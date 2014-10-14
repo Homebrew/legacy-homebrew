@@ -1,15 +1,18 @@
-require 'formula'
+require "formula"
 
 class Newlisp < Formula
-  homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.5.3.tgz'
-  sha1 'dc02542ebb5b2ee2685e51f988a742c4294d14c3'
+  homepage "http://www.newlisp.org/"
+  url "http://www.newlisp.org/downloads/newlisp-10.6.0.tgz"
+  sha1 "0f5ce581d070ff171cbef504308e578885aa5e72"
 
-  depends_on 'readline'
-
-  def patches
-    DATA
+  devel do
+    url "http://www.newlisp.org/downloads/development/newlisp-10.6.1.tgz"
+    sha1 "6f7d06df961022f4319b0ea7227480847e221cb0"
   end
+
+  depends_on "readline"
+
+  patch :DATA
 
   def install
     # Required to use our configuration
@@ -26,6 +29,16 @@ class Newlisp < Formula
     will need to be be pointed to your newlisp executable.
     EOS
   end
+
+  test do
+    path = testpath/"test.lsp"
+    path.write <<-EOS
+      (println "hello")
+      (exit 0)
+    EOS
+
+    assert_equal "hello\n", shell_output("#{bin}/newlisp #{path}")
+  end
 end
 
 __END__
@@ -38,7 +51,7 @@ __END__
  
  ; newlisp-edit.lsp - multiple tab LISP editor and support for running code from the editor
  ; needs 9.9.2 version minimum to run
-@@ -155,7 +155,7 @@
+@@ -157,7 +157,7 @@
  			(write-file file (base64-dec text)))
  		(if (= ostype "Win32")
  			(catch (exec (string {newlisp.exe "} currentScriptFile {" } file " > " (string file "out"))) 'result)
@@ -47,7 +60,7 @@ __END__
  		)
  		(if (list? result)
  			(begin
-@@ -223,7 +223,7 @@
+@@ -225,7 +225,7 @@
  		(gs:run-shell 'OutputArea 
  			(string newlispDir "/newlisp.exe") (string currentExtension " -C -w \"" $HOME "\""))
  		(gs:run-shell 'OutputArea 

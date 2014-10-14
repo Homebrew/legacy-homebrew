@@ -2,8 +2,15 @@ require 'formula'
 
 class Msgpack < Formula
   homepage 'http://msgpack.org/'
-  url 'http://msgpack.org/releases/cpp/msgpack-0.5.7.tar.gz'
-  sha256 '7c203265cf14a4723820e0fc7ac14bf4bad5578f7bc525e9835c70cd36e7d1b8'
+  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz"
+  sha256 "6139614b4142df3773d74e9d9a4dbb6dd0430103cfa7b083e723cde0ec1e7fdd"
+
+  bottle do
+    cellar :any
+    sha1 "dfe0f7299a2b560bc4ca06eb16c0752dff07c891" => :mavericks
+    sha1 "0756a0c48943378e72c27699959f86baed2ea85f" => :mountain_lion
+    sha1 "b1b6d5fc5b747829b2a4d3c6cf19c7f6fc2aac21" => :lion
+  end
 
   fails_with :llvm do
     build 2334

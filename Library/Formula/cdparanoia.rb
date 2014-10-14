@@ -12,20 +12,21 @@ class Cdparanoia < Formula
     cause '"File too small" error while linking'
   end
 
-  def patches
-    [
-     "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/osx_interface.patch",
-     "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/patch-paranoia_paranoia.c.10.4.diff"
-    ]
+  patch do
+    url "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/osx_interface.patch"
+    sha1 "c86e573f51e6d58d5f349b22802a7a7eeece9fcd"
+  end
+
+  patch do
+    url "https://trac.macports.org/export/70964/trunk/dports/audio/cdparanoia/files/patch-paranoia_paranoia.c.10.4.diff"
+    sha1 "d7dc121374df3b82e82adf544df7bf1eec377bdb"
   end
 
   def install
     system "autoconf"
     # Libs are installed as keg-only because most software that searches for cdparanoia
     # will fail to link against it cleanly due to our patches
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--libdir=#{libexec}"
     system "make all"

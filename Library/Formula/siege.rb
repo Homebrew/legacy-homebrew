@@ -2,8 +2,14 @@ require 'formula'
 
 class Siege < Formula
   homepage 'http://www.joedog.org/index/siege-home'
-  url "http://www.joedog.org/pub/siege/siege-3.0.0.tar.gz"
-  sha1 'a044679fbe4a58b027a50735f6a4b2c12f6d2f2a'
+  url 'http://download.joedog.org/siege/siege-3.0.7.tar.gz'
+  sha256 'c651e2ae871cc680eb375f128b4809e97ceecf367f6bd65c3df00603fbceed4e'
+
+  bottle do
+    sha1 "b20c74de2adcdae43e88fbca22fc01fcf58b5285" => :mavericks
+    sha1 "1763b8658f43dbe0bc29fd22278582372db67937" => :mountain_lion
+    sha1 "341a530677f23ae7a871c7278e3ded0d2382bc77" => :lion
+  end
 
   def install
     # To avoid unnecessary warning due to hardcoded path, create the folder first
@@ -31,5 +37,9 @@ class Siege < Formula
 
     Run siege.config to create the ~/.siegerc config file.
     EOS
+  end
+
+  test do
+    system "#{bin}/siege", "--concurrent=1", "--reps=1", "http://google.com/"
   end
 end

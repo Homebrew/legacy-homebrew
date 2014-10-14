@@ -3,7 +3,7 @@ require 'formula'
 class Sshuttle < Formula
   homepage 'https://github.com/apenwarr/sshuttle'
   url 'https://github.com/apenwarr/sshuttle/archive/sshuttle-0.61.tar.gz'
-  sha1 '557455c7c38653bcb3cbb5051026af7d954fec83'
+  sha1 '05551cdc78e866d983470ba4084beb206bacebd8'
 
   head 'https://github.com/apenwarr/sshuttle.git'
 

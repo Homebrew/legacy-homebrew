@@ -10,12 +10,9 @@ class Wmctrl < Formula
   depends_on 'gettext'
   depends_on :x11
 
-  def patches
-    # Fix for 64-bit arch. See:
-    # * http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=362068
-    # * http://patch-tracker.debian.org/package/wmctrl/1.07-6
-    DATA
-  end
+  # Fix for 64-bit arch. See:
+  # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=362068
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

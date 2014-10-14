@@ -1,14 +1,19 @@
 require 'formula'
 
 class Pyqt5 < Formula
-  homepage 'http://www.riverbankcomputing.co.uk/software/pyqt/download5'
-  url 'http://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.0/PyQt-gpl-5.0.tar.gz'
-  sha1 'ad143f8c1287e80f37db23618c9560b00f89bc60'
+  homepage "http://www.riverbankcomputing.co.uk/software/pyqt/download5"
+  url "https://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.3.2/PyQt-gpl-5.3.2.tar.gz"
+  sha1 "bb34d826a50b0735d1319dc51be6a094ba64b800"
 
   option 'enable-debug', "Build with debug symbols"
+  option 'with-docs', "Install HTML documentation and python examples"
 
   depends_on :python3 => :recommended
-  depends_on :python2 => :optional
+  depends_on :python => :optional
+
+  if build.without?("python3") && build.without?("python")
+    odie "pyqt5: --with-python3 must be specified when using --without-python"
+  end
 
   depends_on 'qt5'
 
@@ -19,54 +24,38 @@ class Pyqt5 < Formula
   end
 
   def install
-    python do
+    Language::Python.each_python(build) do |python, version|
       args = [ "--confirm-license",
                "--bindir=#{bin}",
-               "--destdir=#{lib}/#{python.xy}/site-packages",
-               # To avoid conflicst with PyQt (for Qt4):
-               "--sipdir=#{share}/sip#{python.if3then3}/Qt5/",
+               "--destdir=#{lib}/python#{version}/site-packages",
+               # To avoid conflicts with PyQt (for Qt4):
+               "--sipdir=#{share}/sip/Qt5/",
                # sip.h could not be found automatically
-               "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include" ]
+               "--sip-incdir=#{Formula["sip"].opt_include}",
+               # Make sure the qt5 version of qmake is found.
+               # If qt4 is linked it will pickup that version otherwise.
+               "--qmake=#{Formula["qt5"].bin}/qmake",
+               # Force deployment target to avoid libc++ issues
+               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
+               "--verbose"]
       args << '--debug' if build.include? 'enable-debug'
 
-      system python, "./configure.py", *args
+      # addresses https://github.com/Homebrew/homebrew/issues/32370
+      inreplace "configure.py", "qmake_QT=['webkitwidgets']", "qmake_QT=['webkitwidgets', 'printsupport']"
+
+      system python, "configure.py", *args
       system "make"
       system "make", "install"
-      system "make", "clean"  # because this python block may be run twice
-
-      # For PyQt5 we default to put 3.x bindings in bin, unless --without-python3
-      if build.with? 'python3' and build.with? 'python'
-        ['pyuic5', 'pyrcc5', 'pylupdate5'].each { |f| mv(bin/f, bin/"#{f}-py2")}
-      end
+      system "make", "clean"
     end
-  end
-
-  def caveats
-    python.standard_caveats if python
+    doc.install 'doc/html', 'examples' if build.with? "docs"
   end
 
   test do
-    # To test Python 2.x, you have to `brew test pyqt --with-python`
-    (testpath/'test.py').write <<-EOS.undent
-      import sys
-      from PyQt5 import QtGui, QtCore, QtWidgets
-
-      class Test(QtWidgets.QWidget):
-          def __init__(self, parent=None):
-              QtWidgets.QWidget.__init__(self, parent)
-              self.setGeometry(300, 300, 400, 150)
-              self.setWindowTitle('Homebrew')
-              QtWidgets.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
-                               " working with PyQt5. Quitting now...", self).move(50, 50)
-              QtCore.QTimer.singleShot(1500, QtWidgets.qApp.quit)
-
-      app = QtWidgets.QApplication([])
-      window = Test()
-      window.show()
-      sys.exit(app.exec_())
-    EOS
-    python do
-      system python, "test.py"
+    system "pyuic5", "--version"
+    system "pylupdate5", "-version"
+    Language::Python.each_python(build) do |python, version|
+      system python, "-c", "import PyQt5"
     end
   end
 end

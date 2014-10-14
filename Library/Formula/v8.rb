@@ -7,35 +7,37 @@ require 'formula'
 
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
-  url 'https://github.com/v8/v8/archive/3.19.18.4.tar.gz'
-  sha1 'f44c8eed0fe93b2d04d1d547a1e2640f41161354'
-
-  devel do
-    url 'https://github.com/v8/v8/archive/3.20.12.tar.gz'
-    sha1 '1463f4b8b33674bfd366e84b739713a727e9f9ac'
-  end
-
-  head 'https://github.com/v8/v8.git'
+  url 'https://github.com/v8/v8/archive/3.25.30.tar.gz'
+  sha1 '207d0bb1dd5954fe691570e799b3c1e318741290'
 
   option 'with-readline', 'Use readline instead of libedit'
 
-  # gyp currently depends on a full xcode install
-  # https://code.google.com/p/gyp/issues/detail?id=292
-  depends_on :xcode
+  # not building on Snow Leopard:
+  # https://github.com/Homebrew/homebrew/issues/21426
+  depends_on :macos => :lion
+
+  depends_on :python => :build # gyp doesn't run under 2.6 or lower
   depends_on 'readline' => :optional
 
+  resource 'gyp' do
+    url 'http://gyp.googlecode.com/svn/trunk', :revision => 1831
+    version '1831'
+  end
+
   def install
-    system 'make dependencies'
-    system 'make', 'native',
-                   "-j#{ENV.make_jobs}",
+    # Download gyp ourselves because running "make dependencies" pulls in ICU.
+    (buildpath/'build/gyp').install resource('gyp')
+
+    system "make", "native",
                    "library=shared",
                    "snapshot=on",
-                   "console=readline"
+                   "console=readline",
+                   "i18nsupport=off"
 
     prefix.install 'include'
     cd 'out/native' do
       lib.install Dir['lib*']
-      bin.install 'd8', 'lineprocessor', 'preparser', 'process', 'shell' => 'v8'
+      bin.install 'd8', 'lineprocessor', 'process', 'shell' => 'v8'
       bin.install Dir['mksnapshot.*']
     end
   end

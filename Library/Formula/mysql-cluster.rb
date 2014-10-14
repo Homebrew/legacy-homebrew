@@ -2,8 +2,8 @@ require 'formula'
 
 class MysqlCluster < Formula
   homepage 'http://www.mysql.com/cluster/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.1.tar.gz'
-  sha1 '593588df751ba154fbe2d36d96dd57257c9846b3'
+  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.4.tar.gz'
+  sha1 '01003903da6802885bc98565ebe07f76714488fe'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -17,19 +17,12 @@ class MysqlCluster < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'enable-debug', 'Build with debug support'
 
-  conflicts_with 'mysql',
-    :because => "mysql-cluster and mysql install the same binaries."
-
-  conflicts_with 'mariadb',
-    :because => "mysql-cluster and mariadb install the same binaries."
-
-  conflicts_with 'percona-server',
-    :because => "mysql-cluster and percona-server install the same binaries."
-
-  env :std if build.universal?
+  conflicts_with 'memcached', :because => 'both install `bin/memcached`'
+  conflicts_with 'mysql', 'mariadb', 'percona-server',
+    :because => "mysql, mariadb, and percona install the same binaries."
 
   fails_with :clang do
-    build 421
+    build 500
     cause "http://article.gmane.org/gmane.comp.db.mysql.cluster/2085"
   end
 
@@ -55,26 +48,29 @@ class MysqlCluster < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.include? 'with-tests'
+    if build.with? "tests"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? "embedded"
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
+    args << "-DWITH_READLINE=yes" if build.without? "libedit"
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? "archive-storage-engine"
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? "blackhole-storage-engine"
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
@@ -90,8 +86,8 @@ class MysqlCluster < Formula
     (var+"mysql-cluster/ndb_data").mkpath
     (var+"mysql-cluster/mysqld_data").mkpath
     (var+"mysql-cluster/conf").mkpath
-    (var+"mysql-cluster/conf/my.cnf").write my_cnf unless File.exists? var+"mysql-cluster/conf/my.cnf"
-    (var+"mysql-cluster/conf/config.ini").write config_ini unless File.exists? var+"mysql-cluster/conf/config.ini"
+    (var+"mysql-cluster/conf/my.cnf").write my_cnf unless File.exist? var+"mysql-cluster/conf/my.cnf"
+    (var+"mysql-cluster/conf/config.ini").write config_ini unless File.exist? var+"mysql-cluster/conf/config.ini"
 
     plist_path('ndb_mgmd').write ndb_mgmd_startup_plist('ndb_mgmd')
     plist_path('ndb_mgmd').chmod 0644
@@ -101,18 +97,23 @@ class MysqlCluster < Formula
     plist_path('mysqld').chmod 0644
 
     # Don't create databases inside of the prefix!
-    # See: https://github.com/mxcl/homebrew/issues/4975
+    # See: https://github.com/Homebrew/homebrew/issues/4975
     rm_rf prefix+'data'
 
     # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    bin.install_symlink prefix/"scripts/mysql_install_db"
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    bin.install_symlink prefix/"support-files/mysql.server"
+
+    # Move mysqlaccess to libexec
+    libexec.mkpath
+    libexec.install "#{bin}/mysqlaccess", "#{bin}/mysqlaccess.conf",
+                    "#{bin}/mcc_config.py"
   end
 
   def caveats; <<-EOS.undent

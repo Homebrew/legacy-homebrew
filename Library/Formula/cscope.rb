@@ -2,11 +2,11 @@ require 'formula'
 
 class Cscope < Formula
   homepage 'http://cscope.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/cscope/cscope/15.8a/cscope-15.8a.tar.gz'
+  url 'https://downloads.sourceforge.net/project/cscope/cscope/15.8a/cscope-15.8a.tar.gz'
   sha1 '00f76825791b895532778f720c509cd13b9d6846'
 
   # Patch from http://bugs.gentoo.org/show_bug.cgi?ctype=html&id=111621
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",

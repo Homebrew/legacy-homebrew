@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'formula'
 
 class Par < Formula
@@ -6,10 +7,11 @@ class Par < Formula
   version '1.52'
   sha1 '4b83d2ec593bb45ee46d4b7c2bfc590e1f4a41a8'
 
-  def patches
-    # A patch by Jérôme Pouiller that adds support for multibyte
-    # charsets (like UTF-8), plus Debian packaging.
-    "http://www.nicemice.net/par/par_1.52-i18n.3.diff.gz"
+  # A patch by Jérôme Pouiller that adds support for multibyte
+  # charsets (like UTF-8), plus Debian packaging.
+  patch do
+    url "http://sysmic.org/dl/par/par_1.52-i18n.4.patch"
+    sha1 "9f774372c7eedc6970aa7e4ff40692428cbd84ee"
   end
 
   def install

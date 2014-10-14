@@ -2,29 +2,42 @@ require 'formula'
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
-  url 'http://grass.osgeo.org/grass64/source/grass-6.4.2.tar.gz'
-  sha1 '74481611573677d90ae0cd446c04a3895e232004'
+  revision 1
 
-  head 'https://svn.osgeo.org/grass/grass/trunk'
+  stable do
+    url "http://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
+    sha1 "0e4dac9fb3320a26e4f640f641485fde0323dd46"
+
+    # Patches that files are not installed outside of the prefix.
+    patch :DATA
+  end
+
+  head do
+    url "https://svn.osgeo.org/grass/grass/trunk"
+
+    patch do
+      url "https://gist.githubusercontent.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
+      sha1 "ffbe31682d8a7605d5548cdafd536f1c785d3a23"
+    end
+  end
 
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
+  depends_on :macos => :lion
+  depends_on 'gcc' if MacOS.version >= :mountain_lion
   depends_on "pkg-config" => :build
-  depends_on :python
   depends_on "gettext"
   depends_on "readline"
   depends_on "gdal"
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on 'wxmac' => :recommended # prefer over OS X's version because of 64bit
+  depends_on "wxpython" => :recommended # prefer over OS X's version because of 64bit
   depends_on :postgresql => :optional
   depends_on :mysql => :optional
-  depends_on "cairo" if MacOS.version <= :leopard
+  depends_on "cairo"
+  depends_on "freetype"
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
-
-  # Patches that files are not installed outside of the prefix.
-  def patches; DATA; end
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
@@ -33,12 +46,12 @@ class Grass < Formula
   def headless?
     # The GRASS GUI is based on WxPython. Unfortunately, Lion does not include
     # this module so we have to drop it.
-    build.include? 'without-gui' or MacOS.version == :lion
+    build.without? "gui" or MacOS.version == :lion
   end
 
   def install
-    readline = Formula.factory('readline')
-    gettext = Formula.factory('gettext')
+    readline = Formula["readline"].opt_prefix
+    gettext = Formula["gettext"].opt_prefix
 
     args = [
       "--disable-debug", "--disable-dependency-tracking",
@@ -51,13 +64,13 @@ class Grass < Formula
       "--with-lapack",
       "--with-sqlite",
       "--with-odbc",
-      "--with-geos=#{Formula.factory('geos').opt_prefix}/bin/geos-config",
+      "--with-geos=#{Formula["geos"].opt_bin}/geos-config",
       "--with-png",
-      "--with-readline-includes=#{readline.opt_prefix}/include",
-      "--with-readline-libs=#{readline.opt_prefix}/lib",
+      "--with-readline-includes=#{readline}/include",
+      "--with-readline-libs=#{readline}/lib",
       "--with-readline",
-      "--with-nls-includes=#{gettext.opt_prefix}/include",
-      "--with-nls-libs=#{gettext.opt_prefix}/lib",
+      "--with-nls-includes=#{gettext}/include",
+      "--with-nls-libs=#{gettext}/lib",
       "--with-nls",
       "--with-freetype",
       "--without-tcltk" # Disabled due to compatibility issues with OS X Tcl/Tk
@@ -72,38 +85,36 @@ class Grass < Formula
     if headless? or build.without? 'wxmac'
       args << "--without-wxwidgets"
     else
-      args << "--with-wxwidgets=#{Formula.factory('wxmac').opt_prefix}/bin/wx-config"
+      args << "--with-wxwidgets=#{Formula["wxmac"].opt_bin}/wx-config"
+    end
+
+    if build.with? "wxpython"
+      python_site_packages = HOMEBREW_PREFIX/"lib/python2.7/site-packages"
+      default_wx_path = File.read(python_site_packages/"wx.pth").strip
+      ENV.prepend_path "PYTHONPATH", python_site_packages/default_wx_path
     end
 
     args << "--enable-64bit" if MacOS.prefer_64_bit?
     args << "--with-macos-archs=#{MacOS.preferred_arch}"
 
-    # Deal with Cairo support
-    if MacOS.version <= :leopard
-      cairo = Formula.factory('cairo')
-      args << "--with-cairo-includes=#{cairo.include}/cairo"
-      args << "--with-cairo-libs=#{cairo.lib}"
-    else
-      args << "--with-cairo-includes=#{MacOS::X11.include} #{MacOS::X11.include}/cairo"
-    end
-
+    cairo = Formula["cairo"]
+    args << "--with-cairo-includes=#{cairo.include}/cairo"
+    args << "--with-cairo-libs=#{cairo.lib}"
     args << "--with-cairo"
 
     # Database support
-    if build.with? "postgres"
-      args << "--with-postgres"
-    end
+    args << "--with-postgres" if build.with? "postgresql"
 
     if build.with? "mysql"
-      mysql = Formula.factory('mysql')
-      args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
-      args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"
+      mysql = Formula["mysql"]
+      args << "--with-mysql-includes=#{mysql.include}/mysql"
+      args << "--with-mysql-libs=#{mysql.lib}"
       args << "--with-mysql"
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make" # make and make install must be separate steps.
-    system "make install"
+    system "make GDAL_DYNAMIC=" # make and make install must be separate steps.
+    system "make GDAL_DYNAMIC= install" # GDAL_DYNAMIC set to blank for r.external compatability
   end
 
   def caveats
@@ -122,9 +133,9 @@ class Grass < Formula
         The old Tcl/Tk GUI cannot be built using the version of Tcl/Tk provided
         by OS X. This has the unfortunate consquence of disabling the NVIZ
         visualization system. A keg-only Tcl/Tk brew or some deep hackery of
-        the GRASS source may be possible ways to get around this around this.
+        the GRASS source may be possible ways to get around this.
 
-        Tcl/Tk will eventually be depreciated in GRASS 7 and this version has
+        Tcl/Tk will eventually be deprecated in GRASS 7 and this version has
         been built to support the newer wxPython based GUI. However, there is
         a problem as wxWidgets does not compile as a 64 bit library on OS X
         which affects Snow Leopard users. In order to remedy this, the GRASS
@@ -153,6 +164,6 @@ index f1edea6..be404b0 100644
  endif
 -	@# enable OSX Help Viewer
 -	@if [ "`cat include/Make/Platform.make | grep -i '^ARCH.*darwin'`" ] ; then /bin/ln -sfh "${INST_DIR}/docs/html" /Library/Documentation/Help/GRASS-${GRASS_VERSION_MAJOR}.${GRASS_VERSION_MINOR} ; fi
- 
- 
+
+
  install-strip: FORCE

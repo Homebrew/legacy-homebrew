@@ -2,8 +2,10 @@ require 'formula'
 
 class Trash < Formula
   homepage 'http://hasseg.org/trash/'
-  url 'http://github.com/hasseg/trash/archive/v0.8.3.zip'
-  sha1 'de3489f7dbfe03dc490a3c7da22dba90998af3d1'
+  url 'https://github.com/ali-rantakari/trash/archive/v0.8.5.tar.gz'
+  sha1 '4e1273a08e7f67f48a8d4aea5119ea733556b8a9'
+
+  conflicts_with 'osxutils', :because => 'both install a trash binary'
 
   def install
     system "make"
@@ -12,7 +14,7 @@ class Trash < Formula
     man1.install "trash.1"
   end
 
-  def test
+  test do
     system "#{bin}/trash"
   end
 end

@@ -1,13 +1,20 @@
-require 'formula'
+require "formula"
 
 class Readline < Formula
-  homepage 'http://tiswww.case.edu/php/chet/readline/rltop.html'
-  url 'http://ftpmirror.gnu.org/readline/readline-6.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
-  sha256 '79a696070a058c233c72dd6ac697021cc64abd5ed51e59db867d66d196a89381'
-  version '6.2.4'
+  homepage "http://tiswww.case.edu/php/chet/readline/rltop.html"
+  url "http://ftpmirror.gnu.org/readline/readline-6.3.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz"
+  sha256 "56ba6071b9462f980c5a72ab0023893b65ba6debb4eeb475d7a563dc65cafd43"
+  version "6.3.8"
 
-  keg_only <<-EOS
+  bottle do
+    cellar :any
+    sha1 "d530f4e966bb9c654a86f5cc0e65b20b1017aef2" => :mavericks
+    sha1 "7473587d992d8c3eb37afe6c3e0adc3587c977f1" => :mountain_lion
+    sha1 "e84f9cd95503b284651ef24bc8e7da30372687d3" => :lion
+  end
+
+  keg_only :shadowed_by_osx, <<-EOS
 OS X provides the BSD libedit library, which shadows libreadline.
 In order to prevent conflicts when programs look for libreadline we are
 defaulting this GNU Readline installation to keg-only.
@@ -18,177 +25,24 @@ EOS
   # there are, the more unreliable they get. Pulling this patch inline to
   # reduce bug reports.
   # Upstream patches can be found in:
-  # http://ftpmirror.gnu.org/readline/readline-6.2-patches
-  #
-  # We are carrying an additional patch to add Darwin 13 as a build target.
-  # Presumably when 10.9 comes out this patch will move upstream.
-  # https://github.com/mxcl/homebrew/pull/21625
-  def patches; DATA; end
+  # http://git.savannah.gnu.org/cgit/readline.git
+  patch do
+    url "https://gist.githubusercontent.com/jacknagel/d886531fb6623b60b2af/raw/746fc543e56bc37a26ccf05d2946a45176b0894e/readline-6.3.8.diff"
+    sha1 "dccc973e4a75ecfe45c25c296e0f7785b06586dc"
+  end
 
   def install
-    # Always build universal, per https://github.com/mxcl/homebrew/issues/issue/899
     ENV.universal_binary
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--infodir=#{info}",
-                          "--enable-multibyte"
+    system "./configure", "--prefix=#{prefix}", "--enable-multibyte"
     system "make install"
+
+    # The 6.3 release notes say:
+    #   When creating shared libraries on Mac OS X, the pathname written into the
+    #   library (install_name) no longer includes the minor version number.
+    # Software will link against libreadline.6.dylib instead of libreadline.6.3.dylib.
+    # Therefore we create symlinks to avoid bumping the revisions on dependents.
+    # This should be removed at 6.4.
+    lib.install_symlink "libhistory.6.3.dylib" => "libhistory.6.2.dylib",
+                        "libreadline.6.3.dylib" => "libreadline.6.2.dylib"
   end
 end
-
-__END__
-diff --git a/callback.c b/callback.c
-index 4ee6361..7682cd0 100644
---- a/callback.c
-+++ b/callback.c
-@@ -148,6 +148,9 @@ rl_callback_read_char ()
- 	  eof = _rl_vi_domove_callback (_rl_vimvcxt);
- 	  /* Should handle everything, including cleanup, numeric arguments,
- 	     and turning off RL_STATE_VIMOTION */
-+	  if (RL_ISSTATE (RL_STATE_NUMERICARG) == 0)
-+	    _rl_internal_char_cleanup ();
-+
- 	  return;
- 	}
- #endif
-diff --git a/input.c b/input.c
-index 7c74c99..b49af88 100644
---- a/input.c
-+++ b/input.c
-@@ -409,7 +409,7 @@ rl_clear_pending_input ()
- int
- rl_read_key ()
- {
--  int c;
-+  int c, r;
- 
-   rl_key_sequence_length++;
- 
-@@ -429,14 +429,18 @@ rl_read_key ()
- 	{
- 	  while (rl_event_hook)
- 	    {
--	      if (rl_gather_tyi () < 0)	/* XXX - EIO */
-+	      if (rl_get_char (&c) != 0)
-+		break;
-+		
-+	      if ((r = rl_gather_tyi ()) < 0)	/* XXX - EIO */
- 		{
- 		  rl_done = 1;
- 		  return ('\n');
- 		}
-+	      else if (r == 1)			/* read something */
-+		continue;
-+
- 	      RL_CHECK_SIGNALS ();
--	      if (rl_get_char (&c) != 0)
--		break;
- 	      if (rl_done)		/* XXX - experimental */
- 		return ('\n');
- 	      (*rl_event_hook) ();
-diff --git a/patchlevel b/patchlevel
-index fdf4740..626a945 100644
---- a/patchlevel
-+++ b/patchlevel
-@@ -1,3 +1,3 @@
- # Do not edit -- exists only for use by patch
- 
--1
-+4
-diff --git a/support/shobj-conf b/support/shobj-conf
-index 5a63e80..c61dc78 100644
---- a/support/shobj-conf
-+++ b/support/shobj-conf
-@@ -157,7 +157,7 @@ freebsd[4-9]*|freebsdelf*|dragonfly*)
- 	;;
- 
- # Darwin/MacOS X
--darwin[89]*|darwin10*)
-+darwin[89]*|darwin1[0123]*)
- 	SHOBJ_STATUS=supported
- 	SHLIB_STATUS=supported
- 	
-@@ -186,7 +186,7 @@ darwin*|macosx*)
- 	SHLIB_LIBSUFF='dylib'
- 
- 	case "${host_os}" in
--	darwin[789]*|darwin10*)	SHOBJ_LDFLAGS=''
-+	darwin[789]*|darwin1[0123]*)	SHOBJ_LDFLAGS=''
- 			SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
- 			;;
- 	*)		SHOBJ_LDFLAGS='-dynamic'
-diff --git a/vi_mode.c b/vi_mode.c
-index 41e1dbb..4408053 100644
---- a/vi_mode.c
-+++ b/vi_mode.c
-@@ -1114,7 +1114,7 @@ rl_domove_read_callback (m)
-       rl_beg_of_line (1, c);
-       _rl_vi_last_motion = c;
-       RL_UNSETSTATE (RL_STATE_VIMOTION);
--      return (0);
-+      return (vidomove_dispatch (m));
-     }
- #if defined (READLINE_CALLBACKS)
-   /* XXX - these need to handle rl_universal_argument bindings */
-@@ -1234,11 +1234,19 @@ rl_vi_delete_to (count, key)
-       _rl_vimvcxt->motion = '$';
-       r = rl_domove_motion_callback (_rl_vimvcxt);
-     }
--  else if (vi_redoing)
-+  else if (vi_redoing && _rl_vi_last_motion != 'd')	/* `dd' is special */
-     {
-       _rl_vimvcxt->motion = _rl_vi_last_motion;
-       r = rl_domove_motion_callback (_rl_vimvcxt);
-     }
-+  else if (vi_redoing)		/* handle redoing `dd' here */
-+    {
-+      _rl_vimvcxt->motion = _rl_vi_last_motion;
-+      rl_mark = rl_end;
-+      rl_beg_of_line (1, key);
-+      RL_UNSETSTATE (RL_STATE_VIMOTION);
-+      r = vidomove_dispatch (_rl_vimvcxt);
-+    }
- #if defined (READLINE_CALLBACKS)
-   else if (RL_ISSTATE (RL_STATE_CALLBACK))
-     {
-@@ -1316,11 +1324,19 @@ rl_vi_change_to (count, key)
-       _rl_vimvcxt->motion = '$';
-       r = rl_domove_motion_callback (_rl_vimvcxt);
-     }
--  else if (vi_redoing)
-+  else if (vi_redoing && _rl_vi_last_motion != 'c')	/* `cc' is special */
-     {
-       _rl_vimvcxt->motion = _rl_vi_last_motion;
-       r = rl_domove_motion_callback (_rl_vimvcxt);
-     }
-+  else if (vi_redoing)		/* handle redoing `cc' here */
-+    {
-+      _rl_vimvcxt->motion = _rl_vi_last_motion;
-+      rl_mark = rl_end;
-+      rl_beg_of_line (1, key);
-+      RL_UNSETSTATE (RL_STATE_VIMOTION);
-+      r = vidomove_dispatch (_rl_vimvcxt);
-+    }
- #if defined (READLINE_CALLBACKS)
-   else if (RL_ISSTATE (RL_STATE_CALLBACK))
-     {
-@@ -1377,6 +1393,19 @@ rl_vi_yank_to (count, key)
-       _rl_vimvcxt->motion = '$';
-       r = rl_domove_motion_callback (_rl_vimvcxt);
-     }
-+  else if (vi_redoing && _rl_vi_last_motion != 'y')	/* `yy' is special */
-+    {
-+      _rl_vimvcxt->motion = _rl_vi_last_motion;
-+      r = rl_domove_motion_callback (_rl_vimvcxt);
-+    }
-+  else if (vi_redoing)			/* handle redoing `yy' here */
-+    {
-+      _rl_vimvcxt->motion = _rl_vi_last_motion;
-+      rl_mark = rl_end;
-+      rl_beg_of_line (1, key);
-+      RL_UNSETSTATE (RL_STATE_VIMOTION);
-+      r = vidomove_dispatch (_rl_vimvcxt);
-+    }
- #if defined (READLINE_CALLBACKS)
-   else if (RL_ISSTATE (RL_STATE_CALLBACK))
-     {

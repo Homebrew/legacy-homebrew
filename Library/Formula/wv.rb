@@ -1,15 +1,15 @@
-require 'formula'
+require "formula"
 
 class Wv < Formula
-  homepage 'http://wvware.sourceforge.net/'
-  url 'http://abisource.com/downloads/wv/1.2.5/wv-1.2.5.tar.gz'
-  sha1 'a196a31ca1c4083436d9414b9bf4809c0fd7c33c'
+  homepage "http://wvware.sourceforge.net/"
+  url "http://abisource.com/downloads/wv/1.2.9/wv-1.2.9.tar.gz"
+  sha1 "db4717a151742dbdb492318f104504a92075543a"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'libgsf'
-  depends_on 'libwmf'
-  depends_on :libpng
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "libgsf"
+  depends_on "libwmf"
+  depends_on "libpng"
 
   def install
     ENV.libxml2
@@ -18,6 +18,17 @@ class Wv < Formula
                           "--mandir=#{man}"
     system "make"
     ENV.deparallelize
+    # the makefile generated does not create the file structure when installing
+    # till it is fixed upstream, create the target directories here.
+    # http://www.abisource.com/mailinglists/abiword-dev/2011/Jun/0108.html
+
+    bin.mkpath
+    (lib/"pkgconfig").mkpath
+    (include/"wv").mkpath
+    man1.mkpath
+    (share/"wv/wingdingfont").mkpath
+    (share/"wv/patterns").mkpath
+
     system "make install"
   end
 end

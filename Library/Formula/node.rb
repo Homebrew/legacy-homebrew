@@ -1,173 +1,94 @@
-require 'formula'
-
-class NpmNotInstalled < Requirement
-  fatal true
-
-  def modules_folder
-    "#{HOMEBREW_PREFIX}/lib/node_modules"
-  end
-
-  def message; <<-EOS.undent
-    Beginning with 0.8.0, this recipe now comes with npm.
-    It appears you already have npm installed at #{modules_folder}/npm.
-    To use the npm that comes with this recipe, first uninstall npm with
-    `npm uninstall npm -g`, then run this command again.
-
-    If you would like to keep your installation of npm instead of
-    using the one provided with homebrew, install the formula with
-    the `--without-npm` option.
-    EOS
-  end
-
-  satisfy :build_env => false do
-    begin
-      path = Pathname.new("#{modules_folder}/npm/bin/npm")
-      path.realpath.to_s.include?(HOMEBREW_CELLAR)
-    rescue Errno::ENOENT
-      true
-    end
-  end
-end
+require "formula"
 
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
-  homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.17/node-v0.10.17.tar.gz'
-  sha1 'c9d31d5415d2cf7a09fd7abebf9f01259e9dd93b'
+  homepage "http://nodejs.org/"
+  url "http://nodejs.org/dist/v0.10.32/node-v0.10.32.tar.gz"
+  sha256 "c2120d0e3d2d191654cb11dbc0a33a7216d53732173317681da9502be0030f10"
 
-  devel do
-    url 'http://nodejs.org/dist/v0.11.6/node-v0.11.6.tar.gz'
-    sha1 '4f3a643b4913ef085175aef180c3bfd9259a4357'
+  bottle do
+    sha1 "f9f083a1cf13cf3703c764d639702627968e2234" => :mavericks
+    sha1 "83a01d1079ed1bc02a7c9fc7cefa589027778b15" => :mountain_lion
+    sha1 "a2dbe4a3358e98813fbc6c83cfa79120177e6fc8" => :lion
   end
 
-  head 'https://github.com/joyent/node.git'
+  devel do
+    url "http://nodejs.org/dist/v0.11.14/node-v0.11.14.tar.gz"
+    sha256 "ce08b0a2769bcc135ca25639c9d411a038e93e0f5f5a83000ecde9b763c4dd83"
+  end
 
-  option 'enable-debug', 'Build with debugger hooks'
-  option 'without-npm', 'npm will not be installed'
+  head "https://github.com/joyent/node.git"
 
-  depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on :python => ["2.6", :build]
+  option "enable-debug", "Build with debugger hooks"
+  option "without-npm", "npm will not be installed"
+  option "without-completion", "npm bash completion will not be installed"
+
+  depends_on :python => :build
 
   fails_with :llvm do
     build 2326
   end
 
-  # fixes gyp's detection of system paths on CLT-only systems
-  def patches; DATA; end
-
-  def install
-    args = %W{--prefix=#{prefix}}
-
-    args << "--debug" if build.include? 'enable-debug'
-    args << "--without-npm" if build.include? 'without-npm'
-
-    system "./configure", *args
-    system "make install"
-
-    unless build.include? 'without-npm'
-      (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
-    end
+  resource "npm" do
+    url "https://registry.npmjs.org/npm/-/npm-1.4.24.tgz"
+    sha1 "78125bb55dc592b9cbf4aff44e33d5d81c9471af"
   end
 
-  def npm_prefix
-    d = "#{HOMEBREW_PREFIX}/share/npm"
-    if File.directory? d
-      d
-    else
-      HOMEBREW_PREFIX.to_s
+  def install
+    args = %W{--prefix=#{prefix} --without-npm}
+    args << "--debug" if build.include? "enable-debug"
+
+    system "./configure", *args
+    system "make", "install"
+
+    resource("npm").stage libexec/"npm" if build.with? "npm"
+  end
+
+  def post_install
+    return if build.without? "npm"
+
+    node_modules = HOMEBREW_PREFIX/"lib/node_modules"
+    node_modules.mkpath
+    cp_r libexec/"npm", node_modules
+
+    npm_root = node_modules/"npm"
+    npmrc = npm_root/"npmrc"
+    npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
+
+    ENV["NPM_CONFIG_USERCONFIG"] = npmrc
+    npm_root.cd { system "make", "install" }
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest",
+                                         "--prefix", HOMEBREW_PREFIX
+
+    Pathname.glob(npm_root/"man/*") do |man|
+      man.children.each do |file|
+        ln_sf file, "#{HOMEBREW_PREFIX}/share/man/#{man.basename}"
+      end
+    end
+
+    if build.with? "completion"
+      bash_completion.install_symlink \
+        npm_root/"lib/utils/completion.sh" => "npm"
     end
   end
 
   def caveats
-    if build.include? 'without-npm' then <<-end.undent
+    if build.without? "npm"; <<-end.undent
       Homebrew has NOT installed npm. If you later install it, you should supplement
       your NODE_PATH with the npm module folder:
-          #{npm_prefix}/lib/node_modules
-      end
-    elsif not ENV['PATH'].split(':').include? "#{npm_prefix}/bin"; <<-end.undent
-      Probably you should amend your PATH to include npm-installed binaries:
-          #{npm_prefix}/bin
+        #{HOMEBREW_PREFIX}/lib/node_modules
       end
     end
   end
-end
 
-__END__
-diff --git a/tools/gyp/pylib/gyp/xcode_emulation.py b/tools/gyp/pylib/gyp/xcode_emulation.py
-index 806f92b..5256856 100644
---- a/tools/gyp/pylib/gyp/xcode_emulation.py
-+++ b/tools/gyp/pylib/gyp/xcode_emulation.py
-@@ -224,8 +224,7 @@ class XcodeSettings(object):
- 
-   def _GetSdkVersionInfoItem(self, sdk, infoitem):
-     job = subprocess.Popen(['xcodebuild', '-version', '-sdk', sdk, infoitem],
--                           stdout=subprocess.PIPE,
--                           stderr=subprocess.STDOUT)
-+                           stdout=subprocess.PIPE)
-     out = job.communicate()[0]
-     if job.returncode != 0:
-       sys.stderr.write(out + '\n')
-@@ -234,9 +233,17 @@ class XcodeSettings(object):
- 
-   def _SdkPath(self):
-     sdk_root = self.GetPerTargetSetting('SDKROOT', default='macosx')
-+    if sdk_root.startswith('/'):
-+      return sdk_root
-     if sdk_root not in XcodeSettings._sdk_path_cache:
--      XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
--          sdk_root, 'Path')
-+      try:
-+        XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
-+            sdk_root, 'Path')
-+      except:
-+        # if this fails it's because xcodebuild failed, which means
-+        # the user is probably on a CLT-only system, where there
-+        # is no valid SDK root
-+        XcodeSettings._sdk_path_cache[sdk_root] = None
-     return XcodeSettings._sdk_path_cache[sdk_root]
- 
-   def _AppendPlatformVersionMinFlags(self, lst):
-@@ -339,10 +346,11 @@ class XcodeSettings(object):
- 
-     cflags += self._Settings().get('WARNING_CFLAGS', [])
- 
--    config = self.spec['configurations'][self.configname]
--    framework_dirs = config.get('mac_framework_dirs', [])
--    for directory in framework_dirs:
--      cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
-+    if 'SDKROOT' in self._Settings():
-+      config = self.spec['configurations'][self.configname]
-+      framework_dirs = config.get('mac_framework_dirs', [])
-+      for directory in framework_dirs:
-+        cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
- 
-     self.configname = None
-     return cflags
-@@ -572,10 +580,11 @@ class XcodeSettings(object):
-     for rpath in self._Settings().get('LD_RUNPATH_SEARCH_PATHS', []):
-       ldflags.append('-Wl,-rpath,' + rpath)
- 
--    config = self.spec['configurations'][self.configname]
--    framework_dirs = config.get('mac_framework_dirs', [])
--    for directory in framework_dirs:
--      ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
-+    if 'SDKROOT' in self._Settings():
-+      config = self.spec['configurations'][self.configname]
-+      framework_dirs = config.get('mac_framework_dirs', [])
-+      for directory in framework_dirs:
-+        ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
- 
-     self.configname = None
-     return ldflags
-@@ -700,7 +709,10 @@ class XcodeSettings(object):
-         l = '-l' + m.group(1)
-       else:
-         l = library
--    return l.replace('$(SDKROOT)', self._SdkPath())
-+    if self._SdkPath():
-+      return l.replace('$(SDKROOT)', self._SdkPath())
-+    else:
-+      return l
- 
-   def AdjustLibraries(self, libraries):
-     """Transforms entries like 'Cocoa.framework' in libraries into entries like
+  test do
+    path = testpath/"test.js"
+    path.write "console.log('hello');"
+
+    output = `#{bin}/node #{path}`.strip
+    assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
+
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm@latest" if build.with? "npm"
+  end
+end

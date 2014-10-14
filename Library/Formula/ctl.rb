@@ -1,17 +1,22 @@
-require 'formula'
+require "formula"
 
 class Ctl < Formula
-  homepage 'https://github.com/ampas/CTL'
-  url 'http://downloads.sourceforge.net/project/ampasctl/ctl/ctl-1.4.1/ctl-1.4.1.tar.gz'
-  sha1 '4e31de8e8da144bbc840d97014a8f45e20e398ac'
+  homepage "https://github.com/ampas/CTL"
+  url "https://github.com/ampas/CTL/archive/ctl-1.5.2.tar.gz"
+  sha1 "2c4aff2d514eeadfac89c6f041d5ffa2e853a79d"
 
-  depends_on 'ilmbase'
+  depends_on "cmake" => :build
+  depends_on "libtiff"
+  depends_on "ilmbase"
+  depends_on "openexr"
+  depends_on "aces_container"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--with-ilmbase-prefix=#{HOMEBREW_PREFIX}",
-                          "--prefix=#{prefix}"
-    system "make install"
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make"
+      system "make", "check"
+      system "make", "install"
+    end
   end
 end

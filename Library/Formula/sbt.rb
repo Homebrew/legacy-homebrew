@@ -1,27 +1,38 @@
-require 'formula'
+require "formula"
 
 class Sbt < Formula
-  homepage 'http://www.scala-sbt.org'
-  url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar'
-  version '0.13.0'
-  sha1 'b78a29b8db7ae0fc90a7890a84a4617975e1d450'
+  homepage "http://www.scala-sbt.org"
+  url "http://dl.bintray.com/sbt/native-packages/sbt/0.13.6/sbt-0.13.6.tgz"
+  sha1 "3efd29e51751157777c4e001acc106b8737e0720"
 
   def install
-    (bin+'sbt').write <<-EOS.undent
-      #!/bin/sh
-      test -f ~/.sbtconfig && . ~/.sbtconfig
-      exec java -Xmx512M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
-    EOS
+    inreplace "bin/sbt" do |s|
+      s.gsub! 'etc_sbt_opts_file="${sbt_home}/conf/sbtopts"', "etc_sbt_opts_file=\"#{etc}/sbtopts\""
+      s.gsub! "/etc/sbt/sbtopts", "#{etc}/sbtopts"
+    end
 
-    libexec.install Dir['*']
+    inreplace "bin/sbt-launch-lib.bash", "${sbt_home}/bin/sbt-launch.jar", "#{libexec}/sbt-launch.jar"
+
+    libexec.install "bin/sbt", "bin/sbt-launch-lib.bash", "bin/sbt-launch.jar"
+    etc.install "conf/sbtopts"
+
+    (bin/"sbt").write <<-EOS.undent
+      #!/bin/sh
+      if [ -f "$HOME/.sbtconfig" ]; then
+        echo "Use of ~/.sbtconfig is deprecated, please migrate global settings to #{etc}/sbtopts" >&2
+        . "$HOME/.sbtconfig"
+      fi
+      exec "#{libexec}/sbt" "$@"
+    EOS
   end
 
   def caveats;  <<-EOS.undent
-    You can use $SBT_OPTS to pass additional JVM options to SBT.
-    For convenience, this can specified in `~/.sbtconfig`.
+    You can use $SBT_OPTS to pass additional JVM options to SBT:
+       SBT_OPTS="-XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
 
-    For example:
-        SBT_OPTS="-XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
+    This formula is now using the standard typesafe sbt launcher script.
+    Project specific options should be placed in .sbtopts in the root of your project.
+    Global settings should be placed in #{etc}/sbtopts
     EOS
   end
 end

@@ -2,8 +2,14 @@ require 'formula'
 
 class Casperjs < Formula
   homepage 'http://www.casperjs.org/'
-  url 'https://github.com/n1k0/casperjs/archive/1.0.3.tar.gz'
-  sha1 'afbfae02e117ced9edcd26786bcce6baae33bfd9'
+  url 'https://github.com/n1k0/casperjs/archive/1.0.4.tar.gz'
+  sha1 '4e1bdbf2ce93506b6c0d193c90a6f9bcd58c6254'
+
+  devel do
+    url 'https://github.com/n1k0/casperjs/archive/1.1-beta3.tar.gz'
+    sha1 'd1c31f6a19c0b636f3e4dc17ffeb8224c8af8aef'
+    version '1.1-beta3'
+  end
 
   head 'https://github.com/n1k0/casperjs.git'
 
@@ -12,10 +18,5 @@ class Casperjs < Formula
   def install
     libexec.install Dir['*']
     bin.install_symlink libexec+'bin/casperjs'
-  end
-
-  devel do
-    url 'https://github.com/n1k0/casperjs/archive/1.1-beta1.tar.gz'
-    sha1 '9e49094c1123ba2bbf610672443bb69a55a350f2'
   end
 end

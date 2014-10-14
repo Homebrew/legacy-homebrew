@@ -1,16 +1,22 @@
-require 'formula'
+require "formula"
 
 class X3270 < Formula
-  homepage 'http://x3270.bgp.nu/'
-  url 'http://downloads.sourceforge.net/project/x3270/x3270/3.3.12ga13/suite3270-3.3.12ga13-src.tgz'
-  sha1 '4c031a7da1d13550ec85726846e31c34d819f971'
+  homepage "http://x3270.bgp.nu/"
+  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.15ga4/suite3270-3.3.15ga4-src.tgz"
+  sha1 "f702f1c79a5f0e9aec2187e306b4a25cefeaa5d0"
+
+  bottle do
+    sha1 "df5f6dd221c372fac63d45236c6cc3b3b4ab16e3" => :mavericks
+    sha1 "cfc5b618501b3eacfaf1b68abf3d3bcf6b767b50" => :mountain_lion
+    sha1 "b0e808139b1c4f00fc5be8e2263a42b62a46f1c6" => :lion
+  end
 
   depends_on :x11
 
-  option 'with-c3270', 'Include c3270 (curses-based version)'
-  option 'with-s3270', 'Include s3270 (displayless version)'
-  option 'with-tcl3270', 'Include tcl3270 (integrated with Tcl)'
-  option 'with-pr3287', 'Include pr3287 (printer emulation)'
+  option "with-c3270", "Include c3270 (curses-based version)"
+  option "with-s3270", "Include s3270 (displayless version)"
+  option "with-tcl3270", "Include tcl3270 (integrated with Tcl)"
+  option "with-pr3287", "Include pr3287 (printer emulation)"
 
   def make_directory(directory)
     cd directory do
@@ -22,10 +28,10 @@ class X3270 < Formula
   end
 
   def install
-    make_directory 'x3270-3.3'
-    make_directory 'c3270-3.3' if build.include? "with-c3270"
-    make_directory 'pr3287-3.3' if build.include? "with-pr3287"
-    make_directory 's3270-3.3' if build.include? "with-s3270"
-    make_directory 'tcl3270-3.3' if build.include? "with-tcl3270"
+    make_directory "x3270-3.3"
+    make_directory "c3270-3.3" if build.with? "c3270"
+    make_directory "pr3287-3.3" if build.with? "pr3287"
+    make_directory "s3270-3.3" if build.with? "s3270"
+    make_directory "tcl3270-3.3" if build.with? "tcl3270"
   end
 end

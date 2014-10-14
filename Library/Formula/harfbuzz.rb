@@ -1,20 +1,27 @@
-require 'formula'
+require "formula"
 
 class Harfbuzz < Formula
-  homepage 'http://www.freedesktop.org/wiki/Software/HarfBuzz'
-  url 'http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.18.tar.bz2'
-  sha256 'fef0fbbc6d6492cb4074a5e26a699d87d88bef8adc25dda62af6077735a7d908'
+  homepage "http://www.freedesktop.org/wiki/Software/HarfBuzz"
+  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.35.tar.bz2"
+  sha256 "0aa1a8aba6f502321cf6fef3c9d2c73dde48389c5ed1d3615a7691944c2a06ed"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'cairo'
-  depends_on 'icu4c' => :recommended
+  bottle do
+    cellar :any
+    sha1 "d2baeac1dd409726dd7a9058f60ec949bc785d37" => :mavericks
+    sha1 "935cf831401eaef960298b981f08d91b8b4d185b" => :mountain_lion
+    sha1 "9f06e7f6f44943ea83c3a4e1c5976049c1ea9e0f" => :lion
+  end
 
-  # Needs newer fontconfig than XQuartz provides for pango
-  depends_on 'fontconfig'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "cairo"
+  depends_on "icu4c" => :recommended
+  depends_on "freetype"
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--with-icu" if build.with? "icu4c"
+    system "./configure", *args
     system "make install"
   end
 end

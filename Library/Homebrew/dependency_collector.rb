@@ -21,15 +21,21 @@ class DependencyCollector
     :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
+  CACHE = {}
+
+  def self.clear_cache
+    CACHE.clear
+  end
+
   attr_reader :deps, :requirements
 
   def initialize
     @deps = Dependencies.new
-    @requirements = ComparableSet.new
+    @requirements = Requirements.new
   end
 
   def add(spec)
-    case dep = build(spec)
+    case dep = fetch(spec)
     when Dependency
       @deps << dep
     when Requirement
@@ -38,9 +44,21 @@ class DependencyCollector
     dep
   end
 
+  def fetch(spec)
+    CACHE.fetch(cache_key(spec)) { |key| CACHE[key] = build(spec) }
+  end
+
+  def cache_key(spec)
+    if Resource === spec && spec.download_strategy == CurlDownloadStrategy
+      File.extname(spec.url)
+    else
+      spec
+    end
+  end
+
   def build(spec)
     spec, tags = case spec
-                 when Hash then spec.shift
+                 when Hash then destructure_spec_hash(spec)
                  else spec
                  end
 
@@ -49,10 +67,16 @@ class DependencyCollector
 
   private
 
+  def destructure_spec_hash(spec)
+    spec.each { |o| return o }
+  end
+
   def parse_spec(spec, tags)
     case spec
     when String
       parse_string_spec(spec, tags)
+    when Resource
+      resource_dep(spec, tags)
     when Symbol
       parse_symbol_spec(spec, tags)
     when Requirement, Dependency
@@ -60,7 +84,7 @@ class DependencyCollector
     when Class
       parse_class_spec(spec, tags)
     else
-      raise TypeError, "Unsupported type #{spec.class} for #{spec.inspect}"
+      raise TypeError, "Unsupported type #{spec.class.name} for #{spec.inspect}"
     end
   end
 
@@ -68,10 +92,9 @@ class DependencyCollector
     if tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
-      # Next line only for legacy support of `depends_on 'module' => :python`
-      # It should be replaced by `depends_on :python => 'module'`
-      return PythonInstalled.new("2", spec) if tag == :python
-      LanguageModuleDependency.new(tag, spec)
+      LanguageModuleDependency.new(tag, spec, tags[1])
+    elsif HOMEBREW_TAP_FORMULA_REGEX === spec
+      TapDependency.new(spec, tags)
     else
       Dependency.new(spec, tags)
     end
@@ -79,16 +102,10 @@ class DependencyCollector
 
   def parse_symbol_spec(spec, tags)
     case spec
-    when :autoconf, :automake, :bsdmake, :libtool, :libltdl
+    when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tags)
     when :x11        then X11Dependency.new(spec.to_s, tags)
-    when *X11Dependency::Proxy::PACKAGES
-      x11_dep(spec, tags)
-    when :cairo, :pixman
-      # We no longer use X11 psuedo-deps for cairo or pixman,
-      # so just return a standard formula dependency.
-      Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
     when :mysql      then MysqlDependency.new(tags)
@@ -96,15 +113,24 @@ class DependencyCollector
     when :fortran    then FortranDependency.new(tags)
     when :mpi        then MPIDependency.new(*tags)
     when :tex        then TeXDependency.new(tags)
-    when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
-    when :python, :python2 then PythonInstalled.new("2", tags)
-    when :python3    then PythonInstalled.new("3", tags)
+    # python2 is deprecated
+    when :python, :python2 then PythonDependency.new(tags)
+    when :python3    then Python3Dependency.new(tags)
+    when :java       then JavaDependency.new(tags)
+    when :osxfuse    then OsxfuseDependency.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
+    when :ant        then ant_dep(spec, tags)
+    when :clt # deprecated
+    when :cairo, :fontconfig, :freetype, :libpng, :pixman # deprecated
+      Dependency.new(spec.to_s, tags)
+    when :libltdl # deprecated
+      tags << :run
+      Dependency.new("libtool", tags)
     else
-      raise "Unsupported special dependency #{spec.inspect}"
+      raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
   end
 
@@ -116,22 +142,48 @@ class DependencyCollector
     end
   end
 
-  def x11_dep(spec, tags)
-    if MacOS.version >= :mountain_lion
+  def autotools_dep(spec, tags)
+    tags << :build unless tags.include? :run
+    Dependency.new(spec.to_s, tags)
+  end
+
+  def ant_dep(spec, tags)
+    if MacOS.version >= :mavericks
       Dependency.new(spec.to_s, tags)
-    else
-      X11Dependency::Proxy.for(spec.to_s, tags)
     end
   end
 
-  def autotools_dep(spec, tags)
-    unless MacOS::Xcode.provides_autotools?
-      case spec
-      when :libltdl then spec = :libtool
-      else tags << :build
-      end
+  def resource_dep(spec, tags)
+    tags << :build
+    strategy = spec.download_strategy
 
-      Dependency.new(spec.to_s, tags)
+    case
+    when strategy <= CurlDownloadStrategy
+      parse_url_spec(spec.url, tags)
+    when strategy <= GitDownloadStrategy
+      GitDependency.new(tags)
+    when strategy <= MercurialDownloadStrategy
+      MercurialDependency.new(tags)
+    when strategy <= FossilDownloadStrategy
+      Dependency.new("fossil", tags)
+    when strategy <= BazaarDownloadStrategy
+      Dependency.new("bazaar", tags)
+    when strategy <= CVSDownloadStrategy
+      Dependency.new("cvs", tags) if MacOS.version >= :mavericks || !MacOS::Xcode.provides_cvs?
+    when strategy < AbstractDownloadStrategy
+      # allow unknown strategies to pass through
+    else
+      raise TypeError,
+        "#{strategy.inspect} is not an AbstractDownloadStrategy subclass"
+    end
+  end
+
+  def parse_url_spec(url, tags)
+    case File.extname(url)
+    when '.xz'  then Dependency.new('xz', tags)
+    when '.lz'  then Dependency.new('lzip', tags)
+    when '.rar' then Dependency.new('unrar', tags)
+    when '.7z'  then Dependency.new('p7zip', tags)
     end
   end
 end

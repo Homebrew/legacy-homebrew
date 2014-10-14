@@ -1,7 +1,9 @@
 /*
 !/.gitignore
 !/Library/
+!/CODEOFCONDUCT.md
 !/CONTRIBUTING.md
+!/LICENSE.txt
 !/README.md
 !/SUPPORTERS.md
 !/bin
@@ -9,6 +11,7 @@
 !/bin/brew
 !/share/man/man1/brew.1
 .DS_Store
+/Library/Homebrew/doc
 /Library/LinkedKegs
 /Library/PinnedKegs
 /Library/Taps

@@ -6,6 +6,13 @@ class Jasper < Formula
   sha1 'bbf30168ceae74d78e28039972657a90799e68d3'
   version '1.900.1'
 
+  bottle do
+    cellar :any
+    sha1 "12058179e65cd2a3d974cea779861896871c786d" => :mavericks
+    sha1 "43ca04d5d74959347b9e320092a8c8e5b4c20b4f" => :mountain_lion
+    sha1 "de007515f4b7a246aee08fa69aeff363e81a2989" => :lion
+  end
+
   option :universal
 
   depends_on 'jpeg'
@@ -19,7 +26,7 @@ class Jasper < Formula
   # where an assertion fails when Jasper is fed certain JPEG-2000 files with
   # an alpha channel. See:
   # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

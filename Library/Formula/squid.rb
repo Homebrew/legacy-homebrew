@@ -1,29 +1,23 @@
-require 'formula'
-
-class NoBdb5 < Requirement
-  satisfy(:build_env => false) { !Formula.factory("berkeley-db").installed? }
-
-  def message; <<-EOS.undent
-    This software can fail to compile when Berkeley-DB 5.x is installed.
-    You may need to try:
-      brew unlink berkeley-db
-      brew install squid
-      brew link berkeley-db
-    EOS
-  end
-end
+require "formula"
 
 class Squid < Formula
-  homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.3/squid-3.3.8.tar.gz'
-  sha1 '853b7619b65f91424f0d2c4089c095a67d79fc9b'
+  homepage "http://www.squid-cache.org/"
+  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.7.tar.bz2"
+  sha1 "724bc2f7aa2b7dab4111305af3f243b84468689f"
 
-  depends_on NoBdb5
+  bottle do
+    sha1 "f505e4b18fae3fc4423bce935e9e859e003f34ab" => :mavericks
+    sha1 "7454588e02bcf4ffaadb8d3b17e20db5ede2a4cf" => :mountain_lion
+    sha1 "489cd4206f99ec11bd6c6a48bfa8557e2348bed1" => :lion
+  end
 
   def install
+    # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
+    ENV.append "LDFLAGS",  "-lresolv"
+
     # For --disable-eui, see:
     # http://squid-web-proxy-cache.1019090.n4.nabble.com/ERROR-ARP-MAC-EUI-operations-not-supported-on-this-operating-system-td4659335.html
-    args =%W[
+    args = %W[
       --disable-debug
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -31,7 +25,8 @@ class Squid < Formula
       --enable-ssl
       --enable-ssl-crtd
       --disable-eui
-      --enable-ipfw-transparent
+      --enable-pf-transparent
+      --with-included-ltdl
     ]
 
     system "./configure", *args
@@ -49,7 +44,7 @@ class Squid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/squid</string>
+        <string>#{opt_sbin}/squid</string>
         <string>-N</string>
         <string>-d 1</string>
       </array>

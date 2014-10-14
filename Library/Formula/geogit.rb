@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Geogit < Formula
-  homepage 'http://www.geogit.org'
-  url 'http://downloads.sourceforge.net/project/geogit/geogit-0.4.0/geogit-cli-app-0.4.0.zip'
-  sha1 '41d87374e96a765da5ddab928b4cef0756ad339c'
+  homepage "http://www.geogit.org"
+  url "https://downloads.sourceforge.net/project/geogit/geogit-0.10.0/geogit-cli-app-0.10.0.zip"
+  sha1 "290652c33995f9cba950b4e1e8514b724115a37d"
 
   def install
     bin.install "bin/geogit", "bin/geogit-console"

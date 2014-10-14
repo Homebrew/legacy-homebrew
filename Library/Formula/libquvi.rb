@@ -1,23 +1,28 @@
 require 'formula'
 
-class LibquviScripts < Formula
-  homepage 'http://quvi.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/quvi/0.4/libquvi-scripts/libquvi-scripts-0.4.14.tar.xz'
-  sha1 'fe721c8d882c5c4a826f1339c79179c56bb0fe41'
-end
-
 class Libquvi < Formula
   homepage 'http://quvi.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/quvi/0.4/libquvi/libquvi-0.4.1.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/quvi/0.4/libquvi/libquvi-0.4.1.tar.bz2'
   sha1 'b7ac371185c35a1a9a2135ef4ee61c86c48f78f4'
+  revision 1
 
-  depends_on 'xz' => :build
+  bottle do
+    sha1 "91f2b77a689f7086ab9d9c2342bcd7802718147f" => :mavericks
+    sha1 "d140b93f469bc9227913dab2ab98f3f7298bd792" => :mountain_lion
+    sha1 "8be78a6d012269633c435abd6a9b544ec098e05f" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'lua'
 
+  resource 'scripts' do
+    url 'https://downloads.sourceforge.net/project/quvi/0.4/libquvi-scripts/libquvi-scripts-0.4.14.tar.xz'
+    sha1 'fe721c8d882c5c4a826f1339c79179c56bb0fe41'
+  end
+
   def install
     scripts = prefix/'libquvi-scripts'
-    LibquviScripts.new.brew do
+    resource('scripts').stage do
       system "./configure", "--prefix=#{scripts}", "--with-nsfw"
       system "make install"
     end

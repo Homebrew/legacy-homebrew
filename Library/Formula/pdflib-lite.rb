@@ -6,6 +6,13 @@ class PdflibLite < Formula
   version '7.0.5p3'
   sha1 '42e0605ae21f4b6d25fa2d20e78fed6df36fbaa9'
 
+  bottle do
+    cellar :any
+    sha1 "3a6acc7ff25b9738f6ba7511d23e5045874eafe0" => :mavericks
+    sha1 "503d37a1c3299f73125368aa46c186ac332a6074" => :mountain_lion
+    sha1 "2c56052904434bcec59986dba82cacf9b9be9adb" => :lion
+  end
+
   def install
     # Without the following substitution, pdflib-lite runs into weird
     # build errors due to bad interactions with the TIFF headers.

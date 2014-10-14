@@ -1,11 +1,16 @@
 class Formula
   def self.md5(val)
-    @stable ||= SoftwareSpec.new
-    @stable.md5(val)
+    stable.md5(val)
   end
 end
 
 class SoftwareSpec
+  def md5(val)
+    @resource.md5(val)
+  end
+end
+
+class Resource
   def md5(val)
     @checksum = Checksum.new(:md5, val)
   end

@@ -2,23 +2,34 @@ require 'formula'
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url 'http://download.osgeo.org/gdal/1.10.0/gdal-1.10.0.tar.gz'
-  sha1 'e522b95056905e4c41047fdb42c0ca172ef3ad25'
+  url "http://download.osgeo.org/gdal/1.11.1/gdal-1.11.1.tar.gz"
+  sha1 "e2c67481932ec9fb6ec3c0faadc004f715c4eef4"
+  revision 1
 
-  head 'https://svn.osgeo.org/gdal/trunk/gdal'
+  bottle do
+    sha1 "ed850372d092908a29ab150c45b360f92873d1d0" => :mavericks
+    sha1 "451a662b40d8492c52a09ee5fc2b719cf4258065" => :mountain_lion
+    sha1 "9c48e30026c46fd8a25cc80d5c148ed8fec6c01e" => :lion
+  end
+
+  head do
+    url 'https://svn.osgeo.org/gdal/trunk/gdal'
+    depends_on 'doxygen' => :build
+  end
 
   option 'complete', 'Use additional Homebrew libraries to provide more drivers.'
-  option 'with-postgres', 'Specify PostgreSQL as a dependency.'
-  option 'with-mysql', 'Specify MySQL as a dependency.'
   option 'enable-opencl', 'Build with OpenCL acceleration.'
   option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
   option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
+  option 'enable-mdb', 'Build with Access MDB driver (requires Java 1.6+ JDK/JRE, from Apple or Oracle).'
+  option "with-libkml", "Build with Google's libkml driver (requires libkml --HEAD or >= 1.3)"
 
-  # For creating up to date man pages.
-  depends_on 'doxygen' => :build if build.head?
+  depends_on :python => :optional
+  if build.with? "python"
+    depends_on :fortran => :build
+  end
 
-  depends_on :python => :recommended
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'libtiff'
@@ -26,21 +37,24 @@ class Gdal < Formula
   depends_on 'proj'
   depends_on 'geos'
 
-  depends_on 'sqlite'  # To ensure compatibility with SpatiaLite.
+  depends_on 'sqlite' # To ensure compatibility with SpatiaLite.
   depends_on 'freexl'
   depends_on 'libspatialite'
 
   depends_on "postgresql" => :optional
   depends_on "mysql" => :optional
 
-  # Without Numpy, the Python bindings can't deal with raster data.
-  depends_on 'numpy' => :python if build.with? 'python'
-
   depends_on 'homebrew/science/armadillo' if build.include? 'enable-armadillo'
+
+  if build.with? "libkml"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   if build.include? 'complete'
     # Raster libraries
-    depends_on "netcdf" # Also brings in HDF5
+    depends_on "homebrew/science/netcdf" # Also brings in HDF5
     depends_on "jasper"
     depends_on "webp"
     depends_on "cfitsio"
@@ -54,10 +68,28 @@ class Gdal < Formula
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
     depends_on "poppler"
+    depends_on "json-c"
   end
 
-  def png_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
+  # Extra linking libraries in configure test of armadillo may throw warning
+  # see: https://trac.osgeo.org/gdal/ticket/5455
+  # including prefix lib dir added by Homebrew:
+  #    ld: warning: directory not found for option '-L/usr/local/Cellar/gdal/1.11.0/lib'
+  patch do
+    url "https://gist.githubusercontent.com/dakcarto/7abad108aa31a1e53fb4/raw/b56887208fd91d0434d5a901dae3806fb1bd32f8/gdal-armadillo.patch"
+    sha1 "3af1cae94a977d55541adba0d86c697d77bd1320"
+  end if build.include? "enable-armadillo"
+
+  resource 'numpy' do
+    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz'
+    sha1 '8fe1d5f36bab3f1669520b4c7d8ab59a21a984da'
+  end
+
+  resource "libkml" do
+    # Until 1.3 is stable, use master branch
+    url "https://github.com/google/libkml.git",
+        :revision => "9b50572641f671194e523ad21d0171ea6537426e"
+    version "1.3-dev"
   end
 
   def get_configure_args
@@ -80,7 +112,7 @@ class Gdal < Formula
       # Backends supported by OS X.
       "--with-libiconv-prefix=/usr",
       "--with-libz=/usr",
-      "--with-png=#{png_prefix}",
+      "--with-png=#{Formula["libpng"].opt_prefix}",
       "--with-expat=/usr",
       "--with-curl=/usr/bin/curl-config",
 
@@ -90,11 +122,12 @@ class Gdal < Formula
       "--with-gif=#{HOMEBREW_PREFIX}",
       "--with-libtiff=#{HOMEBREW_PREFIX}",
       "--with-geotiff=#{HOMEBREW_PREFIX}",
-      "--with-sqlite3=#{Formula.factory('sqlite').opt_prefix}",
+      "--with-sqlite3=#{Formula["sqlite"].opt_prefix}",
       "--with-freexl=#{HOMEBREW_PREFIX}",
       "--with-spatialite=#{HOMEBREW_PREFIX}",
       "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
       "--with-static-proj4=#{HOMEBREW_PREFIX}",
+      "--with-libjson-c=#{Formula["json-c"].opt_prefix}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the
@@ -147,18 +180,27 @@ class Gdal < Formula
       msg
       oci
       ingres
-      libkml
       dwgdirect
       idb
       sde
       podofo
       rasdaman
+      sosi
     ]
     args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
 
     # Database support.
-    args << (build.with?("postgres") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
+    args << (build.with?("postgresql") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
     args << (build.with?("mysql") ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : "--without-mysql")
+
+    if build.include? 'enable-mdb'
+      args << "--with-java=yes"
+      # The rpath is only embedded for Oracle (non-framework) installs
+      args << "--with-jvm-lib-add-rpath=yes"
+      args << "--with-mdb=yes"
+    end
+
+    args << "--with-libkml=#{libexec}" if build.with? "libkml"
 
     # Python is installed manually to ensure everything is properly sandboxed.
     args << '--without-python'
@@ -176,22 +218,47 @@ class Gdal < Formula
     args << "--without-ruby"
 
     args << (build.include?("enable-opencl") ? "--with-opencl" : "--without-opencl")
-    args << (build.include?("enable-armadillo") ? "--with-armadillo=yes" : "--with-armadillo=no")
+    args << (build.include?("enable-armadillo") ? "--with-armadillo=#{Formula["armadillo"].opt_prefix}" : "--with-armadillo=no")
 
     return args
   end
 
   def install
+    if build.with? 'python'
+      ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+      numpy_args = [ "build", "--fcompiler=gnu95",
+                     "install", "--prefix=#{libexec}" ]
+      resource('numpy').stage { system "python", "setup.py", *numpy_args }
+    end
+
+    if build.with? "libkml"
+      resource("libkml").stage do
+        # See main `libkml` formula for info on patches
+        inreplace "configure.ac", "-Werror", ""
+        inreplace "third_party/Makefile.am" do |s|
+          s.sub! /(lib_LTLIBRARIES =) libminizip.la liburiparser.la/, "\\1"
+          s.sub! /(noinst_LTLIBRARIES = libgtest.la libgtest_main.la)/,
+                 "\\1 libminizip.la liburiparser.la"
+          s.sub! /(libminizip_la_LDFLAGS =)/, "\\1 -static"
+          s.sub! /(liburiparser_la_LDFLAGS =)/, "\\1 -static"
+        end
+
+        system "./autogen.sh"
+        system "./configure", "--prefix=#{libexec}"
+        system "make", "install"
+      end
+    end
+
     # Linking flags for SQLite are not added at a critical moment when the GDAL
     # library is being assembled. This causes the build to fail due to missing
     # symbols. Also, ensure Homebrew SQLite is used so that Spatialite is
     # functional.
     #
     # Fortunately, this can be remedied using LDFLAGS.
-    sqlite = Formula.factory 'sqlite'
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib -lsqlite3"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
-    # Needed by libdap.
+    sqlite = Formula["sqlite"]
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
+    # Needed by libdap
     ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.
@@ -200,39 +267,47 @@ class Gdal < Formula
     # Fix hardcoded mandir: http://trac.osgeo.org/gdal/ticket/5092
     inreplace 'configure', %r[^mandir='\$\{prefix\}/man'$], ''
 
+    # These libs are statically linked in vendored libkml and libkml formula
+    inreplace "configure", " -lminizip -luriparser", "" if build.with? "libkml"
+
     system "./configure", *get_configure_args
     system "make"
     system "make install"
 
-    python do
-      # `python-config` may try to talk us into building bindings for more
-      # architectures than we really should.
-      if MacOS.prefer_64_bit?
-        ENV.append_to_cflags "-arch #{Hardware::CPU.arch_64_bit}"
-      else
-        ENV.append_to_cflags "-arch #{Hardware::CPU.arch_32_bit}"
-      end
+    # `python-config` may try to talk us into building bindings for more
+    # architectures than we really should.
+    if MacOS.prefer_64_bit?
+      ENV.append_to_cflags "-arch #{Hardware::CPU.arch_64_bit}"
+    else
+      ENV.append_to_cflags "-arch #{Hardware::CPU.arch_32_bit}"
+    end
 
-      cd 'swig/python' do
-        system python, "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
-        bin.install Dir['scripts/*']
-      end
+    cd 'swig/python' do
+      system "python", "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
+      bin.install Dir['scripts/*']
     end
 
     system 'make', 'man' if build.head?
     system 'make', 'install-man'
     # Clean up any stray doxygen files.
-    Dir[bin + '*.dox'].each { |p| rm p }
+    Dir.glob("#{bin}/*.dox") { |p| rm p }
   end
 
   def caveats
-    if python
-      python.standard_caveats +
+    if build.include? 'enable-mdb'
       <<-EOS.undent
-        This version of GDAL was built with Python support. In addition to providing
-        modules that makes GDAL functions available to Python scripts, the Python
-        binding provides ~18 additional command line tools.
+
+      To have a functional MDB driver, install supporting .jar files in:
+        `/Library/Java/Extensions/`
+
+      See: `http://www.gdal.org/ogr/drv_mdb.html`
       EOS
     end
+  end
+
+  test do
+    # basic tests to see if third-party dylibs are loading OK
+    system "#{bin}/gdalinfo", "--formats"
+    system "#{bin}/ogrinfo", "--formats"
   end
 end

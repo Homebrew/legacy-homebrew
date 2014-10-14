@@ -2,8 +2,8 @@ require 'formula'
 
 class Vrpn < Formula
   homepage 'http://vrpn.org'
-  url 'ftp://ftp.cs.unc.edu/pub/packages/GRIP/vrpn/vrpn_07_30.zip'
-  sha1 '474f45d524ba959e93630f19666fd03d8f337d90'
+  url 'http://www.cs.unc.edu/Research/vrpn/downloads/vrpn_07_31.zip'
+  sha1 'a78dd36cd301a7def2d54576cfa63604a8729ace'
 
   head 'git://git.cs.unc.edu/vrpn.git'
 
@@ -15,6 +15,8 @@ class Vrpn < Formula
   depends_on 'doxygen' if build.include? 'docs'
 
   def install
+    ENV.libstdcxx
+
     args = std_cmake_args
 
     if build.include? 'clients'

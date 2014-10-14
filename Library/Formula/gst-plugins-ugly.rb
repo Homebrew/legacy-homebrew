@@ -2,19 +2,25 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.9.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.0.9.tar.xz'
-  sha256 '11250fe9e44b0169c3a289e981b31874b483643ed78f619682ae1644d7088379'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.4.3.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.4.3.tar.xz'
+  sha256 'd581592a82cf3930361430d38436c30a58d8b6c249cad18f7f213b203e206d46'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
+  bottle do
+    sha1 "7bfe45bf9e96a93338d52d12d61e9d98d6c6c025" => :mavericks
+    sha1 "caabe8b129fc750ea1b6b082a1e8db1767f81112" => :mountain_lion
+    sha1 "5e9a2adce47c29d390eb65ef94bfc052a42d3595" => :lion
+  end
 
-  if build.head?
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
+
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 
@@ -44,8 +50,6 @@ class GstPluginsUgly < Formula
   # Does not work with libcdio 0.9
 
   def install
-    ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
-
     args = %W[
       --prefix=#{prefix}
       --mandir=#{man}
@@ -54,13 +58,13 @@ class GstPluginsUgly < Formula
     ]
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 
     if build.with? "opencore-amr"
       # Fixes build error, missing includes.
-      # https://github.com/mxcl/homebrew/issues/14078
+      # https://github.com/Homebrew/homebrew/issues/14078
       nbcflags = `pkg-config --cflags opencore-amrnb`.chomp
       wbcflags = `pkg-config --cflags opencore-amrwb`.chomp
       ENV['AMRNB_CFLAGS'] = nbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrnb"

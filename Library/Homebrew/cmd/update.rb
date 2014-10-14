@@ -1,7 +1,7 @@
 require 'cmd/tap'
 require 'cmd/untap'
 
-module Homebrew extend self
+module Homebrew
   def update
     unless ARGV.named.empty?
       abort <<-EOS.undent
@@ -9,7 +9,6 @@ module Homebrew extend self
         Use `brew upgrade <formula>`.
       EOS
     end
-    abort "Please `brew install git' first." unless which "git"
 
     # ensure GIT_CONFIG is unset as we need to operate on .git/config
     ENV.delete('GIT_CONFIG')
@@ -17,24 +16,38 @@ module Homebrew extend self
     cd HOMEBREW_REPOSITORY
     git_init_if_necessary
 
+    tapped_formulae = []
+    HOMEBREW_LIBRARY.join("Formula").children.each do |path|
+      next unless path.symlink?
+      tapped_formulae << path.resolved_path
+    end
+    unlink_tap_formula(tapped_formulae)
+
     report = Report.new
-    master_updater = Updater.new
-    master_updater.pull!
-    report.merge!(master_updater.report)
+    master_updater = Updater.new(HOMEBREW_REPOSITORY)
+    begin
+      master_updater.pull!
+    ensure
+      link_tap_formula(tapped_formulae)
+    end
+    report.update(master_updater.report)
 
-    Dir["Library/Taps/*"].each do |tapd|
-      next unless File.directory?(tapd)
+    # rename Taps directories
+    # this procedure will be removed in the future if it seems unnecessasry
+    rename_taps_dir_if_necessary
 
-      cd tapd do
+    each_tap do |user, repo|
+      repo.cd do
+        updater = Updater.new(repo)
+
         begin
-          updater = Updater.new
           updater.pull!
-          report.merge!(updater.report) do |key, oldval, newval|
+        rescue
+          onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
+        else
+          report.update(updater.report) do |key, oldval, newval|
             oldval.concat(newval)
           end
-        rescue
-          tapd =~ %r{^Library/Taps/(\w+)-(\w+)}
-          onoe "Failed to update tap: #$1/#$2"
         end
       end
     end
@@ -42,6 +55,15 @@ module Homebrew extend self
     # we unlink first in case the formula has moved to another tap
     Homebrew.unlink_tap_formula(report.removed_tapped_formula)
     Homebrew.link_tap_formula(report.new_tapped_formula)
+
+    # automatically tap any migrated formulae's new tap
+    report.select_formula(:D).each do |f|
+      next unless (HOMEBREW_CELLAR/f).exist?
+      migration = TAP_MIGRATIONS[f]
+      next unless migration
+      tap_user, tap_repo = migration.split '/'
+      install_tap tap_user, tap_repo
+    end if load_tap_migrations
 
     if report.empty?
       puts "Already up-to-date."
@@ -54,30 +76,78 @@ module Homebrew extend self
   private
 
   def git_init_if_necessary
-    if Dir['.git/*'].empty?
-      safe_system "git init"
-      safe_system "git config core.autocrlf false"
-      safe_system "git remote add origin https://github.com/mxcl/homebrew.git"
-      safe_system "git fetch origin"
-      safe_system "git reset --hard origin/master"
+    if Dir[".git/*"].empty?
+      safe_system "git", "init"
+      safe_system "git", "config", "core.autocrlf", "false"
+      safe_system "git", "config", "remote.origin.url", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
+      safe_system "git", "fetch", "origin"
+      safe_system "git", "reset", "--hard", "origin/master"
+    end
+
+    if `git remote show origin -n` =~ /Fetch URL: \S+mxcl\/homebrew/
+      safe_system "git", "remote", "set-url", "origin", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "remote", "set-url", "--delete", "origin", ".*mxcl\/homebrew.*"
     end
   rescue Exception
     FileUtils.rm_rf ".git"
     raise
   end
 
+  def rename_taps_dir_if_necessary
+    need_repair_taps = false
+    Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
+      begin
+        tapd_basename = File.basename(tapd)
+
+        if File.directory?(tapd + "/.git")
+          if tapd_basename.include?("-")
+            # only replace the *last* dash: yes, tap filenames suck
+            user, repo = tapd_basename.reverse.sub("-", "/").reverse.split("/")
+
+            FileUtils.mkdir_p("#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}")
+            FileUtils.mv(tapd, "#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase}")
+            need_repair_taps = true
+
+            if tapd_basename.count("-") >= 2
+              opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
+                + "So you may need to rename #{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase} manually."
+            end
+          else
+            opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
+              "#{tapd} is incorrect name format. You may need to rename it like <someuser>/<sometap> manually."
+          end
+        end
+      rescue => ex
+        onoe ex.message
+        next # next tap directory
+      end
+    end
+
+    repair_taps if need_repair_taps
+  end
+
+  def load_tap_migrations
+    require 'tap_migrations'
+  rescue LoadError
+    false
+  end
 end
 
 class Updater
-  attr_reader :initial_revision, :current_revision
+  attr_reader :initial_revision, :current_revision, :repository
+
+  def initialize(repository)
+    @repository = repository
+  end
 
   def pull!
-    safe_system "git checkout -q master"
+    safe_system "git", "checkout", "-q", "master"
 
     @initial_revision = read_current_revision
 
     # ensure we don't munge line endings on checkout
-    safe_system "git config core.autocrlf false"
+    safe_system "git", "config", "core.autocrlf", "false"
 
     args = ["pull"]
     args << "--rebase" if ARGV.include? "--rebase"
@@ -86,26 +156,37 @@ class Updater
     # the refspec ensures that 'origin/master' gets updated
     args << "refs/heads/master:refs/remotes/origin/master"
 
-    safe_system "git", *args
+    reset_on_interrupt { safe_system "git", *args }
 
     @current_revision = read_current_revision
   end
 
-  # Matches raw git diff format (see `man git-diff-tree`)
-  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMR])\d{0,3}\t(.+?)(?:\t(.+))?$/
+  def reset_on_interrupt
+    ignore_interrupts { yield }
+  ensure
+    if $?.signaled? && $?.termsig == 2 # SIGINT
+      safe_system "git", "reset", "--hard", @initial_revision
+    end
+  end
 
   def report
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
-      `git diff-tree -r --raw -M85% #{initial_revision} #{current_revision}`.each_line do |line|
-        DIFFTREE_RX.match line
-        path = case status = $1.to_sym
-          when :R then $3
-          else $2
-          end
-        path = Pathname.pwd.join(path).relative_path_from(HOMEBREW_REPOSITORY)
-        map[status] << path.to_s
+      diff.each_line do |line|
+        status, *paths = line.split
+        src, dst = paths.first, paths.last
+
+        next unless File.extname(dst) == ".rb"
+        next unless paths.any? { |p| File.dirname(p) == formula_directory }
+
+        case status
+        when "A", "M", "D"
+          map[status.to_sym] << repository.join(src)
+        when /^R\d{0,3}/
+          map[:D] << repository.join(src) if File.dirname(src) == formula_directory
+          map[:A] << repository.join(dst) if File.dirname(dst) == formula_directory
+        end
       end
     end
 
@@ -114,15 +195,34 @@ class Updater
 
   private
 
+  def formula_directory
+    if repository == HOMEBREW_REPOSITORY
+      "Library/Formula"
+    elsif repository.join("Formula").directory?
+      "Formula"
+    elsif repository.join("HomebrewFormula").directory?
+      "HomebrewFormula"
+    else
+      "."
+    end
+  end
+
   def read_current_revision
     `git rev-parse -q --verify HEAD`.chomp
   end
 
+  def diff
+    Utils.popen_read(
+      "git", "diff-tree", "-r", "--name-status", "--diff-filter=AMDR",
+      "-M85%", initial_revision, current_revision
+    )
+  end
+
   def `(cmd)
-    out = Kernel.`(cmd) #`
-    if $? && !$?.success?
-      $stderr.puts out
-      raise ErrorDuringExecution, "Failure while executing: #{cmd}"
+    out = super
+    unless $?.success?
+      $stderr.puts(out) unless out.empty?
+      raise ErrorDuringExecution.new(cmd)
     end
     ohai(cmd, out) if ARGV.verbose?
     out
@@ -130,7 +230,22 @@ class Updater
 end
 
 
-class Report < Hash
+class Report
+  def initialize
+    @hash = {}
+  end
+
+  def fetch(*args, &block)
+    @hash.fetch(*args, &block)
+  end
+
+  def update(*args, &block)
+    @hash.update(*args, &block)
+  end
+
+  def empty?
+    @hash.empty?
+  end
 
   def dump
     # Key Legend: Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
@@ -138,30 +253,10 @@ class Report < Hash
     dump_formula_report :A, "New Formulae"
     dump_formula_report :M, "Updated Formulae"
     dump_formula_report :D, "Deleted Formulae"
-    dump_formula_report :R, "Renamed Formulae"
-#    dump_new_commands
-#    dump_deleted_commands
   end
 
   def tapped_formula_for key
-    fetch(key, []).map do |path|
-      case path when %r{^Library/Taps/(\w+-\w+/.*)}
-        relative_path = $1
-        if valid_formula_location?(relative_path)
-          Pathname.new(relative_path)
-        end
-      end
-    end.compact
-  end
-
-  def valid_formula_location?(relative_path)
-    ruby_file = /\A.*\.rb\Z/
-    parts = relative_path.split('/')[1..-1]
-    [
-      parts.length == 1 && parts.first =~ ruby_file,
-      parts.length == 2 && parts.first == 'Formula' && parts.last =~ ruby_file,
-      parts.length == 2 && parts.first == 'HomebrewFormula' && parts.last =~ ruby_file,
-    ].any?
+    fetch(key, []).select { |path| HOMEBREW_TAP_PATH_REGEX === path.to_s }
   end
 
   def new_tapped_formula
@@ -174,20 +269,20 @@ class Report < Hash
 
   def select_formula key
     fetch(key, []).map do |path|
-      case path when %r{^Library/Formula}
-        File.basename(path, ".rb")
-      when %r{^Library/Taps/(\w+)-(\w+)/(.*)\.rb}
-        "#$1/#$2/#{File.basename(path, '.rb')}"
+      case path.to_s
+      when HOMEBREW_TAP_PATH_REGEX
+        "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+      else
+        path.basename(".rb").to_s
       end
-    end.compact.sort
+    end.sort
   end
 
   def dump_formula_report key, title
     formula = select_formula(key)
     unless formula.empty?
       ohai title
-      puts_columns formula.uniq
+      puts_columns formula
     end
   end
-
 end

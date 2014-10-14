@@ -1,16 +1,26 @@
-require 'formula'
+require "formula"
 
 class Xmp < Formula
-  homepage 'http://xmp.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/xmp/xmp/4.0.6/xmp-4.0.6.tar.gz'
-  sha1 '61a7d68e4c37e7407bd35c783821bfbc2b639c87'
-  head 'git://git.code.sf.net/p/xmp/xmp-cli'
+  homepage "http://xmp.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.9/xmp-4.0.9.tar.gz"
+  sha1 "f22871d5e5be1a0b08d11a0b3bd28f6723a69ee3"
 
-  depends_on 'autoconf' if build.head?
-  depends_on 'automake' if build.head?
-  depends_on 'libtool'  if build.head?
-  depends_on 'pkg-config' => :build
-  depends_on 'libxmp'
+  bottle do
+    sha1 "f9b3c62d4952cd0ede1c131dcdf973903316d87d" => :mavericks
+    sha1 "6adf877d9f4cd3c1b96da42f806724a9801ca311" => :mountain_lion
+    sha1 "4ad77815e84f8251d2c06fc72fa5ecfbf0447b19" => :lion
+  end
+
+  head do
+    url "git://git.code.sf.net/p/xmp/xmp-cli"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool"  => :build
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "libxmp"
 
   def install
     if build.head?
@@ -22,12 +32,5 @@ class Xmp < Formula
 
     system "./configure", "--prefix=#{prefix}"
     system "make install"
-
-    # install the included demo song
-    share.install "ub-name.it" unless build.head?
-  end
-
-  def test
-    system "#{bin}/xmp", "--load-only", share/"ub-name.it"
   end
 end

@@ -2,9 +2,8 @@ require 'formula'
 
 class BoostBcp < Formula
   homepage 'http://www.boost.org/doc/tools/bcp/'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
-  version '2013.06-svn'
-  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
+  url 'https://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.bz2'
+  sha1 'f94bb008900ed5ba1994a1072140590784b9b5df'
 
   head 'http://svn.boost.org/svn/boost/trunk/'
 

@@ -1,19 +1,15 @@
 require 'formula'
 
-class ScmManagerCliClient < Formula
-  homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.33/scm-cli-client-1.33-jar-with-dependencies.jar'
-  version '1.33'
-  sha1 'e9ecbc36b89e2519669aff7a6d3d07b002a3f838'
-end
-
 class ScmManager < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.33/scm-server-1.33-app.tar.gz'
-  version '1.33'
-  sha1 '13c547c688c6f3d77ea4cb5e0b178d9ffed925e7'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.41/scm-server-1.41-app.tar.gz'
+  version '1.41'
+  sha1 'b8dfa7b1c5c009b2633f89655a1df631a7d5afd4'
 
-  skip_clean 'libexec/var/log'
+  resource 'client' do
+    url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.41/scm-cli-client-1.41-jar-with-dependencies.jar'
+    sha1 '26e969810c87924da3018e4a7bae6685deb717fc'
+  end
 
   def install
     rm_rf Dir['bin/*.bat']
@@ -30,7 +26,7 @@ class ScmManager < Formula
     chmod 0755, bin/'scm-server'
 
     tools = libexec/'tools'
-    ScmManagerCliClient.new.brew { tools.install Dir['*'] }
+    tools.install resource('client')
 
     scmCliClient = bin+'scm-cli-client'
     scmCliClient.write <<-EOS.undent
@@ -51,7 +47,7 @@ class ScmManager < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/scm-server</string>
+          <string>#{opt_bin}/scm-server</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>

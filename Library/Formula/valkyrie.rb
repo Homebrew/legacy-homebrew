@@ -15,13 +15,4 @@ class Valkyrie < Formula
     system "make install"
     prefix.install bin/'valkyrie.app'
   end
-
-  def caveats; <<-EOS.undent
-    The application has been installed to:
-      #{prefix}/valkyrie.app
-
-    To link the application to a normal Mac OS X location:
-      brew linkapps
-    EOS
-  end
 end

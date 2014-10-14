@@ -2,15 +2,14 @@ require 'formula'
 
 class Gloox < Formula
   homepage 'http://camaya.net/gloox/'
-  url 'http://camaya.net/download/gloox-1.0.tar.bz2'
-  sha1 '8c788738f72b05fae7c05c744a67859419ffa09c'
+  url 'http://camaya.net/download/gloox-1.0.9.tar.bz2'
+  sha1 '0f408d25b8e8ba8dea69832b4c49ad02d74a6695'
 
   depends_on 'pkg-config' => :build
 
-  # Fix memory leak
-  # http://bugs.camaya.net/horde/whups/ticket/?id=181
-  # Issue tracker is 404 on 3/17/2012 - @adamv
-  def patches; DATA; end
+  # signed/unsigned conversion error, reported upstream:
+  # http://bugs.camaya.net/ticket/?id=223
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",
@@ -23,54 +22,16 @@ class Gloox < Formula
 end
 
 __END__
-diff --git a/src/tlsgnutlsbase.cpp b/src/tlsgnutlsbase.cpp
-index d98c802..37f702d 100644
---- a/src/tlsgnutlsbase.cpp
-+++ b/src/tlsgnutlsbase.cpp
-@@ -97,7 +97,7 @@ namespace gloox
-     gnutls_bye( *m_session, GNUTLS_SHUT_RDWR );
-     gnutls_db_remove_session( *m_session );
-     gnutls_credentials_clear( *m_session );
--    if( m_secure )
-+    if( m_session )
-       gnutls_deinit( *m_session );
- 
-     m_secure = false;
-diff --git a/src/tlsgnutlsclient.cpp b/src/tlsgnutlsclient.cpp
-index c1d24c2..d250f32 100644
---- a/src/tlsgnutlsclient.cpp
-+++ b/src/tlsgnutlsclient.cpp
-@@ -33,6 +33,8 @@ namespace gloox
-   void GnuTLSClient::cleanup()
-   {
-     GnuTLSBase::cleanup();
-+    if (m_credentials)
-+        gnutls_certificate_free_credentials( m_credentials );
-     init();
-   }
- 
-@@ -120,6 +122,7 @@ namespace gloox
-       m_certInfo.status |= CertSignerNotCa;
-     const gnutls_datum_t* certList = 0;
-     unsigned int certListSize;
-+    unsigned int certListSizeFull;
-     if( !error && ( ( certList = gnutls_certificate_get_peers( *m_session, &certListSize ) ) == 0 ) )
-       error = true;
- 
-@@ -131,6 +134,7 @@ namespace gloox
-         error = true;
-     }
- 
-+    certListSizeFull = certListSize;
-     if( ( gnutls_x509_crt_check_issuer( cert[certListSize-1], cert[certListSize-1] ) > 0 )
-          && certListSize > 0 )
-       certListSize--;
-@@ -189,7 +193,7 @@ namespace gloox
-     if( !gnutls_x509_crt_check_hostname( cert[0], m_server.c_str() ) )
-       m_certInfo.status |= CertWrongPeer;
- 
--    for( unsigned int i = 0; i < certListSize; ++i )
-+    for( unsigned int i = 0; i < certListSizeFull; ++i )
-       gnutls_x509_crt_deinit( cert[i] );
- 
-     delete[] cert;
+diff --git a/src/atomicrefcount.cpp b/src/atomicrefcount.cpp
+index 58a3887..599a818 100644
+--- a/src/atomicrefcount.cpp
++++ b/src/atomicrefcount.cpp
+@@ -76,7 +76,7 @@ namespace gloox
+ #if defined( _WIN32 ) && !defined( __SYMBIAN32__ )
+       ::InterlockedExchange( (volatile LONG*)&m_count, (volatile LONG)0 );
+ #elif defined( __APPLE__ )
+-      OSAtomicAnd32Barrier( (int32_t)0, (volatile int32_t*)&m_count );
++      OSAtomicAnd32Barrier( (int32_t)0, (volatile uint32_t*)&m_count );
+ #elif defined( HAVE_GCC_ATOMIC_BUILTINS )
+       // Use the gcc intrinsic for atomic decrement if supported.
+       __sync_fetch_and_and( &m_count, 0 );

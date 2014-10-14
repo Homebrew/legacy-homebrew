@@ -1,14 +1,22 @@
-require 'formula'
+require "formula"
 
 class Dnsmasq < Formula
-  homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.66.tar.gz'
-  sha256 '36232fa23d1a8efc6f84a29da5ff829c2aa40df857b9116a9320ea37b651a982'
+  homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
+  url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.72.tar.gz"
+  sha1 "c2dc54b142ec5676d6e22951bc5b61863b0503fe"
 
-  option 'with-idn', 'Compile with IDN support'
+  bottle do
+    sha1 "b4bb00ef3c8fd8ffa48a08b0de4f95fa5cef09d2" => :mavericks
+    sha1 "6ae8c98b3c600c1a6f1f0263a5d7612887d8e768" => :mountain_lion
+    sha1 "66c145b8ed68c93ae0e7dcbc755b2151f94f5772" => :lion
+  end
 
-  depends_on "libidn" if build.include? 'with-idn'
-  depends_on 'pkg-config' => :build
+  option "with-idn", "Compile with IDN support"
+  option "with-dnssec", "Compile with DNSSEC support"
+
+  depends_on "libidn" if build.with? "idn"
+  depends_on "nettle" if build.with? "dnssec"
+  depends_on "pkg-config" => :build
 
   def install
     ENV.deparallelize
@@ -17,8 +25,13 @@ class Dnsmasq < Formula
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
     # Optional IDN support
-    if build.include? 'with-idn'
+    if build.with? "idn"
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
+    end
+
+    # Optional DNSSEC support
+    if build.with? "dnssec"
+      inreplace "src/config.h", "/* #define HAVE_DNSSEC */", "#define HAVE_DNSSEC"
     end
 
     # Fix compilation on Lion
@@ -51,14 +64,13 @@ class Dnsmasq < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/dnsmasq</string>
+          <string>#{opt_sbin}/dnsmasq</string>
           <string>--keep-in-foreground</string>
         </array>
+        <key>RunAtLoad</key>
+        <true/>
         <key>KeepAlive</key>
-        <dict>
-          <key>NetworkState</key>
-          <true/>
-        </dict>
+        <true/>
       </dict>
     </plist>
     EOS

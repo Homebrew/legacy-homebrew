@@ -4,6 +4,13 @@ class Caudec < Formula
   homepage 'http://caudec.outpost.fr/'
   url 'http://caudec.outpost.fr/downloads/caudec-1.6.4.tar.gz'
   sha1 '4c4ad207e86c8f8bf15545bab1c434525cd79f7d'
+  bottle do
+    sha1 "4fcd8647ac1bcd81911f437e6a6fa2d2bc1a6c6a" => :mavericks
+    sha1 "ff95a111531d9dcc88b51a713543ca03df7605f6" => :mountain_lion
+    sha1 "c33863b2e29bf5433039dfb187a1b91bc448305b" => :lion
+  end
+
+  revision 1
 
   depends_on 'gnu-sed'
   depends_on 'shntool'

@@ -2,8 +2,8 @@ require 'formula'
 
 class Epic5 < Formula
   homepage 'http://www.epicsol.org/'
-  url 'http://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/epic5-1.1.5.tar.gz'
-  sha1 '7a65bed6971118b0f0931652d6eee5090c75d449'
+  url 'http://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/epic5-1.1.6.tar.gz'
+  sha1 '5b7605a28d184338357abd655e157eed5ad699d7'
 
   def install
     system "./configure", "--disable-debug",
@@ -13,7 +13,7 @@ class Epic5 < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/epic5", "-v"
   end
 end

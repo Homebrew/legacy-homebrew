@@ -2,10 +2,9 @@ require 'formula'
 
 class Gssdp < Formula
   homepage 'https://wiki.gnome.org/GUPnP/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gssdp/0.14/gssdp-0.14.3.tar.xz'
-  sha256 '79dbdc5f79cc406632a783826b3dbe6acc0fbf41eb801b642bce1a02ecc3c66d'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gssdp/0.14/gssdp-0.14.8.tar.xz'
+  sha256 '4c3ffa01435e84dc31c954e669e1ca0749b962f76a333e74f5c2cb0de5803a13'
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'

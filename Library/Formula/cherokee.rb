@@ -1,19 +1,29 @@
 require 'formula'
 
 class Cherokee < Formula
-  homepage 'http://www.cherokee-project.com/'
-  url 'http://www.cherokee-project.com/download/1.2/1.2.101/cherokee-1.2.101.tar.gz'
-  sha1 'b27f149c7d7111207ac8c3cd8a4856c05490d136'
+  homepage 'http://cherokee-project.com/'
 
-  head 'https://github.com/cherokee/webserver.git'
+  stable do
+    url "http://pkgs.fedoraproject.org/repo/pkgs/cherokee/cherokee-1.2.103.tar.gz/527b3de97ef9727bfd5f6832043cf916/cherokee-1.2.103.tar.gz"
+    sha1 "8af2b93eb08f3719d21c7ae8fd94b9a99fb674c0"
 
-  depends_on 'gettext'
-  if build.head?
+    # OSX 10.9 patch
+    patch do
+      url "https://github.com/cherokee/webserver/commit/d0213768fdc6cf3aee61fe0be398d7825c01198f.diff"
+      sha1 "6f6443e7b1fce20bf36660e6a75c889fd1121c16"
+    end
+  end
+
+  head do
+    url 'https://github.com/cherokee/webserver.git'
+
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
     depends_on 'wget' => :build
   end
+
+  depends_on 'gettext'
 
   def install
     if build.head?

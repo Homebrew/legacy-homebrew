@@ -2,7 +2,7 @@ require 'formula'
 
 class Gdmap < Formula
   homepage 'http://sourceforge.net/projects/gdmap/'
-  url 'http://downloads.sourceforge.net/project/gdmap/gdmap/0.8.1/gdmap-0.8.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/gdmap/gdmap/0.8.1/gdmap-0.8.1.tar.gz'
   sha1 'd97cc7c107dbaf9f3f3ed22ee6cef6172c115295'
 
   depends_on 'pkg-config' => :build
@@ -16,9 +16,7 @@ class Gdmap < Formula
   #The first patch turns off this disablement, making the code work fine as intended
   #The second patch is to remove an unused system header import on one of the files.
   #This header file doesn't exist in OSX and the program compiles and runs fine without it.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -27,7 +25,7 @@ class Gdmap < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/gdmap"
   end
 end

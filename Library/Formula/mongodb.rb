@@ -1,57 +1,101 @@
-require 'formula'
+require "formula"
 
 class Mongodb < Formula
-  homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.6.tgz'
-  sha1 '36886ec043e660db00f2bb6b18d32f507b63a041'
+  homepage "https://www.mongodb.org/"
 
-  devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.2.tgz'
-    sha1 '3f1f4d1b6f0cae4f70d9599d969ac4f7d0a0c579'
+  stable do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.5.tar.gz"
+    sha1 "f5a68505a0de1152b534d62a8f0147d258d503a0"
+
+    # Review this patch with the next stable release.
+    # Note it is a different patch to the one applied to all builds further below.
+    # This is already fixed in the devel & HEAD builds.
+    if MacOS.version == :yosemite
+      patch do
+        url "https://github.com/mongodb/mongo/commit/759b6e8.diff"
+        sha1 "63d901ac81681fbe8b92dc918954b247990ab2fb"
+      end
+    end
   end
 
-  depends_on :arch => :x86_64
+  bottle do
+    sha1 "311c0ab255cff7c8a47351374f609cff6fa7cd7c" => :mavericks
+    sha1 "9330df7505b9fc93c3cabf8cb68b7cefee91bf5f" => :mountain_lion
+    sha1 "4700ba1d8c5ac9cca8acde03d161a1526ae6f6eb" => :lion
+  end
+
+  devel do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r2.7.7.tar.gz"
+    sha1 "ce223f5793bdf5b3e1420b0ede2f2403e9f94e5a"
+
+    # Remove this with the next devel release. Already merged in HEAD.
+    # https://github.com/mongodb/mongo/commit/8b8e90fb
+    patch do
+      url "https://github.com/mongodb/mongo/commit/8b8e90fb.diff"
+      sha1 "9f9ce609c7692930976690cae68aa4fce1f8bca3"
+    end
+  end
+
+  # HEAD is currently failing. See https://jira.mongodb.org/browse/SERVER-15555
+  head "https://github.com/mongodb/mongo.git"
+
+  option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+
+  depends_on "boost" => :optional
+  depends_on :macos => :snow_leopard
+  depends_on "scons" => :build
+  depends_on "openssl" => :optional
+
+  # Review this patch with each release.
+  # This modifies the SConstruct file to include 10.10 as an accepted build option.
+  if MacOS.version == :yosemite
+    patch do
+      url "https://raw.githubusercontent.com/DomT4/scripts/fbc0cda/Homebrew_Resources/Mongodb/mongoyosemite.diff"
+      sha1 "f4824e93962154aad375eb29527b3137d07f358c"
+    end
+  end
 
   def install
-    # Copy the prebuilt binaries to prefix
-    prefix.install Dir['*']
+    args = %W[
+      --prefix=#{prefix}
+      -j#{ENV.make_jobs}
+      --cc=#{ENV.cc}
+      --cxx=#{ENV.cxx}
+      --osx-version-min=#{MacOS.version}
+    ]
 
-    # Create the data and log directories under /var
-    (var+'mongodb').mkpath
-    (var+'log/mongodb').mkpath
+    # --full installs development headers and client library, not just binaries
+    # (only supported pre-2.7)
+    args << "--full" if build.stable?
+    args << "--use-system-boost" if build.with? "boost"
+    args << "--64" if MacOS.prefer_64_bit?
 
-    # Write the configuration files
-    (prefix+'mongod.conf').write mongodb_conf
+    if build.with? "openssl"
+      args << "--ssl" << "--extrapath=#{Formula["openssl"].opt_prefix}"
+    end
 
-    # Homebrew: it just works.
-    # NOTE plist updated to use prefix/mongodb!
-    mv bin/'mongod', prefix
-    (bin/'mongod').write <<-EOS.undent
-      #!/usr/bin/env ruby
-      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg|
-        arg =~ /^\s*\-\-config$/ or arg =~ /^\s*\-f$/
-      }
-      exec "#{prefix}/mongod", *ARGV
-    EOS
+    scons "install", *args
 
-    # copy the config file to etc if this is the first install.
-    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
+    (buildpath+"mongod.conf").write mongodb_conf
+    etc.install "mongod.conf"
+
+    (var+"mongodb").mkpath
+    (var+"log/mongodb").mkpath
   end
 
   def mongodb_conf; <<-EOS.undent
-    # Store data in #{var}/mongodb instead of the default /data/db
-    dbpath = #{var}/mongodb
-
-    # Append logs to #{var}/log/mongodb/mongo.log
-    logpath = #{var}/log/mongodb/mongo.log
-    logappend = true
-
-    # Only accept local connections
-    bind_ip = 127.0.0.1
+    systemLog:
+      destination: file
+      path: #{var}/log/mongodb/mongo.log
+      logAppend: true
+    storage:
+      dbPath: #{var}/mongodb
+    net:
+      bindIp: 127.0.0.1
     EOS
   end
 
-  plist_options :manual => "mongod"
+  plist_options :manual => "mongod --config #{HOMEBREW_PREFIX}/etc/mongod.conf"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -62,8 +106,7 @@ class Mongodb < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/mongod</string>
-        <string>run</string>
+        <string>#{opt_bin}/mongod</string>
         <string>--config</string>
         <string>#{etc}/mongod.conf</string>
       </array>
@@ -90,5 +133,9 @@ class Mongodb < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/mongod", "--sysinfo"
   end
 end

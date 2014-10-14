@@ -2,9 +2,16 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://www.zsh.org/pub/zsh-5.0.2.tar.bz2'
-  mirror 'http://downloads.sourceforge.net/project/zsh/zsh/5.0.2/zsh-5.0.2.tar.bz2'
-  sha1 '9f55ecaaae7cdc1495f91237ba2ec087777a4ad9'
+  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.6/zsh-5.0.6.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.6.tar.bz2'
+  sha1 'a626aa1923cc1bd4f8f2463e947a3f3cb340b0ea'
+
+  bottle do
+    revision 1
+    sha1 "1ba405c49cb617bdc522f603928ae20f216f7ac8" => :mavericks
+    sha1 "f66774643770e198c8806d62181d629357a52f8e" => :mountain_lion
+    sha1 "872c033ec24fa0071e8fd14b688edcc2da3e46e6" => :lion
+  end
 
   depends_on 'gdbm'
   depends_on 'pcre'
@@ -18,6 +25,7 @@ class Zsh < Formula
       --enable-scriptdir=#{share}/zsh/scripts
       --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
       --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
+      --enable-runhelpdir=#{share}/zsh/help
       --enable-cap
       --enable-maildir-support
       --enable-multibyte
@@ -26,7 +34,11 @@ class Zsh < Formula
       --with-tcsetpgrp
     ]
 
-    args << '--disable-etcdir' if build.include? 'disable-etcdir'
+    if build.include? 'disable-etcdir'
+      args << '--disable-etcdir'
+    else
+      args << '--enable-etcdir=/etc'
+    end
 
     system "./configure", *args
 
@@ -34,34 +46,19 @@ class Zsh < Formula
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
-    system "make install"
-
-    # See http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Accessing-On_002dLine-Help
-    mkdir "helpfiles" do
-      system "man zshall | colcrt - | perl ../Util/helpfiles"
-      (share+"zsh/helpfiles").install Dir["*"]
-    end
+    system "make", "install"
+    system "make", "install.info"
   end
 
-  def test
+  test do
     system "#{bin}/zsh", "--version"
   end
 
   def caveats; <<-EOS.undent
-    To use this build of Zsh as your login shell, add it to /etc/shells.
-
-    If you have administrator privileges, you must fix an Apple miss
-    configuration in Mac OS X 10.7 Lion by renaming /etc/zshenv to
-    /etc/zprofile, or Zsh will have the wrong PATH when executed
-    non-interactively by scripts.
-
-    Alternatively, install Zsh with /etc disabled:
-      brew install --disable-etcdir zsh
-
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help
-      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/help
     EOS
   end
 end

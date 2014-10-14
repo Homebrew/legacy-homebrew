@@ -11,7 +11,7 @@ class Version
     end
 
     def inspect
-      "#<#{self.class} #{value.inspect}>"
+      "#<#{self.class.name} #{value.inspect}>"
     end
 
     def to_s
@@ -36,14 +36,14 @@ class Version
     end
 
     def inspect
-      "#<#{self.class}>"
+      "#<#{self.class.name}>"
     end
   end
 
   NULL_TOKEN = NullToken.new
 
   class StringToken < Token
-    PATTERN = /[a-z]+[0-9]+/i
+    PATTERN = /[a-z]+[0-9]*/i
 
     def initialize(value)
       @value = value.to_s
@@ -80,7 +80,7 @@ class Version
 
   class CompositeToken < StringToken
     def rev
-      value[/([0-9]+)/, 1] || "0"
+      value[/[0-9]+/].to_i
     end
   end
 
@@ -146,13 +146,14 @@ class Version
     end
   end
 
-  def self.new_with_scheme(value, scheme)
-    if Class === scheme && scheme.ancestors.include?(Version)
-      scheme.new(value)
-    else
-      raise TypeError, "Unknown version scheme #{scheme.inspect}"
-    end
-  end
+  SCAN_PATTERN = Regexp.union(
+    AlphaToken::PATTERN,
+    BetaToken::PATTERN,
+    RCToken::PATTERN,
+    PatchToken::PATTERN,
+    NumericToken::PATTERN,
+    StringToken::PATTERN
+  )
 
   def self.detect(url, specs={})
     if specs.has_key?(:tag)
@@ -163,7 +164,12 @@ class Version
   end
 
   def initialize(val, detected=false)
-    @version = val.to_s
+    if val.respond_to?(:to_str)
+      @version = val.to_str
+    else
+      raise TypeError, "Version value must be a string"
+    end
+
     @detected_from_url = detected
   end
 
@@ -183,6 +189,11 @@ class Version
 
     max = [tokens.length, other.tokens.length].max
     pad_to(max) <=> other.pad_to(max)
+  end
+  alias_method :eql?, :==
+
+  def hash
+    @version.hash
   end
 
   def to_s
@@ -211,16 +222,7 @@ class Version
   end
 
   def tokenize
-    @version.scan(
-      Regexp.union(
-        AlphaToken::PATTERN,
-        BetaToken::PATTERN,
-        RCToken::PATTERN,
-        PatchToken::PATTERN,
-        NumericToken::PATTERN,
-        StringToken::PATTERN
-      )
-    ).map! do |token|
+    @version.scan(SCAN_PATTERN).map! do |token|
       case token
       when /\A#{AlphaToken::PATTERN}\z/o   then AlphaToken
       when /\A#{BetaToken::PATTERN}\z/o    then BetaToken
@@ -308,7 +310,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
-    m = /\/(\d\.\d+)\//.match(spec_s)
+    m = /\/(\d\.\d+(\.\d)?)\//.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz

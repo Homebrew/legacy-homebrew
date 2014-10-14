@@ -10,7 +10,7 @@ class Wbox < Formula
     bin.install "wbox"
   end
 
-  def test
+  test do
     system "#{bin}/wbox", "www.google.com", "1"
   end
 end

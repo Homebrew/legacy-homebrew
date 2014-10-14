@@ -2,13 +2,16 @@ require 'formula'
 
 class Postgis < Formula
   homepage 'http://postgis.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.1.0.tar.gz'
-  sha1 'e8a428348e93f204fdf4838ebedcad9306b29a5e'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.1.4.tar.gz'
+  sha256 'cd73c2a38428c8736f6cae73b955aee0bd42f9ca4fd8d93c1af464524cb100fc'
+  revision 1
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
+  option 'without-gdal', 'Disable postgis raster support'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 
@@ -17,16 +20,20 @@ class Postgis < Formula
   depends_on 'proj'
   depends_on 'geos'
 
-  depends_on 'gtk+' if build.include? 'with-gui'
+  depends_on 'gtk+' if build.with? "gui"
+  depends_on 'pkg-config' if build.with? "gui"
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
-  depends_on 'gdal'
+  depends_on 'gdal' => :recommended
+
+  # For advanced 2D/3D functions
+  depends_on 'sfcgal' => :recommended
 
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
     # as it is common for people to avoid upgrading Postgres.
-    postgres_realpath = Formula.factory('postgresql').opt_prefix.realpath
+    postgres_realpath = Formula["postgresql"].opt_prefix.realpath
 
     ENV.deparallelize
 
@@ -35,7 +42,7 @@ class Postgis < Formula
       # Can't use --prefix, PostGIS disrespects it and flat-out refuses to
       # accept it with 2.0.
       "--with-projdir=#{HOMEBREW_PREFIX}",
-      "--with-jsondir=#{Formula.factory('json-c').opt_prefix}",
+      "--with-jsondir=#{Formula["json-c"].opt_prefix}",
       # This is against Homebrew guidelines, but we have to do it as the
       # PostGIS plugin libraries can only be properly inserted into Homebrew's
       # Postgresql keg.
@@ -46,7 +53,9 @@ class Postgis < Formula
       # gettext installations are.
       "--disable-nls"
     ]
-    args << '--with-gui' if build.include? 'with-gui'
+    args << '--with-gui' if build.with? "gui"
+
+    args << '--without-raster' if build.without? "gdal"
 
     system './autogen.sh'
     system './configure', *args
@@ -92,12 +101,12 @@ class Postgis < Formula
   end
 
   def caveats;
-    pg = Formula.factory('postgresql').opt_prefix
+    pg = Formula["postgresql"].opt_prefix
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
       If you are currently using PostGIS 2.0+, you can go the soft upgrade path:
-        ALTER EXTENSION postgis UPDATE TO "2.1.0";
+        ALTER EXTENSION postgis UPDATE TO "2.1.4";
       Users of 1.5 and below will need to go the hard-upgrade path, see here:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#upgrading
 
@@ -108,5 +117,15 @@ class Postgis < Formula
       PostGIS extension modules installed to:
         #{pg}/share/postgresql/extension
       EOS
+  end
+
+  test do
+    require "base64"
+    (testpath/"brew.shp").write(::Base64.decode64("AAAnCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoOgDAAALAAAAAAAAAAAAAAAA\nAAAAAADwPwAAAAAAABBAAAAAAAAAFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAEAAAASCwAAAAAAAAAAAPA/AAAAAAAA8D8AAAAAAAAA\nAAAAAAAAAAAAAAAAAgAAABILAAAAAAAAAAAACEAAAAAAAADwPwAAAAAAAAAA\nAAAAAAAAAAAAAAADAAAAEgsAAAAAAAAAAAAQQAAAAAAAAAhAAAAAAAAAAAAA\nAAAAAAAAAAAAAAQAAAASCwAAAAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAAA\nAAAAAAAAAAAABQAAABILAAAAAAAAAAAAAAAAAAAAAAAUQAAAAAAAACJAAAAA\nAAAAAEA=\n"))
+    (testpath/"brew.dbf").write(::Base64.decode64("A3IJGgUAAABhAFsAAAAAAAAAAAAAAAAAAAAAAAAAAABGSVJTVF9GTEQAAEMA\nAAAAMgAAAAAAAAAAAAAAAAAAAFNFQ09ORF9GTEQAQwAAAAAoAAAAAAAAAAAA\nAAAAAAAADSBGaXJzdCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgIFBvaW50ICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgU2Vjb25kICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgICBQb2ludCAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgIFRoaXJkICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgUG9pbnQgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICBGb3VydGggICAgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgIFBvaW50ICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgQXBwZW5kZWQgICAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAgICAgICBQb2ludCAgICAgICAgICAgICAgICAgICAgICAg\nICAgICAgICAgICAg\n"))
+    (testpath/"brew.shx").write(::Base64.decode64("AAAnCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARugDAAALAAAAAAAAAAAAAAAA\nAAAAAADwPwAAAAAAABBAAAAAAAAAFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAADIAAAASAAAASAAAABIAAABeAAAAEgAAAHQAAAASAAAA\nigAAABI=\n"))
+    result = shell_output("#{bin}/shp2pgsql #{testpath}/brew.shp")
+    assert_match /Point/, result
+    assert_match /AddGeometryColumn/, result
   end
 end

@@ -1,21 +1,73 @@
 require 'formula'
 
 class Opam < Formula
-  homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/archive/1.0.0.tar.gz'
-  sha1 '5e126f71c7e0caff3b61a751ef09dd66892720ae'
+  homepage 'https://opam.ocaml.org'
+  url 'https://github.com/ocaml/opam/archive/1.1.2.tar.gz'
+  sha1 '15ade90a1965fa712967e807a717f79db8d9032f'
 
-  head 'https://github.com/OCamlPro/opam.git'
+  head 'https://github.com/ocaml/opam.git'
 
   depends_on "objective-caml"
+  depends_on "aspcud" => :recommended
+
+  if build.with? "aspcud"
+    needs :cxx11
+  end
+
+  resource "cudf" do
+    url "https://gforge.inria.fr/frs/download.php/31910/cudf-0.6.3.tar.gz"
+    sha1 "e2699dd33b8c49d8122c4402a20561a4dfdd1bae"
+  end
+
+  resource "extlib" do
+    url "http://ocaml-extlib.googlecode.com/files/extlib-1.5.3.tar.gz"
+    sha1 "6e395ae70e690d5ec6f166cce4761798ce494580"
+  end
+
+  resource "ocaml-re" do
+    url "https://github.com/ocaml/ocaml-re/archive/ocaml-re-1.2.0.tar.gz"
+    sha1 "d54439efaaf888d619cbf1ccd92fbb077aed5d6a"
+  end
+
+  resource "ocamlgraph" do
+    url "http://ocamlgraph.lri.fr/download/ocamlgraph-1.8.1.tar.gz"
+    sha1 "1eac55604956f566f525c3e043188d626d1924ce"
+  end
+
+  resource "dose3" do
+    url "https://gforge.inria.fr/frs/download.php/31595/dose3-3.1.2.tar.gz"
+    sha1 "c1033921e907a1cfa7a8873683b0debe24319f87"
+  end
+
+  resource "cmdliner" do
+    url "http://erratique.ch/software/cmdliner/releases/cmdliner-0.9.3.tbz"
+    sha1 "af7e32e5f2eb829aab9ba6c1d85574b2a3ba174e"
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    ENV.deparallelize
+
+    # We put the compressed external libraries where the build
+    # expects to find them, thus tricking it into believing that it
+    # already downloaded the necessary files.
+    resources.each do |r|
+      r.verify_download_integrity(r.fetch)
+      original_name = r.cached_download.basename.sub(/^#{Regexp.escape(name)}--/, "")
+      cp r.cached_download, buildpath/"src_ext/#{original_name}"
+    end
+
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "make", "lib-ext"
     system "make"
-    system "make install"
+    system "make", "man"
+    system "make", "install"
+
+    # mandir is not honored: https://github.com/ocaml/opam/issues/1753
+    # Fixed in head: https://github.com/OCamlPro/opam/commit/24916e8cb
+    share.install "#{prefix}/man" unless build.head?
 
     bash_completion.install "shell/opam_completion.sh"
-    zsh_completion.install "shell/opam_completion_zsh.sh"
+    zsh_completion.install "shell/opam_completion_zsh.sh" => "_opam"
   end
 
   test do
@@ -36,7 +88,7 @@ class Opam < Formula
       * On Bash, add them to `~/.bash_profile`.
       * On Zsh, add them to `~/.zprofile` instead.
 
-    Documentation and tutorials are available at http://opam.ocamlpro.com, or
+    Documentation and tutorials are available at https://opam.ocaml.org, or
     via 'man opam' and 'opam --help'.
     EOS
   end

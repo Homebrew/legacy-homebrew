@@ -1,27 +1,30 @@
 require 'formula'
 
-# https version doesn't download with system curl on Snow Leopard
-# https://github.com/mxcl/homebrew/issues/20339
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.0.tar.gz'
-  sha1 'bddb179b5015d4d9d45fba3c2e63ca764bc46bf3'
+  url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.1.tar.gz'
+  sha1 '719608b87836b0b4d05685c3ce67c3fad8a3173a'
 
   depends_on 'pcre'
-  depends_on 'tokyo-cabinet'
+  depends_on 'lmdb'
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+  depends_on 'libxml2' if MacOS.version < :mountain_lion
 
   def install
-    # Find our libpcre
-    ENV.append 'LDFLAGS', "-L#{Formula.factory('pcre').opt_prefix}/lib"
-
+    system "autoreconf", "-Wno-portability", "-fvi", "-I", "m4" # see autogen.sh
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-workdir=#{var}/cfengine",
-                          "--with-tokyocabinet"
+                          "--with-lmdb=#{Formula['lmdb'].opt_prefix}",
+                          "--with-pcre=#{Formula['pcre'].opt_prefix}",
+                          "--without-mysql",
+                          "--without-postgresql"
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/cf-agent", "-V"
   end
 end

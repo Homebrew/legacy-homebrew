@@ -5,15 +5,15 @@ class Ohcount < Formula
   url 'https://github.com/blackducksw/ohcount/archive/3.0.0.tar.gz'
   sha1 '7f3fce48bf2a522c5262215699c36625ca6d3d33'
 
-  head 'https://github.com/blackducksw/ohcount.git'
+  head do
+    url 'https://github.com/blackducksw/ohcount.git'
+    depends_on 'libmagic'
+  end
 
   depends_on 'ragel'
   depends_on 'pcre'
-  depends_on 'libmagic' if build.head?
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # find Homebrew's libpcre
@@ -21,6 +21,14 @@ class Ohcount < Formula
 
     system "./build", "ohcount"
     bin.install 'bin/ohcount'
+  end
+
+  test do
+    path = testpath/"test.rb"
+    path.write "# comment\n puts\n puts\n"
+    stats = `#{bin}/ohcount -i #{path}`.split("\n")[-1]
+    assert_equal 0, $?.exitstatus
+    assert_equal ["ruby", "2", "1", "33.3%"], stats.split[0..3]
   end
 end
 

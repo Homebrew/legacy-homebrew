@@ -5,6 +5,7 @@ class Ezstream < Formula
   url 'http://downloads.xiph.org/releases/ezstream/ezstream-0.5.6.tar.gz'
   sha1 'f9d3ee5a2f81d156685ffbfc59b556c63afcca83'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libvorbis'
   depends_on 'libshout'
   depends_on 'theora'

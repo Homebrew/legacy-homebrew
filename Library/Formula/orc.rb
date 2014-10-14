@@ -1,16 +1,18 @@
 require 'formula'
 
 class Orc < Formula
-  homepage 'http://code.entropywave.com/projects/orc/'
-  url 'http://code.entropywave.com/download/orc/orc-0.4.17.tar.gz'
-  sha1 '5cb7b3225a23bc4a5771a62e9c94a90d21609632'
+  homepage 'http://cgit.freedesktop.org/gstreamer/orc/'
+  url 'http://gstreamer.freedesktop.org/src/orc/orc-0.4.22.tar.xz'
+  sha1 'c50cf2f2a9a7e4ab400fd79f706e831ace1936bc'
+
+  bottle do
+    cellar :any
+    sha1 "bec7e363073a890e5fecf672aff368d16135ba81" => :mavericks
+    sha1 "7666ce536dfdd52724ff0e49109b40dfd58b2d6a" => :mountain_lion
+    sha1 "ef6997d06ae94bd9e097a6ce33e882a3f965f383" => :lion
+  end
 
   def install
-    # Fix compiling on 32 bit systems. See:
-    # https://trac.macports.org/ticket/26881
-    # https://github.com/mxcl/homebrew/issues/8848
-    ENV["CFLAGS"] = "-Xarch_i386 -O1" #if Hardware.is_32_bit?
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-gtk-doc"

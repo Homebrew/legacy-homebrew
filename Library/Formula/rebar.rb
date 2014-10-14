@@ -1,20 +1,27 @@
-require 'formula'
+require "formula"
 
 class Rebar < Formula
-  homepage 'https://github.com/rebar/rebar'
-  url 'https://github.com/rebar/rebar/archive/2.0.0.zip'
-  sha1 '4775839097324107c730e094e42ce87b456b655c'
+  homepage "https://github.com/rebar/rebar"
+  url "https://github.com/rebar/rebar/archive/2.5.1.tar.gz"
+  sha1 "cf8d3e33c21f09b826a52a681f5b729559a3280c"
 
-  head "https://github.com/basho/rebar.git", :branch => "master"
+  head "https://github.com/rebar/rebar.git", :branch => "master"
 
-  depends_on 'erlang'
+  bottle do
+    cellar :any
+    sha1 "e2908a79a0819ae121f2ecad281474bae417bfe4" => :mavericks
+    sha1 "fe9177f8b1b5d165de672fb27e4906ae5f9a9f64" => :mountain_lion
+    sha1 "22db3c6c0b933ad003f9495fe2528fe5bb8f73fa" => :lion
+  end
+
+  depends_on "erlang"
 
   def install
-    system './bootstrap'
-    bin.install 'rebar'
+    system "./bootstrap"
+    bin.install "rebar"
   end
 
   test do
-    system 'rebar', '--version'
+    system bin/"rebar", "--version"
   end
 end

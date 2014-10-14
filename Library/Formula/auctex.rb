@@ -6,16 +6,18 @@ class Auctex < Formula
   mirror 'http://ftp.gnu.org/gnu/auctex/auctex-11.87.tar.gz'
   sha1 '0be92c7d8f89d57346fe07f05a1a045ffd11cd71'
 
-  head 'git://git.savannah.gnu.org/auctex.git'
+  head do
+    url 'git://git.savannah.gnu.org/auctex.git'
+    depends_on :autoconf
+  end
 
   depends_on :tex
-  depends_on :autoconf if build.head?
 
   option "with-emacs=", "Path to an emacs binary"
 
   def which_emacs
     emacs = ARGV.value('with-emacs') || which('emacs').to_s
-    raise "#{emacs} not found" if not File.exists? emacs
+    raise "#{emacs} not found" unless File.exist? emacs
     return emacs
   end
 

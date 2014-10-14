@@ -1,30 +1,24 @@
 require 'formula'
 
-class NoGcrypt < Requirement
-  satisfy(:build_env => false) { !Formula.factory("libgcrypt").installed? }
-
-  def message; <<-EOS.undent
-    This software can fail to compile when libgcrypt is installed.
-    You may need to try:
-      brew unlink libgcrypt
-      brew install libmtp
-      brew link libgcrypt
-    EOS
-  end
-end
-
 class Libmtp < Formula
   homepage 'http://libmtp.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/libmtp/libmtp/1.1.6/libmtp-1.1.6.tar.gz'
-  sha1 'f9e55c75399fc5f4deabcdfa58e1b01b2e6e3283'
+  url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.8/libmtp-1.1.8.tar.gz"
+  sha1 "6528da141b9f8a04fc97c0b01cf4f3a6142ff64f"
 
-  depends_on NoGcrypt
+  bottle do
+    cellar :any
+    sha1 "e3194ce6f1692562c24ce59b4ba81079e1515817" => :mavericks
+    sha1 "7a8fd87ec676a4d38fb66e038d62c4313a73a71f" => :mountain_lion
+    sha1 "0bd337f0f7d78d65e90c1c385e6d795e847bed96" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libusb-compat"
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--disable-mtpz"
     system "make install"
   end
 end

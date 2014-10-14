@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'requirements/mpi_dependency'
 
-class MPIDependencyTests < Test::Unit::TestCase
+class MPIDependencyTests < Homebrew::TestCase
   def test_initialize_untangles_tags_and_wrapper_symbols
     wrappers = [:cc, :cxx, :f77]
     tags = [:optional, 'some-other-tag']

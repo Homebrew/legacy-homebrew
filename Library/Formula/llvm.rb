@@ -1,43 +1,67 @@
 require 'formula'
 
-class Clang < Formula
-  homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
-  sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
-end
-
 class Llvm < Formula
-  homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
-  sha1      'c6c22d5593419e3cb47cbcf16d967640e5cce133'
+  homepage 'http://llvm.org/'
 
   bottle do
-    sha1 '61854a2cf08a1398577f74fea191a749bec3e72d' => :mountain_lion
-    sha1 'fbe7b85a50f4b283ad55be020c7ddfbf655435ad' => :lion
-    sha1 'f68fdb89d44a72c83db1e55e25444de4dcde5375' => :snow_leopard
+    sha1 "1fc5969edc5fcffbb3e958da00ff6a1c70606262" => :mavericks
+    sha1 "c30d6cc49521fb950bd76390878c9469a780b981" => :mountain_lion
+    sha1 "0e4178a7e094b9c77431a6f37f7dc2f72acb8389" => :lion
+  end
+
+  stable do
+    url "http://llvm.org/releases/3.5.0/llvm-3.5.0.src.tar.xz"
+    sha1 "58d817ac2ff573386941e7735d30702fe71267d5"
+    resource 'clang' do
+      url "http://llvm.org/releases/3.5.0/cfe-3.5.0.src.tar.xz"
+      sha1 "834cee2ed8dc6638a486d8d886b6dce3db675ffa"
+    end
+    resource 'lld' do
+      url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
+      sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
+    end
+  end
+
+  head do
+    url "http://llvm.org/svn/llvm-project/llvm/trunk", :using => :svn
+    resource 'clang' do
+      url "http://llvm.org/svn/llvm-project/cfe/trunk", :using => :svn
+    end
+    resource 'lld' do
+      url "http://llvm.org/svn/llvm-project/lld/trunk", :using => :svn
+    end
   end
 
   option :universal
-  option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'with-clang', 'Build Clang support library'
+  option 'with-lld', 'Build LLD linker'
   option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
-  env :std if build.universal?
+  keg_only :provided_by_osx
+
+  # Apple's libstdc++ is too old to build LLVM
+  fails_with :gcc
+  fails_with :llvm
 
   def install
-    if build.with? 'python' and build.include? 'disable-shared'
+    # Apple's libstdc++ is too old to build LLVM
+    ENV.libcxx if ENV.compiler == :clang
+
+    if build.with? "python" and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end
 
-    Clang.new("clang").brew do
-      clang_dir.install Dir['*']
-    end if build.include? 'with-clang'
+    (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
+
+    (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
 
     if build.universal?
+      ENV.permit_arch_flags
       ENV['UNIVERSAL'] = '1'
       ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
@@ -62,50 +86,30 @@ class Llvm < Formula
     args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
-    system 'make', 'VERBOSE=1'
-    system 'make', 'VERBOSE=1', 'install'
+    system 'make'
+    system 'make', 'install'
+
+    (share/'llvm/cmake').install buildpath/'cmake/modules'
 
     # install llvm python bindings
-    if python
-      python.site_packages.install buildpath/'bindings/python/llvm'
-    end
-
-    # Install clang tools and bindings
-    cd clang_dir do
-      (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
-      python.site_packages.install 'bindings/python/clang' if python
-    end if build.include? 'with-clang'
-
-    # Remove all binaries except llvm-config
-    Dir[bin/'*'].each do |exec_path|
-      rm_f exec_path unless File.basename(exec_path) == 'llvm-config'
+    if build.with? "python"
+      (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
+      (lib+'python2.7/site-packages').install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
     end
   end
 
-  def test
+  test do
     system "#{bin}/llvm-config", "--version"
   end
 
   def caveats
-    s = ''
-    s += python.standard_caveats if python
-    s += <<-EOS.undent
-      This formula only provide library components of LLVM. To use full
-      featured LLVM please try the llvm3* formulae in homebrew-versions tap,
-      for instance:
-
-          brew tap homebrew/versions
-          brew install llvm33
-
-      Extra tools are installed in #{share}/llvm and #{share}/clang.
+    <<-EOS.undent
+      LLVM executables are installed in #{opt_bin}.
+      Extra tools are installed in #{opt_share}/llvm.
 
       If you already have LLVM installed, then "brew upgrade llvm" might not work.
       Instead, try:
           brew rm llvm && brew install llvm
     EOS
-  end
-
-  def clang_dir
-    buildpath/'tools/clang'
   end
 end

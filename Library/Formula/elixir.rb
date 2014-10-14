@@ -2,21 +2,21 @@ require 'formula'
 
 class ErlangInstalled < Requirement
   fatal true
+  env :userpaths
+  default_formula "erlang"
 
   satisfy {
     erl = which('erl') and begin
-      `#{erl} -noshell -eval 'io:fwrite("~s~n", [erlang:system_info(otp_release)]).' -s erlang halt | grep -q '^R1[6789]'`
+      `#{erl} -noshell -eval 'io:fwrite("~s~n", [erlang:system_info(otp_release)]).' -s erlang halt | grep -q '^1[789]'`
       $?.exitstatus == 0
     end
   }
 
   def message; <<-EOS.undent
-    Erlang R16 is required to install.
+    Erlang 17 is required to install.
 
     You can install this with:
-      brew tap homebrew/versions
-      brew unlink erlang
-      brew install erlang-r16
+      brew install erlang
 
     Or you can use an official installer from:
       http://www.erlang.org/
@@ -26,22 +26,25 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/archive/v0.10.1.tar.gz'
-  sha1 '18e0312b28e9e429995bc2de06bfd0f7d1e4348f'
+  url  'https://github.com/elixir-lang/elixir/archive/v1.0.1.tar.gz'
+  sha1 '7d6adade172f27efdad784ba9722e0eadbc3b746'
 
   head 'https://github.com/elixir-lang/elixir.git'
 
-  depends_on ErlangInstalled
+  bottle do
+    sha1 "86169cc70a21c0f3b58cd004a8bc9cf3cd557c80" => :mavericks
+    sha1 "fdece1b34a51041649d184d14bfc6dfb72f912f9" => :mountain_lion
+  end
 
-  env :userpaths
+  depends_on ErlangInstalled
 
   def install
     system "make"
-    bin.install Dir['bin/*'] - Dir['bin/*.bat']
+    bin.install Dir['bin/*'] - Dir['bin/*.{bat,ps1}']
 
-    Dir['lib/*/ebin'].each do |path|
-      app  = File.basename(File.dirname(path))
-      (lib/"#{app}").install path
+    Dir.glob("lib/*/ebin") do |path|
+      app = File.basename(File.dirname(path))
+      (lib/app).install path
     end
   end
 

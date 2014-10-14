@@ -2,8 +2,8 @@ require 'formula'
 
 class Cmocka < Formula
   homepage 'http://cmocka.cryptomilk.org/'
-  url 'https://open.cryptomilk.org/attachments/download/7/cmocka-0.2.0.tar.gz'
-  sha1 '6d3aa2c201cb390d6bf5929eba75d9e77bfe4159'
+  url 'https://open.cryptomilk.org/attachments/download/42/cmocka-0.4.1.tar.xz'
+  sha1 'ef8b64878edc5f0e442dc6aaf3dc83ef912c51c2'
 
   depends_on 'cmake' => :build
 

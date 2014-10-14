@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'dependency'
 
-class DependableTests < Test::Unit::TestCase
+class DependableTests < Homebrew::TestCase
   def setup
     @tags = ["foo", "bar", :build]
     @dep = Struct.new(:tags).new(@tags).extend(Dependable)
@@ -12,13 +12,13 @@ class DependableTests < Test::Unit::TestCase
   end
 
   def test_interrogation
-    assert @dep.build?
-    assert !@dep.optional?
-    assert !@dep.recommended?
+    assert_predicate @dep, :build?
+    refute_predicate @dep, :optional?
+    refute_predicate @dep, :recommended?
   end
 end
 
-class DependencyTests < Test::Unit::TestCase
+class DependencyTests < Homebrew::TestCase
   def test_accepts_single_tag
     dep = Dependency.new("foo", %w{bar})
     assert_equal %w{bar}, dep.tags
@@ -44,8 +44,8 @@ class DependencyTests < Test::Unit::TestCase
     foo2 = Dependency.new("foo")
     bar = Dependency.new("bar")
     assert_equal foo1, foo2
-    assert foo1.eql?(foo2)
-    assert_not_equal foo1, bar
-    assert !foo1.eql?(bar)
+    assert_eql foo1, foo2
+    refute_equal foo1, bar
+    refute_eql foo1, bar
   end
 end

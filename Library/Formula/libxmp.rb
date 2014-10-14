@@ -1,12 +1,21 @@
-require 'formula'
+require "formula"
 
 class Libxmp < Formula
-  homepage 'http://xmp.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/xmp/libxmp/4.1.5/libxmp-4.1.5.tar.gz'
-  sha1 'f50ff6d98e9c21c8fb5e29a8c9e5677983285d90'
-  head 'git://git.code.sf.net/p/xmp/libxmp'
+  homepage "http://xmp.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.0/libxmp-4.3.0.tar.gz"
+  sha1 "7cc6acef4d3b86b9073851649d1b5f6f4a904e43"
 
-  depends_on :autoconf if build.head?
+  bottle do
+    cellar :any
+    sha1 "5d838e452561152cbc569996d0b6c721a447bbc3" => :mavericks
+    sha1 "7ae31575dc3f7e052117a4d274ef65556095f485" => :mountain_lion
+    sha1 "39a97017b0ee409c2e6fe39a97c2be672393bcff" => :lion
+  end
+
+  head do
+    url "git://git.code.sf.net/p/xmp/libxmp"
+    depends_on :autoconf
+  end
 
   def install
     system "autoconf" if build.head?

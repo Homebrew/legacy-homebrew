@@ -12,4 +12,10 @@ class Cowsay < Formula
     system "/bin/sh", "install.sh", prefix
     mv prefix/'man', share
   end
+
+  test do
+    output = shell_output("#{bin}/cowsay moo")
+    assert output.include?("moo")  # bubble
+    assert output.include?("^__^") # cow
+  end
 end

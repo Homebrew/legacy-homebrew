@@ -2,14 +2,18 @@ require 'formula'
 
 class Bochs < Formula
   homepage 'http://bochs.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/bochs/bochs/2.6.1/bochs-2.6.1.tar.gz'
-  sha1 'fa272a69477b1d8641c387e9198eaa8ed966d6ee'
+  url 'https://downloads.sourceforge.net/project/bochs/bochs/2.6.2/bochs-2.6.2.tar.gz'
+  sha1 'f82ee01a52367d2a6daffa2774a1297b978f6821'
 
   depends_on 'pkg-config' => :build
   depends_on :x11
   depends_on 'gtk+'
 
   def install
+    # upstream Makefile bug
+    # https://github.com/Homebrew/homebrew/pull/32832#issuecomment-57586763
+    inreplace "configure", 'if test "$have_ltdl" = 1', 'if 0'
+
     system "./configure", "--prefix=#{prefix}",
                           "--with-x11",
                           "--enable-debugger",
@@ -38,17 +42,11 @@ class Bochs < Formula
                           "--with-term",
                           "--enable-ne2000"
 
-    # See: http://sourceforge.net/p/bochs/discussion/39592/thread/9c22887c
-    inreplace 'config.h', 'define BX_HAVE_LTDL 1', 'define BX_HAVE_LTDL 0'
-    inreplace 'Makefile' do |s|
-      s.gsub! /\-lltdl/, 'ltdl.o'
-    end
-
     system "make"
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/bochs"
   end
 end

@@ -1,27 +1,24 @@
-require 'formula'
+require "formula"
 
 class Ssreflect < Formula
-  homepage 'http://www.msr-inria.inria.fr/Projects/math-components'
-  url 'http://ssr.msr-inria.inria.fr/FTP/ssreflect-1.4-coq8.4.tar.gz'
-  version '1.4'
-  sha1 'c9e678a362973b202a5d90d2abf6436fa1ab4dcf'
+  homepage "http://www.msr-inria.fr/projects/mathematical-components-2/"
+  url "http://ssr.msr-inria.inria.fr/FTP/ssreflect-1.5.tar.gz"
+  sha1 "131f4e2746b4a97627ae91a9f980f61ec42a00c9"
 
-  depends_on 'objective-caml'
-  depends_on 'coq'
+  depends_on "objective-caml"
+  depends_on "coq"
 
-  option 'with-doc', 'Install HTML documents'
-  option 'with-static', 'Build with static linking'
+  option "with-doc", "Install HTML documents"
+  option "with-static", "Build with static linking"
 
-  def patches
-    # Fix an ill-formatted ocamldoc comment.
-    DATA
-  end
+  # Fix an ill-formatted ocamldoc comment.
+  patch :DATA
 
   def install
     ENV.j1
 
     # Enable static linking.
-    if build.include? 'with-static'
+    if build.with? "static"
       inreplace 'Make' do |s|
         s.gsub! /#\-custom/, '-custom'
         s.gsub! /#SSRCOQ/, 'SSRCOQ'
@@ -34,17 +31,15 @@ class Ssreflect < Formula
             "DSTROOT=#{prefix}/"]
     system "make", *args
     system "make", "install", *args
-    if build.include? 'with-doc'
+    if build.with? "doc"
       system "make", "-f", "Makefile.coq", "html", *args
       system "make", "-f", "Makefile.coq", "mlihtml", *args
       system "make", "-f", "Makefile.coq", "install-doc", *args
     end
-    bin.install 'bin/ssrcoq.byte', 'bin/ssrcoq' if build.include? 'with-static'
-    (share/'ssreflect').install "pg-ssr.el"
+    bin.install "bin/ssrcoq.byte", "bin/ssrcoq" if build.with? "static"
+    (share/"ssreflect").install "pg-ssr.el"
   end
-
 end
-
 
 __END__
 diff --git a/src/ssrmatching.mli b/src/ssrmatching.mli

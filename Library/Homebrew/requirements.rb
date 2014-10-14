@@ -1,21 +1,32 @@
 require 'requirement'
 require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
-require 'requirements/macos_requirement'
+require 'requirements/minimum_macos_requirement'
 require 'requirements/mpi_dependency'
+require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
 require 'requirements/x11_dependency'
+require 'requirements/maximum_macos_requirement'
 
 class XcodeDependency < Requirement
   fatal true
-  build true
 
   satisfy(:build_env => false) { MacOS::Xcode.installed? }
 
-  def message; <<-EOS.undent
-    A full installation of Xcode.app is required to compile this software.
-    Installing just the Command Line Tools is not sufficient.
+  def message
+    message = <<-EOS.undent
+      A full installation of Xcode.app is required to compile this software.
+      Installing just the Command Line Tools is not sufficient.
     EOS
+    if MacOS.version >= :lion
+      message += <<-EOS.undent
+        Xcode can be installed from the App Store.
+      EOS
+    else
+      message += <<-EOS.undent
+        Xcode can be installed from https://developer.apple.com/downloads/
+      EOS
+    end
   end
 end
 
@@ -38,31 +49,21 @@ class TeXDependency < Requirement
 
   satisfy { which('tex') || which('latex') }
 
-  def message; <<-EOS.undent
-    A LaTeX distribution is required to install.
+  def message;
+    if File.exist?("/usr/texbin")
+      texbin_path = "/usr/texbin"
+    else
+      texbin_path = "its bin directory"
+    end
+
+    <<-EOS.undent
+    A LaTeX distribution is required for Homebrew to install this formula.
 
     You can install MacTeX distribution from:
       http://www.tug.org/mactex/
 
-    Make sure that its bin directory is in your PATH before proceeding.
-
-    You may also need to restore the ownership of Homebrew install:
-      sudo chown -R $USER `brew --prefix`
-    EOS
-  end
-end
-
-class CLTDependency < Requirement
-  fatal true
-  build true
-
-  satisfy(:build_env => false) { MacOS::CLT.installed? }
-
-  def message; <<-EOS.undent
-    The Command Line Tools are required to compile this software.
-    The standalone package can be obtained from
-    https://developer.apple.com/downloads/,
-    or it can be installed via Xcode's preferences.
+    Make sure that "/usr/texbin", or the location you installed it to, is in
+    your PATH before proceeding.
     EOS
   end
 end
@@ -92,4 +93,39 @@ class MercurialDependency < Requirement
   default_formula 'mercurial'
 
   satisfy { which('hg') }
+end
+
+class GitDependency < Requirement
+  fatal true
+  default_formula 'git'
+  satisfy { !!which('git') }
+end
+
+class JavaDependency < Requirement
+  fatal true
+  satisfy { java_version }
+
+  def initialize(tags)
+    @version = tags.pop
+    super
+  end
+
+  def java_version
+    args = %w[/usr/libexec/java_home --failfast]
+    args << "--version" << "#{@version}+" if @version
+    quiet_system(*args)
+  end
+
+  def message
+    version_string = " #{@version}" if @version
+
+    <<-EOS.undent
+      Java#{version_string} is required to install this formula.
+
+      You can install Java from:
+        http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+      Make sure you install both the JRE and JDK.
+    EOS
+  end
 end

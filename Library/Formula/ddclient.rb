@@ -1,9 +1,11 @@
 require 'formula'
 
 class Ddclient < Formula
-  homepage 'http://sourceforge.net/apps/trac/ddclient'
-  url 'http://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.1/ddclient-3.8.1.tar.bz2'
-  sha1 '2fc0909cf25ab03019214e52d66c7fcd449f8bbe'
+  homepage 'http://sourceforge.net/p/ddclient/wiki/Home'
+  url 'https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.2/ddclient-3.8.2.tar.bz2'
+  sha1 '8c887c06a580773c48a1eaced82a08c3077e1325'
+
+  head 'https://github.com/wimpunk/ddclient.git'
 
   def install
     # Adjust default paths in script
@@ -24,7 +26,7 @@ class Ddclient < Formula
     inreplace 'sample-etc_ddclient.conf',
       "/var/run/ddclient.pid", "#{var}/run/ddclient/pid"
 
-    (share+'doc/ddclient').install %w(
+    doc.install %w(
       sample-ddclient-wrapper.sh
       sample-etc_cron.d_ddclient
       sample-etc_ddclient.conf
@@ -38,7 +40,7 @@ class Ddclient < Formula
   def caveats; <<-EOS.undent
     For ddclient to work, you will need to create a configuration file
     in #{etc}/ddclient, a sample configuration can be found in
-    #{opt_prefix}/share/doc/ddclient.
+    #{opt_share}/doc/ddclient.
 
     Note: don't enable daemon mode in the configuration file; see
     additional information below.
@@ -62,7 +64,7 @@ class Ddclient < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/ddclient</string>
+        <string>#{opt_sbin}/ddclient</string>
         <string>-file</string>
         <string>#{etc}/ddclient/ddclient.conf</string>
       </array>

@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "August 2013" "Homebrew" "brew"
+.TH "BREW" "1" "September 2014" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -38,8 +38,8 @@ Fetch the newest version of Homebrew from GitHub using \fBgit\fR(1)\.
 List all installed formulae\.
 .
 .TP
-\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+\fBsearch\fR \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\. If no search term is given, all locally available formulae are listed\.
 .
 .SH "COMMANDS"
 .
@@ -71,11 +71,19 @@ If \fB\-n\fR is passed, show what would be removed, but do not actually remove a
 If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest versions of formula\. Note downloads for any installed formula will still not be deleted\. If you want to delete those too: \fBrm \-rf $(brew \-\-cache)\fR
 .
 .TP
+\fBcommands\fR
+Show a list of built\-in and external commands\.
+.
+.TP
+\fBconfig\fR
+Show Homebrew and system configuration useful for debugging\. If you file a bug report, you will likely be asked for this information if you do not provide it\.
+.
+.TP
 \fBcreate <URL> [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
 Generate a formula for the downloadable file at \fIURL\fR and open it in the editor\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\. For a complete cheat\-sheet, have a look at
 .
 .IP
-\fB$(brew \-\-prefix)/Library/Contributions/example\-formula\.rb\fR
+\fB$(brew \-\-repository)/Library/Contributions/example\-formula\.rb\fR
 .
 .IP
 If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-style build\. If \fB\-\-cmake\fR is passed, create a basic template for a CMake\-style build\.
@@ -87,14 +95,17 @@ If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the ca
 The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are creating\.
 .
 .TP
-\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all] [\-\-installed]\fR \fIformula\fR
-Show \fIformula\fR\'s dependencies\.
+\fBdeps [\-\-1] [\-n] [\-\-union] [\-\-tree] [\-\-all] [\-\-installed]\fR \fIformulae\fR
+Show dependencies for \fIformulae\fR\. When given multiple formula arguments, show the intersection of dependencies for \fIformulae\fR, except when passed \fB\-\-tree\fR, \fB\-\-all\fR, or \fB\-\-installed\fR\.
 .
 .IP
 If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
 .
 .IP
 If \fB\-n\fR is passed, show dependencies in topological order\.
+.
+.IP
+If \fB\-\-union\fR is passed, show the union of dependencies for \fIformulae\fR, instead of the intersection\.
 .
 .IP
 If \fB\-\-tree\fR is passed, show dependencies as a tree\.
@@ -106,14 +117,14 @@ If \fB\-\-all\fR is passed, show dependencies for all formulae\.
 If \fB\-\-installed\fR is passed, show dependencies for all installed formulae\.
 .
 .TP
-\fBdiy [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
+\fBdiy [\-\-name=<name>] [\-\-version=<version>]\fR
 Automatically determine the installation prefix for non\-Homebrew software\.
 .
 .IP
 Using the output from this command, you can install your own software into the Cellar and then link it into Homebrew\'s prefix with \fBbrew link\fR\.
 .
 .IP
-The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are installing\.
+The options \fB\-\-name=<name>\fR and \fB\-\-version=<version>\fR each take an argument and allow you to explicitly set the name and version of the package you are installing\.
 .
 .TP
 \fBdoctor\fR
@@ -128,11 +139,14 @@ Open all of Homebrew for editing\.
 Open \fIformula\fR in the editor\.
 .
 .TP
-\fBfetch [\-\-force] [\-v] [\-\-HEAD] [\-\-deps] [\-\-build\-from\-source]\fR \fIformulae\fR
+\fBfetch [\-\-force] [\-v] [\-\-devel|\-\-HEAD] [\-\-deps] [\-\-build\-from\-source|\-\-force\-bottle]\fR \fIformulae\fR
 Download the source packages for the given \fIformulae\fR\. For tarballs, also print SHA1 and SHA\-256 checksums\.
 .
 .IP
-If \fB\-\-HEAD\fR is passed, download the HEAD versions of \fIformulae\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
+If \fB\-\-HEAD\fR or \fB\-\-devel\fR is passed, fetch that version instead of the stable version\.
+.
+.IP
+If \fB\-v\fR is passed, do a verbose VCS checkout, if the url represents a CVS\. This useful for seeing if an existing VCS cache has been updated\.
 .
 .IP
 If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
@@ -143,6 +157,9 @@ If \fB\-\-deps\fR is passed, also download dependencies for any listed \fIformul
 .IP
 If \fB\-\-build\-from\-source\fR is passed, download the source rather than a bottle\.
 .
+.IP
+If \fB\-\-force\-bottle\fR is passed, download a bottle if it exists for the current version of OS X, even if it would not be used during installation\.
+.
 .TP
 \fBhome\fR
 Open Homebrew\'s own homepage in a browser\.
@@ -152,11 +169,8 @@ Open Homebrew\'s own homepage in a browser\.
 Open \fIformula\fR\'s homepage in a browser\.
 .
 .TP
-\fBinfo [\-\-all]\fR \fIformula\fR
+\fBinfo\fR \fIformula\fR
 Display information about \fIformula\fR\.
-.
-.IP
-If \fB\-\-all\fR is passed, show info for all formulae\.
 .
 .TP
 \fBinfo \-\-github\fR \fIformula\fR
@@ -166,18 +180,24 @@ Open a browser to the GitHub History page for formula \fIformula\fR\.
 To view formula history locally: \fBbrew log \-p <formula>\fR\.
 .
 .TP
-\fBinfo\fR \fIURL\fR
-Print the name and version that will be detected for \fIURL\fR\.
+\fBinfo \-\-json=<version>\fR (\-\-all|\-\-installed|\fIformulae\fR)
+Print a JSON representation of \fIformulae\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
+.
+.IP
+Pass \fB\-\-all\fR to get information on all formulae, or \fB\-\-installed\fR to get information on all installed formulae\.
+.
+.IP
+See the wiki for examples of using the JSON: \fIhttps://github\.com/Homebrew/homebrew/wiki/Querying\-Brew\fR
 .
 .TP
-\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-use\-clang|\-\-use\-gcc|\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
 \fIformula\fR is usually the name of the formula to install, but it can be specified several different ways\. See \fISPECIFYING FORMULAE\fR\.
 .
 .IP
-If \fB\-\-debug\fR is passed and brewing fails, open an interactive debugging session with access to IRB, ruby\-debug, or a shell inside the temporary build directory\.
+If \fB\-\-debug\fR is passed and brewing fails, open an interactive debugging session with access to IRB or a shell inside the temporary build directory\.
 .
 .IP
 If \fB\-\-env=std\fR is passed, use the standard build environment instead of superenv\.
@@ -189,16 +209,10 @@ If \fB\-\-env=super\fR is passed, use superenv even if the formula specifies the
 If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of any kind\. If they are not already present, the formula will probably fail to install\.
 .
 .IP
-If \fB\-\-fresh\fR is passed, the installation process will not re\-use any options from previous installs\.
+If \fB\-\-only\-dependencies\fR is passed, install the dependencies with specified options but do not install the specified formula\.
 .
 .IP
-If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
-.
-.IP
-If \fB\-\-use\-gcc\fR is passed, attempt to compile using GCC\. This is useful for systems whose default compiler is LLVM\-GCC\.
-.
-.IP
-If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
+If \fB\-\-cc=<compiler>\fR is passed, attempt to compile using \fIcompiler\fR\. \fIcompiler\fR should be the name of the compiler\'s executable, for instance \fBgcc\-4\.2\fR for Apple\'s GCC 4\.2, or \fBgcc\-4\.9\fR for a Homebrew\-provided GCC 4\.9\.
 .
 .IP
 If \fB\-\-build\-from\-source\fR is passed, compile from source even if a bottle is provided for \fIformula\fR\.
@@ -220,6 +234,10 @@ Download and patch \fIformula\fR, then open a shell\. This allows the user to ru
 If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.
 .
 .TP
+\fBleaves\fR
+Show installed formulae that are not dependencies of another installed formula\.
+.
+.TP
 \fBln\fR, \fBlink [\-\-overwrite] [\-\-dry\-run] [\-\-force]\fR \fIformula\fR
 Symlink all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula, but can be useful for DIY installations\.
 .
@@ -233,7 +251,14 @@ If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which
 If \fB\-\-force\fR is passed, Homebrew will allow keg\-only formulae to be linked\.
 .
 .TP
-\fBls, list [\-\-unbrewed] [\-\-versions] [\-\-pinned]\fR [\fIformulae\fR]
+\fBlinkapps [\-\-local]\fR
+Find all installed formulae that have compiled \fB\.app\fR\-style "application" packages for OS X, and symlink those apps into \fB/Applications\fR, allowing for easier access\.
+.
+.IP
+If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR folder instead of the system folder\. It may need to be created, first\.
+.
+.TP
+\fBls, list [\-\-unbrewed] [\-\-versions [\-\-multiple]] [\-\-pinned]\fR [\fIformulae\fR]
 Without any arguments, list all installed formulae\.
 .
 .IP
@@ -243,7 +268,7 @@ If \fIformulae\fR are given, list the installed files for \fIformulae\fR\. Combi
 If \fB\-\-unbrewed\fR is passed, list all files in the Homebrew prefix not installed by Homebrew\.
 .
 .IP
-If \fB\-\-versions\fR is passed, show the version number for installed formulae, or only the specified formulae if \fIformulae\fR are given\.
+If \fB\-\-versions\fR is passed, show the version number for installed formulae, or only the specified formulae if \fIformulae\fR are given\. With \fB\-\-multiple\fR, only show formulae with multiple versions installed\.
 .
 .IP
 If \fB\-\-pinned\fR is passed, show the versions of pinned formulae, or only the specified (pinned) formulae if \fIformulae\fR are given\. See also \fBpin\fR, \fBunpin\fR\.
@@ -288,6 +313,10 @@ Pin the specified \fIformulae\fR, preventing them from being upgraded when issui
 Remove dead symlinks from the Homebrew prefix\. This is generally not needed, but can be useful when doing DIY installations\.
 .
 .TP
+\fBreinstall\fR \fIformula\fR
+Uninstall then install \fIformula\fR
+.
+.TP
 \fBrm\fR, \fBremove\fR, \fBuninstall [\-\-force]\fR \fIformula\fR
 Uninstall \fIformula\fR\.
 .
@@ -295,8 +324,12 @@ Uninstall \fIformula\fR\.
 If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, delete all installed versions\.
 .
 .TP
+\fBsearch\fR, \fB\-S\fR
+Display all locally available formulae for brewing (including tapped ones)\. No online search is performed if called without arguments\.
+.
+.TP
 \fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\.
 .
 .TP
 \fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR
@@ -320,8 +353,14 @@ Tap a new formula repository from GitHub, or list existing taps\.
 Ensures all tapped formula are symlinked into Library/Formula and prunes dead formula from Library/Formula\.
 .
 .TP
-\fBtest\fR \fIformula\fR
+\fBtest\fR [\-\-devel|\-\-HEAD] [\-\-debug] \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
+.
+.IP
+To test the development or head version of a formula, use \fB\-\-devel\fR or \fB\-\-HEAD\fR\.
+.
+.IP
+If \fB\-\-debug\fR is passed and the test fails, an interactive debugger will be launched with access to IRB or a shell inside the temporary test directory\.
 .
 .IP
 Example: \fBbrew install jruby && brew test jruby\fR
@@ -329,6 +368,22 @@ Example: \fBbrew install jruby && brew test jruby\fR
 .TP
 \fBunlink\fR \fIformula\fR
 Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+.
+.TP
+\fBunlinkapps [\-\-local]\fR
+Removes links created by \fBbrew linkapps\fR\.
+.
+.TP
+\fBunpack [\-\-git|\-\-patch] [\-\-destdir=<path>]\fR \fIformulae\fR:
+.
+.IP
+Unpack the source files for \fIformulae\fR into subdirectories of the current working directory\. If \fB\-\-destdir=<path>\fR is given, the subdirectories will be created in the directory named by \fB<path>\fR instead\.
+.
+.IP
+If \fB\-\-patch\fR is passed, patches for \fIformulae\fR will be applied to the unpacked source\.
+.
+.IP
+If \fB\-\-git\fR is passed, a Git repository will be initalized in the unpacked source\. This is useful for creating patches for the software\.
 .
 .TP
 \fBunpin\fR \fIformulae\fR
@@ -356,8 +411,8 @@ Options for the \fBinstall\fR command are also valid here\.
 If \fIformulae\fR are given, upgrade only the specified brews (but do so even if they are pinned; see \fBpin\fR, \fBunpin\fR)\.
 .
 .TP
-\fBuses [\-\-installed] [\-\-recursive]\fR \fIformula\fR
-Show the formulae that specify \fIformula\fR as a dependency\.
+\fBuses [\-\-installed] [\-\-recursive] [\-\-devel|\-\-HEAD]\fR \fIformulae\fR
+Show the formulae that specify \fIformulae\fR as a dependency\. When given multiple formula arguments, show the intersection of formulae that use \fIformulae\fR\.
 .
 .IP
 Use \fB\-\-recursive\fR to resolve more than one level of dependencies\.
@@ -365,12 +420,8 @@ Use \fB\-\-recursive\fR to resolve more than one level of dependencies\.
 .IP
 If \fB\-\-installed\fR is passed, only list installed formulae\.
 .
-.TP
-\fBversions [\-\-compact]\fR \fIformulae\fR
-List previous versions of \fIformulae\fR, along with a command to checkout each version\.
-.
 .IP
-If \fB\-\-compact\fR is passed, show all options on a single line separated by spaces\.
+By default, \fBuses\fR shows usages of \fBformula\fR by stable builds\. To find cases where \fBformula\fR is used by development or HEAD build, pass \fB\-\-devel\fR or \fB\-\-HEAD\fR\.
 .
 .TP
 \fB\-\-cache\fR
@@ -387,10 +438,6 @@ Display Homebrew\'s Cellar path\. \fIDefault:\fR \fB/usr/local/Cellar\fR
 .TP
 \fB\-\-cellar\fR \fIformula\fR
 Display the location in the cellar where \fIformula\fR would be installed, without any sort of versioned directory as the last path\.
-.
-.TP
-\fB\-\-config\fR
-Show Homebrew and system configuration useful for debugging\. If you file a bug report, you will likely be asked for this information if you do not provide it\.
 .
 .TP
 \fB\-\-env\fR
@@ -422,14 +469,14 @@ A number of (useful, but unsupported) external commands are included and enabled
 .
 .nf
 
-$ ls `brew \-\-repository`/Library/Contributions/cmd
+$ ls $(brew \-\-repository)/Library/Contributions/cmd
 .
 .fi
 .
 .IP "" 0
 .
 .P
-Documentation for the included external commands as well as instructions for creating your own can be found on the wiki: \fIhttp://wiki\.github\.com/mxcl/homebrew/External\-Commands\fR
+Documentation for the included external commands as well as instructions for creating your own can be found on the wiki: \fIhttp://wiki\.github\.com/Homebrew/homebrew/External\-Commands\fR
 .
 .SH "SPECIFYING FORMULAE"
 Many Homebrew commands accept one or more \fIformula\fR arguments\. These arguments can take several different forms:
@@ -440,13 +487,17 @@ e\.g\. \fBgit\fR, \fBnode\fR, \fBwget\fR\.
 .
 .TP
 The fully\-qualified name of a tapped formula
-Sometimes a formula from a tapped repository may conflict with one in mxcl/master\. You can still access these formulae by using a special syntax, e\.g\. \fBhomebrew/dupes/vim\fR or \fBhomebrew/versions/node4\fR\.
+Sometimes a formula from a tapped repository may conflict with one in Homebrew/homebrew\. You can still access these formulae by using a special syntax, e\.g\. \fBhomebrew/dupes/vim\fR or \fBhomebrew/versions/node4\fR\.
 .
 .TP
 An arbitrary URL
-Homebrew can install formulae via URL, e\.g\. \fBhttps://raw\.github\.com/mxcl/homebrew/master/Library/Formula/git\.rb\fR\. The formula file will be cached for later use\.
+Homebrew can install formulae via URL, e\.g\. \fBhttps://raw\.github\.com/Homebrew/homebrew/master/Library/Formula/git\.rb\fR\. The formula file will be cached for later use\.
 .
 .SH "ENVIRONMENT"
+.
+.TP
+AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+When using the S3 download strategy, Homebrew will look in these variables for access credentials (see \fIhttp://docs\.aws\.amazon\.com/fws/1\.1/GettingStartedGuide/index\.html?AWSCredentials\.html\fR to retrieve these access credentials from AWS)\. If they are not set, the S3 download strategy will download with a public (unsigned) URL\.
 .
 .TP
 BROWSER
@@ -510,13 +561,6 @@ HOMEBREW_GITHUB_API_TOKEN
 A personal GitHub API Access token, which you can create at \fIhttps://github\.com/settings/applications\fR\. If set, GitHub will allow you a greater number of API requests\. See \fIhttp://developer\.github\.com/v3/#rate\-limiting\fR for more information\. Homebrew uses the GitHub API for features such as \fBbrew search\fR\.
 .
 .TP
-HOMEBREW_KEEP_INFO
-If set, Homebrew will not remove files from \fBshare/info\fR, allowing them to be linked from the Cellar\. To access these info files, prepend \fBshare/info\fR to your \fBINFOPATH\fR environment variable\.
-.
-.IP
-\fIExample:\fR \fBexport INFOPATH=\'/usr/local/share/info:/usr/share/info\'\fR
-.
-.TP
 HOMEBREW_MAKE_JOBS
 If set, instructs Homebrew to use the value of \fBHOMEBREW_MAKE_JOBS\fR as the number of parallel jobs to run when building with \fBmake\fR(1)\.
 .
@@ -525,10 +569,18 @@ If set, instructs Homebrew to use the value of \fBHOMEBREW_MAKE_JOBS\fR as the n
 .
 .TP
 HOMEBREW_NO_EMOJI
-If set, Homebrew will not print the beer emoji on a successful build\.
+If set, Homebrew will not print the \fBHOMEBREW_INSTALL_BADGE\fR on a successful build\.
 .
 .IP
 \fINote:\fR Homebrew will only try to print emoji on Lion or newer\.
+.
+.TP
+HOMEBREW_NO_GITHUB_API
+If set, Homebrew will not use the GitHub API for e\.g searches or fetching relevant issues on a failed install\.
+.
+.TP
+HOMEBREW_INSTALL_BADGE
+Text printed before the installation summary of each successful build\. Defaults to the beer emoji\.
 .
 .TP
 HOMEBREW_SOURCEFORGE_MIRROR
@@ -550,18 +602,6 @@ If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary directory
 .
 .IP
 This issue typically occurs when using FileVault or custom SSD configurations\.
-.
-.TP
-HOMEBREW_USE_CLANG
-If set, forces Homebrew to compile using clang\.
-.
-.TP
-HOMEBREW_USE_GCC
-If set, forces Homebrew to compile using gcc\.
-.
-.TP
-HOMEBREW_USE_LLVM
-If set, forces Homebrew to compile using LLVM\.
 .
 .TP
 HOMEBREW_VERBOSE
@@ -601,7 +641,7 @@ http_proxy=http://<user>:<password>@<host>:<port> brew install foo
 .IP "" 0
 .
 .SH "SEE ALSO"
-Homebrew Wiki: \fIhttp://wiki\.github\.com/mxcl/homebrew/\fR
+Homebrew Wiki: \fIhttp://wiki\.github\.com/Homebrew/homebrew/\fR
 .
 .P
 \fBgit\fR(1), \fBgit\-log\fR(1)
@@ -610,4 +650,4 @@ Homebrew Wiki: \fIhttp://wiki\.github\.com/mxcl/homebrew/\fR
 Max Howell, a splendid chap\.
 .
 .SH "BUGS"
-See Issues on GitHub: \fIhttp://github\.com/mxcl/homebrew/issues\fR
+See Issues on GitHub: \fIhttp://github\.com/Homebrew/homebrew/issues\fR

@@ -2,7 +2,7 @@ require 'formula'
 
 class Mktorrent < Formula
   homepage 'http://mktorrent.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/mktorrent/mktorrent-1.0.tar.gz'
+  url 'https://downloads.sourceforge.net/mktorrent/mktorrent-1.0.tar.gz'
   sha1 'f9b1bbf9d19911b6c8994dbec6208530c7d929ad'
 
   def install

@@ -1,7 +1,9 @@
 require 'formula'
 require 'blacklist'
+require 'digest'
+require 'erb'
 
-module Homebrew extend self
+module Homebrew
 
   # Create a formula from a tarball URL
   def create
@@ -34,11 +36,11 @@ module Homebrew extend self
       :autotools
     end
 
-    if fc.name.nil? or fc.name.to_s.strip.empty?
-      path = Pathname.new url
-      print "Formula name [#{path.stem}]: "
-      fc.name = __gets || path.stem
-      fc.path = Formula.path fc.name
+    if fc.name.nil? || fc.name.strip.empty?
+      stem = Pathname.new(url).stem
+      print "Formula name [#{stem}]: "
+      fc.name = __gets || stem
+      fc.path = Formula.path(fc.name)
     end
 
     # Don't allow blacklisted formula, or names that shadow aliases,
@@ -49,7 +51,7 @@ module Homebrew extend self
       end
 
       if Formula.aliases.include? fc.name
-        realname = Formula.canonical_name fc.name
+        realname = Formulary.canonical_name(fc.name)
         raise <<-EOS.undent
           The formula #{realname} is already aliased to #{fc.name}
           Please check that you are not creating a duplicate.
@@ -78,9 +80,11 @@ class FormulaCreator
     @url = url
     path = Pathname.new(url)
     if @name.nil?
+      %r{github.com/\S+/(\S+)/archive/}.match url
+      @name ||= $1
       /(.*?)[-_.]?#{path.version}/.match path.basename
-      @name = $1
-      @path = Formula.path $1 unless $1.nil?
+      @name ||= $1
+      @path = Formula.path @name unless @name.nil?
     else
       @path = Formula.path name
     end
@@ -91,58 +95,65 @@ class FormulaCreator
     end
   end
 
+  def fetch?
+    !ARGV.include?("--no-fetch")
+  end
+
   def generate!
     raise "#{path} already exists" if path.exist?
-
-    require 'digest'
-    require 'erb'
 
     if version.nil?
       opoo "Version cannot be determined from URL."
       puts "You'll need to add an explicit 'version' to the formula."
     end
 
-    unless ARGV.include? "--no-fetch" and version
-      spec = SoftwareSpec.new(url, version)
-      strategy = spec.download_strategy
-      @sha1 = strategy.new(name, spec).fetch.sha1 if strategy == CurlDownloadStrategy
+    if fetch? && version
+      r = Resource.new
+      r.url, r.version, r.owner = url, version, self
+      @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
   end
 
   def template; <<-EOS.undent
-    require 'formula'
+    require "formula"
 
-    # Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-    #                #{HOMEBREW_PREFIX}/Library/Contributions/example-formula.rb
+    # Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+    #                #{HOMEBREW_CONTRIB}/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
-    class #{Formula.class_s name} < Formula
-      homepage ''
-      url '#{url}'
-    <% if not version.nil? and not version.detected_from_url? %>
-      version '#{version}'
+    class #{Formulary.class_s(name)} < Formula
+      homepage ""
+      url "#{url}"
+    <% unless version.nil? or version.detected_from_url? %>
+      version "#{version}"
     <% end %>
-      sha1 '#{sha1}'
+      sha1 "#{sha1}"
 
     <% if mode == :cmake %>
-      depends_on 'cmake' => :build
+      depends_on "cmake" => :build
     <% elsif mode.nil? %>
-      # depends_on 'cmake' => :build
+      # depends_on "cmake" => :build
     <% end %>
       depends_on :x11 # if your formula requires any X11/XQuartz components
 
       def install
-        # ENV.j1  # if your formula's build system can't parallelize
+        # ENV.deparallelize  # if your formula fails when building in parallel
 
     <% if mode == :cmake %>
         system "cmake", ".", *std_cmake_args
     <% elsif mode == :autotools %>
-        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+        # Remove unrecognized options if warned by configure
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=\#{prefix}"
     <% else %>
-        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+        # Remove unrecognized options if warned by configure
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=\#{prefix}"
         # system "cmake", ".", *std_cmake_args
     <% end %>
@@ -154,7 +165,11 @@ class FormulaCreator
         #
         # This test will fail and we won't accept that! It's enough to just replace
         # "false" with the main program this formula installs, but it'd be nice if you
-        # were more thorough. Run the test with `brew test #{name}`.
+        # were more thorough. Run the test with `brew test #{name}`. Options passed
+        # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
+        #
+        # The installed folder is not in the path, so use the entire path to any
+        # executables being tested: `system "\#{bin}/program", "do", "something"`.
         system "false"
       end
     end

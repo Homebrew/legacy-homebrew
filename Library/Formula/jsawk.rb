@@ -2,8 +2,8 @@ require 'formula'
 
 class Jsawk < Formula
   homepage 'https://github.com/micha/jsawk'
-  url 'https://github.com/micha/jsawk/archive/1.2.tar.gz'
-  sha1 '386ab745a07f650adac2e980d5a53ae037e495ed'
+  url 'https://github.com/micha/jsawk/archive/1.4.tar.gz'
+  sha1 '4f2c962c8a5209764116457682985854400cbf24'
 
   head 'https://github.com/micha/jsawk.git'
 

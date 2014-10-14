@@ -2,8 +2,15 @@ require 'formula'
 
 class Libdv < Formula
   homepage 'http://libdv.sourceforge.net'
-  url 'http://downloads.sourceforge.net/libdv/libdv-1.0.0.tar.gz'
+  url 'https://downloads.sourceforge.net/libdv/libdv-1.0.0.tar.gz'
   sha1 '2e5ba0e95f665d60e72cbebcf1c4989e0d6c92c8'
+
+  bottle do
+    cellar :any
+    sha1 "0ab33938816dfcef7dce110e2cea98519eb5a958" => :mavericks
+    sha1 "5a7346e4b2871f55c1823dab7620a88d5e3e2f69" => :mountain_lion
+    sha1 "851394c94147765570f9d06825f28af081e9fbfb" => :lion
+  end
 
   depends_on 'popt'
 
