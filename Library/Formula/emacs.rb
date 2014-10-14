@@ -20,8 +20,8 @@ class Emacs < Formula
       url 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
     end
 
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
     depends_on "glib" => :optional
   end
 
@@ -29,15 +29,15 @@ class Emacs < Formula
     url 'http://alpha.gnu.org/gnu/emacs/pretest/emacs-24.3.94.tar.xz'
     sha256 '5751cac3e1604ad100f9847ff8a429c1b0907b26032152c040e89f294e515bc2'
 
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
     depends_on "glib" => :optional
   end
 
   stable do
     if build.include? "cocoa"
-      depends_on :autoconf
-      depends_on :automake
+      depends_on "autoconf" => :build
+      depends_on "automake" => :build
     end
 
     # Fix default-directory on Cocoa and Mavericks.
