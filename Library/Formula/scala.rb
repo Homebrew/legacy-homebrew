@@ -2,8 +2,8 @@ require 'formula'
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/files/archive/scala-2.11.3.tgz'
-  sha1 '183f0596114015bbb9092822c865ac0c7244fa09'
+  url 'http://www.scala-lang.org/files/archive/scala-2.11.2.tgz'
+  sha1 '904e9ee3bb96e8350b1e0f2502a704f836c0cdf1'
 
   bottle do
     cellar :any
@@ -16,17 +16,17 @@ class Scala < Formula
   option 'with-src', 'Also install sources for IDE support'
 
   resource 'docs' do
-    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.3.zip'
-    sha1 '314ae7c16f5d48e67e662350a96541020e8aa078'
+    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.2.zip'
+    sha1 '2add2130989c3434b8f6ef30f05ed3dd98ab156a'
   end
 
   resource 'src' do
-    url 'https://github.com/scala/scala/archive/v2.11.3.tar.gz'
-    sha1 '8b6c22306c694366f161fc0a57952e25ac062fce'
+    url 'https://github.com/scala/scala/archive/v2.11.2.tar.gz'
+    sha1 '52654124565a1706e9e6d0ad7b0969d319628847'
   end
 
   resource 'completion' do
-    url 'https://raw.githubusercontent.com/scala/scala-dist/v2.11.3/bash-completion/src/main/resources/completion.d/2.9.1/scala'
+    url 'https://raw.githubusercontent.com/scala/scala-dist/v2.11.2/bash-completion/src/main/resources/completion.d/2.9.1/scala'
     sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
   end
 
