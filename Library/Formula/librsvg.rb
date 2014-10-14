@@ -31,6 +31,7 @@ class Librsvg < Formula
     system "./configure", *args
     system "make install"
   end
+
   def post_install
     #librsvg is not aware GDK_PIXBUF_MODULEDIR must be set
     #set GDK_PIXBUF_MODULEDIR and update loader cache
