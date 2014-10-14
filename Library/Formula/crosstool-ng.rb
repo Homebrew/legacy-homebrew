@@ -2,8 +2,8 @@ require 'formula'
 
 class CrosstoolNg < Formula
   homepage 'http://crosstool-ng.org'
-  url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.19.0.tar.bz2'
-  sha1 'b7ae3e90756b499ff5362064b7d80f8a45d09bfb'
+  url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.20.0.tar.bz2'
+  sha1 'b11f7ee706753b8cf822f98b549f8ab9dd8da9c7'
 
   depends_on :autoconf
   depends_on :automake
@@ -79,15 +79,16 @@ index c9e690e..21e79e4 100644
 
  static struct kconf_id *kconf_id_lookup(register const char *str, register unsigned int len);
 
-diff -u a/scripts/crosstool-NG.sh.in b/scripts/crosstool-NG.sh.in
+diff --git a/scripts/crosstool-NG.sh.in b/scripts/crosstool-NG.sh.in
+index cd65d5b..53ac552 100644
 --- a/scripts/crosstool-NG.sh.in
 +++ b/scripts/crosstool-NG.sh.in
-@@ -122,7 +122,7 @@
+@@ -125,7 +125,7 @@ CT_DoLog INFO "Build started ${CT_STAR_DATE_HUMAN}"
  # We really need to extract from ,config and not .config.2, as we
  # do want the kconfig's values, not our mangled config with arrays.
  CT_DoStep DEBUG "Dumping user-supplied crosstool-NG configuration"
--CT_DoExecLog DEBUG grep -E '^(# |)CT_' .config
-+CT_DoExecLog DEBUG grep -E '^(# )?CT_' .config
+-CT_DoExecLog DEBUG ${grep} -E '^(# |)CT_' .config
++CT_DoExecLog DEBUG ${grep} -E '^(# )?CT_' .config
  CT_EndStep
  
  CT_DoLog DEBUG "Unsetting and unexporting MAKEFLAGS"
