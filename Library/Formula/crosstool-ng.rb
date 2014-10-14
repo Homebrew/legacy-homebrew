@@ -23,6 +23,8 @@ class CrosstoolNg < Formula
   env :std
 
   # Fixes clang offsetof compatability. Took better patch from #14547
+  # Patch scripts/crosstool-NG.sh.in to use regex compatible with BSD grep.
+  # Can be removed if committed upstream http://patchwork.ozlabs.org/patch/399382/
   patch :DATA
 
   def install
@@ -76,3 +78,16 @@ index c9e690e..21e79e4 100644
  struct kconf_id;
 
  static struct kconf_id *kconf_id_lookup(register const char *str, register unsigned int len);
+
+diff -u a/scripts/crosstool-NG.sh.in b/scripts/crosstool-NG.sh.in
+--- a/scripts/crosstool-NG.sh.in
++++ b/scripts/crosstool-NG.sh.in
+@@ -122,7 +122,7 @@
+ # We really need to extract from ,config and not .config.2, as we
+ # do want the kconfig's values, not our mangled config with arrays.
+ CT_DoStep DEBUG "Dumping user-supplied crosstool-NG configuration"
+-CT_DoExecLog DEBUG grep -E '^(# |)CT_' .config
++CT_DoExecLog DEBUG grep -E '^(# )?CT_' .config
+ CT_EndStep
+ 
+ CT_DoLog DEBUG "Unsetting and unexporting MAKEFLAGS"
