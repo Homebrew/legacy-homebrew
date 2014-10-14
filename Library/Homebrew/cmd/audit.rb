@@ -554,19 +554,6 @@ class FormulaAuditor
     problem(output) if output
   end
 
-  def audit_installed
-    audit_check_output(check_manpages)
-    audit_check_output(check_infopages)
-    audit_check_output(check_jars)
-    audit_check_output(check_non_libraries)
-    audit_check_output(check_non_executables(f.bin))
-    audit_check_output(check_generic_executables(f.bin))
-    audit_check_output(check_non_executables(f.sbin))
-    audit_check_output(check_generic_executables(f.sbin))
-    audit_check_output(check_shadowed_headers)
-    audit_check_output(check_easy_install_pth(f.lib))
-  end
-
   def audit
     audit_file
     audit_specs
