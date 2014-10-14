@@ -6,6 +6,11 @@ class IosClassGuard < Formula
   url "https://github.com/Polidea/ios-class-guard/archive/0.6.tar.gz"
   sha1 "6b16fcb8ba55354180de7460d3ea1ae3cc4830ac"
 
+  bottle do
+    cellar :any
+    sha1 "e83dde7f68747d6b2d6c14beddbb737911632fad" => :mavericks
+  end
+
   depends_on :macos => :mavericks
   depends_on :xcode => :build
 
