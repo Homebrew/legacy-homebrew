@@ -3,9 +3,9 @@ require "formula"
 class Icu4c < Formula
   homepage "http://site.icu-project.org/"
   head "http://source.icu-project.org/repos/icu/icu/trunk/", :using => :svn
-  url "http://download.icu-project.org/files/icu4c/53.1/icu4c-53_1-src.tgz"
-  version "53.1"
-  sha1 "7eca017fdd101e676d425caaf28ef862d3655e0f"
+  url "http://download.icu-project.org/files/icu4c/54.1/icu4c-54_1-src.tgz"
+  version "54.1"
+  sha1 "8c752490bbf31cea26e20246430cee67d48abe34"
 
   bottle do
     sha1 "1199e740fbc35f09eaa3774ada8c805c885ca170" => :mavericks
