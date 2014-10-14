@@ -6,9 +6,9 @@ class Pari < Formula
   sha256 "ac76c99549d549273087daa554c4dabaf9239881da422f69acb05fa7a0ff10ac"
 
   bottle do
-    sha1 "7310d817b3aa680a0c52b742927a25d93657a49a" => :mavericks
-    sha1 "d6862273809b309c03a869d3757a20612630de3c" => :mountain_lion
-    sha1 "ef811fe6516c1e71c5b9142bbcff14ac4c86c6a5" => :lion
+    sha1 "279df09e4ed8ef338a908d22b376be54de33900c" => :mavericks
+    sha1 "e7fba0b065c31e7f9b23d198f24f76333d28a8ba" => :mountain_lion
+    sha1 "8dcd6a003063962867a9f29830acd6eeea58e90f" => :lion
   end
 
   depends_on "gmp"
