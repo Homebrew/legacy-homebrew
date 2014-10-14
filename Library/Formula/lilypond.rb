@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Lilypond < Formula
   homepage "http://lilypond.org/"
   url "http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.2.tar.gz"
   sha1 "09d3a1e0e9fadeb8ef6e279227a2b30812c7ee9b"
-  revision 2
+  revision 3
 
   devel do
     url "http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.15.tar.gz"
@@ -19,7 +19,7 @@ class Lilypond < Formula
 
   env :std
 
-  option 'with-doc', "Build documentation in addition to binaries (may require several hours)."
+  option "with-doc", "Build documentation in addition to binaries (may require several hours)."
 
   # Dependencies for LilyPond
   depends_on :tex
@@ -29,7 +29,7 @@ class Lilypond < Formula
   depends_on "pango"
   depends_on "ghostscript"
   depends_on "mftrace"
-  depends_on "fontforge" => ["with-x", "with-cairo"]
+  depends_on "fontforge" => ["with-x"]
   depends_on "fondu"
   depends_on "texinfo"
 
@@ -57,20 +57,20 @@ class Lilypond < Formula
   end
 
   fails_with :clang do
-    cause 'Strict C99 compliance error in a pointer conversion.'
+    cause "Strict C99 compliance error in a pointer conversion."
   end
 
   def install
     # The contents of the following block are taken from the guile18 formula
     # in homebrew/versions.
-    resource('guile18').stage do
+    resource("guile18").stage do
        system "./configure", "--disable-dependency-tracking",
                              "--prefix=#{prefix}",
                              "--with-libreadline-prefix=#{Formula["readline"].opt_prefix}"
        system "make", "install"
        # A really messed up workaround required on OS X --mkhl
        lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
-       ENV.prepend_path 'PATH', "#{bin}"
+       ENV.prepend_path "PATH", "#{bin}"
     end
 
     gs = Formula["ghostscript"]
@@ -83,8 +83,8 @@ class Lilypond < Formula
     system "./configure", *args
 
     # Separate steps to ensure that lilypond's custom fonts are created.
-    system 'make all'
-    system "make install"
+    system "make all"
+    system "make", "install"
 
     # Build documentation if requested.
     if build.with? "doc"
@@ -102,7 +102,7 @@ class Lilypond < Formula
   end
 
   test do
-    (testpath/'test.ly').write <<-EOS.undent
+    (testpath/"test.ly").write <<-EOS.undent
       \\header { title = "Do-Re-Mi" }
       { c' d' e' }
     EOS
