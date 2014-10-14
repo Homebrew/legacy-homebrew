@@ -17,6 +17,7 @@ class Ansible < Formula
   depends_on 'libyaml'
 
   option 'with-accelerate', "Enable accelerated mode"
+  option 'with-windows', "Enable windows support"
 
   resource 'pycrypto' do
     url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
@@ -76,8 +77,9 @@ class Ansible < Formula
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2 pywinrm isodate xmltodict]
+    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
     res << "python-keyczar" if build.with? "accelerate"
+    res += %w[pywinrm isodate xmltodict] if build.with? "windows"
     res.each do |r|
       resource(r).stage { system "python", *install_args }
     end
