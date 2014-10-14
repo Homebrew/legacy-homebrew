@@ -25,6 +25,15 @@ class Emacs < Formula
     depends_on "glib" => :optional
   end
 
+  devel do
+    url 'http://alpha.gnu.org/gnu/emacs/pretest/emacs-24.3.94.tar.xz'
+    sha256 '5751cac3e1604ad100f9847ff8a429c1b0907b26032152c040e89f294e515bc2'
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on "glib" => :optional
+  end
+
   stable do
     if build.include? "cocoa"
       depends_on :autoconf
@@ -79,7 +88,7 @@ class Emacs < Formula
 
   def install
     # HEAD builds blow up when built in parallel as of April 20 2012
-    ENV.deparallelize if build.head?
+    ENV.deparallelize unless build.stable?
 
     args = ["--prefix=#{prefix}",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
@@ -99,12 +108,12 @@ class Emacs < Formula
     args << "--with-imagemagick" if build.with? "imagemagick"
     args << "--without-popmail" if build.with? "mailutils"
 
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh" unless build.stable?
 
     if build.include? "cocoa"
       # Patch for color issues described here:
       # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
-      if build.include? "srgb" and not build.head?
+      if build.include? "srgb" and build.stable?
         inreplace "src/nsterm.m",
           "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
           "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
@@ -153,7 +162,7 @@ class Emacs < Formula
         A command line wrapper for the cocoa app was installed to:
          #{bin}/emacs
       EOS
-      if build.include? "srgb" and build.head?
+      if build.include? "srgb" and not build.stable?
         s << "\nTo enable sRGB, use (setq ns-use-srgb-colorspace t)"
       end
     end
