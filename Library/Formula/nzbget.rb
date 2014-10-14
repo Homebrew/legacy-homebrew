@@ -19,6 +19,7 @@ class Nzbget < Formula
     sha1 "57a8551fed4323e4d9554fcb39d76217b3e3bf33" => :lion
   end
 
+  depends_on "openssl" => :recommended
   depends_on "pkg-config" => :build
   depends_on "libsigc++"
 
