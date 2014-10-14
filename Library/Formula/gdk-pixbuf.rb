@@ -53,7 +53,7 @@ class GdkPixbuf < Formula
   def caveats; <<-EOS.undent
     Programs that require this module need to set the environment variable
       export GDK_PIXBUF_MODULEDIR="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
-    If you need to manually update the query loader cache
+    If you need to manually update the query loader cache, set GDK_PIXBUF_MODULEDIR then run
       #{bin}/gdk-pixbuf-query-loaders --update-cache
     EOS
   end
