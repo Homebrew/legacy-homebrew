@@ -1,4 +1,5 @@
 # Kickstarter Supporters
+
 This file contains a list of the awesome people who gave £5 or more to
 [our Kickstarter](http://www.kickstarter.com/projects/homebrew/brew-test-bot).
 
@@ -7,7 +8,7 @@ a physical reward. Kickstarter recommends asking only when we are ready to
 ship (to avoid changes of address) so we can't ask for more names/URLs
 until then.
 
-These mind-blowing people supported our Kickstarter by giving us £450 or more:
+These mindblowing people supported our Kickstarter by giving us £450 or more:
 
 [![Hashrocket](https://s3.amazonaws.com/hashrocket-misc/hr_180x50.png)](http://hashrocket.com/)
 
@@ -442,7 +443,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * Jakub Suder
 * [Jason Garber](http://sixtwothree.org)
 * [Alejandro Caceres](http://punkspider.hyperiongray.com)
-* [Slobodan Miskovic](https://miskovic.ca)
+* [Slobodan Miskovic](http://www.taskforce-1.com)
 * [Kurt Ostergaard](http://KurtOstergaard.com)
 * [Simply Business](http://www.simplybusiness.co.uk/)
 * Tate Johnson
