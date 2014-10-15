@@ -121,6 +121,10 @@ class Tab < OpenStruct
     CxxStdlib.create(lib, cc.to_sym)
   end
 
+  def build_bottle?
+    built_as_bottle && !poured_from_bottle
+  end
+
   def to_json
     Utils::JSON.dump({
       :used_options => used_options.as_flags,
