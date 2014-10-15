@@ -15,7 +15,7 @@ class GnuTar < Formula
 
   # Fix for xattrs bug causing build failures on OS X:
   # https://lists.gnu.org/archive/html/bug-tar/2014-08/msg00001.html
-  patch :p1 do
+  patch do
     url "https://gist.githubusercontent.com/mistydemeo/10fbae8b8441359ba86d/raw/e5c183b72036821856f9e82b46fba6185e10e8b9/gnutar-configure-xattrs.patch"
     sha1 "55d570de077eb1dd30b1e499484f28636fbda882"
   end

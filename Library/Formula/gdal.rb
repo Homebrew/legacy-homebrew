@@ -4,11 +4,12 @@ class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url "http://download.osgeo.org/gdal/1.11.1/gdal-1.11.1.tar.gz"
   sha1 "e2c67481932ec9fb6ec3c0faadc004f715c4eef4"
+  revision 1
 
   bottle do
-    sha1 "a46a7d6086593208d0d4986ddd3ad7f9bc9aade3" => :mavericks
-    sha1 "151d7ab717d6b6ee4065d31030c50d53bec5fbe8" => :mountain_lion
-    sha1 "46f2342c3c56b2b8b3368a6b64f32eadbd88e1e8" => :lion
+    sha1 "ed850372d092908a29ab150c45b360f92873d1d0" => :mavericks
+    sha1 "451a662b40d8492c52a09ee5fc2b719cf4258065" => :mountain_lion
+    sha1 "9c48e30026c46fd8a25cc80d5c148ed8fec6c01e" => :lion
   end
 
   head do

@@ -2,15 +2,14 @@ require "formula"
 
 class Rocksdb < Formula
   homepage "http://rocksdb.org"
-  url "https://github.com/facebook/rocksdb/archive/3.5.fb.tar.gz"
-  sha1 "f8bd52914835a0839548eaca7f755128ed759991"
-  version "3.5"
+  url "https://github.com/facebook/rocksdb/archive/rocksdb-3.5.1.tar.gz"
+  sha1 "20e90bf82a74677f337fd5295e126651f3333e79"
 
   bottle do
     cellar :any
-    sha1 "12a0ee9a9df0395e7238ef521d394e9e9a00bd8c" => :mavericks
-    sha1 "2f1b4f55088ec76beb5956a2d4e69509c99ec3f8" => :mountain_lion
-    sha1 "617a97e1b14b1e0bb395ed74c55bacc1507e1f4d" => :lion
+    sha1 "1054d8930b67df3740e7e9ce0f2fd1589ac81528" => :mavericks
+    sha1 "3ff7a41bcc4b0a0a32ce57b8ae3a3bfdc6612968" => :mountain_lion
+    sha1 "2feff3bb8aa49090437fbe7a6d5ea3c2e5a53c42" => :lion
   end
 
   needs :cxx11
