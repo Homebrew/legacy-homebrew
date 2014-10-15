@@ -4,6 +4,7 @@ class Tor < Formula
   homepage "https://www.torproject.org/"
   url "https://www.torproject.org/dist/tor-0.2.4.24.tar.gz"
   sha256 "99b15c6858c04e93a31d3ae90dd69f5021faa2237da93a24fbd246f4f1670ad1"
+  revision 1
 
   bottle do
     sha1 "67271d2324c78f04e83408d408bb32024fbc5741" => :mavericks
@@ -32,7 +33,7 @@ class Tor < Formula
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
-    system "make install"
+    system "make", "install"
 
     if build.stable?
       # (tor-ctrl removed in v0.2.5.5.)
