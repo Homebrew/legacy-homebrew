@@ -2,6 +2,7 @@ require 'formula'
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
+  revision 1
 
   stable do
     url "http://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"

@@ -8,6 +8,7 @@ class Gh < Formula
 
   bottle do
     revision 1
+    sha1 "2f7d94e9d932fa8a275b097c1756c8827511de17" => :yosemite
     sha1 "bac12bb9f1b776a10eab9d7b3fd859f4fb459a23" => :mavericks
     sha1 "9706eaf67eed09dc7e1267afed043c32c67c4ca1" => :mountain_lion
     sha1 "3f46e4ee7a3e2d63e514f057e9dd8e116b3c18e2" => :lion

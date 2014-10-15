@@ -119,6 +119,8 @@ def check_for_stray_dylibs
   white_list = [
     "libfuse.2.dylib", # MacFuse
     "libfuse_ino64.2.dylib", # MacFuse
+    "libmacfuse_i32.2.dylib", # OSXFuse MacFuse compatibility layer
+    "libmacfuse_i64.2.dylib", # OSXFuse MacFuse compatibility layer
     "libosxfuse_i32.2.dylib", # OSXFuse
     "libosxfuse_i64.2.dylib", # OSXFuse
   ]
@@ -153,6 +155,8 @@ def check_for_stray_pcs
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = [
+    "fuse.pc", # OSXFuse/MacFuse
+    "macfuse.pc", # OSXFuse MacFuse compatibility layer
     "osxfuse.pc", # OSXFuse
   ]
 
@@ -184,7 +188,9 @@ end
 
 def check_for_stray_headers
   white_list = [
-    "macfuse/**/*.h", # MacFuse
+    "fuse.h", # MacFuse
+    "fuse/**/*.h", # MacFuse
+    "macfuse/**/*.h", # OSXFuse MacFuse compatibility layer
     "osxfuse/**/*.h", # OSXFuse
   ]
 
@@ -346,7 +352,11 @@ end
 def check_for_bad_install_name_tool
   return if MacOS.version < "10.9"
 
-  libs = `otool -L /usr/bin/install_name_tool`
+  libs = Pathname.new("/usr/bin/install_name_tool").dynamically_linked_libraries
+
+  # otool may not work, for example if the Xcode license hasn't been accepted yet
+  return if libs.empty?
+
   unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
     You have an outdated version of /usr/bin/install_name_tool installed.
     This will cause binary package installations to fail.
@@ -653,7 +663,6 @@ def check_for_config_scripts
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
-    # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
     config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
   end
 
@@ -901,7 +910,7 @@ end
 
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
-  %w{expat.framework libexpat.framework}.
+  %w{expat.framework libexpat.framework libcurl.framework}.
     map{ |frmwrk| "/Library/Frameworks/#{frmwrk}" }.
     select{ |frmwrk| File.exist? frmwrk }.
     map do |frmwrk| <<-EOS.undent

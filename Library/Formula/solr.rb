@@ -2,37 +2,46 @@ require "formula"
 
 class Solr < Formula
   homepage "http://lucene.apache.org/solr/"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.10.0/solr-4.10.0.tgz"
-  sha1 "ae47a89f35b5e2a6a4e55732cccc64fb10ed9779"
+  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.10.1/solr-4.10.1.tgz"
+  sha1 "6033a9887bbfdd1d8ce1bdafce0d65975cf910d8"
 
   bottle do
     cellar :any
-    sha1 "9c3fe919fd112549b5fbac7b4715a6bcf209b88d" => :mavericks
-    sha1 "ad64b5fe509d2f9da244a52f13d9525259604e2f" => :mountain_lion
-    sha1 "82bc81371673e7e9e2cafae5d9914dd46ec64e84" => :lion
-  end
-
-  def script; <<-EOS.undent
-    #!/bin/sh
-    if [ -z "$1" ]; then
-      echo "Usage: $ solr /absolute/path/to/config/dir"
-    else
-      cd #{libexec}/example && java -server $JAVA_OPTS -Dsolr.solr.home=$1 -jar start.jar
-    fi
-    EOS
+    sha1 "813b592ac2f8608e4495c6b79e1ecafd63e96421" => :mavericks
+    sha1 "5059173bedf5a8a70102ac414c9a43e79ce3c265" => :mountain_lion
+    sha1 "6c17714dd9ee85c8bebe8c00adf21219d9f3a804" => :lion
   end
 
   def install
     libexec.install Dir["*"]
-    (bin+"solr").write script
+    bin.install "#{libexec}/bin/solr"
+    share.install "#{libexec}/bin/solr.in.sh"
+    prefix.install "#{libexec}/example"
   end
 
-  def caveats; <<-EOS.undent
-    To start solr:
-      solr /absolute/path/to/solr/config/dir
+  plist_options :manual => "solr start"
 
-    See the solr homepage for more setup information:
-      brew home solr
+  def plist; <<-EOS.undent
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/solr</string>
+            <string>start</string>
+            <string>-f</string>
+          </array>
+          <key>ServiceDescription</key>
+          <string>#{name}</string>
+          <key>WorkingDirectory</key>
+          <string>#{HOMEBREW_PREFIX}</string>
+          <key>RunAtLoad</key>
+          <true/>
+      </dict>
+      </plist>
     EOS
   end
 end

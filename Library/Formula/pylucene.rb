@@ -2,8 +2,8 @@ require "formula"
 
 class Pylucene < Formula
   homepage "http://lucene.apache.org/pylucene/index.html"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/pylucene/pylucene-4.9.0-0-src.tar.gz"
-  sha1 "859613e405d266eaadc2f045e9200bc2d8765eb8"
+  url "http://www.apache.org/dyn/closer.cgi?path=lucene/pylucene/pylucene-4.10.1-1-src.tar.gz"
+  sha1 "650709590f4443ed711f100cc6e4f6850245899b"
 
   option "with-shared", "build jcc as a shared library"
 
@@ -24,7 +24,7 @@ class Pylucene < Formula
     end
 
     cd "jcc" do
-      system "python", "setup.py", "install", "--prefix=#{prefix}"
+      system "python", "setup.py", "install", "--prefix=#{prefix}", "--single-version-externally-managed", "--record=install.txt"
     end
     ENV.deparallelize  # the jars must be built serially
     system "make", "all", "install", opt, jcc, "ANT=ant", "PYTHON=python", "NUM_FILES=8"

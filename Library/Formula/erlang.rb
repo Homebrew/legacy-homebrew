@@ -5,28 +5,35 @@ require 'formula'
 # elixir are compatible.
 class Erlang < Formula
   homepage 'http://www.erlang.org'
-  # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/archive/OTP-17.1.tar.gz"
-  sha1 "f983a14152948a23418133155b5f9ba070544292"
-  revision 1
+
+  stable do
+    # Download tarball from GitHub; it is served faster than the official tarball.
+    url "https://github.com/erlang/otp/archive/OTP-17.3.tar.gz"
+    sha1 "655e23a4f98b8ba4976dc417f0e876b40df74a7b"
+
+    # Upstream patch to fix http://erlang.org/pipermail/erlang-questions/2014-September/081176.html
+    patch do
+      url "https://github.com/erlang/otp/commit/b196730a325cfe74312c3a5f4b1273ba7c705ed6.diff"
+      sha1 "382fcaf4502adaac4f4c00dd46f64adb0ae84212"
+    end
+  end
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    revision 1
-    sha1 "960880f03335f05b18c77d5a4d50d9956ab8efe4" => :mavericks
-    sha1 "918dd8f0029ae00f204a9b49b667e099896b79b6" => :mountain_lion
-    sha1 "12793763351b6854e377bf9fa363f4f203a8b30c" => :lion
+    sha1 "4df5f69f270ca36d746db724703d6909df82dd2e" => :mavericks
+    sha1 "e1ea1ef44b2e99070d0d477665e6d492a56a5d6d" => :mountain_lion
+    sha1 "d77409b18487e65138d89ee7dfe93dee9f2f955e" => :lion
   end
 
   resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_17.1.tar.gz"
-    sha1 "c23cc3c9d4b9ba5d1a61b2156be0edd16ce6144d"
+    url "http://www.erlang.org/download/otp_doc_man_17.3.tar.gz"
+    sha1 "3f7717186f572bb6431e1a1e5bc6c0f5ffd53171"
   end
 
   resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_17.1.tar.gz"
-    sha1 "6a8af3937fc87450b0c1acf4a35d311fd8042bf9"
+    url "http://www.erlang.org/download/otp_doc_html_17.3.tar.gz"
+    sha1 "fee5762225ef990e8c07aa4baa563a57208b0198"
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"

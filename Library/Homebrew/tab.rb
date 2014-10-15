@@ -81,7 +81,8 @@ class Tab < OpenStruct
             :compiler => :clang
   end
 
-  def with? name
+  def with? val
+    name = val.respond_to?(:option_name) ? val.option_name : val
     include?("with-#{name}") || unused_options.include?("without-#{name}")
   end
 
@@ -118,6 +119,10 @@ class Tab < OpenStruct
     lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
     CxxStdlib.create(lib, cc.to_sym)
+  end
+
+  def build_bottle?
+    built_as_bottle && !poured_from_bottle
   end
 
   def to_json

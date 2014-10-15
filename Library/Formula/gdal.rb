@@ -2,14 +2,14 @@ require 'formula'
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url 'http://download.osgeo.org/gdal/1.11.0/gdal-1.11.0.tar.gz'
-  sha1 '25efd2bffdea2e841377ca8c1fd49d89d02ac87e'
+  url "http://download.osgeo.org/gdal/1.11.1/gdal-1.11.1.tar.gz"
+  sha1 "e2c67481932ec9fb6ec3c0faadc004f715c4eef4"
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "f8c69a9220e08d549e894cc4352b98105995f3cb" => :mavericks
-    sha1 "9c524862c7e63c1808874ad360b3a60ff84c716f" => :mountain_lion
-    sha1 "6a9451e0cd183f39f795f9ff0b95d97ca209f0f5" => :lion
+    sha1 "ed850372d092908a29ab150c45b360f92873d1d0" => :mavericks
+    sha1 "451a662b40d8492c52a09ee5fc2b719cf4258065" => :mountain_lion
+    sha1 "9c48e30026c46fd8a25cc80d5c148ed8fec6c01e" => :lion
   end
 
   head do

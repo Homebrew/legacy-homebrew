@@ -8,6 +8,7 @@ class Checkbashisms < Formula
 
   bottle do
     cellar :any
+    sha1 "ba3d65481d041cc28b3f1c2a0887a1c2a08694d0" => :yosemite
     sha1 "0a2f8609c179a3096683645b64410dc3388245e6" => :mavericks
     sha1 "973505a805eadf37740db75a646e168b8c6545c7" => :mountain_lion
     sha1 "81691ff80d98176deefb878972ae419567326d12" => :lion

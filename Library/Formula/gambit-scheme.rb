@@ -2,13 +2,13 @@ require 'formula'
 
 class GambitScheme < Formula
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_2.tgz'
-  sha256 'c09597fa423602eb9d06b1ab3c1a63cd9c612b89f7f6d718f2c0a96da4d4ac1a'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_3.tgz'
+  sha256 '59c4c62f2cfaf698b54a862e7af9c1b3e4cc27e46d386f31c66e00fed4701777'
 
   bottle do
-    sha1 "e91aa45c23c225c024c0d013ec37150ac57a3777" => :mavericks
-    sha1 "a8d9d58347d1e67317a2276a5c33415c2d4717f6" => :mountain_lion
-    sha1 "da656ff450a9bb435a81b8d317cb3409540a8668" => :lion
+    sha1 "4f04f85300495e2c3fad49206b57605d010ad1f7" => :mavericks
+    sha1 "57c650e3539e41e084f29adf26160e920e3a068e" => :mountain_lion
+    sha1 "f4002601e8f904d064909b5df30479a26c916f8d" => :lion
   end
 
   conflicts_with 'ghostscript', :because => 'both install `gsc` binaries'
@@ -50,5 +50,9 @@ class GambitScheme < Formula
     ENV.j1
     system "make"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/gsi", "-e", '(print "hello world")'
   end
 end

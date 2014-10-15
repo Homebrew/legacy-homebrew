@@ -6,19 +6,19 @@ class Mpfr < Formula
   url "http://ftpmirror.gnu.org/mpfr/mpfr-3.1.2.tar.bz2"
   mirror "http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2"
   sha1 "46d5a11a59a4e31f74f73dd70c5d57a59de2d0b4"
-  version "3.1.2-p8"
+  version "3.1.2-p10"
 
   bottle do
     cellar :any
-    sha1 "ae9062f1736202e1e6324dbb74f6074d672708e8" => :mavericks
-    sha1 "6f4e0967728cb9ff5fad9de53dc38eb1648eee8e" => :mountain_lion
-    sha1 "63efa4c854ede1a352d73756d242514e042c8e2e" => :lion
+    sha1 "4612c09b4f5cb156d86f2e404a8b50821729dd34" => :mavericks
+    sha1 "f4cdf0f09d9fe0f29742720895f4f4cc84960bb7" => :mountain_lion
+    sha1 "606d4d79126cd3eb22e1cfa8cc6479186b07de39" => :lion
   end
 
   # http://www.mpfr.org/mpfr-current/allpatches
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/7f276cd60149a1ffc9a7/raw/0f2c24423ceda0dae996e2333f395c7115db33ec/mpfr-3.1.2-8.diff"
-    sha1 "047c96dcfb86f010972dedae088a3e67eaaecb8a"
+    url "https://gist.githubusercontent.com/jacknagel/7f276cd60149a1ffc9a7/raw/39116c674a8c340fef880a393d7c7bdc6d73c59e/mpfr-3.1.2-p10.diff"
+    sha1 "c101708c6f7d86a3f7309c2e046d907ac36d6aa4"
   end
 
   depends_on "gmp"

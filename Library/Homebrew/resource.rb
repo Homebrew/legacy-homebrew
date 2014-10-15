@@ -77,14 +77,15 @@ class Resource
     Partial.new(self, files)
   end
 
-  # For brew-fetch and others.
   def fetch
-    # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
-    downloader.fetch
-  rescue ErrorDuringExecution, CurlDownloadStrategyError => e
-    raise DownloadError.new(self, e)
-  else
+
+    begin
+      downloader.fetch
+    rescue ErrorDuringExecution, CurlDownloadStrategyError => e
+      raise DownloadError.new(self, e)
+    end
+
     cached_download
   end
 

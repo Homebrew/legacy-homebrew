@@ -54,6 +54,8 @@ class Xapian < Formula
       if build.with? 'python'
         (lib+'python2.7/site-packages').mkpath
         ENV['PYTHON_LIB'] = lib+'python2.7/site-packages'
+        # configure looks for python2 and system python doesn't install one
+        ENV["PYTHON"] = which "python"
         args << "--with-python"
       else
         args << "--without-python"

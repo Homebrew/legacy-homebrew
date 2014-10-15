@@ -378,13 +378,7 @@ class FormulaInstaller
   def caveats
     return if only_deps?
 
-    if ARGV.homebrew_developer? and not f.keg_only?
-      audit_bin
-      audit_sbin
-      audit_lib
-      audit_man
-      audit_info
-    end
+    audit_installed if ARGV.homebrew_developer? and not f.keg_only?
 
     c = Caveats.new(f)
 
@@ -636,39 +630,17 @@ class FormulaInstaller
     FileUtils.rm_rf f.bottle_prefix
   end
 
-  ## checks
-
-  def print_check_output warning_and_description
-    return unless warning_and_description
-    warning, description = *warning_and_description
-    opoo warning
-    puts description
-    @show_summary_heading = true
+  def audit_check_output(output)
+    if output
+      opoo output
+      @show_summary_heading = true
+    end
   end
 
-  def audit_bin
-    print_check_output(check_PATH(f.bin)) unless f.keg_only?
-    print_check_output(check_non_executables(f.bin))
-    print_check_output(check_generic_executables(f.bin))
-  end
-
-  def audit_sbin
-    print_check_output(check_PATH(f.sbin)) unless f.keg_only?
-    print_check_output(check_non_executables(f.sbin))
-    print_check_output(check_generic_executables(f.sbin))
-  end
-
-  def audit_lib
-    print_check_output(check_jars)
-    print_check_output(check_non_libraries)
-  end
-
-  def audit_man
-    print_check_output(check_manpages)
-  end
-
-  def audit_info
-    print_check_output(check_infopages)
+  def audit_installed
+    audit_check_output(check_PATH(f.bin))
+    audit_check_output(check_PATH(f.sbin))
+    super
   end
 
   private
