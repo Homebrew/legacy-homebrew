@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Openssl < Formula
-  homepage 'http://openssl.org'
-  url 'https://www.openssl.org/source/openssl-1.0.1i.tar.gz'
-  mirror 'http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.1i.tar.gz'
-  sha256 '3c179f46ca77069a6a0bac70212a9b3b838b2f66129cb52d568837fc79d8fcc7'
+  homepage "https://openssl.org"
+  url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/o/openssl/openssl_1.0.1j.orig.tar.gz"
+  sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
 
   bottle do
     revision 3
@@ -20,7 +20,7 @@ class Openssl < Formula
   depends_on "makedepend" => :build
 
   keg_only :provided_by_osx,
-    "The OpenSSL provided by OS X is too old for some software."
+    "The OpenSSL provided by OS X is too old for some software"
 
   def arch_args
     {
@@ -122,9 +122,9 @@ class Openssl < Formula
   end
 
   test do
-    (testpath/'testfile.txt').write("This is a test file")
+    (testpath/"testfile.txt").write("This is a test file")
     expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
-    system "#{bin}/openssl", 'dgst', '-sha1', '-out', 'checksum.txt', 'testfile.txt'
+    system "#{bin}/openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
     open("checksum.txt") do |f|
       checksum = f.read(100).split("=").last.strip
       assert_equal checksum, expected_checksum
