@@ -5,6 +5,7 @@ class Sqlite < Formula
   url "http://sqlite.org/2014/sqlite-autoconf-3080600.tar.gz"
   version "3.8.6"
   sha1 "c4b2911bc4a6e1dc2b411aa21d8c4f524113eb64"
+  revision 1
 
   bottle do
     cellar :any
