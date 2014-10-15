@@ -28,19 +28,19 @@ For release notes, look in the `notes/` directory.  They should also be up on [l
 
 You need to have [SBT](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html) installed.
 
-From SBT shell, simply type "re-start".  This uses a default configuration file.  An optional argument is a
+From SBT shell, simply type "reStart".  This uses a default configuration file.  An optional argument is a
 path to an alternative config file.  You can also specify JVM parameters after "---".  Including all the
 options looks like this:
 
-    re-start /path/to/my.conf --- -Xmx8g
+    reStart /path/to/my.conf --- -Xmx8g
 
-Note that re-start (SBT Revolver) forks the job server in a separate process.  If you make a code change, simply
-type re-start again at the SBT shell prompt, it will compile your changes and restart the jobserver.  It enables
+Note that reStart (SBT Revolver) forks the job server in a separate process.  If you make a code change, simply
+type reStart again at the SBT shell prompt, it will compile your changes and restart the jobserver.  It enables
 very fast turnaround cycles.
 
 For example jobs see the job-server-tests/ project / folder.
 
-When you use `re-start`, the log file goes to `job-server/job-server-local.log`.  There is also an environment variable
+When you use `reStart`, the log file goes to `job-server/job-server-local.log`.  There is also an environment variable
 EXTRA_JAR for adding a jar to the classpath.
 
 ### WordCountExample walk-through
@@ -295,7 +295,7 @@ Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 - Logging for tests goes to "job-server-test.log"
 - Run `scoverage:test` to check the code coverage and improve it
 - Please run scalastyle to ensure your code changes don't break the style guide
-- Do "re-start" from SBT for quick restarts of the job server process
+- Do "reStart" from SBT for quick restarts of the job server process
 - Please update the g8 template if you change the SparkJob API
 
 ### Publishing packages
