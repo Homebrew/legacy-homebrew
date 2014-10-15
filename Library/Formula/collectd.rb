@@ -1,13 +1,22 @@
 require "formula"
 
 class Collectd < Formula
-  homepage "http://collectd.org/"
-  url "http://collectd.org/files/collectd-5.4.1.tar.bz2"
-  sha1 "cea47e3936ed081bd71efacf7ba825fc837dc347"
+  homepage "https://collectd.org/"
+  url "https://collectd.org/files/collectd-5.4.1.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/c/collectd/collectd_5.4.1.orig.tar.gz"
+  sha256 "853680936893df00bfc2be58f61ab9181fecb1cf45fc5cddcb7d25da98855f65"
 
   # Will fail against Java 1.7
   option "java", "Enable Java 1.6 support"
   option "debug", "Enable debug support"
+
+  head do
+    url "git://git.verplant.org/collectd.git"
+
+    depends_on "libtool" => :build
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
 
   depends_on "pkg-config" => :build
 
@@ -33,8 +42,9 @@ class Collectd < Formula
     args << "--disable-java" unless build.include? "java"
     args << "--enable-debug" if build.include? "debug"
 
+    system "./build.sh" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   def plist; <<-EOS.undent
