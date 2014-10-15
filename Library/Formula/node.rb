@@ -5,6 +5,7 @@ class Node < Formula
   homepage "http://nodejs.org/"
   url "http://nodejs.org/dist/v0.10.32/node-v0.10.32.tar.gz"
   sha256 "c2120d0e3d2d191654cb11dbc0a33a7216d53732173317681da9502be0030f10"
+  revision 1
 
   bottle do
     sha1 "f9f083a1cf13cf3703c764d639702627968e2234" => :mavericks
@@ -30,8 +31,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-1.4.24.tgz"
-    sha1 "78125bb55dc592b9cbf4aff44e33d5d81c9471af"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.2.tgz"
+    sha256 "91d580807941f5c31c695bb791127be46e2d7aa02931c27989e886067f023982"
   end
 
   def install
@@ -57,8 +58,6 @@ class Node < Formula
 
     ENV["NPM_CONFIG_USERCONFIG"] = npmrc
     npm_root.cd { system "make", "install" }
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest",
-                                         "--prefix", HOMEBREW_PREFIX
 
     Pathname.glob(npm_root/"man/*") do |man|
       man.children.each do |file|
@@ -73,12 +72,23 @@ class Node < Formula
   end
 
   def caveats
-    if build.without? "npm"; <<-end.undent
-      Homebrew has NOT installed npm. If you later install it, you should supplement
-      your NODE_PATH with the npm module folder:
-        #{HOMEBREW_PREFIX}/lib/node_modules
-      end
-    end
+    s = ""
+
+   if build.with? "npm"
+    s = <<-EOS.undent
+      If you update npm do NOT use the npm upgrade command
+      Instead execute:
+        npm install -g npm@latest
+    EOS
+   else
+      s += <<-EOS.undent
+        Homebrew has NOT installed npm. If you later install it, you should supplement
+        your NODE_PATH with the npm module folder:
+          #{HOMEBREW_PREFIX}/lib/node_modules
+      EOS
+   end
+
+    s
   end
 
   test do
@@ -89,6 +99,6 @@ class Node < Formula
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
 
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm@latest" if build.with? "npm"
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "desktop" if build.with? "npm"
   end
 end
