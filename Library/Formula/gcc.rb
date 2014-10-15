@@ -158,8 +158,6 @@ class Gcc < Formula
     # Handle conflicts between GCC formulae and avoid interfering
     # with system compilers.
     # Since GCC 4.8 libffi stuff are no longer shipped.
-    # Rename libiberty.a.
-    Dir.glob(prefix/"**/libiberty.*") { |file| add_suffix file, version_suffix }
     # Rename man7.
     Dir.glob(man7/"*.7") { |file| add_suffix file, version_suffix }
     # Even when suffixes are appended, the info pages conflict when
