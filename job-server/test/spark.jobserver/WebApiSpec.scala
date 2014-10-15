@@ -24,7 +24,9 @@ with ScalatestRouteTest with HttpService {
 
   def actorRefFactory = system
 
-  val config = ConfigFactory.parseString("foo.bar = baz")
+  val bindConfKey = "spark.jobserver.bind-address"
+  val bindConfVal = "127.0.0.1"
+  val config = ConfigFactory.parseString(s"""$bindConfKey = "${bindConfVal}" """)
   val dummyPort = 9999
 
   // See http://doc.akka.io/docs/akka/2.2.4/scala/actors.html#Deprecated_Variants;
@@ -169,7 +171,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map("foo.bar" -> "baz", "foo.baz" -> "booboo")
+          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }
@@ -191,7 +193,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map("foo.bar" -> "baz", "foo.baz" -> "booboo")
+          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }
@@ -203,7 +205,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map("foo.bar" -> "baz", "foo.baz" -> "booboo")
+          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }
