@@ -3,7 +3,7 @@ require "formula"
 class Openssl < Formula
   homepage "https://openssl.org"
   url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/o/openssl/openssl_1.0.1j.orig.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1j.tar.gz"
   sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
 
   bottle do

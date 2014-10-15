@@ -4,7 +4,7 @@ class FreeradiusServer < Formula
   homepage "http://freeradius.org/"
   url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.5.tar.gz"
   sha1 "4d18ed8ff3fde4a29112ecc07f175b774ed5f702"
-  revision 1
+  revision 2
 
   devel do
     url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.4.tar.bz2"

@@ -1,11 +1,11 @@
 require "formula"
 
 class Python < Formula
-  homepage "http://www.python.org"
-  head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
+  homepage "https://www.python.org"
+  head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
+  url "https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
   sha1 "511960dd78451a06c9df76509635aeec05b2051a"
-  revision 1
+  revision 2
 
   bottle do
     revision 2
