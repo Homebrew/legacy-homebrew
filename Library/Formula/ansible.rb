@@ -17,6 +17,7 @@ class Ansible < Formula
   depends_on 'libyaml'
 
   option 'with-accelerate', "Enable accelerated mode"
+  option 'with-windows', "Enable Windows support"
 
   resource 'pycrypto' do
     url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
@@ -53,6 +54,21 @@ class Ansible < Formula
     sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
   end
 
+  resource 'pywinrm' do
+    url 'https://github.com/diyan/pywinrm/archive/df049454a9309280866e0156805ccda12d71c93a.zip'
+    sha1 'f2f94b9a1038425323afaa191a25798c1c0b8426'
+  end
+
+  resource 'isodate' do
+    url 'https://pypi.python.org/packages/source/i/isodate/isodate-0.5.0.tar.gz'
+    sha1 '1174aeb482567df02933bdc6f6e7c2a9a72eb31e'
+  end
+
+  resource 'xmltodict' do
+    url 'https://pypi.python.org/packages/source/x/xmltodict/xmltodict-0.9.0.tar.gz'
+    sha1 '06e4396e886133fdc0b10147c388ed82b0586c83'
+  end
+
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
@@ -63,6 +79,7 @@ class Ansible < Formula
 
     res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
     res << "python-keyczar" if build.with? "accelerate"
+    res += %w[pywinrm isodate xmltodict] if build.with? "windows"
     res.each do |r|
       resource(r).stage { system "python", *install_args }
     end
