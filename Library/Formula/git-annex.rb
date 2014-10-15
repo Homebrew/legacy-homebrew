@@ -5,8 +5,8 @@ class GitAnnex < Formula
   include Language::Haskell::Cabal
 
   homepage "https://git-annex.branchable.com/"
-  url "http://hackage.haskell.org/package/git-annex-5.20140717/git-annex-5.20140717.tar.gz"
-  sha1 "f3d49408db14a6230436105b50ce9232da8e57ae"
+  url "http://hackage.haskell.org/package/git-annex-5.20141013/git-annex-5.20141013.tar.gz"
+  sha1 "db93f75db07862ce85bdc14adfdac5aba6104f90"
 
   bottle do
     cellar :any
