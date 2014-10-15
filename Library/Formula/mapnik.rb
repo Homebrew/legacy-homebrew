@@ -5,7 +5,7 @@ class Mapnik < Formula
   head "https://github.com/mapnik/mapnik.git"
   url "http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
   sha1 "e493ad87ca83471374a3b080f760df4b25f7060d"
-  revision 3
+  revision 4
 
   bottle do
     sha1 "7ad87d1b99c5ceb1861b1cbabdb094488886bab4" => :mavericks
