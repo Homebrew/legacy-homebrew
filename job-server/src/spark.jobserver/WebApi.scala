@@ -40,6 +40,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
   val contextTimeout = Try(config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000)
                          .getOrElse(15)
   val sparkAliveWorkerThreshold = Try(config.getInt("spark.jobserver.sparkAliveWorkerThreshold")).getOrElse(1)
+  val bindAddress = config.getString("spark.jobserver.bind-address")
 
   val logger = LoggerFactory.getLogger(getClass)
 
@@ -47,7 +48,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
 
   def start() {
     logger.info("Starting browser web service...")
-    WebService.start(myRoutes ~ commonRoutes, system, "0.0.0.0", port)
+    WebService.start(myRoutes ~ commonRoutes, system, bindAddress, port)
   }
 
   /**
