@@ -1,13 +1,13 @@
 require 'formula'
 
 class Lynis < Formula
-  homepage 'http://cisofy.com/lynis/'
-  url 'http://cisofy.com/files/lynis-1.6.3.tar.gz'
-  sha1 '587d8bd8b7653a485ad1f472e8490065b136a8cf'
+  homepage "http://cisofy.com/lynis/"
+  url "http://cisofy.com/files/lynis-1.6.3.tar.gz"
+  sha1 "587d8bd8b7653a485ad1f472e8490065b136a8cf"
 
   def install
-    inreplace 'lynis' do |s|
-      s.gsub!'tINCLUDE_TARGETS="/usr/local/include/lynis /usr/local/lynis/include /usr/share/lynis/include ./include"',
+    inreplace "lynis" do |s|
+      s.gsub! 'tINCLUDE_TARGETS="/usr/local/include/lynis /usr/local/lynis/include /usr/share/lynis/include ./include"',
         %{tINCLUDE_TARGETS="#{include}"}
       s.gsub! 'tPLUGIN_TARGETS="/usr/local/lynis/plugins /usr/local/share/lynis/plugins /usr/share/lynis/plugins /etc/lynis/plugins ./plugins"',
         %{tPLUGIN_TARGETS="#{prefix}/plugins"}
