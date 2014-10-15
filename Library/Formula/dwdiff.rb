@@ -4,7 +4,7 @@ class Dwdiff < Formula
   homepage "http://os.ghalkes.nl/dwdiff.html"
   url "http://os.ghalkes.nl/dist/dwdiff-2.0.9.tgz"
   sha1 "01cb2230b9147347bcfd1770898e435e4a57fa25"
-  revision 1
+  revision 2
 
   bottle do
     sha1 "d86c4df0684421132d197d6059ae73c1022b26cc" => :mavericks
