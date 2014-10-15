@@ -2,9 +2,8 @@ require 'formula'
 
 class Zeromq < Formula
   homepage "http://www.zeromq.org/"
-  url "http://download.zeromq.org/zeromq-4.0.4.tar.gz"
-  sha1 "2328014e5990efac31390439b75c5528e38e4490"
-  revision 1
+  url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
+  sha1 "a664ec63661a848ef46114029156a0a6006feecd"
 
   bottle do
     cellar :any
