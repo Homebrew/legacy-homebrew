@@ -7,9 +7,9 @@ class Perlmagick < Formula
   revision 1
 
   bottle do
-    sha1 "6efa2e6d746ab5d38cc4ca06251fb81a7125a8f8" => :mavericks
-    sha1 "7fdaa41367a66a4ccec92df933f88d5952233f1c" => :mountain_lion
-    sha1 "035a0402685b6c7fb4fcd894e8b4a76ed3f22c75" => :lion
+    sha1 "ce1cf658507f5269ea3167a9d6f83ff4e38b9749" => :mavericks
+    sha1 "939ec50e438de4caf808f324e9949a5a75c13eb8" => :mountain_lion
+    sha1 "c040bc6e0b238c49c076414b5a082b4b54047406" => :lion
   end
 
   depends_on "freetype"
