@@ -4,13 +4,12 @@ class Freetds < Formula
   homepage "http://www.freetds.org/"
   url "http://mirrors.ibiblio.org/freetds/stable/freetds-0.91.tar.gz"
   sha1 "3ab06c8e208e82197dc25d09ae353d9f3be7db52"
-  revision 1
+  revision 2
 
   bottle do
-    revision 1
-    sha1 "adce43db374594ab3f5854e78addd50a9b3e995b" => :mavericks
-    sha1 "17e403d9fd915ff7897c5fce5f45d95ed4446dcf" => :mountain_lion
-    sha1 "9f1a45613386ad2b15f2ae713de048045c4a3651" => :lion
+    sha1 "7f98f1313e932185398c72237b7ac0d408cea986" => :mavericks
+    sha1 "ecef51129ffd5d25543a9775960d5cea716bae78" => :mountain_lion
+    sha1 "f261d6b8309af7642198ad87a2b63599a08602e3" => :lion
   end
 
   head do

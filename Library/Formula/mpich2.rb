@@ -4,9 +4,9 @@ require 'formula'
 # formula renames, see homebrew issue #14374.
 class Mpich2 < Formula
   homepage 'http://www.mpich.org/'
-  url 'http://www.mpich.org/static/downloads/3.1.2/mpich-3.1.2.tar.gz'
-  mirror 'http://fossies.org/linux/misc/mpich-3.1.2.tar.gz'
-  sha1 'c5199be7e9f1843b288dba0faf2c071c7a8e999d'
+  url 'http://www.mpich.org/static/downloads/3.1.3/mpich-3.1.3.tar.gz'
+  mirror 'http://fossies.org/linux/misc/mpich-3.1.3.tar.gz'
+  sha1 'aa9907891ef4a4a584ab2f90a86775f29ca0dec0'
 
   head do
     url 'git://git.mpich.org/mpich.git'

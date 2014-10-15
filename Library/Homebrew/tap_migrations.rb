@@ -22,6 +22,7 @@ TAP_MIGRATIONS = {
   "drush" => "homebrew/php",
   "dsniff" => "homebrew/boneyard",
   "electric-fence" => "homebrew/boneyard",
+  "fceux" => "homebrew/games",
   "gnunet" => "homebrew/boneyard",
   "grads" => "homebrew/binary",
   "gromacs" => "homebrew/science",

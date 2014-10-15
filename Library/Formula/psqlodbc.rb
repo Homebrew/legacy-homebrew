@@ -1,35 +1,24 @@
 require "formula"
 
-class PostgresqlInstalled < Requirement
-  fatal true
-  default_formula "postgresql"
-
-  satisfy { which "pg_config" }
-end
-
 class Psqlodbc < Formula
   homepage "http://www.postgresql.org/"
-  url "http://ftp.postgresql.org/pub/odbc/versions/src/psqlodbc-09.03.0210.tar.gz"
-  sha1 "e1eb147ef0452e1f7b0f9e102dacb5654a580dba"
+  url "http://ftp.postgresql.org/pub/odbc/versions/src/psqlodbc-09.03.0300.tar.gz"
+  sha1 "0f41b4678b513aa70f14b03803af92a7abf1e179"
+
   bottle do
     cellar :any
-    revision 1
-    sha1 "14da3adcbbb44feeb9269b817ef83ae96992dc0c" => :mavericks
-    sha1 "59cae2eafaecc1d2f844d43c56591586b31cbfc5" => :mountain_lion
-    sha1 "d9e55bbc56370d92b49de3c18f34948d0ad7bbf7" => :lion
+    sha1 "f24bdc4d51cd85e391be2e483e9c48858ee71d83" => :mavericks
+    sha1 "9b3f60310f063bb416ecaf32343b31b7f09b1445" => :mountain_lion
+    sha1 "6f463b33df349d2fe20bcb71ec340dc6f425dc36" => :lion
   end
-
-  revision 1
 
   depends_on "openssl"
   depends_on "unixodbc"
-  depends_on PostgresqlInstalled
+  depends_on :postgresql
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--with-unixodbc=#{Formula['unixodbc'].prefix}"]
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-unixodbc=#{Formula["unixodbc"].prefix}"
     system "make"
     system "make", "install"
   end

@@ -27,10 +27,10 @@ class Gcc < Formula
   sha1 "3f303f403053f0ce79530dae832811ecef91197e"
 
   bottle do
-    revision 2
-    sha1 "4a7fc491b6487da16089c218f9dda8d23e8656b5" => :mavericks
-    sha1 "9e826e179f7f679d1423b8d92d9a647860bd27ae" => :mountain_lion
-    sha1 "81d02ad2e353ed804927ee166a1090ebf057c4b3" => :lion
+    revision 3
+    sha1 "a612b8b8525017df25a6aa9836ee2b42b340b00d" => :mavericks
+    sha1 "28446d4af34b7449c1fda0ba0d4e977faeb71b4d" => :mountain_lion
+    sha1 "ea528ce2d436952e8ce17cd03c58fc9bcb37e410" => :lion
   end
 
   option "with-java", "Build the gcj compiler"
@@ -74,10 +74,10 @@ class Gcc < Formula
     version.to_s.slice(/\d\.\d/)
   end
 
-  # Fix 10.10 issues: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61407
+  # Fix 10.10 issues: https://gcc.gnu.org/viewcvs/gcc?view=revision&revision=215251
   patch do
-    url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=33180"
-    sha1 "def0cb036a255175db86f106e2bb9dd66d19b702"
+    url "https://raw.githubusercontent.com/DomT4/scripts/6c0e48921/Homebrew_Resources/Gcc/gcc1010.diff"
+    sha1 "083ec884399218584aec76ab8f2a0db97c12a3ba"
   end
 
   # Fix config-ml.in: eval: line 160: unexpected EOF while looking for matching `''
@@ -190,8 +190,6 @@ class Gcc < Formula
     # Handle conflicts between GCC formulae and avoid interfering
     # with system compilers.
     # Since GCC 4.8 libffi stuff are no longer shipped.
-    # Rename libiberty.a.
-    Dir.glob(prefix/"**/libiberty.*") { |file| add_suffix file, version_suffix }
     # Rename man7.
     Dir.glob(man7/"*.7") { |file| add_suffix file, version_suffix }
     # Even when suffixes are appended, the info pages conflict when

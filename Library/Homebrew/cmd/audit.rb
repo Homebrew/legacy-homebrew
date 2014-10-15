@@ -484,9 +484,7 @@ class FormulaAuditor
     end
 
     if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
-      # Python formulae need ARGV for Requirements
-      problem "Use build instead of ARGV to check options",
-              :whitelist => %w{pygobject3 qscintilla2}
+      problem "Use build instead of ARGV to check options"
     end
 
     if line =~ /def options/
@@ -552,23 +550,8 @@ class FormulaAuditor
     Symbol === dep ? dep.inspect : "'#{dep}'"
   end
 
-  def audit_check_output warning_and_description
-    return unless warning_and_description
-    warning, description = *warning_and_description
-    problem "#{warning}\n#{description}"
-  end
-
-  def audit_installed
-    audit_check_output(check_manpages)
-    audit_check_output(check_infopages)
-    audit_check_output(check_jars)
-    audit_check_output(check_non_libraries)
-    audit_check_output(check_non_executables(f.bin))
-    audit_check_output(check_generic_executables(f.bin))
-    audit_check_output(check_non_executables(f.sbin))
-    audit_check_output(check_generic_executables(f.sbin))
-    audit_check_output(check_shadowed_headers)
-    audit_check_output(check_easy_install_pth(f.lib))
+  def audit_check_output(output)
+    problem(output) if output
   end
 
   def audit
@@ -585,8 +568,7 @@ class FormulaAuditor
 
   private
 
-  def problem p, options={}
-    return if options[:whitelist].to_a.include? f.name
+  def problem p
     @problems << p
   end
 end
