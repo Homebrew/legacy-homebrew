@@ -27,10 +27,10 @@ class Gcc < Formula
   sha1 "3f303f403053f0ce79530dae832811ecef91197e"
 
   bottle do
-    revision 2
-    sha1 "4a7fc491b6487da16089c218f9dda8d23e8656b5" => :mavericks
-    sha1 "9e826e179f7f679d1423b8d92d9a647860bd27ae" => :mountain_lion
-    sha1 "81d02ad2e353ed804927ee166a1090ebf057c4b3" => :lion
+    revision 3
+    sha1 "a612b8b8525017df25a6aa9836ee2b42b340b00d" => :mavericks
+    sha1 "28446d4af34b7449c1fda0ba0d4e977faeb71b4d" => :mountain_lion
+    sha1 "ea528ce2d436952e8ce17cd03c58fc9bcb37e410" => :lion
   end
 
   option "with-java", "Build the gcj compiler"
