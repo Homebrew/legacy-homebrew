@@ -4,6 +4,7 @@ class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tar.xz"
   sha1 "0727d8a8498733baabe6f51632b9bab0cbaa9ada"
+  revision 1
 
   bottle do
     sha1 "fd271aeeff5971fc8570b368603f85d551041df7" => :mavericks
@@ -13,7 +14,7 @@ class Python3 < Formula
 
   VER="3.4"  # The <major>.<minor> is used so often.
 
-  head "http://hg.python.org/cpython", :using => :hg, :branch => VER
+  head "https://hg.python.org/cpython", :using => :hg, :branch => VER
 
   option :universal
   option "quicktest", "Run `make quicktest` after the build"
