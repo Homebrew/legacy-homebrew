@@ -53,8 +53,7 @@ module Homebrew
 
     fi = FormulaInstaller.new(f)
     fi.options             = tab.used_options
-    fi.build_bottle        = ARGV.build_bottle?
-    fi.build_bottle      ||= tab.built_as_bottle && !tab.poured_from_bottle
+    fi.build_bottle        = ARGV.build_bottle? || tab.build_bottle?
     fi.build_from_source   = ARGV.build_from_source?
     fi.verbose             = ARGV.verbose?
     fi.verbose           &&= :quieter if ARGV.quieter?
