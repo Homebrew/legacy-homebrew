@@ -2,8 +2,8 @@ require 'formula'
 
 class Lynis < Formula
   homepage 'http://cisofy.com/lynis/'
-  url 'http://cisofy.com/files/lynis-1.6.2.tar.gz'
-  sha1 'da671537653064b669888abea2fd0ae80f4e9300'
+  url 'http://cisofy.com/files/lynis-1.6.3.tar.gz'
+  sha1 '587d8bd8b7653a485ad1f472e8490065b136a8cf'
 
   def install
     inreplace 'lynis' do |s|
@@ -17,7 +17,7 @@ class Lynis < Formula
         %{tPROFILE_TARGETS="#{prefix}/default.prf"}
     end
 
-    prefix.install "db", "dev", "include", "plugins", "default.prf"
+    prefix.install "db", "include", "plugins", "default.prf"
     bin.install "lynis"
     man8.install "lynis.8"
   end
