@@ -33,4 +33,9 @@ class MobileShell < Formula
     system "make", "check" if build.with? "check"
     system "make", "install"
   end
+
+  test do
+    ENV["TERM"]="xterm"
+    system "#{bin}/mosh-client", "-c"
+  end
 end
