@@ -55,8 +55,8 @@ class Ansible < Formula
   end
 
   resource 'pywinrm' do
-    url 'https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.0.3.tar.gz'
-    sha1 '9b4f50e838b9222a101094328b0f6e8669ac17b7'
+    url 'https://github.com/diyan/pywinrm/archive/df049454a9309280866e0156805ccda12d71c93a.zip'
+    sha1 'f2f94b9a1038425323afaa191a25798c1c0b8426'
   end
 
   resource 'isodate' do
