@@ -4,6 +4,7 @@ class RakudoStar < Formula
   homepage "http://rakudo.org/"
   url "http://rakudo.org/downloads/star/rakudo-star-2014.09.tar.gz"
   sha256 "e7cfc6f4d92d9841f03246d68d51ed54d48df08736b0bd73626fe45196498649"
+  revision 1
 
   bottle do
     sha1 "7e2fac26d780d15cb3adc94767c62155b76ac9b8" => :mavericks
