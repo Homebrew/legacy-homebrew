@@ -4,6 +4,7 @@ class Libmspub < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libmspub"
   url "http://dev-www.libreoffice.org/src/libmspub/libmspub-0.1.1.tar.bz2"
   sha1 "0a6743a07ee3393bd4437a8bbee12fa62c9cd0f4"
+  revision 1
 
   bottle do
     cellar :any
