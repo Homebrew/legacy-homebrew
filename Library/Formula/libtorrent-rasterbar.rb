@@ -1,7 +1,7 @@
 require "formula"
 
 class LibtorrentRasterbar < Formula
-  homepage "http://www.rasterbar.com/products/libtorrent/"
+  homepage "http://sourceforge.net/projects/libtorrent/"
   url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.2.tar.gz"
   sha1 "bfb161825306abbd5c03775e75f5e094ee757a9a"
   revision 1
@@ -52,6 +52,6 @@ class LibtorrentRasterbar < Formula
       system "./configure", *args
     end
 
-    system "make install"
+    system "make", "install"
   end
 end
