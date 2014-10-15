@@ -5,7 +5,7 @@ class Parrot < Formula
   head "https://github.com/parrot/parrot.git"
   url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.6.0/parrot-6.6.0.tar.bz2"
   sha256 "08e9e02db952828f6ab71755be47f99ebc90894378f04d8e4d7f3bc623f79ff5"
-  revision 1
+  revision 2
 
   bottle do
     sha1 "490672e708d62a0c1fc5a38d6326d53f88636c18" => :mavericks
