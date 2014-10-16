@@ -45,14 +45,12 @@ class Collectd < Formula
   end
 
   def install
-    # Use system Python; doesn't compile against 2.7
-    # -C enables the cache and resolves permissions errors
-    args = %W[-C
-              --disable-debug
-              --disable-dependency-tracking
-              --prefix=#{prefix}
-              --localstatedir=#{var}
-              --with-python=/usr/bin]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --localstatedir=#{var}
+    ]
 
     args << "--disable-embedded-perl" if MacOS.version <= :leopard
     args << "--disable-java" unless build.include? "java"
