@@ -2,9 +2,19 @@ require "formula"
 
 class Collectd < Formula
   homepage "https://collectd.org/"
-  url "https://collectd.org/files/collectd-5.4.1.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/c/collectd/collectd_5.4.1.orig.tar.gz"
-  sha256 "853680936893df00bfc2be58f61ab9181fecb1cf45fc5cddcb7d25da98855f65"
+
+  stable do
+    url "https://collectd.org/files/collectd-5.4.1.tar.gz"
+    mirror "https://mirrors.kernel.org/debian/pool/main/c/collectd/collectd_5.4.1.orig.tar.gz"
+    sha256 "853680936893df00bfc2be58f61ab9181fecb1cf45fc5cddcb7d25da98855f65"
+
+    # Fix detection of htonll()
+    # https://github.com/collectd/collectd/commit/1a822486f40
+    patch do
+      url "https://gist.githubusercontent.com/jacknagel/85ba734488b6fbd25957/raw/7f16be18f96f1202ec7e5b193afa46061dfd944e/collectd.diff"
+      sha1 "34afbe6b9193f72ac6f2dd9a6978ff75ef9f41b0"
+    end
+  end
 
   # Will fail against Java 1.7
   option "java", "Enable Java 1.6 support"
