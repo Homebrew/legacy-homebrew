@@ -10,9 +10,9 @@ class GitAnnex < Formula
 
   bottle do
     cellar :any
-    sha1 "b4e1f525dbc89d322ac3706657bf86fb8b9e1697" => :mavericks
-    sha1 "6363b33492c0a6d98cea8f1dc889b03285030357" => :mountain_lion
-    sha1 "df28277b5ae4e48514236f6c0ef6a78387daef63" => :lion
+    sha1 "9f353c6f66e8db47bd91a3c0fc65599aca50ad50" => :mavericks
+    sha1 "264534752e8d2c26e49c84a77571f34fba4fac35" => :mountain_lion
+    sha1 "92c21f66c0518b7daf870d230bdf5a6beed80d05" => :lion
   end
 
   depends_on "gcc" => :build
