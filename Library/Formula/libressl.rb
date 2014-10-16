@@ -7,9 +7,9 @@ class Libressl < Formula
   sha256 "fb5ada41a75b31c8dd9ff013daca57b253047ad14e43f65d8b41879b7b8e3c17"
 
   bottle do
-    sha1 "a0b66bae0a536ca1b4318e7ed651a56a78b85ac5" => :mavericks
-    sha1 "4886c0ab6e3c6d33d883ac6dcdf500502fb5e4f7" => :mountain_lion
-    sha1 "18c2c8c25ac99bc5db5b5a470dd5c8c7f35aede6" => :lion
+    sha1 "695885e787732d2f2b3b5c5967f3da5a9639b4aa" => :mavericks
+    sha1 "88c2e8453229b7a85890230b6863d27b94fad2f2" => :mountain_lion
+    sha1 "5809502395661d9148257e73ba1c0cab21f8ad0d" => :lion
   end
 
   head do
