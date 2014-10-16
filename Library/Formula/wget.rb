@@ -26,8 +26,11 @@ class Wget < Formula
     depends_on "gettext"
   end
 
-  option "enable-iri", "Enable iri support"
-  option "enable-debug", "Build with debug support"
+  deprecated_option "enable-iri" => "with-iri"
+  deprecated_option "enable-debug" => "with-debug"
+
+  option "with-iri", "Enable iri support"
+  option "with-debug", "Build with debug support"
 
   depends_on "openssl"
   depends_on "libidn" if build.include? "enable-iri"
