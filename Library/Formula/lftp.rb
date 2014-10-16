@@ -2,8 +2,8 @@ require "formula"
 
 class Lftp < Formula
   homepage "http://lftp.yar.ru/"
-  url "http://lftp.yar.ru/ftp/lftp-4.5.5.tar.gz"
-  sha1 "4dbef2d6a5bd9c44b5571a71a211b639450e09db"
+  url "http://lftp.yar.ru/ftp/lftp-4.6.0.tar.gz"
+  sha1 "8bc43080c3c467d1aeb659382d95ef5ac7436504"
 
   bottle do
     sha1 "57279f43658740d7e87023047e475892ea0516a2" => :mavericks
@@ -20,5 +20,9 @@ class Lftp < Formula
                           "--prefix=#{prefix}",
                           "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/lftp", "-c", "open ftp://mirrors.kernel.org; ls"
   end
 end
