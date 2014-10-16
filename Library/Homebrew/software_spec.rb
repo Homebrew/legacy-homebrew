@@ -113,10 +113,11 @@ class SoftwareSpec
 
           old_flag = deprecated_option.old_flag
           new_flag = deprecated_option.current_flag
-          next unless @flags.include? old_flag
-          @flags -= [old_flag]
-          @flags |= [new_flag]
-          @deprecated_flags << deprecated_option
+          if @flags.include? old_flag
+            @flags -= [old_flag]
+            @flags |= [new_flag]
+            @deprecated_flags << deprecated_option
+          end
         end
       end
     end
