@@ -8,9 +8,9 @@ class Gptfdisk < Formula
 
   bottle do
     cellar :any
-    sha1 "72d74146ed1e0c057dff5afd70d55d4ec5992484" => :mavericks
-    sha1 "b3c218e0f18ce1a286f1a70823d08f349a6342e5" => :mountain_lion
-    sha1 "6ca48618e6a5a5800b192c06107f9bcc1b499e3a" => :lion
+    sha1 "a4db6095a887342b21583eca37e639afb6bc2d30" => :mavericks
+    sha1 "15c7a03013725b422771f26ad077c2060d4fea2a" => :mountain_lion
+    sha1 "174a1a62488be645d1c4f045456f94962c92e02c" => :lion
   end
 
   depends_on "popt"
