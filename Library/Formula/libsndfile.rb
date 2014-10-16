@@ -1,9 +1,10 @@
-require 'formula'
+require "formula"
 
 class Libsndfile < Formula
-  homepage 'http://www.mega-nerd.com/libsndfile/'
-  url 'http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.25.tar.gz'
-  sha1 'e95d9fca57f7ddace9f197071cbcfb92fa16748e'
+  homepage "http://www.mega-nerd.com/libsndfile/"
+  url "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.25.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/libs/libsndfile/libsndfile_1.0.25.orig.tar.gz"
+  sha1 "e95d9fca57f7ddace9f197071cbcfb92fa16748e"
 
   bottle do
     cellar :any
@@ -44,6 +45,6 @@ class Libsndfile < Formula
 
     system "autoreconf", "-i"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
