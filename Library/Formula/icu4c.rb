@@ -13,7 +13,7 @@ class Icu4c < Formula
     sha1 "69037c3eacbf544ab6191e4290c1bc4a6dbdcda0" => :lion
   end
 
-  keg_only "Conflicts; see: https://github.com/Homebrew/homebrew/issues/issue/167"
+  keg_only :provided_by_osx, "OS X provides libicucore.dylib (But nothing else.)"
 
   option :universal
   option :cxx11
