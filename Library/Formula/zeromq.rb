@@ -26,7 +26,7 @@ class Zeromq < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libpgm" if build.with? "pgm"
-  depends_on "libsodium" => :optional
+  depends_on "libsodium" => :recommended
 
   def install
     ENV.universal_binary if build.universal?
