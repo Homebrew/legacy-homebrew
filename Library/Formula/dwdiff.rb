@@ -7,9 +7,9 @@ class Dwdiff < Formula
   revision 2
 
   bottle do
-    sha1 "d86c4df0684421132d197d6059ae73c1022b26cc" => :mavericks
-    sha1 "3cde7642d439be392e69a939c8a0f16b30ec84b0" => :mountain_lion
-    sha1 "4e33875ebc44f65716a6588de2a82e52658b9806" => :lion
+    sha1 "7f88e50048cd75124feabeefa19ce892d2530895" => :mavericks
+    sha1 "7a7ee944533fe44613dcb53bd5baf1a5e2c6efa0" => :mountain_lion
+    sha1 "df694f72951f3c441de4150261437c1d5a0d679f" => :lion
   end
 
   depends_on "gettext"
