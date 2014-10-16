@@ -11,9 +11,9 @@ class Stunnel < Formula
   # https://www.stunnel.org/pipermail/stunnel-users/2014-October/004806.html
 
   bottle do
-    sha1 "f1b5731e9c6191035797f0d046915a5cf34205bd" => :mavericks
-    sha1 "4a52a8dd2df0b0e1d0815fc75eca918546f08e86" => :mountain_lion
-    sha1 "d15b1611c5afd9f308d825ea1f03d0d926124019" => :lion
+    sha1 "a4656d453c179052e0ee8368161687e8a0b8181a" => :mavericks
+    sha1 "f00f5b5db306b27e81e6ee1653d8a2fa793b30db" => :mountain_lion
+    sha1 "75563236665d1333ef5a9de3c7c0c6c651d24b68" => :lion
   end
 
   depends_on "openssl"
