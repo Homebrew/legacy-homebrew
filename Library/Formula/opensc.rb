@@ -7,9 +7,9 @@ class Opensc < Formula
   revision 1
 
   bottle do
-    sha1 "58e3ad4248bc4a10258560a6dd186ec1c86467a4" => :mavericks
-    sha1 "d7b65a4e3c7997340dc102ff3196b594731b2977" => :mountain_lion
-    sha1 "cf7e11fe49ca6910d9374211f6421980f7e0f94f" => :lion
+    sha1 "82b08c2bd2b58b7080797a441f8c641cbb101064" => :mavericks
+    sha1 "b5107cad1a7b5c7808d8b93f497bfe64127fcbce" => :mountain_lion
+    sha1 "26bc12047a4ca119fd37ff76ea4055226d88dc34" => :lion
   end
 
   head do
