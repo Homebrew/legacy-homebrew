@@ -8,9 +8,9 @@ class Libmspub < Formula
 
   bottle do
     cellar :any
-    sha1 "25a8271a146caaa1074ee71599f8e0b6baf5d81e" => :mavericks
-    sha1 "ce8627de1435ad221b4f631f48999ec260278eee" => :mountain_lion
-    sha1 "7096aed5efd72e4cfae1f383e51402745fd2e0a2" => :lion
+    sha1 "d68c4429528e006a76a44936f4295bb3846759c2" => :mavericks
+    sha1 "dd9ce8854f4970534bcfb618bb8e67294976a104" => :mountain_lion
+    sha1 "1a2a88cf22beb35af91dfe0d89966817d5a861b3" => :lion
   end
 
   depends_on "pkg-config" => :build
