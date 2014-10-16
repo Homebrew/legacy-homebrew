@@ -34,7 +34,8 @@ module Homebrew
 
   def homebrew_git_repo tap=nil
     if tap
-        HOMEBREW_LIBRARY/"Taps/#{tap}"
+        user, repo = tap.split "/"
+        HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
       else
         HOMEBREW_REPOSITORY
       end
