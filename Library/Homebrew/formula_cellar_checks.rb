@@ -104,6 +104,7 @@ module FormulaCellarChecks
   end
 
   def check_shadowed_headers
+    return if f.name == "libtool" || f.name == "subversion"
     return if f.keg_only? || !f.include.directory?
 
     files  = relative_glob(f.include, "**/*.h")
