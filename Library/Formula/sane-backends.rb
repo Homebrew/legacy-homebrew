@@ -5,6 +5,12 @@ class SaneBackends < Formula
   url "http://fossies.org/linux/misc/sane-backends-1.0.24.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/sane-backends/sane-backends_1.0.24.orig.tar.gz"
   sha1 "c10bcb30a1b092b2c2fe5a86d6a5efc29123ccf9"
+  bottle do
+    sha1 "c4d014ea40683f69840c63558061e24611fd8703" => :mavericks
+    sha1 "8944920bba83da860a454c579c4f38364b1c381d" => :mountain_lion
+    sha1 "6bb3c2d4ee5ea86aa96e22ff165fcbaaf5392130" => :lion
+  end
+
   revision 1
 
   option :universal
