@@ -47,6 +47,11 @@ class DeprecatedOption
   def current_flag
     "--#{current}"
   end
+
+  def ==(other)
+    instance_of?(other.class) && old == other.old && current == other.current
+  end
+  alias_method :eql?, :==
 end
 
 class Options
