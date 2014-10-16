@@ -18,7 +18,7 @@ class Openssl < Formula
   depends_on "makedepend" => :build
 
   keg_only :provided_by_osx,
-    "The OpenSSL provided by OS X is too old for some software"
+    "OS X provides an outdated OpenSSL. This is undesirable but problematic to override."
 
   def arch_args
     {
