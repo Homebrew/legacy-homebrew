@@ -233,7 +233,10 @@ module Homebrew
       end
 
       # Handle Jenkins pull request builder plugin.
-      @url = ENV['ghprbPullLink'] if ENV['ghprbPullLink']
+      if ENV['ghprbPullLink']
+        @url = ENV['ghprbPullLink']
+        @hash = nil
+      end
 
       if no_args?
         if diff_start_sha1 == diff_end_sha1 or \
