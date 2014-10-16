@@ -79,6 +79,19 @@ index c9e690e..21e79e4 100644
 
  static struct kconf_id *kconf_id_lookup(register const char *str, register unsigned int len);
 
+diff --git a/kconfig/kconfig.mk b/kconfig/kconfig.mk
+index cb9f91c..06e022c 100644
+--- a/kconfig/kconfig.mk
++++ b/kconfig/kconfig.mk
+@@ -38,7 +38,7 @@ defconfig:
+ # Always be silent, the stdout an be >.config
+ extractconfig:
+ 	@$(awk) 'BEGIN { dump=0; }                                                  \
+-	         dump==1 && $$0~/^\[.....\][[:space:]]+(# |)CT_/ {                  \
++	         dump==1 && $$0~/^\[.....\][[:space:]]+(# )?CT_/ {                  \
+ 	             $$1="";                                                        \
+ 	             gsub("^[[:space:]]","");                                       \
+ 	             print;                                                         \
 diff --git a/scripts/crosstool-NG.sh.in b/scripts/crosstool-NG.sh.in
 index cd65d5b..53ac552 100644
 --- a/scripts/crosstool-NG.sh.in
