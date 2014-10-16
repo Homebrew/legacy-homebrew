@@ -25,6 +25,20 @@ class OptionTests < Homebrew::TestCase
   end
 end
 
+class DeprecatedOptionTests < Homebrew::TestCase
+  def setup
+    @deprecated_option = DeprecatedOption.new("foo", "bar")
+  end
+
+  def test_old
+    assert_equal "foo", @deprecated_option.old
+  end
+
+  def test_current
+    assert_equal "bar", @deprecated_option.current
+  end
+end
+
 class OptionsTests < Homebrew::TestCase
   def setup
     @options = Options.new

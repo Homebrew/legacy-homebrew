@@ -32,6 +32,23 @@ class Option
   end
 end
 
+class DeprecatedOption
+  attr_reader :old, :current
+
+  def initialize(old, current)
+    @old = old
+    @current = current
+  end
+
+  def old_flag
+    "--#{old}"
+  end
+
+  def current_flag
+    "--#{current}"
+  end
+end
+
 class Options
   include Enumerable
 
