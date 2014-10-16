@@ -11,7 +11,7 @@
 # --email:        Generate an email subject file.
 # --no-bottle:    Run brew install without --build-bottle
 # --HEAD:         Run brew install with --HEAD
-# --local:        Ask Homebrew to write verbose logs under ./logs/
+# --local:        Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
 # --tap=<tap>:    Use the git repository of the given tap
 # --dry-run:      Just print commands, don't run them.
 #
@@ -535,6 +535,8 @@ module Homebrew
     end
 
     if ARGV.include? '--local'
+      ENV['HOME'] = "#{Dir.pwd}/home"
+      mkdir_p ENV['HOME']
       ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
     end
 
