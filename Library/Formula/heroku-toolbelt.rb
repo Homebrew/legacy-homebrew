@@ -26,9 +26,10 @@ class Ruby19 < Requirement
 end
 
 class HerokuToolbelt < Formula
+  version '3.12.1'
+  sha1 '597aa1c375809bdb9a7eea778373dab0b4f0abd8'
+  url "http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-#{version}.tgz"
   homepage 'https://toolbelt.heroku.com/other'
-  url 'http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-3.9.7.tgz'
-  sha1 '9128ce806318314be13f058079f4aa117b515afa'
 
   depends_on Ruby19
 
