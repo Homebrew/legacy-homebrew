@@ -8,9 +8,7 @@ class Beecrypt < Formula
 
   bottle do
     cellar :any
-    sha1 "8ccefc8dd0550ad157854be5217c9d3aebcd8275" => :mavericks
-    sha1 "67e8a03aeab78969d859e4cb7fcdf44b37fe5966" => :mountain_lion
-    sha1 "22a47abf61584481e5c3fa03de13fda568e046e1" => :lion
+    sha1 "5ebfd5789fc518c873994cb5d9b404837a742b5a" => :mavericks
   end
 
   depends_on "icu4c"
