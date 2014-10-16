@@ -30,6 +30,7 @@ require 'rexml/cdata'
 
 module Homebrew
   EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
+  BYTES_IN_1_MEGABYTE = 1024*1024
 
   def homebrew_git_repo tap=nil
     if tap
@@ -621,7 +622,12 @@ module Homebrew
             if output.respond_to?(:force_encoding) && !output.valid_encoding?
               output.force_encoding(Encoding::UTF_8)
             end
-            output = REXML::CData.new output.delete("\000\a\b\e\f")
+            output = output.delete("\000\a\b\e\f")
+            if output.bytesize > BYTES_IN_1_MEGABYTE
+              output = "truncated output to 1MB:\n" \
+                + output.slice(-BYTES_IN_1_MEGABYTE, BYTES_IN_1_MEGABYTE)
+            end
+            output = REXML::CData.new output
             if step.passed?
               system_out = testcase.add_element 'system-out'
               system_out.text = output
