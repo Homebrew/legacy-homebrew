@@ -5,12 +5,13 @@ class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
   url "http://ftp.indexdata.dk/pub/yaz/yaz-5.4.2.tar.gz"
   sha1 "2d64a212481ffaa1afbb15b9fbdc7cc7c9068ca7"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "0d4921722468b8b87d2d13af1d240861affcb45f" => :mavericks
-    sha1 "610de58b0121cbfa88ef44ca61ef4236c059d42f" => :mountain_lion
-    sha1 "94cb13782dbfeceda17ac213a9e5d5c5de723edf" => :lion
+    sha1 "603137fa06707207b0285a7f2589a4739dcb9149" => :mavericks
+    sha1 "f070ca68095aef1b1cac2e502129142768c58da5" => :mountain_lion
+    sha1 "e8b4bc41dc99b5fc0912400255ac62b4a8d16665" => :lion
   end
 
   depends_on "pkg-config" => :build
