@@ -1,9 +1,10 @@
-require 'formula'
+require "formula"
 
 class Opensc < Formula
-  homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz'
-  sha1 '4a898e351b0a6d2a5d81576daa7ebed45baf9138'
+  homepage "https://github.com/OpenSC/OpenSC/wiki"
+  url "https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz"
+  sha1 "4a898e351b0a6d2a5d81576daa7ebed45baf9138"
+  revision 1
 
   bottle do
     sha1 "58e3ad4248bc4a10258560a6dd186ec1c86467a4" => :mavericks
@@ -12,16 +13,17 @@ class Opensc < Formula
   end
 
   head do
-    url 'https://github.com/OpenSC/OpenSC.git'
+    url "https://github.com/OpenSC/OpenSC.git"
 
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
-  option 'with-man-pages', 'Build manual pages'
+  option "with-man-pages", "Build manual pages"
 
-  depends_on 'docbook-xsl' if build.with? "man-pages"
+  depends_on "docbook-xsl" if build.with? "man-pages"
+  depends_on "openssl"
 
   def install
     args = []
@@ -38,6 +40,10 @@ class Opensc < Formula
                           "--enable-pcsc",
                           *args
 
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/opensc-tool", "-i"
   end
 end
