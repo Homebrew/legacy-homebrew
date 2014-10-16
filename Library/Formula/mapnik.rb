@@ -8,9 +8,9 @@ class Mapnik < Formula
   revision 4
 
   bottle do
-    sha1 "7ad87d1b99c5ceb1861b1cbabdb094488886bab4" => :mavericks
-    sha1 "cb2d4ab00ae91ff90602db62b01703f105a21362" => :mountain_lion
-    sha1 "0bcaf11e97ad59e025e38b428e03adc7195b61e2" => :lion
+    sha1 "e9a4adde844d0cd895f4ff07c81f9ae3dc761d55" => :mavericks
+    sha1 "4d0bc356c681e2a4337e281a5ae0e01e1f4983c7" => :mountain_lion
+    sha1 "359a96c8206039098c149e30ac7e7d97a73039f7" => :lion
   end
 
   stable do
