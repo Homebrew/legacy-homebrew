@@ -24,6 +24,8 @@ class GitAnnex < Formula
   depends_on "gnutls"
   depends_on "gmp"
 
+  fails_with(:clang) { build 425 } # clang segfaults on Lion
+
   def install
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "c2hs"
