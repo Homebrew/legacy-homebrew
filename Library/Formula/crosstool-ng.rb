@@ -22,10 +22,17 @@ class CrosstoolNg < Formula
   # Avoid superenv to prevent https://github.com/mxcl/homebrew/pull/10552#issuecomment-9736248
   env :std
 
-  # Fixes clang offsetof compatability. Took better patch from #14547
-  # Patch scripts/crosstool-NG.sh.in to use regex compatible with BSD grep.
-  # Can be removed if committed upstream http://patchwork.ozlabs.org/patch/399382/
-  patch :DATA
+  # Patch to fix clang offsetof. Can be removed when adopted upstream.
+  patch do
+    url "http://patchwork.ozlabs.org/patch/400328/raw/"
+    sha1 "0baca77c863e6876f6fb1838db9e5cb60c6fe89c"
+  end
+
+  # Patch to make regex BSD grep compatible. Can be removed when adopted upstream.
+  patch do
+    url "http://patchwork.ozlabs.org/patch/400351/raw/"
+    sha1 "8f8e29aa149e65c2588a2d9ec3849d0ba727e0ad"
+  end
 
   def install
     args = ["--prefix=#{prefix}",
@@ -62,46 +69,3 @@ class CrosstoolNg < Formula
   end
 end
 
-__END__
-diff --git a/kconfig/zconf.gperf b/kconfig/zconf.gperf
-index c9e690e..21e79e4 100644
---- a/kconfig/zconf.gperf
-+++ b/kconfig/zconf.gperf
-@@ -7,6 +7,10 @@
- %pic
- %struct-type
-
-+%{
-+#include <stddef.h>
-+%}
-+
- struct kconf_id;
-
- static struct kconf_id *kconf_id_lookup(register const char *str, register unsigned int len);
-
-diff --git a/kconfig/kconfig.mk b/kconfig/kconfig.mk
-index cb9f91c..06e022c 100644
---- a/kconfig/kconfig.mk
-+++ b/kconfig/kconfig.mk
-@@ -38,7 +38,7 @@ defconfig:
- # Always be silent, the stdout an be >.config
- extractconfig:
- 	@$(awk) 'BEGIN { dump=0; }                                                  \
--	         dump==1 && $$0~/^\[.....\][[:space:]]+(# |)CT_/ {                  \
-+	         dump==1 && $$0~/^\[.....\][[:space:]]+(# )?CT_/ {                  \
- 	             $$1="";                                                        \
- 	             gsub("^[[:space:]]","");                                       \
- 	             print;                                                         \
-diff --git a/scripts/crosstool-NG.sh.in b/scripts/crosstool-NG.sh.in
-index cd65d5b..53ac552 100644
---- a/scripts/crosstool-NG.sh.in
-+++ b/scripts/crosstool-NG.sh.in
-@@ -125,7 +125,7 @@ CT_DoLog INFO "Build started ${CT_STAR_DATE_HUMAN}"
- # We really need to extract from ,config and not .config.2, as we
- # do want the kconfig's values, not our mangled config with arrays.
- CT_DoStep DEBUG "Dumping user-supplied crosstool-NG configuration"
--CT_DoExecLog DEBUG ${grep} -E '^(# |)CT_' .config
-+CT_DoExecLog DEBUG ${grep} -E '^(# )?CT_' .config
- CT_EndStep
- 
- CT_DoLog DEBUG "Unsetting and unexporting MAKEFLAGS"
