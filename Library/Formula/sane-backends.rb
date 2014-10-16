@@ -1,15 +1,18 @@
-require 'formula'
+require "formula"
 
 class SaneBackends < Formula
-  homepage 'http://www.sane-project.org/'
-  url 'http://fossies.org/linux/misc/sane-backends-1.0.24.tar.gz'
-  sha1 'c10bcb30a1b092b2c2fe5a86d6a5efc29123ccf9'
+  homepage "http://www.sane-project.org/"
+  url "http://fossies.org/linux/misc/sane-backends-1.0.24.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/s/sane-backends/sane-backends_1.0.24.orig.tar.gz"
+  sha1 "c10bcb30a1b092b2c2fe5a86d6a5efc29123ccf9"
+  revision 1
 
   option :universal
 
-  depends_on 'jpeg'
-  depends_on 'libtiff'
-  depends_on 'libusb-compat'
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "libusb-compat"
+  depends_on "openssl"
 
   # Fixes u_long missing error. Reported upstream:
   # https://github.com/fab1an/homebrew/commit/2a716f1a2b07705aa891e2c7fbb5148506aa5a01
@@ -27,7 +30,7 @@ class SaneBackends < Formula
                           "--enable-libusb",
                           "--disable-latex"
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Some drivers require a lockfile
     (var+"lock/sane").mkpath
