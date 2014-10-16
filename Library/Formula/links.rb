@@ -7,6 +7,13 @@ class Links < Formula
   sha1 "a808d80d910b7d3ad86f4c5089e64f35113b69f2"
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "e59741a8ae32d09d3b621169095eb871d62af2c3" => :mavericks
+    sha1 "5040c93b09ec5b2ba02e80ff4283d974b5f12d64" => :mountain_lion
+    sha1 "c1a7f7f4b11ed3907eadcd1d66b633f94e89ac9d" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "openssl"
   depends_on :x11 => :optional
