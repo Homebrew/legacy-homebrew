@@ -81,15 +81,10 @@ class SoftwareSpecTests < Homebrew::TestCase
 
   def test_deprecated_options
     @spec.deprecated_option(['foo1', 'foo2'] => 'bar1', 'foo3' => ['bar2', 'bar3'])
-    refute_empty @spec.deprecated_options
-    assert_equal "foo1", @spec.deprecated_options.first.old
-    assert_equal "bar1", @spec.deprecated_options.first.current
-    assert_equal "foo2", @spec.deprecated_options[1].old
-    assert_equal "bar1", @spec.deprecated_options[1].current
-    assert_equal "foo3", @spec.deprecated_options[2].old
-    assert_equal "bar2", @spec.deprecated_options[2].current
-    assert_equal "foo3", @spec.deprecated_options.last.old
-    assert_equal "bar3", @spec.deprecated_options.last.current
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo1", "bar1")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo2", "bar1")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo3", "bar2")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo3", "bar3")
   end
 
   def test_deprecated_option_raises_when_empty
