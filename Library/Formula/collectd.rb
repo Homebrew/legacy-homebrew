@@ -16,6 +16,12 @@ class Collectd < Formula
     end
   end
 
+  bottle do
+    sha1 "a5476eb04711bb016a4ef65412a70ba3722098e2" => :mavericks
+    sha1 "4829ba6a324a3057ce56a56d378a7e6790530feb" => :mountain_lion
+    sha1 "c0c82da5f79fb4c19cf7d2f16a9c008810b835c7" => :lion
+  end
+
   # Will fail against Java 1.7
   option "java", "Enable Java 1.6 support"
   option "debug", "Enable debug support"
