@@ -4,6 +4,9 @@ class Hashpump < Formula
   homepage "https://github.com/bwall/HashPump"
   url "https://github.com/bwall/HashPump/archive/v1.1.0.tar.gz"
   sha1 "610582b0e4c86bbcbe5620d4a3ad48e9c3046817"
+  revision 1
+
+  depends_on "openssl"
 
   def install
     bin.mkpath
