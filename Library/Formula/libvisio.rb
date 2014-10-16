@@ -8,9 +8,9 @@ class Libvisio < Formula
 
   bottle do
     cellar :any
-    sha1 "bdfcdedd23af956b9368d2efcdcdd3a3c2ae149e" => :mavericks
-    sha1 "f91823c71abf65d1badc48ea249f21d6f85b9e88" => :mountain_lion
-    sha1 "6aec36a1622a98013865c6d3292eb4999fdccee5" => :lion
+    sha1 "1b23f312ce3dece38c7ee05eba21c6d294de58dd" => :mavericks
+    sha1 "5aa48d33eb3dae9f982ca850a07656512c83b292" => :mountain_lion
+    sha1 "2ffaa6fb2dcf469aaf47fdf23d71700f4432fd5b" => :lion
   end
 
   depends_on "pkg-config" => :build
