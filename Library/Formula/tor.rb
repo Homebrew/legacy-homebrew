@@ -7,9 +7,9 @@ class Tor < Formula
   revision 1
 
   bottle do
-    sha1 "67271d2324c78f04e83408d408bb32024fbc5741" => :mavericks
-    sha1 "e9400858212ed466b04d5ba6961f1d34475e00b1" => :mountain_lion
-    sha1 "7c3084a1cd63f0547f5b41fb78c52ca0d635dae9" => :lion
+    sha1 "5456718ac7f890f7afdf41bf9631f1e1dad8dbf3" => :mavericks
+    sha1 "cfe0bec72693402dea5b69268dc077f0c45dadf5" => :mountain_lion
+    sha1 "c46da85cd7b35c1a83a27b3ef88a8a73b99c6072" => :lion
   end
 
   devel do
