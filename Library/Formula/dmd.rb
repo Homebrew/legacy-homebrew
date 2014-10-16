@@ -6,6 +6,9 @@ class Dmd < Formula
   sha1 "4ad09f680b249bb10b014b61ccb791a24f7a84c6"
 
   bottle do
+    sha1 "1cbca6f4f1b0d2af27ad6571c0b2f4b37b928423" => :mavericks
+    sha1 "a61c224f5d15c7b846b3348e196dde6a86cf6b0a" => :mountain_lion
+    sha1 "051c88ee54bebc15c3908fd2f31ec18b6634b9c1" => :lion
   end
 
   resource "druntime" do
