@@ -117,55 +117,58 @@ class FormulaAuditor
   def audit_deps
     # Don't depend_on aliases; use full name
     @@aliases ||= Formula.aliases
-    f.deps.select { |d| @@aliases.include? d.name }.each do |d|
-      real_name = d.to_formula.name
-      problem "Dependency '#{d}' is an alias; use the canonical name '#{real_name}'."
-    end
 
-    # Check for things we don't like to depend on.
-    # We allow non-Homebrew installs whenever possible.
-    f.deps.each do |dep|
-      begin
-        dep_f = dep.to_formula
-      rescue TapFormulaUnavailableError
-        # Don't complain about missing cross-tap dependencies
-        next
-      rescue FormulaUnavailableError
-        problem "Can't find dependency #{dep.name.inspect}."
-        next
+    @specs.each do |spec|
+      spec.deps.select { |d| @@aliases.include? d.name }.each do |d|
+        real_name = d.to_formula.name
+        problem "Dependency '#{d}' is an alias; use the canonical name '#{real_name}'."
       end
 
-      dep.options.reject do |opt|
-        next true if dep_f.option_defined?(opt)
-        dep_f.requirements.detect do |r|
-          if r.recommended?
-            opt.name == "with-#{r.name}"
-          elsif r.optional?
-            opt.name == "without-#{r.name}"
-          end
+      # Check for things we don't like to depend on.
+      # We allow non-Homebrew installs whenever possible.
+      spec.deps.each do |dep|
+        begin
+          dep_f = dep.to_formula
+        rescue TapFormulaUnavailableError
+          # Don't complain about missing cross-tap dependencies
+          next
+        rescue FormulaUnavailableError
+          problem "Can't find dependency #{dep.name.inspect}."
+          next
         end
-      end.each do |opt|
-        problem "Dependency #{dep} does not define option #{opt.name.inspect}"
-      end
 
-      case dep.name
-      when *BUILD_TIME_DEPS
-        next if dep.build? or dep.run?
-        problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
-      when "git", "ruby", "mercurial"
-        problem <<-EOS.undent
-          Don't use #{dep} as a dependency. We allow non-Homebrew
-          #{dep} installations.
-          EOS
-      when 'gfortran'
-        problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
-      when 'open-mpi', 'mpich2'
-        problem <<-EOS.undent
-          There are multiple conflicting ways to install MPI. Use an MPIDependency:
-            depends_on :mpi => [<lang list>]
-          Where <lang list> is a comma delimited list that can include:
-            :cc, :cxx, :f77, :f90
-          EOS
+        dep.options.reject do |opt|
+          next true if dep_f.option_defined?(opt)
+          dep_f.requirements.detect do |r|
+            if r.recommended?
+              opt.name == "with-#{r.name}"
+            elsif r.optional?
+              opt.name == "without-#{r.name}"
+            end
+          end
+        end.each do |opt|
+          problem "Dependency #{dep} does not define option #{opt.name.inspect}"
+        end
+
+        case dep.name
+        when *BUILD_TIME_DEPS
+          next if dep.build? or dep.run?
+          problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
+        when "git", "ruby", "mercurial"
+          problem <<-EOS.undent
+            Don't use #{dep} as a dependency. We allow non-Homebrew
+            #{dep} installations.
+            EOS
+        when 'gfortran'
+          problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
+        when 'open-mpi', 'mpich2'
+          problem <<-EOS.undent
+            There are multiple conflicting ways to install MPI. Use an MPIDependency:
+              depends_on :mpi => [<lang list>]
+            Where <lang list> is a comma delimited list that can include:
+              :cc, :cxx, :f77, :f90
+            EOS
+        end
       end
     end
   end
