@@ -8,12 +8,10 @@ class ClangOmp < Formula
 
   resource "compiler-rt" do
     url "https://github.com/clang-omp/compiler-rt", :using => :git, :tag => "1013141148"
-    sha1 ""
   end
 
   resource "clang" do
     url "https://github.com/clang-omp/clang", :using => :git, :branch => "clang-omp", :tag => "1013141148"
-    sha1 ""
   end
 
   def install
@@ -27,8 +25,7 @@ class ClangOmp < Formula
   end
 
   test do
-    system "#{bin}/clang", "-v"
-    system "#{bin}/clang++", "-v"
+    system "#{bin}/clang-omp", "-v"
   end
 
 end
