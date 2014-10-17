@@ -1,9 +1,11 @@
-require 'formula'
+require "formula"
 
 class Libevent < Formula
-  homepage 'http://libevent.org'
-  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz'
-  sha1 '3e6674772eb77de24908c6267c698146420ab699'
+  homepage "http://libevent.org"
+  url "https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/libe/libevent/libevent_2.0.21-stable.orig.tar.gz"
+  sha1 "3e6674772eb77de24908c6267c698146420ab699"
+  revision 1
 
   bottle do
     cellar :any
@@ -14,17 +16,19 @@ class Libevent < Formula
   end
 
   head do
-    url 'https://github.com/libevent/libevent.git'
+    url "https://github.com/libevent/libevent.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  depends_on "doxygen" => :build if build.include? 'enable-manpages'
+  depends_on "doxygen" => :build if build.include? "enable-manpages"
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   option :universal
-  option 'enable-manpages', 'Install the libevent manpages (requires doxygen)'
+  option "enable-manpages", "Install the libevent manpages (requires doxygen)"
 
   fails_with :llvm do
     build 2326
@@ -32,7 +36,7 @@ class Libevent < Formula
   end
 
   # Enable manpage generation
-  patch :DATA if build.include? 'enable-manpages'
+  patch :DATA if build.include? "enable-manpages"
 
   def install
     ENV.universal_binary if build.universal?
@@ -42,11 +46,11 @@ class Libevent < Formula
                           "--disable-debug-mode",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
 
-    if build.include? 'enable-manpages'
+    if build.include? "enable-manpages"
       system "make doxygen"
-      man3.install Dir['doxygen/man/man3/*.3']
+      man3.install Dir["doxygen/man/man3/*.3"]
     end
   end
 end
