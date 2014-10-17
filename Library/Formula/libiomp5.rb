@@ -21,16 +21,11 @@ class Libiomp5 < Formula
     end
   end
 
-  def intel_arch
-    if MacOS.prefer_64_bit?
-      "mac_32e"
-    else
-      "mac_32"
-    end
-  end
-
   def install
+    intel_arch = MacOS.prefer_64_bit? ? "mac_32e" : "mac_32"
+
     system "make", "compiler=clang"
+    
     (include/"libiomp5").install Dir["exports/common/include/*"]
     lib.install "exports/#{intel_arch}/lib.thin/libiomp5.dylib"
   end
