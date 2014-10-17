@@ -28,7 +28,22 @@ class ClangOmp < Formula
   end
 
   test do
-    system "#{bin}/clang-omp", "-v"
+    testfile = <<-EOS.undent
+      #include <stdlib.h>
+      #include <stdio.h>
+      
+
+      int main(void) {
+          #pragma omp parallel
+          {
+            printf("hello world");
+          }
+          return EXIT_SUCCESS;
+      }
+    EOS
+    (testpath/"test.c").write(testfile)
+    system "#{bin}/clang-omp", "-fopenmp", "-Werror", "-Wall", "test.c", "-o", "test"
+    system "./test"
   end
 
 end
