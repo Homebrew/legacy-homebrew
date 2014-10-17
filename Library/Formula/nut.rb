@@ -5,6 +5,12 @@ class Nut < Formula
   url "http://www.networkupstools.org/source/2.7/nut-2.7.2.tar.gz"
   sha256 "4d5365359b059d96dfcb77458f361a114d26c84f1297ffcd0c6c166f7200376d"
 
+  bottle do
+    sha1 "4a37cf6350e56dfbbb80a7bfb03f3f6aa804e36a" => :mavericks
+    sha1 "467ed9df7b3aeae35060d5fecfe229caeba62180" => :mountain_lion
+    sha1 "4ab46368434117fbb380d90463295fbb8f254ef9" => :lion
+  end
+
   head do
     url "https://github.com/networkupstools/nut.git"
 
