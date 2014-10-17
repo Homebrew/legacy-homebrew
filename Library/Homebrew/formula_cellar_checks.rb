@@ -150,6 +150,7 @@ module FormulaCellarChecks
   private
 
   def relative_glob(dir, pattern)
+    return [] unless Dir.exist? dir
     Dir.chdir(dir) { Dir[pattern] }
   end
 end
