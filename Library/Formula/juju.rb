@@ -6,9 +6,9 @@ class Juju < Formula
   sha1 '0f59ba487382136f923d9be992d705db3da3e418'
 
   bottle do
-    sha1 "cd7f15cfcba77c2be1f1fcf30f6f83e11fb37637" => :mavericks
-    sha1 "bdba39a1637540f70e214cbd9edc2bda6b74f2bd" => :mountain_lion
-    sha1 "36f3bfa3228abf7645270e3e4a59c6279d1f8158" => :lion
+    sha1 "683e051827f984024d87a8d9e55611103c862180" => :mavericks
+    sha1 "9dc22987b545b65a787bcebcce55e456b2a1ad2a" => :mountain_lion
+    sha1 "bd25350f412c097d907998a5e921c8e1cd233fa0" => :lion
   end
 
   depends_on 'go' => :build
