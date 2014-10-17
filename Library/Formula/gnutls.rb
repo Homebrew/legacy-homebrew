@@ -9,6 +9,7 @@ class Gnutls < Formula
 
   bottle do
     cellar :any
+    sha1 "9afca62450a3a74d91ee70a5ae11624310b7a755" => :yosemite
     sha1 "3e4d0c1cd43da26defe0620b1c619be532e5b536" => :mavericks
     sha1 "3eb9d4d68f26cf9589d417db111da503951799e9" => :mountain_lion
     sha1 "d5cef16200d281b8ac69957d2f4c0c436b2c766e" => :lion
@@ -61,7 +62,7 @@ __END__
 --- a/src/libopts/autoopts.h
 +++ b/src/libopts/autoopts.h
 @@ -32,7 +32,14 @@
- 
+
  #ifndef AUTOGEN_AUTOOPTS_H
  #define AUTOGEN_AUTOOPTS_H
 -#include <stdnoreturn.h>
@@ -73,6 +74,6 @@ __END__
 +#  define noreturn
 +# endif
 +#endif
- 
+
  #define AO_NAME_LIMIT           127
  #define AO_NAME_SIZE            ((size_t)(AO_NAME_LIMIT + 1))
