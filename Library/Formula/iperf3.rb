@@ -2,9 +2,22 @@ require "formula"
 
 class Iperf3 < Formula
   homepage "https://github.com/esnet/iperf"
-  url "https://github.com/esnet/iperf/archive/3.0.7.tar.gz"
-  sha1 "267e020707c983b9649bb6cb76e3c1e7956ebfd4"
-  head "https://code.google.com/p/iperf/", :using => :hg
+
+  stable do
+    url "https://github.com/esnet/iperf/archive/3.0.9.tar.gz"
+    sha256 "985d87e2bc3f302dd5e864022f61b053cdeafd2e6a325711a317ed6aa1b68771"
+
+    # Remove this with next stable release please! Fixed in HEAD.
+    depends_on MaximumMacOSRequirement => :mavericks
+  end
+
+  head do
+    url "https://github.com/esnet/iperf.git"
+
+    depends_on "libtool" => :build
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
 
   bottle do
     cellar :any
@@ -14,6 +27,7 @@ class Iperf3 < Formula
   end
 
   def install
+    system "./bootstrap.sh" if build.head?
     system "./configure", "--prefix=#{prefix}"
     system "make", "clean"      # there are pre-compiled files in the tarball
     system "make", "install"
