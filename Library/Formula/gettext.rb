@@ -2,9 +2,9 @@ require "formula"
 
 class Gettext < Formula
   homepage "https://www.gnu.org/software/gettext/"
-  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.2.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.2.tar.xz"
-  sha256 "b34e1baaf37e56b4f5d7104353a437a735b2e094a70588e7c5ae671eaa0819c3"
+  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.3.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.3.tar.xz"
+  sha256 "f6fdb29c9ee8ce85c7e574f60ff64fa91cf0f4f018437dfe800227d15595db46"
 
   bottle do
     sha1 "d2a84c4dc0bcc7984e8a6232bff11780f21d16d3" => :mavericks
@@ -35,6 +35,6 @@ class Gettext < Formula
                           "--without-cvs"
     system "make"
     ENV.deparallelize # install doesn't support multiple make jobs
-    system "make install"
+    system "make", "install"
   end
 end
