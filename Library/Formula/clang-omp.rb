@@ -31,7 +31,6 @@ class ClangOmp < Formula
     testfile = <<-EOS.undent
       #include <stdlib.h>
       #include <stdio.h>
-      
 
       int main(void) {
           #pragma omp parallel
