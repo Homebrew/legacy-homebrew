@@ -30,7 +30,7 @@ class Libiomp < Formula
     intel_arch = MacOS.prefer_64_bit? ? "mac_32e" : "mac_32"
 
     system "make", "compiler=clang"
-    
+
     (include/"libiomp").install Dir["exports/common/include/*"]
     lib.install "exports/#{intel_arch}/lib.thin/libiomp5.dylib"
   end
