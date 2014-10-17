@@ -7,9 +7,9 @@ class Uwsgi < Formula
   head "https://github.com/unbit/uwsgi.git"
 
   bottle do
-    sha1 "d42895c7b7fdbc1be90e7ebd84258f7409a70e4c" => :mavericks
-    sha1 "ff677ccbb7ca824eaf8e8b8ba6fb1eec5a0acecb" => :mountain_lion
-    sha1 "6e6ac75b4f1fc85a3e18c4bd9a27621f480fe41b" => :lion
+    sha1 "4a195f89dcac74576b8818b39c9dce7c4eee873d" => :mavericks
+    sha1 "f48132c3aa9a4aa82c772358aff335c1993e29f1" => :mountain_lion
+    sha1 "1d538a6627baa5fda1f40ed68c093c079c9dbd80" => :lion
   end
 
   depends_on "pkg-config" => :build
