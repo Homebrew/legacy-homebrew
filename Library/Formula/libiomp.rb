@@ -5,6 +5,13 @@ class Libiomp < Formula
   url "https://www.openmprtl.org/sites/default/files/libomp_20140926_oss.tgz"
   sha1 "488ff3874eb5c971523534cb3c987bfb5ce3addb"
 
+  bottle do
+    cellar :any
+    sha1 "782faf00e595709011f1e8a19933fff0d55c954e" => :yosemite
+    sha1 "070a6edb8c872e2b88f953222b72cd587f288149" => :mavericks
+    sha1 "26a2f4d2d6427c1d114fdc774a71bdd06926cc13" => :mountain_lion
+  end
+
   depends_on :arch => :intel
 
   fails_with :gcc  do
