@@ -22,6 +22,11 @@ class Libiomp < Formula
   end
 
   def install
+    # fix makefile for yosemite:
+    inreplace "src/makefile.mk" do |s|
+      s.gsub! "`sw_vers -productVersion` > 10.6", "`sw_vers -productVersion` == '10.10' || `sw_vers -productVersion`> 10.6"
+    end
+
     intel_arch = MacOS.prefer_64_bit? ? "mac_32e" : "mac_32"
 
     system "make", "compiler=clang"
