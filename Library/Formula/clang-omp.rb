@@ -23,9 +23,7 @@ class ClangOmp < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
 
-    # TODO
-    #(bin/'clang').mv 'clang-omp'
-    #(bin/'clang++').mv 'clang++-omp'
+    mv bin/"clang", bin/"clang-omp"
   end
 
   test do
