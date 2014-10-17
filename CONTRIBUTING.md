@@ -19,4 +19,8 @@ Please read:
 * [Ruby Style Guide](https://github.com/styleguide/ruby)
 * [How To Open a Homebrew Pull Request (and get it merged)](https://github.com/Homebrew/homebrew/wiki/How-To-Open-a-Homebrew-Pull-Request-(and-get-it-merged))
 
+Yosemite Notice
+---------------
+Please note that XCode 6.1 is required to build software on Yosemite, even though it is not yet being distributed by Apple.  Any bug reports on Yosemite without XCode 6.1 will be ignored.
+
 Thanks!
