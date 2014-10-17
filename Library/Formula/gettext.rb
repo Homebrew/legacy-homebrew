@@ -2,8 +2,8 @@ require "formula"
 
 class Gettext < Formula
   homepage "https://www.gnu.org/software/gettext/"
-  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.3.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.3.tar.xz"
+  url "https://ftp.gnu.org/gnu/gettext/gettext-0.19.3.tar.xz"
+  mirror "ftp://gnu.mirror.iweb.com/gettext/gettext-0.19.3.tar.xz"
   sha256 "f6fdb29c9ee8ce85c7e574f60ff64fa91cf0f4f018437dfe800227d15595db46"
 
   bottle do
