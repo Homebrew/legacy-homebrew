@@ -16,6 +16,7 @@ class Postgresql < Formula
 
   bottle do
     revision 1
+    sha1 "00d8f44111b8585fc2fa045fb33098cde3bcf230" => :yosemite
     sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
     sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
     sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
