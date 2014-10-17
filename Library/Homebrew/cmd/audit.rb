@@ -22,11 +22,9 @@ module Homebrew
       fa.audit
 
       unless fa.problems.empty?
-        puts "#{f.name}:"
-        fa.problems.each { |p| puts " * #{p}" }
-        puts
         formula_count += 1
         problem_count += fa.problems.size
+        puts "#{f.name}:", fa.problems.map { |p| " * #{p}" }, ""
       end
     end
 
@@ -153,10 +151,7 @@ class FormulaAuditor
           next if dep.build? or dep.run?
           problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
         when "git", "ruby", "mercurial"
-          problem <<-EOS.undent
-            Don't use #{dep} as a dependency. We allow non-Homebrew
-            #{dep} installations.
-            EOS
+          problem "Don't use #{dep} as a dependency. We allow non-Homebrew #{dep} installations."
         when 'gfortran'
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
         when 'open-mpi', 'mpich2'
