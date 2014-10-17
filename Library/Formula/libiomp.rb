@@ -1,6 +1,6 @@
 require "formula"
 
-class Libiomp5 < Formula
+class Libiomp < Formula
   homepage "https://www.openmprtl.org/download"
   url "https://www.openmprtl.org/sites/default/files/libomp_20140926_oss.tgz"
   sha1 "488ff3874eb5c971523534cb3c987bfb5ce3addb"
@@ -8,16 +8,16 @@ class Libiomp5 < Formula
   depends_on :arch => :intel
 
   fails_with :gcc  do
-    cause "libiomp5 can only be built with clang."
+    cause "libiomp can only be built with clang."
   end
 
   fails_with :gcc_4_0 do
-    cause "libiomp5 can only be built with clang."
+    cause "libiomp can only be built with clang."
   end
 
   ("4.3".."4.9").each do |n|
     fails_with :gcc => n do
-      cause "libiomp5 can only be built with clang."
+      cause "libiomp can only be built with clang."
     end
   end
 
@@ -26,7 +26,7 @@ class Libiomp5 < Formula
 
     system "make", "compiler=clang"
     
-    (include/"libiomp5").install Dir["exports/common/include/*"]
+    (include/"libiomp").install Dir["exports/common/include/*"]
     lib.install "exports/#{intel_arch}/lib.thin/libiomp5.dylib"
   end
 
@@ -42,7 +42,7 @@ class Libiomp5 < Formula
       }
     EOS
     (testpath/"test.c").write(testfile)
-    system ENV.cc, "-L#{lib}", "-liomp5", "-I#{include}/libiomp5", "test.c", "-o", "test"
+    system ENV.cc, "-L#{lib}", "-liomp5", "-I#{include}/libiomp", "test.c", "-o", "test"
     system "./test"
   end
 end
