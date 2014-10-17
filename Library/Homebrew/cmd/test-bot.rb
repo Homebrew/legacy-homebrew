@@ -154,7 +154,13 @@ module Homebrew
 
       # Tap repository if required, this is done before everything else
       # because Formula parsing and/or git commit hash lookup depends on it.
-      test "brew", "tap", @tap if @tap && @repository_requires_tapping
+      if @tap
+        if @repository_requires_tapping
+          test "brew", "tap", @tap
+        else
+          test "brew", "tap", "--repair"
+        end
+      end
 
       begin
         formula = Formulary.factory(argument)
