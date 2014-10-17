@@ -114,16 +114,10 @@ class FormulaAuditor
     end
   end
 
+  @@aliases ||= Formula.aliases
+
   def audit_deps
-    # Don't depend_on aliases; use full name
-    @@aliases ||= Formula.aliases
-
     @specs.each do |spec|
-      spec.deps.select { |d| @@aliases.include? d.name }.each do |d|
-        real_name = d.to_formula.name
-        problem "Dependency '#{d}' is an alias; use the canonical name '#{real_name}'."
-      end
-
       # Check for things we don't like to depend on.
       # We allow non-Homebrew installs whenever possible.
       spec.deps.each do |dep|
@@ -135,6 +129,10 @@ class FormulaAuditor
         rescue FormulaUnavailableError
           problem "Can't find dependency #{dep.name.inspect}."
           next
+        end
+
+        if @@aliases.include?(dep.name)
+          problem "Dependency '#{dep.name}' is an alias; use the canonical name '#{dep.to_formula.name}'."
         end
 
         dep.options.reject do |opt|
