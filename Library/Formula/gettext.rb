@@ -7,9 +7,9 @@ class Gettext < Formula
   sha256 "f6fdb29c9ee8ce85c7e574f60ff64fa91cf0f4f018437dfe800227d15595db46"
 
   bottle do
-    sha1 "d2a84c4dc0bcc7984e8a6232bff11780f21d16d3" => :mavericks
-    sha1 "ca0f41730c2769d906d83e88d0aa4506350691fb" => :mountain_lion
-    sha1 "0cf03a50241ea2383e8140cf974c5b0b5533f7b2" => :lion
+    sha1 "8e94d136e0e9bdab19155e08a78c35e9691e50cf" => :mavericks
+    sha1 "dc373eedc56725b494be8f340e374b59b841d8c6" => :mountain_lion
+    sha1 "c78b336ceaa699f4186ed4f56e0c641c11e47cc9" => :lion
   end
 
   keg_only :shadowed_by_osx, "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
