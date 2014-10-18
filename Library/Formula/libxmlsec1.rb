@@ -6,9 +6,9 @@ class Libxmlsec1 < Formula
   sha1 "40117ab0f788e43deef6eaf028c88f6abc3a30d0"
 
   bottle do
-    sha1 "dacd6e67c5a65acd187faff789086d1c787925a5" => :mavericks
-    sha1 "e9b9669f1b1364eaea9c320880ef13be944f52db" => :mountain_lion
-    sha1 "63b1cb774d0778366c13815e6971e2e51094a627" => :lion
+    sha1 "7cfecf66f3608695321bc195b35957f2dddeb354" => :yosemite
+    sha1 "ff35feb04a9f18af8cf96aacc340e25e60adb542" => :mavericks
+    sha1 "9b4df5db57f11d86d63fc7dcaa51939d9b874c23" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
