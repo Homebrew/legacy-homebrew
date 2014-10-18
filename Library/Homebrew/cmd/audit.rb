@@ -630,6 +630,12 @@ class ResourceAuditor
   def audit_download_strategy
     return unless using
 
+    if using == :ssl3 || using == CurlSSL3DownloadStrategy
+      problem "The SSL3 download strategy is deprecated, please choose a different URL"
+    elsif using == CurlUnsafeDownloadStrategy
+      problem "#{using.name} is deprecated, please choose a different URL"
+    end
+
     url_strategy   = DownloadStrategyDetector.detect(url)
     using_strategy = DownloadStrategyDetector.detect('', using)
 
