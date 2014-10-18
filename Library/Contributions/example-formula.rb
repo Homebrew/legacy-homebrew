@@ -23,7 +23,6 @@ class ExampleFormula < Formula
   #     `:nounzip` (without extracting)
   #     `:post` (download via an HTTP POST)
   #     `S3DownloadStrategy` (download from S3 using signed request)
-  #     `UnsafeSubversionDownloadStrategy` (svn with invalid certs)
   url "https://some.dont.provide.archives.example.com", :using => :git, :tag => "1.2.3"
 
   # version is seldom needed, because it's usually autodetected from the URL/tag.
