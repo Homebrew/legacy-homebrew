@@ -2,10 +2,9 @@ require "formula"
 
 class Sqlite < Formula
   homepage "http://sqlite.org/"
-  url "http://sqlite.org/2014/sqlite-autoconf-3080600.tar.gz"
-  version "3.8.6"
-  sha1 "c4b2911bc4a6e1dc2b411aa21d8c4f524113eb64"
-  revision 1
+  url "http://sqlite.org/2014/sqlite-autoconf-3080700.tar.gz"
+  version "3.8.7"
+  sha1 "8b773b006db46f3ffcbabe065e927823d13bf5c0"
 
   bottle do
     cellar :any
