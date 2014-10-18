@@ -3,9 +3,8 @@ require "formula"
 
 class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.4.2.tar.gz"
-  sha1 "2d64a212481ffaa1afbb15b9fbdc7cc7c9068ca7"
-  revision 1
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.4.3.tar.gz"
+  sha1 "3da21b6f420c0305850e1286c821a1099676e516"
 
   bottle do
     cellar :any
@@ -17,12 +16,13 @@ class Yaz < Formula
   depends_on "pkg-config" => :build
   depends_on "icu4c" => :recommended
   depends_on "gnutls" => :optional
+  depends_on "libgcrypt" if build.with? "gnutls"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-xml2"
-    system "make install"
+    system "make", "install"
   end
 
   test do
