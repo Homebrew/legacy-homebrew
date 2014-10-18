@@ -6,9 +6,9 @@ class Gearman < Formula
   sha1 "85b5271ea3ac919d96fff9500993b73c9dc80c6c"
 
   bottle do
-    sha1 "b1d76be880294ad7900c18628674c9853b7d6a14" => :mavericks
-    sha1 "43aa44d53ca68b67978beeb94613c8418e4d0eaf" => :mountain_lion
-    sha1 "d09770f6262eed1c7ababa6f06e9659e12694e9a" => :lion
+    sha1 "99393fa57c7c2ff6c4b52d3639e80c77b099edc3" => :yosemite
+    sha1 "efc68a7e0880ad8c63f557ee335ef2a29f50a076" => :mavericks
+    sha1 "3efaaacefd8dc65954e3195637149ff43e4d12d6" => :mountain_lion
   end
 
   option "with-mysql", "Compile with MySQL persistent queue enabled"
