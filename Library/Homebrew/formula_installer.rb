@@ -158,15 +158,6 @@ class FormulaInstaller
       if pour_bottle? :warn => true
         pour
         @poured_bottle = true
-
-        CxxStdlib.check_compatibility(
-          f, f.recursive_dependencies,
-          Keg.new(f.prefix), MacOS.default_compiler
-        )
-
-        tab = Tab.for_keg f.prefix
-        tab.poured_from_bottle = true
-        tab.write
       end
     rescue => e
       raise e if ARGV.homebrew_developer?
@@ -628,6 +619,15 @@ class FormulaInstaller
       path.cp_path_sub(f.bottle_prefix, HOMEBREW_PREFIX)
     end
     FileUtils.rm_rf f.bottle_prefix
+
+    CxxStdlib.check_compatibility(
+      f, f.recursive_dependencies,
+      Keg.new(f.prefix), MacOS.default_compiler
+    )
+
+    tab = Tab.for_keg(f.prefix)
+    tab.poured_from_bottle = true
+    tab.write
   end
 
   def audit_check_output(output)
