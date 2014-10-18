@@ -65,10 +65,10 @@ class Emacs < Formula
     end if build.include? "cocoa" and build.include? "japanese"
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on :x11 if build.with? "x"
   depends_on "d-bus" => :optional
-  depends_on 'gnutls' => :optional
+  depends_on "gnutls" => :optional
   depends_on "librsvg" => :optional
   depends_on "imagemagick" => :optional
   depends_on "mailutils" => :optional
@@ -100,10 +100,10 @@ class Emacs < Formula
     else
       args << "--without-dbus"
     end
-    if build.with? 'gnutls'
-      args << '--with-gnutls'
+    if build.with? "gnutls"
+      args << "--with-gnutls"
     else
-      args << '--without-gnutls'
+      args << "--without-gnutls"
     end
     args << "--with-rsvg" if build.with? "librsvg"
     args << "--with-imagemagick" if build.with? "imagemagick"
@@ -123,7 +123,7 @@ class Emacs < Formula
       args << "--with-ns" << "--disable-ns-self-contained"
       system "./configure", *args
       system "make"
-      system "make install"
+      system "make", "install"
       prefix.install "nextstep/Emacs.app"
 
       # Don't cause ctags clash.
@@ -140,7 +140,7 @@ class Emacs < Formula
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/Homebrew/homebrew/issues/8156
-        ENV.append 'LDFLAGS', '-lfreetype -lfontconfig'
+        ENV.append "LDFLAGS", "-lfreetype -lfontconfig"
         args << "--with-x"
         args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
       else
@@ -149,7 +149,7 @@ class Emacs < Formula
 
       system "./configure", *args
       system "make"
-      system "make install"
+      system "make", "install"
 
       # Don't cause ctags clash.
       do_not_install_ctags
