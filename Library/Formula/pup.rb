@@ -27,27 +27,27 @@ class Pup < Formula
   end
 
   # discovered via
-  # find . -name '*.go' -exec head -20 '{}' ';' | grep '.*\..*/' | sort | uniq
+  # find . -name "*.go" -exec head -20 "{}" ";" | grep ".*\..*/" | sort | uniq
   go_resource "github.com/fatih/color" do
     url "git://github.com/fatih/color.git",
         # this was just the `master` at the time of this Formula
-        :revision => '3161cccfa22c6243e02aa984cf2886d022024cec'
+        :revision => "3161cccfa22c6243e02aa984cf2886d022024cec"
   end
   go_resource "github.com/mattn/go-colorable" do
     url "git://github.com/mattn/go-colorable.git",
         # this was just the `master` at the time of this Formula
-        :revision => '043ae16291351db8465272edf465c9f388161627'
+        :revision => "043ae16291351db8465272edf465c9f388161627"
   end
   go_resource "code.google.com/p/go.net" do
     url "https://code.google.com/p/go.net/",
         # this was just the `tip` at the time of this Formula
-        :revision => 'b39f3d42a398493ea477d6aa63ae43d818d1f78a',
+        :revision => "b39f3d42a398493ea477d6aa63ae43d818d1f78a",
         :using => :hg
   end
   go_resource "code.google.com/p/go.text" do
     url "https://code.google.com/p/go.text/",
         # this was just the `tip` at the time of this Formula
-      :revision => '1ac75970ff9e986010d3d7d8549f1863951a9839',
+      :revision => "1ac75970ff9e986010d3d7d8549f1863951a9839",
       :using => :hg
   end
 
@@ -56,12 +56,12 @@ class Pup < Formula
     ENV.append_path "PATH", buildpath
 
     # fake our install so gox will see it
-    repo_dir = homepage.downcase.gsub /^https:../, ''
+    repo_dir = homepage.downcase.gsub /^https:../, ""
     my_pkg = buildpath / "src/#{repo_dir}"
-    prefix.install 'LICENSE'
+    prefix.install "LICENSE"
     my_pkg.install Dir["*"]
 
-    Language::Go.stage_deps resources, buildpath / 'src'
+    Language::Go.stage_deps resources, buildpath / "src"
 
     ENV["GOPATH"] = buildpath
     cd "src/github.com/mitchellh/gox" do
@@ -83,7 +83,7 @@ class Pup < Formula
 
   test do
     expected = %{Hello}
-    actual = %x{echo "<body><p>Hello</p></body>" | pup p 'text{}'}.strip
+    actual = %x{echo "<body><p>Hello</p></body>" | pup p "text{}"}.strip
     assert_equal expected, actual
   end
 end
