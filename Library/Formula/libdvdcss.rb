@@ -9,9 +9,10 @@ class Libdvdcss < Formula
 
   bottle do
     cellar :any
-    sha1 "fe98ffcbc81bc60bf24598bedd91de4bfc99ba09" => :mavericks
-    sha1 "bfc883c82af35d57661916d6456ed1a2983f7b73" => :mountain_lion
-    sha1 "6169cae9c293189f2e2d2dbe10680af48f76f7db" => :lion
+    revision 1
+    sha1 "7709d75dbacced986314aba9c05f7e9351d9aeca" => :yosemite
+    sha1 "dd85bca762d539179011f67a7196bd3a3392abac" => :mavericks
+    sha1 "8d1e8dd357ac40b115c785e054041616b79a2d73" => :mountain_lion
   end
 
   def install
