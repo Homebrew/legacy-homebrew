@@ -153,7 +153,7 @@ class FormulaInstaller
     f.active_spec.deprecated_flags.each do |deprecated_option|
       old_flag = deprecated_option.old_flag
       new_flag = deprecated_option.current_flag
-      opoo "#{f.name}: #{old_flag} is deprecated; use #{new_flag} instead!"
+      opoo "#{f.name}: #{old_flag} was deprecated; using #{new_flag} instead!"
     end
 
     oh1 "Installing #{Tty.green}#{f.name}#{Tty.reset}" if show_header?
