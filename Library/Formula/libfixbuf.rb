@@ -7,9 +7,9 @@ class Libfixbuf < Formula
 
   bottle do
     cellar :any
-    sha1 "0e55b16b511a8719219c97b3ae14284845cd6ee1" => :mavericks
-    sha1 "acfed7df74766b4a2a4d20e73d07657ea683b5ff" => :mountain_lion
-    sha1 "bea6a050f70031c1ca7998b7be77be39d8b9c815" => :lion
+    revision 1
+    sha1 "60c700ab713836edb6801bb269f7df2cefc2bbf0" => :yosemite
+    sha1 "58cd2e290fff5892a5e71d660755da72634e3ee2" => :mavericks
   end
 
   depends_on "pkg-config" => :build
