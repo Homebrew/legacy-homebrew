@@ -7,9 +7,9 @@ class Libxmp < Formula
 
   bottle do
     cellar :any
-    sha1 "5d838e452561152cbc569996d0b6c721a447bbc3" => :mavericks
-    sha1 "7ae31575dc3f7e052117a4d274ef65556095f485" => :mountain_lion
-    sha1 "39a97017b0ee409c2e6fe39a97c2be672393bcff" => :lion
+    revision 1
+    sha1 "05a81df01e7861ccefd955673bd1a17604bd4100" => :yosemite
+    sha1 "772668a1ad68de0596a42ee9c75c37b82f5d027f" => :mavericks
   end
 
   head do
