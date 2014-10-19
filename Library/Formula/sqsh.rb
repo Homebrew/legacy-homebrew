@@ -11,7 +11,7 @@ class Sqsh < Formula
   depends_on 'freetds'
   depends_on 'readline'
 
-  deprecated_option "enable-x", "with-x11"
+  deprecated_option "enable-x" => "with-x11"
 
   # this patch fixes detection of freetds being instaled, it was reported
   # upstream via email and should be fixed in the next release
