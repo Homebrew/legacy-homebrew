@@ -34,6 +34,8 @@ class Qt < Formula
   depends_on "mysql" => :optional
   depends_on "postgresql" => :optional
 
+  deprecated_option "qtdbus" => "with-d-bus"
+
   def install
     ENV.universal_binary if build.universal?
 
