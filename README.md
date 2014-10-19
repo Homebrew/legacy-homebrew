@@ -23,7 +23,7 @@ Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebre
 
 Who Are You?
 ------------
-Homebrew's current maintainers are [Misty De Meo][mistydemeo], [Adam Vandenberg][adamv], [Jack Nagel][jacknagel], [Mike McQuaid][mikemcquaid] and [Brett Koonce][asparagui].
+Homebrew's current maintainers are [Misty De Meo][mistydemeo], [Adam Vandenberg][adamv], [Jack Nagel][jacknagel], [Mike McQuaid][mikemcquaid], [Brett Koonce][asparagui] and [Tim Smith][tdsmith].
 
 Homebrew was originally created by [Max Howell][mxcl].
 
@@ -44,6 +44,7 @@ We accept tips through [Gittip][tip].
 [jacknagel]:https://github.com/jacknagel
 [mikemcquaid]:https://github.com/mikemcquaid
 [asparagui]:https://github.com/asparagui
+[tdsmith]:https://github.com/tdsmith
 [mxcl]:https://github.com/mxcl
 [formula]:https://github.com/Homebrew/homebrew/tree/master/Library/Formula/
 [braumeister]:http://braumeister.org

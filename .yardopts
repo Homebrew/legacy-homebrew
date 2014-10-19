@@ -1,0 +1,4 @@
+--title "Homebrew"
+--main Library/Homebrew/API.md
+Library/Homebrew/**/*.rb
+*.md

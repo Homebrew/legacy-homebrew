@@ -74,8 +74,7 @@ class Gd < Formula
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/pngtogd", test_png, "gd_test.gd"
+    system "#{bin}/pngtogd", test_fixtures("test.png"), "gd_test.gd"
     system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
   end
 end

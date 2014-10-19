@@ -4,12 +4,13 @@ class Libmspub < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libmspub"
   url "http://dev-www.libreoffice.org/src/libmspub/libmspub-0.1.1.tar.bz2"
   sha1 "0a6743a07ee3393bd4437a8bbee12fa62c9cd0f4"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "25a8271a146caaa1074ee71599f8e0b6baf5d81e" => :mavericks
-    sha1 "ce8627de1435ad221b4f631f48999ec260278eee" => :mountain_lion
-    sha1 "7096aed5efd72e4cfae1f383e51402745fd2e0a2" => :lion
+    sha1 "d68c4429528e006a76a44936f4295bb3846759c2" => :mavericks
+    sha1 "dd9ce8854f4970534bcfb618bb8e67294976a104" => :mountain_lion
+    sha1 "1a2a88cf22beb35af91dfe0d89966817d5a861b3" => :lion
   end
 
   depends_on "pkg-config" => :build

@@ -187,6 +187,9 @@ module OS
 
       def detect_version
         [MAVERICKS_PKG_ID, MAVERICKS_NEW_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+          if MacOS.version >= :mavericks
+            next unless File.exist?("#{MAVERICKS_PKG_PATH}/usr/bin/clang")
+          end
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end

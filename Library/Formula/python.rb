@@ -1,17 +1,16 @@
 require "formula"
 
 class Python < Formula
-  homepage "http://www.python.org"
-  head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
+  homepage "https://www.python.org"
+  head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
+  url "https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
   sha1 "511960dd78451a06c9df76509635aeec05b2051a"
-  revision 1
+  revision 2
 
   bottle do
-    revision 2
-    sha1 "f1244c117036a733742f128f8a168dcb0568675d" => :mavericks
-    sha1 "41f27fc515410ff728316e994be6f471520e5c90" => :mountain_lion
-    sha1 "cab018e86b60e5a8a8115581a2aa3390b18b3080" => :lion
+    sha1 "b84f255563bb7c86c15329b534d64ab2c8fcb7ba" => :mavericks
+    sha1 "8921690c3c855ab0a06c76d8c4a2cdf9702b9fdb" => :mountain_lion
+    sha1 "61d735d94ae8e84c9fdc3bba2af16233aaabda29" => :lion
   end
 
   option :universal
