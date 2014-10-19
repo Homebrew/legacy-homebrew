@@ -8,9 +8,10 @@ class Libidn < Formula
 
   bottle do
     cellar :any
-    sha1 "a44c5f19b4814f6c32ecb9d13f7043095348df2c" => :mavericks
-    sha1 "aec417a8c628313757dad09ff19a2ce3708a2d96" => :mountain_lion
-    sha1 "74eabd145413365737b9cae31235a9c6e90f24e5" => :lion
+    revision 1
+    sha1 "ee3fa3bc8ab104553777ed22dc080178bf264bd0" => :yosemite
+    sha1 "9343d41b0a0ea4f1dd895eafa2f893e133f8cf76" => :mavericks
+    sha1 "35fd90e1199a09fb4d5f85ad0088858279ea002f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
