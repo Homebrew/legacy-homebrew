@@ -7,9 +7,9 @@ class Libewf < Formula
 
   bottle do
     cellar :any
-    sha1 "b1fabc308e90d9972da6d63076946ddd7f28d43f" => :mavericks
-    sha1 "f44554f885887404ae2f6d7e124d775706f61d45" => :mountain_lion
-    sha1 "a64fca272567e8cfad605b4fd8423fd90fe075b7" => :lion
+    revision 1
+    sha1 "402eaa3c798f989cdaaea037aa4042813f27a19c" => :yosemite
+    sha1 "efc08c4c055d93a533e833fa99339d29bd12aee2" => :mavericks
   end
 
   def install
