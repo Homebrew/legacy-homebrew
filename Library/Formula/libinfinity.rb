@@ -6,9 +6,9 @@ class Libinfinity < Formula
   sha1 "93477ccefcedf28bba7f709f3387920040cbcedc"
 
   bottle do
-    sha1 "e361f9f9fe5323bddccb4d47966a9920b2d93c39" => :mavericks
-    sha1 "5be4eb2a739c4bbe00f409b81f9721577809d861" => :mountain_lion
-    sha1 "e99f4d2708964047363a20ee31b0acd16272c784" => :lion
+    sha1 "a82073981d1c5e79dc509ca7bf0a35256c19ccbb" => :yosemite
+    sha1 "7c3d790b92bcb06e64b102f93839f82546e9ab19" => :mavericks
+    sha1 "bc5f466be269f8c3a7a23cf4e09c0391681e3b1c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
