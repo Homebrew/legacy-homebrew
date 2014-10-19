@@ -246,11 +246,25 @@ if MacOS.version >= "10.9"
   end
 
   def check_xcode_up_to_date
-    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
+      s = <<-EOS.undent
       Your Xcode (#{MacOS::Xcode.version}) is outdated
       Please update to Xcode #{MacOS::Xcode.latest_version}.
-      Xcode can be updated from the App Store.
       EOS
+      if MacOS.version == :yosemite && MacOS::Xcode.latest_version == "6.1"
+        s += <<-EOS.undent
+          Xcode 6.1 is required on Yosemite to compile anything (6.0.1 does not include
+          the 10.10 SDK). Apple have not yet uploaded it to the App Store. Instead it must
+          be downloaded from:
+            https://developer.apple.com/downloads/download.action?path=Developer_Tools/xcode_6.1/xcode_6.1.dmg
+
+          For some software installing the CLT may be enough:
+            xcode-select --install
+        EOS
+      else
+        s += "Xcode can be updated from the App Store."
+      end
+      s
     end
   end
 
