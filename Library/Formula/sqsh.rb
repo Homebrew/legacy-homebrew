@@ -7,9 +7,11 @@ class Sqsh < Formula
 
   option "enable-x", "Enable X windows support"
 
-  depends_on :x11 if build.include? "enable-x"
+  depends_on :x11 => :optional
   depends_on 'freetds'
   depends_on 'readline'
+
+  deprecated_option "enable-x", "with-x11"
 
   # this patch fixes detection of freetds being instaled, it was reported
   # upstream via email and should be fixed in the next release
@@ -26,7 +28,7 @@ class Sqsh < Formula
     ENV['LIBDIRS'] = readline.opt_lib
     ENV['INCDIRS'] = readline.opt_include
 
-    if build.include? "enable-x"
+    if build.with? "x11"
       args << "--with-x"
       args << "--x-libraries=#{MacOS::X11.lib}"
       args << "--x-includes=#{MacOS::X11.include}"
