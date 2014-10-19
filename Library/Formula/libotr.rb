@@ -7,9 +7,10 @@ class Libotr < Formula
 
   bottle do
     cellar :any
-    sha1 "f49e2b138533aa7777b12cb5fdf5d86f5f5db72b" => :mavericks
-    sha1 "e36eb2e9cb4a32c07d0c78d60ef5d1d7031c1706" => :mountain_lion
-    sha1 "5f80d7daeb377eb938a0166b6c21901fad271eab" => :lion
+    revision 1
+    sha1 "bca1aa0c737cb530a3fd3c0a35c72e944e963a23" => :yosemite
+    sha1 "c46f13b234c05c9582a174008a4ef9e62935ac94" => :mavericks
+    sha1 "a5b6552c4a4b477a4ddce1c612728a3e58986800" => :mountain_lion
   end
 
   depends_on "libgcrypt"
