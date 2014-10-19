@@ -36,7 +36,7 @@ class Mplayer < Formula
   depends_on 'libcaca' => :optional
   depends_on :x11 => :optional
 
-  deprecated_option "with-x", "with-x11"
+  deprecated_option "with-x" => "with-x11"
 
   if build.with? 'osd' or build.with? 'x11'
     # These are required for the OSD. We can get them from X11, or we can
