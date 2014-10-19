@@ -11,9 +11,10 @@ class Cairo < Formula
   revision 1
 
   bottle do
-    sha1 "10638baaadb72abb460f2693019ad93f95b0c93a" => :mavericks
-    sha1 "285f291b386d46d86bd6d0360f9f9121170d72bc" => :mountain_lion
-    sha1 "a854c7d9c3cb0736ae09512384dc943425a29b43" => :lion
+    revision 1
+    sha1 "25b504ff3e601cc87d5f64b2bcc04712aef9ba62" => :yosemite
+    sha1 "e111154f2b17cdab98ee0606e286761e72ee019c" => :mavericks
+    sha1 "14926972549bc24365481a627ed8e9d6d02bd2c5" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
