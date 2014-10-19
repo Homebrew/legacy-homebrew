@@ -7,9 +7,9 @@ class Libzip < Formula
 
   bottle do
     cellar :any
-    sha1 "ed81b49df9a37a76c79ea81ea24270e85bcfcf7b" => :mavericks
-    sha1 "c6ae9c8a7d990eda3120dcdedc8eaedba24be174" => :mountain_lion
-    sha1 "075beaec1419bf7b0aaeb03a492acc70a731e3ba" => :lion
+    revision 1
+    sha1 "ce30c8d305a9e9472448f5d91b28714a5aa2a576" => :yosemite
+    sha1 "b9efac49af4b11a0e9f45d849b6d5b0b6c8e2a6e" => :mavericks
   end
 
   option :universal
