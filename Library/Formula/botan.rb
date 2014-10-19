@@ -6,6 +6,12 @@ class Botan < Formula
   sha1 "078fcb03c9ef0691621eda3ca312ebf08b3890cc"
   revision 1
 
+  bottle do
+    sha1 "89d491598019e57540e22089c3c7a3d45a845adc" => :yosemite
+    sha1 "aa5b7be38ab12c1755f3cb8dbee104d9514f27b2" => :mavericks
+    sha1 "2efea61b9f63b8344617a90eb4dc0445baab0243" => :mountain_lion
+  end
+
   option "enable-debug", "Enable debug build of Botan"
 
   depends_on "pkg-config" => :build
