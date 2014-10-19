@@ -1,11 +1,12 @@
 require 'formula'
 
 class Mess < Formula
-  homepage 'http://www.mess.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => '31397'
-  version '0.154'
+  homepage "http://www.mess.org/"
+  url "https://github.com/mamedev/mame/archive/mame0155.tar.gz"
+  sha1 "0e56d53dd6dd916b3c29387112a7042befc501bd"
+  version "0.155"
 
-  head 'svn://dspnet.fr/mame/trunk'
+  head "https://github.com/mamedev/mame.git"
 
   bottle do
     cellar :any
