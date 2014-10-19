@@ -35,7 +35,8 @@ class Cmake < Formula
     sha1 "842240c9febb4123918cf62a3cea5ca4207ad860" => :lion
   end
 
-  depends_on :python => :build if MacOS.version <= :snow_leopard
+  option "without-docs", "Don't build man pages"
+  depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
 
   resource "sphinx" do
     url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
@@ -65,16 +66,22 @@ class Cmake < Formula
   depends_on NoExpatFramework
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
-    %w[markupsafe docutils pygments jinja2 sphinx].each do |r|
-      resource(r).stage do
-        system "python", "setup.py", "install", "--prefix=#{buildpath}/sphinx"
+    if build.with? "docs"
+      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      %w[markupsafe docutils pygments jinja2 sphinx].each do |r|
+        resource(r).stage do
+          pyargs = ["setup.py", "install", "--prefix=#{buildpath}/sphinx"]
+          unless r == "docutils"
+            pyargs << "--single-version-externally-managed" << "--record=installed.txt"
+          end
+          system "python", *pyargs
+        end
       end
-    end
 
-    # There is an existing issue around OS X & Python locale setting
-    # See http://bugs.python.org/issue18378#msg215215 for explanation
-    ENV["LC_ALL"] = "en_US.UTF-8"
+      # There is an existing issue around OS X & Python locale setting
+      # See http://bugs.python.org/issue18378#msg215215 for explanation
+      ENV["LC_ALL"] = "en_US.UTF-8"
+    end
 
     args = %W[
       --prefix=#{prefix}
@@ -83,9 +90,10 @@ class Cmake < Formula
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
       --mandir=/share/man
-      --sphinx-man
-      --sphinx-build=#{buildpath}/sphinx/bin/sphinx-build
     ]
+    if build.with? "docs"
+      args << "--sphinx-man" << "--sphinx-build=#{buildpath}/sphinx/bin/sphinx-build"
+    end
 
     system "./bootstrap", *args
     system "make"
