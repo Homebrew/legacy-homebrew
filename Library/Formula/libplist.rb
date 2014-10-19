@@ -9,9 +9,10 @@ class Libplist < Formula
 
   bottle do
     cellar :any
-    sha1 "704dc72fd28c670551533f438ab642e80d269ce2" => :mavericks
-    sha1 "0393087a627ed94d2755717360ad110aef1276f3" => :mountain_lion
-    sha1 "b7e92b4a4b92e46fe9e57dcfdd382a558d04832f" => :lion
+    revision 1
+    sha1 "cdb47a2580cb22b91f5f7e54c4c931656d85c191" => :yosemite
+    sha1 "0a09124d49ed3f662191fc4d11dcd9fa01530c8f" => :mavericks
+    sha1 "60f6e063e274c92a220e4f926e4acec7c76c25be" => :mountain_lion
   end
 
   option "with-python", "Enable Cython Python bindings"
