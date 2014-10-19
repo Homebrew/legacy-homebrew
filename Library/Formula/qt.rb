@@ -17,10 +17,10 @@ class Qt < Formula
   end
 
   bottle do
-    revision 5
-    sha1 "34d66e17aaed4d2067297d4a64482d56f2382339" => :mavericks
-    sha1 "9ab96caa65e8b707deeb27caaff9ad8b1e906b2c" => :mountain_lion
-    sha1 "18b1d1a4aa89f92c4b9a9f202a95cc0896e03a9d" => :lion
+    revision 6
+    sha1 "bedfe4e950676a85f9653732d33767fbcce45da5" => :yosemite
+    sha1 "8ee072473ababd49fe85bc6f9bf5ddcdafea8c26" => :mavericks
+    sha1 "668ac1a65811e0ff23230a698725b383c61c1d13" => :mountain_lion
   end
 
   head "git://gitorious.org/qt/qt.git", :branch => '4.8'
