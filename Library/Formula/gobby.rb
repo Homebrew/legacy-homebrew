@@ -7,6 +7,12 @@ class Gobby < Formula
 
   head "git://git.0x539.de/git/gobby.git"
 
+  bottle do
+    sha1 "8488391352fc1563e68f56a6916684988c18d218" => :yosemite
+    sha1 "b40c4cd2fd44488345890d8e21e316e19751f587" => :mavericks
+    sha1 "29987428159b13b57568f44ca260df165b6ee66c" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gtkmm"
