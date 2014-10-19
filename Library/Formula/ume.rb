@@ -10,9 +10,9 @@ class Ume < Formula
 
   bottle do
     cellar :any
-    sha1 "9355c003f65ff30d16dbdd304a340bcb5fb81b61" => :mavericks
-    sha1 "d88f548400574c40e2df081e50ec37c1381edd07" => :mountain_lion
-    sha1 "4a8c91568ef915b0cad541e7b8db71c3545808ef" => :lion
+    sha1 "9850cfef7179c418ce1104edcdcfc0682f7979b3" => :yosemite
+    sha1 "2afbdf96a4c6f45b04ada32debfdb86ef08aa2d2" => :mavericks
+    sha1 "4e4684c5682424c294bc76d3ff12d9cdf3cdca88" => :mountain_lion
   end
 
   depends_on 'sdl'
