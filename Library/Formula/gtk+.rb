@@ -6,10 +6,10 @@ class Gtkx < Formula
   sha256 '12ceb2e198c82bfb93eb36348b6e9293c8fdcd60786763d04cfec7ebe7ed3d6d'
 
   bottle do
-    revision 1
-    sha1 "4bea858d56bd72ea807c3a65b51518f2fabbd088" => :mavericks
-    sha1 "df71563bc01f092248dd6cce12f071887796eb19" => :mountain_lion
-    sha1 "9b42bdb4a928a69f18b5192a333652612c92e16c" => :lion
+    revision 2
+    sha1 "0d3be75e89887d0728d9fb3df6146e4b5b6305bf" => :yosemite
+    sha1 "463b895e62bded89515b626b1c28218f9e4c9e9b" => :mavericks
+    sha1 "c05e08a823fe2e710af29a7aa94b49692e22addd" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
