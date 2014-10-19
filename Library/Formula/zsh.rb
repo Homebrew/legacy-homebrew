@@ -7,10 +7,9 @@ class Zsh < Formula
   sha1 '1500191d16af8a71aec4f719a92775a074682096'
 
   bottle do
-    revision 1
-    sha1 "1ba405c49cb617bdc522f603928ae20f216f7ac8" => :mavericks
-    sha1 "f66774643770e198c8806d62181d629357a52f8e" => :mountain_lion
-    sha1 "872c033ec24fa0071e8fd14b688edcc2da3e46e6" => :lion
+    sha1 "83d646649569ade648db6a44c480709d63268a25" => :yosemite
+    sha1 "935990ced3a6d3a3027bac4b32ac8f031e8fa244" => :mavericks
+    sha1 "c6e8055106d0b939cec5674469099bfd63d53f9e" => :mountain_lion
   end
 
   depends_on 'gdbm'
