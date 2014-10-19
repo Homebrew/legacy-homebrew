@@ -116,7 +116,6 @@ class Imagemagick < Formula
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/identify", test_png
+    system "#{bin}/identify", test_fixtures("test.png")
   end
 end

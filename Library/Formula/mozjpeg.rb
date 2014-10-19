@@ -30,10 +30,9 @@ class Mozjpeg < Formula
   end
 
   test do
-    test_jpg = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.jpg"
     system "#{bin}/jpegtran", "-crop", "1x1",
                               "-transpose", "-optimize",
                               "-outfile", "out.jpg",
-                              test_jpg
+                              test_fixtures("test.jpg")
   end
 end
