@@ -7,9 +7,9 @@ class Libyubikey < Formula
 
   bottle do
     cellar :any
-    sha1 "e5cf353256f4e7ca7b18e00aeb9976eb772070e9" => :mavericks
-    sha1 "1b6c9c26b3cd5fd49fd9eae477b7cc2edd35e314" => :mountain_lion
-    sha1 "d7e5fbe2f2bbc8ac385f2b044539c686484357a4" => :lion
+    revision 1
+    sha1 "daad568fcab3dd93b6e04c5f387556d6967c0861" => :yosemite
+    sha1 "6180685ff58f83470f2b92ee3537b03c4de6fe96" => :mavericks
   end
 
   option :universal
