@@ -5,6 +5,8 @@ class Opus < Formula
   url 'http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz'
   sha1 '35005f5549e2583f5770590135984dcfce6f3d58'
 
+  option "with-custom-modes", "Enable custom-modes for opus see http://www.opus-codec.org/docs/html_api-1.1.0/group__opus__custom.html"
+
   head do
     url 'https://git.xiph.org/opus.git'
 
@@ -14,9 +16,15 @@ class Opus < Formula
   end
 
   def install
+    opts = []
+    opts << "--enable-custom-modes" if build.with? "custom-modes"
+
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking", "--disable-doc",
-                          "--prefix=#{prefix}"
+    system "./configure",
+      "--disable-dependency-tracking",
+      "--disable-doc",
+      "--prefix=#{prefix}",
+      *opts
     system "make install"
   end
 end
