@@ -9,9 +9,9 @@ class Libvpx < Formula
   head "https://chromium.googlesource.com/webm/libvpx", :using => :git
 
   bottle do
-    sha1 "b1686149e88d18545bc41ba1d9a581a081f215f7" => :mavericks
-    sha1 "bb16fa011de3155d93e4d403e9d95c58d62b828e" => :mountain_lion
-    sha1 "b2567fb8f49b2b57bbd3b5472f7f5eea9dfd8f0f" => :lion
+    revision 1
+    sha1 "9ce8fe3ae1d8fa737bc3d900b289da0838c2500a" => :yosemite
+    sha1 "65a8b42abf0c83ed0e9faec7791150b68836f862" => :mavericks
   end
 
   depends_on 'yasm' => :build
