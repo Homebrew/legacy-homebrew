@@ -42,7 +42,6 @@ class Dnsrend < Formula
   end
 
   test do
-    test_pcap = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.pcap"
-    system "#{bin}/dnsrend", test_pcap
+    system "#{bin}/dnsrend", test_fixtures("test.pcap")
   end
 end

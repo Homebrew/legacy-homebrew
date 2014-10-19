@@ -498,6 +498,10 @@ class Formula
   def test
   end
 
+  def test_fixtures(file)
+    HOMEBREW_LIBRARY.join("Homebrew", "test", "fixtures", file)
+  end
+
   protected
 
   # :startdoc:
