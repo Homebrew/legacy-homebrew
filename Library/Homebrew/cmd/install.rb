@@ -102,6 +102,8 @@ module Homebrew
   end
 
   def install_formula f
+    f.print_tap_action
+
     fi = FormulaInstaller.new(f)
     fi.options             = f.build.used_options
     fi.ignore_deps         = ARGV.ignore_deps?
