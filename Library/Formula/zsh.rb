@@ -2,9 +2,9 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.6/zsh-5.0.6.tar.bz2'
-  mirror 'http://www.zsh.org/pub/zsh-5.0.6.tar.bz2'
-  sha1 'a626aa1923cc1bd4f8f2463e947a3f3cb340b0ea'
+  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.7/zsh-5.0.7.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.7.tar.bz2'
+  sha1 '1500191d16af8a71aec4f719a92775a074682096'
 
   bottle do
     revision 1
