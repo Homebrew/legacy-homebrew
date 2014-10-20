@@ -328,11 +328,20 @@ class Keg
     return unless dst.symlink?
 
     src = dst.resolved_path
+
     # src itself may be a symlink, so check lstat to ensure we are dealing with
     # a directory, and not a symlink pointing at a directory (which needs to be
     # treated as a file). In other words, we only want to resolve one symlink.
-    # If it isn't a directory, make_relative_symlink will raise an exception.
-    if src.lstat.directory?
+
+    begin
+      stat = src.lstat
+    rescue Errno::ENOENT
+      # dst is a broken symlink, so remove it.
+      dst.unlink unless mode.dry_run
+      return
+    end
+
+    if stat.directory?
       keg = Keg.for(src)
       dst.unlink unless mode.dry_run
       keg.link_dir(src, mode) { :mkpath }
