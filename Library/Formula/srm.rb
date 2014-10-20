@@ -11,6 +11,12 @@ class Srm < Formula
     system "make"
     system "make", "install", "DESTDIR=#{prefix}", "MAN_DIR=#{man}"
   end
+
+  test do
+    (testpath/"CMakeLists.txt").write("find_package(Ruby)")
+    system "#{bin}/srm", "CMakeLists.txt"
+    system "test ! -f CMakeLists.txt"
+  end
 end
 
 __END__
