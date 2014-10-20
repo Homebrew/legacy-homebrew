@@ -7,9 +7,10 @@ class Yasm < Formula
 
   bottle do
     cellar :any
-    sha1 "d8d6f7e68d2d0ff8897a9b160e49c5cc4ad3f97d" => :mavericks
-    sha1 "94596d8c7b99094001d3313624970070e7d8e920" => :mountain_lion
-    sha1 "07116ee2758d99aed65a3aaf59a7f9cbb9a982a8" => :lion
+    revision 1
+    sha1 "86705ca09a33d0ba81000cadef9afe46a2072a70" => :yosemite
+    sha1 "670a8b4722cfa032e7b0abcc618d54d0c32631bf" => :mavericks
+    sha1 "772d7dbb840d3beb794980d1386f86db1cfd5bb4" => :mountain_lion
   end
 
   head do

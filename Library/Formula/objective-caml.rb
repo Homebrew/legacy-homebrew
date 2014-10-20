@@ -12,10 +12,10 @@ class ObjectiveCaml < Formula
   depends_on :x11 => :recommended
 
   bottle do
-    revision 3
-    sha1 "33e3a1cb87802572e531c801958ca6cdeee4cfbc" => :mavericks
-    sha1 "c418ec76d9f5eba9e1c2151a6e1c89e91da8d212" => :mountain_lion
-    sha1 "7da29c24adfd64772e2c3cca8b8502a1d6ce9fe0" => :lion
+    revision 4
+    sha1 "2a6605b51a640356b1ad861d942e0c63ece8facf" => :yosemite
+    sha1 "a98ff68b548732ab495ba8b38bc6958fed4c1d37" => :mavericks
+    sha1 "bde3be019fb30cc0221ddf78f4725b018f56b651" => :mountain_lion
   end
 
   # recent versions of clang fail with a hard error if -fno-defer-pop

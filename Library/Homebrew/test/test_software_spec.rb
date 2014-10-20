@@ -72,6 +72,25 @@ class SoftwareSpecTests < Homebrew::TestCase
     assert_equal "", @spec.options.first.description
   end
 
+  def test_deprecated_option
+    @spec.deprecated_option('foo' => 'bar')
+    assert @spec.deprecated_options.any?
+    assert_equal "foo", @spec.deprecated_options.first.old
+    assert_equal "bar", @spec.deprecated_options.first.current
+  end
+
+  def test_deprecated_options
+    @spec.deprecated_option(['foo1', 'foo2'] => 'bar1', 'foo3' => ['bar2', 'bar3'])
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo1", "bar1")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo2", "bar1")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo3", "bar2")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo3", "bar3")
+  end
+
+  def test_deprecated_option_raises_when_empty
+    assert_raises(ArgumentError) { @spec.deprecated_option({}) }
+  end
+
   def test_depends_on
     @spec.depends_on('foo')
     assert_equal 'foo', @spec.deps.first.name

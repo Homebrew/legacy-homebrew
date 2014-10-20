@@ -57,6 +57,8 @@ class Qt5 < Formula
 
   depends_on OracleHomeVar if build.with? "oci"
 
+  deprecated_option "qtdbus" => "with-d-bus"
+
   def install
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,

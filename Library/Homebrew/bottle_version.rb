@@ -16,6 +16,10 @@ class BottleVersion < Version
     m = /(00-\d+\.\d+(\.\d+)+)/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. 13-2.9.19 from libpano-13-2.9.19_1.yosemite.bottle.tar.gz
+    m = /\D+-(\d+-[\d\.]+)/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. 1.6.39 from pazpar2-1.6.39.mavericks.bottle.tar.gz
     m = /-(\d+\.\d+(\.\d+)+)/.match(stem)
     return m.captures.first unless m.nil?

@@ -9,6 +9,7 @@ class Freetype < Formula
   bottle do
     cellar :any
     revision 1
+    sha1 "1c955caa22b5226b6ad18c03fb9a6ffb9c88659b" => :yosemite
     sha1 "f31e54b32a34a69998e120706ba13a99a948c190" => :mavericks
     sha1 "d2f7099c87fe2dc8e969337326f1fe3036d4874e" => :mountain_lion
     sha1 "df246259dde3352bac99dc08af757604c06a2e09" => :lion

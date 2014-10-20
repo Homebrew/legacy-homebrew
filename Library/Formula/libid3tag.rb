@@ -7,9 +7,10 @@ class Libid3tag < Formula
 
   bottle do
     cellar :any
-    sha1 "fc017adc0de8aaf7605bb8a6cc5c0a2fac2445c9" => :mavericks
-    sha1 "323b281abe8edd5e43644ce6804ac3057ad6fa59" => :mountain_lion
-    sha1 "e77397115b59362892efc13fed00e1e8ba06097e" => :lion
+    revision 1
+    sha1 "6af55775934ba5609bcc80b8f1127ae4037b4f58" => :yosemite
+    sha1 "c41d494aae79cc8b2f9fda797e3bbb6847f58535" => :mavericks
+    sha1 "b3ed68decc9453e3c72ab76898aa9237c7e5f350" => :mountain_lion
   end
 
   # patch for utf-16 (memory leaks), see https://bugs.launchpad.net/mixxx/+bug/403586
