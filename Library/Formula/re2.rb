@@ -24,9 +24,13 @@ class Re2 < Formula
                 # operator<<(std::ostream&, re2::StringPiece const&)
                 '__ZlsRSoRKN3re211StringPieceE'
     end
+    # As of writing, RE2 Makefile produces so extension instead of dylib
+    # extension and a fix is pending code review upstream:
+    # https://code-review.googlesource.com/#/c/3120/
+    inreplace "Makefile", "-dynamiclib $(LDFLAGS)", "-dynamiclib $(LDFLAGS) -Wl,-install_name,@rpath/libre2.dylib"
+    inreplace "Makefile", "libre2.so.$(SONAME).0.0", "libre2.$(SONAME).0.0.dylib"
+    inreplace "Makefile", "libre2.so.$(SONAME)", "libre2.$(SONAME).dylib"
+    inreplace "Makefile", "libre2.so", "libre2.dylib"
     system "make", "install", "prefix=#{prefix}"
-    mv lib/"libre2.so.0.0.0", lib/"libre2.0.0.0.dylib"
-    lib.install_symlink "libre2.0.0.0.dylib" => "libre2.0.dylib"
-    lib.install_symlink "libre2.0.0.0.dylib" => "libre2.dylib"
   end
 end
