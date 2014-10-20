@@ -8,12 +8,7 @@ class Srm < Formula
   patch :DATA
 
   def install
-    args = ["--prefix", prefix]
-
-    system "./configure", *args
-
     system "make"
-    # MAN1DIR, relative to the given prefix
     system "make", "install", "DESTDIR=#{prefix}", "MAN_DIR=#{man}"
   end
 end
