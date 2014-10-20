@@ -5,6 +5,13 @@ class Tutum < Formula
   url "https://github.com/tutumcloud/tutum-cli/archive/0.9.1.4.tar.gz"
   sha1 "fa736ce94b204966f101251b8f8287147a9de3ec"
 
+  bottle do
+    cellar :any
+    sha1 "b1cb67c8e2f312069f524076853bdaa573a5a06b" => :yosemite
+    sha1 "346eb88f4ed97ef6bfc005d7bdae37fbef1ad29d" => :mavericks
+    sha1 "63772b299987d56ecf696024040dc02dc277b522" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
