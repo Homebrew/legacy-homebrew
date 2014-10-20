@@ -342,13 +342,17 @@ class Keg
     end
 
     if stat.directory?
-      keg = Keg.for(src)
+      begin
+        keg = Keg.for(src)
+      rescue NotAKegError
+        puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
+        return
+      end
+
       dst.unlink unless mode.dry_run
       keg.link_dir(src, mode) { :mkpath }
       return true
     end
-  rescue NotAKegError
-    puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
   def make_relative_symlink dst, src, mode
