@@ -28,7 +28,7 @@ module Homebrew
       ARGV.formulae.each do |f|
         # Building head-only without --HEAD is an error
         if not ARGV.build_head? and f.stable.nil?
-          raise CannotInstallFormulaError, <<-EOS.undent
+          raise <<-EOS.undent
           #{f.name} is a head-only formula
           Install with `brew install --HEAD #{f.name}`
           EOS
@@ -36,7 +36,7 @@ module Homebrew
 
         # Building stable-only with --HEAD is an error
         if ARGV.build_head? and f.head.nil?
-          raise CannotInstallFormulaError, "No head is defined for #{f.name}"
+          raise "No head is defined for #{f.name}"
         end
       end
 
