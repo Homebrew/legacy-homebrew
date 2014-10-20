@@ -12,9 +12,16 @@ class Netdiscover < Formula
   depends_on "libnet"
 
   def install
-    system "./autogen.sh" if build.head?
-    system "autoconf" if !build.head?
+    if build.head?
+      system "./autogen.sh"
+    else
+      system "autoconf"
+    end
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    system "(#{sbin}/netdiscover --help; true)"
   end
 end
