@@ -9,9 +9,10 @@ class Libgit2 < Formula
 
   bottle do
     cellar :any
-    sha1 "e0588a7e02a24b141025ad5e6e507cb09831229d" => :mavericks
-    sha1 "e8efca2c42c1053c8b468ff73e81eec1380bec14" => :mountain_lion
-    sha1 "ede1558e9594d987ffa5ce33caec8edfdb1f6933" => :lion
+    revision 1
+    sha1 "264ee00fbd0df428ac1de74ae7d74f98d8109066" => :yosemite
+    sha1 "809e858db9e378949989b23b045b527a34af3b12" => :mavericks
+    sha1 "d833de5afde015cf8905fbf070083023cc1d9201" => :mountain_lion
   end
 
   depends_on "cmake" => :build
