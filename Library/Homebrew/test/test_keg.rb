@@ -239,4 +239,20 @@ class LinkTests < Homebrew::TestCase
     a.uninstall
     b.uninstall
   end
+
+  def test_removes_broken_symlinks_that_conflict_with_directories
+    a = HOMEBREW_CELLAR.join("a", "1.0")
+    a.join("lib", "foo").mkpath
+
+    keg = Keg.new(a)
+
+    link = HOMEBREW_PREFIX.join("lib", "foo")
+    link.parent.mkpath
+    link.make_symlink(@nonexistent)
+
+    keg.link
+  ensure
+    keg.unlink
+    keg.uninstall
+  end
 end
