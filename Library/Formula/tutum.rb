@@ -66,6 +66,6 @@ class Tutum < Formula
   end
 
   test do
-    system "#{bin}/tutum", "--version"
+    system "#{bin}/tutum", "container"
   end
 end
