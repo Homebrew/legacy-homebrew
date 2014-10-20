@@ -1,23 +1,24 @@
-require 'formula'
+require "formula"
 
 class Fuse4xKext < Formula
-  homepage 'http://fuse4x.github.io'
-  url 'https://github.com/fuse4x/kext/archive/fuse4x_0_9_2.tar.gz'
-  sha1 '4222c14b38325d9e41fb0925d2681dda3e73e861'
+  homepage "http://fuse4x.github.io"
+  url "https://github.com/fuse4x/kext/archive/fuse4x_0_9_2.tar.gz"
+  sha1 "4222c14b38325d9e41fb0925d2681dda3e73e861"
 
   bottle do
     cellar :any
     revision 4
-    sha1 '1d1ab89b714ea897c981f356a659afaff977a0da' => :mavericks
-    sha1 '0a03e6a51e40fe3456b8f132549516e4cb996985' => :mountain_lion
-    sha1 '6f306f38557d016f5eaa0c999f2092d0767870e6' => :lion
+    sha1 "1d1ab89b714ea897c981f356a659afaff977a0da" => :mavericks
+    sha1 "0a03e6a51e40fe3456b8f132549516e4cb996985" => :mountain_lion
+    sha1 "6f306f38557d016f5eaa0c999f2092d0767870e6" => :lion
   end
 
   depends_on :xcode => :build
+  depends_on UnsignedKextRequirement
 
   def install
-    ENV.delete('CC')
-    ENV.delete('CXX')
+    ENV.delete("CC")
+    ENV.delete("CXX")
 
     args = [
       "-sdk",
@@ -28,7 +29,7 @@ class Fuse4xKext < Formula
       "SYMROOT=build",
       # Build a 32-bit kernel extension on Leopard and a fat binary for Snow
       # Leopard/Lion.
-      "ARCHS=i386 #{'x86_64' if MacOS.prefer_64_bit?}", 'ONLY_ACTIVE_ARCH=NO'
+      "ARCHS=i386 #{"x86_64" if MacOS.prefer_64_bit?}", "ONLY_ACTIVE_ARCH=NO"
     ]
 
     xcodebuild *args
@@ -62,7 +63,7 @@ class Fuse4xKext < Formula
     # filesystem layout convention from Apple.
     # Check if the user has fuse4x kext in the old location.
     # Remove this check Q4 2012 when it become clear that everyone migrated to 0.9.0+
-    if File.exist?('/System/Library/Extensions/fuse4x.kext/')
+    if File.exist?("/System/Library/Extensions/fuse4x.kext/")
       message += <<-EOS.undent
         You have older version of fuse4x installed. Please remove it by running:
 

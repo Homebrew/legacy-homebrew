@@ -15,6 +15,7 @@ class Osxfuse < Formula
   depends_on :macos => :snow_leopard
   depends_on :xcode => :build
   depends_on ConflictsWithBinaryOsxfuse
+  depends_on UnsignedKextRequirement
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
