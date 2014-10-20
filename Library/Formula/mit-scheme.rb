@@ -28,7 +28,7 @@ class MitScheme < Formula
 
     # Take care of some hard-coded paths
     inreplace %w(6001/edextra.scm 6001/floppy.scm compiler/etc/disload.scm microcode/configure
-    edwin/techinfo.scm edwin/unix.scm lib/include/configure lib/include/option.h
+    edwin/techinfo.scm edwin/unix.scm lib/include/configure
     swat/c/tk3.2-custom/Makefile swat/c/tk3.2-custom/tcl/Makefile swat/scheme/other/btest.scm) do |s|
       s.gsub! "/usr/local", prefix
     end
