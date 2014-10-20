@@ -81,11 +81,16 @@ class Subliminal < Formula
     sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
   end
 
+  resource "colorlog" do
+    url "https://pypi.python.org/packages/source/c/colorlog/colorlog-2.4.0.tar.gz"
+    sha1 "30b4a621ec372ba4ab367cb5446a4a4293f6e9ed"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", "#{libexec}/lib/python2.7/site-packages"
-    %w[six charade guessit pysrt html5lib enzyme chardet dogpile.core requests babelfish beautifulsoup4 dogpile.cache python-dateutil].each do |r|
+    %w[six charade guessit pysrt html5lib enzyme chardet dogpile.core requests babelfish beautifulsoup4 dogpile.cache python-dateutil colorlog].each do |r|
       resource(r).stage do
-        system "python", "setup.py", "install", "--prefix=#{libexec}"
+        system "python", "setup.py", "install", "--prefix=#{libexec}", "--record=installed.txt"
       end
     end
 
