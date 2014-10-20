@@ -7,9 +7,10 @@ class Libnice < Formula
 
   bottle do
     cellar :any
-    sha1 "75a3d506cc2c9cc994cbbb441c738e84a6e5928a" => :mavericks
-    sha1 "c12e39da19cfe80dad26c5dcdf4c39bffb5941f5" => :mountain_lion
-    sha1 "33d289f519c836b381440b547e258a470abc7bd2" => :lion
+    revision 1
+    sha1 "8040ab61239c18ac7fd55c661c810115c57ad94f" => :yosemite
+    sha1 "d7e063ed0efe3d2d1873843a9b15a0a3e6ec0b51" => :mavericks
+    sha1 "e5bc420dad36c42a8cfc57a1a089aa4f6dd1d122" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
