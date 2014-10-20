@@ -226,11 +226,17 @@ class LinkTests < Homebrew::TestCase
     a.join("lib", "example2").make_symlink "example"
     b.join("lib", "example2").mkpath
 
-    Keg.new(a).link
+    a = Keg.new(a)
+    b = Keg.new(b)
+    a.link
 
     lib = HOMEBREW_PREFIX.join("lib")
     assert_equal 2, lib.children.length
-    assert_raises(Keg::ConflictError) { Keg.new(b).link }
+    assert_raises(Keg::ConflictError) { b.link }
     assert_equal 2, lib.children.length
+  ensure
+    a.unlink
+    a.uninstall
+    b.uninstall
   end
 end
