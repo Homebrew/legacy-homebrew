@@ -8,9 +8,10 @@ class Libxmi < Formula
 
   bottle do
     cellar :any
-    sha1 "a78fe7d813f10d8f0f8473beac021676677a0c80" => :mavericks
-    sha1 "40b646ef16c03659880d93ca80c3fa2a1589b156" => :mountain_lion
-    sha1 "d5cd3ebb9df57a37855282bee6a198859253c50d" => :lion
+    revision 1
+    sha1 "883a10b3f456d9ac39ca1442253a90167157b50c" => :yosemite
+    sha1 "b7d2b8c174df9ac8b9e77aada7efe2e94384a913" => :mavericks
+    sha1 "d21c5eb24647aa5d18f589ab4327c215df6383f6" => :mountain_lion
   end
 
   def install
