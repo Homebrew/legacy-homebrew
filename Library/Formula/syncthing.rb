@@ -5,9 +5,9 @@ class Syncthing < Formula
   url "https://github.com/calmh/syncthing.git", :tag => "v0.10.2"
 
   bottle do
-    sha1 "d6f3b070e9f43c2caba3bd630a150dd7195dfd4d" => :mavericks
-    sha1 "84f35ae41c48fc9f2a8830859e9fd562d0f9a026" => :mountain_lion
-    sha1 "4e9abc8e955640d89d22c43f39314d9b626a6e04" => :lion
+    sha1 "27c1d601fe49f81cb604a24f65d0c7328bc5b4ec" => :yosemite
+    sha1 "05bf61e1d694a9efc563d4b41628e15381f8f339" => :mavericks
+    sha1 "62b1a3c34fcbc370d332661198ad7e60ce792edd" => :mountain_lion
   end
 
   depends_on "go" => :build
