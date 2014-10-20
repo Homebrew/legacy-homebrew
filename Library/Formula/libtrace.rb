@@ -6,9 +6,10 @@ class Libtrace < Formula
   sha1 "208908ceee0dde9a556dc4cf1d5dac7320f6bae3"
 
   bottle do
-    sha1 "aed7a85b453b452ca98c55b8d6c534f7aeea283a" => :mavericks
-    sha1 "578e479abb34754a0a6ceee8e9f20cafdce09a47" => :mountain_lion
-    sha1 "673b919a3da93e90bfbd25e2401507a9d2cc434e" => :lion
+    revision 1
+    sha1 "21ed3acff5c080c76ff0e49f21b7d8e0333478d8" => :yosemite
+    sha1 "d2cf23b52f028f5094daef2c0e62c8340927c717" => :mavericks
+    sha1 "0e334011d10d9212b30bf633cdadbaa714f90007" => :mountain_lion
   end
 
   def install
