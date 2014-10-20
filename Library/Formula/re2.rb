@@ -24,6 +24,7 @@ class Re2 < Formula
                 # operator<<(std::ostream&, re2::StringPiece const&)
                 '__ZlsRSoRKN3re211StringPieceE'
     end
+    inreplace "Makefile", "-dynamiclib $(LDFLAGS)", "-dynamiclib $(LDFLAGS) -Wl,-install_name,@rpath/libre2.dylib"
     system "make", "install", "prefix=#{prefix}"
     mv lib/"libre2.so.0.0.0", lib/"libre2.0.0.0.dylib"
     lib.install_symlink "libre2.0.0.0.dylib" => "libre2.0.dylib"
