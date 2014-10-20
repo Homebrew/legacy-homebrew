@@ -7,9 +7,10 @@ class Libcroco < Formula
 
   bottle do
     cellar :any
-    sha1 "fa9e84447cda19feb8897ee6ac98c13f505ebe71" => :mavericks
-    sha1 "5c8bfd41955f6a14dd12c3307047c6d865ef390c" => :mountain_lion
-    sha1 "70c653cf465e239f2f928e4adc5ad10a4a48e5a7" => :lion
+    revision 1
+    sha1 "055cf72538ad7dc86cec135bf207347cfb6c4111" => :yosemite
+    sha1 "33f4e055880495f080be7253315c5adb064e7dd7" => :mavericks
+    sha1 "52cd96351c6cbdce21f396823813b79dd60c4f09" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
