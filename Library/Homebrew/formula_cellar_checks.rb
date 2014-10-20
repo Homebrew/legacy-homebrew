@@ -134,6 +134,23 @@ module FormulaCellarChecks
     EOS
   end
 
+  def check_openssl_links prefix
+    return unless prefix.directory?
+    keg = Keg.new(prefix)
+    system_openssl = keg.mach_o_files.select do |obj|
+      dlls = obj.dynamically_linked_libraries
+      dlls.any? { |dll| /\/usr\/lib\/lib(crypto|ssl).(\d\.)*dylib/.match dll }
+    end
+    return if system_openssl.empty?
+
+    <<-EOS.undent
+      object files were linked against system openssl
+      These object files were linked against the deprecated system OpenSSL.
+      Adding `depends_on "openssl"` to the formula may help.
+        #{system_openssl  * "\n        "}
+    EOS
+  end
+
   def audit_installed
     audit_check_output(check_manpages)
     audit_check_output(check_infopages)
@@ -145,6 +162,7 @@ module FormulaCellarChecks
     audit_check_output(check_generic_executables(f.sbin))
     audit_check_output(check_shadowed_headers)
     audit_check_output(check_easy_install_pth(f.lib))
+    audit_check_output(check_openssl_links(f.prefix))
   end
 
   private
