@@ -15,7 +15,7 @@ class Srm < Formula
   test do
     (testpath/"CMakeLists.txt").write("find_package(Ruby)")
     system "#{bin}/srm", "CMakeLists.txt"
-    system "test ! -f CMakeLists.txt"
+    assert !File.exist?("CMakeLists.txt")
   end
 end
 
