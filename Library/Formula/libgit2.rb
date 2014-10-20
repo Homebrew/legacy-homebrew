@@ -15,6 +15,7 @@ class Libgit2 < Formula
   end
 
   depends_on "cmake" => :build
+  depends_on "libssh2" => :optional
 
   def install
     mkdir "build" do
