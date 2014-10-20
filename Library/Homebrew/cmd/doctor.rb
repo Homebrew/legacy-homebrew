@@ -254,9 +254,7 @@ if MacOS.version >= "10.9"
       if MacOS.version == :yosemite && MacOS::Xcode.latest_version == "6.1"
         s += <<-EOS.undent
           Xcode 6.1 is required on Yosemite to compile anything (6.0.1 does not include
-          the 10.10 SDK). Apple have not yet uploaded it to the App Store. Instead it must
-          be downloaded from:
-            https://developer.apple.com/downloads/download.action?path=Developer_Tools/xcode_6.1/xcode_6.1.dmg
+          the 10.10 SDK). You can install it from the App Store.
 
           For some software installing the CLT may be enough:
             xcode-select --install
