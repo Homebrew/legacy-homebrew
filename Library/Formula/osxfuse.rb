@@ -2,7 +2,7 @@ require "formula"
 
 class Osxfuse < Formula
   homepage "http://osxfuse.github.io"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.1"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.2"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
@@ -15,6 +15,7 @@ class Osxfuse < Formula
   depends_on :macos => :snow_leopard
   depends_on :xcode => :build
   depends_on ConflictsWithBinaryOsxfuse
+  depends_on UnsignedKextRequirement
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
