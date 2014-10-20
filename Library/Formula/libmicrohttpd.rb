@@ -8,9 +8,10 @@ class Libmicrohttpd < Formula
 
   bottle do
     cellar :any
-    sha1 "7c9550a8d1d6cc12a6d1909c917c9ac6756968d7" => :mavericks
-    sha1 "eb78f899cfeebe8e88ac11978b9130e15dd410ad" => :mountain_lion
-    sha1 "33d895cc7b9610b8daf18f800d2c088085fe1d13" => :lion
+    revision 1
+    sha1 "aacdc62a4d475d531ab371789827467606374d53" => :yosemite
+    sha1 "244043f22a39f88c07cfaa3d95088118dad1b73f" => :mavericks
+    sha1 "26bb4de80f5d43bfb24685f651467fd97d821936" => :mountain_lion
   end
 
   def install
