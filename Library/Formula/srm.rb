@@ -14,7 +14,7 @@ class Srm < Formula
 
     system "make"
     # MAN1DIR, relative to the given prefix
-    system "make", "install", "DESTDIR=#{prefix}"
+    system "make", "install", "DESTDIR=#{prefix}", "MAN_DIR=#{man}"
   end
 end
 
@@ -31,7 +31,7 @@ __END__
 -DOC_DIR=/usr/share/doc/secure_delete
 -OPT_MOD=-D__KERNEL__ -DMODULE -fomit-frame-pointer -fno-strict-aliasing -pipe -mpreferred-stack-boundary=2
 +INSTALL_DIR=${DESTDIR}/bin
-+MAN_DIR=${DESTDIR}/man
++MAN_DIR=${MAN_DIR}
 +DOC_DIR=${DESTDIR}/share/doc/secure_delete
 +OPT_MOD=-D__KERNEL__ -DMODULE -fomit-frame-pointer -fno-strict-aliasing -pipe
  #LD_MOD=-r
