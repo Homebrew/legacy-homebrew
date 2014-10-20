@@ -255,9 +255,6 @@ if MacOS.version >= "10.9"
         s += <<-EOS.undent
           Xcode 6.1 is required on Yosemite to compile anything (6.0.1 does not include
           the 10.10 SDK). You can install it from the App Store.
-
-          For some software installing the CLT may be enough:
-            xcode-select --install
         EOS
       else
         s += "Xcode can be updated from the App Store."
