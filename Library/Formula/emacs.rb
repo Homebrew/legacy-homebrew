@@ -2,12 +2,11 @@ require 'formula'
 
 class Emacs < Formula
   homepage 'http://www.gnu.org/software/emacs/'
-  url 'http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz'
-  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.3.tar.gz'
-  sha256 '0098ca3204813d69cd8412045ba33e8701fa2062f4bff56bedafc064979eef41'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-24.4.tar.xz'
+  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz'
+  sha256 '47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd'
 
   option "cocoa", "Build a Cocoa version of emacs"
-  option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
@@ -39,22 +38,6 @@ class Emacs < Formula
     if build.include? "cocoa"
       depends_on "autoconf" => :build
       depends_on "automake" => :build
-    end
-
-    # Fix default-directory on Cocoa and Mavericks.
-    # Fixed upstream in r114730 and r114882.
-    patch :p0, :DATA
-
-    # Make native fullscreen mode optional, mostly from upstream r111679
-    patch do
-      url "https://gist.githubusercontent.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch"
-      sha1 "cb4cc4940efa1a43a5d36ec7b989b90834b7442b"
-    end
-
-    # Fix memory leaks in NS version from upstream r114945
-    patch do
-      url "https://gist.githubusercontent.com/anonymous/8553178/raw/c0ddb67b6e92da35a815d3465c633e036df1a105/emacs.memory.leak.aka.distnoted.patch.diff"
-      sha1 "173ce253e0d8920e0aa7b1464d5635f6902c98e7"
     end
 
     # "--japanese" option:
@@ -112,14 +95,6 @@ class Emacs < Formula
     system "./autogen.sh" unless build.stable?
 
     if build.include? "cocoa"
-      # Patch for color issues described here:
-      # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
-      if build.include? "srgb" and build.stable?
-        inreplace "src/nsterm.m",
-          "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
-          "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
-      end
-
       args << "--with-ns" << "--disable-ns-self-contained"
       system "./configure", *args
       system "make"
@@ -163,9 +138,6 @@ class Emacs < Formula
         A command line wrapper for the cocoa app was installed to:
          #{bin}/emacs
       EOS
-      if build.include? "srgb" and not build.stable?
-        s << "\nTo enable sRGB, use (setq ns-use-srgb-colorspace t)"
-      end
     end
     return s
   end
@@ -174,23 +146,3 @@ class Emacs < Formula
     assert_equal "4", shell_output("#{bin}/emacs --batch --eval=\"(print (+ 2 2))\"").strip
   end
 end
-
-__END__
---- src/emacs.c.orig	2013-02-06 13:33:36.000000000 +0900
-+++ src/emacs.c	2013-11-02 22:38:45.000000000 +0900
-@@ -1158,10 +1158,13 @@
-   if (!noninteractive)
-     {
- #ifdef NS_IMPL_COCOA
-+      /* Started from GUI? */
-+      /* FIXME: Do the right thing if getenv returns NULL, or if
-+         chdir fails.  */
-+      if (! inhibit_window_system && ! isatty (0))
-+        chdir (getenv ("HOME"));
-       if (skip_args < argc)
-         {
--	  /* FIXME: Do the right thing if getenv returns NULL, or if
--	     chdir fails.  */
-           if (!strncmp (argv[skip_args], "-psn", 4))
-             {
-               skip_args += 1;
