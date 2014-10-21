@@ -50,15 +50,6 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
-  # Follow MacPorts and don't install ctags from Emacs. This allows Vim
-  # and Emacs and ctags to play together without violence.
-  def do_not_install_ctags
-    unless build.include? "keep-ctags"
-      (bin/"ctags").unlink
-      (man1/"ctags.1.gz").unlink
-    end
-  end
-
   def install
     # HEAD builds blow up when built in parallel as of April 20 2012
     ENV.deparallelize unless build.stable?
@@ -90,9 +81,6 @@ class Emacs < Formula
       system "make", "install"
       prefix.install "nextstep/Emacs.app"
 
-      # Don't cause ctags clash.
-      do_not_install_ctags
-
       # Replace the symlink with one that avoids starting Cocoa.
       (bin/"emacs").unlink # Kill the existing symlink
       (bin/"emacs").write <<-EOS.undent
@@ -114,9 +102,13 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make", "install"
+    end
 
-      # Don't cause ctags clash.
-      do_not_install_ctags
+    # Follow MacPorts and don't install ctags from Emacs. This allows Vim
+    # and Emacs and ctags to play together without violence.
+    unless build.include? "keep-ctags"
+      (bin/"ctags").unlink
+      (man1/"ctags.1.gz").unlink
     end
   end
 
