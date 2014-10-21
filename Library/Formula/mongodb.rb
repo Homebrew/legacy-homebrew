@@ -61,8 +61,8 @@ class Mongodb < Formula
       -j#{ENV.make_jobs}
       --cc=#{ENV.cc}
       --cxx=#{ENV.cxx}
-      --osx-version-min=#{MacOS.version}
     ]
+    args << "--osx-version-min=#{MacOS.version}" if OS.mac?
 
     # --full installs development headers and client library, not just binaries
     # (only supported pre-2.7)
