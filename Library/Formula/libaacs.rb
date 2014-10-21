@@ -8,9 +8,10 @@ class Libaacs < Formula
 
   bottle do
     cellar :any
-    sha1 "9ac7056e5857137d57d42d41a4743e5a6444e66f" => :mavericks
-    sha1 "aec8c5c4c2c3421522000a1fc6e0c550a7d2dd7b" => :mountain_lion
-    sha1 "8907c7d984959ea8a3f5b83134ce8fe19c0fa314" => :lion
+    revision 1
+    sha1 "4835b5d14f3c078e60a1149648b6788ca49f523b" => :yosemite
+    sha1 "9352defc959c0587e4eaaab4f93e777139cdc964" => :mavericks
+    sha1 "69c286aeceb83e3e602872e03bc9eef3882c6631" => :mountain_lion
   end
 
   head do
