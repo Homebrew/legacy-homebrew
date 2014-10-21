@@ -9,9 +9,10 @@ class BdwGc < Formula
   depends_on "libatomic_ops" => :build
 
   bottle do
-    sha1 "ec34da6a822836bf96e450def06569a8809410a8" => :mavericks
-    sha1 "84f85673490d30f0de336ddf8f4c3fd5495d1b18" => :mountain_lion
-    sha1 "433a316925295305a006cefd6adb48244768bfe1" => :lion
+    revision 1
+    sha1 "3c5fdf16d5ddb72427e300a79b8aa829df51480d" => :yosemite
+    sha1 "9c03aaf69cbda261bc263a65e922607a4cda3bd1" => :mavericks
+    sha1 "365f19fe49db14430a858c812210ebc5e8bb0f5e" => :mountain_lion
   end
 
   option :universal
