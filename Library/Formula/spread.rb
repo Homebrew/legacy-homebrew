@@ -8,11 +8,9 @@ class Spread < Formula
 
   option :universal
 
-  #patch :DATA
-
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
     system "make install"
   end
@@ -57,5 +55,3 @@ TDs/PropertyList-1.0.dtd">
     system "#{bin}/spflooder", "-m", "1", "-s", "4803@localhost"
   end
 end
-
-__END__
