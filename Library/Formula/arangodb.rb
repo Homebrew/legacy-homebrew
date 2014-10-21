@@ -17,14 +17,6 @@ class Arangodb < Formula
 
   needs :cxx11
 
-  def suffix
-    if build.stable?
-      return ""
-    else
-      return "-" + (build.devel? ? version : "unstable")
-    end
-  end
-
   def install
     # clang on 10.8 will still try to build against libstdc++,
     # which fails because it doesn't have the C++0x features
@@ -48,8 +40,9 @@ class Arangodb < Formula
       --enable-mruby
       --datadir=#{share}
       --localstatedir=#{var}
-      --program-suffix=#{suffix}
     ]
+
+    args << "--program-suffix=unstable" if build.head?
 
     system "./configure", *args
     system "make install"
