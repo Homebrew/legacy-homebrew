@@ -21,7 +21,6 @@ class Emacs < Formula
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
-    depends_on "glib" => :optional
   end
 
   stable do
@@ -38,6 +37,7 @@ class Emacs < Formula
   depends_on "librsvg" => :optional
   depends_on "imagemagick" => :optional
   depends_on "mailutils" => :optional
+  depends_on "glib" => :optional
 
   fails_with :llvm do
     build 2334
