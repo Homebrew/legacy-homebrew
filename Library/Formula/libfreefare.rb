@@ -4,6 +4,7 @@ class Libfreefare < Formula
   homepage 'https://code.google.com/p/libfreefare/'
   url 'https://libfreefare.googlecode.com/files/libfreefare-0.4.0.tar.bz2'
   sha1 '74214069d6443a6a40d717e496320428a114198c'
+  revision 1
 
   bottle do
     cellar :any
@@ -15,6 +16,7 @@ class Libfreefare < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libnfc'
+  depends_on "openssl"
 
   def install
     system "./configure", "--disable-dependency-tracking",
