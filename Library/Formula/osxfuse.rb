@@ -2,7 +2,7 @@ require "formula"
 
 class Osxfuse < Formula
   homepage "http://osxfuse.github.io"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.1"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.2"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
