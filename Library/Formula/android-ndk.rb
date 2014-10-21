@@ -1,24 +1,23 @@
 require "formula"
 
+class DownloadStrategy7z < CurlDownloadStrategy
+  def stage
+    safe_system '7zr', 'x', tarball_path
+  end
+end
+
 class AndroidNdk < Formula
   homepage "http://developer.android.com/sdk/ndk/index.html"
+  version 'r10c'
+
+  depends_on 'p7zip' => :build
 
   if MacOS.prefer_64_bit?
-    url "https://dl.google.com/android/ndk/android-ndk32-r10b-darwin-x86_64.tar.bz2"
-    sha1 "6888a670c9d9007ffba7e314e38c367b6ea67f7c"
-
-    resource "64bit_target" do
-      url "https://dl.google.com/android/ndk/android-ndk64-r10b-darwin-x86_64.tar.bz2"
-      sha1 "b8354a4547cedb2901acc3dc35fd29104f6cc1bf"
-    end
+    url "https://dl.google.com/android/ndk/android-ndk-r10c-darwin-x86_64.bin" , :using => DownloadStrategy7z
+    sha1 "a136ca2ad87771422c2cfa9474196cd29ffd9bb1"
   else
-    url "https://dl.google.com/android/ndk/android-ndk32-r10b-darwin-x86.tar.bz2"
-    sha1 "ee763b15cded16d313feded1e7244ce094825574"
-
-    resource "64bit_target" do
-      url "https://dl.google.com/android/ndk/android-ndk64-r10b-darwin-x86.tar.bz2"
-      sha1 "e55fecfa0189a0f94725d3208a4a1c1d4235a3ab"
-    end
+    url "https://dl.google.com/android/ndk/android-ndk-r10c-darwin-x86.bin" , :using => DownloadStrategy7z
+    sha1 "b083f9a1a4dd66d55ced8ea41eea6a0a91ea1ac9"
   end
 
   depends_on "android-sdk" => :recommended
@@ -26,12 +25,6 @@ class AndroidNdk < Formula
   def install
     bin.mkpath
 
-    # Unpack 64-bit target into current directory
-    target = resource("64bit_target")
-    target.verify_download_integrity(target.fetch)
-    system "tar", "xf", target.cached_download, "-C", buildpath.dirname
-
-    # Now we can install both 64-bit and 32-bit targeting toolchains
     prefix.install Dir["*"]
 
     # Create a dummy script to launch the ndk apps
@@ -39,11 +32,11 @@ class AndroidNdk < Formula
     ndk_exec.write <<-EOS.undent
       #!/bin/sh
       BASENAME=`basename $0`
-      EXEC="#{prefix}/$BASENAME"
+      EXEC="#{prefix}/android-ndk-r10c/$BASENAME"
       test -f "$EXEC" && exec "$EXEC" "$@"
     EOS
     ndk_exec.chmod 0755
-    %w[ndk-build ndk-gdb ndk-stack].each { |app| bin.install_symlink ndk_exec => app }
+    %w[ndk-build ndk-gdb ndk-stack ndk-depends ndk-which ndk-stack].each { |app| bin.install_symlink ndk_exec => app }
   end
 
   def caveats; <<-EOS.undent
@@ -57,7 +50,7 @@ class AndroidNdk < Formula
     http://developer.android.com/sdk/ndk/index.html#requirements
 
     For more documentation on Android NDK, please check:
-      #{prefix}/docs
+      #{prefix}/android-ndk-r10c/docs
     EOS
   end
 end
