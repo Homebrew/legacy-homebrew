@@ -11,7 +11,7 @@ class Pypy < Formula
     sha1 "3f91bcf68fc5d6954f7032be18f14eb17dfb8d55" => :lion
   end
 
-  revision 2
+  revision 3
 
   depends_on :arch => :x86_64
   depends_on "pkg-config" => :build
