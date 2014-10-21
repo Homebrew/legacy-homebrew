@@ -7,9 +7,10 @@ class Libnids < Formula
 
   bottle do
     cellar :any
-    sha1 "dab19d9269aad0478c8fdeda6dcd343064c2b6ce" => :mavericks
-    sha1 "90451a9b072c8eeaea11e5254e3cebcb904e3b61" => :mountain_lion
-    sha1 "7c62126f564bc4f86aeaf7337e5d4dc954f6d894" => :lion
+    revision 1
+    sha1 "49f12f0277e954aad59221c16f28d1ac86838ea1" => :yosemite
+    sha1 "fcb4eed5e69d8f80e5f7bacd6dad1d09d942e4f7" => :mavericks
+    sha1 "23f8aaac028f2fd18323cebd0f5e06c74e708893" => :mountain_lion
   end
 
   option "disable-libnet", "Don't include code requiring libnet"
