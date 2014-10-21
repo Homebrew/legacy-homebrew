@@ -407,7 +407,6 @@ class Formula
   def print_tap_action options={}
     if tap?
       verb = options[:verb] || "Installing"
-      is_was = options[:past] ? "was" : "is"
       ohai "#{verb} #{name} from #{tap}"
     end
   end
