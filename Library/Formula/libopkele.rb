@@ -13,6 +13,11 @@ class Libopkele < Formula
     end
   end
 
+  bottle do
+    cellar :any
+    sha1 "7f83e74f921f023c804c0b6956e384289a52ac6a" => :mountain_lion
+  end
+
   head do
     url 'https://github.com/hacker/libopkele.git'
 
