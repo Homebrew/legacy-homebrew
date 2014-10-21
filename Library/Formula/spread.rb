@@ -52,6 +52,12 @@ TDs/PropertyList-1.0.dtd">
   end
 
   test do
+    master = fork do
+        exec "#{sbin}/spread", "-n", "localhost"
+    end
+
     system "#{bin}/spflooder", "-m", "1", "-s", "4803@localhost"
+
+    Process.kill("TERM", master)
   end
 end
