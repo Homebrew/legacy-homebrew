@@ -4,6 +4,7 @@ class Mariadb < Formula
   homepage 'http://mariadb.org/'
   url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.14/source/mariadb-10.0.14.tar.gz"
   sha1 "46dc0b66567ff9d4e3a32d9d4b3c9ef250a6fc9e"
+  revision 1
 
   bottle do
     sha1 "afcd264148f8ab83ff44db884511f26f8cc3249d" => :mavericks
@@ -13,6 +14,7 @@ class Mariadb < Formula
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   option :universal
   option 'with-tests', 'Keep test when installing'
