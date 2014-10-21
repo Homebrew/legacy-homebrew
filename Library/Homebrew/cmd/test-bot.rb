@@ -598,7 +598,8 @@ module Homebrew
     else
       ARGV.named.each do |argument|
         test = Test.new(argument, tap)
-        any_errors ||= !test.run
+        test_error = !test.run
+        any_errors ||= test_error
         tests << test
       end
     end
