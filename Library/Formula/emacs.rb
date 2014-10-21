@@ -13,7 +13,6 @@ class Emacs < Formula
   end
 
   option "cocoa", "Build a Cocoa version of emacs"
-  option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
@@ -113,17 +112,11 @@ class Emacs < Formula
   end
 
   def caveats
-    s = ""
-    if build.include? "cocoa"
-      s += <<-EOS.undent
-        A command line wrapper for the cocoa app was installed to:
-         #{bin}/emacs
+    if build.include? "cocoa" then <<-EOS.undent
+      A command line wrapper for the cocoa app was installed to:
+        #{bin}/emacs
       EOS
-      if build.include? "srgb" and not build.stable?
-        s << "\nTo enable sRGB, use (setq ns-use-srgb-colorspace t)"
-      end
     end
-    return s
   end
 
   test do
