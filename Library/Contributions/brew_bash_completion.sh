@@ -500,7 +500,6 @@ _brew ()
             update
             upgrade
             uses
-            versions
             $ext
             "
         return
@@ -538,7 +537,6 @@ _brew ()
     update)                     _brew_update ;;
     upgrade)                    _brew_upgrade ;;
     uses)                       _brew_uses ;;
-    versions)                   __brew_complete_formulae ;;
     *)                          ;;
     esac
 }
