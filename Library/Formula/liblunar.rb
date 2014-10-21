@@ -6,9 +6,10 @@ class Liblunar < Formula
   sha1 'c149dc32776667ed8d53124eec414ab15ace0981'
 
   bottle do
-    sha1 "4ddd0ce2ddc3bc282393de68bff76d5adb611873" => :mavericks
-    sha1 "e7c93c0847db2713d51eb90aa92e5dd5672146d4" => :mountain_lion
-    sha1 "f5919e09c5c26813d3757ebe6b4a5e780587de6f" => :lion
+    revision 1
+    sha1 "8113fe85f888c12a9841aa6281016406ec7b9799" => :yosemite
+    sha1 "b92965d3651332b69eb42a1f6341b5daf12b9632" => :mavericks
+    sha1 "69b6824161e90b0578e314efcae5db056930ed2e" => :mountain_lion
   end
 
   option 'python', 'Build python bindings using pygobject'
