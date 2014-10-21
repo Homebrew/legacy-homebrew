@@ -24,6 +24,8 @@ class Pyqt5 < Formula
   end
 
   def install
+    # addresses https://github.com/Homebrew/homebrew/issues/32370
+    inreplace "configure.py", "qmake_QT=['webkitwidgets']", "qmake_QT=['webkitwidgets', 'printsupport']"
     Language::Python.each_python(build) do |python, version|
       args = [ "--confirm-license",
                "--bindir=#{bin}",
@@ -39,9 +41,6 @@ class Pyqt5 < Formula
                "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
                "--verbose"]
       args << '--debug' if build.include? 'enable-debug'
-
-      # addresses https://github.com/Homebrew/homebrew/issues/32370
-      inreplace "configure.py", "qmake_QT=['webkitwidgets']", "qmake_QT=['webkitwidgets', 'printsupport']"
 
       system python, "configure.py", *args
       system "make"
