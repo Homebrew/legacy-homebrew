@@ -5,6 +5,8 @@ class Srm < Formula
   url "https://www.thc.org/releases/secure_delete-3.1.tar.gz"
   sha1 "ce6391003587b37bd3713a967de04de1f0759107"
 
+  keg_only :provided_by_osx if MacOS.version >= :mavericks
+
   patch :DATA
 
   def install
