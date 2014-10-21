@@ -28,13 +28,6 @@ class Emacs < Formula
     depends_on "automake" => :build
   end
 
-  stable do
-    if build.include? "cocoa"
-      depends_on "autoconf" => :build
-      depends_on "automake" => :build
-    end
-  end
-
   depends_on "pkg-config" => :build
   depends_on :x11 if build.with? "x"
   depends_on "d-bus" => :optional
