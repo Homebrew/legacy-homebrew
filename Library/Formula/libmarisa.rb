@@ -7,9 +7,10 @@ class Libmarisa < Formula
 
   bottle do
     cellar :any
-    sha1 "7488aa114b3c53ec5b2d11a7ebbc7196de0539a8" => :mavericks
-    sha1 "c45d67cdca754912b77a8b0d9ac39095f3374da1" => :mountain_lion
-    sha1 "3fc68e8e71c8696197f3f9dcb6daa0f98890cc56" => :lion
+    revision 1
+    sha1 "99eb0cbc6afdfb058a12d944217b5dd0e13ed95d" => :yosemite
+    sha1 "0881fd8efe266861d9f60deb6ccd9860419db679" => :mavericks
+    sha1 "a9a51d0e5c0ad1ceb8e857493cfce501c208e76d" => :mountain_lion
   end
 
   def install
