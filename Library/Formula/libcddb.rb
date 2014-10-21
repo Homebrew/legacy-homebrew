@@ -7,9 +7,10 @@ class Libcddb < Formula
 
   bottle do
     cellar :any
-    sha1 "e663db6e8362f7e4f6953e7f02d9e3751f64a836" => :mavericks
-    sha1 "9c9de1cf8eb40cadbdac48dd65520f6614dbf5e4" => :mountain_lion
-    sha1 "82190e9f5174f6850e5e94ead820281e1e8ced08" => :lion
+    revision 1
+    sha1 "253045ed49df247223574bae9888b3119ebd995b" => :yosemite
+    sha1 "5589c76a2a1abe8e11aedb05ec3b6510b47f7394" => :mavericks
+    sha1 "a23458d0ab82864cb515dfd7c84f5e363de9e7a5" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
