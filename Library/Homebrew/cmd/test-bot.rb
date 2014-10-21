@@ -175,7 +175,7 @@ module Homebrew
       elsif formula
         @formulae = [argument]
       else
-        odie "#{argument} is not a pull request URL, commit URL or formula name."
+        raise ArgumentError.new("#{argument} is not a pull request URL, commit URL or formula name.")
       end
 
       @category = __method__
@@ -597,8 +597,14 @@ module Homebrew
       tests << test
     else
       ARGV.named.each do |argument|
-        test = Test.new(argument, tap)
-        test_error = !test.run
+        test_error = false
+        begin
+          test = Test.new(argument, tap)
+          test_error = !test.run
+        rescue ArgumentError => e
+          test_error = true
+          ofail e.message
+        end
         any_errors ||= test_error
         tests << test
       end
