@@ -66,10 +66,17 @@ class Postgresql < Formula
 
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
-    if !build.include? "no-tcl"
+
+    # The CLT is required to build tcl support on 10.7 and 10.8 because
+    # tclConfig.sh is not part of the SDK
+    unless build.include?("no-tcl") || MacOS.version < :mavericks && MacOS::CLT.installed?
       args << "--with-tcl"
-      args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+
+      if File.exist?("#{MacOS.sdk_path}/usr/lib/tclConfig.sh")
+        args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+      end
     end
+
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
     if build.with?("ossp-uuid")
