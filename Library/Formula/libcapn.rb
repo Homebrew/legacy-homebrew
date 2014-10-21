@@ -2,8 +2,8 @@ require 'formula'
 
 class Libcapn < Formula
   homepage 'http://libcapn.org/'
-  url 'http://libcapn.org/download/libcapn-1.0.0b3-src.tar.gz'
-  sha1 'a53f7b382e683249ff55214b1effbae5f82c4ef2'
+  url "http://libcapn.org/download/libcapn-1.0.0-src.tar.gz"
+  sha1 "740dc87395fc7255b78c3c926a044f00692e8c41"
   head 'https://github.com/adobkin/libcapn.git'
 
   bottle do
@@ -16,10 +16,12 @@ class Libcapn < Formula
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
+  depends_on "openssl"
 
   def install
-    inreplace 'CMakeLists.txt', /usr\/lib\/pkgconfig/, "#{lib}/pkgconfig" unless build.head?
-    system "cmake", ".", *std_cmake_args
+    cmake_args = std_cmake_args
+    cmake_args << "-DOPENSSL_ROOT_DIR=#{Formula["openssl"].opt_prefix}"
+    system "cmake", ".", *cmake_args
     system "make", "install"
   end
 
