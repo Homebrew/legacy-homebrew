@@ -5,6 +5,13 @@ class Jsoncpp < Formula
   url "https://github.com/open-source-parsers/jsoncpp/archive/svn-release-0.6.0-rc2.tar.gz"
   sha1 "6cc51ed1f31e742637a512201b585e0bc4e06980"
 
+  bottle do
+    cellar :any
+    sha1 "701adf90e494bfabf0bc54b9d3628fb125bd1244" => :yosemite
+    sha1 "c6cd33fe89d9b91c1864dc7e8158a507199c1454" => :mavericks
+    sha1 "d315e5fab004b81e068a624c37fb0afc6b4318b2" => :mountain_lion
+  end
+
   depends_on "scons" => :build
 
   patch :p1 do
