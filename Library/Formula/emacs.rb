@@ -44,6 +44,8 @@ class Emacs < Formula
 
   def install
     # HEAD builds blow up when built in parallel as of April 20 2012
+    # FIXME is this still necessary? It's been more than two years, surely any
+    # race conditions would have made it into release by now.
     ENV.deparallelize unless build.stable?
 
     args = ["--prefix=#{prefix}",
