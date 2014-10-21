@@ -7,9 +7,10 @@ class Libzzip < Formula
 
   bottle do
     cellar :any
-    sha1 "0054168728b77dcd9e1a73fdb1af945ad1ba9dd9" => :mavericks
-    sha1 "d745e568d441b66c4bc9ccc920c22d0a1ce4e904" => :mountain_lion
-    sha1 "a2191d35352eddb133bc838f587bf98764f32378" => :lion
+    revision 1
+    sha1 "5a1b7004e05d64c363169b7437df6df13dcf442a" => :yosemite
+    sha1 "9ba90a192f579f08425969b07abf9da33cf06b96" => :mavericks
+    sha1 "986d13aa3974d0b7c2621a8447f1aad640f11d92" => :mountain_lion
   end
 
   option 'sdl', 'Enable SDL usage and create SDL_rwops_zzip.pc'

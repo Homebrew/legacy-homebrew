@@ -7,9 +7,10 @@ class Libsmf < Formula
 
   bottle do
     cellar :any
-    sha1 "0d0cc353ac631f8d368aa0d33c26afd9570dd3c0" => :mavericks
-    sha1 "8a02ebe28c6bf851c979dc984362faba91ad0183" => :mountain_lion
-    sha1 "4cf06bc29611951634e7916cd18bf01dbcb21252" => :lion
+    revision 1
+    sha1 "0f0e51b213d978ecd8c8a55b7432895b44631803" => :yosemite
+    sha1 "5e51896c19b99ca8936e191f1e340f642676d6e1" => :mavericks
+    sha1 "132000d2bd832712926b330736d02eabbfca0ee7" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
