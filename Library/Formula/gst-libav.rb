@@ -7,9 +7,10 @@ class GstLibav < Formula
   sha256 '833229d2b1aad6549ad0297435516508cc3ac47b166d6393ecdffc34c31a01d3'
 
   bottle do
-    sha1 "4bf3aa83e16ad56c83e4b28df65a26ccb5a0a5ed" => :mavericks
-    sha1 "0b7a157660fd9ab7ab9fe2b3026e128d7d30dd10" => :mountain_lion
-    sha1 "b45a6dc041af9900132908655f5196803722133b" => :lion
+    revision 1
+    sha1 "9514efedab2cd85c4d60e3b4f5d476875a4e5a00" => :yosemite
+    sha1 "d3453277643884a602ec17d238ffc340a226dbd4" => :mavericks
+    sha1 "0dee620b9b88c01181a42f8e4915c5a86be4a274" => :mountain_lion
   end
 
   head do
