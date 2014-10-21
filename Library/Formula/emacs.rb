@@ -6,6 +6,12 @@ class Emacs < Formula
   mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
   sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
 
+  bottle do
+    sha1 "32846286dea7fdc0a81d4c5b586979e10f318fb5" => :yosemite
+    sha1 "487d3784982927f80b5667155a9b40832ce98292" => :mavericks
+    sha1 "dcd4dbefd2f74b36fb258efe3b2f5114a1480095" => :mountain_lion
+  end
+
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
