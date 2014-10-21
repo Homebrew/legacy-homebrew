@@ -6,9 +6,9 @@ class LibjsonRpcCpp < Formula
   sha1 "a5473ea664a99dcc5d44ebbccae4e9b0803f2e6e"
 
   depends_on "boost" => :build
-  depends_on "argtable" => :build
-  depends_on "jsoncpp" => :build
   depends_on "cmake" => :build
+  depends_on "argtable"
+  depends_on "jsoncpp"
 
   def install
     system "cmake", ".", *std_cmake_args
