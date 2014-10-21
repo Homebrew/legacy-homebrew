@@ -4,6 +4,7 @@ class Libopendkim < Formula
   homepage "http://opendkim.org"
   url "https://downloads.sourceforge.net/project/opendkim/opendkim-2.9.2.tar.gz"
   sha1 "6d6720e60ffe44a689de6732d10e7aba26e24b06"
+  revision 1
 
   bottle do
     revision 1
@@ -13,6 +14,7 @@ class Libopendkim < Formula
   end
 
   depends_on "unbound"
+  depends_on "openssl"
 
   def install
     # --dsiable-filter: not needed for the library build
