@@ -134,9 +134,10 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_openssl_links prefix
-    return unless prefix.directory?
-    keg = Keg.new(prefix)
+  def check_openssl_links
+    return unless f.prefix.directory?
+    return if f.name == "android-ndk"
+    keg = Keg.new(f.prefix)
     system_openssl = keg.mach_o_files.select do |obj|
       dlls = obj.dynamically_linked_libraries
       dlls.any? { |dll| /\/usr\/lib\/lib(crypto|ssl).(\d\.)*dylib/.match dll }
@@ -162,7 +163,7 @@ module FormulaCellarChecks
     audit_check_output(check_generic_executables(f.sbin))
     audit_check_output(check_shadowed_headers)
     audit_check_output(check_easy_install_pth(f.lib))
-    audit_check_output(check_openssl_links(f.prefix))
+    audit_check_output(check_openssl_links)
   end
 
   private
