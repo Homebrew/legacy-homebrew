@@ -78,14 +78,6 @@ class Emacs < Formula
     system "./autogen.sh" unless build.stable?
 
     if build.include? "cocoa"
-      # Patch for color issues described here:
-      # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
-      if build.include? "srgb" and build.stable?
-        inreplace "src/nsterm.m",
-          "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
-          "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
-      end
-
       args << "--with-ns" << "--disable-ns-self-contained"
       system "./configure", *args
       system "make"
