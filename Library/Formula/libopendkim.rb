@@ -6,9 +6,10 @@ class Libopendkim < Formula
   sha1 "6d6720e60ffe44a689de6732d10e7aba26e24b06"
 
   bottle do
-    sha1 "39e562199abf2f28cffc9d6941627b4c368ecebb" => :mavericks
-    sha1 "1d2d00dbc4999405d9fab4a52e9cd7cb5f779db3" => :mountain_lion
-    sha1 "4b77b3a6133c8e2dd1df7479890a33b4e8e5c8c8" => :lion
+    revision 1
+    sha1 "b27c9d6ac17e8b2853112ad8ad51904e1a3c5d9c" => :yosemite
+    sha1 "5ab9d02326500931fa34fdba14e8ec4d4b66ba29" => :mavericks
+    sha1 "b4e2c0613a097e4e39c0261a29d55746ae14ec16" => :mountain_lion
   end
 
   depends_on "unbound"

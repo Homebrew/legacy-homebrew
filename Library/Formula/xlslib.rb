@@ -7,9 +7,10 @@ class Xlslib < Formula
 
   bottle do
     cellar :any
-    sha1 "3c59ef7c51a220426327497d48aab6188aa80d3a" => :mavericks
-    sha1 "69812c1e71bd582d61f1693bd00edc07a426360b" => :mountain_lion
-    sha1 "d9fc2ec1a71a7845fd48b41e2e63641bfb5d75f9" => :lion
+    revision 1
+    sha1 "0161ba098ddc20603702218aafb04d6e26a9e135" => :yosemite
+    sha1 "39b190165018891f8df7711851d9bd0efd24026e" => :mavericks
+    sha1 "3935bcbc13fb51f5646dc55126f0cd921cde6f63" => :mountain_lion
   end
 
   def install

@@ -7,9 +7,10 @@ class Libkate < Formula
   revision 1
 
   bottle do
-    sha1 "a19680a224110d19d08e67c34902f7dfb36528ea" => :mavericks
-    sha1 "4caeaded00d86b8aeaf9ae5d197e19cc0f93ae91" => :mountain_lion
-    sha1 "57d712aca93b4ae898ae11ef482ac31a5022d942" => :lion
+    revision 1
+    sha1 "97d80c510059826dc80316c8c4861cdc6ad8261e" => :yosemite
+    sha1 "ce7aa340bba256de2ac0f0018ad577605448e300" => :mavericks
+    sha1 "8ed93646139c5ec85a9fb9efdab9fa4f161a62d6" => :mountain_lion
   end
 
   depends_on 'libpng'

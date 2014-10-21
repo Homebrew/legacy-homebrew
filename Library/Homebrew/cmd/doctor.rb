@@ -246,7 +246,8 @@ if MacOS.version >= "10.9"
   end
 
   def check_xcode_up_to_date
-    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
+      <<-EOS.undent
       Your Xcode (#{MacOS::Xcode.version}) is outdated
       Please update to Xcode #{MacOS::Xcode.latest_version}.
       Xcode can be updated from the App Store.

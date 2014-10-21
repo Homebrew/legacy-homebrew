@@ -8,6 +8,7 @@ class Pcre < Formula
 
   bottle do
     cellar :any
+    sha1 "71073c438d54caa2acc16026c947876c88ce2b80" => :yosemite
     sha1 "be65f007b73eeede8b965c0d7fc1c3d1a4bce087" => :mavericks
     sha1 "a0358dc5793923703258bd6a4fb9e5a5e44a358e" => :mountain_lion
     sha1 "6f7043ff5e9ad854dfe98e0399045d0f62209402" => :lion

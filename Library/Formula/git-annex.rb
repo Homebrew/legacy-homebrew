@@ -5,14 +5,14 @@ class GitAnnex < Formula
   include Language::Haskell::Cabal
 
   homepage "https://git-annex.branchable.com/"
-  url "http://hackage.haskell.org/package/git-annex-5.20140717/git-annex-5.20140717.tar.gz"
-  sha1 "f3d49408db14a6230436105b50ce9232da8e57ae"
+  url "http://hackage.haskell.org/package/git-annex-5.20141013/git-annex-5.20141013.tar.gz"
+  sha1 "db93f75db07862ce85bdc14adfdac5aba6104f90"
 
   bottle do
     cellar :any
-    sha1 "b4e1f525dbc89d322ac3706657bf86fb8b9e1697" => :mavericks
-    sha1 "6363b33492c0a6d98cea8f1dc889b03285030357" => :mountain_lion
-    sha1 "df28277b5ae4e48514236f6c0ef6a78387daef63" => :lion
+    sha1 "9f353c6f66e8db47bd91a3c0fc65599aca50ad50" => :mavericks
+    sha1 "264534752e8d2c26e49c84a77571f34fba4fac35" => :mountain_lion
+    sha1 "92c21f66c0518b7daf870d230bdf5a6beed80d05" => :lion
   end
 
   depends_on "gcc" => :build
@@ -23,6 +23,8 @@ class GitAnnex < Formula
   depends_on "libidn"
   depends_on "gnutls"
   depends_on "gmp"
+
+  fails_with(:clang) { build 425 } # clang segfaults on Lion
 
   def install
     cabal_sandbox do

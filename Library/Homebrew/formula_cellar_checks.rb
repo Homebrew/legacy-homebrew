@@ -104,6 +104,7 @@ module FormulaCellarChecks
   end
 
   def check_shadowed_headers
+    return if f.name == "libtool" || f.name == "subversion"
     return if f.keg_only? || !f.include.directory?
 
     files  = relative_glob(f.include, "**/*.h")
@@ -133,6 +134,24 @@ module FormulaCellarChecks
     EOS
   end
 
+  def check_openssl_links
+    return unless f.prefix.directory?
+    return if f.name == "android-ndk"
+    keg = Keg.new(f.prefix)
+    system_openssl = keg.mach_o_files.select do |obj|
+      dlls = obj.dynamically_linked_libraries
+      dlls.any? { |dll| /\/usr\/lib\/lib(crypto|ssl).(\d\.)*dylib/.match dll }
+    end
+    return if system_openssl.empty?
+
+    <<-EOS.undent
+      object files were linked against system openssl
+      These object files were linked against the deprecated system OpenSSL.
+      Adding `depends_on "openssl"` to the formula may help.
+        #{system_openssl  * "\n        "}
+    EOS
+  end
+
   def audit_installed
     audit_check_output(check_manpages)
     audit_check_output(check_infopages)
@@ -144,11 +163,12 @@ module FormulaCellarChecks
     audit_check_output(check_generic_executables(f.sbin))
     audit_check_output(check_shadowed_headers)
     audit_check_output(check_easy_install_pth(f.lib))
+    audit_check_output(check_openssl_links)
   end
 
   private
 
   def relative_glob(dir, pattern)
-    Dir.chdir(dir) { Dir[pattern] }
+    File.directory?(dir) ? Dir.chdir(dir) { Dir[pattern] } : []
   end
 end

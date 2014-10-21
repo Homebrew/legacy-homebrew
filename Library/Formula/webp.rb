@@ -33,8 +33,7 @@ class Webp < Formula
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/cwebp", test_png, "-o", "webp_test.png"
+    system "#{bin}/cwebp", test_fixtures("test.png"), "-o", "webp_test.png"
     system "#{bin}/dwebp", "webp_test.png", "-o", "webp_test.webp"
   end
 end

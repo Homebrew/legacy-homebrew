@@ -103,7 +103,7 @@ Who Are You?
 ------------
 Linuxbrew is maintained by [Shaun Jackman][sjackman].
 
-Homebrew's current maintainers are [Misty De Meo][mistydemeo], [Adam Vandenberg][adamv], [Jack Nagel][jacknagel], [Mike McQuaid][mikemcquaid] and [Brett Koonce][asparagui].
+Homebrew's current maintainers are [Misty De Meo][mistydemeo], [Adam Vandenberg][adamv], [Jack Nagel][jacknagel], [Mike McQuaid][mikemcquaid], [Brett Koonce][asparagui] and [Tim Smith][tdsmith].
 
 Homebrew was originally created by [Max Howell][mxcl].
 
@@ -131,6 +131,7 @@ We accept tips through [Gittip][tip].
 [mikemcquaid]:https://github.com/mikemcquaid
 [asparagui]:https://github.com/asparagui
 [sjackman]:https://github.com/sjackman
+[tdsmith]:https://github.com/tdsmith
 [mxcl]:https://github.com/mxcl
 [formula]:https://github.com/Homebrew/homebrew/tree/master/Library/Formula/
 [braumeister]:http://braumeister.org

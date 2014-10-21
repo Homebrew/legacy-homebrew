@@ -8,9 +8,10 @@ class Libosip < Formula
 
   bottle do
     cellar :any
-    sha1 "1fab34da8951a2d767a3478553e74fd6beb46bf5" => :mavericks
-    sha1 "a5b3fed5a8715d68b28712ed76ea0f0dbdb7f963" => :mountain_lion
-    sha1 "c269374768df59fbe962d05322a341abaf418b0b" => :lion
+    revision 1
+    sha1 "390c7708fca1df43b0cec939d724f6095ddc4451" => :yosemite
+    sha1 "5b648dbcf493f93c982907329e89f959327f6667" => :mavericks
+    sha1 "bf05b7e0f5a1f6c38178e76282b7dd7dba5f3018" => :mountain_lion
   end
 
   def install

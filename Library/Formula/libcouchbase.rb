@@ -6,9 +6,10 @@ class Libcouchbase < Formula
   sha1 '671ec846d69cb1c703c20c055c4f2daa91ae6a2e'
 
   bottle do
-    sha1 "7378d93afb9c869cb575a3c3433b02d9b2d1ae8d" => :mavericks
-    sha1 "313ed9ee0ca559e6b22267a8c6477068bcba0d70" => :mountain_lion
-    sha1 "066e5c6c5f42d03a40a7ffc571e8a4373f436104" => :lion
+    revision 1
+    sha1 "27456ae51ba57d3e03015f5c09261cceb35b0a44" => :yosemite
+    sha1 "004d6f093f5622187dd5501fa12d171354690668" => :mavericks
+    sha1 "dd609dbc7abe057c77b47b0773ced94cdcd2290c" => :mountain_lion
   end
 
   option :universal

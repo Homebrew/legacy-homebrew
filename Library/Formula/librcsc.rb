@@ -7,9 +7,10 @@ class Librcsc < Formula
 
   bottle do
     cellar :any
-    sha1 "65592801ed8334be4f419609f226526cb1acb358" => :mavericks
-    sha1 "4c503946d3ad488fe9858a49826b51e63e1171fe" => :mountain_lion
-    sha1 "d8aabc6ddddc9dd799f3341ecf6c5bf97aebc77f" => :lion
+    revision 1
+    sha1 "7db2070cbe574575393712c697fc743a138129e7" => :yosemite
+    sha1 "27075e4e199258cc61e287464d7bf255fc4702ac" => :mavericks
+    sha1 "9607e6d54b8a36202294ed27a71b2142cee8ee95" => :mountain_lion
   end
 
   depends_on "boost"

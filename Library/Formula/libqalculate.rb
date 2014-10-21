@@ -5,6 +5,11 @@ class Libqalculate < Formula
   url 'https://downloads.sourceforge.net/project/qalculate/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
   sha1 'c15f7f3a97995decf62cc964956fc1e374ecd78c'
 
+  bottle do
+    sha1 "334b9bbf28268f858997dda432dd1ee6c48ca168" => :mavericks
+    sha1 "b25b47d582d12a3017eb57fe42463f2ddfd859c7" => :mountain_lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'cln'
   depends_on 'glib'

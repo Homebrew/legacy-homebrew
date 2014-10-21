@@ -1,0 +1,8 @@
+--title "Homebrew"
+--main Library/Homebrew/API.md
+--exclude Library/Homebrew/test/vendor/
+--exclude Library/Homebrew/vendor/
+Library/Homebrew/**/*.rb
+-
+Library/Homebrew/*.md
+*.md

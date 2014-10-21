@@ -3,10 +3,11 @@ require "formula"
 class Openssl < Formula
   homepage "https://openssl.org"
   url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/o/openssl/openssl_1.0.1j.orig.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1j.tar.gz"
   sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
 
   bottle do
+    sha1 "f6cdb5c0ec14896a385dacf0746768e56e65aed9" => :yosemite
     sha1 "595305062ba76824570d5c52b2add7f53422dafb" => :mavericks
     sha1 "dc26c0ea2a7e38451a1b213f7e0f3694f70e460d" => :mountain_lion
     sha1 "ba064e1f82e3eb54a7272d20c8114d8910bbdf01" => :lion
@@ -18,7 +19,7 @@ class Openssl < Formula
   depends_on "makedepend" => :build
 
   keg_only :provided_by_osx,
-    "The OpenSSL provided by OS X is too old for some software"
+    "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
   def arch_args
     return { :i386  => %w[linux-x86_64], :x86_64 => %w[linux-x86_64] } if OS.linux?

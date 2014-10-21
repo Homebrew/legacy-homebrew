@@ -88,8 +88,7 @@ class Graphicsmagick < Formula
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/gm", "identify", test_png
+    system "#{bin}/gm", "identify", test_fixtures("test.png")
   end
 
   def caveats

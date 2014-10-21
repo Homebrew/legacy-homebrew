@@ -13,7 +13,7 @@ module OS
         when "10.6"  then "3.2.6"
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
-        when "10.9"  then "6.0.1"
+        when "10.9"  then "6.1"
         when "10.10" then "6.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
@@ -161,7 +161,7 @@ module OS
       def latest_version
         case MacOS.version
         when "10.10" then "600.0.54"
-        when "10.9"  then "600.0.51"
+        when "10.9"  then "600.0.54"
         when "10.8"  then "503.0.40"
         else
           "425.0.28"
@@ -187,6 +187,9 @@ module OS
 
       def detect_version
         [MAVERICKS_PKG_ID, MAVERICKS_NEW_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+          if MacOS.version >= :mavericks
+            next unless File.exist?("#{MAVERICKS_PKG_PATH}/usr/bin/clang")
+          end
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end

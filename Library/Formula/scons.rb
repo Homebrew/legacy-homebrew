@@ -7,9 +7,10 @@ class Scons < Formula
 
   bottle do
     cellar :any
-    sha1 "9d69276a41e5e8f52e241cd9047135a06f837651" => :mavericks
-    sha1 "d7c2ace93bcfde40f21913ed3a7929d426a78b4c" => :mountain_lion
-    sha1 "a86c4a457e6925be8d0ae2645c36b019ad315307" => :lion
+    revision 1
+    sha1 "819d08b7e8c1ba2451db6d7d848f689b108b40aa" => :yosemite
+    sha1 "629c8e7a23a3ca5378a42ccce3472f36f54f8360" => :mavericks
+    sha1 "38882a9e4002c6c5b7e35df8613fb2bf6720f3b1" => :mountain_lion
   end
 
   def install

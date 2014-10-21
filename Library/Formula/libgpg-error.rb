@@ -8,9 +8,10 @@ class LibgpgError < Formula
 
   bottle do
     cellar :any
-    sha1 "c9d320a135686d2dccef6328a7d9b926ba04db2a" => :mavericks
-    sha1 "5fa28dbea7cf575256f8c7d801f5c162af1b948d" => :mountain_lion
-    sha1 "e934e5ef48e6d87c06324cb5e50637cd979d2bc5" => :lion
+    revision 1
+    sha1 "b584fbdd6545806f82a8c9c396513255a603c31b" => :yosemite
+    sha1 "e45588e22aafc220fd4b742d6bf0941a84b65389" => :mavericks
+    sha1 "3323b912b2f40994b18f0fccae8506839d883cbe" => :mountain_lion
   end
 
   option :universal

@@ -4,16 +4,18 @@ class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tar.xz"
   sha1 "0727d8a8498733baabe6f51632b9bab0cbaa9ada"
+  revision 1
 
   bottle do
-    sha1 "fd271aeeff5971fc8570b368603f85d551041df7" => :mavericks
-    sha1 "548aeec37a6ebbc5f0481d87dd17d260f3c17391" => :mountain_lion
-    sha1 "28b35ed1a59bae88da10235379e31554e2c0342d" => :lion
+    revision 1
+    sha1 "e9c851c8064701e14351b9070e4aa6c464c93585" => :yosemite
+    sha1 "b61b7a4f6ea506a056cd89cb6cc19b40584ef7fd" => :mavericks
+    sha1 "feff5d17e50cceabd8eca1125be5d463897a4ac7" => :mountain_lion
   end
 
   VER="3.4"  # The <major>.<minor> is used so often.
 
-  head "http://hg.python.org/cpython", :using => :hg, :branch => VER
+  head "https://hg.python.org/cpython", :using => :hg, :branch => VER
 
   option :universal
   option "quicktest", "Run `make quicktest` after the build"

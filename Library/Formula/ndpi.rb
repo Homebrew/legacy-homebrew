@@ -25,7 +25,6 @@ class Ndpi < Formula
   end
 
   test do
-    test_pcap = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.pcap"
-    system "#{bin}/ndpiReader", "-i", test_pcap
+    system "#{bin}/ndpiReader", "-i", test_fixtures("test.pcap")
   end
 end

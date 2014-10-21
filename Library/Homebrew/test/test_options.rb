@@ -25,6 +25,37 @@ class OptionTests < Homebrew::TestCase
   end
 end
 
+class DeprecatedOptionTests < Homebrew::TestCase
+  def setup
+    @deprecated_option = DeprecatedOption.new("foo", "bar")
+  end
+
+  def test_old
+    assert_equal "foo", @deprecated_option.old
+  end
+
+  def test_current
+    assert_equal "bar", @deprecated_option.current
+  end
+
+  def test_old
+    assert_equal "--foo", @deprecated_option.old_flag
+  end
+
+  def test_current
+    assert_equal "--bar", @deprecated_option.current_flag
+  end
+
+  def test_equality
+    foobar = DeprecatedOption.new("foo", "bar")
+    boofar = DeprecatedOption.new("boo", "far")
+    assert_equal foobar, @deprecated_option
+    refute_equal boofar, @deprecated_option
+    assert_eql @deprecated_option, foobar
+    refute_eql @deprecated_option, boofar
+  end
+end
+
 class OptionsTests < Homebrew::TestCase
   def setup
     @options = Options.new
