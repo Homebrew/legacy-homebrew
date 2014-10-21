@@ -26,7 +26,7 @@ class Spread < Formula
     EOS
   end
 
-  plist_options :manual => "spread start"
+  plist_options :manual => "spread"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
