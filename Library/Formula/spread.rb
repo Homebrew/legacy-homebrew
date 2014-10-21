@@ -56,7 +56,9 @@ TDs/PropertyList-1.0.dtd">
         exec "#{sbin}/spread", "-n", "localhost"
     end
 
-    system "#{bin}/spflooder", "-m", "1", "-s", "4803@localhost"
+    if master
+        system "#{bin}/spflooder", "-m", "1", "-s", "4803@localhost"
+    end
 
     Process.kill("TERM", master)
   end
