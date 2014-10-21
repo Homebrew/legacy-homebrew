@@ -54,7 +54,7 @@ class Python < Formula
   patch :DATA if build.with? "brewed-tk"
 
   def lib_cellar
-    prefix / (if OS.mac? then "Frameworks/Python.framework/Versions/2.7" end) /
+    prefix / (OS.mac? ? "Frameworks/Python.framework/Versions/2.7" : "") /
       "lib/python2.7"
   end
 
