@@ -6,9 +6,10 @@ class Pypy < Formula
   sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
   bottle do
     cellar :any
-    sha1 "533b3d5b9e566b7162d529c0f0bfaaea06cb19e8" => :mavericks
-    sha1 "bc30d65847cb9b1e1eb85eb3ff36fd003f1f23b5" => :mountain_lion
-    sha1 "3f91bcf68fc5d6954f7032be18f14eb17dfb8d55" => :lion
+    revision 1
+    sha1 "3473464c440ded1e99b5aaa40e5cc740aa3d7ef4" => :yosemite
+    sha1 "9d4eccd93b9af5814ce5d159bc4f16bbaf589418" => :mavericks
+    sha1 "06ee886537c517845fdec289839105c024689007" => :mountain_lion
   end
 
   revision 2
