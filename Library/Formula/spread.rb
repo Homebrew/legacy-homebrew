@@ -52,6 +52,7 @@ TDs/PropertyList-1.0.dtd">
   end
 
   test do
+    return if not Process.respond_to?(:spawn)
     master = Process.spawn("#{sbin}/spread -n localhost")
     sleep 2
     unless $?.exited?
