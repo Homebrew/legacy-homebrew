@@ -52,7 +52,7 @@ TDs/PropertyList-1.0.dtd">
   end
 
   test do
-    master = spawn("#{sbin}/spread -n localhost")
+    master = Process.spawn("#{sbin}/spread -n localhost")
     sleep 2
     unless $?.exited?
       system "#{bin}/spflooder", "-m", "1", "-s", "4803@localhost"
