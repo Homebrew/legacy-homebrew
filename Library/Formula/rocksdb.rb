@@ -5,6 +5,13 @@ class Rocksdb < Formula
   url "https://github.com/facebook/rocksdb/archive/rocksdb-3.6.1.tar.gz"
   sha1 "5913cfe18a16487d6b3957fe104354c0ec15b9c7"
 
+  bottle do
+    cellar :any
+    sha1 "49595928c9413224d17be626a8e5ae276fa1857b" => :yosemite
+    sha1 "5f97280309ca391216b67d8ac93703d4567a0895" => :mavericks
+    sha1 "3cf7ffd06fb57f5360d7332586ec96b04fc63c3b" => :mountain_lion
+  end
+
   needs :cxx11
   depends_on "snappy"
   depends_on "lz4"
