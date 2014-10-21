@@ -5,9 +5,9 @@ class Sword < Formula
   url "ftp://ftp.crosswire.org/pub/sword/source/v1.7/sword-1.7.3.tar.gz"
   sha1 "6ecac6364aa098e150cf8851fd8f97d48df21a34"
 
-  # Activates optional unicode support in sword.
+  option "with-icu4c", "Uses icu4c for unicode support"
   depends_on "icu4c" => :optional
-  # Activates optional clucene based text searching capabilities in sword.
+  option "with-clucene", "Uses clucene for text searching capabilities"
   depends_on "clucene" => :optional
 
   def install
