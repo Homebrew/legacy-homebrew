@@ -7,9 +7,10 @@ class Libechonest < Formula
 
   bottle do
     cellar :any
-    sha1 "78c787069afab61d3b364886cbb9a777c2d1558c" => :mavericks
-    sha1 "14e726d2267171af68e4548662284d443072a4d9" => :mountain_lion
-    sha1 "d983fbabb1c3e5a68111dd325c41dc9eb3999c42" => :lion
+    revision 1
+    sha1 "c28f255845403371492620b020672e8e64d19b9b" => :yosemite
+    sha1 "12ab88fa73e2c0ab2650972f31a446c0ea90bb62" => :mavericks
+    sha1 "1ae85cce12862896bcc2d28509854dd8e6b3d9be" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
