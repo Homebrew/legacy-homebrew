@@ -11,9 +11,9 @@ class Sword < Formula
     sha1 "36eedc14308de364ebfb1e2fecfc86852b65e3cf" => :mountain_lion
   end
 
-  # Activates optional unicode support in sword.
+  option "with-icu4c", "Uses icu4c for unicode support"
   depends_on "icu4c" => :optional
-  # Activates optional clucene based text searching capabilities in sword.
+  option "with-clucene", "Uses clucene for text searching capabilities"
   depends_on "clucene" => :optional
 
   def install
