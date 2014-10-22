@@ -6,6 +6,13 @@ class Postgis < Formula
   sha256 'cd73c2a38428c8736f6cae73b955aee0bd42f9ca4fd8d93c1af464524cb100fc'
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "052eb70ee96f0fa2f72e4d8fdcf929f06fd2b8a4" => :yosemite
+    sha1 "34057a42f859e8974f85ff0d633eaf7772689fc4" => :mavericks
+    sha1 "98dcbf94883a1869abd7659b25d633077a6bc558" => :mountain_lion
+  end
+
   head 'http://svn.osgeo.org/postgis/trunk/'
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
