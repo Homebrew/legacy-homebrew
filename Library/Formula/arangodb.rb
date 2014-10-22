@@ -2,8 +2,8 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.2.5.tar.gz'
-  sha1 'e0522685659d49ab2718f4f6505a38ddf740df63'
+  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.2.6.tar.gz'
+  sha1 '5e777db1dca878e9aaa518889b989126e368492d'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
@@ -14,6 +14,7 @@ class Arangodb < Formula
   end
 
   depends_on 'go' => :build
+  depends_on 'openssl'
 
   needs :cxx11
 
