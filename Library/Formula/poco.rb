@@ -12,6 +12,7 @@ class Poco < Formula
   end
 
   option :cxx11
+  depends_on "openssl"
 
   def install
     ENV.cxx11 if build.cxx11?
