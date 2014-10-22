@@ -18,7 +18,10 @@ class Md5sha1sum < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make", "install"
+    system "make"
+    bin.install 'md5sum'
+    bin.install_symlink bin/'md5sum' => 'sha1sum'
+    bin.install_symlink bin/'md5sum' => 'ripemd160sum'
   end
 
   test do
