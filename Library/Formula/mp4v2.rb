@@ -7,9 +7,10 @@ class Mp4v2 < Formula
 
   bottle do
     cellar :any
-    sha1 "d7bce18055cddaaf13429b96dec5cecf60536ade" => :mavericks
-    sha1 "d862406a423a2587bfac793d482dae6391f70822" => :mountain_lion
-    sha1 "abfa572954faff663b79c1d03ef08f469faa65af" => :lion
+    revision 1
+    sha1 "7cdf66572d30457b9ccde22e5adb254f8423372a" => :yosemite
+    sha1 "423dc3e6a70da565233d7093a82089aa725d021e" => :mavericks
+    sha1 "7adca200e0baf9cd0ba94acec0417d6a5dc74ad9" => :mountain_lion
   end
 
   def install
