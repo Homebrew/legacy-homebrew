@@ -21,6 +21,10 @@ Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebre
 
 **If you don't read these it will take us far longer to help you with your problem.**
 
+Security
+--------
+Please report security issues to security@brew.sh.
+
 Who Are You?
 ------------
 Homebrew's current maintainers are [Misty De Meo][mistydemeo], [Adam Vandenberg][adamv], [Jack Nagel][jacknagel], [Mike McQuaid][mikemcquaid], [Brett Koonce][asparagui] and [Tim Smith][tdsmith].
