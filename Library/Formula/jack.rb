@@ -13,9 +13,10 @@ class Jack < Formula
   sha1 "e9ba4a4c754ec95fbe653dcf7344edd6cc47cd60"
 
   bottle do
-    sha1 "1a6b9ef8bf76ac101b60469ce69c849487395bff" => :mavericks
-    sha1 "fba42da50d726fa86ed02ae7607feac6ad9c1537" => :mountain_lion
-    sha1 "89f26ade3b8e39a3fe8c888d6e67abb13fa508bd" => :lion
+    revision 1
+    sha1 "77d0ff244fa183a4f520498229b7c3263b6d099d" => :yosemite
+    sha1 "5ba1cd3b59da76cbec24b2ce8cfafb920934b5e7" => :mavericks
+    sha1 "01f34e585df06210bfc2f06d07d1ef7058d17f67" => :mountain_lion
   end
 
   depends_on 'berkeley-db'
