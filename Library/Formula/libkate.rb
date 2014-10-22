@@ -8,10 +8,10 @@ class Libkate < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "97d80c510059826dc80316c8c4861cdc6ad8261e" => :yosemite
-    sha1 "ce7aa340bba256de2ac0f0018ad577605448e300" => :mavericks
-    sha1 "8ed93646139c5ec85a9fb9efdab9fa4f161a62d6" => :mountain_lion
+    revision 2
+    sha1 "fd0287aca68b310e7c9d856c352b7453de2042c3" => :yosemite
+    sha1 "3cdb628edf85be70d407a15070a3c9bc10b83215" => :mavericks
+    sha1 "f47ba4978a5b1ff7a3aa7e9a6590e5d799cc2226" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
