@@ -6,6 +6,13 @@ class Pidgin < Formula
   sha1 'f3de8fd94dba1f4c98d5402a02430f9f323e665a'
   revision 1
 
+  bottle do
+    revision 1
+    sha1 "430aef531d3993806a044c16ce86b55a19cf8d15" => :yosemite
+    sha1 "0dc523a911e1a5b08d0103858904ee67e91ac688" => :mavericks
+    sha1 "0b158a8e1657695a480df0cc170f83a9558cc9c7" => :mountain_lion
+  end
+
   depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
