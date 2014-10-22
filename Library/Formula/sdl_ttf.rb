@@ -7,9 +7,10 @@ class SdlTtf < Formula
 
   bottle do
     cellar :any
-    sha1 "3876dd0927050f70f7d5b5658938c3780c34f44b" => :mavericks
-    sha1 "9427a99c35761cba9e585f00b797800fb0497e19" => :mountain_lion
-    sha1 "7822774b7bce3812a374d568ca5101d33cc75047" => :lion
+    revision 1
+    sha1 "ef450cac430fb2f581f0b93d3c44b941828e96eb" => :yosemite
+    sha1 "b312c46ace8fca0219dacda256077051d6c2e666" => :mavericks
+    sha1 "6df57f99f03a918b88b007d8b1698e3485faf3c6" => :mountain_lion
   end
 
   option :universal
