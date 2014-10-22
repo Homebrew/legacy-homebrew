@@ -16,9 +16,9 @@ class Fontforge < Formula
   end
 
   bottle do
-    sha1 "3495cb05210a3d70ef8d39835502afc28af8c2a2" => :mavericks
-    sha1 "430aaddeb6f59729e9216ba67223a8ce1c5b9ee2" => :mountain_lion
-    sha1 "f1ff364ff4e0dc54483a370a8ea54abf150f4f22" => :lion
+    sha1 "7dcb6b4262cb397be47efeafe8a57757f50689d6" => :yosemite
+    sha1 "ee2b108f7d9fd88fab51238c4511b26d039c9574" => :mavericks
+    sha1 "2e0b2ac9c7b6abbb0fd302b422e56a478c9492da" => :mountain_lion
   end
 
   head "https://github.com/fontforge/fontforge.git"
