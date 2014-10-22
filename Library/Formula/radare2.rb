@@ -16,9 +16,7 @@ class Radare2 < Formula
     end
   end
 
-  head do
-    url 'https://github.com/radare/radare2'
-  end
+  head 'https://github.com/radare/radare2.git'
 
   depends_on "pkg-config" => :build
   depends_on "valabind" => :build
