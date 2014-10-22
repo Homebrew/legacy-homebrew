@@ -14,9 +14,20 @@ class Radare2 < Formula
       url "https://github.com/radare/radare2/commit/f0dbeb9950c55cdb75a2515b1cf6add4e0f4a591.diff"
       sha1 "1b02e071728c2ef9b328e25ae46eac15eed391be"
     end
+
+    resource "bindings" do
+      url "http://radare.org/get/radare2-bindings-0.9.7.tar.xz"
+      sha1 "b425e3faeebd3f212e6542a64dafa3b629535e7a"
+    end
   end
 
-  head 'https://github.com/radare/radare2.git'
+  head do
+    url 'https://github.com/radare/radare2.git'
+    
+    resource "bindings" do
+      url 'https://github.com/radare/radare2-bindings.git'
+    end
+  end
 
   depends_on "pkg-config" => :build
   depends_on "valabind" => :build
@@ -26,11 +37,6 @@ class Radare2 < Formula
   depends_on "libmagic"
   depends_on "gmp"
   depends_on "lua"
-
-  resource "bindings" do
-    url "http://radare.org/get/radare2-bindings-0.9.7.tar.xz"
-    sha1 "b425e3faeebd3f212e6542a64dafa3b629535e7a"
-  end
 
   def install
     system "./configure", "--prefix=#{prefix}"
