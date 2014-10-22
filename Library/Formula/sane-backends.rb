@@ -6,9 +6,10 @@ class SaneBackends < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/s/sane-backends/sane-backends_1.0.24.orig.tar.gz"
   sha1 "c10bcb30a1b092b2c2fe5a86d6a5efc29123ccf9"
   bottle do
-    sha1 "c4d014ea40683f69840c63558061e24611fd8703" => :mavericks
-    sha1 "8944920bba83da860a454c579c4f38364b1c381d" => :mountain_lion
-    sha1 "6bb3c2d4ee5ea86aa96e22ff165fcbaaf5392130" => :lion
+    revision 1
+    sha1 "36cbd09583ba8282b149467de09e963d8c2c2a6f" => :yosemite
+    sha1 "d12ff8d69dae245177c554c82dbe0acc9c31fd3d" => :mavericks
+    sha1 "343224849f6824dba073499bcb0521abd76e9e23" => :mountain_lion
   end
 
   revision 1
