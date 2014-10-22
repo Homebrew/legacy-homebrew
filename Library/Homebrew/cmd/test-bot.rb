@@ -232,10 +232,13 @@ module Homebrew
         diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
         diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
         test "brew", "update" if current_branch == "master"
-      elsif @hash or @url
+      elsif @hash
         diff_start_sha1 = current_sha1
         test "brew", "update" if current_branch == "master"
         diff_end_sha1 = current_sha1
+      elsif @url
+        test "brew", "update"  if current_branch == "master"
+        diff_start_sha1 = current_sha1
       end
 
       # Handle Jenkins pull request builder plugin.
