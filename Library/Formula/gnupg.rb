@@ -6,6 +6,7 @@ class Gnupg < Formula
   mirror "http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.18.tar.bz2"
   mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/gnupg/gnupg-1.4.18.tar.bz2"
   sha1 "41462d1a97f91abc16a0031b5deadc3095ce88ae"
+  revision 1
 
   bottle do
     revision 1
@@ -15,6 +16,8 @@ class Gnupg < Formula
   end
 
   option "8192", "Build with support for private keys of up to 8192 bits"
+
+  depends_on "curl" if MacOS.version <= :mavericks
 
   def install
     inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
