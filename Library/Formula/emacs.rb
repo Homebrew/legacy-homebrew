@@ -7,9 +7,10 @@ class Emacs < Formula
   sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
 
   bottle do
-    sha1 "32846286dea7fdc0a81d4c5b586979e10f318fb5" => :yosemite
-    sha1 "487d3784982927f80b5667155a9b40832ce98292" => :mavericks
-    sha1 "dcd4dbefd2f74b36fb258efe3b2f5114a1480095" => :mountain_lion
+    revision 1
+    sha1 "921a8a802cb99821d8cc6a1a73ad99bafb09dd77" => :yosemite
+    sha1 "9d076a90ed7ce5b70fe89a7400ff95b8d7089132" => :mavericks
+    sha1 "74439e42f3147b814b4fa451524789d388e24ed8" => :mountain_lion
   end
 
   option "cocoa", "Build a Cocoa version of emacs"
