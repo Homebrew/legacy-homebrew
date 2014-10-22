@@ -11,10 +11,10 @@ class Netpbm < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "c44d6b98a6e2358081e29570cc65e463a2580d0c" => :mavericks
-    sha1 "b8182333c2bad2a03669ab820199a1f367c0f8fe" => :mountain_lion
-    sha1 "701c82ac12208ae9f7312f1d68724a8f61d69415" => :lion
+    revision 2
+    sha1 "1f842e7b6c2632a80401751a5975f3379af6a10e" => :yosemite
+    sha1 "b2ee77e9829b27ef530c7ebc50043e4d5bc23b8e" => :mavericks
+    sha1 "a036886a7d91d2658ac1dd76ed6bc9cc246e3ec6" => :mountain_lion
   end
 
   option :universal
