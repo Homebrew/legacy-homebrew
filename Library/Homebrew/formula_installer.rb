@@ -142,7 +142,9 @@ class FormulaInstaller
 
     check_conflicts
 
+    f.active_spec.prefetch
     compute_and_install_dependencies unless ignore_deps?
+    f.active_spec.wait_for_prefetch
 
     return if only_deps?
 
@@ -320,7 +322,9 @@ class FormulaInstaller
       oh1 "Installing dependencies for #{f.name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
     end
 
-    deps.each { |dep, options| install_dependency(dep, options) }
+    deps.map { |dep, options| [dep, options, dep.to_formula] }
+        .each { |dep, options, df| df.active_spec.prefetch }
+        .each { |dep, options, df| install_dependency(dep, options, df) }
 
     @show_header = true unless deps.empty?
   end
@@ -338,8 +342,7 @@ class FormulaInstaller
     end
   end
 
-  def install_dependency(dep, inherited_options)
-    df = dep.to_formula
+  def install_dependency(dep, inherited_options, df)
     tab = Tab.for_formula(df)
 
     if df.linked_keg.directory?

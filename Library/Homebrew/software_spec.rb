@@ -25,6 +25,7 @@ class SoftwareSpec
   attr_reader :compiler_failures
 
   def_delegators :@resource, :stage, :fetch, :verify_download_integrity
+  def_delegators :@resource, :prefetch, :wait_for_prefetch
   def_delegators :@resource, :cached_download, :clear_cache
   def_delegators :@resource, :checksum, :mirrors, :specs, :using
   def_delegators :@resource, :version, :mirror, *Checksum::TYPES
