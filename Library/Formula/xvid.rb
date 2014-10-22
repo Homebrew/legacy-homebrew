@@ -9,9 +9,10 @@ class Xvid < Formula
 
   bottle do
     cellar :any
-    sha1 "193d4057a9efba3cffc00dd89a439199187ad44f" => :mavericks
-    sha1 "85f9ef42226bf1e315afecf4ca51572bb0ab2cff" => :mountain_lion
-    sha1 "23adf592abd0be309096c1b4d42ac106726c518d" => :lion
+    revision 1
+    sha1 "7909530c342faf017a3182e8393e24eaf11ebd02" => :yosemite
+    sha1 "f8c77d6d2ea36943646f6ffcfcc999db50d62bab" => :mavericks
+    sha1 "d0df269c7a0ef1e6c1d2a05ef0e8b9cea0b2d461" => :mountain_lion
   end
 
   def install
