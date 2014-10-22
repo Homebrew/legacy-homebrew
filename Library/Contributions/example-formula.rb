@@ -398,8 +398,8 @@ class ExampleFormula < Formula
       assert_equal "result", stdout.read
     end
 
-    # If an exception is raised (e.g. by assert), or if we return false, or if
-    # the command run by `system` prints to stderr, we consider the test failed.
+    # The test will fail if it returns false, or if an exception is raised.
+    # Failed assertions and failed `system` commands will raise exceptions.
   end
 
 
