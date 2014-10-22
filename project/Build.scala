@@ -26,7 +26,7 @@ object JobServerBuild extends Build {
     settings = commonSettings210 ++ Seq(
       description := "Common Akka application stack: metrics, tracing, logging, and more.",
       libraryDependencies ++= coreTestDeps ++ akkaDeps
-    )
+    ) ++ publishSettings
   )
 
   lazy val jobServer = Project(id = "job-server", base = file("job-server"),
@@ -51,7 +51,7 @@ object JobServerBuild extends Build {
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
       // This lets us add Spark back to the classpath without assembly barfing
       fullClasspath in Revolver.reStart := (fullClasspath in Compile).value
-      ) ++ implicitlySettings
+      ) ++ implicitlySettings ++ publishSettings
   ) dependsOn(akkaApp, jobServerApi)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
@@ -62,16 +62,15 @@ object JobServerBuild extends Build {
   ) dependsOn(jobServerApi)
 
   lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"),
-    settings = commonSettings210 ++ Seq(exportJars := true)
+    settings = commonSettings210 ++ publishSettings //++ Seq(exportJars := true)
                                     )
 
   // This meta-project aggregates all of the sub-projects and can be used to compile/test/style check
   // all of them with a single command.
   //
-  // Note: SBT's default project is the one with the first lexicographical variable name, so we
-  // prepend "aaa" to the project name here.
-  lazy val aaaMasterProject = Project(
-    id = "master", base = file("master"),
+  // NOTE: if we don't define a root project, SBT does it for us, but without our settings
+  lazy val root = Project(
+    id = "root", base = file("."),
     settings =
       commonSettings210  ++ Seq(
       parallelExecution in Test := false,
@@ -120,7 +119,7 @@ object JobServerBuild extends Build {
         <exclude module="jmxtools"/>
         <exclude module="jmxri"/>
       </dependencies>
-  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings ++ publishSettings
+  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings
 
   lazy val scoverageSettings = {
     import ScoverageSbtPlugin._
