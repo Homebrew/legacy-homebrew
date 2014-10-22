@@ -8,9 +8,10 @@ class Unixodbc < Formula
   revision 1
 
   bottle do
-    sha1 "eebb5edaaa4bcd4b2d44c1d6c70fc330f044efcf" => :mavericks
-    sha1 "b595c9e8c2f531c0220d0a265a9b021f0d5628bd" => :mountain_lion
-    sha1 "e7abdd1023388d5f219d568a091112ac2173889c" => :lion
+    revision 1
+    sha1 "03dd766eb34bf59cc26c6ae55ca906f95b9e0c17" => :yosemite
+    sha1 "29acdaea17aea46d72b8cfe061c84d3d58e3d594" => :mavericks
+    sha1 "e9efe13f0a2eb4f162422dc3465411ab35b85aef" => :mountain_lion
   end
 
   option :universal
