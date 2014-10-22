@@ -30,9 +30,10 @@ class Qt5 < Formula
   sha1 "502dd2db1e9ce349bb8ac48b4edf7f768df1cafe"
 
   bottle do
-    sha1 "b2a204e963405aade40d9a88383beeec7301c7e2" => :mavericks
-    sha1 "2744a6ee18b87ab1ab791ec136c3f95481713d2c" => :mountain_lion
-    sha1 "6d327353447bdc56176f605e51d910fde032ad8d" => :lion
+    revision 1
+    sha1 "a622384b646da163271514546498a5fcd53203b7" => :yosemite
+    sha1 "06b31931f5b75352f605a7d22dbc9a66b2583002" => :mavericks
+    sha1 "8056e8b4c814b3e0044db7eb11457ba7c6509559" => :mountain_lion
   end
 
   # Patch to fix compile errors on Yosemite. Can be removed with 5.4.
