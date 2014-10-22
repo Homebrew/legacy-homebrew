@@ -7,10 +7,10 @@ class Glew < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "bd5a2a92acf5443149d5a7b86599b6092192f7f7" => :mavericks
-    sha1 "46c52b5ee309f0b753eed917dc506c677fc11492" => :mountain_lion
-    sha1 "82232dfa4c363b10f4a3f45248e9fa024851f9dd" => :lion
+    revision 2
+    sha1 "0f140259d5cb5525153b32102220432fefba1bee" => :yosemite
+    sha1 "ab31a942adaf43f20cea1fd39d1a04949615c2de" => :mavericks
+    sha1 "0ea8a4b4ec385c39eb52732ce8527f68410e35da" => :mountain_lion
   end
 
   def install
