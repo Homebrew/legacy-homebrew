@@ -6,6 +6,7 @@ class Gnupg2 < Formula
   mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
   mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/gnupg/gnupg-2.0.26.tar.bz2"
   sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
+  revision 1
 
   bottle do
     revision 1
@@ -23,6 +24,7 @@ class Gnupg2 < Formula
   depends_on "pinentry"
   depends_on "pth"
   depends_on "gpg-agent"
+  depends_on "curl" if MacOS.version <= :mavericks
   depends_on "dirmngr" => :recommended
   depends_on "libusb-compat" => :recommended
   depends_on "readline" => :optional
