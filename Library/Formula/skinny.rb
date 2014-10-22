@@ -2,8 +2,8 @@ require "formula"
 
 class Skinny < Formula
   homepage "http://skinny-framework.org/"
-  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.4/skinny-1.3.4.tar.gz"
-  sha1 "79cb32e4ddc579913445e3514cde62bd6ce66546"
+  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.4-1/skinny-1.3.4-1.tar.gz"
+  sha1 "59cba0afb287b06f2a6ddf2d7f2fb238a3653508"
 
   depends_on "node"
 
@@ -19,16 +19,11 @@ class Skinny < Formula
   option "without-npm-generator", "Yeoman generator will not be installed"
 
   def install
-    # npm wrapper only for this skinny script
-    (libexec/"npm").write_env_script "npm", :PREFIX => libexec
-    chmod 0755, libexec/"npm"
-
     libexec.install Dir["*"]
-
     # `skinny new/upgrade` use only its own node_modules under libexec dir
     (bin/"skinny").write <<-EOS.undent
       #!/bin/bash
-      export PATH=#{libexec}/bin/:$PATH
+      export PATH=#{bin}:$PATH
       PREFIX="#{libexec}" exec "#{libexec}/skinny" "$@"
     EOS
   end
@@ -38,8 +33,10 @@ class Skinny < Formula
     return if build.without? "npm-generator"
 
     # install npm modules under libexec dir
-    system libexec/"npm", "install", "-g", "yo"
-    system libexec/"npm", "install", "-g", "generator-skinny"
+    cd libexec
+    system "npm", "install", "yo"
+    system "ln", "-s", libexec/"node_modules/yo/cli.js", bin/"yo"
+    system "npm", "install", "generator-skinny"
   end
 
   test do
