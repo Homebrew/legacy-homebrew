@@ -1,7 +1,7 @@
 require "formula"
 
 class Sword < Formula
-  homepage "http://www.crosswire.org"
+  homepage "http://www.crosswire.org/sword/index.jsp"
   url "ftp://ftp.crosswire.org/pub/sword/source/v1.7/sword-1.7.3.tar.gz"
   sha1 "6ecac6364aa098e150cf8851fd8f97d48df21a34"
 
