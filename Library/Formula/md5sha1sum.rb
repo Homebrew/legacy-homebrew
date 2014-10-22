@@ -8,9 +8,10 @@ class Md5sha1sum < Formula
 
   bottle do
     cellar :any
-    sha1 "2f064d2390b9564b6c9d6b84623e2807dd031706" => :mavericks
-    sha1 "0c5dee6e92679788df27d0e2f53f23bceaf21ed4" => :mountain_lion
-    sha1 "11bae51a115c14688f7f57cf0903a829f8c28dde" => :lion
+    revision 1
+    sha1 "bcc33c65f871406565ef2a6903ef8d710b5dbe13" => :yosemite
+    sha1 "4336eec700ddbf54292291005fbd7bebbdf1d805" => :mavericks
+    sha1 "e7908cb541f5b419978a71e2d0a443856e006b4c" => :mountain_lion
   end
 
   depends_on "openssl"
