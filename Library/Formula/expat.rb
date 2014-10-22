@@ -7,9 +7,10 @@ class Expat < Formula
 
   bottle do
     cellar :any
-    sha1 "2d12120ed9ff4835d8c5c31ef1699629dc0f480a" => :mavericks
-    sha1 "f2158bd85b4f592df187d2819635dd868b58e023" => :mountain_lion
-    sha1 "9be7ecfc6f4e2e58361af84e303214b842c652b7" => :lion
+    revision 1
+    sha1 "bed02c89a0fdaf86c6f61fb81fa02d8962583de8" => :yosemite
+    sha1 "d4b5ee6b854e860ca3c465aa970ffbe881f1358f" => :mavericks
+    sha1 "fd958aab5f15b738ed4432b3694e68731021c256" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "OS X includes Expat 1.5."
