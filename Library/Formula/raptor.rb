@@ -7,9 +7,10 @@ class Raptor < Formula
 
   bottle do
     cellar :any
-    sha1 "b22317b19b16764738fdd3bffeb80b86379d293a" => :mavericks
-    sha1 "b2e832498b362a0a2da1935c9901445496bdf33e" => :mountain_lion
-    sha1 "64dffefd3d044632e10a9a3c768f670d62ec1c8b" => :lion
+    revision 1
+    sha1 "f7cecc5f216e22af901503d4d2a0dc1b067a17dc" => :yosemite
+    sha1 "91e0f02cf40d73b1a8d2086dd9e99b5b68865ba7" => :mavericks
+    sha1 "90e06f872ef68f2ddfd1db49be3caad6f9f3cf6a" => :mountain_lion
   end
 
   def install
