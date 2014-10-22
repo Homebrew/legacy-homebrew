@@ -7,10 +7,10 @@ class Zeromq < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "f0b1d5adb4b416e0c30b6f4c3363258b7d285992" => :mavericks
-    sha1 "34822b161d6443666ea528c196aa0ee83a570c07" => :mountain_lion
-    sha1 "6a10776dbb0e16892f304cebe8cf4b1a23b9303e" => :lion
+    revision 2
+    sha1 "8260f1908dc155ba835711e1f848c3e275a3f461" => :yosemite
+    sha1 "7ab73a456532154c9bc182435b28b75c5258a7e5" => :mavericks
+    sha1 "aecbe315d2f265f4e3a16be995bb1125d789c9af" => :mountain_lion
   end
 
   head do
