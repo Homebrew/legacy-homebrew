@@ -322,9 +322,9 @@ class FormulaInstaller
       oh1 "Installing dependencies for #{f.name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
     end
 
-    deps.map { |dep, options| [dep, options, dep.to_formula] }
-        .each { |dep, options, df| df.active_spec.prefetch }
-        .each { |dep, options, df| install_dependency(dep, options, df) }
+    deps.map { |dep, options| [dep, options, dep.to_formula] }.
+         each { |dep, options, df| df.active_spec.prefetch }.
+         each { |dep, options, df| install_dependency(dep, options, df) }
 
     @show_header = true unless deps.empty?
   end
