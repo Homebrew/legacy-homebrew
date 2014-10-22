@@ -8,9 +8,10 @@ class Icu4c < Formula
   sha1 "8c752490bbf31cea26e20246430cee67d48abe34"
 
   bottle do
-    sha1 "984f992aa1e6e35866aa8ed28da06e6d3e6ce29d" => :mavericks
-    sha1 "2d6234ded70b57db9f8bc18a956dec3a9666491d" => :mountain_lion
-    sha1 "c7de3cc30819af40dbbc185d9cd9dd299ea3dc5a" => :lion
+    revision 1
+    sha1 "244dbb217c95a79f87a35df70aca493a05c9ff39" => :yosemite
+    sha1 "a963404c60a1de000c3e9d7478f6318e8f3c9291" => :mavericks
+    sha1 "fb48ee8a8fa5aa9537d4e594178bc7e62689156a" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "OS X provides libicucore.dylib (but nothing else)."

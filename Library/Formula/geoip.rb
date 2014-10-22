@@ -16,10 +16,10 @@ class Geoip < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "3ebd898cb31012b641b471b4cf5cd537f9226afd" => :mavericks
-    sha1 "d3798825d01b45a40e6015e637f82965dbe49fdc" => :mountain_lion
-    sha1 "ba096b834f4c251c2b6c6d63349574aab3a336fb" => :lion
+    revision 2
+    sha1 "d3379a5450e8ab5696f72a4d901ad122a63c4029" => :yosemite
+    sha1 "0d9bb56a2b6b950f566c86208af7a53426e1de99" => :mavericks
+    sha1 "9f6129ef37af7af53c3f66c87ce20f753bfdbf0c" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

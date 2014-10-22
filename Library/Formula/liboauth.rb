@@ -7,9 +7,10 @@ class Liboauth < Formula
 
   bottle do
     cellar :any
-    sha1 "629338632e3bc565c467e78ec3eda027e5dc8f5f" => :mavericks
-    sha1 "beb85d4344d6fe052a6f0fd86660d23ac719b004" => :mountain_lion
-    sha1 "e7412537949792cec74e50bb2a04c4b1f6116094" => :lion
+    revision 1
+    sha1 "e45a5f09893eff5434259c1563a6d1d57333b26c" => :yosemite
+    sha1 "80ef673091befb4c94efc94365271f152ac2fc0e" => :mavericks
+    sha1 "f58f7890a6b3165fd4254ef921c0e85eeb73f810" => :mountain_lion
   end
 
   def install

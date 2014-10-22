@@ -7,9 +7,10 @@ class Pidgin < Formula
   revision 1
 
   bottle do
-    sha1 "e039a6633ee9110630b5b7406fc9c465b10d34e2" => :mavericks
-    sha1 "052f83d0798c770489cdee0cc1e4b6da7b858fff" => :mountain_lion
-    sha1 "812f2081647fcbeaacd5beb70e1a84850365a283" => :lion
+    revision 1
+    sha1 "430aef531d3993806a044c16ce86b55a19cf8d15" => :yosemite
+    sha1 "0dc523a911e1a5b08d0103858904ee67e91ac688" => :mavericks
+    sha1 "0b158a8e1657695a480df0cc170f83a9558cc9c7" => :mountain_lion
   end
 
   depends_on :x11
@@ -23,8 +24,8 @@ class Pidgin < Formula
   depends_on "libotr"
 
   resource "pidgin-otr" do
-    url "http://www.cypherpunks.ca/otr/pidgin-otr-4.0.0.tar.gz"
-    sha1 "23c602c4b306ef4eeb3ff5959cd389569f39044d"
+    url "https://otr.cypherpunks.ca/pidgin-otr-4.0.1.tar.gz"
+    sha1 "e231a2dc72c960f2aa70d8c9d4b05abc6d123085"
   end
 
   option 'perl', 'Build pidgin with perl support'

@@ -7,9 +7,10 @@ class Dxflib < Formula
 
   bottle do
     cellar :any
-    sha1 "e20ddb14b010c8686963fad454846521b6bc4d2d" => :mavericks
-    sha1 "1af6665dba3655d6a47f99ada050ecd585c2ffb1" => :mountain_lion
-    sha1 "00b03949f806c24e4d4d3f23023d9ed48e8bfd97" => :lion
+    revision 1
+    sha1 "58c0add8f6f8c5211ca4e59bc185468531431765" => :yosemite
+    sha1 "2184e3835e92a57a52854ad82f966a9e186c30e0" => :mavericks
+    sha1 "238319c0040cde6d76fa085f086adef65c3c15f0" => :mountain_lion
   end
 
   def install

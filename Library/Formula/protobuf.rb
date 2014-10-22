@@ -41,9 +41,10 @@ class Protobuf < Formula
 
   bottle do
     cellar :any
-    sha1 "15ae01660cd840952b246058ecdd55e2fd01edf0" => :mavericks
-    sha1 "7d7a22de4d560d3569bf6100137165b9c64d551a" => :mountain_lion
-    sha1 "6a660512d05324ddefa5b3f0e633c8e8ef3aa687" => :lion
+    revision 1
+    sha1 "e0195a4905560d5869863983840b3ecad7f80c78" => :yosemite
+    sha1 "d7c3d7296beb07bf3c0aa853d136beff0fdac4ce" => :mavericks
+    sha1 "b751a032b13e09989e37a03b64be958f8796e80c" => :mountain_lion
   end
 
   option :universal

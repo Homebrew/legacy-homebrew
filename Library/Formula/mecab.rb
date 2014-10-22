@@ -6,9 +6,10 @@ class Mecab < Formula
   sha1 '15baca0983a61c1a49cffd4a919463a0a39ef127'
 
   bottle do
-    sha1 "d6435459cc7781e7823e809066266b6886be2863" => :mavericks
-    sha1 "3d97f4f6338245415a36c9209e3cab0be771dbcf" => :mountain_lion
-    sha1 "195c754f42fa4c2c0253ca8856cdaaa564c5acd2" => :lion
+    revision 1
+    sha1 "73f5e7206a4482f7ab714b0690ad3eeac7f0c9e0" => :yosemite
+    sha1 "530ee77a2f13cce3225abd0cd9401858219959d9" => :mavericks
+    sha1 "9747369cd4c0aa246e6a973c4f2e5652e174bae8" => :mountain_lion
   end
 
   def install

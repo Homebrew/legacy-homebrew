@@ -6,9 +6,10 @@ class Bsdmake < Formula
   sha1 "9ce3c3fc01e0eb47d82827b1eb227eb371fefd5c"
 
   bottle do
-    sha1 "79030aa9845b6d38597687450fe2e816096ded78" => :mavericks
-    sha1 "ec9167226d71cb85d097b4a9c2770cf98a5465e1" => :mountain_lion
-    sha1 "517532eb240860be38ef6c6523aae550e2be5ca6" => :lion
+    revision 1
+    sha1 "af9a7d65b92a9c5fae42bd3653d4b79c249e8c18" => :yosemite
+    sha1 "e7530cee7765619355ad4ff07ff3a9635c5f843c" => :mavericks
+    sha1 "cbb0f8c89812af75e3f4ba99951d8b440db5660e" => :mountain_lion
   end
 
   keg_only :provided_until_xcode43

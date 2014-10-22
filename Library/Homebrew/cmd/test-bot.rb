@@ -175,7 +175,7 @@ module Homebrew
       elsif formula
         @formulae = [argument]
       else
-        odie "#{argument} is not a pull request URL, commit URL or formula name."
+        raise ArgumentError.new("#{argument} is not a pull request URL, commit URL or formula name.")
       end
 
       @category = __method__
@@ -232,10 +232,13 @@ module Homebrew
         diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
         diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
         test "brew", "update" if current_branch == "master"
-      elsif @hash or @url
+      elsif @hash
         diff_start_sha1 = current_sha1
         test "brew", "update" if current_branch == "master"
         diff_end_sha1 = current_sha1
+      elsif @url
+        test "brew", "update"  if current_branch == "master"
+        diff_start_sha1 = current_sha1
       end
 
       # Handle Jenkins pull request builder plugin.
@@ -597,8 +600,15 @@ module Homebrew
       tests << test
     else
       ARGV.named.each do |argument|
-        test = Test.new(argument, tap)
-        any_errors ||= !test.run
+        test_error = false
+        begin
+          test = Test.new(argument, tap)
+          test_error = !test.run
+        rescue ArgumentError => e
+          test_error = true
+          ofail e.message
+        end
+        any_errors ||= test_error
         tests << test
       end
     end

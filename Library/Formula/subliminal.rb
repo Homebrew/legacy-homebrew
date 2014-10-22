@@ -7,9 +7,10 @@ class Subliminal < Formula
 
   bottle do
     cellar :any
-    sha1 "f19b5e7d47179e6b583c293ec722d102bbe73ac0" => :mavericks
-    sha1 "2e2b536ce2a2fc7883f55f68647a44ac86d8c07a" => :mountain_lion
-    sha1 "ff68aa0d2d056c61b4bacaabf0d82d354427c10b" => :lion
+    revision 1
+    sha1 "8625822a2fa45a74437c0f885475d4858e660091" => :yosemite
+    sha1 "608010d410137ad0ba71bdc4e115ee5f3283e8fe" => :mavericks
+    sha1 "633ca93147b2d58b50413d354e0d2dff5999abb8" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -81,11 +82,16 @@ class Subliminal < Formula
     sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
   end
 
+  resource "colorlog" do
+    url "https://pypi.python.org/packages/source/c/colorlog/colorlog-2.4.0.tar.gz"
+    sha1 "30b4a621ec372ba4ab367cb5446a4a4293f6e9ed"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", "#{libexec}/lib/python2.7/site-packages"
-    %w[six charade guessit pysrt html5lib enzyme chardet dogpile.core requests babelfish beautifulsoup4 dogpile.cache python-dateutil].each do |r|
+    %w[six charade guessit pysrt html5lib enzyme chardet dogpile.core requests babelfish beautifulsoup4 dogpile.cache python-dateutil colorlog].each do |r|
       resource(r).stage do
-        system "python", "setup.py", "install", "--prefix=#{libexec}"
+        system "python", "setup.py", "install", "--prefix=#{libexec}", "--record=installed.txt"
       end
     end
 
