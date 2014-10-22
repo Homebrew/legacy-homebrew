@@ -26,7 +26,7 @@ object JobServerBuild extends Build {
     settings = commonSettings210 ++ Seq(
       description := "Common Akka application stack: metrics, tracing, logging, and more.",
       libraryDependencies ++= coreTestDeps ++ akkaDeps
-    )
+    ) ++ publishSettings
   )
 
   lazy val jobServer = Project(id = "job-server", base = file("job-server"),
@@ -51,7 +51,7 @@ object JobServerBuild extends Build {
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
       // This lets us add Spark back to the classpath without assembly barfing
       fullClasspath in Revolver.reStart := (fullClasspath in Compile).value
-      )
+      ) ++ implicitlySettings ++ publishSettings
   ) dependsOn(akkaApp, jobServerApi)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
@@ -62,18 +62,17 @@ object JobServerBuild extends Build {
   ) dependsOn(jobServerApi)
 
   lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"),
-    settings = commonSettings210 ++ Seq(exportJars := true)
+    settings = commonSettings210 ++ publishSettings //++ Seq(exportJars := true)
                                     )
 
   // This meta-project aggregates all of the sub-projects and can be used to compile/test/style check
   // all of them with a single command.
   //
-  // Note: SBT's default project is the one with the first lexicographical variable name, so we
-  // prepend "aaa" to the project name here.
-  lazy val aaaMasterProject = Project(
-    id = "master", base = file("master")
-  ) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp
-  ) settings(
+  // NOTE: if we don't define a root project, SBT does it for us, but without our settings
+  lazy val root = Project(
+    id = "root", base = file("."),
+    settings =
+      commonSettings210  ++ Seq(
       parallelExecution in Test := false,
       publish      := {},
       concurrentRestrictions := Seq(
@@ -82,7 +81,7 @@ object JobServerBuild extends Build {
         // Note: some components of tests seem to have the "Untagged" tag rather than "Test" tag.
         // So, we limit the sum of "Test", "Untagged" tags to 1 concurrent
         Tags.limitSum(1, Tags.Test, Tags.Untagged))
-  )
+  )) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp)
 
   // To add an extra jar to the classpath when doing "re-start" for quick development, set the
   // env var EXTRA_JAR to the absolute full path to the jar
@@ -95,7 +94,7 @@ object JobServerBuild extends Build {
 
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
     organization := "spark.jobserver",
-    version      := "0.4.0",
+    version      := "0.4.1-SNAPSHOT",
     crossPaths   := false,
     scalaVersion := "2.10.4",
     scalaBinaryVersion := "2.10",
@@ -120,7 +119,7 @@ object JobServerBuild extends Build {
         <exclude module="jmxtools"/>
         <exclude module="jmxri"/>
       </dependencies>
-  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings ++ publishSettings
+  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings
 
   lazy val scoverageSettings = {
     import ScoverageSbtPlugin._
@@ -134,6 +133,21 @@ object JobServerBuild extends Build {
     licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
     bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("spark-jobserver")
   )
+
+  lazy val implicitlySettings = {
+    import ls.Plugin._
+    import LsKeys._
+
+    lsSettings ++ Seq(
+      homepage := Some(url("https://github.com/spark-jobserver/spark-jobserver")),
+      (tags in lsync) := Seq("spark", "akka", "rest"),
+      (description in lsync) := "REST job server for Apache Spark",
+      (externalResolvers in lsync) := Seq("Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven"),
+      (ghUser in lsync) := Some("spark-jobserver"),
+      (ghRepo in lsync) := Some("spark-jobserver"),
+      (ghBranch in lsync) := Some("master")
+    )
+  }
 
   // change to scalariformSettings for auto format on compile; defaultScalariformSettings to disable
   // See https://github.com/mdr/scalariform for formatting options

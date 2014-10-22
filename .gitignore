@@ -7,3 +7,7 @@ test-reports/
 .ensime*
 .idea*
 .vagrant
+
+# ignore deployment configs
+config/*.conf
+config/*.sh

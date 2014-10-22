@@ -27,7 +27,7 @@ object Dependencies {
   ) ++ yodaDeps
 
   lazy val sparkDeps = Seq(
-    "org.apache.spark" %% "spark-core" % "1.0.2" % "provided" exclude("io.netty", "netty-all"),
+    "org.apache.spark" %% "spark-core" % "1.1.0" % "provided" exclude("io.netty", "netty-all"),
     // Force netty version.  This avoids some Spark netty dependency problem.
     "io.netty" % "netty" % "3.6.6.Final"
   )
@@ -50,7 +50,7 @@ object Dependencies {
 
   lazy val serverDeps = apiDeps ++ yodaDeps
   lazy val apiDeps = sparkDeps :+ typeSafeConfigDeps
-  
+
   val repos = Seq(
     "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/",
     "sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",

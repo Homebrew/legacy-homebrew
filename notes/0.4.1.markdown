@@ -1,0 +1,7 @@
+#Scala #akka @ApacheSpark
+
+* Updated for Spark 1.1.0
+* Hardened deploy scripts and $SSH_KEY support (thanks @sujee and @hibikir)
+* Configurable binding address
+* Travis CI integration
+* ls.implicit.ly listing
