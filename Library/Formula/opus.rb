@@ -16,15 +16,11 @@ class Opus < Formula
   end
 
   def install
-    opts = []
-    opts << "--enable-custom-modes" if build.with? "custom-modes"
+    args = ["--disable-dependency-tracking", "--disable-doc", "--prefix=#{prefix}"]
+    args << "--enable-custom-modes" if build.with? "custom-modes"
 
     system "./autogen.sh" if build.head?
-    system "./configure",
-      "--disable-dependency-tracking",
-      "--disable-doc",
-      "--prefix=#{prefix}",
-      *opts
+    system "./configure", *args
     system "make install"
   end
 end
