@@ -7,9 +7,9 @@ class Pypy3 < Formula
 
   bottle do
     cellar :any
-    sha1 "51f93930d175a44e6f97aa7827f46f1e009f0c1a" => :mavericks
-    sha1 "298a86ebee02ba6669887c9ae4bb880d2ddbbf6d" => :mountain_lion
-    sha1 "edf9c97210ef71120a8691d6c04a81ac18f3f234" => :lion
+    sha1 "91c1ccc5028d0e624f305897774acef91aa90553" => :yosemite
+    sha1 "70dc2d4a2777e4fca94b7eb7a725c3c0b67063ea" => :mavericks
+    sha1 "2712e981287725a7282811b7eb35b14e866ad960" => :mountain_lion
   end
 
   depends_on :arch => :x86_64
