@@ -6,6 +6,11 @@ class Fltk < Formula
   sha1 '25071d6bb81cc136a449825bfd574094b48f07fb'
   revision 1
 
+  bottle do
+    sha1 "fdd346322d4abd84efcb94947dacc1452a922f7d" => :mavericks
+    sha1 "20f8ab2cbc0c9c04c2f86e0e9a405baa48d02831" => :mountain_lion
+  end
+
   option :universal
 
   depends_on 'libpng'
