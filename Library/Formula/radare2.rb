@@ -6,7 +6,7 @@ class Radare2 < Formula
   sha1 '34af6c6ba53ac08c852b4e110ac6908054616b9d'
   revision 1
 
-  head 'http://github.com/radare/radare2'
+  head 'https://github.com/radare/radare2'
 
   depends_on "pkg-config" => :build
   depends_on "valabind" => :build
