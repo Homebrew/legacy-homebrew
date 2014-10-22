@@ -2,9 +2,8 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.16.tar.xz"
-  sha1 "ef510446e858fadf20d36fa2c1bed6f35a51e613"
-  revision 1
+  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.1.tar.xz"
+  sha1 "68f1ff43a2dd4de913d6c979db504dc2955f5737"
 
   bottle do
     sha1 "4190b0d49b5590835e956f101e17861e468b7fbe" => :mavericks
@@ -34,10 +33,12 @@ class Mpd < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "boost" => :build
   depends_on "glib"
   depends_on "libid3tag"
   depends_on "sqlite"
   depends_on "libsamplerate"
+  depends_on "icu4c"
 
   needs :cxx11
 
