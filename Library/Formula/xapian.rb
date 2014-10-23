@@ -6,9 +6,9 @@ class Xapian < Formula
   sha1 'a8679cd0f708e32f2ec76bcdc198cd9fa2e1d65e'
 
   bottle do
-    sha1 "a0ea621525aa1dd72bccade43348b8c14670cb74" => :yosemite
-    sha1 "adc65335a9cba4b25a9825c4d0c8502527642f05" => :mavericks
-    sha1 "4f0fafca4d8396956b2fc71f683cb65e079d5f3d" => :mountain_lion
+    sha1 "51971954b89b767f45c0cdbec9b3bc39c4704d2e" => :yosemite
+    sha1 "90cc658d5639598783c165938edce758f44657f4" => :mavericks
+    sha1 "fd032717423f8440865e9b6b3e82b3d1b70f8fad" => :mountain_lion
   end
 
   option "java",   "Java bindings"
