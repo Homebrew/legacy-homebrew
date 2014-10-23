@@ -26,12 +26,6 @@ class Mpd < Formula
   option "with-yajl", "Build with yajl support (for playing from soundcloud)"
   option "with-opus", "Build with opus support (for Opus encoding and decoding)"
 
-  if MacOS.version < :lion
-    option "with-libwrap", "Build with libwrap (TCP Wrappers) support"
-  elsif MacOS.version == :lion
-    option "with-libwrap", "Build with libwrap (TCP Wrappers) support (buggy)"
-  end
-
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
   depends_on "glib"
@@ -67,16 +61,6 @@ class Mpd < Formula
     # The build is fine with G++.
     ENV.libcxx
 
-    if build.include? "lastfm" or build.include? "libwrap" \
-       or build.include? "enable-soundcloud"
-      opoo "You are using an option that has been replaced."
-      opoo "See this formula's caveats for details."
-    end
-
-    if build.with? "libwrap" and MacOS.version > :lion
-      opoo "Ignoring --with-libwrap: TCP Wrappers were removed in OSX 10.8"
-    end
-
     system "./autogen.sh" if build.head?
 
     args = %W[
@@ -87,6 +71,7 @@ class Mpd < Formula
       --enable-ffmpeg
       --enable-fluidsynth
       --enable-osx
+      --disable-libwrap
     ]
 
     args << "--disable-mad"
@@ -94,7 +79,6 @@ class Mpd < Formula
 
     args << "--enable-zzip" if build.with? "libzzip"
     args << "--enable-lastfm" if build.with? "lastfm"
-    args << "--disable-libwrap" if build.without? "libwrap"
     args << "--disable-lame-encoder" if build.without? "lame"
     args << "--disable-soundcloud" if build.without? "yajl"
     args << "--enable-vorbis-encoder" if build.with? "vorbis"
