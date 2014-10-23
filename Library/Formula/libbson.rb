@@ -2,8 +2,8 @@ require "formula"
 
 class Libbson < Formula
   homepage "https://github.com/mongodb/libbson"
-  url "https://github.com/mongodb/libbson/releases/download/1.0.0/libbson-1.0.0.tar.gz"
-  sha1 "f1cd25e34426472ec3d8028edc6685fe77a81f5b"
+  url "https://github.com/mongodb/libbson/releases/download/1.0.2/libbson-1.0.2.tar.gz"
+  sha1 "20126faa95dfdcdc30d4289b82e914cc5b606be7"
 
   bottle do
     cellar :any
