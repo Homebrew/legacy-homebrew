@@ -2,14 +2,13 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.16.tar.xz"
-  sha1 "ef510446e858fadf20d36fa2c1bed6f35a51e613"
-  revision 1
+  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.1.tar.xz"
+  sha1 "68f1ff43a2dd4de913d6c979db504dc2955f5737"
 
   bottle do
-    sha1 "4190b0d49b5590835e956f101e17861e468b7fbe" => :mavericks
-    sha1 "1a7620942795359541772b42c1681f854606677e" => :mountain_lion
-    sha1 "e19dc0265a30fb57c676a5a08a56be91c2b1d6fb" => :lion
+    sha1 "5ae7e75ccb454ec5bb7ac78266346168132ead1e" => :yosemite
+    sha1 "917c7d262cb096cbb7ee81a66558ccba79b99c80" => :mavericks
+    sha1 "88426fd9b9264fcfe2c5f31298e1844105e7850c" => :mountain_lion
   end
 
   head do
@@ -34,10 +33,12 @@ class Mpd < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "boost" => :build
   depends_on "glib"
   depends_on "libid3tag"
   depends_on "sqlite"
   depends_on "libsamplerate"
+  depends_on "icu4c"
 
   needs :cxx11
 

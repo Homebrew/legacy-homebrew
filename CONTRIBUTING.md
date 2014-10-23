@@ -9,6 +9,10 @@ Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebre
 
 **If you don't read these it will take us far longer to help you with your problem.**
 
+Security
+--------
+Please report security issues to security@brew.sh.
+
 Contributing
 ------------
 Please read:

@@ -13,6 +13,8 @@ class Ffmpeg2theora < Formula
       url "http://git.xiph.org/?p=ffmpeg2theora.git;a=patch;h=d3435a6a83dc656379de9e6523ecf8d565da6ca6"
       sha1 "5a3e48c386ac077ab58afa6c49631c88f8f85929"
     end
+
+    depends_on "libkate" => :optional
   end
 
   bottle do
@@ -23,7 +25,11 @@ class Ffmpeg2theora < Formula
     sha1 "7c215c1078da702b774e8f99787f9bd87975aedc" => :mountain_lion
   end
 
-  head "git://git.xiph.org/ffmpeg2theora.git"
+  head do
+    url "git://git.xiph.org/ffmpeg2theora.git"
+
+    depends_on "libkate" => :recommended
+  end
 
   depends_on "pkg-config" => :build
   depends_on "scons" => :build
@@ -31,10 +37,6 @@ class Ffmpeg2theora < Formula
   depends_on "libogg"
   depends_on "libvorbis"
   depends_on "theora"
-
-  # ffmpeg2theora can't find our libkate because we don't build liboggkate.
-  # Either fix this here or upstream this issue.
-  # Have removed that optional dependency here temporarily.
 
   def install
     args = ["prefix=#{prefix}", "mandir=PREFIX/share/man"]
