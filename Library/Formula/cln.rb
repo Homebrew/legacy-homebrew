@@ -7,9 +7,9 @@ class Cln < Formula
 
   bottle do
     cellar :any
-    sha1 "54f11e2ffe58d465e7ae7740a607f38169e99d32" => :mavericks
-    sha1 "657f0060d774be90d2a88ebc480a20b6043e7c67" => :mountain_lion
-    sha1 "3c4a67e6672596a0a9881fb23b7aa3c9eb2c673f" => :lion
+    sha1 "4e7caf04c3fc9e5b38bc45b2ca8110aefdffea28" => :yosemite
+    sha1 "32c6b097023b1c7e5f7bea248a39648356dc02e3" => :mavericks
+    sha1 "1c2e8079757a031feb65279be81f0b9874098134" => :mountain_lion
   end
 
   depends_on "gmp"
