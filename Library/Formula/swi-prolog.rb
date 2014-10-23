@@ -18,7 +18,6 @@ class SwiProlog < Formula
 
   head do
     url "git://www.swi-prolog.org/home/pl/git/pl.git"
-
     depends_on "autoconf" => :build
   end
 
@@ -29,6 +28,7 @@ class SwiProlog < Formula
   depends_on "pkg-config" => :build
   depends_on "readline"
   depends_on "gmp"
+  depends_on "openssl"
   depends_on "libarchive" => :optional
 
   if build.with? "xpce"
