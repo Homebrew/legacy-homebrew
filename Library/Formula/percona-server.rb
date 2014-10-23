@@ -5,6 +5,7 @@ class PerconaServer < Formula
   url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.21-69.0.tar.gz'
   version '5.6.21-69.0'
   sha1 '0071f263774d6acb9e8991a7574a79cc2b83bc0a'
+  revision 1
 
   bottle do
     sha1 "0bc089f58e454b66a27a87f462c68f4a77b507ea" => :mavericks
@@ -14,6 +15,7 @@ class PerconaServer < Formula
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   option :universal
   option 'with-tests', 'Build with unit tests'
