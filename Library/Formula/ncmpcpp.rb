@@ -13,12 +13,16 @@ class Ncmpcpp < Formula
   end
 
   devel do
-    url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6_beta4.tar.bz2"
-    sha1 "e995546831489e3629a961512365dc2d3f2f7310"
-    version "0.6-beta4"
+    url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6_beta5.tar.bz2"
+    sha1 "aee7885b362af215a23ca278171e90f4fe888fe3"
+    version "0.6-beta5"
 
     depends_on 'boost' # not needed by stable
     depends_on 'readline'
+
+    fails_with :clang do
+      cause "Your compiler doesn't seem to support initializer lists"
+    end
   end
 
   head do
