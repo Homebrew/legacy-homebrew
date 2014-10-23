@@ -41,6 +41,9 @@ class Cogl < Formula
   patch :DATA
 
   def install
+    # Don't dump files in $HOME.
+    ENV["GI_SCANNER_DISABLE_CACHE"] = "yes"
+
     resource("grep").stage do
       system "./configure", "--disable-dependency-tracking",
                             "--disable-nls",
