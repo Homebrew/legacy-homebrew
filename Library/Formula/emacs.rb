@@ -2,9 +2,20 @@ require "formula"
 
 class Emacs < Formula
   homepage "https://www.gnu.org/software/emacs/"
-  url "http://ftpmirror.gnu.org/emacs/emacs-24.4.tar.xz"
-  mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
-  sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
+
+  stable do
+    url "http://ftpmirror.gnu.org/emacs/emacs-24.4.tar.xz"
+    mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
+    sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
+
+    # Fix ns-antialias-text, broken in 24.4, submitted upstream here:
+    # http://lists.gnu.org/archive/html/emacs-devel/2014-10/msg00813.html
+
+    patch do
+      url 'https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/b7055ba40a7dd9e8f6f5dd6bbe5c305a78bbbc87/emacs-fix-ns-antialias-text-mac-os.patch'
+      sha1 '6215c59c01dc247dfdec7c89ff2fe84ff28eb1c7'
+    end
+  end
 
   bottle do
     revision 1
