@@ -87,9 +87,6 @@ class OpenBabel < Formula
   end
 
   test do
-    system "obabel --help"
-    system "obabel -:'C1=CC=CC=C1Br' -ocan"
-    system "obabel -:'C1=CC=CC=C1Br' -omol"
-    system "obabel -:'C1=CC=CC=C1Br' -oinchi"
+    system "obabel", "-:'C1=CC=CC=C1Br'", "-omol"
   end
 end
