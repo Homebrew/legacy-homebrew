@@ -7,6 +7,12 @@ class Luajit < Formula
   head 'http://luajit.org/git/luajit-2.0.git'
   revision 1
 
+  bottle do
+    sha1 "9a6fc01ed0659ecc07a1e34daecdcf82cd150ca4" => :yosemite
+    sha1 "7ed3346a644ca5cd73c51131c54060b13038208e" => :mavericks
+    sha1 "0363e0a9c7ff2580d35363622b228fba7bb8f770" => :mountain_lion
+  end
+
   skip_clean 'lib/lua/5.1', 'share/lua/5.1'
 
   option "enable-debug", "Build with debugging symbols"
