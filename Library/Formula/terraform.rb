@@ -3,13 +3,13 @@ require "language/go"
 
 class Terraform < Formula
   homepage "http://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.3.0.tar.gz"
+  url "https://github.com/hashicorp/terraform/archive/v0.3.1.tar.gz"
   sha1 "4b60eebca3dbc73bc69f1ef38d24a1078f15c31e"
 
   bottle do
-#    sha1 "94ae5dcbc41ad630b9a5ebe85f814a7c107a122b" => :mavericks
-#    sha1 "17ba9f29cb8b7808c294dbb019c2056ef834088e" => :mountain_lion
-#    sha1 "24a307812d75adbbc764a80972723fc68acaae0a" => :lion
+    sha1 "94ae5dcbc41ad630b9a5ebe85f814a7c107a122b" => :mavericks
+    sha1 "17ba9f29cb8b7808c294dbb019c2056ef834088e" => :mountain_lion
+    sha1 "24a307812d75adbbc764a80972723fc68acaae0a" => :lion
   end
 
   depends_on "go" => :build
@@ -39,7 +39,7 @@ class Terraform < Formula
   end
 
   go_resource "github.com/mitchellh/goamz" do
-    url "https://github.com/mitchellh/goamz.git", :revision => "ab85368956852eb0a22d122b963c2c8a2ae74227"
+    url "https://github.com/mitchellh/goamz.git", :revision => "835bb759f66f80805f855201eb6bc6243b059a65"
   end
 
   go_resource "github.com/vaughan0/go-ini" do
