@@ -56,13 +56,7 @@ class OpenBabel < Formula
       pyinc = `python -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'`.strip
       args << "-DPYTHON_BINDINGS=ON"
       args << "-DPYTHON_INCLUDE_DIR='#{pyinc}'"
-      if File.exist? "#{pypref}/Python"
-        args << "-DPYTHON_LIBRARY='#{pypref}/Python'"
-      elsif File.exists? "#{pypref}/lib/lib#{pyvers}.a"
-        args << "-DPYTHON_LIBRARY='#{pypref}/lib/lib#{pyvers}.a'"
-      else
-        args << "-DPYTHON_LIBRARY='#{pypref}/lib/lib#{pyvers}.dylib'"
-      end
+      args << "-DPYTHON_LIBRARY='#{pypref}/lib/lib#{pyvers}.dylib'"
     end
 
     args << '..'
