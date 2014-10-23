@@ -3,8 +3,9 @@ require "formula"
 # brew audit reports
 # * Non-executables were installed to "/usr/local/Cellar/epics/3.14.12.4/bin"
 #
-# This is OK (and required) for EPICS build system. EPICS does not come with executables,
-# it's a framework to make ones.
+# This is OK (and required) for EPICS build system. EPICS does not come with
+# end-user eecutables. The executables in the prefix/bin are needed by other
+# libraries.
 
 class Epics < Formula
   homepage "http://www.aps.anl.gov/epics/"
@@ -13,24 +14,18 @@ class Epics < Formula
   version "3.14.12.4"
 
   def install
-    host_arch = `#{buildpath}/startup/EpicsHostArch`
-    host_arch = host_arch.strip
-
-    ohai "Configuring INSTALL_LOCATION to point to #{prefix}"
+    ENV['EPICS_HOST_ARCH'] = %x[#{buildpath}/startup/EpicsHostArch].chomp
     inreplace "configure/CONFIG_SITE", "#INSTALL_LOCATION=<fullpathname>", "INSTALL_LOCATION=#{prefix}"
-
-    ohai "Building EPICS base #{version} for #{host_arch}, this might take a while..."
     system "make install"
-    ohai "EPICS base #{version} built successfully.\n"
+  end
 
-    ohai "Creating an EPICS root symlink"
-    epics_root = "#{HOMEBREW_PREFIX}/#{name}"
-    system "ln -fs #{HOMEBREW_PREFIX}/Cellar/#{name} #{epics_root}"
+  def caveats; <<-EOS.undent
+    Please configure your system to define the following system environment variables:
 
-    ohai ""
-    ohai "Please configure your system to define the following system environment variables:"
-    ohai "\tEPICS_BASE=#{epics_root}/#{version}"
-    ohai "\tEPICS_HOST_ARCH=#{host_arch}"
+        EPICS_BASE=#{prefix}
+        EPICS_HOST_ARCH=#{ENV['EPICS_HOST_ARCH']}
+
+    EOS
   end
 
 end
