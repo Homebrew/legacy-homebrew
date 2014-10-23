@@ -65,6 +65,9 @@ class Emscripten < Formula
     ]
 
     cd "fastcomp" do
+      # silly fix for parsing Mac OS X version numbers >= 10.10
+      inreplace "Makefile.rules", '10.([0-9])', '10.([0-9]+)'
+      inreplace "Makefile.rules", '(10.[0-9])', '(10.[0-9]+)'
       system "./configure", *args
       system "make"
       system "make", "install"
