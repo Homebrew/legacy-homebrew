@@ -4,6 +4,7 @@ class SwiProlog < Formula
   homepage "http://www.swi-prolog.org/"
   url "http://www.swi-prolog.org/download/stable/src/pl-6.6.6.tar.gz"
   sha1 "38cc6772a48fd412f50fc06e24e6e4673eb71d3b"
+  revision 1
 
   bottle do
     sha1 "6003d555c8b45abf55773637d556f8bee28ca4dd" => :mavericks
@@ -12,8 +13,8 @@ class SwiProlog < Formula
   end
 
   devel do
-    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.23.tar.gz"
-    sha1 "eb2b4cb49acf8574e25bdc0bcc5686adf07e8f9f"
+    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.25.tar.gz"
+    sha1 "c7912d9905de961426ffae3545f8d4a16f68c386"
   end
 
   head do
@@ -29,6 +30,7 @@ class SwiProlog < Formula
   depends_on "pkg-config" => :build
   depends_on "readline"
   depends_on "gmp"
+  depends_on "openssl"
   depends_on "libarchive" => :optional
 
   if build.with? "xpce"
