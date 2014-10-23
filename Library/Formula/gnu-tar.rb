@@ -7,10 +7,10 @@ class GnuTar < Formula
   sha1 "cd30a13bbfefb54b17e039be7c43d2592dd3d5d0"
 
   bottle do
-    revision 1
-    sha1 "9bb446adc443bee53702301fd131b51993306cfb" => :mavericks
-    sha1 "6d9b3b71d490d599b15d313e61262cc9303b773a" => :mountain_lion
-    sha1 "e53b6fbcd67091197bacf96d032877d31bcbf649" => :lion
+    revision 2
+    sha1 "bc61f3210e6f8adaade8abe7e8bed4542ead62e2" => :yosemite
+    sha1 "01e82dddbbadb8a40af90f1f844cce3684a19399" => :mavericks
+    sha1 "63268147e47588ccbb33be80e3484611bfacc2f4" => :mountain_lion
   end
 
   # Fix for xattrs bug causing build failures on OS X:
