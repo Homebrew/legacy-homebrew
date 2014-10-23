@@ -2,8 +2,8 @@ require 'formula'
 
 class Atf < Formula
   homepage 'https://github.com/jmmv/atf'
-  url 'https://github.com/jmmv/atf/releases/download/atf-0.20/atf-0.20.tar.gz'
-  sha1 '398baa9733f9136bb78c27d10a8fffd7810e678a'
+  url 'https://github.com/jmmv/atf/releases/download/atf-0.21/atf-0.21.tar.gz'
+  sha1 '7cc9d3703f7c0e00bb8ec801f7ac65ac9dc898d7'
 
   def install
     system "./configure", "--disable-dependency-tracking",
