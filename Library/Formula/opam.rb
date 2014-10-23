@@ -7,6 +7,13 @@ class Opam < Formula
 
   head 'https://github.com/ocaml/opam.git'
 
+  bottle do
+    cellar :any
+    sha1 "ab7dbbdabc144c7e729760dc0455fceebfbb14ab" => :yosemite
+    sha1 "6bd3df5754811e0cdd27123f4a801ae80799402b" => :mavericks
+    sha1 "967cb558027afafed8f9bb828b638cde3345a810" => :mountain_lion
+  end
+
   depends_on "objective-caml"
   depends_on "aspcud" => :recommended
 
