@@ -17,7 +17,7 @@ class SwiProlog < Formula
   end
 
   head do
-    url "git://www.swi-prolog.org/home/pl/git/pl.git"
+    url "https://github.com/SWI-Prolog/swipl-devel.git"
 
     depends_on "autoconf" => :build
   end
