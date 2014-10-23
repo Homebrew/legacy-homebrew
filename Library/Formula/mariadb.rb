@@ -78,10 +78,6 @@ class Mariadb < Formula
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
 
-    # oqgraph requires boost, but fails to compile against boost 1.54
-    # Upstream bug: https://mariadb.atlassian.net/browse/MDEV-4795
-    args << "-DWITHOUT_OQGRAPH_STORAGE_ENGINE=1"
-
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
 
