@@ -7,9 +7,9 @@ class SwiProlog < Formula
   revision 1
 
   bottle do
-    sha1 "6003d555c8b45abf55773637d556f8bee28ca4dd" => :mavericks
-    sha1 "b790e5871436682e50ee8c2048ceaa4d09f25732" => :mountain_lion
-    sha1 "bba383cb95cfc1b79a7b931174f879d4f83c3dcb" => :lion
+    sha1 "639b6093ff09bb6b066ff86705de2ddc78c37213" => :yosemite
+    sha1 "76f0f355cc1e16442ed3f474654924890da457dd" => :mavericks
+    sha1 "6917eab60b4e607311f0ee777dd70e31e624e7c1" => :mountain_lion
   end
 
   devel do
