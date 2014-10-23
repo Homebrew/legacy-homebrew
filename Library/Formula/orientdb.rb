@@ -6,6 +6,13 @@ class Orientdb < Formula
   version '1.7.9'
   sha1 '85e6e13bde4e04fb66828faf2bee6462a4b39f1e'
 
+  devel do
+    url 'http://www.orientdb.org/portal/function/portal/download/unknown@unknown.com/-/-/-/-/-/orientdb-community-2.0-M2.tar.gz/false/false/mac'
+    version '2.0-M2'
+    sha1 'f0d47c1d762804394411dc73fbd4ca742fce6d83'
+  end
+
+
   bottle do
     cellar :any
     sha1 "0bc1553a143ad95dbb32eca2f17eb79c38ac50c5" => :mavericks
