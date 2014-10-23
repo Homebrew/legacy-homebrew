@@ -8,10 +8,9 @@ class Libfreefare < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "5939f87b737816272e8bd24bf54ceabcedd9eac6" => :yosemite
-    sha1 "1890623e36354d249e06587ff9eaaa0af8ee8ded" => :mavericks
-    sha1 "ab6743edaf802a89944cec742d0c2b1f193d7897" => :mountain_lion
+    sha1 "5c480eebc127a8e05a6c2390a0b99823f631e92b" => :yosemite
+    sha1 "2c4ab3dfc877588a4780605347e459d03ecfca6a" => :mavericks
+    sha1 "3ef841880e81e9839b69ae5ede01e02ff922ac32" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
