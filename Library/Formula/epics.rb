@@ -9,12 +9,11 @@ class Epics < Formula
     ENV["EPICS_HOST_ARCH"] = `#{buildpath}/startup/EpicsHostArch`.chomp
     inreplace "configure/CONFIG_SITE", "#INSTALL_LOCATION=<fullpathname>", "INSTALL_LOCATION=#{libexec}"
     system "make", "install"
+    libexec.install Dir["startup"]
    end
 
   def caveats; <<-EOS.undent
-    Please configure your system to define the following system environment variables:
-        EPICS_BASE=#{opt_prefix}/libexec
-        EPICS_HOST_ARCH=#{ENV["EPICS_HOST_ARCH"]}
+    EPICS base installed to #{opt_prefix}/libexec
     EOS
   end
 end
