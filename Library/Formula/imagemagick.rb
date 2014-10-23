@@ -2,21 +2,13 @@ require "formula"
 
 class Imagemagick < Formula
   homepage "http://www.imagemagick.org"
-
-  # upstream's stable tarballs tend to disappear, so we provide our own mirror
-  # Tarball and checksum from: http://www.imagemagick.org/download
-  url "https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.9-7.tar.xz"
-  mirror "http://www.imagemagick.org/download/ImageMagick-6.8.9-7.tar.xz"
-  sha256 "45670f37ebd3354d64e45df5462b929b5b843dee2b038b0ad524491492bffbf9"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.8.9-8.tar.xz"
+  sha256 "27360449c6f3d4cca548d1780ecd5f8313a57a0a83d6d953a5088cc81714e9b0"
 
   head "https://www.imagemagick.org/subversion/ImageMagick/trunk",
     :using => UnsafeSubversionDownloadStrategy
 
   bottle do
-    revision 1
-    sha1 "b7dc2890a2c6b5cdc38ac3c5bf27a2a6b4cc82a1" => :yosemite
-    sha1 "035aa87d6db0ee4ece79d5b3bb5fb9b21f6c0aa2" => :mavericks
-    sha1 "9b30aa80ecdc052955dbdb26780b45bf1fab1ff8" => :mountain_lion
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
