@@ -14,6 +14,7 @@ class Libebur128 < Formula
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "speex" => :recommended
 
   def install
