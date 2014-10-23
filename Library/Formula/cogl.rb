@@ -6,9 +6,10 @@ class Cogl < Formula
   sha256 "9278e519d5480eb0379efd48db024e8fdbf93f01dff48a7e756b85b508a863aa"
 
   bottle do
-    sha1 "6ed57026e1e5f8a7ae7ca4d6191fcdfa496d7b9f" => :mavericks
-    sha1 "a064bf230c3188142a2c8d5d1d6031f164a1507f" => :mountain_lion
-    sha1 "994fa2392d984d6a7a6885d7ed705231c8fd5f71" => :lion
+    revision 1
+    sha1 "f86c435b6472355f9db615cfc7ea94d76452d8f6" => :yosemite
+    sha1 "113da66275bfe4c1af107b9cfa65619e20af5441" => :mavericks
+    sha1 "2740ac7cb7da32ae2e44d055918352d5d947aa1e" => :mountain_lion
   end
 
   head do
