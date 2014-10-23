@@ -105,20 +105,6 @@ class Mpd < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
-      As of mpd-0.17.4, this formula no longer enables support for streaming
-      output by default. If you want streaming output, you must now specify
-      the --with-libshout, --with-lame, --with-two-lame, and/or --with-flac
-      options explicitly. (Use '--with-libshout --with-lame --with-flac' for
-      the pre-0.17.4 behavior.)
-
-      As of mpd-0.17.4, this formula has renamed options as follows:
-        --lastfm            -> --with-lastfm
-        --libwrap           -> --with-libwrap (unsupported in OSX >= 10.8)
-        --enable-soundcloud -> --with-yajl
-    EOS
-  end
-
   plist_options :manual => "mpd"
 
   def plist; <<-EOS.undent
