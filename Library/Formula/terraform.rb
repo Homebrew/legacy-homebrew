@@ -4,7 +4,7 @@ require "language/go"
 class Terraform < Formula
   homepage "http://www.terraform.io/"
   url "https://github.com/hashicorp/terraform/archive/v0.3.1.tar.gz"
-  sha1 "4b60eebca3dbc73bc69f1ef38d24a1078f15c31e"
+  sha1 "0c1fa4ac3e0e68c054183956152c58329850231a"
 
   bottle do
     sha1 "94ae5dcbc41ad630b9a5ebe85f814a7c107a122b" => :mavericks
