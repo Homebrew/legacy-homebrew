@@ -29,8 +29,8 @@ class Gnutls < Formula
     cause "Undefined symbols when linking"
   end
 
-  # Fix use of stdnoreturn header on Lion
-  # https://www.gitorious.org/gnutls/gnutls/commit/9d2a2d17c0e483f056f98084955fba82b166bd56
+  # Fix libopts Makefile.in, corresponds to upstream commit
+  # https://gitorious.org/gnutls/gnutls/commit/db3f46aeca90f6dce42592dd723a15f988264852
   patch :DATA
 
   def install
@@ -62,21 +62,16 @@ class Gnutls < Formula
 end
 
 __END__
---- a/src/libopts/autoopts.h
-+++ b/src/libopts/autoopts.h
-@@ -32,7 +32,14 @@
-
- #ifndef AUTOGEN_AUTOOPTS_H
- #define AUTOGEN_AUTOOPTS_H
--#include <stdnoreturn.h>
-+
-+#ifdef HAVE_STDNORETURN_H
-+# include <stdnoreturn.h>
-+#else
-+# ifndef noreturn
-+#  define noreturn
-+# endif
-+#endif
-
- #define AO_NAME_LIMIT           127
- #define AO_NAME_SIZE            ((size_t)(AO_NAME_LIMIT + 1))
+diff --git a/src/libopts/Makefile.in b/src/libopts/Makefile.in
+index 3be797a..8e6d3eb 100644
+--- a/src/libopts/Makefile.in
++++ b/src/libopts/Makefile.in
+@@ -1546,7 +1546,7 @@ uninstall-am:
+ 	tags tags-am uninstall uninstall-am
+ 
+ 
+-+_NORETURN_H=$(srcdir)/compat/_Noreturn.h
++_NORETURN_H=$(srcdir)/compat/_Noreturn.h
+ @GL_GENERATE_STDNORETURN_H_TRUE@stdnoreturn.h: stdnoreturn.in.h $(top_builddir)/config.status $(_NORETURN_H)
+ @GL_GENERATE_STDNORETURN_H_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
+ @GL_GENERATE_STDNORETURN_H_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
