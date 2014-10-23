@@ -28,6 +28,12 @@ class Mkvtoolnix < Formula
   url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.2.0.tar.xz"
   sha1 "b8e688c274d0946faea390d626147c357583e8bc"
 
+  bottle do
+    sha1 "ff8ace4ece6cab820a40bc8f6761f4191ca7537c" => :yosemite
+    sha1 "90aa55113865e9e67d70ec7181c70f63b396be56" => :mavericks
+    sha1 "abc98a3d670d5aacac8232645027a20c8edc0a98" => :mountain_lion
+  end
+
   head do
     url "https://github.com/mbunkus/mkvtoolnix.git"
     depends_on "automake" => :build
