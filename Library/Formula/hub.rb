@@ -6,7 +6,7 @@ class Hub < Formula
   sha1 '65359d3dcc8e1a0986aab3726f6047bfb9df3d7c'
 
   head do
-    url "https://github.com/github/hub.git"
+    url "https://github.com/github/hub.git", :branch => "master"
     depends_on "go" => :build
   end
 
