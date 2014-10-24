@@ -152,7 +152,7 @@ class Smlnj < Formula
 
     # Orrrr, don't mess with our PATH. Superenv carefully sets that up.
     inreplace root/'base/runtime/config/gen-posix-names.sh','PATH=/bin:/usr/bin', '# do not hardcode the path'
-    inreplace root/'base/runtime/config/gen-posix-names.sh', '/usr/include', "#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
+    inreplace root/'base/runtime/config/gen-posix-names.sh', '/usr/include', "#{MacOS.sdk_path}/usr/include"
 
     system 'config/install.sh'
 
