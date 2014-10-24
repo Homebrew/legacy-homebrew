@@ -23,7 +23,7 @@ class Bind < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
                           "--enable-ipv6",
-                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}"
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
 
     # From the bind9 README: "Do not use a parallel "make"."
     ENV.deparallelize
