@@ -148,7 +148,7 @@ class Python < Formula
     inreplace lib_cellar/"config/Makefile" do |s|
       s.change_make_var! "LINKFORSHARED",
         "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
-    end
+    end if OS.mac?
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
