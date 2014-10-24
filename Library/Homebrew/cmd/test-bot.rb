@@ -543,7 +543,7 @@ module Homebrew
       ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
     end
 
-    if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
+    if ARGV.include? '--ci-upload' or ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
       jenkins = ENV['JENKINS_HOME']
       job = ENV['UPSTREAM_JOB_NAME']
       id = ENV['UPSTREAM_BUILD_ID']
@@ -566,10 +566,7 @@ module Homebrew
       safe_system "git", "checkout", "-f", "master"
       safe_system "git", "reset", "--hard", "origin/master"
       safe_system "brew", "update"
-
-      if ARGV.include? '--ci-pr-upload'
-        safe_system "brew", "pull", "--clean", pr
-      end
+      safe_system "brew", "pull", "--clean", pr if pr
 
       ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
