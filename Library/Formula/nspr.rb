@@ -2,8 +2,8 @@ require 'formula'
 
 class Nspr < Formula
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
-  url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.6/src/nspr-4.10.6.tar.gz"
-  sha1 "9f3f278f7f31574b2cdbb99d9703c58e51cd3e1c"
+  url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.7/src/nspr-4.10.7.tar.gz"
+  sha256 "389af5cfa863ea9bc6de7b30c15f8a4f9bddd8002f8c6fdc8b33caef43893938"
 
   bottle do
     cellar :any
