@@ -6,6 +6,13 @@ class Czmq < Formula
   sha1 "2f4fd8de4cf04a68a8f6e88ea7657d8068f472d2"
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "76953cbf02d8eb56aa0bea5caefa19d19f5e48c6" => :yosemite
+    sha1 "5297d31b43353db09cc1931de2a529999ca0f2b5" => :mavericks
+    sha1 "998759fe30f0e27fb994130dd7fe95c5930a8124" => :mountain_lion
+  end
+
   head do
     url "https://github.com/zeromq/czmq.git"
 
