@@ -26,12 +26,6 @@ class Mpd < Formula
   option "with-yajl", "Build with yajl support (for playing from soundcloud)"
   option "with-opus", "Build with opus support (for Opus encoding and decoding)"
 
-  if MacOS.version < :lion
-    option "with-libwrap", "Build with libwrap (TCP Wrappers) support"
-  elsif MacOS.version == :lion
-    option "with-libwrap", "Build with libwrap (TCP Wrappers) support (buggy)"
-  end
-
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
   depends_on "glib"
@@ -67,16 +61,6 @@ class Mpd < Formula
     # The build is fine with G++.
     ENV.libcxx
 
-    if build.include? "lastfm" or build.include? "libwrap" \
-       or build.include? "enable-soundcloud"
-      opoo "You are using an option that has been replaced."
-      opoo "See this formula's caveats for details."
-    end
-
-    if build.with? "libwrap" and MacOS.version > :lion
-      opoo "Ignoring --with-libwrap: TCP Wrappers were removed in OSX 10.8"
-    end
-
     system "./autogen.sh" if build.head?
 
     args = %W[
@@ -87,6 +71,7 @@ class Mpd < Formula
       --enable-ffmpeg
       --enable-fluidsynth
       --enable-osx
+      --disable-libwrap
     ]
 
     args << "--disable-mad"
@@ -94,7 +79,6 @@ class Mpd < Formula
 
     args << "--enable-zzip" if build.with? "libzzip"
     args << "--enable-lastfm" if build.with? "lastfm"
-    args << "--disable-libwrap" if build.without? "libwrap"
     args << "--disable-lame-encoder" if build.without? "lame"
     args << "--disable-soundcloud" if build.without? "yajl"
     args << "--enable-vorbis-encoder" if build.with? "vorbis"
@@ -103,20 +87,6 @@ class Mpd < Formula
     system "make"
     ENV.j1 # Directories are created in parallel, so let"s not do that
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-      As of mpd-0.17.4, this formula no longer enables support for streaming
-      output by default. If you want streaming output, you must now specify
-      the --with-libshout, --with-lame, --with-two-lame, and/or --with-flac
-      options explicitly. (Use '--with-libshout --with-lame --with-flac' for
-      the pre-0.17.4 behavior.)
-
-      As of mpd-0.17.4, this formula has renamed options as follows:
-        --lastfm            -> --with-lastfm
-        --libwrap           -> --with-libwrap (unsupported in OSX >= 10.8)
-        --enable-soundcloud -> --with-yajl
-    EOS
   end
 
   plist_options :manual => "mpd"

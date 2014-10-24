@@ -2,13 +2,13 @@ require "formula"
 
 class Kyua < Formula
   homepage "https://github.com/jmmv/kyua"
-  url "https://github.com/jmmv/kyua/releases/download/kyua-0.10/kyua-0.10.tar.gz"
-  sha1 "cb2c78c6bf2ab4f543eba61dd3ace75db0de27dc"
+  url "https://github.com/jmmv/kyua/releases/download/kyua-0.11/kyua-0.11.tar.gz"
+  sha1 "ba4b822c7157bf9b3478717fc3ff9bb9883d7a8f"
 
   bottle do
-    sha1 "b01a65c236678fce2a1b6e93f9c8edd1b0cafeb0" => :mavericks
-    sha1 "561f9b7a4a88f6187ad9e438225efab55511260e" => :mountain_lion
-    sha1 "e29ab8d8fb98c383b0097e2b9e6fc32b8d2e9876" => :lion
+    sha1 "d9aec0a429eea528157e8f9442a39601047b29c9" => :yosemite
+    sha1 "34c93c5aca199d6b6382c067d1b9e7b4899a3e32" => :mavericks
+    sha1 "a44bd2fbf521782a7f9e93b85ef48ebfd3d38b91" => :mountain_lion
   end
 
   depends_on "atf"

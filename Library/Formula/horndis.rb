@@ -12,6 +12,7 @@ class Horndis < Formula
     sha1 "af083937c77de9d628d9cf6858296be61846ad63" => :lion
   end
 
+  depends_on UnsignedKextRequirement
   depends_on :xcode => :build
 
   def install

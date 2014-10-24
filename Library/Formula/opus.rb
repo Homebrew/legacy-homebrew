@@ -12,6 +12,8 @@ class Opus < Formula
     sha1 "a7e6ed2455861c41e021fec280b6fa28462341a2" => :mountain_lion
   end
 
+  option "with-custom-modes", "Enable custom-modes for opus see http://www.opus-codec.org/docs/html_api-1.1.0/group__opus__custom.html"
+
   head do
     url 'https://git.xiph.org/opus.git'
 
@@ -21,9 +23,11 @@ class Opus < Formula
   end
 
   def install
+    args = ["--disable-dependency-tracking", "--disable-doc", "--prefix=#{prefix}"]
+    args << "--enable-custom-modes" if build.with? "custom-modes"
+
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking", "--disable-doc",
-                          "--prefix=#{prefix}"
+    system "./configure", *args
     system "make install"
   end
 end
