@@ -2,8 +2,8 @@ require "formula"
 
 class MongoC < Formula
   homepage "http://docs.mongodb.org/ecosystem/drivers/c/"
-  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.0.0/mongo-c-driver-1.0.0.tar.gz"
-  sha1 "d9a91374b7273f09da859822e61f3caa09756f23"
+  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.0.2/mongo-c-driver-1.0.2.tar.gz"
+  sha1 "baa425d64dddf5f8267beb0cef509df5b80e5abb"
 
   bottle do
     cellar :any
@@ -14,9 +14,10 @@ class MongoC < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libbson"
+  depends_on "openssl"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--enable-sasl=no"
     system "make", "install"
   end
 end
