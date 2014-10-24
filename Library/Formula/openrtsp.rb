@@ -2,8 +2,8 @@ require 'formula'
 
 class Openrtsp < Formula
   homepage 'http://www.live555.com/openRTSP'
-  url 'http://www.live555.com/liveMedia/public/live.2014.03.25.tar.gz'
-  sha1 'cca0b497867e0dac4bf64647d24b6c5e53029270'
+  url 'http://www.live555.com/liveMedia/public/live.2014.10.21.tar.gz'
+  sha1 'e493e0d6f7f2bf4be8e88393bb3ba583136bb271'
 
   bottle do
     cellar :any
