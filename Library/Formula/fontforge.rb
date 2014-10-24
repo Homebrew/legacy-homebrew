@@ -16,9 +16,10 @@ class Fontforge < Formula
   end
 
   bottle do
-    sha1 "7dcb6b4262cb397be47efeafe8a57757f50689d6" => :yosemite
-    sha1 "ee2b108f7d9fd88fab51238c4511b26d039c9574" => :mavericks
-    sha1 "2e0b2ac9c7b6abbb0fd302b422e56a478c9492da" => :mountain_lion
+    revision 1
+    sha1 "ef8e64045c5f97d154a8deb96efb94f72b4ecf6a" => :yosemite
+    sha1 "37363b5e3923118b1b7eaeb7c4320b955fa7c8b5" => :mavericks
+    sha1 "1d463715d0ca9d27dcac36904c28b750698f2de0" => :mountain_lion
   end
 
   head do
