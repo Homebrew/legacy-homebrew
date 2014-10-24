@@ -7,10 +7,9 @@ class Nspr < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "0dede2a53a2b66d0f553767950359b13c1329831" => :yosemite
-    sha1 "f0d769bab14bdddcb51acf29b73389deeddf5faf" => :mavericks
-    sha1 "046fb1f94217b986fbc5b38cd65e39496ef38eaa" => :mountain_lion
+    sha1 "0b5ae7b07ce671c57c590eb37807fb8391537284" => :yosemite
+    sha1 "ac2f2904dd4c6e47fde68f3ac7c38a4745ec0702" => :mavericks
+    sha1 "1180562bef675d27bf8b6d33da4e045927819538" => :mountain_lion
   end
 
   def install
