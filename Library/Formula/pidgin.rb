@@ -2,9 +2,8 @@ require 'formula'
 
 class Pidgin < Formula
   homepage 'http://pidgin.im/'
-  url 'https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.9/pidgin-2.10.9.tar.bz2'
-  sha1 'f3de8fd94dba1f4c98d5402a02430f9f323e665a'
-  revision 1
+  url 'https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.10/pidgin-2.10.10.tar.bz2'
+  sha1 '81267c35c8d27f2c62320b564fc11af2cc1f3a4a'
 
   bottle do
     revision 1
