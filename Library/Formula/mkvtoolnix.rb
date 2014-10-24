@@ -29,9 +29,9 @@ class Mkvtoolnix < Formula
   sha1 "c5379fa684a0a5e6cf0db7404b72e7075989a1a3"
 
   bottle do
-    sha1 "ff8ace4ece6cab820a40bc8f6761f4191ca7537c" => :yosemite
-    sha1 "90aa55113865e9e67d70ec7181c70f63b396be56" => :mavericks
-    sha1 "abc98a3d670d5aacac8232645027a20c8edc0a98" => :mountain_lion
+    sha1 "56cde38aad413ef85cdea858e4609abc4fc70491" => :yosemite
+    sha1 "06dc3b91062deb677a95b9eb416232ff6c5e319c" => :mavericks
+    sha1 "db880af7a75c5979aed0c1f19e02c63e0d17e7c7" => :mountain_lion
   end
 
   head do
