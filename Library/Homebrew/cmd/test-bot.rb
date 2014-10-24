@@ -18,8 +18,7 @@
 # --ci-master:         Shortcut for Homebrew master branch CI options.
 # --ci-pr:             Shortcut for Homebrew pull request CI options.
 # --ci-testing:        Shortcut for Homebrew testing CI options.
-# --ci-pr-upload:      Homebrew CI pull request bottle upload.
-# --ci-testing-upload: Homebrew CI testing bottle upload.
+# --ci-upload:         Homebrew CI bottle upload.
 
 require 'formula'
 require 'utils'
@@ -543,7 +542,7 @@ module Homebrew
       ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
     end
 
-    if ARGV.include? '--ci-upload' or ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
+    if ARGV.include? '--ci-upload'
       jenkins = ENV['JENKINS_HOME']
       job = ENV['UPSTREAM_JOB_NAME']
       id = ENV['UPSTREAM_BUILD_ID']
