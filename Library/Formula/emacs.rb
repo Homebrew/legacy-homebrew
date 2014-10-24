@@ -18,10 +18,10 @@ class Emacs < Formula
   end
 
   bottle do
-    revision 1
-    sha1 "921a8a802cb99821d8cc6a1a73ad99bafb09dd77" => :yosemite
-    sha1 "9d076a90ed7ce5b70fe89a7400ff95b8d7089132" => :mavericks
-    sha1 "74439e42f3147b814b4fa451524789d388e24ed8" => :mountain_lion
+    revision 2
+    sha1 "dbbb5869715475184bb272023559c318fb38c2bb" => :yosemite
+    sha1 "5ed8b3aa255814b41d66d49371c7a37adf63b7ee" => :mavericks
+    sha1 "e2d8d47197695e537de4ba3e01c88c1ba547d81c" => :mountain_lion
   end
 
   option "cocoa", "Build a Cocoa version of emacs"
