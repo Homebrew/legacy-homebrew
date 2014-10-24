@@ -41,7 +41,8 @@ class Mkvtoolnix < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-preview-gui", "Build with experimental QT GUI"
+  option "with-wxmac", "Build with wxWidgets GUI"
+  option "with-qt5", "Build with experimental QT GUI"
 
   depends_on "pkg-config" => :build
   depends_on Ruby19
@@ -53,6 +54,7 @@ class Mkvtoolnix < Formula
   depends_on "libmagic" => :recommended
   depends_on "lzo" => :optional
   depends_on "wxmac" => :optional
+  depends_on "qt5" => :optional
   depends_on "gettext" => :optional
   # On Mavericks, the bottle (without c++11) can be used
   # because mkvtoolnix is linked against libc++ by default
@@ -64,10 +66,6 @@ class Mkvtoolnix < Formula
     depends_on "boost" => "c++11"
     depends_on "libmatroska" => "c++11"
     depends_on "libebml" => "c++11"
-  end
-
-  if build.with?("preview-gui")
-    depends_on "qt5"
   end
 
   needs :cxx11
@@ -96,7 +94,7 @@ class Mkvtoolnix < Formula
       args << "--disable-wxwidgets"
     end
 
-    if build.with?("preview-gui")
+    if build.with?("qt5")
       qt5 = Formula["qt5"]
 
       args << "--with-moc=#{qt5.opt_bin}/moc"
