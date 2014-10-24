@@ -1,9 +1,10 @@
-require 'formula'
+require "formula"
 
 class Zeromq < Formula
   homepage "http://www.zeromq.org/"
   url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
   sha1 "a664ec63661a848ef46114029156a0a6006feecd"
+  revision 1
 
   bottle do
     cellar :any
