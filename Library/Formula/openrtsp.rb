@@ -7,9 +7,9 @@ class Openrtsp < Formula
 
   bottle do
     cellar :any
-    sha1 "21d6d05d03ecc8b563138bd35160d0aa90dcf29d" => :mavericks
-    sha1 "2bd52bbadecc80025ed6c51e48aac06d0ce85aef" => :mountain_lion
-    sha1 "714197f600b197b8e573a8c4983f8090fec30e0b" => :lion
+    sha1 "01a5a2676e3995e505fc092ca949b67691f2e812" => :yosemite
+    sha1 "f019de571028a7fa0027a2f4e464651e5a5259f9" => :mavericks
+    sha1 "ee10c6dd74631ae656f4482380a1ec81c86e779d" => :mountain_lion
   end
 
   option "32-bit"
