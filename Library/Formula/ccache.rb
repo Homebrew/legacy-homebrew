@@ -5,6 +5,13 @@ class Ccache < Formula
   url 'http://samba.org/ftp/ccache/ccache-3.1.10.tar.bz2'
   sha1 'f78154d526b98546c27e5ef480354f3ce021abe2'
 
+  bottle do
+    cellar :any
+    sha1 "5679d6b03cb483ea5a410b64683879351b417bd5" => :yosemite
+    sha1 "a8ea6388d840a5010cc1335aac6a16f937618446" => :mavericks
+    sha1 "5562df8168b3cc70cf8ca74c70c2baa2df5be6a6" => :mountain_lion
+  end
+
   head do
     url 'https://github.com/jrosdahl/ccache.git'
 
