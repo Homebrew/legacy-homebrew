@@ -2,13 +2,15 @@ require "formula"
 
 class Ticcutils < Formula
   homepage "http://ilk.uvt.nl/ticcutils/"
-  url "http://software.ticc.uvt.nl/ticcutils-0.5.tar.gz"
-  sha1 "8cdd5aa1536bcf98ee4e48f188726ec826db90a0"
+  url "http://software.ticc.uvt.nl/ticcutils-0.7.tar.gz"
+  sha1 "f58ec1a6b64a0eebc1a8a74ef625cf6398a5fafc"
 
   depends_on "pkg-config" => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
     system "make", "install"
   end
 end
