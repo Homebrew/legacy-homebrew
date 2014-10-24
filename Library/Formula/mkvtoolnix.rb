@@ -25,8 +25,8 @@ end
 
 class Mkvtoolnix < Formula
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.2.0.tar.xz"
-  sha1 "b8e688c274d0946faea390d626147c357583e8bc"
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.3.0.tar.xz"
+  sha1 "c5379fa684a0a5e6cf0db7404b72e7075989a1a3"
 
   bottle do
     sha1 "ff8ace4ece6cab820a40bc8f6761f4191ca7537c" => :yosemite
@@ -41,16 +41,21 @@ class Mkvtoolnix < Formula
     depends_on "libtool" => :build
   end
 
+  option "with-wxmac", "Build with wxWidgets GUI"
+  option "with-qt5", "Build with experimental QT GUI"
+
   depends_on "pkg-config" => :build
   depends_on Ruby19
   depends_on "libogg"
   depends_on "libvorbis"
-  depends_on "flac" => :optional
-  depends_on "lzo" => :optional
   depends_on "expat"
-  depends_on "gettext"
   depends_on "pcre"
+  depends_on "flac" => :recommended
+  depends_on "libmagic" => :recommended
+  depends_on "lzo" => :optional
   depends_on "wxmac" => :optional
+  depends_on "qt5" => :optional
+  depends_on "gettext" => :optional
   # On Mavericks, the bottle (without c++11) can be used
   # because mkvtoolnix is linked against libc++ by default
   if MacOS.version >= "10.9"
@@ -72,8 +77,6 @@ class Mkvtoolnix < Formula
     ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
 
     boost = Formula["boost"]
-    ogg = Formula["libogg"]
-    vorbis = Formula["libvorbis"]
 
     args = %W[
       --disable-debug
@@ -85,15 +88,20 @@ class Mkvtoolnix < Formula
     if build.with? "wxmac"
       wxmac = Formula["wxmac"]
 
-      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{wxmac.opt_include}"
-      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{wxmac.opt_lib}"
       args << "--enable-gui"
       args << "--enable-wxwidgets"
     else
-      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include}"
-      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib}"
-      args << "--disable-gui"
       args << "--disable-wxwidgets"
+    end
+
+    if build.with?("qt5")
+      qt5 = Formula["qt5"]
+
+      args << "--with-moc=#{qt5.opt_bin}/moc"
+      args << "--with-uic=#{qt5.opt_bin}/uic"
+      args << "--with-rcc=#{qt5.opt_bin}/rcc"
+      args << "--with-mkvtoolnix-gui"
+      args << "--enable-qt"
     end
 
     system "./autogen.sh" if build.head?
@@ -101,7 +109,7 @@ class Mkvtoolnix < Formula
     system "./configure", *args
 
     system "./drake", "-j#{ENV.make_jobs}"
-    system "./drake install"
+    system "./drake", "install"
   end
 
   test do
