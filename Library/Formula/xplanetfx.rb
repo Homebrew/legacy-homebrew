@@ -8,9 +8,10 @@ class Xplanetfx < Formula
 
   bottle do
     cellar :any
-    sha1 "405addc419e4e61202706d984e7b4c68204f0d4c" => :mavericks
-    sha1 "93284f0dd9e525bf5561abf542fda1ad8e5a79b2" => :mountain_lion
-    sha1 "8874574087f4766366491c006b83b0186f01ae0d" => :lion
+    revision 1
+    sha1 "ab142c8f11896b22de34e9cfbd5bfc61bb847003" => :yosemite
+    sha1 "5efddfd3860035daa87ff251dfa60364f8bf0eb9" => :mavericks
+    sha1 "da82091b30b766eb89d8130f4efe405f02d8d55a" => :mountain_lion
   end
 
   option "without-perlmagick", "Build without PerlMagick support - used to check cloud map downloads"
