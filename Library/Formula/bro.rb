@@ -16,9 +16,9 @@ class Bro < Formula
   end
 
   bottle do
-    sha1 "8aa75265faa2f23b73f7b27b7e495d79c60447d7" => :mavericks
-    sha1 "322c30d872bfe4271d113f8c54fad4fd7476f899" => :mountain_lion
-    sha1 "cf5fe821b85cfac5d8e4ebd86df37a7c75cf95cc" => :lion
+    sha1 "19d44e396ea474a01625333cc005d59c15a1a779" => :yosemite
+    sha1 "3ec9e7b7c05b68668f6559322372a2f57344f735" => :mavericks
+    sha1 "6e69354144ece0c4b99fe0c8f07c353e5892bf3c" => :mountain_lion
   end
 
   depends_on "cmake" => :build
