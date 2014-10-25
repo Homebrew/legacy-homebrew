@@ -46,7 +46,7 @@ class Mutt < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
 
-  depends_on "openssl"
+  depends_on "gnutls"
   depends_on "tokyo-cabinet"
   depends_on "s-lang" => :optional
   depends_on "gpgme" => :optional
@@ -77,7 +77,7 @@ class Mutt < Formula
     args = ["--disable-dependency-tracking",
             "--disable-warnings",
             "--prefix=#{prefix}",
-            "--with-ssl=#{Formula['openssl'].opt_prefix}",
+            "--with-gnutls=#{Formula['gnutls'].opt_prefix}",
             "--with-sasl",
             "--with-gss",
             "--enable-imap",
