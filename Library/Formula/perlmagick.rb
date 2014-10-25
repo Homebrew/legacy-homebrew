@@ -29,9 +29,15 @@ class Perlmagick < Formula
   end
 
   # References the system Perl version.
-  def caveats; <<-EOS.undent
-     You may need to define the Perl library directory for PerlMagick.
-       export PERL5LIB="#{HOMEBREW_PREFIX}/lib/perl5/site_perl/5.16.2"
+  def caveats
+    s = ''
+    perl_version = `/usr/bin/perl -e 'printf "%vd", $^V;'`
+
+    s += <<-EOS.undent
+      You need to define the OS X system Perl library directory to use PerlMagick:
+        export PERL5LIB="#{HOMEBREW_PREFIX}/lib/perl5/site_perl/#{perl_version}"
     EOS
+
+    s
   end
 end
