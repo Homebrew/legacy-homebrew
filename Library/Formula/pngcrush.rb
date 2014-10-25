@@ -4,8 +4,8 @@ require "formula"
 # tarballs are routinely removed and upstream won't change this practice.
 class Pngcrush < Formula
   homepage "http://pmt.sourceforge.net/pngcrush/"
-  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.77/pngcrush-1.7.77.tar.gz"
-  sha1 "70e15781220a0095453d04b040c6f42d77487d7b"
+  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.78/pngcrush-1.7.78.tar.gz"
+  sha1 "9506a4106ecf1f960e8fe2c2a7e34131c234e070"
 
   bottle do
     cellar :any
@@ -25,5 +25,9 @@ class Pngcrush < Formula
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}"
     bin.install "pngcrush"
+  end
+
+  test do
+    system "#{bin}/pngcrush", test_fixtures("test.png"), "/dev/null"
   end
 end
