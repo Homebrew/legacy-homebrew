@@ -2,15 +2,8 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/0.9.1.4.tar.gz"
-  sha1 "fa736ce94b204966f101251b8f8287147a9de3ec"
-
-  bottle do
-    cellar :any
-    sha1 "b1cb67c8e2f312069f524076853bdaa573a5a06b" => :yosemite
-    sha1 "346eb88f4ed97ef6bfc005d7bdae37fbef1ad29d" => :mavericks
-    sha1 "63772b299987d56ecf696024040dc02dc277b522" => :mountain_lion
-  end
+  url "https://github.com/tutumcloud/tutum-cli/archive/0.9.8.tar.gz"
+  sha1 "3ee6842960decc5b8875bef90732b616f28db553"
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
@@ -41,8 +34,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.9.1.1pre.tar.gz"
-    sha1 "828c8ffe052d3a9af290dc6e934ecf5f5d4efa21"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.9.8.tar.gz"
+    sha1 "e99c08e6ca7d9b1bb422d1954318e9e17b29fa27"
   end
 
   resource "six" do
