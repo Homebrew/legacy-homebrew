@@ -67,8 +67,13 @@ class Keg
     return unless patchelf.installed?
     glibc = Formula["glibc"]
     cmd = "#{patchelf.opt_bin}/patchelf --set-rpath #{new_prefix}/lib"
-    if file.mach_o_executable? && glibc.installed?
-      cmd << " --set-interpreter #{new_prefix}/opt/glibc/lib/ld-linux-x86-64.so.2"
+    if file.mach_o_executable?
+      interpreter = if new_prefix == PREFIX_PLACEHOLDER || !glibc.installed? then
+        "/lib64/ld-linux-x86-64.so.2"
+      else
+        "#{glibc.opt_lib}/ld-linux-x86-64.so.2"
+      end
+      cmd << " --set-interpreter #{interpreter}"
     end
     cmd << " #{file}"
     puts "Setting RPATH of #{file}" if ARGV.debug?
