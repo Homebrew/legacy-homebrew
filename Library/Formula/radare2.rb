@@ -42,16 +42,20 @@ class Radare2 < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make", "install"
+    
+    if build.stable?
+      resource("bindings").stage do
+        ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
 
-    resource("bindings").stage do
-      ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
+        if build.stable?
+          # https://github.com/radare/radare2-bindings/pull/18
+          inreplace "python-config-wrapper", '\s', '\ '
+        end
 
-      # https://github.com/radare/radare2-bindings/pull/18
-      inreplace "python-config-wrapper", '\s', '\ '
-
-      system "./configure", "--prefix=#{prefix}"
-      system "make"
-      system "make", "install", "DESTDIR=#{prefix}"
+        system "./configure", "--prefix=#{prefix}"
+        system "make"
+        system "make", "install", "DESTDIR=#{prefix}"
+      end
     end
   end
 end
