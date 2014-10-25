@@ -67,13 +67,13 @@ class Caveats
         EOS
         s += remedy unless Language::Python.reads_brewed_pth_files?("python")
       end
+      return s
     end
 
-    return s if Language::Python.reads_brewed_pth_files?("python")
+    return if Language::Python.reads_brewed_pth_files?("python")
 
     if !Language::Python.in_sys_path?("python", homebrew_site_packages)
-      s ||= ""
-      s += <<-EOS.undent
+      s = <<-EOS.undent
         Python modules have been installed and Homebrew's site-packages is not
         in your Python sys.path, so you will not be able to import the modules
         this formula installed. If you plan to develop with these modules,
@@ -81,8 +81,7 @@ class Caveats
       EOS
       s += remedy
     elsif keg.python_pth_files_installed?
-      s ||= ""
-      s += <<-EOS.undent
+      s = <<-EOS.undent
         This formula installed .pth files to Homebrew's site-packages and your
         Python isn't configured to process them, so you will not be able to
         import the modules this formula installed. If you plan to develop
