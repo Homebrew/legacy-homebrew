@@ -43,23 +43,6 @@ class GitAnnex < Formula
   test do
     # make sure git can find git-annex
     ENV.prepend_path "PATH", bin
-    # create a first git repository with an annex
-    mkdir "my_annex" do
-      system "git", "init"
-      system "git", "annex", "init", "my_annex"
-      cp bin/"git-annex", "bigfile"
-      system "git", "annex", "add", "bigfile"
-      system "git", "commit", "-am", "big file added"
-      assert File.symlink? "bigfile"
-    end
-    # and propagate its content to another
-    system "git", "clone", "my_annex", "my_annex_clone"
-    Dir.chdir "my_annex_clone" do
-      assert !File.file?("bigfile")
-      system "git", "annex", "get", "bigfile"
-      assert File.file? "bigfile"
-    end
-    # make test files writable so homebrew can drop them
-    chmod_R 0777, testpath
+    system "git", "annex", "test"
   end
 end
