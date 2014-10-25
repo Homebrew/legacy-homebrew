@@ -3,9 +3,9 @@ class Keg
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
   def fix_install_names options={}
+    return unless OS.mac?
     mach_o_files.each do |file|
       file.ensure_writable do
-        change_rpath(file)
         change_dylib_id(dylib_id_for(file, options), file) if file.dylib?
 
         each_install_name_for(file) do |bad_name|
@@ -20,9 +20,11 @@ class Keg
   end
 
   def relocate_install_names old_prefix, new_prefix, old_cellar, new_cellar, options={}
-    return unless OS.mac?
     mach_o_files.each do |file|
       file.ensure_writable do
+        change_rpath(file, new_prefix)
+        next unless OS.mac?
+
         if file.dylib?
           id = dylib_id_for(file, options).sub(old_prefix, new_prefix)
           change_dylib_id(id, file)
@@ -59,14 +61,14 @@ class Keg
     end
   end
 
-  def change_rpath(file)
+  def change_rpath(file, new_prefix)
     return unless OS.linux?
     patchelf = Formula["patchelf"]
     return unless patchelf.installed?
     glibc = Formula["glibc"]
-    cmd = "#{patchelf.opt_bin}/patchelf --set-rpath #{HOMEBREW_PREFIX}/lib"
+    cmd = "#{patchelf.opt_bin}/patchelf --set-rpath #{new_prefix}/lib"
     if file.mach_o_executable? && glibc.installed?
-      cmd << " --set-interpreter #{glibc.opt_lib}/ld-linux-x86-64.so.2"
+      cmd << " --set-interpreter #{new_prefix}/opt/glibc/lib/ld-linux-x86-64.so.2"
     end
     cmd << " #{file}"
     puts "Setting RPATH of #{file}" if ARGV.debug?
@@ -104,7 +106,7 @@ class Keg
   end
 
   def each_unique_file_matching string
-    Utils.popen_read("/usr/bin/fgrep", "-lr", string, to_s) do |io|
+    Utils.popen_read("fgrep", "-lr", string, to_s) do |io|
       hardlinks = Set.new
 
       until io.eof?
@@ -116,7 +118,6 @@ class Keg
   end
 
   def install_name_tool(*args)
-    return unless OS.mac?
     tool = MacOS.locate("install_name_tool")
     system(tool, *args) or raise ErrorDuringExecution.new(tool, args)
   end
