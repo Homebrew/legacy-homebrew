@@ -43,7 +43,7 @@ class Scala < Formula
     # Set up an IntelliJ compatible symlink farm in 'idea'
     idea = prefix/'idea'
     idea.install_symlink libexec/'src', libexec/'lib'
-    (idea/'doc/scala-devel-docs').install_symlink doc => 'api'
+    idea.install_symlink doc => 'doc'
   end
 
   def caveats; <<-EOS.undent
