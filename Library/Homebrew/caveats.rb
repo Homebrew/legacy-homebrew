@@ -55,7 +55,7 @@ class Caveats
     pthfile = user_site_packages/"homebrew.pth"
     remedy = <<-EOS.undent.gsub(/^/, "  ")
       mkdir -p #{user_site_packages}
-      echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{pthfile}"
+      echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{pthfile}
     EOS
 
     if f.keg_only?
