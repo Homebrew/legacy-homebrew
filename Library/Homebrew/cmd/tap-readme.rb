@@ -22,9 +22,9 @@ module Homebrew
 
     Docs
     ----
-    `brew help`, `man brew`, or the Homebrew [wiki][].
+    `brew help`, `man brew`, or the Homebrew [docs][].
 
-    [wiki]:http://wiki.github.com/Homebrew/homebrew
+    [docs]:https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/README.md#readme
     EOS
 
     puts template if ARGV.verbose?
