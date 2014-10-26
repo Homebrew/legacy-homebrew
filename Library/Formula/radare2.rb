@@ -23,7 +23,9 @@ class Radare2 < Formula
 
   head do
     url 'https://github.com/radare/radare2.git'
-    
+
+    depends_on "openssl"
+
     resource "bindings" do
       url 'https://github.com/radare/radare2-bindings.git'
     end
@@ -42,7 +44,7 @@ class Radare2 < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make", "install"
-    
+
     if build.stable?
       resource("bindings").stage do
         ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
