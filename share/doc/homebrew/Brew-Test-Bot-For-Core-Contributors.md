@@ -4,20 +4,13 @@ If a build has run and passed on `brew test-bot` then it can be used to quickly 
 There are three types of Jenkins jobs:
 
 ## Homebrew
-This job automatically builds anything committed to the master branch. On
-failure it sends an email to `brew-test-bot@googlegroups.com`. It tests rather than builds bottles.
+This job automatically builds anything committed to the master branch. On failure it sends an email to `brew-test-bot@googlegroups.com`. It tests rather than builds bottles.
 
 ## Homebrew Pull Requests
-
-This job automatically builds any pull requests submitted to Homebrew/homebrew. On
-success or failure it updates the pull request status (see more details on the
-[main Brew Test Bot wiki page](Brew-Test-Bot)). On a successful build it automatically uploads bottles.
+This job automatically builds any pull requests submitted to Homebrew/homebrew. On success or failure it updates the pull request status (see more details on the [main Brew Test Bot wiki page](Brew-Test-Bot.md)). On a successful build it automatically uploads bottles.
 
 ## Homebrew Testing
-
-This job is manually triggered to run
-[`brew-test-bot.rb`](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/cmd/brew-test-bot.rb)
-on with user-specified parameters. On a successful build it automatically uploads bottles.
+This job is manually triggered to run [`brew-test-bot.rb`](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/cmd/brew-test-bot.rb) with user-specified parameters. On a successful build it automatically uploads bottles.
 
 You can manually start this job with parameters to run [`brew-test-bot`](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/cmd/brew-test-bot.rb) with the same parameters. It's often useful to pass a pull request URL, a commit URL, a commit SHA-1 and/or formula names to have `brew-test-bot` test them, report the results and produce bottles.
 
