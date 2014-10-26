@@ -35,7 +35,7 @@ class Pyqt < Formula
       args = ["--confirm-license",
               "--bindir=#{bin}",
               "--destdir=#{lib}/python#{version}/site-packages",
-              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+              "--sipdir=#{share}/sip"]
 
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by QGIS, PyQWT (and many other PyQt interoperable
