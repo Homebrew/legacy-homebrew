@@ -1,7 +1,7 @@
 # Acceptable Formulae
 Some formulae should not go in
 [Homebrew/homebrew](https://github.com/Homebrew/homebrew). But there are
-additional [Interesting Taps & Branches](Interesting-Taps-&-Branches.md) and anyone can start his/her
+additional [Interesting Taps & Branches](Interesting-Taps-&-Branches.md) and anyone can start their
 own!
 
 ### We try hard to avoid dupes in Homebrew/homebrew
