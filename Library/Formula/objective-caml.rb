@@ -10,10 +10,9 @@ class ObjectiveCaml < Formula
   depends_on :x11 => :recommended
 
   bottle do
-    revision 4
-    sha1 "2a6605b51a640356b1ad861d942e0c63ece8facf" => :yosemite
-    sha1 "a98ff68b548732ab495ba8b38bc6958fed4c1d37" => :mavericks
-    sha1 "bde3be019fb30cc0221ddf78f4725b018f56b651" => :mountain_lion
+    sha1 "4ace54d7cc633294edfdbdc443dc64354c4fb81b" => :yosemite
+    sha1 "2a8c6d611a2b89eb0b98111f4ee2d9f91295651d" => :mavericks
+    sha1 "0c94cafa9f5d910d3af1fa12fb467cd9f01d2951" => :mountain_lion
   end
 
   def install
