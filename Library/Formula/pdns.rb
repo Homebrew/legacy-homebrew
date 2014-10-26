@@ -3,9 +3,8 @@ require 'formula'
 class Pdns < Formula
   homepage 'http://www.powerdns.com'
   head 'https://github.com/powerdns/pdns.git'
-  url 'http://downloads.powerdns.com/releases/pdns-3.3.1.tar.gz'
-  sha1 '555862bf9635d1dcab2c4f3b7569bdd8212ef67f'
-  revision 1
+  url 'http://downloads.powerdns.com/releases/pdns-3.4.0.tar.bz2'
+  sha1 'b1c5bf10e03c04f707b752b5159db06179c172d9'
 
   option 'pgsql', 'Enable the PostgreSQL backend'
 
