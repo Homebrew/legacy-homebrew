@@ -56,8 +56,11 @@ class Node < Formula
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
+    # make sure npm can find node
+    ENV["PATH"] = "#{opt_bin}:#{ENV["PATH"]}"
+
     ENV["NPM_CONFIG_USERCONFIG"] = npmrc
-    npm_root.cd { system "make", "install" }
+    npm_root.cd { system "make", "VERBOSE=1", "install" }
     system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest",
                                          "--prefix", HOMEBREW_PREFIX
 
@@ -90,6 +93,12 @@ class Node < Formula
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
 
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm@latest" if build.with? "npm"
+    if build.with? "npm"
+      # make sure npm can find node
+      ENV.prepend_path "PATH", opt_bin
+      assert_equal which("node"), opt_bin/"node"
+      assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
+      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
+    end
   end
 end
