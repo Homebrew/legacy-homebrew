@@ -44,7 +44,7 @@ class Sip < Formula
   end
 
   def post_install
-    mkdir "#{HOMEBREW_PREFIX}/share/sip"
+    mkdir_p "#{HOMEBREW_PREFIX}/share/sip"
   end
 
   def caveats
