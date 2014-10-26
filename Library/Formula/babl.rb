@@ -1,33 +1,46 @@
-require 'formula'
+require "formula"
 
 class Babl < Formula
-  homepage 'http://www.gegl.org/babl/'
-  url 'ftp://ftp.gtk.org/pub/babl/0.1/babl-0.1.10.tar.bz2'
-  sha1 'ee60089e8e9d9390e730d3ae5e41074549928b7a'
+  homepage "http://www.gegl.org/babl/"
 
-  head 'git://git.gnome.org/babl'
+  stable do
+    # The official url is unreliable. Use Debian instead.
+    url "https://mirrors.kernel.org/debian/pool/main/b/babl/babl_0.1.10.orig.tar.bz2"
+    mirror "http://ftp.gtk.org/pub/babl/0.1/babl-0.1.10.tar.bz2"
+    sha1 "ee60089e8e9d9390e730d3ae5e41074549928b7a"
 
-  depends_on 'pkg-config' => :build
+    # There are two patches.
+    # The first one changes an include <values.h> (deleted on Mac OS X) to <limits.h>
+    # The second one fixes an error when compiling with clang. See:
+    # https://trac.macports.org/browser/trunk/dports/graphics/babl/files/clang.patch
+    patch :DATA
+  end
+
+  head do
+    # Use Github instead of GNOME's git. The latter is unreliable.
+    url "https://github.com/GNOME/babl.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "pkg-config" => :build
 
   option :universal
-
-  # There are two patches.
-  # The first one changes an include <values.h> (deleted on Mac OS X) to <limits.h>
-  # The second one fixes an error when compiling with clang. See:
-  # https://trac.macports.org/browser/trunk/dports/graphics/babl/files/clang.patch
-  patch :DATA
 
   def install
     if build.universal?
       ENV.universal_binary
       if ENV.compiler == :gcc
-        opoo 'Compilation may fail at babl-cpuaccel.c using gcc for a universal build'
+        opoo "Compilation may fail at babl-cpuaccel.c using gcc for a universal build"
       end
     end
 
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 
