@@ -5,9 +5,6 @@ class Pyqt < Formula
   url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
   sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
 
-  # TODO: Before adding a bottle block again we need to fix:
-  # https://github.com/Homebrew/homebrew/issues/27623
-
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
@@ -35,7 +32,7 @@ class Pyqt < Formula
       args = ["--confirm-license",
               "--bindir=#{bin}",
               "--destdir=#{lib}/python#{version}/site-packages",
-              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+              "--sipdir=#{share}/sip"]
 
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by QGIS, PyQWT (and many other PyQt interoperable
