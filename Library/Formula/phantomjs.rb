@@ -2,21 +2,10 @@ require "formula"
 
 class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
-  revision 1
 
   stable do
-    url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
-    sha256 "0f6c50ff24c1c4a8ccd7fedef62feef5e45195c7ba5ef6c84434448544877ff3"
-
-    patch do
-      url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
-      sha1 "d3efd38e0f3f0da08530d0bf603ea72ebdf06b78"
-    end
-
-    # Upstream have said won't fix 1.9.x for Yosemite
-    # https://github.com/ariya/phantomjs/issues/10648
-    # Please remove this dependency with the next stable 2.0 release.
-    depends_on MaximumMacOSRequirement => :mavericks
+    url "https://github.com/ariya/phantomjs/archive/1.9.8.tar.gz"
+    sha256 "3a321561677f678ca00137c47689e3379c7fe6b83f7597d2d5de187dd243f7be"
   end
 
   bottle do
