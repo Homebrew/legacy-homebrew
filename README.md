@@ -11,13 +11,13 @@ What Packages Are Available?
 
 More Documentation
 ------------------
-`brew help` or `man brew` or check our [wiki][].
+`brew help` or `man brew` or check our [documentation][].
 
 Troubleshooting
 ---------------
 First, please run `brew update` and `brew doctor`.
 
-Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebrew/wiki/troubleshooting).
+Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Troubleshooting.md).
 
 **If you don't read these it will take us far longer to help you with your problem.**
 
@@ -42,7 +42,7 @@ We accept tips through [Gittip][tip].
 [![Gittip](https://img.shields.io/gittip/Homebrew.svg?style=flat)](https://www.gittip.com/Homebrew/)
 
 [home]:http://brew.sh
-[wiki]:https://github.com/Homebrew/homebrew/wiki
+[documentation]:https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/
 [mistydemeo]:https://github.com/mistydemeo
 [adamv]:https://github.com/adamv
 [jacknagel]:https://github.com/jacknagel
