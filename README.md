@@ -2,10 +2,9 @@
 Features, usage and installation instructions are [summarised on the homepage](http://brew.sh).
 
 ## What Packages Are Available?
-1. You can [browse the Formula directory on GitHub](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/).
-2. Or type `brew search` for a list.
-3. Or visit [braumeister.org](http://braumeister.org) to browse packages online.
-4. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
+1. Type `brew search` for a list.
+2. Or visit [braumeister.org](http://braumeister.org) to browse packages online.
+3. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
 
 ## More Documentation
 `brew help` or `man brew` or check our [documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
