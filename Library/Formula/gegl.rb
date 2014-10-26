@@ -10,6 +10,12 @@ class Gegl < Formula
     sha1 "764cc66cb3c7b261b8fc18a6268a0e264a91d573"
   end
 
+  bottle do
+    sha1 "df1f74de4563aa8c1de86cf03cf265c42e923c41" => :yosemite
+    sha1 "3c395d3cfaf0e423e7e072c13fe0d51d7829d8a5" => :mavericks
+    sha1 "93133f696a63fb0e865d51251b309ea327ab2ce7" => :mountain_lion
+  end
+
   head do
     # Use the Github mirror because official git unreliable.
     url "https://github.com/GNOME/gegl.git"
