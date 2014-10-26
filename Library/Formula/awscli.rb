@@ -2,8 +2,8 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.5.2.tar.gz"
-  sha1 "c852bf5529547eca91a15f81116fa011ef5d0ae9"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.5.3.tar.gz"
+  sha1 "529420e1148a3e6ad56dc58beb799e72f62eb39b"
 
   bottle do
     cellar :any
