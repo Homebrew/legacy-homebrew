@@ -99,7 +99,7 @@ module OS
         when 2327..2333 then "3.2.5"
         when 2335
           # this build number applies to 3.2.6, 4.0 and 4.1
-          # https://github.com/Homebrew/homebrew/wiki/Xcode
+          # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Xcode.md
           "4.0"
         else
           case (MacOS.clang_version.to_f * 10).to_i
