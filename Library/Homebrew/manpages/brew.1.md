@@ -604,7 +604,9 @@ Homebrew Documentation: <https://github.com/Homebrew/homebrew/blob/master/share/
 
 ## AUTHORS
 
-Max Howell, a splendid chap.
+Homebrew's current maintainers are Misty De Meo, Adam Vandenberg, Jack Nagel, Mike McQuaid, Brett Koonce and Tim Smith.
+
+Homebrew was originally created by Max Howell.
 
 ## BUGS
 
