@@ -236,8 +236,7 @@ module Homebrew
         test "brew", "update" if current_branch == "master"
         diff_end_sha1 = current_sha1
       elsif @url
-        test "brew", "update"  if current_branch == "master"
-        diff_start_sha1 = current_sha1
+        test "brew", "update" if current_branch == "master"
       end
 
       # Handle Jenkins pull request builder plugin.
@@ -259,7 +258,8 @@ module Homebrew
         diff_end_sha1 = @hash
         @name = @hash
       elsif @url
-        test "git", "checkout", current_sha1
+        diff_start_sha1 = current_sha1
+        test "git", "checkout", diff_start_sha1
         test "brew", "pull", "--clean", @url
         diff_end_sha1 = current_sha1
         @short_url = @url.gsub('https://github.com/', '')
