@@ -16,6 +16,12 @@ class Babl < Formula
     patch :DATA
   end
 
+  bottle do
+    sha1 "d3ead1808b7c029ab864d3318d7009379cc205a5" => :yosemite
+    sha1 "4fcb4a9c92b59796d40ffc4312935ca756d5264f" => :mavericks
+    sha1 "a35994e97093d303d02d30c3369bccfd1f33af37" => :mountain_lion
+  end
+
   head do
     # Use Github instead of GNOME's git. The latter is unreliable.
     url "https://github.com/GNOME/babl.git"
@@ -63,12 +69,12 @@ index b44bb5e..7f633d1 100644
 --- a/extensions/sse-fixups.c
 +++ b/extensions/sse-fixups.c
 @@ -21,7 +21,7 @@
- 
+
  #include "config.h"
- 
+
 -#if defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
 +#if !defined(__clang__) && defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
- 
+
  #include <stdint.h>
  #include <stdlib.h>
 @@ -177,7 +177,7 @@ int init (void);
@@ -77,6 +83,6 @@ index b44bb5e..7f633d1 100644
  {
 -#if defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
 +#if !defined(__clang__) && defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
- 
+
    const Babl *rgbaF_linear = babl_format_new (
      babl_model ("RGBA"),
