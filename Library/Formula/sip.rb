@@ -43,6 +43,10 @@ class Sip < Formula
     end
   end
 
+  def post_install
+    mkdir_p "#{HOMEBREW_PREFIX}/share/sip"
+  end
+
   def caveats
     "The sip-dir for Python is #{HOMEBREW_PREFIX}/share/sip."
   end
