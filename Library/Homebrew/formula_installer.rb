@@ -524,6 +524,7 @@ class FormulaInstaller
         onoe "Failed to create #{f.opt_prefix}"
         puts "Things that depend on #{f.name} will probably not build."
         puts e
+        Homebrew.failed = true
       end
       return
     end
@@ -544,6 +545,7 @@ class FormulaInstaller
       mode = OpenStruct.new(:dry_run => true, :overwrite => true)
       keg.link(mode)
       @show_summary_heading = true
+      Homebrew.failed = true
     rescue Keg::LinkError => e
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
@@ -552,6 +554,7 @@ class FormulaInstaller
       puts "You can try again using:"
       puts "  brew link #{f.name}"
       @show_summary_heading = true
+      Homebrew.failed = true
     rescue Exception => e
       onoe "An unexpected error occurred during the `brew link` step"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
@@ -559,6 +562,7 @@ class FormulaInstaller
       puts e.backtrace if debug?
       @show_summary_heading = true
       ignore_interrupts { keg.unlink }
+      Homebrew.failed = true
       raise
     end
   end
@@ -570,6 +574,7 @@ class FormulaInstaller
   rescue Exception => e
     onoe "Failed to install plist file"
     ohai e, e.backtrace if debug?
+    Homebrew.failed = true
   end
 
   def fix_install_names(keg)
@@ -584,6 +589,7 @@ class FormulaInstaller
     puts "The formula built, but you may encounter issues using it or linking other"
     puts "formula against it."
     ohai e, e.backtrace if debug?
+    Homebrew.failed = true
     @show_summary_heading = true
   end
 
@@ -594,6 +600,7 @@ class FormulaInstaller
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
     ohai e, e.backtrace if debug?
+    Homebrew.failed = true
     @show_summary_heading = true
   end
 
@@ -603,6 +610,7 @@ class FormulaInstaller
     opoo "The post-install step did not complete successfully"
     puts "You can try again using `brew postinstall #{f.name}`"
     ohai e, e.backtrace if debug?
+    Homebrew.failed = true
     @show_summary_heading = true
   end
 
