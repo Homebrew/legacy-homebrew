@@ -2,6 +2,13 @@ require "formula"
 
 class Camlp4 < Formula
   version '4.02.1+1'
+  bottle do
+    cellar :any
+    sha1 "0eb13f59de6a620e7663f3e865d0fae8d211abfa" => :yosemite
+    sha1 "af24c6a58f16bd15875114bca320db8c3110d88d" => :mavericks
+    sha1 "c0c7378b99240a65cec22fa505cc4711413e03ec" => :mountain_lion
+  end
+
   homepage "https://github.com/ocaml/camlp4"
   url "https://github.com/ocaml/camlp4/archive/4.02.1+1.tar.gz"
   sha1 "7d0f879517887299167f1c3eefa8f4d266d69183"
