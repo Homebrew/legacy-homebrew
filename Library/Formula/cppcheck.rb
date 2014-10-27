@@ -4,6 +4,7 @@ class Cppcheck < Formula
   homepage "http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page"
   url "https://github.com/danmar/cppcheck/archive/1.67.tar.gz"
   sha1 "14b886e5cac631cec11a3f8efbdeaed15ddcc7d3"
+  revision 1
 
   head "https://github.com/danmar/cppcheck.git"
 
@@ -30,6 +31,9 @@ class Cppcheck < Formula
     end
 
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
+
+    # make sure cppcheck can find its configure directory, #26194
+    prefix.install "cfg"
 
     if build.with? "gui"
       cd "gui" do
