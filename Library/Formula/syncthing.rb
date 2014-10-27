@@ -2,7 +2,7 @@ require "formula"
 
 class Syncthing < Formula
   homepage "http://syncthing.net"
-  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.3"
+  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.4"
 
   bottle do
     sha1 "8239e9862e76460caf9e5c95a61a118df47584fa" => :yosemite
