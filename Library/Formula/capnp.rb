@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Capnp < Formula
-  homepage 'http://kentonv.github.io/capnproto/'
-  url 'http://capnproto.org/capnproto-c++-0.4.1.tar.gz'
-  sha1 '18ce1a404c2bf68e6625e44927bfe6b67186cb15'
+  homepage "http://kentonv.github.io/capnproto/"
+  url "http://capnproto.org/capnproto-c++-0.4.1.tar.gz"
+  sha1 "18ce1a404c2bf68e6625e44927bfe6b67186cb15"
 
   bottle do
     cellar :any
@@ -13,7 +13,7 @@ class Capnp < Formula
   end
 
   needs :cxx11
-  option 'without-shared', 'Disable building shared library variant'
+  option "without-shared", "Disable building shared library variant"
 
   def install
     args = ["--disable-debug",
@@ -21,9 +21,7 @@ class Capnp < Formula
             "--disable-silent-rules",
             "--prefix=#{prefix}"]
 
-    if build.without? "shared"
-      args << "--disable-shared"
-    end
+    args << "--disable-shared" if build.without? "shared"
 
     system "./configure", *args
     system "make", "check"
