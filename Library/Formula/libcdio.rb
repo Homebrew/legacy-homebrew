@@ -8,9 +8,9 @@ class Libcdio < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "d873d37cdcd905a525e2595be1ea06b1c33d1530" => :yosemite
-    sha1 "70bd8d87dbffab5e7ed4c725829fbac4a06ea0f2" => :mavericks
+    sha1 "238264203ea7edf8bbceff7b96769b7d5375e44d" => :yosemite
+    sha1 "8ae5dd507c22a07fc517073878dfbcba44dab38f" => :mavericks
+    sha1 "e85ebcfa037fe2d2615d74cf8a71ffca11a76901" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
