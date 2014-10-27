@@ -8,9 +8,9 @@ class Parallel < Formula
 
   bottle do
     cellar :any
-    sha1 "f0db31d409f45e4fff5f44b7599bf21364a75c1e" => :mavericks
-    sha1 "191a9d0b9d6004bb4e5c0ed7a4fefd2a85c774d5" => :mountain_lion
-    sha1 "70753d782bcadde6ea1b7870c06184427bd80f5e" => :lion
+    sha1 "a0cbb83289109b948144ac8eb87f012079129c95" => :yosemite
+    sha1 "95d6ec6d020555cc8981f2b0e942cf2024b820e0" => :mavericks
+    sha1 "76cef437b4435627bcacfd2d88427aa8cd8c4232" => :mountain_lion
   end
 
   conflicts_with "moreutils",
