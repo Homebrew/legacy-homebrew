@@ -33,10 +33,9 @@ class Node < Formula
     build 2326
   end
 
-  # Bumping this may cause `brew test` to fail.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-1.4.28.tgz"
-    sha256 "df3c620cfe1664d45fb5f1948ca0ef1c8b3384acff31648557caac3a9ac2d459"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.6.tgz"
+    sha1 "a28e8b44f910b9ab056aa0b73c13c1f9459c9b37"
   end
 
   def install
@@ -53,28 +52,31 @@ class Node < Formula
   def post_install
     return if build.without? "npm"
 
+    (libexec/"npm").cd { system "make", "uninstall" }
+    Pathname.glob(HOMEBREW_PREFIX/"share/man/*") do |man|
+      next unless man.directory?
+      man.children.each do |file|
+        next unless file.symlink?
+        file.unlink if file.readlink.to_s.include? "/node_modules/npm/man/"
+      end
+    end
+
     node_modules = HOMEBREW_PREFIX/"lib/node_modules"
     node_modules.mkpath
     cp_r libexec/"npm", node_modules
 
     npm_root = node_modules/"npm"
     npmrc = npm_root/"npmrc"
-    npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
+    npmrc.atomic_write <<-EOS.undent
+      prefix = #{HOMEBREW_PREFIX}
+      loglevel = verbose
+    EOS
 
     # make sure npm can find node
     ENV["PATH"] = "#{opt_bin}:#{ENV["PATH"]}"
 
     ENV["NPM_CONFIG_USERCONFIG"] = npmrc
-    npm_root.cd { system "make", "VERBOSE=1", "install" }
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--verbose", "--global",
-                                         "npm@latest",
-                                         "--prefix", HOMEBREW_PREFIX
-
-    Pathname.glob(npm_root/"man/*") do |man|
-      man.children.each do |file|
-        ln_sf file, "#{HOMEBREW_PREFIX}/share/man/#{man.basename}"
-      end
-    end
+    npm_root.cd { system "make", "install" }
 
     if build.with? "completion"
       bash_completion.install_symlink \
