@@ -16,6 +16,7 @@ class Opam < Formula
 
   depends_on "objective-caml"
   depends_on "aspcud" => :recommended
+  depends_on "camlp4" => :recommended
 
   if build.with? "aspcud"
     needs :cxx11
