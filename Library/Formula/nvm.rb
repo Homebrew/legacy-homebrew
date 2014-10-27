@@ -12,15 +12,15 @@ class Nvm < Formula
   end
 
   def caveats; <<-EOS.undent
-      Add the following to $HOME/.bashrc, $HOME/.zshrc, or your shell's
-      equivalent configuration file:
-
-        source $(brew --prefix nvm)/nvm.sh
-
-      Node installs will be lost upon upgrading nvm. Add the following above
-      the source line to move install location and prevent this:
+      Node installs will be lost upon upgrading nvm. Add the following to
+      $HOME/.bashrc, $HOME/.zshrc, or your shell's equivalent configuration
+      file to move install location and prevent this:
 
         export NVM_DIR=~/.nvm
+        
+      Add the following above the export line:
+
+        source $(brew --prefix nvm)/nvm.sh
 
       Type `nvm help` for further information.
     EOS
