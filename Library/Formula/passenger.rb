@@ -13,6 +13,7 @@ class Passenger < Formula
   end
 
   depends_on 'pcre'
+  depends_on "openssl"
   depends_on :macos => :lion
 
   option 'without-apache2-module', 'Disable Apache2 module'

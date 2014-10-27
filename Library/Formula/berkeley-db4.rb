@@ -5,6 +5,13 @@ class BerkeleyDb4 < Formula
   url 'http://download.oracle.com/berkeley-db/db-4.8.30.tar.gz'
   sha1 'ab36c170dda5b2ceaad3915ced96e41c6b7e493c'
 
+  bottle do
+    cellar :any
+    sha1 "20e65ac304a3faa61b84051344e73a4e8ea14e66" => :yosemite
+    sha1 "633a40046bb6e34e55a8781bc4dd0261ac0defa4" => :mavericks
+    sha1 "2f4fe7ea4983f9d8f671fa5ea59e826e5d093e2e" => :mountain_lion
+  end
+
   keg_only "BDB 4.8.30 is provided for software that doesn't compile against newer versions."
 
   # Fix build under Xcode 4.6

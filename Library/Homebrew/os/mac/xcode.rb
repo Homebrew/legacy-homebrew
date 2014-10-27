@@ -13,7 +13,7 @@ module OS
         when "10.6"  then "3.2.6"
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
-        when "10.9"  then "6.1"
+        when "10.9"  then "6.0.1"
         when "10.10" then "6.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
@@ -99,7 +99,7 @@ module OS
         when 2327..2333 then "3.2.5"
         when 2335
           # this build number applies to 3.2.6, 4.0 and 4.1
-          # https://github.com/Homebrew/homebrew/wiki/Xcode
+          # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Xcode.md
           "4.0"
         else
           case (MacOS.clang_version.to_f * 10).to_i
@@ -161,7 +161,7 @@ module OS
       def latest_version
         case MacOS.version
         when "10.10" then "600.0.54"
-        when "10.9"  then "600.0.54"
+        when "10.9"  then "600.0.51"
         when "10.8"  then "503.0.40"
         else
           "425.0.28"

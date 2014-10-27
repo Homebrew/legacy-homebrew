@@ -6,9 +6,10 @@ class Emscripten < Formula
   sha1 "6ef643c761d0e07d428fe882d007b48b82f9e0c2"
 
   bottle do
-    sha1 "bdc5831281320ccf7ccb0b237373bca63187de71" => :mavericks
-    sha1 "eb669e7c56cb6dc3a371a5becd93cb06f39c9fce" => :mountain_lion
-    sha1 "f85924b43929e3a6c7b5d89a21f1850abab83099" => :lion
+    revision 1
+    sha1 "2e43d32ea4e376d6815b41a21572ebde86d85e39" => :yosemite
+    sha1 "1665407229116c4cd0db67b9fa54489609684e1c" => :mavericks
+    sha1 "a96131a541e2b6bc0d0273646c41729870bd697a" => :mountain_lion
   end
 
   head do
@@ -65,6 +66,10 @@ class Emscripten < Formula
     ]
 
     cd "fastcomp" do
+      # Fix for parsing Mac OS X version numbers >= 10.10
+      # https://groups.google.com/forum/#!msg/emscripten-discuss/8gb88R5eyqs/p9_82Wi2pSAJ
+      inreplace "Makefile.rules", '10.([0-9])', '10.([0-9]+)'
+      inreplace "Makefile.rules", '(10.[0-9])', '(10.[0-9]+)'
       system "./configure", *args
       system "make"
       system "make", "install"
@@ -81,7 +86,8 @@ class Emscripten < Formula
   end
 
   def caveats; <<-EOS.undent
-    Manually set LLVM_ROOT to \"#{opt_prefix}/libexec/llvm/bin\"
+    Manually set LLVM_ROOT to
+      #{opt_libexec}/llvm/bin
     in ~/.emscripten after running `emcc` for the first time.
     EOS
   end

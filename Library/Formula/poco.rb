@@ -2,16 +2,25 @@ require 'formula'
 
 class Poco < Formula
   homepage 'http://pocoproject.org/'
-  url 'http://pocoproject.org/releases/poco-1.4.6/poco-1.4.6p4-all.tar.gz'
-  sha1 'a74f5d4a5a1b9218adcb3e3e9bc81f5377200c3e'
-  version '1.4.6p4-all'
+  url 'http://pocoproject.org/releases/poco-1.4.7/poco-1.4.7-all.tar.gz'
+  sha1 '778bd5fca9d4169a2dd83265bc07123bd0d12273'
+  version '1.4.7-all'
+
+  bottle do
+    cellar :any
+    sha1 "5234c064ce6b045c647c2fe144eb4a37312cf7a1" => :yosemite
+    sha1 "23c4636a3c6fc634708999981dce3a37943eb715" => :mavericks
+    sha1 "cddefc836a5b38de7ad852f40f0208b95e1bb063" => :mountain_lion
+  end
 
   devel do
-    url 'http://pocoproject.org/releases/poco-1.5.3/poco-1.5.3-all.tar.gz'
-    sha1 'e2eb6d812c907b6e8c117dea101289559926500c'
+    url 'http://pocoproject.org/releases/poco-1.5.4/poco-1.5.4-all.tar.gz'
+    sha1 'd7f14c49472c4f333fe99d43cac021e90d24b024'
   end
 
   option :cxx11
+
+  depends_on "openssl"
 
   def install
     ENV.cxx11 if build.cxx11?

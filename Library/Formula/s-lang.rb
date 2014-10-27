@@ -8,10 +8,10 @@ class SLang < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "21a69be9c04987b3f0f9fe22e5c67e1bbf35ffdf" => :mavericks
-    sha1 "6419ca383eaa2841c0a1b4c8000d7ef3e4e8ce8a" => :mountain_lion
-    sha1 "ba07bb45335ab72814f95b9eadace80b85e7c770" => :lion
+    revision 2
+    sha1 "dc2d2148553f6ea6ecb83f5b2997a87aac41a48e" => :yosemite
+    sha1 "6498d9a823c84f48b036d1c42571b13e4a2f0a50" => :mavericks
+    sha1 "274fdf93326cb429e850181a58ae13a85bfa5c4c" => :mountain_lion
   end
 
   depends_on 'libpng'

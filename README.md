@@ -1,7 +1,8 @@
-Linuxbrew
-=========
+# Linuxbrew
 
-A fork of Homebrew for Linux
+Linuxbrew is a fork of [Homebrew](http://brew.sh), the Mac OS package manager, for Linux.
+
+Features, usage and installation instructions are [summarised on the homepage](http://brew.sh/linuxbrew/).
 
 Install Linuxbrew (tl;dr)
 -------------------------
@@ -71,70 +72,43 @@ You're done!
 brew install $WHATEVER_YOU_WANT
 ```
 
-What Packages Are Available?
-----------------------------
-1. You can [browse the Formula directory on GitHub][formula].
-2. Or type `brew search` for a list.
-3. Or visit [braumeister.org][braumeister] to browse packages online.
-4. Or use [`brew desc`][brew-desc] to browse packages from the command line.
+## What Packages Are Available?
+1. Type `brew search` for a list.
+2. Or visit [braumeister.org](http://braumeister.org) to browse packages online.
+3. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
 
-More Documentation
-------------------
-`brew help` or `man brew` or check our [wiki][].
+## More Documentation
+`brew help` or `man brew` or check our [documentation](https://github.com/Homebrew/linuxbrew/tree/master/share/doc/homebrew#readme).
 
-Troubleshooting
----------------
+## Troubleshooting
 First, please run `brew update` and `brew doctor`.
 
-Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebrew/wiki/troubleshooting).
+Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/linuxbrew/blob/master/share/doc/homebrew/Troubleshooting.md#troubleshooting).
 
 **If you don't read these it will take us far longer to help you with your problem.**
 
-Something broke!
-----------------
+## Something broke!
 
-Many of the Homebrew formulae work on either Mac or Linux without changes, but
-some formulae will need to be adapted for Linux. If a formula doesn't work,
-[open an issue on GitHub][issues] or, even better, submit a pull request.
+Many of the Homebrew formulae work on either Mac or Linux without changes, but some formulae will need to be adapted for Linux. If a formula doesn't work, [open an issue on GitHub](https://github.com/Homebrew/linuxbrew/issues) or, even better, submit a pull request.
 
-[issues]: https://github.com/Homebrew/linuxbrew/issues
+## Security
+Please report security issues to security@brew.sh.
 
-Who Are You?
-------------
-Linuxbrew is maintained by [Shaun Jackman][sjackman].
+## Who Are You?
+Linuxbrew is maintained by [Shaun Jackman](https://github.com/sjackman).
 
-Homebrew's current maintainers are [Misty De Meo][mistydemeo], [Adam Vandenberg][adamv], [Jack Nagel][jacknagel], [Mike McQuaid][mikemcquaid], [Brett Koonce][asparagui] and [Tim Smith][tdsmith].
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
 
-Homebrew was originally created by [Max Howell][mxcl].
+Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 
-License
--------
-Code is under the [BSD 2 Clause (NetBSD) license][license].
+## License
+Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt).
 
-Donations
----------
-We accept tips through [Gittip][tip].
+## Donations
+We accept tips through Gratipay.
 
-### Shaun Jackman
-
-[![Gittip](https://img.shields.io/gittip/sjackman.svg?style=flat)](https://www.gittip.com/sjackman/)
+### Shaun Jackman for Linuxbrew
+[![Gittip](https://img.shields.io/gratipay/sjackman.svg?style=flat)](https://gratipay.com/sjackman/)
 
 ### Homebrew
-
-[![Gittip](https://img.shields.io/gittip/Homebrew.svg?style=flat)](https://www.gittip.com/Homebrew/)
-
-[home]:http://brew.sh
-[wiki]:https://github.com/Homebrew/homebrew/wiki
-[mistydemeo]:https://github.com/mistydemeo
-[adamv]:https://github.com/adamv
-[jacknagel]:https://github.com/jacknagel
-[mikemcquaid]:https://github.com/mikemcquaid
-[asparagui]:https://github.com/asparagui
-[sjackman]:https://github.com/sjackman
-[tdsmith]:https://github.com/tdsmith
-[mxcl]:https://github.com/mxcl
-[formula]:https://github.com/Homebrew/homebrew/tree/master/Library/Formula/
-[braumeister]:http://braumeister.org
-[brew-desc]: https://github.com/telemachus/homebrew-desc
-[license]:https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt
-[tip]:https://www.gittip.com/Homebrew/
+[![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://gratipay.com/Homebrew/)

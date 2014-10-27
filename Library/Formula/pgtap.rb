@@ -41,7 +41,7 @@ class Pgtap < Formula
       system './Build', 'install'
     end
 
-    pg_config = Formula["postgresql"].opt_prefix/'bin/pg_config'
+    pg_config = "#{Formula["postgresql"].opt_bin}/pg_config"
     system "make", "PG_CONFIG=#{pg_config}"
     system "make", "PG_CONFIG=#{pg_config}", "install"
   end

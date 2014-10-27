@@ -4,15 +4,17 @@ class Mariadb < Formula
   homepage 'http://mariadb.org/'
   url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.14/source/mariadb-10.0.14.tar.gz"
   sha1 "46dc0b66567ff9d4e3a32d9d4b3c9ef250a6fc9e"
+  revision 1
 
   bottle do
-    sha1 "afcd264148f8ab83ff44db884511f26f8cc3249d" => :mavericks
-    sha1 "f93ebfd2619060aaa9f92bb63236d3065efbfcce" => :mountain_lion
-    sha1 "b7e51a046b0c27770aa93c90d0216827742b52c5" => :lion
+    sha1 "9e59fc98a660442128144a8d0fa45b2345b7d41e" => :yosemite
+    sha1 "511c7e832185e301b632a53dac68af904203a6d7" => :mavericks
+    sha1 "3a48b324b1697fa00400e4e52cf47948580d74f1" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion || OS.linux?
+  depends_on "openssl"
 
   option :universal
   option 'with-tests', 'Keep test when installing'
@@ -75,10 +77,6 @@ class Mariadb < Formula
     ]
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
-
-    # oqgraph requires boost, but fails to compile against boost 1.54
-    # Upstream bug: https://mariadb.atlassian.net/browse/MDEV-4795
-    args << "-DWITHOUT_OQGRAPH_STORAGE_ENGINE=1"
 
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'

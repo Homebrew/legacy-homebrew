@@ -408,6 +408,13 @@ class Formula
     end
   end
 
+  def print_tap_action options={}
+    if tap?
+      verb = options[:verb] || "Installing"
+      ohai "#{verb} #{name} from #{tap}"
+    end
+  end
+
   # True if this formula is provided by Homebrew itself
   def core_formula?
     path == Formula.path(name)

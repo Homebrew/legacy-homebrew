@@ -19,7 +19,7 @@ The Homebrew community welcomes and encourages participation by everyone. Our co
 
 We have created this diversity statement because we believe that a diverse Homebrew community is stronger and more vibrant. A diverse community where people treat each other with respect has more potential contributors and more sources for ideas.
 
-Although we have phrased the formal diversity statement generically to make it all-inclusive, we recognize that there are specific attributes that are used to discriminate against people. In alphabetical order, some of these attributes include (but are not limited to): age, culture, ethnicity, gender identity or expression, national origin, physical or mental difference, politics, race, religion, sex, sexual orientation, socio-economic status, and subculture. We welcome people regardless of the values of these or other attributes.
+Although we have phrased the formal diversity statement generically to make it all-inclusive, we recognise that there are specific attributes that are used to discriminate against people. In alphabetical order, some of these attributes include (but are not limited to): age, culture, ethnicity, gender identity or expression, national origin, physical or mental difference, politics, race, religion, sex, sexual orientation, socio-economic status, and subculture. We welcome people regardless of the values of these or other attributes.
 
 # Attribution
 This code of conduct is heavily based on the [Python Community Code of Conduct](http://www.python.org/psf/codeofconduct/) and the [Python Diversity Statement](http://www.python.org/community/diversity/).

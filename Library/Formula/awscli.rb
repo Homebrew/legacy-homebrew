@@ -2,14 +2,14 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.5.2.tar.gz"
-  sha1 "c852bf5529547eca91a15f81116fa011ef5d0ae9"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.5.3.tar.gz"
+  sha1 "529420e1148a3e6ad56dc58beb799e72f62eb39b"
 
   bottle do
     cellar :any
-    sha1 "8c32525166e645d57f9ecef9673af8d56cf664f2" => :yosemite
-    sha1 "4eb0ebddd7aa8f48e52f44c886f668c4d1a2d207" => :mavericks
-    sha1 "0aec1c7947c8827fb42566fd6b84e0918ad4f2a9" => :mountain_lion
+    sha1 "7d41e26398421622338a26089e7c124e946fbcb5" => :yosemite
+    sha1 "873a05712283890f93d34f09880e7d8f94244119" => :mavericks
+    sha1 "b3ee173e568ea7dfb2422b1456e9b4d69fa9aca2" => :mountain_lion
   end
 
   head do

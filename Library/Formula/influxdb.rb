@@ -2,14 +2,13 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.org"
-  url "http://get.influxdb.org/with_dependencies/influxdb-0.8.3.src.tar.gz"
-  sha1 "2626bc5e8877ab23db3b121b64f4c5f9c8a2b627"
+  url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.4.src.tar.gz"
+  sha1 "c3e7dba0a790370bf63c4d80af2fb52d84b1bead"
 
   bottle do
-    revision 1
-    sha1 "ad6e564cde67cb0518416777e5e18ff5796a5380" => :mavericks
-    sha1 "b18f89ce07b08020099e15918e7d7e1f909305e0" => :mountain_lion
-    sha1 "1d83ccd8902d6fb401b4483c1fe186e8c46e8b45" => :lion
+    sha1 "00baab0b7a8d8fb881f08b9a5c3c7f745cfcada4" => :yosemite
+    sha1 "42ff9717282f9ca527921f4fe35ce4c7f3ab2097" => :mavericks
+    sha1 "2f638371dd6d200c45c93cb8b721aea8a8aef7aa" => :mountain_lion
   end
 
   depends_on "leveldb"
@@ -22,35 +21,25 @@ class Influxdb < Formula
   depends_on "gawk" => :build
 
   def install
-    ENV["GOPATH"] = buildpath.parent
-    Dir.chdir File.join(buildpath, "github.com", "influxdb", "influxdb")
+    ENV["GOPATH"] = buildpath
+    Dir.chdir File.join(buildpath, "src", "github.com", "influxdb", "influxdb")
 
     flex = Formula["flex"].bin/"flex"
     bison = Formula["bison"].bin/"bison"
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
-
-    system "make", "protobuf"
-    system "make", "parser"
-
-    inreplace "daemon/version.go" do |s|
-      s.gsub! /^(const version).*$/, %Q{\\1 = "0.8.3"}
-      s.gsub! /^(const gitSha).*$/, %Q{\\1 = "fbf9a474055051c64e947f2a071388ee009a08d5"}
-    end
-
-    system "go", "build", "-o", "influxdb", "github.com/influxdb/influxdb/daemon"
+    system "make", "parser", "protobuf"
+    system "go", "build", "-tags", "rocksdb", "-o", "influxdb", "github.com/influxdb/influxdb/daemon"
 
     inreplace "config.sample.toml" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
       s.gsub! "/tmp/influxdb/development/wal", "#{var}/influxdb/wal"
       s.gsub! "influxdb.log", "#{var}/influxdb/logs/influxdb.log"
-      s.gsub! "./admin", "#{opt_share}/admin"
     end
 
     bin.install "influxdb" => "influxdb"
     etc.install "config.sample.toml" => "influxdb.conf"
-    share.install "admin-ui" => "admin"
 
     (var/"influxdb/data").mkpath
     (var/"influxdb/raft").mkpath

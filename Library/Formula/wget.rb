@@ -1,24 +1,22 @@
-require 'formula'
+require "formula"
 
 # NOTE: Configure will fail if using awk 20110810 from dupes.
 # Upstream issue: https://savannah.gnu.org/bugs/index.php?37063
 
 class Wget < Formula
-  homepage 'http://www.gnu.org/software/wget/'
-  url 'http://ftpmirror.gnu.org/wget/wget-1.15.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/wget/wget-1.15.tar.gz'
-  sha1 'f3c925f19dfe5ed386daae4f339175c108c50574'
-  revision 2
+  homepage "https://www.gnu.org/software/wget/"
+  url "http://ftpmirror.gnu.org/wget/wget-1.16.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.tar.xz"
+  sha1 "08d991acc80726abe57043a278f9da469c454503"
 
   bottle do
-    revision 1
-    sha1 "5e3dd7a6e79e4de274b1c1dc1baa6d8110a56000" => :mavericks
-    sha1 "f4e4664b78cfc1c515e791f3b2ffedf7207a2a22" => :mountain_lion
-    sha1 "217a42b233f21fcb693723f91ec6df0ae168609e" => :lion
+    sha1 "97196dab9c0eb7afc7060afec98fc8cda54459c2" => :yosemite
+    sha1 "98af6113f187abc5613b7aa2fbc24feeaa964e4f" => :mavericks
+    sha1 "d84826b6dca644b2ccf3b157fd8a092994de43e2" => :mountain_lion
   end
 
   head do
-    url 'git://git.savannah.gnu.org/wget.git'
+    url "git://git.savannah.gnu.org/wget.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -49,7 +47,7 @@ class Wget < Formula
     args << "--disable-iri" unless build.include? "enable-iri"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do

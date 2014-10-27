@@ -6,9 +6,10 @@ class Camlp5 < Formula
   sha1 "d78d89dbd33725d7589181c38cc67180502da2f8"
 
   bottle do
-    sha1 "a96b54c869d6a746d63f4fae548eabce16e866e4" => :mavericks
-    sha1 "865a5f4e5162ddbd661f930717f4e7d35b6dffb2" => :mountain_lion
-    sha1 "ae8b490cad902abac671e9ac332dadd8a8e8cfe8" => :lion
+    revision 1
+    sha1 "1b80d63b1cf8253d01cab351d41e785c52302e9b" => :yosemite
+    sha1 "2caa1f1a2ede6630b04e3d8759f72654c60f2ff9" => :mavericks
+    sha1 "b62f655ebc58631713c33be835e5004723cec314" => :mountain_lion
   end
 
   depends_on "objective-caml"

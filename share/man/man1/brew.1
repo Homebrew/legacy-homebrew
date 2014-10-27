@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "September 2014" "Homebrew" "brew"
+.TH "BREW" "1" "October 2014" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -187,7 +187,7 @@ Print a JSON representation of \fIformulae\fR\. Currently the only accepted valu
 Pass \fB\-\-all\fR to get information on all formulae, or \fB\-\-installed\fR to get information on all installed formulae\.
 .
 .IP
-See the wiki for examples of using the JSON: \fIhttps://github\.com/Homebrew/homebrew/wiki/Querying\-Brew\fR
+See the docs for examples of using the JSON: \fIhttps://github\.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying\-Brew\.md\fR
 .
 .TP
 \fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
@@ -476,7 +476,7 @@ $ ls $(brew \-\-repository)/Library/Contributions/cmd
 .IP "" 0
 .
 .P
-Documentation for the included external commands as well as instructions for creating your own can be found on the wiki: \fIhttp://wiki\.github\.com/Homebrew/homebrew/External\-Commands\fR
+Documentation for the included external commands as well as instructions for creating your own can be found in the docs: \fIhttps://github\.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External\-Commands\.md\fR
 .
 .SH "SPECIFYING FORMULAE"
 Many Homebrew commands accept one or more \fIformula\fR arguments\. These arguments can take several different forms:
@@ -641,13 +641,16 @@ http_proxy=http://<user>:<password>@<host>:<port> brew install foo
 .IP "" 0
 .
 .SH "SEE ALSO"
-Homebrew Wiki: \fIhttp://wiki\.github\.com/Homebrew/homebrew/\fR
+Homebrew Documentation: \fIhttps://github\.com/Homebrew/homebrew/blob/master/share/doc/homebrew/\fR
 .
 .P
 \fBgit\fR(1), \fBgit\-log\fR(1)
 .
 .SH "AUTHORS"
-Max Howell, a splendid chap\.
+Homebrew\'s current maintainers are Misty De Meo, Adam Vandenberg, Jack Nagel, Mike McQuaid, Brett Koonce and Tim Smith\.
+.
+.P
+Homebrew was originally created by Max Howell\.
 .
 .SH "BUGS"
 See Issues on GitHub: \fIhttp://github\.com/Homebrew/homebrew/issues\fR

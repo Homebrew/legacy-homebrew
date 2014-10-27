@@ -2,14 +2,13 @@ require 'formula'
 
 class Pidgin < Formula
   homepage 'http://pidgin.im/'
-  url 'https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.9/pidgin-2.10.9.tar.bz2'
-  sha1 'f3de8fd94dba1f4c98d5402a02430f9f323e665a'
-  revision 1
+  url 'https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.10/pidgin-2.10.10.tar.bz2'
+  sha1 '81267c35c8d27f2c62320b564fc11af2cc1f3a4a'
 
   bottle do
-    sha1 "e039a6633ee9110630b5b7406fc9c465b10d34e2" => :mavericks
-    sha1 "052f83d0798c770489cdee0cc1e4b6da7b858fff" => :mountain_lion
-    sha1 "812f2081647fcbeaacd5beb70e1a84850365a283" => :lion
+    sha1 "8619dec05832868cf29df37382683b2c8d5944e4" => :yosemite
+    sha1 "ee004c411e8e8d534eae11a74c8e3bb2fdfb018c" => :mavericks
+    sha1 "ecd1805951f73871171f36587323f6ef1aeb82e0" => :mountain_lion
   end
 
   depends_on :x11
@@ -23,8 +22,8 @@ class Pidgin < Formula
   depends_on "libotr"
 
   resource "pidgin-otr" do
-    url "http://www.cypherpunks.ca/otr/pidgin-otr-4.0.0.tar.gz"
-    sha1 "23c602c4b306ef4eeb3ff5959cd389569f39044d"
+    url "https://otr.cypherpunks.ca/pidgin-otr-4.0.1.tar.gz"
+    sha1 "e231a2dc72c960f2aa70d8c9d4b05abc6d123085"
   end
 
   option 'perl', 'Build pidgin with perl support'

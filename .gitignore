@@ -10,6 +10,7 @@
 !/bin
 /bin/*
 !/bin/brew
+!/share/doc/homebrew
 !/share/man/man1/brew.1
 .DS_Store
 /Library/Homebrew/doc

@@ -6,6 +6,9 @@ class Postgis < Formula
   sha256 'cd73c2a38428c8736f6cae73b955aee0bd42f9ca4fd8d93c1af464524cb100fc'
   revision 1
 
+  # TODO: don't add bottle until we've fixed:
+  # https://github.com/Homebrew/homebrew/issues/33566
+
   head 'http://svn.osgeo.org/postgis/trunk/'
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'

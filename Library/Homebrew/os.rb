@@ -16,5 +16,5 @@ module OS
   else
     raise "Unknown operating system"
   end
-  ISSUES_URL = "https://github.com/Homebrew/#{GITHUB_REPOSITORY}/wiki/troubleshooting"
+  ISSUES_URL = "https://github.com/Homebrew/#{GITHUB_REPOSITORY}/blob/master/share/doc/homebrew/Troubleshooting.md#troubleshooting"
 end

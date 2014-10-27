@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Zeromq < Formula
   homepage "http://www.zeromq.org/"
   url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
   sha1 "a664ec63661a848ef46114029156a0a6006feecd"
+  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "f0b1d5adb4b416e0c30b6f4c3363258b7d285992" => :mavericks
-    sha1 "34822b161d6443666ea528c196aa0ee83a570c07" => :mountain_lion
-    sha1 "6a10776dbb0e16892f304cebe8cf4b1a23b9303e" => :lion
+    sha1 "7ab7265a9ee4bcf49a5b48da295d4698f883b71f" => :yosemite
+    sha1 "5e1c4991fb8d50a81ef56513d0f75ad32ff9a26d" => :mavericks
+    sha1 "f8d4eafd49c6f8c349544809768f39be95ba14b5" => :mountain_lion
   end
 
   head do
