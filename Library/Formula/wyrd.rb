@@ -6,7 +6,8 @@ class Wyrd < Formula
   sha1 'aaeca29b844825f45aadcf5207f4d1c875e4dc82'
 
   depends_on 'remind'
-  depends_on 'objective-caml'
+  depends_on 'objective-caml' => :build
+  depends_on 'camlp4' => :build
 
   def install
     ENV.deparallelize
