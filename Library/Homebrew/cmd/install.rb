@@ -45,8 +45,11 @@ module Homebrew
       ARGV.formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
       ofail e.message
+      query = query_regexp(e.name)
+      puts 'Searching formulae...'
+      puts_columns(search_formulae(query))
       puts 'Searching taps...'
-      puts_columns(search_taps(query_regexp(e.name)))
+      puts_columns(search_taps(query))
     end
   end
 
