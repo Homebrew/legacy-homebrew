@@ -2,9 +2,9 @@ require 'formula'
 
 class Pcre < Formula
   homepage 'http://www.pcre.org/'
-  url 'https://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.bz2'
-  mirror 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.35.tar.bz2'
-  sha256 'a961c1c78befef263cc130756eeca7b674b4e73a81533293df44e4265236865b'
+  url 'https://downloads.sourceforge.net/project/pcre/pcre/8.36/pcre-8.36.tar.bz2'
+  mirror 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.bz2'
+  sha256 'ef833457de0c40e82f573e34528f43a751ff20257ad0e86d272ed5637eb845bb'
 
   bottle do
     cellar :any
@@ -19,12 +19,6 @@ class Pcre < Formula
   fails_with :llvm do
     build 2326
     cause "Bus error in ld on SL 10.6.4"
-  end
-
-  # Upstream patch to fix compilation with GCC 4.9
-  patch do
-    url "http://bugs.exim.org/attachment.cgi?id=741"
-    sha1 "bad236cf67a7b42f0dc8d4ae05ed0260241320d1"
   end
 
   def install
@@ -44,5 +38,9 @@ class Pcre < Formula
     ENV.deparallelize
     system "make test"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/pcregrep", "regular expression", "#{prefix}/README"
   end
 end
