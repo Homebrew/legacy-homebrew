@@ -1,9 +1,9 @@
 require "formula"
 
 class Influxdb < Formula
-  homepage "http://influxdb.org"
-  url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.4.src.tar.gz"
-  sha1 "c3e7dba0a790370bf63c4d80af2fb52d84b1bead"
+  homepage "http://influxdb.com"
+  url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.5.src.tar.gz"
+  sha1 "bbb361db2e54686c90cbf5ec253d1a89c170ca75"
 
   bottle do
     sha1 "00baab0b7a8d8fb881f08b9a5c3c7f745cfcada4" => :yosemite
