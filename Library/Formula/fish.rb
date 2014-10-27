@@ -12,7 +12,7 @@ class Fish < Formula
   end
 
   head do
-    url "https://github.com/fish-shell/fish-shell.git"
+    url "https://github.com/fish-shell/fish-shell.git", :shallow => false
 
     depends_on :autoconf
     # Indeed, the head build always builds documentation
@@ -22,7 +22,10 @@ class Fish < Formula
   skip_clean "share/doc"
 
   def install
-    system "autoconf" if build.head?
+    if build.head?
+      ENV['GIT_DIR'] = cached_download/'.git'
+      system "autoconf"
+    end
     # In Homebrew's 'superenv' sed's path will be incompatible, so
     # the correct path is passed into configure here.
     system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"
