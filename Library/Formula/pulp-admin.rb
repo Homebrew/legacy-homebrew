@@ -49,8 +49,13 @@ class PulpAdmin < Formula
       end
     end
 
+    inreplace "client_admin/etc/pulp/admin/admin.conf" do |s|
+      s.gsub! "/usr/lib/pulp/admin/extensions", etc+"pulp/admin/extensions"
+    end
+    mkdir "client_admin/etc/pulp/admin/extensions"
+    mkdir "client_admin/etc/pulp/admin/conf.d"
+
     etc.install "client_admin/etc/pulp" unless File.directory?(etc+"pulp")
-    mkdir etc+"pulp/admin/conf.d" unless File.directory?(etc+"pulp/admin/conf.d")
 
     bin.install libexec+"bin/pulp-admin"
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
