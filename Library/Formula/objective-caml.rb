@@ -8,8 +8,6 @@ class ObjectiveCaml < Formula
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
   revision 1
 
-  depends_on :x11 => :optional
-
   option 'without-x11', 'Install without the Graphics module'
   depends_on :x11 => :optional
 
