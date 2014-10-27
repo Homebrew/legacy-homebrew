@@ -3,14 +3,13 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.32/node-v0.10.32.tar.gz"
-  sha256 "c2120d0e3d2d191654cb11dbc0a33a7216d53732173317681da9502be0030f10"
+  url "http://nodejs.org/dist/v0.10.33/node-v0.10.33.tar.gz"
+  sha256 "75dc26c33144e6d0dc91cb0d68aaf0570ed0a7e4b0c35f3a7a726b500edd081e"
 
   bottle do
-    revision 4
-    sha1 "87848a01587d9483f2c20c87f5b03ff2f5f667a6" => :yosemite
-    sha1 "27246a4773d80b4d50256f9964af70ea956a9013" => :mavericks
-    sha1 "fb19ffaa0657693c3512aa7a8524086a2365e74a" => :mountain_lion
+    sha1 "3607953be2ff0e343fc92c6894a87555b325d360" => :yosemite
+    sha1 "c714a3f89be3b11c3b950d337fb3ce8a02e62508" => :mavericks
+    sha1 "5361680248f4481dda5414f46c836cffb17c4351" => :mountain_lion
   end
 
   devel do
@@ -26,18 +25,24 @@ class Node < Formula
 
   depends_on :python => :build
 
+  # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
+  # over Node's shipped version with --shared-openssl.
+  # Would allow us quicker security fixes than Node's release schedule.
+
   fails_with :llvm do
     build 2326
   end
 
+  # Bumping this may cause `brew test` to fail.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-1.4.24.tgz"
-    sha1 "78125bb55dc592b9cbf4aff44e33d5d81c9471af"
+    url "https://registry.npmjs.org/npm/-/npm-1.4.28.tgz"
+    sha256 "df3c620cfe1664d45fb5f1948ca0ef1c8b3384acff31648557caac3a9ac2d459"
   end
 
   def install
     args = %W{--prefix=#{prefix} --without-npm}
     args << "--debug" if build.include? "enable-debug"
+    args << "--without-ssl2" << "--without-ssl3" if build.stable?
 
     system "./configure", *args
     system "make", "install"
@@ -56,9 +61,13 @@ class Node < Formula
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
+    # make sure npm can find node
+    ENV["PATH"] = "#{opt_bin}:#{ENV["PATH"]}"
+
     ENV["NPM_CONFIG_USERCONFIG"] = npmrc
-    npm_root.cd { system "make", "install" }
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest",
+    npm_root.cd { system "make", "VERBOSE=1", "install" }
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--verbose", "--global",
+                                         "npm@latest",
                                          "--prefix", HOMEBREW_PREFIX
 
     Pathname.glob(npm_root/"man/*") do |man|
@@ -74,12 +83,23 @@ class Node < Formula
   end
 
   def caveats
-    if build.without? "npm"; <<-end.undent
-      Homebrew has NOT installed npm. If you later install it, you should supplement
-      your NODE_PATH with the npm module folder:
-        #{HOMEBREW_PREFIX}/lib/node_modules
-      end
+    s = ""
+
+    if build.with? "npm"
+      s += <<-EOS.undent
+        If you update npm do NOT use the npm upgrade command
+        Instead execute:
+          npm install -g npm@latest
+      EOS
+    else
+      s += <<-EOS.undent
+        Homebrew has NOT installed npm. If you later install it, you should supplement
+        your NODE_PATH with the npm module folder:
+          #{HOMEBREW_PREFIX}/lib/node_modules
+      EOS
     end
+
+    s
   end
 
   test do
@@ -90,6 +110,13 @@ class Node < Formula
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
 
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm@latest" if build.with? "npm"
+    if build.with? "npm"
+      # make sure npm can find node
+      ENV.prepend_path "PATH", opt_bin
+      assert_equal which("node"), opt_bin/"node"
+      assert (HOMEBREW_PREFIX/"bin/npm").exist?, "npm must exist"
+      assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
+      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
+    end
   end
 end

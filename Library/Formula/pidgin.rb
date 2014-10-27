@@ -2,15 +2,13 @@ require 'formula'
 
 class Pidgin < Formula
   homepage 'http://pidgin.im/'
-  url 'https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.9/pidgin-2.10.9.tar.bz2'
-  sha1 'f3de8fd94dba1f4c98d5402a02430f9f323e665a'
-  revision 1
+  url 'https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.10/pidgin-2.10.10.tar.bz2'
+  sha1 '81267c35c8d27f2c62320b564fc11af2cc1f3a4a'
 
   bottle do
-    revision 1
-    sha1 "430aef531d3993806a044c16ce86b55a19cf8d15" => :yosemite
-    sha1 "0dc523a911e1a5b08d0103858904ee67e91ac688" => :mavericks
-    sha1 "0b158a8e1657695a480df0cc170f83a9558cc9c7" => :mountain_lion
+    sha1 "8619dec05832868cf29df37382683b2c8d5944e4" => :yosemite
+    sha1 "ee004c411e8e8d534eae11a74c8e3bb2fdfb018c" => :mavericks
+    sha1 "ecd1805951f73871171f36587323f6ef1aeb82e0" => :mountain_lion
   end
 
   depends_on :x11

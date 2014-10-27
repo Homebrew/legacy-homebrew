@@ -59,7 +59,7 @@ class Liblwgeom < Formula
     ]
 
     if build.head?
-      args << "--with-pgconfig=#{Formula["postgresql"].opt_prefix.realpath}/bin/pg_config"
+      args << "--with-pgconfig=#{Formula["postgresql"].opt_bin}/pg_config"
     end
 
     system './autogen.sh'
@@ -70,8 +70,7 @@ class Liblwgeom < Formula
       system 'make', 'install', "DESTDIR=#{buildpath}/stage"
     end
 
-    # NOTE: lib.install Dir['stage/**/lib/*'] fails (symlink is not resolved)
-    prefix.install Dir["stage/**/lib"]
+    lib.install Dir["stage/**/lib/*"]
     include.install Dir["stage/**/include/*"]
   end
 end

@@ -2,15 +2,26 @@ require "formula"
 
 class Emacs < Formula
   homepage "https://www.gnu.org/software/emacs/"
-  url "http://ftpmirror.gnu.org/emacs/emacs-24.4.tar.xz"
-  mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
-  sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
+
+  stable do
+    url "http://ftpmirror.gnu.org/emacs/emacs-24.4.tar.xz"
+    mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
+    sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
+
+    # Fix ns-antialias-text, broken in 24.4, submitted upstream here:
+    # http://lists.gnu.org/archive/html/emacs-devel/2014-10/msg00813.html
+
+    patch do
+      url 'https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/b7055ba40a7dd9e8f6f5dd6bbe5c305a78bbbc87/emacs-fix-ns-antialias-text-mac-os.patch'
+      sha1 '6215c59c01dc247dfdec7c89ff2fe84ff28eb1c7'
+    end
+  end
 
   bottle do
-    revision 1
-    sha1 "921a8a802cb99821d8cc6a1a73ad99bafb09dd77" => :yosemite
-    sha1 "9d076a90ed7ce5b70fe89a7400ff95b8d7089132" => :mavericks
-    sha1 "74439e42f3147b814b4fa451524789d388e24ed8" => :mountain_lion
+    revision 2
+    sha1 "dbbb5869715475184bb272023559c318fb38c2bb" => :yosemite
+    sha1 "5ed8b3aa255814b41d66d49371c7a37adf63b7ee" => :mavericks
+    sha1 "e2d8d47197695e537de4ba3e01c88c1ba547d81c" => :mountain_lion
   end
 
   option "cocoa", "Build a Cocoa version of emacs"

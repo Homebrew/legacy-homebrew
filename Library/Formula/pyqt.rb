@@ -6,9 +6,10 @@ class Pyqt < Formula
   sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
 
   bottle do
-    sha1 "58c9917fc6277f3fb575f6bf962b875bebb6a274" => :yosemite
-    sha1 "ef0077b771c15b1c38eb912d62d6dd3cf15d091e" => :mavericks
-    sha1 "7670bb49a1f9a93f85b02e50905af0a02f37df2a" => :mountain_lion
+    revision 1
+    sha1 "251fb1a136972de87c98d3d06a3f5e1d6b8351d4" => :yosemite
+    sha1 "43f5b59a2b08d5ed035016459ffce566577a6e42" => :mavericks
+    sha1 "e058c40214fa5bed6391e815cfe7b2473b2bbc98" => :mountain_lion
   end
 
   depends_on :python => :recommended
@@ -33,12 +34,12 @@ class Pyqt < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", "#{Formula["sip"].opt_lib}/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
               "--destdir=#{lib}/python#{version}/site-packages",
-              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+              "--sipdir=#{share}/sip"]
 
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by QGIS, PyQWT (and many other PyQt interoperable

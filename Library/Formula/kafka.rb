@@ -8,9 +8,9 @@ class Kafka < Formula
   sha1 "104c15d22da36216a678e6a0c3243c552e47af87"
 
   depends_on "zookeeper"
+  depends_on :java => "1.7"
 
   def install
-    ohai "Java 7 is required to compile this software."
     system "./gradlew", "jar"
 
     # Use 1 partition by default so individual consumers receive all topic messages

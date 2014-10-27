@@ -2,17 +2,17 @@ require "formula"
 
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.8.0.tar.bz2"
-  sha1 "0e1fcaa0ec228830f9b0a650b6cfd3c098c82afc"
+  url "http://download.mono-project.com/sources/mono/mono-3.10.0.tar.bz2"
+  sha1 "74e43604ea48e941c39a43ebc153abee4ddba56c"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha1 "2184aeba1346c3cbbed0dbf077466bbd826c3559" => :mavericks
-    sha1 "982b56d443b6d0f65e0351f74afcf10175271fea" => :mountain_lion
-    sha1 "df60a0666a1aa750e3e64d12d16a80ca1f7997da" => :lion
+    sha1 "b30c33f4fee61ab76bbd66fd482a6fb389b58dd3" => :yosemite
+    sha1 "fa0b56a4cfa2e48dc1c71573ced4c08c835e19cd" => :mavericks
+    sha1 "2b1b55b8a8b9e0825538a64722234ddd84e72ee2" => :mountain_lion
   end
 
   resource "monolite" do

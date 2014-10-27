@@ -16,12 +16,20 @@ class Fontforge < Formula
   end
 
   bottle do
-    sha1 "7dcb6b4262cb397be47efeafe8a57757f50689d6" => :yosemite
-    sha1 "ee2b108f7d9fd88fab51238c4511b26d039c9574" => :mavericks
-    sha1 "2e0b2ac9c7b6abbb0fd302b422e56a478c9492da" => :mountain_lion
+    revision 1
+    sha1 "ef8e64045c5f97d154a8deb96efb94f72b4ecf6a" => :yosemite
+    sha1 "37363b5e3923118b1b7eaeb7c4320b955fa7c8b5" => :mavericks
+    sha1 "1d463715d0ca9d27dcac36904c28b750698f2de0" => :mountain_lion
   end
 
-  head "https://github.com/fontforge/fontforge.git"
+  head do
+    url "https://github.com/fontforge/fontforge.git"
+
+    # Remove this block after next stable release and make mandatory for all again.
+    # Several unique issues fixed in HEAD.
+    depends_on "zeromq"
+    depends_on "czmq"
+  end
 
   option "with-gif", "Build with GIF support"
   option "with-x", "Build with X11 support, building the app bundle"
@@ -33,7 +41,6 @@ class Fontforge < Formula
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
   depends_on :libltdl
-  depends_on "ossp-uuid"
   depends_on "gettext"
   depends_on "pango"
   depends_on "libpng"   => :recommended
@@ -43,27 +50,12 @@ class Fontforge < Formula
   depends_on "giflib" if build.with? "gif"
   depends_on "libspiro" => :optional
   depends_on "fontconfig"
-  # The below two below dependencies are highly unrecommended for now
-  # https://github.com/fontforge/fontforge/issues/1837
-  # They should be made recommended again when functional.
-  depends_on "zeromq" => :optional
-  depends_on "czmq" if build.with? "zeromq"
   depends_on "cairo"
   depends_on :python if MacOS.version <= :snow_leopard
 
   fails_with :llvm do
     build 2336
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
-  end
-
-  # Fix Fontforge collab tools causing folder to build inside bin
-  # That folder causes audit build failures
-  # https://github.com/fontforge/fontforge/pull/1838
-  if build.with? "zeromq"
-    patch do
-      url "https://github.com/fontforge/fontforge/pull/1838.diff"
-      sha1 "5e7a848fd035b5b2aa18e9398f755feeb0bfafbb"
-    end
   end
 
   def install
@@ -90,11 +82,6 @@ class Fontforge < Formula
 
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
-
-    # Fontforge is *really* bad at finding the ossp-uuid dependency. Help it.
-    # It wildly ignores the uuid pkg-config file, so manually give it flags.
-    ENV.prepend "LIBUUID_CFLAGS", "-I#{Formula["ossp-uuid"].include}"
-    ENV.prepend "LIBUUID_LIBS", "-L#{Formula["ossp-uuid"].lib}"
 
     # Bootstrap in every build. See the link below.
     system "./bootstrap" #https://github.com/fontforge/fontforge/issues/1806
