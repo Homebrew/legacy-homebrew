@@ -4,6 +4,7 @@ class Opam < Formula
   homepage 'https://opam.ocaml.org'
   url 'https://github.com/ocaml/opam/archive/1.2.0.tar.gz'
   sha1 'b7923516a853afe86e8439afd23c0dae5fa8ad57'
+  revision 1
 
   head 'https://github.com/ocaml/opam.git'
 
@@ -16,6 +17,7 @@ class Opam < Formula
 
   depends_on "objective-caml"
   depends_on "aspcud" => :recommended
+  depends_on "camlp4" => :recommended
 
   if build.with? "aspcud"
     needs :cxx11
