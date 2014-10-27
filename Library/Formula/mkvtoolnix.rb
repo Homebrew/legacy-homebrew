@@ -77,6 +77,8 @@ class Mkvtoolnix < Formula
     ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
 
     boost = Formula["boost"]
+    ogg = Formula["libogg"]
+    vorbis = Formula["libvorbis"]
 
     args = %W[
       --disable-debug
@@ -87,10 +89,12 @@ class Mkvtoolnix < Formula
 
     if build.with? "wxmac"
       wxmac = Formula["wxmac"]
-
-      args << "--enable-gui"
-      args << "--enable-wxwidgets"
+      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{wxmac.opt_include}"
+      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{wxmac.opt_lib}"
+      args << "--enable-gui" << "--enable-wxwidgets"
     else
+      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include}"
+      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib}"
       args << "--disable-wxwidgets"
     end
 
