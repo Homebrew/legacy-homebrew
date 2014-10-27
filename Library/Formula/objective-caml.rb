@@ -26,6 +26,7 @@ class ObjectiveCaml < Formula
     system "make opt"
     system "make opt.opt"
     system "make", "PREFIX=#{prefix}", "install"
+    (lib/"ocaml/site-lib").mkpath
   end
 
   def post_install
