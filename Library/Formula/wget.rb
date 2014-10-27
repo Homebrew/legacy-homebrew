@@ -10,10 +10,9 @@ class Wget < Formula
   sha1 "08d991acc80726abe57043a278f9da469c454503"
 
   bottle do
-    revision 2
-    sha1 "173036d8c100beb821b6af936a8dfc562a8dad4c" => :yosemite
-    sha1 "825f0187d75ab9d42888901a43aae6104e834af9" => :mavericks
-    sha1 "71e28c9e7325a85668a9bb965ce67cbcc64a550b" => :mountain_lion
+    sha1 "97196dab9c0eb7afc7060afec98fc8cda54459c2" => :yosemite
+    sha1 "98af6113f187abc5613b7aa2fbc24feeaa964e4f" => :mavericks
+    sha1 "d84826b6dca644b2ccf3b157fd8a092994de43e2" => :mountain_lion
   end
 
   head do
