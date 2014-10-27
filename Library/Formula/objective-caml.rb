@@ -19,11 +19,6 @@ class ObjectiveCaml < Formula
   end
 
   def install
-    system "./configure", "--prefix", HOMEBREW_PREFIX,
-                          "--mandir", man,
-                          "-cc", ENV.cc,
-                          "-with-debug-runtime",
-                          "-aspp", "#{ENV.cc} -c"
     args = %W[
       --prefix #{HOMEBREW_PREFIX}
       --mandir #{man}
