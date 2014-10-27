@@ -37,8 +37,8 @@ class Xplanetfx < Formula
 
     prefix.install "bin", "share"
 
-    path = "#{Formula["coreutils"].opt_prefix}/libexec/gnubin"
-    path += ":#{Formula["gnu-sed"].opt_prefix}/libexec/gnubin" if build.with?("gnu-sed")
+    path = "#{Formula["coreutils"].opt_libexec}/gnubin"
+    path += ":#{Formula["gnu-sed"].opt_libexec}/gnubin" if build.with?("gnu-sed")
     if build.with?("perlmagick")
       perl_version = `/usr/bin/perl -e 'printf "%vd", $^V;'`
       ENV.prepend_create_path "PERL5LIB", "#{HOMEBREW_PREFIX}/lib/perl5/site_perl/#{perl_version}"

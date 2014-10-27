@@ -34,7 +34,7 @@ class Pyqt < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", "#{Formula["sip"].opt_lib}/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
