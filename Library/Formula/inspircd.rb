@@ -2,8 +2,8 @@ require 'formula'
 
 class Inspircd < Formula
   homepage 'http://www.inspircd.org'
-  url 'https://github.com/inspircd/inspircd/archive/v2.0.17.tar.gz'
-  sha1 '79c1a2438b926f5cb945db6dd02c4a1416dc9946'
+  url 'https://github.com/inspircd/inspircd/archive/v2.0.18.tar.gz'
+  sha1 '40039d9be51ad28493be16b27c9f20bc7fe617a4'
 
   head 'https://github.com/inspircd/inspircd.git'
 
@@ -19,15 +19,14 @@ class Inspircd < Formula
   depends_on 'pkg-config' => :build
   depends_on 'geoip' => :optional
   depends_on 'gnutls' => :optional
-  depends_on 'libgcrypt' if build.with? 'gnutls'
   depends_on :mysql => :optional
+  depends_on 'openssl' => :optional
   depends_on 'pcre' => :optional
   depends_on 'postgresql' => :optional
   depends_on 'sqlite' => :optional
   depends_on 'tre' => :optional
 
   option 'without-ldap', 'Build without ldap support'
-  option 'without-openssl', 'Build without openssl support'
 
   def install
     modules = []
