@@ -1,14 +1,13 @@
-require 'formula'
+require "formula"
 
 # NOTE: Configure will fail if using awk 20110810 from dupes.
 # Upstream issue: https://savannah.gnu.org/bugs/index.php?37063
 
 class Wget < Formula
-  homepage 'http://www.gnu.org/software/wget/'
-  url 'http://ftpmirror.gnu.org/wget/wget-1.15.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/wget/wget-1.15.tar.gz'
-  sha1 'f3c925f19dfe5ed386daae4f339175c108c50574'
-  revision 2
+  homepage "https://www.gnu.org/software/wget/"
+  url "http://ftpmirror.gnu.org/wget/wget-1.16.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.tar.xz"
+  sha1 "08d991acc80726abe57043a278f9da469c454503"
 
   bottle do
     revision 2
@@ -18,7 +17,7 @@ class Wget < Formula
   end
 
   head do
-    url 'git://git.savannah.gnu.org/wget.git'
+    url "git://git.savannah.gnu.org/wget.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -49,7 +48,7 @@ class Wget < Formula
     args << "--disable-iri" unless build.include? "enable-iri"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do
