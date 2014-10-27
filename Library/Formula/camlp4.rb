@@ -16,7 +16,8 @@ class Camlp4 < Formula
                           "--libdir=#{HOMEBREW_PREFIX}/lib/ocaml",
                           "--pkgdir=#{HOMEBREW_PREFIX}/lib/ocaml/camlp4"
     system "make", "all"
-    system "make", "install"
+    system "make", "install", "LIBDIR=#{prefix}/lib/ocaml",
+                              "PKGDIR=#{prefix}/lib/ocaml/camlp4"
   end
 
   test do
