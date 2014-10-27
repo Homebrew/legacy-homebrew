@@ -2,15 +2,10 @@ require "formula"
 
 class Ruby < Formula
   homepage "https://www.ruby-lang.org/"
-  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.3.tar.bz2"
-  sha256 "36ce72f84ae4129f6cc66e33077a79d87b018ea7bf1dbc3d353604bf006f76d6"
-  revision 1
+  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.4.tar.bz2"
+  sha256 "f37f11a8c75ab9215bb9f61246ef98e0e57e1409f0872e5cf59033edcf5b8d2a"
 
   bottle do
-    revision 1
-    sha1 "bcac3b489accc806b7cb00ebea2b4fab3dc51605" => :yosemite
-    sha1 "31ef6971e2613c9d0ff61e7d1ccf1367eaed3e86" => :mavericks
-    sha1 "116cb1dd83865652d6127c7c0fd03ee1cfe1ef48" => :mountain_lion
   end
 
   head do
