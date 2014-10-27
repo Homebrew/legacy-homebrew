@@ -6,6 +6,7 @@ class Coccinelle < Formula
   sha1 'edc008da552eb8f4ef7712fc99b4dc630ab6fb35'
 
   depends_on "objective-caml"
+  depends_on "camlp4"
 
   def install
     system "./configure", "--disable-dependency-tracking",
