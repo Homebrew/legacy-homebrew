@@ -129,7 +129,7 @@ class Gcc < Formula
     args << "--disable-nls" if build.without? "nls"
 
     if build.with?("java") || build.with?("all-languages")
-      args << "--with-ecj-jar=#{Formula["ecj"].opt_prefix}/share/java/ecj.jar"
+      args << "--with-ecj-jar=#{Formula["ecj"].opt_share}/java/ecj.jar"
     end
 
     if build.without?("multilib") || !MacOS.prefer_64_bit?

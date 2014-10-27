@@ -59,7 +59,7 @@ class Liblwgeom < Formula
     ]
 
     if build.head?
-      args << "--with-pgconfig=#{Formula["postgresql"].opt_prefix.realpath}/bin/pg_config"
+      args << "--with-pgconfig=#{Formula["postgresql"].opt_bin}/pg_config"
     end
 
     system './autogen.sh'

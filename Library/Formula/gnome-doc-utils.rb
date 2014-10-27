@@ -26,7 +26,7 @@ class GnomeDocUtils < Formula
   def install
     # Find our docbook catalog
     ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
-    ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/libxml2/lib/python2.7/site-packages"
+    ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-scrollkeeper",

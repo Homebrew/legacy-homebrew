@@ -12,7 +12,7 @@ class Pow < Formula
     (bin/"pow").write <<-EOS.undent
       #!/bin/sh
       export POW_BIN="#{bin}/pow"
-      exec "#{HOMEBREW_PREFIX}/opt/node/bin/node" "#{libexec}/lib/command.js" "$@"
+      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/lib/command.js" "$@"
     EOS
   end
 

@@ -90,7 +90,7 @@ class Knot < Formula
       <true/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/knotd</string>
+        <string>#{opt_sbin}/knotd</string>
         <string>-c</string>
         <string>#{etc}/knot.conf</string>
       </array>
