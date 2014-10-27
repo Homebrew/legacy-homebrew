@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Libcdio < Formula
-  homepage 'http://www.gnu.org/software/libcdio/'
-  url 'http://ftpmirror.gnu.org/libcdio/libcdio-0.92.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libcdio/libcdio-0.92.tar.gz'
-  sha1 '530031897955729ddb7c850c183f234f7a6516b7'
+  homepage "http://www.gnu.org/software/libcdio/"
+  url "http://ftpmirror.gnu.org/libcdio/libcdio-0.93.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/libcdio/libcdio-0.93.tar.gz"
+  sha1 "bc3f599b0b77d8d186c0afc66495f721747c5293"
 
   bottle do
     cellar :any
@@ -13,7 +13,7 @@ class Libcdio < Formula
     sha1 "70bd8d87dbffab5e7ed4c725829fbac4a06ea0f2" => :mavericks
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
