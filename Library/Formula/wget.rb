@@ -5,8 +5,8 @@ require "formula"
 
 class Wget < Formula
   homepage "https://www.gnu.org/software/wget/"
-  url "http://ftpmirror.gnu.org/wget/wget-1.16.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.tar.xz"
+  url "http://ftpmirror.gnu.org/wget/wget-1.16.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.tar.gz"
   sha1 "08d991acc80726abe57043a278f9da469c454503"
 
   bottle do
