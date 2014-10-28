@@ -8,7 +8,7 @@ class ObjectiveCaml < Formula
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
   revision 1
 
-  option 'without-x11', 'Install without the Graphics module'
+  option "without-x11", "Install without the Graphics module"
   depends_on :x11 => :optional
 
   bottle do
@@ -25,13 +25,13 @@ class ObjectiveCaml < Formula
       -with-debug-runtime
     ]
     args << "-aspp" << "#{ENV.cc} -c"
-    args << "-no-graph" if build.without?("x11")
+    args << "-no-graph" if build.without? "x11"
 
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
     system "./configure", *args
-    system "make world"
-    system "make opt"
-    system "make opt.opt"
+    system "make", "world"
+    system "make", "opt"
+    system "make", "opt.opt"
     system "make", "PREFIX=#{prefix}", "install"
     (lib/"ocaml/site-lib").mkpath
   end
