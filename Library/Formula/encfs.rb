@@ -11,6 +11,18 @@ class Encfs < Formula
     # Fix link times and xattr on links for OSX
     # Proper fix is already in upstream/dev
     patch :DATA
+
+    # Fix pod2man errors
+    # https://github.com/vgough/encfs/issues/28
+    patch do
+      url "https://github.com/vgough/encfs/commit/61dc26fd8b3630e31e7ae8202ef9f31f1a4f9644.diff"
+      sha1 "beaa7214b9cbd2e5c1680bca1bd72d5a6398420e"
+    end
+
+    patch do
+      url "https://github.com/vgough/encfs/commit/5fa5f02109855446c9d96b11ae8a2ee56f921595.diff"
+      sha1 "4b229f3172a2d68f2f61cef57569d918b7b95bc5"
+    end
   end
 
   head 'https://github.com/vgough/encfs.git'
