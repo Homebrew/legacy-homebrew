@@ -41,7 +41,6 @@ class Gtkx3 < Formula
   end
 
   def install
-
     args = %W[
       --disable-debug
       --disable-dependency-tracking
