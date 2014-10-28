@@ -24,9 +24,10 @@ class Iperf3 < Formula
 
   bottle do
     cellar :any
-    sha1 "32203dbcebb819a713d4e49fffc0b8e20bbec0ae" => :mavericks
-    sha1 "9be1ed65f8e43db6fd9d8c15cb0248d74a1a0459" => :mountain_lion
-    sha1 "92b9c81eba28fa0549c45d81162bc58561016163" => :lion
+    revision 1
+    sha1 "5184a6130741de7784072465f36337b8a9846ce0" => :yosemite
+    sha1 "f9ca4f7cf295338dde6f69f960f5e09446da3d3b" => :mavericks
+    sha1 "6f29512d493e596bf1ef3a0e125e7dc7b030de35" => :mountain_lion
   end
 
   def install
