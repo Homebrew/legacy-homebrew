@@ -7,9 +7,9 @@ class Ssdeep < Formula
 
   bottle do
     cellar :any
-    sha1 "1dc13c01d70502db11780b8a4328d51cbc9be858" => :mavericks
-    sha1 "9c4a868d8e17d2cd0decae8588763640e751cb2a" => :mountain_lion
-    sha1 "63eee02b93120277a27adc08620a2c24fe467850" => :lion
+    sha1 "65ea78b9b08334ce62b419672bdc4bdc40975dca" => :yosemite
+    sha1 "03f7b4328bf9140f699fe5dfbf3afdb2ca0a3196" => :mavericks
+    sha1 "7defdbf5042a2db364067a6f7f79ca4f0115d5a0" => :mountain_lion
   end
 
   def install
