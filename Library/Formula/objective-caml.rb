@@ -6,8 +6,10 @@ class ObjectiveCaml < Formula
   sha1 "6af8c67f2badece81d8e1d1ce70568a16e42313e"
 
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
+  revision 1
 
-  depends_on :x11 => :recommended
+  option 'without-x11', 'Install without the Graphics module'
+  depends_on :x11 => :optional
 
   bottle do
     revision 5
@@ -17,12 +19,17 @@ class ObjectiveCaml < Formula
   end
 
   def install
-    system "./configure", "--prefix", HOMEBREW_PREFIX,
-                          "--mandir", man,
-                          "-cc", ENV.cc,
-                          "-with-debug-runtime",
-                          "-aspp", "#{ENV.cc} -c"
+    args = %W[
+      --prefix #{HOMEBREW_PREFIX}
+      --mandir #{man}
+      -cc #{ENV.cc}
+      -with-debug-runtime
+    ]
+    args << "-aspp" << "#{ENV.cc} -c"
+    args << "-no-graph" if build.without?("x11")
+
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
+    system "./configure", *args
     system "make world"
     system "make opt"
     system "make opt.opt"

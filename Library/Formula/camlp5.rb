@@ -4,6 +4,7 @@ class Camlp5 < Formula
   homepage "http://camlp5.gforge.inria.fr/"
   url "http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.12.tgz"
   sha1 "d78d89dbd33725d7589181c38cc67180502da2f8"
+  revision 2
 
   bottle do
     revision 1
