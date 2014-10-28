@@ -16,8 +16,15 @@ class Opam < Formula
   end
 
   depends_on "objective-caml"
-  depends_on "aspcud" => :recommended
   depends_on "camlp4" => :recommended
+
+  # aspcud has a fairly large buildtime dep tree, and uses gringo,
+  # which requires C++11 and is inconvenient to install pre-10.8
+  if MacOS.version > 10.7
+    depends_on "aspcud" => :recommended
+  else
+    depends_on "aspcud" => :optional
+  end
 
   if build.with? "aspcud"
     needs :cxx11
