@@ -22,6 +22,9 @@ class Libtool < Formula
 
   option :universal
 
+  # install libtoolize with 'g' prefix
+  patch :DATA
+
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
@@ -41,3 +44,35 @@ class Libtool < Formula
     system "#{bin}/glibtool", "execute", "/usr/bin/true"
   end
 end
+
+__END__
+diff --git a/Makefile.am b/Makefile.am
+index 77561e1..64753eb 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -509,8 +509,8 @@ install-data-local: $(lt_Makefile_in)
+ 	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+ 	done
+ ## Inline helper-scripts for installed libtoolize script
+-	$(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/libtoolize';
+-	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/libtoolize'
++	$(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/glibtoolize';
++	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/glibtoolize'
+ 
+ 
+ ## ------------- ##
+diff --git a/Makefile.in b/Makefile.in
+index d49abac..5fc016d 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -2318,8 +2318,8 @@ install-data-local: $(lt_Makefile_in)
+ 	  echo " $(INSTALL_DATA) '$(ltdldir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+ 	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+ 	done
+-	$(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/libtoolize';
+-	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/libtoolize'
++	$(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/glibtoolize';
++	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/glibtoolize'
+ $(changelog): FORCE
+ 	$(AM_V_GEN)if test -d '$(srcdir)/.git'; then \
+ 	  $(gitlog_to_changelog) --amend=$(git_log_fix) \
