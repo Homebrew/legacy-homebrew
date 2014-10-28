@@ -106,6 +106,15 @@ class Ghc < Formula
         arch = "x86_64"
       end
 
+      # These will find their way into ghc's settings file, ensuring
+      # that ghc will look in the Homebrew lib dir for native libs
+      # (e.g., libgmp) even if the prefix is not /usr/local. Both are
+      # necessary to avoid problems on systems with custom prefixes:
+      # ghci fails without the first, compiling packages that depend
+      # on native libs fails without the second.
+      ENV["CONF_CC_OPTS_STAGE2"] = "-B#{HOMEBREW_PREFIX}/lib"
+      ENV["CONF_GCC_LINKER_OPTS_STAGE2"] = "-L#{HOMEBREW_PREFIX}/lib"
+
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       system "./configure", "--prefix=#{prefix}",
                             "--build=#{arch}-apple-darwin",
