@@ -26,6 +26,20 @@ class Gtkx3 < Formula
   depends_on 'gobject-introspection'
   depends_on 'gsettings-desktop-schemas' => :recommended
 
+  # These two patches fix a compilation error on Snow Leopard when
+  # using quartz backend (no effect on later OS versions)
+  # Can be removed when upstream releases these commits (3.14.5?)
+  # See: https://bugzilla.gnome.org/show_bug.cgi?id=737561
+  patch do
+    url "https://git.gnome.org/browse/gtk+/patch/?id=7d3991f2757de8374e11891e21e82f61242b4034"
+    sha1 "66dc9d63ba6d2f9219d0dbe27f2dd8343b07ab0c"
+  end
+
+  patch do
+    url "https://git.gnome.org/browse/gtk+/patch/?id=830a72b307b33815179aa0b03dad498c9ac1bb14"
+    sha1 "5a39469d8923ac9ce1f6511c4e304f7e1cba781c"
+  end
+
   def install
 
     args = %W[
