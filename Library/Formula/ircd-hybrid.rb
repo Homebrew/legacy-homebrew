@@ -2,8 +2,8 @@ require "formula"
 
 class IrcdHybrid < Formula
   homepage "http://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.0/ircd-hybrid-8.2.0.tgz"
-  sha1 "a35a2b760768854e5f11e0edccebd45fed13d4c0"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.1/ircd-hybrid-8.2.1.tgz"
+  sha1 "43e96d1d3e57f8d867348921a5b225011ab988b2"
 
   bottle do
     sha1 "14c91fa501d530d090935ffecd5fc44338c06c1b" => :mavericks
