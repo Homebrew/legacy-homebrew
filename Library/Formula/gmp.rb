@@ -13,6 +13,7 @@ class Gmp < Formula
     sha1 "bfaab8c533af804d4317730f62164b9c80f84f24" => :mavericks
     sha1 "99dc6539860a9a8d3eb1ac68d5b9434acfb2d846" => :mountain_lion
     sha1 "466b7549553bf0e8f14ab018bd89c48cbd29a379" => :lion
+    sha1 "c07dc7381816102a65f8602dfb41c43d9382fbac" => :"x86_64-linux"
   end
 
   option '32-bit'
