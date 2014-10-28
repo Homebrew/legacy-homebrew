@@ -2,8 +2,8 @@ require "formula"
 
 class PerconaToolkit < Formula
   homepage "http://www.percona.com/software/percona-toolkit/"
-  url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.10/tarball/percona-toolkit-2.2.10.tar.gz"
-  sha1 "dcdcaad544c8d0631aada41d89b7ffb78745a780"
+  url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.11/percona-toolkit-2.2.11.tar.gz"
+  sha256 "848a8a57bf04dc1b2cc2ab555dd594a2c708b76656042ff38b1a91b8ccb1df4b"
 
   bottle do
     sha1 "4f4a6930ce21896e63a10a924e09772a5890db87" => :mavericks
