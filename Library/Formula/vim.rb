@@ -79,7 +79,6 @@ class Vim < Formula
     system "./configure", "--prefix=#{HOMEBREW_PREFIX}",
                           "--mandir=#{man}",
                           "--enable-multibyte",
-                          "--with-tlib=ncurses",
                           "--enable-cscope",
                           "--with-features=huge",
                           "--with-compiledby=Homebrew",
