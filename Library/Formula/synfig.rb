@@ -7,6 +7,12 @@ class Synfig < Formula
 
   head "git://synfig.git.sourceforge.net/gitroot/synfig/synfig"
 
+  bottle do
+    sha1 "1353dc1b8855ae972fe5b2aa74c4725c919ec233" => :yosemite
+    sha1 "f5d93ec9e09a37b0d9529d6282395facba82d9e0" => :mavericks
+    sha1 "0feeffbb682c86a11fae0a405232fb3f5d67f51d" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "etl"
