@@ -44,7 +44,7 @@ class Wget < Formula
     ]
 
     args << "--disable-debug" unless build.include? "enable-debug"
-    args << "--disable-iri" unless build.include? "enable-iri"
+    args << "--disable-iri" unless build.include? "with-iri"
 
     system "./configure", *args
     system "make", "install"
