@@ -7,8 +7,11 @@ class Iperf3 < Formula
     url "https://github.com/esnet/iperf/archive/3.0.9.tar.gz"
     sha256 "985d87e2bc3f302dd5e864022f61b053cdeafd2e6a325711a317ed6aa1b68771"
 
-    # Remove this with next stable release please! Fixed in HEAD.
-    depends_on MaximumMacOSRequirement => :mavericks
+    # Fix Compile errors for Yosemite - https://github.com/esnet/iperf/issues/213
+    patch do
+      url "https://github.com/esnet/iperf/commit/cc4a7fa75d94.diff"
+      sha1 "6792c1a0cfddb2249d4ae2a3e202cd652b70b729"
+    end
   end
 
   head do
