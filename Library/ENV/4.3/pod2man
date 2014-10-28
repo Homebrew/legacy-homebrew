@@ -1,3 +1,4 @@
 #!/bin/bash
 POD2MAN=$(/usr/bin/which pod2man5.18 || /usr/bin/which pod2man5.16 || /usr/bin/which pod2man5.12 || echo /usr/bin/pod2man)
+POD2MAN="${POD2MAN/5.18/5.18 --stderr}"
 exec $POD2MAN "$@"
