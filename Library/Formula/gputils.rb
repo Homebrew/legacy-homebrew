@@ -5,6 +5,12 @@ class Gputils < Formula
   url "https://downloads.sourceforge.net/project/gputils/gputils/1.4.0/gputils-1.4.0-1.tar.gz"
   sha1 "26593b7237b0c436b4482d1038216b467ec660b7"
 
+  bottle do
+    sha1 "8990a94d132cc92b08518767ecaa25c93246f7cb" => :yosemite
+    sha1 "2536c92c27e1982743965fa4c5c3bbae997105e1" => :mavericks
+    sha1 "b4ef0c6743be8f8b0cd11e7148cee046f8780d59" => :mountain_lion
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
