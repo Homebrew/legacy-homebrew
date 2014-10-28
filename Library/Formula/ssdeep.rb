@@ -2,8 +2,8 @@ require "formula"
 
 class Ssdeep < Formula
   homepage "http://ssdeep.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/ssdeep/ssdeep-2.11.1/ssdeep-2.11.1.tar.gz"
-  sha256 "a632ac30fca29ad5627e1bf5fae05d9a8873e6606314922479259531e0c19608"
+  url "https://downloads.sourceforge.net/project/ssdeep/ssdeep-2.12/ssdeep-2.12.tar.gz"
+  sha256 "89049e87adfd16b51bd8601d01cf02251df7513c4e0eb12576541bcb2e1e4bde"
 
   bottle do
     cellar :any
