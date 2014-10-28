@@ -14,6 +14,7 @@
 # --local:        Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
 # --tap=<tap>:    Use the git repository of the given tap
 # --dry-run:      Just print commands, don't run them.
+# --fail-fast:    Immediately exit on a failing step.
 #
 # --ci-master:         Shortcut for Homebrew master branch CI options.
 # --ci-pr:             Shortcut for Homebrew pull request CI options.
@@ -134,6 +135,8 @@ module Homebrew
         end
         FileUtils.rm(log) unless ARGV.include? "--keep-logs"
       end
+
+      exit 1 if ARGV.include?("--fail-fast") && @status == :failed
     end
   end
 

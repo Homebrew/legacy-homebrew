@@ -2,17 +2,18 @@ require "formula"
 
 class Uwsgi < Formula
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.7.tar.gz"
-  sha1 "0e9d1f881736674221d60a5dd5dfcbc25051d48b"
+  url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
+  sha1 "f017faf259f409907dc8c37541370d3e803fba32"
   head "https://github.com/unbit/uwsgi.git"
 
   bottle do
-    sha1 "4a195f89dcac74576b8818b39c9dce7c4eee873d" => :mavericks
-    sha1 "f48132c3aa9a4aa82c772358aff335c1993e29f1" => :mountain_lion
-    sha1 "1d538a6627baa5fda1f40ed68c093c079c9dbd80" => :lion
+    sha1 "111f178b0f86c2f3e35d791c00c78ce858633e12" => :yosemite
+    sha1 "607debd03c31e9d3ac74ef3a7a72c06d14c868de" => :mavericks
+    sha1 "d83b6ea522d5c9980778218db3545512b4ab09b8" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
 
   depends_on "pcre"
@@ -43,8 +44,16 @@ class Uwsgi < Formula
   option "with-php", "Compile with PHP support (PHP must be built for embedding)"
   option "with-ruby", "Compile with Ruby support"
 
+  # This is a hacky patch, but it works. Replace once upstream have a better fix.
+  # https://github.com/Homebrew/homebrew/issues/33488
+  # https://github.com/unbit/uwsgi/issues/760
+  if MacOS.version == :yosemite
+    patch :DATA
+  end
+
   def install
     ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
+    ENV.append_to_cflags "-DHAVE_HTONLL" if MacOS.version == :yosemite
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
@@ -153,3 +162,27 @@ class Uwsgi < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/plugins/emperor_amqp/amqp.c b/plugins/emperor_amqp/amqp.c
+index 7b34c66..a6f8a2f 100644
+--- a/plugins/emperor_amqp/amqp.c
++++ b/plugins/emperor_amqp/amqp.c
+@@ -2,6 +2,8 @@
+ 
+ #define AMQP_CONNECTION_HEADER "AMQP\0\0\x09\x01"
+ 
++#ifndef HAVE_HTONLL
++
+ #ifdef __BIG_ENDIAN__
+ #define ntohll(x) x
+ #else
+@@ -9,6 +11,8 @@
+ #endif
+ #define htonll(x) ntohll(x)
+ 
++#endif
++
+ #define amqp_send(a, b, c) if (send(a, b, c, 0) < 0) { uwsgi_error("send()"); return -1; }
+ 
+ struct amqp_frame_header {
