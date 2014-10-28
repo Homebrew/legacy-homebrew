@@ -31,7 +31,7 @@ class Wget < Formula
   option "with-debug", "Build with debug support"
 
   depends_on "openssl"
-  depends_on "libidn" if build.include? "enable-iri"
+  depends_on "libidn" if build.with? "iri"
 
   def install
     system "./bootstrap" if build.head?
@@ -43,8 +43,8 @@ class Wget < Formula
       --with-libssl-prefix=#{Formula["openssl"].opt_prefix}
     ]
 
-    args << "--disable-debug" unless build.include? "enable-debug"
-    args << "--disable-iri" unless build.include? "enable-iri"
+    args << "--disable-debug" if build.without? "debug"
+    args << "--disable-iri" if build.without? "iri"
 
     system "./configure", *args
     system "make", "install"
