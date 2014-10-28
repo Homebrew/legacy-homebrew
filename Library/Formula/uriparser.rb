@@ -2,8 +2,8 @@ require "formula"
 
 class Uriparser < Formula
   homepage "http://uriparser.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/uriparser/Sources/0.8.0.1/uriparser-0.8.0.1.tar.bz2"
-  sha1 "53b16dd0640fda006ba4f9d750fec7e7c58836a9"
+  url "https://downloads.sourceforge.net/project/uriparser/Sources/0.8.1/uriparser-0.8.1.tar.bz2"
+  sha1 "4405d8baa0d9f5bc0319e6d5e68770acab67b602"
 
   bottle do
     cellar :any
