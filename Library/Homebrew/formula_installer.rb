@@ -49,6 +49,11 @@ class FormulaInstaller
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
+    return false if f.requirements.find { |req|
+      next if (req.optional? || req.recommended?) && build.without?(req)
+      !req.pour_bottle?
+    }
+
     return true if Homebrew::Hooks::Bottles.formula_has_bottle?(f)
 
     return false if @pour_failed
@@ -237,8 +242,8 @@ class FormulaInstaller
   def install_requirement_default_formula?(req, build)
     return false unless req.default_formula?
     return false if build.without?(req) && (req.recommended? || req.optional?)
-    return true unless req.satisfied?
-    pour_bottle? || build_bottle?
+    return false if req.satisfied?
+    true
   end
 
   def expand_requirements
