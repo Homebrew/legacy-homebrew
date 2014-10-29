@@ -5,6 +5,12 @@ class OpenMpi < Formula
   url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.3.tar.bz2'
   sha1 '4be9c5d2a8baee6a80bde94c6485931979a428fe'
 
+  bottle do
+    sha1 "60e953d115aa38e7495c7de774518eda83abb982" => :yosemite
+    sha1 "257dfda61a3a2b75c1d810c25e034b4e8998ff0e" => :mavericks
+    sha1 "6ef00e19f8ceb677ca370c209ef2f1cefd085e09" => :mountain_lion
+  end
+
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
   option :cxx11
@@ -42,8 +48,8 @@ class OpenMpi < Formula
     # (Fortran header) in `lib` that need to be moved to `include`.
     include.install Dir["#{lib}/*.mod"]
 
-    # Not sure why the wrapped script has a jar extension - adamv
+    # Move vtsetup.jar from bin to libexec.
     libexec.install bin/'vtsetup.jar'
-    bin.write_jar_script libexec/'vtsetup.jar', 'vtsetup.jar'
+    inreplace bin/'vtsetup', '$bindir/vtsetup.jar', '$prefix/libexec/vtsetup.jar'
   end
 end

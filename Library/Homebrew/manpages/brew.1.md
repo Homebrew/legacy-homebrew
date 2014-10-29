@@ -169,8 +169,8 @@ Note that these flags should only appear after a command.
     Pass `--all` to get information on all formulae, or `--installed` to get
     information on all installed formulae.
 
-    See the wiki for examples of using the JSON:
-    <https://github.com/Homebrew/homebrew/wiki/Querying-Brew>
+    See the docs for examples of using the JSON:
+    <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md>
 
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
@@ -441,8 +441,8 @@ by default:
     $ ls $(brew --repository)/Library/Contributions/cmd
 
 Documentation for the included external commands as well as instructions for
-creating your own can be found on the wiki:
-<http://wiki.github.com/Homebrew/homebrew/External-Commands>
+creating your own can be found in the docs:
+<https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md>
 
 ## SPECIFYING FORMULAE
 
@@ -598,13 +598,15 @@ If your proxy requires authentication:
 
 ## SEE ALSO
 
-Homebrew Wiki: <http://wiki.github.com/Homebrew/homebrew/>
+Homebrew Documentation: <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/>
 
 `git`(1), `git-log`(1)
 
 ## AUTHORS
 
-Max Howell, a splendid chap.
+Homebrew's current maintainers are Misty De Meo, Adam Vandenberg, Jack Nagel, Mike McQuaid, Brett Koonce and Tim Smith.
+
+Homebrew was originally created by Max Howell.
 
 ## BUGS
 

@@ -3,7 +3,7 @@ require "formula"
 # This is a non-functional example formula to showcase all features and
 # therefore, it's overly complex and dupes stuff just to comment on it.
 # You may want to use `brew create` to start your own new formula!
-# Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
 
 ## Naming -- Every Homebrew formula is a class of the type `Formula`.
 # Ruby classes have to start Upper case and dashes are not allowed.
@@ -23,7 +23,6 @@ class ExampleFormula < Formula
   #     `:nounzip` (without extracting)
   #     `:post` (download via an HTTP POST)
   #     `S3DownloadStrategy` (download from S3 using signed request)
-  #     `UnsafeSubversionDownloadStrategy` (svn with invalid certs)
   url "https://some.dont.provide.archives.example.com", :using => :git, :tag => "1.2.3"
 
   # version is seldom needed, because it's usually autodetected from the URL/tag.
@@ -88,8 +87,7 @@ class ExampleFormula < Formula
 
   # Bottles are pre-built and added by the Homebrew maintainers for you.
   # If you maintain your own repository, you can add your own bottle links.
-  # Read in the wiki about how to provide bottles:
-  # <https://github.com/Homebrew/homebrew/wiki/Bottles>
+  # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Bottles.md
   bottle do
     root_url "http://mikemcquaid.com" # Optional root to calculate bottle URLs
     prefix "/opt/homebrew" # Optional HOMEBREW_PREFIX in which the bottles were built.
@@ -399,8 +397,8 @@ class ExampleFormula < Formula
       assert_equal "result", stdout.read
     end
 
-    # If an exception is raised (e.g. by assert), or if we return false, or if
-    # the command run by `system` prints to stderr, we consider the test failed.
+    # The test will fail if it returns false, or if an exception is raised.
+    # Failed assertions and failed `system` commands will raise exceptions.
   end
 
 
@@ -414,8 +412,8 @@ end
 
 __END__
 # Room for a patch after the `__END__`
-# Read in the wiki about how to get a patch in here:
-#    https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+# Read about how to get a patch in here:
+#    https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
 # In short, `brew install --interactive --git <formula>` and make your edits.
 # Then `git diff >> path/to/your/formula.rb`
 # Note, that HOMEBREW_PREFIX will be replaced in the path before it is

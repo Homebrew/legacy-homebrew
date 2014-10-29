@@ -7,9 +7,10 @@ class Libtorrent < Formula
 
   bottle do
     cellar :any
-    sha1 "e64f87dc56f811ed638e21d6010efd671c461d1e" => :mavericks
-    sha1 "328d903212207eea0a9117eee3edbfb707612438" => :mountain_lion
-    sha1 "0061da39b678f0c0859de0ebbae14f5ad70d104a" => :lion
+    revision 1
+    sha1 "dad688e6891698d0d831e790dcfb15fa68fa8936" => :yosemite
+    sha1 "e2e4a075b89b560db4bee7ab228560574fad1b70" => :mavericks
+    sha1 "4be608f09508bc55ad1daefa8ba6960dcd636758" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

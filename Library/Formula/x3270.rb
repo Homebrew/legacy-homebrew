@@ -2,13 +2,13 @@ require "formula"
 
 class X3270 < Formula
   homepage "http://x3270.bgp.nu/"
-  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.14ga11/suite3270-3.3.14ga11-src.tgz"
-  sha1 "23bf5b29a2c3c10b935b66a95f666de350ae9c2d"
+  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.15ga5/suite3270-3.3.15ga5-src.tgz"
+  sha1 "7f918e21c9134ce4bccb7e0f661763f9f18946ee"
 
   bottle do
-    sha1 "8e63062663062dbd4412f65a6ef4d8de7a6b793e" => :mavericks
-    sha1 "183083f571154a57dccfef53f8e5d025f6947064" => :mountain_lion
-    sha1 "70241dff845889ef68a58a18aa542c62aee01929" => :lion
+    sha1 "c8d06fd2d78e89f65976c45c99b69e8b3f585102" => :yosemite
+    sha1 "305257a2615698a57341793cbda367588244faf8" => :mavericks
+    sha1 "c35fdab2f4223da207164eff643313b2ee291b37" => :mountain_lion
   end
 
   depends_on :x11

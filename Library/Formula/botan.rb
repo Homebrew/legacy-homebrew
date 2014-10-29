@@ -1,11 +1,21 @@
-require 'formula'
+require "formula"
 
 class Botan < Formula
-  homepage 'http://botan.randombit.net/'
-  url 'http://botan.randombit.net/files/Botan-1.10.8.tbz'
-  sha1 'a7ba0be11629143043da078a4c044eac3369b4ec'
+  homepage "http://botan.randombit.net/"
+  url "http://files.randombit.net/botan/Botan-1.10.8.tgz"
+  sha1 "078fcb03c9ef0691621eda3ca312ebf08b3890cc"
+  revision 1
 
-  option 'enable-debug', 'Enable debug build of Botan'
+  bottle do
+    sha1 "89d491598019e57540e22089c3c7a3d45a845adc" => :yosemite
+    sha1 "aa5b7be38ab12c1755f3cb8dbee104d9514f27b2" => :mavericks
+    sha1 "2efea61b9f63b8344617a90eb4dc0445baab0243" => :mountain_lion
+  end
+
+  option "enable-debug", "Enable debug build of Botan"
+
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
   patch :DATA

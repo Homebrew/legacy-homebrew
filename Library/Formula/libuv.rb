@@ -8,9 +8,9 @@ class Libuv < Formula
 
   bottle do
     cellar :any
-    sha1 "d5791cfcd21caedadd5621de7228a1dc7cd83006" => :mavericks
-    sha1 "69f380f49bbec2d1066e74bfda73aad797395af2" => :mountain_lion
-    sha1 "789d58edabb28ca47bc8072000e935a0c958780e" => :lion
+    revision 1
+    sha1 "a897f491618c4c14f35e87d92765ae92c61ccfa2" => :yosemite
+    sha1 "bac4d19684a5108459fed73fcb459f0d12f60213" => :mavericks
   end
 
   head do
@@ -22,9 +22,9 @@ class Libuv < Formula
   end
 
   devel do
-    url "https://github.com/joyent/libuv/archive/v1.0.0-rc1.tar.gz"
-    sha1 "5be6817b15980b0453b3da3dafb4beea16e90d8f"
-    version "1.0.0-rc1"
+    url "https://github.com/joyent/libuv/archive/v1.0.0-rc2.tar.gz"
+    sha1 "914c74fd2a1ff92e852f37e39c3fa086e255bb3f"
+    version "1.0.0-rc2"
 
     depends_on "pkg-config" => :build
     depends_on "automake" => :build

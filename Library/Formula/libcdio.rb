@@ -1,19 +1,19 @@
-require 'formula'
+require "formula"
 
 class Libcdio < Formula
-  homepage 'http://www.gnu.org/software/libcdio/'
-  url 'http://ftpmirror.gnu.org/libcdio/libcdio-0.92.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libcdio/libcdio-0.92.tar.gz'
-  sha1 '530031897955729ddb7c850c183f234f7a6516b7'
+  homepage "http://www.gnu.org/software/libcdio/"
+  url "http://ftpmirror.gnu.org/libcdio/libcdio-0.93.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/libcdio/libcdio-0.93.tar.gz"
+  sha1 "bc3f599b0b77d8d186c0afc66495f721747c5293"
 
   bottle do
     cellar :any
-    sha1 "bf6dcf0e95bf97ab3bac869a540ee5f0b309d3a2" => :mavericks
-    sha1 "daa6de483ecc043d54462e1380dc9d5b80a3e001" => :mountain_lion
-    sha1 "7df4ad927c3cb52f6f2403283f218c5f4ea29111" => :lion
+    sha1 "238264203ea7edf8bbceff7b96769b7d5375e44d" => :yosemite
+    sha1 "8ae5dd507c22a07fc517073878dfbcba44dab38f" => :mavericks
+    sha1 "e85ebcfa037fe2d2615d74cf8a71ffca11a76901" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

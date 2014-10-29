@@ -4,14 +4,14 @@ class Boot2docker < Formula
   homepage "https://github.com/boot2docker/boot2docker-cli"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of docker too
-  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.2.0"
+  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.3.0"
   head "https://github.com/boot2docker/boot2docker-cli.git", :branch => "master"
 
   bottle do
-    revision 1
-    sha1 "9da9a3caea7efbf7b2d9d5c9fd6948ac796becca" => :mavericks
-    sha1 "9cff42aea648b52fd10a3077595ca494b062ce5c" => :mountain_lion
-    sha1 "05582008ec7a25b1f4263a24aa559887ed10a4c4" => :lion
+    revision 2
+    sha1 "891132f91b6af4cba058c92cecd41287d2e1fc6d" => :mavericks
+    sha1 "ec3342d2c6378aa6725eed021fd6cc801da79d31" => :mountain_lion
+    sha1 "5c651fe2047ea0cd0512722d278631d39b6a19f8" => :lion
   end
 
   depends_on "docker" => :recommended

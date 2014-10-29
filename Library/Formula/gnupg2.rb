@@ -6,12 +6,13 @@ class Gnupg2 < Formula
   mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
   mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/gnupg/gnupg-2.0.26.tar.bz2"
   sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "c40e93d9d5176742c171ddb6002019fdfb4c428c" => :mavericks
-    sha1 "6ed3bdc238081dddeab4917c37436cc294f561d7" => :mountain_lion
-    sha1 "85ab322c61d2e46359b62d801b557f7d537684e5" => :lion
+    revision 2
+    sha1 "ccbafc88773f15b92e7ab931ec1be83fb27b58c2" => :yosemite
+    sha1 "1735c876de43f9635e191e6b1f1ed3f1ae04068d" => :mavericks
+    sha1 "ad0e8129ffbaf615f8b43aa93b89eb1cdc517f1f" => :mountain_lion
   end
 
   option "8192", "Build with support for private keys of up to 8192 bits"
@@ -23,6 +24,7 @@ class Gnupg2 < Formula
   depends_on "pinentry"
   depends_on "pth"
   depends_on "gpg-agent"
+  depends_on "curl" if MacOS.version <= :mavericks
   depends_on "dirmngr" => :recommended
   depends_on "libusb-compat" => :recommended
   depends_on "readline" => :optional

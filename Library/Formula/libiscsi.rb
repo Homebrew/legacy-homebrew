@@ -8,9 +8,10 @@ class Libiscsi < Formula
 
   bottle do
     cellar :any
-    sha1 "43778910dcf766e108c519f2a4faf41ae465c784" => :mavericks
-    sha1 "d14714144c5d6b781cbc1437a497ab37b5c5695f" => :mountain_lion
-    sha1 "6fda26d7c6f7bc60b6c11130809f7b02120aa317" => :lion
+    revision 1
+    sha1 "5bc5b53461a7564d9721c7b468d37fbdbae564a2" => :yosemite
+    sha1 "e53c4947c7747b1d4cd1e9f36c88a16e200c4866" => :mavericks
+    sha1 "2edaf3c3a74dcb17365ef51d8d460939f0a5594c" => :mountain_lion
   end
 
   option 'with-noinst', 'Install the noinst binaries (e.g. iscsi-test-cu)'

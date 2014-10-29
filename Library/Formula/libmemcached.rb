@@ -7,10 +7,10 @@ class Libmemcached < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "253044714be22f54bc972f380fb83e245f869be2" => :mavericks
-    sha1 "ce943a53e91365172e4e2f119c9cbe92e1b73d60" => :mountain_lion
-    sha1 "1ab1b87844f301cb2a974a2722db5ad661b29e17" => :lion
+    revision 2
+    sha1 "274d4fc366072ec4a530ea8c0a8a3283b361ff5a" => :yosemite
+    sha1 "5966d2bcccbcc24fadfbc91b9dca113c7c8c0dda" => :mavericks
+    sha1 "614d50333395e4f79db56eae6b10ee12e713d39b" => :mountain_lion
   end
 
   option "with-sasl", "Build with sasl support"

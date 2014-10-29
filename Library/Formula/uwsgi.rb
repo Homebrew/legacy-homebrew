@@ -1,18 +1,20 @@
-require 'formula'
+require "formula"
 
 class Uwsgi < Formula
-  homepage "http://projects.unbit.it/uwsgi/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
-  sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
-  revision 1
+  homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
+  url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
+  sha1 "f017faf259f409907dc8c37541370d3e803fba32"
+  head "https://github.com/unbit/uwsgi.git"
 
   bottle do
-    sha1 "d42895c7b7fdbc1be90e7ebd84258f7409a70e4c" => :mavericks
-    sha1 "ff677ccbb7ca824eaf8e8b8ba6fb1eec5a0acecb" => :mountain_lion
-    sha1 "6e6ac75b4f1fc85a3e18c4bd9a27621f480fe41b" => :lion
+    sha1 "111f178b0f86c2f3e35d791c00c78ce858633e12" => :yosemite
+    sha1 "607debd03c31e9d3ac74ef3a7a72c06d14c868de" => :mavericks
+    sha1 "d83b6ea522d5c9980778218db3545512b4ab09b8" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   depends_on "pcre"
   depends_on "yajl" if build.without? "jansson"
@@ -42,8 +44,16 @@ class Uwsgi < Formula
   option "with-php", "Compile with PHP support (PHP must be built for embedding)"
   option "with-ruby", "Compile with Ruby support"
 
+  # This is a hacky patch, but it works. Replace once upstream have a better fix.
+  # https://github.com/Homebrew/homebrew/issues/33488
+  # https://github.com/unbit/uwsgi/issues/760
+  if MacOS.version == :yosemite
+    patch :DATA
+  end
+
   def install
     ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
+    ENV.append_to_cflags "-DHAVE_HTONLL" if MacOS.version == :yosemite
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
@@ -117,7 +127,7 @@ class Uwsgi < Formula
     bin.install "uwsgi"
   end
 
-  plist_options :manual => 'uwsgi'
+  plist_options :manual => "uwsgi"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -152,3 +162,27 @@ class Uwsgi < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/plugins/emperor_amqp/amqp.c b/plugins/emperor_amqp/amqp.c
+index 7b34c66..a6f8a2f 100644
+--- a/plugins/emperor_amqp/amqp.c
++++ b/plugins/emperor_amqp/amqp.c
+@@ -2,6 +2,8 @@
+ 
+ #define AMQP_CONNECTION_HEADER "AMQP\0\0\x09\x01"
+ 
++#ifndef HAVE_HTONLL
++
+ #ifdef __BIG_ENDIAN__
+ #define ntohll(x) x
+ #else
+@@ -9,6 +11,8 @@
+ #endif
+ #define htonll(x) ntohll(x)
+ 
++#endif
++
+ #define amqp_send(a, b, c) if (send(a, b, c, 0) < 0) { uwsgi_error("send()"); return -1; }
+ 
+ struct amqp_frame_header {

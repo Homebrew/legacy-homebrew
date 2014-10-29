@@ -2,17 +2,19 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.13/source/mariadb-10.0.13.tar.gz"
-  sha1 "3ede106603eeb348d5a70274d806760b8f37eaeb"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.14/source/mariadb-10.0.14.tar.gz"
+  sha1 "46dc0b66567ff9d4e3a32d9d4b3c9ef250a6fc9e"
+  revision 1
 
   bottle do
-    sha1 "88c369ec2a241bd233d43a2b665a89794dcc6f99" => :mavericks
-    sha1 "69bba44ac1a650c0706efdaee9db8aeed29aa142" => :mountain_lion
-    sha1 "fd48710219e5b6a2b0ccc06d137c1b6757e74676" => :lion
+    sha1 "9e59fc98a660442128144a8d0fa45b2345b7d41e" => :yosemite
+    sha1 "511c7e832185e301b632a53dac68af904203a6d7" => :mavericks
+    sha1 "3a48b324b1697fa00400e4e52cf47948580d74f1" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   option :universal
   option 'with-tests', 'Keep test when installing'
@@ -27,6 +29,13 @@ class Mariadb < Formula
     :because => "mariadb, mysql, and percona install the same binaries."
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
+
+  # upstream fix for compile error, to be removed with 1.0.15
+  # https://mariadb.atlassian.net/browse/MDEV-6802
+  patch :p0 do
+    url "https://bazaar.launchpad.net/~maria-captains/maria/10.0-connect/diff/4424"
+    sha1 "06dee7edd4a37a072454a7e0218886d33bffdceb"
+  end
 
   def install
     # Don't hard-code the libtool path. See:
@@ -68,10 +77,6 @@ class Mariadb < Formula
     ]
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
-
-    # oqgraph requires boost, but fails to compile against boost 1.54
-    # Upstream bug: https://mariadb.atlassian.net/browse/MDEV-4795
-    args << "-DWITHOUT_OQGRAPH_STORAGE_ENGINE=1"
 
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'

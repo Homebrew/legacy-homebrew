@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Zeromq < Formula
   homepage "http://www.zeromq.org/"
-  url "http://download.zeromq.org/zeromq-4.0.4.tar.gz"
-  sha1 "2328014e5990efac31390439b75c5528e38e4490"
+  url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
+  sha1 "a664ec63661a848ef46114029156a0a6006feecd"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "61b761d9c911d1d2c5f3ef7057bfd8f406952062" => :mavericks
-    sha1 "8daecb22408336a638c2d6651cd22f61cef66eaa" => :mountain_lion
-    sha1 "a9f966846ca87d8b28e60690695c741b13e177e0" => :lion
+    sha1 "7ab7265a9ee4bcf49a5b48da295d4698f883b71f" => :yosemite
+    sha1 "5e1c4991fb8d50a81ef56513d0f75ad32ff9a26d" => :mavericks
+    sha1 "f8d4eafd49c6f8c349544809768f39be95ba14b5" => :mountain_lion
   end
 
   head do
@@ -27,7 +27,7 @@ class Zeromq < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libpgm" if build.with? "pgm"
-  depends_on "libsodium" => :optional
+  depends_on "libsodium" => :recommended
 
   def install
     ENV.universal_binary if build.universal?

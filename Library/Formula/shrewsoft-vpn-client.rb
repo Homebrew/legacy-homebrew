@@ -79,7 +79,7 @@ class ShrewsoftVpnClient < Formula
         <string>net.shrew.iked</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/iked</string>
+          <string>#{opt_sbin}/iked</string>
           <string>-F</string>
         </array>
         <key>RunAtLoad</key>

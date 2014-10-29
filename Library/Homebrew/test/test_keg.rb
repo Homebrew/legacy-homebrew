@@ -226,11 +226,33 @@ class LinkTests < Homebrew::TestCase
     a.join("lib", "example2").make_symlink "example"
     b.join("lib", "example2").mkpath
 
-    Keg.new(a).link
+    a = Keg.new(a)
+    b = Keg.new(b)
+    a.link
 
     lib = HOMEBREW_PREFIX.join("lib")
     assert_equal 2, lib.children.length
-    assert_raises(Keg::ConflictError) { Keg.new(b).link }
+    assert_raises(Keg::ConflictError) { b.link }
     assert_equal 2, lib.children.length
+  ensure
+    a.unlink
+    a.uninstall
+    b.uninstall
+  end
+
+  def test_removes_broken_symlinks_that_conflict_with_directories
+    a = HOMEBREW_CELLAR.join("a", "1.0")
+    a.join("lib", "foo").mkpath
+
+    keg = Keg.new(a)
+
+    link = HOMEBREW_PREFIX.join("lib", "foo")
+    link.parent.mkpath
+    link.make_symlink(@nonexistent)
+
+    keg.link
+  ensure
+    keg.unlink
+    keg.uninstall
   end
 end

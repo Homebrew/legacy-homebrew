@@ -11,6 +11,7 @@ class Libxml2 < Formula
 
   bottle do
     revision 1
+    sha1 "3a588b6dc094e8133e3b4885c55bdd30b885888b" => :yosemite
     sha1 "beea5228f6757f6527aa4714f16c76f773a8c8fe" => :mavericks
     sha1 "74b53656cc103b6c2c397ca0a96d9be1f3afa8c0" => :mountain_lion
     sha1 "9590f024de3820d9b45de979ea9171b17058f69d" => :lion

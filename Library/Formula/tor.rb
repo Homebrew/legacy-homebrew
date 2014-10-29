@@ -2,42 +2,24 @@ require "formula"
 
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://www.torproject.org/dist/tor-0.2.4.24.tar.gz"
-  sha256 "99b15c6858c04e93a31d3ae90dd69f5021faa2237da93a24fbd246f4f1670ad1"
+  url "https://www.torproject.org/dist/tor-0.2.5.10.tar.gz"
+  sha256 "b3dd02a5dcd2ffe14d9a37956f92779d4427edf7905c0bba9b1e3901b9c5a83b"
 
   bottle do
-    sha1 "67271d2324c78f04e83408d408bb32024fbc5741" => :mavericks
-    sha1 "e9400858212ed466b04d5ba6961f1d34475e00b1" => :mountain_lion
-    sha1 "7c3084a1cd63f0547f5b41fb78c52ca0d635dae9" => :lion
-  end
-
-  devel do
-    url "https://www.torproject.org/dist/tor-0.2.5.8-rc.tar.gz"
-    version "0.2.5.8-rc"
-    sha256 "a4c04e049f8c5798991eb5028fb2831ea2353bf12c7f5afa9c1df1472787b22c"
+    sha1 "0bf6ef6985285bac9e67fbc78cef7ebb78844de2" => :yosemite
+    sha1 "6f4d92e5a77e1d3f3da94f1b45e4817c8ccecdf9" => :mavericks
+    sha1 "bae5ecb83486c16256d9d56b284bbf341c8d5a42" => :mountain_lion
   end
 
   depends_on "libevent"
   depends_on "openssl"
 
   def install
-    if build.stable?
-      # Fix the path to the control cookie. (tor-ctrl removed in v0.2.5.5.)
-      inreplace "contrib/tor-ctrl.sh",
-        'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
-        'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
-    end
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
-    system "make install"
-
-    if build.stable?
-      # (tor-ctrl removed in v0.2.5.5.)
-      bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
-    end
+    system "make", "install"
   end
 
   test do

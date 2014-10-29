@@ -8,9 +8,10 @@ class Guile < Formula
   revision 1
 
   bottle do
-    sha1 "144466e2a084ea75d295b98b995690969363b33f" => :mavericks
-    sha1 "ab535db3b510c80356df01a9a86e6a7f9ec1b15c" => :mountain_lion
-    sha1 "79baa2dfc742e413b5492aa7a876f8ff042497ae" => :lion
+    revision 1
+    sha1 "67bd9b8050bded7916db3622d7abd896e1376eac" => :yosemite
+    sha1 "818e7ac90634b60bcbf44509a512b542b0a87bd8" => :mavericks
+    sha1 "55790b96275804b2e5952b60e1071a318f3b1518" => :mountain_lion
   end
 
   head do

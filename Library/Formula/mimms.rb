@@ -10,7 +10,6 @@ class Mimms < Formula
 
   # Switch shared library loading to Mach-O naming convention (.dylib)
   # Matching upstream bug report: http://savannah.nongnu.org/bugs/?29684
-  # Fix installation path for man page to $(brew --prefix)/share/man
   patch :DATA
 
   def install

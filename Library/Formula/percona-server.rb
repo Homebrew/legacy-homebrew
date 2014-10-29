@@ -5,15 +5,17 @@ class PerconaServer < Formula
   url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.21-69.0.tar.gz'
   version '5.6.21-69.0'
   sha1 '0071f263774d6acb9e8991a7574a79cc2b83bc0a'
+  revision 1
 
   bottle do
-    sha1 "0bc089f58e454b66a27a87f462c68f4a77b507ea" => :mavericks
-    sha1 "d925b7eda20b620a41f00776a186745f20672c44" => :mountain_lion
-    sha1 "170f8cc74dc8995e2c863a59ee89dce444b9e42c" => :lion
+    sha1 "12a591763c3d23c2fc3cb764e4d107ba6047ed3a" => :yosemite
+    sha1 "f1dbe3dd290d75469237095727614aa569b697b9" => :mavericks
+    sha1 "288fcd0deacb49c786600b119ac2b765a1a44200" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   option :universal
   option 'with-tests', 'Build with unit tests'

@@ -1,17 +1,18 @@
 require 'formula'
 
 class Mess < Formula
-  homepage 'http://www.mess.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => '31397'
-  version '0.154'
+  homepage "http://www.mess.org/"
+  url "https://github.com/mamedev/mame/archive/mame0155.tar.gz"
+  sha1 "0e56d53dd6dd916b3c29387112a7042befc501bd"
+  version "0.155"
 
-  head 'svn://dspnet.fr/mame/trunk'
+  head "https://github.com/mamedev/mame.git"
 
   bottle do
     cellar :any
-    sha1 "dc6ff1625f345f6f810636bdd98a5a22fd8524eb" => :mavericks
-    sha1 "0546864fa385c152fb93d8ed541b4fd38b96d88b" => :mountain_lion
-    sha1 "e08903763afabce924b4253b165e21ffd24d3942" => :lion
+    sha1 "e5a44194f5e7498ef816530ec8196c1f96448f96" => :yosemite
+    sha1 "6003ef6faaced6b86a8f63ab7a2ec33885c2fa75" => :mavericks
+    sha1 "51c9c19ba6dfc316986406018da7a4f86c46dd1d" => :mountain_lion
   end
 
   depends_on 'sdl'

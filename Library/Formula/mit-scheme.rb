@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class MitScheme < Formula
-  homepage 'http://www.gnu.org/software/mit-scheme/'
-  url 'http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz'
-  sha1 'd2820ee76da109d370535fec6e19910a673aa7ee'
+  homepage "http://www.gnu.org/software/mit-scheme/"
+  url "http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz"
+  sha1 "d2820ee76da109d370535fec6e19910a673aa7ee"
 
   bottle do
     sha1 "dadd99b6228b6950c91e57a0e5197a5f61f80cd1" => :mavericks
@@ -12,7 +12,7 @@ class MitScheme < Formula
     sha1 "e02e2cf5cc62c24159ef5690172c9bcb4e09645d" => :lion
   end
 
-  conflicts_with 'tinyscheme', :because => 'both install a `scheme` binary'
+  conflicts_with "tinyscheme", :because => "both install a `scheme` binary"
 
   depends_on :x11
 
@@ -28,17 +28,17 @@ class MitScheme < Formula
 
     # Take care of some hard-coded paths
     inreplace %w(6001/edextra.scm 6001/floppy.scm compiler/etc/disload.scm microcode/configure
-    edwin/techinfo.scm edwin/unix.scm lib/include/configure lib/include/option.h
+    edwin/techinfo.scm edwin/unix.scm lib/include/configure
     swat/c/tk3.2-custom/Makefile swat/c/tk3.2-custom/tcl/Makefile swat/scheme/other/btest.scm) do |s|
       s.gsub! "/usr/local", prefix
     end
 
-    # The configure script will add '-isysroot' to CPPFLAGS, so it didn't check .h here
+    # The configure script will add "-isysroot" to CPPFLAGS, so it didn't check .h here
     # by default even Homebrew is installed in /usr/local. This breaks things when gdbm
     # or other optional dependencies was installed using Homebrew
-    ENV.prepend 'CPPFLAGS', "-I#{HOMEBREW_PREFIX}/include"
-    ENV['MACOSX_SYSROOT'] = MacOS.sdk_path
+    ENV.prepend "CPPFLAGS", "-I#{HOMEBREW_PREFIX}/include"
+    ENV["MACOSX_SYSROOT"] = MacOS.sdk_path
     system "etc/make-liarc.sh", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end

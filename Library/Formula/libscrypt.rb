@@ -7,9 +7,10 @@ class Libscrypt < Formula
 
   bottle do
     cellar :any
-    sha1 "471622a1f4fe31bc2b54e93bb7ae1253edbbc2da" => :mavericks
-    sha1 "60f5c75dbb4b14ed4f3c7bc89a9410b78f791c90" => :mountain_lion
-    sha1 "8fef4e66f57d7faf2a23ecf1c3f3fcbeb58d6217" => :lion
+    revision 1
+    sha1 "9ab1c43f3a714d824fc8350202dbb48781c61ff0" => :yosemite
+    sha1 "98da6b52ef80a84beba1d9decdbc8e2230ef5e51" => :mavericks
+    sha1 "98248b6497ba04be1191c3fde0cc625849af052a" => :mountain_lion
   end
 
   def install

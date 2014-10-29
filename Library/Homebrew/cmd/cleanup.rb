@@ -75,6 +75,7 @@ module Homebrew
   end
 
   def cleanup_cache
+    return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
       next unless (version = file.version)
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])

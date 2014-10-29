@@ -4,11 +4,14 @@ class Libvpx < Formula
   homepage 'http://www.webmproject.org/code/'
   url 'https://webm.googlecode.com/files/libvpx-v1.3.0.tar.bz2'
   sha1 '191b95817aede8c136cc3f3745fb1b8c50e6d5dc'
+  revision 1
+
+  head "https://chromium.googlesource.com/webm/libvpx", :using => :git
 
   bottle do
-    sha1 "6c46b6378c782d9cdd345d29caaa536d5bb1b03e" => :mavericks
-    sha1 "acdcd36694484ce9c0e6b50a318f9d167ba5e98d" => :mountain_lion
-    sha1 "247ef9ee24596e890ed96456070f8f0ec8459cf1" => :lion
+    revision 1
+    sha1 "9ce8fe3ae1d8fa737bc3d900b289da0838c2500a" => :yosemite
+    sha1 "65a8b42abf0c83ed0e9faec7791150b68836f862" => :mavericks
   end
 
   depends_on 'yasm' => :build
@@ -16,12 +19,11 @@ class Libvpx < Formula
   option 'gcov', 'Enable code coverage'
   option 'mem-tracker', 'Enable tracking memory usage'
   option 'visualizer', 'Enable post processing visualizer'
+  option "with-examples", "Build examples (vpxdec/vpxenc)"
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--enable-pic",
-            "--disable-examples",
-            "--disable-runtime-cpu-detect"]
+    args = ["--prefix=#{prefix}", "--enable-pic", "--disable-unit-tests"]
+    args << (build.with?("examples") ? "--enable-examples" : "--disable-examples")
     args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
     args << "--enable-mem-tracker" if build.include? "mem-tracker"
     args << "--enable-postproc-visualizer" if build.include? "visualizer"

@@ -7,9 +7,10 @@ class Libodfgen < Formula
 
   bottle do
     cellar :any
-    sha1 "8f8076250cc85c97dd42551cb7047961da2a40e3" => :mavericks
-    sha1 "32cc5c62aef1c8d9e94206c0b43d800d49e0a223" => :mountain_lion
-    sha1 "72b559f91f4df11b2f4a070165c7f9e285114d9a" => :lion
+    revision 1
+    sha1 "3e617050b73e335a580a3f1784de41bc523a02c7" => :yosemite
+    sha1 "8943717ca18bcd75acba6d970fe80bd5c61b43d3" => :mavericks
+    sha1 "3876f9ec7649aab43452d45b7128aad94308cb28" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

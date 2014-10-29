@@ -1,19 +1,21 @@
-require 'formula'
+require "formula"
 
 # Xcode 4.3 provides the Apple libtool.
 # This is not the same so as a result we must install this as glibtool.
 
 class Libtool < Formula
-  homepage 'http://www.gnu.org/software/libtool/'
-  url 'http://ftpmirror.gnu.org/libtool/libtool-2.4.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libtool/libtool-2.4.2.tar.gz'
-  sha1 '22b71a8b5ce3ad86e1094e7285981cae10e6ff88'
+  homepage "http://www.gnu.org/software/libtool/"
+  url "http://ftpmirror.gnu.org/libtool/libtool-2.4.2.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/libtool/libtool-2.4.2.tar.gz"
+  sha1 "22b71a8b5ce3ad86e1094e7285981cae10e6ff88"
 
   bottle do
-    revision 2
-    sha1 '860a75329b31aa8729d71438d6a696fd453a85e4' => :mavericks
-    sha1 'd97af1451dd547b5857bddfa8e5f241fd78d7c9d' => :mountain_lion
-    sha1 '6873a7b72e86f369f43125c0e29ae5cdbc2d67c1' => :lion
+    cellar :any
+    revision 3
+    sha1 "e172450c5686c7f7e13237c927cb49cce4c0ac0c" => :yosemite
+    sha1 "bbf17c08138fb53a4512732a2dab4f5c8dbec364" => :mavericks
+    sha1 "c749e65dee61cd23b7e757a1308761d8396689e4" => :mountain_lion
+    sha1 "d709c921f42e1f299b5bf09314eb73ab0dfa716d" => :lion
   end
 
   keg_only :provided_until_xcode43
@@ -23,6 +25,10 @@ class Libtool < Formula
   # Allow -stdlib= to pass through to linker
   # http://git.savannah.gnu.org/gitweb/?p=libtool.git;a=commitdiff;h=8f975a1368594126e37d85511f1f96164e466d93
   # https://trac.macports.org/ticket/32982
+
+  # Fix interpretation of MACOSX_DEPLOYMENT_TARGET on 10.10
+  # http://article.gmane.org/gmane.comp.gnu.libtool.patches/11730
+  # https://trac.macports.org/changeset/125325
   patch :DATA
 
   def install
@@ -41,7 +47,7 @@ class Libtool < Formula
   end
 
   test do
-    system "#{bin}/glibtool", 'execute', '/usr/bin/true'
+    system "#{bin}/glibtool", "execute", "/usr/bin/true"
   end
 end
 
@@ -62,3 +68,42 @@ index 63ae69d..9ae038c 100644
          func_quote_for_eval "$arg"
  	arg="$func_quote_for_eval_result"
          func_append compile_command " $arg"
+diff --git a/configure b/configure
+index a1ef3e3..782d28a 100755
+--- a/configure
++++ b/configure
+@@ -7765,7 +7765,7 @@ $as_echo "$lt_cv_ld_force_load" >&6; }
+       case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
+ 	10.0,*86*-darwin8*|10.0,*-darwin[91]*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+-	10.[012]*)
++	10.[012][,.]*)
+ 	  _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;
+ 	10.*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+diff --git a/libltdl/configure b/libltdl/configure
+index f18f272..fef1137 100755
+--- a/libltdl/configure
++++ b/libltdl/configure
+@@ -6978,7 +6978,7 @@ $as_echo "$lt_cv_ld_force_load" >&6; }
+       case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
+ 	10.0,*86*-darwin8*|10.0,*-darwin[91]*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+-	10.[012]*)
++	10.[012][,.]*)
+ 	  _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;
+ 	10.*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+diff --git a/libltdl/m4/libtool.m4 b/libltdl/m4/libtool.m4
+index 44e0ecf..4adcf73 100644
+--- a/libltdl/m4/libtool.m4
++++ b/libltdl/m4/libtool.m4
+@@ -1052,7 +1052,7 @@ _LT_EOF
+       case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
+ 	10.0,*86*-darwin8*|10.0,*-darwin[[91]]*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+-	10.[[012]]*)
++	10.[[012]][[,.]]*)
+ 	  _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;
+ 	10.*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;

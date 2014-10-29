@@ -7,9 +7,10 @@ class Tmux < Formula
 
   bottle do
     cellar :any
-    sha1 "258df085ed5fd3ff4374337294641bd057b81ff4" => :mavericks
-    sha1 "3838e790a791d44464df6e7fcd25d8558d864d9c" => :mountain_lion
-    sha1 "4368a7f81267c047050758338eb8f4207da12224" => :lion
+    revision 1
+    sha1 "5a5e180e33339671bc8c82ed58c26862da037f30" => :yosemite
+    sha1 "6092f92f5cd7eeb6ddf3b555cd4e655c4c85e826" => :mavericks
+    sha1 "981c8c199a2ea3df18b6651205b4616459ae1f8c" => :mountain_lion
   end
 
   head do

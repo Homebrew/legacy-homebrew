@@ -6,9 +6,11 @@ class Libdnet < Formula
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
   bottle do
-    sha1 "6b1bda90b59e20c8a5243d975ae0d948658cd7ff" => :mavericks
-    sha1 "cf3cba764f268c117459cd55a95197d6ff5afd7b" => :mountain_lion
-    sha1 "a3ec593982b554c90c23ac4c9a8192e5683b28ea" => :lion
+    cellar :any
+    revision 1
+    sha1 "d50344d91979822e446a28997c4b25f4c047e405" => :yosemite
+    sha1 "0b7296e9d6d6a3a17268611171df4b944e853bbf" => :mavericks
+    sha1 "e1570018c6ace49b52f2d77a660c7720e6250660" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

@@ -2,20 +2,16 @@ require "formula"
 
 class Imagemagick < Formula
   homepage "http://www.imagemagick.org"
-
-  # upstream's stable tarballs tend to disappear, so we provide our own mirror
-  # Tarball and checksum from: http://www.imagemagick.org/download
-  url "https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.9-7.tar.xz"
-  mirror "http://www.imagemagick.org/download/ImageMagick-6.8.9-7.tar.xz"
-  sha256 "45670f37ebd3354d64e45df5462b929b5b843dee2b038b0ad524491492bffbf9"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.8.9-8.tar.xz"
+  sha256 "27360449c6f3d4cca548d1780ecd5f8313a57a0a83d6d953a5088cc81714e9b0"
 
   head "https://www.imagemagick.org/subversion/ImageMagick/trunk",
     :using => UnsafeSubversionDownloadStrategy
 
   bottle do
-    sha1 "a899454c8b4940ca04f991c5ed0b268baea8e960" => :mavericks
-    sha1 "0616e461385b1d0be1428181b6e676f5bcc0e5ae" => :mountain_lion
-    sha1 "a6783e3deea4502b2878ea85cd1a3fde58b22573" => :lion
+    sha1 "c395c3d14542a6c002fef70dca747f79df7a2df2" => :yosemite
+    sha1 "aef09c33ac55f1b006d197aa9f14286a6af825a6" => :mavericks
+    sha1 "2421db9b50fabf940c4572791e5c5f73ffd009c8" => :mountain_lion
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
@@ -116,7 +112,6 @@ class Imagemagick < Formula
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/identify", test_png
+    system "#{bin}/identify", test_fixtures("test.png")
   end
 end

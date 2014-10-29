@@ -99,7 +99,7 @@ class PatchingTests < Homebrew::TestCase
         def patches
           [PATCH_URL_A]
         end
-      end.brew { assert_patched 'libexec/noop' }
+      end.brew { assert_patched 'libexec/NOOP' }
     end
   end
 
@@ -109,7 +109,7 @@ class PatchingTests < Homebrew::TestCase
         def patches
           { :p1 => PATCH_URL_A }
         end
-      end.brew { assert_patched 'libexec/noop' }
+      end.brew { assert_patched 'libexec/NOOP' }
     end
   end
 
@@ -119,7 +119,7 @@ class PatchingTests < Homebrew::TestCase
         def patches
           { :p1 => [PATCH_URL_A] }
         end
-      end.brew { assert_patched 'libexec/noop' }
+      end.brew { assert_patched 'libexec/NOOP' }
     end
   end
 
@@ -127,7 +127,7 @@ class PatchingTests < Homebrew::TestCase
     shutup do
       formula do
         patch PATCH_A_CONTENTS
-      end.brew { assert_patched 'libexec/noop' }
+      end.brew { assert_patched 'libexec/NOOP' }
     end
   end
 
@@ -135,7 +135,7 @@ class PatchingTests < Homebrew::TestCase
     shutup do
       formula do
         patch :p0, PATCH_B_CONTENTS
-      end.brew { assert_patched 'libexec/noop' }
+      end.brew { assert_patched 'libexec/NOOP' }
     end
   end
 
@@ -145,7 +145,7 @@ class PatchingTests < Homebrew::TestCase
         def patches
           Formula::DATA
         end
-      end.brew { assert_patched "libexec/noop" }
+      end.brew { assert_patched "libexec/NOOP" }
     end
   end
 end

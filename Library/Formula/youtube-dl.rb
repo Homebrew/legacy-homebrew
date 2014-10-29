@@ -5,14 +5,14 @@ require "formula"
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2014.10.05.2/youtube-dl-2014.10.05.2.tar.gz"
-  sha1 "defa32d81d4d88cb5ab041010ce9399d11f0763f"
+  url "https://yt-dl.org/downloads/2014.10.27/youtube-dl-2014.10.27.tar.gz"
+  sha1 "f49040780869cd4747fecc1682dbcfc2f19b7bd0"
 
   bottle do
     cellar :any
-    sha1 "d56b7ea196ca6255ba14f198284ac7dd7bc0ca43" => :mavericks
-    sha1 "5cb6f80980337ae133b7d5c25fae03d1de26d1b9" => :mountain_lion
-    sha1 "eb3bcb7677d9cef89b692624543e344819ebf92e" => :lion
+    sha1 "79cfd9b582a3484cde57b2335cdeb2a195fe281d" => :yosemite
+    sha1 "e4b165a70a4b03af4fee41bc618de5a9d87c5bda" => :mavericks
+    sha1 "26bdb0036c78e91cd6b874bb944d36b6b70c33ae" => :mountain_lion
   end
 
   head do
@@ -27,6 +27,7 @@ class YoutubeDl < Formula
     bin.install "youtube-dl"
     man1.install "youtube-dl.1"
     bash_completion.install "youtube-dl.bash-completion"
+    zsh_completion.install "youtube-dl.zsh" => "_youtube-dl"
   end
 
   def caveats

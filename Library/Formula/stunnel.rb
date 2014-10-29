@@ -1,15 +1,19 @@
 require "formula"
 
 class Stunnel < Formula
-  homepage "http://www.stunnel.org/"
-  url "ftp://ftp.nluug.nl/pub/networking/stunnel/stunnel-5.04.tar.gz"
-  mirror "https://www.stunnel.org/downloads/stunnel-5.04.tar.gz"
-  sha256 "ee9702e073cb8d5940a1310ae171a38d3264f1ce3b087160728bbbcf5710cec1"
+  homepage "https://www.stunnel.org/"
+  url "ftp://ftp.nluug.nl/pub/networking/stunnel/beta/stunnel-5.07b2.tar.gz"
+  mirror "https://www.stunnel.org/downloads/beta/stunnel-5.07b2.tar.gz"
+  sha256 "e9826952f3a56e0f631c0f8e8372297067de9ca8b05a596007015887c38d226d"
+
+  # Any building-against openssl that has disabled sslv2 for now must use the betas.
+  # This is upstream's recommendation. We should be able to go stable again from 5.07.
+  # https://www.stunnel.org/pipermail/stunnel-users/2014-October/004806.html
 
   bottle do
-    sha1 "4468beac294b359096183e8653eb2e662acf7748" => :mavericks
-    sha1 "1fa4437c666131ff2af71077ca7d5fe1d4fd925a" => :mountain_lion
-    sha1 "58abfa40d4d777666606cd1ece1b0f99458d3a9d" => :lion
+    sha1 "a4656d453c179052e0ee8368161687e8a0b8181a" => :mavericks
+    sha1 "f00f5b5db306b27e81e6ee1653d8a2fa793b30db" => :mountain_lion
+    sha1 "75563236665d1333ef5a9de3c7c0c6c651d24b68" => :lion
   end
 
   depends_on "openssl"

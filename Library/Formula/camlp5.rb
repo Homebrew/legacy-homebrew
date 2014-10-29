@@ -4,11 +4,12 @@ class Camlp5 < Formula
   homepage "http://camlp5.gforge.inria.fr/"
   url "http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.12.tgz"
   sha1 "d78d89dbd33725d7589181c38cc67180502da2f8"
+  revision 2
 
   bottle do
-    sha1 "a96b54c869d6a746d63f4fae548eabce16e866e4" => :mavericks
-    sha1 "865a5f4e5162ddbd661f930717f4e7d35b6dffb2" => :mountain_lion
-    sha1 "ae8b490cad902abac671e9ac332dadd8a8e8cfe8" => :lion
+    sha1 "a59c46767de8e867733609b08630953c57523fb3" => :yosemite
+    sha1 "02c88c2b521f13d7733630f19c2fc145e6cb2d97" => :mavericks
+    sha1 "73d8bd3f7848902360e171b425a8e807a512d449" => :mountain_lion
   end
 
   depends_on "objective-caml"
