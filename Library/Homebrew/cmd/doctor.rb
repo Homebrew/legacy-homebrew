@@ -661,7 +661,7 @@ def check_for_config_scripts
 
   paths.each do |p|
     next if whitelist.include? p.downcase
-    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})]
+    next if p.start_with?(real_cellar.to_s, HOMEBREW_CELLAR.to_s)
 
     configs = Dir["#{p}/*-config"]
     config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
