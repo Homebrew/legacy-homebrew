@@ -4,7 +4,7 @@ class Zeromq < Formula
   homepage "http://www.zeromq.org/"
   url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
   sha1 "a664ec63661a848ef46114029156a0a6006feecd"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
@@ -21,13 +21,12 @@ class Zeromq < Formula
     depends_on :libtool
   end
 
-
   option :universal
   option "with-pgm", "Build with PGM extension"
 
   depends_on "pkg-config" => :build
   depends_on "libpgm" if build.with? "pgm"
-  depends_on "libsodium" => :recommended
+  depends_on "libsodium" => :optional
 
   def install
     ENV.universal_binary if build.universal?
