@@ -656,8 +656,13 @@ def check_for_config_scripts
 
   scripts = []
 
-  whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
-  whitelist.map! { |d| d.downcase }
+  whitelist = %W[
+    /usr/bin /usr/sbin
+    /usr/X11/bin /usr/X11R6/bin /opt/X11/bin
+    #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin
+    /Applications/Server.app/Contents/ServerRoot/usr/bin
+    /Applications/Server.app/Contents/ServerRoot/usr/sbin
+  ].map(&:downcase)
 
   paths.each do |p|
     next if whitelist.include?(p.downcase) ||
