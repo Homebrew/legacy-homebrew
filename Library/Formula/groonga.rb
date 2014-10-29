@@ -6,9 +6,9 @@ class Groonga < Formula
   sha1 "b00c56c6d7318fe1a87f6f55366182ace4014a2a"
 
   bottle do
-    sha1 "93dd670108b2ef9f219827eed3e158c4a8f6a4f6" => :mavericks
-    sha1 "1986c599bf78578a148e19cb293079702ab0ee5d" => :mountain_lion
-    sha1 "3fa6aa3b485d1395e3e54136868f4ae662b3114f" => :lion
+    sha1 "2775b6f11f9e37b2c217232a8c1330d96399f247" => :yosemite
+    sha1 "666f42790d8c1971886af044f01d202158439597" => :mavericks
+    sha1 "e98db97c283412714a64066c0250c33832f4472f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
