@@ -14,6 +14,9 @@ class Unison < Formula
 
   depends_on 'objective-caml' => :build
 
+  # fixed upstream in https://webdav.seas.upenn.edu/viewvc/unison?view=revision&revision=530
+  patch :DATA
+
   def install
     ENV.j1
     ENV.delete "CFLAGS" # ocamlopt reads CFLAGS but doesn't understand common options
@@ -23,3 +26,17 @@ class Unison < Formula
     bin.install 'unison'
   end
 end
+
+__END__
+diff --git a/ubase/util.ml b/ubase/util.ml
+index 2ed467f..e143f30 100644
+--- a/ubase/util.ml
++++ b/ubase/util.ml
+@@ -62,7 +62,7 @@ let set_infos s =
+   if s <> !infos then begin clear_infos (); infos := s; show_infos () end
+
+ let msg f =
+-  clear_infos (); Uprintf.eprintf (fun () -> flush stderr; show_infos ()) f
++  clear_infos (); Printf.kfprintf (fun c -> flush c; show_infos ()) stderr f
+
+ let msg : ('a, out_channel, unit) format -> 'a = msg
