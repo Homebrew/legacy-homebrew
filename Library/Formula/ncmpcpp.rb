@@ -24,9 +24,9 @@ class Ncmpcpp < Formula
   head do
     url 'git://repo.or.cz/ncmpcpp.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
     depends_on 'boost' # not needed by stable
     depends_on 'readline'
   end
