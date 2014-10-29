@@ -21,10 +21,16 @@ class Ncmpcpp < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'taglib'
   depends_on 'libmpdclient'
-  depends_on 'boost'
   depends_on 'readline'
+
+  if MacOS.version < :mavericks
+    depends_on "boost" => "c++11"
+    depends_on "taglib" => "c++11"
+  else
+    depends_on "boost"
+    depends_on "taglib"
+  end
 
   depends_on 'fftw' if build.include? "visualizer"
 
