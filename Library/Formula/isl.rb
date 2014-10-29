@@ -17,7 +17,7 @@ class Isl < Formula
     sha1 "502db664090c83f36515b901e8a066d9ef4f0bb4" => :yosemite
     sha1 "f669eadf21a26782f4700facbec71f8d3d1dff7d" => :mavericks
     sha1 "808982b34df706187f041d7b21e644aa3d74b747" => :mountain_lion
-    sha1 "a21a2ce4f30409c62ef37a4ab8d6c0b04cbb932a" => :"x86_64-linux"
+    sha1 "a21a2ce4f30409c62ef37a4ab8d6c0b04cbb932a" => :x86_64_linux
   end
 
   head do

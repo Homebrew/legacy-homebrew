@@ -25,7 +25,7 @@ end
 
 def bottle_tag
   if OS.linux?
-    :"#{RUBY_PLATFORM}"
+    :"#{RUBY_PLATFORM.tr("-.", "_")}"
   elsif MacOS.version >= :lion
     MacOS.cat
   elsif MacOS.version == :snow_leopard

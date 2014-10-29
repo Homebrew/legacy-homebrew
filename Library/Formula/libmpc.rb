@@ -11,7 +11,7 @@ class Libmpc < Formula
     revision 2
     sha1 "656a38feba0a27261f7e71060449731f3e18f7ee" => :yosemite
     sha1 "0f02ce11ca69a24e02e2abd08b01b48192cdac59" => :mavericks
-    sha1 "22284cde961b626fbe774ee2285d964e4789bf26" => :"x86_64-linux"
+    sha1 "22284cde961b626fbe774ee2285d964e4789bf26" => :x86_64_linux
   end
 
   depends_on 'gmp'

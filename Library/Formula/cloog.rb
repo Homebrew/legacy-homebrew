@@ -12,7 +12,7 @@ class Cloog < Formula
     sha1 "65900e9655ab8f444ecf7edf4118caa01ca56ddb" => :yosemite
     sha1 "851f64756bb082a5a354e0992976acd70cfdacbf" => :mavericks
     sha1 "06252f0a9c453818c319b21647ebaa9a26c3f4ac" => :mountain_lion
-    sha1 "1a2edaabaceee7c5079d4142c90b972b0345902e" => :"x86_64-linux"
+    sha1 "1a2edaabaceee7c5079d4142c90b972b0345902e" => :x86_64_linux
   end
 
   head do

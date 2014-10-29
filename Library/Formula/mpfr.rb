@@ -14,7 +14,7 @@ class Mpfr < Formula
     sha1 "7950d0c8f2e68673099516b7c2026055e75d1f9d" => :yosemite
     sha1 "6e63f815013d281187fd6017aeb8ee9f24ca9ad2" => :mavericks
     sha1 "40956fd01c8882333cdaf447eb637480ac8520e8" => :mountain_lion
-    sha1 "04cc102aaf925a955435a976e84a0205d8b20aef" => :"x86_64-linux"
+    sha1 "04cc102aaf925a955435a976e84a0205d8b20aef" => :x86_64_linux
   end
 
   # http://www.mpfr.org/mpfr-current/allpatches
