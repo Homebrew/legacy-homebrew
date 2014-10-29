@@ -237,7 +237,6 @@ class FormulaInstaller
 
   def install_requirement_default_formula?(req, dependent, build)
     return false unless req.default_formula?
-    return false if build.without?(req) && (req.recommended? || req.optional?)
     return true unless req.satisfied?
     install_bottle_for?(dependent, build) || build_bottle?
   end
