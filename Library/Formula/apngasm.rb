@@ -2,8 +2,8 @@ require "formula"
 
 class Apngasm < Formula
   homepage "https://github.com/apngasm/apngasm"
-  url "https://github.com/apngasm/apngasm/archive/3.1.3.tar.gz"
-  sha1 "5968640a5610e5ab47ef8464e413e714d2ef64a5"
+  url "https://github.com/apngasm/apngasm/archive/3.1.4.tar.gz"
+  sha1 "62bd9f829b383a4f53f4bb1018f1e2d24a846272"
 
   bottle do
     cellar :any
