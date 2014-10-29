@@ -6,9 +6,10 @@ class Pidgin < Formula
   sha1 "81267c35c8d27f2c62320b564fc11af2cc1f3a4a"
 
   bottle do
-    sha1 "8619dec05832868cf29df37382683b2c8d5944e4" => :yosemite
-    sha1 "ee004c411e8e8d534eae11a74c8e3bb2fdfb018c" => :mavericks
-    sha1 "ecd1805951f73871171f36587323f6ef1aeb82e0" => :mountain_lion
+    revision 2
+    sha1 "62b0b06637fabb960543e61e4652ee09dfbc1d8f" => :yosemite
+    sha1 "7e20e7691b7ebd105e512c4bfb251a9f71c0d21b" => :mavericks
+    sha1 "8c03819ed1317164cc29b5de882604a7a017a89f" => :mountain_lion
   end
 
   depends_on :x11 => :optional
