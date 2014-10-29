@@ -235,11 +235,11 @@ class FormulaInstaller
     raise UnsatisfiedRequirements.new(fatals) unless fatals.empty?
   end
 
-  def install_requirement_default_formula?(req, build)
+  def install_requirement_default_formula?(req, dependent, build)
     return false unless req.default_formula?
     return false if build.without?(req) && (req.recommended? || req.optional?)
     return true unless req.satisfied?
-    pour_bottle? || build_bottle?
+    install_bottle_for?(dependent, build) || build_bottle?
   end
 
   def expand_requirements
@@ -256,7 +256,7 @@ class FormulaInstaller
           Requirement.prune
         elsif req.build? && install_bottle_for?(dependent, build)
           Requirement.prune
-        elsif install_requirement_default_formula?(req, build)
+        elsif install_requirement_default_formula?(req, dependent, build)
           dep = req.to_dependency
           deps.unshift(dep)
           formulae.unshift(dep.to_formula)
