@@ -17,7 +17,7 @@ class Ncmpcpp < Formula
     sha1 "e995546831489e3629a961512365dc2d3f2f7310"
     version "0.6-beta4"
 
-    depends_on 'boost' # not needed by stable
+    depends_on 'boost'
     depends_on 'readline'
   end
 
@@ -27,7 +27,7 @@ class Ncmpcpp < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on 'boost' # not needed by stable
+    depends_on 'boost'
     depends_on 'readline'
   end
 
