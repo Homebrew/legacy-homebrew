@@ -14,6 +14,10 @@ class W3m < Formula
   patch :DATA
 
   def install
+    # Fix istream.h:23:8: error: redefinition of 'struct file_handle'
+    # See https://sourceforge.net/p/w3m/patches/62/
+    inreplace Dir["istream.[ch]"], "file_handle", "io_file_handle"
+
     system "./configure", "--prefix=#{prefix}", "--disable-image"
     # Race condition in build reported in:
     # https://github.com/Homebrew/homebrew/issues/12854
