@@ -654,20 +654,20 @@ def check_for_config_scripts
   return unless HOMEBREW_CELLAR.exist?
   real_cellar = HOMEBREW_CELLAR.realpath
 
-  config_scripts = []
+  scripts = []
 
   whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
   whitelist.map! { |d| d.downcase }
 
   paths.each do |p|
-    next if whitelist.include? p.downcase
-    next if p.start_with?(real_cellar.to_s, HOMEBREW_CELLAR.to_s)
+    next if whitelist.include?(p.downcase) ||
+      p.start_with?(real_cellar.to_s, HOMEBREW_CELLAR.to_s) ||
+      !File.directory?(p)
 
-    configs = Dir["#{p}/*-config"]
-    config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
+    scripts += Dir.chdir(p) { Dir["*-config"] }.map { |c| File.join(p, c) }
   end
 
-  unless config_scripts.empty?
+  unless scripts.empty?
     s = <<-EOS.undent
       "config" scripts exist outside your system or Homebrew directories.
       `./configure` scripts often look for *-config scripts to determine if
@@ -680,10 +680,7 @@ def check_for_config_scripts
 
     EOS
 
-    config_scripts.each do |dir, files|
-      files.each { |fn| s << "    #{dir}/#{fn}\n" }
-    end
-    s
+    s << scripts.map { |f| "  #{f}" }.join("\n")
   end
 end
 
