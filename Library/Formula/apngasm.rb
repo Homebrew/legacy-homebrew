@@ -7,9 +7,9 @@ class Apngasm < Formula
 
   bottle do
     cellar :any
-    sha1 "5eb0b1a7c88a1196539add4e721cc30dd83f1697" => :mavericks
-    sha1 "fc9b6c1e8910aca9282bee642bce50642ee6b976" => :mountain_lion
-    sha1 "c568690023e0688e6b71cbe5dc9caab7e816420d" => :lion
+    sha1 "cbc3eaa12b5070ecafd3183003ff09c7c3d7e108" => :yosemite
+    sha1 "d2034f6c75bf7eb5da4eef5bb3e50fb33b79ae68" => :mavericks
+    sha1 "209d32e1fb51d7ba730452892775f2df32e2a526" => :mountain_lion
   end
 
   depends_on "cmake" => :build
