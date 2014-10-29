@@ -7,7 +7,7 @@ class LinuxHeaders < Formula
 
   bottle do
     cellar :any
-    sha1 "69c321f2cfca43e39891d34b6b088b4b786007e6" => :"x86_64-linux"
+    sha1 "69c321f2cfca43e39891d34b6b088b4b786007e6" => :x86_64_linux
   end
 
   def install
