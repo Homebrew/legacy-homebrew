@@ -17,6 +17,7 @@ class MongoC < Formula
   depends_on "openssl"
 
   def install
+    # --enable-sasl=no: https://jira.mongodb.org/browse/CDRIVER-447
     system "./configure", "--prefix=#{prefix}", "--enable-sasl=no"
     system "make", "install"
   end
