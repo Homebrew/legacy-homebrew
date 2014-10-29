@@ -7,9 +7,9 @@ class Qbs < Formula
 
   bottle do
     cellar :any
-    sha1 "3aaeb476a15f023cebf99e87ef817fd0bfff6282" => :mavericks
-    sha1 "9401c0d8025745fe1daefb691f49ee8c08cc347e" => :mountain_lion
-    sha1 "7bec1a6ed1ff5d1798ccc1898110c38c94a68f5b" => :lion
+    sha1 "cc8d1816df4336ab9d8745e332efb3081ac8abf7" => :yosemite
+    sha1 "f95dc259474a8006364b62f7fcbc943783a6ccd9" => :mavericks
+    sha1 "bbdadfad3bc1d7a6024b42245999d460ad719515" => :mountain_lion
   end
 
   depends_on "qt5"
