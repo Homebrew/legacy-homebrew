@@ -5,6 +5,13 @@ class Ncmpcpp < Formula
   url 'http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6.tar.bz2'
   sha1 '7bbd63c6f17aa8cdf1190b19e2dc893df188da1c'
 
+  bottle do
+    cellar :any
+    sha1 "57802cfa62bbc99594b534068e987f7fcd9e1fbb" => :yosemite
+    sha1 "a39ff22a16fd90180e3d411d533738c8f640f844" => :mavericks
+    sha1 "255cd14d8f3470446be1b11843de8ec331f3823e" => :mountain_lion
+  end
+
   head do
     url 'git://repo.or.cz/ncmpcpp.git'
 
