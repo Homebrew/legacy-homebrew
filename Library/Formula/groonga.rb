@@ -17,6 +17,7 @@ class Groonga < Formula
   depends_on "mecab" => :optional
   depends_on "mecab-ipadic" if build.with? "mecab"
   depends_on "lz4" => :optional
+  depends_on "openssl"
 
   depends_on "glib" if build.include? "enable-benchmark"
 
