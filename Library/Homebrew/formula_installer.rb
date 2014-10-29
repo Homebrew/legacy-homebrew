@@ -69,7 +69,8 @@ class FormulaInstaller
     true
   end
 
-  def install_bottle_for_dep?(dep, build)
+  def install_bottle_for?(dep, build)
+    return pour_bottle? if dep == f
     return false if build_from_source?
     return false unless dep.bottle && dep.pour_bottle?
     return false unless build.used_options.empty?
@@ -253,9 +254,7 @@ class FormulaInstaller
 
         if (req.optional? || req.recommended?) && build.without?(req)
           Requirement.prune
-        elsif req.build? && dependent == self.f && pour_bottle?
-          Requirement.prune
-        elsif req.build? && dependent != self.f && install_bottle_for_dep?(dependent, build)
+        elsif req.build? && install_bottle_for?(dependent, build)
           Requirement.prune
         elsif install_requirement_default_formula?(req, build)
           dep = req.to_dependency
@@ -285,9 +284,7 @@ class FormulaInstaller
 
       if (dep.optional? || dep.recommended?) && build.without?(dep)
         Dependency.prune
-      elsif dep.build? && dependent == f && pour_bottle?
-        Dependency.prune
-      elsif dep.build? && dependent != f && install_bottle_for_dep?(dependent, build)
+      elsif dep.build? && install_bottle_for?(dependent, build)
         Dependency.prune
       elsif dep.satisfied?(options)
         Dependency.skip
