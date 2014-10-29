@@ -69,7 +69,8 @@ class FormulaInstaller
     true
   end
 
-  def install_bottle_for_dep?(dep, build)
+  def install_bottle_for?(dep, build)
+    return pour_bottle? if dep == f
     return false if build_from_source?
     return false unless dep.bottle && dep.pour_bottle?
     return false unless build.used_options.empty?
@@ -234,11 +235,10 @@ class FormulaInstaller
     raise UnsatisfiedRequirements.new(fatals) unless fatals.empty?
   end
 
-  def install_requirement_default_formula?(req, build)
+  def install_requirement_default_formula?(req, dependent, build)
     return false unless req.default_formula?
-    return false if build.without?(req) && (req.recommended? || req.optional?)
     return true unless req.satisfied?
-    pour_bottle? || build_bottle?
+    install_bottle_for?(dependent, build) || build_bottle?
   end
 
   def expand_requirements
@@ -253,11 +253,9 @@ class FormulaInstaller
 
         if (req.optional? || req.recommended?) && build.without?(req)
           Requirement.prune
-        elsif req.build? && dependent == self.f && pour_bottle?
+        elsif req.build? && install_bottle_for?(dependent, build)
           Requirement.prune
-        elsif req.build? && dependent != self.f && install_bottle_for_dep?(dependent, build)
-          Requirement.prune
-        elsif install_requirement_default_formula?(req, build)
+        elsif install_requirement_default_formula?(req, dependent, build)
           dep = req.to_dependency
           deps.unshift(dep)
           formulae.unshift(dep.to_formula)
@@ -285,9 +283,7 @@ class FormulaInstaller
 
       if (dep.optional? || dep.recommended?) && build.without?(dep)
         Dependency.prune
-      elsif dep.build? && dependent == f && pour_bottle?
-        Dependency.prune
-      elsif dep.build? && dependent != f && install_bottle_for_dep?(dependent, build)
+      elsif dep.build? && install_bottle_for?(dependent, build)
         Dependency.prune
       elsif dep.satisfied?(options)
         Dependency.skip

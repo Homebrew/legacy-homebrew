@@ -93,7 +93,7 @@ following conditions:
 
 * Options were passed to the install command i.e. `brew install $FORMULA`
 will use a bottled version of $FORMULA, but
-`brew install `$FORMULA —enable-bar` will trigger a source build.
+`brew install $FORMULA —enable-bar` will trigger a source build.
 * The `--build-from-source` option is invoked.
 * The environment variable `HOMEBREW_BUILD_FROM_SOURCE` is set.
 * The machine is not running OS X 10.7+ as all bottled builds are
