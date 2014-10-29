@@ -1,20 +1,21 @@
-require 'formula'
+require "formula"
 
 class Finch < Formula
-  homepage 'http://developer.pidgin.im/wiki/Using%20Finch'
-  url 'https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.9/pidgin-2.10.9.tar.bz2'
-  sha1 'f3de8fd94dba1f4c98d5402a02430f9f323e665a'
-  revision 1
+  homepage "http://developer.pidgin.im/wiki/Using%20Finch"
+  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.10/pidgin-2.10.10.tar.bz2"
+  sha1 "81267c35c8d27f2c62320b564fc11af2cc1f3a4a"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'gnutls'
-  depends_on 'libidn'
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "gnutls"
+  depends_on "libidn"
 
-  option 'purple', 'Only build libpurple'
-  option 'perl', 'Build libpurple with perl support'
+  conflicts_with "pidgin", :because => "They are the same piece of software, sans GUI. Pidgin installs Finch"
+
+  option "purple", "Only build libpurple"
+  option "perl", "Build libpurple with perl support"
 
   def install
     # Common options
@@ -34,13 +35,13 @@ class Finch < Formula
       --with-tkconfig=#{MacOS.sdk_path}/usr/lib
     ]
 
-    args << '--disable-perl' unless build.include? 'perl'
+    args << "--disable-perl" unless build.include? "perl"
 
-    if build.include? 'purple'
-      args << '--disable-consoleui'
+    if build.include? "purple"
+      args << "--disable-consoleui"
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
