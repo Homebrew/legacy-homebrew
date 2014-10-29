@@ -8,8 +8,8 @@ end
 
 class SigningParty < Formula
   homepage "http://pgp-tools.alioth.debian.org/"
-  url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.8.orig.tar.gz"
-  sha1 "58b3c94b60d3637689fd1bc7aaa2f5c1527416fb"
+  url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.10.orig.tar.gz"
+  sha1 "909182aaadc2e6e7bd1edefb3722b7b97c9abd86"
 
   bottle do
     sha1 "8cbd4353cbb1715138e4c313bffc35efadb78b86" => :mavericks
@@ -67,15 +67,15 @@ class SigningParty < Formula
   end
 
   resource "Type::Tiny" do
-    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-0.044.tar.gz"
-    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-0.044.tar.gz"
-    sha1 "78854cb1ea3c3f57db3b9f10cece97ef11c3ab97"
+    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-1.000005.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-1.000005.tar.gz"
+    sha1 "95119f0e9565f4cda685902d614a21484765970a"
   end
 
   resource "Exporter::Tiny" do
-    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Exporter-Tiny-0.036.tar.gz"
-    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Exporter-Tiny-0.036.tar.gz"
-    sha1 "6a2f60e6ec245bb6369c2ba4cfab9c74d3bd463f"
+    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Exporter-Tiny-0.042.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Exporter-Tiny-0.042.tar.gz"
+    sha1 "3a3ac1affabcfce1d1bf8cffee2e7a8c78780e54"
   end
 
   resource "Data::Perl" do
@@ -193,7 +193,7 @@ index aaf97bb..7a6bd38 100755
 +++ b/gpgparticipants/gpgparticipants
 @@ -65,7 +65,7 @@ title=$(echo "$5"|tr a-z A-Z|sed 's/\(.\)/\1 /g')
  [ "$output" = - ] && output=/path/to/ksp-file.txt || { exec > "$output"; }
- 
+
  # Date of event
 -LC_ALL=C date --date="$date" +"%A, %B %e, %Y;  %H:%M"
 +LC_ALL=C date -j -f "%Y%m%d %H%M" "$date" +"%A, %B %e, %Y;  %H:%M"
