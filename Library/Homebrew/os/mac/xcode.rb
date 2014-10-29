@@ -123,6 +123,7 @@ module OS
       end
 
       def provides_autotools?
+        return false unless OS.mac?
         version < "4.3"
       end
 
