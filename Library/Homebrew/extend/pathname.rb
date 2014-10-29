@@ -321,7 +321,7 @@ class Pathname
     saved_perms = nil
     unless writable_real?
       saved_perms = stat.mode
-      chmod 0644
+      chmod 0644 | saved_perms
     end
     yield
   ensure
