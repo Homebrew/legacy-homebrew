@@ -5,9 +5,9 @@ require 'formula'
 
 class Cairo < Formula
   homepage 'http://cairographics.org/'
-  url 'http://cairographics.org/releases/cairo-1.12.16.tar.xz'
-  mirror 'https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.12.16.tar.xz'
-  sha256 '2505959eb3f1de3e1841023b61585bfd35684b9733c7b6a3643f4f4cbde6d846'
+  url 'http://cairographics.org/releases/cairo-1.14.0.tar.xz'
+  mirror 'https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.14.0.tar.xz'
+  sha256 '2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7'
   revision 1
 
   bottle do
