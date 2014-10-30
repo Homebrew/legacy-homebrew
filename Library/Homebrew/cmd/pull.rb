@@ -110,7 +110,7 @@ module Homebrew
       unless ARGV.include?('--bottle')
         changed_formulae.each do |f|
           next unless f.bottle
-          opoo "#{f} has a bottle: do you need to update it with --bottle?"
+          opoo "#{f.name} has a bottle: do you need to update it with --bottle?"
         end
       end
 

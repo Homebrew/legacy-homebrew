@@ -62,12 +62,12 @@ class FormulaValidationTests < Homebrew::TestCase
       end
     end
 
-    assert_equal "foo", f.url
+    assert_predicate f, :devel?
   end
 
   def test_head_only_valid
     f = formula { head "foo" }
-    assert_equal "foo", f.url
+    assert_predicate f, :head?
   end
 
   def test_empty_formula_invalid
