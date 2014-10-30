@@ -7,9 +7,9 @@ class Cliclick < Formula
 
   bottle do
     cellar :any
-    sha1 "a56d6d6c95c5cb7f6641d4f6484e944542aaa6e5" => :mavericks
-    sha1 "b8b97526eb4ff4c38f025a418214e0a166b9758a" => :mountain_lion
-    sha1 "feca3a136c0ff6a464ddfec9e7d4b73f93739a45" => :lion
+    sha1 "a99a5a82eb63ef3519935c567daeef9427af2938" => :yosemite
+    sha1 "f33e632b31478da84d02723c23da2fbed5a6fe70" => :mavericks
+    sha1 "4bbce551db8989d4d27a833bb29c8f888aa221ba" => :mountain_lion
   end
 
   def install
