@@ -12,5 +12,6 @@ class Ip2location < Formula
 
   test do
     system "test /usr/local/lib/libIP2Location.dylib"
+    mv "libIP2Location.dylib", lib/"libIP2Location.dylib"
   end
 end
