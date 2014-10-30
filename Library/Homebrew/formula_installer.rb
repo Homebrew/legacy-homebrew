@@ -437,9 +437,10 @@ class FormulaInstaller
     args << "--cc=#{ARGV.cc}" if ARGV.cc
     args << "--env=#{ARGV.env}" if ARGV.env
 
-    case formula.active_spec
-    when formula.head  then args << "--HEAD"
-    when formula.devel then args << "--devel"
+    if formula.head?
+      args << "--HEAD"
+    elsif formula.devel?
+      args << "--devel"
     end
 
     formula.options.each do |opt|
