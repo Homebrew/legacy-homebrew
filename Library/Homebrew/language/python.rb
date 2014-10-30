@@ -33,7 +33,7 @@ module Language
       probe_file = homebrew_site_packages(version)/"homebrew-pth-probe.pth"
       probe_file.atomic_write("import site; site.homebrew_was_here = True")
       result = quiet_system python, "-c", "import site; assert(site.homebrew_was_here)"
-      FileUtils.rm probe_file
+      probe_file.unlink
       result
     end
 
