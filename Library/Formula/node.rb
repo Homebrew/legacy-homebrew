@@ -35,8 +35,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.6.tgz"
-    sha1 "a28e8b44f910b9ab056aa0b73c13c1f9459c9b37"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.5.tgz"
+    sha1 "ce343163a56f1ff14ffa295c140d99833b9764cb"
   end
 
   def install
@@ -70,13 +70,13 @@ class Node < Formula
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write <<-EOS.undent
       prefix = #{HOMEBREW_PREFIX}
-      loglevel = verbose
     EOS
 
     # make sure npm can find node
     ENV["PATH"] = "#{opt_bin}:#{ENV["PATH"]}"
 
     ENV["NPM_CONFIG_USERCONFIG"] = npmrc
+    ENV["npmrc"] = "npm_debug=1"
     npm_root.cd { system "make", "install" }
 
     if build.with? "completion"
