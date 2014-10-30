@@ -41,6 +41,7 @@ class Macvim < Formula
       --with-macarchs=#{MacOS.preferred_arch}
       --enable-perlinterp
       --enable-rubyinterp
+      --enable-pythoninterp
       --enable-tclinterp
       --with-tlib=ncurses
       --with-compiledby=Homebrew
