@@ -1,17 +1,14 @@
 require "formula"
 
-# This formula installs files directly into the top-level gio modules
-# directory, so it can't be bottled.
 class GlibNetworking < Formula
   homepage "https://launchpad.net/glib-networking"
   url "http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.42/glib-networking-2.42.0.tar.xz"
   sha256 "304dd9e4c0ced69094300e0b9e66cd2eaae7161b9fc3186536d11458677d820d"
 
-  bottle do
-    cellar :any
-    sha1 "d9f3da283774d06d62b46d6655e8ee9a5b7ec328" => :yosemite
-    sha1 "3e6fa8b013495e3699312db1e6b3ef8a6109cffa" => :mavericks
-    sha1 "50ba91b0e70f861567f728e5b2012dea6c140592" => :mountain_lion
+  def pour_bottle?
+    # This formula installs files directly into the top-level gio modules
+    # directory, so it can't be bottled.
+    false
   end
 
   depends_on "pkg-config" => :build

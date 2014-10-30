@@ -6,10 +6,10 @@ class Ghc < Formula
   sha256 "b0cd96a549ba3b5e512847a4a8cd1a3174e4b2b75dadfc41c568fb812887b958"
 
   bottle do
-    sha1 "9bff37aa9a75eb7ebfbabb97a37502541cd3fdaa" => :yosemite
-    sha1 "510ba119620aaeb992e359a5a30618983cb6d4fb" => :mavericks
-    sha1 "234248dd606849994fe8950de5085832932e398b" => :mountain_lion
-    sha1 "2ec3d750f54d5e032fab416995b37a2fa337f77d" => :lion
+    revision 1
+    sha1 "f988a8c86bf9f03d4bedf936fbbca922f0639e56" => :yosemite
+    sha1 "96c5264cd455d81c3146c743aec2bade759bac28" => :mavericks
+    sha1 "2c9cdb57800d07a48ebe9bf720470e11a13df44f" => :mountain_lion
   end
 
   option "32-bit"
@@ -105,6 +105,15 @@ class Ghc < Formula
       else
         arch = "x86_64"
       end
+
+      # These will find their way into ghc's settings file, ensuring
+      # that ghc will look in the Homebrew lib dir for native libs
+      # (e.g., libgmp) even if the prefix is not /usr/local. Both are
+      # necessary to avoid problems on systems with custom prefixes:
+      # ghci fails without the first, compiling packages that depend
+      # on native libs fails without the second.
+      ENV["CONF_CC_OPTS_STAGE2"] = "-B#{HOMEBREW_PREFIX}/lib"
+      ENV["CONF_GCC_LINKER_OPTS_STAGE2"] = "-L#{HOMEBREW_PREFIX}/lib"
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       system "./configure", "--prefix=#{prefix}",

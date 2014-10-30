@@ -3,8 +3,8 @@ require "language/go"
 
 class ThePlatinumSearcher < Formula
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.4.tar.gz"
-  sha1 "564bb95672a927802e0beab42af42d6f52d8e5ec"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.5.tar.gz"
+  sha1 "775f73aaf894dabcfbd80f07eeb0d8450010ac15"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   go_resource "github.com/jessevdk/go-flags" do
@@ -30,9 +30,9 @@ class ThePlatinumSearcher < Formula
   depends_on "go" => :build
 
   bottle do
-    sha1 "08e96e5bc7fc7ccc623341febf7cbba3bd7282de" => :mavericks
-    sha1 "68b802bc18dc403c6f018966cc0e04de302bbe1c" => :mountain_lion
-    sha1 "fbdf23fc9f9a26d58cb34fc79fc2f4451b0cab64" => :lion
+    sha1 "a7a984c9716c0cae11b37cc99724cdb7004058ca" => :yosemite
+    sha1 "8ad4be8eb22d125ce6b448e4999dc4bdc1b89cdb" => :mavericks
+    sha1 "c0ace5f1aeab2d6eb1f283f676fdc820f5aaa00a" => :mountain_lion
   end
 
   def install

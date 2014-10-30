@@ -18,7 +18,7 @@ module FormulaCellarChecks
 
   def check_manpages
     # Check for man pages that aren't in share/man
-    return unless (f.prefix+'man').directory?
+    return unless (formula.prefix+'man').directory?
 
     <<-EOS.undent
       A top-level "man" directory was found
@@ -29,7 +29,7 @@ module FormulaCellarChecks
 
   def check_infopages
     # Check for info pages that aren't in share/info
-    return unless (f.prefix+'info').directory?
+    return unless (formula.prefix+'info').directory?
 
     <<-EOS.undent
       A top-level "info" directory was found
@@ -39,12 +39,12 @@ module FormulaCellarChecks
   end
 
   def check_jars
-    return unless f.lib.directory?
-    jars = f.lib.children.select { |g| g.extname == ".jar" }
+    return unless formula.lib.directory?
+    jars = formula.lib.children.select { |g| g.extname == ".jar" }
     return if jars.empty?
 
     <<-EOS.undent
-      JARs were installed to "#{f.lib}"
+      JARs were installed to "#{formula.lib}"
       Installing JARs to "lib" can cause conflicts between packages.
       For Java software, it is typically better for the formula to
       install to "libexec" and then symlink or wrap binaries into "bin".
@@ -55,18 +55,18 @@ module FormulaCellarChecks
   end
 
   def check_non_libraries
-    return unless f.lib.directory?
+    return unless formula.lib.directory?
 
     valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
                           .jar .prl .pm .sh)
-    non_libraries = f.lib.children.select do |g|
+    non_libraries = formula.lib.children.select do |g|
       next if g.directory?
       not valid_extensions.include? g.extname
     end
     return if non_libraries.empty?
 
     <<-EOS.undent
-      Non-libraries were installed to "#{f.lib}"
+      Non-libraries were installed to "#{formula.lib}"
       Installing non-libraries to "lib" is discouraged.
       The offending files are:
         #{non_libraries * "\n        "}
@@ -104,17 +104,17 @@ module FormulaCellarChecks
   end
 
   def check_shadowed_headers
-    return if f.name == "libtool" || f.name == "subversion"
-    return if f.keg_only? || !f.include.directory?
+    return if formula.name == "libtool" || formula.name == "subversion"
+    return if formula.keg_only? || !formula.include.directory?
 
-    files  = relative_glob(f.include, "**/*.h")
+    files  = relative_glob(formula.include, "**/*.h")
     files &= relative_glob("#{MacOS.sdk_path}/usr/include", "**/*.h")
-    files.map! { |p| File.join(f.include, p) }
+    files.map! { |p| File.join(formula.include, p) }
 
     return if files.empty?
 
     <<-EOS.undent
-      Header files that shadow system header files were installed to "#{f.include}"
+      Header files that shadow system header files were installed to "#{formula.include}"
       The offending files are:
         #{files * "\n        "}
     EOS
@@ -135,9 +135,9 @@ module FormulaCellarChecks
   end
 
   def check_openssl_links
-    return unless f.prefix.directory?
-    return if f.name == "android-ndk"
-    keg = Keg.new(f.prefix)
+    return unless formula.prefix.directory?
+    return if formula.name == "android-ndk"
+    keg = Keg.new(formula.prefix)
     system_openssl = keg.mach_o_files.select do |obj|
       dlls = obj.dynamically_linked_libraries
       dlls.any? { |dll| /\/usr\/lib\/lib(crypto|ssl).(\d\.)*dylib/.match dll }
@@ -157,12 +157,12 @@ module FormulaCellarChecks
     audit_check_output(check_infopages)
     audit_check_output(check_jars)
     audit_check_output(check_non_libraries)
-    audit_check_output(check_non_executables(f.bin))
-    audit_check_output(check_generic_executables(f.bin))
-    audit_check_output(check_non_executables(f.sbin))
-    audit_check_output(check_generic_executables(f.sbin))
+    audit_check_output(check_non_executables(formula.bin))
+    audit_check_output(check_generic_executables(formula.bin))
+    audit_check_output(check_non_executables(formula.sbin))
+    audit_check_output(check_generic_executables(formula.sbin))
     audit_check_output(check_shadowed_headers)
-    audit_check_output(check_easy_install_pth(f.lib))
+    audit_check_output(check_easy_install_pth(formula.lib))
     audit_check_output(check_openssl_links)
   end
 
