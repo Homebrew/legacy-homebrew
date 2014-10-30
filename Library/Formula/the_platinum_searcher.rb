@@ -3,8 +3,8 @@ require "language/go"
 
 class ThePlatinumSearcher < Formula
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.4.tar.gz"
-  sha1 "564bb95672a927802e0beab42af42d6f52d8e5ec"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.5.tar.gz"
+  sha1 "775f73aaf894dabcfbd80f07eeb0d8450010ac15"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   go_resource "github.com/jessevdk/go-flags" do
