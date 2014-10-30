@@ -6,13 +6,13 @@ class Ip2location < Formula
   sha1 "5965fbc7973f3359a2352ae468828f473f10fc5c"
 
   def install
-    system "mkdir -p #{prefix}/lib"
+    system "mkdir -p #{lib}"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make", "install"
   end
 
   test do
-    system "test #{prefix}/lib/libIP2Location.dylib"
+    system "test #{HOMEBREW_PREFIX}/lib/libIP2Location.dylib"
   end
 end
