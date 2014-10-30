@@ -13,9 +13,13 @@ class Glew < Formula
     sha1 "0ea8a4b4ec385c39eb52732ce8527f68410e35da" => :mountain_lion
   end
 
+  option :universal
+
   def install
     # Makefile directory race condition on lion
     ENV.deparallelize
+
+    ENV.universal_binary if build.universal?
 
     inreplace "glew.pc.in", "Requires: @requireslib@", ""
     system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "all"
