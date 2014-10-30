@@ -7,9 +7,9 @@ class Tutum < Formula
 
   bottle do
     cellar :any
-    sha1 "deb8e33f7fcf271707bb8494f50cf7e290c065d2" => :yosemite
-    sha1 "983779f2c064e1a9be03fe22e654d3b9fa34f292" => :mavericks
-    sha1 "4e8584bfb10d7fc0abe509c8349f866f509a8a9e" => :mountain_lion
+    sha1 "4f30e05c597ef8b5d2a042462c9f3e363eb717ee" => :yosemite
+    sha1 "d1579461073f847893ea9280cddf63aae14fccab" => :mavericks
+    sha1 "54a28205d4c06e291367394c428db40bdcd0682c" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
