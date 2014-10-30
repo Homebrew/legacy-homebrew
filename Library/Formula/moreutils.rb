@@ -7,9 +7,10 @@ class Moreutils < Formula
   sha1 '32047f935178b490a12c370d8f695f1273dc5895'
 
   bottle do
-    sha1 "c5fa8d952872b74c08d12f32ed8b7c2da0ecd8a2" => :mavericks
-    sha1 "a113dcbd9fc354428d4db301c40fc4b00eea6027" => :mountain_lion
-    sha1 "1bcce8d9fd1eec85087c09fb51d772d1edc19f31" => :lion
+    revision 2
+    sha1 "09c41223be308962ffb8014fdbcedba9c9288a8c" => :yosemite
+    sha1 "07383e8aa340c226800d36fb0d2107073c05392d" => :mavericks
+    sha1 "7ed2b97a47512e47e7a74ee11ebf8b3cc5d1697e" => :mountain_lion
   end
 
   depends_on "docbook-xsl" => :build
