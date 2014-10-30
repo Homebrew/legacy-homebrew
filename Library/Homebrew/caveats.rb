@@ -52,10 +52,10 @@ class Caveats
     s = nil
     homebrew_site_packages = Language::Python.homebrew_site_packages
     user_site_packages = Language::Python.user_site_packages "python"
-    pthfile = user_site_packages/"homebrew.pth"
-    remedy = <<-EOS.undent.gsub(/^/, "  ")
+    pth_file = user_site_packages/"homebrew.pth"
+    instructions = <<-EOS.undent.gsub(/^/, "  ")
       mkdir -p #{user_site_packages}
-      echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{pthfile}
+      echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{pth_file}
     EOS
 
     if f.keg_only?
@@ -65,7 +65,7 @@ class Caveats
           If you need Python to find bindings for this keg-only formula, run:
             echo #{keg_site_packages} >> #{homebrew_site_packages/f.name}.pth
         EOS
-        s += remedy unless Language::Python.reads_brewed_pth_files?("python")
+        s += instructions unless Language::Python.reads_brewed_pth_files?("python")
       end
       return s
     end
@@ -79,7 +79,7 @@ class Caveats
         this formula installed. If you plan to develop with these modules,
         please run:
       EOS
-      s += remedy
+      s += instructions
     elsif keg.python_pth_files_installed?
       s = <<-EOS.undent
         This formula installed .pth files to Homebrew's site-packages and your
@@ -87,7 +87,7 @@ class Caveats
         import the modules this formula installed. If you plan to develop
         with these modules, please run:
       EOS
-      s += remedy
+      s += instructions
     end
     s
   end
