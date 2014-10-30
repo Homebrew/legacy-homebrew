@@ -6,6 +6,8 @@ class S3fs < Formula
   sha1 "478aa3230b5d85bfe95d9962ee2f1d8cd35fa070"
   revision 1
 
+  head "https://github.com/s3fs-fuse/s3fs-fuse.git"
+
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
