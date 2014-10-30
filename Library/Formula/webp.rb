@@ -2,8 +2,8 @@ require 'formula'
 
 class Webp < Formula
   homepage 'http://code.google.com/speed/webp/'
-  url 'https://webp.googlecode.com/files/libwebp-0.4.0.tar.gz'
-  sha1 '326c4b6787a01e5e32a9b30bae76442d18d2d1b6'
+  url 'http://downloads.webmproject.org/releases/webp/libwebp-0.4.2.tar.gz'
+  sha256 '14d825d7c2ef7d49621bcb6b83466be455585e671ae0a2ebc1f2e07775a1722d'
   head 'https://chromium.googlesource.com/webm/libwebp', :branch => 'master'
 
   bottle do
