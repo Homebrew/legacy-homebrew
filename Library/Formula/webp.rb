@@ -8,10 +8,9 @@ class Webp < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7d66d85810e10b0ef49cc4bf2a7b7e36972abaa3" => :yosemite
-    sha1 "873ca6cb0be71d93cc80f723dc263bd391c7a813" => :mavericks
-    sha1 "5ce282b5a2b80918657603d5714144339280fc92" => :mountain_lion
+    sha1 "5eb5c1021f826ddb6fc224a24c25c42e031d7662" => :yosemite
+    sha1 "4a937acc7cfdec599bd78809447bd03eb2bf6fc9" => :mavericks
+    sha1 "3a1b012465710145c7daf74251bfe99bfd477ec4" => :mountain_lion
   end
 
   revision 1
