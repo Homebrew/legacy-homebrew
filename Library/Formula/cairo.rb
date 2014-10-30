@@ -8,10 +8,8 @@ class Cairo < Formula
   url "http://cairographics.org/releases/cairo-1.14.0.tar.xz"
   mirror "https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.14.0.tar.xz"
   sha256 "2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7"
-  revision 1
 
   bottle do
-    revision 1
     sha1 "25b504ff3e601cc87d5f64b2bcc04712aef9ba62" => :yosemite
     sha1 "e111154f2b17cdab98ee0606e286761e72ee019c" => :mavericks
     sha1 "14926972549bc24365481a627ed8e9d6d02bd2c5" => :mountain_lion
