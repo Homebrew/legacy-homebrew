@@ -18,4 +18,24 @@ class Qbs < Formula
     system "qmake", "qbs.pro", "-r"
     system "make", "install", "INSTALL_ROOT=#{prefix}"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      int main() {
+        return 0;
+      }
+    EOS
+
+    (testpath/"test.qbp").write <<-EOS.undent
+      import qbs
+
+      CppApplication {
+        name: "test"
+        files: "test.c"
+        consoleApplication: true
+      }
+    EOS
+
+    system "#{bin}/qbs", "run", "-f", "test.qbp", "profile:clang"
+  end
 end
