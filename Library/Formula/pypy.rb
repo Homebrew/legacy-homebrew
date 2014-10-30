@@ -60,6 +60,12 @@ class Pypy < Formula
   end
 
   def post_install
+    # Precompile cffi extensions in lib_pypy
+    # list from create_cffi_import_libraries in pypy/tool/release/package.py
+    %w[_sqlite3 _curses syslog gdbm _tkinter].each do |module_name|
+      quiet_system bin/"pypy", "-c", "import #{module_name}"
+    end
+
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
     # as going from 1.7.0 to 1.7.1.
