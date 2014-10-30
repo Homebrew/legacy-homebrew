@@ -8,9 +8,9 @@ class Pdnsrec < Formula
 
   bottle do
     cellar :any
-    sha1 "e066a872aa2980893b0c9b2b2bc43d2352211db8" => :mavericks
-    sha1 "ec569f0492e99420d65739125e551b4834ccaeb0" => :mountain_lion
-    sha1 "c11d07c1c1805f4e4ffea6d12f298a092a53f0c6" => :lion
+    sha1 "b4e3d1a4132ff1c41972d3a8e0a70c945c6ad1ef" => :yosemite
+    sha1 "19d5f92b26119931a0ea3b354b54870f3e3b10ae" => :mavericks
+    sha1 "f391330c5b3211349ad4272d1823772b8f5a2300" => :mountain_lion
   end
 
   depends_on :macos => :lion
