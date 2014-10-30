@@ -95,7 +95,7 @@ class FormulaAuditor
   end
 
   def audit_file
-    unless formula.path.stat.mode.to_s(8) == "100644"
+    unless formula.path.stat.mode == 0100644
       problem "Incorrect file permissions: chmod 644 #{formula.path}"
     end
 
