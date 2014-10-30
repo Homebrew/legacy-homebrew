@@ -1,7 +1,7 @@
 require 'formula'
 
 class Moreutils < Formula
-  homepage 'http://packages.debian.org/unstable/utils/moreutils'
+  homepage 'http://joeyh.name/code/moreutils/'
   url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
   mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
   sha1 '32047f935178b490a12c370d8f695f1273dc5895'
