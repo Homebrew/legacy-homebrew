@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 # Use a mirror because of:
 # http://lists.cairographics.org/archives/cairo/2012-September/023454.html
 
 class Cairo < Formula
-  homepage 'http://cairographics.org/'
-  url 'http://cairographics.org/releases/cairo-1.14.0.tar.xz'
-  mirror 'https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.14.0.tar.xz'
-  sha256 '2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7'
+  homepage "http://cairographics.org/"
+  url "http://cairographics.org/releases/cairo-1.14.0.tar.xz"
+  mirror "https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.14.0.tar.xz"
+  sha256 "2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7"
   revision 1
 
   bottle do
@@ -21,12 +21,12 @@ class Cairo < Formula
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'freetype'
-  depends_on 'fontconfig'
-  depends_on 'libpng'
-  depends_on 'pixman'
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "freetype"
+  depends_on "fontconfig"
+  depends_on "libpng"
+  depends_on "pixman"
+  depends_on "glib"
   depends_on :x11 => :recommended
 
   def install
@@ -45,7 +45,7 @@ class Cairo < Formula
       args << "--enable-quartz-image"
     end
 
-    args << '--enable-xcb=no' if MacOS.version <= :leopard
+    args << "--enable-xcb=no" if MacOS.version <= :leopard
 
     system "./configure", *args
     system "make install"
