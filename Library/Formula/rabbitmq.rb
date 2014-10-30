@@ -48,6 +48,10 @@ class Rabbitmq < Formula
     sbin.install 'rabbitmqadmin'
     (sbin/'rabbitmqadmin').chmod 0755
     (bash_completion/'rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
+
+    # Workaround for issue #33672
+    system "mkdir #{bin}"
+    system "ln -s #{prefix}/releases/3.4.0/start.boot start.boot"
   end
 
   def caveats; <<-EOS.undent
