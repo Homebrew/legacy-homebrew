@@ -26,5 +26,6 @@ class Msmtp < Formula
 
     system "./configure", *args
     system "make", "install"
+    (share/"msmtp/scripts").install "scripts/msmtpq"
   end
 end
