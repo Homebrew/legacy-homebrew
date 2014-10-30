@@ -19,7 +19,12 @@ class Glew < Formula
     # Makefile directory race condition on lion
     ENV.deparallelize
 
-    ENV.universal_binary if build.universal?
+    if build.universal?
+      ENV.universal_binary
+
+      # Do not strip resulting binaries; https://sourceforge.net/p/glew/bugs/259/
+      ENV["STRIP"] = ""
+    end
 
     inreplace "glew.pc.in", "Requires: @requireslib@", ""
     system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "all"
