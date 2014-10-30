@@ -2,8 +2,8 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/0.9.8.tar.gz"
-  sha1 "3ee6842960decc5b8875bef90732b616f28db553"
+  url "https://github.com/tutumcloud/tutum-cli/archive/0.9.8.1.tar.gz"
+  sha1 "5bb72985622f0827edb2433adf4584db26273d94"
 
   bottle do
     cellar :any
@@ -31,8 +31,8 @@ class Tutum < Formula
   end
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.5.1.tar.gz"
-    sha1 "9514ea08b84ffab8d28046dd3b5dcd359d239b13"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.5.3.tar.gz"
+    sha1 "11708a7021e3d0d522e145c057256d7d2acaec07"
   end
 
   resource "python-dateutil" do
