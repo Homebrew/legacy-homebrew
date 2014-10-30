@@ -2,8 +2,8 @@ require "formula"
 
 class Pdns < Formula
   homepage "http://www.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-3.4.0.tar.bz2"
-  sha1 "b1c5bf10e03c04f707b752b5159db06179c172d9"
+  url "http://downloads.powerdns.com/releases/pdns-3.4.1.tar.bz2"
+  sha1 "e4d807b4dc27ef130a49e0efaf82a74cb66f5b11"
 
   head do
     url "https://github.com/powerdns/pdns.git"
@@ -29,12 +29,12 @@ class Pdns < Formula
   depends_on :postgresql if build.include? "pgsql"
 
   def install
+    # https://github.com/Homebrew/homebrew/pull/33739
+    ENV.deparallelize
+
     args = ["--prefix=#{prefix}",
             "--with-lua",
             "--with-sqlite3"]
-
-    # Specifying the sqlite prefix is no longer recognised in the HEAD.
-    args << "--with-sqlite=#{Formula["sqlite"].opt_prefix}" if build.stable?
 
     # Include the PostgreSQL backend if requested
     if build.include? "pgsql"
