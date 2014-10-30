@@ -102,6 +102,7 @@ class Openssl < Formula
   end
 
   def post_install
+    return unless OS.mac?
     keychains = %w[
       /Library/Keychains/System.keychain
       /System/Library/Keychains/SystemRootCertificates.keychain
