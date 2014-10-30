@@ -2,8 +2,8 @@ require "formula"
 
 class S3fs < Formula
   homepage "http://code.google.com/p/s3fs/"
-  url "https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.76.tar.gz"
-  sha1 "478aa3230b5d85bfe95d9962ee2f1d8cd35fa070"
+  url "https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.78.tar.gz"
+  sha1 "613b448d84451400d3ee14aa9104ba6d9e90bd0b"
   revision 1
 
   head "https://github.com/s3fs-fuse/s3fs-fuse.git"
