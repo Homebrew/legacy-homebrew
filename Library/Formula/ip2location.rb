@@ -3,7 +3,7 @@ require "formula"
 class Ip2location < Formula
   homepage "http://www.ip2location.com"
   url "https://github.com/velikanov/ip2location/archive/v7.0.0.1.tar.gz"
-  sha1 ""
+  sha1 "57d60932e04c89e6a16a775e224a3f74943df52c"
 
   def install
     system "make"
