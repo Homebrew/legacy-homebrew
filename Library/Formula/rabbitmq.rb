@@ -11,6 +11,8 @@ class Rabbitmq < Formula
     sha1 "c3fd2b3cc376bb4d7f63de5e4d96a1eebd15f6af" => :mountain_lion
   end
 
+  # Upstream fix for rabbitmqctl:
+  # http://hg.rabbitmq.com/rabbitmq-server/raw-rev/3f7c77cdafd8
   patch :DATA
 
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
