@@ -16,8 +16,8 @@ end
 
 class Betty < Formula
   homepage "https://github.com/pickhardt/betty"
-  url "https://github.com/pickhardt/betty/archive/v0.1.6.tar.gz"
-  sha1 "bd838caa8d596598f406209609f39a7bd5087ac1"
+  url "https://github.com/pickhardt/betty/archive/v0.1.7.tar.gz"
+  sha1 "ec21ec5541289a9902874c7897f8d521044daf27"
 
   depends_on Ruby19Dependency
 
