@@ -11,7 +11,7 @@ class Patchelf < Formula
   end
 
   option "with-static", "Link statically"
-  option "with-static-libstdc++", "Link libstdc++ statically"
+  option "without-static-libstdc++", "Link libstdc++ dynamically"
 
   head do
     url "https://github.com/NixOS/patchelf.git"
