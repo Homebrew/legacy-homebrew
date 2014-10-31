@@ -26,7 +26,7 @@ class Ip2location < Formula
     ip2location_data = Pathname.new "#{var}/IP2Location"
 
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/IP2Location"
-    legacy_data.install "IP-COUNTRY-SAMPLE.BIN", "IPV6-COUNTRY.SAMPLE.BIN"
+    legacy_data.install "IP-COUNTRY-SAMPLE.BIN"
 
     (testpath/'test.cpp').write <<-EOS.undent
       #include <stdio.h>
