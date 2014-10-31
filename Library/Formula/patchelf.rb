@@ -5,6 +5,7 @@ class Patchelf < Formula
   url "http://nixos.org/releases/patchelf/patchelf-0.8/patchelf-0.8.tar.bz2"
   sha1 "d0645e9cee6f8e583ae927311c7ce88d29f416fc"
 
+  option "with-static", "Link statically"
   option "with-static-libstdc++", "Link libstdc++ statically"
 
   head do
@@ -22,6 +23,7 @@ class Patchelf < Formula
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--prefix=#{prefix}",
+      ("CXXFLAGS=-static" if build.with? "static"),
       ("CXXFLAGS=-static-libgcc -static-libstdc++" if build.with? "static-libstdc++")
     system "make", "install"
   end
