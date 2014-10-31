@@ -18,7 +18,14 @@ class Libstree < Formula
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
+
     system "make", "install"
+
+    # create and install dynamiclib and symlink
+    system "cd src/.libs && gcc -fno-common -dynamiclib -o libstree.0.0.0.dylib -current_version 0.0.0 -install_name #{prefix}/lib/libstree.0.0.0.dylib *.o"
+    lib.install_symlink "libstree.0.0.0.dylib" => "libstree.dylib"
+    lib.install "src/.libs/libstree.0.0.0.dylib"
+
     prefix.install "test"
   end
 
