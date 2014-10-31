@@ -2,8 +2,8 @@ require "formula"
 
 class Mdp < Formula
   homepage "https://github.com/visit1985/mdp"
-  url "https://github.com/visit1985/mdp/archive/0.91.3.tar.gz"
-  sha1 "e8a0264068c21df1f00e391ec22e674141fddcc1"
+  url "https://github.com/visit1985/mdp/archive/0.92.2.tar.gz"
+  sha1 "d01db33bb3ce1206c48e0c191adb14746f3fcdd5"
 
   bottle do
     cellar :any
@@ -14,7 +14,7 @@ class Mdp < Formula
 
   def install
     system "make"
-    system "make", "install", "DESTDIR=#{bin}"
+    system "make", "install", "PREFIX=#{prefix}"
     share.install "sample.md"
   end
 
