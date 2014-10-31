@@ -1,9 +1,12 @@
 require "formula"
 
 class Libcppa < Formula
-  homepage "http://libcppa.blogspot.it"
-  url "http://github.com/Neverlord/libcppa/archive/V0.9.4.tar.gz"
-  sha1 "eba8002f087e55498edc0bf996fb7f211d7feec6"
+  homepage "http://actor-framework.org/"
+  url "https://github.com/actor-framework/actor-framework/archive/0.11.0.tar.gz"
+  sha1 "202f2fd72a5af59d7ace6b7300df1fcc19f1857f"
+
+  # since upstream has rename the project to actor-framework (or libcaf in its
+  # pkgconfig file), we need to rename libcppa to libcaf in the future
 
   bottle do
     cellar :any
@@ -17,6 +20,7 @@ class Libcppa < Formula
 
   option "with-opencl", "Build with OpenCL actors"
   option "with-examples", "Build examples"
+  option "without-check", "Skip build-time tests (not recommended)"
 
   def install
     ENV.cxx11
@@ -24,15 +28,14 @@ class Libcppa < Formula
     args = %W[
       --prefix=#{prefix}
       --build-static
-      --disable-context-switching
     ]
 
-    args << "--with-opencl" if build.with? "opencl"
+    args << "--no-opencl" if build.without? "opencl"
     args << "--no-examples" if build.without? "examples"
 
     system "./configure", *args
     system "make"
-    system "make", "test"
+    system "make", "test" if build.with? "check"
     system "make", "install"
   end
 end
