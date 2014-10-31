@@ -21,9 +21,7 @@ class Ip2location < Formula
 
   test do
     system "curl", "-O", "http://www.ip2location.com/downloads/sample.bin.db1.zip"
-    system "curl", "-O", "http://www.ip2location.com/downloads/sample6.bin.db1.zip"
     system "unzip", "-o", "sample.bin.db1.zip"
-    system "unzip", "-o", "sample6.bin.db1.zip"
 
     ip2location_data = Pathname.new "#{var}/IP2Location"
 
