@@ -7,9 +7,9 @@ class Dos2unix < Formula
   sha1 "f8247eda06aab93fbbe84b78fe6d14bd319f0fcd"
 
   bottle do
-    sha1 "a616d74ea7f23a01f0cdc47a025eb3a258518ca1" => :mavericks
-    sha1 "2f977ec55907fdc5f707a24ad550d5f92853f482" => :mountain_lion
-    sha1 "a71748546f87f402ec70eb252c4c72a6812c4163" => :lion
+    sha1 "1c82d8e4870beac2033ed0675cf4534c68425ec7" => :yosemite
+    sha1 "ae53df227748c6d0b0e7f5d8aab49b29a56b6b8b" => :mavericks
+    sha1 "48039984312f59e77b5df9a3e6601acb96743a1d" => :mountain_lion
   end
 
   depends_on "gettext"
