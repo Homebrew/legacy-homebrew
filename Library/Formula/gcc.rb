@@ -27,9 +27,9 @@ class Gcc < Formula
   sha1 "79dbcb09f44232822460d80b033c962c0237c6d8"
 
   bottle do
-    sha1 "656bbfa4c755ce4956ab1c896983a36abf103afb" => :yosemite
-    sha1 "d53fdd72908ca631e811fc058e85542d5a945476" => :mavericks
-    sha1 "23b5d413cd1e633fd04e77cef9214bc381313039" => :mountain_lion
+    sha1 "178f037a3970fb9a86c07aad8215acbb9467ab63" => :yosemite
+    sha1 "a3e86973036b15371f2443eb05056d942f7d3dff" => :mavericks
+    sha1 "3d909968fc9bd6c505fd4ff20cf4bc5f4e0ba197" => :mountain_lion
   end
 
   option "with-java", "Build the gcj compiler"
