@@ -7,15 +7,11 @@ class Ip2location < Formula
 
   def install
     lib.mkpath
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--include=#{include}"
     system "make"
     system "make", "install"
 
-    include.install "IP2Loc_DBInterface.h", "IP2Location.h"
-
-    ip2location_data = Pathname.new "#{var}/IP2Location"
-    ip2location_data.mkpath
-    ip2location_data.install "country_test_ipv4_data.txt"
+    (var/"IP2Location").install "country_test_ipv4_data.txt"
 
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/IP2Location"
     legacy_data.mkpath unless legacy_data.exist? or legacy_data.symlink?
@@ -44,10 +40,7 @@ class Ip2location < Formula
         IP2Location *IP2Location4 = IP2Location_open("#{legacy_data}/IP-COUNTRY-SAMPLE.BIN");
         IP2LocationRecord *record4 = NULL;
 
-        if(IP2Location_open_mem(IP2Location4, IP2LOCATION_SHARED_MEMORY) == -1)
-        {
-          fprintf(stderr, "IPv4: Call to IP2Location_open_mem failed\\n");
-        }
+        IP2Location_open_mem(IP2Location4, IP2LOCATION_SHARED_MEMORY);
 
         f4 = fopen("#{ip2location_data}/country_test_ipv4_data.txt", "r");
 
@@ -57,10 +50,7 @@ class Ip2location < Formula
 
           if (record4 != NULL) {
             if (strcmp(expectedCountry, record4->country_short) != 0) {
-              fprintf(stderr, "Test IPv4 Address %s (Test %d) failed. We got %s but expected %s,\\n", ipAddress, test_num, record4->country_short, expectedCountry);
               failed++;
-            } else {
-              fprintf(stdout, "Test IPv4 Address %s (Test %d) passed. We got %s as expected\\n", ipAddress, test_num, record4->country_short);
             }
 
             IP2Location_free_record(record4);
