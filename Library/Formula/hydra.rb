@@ -11,9 +11,10 @@ class Hydra < Formula
 
   bottle do
     cellar :any
-    sha1 "53c106d9b7e7abf705dd0b7d97fdf568ad71f8a2" => :mavericks
-    sha1 "68e042b414cafabc4b0de85cd54c3b84d9eafe96" => :mountain_lion
-    sha1 "de61eb606b7ff5b1c9c3b4161101dd12e1b40b76" => :lion
+    revision 2
+    sha1 "8eef0ef48e07a9b50f51d6b6f62d76be48cd2bb7" => :yosemite
+    sha1 "a918878af2ceb50c9ae0cd7193d99c8911fc179b" => :mavericks
+    sha1 "57e89de532dc1af0c6fd939357881d9920274597" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
