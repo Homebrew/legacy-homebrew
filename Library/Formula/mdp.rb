@@ -7,9 +7,9 @@ class Mdp < Formula
 
   bottle do
     cellar :any
-    sha1 "cc6da77fce8cc33d8e563d8069b07eb7de147601" => :mavericks
-    sha1 "ea647ad8b94575a91125c0b967c02ab8cdf141b2" => :mountain_lion
-    sha1 "7394b1dc8b9aa4e96debb0af0e75dca8828d119c" => :lion
+    sha1 "97df5121df0867e67d045f38111ec13ec43f6f83" => :yosemite
+    sha1 "189097b46a0d97e68cf86e7ff6243a6aa79cde2c" => :mavericks
+    sha1 "d38a3bd49fda2d6b8d41362057f57eec8b091511" => :mountain_lion
   end
 
   def install
