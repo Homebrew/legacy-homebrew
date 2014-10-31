@@ -2,7 +2,7 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.1/rabbitmq-server-mac-standalone-3.4.1.tar.gz'
+  url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.4.1/rabbitmq-server-mac-standalone-3.4.1.tar.gz'
   sha1 'f1cf93cbfe7d5b12d426819c890f9b688868180a'
 
   bottle do
@@ -107,4 +107,3 @@ __END__
  
  # We specify Mnesia dir and sasl error logger since some actions
  # (e.g. forget_cluster_node --offline) require us to impersonate the
-
