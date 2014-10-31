@@ -2,8 +2,8 @@ require "formula"
 
 class Dockutil < Formula
   homepage "https://github.com/kcrawford/dockutil"
-  url "https://github.com/kcrawford/dockutil/archive/2.0.0.tar.gz"
-  sha1 "8b027a0b1559f12a1c97b4a0bfcadd1566d6e6ba"
+  url "https://github.com/kcrawford/dockutil/archive/2.0.2.tar.gz"
+  sha1 "d937d20d4ba6ce2bee347966d84048215a7e52ce"
 
   bottle do
     cellar :any
@@ -28,6 +28,6 @@ class Dockutil < Formula
   end
 
   test do
-    assert_equal "2.0.0", shell_output("#{bin}/dockutil --version").strip
+    assert_equal "2.0.2", shell_output("#{bin}/dockutil --version").strip
   end
 end
