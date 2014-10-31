@@ -18,10 +18,15 @@ class Hydra < Formula
 
   depends_on "pkg-config" => :build
   depends_on :mysql
-  depends_on "libssh" => :optional
   depends_on "openssl"
+  depends_on "libidn" => :optional
+  depends_on "libssh" => :optional
+  depends_on "pcre" => :optional
+  depends_on "gtk+" => :optional
 
   def install
+    # Having our gcc in the PATH first can cause issues. Monitor this.
+    # https://github.com/vanhauser-thc/thc-hydra/issues/22
     system "./configure", "--prefix=#{prefix}"
     bin.mkpath
     system "make", "all", "install"
