@@ -2,8 +2,8 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-mac-standalone-3.4.0.tar.gz'
-  sha1 '594d306dbc4e1b02e69fbc810e67eb6e6762ec58'
+  url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.4.0/rabbitmq-server-3.4.0.tar.gz'
+  sha1 'b25351aff4c04e8240e1321f327692b25f6be33d'
 
   bottle do
     sha1 "38ecb1b3863be6c1c3ef5887774c1fc660326b47" => :yosemite
@@ -11,21 +11,30 @@ class Rabbitmq < Formula
     sha1 "5a2de56f51462e5ce77d5aea94f6d1027cf4cbcf" => :mountain_lion
   end
 
+  depends_on "xmlto" => :build
+  depends_on "erlang"
+  depends_on "openssl"
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   def install
-    # Install the base files
-    prefix.install Dir['*']
+    ENV["XML_CATALOG_FILES"] = Formula["docbook"].etc/"xml/catalog"
+
+    system "make", "install", "TARGET_DIR=#{prefix}",
+                              "SBIN_DIR=#{sbin}",
+                              "MAN_DIR=#{man}",
+                              "DOC_INSTALL_DIR=#{doc}"
 
     # Setup the lib files
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
+    erlang = Formula["erlang"]
     # Correct SYS_PREFIX for things like rabbitmq-plugins
     inreplace sbin/'rabbitmq-defaults' do |s|
-      s.gsub! 'SYS_PREFIX=${RABBITMQ_HOME}', "SYS_PREFIX=#{HOMEBREW_PREFIX}"
-      s.gsub! 'CLEAN_BOOT_FILE="${SYS_PREFIX}', "CLEAN_BOOT_FILE=\"#{prefix}"
-      s.gsub! 'SASL_BOOT_FILE="${SYS_PREFIX}', "SASL_BOOT_FILE=\"#{prefix}"
+      s.change_make_var! "ERL_DIR", "#{erlang.opt_bin}/"
+      s.change_make_var! "SYS_PREFIX", HOMEBREW_PREFIX
+      s.change_make_var! "CLEAN_BOOT_FILE", erlang.opt_lib/"erlang/bin/start_clean"
+      s.change_make_var! "SASL_BOOT_FILE", erlang.opt_lib/"erlang/bin/start_sasl"
     end
 
     # Set RABBITMQ_HOME in rabbitmq-env
