@@ -2,8 +2,8 @@ require "formula"
 
 class Disco < Formula
   homepage "http://discoproject.org/"
-  url "https://github.com/discoproject/disco/archive/0.5.3.tar.gz"
-  sha1 "78e1f38d54460f472d2e862988eb8af3b30afb1f"
+  url "https://github.com/discoproject/disco/archive/0.5.4.tar.gz"
+  sha1 "43bc8fac5d5d657a81a8d7b628d1f72f97470b6e"
 
   bottle do
     cellar :any
