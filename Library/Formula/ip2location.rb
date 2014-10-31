@@ -11,8 +11,7 @@ class Ip2location < Formula
     system "make"
     system "make", "install"
 
-    ip2location_include = Pathname.new "#{include}/IP2Location"
-    ip2location_include.install "IP2Loc_DBInterface.h", "IP2Location.h"
+    include.install "IP2Loc_DBInterface.h", "IP2Location.h"
 
     ip2location_data = Pathname.new "#{var}/IP2Location"
     ip2location_data.mkpath
