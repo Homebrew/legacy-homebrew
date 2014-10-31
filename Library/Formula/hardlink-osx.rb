@@ -5,6 +5,13 @@ class HardlinkOsx < Formula
   url "https://github.com/selkhateeb/hardlink/archive/v0.1.1.tar.gz"
   sha1 "ce89e04b7c6b31a06b497449f2d383a7dab513fb"
 
+  bottle do
+    cellar :any
+    sha1 "b8e5b31796d36c818c302bddbd45f227dc943a13" => :yosemite
+    sha1 "d61a54cff4e7ff52a0fc3131188d6adecf5ad35a" => :mavericks
+    sha1 "15910f042ea3aac09d8a2e94c783ec30e47e1f3a" => :mountain_lion
+  end
+
   def install
     system "make"
     bin.mkdir
