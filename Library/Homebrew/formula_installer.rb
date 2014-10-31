@@ -104,12 +104,6 @@ class FormulaInstaller
   def check_install_sanity
     raise FormulaInstallationAlreadyAttemptedError, formula if @@attempted.include?(formula)
 
-    if formula.installed?
-      msg = "#{formula.name}-#{formula.installed_version} already installed"
-      msg << ", it's just not linked" unless formula.linked_keg.symlink? or formula.keg_only?
-      raise FormulaAlreadyInstalledError, msg
-    end
-
     unless ignore_deps?
       unlinked_deps = formula.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
