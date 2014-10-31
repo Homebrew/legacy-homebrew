@@ -2,16 +2,15 @@ require 'formula'
 
 class Webp < Formula
   homepage 'http://code.google.com/speed/webp/'
-  url 'https://webp.googlecode.com/files/libwebp-0.4.0.tar.gz'
-  sha1 '326c4b6787a01e5e32a9b30bae76442d18d2d1b6'
+  url 'http://downloads.webmproject.org/releases/webp/libwebp-0.4.2.tar.gz'
+  sha256 '14d825d7c2ef7d49621bcb6b83466be455585e671ae0a2ebc1f2e07775a1722d'
   head 'https://chromium.googlesource.com/webm/libwebp', :branch => 'master'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7d66d85810e10b0ef49cc4bf2a7b7e36972abaa3" => :yosemite
-    sha1 "873ca6cb0be71d93cc80f723dc263bd391c7a813" => :mavericks
-    sha1 "5ce282b5a2b80918657603d5714144339280fc92" => :mountain_lion
+    sha1 "5eb5c1021f826ddb6fc224a24c25c42e031d7662" => :yosemite
+    sha1 "4a937acc7cfdec599bd78809447bd03eb2bf6fc9" => :mavericks
+    sha1 "3a1b012465710145c7daf74251bfe99bfd477ec4" => :mountain_lion
   end
 
   revision 1

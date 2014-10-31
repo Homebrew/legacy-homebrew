@@ -2,24 +2,20 @@ require "formula"
 
 class Pdnsrec < Formula
   homepage "http://wiki.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-recursor-3.6.1.tar.bz2"
-  sha1 "b77befa0a20d9822523dec44c2559ffda4ea689d"
+  url "http://downloads.powerdns.com/releases/pdns-recursor-3.6.2.tar.bz2"
+  sha1 "69e461eb1da816f82c344137612d056f281217a1"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "e066a872aa2980893b0c9b2b2bc43d2352211db8" => :mavericks
-    sha1 "ec569f0492e99420d65739125e551b4834ccaeb0" => :mountain_lion
-    sha1 "c11d07c1c1805f4e4ffea6d12f298a092a53f0c6" => :lion
+    sha1 "b4e3d1a4132ff1c41972d3a8e0a70c945c6ad1ef" => :yosemite
+    sha1 "19d5f92b26119931a0ea3b354b54870f3e3b10ae" => :mavericks
+    sha1 "f391330c5b3211349ad4272d1823772b8f5a2300" => :mountain_lion
   end
 
   depends_on :macos => :lion
   depends_on "boost"
   depends_on "lua" => :optional
-
-  # Temporary workaround for Mavericks
-  # https://github.com/PowerDNS/pdns/issues/1707
-  patch :DATA
 
   def install
     # Set overrides using environment variables
@@ -54,15 +50,3 @@ class Pdnsrec < Formula
     system "#{sbin}/pdns_recursor --config > #{prefix}/etc/powerdns/recursor.conf"
   end
 end
-
-__END__
---- pdns-recursor-3.6.1/rec_channel.hh.orig 2014-09-09 09:33:33 UTC
-+++ pdns-recursor-3.6.1/rec_channel.hh
-@@ -4,6 +4,7 @@
- #include <map>
- #include <inttypes.h>
- #include <sys/un.h>
-+#include <pthread.h>
-
-
- /** this class is used both to send and answer channel commands to the PowerDNS Recursor */
