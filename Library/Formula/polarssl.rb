@@ -2,10 +2,9 @@ require "formula"
 
 class Polarssl < Formula
   homepage "https://polarssl.org/"
-  url "https://polarssl.org/download/polarssl-1.3.8-gpl.tgz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/p/polarssl/polarssl_1.3.8.orig.tar.gz"
-  sha256 "318171db41335cacbb5b0047c94f1faf91442ab70a223b5223436703c9406ff1"
-  revision 1
+  url "https://polarssl.org/download/polarssl-1.3.9-gpl.tgz"
+  # 1.4.0 will need dependents recompiled due to breaking binary compat.
+  sha256 "d3605afc28ed4b7d1d9e3142d72e42855e4a23c07c951bbb0299556b02d36755"
 
   head "https://github.com/polarssl/polarssl.git"
 
@@ -33,5 +32,7 @@ class Polarssl < Formula
     system "make", "install"
     # Why does PolarSSL ship with GNU's Hello included? Let's remove that.
     rm "#{bin}/hello"
+    # Remove the pointless example application that hooks into system OpenSSL
+    rm "#{bin}/o_p_test"
   end
 end
