@@ -2,8 +2,13 @@ require "formula"
 
 class Ip2location < Formula
   homepage "http://www.ip2location.com"
-  url "https://github.com/velikanov/ip2location/archive/v7.0.0.4.tar.gz"
-  sha1 "1c84fcec378c3a833f14294ed221cf6e9ed38af4"
+  url "https://github.com/velikanov/ip2location/archive/v7.0.0.6.tar.gz"
+  sha1 "ee2c0c86b142f52c0a93b0ef2e2712a5b2b9e35b"
+
+  resource "sample-database" do
+    url "http://www.ip2location.com/downloads/sample.bin.db1.zip"
+    sha1 "8e1acd7f35a909b6d7bc7d482934050eb1167fa3"
+  end
 
   def install
     lib.mkpath
@@ -15,16 +20,15 @@ class Ip2location < Formula
 
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/IP2Location"
     legacy_data.mkpath unless legacy_data.exist? or legacy_data.symlink?
+
+    resource("sample-database").stage {
+      legacy_data.install "IP-COUNTRY-SAMPLE.BIN"
+    }
   end
 
   test do
-    system "curl", "-O", "http://www.ip2location.com/downloads/sample.bin.db1.zip"
-    system "unzip", "-o", "sample.bin.db1.zip"
-
     ip2location_data = Pathname.new "#{var}/IP2Location"
-
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/IP2Location"
-    legacy_data.install "IP-COUNTRY-SAMPLE.BIN"
 
     (testpath/'test.cpp').write <<-EOS.undent
       #include <stdio.h>
@@ -35,7 +39,6 @@ class Ip2location < Formula
         char ipAddress[30];
         char expectedCountry[3];
         int failed = 0;
-        int test_num = 1;
 
         IP2Location *IP2Location4 = IP2Location_open("#{legacy_data}/IP-COUNTRY-SAMPLE.BIN");
         IP2LocationRecord *record4 = NULL;
@@ -54,7 +57,6 @@ class Ip2location < Formula
             }
 
             IP2Location_free_record(record4);
-            test_num++;
           }
         }
 
