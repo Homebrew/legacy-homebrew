@@ -14,6 +14,11 @@ class S3fs < Formula
   depends_on "openssl"
   depends_on "fuse4x"
 
+  # This has a hard-requirement for fuse4x which presently has no upstream signed binary & kext available
+  # Unsigned kexts cannot be used on 10.10
+  # https://github.com/Homebrew/homebrew/issues/31164
+  depends_on MaximumMacOSRequirement => :mavericks
+
   def install
     system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
