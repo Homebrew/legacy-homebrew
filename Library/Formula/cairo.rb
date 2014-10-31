@@ -1,12 +1,9 @@
 require "formula"
 
-# Use a mirror because of:
-# http://lists.cairographics.org/archives/cairo/2012-September/023454.html
-
 class Cairo < Formula
   homepage "http://cairographics.org/"
   url "http://cairographics.org/releases/cairo-1.14.0.tar.xz"
-  mirror "https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.14.0.tar.xz"
+  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.0.tar.xz"
   sha256 "2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7"
 
   bottle do
