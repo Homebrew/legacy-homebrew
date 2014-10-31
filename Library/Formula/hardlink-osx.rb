@@ -27,16 +27,12 @@ class HardlinkOsx < Formula
   end
 
   test do
-    system "mkdir", "-p", "test1/inner"
-    system "touch", "test1/inner/file"
-    system "mkdir", "otherdir"
+    mkdir_p "test1/inner"
+    touch "test1/inner/file"
+    mkdir "otherdir"
     system "#{bin}/hln", "test1", "otherdir/test2"
-
-    system "test", "-d", "otherdir/test2"
-    assert_equal 0, $?.exitstatus
-    system "test", "-d", "otherdir/test2/inner"
-    assert_equal 0, $?.exitstatus
-    system "test", "-f", "otherdir/test2/inner/file"
-    assert_equal 0, $?.exitstatus
+    assert File.directory? "otherdir/test2"
+    assert File.directory? "otherdir/test2/inner"
+    assert File.file? "otherdir/test2/inner/file"
   end
 end
