@@ -2,9 +2,9 @@ require 'formula'
 
 class Llvm < Formula
   homepage 'http://llvm.org/'
+  revision 1
 
   bottle do
-    revision 1
     sha1 "29ba25a9a3c2217c6f1e1bae670bb35d450f629a" => :yosemite
     sha1 "07f8b675aa98c79a3058f1b51b2ba3e3f33e2875" => :mavericks
     sha1 "5f31150228cbbee9294a8396bf69af756b7d33b3" => :mountain_lion
@@ -91,6 +91,15 @@ class Llvm < Formula
     system 'make', 'install'
 
     (share/'llvm/cmake').install buildpath/'cmake/modules'
+
+    # Install Clang tools
+    if build.with? 'clang'
+      (share/'clang/tools').install buildpath/'tools/clang/tools/scan-build', buildpath/'tools/clang/tools/scan-view'
+      inreplace share/'clang/tools/scan-build/scan-build', '$RealBin/bin/clang', bin/'clang'
+      ln_s share/'clang/tools/scan-build/scan-build', bin
+      ln_s share/'clang/tools/scan-view/scan-view', bin
+      ln_s share/'clang/tools/scan-build/scan-build.1', man1
+    end
 
     # install llvm python bindings
     if build.with? "python"
