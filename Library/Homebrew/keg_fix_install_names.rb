@@ -74,6 +74,9 @@ class Keg
         "#{glibc.opt_lib}/ld-linux-x86-64.so.2"
       end
       cmd << " --set-interpreter #{interpreter}"
+
+      # Patch patchelf using patchelf, even when its interpreter is invalid.
+      cmd = "#{interpreter} #{cmd}" if name == "patchelf"
     end
     cmd << " #{file}"
     puts "Setting RPATH of #{file}" if ARGV.debug?

@@ -56,8 +56,11 @@ class FormulaInstaller
     return false if build_from_source? || build_bottle? || interactive?
     return false unless options.empty?
 
-    return true if OS.linux? && f.name == "linux-headers"
-    return false if OS.linux? && !(Formula["glibc"].installed? && Formula["patchelf"].installed?)
+    if OS.linux?
+      return true if f.name == "linux-headers"
+      return true if f.name == "patchelf" && Formula["glibc"].installed?
+      return false unless Formula["glibc"].installed? && Formula["patchelf"].installed?
+    end
 
     return true if f.local_bottle_path
     return false unless f.bottle && f.pour_bottle?
