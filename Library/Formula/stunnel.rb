@@ -60,7 +60,7 @@ class Stunnel < Formula
                           "--mandir=#{man}",
                           "--disable-libwrap",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
-    system "make", "install"
+    system "make", "install", "cert"
   end
 
   def caveats
