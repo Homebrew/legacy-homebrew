@@ -2,9 +2,9 @@ require "formula"
 
 class Dos2unix < Formula
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
-  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.0.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.0.0/dos2unix-7.0.tar.gz"
-  sha1 "a0c5d20b95f87556ddad226217cc9998c5a0bb70"
+  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.1.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.1/dos2unix-7.1.tar.gz"
+  sha1 "f8247eda06aab93fbbe84b78fe6d14bd319f0fcd"
 
   bottle do
     sha1 "a616d74ea7f23a01f0cdc47a025eb3a258518ca1" => :mavericks
