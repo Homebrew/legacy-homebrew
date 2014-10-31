@@ -25,6 +25,8 @@ module Homebrew
     end unless ARGV.force?
 
     begin
+      formulae = []
+
       ARGV.formulae.each do |f|
         # Building head-only without --HEAD is an error
         if not ARGV.build_head? and f.stable.nil?
@@ -38,11 +40,19 @@ module Homebrew
         if ARGV.build_head? and f.head.nil?
           raise "No head is defined for #{f.name}"
         end
+
+        if f.installed?
+          msg = "#{f.name}-#{f.installed_version} already installed"
+          msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
+          opoo msg
+        else
+          formulae << f
+        end
       end
 
       perform_preinstall_checks
 
-      ARGV.formulae.each { |f| install_formula(f) }
+      formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
       ofail e.message
       query = query_regexp(e.name)
@@ -126,8 +136,6 @@ module Homebrew
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to install f as part of the dependency tree of
     # another formula. In that case, don't generate an error, just move on.
-  rescue FormulaAlreadyInstalledError => e
-    opoo e.message
   rescue CannotInstallFormulaError => e
     ofail e.message
     check_macports
