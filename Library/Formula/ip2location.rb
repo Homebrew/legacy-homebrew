@@ -13,7 +13,7 @@ class Ip2location < Formula
 
     ip2location_data = Pathname.new "#{var}/IP2Location"
     ip2location_data.mkpath
-    ip2location_data.install "country_test_ipv4_data.txt", "country_test_ipv6_data.txt"
+    ip2location_data.install "country_test_ipv4_data.txt"
 
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/IP2Location"
     legacy_data.mkpath unless legacy_data.exist? or legacy_data.symlink?
