@@ -2,9 +2,9 @@ require "formula"
 
 class Libbtbb < Formula
   homepage "https://github.com/greatscottgadgets/libbtbb"
-  url "https://github.com/greatscottgadgets/libbtbb/archive/2014-02-R2.tar.gz"
-  sha1 "aa94b7d92465704aa647123f11e906491a26d090"
-  version "2014-02-R2"
+  url "https://github.com/greatscottgadgets/libbtbb/archive/2014-02-R3.tar.gz"
+  sha1 "b42c19cd1965b18409661d765734adec9c1f7449"
+  version "2014-02-R3"
 
   head "https://github.com/greatscottgadgets/libbtbb.git"
 
