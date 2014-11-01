@@ -9,9 +9,9 @@ class Pup < Formula
   head "https://github.com/EricChiang/pup.git"
 
   bottle do
-    sha1 "de519f7a2b79fb88c1334a6058baa66d7ddfa99a" => :mavericks
-    sha1 "24095aefef241c57a211b5a01c486ebb561d47d7" => :mountain_lion
-    sha1 "b76dfd0b50a0f2b96dbe912d73c70b07eb62e0a3" => :lion
+    sha1 "2738ba14aef491fc87d760edf1fbf23374cdf751" => :yosemite
+    sha1 "db1dd87b6484c1f446882cd06636a6a6a6c8e89a" => :mavericks
+    sha1 "f33ec888512347b9a12bdc19b365a4a81c04508a" => :mountain_lion
   end
 
   depends_on "go" => :build
