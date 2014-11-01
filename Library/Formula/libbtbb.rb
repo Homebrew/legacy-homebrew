@@ -10,10 +10,9 @@ class Libbtbb < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7e326c07fe6042820a6ae908d1b1bf430e0dc188" => :yosemite
-    sha1 "03762cffc3c0c1b5e4701bbc591e585cd3ff8ce0" => :mavericks
-    sha1 "8b922ed4da9a46e0c0b963d801fcae04f74c74bd" => :mountain_lion
+    sha1 "9ce274e76c4e44bb9d5ff166b0f920ef2b6d7997" => :yosemite
+    sha1 "c35dcd7c94a2ca00db402954b1eabba33f3bab7b" => :mavericks
+    sha1 "3238e7c992e725806f3bea8b683638ab337978ab" => :mountain_lion
   end
 
   option :universal
