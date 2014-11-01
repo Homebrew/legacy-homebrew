@@ -1,4 +1,4 @@
-require 'cmd/install'
+require "formula_installer"
 
 module Homebrew
   def reinstall
