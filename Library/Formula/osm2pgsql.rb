@@ -7,9 +7,9 @@ class Osm2pgsql < Formula
 
   bottle do
     cellar :any
-    sha1 "dc345c1a9879184ad88a193e9a6ebfcf65f3750a" => :mavericks
-    sha1 "b4ecf55fdc125fccb7d994004b46938e8636fbcf" => :mountain_lion
-    sha1 "e0dd38b56230cfdad09abda16594fe978352b515" => :lion
+    sha1 "1885597bd9c3edc2cc0ff3a77eeed32e696797a7" => :yosemite
+    sha1 "c4f84d422ea950111cc2cd1d0e70a3772ab7981e" => :mavericks
+    sha1 "08b6aa91ee4a5dc51fb5ceede2974b07aa90f5a4" => :mountain_lion
   end
 
   depends_on :postgresql
