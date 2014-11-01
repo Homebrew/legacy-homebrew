@@ -7,9 +7,9 @@ class Cookiecutter < Formula
 
   bottle do
     cellar :any
-    sha1 "f0ac7ce389eedcdc2e4b67a5e2fb71747c45adf7" => :mavericks
-    sha1 "c8425e83e01c889d090cc6596b5c9900fe53d4bb" => :mountain_lion
-    sha1 "d20dd767a6fec5a5e305d31eef2f91cf1182ced3" => :lion
+    sha1 "ddaf7d11f1fcc1c8843cabd041f074764725a0f0" => :yosemite
+    sha1 "90a6ae68fd96ceab215f2dfaab0cc3ac9525908d" => :mavericks
+    sha1 "4c69f62dfffca5508feb0a5753dd0d4b7efb8ebe" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
