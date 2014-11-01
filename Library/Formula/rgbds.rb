@@ -9,9 +9,9 @@ class Rgbds < Formula
 
   bottle do
     cellar :any
-    sha1 "4dcd554e8ff8c6dba47778461a27c04b798bcee1" => :mavericks
-    sha1 "5479338e6423a60a83abb72667a410db69f97724" => :mountain_lion
-    sha1 "b87f08e1ce5e1ccb4760cf722938184c3143fdcc" => :lion
+    sha1 "033923dc3ed2c549519448845d30fabefeb83bf1" => :yosemite
+    sha1 "9cae6061f1fce0ed5981d9ed0a7fd2885d66334f" => :mavericks
+    sha1 "ca4bad2a5be8b05e0c30dfb87569de1c6a2fcb07" => :mountain_lion
   end
 
   def install
