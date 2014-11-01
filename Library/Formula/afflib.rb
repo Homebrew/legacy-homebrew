@@ -1,9 +1,9 @@
 require 'formula'
 
 class Afflib < Formula
-  homepage 'https://github.com/simsong/AFFLIBv3'
-  url 'https://github.com/simsong/AFFLIBv3/archive/v3.7.4.tar.gz'
-  sha1 '589dae6f8439e97ab080026701cd0caa0636ac22'
+  homepage 'https://github.com/sshock/AFFLIBv3'
+  url 'https://github.com/sshock/AFFLIBv3/archive/v3.7.5.tar.gz'
+  sha1 'ac2a066eb082d4a27a70492427b71fb87de89880'
 
   bottle do
     cellar :any
