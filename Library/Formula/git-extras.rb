@@ -2,8 +2,8 @@ require "formula"
 
 class GitExtras < Formula
   homepage "https://github.com/visionmedia/git-extras"
-  url "https://github.com/visionmedia/git-extras/archive/2.0.0.tar.gz"
-  sha1 "1cb12caffc76d3285d60a3b2b169e3ce6040998c"
+  url "https://github.com/visionmedia/git-extras/archive/v2.1.0.tar.gz"
+  sha1 "0c08877905cf0255166771ffbf33f4724cdb22cd"
 
   head "https://github.com/visionmedia/git-extras.git", :branch => "master"
 
