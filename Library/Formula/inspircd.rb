@@ -8,9 +8,9 @@ class Inspircd < Formula
   head 'https://github.com/inspircd/inspircd.git'
 
   bottle do
-    sha1 "e00f0f3742a4868937bd1d609c37c3ab3fc50fd5" => :mavericks
-    sha1 "cd9bcce5522b4154fe8793fc505769c9e22e8eed" => :mountain_lion
-    sha1 "1fabcc797fe120beefc7f4228d35d7519192c505" => :lion
+    sha1 "b1def0c5b281422dbe37e89b2104321b33f685d0" => :yosemite
+    sha1 "18db9b5143d5f63677f3dc2fb2eeda09b24334dd" => :mavericks
+    sha1 "5cce454e59cf0a0e67e5d4c2bb1d5d94fe8e831d" => :mountain_lion
   end
 
   skip_clean 'data'
