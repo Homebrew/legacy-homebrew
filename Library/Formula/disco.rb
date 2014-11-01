@@ -7,9 +7,9 @@ class Disco < Formula
 
   bottle do
     cellar :any
-    sha1 "851d946ce9d8e0858819c3547ffe60b8a59f2bc8" => :mavericks
-    sha1 "c99a5204936a046a0f3eff9a0c9e48a4ae058817" => :mountain_lion
-    sha1 "66bd8a4206896bf74270275514756a779d20d3b2" => :lion
+    sha1 "f1a4e9775053971dac6ab3b183ebb13d6928c050" => :yosemite
+    sha1 "286325ec178e1bd06a78127333c835a1bf5a2763" => :mavericks
+    sha1 "da6e23c51a8ca6c353e83724746f0e11dba37a99" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
