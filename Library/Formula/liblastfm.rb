@@ -6,10 +6,9 @@ class Liblastfm < Formula
   sha1 "4a6323538a26c5ea2080a8ebe58e4407dbc42397"
 
   bottle do
-    revision 1
-    sha1 "e1e5a13e15705984ad5cfc8eddbd9c9e5b253619" => :yosemite
-    sha1 "51544d5091c626ad854c06c3a9c80acfef94cf77" => :mavericks
-    sha1 "8ca49c976b13020ea6aed69b4364c24a30783ba7" => :mountain_lion
+    sha1 "1e919a51bc85ccc07753feec683ff8b9b96e4f0d" => :yosemite
+    sha1 "efe8b8353f833aa7162602f00f4f28b6d56e770f" => :mavericks
+    sha1 "7d69b0a7013c97a78fcbba626f6d33dbb734f180" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
