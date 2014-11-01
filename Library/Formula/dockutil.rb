@@ -7,9 +7,9 @@ class Dockutil < Formula
 
   bottle do
     cellar :any
-    sha1 "ba91d3ab1b64a8a4fd79bde869ecad702793e932" => :mavericks
-    sha1 "de9c71e038429756b4505779bd3f48e13e7384e8" => :mountain_lion
-    sha1 "9696ba0475e52f0969af8dd202290adfee28dc6a" => :lion
+    sha1 "db8dc90ae8f1704f77c9ae25bdd6a760a3749eb3" => :yosemite
+    sha1 "5e9f89f37f48c7871ed4fee7bd6f89656ce4a1cb" => :mavericks
+    sha1 "31f4c3b4c8702ef36fa085db47b1335f64259875" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
