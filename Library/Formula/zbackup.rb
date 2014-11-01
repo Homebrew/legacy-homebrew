@@ -2,9 +2,8 @@ require "formula"
 
 class Zbackup < Formula
   homepage "http://zbackup.org"
-  url "https://github.com/zbackup/zbackup/archive/1.2.tar.gz"
-  sha1 "e87dfaeeeea0d59f4af00d3ce248aaabf1a25cb9"
-  revision 2
+  url "https://github.com/zbackup/zbackup/archive/1.3.tar.gz"
+  sha1 "e656944cc7bec5267f4b01055ea17b90e63c2d8c"
 
   bottle do
     cellar :any
