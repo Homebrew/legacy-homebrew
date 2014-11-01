@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Osm2pgsql < Formula
-  homepage 'http://wiki.openstreetmap.org/wiki/Osm2pgsql'
-  url 'https://github.com/openstreetmap/osm2pgsql/archive/0.84.0.tar.gz'
-  sha1 '42145c39596580680f120a07a4f30f97a86a3698'
+  homepage "http://wiki.openstreetmap.org/wiki/Osm2pgsql"
+  url "https://github.com/openstreetmap/osm2pgsql/archive/0.86.0.tar.gz"
+  sha1 "243c0db886634b90563217afdc897ad49ab9a238"
 
   bottle do
     cellar :any
@@ -33,6 +33,6 @@ class Osm2pgsql < Formula
     system "./configure", *args
     system "make"
     bin.install "osm2pgsql"
-    (share+'osm2pgsql').install 'default.style'
+    (share+"osm2pgsql").install "default.style"
   end
 end
