@@ -4,6 +4,7 @@ class Mpd < Formula
   homepage "http://www.musicpd.org/"
   url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.1.tar.xz"
   sha1 "68f1ff43a2dd4de913d6c979db504dc2955f5737"
+  revision 1
 
   bottle do
     sha1 "5ae7e75ccb454ec5bb7ac78266346168132ead1e" => :yosemite
@@ -54,6 +55,10 @@ class Mpd < Formula
   depends_on "opus" => :optional        # Opus support
 
   depends_on "libvorbis" if build.with? "vorbis" # Vorbis support
+
+  # Fix mpd in daemon mode
+  # See http://bugs.musicpd.org/view.php?id=4141 for more details
+  patch :DATA
 
   def install
     # mpd specifies -std=gnu++0x, but clang appears to try to build
@@ -114,3 +119,72 @@ class Mpd < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/Main.cxx b/src/Main.cxx
+index d17590e..9457f86 100644
+--- a/src/Main.cxx
++++ b/src/Main.cxx
+@@ -114,6 +114,10 @@
+ #include <ws2tcpip.h>
+ #endif
+ 
++#ifdef __APPLE__
++#include <dispatch/dispatch.h>
++#endif
++
+ #include <limits.h>
+ 
+ static constexpr unsigned DEFAULT_BUFFER_SIZE = 4096;
+@@ -401,8 +405,6 @@ int main(int argc, char *argv[])
+ {
+ #ifdef WIN32
+ 	return win32_main(argc, argv);
+-#elif __APPLE__
+-	return osx_main(argc, argv);
+ #else
+ 	return mpd_main(argc, argv);
+ #endif
+@@ -410,6 +412,8 @@ int main(int argc, char *argv[])
+ 
+ #endif
+ 
++static int mpd_main_after_fork(struct options);
++
+ #ifdef ANDROID
+ static inline
+ #endif
+@@ -513,6 +517,33 @@ int mpd_main(int argc, char *argv[])
+ 	daemonize_begin(options.daemon);
+ #endif
+ 
++#ifdef __APPLE__
++	/*
++	 * Run the OS X native event loop in the main thread, and the rest of
++	 * mpd_main on a new thread. This lets CoreAudio receive route change
++	 * notifications (e.g. plugging or unplugging headphones). All hardware
++	 * output on OS X ultimately uses CoreAudio internally. This must be
++	 * run after forking; if dispatch is called before forking, the child
++	 * process will have a broken internal dispatch state.
++	 */
++	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
++		exit(mpd_main_after_fork(options));
++	});
++	dispatch_main();
++	/*
++	 * This point is unreachable as dispatch_main never returns, so calm
++	 * down compiler.
++	 */
++	return EXIT_FAILURE;
++#else
++	return mpd_main_after_fork(options);
++#endif
++}
++
++static int mpd_main_after_fork(struct options options)
++{
++	Error error;
++
+ 	GlobalEvents::Initialize(*instance->event_loop);
+ 	GlobalEvents::Register(GlobalEvents::IDLE, idle_event_emitted);
+ #ifdef WIN32
