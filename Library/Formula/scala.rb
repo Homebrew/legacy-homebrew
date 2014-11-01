@@ -7,9 +7,9 @@ class Scala < Formula
 
   bottle do
     cellar :any
-    sha1 "da4919e3f11b1d10923e12c20ba50f738db58380" => :mavericks
-    sha1 "15ecc67ac62795c1ae7a9fae01838bea412df6ec" => :mountain_lion
-    sha1 "10784c54d59746277a6f0535ef9d3ff4974fad56" => :lion
+    sha1 "3135e56649f81649a90ef0cddb3fa9c9a8208864" => :yosemite
+    sha1 "80c33a2bd51cefb57c2e6df0c9956ab49824bb78" => :mavericks
+    sha1 "53f58473692d16a1d88b2e515ab04723573232dc" => :mountain_lion
   end
 
   option 'with-docs', 'Also install library documentation'
