@@ -118,6 +118,9 @@ Or if the import name is different to the module name:
 
     depends_on "MacFSEvents" => [:python, "fsevents"]
 
+### Python bottles
+
+If the formula is installed from a bottle and `:python` is a required or `:recommended` dependency (not `:optional`) then it will use the Homebrew `python` formula as a dependency. This is because we cannot create a binary package that works against both versions of Python. If you wish to override this behaviour you can install using `--build-from-source` which will link against the system Python (if it's the first in your `PATH`).
 
 ### If the software provides a `setup.py`
 
