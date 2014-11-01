@@ -2,13 +2,9 @@ require "formula"
 
 class Stunnel < Formula
   homepage "https://www.stunnel.org/"
-  url "ftp://ftp.nluug.nl/pub/networking/stunnel/beta/stunnel-5.07b2.tar.gz"
-  mirror "https://www.stunnel.org/downloads/beta/stunnel-5.07b2.tar.gz"
-  sha256 "e9826952f3a56e0f631c0f8e8372297067de9ca8b05a596007015887c38d226d"
-
-  # Any building-against openssl that has disabled sslv2 for now must use the betas.
-  # This is upstream's recommendation. We should be able to go stable again from 5.07.
-  # https://www.stunnel.org/pipermail/stunnel-users/2014-October/004806.html
+  url "https://www.stunnel.org/downloads/stunnel-5.07.tar.gz"
+  mirror "http://www.usenix.org.uk/mirrors/stunnel/stunnel-5.07.tar.gz"
+  sha256 "505c6c63c4a20fc0cce8c35ef1ab7626c7b01071e3fca4ac6ea417afe8065309"
 
   bottle do
     revision 1
