@@ -7,6 +7,9 @@ class Libxml2 < Formula
   sha256 "5178c30b151d044aefb1b08bf54c3003a0ac55c59c866763997529d60770d5bc"
 
   bottle do
+    sha1 "c5718c3b2a05f295e15d9b983eab3ddd1ec32ca2" => :yosemite
+    sha1 "24867f49b7680fbb56641d5738cf9d86062d9839" => :mavericks
+    sha1 "07d2f3f63fd909d1ad0b51fdb51c09b1163180eb" => :mountain_lion
   end
 
   head do
