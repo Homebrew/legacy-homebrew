@@ -111,7 +111,6 @@ module Homebrew
     check_ppc
     check_writable_install_location
     check_xcode
-    check_macports
     check_cellar
   end
 
@@ -139,5 +138,8 @@ module Homebrew
     # another formula. In that case, don't generate an error, just move on.
   rescue CannotInstallFormulaError => e
     ofail e.message
+  rescue BuildError
+    check_macports
+    raise
   end
 end
