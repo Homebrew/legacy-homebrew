@@ -2,8 +2,8 @@ require "formula"
 
 class Libgit2 < Formula
   homepage "http://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.21.1.tar.gz"
-  sha1 "8975eb3fa6999e30b1fa01a84b7b09d0a2672ac5"
+  url "https://github.com/libgit2/libgit2/archive/v0.21.2.tar.gz"
+  sha1 "a16a59df1bfe073483be0c58a81cdbc89f7b7070"
 
   head "https://github.com/libgit2/libgit2.git", :branch => "development"
 
@@ -17,6 +17,7 @@ class Libgit2 < Formula
 
   depends_on "cmake" => :build
   depends_on "libssh2" => :optional
+  depends_on "openssl"
 
   def install
     mkdir "build" do
