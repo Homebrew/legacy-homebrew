@@ -3,8 +3,8 @@ require "language/go"
 
 class Pup < Formula
   homepage "https://github.com/EricChiang/pup"
-  url "https://github.com/EricChiang/pup/archive/v0.3.1.tar.gz"
-  sha1 "56a5b5963428b555a06acc1e4b6feed4332b8f33"
+  url "https://github.com/EricChiang/pup/archive/v0.3.2.tar.gz"
+  sha1 "a3d4a624368678845e9d081abd1f5906656781dd"
 
   head "https://github.com/EricChiang/pup.git"
 
