@@ -2,9 +2,25 @@ require "formula"
 
 class Uwsgi < Formula
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
-  sha1 "f017faf259f409907dc8c37541370d3e803fba32"
   head "https://github.com/unbit/uwsgi.git"
+
+  stable do
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
+    sha1 "f017faf259f409907dc8c37541370d3e803fba32"
+
+    # Upstream ntohll fix - Kill on next stable release.
+    # https://github.com/unbit/uwsgi/issues/760
+    # https://github.com/unbit/uwsgi/commit/1964c9758
+    patch do
+      url "https://github.com/unbit/uwsgi/commit/1964c975.diff"
+      sha1 "5cad23c43ce933d723bf9961b3af303383386f92"
+    end
+    # Patches the patch to make it more ML & Mavericks friendly.
+    patch do
+      url "https://github.com/unbit/uwsgi/commit/48314cb903b.diff"
+      sha1 "4cd25b2c5ff39edacdac942f91839465e246d687"
+    end
+  end
 
   bottle do
     sha1 "111f178b0f86c2f3e35d791c00c78ce858633e12" => :yosemite
@@ -44,16 +60,8 @@ class Uwsgi < Formula
   option "with-php", "Compile with PHP support (PHP must be built for embedding)"
   option "with-ruby", "Compile with Ruby support"
 
-  # This is a hacky patch, but it works. Replace once upstream have a better fix.
-  # https://github.com/Homebrew/homebrew/issues/33488
-  # https://github.com/unbit/uwsgi/issues/760
-  if MacOS.version == :yosemite
-    patch :DATA
-  end
-
   def install
     ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
-    ENV.append_to_cflags "-DHAVE_HTONLL" if MacOS.version == :yosemite
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
@@ -162,27 +170,3 @@ class Uwsgi < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/plugins/emperor_amqp/amqp.c b/plugins/emperor_amqp/amqp.c
-index 7b34c66..a6f8a2f 100644
---- a/plugins/emperor_amqp/amqp.c
-+++ b/plugins/emperor_amqp/amqp.c
-@@ -2,6 +2,8 @@
- 
- #define AMQP_CONNECTION_HEADER "AMQP\0\0\x09\x01"
- 
-+#ifndef HAVE_HTONLL
-+
- #ifdef __BIG_ENDIAN__
- #define ntohll(x) x
- #else
-@@ -9,6 +11,8 @@
- #endif
- #define htonll(x) ntohll(x)
- 
-+#endif
-+
- #define amqp_send(a, b, c) if (send(a, b, c, 0) < 0) { uwsgi_error("send()"); return -1; }
- 
- struct amqp_frame_header {
