@@ -6,6 +6,12 @@ class Gnatsd < Formula
   head "https://github.com/apcera/gnatsd.git"
   sha1 "b22a0252b838cff91586fb02d9efe31b428e5be2"
 
+  bottle do
+    sha1 "f430b3bae19808ceaa007a681b9b5fe9704ff6e3" => :yosemite
+    sha1 "a17cccfd22645af9f895a23a1adc1a65a6bd6852" => :mavericks
+    sha1 "5699c0b45fd4f38d3a24555eef856435cd6e257b" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   def install
