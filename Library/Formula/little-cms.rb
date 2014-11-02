@@ -22,11 +22,18 @@ class LittleCms < Formula
   def install
     ENV.universal_binary if build.universal?
     args = %W{--disable-dependency-tracking --disable-debug --prefix=#{prefix}}
-    args << "--with-python" if build.with? "python"
     args << "--without-tiff" if build.without? "libtiff"
     args << "--without-jpeg" if build.without? "jpeg"
+    if build.with? "python"
+      args << "--with-python"
+      inreplace "python/Makefile.in" do |s|
+        s.change_make_var! "pkgdir", lib/"python2.7/site-packages"
+      end
+    end
 
     system "./configure", *args
-    system "make install"
+    system "make"
+    ENV.deparallelize
+    system "make", "install"
   end
 end
