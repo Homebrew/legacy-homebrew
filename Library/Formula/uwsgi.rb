@@ -23,9 +23,10 @@ class Uwsgi < Formula
   end
 
   bottle do
-    sha1 "111f178b0f86c2f3e35d791c00c78ce858633e12" => :yosemite
-    sha1 "607debd03c31e9d3ac74ef3a7a72c06d14c868de" => :mavericks
-    sha1 "d83b6ea522d5c9980778218db3545512b4ab09b8" => :mountain_lion
+    revision 1
+    sha1 "9da9aa73d1ac4e5a78e325cb7c3dac45af659c44" => :yosemite
+    sha1 "933203169438fad47bac044b5517a6a04d8af90e" => :mavericks
+    sha1 "7dd5bb88ad74ed0ad834dc1cc3eb06ed4494f687" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
