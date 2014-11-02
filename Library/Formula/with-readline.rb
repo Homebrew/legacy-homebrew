@@ -24,8 +24,6 @@ class WithReadline < Formula
   end
 
   test do
-    # Some test is better than no test
-    system bin/"with-readline", "--version"
-    system bin/"echo 'exit' | with-readline expect"
+    system "echo 'exit' | #{bin}/with-readline /usr/bin/expect"
   end
 end
