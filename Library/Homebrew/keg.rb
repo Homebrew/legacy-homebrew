@@ -230,6 +230,10 @@ class Keg
     path.join("lib", "python2.7", "site-packages").directory?
   end
 
+  def python_pth_files_installed?
+    Dir["#{path}/lib/python2.7/site-packages/*.pth"].any?
+  end
+
   def app_installed?
     Dir["#{path}/{,libexec/}*.app"].any?
   end
