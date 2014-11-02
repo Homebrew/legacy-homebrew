@@ -7,6 +7,13 @@ class ClosureCompiler < Formula
 
   head "https://github.com/google/closure-compiler.git"
 
+  bottle do
+    cellar :any
+    sha1 "4948b02aa41ae8979325f759116750a72b14feff" => :yosemite
+    sha1 "2d99973cfa238d61b2beab10005494b5b61b73ca" => :mavericks
+    sha1 "68df5948864090eab5b2f221b2d6f7fea3e9e3b8" => :mountain_lion
+  end
+
   depends_on :ant => :build
   depends_on :java => "1.7"
 
