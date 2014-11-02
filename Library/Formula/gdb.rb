@@ -67,9 +67,7 @@ class Gdb < Formula
     rm_rf include
     rm_rf lib
     rm_rf share/"locale"
-
-    # Conflicts with other GNU packages
-    rm_f info/"standards.info"
+    rm_rf share/"info"
   end
 
   def caveats; <<-EOS.undent
