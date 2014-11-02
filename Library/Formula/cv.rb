@@ -11,7 +11,7 @@ class Cv < Formula
   end
 
   test do
-    output = `/usr/local/bin/cv --version`
+    output = `#{bin}/cv --version`
     assert output.include?("cv version 0.5")
     assert_equal 0, $?.exitstatus
   end
