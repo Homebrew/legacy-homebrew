@@ -2,8 +2,8 @@ require 'formula'
 
 class Capstone < Formula
   homepage 'http://capstone-engine.org'
-  url 'http://capstone-engine.org/download/2.1.2/capstone-2.1.2.tgz'
-  sha1 '235ceab369025fbad9887fe826b741ca84b1ab41'
+  url 'http://capstone-engine.org/download/3.0/capstone-3.0-rc3.tgz'
+  sha1 '3382ecd50618deed4d28aff89f66387e86d3ea9b'
 
   bottle do
     cellar :any
