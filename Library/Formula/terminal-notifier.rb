@@ -9,8 +9,9 @@ class TerminalNotifier < Formula
 
   bottle do
     cellar :any
-    sha1 "517d91093fc03ef3c263c39c49ed4357379ad3dd" => :mavericks
-    sha1 "3267c5614f2759aeabe92d6ae287345993f03c25" => :mountain_lion
+    sha1 "32a5d80adcf6c1e54ce7cc1ea282a12abc0cbf0f" => :yosemite
+    sha1 "a4ea9dbf9e8260390f7ab7d9fc9471e95a6b3517" => :mavericks
+    sha1 "f7ebd182b5a88663a1c98e64b77130c4508fc3f0" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion
