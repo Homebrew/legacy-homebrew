@@ -2,8 +2,8 @@ require "formula"
 
 class Gputils < Formula
   homepage "http://gputils.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/gputils/gputils/1.3.0/gputils-1.3.0.tar.gz"
-  sha1 "5e4c86174a33af17de5079cdc689ff045e9407a7"
+  url "https://downloads.sourceforge.net/project/gputils/gputils/1.4.0/gputils-1.4.0-1.tar.gz"
+  sha1 "26593b7237b0c436b4482d1038216b467ec660b7"
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
@@ -18,7 +18,7 @@ class Gputils < Formula
 
     # disassemble with gpdasm
     output = `#{bin}/gpdasm -p p16f84 test.hex`
-    assert_equal "000000:  3042  movlw\t0x42\n", output
+    assert_equal "0000:  3042  movlw   0x42\n", output
     assert_equal 0, $?.exitstatus
   end
 end
