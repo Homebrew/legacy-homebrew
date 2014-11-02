@@ -115,11 +115,14 @@ class Caveats
 
       # we readlink because this path probably doesn't exist since caveats
       # occurs before the link step of installation
+      # Yosemite security measures mildly tighter rules:
+      # https://github.com/Homebrew/homebrew/issues/33815
       if !plist_path.file? || !plist_path.symlink?
         if f.plist_startup
           s << "To have launchd start #{f.name} at startup:"
           s << "    sudo mkdir -p #{destination}" unless destination_path.directory?
           s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
+          s << "    sudo chown root #{plist_link}"
         else
           s << "To have launchd start #{f.name} at login:"
           s << "    mkdir -p #{destination}" unless destination_path.directory?
@@ -137,6 +140,7 @@ class Caveats
           s << "To reload #{f.name} after an upgrade:"
           s << "    sudo launchctl unload #{plist_link}"
           s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
+          s << "    sudo chown root #{plist_link}"
           s << "    sudo launchctl load #{plist_link}"
       elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
           s << "To reload #{f.name} after an upgrade:"
