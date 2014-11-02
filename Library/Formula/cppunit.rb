@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Cppunit < Formula
-  homepage 'http://sourceforge.net/apps/mediawiki/cppunit/'
-  url 'https://downloads.sourceforge.net/project/cppunit/cppunit/1.12.1/cppunit-1.12.1.tar.gz'
-  sha1 'f1ab8986af7a1ffa6760f4bacf5622924639bf4a'
+  homepage "http://www.freedesktop.org/wiki/Software/cppunit/"
+  url "http://dev-www.libreoffice.org/src/cppunit-1.13.2.tar.gz"
+  sha1 "0eaf8bb1dcf4d16b12bec30d0732370390d35e6f"
 
   bottle do
     cellar :any

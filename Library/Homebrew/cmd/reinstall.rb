@@ -1,4 +1,4 @@
-require 'cmd/install'
+require "formula_installer"
 
 module Homebrew
   def reinstall
@@ -31,8 +31,6 @@ module Homebrew
     fi.finish
   rescue FormulaInstallationAlreadyAttemptedError
     # next
-  rescue FormulaAlreadyInstalledError => e
-    opoo e.message
   rescue Exception
     ignore_interrupts { restore_backup(keg, f) }
     raise

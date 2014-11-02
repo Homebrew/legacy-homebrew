@@ -2,21 +2,21 @@ require "formula"
 
 class Libgit2 < Formula
   homepage "http://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.21.1.tar.gz"
-  sha1 "8975eb3fa6999e30b1fa01a84b7b09d0a2672ac5"
+  url "https://github.com/libgit2/libgit2/archive/v0.21.2.tar.gz"
+  sha1 "a16a59df1bfe073483be0c58a81cdbc89f7b7070"
 
   head "https://github.com/libgit2/libgit2.git", :branch => "development"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "264ee00fbd0df428ac1de74ae7d74f98d8109066" => :yosemite
-    sha1 "809e858db9e378949989b23b045b527a34af3b12" => :mavericks
-    sha1 "d833de5afde015cf8905fbf070083023cc1d9201" => :mountain_lion
+    sha1 "388688ca18d3ebe91dde4cb7b9fa67e632a4f9a0" => :yosemite
+    sha1 "5bfd8d83f8ff1c62bea445c209efdb4ce3d3f641" => :mavericks
+    sha1 "5b23f7fd5062d7bf1be3a3509d70502c594b1fc5" => :mountain_lion
   end
 
   depends_on "cmake" => :build
   depends_on "libssh2" => :optional
+  depends_on "openssl"
 
   def install
     mkdir "build" do

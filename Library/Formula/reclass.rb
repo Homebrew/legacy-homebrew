@@ -3,14 +3,14 @@ require "formula"
 class Reclass < Formula
   homepage "http://reclass.pantsfullofunix.net/"
   head "https://github.com/madduck/reclass.git"
-  url "https://github.com/madduck/reclass/archive/reclass-1.3.tar.gz"
-  sha1 "eaa8eb1fd22aa040fa7a57c613c6223706904578"
+  url "https://github.com/madduck/reclass/archive/reclass-1.4.1.tar.gz"
+  sha1 "43e38a484437c82a376a57d87b7af6674f1b97fd"
 
   bottle do
     cellar :any
-    sha1 "3d873a3abf8dddae3f5c075ca635fc3cd9f88b1c" => :mavericks
-    sha1 "0724d342a8a3ef4467e3fb9d735635765dca5186" => :mountain_lion
-    sha1 "edbe08b22abb9ab9ef9d3a964cbd8abb029f74a0" => :lion
+    sha1 "4c055763f00605f006fb585f34ccae585b514dc8" => :yosemite
+    sha1 "bf1b1acdd4475d3271f8b27eb41b0f414dac6147" => :mavericks
+    sha1 "4d1a4805aef3db3858c6d6fa01e982eae3a8cd1b" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

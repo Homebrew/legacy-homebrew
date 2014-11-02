@@ -2,14 +2,14 @@ require 'formula'
 
 class Cookiecutter < Formula
   homepage 'https://github.com/audreyr/cookiecutter'
-  url 'https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-0.7.2.tar.gz'
-  sha1 '127b3f755edfb022c4634483666cf5f9d085fa71'
+  url 'https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-0.8.0.tar.gz'
+  sha1 'f8d68f73b5a36540a8798c0aee4eebda028653c5'
 
   bottle do
     cellar :any
-    sha1 "f0ac7ce389eedcdc2e4b67a5e2fb71747c45adf7" => :mavericks
-    sha1 "c8425e83e01c889d090cc6596b5c9900fe53d4bb" => :mountain_lion
-    sha1 "d20dd767a6fec5a5e305d31eef2f91cf1182ced3" => :lion
+    sha1 "ddaf7d11f1fcc1c8843cabd041f074764725a0f0" => :yosemite
+    sha1 "90a6ae68fd96ceab215f2dfaab0cc3ac9525908d" => :mavericks
+    sha1 "4c69f62dfffca5508feb0a5753dd0d4b7efb8ebe" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

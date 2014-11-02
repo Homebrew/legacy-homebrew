@@ -2,14 +2,14 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/0.9.8.tar.gz"
-  sha1 "3ee6842960decc5b8875bef90732b616f28db553"
+  url "https://github.com/tutumcloud/tutum-cli/archive/0.9.8.1.tar.gz"
+  sha1 "5bb72985622f0827edb2433adf4584db26273d94"
 
   bottle do
     cellar :any
-    sha1 "deb8e33f7fcf271707bb8494f50cf7e290c065d2" => :yosemite
-    sha1 "983779f2c064e1a9be03fe22e654d3b9fa34f292" => :mavericks
-    sha1 "4e8584bfb10d7fc0abe509c8349f866f509a8a9e" => :mountain_lion
+    sha1 "4f30e05c597ef8b5d2a042462c9f3e363eb717ee" => :yosemite
+    sha1 "d1579461073f847893ea9280cddf63aae14fccab" => :mavericks
+    sha1 "54a28205d4c06e291367394c428db40bdcd0682c" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -31,8 +31,8 @@ class Tutum < Formula
   end
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.5.1.tar.gz"
-    sha1 "9514ea08b84ffab8d28046dd3b5dcd359d239b13"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.5.3.tar.gz"
+    sha1 "11708a7021e3d0d522e145c057256d7d2acaec07"
   end
 
   resource "python-dateutil" do

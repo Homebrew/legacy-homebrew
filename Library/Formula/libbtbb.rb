@@ -2,18 +2,17 @@ require "formula"
 
 class Libbtbb < Formula
   homepage "https://github.com/greatscottgadgets/libbtbb"
-  url "https://github.com/greatscottgadgets/libbtbb/archive/2014-02-R2.tar.gz"
-  sha1 "aa94b7d92465704aa647123f11e906491a26d090"
-  version "2014-02-R2"
+  url "https://github.com/greatscottgadgets/libbtbb/archive/2014-02-R3.tar.gz"
+  sha1 "b42c19cd1965b18409661d765734adec9c1f7449"
+  version "2014-02-R3"
 
   head "https://github.com/greatscottgadgets/libbtbb.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7e326c07fe6042820a6ae908d1b1bf430e0dc188" => :yosemite
-    sha1 "03762cffc3c0c1b5e4701bbc591e585cd3ff8ce0" => :mavericks
-    sha1 "8b922ed4da9a46e0c0b963d801fcae04f74c74bd" => :mountain_lion
+    sha1 "9ce274e76c4e44bb9d5ff166b0f920ef2b6d7997" => :yosemite
+    sha1 "c35dcd7c94a2ca00db402954b1eabba33f3bab7b" => :mavericks
+    sha1 "3238e7c992e725806f3bea8b683638ab337978ab" => :mountain_lion
   end
 
   option :universal

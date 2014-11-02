@@ -1,15 +1,15 @@
-require 'formula'
+require "formula"
 
 class Osm2pgsql < Formula
-  homepage 'http://wiki.openstreetmap.org/wiki/Osm2pgsql'
-  url 'https://github.com/openstreetmap/osm2pgsql/archive/0.84.0.tar.gz'
-  sha1 '42145c39596580680f120a07a4f30f97a86a3698'
+  homepage "http://wiki.openstreetmap.org/wiki/Osm2pgsql"
+  url "https://github.com/openstreetmap/osm2pgsql/archive/0.86.0.tar.gz"
+  sha1 "243c0db886634b90563217afdc897ad49ab9a238"
 
   bottle do
     cellar :any
-    sha1 "dc345c1a9879184ad88a193e9a6ebfcf65f3750a" => :mavericks
-    sha1 "b4ecf55fdc125fccb7d994004b46938e8636fbcf" => :mountain_lion
-    sha1 "e0dd38b56230cfdad09abda16594fe978352b515" => :lion
+    sha1 "1885597bd9c3edc2cc0ff3a77eeed32e696797a7" => :yosemite
+    sha1 "c4f84d422ea950111cc2cd1d0e70a3772ab7981e" => :mavericks
+    sha1 "08b6aa91ee4a5dc51fb5ceede2974b07aa90f5a4" => :mountain_lion
   end
 
   depends_on :postgresql
@@ -33,6 +33,6 @@ class Osm2pgsql < Formula
     system "./configure", *args
     system "make"
     bin.install "osm2pgsql"
-    (share+'osm2pgsql').install 'default.style'
+    (share+"osm2pgsql").install "default.style"
   end
 end
