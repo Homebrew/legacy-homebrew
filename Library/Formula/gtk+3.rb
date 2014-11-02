@@ -21,7 +21,7 @@ class Gtkx3 < Formula
   depends_on 'cairo'
   depends_on 'jasper' => :optional
   depends_on 'atk'
-  depends_on 'at-spi2-atk'
+  depends_on 'at-spi2-atk' if build.with? "x11"
   depends_on 'gobject-introspection'
   depends_on 'gsettings-desktop-schemas' => :recommended
 
