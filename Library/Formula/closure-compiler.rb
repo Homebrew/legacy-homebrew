@@ -8,6 +8,7 @@ class ClosureCompiler < Formula
   head "https://github.com/google/closure-compiler.git"
 
   depends_on :ant => :build
+  depends_on :java => "1.7"
 
   def install
     system "ant", "clean"
