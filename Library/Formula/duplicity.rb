@@ -2,8 +2,8 @@ require "formula"
 
 class Duplicity < Formula
   homepage "http://www.nongnu.org/duplicity/"
-  url "http://code.launchpad.net/duplicity/0.6-series/0.6.24/+download/duplicity-0.6.24.tar.gz"
-  sha1 "1d0bab80cb9465080179307d969e292c7145c714"
+  url "http://code.launchpad.net/duplicity/0.6-series/0.6.25/+download/duplicity-0.6.25.tar.gz"
+  sha1 "fe0b6b0b0dc7dbc02598d96567954b48c4308420"
 
   bottle do
     cellar :any
