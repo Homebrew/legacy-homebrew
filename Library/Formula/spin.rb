@@ -2,9 +2,9 @@ require "formula"
 
 class Spin < Formula
   homepage "http://spinroot.com/spin/whatispin.html"
-  url "http://spinroot.com/spin/Src/spin640.tar.gz"
-  version "6.4.0"
-  sha1 "d777255a09970ffdb25b62098c0cf22df4bfeab4"
+  url "http://spinroot.com/spin/Src/spin642.tar.gz"
+  version "6.4.2"
+  sha1 "a3a7db806ebcc9f645cf4b61a167145c3d242242"
 
   bottle do
     cellar :any
