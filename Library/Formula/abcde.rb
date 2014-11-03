@@ -1,9 +1,9 @@
 require 'formula'
 
 class Abcde < Formula
-  homepage 'https://code.google.com/p/abcde/'
-  url 'https://abcde.googlecode.com/files/abcde-2.5.4.tar.gz'
-  sha1 'eb0a933f869faf0013bc1382511936797506d108'
+  homepage 'http://abcde.einval.com'
+  url 'http://abcde.einval.com/download/abcde-2.6.tar.gz'
+  sha1 'a1545fb63673e247c8378e9925505e23ace806dc'
 
   depends_on 'cd-discid'
   depends_on 'cdrtools'
