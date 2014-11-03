@@ -71,7 +71,7 @@ class Imagemagick < Formula
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? "ghostscript"
     args << "--without-magick-plus-plus" if build.without? "magick-plus-plus"
     args << "--enable-hdri=yes" if build.include? "enable-hdri"
-    args << "--enable-fftw=yes" if build.include? "with-fftw"
+    args << "--enable-fftw=yes" if build.with? "fftw"
 
     if build.with? "quantum-depth-32"
       quantum_depth = 32
