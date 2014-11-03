@@ -12,6 +12,9 @@ class Rethinkdb < Formula
   end
 
   depends_on :macos => :lion
+  # Embeds an older V8, whose gyp still requires the full Xcode
+  # Reported upstream: https://github.com/rethinkdb/rethinkdb/issues/2581
+  depends_on :xcode => :build
   depends_on "boost" => :build
 
   fails_with :gcc do
