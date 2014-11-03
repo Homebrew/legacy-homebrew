@@ -3,8 +3,8 @@ require "formula"
 class Watchman < Formula
   homepage "https://github.com/facebook/watchman"
   head "https://github.com/facebook/watchman.git"
-  url "https://github.com/facebook/watchman/archive/v2.9.8.tar.gz"
-  sha1 "f2ddfb5d42dce32da71dd789f63b705526fc9758"
+  url "https://github.com/facebook/watchman/archive/v3.0.0.tar.gz"
+  sha1 "cd62a0185401536455e3b6a67c3ee146e291ac9e"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -20,11 +20,13 @@ class Watchman < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
-    To increase file limits add 'kern.maxfiles=10485760' and 'kern.maxfilesperproc=10485760'
-    to /etc/sysctl.conf (use 'sysctl -w' to do so immediately).
-
-    See https://github.com/facebook/watchman#max-os-file-descriptor-limits
-    EOS
+  test do
+    system "#{bin}/watchman", "shutdown-server"
+    system "#{bin}/watchman", "watch", testpath
+    list = `#{bin}/watchman watch-list`
+    if list.index(testpath) === nil then
+      raise "failed to watch tmpdir"
+    end
+    system "#{bin}/watchman", "watch-del", testpath
   end
 end
