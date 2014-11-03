@@ -6,9 +6,9 @@ class Squid < Formula
   sha1 "a356cadc324d91c41119f96a7d1a20330866c1ac"
 
   bottle do
-    sha1 "f505e4b18fae3fc4423bce935e9e859e003f34ab" => :mavericks
-    sha1 "7454588e02bcf4ffaadb8d3b17e20db5ede2a4cf" => :mountain_lion
-    sha1 "489cd4206f99ec11bd6c6a48bfa8557e2348bed1" => :lion
+    sha1 "26d026bc8523fed17870fcdd7ef935687208232d" => :yosemite
+    sha1 "7fa50fc50e2525175d733068b3fc8c00d72eedf1" => :mavericks
+    sha1 "bdae1232126a1aa7a9eec3380d1d95184a2923ed" => :mountain_lion
   end
 
   depends_on "openssl"
