@@ -37,6 +37,10 @@ class BottleVersion < Version
     m = /-(\d{8})/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. 2007f from imap-uw-2007f.yosemite.bottle.tar.gz
+    m = /-(\d+[a-z])/.match(stem)
+    return m.captures.first unless m.nil?
+
     super
   end
 end
