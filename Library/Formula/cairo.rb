@@ -31,6 +31,7 @@ class Cairo < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --enable-gobject=yes
+      --enable-svg=yes
       --with-x
     ]
 
