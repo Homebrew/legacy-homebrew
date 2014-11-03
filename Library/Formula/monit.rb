@@ -7,9 +7,9 @@ class Monit < Formula
 
   bottle do
     cellar :any
-    sha1 "cf32163d1a47c0a7b5588890ee4ef1edb32f31a7" => :mavericks
-    sha1 "a0ca615a07138b15aa148c3eff51a53ecbf8c562" => :mountain_lion
-    sha1 "ab2521e15d9b0d565c058c22db4c2c134fe7239b" => :lion
+    sha1 "c21b130f1492f1ec2d64aaf2af28e2f7924bd3c7" => :yosemite
+    sha1 "a0a3f64fe0ef95bc2adb2e5a3a0cf5647a6d3ef5" => :mavericks
+    sha1 "1f6659744cdcfc0324d74ee0237d61ca14d62b25" => :mountain_lion
   end
 
   depends_on "openssl"
