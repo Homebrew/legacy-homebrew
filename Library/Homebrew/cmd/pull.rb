@@ -34,8 +34,12 @@ module Homebrew
     begin
       safe_system 'git', 'am', *patch_args
     rescue ErrorDuringExecution
-      system 'git', 'am', '--abort'
-      odie 'Patch failed to apply: aborted.'
+      if ARGV.include? "--resolve"
+        odie "Patch failed to apply: try to resolve it."
+      else
+        system 'git', 'am', '--abort'
+        odie 'Patch failed to apply: aborted.'
+      end
     ensure
       patchpath.unlink
     end
