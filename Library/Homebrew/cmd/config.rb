@@ -130,8 +130,8 @@ module Homebrew
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
     f.puts hardware
     f.puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
-    f.puts "Xcode: #{xcode}" if xcode
-    f.puts "CLT: #{clt}" if clt
+    f.puts "Xcode: #{xcode ? xcode : "N/A"}"
+    f.puts "CLT: #{clt ? clt : "N/A"}"
     f.puts "GCC-4.0: build #{gcc_40}" if gcc_40
     f.puts "GCC-4.2: build #{gcc_42}" if gcc_42
     f.puts "LLVM-GCC: build #{llvm}"  if llvm
