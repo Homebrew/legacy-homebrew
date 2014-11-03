@@ -5,6 +5,12 @@ class Gammaray < Formula
   url "https://github.com/KDAB/GammaRay/archive/v2.2.0.tar.gz"
   sha1 "c6055ae24b67465528b1747f2ac291adcd805a8e"
 
+  bottle do
+    sha1 "07bfe7c133e5a72e116f07b5cd65e70b6e5ee00b" => :yosemite
+    sha1 "7d1e58d5d6c9212c52445859921554c22f0f4404" => :mavericks
+    sha1 "8f1aa69e5a27f6078f3fe5c3c5b67f6caa931f55" => :mountain_lion
+  end
+
   option "without-qt4", "Build against Qt5 instead of Qt4 (default)"
   option "with-vtk", "Build with VTK-with-Qt support, for object 3D visualizer"
 
