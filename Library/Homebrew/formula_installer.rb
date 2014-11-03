@@ -19,7 +19,12 @@ class FormulaInstaller
 
   def self.mode_attr_accessor(*names)
     attr_accessor(*names)
-    names.each { |name| define_method("#{name}?") { !!send(name) }}
+    private(*names)
+    names.each do |name|
+      predicate = "#{name}?"
+      define_method(predicate) { !!send(name) }
+      private(predicate)
+    end
   end
 
   attr_reader :formula

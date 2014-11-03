@@ -1,6 +1,7 @@
 require "cmd/missing"
 require "formula"
 require "keg"
+require "language/python"
 require "version"
 
 class Volumes
@@ -1145,6 +1146,24 @@ end
       remove this environment variable.
       EOS
     end
+  end
+
+  def check_for_pth_support
+    homebrew_site_packages = Language::Python.homebrew_site_packages
+    return unless homebrew_site_packages.directory?
+    return if Language::Python.reads_brewed_pth_files? "python"
+    return unless Language::Python.in_sys_path?("python", homebrew_site_packages)
+    user_site_packages = Language::Python.user_site_packages "python"
+    <<-EOS.undent
+      Your default Python does not recognize the Homebrew site-packages
+      directory as a special site-packages directory, which means that .pth
+      files will not be followed. This means you will not be able to import
+      some modules after installing them with Homebrew, like wxpython. To fix
+      this for the current user, you can run:
+
+        mkdir -p #{user_site_packages}
+        echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
+    EOS
   end
 
   def all

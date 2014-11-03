@@ -48,21 +48,48 @@ class Caveats
   def python_caveats
     return unless keg
     return unless keg.python_site_packages_installed?
-    return if Formula["python"].installed?
-    site_packages = if f.keg_only?
-      "#{f.opt_prefix}/lib/python2.7/site-packages"
-    else
-      "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
+
+    s = nil
+    homebrew_site_packages = Language::Python.homebrew_site_packages
+    user_site_packages = Language::Python.user_site_packages "python"
+    pth_file = user_site_packages/"homebrew.pth"
+    instructions = <<-EOS.undent.gsub(/^/, "  ")
+      mkdir -p #{user_site_packages}
+      echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{pth_file}
+    EOS
+
+    if f.keg_only?
+      keg_site_packages = f.opt_prefix/"lib/python2.7/site-packages"
+      unless Language::Python.in_sys_path?("python", keg_site_packages)
+        s = <<-EOS.undent
+          If you need Python to find bindings for this keg-only formula, run:
+            echo #{keg_site_packages} >> #{homebrew_site_packages/f.name}.pth
+        EOS
+        s += instructions unless Language::Python.reads_brewed_pth_files?("python")
+      end
+      return s
     end
-    dir = "~/Library/Python/2.7/lib/python/site-packages"
-    dir_path = Pathname.new(dir).expand_path
-    file = "#{dir}/homebrew.pth"
-    file_path = Pathname.new(file).expand_path
-    if !file_path.readable? || !file_path.read.include?(site_packages)
-      s = "If you need Python to find the installed site-packages:\n"
-      s += "  mkdir -p #{dir}\n" unless dir_path.exist?
-      s += "  echo '#{site_packages}' > #{file}"
+
+    return if Language::Python.reads_brewed_pth_files?("python")
+
+    if !Language::Python.in_sys_path?("python", homebrew_site_packages)
+      s = <<-EOS.undent
+        Python modules have been installed and Homebrew's site-packages is not
+        in your Python sys.path, so you will not be able to import the modules
+        this formula installed. If you plan to develop with these modules,
+        please run:
+      EOS
+      s += instructions
+    elsif keg.python_pth_files_installed?
+      s = <<-EOS.undent
+        This formula installed .pth files to Homebrew's site-packages and your
+        Python isn't configured to process them, so you will not be able to
+        import the modules this formula installed. If you plan to develop
+        with these modules, please run:
+      EOS
+      s += instructions
     end
+    s
   end
 
   def app_caveats
