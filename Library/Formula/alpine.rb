@@ -1,27 +1,36 @@
-require 'formula'
+require "formula"
 
 class Alpine < Formula
-  homepage 'http://www.washington.edu/alpine/'
-  url 'ftp://ftp.cac.washington.edu/alpine/alpine-2.00.tar.gz'
-  sha1 '363b3aa5d3eb1319e168639fbbc42b033b16f15b'
+  homepage "http://patches.freeiz.com/alpine/release/"
+  url "http://patches.freeiz.com/alpine/release/src/alpine-2.11.tar.xz"
+  mirror "https://www.mpeters.org/mirror/alpine-2.11.tar.xz"
+  sha1 "656556f5d2e5ec7e3680d1760cd02aa3a0072c46"
 
-  # Upstream builds are broken on Snow Leopard due to a hack put in for prior
-  # versions of OS X. See: http://trac.macports.org/ticket/20971
+  # Patch for Alpine 2.11 to fix compile issues
+  # Adapted from https://trac.macports.org/ticket/38091
   patch do
-    url "https://trac.macports.org/export/89747/trunk/dports/mail/alpine/files/alpine-osx-10.6.patch"
-    sha1 "8cc6b95b6aba844ceef8454868b8f2c205de9792"
+    url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Alpine/alpine-2.11_patch.diff"
+    sha1 "cf280a0354673ea8aa1ee7834dc066a1732df549"
   end
 
   # Fails to build against Tcl 8.6; reported upstream:
   # http://mailman2.u.washington.edu/pipermail/alpine-info/2013-September/005291.html
+  # Bug still present in 2.11.
   patch :DATA
+
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   def install
     ENV.j1
+    ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--with-ssl-include-dir=/usr/include/openssl"
-    system "make install"
+                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}",
+                          "--with-ssl-include-dir=#{Formula["openssl"].opt_prefix}/include/openssl",
+                          "--with-ssl-lib-dir=#{Formula["openssl"].opt_prefix}/lib",
+                          "--with-ssl-certs-dir=#{etc}/openssl/certs"
+    system "make", "install"
   end
 end
 
