@@ -2,8 +2,8 @@ require 'formula'
 
 class Ssdb < Formula
   homepage "http://ssdb.io/?lang=en"
-  url "https://github.com/ideawu/ssdb/archive/1.6.8.8.tar.gz"
-  sha1 "2d63cb0ba176bf6c463a70e7a3b39f8cc326d5d7"
+  url "https://github.com/ideawu/ssdb/archive/1.7.0.1.tar.gz"
+  sha1 "90c06e31a5e7c921363ea88d2595d593d42ff607"
   head "https://github.com/ideawu/ssdb.git", :branch => "master"
 
   bottle do
