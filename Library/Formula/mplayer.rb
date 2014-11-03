@@ -30,11 +30,13 @@ class Mplayer < Formula
     patch :DATA
   end
 
+  option 'with-enca', 'Enable ENCA support'
   option 'without-osd', 'Build without OSD'
 
   depends_on 'yasm' => :build
   depends_on 'libcaca' => :optional
   depends_on :x11 => :optional
+  depends_on 'enca' if build.with? 'enca'
 
   deprecated_option "with-x" => "with-x11"
 
@@ -70,6 +72,7 @@ class Mplayer < Formula
     ]
 
     args << "--enable-menu" if build.with? 'osd'
+    args << "--enable-enca" if build.with? 'enca'
     args << "--disable-x11" if build.without? 'x11'
     args << "--enable-freetype" if build.with?('osd') || build.with?('x11')
     args << "--enable-caca" if build.with? 'libcaca'
