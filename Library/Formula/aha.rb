@@ -2,8 +2,8 @@ require "formula"
 
 class Aha < Formula
   homepage "https://github.com/theZiz/aha"
-  url "https://github.com/theZiz/aha/archive/0.4.7.2.tar.gz"
-  sha1 "09933fddb02b3129a690eb3d7d140edb97ac0627"
+  url "https://github.com/theZiz/aha/archive/0.4.7.3.tar.gz"
+  sha1 "cc158029efb9dcf138fa20696f07f15ab785b035"
 
   def install
     system "make"
