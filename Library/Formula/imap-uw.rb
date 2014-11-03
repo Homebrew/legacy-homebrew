@@ -6,6 +6,13 @@ class ImapUw < Formula
   mirror 'http://ftp.ntua.gr/pub/net/mail/imap/imap-2007f.tar.gz'
   sha1 '7a82ebd5aae57a5dede96ac4923b63f850ff4fa7'
 
+  bottle do
+    cellar :any
+    sha1 "74c958abb4628c752632abf47cfc7b96ab034e8b" => :yosemite
+    sha1 "8e635bb16b3053ff8bef24fc8261c572fa48ea91" => :mavericks
+    sha1 "a68b0990595cefe59e74b8aab30928ab37cbf6f4" => :mountain_lion
+  end
+
   depends_on "openssl"
 
   def install
