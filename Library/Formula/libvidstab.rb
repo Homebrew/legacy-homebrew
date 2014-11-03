@@ -7,9 +7,10 @@ class Libvidstab < Formula
 
   bottle do
     cellar :any
-    sha1 "1cabec8b4661d8118dfae224efc1edbfb6ae87f4" => :mavericks
-    sha1 "08b6aa92e1dbc9baa82463fc59c9638baf7f8483" => :mountain_lion
-    sha1 "b9e8d199d534d5aeb77df66e712613b3c70a5c91" => :lion
+    revision 1
+    sha1 "57958e5826781bbf10929f918c36a2ac54dc52bd" => :yosemite
+    sha1 "be60ee3921484efe3f90495b24046437c84498b5" => :mavericks
+    sha1 "05e50798e9cf4120ae96dba00f1fed578f481cf0" => :mountain_lion
   end
 
   depends_on "cmake" => :build

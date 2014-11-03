@@ -11,15 +11,15 @@
 # --email:        Generate an email subject file.
 # --no-bottle:    Run brew install without --build-bottle
 # --HEAD:         Run brew install with --HEAD
-# --local:        Ask Homebrew to write verbose logs under ./logs/
+# --local:        Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
 # --tap=<tap>:    Use the git repository of the given tap
 # --dry-run:      Just print commands, don't run them.
+# --fail-fast:    Immediately exit on a failing step.
 #
 # --ci-master:         Shortcut for Homebrew master branch CI options.
 # --ci-pr:             Shortcut for Homebrew pull request CI options.
 # --ci-testing:        Shortcut for Homebrew testing CI options.
-# --ci-pr-upload:      Homebrew CI pull request bottle upload.
-# --ci-testing-upload: Homebrew CI testing bottle upload.
+# --ci-upload:         Homebrew CI bottle upload.
 
 require 'formula'
 require 'utils'
@@ -30,10 +30,12 @@ require 'rexml/cdata'
 
 module Homebrew
   EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
+  BYTES_IN_1_MEGABYTE = 1024*1024
 
   def homebrew_git_repo tap=nil
     if tap
-        HOMEBREW_LIBRARY/"Taps/#{tap}"
+        user, repo = tap.split "/"
+        HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
       else
         HOMEBREW_REPOSITORY
       end
@@ -133,6 +135,8 @@ module Homebrew
         end
         FileUtils.rm(log) unless ARGV.include? "--keep-logs"
       end
+
+      exit 1 if ARGV.include?("--fail-fast") && @status == :failed
     end
   end
 
@@ -152,7 +156,13 @@ module Homebrew
 
       # Tap repository if required, this is done before everything else
       # because Formula parsing and/or git commit hash lookup depends on it.
-      test "brew", "tap", @tap if @tap && @repository_requires_tapping
+      if @tap
+        if @repository_requires_tapping
+          test "brew", "tap", @tap
+        else
+          test "brew", "tap", "--repair"
+        end
+      end
 
       begin
         formula = Formulary.factory(argument)
@@ -167,7 +177,7 @@ module Homebrew
       elsif formula
         @formulae = [argument]
       else
-        odie "#{argument} is not a pull request URL, commit URL or formula name."
+        raise ArgumentError.new("#{argument} is not a pull request URL, commit URL or formula name.")
       end
 
       @category = __method__
@@ -220,28 +230,22 @@ module Homebrew
 
       # Use Jenkins environment variables if present.
       if no_args? and ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT'] \
-         and not ENV['ghprbPullId']
+         and not ENV['ghprbPullLink']
         diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
         diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
         test "brew", "update" if current_branch == "master"
-      elsif @hash or @url
+      elsif @hash
         diff_start_sha1 = current_sha1
         test "brew", "update" if current_branch == "master"
         diff_end_sha1 = current_sha1
+      elsif @url
+        test "brew", "update" if current_branch == "master"
       end
 
       # Handle Jenkins pull request builder plugin.
-      if ENV['ghprbPullId'] and ENV['GIT_URL']
-        git_url = ENV['GIT_URL']
-        git_match = git_url.match %r{.*github.com[:/](\w+/\w+).*}
-        if git_match
-          github_repo = git_match[1]
-          pull_id = ENV['ghprbPullId']
-          @url = "https://github.com/#{github_repo}/pull/#{pull_id}"
-          @hash = nil
-        else
-          puts "Invalid 'ghprbPullId' environment variable value!"
-        end
+      if ENV['ghprbPullLink']
+        @url = ENV['ghprbPullLink']
+        @hash = nil
       end
 
       if no_args?
@@ -257,7 +261,8 @@ module Homebrew
         diff_end_sha1 = @hash
         @name = @hash
       elsif @url
-        test "git", "checkout", current_sha1
+        diff_start_sha1 = current_sha1
+        test "git", "checkout", diff_start_sha1
         test "brew", "pull", "--clean", @url
         diff_end_sha1 = current_sha1
         @short_url = @url.gsub('https://github.com/', '')
@@ -535,10 +540,12 @@ module Homebrew
     end
 
     if ARGV.include? '--local'
+      ENV['HOME'] = "#{Dir.pwd}/home"
+      mkdir_p ENV['HOME']
       ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
     end
 
-    if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
+    if ARGV.include? '--ci-upload'
       jenkins = ENV['JENKINS_HOME']
       job = ENV['UPSTREAM_JOB_NAME']
       id = ENV['UPSTREAM_BUILD_ID']
@@ -561,10 +568,7 @@ module Homebrew
       safe_system "git", "checkout", "-f", "master"
       safe_system "git", "reset", "--hard", "origin/master"
       safe_system "brew", "update"
-
-      if ARGV.include? '--ci-pr-upload'
-        safe_system "brew", "pull", "--clean", pr
-      end
+      safe_system "brew", "pull", "--clean", pr if pr
 
       ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
@@ -595,8 +599,15 @@ module Homebrew
       tests << test
     else
       ARGV.named.each do |argument|
-        test = Test.new(argument, tap)
-        any_errors ||= !test.run
+        test_error = false
+        begin
+          test = Test.new(argument, tap)
+          test_error = !test.run
+        rescue ArgumentError => e
+          test_error = true
+          ofail e.message
+        end
+        any_errors ||= test_error
         tests << test
       end
     end
@@ -621,7 +632,12 @@ module Homebrew
             if output.respond_to?(:force_encoding) && !output.valid_encoding?
               output.force_encoding(Encoding::UTF_8)
             end
-            output = REXML::CData.new output.delete("\000\a\b\e\f")
+            output = output.delete("\000\a\b\e\f")
+            if output.bytesize > BYTES_IN_1_MEGABYTE
+              output = "truncated output to 1MB:\n" \
+                + output.slice(-BYTES_IN_1_MEGABYTE, BYTES_IN_1_MEGABYTE)
+            end
+            output = REXML::CData.new output
             if step.passed?
               system_out = testcase.add_element 'system-out'
               system_out.text = output

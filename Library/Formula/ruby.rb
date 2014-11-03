@@ -1,34 +1,34 @@
-require 'formula'
+require "formula"
 
 class Ruby < Formula
-  homepage 'https://www.ruby-lang.org/'
-  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.3.tar.bz2"
-  sha256 "36ce72f84ae4129f6cc66e33077a79d87b018ea7bf1dbc3d353604bf006f76d6"
+  homepage "https://www.ruby-lang.org/"
+  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.4.tar.bz2"
+  sha256 "f37f11a8c75ab9215bb9f61246ef98e0e57e1409f0872e5cf59033edcf5b8d2a"
 
   bottle do
-    sha1 "34c2401deda99d4eebce57cb8322b023f3c444da" => :mavericks
-    sha1 "b8a67f6b49092db28af84c0e8f7a26ef4519c3fb" => :mountain_lion
-    sha1 "5c39e19039dc0a6e9230ff3ad4737d53bdd55f32" => :lion
+    sha1 "c3c2fd70a2963266ba420e9a31cf3161350fc8d7" => :yosemite
+    sha1 "f424670929f81863cbf4209d7d096301fb271042" => :mavericks
+    sha1 "093abf8b650ba5edaaa9f228b7381ffc8aa079cb" => :mountain_lion
   end
 
   head do
-    url 'http://svn.ruby-lang.org/repos/ruby/trunk/'
+    url "http://svn.ruby-lang.org/repos/ruby/trunk/"
     depends_on "autoconf" => :build
   end
 
   option :universal
-  option 'with-suffix', 'Suffix commands with "21"'
-  option 'with-doc', 'Install documentation'
-  option 'with-tcltk', 'Install with Tcl/Tk support'
+  option "with-suffix", "Suffix commands with '21'"
+  option "with-doc", "Install documentation"
+  option "with-tcltk", "Install with Tcl/Tk support"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'readline' => :recommended
-  depends_on 'gdbm' => :optional
-  depends_on 'gmp' => :optional
-  depends_on 'libffi' => :optional
-  depends_on 'libyaml'
-  depends_on 'openssl'
-  depends_on :x11 if build.with? 'tcltk'
+  depends_on "pkg-config" => :build
+  depends_on "readline" => :recommended
+  depends_on "gdbm" => :optional
+  depends_on "gmp" => :optional
+  depends_on "libffi" => :optional
+  depends_on "libyaml"
+  depends_on "openssl"
+  depends_on :x11 if build.with? "tcltk"
 
   fails_with :llvm do
     build 2326
@@ -70,7 +70,7 @@ class Ruby < Formula
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Customize rubygems to look/install in the global gem directory
     # instead of in the Cellar, making gems last across reinstalls
@@ -142,7 +142,7 @@ class Ruby < Formula
   end
 
   test do
-    output = `#{bin}/ruby -e 'puts "hello"'`
+    output = `#{bin}/ruby -e "puts 'hello'"`
     assert_equal "hello\n", output
     assert_equal 0, $?.exitstatus
   end

@@ -6,9 +6,10 @@ class Flex < Formula
   sha1 'db4b140f2aff34c6197cab919828cc4146aae218'
 
   bottle do
-    sha1 "ea93eb8bc57868e9e4cfe50ab39fc3c7f2ccbb58" => :mavericks
-    sha1 "ec164496e9eec22a920e935f57dea4bc16fa4afd" => :mountain_lion
-    sha1 "654c2f9978368c6f761720f7fa1a29127bf9deea" => :lion
+    revision 1
+    sha1 "0a2bb0ce9a49330e5fd40b6e409a353972cf8840" => :yosemite
+    sha1 "0dd7fc9c36a6258b2e456e7dd0c5818d07e2a2ea" => :mavericks
+    sha1 "69b5f449a9c0bf5fd37f999dca5ccfd120a6f389" => :mountain_lion
   end
 
   keg_only :provided_by_osx, 'Some formulae require a newer version of flex.'

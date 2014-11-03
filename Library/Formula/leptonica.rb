@@ -7,10 +7,10 @@ class Leptonica < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ad82e1ecacdee2428e2c7426198969db363a09c5" => :mavericks
-    sha1 "971d13992a410a6d4907cb4c964151ae5cd5ffe2" => :mountain_lion
-    sha1 "9e58252edeb5ef713a24fe89a154cd25ec98b0a9" => :lion
+    revision 2
+    sha1 "6d6139b159eb9cc8827932362b015530d867303a" => :yosemite
+    sha1 "4f6aef3ad34456c8d683ed316d9b5768862aeb87" => :mavericks
+    sha1 "b32efefe40bba7e3d96ccde1271c5856110611ce" => :mountain_lion
   end
 
   depends_on 'libpng' => :recommended

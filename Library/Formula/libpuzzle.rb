@@ -7,9 +7,10 @@ class Libpuzzle < Formula
 
   bottle do
     cellar :any
-    sha1 "58eaf72cba24d8fa442dd881a78447ecf9d266ef" => :mavericks
-    sha1 "23522a897cecc2a5da709100b46c8943d773149e" => :mountain_lion
-    sha1 "646e0c749303931af5741d22dd9de81655ab23ae" => :lion
+    revision 1
+    sha1 "8b59bfe2bd8fb5c5105d9b826006e02191703278" => :yosemite
+    sha1 "8ba8f68799caa46c1a47dd66552fccfbb3f74afa" => :mavericks
+    sha1 "eb9791c2c0bb5429a31da0fa23a95e5df0be6f9b" => :mountain_lion
   end
 
   depends_on 'gd'

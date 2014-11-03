@@ -6,9 +6,10 @@ class GsettingsDesktopSchemas < Formula
   sha256 "cf3ba58f6257155080b1872b4a6ce4a2424bb7af3f08e607b428cb47b065f2d7"
 
   bottle do
-    sha1 "534f1701a99817b10713dce36014eb4b48e77888" => :mavericks
-    sha1 "2c13acc850fe91b08e400efa50091992cca5cf89" => :mountain_lion
-    sha1 "3622f61020b21764167881396a164159c1e1b42d" => :lion
+    revision 1
+    sha1 "23d7c8b2d97fc5a9957573c140da28afe8acfacb" => :yosemite
+    sha1 "2bcb5e43cdefd81eef7e3bc45b9df4b7d8c2c847" => :mavericks
+    sha1 "b812cc34c9f54f053707cd4a5f5995cf903dd278" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

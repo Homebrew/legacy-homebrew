@@ -6,9 +6,10 @@ class DBus < Formula
   sha1 "e0d10e8b4494383c7e366ac80a942ba45a705a96"
 
   bottle do
-    sha1 "52ccc0020b2509ceb76f091d9d9b218da69bef9c" => :mavericks
-    sha1 "3c9477e550084961fa7f5112b791ff4a2d012e2e" => :mountain_lion
-    sha1 "a14cb84cdb5e6ea7da0b808c336bed7fe2068038" => :lion
+    revision 1
+    sha1 "6258f4a3816c909fe3ef9aa9da7b596c56471d1e" => :yosemite
+    sha1 "de9cc0897fadf951d0a915263ec8303ce3f27e23" => :mavericks
+    sha1 "6132e9f82c522fef668c31319bd8c03ae42dfcda" => :mountain_lion
   end
 
   # Upstream fix for O_CLOEXEC portability

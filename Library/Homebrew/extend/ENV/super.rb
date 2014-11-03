@@ -46,7 +46,7 @@ module Superenv
     self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE.to_s
     self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX.to_s
     self['HOMEBREW_TEMP'] = HOMEBREW_TEMP.to_s
-    self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
+    self['HOMEBREW_SDKROOT'] = effective_sysroot
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
     self['HOMEBREW_ARCHFLAGS'] = ''
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
@@ -58,12 +58,6 @@ module Superenv
     self["HOMEBREW_ISYSTEM_PATHS"] = determine_isystem_paths
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
-
-    # On 10.9 the developer tools honor the correct sysroot by default.
-    # On 10.7 and 10.8 we need to set it ourselves.
-    if MacOS::Xcode.without_clt? && (MacOS.version <= "10.8" || compiler != :clang)
-      self["HOMEBREW_SYSROOT"] = effective_sysroot
-    end
 
     # On 10.9, the tools in /usr/bin proxy to the active developer directory.
     # This means we can use them for any combination of CLT and Xcode.
@@ -96,7 +90,7 @@ module Superenv
   end
 
   def effective_sysroot
-    if MacOS::Xcode.without_clt? then MacOS.sdk_path.to_s else "" end
+    MacOS::Xcode.without_clt? ? MacOS.sdk_path.to_s : nil
   end
 
   def determine_cxx

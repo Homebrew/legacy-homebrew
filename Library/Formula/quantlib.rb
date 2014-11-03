@@ -7,9 +7,10 @@ class Quantlib < Formula
 
   bottle do
     cellar :any
-    sha1 "4159c617207a756fc39e11755c8c0c41562ac48d" => :mavericks
-    sha1 "d556348c0d2d44fe2b24167a99c8ac5c3c26bb79" => :mountain_lion
-    sha1 "8fdc268cab283a11967df58489aa6df60c8f8779" => :lion
+    revision 1
+    sha1 "05127a732538048ea590627c768c83c9034ccf5d" => :yosemite
+    sha1 "eff03577fd90569d8541d64161d9e08851d71ba8" => :mavericks
+    sha1 "19d71ade61f7f55518dfed37ffa46114357b2056" => :mountain_lion
   end
 
   option :cxx11

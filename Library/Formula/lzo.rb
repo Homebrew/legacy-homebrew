@@ -7,9 +7,10 @@ class Lzo < Formula
 
   bottle do
     cellar :any
-    sha1 "c5faa08e3758afbeba605a31bb4b4c0c7b1cd25c" => :mavericks
-    sha1 "019f27adfb514ef4dfdd8b80337e0f3f1485fa0c" => :mountain_lion
-    sha1 "8dd58a1646f3473722302b831022ba7a2630e0fb" => :lion
+    revision 1
+    sha1 "fc54913e0f6dc60b981dd6526995ef0679efaabc" => :yosemite
+    sha1 "d732cb14e6182d58a04362f80a27142dccf88677" => :mavericks
+    sha1 "eba9019e3538d22f2c6a268c8736f34db468fa29" => :mountain_lion
   end
 
   def install

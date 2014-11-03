@@ -8,14 +8,16 @@ class Ffmpeg < Formula
   head "git://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha1 "b476891765fc940292fa78c4da061895751e729c" => :mavericks
-    sha1 "544f1cde3092c93fc48cde7819734d569e4e2b50" => :mountain_lion
-    sha1 "7d90c8cfe90b524706f78a936f74824b6036f824" => :lion
+    revision 1
+    sha1 "3ec4fe17082336a1d8bde43aa52af094760dedbb" => :yosemite
+    sha1 "e6de1a13aa53860fbf3e2b812d5c17df35306b5b" => :mavericks
+    sha1 "0bdfcdecc609fb9a1ae4fab42123f6cf0e477c1b" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder"
+  option "without-qtkit", "Disable deprecated QuickTime framework"
 
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
@@ -101,6 +103,7 @@ class Ffmpeg < Formula
     args << "--enable-libquvi" if build.with? "libquvi"
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
+    args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"

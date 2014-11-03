@@ -37,6 +37,8 @@ class Valgrind < Formula
   end
 
   depends_on :macos => :snow_leopard
+  # Revisit the below requirement with each release
+  depends_on MaximumMacOSRequirement => :mavericks
 
   # Valgrind needs vcpreload_core-*-darwin.so to have execute permissions.
   # See #2150 for more information.

@@ -7,9 +7,10 @@ class Libgnomecanvasmm < Formula
 
   bottle do
     cellar :any
-    sha1 "63365ca38fad41bd2eb61dcaf90f7a361d7b8869" => :mavericks
-    sha1 "045945b94afbed4dc5205ef982c8de603f254a6a" => :mountain_lion
-    sha1 "687414876a0ea73819cae4e7e43fbe63eba3bacd" => :lion
+    revision 1
+    sha1 "55adaa50f257add1c5b6660df1c0423a37f6d730" => :yosemite
+    sha1 "55ef92e8c51a6421a844e138e007cae15d0b9e0d" => :mavericks
+    sha1 "dcf3306ac9ab19171a2c3d05151fb8f020b96b4e" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

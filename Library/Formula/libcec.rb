@@ -7,9 +7,10 @@ class Libcec < Formula
 
   bottle do
     cellar :any
-    sha1 "2e3d47fd5de28a92572fc112ef28f64f02a25d0b" => :mavericks
-    sha1 "b926b847e6a6bd53d42b0af7317846fb73ce20b2" => :mountain_lion
-    sha1 "ab69ed933cb155203a69683e8a4ef4248d87d589" => :lion
+    revision 1
+    sha1 "15c6c1b20a5d4847017d0d0a1f02c3519080a236" => :yosemite
+    sha1 "26a55716130e364641b6eec32e56ad41b7a7e7a3" => :mavericks
+    sha1 "34efc22ee55549ddee07ffc17f3647b8fe180399" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

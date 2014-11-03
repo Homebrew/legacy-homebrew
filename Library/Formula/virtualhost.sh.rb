@@ -2,8 +2,8 @@ require 'formula'
 
 class VirtualhostSh < Formula
   homepage 'https://github.com/virtualhost/virtualhost.sh'
-  url 'https://github.com/virtualhost/virtualhost.sh/archive/1.31.tar.gz'
-  sha1 '25954027dbed14843123bea4efd498cd2abfc4a0'
+  url 'https://github.com/virtualhost/virtualhost.sh/archive/1.32.tar.gz'
+  sha1 'dc307937e10c2a5948c59ff2ece6495763415b77'
 
   head 'https://github.com/virtualhost/virtualhost.sh.git'
 

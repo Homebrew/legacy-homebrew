@@ -8,9 +8,10 @@ class Ilmbase < Formula
 
   bottle do
     cellar :any
-    sha1 "67cf40c3005626fb67d16d65dd06dade0ebcbf6f" => :mavericks
-    sha1 "1a307dc1f9aa13166527fe9cf86002462eff76fb" => :mountain_lion
-    sha1 "20913f21a73681bc3761037be29ba44ea5feed29" => :lion
+    revision 1
+    sha1 "54e793d8813ee0fdf354d4bee73d01e28fbfde03" => :yosemite
+    sha1 "34c4d4dfc3fe428e82bf52e92ae74dad395b2b04" => :mavericks
+    sha1 "3e5f72f788db233cdd7088349dbec90e4de950db" => :mountain_lion
   end
 
   def install

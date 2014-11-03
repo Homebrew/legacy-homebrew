@@ -6,9 +6,10 @@ class Libnfc < Formula
   sha1 '5adfb6c6238b1659ad8609837dc8e59eb41a8768'
 
   bottle do
-    sha1 "6ef108d4cfb9dd7b7de6c8b487e84b013d791b6b" => :mavericks
-    sha1 "90ecfb5007d2536460e09331f9ac0ab3d5e99d4f" => :mountain_lion
-    sha1 "3797f5f195e93da48dea1b09ce2fc9d190df7365" => :lion
+    revision 1
+    sha1 "330b1d514c35dcf992e691b0b37b0ac295c1ff92" => :yosemite
+    sha1 "cc8ed520b9f18458802d6737faacaa47c6d834ec" => :mavericks
+    sha1 "bdae0709e9278e58a5438a93922055e7831ed90a" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

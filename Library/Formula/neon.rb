@@ -8,10 +8,10 @@ class Neon < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "6370730a5ce654fbc6661fd7e9427a6c5cc45470" => :mavericks
-    sha1 "a39df7b0c029d12ebeb31eeb2771ab31e5882d1e" => :mountain_lion
-    sha1 "8e864f76ea0fc8b2db4acbaf7ba0abca5e4efe3a" => :lion
+    revision 2
+    sha1 "ed7c8ab5a2126bb63a15b5996c520326d38d316e" => :yosemite
+    sha1 "b3d7e993759808bf9797a26a1d6d12f9e4d72206" => :mavericks
+    sha1 "2273ce25ead7be557b71101303cfda284364cd7b" => :mountain_lion
   end
 
   keg_only :provided_by_osx

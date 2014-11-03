@@ -7,9 +7,10 @@ class Libexif < Formula
 
   bottle do
     cellar :any
-    sha1 "4d59cec33b869a8f18b7c2bb8efdf089075f97ee" => :mavericks
-    sha1 "41409da6d22a77fd545912058a6ceb41ec2c33cd" => :mountain_lion
-    sha1 "19e0943cb26d67b2b974438f5ec4e63e78e0eadd" => :lion
+    revision 1
+    sha1 "7fd580b7289a4d3ace04575ed44e8005feb63691" => :yosemite
+    sha1 "170009ee38c18d24a06a6ab0bf2c957cf8b378c2" => :mavericks
+    sha1 "4af9a9537c52e59594d313b8decbffc0b12fbf7a" => :mountain_lion
   end
 
   fails_with :llvm do

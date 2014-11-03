@@ -7,9 +7,10 @@ class Pixman < Formula
 
   bottle do
     cellar :any
-    sha1 "60ef712e79cb90762dfb4d3af361b5b5d9a0caac" => :mavericks
-    sha1 "b71ef451728c982f8a16edf7d93032a6f8ddbbf6" => :mountain_lion
-    sha1 "2c2239c33b62feb61fba0a55cfd19f9d3d7ee443" => :lion
+    revision 1
+    sha1 "8f47ec83a3ce8bf6bf41676b3143286c8dbb85bd" => :yosemite
+    sha1 "9670f838299329540839e49026849db0f394f261" => :mavericks
+    sha1 "9012f57f5b65b3f1a3dfec6b91be7f66e955a3e4" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

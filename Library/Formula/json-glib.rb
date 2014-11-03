@@ -6,9 +6,10 @@ class JsonGlib < Formula
   sha256 "887bd192da8f5edc53b490ec51bf3ffebd958a671f5963e4f3af32c22e35660a"
 
   bottle do
-    sha1 "663248e7dce058f796836a01b0b37d82b7d2c942" => :mavericks
-    sha1 "b786fdf1a2c03efd5b67a34779e0e345224684a1" => :mountain_lion
-    sha1 "4d01ece8773d3893db5f0f1b2c4c4618a3dbd4ae" => :lion
+    revision 2
+    sha1 "58daae021ca6c990a0e29e5b7c72699ca4e4800a" => :yosemite
+    sha1 "18168428af31175e10e4c9f52809c58c6afebc22" => :mavericks
+    sha1 "64de84e6abc6bcc2700e45d6288646d14bf5fc05" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -2,8 +2,15 @@ require "formula"
 
 class Pgbadger < Formula
   homepage "http://dalibo.github.io/pgbadger/"
-  url "https://downloads.sourceforge.net/project/pgbadger/5.1/pgbadger-5.1.tar.gz"
-  sha1 "5bc183b7b8a185689ea43fd15fee60239a3fd55b"
+  url "https://downloads.sourceforge.net/project/pgbadger/6.2/pgbadger-6.2.tar.gz"
+  sha1 "46f6935ff746f8b2002009ebbcae60d23aaff8b3"
+
+  bottle do
+    cellar :any
+    sha1 "9616da60ee7c521b8f03e747ac7ec558059be8ed" => :yosemite
+    sha1 "41b734655e5c158be3e585e8108b8cab67017004" => :mavericks
+    sha1 "029768bd3f29fc116c531bc16edc42fb77c30ff7" => :mountain_lion
+  end
 
   def install
     system "perl", "Makefile.PL", "DESTDIR=."

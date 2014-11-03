@@ -8,9 +8,10 @@ class Xplanetfx < Formula
 
   bottle do
     cellar :any
-    sha1 "405addc419e4e61202706d984e7b4c68204f0d4c" => :mavericks
-    sha1 "93284f0dd9e525bf5561abf542fda1ad8e5a79b2" => :mountain_lion
-    sha1 "8874574087f4766366491c006b83b0186f01ae0d" => :lion
+    revision 1
+    sha1 "ab142c8f11896b22de34e9cfbd5bfc61bb847003" => :yosemite
+    sha1 "5efddfd3860035daa87ff251dfa60364f8bf0eb9" => :mavericks
+    sha1 "da82091b30b766eb89d8130f4efe405f02d8d55a" => :mountain_lion
   end
 
   option "without-perlmagick", "Build without PerlMagick support - used to check cloud map downloads"
@@ -36,14 +37,17 @@ class Xplanetfx < Formula
 
     prefix.install "bin", "share"
 
-    sPATH = "#{Formula["coreutils"].opt_prefix}/libexec/gnubin"
-    sPATH += ":#{Formula["gnu-sed"].opt_prefix}/libexec/gnubin" if build.with?("gnu-sed")
-    ENV.prepend_create_path "PERL5LIB", "#{HOMEBREW_PREFIX}/lib/perl5/site_perl/5.16.2" if build.with?("perlmagick")
+    path = "#{Formula["coreutils"].opt_libexec}/gnubin"
+    path += ":#{Formula["gnu-sed"].opt_libexec}/gnubin" if build.with?("gnu-sed")
+    if build.with?("perlmagick")
+      perl_version = `/usr/bin/perl -e 'printf "%vd", $^V;'`
+      ENV.prepend_create_path "PERL5LIB", "#{HOMEBREW_PREFIX}/lib/perl5/site_perl/#{perl_version}"
+    end
     if build.with?("gui")
       ENV.prepend_create_path "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages/gtk-2.0"
       ENV.prepend_create_path "GDK_PIXBUF_MODULEDIR", "#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
     end
-    bin.env_script_all_files(libexec+'bin', :PATH => "#{sPATH}:$PATH", :PYTHONPATH => ENV["PYTHONPATH"], :PERL5LIB => ENV["PERL5LIB"], :GDK_PIXBUF_MODULEDIR => ENV["GDK_PIXBUF_MODULEDIR"])
+    bin.env_script_all_files(libexec+'bin', :PATH => "#{path}:$PATH", :PYTHONPATH => ENV["PYTHONPATH"], :PERL5LIB => ENV["PERL5LIB"], :GDK_PIXBUF_MODULEDIR => ENV["GDK_PIXBUF_MODULEDIR"])
   end
 
   def post_install

@@ -15,9 +15,10 @@ class Pango < Formula
   end
 
   bottle do
-    sha1 "f3b30fdcf3f70a1c000d56d54580332623b7a80a" => :mavericks
-    sha1 "c2350116ce922feff1dc776178b96fdb17128782" => :mountain_lion
-    sha1 "31966ca275095ab6b35955469dfe64f3a0104277" => :lion
+    revision 1
+    sha1 "b30d81e5b4b90792e14aa02b273fcf93e9675fc7" => :yosemite
+    sha1 "eb30e96c1d896cd8fc7e1053513b3e298645c9af" => :mavericks
+    sha1 "ea288645c2ca58b4addf29c0140fb3ecec6ea3ab" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

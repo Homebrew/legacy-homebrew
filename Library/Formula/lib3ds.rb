@@ -7,9 +7,10 @@ class Lib3ds < Formula
 
   bottle do
     cellar :any
-    sha1 "53ae4cb6db633897d434cdfe95b07ca516dd1717" => :mavericks
-    sha1 "db5fdf01d5a6b33ca98bd5a6be84ca9861e4685e" => :mountain_lion
-    sha1 "888a38373b52991adeaa1c91d46fe89cb7e820cb" => :lion
+    revision 1
+    sha1 "73e8d8c384e541a8f00b0a9e5512c8d51e2140ab" => :yosemite
+    sha1 "cfeeba0b43b699344e74faf55536c008c97791cc" => :mavericks
+    sha1 "40bea2c7a1bad1d1516e04cd3bdb88b967270b7d" => :mountain_lion
   end
 
   def install

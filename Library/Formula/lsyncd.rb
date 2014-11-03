@@ -30,7 +30,7 @@ class Lsyncd < Formula
     "10.9.3" => ["xnu-2422.100.13.tar.gz", "3c02b0b43947d4af3363ada0c77310d4c1e501b5"],
     "10.9.4" => ["xnu-2422.110.17.tar.gz", "64eff89852eaa10b298ee58c0a1c92da8283f459"],
     "10.9.5" => ["xnu-2422.115.4.tar.gz", "48207e250422be7e78d238cd8b4d741ac98856df"],
-    "10.10"  => ["xnu-2422.115.4.tar.gz", "48207e250422be7e78d238cd8b4d741ac98856df"],
+    "10.10"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
   }
 
   # TODO wrap MACOS_FULL_VERSION in a MacOS module method

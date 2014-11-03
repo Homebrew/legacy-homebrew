@@ -2,14 +2,18 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.5/rabbitmq-server-mac-standalone-3.3.5.tar.gz'
-  sha1 '3658add67d9ee7503bed8781c2073dca08460124'
+  url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.4.1/rabbitmq-server-mac-standalone-3.4.1.tar.gz'
+  sha1 'f1cf93cbfe7d5b12d426819c890f9b688868180a'
 
   bottle do
-    sha1 "430548832c039eebe30c4e10d595b20833767112" => :mavericks
-    sha1 "b1b987e439f2f85a3297d575e0795ca550c2dbf1" => :mountain_lion
-    sha1 "f799b2372a2085fee9afdd5d4a4a964487ac1d31" => :lion
+    sha1 "f60e1c485e5c415a1614631ca8ff9cd2024bcc33" => :yosemite
+    sha1 "6eb8e5c6108741dff767a108353a85a74f7aa833" => :mavericks
+    sha1 "c3fd2b3cc376bb4d7f63de5e4d96a1eebd15f6af" => :mountain_lion
   end
+
+  # Upstream fix for rabbitmqctl:
+  # http://hg.rabbitmq.com/rabbitmq-server/raw-rev/3f7c77cdafd8
+  patch :DATA
 
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
@@ -90,3 +94,18 @@ class Rabbitmq < Formula
     EOS
   end
 end
+
+
+__END__
+--- a/sbin/rabbitmqctl
++++ b/sbin/rabbitmqctl
+@@ -21,7 +21,8 @@
+
+ # rabbitmqctl starts distribution itself, so we need to make sure epmd
+ # is running.
+-${ERL_DIR}erl ${RABBITMQ_NAME_TYPE} rabbitmqctl-prelaunch-$$ -noinput -eval 'erlang:halt().'
++${ERL_DIR}erl ${RABBITMQ_NAME_TYPE} rabbitmqctl-prelaunch-$$ -noinput \
++-eval 'erlang:halt().' -boot "${CLEAN_BOOT_FILE}"
+
+ # We specify Mnesia dir and sasl error logger since some actions
+ # (e.g. forget_cluster_node --offline) require us to impersonate the

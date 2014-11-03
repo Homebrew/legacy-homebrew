@@ -7,9 +7,10 @@ class Libdrawtext < Formula
 
   bottle do
     cellar :any
-    sha1 "598e85bf3fd3df14e212fa1eee9a2f79b570152b" => :mavericks
-    sha1 "de5a6352e9b1f0336f439ddaaa6c8f594da429d7" => :mountain_lion
-    sha1 "afc5256c5b5594aa08ca5b78d710eb0292081e68" => :lion
+    revision 1
+    sha1 "c47c111bbdfed919e38bb696023beba72b61cc81" => :yosemite
+    sha1 "efecf132c3279015cfe8227aa94aa900baa8adbd" => :mavericks
+    sha1 "267ce6e5aaec21b65190151bdee2496d64620c6d" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

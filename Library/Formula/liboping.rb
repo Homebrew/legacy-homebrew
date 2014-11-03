@@ -6,9 +6,10 @@ class Liboping < Formula
   sha256 '5f4ab4b127b5a8a79ab771002604bff0e2903622393e5602f336cad258bb73cf'
 
   bottle do
-    sha1 "02ef638706e016e6f8f551be3be671a56f59ad42" => :mavericks
-    sha1 "0ea3b028984d2f7b0f1b5a54dbda97b222b916e4" => :mountain_lion
-    sha1 "d6802770af12ceb30742510c5505eed031dc3850" => :lion
+    revision 1
+    sha1 "fced606652325907943e882c5648682de6d1b507" => :yosemite
+    sha1 "fec2a87f6c3105dfd2febcc4f332ca936cb74f84" => :mavericks
+    sha1 "86996fe738d3912e7b4d20cde064415331e4a41f" => :mountain_lion
   end
 
   def install

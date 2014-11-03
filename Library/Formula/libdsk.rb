@@ -6,9 +6,10 @@ class Libdsk < Formula
   sha1 '5ec36eb90cc55ba74b68b1529a15c51d60d382fe'
 
   bottle do
-    sha1 "bb7e7f2159b8f17ddcd6b25f0256e174549e3790" => :mavericks
-    sha1 "c6cdaf38dc5b4ded63ccf782c29fd2090584ff31" => :mountain_lion
-    sha1 "534f16fc632118777ad39db7acfcb427fc3beb2a" => :lion
+    revision 1
+    sha1 "f7dbafebd6c36a32d11dacd3123e2db16cf0f182" => :yosemite
+    sha1 "d4176d3b7aadad58cf4d0ccd92236dee327bab2f" => :mavericks
+    sha1 "b89b0804e8f7d69e8b4a7e95886c54e302fae762" => :mountain_lion
   end
 
   def install

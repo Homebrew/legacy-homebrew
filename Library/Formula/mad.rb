@@ -7,9 +7,10 @@ class Mad < Formula
 
   bottle do
     cellar :any
-    sha1 "553ab873bc524e334ccc3adeb5d643cf2fac8892" => :mavericks
-    sha1 "3b7653b4ccd90ad69faa8deb82eb7b9881797443" => :mountain_lion
-    sha1 "f20398331482b492ab879597794624ce1ab351d7" => :lion
+    revision 1
+    sha1 "ec696978cd2bbd43ed11b6b1d3b78156d2b97c71" => :yosemite
+    sha1 "b8ea86acc3a5aab051e7df3d6e1b00ac1acac346" => :mavericks
+    sha1 "7164d878d4467cda6bbed49fd46129a4ae3169ec" => :mountain_lion
   end
 
   def install

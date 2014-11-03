@@ -25,8 +25,8 @@ class Dar < Formula
   depends_on "upx" => :build if build.with? "upx"
 
   def install
-    ENV.prepend_path 'PATH', "#{Formula['gnu-sed'].opt_prefix}/libexec/gnubin"
-    ENV.prepend_path 'PATH', "#{Formula['coreutils'].libexec}/gnubin" if build.with? "docs"
+    ENV.prepend_path 'PATH', "#{Formula['gnu-sed'].opt_libexec}/gnubin"
+    ENV.prepend_path 'PATH', "#{Formula['coreutils'].opt_libexec}/gnubin" if build.with? "docs"
     ENV.libstdcxx if ENV.compiler == :clang && MacOS.version >= :mavericks
 
     args = %W[

@@ -1,18 +1,37 @@
-require 'formula'
+require "formula"
 
 class Uwsgi < Formula
-  homepage "http://projects.unbit.it/uwsgi/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
-  sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
-  revision 1
+  homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
+  head "https://github.com/unbit/uwsgi.git"
+
+  stable do
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
+    sha1 "f017faf259f409907dc8c37541370d3e803fba32"
+
+    # Upstream ntohll fix - Kill on next stable release.
+    # https://github.com/unbit/uwsgi/issues/760
+    # https://github.com/unbit/uwsgi/commit/1964c9758
+    patch do
+      url "https://github.com/unbit/uwsgi/commit/1964c975.diff"
+      sha1 "5cad23c43ce933d723bf9961b3af303383386f92"
+    end
+    # Patches the patch to make it more ML & Mavericks friendly.
+    patch do
+      url "https://github.com/unbit/uwsgi/commit/48314cb903b.diff"
+      sha1 "4cd25b2c5ff39edacdac942f91839465e246d687"
+    end
+  end
 
   bottle do
-    sha1 "d42895c7b7fdbc1be90e7ebd84258f7409a70e4c" => :mavericks
-    sha1 "ff677ccbb7ca824eaf8e8b8ba6fb1eec5a0acecb" => :mountain_lion
-    sha1 "6e6ac75b4f1fc85a3e18c4bd9a27621f480fe41b" => :lion
+    revision 1
+    sha1 "9da9aa73d1ac4e5a78e325cb7c3dac45af659c44" => :yosemite
+    sha1 "933203169438fad47bac044b5517a6a04d8af90e" => :mavericks
+    sha1 "7dd5bb88ad74ed0ad834dc1cc3eb06ed4494f687" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   depends_on "pcre"
   depends_on "yajl" if build.without? "jansson"
@@ -117,7 +136,7 @@ class Uwsgi < Formula
     bin.install "uwsgi"
   end
 
-  plist_options :manual => 'uwsgi'
+  plist_options :manual => "uwsgi"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

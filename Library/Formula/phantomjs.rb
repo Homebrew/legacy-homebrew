@@ -2,28 +2,17 @@ require "formula"
 
 class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
-  revision 1
 
   stable do
-    url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
-    sha256 "0f6c50ff24c1c4a8ccd7fedef62feef5e45195c7ba5ef6c84434448544877ff3"
-
-    patch do
-      url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
-      sha1 "d3efd38e0f3f0da08530d0bf603ea72ebdf06b78"
-    end
-
-    # Upstream have said won't fix 1.9.x for Yosemite
-    # https://github.com/ariya/phantomjs/issues/10648
-    # Please remove this dependency with the next stable 2.0 release.
-    depends_on MaximumMacOSRequirement => :mavericks
+    url "https://github.com/ariya/phantomjs/archive/1.9.8.tar.gz"
+    sha256 "3a321561677f678ca00137c47689e3379c7fe6b83f7597d2d5de187dd243f7be"
   end
 
   bottle do
     cellar :any
-    sha1 "05b3572c88d11a7263d7b97b628793b7d45e3757" => :mavericks
-    sha1 "a53f4d6c08beea6d3c2dbc709994ab33f1b4fe20" => :mountain_lion
-    sha1 "24b6dbefe4186a2ebbaeef0d6cd217aecda1ff59" => :lion
+    sha1 "d7016751675b1b7948e712b7c90e38f698527ae7" => :yosemite
+    sha1 "cb2da81b59d7b5825645d4a598876539a99bf65c" => :mavericks
+    sha1 "c43984e9ffb64d628f27b64bae5b75cbfd9dcfc2" => :mountain_lion
   end
 
   head "https://github.com/ariya/phantomjs.git"

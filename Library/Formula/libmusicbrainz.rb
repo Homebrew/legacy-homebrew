@@ -7,9 +7,10 @@ class Libmusicbrainz < Formula
 
   bottle do
     cellar :any
-    sha1 "fc24a0733163d3d56c85b7efa16c855a17e77d63" => :mavericks
-    sha1 "71407930a3ce821e29f23a06a26198950085fd37" => :mountain_lion
-    sha1 "7df1778e99122eda79111d0dfbd44b354c877838" => :lion
+    revision 1
+    sha1 "b9055332d11497bcc593273c22379cd3680cb273" => :yosemite
+    sha1 "6a7901872fd932805303f258e363e9245773a79c" => :mavericks
+    sha1 "869651234ba41e4a878402de4fbb7cacce190aab" => :mountain_lion
   end
 
   depends_on 'cmake' => :build

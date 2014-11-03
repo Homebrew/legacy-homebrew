@@ -4,14 +4,14 @@ require "formula"
 # tarballs are routinely removed and upstream won't change this practice.
 class Pngcrush < Formula
   homepage "http://pmt.sourceforge.net/pngcrush/"
-  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.77/pngcrush-1.7.77.tar.gz"
-  sha1 "70e15781220a0095453d04b040c6f42d77487d7b"
+  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.78/pngcrush-1.7.78.tar.gz"
+  sha1 "9506a4106ecf1f960e8fe2c2a7e34131c234e070"
 
   bottle do
     cellar :any
-    sha1 "4fbc1d4dd08adb4f3278cb6422140207c96e01f7" => :mavericks
-    sha1 "bca5fc1cf30f862aed221275ffb7eb3596409789" => :mountain_lion
-    sha1 "4dc287b68464aefd6ac9fc47ddb6d2942c75d3e7" => :lion
+    sha1 "1b873fdea03cfb4a23d1c98ae6e670d4de176ba9" => :yosemite
+    sha1 "e2796d141f963d38341d295274e74987bada717e" => :mavericks
+    sha1 "76fd5fcfdc145c5a926d47cc552323e7150ba085" => :mountain_lion
   end
 
   def install
@@ -25,5 +25,9 @@ class Pngcrush < Formula
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}"
     bin.install "pngcrush"
+  end
+
+  test do
+    system "#{bin}/pngcrush", test_fixtures("test.png"), "/dev/null"
   end
 end

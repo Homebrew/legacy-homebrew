@@ -7,9 +7,10 @@ class Libtar < Formula
 
   bottle do
     cellar :any
-    sha1 "a42c6dc4b8851f67f4d1bcff5e07262979a03327" => :mavericks
-    sha1 "80c7eced65bfd68cf84f5ef5545c823aa979b1d3" => :mountain_lion
-    sha1 "779f42e589701236029e0f40bda618d404da06a6" => :lion
+    revision 1
+    sha1 "18d378564e3507204dd29e84bf09840e335206a2" => :yosemite
+    sha1 "bcbd1747ca7827d795a13d11648d72ecb5b5e1a2" => :mavericks
+    sha1 "96e778eed9bba1d3cfd8fbc81e616ad580770a84" => :mountain_lion
   end
 
   depends_on 'autoconf' => :build

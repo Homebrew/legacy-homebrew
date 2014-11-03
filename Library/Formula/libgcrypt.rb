@@ -8,9 +8,10 @@ class Libgcrypt < Formula
 
   bottle do
     cellar :any
-    sha1 "df22b7aa31f80e30ca6b8272219c5e79637fdd82" => :mavericks
-    sha1 "241ab6c4f2ba2117aceba8ff6d43a740dcd825fc" => :mountain_lion
-    sha1 "26f5294c07110d3201a1e13f6da9d54a299014a5" => :lion
+    revision 2
+    sha1 "dc8f8cd1fddaf5fc65310da67bc9d97432814457" => :yosemite
+    sha1 "41e2ca0f9844ac269216fba13eaade4fae19596d" => :mavericks
+    sha1 "aad60fe1c727f115872b3b971e47b24b3a2e865c" => :mountain_lion
   end
 
   depends_on "libgpg-error"
