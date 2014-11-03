@@ -5,6 +5,13 @@ class ClosureLinter < Formula
   url "https://closure-linter.googlecode.com/files/closure_linter-2.3.13.tar.gz"
   sha1 "71763adfd097dbf2d456db3b1b77ebeb0ba60664"
 
+  bottle do
+    cellar :any
+    sha1 "8fb4bdb75234d102e3cb600f88637fce08295b18" => :yosemite
+    sha1 "fcda78d7ca0c3ddc44362749f824d7ab542846e2" => :mavericks
+    sha1 "550c053155f2b5147c1b49fb8fb20438ba796ad8" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "python-gflags" do
