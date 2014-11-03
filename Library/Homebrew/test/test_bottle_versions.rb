@@ -60,4 +60,9 @@ class BottleVersionParsingTests < Homebrew::TestCase
     assert_version_detected '13-2.9.19',
       'libpano-13-2.9.19_1.yosemite.bottle.tar.gz'
   end
+
+  def test_imapuw_style
+    assert_version_detected '2007f',
+      'imap-uw-2007f.yosemite.bottle.tar.gz'
+  end
 end
