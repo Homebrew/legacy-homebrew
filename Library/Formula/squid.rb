@@ -2,14 +2,16 @@ require "formula"
 
 class Squid < Formula
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.7.tar.bz2"
-  sha1 "724bc2f7aa2b7dab4111305af3f243b84468689f"
+  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.9.tar.bz2"
+  sha1 "a356cadc324d91c41119f96a7d1a20330866c1ac"
 
   bottle do
     sha1 "f505e4b18fae3fc4423bce935e9e859e003f34ab" => :mavericks
     sha1 "7454588e02bcf4ffaadb8d3b17e20db5ede2a4cf" => :mountain_lion
     sha1 "489cd4206f99ec11bd6c6a48bfa8557e2348bed1" => :lion
   end
+
+  depends_on "openssl"
 
   def install
     # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
