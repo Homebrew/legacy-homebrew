@@ -3,9 +3,8 @@ require "formula"
 class Parrot < Formula
   homepage "http://www.parrot.org/"
   head "https://github.com/parrot/parrot.git"
-  url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.6.0/parrot-6.6.0.tar.bz2"
-  sha256 "08e9e02db952828f6ab71755be47f99ebc90894378f04d8e4d7f3bc623f79ff5"
-  revision 2
+  url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.9.0/parrot-6.9.0.tar.bz2"
+  sha256 "ad5f3723c216675b9ebc2e3d3807d24fd13aa55e1eb3e7ffcad4062e0026f482"
 
   bottle do
     sha1 "a75d61ac8c3576b0ae73bcda79c7bb9afc0349b8" => :mavericks
