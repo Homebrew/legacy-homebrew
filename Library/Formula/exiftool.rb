@@ -2,8 +2,8 @@ require "formula"
 
 class Exiftool < Formula
   homepage "http://www.sno.phy.queensu.ca/~phil/exiftool/index.html"
-  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.72.tar.gz"
-  sha1 "7be03e182a9193ff314b4df5afcfae5db7c9198f"
+  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.75.tar.gz"
+  sha1 "8d201c06a71636307eef0df959f8614386f15f5c"
 
   bottle do
     cellar :any
