@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Yazpp < Formula
-  homepage 'http://www.indexdata.com/yazpp'
-  url 'http://ftp.indexdata.dk/pub/yazpp/yazpp-1.6.0.tar.gz'
-  sha1 'f32900be1f05ca51961e17c44b2a0df4ff54a55b'
+  homepage "http://www.indexdata.com/yazpp"
+  url "http://ftp.indexdata.dk/pub/yazpp/yazpp-1.6.1.tar.gz"
+  sha1 "bcf73ff9b69af90f4a4097545948013a2c006c90"
 
   bottle do
     cellar :any
@@ -12,7 +12,7 @@ class Yazpp < Formula
     sha1 "80e862d9b9775a351905d13295151fc2eb04ccd8" => :lion
   end
 
-  depends_on 'yaz'
+  depends_on "yaz"
 
   def install
     system "./configure", "--disable-dependency-tracking",
