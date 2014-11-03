@@ -2,8 +2,8 @@ require "formula"
 
 class Libfixbuf < Formula
   homepage "http://tools.netsa.cert.org/fixbuf/"
-  url "http://tools.netsa.cert.org/releases/libfixbuf-1.5.0.tar.gz"
-  sha1 "6e77c2ec1ee32514454ad1fff6494265c583e72c"
+  url "http://tools.netsa.cert.org/releases/libfixbuf-1.6.1.tar.gz"
+  sha1 "5362e7ae866c418b1ae5576ad9ea3095bd7f2681"
 
   bottle do
     cellar :any
