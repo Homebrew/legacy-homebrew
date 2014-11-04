@@ -8,6 +8,7 @@ class Idris < Formula
   homepage "http://www.idris-lang.org"
   url "https://github.com/idris-lang/Idris-dev/archive/v0.9.15.1.tar.gz"
   sha1 "064608a43f8544b2c15cefde9e6a22a83ebea904"
+  head "https://github.com/idris-lang/Idris-dev.git"
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
