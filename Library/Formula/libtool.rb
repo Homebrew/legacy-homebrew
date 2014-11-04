@@ -20,6 +20,12 @@ class Libtool < Formula
 
   option :universal
 
+  # Fix universal build, submitted upstream by Misty De Meo on 04/11/2014.
+  patch do
+    url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Libtool/libtool.diff"
+    sha1 "3e724a433e608e41187f5bed24a7ac8f79c79851"
+  end
+
   # apply upstream patch to respect '--program-prefix'
   # http://git.savannah.gnu.org/cgit/libtool.git/commit/?id=c77eea5f6c0592423d925131489cc7772e34cf0b
   # fix parallel build
@@ -28,6 +34,8 @@ class Libtool < Formula
 
   def install
     ENV.universal_binary if build.universal?
+    # Remove the touch once upstream have fixed issue reported by Misty
+    touch "doc/libtool.1"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--program-prefix=g",
