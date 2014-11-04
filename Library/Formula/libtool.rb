@@ -28,6 +28,15 @@ class Libtool < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    # Fix an issue with building universal; fixed upstream:
+    # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=18942
+    # Need to touch the manpages after editing to prevent
+    # the buildsystem from thinking they need to be rebuilt.
+    inreplace Dir["build-aux/ltmain.{in,sh}"],
+      '$SED -e "$basename"', '$SED -e "$sed_basename"'
+    Dir["doc/*.1"].each {|f| touch f}
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--program-prefix=g",
