@@ -7,6 +7,13 @@ class BoostBcp < Formula
 
   head "http://svn.boost.org/svn/boost/trunk/"
 
+  bottle do
+    cellar :any
+    sha1 "a43b921395070e10dd093ea1dcdced6013479a0c" => :yosemite
+    sha1 "9ce5c7870fdf63caa0677e7cfd666755707bb9bf" => :mavericks
+    sha1 "eb29007192552cd6149a8e1fecaf28d49edf6d5f" => :mountain_lion
+  end
+
   depends_on "boost-build" => :build
 
   def install
