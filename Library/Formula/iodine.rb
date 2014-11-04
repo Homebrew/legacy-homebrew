@@ -12,7 +12,7 @@ class Iodine < Formula
     sha1 "1afe02179eaa83f66382eaf296023c574e351f79" => :lion
   end
 
-  depends_on "tuntap"
+  depends_on :tuntap
 
   def install
     system "make", "install", "prefix=#{prefix}"
