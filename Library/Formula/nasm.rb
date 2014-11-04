@@ -7,9 +7,9 @@ class Nasm < Formula
 
   bottle do
     cellar :any
-    sha1 "d3995ba55de30d6716e21f5e428b1f4566e95de9" => :yosemite
-    sha1 "09be35f0f249df74981e03663fd903ea25e6ae90" => :mavericks
-    sha1 "abac9b6f33d93e2022c4ad7212b11871878f0c87" => :mountain_lion
+    sha1 "c90a113cf8671959b89334c2e36a7b8670533a96" => :yosemite
+    sha1 "488ec9f2966ec5cc88b453053522cc1ddaaf0b54" => :mavericks
+    sha1 "1a38b898039459c2ecd8374fe984c94bb0305adf" => :mountain_lion
   end
 
   option :universal
