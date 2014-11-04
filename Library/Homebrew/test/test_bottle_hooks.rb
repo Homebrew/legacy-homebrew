@@ -37,4 +37,8 @@ class BottleHookTests < Homebrew::TestCase
     end
     @fi.pour
   end
+
+  def teardown
+    Homebrew::Hooks::Bottles.reset_hooks
+  end
 end

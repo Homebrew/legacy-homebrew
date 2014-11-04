@@ -26,6 +26,9 @@ class Fltk < Formula
   #
   # Second patch is to fix compile issue with clang 3.4.
   # Based on: http://www.fltk.org/strfiles/3046/fltk-clang3.4-1.patch
+  #
+  # Third patch is to fix compile issue with OSX 10.10 Yosemite
+  # Based on: http://www.fltk.org/str.php?L3141
   patch :DATA
 
   def install
@@ -63,3 +66,26 @@ index fdbe320..bd7e741 100644
 +  friend Fl_Widget *make_type_browser(int,int,int,int,const char *);
    friend class Fl_Window_Type;
    virtual void setlabel(const char *); // virtual part of label(char*)
+ 
+diff --git a/src/Fl_cocoa.mm.o b/src/Fl_cocoa.mm
+index 1234567..1234567 100644
+--- a/src/Fl_cocoa.mm
++++ b/src/Fl_cocoa.mm
+@@ -1322,7 +1322,7 @@
+     if (need_new_nsapp) [NSApplication sharedApplication];
+     NSAutoreleasePool *localPool;
+     localPool = [[NSAutoreleasePool alloc] init]; // never released
+-    [NSApp setDelegate:[[FLDelegate alloc] init]];
++    [(NSApplication *)NSApp setDelegate:[[FLDelegate alloc] init]];
+     if (need_new_nsapp) [NSApp finishLaunching];
+ 
+     // empty the event queue but keep system events for drag&drop of files at launch
+@@ -2231,7 +2231,7 @@
+     w->set_visible();
+     if ( w->border() || (!w->modal() && !w->tooltip_window()) ) Fl::handle(FL_FOCUS, w);
+     Fl::first_window(w);
+-    [cw setDelegate:[NSApp delegate]];
++    [(NSFileManager *)cw setDelegate:[NSApp delegate]];
+     if (fl_show_iconic) { 
+       fl_show_iconic = 0;
+       [cw miniaturize:nil];

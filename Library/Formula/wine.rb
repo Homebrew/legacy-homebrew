@@ -23,9 +23,15 @@ class Wine < Formula
     end
   end
 
+  bottle do
+    sha1 "348f15e19880888d19d04d2fe4bad42048fe6828" => :yosemite
+    sha1 "69f05602ecde44875cf26297871186aaa0b26cd7" => :mavericks
+    sha1 "a89371854006687b74f4446a52ddb1f68cfafa7e" => :mountain_lion
+  end
+
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.29.tar.bz2"
-    sha256 "ae48190d35533197811eeabed989ed9fd3201c44af917107f35ec0bf75b8de62"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.30.tar.bz2"
+    sha256 "10f7caf0420970772d868ab2ae24578f89b8a04b93604473e7c41bb295e0086c"
 
     depends_on "samba" => :optional
     depends_on "gnutls"

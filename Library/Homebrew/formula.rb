@@ -65,6 +65,18 @@ class Formula
     end
   end
 
+  def stable?
+    active_spec == stable
+  end
+
+  def devel?
+    active_spec == devel
+  end
+
+  def head?
+    active_spec == head
+  end
+
   def bottle
     Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
   end

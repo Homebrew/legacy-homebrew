@@ -1,6 +1,7 @@
 require "cmd/missing"
 require "formula"
 require "keg"
+require "language/python"
 require "version"
 
 class Volumes
@@ -660,20 +661,25 @@ def check_for_config_scripts
   return unless HOMEBREW_CELLAR.exist?
   real_cellar = HOMEBREW_CELLAR.realpath
 
-  config_scripts = []
+  scripts = []
 
-  whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
-  whitelist.map! { |d| d.downcase }
+  whitelist = %W[
+    /usr/bin /usr/sbin
+    /usr/X11/bin /usr/X11R6/bin /opt/X11/bin
+    #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin
+    /Applications/Server.app/Contents/ServerRoot/usr/bin
+    /Applications/Server.app/Contents/ServerRoot/usr/sbin
+  ].map(&:downcase)
 
   paths.each do |p|
-    next if whitelist.include? p.downcase
-    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
+    next if whitelist.include?(p.downcase) ||
+      p.start_with?(real_cellar.to_s, HOMEBREW_CELLAR.to_s) ||
+      !File.directory?(p)
 
-    configs = Dir["#{p}/*-config"]
-    config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
+    scripts += Dir.chdir(p) { Dir["*-config"] }.map { |c| File.join(p, c) }
   end
 
-  unless config_scripts.empty?
+  unless scripts.empty?
     s = <<-EOS.undent
       "config" scripts exist outside your system or Homebrew directories.
       `./configure` scripts often look for *-config scripts to determine if
@@ -686,10 +692,7 @@ def check_for_config_scripts
 
     EOS
 
-    config_scripts.each do |dir, files|
-      files.each { |fn| s << "    #{dir}/#{fn}\n" }
-    end
-    s
+    s << scripts.map { |f| "  #{f}" }.join("\n")
   end
 end
 
@@ -1153,6 +1156,24 @@ end
       remove this environment variable.
       EOS
     end
+  end
+
+  def check_for_pth_support
+    homebrew_site_packages = Language::Python.homebrew_site_packages
+    return unless homebrew_site_packages.directory?
+    return if Language::Python.reads_brewed_pth_files? "python"
+    return unless Language::Python.in_sys_path?("python", homebrew_site_packages)
+    user_site_packages = Language::Python.user_site_packages "python"
+    <<-EOS.undent
+      Your default Python does not recognize the Homebrew site-packages
+      directory as a special site-packages directory, which means that .pth
+      files will not be followed. This means you will not be able to import
+      some modules after installing them with Homebrew, like wxpython. To fix
+      this for the current user, you can run:
+
+        mkdir -p #{user_site_packages}
+        echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
+    EOS
   end
 
   def all

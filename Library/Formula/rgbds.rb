@@ -2,16 +2,16 @@ require "formula"
 
 class Rgbds < Formula
   homepage "https://github.com/bentley/rgbds"
-  url "https://github.com/bentley/rgbds/releases/download/v0.1.1/rgbds-0.1.1.tar.gz"
-  sha1 "948a0a7c43f79be40c53be740bcb8d5e2b548136"
+  url "https://github.com/bentley/rgbds/releases/download/v0.1.2/rgbds-0.1.2.tar.gz"
+  sha1 "5d83defd7ee101db409e638ff32e362b6ca25a32"
 
   head "https://github.com/bentley/rgbds.git", :branch => "master"
 
   bottle do
     cellar :any
-    sha1 "4dcd554e8ff8c6dba47778461a27c04b798bcee1" => :mavericks
-    sha1 "5479338e6423a60a83abb72667a410db69f97724" => :mountain_lion
-    sha1 "b87f08e1ce5e1ccb4760cf722938184c3143fdcc" => :lion
+    sha1 "033923dc3ed2c549519448845d30fabefeb83bf1" => :yosemite
+    sha1 "9cae6061f1fce0ed5981d9ed0a7fd2885d66334f" => :mavericks
+    sha1 "ca4bad2a5be8b05e0c30dfb87569de1c6a2fcb07" => :mountain_lion
   end
 
   def install

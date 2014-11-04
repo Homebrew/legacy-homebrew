@@ -68,10 +68,10 @@ class Node < Formula
 
     npm_root = node_modules/"npm"
     npmrc = npm_root/"npmrc"
-    npmrc.atomic_write <<-EOS.undent
-      prefix = #{HOMEBREW_PREFIX}
-      loglevel = verbose
-    EOS
+    npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
+
+    # set log level temporarily for npm's `make install`
+    ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
     # make sure npm can find node
     ENV["PATH"] = "#{opt_bin}:#{ENV["PATH"]}"

@@ -2,7 +2,7 @@ require "formula"
 
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://www.torproject.org/dist/tor-0.2.5.10.tar.gz"
+  url "https://dist.torproject.org/tor-0.2.5.10.tar.gz"
   sha256 "b3dd02a5dcd2ffe14d9a37956f92779d4427edf7905c0bba9b1e3901b9c5a83b"
 
   bottle do
@@ -11,14 +11,27 @@ class Tor < Formula
     sha1 "bae5ecb83486c16256d9d56b284bbf341c8d5a42" => :mountain_lion
   end
 
+  devel do
+    url "https://dist.torproject.org/tor-0.2.6.1-alpha.tar.gz"
+    version "0.2.6.1-a1"
+    sha256 "83154b8e5514978722add6c888d050420342405d4567e5945e89ae40b78b8761"
+  end
+
   depends_on "libevent"
   depends_on "openssl"
+  depends_on "libnatpmp" => :optional
+  depends_on "miniupnpc" => :optional
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--sysconfdir=#{etc}",
+            "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"]
+
+    args << "--with-libnatpmp-dir=#{Formula["libnatpmp"].opt_prefix}" if build.with? "libnatpmp"
+    args << "--with-libminiupnpc-dir=#{Formula["miniupnpc"].opt_prefix}" if build.with? "miniupnpc"
+
+    system "./configure", *args
     system "make", "install"
   end
 

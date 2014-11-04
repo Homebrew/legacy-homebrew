@@ -3,14 +3,14 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Libuv < Formula
   homepage "https://github.com/joyent/libuv"
-  url "https://github.com/joyent/libuv/archive/v0.10.21.tar.gz"
-  sha1 "883bb240d84e1db11b22b5b0dfdd117ed6bc6318"
+  url "https://github.com/joyent/libuv/archive/v0.10.29.tar.gz"
+  sha1 "c04d8e4bf1ccab1e13e8fa0e409b6e41b27eb6a7"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "a897f491618c4c14f35e87d92765ae92c61ccfa2" => :yosemite
-    sha1 "bac4d19684a5108459fed73fcb459f0d12f60213" => :mavericks
+    sha1 "9199cb57bae9e08161f3ab84b5982234d488e004" => :yosemite
+    sha1 "c0965d09dd467787801fda71b310b14fcd16f29c" => :mavericks
+    sha1 "071893cfe4e4a07a53d9feb8b928e8449f30485c" => :mountain_lion
   end
 
   head do
@@ -44,6 +44,7 @@ class Libuv < Formula
     else
       system "./autogen.sh"
       system "./configure", "--disable-dependency-tracking",
+                            "--disable-silent-rules",
                             "--prefix=#{prefix}"
       system "make", "install"
     end

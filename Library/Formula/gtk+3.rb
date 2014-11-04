@@ -2,14 +2,13 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.1.tar.xz'
-  sha256 '7e86eb7c8acc18524d7758ca2340b723ddeee1d0cd2cadd56de5a13322770a52'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.4.tar.xz'
+  sha256 'a006c716d723dab0c623491566e3292af84c87d9198a30199051d23cfc7bef2f'
 
   bottle do
-    revision 1
-    sha1 "850028f6dda229c4bfa0e166164f1dbebf43fe6d" => :yosemite
-    sha1 "fb0669ef39db819266a0eeb45f268575f243f90e" => :mavericks
-    sha1 "901ac40ebcb7eafed08584ecedbbdab2d4462c32" => :mountain_lion
+    sha1 "54ad82781a6f423b00acfdfc8425f21099b8ef1d" => :yosemite
+    sha1 "d182700a63a4de1d82db7036b7a728a23b5111f0" => :mavericks
+    sha1 "cee7dfbdecacadd2b8dea994ce698364fd2045c6" => :mountain_lion
   end
 
   depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
@@ -26,8 +25,21 @@ class Gtkx3 < Formula
   depends_on 'gobject-introspection'
   depends_on 'gsettings-desktop-schemas' => :recommended
 
-  def install
+  # These two patches fix a compilation error on Snow Leopard when
+  # using quartz backend (no effect on later OS versions)
+  # Can be removed when upstream releases these commits (3.14.5?)
+  # See: https://bugzilla.gnome.org/show_bug.cgi?id=737561
+  patch do
+    url "https://git.gnome.org/browse/gtk+/patch/?id=7d3991f2757de8374e11891e21e82f61242b4034"
+    sha1 "66dc9d63ba6d2f9219d0dbe27f2dd8343b07ab0c"
+  end
 
+  patch do
+    url "https://git.gnome.org/browse/gtk+/patch/?id=830a72b307b33815179aa0b03dad498c9ac1bb14"
+    sha1 "5a39469d8923ac9ce1f6511c4e304f7e1cba781c"
+  end
+
+  def install
     args = %W[
       --disable-debug
       --disable-dependency-tracking

@@ -8,7 +8,7 @@ Tools available for your platform:
  10.6  | 3.2.6 | N/A
  10.7  | 4.6.3 | April 2013
  10.8  | 5.1.1 | April 2014
- 10.9  | 6.0.1 | September 2014 (for Xcode 6)
+ 10.9  | 6.1   | 6.1
  10.10 | 6.1   | 6.1
 
 

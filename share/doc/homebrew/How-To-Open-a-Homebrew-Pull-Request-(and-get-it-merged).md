@@ -32,4 +32,6 @@ To make changes based on feedback:
 3. Squash new commits into one change per formula with `git rebase --interactive origin/master`
 4. Push to the fork's remote branch and the pull request with `git push --force`
 
-Once all feedback has been addressed and if it's a change we want to include (we include most changes) then we'll add your commit to Homebrew. Well done, you are now a Homebrew contributor!
+Once all feedback has been addressed and if it's a change we want to include (we include most changes) then we'll add your commit to Homebrew. Note it will not show up as "Merged" because of the way we include contributions.
+
+Well done, you are now a Homebrew contributor!

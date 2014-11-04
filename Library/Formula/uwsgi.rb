@@ -2,17 +2,35 @@ require "formula"
 
 class Uwsgi < Formula
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.7.tar.gz"
-  sha1 "0e9d1f881736674221d60a5dd5dfcbc25051d48b"
   head "https://github.com/unbit/uwsgi.git"
 
+  stable do
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
+    sha1 "f017faf259f409907dc8c37541370d3e803fba32"
+
+    # Upstream ntohll fix - Kill on next stable release.
+    # https://github.com/unbit/uwsgi/issues/760
+    # https://github.com/unbit/uwsgi/commit/1964c9758
+    patch do
+      url "https://github.com/unbit/uwsgi/commit/1964c975.diff"
+      sha1 "5cad23c43ce933d723bf9961b3af303383386f92"
+    end
+    # Patches the patch to make it more ML & Mavericks friendly.
+    patch do
+      url "https://github.com/unbit/uwsgi/commit/48314cb903b.diff"
+      sha1 "4cd25b2c5ff39edacdac942f91839465e246d687"
+    end
+  end
+
   bottle do
-    sha1 "4a195f89dcac74576b8818b39c9dce7c4eee873d" => :mavericks
-    sha1 "f48132c3aa9a4aa82c772358aff335c1993e29f1" => :mountain_lion
-    sha1 "1d538a6627baa5fda1f40ed68c093c079c9dbd80" => :lion
+    revision 1
+    sha1 "9da9aa73d1ac4e5a78e325cb7c3dac45af659c44" => :yosemite
+    sha1 "933203169438fad47bac044b5517a6a04d8af90e" => :mavericks
+    sha1 "7dd5bb88ad74ed0ad834dc1cc3eb06ed4494f687" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
 
   depends_on "pcre"

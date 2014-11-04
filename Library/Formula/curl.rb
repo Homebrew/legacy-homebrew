@@ -46,6 +46,7 @@ class Curl < Formula
 
     if MacOS.version < :mountain_lion or build.with? "openssl"
       args << "--with-ssl=#{Formula["openssl"].opt_prefix}"
+      args << "--with-ca-bundle=#{etc}/openssl/cert.pem"
     else
       args << "--with-darwinssl"
     end

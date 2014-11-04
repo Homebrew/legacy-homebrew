@@ -10,6 +10,41 @@ module Homebrew
     match[1].downcase if match
   end
 
+  def pull_url url
+    # GitHub provides commits/pull-requests raw patches using this URL.
+    url += '.patch'
+
+    patchpath = HOMEBREW_CACHE + File.basename(url)
+    curl url, '-o', patchpath
+
+    ohai 'Applying patch'
+    patch_args = []
+    # Normally we don't want whitespace errors, but squashing them can break
+    # patches so an option is provided to skip this step.
+    if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
+      patch_args << '--whitespace=nowarn'
+    else
+      patch_args << '--whitespace=fix'
+    end
+
+    # Fall back to three-way merge if patch does not apply cleanly
+    patch_args << "-3"
+    patch_args << patchpath
+
+    begin
+      safe_system 'git', 'am', *patch_args
+    rescue ErrorDuringExecution
+      if ARGV.include? "--resolve"
+        odie "Patch failed to apply: try to resolve it."
+      else
+        system 'git', 'am', '--abort'
+        odie 'Patch failed to apply: aborted.'
+      end
+    ensure
+      patchpath.unlink
+    end
+  end
+
   def pull
     if ARGV.empty?
       onoe 'This command requires at least one argument containing a URL or pull request number'
@@ -34,6 +69,10 @@ module Homebrew
         issue = url_match[3]
       end
 
+      if ARGV.include?("--bottle") && issue.nil?
+        raise "No pull request detected!"
+      end
+
       if tap_name = tap(url)
         user = url_match[1].downcase
         tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}/homebrew-#{tap_name}"
@@ -43,47 +82,13 @@ module Homebrew
         Dir.chdir HOMEBREW_REPOSITORY
       end
 
-      if ARGV.include? '--bottle'
-        if issue
-          url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
-        else
-          raise "No pull request detected!"
-        end
-      end
-
-      # GitHub provides commits'/pull-requests' raw patches using this URL.
-      url += '.patch'
-
       # The cache directory seems like a good place to put patches.
       HOMEBREW_CACHE.mkpath
-      patchpath = HOMEBREW_CACHE + File.basename(url)
-      curl url, '-o', patchpath
 
       # Store current revision
       revision = `git rev-parse --short HEAD`.strip
 
-      ohai 'Applying patch'
-      patch_args = []
-      # Normally we don't want whitespace errors, but squashing them can break
-      # patches so an option is provided to skip this step.
-      if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
-        patch_args << '--whitespace=nowarn'
-      else
-        patch_args << '--whitespace=fix'
-      end
-
-      # Fall back to three-way merge if patch does not apply cleanly
-      patch_args << "-3"
-      patch_args << patchpath
-
-      begin
-        safe_system 'git', 'am', *patch_args
-      rescue ErrorDuringExecution
-        system 'git', 'am', '--abort'
-        odie 'Patch failed to apply: aborted.'
-      ensure
-        patchpath.unlink
-      end
+      pull_url url
 
       changed_formulae = []
 
@@ -107,10 +112,10 @@ module Homebrew
         end
       end
 
-      unless ARGV.include?('--bottle')
+      unless ARGV.include? '--bottle'
         changed_formulae.each do |f|
           next unless f.bottle
-          opoo "#{f} has a bottle: do you need to update it with --bottle?"
+          opoo "#{f.name} has a bottle: do you need to update it with --bottle?"
         end
       end
 
@@ -131,6 +136,10 @@ module Homebrew
           message += "\nCloses ##{issue}."
           safe_system 'git', 'commit', '--amend', '--signoff', '-q', '-m', message
         end
+      end
+
+      if ARGV.include? "--bottle"
+        pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
       end
 
       ohai 'Patch changed:'

@@ -7,8 +7,11 @@ class Iperf3 < Formula
     url "https://github.com/esnet/iperf/archive/3.0.9.tar.gz"
     sha256 "985d87e2bc3f302dd5e864022f61b053cdeafd2e6a325711a317ed6aa1b68771"
 
-    # Remove this with next stable release please! Fixed in HEAD.
-    depends_on MaximumMacOSRequirement => :mavericks
+    # Fix Compile errors for Yosemite - https://github.com/esnet/iperf/issues/213
+    patch do
+      url "https://github.com/esnet/iperf/commit/cc4a7fa75d94.diff"
+      sha1 "6792c1a0cfddb2249d4ae2a3e202cd652b70b729"
+    end
   end
 
   head do
@@ -21,9 +24,10 @@ class Iperf3 < Formula
 
   bottle do
     cellar :any
-    sha1 "32203dbcebb819a713d4e49fffc0b8e20bbec0ae" => :mavericks
-    sha1 "9be1ed65f8e43db6fd9d8c15cb0248d74a1a0459" => :mountain_lion
-    sha1 "92b9c81eba28fa0549c45d81162bc58561016163" => :lion
+    revision 1
+    sha1 "5184a6130741de7784072465f36337b8a9846ce0" => :yosemite
+    sha1 "f9ca4f7cf295338dde6f69f960f5e09446da3d3b" => :mavericks
+    sha1 "6f29512d493e596bf1ef3a0e125e7dc7b030de35" => :mountain_lion
   end
 
   def install
