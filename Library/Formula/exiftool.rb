@@ -7,9 +7,9 @@ class Exiftool < Formula
 
   bottle do
     cellar :any
-    sha1 "4e911ddd5d1d8b6141e5c8c7dd90ad4bb3532e61" => :mavericks
-    sha1 "f0c4dfebbc8b6798f4e1fa477b0c8c5c904c7173" => :mountain_lion
-    sha1 "727aa2009ec5968d696082ac0f7ad17178a2ab3f" => :lion
+    sha1 "d2a564c8010dbd98c497d88b67d49256b057ed1c" => :yosemite
+    sha1 "6708a38aa6758258740e727efc29c4584dd34c09" => :mavericks
+    sha1 "7312e8c438a045bc6752eaa9744e32bb20720cc5" => :mountain_lion
   end
 
   def install
