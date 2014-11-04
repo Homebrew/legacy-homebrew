@@ -30,7 +30,7 @@ class FormulaInstaller
   attr_accessor :options
   mode_attr_accessor :show_summary_heading, :show_header
   mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
-  mode_attr_accessor :ignore_deps, :only_deps, :interactive
+  mode_attr_accessor :ignore_deps, :only_deps, :interactive, :git
   mode_attr_accessor :verbose, :debug
 
   def initialize(formula)
@@ -42,6 +42,7 @@ class FormulaInstaller
     @build_bottle = false
     @force_bottle = false
     @interactive = false
+    @git = false
     @verbose = false
     @debug = false
     @options = Options.new
@@ -425,11 +426,8 @@ class FormulaInstaller
       args << "--bottle-arch=#{ARGV.bottle_arch}" if ARGV.bottle_arch
     end
 
-    if interactive?
-      args << "--interactive"
-      args << "--git" if interactive == :git
-    end
-
+    args << "--git" if git?
+    args << "--interactive" if interactive?
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
