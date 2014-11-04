@@ -13,14 +13,17 @@ class Syncany < Formula
     system "./gradlew", "installApp"
 
     inreplace "build/install/syncany/bin/syncany" do |s|
-      s.gsub! /APP_HOME="`pwd -P`"/, %{APP_HOME="#{prefix}"}
+      s.gsub! /APP_HOME="`pwd -P`"/, %{APP_HOME="#{libexec}"}
     end
 
-    # `sy is identical to `syncany` so I don't see the point.
-    # `*.bat` are windows batch files that we don't care about.
-    ["sy", "sy.bat", "syncany.bat"].each { |f| File.delete("build/install/syncany/bin/#{f}") }
+    cd "build/install/syncany/bin" do
+      rm "sy.bat"
+      rm "syncany.bat"
+      rm "sy" # This is identical to the syncany script
+    end
 
-    prefix.install Dir["build/install/syncany/*"]
+    libexec.install Dir["build/install/syncany/*"]
+    bin.install_symlink Dir["#{libexec}/bin/syncany"]
   end
 
   def caveats; <<-EOS.undent
