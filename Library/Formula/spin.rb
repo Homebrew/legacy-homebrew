@@ -8,9 +8,9 @@ class Spin < Formula
 
   bottle do
     cellar :any
-    sha1 "388caba593c8f6224513d16b7a307358e5745ec8" => :mavericks
-    sha1 "7979b9dc5722eaeebb8e2e98e4a4d0495bedc775" => :mountain_lion
-    sha1 "bd24c1f818b6460e90dada5adc75aa58ef0d5c4c" => :lion
+    sha1 "2dc693103db81f07a33b438c20c0177eb0d9baf8" => :yosemite
+    sha1 "33205462fcecedf4c5e36f76abd718157e1cbeed" => :mavericks
+    sha1 "825e8d9e41c6a148d3b79f14e5d2f53c25d198ff" => :mountain_lion
   end
 
   fails_with :llvm do
