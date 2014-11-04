@@ -19,7 +19,6 @@ class FormulaInstaller
 
   def self.mode_attr_accessor(*names)
     attr_accessor(*names)
-    private(*names)
     names.each do |name|
       predicate = "#{name}?"
       define_method(predicate) { !!send(name) }
