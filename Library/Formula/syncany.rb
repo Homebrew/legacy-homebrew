@@ -17,25 +17,23 @@ class Syncany < Formula
     end
 
     cd "build/install/syncany/bin" do
-      rm "sy.bat"
-      rm "syncany.bat"
-      rm "sy" # This is identical to the syncany script
+      rm Dir["*.bat"] # Windows batch scripts
+      rm "syncany" # This is identical to the sy script, and the docs mostly refer to the sy script.
     end
 
     libexec.install Dir["build/install/syncany/*"]
-    bin.install_symlink Dir["#{libexec}/bin/syncany"]
+    bin.install_symlink Dir["#{libexec}/bin/sy"]
   end
 
   def caveats; <<-EOS.undent
     Requires Java 1.7.0 or greater.
 
-    The 'sy' script is identical to the 'syncany' script and as such has not
+    The 'syncany' script is identical to the 'sy' script and as such has not
     been installed.
 
-    You may add the following to your shell config to accommodate the syncany
-    documentation (which tends to refer to the 'sy' command):
+    You may want to add the following to your environment:
 
-      alias sy=syncany
+      alias syncany=sy
 
     For more details:
       http://syncany.readthedocs.org/en/latest/
