@@ -39,4 +39,8 @@ class Syncany < Formula
       http://syncany.readthedocs.org/en/latest/
     EOS
   end
+
+  test do
+    system "#{bin}/sy", "-vv"
+  end
 end
