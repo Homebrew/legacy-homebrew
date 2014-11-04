@@ -56,7 +56,7 @@ module Homebrew
     fi.build_bottle        = ARGV.build_bottle? || tab.build_bottle?
     fi.build_from_source   = ARGV.build_from_source?
     fi.verbose             = ARGV.verbose?
-    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.quieter             = ARGV.quieter?
     fi.debug               = ARGV.debug?
     fi.prelude
 
