@@ -5,6 +5,7 @@ class Syncany < Formula
   url "https://codeload.github.com/syncany/syncany/tar.gz/v0.1.12-alpha"
   sha1 "72af093bb67b384eea73c63071abf4f1c030a810"
   version "0.1.12-alpha"
+  head "https://github.com/syncany/syncany.git"
 
   depends_on :java => "1.7"
 
