@@ -6,10 +6,9 @@ class Poppler < Formula
   sha1 '017258af51cb556dc53af630c50165bb9fd76e4f'
 
   bottle do
-    revision 1
-    sha1 "5f9fb565fd8034bb1a5e451e0a59eda8ec699fe0" => :yosemite
-    sha1 "8635336bb014de922e27242051eb72bda4de89fd" => :mavericks
-    sha1 "c61bc06c5dfc0f34a4a724000a6fb57297d0c27b" => :mountain_lion
+    sha1 "acd2993598f19bbc43a97290ddad7e7a9ea057a7" => :yosemite
+    sha1 "51909b61a845b2a3a37b6a6605ce6e90a66f3c57" => :mavericks
+    sha1 "bbcebe2b5ac7d895ec6a3839f2fffbffd62c478e" => :mountain_lion
   end
 
   option 'with-qt4', 'Build Qt backend'
