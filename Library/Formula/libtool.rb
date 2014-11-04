@@ -24,6 +24,8 @@ class Libtool < Formula
 
   # apply upstream patch to respect '--program-prefix'
   # http://git.savannah.gnu.org/cgit/libtool.git/commit/?id=c77eea5f6c0592423d925131489cc7772e34cf0b
+  # fix parallel build
+  # http://git.savannah.gnu.org/cgit/libtool.git/commit/?id=5627a7f498e07a40b970c3a5ab5e74a5053e956f
   patch :DATA
 
   def install
@@ -33,7 +35,6 @@ class Libtool < Formula
                           "--program-prefix=g",
                           "--enable-ltdl-install"
     system "make"
-    ENV.j1
     system "make", "install"
   end
 
@@ -49,65 +50,11 @@ class Libtool < Formula
 end
 
 __END__
-diff --git a/Makefile.am b/Makefile.am
-index 77561e1..cd7d61c 100644
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -476,7 +476,7 @@ pkgltdl_files	= COPYING.LIB \
- 		  ltdl.mk \
- 		  slist.c
- 
--install-data-local: $(lt_Makefile_in)
-+install-data-local: $(lt_Makefile_in) install-scripts-local
- 	@$(NORMAL_INSTALL)
- ## Don't install over the top of an old pkgdatadir
- 	-rm -rf '$(DESTDIR)$(pkgdatadir)'/*
-@@ -508,9 +508,14 @@ install-data-local: $(lt_Makefile_in)
- 	  echo " $(INSTALL_DATA) '$(ltdldir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
- 	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
- 	done
-+	chmod a+x '$(DESTDIR)$(pkgdatadir)/configure'
-+
-+install-scripts-local: $(lt_Makefile_in)
- ## Inline helper-scripts for installed libtoolize script
--	$(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/libtoolize';
--	-chmod a+x '$(DESTDIR)$(pkgdatadir)/configure' '$(DESTDIR)$(bindir)/libtoolize'
-+	@p=`echo libtoolize |sed -e '$(transform)'`; \
-+	echo " $(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/$$p'"; \
-+	$(SCRIPT_ENV) '$(inline_source)' libtoolize > "$(DESTDIR)$(bindir)/$$p"; \
-+	chmod a+x "$(DESTDIR)$(bindir)/$$p"
- 
- 
- ## ------------- ##
-@@ -592,8 +597,9 @@ uninstall-hook:
- 	  echo " rm -f '$(DESTDIR)$(aclocaldir)/$$f'"; \
- 	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
- 	done
--	@echo " rm -f '$(DESTDIR)$(bindir)/libtoolize'"; \
--	rm -f '$(DESTDIR)$(bindir)/libtoolize'
-+	@p=`echo libtoolize |sed -e '$(transform)'`; \
-+	echo " rm -f '$(DESTDIR)$(bindir)/$$p'"; \
-+	rm -f "$(DESTDIR)$(bindir)/$$p"
- 
- 
- ## ----------- ##
 diff --git a/Makefile.in b/Makefile.in
-index d49abac..d15b61e 100644
+index d49abac..6840d3f 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -86,8 +86,9 @@ host_triplet = @host@
- DIST_COMMON = $(srcdir)/libltdl/ltdl.mk INSTALL NEWS README AUTHORS \
- 	ChangeLog $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
- 	$(top_srcdir)/configure $(am__configure_deps) \
--	$(srcdir)/config-h.in $(top_srcdir)/libltdl/lt__dirent.c \
--	$(top_srcdir)/libltdl/lt__strl.c $(top_srcdir)/libltdl/argz.c \
-+	$(srcdir)/config-h.in $(top_srcdir)/libltdl/lt__strl.c \
-+	$(top_srcdir)/libltdl/argz.c \
-+	$(top_srcdir)/libltdl/lt__dirent.c \
- 	$(top_srcdir)/build-aux/depcomp $(doc_libtool_TEXINFOS) \
- 	$(top_srcdir)/build-aux/mdate-sh $(srcdir)/doc/version.texi \
- 	$(srcdir)/doc/stamp-vti $(top_srcdir)/build-aux/texinfo.tex \
-@@ -2290,7 +2291,7 @@ $(libtool_1): $(ltmain_sh)
+@@ -2290,7 +2290,7 @@ $(libtool_1): $(ltmain_sh)
  $(libtoolize_1): $(libtoolize_in)
  	$(AM_V_GEN)$(update_mans) libtoolize
  
@@ -116,7 +63,7 @@ index d49abac..d15b61e 100644
  	@$(NORMAL_INSTALL)
  	-rm -rf '$(DESTDIR)$(pkgdatadir)'/*
  	@list='$(pkgmacro_files)'; for p in $$list; do \
-@@ -2318,8 +2319,13 @@ install-data-local: $(lt_Makefile_in)
+@@ -2318,8 +2318,15 @@ install-data-local: $(lt_Makefile_in)
  	  echo " $(INSTALL_DATA) '$(ltdldir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
  	  $(INSTALL_DATA) "$(ltdldir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
  	done
@@ -127,12 +74,14 @@ index d49abac..d15b61e 100644
 +install-scripts-local: $(lt_Makefile_in)
 +	@p=`echo libtoolize |sed -e '$(transform)'`; \
 +	echo " $(SCRIPT_ENV) '$(inline_source)' libtoolize > '$(DESTDIR)$(bindir)/$$p'"; \
++	d=`echo "$(DESTDIR)$(bindir)/$$p" |$(SED) 's|[^/]*$$||'`; \
++	test -d "$$d" || $(mkinstalldirs) "$$d"; \
 +	$(SCRIPT_ENV) '$(inline_source)' libtoolize > "$(DESTDIR)$(bindir)/$$p"; \
 +	chmod a+x "$(DESTDIR)$(bindir)/$$p"
  $(changelog): FORCE
  	$(AM_V_GEN)if test -d '$(srcdir)/.git'; then \
  	  $(gitlog_to_changelog) --amend=$(git_log_fix) \
-@@ -2366,8 +2372,9 @@ uninstall-hook:
+@@ -2366,8 +2373,9 @@ uninstall-hook:
  	  echo " rm -f '$(DESTDIR)$(aclocaldir)/$$f'"; \
  	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
  	done
