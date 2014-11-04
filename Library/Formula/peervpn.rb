@@ -7,7 +7,7 @@ class Peervpn < Formula
   sha1 "45f815445a2d654e2da56de965633743d25f3468"
 
   depends_on "openssl"
-  depends_on "tuntap"
+  depends_on :tuntap
 
   patch :DATA if MacOS.version == :snow_leopard
 
