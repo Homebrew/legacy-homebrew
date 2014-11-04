@@ -31,7 +31,7 @@ class FormulaInstaller
   mode_attr_accessor :show_summary_heading, :show_header
   mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
   mode_attr_accessor :ignore_deps, :only_deps, :interactive, :git
-  mode_attr_accessor :verbose, :debug
+  mode_attr_accessor :verbose, :debug, :quieter
 
   def initialize(formula)
     @formula = formula
@@ -44,6 +44,7 @@ class FormulaInstaller
     @interactive = false
     @git = false
     @verbose = false
+    @quieter = false
     @debug = false
     @options = Options.new
 
@@ -352,7 +353,7 @@ class FormulaInstaller
     fi.options           |= dep.options
     fi.options           |= inherited_options
     fi.build_from_source  = build_from_source?
-    fi.verbose            = verbose? unless verbose == :quieter
+    fi.verbose            = verbose? && !quieter?
     fi.debug              = debug?
     fi.prelude
     oh1 "Installing #{formula.name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"

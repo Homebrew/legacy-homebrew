@@ -127,7 +127,7 @@ module Homebrew
     fi.interactive         = ARGV.interactive?
     fi.git                 = ARGV.git?
     fi.verbose             = ARGV.verbose?
-    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.quieter             = ARGV.quieter?
     fi.debug               = ARGV.debug?
     fi.prelude
     fi.install
