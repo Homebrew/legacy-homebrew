@@ -11,7 +11,7 @@ class Vpnc < Formula
   depends_on "libgcrypt"
   depends_on "libgpg-error"
   depends_on "gnutls"
-  depends_on "tuntap"
+  depends_on :tuntap
 
   fails_with :llvm do
     build 2334
