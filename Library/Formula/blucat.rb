@@ -9,9 +9,9 @@ class Blucat < Formula
 
   def install
     system "ant"
-    prefix.install "blucat"
-    prefix.install "lib"
-    prefix.install "build"
+    libexec.install "blucat"
+    libexec.install "lib"
+    libexec.install "build"
     
     ## Now make a launcher script. This is required because launching
     ## the default blucat script uses the script path to find the
@@ -19,9 +19,9 @@ class Blucat < Formula
     ## PATH and changing it would be complicated I think. This allows
     ## the code to change independent of this brew installer.
     system "echo \"#!/bin/bash\" > blucat"
-    system "echo " << prefix << "/blucat >> blucat"
+    system "echo " << libexec << "/blucat >> blucat"
     system "chmod +x blucat"
-    libexec.install "blucat"
+    bin.install "blucat"
   end
 
   test do
