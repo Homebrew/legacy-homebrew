@@ -89,6 +89,7 @@ class Imagemagick < Formula
     args << "--without-x" if build.without? "x11"
     args << "--with-fontconfig=yes" if build.with? "fontconfig"
     args << "--with-freetype=yes" if build.with? "freetype"
+    args << "--with-wmf=yes" if build.with? "libwmf"
     args << "--with-webp=yes" if build.with? "webp"
 
     # versioned stuff in main tree is pointless for us
