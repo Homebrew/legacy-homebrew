@@ -36,6 +36,8 @@ class Thrift < Formula
     depends_on :automake
     depends_on :libtool
     depends_on 'pkg-config' => :build
+    depends_on 'bison' => :build
+    depends_on 'openssl'
   end
 
   option "with-haskell", "Install Haskell binding"
@@ -50,7 +52,7 @@ class Thrift < Formula
   def install
     system "./bootstrap.sh" unless build.stable?
 
-    exclusions = ["--without-ruby", "--without-tests", "--without-php_extension"]
+    exclusions = ["--without-ruby", "--disable-tests", "--without-php_extension"]
 
     exclusions << "--without-python" if build.without? "python"
     exclusions << "--without-haskell" if build.without? "haskell"
