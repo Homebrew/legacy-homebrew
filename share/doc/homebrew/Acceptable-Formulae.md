@@ -36,7 +36,7 @@ There are exceptions:
   openssl         | OS X's openssl is deprecated
   libxml2         | Historically, OS X's libxml2 has been buggy
 
-We also maintain [a tap](https://github.com/Homebrew/homebrew-dueps) that
+We also maintain [a tap](https://github.com/Homebrew/homebrew-dupes) that
 contains many duplicates not otherwise found in Homebrew.
 
 ### We don’t like tools that upgrade themselves
