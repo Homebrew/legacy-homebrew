@@ -2,8 +2,8 @@ require "formula"
 
 class Libvirt < Formula
   homepage "http://www.libvirt.org"
-  url "http://libvirt.org/sources/libvirt-1.2.9.tar.gz"
-  sha1 "f2de4cda8640b3abb13e6b30dd4882cc7e7b39e3"
+  url "http://libvirt.org/sources/libvirt-1.2.10.tar.gz"
+  sha1 "e83683cc59be7f60cbd62085d3d2284f595f5ed3"
 
   bottle do
     revision 1
