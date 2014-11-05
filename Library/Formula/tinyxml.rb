@@ -30,6 +30,11 @@ class Tinyxml < Formula
     sha1 "90c69322296a4144795aa66a94233a9409ff7ea5"
   end
 
+  patch do
+    url "https://gist.githubusercontent.com/HollowerMan/7ddd518de097f99172a7/raw/ab106218e09dfb686b7e3f164ef88eb89192ec6f/tinyxml_static_CMakeLists.patch"
+    sha1 "873de89a058c4ee60c7203b9eb5a291bf78eb0df"
+  end
+
   def install
     ENV.universal_binary if build.universal?
     system "cmake", ".", *std_cmake_args
