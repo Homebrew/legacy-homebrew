@@ -3,14 +3,14 @@ require "formula"
 
 class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.4.3.tar.gz"
-  sha1 "3da21b6f420c0305850e1286c821a1099676e516"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.5.0.tar.gz"
+  sha1 "0b13d9ca372aab1a40d73977b6430c8f7bf19544"
 
   bottle do
     cellar :any
-    sha1 "23300ad44258beb998bdb374d87aad0dcd4eeca6" => :yosemite
-    sha1 "66f41915ca791a368c43fc39ec1d5ae143750a13" => :mavericks
-    sha1 "a174f32365853c7a2d8140c96e5e00ce32d35d57" => :mountain_lion
+    sha1 "a035b9847ea01c2c9d25d0927e8aa503194d837b" => :yosemite
+    sha1 "54bb58306eb3bdc6e9450e3e516bfd0191d2f7a0" => :mavericks
+    sha1 "6e302cad8cffcd79671da697d5eea0ec05031ea7" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -1,16 +1,22 @@
-require 'formula'
+require "formula"
 
 class Aget < Formula
-  homepage 'http://www.enderunix.org/aget/'
-  url 'http://www.enderunix.org/aget/aget-0.4.1.tar.gz'
-  sha1 '6f7bc1676fd506207a1a168c587165b902d9d609'
+  homepage "http://www.enderunix.org/aget/"
+  url "http://www.enderunix.org/aget/aget-0.4.1.tar.gz"
+  sha256 "d17393c7f44aab38028ae71f14b572ba1839b6e085fb2092b6ebe68bc931df4d"
+  head "https://github.com/EnderUNIX/Aget.git"
 
-  patch :p0 do
-    url "https://trac.macports.org/export/90173/trunk/dports/net/aget/files/patch-Head.c"
-    sha1 "03999e0c23259ec0ed849e8e0e7e2b16b28a1387"
+  bottle do
+    cellar :any
+    sha1 "62c6fbd2f84ce88cd4c10f7faf48f4436c2addde" => :yosemite
+    sha1 "7949a392886fe34408669c529af6697b96acafc9" => :mavericks
+    sha1 "2b6c73f112e7aedd05807c61e118a32a057cd5f7" => :mountain_lion
   end
 
   def install
+    # ENV replaces the MacPorts patch that ensured compile on OS X.
+    # https://github.com/EnderUNIX/Aget/issues/3
+    ENV.append_to_cflags "-D_DARWIN_C_SOURCE"
     system "make", "CC=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}"

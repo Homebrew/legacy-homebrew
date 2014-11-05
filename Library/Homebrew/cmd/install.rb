@@ -125,9 +125,9 @@ module Homebrew
     fi.build_from_source   = ARGV.build_from_source?
     fi.force_bottle        = ARGV.force_bottle?
     fi.interactive         = ARGV.interactive?
-    fi.interactive       &&= :git if ARGV.flag? "--git"
+    fi.git                 = ARGV.git?
     fi.verbose             = ARGV.verbose?
-    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.quieter             = ARGV.quieter?
     fi.debug               = ARGV.debug?
     fi.prelude
     fi.install

@@ -2,14 +2,14 @@ require "formula"
 
 class Duplicity < Formula
   homepage "http://www.nongnu.org/duplicity/"
-  url "http://code.launchpad.net/duplicity/0.6-series/0.6.24/+download/duplicity-0.6.24.tar.gz"
-  sha1 "1d0bab80cb9465080179307d969e292c7145c714"
+  url "http://code.launchpad.net/duplicity/0.6-series/0.6.25/+download/duplicity-0.6.25.tar.gz"
+  sha1 "fe0b6b0b0dc7dbc02598d96567954b48c4308420"
 
   bottle do
     cellar :any
-    sha1 "dda9a29d50ff2a600dcf09d464508c2f73dcadc3" => :mavericks
-    sha1 "bb80b982fe70b9ef9376808ae232c4e2a010bf56" => :mountain_lion
-    sha1 "e0834d616e404ce6fb6605b8a9524d329b8bce6a" => :lion
+    sha1 "ed9249cda6ea355b903450174b7ba539e25ceca8" => :yosemite
+    sha1 "5da4870f9f7de9453f2135e7fd1cfc20253d4f2f" => :mavericks
+    sha1 "594015d393973f354ce81c16495880ae1acee7d9" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
