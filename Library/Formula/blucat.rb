@@ -12,7 +12,6 @@ class Blucat < Formula
     libexec.install "blucat"
     libexec.install "lib"
     libexec.install "build"
-    
     ## Now make a launcher script. This is required because launching
     ## the default blucat script uses the script path to find the
     ## library files. This allows a user to include the repo in their
