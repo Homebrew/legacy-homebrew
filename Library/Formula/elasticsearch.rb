@@ -26,6 +26,7 @@ class Elasticsearch < Formula
 
     # Remove Windows files
     rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/*.exe"]
 
     # Move libraries to `libexec` directory
     libexec.install Dir["lib/*.jar"]
