@@ -2,8 +2,8 @@ require 'formula'
 
 class Libsvm < Formula
   homepage 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/'
-  url 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/oldfiles/libsvm-3.18.tar.gz'
-  sha1 '20bd3e2d21d79c3714007043475b92dfeed29135'
+  url 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/oldfiles/libsvm-3.19.tar.gz'
+  sha1 '0130bdfc66bce43d105c069f6a4c0767efd95c9f'
 
   bottle do
     cellar :any
