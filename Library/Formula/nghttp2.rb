@@ -9,9 +9,7 @@ class Nghttp2 < Formula
   depends_on "cunit" => :build
   depends_on "openssl"
   depends_on "libevent"
-  depends_on "zlib"
   depends_on "spdylay"
-  depends_on "libxml2"
   depends_on "jemalloc"
   depends_on "jansson"
 
