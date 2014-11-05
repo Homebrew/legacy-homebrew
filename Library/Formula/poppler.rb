@@ -2,8 +2,8 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.26.5.tar.xz'
-  sha1 '12937666faee80bae397a8338a3357e864d77d53'
+  url 'http://poppler.freedesktop.org/poppler-0.28.0.tar.xz'
+  sha1 'f341df8b00243f5a8500d09ba2632e0043b95508'
 
   bottle do
     revision 1
