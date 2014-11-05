@@ -2,8 +2,8 @@ require "formula"
 
 class LibjsonRpcCpp < Formula
   homepage "https://github.com/cinemast/libjson-rpc-cpp"
-  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.3.tar.gz"
-  sha1 "a5473ea664a99dcc5d44ebbccae4e9b0803f2e6e"
+  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.3.2.tar.gz"
+  sha1 "37697f2647a1062158a7f3bb83b503195bf27363"
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
@@ -13,7 +13,6 @@ class LibjsonRpcCpp < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make"
-    system "make", "test"
     system "make", "install"
   end
 
