@@ -1,6 +1,5 @@
 require "formula"
 require "language/haskell"
-require "english"
 
 class Idris < Formula
   include Language::Haskell::Cabal
@@ -24,9 +23,8 @@ class Idris < Formula
       main : IO ()
       main = putStrLn "Hello, Homebrew!"
     EOS
-    system bin/"idris", testpath/"hello.idr", "-o", testpath/"hello"
-    output = `#{testpath/"hello"}`
-    assert $CHILD_STATUS.success?
-    assert_match /Hello, Homebrew!/, output
+    shell_output "#{bin/"idris"} #{testpath/"hello.idr"} -o #{testpath/"hello"}"
+    result = shell_output "#{testpath/"hello"}"
+    assert_match /Hello, Homebrew!/, result
   end
 end
