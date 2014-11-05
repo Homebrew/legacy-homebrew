@@ -40,7 +40,6 @@ class Thrift < Formula
     depends_on 'openssl'
   end
 
-  option "with-cpp", "Install C++ binding"
   option "with-haskell", "Install Haskell binding"
   option "with-erlang", "Install Erlang binding"
   option "with-java", "Install Java binding"
@@ -55,7 +54,6 @@ class Thrift < Formula
 
     exclusions = ["--without-ruby", "--without-tests", "--without-php_extension"]
 
-    exclusions << "--without-cpp" if build.without? "cpp"
     exclusions << "--without-python" if build.without? "python"
     exclusions << "--without-haskell" if build.without? "haskell"
     exclusions << "--without-java" if build.without? "java"
