@@ -5,6 +5,13 @@ class Nailgun < Formula
   url "https://github.com/martylamb/nailgun/archive/nailgun-all-0.9.1.tar.gz"
   sha1 "75f21504e8a6d41f263560b74c33188e91ec1a27"
 
+  bottle do
+    cellar :any
+    sha1 "79c825aeb76953a793edd71ae902675f5a5b3c68" => :yosemite
+    sha1 "cf981b2485dd85508e2b9c4c29813680cfb919c1" => :mavericks
+    sha1 "f81acd632ef0bf6e376802180268e37cc425bccd" => :mountain_lion
+  end
+
   resource "nailgun-jar" do
     url "http://central.maven.org/maven2/com/martiansoftware/nailgun-server/0.9.1/nailgun-server-0.9.1.jar"
     sha1 "d57ea0a6f6c1bb1b616c5b3b311b3726c6ff35ad"
