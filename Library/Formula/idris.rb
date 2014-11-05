@@ -9,6 +9,12 @@ class Idris < Formula
   sha1 "064608a43f8544b2c15cefde9e6a22a83ebea904"
   head "https://github.com/idris-lang/Idris-dev.git"
 
+  bottle do
+    sha1 "1fd1c7c3f223512d2869e8790c4e5afb0f196409" => :yosemite
+    sha1 "b8a7ffc5ed4429665658e54cefe400bacbc26c53" => :mavericks
+    sha1 "6dc50e41562eef4d18987f6f673b8a77f22a5512" => :mountain_lion
+  end
+
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
