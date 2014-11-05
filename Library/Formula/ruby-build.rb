@@ -12,7 +12,6 @@ class RubyBuild < Formula
 
   def install
     ENV["PREFIX"] = prefix
-    ENV['PREFIX'] = prefix
     system "./install.sh"
   end
 
