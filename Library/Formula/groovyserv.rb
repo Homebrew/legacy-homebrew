@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Groovyserv < Formula
-  homepage 'http://kobo.github.io/groovyserv/'
-  url 'https://bitbucket.org/kobo/groovyserv-mirror/downloads/groovyserv-1.0.0-src.zip'
-  sha1 '46b946dee3e40457e667498b235bd8e1567ed9ed'
-  head 'https://github.com/kobo/groovyserv.git'
+  homepage "http://kobo.github.io/groovyserv/"
+  url "https://bitbucket.org/kobo/groovyserv-mirror/downloads/groovyserv-1.0.0-src.zip"
+  sha1 "46b946dee3e40457e667498b235bd8e1567ed9ed"
+  head "https://github.com/kobo/groovyserv.git"
 
   bottle do
     sha1 "2acd972802f63afcdebb622015ab059c23423789" => :yosemite
@@ -21,7 +21,7 @@ class Groovyserv < Formula
   end
 
   def install
-    system './gradlew clean executables'
+    system "./gradlew", "clean" "executables"
 
     # Install executables in libexec to avoid conflicts
     libexec.install Dir["build/executables/{bin,lib}"]
