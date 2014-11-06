@@ -13,8 +13,8 @@ class SwiProlog < Formula
   end
 
   devel do
-    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.25.tar.gz"
-    sha1 "c7912d9905de961426ffae3545f8d4a16f68c386"
+    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.26.tar.gz"
+    sha1 "68559423ad95861a7299ebf0cd5914982dc78cbe"
   end
 
   head do
