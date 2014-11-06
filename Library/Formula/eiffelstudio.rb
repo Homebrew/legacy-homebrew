@@ -10,9 +10,9 @@ class Eiffelstudio < Formula
   depends_on "gtk+"
 
   def install
-    system "./compile_exes", "macosx-x86-64"
-    system "./make_images", "macosx-x86-64"
-	system "mv Eiffel_14.05 ${prefix}/"
+    system "./compile_exes macosx-x86-64"
+    system "./make_images macosx-x86-64"
+	system "mv Eiffel_14.05/* #{prefix}/"
   end
 
   test do
@@ -25,6 +25,6 @@ class Eiffelstudio < Formula
     #
     # The installed folder is not in the path, so use the entire path to any
     # executables being tested: `system "#{bin}/program", "do", "something"`.
-    system "false"
+    system "#{prefix}/studio/spec/macosx-x86-64/bin/ec -version"
   end
 end
