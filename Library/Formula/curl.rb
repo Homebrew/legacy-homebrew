@@ -7,6 +7,10 @@ class Curl < Formula
   sha256 'b222566e7087cd9701b301dd6634b360ae118cc1cbc7697e534dc451102ea4e0'
 
   bottle do
+    cellar :any
+    sha1 "ecb492c18c73bd4beb64b9b16d817bdef0f1b989" => :yosemite
+    sha1 "581f76814f982c87e6d281a55efd0da75f8e26e6" => :mavericks
+    sha1 "fb53da99991975bfdbc8d4c7e7e967ae4c0329b6" => :mountain_lion
   end
 
   keg_only :provided_by_osx
