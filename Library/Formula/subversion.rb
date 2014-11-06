@@ -38,20 +38,24 @@ class Subversion < Formula
   depends_on 'scons' => :build
   depends_on 'openssl'
 
-  # If building bindings, allow non-system interpreters
-  env :userpaths if build.include? 'perl' or build.include? 'ruby'
-
   # Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
   # Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
   patch :DATA
 
-  # When building Perl or Ruby bindings, need to use a compiler that
-  # recognizes GCC-style switches, since that's what the system languages
-  # were compiled against.
-  fails_with :clang do
-    build 318
-    cause "core.c:1: error: bad value (native) for -march= switch"
-  end if build.include? 'perl' or build.include? 'ruby'
+  if build.include? "perl" or build.include? "ruby"
+    # If building bindings, allow non-system interpreters
+    # Currently the serf -> scons dependency forces stdenv, so this isn't
+    # strictly necessary
+    env :userpaths
+
+    # When building Perl or Ruby bindings, need to use a compiler that
+    # recognizes GCC-style switches, since that's what the system languages
+    # were compiled against.
+    fails_with :clang do
+      build 318
+      cause "core.c:1: error: bad value (native) for -march= switch"
+    end
+  end
 
   def install
     serf_prefix = libexec+'serf'
