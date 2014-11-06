@@ -14,7 +14,10 @@ class Nghttp2 < Formula
   depends_on "jansson"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-spdylay", "--enable-app",
+    ENV["ZLIB_CFLAGS"] = "-I/usr/include"
+    ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
+
+    system "./configure", "--prefix=#{prefix}", "--with-spdylay=#{HOMEBREW_PREFIX}/opt/spdylay", "--enable-app",
                           "--disable-threads", "--disable-python-bindings"
     system "make"
     system "make", "check"
