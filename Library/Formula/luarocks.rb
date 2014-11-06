@@ -37,10 +37,11 @@ class Luarocks < Formula
   end
 
   def caveats; <<-EOS.undent
-    Rocks install to: #{HOMEBREW_PREFIX}/lib/luarocks/rocks
+    Rocks are installed to: #{HOMEBREW_PREFIX}/lib/luarocks/rocks
 
-    You may need to run `luarocks install` inside the Homebrew build
-    environment for rocks to successfully build. To do this, first run `brew sh`.
+    A configuration file has been placed at #{HOMEBREW_PREFIX}/etc/luarocks
+    which you can use to specify additional dependency paths as desired.
+    See: http://luarocks.org/en/Config_file_format
     EOS
   end
 
