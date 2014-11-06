@@ -130,3 +130,27 @@ class JavaDependency < Requirement
     EOS
   end
 end
+
+class AprDependency < Requirement
+  fatal true
+
+  satisfy(:build_env => false) { MacOS::CLT.installed? }
+
+  def message
+    message = <<-EOS.undent
+      Due to packaging problems on Apple's part, software that compiles
+      against APR requires the standalone Command Line Tools.
+    EOS
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Run `xcode-select --install` to install them.
+      EOS
+    else
+      message += <<-EOS.undent
+        The standalone package can be obtained from
+        https://developer.apple.com/downloads/,
+        or it can be installed via Xcode's preferences.
+      EOS
+    end
+  end
+end
