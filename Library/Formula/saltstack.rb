@@ -12,8 +12,8 @@ end
 
 class Saltstack < Formula
   homepage "http://www.saltstack.org"
-  url "https://github.com/saltstack/salt/archive/v2014.1.13.tar.gz"
-  sha256 "3aa79048cea9a0c70bc6e65b672f931ff7b809df25eae72dc3e494949d289753"
+  url "https://github.com/saltstack/salt/archive/v2014.7.0.tar.gz"
+  sha256 "a6b3a68733b3fd608d0dcc721fb56490b8079245dbaf22c05274cd6122d19659"
 
   bottle do
     sha1 "ef1159e424e555115525c8bd7d528f6095960921" => :yosemite
@@ -29,14 +29,17 @@ class Saltstack < Formula
   depends_on "zeromq"
   depends_on "libyaml"
 
-  resource "pycrypto" do
-    url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz"
-    sha1 "aeda3ed41caf1766409d4efc689b9ca30ad6aeb2"
-  end
+  # Don't depend on Homebrew's openssl due to upstream build issues with non-system OpenSSL in M2Crypto
+  # See: https://github.com/martinpaljak/M2Crypto/issues/11
 
   resource "m2crypto" do
     url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.3.tar.gz"
     sha1 "c5e39d928aff7a47e6d82624210a7a31b8220a50"
+  end
+
+  resource "pycrypto" do
+    url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz"
+    sha1 "aeda3ed41caf1766409d4efc689b9ca30ad6aeb2"
   end
 
   resource "pyyaml" do
@@ -69,28 +72,19 @@ class Saltstack < Formula
     sha1 "0631bfa3201a5d4c3fdd3d9c39756051c1c70b0f"
   end
 
-  head do
-    resource "requests" do
-      url "https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz"
-      sha1 "f57bc125d35ec01a81afe89f97dc75913a927e65"
-    end
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz"
+    sha1 "f57bc125d35ec01a81afe89f97dc75913a927e65"
   end
 
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
-    head do
-     resource("requests").stage do
-      system "python", "setup.py", "install", "--prefix=#{libexec}",
-       "--single-version-externally-managed", "--record=installed.txt"
-     end
-    end
-
-    %w[pycrypto pyyaml pyzmq jinja2 m2crypto markupsafe msgpack-python apache-libcloud].each do |r|
-      resource(r).stage do
+    resources.each do |r|
+      r.stage do
         pyargs = ["setup.py", "install", "--prefix=#{libexec}"]
-          unless %w[pycrypto pyyaml pyzmq].include? r
+          unless %w[pycrypto pyyaml pyzmq].include? r.name
             pyargs << "--single-version-externally-managed" << "--record=installed.txt"
           end
         system "python", *pyargs
