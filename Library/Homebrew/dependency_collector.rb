@@ -124,6 +124,7 @@ class DependencyCollector
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)
     when :clt # deprecated
+    when :apr        then AprDependency.new(tags)
     when :cairo, :fontconfig, :freetype, :libpng, :pixman # deprecated
       Dependency.new(spec.to_s, tags)
     when :libltdl # deprecated
