@@ -2,8 +2,8 @@ require 'formula'
 
 class Ykpers < Formula
   homepage 'http://yubico.github.io/yubikey-personalization/'
-  url 'https://developers.yubico.com/yubikey-personalization/releases/ykpers-1.16.0.tar.gz'
-  sha1 '2536d8882d2b56303c3e9a089d92eb97a688fac6'
+  url 'https://developers.yubico.com/yubikey-personalization/releases/ykpers-1.16.1.tar.gz'
+  sha1 'ff7cf92551ee06da198a2cccd29d55b388ce172b'
 
   bottle do
     cellar :any
