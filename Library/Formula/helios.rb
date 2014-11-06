@@ -9,8 +9,8 @@ class Helios < Formula
   depends_on :java => "1.7"
 
   def install
-    libexec.install "helios-tools-0.8.76-shaded.jar"
-    bin.write_jar_script libexec/"helios-tools-0.8.76-shaded.jar", "helios"
+    libexec.install "helios-tools-#{version}-shaded.jar"
+    bin.write_jar_script libexec/"helios-tools-#{version}-shaded.jar", "helios"
   end
 
   test do
