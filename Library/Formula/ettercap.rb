@@ -6,6 +6,20 @@ class Ettercap < Formula
   stable do
     url "https://github.com/Ettercap/ettercap/archive/v0.8.1.tar.gz"
     sha1 "66362ce69cd9b82b9eb8ea6a52048700704a7d9b"
+
+    # Upstream patch to fix Luajit compile on OS X
+    # Both of these patches are already in HEAD.
+    # https://github.com/Ettercap/ettercap/pull/618
+    # https://github.com/Homebrew/homebrew/issues/33902
+    patch do
+      url "https://github.com/Ettercap/ettercap/commit/190e4264e3.diff"
+      sha1 "4d8cadd8ca19956450e7e2d52f92dc649d393acf"
+    end
+
+    patch do
+      url "https://github.com/Ettercap/ettercap/commit/e505088db.diff"
+      sha1 "db0f121aeba34286c5f6a16e523ac675868b384c"
+    end
   end
 
   head "https://github.com/Ettercap/ettercap.git"
@@ -40,7 +54,7 @@ class Ettercap < Formula
 
     mkdir "build" do
       system "cmake", *args
-      system "make install"
+      system "make", "install"
     end
   end
 end
