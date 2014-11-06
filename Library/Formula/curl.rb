@@ -2,16 +2,11 @@ require 'formula'
 
 class Curl < Formula
   homepage 'http://curl.haxx.se/'
-  url 'http://curl.haxx.se/download/curl-7.38.0.tar.bz2'
-  mirror 'ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.38.0.tar.bz2'
-  sha256 '035bd41e99aa1a4e64713f4cea5ccdf366ca8199e9be1b53d5a043d5165f9eba'
+  url 'http://curl.haxx.se/download/curl-7.39.0.tar.bz2'
+  mirror 'ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.39.0.tar.bz2'
+  sha256 'b222566e7087cd9701b301dd6634b360ae118cc1cbc7697e534dc451102ea4e0'
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "415899b2eae95dd472c69079db679576337fe09c" => :yosemite
-    sha1 "4e4dfa1e9f36cd58715d03e95958e792093ccd60" => :mavericks
-    sha1 "c3d4f68d131efac02f741e23750ceb23b85ac46d" => :mountain_lion
   end
 
   keg_only :provided_by_osx
