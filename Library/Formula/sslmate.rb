@@ -5,6 +5,13 @@ class Sslmate < Formula
   url "https://packages.sslmate.com/other/sslmate-0.5.0.tar.gz"
   sha256 "481e345e25585bf3a449f0f5f987bdb7a5adcd26a5a8805f1e7e5919456e4977"
 
+  bottle do
+    cellar :any
+    sha1 "8e6d2ef49a4dca0702a466cc49ac0d996ccd85e4" => :yosemite
+    sha1 "3781c6845bc01321149b8959c14523a321368044" => :mavericks
+    sha1 "f27e18e82467cbca19d9f17f1c83226f4e4ba620" => :mountain_lion
+  end
+
   if MacOS.version <= :snow_leopard
     depends_on "perl"
     depends_on "curl"
