@@ -2,8 +2,8 @@ require "formula"
 
 class Sslmate < Formula
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-0.4.5.tar.gz"
-  sha256 "1791eab553f763d92f28027fda5a04afdf8b3ef24c3e32cfe98441a68470b138"
+  url "https://packages.sslmate.com/other/sslmate-0.5.0.tar.gz"
+  sha256 "481e345e25585bf3a449f0f5f987bdb7a5adcd26a5a8805f1e7e5919456e4977"
 
   if MacOS.version <= :snow_leopard
     depends_on "perl"
