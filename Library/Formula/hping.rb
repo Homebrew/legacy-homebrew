@@ -35,7 +35,6 @@ class Hping < Formula
   end
 
   def install
-    # Compile fails with tcl support; TCL on OS X is 32-bit only
     system "./configure"
 
     # Target folders need to exist before installing
