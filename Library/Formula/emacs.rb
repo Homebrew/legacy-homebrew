@@ -8,12 +8,13 @@ class Emacs < Formula
     mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
     sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
 
-    # Fix ns-antialias-text, broken in 24.4, submitted upstream here:
-    # http://lists.gnu.org/archive/html/emacs-devel/2014-10/msg00813.html
+    # Fix ns-antialias-text, broken in 24.4, from upstream:
+    # https://github.com/emacs-mirror/emacs/commit/604a4d21ead40691afe3efe13f0ba1000b2cd61a
+    # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=18876
 
     patch do
-      url 'https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/b7055ba40a7dd9e8f6f5dd6bbe5c305a78bbbc87/emacs-fix-ns-antialias-text-mac-os.patch'
-      sha1 '6215c59c01dc247dfdec7c89ff2fe84ff28eb1c7'
+      url 'https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/4c5229a8a719f81fa6bd2e1e0c85d10b6f635765/emacs-fix-ns-antialias-text-mac-os.patch'
+      sha1 'b63eab599a7ce69de03629494a727f45b310c166'
     end
   end
 
