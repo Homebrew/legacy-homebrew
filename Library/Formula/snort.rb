@@ -5,6 +5,13 @@ class Snort < Formula
   url "https://www.snort.org/downloads/snort/snort-2.9.7.0.tar.gz"
   sha1 "29eddcfaf8a4d02a4d68d88fa97c0275e4f0cc75"
 
+  bottle do
+    cellar :any
+    sha1 "f5a8dbb0d53f814778b275f81e5837e2b8112329" => :yosemite
+    sha1 "c990b24ed535f1999f2330b008829b5ce30ec257" => :mavericks
+    sha1 "3e3d16beb12cbeda1d6d9191c342c50b09bf5450" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "luajit"
   depends_on "daq"
