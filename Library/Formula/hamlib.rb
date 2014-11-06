@@ -13,7 +13,7 @@ class Hamlib < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :libltdl
+  depends_on 'libtool' => :run
   depends_on 'libusb-compat'
 
   def install
