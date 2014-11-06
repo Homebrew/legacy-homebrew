@@ -2,8 +2,8 @@ require "formula"
 
 class Fig < Formula
   homepage "http://www.fig.sh/"
-  url "https://github.com/docker/fig/archive/1.0.0.tar.gz"
-  sha1 "66b79dae588e281656b4a91b54512af4a09e9eea"
+  url "https://github.com/docker/fig/archive/1.0.1.tar.gz"
+  sha1 "8044dd8134af1215138c1e878cc1684bac8932d9"
 
   bottle do
     cellar :any
