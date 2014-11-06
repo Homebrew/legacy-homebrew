@@ -15,7 +15,7 @@ class Aubio < Formula
   end
 
   option :universal
-  
+
   depends_on :macos => :lion
 
   depends_on :python => :optional
