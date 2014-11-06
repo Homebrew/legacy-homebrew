@@ -25,6 +25,7 @@ class Subversion < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on :apr => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
