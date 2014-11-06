@@ -7,10 +7,10 @@ class Fftw < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "edf0ba7f313d219a9f2b397a1418ee2121327959" => :yosemite
-    sha1 "f68bcfc985833b9680c61f057d6bde80ae80fcb1" => :mavericks
-    sha1 "c458d7f414aeca2ab980901815991edbe81007e5" => :mountain_lion
+    revision 2
+    sha1 "23ca4d2d44d13a4831cbeb8600425389050ca601" => :yosemite
+    sha1 "5103995b587d5223f54c20ce64023aea5220de11" => :mavericks
+    sha1 "7874a8fe1eeb52096a428778da61564358f6729e" => :mountain_lion
   end
 
   option "with-fortran", "Enable Fortran bindings"

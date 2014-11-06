@@ -17,6 +17,7 @@ class Sqlcipher < Formula
       --prefix=#{prefix}
       --enable-tempstore=yes
       --with-crypto-lib=#{Formula["openssl"].opt_prefix}
+      --enable-load-extension
       --disable-tcl
     ]
 

@@ -2,21 +2,18 @@ require "formula"
 
 class Snort < Formula
   homepage "https://www.snort.org"
-  revision 1
+  url "https://www.snort.org/downloads/snort/snort-2.9.7.0.tar.gz"
+  sha1 "29eddcfaf8a4d02a4d68d88fa97c0275e4f0cc75"
 
-  stable do
-    url "https://www.snort.org/downloads/snort/snort-2.9.6.2.tar.gz"
-    sha1 "09068bc88dbb3fe47b2bff5803a7b3ef0c98395b"
-    fails_with :clang
+  bottle do
+    cellar :any
+    sha1 "f5a8dbb0d53f814778b275f81e5837e2b8112329" => :yosemite
+    sha1 "c990b24ed535f1999f2330b008829b5ce30ec257" => :mavericks
+    sha1 "3e3d16beb12cbeda1d6d9191c342c50b09bf5450" => :mountain_lion
   end
 
-  devel do
-    url "https://www.snort.org/downloads/snortdev/snort-2.9.7.0_rc.tar.gz"
-    sha1 "945090c3a1a726f9e05c4538903492928dba901f"
-
-    depends_on "luajit"
-  end
-
+  depends_on "pkg-config" => :build
+  depends_on "luajit"
   depends_on "daq"
   depends_on "libdnet"
   depends_on "pcre"
@@ -27,21 +24,22 @@ class Snort < Formula
   def install
     openssl = Formula["openssl"]
 
-    args = %W[--prefix=#{prefix}
-              --disable-dependency-tracking
-              --enable-gre
-              --enable-mpls
-              --enable-targetbased
-              --enable-ppm
-              --enable-perfprofiling
-              --enable-zlib
-              --with-openssl-includes=#{openssl.opt_include}
-              --with-openssl-libraries=#{openssl.opt_lib}
-              --enable-active-response
-              --enable-normalizer
-              --enable-reload
-              --enable-react
-              --enable-flexresp3]
+    args = %W[
+      --prefix=#{prefix}
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --enable-gre
+      --enable-mpls
+      --enable-targetbased
+      --enable-sourcefire
+      --with-openssl-includes=#{openssl.opt_include}
+      --with-openssl-libraries=#{openssl.opt_lib}
+      --enable-active-response
+      --enable-normalizer
+      --enable-reload
+      --enable-react
+      --enable-flexresp3
+    ]
 
     if build.include? "enable-debug"
       args << "--enable-debug"
