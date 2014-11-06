@@ -20,6 +20,7 @@ class Vim < Formula
   LANGUAGES_DEFAULT  = %w(perl python ruby)
 
   option "with-python3", "Build vim with python3 instead of python[2] support"
+  option "with-luajit", "Build vim with luajit support"
   LANGUAGES_OPTIONAL.each do |language|
     option "with-#{language}", "Build vim with #{language} support"
   end
@@ -37,7 +38,7 @@ class Vim < Formula
     :because => "vim and ex-vi both install bin/ex and bin/view"
 
   def install
-    ENV["LUA_PREFIX"] = HOMEBREW_PREFIX if build.with?("lua")
+    ENV["LUA_PREFIX"] = HOMEBREW_PREFIX if build.with?("lua") || build.with?("luajit")
 
     # vim doesn"t require any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
@@ -65,7 +66,10 @@ class Vim < Formula
       opts << "--without-x"
     end
 
-    opts << "--with-luajit" if build.with? "luajit"
+    if build.with? "luajit"
+      opts << "--with-luajit"
+      opts << "--enable-luainterp"
+    end
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
