@@ -22,6 +22,12 @@ class Ettercap < Formula
     end
   end
 
+  bottle do
+    sha1 "b7d7bfc3d98015cea228473b239a0fe9ae41127d" => :yosemite
+    sha1 "15b7682fbba8687cfaa8effd00b7f6dd0ced8e91" => :mavericks
+    sha1 "d221416cc95911a965ea1821b1a218531b4ea349" => :mountain_lion
+  end
+
   head "https://github.com/Ettercap/ettercap.git"
 
   option "without-curses", "Install without curses interface"
