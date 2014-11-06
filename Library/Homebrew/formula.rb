@@ -279,8 +279,6 @@ class Formula
     stage do
       begin
         patch
-        # we allow formulae to do anything they want to the Ruby process
-        # so load any deps before this point! And exit asap afterwards
         yield self
       ensure
         cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
