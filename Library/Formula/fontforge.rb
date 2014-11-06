@@ -36,11 +36,10 @@ class Fontforge < Formula
 
   # Autotools are required to build from source in all releases.
   # I have upstreamed a request to change this, so keep monitoring the situation.
-  # Libtool must be :libltdl or bottling errors occur.
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
-  depends_on :libltdl
+  depends_on "libtool" => :run
   depends_on "gettext"
   depends_on "pango"
   depends_on "libpng"   => :recommended
