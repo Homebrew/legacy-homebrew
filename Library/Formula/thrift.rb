@@ -52,7 +52,7 @@ class Thrift < Formula
   def install
     system "./bootstrap.sh" unless build.stable?
 
-    exclusions = ["--without-ruby", "--disable-tests", "--without-php_extension"]
+    exclusions = ["--without-ruby", "--without-tests", "--without-php_extension"]
 
     exclusions << "--without-python" if build.without? "python"
     exclusions << "--without-haskell" if build.without? "haskell"
