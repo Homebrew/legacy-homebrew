@@ -29,8 +29,8 @@ class Idris < Formula
       main : IO ()
       main = putStrLn "Hello, Homebrew!"
     EOS
-    shell_output "#{bin/"idris"} #{testpath/"hello.idr"} -o #{testpath/"hello"}"
-    result = shell_output "#{testpath/"hello"}"
+    shell_output "#{bin}/idris #{testpath}/hello.idr -o #{testpath}/hello"
+    result = shell_output "#{testpath}/hello"
     assert_match /Hello, Homebrew!/, result
   end
 end
