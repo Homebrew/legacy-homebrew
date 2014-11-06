@@ -30,11 +30,14 @@ module Language
     def self.reads_brewed_pth_files? python
       version = major_minor_version python
       return unless homebrew_site_packages(version).directory?
+      return unless homebrew_site_packages(version).writable_real?
       probe_file = homebrew_site_packages(version)/"homebrew-pth-probe.pth"
-      probe_file.atomic_write("import site; site.homebrew_was_here = True")
-      result = quiet_system python, "-c", "import site; assert(site.homebrew_was_here)"
-      probe_file.unlink
-      result
+      begin
+        probe_file.atomic_write("import site; site.homebrew_was_here = True")
+        quiet_system python, "-c", "import site; assert(site.homebrew_was_here)"
+      ensure
+        probe_file.unlink if probe_file.exist?
+      end
     end
 
     def self.user_site_packages python
