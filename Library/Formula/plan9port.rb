@@ -5,6 +5,8 @@ class Plan9port < Formula
   url "https://plan9port.googlecode.com/files/plan9port-20140306.tgz"
   sha1 "b778a96558e2b67be28ae80cab4482ef3082ec0e"
 
+  head "https://code.google.com/p/plan9port/", :using => :hg
+
   def install
     ENV["PLAN9_TARGET"] = libexec
     system "./INSTALL"
