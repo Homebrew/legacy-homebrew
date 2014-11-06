@@ -16,9 +16,9 @@ class Saltstack < Formula
   sha256 "a6b3a68733b3fd608d0dcc721fb56490b8079245dbaf22c05274cd6122d19659"
 
   bottle do
-    sha1 "ef1159e424e555115525c8bd7d528f6095960921" => :yosemite
-    sha1 "64c5ce680dcd40fddd34a6c1c190f0e70d30290c" => :mavericks
-    sha1 "eaf87b4b199327648a5c03e7e97fba9a0ef3dbca" => :mountain_lion
+    sha1 "c1c30977edb597b959452417b38fc518994316b4" => :yosemite
+    sha1 "dffce0bce3e8a071ad1d132b99871dc75ef3601e" => :mavericks
+    sha1 "a3776f39e5c18b660dcabf3127286eddfdfc445c" => :mountain_lion
   end
 
   head "https://github.com/saltstack/salt.git", :branch => "develop",
