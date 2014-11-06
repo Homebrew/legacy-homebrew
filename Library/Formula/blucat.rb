@@ -4,8 +4,9 @@ class Blucat < Formula
   homepage "http://blucat.sourceforge.net/blucat/"
   url "http://blucat.sourceforge.net/blucat/wp-content/uploads/2013/10/blucat-aa3e02.zip"
   sha1 "c5c801700b5d4d59f6bf0a5f0e4a405237de1840"
-
+  version '0.9'
   depends_on "ant" => :build
+  depends_on :java => '1.6'
 
   def install
     system "ant"
