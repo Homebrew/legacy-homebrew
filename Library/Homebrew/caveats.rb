@@ -7,7 +7,8 @@ class Caveats
 
   def caveats
     caveats = []
-    caveats << f.caveats if f.caveats.to_s.length > 0
+    s = f.caveats.to_s
+    caveats << s.chomp + "\n" if s.length > 0
     caveats << f.keg_only_text if f.keg_only? && f.respond_to?(:keg_only_text)
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
