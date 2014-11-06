@@ -11,14 +11,16 @@ class Bitlbee < Formula
     sha1 "c21d19af516d959eb2a0b4b5ff534a66678d419d" => :lion
   end
 
-  option 'with-finch', "Use finch/libpurple for all communication with instant messaging networks"
+  option 'with-pidgin', "Use finch/libpurple for all communication with instant messaging networks"
   option 'with-libotr', "Build with otr (off the record) support"
+
+  deprecated_option "with-finch" => "with-pidgin"
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gnutls'
   depends_on 'libgcrypt'
-  depends_on 'finch' => :optional
+  depends_on 'pidgin' => :optional
   depends_on 'libotr' => :optional
 
   def install
@@ -29,7 +31,7 @@ class Bitlbee < Formula
             "--config=#{var}/bitlbee/lib/",
             "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
 
-    args << "--purple=1" if build.with? "finch"
+    args << "--purple=1" if build.with? "pidgin"
     args << "--otr=1" if build.with? "libotr"
 
     system "./configure", *args
