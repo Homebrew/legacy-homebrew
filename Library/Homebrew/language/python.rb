@@ -48,5 +48,20 @@ module Language
       EOS
       quiet_system python, "-c", script
     end
+
+    def self.setup_install python, prefix, *args
+      # force-import setuptools, which monkey-patches distutils, to make
+      # sure that we always call a setuptools setup.py. trick borrowed from pip:
+      # https://github.com/pypa/pip/blob/043af83/pip/req/req_install.py#L743-L780
+      shim = <<-EOS.undent
+        import setuptools, tokenize
+        __file__ = 'setup.py'
+        exec(compile(getattr(tokenize, 'open', open)(__file__).read()
+          .replace('\\r\\n', '\\n'), __file__, 'exec'))
+      EOS
+      args += %w[--single-version-externally-managed --record=installed.txt]
+      args << "--prefix=#{prefix}"
+      system python, "-c", shim, "install", *args
+    end
   end
 end
