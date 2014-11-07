@@ -13,6 +13,7 @@ class Readline < Formula
     sha1 "d530f4e966bb9c654a86f5cc0e65b20b1017aef2" => :mavericks
     sha1 "7473587d992d8c3eb37afe6c3e0adc3587c977f1" => :mountain_lion
     sha1 "e84f9cd95503b284651ef24bc8e7da30372687d3" => :lion
+    sha1 "86d5b9260720202a1eb4b43980f175264294dd1e" => :x86_64_linux
   end
 
   keg_only :shadowed_by_osx, <<-EOS
