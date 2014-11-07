@@ -20,7 +20,6 @@ class Vim < Formula
   LANGUAGES_DEFAULT  = %w(perl python ruby)
 
   option "with-python3", "Build vim with python3 instead of python[2] support"
-  option "with-luajit", "Build vim with luajit support"
   LANGUAGES_OPTIONAL.each do |language|
     option "with-#{language}", "Build vim with #{language} support"
   end
