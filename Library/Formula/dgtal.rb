@@ -13,7 +13,11 @@ class Dgtal < Formula
   depends_on 'libqglviewer' => :optional
   depends_on 'graphicsmagick' => :optional
   depends_on 'eigen' => :optional
+  depends_on "cgal" => [:optional, "with-eigen3"].
 
+  deprecated_option "with-magick" => "with-graphicsmagick"
+  deprecated_option "with-qglviewer" => "with-libqglviewer"
+  
   def install
     args = std_cmake_args
     args << "-DCMAKE_BUILD_TYPE=Release"
@@ -26,6 +30,7 @@ class Dgtal < Formula
     args << "-DWITH_QGLVIEWER=ON" if build.with? 'libqglviewer'
     args << "-DWITH_EIGEN=ON" if build.with? 'eigen'
     args << "-DWITH_MAGICK=ON" if build.with? 'graphicsmagick'
+    args << "-DWITH_CGAL=ON -DWITH_EIGEN=ON -DWITH_GMP=ON" if build.with? 'cgal'
 
     mkdir 'build' do
       system "cmake", "..", *args
