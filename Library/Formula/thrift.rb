@@ -35,7 +35,6 @@ class Thrift < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-    depends_on "openssl"
     depends_on "pkg-config" => :build
     depends_on "bison" => :build
   end
@@ -47,6 +46,7 @@ class Thrift < Formula
   option "with-php", "Install PHP binding"
 
   depends_on "boost"
+  depends_on "openssl"
   depends_on :python => :optional
 
   def install
