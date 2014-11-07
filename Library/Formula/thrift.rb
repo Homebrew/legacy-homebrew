@@ -29,6 +29,13 @@ class Thrift < Formula
     end
   end
 
+  bottle do
+    cellar :any
+    sha1 "07614d7e556b72d53e990de3966b67f8cbea88d6" => :yosemite
+    sha1 "983a86c23cc80f40f67c3897dba412e2eb3c0d97" => :mavericks
+    sha1 "57e63acf576ff07b549b9f84034d95161cb2c71c" => :mountain_lion
+  end
+
   head do
     url "https://git-wip-us.apache.org/repos/asf/thrift.git"
 
