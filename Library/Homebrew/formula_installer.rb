@@ -70,7 +70,7 @@ class FormulaInstaller
 
     unless bottle.compatible_cellar?
       if install_bottle_options[:warn]
-        opoo "Building source; cellar of #{formula.name}'s bottle is #{bottle.cellar}"
+        opoo "Building source; cellar of #{formula.name}'s precompiled package is #{bottle.cellar}"
       end
       return false
     end
@@ -684,7 +684,7 @@ end
 
 class Formula
   def keg_only_text
-    s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
+    s = "This formula was not linked into #{HOMEBREW_PREFIX} by default."
     s << "\n\n#{keg_only_reason.to_s}"
     if lib.directory? or include.directory?
       s <<

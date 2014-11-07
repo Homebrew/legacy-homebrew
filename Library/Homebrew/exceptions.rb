@@ -18,7 +18,7 @@ class NoSuchKegError < RuntimeError
 
   def initialize name
     @name = name
-    super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
+    super "No such package: #{HOMEBREW_CELLAR}/#{name}"
   end
 end
 

@@ -17,7 +17,7 @@ class Noweb < Formula
         ohai 'TeX installation found. Installing TeX support files there might fail if your user does not have permission'
         texmf = Pathname.new(`kpsewhich -var-value=TEXMFLOCAL`.chomp)
       else
-        ohai 'No TeX installation found. Installing TeX support files in the noweb Cellar.'
+        ohai 'No TeX installation found. Installing TeX support files in the noweb prefix.'
         texmf = prefix
       end
 

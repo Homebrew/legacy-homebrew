@@ -86,7 +86,7 @@ class ExampleFormula < Formula
   ## Bottles
 
   # Bottles are pre-built and added by the Homebrew maintainers for you.
-  # If you maintain your own repository, you can add your own bottle links.
+  # If you maintain your own repository, you can add your own binary package links.
   # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Bottles.md
   bottle do
     root_url "http://mikemcquaid.com" # Optional root to calculate bottle URLs

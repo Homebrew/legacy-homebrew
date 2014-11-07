@@ -53,7 +53,7 @@ module Homebrew
         if f.can_cleanup?
           cleanup_keg(keg)
         else
-          opoo "Skipping (old) keg-only: #{keg}"
+          opoo "Skipping (old) unlinked-by-default package: #{keg}"
         end
       end
     elsif f.rack.subdirs.length > 1

@@ -714,7 +714,7 @@ def check_for_symlinked_cellar
   return unless HOMEBREW_CELLAR.exist?
   if HOMEBREW_CELLAR.symlink?
     <<-EOS.undent
-      Symlinked Cellars can cause problems.
+      Symlinked Cellar paths can cause problems.
       Your Homebrew Cellar is a symlink: #{HOMEBREW_CELLAR}
                       which resolves to: #{HOMEBREW_CELLAR.realpath}
 
@@ -745,12 +745,12 @@ def check_for_multiple_volumes
   Dir.delete tmp
 
   unless where_cellar == where_temp then <<-EOS.undent
-    Your Cellar and TEMP directories are on different volumes.
+    Your Cellar path and TEMP directories are on different volumes.
     OS X won't move relative symlinks across volumes unless the target file already
     exists. Brews known to be affected by this are Git and Narwhal.
 
     You should set the "HOMEBREW_TEMP" environmental variable to a suitable
-    directory on the same volume as your Cellar.
+    directory on the same volume as your Cellar path.
     EOS
   end
 end
@@ -895,13 +895,13 @@ def check_for_linked_keg_only_brews
 
   unless warnings.empty?
     s = <<-EOS.undent
-    Some keg-only formula are linked into the Cellar.
-    Linking a keg-only formula, such as gettext, into the cellar with
+    Some unlinked-by-default formula are linked into the Cellar.
+    Linking an unlinked-by-default formula, such as gettext, into the Cellar with
     `brew link <formula>` will cause other formulae to detect them during
     the `./configure` step. This may cause problems when compiling those
     other formulae.
 
-    Binaries provided by keg-only formulae may override system binaries
+    Binaries provided by unlinked-by-default formulae may override system binaries
     with other strange results.
 
     You may wish to `brew unlink` these brews:
@@ -1102,9 +1102,9 @@ def check_for_unlinked_but_not_keg_only
   end.map{ |pn| pn.basename }
 
   if not unlinked.empty? then <<-EOS.undent
-    You have unlinked kegs in your Cellar
-    Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
-    those kegs to fail to run properly once built. Run `brew link` on these:
+    You have unlinked packages in your Cellar
+    Leaving packages unlinked can lead to build-trouble and cause brews that depend on
+    those packages to fail to run properly once built. Run `brew link` on these:
 
         #{unlinked * "\n        "}
     EOS

@@ -149,7 +149,7 @@ begin
 rescue FormulaUnspecifiedError
   abort "This command requires a formula argument"
 rescue KegUnspecifiedError
-  abort "This command requires a keg argument"
+  abort "This command requires a package argument"
 rescue UsageError
   onoe "Invalid usage"
   abort ARGV.usage
