@@ -1,5 +1,5 @@
 require 'testing_env'
-require 'test/testball'
+require 'testball'
 require 'formula'
 require 'cxxstdlib'
 
