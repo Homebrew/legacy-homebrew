@@ -1,6 +1,6 @@
 require 'testing_env'
 require 'formula'
-require 'test/testball'
+require 'testball'
 require 'keg'
 
 
