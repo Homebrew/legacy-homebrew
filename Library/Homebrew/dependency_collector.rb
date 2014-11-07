@@ -120,6 +120,7 @@ class DependencyCollector
     when :python3    then Python3Dependency.new(tags)
     when :java       then JavaDependency.new(tags)
     when :osxfuse    then OsxfuseDependency.new(tags)
+    when :tuntap     then TuntapDependency.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)

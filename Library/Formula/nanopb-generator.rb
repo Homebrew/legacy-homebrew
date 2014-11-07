@@ -44,7 +44,7 @@ class NanopbGenerator < Formula
       }
     PROTO
     system Formula["protobuf"].bin/"protoc",
-      "--proto_path=#{testpath}", "--plugin=#{bin/"protoc-gen-nanopb"}",
+      "--proto_path=#{testpath}", "--plugin=#{bin}/protoc-gen-nanopb",
       "--nanopb_out=#{testpath}", testpath/"test.proto"
     system "grep", "test_field", testpath/"test.pb.c"
     system "grep", "test_field", testpath/"test.pb.h"

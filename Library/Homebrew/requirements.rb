@@ -6,6 +6,7 @@ require 'requirements/maximum_macos_requirement'
 require 'requirements/mpi_dependency'
 require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
+require 'requirements/tuntap_dependency'
 require 'requirements/unsigned_kext_requirement'
 require 'requirements/x11_dependency'
 
