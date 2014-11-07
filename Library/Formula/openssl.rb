@@ -13,6 +13,12 @@ class Openssl < Formula
     sha1 "ba064e1f82e3eb54a7272d20c8114d8910bbdf01" => :lion
   end
 
+  resource "cacert" do
+    #homepage "http://curl.haxx.se/docs/caextract.html"
+    url "http://curl.haxx.se/ca/cacert.pem"
+    sha1 "e8e794392766cca1528858a229ac046b0f5d5801"
+  end
+
   option :universal
   option "without-check", "Skip build-time tests (not recommended)"
 
@@ -102,7 +108,12 @@ class Openssl < Formula
   end
 
   def post_install
-    return unless OS.mac?
+    unless OS.mac?
+      # Download and install cacert.pem from curl.haxx.se
+      (etc/"openssl").install resource("cacert").files("cacert.pem" => "cert.pem")
+      return
+    end
+
     keychains = %w[
       /Library/Keychains/System.keychain
       /System/Library/Keychains/SystemRootCertificates.keychain
