@@ -1,7 +1,7 @@
-require 'formula'
+require "formula"
 
 class Thrift < Formula
-  homepage 'http://thrift.apache.org'
+  homepage "http://thrift.apache.org"
 
   stable do
     url "http://archive.apache.org/dist/thrift/0.9.1/thrift-0.9.1.tar.gz"
@@ -30,14 +30,14 @@ class Thrift < Formula
   end
 
   head do
-    url 'https://git-wip-us.apache.org/repos/asf/thrift.git'
+    url "https://git-wip-us.apache.org/repos/asf/thrift.git"
 
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-    depends_on 'pkg-config' => :build
-    depends_on 'bison' => :build
-    depends_on 'openssl'
+    depends_on "openssl"
+    depends_on "pkg-config" => :build
+    depends_on "bison" => :build
   end
 
   option "with-haskell", "Install Haskell binding"
@@ -46,7 +46,7 @@ class Thrift < Formula
   option "with-perl", "Install Perl binding"
   option "with-php", "Install PHP binding"
 
-  depends_on 'boost'
+  depends_on "boost"
   depends_on :python => :optional
 
   def install
@@ -73,7 +73,7 @@ class Thrift < Formula
                           *exclusions
     ENV.j1
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats
