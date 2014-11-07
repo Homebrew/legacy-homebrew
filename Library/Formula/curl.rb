@@ -12,6 +12,7 @@ class Curl < Formula
     sha1 "415899b2eae95dd472c69079db679576337fe09c" => :yosemite
     sha1 "4e4dfa1e9f36cd58715d03e95958e792093ccd60" => :mavericks
     sha1 "c3d4f68d131efac02f741e23750ceb23b85ac46d" => :mountain_lion
+    sha1 "d345d4dab7471bfa3b1bed7b869b7e655b9abff4" => :x86_64_linux
   end
 
   keg_only :provided_by_osx
