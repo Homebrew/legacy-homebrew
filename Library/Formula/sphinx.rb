@@ -61,6 +61,9 @@ class Sphinx < Formula
   end
 
   def caveats; <<-EOS.undent
+    This is not sphinx - the Python Documentation Generator. To install
+    sphinx-python, use pip or easy_tools
+
     Sphinx has been compiled with libstemmer support.
 
     Sphinx depends on either MySQL or PostreSQL as a datasource.
