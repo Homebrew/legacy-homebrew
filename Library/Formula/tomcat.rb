@@ -2,8 +2,8 @@ require 'formula'
 
 class Tomcat < Formula
   homepage "http://tomcat.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.14/bin/apache-tomcat-8.0.14.tar.gz"
-  sha1 "1a63a44dbf1b73f2256a2f21521b3d5ee3e8b5bf"
+  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.15/bin/apache-tomcat-8.0.15.tar.gz"
+  sha1 "e9b6c04f3d337a7a1e50acd175295b8c30e9d3b2"
 
   bottle do
     cellar :any
@@ -15,9 +15,9 @@ class Tomcat < Formula
   option "with-fulldocs", "Install full documentation locally"
 
   resource "fulldocs" do
-    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.14/bin/apache-tomcat-8.0.14-fulldocs.tar.gz"
-    version "8.0.14"
-    sha1 "181b01c6d0be3dee5dea5dc12e38f5f0f3c2a72a"
+    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.15/bin/apache-tomcat-8.0.15-fulldocs.tar.gz"
+    version "8.0.15"
+    sha1 "c010691b690f23b3320702f7a9b2fde51d885a44"
   end
 
   def install
