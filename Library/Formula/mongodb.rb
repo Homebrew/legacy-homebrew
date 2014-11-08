@@ -26,6 +26,8 @@ class Mongodb < Formula
   end
 
   devel do
+    # This can't be bumped past 2.7.7 until we decide what to do with
+    # https://github.com/Homebrew/homebrew/pull/33652
     url "https://fastdl.mongodb.org/src/mongodb-src-r2.7.7.tar.gz"
     sha1 "ce223f5793bdf5b3e1420b0ede2f2403e9f94e5a"
 
@@ -36,9 +38,6 @@ class Mongodb < Formula
       sha1 "9f9ce609c7692930976690cae68aa4fce1f8bca3"
     end
   end
-
-  # HEAD is currently failing. See https://jira.mongodb.org/browse/SERVER-15555
-  head "https://github.com/mongodb/mongo.git"
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
 
