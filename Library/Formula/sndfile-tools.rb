@@ -5,6 +5,8 @@ class SndfileTools < Formula
   url "http://www.mega-nerd.com/libsndfile/files/sndfile-tools-1.03.tar.gz"
   sha1 "df7135f5291c1188f0a8c07c82c2d4ec0520a6e3"
 
+  head "https://github.com/erikd/sndfile-tools.git"
+
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -12,6 +14,7 @@ class SndfileTools < Formula
   depends_on "libsndfile" => :build
   depends_on "fftw" => :build
   depends_on "jack" => :build
+  depends_on "libsamplerate" => ["with-fftw", "with-libsndfile"]
   depends_on "cairo"
 
   option :universal
