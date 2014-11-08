@@ -31,6 +31,7 @@ class SndfileTools < Formula
 
   test do
     system "sndfile-generate-chirp", "-h"
+    system "sndfile-jackplay", "-h" if !build.stable?
     system "sndfile-spectrogram", "-h"
     system "sndfile-mix-to-mono", "-h"
   end
