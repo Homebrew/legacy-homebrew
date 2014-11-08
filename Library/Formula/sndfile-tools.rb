@@ -11,9 +11,9 @@ class SndfileTools < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "libsndfile" => :build
-  depends_on "fftw" => :build
-  depends_on "jack" => :build
+  depends_on "libsndfile"
+  depends_on "fftw"
+  depends_on JackDependency
   depends_on "libsamplerate" => ["with-fftw", "with-libsndfile"]
   depends_on "cairo"
 
