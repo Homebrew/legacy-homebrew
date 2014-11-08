@@ -6,9 +6,10 @@ class Asn1c < Formula
   sha1 'b12a78d5e0723c01fb9bf3d916be88824b68e6ee'
 
   bottle do
-    sha1 "7fb4a515ba1d88e98fc17564389b94b49af64d4b" => :yosemite
-    sha1 "8795d4588c8318d4a7c1ba4077893a20c8e6643a" => :mavericks
-    sha1 "bf0435b8c6844c8ea2909129d7d3ca95386c8172" => :mountain_lion
+    revision 1
+    sha1 "3c2a60011a528b5ab8a3d690bad1dc8d7055671e" => :yosemite
+    sha1 "390a9550e70ead04dd2a212bd8239a2942250291" => :mavericks
+    sha1 "2930ed406e3bc13347486e851423423d3a928c0e" => :mountain_lion
   end
 
   def install
