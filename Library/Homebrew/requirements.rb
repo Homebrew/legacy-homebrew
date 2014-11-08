@@ -9,6 +9,7 @@ require 'requirements/python_dependency'
 require 'requirements/tuntap_dependency'
 require 'requirements/unsigned_kext_requirement'
 require 'requirements/x11_dependency'
+require 'requirements/jack_dependency'
 
 class XcodeDependency < Requirement
   fatal true

@@ -19,6 +19,7 @@ class Jack < Formula
     sha1 "01f34e585df06210bfc2f06d07d1ef7058d17f67" => :mountain_lion
   end
 
+  depends_on ConflictsWithBinaryJack
   depends_on 'berkeley-db'
   depends_on 'celt'
   depends_on 'libsndfile'
