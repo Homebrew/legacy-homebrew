@@ -12,6 +12,6 @@ class Rancid < Formula
   end
 
   test do
-    system "#{bin}/rancid", "localhost"
+    system "#{bin}/rancid", "-t", "cisco", "localhost"
   end
 end
