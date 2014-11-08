@@ -25,6 +25,7 @@ class Dgtal < Formula
   end
 
   def install
+    ENV.cxx11
     args = std_cmake_args
     args << "-DCMAKE_BUILD_TYPE=Release"
     args << "-DBUILD_EXAMPLES=OFF"
