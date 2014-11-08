@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Ansifilter < Formula
-  homepage 'http://www.andre-simon.de/doku/ansifilter/ansifilter.html'
-  url 'http://www.andre-simon.de/zip/ansifilter-1.8.tar.gz'
-  sha1 '805bc0227c5972a971a82d3db749fb2431c107c1'
+  homepage "http://www.andre-simon.de/doku/ansifilter/ansifilter.html"
+  url "http://www.andre-simon.de/zip/ansifilter-1.11.tar.gz"
+  sha256 "bdbd6cda51be643e070c98139e79061ab3c2935c4b26c4a098bc64fa3328d1a3"
 
   bottle do
     cellar :any
@@ -13,7 +13,7 @@ class Ansifilter < Formula
   end
 
   def install
-    # both steps required and with PREFIX, last checked v1.7
+    # both steps required and with PREFIX, last checked v1.11
     system "make", "PREFIX=#{prefix}"
     system "make", "PREFIX=#{prefix}", "install"
   end
