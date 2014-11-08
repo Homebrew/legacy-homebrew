@@ -18,9 +18,12 @@ class Dgtal < Formula
   deprecated_option 'with-magick' => 'with-graphicsmagick'
   deprecated_option 'with-qglviewer' => 'with-libqglviewer'
 
-  # Allows to compile with boost 1.57: https://github.com/DGtal-team/DGtal/issues/936
-  patch :DATA
-  
+  # Bugfix for boost 1.57: https://github.com/DGtal-team/DGtal/issues/938
+  patch do
+    url "https://github.com/dcoeurjo/DGtal/commit/c676dc82d8d959377622a61ceab6354bab7a2baa.diff"
+    sha1 "ef878791a0e31a006f88ea4366344108bf2a4db8"
+  end
+
   def install
     args = std_cmake_args
     args << "-DCMAKE_BUILD_TYPE=Release"
@@ -41,68 +44,3 @@ class Dgtal < Formula
     end
   end
 end
-
-__END__
-diff --git a/src/DGtal/base/Common.h b/src/DGtal/base/Common.h
-index 0a524f6..bcd20a3 100644
---- a/src/DGtal/base/Common.h
-+++ b/src/DGtal/base/Common.h
-@@ -51,6 +51,7 @@
- #include <iostream>
- #include <exception>
- #include <algorithm>
-+#include <boost/version.hpp>
- #include <boost/concept_check.hpp>
- #include <boost/static_assert.hpp>
- #include <boost/concept/assert.hpp>
-diff --git a/src/DGtal/base/IteratorCirculatorTraits.h b/src/DGtal/base/IteratorCirculatorTraits.h
-index 729d608..9858f38 100644
---- a/src/DGtal/base/IteratorCirculatorTraits.h
-+++ b/src/DGtal/base/IteratorCirculatorTraits.h
-@@ -246,20 +246,39 @@ struct ToDGtalCategory<boost::random_access_traversal_tag> {
-     typedef  RandomAccessCategory Category;
- };
- 
--template <>
--struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
--    typedef  ForwardCategory Category;
--};
- 
--template <>
--struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
-+
-+
-+#if (((BOOST_VERSION /100000)==1) && ((BOOST_VERSION / 100 % 1000 )<57))
-+  template <>
-+  struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
-+    typedef  ForwardCategory Category;
-+  };
-+  template <>
-+  struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
-     typedef  BidirectionalCategory Category;
--};
-+  };
- 
--template <>
--struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
-+  template <>
-+  struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
-     typedef  RandomAccessCategory Category;
--};
-+  };
-+#else
-+  template <>
-+  struct ToDGtalCategory<boost::iterators::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
-+    typedef  ForwardCategory Category;
-+  };
-+  template <>
-+  struct ToDGtalCategory<boost::iterators::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
-+    typedef  BidirectionalCategory Category;
-+  };
-+  
-+  template <>
-+  struct ToDGtalCategory<boost::iterators::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
-+    typedef  RandomAccessCategory Category;
-+  };
-+#endif
-+
