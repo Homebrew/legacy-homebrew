@@ -7,9 +7,9 @@ class Ansifilter < Formula
 
   bottle do
     cellar :any
-    sha1 "e28d7cd8ef0c42040b216d9eb6087ddc90cba855" => :mavericks
-    sha1 "6110cc501ebfe6a7d402b778880651314310ce3b" => :mountain_lion
-    sha1 "2ab9271e360293e599926909da601e511c270152" => :lion
+    sha1 "0206b02f9a153af5ae065636d6a0d3b5909b0f30" => :yosemite
+    sha1 "eaaeb1c8ad032d26afd990f426cc4b4da0dbd0ba" => :mavericks
+    sha1 "a726df12fc5b88a027225db2e16b736328b38267" => :mountain_lion
   end
 
   def install
