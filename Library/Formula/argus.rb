@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Argus < Formula
-  homepage 'http://qosient.com/argus/'
-  url 'http://qosient.com/argus/src/argus-3.0.6.1.tar.gz'
-  sha1 '0da193957510fbe1b72875d4ea205453cb7821be'
+  homepage "http://qosient.com/argus/"
+  url "http://qosient.com/argus/src/argus-3.0.8.tar.gz"
+  sha1 "fe9833c7f8ea4cdf7054b37024e5d007613f9571"
 
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
