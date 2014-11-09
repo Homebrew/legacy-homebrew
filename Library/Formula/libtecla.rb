@@ -7,9 +7,9 @@ class Libtecla < Formula
 
   bottle do
     cellar :any
-    sha1 "d9e5da2740a39ddb9ef8a98b8c4cf0f779ab5741" => :yosemite
-    sha1 "e2bd07ac82c62735da70bdd7126f7afef8f7da95" => :mavericks
-    sha1 "cfe81b793c6a6f7a42b438862acd4f2872d21e27" => :mountain_lion
+    sha1 "d4148dea590822dbd6b801decdaa4ba9cd88cf02" => :yosemite
+    sha1 "7158c356aa224f096a93cafdc8f01fa238471b9b" => :mavericks
+    sha1 "515484afb0f5e3eea75a775361ce9b8059cb5a54" => :mountain_lion
   end
 
   def install
