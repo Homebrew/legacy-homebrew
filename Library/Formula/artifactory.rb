@@ -1,41 +1,41 @@
-require 'formula'
+require "formula"
 
 class Artifactory < Formula
-  homepage 'http://www.jfrog.com/artifactory/'
-  url 'http://dl.bintray.com/jfrog/artifactory/artifactory-3.4.0.zip'
-  sha1 'fb53abccd7d547b8deaa6112b83d512f8a1c593b'
+  homepage "http://www.jfrog.com/artifactory/"
+  url "http://dl.bintray.com/jfrog/artifactory/artifactory-3.4.1.zip"
+  sha1 "c8ca7a024be33648ab36f5e674f340c6630ec603"
 
-  depends_on :java => '1.7'
+  depends_on :java => "1.7"
 
-  option 'with-low-heap', 'Run artifactory with low Java memory options. Useful for development machines. Do not use in production.'
-  option 'with-java8', 'Adjust memory settings for Java 8'
+  option "with-low-heap", "Run artifactory with low Java memory options. Useful for development machines. Do not use in production."
+  option "with-java8", "Adjust memory settings for Java 8"
 
   def install
     # Remove Windows binaries
-    rm_f Dir['bin/*.bat']
-    rm_f Dir['bin/*.exe']
+    rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/*.exe"]
 
     # Set correct working directory
-    inreplace 'bin/artifactory.sh',
+    inreplace "bin/artifactory.sh",
       'export ARTIFACTORY_HOME="$(cd "$(dirname "${artBinDir}")" && pwd)"',
       "export ARTIFACTORY_HOME=#{libexec}"
 
     # Remove obsolete parameters for Java 8
-    inreplace 'bin/artifactory.default',
-      '-server -Xms512m -Xmx2g -Xss256k -XX:PermSize=128m -XX:MaxPermSize=256m -XX:+UseG1GC',
-      '-server -Xms512m -Xmx2g -Xss256k -XX:+UseG1GC' if build.with? 'java8'
+    inreplace "bin/artifactory.default",
+      "-server -Xms512m -Xmx2g -Xss256k -XX:PermSize=128m -XX:MaxPermSize=256m -XX:+UseG1GC",
+      "-server -Xms512m -Xmx2g -Xss256k -XX:+UseG1GC" if build.with? "java8"
 
     # Reduce memory consumption for non production use
-    inreplace 'bin/artifactory.default',
-      '-server -Xms512m -Xmx2g',
-      '-Xms128m -Xmx768m' if build.with? 'low-heap'
+    inreplace "bin/artifactory.default",
+      "-server -Xms512m -Xmx2g",
+      "-Xms128m -Xmx768m" if build.with? "low-heap"
 
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
     # Launch Script
-    bin.install_symlink libexec/'bin/artifactory.sh'
+    bin.install_symlink libexec/"bin/artifactory.sh"
     # Memory Options
-    bin.install_symlink libexec/'bin/artifactory.default'
+    bin.install_symlink libexec/"bin/artifactory.default"
   end
 
 
@@ -43,10 +43,10 @@ class Artifactory < Formula
     # Create persistent data directory. Artifactory heavily relies on the data
     # directory being directly under ARTIFACTORY_HOME.
     # Therefore, I symlink the data dir to var.
-    data = (var+'artifactory')
+    data = (var+"artifactory")
     data.mkpath
 
-    libexec.install_symlink data => 'data'
+    libexec.install_symlink data => "data"
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/artifactory/libexec/bin/artifactory.sh"
