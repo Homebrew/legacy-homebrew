@@ -21,7 +21,7 @@ class Tmux < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
     if build.with? "24-bit"
-      patch do 
+      patch do
         url "https://gist.githubusercontent.com/JohnMorales/0579990993f6dec19e83/raw/75b073e85f3d539ed24907f1615d9e0fa3e303f4/tmux-24.diff"
         sha1 "101aa54529adf8aa22216c3f35d55fc837c246e8"
       end
