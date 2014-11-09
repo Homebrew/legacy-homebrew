@@ -2,8 +2,8 @@ require "formula"
 
 class AtSpi2Atk < Formula
   homepage "http://a11y.org"
-  url "http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.14/at-spi2-atk-2.14.0.tar.xz"
-  sha256 "56b40ef16d9f1b1630d32addb0cc941372a1e97d8ddafd369f912c7d125688e7"
+  url "http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.14/at-spi2-atk-2.14.1.tar.xz"
+  sha256 "058f34ea60edf0a5f831c9f2bdd280fe95c1bcafb76e466e44aa0fb356d17bcb"
 
   bottle do
     cellar :any
@@ -18,6 +18,6 @@ class AtSpi2Atk < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
