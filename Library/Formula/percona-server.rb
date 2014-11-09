@@ -1,11 +1,10 @@
-require 'formula'
+require "formula"
 
 class PerconaServer < Formula
-  homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.21-69.0.tar.gz'
-  version '5.6.21-69.0'
-  sha1 '0071f263774d6acb9e8991a7574a79cc2b83bc0a'
-  revision 1
+  homepage "http://www.percona.com"
+  url "http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.21-70.0.tar.gz"
+  version "5.6.21-70.0"
+  sha1 "15abf4e614848f594b51bb364b8d087003964e72"
 
   bottle do
     sha1 "12a591763c3d23c2fc3cb764e4d107ba6047ed3a" => :yosemite
@@ -13,23 +12,23 @@ class PerconaServer < Formula
     sha1 "288fcd0deacb49c786600b119ac2b765a1a44200" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
   depends_on "openssl"
 
   option :universal
-  option 'with-tests', 'Build with unit tests'
-  option 'with-embedded', 'Build the embedded server'
-  option 'with-memcached', 'Build with InnoDB Memcached plugin'
-  option 'enable-local-infile', 'Build with local infile loading support'
+  option "with-tests", "Build with unit tests"
+  option "with-embedded", "Build the embedded server"
+  option "with-memcached", "Build with InnoDB Memcached plugin"
+  option "enable-local-infile", "Build with local infile loading support"
 
-  conflicts_with 'mysql-connector-c',
-    :because => 'both install `mysql_config`'
+  conflicts_with "mysql-connector-c",
+    :because => "both install `mysql_config`"
 
-  conflicts_with 'mariadb', 'mysql', 'mysql-cluster',
+  conflicts_with "mariadb", "mysql", "mysql-cluster",
     :because => "percona, mariadb, and mysql install the same binaries."
-  conflicts_with 'mysql-connector-c',
-    :because => 'both install MySQL client libraries'
+  conflicts_with "mysql-connector-c",
+    :because => "both install MySQL client libraries"
 
   fails_with :llvm do
     build 2334
@@ -40,7 +39,7 @@ class PerconaServer < Formula
   # under var/percona, but going forward they will be under var/msyql to be
   # shared with the mysql and mariadb formulae.
   def datadir
-    @datadir ||= (var/'percona').directory? ? var/'percona' : var/'mysql'
+    @datadir ||= (var/"percona").directory? ? var/"percona" : var/"mysql"
   end
 
   def pour_bottle?
@@ -85,17 +84,17 @@ class PerconaServer < Formula
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.with? 'tests'
+    if build.with? "tests"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? "embedded"
 
     # Build with InnoDB Memcached plugin
-    args << "-DWITH_INNODB_MEMCACHED=ON" if build.with? 'memcached'
+    args << "-DWITH_INNODB_MEMCACHED=ON" if build.with? "memcached"
 
     # Make universal for binding to universal applications
     if build.universal?
@@ -104,15 +103,15 @@ class PerconaServer < Formula
     end
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.include? "enable-local-infile"
 
     system "cmake", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix+'data'
+    rm_rf prefix+"data"
 
     # Link the setup script into bin
     bin.install_symlink prefix/"scripts/mysql_install_db"
@@ -121,7 +120,7 @@ class PerconaServer < Formula
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      s.gsub!(/pidof/, "pgrep") if MacOS.version >= :mountain_lion
     end
 
     bin.install_symlink prefix/"support-files/mysql.server"
@@ -135,7 +134,7 @@ class PerconaServer < Formula
     # Make sure that data directory exists
     datadir.mkpath
     unless File.exist? "#{datadir}/mysql/user.frm"
-      ENV['TMPDIR'] = nil
+      ENV["TMPDIR"] = nil
       system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
         "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
     end
@@ -150,7 +149,7 @@ class PerconaServer < Formula
     EOS
   end
 
-  plist_options :manual => 'mysql.server start'
+  plist_options :manual => "mysql.server start"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
