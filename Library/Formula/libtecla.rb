@@ -2,8 +2,8 @@ require "formula"
 
 class Libtecla < Formula
   homepage "http://www.astro.caltech.edu/~mcs/tecla/index.html"
-  url "http://www.astro.caltech.edu/~mcs/tecla/libtecla-1.6.2.tar.gz"
-  sha1 "2eae391d29ee02d921e73c4acc78350c9b03d618"
+  url "http://www.astro.caltech.edu/~mcs/tecla/libtecla-1.6.3.tar.gz"
+  sha1 "1c2ca66c16deea59cde6fff53a5cfb9a02659ffc"
 
   bottle do
     cellar :any
@@ -15,8 +15,6 @@ class Libtecla < Formula
   def install
     ENV.j1
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    # Emailed upstream with this fix on 31st October 2014.
-    inreplace "Makefile", "libgcc.a", ""
     system "make", "install"
   end
 end
