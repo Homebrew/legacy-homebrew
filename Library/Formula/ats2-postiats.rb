@@ -2,8 +2,8 @@ require "formula"
 
 class Ats2Postiats < Formula
   homepage "http://www.ats-lang.org/"
-  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.0/ATS2-Postiats-0.1.0.tgz"
-  sha1 "7767db094f7f050edf30518866892b6cd0e2277e"
+  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.4/ATS2-Postiats-0.1.4.tgz"
+  sha1 "a1efb18fad356c5e6dcddde79b8433476443da09"
 
   bottle do
     cellar :any
@@ -13,6 +13,10 @@ class Ats2Postiats < Formula
   end
 
   depends_on "gmp"
+
+  fails_with :clang do
+    cause "Trying to compile this with Clang is failure-galore."
+  end
 
   def install
     ENV.deparallelize
