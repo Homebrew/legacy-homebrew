@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Npth < Formula
-  homepage 'http://lwn.net/Articles/496268/'
-  url 'ftp://ftp.gnupg.org/gcrypt/npth/npth-0.91.tar.bz2'
-  sha1 'bb10db9f043fb63424162b6da6969af9082e6fa0'
+  homepage "https://gnupg.org/index.html"
+  url "ftp://ftp.gnupg.org/gcrypt/npth/npth-1.1.tar.bz2"
+  sha1 "597ce74402e5790553a6273130b214d7ddd0b05d"
 
   bottle do
     cellar :any
@@ -14,7 +14,12 @@ class Npth < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/npth-config", "--version"
   end
 end
