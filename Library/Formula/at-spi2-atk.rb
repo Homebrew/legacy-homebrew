@@ -7,9 +7,9 @@ class AtSpi2Atk < Formula
 
   bottle do
     cellar :any
-    sha1 "f11701fff9c808d0be86ab0245b7b166e95cf371" => :mavericks
-    sha1 "a2cb17226b9d03779b67f52c42c5668ff3d4e6b2" => :mountain_lion
-    sha1 "690f4136be39fb82537dab0dcb090c87ddd7177d" => :lion
+    sha1 "87a7ff21bc3a30210612b0a9967eec0c9cbfe42e" => :yosemite
+    sha1 "2dfa3d351cee3cf5b306c11858dcc98ffc629b8f" => :mavericks
+    sha1 "a1538c6a67142e6ee84fd3ee87c03328c0fec926" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
