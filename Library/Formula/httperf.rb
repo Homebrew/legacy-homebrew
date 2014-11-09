@@ -6,6 +6,13 @@ class Httperf < Formula
   sha1 "2aa885c0c143d809c0e50a6eca5063090bddee35"
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "b37decb63bdb77a6d04cb770a2d40745d2b5ee78" => :yosemite
+    sha1 "5e00255e74995f0bfa601152329d66be8a0d7fdf" => :mavericks
+    sha1 "cc699648d2c48f2a9a8fa94da42831c3551e8475" => :mountain_lion
+  end
+
   # Upstream actually recommend using head over stable now.
   head do
     url "http://httperf.googlecode.com/svn/trunk/"
