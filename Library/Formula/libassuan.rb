@@ -8,9 +8,9 @@ class Libassuan < Formula
 
   bottle do
     cellar :any
-    sha1 "b096e4c29bbe9f706386e1f5fb0b6aeae79804a4" => :yosemite
-    sha1 "5e2dc4817c5947892920025a9cf937f51480a5f4" => :mavericks
-    sha1 "15f6f77e99f1f3b8f9a52e2703ff5d2ae1f05101" => :mountain_lion
+    sha1 "8c89e123cca5d492535e9ba9ec3ca34141d54823" => :yosemite
+    sha1 "b1e6d766da6c4cd4b77ec6d41e3a3ec7d657bd88" => :mavericks
+    sha1 "9c395e49e64d3ce487ef36f66dda3c4d6f1f3214" => :mountain_lion
   end
 
   depends_on "libgpg-error"
