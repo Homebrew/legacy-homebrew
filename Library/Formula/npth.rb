@@ -7,9 +7,9 @@ class Npth < Formula
 
   bottle do
     cellar :any
-    sha1 "6830f2d744b23859fa690454d02a2c60a8ae73c4" => :mavericks
-    sha1 "9ea753df5be9e97514f67ebe5969146064648f23" => :mountain_lion
-    sha1 "931d244c23b907c732286cfa5099e03978506ce5" => :lion
+    sha1 "9c933c021a84a1fe71531f6deda2c368c0dc3e08" => :yosemite
+    sha1 "8eedb70363bbdded692e29e8021527a17b6cfd17" => :mavericks
+    sha1 "0fd048150a802f5a8f9f392faf7a55ed30eb60f7" => :mountain_lion
   end
 
   def install
