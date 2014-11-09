@@ -2,20 +2,19 @@ require "formula"
 
 class ShadowsocksLibev < Formula
   homepage "https://github.com/madeye/shadowsocks-libev"
-  url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.8.tar.gz"
-  sha1 "8261d91dc7184d2edafb9f1f57f70f97fe7d0f2f"
+  url "https://github.com/madeye/shadowsocks-libev/archive/v1.5.1.tar.gz"
+  sha1 "eb36d2a125431597dfe3073b0a7c75ee921810ed"
 
   bottle do
-    sha1 "8b47e5c7d2a1398e8bb6069f5c33bb6a2595574a" => :yosemite
-    sha1 "585d31bf4a6128d490ea51d0199949922056f9e8" => :mavericks
-    sha1 "d78ad3908a3708ddc92151538102cb44b2a05809" => :mountain_lion
+    sha1 "5da303c6c410f9ec3f4d2e45185e185425486dda" => :yosemite
+    sha1 "047fa26a91d4fff57b1ae1fba5b1e6d4a1b2d510" => :mavericks
+    sha1 "4ce5dcb3983e4c336b75b89b2c66924275bca1c1" => :mountain_lion
   end
 
   head "https://github.com/madeye/shadowsocks-libev.git"
 
   option "with-polarssl", "Use PolarSSL instead of OpenSSL"
 
-  depends_on "libev"
   depends_on "polarssl" => :optional
   depends_on "openssl" if build.without? "polarssl"
 
@@ -30,7 +29,9 @@ class ShadowsocksLibev < Formula
     end
 
     system "./configure", *args
-    system "make", "install"
+    system "make"
+
+    bin.install "src/ss-local"
 
     (buildpath/"shadowsocks-libev.json").write <<-EOS.undent
       {
