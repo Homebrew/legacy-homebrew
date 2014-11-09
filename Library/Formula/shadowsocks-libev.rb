@@ -15,7 +15,6 @@ class ShadowsocksLibev < Formula
 
   option "with-polarssl", "Use PolarSSL instead of OpenSSL"
 
-  depends_on "libev"
   depends_on "polarssl" => :optional
   depends_on "openssl" if build.without? "polarssl"
 
