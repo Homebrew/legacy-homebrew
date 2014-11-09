@@ -2,8 +2,8 @@ require "formula"
 
 class Libimobiledevice < Formula
   homepage "http://www.libimobiledevice.org/"
-  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.6.tar.bz2"
-  sha1 "3016bf1241bc5a77a621c49d82d71bb8f32905e4"
+  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.7.tar.bz2"
+  sha1 "ac47ba39e7f8d8cb9379756773ece30458b93c80"
   revision 1
 
   bottle do
