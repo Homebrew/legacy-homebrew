@@ -1,12 +1,13 @@
-require 'formula'
+require "formula"
 
 class DfuUtil < Formula
-  homepage 'http://dfu-util.gnumonks.org/'
-  url 'http://dfu-util.gnumonks.org/releases/dfu-util-0.7.tar.gz'
-  sha1 'a6f621a17a164bd86d2752e2fcd3903f94a8925b'
+  homepage "https://gitorious.org/dfu-util/community"
+  # upstream moved, no releases yet, using debian mirror until then.  see #34047
+  url "http://ftp.de.debian.org/debian/pool/main/d/dfu-util/dfu-util_0.8.orig.tar.gz"
+  sha1 "164551ca40f0c569eb7ae3263a9945a1ef3fed4d"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libusb'
+  depends_on "pkg-config" => :build
+  depends_on "libusb"
 
   def install
     system "./configure", "--disable-dependency-tracking",
