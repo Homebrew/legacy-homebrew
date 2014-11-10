@@ -26,6 +26,7 @@ TAP_MIGRATIONS = {
   "gnunet" => "homebrew/boneyard",
   "grads" => "homebrew/binary",
   "gromacs" => "homebrew/science",
+  "helios" => "spotify/public",
   "hllib" => "homebrew/boneyard",
   "hugs98" => "homebrew/boneyard",
   "hwloc" => "homebrew/science",
