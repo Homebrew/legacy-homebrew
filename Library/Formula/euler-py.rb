@@ -5,6 +5,13 @@ class EulerPy < Formula
   url "https://github.com/iKevinY/EulerPy/archive/v1.2.3.tar.gz"
   sha1 "88d97d7807f6b06ebfe475eee31ebd021b4ef275"
 
+  bottle do
+    cellar :any
+    sha1 "0118e4251a9a41adfca4c5f4fce135540a26b201" => :yosemite
+    sha1 "f6a07bb235eebadc38e3474bbaf025704ee2236d" => :mavericks
+    sha1 "962c5651ae11c6a981b43c9fdb01c3a99d2f127e" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "click" do
