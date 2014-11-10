@@ -2,16 +2,14 @@ require "formula"
 
 class PerconaToolkit < Formula
   homepage "http://www.percona.com/software/percona-toolkit/"
-  url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.10/tarball/percona-toolkit-2.2.10.tar.gz"
-  sha1 "dcdcaad544c8d0631aada41d89b7ffb78745a780"
+  url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.11/percona-toolkit-2.2.11.tar.gz"
+  sha1 "7119aa553576fe52cea62944449e34a910a33e1b"
 
   bottle do
-    sha1 "4f4a6930ce21896e63a10a924e09772a5890db87" => :mavericks
-    sha1 "25b6094e18ce418cdc13817beda32abf13063561" => :mountain_lion
-    sha1 "2587f2fbc846610a6f16b665a20d39155413ccc2" => :lion
   end
 
   depends_on :mysql
+  depends_on "openssl"
 
   resource "DBD::mysql" do
     url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
