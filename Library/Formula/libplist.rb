@@ -7,9 +7,9 @@ class Libplist < Formula
 
   bottle do
     cellar :any
-    sha1 "cdb47a2580cb22b91f5f7e54c4c931656d85c191" => :yosemite
-    sha1 "0a09124d49ed3f662191fc4d11dcd9fa01530c8f" => :mavericks
-    sha1 "60f6e063e274c92a220e4f926e4acec7c76c25be" => :mountain_lion
+    sha1 "abd1c58c509b305549310367feab44bca513d647" => :yosemite
+    sha1 "e7bf9fbf14a51449b6b8dd5c2f084ace824f553f" => :mavericks
+    sha1 "40172d50d4c836931dbfd38700a9088842c56b6c" => :mountain_lion
   end
 
   head do
