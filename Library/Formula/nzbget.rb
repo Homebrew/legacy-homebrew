@@ -8,10 +8,9 @@ class Nzbget < Formula
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
   bottle do
-    revision 1
-    sha1 "1c3dadeea5e3b2c11c389c47d52b01c178c8dc15" => :mavericks
-    sha1 "cc54cc62edb0a8e46984f182e910113746bcd1c1" => :mountain_lion
-    sha1 "a16304bb423a561ce4a51a808d3c10717f237d51" => :lion
+    sha1 "39db25fa2d79c924cf0aa706c7180c0650734c32" => :yosemite
+    sha1 "43478c1ccb216da5d58e8dfee64d7c3e13086d8e" => :mavericks
+    sha1 "21db9c9bbcf94ce4ef0862f1c2f1b4a5d59d6f68" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
