@@ -7,9 +7,9 @@ class Usbmuxd < Formula
 
   bottle do
     cellar :any
-    sha1 "df155e8fd46fb368a27359dfb1d3e38748e62520" => :yosemite
-    sha1 "111014819a0d4351ddb074e917f399a74bcf1442" => :mavericks
-    sha1 "f23f5dee72baff05e14f59e0b1adbc52e9d2918d" => :mountain_lion
+    sha1 "8842576a4da2ec84045888cc50e4df8672798947" => :yosemite
+    sha1 "af8be14dba7a0cfd89c0a0a63e2b5f18891cec5a" => :mavericks
+    sha1 "8d3728b0c4a52433937cc7d93e21a75e978025d7" => :mountain_lion
   end
 
   head do
