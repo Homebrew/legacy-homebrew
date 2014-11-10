@@ -52,11 +52,11 @@ Note that these flags should only appear after a command.
 
   * `cleanup [--force] [-ns]` [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
-    cellar. By default, does not remove out-of-date keg-only brews, as other
-    software may link directly to specific versions. In addition old downloads from
-    the Homebrew download-cache are deleted.
+    cellar. By default, does not remove out-of-date unlinked-by-default
+    packages, as other software may link directly to specific versions. In
+    addition old downloads from the Homebrew download-cache are deleted.
 
-    If `--force` is passed, remove out-of-date keg-only brews as well.
+    If `--force` is passed, remove out-of-date unlinked brews as well.
 
     If `-n` is passed, show what would be removed, but do not actually remove anything.
 
@@ -112,7 +112,7 @@ Note that these flags should only appear after a command.
     Automatically determine the installation prefix for non-Homebrew software.
 
     Using the output from this command, you can install your own software into
-    the Cellar and then link it into Homebrew's prefix with `brew link`.
+    the Cellar path and then link it into Homebrew's prefix with `brew link`.
 
     The options `--name=<name>` and `--version=<version>` each take an argument
     and allow you to explicitly set the name and version of the package you are
@@ -143,9 +143,9 @@ Note that these flags should only appear after a command.
     If `--deps` is passed, also download dependencies for any listed <formulae>.
 
     If `--build-from-source` is passed, download the source rather than a
-    bottle.
+    precompiled package.
 
-    If `--force-bottle` is passed, download a bottle if it exists for the current
+    If `--force-bottle` is passed, download a precompiled package if it exists for the current
     version of OS X, even if it would not be used during installation.
 
   * `home`:
@@ -198,7 +198,7 @@ Note that these flags should only appear after a command.
     `gcc-4.2` for Apple's GCC 4.2, or `gcc-4.9` for a Homebrew-provided GCC
     4.9.
 
-    If `--build-from-source` is passed, compile from source even if a bottle
+    If `--build-from-source` is passed, compile from source even if a precompiled package
     is provided for <formula>.
 
     If `--devel` is passed, and <formula> defines it, install the development version.
@@ -232,7 +232,7 @@ Note that these flags should only appear after a command.
     be linked or which would be deleted by `brew link --overwrite`, but will not
     actually link or delete any files.
 
-    If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
+    If `--force` is passed, Homebrew will allow formulae unlinked-by-default to be linked.
 
   * `linkapps [--local]`:
     Find all installed formulae that have compiled `.app`-style "application"
@@ -247,7 +247,7 @@ Note that these flags should only appear after a command.
 
     If <formulae> are given, list the installed files for <formulae>.
     Combined with `--verbose`, recursively list the contents of all subdirectories
-    in each <formula>'s keg.
+    in each <formula>'s prefix.
 
     If `--unbrewed` is passed, list all files in the Homebrew prefix not installed
     by Homebrew.
@@ -491,7 +491,7 @@ can take several different forms:
 
   * HOMEBREW\_BUILD\_FROM\_SOURCE:
     If set, instructs Homebrew to compile from source even when a formula
-    provides a bottle.
+    provides a precompiled package.
 
   * HOMEBREW\_CACHE:
     If set, instructs Homebrew to use the given directory as the download cache.
@@ -512,7 +512,7 @@ can take several different forms:
 
   * HOMEBREW\_DEBUG\_PREFIX:
     When `brew install -d` or `brew install -i` drops into a shell,
-    `HOMEBREW_DEBUG_PREFIX` will be set to the target prefix in the Cellar
+    `HOMEBREW_DEBUG_PREFIX` will be set to the target prefix in the Cellar path
     of the formula being brewed.
 
   * HOMEBREW\_DEVELOPER:
@@ -556,7 +556,7 @@ can take several different forms:
 
   * HOMEBREW\_SOURCEFORGE\_MIRROR:
     If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to
-    select a SourceForge mirror for downloading bottles.
+    select a SourceForge mirror for downloading precompiled packages.
 
     *Example:* `export HOMEBREW_SOURCEFORGE_MIRROR='heanet'`
 

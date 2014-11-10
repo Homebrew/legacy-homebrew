@@ -15,8 +15,8 @@ module Homebrew
         puts "To relink: brew unlink #{keg.name} && brew link #{keg.name}"
         next
       elsif keg_only?(keg.name) && !ARGV.force?
-        opoo "#{keg.name} is keg-only and must be linked with --force"
-        puts "Note that doing so can interfere with building software."
+        opoo "#{keg.name} is not linked into #{HOMEBREW_PREFIX} by default."
+        puts "To do so requires --force (which can interfere with building other packages)."
         next
       elsif mode.dry_run && mode.overwrite
         puts "Would remove:"

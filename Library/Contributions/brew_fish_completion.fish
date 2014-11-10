@@ -98,7 +98,7 @@ complete -c brew --arguments '(__fish_brew_formula_arguments)'
 complete -c brew -x -a "$commands" -n '__fish_complete_brew_no_command'
 complete -c brew -x -a '(__fish_complete_brew_argument)' -n '__fish_complete_brew_has_command'
 
-complete -c brew -s f -l force -n '__fish_complete_brew_command cleanup' -d "Remove out-of-date keg-only brews"
+complete -c brew -s f -l force -n '__fish_complete_brew_command cleanup' -d "Remove out-of-date unlinked-by-default packages"
 complete -c brew -s n -l dry-run -n '__fish_complete_brew_command cleanup' -d "Show what would be removed, but don't do anything"
 complete -c brew -s s -n '__fish_complete_brew_command cleanup' -d "Remove all downloads"
 
@@ -131,7 +131,7 @@ complete -c brew -s d -l debug -n '__fish_complete_brew_command install' -d "Ope
 complete -c brew -s f -l force -n '__fish_complete_brew_command force' -d "Install formula even if blacklisted"
 complete -c brew -s i -l interactive -n '__fish_complete_brew_command install' -d "Open a subshell to install manually"
 complete -c brew -l git -n '__fish_complete_brew_command install' -d 'Create a git repo (useful for making patches)'
-complete -c brew -l build-from-source -n '__fish_complete_brew_command install' -d "Compile from source even if a bottle is provided"
+complete -c brew -l build-from-source -n '__fish_complete_brew_command install' -d "Compile from source even if a precompiled package is provided"
 complete -c brew -l devel -n '__fish_complete_brew_command install' -d "Install the development version"
 complete -c brew -l HEAD -n '__fish_complete_brew_command install' -d "Install the HEAD version"
 

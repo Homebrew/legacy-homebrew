@@ -26,7 +26,7 @@ class GtkEngines < Formula
   def caveats; <<-EOS.undent
     You will need to set:
       GTK_PATH=#{HOMEBREW_PREFIX}/lib/gtk-2.0
-    as by default GTK looks for modules in Cellar.
+    as by default GTK looks for modules in its installation prefix.
     EOS
   end
 end

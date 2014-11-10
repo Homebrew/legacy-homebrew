@@ -294,21 +294,16 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
   end
 
   def stage
-    ohai "Pouring #{tarball_path.basename}"
+    ohai "Installing precompiled package #{tarball_path.basename}"
     super
   end
 end
 
 # This strategy extracts local binary packages.
-class LocalBottleDownloadStrategy < CurlDownloadStrategy
+class LocalBottleDownloadStrategy < CurlBottleDownloadStrategy
   def initialize formula
     super formula.name, formula.active_spec
     @tarball_path = formula.local_bottle_path
-  end
-
-  def stage
-    ohai "Pouring #{tarball_path.basename}"
-    super
   end
 end
 

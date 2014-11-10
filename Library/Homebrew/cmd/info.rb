@@ -22,7 +22,7 @@ module Homebrew
   def print_info
     if ARGV.named.empty?
       if HOMEBREW_CELLAR.exist?
-        puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
+        puts "#{HOMEBREW_CELLAR.children.length} packages, #{HOMEBREW_CELLAR.abv}"
       end
     else
       ARGV.named.each_with_index do |f,i|
@@ -79,13 +79,13 @@ module Homebrew
 
     if stable = f.stable
       s = "stable #{stable.version}"
-      s += " (bottled)" if stable.bottled?
+      s += " (precompiled package)" if stable.bottled?
       specs << s
     end
 
     if devel = f.devel
       s = "devel #{devel.version}"
-      s += " (bottled)" if devel.bottled?
+      s += " (precompiled package)" if devel.bottled?
       specs << s
     end
 
@@ -97,7 +97,7 @@ module Homebrew
 
     if f.keg_only?
       puts
-      puts "This formula is keg-only."
+      puts "This formula not linked into #{HOMEBREW_PREFIX} by default."
       puts f.keg_only_reason
       puts
     end
