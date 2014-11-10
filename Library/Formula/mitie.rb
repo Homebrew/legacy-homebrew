@@ -5,6 +5,13 @@ class Mitie < Formula
   url "https://github.com/mit-nlp/MITIE/archive/v0.3.tar.gz"
   sha1 "05ea37283bd75487db469b68b0e2ecdea991c05e"
 
+  bottle do
+    cellar :any
+    sha1 "5340adc68370e4aec0114080e143e779595fed37" => :yosemite
+    sha1 "d0fb785080028ad13aec010e990a82efcfce8c57" => :mavericks
+    sha1 "54b250080d42b7da77b3c92d67d32431be180dfd" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "models-english" do
