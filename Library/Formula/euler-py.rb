@@ -22,7 +22,8 @@ class EulerPy < Formula
   def install
     ENV.prepend_create_path "PYTHONPATH", "#{libexec}/lib/python2.7/site-packages"
     resource("click").stage do
-      system "python", "setup.py", "install", "--prefix=#{libexec}"
+      system "python", "setup.py", "install", "--prefix=#{libexec}",
+             "--single-version-externally-managed", "--record=installed.txt"
     end
 
     ENV.prepend_create_path "PYTHONPATH", "#{lib}/python2.7/site-packages"
