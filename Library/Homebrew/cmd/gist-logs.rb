@@ -6,14 +6,6 @@ require 'stringio'
 
 module Homebrew
   def gistify_logs f
-    if ARGV.include? '--new-issue'
-      unless HOMEBREW_GITHUB_API_TOKEN
-        puts 'You need to create an API token: https://github.com/settings/applications'
-        puts 'and then set HOMEBREW_GITHUB_API_TOKEN to use --new-issue option.'
-        exit 1
-      end
-    end
-
     files = load_logs(f.name)
 
     s = StringIO.new
@@ -23,11 +15,39 @@ module Homebrew
 
     url = create_gist(files)
 
-    if ARGV.include? '--new-issue'
-      url = new_issue(f.tap, "#{f.name} failed to build on #{MACOS_FULL_VERSION}", url)
+    if ARGV.include?('--new-issue') || ARGV.switch?('n')
+      auth = :AUTH_TOKEN
+
+      unless HOMEBREW_GITHUB_API_TOKEN
+        puts 'You can create an API token: https://github.com/settings/applications'
+        puts 'and then set HOMEBREW_GITHUB_API_TOKEN as authentication method.'
+        puts
+
+        auth = :AUTH_BASIC
+      end
+
+      url = new_issue(f.tap, "#{f.name} failed to build on #{MACOS_FULL_VERSION}", url, auth)
     end
 
-    ensure puts url if url
+    puts url if url
+  end
+
+  #Hack for ruby < 1.9.3
+  def noecho_gets
+    system 'stty -echo'
+    result = $stdin.gets
+    system 'stty echo'
+    puts
+    result
+  end
+
+  def login request
+    print 'GitHub User: '
+    user = $stdin.gets.chomp
+    print 'Password: '
+    password = noecho_gets.chomp
+    puts
+    request.basic_auth(user, password)
   end
 
   def load_logs name
@@ -42,11 +62,11 @@ module Homebrew
   end
 
   def create_gist files
-    post("/gists", "public" => true, "files" => files)["html_url"]
+    post("/gists", { "public" => true, "files" => files })["html_url"]
   end
 
-  def new_issue repo, title, body
-    post("/repos/#{repo}/issues", "title" => title, "body" => body)["html_url"]
+  def new_issue repo, title, body, auth
+    post("/repos/#{repo}/issues", { "title" => title, "body" => body }, auth)["html_url"]
   end
 
   def http
@@ -63,24 +83,27 @@ module Homebrew
     end
   end
 
-  def make_request(path, data)
+  def make_request(path, data, auth)
     headers = {
       "User-Agent"   => HOMEBREW_USER_AGENT,
       "Accept"       => "application/vnd.github.v3+json",
       "Content-Type" => "application/json",
     }
 
-    if HOMEBREW_GITHUB_API_TOKEN
+    if auth == :AUTH_TOKEN || (auth == nil && HOMEBREW_GITHUB_API_TOKEN)
       headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}"
     end
 
     request = Net::HTTP::Post.new(path, headers)
+
+    login(request) if auth == :AUTH_BASIC
+
     request.body = Utils::JSON.dump(data)
     request
   end
 
-  def post(path, data)
-    request = make_request(path, data)
+  def post(path, data, auth = nil)
+    request = make_request(path, data, auth)
 
     case response = http.request(request)
     when Net::HTTPCreated
@@ -102,7 +125,7 @@ module Homebrew
 
   def gist_logs
     if ARGV.formulae.length != 1
-      puts "usage: brew gist-logs [--new-issue] <formula>"
+      puts "usage: brew gist-logs [--new-issue|-n] <formula>"
       Homebrew.failed = true
       return
     end
