@@ -6,7 +6,7 @@ own!
 
 ### We try hard to avoid dupes in Homebrew/homebrew
 Stuff that comes with OS X or is a library that is provided by
-[RubyGems, CPAN or PyPi](http://github.com/Homebrew/homebrew/wiki/Gems,-Eggs-and-Perl-Modules)
+[RubyGems, CPAN or PyPi](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Gems,-Eggs-and-Perl-Modules.md)
 should not be duplicated. There are good reasons for this:
 
 * Duplicate libraries regularly break builds
@@ -97,7 +97,7 @@ don’t want those things in Homebrew. Make it build a command line tool
 or a library. However, we have a few exceptions to that, e.g. when the
 App is just additional to CLI or if the GUI-application is non-native
 for OS X and/or hard to get in binary elsewhere (example: font forge).
-Check out the [homebrew-cask](https://github.com/phinze/homebrew-cask)
+Check out the [homebrew-cask](https://github.com/caskroom/homebrew-cask)
 project if you’d like to brew native OS X Applications.
 
 ### Building under “superenv” is best
