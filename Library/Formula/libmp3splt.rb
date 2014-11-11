@@ -6,9 +6,9 @@ class Libmp3splt < Formula
   sha1 "d4e84e1f466e7fdabe30d0a12acb751903bb9203"
 
   bottle do
-    sha1 "b78ccf811dd3878091ed2eb3285b45347e6babcc" => :yosemite
-    sha1 "3e269de0fd2478cf5427d8992c30d7e2407da55d" => :mavericks
-    sha1 "8d9aac62753ff445006c23bc323323592e605c63" => :mountain_lion
+    sha1 "c8c679d41172345360105247e20e6996d8ad8a6e" => :yosemite
+    sha1 "9814ea3e104296b7c4deda3d7a548737b2abd605" => :mavericks
+    sha1 "1be429bb92ffc593284b8f33456795f78c711a1e" => :mountain_lion
   end
 
   depends_on "libtool" => :build
