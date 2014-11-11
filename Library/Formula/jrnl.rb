@@ -2,9 +2,8 @@ require "formula"
 
 class Jrnl < Formula
   homepage "http://maebert.github.io/jrnl/"
-  url "https://github.com/maebert/jrnl/archive/1.9.6.tar.gz"
-  sha1 "925571cd9ba85803a291d0a0816dbf79882e45dd"
-  revision 2
+  url "https://github.com/maebert/jrnl/archive/1.9.7.tar.gz"
+  sha1 "65914c66762ded186201a526b19e702dd35b0939"
 
   bottle do
     cellar :any
@@ -52,22 +51,19 @@ class Jrnl < Formula
 
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", "#{libexec}/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     %w[six pycrypto keyring parsedatetime python-dateutil pytz tzlocal].each do |r|
-        resource(r).stage do
-            system "python", "setup.py", "install", "--prefix=#{libexec}"
-        end
+      resource(r).stage { Language::Python.setup_install "python", libexec/"vendor" }
     end
 
-    ENV.prepend_create_path "PYTHONPATH", "#{lib}/python2.7/site-packages"
-    system "python", "setup.py", "install", "--prefix=#{prefix}",
-           "--single-version-externally-managed", "--record=installed.txt"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    Language::Python.setup_install "python", libexec
 
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
     system "#{bin}/jrnl", "-v"
-    assert_equal 0, $?.exitstatus
   end
 end
