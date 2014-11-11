@@ -2,8 +2,15 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.2.tar.xz"
-  sha1 "47616949d1617f467c31fb10df8ddd5a5c4ddc84"
+
+  stable do
+    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.2.tar.xz"
+    sha1 "47616949d1617f467c31fb10df8ddd5a5c4ddc84"
+
+    # Fixes build with non-Apple GCCs; merged upstream:
+    # http://git.musicpd.org/cgit/master/mpd.git/commit/?h=v0.19.x&id=134cb6a0171192b7d621697f84196ce670a3ce21
+    patch :DATA
+  end
 
   bottle do
     sha1 "340893f88af321175dfff63b0164456959f1a90a" => :yosemite
@@ -114,3 +121,27 @@ class Mpd < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/Main.cxx b/src/Main.cxx
+index 2719c05..26d4e7a 100644
+--- a/src/Main.cxx
++++ b/src/Main.cxx
+@@ -114,7 +114,7 @@
+ #include <ws2tcpip.h>
+ #endif
+ 
+-#ifdef __APPLE__
++#ifdef __BLOCKS__
+ #include <dispatch/dispatch.h>
+ #endif
+ 
+@@ -517,7 +517,7 @@ int mpd_main(int argc, char *argv[])
+ 	daemonize_begin(options.daemon);
+ #endif
+ 
+-#ifdef __APPLE__
++#ifdef __BLOCKS__
+ 	/* Runs the OS X native event loop in the main thread, and runs
+ 	   the rest of mpd_main on a new thread. This lets CoreAudio receive
+ 	   route change notifications (e.g. plugging or unplugging headphones).
