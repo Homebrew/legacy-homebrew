@@ -7,10 +7,10 @@ class Node < Formula
   sha256 "75dc26c33144e6d0dc91cb0d68aaf0570ed0a7e4b0c35f3a7a726b500edd081e"
 
   bottle do
-    revision 6
-    sha1 "4a28432c960e5eac419d304b927c1f2c55aa2bda" => :yosemite
-    sha1 "169ef2c3d46e42f79d07c52b293f4e2a4e16eb2b" => :mavericks
-    sha1 "901b0d05921eb0fcaea3e2329d9d01792db156bc" => :mountain_lion
+    revision 7
+    sha1 "a3ad0a797d8d7abfae0f2b37dd4d03c8fe302486" => :yosemite
+    sha1 "263b2caf48b61c0ec9f8079b20396f11f1744cac" => :mavericks
+    sha1 "e14ab867ad13d963cac04cb368f5e611a22b5700" => :mountain_lion
   end
 
   devel do
@@ -18,9 +18,11 @@ class Node < Formula
     sha256 "ce08b0a2769bcc135ca25639c9d411a038e93e0f5f5a83000ecde9b763c4dd83"
   end
 
-  head "https://github.com/joyent/node.git"
+  head "https://github.com/joyent/node.git", :branch => "v0.12"
 
-  option "enable-debug", "Build with debugger hooks"
+  deprecated_option "enable-debug" => "with-debug"
+
+  option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
 
@@ -29,19 +31,21 @@ class Node < Formula
   # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
   # over Node's shipped version with --shared-openssl.
   # Would allow us quicker security fixes than Node's release schedule.
+  # This particular affects the devel build, which is ultra-slow release.
+  # See https://github.com/joyent/node/issues/3557 for prior discussion.
 
   fails_with :llvm do
     build 2326
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.6.tgz"
-    sha1 "a28e8b44f910b9ab056aa0b73c13c1f9459c9b37"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.7.tgz"
+    sha1 "4b8315574b84136dad6a225ce8fb85e2d7d98502"
   end
 
   def install
     args = %W{--prefix=#{prefix} --without-npm}
-    args << "--debug" if build.include? "enable-debug"
+    args << "--debug" if build.with? "debug"
     args << "--without-ssl2" << "--without-ssl3" if build.stable?
 
     system "./configure", *args
@@ -90,7 +94,7 @@ class Node < Formula
 
     if build.with? "npm"
       s += <<-EOS.undent
-        If you update npm do NOT use the npm upgrade command
+        If you update npm itself do NOT use the npm upgrade command
         Instead execute:
           npm install -g npm@latest
       EOS
