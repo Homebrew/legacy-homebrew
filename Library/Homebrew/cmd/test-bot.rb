@@ -609,9 +609,9 @@ module Homebrew
           ofail e.message
         else
           test_error = !test.run
+          tests << test
         end
         any_errors ||= test_error
-        tests << test
       end
     end
 
