@@ -93,6 +93,6 @@ These commands have been contributed by Homebrew users but are not included in t
 >Simple support to start formulae using launchctl, has out of the box support for any formula which defines `startup_plist` (e.g. mysql, postgres, redis u.v.m.): [https://gist.github.com/766293](https://gist.github.com/766293)
 
 ## SEE ALSO
-Homebrew Wiki: <http://wiki.github.com/Homebrew/homebrew/>
+Homebrew Docs: <https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew>
 
 `brew`(1), `which`(1), `grep`(1), [`ronn`(1)](http://rtomayko.github.com/ronn/)

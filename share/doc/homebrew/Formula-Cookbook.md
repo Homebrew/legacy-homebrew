@@ -512,7 +512,7 @@ Instead of `git diff | pbcopy`, for some editors `git diff >> path/to/your/formu
 
 # Advanced Formula Tricks
 
-If anything isn’t clear, you can usually figure it out with some `grep` and the `Library/Formula` directory. Please amend this wiki page if you think it will help!
+If anything isn’t clear, you can usually figure it out with some `grep` and the `Library/Formula` directory. Please amend this document if you think it will help!
 
 
 ## Unstable versions (`HEAD`, `devel`)
