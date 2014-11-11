@@ -6,6 +6,12 @@ class Dgtal < Formula
   sha1 '61c8d4b7db2c31daed9456ab65b0158d0a0e1bab'
   head 'https://github.com/DGtal-team/DGtal.git'
 
+  bottle do
+    sha1 "1b4c350945e664552202155c20b26f0ca28c7637" => :yosemite
+    sha1 "44fcfb0d5ba7f1d05f504dad9ec92cd63d6b6b0c" => :mavericks
+    sha1 "7f779f3f7d6dae2936ca1e160b84863f42d4eb15" => :mountain_lion
+  end
+
   depends_on 'cmake' => :build
   boost_args = []; boost_args << "c++11" if MacOS.version < "10.9";
   depends_on "boost" => boost_args
