@@ -13,10 +13,18 @@ class DfuUtil < Formula
     sha1 "cd533314e4700a3d746330b12aa08407f693d7a4" => :mountain_lion
   end
 
+  head do
+    url "git://gitorious.org/dfu-util/dfu-util.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libusb"
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
