@@ -7,7 +7,8 @@ class Dgtal < Formula
   head 'https://github.com/DGtal-team/DGtal.git'
 
   depends_on 'cmake' => :build
-  depends_on 'boost'
+  boost_args = []; boost_args << "c++11" if MacOS.version < "10.9";
+  depends_on "boost" => boost_args
   depends_on 'gmp' => :optional
   depends_on 'cairo' => :optional
   depends_on 'libqglviewer' => :optional
@@ -23,6 +24,8 @@ class Dgtal < Formula
     url "https://github.com/dcoeurjo/DGtal/commit/c676dc82d8d959377622a61ceab6354bab7a2baa.diff"
     sha1 "ef878791a0e31a006f88ea4366344108bf2a4db8"
   end
+
+  needs :cxx11
 
   def install
     ENV.cxx11
