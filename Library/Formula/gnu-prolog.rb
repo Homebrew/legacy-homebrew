@@ -15,8 +15,8 @@ class GnuProlog < Formula
   def install
     cd 'src' do
       system "./configure", "--prefix=#{prefix}", "--with-doc-dir=#{doc}"
-      system "make"
       ENV.deparallelize
+      system "make"
       system "make", "install"
     end
   end
