@@ -1,8 +1,8 @@
 require "formula"
 class Geographiclib < Formula
   homepage "http://geographiclib.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.38.tar.gz"
-  sha1 "e854d6d85cc5b1273fa4044828fadd9e1b151fcd"
+  url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.39.tar.gz"
+  sha1 "7a48a773997abce598e9c42ae8848e4c20f6ae72"
 
   bottle do
     cellar :any
