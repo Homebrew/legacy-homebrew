@@ -3,13 +3,11 @@
 
 Please run `brew update` and `brew doctor` *before* creating an issue!
 
-If you create an issue, please also create a [Gist][] by running
+To create an issue, please run:
 
 ```
-brew gist-logs <formula name>
+brew gist-logs -n <formula name>
 ```
-
-and include a link to the gist in the issue.
 
 Read on for more detailed instructions.
 
@@ -32,23 +30,9 @@ Thank you!
 * Browse open issues on the [issue tracker](https://github.com/Homebrew/homebrew/issues) to see if someone else has already reported the same problem.
 * Make sure you check issues on the correct repository. If the formula that failed to build is part of a tap, like [homebrew-science](https://github.com/Homebrew/homebrew-science) or [homebrew-dupes](https://github.com/Homebrew/homebrew-dupes), check there instead.
 
-## Create an issue
+#### Bug Reporting
 
-1. [Create a new issue](https://github.com/Homebrew/homebrew/issues/new)
-  * Again, make sure you file the issue against the correct repository.
-  * If you are reporting a build failure, title it "\<formula name> failed to build on 10.x", where \<formula name> is the name of the formula that failed to build, and 10.x is the version of OS X you are using.
-  * Otherwise, choose a title that best describes the problem you are experiencing.
-
-2. Upload a [Gist][] with relevant debugging information
-  * The simplest method is to run `brew gist-logs <formula name>`
-  * You can also create a [Gist][] manually. Include the following:
-     1. The output from `HOMEBREW_MAKE_JOBS=1 brew install -v <formula name> 2>&1`
-     2. The contents of the largest numbered log in `~/Library/Logs/Homebrew/<formula name>`, e.g. `03.make`
-     3. The output from `brew config` and `brew doctor`
-  * If you are reporting a bug rather than a build failure, please include `brew config`, `brew doctor`, and enough information to reliably reproduce the bug.
-
-3. Include a link to the gist in your new issue
-  * Be sure to use the `https:` URL (i.e. the URL in your browser's address bar), not the `git:` URL.
+* If you are reporting a bug rather than a build failure, please include brew config, brew doctor, and enough information to reliably reproduce the bug.
 
 [Gist]:https://gist.github.com
 [Apple Developer]:https://developer.apple.com/downloads
