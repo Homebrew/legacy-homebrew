@@ -6,16 +6,22 @@ class GnuTime < Formula
   mirror 'http://ftp.gnu.org/gnu/time/time-1.7.tar.gz'
   sha1 'dde0c28c7426960736933f3e763320680356cc6a'
 
+  option "with-default-names", "Do not prepend 'g' to the binary"
+
   # Fixes issue with main returning void rather than int
   # http://trac.macports.org/ticket/32860
   # http://trac.macports.org/browser/trunk/dports/sysutils/gtime/files/patch-time.c.diff?rev=88924
   patch :DATA
 
   def install
-    system "./configure", "--program-prefix=g",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--info=#{info}"
+    args = [
+      "--prefix=#{prefix}",
+      "--mandir=#{man}",
+      "--info=#{info}"
+    ]
+    args << "--program-prefix=g" if build.without? "default-names"
+
+    system "./configure", *args
     system "make install"
   end
 end
