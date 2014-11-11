@@ -1165,7 +1165,7 @@ end
   def check_for_pth_support
     homebrew_site_packages = Language::Python.homebrew_site_packages
     return unless homebrew_site_packages.directory?
-    return if Language::Python.reads_brewed_pth_files? "python"
+    return if Language::Python.reads_brewed_pth_files?("python") != false
     return unless Language::Python.in_sys_path?("python", homebrew_site_packages)
     user_site_packages = Language::Python.user_site_packages "python"
     <<-EOS.undent
