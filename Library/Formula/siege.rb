@@ -4,6 +4,9 @@ class Siege < Formula
   homepage 'http://www.joedog.org/index/siege-home'
   url 'http://download.joedog.org/siege/siege-3.0.7.tar.gz'
   sha256 'c651e2ae871cc680eb375f128b4809e97ceecf367f6bd65c3df00603fbceed4e'
+  revision 1
+
+  depends_on 'openssl'
 
   bottle do
     sha1 "b20c74de2adcdae43e88fbca22fc01fcf58b5285" => :mavericks
@@ -18,7 +21,7 @@ class Siege < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--localstatedir=#{var}",
-                          "--with-ssl"
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}"
     system "make install"
   end
 
@@ -40,6 +43,6 @@ class Siege < Formula
   end
 
   test do
-    system "#{bin}/siege", "--concurrent=1", "--reps=1", "http://google.com/"
+    system "#{bin}/siege", "--concurrent=1", "--reps=1", "https://www.google.com/"
   end
 end
