@@ -17,7 +17,7 @@ class DfuUtil < Formula
   depends_on 'libusb'
 
   def install
-    system "autoreconf", "-fi" if build.head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
