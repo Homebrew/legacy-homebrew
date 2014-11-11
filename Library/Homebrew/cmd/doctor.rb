@@ -434,6 +434,19 @@ end
   end
 end
 
+def check_access_site_packages
+  if Language::Python.homebrew_site_packages.exist? && !Language::Python.homebrew_site_packages.writable_real?
+    <<-EOS.undent
+      #{Language::Python.homebrew_site_packages} isn't writable.
+      This can happen if you "sudo pip install" software that isn't managed
+      by Homebrew. If you install a formula with Python modules, the install
+      will fail during the link step.
+
+      You should probably `chown` #{Language::Python.homebrew_site_packages}
+    EOS
+  end
+end
+
 def check_access_logs
   if HOMEBREW_LOGS.exist? and not HOMEBREW_LOGS.writable_real?
     <<-EOS.undent
