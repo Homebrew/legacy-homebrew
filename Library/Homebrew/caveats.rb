@@ -7,7 +7,8 @@ class Caveats
 
   def caveats
     caveats = []
-    caveats << f.caveats if f.caveats.to_s.length > 0
+    s = f.caveats.to_s
+    caveats << s.chomp + "\n" if s.length > 0
     caveats << f.keg_only_text if f.keg_only? && f.respond_to?(:keg_only_text)
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
@@ -48,21 +49,48 @@ class Caveats
   def python_caveats
     return unless keg
     return unless keg.python_site_packages_installed?
-    return if Formula["python"].installed?
-    site_packages = if f.keg_only?
-      "#{f.opt_prefix}/lib/python2.7/site-packages"
-    else
-      "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
+
+    s = nil
+    homebrew_site_packages = Language::Python.homebrew_site_packages
+    user_site_packages = Language::Python.user_site_packages "python"
+    pth_file = user_site_packages/"homebrew.pth"
+    instructions = <<-EOS.undent.gsub(/^/, "  ")
+      mkdir -p #{user_site_packages}
+      echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{pth_file}
+    EOS
+
+    if f.keg_only?
+      keg_site_packages = f.opt_prefix/"lib/python2.7/site-packages"
+      unless Language::Python.in_sys_path?("python", keg_site_packages)
+        s = <<-EOS.undent
+          If you need Python to find bindings for this keg-only formula, run:
+            echo #{keg_site_packages} >> #{homebrew_site_packages/f.name}.pth
+        EOS
+        s += instructions unless Language::Python.reads_brewed_pth_files?("python")
+      end
+      return s
     end
-    dir = "~/Library/Python/2.7/lib/python/site-packages"
-    dir_path = Pathname.new(dir).expand_path
-    file = "#{dir}/homebrew.pth"
-    file_path = Pathname.new(file).expand_path
-    if !file_path.readable? || !file_path.read.include?(site_packages)
-      s = "If you need Python to find the installed site-packages:\n"
-      s += "  mkdir -p #{dir}\n" unless dir_path.exist?
-      s += "  echo '#{site_packages}' > #{file}"
+
+    return if Language::Python.reads_brewed_pth_files?("python")
+
+    if !Language::Python.in_sys_path?("python", homebrew_site_packages)
+      s = <<-EOS.undent
+        Python modules have been installed and Homebrew's site-packages is not
+        in your Python sys.path, so you will not be able to import the modules
+        this formula installed. If you plan to develop with these modules,
+        please run:
+      EOS
+      s += instructions
+    elsif keg.python_pth_files_installed?
+      s = <<-EOS.undent
+        This formula installed .pth files to Homebrew's site-packages and your
+        Python isn't configured to process them, so you will not be able to
+        import the modules this formula installed. If you plan to develop
+        with these modules, please run:
+      EOS
+      s += instructions
     end
+    s
   end
 
   def app_caveats
@@ -88,11 +116,14 @@ class Caveats
 
       # we readlink because this path probably doesn't exist since caveats
       # occurs before the link step of installation
+      # Yosemite security measures mildly tighter rules:
+      # https://github.com/Homebrew/homebrew/issues/33815
       if !plist_path.file? || !plist_path.symlink?
         if f.plist_startup
           s << "To have launchd start #{f.name} at startup:"
           s << "    sudo mkdir -p #{destination}" unless destination_path.directory?
           s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
+          s << "    sudo chown root #{plist_link}"
         else
           s << "To have launchd start #{f.name} at login:"
           s << "    mkdir -p #{destination}" unless destination_path.directory?
@@ -110,6 +141,7 @@ class Caveats
           s << "To reload #{f.name} after an upgrade:"
           s << "    sudo launchctl unload #{plist_link}"
           s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
+          s << "    sudo chown root #{plist_link}"
           s << "    sudo launchctl load #{plist_link}"
       elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
           s << "To reload #{f.name} after an upgrade:"

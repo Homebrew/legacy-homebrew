@@ -9,9 +9,10 @@ class Lua51 < Formula
   sha1 "b3882111ad02ecc6b972f8c1241647905cb2e3fc"
 
   bottle do
-    sha1 "2b64683201c6ae570760a4b60406e6f3ab26d9df" => :mavericks
-    sha1 "e95bce9d8686eac65f824535a9a8af292ab6be8a" => :mountain_lion
-    sha1 "a4120e7eb5a1b8851c572d517f6b85f2e3a323d7" => :lion
+    revision 1
+    sha1 "139e0f93e5484c9eb256b65ceaaf05ea43919341" => :yosemite
+    sha1 "8f9293404e5acb8cd0aafb772e97eda7b7f06ca2" => :mavericks
+    sha1 "50fcc046ae49c44018ca2e88c1634b264e725681" => :mountain_lion
   end
 
   fails_with :llvm do

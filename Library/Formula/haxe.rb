@@ -15,6 +15,7 @@ class Haxe < Formula
 
   depends_on 'neko' => :recommended
   depends_on 'objective-caml' => :build
+  depends_on 'camlp4' => :build
 
   def install
     # Build requires targets to be built in specific order

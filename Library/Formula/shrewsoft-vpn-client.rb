@@ -20,7 +20,7 @@ class ShrewsoftVpnClient < Formula
 
   depends_on "cmake" => :build
   depends_on "openssl"
-  depends_on "tuntap"
+  depends_on :tuntap
   depends_on "qt" if build.with? "gui"
 
   def install
@@ -79,7 +79,7 @@ class ShrewsoftVpnClient < Formula
         <string>net.shrew.iked</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/iked</string>
+          <string>#{opt_sbin}/iked</string>
           <string>-F</string>
         </array>
         <key>RunAtLoad</key>

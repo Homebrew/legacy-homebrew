@@ -25,8 +25,7 @@ class Tiff2png < Formula
   end
 
   test do
-    test_tiff = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.tiff"
-    system "#{bin}/tiff2png", test_tiff
+    system "#{bin}/tiff2png", test_fixtures("test.tiff")
   end
 end
 

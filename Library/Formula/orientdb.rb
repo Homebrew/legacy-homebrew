@@ -6,11 +6,19 @@ class Orientdb < Formula
   version '1.7.9'
   sha1 '85e6e13bde4e04fb66828faf2bee6462a4b39f1e'
 
+  devel do
+    url 'http://www.orientdb.org/portal/function/portal/download/unknown@unknown.com/-/-/-/-/-/orientdb-community-2.0-M2.tar.gz/false/false/mac'
+    version '2.0-M2'
+    sha1 'f0d47c1d762804394411dc73fbd4ca742fce6d83'
+  end
+
+
   bottle do
     cellar :any
-    sha1 "0bc1553a143ad95dbb32eca2f17eb79c38ac50c5" => :mavericks
-    sha1 "3d249cb0d2559f3fdf31e9aec9d1b9ee6119a306" => :mountain_lion
-    sha1 "2765f099266ccc4a1b2ccd5240343cb72282c3ee" => :lion
+    revision 1
+    sha1 "346ac9185dbfd151cc462fa28421e23e76496261" => :yosemite
+    sha1 "1ed5c993c6bdbe3ffa2d52f2efe0fe9199c3615f" => :mavericks
+    sha1 "7068f8642028aaa7c1af31b182d877ecdcc2577a" => :mountain_lion
   end
 
   # Fixing OrientDB init scripts

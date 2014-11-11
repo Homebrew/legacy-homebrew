@@ -20,7 +20,7 @@ class Keybase < Formula
     (bin/"keybase").write <<-EOS.undent
       #!/bin/sh
       export KEYBASE_BIN="#{bin}/keybase"
-      exec "#{HOMEBREW_PREFIX}/opt/node/bin/node" "#{libexec}/bin/main.js" "$@"
+      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/bin/main.js" "$@"
     EOS
   end
 

@@ -2,115 +2,98 @@ require 'testing_env'
 require 'formula'
 
 class FormulaSpecSelectionTests < Homebrew::TestCase
-  def assert_spec_selected(spec)
-    assert_equal @_f.send(spec), @_f.active_spec
-  end
-
-  def assert_spec_unset(spec)
-    assert_nil @_f.send(spec)
-  end
-
   def test_selects_stable_by_default
-    formula do
-      url 'foo-1.0'
-      devel { url 'foo-1.1a' }
-      head 'foo'
-    end
+    f = formula {
+      url "foo-1.0"
+      devel { url "foo-1.1a" }
+      head "foo"
+    }
 
-    assert_spec_selected :stable
+    assert_predicate f, :stable?
   end
 
   def test_selects_stable_when_exclusive
-    formula do
-      url 'foo-1.0'
-    end
-
-    assert_spec_selected :stable
+    f = formula { url "foo-1.0" }
+    assert_predicate f, :stable?
   end
 
   def test_selects_devel_before_head
-    formula do
-      devel { url 'foo-1.1a' }
-      head 'foo'
-    end
+    f = formula {
+      devel { url "foo-1.1a" }
+      head "foo"
+    }
 
-    assert_spec_selected :devel
+    assert_predicate f, :devel?
   end
 
   def test_selects_devel_when_exclusive
-    formula do
-      devel { url 'foo-1.1a' }
-    end
-
-    assert_spec_selected :devel
+    f = formula { devel { url "foo-1.1a" } }
+    assert_predicate f, :devel?
   end
 
   def test_selects_head_when_exclusive
-    formula do
-      head 'foo'
-    end
-
-    assert_spec_selected :head
+    f = formula { head "foo" }
+    assert_predicate f, :head?
   end
 
   def test_incomplete_spec_not_selected
-    formula do
+    f = formula {
       sha1 TEST_SHA1
-      version '1.0'
-      head 'foo'
-    end
+      version "1.0"
+      head "foo"
+    }
 
-    assert_spec_selected :head
+    assert_predicate f, :head?
   end
 
   def test_incomplete_stable_not_set
-    formula do
+    f = formula {
       sha1 TEST_SHA1
-      devel { url 'foo-1.1a' }
-      head 'foo'
-    end
+      devel { url "foo-1.1a" }
+      head "foo"
+    }
 
-    assert_spec_unset :stable
-    assert_spec_selected :devel
+    assert_nil f.stable
+    assert_predicate f, :devel?
   end
 
   def test_selects_head_when_requested
-    formula("test", Pathname.new(__FILE__).expand_path, :head) do
-      url 'foo-1.0'
-      devel { url 'foo-1.1a' }
-      head 'foo'
-    end
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) {
+      url "foo-1.0"
+      devel { url "foo-1.1a" }
+      head "foo"
+    }
 
-    assert_spec_selected :head
+    assert_predicate f, :head?
   end
 
   def test_selects_devel_when_requested
-    formula("test", Pathname.new(__FILE__).expand_path, :devel) do
-      url 'foo-1.0'
-      devel { url 'foo-1.1a' }
-      head 'foo'
-    end
+    f = formula("test", Pathname.new(__FILE__).expand_path, :devel) {
+      url "foo-1.0"
+      devel { url "foo-1.1a" }
+      head "foo"
+    }
 
-    assert_spec_selected :devel
+    assert_predicate f, :devel?
   end
 
   def test_incomplete_devel_not_set
-    formula do
-      url 'foo-1.0'
-      devel { version '1.1a' }
-      head 'foo'
-    end
+    f = formula {
+      url "foo-1.0"
+      devel { version "1.1a" }
+      head "foo"
+    }
 
-    assert_spec_unset :devel
-    assert_spec_selected :stable
+    assert_nil f.devel
+    assert_predicate f, :stable?
   end
 
   def test_does_not_raise_for_missing_spec
-    formula("test", Pathname.new(__FILE__).expand_path, :devel) do
-      url 'foo-1.0'
-      head 'foo'
-    end
+    f = formula("test", Pathname.new(__FILE__).expand_path, :devel) {
+      url "foo-1.0"
+      head "foo"
+    }
 
-    assert_spec_selected :stable
+    assert_predicate f, :stable?
   end
 end

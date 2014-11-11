@@ -2,14 +2,14 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.5.1.tar.gz"
-  sha1 "784b09ed06d2a414e87960fbe99f67da31a8f676"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.5.4.tar.gz"
+  sha1 "40d4427bd623ce695ed060e9bb3fdb9959375485"
 
   bottle do
     cellar :any
-    sha1 "9edd4aa5ced898739c9f87adccb611ac58ab3b37" => :mavericks
-    sha1 "38babb911ee788dfbf1ee06706547c3fddc1649c" => :mountain_lion
-    sha1 "b4a2cf9972663daf90522729f788e91ba9d90814" => :lion
+    sha1 "04bbe41b9a06f71ecd2b07624477233f7ed94861" => :yosemite
+    sha1 "90d4e388ad7d8ffb5008f52ca5d96c96065901d1" => :mavericks
+    sha1 "0e897363015e92bce11d872f0b7d7d7f511cd8e1" => :mountain_lion
   end
 
   head do
@@ -31,8 +31,8 @@ class Awscli < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.65.0.tar.gz"
-    sha1 "52c8e6888e248ef795e29620b85c61b644c655a3"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.68.0.tar.gz"
+    sha1 "5704babdf525e5443d1ef7189a2ed07ae023a0f4"
   end
 
   resource "bcdoc" do

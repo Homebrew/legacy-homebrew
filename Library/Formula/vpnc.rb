@@ -1,17 +1,17 @@
-require 'formula'
+require "formula"
 
 class Vpnc < Formula
-  homepage 'http://www.unix-ag.uni-kl.de/~massar/vpnc/'
-  url 'http://ftp.debian.org/debian/pool/main/v/vpnc/vpnc_0.5.3r512.orig.tar.gz'
-  version '0.5.3r512'
-  sha256 'd421ac20b6c65d22d2ee88066e487f740f4d367f9143b6045bcb8fa177b384fe'
+  homepage "http://www.unix-ag.uni-kl.de/~massar/vpnc/"
+  url "http://ftp.debian.org/debian/pool/main/v/vpnc/vpnc_0.5.3r512.orig.tar.gz"
+  version "0.5.3r512"
+  sha256 "d421ac20b6c65d22d2ee88066e487f740f4d367f9143b6045bcb8fa177b384fe"
   revision 2
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libgcrypt'
-  depends_on 'libgpg-error'
-  depends_on 'gnutls'
-  depends_on 'tuntap'
+  depends_on "pkg-config" => :build
+  depends_on "libgcrypt"
+  depends_on "libgpg-error"
+  depends_on "gnutls"
+  depends_on :tuntap
 
   fails_with :llvm do
     build 2334
@@ -27,28 +27,28 @@ class Vpnc < Formula
     ENV.deparallelize
 
     inreplace ["vpnc-script", "vpnc-disconnect"] do |s|
-      s.gsub! "/var/run/vpnc", (var + 'run/vpnc')
+      s.gsub! "/var/run/vpnc", (var + "run/vpnc")
     end
 
     inreplace "vpnc.8.template" do |s|
-      s.gsub! "/etc/vpnc", (etc + 'vpnc')
+      s.gsub! "/etc/vpnc", (etc + "vpnc")
     end
 
     inreplace "Makefile" do |s|
       s.change_make_var! "PREFIX", prefix
-      s.change_make_var! "ETCDIR", (etc + 'vpnc')
+      s.change_make_var! "ETCDIR", (etc + "vpnc")
 
       s.gsub! /^#OPENSSL/, "OPENSSL" if build.include? "hybrid"
     end
 
     inreplace "config.c" do |s|
-      s.gsub! "/etc/vpnc", (etc + 'vpnc')
-      s.gsub! "/var/run/vpnc", (var + 'run/vpnc')
+      s.gsub! "/etc/vpnc", (etc + "vpnc")
+      s.gsub! "/var/run/vpnc", (var + "run/vpnc")
     end
 
     system "make"
-    (var + 'run/vpnc').mkpath
-    system "make install"
+    (var + "run/vpnc").mkpath
+    system "make", "install"
   end
 end
 

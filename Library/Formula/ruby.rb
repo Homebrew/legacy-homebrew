@@ -2,14 +2,13 @@ require "formula"
 
 class Ruby < Formula
   homepage "https://www.ruby-lang.org/"
-  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.3.tar.bz2"
-  sha256 "36ce72f84ae4129f6cc66e33077a79d87b018ea7bf1dbc3d353604bf006f76d6"
-  revision 1
+  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.4.tar.bz2"
+  sha256 "f37f11a8c75ab9215bb9f61246ef98e0e57e1409f0872e5cf59033edcf5b8d2a"
 
   bottle do
-    sha1 "26a2a1a48338c5bd44cb6dc4a48d9904bc1fe69c" => :mavericks
-    sha1 "d930fbbb2d96b754e4d200448ab97c498fcd19d2" => :mountain_lion
-    sha1 "4c574b9b8271b67ab9d84a9acb9391809c456c74" => :lion
+    sha1 "c3c2fd70a2963266ba420e9a31cf3161350fc8d7" => :yosemite
+    sha1 "f424670929f81863cbf4209d7d096301fb271042" => :mavericks
+    sha1 "093abf8b650ba5edaaa9f228b7381ffc8aa079cb" => :mountain_lion
   end
 
   head do

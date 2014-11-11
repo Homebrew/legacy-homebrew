@@ -23,7 +23,7 @@ class EasyTag < Formula
   depends_on "wavpack" => :optional
 
   def install
-    ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].lib}/python2.7/site-packages"
+    ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

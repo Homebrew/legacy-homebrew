@@ -7,9 +7,10 @@ class Python3 < Formula
   revision 1
 
   bottle do
-    sha1 "96f6f3acdba233499310eda1b40906425a0be2ea" => :mavericks
-    sha1 "aaa80a73d5077bad11a671da4b321438711ac7fb" => :mountain_lion
-    sha1 "e023fc5170ee154cf6864c06346ab67c6b09f4dd" => :lion
+    revision 1
+    sha1 "e9c851c8064701e14351b9070e4aa6c464c93585" => :yosemite
+    sha1 "b61b7a4f6ea506a056cd89cb6cc19b40584ef7fd" => :mavericks
+    sha1 "feff5d17e50cceabd8eca1125be5d463897a4ac7" => :mountain_lion
   end
 
   VER="3.4"  # The <major>.<minor> is used so often.
@@ -191,7 +192,7 @@ class Python3 < Formula
     # superenv makes cc always find includes/libs!
     inreplace "setup.py",
               "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-              "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
+              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
   end
 
   def distutils_fix_stdenv

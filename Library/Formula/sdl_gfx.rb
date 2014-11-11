@@ -7,9 +7,10 @@ class SdlGfx < Formula
 
   bottle do
     cellar :any
-    sha1 "358c2bec6cdd846a198230b3c35f8d9446d7056b" => :mavericks
-    sha1 "30d6561259dd7cc35b6ce51913729aedd2d766ce" => :mountain_lion
-    sha1 "3af37af44834746b8ac841d88ac82cd523a5fa79" => :lion
+    revision 1
+    sha1 "6c70b7a9048bc066ecbb3c037c3a1a0fe2d3166a" => :yosemite
+    sha1 "364758460ad6f2cfc83c58d5fc8e793688cd9862" => :mavericks
+    sha1 "342e8a64a908f0e39ba6a1d8318ed111679067a1" => :mountain_lion
   end
 
   depends_on 'sdl'

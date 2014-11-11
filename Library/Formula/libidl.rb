@@ -7,9 +7,10 @@ class Libidl < Formula
 
   bottle do
     cellar :any
-    sha1 "180ee43bd107ff66958c084e07cee49dfebe3ad8" => :mavericks
-    sha1 "67b52367b3837a35a040756e9527843c7c128c7d" => :mountain_lion
-    sha1 "32f78e432853dfddafed4a616f55e3dcde64ccd0" => :lion
+    revision 1
+    sha1 "60164bc801b8634dc8a49a0a20feb69b3d07ecd2" => :yosemite
+    sha1 "ce811907de560d4267e86a751aaae547917b821b" => :mavericks
+    sha1 "b84b7a68bbfac07be00db3449ad7b9ca3baecdca" => :mountain_lion
   end
 
   option :universal

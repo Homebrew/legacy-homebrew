@@ -20,7 +20,6 @@ class P0f < Formula
   end
 
   test do
-    test_pcap = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.pcap"
-    system "#{sbin}/p0f", "-r", test_pcap
+    system "#{sbin}/p0f", "-r", test_fixtures("test.pcap")
   end
 end

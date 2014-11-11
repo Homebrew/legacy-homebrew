@@ -8,10 +8,10 @@ class Subversion < Formula
   revision 1
 
   bottle do
-    revision 3
-    sha1 "fcd631849436d7d2857e5361dbe66293feca9501" => :mavericks
-    sha1 "1089939ef5a0de5ca257e5c2ff34cd0c59e4a601" => :mountain_lion
-    sha1 "dcd9bee050a9c21db85a6947359beef4dacdc49c" => :lion
+    revision 4
+    sha1 "91915d626c5e843b2a035e4cfa00898c6c79b353" => :yosemite
+    sha1 "c0d4416a5dc4db63d37bbfae2af29538699b28ca" => :mavericks
+    sha1 "7b78b1abd3bb77ef8ee8f711d3bbc0eec8a9390a" => :mountain_lion
   end
 
   option :universal
@@ -25,9 +25,7 @@ class Subversion < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on :apr => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
@@ -40,20 +38,24 @@ class Subversion < Formula
   depends_on 'scons' => :build
   depends_on 'openssl'
 
-  # If building bindings, allow non-system interpreters
-  env :userpaths if build.include? 'perl' or build.include? 'ruby'
+  # Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
+  # Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
+  patch :DATA
 
-  # 1. Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
-  # 2. Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
-  patch :p0, :DATA
+  if build.include? "perl" or build.include? "ruby"
+    # If building bindings, allow non-system interpreters
+    # Currently the serf -> scons dependency forces stdenv, so this isn't
+    # strictly necessary
+    env :userpaths
 
-  # When building Perl or Ruby bindings, need to use a compiler that
-  # recognizes GCC-style switches, since that's what the system languages
-  # were compiled against.
-  fails_with :clang do
-    build 318
-    cause "core.c:1: error: bad value (native) for -march= switch"
-  end if build.include? 'perl' or build.include? 'ruby'
+    # When building Perl or Ruby bindings, need to use a compiler that
+    # recognizes GCC-style switches, since that's what the system languages
+    # were compiled against.
+    fails_with :clang do
+      build 318
+      cause "core.c:1: error: bad value (native) for -march= switch"
+    end
+  end
 
   def install
     serf_prefix = libexec+'serf'
@@ -133,8 +135,7 @@ class Subversion < Formula
     inreplace 'Makefile.in',
               'toolsdir = @bindir@/svn-tools',
               'toolsdir = @libexecdir@/svn-tools'
-    # Suggestion by upstream. http://svn.haxx.se/users/archive-2013-09/0188.shtml
-    system "./autogen.sh"
+
     system "./configure", *args
     system "make"
     system "make install"
@@ -231,18 +232,28 @@ class Subversion < Formula
 end
 
 __END__
-
-Patch 1
-
---- subversion/bindings/swig/perl/native/Makefile.PL.in~     2014-01-18 05:04:18.000000000 +0100
-+++ subversion/bindings/swig/perl/native/Makefile.PL.in      2014-08-15 18:37:33.000000000 +0200
-@@ -76,10 +76,15 @@
+diff --git a/configure b/configure
+index 445251b..3ed9485 100755
+--- a/configure
++++ b/configure
+@@ -25205,6 +25205,8 @@ fi
+ SWIG_CPPFLAGS="$CPPFLAGS"
+ 
+   SWIG_CPPFLAGS=`echo "$SWIG_CPPFLAGS" | $SED -e 's/-no-cpp-precomp //'`
++  SWIG_CPPFLAGS=`echo "$SWIG_CPPFLAGS" | $SED -e 's/-F\/[^ ]* //'`
++  SWIG_CPPFLAGS=`echo "$SWIG_CPPFLAGS" | $SED -e 's/-isystem\/[^ ]* //'`
+ 
+ 
+ 
+diff --git a/subversion/bindings/swig/perl/native/Makefile.PL.in b/subversion/bindings/swig/perl/native/Makefile.PL.in
+index a60430b..bd9b017 100644
+--- a/subversion/bindings/swig/perl/native/Makefile.PL.in
++++ b/subversion/bindings/swig/perl/native/Makefile.PL.in
+@@ -76,10 +76,13 @@ my $apr_ldflags = '@SVN_APR_LIBS@'
  
  chomp $apr_shlib_path_var;
  
 +my $config_ccflags = $Config{ccflags};
-+# remove any -arch arguments, since those
-+# we want will already be in $cflags
 +$config_ccflags =~ s/-arch\s+\S+//g;
 +
  my %config = (
@@ -253,20 +264,3 @@ Patch 1
      INC  => join(' ', $includes, $cppflags,
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
-
-
-Patch 2
-
---- configure.ac   2014-08-15 19:15:23.000000000 +0200
-+++ configure.ac        2014-08-15 19:15:45.000000000 +0200
-@@ -1442,6 +1442,10 @@
- # Need to strip '-no-cpp-precomp' from CPPFLAGS for SWIG as well.
- SWIG_CPPFLAGS="$CPPFLAGS"
- SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-no-cpp-precomp ])
-+# Swig don't understand "-F" and "-isystem" flags added by Homebrew,
-+# so filter them out.
-+SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-F\/[[^ ]]* ])
-+SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-isystem\/[[^ ]]* ])
- AC_SUBST([SWIG_CPPFLAGS])
- 
- dnl Since this is used only on Unix-y systems, define the path separator as '/'

@@ -19,12 +19,15 @@ class Mongodb < Formula
   end
 
   bottle do
-    sha1 "311c0ab255cff7c8a47351374f609cff6fa7cd7c" => :mavericks
-    sha1 "9330df7505b9fc93c3cabf8cb68b7cefee91bf5f" => :mountain_lion
-    sha1 "4700ba1d8c5ac9cca8acde03d161a1526ae6f6eb" => :lion
+    revision 2
+    sha1 "e6da509908fdacf9eb0f16e850e0516cd0898072" => :yosemite
+    sha1 "5ab96fe864e725461eea856e138417994f50bb32" => :mavericks
+    sha1 "193e639b7b79fbb18cb2e0a6bbabfbc9b8cbc042" => :mountain_lion
   end
 
   devel do
+    # This can't be bumped past 2.7.7 until we decide what to do with
+    # https://github.com/Homebrew/homebrew/pull/33652
     url "https://fastdl.mongodb.org/src/mongodb-src-r2.7.7.tar.gz"
     sha1 "ce223f5793bdf5b3e1420b0ede2f2403e9f94e5a"
 
@@ -35,9 +38,6 @@ class Mongodb < Formula
       sha1 "9f9ce609c7692930976690cae68aa4fce1f8bca3"
     end
   end
-
-  # HEAD is currently failing. See https://jira.mongodb.org/browse/SERVER-15555
-  head "https://github.com/mongodb/mongo.git"
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
 

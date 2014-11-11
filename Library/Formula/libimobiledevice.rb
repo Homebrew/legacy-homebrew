@@ -2,16 +2,15 @@ require "formula"
 
 class Libimobiledevice < Formula
   homepage "http://www.libimobiledevice.org/"
-  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.6.tar.bz2"
-  sha1 "3016bf1241bc5a77a621c49d82d71bb8f32905e4"
-  revision 1
+  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.7.tar.bz2"
+  sha1 "ac47ba39e7f8d8cb9379756773ece30458b93c80"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "33a77a7e631b3fd8188ffd6043afd1bc0d2a7ed8" => :mavericks
-    sha1 "5d5302f4b79262902272caaaa66471d52b256488" => :mountain_lion
-    sha1 "ba4c0f4864153cc916d0f6c9ebd20468c6db47ac" => :lion
+    sha1 "39f7ff7216e593d6afe2737ed42b30a8565060d5" => :yosemite
+    sha1 "bcdb212d83c8b863e2ac81bd560cbbb3b6268bc2" => :mavericks
+    sha1 "e288c30272a07b9dc2fce2f804a4c19d5d3971b1" => :mountain_lion
   end
 
   head do

@@ -7,9 +7,10 @@ class Sdl < Formula
 
   bottle do
     cellar :any
-    sha1 "c773fb3d4118d4c6b0a9ead984a9893d6e9e88bf" => :mavericks
-    sha1 "6b6e01081d5381a5117a46fa7aa090ce45c18212" => :mountain_lion
-    sha1 "119ef97b48576db0644ef51c9f473affd8b64493" => :lion
+    revision 1
+    sha1 "349711f92cec0b02b53439b3126fe540bfea04e1" => :yosemite
+    sha1 "77ec0e596a9a66c60f843a2528b38d2ef2e4c9f5" => :mavericks
+    sha1 "d27291ac68ac7c22e6c7b35d0e658a65a6f2d189" => :mountain_lion
   end
 
   head do

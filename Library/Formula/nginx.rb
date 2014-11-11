@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 "1a5458bc15acf90eea16353a1dd17285cf97ec35"
 
   devel do
-    url "http://nginx.org/download/nginx-1.7.6.tar.gz"
-    sha1 "a83560142c19f7624bf1e089dcde3c1a223f4c46"
+    url "http://nginx.org/download/nginx-1.7.7.tar.gz"
+    sha1 "c8e1caaa0dc6cfe540082c52ecd856ab794e38dc"
   end
 
   head "http://hg.nginx.org/nginx/", :using => :hg
@@ -32,18 +32,6 @@ class Nginx < Formula
   depends_on "pcre"
   depends_on "passenger" => :optional
   depends_on "openssl"
-
-  def passenger_config_args
-    passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
-    nginx_ext = `#{passenger_config} --nginx-addon-dir`.chomp
-
-    if File.directory?(nginx_ext)
-      return "--add-module=#{nginx_ext}"
-    end
-
-    puts "Unable to install nginx with passenger support."
-    exit
-  end
 
   def install
     # Changes default port to 8080
@@ -74,7 +62,11 @@ class Nginx < Formula
             "--with-http_gzip_static_module"
           ]
 
-    args << passenger_config_args if build.with? "passenger"
+    if build.with? "passenger"
+      nginx_ext = `#{Formula["passenger"].opt_bin}/passenger-config --nginx-addon-dir`.chomp
+      args << "--add-module=#{nginx_ext}"
+    end
+
     args << "--with-http_dav_module" if build.with? "webdav"
     args << "--with-debug" if build.with? "debug"
     args << "--with-http_spdy_module" if build.with? "spdy"
@@ -124,16 +116,16 @@ class Nginx < Formula
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
-      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini;
+      passenger_root #{Formula["passenger"].opt_libexec}/lib/phusion_passenger/locations.ini;
       passenger_ruby /usr/bin/ruby;
     EOS
   end
 
   def caveats
     s = <<-EOS.undent
-    Docroot is: #{HOMEBREW_PREFIX}/var/www
+    Docroot is: #{var}/www
 
-    The default port has been set in #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf to 8080 so that
+    The default port has been set in #{etc}/nginx/nginx.conf to 8080 so that
     nginx can run without sudo.
     EOS
     s << passenger_caveats if build.with? "passenger"

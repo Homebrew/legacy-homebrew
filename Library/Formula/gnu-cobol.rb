@@ -2,8 +2,18 @@ require "formula"
 
 class GnuCobol < Formula
   homepage "http://www.opencobol.org/"
-  url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/1.1/gnu-cobol-1.1.tar.gz"
-  sha1 "86e928c43cb3372f1f4564f3fd5e1dde668e8c1f"
+
+  stable do
+    url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/1.1/gnu-cobol-1.1.tar.gz"
+    sha1 "86e928c43cb3372f1f4564f3fd5e1dde668e8c1f"
+
+    fails_with :clang do
+      cause <<-EOS.undent
+        Building with Clang configures GNU-COBOL to use Clang as its compiler,
+        which causes subsequent GNU-COBOL-based builds to fail.
+      EOS
+    end
+  end
 
   devel do
     version "2.0_nightly_r411"
@@ -22,15 +32,6 @@ class GnuCobol < Formula
   depends_on "automake" => :build
   depends_on "berkeley-db4"
   depends_on "gmp"
-
-  if build.stable?
-    fails_with :clang do
-      cause <<-EOS.undent
-        Building with Clang configures GNU-COBOL to use Clang as its compiler,
-        which causes subsequent GNU-COBOL-based builds to fail.
-      EOS
-    end
-  end
 
   def install
     # both environment variables are needed to be set

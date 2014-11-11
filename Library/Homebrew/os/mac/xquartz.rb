@@ -90,8 +90,8 @@ module OS
       end
 
       # This should really be private, but for compatibility reasons it must
-      # remain public. New code should use MacOS::X11.{bin,lib,include}
-      # instead, as that accounts for Xcode-only systems.
+      # remain public. New code should use MacOS::X11.bin, MacOS::X11.lib and
+      # MacOS::X11.include instead, as that accounts for Xcode-only systems.
       def prefix
         @prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
           Pathname.new('/opt/X11')

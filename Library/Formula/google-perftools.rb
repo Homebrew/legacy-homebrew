@@ -2,8 +2,15 @@ require 'formula'
 
 class GooglePerftools < Formula
   homepage 'http://code.google.com/p/gperftools/'
-  url 'https://gperftools.googlecode.com/files/gperftools-2.1.tar.gz'
-  sha1 'b799b99d9f021988bbc931db1c21b2f94826d4f0'
+  url "https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-2.2.1.tar.gz"
+  sha1 "f505eb467bc5b55ea3a27e3386a70331bf6e38a0"
+
+  bottle do
+    cellar :any
+    sha1 "c5f3fcc3e72965cdf5a60b3ff26e5b8fcc1f6bd2" => :yosemite
+    sha1 "c930c122d93509860ed775647b6087ff47209646" => :mavericks
+    sha1 "012d32851ca538fd32cd85db4fe8b033cfe38755" => :mountain_lion
+  end
 
   fails_with :llvm do
     build 2326
@@ -14,10 +21,6 @@ class GooglePerftools < Formula
   # * configure patch removes __thread support, which breaks tcmalloc since it internally calls malloc as well
   #   upstream: https://code.google.com/p/gperftools/issues/detail?id=573
   patch :DATA
-  patch do
-    url "https://gist.githubusercontent.com/JustSid/7430366/raw/54979ac61602eec5e59223164cb1f0d136044d1f/gistfile1.txt"
-    sha1 "4fde81e106b31198622db587fea51f01e2640789"
-  end
 
   def install
     ENV.append_to_cflags '-D_XOPEN_SOURCE'

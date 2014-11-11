@@ -1,6 +1,6 @@
 require 'testing_env'
 require 'formula'
-require 'test/testball'
+require 'testball'
 require 'keg'
 
 
@@ -35,9 +35,8 @@ class InstallTests < Homebrew::TestCase
       assert_predicate f.bin, :directory?
       assert_equal 3, f.bin.children.length
 
-      libexec = f.prefix+'libexec'
-      assert_predicate libexec, :directory?
-      assert_equal 1, libexec.children.length
+      assert_predicate f.libexec, :directory?
+      assert_equal 1, f.libexec.children.length
 
       refute_predicate f.prefix+'main.c', :exist?
       assert_predicate f, :installed?

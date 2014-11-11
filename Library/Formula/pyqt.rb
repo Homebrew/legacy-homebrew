@@ -5,6 +5,13 @@ class Pyqt < Formula
   url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
   sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
 
+  bottle do
+    revision 1
+    sha1 "251fb1a136972de87c98d3d06a3f5e1d6b8351d4" => :yosemite
+    sha1 "43f5b59a2b08d5ed035016459ffce566577a6e42" => :mavericks
+    sha1 "e058c40214fa5bed6391e815cfe7b2473b2bbc98" => :mountain_lion
+  end
+
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
@@ -27,12 +34,12 @@ class Pyqt < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", "#{Formula["sip"].opt_lib}/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
               "--destdir=#{lib}/python#{version}/site-packages",
-              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+              "--sipdir=#{share}/sip"]
 
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by QGIS, PyQWT (and many other PyQt interoperable

@@ -6,9 +6,10 @@ class Libdap < Formula
   sha1 'bfb72dd3035e7720b1ada0bf762b9ab80bb6bbf2'
 
   bottle do
-    sha1 "e9f582f9db0809b3be2ad9ffeeed7b82909ad2b0" => :mavericks
-    sha1 "e1a586aa0f89f176c3e61699627aa237efd3f3d0" => :mountain_lion
-    sha1 "07069f365f55d2f26ec9857182f96bff6c4ac683" => :lion
+    revision 1
+    sha1 "34baca09631ed6f58e82579854e025bb032a4127" => :yosemite
+    sha1 "feda9fde7dc1898e19442d51e61959605ae182f8" => :mavericks
+    sha1 "a4d7b53a3f20d3bc19e0a24c1b50b8b7bffc051c" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

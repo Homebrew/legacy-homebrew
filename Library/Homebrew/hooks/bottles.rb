@@ -26,6 +26,10 @@ module Homebrew
         return false unless @pour_bottle
         @pour_bottle.call formula
       end
+
+      def self.reset_hooks
+        @has_bottle = @pour_bottle = nil
+      end
     end
   end
 end

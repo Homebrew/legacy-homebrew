@@ -43,6 +43,16 @@ class Tab < OpenStruct
     for_formula(Formulary.factory(name))
   end
 
+  def self.remap_deprecated_options deprecated_options, options
+    deprecated_options.each do |deprecated_option|
+      option = options.find {|option| option.name == deprecated_option.old }
+      next unless option
+      options -= [option]
+      options << Option.new(deprecated_option.current, option.description)
+    end
+    options
+  end
+
   def self.for_formula f
     paths = []
 
@@ -63,7 +73,10 @@ class Tab < OpenStruct
     path = paths.map { |pn| pn.join(FILENAME) }.find(&:file?)
 
     if path
-      from_file(path)
+      tab = from_file(path)
+      used_options = remap_deprecated_options(f.deprecated_options, tab.used_options)
+      tab.used_options = used_options.as_flags
+      tab
     else
       dummy_tab(f)
     end

@@ -8,10 +8,10 @@ class Librasterlite < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7dcd4ea33188c1f480ccd79ea3b219d0e6f15d88" => :mavericks
-    sha1 "b88fb8974a1040cb92ccb3ba625c9ca32d831d72" => :mountain_lion
-    sha1 "fb8da1e10de9cde87295c2cac6d7de4732c77f20" => :lion
+    revision 2
+    sha1 "bc1d50a1363cd3f6827fa512ae5412ace413a1b9" => :yosemite
+    sha1 "86cde48b326df5915f2c2efd1b0d335f79b7bcbd" => :mavericks
+    sha1 "74b25b3d5ddbeeb8510026a7a8a918193600b9fc" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

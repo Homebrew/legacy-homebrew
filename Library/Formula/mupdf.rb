@@ -16,6 +16,10 @@ class Mupdf < Formula
   depends_on :x11
 
   def install
-    system "make", "install", "build=release", "prefix=#{prefix}"
+    system "make", "install",
+                   "build=release",
+                   "verbose=yes",
+                   "CC=#{ENV.cc}",
+                   "prefix=#{prefix}"
   end
 end

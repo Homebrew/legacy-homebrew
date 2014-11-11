@@ -7,9 +7,10 @@ class Shapelib < Formula
 
   bottle do
     cellar :any
-    sha1 "57be889ffefc8a5fa66c3595f15a8d1b5e5daf28" => :mavericks
-    sha1 "6845193a026890fafed785d9b85ee5ceb65b0f71" => :mountain_lion
-    sha1 "25f0d59ecbf9011c00f798b67a9546e78a301ae0" => :lion
+    revision 1
+    sha1 "94876630b25d3118459e6ed1f993a155617ad2ab" => :yosemite
+    sha1 "f084d8d30da0f0859527e9c747809e7ad5ea0d07" => :mavericks
+    sha1 "0f7ade9614306874b162d89c14ca74c0048281d2" => :mountain_lion
   end
 
   def install

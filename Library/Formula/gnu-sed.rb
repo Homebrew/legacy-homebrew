@@ -8,9 +8,10 @@ class GnuSed < Formula
 
   bottle do
     cellar :any
-    sha1 "4e97d284b3429838d296928a70bb700e38c33453" => :mavericks
-    sha1 "11a59857a6a4e87059a8c52aeaabfb3283be2113" => :mountain_lion
-    sha1 "a60cef42f2169074f1377fdf59dad5b652216d2c" => :lion
+    revision 1
+    sha1 "2f92a57761e272e41b00915d3a348927447b249d" => :yosemite
+    sha1 "aec8b9fc4ad1c58dc5279ee62133c2a67a24e651" => :mavericks
+    sha1 "4dff2a21df4148c95abc04e87544bef1c452951f" => :mountain_lion
   end
 
   option 'default-names', "Do not prepend 'g' to the binary"

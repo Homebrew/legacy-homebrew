@@ -7,9 +7,10 @@ class Libtess2 < Formula
 
   bottle do
     cellar :any
-    sha1 "4a0b66321fba525d5e17b84c4978059cc79e89d7" => :mavericks
-    sha1 "bc707bcd3debc10404477fb912793fc200b232dc" => :mountain_lion
-    sha1 "65aef6feb5da2895198f893f727ecaff6a6af5f2" => :lion
+    revision 1
+    sha1 "59ce0639c5fcf074d5b5e9e428e974cc6ddd3408" => :yosemite
+    sha1 "4cd702f0b57ae52eb4e15c72877390b764f21a95" => :mavericks
+    sha1 "ad22b0855070d3ba896589ce40218744ffd5ec2d" => :mountain_lion
   end
 
   depends_on 'cmake' => :build

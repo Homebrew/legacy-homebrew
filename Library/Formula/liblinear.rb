@@ -7,9 +7,10 @@ class Liblinear < Formula
 
   bottle do
     cellar :any
-    sha1 "2abdfc1ed089473fdcb303179bcd1462c0a472aa" => :mavericks
-    sha1 "536cd0730f75face8cfa791de405e9b3d092e6d4" => :mountain_lion
-    sha1 "38dd7df4c233bb0ecf07c887be563e00de7004ca" => :lion
+    revision 1
+    sha1 "b1b7231ae951b2fecfbe07bda0464631a6154262" => :yosemite
+    sha1 "49be96f0e6bbd433345571ad6518c76ebacf6ce4" => :mavericks
+    sha1 "1e10cbc1730d6237edb6b71fb8792a47c83c1d49" => :mountain_lion
   end
 
   # Fix sonames

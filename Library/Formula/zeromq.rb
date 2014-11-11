@@ -1,15 +1,16 @@
-require 'formula'
+require "formula"
 
 class Zeromq < Formula
   homepage "http://www.zeromq.org/"
   url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
   sha1 "a664ec63661a848ef46114029156a0a6006feecd"
+  revision 2
 
   bottle do
     cellar :any
-    sha1 "36b69b2ddab7b16013290fdd5000ee9debaf74c1" => :mavericks
-    sha1 "c81456068da0085d453770171050b51d2451dc2e" => :mountain_lion
-    sha1 "4ec28e612016eafade64ace46d03c9ae7d42c594" => :lion
+    sha1 "8598e6f79d5cfbe72f281c3f835c0894078108ad" => :yosemite
+    sha1 "895c3427fb619cf3dcbe1d51cbf2c97d55177821" => :mavericks
+    sha1 "ba066d695b43cba56747649b18f146696ba2ada0" => :mountain_lion
   end
 
   head do
@@ -19,7 +20,6 @@ class Zeromq < Formula
     depends_on :automake
     depends_on :libtool
   end
-
 
   option :universal
   option "with-pgm", "Build with PGM extension"

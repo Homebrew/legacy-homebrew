@@ -22,10 +22,10 @@ class Libswiften < Formula
   end
 
   bottle do
-    revision 1
-    sha1 "6eb6b78976732915868a35c89f6d8dd6d8e72839" => :mavericks
-    sha1 "614c81e247cfabb895eba2f44a9649cc89d2e283" => :mountain_lion
-    sha1 "f6fd098bca33d0fb5dd0a9c834da2ea6a931fb2b" => :lion
+    revision 2
+    sha1 "4304665d17ab82a8b27afa59b3ead18658b504b1" => :yosemite
+    sha1 "5534c031b81bb3a031e74d87a7bcf74af721323f" => :mavericks
+    sha1 "984038e792a28ef8834ce2d582972c148d0a6533" => :mountain_lion
   end
 
   head do
