@@ -604,10 +604,11 @@ module Homebrew
         test_error = false
         begin
           test = Test.new(argument, tap)
-          test_error = !test.run
         rescue ArgumentError => e
           test_error = true
           ofail e.message
+        else
+          test_error = !test.run
         end
         any_errors ||= test_error
         tests << test
