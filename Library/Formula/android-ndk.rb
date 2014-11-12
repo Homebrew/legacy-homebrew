@@ -3,7 +3,7 @@ require "formula"
 class AndroidNdk < Formula
   homepage "http://developer.android.com/sdk/ndk/index.html"
 
-  if build.includes? "install-32bit"
+  if build.include? "install-32bit"
     url "http://dl.google.com/android/ndk/android-ndk-r10c-darwin-x86.bin"
     sha1 "b083f9a1a4dd66d55ced8ea41eea6a0a91ea1ac9"
   else
@@ -19,7 +19,7 @@ class AndroidNdk < Formula
   def install
     bin.mkpath
 
-    if build.includes? "install-32bit"
+    if build.include? "install-32bit"
       system "chmod", "a+x", "./android-ndk-r10c-darwin-x86.bin"
       system "./android-ndk-r10c-darwin-x86.bin"
     else
