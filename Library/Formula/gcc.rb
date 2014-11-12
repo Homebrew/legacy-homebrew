@@ -189,6 +189,28 @@ class Gcc < Formula
   end
 
   test do
+    (testpath/"hello-c.c").write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+        puts("Hello, world!");
+        return 0;
+      }
+    EOS
+    system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
+    assert_equal "Hello, world!\n", `./hello-c`
+
+    (testpath/"hello-cc.cc").write <<-'EOS'.undent
+      #include <iostream>
+      int main()
+      {
+        std::cout << "Hello, world!\n";
+        return 0;
+      }
+    EOS
+    system "#{bin}/g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
+    assert_equal "Hello, world!\n", `./hello-cc`
+
     if build.with?("fortran") || build.with?("all-languages")
       fixture = <<-EOS.undent
         integer,parameter::m=10000
