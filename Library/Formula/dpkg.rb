@@ -6,6 +6,12 @@ class Dpkg < Formula
   mirror "http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.21.tar.xz"
   sha256 "3ed776627181cb9c1c9ba33f94a6319084be2e9ec9c23dd61ce784c4f602cf05"
 
+  bottle do
+    sha1 "15101b6619ae657e7d59e72d30155dd6fd7498fd" => :yosemite
+    sha1 "05b2f939c6b43d338dbfb83757fa358641ef7bb1" => :mavericks
+    sha1 "f57689470ce7af05f25fa7a31ee158db1d0711e5" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gnu-tar"
 
