@@ -260,6 +260,7 @@ class Gdal < Formula
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
     ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
     # Needed by libdap
+    ENV.append "CPPFLAGS", "-I#{Formula["libxml2"].opt_include}/libxml2" if build.include? 'complete'
     ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.
