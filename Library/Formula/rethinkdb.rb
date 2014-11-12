@@ -2,8 +2,8 @@ require "formula"
 
 class Rethinkdb < Formula
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.1.tgz"
-  sha1 "8ffb3d2eb8d8b8309a663a2307eb097b5c897379"
+  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.2.tgz"
+  sha1 "31c14c764355e555734c7f4479397bd3bd7e0e44"
 
   bottle do
     sha1 "91ea2e7b40d2bcf72169bc747eb141091ce2752f" => :mavericks
@@ -16,6 +16,7 @@ class Rethinkdb < Formula
   # Reported upstream: https://github.com/rethinkdb/rethinkdb/issues/2581
   depends_on :xcode => :build
   depends_on "boost" => :build
+  depends_on "openssl"
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
