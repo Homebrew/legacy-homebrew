@@ -1,9 +1,13 @@
-require 'formula'
+require "formula"
 
 class Unbound < Formula
-  homepage 'http://www.unbound.net'
-  url 'http://unbound.net/downloads/unbound-1.4.22.tar.gz'
-  sha1 'a56e31e2f3a2fefa3caaad9200dd943d174ca81e'
+  homepage "http://www.unbound.net"
+  url "http://unbound.net/downloads/unbound-1.4.22.tar.gz"
+  sha256 "1caf5081b2190ecdb23fc4d998b7999e28640c941f53baff7aee03c092a7d29f"
+  revision 1
+
+  depends_on "openssl"
+  depends_on "libevent"
 
   bottle do
     revision 1
@@ -13,10 +17,9 @@ class Unbound < Formula
   end
 
   def install
-    # gost requires OpenSSL >= 1.0.0
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-gost"
-    system "make install"
+    system "./configure", "--prefix=#{prefix}", "--with-libevent=#{Formula["libevent"].opt_prefix}",
+                          "--sysconfdir=#{etc}"
+    system "make", "install"
   end
 
   plist_options :startup => true
