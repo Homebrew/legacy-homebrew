@@ -110,7 +110,7 @@ class Pypy < Formula
     To update setuptools and pip between pypy releases, run:
         #{scripts_folder}/pip install --upgrade setuptools
 
-    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md
     EOS
   end
 

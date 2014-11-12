@@ -121,7 +121,8 @@ class Postgresql < Formula
     When installing the postgres gem, including ARCHFLAGS is recommended:
       ARCHFLAGS="-arch x86_64" gem install pg
 
-    To install gems without sudo, see the Homebrew wiki.
+    To install gems without sudo, see the Homebrew documentation:
+    https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Gems,-Eggs-and-Perl-Modules.md
     EOS
   end
 

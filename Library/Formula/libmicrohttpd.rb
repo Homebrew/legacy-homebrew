@@ -13,8 +13,13 @@ class Libmicrohttpd < Formula
     sha1 "99df120ff4063f1026fc8ebcaecd3d6d96a778f9" => :mountain_lion
   end
 
+  option :universal
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make install"
+    ENV.universal_binary if build.universal?
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end
