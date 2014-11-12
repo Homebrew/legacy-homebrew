@@ -43,7 +43,7 @@ class Go < Formula
         ['darwin',  ['386', 'amd64']],
       ]
     else
-      targets = [['darwin', ['']]]
+      targets = [[`uname`.strip.downcase, ['']]]
     end
 
     # The version check is due to:
