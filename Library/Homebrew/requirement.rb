@@ -80,7 +80,7 @@ class Requirement
   end
 
   def hash
-    [name, *tags].hash
+    name.hash ^ tags.hash
   end
 
   def inspect
