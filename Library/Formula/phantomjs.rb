@@ -18,6 +18,7 @@ class Phantomjs < Formula
   head "https://github.com/ariya/phantomjs.git"
 
   depends_on "openssl"
+  depends_on "qt"
 
   def install
     if build.stable? && MacOS.prefer_64_bit?
