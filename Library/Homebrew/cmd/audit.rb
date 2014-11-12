@@ -266,7 +266,7 @@ class FormulaAuditor
   end
 
   def audit_specs
-    problem "Head-only (no stable download)" if formula.head_only?
+    problem "Head-only (no stable download)" if formula.head_only? && !ARGV.include?("--ignore-headonly")
 
     %w[Stable Devel HEAD].each do |name|
       next unless spec = formula.send(name.downcase)
