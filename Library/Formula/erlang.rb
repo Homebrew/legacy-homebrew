@@ -8,23 +8,13 @@ class Erlang < Formula
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-17.3.tar.gz"
-    sha1 "655e23a4f98b8ba4976dc417f0e876b40df74a7b"
-
-    # Upstream patch to fix http://erlang.org/pipermail/erlang-questions/2014-September/081176.html
-    patch do
-      url "https://github.com/erlang/otp/commit/b196730a325cfe74312c3a5f4b1273ba7c705ed6.diff"
-      sha1 "382fcaf4502adaac4f4c00dd46f64adb0ae84212"
-    end
+    url "https://github.com/erlang/otp/archive/OTP-17.3.4.tar.gz"
+    sha256 "bb8036c43b1aae12b2940968f2480701e7f431f09d46a0f204d94bf53b0b2b50"
   end
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    revision 1
-    sha1 "5ae67e0c66797577a68bc7c19acaa2e6cc195210" => :yosemite
-    sha1 "ce9af75253ae5428016817d3500781e117ebd814" => :mavericks
-    sha1 "5f164928053cb0bb938b8f8b5c182788c5aaf7a3" => :mountain_lion
   end
 
   resource "man" do
