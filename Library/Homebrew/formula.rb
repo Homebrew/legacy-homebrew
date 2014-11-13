@@ -132,6 +132,12 @@ class Formula
     active_spec.compiler_failures
   end
 
+  # #installed? describes the latest version as installed,
+  # but #active? describes any version as installed
+  def active?
+    opt_prefix.exist?
+  end
+
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     (dir = installed_prefix).directory? && dir.children.length > 0
