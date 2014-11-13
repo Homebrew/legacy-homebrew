@@ -36,10 +36,6 @@ end
 
 # Formula extensions for auditing
 class Formula
-  def head_only?
-    @head and @stable.nil?
-  end
-
   def text
     @text ||= FormulaText.new(@path)
   end
@@ -266,7 +262,9 @@ class FormulaAuditor
   end
 
   def audit_specs
-    problem "Head-only (no stable download)" if formula.head_only?
+    if head_only?(formula) && formula.tap != "homebrew/homebrew-headonly"
+      problem "Head-only (no stable download)"
+    end
 
     %w[Stable Devel HEAD].each do |name|
       next unless spec = formula.send(name.downcase)
@@ -566,6 +564,10 @@ class FormulaAuditor
 
   def problem p
     @problems << p
+  end
+
+  def head_only?(formula)
+    formula.head && formula.stable.nil?
   end
 end
 
