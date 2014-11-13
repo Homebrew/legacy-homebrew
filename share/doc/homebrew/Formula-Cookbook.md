@@ -108,7 +108,7 @@ class Foo < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 #   system "cmake", ".", *std_cmake_args
-    system "make install"
+    system "make", "install"
   end
 end
 ```
@@ -384,7 +384,7 @@ In particular, when a test needs to be performed before installation use `onoe` 
 
 ```ruby
 if some_test?
-  system "make install"
+  system "make", "install"
 else
   onoe "Error! Something is wrong."
 end
@@ -900,7 +900,7 @@ class Foo < Formula
     ENV.deparallelize
     ENV.no_optimization
     system "make"  # separate make and make install steps
-    system "make install"
+    system "make", "install"
   end
 end
 ```
