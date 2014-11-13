@@ -5,6 +5,13 @@ class CrosstoolNg < Formula
   url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.20.0.tar.bz2'
   sha1 'b11f7ee706753b8cf822f98b549f8ab9dd8da9c7'
 
+  bottle do
+    cellar :any
+    sha1 "e0b4f5c33aea34c2c94cfbbb71b9e238ab5262c9" => :yosemite
+    sha1 "dc3c1243bb2df823e0db44562e6dc2b869f0a3b1" => :mavericks
+    sha1 "fc2cfb94d4edb31624c5703c07e536e7becb2fa0" => :mountain_lion
+  end
+
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
