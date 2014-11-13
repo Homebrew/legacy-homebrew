@@ -1,11 +1,10 @@
 require "formula"
 
 class Mvnvm < Formula
-  depends_on "java"
   homepage "http://mvnvm.org"
-  url "https://bitbucket.org/mjensen/mvnvm/get/0d4318ea71a2.tar.gz"
-  version "0.0.1-20141113"
-  sha1 "a89fd49611c6259b9b0621de501be72c6a34540a"
+  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-0.1.tar.gz"
+  version "0.1"
+  sha1 "8e6f07f0395eeca400bb676114b6e2dc6d829a82"
 
   def install
     bin.install "mvn"
