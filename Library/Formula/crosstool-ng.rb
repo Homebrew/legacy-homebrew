@@ -21,12 +21,14 @@ class CrosstoolNg < Formula
   env :std
 
   # Patch to fix clang offsetof. Can be removed when adopted upstream.
+  # http://patchwork.ozlabs.org/patch/400328/
   patch do
     url "http://patchwork.ozlabs.org/patch/400328/raw/"
     sha1 "0baca77c863e6876f6fb1838db9e5cb60c6fe89c"
   end
 
   # Patch to make regex BSD grep compatible. Can be removed when adopted upstream.
+  # http://patchwork.ozlabs.org/patch/400351/
   patch do
     url "http://patchwork.ozlabs.org/patch/400351/raw/"
     sha1 "8f8e29aa149e65c2588a2d9ec3849d0ba727e0ad"
