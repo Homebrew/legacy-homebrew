@@ -12,14 +12,16 @@ class OpenMpi < Formula
     sha1 "4bd58e35a701b7b9bca3092d852b746e5975a866" => :mountain_lion
   end
 
-  option 'disable-fortran', 'Do not build the Fortran bindings'
-  option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
+  deprecated_option "disable-fortran" => "without-fortran"
+  deprecated_option "enable-mpi-thread-multiple" => "with-mpi-thread-multiple"
+
+  option "with-mpi-thread-multiple", "Enable MPI_THREAD_MULTIPLE"
   option :cxx11
 
   conflicts_with 'mpich2', :because => 'both install mpi__ compiler wrappers'
   conflicts_with 'lcdf-typetools', :because => 'both install same set of binaries.'
 
-  depends_on :fortran unless build.include? 'disable-fortran'
+  depends_on :fortran => :recommended
   depends_on 'libevent'
 
   def install
@@ -32,11 +34,8 @@ class OpenMpi < Formula
       --enable-ipv6
       --with-libevent=#{Formula["libevent"].opt_prefix}
     ]
-    args << "--disable-mpi-fortran" if build.include? "disable-fortran"
-
-    if build.include? 'enable-mpi-thread-multiple'
-      args << '--enable-mpi-thread-multiple'
-    end
+    args << "--disable-mpi-fortran" if build.without? "fortran"
+    args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
 
     system './configure', *args
     system 'make', 'all'
