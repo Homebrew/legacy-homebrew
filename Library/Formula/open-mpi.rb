@@ -32,9 +32,7 @@ class OpenMpi < Formula
       --enable-ipv6
       --with-libevent=#{Formula["libevent"].opt_prefix}
     ]
-    if build.include? 'disable-fortran'
-      args << '--disable-mpi-f77' << '--disable-mpi-f90'
-    end
+    args << "--disable-mpi-fortran" if build.include? "disable-fortran"
 
     if build.include? 'enable-mpi-thread-multiple'
       args << '--enable-mpi-thread-multiple'
