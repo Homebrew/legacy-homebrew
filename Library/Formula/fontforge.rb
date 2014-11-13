@@ -32,8 +32,9 @@ class Fontforge < Formula
   end
 
   deprecated_option "with-x" => "with-x11"
+  deprecated_option "with-gif" => "with-giflib"
 
-  option "with-gif", "Build with GIF support"
+  option "with-giflib", "Build with GIF support"
 
   # Autotools are required to build from source in all releases.
   # I have upstreamed a request to change this, so keep monitoring the situation.
@@ -47,7 +48,7 @@ class Fontforge < Formula
   depends_on "jpeg"     => :recommended
   depends_on "libtiff"  => :recommended
   depends_on :x11 => :optional
-  depends_on "giflib" if build.with? "gif"
+  depends_on "giflib" => :optional
   depends_on "libspiro" => :optional
   depends_on "fontconfig"
   depends_on "cairo"
