@@ -26,9 +26,10 @@ class Emacs < Formula
   end
 
   option "cocoa", "Build a Cocoa version of emacs"
-  option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+
+  deprecated_option "with-x" => "with-x11"
 
   head do
     if build.include? "use-git-head"
@@ -42,7 +43,7 @@ class Emacs < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on :x11 if build.with? "x"
+  depends_on :x11 => :optional
   depends_on "d-bus" => :optional
   depends_on "gnutls" => :optional
   depends_on "librsvg" => :optional
@@ -95,7 +96,7 @@ class Emacs < Formula
         exec #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
       EOS
     else
-      if build.with? "x"
+      if build.with? "x11"
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/Homebrew/homebrew/issues/8156
