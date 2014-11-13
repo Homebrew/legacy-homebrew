@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Findutils < Formula
-  homepage 'http://www.gnu.org/software/findutils/'
-  url 'http://ftpmirror.gnu.org/findutils/findutils-4.4.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/findutils/findutils-4.4.2.tar.gz'
-  sha1 'e8dd88fa2cc58abffd0bfc1eddab9020231bb024'
+  homepage "http://www.gnu.org/software/findutils/"
+  url "http://ftpmirror.gnu.org/findutils/findutils-4.4.2.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/findutils/findutils-4.4.2.tar.gz"
+  sha1 "e8dd88fa2cc58abffd0bfc1eddab9020231bb024"
 
   bottle do
     sha1 "aa891bdc442314c4aeb3f1a14d9b3d5ebe037332" => :mavericks
@@ -12,16 +12,22 @@ class Findutils < Formula
     sha1 "bc7e41186d3a3610a417b4dd5fd9a874f9b21c58" => :lion
   end
 
-  option 'default-names', "Do not prepend 'g' to the binary"
+  deprecated_option "default-names" => "with-default-names"
+
+  option "with-default-names", "Do not prepend 'g' to the binary"
 
   def install
     args = ["--prefix=#{prefix}",
             "--localstatedir=#{var}/locate",
             "--disable-dependency-tracking",
             "--disable-debug"]
-    args << "--program-prefix=g" unless build.include? 'default-names'
+    args << "--program-prefix=g" if build.without? "default-names"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gfind", "--version"
   end
 end
