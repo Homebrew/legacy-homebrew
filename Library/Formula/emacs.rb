@@ -26,18 +26,12 @@ class Emacs < Formula
   end
 
   option "cocoa", "Build a Cocoa version of emacs"
-  option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
 
   deprecated_option "with-x" => "with-x11"
 
   head do
-    if build.include? "use-git-head"
-      url "http://git.sv.gnu.org/r/emacs.git"
-    else
-      url "bzr://http://bzr.savannah.gnu.org/r/emacs/trunk"
-    end
-
+    url "http://git.sv.gnu.org/r/emacs.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
