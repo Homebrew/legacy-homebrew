@@ -31,8 +31,9 @@ class Fontforge < Formula
     depends_on "czmq"
   end
 
+  deprecated_option "with-x" => "with-x11"
+
   option "with-gif", "Build with GIF support"
-  option "with-x", "Build with X11 support, building the app bundle"
 
   # Autotools are required to build from source in all releases.
   # I have upstreamed a request to change this, so keep monitoring the situation.
@@ -45,7 +46,7 @@ class Fontforge < Formula
   depends_on "libpng"   => :recommended
   depends_on "jpeg"     => :recommended
   depends_on "libtiff"  => :recommended
-  depends_on :x11 if build.with? "x"
+  depends_on :x11 => :optional
   depends_on "giflib" if build.with? "gif"
   depends_on "libspiro" => :optional
   depends_on "fontconfig"
@@ -60,7 +61,7 @@ class Fontforge < Formula
   def install
     args = ["--prefix=#{prefix}"]
 
-    args << "--with-x" if build.with? "x"
+    args << "--with-x" if build.with? "x11"
 
     args << "--without-libpng" if build.without? "libpng"
     args << "--without-libjpeg" if build.without? "jpeg"
