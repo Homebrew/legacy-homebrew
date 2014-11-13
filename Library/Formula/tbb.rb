@@ -44,7 +44,11 @@ class Tbb < Formula
     end
 
     system "make", *args
-    lib.install Dir["build/BUILDPREFIX_release/*.dylib"]
+    if OS.mac?
+      lib.install Dir["build/BUILDPREFIX_release/*.dylib"]
+    else
+      lib.install Dir["build/BUILDPREFIX_release/*.so*"]
+    end
     include.install "include/tbb"
   end
 end
