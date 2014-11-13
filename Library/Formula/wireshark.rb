@@ -40,7 +40,7 @@ class Wireshark < Formula
 
   depends_on "geoip" => :recommended
   depends_on "c-ares" => :recommended
-  
+
   depends_on "libsmi" => :optional
   depends_on "lua" => :optional
   depends_on "portaudio" => :optional
