@@ -7,9 +7,10 @@ class Libwpg < Formula
 
   bottle do
     cellar :any
-    sha1 "50eed06b50a8793c2ef17e739e07bd2d20123236" => :mavericks
-    sha1 "0ec7bbafdeeeb475d0f8b91801df6b14ba5eaf15" => :mountain_lion
-    sha1 "8664b231a414048acf8e1e113178e689338325a7" => :lion
+    revision 1
+    sha1 "4ffcaff0f379c8be9497fe5783ef1e8ec19a5df5" => :yosemite
+    sha1 "869f2ed7ca10f81070797af9f6668ce483013c3b" => :mavericks
+    sha1 "23b67bcab674ef8a3d47370fd1fc6c7c2a84fa78" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

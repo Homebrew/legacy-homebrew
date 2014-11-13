@@ -2,20 +2,21 @@ require "formula"
 
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.3.3.tar.bz2"
-  sha1 "012afcbc57ecdf23f71b9901087cd5dbc8056756"
+  url "https://www.ffmpeg.org/releases/ffmpeg-2.4.3.tar.bz2"
+  sha1 "a2f05df7ea3e65ede2898e055b0c6615accfb1b3"
 
   head "git://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha1 "a15bcd964b6b993df63a020ba350d07427d88a87" => :mavericks
-    sha1 "82b5f720008d71571e8b089b02ebdb029b473fbc" => :mountain_lion
-    sha1 "866f62dc78a80195c5da71579239bef1110266c3" => :lion
+    sha1 "da5376cb5a7942f694ddc71db7e0f62e121ac7a2" => :yosemite
+    sha1 "7d47d99d0b127914141fa071450fa0808649edae" => :mavericks
+    sha1 "aebc5376516664a78896928b8249dae8443fdd92" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder"
+  option "without-qtkit", "Disable deprecated QuickTime framework"
 
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
@@ -71,7 +72,6 @@ class Ffmpeg < Formula
             "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-avresample",
-            "--enable-vda",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
             "--host-ldflags=#{ENV.ldflags}"
@@ -101,11 +101,22 @@ class Ffmpeg < Formula
     args << "--enable-libquvi" if build.with? "libquvi"
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
+    args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
       args << "--extra-cflags=" + %x[pkg-config --cflags libopenjpeg].chomp
+    end
+
+    # A bug in a dispatch header on 10.10, included via CoreFoundation,
+    # prevents GCC from building VDA support. GCC has no probles on
+    # 10.9 and earlier.
+    # See: https://github.com/Homebrew/homebrew/issues/33741
+    if MacOS.version < :yosemite || ENV.compiler == :clang
+      args << "--enable-vda"
+    else
+      args << "--disable-vda"
     end
 
     # For 32-bit compilation under gcc 4.2, see:

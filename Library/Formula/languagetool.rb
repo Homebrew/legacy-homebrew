@@ -2,8 +2,8 @@ require 'formula'
 
 class Languagetool < Formula
   homepage 'http://www.languagetool.org/'
-  url 'https://www.languagetool.org/download/LanguageTool-2.4.1.zip'
-  sha1 '47ca4ee2da377450056eb386a2b88e4a077a94a5'
+  url 'https://www.languagetool.org/download/LanguageTool-2.6.zip'
+  sha1 "bb9f1fe968aab655c22c94691013766bf0607936"
 
   def server_script server_jar; <<-EOS.undent
     #!/bin/bash
@@ -15,6 +15,6 @@ class Languagetool < Formula
     libexec.install Dir["*"]
     bin.write_jar_script libexec/'languagetool-commandline.jar', 'languagetool'
     (bin+'languagetool-server').write server_script(libexec/'languagetool-server.jar')
-    bin.write_jar_script libexec/'languagetool-standalone.jar', 'languagetool-gui'
+    bin.write_jar_script libexec/'languagetool.jar', 'languagetool-gui'
   end
 end

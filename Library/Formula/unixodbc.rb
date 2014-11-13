@@ -3,17 +3,22 @@ require 'formula'
 class Unixodbc < Formula
   homepage 'http://www.unixodbc.org/'
   url 'http://www.unixodbc.org/unixODBC-2.3.2.tar.gz'
+  mirror 'ftp://mirror.ovh.net/gentoo-distfiles/distfiles/unixODBC-2.3.2.tar.gz'
   sha1 'f84520fd58143625b614fde551435178a558ee2e'
+  revision 1
 
   bottle do
-    sha1 "b57d4162ab0aae7a2b9b590c340156c2a211608a" => :mavericks
-    sha1 "02dcda0fcd62483207ef664cb88a4d94e067602e" => :mountain_lion
-    sha1 "d3ea697a384347cfbbaa35d3478654813b2d0978" => :lion
+    revision 1
+    sha1 "03dd766eb34bf59cc26c6ae55ca906f95b9e0c17" => :yosemite
+    sha1 "29acdaea17aea46d72b8cfe061c84d3d58e3d594" => :mavericks
+    sha1 "e9efe13f0a2eb4f162422dc3465411ab35b85aef" => :mountain_lion
   end
 
   option :universal
 
   conflicts_with 'virtuoso', :because => 'Both install `isql` binaries.'
+
+  keg_only "Shadows system iODBC header files" if MacOS.version < :mavericks
 
   def install
     ENV.universal_binary if build.universal?

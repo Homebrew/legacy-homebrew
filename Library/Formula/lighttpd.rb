@@ -4,11 +4,12 @@ class Lighttpd < Formula
   homepage 'http://www.lighttpd.net/'
   url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.35.tar.bz2'
   sha256 '4a71c1f6d8af41ed894b507720c4c17184dc320590013881d5170ca7f15c5bf7'
+  revision 1
 
   bottle do
-    sha1 "39d57cd89e0b885ce706b4a39fe14a25a33929e9" => :mavericks
-    sha1 "466c297940904499c24cf92550a0d7d5cc866994" => :mountain_lion
-    sha1 "13e06e79a8af9406bcd9e9cfc3c6e40e9bfe6045" => :lion
+    sha1 "1e1149e3cd4a622a4d90e2e0243ee43ee6900b05" => :mavericks
+    sha1 "9005df016564ac3cf44757f14dab8d0ae98eec49" => :mountain_lion
+    sha1 "0dc5abe30f67397f4d0dcf0b04bbed96b8b23173" => :lion
   end
 
   option 'with-lua', 'Include Lua scripting support for mod_magnet'
@@ -18,7 +19,7 @@ class Lighttpd < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
   depends_on 'pcre'
-  depends_on 'lua' => :optional
+  depends_on 'lua51' if build.with? "lua"
   depends_on 'libev' => :optional
 
   # default max. file descriptors; this option will be ignored if the server is not started as root
@@ -63,7 +64,7 @@ class Lighttpd < Formula
         s.sub!(/^var\.home_dir\s*=\s*".+"$/,"var.home_dir    = \"#{run_path}\"")
         s.sub!(/^var\.conf_dir\s*=\s*".+"$/,"var.conf_dir    = \"#{config_path}\"")
         s.sub!(/^server\.port\s*=\s*80$/,'server.port = 8080')
-        s.sub!(/^server\.document-root\s*=\s*server_root + "\/htdocs"$/,'server.document-root = server_root')
+        s.sub!(/^server\.document-root\s*=\s*server_root \+ "\/htdocs"$/,'server.document-root = server_root')
 
         # get rid of "warning: please use server.use-ipv6 only for hostnames, not
         # without server.bind / empty address; your config will break if the kernel

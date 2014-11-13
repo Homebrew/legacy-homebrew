@@ -12,7 +12,7 @@ class Curlftpfs < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on :x11
-  depends_on "osxfuse"
+  depends_on :osxfuse
   depends_on "glib"
 
   def install

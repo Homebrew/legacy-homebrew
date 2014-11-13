@@ -2,10 +2,11 @@ require 'formula'
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
+  revision 1
 
   stable do
-    url "http://grass.osgeo.org/grass64/source/grass-6.4.3.tar.gz"
-    sha1 "925da985f3291c41c7a0411eaee596763f7ff26e"
+    url "http://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
+    sha1 "0e4dac9fb3320a26e4f640f641485fde0323dd46"
 
     # Patches that files are not installed outside of the prefix.
     patch :DATA
@@ -35,6 +36,7 @@ class Grass < Formula
   depends_on :postgresql => :optional
   depends_on :mysql => :optional
   depends_on "cairo"
+  depends_on "freetype"
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
   fails_with :clang do
@@ -84,6 +86,12 @@ class Grass < Formula
       args << "--without-wxwidgets"
     else
       args << "--with-wxwidgets=#{Formula["wxmac"].opt_bin}/wx-config"
+    end
+
+    if build.with? "wxpython"
+      python_site_packages = HOMEBREW_PREFIX/"lib/python2.7/site-packages"
+      default_wx_path = File.read(python_site_packages/"wx.pth").strip
+      ENV.prepend_path "PYTHONPATH", python_site_packages/default_wx_path
     end
 
     args << "--enable-64bit" if MacOS.prefer_64_bit?

@@ -1,24 +1,23 @@
-require 'formula'
+require "formula"
 
 class LibgpgError < Formula
-  homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.13.tar.bz2'
-  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.13.tar.bz2'
-  sha1 '50fbff11446a7b0decbf65a6e6b0eda17b5139fb'
+  homepage "http://www.gnupg.org/"
+  url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.17.tar.bz2"
+  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.17.tar.bz2"
+  sha1 "ba5858b2947e7272dd197c87bac9f32caf29b256"
 
   bottle do
     cellar :any
-    sha1 "1c975ce141fcc44543967cfd83984fcbb2a4bd7d" => :mavericks
-    sha1 "f80ac1daca1a09be3a13a25ed6d0ce3a3940013e" => :mountain_lion
-    sha1 "0ddec43a1845015a046f8ed4f924272eafc1cca7" => :lion
+    sha1 "2797742803d4b1529d5fd12a91e22ccbe8232511" => :yosemite
+    sha1 "7b5d3ad9f1a7de9bb3766d2cbea98547b44ab342" => :mavericks
+    sha1 "b8ae825c272dfe2e98f45d49dc5fdce803bafbe7" => :mountain_lion
   end
 
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

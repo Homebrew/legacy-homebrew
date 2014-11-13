@@ -2,22 +2,20 @@ require "formula"
 
 class Nginx < Formula
   homepage "http://nginx.org/"
-  url "http://nginx.org/download/nginx-1.6.1.tar.gz"
-  sha1 "e58c865f67b580541ed4eadf69d1676762bf50ab"
-  revision 1
+  url "http://nginx.org/download/nginx-1.6.2.tar.gz"
+  sha1 "1a5458bc15acf90eea16353a1dd17285cf97ec35"
 
   devel do
-    url "http://nginx.org/download/nginx-1.7.4.tar.gz"
-    sha1 "94f4ac8ddb4a05349e75c43b84f24dbacdbac6e9"
+    url "http://nginx.org/download/nginx-1.7.7.tar.gz"
+    sha1 "c8e1caaa0dc6cfe540082c52ecd856ab794e38dc"
   end
 
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    revision 1
-    sha1 "c7c3ffae58d4ca2c95fcfb2a9dedbd55152fceb9" => :mavericks
-    sha1 "7da4933d23f1cef378387b8abdb7c2981d20ea5a" => :mountain_lion
-    sha1 "d688d641fd345be01efcc98e6aa65224f9ba3167" => :lion
+    sha1 "7aa0fc40ada6fa9623817f3f5bac0310b7fb1b45" => :mavericks
+    sha1 "c1660c583f74b0829f752804f566769e607998a7" => :mountain_lion
+    sha1 "2f4810ccc3cb5687685028591668ecae50b3cb30" => :lion
   end
 
   env :userpaths
@@ -34,18 +32,6 @@ class Nginx < Formula
   depends_on "pcre"
   depends_on "passenger" => :optional
   depends_on "openssl"
-
-  def passenger_config_args
-    passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
-    nginx_ext = `#{passenger_config} --nginx-addon-dir`.chomp
-
-    if File.directory?(nginx_ext)
-      return "--add-module=#{nginx_ext}"
-    end
-
-    puts "Unable to install nginx with passenger support."
-    exit
-  end
 
   def install
     # Changes default port to 8080
@@ -76,7 +62,11 @@ class Nginx < Formula
             "--with-http_gzip_static_module"
           ]
 
-    args << passenger_config_args if build.with? "passenger"
+    if build.with? "passenger"
+      nginx_ext = `#{Formula["passenger"].opt_bin}/passenger-config --nginx-addon-dir`.chomp
+      args << "--add-module=#{nginx_ext}"
+    end
+
     args << "--with-http_dav_module" if build.with? "webdav"
     args << "--with-debug" if build.with? "debug"
     args << "--with-http_spdy_module" if build.with? "spdy"
@@ -126,16 +116,16 @@ class Nginx < Formula
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
-      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini
-      passenger_ruby /usr/bin/ruby
+      passenger_root #{Formula["passenger"].opt_libexec}/lib/phusion_passenger/locations.ini;
+      passenger_ruby /usr/bin/ruby;
     EOS
   end
 
   def caveats
     s = <<-EOS.undent
-    Docroot is: #{HOMEBREW_PREFIX}/var/www
+    Docroot is: #{var}/www
 
-    The default port has been set in #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf to 8080 so that
+    The default port has been set in #{etc}/nginx/nginx.conf to 8080 so that
     nginx can run without sudo.
     EOS
     s << passenger_caveats if build.with? "passenger"

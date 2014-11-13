@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Openssl < Formula
-  homepage 'http://openssl.org'
-  url 'https://www.openssl.org/source/openssl-1.0.1i.tar.gz'
-  mirror 'http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.1i.tar.gz'
-  sha256 '3c179f46ca77069a6a0bac70212a9b3b838b2f66129cb52d568837fc79d8fcc7'
+  homepage "https://openssl.org"
+  url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1j.tar.gz"
+  sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
 
   bottle do
-    revision 3
-    sha1 "0f669ad9b9910e3807f7b7db1be665306d5f3821" => :mavericks
-    sha1 "b9a769ae1b4dc7360b3d0081d921ebae2f2d2fc6" => :mountain_lion
-    sha1 "20de4f43e7ae42c8ba16b3923e6e33d06663ef49" => :lion
+    sha1 "f6cdb5c0ec14896a385dacf0746768e56e65aed9" => :yosemite
+    sha1 "595305062ba76824570d5c52b2add7f53422dafb" => :mavericks
+    sha1 "dc26c0ea2a7e38451a1b213f7e0f3694f70e460d" => :mountain_lion
+    sha1 "ba064e1f82e3eb54a7272d20c8114d8910bbdf01" => :lion
   end
 
   option :universal
@@ -19,7 +19,7 @@ class Openssl < Formula
   depends_on "makedepend" => :build
 
   keg_only :provided_by_osx,
-    "The OpenSSL provided by OS X is too old for some software."
+    "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
   def arch_args
     {
@@ -121,9 +121,9 @@ class Openssl < Formula
   end
 
   test do
-    (testpath/'testfile.txt').write("This is a test file")
+    (testpath/"testfile.txt").write("This is a test file")
     expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
-    system "#{bin}/openssl", 'dgst', '-sha1', '-out', 'checksum.txt', 'testfile.txt'
+    system "#{bin}/openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
     open("checksum.txt") do |f|
       checksum = f.read(100).split("=").last.strip
       assert_equal checksum, expected_checksum

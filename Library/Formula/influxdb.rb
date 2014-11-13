@@ -1,42 +1,45 @@
 require "formula"
 
 class Influxdb < Formula
-  homepage "http://influxdb.org"
-  url "http://get.influxdb.org/influxdb-0.7.3.src.tar.gz"
-  sha1 "cc774498036a758661965eb01c45c1941bf0ac10"
+  homepage "http://influxdb.com"
+  url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.5.src.tar.gz"
+  sha1 "bbb361db2e54686c90cbf5ec253d1a89c170ca75"
 
   bottle do
-    sha1 "eec1070cf8165525e350ce00c07802a16260a44c" => :mavericks
-    sha1 "d50eae0ed37ad639d7a04f06c83b1398bc738386" => :mountain_lion
-    sha1 "d76c3b4aac9d5adc016f4ab7eed37951f68b4c22" => :lion
+    sha1 "4b6fa7d8ba82b2bcc30ca10689786785f1b0070e" => :yosemite
+    sha1 "635af68566e91ff92b7b949407e05daf5d7c88a1" => :mavericks
+    sha1 "5bb355a8e176220d92aae1cdec7f14be5abd3471" => :mountain_lion
   end
 
   depends_on "leveldb"
+  depends_on "rocksdb"
+  depends_on "autoconf" => :build
   depends_on "protobuf" => :build
   depends_on "bison" => :build
   depends_on "flex" => :build
   depends_on "go" => :build
+  depends_on "gawk" => :build
 
   def install
     ENV["GOPATH"] = buildpath
+    Dir.chdir File.join(buildpath, "src", "github.com", "influxdb", "influxdb")
 
     flex = Formula["flex"].bin/"flex"
     bison = Formula["bison"].bin/"bison"
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
-    system "make", "dependencies", "protobuf", "parser"
-    system "go", "build", "daemon"
+    system "make", "parser", "protobuf"
+    system "go", "build", "-tags", "rocksdb", "-o", "influxdb", "github.com/influxdb/influxdb/daemon"
 
     inreplace "config.sample.toml" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
       s.gsub! "/tmp/influxdb/development/wal", "#{var}/influxdb/wal"
-      s.gsub! "./admin", "#{opt_share}/admin"
+      s.gsub! "influxdb.log", "#{var}/influxdb/logs/influxdb.log"
     end
 
-    bin.install "daemon" => "influxdb"
+    bin.install "influxdb" => "influxdb"
     etc.install "config.sample.toml" => "influxdb.conf"
-    share.install "admin"
 
     (var/"influxdb/data").mkpath
     (var/"influxdb/raft").mkpath

@@ -18,7 +18,7 @@ class Sshfs < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "osxfuse"
+  depends_on :osxfuse
   depends_on "glib"
 
   # Fixes issue https://github.com/osxfuse/sshfs/pull/4

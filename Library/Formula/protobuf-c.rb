@@ -2,13 +2,13 @@ require "formula"
 
 class ProtobufC < Formula
   homepage "https://github.com/protobuf-c/protobuf-c"
-  url "https://github.com/protobuf-c/protobuf-c/releases/download/v1.0.1/protobuf-c-1.0.1.tar.gz"
-  sha1 "5928059292462aa6696c38857a3ca541a54f1b3f"
+  url "https://github.com/protobuf-c/protobuf-c/releases/download/v1.0.2/protobuf-c-1.0.2.tar.gz"
+  sha1 "f831f98a1142fdd3072b329fdc3b30533be67f48"
 
   bottle do
-    sha1 "3e7b3432a5284e9308d0318357ff06ee960e5ed6" => :mavericks
-    sha1 "c1dd644b5f4560a0e70b9bb9085dc50ef0bed98a" => :mountain_lion
-    sha1 "6502775b0cd40d27334dfde490369cbfe7a9fa2a" => :lion
+    sha1 "e850a4947ec7189154845bfb60ff8b69197c45e4" => :mavericks
+    sha1 "fd96052b5ac98180f0679fdb6d62fce8d2c576ac" => :mountain_lion
+    sha1 "b3990ecc09a996fef5a976f59a16ffb7e8d87ecb" => :lion
   end
 
   depends_on "pkg-config" => :build

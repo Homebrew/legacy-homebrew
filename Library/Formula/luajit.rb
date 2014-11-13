@@ -5,6 +5,13 @@ class Luajit < Formula
   url 'http://luajit.org/download/LuaJIT-2.0.3.tar.gz'
   sha1 '2db39e7d1264918c2266b0436c313fbd12da4ceb'
   head 'http://luajit.org/git/luajit-2.0.git'
+  revision 1
+
+  bottle do
+    sha1 "9a6fc01ed0659ecc07a1e34daecdcf82cd150ca4" => :yosemite
+    sha1 "7ed3346a644ca5cd73c51131c54060b13038208e" => :mavericks
+    sha1 "0363e0a9c7ff2580d35363622b228fba7bb8f770" => :mountain_lion
+  end
 
   skip_clean 'lib/lua/5.1', 'share/lua/5.1'
 
@@ -28,6 +35,9 @@ class Luajit < Formula
 
     system 'make', 'amalg', *args
     system 'make', 'install', *args
+    # Having an empty Lua dir in Lib can screw with the new Lua setup.
+    rm_rf prefix/'lib/lua'
+    rm_rf prefix/'share/lua'
   end
 
   test do

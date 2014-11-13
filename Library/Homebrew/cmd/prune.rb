@@ -36,7 +36,7 @@ module Homebrew
       end
     end
 
-    repair_taps unless ARGV.dry_run?
+    repair_taps(false) unless ARGV.dry_run?
 
     if ObserverPathnameExtension.total.zero?
       puts "Nothing pruned" if ARGV.verbose?

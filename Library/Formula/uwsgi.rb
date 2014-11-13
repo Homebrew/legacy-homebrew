@@ -1,18 +1,37 @@
-require 'formula'
+require "formula"
 
 class Uwsgi < Formula
-  homepage "http://projects.unbit.it/uwsgi/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
-  sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
+  homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
+  head "https://github.com/unbit/uwsgi.git"
+
+  stable do
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
+    sha1 "f017faf259f409907dc8c37541370d3e803fba32"
+
+    # Upstream ntohll fix - Kill on next stable release.
+    # https://github.com/unbit/uwsgi/issues/760
+    # https://github.com/unbit/uwsgi/commit/1964c9758
+    patch do
+      url "https://github.com/unbit/uwsgi/commit/1964c975.diff"
+      sha1 "5cad23c43ce933d723bf9961b3af303383386f92"
+    end
+    # Patches the patch to make it more ML & Mavericks friendly.
+    patch do
+      url "https://github.com/unbit/uwsgi/commit/48314cb903b.diff"
+      sha1 "4cd25b2c5ff39edacdac942f91839465e246d687"
+    end
+  end
 
   bottle do
     revision 1
-    sha1 "b7bd8eab827a33c547016c8a6e381517ce9143c2" => :mavericks
-    sha1 "d41c406d8c772c220a77f7c9b03158ccdd898f96" => :mountain_lion
-    sha1 "e64b429906886bffb38884c3a2d57645d83d68a1" => :lion
+    sha1 "9da9aa73d1ac4e5a78e325cb7c3dac45af659c44" => :yosemite
+    sha1 "933203169438fad47bac044b5517a6a04d8af90e" => :mavericks
+    sha1 "7dd5bb88ad74ed0ad834dc1cc3eb06ed4494f687" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   depends_on "pcre"
   depends_on "yajl" if build.without? "jansson"
@@ -24,7 +43,7 @@ class Uwsgi < Formula
   depends_on "libffi" => :optional
   depends_on "libxslt" => :optional
   depends_on "libyaml" => :optional
-  depends_on "lua" => :optional
+  depends_on "lua51" => :optional
   depends_on "mongodb" => :optional
   depends_on "mongrel2" => :optional
   depends_on "nagios" => :optional
@@ -43,17 +62,10 @@ class Uwsgi < Formula
   option "with-ruby", "Compile with Ruby support"
 
   def install
-    %w{CFLAGS LDFLAGS}.each { |e| ENV.append e, "-arch #{MacOS.preferred_arch}" }
+    ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
 
-    json = "yajl"
-    if build.with? "jansson"
-      json = "jansson"
-    end
-
-    yaml = "embedded"
-    if build.with? "libyaml"
-      yaml = "libyaml"
-    end
+    json = build.with?("jansson") ? "jansson" : "yajl"
+    yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
@@ -124,7 +136,7 @@ class Uwsgi < Formula
     bin.install "uwsgi"
   end
 
-  plist_options :manual => 'uwsgi'
+  plist_options :manual => "uwsgi"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

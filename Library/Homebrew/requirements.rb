@@ -2,8 +2,12 @@ require 'requirement'
 require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
 require 'requirements/minimum_macos_requirement'
+require 'requirements/maximum_macos_requirement'
 require 'requirements/mpi_dependency'
+require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
+require 'requirements/tuntap_dependency'
+require 'requirements/unsigned_kext_requirement'
 require 'requirements/x11_dependency'
 
 class XcodeDependency < Requirement
@@ -109,18 +113,45 @@ class JavaDependency < Requirement
   end
 
   def java_version
-    version_flag = " --version #{@version}+" if @version
-    quiet_system "/usr/libexec/java_home --failfast#{version_flag}"
+    args = %w[/usr/libexec/java_home --failfast]
+    args << "--version" << "#{@version}+" if @version
+    quiet_system(*args)
   end
 
   def message
     version_string = " #{@version}" if @version
 
     <<-EOS.undent
-      Java#{version_string} is required for Homebrew to install this formula.
+      Java#{version_string} is required to install this formula.
 
       You can install Java from:
         http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+      Make sure you install both the JRE and JDK.
     EOS
+  end
+end
+
+class AprDependency < Requirement
+  fatal true
+
+  satisfy(:build_env => false) { MacOS::CLT.installed? }
+
+  def message
+    message = <<-EOS.undent
+      Due to packaging problems on Apple's part, software that compiles
+      against APR requires the standalone Command Line Tools.
+    EOS
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Run `xcode-select --install` to install them.
+      EOS
+    else
+      message += <<-EOS.undent
+        The standalone package can be obtained from
+        https://developer.apple.com/downloads/,
+        or it can be installed via Xcode's preferences.
+      EOS
+    end
   end
 end

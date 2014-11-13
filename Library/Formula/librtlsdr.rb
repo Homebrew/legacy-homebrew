@@ -8,9 +8,10 @@ class Librtlsdr < Formula
 
   bottle do
     cellar :any
-    sha1 "8bc76582e3464d4fa380e2fb3bf91d71a697b1b2" => :mavericks
-    sha1 "aafd6ee6cfe60cfc5d9ff9c4ed76893bf71873eb" => :mountain_lion
-    sha1 "24a67d577ad05261285acc8cfb03cb2a34afabfa" => :lion
+    revision 1
+    sha1 "8680ce437b474e7032b29cb74707a83dccd31a94" => :yosemite
+    sha1 "c1e932c691bf46a96c254907201dbf00165f33e5" => :mavericks
+    sha1 "e9acc1e44e8cf4c6814b1dee47ea226a24a06d9e" => :mountain_lion
   end
 
   option :universal

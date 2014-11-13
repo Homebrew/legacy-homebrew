@@ -7,9 +7,10 @@ class Libpcl < Formula
 
   bottle do
     cellar :any
-    sha1 "5f5fa67315aa53eec8456101bf79d14d1b80f9ff" => :mavericks
-    sha1 "3e68ab4a81fec5b4bc482cebe07a1d682d3e2b69" => :mountain_lion
-    sha1 "06c814a3a004cd671996f4fbc15a395bd8046795" => :lion
+    revision 1
+    sha1 "f765f414f926e08424a150ef9d6ed0c781c747a5" => :yosemite
+    sha1 "659570156b38f819a880f0cb4e8650129b4c6d29" => :mavericks
+    sha1 "144245dc5c42c66e42144a7ccfa648fc96550752" => :mountain_lion
   end
 
   def install

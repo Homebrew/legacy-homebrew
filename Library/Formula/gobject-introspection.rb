@@ -1,25 +1,26 @@
-require 'formula'
+require "formula"
 
 class GobjectIntrospection < Formula
-  homepage 'http://live.gnome.org/GObjectIntrospection'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.40/gobject-introspection-1.40.0.tar.xz'
-  sha256 '96ea75e9679083e7fe39a105e810e2ead2d708abf189a5ba420bfccfffa24e98'
+  homepage "http://live.gnome.org/GObjectIntrospection"
+  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.42/gobject-introspection-1.42.0.tar.xz"
+  sha256 "3ba2edfad4f71d4f0de16960b5d5f2511335fa646b2c49bbb93ce5942b3f95f7"
 
   bottle do
-    sha1 "dbd65331012abd0570bfb8b115870a4ece51aad7" => :mavericks
-    sha1 "e553b3f537e998ef50ca42f1224aa981558ee29d" => :mountain_lion
-    sha1 "bb2353a61e8a05d4ef3e2a9f113d8ff348106e79" => :lion
+    revision 1
+    sha1 "9d87f1faa5296c6d49a6dfc14945b05278a0a6fb" => :yosemite
+    sha1 "e1ed56b4ff510fa7316309f61fcfa8229aeb2e3b" => :mavericks
+    sha1 "00d3c7bf606caf63b901ceae35b446318dd7b35e" => :mountain_lion
   end
 
   option :universal
-  option 'with-tests', 'Run tests in addition to the build (requires cairo)'
+  option "with-tests", "Run tests in addition to the build (requires cairo)"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'libffi'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "libffi"
   # To avoid: ImportError: dlopen(./.libs/_giscanner.so, 2): Symbol not found: _PyList_Check
   depends_on :python
-  depends_on 'cairo' => :build if build.with? 'tests'
+  depends_on "cairo" => :build if build.with? "tests"
 
   # Allow tests to execute on OS X (.so => .dylib)
   patch do
@@ -28,11 +29,11 @@ class GobjectIntrospection < Formula
   end if build.with? "tests"
 
   def install
-    ENV['GI_SCANNER_DISABLE_CACHE'] = 'true'
+    ENV["GI_SCANNER_DISABLE_CACHE"] = "true"
     ENV.universal_binary if build.universal?
-    inreplace 'giscanner/transformer.py', '/usr/share', HOMEBREW_PREFIX/'share'
-    inreplace 'configure' do |s|
-      s.change_make_var! 'GOBJECT_INTROSPECTION_LIBDIR', HOMEBREW_PREFIX/'lib'
+    inreplace "giscanner/transformer.py", "/usr/share", "#{HOMEBREW_PREFIX}/share"
+    inreplace "configure" do |s|
+      s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
     end
 
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]

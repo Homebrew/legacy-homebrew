@@ -1,35 +1,32 @@
-require 'formula'
+require "formula"
 
 class OsspUuid < Formula
-  homepage 'http://www.ossp.org/pkg/lib/uuid/'
-  url 'ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz'
-  mirror 'https://gnome-build-stage-1.googlecode.com/files/uuid-1.6.2.tar.gz'
-  sha1 '3e22126f0842073f4ea6a50b1f59dcb9d094719f'
+  homepage "http://www.ossp.org/pkg/lib/uuid/"
+  url "http://ftp.de.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_1.6.2.orig.tar.gz"
+  mirror "ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz"
+  sha1 "3e22126f0842073f4ea6a50b1f59dcb9d094719f"
+  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 'be005cdd4b3b2bb684a2c67458b241189fb234e2' => :mavericks
-    sha1 'fbed4a708210f9c2fcf2ee70f8e82e4c92db3ac3' => :mountain_lion
-    sha1 '853ec550d13e6cd48f2ff43605a6ae17b43f4565' => :lion
+    sha1 "bc8c6f93dd36442dfc24199062a73d1b4c47701f" => :yosemite
+    sha1 "93c3c44dc456e49bed9cb8b3672144fc348298dc" => :mavericks
+    sha1 "8a922934644663915eedc97f1a7da83725c646d2" => :mountain_lion
+    sha1 "3fbf704b60a660becfba68753285ec70ee47cdeb" => :lion
   end
 
   option :universal
   option "32-bit"
 
-  # see https://github.com/Homebrew/homebrew/issues/16077
-  keg_only "OS X provides a uuid.h which conflicts with ossp-uuid's header."
-
   def install
     if build.universal?
       ENV.universal_binary
     elsif build.build_32_bit?
-      ENV.append 'CFLAGS', '-arch i386'
-      ENV.append 'LDFLAGS', '-arch i386'
+      ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
+                          "--includedir=#{include}/ossp",
                           "--without-perl",
                           "--without-php",
                           "--without-pgsql"

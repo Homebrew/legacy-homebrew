@@ -7,7 +7,7 @@ class Archivemount < Formula
   head 'http://cybernoia.de/software/archivemount/git'
 
   depends_on 'pkg-config' => :build
-  depends_on 'osxfuse'
+  depends_on :osxfuse
   depends_on 'libarchive'
 
   def install

@@ -1,28 +1,21 @@
-require 'formula'
+require "formula"
 
 class Scons < Formula
-  homepage 'http://www.scons.org'
-  url 'https://downloads.sourceforge.net/scons/scons-2.3.2.tar.gz'
-  sha1 '2937f20b86d0c5f86cf31e1fa378307ed34fc20a'
-  revision 1
+  homepage "http://www.scons.org"
+  url "https://downloads.sourceforge.net/scons/scons-2.3.4.tar.gz"
+  sha1 "8c55f8c15221c1b3536a041d46056ddd7fa2d23a"
 
   bottle do
     cellar :any
-    sha1 "59050aba17abff544a0653a2f12ae41b3ea255a0" => :mavericks
-    sha1 "6702ca156e864375ef01518fee9723d4d1110c66" => :mountain_lion
-    sha1 "08e0c669f54b07f58d10aa160f0dc9fe75e9bf77" => :lion
-  end
-
-  # Upstream patch to fix compatibility with Python pre-2.7
-  # https://bitbucket.org/scons/scons/commits/1444ad9af1d3b6148451af3f0596cba0ad352c50
-  patch :p2 do
-    url "https://bitbucket.org/scons/scons/commits/1444ad9af1d3b6148451af3f0596cba0ad352c50/raw/"
-    sha1 "022a40b4226d85d82a8145d08443495f31a9ed34"
+    revision 1
+    sha1 "819d08b7e8c1ba2451db6d7d848f689b108b40aa" => :yosemite
+    sha1 "629c8e7a23a3ca5378a42ccce3472f36f54f8360" => :mavericks
+    sha1 "38882a9e4002c6c5b7e35df8613fb2bf6720f3b1" => :mountain_lion
   end
 
   def install
     bin.mkpath # Script won't create this if it doesn't already exist
-    man1.install gzip('scons-time.1', 'scons.1', 'sconsign.1')
+    man1.install gzip("scons-time.1", "scons.1", "sconsign.1")
     system "/usr/bin/python", "setup.py", "install",
              "--prefix=#{prefix}",
              "--standalone-lib",

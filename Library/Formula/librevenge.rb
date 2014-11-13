@@ -7,9 +7,10 @@ class Librevenge < Formula
 
   bottle do
     cellar :any
-    sha1 "c8479e57f7f14753bf37f9c6ee254c2ca4283c46" => :mavericks
-    sha1 "b91249c93c6d0c11c6a4f1247d8241206ad26ad4" => :mountain_lion
-    sha1 "738338d4bc36e49299ab1a9148d7a1686ae45ed0" => :lion
+    revision 1
+    sha1 "b4530cc65a0d8844e94a5793eaa1e92ea8208338" => :yosemite
+    sha1 "ddf0a4bd3c679bd60fdd847c2d029bdecf8be9fe" => :mavericks
+    sha1 "205b4e1cbecbcb686fab50fafc1140438099756c" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
@@ -33,6 +34,7 @@ class Librevenge < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.cpp", "-lrevenge-0.0", "-I#{include}/librevenge-0.0"
+    system ENV.cc, "test.cpp", "-lrevenge-0.0",
+                   "-I#{include}/librevenge-0.0", "-L#{lib}"
   end
 end

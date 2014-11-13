@@ -6,9 +6,10 @@ class GdkPixbuf < Formula
   sha256 '4853830616113db4435837992c0aebd94cbb993c44dc55063cee7f72a7bef8be'
 
   bottle do
-    sha1 "c8a9dee31d549da7b398622076b5facea56f8e20" => :mavericks
-    sha1 "0e4a38ab5a7641cd7ba9c203838712e3366f4cab" => :mountain_lion
-    sha1 "c0404c515e96feecde1fa3a9c20a44035d315813" => :lion
+    revision 1
+    sha1 "fb4261dd767c0e88888ef210e7c6bf91c4e2549e" => :yosemite
+    sha1 "06dc916f0fc6018e390285cb4b882478b10417fd" => :mavericks
+    sha1 "b3e286bf4e15e8e2e522f049c8e8d9a39c5b4f36" => :mountain_lion
   end
 
   option :universal
@@ -53,7 +54,7 @@ class GdkPixbuf < Formula
   def caveats; <<-EOS.undent
     Programs that require this module need to set the environment variable
       export GDK_PIXBUF_MODULEDIR="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
-    If you need to manually update the query loader cache
+    If you need to manually update the query loader cache, set GDK_PIXBUF_MODULEDIR then run
       #{bin}/gdk-pixbuf-query-loaders --update-cache
     EOS
   end

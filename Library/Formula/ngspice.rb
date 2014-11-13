@@ -16,7 +16,11 @@ class Ngspice < Formula
       --prefix=#{prefix}
       --with-editline=yes
     ]
-    args << "--enable-x" if build.with? "x"
+    if build.with? "x"
+        args << "--with-x"
+    else
+        args << "--without-x"
+    end
     args << "--enable-xspice" if build.with? "xspice"
 
     system "./configure", *args

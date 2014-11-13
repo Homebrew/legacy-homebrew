@@ -24,23 +24,23 @@ class KegOnlyReason
 
   def to_s
     case @reason
-    when :provided_by_osx then <<-EOS.undent
-      Mac OS X already provides this software and installing another version in
-      parallel can cause all kinds of trouble.
+    when :provided_by_osx then <<-EOS
+Mac OS X already provides this software and installing another version in
+parallel can cause all kinds of trouble.
 
-      #{@explanation}
-      EOS
-    when :shadowed_by_osx then <<-EOS.undent
-      Mac OS X provides similar software, and installing this software in
-      parallel can cause all kinds of trouble.
+#{@explanation}
+EOS
+    when :shadowed_by_osx then <<-EOS
+Mac OS X provides similar software, and installing this software in
+parallel can cause all kinds of trouble.
 
-      #{@explanation}
-      EOS
-    when :provided_pre_mountain_lion then <<-EOS.undent
-      Mac OS X already provides this software in versions before Mountain Lion.
+#{@explanation}
+EOS
+    when :provided_pre_mountain_lion then <<-EOS
+Mac OS X already provides this software in versions before Mountain Lion.
 
-      #{@explanation}
-      EOS
+#{@explanation}
+EOS
     when :provided_until_xcode43
       "Xcode provides this software prior to version 4.3.\n\n#{@explanation}"
     when :provided_until_xcode5

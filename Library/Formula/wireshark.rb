@@ -4,9 +4,9 @@ class Wireshark < Formula
   homepage "http://www.wireshark.org"
 
   stable do
-    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0.tar.bz2"
-    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.0.tar.bz2"
-    sha1 "c7a94a9ec90c1ff9be2a7d7b813276e433509df9"
+    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.1.tar.bz2"
+    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.1.tar.bz2"
+    sha1 "e1508ea25ccf077c5a7fa2af3b88f3ae199f77fb"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -14,9 +14,9 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha1 "4ae3387780d99ecd34b36317e7895c29f9794b27" => :mavericks
-    sha1 "01eea3bfc334f24fb3bcde6338aa4ae2305862c9" => :mountain_lion
-    sha1 "2d34cea77826c50b684b79a5b52e8ff79137de21" => :lion
+    sha1 "39c6d406bc26596f50ecd8bf0c655a881ddb3dc4" => :mavericks
+    sha1 "3edff08a8c13ac4c7ff86fc449624678cc56e96d" => :mountain_lion
+    sha1 "9e7161cf85b8fb2b646bd4f6a083a9913105da64" => :lion
   end
 
   head do
@@ -27,7 +27,9 @@ class Wireshark < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-qt", "Use QT for GUI instead of GTK+3"
+  option "with-gtk+3", "Build the wireshark command with gtk+3"
+  option "with-gtk+", "Build the wireshark command with gtk+"
+  option "with-qt", "Build the wireshark-qt command (can be used with or without either GTK option)"
   option "with-headers", "Install Wireshark library headers for plug-in developemnt"
 
   depends_on "pkg-config" => :build
@@ -39,6 +41,7 @@ class Wireshark < Formula
   depends_on "geoip" => :recommended
 
   depends_on "c-ares" => :optional
+  depends_on "libsmi" => :optional
   depends_on "lua" => :optional
   depends_on "pcre" => :optional
   depends_on "portaudio" => :optional

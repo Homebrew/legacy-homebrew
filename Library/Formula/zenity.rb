@@ -13,12 +13,9 @@ class Zenity < Formula
   depends_on 'scrollkeeper'
 
   def install
-    ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/libxml2/lib/python2.7/site-packages"
-
+    ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"
     system "./configure", "--prefix=#{prefix}"
-
     system "make"
     system "make install"
   end
-
 end

@@ -4,6 +4,8 @@ class Ddar < Formula
   homepage "http://www.synctus.com/ddar/"
   url "https://github.com/basak/ddar/archive/v1.0.tar.gz"
   sha1 "5f8b508f93031b1be217441b45fff27a6b630a49"
+  revision 1
+
   head "https://github.com/basak/ddar.git"
 
   depends_on "xmltoman" => :build

@@ -2,8 +2,15 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.1.tar.bz2'
-  sha1 'e6e85da3e54784ee3d7b0bb0ff4d365ef2899c49'
+  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.3.tar.bz2'
+  sha1 '4be9c5d2a8baee6a80bde94c6485931979a428fe'
+
+  bottle do
+    revision 1
+    sha1 "6f2e83991f28267fb693fdd840d6db244c39c1ad" => :yosemite
+    sha1 "605dc42b155eeda69592be9b63524a4323ebfaf5" => :mavericks
+    sha1 "4bd58e35a701b7b9bca3092d852b746e5975a866" => :mountain_lion
+  end
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
@@ -38,12 +45,12 @@ class OpenMpi < Formula
     system 'make', 'check'
     system 'make', 'install'
 
-    # If Fortran bindings were built, there will be a stray `.mod` file
-    # (Fortran header) in `lib` that needs to be moved to `include`.
-    include.install lib/'mpi.mod' if File.exist? "#{lib}/mpi.mod"
+    # If Fortran bindings were built, there will be stray `.mod` files
+    # (Fortran header) in `lib` that need to be moved to `include`.
+    include.install Dir["#{lib}/*.mod"]
 
-    # Not sure why the wrapped script has a jar extension - adamv
+    # Move vtsetup.jar from bin to libexec.
     libexec.install bin/'vtsetup.jar'
-    bin.write_jar_script libexec/'vtsetup.jar', 'vtsetup.jar'
+    inreplace bin/'vtsetup', '$bindir/vtsetup.jar', '$prefix/libexec/vtsetup.jar'
   end
 end

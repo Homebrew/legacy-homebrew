@@ -6,11 +6,13 @@ class Gnupg2 < Formula
   mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
   mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/gnupg/gnupg-2.0.26.tar.bz2"
   sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
+  revision 1
 
   bottle do
-    sha1 "09e5e2acda47c02836d8a1b874f805bec9d9acbf" => :mavericks
-    sha1 "1300333cdd1c047179434370aa710a949f72be1c" => :mountain_lion
-    sha1 "4fecb9820b713e81271fb47499fd88c1568890e7" => :lion
+    revision 2
+    sha1 "ccbafc88773f15b92e7ab931ec1be83fb27b58c2" => :yosemite
+    sha1 "1735c876de43f9635e191e6b1f1ed3f1ae04068d" => :mavericks
+    sha1 "ad0e8129ffbaf615f8b43aa93b89eb1cdc517f1f" => :mountain_lion
   end
 
   option "8192", "Build with support for private keys of up to 8192 bits"
@@ -22,6 +24,7 @@ class Gnupg2 < Formula
   depends_on "pinentry"
   depends_on "pth"
   depends_on "gpg-agent"
+  depends_on "curl" if MacOS.version <= :mavericks
   depends_on "dirmngr" => :recommended
   depends_on "libusb-compat" => :recommended
   depends_on "readline" => :optional
@@ -39,6 +42,7 @@ class Gnupg2 < Formula
       s.gsub! "../../agent/gpg-agent --quiet --daemon sh",
               "gpg-agent --quiet --daemon sh"
     end
+    inreplace "tools/gpgkey2ssh.c", "gpg --list-keys", "gpg2 --list-keys"
 
     inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
 

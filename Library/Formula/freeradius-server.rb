@@ -4,36 +4,57 @@ class FreeradiusServer < Formula
   homepage "http://freeradius.org/"
   url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.5.tar.gz"
   sha1 "4d18ed8ff3fde4a29112ecc07f175b774ed5f702"
-  revision 1
+  revision 2
 
-  bottle do
-    revision 1
-    sha1 "8d4ee7a2f614da03a1cabd3ec5214a70d0170319" => :mavericks
-    sha1 "2d4a5a91820eead568781f256e5c4ad4b9b44afb" => :mountain_lion
-    sha1 "b553c57efec7453296980809c417d090835522d8" => :lion
+  devel do
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.4.tar.bz2"
+    sha1 "baa58979672f6fc57ab4f16e947b85b9a6eee969"
+    depends_on "talloc" => :build
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  bottle do
+    sha1 "588867d47d85bbbf558d8e4332227bc3d5f9eb79" => :mavericks
+    sha1 "a5c11d2365f5ea91a7563d1090fa3f57761834a3" => :mountain_lion
+    sha1 "5b061feeae193e2f1bf1e816fb7c49e85155bd71" => :lion
+  end
+
   depends_on "openssl"
 
   # libtool is glibtool on OS X
-  patch :DATA
+  stable do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    patch :DATA
+  end
 
   def install
     openssl = Formula["openssl"]
 
     ENV.deparallelize
-    inreplace "autogen.sh", "libtool", "glibtool"
-    system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--sbindir=#{bin}",
-                          "--localstatedir=#{var}",
-                          "--with-system-libtool",
-                          "--with-system-libltdl",
-                          "--with-openssl-includes=#{openssl.opt_include}",
-                          "--with-openssl-libraries=#{openssl.opt_lib}"
+
+    args = [
+      "--prefix=#{prefix}",
+      "--sbindir=#{bin}",
+      "--localstatedir=#{var}",
+      "--with-openssl-includes=#{openssl.opt_include}",
+      "--with-openssl-libraries=#{openssl.opt_lib}",
+    ]
+
+    if build.stable?
+      args << "--with-system-libtool"
+      args << "--with-system-libltdl"
+      inreplace "autogen.sh", "libtool", "glibtool"
+      system "./autogen.sh"
+    end
+
+    if build.devel?
+      talloc = Formula["talloc"]
+      args << "--with-talloc-lib-dir=#{talloc.opt_lib}"
+      args << "--with-talloc-include-dir=#{talloc.opt_include}"
+    end
+
+    system "./configure", *args
     system "make"
     system "make", "install"
   end

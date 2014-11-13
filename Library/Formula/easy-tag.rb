@@ -2,8 +2,8 @@ require "formula"
 
 class EasyTag < Formula
   homepage "http://projects.gnome.org/easytag"
-  url "http://ftp.gnome.org/pub/GNOME/sources/easytag/2.2/easytag-2.2.2.tar.xz"
-  sha1 "165a9288d0736abcd729e570687ddd3b44f578b3"
+  url "http://ftp.gnome.org/pub/GNOME/sources/easytag/2.2/easytag-2.2.4.tar.xz"
+  sha256 "458329ab17e07fac5e92a2d732f0f4e9b12ea8aa31707506b39d3b2428d0c091"
 
   depends_on :x11
   depends_on "pkg-config" => :build
@@ -23,7 +23,7 @@ class EasyTag < Formula
   depends_on "wavpack" => :optional
 
   def install
-    ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].lib}/python2.7/site-packages"
+    ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

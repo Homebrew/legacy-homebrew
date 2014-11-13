@@ -6,7 +6,7 @@ class S3Backer < Formula
   sha1 'c75c7e70cb38bcac41d342a2bdb63e9505ab550a'
 
   depends_on 'pkg-config' => :build
-  depends_on 'osxfuse'
+  depends_on :osxfuse
 
   def install
     inreplace "configure", "-lfuse", "-losxfuse"

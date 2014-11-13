@@ -22,15 +22,14 @@ class Gcc < Formula
   end
 
   homepage "http://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-4.9.1/gcc-4.9.1.tar.bz2"
-  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.1/gcc-4.9.1.tar.bz2"
-  sha1 "3f303f403053f0ce79530dae832811ecef91197e"
+  url "http://ftpmirror.gnu.org/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2"
+  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2"
+  sha1 "79dbcb09f44232822460d80b033c962c0237c6d8"
 
   bottle do
-    revision 2
-    sha1 "4a7fc491b6487da16089c218f9dda8d23e8656b5" => :mavericks
-    sha1 "9e826e179f7f679d1423b8d92d9a647860bd27ae" => :mountain_lion
-    sha1 "81d02ad2e353ed804927ee166a1090ebf057c4b3" => :lion
+    sha1 "178f037a3970fb9a86c07aad8215acbb9467ab63" => :yosemite
+    sha1 "a3e86973036b15371f2443eb05056d942f7d3dff" => :mavericks
+    sha1 "3d909968fc9bd6c505fd4ff20cf4bc5f4e0ba197" => :mountain_lion
   end
 
   option "with-java", "Build the gcj compiler"
@@ -66,12 +65,6 @@ class Gcc < Formula
 
   def version_suffix
     version.to_s.slice(/\d\.\d/)
-  end
-
-  # Fix 10.10 issues: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61407
-  patch do
-    url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=33180"
-    sha1 "def0cb036a255175db86f106e2bb9dd66d19b702"
   end
 
   def install
@@ -129,7 +122,7 @@ class Gcc < Formula
     args << "--disable-nls" if build.without? "nls"
 
     if build.with?("java") || build.with?("all-languages")
-      args << "--with-ecj-jar=#{Formula["ecj"].opt_prefix}/share/java/ecj.jar"
+      args << "--with-ecj-jar=#{Formula["ecj"].opt_share}/java/ecj.jar"
     end
 
     if build.without?("multilib") || !MacOS.prefer_64_bit?
@@ -158,8 +151,6 @@ class Gcc < Formula
     # Handle conflicts between GCC formulae and avoid interfering
     # with system compilers.
     # Since GCC 4.8 libffi stuff are no longer shipped.
-    # Rename libiberty.a.
-    Dir.glob(prefix/"**/libiberty.*") { |file| add_suffix file, version_suffix }
     # Rename man7.
     Dir.glob(man7/"*.7") { |file| add_suffix file, version_suffix }
     # Even when suffixes are appended, the info pages conflict when

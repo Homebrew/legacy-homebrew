@@ -2,9 +2,16 @@ require "formula"
 
 class Autossh < Formula
   homepage "http://www.harding.motd.ca/autossh/"
-  url "http://www.harding.motd.ca/autossh/autossh-1.4c.tgz"
-  mirror "http://ftp.de.debian.org/debian/pool/main/a/autossh/autossh_1.4c.orig.tar.gz"
-  sha1 "d9a1d5a2987e7e5a444b00e63d6590936da1e1f2"
+  url "http://www.harding.motd.ca/autossh/autossh-1.4d.tgz"
+  mirror "http://ftp.de.debian.org/debian/pool/main/a/autossh/autossh_1.4d.orig.tar.gz"
+  sha1 "27da23c357f8d263aba6ecf3e8792a3552d90e50"
+
+  bottle do
+    cellar :any
+    sha1 "4233a7ced33f61621bbfe993a38b1f341b50fa37" => :yosemite
+    sha1 "5438d61bc2751a0f7225882199f9e25cdc61863f" => :mavericks
+    sha1 "3dc121773b268bb858d65e2824be58dee8495289" => :mountain_lion
+  end
 
   patch :DATA
 

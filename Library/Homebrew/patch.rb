@@ -66,8 +66,9 @@ class EmbeddedPatch
 
   def apply
     data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
-    IO.popen("/usr/bin/patch -g 0 -f -#{strip}", "w") { |p| p.write(data) }
-    raise ErrorDuringExecution, "Applying DATA patch failed" unless $?.success?
+    cmd, args = "/usr/bin/patch", %W[-g 0 -f -#{strip}]
+    IO.popen("#{cmd} #{args.join(" ")}", "w") { |p| p.write(data) }
+    raise ErrorDuringExecution.new(cmd, args) unless $?.success?
   end
 
   def inspect

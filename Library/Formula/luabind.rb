@@ -4,8 +4,9 @@ class Luabind < Formula
   homepage 'http://www.rasterbar.com/products/luabind.html'
   url 'https://downloads.sourceforge.net/project/luabind/luabind/0.9.1/luabind-0.9.1.tar.gz'
   sha1 '2e92a18b8156d2e2948951d429cd3482e7347550'
+  revision 1
 
-  depends_on 'lua'
+  depends_on 'lua51'
   depends_on 'boost'
   depends_on 'boost-build' => :build
 
@@ -29,7 +30,7 @@ class Luabind < Formula
   end if MacOS.version >= :mavericks
 
   def install
-    ENV["LUA_PATH"] = Formula["lua"].opt_prefix
+    ENV["LUA_PATH"] = Formula["lua51"].opt_prefix
     args = [
       "release",
       "install",

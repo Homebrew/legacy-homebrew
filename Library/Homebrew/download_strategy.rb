@@ -287,10 +287,10 @@ end
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize name, resource
+  def curl(*args)
+    mirror = ENV["HOMEBREW_SOURCEFORGE_MIRROR"]
+    args << "-G" << "-d" << "use_mirror=#{mirror}" if mirror
     super
-    mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
-    @url = "#{@url}?use_mirror=#{mirror}" if mirror
   end
 
   def stage
@@ -405,12 +405,16 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     end
   end
 
+  def fetch_args
+    []
+  end
+
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.directory? ? 'up' : 'checkout'
-    args = ['svn', svncommand]
+    args = ['svn', svncommand] + fetch_args
     # SVN shipped with XCode 3.1.4 can't force a checkout.
     args << '--force' unless MacOS.version == :leopard
     args << url unless target.directory?
@@ -421,37 +425,12 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 end
 
-# Require a newer version of Subversion than 1.4.x (Leopard-provided version)
-class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
-  def find_svn
-    exe = `svn -print-path`
-    `#{exe} --version` =~ /version (\d+\.\d+(\.\d+)*)/
-    svn_version = $1
-    version_tuple=svn_version.split(".").collect {|v|Integer(v)}
-
-    if version_tuple[0] == 1 and version_tuple[1] <= 4
-      onoe "Detected Subversion (#{exe}, version #{svn_version}) is too old."
-      puts "Subversion 1.4.x will not export externals correctly for this formula."
-      puts "You must either `brew install subversion` or set HOMEBREW_SVN to the path"
-      puts "of a newer svn binary."
-    end
-    return exe
-  end
-end
+StrictSubversionDownloadStrategy = SubversionDownloadStrategy
 
 # Download from SVN servers with invalid or self-signed certs
 class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
-  def fetch_repo target, url, revision=nil, ignore_externals=false
-    # Use "svn up" when the repository already exists locally.
-    # This saves on bandwidth and will have a similar effect to verifying the
-    # cache as it will make any changes to get the right revision.
-    svncommand = target.directory? ? 'up' : 'checkout'
-    args = ['svn', svncommand, '--non-interactive', '--trust-server-cert', '--force']
-    args << url unless target.directory?
-    args << target
-    args << '-r' << revision if revision
-    args << '--ignore-externals' if ignore_externals
-    quiet_safe_system(*args)
+  def fetch_args
+    %w[--non-interactive --trust-server-cert]
   end
 end
 

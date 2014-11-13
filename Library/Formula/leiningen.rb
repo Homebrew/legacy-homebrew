@@ -3,12 +3,12 @@ require "formula"
 class Leiningen < Formula
   homepage "https://github.com/technomancy/leiningen"
   head "https://github.com/technomancy/leiningen.git"
-  url "https://github.com/technomancy/leiningen/archive/2.4.3.tar.gz"
-  sha1 "809bf399ea69877a77a69ca8f45a80d92f58669d"
+  url "https://github.com/technomancy/leiningen/archive/2.5.0.tar.gz"
+  sha1 "881c3646c41d9aea14f5401981d45053483125bc"
 
   resource "jar" do
-    url "https://github.com/technomancy/leiningen/releases/download/2.4.3/leiningen-2.4.3-standalone.jar"
-    sha1 "a875779c2b6ce02320ccfb153c3ce3995f19cc3a"
+    url "https://github.com/technomancy/leiningen/releases/download/2.5.0/leiningen-2.5.0-standalone.jar"
+    sha1 "7514d137f0f4ff226c0171df47a3422b1ecfa80a"
   end
 
   def install

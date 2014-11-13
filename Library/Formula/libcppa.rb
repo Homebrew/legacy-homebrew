@@ -1,14 +1,18 @@
 require "formula"
 
 class Libcppa < Formula
-  homepage "http://libcppa.blogspot.it"
-  url "http://github.com/Neverlord/libcppa/archive/V0.9.4.tar.gz"
-  sha1 "eba8002f087e55498edc0bf996fb7f211d7feec6"
+  homepage "http://actor-framework.org/"
+  url "https://github.com/actor-framework/actor-framework/archive/0.11.0.tar.gz"
+  sha1 "202f2fd72a5af59d7ace6b7300df1fcc19f1857f"
+
+  # since upstream has rename the project to actor-framework (or libcaf in its
+  # pkgconfig file), we need to rename libcppa to libcaf in the future
 
   bottle do
     cellar :any
-    sha1 "a90dee39274040acf70868ccc636e8c14e7c7ad5" => :mavericks
-    sha1 "3ef83c6fad796a1e50f6fd417b81825a44f606d5" => :mountain_lion
+    sha1 "b0e9bef1983d561763e21539c9b9196d75e5a935" => :yosemite
+    sha1 "ed71bb57236d2aecf4e19e5044ca3af22969b5c5" => :mavericks
+    sha1 "8224fe20d5d4bd184a9b6c15ddd6143740ea23ca" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -17,6 +21,7 @@ class Libcppa < Formula
 
   option "with-opencl", "Build with OpenCL actors"
   option "with-examples", "Build examples"
+  option "without-check", "Skip build-time tests (not recommended)"
 
   def install
     ENV.cxx11
@@ -24,15 +29,14 @@ class Libcppa < Formula
     args = %W[
       --prefix=#{prefix}
       --build-static
-      --disable-context-switching
     ]
 
-    args << "--with-opencl" if build.with? "opencl"
+    args << "--no-opencl" if build.without? "opencl"
     args << "--no-examples" if build.without? "examples"
 
     system "./configure", *args
     system "make"
-    system "make", "test"
+    system "make", "test" if build.with? "check"
     system "make", "install"
   end
 end

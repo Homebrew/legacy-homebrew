@@ -20,6 +20,7 @@ class SoftwareSpec
 
   attr_reader :name, :owner
   attr_reader :build, :resources, :patches, :options
+  attr_reader :deprecated_flags, :deprecated_options
   attr_reader :dependency_collector
   attr_reader :bottle_specification
   attr_reader :compiler_failures
@@ -36,7 +37,10 @@ class SoftwareSpec
     @bottle_specification = BottleSpecification.new
     @patches = []
     @options = Options.new
-    @build = BuildOptions.new(Options.create(ARGV.flags_only), options)
+    @flags = ARGV.flags_only
+    @deprecated_flags = []
+    @deprecated_options = []
+    @build = BuildOptions.new(Options.create(@flags), options)
     @compiler_failures = []
   end
 
@@ -99,6 +103,27 @@ class SoftwareSpec
     options << opt
   end
 
+  def deprecated_option hash
+    raise ArgumentError, "deprecated_option hash must not be empty" if hash.empty?
+    hash.each do |old_options, new_options|
+      Array(old_options).each do |old_option|
+        Array(new_options).each do |new_option|
+          deprecated_option = DeprecatedOption.new(old_option, new_option)
+          deprecated_options << deprecated_option
+
+          old_flag = deprecated_option.old_flag
+          new_flag = deprecated_option.current_flag
+          if @flags.include? old_flag
+            @flags -= [old_flag]
+            @flags |= [new_flag]
+            @deprecated_flags << deprecated_option
+          end
+        end
+      end
+    end
+    @build = BuildOptions.new(Options.create(@flags), options)
+  end
+
   def depends_on spec
     dep = dependency_collector.add(spec)
     add_dep_option(dep) if dep
@@ -114,10 +139,6 @@ class SoftwareSpec
 
   def patch strip=:p1, src=nil, &block
     patches << Patch.create(strip, src, &block)
-  end
-
-  def fails_with? compiler
-    compiler_failures.any? { |failure| failure === compiler }
   end
 
   def fails_with compiler, &block

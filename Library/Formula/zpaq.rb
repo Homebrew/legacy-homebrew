@@ -2,9 +2,9 @@ require "formula"
 
 class Zpaq < Formula
   homepage "http://mattmahoney.net/dc/zpaq.html"
-  url "http://mattmahoney.net/dc/zpaq649.zip"
-  sha1 "aa0d8241679f314d0be8a43e7a87e5b4d4529017"
-  version "6.49"
+  url "http://mattmahoney.net/dc/zpaq655.zip"
+  sha1 "0a64fada7112e59a85b8a53c5bf13f22b6f63620"
+  version "6.55"
 
   def install
     ENV.append_to_cflags "-Dunix -O3"

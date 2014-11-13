@@ -2,13 +2,14 @@ require "formula"
 
 class DBus < Formula
   homepage "http://www.freedesktop.org/wiki/Software/dbus"
-  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.6.tar.gz"
-  sha1 "ad7cb87cdce66533479a9d7c1c956bdb0243ad87"
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.8.tar.gz"
+  sha1 "e0d10e8b4494383c7e366ac80a942ba45a705a96"
 
   bottle do
-    sha1 "080efb67d648af00124b263fbdfe1e99a53831c4" => :mavericks
-    sha1 "96220a126a73a3d78db9fc5e213e54e366cef912" => :mountain_lion
-    sha1 "d59965651e893a73e610aa166333c6b77f56482a" => :lion
+    revision 1
+    sha1 "6258f4a3816c909fe3ef9aa9da7b596c56471d1e" => :yosemite
+    sha1 "de9cc0897fadf951d0a915263ec8303ce3f27e23" => :mavericks
+    sha1 "6132e9f82c522fef668c31319bd8c03ae42dfcda" => :mountain_lion
   end
 
   # Upstream fix for O_CLOEXEC portability

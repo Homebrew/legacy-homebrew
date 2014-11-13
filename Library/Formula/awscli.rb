@@ -2,38 +2,37 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.23.tar.gz"
-  sha1 "caab7b004bece3613b0f81630a2e1d7ce28183dc"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.5.4.tar.gz"
+  sha1 "40d4427bd623ce695ed060e9bb3fdb9959375485"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "de5d4e6a27fc38851cbdf2652d92ad086e9e186f" => :mavericks
-    sha1 "444f013ff25878744fe6526a0a7ebaabef2936b8" => :mountain_lion
-    sha1 "48bc212e3ead076c969c5b8b26480a944364db71" => :lion
+    sha1 "04bbe41b9a06f71ecd2b07624477233f7ed94861" => :yosemite
+    sha1 "90d4e388ad7d8ffb5008f52ca5d96c96065901d1" => :mavericks
+    sha1 "0e897363015e92bce11d872f0b7d7d7f511cd8e1" => :mountain_lion
   end
 
   head do
-    url "https://github.com/aws/aws-cli.git", :branch => :develop
+    url "https://github.com/aws/aws-cli.git", :branch => "develop"
 
     resource "botocore" do
-      url "https://github.com/boto/botocore.git", :branch => :develop
+      url "https://github.com/boto/botocore.git", :branch => "develop"
     end
 
     resource "bcdoc" do
-      url "https://github.com/boto/bcdoc.git", :branch => :develop
+      url "https://github.com/boto/bcdoc.git", :branch => "develop"
     end
 
     resource "jmespath" do
-      url "https://github.com/boto/jmespath.git", :branch => :develop
+      url "https://github.com/boto/jmespath.git", :branch => "develop"
     end
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.57.0.tar.gz"
-    sha1 "dffb786437b8bb604a64120834f52391dd712377"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.68.0.tar.gz"
+    sha1 "5704babdf525e5443d1ef7189a2ed07ae023a0f4"
   end
 
   resource "bcdoc" do
@@ -42,8 +41,8 @@ class Awscli < Formula
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.7.3.tar.gz"
-    sha1 "43d173ff19bf2ac41189aa3701c7240fcd1182e3"
+    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
+    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
   end
 
   resource "colorama" do

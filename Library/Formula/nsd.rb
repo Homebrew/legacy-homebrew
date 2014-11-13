@@ -2,8 +2,8 @@ require 'formula'
 
 class Nsd < Formula
   homepage 'http://www.nlnetlabs.nl/projects/nsd/'
-  url 'http://www.nlnetlabs.nl/downloads/nsd/nsd-4.0.1.tar.gz'
-  sha1 '788cc290ade7fc6a61fe4391837d3abddbda4df0'
+  url 'http://www.nlnetlabs.nl/downloads/nsd/nsd-4.1.0.tar.gz'
+  sha1 'cb4ec496eaec5bfbd5b9f4b361da2a0a79d17030'
 
   option 'with-root-server', 'Allow NSD to run as a root name server'
   option 'with-bind8-stats', 'Enable BIND8-like NSTATS & XSTATS'

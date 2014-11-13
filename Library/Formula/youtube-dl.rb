@@ -5,14 +5,14 @@ require "formula"
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2014.09.04.3/youtube-dl-2014.09.04.3.tar.gz"
-  sha1 "2dce554aa60d84b688580f3f357190ab86b8c247"
+  url "https://yt-dl.org/downloads/2014.11.04/youtube-dl-2014.11.04.tar.gz"
+  sha1 "36e1a256417b78f20d639fd6fa5727dfa2d5c6e7"
 
   bottle do
     cellar :any
-    sha1 "b1cf66aad269dc27724e2276d60790a767cbf5b8" => :mavericks
-    sha1 "5cd7482bde16eedd75e1cc6b2821bec2e99555a9" => :mountain_lion
-    sha1 "db8a7ab408ba266e72660cdf2349e422e2c26a28" => :lion
+    sha1 "9f3c1260194b2b7e39dcf71edd196893140d75cc" => :yosemite
+    sha1 "bf82c8fabdf00954b85a19b2d83fdd77391aaf5c" => :mavericks
+    sha1 "a8353d9dab4443fbb5cdb3b45c869c8fc17b0a1e" => :mountain_lion
   end
 
   head do
@@ -23,12 +23,11 @@ class YoutubeDl < Formula
   depends_on "rtmpdump" => :optional
 
   def install
-    # Remove the legacy executable from the git repo
-    rm "youtube-dl" if build.head?
     system "make", "PREFIX=#{prefix}"
     bin.install "youtube-dl"
     man1.install "youtube-dl.1"
     bash_completion.install "youtube-dl.bash-completion"
+    zsh_completion.install "youtube-dl.zsh" => "_youtube-dl"
   end
 
   def caveats

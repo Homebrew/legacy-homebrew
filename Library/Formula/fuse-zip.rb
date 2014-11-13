@@ -7,7 +7,7 @@ class FuseZip < Formula
   head 'https://code.google.com/p/fuse-zip/', :using => :hg
 
   depends_on 'pkg-config' => :build
-  depends_on 'osxfuse'
+  depends_on :osxfuse
   depends_on 'libzip'
 
   def install

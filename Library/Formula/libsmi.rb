@@ -6,9 +6,10 @@ class Libsmi < Formula
   sha1 '77c512ccbdd29667d152398b0dcde533aed57b49'
 
   bottle do
-    sha1 "85840d6b3e66ecc3ff3c4044942a09cb4cd7bc12" => :mavericks
-    sha1 "b59655ea31657172d78cfe736610ca510f788822" => :mountain_lion
-    sha1 "7e2434d1b0ae815f91c98d09897d71d0a8197a46" => :lion
+    revision 1
+    sha1 "926dcdef0a96a52898ef1848c621bb261ea96330" => :yosemite
+    sha1 "545b6b13369663d040e377380a1363a6fe79527a" => :mavericks
+    sha1 "a51083176c16132820ed4cdd2a68666baba11ff1" => :mountain_lion
   end
 
   def install

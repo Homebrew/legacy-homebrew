@@ -2,24 +2,17 @@ require "formula"
 
 class Bind < Formula
   homepage "http://www.isc.org/software/bind/"
-  url "http://ftp.isc.org/isc/bind9/9.10.0-P2/bind-9.10.0-P2.tar.gz"
-  sha1 "c57b5825e36933119e9fd6f43e3f52262e7ff4ed"
-  version "9.10.0-P2"
-  revision 1
+  url "http://ftp.isc.org/isc/bind9/9.10.1/bind-9.10.1.tar.gz"
+  sha1 "96aa28c6112c6a8c33a19efeac98c715f03b35ca"
 
   bottle do
-    revision 3
-    sha1 "778abf075d51d248e50acfb1111234824198fe89" => :mavericks
-    sha1 "883b2f3b4aea443bd268d54e5c298a740e55070d" => :mountain_lion
-    sha1 "1250c63b82ba157ce76f41282b10084d241618b2" => :lion
+    revision 4
+    sha1 "fbef96e8741894256851dd93b1136cbf83ed4518" => :yosemite
+    sha1 "9b79a3276cd9a0bd80ae2f6d2b216a780ce72f49" => :mavericks
+    sha1 "5efa168d357725842a24ce21d247a570b458cf88" => :mountain_lion
   end
 
   head "https://source.isc.org/git/bind9.git"
-
-  devel do
-    url "https://source.isc.org/git/bind9.git", :tag => "v9_10_1b2"
-    version "9.10.1-b2"
-  end
 
   depends_on "openssl"
 
@@ -31,7 +24,7 @@ class Bind < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
                           "--enable-ipv6",
-                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}"
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
 
     # From the bind9 README: "Do not use a parallel "make"."
     ENV.deparallelize

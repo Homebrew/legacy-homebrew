@@ -7,9 +7,10 @@ class Librsvg < Formula
 
   bottle do
     cellar :any
-    sha1 "d01815e453ec00c29de8d5a57652e38df1ae81aa" => :mavericks
-    sha1 "5415045a2de814249515a5ec96cb773b6885d939" => :mountain_lion
-    sha1 "276af00164ceb754199b2aed99079378b581579e" => :lion
+    revision 1
+    sha1 "4e83e5f0691db664289df16b3c491618d400b12c" => :yosemite
+    sha1 "e08617797236e3cffc78adaca0c254af7cfb4d50" => :mavericks
+    sha1 "7b20f7d74b54ad6c03fd290ccd4ebb3707b00a89" => :mountain_lion
   end
 
   depends_on :x11
@@ -30,5 +31,12 @@ class Librsvg < Formula
 
     system "./configure", *args
     system "make install"
+  end
+
+  def post_install
+    # librsvg is not aware GDK_PIXBUF_MODULEDIR must be set
+    # set GDK_PIXBUF_MODULEDIR and update loader cache
+    ENV["GDK_PIXBUF_MODULEDIR"] = "#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+    system "#{Formula["gdk-pixbuf"].opt_bin}/gdk-pixbuf-query-loaders", "--update-cache"
   end
 end

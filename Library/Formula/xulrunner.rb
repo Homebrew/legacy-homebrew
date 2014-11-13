@@ -34,20 +34,19 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/30.0/source/xulrunner-30.0.source.tar.bz2"
-  sha1 "d987efafc67cb0170c6a5dabb9cede3b98e5c24b"
+
+  stable do
+    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/latest/source/xulrunner-33.0.source.tar.bz2"
+    sha1 "0fbd6ac263d9c5811a5338252b28e3d08ddfbeb2"
+
+    # https://github.com/Homebrew/homebrew/issues/33558
+    depends_on MaximumMacOSRequirement => :mavericks
+  end
 
   bottle do
     cellar :any
-    sha1 "b9ce9af762ae4fcbafc3812f81461dc01edca322" => :mavericks
-    sha1 "390f9aee89766814b38f9aba9360c8dec1a2cb07" => :mountain_lion
-    sha1 "7d1245a5c30266fc379ed6d68feb5736741e9019" => :lion
-  end
-
-  devel do
-    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/31.0b1/source/xulrunner-31.0b1.source.tar.bz2"
-    sha1 "defcf12f71082ddc167ac5c49fd3a307faa5e8f2"
-    version "31.0b1"
+    sha1 "222b1eaabea7a2aaa4712682c9580ed70f78ceb8" => :mavericks
+    sha1 "3eb54b046978536c2161a3961e0e50a624223a0d" => :mountain_lion
   end
 
   head do

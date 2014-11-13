@@ -2,15 +2,15 @@ require 'formula'
 
 class Weechat < Formula
   homepage 'http://www.weechat.org'
-  url 'http://weechat.org/files/src/weechat-1.0.tar.bz2'
-  sha1 'd3070ffde05cb706d615144e71f933153871894d'
+  url 'http://weechat.org/files/src/weechat-1.0.1.tar.gz'
+  sha1 '1d33591b6c0adc2c30b36a7b349603cbdbcb40b2'
 
   head 'https://github.com/weechat/weechat.git'
 
   bottle do
-    sha1 "ffe3cecdb9b796eae6fd6db61aa8b9ea9c5bc6b4" => :mavericks
-    sha1 "a308dce7ebecc1bae28a9a3aafe1ee44161da42b" => :mountain_lion
-    sha1 "3127000fe74e0911ae006d035aa72112cdb84047" => :lion
+    sha1 "d7112142ed11d2a1a55b367e01e0200b5ba0cae6" => :mavericks
+    sha1 "39d482d54d391ce27a0aff4de22b5a122ab27275" => :mountain_lion
+    sha1 "8cfbd8d53a85b88138bff6c4545efa955fa30c26" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -25,10 +25,10 @@ class Weechat < Formula
   option 'with-ruby', 'Build the ruby module'
 
   def install
-    # this will fix error:
-    #    no such file or directory: 'Python.framework/Versions/2.7/Python'
-    inreplace 'src/plugins/python/CMakeLists.txt',
-      '${PYTHON_LFLAGS}', '-u _PyMac_Error'
+    # builds against the python in PATH by asking cmake to use introspected
+    # values instead of ignoring them
+    # https://github.com/weechat/weechat/pull/217
+    inreplace "cmake/FindPython.cmake", "PATHS ${", "HINTS ${"
 
     args = std_cmake_args + %W[
       -DPREFIX=#{prefix}

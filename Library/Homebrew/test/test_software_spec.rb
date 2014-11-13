@@ -19,6 +19,7 @@ class SoftwareSpecTests < Homebrew::TestCase
   end
 
   def test_raises_when_accessing_missing_resources
+    @spec.owner = Class.new { def name; "test"; end }.new
     assert_raises(ResourceMissingError) { @spec.resource('foo') }
   end
 
@@ -69,6 +70,25 @@ class SoftwareSpecTests < Homebrew::TestCase
   def test_option_description_defaults_to_empty_string
     @spec.option("foo")
     assert_equal "", @spec.options.first.description
+  end
+
+  def test_deprecated_option
+    @spec.deprecated_option('foo' => 'bar')
+    assert @spec.deprecated_options.any?
+    assert_equal "foo", @spec.deprecated_options.first.old
+    assert_equal "bar", @spec.deprecated_options.first.current
+  end
+
+  def test_deprecated_options
+    @spec.deprecated_option(['foo1', 'foo2'] => 'bar1', 'foo3' => ['bar2', 'bar3'])
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo1", "bar1")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo2", "bar1")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo3", "bar2")
+    assert_includes @spec.deprecated_options, DeprecatedOption.new("foo3", "bar3")
+  end
+
+  def test_deprecated_option_raises_when_empty
+    assert_raises(ArgumentError) { @spec.deprecated_option({}) }
   end
 
   def test_depends_on

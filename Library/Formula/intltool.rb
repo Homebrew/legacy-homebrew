@@ -6,6 +6,7 @@ class Intltool < Formula
   sha1 "7fddbd8e1bf94adbf1bc947cbf3b8ddc2453f8ad"
 
   bottle do
+    sha1 "88c0a273f4bb8c9df2e9250f7272117d55868b06" => :yosemite
     sha1 "36c951e99ec642add05e84acef83cf8c2bdb4b91" => :mavericks
     sha1 "edcf10d843211ca24dec1888281f3dfec76fa33b" => :mountain_lion
     sha1 "b2736b5eb60c9d346ef6f041f3fd66b220daca29" => :lion

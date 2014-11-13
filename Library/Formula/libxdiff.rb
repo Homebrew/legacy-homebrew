@@ -7,9 +7,10 @@ class Libxdiff < Formula
 
   bottle do
     cellar :any
-    sha1 "c1cce0763a3a260be20748260a7cac0912794120" => :mavericks
-    sha1 "6c96659fa393e51c25a404dcf3b56b4bb9cc39f0" => :mountain_lion
-    sha1 "b2968cb4164b342b89ada07302e7d9ddc5d97c10" => :lion
+    revision 1
+    sha1 "ced65da17256956abfaca7e8ae0b993959e992b7" => :yosemite
+    sha1 "ce2f24d9b189f996b8a60c61f72dd540120ff9f0" => :mavericks
+    sha1 "d657af562a1d224182093b29620da4e37db32a83" => :mountain_lion
   end
 
   def install

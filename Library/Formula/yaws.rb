@@ -21,14 +21,13 @@ class Yaws < Formula
 
   def install
     if build.build_32_bit?
-      %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
-        ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
-        ENV.append compiler_flag, "-arch #{Hardware::CPU.arch_32_bit}"
-      end
+      ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     system "autoreconf", "-fvi"
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          # Ensure pam headers are found on Xcode-only installs
+                          "--with-extrainclude=#{MacOS.sdk_path}/usr/include/security"
     system "make install"
 
     if build.with? "yapp"

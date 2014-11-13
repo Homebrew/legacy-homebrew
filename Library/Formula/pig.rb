@@ -2,14 +2,14 @@ require 'formula'
 
 class Pig < Formula
   homepage 'http://pig.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.12.0/pig-0.12.0.tar.gz'
-  sha1 'b641a932d45003d2e6350007558d63e69a1bf7c6'
+  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.13.0/pig-0.13.0.tar.gz'
+  sha256 'f4f6777165fcfc0d9df0a7ee4e897e0bdf73c8e8ec7fcc31db15c1917f5ca971'
 
   patch :DATA
 
   def install
     bin.install 'bin/pig'
-    prefix.install ["pig-#{version}.jar", "pig-#{version}-withouthadoop.jar"]
+    prefix.install ["pig-#{version}-h1.jar", "pig-#{version}-withouthadoop-h1.jar", "pig-#{version}-withouthadoop-h2.jar"]
   end
 
   def caveats; <<-EOS.undent

@@ -4,6 +4,13 @@ class Rrdtool < Formula
   homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
   url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.8.tar.gz'
   sha1 '56d68857f39e70bfa32360947614d8220702ed02'
+  revision 1
+
+  bottle do
+    sha1 "66e4c7cb71218b8071a0e08e6fc76e3d54bd5509" => :yosemite
+    sha1 "f58c34f5e7ca96af0a36f8e11d9c5612d915ba30" => :mavericks
+    sha1 "17793a75d33fb5173fbe97dc01f687a47a56a54e" => :mountain_lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

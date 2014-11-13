@@ -11,9 +11,11 @@ require 'install_renamed'
 require 'pkg_version'
 
 class Formula
+  # :startdoc:
   include FileUtils
   include Utils::Inreplace
   extend Enumerable
+  # :stopdoc:
 
   attr_reader :name, :path
   attr_reader :stable, :devel, :head, :active_spec
@@ -63,6 +65,18 @@ class Formula
     end
   end
 
+  def stable?
+    active_spec == stable
+  end
+
+  def devel?
+    active_spec == devel
+  end
+
+  def head?
+    active_spec == head
+  end
+
   def bottle
     Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
   end
@@ -106,12 +120,16 @@ class Formula
     active_spec.options
   end
 
+  def deprecated_options
+    active_spec.deprecated_options
+  end
+
   def option_defined?(name)
     active_spec.option_defined?(name)
   end
 
-  def fails_with?(compiler)
-    active_spec.fails_with?(compiler)
+  def compiler_failures
+    active_spec.compiler_failures
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -137,6 +155,8 @@ class Formula
     require 'keg'
     Keg.new(installed_prefix).version
   end
+
+  # :startdoc:
 
   # The directory in the cellar that the formula is installed to.
   # This directory contains the formula's name and version.
@@ -250,6 +270,8 @@ class Formula
     false
   end
 
+  # :stopdoc:
+
   # yields self with current working directory set to the uncompressed tarball
   def brew
     validate_attributes :name, :version
@@ -257,8 +279,6 @@ class Formula
     stage do
       begin
         patch
-        # we allow formulae to do anything they want to the Ruby process
-        # so load any deps before this point! And exit asap afterwards
         yield self
       ensure
         cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
@@ -315,6 +335,8 @@ class Formula
     "#<#{self.class.name}: #{path}>"
   end
 
+  # :startdoc:
+
   # Standard parameters for CMake builds.
   # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
   # Setting it to Release would ignore our flags.
@@ -332,6 +354,8 @@ class Formula
       -Wno-dev
     ]
   end
+
+  # :stopdoc:
 
   # Deprecated
   def python(options={}, &block)
@@ -391,6 +415,13 @@ class Formula
       "Homebrew/homebrew"
     else
       "path or URL"
+    end
+  end
+
+  def print_tap_action options={}
+    if tap?
+      verb = options[:verb] || "Installing"
+      ohai "#{verb} #{name} from #{tap}"
     end
   end
 
@@ -463,42 +494,47 @@ class Formula
 
   end
 
-  # For brew-fetch and others.
   def fetch
     active_spec.fetch
   end
 
-  # For FormulaInstaller.
   def verify_download_integrity fn
     active_spec.verify_download_integrity(fn)
   end
 
-  def test
+  def run_test
     self.build = Tab.for_formula(self)
-    ret = nil
     mktemp do
       @testpath = Pathname.pwd
-      ret = instance_eval(&self.class.test)
-      @testpath = nil
+      test
     end
-    ret
+  ensure
+    @testpath = nil
   end
 
   def test_defined?
     false
   end
 
+  def test
+  end
+
+  def test_fixtures(file)
+    HOMEBREW_LIBRARY.join("Homebrew", "test", "fixtures", file)
+  end
+
   protected
+
+  # :startdoc:
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    rd, wr = IO.pipe
-
+    verbose = ARGV.verbose?
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not verbose
       pretty_args.delete "--disable-dependency-tracking"
       pretty_args.delete "--disable-debug"
     end
@@ -510,35 +546,30 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    pid = fork do
-      ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+    log = File.open(logfn, "w")
+    begin
+      log.puts Time.now, "", cmd, args, ""
+      log.flush
 
-      # TODO system "xcodebuild" is deprecated, this should be removed soon.
-      if cmd.to_s.start_with? "xcodebuild"
-        ENV.remove_cc_etc
-      end
+      if verbose
+        rd, wr = IO.pipe
+        begin
+          pid = fork do
+            rd.close
+            log.close
+            exec_cmd(cmd, args, wr, logfn)
+          end
+          wr.close
 
-      # Turn on argument filtering in the superenv compiler wrapper.
-      # We should probably have a better mechanism for this than adding
-      # special cases to this method.
-      if cmd == "python" && %w[setup.py build.py].include?(args.first)
-        ENV.refurbish_args
-      end
-
-      rd.close
-      $stdout.reopen wr
-      $stderr.reopen wr
-      args.collect!{|arg| arg.to_s}
-      exec(cmd, *args) rescue nil
-      puts "Failed to execute: #{cmd}"
-      exit! 1 # never gets here unless exec threw or failed
-    end
-    wr.close
-
-    File.open(logfn, 'w') do |f|
-      while buf = rd.gets
-        f.puts buf
-        puts buf if ARGV.verbose?
+          while buf = rd.gets
+            log.puts buf
+            puts buf
+          end
+        ensure
+          rd.close
+        end
+      else
+        pid = fork { exec_cmd(cmd, args, log, logfn) }
       end
 
       Process.wait(pid)
@@ -546,19 +577,45 @@ class Formula
       $stdout.flush
 
       unless $?.success?
-        f.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
-        f.puts
+        log.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
+        log.puts
         require 'cmd/config'
-        Homebrew.dump_build_config(f)
-        raise BuildError.new(self, cmd, args)
+        Homebrew.dump_build_config(log)
+        raise BuildError.new(self, cmd, args, ENV.to_hash)
       end
+    ensure
+      log.close
     end
-  ensure
-    rd.close unless rd.closed?
   end
 
+  # :stopdoc:
+
   private
+
+  def exec_cmd(cmd, args, out, logfn)
+    ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+
+    # TODO system "xcodebuild" is deprecated, this should be removed soon.
+    if cmd.to_s.start_with? "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
+    # Turn on argument filtering in the superenv compiler wrapper.
+    # We should probably have a better mechanism for this than adding
+    # special cases to this method.
+    if cmd == "python" && %w[setup.py build.py].include?(args.first)
+      ENV.refurbish_args
+    end
+
+    $stdout.reopen(out)
+    $stderr.reopen(out)
+    out.close
+    args.collect!{|arg| arg.to_s}
+    exec(cmd, *args) rescue nil
+    puts "Failed to execute: #{cmd}"
+    exit! 1 # never gets here unless exec threw or failed
+  end
 
   def stage
     active_spec.stage do
@@ -572,7 +629,7 @@ class Formula
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
 
-    active_spec.patches.grep(DATAPatch).each { |p| p.path = path }
+    active_spec.patches.grep(DATAPatch) { |p| p.path = path }
 
     active_spec.patches.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
@@ -678,6 +735,10 @@ class Formula
       specs.each { |spec| spec.option(name, description) }
     end
 
+    def deprecated_option hash
+      specs.each { |spec| spec.deprecated_option(hash) }
+    end
+
     def patch strip=:p1, src=nil, &block
       specs.each { |spec| spec.patch(strip, src, &block) }
     end
@@ -751,9 +812,8 @@ class Formula
     end
 
     def test &block
-      return @test unless block_given?
       define_method(:test_defined?) { true }
-      @test = block
+      define_method(:test, &block)
     end
   end
 end

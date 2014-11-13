@@ -7,9 +7,9 @@ class Libwps < Formula
 
   bottle do
     cellar :any
-    sha1 "8c76c7efb60f8c268f7d6e7b8a1428fdcf2e9fc4" => :mavericks
-    sha1 "699410ea39b599ba65faf6741e6e8a9636dc58e3" => :mountain_lion
-    sha1 "2dcfb58aee6a117f78aae21596b683abda9d399d" => :lion
+    revision 1
+    sha1 "6da56fae08558950c9134a762f6e7491fabbb7b8" => :yosemite
+    sha1 "a1785cc9c07420d3e88a7000e7b42bb96091baea" => :mavericks
   end
 
   depends_on 'pkg-config' => :build
@@ -32,9 +32,13 @@ class Libwps < Formula
       }
     EOS
     system ENV.cc, "test.cpp", "-o", "test",
-                  "-lrevenge-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                  "-lwpd-0.10", "-I#{Formula["libwpd"].include}/libwpd-0.10",
-                  "-lwps-0.3", "-I#{include}/libwps-0.3"
+                  "-lrevenge-0.0",
+                  "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                  "-L#{Formula["librevenge"].lib}",
+                  "-lwpd-0.10",
+                  "-I#{Formula["libwpd"].include}/libwpd-0.10",
+                  "-L#{Formula["libwpd"].lib}",
+                  "-lwps-0.3", "-I#{include}/libwps-0.3", "-L#{lib}"
     system "./test"
   end
 end

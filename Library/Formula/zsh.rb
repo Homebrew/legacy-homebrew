@@ -2,14 +2,14 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.6/zsh-5.0.6.tar.bz2'
-  mirror 'http://www.zsh.org/pub/zsh-5.0.6.tar.bz2'
-  sha1 'a626aa1923cc1bd4f8f2463e947a3f3cb340b0ea'
+  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.7/zsh-5.0.7.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.7.tar.bz2'
+  sha1 '1500191d16af8a71aec4f719a92775a074682096'
 
   bottle do
-    sha1 "32f15592b2516bdfe1d0c660a1556cfa93dee54d" => :mavericks
-    sha1 "23b2dfa6a856f2f0ce41b724a8bbaba459880683" => :mountain_lion
-    sha1 "756101a883b8c90b98f0d5faff8161e6c981f2c2" => :lion
+    sha1 "83d646649569ade648db6a44c480709d63268a25" => :yosemite
+    sha1 "935990ced3a6d3a3027bac4b32ac8f031e8fa244" => :mavericks
+    sha1 "c6e8055106d0b939cec5674469099bfd63d53f9e" => :mountain_lion
   end
 
   depends_on 'gdbm'
@@ -24,6 +24,7 @@ class Zsh < Formula
       --enable-scriptdir=#{share}/zsh/scripts
       --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
       --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
+      --enable-runhelpdir=#{share}/zsh/help
       --enable-cap
       --enable-maildir-support
       --enable-multibyte
@@ -56,7 +57,7 @@ class Zsh < Formula
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help
-      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/help
     EOS
   end
 end

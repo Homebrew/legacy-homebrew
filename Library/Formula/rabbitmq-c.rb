@@ -2,16 +2,16 @@ require "formula"
 
 class RabbitmqC < Formula
   homepage "https://github.com/alanxz/rabbitmq-c"
-  url "https://github.com/alanxz/rabbitmq-c/archive/v0.5.1.tar.gz"
-  sha1 "3a2fad69f65ef3a733fbfd9320717d2aedec5aa2"
+  url "https://github.com/alanxz/rabbitmq-c/archive/v0.5.2.tar.gz"
+  sha1 "6c442aefbc4477ac0598c05361c767a75d6e1541"
 
   head "https://github.com/alanxz/rabbitmq-c.git"
 
   bottle do
     cellar :any
-    sha1 "7637f895726ed8e597c02b616ba7f9a27109da91" => :mavericks
-    sha1 "e9b5682c5fe0d5e5dfec55ce4c3f0957182755b1" => :mountain_lion
-    sha1 "4ae0eb86504082c622c642f3c27f6361d0af4fad" => :lion
+    sha1 "496b4ca88678eb149a7ab595d8910f108e02cedd" => :mavericks
+    sha1 "3e571b8134ad11c1bf00fc809f6ddb75bfe7ca27" => :mountain_lion
+    sha1 "13949d69b20f76376819bb811bb6fe9972ed4a39" => :lion
   end
 
   option :universal

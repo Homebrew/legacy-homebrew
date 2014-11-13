@@ -2,18 +2,19 @@ require "formula"
 
 class Nzbget < Formula
   homepage "http://nzbget.net/"
-  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/13.0/nzbget-13.0.tar.gz"
-  sha1 "dc321ed59f47755bc910cf859f18dab0bf0cc7ff"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.0/nzbget-14.0.tar.gz"
+  sha1 "bb45cbf7c53d94544b03d15adec327df6dfaeb19"
 
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
   bottle do
-    sha1 "079c3445547cb316a1e6a9bafa58f024ec83c387" => :mavericks
-    sha1 "f278128b20c75ec532ccc6ccff4b514217384591" => :mountain_lion
-    sha1 "57a8551fed4323e4d9554fcb39d76217b3e3bf33" => :lion
+    sha1 "39db25fa2d79c924cf0aa706c7180c0650734c32" => :yosemite
+    sha1 "43478c1ccb216da5d58e8dfee64d7c3e13086d8e" => :mavericks
+    sha1 "21db9c9bbcf94ce4ef0862f1c2f1b4a5d59d6f68" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
   depends_on "libsigc++"
 
   fails_with :clang do
@@ -33,7 +34,7 @@ class Nzbget < Formula
     resource("libpar2").stage do
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{libexec}/lp2"
-      system "make install"
+      system "make", "install"
     end
 
     # Tell configure where libpar2 is, and tell it to use OpenSSL
@@ -44,7 +45,16 @@ class Nzbget < Formula
                           "--with-tlslib=OpenSSL"
     system "make"
     ENV.j1
-    system "make install"
-    system "make install-conf"
+    system "make", "install"
+    etc.install "nzbget.conf"
+  end
+
+  test do
+    # Start nzbget as a server in daemon-mode
+    system "#{bin}/nzbget", "-D"
+    # Query server for version information
+    system "#{bin}/nzbget", "-V"
+    # Shutdown server daemon
+    system "#{bin}/nzbget", "-Q"
   end
 end

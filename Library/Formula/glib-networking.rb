@@ -1,18 +1,22 @@
-require 'formula'
+require "formula"
 
-# This formula installs files directly into the top-level gio modules
-# directory, so it can't be bottled.
 class GlibNetworking < Formula
-  homepage 'https://launchpad.net/glib-networking'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.40/glib-networking-2.40.1.tar.xz'
-  sha256 '9fb3e54d049a480afdb814ff7452e7ab67e5d5f607ade230d7713f19922b5a28'
+  homepage "https://launchpad.net/glib-networking"
+  url "http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.42/glib-networking-2.42.0.tar.xz"
+  sha256 "304dd9e4c0ced69094300e0b9e66cd2eaae7161b9fc3186536d11458677d820d"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'gnutls'
-  depends_on 'gsettings-desktop-schemas'
+  def pour_bottle?
+    # This formula installs files directly into the top-level gio modules
+    # directory, so it can't be bottled.
+    false
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "gnutls"
+  depends_on "gsettings-desktop-schemas"
 
   def install
     system "./configure", "--disable-dependency-tracking",

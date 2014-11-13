@@ -5,6 +5,12 @@ class Moc < Formula
 
   stable do
     url "http://ftp.daper.net/pub/soft/moc/unstable/moc-2.5.0-beta1.tar.bz2"
+  bottle do
+    sha1 "1db850d8a502eb58a2f6f0f927b0f853a8964f62" => :mavericks
+    sha1 "bf52427f83ca16498e5470f9d8bad9e5fd71c0f0" => :mountain_lion
+    sha1 "4079ee34b2ce7f96cbe2830711a3569d65f7c600" => :lion
+  end
+
     sha1 "4030a1fa5c7cfef06909c54d8c7a1fbb93f23caa"
 
     # Patches up to r2544 (HEAD at 2013-08-13)
@@ -13,6 +19,7 @@ class Moc < Formula
       sha1 "55d64d17b320b391a5c11f502417fa8353498b37"
     end
   end
+  revision 1
 
   head 'svn://daper.net/moc/trunk'
 

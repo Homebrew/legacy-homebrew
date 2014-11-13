@@ -9,6 +9,7 @@ class SshCopyId < Formula
 
   bottle do
     cellar :any
+    sha1 "744408742dfae4e3bedd78014bcabc1693ca0d46" => :yosemite
     sha1 "c62e6863235b9cb0dc9c78c04971b8692332f935" => :mavericks
     sha1 "76b719c4c3391344d5aa2d22ded2fcc0db45f2c9" => :mountain_lion
     sha1 "4b679aea29d2ec0e9fd2292cc7ea6b3955747096" => :lion

@@ -2,8 +2,15 @@ require 'formula'
 
 class Sip < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.1/sip-4.16.1.tar.gz"
-  sha1 "e3eb1ebe9b380ed4a7abcf7e0db02f9a2ddf95fc"
+  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.3/sip-4.16.3.tar.gz"
+  sha1 "7c4079d164ccbfe4a5274eaeebe8e3cc86e3a75a"
+
+  bottle do
+    revision 1
+    sha1 "724af0277f4ec4635f86a011432a01206a81ea1e" => :yosemite
+    sha1 "4410671269f1f46de216cb189debe973333b9965" => :mavericks
+    sha1 "5aac602b4d22d471a59c517809dc1159545cba9f" => :mountain_lion
+  end
 
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
@@ -35,6 +42,10 @@ class Sip < Formula
       system "make", "install"
       system "make", "clean"
     end
+  end
+
+  def post_install
+    mkdir_p "#{HOMEBREW_PREFIX}/share/sip"
   end
 
   def caveats

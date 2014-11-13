@@ -6,9 +6,16 @@ class Inkscape < Formula
   sha1 'e14789da0f6b5b84ef26f6759e295bc4be7bd34d'
 
   bottle do
-    sha1 "284ea91d099a9561e0c87001641539c2a4038baf" => :mavericks
-    sha1 "bafdb00a9a3b23243e2ae03d2ae1155c3ffc246c" => :mountain_lion
-    sha1 "56127cf9ebfe7c476e8b8bb2cb334bc5af4f4296" => :lion
+    revision 1
+    sha1 "ad338136463ee2a73dc0922e4f059bd1dc3a8a10" => :mavericks
+    sha1 "8160eb07157e6b969b50d9ff15d737d0f2365089" => :mountain_lion
+    sha1 "866814f911ba37e2214c8a983e91c0bdc668736e" => :lion
+  end
+
+  stable do
+    # boost 1.56 compatibility
+    # https://bugs.launchpad.net/inkscape/+bug/1357411
+    patch :p0, :DATA
   end
 
   head do
@@ -59,3 +66,16 @@ class Inkscape < Formula
     system "#{bin}/inkscape", "-V"
   end
 end
+__END__
+=== modified file 'src/object-snapper.cpp'
+--- src/object-snapper.cpp	2010-07-19 06:51:04 +0000
++++ src/object-snapper.cpp	2014-08-15 15:43:28 +0000
+@@ -561,7 +561,7 @@
+                         // When it's within snapping range, then return it
+                         // (within snapping range == between p_min_on_cl and p_max_on_cl == 0 < ta < 1)
+                         Geom::Coord dist = Geom::L2(_snapmanager->getDesktop()->dt2doc(p_proj_on_cl) - p_inters);
+-                        SnappedPoint s(_snapmanager->getDesktop()->doc2dt(p_inters), p.getSourceType(), p.getSourceNum(), k->target_type, dist, getSnapperTolerance(), getSnapperAlwaysSnap(), true, k->target_bbox);
++                        SnappedPoint s(_snapmanager->getDesktop()->doc2dt(p_inters), p.getSourceType(), p.getSourceNum(), k->target_type, dist, getSnapperTolerance(), getSnapperAlwaysSnap(), true, false, k->target_bbox);
+                         sc.points.push_back(s);
+                     }
+                 }

@@ -105,26 +105,29 @@ class Pathname
   # NOTE always overwrites
   def atomic_write content
     require "tempfile"
-    tf = Tempfile.new(basename.to_s)
-    tf.binmode
-    tf.write(content)
-    tf.close
-
+    tf = Tempfile.new(basename.to_s, dirname)
     begin
-      old_stat = stat
-    rescue Errno::ENOENT
-      old_stat = default_stat
-    end
+      tf.binmode
+      tf.write(content)
 
-    FileUtils.mv tf.path, self
+      begin
+        old_stat = stat
+      rescue Errno::ENOENT
+        old_stat = default_stat
+      end
 
-    uid = Process.uid
-    gid = Process.groups.delete(old_stat.gid) { Process.gid }
+      uid = Process.uid
+      gid = Process.groups.delete(old_stat.gid) { Process.gid }
 
-    begin
-      chown(uid, gid)
-      chmod(old_stat.mode)
-    rescue Errno::EPERM
+      begin
+        tf.chown(uid, gid)
+        tf.chmod(old_stat.mode)
+      rescue Errno::EPERM
+      end
+
+      File.rename(tf.path, self)
+    ensure
+      tf.close!
     end
   end
 

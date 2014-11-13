@@ -2,13 +2,13 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.26.4.tar.xz'
-  sha1 '26ff3310cb4866829030c73070df4ae9aa4f6cac'
+  url 'http://poppler.freedesktop.org/poppler-0.28.1.tar.xz'
+  sha1 '017258af51cb556dc53af630c50165bb9fd76e4f'
 
   bottle do
-    sha1 "6634b3885414fddfec33f2070e6b27a63ef63372" => :mavericks
-    sha1 "89893811796e5b7d949364859ac98d98ba436406" => :mountain_lion
-    sha1 "669ae1aeece7b6a643b52a3bfa4e0cc4114b2211" => :lion
+    sha1 "acd2993598f19bbc43a97290ddad7e7a9ea057a7" => :yosemite
+    sha1 "51909b61a845b2a3a37b6a6605ce6e90a66f3c57" => :mavericks
+    sha1 "bbcebe2b5ac7d895ec6a3839f2fffbffd62c478e" => :mountain_lion
   end
 
   option 'with-qt4', 'Build Qt backend'

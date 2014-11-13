@@ -2,17 +2,15 @@ require 'formula'
 
 class Curl < Formula
   homepage 'http://curl.haxx.se/'
-  url 'http://curl.haxx.se/download/curl-7.37.1.tar.gz'
-  mirror 'ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.37.1.tar.gz'
-  sha256 'a32492a38c10a097344892f5fd2041e54698cb909696852311b1161e4aa979f3'
-  revision 1
+  url 'http://curl.haxx.se/download/curl-7.39.0.tar.bz2'
+  mirror 'ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.39.0.tar.bz2'
+  sha256 'b222566e7087cd9701b301dd6634b360ae118cc1cbc7697e534dc451102ea4e0'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "2f55044789402b0adbb1ea8c49ba786f83d5b87b" => :mavericks
-    sha1 "e2cbd2b1a4567f746d3513da64067415eda3f3bc" => :mountain_lion
-    sha1 "3e1a0ed6fb7eab1bc15ffd875b906eab3d4c7e54" => :lion
+    sha1 "ecb492c18c73bd4beb64b9b16d817bdef0f1b989" => :yosemite
+    sha1 "581f76814f982c87e6d281a55efd0da75f8e26e6" => :mavericks
+    sha1 "fb53da99991975bfdbc8d4c7e7e967ae4c0329b6" => :mountain_lion
   end
 
   keg_only :provided_by_osx
@@ -47,6 +45,7 @@ class Curl < Formula
 
     if MacOS.version < :mountain_lion or build.with? "openssl"
       args << "--with-ssl=#{Formula["openssl"].opt_prefix}"
+      args << "--with-ca-bundle=#{etc}/openssl/cert.pem"
     else
       args << "--with-darwinssl"
     end

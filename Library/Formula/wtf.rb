@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Wtf < Formula
-  homepage 'http://cvsweb.netbsd.org/bsdweb.cgi/src/games/wtf/'
-  url 'https://downloads.sourceforge.net/project/bsdwtf/wtf-20140614.tar.gz'
-  sha1 'b19b055b363acb0c53b539faa81d00c7b5c2c426'
+  homepage "http://cvsweb.netbsd.org/bsdweb.cgi/src/games/wtf/"
+  url "https://downloads.sourceforge.net/project/bsdwtf/wtf-20140820.tar.gz"
+  sha1 "eda9a91125039518fb0fd28d4bff6cd4e45de1f4"
 
   def install
     inreplace %w[wtf wtf.6], "/usr/share", share

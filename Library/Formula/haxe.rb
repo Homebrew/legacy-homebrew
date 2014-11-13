@@ -13,8 +13,9 @@ class Haxe < Formula
     sha1 "408dbaf0110cb38ee52900bd4910c56913681bab" => :lion
   end
 
-  depends_on 'neko'
-  depends_on 'objective-caml'
+  depends_on 'neko' => :recommended
+  depends_on 'objective-caml' => :build
+  depends_on 'camlp4' => :build
 
   def install
     # Build requires targets to be built in specific order

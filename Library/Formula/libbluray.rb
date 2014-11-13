@@ -1,15 +1,16 @@
 require "formula"
 
 class Libbluray < Formula
-  homepage "http://www.videolan.org/developers/libbluray.html"
-  url "ftp://ftp.videolan.org/pub/videolan/libbluray/0.6.0/libbluray-0.6.0.tar.bz2"
-  sha1 "2249e72ea50f43a1864c7f9658e13403ca3270f7"
+  homepage "https://www.videolan.org/developers/libbluray.html"
+  url "ftp://ftp.videolan.org/pub/videolan/libbluray/0.6.2/libbluray-0.6.2.tar.bz2"
+  sha1 "a1ab8c8c9310680fb1fe6a58f9fc5430613600fe"
 
   bottle do
     cellar :any
-    sha1 "a8d92a21ac562627b5f3675d3873a1ab52739964" => :mavericks
-    sha1 "7f20e2e75ee36646ee965167f457dbe4da2a715a" => :mountain_lion
-    sha1 "fe040200d7ad44edc83f6e0490c7905579b7d2f6" => :lion
+    revision 1
+    sha1 "a223bd0799d7dc26a05ad0d5751569c4964c248e" => :yosemite
+    sha1 "050786aa8393d98e0e72249f4933efa590c69a17" => :mavericks
+    sha1 "9170f553e8df68758d0ccddea706b1b2b0e16109" => :mountain_lion
   end
 
   head do

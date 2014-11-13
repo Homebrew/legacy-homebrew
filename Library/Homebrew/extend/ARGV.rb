@@ -86,6 +86,10 @@ module HomebrewArgvExtension
     include?('--dry-run') || switch?('n')
   end
 
+  def git?
+    flag? "--git"
+  end
+
   def homebrew_developer?
     include? '--homebrew-developer' or !ENV['HOMEBREW_DEVELOPER'].nil?
   end

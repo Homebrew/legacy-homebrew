@@ -12,7 +12,7 @@ class AptCacherNg < Formula
   end
 
   depends_on 'cmake' => :build
-  depends_on 'osxfuse' => :build
+  depends_on :osxfuse => :build
   depends_on 'boost' => :build
 
   def install

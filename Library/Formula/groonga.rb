@@ -2,13 +2,13 @@ require "formula"
 
 class Groonga < Formula
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-4.0.5.tar.gz"
-  sha1 "2e6fd8743a71532f5ee29f3508b678f5505802d2"
+  url "http://packages.groonga.org/source/groonga/groonga-4.0.7.tar.gz"
+  sha1 "b00c56c6d7318fe1a87f6f55366182ace4014a2a"
 
   bottle do
-    sha1 "9c6ab2a1c81cf907cadfb0a48a66a326737091b9" => :mavericks
-    sha1 "c39d70c9ae83fd3af14079d0102391cf4b7649bb" => :mountain_lion
-    sha1 "d46e6f5df48d56b653b8fe183b1caf83634e128b" => :lion
+    sha1 "2775b6f11f9e37b2c217232a8c1330d96399f247" => :yosemite
+    sha1 "666f42790d8c1971886af044f01d202158439597" => :mavericks
+    sha1 "e98db97c283412714a64066c0250c33832f4472f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -16,6 +16,8 @@ class Groonga < Formula
   depends_on "msgpack"
   depends_on "mecab" => :optional
   depends_on "mecab-ipadic" if build.with? "mecab"
+  depends_on "lz4" => :optional
+  depends_on "openssl"
 
   depends_on "glib" if build.include? "enable-benchmark"
 
@@ -26,10 +28,13 @@ class Groonga < Formula
       --prefix=#{prefix}
       --with-zlib
       --disable-zeromq
+      --with-mruby
+      --without-libstemmer
     ]
 
     args << "--enable-benchmark" if build.include? "enable-benchmark"
     args << "--with-mecab" if build.with? "mecab"
+    args << "--with-lz4" if build.with? "lz4"
 
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
