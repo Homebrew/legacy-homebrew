@@ -201,8 +201,8 @@ class FormulaInstaller
   def check_conflicts
     return if ARGV.force?
 
-    conflicts = formula.conflicts.reject do |c|
-      not Formulary.factory(c.name).active?
+    conflicts = formula.conflicts.select do |c|
+      Formulary.factory(c.name).active?
     end
 
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
