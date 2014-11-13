@@ -2,9 +2,9 @@ require "formula"
 
 class Mvnvm < Formula
   homepage "http://mvnvm.org"
-  url "https://bitbucket.org/mjensen/mvnvm/get/0d4318ea71a2.zip"
+  url "https://bitbucket.org/mjensen/mvnvm/get/0d4318ea71a2.tar.gz"
   version "0.0.1-20141113"
-  sha1 "9a6840ded35ce30bc58a573ea3757e5b2977c27d"
+  sha1 "a89fd49611c6259b9b0621de501be72c6a34540a"
 
   def install
     bin.install "mvn"
