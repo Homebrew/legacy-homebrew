@@ -51,8 +51,7 @@ class Wireshark < Formula
   def install
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
-            "--with-gnutls",
-            "--with-ssl"]
+            "--with-gnutls"]
 
     args << "--disable-wireshark" if build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+")
     args << "--disable-gtktest" if build.without?("gtk+3") && build.without?("gtk+")
