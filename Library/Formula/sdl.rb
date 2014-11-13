@@ -21,11 +21,12 @@ class Sdl < Formula
     depends_on "libtool" => :build
   end
 
-  option 'with-x11-driver', 'Compile with support for X11 video driver'
+  option 'with-x11', 'Compile with support for X11 video driver'
   option :universal
 
-  if build.with? 'x11-driver'
-    depends_on :x11
+  depends_on :x11 => :optional
+
+  if build.with? 'x11'
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -58,13 +59,13 @@ class Sdl < Formula
 
     ENV.universal_binary if build.universal?
 
-    system "./autogen.sh" if build.head? or build.with? 'x11-driver'
+    system "./autogen.sh" if build.head? or build.with? 'x11'
 
     args = %W[--prefix=#{prefix}]
     args << "--disable-nasm" unless MacOS.version >= :mountain_lion # might work with earlier, might only work with new clang
     # LLVM-based compilers choke on the assembly code packaged with SDL.
     args << '--disable-assembly' if ENV.compiler == :llvm or (ENV.compiler == :clang and MacOS.clang_build_version < 421)
-    args << "--without-x" if build.without? 'x11-driver'
+    args << "--without-x" if build.without? 'x11'
 
     system './configure', *args
     system "make install"
