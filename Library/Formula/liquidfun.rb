@@ -16,7 +16,7 @@ class Liquidfun < Formula
                         "-DBOX2D_BUILD_SHARED=ON",
                         "-DBOX2D_BUILD_EXAMPLES=OFF",
                         *std_cmake_args
-        system "make install"
+        system "make", "install"
         (include/"Box2D/Common").install "Box2D/Common/b2GrowableBuffer.h"
       end
     end
