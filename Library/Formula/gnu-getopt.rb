@@ -2,7 +2,7 @@ require 'formula'
 
 class GnuGetopt < Formula
   homepage 'http://software.frodo.looijaard.name/getopt/'
-  url 'http://software.frodo.looijaard.name/getopt/files/getopt-1.1.5.tar.gz'
+  url 'http://frodo.looijaard.name/system/files/software/getopt/getopt-1.1.5.tar.gz'
   sha1 '9090eb46ac92f2fd2749ca4121e81aaad40f325d'
 
   bottle do
