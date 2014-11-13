@@ -202,8 +202,7 @@ class FormulaInstaller
     return if ARGV.force?
 
     conflicts = formula.conflicts.reject do |c|
-      keg = Formulary.factory(c.name).prefix
-      not keg.directory? && Keg.new(keg).linked?
+      not Formulary.factory(c.name).active?
     end
 
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
