@@ -1,6 +1,7 @@
 require "formula"
 
 class Mvnvm < Formula
+  depends_on "java"
   homepage "http://mvnvm.org"
   url "https://bitbucket.org/mjensen/mvnvm/get/0d4318ea71a2.tar.gz"
   version "0.0.1-20141113"
