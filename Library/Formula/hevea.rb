@@ -6,10 +6,9 @@ class Hevea < Formula
   sha1 "59c0d35819c83b6558490b36f1113cdb4d49e919"
 
   bottle do
-    revision 1
-    sha1 "c621f678b16b718d8bbc24470ca207d0fe4c0308" => :mavericks
-    sha1 "44b2489966166404d8fd2db1037481a56fa183e3" => :mountain_lion
-    sha1 "3e788ceb7a493edfd1c0fc2911e58fe39a55d6de" => :lion
+    sha1 "85895fc6d991f57fe1a0e9ecbc083d335c7cf704" => :yosemite
+    sha1 "d45bb32ad08211b304ae6c87f49727505ad81d33" => :mavericks
+    sha1 "85d66fad38057feaa11c615dfdd7be4c921baca5" => :mountain_lion
   end
 
   depends_on "objective-caml"
