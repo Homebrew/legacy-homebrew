@@ -10,15 +10,12 @@ class Liquidfun < Formula
   conflicts_with "box2d", :because => "liquidfun is based on box2d and include it"
 
   def install
-    cd "liquidfun" do
-      cd "Box2D" do
-        system "cmake", "-DBOX2D_INSTALL=ON",
-                        "-DBOX2D_BUILD_SHARED=ON",
-                        "-DBOX2D_BUILD_EXAMPLES=OFF",
-                        *std_cmake_args
-        system "make", "install"
-        (include/"Box2D/Common").install "Box2D/Common/b2GrowableBuffer.h"
-      end
-    end
+    cd "liquidfun/Box2D"
+    system "cmake", "-DBOX2D_INSTALL=ON",
+                    "-DBOX2D_BUILD_SHARED=ON",
+                    "-DBOX2D_BUILD_EXAMPLES=OFF",
+                    *std_cmake_args
+    system "make", "install"
+    (include/"Box2D/Common").install "Box2D/Common/b2GrowableBuffer.h"
   end
 end
