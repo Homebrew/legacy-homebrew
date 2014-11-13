@@ -34,20 +34,13 @@ module Homebrew
   end
 end
 
-# Formula extensions for auditing
-class Formula
-  def text
-    @text ||= FormulaText.new(@path)
-  end
-end
-
 class FormulaText
   def initialize path
     @text = path.open("rb", &:read)
   end
 
   def without_patch
-    @text.split("__END__")[0].strip()
+    @text.split("\n__END__").first
   end
 
   def has_DATA?
@@ -86,7 +79,7 @@ class FormulaAuditor
   def initialize(formula)
     @formula = formula
     @problems = []
-    @text = formula.text.without_patch
+    @text = FormulaText.new(formula.path)
     @specs = %w{stable devel head}.map { |s| formula.send(s) }.compact
   end
 
@@ -95,15 +88,15 @@ class FormulaAuditor
       problem "Incorrect file permissions: chmod 644 #{formula.path}"
     end
 
-    if formula.text.has_DATA? and not formula.text.has_END?
+    if text.has_DATA? and not text.has_END?
       problem "'DATA' was found, but no '__END__'"
     end
 
-    if formula.text.has_END? and not formula.text.has_DATA?
+    if text.has_END? and not text.has_DATA?
       problem "'__END__' was found, but 'DATA' is not used"
     end
 
-    unless formula.text.has_trailing_newline?
+    unless text.has_trailing_newline?
       problem "File should end with a newline"
     end
   end
@@ -556,7 +549,7 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
-    text.split("\n").each_with_index {|line, lineno| audit_line(line, lineno+1) }
+    text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
     audit_installed
   end
 
