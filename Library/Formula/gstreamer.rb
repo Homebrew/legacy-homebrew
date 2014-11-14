@@ -7,10 +7,9 @@ class Gstreamer < Formula
   sha256 "f0e305d91a93d05bf9e332cd4256ca07d77f5186a4d73847b7ae6db218f2c237"
 
   bottle do
-    revision 1
-    sha1 "8f87c50553526db465c19e8835f4b1ebc6fd201f" => :yosemite
-    sha1 "91a9136afb0b5ab0f45edde0a6e4dd1c95480593" => :mavericks
-    sha1 "63b329db1488338e8d7732e72072fc5f9dd0a280" => :mountain_lion
+    sha1 "3684b3cfd9aa5c8d00ca104062b3980d13d9d774" => :yosemite
+    sha1 "10412679f79ec07b34231eced9847b98b176d76b" => :mavericks
+    sha1 "74f8eac19b8b31f394dfe6e8051da2f9b0053823" => :mountain_lion
   end
 
   head do
