@@ -38,6 +38,8 @@ class Cmake < Formula
   option "without-docs", "Don't build man pages"
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
 
+  depends_on "qt" => :optional
+
   resource "sphinx" do
     url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
     sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
@@ -91,9 +93,12 @@ class Cmake < Formula
       --docdir=/share/doc/cmake
       --mandir=/share/man
     ]
+
     if build.with? "docs"
       args << "--sphinx-man" << "--sphinx-build=#{buildpath}/sphinx/bin/sphinx-build"
     end
+
+    args << "--qt-gui" if build.with? "qt"
 
     system "./bootstrap", *args
     system "make"
