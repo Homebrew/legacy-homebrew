@@ -18,9 +18,10 @@ class Graphviz < Formula
   option :universal
   option "with-bindings", "Build Perl/Python/Ruby/etc. bindings"
   option "with-pangocairo", "Build with Pango/Cairo for alternate PDF output"
-  option "with-x", "Build with X11 support"
   option "with-app", "Build GraphViz.app (requires full XCode install)"
   option "with-gts", "Build with GNU GTS support (required by prism)"
+
+  deprecated_option "with-x" => "with-x11"
 
   depends_on "libpng"
 
@@ -31,7 +32,7 @@ class Graphviz < Formula
   depends_on "gts" => :optional
   depends_on "librsvg" => :optional
   depends_on "freetype" => :optional
-  depends_on :x11 if build.with? "x"
+  depends_on :x11 => :optional
   depends_on :xcode => :build if build.with? "app"
 
   fails_with :clang do
@@ -54,7 +55,7 @@ class Graphviz < Formula
     args << "--disable-swig" if build.without? "bindings"
     args << "--without-pangocairo" if build.without? "pangocairo"
     args << "--without-freetype2" if build.without? "freetype"
-    args << "--without-x" if build.without? "x"
+    args << "--without-x" if build.without? "x11"
     args << "--without-rsvg" if build.without? "librsvg"
 
     if build.with? "bindings"

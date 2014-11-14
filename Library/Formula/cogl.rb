@@ -19,13 +19,13 @@ class Cogl < Formula
     depends_on "libtool" => :build
   end
 
-  option "without-x", "Build without X11 support"
+  deprecated_option "without-x" => "without-x11"
 
   depends_on "pkg-config" => :build
   depends_on "cairo"
   depends_on "glib"
   depends_on "pango"
-  depends_on :x11 => "2.5.1" if build.with? "x"
+  depends_on :x11 => ["2.5.1", :recommended]
   depends_on "gobject-introspection"
 
   # Lion's grep fails, which later results in compilation failures:
@@ -61,7 +61,7 @@ class Cogl < Formula
       --enable-cogl-pango=yes
       --enable-introspection=yes
     ]
-    args << "--without-x" if build.without? "x"
+    args << "--without-x" if build.without? "x11"
     system "./configure", *args
     system "make install"
   end

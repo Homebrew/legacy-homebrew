@@ -14,14 +14,22 @@ class Go < Formula
     sha1 "2aa465d9fb98833b80d8f2801153592c1d52bd1a" => :lion
   end
 
+  devel do
+    url 'https://storage.googleapis.com/golang/go1.4beta1.src.tar.gz'
+    version '1.4beta1'
+    sha1 'f2fece0c9f9cdc6e8a85ab56b7f1ffcb57c3e7cd'
+  end
+
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
   option 'without-cgo', "Build without cgo"
 
   def install
-    # install the completion scripts
-    bash_completion.install 'misc/bash/go' => 'go-completion.bash'
-    zsh_completion.install 'misc/zsh/go' => '_go'
+    unless build.devel?
+      # install the completion scripts
+      bash_completion.install 'misc/bash/go' => 'go-completion.bash'
+      zsh_completion.install 'misc/zsh/go' => '_go'
+    end
 
     # host platform (darwin) must come last in the targets list
     if build.include? 'cross-compile-all'
