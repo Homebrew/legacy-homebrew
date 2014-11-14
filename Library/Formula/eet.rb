@@ -5,6 +5,13 @@ class Eet < Formula
   url "http://download.enlightenment.org/releases/eet-1.7.10.tar.gz"
   sha1 "7cf6938cc76fbf1cd8e2721606d61c93c09edd9e"
 
+  bottle do
+    cellar :any
+    sha1 "73d9599c2ab8fa5067ff4fc4fddacbeb19b825c4" => :yosemite
+    sha1 "36315f8d5bc59d56c6082e76e8dd2a9bfaec3735" => :mavericks
+    sha1 "dcc57b32e7225fe86c83a5bfaade296d828b9ba0" => :mountain_lion
+  end
+
   head do
     url "http://svn.enlightenment.org/svn/e/trunk/eet/"
 
