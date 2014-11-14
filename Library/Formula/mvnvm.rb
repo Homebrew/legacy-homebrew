@@ -3,7 +3,7 @@ require "formula"
 class Mvnvm < Formula
   homepage "http://mvnvm.org"
   url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-0.1.zip"
-  sha1 "8e6f07f0395eeca400bb676114b6e2dc6d829a82"
+  sha1 "ae75e26265c62daab4e9f751f5a6a44325247e23"
 
   depends_on :java => "1.7"
   head do
