@@ -15,7 +15,7 @@ class Qca < Formula
   depends_on "qt5" => :optional
 
   # Plugins (QCA needs at least one plugin to do anything useful)
-  depends_on "openssl" => :recommended # qca-ossl
+  depends_on "openssl" # qca-ossl
   depends_on "botan" => :optional # qca-botan
   depends_on "libgcrypt" => :optional # qca-gcrypt
   depends_on "gnupg" => :optional # qca-gnupg
@@ -33,7 +33,7 @@ class Qca < Formula
     args << "-DBUILD_TESTS=#{build.with?("tests") ? "ON" : "OFF"}"
 
     # Plugins (qca-cyrus-sasl, qca-logger, qca-softstore are always built)
-    args << "-DWITH_ossl_PLUGIN=#{build.with?("openssl") ? "YES" : "NO"}"
+    args << "-DWITH_ossl_PLUGIN=YES"
     args << "-DWITH_botan_PLUGIN=#{build.with?("botan") ? "YES" : "NO"}"
     args << "-DWITH_gcrypt_PLUGIN=#{build.with?("libgcrypt") ? "YES" : "NO"}"
     args << "-DWITH_gnupg_PLUGIN=#{build.with?("gnupg") ? "YES" : "NO"}"
@@ -78,5 +78,9 @@ class Qca < Formula
     certs_store.mkpath
     rm_f root_certs
     root_certs.atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+  end
+
+  test do
+    assert pipe_output("#{bin}/qcatool plugins").include?("qca-ossl")
   end
 end
