@@ -2,8 +2,8 @@ require 'formula'
 
 class Liblas < Formula
   homepage 'http://liblas.org'
-  url 'http://download.osgeo.org/liblas/libLAS-1.7.0.tar.gz'
-  sha1 'f31070efdf7bb7d6675c23c6c6c84584e3a10869'
+  url 'http://download.osgeo.org/liblas/libLAS-1.8.0.tar.bz2'
+  sha1 '73a29a97dfb8373d51c5e36bdf12a825c44fa398'
 
   head 'https://github.com/libLAS/libLAS.git'
 
@@ -22,14 +22,6 @@ class Liblas < Formula
   depends_on 'laszip' => :optional
 
   option 'with-test', 'Verify during install with `make test`'
-
-  # Fix for error of conflicting types for '_GTIFcalloc' between gdal 1.11
-  # and libgeotiff. Commited so can be removed on next stable release.
-  # https://github.com/libLAS/libLAS/issues/33
-  patch do
-    url "https://github.com/libLAS/libLAS/commit/b8799e.diff"
-    sha1 "3d2430327f9bbff9bd1f6d7cba80c7837552204e"
-  end
 
   def install
     mkdir 'macbuild' do
