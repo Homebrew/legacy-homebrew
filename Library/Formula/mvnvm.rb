@@ -3,9 +3,9 @@ require "formula"
 class Mvnvm < Formula
   homepage "http://mvnvm.org"
   url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-0.1.tar.gz"
-  version "0.1"
   sha1 "8e6f07f0395eeca400bb676114b6e2dc6d829a82"
-
+  version "0.1"
+  depends_on :java => "1.7"
   def install
     bin.install "mvn"
   end
@@ -35,6 +35,6 @@ class Mvnvm < Formula
         }
       }
     EOS
-    system "#{bin}/mvn", 'compile'
+    system "#{bin}/mvn", "compile"
   end
 end
