@@ -12,12 +12,15 @@ class Libcouchbase < Formula
   end
 
   option :universal
-  option 'with-libev-plugin', 'Build libev IO plugin (will pull libev dependency)'
-  option 'without-libevent-plugin', 'Do not build libevent plugin (will remove libevent dependency)'
+  option "with-libev", "Build libev plugin"
+  option "without-libevent", "Do not build libevent plugin"
 
-  depends_on 'libev' if build.with?('libev-plugin')
-  depends_on 'libevent' if build.with?('libevent-plugin')
-  depends_on 'openssl'
+  deprecated_option "with-libev-plugin" => "with-libev"
+  deprecated_option "without-libevent-plugin" => "without-libevent"
+
+  depends_on "libev" => :optional
+  depends_on "libevent" => :recommended
+  depends_on "openssl"
 
   def install
     args = [
@@ -28,14 +31,17 @@ class Libcouchbase < Formula
       "--disable-tests", # don't download google-test framework
       "--disable-couchbasemock"
     ]
+
     if build.universal?
       args << "--enable-fat-binary"
       ENV.universal_binary
     end
-    if build.without?('libev-plugin') && build.without?("libevent-plugin")
+
+    if build.without? "libev" and build.without? "libevent"
       # do not do plugin autodiscovery
       args << "--disable-plugins"
     end
+
     system "./configure", *args
     system "make install"
   end
