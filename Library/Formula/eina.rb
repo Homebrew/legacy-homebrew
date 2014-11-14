@@ -6,6 +6,9 @@ class Eina < Formula
   sha1 "c2544357b27f59d1592a02228cb277dc6b4ef797"
 
   bottle do
+    sha1 "58d642bbf7088e75415c2d7267c1170e7bd99c39" => :yosemite
+    sha1 "17da185c9c97ac84a55fb814a69171da1db77bbf" => :mavericks
+    sha1 "1310e97405ab4ff2ab1160420ac8b0f4aa74cec7" => :mountain_lion
   end
 
   head do
