@@ -9,21 +9,18 @@ class Qca < Formula
 
   option "with-api-docs", "Build Doxygen API documentation"
   option "without-tests", "Don't build and run tests"
-  option "without-plugins", "Skip building plugins"
 
   depends_on "cmake" => :build
   depends_on "qt" => :recommended
   depends_on "qt5" => :optional
 
   # Plugins (QCA needs at least one plugin to do anything useful)
-  if build.with? "plugins"
-    depends_on "openssl" => :recommended # qca-ossl
-    depends_on "botan" => :optional # qca-botan
-    depends_on "libgcrypt" => :optional # qca-gcrypt
-    depends_on "gnupg" => :optional # qca-gnupg (currently segfaults in tests)
-    depends_on "nss" => :optional # qca-nss
-    depends_on "pkcs11-helper" => :optional # qca-pkcs11
-  end
+  depends_on "openssl" => :recommended # qca-ossl
+  depends_on "botan" => :optional # qca-botan
+  depends_on "libgcrypt" => :optional # qca-gcrypt
+  depends_on "gnupg" => :optional # qca-gnupg
+  depends_on "nss" => :optional # qca-nss
+  depends_on "pkcs11-helper" => :optional # qca-pkcs11
 
   if build.with? "api-docs"
     depends_on "graphviz" => :build
@@ -54,8 +51,8 @@ class Qca < Formula
     args = std_cmake_args
     args << "-DQT4_BUILD=#{build.with?("qt5") ? "OFF" : "ON"}"
     args << "-DBUILD_TESTS=#{build.with?("tests") ? "ON" : "OFF"}"
-    args << "-DBUILD_PLUGINS=#{build.with?("plugins") ? "auto" : "none"}"
 
+    # Plugins (qca-cyrus-sasl, qca-logger, qca-softstore are always built)
     args << "-DWITH_ossl_PLUGIN=#{build.with?("openssl") ? "YES" : "NO"}"
     args << "-DWITH_botan_PLUGIN=#{build.with?("botan") ? "YES" : "NO"}"
     args << "-DWITH_gcrypt_PLUGIN=#{build.with?("libgcrypt") ? "YES" : "NO"}"
