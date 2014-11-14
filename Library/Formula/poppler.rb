@@ -11,8 +11,11 @@ class Poppler < Formula
     sha1 "bbcebe2b5ac7d895ec6a3839f2fffbffd62c478e" => :mountain_lion
   end
 
-  option 'with-qt4', 'Build Qt backend'
-  option 'with-lcms2', 'Use color management system'
+  option "with-qt", "Build Qt backend"
+  option "with-little-cms2", "Use color management system"
+
+  deprecated_option "with-qt4" => "with-qt"
+  deprecated_option "with-lcms2" => "with-little-cms2"
 
   depends_on 'pkg-config' => :build
   depends_on 'cairo'
@@ -26,8 +29,8 @@ class Poppler < Formula
   depends_on 'libtiff'
   depends_on 'openjpeg'
 
-  depends_on 'qt' if build.with? 'qt4'
-  depends_on 'little-cms2' if build.with? 'lcms2'
+  depends_on "qt" => :optional
+  depends_on "little-cms2" => :optional
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
 
@@ -49,13 +52,13 @@ class Poppler < Formula
       --enable-introspection=yes
     ]
 
-    if build.with? "qt4"
+    if build.with? "qt"
       args << "--enable-poppler-qt4"
     else
       args << "--disable-poppler-qt4"
     end
 
-    args << "--enable-cms=lcms2" if build.with? "lcms2"
+    args << "--enable-cms=lcms2" if build.with? "little-cms2"
 
     system "./configure", *args
     system "make install"
