@@ -14,7 +14,7 @@ class Evas < Formula
   depends_on 'fontconfig'
   depends_on 'fribidi'
   depends_on 'harfbuzz'
-  depends_on 'doxygen' if build.with? "docs"
+  depends_on "doxygen" => :build if build.with? "docs"
 
   def install
     args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]
