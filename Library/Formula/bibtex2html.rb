@@ -2,8 +2,8 @@ require 'formula'
 
 class Bibtex2html < Formula
   homepage 'http://www.lri.fr/~filliatr/bibtex2html/'
-  url 'http://www.lri.fr/~filliatr/ftp/bibtex2html/bibtex2html-1.97.tar.gz'
-  sha1 '970cb972eb88ff4cd01f247c0d8a6b821473f243'
+  url 'http://www.lri.fr/~filliatr/ftp/bibtex2html/bibtex2html-1.98.tar.gz'
+  sha1 'daaa082885a30dae38263614565298d4862b8331'
 
   depends_on 'objective-caml'
   depends_on 'hevea'
