@@ -26,7 +26,7 @@ index 4531ee1..cd4a910 100644
  # FORCE_M32=-m32
 
 -ifneq ($(shell sw_vers -productVersion | egrep '10\.[6789](\.[0-9]+)?'),)
--SDK=$(shell xcodebuild -sdk macosx -version | grep '^Path:' | sed 's/Path:\(.*\)/\1/')
+-SDK=$(shell xcodebuild -sdk macosx -version | grep '^Path:' | sed 's/Path: \(.*\)/\1/')
 -ISYSROOT=-isysroot $(SDK)
 +ifneq ($(shell sw_vers -productVersion | egrep '10\.([6789]|1[0-9]+)(\.[0-9]+)?'),)
  LINK_EXTRAS=-F/System/Library/PrivateFrameworks \
