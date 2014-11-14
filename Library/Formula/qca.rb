@@ -62,7 +62,8 @@ class Qca < Formula
     qca_plugins = "#{prefix}/qca_plugins"
     mkpath qca_plugins
     mv "#{lib}/qca/crypto", "#{qca_plugins}/crypto"
-    ln_sf "#{qca_plugins}/crypto", Formula["qt"].prefix/"plugins/"
+    qt_prefix = build.with?("qt5") ? Formula["qt5"].prefix : Formula["qt"].prefix
+    ln_sf "#{qca_plugins}/crypto", qt_prefix/"plugins/"
   end
 
   def post_install
