@@ -1,25 +1,26 @@
-require 'formula'
+require "formula"
 
 class Embryo < Formula
-  homepage 'http://trac.enlightenment.org/e/wiki/Embryo'
-  url 'http://download.enlightenment.org/releases/embryo-1.7.9.tar.gz'
-  sha1 '1644da0be669213ce9ed29f1b58e9c6f3ab7c05c'
+  homepage "http://trac.enlightenment.org/e/wiki/Embryo"
+  url "http://download.enlightenment.org/releases/embryo-1.7.10.tar.gz"
+  sha1 "4e4b3eb809211876655564920fdb773fb034f22c"
 
   head do
-    url 'http://svn.enlightenment.org/svn/e/trunk/embryo/'
+    url "http://svn.enlightenment.org/svn/e/trunk/embryo/"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'eina'
+  depends_on "pkg-config" => :build
+  depends_on "eina"
 
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
