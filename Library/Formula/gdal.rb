@@ -7,6 +7,9 @@ class Gdal < Formula
   revision 2
 
   bottle do
+    sha1 "d224e8c01d442ecfbbe62f1c65c2f5c4b9758fbf" => :yosemite
+    sha1 "6daaca6a1c0863fc80bde5c93d186146884b148f" => :mavericks
+    sha1 "afd2cc4acfc5c440f984cc92ba9565550a5108e5" => :mountain_lion
   end
 
   head do
