@@ -7,8 +7,8 @@ class Qca < Formula
 
   head "git://anongit.kde.org/qca.git", :branch => "master"
 
-  option "with-api-docs", "Build Doxygen API documentation"
   option "without-tests", "Don't build and run tests"
+  option "with-api-docs", "Build API documentation"
 
   depends_on "cmake" => :build
   depends_on "qt" => :recommended
