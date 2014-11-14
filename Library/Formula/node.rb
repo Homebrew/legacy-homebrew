@@ -39,8 +39,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.7.tgz"
-    sha1 "4b8315574b84136dad6a225ce8fb85e2d7d98502"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.8.tgz"
+    sha1 "0023e311e13514fc874b4f60ac28ad9ca7ff07f8"
   end
 
   def install
