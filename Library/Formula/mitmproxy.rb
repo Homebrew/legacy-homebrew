@@ -18,6 +18,8 @@ class Mitmproxy < Formula
   depends_on 'freetype'
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'protobuf' => :optional
+  depends_on :x11
+  depends_on 'libffi'
 
   resource 'pyopenssl' do
     url 'https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.14.tar.gz'
@@ -65,6 +67,9 @@ class Mitmproxy < Formula
   end
 
   def install
+    libffi = Formula["libffi"]
+    ENV.append_to_cflags "-I#{libffi.lib}/libffi-#{libffi.version}/include"
+
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
