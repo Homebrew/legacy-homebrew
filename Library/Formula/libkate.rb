@@ -14,15 +14,15 @@ class Libkate < Formula
     sha1 "f47ba4978a5b1ff7a3aa7e9a6590e5d799cc2226" => :mountain_lion
   end
 
+  option "with-docs", "Build documentation"
+  option "with-examples", "Build example streams"
+
   depends_on "pkg-config" => :build
   depends_on "doxygen" => :build if build.with? "docs"
   depends_on "oggz" if build.with? "examples"
   depends_on "libpng"
   depends_on "libogg"
   depends_on "wxmac" => :optional
-
-  option "with-docs", "Build documentation"
-  option "with-examples", "Build example streams"
 
   fails_with :gcc do
     build 5666

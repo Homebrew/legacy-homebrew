@@ -11,7 +11,8 @@ class Goaccess < Formula
     sha1 "98e9188ea8aa24f8e51dd046d6003b81c894f53e" => :lion
   end
 
-  option "enable-geoip", "Enable IP location information using GeoIP"
+  option "with-geoip", "Enable IP location information using GeoIP"
+  deprecated_option "enable-geoip" => "with-geoip"
 
   head do
     url "https://github.com/allinurl/goaccess.git"
@@ -21,7 +22,7 @@ class Goaccess < Formula
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "geoip" if build.include? "enable-geoip"
+  depends_on "geoip" => :optional
 
   def install
     system "autoreconf", "-vfi" if build.head?
@@ -31,7 +32,7 @@ class Goaccess < Formula
       --prefix=#{prefix}
     ]
 
-    args << "--enable-geoip" if build.include? "enable-geoip"
+    args << "--enable-geoip" if build.with? "geoip"
 
     system "./configure", *args
     system "make install"

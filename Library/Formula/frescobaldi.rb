@@ -13,7 +13,7 @@ class Frescobaldi < Formula
   depends_on "lilypond" => :recommended
 
   # python-poppler-qt4 dependencies
-  depends_on "poppler" => "with-qt4"
+  depends_on "poppler" => "with-qt"
   depends_on "pyqt"
   depends_on "pkg-config" => :build
 

@@ -8,11 +8,12 @@ class Vrpn < Formula
   head 'git://git.cs.unc.edu/vrpn.git'
 
   option 'clients', 'Build client apps and tests'
-  option 'docs', 'Build doxygen-based API documentation'
+  option "with-docs", "Build doxygen-based API documentation"
+  deprecated_option "docs" => "with-docs"
 
   depends_on 'cmake' => :build
   depends_on 'libusb' # for HID support
-  depends_on 'doxygen' if build.include? 'docs'
+  depends_on "doxygen" => :build if build.with? "docs"
 
   def install
     ENV.libstdcxx
@@ -28,7 +29,7 @@ class Vrpn < Formula
 
     mkdir "build" do
       system "cmake", *args
-      system "make doc" if build.include? 'docs'
+      system "make doc" if build.with? "docs"
       system "make install"
     end
   end

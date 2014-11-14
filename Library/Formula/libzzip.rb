@@ -13,11 +13,13 @@ class Libzzip < Formula
     sha1 "986d13aa3974d0b7c2621a8447f1aad640f11d92" => :mountain_lion
   end
 
-  option 'sdl', 'Enable SDL usage and create SDL_rwops_zzip.pc'
+  option 'with-sdl', 'Enable SDL usage and create SDL_rwops_zzip.pc'
   option :universal
 
+  deprecated_option "sdl" => "with-sdl"
+
   depends_on 'pkg-config' => :build
-  depends_on 'sdl' if build.include? 'sdl'
+  depends_on 'sdl' => :optional
 
   conflicts_with 'zzuf', :because => 'both install `zzcat` binaries'
 
@@ -33,7 +35,7 @@ class Libzzip < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    args << '--enable-sdl' if build.include? 'sdl'
+    args << "--enable-sdl" if build.with? "sdl"
     system './configure', *args
     system 'make install'
     ENV.deparallelize   # fails without this when a compressed file isn't ready

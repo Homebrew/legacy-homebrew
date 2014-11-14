@@ -24,6 +24,8 @@ class Sdl < Formula
   option 'with-x11', 'Compile with support for X11 video driver'
   option :universal
 
+  deprecated_option "with-x11-driver" => "with-x11"
+
   depends_on :x11 => :optional
 
   if build.with? 'x11'

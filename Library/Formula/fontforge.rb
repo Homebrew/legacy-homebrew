@@ -91,7 +91,8 @@ class Fontforge < Formula
     system "make", "install"
 
     # Link this to enable symlinking into /Applications with brew linkapps.
-    ln_s "#{share}/fontforge/osx/Fontforge.app", "#{prefix}"
+    # The name is case-sensitive. It breaks without both F's capitalised.
+    ln_s "#{share}/fontforge/osx/FontForge.app", prefix
   end
 
   test do
