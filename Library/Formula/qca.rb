@@ -12,7 +12,7 @@ class Qca < Formula
   option "without-plugins", "Skip building plugins"
 
   depends_on "cmake" => :build
-  depends_on 'qt'
+  depends_on "qt" => :recommended
   depends_on "qt5" => :optional
 
   # Plugins (QCA needs at least one plugin to do anything useful)
