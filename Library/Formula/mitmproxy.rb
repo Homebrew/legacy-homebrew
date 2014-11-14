@@ -20,6 +20,7 @@ class Mitmproxy < Formula
   depends_on 'protobuf' => :optional
   depends_on :x11
   depends_on 'libffi'
+  depends_on 'openssl'
 
   resource 'pyopenssl' do
     url 'https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.14.tar.gz'
