@@ -27,26 +27,6 @@ class Qca < Formula
     depends_on "doxygen" => [:build, "with-dot"]
   end
 
-  def certs_store
-    prefix/"certs"
-  end
-
-  def root_certs
-    certs_store/"rootcerts.pem"
-  end
-
-  def populate_store
-    # Culled from openssl formula
-    ohai "Populating #{root_certs}"
-    keychains = %w[
-      /Library/Keychains/System.keychain
-      /System/Library/Keychains/SystemRootCertificates.keychain
-    ]
-    certs_store.mkpath
-    rm_f root_certs
-    root_certs.atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
-  end
-
   def install
     args = std_cmake_args
     args << "-DQT4_BUILD=#{build.with?("qt5") ? "OFF" : "ON"}"
@@ -86,6 +66,16 @@ class Qca < Formula
   end
 
   def post_install
-      populate_store
+    certs_store = prefix/"certs"
+    root_certs = certs_store/"rootcerts.pem"
+
+    # Culled from openssl formula
+    keychains = %w[
+      /Library/Keychains/System.keychain
+      /System/Library/Keychains/SystemRootCertificates.keychain
+    ]
+    certs_store.mkpath
+    rm_f root_certs
+    root_certs.atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 end
