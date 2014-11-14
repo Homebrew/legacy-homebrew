@@ -4,13 +4,9 @@ class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url "http://download.osgeo.org/gdal/1.11.1/gdal-1.11.1.tar.gz"
   sha1 "e2c67481932ec9fb6ec3c0faadc004f715c4eef4"
-  revision 1
+  revision 2
 
   bottle do
-    revision 2
-    sha1 "bc2a281841b0b5179ceeb352a6c1c63e468903cc" => :yosemite
-    sha1 "cff8c3c89558603d579255e9a8fd7b00f4c99f34" => :mavericks
-    sha1 "93908f8c4570af931a9096aa73a7c2b03b692d33" => :mountain_lion
   end
 
   head do
@@ -61,6 +57,7 @@ class Gdal < Formula
     depends_on "cfitsio"
     depends_on "epsilon"
     depends_on "libdap"
+    depends_on "libxml2"
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
@@ -259,8 +256,6 @@ class Gdal < Formula
     sqlite = Formula["sqlite"]
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
     ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
-    # Needed by libdap
-    ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.
     ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
