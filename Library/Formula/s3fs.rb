@@ -1,27 +1,31 @@
 require "formula"
 
 class S3fs < Formula
-  homepage "http://code.google.com/p/s3fs/"
-  url "https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.78.tar.gz"
-  sha1 "613b448d84451400d3ee14aa9104ba6d9e90bd0b"
+  homepage "https://code.google.com/p/s3fs/"
   revision 1
 
-  head "https://github.com/s3fs-fuse/s3fs-fuse.git"
+  stable do
+    url "https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.78.tar.gz"
+    sha1 "613b448d84451400d3ee14aa9104ba6d9e90bd0b"
+
+    # S3fs currently relies on fuse4x which uses unsigned kexts, barred by Yosemite.
+    # Fuse4x and osxfuse are merging so monitor this over time and switch if/when possible.
+    depends_on "fuse4x"
+    depends_on MaximumMacOSRequirement => :mavericks
+  end
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "openssl"
-  depends_on "fuse4x"
+  depends_on "gnutls"
+  depends_on "nettle"
+  depends_on "libgcrypt"
 
-  # This has a hard-requirement for fuse4x which presently has no upstream signed binary & kext available
-  # Unsigned kexts cannot be used on 10.10
-  # https://github.com/Homebrew/homebrew/issues/31164
-  depends_on MaximumMacOSRequirement => :mavericks
+  head "https://github.com/s3fs-fuse/s3fs-fuse.git"
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--with-gnutls", "--prefix=#{prefix}"
     system "make", "install"
   end
 
