@@ -21,6 +21,7 @@ object JobServerBuild extends Build {
   )
 
   import Dependencies._
+  import JobServerRelease._
 
   lazy val akkaApp = Project(id = "akka-app", base = file("akka-app"),
     settings = commonSettings210 ++ Seq(
@@ -51,18 +52,18 @@ object JobServerBuild extends Build {
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
       // This lets us add Spark back to the classpath without assembly barfing
       fullClasspath in Revolver.reStart := (fullClasspath in Compile).value
-      ) ++ implicitlySettings ++ publishSettings
+      ) ++ publishSettings
   ) dependsOn(akkaApp, jobServerApi)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
     settings = commonSettings210 ++ Seq(libraryDependencies ++= sparkDeps ++ apiDeps,
-                                        publish      := {},
+                                        publishArtifact := false,
                                         description := "Test jar for Spark Job Server",
                                         exportJars := true)   // use the jar instead of target/classes
   ) dependsOn(jobServerApi)
 
   lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"),
-    settings = commonSettings210 ++ publishSettings //++ Seq(exportJars := true)
+    settings = commonSettings210 ++ publishSettings
                                     )
 
   // This meta-project aggregates all of the sub-projects and can be used to compile/test/style check
@@ -72,9 +73,9 @@ object JobServerBuild extends Build {
   lazy val root = Project(
     id = "root", base = file("."),
     settings =
-      commonSettings210  ++ Seq(
+      commonSettings210 ++ ourReleaseSettings ++ Seq(
       parallelExecution in Test := false,
-      publish      := {},
+      publishArtifact := false,
       concurrentRestrictions := Seq(
         Tags.limit(Tags.CPU, java.lang.Runtime.getRuntime().availableProcessors()),
         // limit to 1 concurrent test task, even across sub-projects
@@ -92,12 +93,12 @@ object JobServerBuild extends Build {
   // Create a default Scala style task to run with compiles
   lazy val runScalaStyle = taskKey[Unit]("testScalaStyle")
 
-  lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
+  lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ implicitlySettings ++ Seq(
     organization := "spark.jobserver",
-    version      := "0.4.1-SNAPSHOT",
     crossPaths   := false,
     scalaVersion := "2.10.4",
     scalaBinaryVersion := "2.10",
+    publishTo    := Some(Resolver.file("Unused repo", file("target/unusedrepo"))),
 
     runScalaStyle := {
       org.scalastyle.sbt.PluginKeys.scalastyle.toTask("").value
@@ -133,21 +134,6 @@ object JobServerBuild extends Build {
     licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
     bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("spark-jobserver")
   )
-
-  lazy val implicitlySettings = {
-    import ls.Plugin._
-    import LsKeys._
-
-    lsSettings ++ Seq(
-      homepage := Some(url("https://github.com/spark-jobserver/spark-jobserver")),
-      (tags in lsync) := Seq("spark", "akka", "rest"),
-      (description in lsync) := "REST job server for Apache Spark",
-      (externalResolvers in lsync) := Seq("Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven"),
-      (ghUser in lsync) := Some("spark-jobserver"),
-      (ghRepo in lsync) := Some("spark-jobserver"),
-      (ghBranch in lsync) := Some("master")
-    )
-  }
 
   // change to scalariformSettings for auto format on compile; defaultScalariformSettings to disable
   // See https://github.com/mdr/scalariform for formatting options

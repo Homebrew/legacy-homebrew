@@ -1,0 +1,30 @@
+{
+  "organization" : "spark.jobserver",
+  "name" : "root",
+  "version" : "0.4.1-SNAPSHOT",
+  "description" : "REST job server for Apache Spark",
+  "site" : "https://github.com/spark-jobserver/spark-jobserver",
+  "tags" : [ "spark", "akka", "rest" ],
+  "docs" : "",
+  "resolvers" : [ "http://dl.bintray.com/spark-jobserver/maven" ],
+  "dependencies" : [ {
+    "organization" : "org.apache.spark",
+    "name" : "spark-core",
+    "version" : "1.1.0"
+  }, {
+    "organization" : "io.netty",
+    "name" : "netty",
+    "version" : "3.6.6.Final"
+  }, {
+    "organization" : "com.typesafe",
+    "name" : "config",
+    "version" : "1.0.0"
+  }, {
+    "organization" : "org.scoverage",
+    "name" : "scalac-scoverage-plugin",
+    "version" : "0.98.0"
+  } ],
+  "scalas" : [ "2.10.4" ],
+  "licenses" : [ ],
+  "sbt" : false
+}
