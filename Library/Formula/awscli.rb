@@ -4,6 +4,7 @@ class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
   url "https://pypi.python.org/packages/source/a/awscli/awscli-1.6.2.tar.gz"
   sha1 "af3b239ea14e174928ad4b3850c22afa67e5afe9"
+  revision 1
 
   bottle do
     cellar :any
@@ -30,24 +31,29 @@ class Awscli < Formula
 
   depends_on :python if MacOS.version <= :snow_leopard
 
-  resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.73.0.tar.gz"
-    sha1 "bee0e6fa263002bea01718ea853839d4bacbe85d"
-  end
-
-  resource "bcdoc" do
-    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.12.2.tar.gz"
-    sha1 "31b2a714c2803658d9d028c8edf4623fd0daaf18"
-  end
-
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
     sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
   end
 
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
+    sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
+  end
+
   resource "colorama" do
-    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.2.5.tar.gz"
-    sha1 "87507210c5a7d400b27d23e8dd42734198663d66"
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.2.tar.gz"
+    sha1 "f2da891543421eeb423c469dff13faf1e70187e5"
+  end
+
+  resource "jmespath" do
+    url "https://pypi.python.org/packages/source/j/jmespath/jmespath-0.5.0.tar.gz"
+    sha1 "c9ce28e08fd24cdaa23e1183008b67ded302ef27"
+  end
+
+  resource "botocore" do
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.73.0.tar.gz"
+    sha1 "bee0e6fa263002bea01718ea853839d4bacbe85d"
   end
 
   resource "docutils" do
@@ -55,21 +61,30 @@ class Awscli < Formula
     sha1 "002450621b33c5690060345b0aac25bc2426d675"
   end
 
+  resource "bcdoc" do
+    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.12.2.tar.gz"
+    sha1 "31b2a714c2803658d9d028c8edf4623fd0daaf18"
+  end
+
+  resource "pyasn1" do
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.7.tar.gz"
+    sha1 "e32b91c5a5d9609fb1d07d8685a884bab22ca6d0"
+  end
+
   resource "rsa" do
-    url "https://bitbucket.org/sybren/python-rsa/get/version-3.1.2.tar.gz"
-    sha1 "6a7515221e50ee87cfb54cb36e96f2a39df9badd"
+    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.4.tar.gz"
+    sha1 "208583c49489b7ab415a4455eae7618b7055feca"
   end
 
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
+    ENV["PYTHONPATH"] = libexec/"lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+      r.stage { Language::Python.setup_install "python", libexec/"vendor" }
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}",
-      "--single-version-externally-managed", "--record=installed.txt"
+    Language::Python.setup_install "python", libexec
 
     # Install zsh completion
     zsh_completion.install "bin/aws_zsh_completer.sh" => "_aws"
@@ -77,6 +92,7 @@ class Awscli < Formula
     # Install the examples
     (share+"awscli").install "awscli/examples"
 
+    bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
