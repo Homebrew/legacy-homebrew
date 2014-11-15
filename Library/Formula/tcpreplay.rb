@@ -12,6 +12,14 @@ class Tcpreplay < Formula
     sha1 "9675b87cf528c950d69c8500c78ab059b601f16a" => :lion
   end
 
+  depends_on "libdnet" => :recommended
+
+  devel do
+    url "https://github.com/appneta/tcpreplay/releases/download/v4.1.0beta2/tcpreplay-4.1.0beta2.tar.gz"
+    sha1 "63c2e5cb17e65bd5072661b43553dc7efc48e881"
+    version "4.1.0-b2"
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
@@ -19,5 +27,9 @@ class Tcpreplay < Formula
                           "--enable-dynamic-link",
                           "--with-libpcap=#{MacOS.sdk_path}/usr"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/tcpreplay", "--version"
   end
 end
