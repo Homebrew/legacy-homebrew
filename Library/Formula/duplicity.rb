@@ -18,35 +18,46 @@ class Duplicity < Formula
 
   option :universal
 
-  resource "lockfile" do
-    url "https://pypi.python.org/packages/source/l/lockfile/lockfile-0.9.1.tar.gz"
-    sha1 "9870cc7e7d4b23f0b6c39cf6ba597c87871ac6de"
-  end
-
-  resource "paramiko" do
-    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.14.0.tar.gz"
-    sha1 "54a34873b09c3dd3ea7090caa914908b3e0f1822"
-  end
-
   resource "boto" do
     url "https://pypi.python.org/packages/source/b/boto/boto-2.32.0.tar.gz"
     sha1 "3600168823a0c37051daf24c5147e1a9ae73d28d"
   end
 
+  resource "lockfile" do
+    url "https://pypi.python.org/packages/source/l/lockfile/lockfile-0.10.2.tar.gz"
+    sha1 "1df8b1fad0c344230eaa7ce5fbf06521a74d7a6b"
+  end
+
+  resource "paramiko" do
+    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.15.1.tar.gz"
+    sha1 "1f2d48f6c1c5c8620c264a8b2a592a5383309fea"
+  end
+
+  resource "pycryptopp" do
+    url "https://pypi.python.org/packages/source/p/pycryptopp/pycryptopp-0.6.0.1206569328141510525648634803928199668821045408958.tar.gz"
+    sha1 "773008d41d5c135a5bd899cd4c4a51ee54a97e39"
+  end
+
+  resource "pyrax" do
+    url "https://github.com/rackspace/pyrax/archive/v1.9.2.tar.gz"
+    sha1 "4ff5a326c7cc83cc61d000c02acc6e4f116cc2d8"
+  end
+
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+    ENV["PYTHONPATH"] = libexec/"lib/python2.7/site-packages"
 
     ENV.universal_binary if build.universal?
 
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
-    resource("lockfile").stage { system "python", *install_args }
-    resource("paramiko").stage { system "python", *install_args }
-    resource("boto").stage { system "python", *install_args }
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    resources.each do |r|
+      r.stage { Language::Python.setup_install "python", libexec/"vendor" }
+    end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    Language::Python.setup_install "python", libexec
 
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    man1.install Dir[libexec/"share/man/man1/*"]
   end
 
   test do
