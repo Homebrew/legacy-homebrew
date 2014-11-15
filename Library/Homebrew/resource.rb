@@ -77,7 +77,28 @@ class Resource
     Partial.new(self, files)
   end
 
+  def prefetch
+    @prefetch_thread = Thread.new { fetch_it } unless @prefetch_thread
+  end
+
+  def wait_for_prefetch
+    if @prefetch_thread
+      ohai "I am hereby waiting for the download to finish."
+      result = @prefetch_thread.value
+      ohai "Download finished! Let's rock on!"
+      result
+    end
+  end
+
   def fetch
+    if @prefetch_thread
+      wait_for_prefetch
+    else
+      fetch_it
+    end
+  end
+
+  def fetch_it
     HOMEBREW_CACHE.mkpath
 
     begin
