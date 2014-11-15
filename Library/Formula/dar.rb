@@ -16,8 +16,11 @@ class Dar < Formula
   option "with-lzo", "enable lzo compression support"
   option "with-upx", "make executables compressed at installation time"
 
-  depends_on "coreutils" => :build if build.with? "docs"
-  depends_on "doxygen" => :build if build.with? "docs"
+  if build.with? "docs"
+    depends_on "coreutils" => :build
+    depends_on "doxygen" => :build
+  end
+
   depends_on "gettext" => :optional
   depends_on "gnu-sed" => :build
   depends_on "libgcrypt" => :optional

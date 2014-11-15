@@ -29,8 +29,9 @@ class OpenSceneGraph < Formula
 
   head 'http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/'
 
-  option 'docs', 'Build the documentation with Doxygen and Graphviz'
   option :cxx11
+  option "with-docs", "Build the documentation with Doxygen and Graphviz"
+  deprecated_option "docs" => "with-docs"
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -49,9 +50,9 @@ class OpenSceneGraph < Formula
   depends_on 'qt5' => :optional
   depends_on 'qt' => :optional
 
-  if build.include? 'docs'
-    depends_on 'doxygen'
-    depends_on 'graphviz'
+  if build.with? "docs"
+    depends_on "doxygen" => :build
+    depends_on "graphviz" => :build
   end
 
   # Fix osgQt for Qt 5.2
@@ -67,7 +68,7 @@ class OpenSceneGraph < Formula
     end
 
     args = std_cmake_args
-    args << '-DBUILD_DOCUMENTATION=' + ((build.include? 'docs') ? 'ON' : 'OFF')
+    args << "-DBUILD_DOCUMENTATION=" + ((build.with? "docs") ? "ON" : "OFF")
 
     if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.arch_64_bit}"
@@ -92,9 +93,9 @@ class OpenSceneGraph < Formula
     mkdir 'build' do
       system 'cmake', *args
       system 'make'
-      system 'make', 'doc_openscenegraph' if build.include? 'docs'
+      system "make", "doc_openscenegraph" if build.with? "docs"
       system 'make install'
-      if build.include? 'docs'
+      if build.with? "docs"
         doc.install Dir["#{prefix}/doc/OpenSceneGraphReferenceDocs/*"]
       end
     end
