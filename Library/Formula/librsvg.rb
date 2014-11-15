@@ -1,7 +1,7 @@
 class Librsvg < Formula
-  homepage 'https://live.gnome.org/LibRsvg'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.40/librsvg-2.40.5.tar.xz'
-  sha256 'd14d7b3e25023ce34302022fd7c9b3a468629c94dff6c177874629686bfc71a7'
+  homepage "https://live.gnome.org/LibRsvg"
+  url "http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.40/librsvg-2.40.5.tar.xz"
+  sha256 "d14d7b3e25023ce34302022fd7c9b3a468629c94dff6c177874629686bfc71a7"
 
   bottle do
     cellar :any
@@ -29,7 +29,7 @@ class Librsvg < Formula
             "--enable-pixbuf-loader=yes",
             "--enable-introspection=no"]
 
-    args << "--enable-svgz" if build.with? 'libgsf'
+    args << "--enable-svgz" if build.with? "libgsf"
 
     system "./configure", *args
     system "make", "install",
