@@ -16,7 +16,8 @@ class Tcpreplay < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--enable-dynamic-link"
+                          "--enable-dynamic-link",
+                          "--with-libpcap=#{MacOS.sdk_path}/usr"
     system "make", "install"
   end
 end
