@@ -63,7 +63,7 @@ object JobServerBuild extends Build {
   ) dependsOn(jobServerApi)
 
   lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"),
-    settings = commonSettings210 ++ publishSettings //++ Seq(exportJars := true)
+    settings = commonSettings210 ++ publishSettings
                                     )
 
   // This meta-project aggregates all of the sub-projects and can be used to compile/test/style check
