@@ -2,8 +2,8 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.5.4.tar.gz"
-  sha1 "40d4427bd623ce695ed060e9bb3fdb9959375485"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.6.2.tar.gz"
+  sha1 "af3b239ea14e174928ad4b3850c22afa67e5afe9"
 
   bottle do
     cellar :any
@@ -31,8 +31,8 @@ class Awscli < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.68.0.tar.gz"
-    sha1 "5704babdf525e5443d1ef7189a2ed07ae023a0f4"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.73.0.tar.gz"
+    sha1 "bee0e6fa263002bea01718ea853839d4bacbe85d"
   end
 
   resource "bcdoc" do
