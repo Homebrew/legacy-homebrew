@@ -38,7 +38,7 @@ class OpenBabel < Formula
   depends_on 'swig' if build.with? 'python' or build.with? 'java'
 
   def install
-    args = std_cmake_parameters.split
+    args = std_cmake_args
     args << "-DRUN_SWIG=ON" if build.with? 'python' or build.with? 'java'
     args << "-DJAVA_BINDINGS=ON" if build.with? 'java'
     args << "-DBUILD_GUI=ON" if build.with? 'wxmac'
