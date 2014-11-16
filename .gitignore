@@ -13,6 +13,7 @@
 !/share/doc/homebrew
 !/share/man/man1/brew.1
 .DS_Store
+*.DS_Store
 /Library/Homebrew/doc
 /Library/LinkedKegs
 /Library/PinnedKegs
