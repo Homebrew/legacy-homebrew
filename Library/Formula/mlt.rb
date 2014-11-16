@@ -25,7 +25,7 @@ class Mlt < Formula
 
   depends_on "gtk+" => :optional
 
-  if build.with? "gtk"
+  if build.with? "gtk+"
     depends_on "pango"
     depends_on "gdk-pixbuf"
   end
@@ -36,7 +36,7 @@ class Mlt < Formula
             "--disable-jackrack",
             "--disable-swfdec"]
 
-    args << "--disable-gtk" if build.without? "gtk"
+    args << "--disable-gtk" if build.without? "gtk+"
 
     system "./configure", *args
 
