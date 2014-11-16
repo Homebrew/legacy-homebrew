@@ -25,7 +25,7 @@ class Dar < Formula
   depends_on "gnu-sed" => :build
   depends_on "libgcrypt" => :optional
   depends_on "lzo" => :optional
-  depends_on "upx" => :build if build.with? "upx"
+  depends_on "upx" => [:build, :optional]
 
   def install
     ENV.prepend_path 'PATH', "#{Formula['gnu-sed'].opt_libexec}/gnubin"
