@@ -6,8 +6,12 @@ class Postgis < Formula
   sha256 'cd73c2a38428c8736f6cae73b955aee0bd42f9ca4fd8d93c1af464524cb100fc'
   revision 1
 
-  # TODO: don't add bottle until we've fixed:
-  # https://github.com/Homebrew/homebrew/issues/33566
+  def pour_bottle?
+    # Postgres extensions must live in the Postgres prefix, which precludes
+    # bottling: https://github.com/Homebrew/homebrew/issues/10247
+    # Overcoming this will likely require changes in Postgres itself.
+    false
+  end
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
