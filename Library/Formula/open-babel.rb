@@ -51,12 +51,11 @@ class OpenBabel < Formula
 
     # Point cmake towards correct python
     if build.with? 'python'
-      pyvers = "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
       pypref = `python -c 'import sys;print(sys.prefix)'`.strip
       pyinc = `python -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'`.strip
       args << "-DPYTHON_BINDINGS=ON"
       args << "-DPYTHON_INCLUDE_DIR='#{pyinc}'"
-      args << "-DPYTHON_LIBRARY='#{pypref}/lib/lib#{pyvers}.dylib'"
+      args << "-DPYTHON_LIBRARY='#{pypref}/lib/libpython2.7.dylib'"
     end
 
     args << '..'
