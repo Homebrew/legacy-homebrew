@@ -4,7 +4,7 @@ class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
   head 'https://github.com/fletcher/MultiMarkdown-4.git', :branch => 'master'
   # Use git tag instead of the tarball to get submodules
-  url 'https://github.com/fletcher/MultiMarkdown-4.git', :tag => '4.5.3'
+  url 'https://github.com/fletcher/MultiMarkdown-4.git', :tag => '4.6'
 
   conflicts_with 'mtools', :because => 'both install `mmd` binaries'
 
