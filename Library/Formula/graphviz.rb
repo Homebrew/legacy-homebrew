@@ -24,17 +24,19 @@ class Graphviz < Formula
   deprecated_option "with-x" => "with-x11"
   deprecated_option "with-pangocairo" => "with-pango"
 
-  depends_on "libpng"
-
   depends_on "pkg-config" => :build
+  depends_on :xcode => :build if build.with? "app"
   depends_on "pango" => :optional
-  depends_on "swig" if build.with? "bindings"
-  depends_on :python if build.with? "bindings"
   depends_on "gts" => :optional
   depends_on "librsvg" => :optional
   depends_on "freetype" => :optional
   depends_on :x11 => :optional
-  depends_on :xcode => :build if build.with? "app"
+  depends_on "libpng"
+
+  if build.with? "bindings"
+    depends_on "swig" => :build
+    depends_on :python
+  end
 
   fails_with :clang do
     build 318
