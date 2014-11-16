@@ -1,9 +1,23 @@
-require 'formula'
+require "formula"
 
 class DBus < Formula
-  homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.6.4.tar.gz'
-  sha256 '5fba6b7a415d761a843fb8e0aee72db61cf13057a9ef8cdc795e5d369dc74cf1'
+  homepage "http://www.freedesktop.org/wiki/Software/dbus"
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.8.tar.gz"
+  sha1 "e0d10e8b4494383c7e366ac80a942ba45a705a96"
+
+  bottle do
+    revision 1
+    sha1 "6258f4a3816c909fe3ef9aa9da7b596c56471d1e" => :yosemite
+    sha1 "de9cc0897fadf951d0a915263ec8303ce3f27e23" => :mavericks
+    sha1 "6132e9f82c522fef668c31319bd8c03ae42dfcda" => :mountain_lion
+  end
+
+  # Upstream fix for O_CLOEXEC portability
+  # http://cgit.freedesktop.org/dbus/dbus/commit/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472
+  patch do
+    url "http://cgit.freedesktop.org/dbus/dbus/patch/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472"
+    sha1 "ebb383abb86eeafbe048dbb8b77d83bdf0b7c9bb"
+  end
 
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
@@ -23,8 +37,10 @@ class DBus < Formula
     ENV.deparallelize
     system "make install"
 
-    (prefix+'org.freedesktop.dbus-session.plist').chmod 0644
+    (prefix+"org.freedesktop.dbus-session.plist").chmod 0644
+  end
 
+  def post_install
     # Generate D-Bus's UUID for this machine
     system "#{bin}/dbus-uuidgen", "--ensure=#{var}/lib/dbus/machine-id"
   end

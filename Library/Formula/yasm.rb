@@ -2,19 +2,31 @@ require 'formula'
 
 class Yasm < Formula
   homepage 'http://yasm.tortall.net/'
-  url 'http://tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz'
-  sha256 '768ffab457b90a20a6d895c39749adb547c1b7cb5c108e84b151a838a23ccf31'
+  url "http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz"
+  sha256 "3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f"
 
-  head 'https://github.com/yasm/yasm.git'
-
-  option 'enable-python', 'Enable Python bindings'
-
-  if build.head?
-    depends_on 'gettext'
-    depends_on :automake
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "86705ca09a33d0ba81000cadef9afe46a2072a70" => :yosemite
+    sha1 "670a8b4722cfa032e7b0abcc618d54d0c32631bf" => :mavericks
+    sha1 "772d7dbb840d3beb794980d1386f86db1cfd5bb4" => :mountain_lion
   end
 
-  depends_on 'Cython' => :python if build.include? 'enable-python'
+  head do
+    url 'https://github.com/yasm/yasm.git'
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "gettext"
+  end
+
+  resource "cython" do
+    url "http://cython.org/release/Cython-0.20.2.tar.gz"
+    sha1 "e3fd4c32bdfa4a388cce9538417237172c656d55"
+  end
+
+  depends_on :python => :optional
 
   def install
     args = %W[
@@ -22,31 +34,21 @@ class Yasm < Formula
       --prefix=#{prefix}
     ]
 
-    if build.include? 'enable-python'
+    if build.with? "python"
+      ENV.prepend_create_path "PYTHONPATH", buildpath+"lib/python2.7/site-packages"
+      resource("cython").stage do
+        system "python", "setup.py", "build", "install", "--prefix=#{buildpath}"
+      end
+
       args << '--enable-python'
       args << '--enable-python-bindings'
     end
 
-    # Avoid "ld: library not found for -lcrt1.10.6.o" on Xcode without CLT
-    ENV['LIBS'] = ENV.ldflags
-    ENV['INCLUDES'] = ENV.cppflags
+    # https://github.com/Homebrew/homebrew/pull/19593
+    ENV.deparallelize
+
     system './autogen.sh' if build.head?
     system './configure', *args
     system 'make install'
-  end
-
-  def caveats
-    if build.include? 'enable-python' then <<-EOS.undent
-      Python bindings installed to:
-        #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
-
-      For non-homebrew Python, you need to amend your PYTHONPATH like so:
-        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-      EOS
-    end
-  end
-
-  def which_python
-    'python' + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end

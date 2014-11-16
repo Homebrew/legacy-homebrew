@@ -2,22 +2,18 @@ require 'formula'
 
 class Glade < Formula
   homepage 'http://glade.gnome.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/glade3/3.8/glade3-3.8.2.tar.xz'
-  sha256 'f180a5018eee6e3fe574854cb025af897dd9962b01d17d5752e626876d388b19'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/glade3/3.8/glade3-3.8.5.tar.xz'
+  sha256 '58a5f6e4df4028230ddecc74c564808b7ec4471b1925058e29304f778b6b2735'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'intltool'
   depends_on 'libglade'
+  depends_on 'libxml2'
   depends_on 'hicolor-icon-theme'
   depends_on :x11
 
   def install
-    pydir = 'python' + `python -c 'import sys;print(sys.version[:3])'`.strip
-    libxml2 = Formula.factory('libxml2')
-    ENV.prepend 'PYTHONPATH', libxml2.lib/pydir/'site-packages', ':'
-
     # Find our docbook catalog
     ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
 

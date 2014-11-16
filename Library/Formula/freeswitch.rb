@@ -2,20 +2,36 @@ require 'formula'
 
 class Freeswitch < Formula
   homepage 'http://freeswitch.org'
-  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.2.0'
-  version '1.2.0'
+  url 'https://stash.freeswitch.org/scm/fs/freeswitch.git', :tag => 'v1.4.6'
 
-  head 'git://git.freeswitch.org/freeswitch.git'
+  head 'https://stash.freeswitch.org/scm/fs/freeswitch.git'
+
+  bottle do
+    sha1 "a1ff029908457b7a992474b8abd4428c88858128" => :mavericks
+    sha1 "05c391e0c3f2f795ec7b87485a5ad54fbdd57259" => :mountain_lion
+    sha1 "dc5a331f94eb51353d01dfe6d2319985e7844a96" => :lion
+  end
 
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
-
   depends_on 'pkg-config' => :build
+
   depends_on 'jpeg'
+  depends_on 'curl'
+  depends_on 'openssl'
+  depends_on 'pcre'
+  depends_on 'speex'
+  depends_on 'sqlite'
 
   def install
     system "./bootstrap.sh -j#{ENV.make_jobs}"
+
+    # tiff will fail to find OpenGL unless told not to use X
+    inreplace "libs/tiff-4.0.2/configure.gnu", "--with-pic", "--with-pic --without-x"
+    # mod_enum requires libldns-dev which doesn't seem to exist in brew
+    inreplace "modules.conf", "applications/mod_enum", "#applications/mod_enum"
+
     system "./configure", "--disable-dependency-tracking",
                           "--enable-shared",
                           "--enable-static",
@@ -27,7 +43,9 @@ class Freeswitch < Formula
     system "make all cd-sounds-install cd-moh-install"
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :manual => "freeswitch -nc --nonat"
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -51,23 +69,7 @@ class Freeswitch < Formula
     EOS
   end
 
-  def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or start it manually:
-      freeswitch -nc --nonat
-    EOS
-  end
-
-  def test
+  test do
     system "#{bin}/freeswitch", "-version"
   end
 end

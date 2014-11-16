@@ -1,35 +1,34 @@
-require 'formula'
+require "formula"
 
 class Hadoop < Formula
-  homepage 'http://hadoop.apache.org/common/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.0.3/hadoop-1.0.3.tar.gz'
-  sha1 '5ca6b77e0a600475fae6770c52b47a751f646f9c'
-
-  def shim_script target
-    <<-EOS.undent
-    #!/bin/bash
-    exec "#{libexec}/bin/#{target}" "$@"
-    EOS
-  end
+  homepage "http://hadoop.apache.org/"
+  url "http://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.5.1/hadoop-2.5.1.tar.gz"
+  sha1 "f578b7dc395407601b58c956400afab810189025"
 
   def install
-    rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf lib webapps contrib]
-    libexec.install Dir['*.jar']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    rm_f Dir["bin/*.cmd", "sbin/*.cmd", "libexec/*.cmd", "etc/hadoop/*.cmd"]
+    libexec.install %w[bin sbin libexec share etc]
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
+    sbin.write_exec_script Dir["#{libexec}/sbin/*"]
+    # But don't make rcc visible, it conflicts with Qt
+    (bin/"rcc").unlink
 
-    inreplace "#{libexec}/conf/hadoop-env.sh",
-      "# export JAVA_HOME=/usr/lib/j2sdk1.5-sun",
+    inreplace "#{libexec}/etc/hadoop/hadoop-env.sh",
+      "export JAVA_HOME=${JAVA_HOME}",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+    inreplace "#{libexec}/etc/hadoop/yarn-env.sh",
+      "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+    inreplace "#{libexec}/etc/hadoop/mapred-env.sh",
+      "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
       "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 
   def caveats; <<-EOS.undent
     In Hadoop's config file:
-      #{libexec}/conf/hadoop-env.sh
+      #{libexec}/etc/hadoop/hadoop-env.sh,
+      #{libexec}/etc/hadoop/mapred-env.sh and
+      #{libexec}/etc/hadoop/yarn-env.sh
     $JAVA_HOME has been set to be the output of:
       /usr/libexec/java_home
     EOS

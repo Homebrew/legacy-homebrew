@@ -1,26 +1,45 @@
 require 'formula'
 
-class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.12.1.tar.gz'
-  sha1 '2d9c267c5370cdceb2e67f67abf5b152b0c18db9'
-end
-
-class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.12.1.tar.gz'
-  sha1 'b42d5db34612825676d0a231cf9c566f8ad45e9f'
-end
-
 class Git < Formula
-  homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.12.1.tar.gz'
-  sha1 'c5227b5202947bba3d63dca72662fad02d208800'
+  homepage "http://git-scm.com"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.1.3.tar.gz"
+  sha1 "e8e7dcff1c23dc56f5d00460283f8ab779998f48"
 
-  head 'https://github.com/git/git.git'
+  head "https://github.com/git/git.git", :shallow => false
 
-  depends_on 'pcre' if build.include? 'with-pcre'
+  bottle do
+    sha1 "bfd87cb2e3d93fae22be525c4ec13ef07f319f4f" => :yosemite
+    sha1 "5d31dfe61d78b8642ea80d54c2eff950a1cd09e5" => :mavericks
+    sha1 "574d6f77e7f0b39e8720e2e8717c4824b44b588c" => :mountain_lion
+  end
+
+  resource "man" do
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.1.3.tar.gz"
+    sha1 "68b07135b73ca05dab08eb909dfcecd0216230d2"
+  end
+
+  resource "html" do
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.1.3.tar.gz"
+    sha1 "5177f471c677ffb570e8618b7dce79e1024a628e"
+  end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
-  option 'with-pcre', 'Compile with the PCRE library'
+  option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
+  option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
+  option 'with-brewed-curl', "Use Homebrew's version of cURL library"
+  option 'with-brewed-svn', "Use Homebrew's version of SVN"
+  option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
+
+  depends_on 'pcre' => :optional
+  depends_on 'gettext' => :optional
+  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'curl' if build.with? 'brewed-curl'
+  depends_on 'go' => :build if build.with? 'persistent-https'
+  depends_on 'subversion' => 'perl' if build.with? 'brewed-svn'
+
+  # This patch fixes Makefile bug contrib/subtree
+  # http://thread.gmane.org/gmane.comp.version-control.git/255347
+  patch :DATA
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -28,21 +47,40 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-    ENV['NO_GETTEXT'] = '1'
-    ENV['PERL_PATH'] = which 'perl' # workaround for users of perlbrew
-    ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
+    ENV['PYTHON_PATH'] = which 'python'
+    ENV['PERL_PATH'] = which 'perl'
 
-    # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
+    perl_version = /\d\.\d+/.match(`perl --version`)
 
-    ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
-
-    if build.include? 'with-pcre'
-      ENV['USE_LIBPCRE'] = '1'
-      ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
+    if build.with? 'brewed-svn'
+      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
+    elsif MacOS.version >= :mavericks
+      ENV["PERLLIB_EXTRA"] = %W{
+        #{MacOS.active_developer_dir}
+        /Library/Developer/CommandLineTools
+        /Applications/Xcode.app/Contents/Developer
+      }.uniq.map { |p|
+        "#{p}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
+      }.join(":")
     end
 
+    unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
+      ENV['NO_PERL_MAKEMAKER'] = '1'
+    end
+
+    ENV['BLK_SHA1'] = '1' if build.with? 'blk-sha1'
+
+    if build.with? 'pcre'
+      ENV['USE_LIBPCRE'] = '1'
+      ENV['LIBPCREDIR'] = Formula['pcre'].opt_prefix
+    end
+
+    ENV['NO_GETTEXT'] = '1' if build.without? 'gettext'
+
+    ENV['GIT_DIR'] = cached_download/".git" if build.head?
+
     system "make", "prefix=#{prefix}",
+                   "sysconfdir=#{etc}",
                    "CC=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}",
@@ -65,15 +103,34 @@ class Git < Formula
       bin.install 'git-subtree'
     end
 
-    # install the completion script first because it is inside 'contrib'
-    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
-    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-prompt.sh'
+    if build.with? 'persistent-https'
+      cd 'contrib/persistent-https' do
+        system "make"
+        bin.install 'git-remote-persistent-http',
+                    'git-remote-persistent-https',
+                    'git-remote-persistent-https--proxy'
+      end
+    end
+
+    if build.with? 'completions'
+      # install the completion script first because it is inside 'contrib'
+      bash_completion.install 'contrib/completion/git-completion.bash'
+      bash_completion.install 'contrib/completion/git-prompt.sh'
+
+      zsh_completion.install 'contrib/completion/git-completion.zsh' => '_git'
+      cp "#{bash_completion}/git-completion.bash", zsh_completion
+    end
+
     (share+'git-core').install 'contrib'
 
     # We could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier.
-    GitManuals.new.brew { man.install Dir['*'] }
-    GitHtmldocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
+    man.install resource('man')
+    (share+'doc/git-doc').install resource('html')
+
+    # Make html docs world-readable
+    chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
+    chmod 0755, Dir["#{share}/doc/git-doc/{RelNotes,howto,technical}"]
   end
 
   def caveats; <<-EOS.undent
@@ -85,9 +142,28 @@ class Git < Formula
     EOS
   end
 
-  def test
+  test do
     HOMEBREW_REPOSITORY.cd do
-      `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
+      assert_equal 'bin/brew', `#{bin}/git ls-files -- bin`.strip
     end
   end
 end
+
+__END__
+--- a/contrib/subtree/Makefile
++++ b/contrib/subtree/Makefile
+@@ -1,3 +1,5 @@
++all::
++
+ -include ../../config.mak.autogen
+ -include ../../config.mak
+ 
+@@ -34,7 +36,7 @@ GIT_SUBTREE_XML := git-subtree.xml
+ GIT_SUBTREE_TXT := git-subtree.txt
+ GIT_SUBTREE_HTML := git-subtree.html
+ 
+-all: $(GIT_SUBTREE)
++all:: $(GIT_SUBTREE)
+ 
+ $(GIT_SUBTREE): $(GIT_SUBTREE_SH)
+ 	sed -e '1s|#!.*/sh|#!$(SHELL_PATH_SQ)|' $< >$@

@@ -1,90 +1,31 @@
 require 'formula'
 
-class MySqlInstalled < Requirement
-  def message
-    <<-EOS.undent
-      MySQL is required to install.
-
-      You can install this with Homebrew using:
-        brew install mysql-connector-c
-          For MySQL client libraries only.
-
-        brew install mysql
-          For MySQL server.
-
-      Or you can use an official installer from:
-        http://dev.mysql.com/downloads/mysql/
-    EOS
-  end
-
-  def satisfied?
-    which 'mysql_config'
-  end
-
-  def fatal?
-    true
-  end
-end
-
-class PostgresInstalled < Requirement
-  def message
-    <<-EOS.undent
-      Postgres is required to install.
-
-      You can install this with Homebrew using:
-        brew install postgres
-
-      Or you can use an official installer from:
-        http://www.postgresql.org/download/macosx/
-    EOS
-  end
-
-  def satisfied?
-    which 'pg_config'
-  end
-
-  def fatal?
-    true
-  end
-end
-
-def no_mysql?
-  ARGV.include? '--without-mysql'
-end
-
-def no_postgresql?
-  ARGV.include? '--without-postgresql'
-end
-
-def no_sqlite?
-  ARGV.include? '--without-sqlite'
-end
-
 class Libzdb < Formula
   homepage 'http://tildeslash.com/libzdb/'
-  url 'http://tildeslash.com/libzdb/dist/libzdb-2.10.5.tar.gz'
-  sha1 '30f975e73caf58f1fa02260ed7136185a3ba2d27'
+  url 'http://tildeslash.com/libzdb/dist/libzdb-3.0.tar.gz'
+  sha1 'bcf14c11cfcd0c05ecc8740f43cd0d6170406dc1'
 
-  depends_on PostgresInstalled.new unless no_postgresql?
-  depends_on MySqlInstalled.new    unless no_mysql?
-  depends_on 'sqlite'              unless no_sqlite?
-
-  def options
-    [
-      ['--without-sqlite',     "Compile without SQLite support."],
-      ['--without-postgresql', "Compile without PostgreSQL support."],
-      ['--without-mysql',      "Compile without MySQL support."]
-    ]
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "e733947b31862fd1c8964872a29bd8aa5479635c" => :yosemite
+    sha1 "aa3ccc94e86d2158c1041474c79cdccb25e5d0b1" => :mavericks
+    sha1 "4ab2279dae830f543cc9fec5d41197150163bf83" => :mountain_lion
   end
 
-  def install
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
+  depends_on :postgresql => :recommended
+  depends_on :mysql => :recommended
+  depends_on 'sqlite' => :recommended
 
-    args << "--without-sqlite"     if no_sqlite?
-    args << "--without-mysql"      if no_mysql?
-    args << "--without-postgresql" if no_postgresql?
+  def install
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
+    args << "--without-postgresql" if build.without? 'postgresql'
+    args << "--without-mysql" if build.without? 'mysql'
+    args << "--without-sqlite" if build.without? 'sqlite'
 
     system "./configure", *args
     system "make install"

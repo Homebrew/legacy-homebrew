@@ -2,48 +2,43 @@ require 'formula'
 
 class Fop < Formula
   homepage "http://xmlgraphics.apache.org/fop/index.html"
-  url "http://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-1.0-bin.tar.gz"
-  sha1 '2e81bc0b6d26cba8af7d008cffe6a46955a82a4f'
+  url "http://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-1.1-bin.tar.gz"
+  sha1 '6b96c3f3fd5efe9f2b6b54bfa96161ec3f6a1dbc'
 
-  # Run in headless mode to avoid having it appear on the Dock and stealing UI focus.
-  def patches
-    DATA
+  # http://offo.sourceforge.net/hyphenation/
+  resource 'hyph' do
+    url 'https://downloads.sourceforge.net/project/offo/offo-hyphenation-utf8/0.1/offo-hyphenation-fop-stable-utf8.zip'
+    sha1 'c2a3f6e985b21c9702a714942ac747864c8b1759'
   end
 
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      "#{libexec}/#{target}" "$@"
-    EOS
-  end
+  # fixes broken default java path as in
+  # http://svn.apache.org/viewvc/ant/core/trunk/src/script/ant?r1=1238725&r2=1434680&pathrev=1434680&view=patch
+  patch :DATA
 
   def install
     libexec.install Dir["*"]
-    (bin+'fop').write shim_script('fop')
+    bin.write_exec_script libexec/'fop'
+    resource('hyph').stage do
+      (libexec/'build').install 'fop-hyph.jar'
+    end
   end
 end
 
-
 __END__
 diff --git a/fop b/fop
-index 3f2ac6f..c9167bb 100755
+index aca642b..1cae344 100755
 --- a/fop
 +++ b/fop
-@@ -19,6 +19,7 @@
- 
- rpm_mode=true
- fop_exec_args=
-+java_exec_args="-Djava.awt.headless=true"
- no_config=false
- fop_exec_debug=false
- show_help=false
-@@ -247,7 +248,7 @@ fi
- 
- # Execute FOP using eval/exec to preserve spaces in paths,
- # java options, and FOP args
--fop_exec_command="exec \"$JAVACMD\" $LOGCHOICE $LOGLEVEL -classpath \"$LOCALCLASSPATH\" $FOP_OPTS org.apache.fop.cli.Main $fop_exec_args"
-+fop_exec_command="exec \"$JAVACMD\" $java_exec_args $LOGCHOICE $LOGLEVEL -classpath \"$LOCALCLASSPATH\" $FOP_OPTS org.apache.fop.cli.Main $fop_exec_args"
- if $fop_exec_debug ; then
-     echo $fop_exec_command
- fi
-
+@@ -81,7 +81,11 @@ case "`uname`" in
+   CYGWIN*) cygwin=true ;;
+   Darwin*) darwin=true
+            if [ -z "$JAVA_HOME" ] ; then
+-             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
++               if [ -x '/usr/libexec/java_home' ] ; then
++                   JAVA_HOME=`/usr/libexec/java_home`
++               elif [ -d "/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home" ]; then
++                   JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
++               fi
+            fi
+            ;;
+ esac

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mysqlxx < Formula
-  url 'http://tangentsoft.net/mysql++/releases/mysql++-3.1.0.tar.gz'
+  url 'http://tangentsoft.net/mysql++/releases/mysql++-3.2.0.tar.gz'
   homepage 'http://tangentsoft.net/mysql++/'
-  sha1 '9bd383ad932dce8cc1948ec76eed9036419d427f'
+  sha1 '4bd50f5b8259b5f12e42d6a810e5941eaddaf24a'
 
   depends_on 'mysql-connector-c'
 

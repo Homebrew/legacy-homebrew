@@ -2,12 +2,18 @@ require 'formula'
 
 class HtopOsx < Formula
   homepage 'https://github.com/max-horvath/htop-osx'
-  url 'https://github.com/max-horvath/htop-osx/tarball/0.8.2.1-2012-04-18'
-  sha1 '90975472c683e59a6476e215ae5cb768d86659a8'
+  url 'https://github.com/max-horvath/htop-osx/archive/0.8.2.2.tar.gz'
+  sha1 '17c56fe5efe81cf6b0f4c13a958fa7e4d8591b23'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  bottle do
+    sha1 "1979feaa7dc6dc9ea8eba0eeba0903451b6dcb60" => :mavericks
+    sha1 "60dfb6d300afd103aa5533b52302de3bb0dd067f" => :mountain_lion
+    sha1 "ffed10bd7a4a6649120d8db66ac7b0daf686b982" => :lion
+  end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     # Otherwise htop will segfault when resizing the terminal

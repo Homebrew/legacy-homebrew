@@ -2,19 +2,22 @@ require 'formula'
 
 class Vrpn < Formula
   homepage 'http://vrpn.org'
-  url 'ftp://ftp.cs.unc.edu/pub/packages/GRIP/vrpn/vrpn_07_30.zip'
-  sha1 '474f45d524ba959e93630f19666fd03d8f337d90'
+  url 'http://www.cs.unc.edu/Research/vrpn/downloads/vrpn_07_31.zip'
+  sha1 'a78dd36cd301a7def2d54576cfa63604a8729ace'
 
   head 'git://git.cs.unc.edu/vrpn.git'
 
   option 'clients', 'Build client apps and tests'
-  option 'docs', 'Build doxygen-based API documentation'
+  option "with-docs", "Build doxygen-based API documentation"
+  deprecated_option "docs" => "with-docs"
 
   depends_on 'cmake' => :build
   depends_on 'libusb' # for HID support
-  depends_on 'doxygen' if build.include? 'docs'
+  depends_on "doxygen" => :build if build.with? "docs"
 
   def install
+    ENV.libstdcxx
+
     args = std_cmake_args
 
     if build.include? 'clients'
@@ -26,7 +29,7 @@ class Vrpn < Formula
 
     mkdir "build" do
       system "cmake", *args
-      system "make doc" if build.include? 'docs'
+      system "make doc" if build.with? "docs"
       system "make install"
     end
   end

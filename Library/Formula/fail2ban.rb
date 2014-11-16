@@ -1,40 +1,42 @@
-require 'formula'
+require "formula"
 
 class Fail2ban < Formula
-  homepage 'http://www.fail2ban.org/'
-  url 'http://cloud.github.com/downloads/fail2ban/fail2ban/fail2ban_0.8.7.1.orig.tar.gz'
-  sha1 'ec1a7ea1360056d5095bb9de733c1e388bd22373'
+  homepage "http://www.fail2ban.org/"
+  url "https://github.com/fail2ban/fail2ban/archive/0.8.14.tar.gz"
+  sha1 "fb104335acf9d71552a4a1cec06fac1187846867"
+
+  bottle do
+    sha1 "ab90e39f9669b929dd4ec43b9f736a1ab1cac652" => :mavericks
+    sha1 "3b2c563f7316ed9c485744e24ec6abc3bb242040" => :mountain_lion
+    sha1 "0c91986b55c0d35497ef0d4c42d992c9958c577e" => :lion
+  end
 
   def install
-    inreplace 'setup.py' do |s|
+    rm "setup.cfg"
+    inreplace "setup.py" do |s|
       s.gsub! /\/etc/, etc
       s.gsub! /\/var/, var
     end
 
     # Replace hardcoded paths
-    inreplace 'fail2ban-client', '/usr/share/fail2ban', libexec
-    inreplace 'fail2ban-server', '/usr/share/fail2ban', libexec
-    inreplace 'fail2ban-regex', '/usr/share/fail2ban', libexec
+    inreplace "fail2ban-client", "/usr/share/fail2ban", libexec
+    inreplace "fail2ban-server", "/usr/share/fail2ban", libexec
+    inreplace "fail2ban-regex", "/usr/share/fail2ban", libexec
 
-    inreplace 'fail2ban-client', '/etc', etc
-    inreplace 'fail2ban-server', '/etc', etc
-    inreplace 'fail2ban-regex', '/etc', etc
+    inreplace "fail2ban-client", "/etc", etc
+    inreplace "fail2ban-regex", "/etc", etc
 
-    inreplace 'fail2ban-server', '/var', var
-    inreplace 'config/fail2ban.conf', '/var/run', (var + 'run')
+    inreplace "fail2ban-server", "/var", var
+    inreplace "config/fail2ban.conf", "/var/run", (var/"run")
 
-    system "python", "setup.py", "install",
-                     "--prefix=#{prefix}",
-                     "--install-lib=#{libexec}",
-                     "--install-data=#{libexec}",
-                     "--install-scripts=#{bin}"
+    inreplace "setup.py", "/usr/share/doc/fail2ban", (libexec/"doc")
 
-    plist_path.write startup_plist
-    plist_path.chmod 0644
+    system "python", "setup.py", "install", "--prefix=#{prefix}", "--install-lib=#{libexec}"
   end
 
-  def startup_plist
-    <<-EOF.undent
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -43,14 +45,15 @@ class Fail2ban < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{HOMEBREW_PREFIX}/bin/fail2ban-client</string>
+          <string>#{opt_bin}/fail2ban-client</string>
+          <string>-x</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
       </dict>
       </plist>
-    EOF
+    EOS
   end
 
   def caveats
@@ -69,15 +72,6 @@ class Fail2ban < Formula
 
         10.4: http://www.fail2ban.org/wiki/index.php/HOWTO_Mac_OS_X_Server_(10.4)
         10.5: http://www.fail2ban.org/wiki/index.php/HOWTO_Mac_OS_X_Server_(10.5)
-
-      A launchctl plist has been created that will start Fail2Ban at bootup. It
-      must be run by a user that is allowed to manipulate the enabled rules,
-      i.e. ipfw.
-      To install it execute the following commands:
-
-        sudo cp #{plist_path} /Library/LaunchDaemons/
-        sudo launchctl load /Library/LaunchDaemons/#{plist_name}
-
     EOS
   end
 end

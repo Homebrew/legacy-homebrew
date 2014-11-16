@@ -1,8 +1,8 @@
 require 'formula'
 
 class ThcPptpBruter < Formula
-  url 'http://freeworld.thc.org/releases/thc-pptp-bruter-0.1.4.tar.gz'
   homepage 'http://thc.org'
+  url 'http://freeworld.thc.org/releases/thc-pptp-bruter-0.1.4.tar.gz'
   sha1 '88a797ed0dcfb79aba92b319e29d1c5d8c1b14a4'
 
   def install

@@ -8,9 +8,11 @@ class Pxz < Formula
 
   depends_on 'xz'
 
-  def patches
-    DATA # Fixes usage of MAP_POPULATE for mmap (linux only)
+  fails_with :clang do
+    cause "pxz requires OpenMP support"
   end
+
+  patch :DATA # Fixes usage of MAP_POPULATE for mmap (linux only)
 
   def install
     system "make", "CC=#{ENV.cc}"

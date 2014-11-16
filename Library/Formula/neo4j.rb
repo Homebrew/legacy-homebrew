@@ -1,49 +1,27 @@
-require 'formula'
+require "formula"
 
 class Neo4j < Formula
-  homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.7.2-unix.tar.gz'
-  version 'community-1.7.2-unix'
-  sha1 '3836018559a550875f924ee225106ab8b15e8be0'
+  homepage "http://neo4j.org"
+  url "http://dist.neo4j.org/neo4j-community-2.1.5-unix.tar.gz"
+  sha1 "727c361e74d6a91e50b1ddc9b4ff6e61f72e39d9"
+  version "2.1.5"
 
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
-    # Fix the permissions on the global settings file.
-    chmod 0644, Dir["config"]
-
     # Install jars in libexec to avoid conflicts
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
     # Symlink binaries
     bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
-  end
 
-  def caveats; <<-EOS.undent
-    Quick-start guide:
+    # Adjust UDC props
+    open("#{libexec}/conf/neo4j-wrapper.conf", "a") { |f|
+      f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
 
-        1. Start the server manually:
-            neo4j start
-
-        2. Open webadmin:
-            open http://localhost:7474/webadmin/
-
-        3. Start exploring the REST API:
-            curl -v http://localhost:7474/db/data/
-
-        4. Stop:
-            neo4j stop
-
-    To launch on startup, install launchd-agent to ~/Library/LaunchAgents/ with:
-        neo4j install
-
-    If this is an upgrade, see:
-        #{libexec}/UPGRADE.txt
-
-    The manual can be found in:
-        #{libexec}/doc/
-
-    EOS
+      # suppress the empty, focus-stealing java gui
+      f.puts "wrapper.java.additional=-Djava.awt.headless=true"
+    }
   end
 end

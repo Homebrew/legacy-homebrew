@@ -1,15 +1,16 @@
-require 'formula'
+require "formula"
 
 class Antlr < Formula
-  homepage 'http://www.antlr.org/'
-  url "http://www.antlr.org/download/antlr-3.4-complete.jar"
-  sha1 '5cab59d859caa6598e28131d30dd2e89806db57f'
+  homepage "http://www.antlr.org/"
+  url "http://www.antlr.org/download/antlr-4.4-complete.jar"
+  sha1 "735569b1fa92a0d3f14bb5f3a3ffa713f5be4d1e"
 
   def install
-    prefix.install "antlr-3.4-complete.jar"
-    (bin+"antlr-3.4").write <<-EOS.undent
-    #!/bin/sh
-    java -jar #{prefix}/antlr-3.4-complete.jar "$@"
+    prefix.install "antlr-#{version}-complete.jar"
+    bin.write_jar_script prefix/"antlr-#{version}-complete.jar", "antlr4"
+    (bin+"grun").write <<-EOS.undent
+      #!/bin/bash
+      java -classpath #{prefix}/antlr-#{version}-complete.jar:. org.antlr.v4.runtime.misc.TestRig "$@"
     EOS
   end
 end

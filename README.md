@@ -1,25 +1,33 @@
-Homebrew
-========
-Features, usage and installation instructions are [summarized on the homepage][home].
+# Homebrew
+Features, usage and installation instructions are [summarised on the homepage](http://brew.sh).
 
-What Packages Are Available?
-----------------------------
-1. You can [browse the Formula directory on GitHub][formula].
-2. Or type `brew search` for a list.
-3. Or run `brew server` to browse packages off of a local web server.
-4. Or visit [braumeister.org][braumeister] to browse packages online.
+## What Packages Are Available?
+1. Type `brew search` for a list.
+2. Or visit [braumeister.org](http://braumeister.org) to browse packages online.
+3. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
 
-More Documentation
-------------------
-`brew help` or `man brew` or check our [wiki][].
+## More Documentation
+`brew help` or `man brew` or check our [documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
 
-Who Are You?
-------------
-I'm [Max Howell][mxcl] and I'm a splendid chap.
+## Troubleshooting
+First, please run `brew update` and `brew doctor`.
 
+Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Troubleshooting.md#troubleshooting).
 
-[home]:http://mxcl.github.com/homebrew
-[wiki]:http://wiki.github.com/mxcl/homebrew
-[mxcl]:http://twitter.com/mxcl
-[formula]:http://github.com/mxcl/homebrew/tree/master/Library/Formula/
-[braumeister]:http://braumeister.org
+**If you don't read these it will take us far longer to help you with your problem.**
+
+## Security
+Please report security issues to security@brew.sh.
+
+## Who Are You?
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
+
+Homebrew was originally created by [Max Howell](https://github.com/mxcl).
+
+## License
+Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt).
+
+## Donations
+We accept tips through [Gratipay](https://gratipay.com/Homebrew/).
+
+[![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://www.gittip.com/Homebrew/)

@@ -2,7 +2,7 @@ require 'formula'
 
 class Xdotool < Formula
   homepage 'http://www.semicomplete.com/projects/xdotool/'
-  url 'http://semicomplete.googlecode.com/files/xdotool-2.20110530.1.tar.gz'
+  url 'https://semicomplete.googlecode.com/files/xdotool-2.20110530.1.tar.gz'
   sha1 'bf8372b2e76e8ee3884763cee6e8b3f66bf29aa6'
 
   depends_on 'pkg-config' => :build

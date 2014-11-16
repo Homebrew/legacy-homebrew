@@ -2,32 +2,49 @@ require 'formula'
 
 class Sleuthkit < Formula
   homepage 'http://www.sleuthkit.org/'
-  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/3.2.3/sleuthkit-3.2.3.tar.gz'
-  sha1 '85d100ffde54f051916a4ea9452563ff85fad4ac'
 
-  head 'https://github.com/sleuthkit/sleuthkit.git'
+  stable do
+    url "https://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.3/sleuthkit-4.1.3.tar.gz"
+    sha1 "9350bb59bb5fbe41d6e29a8d0494460b937749ef"
 
-  if build.head?
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    # Upstream fix for https://github.com/sleuthkit/sleuthkit/issues/345
+    patch do
+      url "https://github.com/sleuthkit/sleuthkit/commit/39c62d6d169f8723c821ca7decdb8e124e126782.diff"
+      sha1 "9da053e839ef8c4a454ac2f4f80b368884ff959c"
+    end
   end
 
+  head do
+    url "https://github.com/sleuthkit/sleuthkit.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  conflicts_with 'irods', :because => 'both install `ils`'
+
+  option 'with-jni', "Build Sleuthkit with JNI bindings"
+
+  depends_on :ant => :build
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 
-  def patches
-    # required for new-ish libewf releases (API change)
-    # fixed in the upcoming sleuthkit 4.x
-    if build.stable?
-      "http://downloads.sourceforge.net/project/libewf/patches%20for%203rd%20party%20software/sleuthkit/tsk3.2.3-libewf.patch"
-    end
-  end
+  conflicts_with 'ffind',
+    :because => "both install a 'ffind' executable."
 
   def install
     system "./bootstrap" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
     system "make install"
+
+    if build.with? 'jni'
+      cd 'bindings/java' do
+        system 'ant'
+      end
+      prefix.install 'bindings'
+    end
   end
 end

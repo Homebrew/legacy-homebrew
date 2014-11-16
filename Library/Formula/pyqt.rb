@@ -1,69 +1,108 @@
-require 'formula'
-
-# Note: this project doesn't save old releases, so it breaks often as
-# downloads disappear.
+require "formula"
 
 class Pyqt < Formula
-  homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.9.4/PyQt-mac-gpl-4.9.4.tar.gz'
-  sha1 '3fe827fed91ec710746fa980f433313dfec2d5fd'
+  homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
+  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
+  sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
 
-  depends_on 'sip'
-  depends_on 'qt'
+  bottle do
+    revision 1
+    sha1 "251fb1a136972de87c98d3d06a3f5e1d6b8351d4" => :yosemite
+    sha1 "43f5b59a2b08d5ed035016459ffce566577a6e42" => :mavericks
+    sha1 "e058c40214fa5bed6391e815cfe7b2473b2bbc98" => :mountain_lion
+  end
+
+  depends_on :python => :recommended
+  depends_on :python3 => :optional
+
+  if build.without?("python3") && build.without?("python")
+    odie "pyqt: --with-python3 must be specified when using --without-python"
+  end
+
+  depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
+
+  if build.with? "python3"
+    depends_on "sip" => "with-python3"
+  else
+    depends_on "sip"
+  end
 
   def install
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
+    # On Mavericks we want to target libc++, this requires a non default qt makespec
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
+    end
 
-    system "python", "./configure.py", "--confirm-license",
-                                       "--bindir=#{bin}",
-                                       "--destdir=#{lib}/#{which_python}/site-packages",
-                                       "--sipdir=#{share}/sip"
-    system "make"
-    system "make install"
+    Language::Python.each_python(build) do |python, version|
+      ENV.append_path "PYTHONPATH", "#{Formula["sip"].opt_lib}/python#{version}/site-packages"
+
+      args = ["--confirm-license",
+              "--bindir=#{bin}",
+              "--destdir=#{lib}/python#{version}/site-packages",
+              "--sipdir=#{share}/sip"]
+
+      # We need to run "configure.py" so that pyqtconfig.py is generated, which
+      # is needed by QGIS, PyQWT (and many other PyQt interoperable
+      # implementations such as the ROS GUI libs). This file is currently needed
+      # for generating build files appropriate for the qmake spec that was used
+      # to build Qt.  The alternatives provided by configure-ng.py is not
+      # sufficient to replace pyqtconfig.py yet (see
+      # https://github.com/qgis/QGIS/pull/1508). Using configure.py is
+      # deprecated and will be removed with SIP v5, so we do the actual compile
+      # using the newer configure-ng.py as recommended. In order not to
+      # interfere with the build using configure-ng.py, we run configure.py in a
+      # temporary directory and only retain the pyqtconfig.py from that.
+
+      require "tmpdir"
+      dir = Dir.mktmpdir
+      begin
+        cp_r(Dir.glob('*'), dir)
+        cd dir do
+          system python, "configure.py", *args
+          (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
+        end
+      ensure
+        remove_entry_secure dir
+      end
+
+      # On Mavericks we want to target libc++, this requires a non default qt makespec
+      if ENV.compiler == :clang and MacOS.version >= :mavericks
+        args << "--spec" << "unsupported/macx-clang-libc++"
+      end
+
+      system python, "configure-ng.py", *args
+      system "make"
+      system "make", "install"
+      system "make", "clean"  # for when building against multiple Pythons
+    end
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+  def caveats
+    "Phonon support is broken."
+  end
+
+  test do
+    Pathname("test.py").write <<-EOS.undent
+      import sys
+      from PyQt4 import QtGui, QtCore
+
+      class Test(QtGui.QWidget):
+          def __init__(self, parent=None):
+              QtGui.QWidget.__init__(self, parent)
+              self.setGeometry(300, 300, 400, 150)
+              self.setWindowTitle('Homebrew')
+              QtGui.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
+                           " working with PyQt4. Quitting now...", self).move(50, 50)
+              QtCore.QTimer.singleShot(1500, QtGui.qApp, QtCore.SLOT("quit()"))
+
+      app = QtGui.QApplication([])
+      window = Test()
+      window.show()
+      sys.exit(app.exec_())
     EOS
-  end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
-
-  def test
-    # Reference: http://zetcode.com/tutorials/pyqt4/firstprograms/
-    mktemp do
-      ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
-
-      (Pathname.pwd/'test.py').write <<-EOS.undent
-        #!/usr/bin/env python
-
-        import sys
-        from PyQt4 import QtGui, QtCore
-
-        class QuitButton(QtGui.QWidget):
-            def __init__(self, parent=None):
-                QtGui.QWidget.__init__(self, parent)
-
-                self.setGeometry(300, 300, 250, 150)
-                self.setWindowTitle('Quit button')
-
-                quit = QtGui.QPushButton('Close', self)
-                quit.setGeometry(10, 10, 60, 35)
-
-                self.connect(quit, QtCore.SIGNAL('clicked()'),
-                    QtGui.qApp, QtCore.SLOT('quit()'))
-
-        app = QtGui.QApplication(sys.argv)
-        qb = QuitButton()
-        qb.show()
-        app.exec_()
-        sys.exit(0)
-        EOS
-
-      system "python", "test.py"
+    Language::Python.each_python(build) do |python, version|
+      system python, "test.py"
     end
   end
 end

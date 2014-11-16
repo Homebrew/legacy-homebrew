@@ -1,11 +1,11 @@
 require 'formula'
 
 class RbenvGemset < Formula
-  url 'https://github.com/jamis/rbenv-gemset/tarball/v0.3.0'
-  homepage 'https://github.com/jamis/rbenv-gemset'
-  sha1 '52e058e43a4a1395c3fe923365cee53d0977c41a'
+  homepage 'https://github.com/jf/rbenv-gemset'
+  url 'https://github.com/jf/rbenv-gemset/archive/v0.5.8.tar.gz'
+  sha1 'bd06efff2fcfaeb47bd32dc1658e4aae5d8a0619'
 
-  head 'https://github.com/jamis/rbenv-gemset.git'
+  head 'https://github.com/jf/rbenv-gemset.git'
 
   depends_on 'rbenv'
 

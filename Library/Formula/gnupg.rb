@@ -1,30 +1,26 @@
-require 'formula'
-
-class GnupgIdea < Formula
-  head 'http://www.gnupg.dk/contrib-dk/idea.c.gz', :using  => :nounzip
-  sha1 '9b78e20328d35525af7b8a9c1cf081396910e937'
-end
+require "formula"
 
 class Gnupg < Formula
-  homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.12.tar.bz2'
-  sha1 '9b78e20328d35525af7b8a9c1cf081396910e937'
+  homepage "http://www.gnupg.org/"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.18.tar.bz2"
+  mirror "http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.18.tar.bz2"
+  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/gnupg/gnupg-1.4.18.tar.bz2"
+  sha1 "41462d1a97f91abc16a0031b5deadc3095ce88ae"
+  revision 1
 
-  option 'idea', 'Build with the patented IDEA cipher'
-  option '8192', 'Build with support for private keys of up to 8192 bits'
+  bottle do
+    revision 2
+    sha1 "e1ea1c3bd682a15370f596a31297eb19ff87998e" => :yosemite
+    sha1 "71e3618e2f4ea550e194938f6742772fb7d376d9" => :mavericks
+    sha1 "f933064e91d20ebdb48f6f2180fdf7b99e814b8c" => :mountain_lion
+  end
+
+  option "8192", "Build with support for private keys of up to 8192 bits"
+
+  depends_on "curl" if MacOS.version <= :mavericks
 
   def install
-    if ENV.compiler == :clang
-      ENV.append 'CFLAGS', '-std=gnu89'
-      ENV.append 'CFLAGS', '-fheinous-gnu-extensions'
-    end
-
-    if build.include? 'idea'
-      GnupgIdea.new.brew { (buildpath/'cipher').install Dir['*'] }
-      system 'gunzip', 'cipher/idea.c.gz'
-    end
-
-    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
+    inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -34,21 +30,7 @@ class Gnupg < Formula
 
     # we need to create these directories because the install target has the
     # dependency order wrong
-    bin.mkpath
-    (libexec+'gnupg').mkpath
+    [bin, libexec/"gnupg"].each(&:mkpath)
     system "make install"
-  end
-
-  def caveats
-    if build.include? 'idea' then <<-EOS.undent
-      This build of GnuPG contains support for the patented IDEA cipher.
-      Please read http://www.gnupg.org/faq/why-not-idea.en.html before using
-      this software.
-
-      You will then need to add the following line to your ~/.gnupg/gpg.conf or
-        ~/.gnupg/options file:
-          load-extension idea
-      EOS
-    end
   end
 end

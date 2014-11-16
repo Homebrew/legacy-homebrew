@@ -1,30 +1,42 @@
-require 'formula'
+require "formula"
 
 class PltRacket < Formula
-  homepage 'http://racket-lang.org/'
-  # Use GitHub tarball as the release tarball doesn't have
-  # everything needed for building on OS X
-  url 'https://github.com/plt/racket/tarball/v5.2'
-  sha1 'bb2c6b6504796a88dada10b510f040b5bbec7b2e'
+  homepage "http://racket-lang.org/"
+  url "http://mirror.racket-lang.org/installers/6.1/racket-minimal-6.1-src-builtpkgs.tgz"
+  sha1 "988cc297eb35e26585cceac67ae00ebfd47174e2"
+  version "6.1"
 
-  # Don't strip symbols; need them for dynamic linking.
-  skip_clean 'bin'
+  bottle do
+    sha1 "91605ef5aca76449ad465669f21b940fa5ffd8fd" => :mavericks
+    sha1 "9de25cf2475b3aba5a58a721325fc9d1a9656f12" => :mountain_lion
+    sha1 "a0862a96129f518d28625bf55fddb89b7fcb06f5" => :lion
+  end
 
   def install
-    cd 'src' do
+    cd "src" do
       args = ["--disable-debug", "--disable-dependency-tracking",
-              "--enable-xonx",
-              "--enable-shared",
-              "--prefix=#{prefix}" ]
+              "--enable-macprefix",
+              "--prefix=#{prefix}",
+              "--man=#{man}"]
 
-      if MacOS.prefer_64_bit?
-        args += ["--enable-mac64", "--enable-sgc", "--disable-gracket"]
-      end
+      args << "--disable-mac64" if not MacOS.prefer_64_bit?
 
       system "./configure", *args
       system "make"
-      ohai "Installing may take a long time (~40 minutes)" unless ARGV.verbose?
       system "make install"
     end
+  end
+
+  def caveats; <<-EOS.undent
+    This is a minimal Racket distribution.
+    If you want to use the DrRacket IDE, we recommend that you use
+    the PLT-provided packages from http://racket-lang.org/download/.
+    EOS
+  end
+
+  test do
+    output = `'#{bin}/racket' -e '(displayln "Hello Homebrew")'`
+    assert $?.success?
+    assert_match /Hello Homebrew/, output
   end
 end

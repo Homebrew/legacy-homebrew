@@ -1,24 +1,22 @@
 require 'formula'
 
 class Jetty < Formula
-  homepage 'http://www.eclipse.org/jetty/'
-  url 'http://download.eclipse.org/jetty/8.1.7.v20120910/dist/jetty-distribution-8.1.7.v20120910.tar.gz'
-  version '8.1.7'
-  sha1 'f0ff5a85d494fea6bfac2aba956ddf0f2fafb129'
+  homepage "http://www.eclipse.org/jetty/"
+  url "http://eclipse.org/downloads/download.php?file=/jetty/9.2.3.v20140905/dist/jetty-distribution-9.2.3.v20140905.tar.gz&r=1"
+  version "9.2.3"
+  sha1 "7ad9d6678e794aa483fe5b4517f9aa79caf8e8db"
 
   def install
-    rm_rf Dir['bin/*.{cmd,bat]}']
-
     libexec.install Dir['*']
     (libexec+'logs').mkpath
 
     bin.mkpath
-    Dir["#{libexec}/bin/*.sh"].each do |f|
+    Dir.glob("#{libexec}/bin/*.sh") do |f|
       scriptname = File.basename(f, '.sh')
       (bin+scriptname).write <<-EOS.undent
         #!/bin/bash
         JETTY_HOME=#{libexec}
-        #{f} $@
+        #{f} "$@"
       EOS
       chmod 0755, bin+scriptname
     end

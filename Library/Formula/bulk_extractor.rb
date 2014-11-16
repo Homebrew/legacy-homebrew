@@ -1,38 +1,48 @@
 require 'formula'
 
 class BulkExtractor < Formula
-  homepage 'https://github.com/simsong/bulk_extractor/wiki'
-  url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.2.2.tar.gz'
-  sha1 '2f0a2049259f826afe253cf5baeeb139b795dddb'
+  homepage "https://github.com/simsong/bulk_extractor/wiki"
+  url "http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz"
+  sha1 "59cab1d96089043ad4a74483bd09179262b136ab"
 
-  devel do
-    url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3b5.tar.gz'
-    sha1 '04a3d49f35efc7381ae1d3f516bdad273a0f49ee'
+  bottle do
+    cellar :any
+    sha1 "f1bca8f9e8110bae172f7d1911fdd03439fb1dfa" => :mavericks
+    sha1 "ff6c35229ec49ac068f1d3aafcad84b03125ad07" => :mountain_lion
+    sha1 "027a6f08f3f50a615bfbfe3fbf9e3df5b33f6c3d" => :lion
   end
 
-  depends_on :autoconf
-  depends_on :automake
-
-  depends_on 'afflib' => :optional
-  depends_on 'exiv2' => :optional
-  depends_on 'libewf' => :optional
+  depends_on "afflib" => :optional
+  depends_on "boost"
+  depends_on "exiv2" => :optional
+  depends_on "libewf" => :optional
 
   def install
-    system "autoreconf", "-i"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
     system "make install"
 
     # Install documentation
-    (share/'bulk_extractor/doc').install Dir['doc/*.{html,txt,pdf}']
+    (share/"bulk_extractor/doc").install Dir["doc/*.{html,txt,pdf}"]
 
-    # Install Python utilities
-    (share/'bulk_extractor/python').install Dir['python/*.py']
+    (lib/"python2.7/site-packages").install Dir["python/*.py"]
+
+    # Install the GUI the Homebrew way
+    # .jar gets installed into bin by default
+    libexec.install bin/"BEViewer.jar"
+    (bin/"BEViewer").unlink
+    bin.write_jar_script libexec/"BEViewer.jar", "BEViewer", "-Xmx1g"
   end
 
-  def caveats; <<-EOS.undent
-    You may need to add the directory containing the Python bindings to your PYTHONPATH:
-      #{share}/bulk_extractor/python
-    EOS
+  test do
+    input_file = testpath/"data.txt"
+    input_file.write "http://brew.sh\n(201)555-1212\n"
+
+    output_dir = testpath/"output"
+    system "#{bin}/bulk_extractor", "-o", output_dir, input_file
+
+    assert (output_dir/"url.txt").read.include?("http://brew.sh")
+    assert (output_dir/"telephone.txt").read.include?("(201)555-1212")
   end
 end

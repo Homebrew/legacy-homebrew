@@ -2,48 +2,28 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'http://dl.rust-lang.org/dist/rust-0.3.1.tar.gz'
-  sha256 'eb99ff2e745ecb6eaf01d4caddebce397a2b4cda6836a051cb2d493b9cedd018'
+  url 'https://static.rust-lang.org/dist/rust-0.12.0.tar.gz'
+  sha256 '883e66b24d90d9957c5c538469fcde6f0668e5fb6448beecfc60884060e769b7'
 
-  fails_with :clang do
-    build 318
-    cause "cannot initialize a parameter of type 'volatile long long *' with an rvalue of type 'int *'"
-  end
+  head 'https://github.com/rust-lang/rust.git'
 
-  def patches
-    # fix for Mountain Lion's clang 4.0
-    # should be part of next release (commit 50f2db4)
-    # fix for Mountain Lion's clang 4.1
-    # should be part of next release (commit 25bc65b)
-    DATA
+  bottle do
+    sha1 "8cc3fabfd93f5554e022d9f41f6950c27d427b44" => :mavericks
+    sha1 "0940a33152968c39b9f6d5f91b5405b92e16ebe7" => :mountain_lion
+    sha1 "c626fbcafc7b21533dd9df9a46cc124fa34a3321" => :lion
   end
 
   def install
     args = ["--prefix=#{prefix}"]
+    args << "--disable-rpath" if build.head?
     args << "--enable-clang" if ENV.compiler == :clang
     system "./configure", *args
     system "make"
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/rustc"
-    system "#{bin}/rustdoc"
-    system "#{bin}/cargo"
+    system "#{bin}/rustdoc", "-h"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index 06bddcc..040bae9 100755
---- a/configure
-+++ b/configure
-@@ -400,7 +400,7 @@ then
-                       | cut -d ' ' -f 2)
-
-     case $CFG_CLANG_VERSION in
--        (3.0svn | 3.0 | 3.1)
-+        (3.0svn | 3.0 | 3.1 | 4.0 | 4.1)
-         step_msg "found ok version of CLANG: $CFG_CLANG_VERSION"
-         CFG_C_COMPILER="clang"
-         ;;

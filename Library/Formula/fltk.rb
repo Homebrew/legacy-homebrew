@@ -2,16 +2,18 @@ require 'formula'
 
 class Fltk < Formula
   homepage 'http://www.fltk.org/'
-  url 'http://ftp.easysw.com/pub/fltk/1.3.0/fltk-1.3.0-source.tar.gz'
-  sha1 '720f2804be6132ebae9909d4e74dedcc00b39d25'
+  url 'http://fossies.org/linux/misc/fltk-1.3.2-source.tar.gz'
+  sha1 '25071d6bb81cc136a449825bfd574094b48f07fb'
+  revision 1
 
-  devel do
-    url 'http://ftp.easysw.com/pub/fltk/snapshots/fltk-1.3.x-r9327.tar.bz2'
-    version '1.3.x-r9327'
-    sha1 '12425368b639cd3ae102e658cf5ba8b6d0ca2f85'
+  bottle do
+    sha1 "fdd346322d4abd84efcb94947dacc1452a922f7d" => :mavericks
+    sha1 "20f8ab2cbc0c9c04c2f86e0e9a405baa48d02831" => :mountain_lion
   end
 
-  depends_on :libpng
+  option :universal
+
+  depends_on 'libpng'
   depends_on 'jpeg'
 
   fails_with :clang do
@@ -19,66 +21,71 @@ class Fltk < Formula
     cause "http://llvm.org/bugs/show_bug.cgi?id=10338"
   end
 
-  # Fix Mountain Lion build.
-  # http://www.fltk.org/str.php?L2864
-  # Committed upstream as r9649
-  def patches
-    { :p0 => DATA }
-  end
+  # First patch is to fix issue with -lpng not found.
+  # Based on: https://trac.macports.org/browser/trunk/dports/aqua/fltk/files/patch-src-Makefile.diff
+  #
+  # Second patch is to fix compile issue with clang 3.4.
+  # Based on: http://www.fltk.org/strfiles/3046/fltk-clang3.4-1.patch
+  #
+  # Third patch is to fix compile issue with OSX 10.10 Yosemite
+  # Based on: http://www.fltk.org/str.php?L3141
+  patch :DATA
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-threads"
+    ENV.universal_binary if build.universal?
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-threads",
+                          "--enable-shared"
     system "make install"
   end
 end
 
 __END__
-Index: src/filename_list.cxx
-===================================================================
---- src/filename_list.cxx	(revision 9648)
-+++ src/filename_list.cxx	(revision 9649)
-@@ -22,7 +22,9 @@
- #include <FL/fl_utf8.h>
- #include "flstring.h"
- #include <stdlib.h>
--
-+#ifdef __APPLE__
-+#include <FL/x.H>
-+#endif
+diff --git a/src/Makefile b/src/Makefile
+index fcad5f0..5a5a850 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -355,7 +355,7 @@ libfltk_images.1.3.dylib: $(IMGOBJECTS) libfltk.1.3.dylib
+ 		-install_name $(libdir)/$@ \
+ 		-current_version 1.3.1 \
+ 		-compatibility_version 1.3.0 \
+-		$(IMGOBJECTS)  -L. $(LDLIBS) $(IMAGELIBS) -lfltk
++		$(IMGOBJECTS)  -L. $(LDLIBS) $(IMAGELIBS) -lfltk $(LDFLAGS)
+ 	$(RM) libfltk_images.dylib
+ 	$(LN) libfltk_images.1.3.dylib libfltk_images.dylib
+ 
+diff --git a/fluid/Fl_Type.h b/fluid/Fl_Type.h
+index fdbe320..bd7e741 100644
+--- a/fluid/Fl_Type.h
++++ b/fluid/Fl_Type.h
+@@ -36,7 +36,7 @@ void set_modflag(int mf);
+ class Fl_Type {
 
- extern "C" {
- #ifndef HAVE_SCANDIR
-@@ -95,7 +97,7 @@
- #ifndef HAVE_SCANDIR
-   // This version is when we define our own scandir
-   int n = fl_scandir(dirloc, list, 0, sort);
--#elif defined(HAVE_SCANDIR_POSIX) && !defined(__APPLE__)
-+#elif defined(HAVE_SCANDIR_POSIX)
-   // POSIX (2008) defines the comparison function like this:
-   int n = scandir(dirloc, list, 0, (int(*)(const dirent **, const dirent **))sort);
- #elif defined(__osf__)
-Index: FL/mac.H
-===================================================================
---- FL/mac.H	(revision 9648)
-+++ FL/mac.H	(revision 9649)
-@@ -149,6 +149,21 @@
- #ifndef MAC_OS_X_VERSION_10_6
- #define MAC_OS_X_VERSION_10_6 1060
- #endif
-+#ifndef MAC_OS_X_VERSION_10_7
-+#define MAC_OS_X_VERSION_10_7 1070
-+#endif
-+#ifndef MAC_OS_X_VERSION_10_8
-+#define MAC_OS_X_VERSION_10_8 1080
-+#endif
-+
-+#if defined(FL_LIBRARY) || defined(FL_INTERNALS)
-+#ifdef HAVE_SCANDIR_POSIX
-+#undef HAVE_SCANDIR_POSIX
-+#endif
-+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_8
-+#define HAVE_SCANDIR_POSIX 1
-+#endif
-+#endif // FL_LIBRARY || FL_INTERNALS
-
- typedef CGImageRef Fl_Bitmask;
+   friend class Widget_Browser;
+-  friend Fl_Widget *make_type_browser(int,int,int,int,const char *l=0);
++  friend Fl_Widget *make_type_browser(int,int,int,int,const char *);
+   friend class Fl_Window_Type;
+   virtual void setlabel(const char *); // virtual part of label(char*)
+ 
+diff --git a/src/Fl_cocoa.mm.o b/src/Fl_cocoa.mm
+index 1234567..1234567 100644
+--- a/src/Fl_cocoa.mm
++++ b/src/Fl_cocoa.mm
+@@ -1322,7 +1322,7 @@
+     if (need_new_nsapp) [NSApplication sharedApplication];
+     NSAutoreleasePool *localPool;
+     localPool = [[NSAutoreleasePool alloc] init]; // never released
+-    [NSApp setDelegate:[[FLDelegate alloc] init]];
++    [(NSApplication *)NSApp setDelegate:[[FLDelegate alloc] init]];
+     if (need_new_nsapp) [NSApp finishLaunching];
+ 
+     // empty the event queue but keep system events for drag&drop of files at launch
+@@ -2231,7 +2231,7 @@
+     w->set_visible();
+     if ( w->border() || (!w->modal() && !w->tooltip_window()) ) Fl::handle(FL_FOCUS, w);
+     Fl::first_window(w);
+-    [cw setDelegate:[NSApp delegate]];
++    [(NSFileManager *)cw setDelegate:[NSApp delegate]];
+     if (fl_show_iconic) { 
+       fl_show_iconic = 0;
+       [cw miniaturize:nil];

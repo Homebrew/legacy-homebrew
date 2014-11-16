@@ -1,51 +1,77 @@
 require 'formula'
 
-def which_python
-  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-end
-
-def site_package_dir
-  "lib/#{which_python}/site-packages"
-end
-
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.8+1.1.1.tar.bz2'
-  sha1 '37b4a2f666a84e39aa4b55f8909964c73ce47123'
+  url 'https://download.qt-project.org/official_releases/pyside/pyside-qt4.8+1.2.2.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.2.tar.bz2'
+  sha1 '955e32d193d173faa64edc51111289cdcbe3b96e'
+
+  head 'git://gitorious.org/pyside/pyside.git'
+
+  depends_on :python => :recommended
+  depends_on :python3 => :optional
+
+  option "without-docs", "Skip building documentation"
 
   depends_on 'cmake' => :build
-  depends_on 'shiboken'
+  depends_on 'qt'
+
+  if build.with? 'python3'
+    depends_on 'shiboken' => 'with-python3'
+  else
+    depends_on 'shiboken'
+  end
+
+  resource 'sphinx' do
+    url 'https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.2.tar.gz'
+    sha1 '9e424b03fe1f68e0326f3905738adcf27782f677'
+  end
 
   def install
-    # The build will be unable to find Qt headers buried inside frameworks
-    # unless the folder containing those frameworks is added to the compiler
-    # search path.
-    qt = Formula.factory 'qt'
-    ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
+    if build.with? "docs"
+      (buildpath/"sphinx").mkpath
 
-    # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
+      resource("sphinx").stage do
+        system "python", "setup.py", "install",
+                                     "--prefix=#{buildpath}/sphinx",
+                                     "--record=installed.txt",
+                                     "--single-version-externally-managed"
+      end
+
+      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
+    else
+      rm buildpath/"doc/CMakeLists.txt"
+    end
+
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
-    args = std_cmake_args + %W[
-      -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks
-      -DSITE_PACKAGE=#{site_package_dir}
-      -DBUILD_TESTS=NO
-      ..
-    ]
-    mkdir 'macbuild' do
-      system 'cmake', *args
-      system 'make'
-      system 'make install'
+    Language::Python.each_python(build) do |python, version|
+      mkdir "macbuild#{version}" do
+        qt = Formula["qt"].opt_prefix
+        args = std_cmake_args + %W[
+          -DSITE_PACKAGE=#{lib}/python#{version}/site-packages
+          -DALTERNATIVE_QT_INCLUDE_DIR=#{qt}/include
+          -DQT_SRC_DIR=#{qt}/src
+        ]
+        if version.to_s[0,1] == "2"
+          args << "-DPYTHON_SUFFIX=-python#{version}"
+        else
+          major_version = version.to_s[0,1]
+          minor_version = version.to_s[2,3]
+          args << "-DPYTHON_SUFFIX=.cpython-#{major_version}#{minor_version}m"
+          args << "-DUSE_PYTHON3=1"
+        end
+        args << ".."
+        system "cmake", *args
+        system "make"
+        system "make", "install"
+      end
     end
   end
 
-  def caveats
-    <<-EOS
-PySide Python modules have been linked to:
-    #{HOMEBREW_PREFIX}/#{site_package_dir}
-
-Make sure this folder is on your PYTHONPATH. For PySide development tools,
-install the `pyside-tools` formula.
-    EOS
+  test do
+    Language::Python.each_python(build) do |python, version|
+      system python, "-c", "from PySide import QtCore"
+    end
   end
 end

@@ -1,64 +1,64 @@
 require 'cmd/install'
+require 'cmd/outdated'
 
-class Fixnum
-  def plural_s
-    if self > 1 then "s" else "" end
-  end
-end
-
-module Homebrew extend self
+module Homebrew
   def upgrade
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      # note we only abort if Homebrew is *not* installed as sudo and the user
-      # calls brew as root. The fix is to chown brew to root.
-      abort "Cowardly refusing to `sudo brew upgrade'"
-    end
-
     Homebrew.perform_preinstall_checks
 
-    outdated = if ARGV.named.empty?
-      require 'cmd/outdated'
-      Homebrew.outdated_brews
+    if ARGV.named.empty?
+      outdated = Homebrew.outdated_brews
+      exit 0 if outdated.empty?
     else
-      ARGV.formulae.select do |f|
+      outdated = ARGV.formulae.select do |f|
         if f.installed?
-          onoe "#{f}-#{f.installed_version} already installed"
-        elsif not f.rack.exist? or f.rack.children.empty?
-          onoe "#{f} not installed"
+          onoe "#{f.name}-#{f.installed_version} already installed"
+          false
+        elsif not f.rack.directory? or f.rack.subdirs.empty?
+          onoe "#{f.name} not installed"
+          false
         else
           true
         end
       end
+      exit 1 if outdated.empty?
     end
 
-    # Expand the outdated list to include outdated dependencies then sort and
-    # reduce such that dependencies are installed first and installation is not
-    # attempted twice. Sorting is implicit the way `recursive_deps` returns
-    # root dependencies at the head of the list and `uniq` keeps the first
-    # element it encounters and discards the rest.
-    ARGV.filter_for_dependencies do
-      outdated.map!{ |f| f.recursive_deps.reject{ |d| d.installed? } << f }
-      outdated.flatten!
-      outdated.uniq!
-    end unless ARGV.ignore_deps?
-
-    if outdated.length > 1
-      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+    unless upgrade_pinned?
+      pinned = outdated.select(&:pinned?)
+      outdated -= pinned
     end
 
-    outdated.each do |f|
-      upgrade_formula f
+    unless outdated.empty?
+      oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
+      puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+    else
+      oh1 "No packages to upgrade"
     end
+
+    unless upgrade_pinned? || pinned.empty?
+      oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
+      puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+    end
+
+    outdated.each { |f| upgrade_formula(f) }
+  end
+
+  def upgrade_pinned?
+    not ARGV.named.empty?
   end
 
   def upgrade_formula f
+    outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
     tab = Tab.for_formula(f)
-    outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
-    installer = FormulaInstaller.new(f, tab)
-    installer.show_header = false
-    installer.install_bottle = install_bottle?(f) and tab.used_options.empty?
+    fi = FormulaInstaller.new(f)
+    fi.options             = tab.used_options
+    fi.build_bottle        = ARGV.build_bottle? || tab.build_bottle?
+    fi.build_from_source   = ARGV.build_from_source?
+    fi.verbose             = ARGV.verbose?
+    fi.quieter             = ARGV.quieter?
+    fi.debug               = ARGV.debug?
+    fi.prelude
 
     oh1 "Upgrading #{f.name}"
 
@@ -67,15 +67,27 @@ module Homebrew extend self
     # do! Seriously, it happens!
     outdated_keg.unlink if outdated_keg
 
-    installer.install
-    installer.caveats
-    installer.finish
+    fi.install
+    fi.caveats
+    fi.finish
+
+    # If the formula was pinned, and we were force-upgrading it, unpin and
+    # pin it again to get a symlink pointing to the correct keg.
+    if f.pinned?
+      f.unpin
+      f.pin
+    end
+  rescue FormulaInstallationAlreadyAttemptedError
+    # We already attempted to upgrade f as part of the dependency tree of
+    # another formula. In that case, don't generate an error, just move on.
   rescue CannotInstallFormulaError => e
     ofail e
   rescue BuildError => e
     e.dump
     puts
     Homebrew.failed = true
+  rescue DownloadError => e
+    ofail e
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not f.installed? rescue nil

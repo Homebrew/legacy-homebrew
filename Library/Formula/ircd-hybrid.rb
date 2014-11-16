@@ -1,139 +1,66 @@
-require 'formula'
+require "formula"
 
 class IrcdHybrid < Formula
-  homepage 'http://www.ircd-hybrid.org/'
-  url 'http://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-7.3.1/ircd-hybrid-7.3.1.tgz'
-  sha1 'a4d7e06517152ea88b064cd9756084372ed831ac'
+  homepage "http://www.ircd-hybrid.org/"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.1/ircd-hybrid-8.2.1.tgz"
+  sha1 "43e96d1d3e57f8d867348921a5b225011ab988b2"
+
+  bottle do
+    sha1 "1ac5860e94fac63377994eebada838b4975e5cb2" => :yosemite
+    sha1 "d3150f7395160fc08cd665144288587360d5ee34" => :mavericks
+    sha1 "cbcbb7266548178d080fb3683e7ba8cd203265fa" => :mountain_lion
+  end
 
   # ircd-hybrid needs the .la files
-  skip_clean 'lib'
+  skip_clean :la
+
+  depends_on "openssl"
 
   def install
-    # See patch fix 3
-    mv 'etc/example.conf', 'etc/ircd.conf'
+    ENV.j1 # build system trips over itself
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
-                          # there's no config setting for this so set it to something generous
-                          "--with-nicklen=30"
-    system "make install"
+                          "--sysconfdir=#{etc}",
+                          "--enable-openssl=#{Formula["openssl"].opt_prefix}"
+    system "make", "install"
+    etc.install "doc/reference.conf" => "ircd.conf"
   end
 
-  def test
-    system "ircd -version"
-  end
-
-  # Fix 1: Set an sid so it runs
-  # Fix 2: Remove the trap line so it runs
-  # Fix 3: Rename config path in Makefile to match where we moved it
-  def patches
-    DATA
+  test do
+    system "#{bin}/ircd", "-version"
   end
 
   def caveats; <<-EOS.undent
     You'll more than likely need to edit the default settings in the config file:
       #{etc}/ircd.conf
-
-    If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or start manually with:
-      ircd
-
-    Which will give you a pid you can kill with:
-      kill pid
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>KeepAlive</key>
-  <false/>
-  <key>Label</key>
-  <string>#{plist_name}</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{HOMEBREW_PREFIX}/sbin/ircd</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
-  <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}</string>
-  <key>StandardErrorPath</key>
-  <string>#{var}/ircd.log</string>
-</dict>
-</plist>
-    EOPLIST
+  plist_options :manual => "ircd"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>KeepAlive</key>
+      <false/>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_sbin}/ircd</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/ircd.log</string>
+    </dict>
+    </plist>
+    EOS
   end
 end
-
-
-__END__
-diff --git a/etc/example.conf b/etc/example.conf
-index d74ef84..94d2218 100644
---- a/etc/example.conf
-+++ b/etc/example.conf
-@@ -53,7 +53,7 @@ serverinfo {
-	 * a digit, followed by 2 alpha-numerical letters.
-	 * NOTE: The letters must be capitalized.  This cannot be changed at runtime.
-	 */
--	sid = "_CHANGE_ME_";
-+	sid = "1AA";
-
-	/*
-	 * description: the description of the server.  '[' and ']' may not
-@@ -1144,7 +1144,7 @@ general {
-	idletime = 0;
-
-	/* REMOVE ME.  The following line checks you've been reading. */
--	havent_read_conf = 1;
-+	/* havent_read_conf = 1; */
-
-	/*
-	 * max_targets: the maximum amount of targets in a single
-diff --git a/etc/Makefile.am b/etc/Makefile.am
-index ac0ac33..9a93ee2 100644
---- a/etc/Makefile.am
-+++ b/etc/Makefile.am
-@@ -2,5 +2,5 @@ AUTOMAKE_OPTIONS = foreign
- if EFNET
- dist_sysconf_DATA = example.efnet.conf
- else
--dist_sysconf_DATA = example.conf
-+dist_sysconf_DATA = ircd.conf
- endif
-diff --git a/etc/Makefile.in b/etc/Makefile.in
-index dd88824..60d9b19 100644
---- a/etc/Makefile.in
-+++ b/etc/Makefile.in
-@@ -48,7 +48,7 @@ CONFIG_CLEAN_FILES =
- CONFIG_CLEAN_VPATH_FILES =
- SOURCES =
- DIST_SOURCES =
--am__dist_sysconf_DATA_DIST = example.conf example.efnet.conf
-+am__dist_sysconf_DATA_DIST = ircd.conf example.efnet.conf
- am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
- am__vpath_adj = case $$p in \
-     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-@@ -214,7 +214,7 @@ top_build_prefix = @top_build_prefix@
- top_builddir = @top_builddir@
- top_srcdir = @top_srcdir@
- AUTOMAKE_OPTIONS = foreign
--@EFNET_FALSE@dist_sysconf_DATA = example.conf
-+@EFNET_FALSE@dist_sysconf_DATA = ircd.conf
- @EFNET_TRUE@dist_sysconf_DATA = example.efnet.conf
- all: all-am

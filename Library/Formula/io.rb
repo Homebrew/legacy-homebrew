@@ -1,21 +1,34 @@
-require 'formula'
+require "formula"
 
 class Io < Formula
-  homepage 'http://iolanguage.com/'
-  url 'https://github.com/stevedekorte/io/tarball/2011.09.12'
-  sha1 '56720fe9b2c746ca817c15e48023b256363b3015'
+  homepage "http://iolanguage.com/"
+  url "https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz"
+  sha1 "47d9a3e7a8e14c9fbe3b376e4967bb55f6c68aed"
 
-  head 'https://github.com/stevedekorte/io.git'
+  head "https://github.com/stevedekorte/io.git"
 
-  option 'without-addons', 'Build without addons'
-  option 'without-python', 'Build without python addon'
+  option "without-addons", "Build without addons"
 
-  depends_on 'cmake' => :build
-  depends_on 'ossp-uuid'
-  depends_on 'libevent'
-  depends_on 'yajl'
-  depends_on 'libffi'
-  depends_on 'pcre'
+  depends_on "cmake" => :build
+
+  if build.with? "addons"
+    depends_on "glib"
+    depends_on "cairo"
+    depends_on "gmp"
+    depends_on "jpeg"
+    depends_on "libevent"
+    depends_on "libffi"
+    depends_on "libogg"
+    depends_on "libpng"
+    depends_on "libsndfile"
+    depends_on "libtiff"
+    depends_on "libvorbis"
+    depends_on "ossp-uuid"
+    depends_on "pcre"
+    depends_on "yajl"
+    depends_on "xz"
+    depends_on :python => :optional
+  end
 
   fails_with :clang do
     build 421
@@ -25,47 +38,48 @@ class Io < Formula
     EOS
   end
 
-  # Fix recursive inline. See discussion in:
-  # https://github.com/stevedekorte/io/issues/135
-  def patches
-    DATA
+  # Fixes build on GCC with recursive inline functions;
+  # committed upstream, will be in the next release.
+  patch do
+    url "https://github.com/stevedekorte/io/commit/f21a10ca0e8959e2a0774962c36392cf166be6a6.diff"
+    sha1 "f8756e85268211e93dfd06a0eeade63bfb9bcc9c"
   end
 
   def install
     ENV.j1
-    if build.include? 'without-addons'
-      inreplace  "CMakeLists.txt",
-        'add_subdirectory(addons)',
-        '#add_subdirectory(addons)'
+
+    # FSF GCC needs this to build the ObjC bridge
+    ENV.append_to_cflags '-fobjc-exceptions'
+
+    if build.without? "addons"
+      # Turn off all add-ons in main cmake file
+      inreplace "CMakeLists.txt", "add_subdirectory(addons)",
+                                  '#add_subdirectory(addons)'
+    else
+      inreplace "addons/CMakeLists.txt" do |s|
+        if build.without? "python"
+          s.gsub! "add_subdirectory(Python)", '#add_subdirectory(Python)'
+        end
+
+        # Turn off specific add-ons that are not currently working
+
+        # Looks for deprecated Freetype header
+        s.gsub! /(add_subdirectory\(Font\))/, '#\1'
+        # Builds against older version of memcached library
+        s.gsub! /(add_subdirectory\(Memcached\))/, '#\1'
+      end
     end
-    if build.include? 'without-python'
-      inreplace  "addons/CMakeLists.txt",
-        'add_subdirectory(Python)',
-        '#add_subdirectory(Python)'
-    end
-    mkdir 'buildroot' do
+
+    mkdir "buildroot" do
       system "cmake", "..", *std_cmake_args
-      system 'make'
+      system "make"
       output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
       if $?.exitstatus != 0
         opoo "Test suite not 100% successful:\n#{output}"
       else
         ohai "Test suite ran successfully:\n#{output}"
       end
-      system 'make install'
+      system "make install"
     end
   end
 end
-
-__END__
---- a/libs/basekit/source/Common_inline.h	2011-09-12 17:14:12.000000000 -0500
-+++ b/libs/basekit/source/Common_inline.h	2011-12-17 00:46:02.000000000 -0600
-@@ -52,7 +52,7 @@
- 
- #if defined(__APPLE__) 
- 
--	#define NS_INLINE static __inline__ __attribute__((always_inline))
-+	#define NS_INLINE static inline
- 
- 	#ifdef IO_IN_C_FILE
- 		// in .c 

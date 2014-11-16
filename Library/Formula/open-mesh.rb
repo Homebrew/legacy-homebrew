@@ -1,24 +1,23 @@
-require 'formula'
+require "formula"
 
 class OpenMesh < Formula
-  homepage 'http://openmesh.org'
-  url 'http://www.openmesh.org/fileadmin/openmesh-files/2.2/OpenMesh-2.2.tar.gz'
-  sha1 'ee1114d7dbcf66c4717ea9b5897f5f78ec754b91'
+  homepage "http://openmesh.org"
+  url "http://www.openmesh.org/media/Releases/3.1/OpenMesh-3.1.tar.gz"
+  sha1 "f73fc5a072b11028b882ce1c221602040fb23be2"
 
-  head 'http://openmesh.org/svnrepo/OpenMesh/trunk/', :using => :svn
+  head "http://openmesh.org/svnrepo/OpenMesh/trunk/", :using => :svn
 
-  depends_on 'cmake' => :build
-  depends_on 'qt'
-  depends_on 'glew'
+  depends_on "cmake" => :build
+  depends_on "qt"
 
   def install
-    mkdir 'openmesh-build' do
-      system "cmake -DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=Release .."
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
       system "make install"
     end
   end
 
-  def test
-    system "#{bin}/mconvert", '-help'
+  test do
+    system "#{bin}/mconvert", "-help"
   end
 end

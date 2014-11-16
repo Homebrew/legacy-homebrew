@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Duply < Formula
-  homepage 'http://duply.net'
-  url 'http://sourceforge.net/projects/ftplicity/files/duply%20%28simple%20duplicity%29/1.5.x/duply_1.5.7.tgz'
-  sha1 '61d5e17285d2645e818c8449e4fd8d149edf9b9e'
+  homepage "http://duply.net"
+  url "https://downloads.sourceforge.net/project/ftplicity/duply%20(simple%20duplicity)/1.9.x/duply_1.9.1.tgz"
+  sha1 "b4a53f6ebc207185ae5c0b5f98bf46cf961def1a"
 
-  depends_on 'duplicity'
+  depends_on "duplicity"
 
   def install
-    bin.install 'duply'
+    bin.install "duply"
   end
 end

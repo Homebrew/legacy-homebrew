@@ -1,35 +1,16 @@
 require 'formula'
 
-class PostgresqlInstalled < Requirement
-  def message; <<-EOS.undent
-    PostgresQL is required to install.
-
-    You can install this with:
-      brew install postgresql
-
-    Or you can use an official installer from:
-      http://www.postgresql.org/
-    EOS
-  end
-  def satisfied?
-    which 'pg_config'
-  end
-  def fatal?
-    true
-  end
-end
-
-
 class PgTop < Formula
   homepage 'http://ptop.projects.postgresql.org/'
-  url 'http://pgfoundry.org/frs/download.php/1781/pg_top-3.6.2.tar.gz'
-  sha1 'c165a5b09ab961bf98892db94b307e31ac0cf832'
+  url 'http://pgfoundry.org/frs/download.php/3504/pg_top-3.7.0.tar.bz2'
+  sha1 '377518d95d65011b984d23fd87fb3cc91aaa1afd'
 
-  depends_on PostgresqlInstalled.new
+  depends_on :postgresql
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "echo '#define HAVE_DECL_STRLCPY 1' >> config.h" if MacOS.version >= :mavericks
     system "make install"
   end
 end

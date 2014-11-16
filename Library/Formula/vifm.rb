@@ -1,54 +1,21 @@
-require 'formula'
+require "formula"
 
 class Vifm < Formula
-  homepage 'http://vifm.sourceforge.net/index.html'
-  url 'http://sourceforge.net/projects/vifm/files/vifm-0.7.3a.tar.bz2'
-  sha1 '4056b5bdc496f81225ddc7ee796380beb72a43da'
+  homepage "http://vifm.sourceforge.net/index.html"
+  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.7.8.tar.bz2"
+  sha256 '5dfbb26c2038a58dcff12026dab736e29d547b4aa3ff5912e4d844064c9e7603'
 
-  # OS X provides "ncurses" not "ncursesw"
-  def patches
-    DATA
+  bottle do
+    sha1 "9c91b72060c3fb9abf43cecc1a2304816deb0334" => :yosemite
+    sha1 "f6adc73279074c20f52dcb355bff076bf31cca40" => :mavericks
+    sha1 "cc3f9c80da284c39c2460f81eb53ec9bc98ccded" => :mountain_lion
   end
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+
+    ENV.deparallelize
     system "make install"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index 16a10f5..0d77a28 100755
---- a/configure
-+++ b/configure
-@@ -13307,13 +13307,13 @@ if test "${with_curses+set}" = set; then :
- fi
- 
- 
--{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for initscr in -lncursesw" >&5
--$as_echo_n "checking for initscr in -lncursesw... " >&6; }
-+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for initscr in -lncurses" >&5
-+$as_echo_n "checking for initscr in -lncurses... " >&6; }
- if ${ac_cv_lib_ncursesw_initscr+:} false; then :
-   $as_echo_n "(cached) " >&6
- else
-   ac_check_lib_save_LIBS=$LIBS
--LIBS="-lncursesw  $LIBS"
-+LIBS="-lncurses  $LIBS"
- cat confdefs.h - <<_ACEOF >conftest.$ac_ext
- /* end confdefs.h.  */
- 
-@@ -13344,9 +13344,9 @@ fi
- { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ncursesw_initscr" >&5
- $as_echo "$ac_cv_lib_ncursesw_initscr" >&6; }
- if test "x$ac_cv_lib_ncursesw_initscr" = xyes; then :
--  LIBS="$LIBS -lncursesw"
--	if test x$vifm_cv_curses = x/usr -a -d /usr/include/ncursesw; then
--		CPPFLAGS="$CPPFLAGS -I/usr/include/ncursesw"
-+  LIBS="$LIBS -lncurses"
-+	if test x$vifm_cv_curses = x/usr -a -d /usr/include/ncurses; then
-+		CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses"
- 	fi
- 	for ac_header in ncurses.h
- do :

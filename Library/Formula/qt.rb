@@ -1,68 +1,80 @@
 require 'formula'
 
 class Qt < Formula
-  homepage 'http://qt.nokia.com/'
-  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.3.tar.gz'
-  sha1 'bc352a283610e0cd2fe0dbedbc45613844090fcb'
+  homepage "http://qt-project.org/"
+
+  stable do
+    # Mirror rather than source set as primary because source is very slow.
+    url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
+    mirror "http://download.qt-project.org/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
+    sha1 "ddf9c20ca8309a116e0466c42984238009525da6"
+
+    # This patch should be able to be removed with the next stable Qt4 release.
+    patch do
+      url "https://raw.githubusercontent.com/DomT4/scripts/440e3cafde5bf6ec6f50cd28fa5bf89c280f1b53/Homebrew_Resources/Qt/qt4patch.diff"
+      sha1 "57246a33460246118a1fab7460c79f2077d3a929"
+    end
+  end
 
   bottle do
-    sha1 'ff488747325cd6771fbf0b79156fd3833ff3af63' => :mountainlion
-    sha1 '5b8d6d3c47f3992465de3a750a35407eef128c94' => :lion
-    sha1 'bb0b7e58d743e7b9147ae0d03cebc83134b8f68c' => :snowleopard
+    revision 6
+    sha1 "bedfe4e950676a85f9653732d33767fbcce45da5" => :yosemite
+    sha1 "8ee072473ababd49fe85bc6f9bf5ddcdafea8c26" => :mavericks
+    sha1 "668ac1a65811e0ff23230a698725b383c61c1d13" => :mountain_lion
   end
 
-  head 'git://gitorious.org/qt/qt.git', :branch => 'master'
-
-  env :std # Otherwise fails on SSE intrinsics
+  head "git://gitorious.org/qt/qt.git", :branch => '4.8'
 
   option :universal
-  option 'with-qtdbus', 'Enable QtDBus module'
-  option 'with-qt3support', 'Enable deprecated Qt3Support module'
-  option 'with-demos-examples', 'Enable Qt demos and examples'
-  option 'with-debug-and-release', 'Compile Qt in debug and release mode'
-  option 'with-mysql', 'Enable MySQL plugin'
-  option 'developer', 'Compile and link Qt with developer options'
+  option 'with-qt3support', 'Build with deprecated Qt3Support module support'
+  option 'with-docs', 'Build documentation'
+  option 'developer', 'Build and link with developer options'
 
-  depends_on "d-bus" if build.include? 'with-qtdbus'
-  depends_on "mysql" if build.include? 'with-mysql'
-  depends_on 'sqlite' if MacOS.version == :leopard
+  depends_on "d-bus" => :optional
+  depends_on "mysql" => :optional
+  depends_on "postgresql" => :optional
 
-  def patches
-    # Fixes compilation failure on Leopard.
-    # https://bugreports.qt-project.org/browse/QTBUG-23258
-    if MacOS.version == :leopard
-      "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
-    end
-  end
+  deprecated_option "qtdbus" => "with-d-bus"
 
   def install
-    ENV.append "CXXFLAGS", "-fvisibility=hidden"
+    ENV.universal_binary if build.universal?
+
     args = ["-prefix", prefix,
             "-system-zlib",
+            "-qt-libtiff", "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
-            "-cocoa", "-fast" ]
+            "-nomake", "demos", "-nomake", "examples",
+            "-cocoa", "-fast", "-release"]
 
-    args << "-platform" << "unsupported/macx-clang" if ENV.compiler == :clang
+    if ENV.compiler == :clang
+        args << "-platform"
 
-    # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MacOS.version == :leopard
-
-    args << "-plugin-sql-mysql" if build.include? 'with-mysql'
-
-    if build.include? 'with-qtdbus'
-      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+        if MacOS.version >= :mavericks
+          args << "unsupported/macx-clang-libc++"
+        else
+          args << "unsupported/macx-clang"
+        end
     end
 
-    if build.include? 'with-qt3support'
+    args << "-plugin-sql-mysql" if build.with? 'mysql'
+    args << "-plugin-sql-psql" if build.with? 'postgresql'
+
+    if build.with? 'd-bus'
+      dbus_opt = Formula["d-bus"].opt_prefix
+      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
+      args << "-I#{dbus_opt}/include/dbus-1.0"
+      args << "-L#{dbus_opt}/lib"
+      args << "-ldbus-1"
+      args << "-dbus-linked"
+    end
+
+    if build.with? 'qt3support'
       args << "-qt3support"
     else
       args << "-no-qt3support"
     end
 
-    unless build.include? 'with-demos-examples'
-      args << "-nomake" << "demos" << "-nomake" << "examples"
-    end
+    args << "-nomake" << "docs" if build.without? 'docs'
 
     if MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86_64'
@@ -72,56 +84,34 @@ class Qt < Formula
       args << '-arch' << 'x86'
     end
 
-    if build.include? 'with-debug-and-release'
-      args << "-debug-and-release"
-      # Debug symbols need to find the source so build in the prefix
-      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      cd "#{prefix}/src"
-    else
-      args << "-release"
-    end
-
     args << '-developer-build' if build.include? 'developer'
-
-    # Needed for Qt 4.8.3 due to attempting to link moc with gcc.
-    ENV['LD'] = ENV.cxx
 
     system "./configure", *args
     system "make"
     ENV.j1
     system "make install"
 
-    # stop crazy disk usage
-    (prefix+'doc/html').rmtree
-    (prefix+'doc/src').rmtree
     # what are these anyway?
     (bin+'pixeltool.app').rmtree
     (bin+'qhelpconverter.app').rmtree
     # remove porting file for non-humans
-    (prefix+'q3porting.xml').unlink
+    (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    # VirtualBox is an example of where this is needed
-    # See: https://github.com/mxcl/homebrew/issues/issue/745
-    cd prefix do
-      ln_s lib, prefix + "Frameworks"
-    end
+    frameworks.install_symlink Dir["#{lib}/*.framework"]
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
     # the Frameworks' Headers folders.
-    Pathname.glob(lib + '*.framework/Headers').each do |path|
-      framework_name = File.basename(File.dirname(path), '.framework')
-      ln_s path.realpath, include+framework_name
+    Pathname.glob("#{lib}/*.framework/Headers") do |path|
+      include.install_symlink path => path.parent.basename(".framework")
     end
 
-    Pathname.glob(bin + '*.app').each do |path|
-      mv path, prefix
-    end
+    Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
   end
 
-  def test
-    system "#{bin}/qmake", "--version"
+  test do
+    system "#{bin}/qmake", '-project'
   end
 
   def caveats; <<-EOS.undent

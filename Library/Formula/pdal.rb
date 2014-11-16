@@ -2,8 +2,10 @@ require 'formula'
 
 class Pdal < Formula
   homepage 'http://pointcloud.org'
-  url 'https://github.com/PDAL/PDAL/zipball/0.1.0'
-  sha1 'd0cc3d2ea5909d51e0ce1e451b4236819de4a0b7'
+  url 'https://github.com/PDAL/PDAL/archive/0.9.8.tar.gz'
+  sha1 '6a6a76e6531473541746c19154630ff403099547'
+
+  head 'https://github.com/PDAL/PDAL.git'
 
   depends_on 'cmake' => :build
   depends_on 'boost'

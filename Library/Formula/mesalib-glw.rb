@@ -2,8 +2,16 @@ require 'formula'
 
 class MesalibGlw < Formula
   homepage 'http://www.mesa3d.org'
-  url 'http://downloads.sourceforge.net/project/mesa3d/MesaLib/7.2/MesaLib-7.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/mesa3d/MesaLib/7.2/MesaLib-7.2.tar.gz'
   sha1 '6390ece818ec6fecacaafe3618ae844cf5f92b92'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "617a0490b723c28d7afc30742a7fde7e3aa56c81" => :yosemite
+    sha1 "a0ac2d5bd0d31aa471d63c6f81d304a107c03fc5" => :mavericks
+    sha1 "35df28b14aca921ef20e9bdd4db35c6c803e8561" => :mountain_lion
+  end
 
   depends_on :x11
 

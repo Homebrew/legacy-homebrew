@@ -1,14 +1,20 @@
 require 'formula'
 
 class HgFlow < Formula
-  homepage 'https://bitbucket.org/yinwm/hgflow/wiki/Home'
-  url 'https://bitbucket.org/yinwm/hgflow/get/v0.3.tar.gz'
-  sha1 '56250d4ce9f2e24a71e6a3c4b1f3e1d37bb64766'
+  homepage 'https://bitbucket.org/yujiewu/hgflow'
+  url 'https://bitbucket.org/yujiewu/hgflow/downloads/hgflow-v0.9.6.tar.bz2'
+  sha1 'f4f71daee139dcee882b9ab199f14b7214167498'
 
-  head "http://bitbucket.org/yinwm/hgflow", :using => :hg
+  head "http://bitbucket.org/yujiewu/hgflow", :using => :hg, :branch => 'develop'
+
+  depends_on :python if MacOS.version <= :snow_leopard
 
   def install
-    prefix.install 'src/hgflow/hgflow.py'
+    if build.head?
+      (lib/'python2.7/site-packages').install 'src/hgflow.py' => 'hgflow.py'
+    else
+      (lib/'python2.7/site-packages').install 'hgflow.py' => 'hgflow.py'
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -16,8 +22,8 @@ class HgFlow < Formula
     2. Restart your shell and try "hg flow".
     3. For more information go to http://bitbucket.org/yinwm/hgflow
 
-    [extensions]
-    hgflow = #{prefix}/hgflow.py
+        [extensions]
+        hgflow=
 
     EOS
   end

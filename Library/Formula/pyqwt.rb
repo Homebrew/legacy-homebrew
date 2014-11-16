@@ -2,43 +2,33 @@ require 'formula'
 
 class Pyqwt < Formula
   homepage 'http://pyqwt.sourceforge.net'
-  url 'http://sourceforge.net/projects/pyqwt/files/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
+  url 'https://downloads.sourceforge.net/project/pyqwt/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
   sha1 '797f37c63dec660272f6a8ccfd16a017df0ad640'
 
+  depends_on :python
   depends_on 'qt'
   depends_on 'qwt'
   depends_on 'sip'
   depends_on 'pyqt'
 
-  def patches
-    # Patch to build system to allow for specific
-    #  installation directories.
-    {:p0 => DATA}
-  end
+  # Patch to build system to allow for specific installation directories.
+  patch :p0, :DATA
 
   def install
     cd "configure" do
       system "python",
              "configure.py",
-             "--module-install-path=#{lib}/#{which_python}/site-packages/PyQt4/Qwt5",
+             "--module-install-path=#{lib}/python2.7/site-packages/PyQt4/Qwt5",
              "--sip-install-path=#{share}/sip/Qwt5",
-             "--uic-install-path=#{lib}/#{which_python}/site-packages/PyQt4",
+             "--uic-install-path=#{lib}/python2.7/site-packages/PyQt4",
              "-Q", "../qwt-5.2"
       system "make install"
+      system 'make clean'
     end
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
-
-  def test
+  test do
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     system "python", "-c", "from PyQt4 import Qwt5 as Qwt"
   end
 end

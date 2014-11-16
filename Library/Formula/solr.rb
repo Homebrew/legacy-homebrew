@@ -1,37 +1,40 @@
-require 'formula'
+require "formula"
 
 class Solr < Formula
-  homepage 'http://lucene.apache.org/solr/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/3.6.1/apache-solr-3.6.1.tgz'
-  sha1 'd9f8a4086fb66e716e526d1a047578efdbdd0ede'
-
-  devel do
-    url  'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.0.0-BETA/apache-solr-4.0.0-BETA.tgz'
-    sha1 'b41061400f3c5e0433ae8e01c4a62814be37b712'
-    version "4.0.0-BETA"
-  end
-
-  def script; <<-EOS.undent
-    #!/bin/sh
-    if [ -z "$1" ]; then
-      echo "Usage: $ solr path/to/config/dir"
-    else
-      cd #{libexec}/example && java -Dsolr.solr.home=$1 -jar start.jar
-    fi
-    EOS
-  end
+  homepage "http://lucene.apache.org/solr/"
+  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.10.2/solr-4.10.2.tgz"
+  sha1 "b913204d07212d7bb814afe4641992f22404a27d"
 
   def install
-    libexec.install Dir['*']
-    (bin+'solr').write script
+    libexec.install Dir["*"]
+    bin.install "#{libexec}/bin/solr"
+    share.install "#{libexec}/bin/solr.in.sh"
+    prefix.install "#{libexec}/example"
   end
 
-  def caveats; <<-EOS.undent
-    To start solr:
-      solr path/to/solr/config/dir
+  plist_options :manual => "solr start"
 
-    See the solr homepage for more setup information:
-      brew home solr
+  def plist; <<-EOS.undent
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/solr</string>
+            <string>start</string>
+            <string>-f</string>
+          </array>
+          <key>ServiceDescription</key>
+          <string>#{name}</string>
+          <key>WorkingDirectory</key>
+          <string>#{HOMEBREW_PREFIX}</string>
+          <key>RunAtLoad</key>
+          <true/>
+      </dict>
+      </plist>
     EOS
   end
 end

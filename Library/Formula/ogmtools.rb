@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ogmtools < Formula
-  url 'http://www.bunkus.org/videotools/ogmtools/ogmtools-1.5.tar.bz2'
   homepage 'http://www.bunkus.org/videotools/ogmtools/'
+  url 'http://www.bunkus.org/videotools/ogmtools/ogmtools-1.5.tar.bz2'
   sha1 'a23ba7e6ac490ffb60e8fb739e790b7a020a444c'
 
   depends_on 'libogg'
@@ -10,13 +10,15 @@ class Ogmtools < Formula
   depends_on 'libdvdread' => :optional
 
   # Borrow patch from MacPorts
-  def patches
-    {:p0 => 'https://trac.macports.org/export/87593/trunk/dports/multimedia/ogmtools/files/common.h.diff'}
+  patch :p0 do
+    url "https://trac.macports.org/export/87593/trunk/dports/multimedia/ogmtools/files/common.h.diff"
+    sha1 "cd7206eebbe939f1c4e0203c612ad5aeb6d8ea56"
   end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 

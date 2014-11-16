@@ -7,22 +7,20 @@ class Ekg2 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'
-  depends_on 'libgadu' if build.include? "with-libgadu"
-
-  option "with-libgadu", "Compiles ekg2 with gadu-gadu support"
+  depends_on 'libgadu' => :optional
 
   def install
-    readline = Formula.factory 'readline'
+    readline = Formula['readline'].opt_prefix
 
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--without-python",
             "--without-perl",
-            "--with-readline=#{readline.prefix}",
+            "--with-readline=#{readline}",
             "--without-gtk",
             "--enable-unicode"]
 
-    args << build.include?("with-libgadu") ? "--with-libgadu" : "--without-libgadu"
+    args << (build.with?("libgadu") ? "--with-libgadu" : "--without-libgadu")
 
     system "./configure", *args
     system "make install"

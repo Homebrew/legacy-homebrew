@@ -1,18 +1,20 @@
-require 'formula'
+require "formula"
 
 class MitScheme < Formula
-  homepage 'http://www.gnu.org/software/mit-scheme/'
-  url 'http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
-  sha1 '8f175a40061bdfc0248535e198cc7f5b5a0dce32'
+  homepage "http://www.gnu.org/software/mit-scheme/"
+  url "http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz"
+  sha1 "d2820ee76da109d370535fec6e19910a673aa7ee"
 
-  depends_on :x11 if MacOS::X11.installed?
-
-  def patches
-    # fix installation issue with OS X 10.7 and Xcode in /Applications
-    # http://savannah.gnu.org/patch/?7775
-    DATA
+  bottle do
+    sha1 "dadd99b6228b6950c91e57a0e5197a5f61f80cd1" => :mavericks
+    sha1 "d91e6fdd907d7747fa56cced88926242888d50d5" => :mountain_lion
+    sha1 "e02e2cf5cc62c24159ef5690172c9bcb4e09645d" => :lion
   end
+
+  conflicts_with "tinyscheme", :because => "both install a `scheme` binary"
+
+  depends_on :x11
 
   def install
     # The build breaks __HORRIBLY__ with parallel make -- one target will erase something
@@ -20,55 +22,23 @@ class MitScheme < Formula
     # change_make_var, because there are Makefiles littered everywhere
     ENV.j1
 
+
     # Liarc builds must launch within the src dir, not using the top-level Makefile
     cd "src"
 
     # Take care of some hard-coded paths
-    inreplace %w(6001/edextra.scm 6001/floppy.scm compiler/etc/disload.scm configure
-    edwin/techinfo.scm edwin/unix.scm lib/include/configure lib/include/option.c
+    inreplace %w(6001/edextra.scm 6001/floppy.scm compiler/etc/disload.scm microcode/configure
+    edwin/techinfo.scm edwin/unix.scm lib/include/configure
     swat/c/tk3.2-custom/Makefile swat/c/tk3.2-custom/tcl/Makefile swat/scheme/other/btest.scm) do |s|
       s.gsub! "/usr/local", prefix
     end
 
-    # The configure script will add '-isysroot' to CPPFLAGS, so it didn't check .h here
+    # The configure script will add "-isysroot" to CPPFLAGS, so it didn't check .h here
     # by default even Homebrew is installed in /usr/local. This breaks things when gdbm
     # or other optional dependencies was installed using Homebrew
-    ENV.prepend 'CPPFLAGS', "-I#{HOMEBREW_PREFIX}/include"
-
+    ENV.prepend "CPPFLAGS", "-I#{HOMEBREW_PREFIX}/include"
+    ENV["MACOSX_SYSROOT"] = MacOS.sdk_path
     system "etc/make-liarc.sh", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
-
-__END__
-diff --git a/src/configure b/src/configure
-index 23187c9..4485b64 100755
---- a/src/configure
-+++ b/src/configure
-@@ -6257,7 +6257,10 @@ echo "$as_me: error: Unable to determine MacOSX version" >&2;}
-     else
- 	SDK=MacOSX${MACOSX}
-     fi
-+	MACOSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
-+	if test ! -d "${MACOSX_SYSROOT}"; then
-     MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk
-+	fi
-     if test ! -d "${MACOSX_SYSROOT}"; then
- 	{ { echo "$as_me:$LINENO: error: No MacOSX SDK for version: ${MACOSX}" >&5
- echo "$as_me: error: No MacOSX SDK for version: ${MACOSX}" >&2;}
-
-diff --git a/src/lib/include/configure b/src/lib/include/configure
-index d4c7717..49be0a2 100755
---- a/src/lib/include/configure
-+++ b/src/lib/include/configure
-@@ -5311,7 +5311,10 @@ echo "$as_me: error: Unable to determine MacOSX version" >&2;}
-     else
- 	SDK=MacOSX${MACOSX}
-     fi
-+	MACOSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
-+	if test ! -d "${MACOSX_SYSROOT}"; then
-     MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk
-+	fi
-     if test ! -d "${MACOSX_SYSROOT}"; then
- 	{ { echo "$as_me:$LINENO: error: No MacOSX SDK for version: ${MACOSX}" >&5
- echo "$as_me: error: No MacOSX SDK for version: ${MACOSX}" >&2;}

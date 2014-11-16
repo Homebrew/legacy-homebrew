@@ -2,38 +2,39 @@ require 'formula'
 
 class Gmp < Formula
   homepage 'http://gmplib.org/'
-  url 'http://ftpmirror.gnu.org/gmp/gmp-5.0.5.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.0.5.tar.bz2'
-  sha256 '1f588aaccc41bb9aed946f9fe38521c26d8b290d003c5df807f65690f2aadec9'
+  url 'http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2'
+  mirror 'ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2'
+  sha1 '360802e3541a3da08ab4b55268c80f799939fddc'
+
+  bottle do
+    cellar :any
+    sha1 "93ad3c1a012806518e9a128d6eb5b565b4a1771d" => :yosemite
+    sha1 "bfaab8c533af804d4317730f62164b9c80f84f24" => :mavericks
+    sha1 "99dc6539860a9a8d3eb1ac68d5b9434acfb2d846" => :mountain_lion
+    sha1 "466b7549553bf0e8f14ab018bd89c48cbd29a379" => :lion
+  end
 
   option '32-bit'
-  option 'skip-check', 'Do not run `make check`'
+  option :cxx11
 
   def install
-    # Reports of problems using gcc 4.0 on Leopard
-    # https://github.com/mxcl/homebrew/issues/issue/2302
-    # Also force use of 4.2 on 10.6 in case a user has changed the default
-    # Do not force if xcode > 4.2 since it does not have /usr/bin/gcc-4.2 as default
-    # FIXME convert this to appropriate fails_with annotations
-    ENV.gcc if MacOS::Xcode.provides_gcc?
+    ENV.cxx11 if build.cxx11?
+    args = ["--prefix=#{prefix}", "--enable-cxx"]
 
-    args = %W[--prefix=#{prefix} --enable-cxx]
-
-    # Build 32-bit where appropriate, and help configure find 64-bit CPUs
-    # see: http://gmplib.org/macos.html
-    if MacOS.prefer_64_bit? and not build.build_32_bit?
-      ENV.m64
-      args << "--build=x86_64-apple-darwin"
-    else
+    if build.build_32_bit?
       ENV.m32
-      args << "--build=none-apple-darwin"
+      args << "ABI=32"
+      # https://github.com/Homebrew/homebrew/issues/20693
+      args << "--disable-assembly"
+    elsif build.bottle?
+      args << "--disable-assembly"
     end
 
     system "./configure", *args
     system "make"
-    ENV.j1 # Doesn't install in parallel on 8-core Mac Pro
-    # Upstream implores users to always run the test suite
-    system "make check" unless build.include? "skip-check"
+    system "make check"
+    ENV.deparallelize
     system "make install"
   end
 end

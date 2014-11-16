@@ -1,17 +1,17 @@
-require 'formula'
+require "formula"
 
 class Abcl < Formula
-  homepage 'http://common-lisp.net/project/armedbear/'
-  url 'http://common-lisp.net/project/armedbear/releases/1.0.1/abcl-bin-1.0.1.tar.gz'
-  sha1 '50886fe87f31317eda5c40eba8e704742cafd18e'
+  homepage "http://abcl.org"
+  url "http://abcl.org/releases/1.3.1/abcl-bin-1.3.1.tar.gz"
+  sha1 "7abb22130acfbca9d01c413da9c98a6aa078c78b"
 
-  depends_on 'rlwrap'
+  depends_on "rlwrap"
 
   def install
-    prefix.install "abcl.jar", "abcl-contrib.jar"
+    libexec.install "abcl.jar", "abcl-contrib.jar"
     (bin+"abcl").write <<-EOS.undent
       #!/bin/sh
-      rlwrap java -jar "#{prefix}/abcl.jar" "$@"
+      rlwrap java -jar "#{libexec}/abcl.jar" "$@"
     EOS
   end
 end

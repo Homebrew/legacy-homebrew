@@ -1,18 +1,12 @@
-require 'formula'
+require "formula"
 
 class Cpputest < Formula
-  homepage 'http://www.cpputest.org/'
-  url 'http://sourceforge.net/projects/cpputest/files/cpputest/v3.1/CppUTest-v3.1.zip'
-  sha1 '8ff6b764a9ca6202582ae0c94545f56b921f39d5'
-
-  fails_with :clang do
-    build 421
-    cause 'Uses -lgcov which only comes with llvm or gcc'
-  end
+  homepage "http://www.cpputest.org/"
+  url "https://github.com/cpputest/cpputest/archive/v3.6.tar.gz"
+  sha1 "308a4200adfb86182251d435e09f42360d9ed8ea"
 
   def install
-    system "make"
-    lib.install 'lib/libCppUTest.a'
-    include.install 'include/CppUTest'
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
   end
 end

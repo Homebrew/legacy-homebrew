@@ -1,136 +1,130 @@
-class Compilers < Array
-  def include? cc
-    cc = cc.name if cc.is_a? Compiler
-    self.any? { |c| c.name == cc }
-  end
+module CompilerConstants
+  GNU_GCC_VERSIONS = 3..9
+  GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
 end
 
+class CompilerFailure
+  attr_reader :name
+  attr_rw :version
 
-class CompilerFailures < Array
-  def include? cc
-    cc = Compiler.new(cc) unless cc.is_a? Compiler
-    self.any? { |failure| failure.compiler == cc.name }
-  end
+  # Allows Apple compiler `fails_with` statements to keep using `build`
+  # even though `build` and `version` are the same internally
+  alias_method :build, :version
 
-  def <<(failure)
-    super(failure) unless self.include? failure.compiler
-  end
-end
+  # The cause is no longer used so we need not hold a reference to the string
+  def cause(_); end
 
-
-class Compiler
-  attr_reader :name, :build
-
-  def initialize name
-    @name = name
-    @build = case name
-    when :clang then MacOS.clang_build_version.to_i
-    when :llvm then MacOS.llvm_build_version.to_i
-    when :gcc then MacOS.gcc_42_build_version.to_i
+  def self.for_standard standard
+    COLLECTIONS.fetch(standard) do
+      raise ArgumentError, "\"#{standard}\" is not a recognized standard"
     end
   end
 
-  def ==(other)
-    @name.to_sym == other.to_sym
+  def self.create(spec, &block)
+    # Non-Apple compilers are in the format fails_with compiler => version
+    if spec.is_a?(Hash)
+      _, major_version = spec.each { |e| break e }
+      name = "gcc-#{major_version}"
+      # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
+      version = "#{major_version}.999"
+    else
+      name = spec
+      version = 9999
+    end
+    new(name, version, &block)
   end
-end
 
-
-class CompilerFailure
-  attr_reader :compiler
-
-  def initialize compiler, &block
-    @compiler = compiler
+  def initialize(name, version, &block)
+    @name = name
+    @version = version
     instance_eval(&block) if block_given?
   end
 
-  def build val=nil
-    val.nil? ? @build.to_i : @build = val.to_i
+  def ===(compiler)
+    name == compiler.name && version >= compiler.version
   end
 
-  def cause val=nil
-    val.nil? ? @cause : @cause = val
+  def inspect
+    "#<#{self.class.name}: #{name} #{version}>"
   end
+
+  COLLECTIONS = {
+    :cxx11 => [
+      create(:gcc_4_0),
+      create(:gcc),
+      create(:llvm),
+      create(:clang) { build 425 },
+      create(:gcc => "4.3"),
+      create(:gcc => "4.4"),
+      create(:gcc => "4.5"),
+      create(:gcc => "4.6"),
+    ],
+    :openmp => [create(:clang)],
+  }
 end
 
-
-# CompilerSelector is used to process a formula's CompilerFailures.
-# If no viable compilers are available, ENV.compiler is left as-is.
 class CompilerSelector
-  NAMES = { :clang => "Clang", :gcc => "GCC", :llvm => "LLVM" }
+  include CompilerConstants
 
-  def initialize f
-    @f = f
-    @old_compiler = ENV.compiler
-    @compilers = Compilers.new
-    @compilers << Compiler.new(:clang) if MacOS.clang_build_version
-    @compilers << Compiler.new(:llvm) if MacOS.llvm_build_version
-    @compilers << Compiler.new(:gcc) if MacOS.gcc_42_build_version
+  Compiler = Struct.new(:name, :version)
+
+  COMPILER_PRIORITY = {
+    :clang   => [:clang, :gcc, :llvm, :gnu, :gcc_4_0],
+    :gcc     => [:gcc, :llvm, :gnu, :clang, :gcc_4_0],
+    :llvm    => [:llvm, :gcc, :gnu, :clang, :gcc_4_0],
+    :gcc_4_0 => [:gcc_4_0, :gcc, :llvm, :gnu, :clang],
+  }
+
+  def self.select_for(formula, compilers=self.compilers)
+    new(formula, MacOS, compilers).compiler
   end
 
-  def select_compiler
-    # @compilers is our list of available compilers. If @f declares a
-    # failure with compiler foo, then we remove foo from the list if
-    # the failing build is >= the currently installed version of foo.
-    @compilers.reject! do |cc|
-      failure = @f.fails_with? cc
-      next unless failure
-      failure.build >= cc.build
-    end
+  def self.compilers
+    COMPILER_PRIORITY.fetch(MacOS.default_compiler)
+  end
 
-    return if @compilers.empty? or @compilers.include? ENV.compiler
+  attr_reader :formula, :failures, :versions, :compilers
 
-    ENV.send case ENV.compiler
-    when :clang
-      if @compilers.include? :llvm then :llvm
-      elsif @compilers.include? :gcc then :gcc
-      else ENV.compiler
-      end
-    when :llvm
-      if @compilers.include? :clang and MacOS.clang_build_version >= 211 then :clang
-      elsif @compilers.include? :gcc then :gcc
-      elsif @compilers.include? :clang then :clang
-      else ENV.compiler
-      end
-    when :gcc
-      if @compilers.include? :clang and MacOS.clang_build_version >= 211 then :clang
-      elsif @compilers.include? :llvm then :llvm
-      elsif @compilers.include? :clang then :clang
-      else ENV.compiler
+  def initialize(formula, versions, compilers)
+    @formula = formula
+    @failures = formula.compiler_failures
+    @versions = versions
+    @compilers = compilers
+  end
+
+  def compiler
+    find_compiler { |c| return c.name unless fails_with?(c) }
+    raise CompilerSelectionError.new(formula)
+  end
+
+  private
+
+  def find_compiler
+    compilers.each do |compiler|
+      case compiler
+      when :gnu
+        GNU_GCC_VERSIONS.reverse_each do |v|
+          name = "gcc-4.#{v}"
+          version = compiler_version(name)
+          yield Compiler.new(name, version) if version
+        end
+      else
+        version = compiler_version(compiler)
+        yield Compiler.new(compiler, version) if version
       end
     end
   end
 
-  def advise
-    failure = @f.fails_with? @old_compiler
-    return unless failure
+  def fails_with?(compiler)
+    failures.any? { |failure| failure === compiler }
+  end
 
-    # If we're still using the original ENV.compiler, then the formula did not
-    # declare a specific failing build, so we continue and print some advice.
-    # Otherwise, tell the user that we're switching compilers.
-    if @old_compiler == ENV.compiler
-      cc = Compiler.new(ENV.compiler)
-      subject = "#{@f.name}-#{@f.version}: builds with #{NAMES[cc.name]}-#{cc.build}-#{MACOS_VERSION}"
-      warning = "Using #{NAMES[cc.name]}, but this formula is reported to fail with #{NAMES[cc.name]}."
-      warning += "\n\n#{failure.cause.strip}\n" unless failure.cause.nil?
-      warning += <<-EOS.undent
-
-        We are continuing anyway so if the build succeeds, please open a ticket with
-        the subject
-
-          #{subject}
-
-        so that we can update the formula accordingly. Thanks!
-        EOS
-
-      viable = @compilers.reject { |cc| @f.fails_with? cc }
-      unless viable.empty?
-        warning += "\nIf it fails you can use "
-        options = viable.map { |cc| "--use-#{cc.name}" }
-        warning += "#{options*' or '} to try a different compiler."
-      end
-
-      opoo warning
+  def compiler_version(name)
+    case name
+    when GNU_GCC_REGEXP
+      versions.non_apple_gcc_version(name)
+    else
+      versions.send("#{name}_build_version")
     end
   end
 end

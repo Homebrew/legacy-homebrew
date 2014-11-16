@@ -1,18 +1,18 @@
-require 'formula'
+require "formula"
 
 class Sonar < Formula
-  homepage 'http://www.sonarsource.org'
-  url 'http://dist.sonar.codehaus.org/sonar-3.2.zip'
-  sha1 'a6ec8855e4b365a89c07d688a8a1af04358237bb'
+  homepage "http://www.sonarqube.org/"
+  url "http://dist.sonar.codehaus.org/sonarqube-4.5.1.zip"
+  sha1 "3b1ceb5e9b0731f693d9c89c4c9873e6c439e8c5"
 
   def install
     # Delete native bin directories for other systems
     rm_rf Dir['bin/{aix,hpux,linux,solaris,windows}-*']
 
     if MacOS.prefer_64_bit?
-      rm_rf Dir['bin/macosx-universal-32']
+      rm_rf "bin/macosx-universal-32"
     else
-      rm_rf Dir['bin/macosx-universal-64']
+      rm_rf "bin/macosx-universal-64"
     end
 
     # Delete Windows files
@@ -26,39 +26,24 @@ class Sonar < Formula
     end
   end
 
-  def caveats; <<-EOS
-If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/sonar/bin/sonar console"
 
-If this is an upgrade and you already have the #{plist_path.basename} loaded:
-    launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-Or start it manually:
-   #{HOMEBREW_PREFIX}/bin/sonar console
-EOS
-  end
-
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-    <string>#{HOMEBREW_PREFIX}/bin/sonar</string>
-    <string>start</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-</dict>
-</plist>
-EOS
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+        <string>#{opt_bin}/sonar</string>
+        <string>start</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+    </dict>
+    </plist>
+    EOS
   end
 end

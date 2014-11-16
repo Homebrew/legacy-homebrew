@@ -1,17 +1,19 @@
 require 'formula'
 
 class Zint < Formula
-  homepage 'http://zint.github.com/'
+  homepage 'http://zint.github.io/'
   url 'https://github.com/downloads/zint/zint/zint-2.4.3.tar.gz'
   sha1 '300732d03c77ccf1031c485a20f09b51495ef5a3'
+  revision 1
 
   head 'git://zint.git.sourceforge.net/gitroot/zint/zint'
 
-  option 'qt', 'Build the zint-qt GUI.'
+  option "with-qt", "Build the zint-qt GUI"
+  deprecated_option "qt" => "with-qt"
 
   depends_on 'cmake' => :build
-  depends_on :libpng
-  depends_on 'qt' => :optional if build.include? 'qt'
+  depends_on 'libpng'
+  depends_on 'qt' => :optional
 
   def install
     mkdir 'zint-build' do
@@ -20,9 +22,7 @@ class Zint < Formula
     end
   end
 
-  def test
-    mktemp do
-      system "#{bin}/zint", "-o", "test-zing.png", "-d", "This Text"
-    end
+  test do
+    system "#{bin}/zint", "-o", "test-zing.png", "-d", "This Text"
   end
 end

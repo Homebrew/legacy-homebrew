@@ -1,288 +1,277 @@
 require 'testing_env'
-require 'test/testball'
+require 'testball'
 
-class AbstractDownloadStrategy
-  attr_reader :url
-end
+class FormulaTests < Homebrew::TestCase
+  def test_formula_instantiation
+    klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
+    name = "formula_name"
+    path = Formula.path(name)
+    spec = :stable
 
-class MostlyAbstractFormula < Formula
-  url ''
-end
-
-class FormulaTests < Test::Unit::TestCase
-  include VersionAssertions
+    f = klass.new(name, path, spec)
+    assert_equal name, f.name
+    assert_equal path, f.path
+    assert_raises(ArgumentError) { klass.new }
+  end
 
   def test_prefix
-    nostdout do
-      TestBall.new.brew do |f|
-        assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
-        assert_kind_of Pathname, f.prefix
+    f = TestBall.new
+    assert_equal HOMEBREW_CELLAR/f.name/'0.1', f.prefix
+    assert_kind_of Pathname, f.prefix
+  end
+
+  def test_revised_prefix
+    f = Class.new(TestBall) { revision 1 }.new
+    assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
+  end
+
+  def test_installed?
+    f = TestBall.new
+    f.stubs(:installed_prefix).returns(stub(:directory? => false))
+    refute_predicate f, :installed?
+
+    f.stubs(:installed_prefix).returns(
+      stub(:directory? => true, :children => [])
+    )
+    refute_predicate f, :installed?
+
+    f.stubs(:installed_prefix).returns(
+      stub(:directory? => true, :children => [stub])
+    )
+    assert_predicate f, :installed?
+  end
+
+  def test_installed_prefix
+    f = Class.new(TestBall).new
+    assert_equal f.prefix, f.installed_prefix
+  end
+
+  def test_installed_prefix_head_installed
+    f = formula do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0'
       end
     end
+    prefix = HOMEBREW_CELLAR+f.name+f.head.version
+    prefix.mkpath
+    assert_equal prefix, f.installed_prefix
+  ensure
+    f.rack.rmtree
+  end
+
+  def test_installed_prefix_devel_installed
+    f = formula do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.devel.version
+    prefix.mkpath
+    assert_equal prefix, f.installed_prefix
+  ensure
+    f.rack.rmtree
+  end
+
+  def test_installed_prefix_stable_installed
+    f = formula do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0-devel'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.version
+    prefix.mkpath
+    assert_equal prefix, f.installed_prefix
+  ensure
+    f.rack.rmtree
+  end
+
+  def test_installed_prefix_head
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0-devel'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.head.version
+    assert_equal prefix, f.installed_prefix
+  end
+
+  def test_installed_prefix_devel
+    f = formula("test", Pathname.new(__FILE__).expand_path, :devel) do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0-devel'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.devel.version
+    assert_equal prefix, f.installed_prefix
+  end
+
+  def test_equality
+    x = TestBall.new
+    y = TestBall.new
+    assert_equal x, y
+    assert_eql x, y
+    assert_equal x.hash, y.hash
+  end
+
+  def test_inequality
+    x = TestBall.new("foo")
+    y = TestBall.new("bar")
+    refute_equal x, y
+    refute_eql x, y
+    refute_equal x.hash, y.hash
+  end
+
+  def test_comparison_with_non_formula_objects_does_not_raise
+    refute_equal TestBall.new, Object.new
+  end
+
+  def test_sort_operator
+    assert_nil TestBall.new <=> Object.new
   end
 
   def test_class_naming
-    assert_equal 'ShellFm', Formula.class_s('shell.fm')
-    assert_equal 'Fooxx', Formula.class_s('foo++')
-    assert_equal 'SLang', Formula.class_s('s-lang')
-    assert_equal 'PkgConfig', Formula.class_s('pkg-config')
-    assert_equal 'FooBar', Formula.class_s('foo_bar')
+    assert_equal 'ShellFm', Formulary.class_s('shell.fm')
+    assert_equal 'Fooxx', Formulary.class_s('foo++')
+    assert_equal 'SLang', Formulary.class_s('s-lang')
+    assert_equal 'PkgConfig', Formulary.class_s('pkg-config')
+    assert_equal 'FooBar', Formulary.class_s('foo_bar')
   end
 
-  def test_cant_override_brew
-    assert_raises(RuntimeError) do
-      eval <<-EOS
-      class TestBallOverrideBrew < Formula
-        def initialize
-          super "foo"
-        end
-        def brew
-        end
+  def test_formula_spec_integration
+    f = Class.new(Formula) do
+      homepage 'http://example.com'
+      url 'http://example.com/test-0.1.tbz'
+      mirror 'http://example.org/test-0.1.tbz'
+      sha1 TEST_SHA1
+
+      head 'http://example.com/test.git', :tag => 'foo'
+
+      devel do
+        url 'http://example.com/test-0.2.tbz'
+        mirror 'http://example.org/test-0.2.tbz'
+        sha256 TEST_SHA256
       end
-      EOS
-    end
-  end
 
-  def test_abstract_formula
-    f=MostlyAbstractFormula.new
-    assert_equal '__UNKNOWN__', f.name
-    assert_raises(RuntimeError) { f.prefix }
-    nostdout { assert_raises(RuntimeError) { f.brew } }
-  end
+      bottle { sha1 TEST_SHA1 => bottle_tag }
 
-  def test_mirror_support
-    HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
-    nostdout do
-      f = TestBallWithMirror.new
-      tarball, downloader = f.fetch
-      assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-      assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    end
-  end
-
-  def test_formula_specs
-    f = SpecTestBall.new
+      def initialize
+        super "test", Pathname.new(__FILE__).expand_path, :stable
+      end
+    end.new
 
     assert_equal 'http://example.com', f.homepage
-    assert_equal 'file:///foo.com/testball-0.1.tbz', f.url
-    assert_equal 1, f.mirrors.length
     assert_version_equal '0.1', f.version
-    assert_equal f.stable, f.active_spec
-    assert_equal CurlDownloadStrategy, f.download_strategy
-    assert_instance_of CurlDownloadStrategy, f.downloader
+    assert_predicate f, :stable?
 
     assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of Bottle, f.bottle
     assert_instance_of SoftwareSpec, f.devel
     assert_instance_of HeadSoftwareSpec, f.head
-
-    assert_equal 'file:///foo.com/testball-0.1.tbz', f.stable.url
-    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spectestball-0.1.#{MacOS.cat}.bottle.tar.gz",
-      f.bottle.url
-    assert_equal 'file:///foo.com/testball-0.2.tbz', f.devel.url
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
-
-    assert_nil f.stable.specs
-    assert_nil f.bottle.specs
-    assert_nil f.devel.specs
-    assert_equal({ :tag => 'foo' }, f.head.specs)
-
-    assert_equal CurlDownloadStrategy, f.stable.download_strategy
-    assert_equal CurlBottleDownloadStrategy, f.bottle.download_strategy
-    assert_equal CurlDownloadStrategy, f.devel.download_strategy
-    assert_equal GitDownloadStrategy, f.head.download_strategy
-
-    assert_instance_of Checksum, f.stable.checksum
-    assert_instance_of Checksum, f.bottle.checksum
-    assert_instance_of Checksum, f.devel.checksum
-    assert !f.stable.checksum.empty?
-    assert !f.bottle.checksum.empty?
-    assert !f.devel.checksum.empty?
-    assert_nil f.head.checksum
-    assert_equal :sha1, f.stable.checksum.hash_type
-    assert_equal :sha1, f.bottle.checksum.hash_type
-    assert_equal :sha256, f.devel.checksum.hash_type
-    assert_equal case MacOS.cat
-      when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-      when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
-      when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
-      end, f.bottle.checksum.hexdigest
-    assert_match /[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest
-    assert_match /[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest
-
-    assert_nil f.stable.md5
-    assert_nil f.stable.sha256
-    assert_nil f.bottle.md5
-    assert_nil f.bottle.sha256
-    assert_nil f.devel.md5
-    assert_nil f.devel.sha1
-
-    assert_equal 1, f.stable.mirrors.length
-    assert f.bottle.mirrors.empty?
-    assert_equal 1, f.devel.mirrors.length
-    assert f.head.mirrors.empty?
-
-    assert f.stable.version.detected_from_url?
-    assert f.bottle.version.detected_from_url?
-    assert f.devel.version.detected_from_url?
-    assert_version_equal '0.1', f.stable.version
-    assert_version_equal '0.1', f.bottle.version
-    assert_version_equal '0.2', f.devel.version
-    assert_version_equal 'HEAD', f.head.version
-    assert_equal 0, f.bottle.revision
   end
 
-  def test_devel_active_spec
-    ARGV.push '--devel'
-    f = SpecTestBall.new
-    assert_equal f.devel, f.active_spec
-    assert_version_equal '0.2', f.version
-    assert_equal 'file:///foo.com/testball-0.2.tbz', f.url
-    assert_equal CurlDownloadStrategy, f.download_strategy
-    assert_instance_of CurlDownloadStrategy, f.downloader
-    ARGV.delete '--devel'
+  def test_path
+    name = 'foo-bar'
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formula.path(name)
   end
 
-  def test_head_active_spec
-    ARGV.push '--HEAD'
-    f = SpecTestBall.new
-    assert_equal f.head, f.active_spec
-    assert_version_equal 'HEAD', f.version
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.url
-    assert_equal GitDownloadStrategy, f.download_strategy
-    assert_instance_of GitDownloadStrategy, f.downloader
-    ARGV.delete '--HEAD'
+  def test_factory
+    name = 'foo-bar'
+    path = HOMEBREW_PREFIX+"Library/Formula/#{name}.rb"
+    path.dirname.mkpath
+    File.open(path, 'w') do |f|
+      f << %{
+        require 'formula'
+        class #{Formulary.class_s(name)} < Formula
+          url 'foo-1.0'
+        end
+      }
+    end
+    assert_kind_of Formula, Formulary.factory(name)
+  ensure
+    path.unlink
   end
 
-  def test_explicit_version_spec
-    f = ExplicitVersionSpecTestBall.new
-    assert_version_equal '0.3', f.version
-    assert_version_equal '0.3', f.stable.version
-    assert_version_equal '0.4', f.devel.version
-    assert !f.stable.version.detected_from_url?
-    assert !f.devel.version.detected_from_url?
-  end
+  def test_class_specs_are_always_initialized
+    f = formula { url 'foo-1.0' }
 
-  def test_old_bottle_specs
-    f = OldBottleSpecTestBall.new
-
-    case MacOS.cat
-    when :lion
-      assert_instance_of Bottle, f.bottle
-      assert_equal CurlBottleDownloadStrategy, f.bottle.download_strategy
-      assert_nil f.bottle.specs
-      assert_nil f.bottle.mirrors
-
-      assert_equal 'file:///foo.com/testball-0.1-bottle.tar.gz', f.bottle.url
-
-      assert_instance_of Checksum, f.bottle.checksum
-      assert_equal :sha1, f.bottle.checksum.hash_type
-      assert !f.bottle.checksum.empty?
-      assert_equal 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d', f.bottle.sha1.hexdigest
-      assert_nil f.bottle.md5
-      assert_nil f.bottle.sha256
-
-      assert f.bottle.version.detected_from_url?
-      assert_equal 0, f.bottle.revision
-      assert_version_equal '0.1', f.bottle.version
-    else
-      assert_nil f.bottle
+    %w{stable devel head}.each do |spec|
+      assert_kind_of SoftwareSpec, f.class.send(spec)
     end
   end
 
-  def test_ancient_bottle_specs
-    f = AncientBottleSpecTestBall.new
-    assert_nil f.bottle
+  def test_incomplete_instance_specs_are_not_accessible
+    f = formula { url 'foo-1.0' }
+
+    %w{devel head}.each { |spec| assert_nil f.send(spec) }
   end
 
-  def test_head_only_specs
-    f = HeadOnlySpecTestBall.new
+  def test_honors_attributes_declared_before_specs
+    f = formula do
+      url 'foo-1.0'
+      depends_on 'foo'
+      devel { url 'foo-1.1' }
+    end
 
-    assert_not_nil f.head
-    assert_nil f.stable
-    assert_nil f.bottle
-    assert_nil f.devel
-
-    assert_equal f.head, f.active_spec
-    assert_version_equal 'HEAD', f.version
-    assert_nil f.head.checksum
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.url
-    assert_equal GitDownloadStrategy, f.download_strategy
-    assert_instance_of GitDownloadStrategy, f.downloader
-    assert_instance_of HeadSoftwareSpec, f.head
+    %w{stable devel head}.each do |spec|
+      assert_equal 'foo', f.class.send(spec).deps.first.name
+    end
   end
 
-  def test_incomplete_stable_specs
-    f = IncompleteStableSpecTestBall.new
-
-    assert_not_nil f.head
-    assert_nil f.stable
-    assert_nil f.bottle
-    assert_nil f.devel
-
-    assert_equal f.head, f.active_spec
-    assert_version_equal 'HEAD', f.version
-    assert_nil f.head.checksum
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.url
-    assert_equal GitDownloadStrategy, f.download_strategy
-    assert_instance_of GitDownloadStrategy, f.downloader
-    assert_instance_of HeadSoftwareSpec, f.head
+  def test_simple_version
+    assert_equal PkgVersion.parse('1.0'), formula { url 'foo-1.0.bar' }.pkg_version
   end
 
-  def test_head_only_with_version_specs
-    f = IncompleteStableSpecTestBall.new
+  def test_version_with_revision
+    f = formula do
+      url 'foo-1.0.bar'
+      revision 1
+    end
 
-    assert_not_nil f.head
-    assert_nil f.stable
-    assert_nil f.bottle
-    assert_nil f.devel
-
-    assert_equal f.head, f.active_spec
-    assert_version_equal 'HEAD', f.version
-    assert_nil f.head.checksum
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.url
-    assert_equal GitDownloadStrategy, f.download_strategy
-    assert_instance_of GitDownloadStrategy, f.downloader
-    assert_instance_of HeadSoftwareSpec, f.head
+    assert_equal PkgVersion.parse('1.0_1'), f.pkg_version
   end
 
-  def test_explicit_strategy_specs
-    f = ExplicitStrategySpecTestBall.new
+  def test_head_ignores_revisions
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
+      url 'foo-1.0.bar'
+      revision 1
+      head 'foo'
+    end
 
-    assert_not_nil f.stable
-    assert_not_nil f.devel
-    assert_not_nil f.head
-
-    assert_equal f.stable, f.active_spec
-
-    assert_nil f.stable.checksum
-    assert_nil f.devel.checksum
-    assert_nil f.head.checksum
-
-    assert_equal MercurialDownloadStrategy, f.stable.download_strategy
-    assert_equal BazaarDownloadStrategy, f.devel.download_strategy
-    assert_equal SubversionDownloadStrategy, f.head.download_strategy
-
-    assert_equal({ :tag => '0.2' }, f.stable.specs)
-    assert_equal({ :tag => '0.3' }, f.devel.specs)
-    assert f.head.specs.empty?
+    assert_equal PkgVersion.parse('HEAD'), f.pkg_version
   end
 
-  def test_revised_bottle_specs
-    f = RevisedBottleSpecTestBall.new
-
-    assert_equal 1, f.bottle.revision
-    assert_equal case MacOS.cat
-      when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-      when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
-      when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
-      end, f.bottle.checksum.hexdigest
+  def test_raises_when_non_formula_constant_exists
+    const = :SomeConst
+    Object.const_set(const, Module.new)
+    begin
+      assert_raises(FormulaUnavailableError) { Formulary.factory("some_const") }
+    ensure
+      Object.send(:remove_const, const)
+    end
   end
 
-  def test_custom_version_scheme
-    f = CustomVersionSchemeTestBall.new
+  def test_legacy_options
+    f = formula do
+      url "foo-1.0"
 
-    assert_version_equal '1.0', f.version
-    assert_instance_of CustomVersionScheme, f.version
+      def options
+        [["--foo", "desc"], ["--bar", "desc"]]
+      end
+
+      option "baz"
+    end
+
+    assert f.option_defined?("foo")
+    assert f.option_defined?("bar")
+    assert f.option_defined?("baz")
   end
 end

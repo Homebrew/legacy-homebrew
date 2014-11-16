@@ -1,25 +1,22 @@
-require 'formula'
+require "formula"
 
 class Qpdf < Formula
-  url 'http://downloads.sourceforge.net/project/qpdf/qpdf/2.3.1/qpdf-2.3.1.tar.gz'
-  homepage 'http://qpdf.sourceforge.net/'
-  sha1 '043cceeb74a702d4e6a6a83b0211d99f28383655'
+  homepage "http://qpdf.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/qpdf/qpdf/5.1.2/qpdf-5.1.2.tar.gz"
+  sha1 "ede3938fdf2e3bf603fce6eb2bd93b3a2e1d13b9"
 
-  depends_on 'pcre'
-
-  def patches
-    # Fix call to depreciated PCRE function. Can probably be removed on next
-    # release. Upstream issue:
-    #   http://sourceforge.net/tracker/?func=detail&aid=3489349&group_id=224196&atid=1060899
-    'http://sourceforge.net/tracker/download.php?group_id=224196&atid=1060899&file_id=436172&aid=3489349'
-  end
+  depends_on "pcre"
 
   def install
     # find Homebrew's libpcre
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    ENV.append "LDFLAGS", "-L#{Formula["pcre"].opt_lib}"
 
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/qpdf", "--version"
   end
 end

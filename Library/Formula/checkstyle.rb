@@ -1,27 +1,22 @@
-require 'formula'
+require "formula"
 
 class Checkstyle < Formula
-  homepage 'http://checkstyle.sourceforge.net/'
-  url 'http://sourceforge.net/projects/checkstyle/files/checkstyle/5.5/checkstyle-5.5-bin.tar.gz'
-  sha1 '757f89f0bb6148718904577d230a9b4f8221b03c'
+  homepage "http://checkstyle.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.0/checkstyle-6.0-bin.tar.gz"
+  sha1 "55628df367e55127205bb3d8f333db26bdf28b3c"
 
   def install
-    # wrapper script
-    (bin/'checkstyle').write <<-EOS.undent
-      #! /usr/bin/env bash -e
-      java -jar "#{libexec}/checkstyle-5.5-all.jar" "$@"
-    EOS
-
-    libexec.install 'checkstyle-5.5-all.jar', 'sun_checks.xml'
+    libexec.install "checkstyle-#{version}-all.jar", "sun_checks.xml"
+    bin.write_jar_script libexec/"checkstyle-#{version}-all.jar", "checkstyle"
   end
 
-  def test
-    mktemp do
-      # create test file
-      (Pathname.pwd/"Test.java").write <<-EOS.undent
-        public class Test{ }
-      EOS
-      system "#{bin}/checkstyle", "-c", "#{libexec}/sun_checks.xml", "-r", "Test.java"
-    end
+  test do
+    path = testpath/"foo.java"
+    path.write "public class Foo{ }\n"
+
+    output = `#{bin}/checkstyle -c #{libexec}/sun_checks.xml -r #{path}`
+    errors = output.split("\n").select { |line| line.start_with?(path) }
+    assert errors.include?("#{path}:1:17: '{' is not preceded with whitespace.")
+    assert_equal errors.size, $?.exitstatus
   end
 end

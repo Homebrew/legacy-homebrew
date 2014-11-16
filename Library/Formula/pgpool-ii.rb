@@ -1,33 +1,20 @@
-require 'formula'
-
-class PostgresqlInstalled < Requirement
-  def message; <<-EOS.undent
-    PostgresQL is required to install.
-
-    You can install this with:
-      brew install postgresql
-
-    Or you can use an official installer from:
-      http://www.postgresql.org/
-    EOS
-  end
-  def satisfied?
-    which 'pg_config'
-  end
-  def fatal?
-    true
-  end
-end
+require "formula"
 
 class PgpoolIi < Formula
-  homepage 'http://www.pgpool.net/mediawiki/index.php/Main_Page'
-  url 'http://www.pgpool.net/mediawiki/download.php?f=pgpool-II-3.1.3.tar.gz'
-  sha1 '99e45bd218ab780e982116860fee11a605bd834f'
+  homepage "http://www.pgpool.net/mediawiki/index.php/Main_Page"
+  url "http://www.pgpool.net/download.php?f=pgpool-II-3.4.0.tar.gz"
+  sha1 "5502268055b6ba48013c1b7c9ac5a8ce3a0d30ed"
 
-  depends_on PostgresqlInstalled.new
+  bottle do
+    sha1 "b05f96a3f5d0ff02afea65aa50fa33ca1f75defb" => :yosemite
+    sha1 "621632adc180b378e427e21587c0c005e8b125db" => :mavericks
+    sha1 "26d1434b15ce5f716012bc204b8b01e05b0574c7" => :mountain_lion
+  end
+
+  depends_on :postgresql
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

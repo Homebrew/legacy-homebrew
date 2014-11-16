@@ -1,17 +1,29 @@
-require 'formula'
-
-class Flac2Mp3 < Formula
-  url 'https://github.com/rmndk/flac2mp3/tarball/v1.0'
-  sha1 '07d83e9264e7159a3df50d8422fb1db07f827f55'
-end
+require "formula"
 
 class Flac < Formula
-  homepage 'http://flac.sourceforge.net'
-  url 'http://downloads.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
-  sha1 'bd54354900181b59db3089347cc84ad81e410b38'
+  homepage "http://xiph.org/flac/"
+  url "http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz"
+  sha1 "a136e5748f8fb1e6c524c75000a765fc63bb7b1b"
 
-  depends_on 'lame'
-  depends_on 'libogg' => :optional
+  head do
+    url "git://git.xiph.org/flac.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  bottle do
+    cellar :any
+    revision 5
+    sha1 "3263a013f0ef3181c4bb94fc0b033784a7bc6b0f" => :yosemite
+    sha1 "43efcb1ad0516523a008b5b8fd656083f2b8d827" => :mavericks
+    sha1 "df55c22600a8360d0848c2801a009208740189e9" => :mountain_lion
+  end
+
+  option :universal
+
+  depends_on "pkg-config" => :build
+  depends_on "libogg" => :optional
 
   fails_with :llvm do
     build 2326
@@ -19,16 +31,32 @@ class Flac < Formula
   end
 
   def install
-    # sadly the asm optimisations won't compile since Leopard, and nobody
-    # cares or knows how to fix it
-    system "./configure", "--disable-debug",
-                          "--disable-asm-optimizations",
-                          "--enable-sse",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
-    ENV['OBJ_FORMAT']='macho'
-    system "make install"
+    ENV.universal_binary if build.universal?
 
-    Flac2Mp3.new.brew {|f| bin.install 'flac2mp3'}
+    ENV.append "CFLAGS", "-std=gnu89"
+
+    system "./autogen.sh" if build.head?
+
+    args = %W[
+      --disable-dependency-tracking
+      --disable-debug
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --enable-sse
+      --enable-static
+    ]
+
+    args << "--without-ogg" if build.without? "libogg"
+
+    system "./configure", *args
+
+    ENV["OBJ_FORMAT"] = "macho"
+
+    # adds universal flags to the generated libtool script
+    inreplace "libtool" do |s|
+      s.gsub! ":$verstring\"", ":$verstring -arch #{Hardware::CPU.arch_32_bit} -arch #{Hardware::CPU.arch_64_bit}\""
+    end
+
+    system "make", "install"
   end
 end

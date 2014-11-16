@@ -1,31 +1,21 @@
 require 'formula'
 
-class TikaRestServer < Formula
-  url 'http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.2/tika-server-1.2.jar'
-  sha1 '1343e490a61f9223832c66ff384a35f73dbc719c'
-end
-
 class Tika < Formula
   homepage 'http://tika.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi/tika/tika-app-1.2.jar'
-  sha1 '22c7110997d8ec114c6713cca1aadbbab6472c07'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.6.jar'
+  sha1 '99df0d8c3f6a2be498d275053e611fb5afdf0a9d'
 
-  def script; <<-EOS.undent
-    #!/bin/sh
-    java -jar #{libexec}/tika-app-1.2.jar "$@"
-    EOS
+  resource 'server' do
+    url 'http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.6/tika-server-1.6.jar'
+    sha1 '0e4a9fc0394b5a99b214423b6868d8eb6b0df7b0'
   end
 
   def install
-    libexec.install 'tika-app-1.2.jar'
-    (bin+'tika').write script
-    TikaRestServer.new.brew {
-      libexec.install 'tika-server-1.2.jar'
-      (bin+'tika-rest-server').write <<-EOS.undent
-        #!/bin/sh
-        java -jar #{libexec}/tika-server-1.2.jar "$@"
-        EOS
-    }
+    libexec.install "tika-app-#{version}.jar"
+    bin.write_jar_script libexec/"tika-app-#{version}.jar", "tika"
+
+    libexec.install resource('server')
+    bin.write_jar_script libexec/"tika-server-#{version}.jar", "tika-rest-server"
   end
 
   def caveats; <<-EOS.undent

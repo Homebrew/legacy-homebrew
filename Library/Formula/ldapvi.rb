@@ -5,6 +5,7 @@ class Ldapvi < Formula
   url 'http://www.lichteblau.com/download/ldapvi-1.7.tar.gz'
   sha1 'd1cde4cbb618180f9ae0e77c56a1520b8ad61c9a'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'popt'
@@ -14,9 +15,7 @@ class Ldapvi < Formula
   # (namespace conflict with Lion's getline function)
   # http://www.lichteblau.com/git/?p=ldapvi.git;a=commit;h=256ced029c235687bfafdffd07be7d47bf7af39b
   # Also fix compilation with clang by changing `return` to `return 0`.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

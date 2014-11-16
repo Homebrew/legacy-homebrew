@@ -1,9 +1,11 @@
 require 'formula'
 
 class Nickle < Formula
-  url 'http://nickle.org/release/nickle-2.70.tar.gz'
   homepage 'http://www.nickle.org/'
-  sha1 'b967e09816146e2f356c97b4fc5170a33bad2f29'
+  url 'http://www.nickle.org/release/nickle-2.77.tar.gz'
+  sha1 'b391e9fdc4e1bf48edeb10e587f472f04f571f29'
+
+  depends_on 'readline'
 
   def install
     system "./configure", "--disable-dependency-tracking",

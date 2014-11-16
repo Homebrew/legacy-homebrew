@@ -1,23 +1,62 @@
-require 'formula'
+require "formula"
 
 class Stunnel < Formula
-  homepage 'http://www.stunnel.org/'
-  url 'ftp://ftp.stunnel.org/stunnel/archive/4.x/stunnel-4.53.tar.gz'
-  sha1 'c167833c23fde388db697bd3edb4444aff0e449e'
+  homepage "https://www.stunnel.org/"
+  url "https://www.stunnel.org/downloads/stunnel-5.07.tar.gz"
+  mirror "http://www.usenix.org.uk/mirrors/stunnel/stunnel-5.07.tar.gz"
+  sha256 "505c6c63c4a20fc0cce8c35ef1ab7626c7b01071e3fca4ac6ea417afe8065309"
 
-  # This patch installs a bogus .pem in lieu of interactive cert generation.
-  # - additionally stripping carriage-returns
-  def patches
-    DATA
+  bottle do
+    sha1 "24b0625b1e8bf6dbeadd06c0356046cb6d78d953" => :yosemite
+    sha1 "d7f393c179a476a71fb782920feb60161be50406" => :mavericks
+    sha1 "be84862ed87f0a6e36327da9b02bb76bbc84e0ea" => :mountain_lion
   end
 
+  depends_on "openssl"
+
   def install
+    # This causes a bogus .pem to be created in lieu of interactive cert generation.
+    stunnel_cnf = Pathname.new("tools/stunnel.cnf")
+    stunnel_cnf.unlink
+    stunnel_cnf.write <<-EOS.undent
+      # OpenSSL configuration file to create a server certificate
+      # by Michal Trojnara 1998-2013
+
+      [ req ]
+      # the default key length is secure and quite fast - do not change it
+      default_bits                    = 2048
+      # comment out the next line to protect the private key with a passphrase
+      encrypt_key                     = no
+      distinguished_name              = req_dn
+      x509_extensions                 = cert_type
+      prompt                          = no
+
+      [ req_dn ]
+      countryName                     = PL
+      stateOrProvinceName             = Mazovia Province
+      localityName                    = Warsaw
+      organizationName                = Stunnel Developers
+      organizationalUnitName          = Provisional CA
+      0.commonName                    = localhost
+
+      # To create a certificate for more than one name uncomment:
+      # 1.commonName                  = DNS alias of your server
+      # 2.commonName                  = DNS alias of your server
+      # ...
+      # See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
+      # to see how Netscape understands commonName.
+
+      [ cert_type ]
+      nsCertType                      = server
+    EOS
+
     system "./configure", "--disable-dependency-tracking",
-                          "--disable-libwrap",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}"
-                          "--mandir=#{man}"
-    system "make install"
+                          "--sysconfdir=#{etc}",
+                          "--mandir=#{man}",
+                          "--disable-libwrap",
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}"
+    system "make", "install", "cert"
   end
 
   def caveats
@@ -32,85 +71,3 @@ class Stunnel < Formula
     EOS
   end
 end
-
-
-__END__
-diff --git a/tools/stunnel.cnf b/tools/stunnel.cnf
-index d8c3174..5ad26e0 100644
---- a/tools/stunnel.cnf
-+++ b/tools/stunnel.cnf
-@@ -1,42 +1,30 @@
--# OpenSSL configuration file to create a server certificate
--# by Michal Trojnara 1998-2012
--
--[ req ]
--# the default key length is secure and quite fast - do not change it
--default_bits                    = 2048
--# comment out the next line to protect the private key with a passphrase
--encrypt_key                     = no
--distinguished_name              = req_dn
--x509_extensions                 = cert_type
--
--[ req_dn ]
--countryName = Country Name (2 letter code)
--countryName_default             = PL
--countryName_min                 = 2
--countryName_max                 = 2
--
--stateOrProvinceName             = State or Province Name (full name)
--stateOrProvinceName_default     = Mazovia Province
--
--localityName                    = Locality Name (eg, city)
--localityName_default            = Warsaw
--
--organizationName                = Organization Name (eg, company)
--organizationName_default        = Stunnel Developers
--
--organizationalUnitName          = Organizational Unit Name (eg, section)
--organizationalUnitName_default  = Provisional CA
--
--0.commonName                    = Common Name (FQDN of your server)
--0.commonName_default            = localhost
--
--# To create a certificate for more than one name uncomment:
--# 1.commonName                  = DNS alias of your server
--# 2.commonName                  = DNS alias of your server
--# ...
--# See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
--# to see how Netscape understands commonName.
--
--[ cert_type ]
--nsCertType                      = server
--
-+# OpenSSL configuration file to create a server certificate
-+# by Michal Trojnara 1998-2012
-+
-+[ req ]
-+# the default key length is secure and quite fast - do not change it
-+default_bits                    = 2048
-+# comment out the next line to protect the private key with a passphrase
-+encrypt_key                     = no
-+distinguished_name              = req_dn
-+x509_extensions                 = cert_type
-+prompt                          = no
-+
-+[ req_dn ]
-+countryName                     = PL
-+stateOrProvinceName             = Mazovia Province
-+localityName                    = Warsaw
-+organizationName                = Stunnel Developers
-+organizationalUnitName          = Provisional CA
-+0.commonName                    = localhost
-+
-+# To create a certificate for more than one name uncomment:
-+# 1.commonName                  = DNS alias of your server
-+# 2.commonName                  = DNS alias of your server
-+# ...
-+# See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
-+# to see how Netscape understands commonName.
-+
-+[ cert_type ]
-+nsCertType                      = server
-+
---
-1.7.9

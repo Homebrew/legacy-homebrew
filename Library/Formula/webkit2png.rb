@@ -1,10 +1,9 @@
 require 'formula'
 
 class Webkit2png < Formula
-  url 'https://github.com/paulhammond/webkit2png/tarball/9c4265a82ebfcec200fca8de39fb970e5aae0a3d'
-  version '0.5'
   homepage 'http://www.paulhammond.org/webkit2png/'
-  sha1 '1112d3f7e5fac5e1bfef11f38626d09536957310'
+  url 'https://github.com/paulhammond/webkit2png/archive/v0.7.tar.gz'
+  sha1 '41fe7dfb13125d6489245ad186a8e5a409c5d0a9'
 
   def install
     bin.install 'webkit2png'

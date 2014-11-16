@@ -1,54 +1,56 @@
-module Homebrew extend self
+require 'ostruct'
 
+module Homebrew
   def link
     raise KegUnspecifiedError if ARGV.named.empty?
 
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      raise "Cowardly refusing to `sudo brew link'\n#{SUDO_BAD_ERRMSG}"
-    end
+    mode = OpenStruct.new
 
-    if ARGV.force? then mode = :force
-    elsif ARGV.dry_run? then mode = :dryrun
-    else mode = nil
-    end
+    mode.overwrite = true if ARGV.include? '--overwrite'
+    mode.dry_run = true if ARGV.dry_run?
 
     ARGV.kegs.each do |keg|
       if keg.linked?
         opoo "Already linked: #{keg}"
+        puts "To relink: brew unlink #{keg.name} && brew link #{keg.name}"
+        next
+      elsif keg_only?(keg.name) && !ARGV.force?
+        opoo "#{keg.name} is keg-only and must be linked with --force"
+        puts "Note that doing so can interfere with building software."
+        next
+      elsif mode.dry_run && mode.overwrite
+        puts "Would remove:"
+        keg.link(mode)
+
+        next
+      elsif mode.dry_run
+        puts "Would link:"
+        keg.link(mode)
+
         next
       end
 
-      if mode == :dryrun
-        print "Would remove:\n" do
-          keg.link(mode)
+      keg.lock do
+        print "Linking #{keg}... "
+        puts if ARGV.verbose?
+
+        begin
+          n = keg.link(mode)
+        rescue Keg::LinkError
+          puts
+          raise
+        else
+          puts "#{n} symlinks created"
         end
-
-        next
-      end
-
-      print "Linking #{keg}... " do
-        puts "#{keg.link(mode)} symlinks created"
       end
     end
   end
 
   private
 
-  # Allows us to ensure a puts happens before the block exits so that if say,
-  # an exception is thrown, its output starts on a new line.
-  def print str, &block
-    Kernel.print str
-    puts_capture = Class.new do
-      def self.puts str
-        $did_puts = true
-        Kernel.puts str
-      end
-    end
-
-    puts_capture.instance_eval &block
-
-  ensure
-    puts unless $did_puts
+  def keg_only?(name)
+    Formulary.factory(name).keg_only?
+  rescue FormulaUnavailableError
+    false
   end
-
 end

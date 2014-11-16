@@ -1,16 +1,18 @@
 require 'formula'
 
 class Gforth < Formula
-  url 'http://www.complang.tuwien.ac.at/forth/gforth/gforth-0.7.0.tar.gz'
-  homepage 'http://www.jwdt.com/~paysan/gforth.html'
-  sha1 '5bb357268cba683f2a8c63d2a4bcab8f41cb0086'
+  homepage 'http://www.gnu.org/software/gforth/'
+  url 'http://www.complang.tuwien.ac.at/forth/gforth/gforth-0.7.3.tar.gz'
+  sha256 '2f62f2233bf022c23d01c920b1556aa13eab168e3236b13352ac5e9f18542bb0'
+
+  depends_on 'libtool' => :run
+  depends_on 'libffi'
+  depends_on 'pcre'
 
   def install
-    ENV.j1 # Parallel builds won't work
-    # Install 32-bit only, even on Snow Leopard. See:
-    # http://www.groupsrv.com/computers/about648918.html
-    ENV['CC'] = "#{ENV.cc} -m32"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    ENV.deparallelize
+    system "./configure", "--prefix=#{prefix}"
     system "make" # Separate build steps.
     system "make install"
   end

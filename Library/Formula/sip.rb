@@ -1,101 +1,54 @@
 require 'formula'
 
-# NOTE TO MAINTAINERS:
-#
-# Unless Riverbank policy changes in the future or the Mercurial archive
-# becomes unavailable, *do not use* the SIP download URL from the Riverbank
-# website. This URL will break as soon as a new version of SIP is released
-# which causes panic and terror to flood the Homebrew issue tracker.
-
 class Sip < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.3.tar.gz'
-  sha1 '672f0bd9c13860979ab2a7753b2bf91475a4deeb'
+  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.3/sip-4.16.3.tar.gz"
+  sha1 "7c4079d164ccbfe4a5274eaeebe8e3cc86e3a75a"
+
+  bottle do
+    revision 1
+    sha1 "724af0277f4ec4635f86a011432a01206a81ea1e" => :yosemite
+    sha1 "4410671269f1f46de216cb189debe973333b9965" => :mavericks
+    sha1 "5aac602b4d22d471a59c517809dc1159545cba9f" => :mountain_lion
+  end
 
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
-  def patches
-    DATA
+  depends_on :python => :recommended
+  depends_on :python3 => :optional
+
+  if build.without?("python3") && build.without?("python")
+    odie "sip: --with-python3 must be specified when using --without-python"
   end
 
   def install
     if build.head?
-      # Set fallback version to the same value it would have without the patch
-      # and link the Mercurial repository into the download directory so
-      # buid.py can use it to figure out a version number.
-      sip_version = "0.1.0"
-      ln_s downloader.cached_location + '.hg', '.hg'
-    else
-      sip_version = version
+      # Link the Mercurial repository into the download directory so
+      # build.py can use it to figure out a version number.
+      ln_s cached_download + ".hg", ".hg"
+      # build.py doesn't run with python3
+      system "python", "build.py", "prepare"
     end
-    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.to_s.gsub '.', ',')
 
-    system "python", "build.py", "prepare"
-    # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
-    system "python", "configure.py",
-                              "--destdir=#{lib}/#{which_python}/site-packages",
-                              "--bindir=#{bin}",
-                              "--incdir=#{include}",
-                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip",
-                              "CFLAGS=#{ENV.cflags}",
-                              "LFLAGS=#{ENV.ldflags}"
-    system "make install"
+    Language::Python.each_python(build) do |python, version|
+      # Note the binary `sip` is the same for python 2.x and 3.x
+      system python, "configure.py",
+                     "--deployment-target=#{MacOS.version}",
+                     "--destdir=#{lib}/python#{version}/site-packages",
+                     "--bindir=#{bin}",
+                     "--incdir=#{include}",
+                     "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
+      system "make"
+      system "make", "install"
+      system "make", "clean"
+    end
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
+  def post_install
+    mkdir_p "#{HOMEBREW_PREFIX}/share/sip"
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  def caveats
+    "The sip-dir for Python is #{HOMEBREW_PREFIX}/share/sip."
   end
 end
-
-
-__END__
-Patch to allow the SIP build.py script to generate a reasonable version number
-for installing from a Mercurial snapshot without the .hg directory from the
-Mercurial repository. The install code hooks on to the @SIP_VERSION@ tag and
-inserts a real version tuple
-
-diff --git a/build.py b/build.py
-index 927d7f1..fdf13a3 100755
---- a/build.py
-+++ b/build.py
-@@ -179,7 +179,7 @@ def _get_release():
-         changelog = None
-         name = os.path.basename(_RootDir)
- 
--        release_suffix = "-unknown"
-+        release_suffix = ""
-         version = None
- 
-         parts = name.split('-')
-@@ -192,7 +192,7 @@ def _get_release():
- 
-     # Format the results.
-     if version is None:
--        version = (0, 1, 0)
-+        version = (@SIP_VERSION@)
- 
-     major, minor, micro = version
- 
-
-Patch to remove the seemingly unnecessary framework build requirement
-diff --git a/siputils.py b/siputils.py
-index 57e8911..1af6152 100644
---- a/siputils.py
-+++ b/siputils.py
-@@ -1434,8 +1434,8 @@ class ModuleMakefile(Makefile):
-             # 'real_prefix' exists if virtualenv is being used.
-             dl = getattr(sys, 'real_prefix', sys.exec_prefix).split(os.sep)
- 
--            if "Python.framework" not in dl:
--                error("SIP requires Python to be built as a framework")
-+            # if "Python.framework" not in dl:
-+                # error("SIP requires Python to be built as a framework")
- 
-             self.LFLAGS.append("-undefined dynamic_lookup")
- 

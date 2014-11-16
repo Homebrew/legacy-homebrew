@@ -2,8 +2,17 @@ require 'formula'
 
 class Nettle < Formula
   homepage 'http://www.lysator.liu.se/~nisse/nettle/'
-  url 'http://www.lysator.liu.se/~nisse/archive/nettle-2.5.tar.gz'
-  sha256 '4aa142e908b0053082d7729fc0155dc90dbe71c8ef5f50f30034805ed5c92c72'
+  url 'http://www.lysator.liu.se/~nisse/archive/nettle-2.7.1.tar.gz'
+  sha1 'e7477df5f66e650c4c4738ec8e01c2efdb5d1211'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "41d80787422ed29f084c147b49e2f7c3a223eded" => :yosemite
+    sha1 "89238f83e4f3f18145553d3c442fe022680cbd7b" => :mavericks
+    sha1 "8f2a4c261926f2f62e9d8f197a8466a2489b37e0" => :mountain_lion
+    sha1 "6c56084887da5b7e99d7c730bf22a68c9af360e9" => :lion
+  end
 
   depends_on 'gmp'
 

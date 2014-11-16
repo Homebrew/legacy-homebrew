@@ -1,14 +1,18 @@
 require 'formula'
 
 class Qd < Formula
-  url 'http://crd.lbl.gov/~dhbailey/mpdist/qd-2.3.13.tar.gz'
   homepage 'http://crd.lbl.gov/~dhbailey/mpdist/'
-  sha1 'f46d63eb5e21172a6f66884b4ddbb352b327a9ca'
+  url 'http://crd.lbl.gov/~dhbailey/mpdist/qd-2.3.14.tar.gz'
+  sha1 'bda1048feed8c3a52957e5e63592163aa0a15da4'
+
+  depends_on :fortran => :recommended
 
   def install
-    ENV.fortran
-
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = ["--disable-dependency-tracking", "--enable-shared", "--prefix=#{prefix}"]
+    args << "--enable-fortran=no" if build.without? :fortran
+    system "./configure", *args
+    system "make"
+    system "make check"
     system "make install"
   end
 end

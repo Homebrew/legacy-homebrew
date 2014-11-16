@@ -2,8 +2,8 @@ require 'formula'
 
 class Polipo < Formula
   homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
-  url 'http://freehaven.net/~chrisd/polipo/polipo-1.0.4.1.tar.gz'
-  sha1 'e755b585a9bba2b599a6bcc7c6f7035d3cb27bec'
+  url 'http://www.pps.univ-paris-diderot.fr/~jch/software/files/polipo/polipo-1.1.1.tar.gz'
+  sha1 'cf7461a96c4bf012496844d5a54171182c2cb1a7'
 
   head 'git://git.wifi.pps.jussieu.fr/polipo'
 
@@ -21,39 +21,23 @@ class Polipo < Formula
     system "make", "install", *args
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>ProgramArguments</key>
-    <array>
-      <string>#{bin}/polipo</string>
-    </array>
-  </dict>
-</plist>
-    EOPLIST
-  end
-
-  def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/polipo</string>
+        </array>
+      </dict>
+    </plist>
     EOS
   end
 end

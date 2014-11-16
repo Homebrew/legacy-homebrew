@@ -1,162 +1,191 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
-
-# This script is called by formula_installer as a separate instance.
-# Rationale: Formula can use __END__, Formula can change ENV
+# This script is loaded by formula_installer as a separate instance.
 # Thrown exceptions are propogated back to the parent process over a pipe
 
-STD_TRAP = trap("INT") { exit! 130 } # no backtrace thanks
+old_trap = trap("INT") { exit! 130 }
 
-at_exit do
-  # the whole of everything must be run in at_exit because the formula has to
-  # be the run script as __END__ must work for *that* formula.
-  main
-end
+require "global"
+require "build_options"
+require "cxxstdlib"
+require "keg"
+require "extend/ENV"
+require "debrew"
+require "fcntl"
 
-require 'global'
+class Build
+  attr_reader :formula, :deps, :reqs
 
-def main
-  # The main Homebrew process expects to eventually see EOF on the error
-  # pipe in FormulaInstaller#build. However, if any child process fails to
-  # terminate (i.e, fails to close the descriptor), this won't happen, and
-  # the installer will hang. Set close-on-exec to prevent this.
-  # Whether it is *wise* to launch daemons from formulae is a separate
-  # question altogether.
-  if ENV['HOMEBREW_ERROR_PIPE']
-    require 'fcntl'
-    error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
-    error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
-  end
+  def initialize(formula, options)
+    @formula = formula
+    @formula.build = BuildOptions.new(options, formula.options)
 
-  raise $! if $! # an exception was already thrown when parsing the formula
-
-  trap("INT", STD_TRAP) # restore default CTRL-C handler
-
-  require 'hardware'
-  require 'keg'
-
-  # Force any future invocations of sudo to require the user's password to be
-  # re-entered. This is in-case any build script call sudo. Certainly this is
-  # can be inconvenient for the user. But we need to be safe.
-  system "/usr/bin/sudo -k"
-
-  install(Formula.factory($0))
-rescue Exception => e
-  unless error_pipe.nil?
-    Marshal.dump(e, error_pipe)
-    error_pipe.close
-    exit! 1
-  else
-    onoe e
-    puts e.backtrace
-    exit! 2
-  end
-end
-
-def post_superenv_hacks f
-  # Only allow Homebrew-approved directories into the PATH, unless
-  # a formula opts-in to allowing the user's path.
-  if f.env.userpaths?
-    paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
-    ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
-  end
-end
-
-def pre_superenv_hacks f
-  # Allow a formula to opt-in to the std environment.
-  ARGV.unshift '--env=std' if (f.env.std? or
-    f.recursive_deps.detect{|d| d.name == 'scons' }) and
-    not ARGV.include? '--env=super'
-end
-
-def install f
-  deps = f.recursive_deps
-  keg_only_deps = deps.select{|dep| dep.keg_only? }
-
-  pre_superenv_hacks(f)
-  require 'superenv'
-
-  unless superenv?
-    ENV.setup_build_environment
-    # Requirements are processed first so that adjustments made to ENV
-    # for keg-only deps take precdence.
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
-  end
-
-  deps.each do |dep|
-    opt = HOMEBREW_PREFIX/:opt/dep
-    fixopt(dep) unless opt.directory?
-    if not superenv? and dep.keg_only?
-      ENV.prepend_path 'PATH', "#{opt}/bin"
-      ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
-      ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
-      ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
-      ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
-      ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
-      ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
-    end
-  end
-
-  if superenv?
-    ENV.deps = keg_only_deps.map(&:to_s)
-    ENV.all_deps = f.recursive_deps.map(&:to_s)
-    ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
-    ENV.setup_build_environment
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
-    post_superenv_hacks(f)
-  end
-
-  if f.fails_with? ENV.compiler
-    cs = CompilerSelector.new f
-    cs.select_compiler
-    cs.advise
-  end
-
-  f.brew do
-    if ARGV.flag? '--git'
-      system "git init"
-      system "git add -A"
-    end
-    if ARGV.flag? '--interactive'
-      ohai "Entering interactive mode"
-      puts "Type `exit' to return and finalize the installation"
-      puts "Install to this prefix: #{f.prefix}"
-
-      if ARGV.flag? '--git'
-        puts "This directory is now a git repo. Make your changes and then use:"
-        puts "  git diff | pbcopy"
-        puts "to copy the diff to the clipboard."
-      end
-
-      interactive_shell f
+    if ARGV.ignore_deps?
+      @deps = []
+      @reqs = []
     else
-      f.prefix.mkpath
-      f.install
+      @deps = expand_deps
+      @reqs = expand_reqs
+    end
+  end
 
-      # Find and link metafiles
-      FORMULA_META_FILES.each do |filename|
-        next if File.directory? filename
-        target_file = filename
-        target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
-        # Some software symlinks these files (see help2man.rb)
-        target_file = Pathname.new(target_file).resolved_path
-        f.prefix.install target_file => filename rescue nil
-        (f.prefix/filename).chmod 0644 rescue nil
+  def post_superenv_hacks
+    # Only allow Homebrew-approved directories into the PATH, unless
+    # a formula opts-in to allowing the user's path.
+    if formula.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
+      ENV.userpaths!
+    end
+  end
+
+  def pre_superenv_hacks
+    # Allow a formula to opt-in to the std environment.
+    if (formula.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
+      ARGV.unshift "--env=std"
+    end
+  end
+
+  def effective_build_options_for(dependent)
+    args  = dependent.build.used_options
+    args |= Tab.for_formula(dependent).used_options
+    BuildOptions.new(args, dependent.options)
+  end
+
+  def expand_reqs
+    formula.recursive_requirements do |dependent, req|
+      build = effective_build_options_for(dependent)
+      if (req.optional? || req.recommended?) && build.without?(req)
+        Requirement.prune
+      elsif req.build? && dependent != formula
+        Requirement.prune
+      elsif req.satisfied? && req.default_formula? && (dep = req.to_dependency).installed?
+        deps << dep
+        Requirement.prune
       end
     end
   end
+
+  def expand_deps
+    formula.recursive_dependencies do |dependent, dep|
+      build = effective_build_options_for(dependent)
+      if (dep.optional? || dep.recommended?) && build.without?(dep)
+        Dependency.prune
+      elsif dep.build? && dependent != formula
+        Dependency.prune
+      elsif dep.build?
+        Dependency.keep_but_prune_recursive_deps
+      end
+    end
+  end
+
+  def install
+    keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
+
+    deps.map(&:to_formula).each do |dep|
+      fixopt(dep) unless dep.opt_prefix.directory?
+    end
+
+    pre_superenv_hacks
+    ENV.activate_extensions!
+
+    if superenv?
+      ENV.keg_only_deps = keg_only_deps.map(&:name)
+      ENV.deps = deps.map { |d| d.to_formula.name }
+      ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
+      ENV.setup_build_environment(formula)
+      post_superenv_hacks
+      reqs.each(&:modify_build_environment)
+      deps.each(&:modify_build_environment)
+    else
+      ENV.setup_build_environment(formula)
+      reqs.each(&:modify_build_environment)
+      deps.each(&:modify_build_environment)
+
+      keg_only_deps.each do |dep|
+        ENV.prepend_path "PATH", dep.opt_bin.to_s
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{dep.opt_lib}/pkgconfig"
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{dep.opt_share}/pkgconfig"
+        ENV.prepend_path "ACLOCAL_PATH", "#{dep.opt_share}/aclocal"
+        ENV.prepend_path "CMAKE_PREFIX_PATH", dep.opt_prefix.to_s
+        ENV.prepend "LDFLAGS", "-L#{dep.opt_lib}" if dep.opt_lib.directory?
+        ENV.prepend "CPPFLAGS", "-I#{dep.opt_include}" if dep.opt_include.directory?
+      end
+    end
+
+    if ARGV.debug?
+      formula.extend(Debrew::Formula)
+      formula.resources.each { |r| r.extend(Debrew::Resource) }
+    end
+
+    formula.brew do
+      if ARGV.git?
+        system "git", "init"
+        system "git", "add", "-A"
+      end
+      if ARGV.interactive?
+        ohai "Entering interactive mode"
+        puts "Type `exit' to return and finalize the installation"
+        puts "Install to this prefix: #{formula.prefix}"
+
+        if ARGV.git?
+          puts "This directory is now a git repo. Make your changes and then use:"
+          puts "  git diff | pbcopy"
+          puts "to copy the diff to the clipboard."
+        end
+
+        interactive_shell(formula)
+      else
+        formula.prefix.mkpath
+
+        formula.install
+
+        stdlibs = detect_stdlibs
+        Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
+
+        # Find and link metafiles
+        formula.prefix.install_metafiles Pathname.pwd
+      end
+    end
+  end
+
+  def detect_stdlibs
+    keg = Keg.new(formula.prefix)
+    CxxStdlib.check_compatibility(formula, deps, keg, ENV.compiler)
+
+    # The stdlib recorded in the install receipt is used during dependency
+    # compatibility checks, so we only care about the stdlib that libraries
+    # link against.
+    keg.detect_cxx_stdlibs(:skip_executables => true)
+  end
+
+  def fixopt f
+    path = if f.linked_keg.directory? and f.linked_keg.symlink?
+      f.linked_keg.resolved_path
+    elsif f.prefix.directory?
+      f.prefix
+    elsif (kids = f.rack.children).size == 1 and kids.first.directory?
+      kids.first
+    else
+      raise
+    end
+    Keg.new(path).optlink
+  rescue StandardError
+    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f.name}. Sorry :("
+  end
 end
 
-def fixopt f
-  path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.realpath
-  elsif f.prefix.directory?
-    f.prefix
-  elsif (kids = f.rack.children).size == 1 and kids.first.directory?
-    kids.first
-  else
-    raise
-  end
-  Keg.new(path).optlink
-rescue StandardError
-  raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
+begin
+  error_pipe = IO.new(ENV["HOMEBREW_ERROR_PIPE"].to_i, "w")
+  error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+
+  # Invalidate the current sudo timestamp in case a build script calls sudo
+  system "/usr/bin/sudo", "-k"
+
+  trap("INT", old_trap)
+
+  formula = ARGV.formulae.first
+  options = Options.create(ARGV.flags_only)
+  build   = Build.new(formula, options)
+  build.install
+rescue Exception => e
+  Marshal.dump(e, error_pipe)
+  error_pipe.close
+  exit! 1
 end

@@ -2,24 +2,24 @@ require 'formula'
 
 class Audiofile < Formula
   homepage 'http://www.68k.org/~michael/audiofile/'
-  url 'https://github.com/downloads/mpruett/audiofile/audiofile-0.3.4.tar.gz'
-  sha1 'e6f664b0d551df35ce0c10e38e5617bcd4605335'
+  url 'http://audiofile.68k.org/audiofile-0.3.6.tar.gz'
+  sha1 '3aba3ef724b1b5f88cfc20ab9f8ce098e6c35a0e'
 
-  option 'with-lcov', 'Enable Code Coverage support using lcov.'
+  option 'with-lcov', 'Enable Code Coverage support using lcov'
   option 'with-check', 'Run the test suite during install ~30sec'
 
-  depends_on 'lcov' if build.include? 'with-lcov'
+  depends_on 'lcov' => :optional
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << '--enable-coverage' if build.include? 'with-lcov'
+    args << '--enable-coverage' if build.with? 'lcov'
     system "./configure", *args
     system "make"
-    system "make check" if build.include? 'with-check'
+    system "make check" if build.with? 'check'
     system "make install"
   end
 
-  def test
+  test do
     inn  = '/System/Library/Sounds/Glass.aiff'
     out  = 'Glass.wav'
     conv_bin = "#{bin}/sfconvert"
@@ -39,9 +39,7 @@ class Audiofile < Formula
       return
     end
 
-    mktemp do
-      system conv_bin, inn, out, 'format', 'wave'
-      system info_bin, '--short', '--reporterror', out
-    end
+    system conv_bin, inn, out, 'format', 'wave'
+    system info_bin, '--short', '--reporterror', out
   end
 end

@@ -2,22 +2,21 @@ require 'formula'
 
 class Sdhash < Formula
   homepage 'http://roussev.net/sdhash/sdhash.html'
-  url 'http://roussev.net/sdhash/releases/packages/sdhash-2.2.tar.gz'
-  sha1 '2039bbc0c25c7ff6bd6e27a0844f10ec8a88dfec'
-
-  depends_on "boost"
+  url 'http://roussev.net/sdhash/releases/packages/sdhash-3.1.tar.gz'
+  sha1 '0539d05a9c68aee509ca2d2dee30e5067dc211d0'
 
   def install
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "LDFLAGS", "#{ENV.ldflags} -lboost_regex-mt -lboost_system-mt -lboost_filesystem-mt -lboost_program_options-mt -lc -lm -lcrypto -lboost_thread-mt -lpthread"
+    inreplace "Makefile" do |s|
+      # Remove space between -L and the path (reported upstream)
+      s.change_make_var! "LDFLAGS", "-L. -L./external/stage/lib -lboost_regex -lboost_system -lboost_filesystem -lboost_program_options -lc -lm -lcrypto -lboost_thread -lpthread"
     end
-    system "make", "stream"
-    system "make", "man"
+    system 'make', 'boost'
+    system 'make', 'stream'
     bin.install 'sdhash'
     man1.install Dir['man/*.1']
   end
 
-  def test
+  test do
     system "#{bin}/sdhash"
   end
 end

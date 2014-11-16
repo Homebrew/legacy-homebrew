@@ -1,9 +1,9 @@
 require 'formula'
 
 class OpenCobol < Formula
-  url 'http://downloads.sourceforge.net/project/open-cobol/open-cobol/1.0/open-cobol-1.0.tar.gz'
   homepage 'http://www.opencobol.org/'
-  sha1 '4c0930a74e92014317b2f237aaedc90acc2b72df'
+  url 'https://downloads.sourceforge.net/project/open-cobol/open-cobol/1.1/open-cobol-1.1.tar.gz'
+  sha1 'a833f011cd0f56d0aa3d97a56258ddd5141b594c'
 
   depends_on 'gmp'
   depends_on 'berkeley-db'
@@ -14,7 +14,7 @@ class OpenCobol < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/cobc", "--help"
   end
 end

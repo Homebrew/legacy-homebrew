@@ -1,9 +1,16 @@
 require 'formula'
 
 class Gpgme < Formula
-  homepage 'http://www.gnupg.org/gpgme.html'
-  url 'ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.3.2.tar.bz2'
-  sha1 '5b5ebcc4dad46ced0e436a30f5542577536619c7'
+  homepage 'http://www.gnupg.org/related_software/gpgme/'
+  url 'ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.4.3.tar.bz2'
+  sha1 'ffdb5e4ce85220501515af8ead86fd499525ef9a'
+
+  bottle do
+    revision 1
+    sha1 "60d557c728754011a62f4ede0e04ca786bf5b161" => :yosemite
+    sha1 "ae98c80946c947f967d44436717ed492b0f08420" => :mavericks
+    sha1 "9e3d8a25586683f0aeb050b341b38da79ba770d5" => :mountain_lion
+  end
 
   depends_on 'gnupg'
   depends_on 'libgpg-error'

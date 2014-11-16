@@ -2,23 +2,28 @@ require 'formula'
 
 class Bitlbee < Formula
   homepage 'http://www.bitlbee.org/'
-  url 'http://get.bitlbee.org/src/bitlbee-3.0.5.tar.gz'
-  sha1 '74afdff87be49ce060771a6ae10d7643cd57b9b6'
+  url 'http://get.bitlbee.org/src/bitlbee-3.2.2.tar.gz'
+  sha1 '7e3cfe2b6bf4e8e603c74e7587307a6f5d267e9c'
 
-  option 'purple', "Use libpurple for all communication with instant messaging networks"
+  bottle do
+    sha1 "4a639d88aa819d23d6020a36602097474f66357d" => :mavericks
+    sha1 "5312823fead39bba80b712bcedca4f9a7fc9211d" => :mountain_lion
+    sha1 "c21d19af516d959eb2a0b4b5ff534a66678d419d" => :lion
+  end
 
+  option 'with-pidgin', "Use finch/libpurple for all communication with instant messaging networks"
+  option 'with-libotr', "Build with otr (off the record) support"
+
+  deprecated_option "with-finch" => "with-pidgin"
+
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gnutls'
-  depends_on 'libpurple' if build.include? 'purple'
+  depends_on 'libgcrypt'
+  depends_on 'pidgin' => :optional
+  depends_on 'libotr' => :optional
 
   def install
-    # By default Homebrew will set ENV['LD'] to the same as ENV['CC'] which
-    # defaults to /usr/bin/cc (see Library/Homebrew/extend/ENV.rb:39) However
-    # this will break as bitlbee uses one of those odd and rare Makefiles that
-    # can't handle the linker being 'cc' and must be 'ld' (don't ask me some C
-    # magician will know).
-    ENV['LD'] = '/usr/bin/ld'
-
     args = ["--prefix=#{prefix}",
             "--debug=0",
             "--ssl=gnutls",
@@ -26,7 +31,8 @@ class Bitlbee < Formula
             "--config=#{var}/bitlbee/lib/",
             "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
 
-    args << "--purple=1" if build.include? "purple"
+    args << "--purple=1" if build.with? "pidgin"
+    args << "--otr=1" if build.with? "libotr"
 
     system "./configure", *args
 
@@ -40,5 +46,46 @@ class Bitlbee < Formula
 
     (var+"bitlbee/run").mkpath
     (var+"bitlbee/lib").mkpath
+  end
+
+  plist_options :manual => "bitlbee -D"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>OnDemand</key>
+      <true/>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_sbin}/bitlbee</string>
+      </array>
+      <key>ServiceDescription</key>
+      <string>bitlbee irc-im proxy</string>
+      <key>Sockets</key>
+      <dict>
+        <key>Listener</key>
+        <dict>
+          <key>SockFamily</key>
+          <string>IPv4</string>
+          <key>SockProtocol</key>
+          <string>TCP</string>
+          <key>SockServiceName</key>
+          <string>6667</string>
+          <key>SockType</key>
+          <string>stream</string>
+        </dict>
+      </dict>
+      <key>inetdCompatibility</key>
+      <dict>
+        <key>Wait</key>
+        <false/>
+      </dict>
+    </dict>
+    </plist>
+    EOS
   end
 end

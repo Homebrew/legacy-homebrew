@@ -2,8 +2,16 @@ require 'formula'
 
 class Libmpd < Formula
   homepage 'http://gmpc.wikia.com/wiki/Gnome_Music_Player_Client'
-  url 'http://downloads.sourceforge.net/project/musicpd/libmpd/11.8.17/libmpd-11.8.17.tar.gz'
+  url 'http://www.musicpd.org/download/libmpd/11.8.17/libmpd-11.8.17.tar.gz'
   sha1 'df129f15061662a6fec1b2ce19f9dbc8b7a7d1ba'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "5a352271b7ae233617fe2ce48c0fc269e3f51cbc" => :yosemite
+    sha1 "6ebf0308d867a69916c532ada5633172c120e49e" => :mavericks
+    sha1 "1acdd0b195f4bb35f8d35098c54c5007396b7df8" => :mountain_lion
+  end
 
   option :universal
 

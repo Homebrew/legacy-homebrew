@@ -1,13 +1,24 @@
-require 'formula'
+require "formula"
 
 class Dnsmasq < Formula
-  homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.63.tar.gz'
-  sha256 'fd86e3bcc6a63c76e35e4a20baa790e7bbbfc7b43845cae85ca8ffd024467710'
+  homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
+  url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.72.tar.gz"
+  sha1 "c2dc54b142ec5676d6e22951bc5b61863b0503fe"
 
-  option 'with-idn', 'Compile with IDN support'
+  bottle do
+    sha1 "b4bb00ef3c8fd8ffa48a08b0de4f95fa5cef09d2" => :mavericks
+    sha1 "6ae8c98b3c600c1a6f1f0263a5d7612887d8e768" => :mountain_lion
+    sha1 "66c145b8ed68c93ae0e7dcbc755b2151f94f5772" => :lion
+  end
 
-  depends_on "libidn" if build.include? 'with-idn'
+  option "with-libidn", "Compile with IDN support"
+  option "with-dnssec", "Compile with DNSSEC support"
+
+  deprecated_option "with-idn" => "with-libidn"
+
+  depends_on "pkg-config" => :build
+  depends_on "libidn" => :optional
+  depends_on "nettle" if build.with? "dnssec"
 
   def install
     ENV.deparallelize
@@ -16,8 +27,13 @@ class Dnsmasq < Formula
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
     # Optional IDN support
-    if build.include? 'with-idn'
+    if build.with? "libidn"
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
+    end
+
+    # Optional DNSSEC support
+    if build.with? "dnssec"
+      inreplace "src/config.h", "/* #define HAVE_DNSSEC */", "#define HAVE_DNSSEC"
     end
 
     # Fix compilation on Lion
@@ -35,17 +51,13 @@ class Dnsmasq < Formula
     To configure dnsmasq, copy the example configuration to #{etc}/dnsmasq.conf
     and edit to taste.
 
-      cp #{prefix}/dnsmasq.conf.example #{etc}/dnsmasq.conf
-
-    To load dnsmasq automatically on startup, install and load the provided launchd
-    item as follows:
-
-      sudo cp #{plist_path} /Library/LaunchDaemons
-      sudo launchctl load -w /Library/LaunchDaemons/#{plist_path.basename}
+      cp #{opt_prefix}/dnsmasq.conf.example #{etc}/dnsmasq.conf
     EOS
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -54,14 +66,13 @@ class Dnsmasq < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{HOMEBREW_PREFIX}/sbin/dnsmasq</string>
+          <string>#{opt_sbin}/dnsmasq</string>
           <string>--keep-in-foreground</string>
         </array>
+        <key>RunAtLoad</key>
+        <true/>
         <key>KeepAlive</key>
-        <dict>
-          <key>NetworkState</key>
-          <true/>
-        </dict>
+        <true/>
       </dict>
     </plist>
     EOS

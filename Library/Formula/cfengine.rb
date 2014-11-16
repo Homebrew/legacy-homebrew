@@ -2,29 +2,29 @@ require 'formula'
 
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'https://cfengine.com/source-code/download?file=cfengine-3.3.5.tar.gz'
-  sha1 '205896ba59a472de363c06e6847cecaf4cfbc5cf'
+  url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.1.tar.gz'
+  sha1 '719608b87836b0b4d05685c3ce67c3fad8a3173a'
 
-  depends_on 'tokyo-cabinet'
   depends_on 'pcre'
-
-  def patches
-    # See https://github.com/cfengine/core/commit/ce2b8abf
-    "https://github.com/cfengine/core/commit/ce2b8abf.patch" if ENV.compiler == :clang
-  end
+  depends_on 'lmdb'
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+  depends_on 'libxml2' if MacOS.version < :mountain_lion
 
   def install
-    # Find our libpcre
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
-
+    system "autoreconf", "-Wno-portability", "-fvi", "-I", "m4" # see autogen.sh
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-workdir=#{var}/cfengine",
-                          "--with-tokyocabinet"
+                          "--with-lmdb=#{Formula['lmdb'].opt_prefix}",
+                          "--with-pcre=#{Formula['pcre'].opt_prefix}",
+                          "--without-mysql",
+                          "--without-postgresql"
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/cf-agent", "-V"
   end
 end

@@ -1,28 +1,29 @@
-require 'formula'
-
-# Use a mirror because of:
-# http://lists.cairographics.org/archives/cairo/2012-September/023454.html
+require "formula"
 
 class Cairo < Formula
-  homepage 'http://cairographics.org/'
-  url 'http://cairographics.org/releases/cairo-1.12.2.tar.xz'
-  mirror 'http://ftp-nyc.osuosl.org/pub/gentoo/distfiles/cairo-1.12.2.tar.xz'
-  sha256 'b786bc4a70542bcb09f2d9d13e5e6a0c86408cbf6d1edde5f0de807eecf93f96'
+  homepage "http://cairographics.org/"
+  url "http://cairographics.org/releases/cairo-1.14.0.tar.xz"
+  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.0.tar.xz"
+  sha256 "2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7"
+
+  bottle do
+    revision 1
+    sha1 "e2db7a27b4b9ddd78875f8fa1820c756b03ed1ac" => :yosemite
+    sha1 "2e975c2003ea16d8186e63c3e59dcc4963227a9e" => :mavericks
+    sha1 "b55dd832e2f702cb9685f3b3822b29f7dec0a34a" => :mountain_lion
+  end
 
   keg_only :provided_pre_mountain_lion
 
   option :universal
-  option 'without-x', 'Build without X11 support'
 
-  depends_on :libpng
-  depends_on 'pixman'
-  depends_on 'pkg-config' => :build
-  depends_on 'xz'=> :build
-  depends_on 'glib' unless build.include? 'without-x'
-  depends_on :x11 unless build.include? 'without-x'
-
-  # Fixes a build error with clang & universal, where a function was implicit.
-  def patches; DATA; end
+  depends_on "pkg-config" => :build
+  depends_on "freetype"
+  depends_on "fontconfig"
+  depends_on "libpng"
+  depends_on "pixman"
+  depends_on "glib"
+  depends_on :x11 => :recommended
 
   def install
     ENV.universal_binary if build.universal?
@@ -30,27 +31,20 @@ class Cairo < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --enable-gobject=yes
+      --enable-svg=yes
+      --with-x
     ]
 
-    args << '--with-x' unless build.include? 'without-x'
-    args << '--enable-xcb=no' if MacOS.version == :leopard
+    if build.without? "x11"
+      args.delete "--with-x"
+      args << "--enable-xlib=no" << "--enable-xlib-xrender=no"
+      args << "--enable-quartz-image"
+    end
+
+    args << "--enable-xcb=no" if MacOS.version <= :leopard
 
     system "./configure", *args
     system "make install"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index b75757d..1230da2 100755
---- a/configure
-+++ b/configure
-@@ -17939,7 +17939,7 @@ CAIRO_NONPKGCONFIG_LIBS="$LIBS"
- 
- MAYBE_WARN="-Wall -Wextra \
- -Wold-style-definition -Wdeclaration-after-statement \
---Wmissing-declarations -Werror-implicit-function-declaration \
-+-Wmissing-declarations -Wimplicit-function-declaration \
- -Wnested-externs -Wpointer-arith -Wwrite-strings \
- -Wsign-compare -Wstrict-prototypes -Wmissing-prototypes \
- -Wpacked -Wswitch-enum -Wmissing-format-attribute \

@@ -8,11 +8,11 @@ class Txt2man < Formula
   depends_on 'gawk'
 
   def install
-    man1.install %W[ bookman.1 src2man.1 txt2man.1 ]
-    bin.install %W[ bookman src2man txt2man ]
+    man1.install %W[bookman.1 src2man.1 txt2man.1]
+    bin.install %W[bookman src2man txt2man]
   end
 
-  def test
+  test do
     system "#{bin}/txt2man", "-h"
     system "#{bin}/src2man", "-h"
     system "#{bin}/bookman", "-h"

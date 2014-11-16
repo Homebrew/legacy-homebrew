@@ -1,11 +1,9 @@
 require 'formula'
 
 class Pgdbf < Formula
-  homepage 'http://pgdbf.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/pgdbf/pgdbf/0.6.1/pgdbf-0.6.1.tar.xz'
-  sha1 '93c9104d92e1ef0c77faf308a6a2976ed0fa2685'
-
-  depends_on 'xz' => :build
+  homepage 'https://github.com/kstrauser/pgdbf'
+  url 'https://downloads.sourceforge.net/project/pgdbf/pgdbf/0.6.2/pgdbf-0.6.2.tar.xz'
+  sha1 '36ddf162b594ac328456a21d057b787c93ec1abb'
 
   def install
     system "./configure", "--disable-dependency-tracking",

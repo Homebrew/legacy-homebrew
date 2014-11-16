@@ -2,9 +2,15 @@ require 'formula'
 
 class Libqalculate < Formula
   homepage 'http://qalculate.sourceforge.net/'
-  url 'http://sourceforge.net/projects/qalculate/files/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
+  url 'https://downloads.sourceforge.net/project/qalculate/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
   sha1 'c15f7f3a97995decf62cc964956fc1e374ecd78c'
 
+  bottle do
+    sha1 "334b9bbf28268f858997dda432dd1ee6c48ca168" => :mavericks
+    sha1 "b25b47d582d12a3017eb57fe42463f2ddfd859c7" => :mountain_lion
+  end
+
+  depends_on 'pkg-config' => :build
   depends_on 'cln'
   depends_on 'glib'
   depends_on 'gnuplot'
@@ -13,7 +19,7 @@ class Libqalculate < Formula
   depends_on 'wget'
 
   # Patches against version 0.9.7, should not be needed in the future
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -21,7 +27,7 @@ class Libqalculate < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/qalc", "(2+2)/4 hours to minutes"
   end
 end

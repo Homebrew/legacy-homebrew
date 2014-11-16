@@ -5,9 +5,10 @@ class Uudeview < Formula
   url 'http://www.fpx.de/fp/Software/UUDeview/download/uudeview-0.5.20.tar.gz'
   sha1 '2c6ab7d355b545218bd0877d598bd5327d9fd125'
 
-  fails_with :clang do
-    build 318
-    cause "inews.c:195:4: error: non-void function 'append_signature' should return a value [-Wreturn-type]"
+  # Fix function signatures (for clang)
+  patch :p0 do
+    url "https://trac.macports.org/export/102865/trunk/dports/mail/uudeview/files/inews.c.patch"
+    sha1 "a21eb4f1081de31099bffbbb3161ca74ca81bad5"
   end
 
   def install
@@ -17,7 +18,7 @@ class Uudeview < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/uudeview", "-V"
   end
 end

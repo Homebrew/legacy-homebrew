@@ -10,10 +10,9 @@ class Qtplay < Formula
     system ENV.cc, "qtplay.c", "-arch", "i386", "-framework", "QuickTime", "-framework", "Carbon", "-o", "qtplay"
     bin.install 'qtplay'
     man1.install 'qtplay.1'
-    prefix.install 'Readme.rtf'
   end
 
-  def test
+  test do
     system "#{bin}/qtplay", "--help"
   end
 end

@@ -1,18 +1,22 @@
 require 'formula'
 
 class Ilmbase < Formula
-  url 'http://download.savannah.gnu.org/releases/openexr/ilmbase-1.0.2.tar.gz'
   homepage 'http://www.openexr.com/'
-  sha1 'fe6a910a90cde80137153e25e175e2b211beda36'
+  url 'http://download.savannah.gnu.org/releases/openexr/ilmbase-2.1.0.tar.gz'
+  mirror 'http://download-mirror.savannah.gnu.org/releases/openexr/ilmbase-2.1.0.tar.gz'
+  sha1 '306d76e7a2ac619c2f641f54b59dd95576525192'
 
-  # included for reference only - repository doesn't have 'configure' script
-  # head 'cvs://:pserver:anonymous@cvs.sv.gnu.org:/sources/openexr:IlmBase'
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "54e793d8813ee0fdf354d4bee73d01e28fbfde03" => :yosemite
+    sha1 "34c4d4dfc3fe428e82bf52e92ae74dad395b2b04" => :mavericks
+    sha1 "3e5f72f788db233cdd7088349dbec90e4de950db" => :mountain_lion
+  end
 
   def install
-    # prevent 'cc1plus: error: unrecognized command line option "-Wno-long-double"'
-    inreplace 'configure', 'CXXFLAGS="$CXXFLAGS -Wno-long-double"', ''
-
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

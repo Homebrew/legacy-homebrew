@@ -1,33 +1,50 @@
-require 'formula'
+require "formula"
 
 class Graphviz < Formula
-  homepage 'http://graphviz.org/'
-  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
-  sha1 '4725d88a13e071ee22e632de551d4a55ca08ee7d'
+  homepage "http://graphviz.org/"
+  url "http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz"
+  sha1 "053c771278909160916ca5464a0a98ebf034c6ef"
 
+  bottle do
+    revision 1
+    sha1 "a3461628baba501e16c63ceaa0414027f7e26c7f" => :yosemite
+    sha1 "dc7f915d199931a49fb2a8eb623b329fed6c619c" => :mavericks
+    sha1 "ec730f7cdd3e9549610960ecab86dac349e2f8ea" => :mountain_lion
+  end
+
+  # To find Ruby and Co.
   env :std
 
   option :universal
-  option 'with-bindings', 'Build Perl/Python/Ruby/etc. bindings'
-  option 'with-pangocairo', 'Build with Pango/Cairo for alternate PDF output'
-  option 'with-freetype', 'Build with FreeType support'
-  option 'with-app', 'Build GraphViz.app (requires full XCode install)'
+  option "with-bindings", "Build Perl/Python/Ruby/etc. bindings"
+  option "with-pango", "Build with Pango/Cairo for alternate PDF output"
+  option "with-app", "Build GraphViz.app (requires full XCode install)"
+  option "with-gts", "Build with GNU GTS support (required by prism)"
 
-  depends_on :libpng
+  deprecated_option "with-x" => "with-x11"
+  deprecated_option "with-pangocairo" => "with-pango"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'pango' if build.include? 'with-pangocairo'
-  depends_on 'swig' if build.include? 'with-bindings'
-  depends_on :freetype if build.include? 'with-freetype'
-  depends_on :xcode if build.include? 'with-app'
+  depends_on "pkg-config" => :build
+  depends_on :xcode => :build if build.with? "app"
+  depends_on "pango" => :optional
+  depends_on "gts" => :optional
+  depends_on "librsvg" => :optional
+  depends_on "freetype" => :optional
+  depends_on :x11 => :optional
+  depends_on "libpng"
+
+  if build.with? "bindings"
+    depends_on "swig" => :build
+    depends_on :python
+  end
 
   fails_with :clang do
     build 318
   end
 
-  def patches
-    { :p0 => "https://trac.macports.org/export/78507/trunk/dports/graphics/graphviz-gui/files/patch-project.pbxproj.diff",
-    :p1 => DATA}
+  patch :p0 do
+    url "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff"
+    sha1 "b242fb8fa81489dd16830e5df6bbf5448a3874d5"
   end
 
   def install
@@ -36,108 +53,40 @@ class Graphviz < Formula
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--without-qt",
-            "--without-x",
             "--with-quartz"]
-    args << "--disable-swig" unless build.include? 'with-bindings'
-    args << "--without-pangocairo" unless build.include? 'with-pangocairo'
-    args << "--without-freetype2" unless build.include? 'with-freetype'
+    args << "--with-gts" if build.with? "gts"
+    args << "--disable-swig" if build.without? "bindings"
+    args << "--without-pangocairo" if build.without? "pango"
+    args << "--without-freetype2" if build.without? "freetype"
+    args << "--without-x" if build.without? "x11"
+    args << "--without-rsvg" if build.without? "librsvg"
+
+    if build.with? "bindings"
+      # http://www.graphviz.org/mantisbt/view.php?id=2486
+      inreplace "configure", 'PYTHON_LIBS="-lpython$PYTHON_VERSION_SHORT"',
+                             'PYTHON_LIBS="-L$PYTHON_PREFIX/lib -lpython$PYTHON_VERSION_SHORT"'
+    end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
-    if build.include? 'with-app'
-      # build Graphviz.app
+    if build.with? "app"
       cd "macosx" do
-        system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+        xcodebuild "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
       end
       prefix.install "macosx/build/Release/Graphviz.app"
     end
 
-    (bin+'gvmap.sh').unlink
+    (bin+"gvmap.sh").unlink
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd+'sample.dot').write <<-EOS.undent
-      digraph G {
-        a -> b
-      }
-      EOS
+  test do
+    (testpath/"sample.dot").write <<-EOS.undent
+    digraph G {
+      a -> b
+    }
+    EOS
 
-      system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
-    end
-  end
-
-  def caveats
-    if build.include? 'with-app'
-      <<-EOS
-        Graphviz.app was installed in:
-          #{prefix}
-
-        To symlink into ~/Applications, you can do:
-          brew linkapps
-        EOS
-    end
+    system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
   end
 end
-
-# fix build on platforms without /usr/lib/libltdl.a (i.e., Lion)
-# http://www.graphviz.org/mantisbt/view.php?id=2109
-# fixed in upstream development version 2.29
-# second part of DATA patch fixes quartz plugin build, may not be in upstream yet
-__END__
-diff --git a/lib/gvc/Makefile.in b/lib/gvc/Makefile.in
-index 2d345a0..67183f2 100644
---- a/lib/gvc/Makefile.in
-+++ b/lib/gvc/Makefile.in
-@@ -41,8 +41,7 @@ host_triplet = @host@
- @WITH_WIN32_TRUE@am__append_1 = -O0
- @WITH_ORTHO_TRUE@am__append_2 = $(top_builddir)/lib/ortho/libortho_C.la
- @WITH_ORTHO_TRUE@am__append_3 = $(top_builddir)/lib/ortho/libortho_C.la
--@ENABLE_LTDL_TRUE@am__append_4 = $(LIBLTDL) $(LIBLTDL_LDFLAGS)
--@ENABLE_LTDL_TRUE@am__append_5 = $(LIBLTDL)
-+@ENABLE_LTDL_TRUE@am__append_4 = @LIBLTDL@ $(LIBLTDL_LDFLAGS)
- subdir = lib/gvc
- DIST_COMMON = $(noinst_HEADERS) $(pkginclude_HEADERS) \
- 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-@@ -87,8 +86,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(man3dir)" \
- 	"$(DESTDIR)$(pkgincludedir)"
- LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
- am__DEPENDENCIES_1 =
--@ENABLE_LTDL_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) \
--@ENABLE_LTDL_TRUE@	$(am__DEPENDENCIES_1)
-+@ENABLE_LTDL_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
- am__DEPENDENCIES_3 = $(top_builddir)/lib/pack/libpack_C.la \
- 	$(top_builddir)/lib/xdot/libxdot_C.la \
- 	$(top_builddir)/lib/common/libcommon_C.la $(am__append_2) \
-diff --git a/plugin/quartz/Makefile.in b/plugin/quartz/Makefile.in
-index 20ec9c6..dbeb46b 100644
---- a/plugin/quartz/Makefile.in
-+++ b/plugin/quartz/Makefile.in
-@@ -89,7 +89,7 @@ libgvplugin_quartz_la_OBJECTS = $(am_libgvplugin_quartz_la_OBJECTS)
- AM_V_lt = $(am__v_lt_$(V))
- am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
- am__v_lt_0 = --silent
--libgvplugin_quartz_la_LINK = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
-+libgvplugin_quartz_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(OBJCLD) $(AM_OBJCFLAGS) \
-	$(OBJCFLAGS) $(libgvplugin_quartz_la_LDFLAGS) $(LDFLAGS) -o $@
- @WITH_QUARTZ_TRUE@@WITH_WIN32_FALSE@am_libgvplugin_quartz_la_rpath =  \
-@@ -128,7 +128,7 @@ am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
- am__v_CCLD_0 = @echo "  CCLD  " $@;
- OBJCCOMPILE = $(OBJC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
-	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_OBJCFLAGS) $(OBJCFLAGS)
--LTOBJCCOMPILE = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) \
-+LTOBJCCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=compile $(OBJC) $(DEFS) \
-	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	$(AM_OBJCFLAGS) $(OBJCFLAGS)
-@@ -136,7 +136,7 @@ AM_V_OBJC = $(am__v_OBJC_$(V))
- am__v_OBJC_ = $(am__v_OBJC_$(AM_DEFAULT_VERBOSITY))
- am__v_OBJC_0 = @echo "  OBJC  " $@;
- OBJCLD = $(OBJC)
--OBJCLINK = $(LIBTOOL) $(AM_V_lt) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-+OBJCLINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(OBJCLD) $(AM_OBJCFLAGS) $(OBJCFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
- AM_V_OBJCLD = $(am__v_OBJCLD_$(V))

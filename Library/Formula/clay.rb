@@ -2,8 +2,8 @@ require 'formula'
 
 class Clay < Formula
   homepage 'http://claylabs.com/clay/'
-  url 'https://github.com/jckarter/clay/tarball/v0.1.2'
-  sha1 '1c7de85a36b4516c0cf5ba7f413d748d1c37c9b4'
+  url 'https://github.com/jckarter/clay/archive/v0.1.2.tar.gz'
+  sha1 'cd557a5ccaca17fd8ec83651f8df3e5405c4f855'
 
   head 'https://github.com/jckarter/clay.git'
 
@@ -15,7 +15,7 @@ class Clay < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/clay", "-e", "println(\"Hello, Clay!\");"
   end
 end

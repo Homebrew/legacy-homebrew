@@ -2,8 +2,8 @@ require 'formula'
 
 class ReattachToUserNamespace < Formula
   homepage 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard'
-  url 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git', :revision => 'ece1935953593d05e98d8c3ee8f956b2429d633f'
-  version 'ece193'
+  url 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard/archive/v2.3.tar.gz'
+  sha1 '830d329992b294c2673ed240ee3c7786e4e06308'
 
   head 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git'
 

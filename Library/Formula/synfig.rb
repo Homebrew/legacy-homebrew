@@ -1,24 +1,38 @@
-require 'formula'
+require "formula"
 
 class Synfig < Formula
-  homepage 'http://synfig.org'
-  url 'http://downloads.sourceforge.net/project/synfig/synfig/0.63.05/synfig-0.63.05.tar.gz'
-  sha1 'd532b8dd37a7eed10ea5de6f5b2b2dd419648f2c'
+  homepage "http://synfig.org"
+  url "https://downloads.sourceforge.net/project/synfig/releases/0.64.2/source/synfig-0.64.2.tar.gz"
+  sha1 "57eeea0ac92437b909f0aeeee0ec939f03b2555f"
 
-  head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig'
+  head "git://synfig.git.sourceforge.net/gitroot/synfig/synfig"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'etl'
-  depends_on 'libsigc++'
-  depends_on 'libxml++'
-  depends_on 'imagemagick'
-  depends_on :libpng
+  bottle do
+    sha1 "1353dc1b8855ae972fe5b2aa74c4725c919ec233" => :yosemite
+    sha1 "f5d93ec9e09a37b0d9529d6282395facba82d9e0" => :mavericks
+    sha1 "0feeffbb682c86a11fae0a405232fb3f5d67f51d" => :mountain_lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "etl"
+  depends_on "libsigc++"
+  depends_on "libxml++"
+  depends_on "imagemagick"
+  depends_on "libpng"
+  depends_on "freetype"
+  depends_on "cairo"
+  depends_on "pango"
+  depends_on "boost"
+  depends_on "openexr"
+  depends_on "libtool" => :run
 
   def install
+    boost = Formula["boost"]
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-boost=#{boost.opt_prefix}"
     system "make install"
   end
 end

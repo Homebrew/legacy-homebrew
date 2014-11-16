@@ -5,6 +5,7 @@ class Jcal < Formula
   url 'http://download.savannah.gnu.org/releases/jcal/jcal-0.4.1.tar.gz'
   sha1 '23710a685515e1e824494890d6befac9edf04143'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 
@@ -17,7 +18,7 @@ class Jcal < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/jcal", "-y"
     system "#{bin}/jdate"
   end
