@@ -4,6 +4,8 @@ require 'formula'
 # too:
 #  - http://wiki.winehq.org/Gecko
 #  - http://wiki.winehq.org/Mono
+# Check dlls/appwiz.cpl/addons.c for the version that matches the specific
+# release (GECKO_VERSION and MONO_VERSION).
 class Wine < Formula
   homepage 'http://winehq.org/'
 
@@ -30,8 +32,19 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.30.tar.bz2"
-    sha256 "10f7caf0420970772d868ab2ae24578f89b8a04b93604473e7c41bb295e0086c"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.31.tar.bz2"
+    sha256 "3c6e62cb3bfab8505f8b9cbde0fe81072043875c4e655bd1dedd2a5f613ce490"
+
+    resource "gecko" do
+      url "https://downloads.sourceforge.net/wine/wine_gecko-2.34-x86.msi", :using => :nounzip
+      version "2.34"
+      sha1 "e9646cf9d683a6f4e254bcff3864a863fe8287e9"
+    end
+
+    resource "mono" do
+      url "https://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi", :using => :nounzip
+      sha1 "73d6b8aa7a8921f43b22c6d930e8d7e421058187"
+    end
 
     depends_on "samba" => :optional
     depends_on "gnutls"
