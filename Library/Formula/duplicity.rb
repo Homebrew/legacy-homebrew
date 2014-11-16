@@ -53,6 +53,9 @@ class Duplicity < Formula
       r.stage { Language::Python.setup_install "python", libexec/"vendor" }
     end
 
+    # Prevent clang from dying because of -fno-fused-madd on Mountain Lion
+    ENV.refurbish_args
+
     Language::Python.setup_install "python", libexec
 
     bin.install Dir[libexec/"bin/*"]
