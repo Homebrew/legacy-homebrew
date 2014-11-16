@@ -22,7 +22,7 @@ class Botan < Formula
   def install
     args = %W[
       --prefix=#{prefix}
-      --docdir=#{share}/doc
+      --docdir=share/doc
       --cpu=#{MacOS.preferred_arch}
       --cc=#{ENV.compiler}
       --os=darwin
