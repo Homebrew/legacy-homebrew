@@ -16,8 +16,25 @@ class Ansible < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
-  option "with-accelerate", "Enable accelerated mode"
-  option "with-windows", "Enable Windows support"
+  resource "docker-py" do
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.6.0.tar.gz"
+    sha1 "01eb7b2cd1a607d361170041b973a0e36bb1be42"
+  end
+
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.2.1.tar.gz"
+    sha1 "88eb1fd6a0dfb8b97262f8029978d7c75eebc16f"
+  end
+
+  resource "websocket-client" do
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.11.0.tar.gz"
+    sha1 "a38cb6072a25b18faf11d31dd415750692c36f33"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
+    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+  end
 
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz"
@@ -74,8 +91,9 @@ class Ansible < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
     res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
-    res << "python-keyczar" if build.with? "accelerate"
-    res += %w[pywinrm isodate xmltodict] if build.with? "windows"
+    res += %w[pywinrm isodate xmltodict] # windows support
+    res += %w[docker-py requests websocket-client six] # docker support
+    res += %w[python-keyczar] # accelerate support
     res.each do |r|
       resource(r).stage { Language::Python.setup_install "python", libexec/"vendor" }
     end
