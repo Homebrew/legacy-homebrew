@@ -2,8 +2,8 @@ require "formula"
 
 class Rlwrap < Formula
   homepage "http://utopia.knoware.nl/~hlub/rlwrap/"
-  url "http://utopia.knoware.nl/~hlub/rlwrap/rlwrap-0.41.tar.gz"
-  sha1 "9fbc6d977255a6081360230917a293b6fd9c5fbe"
+  url "http://utopia.knoware.nl/~hlub/rlwrap/rlwrap-0.42.tar.gz"
+  sha1 "8d2ad1be9b6c362439825ae5456a2ba5cdd7eb07"
 
   depends_on "readline"
 
