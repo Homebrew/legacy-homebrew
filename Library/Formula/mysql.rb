@@ -22,7 +22,7 @@ class Mysql < Formula
   option 'enable-debug', 'Build with debug support'
 
   depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion || !OS.mac?
   depends_on 'openssl'
 
   conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
@@ -113,7 +113,7 @@ class Mysql < Formula
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion || !OS.mac?
     end
 
     bin.install_symlink prefix/"support-files/mysql.server"
