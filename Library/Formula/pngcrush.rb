@@ -6,6 +6,10 @@ class Pngcrush < Formula
   sha1 "299650645a675ec1652a8c97d2bc5094ff91ba5c"
 
   bottle do
+    cellar :any
+    sha1 "4e9958095e92fc147b0a6a5dcff8a9d3835155b1" => :yosemite
+    sha1 "fa65f4af28e0b62f96b5a5696e03968179f8ce27" => :mavericks
+    sha1 "7283828aa8237281ff47411dcd586b5d7a732448" => :mountain_lion
   end
 
   def install
