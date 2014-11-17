@@ -132,7 +132,7 @@ module Homebrew
         end
 
         # If this is a pull request, append a close message.
-        unless message.include? 'Closes #'
+        unless message.include? "Closes ##{issue}."
           message += "\nCloses ##{issue}."
           safe_system 'git', 'commit', '--amend', '--signoff', '-q', '-m', message
         end
