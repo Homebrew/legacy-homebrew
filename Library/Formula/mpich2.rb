@@ -27,10 +27,9 @@ class Mpich2 < Formula
     sha1 '2bea3f7cb3d69d2ea372e48f376187e91b929bb6'
   end
 
-  option 'disable-fortran', "Do not attempt to build Fortran bindings"
-  option 'disable-shared', "Do not build shared libraries"
+  deprecated_option "disable-fortran" => "without-fortran"
 
-  depends_on :fortran unless build.include? 'disable-fortran'
+  depends_on :fortran => :recommended
 
   conflicts_with 'open-mpi', :because => 'both install mpi__ compiler wrappers'
 
@@ -48,11 +47,8 @@ class Mpich2 < Formula
       "--prefix=#{prefix}",
       "--mandir=#{man}"
     ]
-    args << "--disable-fortran" if build.include? "disable-fortran"
 
-    if build.include? 'disable-shared'
-      args << "--disable-shared"
-    end
+    args << "--disable-fortran" if build.without? "fortran"
 
     system "./configure", *args
     system "make"
