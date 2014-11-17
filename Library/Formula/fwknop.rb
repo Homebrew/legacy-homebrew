@@ -7,9 +7,9 @@ class Fwknop < Formula
   sha1 "b13ef022ade7da6dc5b08335d5a1d29dd898887b"
 
   bottle do
-    sha1 "a8f0c47a80109c15bbdbee4c6b768a5970d87786" => :mavericks
-    sha1 "28c45793806d7cdd6bdce5001a44645ce3c258b8" => :mountain_lion
-    sha1 "c963e977da7c1171b56b9e5dce523b7ddbc42b35" => :lion
+    sha1 "1708a7d273a2b70ca61d9e34189fc9e1cb2cd1f0" => :yosemite
+    sha1 "16dd1174e3a4ef880d54bf24a98fc26719117480" => :mavericks
+    sha1 "9e8176ccc32ffecd6d39b10c8930fec0fcb2e1ca" => :mountain_lion
   end
 
   depends_on "automake" => :build
