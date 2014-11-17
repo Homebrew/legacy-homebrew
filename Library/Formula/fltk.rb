@@ -6,8 +6,8 @@ class Fltk < Formula
   sha1 "873aac49b277149e054b9740378e2ca87b0bd435"
 
   bottle do
-    sha1 "fdd346322d4abd84efcb94947dacc1452a922f7d" => :mavericks
-    sha1 "20f8ab2cbc0c9c04c2f86e0e9a405baa48d02831" => :mountain_lion
+    sha1 "33c75cce41deadbfe54bdcc22ae91d17d3ecc782" => :mavericks
+    sha1 "3674769086a1a667379c94aa50aa59b5f66f75d3" => :mountain_lion
   end
 
   option :universal
