@@ -5,6 +5,7 @@ class Fwknop < Formula
   head "https://github.com/mrash/fwknop.git"
   url "https://github.com/mrash/fwknop/archive/2.6.4.tar.gz"
   sha1 "b13ef022ade7da6dc5b08335d5a1d29dd898887b"
+  revision 1
 
   bottle do
     sha1 "1708a7d273a2b70ca61d9e34189fc9e1cb2cd1f0" => :yosemite
@@ -15,14 +16,15 @@ class Fwknop < Formula
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
+  depends_on "wget" => :optional
   depends_on "gpgme"
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-gpgme"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--disable-silent-rules",
+                          "--prefix=#{prefix}", "--with-gpgme",
+                          "--with-gpg=#{Formula["gnupg2"].opt_prefix}/bin/gpg2"
+    system "make", "install"
   end
 
   test do
