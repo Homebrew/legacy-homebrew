@@ -3,8 +3,8 @@ require "formula"
 class Fwknop < Formula
   homepage "http://www.cipherdyne.org/fwknop/"
   head "https://github.com/mrash/fwknop.git"
-  url "https://github.com/mrash/fwknop/archive/2.6.3.tar.gz"
-  sha1 "ea83821d082e640bc70438f00578d3c049d4de8a"
+  url "https://github.com/mrash/fwknop/archive/2.6.4.tar.gz"
+  sha1 "b13ef022ade7da6dc5b08335d5a1d29dd898887b"
 
   bottle do
     sha1 "a8f0c47a80109c15bbdbee4c6b768a5970d87786" => :mavericks
