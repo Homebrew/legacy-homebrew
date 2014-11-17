@@ -1,9 +1,11 @@
 require 'formula'
 
 class GitCrypt < Formula
-  homepage 'http://www.agwa.name/projects/git-crypt/'
-  url 'https://github.com/AGWA/git-crypt/archive/0.3.tar.gz'
-  sha1 '7ee53e970d8fd085ad23463120b04b4d94a47ef0'
+  homepage 'https://www.agwa.name/projects/git-crypt/'
+  url 'https://www.agwa.name/projects/git-crypt/downloads/git-crypt-0.4.tar.gz'
+  sha1 '18cffadc905d69e221e6f2d4ec92b013413596f3'
+
+  depends_on "openssl"
 
   def install
     system "make"
@@ -11,6 +13,6 @@ class GitCrypt < Formula
   end
 
   test do
-    system "#{bin}/git-crypt"
+    system "#{bin}/git-crypt", "keygen", "keyfile"
   end
 end
