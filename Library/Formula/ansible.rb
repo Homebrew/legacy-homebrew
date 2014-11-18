@@ -66,9 +66,14 @@ class Ansible < Formula
     sha1 "a9b24d887f2be772921b3ee30a0b9d435cffadda"
   end
 
+  resource "pyasn1" do
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.7.tar.gz"
+    sha1 "e32b91c5a5d9609fb1d07d8685a884bab22ca6d0"
+  end
+
   resource "python-keyczar" do
-    url "https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz"
-    sha1 "20c7c5d54c0ce79262092b4cc691aa309fb277fa"
+    url "https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71c.tar.gz"
+    sha1 "0ac1e85e05acac470029d1eaeece5c47d59fcc89"
   end
 
   resource "pywinrm" do
@@ -91,9 +96,9 @@ class Ansible < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
     res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
-    res += %w[pywinrm isodate xmltodict] # windows support
-    res += %w[docker-py requests websocket-client six] # docker support
-    res += %w[python-keyczar] # accelerate support
+    res += %w[isodate xmltodict pywinrm] # windows support
+    res += %w[six requests websocket-client docker-py] # docker support
+    res += %w[pyasn1 python-keyczar] # accelerate support
     res.each do |r|
       resource(r).stage { Language::Python.setup_install "python", libexec/"vendor" }
     end
