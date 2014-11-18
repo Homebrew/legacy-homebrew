@@ -149,7 +149,11 @@ There are plenty of others. Check `/usr/lib` to see.
 
 We try to not duplicate libraries and complicated tools in core Homebrew. We dupe some common tools though. But generally, we avoid dupes because it’s one of Homebrew’s foundations. (And it causes build and usage problems!)
 
-However, we maintain a special [tap that provides dupes](https://github.com/Homebrew/homebrew-dupes).
+The one special exception is OpenSSL. Anything that uses OpenSSL *should* be built using Homebrew’s shipped OpenSSL and our test bot's post-install audit will warn of this when it is detected. (*Of course, there are exceptions to the exception. Not everything can be forced onto our OpenSSL)*.
+
+Because Homebrew’s OpenSSL is `keg_only` to avoid conflicting with the system sometimes formulae need to have environmental variables set or special configuration flags passed to locate our preferred OpenSSL; you can see this mechanism in the [clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28) formula. Usually this is unnecessary because when OpenSSL is specified as a dependency Homebrew temporarily prepends the $PATH with that prefix.
+
+Homebrew maintains a special [tap that provides other useful dupes](https://github.com/Homebrew/homebrew-dupes).
 
 *Important:* Since the introduction of `superenv`, `brew --prefix`/bin is NOT on the `$PATH` during formula installation. If you have dependencies at build time, you must specify them and brew will add them to the `$PATH`. You can test around this with `--env=std`.
 
@@ -162,7 +166,7 @@ class Foo < Formula
   depends_on "gtk+" => :optional
   depends_on "readline" => :recommended
   depends_on "boost" => "with-icu"
-  depends_on :x11
+  depends_on :x11 => :optional
 end
 ```
 
@@ -196,6 +200,15 @@ A Hash specifies a formula dependency with some additional information. Given a 
     depends_on "foo" => [:optional, "with-bar"]
     ```
 
+## Formulae Revisions
+
+In Homebrew we sometimes accept formulae updates that don’t include a version bump. These include homepage changes, resource updates, new patches or fixing a security issue with a formula.
+
+Occasionally, these updates require a forced-recompile of the formula itself or its dependents to either ensure formulae continue to function as expected or to close a security issue. This forced-recompile is known as a `revision` and inserted underneath the homepage/url/sha block.
+
+Where a dependent of a formula fails against a new version of that dependency it must receive a `revision`. An example of such failure can be seen [here](https://github.com/Homebrew/homebrew/issues/31195) and the fix [here](https://github.com/Homebrew/homebrew/pull/31207).
+
+`Revisions` are also used for formulae that move from the system OpenSSL to the Homebrew-shipped OpenSSL without any other changes to that formula. This ensures users aren’t left exposed to the potential security issues of the outdated OpenSSL. An example of this can be seen in [this commit](https://github.com/Homebrew/homebrew/commit/6b9d60d474d72b1848304297d91adc6120ea6f96).
 
 ## Double-check for dependencies
 
@@ -205,17 +218,16 @@ You can double-check which libraries a binary links to with the `otool` command 
 
     $ otool -L /usr/local/bin/ldapvi
     /usr/local/bin/ldapvi:
-      /usr/lib/libssl.0.9.8.dylib (compatibility version 0.9.8, current version 0.9.8)
-      /usr/lib/libcrypto.0.9.8.dylib (compatibility version 0.9.8, current version 0.9.8)
-      /usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.3)
-      /usr/local/Cellar/glib/2.22.4/lib/libglib-2.0.0.dylib (compatibility version 2201.0.0, current version 2201.4.0)
-      /usr/local/Cellar/gettext/0.17/lib/libintl.8.dylib (compatibility version 9.0.0, current version 9.2.0)
-      /usr/local/Cellar/readline/6.0/lib/libreadline.6.0.dylib (compatibility version 6.0.0, current version 6.0.0)
-      /usr/local/Cellar/popt/1.15/lib/libpopt.0.dylib (compatibility version 1.0.0, current version 1.0.0)
-      /usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
-      /System/Library/Frameworks/LDAP.framework/Versions/A/LDAP (compatibility version 1.0.0, current version 2.2.0)
-      /usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 38.0.0)
-      /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 125.0.0)
+	/usr/local/opt/openssl/lib/libssl.1.0.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/local/lib/libglib-2.0.0.dylib (compatibility version 4201.0.0, current version 4201.0.0)
+	/usr/local/opt/gettext/lib/libintl.8.dylib (compatibility version 10.0.0, current version 10.2.0)
+	/usr/local/opt/readline/lib/libreadline.6.dylib (compatibility version 6.0.0, current version 6.3.0)
+	/usr/local/lib/libpopt.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
+	/System/Library/Frameworks/LDAP.framework/Versions/A/LDAP (compatibility version 1.0.0, current version 2.4.0)
+	/usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1213.0.0)
 
 
 ## Specifying gems, Python modules etc. as dependencies
@@ -232,12 +244,12 @@ class Foo < Formula
   end
 
   def install
-    resource("pycrypto").stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+    resource("pycrypto").stage { Language::Python.setup_install "python", libexec/"vendor" }
   end
 end
 ```
 
-See [ansible](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/ansible.rb) for an example of a formula that does this well. The end-result means the user doesn't have to faff with `pip` or Python and can just run `ansible`.
+See [jrnl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/jrnl.rb) for an example of a formula that does this well. The end-result means the user doesn't have to faff with `pip` or Python and can just run `jrnl`.
 
 [This script](https://raw.githubusercontent.com/tdsmith/labmisc/master/mkpydeps) can help you generate resource stanzas for the dependencies of your Python application.
 
@@ -292,7 +304,11 @@ If you’re not sure about the name check the homepage, and check the Wikipedia 
 
 [ALSO CHECK WHAT DEBIAN CALLS IT!](http://www.debian.org/distrib/packages)
 
-If you’re *still* not sure, just commit. I’ll apply some arbitrary rule and make a decision ;)
+Where Homebrew already has a formula called `foo` we typically do not accept requests to replace that formula with something else also named `foo`. This is to avoid both confusing and surprising users’ expectation.
+
+When two formulae share an upstream name, e.g. [`AESCrypt`](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/aescrypt.rb) and [`AESCrypt`](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/aescrypt-packetizer.rb) the newer formula must typically adapt the name to avoid conflict with the current formula.
+
+If you’re *still* not sure, just commit. We’ll apply some arbitrary rule and make a decision ;)
 
 When importing classes, Homebrew will require the formula and then create an instance of the class. It does this by assuming the formula name can be directly converted to the class name using a `regexp`. The rules are simple:
 
@@ -360,7 +376,7 @@ If a commit touches multiple files, or isn’t one logical bug fix, or a file is
 
 *   The result of `Formula.download_strategy` is instantiated.
 *   `DownloadStrategy.fetch` is called (downloads tarball, checks out git repository, etc.)
-*   A temporary sandbox is created in `/tmp/homebrew`
+*   A temporary sandbox is created in `/tmp/$formulaname`
 *   `DownloadStrategy.stage` is called (extracts tarball to above sandbox, exports git repository to sandbox, etc.)
 *   Patches are applied
 *   Current directory is changed to the stage root (so when you `system make`, it works)
@@ -393,7 +409,7 @@ end
 
 ## bin.install "foo"
 
-You’ll see stuff like that in other formulae. This installs the file foo into the Formula’s `bin` directory (`/usr/local/Cellar/pkg/0.1/bin`) and makes it executable (`chmod +x foo`).
+You’ll see stuff like that in other formulae. This installs the file foo into the Formula’s `bin` directory (`/usr/local/Cellar/pkg/0.1/bin`) and makes it executable (`chmod 0555 foo`).
 
 ## inreplace
 
@@ -823,7 +839,7 @@ if build.without? "ham"
 end
 
 if build.include? "enable-ham"
-  # the old style, only useful for options other than `with`/`without` style
+  # the deprecated style, only useful for options other than `with`/`without` style
 end
 ```
 
@@ -860,7 +876,7 @@ Homebrew provides two Formula methods for launchd plist files. `plist_name` will
 
 ## Updating formulae
 
-Eventually a new version of the software will be released. In this case you should update the `url` and `sha1`/`sha256`. Even although it will warn on your local machine please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
+Eventually a new version of the software will be released. In this case you should update the `url` and `sha1`/`sha256`. Please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
 
 Check if the formula you are updating is a dependency for any other formulae by running `brew uses UPDATED_FORMULA`. If it is a dependency please `brew reinstall` all the dependencies after it is installed and verify they work correctly.
 

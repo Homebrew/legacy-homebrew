@@ -16,6 +16,10 @@ duplicate tools
 
 There are exceptions:
 
+* OpenSSL - Apple has formally deprecated OpenSSL on OS X in favour of their own Security Framework
+  & consequently the OS X OpenSSL is rarely updated and frequently falls behind important security updates.
+  Homebrew endeavours to use our shipped OpenSSL as much
+   as possible.
 * Programs that a user will regularly interact with directly, like editors and
   language runtimes
 * Libraries that provide functionality or contain security updates not found in
