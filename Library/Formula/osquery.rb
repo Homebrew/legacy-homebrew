@@ -3,7 +3,7 @@ require "formula"
 class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.0.5"
+  url "https://github.com/facebook/osquery.git", :tag => "1.1.0"
 
   bottle do
     sha1 "0bf8208e6d0605273f67ac1ba180d7918bc2c927" => :yosemite
