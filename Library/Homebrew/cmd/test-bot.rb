@@ -322,11 +322,17 @@ module Homebrew
       puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula_name}#{Tty.reset}"
     end
 
-    def satisfied_requirements? formula, spec
+    def satisfied_requirements? formula, spec, dependency=nil
       requirements = formula.send(spec).requirements
 
       unsatisfied_requirements = requirements.reject do |requirement|
-        requirement.satisfied? || requirement.default_formula?
+        satisfied = false
+        satisfied = true if requirement.satisfied?
+        if !satisfied && requirement.default_formula?
+          default = Formula[requirement.class.default_formula]
+          satisfied = satisfied_requirements?(default, :stable, formula.name)
+        end
+        satisfied
       end
 
       if unsatisfied_requirements.empty?
@@ -334,6 +340,7 @@ module Homebrew
       else
         name = formula.name
         name += " (#{spec})" unless spec == :stable
+        name += " (#{dependency} dependency)" if dependency
         skip name
         puts unsatisfied_requirements.map(&:message)
         false
