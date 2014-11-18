@@ -30,6 +30,7 @@ class Ffmpeg < Formula
   option "with-fdk-aac", "Enable the Fraunhofer FDK AAC library"
   option "with-libvidstab", "Enable vid.stab support for video stabilization"
   option "with-x265", "Enable x265 encoder"
+  option "with-libsoxr", "Enable the soxr resample library"
 
   depends_on "pkg-config" => :build
 
@@ -59,6 +60,7 @@ class Ffmpeg < Formula
   depends_on "frei0r" => :optional
   depends_on "libcaca" => :optional
   depends_on "libbluray" => :optional
+  depends_on "libsoxr" => :optional
   depends_on "libquvi" => :optional
   depends_on "libvidstab" => :optional
   depends_on "x265" => :optional
@@ -99,6 +101,7 @@ class Ffmpeg < Formula
     args << "--enable-libopus" if build.with? "opus"
     args << "--enable-frei0r" if build.with? "frei0r"
     args << "--enable-libcaca" if build.with? "libcaca"
+    args << "--enable-libsoxr" if build.with? "libsoxr"
     args << "--enable-libquvi" if build.with? "libquvi"
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
