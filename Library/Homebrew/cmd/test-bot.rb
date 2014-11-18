@@ -129,7 +129,7 @@ module Homebrew
       puts_result
 
       if File.exist?(log)
-        @output = File.read(log)
+        @output = fix_encoding File.read(log)
         if has_output? and (failed? or @puts_output_on_success)
           puts @output
         end
@@ -137,6 +137,22 @@ module Homebrew
       end
 
       exit 1 if ARGV.include?("--fail-fast") && @status == :failed
+    end
+
+    private
+
+    if String.method_defined?(:force_encoding)
+      def fix_encoding(str)
+        return str if str.valid_encoding?
+        # Assume we are starting from a "mostly" UTF-8 string
+        str.force_encoding(Encoding::UTF_8)
+        str.encode!(Encoding::UTF_16, :invalid => :replace, :undef => :replace)
+        str.encode!(Encoding::UTF_8)
+      end
+    else
+      def fix_encoding(str)
+        str
+      end
     end
   end
 
@@ -630,12 +646,11 @@ module Homebrew
           testcase.attributes['time'] = step.time
           failure = testcase.add_element 'failure' if step.failed?
           if step.has_output?
-            # Remove invalid XML CData characters from step output.
             output = step.output
-            if output.respond_to?(:force_encoding) && !output.valid_encoding?
-              output.force_encoding(Encoding::UTF_8)
-            end
+
+            # Remove invalid XML CData characters from step output.
             output = output.delete("\000\a\b\e\f")
+
             if output.bytesize > BYTES_IN_1_MEGABYTE
               output = "truncated output to 1MB:\n" \
                 + output.slice(-BYTES_IN_1_MEGABYTE, BYTES_IN_1_MEGABYTE)
