@@ -8,9 +8,9 @@ class Acpica < Formula
 
   bottle do
     cellar :any
-    sha1 "67536b4f83b441486bc629290adf24ae1c068582" => :yosemite
-    sha1 "10f7afd73ba977b10db461492344efa40860165d" => :mavericks
-    sha1 "19b90793ec68a5c26a1add2cdabd6d6cd83b29de" => :mountain_lion
+    sha1 "751442a403e1b2110fd776f23ec24f78da235b97" => :yosemite
+    sha1 "647e732c34b8118197dff74efc2307b4f78da89d" => :mavericks
+    sha1 "b4c558d517c81251239025b1414a913d690ea8f2" => :mountain_lion
   end
 
   def install
