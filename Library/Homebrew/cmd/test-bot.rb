@@ -129,7 +129,7 @@ module Homebrew
       puts_result
 
       if File.exist?(log)
-        @output = File.read(log)
+        @output = fix_encoding File.read(log)
         if has_output? and (failed? or @puts_output_on_success)
           puts @output
         end
@@ -137,6 +137,26 @@ module Homebrew
       end
 
       exit 1 if ARGV.include?("--fail-fast") && @status == :failed
+    end
+
+    private
+
+    if String.method_defined?(:force_encoding)
+      def fix_encoding(str)
+        return str if str.valid_encoding?
+        # Assume we are starting from a "mostly" UTF-8 string
+        str.force_encoding(Encoding::UTF_8)
+        str.encode!(Encoding::UTF_16, :invalid => :replace)
+        str.encode!(Encoding::UTF_8)
+      end
+    elsif require "iconv"
+      def fix_encoding(str)
+        Iconv.conv("UTF-8//IGNORE", "UTF-8", str)
+      end
+    else
+      def fix_encoding(str)
+        str
+      end
     end
   end
 
@@ -302,11 +322,17 @@ module Homebrew
       puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula_name}#{Tty.reset}"
     end
 
-    def satisfied_requirements? formula, spec
+    def satisfied_requirements? formula, spec, dependency=nil
       requirements = formula.send(spec).requirements
 
       unsatisfied_requirements = requirements.reject do |requirement|
-        requirement.satisfied? || requirement.default_formula?
+        satisfied = false
+        satisfied = true if requirement.satisfied?
+        if !satisfied && requirement.default_formula?
+          default = Formula[requirement.class.default_formula]
+          satisfied = satisfied_requirements?(default, :stable, formula.name)
+        end
+        satisfied
       end
 
       if unsatisfied_requirements.empty?
@@ -314,6 +340,7 @@ module Homebrew
       else
         name = formula.name
         name += " (#{spec})" unless spec == :stable
+        name += " (#{dependency} dependency)" if dependency
         skip name
         puts unsatisfied_requirements.map(&:message)
         false
@@ -630,12 +657,11 @@ module Homebrew
           testcase.attributes['time'] = step.time
           failure = testcase.add_element 'failure' if step.failed?
           if step.has_output?
-            # Remove invalid XML CData characters from step output.
             output = step.output
-            if output.respond_to?(:force_encoding) && !output.valid_encoding?
-              output.force_encoding(Encoding::UTF_8)
-            end
+
+            # Remove invalid XML CData characters from step output.
             output = output.delete("\000\a\b\e\f")
+
             if output.bytesize > BYTES_IN_1_MEGABYTE
               output = "truncated output to 1MB:\n" \
                 + output.slice(-BYTES_IN_1_MEGABYTE, BYTES_IN_1_MEGABYTE)

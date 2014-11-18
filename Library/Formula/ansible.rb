@@ -8,16 +8,34 @@ class Ansible < Formula
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha1 "97822f76a9c9650473fff0cd725bfa546bb84442" => :mavericks
-    sha1 "dcc7cf4b6272707d95505a2c2c2f1b9b051f1b76" => :mountain_lion
-    sha1 "5f9f3b109a31ccf5d7d64a16338d635d974b1648" => :lion
+    revision 3
+    sha1 "86361799cceb9b3dfcdc7f0c8780a903ab0e9b17" => :yosemite
+    sha1 "64b09af1848817e84f29ec1984a30aaed2289403" => :mavericks
+    sha1 "aa75a88b94c42fb02137ed66aae23d015360d28a" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
-  option "with-accelerate", "Enable accelerated mode"
-  option "with-windows", "Enable Windows support"
+  resource "docker-py" do
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.6.0.tar.gz"
+    sha1 "01eb7b2cd1a607d361170041b973a0e36bb1be42"
+  end
+
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.2.1.tar.gz"
+    sha1 "88eb1fd6a0dfb8b97262f8029978d7c75eebc16f"
+  end
+
+  resource "websocket-client" do
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.11.0.tar.gz"
+    sha1 "a38cb6072a25b18faf11d31dd415750692c36f33"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
+    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+  end
 
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz"
@@ -49,9 +67,14 @@ class Ansible < Formula
     sha1 "a9b24d887f2be772921b3ee30a0b9d435cffadda"
   end
 
+  resource "pyasn1" do
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.7.tar.gz"
+    sha1 "e32b91c5a5d9609fb1d07d8685a884bab22ca6d0"
+  end
+
   resource "python-keyczar" do
-    url "https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz"
-    sha1 "20c7c5d54c0ce79262092b4cc691aa309fb277fa"
+    url "https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71c.tar.gz"
+    sha1 "0ac1e85e05acac470029d1eaeece5c47d59fcc89"
   end
 
   resource "pywinrm" do
@@ -74,8 +97,9 @@ class Ansible < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
     res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
-    res << "python-keyczar" if build.with? "accelerate"
-    res += %w[pywinrm isodate xmltodict] if build.with? "windows"
+    res += %w[isodate xmltodict pywinrm] # windows support
+    res += %w[six requests websocket-client docker-py] # docker support
+    res += %w[pyasn1 python-keyczar] # accelerate support
     res.each do |r|
       resource(r).stage { Language::Python.setup_install "python", libexec/"vendor" }
     end
