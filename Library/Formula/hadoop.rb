@@ -13,6 +13,7 @@ class Hadoop < Formula
     # But don't make rcc visible, it conflicts with Qt
     (bin/"rcc").unlink
 
+    return unless OS.mac?
     inreplace "#{libexec}/etc/hadoop/hadoop-env.sh",
       "export JAVA_HOME=${JAVA_HOME}",
       "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
@@ -32,5 +33,5 @@ class Hadoop < Formula
     $JAVA_HOME has been set to be the output of:
       /usr/libexec/java_home
     EOS
-  end
+  end if OS.mac?
 end
