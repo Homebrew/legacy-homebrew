@@ -25,6 +25,7 @@ class Gcc < Formula
   url "http://ftpmirror.gnu.org/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2"
   mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2"
   sha1 "79dbcb09f44232822460d80b033c962c0237c6d8"
+  revision 1
 
   bottle do
     sha1 "178f037a3970fb9a86c07aad8215acbb9467ab63" => :yosemite
@@ -88,6 +89,7 @@ class Gcc < Formula
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
       "--prefix=#{prefix}",
+      "--libdir=#{lib}/gcc/#{version_suffix}",
       "--enable-languages=#{languages.join(",")}",
       # Make most executables versioned to avoid conflicts.
       "--program-suffix=-#{version_suffix}",
@@ -97,10 +99,6 @@ class Gcc < Formula
       "--with-cloog=#{Formula["cloog"].opt_prefix}",
       "--with-isl=#{Formula["isl"].opt_prefix}",
       "--with-system-zlib",
-      # This ensures lib, libexec, include are sandboxed so that they
-      # don't wander around telling little children there is no Santa
-      # Claus.
-      "--enable-version-specific-runtime-libs",
       "--enable-libstdcxx-time=yes",
       "--enable-stage1-checking",
       "--enable-checking=release",
@@ -132,6 +130,10 @@ class Gcc < Formula
       args << "--enable-multilib"
     end
 
+    # Ensure correct install names when linking against libgcc_s;
+    # see discussion in https://github.com/Homebrew/homebrew/pull/34303
+    inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
+
     mkdir "build" do
       unless MacOS::CLT.installed?
         # For Xcode-only systems, we need to tell the sysroot path.
@@ -161,10 +163,10 @@ class Gcc < Formula
     # Rename java properties
     if build.with?("java") || build.with?("all-languages")
       config_files = [
-        "#{lib}/logging.properties",
-        "#{lib}/security/classpath.security",
-        "#{lib}/i386/logging.properties",
-        "#{lib}/i386/security/classpath.security"
+        "#{lib}/gcc/#{version_suffix}/logging.properties",
+        "#{lib}/gcc/#{version_suffix}/security/classpath.security",
+        "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
+        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security"
       ]
       config_files.each do |file|
         add_suffix file, version_suffix if File.exist? file
