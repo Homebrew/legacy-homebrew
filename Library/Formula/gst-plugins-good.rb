@@ -24,7 +24,6 @@ class GstPluginsGood < Formula
     depends_on :automake
     depends_on :libtool
     depends_on 'check'
-    depends_on 'xz' => :build
   end
 
   depends_on 'pkg-config' => :build
