@@ -149,6 +149,10 @@ module Homebrew
         str.encode!(Encoding::UTF_16, :invalid => :replace)
         str.encode!(Encoding::UTF_8)
       end
+    elsif require "iconv"
+      def fix_encoding(str)
+        Iconv.conv("UTF-8//IGNORE", "UTF-8", str)
+      end
     else
       def fix_encoding(str)
         str
