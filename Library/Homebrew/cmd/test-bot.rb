@@ -146,7 +146,7 @@ module Homebrew
         return str if str.valid_encoding?
         # Assume we are starting from a "mostly" UTF-8 string
         str.force_encoding(Encoding::UTF_8)
-        str.encode!(Encoding::UTF_16, :invalid => :replace, :undef => :replace)
+        str.encode!(Encoding::UTF_16, :invalid => :replace)
         str.encode!(Encoding::UTF_8)
       end
     else
