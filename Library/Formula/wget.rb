@@ -33,7 +33,10 @@ class Wget < Formula
   depends_on "libidn" if build.with? "iri"
 
   def install
-    system "./bootstrap" if build.head?
+    if build.head?
+      ln_s cached_download/".git", ".git"
+      system "./bootstrap"
+    end
 
     args = %W[
       --prefix=#{prefix}
