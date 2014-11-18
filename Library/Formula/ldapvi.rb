@@ -5,6 +5,13 @@ class Ldapvi < Formula
   url "http://www.lichteblau.com/download/ldapvi-1.7.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/ldapvi/ldapvi_1.7.orig.tar.gz"
   sha1 "d1cde4cbb618180f9ae0e77c56a1520b8ad61c9a"
+  bottle do
+    cellar :any
+    sha1 "c87e30a0955bb200d8f88011ee8eec8291562b93" => :yosemite
+    sha1 "f3bd57a8d0ce4f7e19ade3cf051396169441bdcf" => :mavericks
+    sha1 "13d1720d60f6557a57214baa7622f7ffac889edc" => :mountain_lion
+  end
+
   revision 1
 
   depends_on "pkg-config" => :build
