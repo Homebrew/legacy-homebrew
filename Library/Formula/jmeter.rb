@@ -2,8 +2,8 @@ require 'formula'
 
 class Jmeter < Formula
   homepage 'http://jmeter.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.11.tgz'
-  sha1 'e9b24f8b5f34565831aafcb046e72bdfa9537386'
+  url 'http://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.12.tgz'
+  sha1 '2b3de1d1ebc4c85a1fc5da12279649d97ca45788'
 
   resource "jmeterplugins-standard" do
     url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.1.3.zip"
