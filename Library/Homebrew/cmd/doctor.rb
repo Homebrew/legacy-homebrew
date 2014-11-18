@@ -63,7 +63,7 @@ class Checks
   end
 
   # Git will always be on PATH because of the wrapper script in
-  # Library/Contributions/cmd, so we check if there is a *real*
+  # Library/ENV/scm, so we check if there is a *real*
   # git here to avoid multiple warnings.
   def git?
     return @git if instance_variable_defined?(:@git)

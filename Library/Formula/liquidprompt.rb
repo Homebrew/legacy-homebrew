@@ -2,8 +2,8 @@ require 'formula'
 
 class Liquidprompt < Formula
   homepage 'https://github.com/nojhan/liquidprompt'
-  url 'https://github.com/nojhan/liquidprompt/archive/v_1.8.tar.gz'
-  sha1 'ad481e98b0f6ed251cd65cb01464da151929f081'
+  url 'https://github.com/nojhan/liquidprompt/archive/v_1.9.tar.gz'
+  sha1 'c4bc4027810bd5fd1b727f2be724eaf12c03e7cb'
 
   def install
     share.install 'liquidpromptrc-dist'

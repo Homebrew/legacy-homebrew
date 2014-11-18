@@ -11,6 +11,8 @@ class Gtkx3 < Formula
     sha1 "cee7dfbdecacadd2b8dea994ce698364fd2045c6" => :mountain_lion
   end
 
+  option :universal
+
   depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -40,6 +42,8 @@ class Gtkx3 < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W[
       --disable-debug
       --disable-dependency-tracking
