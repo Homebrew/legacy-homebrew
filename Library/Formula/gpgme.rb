@@ -7,9 +7,10 @@ class Gpgme < Formula
   sha1 "a91c258e79acf30ec86a667e07f835e5e79342d8"
 
   bottle do
-    sha1 "60d557c728754011a62f4ede0e04ca786bf5b161" => :yosemite
-    sha1 "ae98c80946c947f967d44436717ed492b0f08420" => :mavericks
-    sha1 "9e3d8a25586683f0aeb050b341b38da79ba770d5" => :mountain_lion
+    cellar :any
+    sha1 "6acb8e98c8dff9020970439cc69700dc8562ec7f" => :yosemite
+    sha1 "1c117231ba66c70b4a8b99d27acba6e704aa078c" => :mavericks
+    sha1 "2a8f71ddcb8c0582410bedb5c401057ab1ce990d" => :mountain_lion
   end
 
   depends_on "gnupg2"
