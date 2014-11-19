@@ -298,11 +298,14 @@ If \fB\-\-all\fR is passed, show options for all formulae\.
 If \fB\-\-installed\fR is passed, show options for all installed formulae\.
 .
 .TP
-\fBoutdated [\-\-quiet]\fR
-Show formulae that have an updated version available\.
+\fBoutdated [\-\-quiet|\-\-verbose]\fR
+Show formulae that have an updated version available\. By default, version information is included in interactive shells, but is suppressed otherwise\.
 .
 .IP
-If \fB\-\-quiet\fR is passed, list only the names of outdated brews\. Otherwise, the versions are printed as well\.
+If \fB\-\-quiet\fR is passed, list only the names of outdated brews\. (Takes precedence over \fB\-\-verbose\fR\.)
+.
+.IP
+If \fB\-\-verbose\fR is passed, force version info to be displayed\.
 .
 .TP
 \fBpin\fR \fIformulae\fR

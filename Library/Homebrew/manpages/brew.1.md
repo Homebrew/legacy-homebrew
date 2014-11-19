@@ -279,11 +279,15 @@ Note that these flags should only appear after a command.
 
     If `--installed` is passed, show options for all installed formulae.
 
-  * `outdated [--quiet]`:
-    Show formulae that have an updated version available.
+  * `outdated [--quiet|--verbose]`:
+    Show formulae that have an updated version available. By default, version
+    information is included in interactive shells, but is suppressed
+    otherwise.
 
-    If `--quiet` is passed, list only the names of outdated brews. Otherwise,
-    the versions are printed as well.
+    If `--quiet` is passed, list only the names of outdated brews. (Takes
+    precedence over `--verbose`.)
+
+    If `--verbose` is passed, force version info to be displayed.
 
   * `pin` <formulae>:
     Pin the specified <formulae>, preventing them from being upgraded when
