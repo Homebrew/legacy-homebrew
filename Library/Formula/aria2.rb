@@ -18,9 +18,9 @@ class Aria2 < Formula
 
   bottle do
     cellar :any
-    sha1 "0d9ea391b7e7651df5abd4fb4e7eabd45e6e3d48" => :mavericks
-    sha1 "6be677ac2eefae9f5e658f3e340864d53ffb5f8b" => :mountain_lion
-    sha1 "b2aff43e5bffe9fe203b23e05060cc84944c20c0" => :lion
+    sha1 "0bfe8bc96b7d95c0d45c9f84e725eb5eae64d1bf" => :yosemite
+    sha1 "1c8c6558e0016c7e1ac2f01485a676b28df8ac55" => :mavericks
+    sha1 "9199de445bcc3c9dd932781e96d1fa53dd7e922e" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
