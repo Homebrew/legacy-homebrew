@@ -2,14 +2,14 @@ require 'formula'
 
 class Icecast < Formula
   homepage 'http://www.icecast.org/'
-  url 'http://downloads.xiph.org/releases/icecast/icecast-2.4.0.tar.gz'
-  sha1 '45bd403c2b1d6f1250216cd3a0447d41f979c348'
+  url 'http://downloads.xiph.org/releases/icecast/icecast-2.4.1.tar.gz'
+  sha1 '0ec1a6470554cccd9ca48488776a26887e9b9a5e'
 
   depends_on 'pkg-config' => :build
   depends_on 'libogg' => :optional
   depends_on 'theora' => :optional
   depends_on 'speex'  => :optional
-
+  depends_on 'openssl'
   depends_on 'libvorbis'
 
   def install
