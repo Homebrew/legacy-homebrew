@@ -6,6 +6,13 @@ class Sassc < Formula
   sha1 "4666a8452005613afe4129a8e0cb4dd9e54b2868"
   head "https://github.com/sass/sassc.git"
 
+  bottle do
+    cellar :any
+    sha1 "65fb58f5c6fe34eeff1ea207b8757bcec2a3e1c9" => :yosemite
+    sha1 "262ebee2c5fddcb2e29789ab8114c83abf3aeded" => :mavericks
+    sha1 "740702bd6479be486197055af380bc941ccb312e" => :mountain_lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
