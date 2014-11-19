@@ -5,14 +5,14 @@ class GitAnnex < Formula
   include Language::Haskell::Cabal
 
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-5.20141024/git-annex-5.20141024.tar.gz"
-  sha1 "e185f17db77654340b75879de301ab6982ce2b33"
+  url "https://hackage.haskell.org/package/git-annex-5.20141125/git-annex-5.20141125.tar.gz"
+  sha1 "45445bfef32f380624cbf415813a1a69010ecb13"
 
   bottle do
     cellar :any
-    sha1 "1b4e40ff2b8ac93c2626d63b1bd8ea10609ced0f" => :yosemite
-    sha1 "513da732960583d06a5949ac33af3b3e521f10dc" => :mavericks
-    sha1 "e28ff9cb1751689cc0a2830fa6d3481ef9fa0f39" => :mountain_lion
+    sha1 "dc9c4df9d7eb9f33cacc1e26e4df4d63f2d3c105" => :yosemite
+    sha1 "18bc46d6db31fc6e55816272d4b9bb392a182ebf" => :mavericks
+    sha1 "e0bba76cda3e7940a3645c68290dd54782e4cef4" => :mountain_lion
   end
 
   depends_on "gcc" => :build
