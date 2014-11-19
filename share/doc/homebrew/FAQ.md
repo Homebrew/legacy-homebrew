@@ -96,8 +96,8 @@ will use a bottled version of $FORMULA, but
 `brew install $FORMULA —enable-bar` will trigger a source build.
 * The `--build-from-source` option is invoked.
 * The environment variable `HOMEBREW_BUILD_FROM_SOURCE` is set.
-* The machine is not running OS X 10.7+ as all bottled builds are
-generated on Lion or later.
+* The machine is not running OS X 10.8+ as all bottled builds are
+generated on Mountain Lion or later.
 * Homebrew is installed to a prefix other than the standard
 `/usr/local` (although some bottles support this)
 
@@ -170,7 +170,7 @@ creating a separate user account especially for use of Homebrew.
 
 ### Why isn’t a particular command documented?
 
-If it’s not in `man brew`, it’s probably an external command. These are documented [here](https://github.com/Homebrew/homebrew/wiki/External-Commands).
+If it’s not in `man brew`, it’s probably an external command. These are documented [here](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md).
 
 ### Why haven’t you pulled my pull request?
 If it’s been a while, bump it with a “bump” comment. Sometimes we miss requests and there are plenty of them. Maybe we were thinking on something. It will encourage consideration. In the meantime if you could rebase the pull request so that it can be cherry-picked more easily we will love you for a long time.

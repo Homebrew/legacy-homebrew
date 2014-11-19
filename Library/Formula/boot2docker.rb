@@ -8,9 +8,10 @@ class Boot2docker < Formula
   head "https://github.com/boot2docker/boot2docker-cli.git", :branch => "master"
 
   bottle do
-    sha1 "becdb32043b9a40e8251120672d3a637ab5cb476" => :yosemite
-    sha1 "c7f4216d9049d23ef77c0a91311d8656b9b90d64" => :mavericks
-    sha1 "17a608549bf7adb4cae2180388a0c83f21dcdee6" => :mountain_lion
+    revision 3
+    sha1 "42298f5d491248fb0d2620f5d698300ec7a79b33" => :yosemite
+    sha1 "30f49d694bc92a6f38f7d825b5e5399b8e4d2dba" => :mavericks
+    sha1 "08295a0b656181207c2a33b2685d876cba1048ca" => :mountain_lion
   end
 
   depends_on "docker" => :recommended
@@ -28,6 +29,25 @@ class Boot2docker < Formula
     end
 
     bin.install "bin/boot2docker-cli" => "boot2docker"
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_bin}/boot2docker</string>
+        <string>up</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+    </dict>
+    </plist>
+    EOS
   end
 
   test do

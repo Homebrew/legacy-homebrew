@@ -13,11 +13,11 @@ class Imlib2 < Formula
     sha1 "43617f8bb0c30c7de73dc5f2e07d6f1f10fd8e6c" => :mountain_lion
   end
 
-  option "without-x", "Build without X support"
+  deprecated_option "without-x" => "without-x11"
 
   depends_on 'freetype'
   depends_on 'libpng' => :recommended
-  depends_on :x11 if build.with? "x"
+  depends_on :x11 => :recommended
   depends_on 'pkg-config' => :build
   depends_on 'jpeg' => :recommended
 
@@ -27,7 +27,7 @@ class Imlib2 < Formula
       --prefix=#{prefix}
       --enable-amd64=no
     ]
-    args << "--without-x" if build.without? "x"
+    args << "--without-x" if build.without? "x11"
 
     system "./configure", *args
     system "make install"

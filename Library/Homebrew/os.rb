@@ -9,12 +9,13 @@ module OS
 
   if OS.mac?
     GITHUB_REPOSITORY = "homebrew"
+    ISSUES_URL = "http://git.io/brew-troubleshooting"
     PATH_OPEN = "/usr/bin/open"
   elsif OS.linux?
     GITHUB_REPOSITORY = "linuxbrew"
+    ISSUES_URL = "https://github.com/Homebrew/#{GITHUB_REPOSITORY}/blob/master/share/doc/homebrew/Troubleshooting.md#troubleshooting"
     PATH_OPEN = "xdg-open"
   else
     raise "Unknown operating system"
   end
-  ISSUES_URL = "https://github.com/Homebrew/#{GITHUB_REPOSITORY}/blob/master/share/doc/homebrew/Troubleshooting.md#troubleshooting"
 end

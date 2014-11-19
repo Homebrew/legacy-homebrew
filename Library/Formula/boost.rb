@@ -18,26 +18,20 @@ class Boost < Formula
   env :userpaths
 
   option :universal
-  option 'with-icu', 'Build regexp engine with icu support'
+  option 'with-icu4c', 'Build regexp engine with icu support'
   option 'without-single', 'Disable building single-threading variant'
   option 'without-static', 'Disable building static library variant'
   option 'with-mpi', 'Build with MPI support'
   option :cxx11
 
-  if build.with? 'icu'
-    if build.cxx11?
-      depends_on 'icu4c' => 'c++11'
-    else
-      depends_on 'icu4c'
-    end
-  end
+  deprecated_option "with-icu" => "with-icu4c"
 
-  if build.with? 'mpi'
-    if build.cxx11?
-      depends_on 'open-mpi' => 'c++11'
-    else
-      depends_on :mpi => [:cc, :cxx, :optional]
-    end
+  if build.cxx11?
+    depends_on "icu4c" => [:optional, "c++11"]
+    depends_on "open-mpi" => "c++11" if build.with? "mpi"
+  else
+    depends_on "icu4c" => :optional
+    depends_on :mpi => [:cc, :cxx, :optional]
   end
 
   fails_with :llvm do

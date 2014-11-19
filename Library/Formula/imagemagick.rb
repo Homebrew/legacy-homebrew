@@ -21,6 +21,7 @@ class Imagemagick < Formula
   option "without-magick-plus-plus", "disable build/install of Magick++"
   option "with-jp2", "Compile with Jpeg2000 support"
   option "enable-hdri", "Compile with HDRI support"
+  option "with-fftw", "Compile with FFTW support"
 
   depends_on "libtool" => :run
 
@@ -42,6 +43,7 @@ class Imagemagick < Formula
   depends_on "ghostscript" => :optional
   depends_on "webp" => :optional
   depends_on "homebrew/versions/openjpeg21" if build.with? "jp2"
+  depends_on "fftw" => :optional
 
   depends_on "xz"
 
@@ -69,6 +71,7 @@ class Imagemagick < Formula
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? "ghostscript"
     args << "--without-magick-plus-plus" if build.without? "magick-plus-plus"
     args << "--enable-hdri=yes" if build.include? "enable-hdri"
+    args << "--enable-fftw=yes" if build.with? "fftw"
 
     if build.with? "quantum-depth-32"
       quantum_depth = 32

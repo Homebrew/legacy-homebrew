@@ -8,40 +8,36 @@ class Emacs < Formula
     mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
     sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
 
-    # Fix ns-antialias-text, broken in 24.4, submitted upstream here:
-    # http://lists.gnu.org/archive/html/emacs-devel/2014-10/msg00813.html
+    # Fix ns-antialias-text, broken in 24.4, from upstream:
+    # https://github.com/emacs-mirror/emacs/commit/604a4d21ead40691afe3efe13f0ba1000b2cd61a
+    # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=18876
 
     patch do
-      url 'https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/b7055ba40a7dd9e8f6f5dd6bbe5c305a78bbbc87/emacs-fix-ns-antialias-text-mac-os.patch'
-      sha1 '6215c59c01dc247dfdec7c89ff2fe84ff28eb1c7'
+      url 'https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/4c5229a8a719f81fa6bd2e1e0c85d10b6f635765/emacs-fix-ns-antialias-text-mac-os.patch'
+      sha1 'b63eab599a7ce69de03629494a727f45b310c166'
     end
   end
 
   bottle do
-    revision 2
-    sha1 "dbbb5869715475184bb272023559c318fb38c2bb" => :yosemite
-    sha1 "5ed8b3aa255814b41d66d49371c7a37adf63b7ee" => :mavericks
-    sha1 "e2d8d47197695e537de4ba3e01c88c1ba547d81c" => :mountain_lion
+    revision 3
+    sha1 "d4610ae4e9c9c6e6eba16728c5f3c7af9ec065be" => :yosemite
+    sha1 "80d0aba03d603c94f255c01716d65a4ddcb50b8a" => :mavericks
+    sha1 "e3c6ab764c4b39b983e57d94c9f43acb7dad31f7" => :mountain_lion
   end
 
   option "cocoa", "Build a Cocoa version of emacs"
-  option "with-x", "Include X11 support"
-  option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
 
-  head do
-    if build.include? "use-git-head"
-      url "http://git.sv.gnu.org/r/emacs.git"
-    else
-      url "bzr://http://bzr.savannah.gnu.org/r/emacs/trunk"
-    end
+  deprecated_option "with-x" => "with-x11"
 
+  head do
+    url "http://git.sv.gnu.org/r/emacs.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
 
   depends_on "pkg-config" => :build
-  depends_on :x11 if build.with? "x"
+  depends_on :x11 => :optional
   depends_on "d-bus" => :optional
   depends_on "gnutls" => :optional
   depends_on "librsvg" => :optional
@@ -55,11 +51,6 @@ class Emacs < Formula
   end
 
   def install
-    # HEAD builds blow up when built in parallel as of April 20 2012
-    # FIXME is this still necessary? It's been more than two years, surely any
-    # race conditions would have made it into release by now.
-    ENV.deparallelize unless build.stable?
-
     args = ["--prefix=#{prefix}",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
@@ -94,7 +85,7 @@ class Emacs < Formula
         exec #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
       EOS
     else
-      if build.with? "x"
+      if build.with? "x11"
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/Homebrew/homebrew/issues/8156

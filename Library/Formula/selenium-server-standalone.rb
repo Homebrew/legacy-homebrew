@@ -40,9 +40,9 @@ class SeleniumServerStandalone < Formula
       <key>ServiceDescription</key>
       <string>Selenium Server</string>
       <key>StandardErrorPath</key>
-      <string>/var/log/selenium/selenium-error.log</string>
+      <string>#{var}/log/selenium-error.log</string>
       <key>StandardOutPath</key>
-      <string>/var/log/selenium/selenium-output.log</string>
+      <string>#{var}/log/selenium-output.log</string>
     </dict>
     </plist>
     EOS

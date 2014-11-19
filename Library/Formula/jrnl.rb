@@ -2,15 +2,14 @@ require "formula"
 
 class Jrnl < Formula
   homepage "http://maebert.github.io/jrnl/"
-  url "https://github.com/maebert/jrnl/archive/1.9.6.tar.gz"
-  sha1 "925571cd9ba85803a291d0a0816dbf79882e45dd"
-  revision 2
+  url "https://github.com/maebert/jrnl/archive/1.9.7.tar.gz"
+  sha1 "65914c66762ded186201a526b19e702dd35b0939"
 
   bottle do
     cellar :any
-    sha1 "4065ac663f692810f854256bbee38e9611bb193f" => :mavericks
-    sha1 "da02ddf49d31cbfe264b51162328db5c6c38f68e" => :mountain_lion
-    sha1 "b518ad8634355a28662b7ddd0bad390615cf091d" => :lion
+    sha1 "85aeed5404abd7a962fe30cb68151f461e944070" => :yosemite
+    sha1 "cec814646e140a72c994c9e7a55a4428a6b7e336" => :mavericks
+    sha1 "127d73c4f50620bfab34bd398102c8f9f1821f12" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -52,22 +51,19 @@ class Jrnl < Formula
 
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", "#{libexec}/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     %w[six pycrypto keyring parsedatetime python-dateutil pytz tzlocal].each do |r|
-        resource(r).stage do
-            system "python", "setup.py", "install", "--prefix=#{libexec}"
-        end
+      resource(r).stage { Language::Python.setup_install "python", libexec/"vendor" }
     end
 
-    ENV.prepend_create_path "PYTHONPATH", "#{lib}/python2.7/site-packages"
-    system "python", "setup.py", "install", "--prefix=#{prefix}",
-           "--single-version-externally-managed", "--record=installed.txt"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    Language::Python.setup_install "python", libexec
 
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
     system "#{bin}/jrnl", "-v"
-    assert_equal 0, $?.exitstatus
   end
 end

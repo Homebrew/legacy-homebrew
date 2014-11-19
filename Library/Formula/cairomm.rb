@@ -13,8 +13,9 @@ class Cairomm < Formula
     sha1 "3247ebe37140dc109465dcfc7b5df6d948690091" => :mountain_lion
   end
 
-  option 'without-x', 'Build without X11 support'
   option :cxx11
+
+  deprecated_option "without-x" => "without-x11"
 
   depends_on 'pkg-config' => :build
   if build.cxx11?
@@ -25,7 +26,7 @@ class Cairomm < Formula
 
   depends_on 'cairo'
   depends_on 'libpng'
-  depends_on :x11 if build.with? "x"
+  depends_on :x11 => :recommended
 
   def install
     ENV.cxx11 if build.cxx11?

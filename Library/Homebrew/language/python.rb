@@ -30,11 +30,14 @@ module Language
     def self.reads_brewed_pth_files? python
       version = major_minor_version python
       return unless homebrew_site_packages(version).directory?
+      return unless homebrew_site_packages(version).writable_real?
       probe_file = homebrew_site_packages(version)/"homebrew-pth-probe.pth"
-      probe_file.atomic_write("import site; site.homebrew_was_here = True")
-      result = quiet_system python, "-c", "import site; assert(site.homebrew_was_here)"
-      probe_file.unlink
-      result
+      begin
+        probe_file.atomic_write("import site; site.homebrew_was_here = True")
+        quiet_system python, "-c", "import site; assert(site.homebrew_was_here)"
+      ensure
+        probe_file.unlink if probe_file.exist?
+      end
     end
 
     def self.user_site_packages python
@@ -47,6 +50,21 @@ module Language
         [os.path.realpath(p) for p in sys.path].index(os.path.realpath("#{path}"))
       EOS
       quiet_system python, "-c", script
+    end
+
+    def self.setup_install python, prefix, *args
+      # force-import setuptools, which monkey-patches distutils, to make
+      # sure that we always call a setuptools setup.py. trick borrowed from pip:
+      # https://github.com/pypa/pip/blob/043af83/pip/req/req_install.py#L743-L780
+      shim = <<-EOS.undent
+        import setuptools, tokenize
+        __file__ = 'setup.py'
+        exec(compile(getattr(tokenize, 'open', open)(__file__).read()
+          .replace('\\r\\n', '\\n'), __file__, 'exec'))
+      EOS
+      args += %w[--single-version-externally-managed --record=installed.txt]
+      args << "--prefix=#{prefix}"
+      system python, "-c", shim, "install", *args
     end
   end
 end

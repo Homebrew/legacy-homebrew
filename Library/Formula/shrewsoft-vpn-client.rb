@@ -20,7 +20,7 @@ class ShrewsoftVpnClient < Formula
 
   depends_on "cmake" => :build
   depends_on "openssl"
-  depends_on "tuntap"
+  depends_on :tuntap
   depends_on "qt" if build.with? "gui"
 
   def install

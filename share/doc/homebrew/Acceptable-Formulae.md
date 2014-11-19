@@ -6,7 +6,7 @@ own!
 
 ### We try hard to avoid dupes in Homebrew/homebrew
 Stuff that comes with OS X or is a library that is provided by
-[RubyGems, CPAN or PyPi](http://github.com/Homebrew/homebrew/wiki/Gems,-Eggs-and-Perl-Modules)
+[RubyGems, CPAN or PyPi](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Gems,-Eggs-and-Perl-Modules.md)
 should not be duplicated. There are good reasons for this:
 
 * Duplicate libraries regularly break builds
@@ -16,6 +16,10 @@ duplicate tools
 
 There are exceptions:
 
+* OpenSSL - Apple has formally deprecated OpenSSL on OS X in favour of their own Security Framework
+  & consequently the OS X OpenSSL is rarely updated and frequently falls behind important security updates.
+  Homebrew endeavours to use our shipped OpenSSL as much
+   as possible.
 * Programs that a user will regularly interact with directly, like editors and
   language runtimes
 * Libraries that provide functionality or contain security updates not found in
@@ -36,7 +40,7 @@ There are exceptions:
   openssl         | OS X's openssl is deprecated
   libxml2         | Historically, OS X's libxml2 has been buggy
 
-We also maintain [a tap](https://github.com/Homebrew/homebrew-dueps) that
+We also maintain [a tap](https://github.com/Homebrew/homebrew-dupes) that
 contains many duplicates not otherwise found in Homebrew.
 
 ### We don’t like tools that upgrade themselves
@@ -97,7 +101,7 @@ don’t want those things in Homebrew. Make it build a command line tool
 or a library. However, we have a few exceptions to that, e.g. when the
 App is just additional to CLI or if the GUI-application is non-native
 for OS X and/or hard to get in binary elsewhere (example: font forge).
-Check out the [homebrew-cask](https://github.com/phinze/homebrew-cask)
+Check out the [homebrew-cask](https://github.com/caskroom/homebrew-cask)
 project if you’d like to brew native OS X Applications.
 
 ### Building under “superenv” is best

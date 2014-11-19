@@ -1,30 +1,33 @@
-require 'formula'
+require "formula"
 
 class Logtalk < Formula
-  homepage 'http://logtalk.org'
-  url 'http://logtalk.org/files/lgt2432.tar.bz2'
-  version '2.43.2'
-  sha1 'c5491754f4277c38ecf00d916eb0faba05d58442'
+  homepage "http://logtalk.org"
+  url "http://logtalk.org/files/lgt2441.tar.bz2"
+  sha256 "ca49d8e26a08dcf2a39358efa827789ecc5c47791035e5bb5830a6aec59b94e9"
+  version "2.44.1"
+
+  devel do
+    url "http://logtalk.org/files/logtalk-3.00.0-rc4.tar.bz2"
+    sha256 "d40a52b79b4c82051287f4142d73b2a625652b8e712d1a2607ab7a89bca86e38"
+    version "3.00.0-rc4"
+  end
+
+  head "https://github.com/LogtalkDotOrg/logtalk3.git"
 
   option "swi-prolog", "Build using SWI Prolog as backend"
   option "gnu-prolog", "Build using GNU Prolog as backend (Default)"
-  option "use-git-head", "Use GitHub mirror"
 
   if build.include?("swi-prolog")
-    depends_on 'swi-prolog'
+    depends_on "swi-prolog"
   else
-    depends_on 'gnu-prolog'
-  end
-
-  if build.include?("use-git-head")
-    head 'https://github.com/pmoura/logtalk.git'
-  else
-    head 'http://svn.logtalk.org/logtalk/trunk'
+    depends_on "gnu-prolog"
   end
 
   def install
-    system "scripts/install.sh #{prefix}"
-    man1.install Dir['man/man1/*']
-    bin.install Dir['bin/*']
+    if build.stable?
+      cd("scripts") { system "./install.sh", prefix }
+    else
+      cd("scripts") { system "./install.sh", "-p", prefix }
+    end
   end
 end

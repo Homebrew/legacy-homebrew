@@ -11,12 +11,14 @@ class Dnsmasq < Formula
     sha1 "66c145b8ed68c93ae0e7dcbc755b2151f94f5772" => :lion
   end
 
-  option "with-idn", "Compile with IDN support"
+  option "with-libidn", "Compile with IDN support"
   option "with-dnssec", "Compile with DNSSEC support"
 
-  depends_on "libidn" if build.with? "idn"
-  depends_on "nettle" if build.with? "dnssec"
+  deprecated_option "with-idn" => "with-libidn"
+
   depends_on "pkg-config" => :build
+  depends_on "libidn" => :optional
+  depends_on "nettle" if build.with? "dnssec"
 
   def install
     ENV.deparallelize
@@ -25,7 +27,7 @@ class Dnsmasq < Formula
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
     # Optional IDN support
-    if build.with? "idn"
+    if build.with? "libidn"
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
     end
 

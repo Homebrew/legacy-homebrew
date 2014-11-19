@@ -2,14 +2,14 @@ require 'formula'
 
 class GstPluginsBad < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.3.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.3.tar.xz'
-  sha256 'a6840080c469d0db51d6d4d0f7c42c97b3c8c01942f24401c61b1ad36726b97c'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.4.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.4.tar.xz'
+  sha256 'e41b36105c0a13a2cb1ff9f559714e839b82dc3841484cd664790fb7947e55c7'
 
   bottle do
-    sha1 "7cdb7699744842c077459fc7498a269477c04425" => :mavericks
-    sha1 "95b4182a6da12cd50f8319256581a3afbce58607" => :mountain_lion
-    sha1 "72610ec1a7734f6a5e100b073b669698cc7e8080" => :lion
+    sha1 "305cae1ca296427ae68f4b641ea985466486586e" => :yosemite
+    sha1 "96b48ba16e465cdf8fd6db64fcf3a22a8b89d5f8" => :mavericks
+    sha1 "f395b147b64092881bab0cc79b8bad9f44c6690f" => :mountain_lion
   end
 
   head do
@@ -18,6 +18,7 @@ class GstPluginsBad < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
+    depends_on 'xz' => :build
   end
 
   depends_on 'pkg-config' => :build

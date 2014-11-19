@@ -2,18 +2,22 @@ require "formula"
 
 class Peervpn < Formula
   homepage "http://www.peervpn.net"
-  url "http://www.peervpn.net/files/peervpn-0-040.tar.gz"
-  version "0.040"
-  sha1 "45f815445a2d654e2da56de965633743d25f3468"
+  url "http://www.peervpn.net/files/peervpn-0-041.tar.gz"
+  version "0.041"
+  sha1 "b05bb88bfe73976714f559c8aaf545d75b026768"
+
+  bottle do
+    cellar :any
+    sha1 "b560c712976a84dfc0b84aec277becf0ab2aa930" => :mavericks
+    sha1 "7af025a1bf74dcbd992f988d3e3ef9978445d860" => :mountain_lion
+  end
 
   depends_on "openssl"
-  depends_on "tuntap"
+  depends_on :tuntap
 
   patch :DATA if MacOS.version == :snow_leopard
 
   def install
-    # Remove the Linux-only lrt lib from the makefile or else compile = nope.
-    inreplace "Makefile", "LIBS+=-lrt -lcrypto -lz", "LIBS+=-lcrypto -lz"
     system "make"
     bin.install "peervpn"
     etc.install "peervpn.conf"

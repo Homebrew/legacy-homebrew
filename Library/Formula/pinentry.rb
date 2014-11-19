@@ -1,27 +1,28 @@
-require 'formula'
+require "formula"
 
 class Pinentry < Formula
-  homepage 'http://www.gnupg.org/related_software/pinentry/index.en.html'
-  url 'ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.8.4.tar.bz2'
-  sha1 '36c94980ceab5c15e188de121f7ab4c7ee6b3521'
+  homepage "http://www.gnupg.org/related_software/pinentry/index.en.html"
+  url "ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.0.tar.bz2"
+  sha1 "f8e5c774c35fbb91d84e82559baf76f6b4513236"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "c31bea35dfee2a0781fbb953a4bf17e215f08df8" => :yosemite
-    sha1 "007ad6402a6ec5b38bc852849d0fcdcf957ea6dc" => :mavericks
-    sha1 "44787bbcfb7e53371fe58eeb4076ff5529d7c24c" => :mountain_lion
+    sha1 "430ee45b7236eecc16a089d7601b15f78c010684" => :yosemite
+    sha1 "6eab9da0d163a0ca3d3717092a50048863dd16af" => :mavericks
+    sha1 "ffd319f02d77015c80a40c5a4f055db03315503a" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-pinentry-qt",
                           "--disable-pinentry-qt4",
-                          "--disable-pinentry-gtk",
                           "--disable-pinentry-gtk2"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/pinentry", "--version"
   end
 end
