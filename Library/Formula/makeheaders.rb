@@ -23,3 +23,4 @@ class Makeheaders < Formula
     system 'makeheaders'
   end
 end
+
