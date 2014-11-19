@@ -2,8 +2,8 @@ require 'formula'
 
 class CouchdbLucene < Formula
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  url 'https://github.com/rnewson/couchdb-lucene/archive/v0.9.0.tar.gz'
-  sha1 '99b8f8f1e644e6840896ee6c9b19c402042c1896'
+  url 'https://github.com/rnewson/couchdb-lucene/archive/v1.0.2.tar.gz'
+  sha1 '75e0c55a87f47903c6cd122286ea3e4568809f7e'
 
   conflicts_with 'clusterit', :because => 'both install a `run` binary'
 
@@ -11,6 +11,14 @@ class CouchdbLucene < Formula
   depends_on 'maven'
 
   def install
+    if !ENV["JAVA_HOME"] then
+      puts <<-EOS.undent
+      couchdb-lucene needs JAVA_HOME to be est. Run this:
+      export JAVA_HOME=`/usr/libexec/java_home -v 1.8` && brew install couchdb-lucene
+      EOS
+      exit
+    end
+    puts ENV["JAVA_HOME"]
     system "mvn"
     system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz", "--strip", "1"
 
