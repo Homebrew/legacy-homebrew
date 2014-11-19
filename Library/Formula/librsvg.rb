@@ -27,7 +27,7 @@ class Librsvg < Formula
             "--disable-Bsymbolic",
             "--enable-tools=yes",
             "--enable-pixbuf-loader=yes",
-            "--enable-introspection=no"]
+            "--enable-introspection=yes"]
 
     args << "--enable-svgz" if build.with? "libgsf"
 
