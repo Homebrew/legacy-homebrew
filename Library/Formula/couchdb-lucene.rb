@@ -18,7 +18,6 @@ class CouchdbLucene < Formula
       EOS
       exit
     end
-    puts ENV["JAVA_HOME"]
     system "mvn"
     system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz", "--strip", "1"
 
