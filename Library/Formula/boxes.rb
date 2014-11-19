@@ -7,10 +7,12 @@ class Boxes < Formula
   sha1 '9b09f8c59276a3978ecaf985029b8459aa69e9c1'
 
   def install
+    ENV.m32
+
     # distro uses /usr/share/boxes change to prefix
     system "make",
       "GLOBALCONF=#{share}/boxes-config",
-      "CC=/usr/bin/cc", # TODO: Figure out issue with ENV.cc
+      "CC=#{ENV.cc}",
 
       # Force 32 bit compile
       # These flags are only (as of 1.1.1) supported on HEAD
