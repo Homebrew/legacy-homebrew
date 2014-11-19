@@ -6,6 +6,13 @@ class Ninja < Formula
   sha1 "c5a3af39f6d7ee3a30263f34091c046964d442f0"
   head "https://github.com/martine/ninja.git"
 
+  bottle do
+    cellar :any
+    sha1 "f5c298094cdfd6453eadd99703facba3d16b4afc" => :yosemite
+    sha1 "fe6f6a2b861a7228b381d83582a8f5e95fd9a2a8" => :mavericks
+    sha1 "141091bfdeb40caf0538413f01c72ce5c89a3e76" => :mountain_lion
+  end
+
   option "without-tests", "Run build-time tests"
 
   resource "gtest" do
