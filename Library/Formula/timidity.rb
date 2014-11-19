@@ -12,6 +12,7 @@ class Timidity < Formula
   depends_on 'libvorbis' => :recommended
   depends_on 'flac' => :recommended
   depends_on 'speex' => :recommended
+  depends_on 'libao' => :recommended
 
   resource 'freepats' do
     url 'http://freepats.zenvoid.org/freepats-20060219.zip'
@@ -30,6 +31,7 @@ class Timidity < Formula
     formats << 'vorbis' if build.with? 'libogg' and build.with? 'libvorbis'
     formats << 'flac' if build.with? 'flac'
     formats << 'speex' if build.with? 'speex'
+    formats << 'ao' if build.with? 'libao'
 
     if formats.any?
       args << "--enable-audio=" + formats.join(",")
