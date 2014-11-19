@@ -6,9 +6,9 @@ class Moc < Formula
   stable do
     url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.0.tar.bz2"
   bottle do
-    sha1 "1db850d8a502eb58a2f6f0f927b0f853a8964f62" => :mavericks
-    sha1 "bf52427f83ca16498e5470f9d8bad9e5fd71c0f0" => :mountain_lion
-    sha1 "4079ee34b2ce7f96cbe2830711a3569d65f7c600" => :lion
+    sha1 "1a08c15f965d74614f142ee8ec2bea75b5d999cd" => :yosemite
+    sha1 "7168fc76526f705ecc4ee766e2f6d7a37e271b46" => :mavericks
+    sha1 "876c8a6cbf642db773e6c65794e7632422e9cafa" => :mountain_lion
   end
 
     sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
