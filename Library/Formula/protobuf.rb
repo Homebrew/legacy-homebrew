@@ -36,16 +36,8 @@ end
 
 class Protobuf < Formula
   homepage 'http://code.google.com/p/protobuf/'
-  url 'https://protobuf.googlecode.com/svn/rc/protobuf-2.6.0.tar.bz2', :using => :curl
-  sha1 '6d9dc4c5899232e2397251f9323cbdf176391d1b'
-
-  bottle do
-    cellar :any
-    revision 1
-    sha1 "e0195a4905560d5869863983840b3ecad7f80c78" => :yosemite
-    sha1 "d7c3d7296beb07bf3c0aa853d136beff0fdac4ce" => :mavericks
-    sha1 "b751a032b13e09989e37a03b64be958f8796e80c" => :mountain_lion
-  end
+  url 'https://github.com/google/protobuf/releases/download/2.6.1/protobuf-2.6.1.tar.bz2'
+  sha1 '6421ee86d8fb4e39f21f56991daa892a3e8d314b'
 
   option :universal
   option :cxx11
