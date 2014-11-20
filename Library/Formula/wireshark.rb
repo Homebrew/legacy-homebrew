@@ -1,11 +1,11 @@
 require "formula"
 
 class Wireshark < Formula
-  homepage "http://www.wireshark.org"
+  homepage "https://www.wireshark.org"
 
   stable do
-    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.2.tar.bz2"
-    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.2.tar.bz2"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.2.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.2.tar.bz2"
     sha1 "0598fe285725f97045d7d08e6bde04686044b335"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
@@ -25,6 +25,12 @@ class Wireshark < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  devel do
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.0.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.0.tar.bz2"
+    sha1 "2e5cf3209104b98251350b3a5e52401866916aec"
   end
 
   option "with-gtk+3", "Build the wireshark command with gtk+3"
@@ -47,9 +53,11 @@ class Wireshark < Formula
   depends_on "qt" => :optional
   depends_on "gtk+3" => :optional
   depends_on "gtk+" => :optional
+  depends_on "homebrew/dupes/libpcap" => :optional
 
   def install
     args = ["--disable-dependency-tracking",
+            "--disable-silent-rules",
             "--prefix=#{prefix}",
             "--with-gnutls"]
 
@@ -58,6 +66,7 @@ class Wireshark < Formula
     args << "--with-qt" if build.with? "qt"
     args << "--with-gtk3" if build.with? "gtk+3"
     args << "--with-gtk2" if build.with? "gtk+"
+    args << "--with-libcap=#{Formula["libpcap"].opt_prefix}" if build.with? "libpcap"
 
     if build.head?
       args << "--disable-warnings-as-errors"
@@ -67,7 +76,7 @@ class Wireshark < Formula
     system "./configure", *args
     system "make"
     ENV.deparallelize # parallel install fails
-    system "make install"
+    system "make", "install"
 
     if build.with? "headers"
       (include/"wireshark").install Dir["*.h"]
