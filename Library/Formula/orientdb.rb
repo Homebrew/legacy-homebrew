@@ -2,9 +2,9 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'http://www.orientdb.org/portal/function/portal/download/unknown@unknown.com/-/-/-/-/-/orientdb-community-1.7.9.tar.gz/false/false/mac'
-  version '1.7.9'
-  sha1 '85e6e13bde4e04fb66828faf2bee6462a4b39f1e'
+  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-1.7.10.tar.gz&os=mac'
+  version '1.7.10'
+  sha1 '71c38c2e91ec6e92bf9d6c166af750f491380852'
 
   devel do
     url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0-M3.tar.gz&os=mac'
