@@ -5,6 +5,7 @@ TAP_MIGRATIONS = {
   "apple-gcc42" => "homebrew/dupes",
   "appledoc" => "homebrew/boneyard",
   "appswitch" => "homebrew/binary",
+  "authexec" => "homebrew/boneyard",
   "aws-iam-tools" => "homebrew/boneyard",
   "blackbox" => "homebrew/boneyard",
   "boost149" => "homebrew/versions",
