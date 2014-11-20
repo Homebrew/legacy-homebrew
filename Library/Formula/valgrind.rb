@@ -13,6 +13,9 @@ class Valgrind < Formula
       url "https://gist.githubusercontent.com/jacknagel/369bedc191e0a0795358/raw/a71e6c0fdcb786fdfde2fc33d71d555b18bcfe8d/valgrind-sdk-paths-Makefile-in.diff"
       sha1 "4210431e2a12c191875391b144b9a45cc76496c1"
     end
+
+    # Revisit the below requirement with each release
+    depends_on MaximumMacOSRequirement => :mavericks
   end
 
   bottle do
@@ -37,8 +40,6 @@ class Valgrind < Formula
   end
 
   depends_on :macos => :snow_leopard
-  # Revisit the below requirement with each release
-  depends_on MaximumMacOSRequirement => :mavericks
 
   # Valgrind needs vcpreload_core-*-darwin.so to have execute permissions.
   # See #2150 for more information.
