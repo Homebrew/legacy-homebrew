@@ -4,7 +4,6 @@ class Makeheaders < Formula
   homepage "http://www.hwaci.com/sw/mkhdr/"
   url "https://github.com/steakknife/makeheaders/archive/1.4-2.tar.gz"
   sha256 "440b506ab27b12fcc238f9bc9cd31029769fe0bd05da34238c017fbb1e18b4fa"
-  version "1.4-2"
   head "https://github.com/steakknife/makeheaders.git"
 
   depends_on "automake" => :build
@@ -12,8 +11,7 @@ class Makeheaders < Formula
 
   def install
     system "sh", "./bootstrap"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
