@@ -10,7 +10,7 @@ class Wakatime < Formula
     ENV["PYTHONPATH"] = libexec+"lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", "setup.py", "install", "--prefix=#{prefix}", "--single-version-externally-managed", "--record=install.txt"
 
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
