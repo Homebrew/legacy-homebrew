@@ -43,6 +43,7 @@ class Ffmpeg < Formula
   depends_on "lame" => :recommended
   depends_on "xvid" => :recommended
 
+  depends_on "fontconfig" => :optional
   depends_on "freetype" => :optional
   depends_on "theora" => :optional
   depends_on "libvorbis" => :optional
@@ -85,6 +86,7 @@ class Ffmpeg < Formula
     args << "--enable-libmp3lame" if build.with? "lame"
     args << "--enable-libxvid" if build.with? "xvid"
 
+    args << "--enable-libfontconfig" if build.with? "fontconfig"
     args << "--enable-libfreetype" if build.with? "freetype"
     args << "--enable-libtheora" if build.with? "theora"
     args << "--enable-libvorbis" if build.with? "libvorbis"
