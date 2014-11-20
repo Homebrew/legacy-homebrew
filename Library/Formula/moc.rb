@@ -5,13 +5,13 @@ class Moc < Formula
 
   stable do
     url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.0.tar.bz2"
+    sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
+  end
+
   bottle do
     sha1 "1a08c15f965d74614f142ee8ec2bea75b5d999cd" => :yosemite
     sha1 "7168fc76526f705ecc4ee766e2f6d7a37e271b46" => :mavericks
     sha1 "876c8a6cbf642db773e6c65794e7632422e9cafa" => :mountain_lion
-  end
-
-    sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
   end
 
   head 'svn://daper.net/moc/trunk'
