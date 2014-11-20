@@ -13,7 +13,7 @@ class SimpleAmqpClient < Formula
     sha1 "7f60046c62ba839e2a4df7477d9a5cf23901704d" => :mountain_lion
   end
 
-  depends_on "cmake"   => :build
+  depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "rabbitmq-c"
   depends_on "boost"
@@ -24,7 +24,7 @@ class SimpleAmqpClient < Formula
   end
 
   test do
-     (testpath/'test.cpp').write <<-EOS.undent
+     (testpath/"test.cpp").write <<-EOS.undent
        #include <SimpleAmqpClient/SimpleAmqpClient.h>
        #include <string>
        int main() {
