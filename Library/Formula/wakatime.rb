@@ -7,11 +7,12 @@ class Wakatime < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+    ENV["PYTHONPATH"] = libexec+"lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
 
-    Language::Python.setup_install "python", libexec
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
 
-    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
