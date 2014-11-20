@@ -2,8 +2,9 @@ require 'formula'
 
 class Libcouchbase < Formula
   homepage 'http://couchbase.com/communities/c'
-  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.3.tar.gz'
-  sha1 'a3be2316787f1fcd440806d00efdb023f021495d'
+  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.4.tar.gz'
+  sha1 'eedc67ef4f85fd51b6bc43cb222e07f6d07241a8'
+  head "https://github.com/couchbase/libcouchbase", :using => :git
 
   bottle do
     sha1 "237c350c22cdff767e0cc309abede040b3c50b1b" => :yosemite
@@ -19,31 +20,31 @@ class Libcouchbase < Formula
   deprecated_option "without-libevent-plugin" => "without-libevent"
 
   depends_on "libev" => :optional
+  depends_on "libuv" => :optional
   depends_on "libevent" => :recommended
   depends_on "openssl"
+  depends_on 'cmake' => :build
 
   def install
-    args = [
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--disable-examples",
-      "--disable-tests", # don't download google-test framework
-      "--disable-couchbasemock"
-    ]
+    args = std_cmake_args
+    args << '-DLCB_NO_TESTS=1'
 
+    ['libev', 'libevent', 'libuv'].each do |pname|
+        args << "-DLCB_BUILD_#{pname.upcase}=" + (build.with?("#{pname}") ? 'ON' : 'OFF')
+    end
     if build.universal?
-      args << "--enable-fat-binary"
+      args << '-DLCB_UNIVERSAL_BINARY=1'
       ENV.universal_binary
     end
-
-    if build.without? "libev" and build.without? "libevent"
-      # do not do plugin autodiscovery
-      args << "--disable-plugins"
+    if build.without?('libev') && build.without?('libuv') && build.without?('libevent')
+      args << '-DLCB_NO_PLUGINS=1'
     end
 
-    system "./configure", *args
-    system "make install"
+    ln_s cached_download/".git", ".git" if build.head?
+    mkdir 'LCB-BUILD' do
+      system "cmake", "..", *args
+      system 'make install'
+    end
   end
 
   test do
