@@ -1,26 +1,26 @@
-require 'formula'
+require "formula"
 
 class Makeheaders < Formula
-  homepage 'http://www.hwaci.com/sw/mkhdr/'
-  version '1.4-1'
-  sha256 '663c4f5f4579a7b9b7dba49086a33706009b5966d2b669951d5ebee21e411306'
-  url "https://github.com/steakknife/makeheaders/archive/#{version}.tar.gz"
-  head 'https://github.com/steakknife/makeheaders.git'
+  homepage "http://www.hwaci.com/sw/mkhdr/"
+  url "https://github.com/steakknife/makeheaders/archive/1.4-2.tar.gz"
+  sha256 "440b506ab27b12fcc238f9bc9cd31029769fe0bd05da34238c017fbb1e18b4fa"
+  version "1.4-2"
+  head "https://github.com/steakknife/makeheaders.git"
 
-  depends_on 'automake' => :build
-  depends_on 'autoconf' => :build
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
 
   def install
-    system './bootstrap'
-    system './configure', '--disable-debug',
-                          '--disable-dependency-tracking',
-                          '--disable-silent-rules',
+    system "sh", "./bootstrap"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system 'make', 'install'
+    system "make", "install"
   end
 
   test do
-    system 'makeheaders'
+    system "makeheaders"
   end
 end
 
