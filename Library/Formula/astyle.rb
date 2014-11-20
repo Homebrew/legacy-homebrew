@@ -8,9 +8,9 @@ class Astyle < Formula
 
   bottle do
     cellar :any
-    sha1 "9228d8c5a0d97b26c6df18af9d1df5148edb1cd7" => :yosemite
-    sha1 "cd2c3c120969f037dbf7e9fd20bb764b7bf2c7b1" => :mavericks
-    sha1 "c4b8fb8f1d50e067c3c671d1522f5745cf69b94c" => :mountain_lion
+    sha1 "eee1cfb500d564b2209cbe8bcc5cf8e55132c10a" => :yosemite
+    sha1 "5d2cb65bffdbbb3718d72b5529354a5362d90bf5" => :mavericks
+    sha1 "5125e27b1b8343ed7da7d223f06393aca25a6acd" => :mountain_lion
   end
 
   def install
