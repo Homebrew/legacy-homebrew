@@ -4,9 +4,9 @@ class Wireshark < Formula
   homepage "http://www.wireshark.org"
 
   stable do
-    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.1.tar.bz2"
-    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.1.tar.bz2"
-    sha1 "e1508ea25ccf077c5a7fa2af3b88f3ae199f77fb"
+    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.2.tar.bz2"
+    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.2.tar.bz2"
+    sha1 "0598fe285725f97045d7d08e6bde04686044b335"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
