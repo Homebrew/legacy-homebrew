@@ -1,9 +1,9 @@
 require 'formula'
 
 class Liboping < Formula
-  homepage 'http://verplant.org/liboping/'
-  url 'http://verplant.org/liboping/files/liboping-1.6.2.tar.bz2'
-  sha256 '5f4ab4b127b5a8a79ab771002604bff0e2903622393e5602f336cad258bb73cf'
+  homepage 'http://noping.cc'
+  url 'http://noping.cc/files/liboping-1.8.0.tar.bz2'
+  sha256 '1dcb9182c981b31d67522ae24e925563bed57cf950dc681580c4b0abb6a65bdb'
 
   bottle do
     revision 1
