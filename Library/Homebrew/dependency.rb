@@ -20,12 +20,12 @@ class Dependency
   end
 
   def ==(other)
-    instance_of?(other.class) && name == other.name
+    instance_of?(other.class) && name == other.name && tags == other.tags
   end
   alias_method :eql?, :==
 
   def hash
-    name.hash
+    name.hash ^ tags.hash
   end
 
   def to_formula
@@ -118,12 +118,11 @@ class Dependency
       throw(:action, :keep_but_prune_recursive_deps)
     end
 
-    def merge_repeats(deps)
-      grouped = deps.group_by(&:name)
-
-      deps.uniq.map do |dep|
-        tags = grouped.fetch(dep.name).map(&:tags).flatten.uniq
-        dep.class.new(dep.name, tags, dep.env_proc)
+    def merge_repeats(all)
+      all.group_by(&:name).map do |name, deps|
+        dep  = deps.first
+        tags = deps.map(&:tags).flatten.uniq
+        dep.class.new(name, tags, dep.env_proc)
       end
     end
   end
