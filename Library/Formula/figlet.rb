@@ -15,6 +15,10 @@ class Figlet < Formula
     sha1 '4bdc505f82305debf8108b725ac418f404a8bcb0'
   end
 
+  def patches
+    DATA
+  end
+
   def install
     share_fonts = share+"figlet/fonts"
     share_fonts.install resource('contrib'), resource('intl')
@@ -33,3 +37,16 @@ class Figlet < Formula
     system "#{bin}/figlet", "-f", "larry3d", "hello, figlet"
   end
 end
+__END__
+diff a/Makefile b/Makefile
+--- a/Makefile
++++ b/Makefile
+@@ -27,6 +27,8 @@ LDFLAGS =
+ # Feature flags:
+ #   define TLF_FONTS to use TOIlet TLF fonts
+ XCFLAGS	= -DTLF_FONTS
++#   OS X is unix
++XCFLAGS        += -Dunix
+ 
+ # Where to install files
+ prefix	= /usr/local
