@@ -39,6 +39,13 @@ class Protobuf < Formula
   url 'https://github.com/google/protobuf/releases/download/2.6.1/protobuf-2.6.1.tar.bz2'
   sha1 '6421ee86d8fb4e39f21f56991daa892a3e8d314b'
 
+  bottle do
+    cellar :any
+    sha1 "e15c6944fabbce96a3aebe59d1314c6626359177" => :yosemite
+    sha1 "cc4044ef1fe19826f08f449893da83d0f031a55c" => :mavericks
+    sha1 "4acb8d1239cd352b4b90691114b4abe8a0ef4d65" => :mountain_lion
+  end
+
   option :universal
   option :cxx11
 
