@@ -8,8 +8,9 @@ class Assimp < Formula
 
   head 'https://github.com/assimp/assimp.git'
 
+  option "without-boost", "Compile without thread safe logging or multithreaded computation if boost isn't installed"
   depends_on 'cmake' => :build
-  depends_on 'boost'
+  depends_on 'boost' => :recommended
 
   def install
     system "cmake", ".", *std_cmake_args
