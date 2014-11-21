@@ -51,6 +51,10 @@ class Dependencies
     deps == other.deps
   end
   alias_method :eql?, :==
+
+  def inspect
+    "#<#{self.class.name}: #{to_a.inspect}>"
+  end
 end
 
 class Requirements
