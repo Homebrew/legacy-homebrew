@@ -5,6 +5,7 @@ class Node < Formula
   homepage "http://nodejs.org/"
   url "http://nodejs.org/dist/v0.10.33/node-v0.10.33.tar.gz"
   sha256 "75dc26c33144e6d0dc91cb0d68aaf0570ed0a7e4b0c35f3a7a726b500edd081e"
+  revision 1
 
   bottle do
     revision 8
@@ -39,8 +40,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.8.tgz"
-    sha1 "0023e311e13514fc874b4f60ac28ad9ca7ff07f8"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.9.tgz"
+    sha1 "6e8860d3902f90e4b4819a7e70cf6cbb5fafa74d"
   end
 
   def install
