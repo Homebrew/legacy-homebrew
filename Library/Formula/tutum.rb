@@ -2,8 +2,8 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/0.10.1.tar.gz"
-  sha1 "3fce5453dd1dcc2879f0881a8281d3dcf132c187"
+  url "https://github.com/tutumcloud/tutum-cli/archive/v0.10.5.tar.gz"
+  sha1 "82238e8eba3a69879a523dd348baf9d47d00eba5"
 
   bottle do
     cellar :any
@@ -41,8 +41,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.10.0.tar.gz"
-    sha1 "844d2e924a4ecb59a7a7c5887dc2c3448f003908"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.10.5.tar.gz"
+    sha1 "4e14fd392f69e0efd91f05f7a9dfc257677eb04f"
   end
 
   resource "six" do
