@@ -2,14 +2,18 @@ require "formula"
 
 class Aria2 < Formula
   homepage "http://aria2.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.8/aria2-1.18.8.tar.bz2"
-  sha1 "b6ad7064b1ea769e78f6a7dc9787a12cfc1e153f"
+  revision 1
 
-  bottle do
-    cellar :any
-    sha1 "0d9ea391b7e7651df5abd4fb4e7eabd45e6e3d48" => :mavericks
-    sha1 "6be677ac2eefae9f5e658f3e340864d53ffb5f8b" => :mountain_lion
-    sha1 "b2aff43e5bffe9fe203b23e05060cc84944c20c0" => :lion
+  stable do
+    url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.8/aria2-1.18.8.tar.bz2"
+    sha1 "b6ad7064b1ea769e78f6a7dc9787a12cfc1e153f"
+
+    # Upstream patch to fix crash on OSX when proxy is used
+    # See: https://github.com/tatsuhiro-t/aria2/commit/9a931e7
+    patch do
+      url "https://github.com/tatsuhiro-t/aria2/commit/9a931e7.diff"
+      sha1 "386c2a831e9ab91524a1af1eeb3037a819b85ec5"
+    end
   end
 
   depends_on "pkg-config" => :build
