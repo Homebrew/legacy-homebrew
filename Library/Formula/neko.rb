@@ -16,10 +16,8 @@ class Neko < Formula
   end
 
   bottle do
-    cellar :any
-    sha1 "d72b7af1c8ae7c58c613df9883f27466bfcca60f" => :mavericks
-    sha1 "ad22cc3edca5ae05b663edf63d5cd496d3ad2b78" => :mountain_lion
-    sha1 "77daff389d401d6764d1082ecc3448afbe27fccd" => :lion
+    sha1 "3ef70ebed2f81e523da90926ec1900e23a7cfa40" => :mavericks
+    sha1 "5b42966d7ff146962b8722b41e6ed11ddcbee77c" => :mountain_lion
   end
 
   depends_on "bdw-gc"
