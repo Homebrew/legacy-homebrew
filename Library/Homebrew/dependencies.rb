@@ -1,8 +1,8 @@
 class Dependencies
   include Enumerable
 
-  def initialize(*args)
-    @deps = Array.new(*args)
+  def initialize
+    @deps = []
   end
 
   def each(*args, &block)
@@ -60,8 +60,8 @@ end
 class Requirements
   include Enumerable
 
-  def initialize(*args)
-    @reqs = Set.new(*args)
+  def initialize
+    @reqs = Set.new
   end
 
   def each(*args, &block)
