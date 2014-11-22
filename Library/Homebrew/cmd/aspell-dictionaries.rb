@@ -28,6 +28,7 @@ module Homebrew
       resources << r
     end.each(&:fetch).each do |r|
       puts <<-EOS
+        option "with-lang-#{r.name}", "Install #{r.name} dictionary"
         resource "#{r.name}" do
           url "#{r.url}"
           mirror "#{r.mirrors.first}"
