@@ -4,6 +4,7 @@ class Qd < Formula
   homepage 'http://crd.lbl.gov/~dhbailey/mpdist/'
   url 'http://crd.lbl.gov/~dhbailey/mpdist/qd-2.3.14.tar.gz'
   sha1 'bda1048feed8c3a52957e5e63592163aa0a15da4'
+  revision 1
 
   depends_on :fortran => :recommended
 
