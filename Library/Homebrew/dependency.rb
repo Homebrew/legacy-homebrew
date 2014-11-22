@@ -119,7 +119,10 @@ class Dependency
     end
 
     def merge_repeats(all)
-      all.group_by(&:name).map do |name, deps|
+      grouped = all.group_by(&:name)
+
+      all.map(&:name).uniq.map do |name|
+        deps = grouped.fetch(name)
         dep  = deps.first
         tags = deps.map(&:tags).flatten.uniq
         dep.class.new(name, tags, dep.env_proc)
