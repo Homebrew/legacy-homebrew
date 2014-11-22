@@ -4,6 +4,7 @@ class Gringo < Formula
   homepage 'http://potassco.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/potassco/gringo/4.4.0/gringo-4.4.0-source.tar.gz'
   sha1 'c39a1c3cfe64b62e39e6abcc8f813e2d1d17251e'
+  revision 1
 
   bottle do
     cellar :any
