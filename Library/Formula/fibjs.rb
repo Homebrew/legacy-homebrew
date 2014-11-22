@@ -9,9 +9,9 @@ class Fibjs < Formula
 
   bottle do
     cellar :any
-    sha1 "2a21b1cf4aa39b1b8560087df1786c5aa4dd6fbc" => :yosemite
-    sha1 "772f0f1b9059b5e7e1e9ca07714e8e60508518c4" => :mavericks
-    sha1 "8cfa4d2b59ce2b401d8adc384583a4a040c50064" => :mountain_lion
+    sha1 "5c9dee229c3c5eede978eabe3ec6ccc5b7c4a616" => :yosemite
+    sha1 "9eb15e12ad700529ad91bf0f294d349474dc7144" => :mavericks
+    sha1 "11120148b4943383ddd8779c6a4d18dba72735eb" => :mountain_lion
   end
 
   depends_on "cmake" => :build
