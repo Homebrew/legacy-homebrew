@@ -4,6 +4,7 @@ class GribApi < Formula
   homepage 'https://software.ecmwf.int/wiki/display/GRIB/Home'
   url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.12.3.tar.gz'
   sha1 '2764b262c8f081fefb81112f7f7463a3a34b6e66'
+  revision 1
 
   bottle do
     sha1 "aaa46754fcaa6f19099a2045000ba8ee4e93f29e" => :mavericks

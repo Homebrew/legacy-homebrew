@@ -5,6 +5,7 @@ class Pgplot < Formula
   url 'ftp://ftp.astro.caltech.edu/pub/pgplot/pgplot522.tar.gz'
   version '5.2.2'
   sha1 '1f1c9aa17eeec9a2fb23fd15a0e4a91dcc49ddc1'
+  revision 1
 
   option 'with-button', 'Install libbutton'
 
