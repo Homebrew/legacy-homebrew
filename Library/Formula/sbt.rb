@@ -5,6 +5,13 @@ class Sbt < Formula
   url "https://dl.bintray.com/sbt/native-packages/sbt/0.13.7/sbt-0.13.7.tgz"
   sha1 "0ee4df9a5bd6dc478f9007ebdb24bacd1cf2731c"
 
+  bottle do
+    cellar :any
+    sha1 "4ca22cd7cca26e940eb8634a9226f2051b098053" => :yosemite
+    sha1 "db2296a8b05c7fbe2db23dfe8b53d575df2ef164" => :mavericks
+    sha1 "d97a9693ea2475d8f671cfe22b50a4a0188b421a" => :mountain_lion
+  end
+
   def install
     inreplace "bin/sbt" do |s|
       s.gsub! 'etc_sbt_opts_file="${sbt_home}/conf/sbtopts"', "etc_sbt_opts_file=\"#{etc}/sbtopts\""
