@@ -1,6 +1,6 @@
 require "formula"
 
-class Wakatime < Formula
+class WakatimeCli < Formula
   homepage "https://wakatime.com/"
   url "https://pypi.python.org/packages/source/w/wakatime/wakatime-2.1.6.tar.gz"
   sha1 "e288befaeefaaeec303efa36f2b7488829a6cf0d"
