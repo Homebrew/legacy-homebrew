@@ -4,6 +4,7 @@ class Inkscape < Formula
   homepage 'http://inkscape.org/'
   url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.5/inkscape-0.48.5.tar.gz'
   sha1 'e14789da0f6b5b84ef26f6759e295bc4be7bd34d'
+  revision 1
 
   bottle do
     revision 1
