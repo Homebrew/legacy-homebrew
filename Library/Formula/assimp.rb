@@ -8,6 +8,13 @@ class Assimp < Formula
 
   head "https://github.com/assimp/assimp.git"
 
+  bottle do
+    cellar :any
+    sha1 "0b103054733c3791ad92cdb51b0acd7e053baf61" => :yosemite
+    sha1 "a34746e16ce3ec4d5737db73db1ddd766d688619" => :mavericks
+    sha1 "7a0bb7602c85f83cb775a95bfe384bf8a5ca4283" => :mountain_lion
+  end
+
   option "without-boost", "Compile without thread safe logging or multithreaded computation if boost isn't installed"
 
   depends_on "cmake" => :build
