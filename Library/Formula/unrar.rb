@@ -2,8 +2,8 @@ require 'formula'
 
 class Unrar < Formula
   homepage 'http://www.rarlab.com'
-  url 'http://www.rarlab.com/rar/unrarsrc-5.2.1.tar.gz'
-  sha1 'e3e60d89d71132fd77d071261e49d1fc4f1aed80'
+  url 'http://www.rarlab.com/rar/unrarsrc-5.2.2.tar.gz'
+  sha1 '5e30ab23aab82d2f8b747c5b6f7187e364eb360c'
 
   def install
     system "make"
