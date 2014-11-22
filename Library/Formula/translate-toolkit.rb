@@ -6,6 +6,13 @@ class TranslateToolkit < Formula
   sha1 "76d3f33afb5ac723da05558cebe80642af31657a"
   head "https://github.com/translate/translate.git"
 
+  bottle do
+    cellar :any
+    sha1 "e1baa8c110b368218be49ac3973e5bea9ec63964" => :yosemite
+    sha1 "b80d249ad5f1efba7431a7ead95f3ebe7d4ba2e2" => :mavericks
+    sha1 "dd5a36eaaec9477beee917b2cfae173e45ad5823" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "lxml" do
