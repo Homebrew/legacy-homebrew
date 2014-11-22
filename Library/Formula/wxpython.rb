@@ -17,6 +17,7 @@ class Wxpython < Formula
   homepage "http://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxpython/wxPython/3.0.1.1/wxPython-src-3.0.1.1.tar.bz2"
   sha1 "d2c4719015d7c499a9765b1e5107fdf37a32abfb"
+  revision 1
 
   bottle do
     sha1 "e7fad91e96497ecae7a12f55f092c74e07e41f5b" => :mavericks
@@ -29,6 +30,18 @@ class Wxpython < Formula
     depends_on FrameworkPython
   end
   depends_on "wxmac"
+
+  stable do
+    # See closed ticket #16590:
+    #     Update wxpython lib/plot.py (numpy has removed oldnumeric)
+    #     http://trac.wxwidgets.org/ticket/16590
+    # Applied upstream: http://trac.wxwidgets.org/changeset/77995
+    # This duplicate gist patch just strips "/trunk" from within target file's path
+    patch :p0 do
+      url "https://gist.githubusercontent.com/dakcarto/f0331c2e4e97a7c4271e/raw/9e65152464c6321bd2c5ff723c21b6cc78958e03/wxpython_77995.diff"
+      sha1 "73b90a983fbb5330abc1b3866817081c8efde479"
+    end
+  end
 
   def install
     ENV["WXWIN"] = buildpath
