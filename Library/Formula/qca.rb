@@ -11,7 +11,7 @@ class Qca < Formula
   # http://clang.llvm.org/compatibility.html#dep_lookup_bases
   patch do
     url "http://quickgit.kde.org/?p=qca.git&a=commitdiff&h=312b69&o=plain"
-    sha1 "f3b1f645e35f46919d9bf9ed6f790619c7d03631"
+    sha1 "0c5e5349de083c1a35d9163d935f388d9742a597"
   end
 
   def install
