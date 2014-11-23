@@ -18,6 +18,9 @@ class S3fs < Formula
   # S3fs currently relies on fuse4x which uses unsigned kexts, barred by Yosemite.
   # Fuse4x and osxfuse are merging so monitor this over time and switch if/when possible.
   depends_on "fuse4x"
+  depends_on MaximumMacOSRequirement => :mavericks
+
+  head "https://github.com/s3fs-fuse/s3fs-fuse.git"
 
   head "https://github.com/s3fs-fuse/s3fs-fuse.git"
 
