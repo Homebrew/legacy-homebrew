@@ -2,8 +2,8 @@ require "formula"
 
 class Doitlive < Formula
   homepage "http://doitlive.readthedocs.org/en/latest/"
-  url "https://pypi.python.org/packages/source/d/doitlive/doitlive-2.2.0.tar.gz"
-  sha1 "00d9f4fa2e25cc6ac14d6d9a1e14c9214c29ff48"
+  url "https://pypi.python.org/packages/source/d/doitlive/doitlive-2.3.0.tar.gz"
+  sha1 "e2729b81828966c775f396be8845da2c98f129cc"
 
   bottle do
     cellar :any
