@@ -5,6 +5,12 @@ class Pulse < Formula
   url "https://source.ind.ie/project/pulse.git", :tag => "0.1.1"
   head "https://source.ind.ie/project/pulse.git"
 
+  bottle do
+    sha1 "a74e7d0c530321cd9bd83fd382f28b53aa306606" => :yosemite
+    sha1 "b85b68c551bbff3c5f5a3ca0c151d60687b4ebc3" => :mavericks
+    sha1 "2e4797f4a3b1a51296beb61b60f2eb273c1155fb" => :mountain_lion
+  end
+
   depends_on "go" => :build
   depends_on :hg => :build
 
