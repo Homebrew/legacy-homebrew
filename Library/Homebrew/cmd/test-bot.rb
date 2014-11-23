@@ -170,19 +170,8 @@ module Homebrew
       @steps = []
       @tap = tap
       @repository = Homebrew.homebrew_git_repo @tap
-      @repository_requires_tapping = !@repository.directory?
 
       url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-
-      # Tap repository if required, this is done before everything else
-      # because Formula parsing and/or git commit hash lookup depends on it.
-      if @tap
-        if @repository_requires_tapping
-          test "brew", "tap", @tap
-        else
-          test "brew", "tap", "--repair"
-        end
-      end
 
       begin
         formula = Formulary.factory(argument)
@@ -481,8 +470,6 @@ module Homebrew
         test "brew", "cleanup"
       end
 
-      test "brew", "untap", @tap if @tap && @repository_requires_tapping
-
       FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
     end
 
@@ -582,6 +569,18 @@ module Homebrew
       ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
     end
 
+    repository = Homebrew.homebrew_git_repo tap
+
+    # Tap repository if required, this is done before everything else
+    # because Formula parsing and/or git commit hash lookup depends on it.
+    if tap
+      if !repository.directory?
+        system "brew", "tap", tap
+      else
+        system "brew", "tap", "--repair"
+      end
+    end
+
     if ARGV.include? '--ci-upload'
       jenkins = ENV['JENKINS_HOME']
       job = ENV['UPSTREAM_JOB_NAME']
@@ -594,7 +593,7 @@ module Homebrew
 
       ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
       ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
-      ENV["GIT_WORK_TREE"] = Homebrew.homebrew_git_repo tap
+      ENV["GIT_WORK_TREE"] = repository
       ENV["GIT_DIR"] = "#{ENV["GIT_WORK_TREE"]}/.git"
 
       pr = ENV['UPSTREAM_PULL_REQUEST']
