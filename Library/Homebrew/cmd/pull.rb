@@ -124,7 +124,7 @@ module Homebrew
         message = `git log HEAD^.. --format=%B`
 
         if ARGV.include? '--bump'
-          onoe 'Can only bump one changed formula' unless changed_formulae.length == 1
+          odie 'Can only bump one changed formula' unless changed_formulae.length == 1
           f = changed_formulae.first
           subject = "#{f.name} #{f.version}"
           ohai "New bump commit subject: #{subject}"
