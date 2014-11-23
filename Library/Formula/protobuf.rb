@@ -41,9 +41,10 @@ class Protobuf < Formula
 
   bottle do
     cellar :any
-    sha1 "e15c6944fabbce96a3aebe59d1314c6626359177" => :yosemite
-    sha1 "cc4044ef1fe19826f08f449893da83d0f031a55c" => :mavericks
-    sha1 "4acb8d1239cd352b4b90691114b4abe8a0ef4d65" => :mountain_lion
+    revision 1
+    sha1 "fa7019a4ee16a4bdf0c653dc3fd932dc5a7e1e3b" => :yosemite
+    sha1 "f3ba19bdabe4994c7c69d05897a52be8b13117bf" => :mavericks
+    sha1 "9239ad264a7327cc90d1d3ddb26a27a4de10527f" => :mountain_lion
   end
 
   # this will double the build time approximately if enabled
