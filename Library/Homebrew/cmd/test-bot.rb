@@ -549,8 +549,9 @@ module Homebrew
     git_url = ENV['UPSTREAM_GIT_URL'] || ENV['GIT_URL']
     if !tap && git_url
       # Also can get tap from Jenkins GIT_URL.
-      /([\w-]+\/homebrew-[\w-]+)/ =~ git_url
-      tap = $1
+      url_path = git_url.gsub(%r{^https?://github\.com/}, "").gsub(%r{/$}, "")
+      HOMEBREW_TAP_ARGS_REGEX =~ url_path
+      tap = "#{$1}/#{$3}" if $1 && $3
     end
 
     if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
