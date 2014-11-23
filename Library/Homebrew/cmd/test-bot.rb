@@ -546,6 +546,13 @@ module Homebrew
   def test_bot
     tap = ARGV.value('tap')
 
+    git_url = ENV['UPSTREAM_GIT_URL'] || ENV['GIT_URL']
+    if !tap && git_url
+      # Also can get tap from Jenkins GIT_URL.
+      /([\w-]+\/homebrew-[\w-]+)/ =~ git_url
+      tap = $1
+    end
+
     if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
       odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
     end
@@ -603,7 +610,9 @@ module Homebrew
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
       safe_system "brew", "bottle", "--merge", "--write", *Dir["*.bottle.rb"]
 
-      remote = "git@github.com:BrewTestBot/homebrew.git"
+      remote_repo = tap ? tap.gsub("/", "-") : "homebrew"
+
+      remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
       tag = pr ? "pr-#{pr}" : "testing-#{number}"
       safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
