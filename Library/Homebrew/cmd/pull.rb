@@ -139,7 +139,11 @@ module Homebrew
       end
 
       if ARGV.include? "--bottle"
-        pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+        if tap_name
+          pull_url "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
+        else
+          pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+        end
       end
 
       ohai 'Patch changed:'
