@@ -8,12 +8,12 @@ class Mvnvm < Formula
   head "https://bitbucket.org/mjensen/mvnvm.git"
 
   depends_on :java => "1.7"
-  
+
   def install
     bin.install "mvn"
   end
 
-  conflicts_with "maven", 
+  conflicts_with "maven",
     :because => "also installs a 'mvn' executable"
 
   test do
