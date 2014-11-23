@@ -575,9 +575,9 @@ module Homebrew
     # because Formula parsing and/or git commit hash lookup depends on it.
     if tap
       if !repository.directory?
-        system "brew", "tap", tap
+        safe_system "brew", "tap", tap
       else
-        system "brew", "tap", "--repair"
+        safe_system "brew", "tap", "--repair"
       end
     end
 
@@ -604,7 +604,16 @@ module Homebrew
       safe_system "git", "checkout", "-f", "master"
       safe_system "git", "reset", "--hard", "origin/master"
       safe_system "brew", "update"
-      safe_system "brew", "pull", "--clean", pr if pr
+
+      if pr
+        pull_pr = if tap
+          user, repo = tap.split "/"
+          "https://github.com/#{user}/homebrew-#{repo}/pull/#{pr}"
+        else
+          pr
+        end
+        safe_system "brew", "pull", "--clean", pull_pr
+      end
 
       ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
