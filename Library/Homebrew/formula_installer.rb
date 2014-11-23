@@ -395,7 +395,12 @@ class FormulaInstaller
     link(keg)
     fix_install_names(keg) if OS.mac?
 
-    post_install
+    if build_bottle?
+      ohai "Not running post_install as we're building a bottle"
+      puts "You can run it manually using `brew postinstall #{formula.name}`"
+    else
+      post_install
+    end
 
     ohai "Summary" if verbose? or show_summary_heading?
     puts summary
