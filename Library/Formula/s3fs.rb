@@ -6,11 +6,6 @@ class S3fs < Formula
   stable do
     url "https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.78.tar.gz"
     sha1 "613b448d84451400d3ee14aa9104ba6d9e90bd0b"
-
-    # S3fs currently relies on fuse4x which uses unsigned kexts, barred by Yosemite.
-    # Fuse4x and osxfuse are merging so monitor this over time and switch if/when possible.
-    depends_on "fuse4x"
-    depends_on MaximumMacOSRequirement => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -19,6 +14,11 @@ class S3fs < Formula
   depends_on "gnutls"
   depends_on "nettle"
   depends_on "libgcrypt"
+
+  # S3fs currently relies on fuse4x which uses unsigned kexts, barred by Yosemite.
+  # Fuse4x and osxfuse are merging so monitor this over time and switch if/when possible.
+  depends_on "fuse4x"
+  depends_on MaximumMacOSRequirement => :mavericks
 
   head "https://github.com/s3fs-fuse/s3fs-fuse.git"
 
