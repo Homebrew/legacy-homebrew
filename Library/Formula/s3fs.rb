@@ -2,7 +2,6 @@ require "formula"
 
 class S3fs < Formula
   homepage "https://code.google.com/p/s3fs/"
-  revision 1
 
   stable do
     url "https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.78.tar.gz"
