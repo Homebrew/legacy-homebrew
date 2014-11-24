@@ -12,4 +12,9 @@ class Gifify < Formula
   def install
     bin.install "gifify.sh" => "gifify"
   end
+
+  test do
+    system "ffmpeg", "-f", "lavfi", "-i", "testsrc", "-t", "1", "-c:v", "libx264", "test.m4v"
+    system "#{bin}/gifify", "-n", "test.m4v"
+  end
 end
