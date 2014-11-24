@@ -405,7 +405,13 @@ module Homebrew
       test "brew", "audit", formula_name
       if install_passed
         unless ARGV.include? '--no-bottle'
-          test "brew", "bottle", "--rb", formula_name, :puts_output_on_success => true
+          bottle_args = ["--rb", formula_name]
+          if @tap
+            tap_user, tap_repo = @tap.split "/"
+            bottle_args << "--root-url=#{BottleSpecification::DEFAULT_ROOT_URL}/#{tap_repo}"
+          end
+          bottle_args << { :puts_output_on_success => true }
+          test "brew", "bottle", *bottle_args
           bottle_step = steps.last
           if bottle_step.passed? and bottle_step.has_output?
             bottle_filename =
@@ -533,6 +539,12 @@ module Homebrew
   def test_bot
     tap = ARGV.value('tap')
 
+    if !tap && ENV['UPSTREAM_BOT_PARAMS']
+      bot_argv = ENV['UPSTREAM_BOT_PARAMS'].split " "
+      bot_argv.extend HomebrewArgvExtension
+      tap ||= bot_argv.value('tap')
+    end
+
     git_url = ENV['UPSTREAM_GIT_URL'] || ENV['GIT_URL']
     if !tap && git_url
       # Also can get tap from Jenkins GIT_URL.
@@ -626,6 +638,10 @@ module Homebrew
       safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
       path = "/home/frs/project/m/ma/machomebrew/Bottles/"
+      if tap
+        tap_user, tap_repo = tap.split "/"
+        path += "#{tap_repo}/"
+      end
       url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
 
       rsync_args = %w[--partial --progress --human-readable --compress]
