@@ -320,7 +320,7 @@ For user/dev questions, we are using google group for discussions:
 <https://groups.google.com/forum/#!forum/spark-jobserver>
 
 Please report bugs/problems to:
-<https://github.com/ooyala/spark-jobserver/issues>
+<https://github.com/spark-jobserver/spark-jobserver/issues>
 
 ## License
 Apache 2.0, see LICENSE.md
