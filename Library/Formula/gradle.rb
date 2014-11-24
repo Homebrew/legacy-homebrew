@@ -2,8 +2,8 @@ require 'formula'
 
 class Gradle < Formula
   homepage 'http://www.gradle.org/'
-  url 'https://downloads.gradle.org/distributions/gradle-2.2-bin.zip'
-  sha1 '9e0f1d3e962dd7a38dbf17bace183a78423dbe4a'
+  url 'https://services.gradle.org/distributions/gradle-2.2.1-bin.zip'
+  sha1 '97ae081bc8be8b691e21dcf792eff1630dbc8eb6'
 
   def install
     libexec.install %w[bin lib]
