@@ -5,6 +5,13 @@ class Smali < Formula
   url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.0.3.jar", :using => :nounzip
   sha1 "42774f5d949add1739299785feb83f3dec32f240"
 
+  bottle do
+    cellar :any
+    sha1 "042f4692b35ab5d483aa291e3a4924565fe1510f" => :yosemite
+    sha1 "a9e5893ba2cc5bdd4b0b1e9ab489cf8863a48dfb" => :mavericks
+    sha1 "f6829e47d12e951c4ea37784496bed1b79cebf0d" => :mountain_lion
+  end
+
   resource "baksmali-jar" do
     url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.0.3.jar", :using => :nounzip
     sha1 "39d860bc2539753c8575f39879cf8d515e1c1cb9"
