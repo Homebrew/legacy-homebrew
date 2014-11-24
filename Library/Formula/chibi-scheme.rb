@@ -11,9 +11,10 @@ class ChibiScheme < Formula
   head "https://code.google.com/p/chibi-scheme/", :using => :hg
 
   bottle do
-    sha1 "e5f0e061820123d56736261e3f04907bf5c63ce8" => :mavericks
-    sha1 "fd04e7f93c4b5bcc416ace19d80f7766c41a3afe" => :mountain_lion
-    sha1 "7111751abca30c0a77c8130bd87f082cea255bdd" => :lion
+    cellar :any
+    sha1 "eff7f6bd5b2a711cd21b7c6d74d14462b647b4ad" => :yosemite
+    sha1 "2343e7d9a49a5ea997cbe5e7f91e516aeaf2cbfb" => :mavericks
+    sha1 "55723f46b0c3043f676db51894a47e9ac8271b47" => :mountain_lion
   end
 
   def install
