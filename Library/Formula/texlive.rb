@@ -14,9 +14,9 @@ class Texlive < Formula
   option "with-minimal", "install plain only"
 
   def install
-    scheme = %w[full medium small basic minimal].find ->{"small"} {
+    scheme = %w[full medium small basic minimal].find {
       |x| build.with? x
-    }
+    } || "small"
 
     ohai "Downloading and installing TeX Live. This will take a few minutes."
     ENV["TEXLIVE_INSTALL_PREFIX"] = prefix
