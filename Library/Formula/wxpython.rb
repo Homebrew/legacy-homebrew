@@ -20,9 +20,9 @@ class Wxpython < Formula
   revision 1
 
   bottle do
-    sha1 "e7fad91e96497ecae7a12f55f092c74e07e41f5b" => :mavericks
-    sha1 "3cbb8428f88ac9363081cb79f18067895fdf35cf" => :mountain_lion
-    sha1 "e6db873562487f0135412f5fff9a367d0a29552b" => :lion
+    sha1 "d9fe82c3cc35a8b2a8a66ca66ed8024641884561" => :yosemite
+    sha1 "8fa3a83c48852dc978ee408f5f454ee9e4e46056" => :mavericks
+    sha1 "8e753e7542cf4dd38b7c758fe12902bd2134bf93" => :mountain_lion
   end
 
   if MacOS.version <= :snow_leopard
