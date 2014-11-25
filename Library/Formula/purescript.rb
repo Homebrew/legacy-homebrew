@@ -1,14 +1,24 @@
 require "formula"
+require "language/haskell"
 
 class Purescript < Formula
+  include Language::Haskell::Cabal
+
   homepage "http://www.purescript.org/"
-  url "https://github.com/purescript/purescript/releases/download/v0.6.1.2/macos.tar.gz"
-  sha1 "43899cb5ddb681911e4a6c716f464f1400bdccc1"
-  version "0.6.1.2"
+  url "https://hackage.haskell.org/package/purescript-0.6.1.2/purescript-0.6.1.2.tar.gz"
+  sha1 "645d9d11295e065d5a75cadf9a5eb08f2e3b90cb"
+
+  depends_on "ghc" => :build
+  depends_on "cabal-install" => :build
+
+  fails_with(:clang)
 
   def install
-    bin.install %w(psc psc-docs psc-make psci)
-    doc.install %w(LICENSE README)
+    cabal_sandbox do
+      cabal_install "--only-dependencies"
+      cabal_install "--prefix=#{prefix}"
+    end
+    cabal_clean_lib
   end
 
   test do
