@@ -2,8 +2,8 @@ require "formula"
 
 class Ninja < Formula
   homepage "https://martine.github.io/ninja/"
-  url "https://github.com/martine/ninja/archive/v1.5.1.tar.gz"
-  sha1 "c5a3af39f6d7ee3a30263f34091c046964d442f0"
+  url "https://github.com/martine/ninja/archive/v1.5.3.tar.gz"
+  sha1 "b3ff794461ff5e4e1e73fe6bd11e653bbe509e63"
   head "https://github.com/martine/ninja.git"
 
   bottle do
@@ -21,7 +21,7 @@ class Ninja < Formula
   end
 
   def install
-    system "python", "bootstrap.py"
+    system "python", "configure.py", "--bootstrap"
 
     if build.with? "tests"
       (buildpath/"gtest").install resource("gtest")
