@@ -17,6 +17,8 @@ class Gettext < Formula
 
   option :universal
 
+  depends_on "xz"
+
   def install
     ENV.libxml2
     ENV.universal_binary if build.universal?
