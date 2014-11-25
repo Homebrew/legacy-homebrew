@@ -2,9 +2,9 @@ require 'formula'
 
 class Libksba < Formula
   homepage 'http://www.gnupg.org/related_software/libksba/index.en.html'
-  url 'ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.1.tar.bz2'
-  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.1.tar.bz2'
-  sha1 '6bfe285dbc3a7b6e295f9389c20ea1cdf4947ee5'
+  url 'ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.2.tar.bz2'
+  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.2.tar.bz2'
+  sha1 '37d0893a587354af2b6e49f6ae701ca84f52da67'
 
   bottle do
     cellar :any
