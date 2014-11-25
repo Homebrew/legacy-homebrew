@@ -22,6 +22,7 @@ class Purescript < Formula
   end
 
   test do
-    system "sh", "-c", "echo module Main where | psc --no-prelude -s"
+    (testpath/"t.purs").write "module Main where"
+    system "psc", testpath/"t.purs"
   end
 end
