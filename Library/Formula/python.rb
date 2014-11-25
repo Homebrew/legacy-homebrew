@@ -19,6 +19,8 @@ class Python < Formula
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
   option "with-dtrace", "Experimental DTrace support (http://bugs.python.org/issue13405)"
+  option "with-wide-unicode", "Make a wide build with support for unicode chars >= 0x10000"
+
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -122,6 +124,10 @@ class Python < Formula
       tcl_tk = Formula["tcl-tk"].opt_prefix
       ENV.append "CPPFLAGS", "-I#{tcl_tk}/include"
       ENV.append "LDFLAGS", "-L#{tcl_tk}/lib"
+    end
+
+    if build.with? "wide-unicode"
+      args << "--enable-unicode=ucs4"
     end
 
     system "./configure", *args
