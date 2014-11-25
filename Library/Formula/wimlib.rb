@@ -2,8 +2,8 @@ require "formula"
 
 class Wimlib < Formula
   homepage "http://sourceforge.net/projects/wimlib/"
-  url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.7.1.tar.gz"
-  sha1 "ffbd2f138b396b0f1fb684294747d9c8b5421188"
+  url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.7.3.tar.gz"
+  sha1 "3e6633b932dec774fa348511efb1ec505159a481"
 
   bottle do
     cellar :any
@@ -15,6 +15,7 @@ class Wimlib < Formula
 
   depends_on "pkg-config" => :build
   depends_on "ntfs-3g"
+  depends_on "openssl"
 
   def install
     system "./configure", "--disable-debug",
