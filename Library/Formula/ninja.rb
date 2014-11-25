@@ -8,9 +8,9 @@ class Ninja < Formula
 
   bottle do
     cellar :any
-    sha1 "f5c298094cdfd6453eadd99703facba3d16b4afc" => :yosemite
-    sha1 "fe6f6a2b861a7228b381d83582a8f5e95fd9a2a8" => :mavericks
-    sha1 "141091bfdeb40caf0538413f01c72ce5c89a3e76" => :mountain_lion
+    sha1 "e82dc5e952531ce5a586275c1078e3c35a15246b" => :yosemite
+    sha1 "04e4fc5a7ee416e248fd42eab9fe04a26f79fc96" => :mavericks
+    sha1 "553fca852991a02ed526d4a37f79aa60c50f23ee" => :mountain_lion
   end
 
   option "without-tests", "Run build-time tests"
