@@ -8,10 +8,9 @@ class Libksba < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "4c6d52633b6c610529c22d67ae70853608630f6a" => :yosemite
-    sha1 "605336e6018ebfc4b688bc007f05e94259d8643e" => :mavericks
-    sha1 "5ded6d36bc756f8dd8d07a838efcd780b510ce96" => :mountain_lion
+    sha1 "d7ad259546f648c7187b0d213df2d747267affff" => :yosemite
+    sha1 "fb1657abc91ef16076fe005b42f77d0a67ab849f" => :mavericks
+    sha1 "f0a2bd05b9cb065384230ed3c2054af847ce4b67" => :mountain_lion
   end
 
   depends_on 'libgpg-error'
