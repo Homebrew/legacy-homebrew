@@ -21,6 +21,8 @@ class Libpng < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make"
+    system "make", "test"
+    system "make", "install"
   end
 end
