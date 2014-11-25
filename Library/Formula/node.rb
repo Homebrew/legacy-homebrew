@@ -94,8 +94,8 @@ class Node < Formula
 
     if build.with? "npm"
       s += <<-EOS.undent
-        If you update npm itself do NOT use the npm upgrade command
-        Instead execute:
+        If you update npm itself, do NOT use the npm update command.
+        The recommended way to update npm is:
           npm install -g npm@latest
       EOS
     else
