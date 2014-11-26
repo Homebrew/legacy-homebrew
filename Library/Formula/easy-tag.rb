@@ -2,8 +2,8 @@ require "formula"
 
 class EasyTag < Formula
   homepage "http://projects.gnome.org/easytag"
-  url "http://ftp.gnome.org/pub/GNOME/sources/easytag/2.2/easytag-2.2.4.tar.xz"
-  sha256 "458329ab17e07fac5e92a2d732f0f4e9b12ea8aa31707506b39d3b2428d0c091"
+  url "http://ftp.gnome.org/pub/GNOME/sources/easytag/2.2/easytag-2.2.5.tar.xz"
+  sha256 "a6da3a094997fa225d1c01211b282f2d3c2dfd93a74f3bec24017bd5a13f3855"
 
   depends_on :x11
   depends_on "pkg-config" => :build
