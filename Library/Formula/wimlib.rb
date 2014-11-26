@@ -15,6 +15,7 @@ class Wimlib < Formula
 
   depends_on "pkg-config" => :build
   depends_on "ntfs-3g"
+  depends_on "openssl"
 
   def install
     system "./configure", "--disable-debug",
