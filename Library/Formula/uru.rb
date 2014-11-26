@@ -2,8 +2,8 @@ require "formula"
 
 class Uru < Formula
   homepage "https://bitbucket.org/jonforums/uru"
-  url "https://bitbucket.org/jonforums/uru/get/v0.7.4.tar.gz"
-  sha1 "24b91db240e324d2738ad1f19079aed41b9cfdbf"
+  url "https://bitbucket.org/jonforums/uru/get/v0.7.6.tar.gz"
+  sha1 "c1618f861c94318004cdede66946f31436b410e7"
 
   depends_on "go" => :build
 
