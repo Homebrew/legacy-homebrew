@@ -153,7 +153,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
       logger.info("Receiving sparkHealthz check request")
       val future = sparkWebUiActor ? GetWorkerStatus()
       future.map {
-        case SparkWorkersInfo(dead, alive) =>
+        case SparkWorkersInfo(alive, dead) =>
           if ( dead > 0 ) {
             logger.warn( "Spark dead worker non-zero: " + dead)
           }
