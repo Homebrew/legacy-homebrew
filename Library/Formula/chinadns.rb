@@ -10,4 +10,8 @@ class Chinadns < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    system "chinadns", "-h"
+  end
 end
