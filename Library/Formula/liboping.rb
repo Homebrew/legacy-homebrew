@@ -18,7 +18,14 @@ class Liboping < Formula
     system "make install"
   end
 
-  def caveats
-    "Run oping and noping sudo'ed in order to avoid the 'Operation not permitted'"
+  def caveats; <<-EOS.undent
+    oping and noping requires root prveleges. You can either run them via `sudo`,
+    or set setuid bit.
+
+      sudo chown root:wheel #{bin}/oping #{bin}/noping
+      sudo chmod u+s #{bin}/oping #{bin}/noping
+
+    You should be certain that you trust any software you grant root privileges.
+    EOS
   end
 end
