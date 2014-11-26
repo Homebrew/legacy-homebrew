@@ -7,8 +7,7 @@ class Chinadns < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
