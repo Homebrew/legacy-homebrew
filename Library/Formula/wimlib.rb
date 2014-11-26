@@ -7,10 +7,8 @@ class Wimlib < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "f3771fc90479055608bf752f8c9884169aa63969" => :yosemite
-    sha1 "78db53c2dc541e8d784a56acf3ea45e52f1cd2b9" => :mavericks
-    sha1 "afeba655f906d59e9afc8acec3fd105a39d9e221" => :mountain_lion
+    sha1 "9834abd0fc78c5b6f75a9eef98414fd8084750e3" => :mavericks
+    sha1 "864775795fc1f13367752c9c9d997c2362c54bcb" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
