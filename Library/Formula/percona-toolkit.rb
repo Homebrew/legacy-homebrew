@@ -6,9 +6,9 @@ class PerconaToolkit < Formula
   sha1 "83757aca2e04b0c55e682316d9e09f405d4a0180"
 
   bottle do
-    sha1 "23444156b64f18978806cb5fd4e46bbab9a31760" => :yosemite
-    sha1 "a19db77eaae101271cd814004ddfdd249142a0ed" => :mavericks
-    sha1 "472790c8a075fbb8e7832a1ef1c72f42962d9aa3" => :mountain_lion
+    sha1 "cf2163192bcf6f6c12e8de0fdee7e707d7dd0860" => :yosemite
+    sha1 "8f951f08023adf4dd8b70b912c2d2c8bad7d661d" => :mavericks
+    sha1 "839a79ceacf3df20af36f1610bed661a58024181" => :mountain_lion
   end
 
   depends_on :mysql
