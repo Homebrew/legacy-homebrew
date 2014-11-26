@@ -92,7 +92,7 @@ class Lua < Formula
     Description: An Extensible Extension Language
     Version: 5.2.3
     Requires:
-    Libs: -L${libdir} -llua -lm
+    Libs: -L${libdir} -llua -lm #{"-ldl" if OS.linux?}
     Cflags: -I${includedir}
     EOS
   end
