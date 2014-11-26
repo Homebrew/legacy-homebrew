@@ -44,7 +44,11 @@ class Gnupg2 < Formula
     end
     inreplace "tools/gpgkey2ssh.c", "gpg --list-keys", "gpg2 --list-keys"
 
-    inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
+    if build.include? "8192"
+      inreplace "g10/keygen.c", "max=4096", "max=8192"
+      inreplace "g10/keygen.c", "nbits > 4096", "nbits > 8192"
+      inreplace "g10/keygen.c", "nbits = 4096", "nbits = 8192"
+    end
 
     (var/"run").mkpath
 
