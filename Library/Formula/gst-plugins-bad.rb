@@ -18,7 +18,6 @@ class GstPluginsBad < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-    depends_on 'xz' => :build
   end
 
   depends_on 'pkg-config' => :build

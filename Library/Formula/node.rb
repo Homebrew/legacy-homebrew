@@ -5,12 +5,12 @@ class Node < Formula
   homepage "http://nodejs.org/"
   url "http://nodejs.org/dist/v0.10.33/node-v0.10.33.tar.gz"
   sha256 "75dc26c33144e6d0dc91cb0d68aaf0570ed0a7e4b0c35f3a7a726b500edd081e"
+  revision 1
 
   bottle do
-    revision 8
-    sha1 "032e6534d85435ecfe30effc8fa95ec0dfc0506b" => :yosemite
-    sha1 "6e07b257eb33fd752db10fc1ada41ccf78ffdb74" => :mavericks
-    sha1 "646c68412a627602c917b126bd83e092587bb84e" => :mountain_lion
+    sha1 "d42a126d8b9355b6f561876af027be29214240cb" => :yosemite
+    sha1 "053a8236f3fc5439aa8183c3e7f5f40882e55628" => :mavericks
+    sha1 "20a7cd32a030477ea83337856391a254036526b5" => :mountain_lion
   end
 
   devel do
@@ -39,8 +39,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.8.tgz"
-    sha1 "0023e311e13514fc874b4f60ac28ad9ca7ff07f8"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.9.tgz"
+    sha1 "6e8860d3902f90e4b4819a7e70cf6cbb5fafa74d"
   end
 
   def install
@@ -94,8 +94,8 @@ class Node < Formula
 
     if build.with? "npm"
       s += <<-EOS.undent
-        If you update npm itself do NOT use the npm upgrade command
-        Instead execute:
+        If you update npm itself, do NOT use the npm update command.
+        The recommended way to update npm is:
           npm install -g npm@latest
       EOS
     else

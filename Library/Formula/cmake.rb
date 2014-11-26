@@ -103,6 +103,7 @@ class Cmake < Formula
     system "./bootstrap", *args
     system "make"
     system "make", "install"
+    bin.install_symlink Dir["#{prefix}/CMake.app/Contents/bin/*"] if build.with? "qt"
   end
 
   test do

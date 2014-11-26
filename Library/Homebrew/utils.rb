@@ -325,7 +325,7 @@ module GitHub extend self
       end
     rescue OpenURI::HTTPError => e
       handle_api_error(e)
-    rescue SocketError, OpenSSL::SSL::SSLError => e
+    rescue EOFError, SocketError, OpenSSL::SSL::SSLError => e
       raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
     rescue Utils::JSON::Error => e
       raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace

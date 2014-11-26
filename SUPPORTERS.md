@@ -442,7 +442,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * Jakub Suder
 * [Jason Garber](http://sixtwothree.org)
 * [Alejandro Caceres](http://punkspider.hyperiongray.com)
-* [Slobodan Miskovic](http://www.taskforce-1.com)
+* [Slobodan Miskovic](https://miskovic.ca)
 * [Kurt Ostergaard](http://KurtOstergaard.com)
 * [Simply Business](http://www.simplybusiness.co.uk/)
 * Tate Johnson

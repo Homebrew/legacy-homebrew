@@ -2,14 +2,14 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.21-70.0.tar.gz'
-  version '5.6.21-70.0'
-  sha1 '15abf4e614848f594b51bb364b8d087003964e72'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.21-70.1.tar.gz'
+  version '5.6.21-70.1'
+  sha1 '5c4d2b1ebff5b4849dd2c409dc8f81129961a675'
 
   bottle do
-    sha1 "42feb4470765e5b850c8140d86486d585ea5e02e" => :yosemite
-    sha1 "394150b6c7c92c10b8b49084ff177ee6fd4ab2b1" => :mavericks
-    sha1 "1011a6e4644f6d74dba89a87d88cb1010471b77c" => :mountain_lion
+    sha1 "06c7da21c698a2d8cf538fd6b06763f1d90c3cd8" => :yosemite
+    sha1 "cae0d9106417065618ac5a48625cc9a6c88a9886" => :mavericks
+    sha1 "f1af359ac6d010c57f8ae9a38fe774f8ebb70561" => :mountain_lion
   end
 
   depends_on 'cmake' => :build

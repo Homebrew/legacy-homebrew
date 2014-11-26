@@ -2,14 +2,13 @@ require 'formula'
 
 class Glib < Formula
   homepage "http://developer.gnome.org/glib/"
-  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.42/glib-2.42.0.tar.xz"
-  sha256 "94fbc0a7d10633433ff383e540607de649c1b46baaa59dea446a50977a6c4472"
+  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.42/glib-2.42.1.tar.xz"
+  sha256 "8f3f0865280e45b8ce840e176ef83bcfd511148918cc8d39df2ee89b67dcf89a"
 
   bottle do
-    sha1 "c85b04f9c53b61c72b52a94ed3859515b3b812fc" => :yosemite
-    sha1 "37c62e46737afec92ee03da87f34f6b1aae9d9c9" => :mavericks
-    sha1 "82cfc3ca5c9d4af16f8780c554b7da0929d50187" => :mountain_lion
-    sha1 "7cbe73aa32f468f3ef0725d55aaa0b04d257daea" => :lion
+    sha1 "4e6e2a4663a87d696be3d307b97451507f048b65" => :yosemite
+    sha1 "1657da82e99bb5ebf50cb54a7daa5f08b5fc32e8" => :mavericks
+    sha1 "2d71dde5c704e9ce585d0d71b733360e494c10e5" => :mountain_lion
   end
 
   option :universal

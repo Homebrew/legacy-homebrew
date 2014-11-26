@@ -2,14 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.14/source/mariadb-10.0.14.tar.gz"
-  sha1 "46dc0b66567ff9d4e3a32d9d4b3c9ef250a6fc9e"
-  revision 1
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.15/source/mariadb-10.0.15.tar.gz"
+  sha1 "edd8ba315fffa727b52833df453ac9b88961130e"
 
   bottle do
-    sha1 "9e59fc98a660442128144a8d0fa45b2345b7d41e" => :yosemite
-    sha1 "511c7e832185e301b632a53dac68af904203a6d7" => :mavericks
-    sha1 "3a48b324b1697fa00400e4e52cf47948580d74f1" => :mountain_lion
+    sha1 "96be0c291a73e273b3910f7c609cdfa45fc25347" => :yosemite
+    sha1 "432e13ac5b3f90008de0fcafeb42fe0d7a139229" => :mavericks
+    sha1 "cbffb3b121dad1e8602514613ac5f6aaf40a859a" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
@@ -29,13 +28,6 @@ class Mariadb < Formula
     :because => "mariadb, mysql, and percona install the same binaries."
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
-
-  # upstream fix for compile error, to be removed with 1.0.15
-  # https://mariadb.atlassian.net/browse/MDEV-6802
-  patch :p0 do
-    url "https://bazaar.launchpad.net/~maria-captains/maria/10.0-connect/diff/4424"
-    sha1 "06dee7edd4a37a072454a7e0218886d33bffdceb"
-  end
 
   def install
     # Don't hard-code the libtool path. See:
