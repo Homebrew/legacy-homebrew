@@ -6,17 +6,8 @@ class Chinadns < Formula
   sha1 "e712aab436e555a242f6c3c8acd7474b0b445bf1"
 
   def install
-    system "./configure"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
-  end
-
-  def caveats
-    <<-EOS.undent
-    Simple usage:
-      sudo chinadns
-
-    More Advanced: https://github.com/clowwindy/ChinaDNS-C#advanced
-    EOS
   end
 end
