@@ -7,7 +7,7 @@ class Ghostscript < Formula
     url 'http://downloads.ghostscript.com/public/ghostscript-9.15.tar.gz'
     sha1 'f53bcc47e912c7bffc2ced62ed9311376fb18bab'
 
-    patch :DATA # Uncomment OS X-specific make vars
+    patch :DATA if OS.mac? # Uncomment OS X-specific make vars
   end
 
   bottle do
@@ -32,7 +32,7 @@ class Ghostscript < Formula
     patch do
       url "https://gist.githubusercontent.com/jacknagel/9559501/raw/9709b3234cc888d29f717838650d29e7062da917/gs.patch"
       sha1 "65c99df4f0d57368a086154d34722f5c4b9c84cc"
-    end
+    end if OS.mac?
   end
 
   option 'with-djvu', 'Build drivers for DjVU file format'
