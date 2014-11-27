@@ -15,13 +15,9 @@ class Gnupg < Formula
     sha1 "f933064e91d20ebdb48f6f2180fdf7b99e814b8c" => :mountain_lion
   end
 
-  option "8192", "Build with support for private keys of up to 8192 bits"
-
   depends_on "curl" if MacOS.version <= :mavericks
 
   def install
-    inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm"
