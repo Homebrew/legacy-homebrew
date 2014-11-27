@@ -45,7 +45,7 @@ class Wine < Formula
   end
 
   head do
-    url "git://source.winehq.org/git/wine.git"
+    url "https://source.winehq.org/git/wine.git"
     depends_on "samba" => :optional
   end
 
