@@ -7,9 +7,9 @@ class Fontforge < Formula
   head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    sha1 "ef8e64045c5f97d154a8deb96efb94f72b4ecf6a" => :yosemite
-    sha1 "37363b5e3923118b1b7eaeb7c4320b955fa7c8b5" => :mavericks
-    sha1 "1d463715d0ca9d27dcac36904c28b750698f2de0" => :mountain_lion
+    sha1 "9cb3881adf612eae21aa4c70eb17907a96f05d8d" => :yosemite
+    sha1 "a079566b826ae865e2f393eaaa56cdc097d1f458" => :mavericks
+    sha1 "dcb8c5630310b8a7c534e90e4579d2734a0154ab" => :mountain_lion
   end
 
   deprecated_option "with-x" => "with-x11"
