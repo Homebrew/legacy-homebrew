@@ -14,6 +14,7 @@ class MitScheme < Formula
 
   conflicts_with "tinyscheme", :because => "both install a `scheme` binary"
 
+  depends_on "openssl"
   depends_on :x11
 
   def install
@@ -21,7 +22,6 @@ class MitScheme < Formula
     # before another target gets it, so it's easier to change the environment than to
     # change_make_var, because there are Makefiles littered everywhere
     ENV.j1
-
 
     # Liarc builds must launch within the src dir, not using the top-level Makefile
     cd "src"
