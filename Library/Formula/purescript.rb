@@ -11,7 +11,14 @@ class Purescript < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
-  fails_with(:clang)
+  fails_with :clang do
+    cause <<-EOS
+      GHC with clang fails to compile text-1.2.0.0. See also:
+
+       - http://git.io/L5a_JA
+       - https://ghc.haskell.org/trac/ghc/ticket/9711
+    EOS
+  end
 
   def install
     cabal_sandbox do
