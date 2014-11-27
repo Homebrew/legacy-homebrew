@@ -36,13 +36,14 @@ class Wireshark < Formula
   option "with-gtk+3", "Build the wireshark command with gtk+3"
   option "with-gtk+", "Build the wireshark command with gtk+"
   option "with-qt", "Build the wireshark-qt command (can be used with or without either GTK option)"
-  option "with-headers", "Install Wireshark library headers for plug-in developemnt"
+  option "with-headers", "Install Wireshark library headers for plug-in development"
 
   depends_on "pkg-config" => :build
 
   depends_on "glib"
   depends_on "gnutls"
   depends_on "libgcrypt"
+  depends_on "d-bus"
 
   depends_on "geoip" => :recommended
   depends_on "c-ares" => :recommended
@@ -54,6 +55,7 @@ class Wireshark < Formula
   depends_on "gtk+3" => :optional
   depends_on "gtk+" => :optional
   depends_on "homebrew/dupes/libpcap" => :optional
+  depends_on "gnome-icon-theme" if build.with? "gtk+3"
 
   def install
     args = ["--disable-dependency-tracking",
