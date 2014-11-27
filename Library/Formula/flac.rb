@@ -2,8 +2,8 @@ require "formula"
 
 class Flac < Formula
   homepage "http://xiph.org/flac/"
-  url "http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz"
-  sha1 "a136e5748f8fb1e6c524c75000a765fc63bb7b1b"
+  url "http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz"
+  sha1 "38e17439d11be26207e4af0ff50973815694b26f"
 
   head do
     url "git://git.xiph.org/flac.git"
