@@ -25,14 +25,13 @@ class Git < Formula
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
-  option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
   option 'with-brewed-svn', "Use Homebrew's version of SVN"
   option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
+  depends_on 'openssl'
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
-  depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
   depends_on 'subversion' => 'perl' if build.with? 'brewed-svn'
