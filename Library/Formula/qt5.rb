@@ -12,6 +12,17 @@ class Qt5HeadDownloadStrategy < GitDownloadStrategy
   end
 end
 
+class OracleHomeVar < Requirement
+  fatal true
+  satisfy ENV["ORACLE_HOME"]
+
+  def message; <<-EOS.undent
+      To use --with-oci you have to set the ORACLE_HOME environment variable.
+      Check Oracle Instant Client documentation for more information.
+    EOS
+  end
+end
+
 class Qt5 < Formula
   homepage "http://qt-project.org/"
   url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
@@ -19,9 +30,10 @@ class Qt5 < Formula
   sha1 "502dd2db1e9ce349bb8ac48b4edf7f768df1cafe"
 
   bottle do
-    sha1 "b2a204e963405aade40d9a88383beeec7301c7e2" => :mavericks
-    sha1 "2744a6ee18b87ab1ab791ec136c3f95481713d2c" => :mountain_lion
-    sha1 "6d327353447bdc56176f605e51d910fde032ad8d" => :lion
+    revision 1
+    sha1 "a622384b646da163271514546498a5fcd53203b7" => :yosemite
+    sha1 "06b31931f5b75352f605a7d22dbc9a66b2583002" => :mavericks
+    sha1 "8056e8b4c814b3e0044db7eb11457ba7c6509559" => :mountain_lion
   end
 
   # Patch to fix compile errors on Yosemite. Can be removed with 5.4.
@@ -35,12 +47,18 @@ class Qt5 < Formula
 
   option :universal
   option "with-docs", "Build documentation"
+  option "with-examples", "Build examples"
   option "developer", "Build and link with developer options"
+  option "with-oci", "Build with Oracle OCI plugin"
 
   depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
-  depends_on "mysql" => :optional
+  depends_on :mysql => :optional
   depends_on :xcode => :build
+
+  depends_on OracleHomeVar if build.with? "oci"
+
+  deprecated_option "qtdbus" => "with-d-bus"
 
   def install
     ENV.universal_binary if build.universal?
@@ -48,9 +66,10 @@ class Qt5 < Formula
             "-system-zlib",
             "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
-            "-nomake", "examples",
             "-nomake", "tests",
             "-release"]
+
+    args << "-nomake" << "examples" if build.without? "examples"
 
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
@@ -72,6 +91,12 @@ class Qt5 < Formula
 
     if !MacOS.prefer_64_bit? or build.universal?
       args << "-arch" << "x86"
+    end
+
+    if build.with? "oci"
+      args << "-I#{ENV['ORACLE_HOME']}/sdk/include"
+      args << "-L{ENV['ORACLE_HOME']}"
+      args << "-plugin-sql-oci"
     end
 
     args << "-developer-build" if build.include? "developer"

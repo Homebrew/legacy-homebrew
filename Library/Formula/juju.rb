@@ -2,13 +2,13 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.20/1.20.8/+download/juju-core_1.20.8.tar.gz'
-  sha1 '9ca2d865e3051f05888c5aefff1d3f269294359e'
+  url 'https://launchpad.net/juju-core/1.20/1.20.13/+download/juju-core_1.20.13.tar.gz'
+  sha1 '964c187388b2d5770e43cf875d85805fe44416f7'
 
   bottle do
-    sha1 "2c8def45af033c81187225a9203071e59dcc738b" => :mavericks
-    sha1 "bbd64e1fd23b0d08223a10a8192cee70f0391609" => :mountain_lion
-    sha1 "b77f85bf2abad32c8db4ba5d4013158385032153" => :lion
+    sha1 "ceaa0f001483c3cd4e25b62905293bb36d24c8ab" => :yosemite
+    sha1 "ab9c19e731ec71e239a48f1ecbd46714c0626148" => :mavericks
+    sha1 "f43b4e5a920ebf3c80d9fdef89a226fe9450b1a8" => :mountain_lion
   end
 
   depends_on 'go' => :build

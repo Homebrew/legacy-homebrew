@@ -169,8 +169,8 @@ Note that these flags should only appear after a command.
     Pass `--all` to get information on all formulae, or `--installed` to get
     information on all installed formulae.
 
-    See the wiki for examples of using the JSON:
-    <https://github.com/Homebrew/homebrew/wiki/Querying-Brew>
+    See the docs for examples of using the JSON:
+    <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md>
 
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
@@ -279,11 +279,16 @@ Note that these flags should only appear after a command.
 
     If `--installed` is passed, show options for all installed formulae.
 
-  * `outdated [--quiet]`:
+  * `outdated [--quiet|--verbose]`:
     Show formulae that have an updated version available.
 
-    If `--quiet` is passed, list only the names of outdated brews. Otherwise,
-    the versions are printed as well.
+    By default, version information is displayed in interactive shells, and
+    suppressed otherwise.
+
+    If `--quiet` is passed, list only the names of outdated brews (takes
+    precedence over `--verbose`).
+
+    If `--verbose` is passed, display detailed version information.
 
   * `pin` <formulae>:
     Pin the specified <formulae>, preventing them from being upgraded when
@@ -435,14 +440,8 @@ scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
 `brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
 to create your own commands without modifying Homebrew's internals.
 
-A number of (useful, but unsupported) external commands are included and enabled
-by default:
-
-    $ ls $(brew --repository)/Library/Contributions/cmd
-
-Documentation for the included external commands as well as instructions for
-creating your own can be found on the wiki:
-<http://wiki.github.com/Homebrew/homebrew/External-Commands>
+Instructions for creating your own commands can be found in the docs:
+<https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md>
 
 ## SPECIFYING FORMULAE
 
@@ -598,13 +597,15 @@ If your proxy requires authentication:
 
 ## SEE ALSO
 
-Homebrew Wiki: <http://wiki.github.com/Homebrew/homebrew/>
+Homebrew Documentation: <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/>
 
 `git`(1), `git-log`(1)
 
 ## AUTHORS
 
-Max Howell, a splendid chap.
+Homebrew's current maintainers are Misty De Meo, Adam Vandenberg, Jack Nagel, Mike McQuaid, Brett Koonce and Tim Smith.
+
+Homebrew was originally created by Max Howell.
 
 ## BUGS
 

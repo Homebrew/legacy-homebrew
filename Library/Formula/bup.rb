@@ -8,6 +8,13 @@ class Bup < Formula
 
   option "run-tests", "Run unit tests after compilation"
 
+  # Fix compilation on 10.10
+  # https://github.com/bup/bup/commit/75d089e7cdb7a7eb4d69c352f56dad5ad3aa1f97
+  patch do
+    url "https://github.com/bup/bup/commit/75d089e7cdb7a7eb4d69c352f56dad5ad3aa1f97.diff"
+    sha1 "a97d4292a7398d0bca2eb2ea0a99fb40a049c178"
+  end
+
   def install
     system "make"
     system "make test" if build.include? "run-tests"

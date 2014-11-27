@@ -2,15 +2,15 @@ require "formula"
 
 class Help2man < Formula
   homepage "http://www.gnu.org/software/help2man/"
-  url "http://ftpmirror.gnu.org/help2man/help2man-1.46.2.tar.xz"
-  mirror "http://ftp.gnu.org/gnu/help2man/help2man-1.46.2.tar.xz"
-  sha256 "92191decc8c324c88bfec5e989d13108f22ed135d794bde2b3b802ffe3650311"
+  url "http://ftpmirror.gnu.org/help2man/help2man-1.46.4.tar.xz"
+  mirror "http://ftp.gnu.org/gnu/help2man/help2man-1.46.4.tar.xz"
+  sha256 "1ae7f15f53b0cc55b070ae49df2ee5caa942c71529054e157599427bba3c5633"
 
   bottle do
     cellar :any
-    sha1 "2f432d716f8225e6b698078c65fd44a0588cee74" => :mavericks
-    sha1 "8d2228346994f1f004898126144ea4a4466f9316" => :mountain_lion
-    sha1 "4d903506ba1f27bd570ec3cd4012dcfb3cb569df" => :lion
+    sha1 "6ba98c8f097531912e58863dee1247cb02f9c289" => :yosemite
+    sha1 "747eadb45bf3bbcd2e2fd58dac062495768dd912" => :mavericks
+    sha1 "134e606290c5c93f915c51fbe87a6ddaa352f1fd" => :mountain_lion
   end
 
   def install

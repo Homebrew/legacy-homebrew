@@ -2,15 +2,16 @@ require 'formula'
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.2.4-release.tar.gz'
-  sha1 'd89f2188f7d47cd8468708b15cc55f5d457009e0'
+  url 'http://sphinxsearch.com/files/sphinx-2.2.5-release.tar.gz'
+  sha1 '27e1a37fdeff12b866b33d3bb5602894af10bb5e'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   bottle do
-    sha1 "2d58704fcd15ec7d9c8ac7f4bb4391b9105ea35f" => :mavericks
-    sha1 "5e3447a20996bd752d1b1793efef72b6dbf8421f" => :mountain_lion
-    sha1 "cd9566b61321cb1ae618c0937c5133219183b478" => :lion
+    revision 2
+    sha1 "8f9004812b5545eb923917a4c20e08ae6c491a0d" => :yosemite
+    sha1 "fb8af1e261bfd2ddfa82098ecb192f97451f7c29" => :mavericks
+    sha1 "065c4ad66e0f5253b70281cbbdc824b9f7ab8ca7" => :mountain_lion
   end
 
   option 'mysql', 'Force compiling against MySQL'
@@ -24,7 +25,7 @@ class Sphinx < Formula
   # http://snowball.tartarus.org/
   resource 'stemmer' do
     url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-    sha1 '9b0f120a68a3c688b2f5a8d0f681620465c29d38'
+    sha1 '1ac6bb16e829e9f3a58f62c27047c26784975aa1'
   end
 
   fails_with :llvm do
@@ -61,6 +62,9 @@ class Sphinx < Formula
   end
 
   def caveats; <<-EOS.undent
+    This is not sphinx - the Python Documentation Generator.
+    To install sphinx-python: use pip or easy_install,
+
     Sphinx has been compiled with libstemmer support.
 
     Sphinx depends on either MySQL or PostreSQL as a datasource.

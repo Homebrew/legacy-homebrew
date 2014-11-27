@@ -5,14 +5,14 @@ class GitAnnex < Formula
   include Language::Haskell::Cabal
 
   homepage "https://git-annex.branchable.com/"
-  url "http://hackage.haskell.org/package/git-annex-5.20140717/git-annex-5.20140717.tar.gz"
-  sha1 "f3d49408db14a6230436105b50ce9232da8e57ae"
+  url "https://hackage.haskell.org/package/git-annex-5.20141125/git-annex-5.20141125.tar.gz"
+  sha1 "45445bfef32f380624cbf415813a1a69010ecb13"
 
   bottle do
     cellar :any
-    sha1 "b4e1f525dbc89d322ac3706657bf86fb8b9e1697" => :mavericks
-    sha1 "6363b33492c0a6d98cea8f1dc889b03285030357" => :mountain_lion
-    sha1 "df28277b5ae4e48514236f6c0ef6a78387daef63" => :lion
+    sha1 "dc9c4df9d7eb9f33cacc1e26e4df4d63f2d3c105" => :yosemite
+    sha1 "18bc46d6db31fc6e55816272d4b9bb392a182ebf" => :mavericks
+    sha1 "e0bba76cda3e7940a3645c68290dd54782e4cef4" => :mountain_lion
   end
 
   depends_on "gcc" => :build
@@ -23,6 +23,8 @@ class GitAnnex < Formula
   depends_on "libidn"
   depends_on "gnutls"
   depends_on "gmp"
+
+  fails_with(:clang) { build 425 } # clang segfaults on Lion
 
   def install
     cabal_sandbox do
@@ -41,23 +43,6 @@ class GitAnnex < Formula
   test do
     # make sure git can find git-annex
     ENV.prepend_path "PATH", bin
-    # create a first git repository with an annex
-    mkdir "my_annex" do
-      system "git", "init"
-      system "git", "annex", "init", "my_annex"
-      cp bin/"git-annex", "bigfile"
-      system "git", "annex", "add", "bigfile"
-      system "git", "commit", "-am", "big file added"
-      assert File.symlink? "bigfile"
-    end
-    # and propagate its content to another
-    system "git", "clone", "my_annex", "my_annex_clone"
-    Dir.chdir "my_annex_clone" do
-      assert !File.file?("bigfile")
-      system "git", "annex", "get", "bigfile"
-      assert File.file? "bigfile"
-    end
-    # make test files writable so homebrew can drop them
-    chmod_R 0777, testpath
+    system "git", "annex", "test"
   end
 end

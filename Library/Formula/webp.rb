@@ -2,15 +2,15 @@ require 'formula'
 
 class Webp < Formula
   homepage 'http://code.google.com/speed/webp/'
-  url 'https://webp.googlecode.com/files/libwebp-0.4.0.tar.gz'
-  sha1 '326c4b6787a01e5e32a9b30bae76442d18d2d1b6'
+  url 'http://downloads.webmproject.org/releases/webp/libwebp-0.4.2.tar.gz'
+  sha256 '14d825d7c2ef7d49621bcb6b83466be455585e671ae0a2ebc1f2e07775a1722d'
   head 'https://chromium.googlesource.com/webm/libwebp', :branch => 'master'
 
   bottle do
     cellar :any
-    sha1 "917f008789d42387a236bf2f91c7c32e35ac8726" => :mavericks
-    sha1 "8585b90461bfee0e0a79a82a0ea939ad5aa9e64d" => :mountain_lion
-    sha1 "3faef81ac165696eaf3631a8ce27c5a5f5ceb83b" => :lion
+    sha1 "5eb5c1021f826ddb6fc224a24c25c42e031d7662" => :yosemite
+    sha1 "4a937acc7cfdec599bd78809447bd03eb2bf6fc9" => :mavericks
+    sha1 "3a1b012465710145c7daf74251bfe99bfd477ec4" => :mountain_lion
   end
 
   revision 1
@@ -33,8 +33,7 @@ class Webp < Formula
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/cwebp", test_png, "-o", "webp_test.png"
+    system "#{bin}/cwebp", test_fixtures("test.png"), "-o", "webp_test.png"
     system "#{bin}/dwebp", "webp_test.png", "-o", "webp_test.webp"
   end
 end

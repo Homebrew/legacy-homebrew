@@ -2,18 +2,21 @@ require "formula"
 
 class Rethinkdb < Formula
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.0-1.tgz"
-  version "1.15.0"
-  sha1 "eb68b3a2f9e6c1eb917bec1e46c3cef86fe3c25b"
+  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.2.tgz"
+  sha1 "31c14c764355e555734c7f4479397bd3bd7e0e44"
 
   bottle do
-    sha1 "4b5f1269335697008c507f528c68d3a59dd2cc02" => :mavericks
-    sha1 "925bad3bb759089349aca73b112c036347101342" => :mountain_lion
-    sha1 "1c1ab85203934327dffed316d55a63cc34430582" => :lion
+    sha1 "2710231d7a0013779e2d61228aa0395e8261611f" => :yosemite
+    sha1 "c8c7f4e2d05535953de0ba229ac3c12ac11de8b9" => :mavericks
+    sha1 "bcbdc4b123365987dd5ce6f6cc0f628302d95e3c" => :mountain_lion
   end
 
   depends_on :macos => :lion
+  # Embeds an older V8, whose gyp still requires the full Xcode
+  # Reported upstream: https://github.com/rethinkdb/rethinkdb/issues/2581
+  depends_on :xcode => :build
   depends_on "boost" => :build
+  depends_on "openssl"
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1

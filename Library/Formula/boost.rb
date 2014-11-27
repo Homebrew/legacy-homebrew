@@ -9,34 +9,29 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    sha1 "68c626ad06f13687ff529174ddfef2ecf91d6e22" => :mavericks
-    sha1 "cb657544a41c58c7422c16e46b96341e8fe9297d" => :mountain_lion
-    sha1 "e23c15575d465efa43ffe7fcfce068e2fe5d4073" => :lion
+    revision 1
+    sha1 "ea390cc163c7bc5f4bcebc8dc1dfef0f7a4dbc2d" => :yosemite
+    sha1 "c67641e7b6149c64809fc8d3d0e7e97dcf4ec518" => :mavericks
+    sha1 "d09cea432feca8303106fadb4c27de66b793e2c7" => :mountain_lion
   end
 
   env :userpaths
 
   option :universal
-  option 'with-icu', 'Build regexp engine with icu support'
+  option 'with-icu4c', 'Build regexp engine with icu support'
   option 'without-single', 'Disable building single-threading variant'
   option 'without-static', 'Disable building static library variant'
   option 'with-mpi', 'Build with MPI support'
   option :cxx11
 
-  if build.with? 'icu'
-    if build.cxx11?
-      depends_on 'icu4c' => 'c++11'
-    else
-      depends_on 'icu4c'
-    end
-  end
+  deprecated_option "with-icu" => "with-icu4c"
 
-  if build.with? 'mpi'
-    if build.cxx11?
-      depends_on 'open-mpi' => 'c++11'
-    else
-      depends_on :mpi => [:cc, :cxx, :optional]
-    end
+  if build.cxx11?
+    depends_on "icu4c" => [:optional, "c++11"]
+    depends_on "open-mpi" => "c++11" if build.with? "mpi"
+  else
+    depends_on "icu4c" => :optional
+    depends_on :mpi => [:cc, :cxx, :optional]
   end
 
   fails_with :llvm do

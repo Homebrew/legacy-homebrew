@@ -7,9 +7,10 @@ class Libmodplug < Formula
 
   bottle do
     cellar :any
-    sha1 "3a2b647f1cc24e83c626898087a20a3ec0978963" => :mavericks
-    sha1 "0e409711ad515e7f739dcec3792d0bd3ab9652bc" => :mountain_lion
-    sha1 "280ba8ba18963cd71616f7e6a5a1cc6d9e510203" => :lion
+    revision 1
+    sha1 "0901d9ad6b88c87cffaf2e9f7c2e38159f0c4c68" => :yosemite
+    sha1 "82462ed1591281bc461165071b7479417c9f3493" => :mavericks
+    sha1 "ecddcd3abd6d223334c2404f14f1f79eb93b08ba" => :mountain_lion
   end
 
   def install

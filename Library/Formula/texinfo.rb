@@ -6,6 +6,12 @@ class Texinfo < Formula
   mirror 'http://ftp.gnu.org/gnu/texinfo/texinfo-5.2.tar.gz'
   sha1 'dc54edfbb623d46fb400576b3da181f987e63516'
 
+  bottle do
+    sha1 "988fc8c195a43ad8b9dea1da2827fb24c794c200" => :yosemite
+    sha1 "40453ac408ede2cb5470935a5c5d2360f64032b5" => :mavericks
+    sha1 "1ac4d9ac120248a5b71cb45199c01bad850a7655" => :mountain_lion
+  end
+
   keg_only :provided_by_osx, <<-EOS.undent
     Software that uses TeX, such as lilypond and octave, require a newer version
     of these files.

@@ -119,6 +119,10 @@ module Homebrew
   def self.git_head
     HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
   end
+
+  def self.git_last_commit
+    HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
+  end
 end
 
 def with_system_path
@@ -321,7 +325,7 @@ module GitHub extend self
       end
     rescue OpenURI::HTTPError => e
       handle_api_error(e)
-    rescue SocketError, OpenSSL::SSL::SSLError => e
+    rescue EOFError, SocketError, OpenSSL::SSL::SSLError => e
       raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
     rescue Utils::JSON::Error => e
       raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace

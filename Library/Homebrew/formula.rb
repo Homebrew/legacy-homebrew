@@ -65,6 +65,18 @@ class Formula
     end
   end
 
+  def stable?
+    active_spec == stable
+  end
+
+  def devel?
+    active_spec == devel
+  end
+
+  def head?
+    active_spec == head
+  end
+
   def bottle
     Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
   end
@@ -106,6 +118,10 @@ class Formula
 
   def options
     active_spec.options
+  end
+
+  def deprecated_options
+    active_spec.deprecated_options
   end
 
   def option_defined?(name)
@@ -263,8 +279,6 @@ class Formula
     stage do
       begin
         patch
-        # we allow formulae to do anything they want to the Ruby process
-        # so load any deps before this point! And exit asap afterwards
         yield self
       ensure
         cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
@@ -404,6 +418,13 @@ class Formula
     end
   end
 
+  def print_tap_action options={}
+    if tap?
+      verb = options[:verb] || "Installing"
+      ohai "#{verb} #{name} from #{tap}"
+    end
+  end
+
   # True if this formula is provided by Homebrew itself
   def core_formula?
     path == Formula.path(name)
@@ -473,12 +494,10 @@ class Formula
 
   end
 
-  # For brew-fetch and others.
   def fetch
     active_spec.fetch
   end
 
-  # For FormulaInstaller.
   def verify_download_integrity fn
     active_spec.verify_download_integrity(fn)
   end
@@ -498,6 +517,10 @@ class Formula
   end
 
   def test
+  end
+
+  def test_fixtures(file)
+    HOMEBREW_LIBRARY.join("Homebrew", "test", "fixtures", file)
   end
 
   protected
@@ -710,6 +733,10 @@ class Formula
 
     def option name, description=""
       specs.each { |spec| spec.option(name, description) }
+    end
+
+    def deprecated_option hash
+      specs.each { |spec| spec.deprecated_option(hash) }
     end
 
     def patch strip=:p1, src=nil, &block

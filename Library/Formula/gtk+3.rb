@@ -2,15 +2,16 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.0.tar.xz'
-  sha256 '68d6b57d15c16808d0045e96b303f3dd439cc22a9c06fdffb07025cd713a82bc'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.5.tar.xz'
+  sha256 'ba70f5ccde6646c6d8aa5a6398794b7bcf23fc45af22580a215d258f392dbbe2'
 
   bottle do
-    revision 1
-    sha1 "ed0ce70bdb9b8f70f3a7f292fa5a6218bb8393a3" => :mavericks
-    sha1 "d4b3cb9c83fa76d5a2e62c8f1705e27aafd4928e" => :mountain_lion
-    sha1 "c0dde5f4a0da96b2f025832c53706514529575ef" => :lion
+    sha1 "bbf8ad842751cced18188d3fd7bc8d6d360192fe" => :yosemite
+    sha1 "82c08927605620adbbc5b909c4a181a79a0b1f8f" => :mavericks
+    sha1 "270d50a2b38eec91e046760230f55f1c55452e55" => :mountain_lion
   end
+
+  option :universal
 
   depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
@@ -22,11 +23,12 @@ class Gtkx3 < Formula
   depends_on 'cairo'
   depends_on 'jasper' => :optional
   depends_on 'atk'
-  depends_on 'at-spi2-atk'
+  depends_on 'at-spi2-atk' if build.with? "x11"
   depends_on 'gobject-introspection'
   depends_on 'gsettings-desktop-schemas' => :recommended
 
   def install
+    ENV.universal_binary if build.universal?
 
     args = %W[
       --disable-debug

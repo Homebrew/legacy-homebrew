@@ -1,16 +1,21 @@
 #!/bin/sh
-BREW_FILE_DIRECTORY=$(cd "${0%/*}" && pwd -P)
+
+chdir () {
+  cd "$@" >/dev/null
+}
+
+BREW_FILE_DIRECTORY=$(chdir "${0%/*}" && pwd -P)
 export HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
 BREW_SYMLINK=$(readlink "$0")
 if [ -n "$BREW_SYMLINK" ]
 then
     BREW_SYMLINK_DIRECTORY=$(dirname "$BREW_SYMLINK")
-    BREW_FILE_DIRECTORY=$(cd "$BREW_FILE_DIRECTORY" &&
-                          cd "$BREW_SYMLINK_DIRECTORY" && pwd -P)
+    BREW_FILE_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY" &&
+                          chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)
 fi
 
-BREW_LIBRARY_DIRECTORY=$(cd "$BREW_FILE_DIRECTORY"/../Library && pwd -P)
+BREW_LIBRARY_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)
 
 # Users may have these set, pointing the system Ruby
 # at non-system gem paths

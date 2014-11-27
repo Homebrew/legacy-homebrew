@@ -2,20 +2,21 @@ require "formula"
 
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.3.3.tar.bz2"
-  sha1 "012afcbc57ecdf23f71b9901087cd5dbc8056756"
+  url "https://www.ffmpeg.org/releases/ffmpeg-2.4.3.tar.bz2"
+  sha1 "a2f05df7ea3e65ede2898e055b0c6615accfb1b3"
 
   head "git://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha1 "a15bcd964b6b993df63a020ba350d07427d88a87" => :mavericks
-    sha1 "82b5f720008d71571e8b089b02ebdb029b473fbc" => :mountain_lion
-    sha1 "866f62dc78a80195c5da71579239bef1110266c3" => :lion
+    sha1 "da5376cb5a7942f694ddc71db7e0f62e121ac7a2" => :yosemite
+    sha1 "7d47d99d0b127914141fa071450fa0808649edae" => :mavericks
+    sha1 "aebc5376516664a78896928b8249dae8443fdd92" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder"
+  option "without-qtkit", "Disable deprecated QuickTime framework"
 
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
@@ -29,10 +30,11 @@ class Ffmpeg < Formula
   option "with-fdk-aac", "Enable the Fraunhofer FDK AAC library"
   option "with-libvidstab", "Enable vid.stab support for video stabilization"
   option "with-x265", "Enable x265 encoder"
+  option "with-libsoxr", "Enable the soxr resample library"
 
   depends_on "pkg-config" => :build
 
-  # manpages won"t be built without texi2html
+  # manpages won't be built without texi2html
   depends_on "texi2html" => :build if MacOS.version >= :mountain_lion
   depends_on "yasm" => :build
 
@@ -41,6 +43,7 @@ class Ffmpeg < Formula
   depends_on "lame" => :recommended
   depends_on "xvid" => :recommended
 
+  depends_on "fontconfig" => :optional
   depends_on "freetype" => :optional
   depends_on "theora" => :optional
   depends_on "libvorbis" => :optional
@@ -58,9 +61,11 @@ class Ffmpeg < Formula
   depends_on "frei0r" => :optional
   depends_on "libcaca" => :optional
   depends_on "libbluray" => :optional
+  depends_on "libsoxr" => :optional
   depends_on "libquvi" => :optional
   depends_on "libvidstab" => :optional
   depends_on "x265" => :optional
+  depends_on "openssl" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -71,7 +76,6 @@ class Ffmpeg < Formula
             "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-avresample",
-            "--enable-vda",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
             "--host-ldflags=#{ENV.ldflags}"
@@ -82,6 +86,7 @@ class Ffmpeg < Formula
     args << "--enable-libmp3lame" if build.with? "lame"
     args << "--enable-libxvid" if build.with? "xvid"
 
+    args << "--enable-libfontconfig" if build.with? "fontconfig"
     args << "--enable-libfreetype" if build.with? "freetype"
     args << "--enable-libtheora" if build.with? "theora"
     args << "--enable-libvorbis" if build.with? "libvorbis"
@@ -98,14 +103,26 @@ class Ffmpeg < Formula
     args << "--enable-libopus" if build.with? "opus"
     args << "--enable-frei0r" if build.with? "frei0r"
     args << "--enable-libcaca" if build.with? "libcaca"
+    args << "--enable-libsoxr" if build.with? "libsoxr"
     args << "--enable-libquvi" if build.with? "libquvi"
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
+    args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
       args << "--extra-cflags=" + %x[pkg-config --cflags libopenjpeg].chomp
+    end
+
+    # A bug in a dispatch header on 10.10, included via CoreFoundation,
+    # prevents GCC from building VDA support. GCC has no probles on
+    # 10.9 and earlier.
+    # See: https://github.com/Homebrew/homebrew/issues/33741
+    if MacOS.version < :yosemite || ENV.compiler == :clang
+      args << "--enable-vda"
+    else
+      args << "--disable-vda"
     end
 
     # For 32-bit compilation under gcc 4.2, see:

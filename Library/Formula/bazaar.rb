@@ -1,7 +1,7 @@
 require 'formula'
 
 class Bazaar < Formula
-  homepage 'http://bazaar-vcs.org/'
+  homepage 'http://bazaar.canonical.com/'
   url 'https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz'
   sha1 '5eb4d0367c6d83396250165da5bb2c8a9f378293'
   def install

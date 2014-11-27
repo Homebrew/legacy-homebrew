@@ -23,21 +23,13 @@ class Global < Formula
   option "with-exuberant-ctags", "Enable Exuberant Ctags as a plug-in parser"
   option "with-pygments", "Enable Pygments as a plug-in parser (should enable exuberent-ctags too)"
 
-  if build.with? "exuberant-ctags"
-    depends_on "ctags"
-    skip_clean "lib/gtags/exuberant-ctags.la"
-  end
+  depends_on "ctags" if build.with? "exuberant-ctags"
 
-  if build.with? "pygments"
-    if build.without? "exuberant-ctags"
-      opoo "suggest --with-exuberant-ctags as pygments parser symbol only without"
-      "to create definition and reference tags without it all tags will be symbols"
-    end
-    resource 'pygments' do
-      url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
-      sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
-    end
-    skip_clean "lib/gtags/pygments-parser.la"
+  skip_clean "lib/gtags"
+
+  resource "pygments" do
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
+    sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
   end
 
   def install
@@ -50,7 +42,7 @@ class Global < Formula
     ]
 
     if build.with? "exuberant-ctags"
-      args << "--with-exuberant-ctags=#{HOMEBREW_PREFIX}/bin/ctags"
+      args << "--with-exuberant-ctags=#{Formula["ctags"].opt_bin}/ctags"
     end
 
     if build.with? "pygments"

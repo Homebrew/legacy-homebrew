@@ -6,9 +6,10 @@ class TelepathyGlib < Formula
   sha1 "43a3e9f3e08725b689aba3baa487c9711d436888"
 
   bottle do
-    sha1 "fbe22e4204d03da7d54ffbca469a6ed6f7fb8a73" => :mavericks
-    sha1 "d58cdac4945b50a985e2c47052f3aaeb136b50df" => :mountain_lion
-    sha1 "6708431e97da80f649bf73fb12cc6d4c1a53b915" => :lion
+    revision 1
+    sha1 "a98475645190b7d9253cc950b828d0ac05b72124" => :yosemite
+    sha1 "f49fed685755aca7c829a779fae1f31855d0195c" => :mavericks
+    sha1 "f01c372f200a12a9e573683a58c3a514a89c0aa9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

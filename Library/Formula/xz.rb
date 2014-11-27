@@ -10,9 +10,15 @@ class Xz < Formula
 
   bottle do
     cellar :any
+    sha1 "9e340d49dcfd08d82b59211ec7778b384bfa59f8" => :yosemite
     sha1 "c54becb676547560824fb873d6a04f24aa3e27aa" => :mavericks
     sha1 "d3ee779d021906abde55b3672135a0cac27c73b0" => :mountain_lion
     sha1 "99d721024996c74abf542373a03d85e121a0714a" => :lion
+  end
+
+  devel do
+    url 'http://tukaani.org/xz/xz-5.1.4beta.tar.gz'
+    sha256 "7c47b9e2cfb5be93245d9fcf2bec5b459412b7628c333896dded373dcd0cf0e0"
   end
 
   option :universal

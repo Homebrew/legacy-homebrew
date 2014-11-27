@@ -4,6 +4,13 @@ class Mlt < Formula
   homepage "http://www.mltframework.org/"
   url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.2.tar.gz"
   sha1 "eb1cdb8a1d9e69512716431054e5da7eb3bedb6d"
+  revision 1
+
+  bottle do
+    sha1 "8a672be9b09bf79c099755f822afd7837ee715a9" => :mavericks
+    sha1 "6fbdbc9c2422836ce659989f096d1670570d1c57" => :mountain_lion
+    sha1 "b5804ee50a521ee7f09c82fb3d58947ad4413990" => :lion
+  end
 
   depends_on "pkg-config" => :build
 
@@ -18,7 +25,7 @@ class Mlt < Formula
 
   depends_on "gtk+" => :optional
 
-  if build.with? "gtk"
+  if build.with? "gtk+"
     depends_on "pango"
     depends_on "gdk-pixbuf"
   end
@@ -29,7 +36,7 @@ class Mlt < Formula
             "--disable-jackrack",
             "--disable-swfdec"]
 
-    args << "--disable-gtk" if build.without? "gtk"
+    args << "--disable-gtk" if build.without? "gtk+"
 
     system "./configure", *args
 

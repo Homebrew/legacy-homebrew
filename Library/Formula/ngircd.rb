@@ -2,15 +2,14 @@ require 'formula'
 
 class Ngircd < Formula
   homepage 'http://ngircd.barton.de'
-  url 'http://ngircd.barton.de/pub/ngircd/ngircd-21.1.tar.gz'
-  mirror 'http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-21.1.tar.gz'
-  sha256 '96083ae7dbc5df852efc904fff4800959f103554de2c6d096deaa5408135f59e'
+  url 'http://ngircd.barton.de/pub/ngircd/ngircd-22.tar.gz'
+  mirror 'http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-22.tar.gz'
+  sha256 'a08e18de52bcf09d35ce75a802204ecf000f32663c1c57ad930ebcd139bf4cc8'
 
   bottle do
-    revision 1
-    sha1 "4b57669606f323726abf6d9697c0f96bf1eff0a0" => :mavericks
-    sha1 "06252db0d529c3edcd14f054898e2b4220a56d80" => :mountain_lion
-    sha1 "780f4368b6b17e0ab0989d004b252291fb2775c8" => :lion
+    sha1 "1a370c58b671a989c69e30d0c93755a8f1f79995" => :mavericks
+    sha1 "d79602eb6d27418d969e954513cc0870058109c3" => :mountain_lion
+    sha1 "a863f046eb03353d881221fc6a6a725ab098de57" => :lion
   end
 
   option 'with-iconv', 'Enable character conversion using libiconv.'

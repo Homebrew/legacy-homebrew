@@ -2,15 +2,22 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'http://www.orientdb.org/portal/function/portal/download/unknown@unknown.com/-/-/-/-/-/orientdb-community-1.7.9.tar.gz/false/false/mac'
-  version '1.7.9'
-  sha1 '85e6e13bde4e04fb66828faf2bee6462a4b39f1e'
+  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-1.7.10.tar.gz&os=mac'
+  version '1.7.10'
+  sha1 '71c38c2e91ec6e92bf9d6c166af750f491380852'
+
+  devel do
+    url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0-M3.tar.gz&os=mac'
+    version '2.0-M3'
+    sha1 '8e5f9410eed54e6ea4b3aa5d527e6ea0262f790d'
+  end
+
 
   bottle do
     cellar :any
-    sha1 "0bc1553a143ad95dbb32eca2f17eb79c38ac50c5" => :mavericks
-    sha1 "3d249cb0d2559f3fdf31e9aec9d1b9ee6119a306" => :mountain_lion
-    sha1 "2765f099266ccc4a1b2ccd5240343cb72282c3ee" => :lion
+    sha1 "ce4b7060fc28b4e686fae9cea7d6c016c988ef57" => :yosemite
+    sha1 "a6320a3d1b705aea9bdb5c73f7e15cfeae50b0eb" => :mavericks
+    sha1 "e58a8099e08788365b2d8ad4148e6e46ee1021f5" => :mountain_lion
   end
 
   # Fixing OrientDB init scripts

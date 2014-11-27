@@ -11,13 +11,13 @@ require 'build_environment'
 class Requirement
   include Dependable
 
-  attr_reader :tags, :name, :option_name
+  attr_reader :tags, :name
+  alias_method :option_name, :name
 
   def initialize(tags=[])
     @tags = tags
     @tags << :build if self.class.build
     @name ||= infer_name
-    @option_name = @name
   end
 
   # The message to show when the requirement is not met.
@@ -75,12 +75,13 @@ class Requirement
     self.class.env_proc
   end
 
-  def eql?(other)
+  def ==(other)
     instance_of?(other.class) && name == other.name && tags == other.tags
   end
+  alias_method :eql?, :==
 
   def hash
-    [name, *tags].hash
+    name.hash ^ tags.hash
   end
 
   def inspect

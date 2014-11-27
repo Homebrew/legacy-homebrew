@@ -2,14 +2,14 @@ require "formula"
 
 class Libxmp < Formula
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.0/libxmp-4.3.0.tar.gz"
-  sha1 "7cc6acef4d3b86b9073851649d1b5f6f4a904e43"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.1/libxmp-4.3.1.tar.gz"
+  sha1 "feb07a6fd460be8086a451931aa8507fe8953382"
 
   bottle do
     cellar :any
-    sha1 "5d838e452561152cbc569996d0b6c721a447bbc3" => :mavericks
-    sha1 "7ae31575dc3f7e052117a4d274ef65556095f485" => :mountain_lion
-    sha1 "39a97017b0ee409c2e6fe39a97c2be672393bcff" => :lion
+    sha1 "868e25bcb0e649aa75ef444e4a1386f2c956002c" => :yosemite
+    sha1 "e7ba97dd07f2935db97a991a96af828ef5d1cb77" => :mavericks
+    sha1 "b30afb2e4703afe6b2685d037effd4c1c793caf1" => :mountain_lion
   end
 
   head do

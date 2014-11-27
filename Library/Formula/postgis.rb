@@ -6,22 +6,31 @@ class Postgis < Formula
   sha256 'cd73c2a38428c8736f6cae73b955aee0bd42f9ca4fd8d93c1af464524cb100fc'
   revision 1
 
-  head 'http://svn.osgeo.org/postgis/trunk/'
+  def pour_bottle?
+    # Postgres extensions must live in the Postgres prefix, which precludes
+    # bottling: https://github.com/Homebrew/homebrew/issues/10247
+    # Overcoming this will likely require changes in Postgres itself.
+    false
+  end
+
+  head do
+    url "http://svn.osgeo.org/postgis/trunk/"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
   option 'without-gdal', 'Disable postgis raster support'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-
+  depends_on "pkg-config" => :build
   depends_on 'gpp' => :build
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
 
   depends_on 'gtk+' if build.with? "gui"
-  depends_on 'pkg-config' if build.with? "gui"
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
@@ -38,7 +47,6 @@ class Postgis < Formula
     ENV.deparallelize
 
     args = [
-      "--disable-dependency-tracking",
       # Can't use --prefix, PostGIS disrespects it and flat-out refuses to
       # accept it with 2.0.
       "--with-projdir=#{HOMEBREW_PREFIX}",
@@ -53,11 +61,11 @@ class Postgis < Formula
       # gettext installations are.
       "--disable-nls"
     ]
-    args << '--with-gui' if build.with? "gui"
 
+    args << '--with-gui' if build.with? "gui"
     args << '--without-raster' if build.without? "gdal"
 
-    system './autogen.sh'
+    system "./autogen.sh" if build.head?
     system './configure', *args
     system 'make'
 

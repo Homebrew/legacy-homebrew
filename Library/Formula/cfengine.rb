@@ -2,8 +2,15 @@ require 'formula'
 
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.1.tar.gz'
-  sha1 '719608b87836b0b4d05685c3ce67c3fad8a3173a'
+  url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.2.tar.gz'
+  sha1 '036dae35dfce559f5807a13f4de2985f28d3e5d1'
+
+  bottle do
+    cellar :any
+    sha1 "43ea51c13d9ce4cb4de2875d32ce6e389e3465af" => :yosemite
+    sha1 "6cf3b0aa002c1a93702ed1687fa4d72aaa0f3a1d" => :mavericks
+    sha1 "d6193124ee2324ed0cd279a6e8b47a95a586d5f7" => :mountain_lion
+  end
 
   depends_on 'pcre'
   depends_on 'lmdb'
@@ -11,6 +18,7 @@ class Cfengine < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
   depends_on 'libxml2' if MacOS.version < :mountain_lion
+  depends_on "openssl"
 
   def install
     system "autoreconf", "-Wno-portability", "-fvi", "-I", "m4" # see autogen.sh

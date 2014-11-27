@@ -2,15 +2,13 @@ require "formula"
 
 class Mosquitto < Formula
   homepage "http://mosquitto.org/"
-  url "http://mosquitto.org/files/source/mosquitto-1.3.4.tar.gz"
-  sha1 "b818672cc0db723995d7c3201ef6962931dd891a"
-  revision 1
+  url "http://mosquitto.org/files/source/mosquitto-1.3.5.tar.gz"
+  sha1 "2d30ffbf1c1b310581735e7ea10465e7c310e580"
 
   bottle do
-    revision 1
-    sha1 "5e8dfe80e2ea2af1af0e8ce3b79f59727b9ca82f" => :mavericks
-    sha1 "1b11a70a2c1fe7d9edabc1e3c7419669afafbd6b" => :mountain_lion
-    sha1 "1a36f985225e210c06d1e8d72ddaa7ab13c20337" => :lion
+    sha1 "85ed6685fb8efcf1aa909aaf50da8a843da819e0" => :yosemite
+    sha1 "a505a2071a526c7eb18ce82ca9cd64022f1b0294" => :mavericks
+    sha1 "a533fe55655eb71e3f104d36e52fecaaa1eb8ab0" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

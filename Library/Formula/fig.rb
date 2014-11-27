@@ -2,14 +2,14 @@ require "formula"
 
 class Fig < Formula
   homepage "http://www.fig.sh/"
-  url "https://github.com/docker/fig/archive/0.5.2.tar.gz"
-  sha1 "dea7120368833d3255e138c622572335b36d00fc"
+  url "https://github.com/docker/fig/archive/1.0.1.tar.gz"
+  sha1 "8044dd8134af1215138c1e878cc1684bac8932d9"
 
   bottle do
     cellar :any
-    sha1 "9d5a8ff89b36221658baacced06f324015c76fc1" => :mavericks
-    sha1 "ce5a1a8a8d87b44792d74fc2de09e04b942a6735" => :mountain_lion
-    sha1 "0049d3e346098d2db4a2f063babb33f805da3417" => :lion
+    sha1 "cf37af25e68023c6be1e9b190e144002eb7f68d2" => :yosemite
+    sha1 "f79dda6866edd1de41e28b19b7f0dd28b4f0b176" => :mavericks
+    sha1 "3a3ef310e40669a5a36dd2038c9aac152a990d67" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

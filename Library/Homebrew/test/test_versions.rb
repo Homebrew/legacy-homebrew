@@ -37,6 +37,7 @@ class VersionComparisonTests < Homebrew::TestCase
   def test_patchlevel
     assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
     assert_operator version('1.2.3-p33'), :<, version('1.2.3-p34')
+    assert_operator version('1.2.3-p10'), :>, version('1.2.3-p9')
   end
 
   def test_HEAD

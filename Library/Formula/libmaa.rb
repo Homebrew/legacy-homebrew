@@ -7,9 +7,10 @@ class Libmaa < Formula
 
   bottle do
     cellar :any
-    sha1 "f6202ebc9283ce8cf0b9718561220a3ed8f96926" => :mavericks
-    sha1 "9c45a8050f4b200d492840fb5532cae843895240" => :mountain_lion
-    sha1 "fe07fcbbf99da2816532a525bbf585d2185edda6" => :lion
+    revision 1
+    sha1 "2e87bbf21b8e9775341599459524078ac0f505b1" => :yosemite
+    sha1 "b2750220edec8b59538b80a3b0a32020fd662eaa" => :mavericks
+    sha1 "fc5057ee1f5b99573028908d15285aea445a74b9" => :mountain_lion
   end
 
   depends_on "libtool" => :build

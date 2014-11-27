@@ -43,6 +43,16 @@ class Tab < OpenStruct
     for_formula(Formulary.factory(name))
   end
 
+  def self.remap_deprecated_options deprecated_options, options
+    deprecated_options.each do |deprecated_option|
+      option = options.find {|option| option.name == deprecated_option.old }
+      next unless option
+      options -= [option]
+      options << Option.new(deprecated_option.current, option.description)
+    end
+    options
+  end
+
   def self.for_formula f
     paths = []
 
@@ -63,7 +73,10 @@ class Tab < OpenStruct
     path = paths.map { |pn| pn.join(FILENAME) }.find(&:file?)
 
     if path
-      from_file(path)
+      tab = from_file(path)
+      used_options = remap_deprecated_options(f.deprecated_options, tab.used_options)
+      tab.used_options = used_options.as_flags
+      tab
     else
       dummy_tab(f)
     end
@@ -81,7 +94,8 @@ class Tab < OpenStruct
             :compiler => :clang
   end
 
-  def with? name
+  def with? val
+    name = val.respond_to?(:option_name) ? val.option_name : val
     include?("with-#{name}") || unused_options.include?("without-#{name}")
   end
 
@@ -118,6 +132,10 @@ class Tab < OpenStruct
     lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
     CxxStdlib.create(lib, cc.to_sym)
+  end
+
+  def build_bottle?
+    built_as_bottle && !poured_from_bottle
   end
 
   def to_json

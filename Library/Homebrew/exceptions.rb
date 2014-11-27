@@ -81,8 +81,6 @@ end
 
 class CannotInstallFormulaError < RuntimeError; end
 
-class FormulaAlreadyInstalledError < RuntimeError; end
-
 class FormulaInstallationAlreadyAttemptedError < RuntimeError
   def initialize(formula)
     super "Formula installation already attempted: #{formula.name}"

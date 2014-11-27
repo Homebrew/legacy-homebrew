@@ -5,6 +5,12 @@ class OpenSceneGraph < Formula
 
   stable do
     url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.2.0.zip"
+  bottle do
+    sha1 "39ebd1c9cb19056e150b7087586e1e63a9546288" => :mavericks
+    sha1 "166b932d7d317cd32b1da89353bb3e03b4b13880" => :mountain_lion
+    sha1 "16055dc346e3a892c1083e08c40d32d37c2e10f0" => :lion
+  end
+
     sha1 "c20891862b5876983d180fc4a3d3cfb2b4a3375c"
 
     # Build fixes for clang/c++11
@@ -19,11 +25,13 @@ class OpenSceneGraph < Formula
       sha1 "8a2a0e8384a30e3adb2820786f91adb52ba69cd9"
     end
   end
+  revision 1
 
   head 'http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/'
 
-  option 'docs', 'Build the documentation with Doxygen and Graphviz'
   option :cxx11
+  option "with-docs", "Build the documentation with Doxygen and Graphviz"
+  deprecated_option "docs" => "with-docs"
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -42,9 +50,9 @@ class OpenSceneGraph < Formula
   depends_on 'qt5' => :optional
   depends_on 'qt' => :optional
 
-  if build.include? 'docs'
-    depends_on 'doxygen'
-    depends_on 'graphviz'
+  if build.with? "docs"
+    depends_on "doxygen" => :build
+    depends_on "graphviz" => :build
   end
 
   # Fix osgQt for Qt 5.2
@@ -60,7 +68,7 @@ class OpenSceneGraph < Formula
     end
 
     args = std_cmake_args
-    args << '-DBUILD_DOCUMENTATION=' + ((build.include? 'docs') ? 'ON' : 'OFF')
+    args << "-DBUILD_DOCUMENTATION=" + ((build.with? "docs") ? "ON" : "OFF")
 
     if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.arch_64_bit}"
@@ -85,9 +93,9 @@ class OpenSceneGraph < Formula
     mkdir 'build' do
       system 'cmake', *args
       system 'make'
-      system 'make', 'doc_openscenegraph' if build.include? 'docs'
+      system "make", "doc_openscenegraph" if build.with? "docs"
       system 'make install'
-      if build.include? 'docs'
+      if build.with? "docs"
         doc.install Dir["#{prefix}/doc/OpenSceneGraphReferenceDocs/*"]
       end
     end

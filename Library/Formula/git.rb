@@ -2,25 +2,25 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.1.1.tar.gz"
-  sha1 "23c5c7d808d9991677a847b6bfac1abad568020e"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.2.0.tar.gz"
+  sha1 "b59ad3f9e9c933960b064e31d793757c145be83a"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha1 "9429719ffbb0fa536ca5e891c2812cc83479098e" => :mavericks
-    sha1 "17faf38328596255bee07e5a54394d44e5359b97" => :mountain_lion
-    sha1 "690ddc3642bb8f5cdbdbc790f56baf0bb84bcd3f" => :lion
+    sha1 "df34daed34819add6193ff6399902a7450dc6888" => :yosemite
+    sha1 "c23a241a48521a665a064f970e9df068f5918e2b" => :mavericks
+    sha1 "164850a3d4d261c0d932a7504438a61291a25df4" => :mountain_lion
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.1.1.tar.gz"
-    sha1 "5981c26d58c74834e666c6891b25ec707be1a0d1"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.2.0.tar.gz"
+    sha1 "6d068b6526ef035f48505894de7452df22e6ed40"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.1.1.tar.gz"
-    sha1 "10ddf597009ea74aedde0ab9234f231d69be757d"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.2.0.tar.gz"
+    sha1 "fef0a1944d9d94d5a97e2dae3e53b9818af7973d"
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -36,10 +36,6 @@ class Git < Formula
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
   depends_on 'subversion' => 'perl' if build.with? 'brewed-svn'
-
-  # This patch fixes Makefile bug contrib/subtree
-  # http://thread.gmane.org/gmane.comp.version-control.git/255347
-  patch :DATA
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -148,22 +144,3 @@ class Git < Formula
     end
   end
 end
-
-__END__
---- a/contrib/subtree/Makefile
-+++ b/contrib/subtree/Makefile
-@@ -1,3 +1,5 @@
-+all::
-+
- -include ../../config.mak.autogen
- -include ../../config.mak
- 
-@@ -34,7 +36,7 @@ GIT_SUBTREE_XML := git-subtree.xml
- GIT_SUBTREE_TXT := git-subtree.txt
- GIT_SUBTREE_HTML := git-subtree.html
- 
--all: $(GIT_SUBTREE)
-+all:: $(GIT_SUBTREE)
- 
- $(GIT_SUBTREE): $(GIT_SUBTREE_SH)
- 	sed -e '1s|#!.*/sh|#!$(SHELL_PATH_SQ)|' $< >$@

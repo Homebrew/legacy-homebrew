@@ -3,7 +3,7 @@ require "formula"
 # This is a non-functional example formula to showcase all features and
 # therefore, it's overly complex and dupes stuff just to comment on it.
 # You may want to use `brew create` to start your own new formula!
-# Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
 
 ## Naming -- Every Homebrew formula is a class of the type `Formula`.
 # Ruby classes have to start Upper case and dashes are not allowed.
@@ -11,11 +11,14 @@ require "formula"
 # Homebrew does enforce that the name of the file and the class correspond.
 # Check with `brew search` that the name is free.
 class ExampleFormula < Formula
-  homepage "http://www.example.com" # used by `brew home example-formula`.
+  homepage "https://www.example.com" # used by `brew home example-formula`.
+  revision 1 # This is used when there's no new version but it needs recompiling for another reason.
+             # 0 is default & unwritten.
 
   # The url of the archive. Prefer https (security and proxy issues):
   url "https://packed.sources.and.we.prefer.https.example.com/archive-1.2.3.tar.bz2"
   mirror "https://in.case.the.host.is.down.example.com" # `mirror` is optional.
+  mirror "https://in.case.the.mirror.is.down.example.com" # Mirrors are limitless, but don't go too wild.
 
   # Optionally specify the download strategy `:using => ...`
   #     `:git`, `:hg`, `:svn`, `:bzr`, `:cvs`,
@@ -23,7 +26,6 @@ class ExampleFormula < Formula
   #     `:nounzip` (without extracting)
   #     `:post` (download via an HTTP POST)
   #     `S3DownloadStrategy` (download from S3 using signed request)
-  #     `UnsafeSubversionDownloadStrategy` (svn with invalid certs)
   url "https://some.dont.provide.archives.example.com", :using => :git, :tag => "1.2.3"
 
   # version is seldom needed, because it's usually autodetected from the URL/tag.
@@ -88,17 +90,15 @@ class ExampleFormula < Formula
 
   # Bottles are pre-built and added by the Homebrew maintainers for you.
   # If you maintain your own repository, you can add your own bottle links.
-  # Read in the wiki about how to provide bottles:
-  # <https://github.com/Homebrew/homebrew/wiki/Bottles>
+  # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Bottles.md
   bottle do
     root_url "http://mikemcquaid.com" # Optional root to calculate bottle URLs
     prefix "/opt/homebrew" # Optional HOMEBREW_PREFIX in which the bottles were built.
     cellar "/opt/homebrew/Cellar" # Optional HOMEBREW_CELLAR in which the bottles were built.
     revision 1 # Making the old bottle outdated without bumping the version of the formula.
-    sha1 "d3d13fe6f42416765207503a946db01378131d7b" => :mountain_lion
-    sha1 "cdc48e79de2dee796bb4ba1ad987f6b35ce1c1ee" => :lion
-    sha1 "a19b544c8c645d7daad1d39a070a0eb86dfe9b9c" => :snow_leopard
-    sha1 "583dc9d98604c56983e17d66cfca2076fc56312b" => :snow_leopard_32
+    sha1 "d3d13fe6f42416765207503a946db01378131d7b" => :yosemite
+    sha1 "cdc48e79de2dee796bb4ba1ad987f6b35ce1c1ee" => :mavericks
+    sha1 "a19b544c8c645d7daad1d39a070a0eb86dfe9b9c" => :mountain_lion
   end
 
   def pour_bottle?
@@ -156,6 +156,8 @@ class ExampleFormula < Formula
   depends_on :arch => :ppc # Only builds on PowerPC?
   depends_on :ld64 # Sometimes ld fails on `MacOS.version < :leopard`. Then use this.
   depends_on :x11 # X11/XQuartz components.
+  depends_on :osxfuse # Permits the use of the upstream signed binary or our source package.
+  depends_on :tuntap # Does the same thing as above. This is vital for Yosemite and above.
   depends_on :mysql => :recommended
   # It is possible to only depend on something if
   # `build.with?` or `build.without? "another_formula"`:
@@ -399,23 +401,43 @@ class ExampleFormula < Formula
       assert_equal "result", stdout.read
     end
 
-    # If an exception is raised (e.g. by assert), or if we return false, or if
-    # the command run by `system` prints to stderr, we consider the test failed.
+    # The test will fail if it returns false, or if an exception is raised.
+    # Failed assertions and failed `system` commands will raise exceptions.
   end
 
 
   ## Plist handling
 
+  # Does your plist need to be loaded at startup?
+  plist_options :startup => true
+  # Or only when necessary or desired by the user?
+  plist_options :manual => "foo"
+  # Or perhaps you'd like to give the user a choice? Ooh fancy.
+  plist_options :startup => "true", :manual => "foo start"
+
   # Define this method to provide a plist.
-  # Todo: Expand this example with a little demo plist? I dunno.
-  # There is more to startup plists. Help, I suck a plists!
-  def plist; nil; end
+  # Looking for another example? Check out Apple's handy manpage =>
+  # https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man5/plist.5.html
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <true/>
+    </plist>
+    EOS
+  end
 end
 
 __END__
 # Room for a patch after the `__END__`
-# Read in the wiki about how to get a patch in here:
-#    https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+# Read about how to get a patch in here:
+#    https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
 # In short, `brew install --interactive --git <formula>` and make your edits.
 # Then `git diff >> path/to/your/formula.rb`
 # Note, that HOMEBREW_PREFIX will be replaced in the path before it is

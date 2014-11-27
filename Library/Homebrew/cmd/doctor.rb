@@ -1,6 +1,7 @@
 require "cmd/missing"
 require "formula"
 require "keg"
+require "language/python"
 require "version"
 
 class Volumes
@@ -62,7 +63,7 @@ class Checks
   end
 
   # Git will always be on PATH because of the wrapper script in
-  # Library/Contributions/cmd, so we check if there is a *real*
+  # Library/ENV/scm, so we check if there is a *real*
   # git here to avoid multiple warnings.
   def git?
     return @git if instance_variable_defined?(:@git)
@@ -119,8 +120,11 @@ def check_for_stray_dylibs
   white_list = [
     "libfuse.2.dylib", # MacFuse
     "libfuse_ino64.2.dylib", # MacFuse
+    "libmacfuse_i32.2.dylib", # OSXFuse MacFuse compatibility layer
+    "libmacfuse_i64.2.dylib", # OSXFuse MacFuse compatibility layer
     "libosxfuse_i32.2.dylib", # OSXFuse
     "libosxfuse_i64.2.dylib", # OSXFuse
+    "libTrAPI.dylib", # TrAPI / Endpoint Security VPN
   ]
 
   __check_stray_files "/usr/local/lib", "*.dylib", white_list, <<-EOS.undent
@@ -153,6 +157,8 @@ def check_for_stray_pcs
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = [
+    "fuse.pc", # OSXFuse/MacFuse
+    "macfuse.pc", # OSXFuse MacFuse compatibility layer
     "osxfuse.pc", # OSXFuse
   ]
 
@@ -184,7 +190,9 @@ end
 
 def check_for_stray_headers
   white_list = [
-    "macfuse/**/*.h", # MacFuse
+    "fuse.h", # MacFuse
+    "fuse/**/*.h", # MacFuse
+    "macfuse/**/*.h", # OSXFuse MacFuse compatibility layer
     "osxfuse/**/*.h", # OSXFuse
   ]
 
@@ -240,7 +248,8 @@ if MacOS.version >= "10.9"
   end
 
   def check_xcode_up_to_date
-    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
+      <<-EOS.undent
       Your Xcode (#{MacOS::Xcode.version}) is outdated
       Please update to Xcode #{MacOS::Xcode.latest_version}.
       Xcode can be updated from the App Store.
@@ -346,7 +355,11 @@ end
 def check_for_bad_install_name_tool
   return if MacOS.version < "10.9"
 
-  libs = `otool -L /usr/bin/install_name_tool`
+  libs = Pathname.new("/usr/bin/install_name_tool").dynamically_linked_libraries
+
+  # otool may not work, for example if the Xcode license hasn't been accepted yet
+  return if libs.empty?
+
   unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
     You have an outdated version of /usr/bin/install_name_tool installed.
     This will cause binary package installations to fail.
@@ -419,6 +432,19 @@ end
       You should probably `chown` #{dir}
       EOS
     end
+  end
+end
+
+def check_access_site_packages
+  if Language::Python.homebrew_site_packages.exist? && !Language::Python.homebrew_site_packages.writable_real?
+    <<-EOS.undent
+      #{Language::Python.homebrew_site_packages} isn't writable.
+      This can happen if you "sudo pip install" software that isn't managed
+      by Homebrew. If you install a formula with Python modules, the install
+      will fail during the link step.
+
+      You should probably `chown` #{Language::Python.homebrew_site_packages}
+    EOS
   end
 end
 
@@ -643,21 +669,26 @@ def check_for_config_scripts
   return unless HOMEBREW_CELLAR.exist?
   real_cellar = HOMEBREW_CELLAR.realpath
 
-  config_scripts = []
+  scripts = []
 
-  whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
-  whitelist.map! { |d| d.downcase }
+  whitelist = %W[
+    /usr/bin /usr/sbin
+    /usr/X11/bin /usr/X11R6/bin /opt/X11/bin
+    #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin
+    /Applications/Server.app/Contents/ServerRoot/usr/bin
+    /Applications/Server.app/Contents/ServerRoot/usr/sbin
+  ].map(&:downcase)
 
   paths.each do |p|
-    next if whitelist.include? p.downcase
-    next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
+    next if whitelist.include?(p.downcase) || !File.directory?(p)
 
-    configs = Dir["#{p}/*-config"]
-    # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
-    config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
+    realpath = Pathname.new(p).realpath.to_s
+    next if realpath.start_with?(real_cellar.to_s, HOMEBREW_CELLAR.to_s)
+
+    scripts += Dir.chdir(p) { Dir["*-config"] }.map { |c| File.join(p, c) }
   end
 
-  unless config_scripts.empty?
+  unless scripts.empty?
     s = <<-EOS.undent
       "config" scripts exist outside your system or Homebrew directories.
       `./configure` scripts often look for *-config scripts to determine if
@@ -670,10 +701,7 @@ def check_for_config_scripts
 
     EOS
 
-    config_scripts.each do |dir, files|
-      files.each { |fn| s << "    #{dir}/#{fn}\n" }
-    end
-    s
+    s << scripts.map { |f| "  #{f}" }.join("\n")
   end
 end
 
@@ -901,7 +929,7 @@ end
 
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
-  %w{expat.framework libexpat.framework}.
+  %w{expat.framework libexpat.framework libcurl.framework}.
     map{ |frmwrk| "/Library/Frameworks/#{frmwrk}" }.
     select{ |frmwrk| File.exist? frmwrk }.
     map do |frmwrk| <<-EOS.undent
@@ -1029,7 +1057,7 @@ def check_for_non_prefixed_coreutils
 end
 
 def check_for_non_prefixed_findutils
-  default_names = Tab.for_name('findutils').include? 'default-names'
+  default_names = Tab.for_name('findutils').with? "default-names"
   if default_names then <<-EOS.undent
     Putting non-prefixed findutils in your path can cause python builds to fail.
     EOS
@@ -1135,6 +1163,24 @@ end
     end
   end
 
+  def check_for_pth_support
+    homebrew_site_packages = Language::Python.homebrew_site_packages
+    return unless homebrew_site_packages.directory?
+    return if Language::Python.reads_brewed_pth_files?("python") != false
+    return unless Language::Python.in_sys_path?("python", homebrew_site_packages)
+    user_site_packages = Language::Python.user_site_packages "python"
+    <<-EOS.undent
+      Your default Python does not recognize the Homebrew site-packages
+      directory as a special site-packages directory, which means that .pth
+      files will not be followed. This means you will not be able to import
+      some modules after installing them with Homebrew, like wxpython. To fix
+      this for the current user, you can run:
+
+        mkdir -p #{user_site_packages}
+        echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
+    EOS
+  end
+
   def all
     methods.map(&:to_s).grep(/^check_/)
   end
@@ -1161,7 +1207,13 @@ module Homebrew
 
     first_warning = true
     methods.each do |method|
-      out = checks.send(method)
+      begin
+        out = checks.send(method)
+      rescue NoMethodError
+        Homebrew.failed = true
+        puts "No check available by the name: #{method}"
+        next
+      end
       unless out.nil? or out.empty?
         if first_warning
           puts <<-EOS.undent

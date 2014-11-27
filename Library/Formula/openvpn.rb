@@ -14,7 +14,7 @@ class Openvpn < Formula
   end
 
   depends_on "lzo"
-  depends_on "tuntap"
+  depends_on :tuntap
   depends_on "openssl"
 
   def install
@@ -41,8 +41,9 @@ class Openvpn < Formula
   end
 
   def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info tuntap`
-    before trying to use OpenVPN.
+    If you have installed the Tuntap dependency as a source package you will
+    need to follow the instructions found in `brew info tuntap`. If you have
+    installed the binary Tuntap package, no further action is necessary.
 
     For OpenVPN to work as a server, you will need to create configuration file
     in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn

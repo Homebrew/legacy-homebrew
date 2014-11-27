@@ -8,9 +8,11 @@ class Mackup < Formula
   head "https://github.com/lra/mackup.git"
 
   def install
+    ENV.prepend_create_path "PYTHONPATH", lib/"python2.7/site-packages"
     system "python", "setup.py", "install", "--prefix=#{prefix}",
                      "--single-version-externally-managed",
                      "--record=installed.txt"
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

@@ -133,7 +133,7 @@ class Avidemux < Formula
     mkdir_p app/"MacOS"
     cp_r "./cmake/osx/Avidemux2.6", app/"MacOS/Avidemux2.6.app"
     chmod 0755, app/"MacOS/Avidemux2.6.app"
-    cp_r Formula['qt'].opt_prefix/"lib/QtGui.framework/Resources/qt_menu.nib", app/"MacOS/" if build.with? 'qt'
+    cp_r "#{Formula['qt'].opt_lib}/QtGui.framework/Resources/qt_menu.nib", app/"MacOS/" if build.with? 'qt'
     cp "./cmake/osx/Info.plist", app
     (app/"Resources").install_symlink bin, lib
     cp Dir["./cmake/osx/*.icns"], app/"Resources/"

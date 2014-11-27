@@ -3,14 +3,13 @@ require "formula"
 class Parrot < Formula
   homepage "http://www.parrot.org/"
   head "https://github.com/parrot/parrot.git"
-  url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.6.0/parrot-6.6.0.tar.bz2"
-  sha256 "08e9e02db952828f6ab71755be47f99ebc90894378f04d8e4d7f3bc623f79ff5"
-  revision 1
+  url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.9.0/parrot-6.9.0.tar.bz2"
+  sha256 "ad5f3723c216675b9ebc2e3d3807d24fd13aa55e1eb3e7ffcad4062e0026f482"
 
   bottle do
-    sha1 "490672e708d62a0c1fc5a38d6326d53f88636c18" => :mavericks
-    sha1 "2ad6a39e1d4f9d655c3b1340b45074aaae49d637" => :mountain_lion
-    sha1 "12a26f049a680a0669a3b43f76b709646b48ce08" => :lion
+    sha1 "8cadb0beb3984785d995a64847ed78b279798cee" => :yosemite
+    sha1 "da39dec1f80b1fa5192ed3b72ca53b7333e8ca3b" => :mavericks
+    sha1 "d09c985f1f51ecf6bed935da78311cb650b23ba7" => :mountain_lion
   end
 
   conflicts_with "rakudo-star"

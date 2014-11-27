@@ -1,16 +1,18 @@
-require 'formula'
+require "formula"
 
 class Lua51 < Formula
   # 5.2 is not fully backwards compatible so we must retain 2 Luas for now.
   # The transition has begun. Lua will now become Lua51, and Lua52 will become Lua.
-  homepage 'http://www.lua.org/'
-  url 'http://www.lua.org/ftp/lua-5.1.5.tar.gz'
-  sha1 'b3882111ad02ecc6b972f8c1241647905cb2e3fc'
+  homepage "http://www.lua.org/"
+  url "http://www.lua.org/ftp/lua-5.1.5.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5.orig.tar.gz"
+  sha1 "b3882111ad02ecc6b972f8c1241647905cb2e3fc"
 
   bottle do
-    sha1 "2b64683201c6ae570760a4b60406e6f3ab26d9df" => :mavericks
-    sha1 "e95bce9d8686eac65f824535a9a8af292ab6be8a" => :mountain_lion
-    sha1 "a4120e7eb5a1b8851c572d517f6b85f2e3a323d7" => :lion
+    revision 1
+    sha1 "139e0f93e5484c9eb256b65ceaaf05ea43919341" => :yosemite
+    sha1 "8f9293404e5acb8cd0aafb772e97eda7b7f06ca2" => :mavericks
+    sha1 "50fcc046ae49c44018ca2e88c1634b264e725681" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -19,8 +21,8 @@ class Lua51 < Formula
   end
 
   option :universal
-  option 'with-completion', 'Enables advanced readline support'
-  option 'without-sigaction', 'Revert to ANSI signal instead of improved POSIX sigaction'
+  option "with-completion", "Enables advanced readline support"
+  option "without-sigaction", "Revert to ANSI signal instead of improved POSIX sigaction"
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/Homebrew/homebrew/pull/5043
@@ -44,18 +46,18 @@ class Lua51 < Formula
     ENV.universal_binary if build.universal?
 
     # Use our CC/CFLAGS to compile.
-    inreplace 'src/Makefile' do |s|
-      s.remove_make_var! 'CC'
-      s.change_make_var! 'CFLAGS', "#{ENV.cflags} $(MYCFLAGS)"
-      s.change_make_var! 'MYLDFLAGS', ENV.ldflags
-      s.sub! 'MYCFLAGS_VAL', "-fno-common -DLUA_USE_LINUX"
+    inreplace "src/Makefile" do |s|
+      s.remove_make_var! "CC"
+      s.change_make_var! "CFLAGS", "#{ENV.cflags} $(MYCFLAGS)"
+      s.change_make_var! "MYLDFLAGS", ENV.ldflags
+      s.sub! "MYCFLAGS_VAL", "-fno-common -DLUA_USE_LINUX"
     end
 
     # Fix path in the config header
-    inreplace 'src/luaconf.h', '/usr/local', HOMEBREW_PREFIX
+    inreplace "src/luaconf.h", "/usr/local", HOMEBREW_PREFIX
 
     # Fix paths in the .pc
-    inreplace 'etc/lua.pc' do |s|
+    inreplace "etc/lua.pc" do |s|
       s.gsub! "prefix= /usr/local", "prefix=#{HOMEBREW_PREFIX}"
       s.gsub! "INSTALL_MAN= ${prefix}/man/man1", "INSTALL_MAN= ${prefix}/share/man/man1"
       s.gsub! "INSTALL_INC= ${prefix}/include", "INSTALL_INC= ${prefix}/include/lua-5.1"
@@ -66,7 +68,7 @@ class Lua51 < Formula
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
 
-    (lib+"pkgconfig").install 'etc/lua.pc'
+    (lib+"pkgconfig").install "etc/lua.pc"
 
     # Renaming from Lua to Lua51.
     # Note that the naming must be both lua-version & lua.version.
@@ -84,9 +86,7 @@ class Lua51 < Formula
   end
 
   test do
-    output = `#{bin}/lua-5.1 -e "for i=0,9 do io.write(i) end"`
-    assert_equal "0123456789", output
-    assert_equal 0, $?.exitstatus
+    system "#{bin}/lua5.1", "-e", "print ('Ducks are cool')"
   end
 end
 

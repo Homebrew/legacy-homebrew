@@ -8,7 +8,7 @@ module Homebrew
       missing_deps = f.recursive_dependencies do |dependent, dep|
         if dep.optional? || dep.recommended?
           tab = Tab.for_formula(dependent)
-          Dependency.prune unless tab.with?(dep.name)
+          Dependency.prune unless tab.with?(dep)
         elsif dep.build?
           Dependency.prune
         end

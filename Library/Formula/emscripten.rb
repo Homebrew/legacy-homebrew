@@ -1,14 +1,14 @@
 require "formula"
 
 class Emscripten < Formula
-  homepage "http://emscripten.org"
-  url "https://github.com/kripken/emscripten/archive/1.24.0.tar.gz"
-  sha1 "19f45d0d33078959aa84b48c4cbe8a9cf8a7a12b"
+  homepage "https://kripken.github.io/emscripten-site/"
+  url "https://github.com/kripken/emscripten/archive/1.27.0.tar.gz"
+  sha1 "82feb97e78b87a159c7382b772f62fe5ba2bd0e2"
 
   bottle do
-    sha1 "b5093ee8311a3cfc22526c26eab67b92c4554ffc" => :mavericks
-    sha1 "b52376a4b6e2f7e830cb9679963210875e2c0e4f" => :mountain_lion
-    sha1 "eb5f07a073f38e19df12aa3005057fed71742827" => :lion
+    sha1 "5d981b548c225cd4d8efc6bcc06ddd635483af28" => :yosemite
+    sha1 "ff71534e13b36cafd5d3fa89a7cb32a4ce6abed8" => :mavericks
+    sha1 "4e8831fe22a636971d59d7968c2fce704928244f" => :mountain_lion
   end
 
   head do
@@ -25,16 +25,17 @@ class Emscripten < Formula
 
   stable do
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.24.0.tar.gz"
-      sha1 "39d28dbed54edb267c30f480ef579738fac42d24"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.27.0.tar.gz"
+      sha1 "77343ed1206a6407bcaafb901f699d4c5d2c3c83"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.24.0.tar.gz"
-      sha1 "4b89e978b8ad9227daca7460e43da4cb78bc7c30"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.27.0.tar.gz"
+      sha1 "53a4ee4482e79117fdd6979f6e2d80d18e2c9dca"
     end
   end
 
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "node"
   depends_on "closure-compiler" => :optional
   depends_on "yuicompressor"
@@ -64,6 +65,10 @@ class Emscripten < Formula
     ]
 
     cd "fastcomp" do
+      # Fix for parsing Mac OS X version numbers >= 10.10
+      # https://groups.google.com/forum/#!msg/emscripten-discuss/8gb88R5eyqs/p9_82Wi2pSAJ
+      inreplace "Makefile.rules", '10.([0-9])', '10.([0-9]+)'
+      inreplace "Makefile.rules", '(10.[0-9])', '(10.[0-9]+)'
       system "./configure", *args
       system "make"
       system "make", "install"
@@ -80,7 +85,8 @@ class Emscripten < Formula
   end
 
   def caveats; <<-EOS.undent
-    Manually set LLVM_ROOT to \"#{opt_prefix}/libexec/llvm/bin\"
+    Manually set LLVM_ROOT to
+      #{opt_libexec}/llvm/bin
     in ~/.emscripten after running `emcc` for the first time.
     EOS
   end

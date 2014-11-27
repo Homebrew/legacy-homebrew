@@ -80,7 +80,7 @@ class Version
 
   class CompositeToken < StringToken
     def rev
-      value[/([0-9]+)/, 1] || "0"
+      value[/[0-9]+/].to_i
     end
   end
 

@@ -1,25 +1,47 @@
-require 'formula'
+require "formula"
 
 class Zookeeper < Formula
-  homepage 'http://zookeeper.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
-  sha1 '2a9e53f5990dfe0965834a525fbcad226bf93474'
+  homepage "https://zookeeper.apache.org/"
   revision 1
 
+  stable do
+    url "http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
+    sha1 "2a9e53f5990dfe0965834a525fbcad226bf93474"
+
+    # To resolve Yosemite build errors.
+    # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
+    if MacOS.version == :yosemite
+      patch :p0 do
+        url "https://issues.apache.org/jira/secure/attachment/12673210/ZOOKEEPER-2049.noprefix.branch-3.4.patch"
+        sha1 "ff0e971c028050ccebd8cc7caa348ab14716d664"
+      end
+    end
+  end
+
   bottle do
-    sha1 "44d960c61b67308c2e6e510399505582afe2904d" => :mavericks
-    sha1 "df1c9ff667738859b1362541bcd14bcdfcf6804c" => :mountain_lion
-    sha1 "23cdb5e2a183ef2593b4d7c4e2047fb7a774e031" => :lion
+    revision 1
+    sha1 "4ef32a515592565bdf88546b9773725e4079a080" => :yosemite
+    sha1 "c2db3e5bf5f66cd575a827842d667ec7f1acf6d0" => :mavericks
+    sha1 "ac54b226852c9ec51477de8263bec2c767f7e842" => :mountain_lion
   end
 
   head do
-    url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
+    url "https://svn.apache.org/repos/asf/zookeeper/trunk"
 
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+    # To resolve Yosemite build errors.
+    # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
+    if MacOS.version == :yosemite
+      patch :p0 do
+        url "https://issues.apache.org/jira/secure/attachment/12673212/ZOOKEEPER-2049.noprefix.trunk.patch"
+        sha1 "79ed0793e4693c9bbb83aad70582b55012f19eac"
+      end
+    end
+
     depends_on "ant" => :build
     depends_on "cppunit" => :build
+    depends_on "libtool" => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   option "perl", "Build Perl bindings"
@@ -55,9 +77,9 @@ class Zookeeper < Formula
   def install
     # Don't try to build extensions for PPC
     if Hardware.is_32_bit?
-      ENV['ARCHFLAGS'] = "-arch #{Hardware::CPU.arch_32_bit}"
+      ENV["ARCHFLAGS"] = "-arch #{Hardware::CPU.arch_32_bit}"
     else
-      ENV['ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
+      ENV["ARCHFLAGS"] = Hardware::CPU.universal_archs.as_arch_flags
     end
 
     if build.head?
@@ -69,7 +91,7 @@ class Zookeeper < Formula
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
                             "--without-cppunit"
-      system "make install"
+      system "make", "install"
     end
 
     cd "src/contrib/zkpython" do
@@ -81,7 +103,7 @@ class Zookeeper < Formula
       system "perl", "Makefile.PL", "PREFIX=#{prefix}",
                                     "--zookeeper-include=#{include}",
                                     "--zookeeper-lib=#{lib}"
-      system "make install"
+      system "make", "install"
     end if build.include? "perl"
 
     rm_f Dir["bin/*.cmd"]
@@ -94,27 +116,27 @@ class Zookeeper < Formula
     end
 
     bin.mkpath
-    (etc+'zookeeper').mkpath
-    (var+'log/zookeeper').mkpath
-    (var+'run/zookeeper/data').mkpath
+    (etc+"zookeeper").mkpath
+    (var+"log/zookeeper").mkpath
+    (var+"run/zookeeper/data").mkpath
 
     Pathname.glob("#{libexec}/bin/*.sh") do |path|
-      next if path == libexec+'bin/zkEnv.sh'
+      next if path == libexec+"bin/zkEnv.sh"
       script_name = path.basename
-      bin_name    = path.basename '.sh'
+      bin_name    = path.basename ".sh"
       (bin+bin_name).write shim_script(script_name)
     end
 
-    defaults = etc/'zookeeper/defaults'
+    defaults = etc/"zookeeper/defaults"
     defaults.write(default_zk_env) unless defaults.exist?
 
-    log4j_properties = etc/'zookeeper/log4j.properties'
+    log4j_properties = etc/"zookeeper/log4j.properties"
     log4j_properties.write(default_log4j_properties) unless log4j_properties.exist?
 
-    inreplace 'conf/zoo_sample.cfg',
+    inreplace "conf/zoo_sample.cfg",
               /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
-    cp 'conf/zoo_sample.cfg', 'conf/zoo.cfg'
-    (etc/'zookeeper').install ['conf/zoo.cfg', 'conf/zoo_sample.cfg']
+    cp "conf/zoo_sample.cfg", "conf/zoo.cfg"
+    (etc/"zookeeper").install ["conf/zoo.cfg", "conf/zoo_sample.cfg"]
   end
 
   plist_options :manual => "zkServer start"

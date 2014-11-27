@@ -7,9 +7,10 @@ class Sdl < Formula
 
   bottle do
     cellar :any
-    sha1 "c773fb3d4118d4c6b0a9ead984a9893d6e9e88bf" => :mavericks
-    sha1 "6b6e01081d5381a5117a46fa7aa090ce45c18212" => :mountain_lion
-    sha1 "119ef97b48576db0644ef51c9f473affd8b64493" => :lion
+    revision 1
+    sha1 "349711f92cec0b02b53439b3126fe540bfea04e1" => :yosemite
+    sha1 "77ec0e596a9a66c60f843a2528b38d2ef2e4c9f5" => :mavericks
+    sha1 "d27291ac68ac7c22e6c7b35d0e658a65a6f2d189" => :mountain_lion
   end
 
   head do
@@ -20,11 +21,14 @@ class Sdl < Formula
     depends_on "libtool" => :build
   end
 
-  option 'with-x11-driver', 'Compile with support for X11 video driver'
+  option 'with-x11', 'Compile with support for X11 video driver'
   option :universal
 
-  if build.with? 'x11-driver'
-    depends_on :x11
+  deprecated_option "with-x11-driver" => "with-x11"
+
+  depends_on :x11 => :optional
+
+  if build.with? 'x11'
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -57,13 +61,13 @@ class Sdl < Formula
 
     ENV.universal_binary if build.universal?
 
-    system "./autogen.sh" if build.head? or build.with? 'x11-driver'
+    system "./autogen.sh" if build.head? or build.with? 'x11'
 
     args = %W[--prefix=#{prefix}]
     args << "--disable-nasm" unless MacOS.version >= :mountain_lion # might work with earlier, might only work with new clang
     # LLVM-based compilers choke on the assembly code packaged with SDL.
     args << '--disable-assembly' if ENV.compiler == :llvm or (ENV.compiler == :clang and MacOS.clang_build_version < 421)
-    args << "--without-x" if build.without? 'x11-driver'
+    args << "--without-x" if build.without? 'x11'
 
     system './configure', *args
     system "make install"

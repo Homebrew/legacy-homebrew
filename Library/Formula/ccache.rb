@@ -2,8 +2,14 @@ require 'formula'
 
 class Ccache < Formula
   homepage 'http://ccache.samba.org/'
-  url 'http://samba.org/ftp/ccache/ccache-3.1.9.tar.bz2'
-  sha1 'e80a5cb7301e72f675097246d722505ae56e3cd3'
+  url 'http://samba.org/ftp/ccache/ccache-3.2.tar.bz2'
+  sha1 '2dce973a0dc0208108202983ccb7332c30e3b0fd'
+
+  bottle do
+    sha1 "5f2b5557da18bbaf56ddf0082714f4174587f48e" => :yosemite
+    sha1 "6fd29412eb8863abfb823dfdc6b14971a447c0ee" => :mavericks
+    sha1 "a2f3ed24c30f6402ab646cf55b7a4914af9e0551" => :mountain_lion
+  end
 
   head do
     url 'https://github.com/jrosdahl/ccache.git'

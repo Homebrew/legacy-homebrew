@@ -4,14 +4,14 @@ class Moc < Formula
   homepage 'http://moc.daper.net'
 
   stable do
-    url "http://ftp.daper.net/pub/soft/moc/unstable/moc-2.5.0-beta1.tar.bz2"
-    sha1 "4030a1fa5c7cfef06909c54d8c7a1fbb93f23caa"
+    url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.0.tar.bz2"
+    sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
+  end
 
-    # Patches up to r2544 (HEAD at 2013-08-13)
-    patch :p0 do
-      url "https://gist.githubusercontent.com/toroidal-code/6310844/raw/23c460144b64040eb6c3117693fd7e129a462b26/ffmpeg-patch.diff"
-      sha1 "55d64d17b320b391a5c11f502417fa8353498b37"
-    end
+  bottle do
+    sha1 "1a08c15f965d74614f142ee8ec2bea75b5d999cd" => :yosemite
+    sha1 "7168fc76526f705ecc4ee766e2f6d7a37e271b46" => :mavericks
+    sha1 "876c8a6cbf642db773e6c65794e7632422e9cafa" => :mountain_lion
   end
 
   head 'svn://daper.net/moc/trunk'

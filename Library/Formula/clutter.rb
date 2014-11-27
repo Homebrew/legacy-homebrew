@@ -11,7 +11,7 @@ class Clutter < Formula
     sha1 "7565ae43a559f988271cfdf8a745cc7919659efe" => :lion
   end
 
-  option "without-x", "Build without X11 support"
+  deprecated_option "without-x" => "without-x11"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
@@ -21,7 +21,7 @@ class Clutter < Formula
   depends_on "atk"
   depends_on "pango"
   depends_on "json-glib"
-  depends_on :x11 => "2.5.1" if build.with? "x"
+  depends_on :x11 => ["2.5.1", :recommended]
   depends_on "gobject-introspection"
 
   def install
@@ -37,7 +37,7 @@ class Clutter < Formula
       --disable-gtk-doc-html
     ]
 
-    if build.with? "x"
+    if build.with? "x11"
       args.concat %w{
         --with-x --enable-x11-backend=yes
         --enable-gdk-pixbuf=yes

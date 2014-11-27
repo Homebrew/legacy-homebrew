@@ -23,9 +23,15 @@ class Wine < Formula
     end
   end
 
+  bottle do
+    sha1 "348f15e19880888d19d04d2fe4bad42048fe6828" => :yosemite
+    sha1 "69f05602ecde44875cf26297871186aaa0b26cd7" => :mavericks
+    sha1 "a89371854006687b74f4446a52ddb1f68cfafa7e" => :mountain_lion
+  end
+
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.27.tar.bz2"
-    sha256 "99d2050c5bd04591a3e5f84d2ad6c021deb4d8b97874050cd3946d5c984d32b2"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.31.tar.bz2"
+    sha256 "3c6e62cb3bfab8505f8b9cbde0fe81072043875c4e655bd1dedd2a5f613ce490"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -63,9 +69,9 @@ class Wine < Formula
   depends_on 'libgsm' => :optional
 
   resource 'gecko' do
-    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
-    version '2.24'
-    sha1 'b4923c0565e6cbd20075a0d4119ce3b48424f962'
+    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.34-x86.msi', :using => :nounzip
+    version '2.34'
+    sha256 '956c26bf302b1864f4d7cb6caee4fc83d4c1281157731761af6395b876e29ca7'
   end
 
   resource 'mono' do

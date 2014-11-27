@@ -2,48 +2,41 @@ require "formula"
 
 class Fontforge < Formula
   homepage "https://fontforge.github.io"
-
-  stable do
-    url "https://github.com/fontforge/fontforge/archive/2.0.20140101.tar.gz"
-    sha1 "abce297e53e8b6ff6f08871e53d1eb0be5ab82e7"
-
-    depends_on "cairo" => :optional
-    depends_on :python => :optional
-  end
+  url "https://github.com/fontforge/fontforge/releases/download/20141126/fontforge-20141126.tar.gz"
+  sha1 "ecd776480a47cdcbe1b30ce275172d7d52288e77"
+  head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    sha1 "3495cb05210a3d70ef8d39835502afc28af8c2a2" => :mavericks
-    sha1 "430aaddeb6f59729e9216ba67223a8ce1c5b9ee2" => :mountain_lion
-    sha1 "f1ff364ff4e0dc54483a370a8ea54abf150f4f22" => :lion
+    sha1 "9cb3881adf612eae21aa4c70eb17907a96f05d8d" => :yosemite
+    sha1 "a079566b826ae865e2f393eaaa56cdc097d1f458" => :mavericks
+    sha1 "dcb8c5630310b8a7c534e90e4579d2734a0154ab" => :mountain_lion
   end
 
-  head do
-    url "https://github.com/fontforge/fontforge.git"
+  deprecated_option "with-x" => "with-x11"
+  deprecated_option "with-gif" => "with-giflib"
 
-    depends_on "zeromq"
-    depends_on "czmq"
-    depends_on "cairo"
-    depends_on :python if MacOS.version <= :snow_leopard
-  end
+  option "with-giflib", "Build with GIF support"
 
-  option 'with-gif', 'Build with GIF support'
-  option 'with-x', 'Build with X11 support, building the app bundle'
-  option 'with-python', 'Build with Python extensions and scripting'
-
+  # Autotools are required to build from source in all releases.
+  # I have upstreamed a request to change this, so keep monitoring the situation.
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
-  depends_on :libltdl
-  depends_on "ossp-uuid"
+  depends_on "libtool" => :run
   depends_on "gettext"
   depends_on "pango"
+  depends_on "zeromq"
+  depends_on "czmq"
   depends_on "libpng"   => :recommended
   depends_on "jpeg"     => :recommended
   depends_on "libtiff"  => :recommended
-  depends_on :x11 if build.with? "x"
-  depends_on "giflib" if build.with? "gif"
+  depends_on :x11 => :optional
+  depends_on "gtk+" => :optional
+  depends_on "giflib" => :optional
   depends_on "libspiro" => :optional
   depends_on "fontconfig"
+  depends_on "cairo"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   fails_with :llvm do
     build 2336
@@ -52,14 +45,15 @@ class Fontforge < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-x" if build.with? 'x'
 
-    unless build.head?
-      # Cairo & Python are still optional in stable, but not in HEAD.
-      args << "--without-cairo" if build.without? "cairo"
-      args << "--disable-python-extension" if build.without? "python"
-      args << "--disable-python-scripting" if build.without? "python"
-    end
+    args << "--with-x" if build.with? "x11"
+    args << "--enable-gtk2-use" if build.with? "gtk+"
+
+    args << "--without-libpng" if build.without? "libpng"
+    args << "--without-libjpeg" if build.without? "jpeg"
+    args << "--without-libtiff" if build.without? "libtiff"
+    args << "--without-giflib" if build.without? "giflib"
+    args << "--without-libspiro" if build.without? "libspiro"
 
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
@@ -69,27 +63,21 @@ class Fontforge < Formula
     ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
 
     # And finding Homebrew's Python
-    if build.with? "python"
-      ENV.append_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/"
-      ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
-    end
+    ENV.append_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/"
+    ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
 
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
-    system "./autogen.sh" if build.stable?
-    system "./bootstrap" if build.head?
+    # Bootstrap in every build. See the link below.
+    system "./bootstrap" #https://github.com/fontforge/fontforge/issues/1806
     system "./configure", *args
     system "make"
     system "make", "install"
 
-    # Fix the broken fontforge_package_name issue
-    # This is fixed in the HEAD build.
-    if build.stable?
-      mv "#{include}/fontforge_package_name", "#{include}/fontforge"
-      mv "#{share}/fontforge_package_name", "#{share}/fontforge"
-      mv "#{share}/doc/fontforge_package_name", "#{share}/doc/fontforge"
-    end
+    # Link this to enable symlinking into /Applications with brew linkapps.
+    # The name is case-sensitive. It breaks without both F's capitalised.
+    ln_s "#{share}/fontforge/osx/FontForge.app", prefix
   end
 
   test do

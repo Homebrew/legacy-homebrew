@@ -7,9 +7,10 @@ class Libtins < Formula
   head "https://github.com/mfontanini/libtins.git"
 
   bottle do
-    sha1 "a192104ba75ed438f9238f8e574ff89d6616b337" => :mavericks
-    sha1 "5eb5c9d9c7165d70d98473b06b8faadbd5b3133b" => :mountain_lion
-    sha1 "b8bbdf13d0d00d963195bf749a4f51d67e20fb2d" => :lion
+    revision 1
+    sha1 "3f7a5a404ce751fe953100f8a282490dec1eed2a" => :yosemite
+    sha1 "316b0d0b1255f9aa25b257a29f1900c49ec09046" => :mavericks
+    sha1 "85fb8ad451c673cb5cc918294e563525a95824ae" => :mountain_lion
   end
 
   option :cxx11

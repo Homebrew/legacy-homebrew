@@ -2,9 +2,9 @@ require 'formula'
 
 class DynamodbLocal < Formula
   homepage 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html'
-  url 'http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_2014-04-24.tar.gz'
-  version '2014-04-24'
-  sha1 '16e7fcf5b71498d72e093b1fbd6cf17e989bea84'
+  url 'http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_2014-10-07.tar.gz'
+  version '2014-10-07'
+  sha1 '7fc8a3b246d9e132c0522c3e08acf6f14d76fe44'
 
   def data_path
     var/'data/dynamodb-local'

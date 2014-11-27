@@ -2,16 +2,15 @@ require 'formula'
 
 class Weechat < Formula
   homepage 'http://www.weechat.org'
-  url 'http://weechat.org/files/src/weechat-1.0.tar.bz2'
-  sha1 'd3070ffde05cb706d615144e71f933153871894d'
-  revision 1
+  url 'http://weechat.org/files/src/weechat-1.0.1.tar.gz'
+  sha1 '1d33591b6c0adc2c30b36a7b349603cbdbcb40b2'
 
   head 'https://github.com/weechat/weechat.git'
 
   bottle do
-    sha1 "19360d0fe50646b592b78bb36353547dd1f43317" => :mavericks
-    sha1 "2d4fb76df048df84fb2ec878a2964573a36f74ee" => :mountain_lion
-    sha1 "add1d9b1eb865db66cae4c534c200a790e133677" => :lion
+    sha1 "d7112142ed11d2a1a55b367e01e0200b5ba0cae6" => :mavericks
+    sha1 "39d482d54d391ce27a0aff4de22b5a122ab27275" => :mountain_lion
+    sha1 "8cfbd8d53a85b88138bff6c4545efa955fa30c26" => :lion
   end
 
   depends_on 'cmake' => :build

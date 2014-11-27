@@ -13,17 +13,20 @@ class Onetime < Formula
   end
 
   devel do
-    url "https://github.com/kfogel/OneTime/archive/2.0-beta2.tar.gz"
-    version "2.0.02"
-    sha1 "2dbfe3f6479aed6c9e76337dd27b063ff73967fa"
+    url "http://red-bean.com/onetime/onetime-2.0-beta3.tar.gz"
+    version "2.0.03"
+    sha1 "db488e9c1463bc4d4b8905546137e15f4fa864e2"
+  end
+
+  # Fixes the Makefile to permit destination specification
+  # https://github.com/kfogel/OneTime/pull/12
+  patch do
+    url "https://github.com/kfogel/OneTime/pull/12.diff"
+    sha1 "24c3d023c13b556bb34f28909a6ce455f641504c"
   end
 
   def install
-    # inreplace required for now due to upstream issue:
-    # https://github.com/kfogel/OneTime/issues/11
-    inreplace "Makefile", "$(DESTDIR)/usr/bin/", "$(DESTDIR)#{bin}"
-    mkdir bin
-    system "make", "install"
+    system "make", "prefix=#{prefix}", "install"
   end
 
   test do

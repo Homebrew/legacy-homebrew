@@ -2,9 +2,9 @@ require "formula"
 
 class Neo4j < Formula
   homepage "http://neo4j.org"
-  url "http://dist.neo4j.org/neo4j-community-2.1.4-unix.tar.gz"
-  sha1 "d891c848d30ed4b181416ee21d1f9c3e814db6c6"
-  version "2.1.4"
+  url "http://dist.neo4j.org/neo4j-community-2.1.6-unix.tar.gz"
+  sha1 "6f790bb9dc50e50ba2409101f809e6b3a6cd709e"
+  version "2.1.6"
 
   def install
     # Remove windows files
