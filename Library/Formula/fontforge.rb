@@ -2,33 +2,14 @@ require "formula"
 
 class Fontforge < Formula
   homepage "https://fontforge.github.io"
-
-  stable do
-    url "https://github.com/fontforge/fontforge/releases/download/20141014/fontforge-20141014.tar.gz"
-    sha1 "b366293e423a94d213824368460fa80f9a1ad810"
-
-    # Upstream commit allowing non-/Applications app bundle to run.
-    # Doesn't actually work for me yet in stable - Keep an eye on that.
-    patch do
-      url "https://github.com/fontforge/fontforge/commit/bce235d23b8.diff"
-      sha1 "8ec20f07bbf5f93c052bed7304c6e667046910ef"
-    end
-  end
+  url "https://github.com/fontforge/fontforge/releases/download/20141126/fontforge-20141126.tar.gz"
+  sha1 "ecd776480a47cdcbe1b30ce275172d7d52288e77"
+  head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    revision 1
     sha1 "ef8e64045c5f97d154a8deb96efb94f72b4ecf6a" => :yosemite
     sha1 "37363b5e3923118b1b7eaeb7c4320b955fa7c8b5" => :mavericks
     sha1 "1d463715d0ca9d27dcac36904c28b750698f2de0" => :mountain_lion
-  end
-
-  head do
-    url "https://github.com/fontforge/fontforge.git"
-
-    # Remove this block after next stable release and make mandatory for all again.
-    # Several unique issues fixed in HEAD.
-    depends_on "zeromq"
-    depends_on "czmq"
   end
 
   deprecated_option "with-x" => "with-x11"
@@ -44,10 +25,13 @@ class Fontforge < Formula
   depends_on "libtool" => :run
   depends_on "gettext"
   depends_on "pango"
+  depends_on "zeromq"
+  depends_on "czmq"
   depends_on "libpng"   => :recommended
   depends_on "jpeg"     => :recommended
   depends_on "libtiff"  => :recommended
   depends_on :x11 => :optional
+  depends_on "gtk+" => :optional
   depends_on "giflib" => :optional
   depends_on "libspiro" => :optional
   depends_on "fontconfig"
@@ -63,6 +47,7 @@ class Fontforge < Formula
     args = ["--prefix=#{prefix}"]
 
     args << "--with-x" if build.with? "x11"
+    args << "--enable-gtk2-use" if build.with? "gtk+"
 
     args << "--without-libpng" if build.without? "libpng"
     args << "--without-libjpeg" if build.without? "jpeg"
