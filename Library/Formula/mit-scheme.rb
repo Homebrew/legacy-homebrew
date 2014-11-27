@@ -7,9 +7,10 @@ class MitScheme < Formula
   sha1 "d2820ee76da109d370535fec6e19910a673aa7ee"
 
   bottle do
-    sha1 "dadd99b6228b6950c91e57a0e5197a5f61f80cd1" => :mavericks
-    sha1 "d91e6fdd907d7747fa56cced88926242888d50d5" => :mountain_lion
-    sha1 "e02e2cf5cc62c24159ef5690172c9bcb4e09645d" => :lion
+    revision 1
+    sha1 "af57614a2fba575d897aead31686ee5cd363fb4f" => :yosemite
+    sha1 "7bdca846c5d7efb137b05fa6bff6b755e8eed3fa" => :mavericks
+    sha1 "f1c8d3788f6308be61948350ea33dd7ce085307f" => :mountain_lion
   end
 
   conflicts_with "tinyscheme", :because => "both install a `scheme` binary"
