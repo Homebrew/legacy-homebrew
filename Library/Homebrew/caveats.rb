@@ -111,7 +111,7 @@ class Caveats
       plist_filename = if f.plist
         f.plist_path.basename
       else
-        File.basename Dir["#{keg.to_path}/*.plist"].first
+        File.basename Dir["#{keg}/*.plist"].first
       end
       plist_link = "#{destination}/#{plist_filename}"
       plist_domain = f.plist_path.basename('.plist')
