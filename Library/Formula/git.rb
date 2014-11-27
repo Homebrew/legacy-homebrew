@@ -2,8 +2,8 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.1.3.tar.gz"
-  sha1 "e8e7dcff1c23dc56f5d00460283f8ab779998f48"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.2.0.tar.gz"
+  sha1 "b59ad3f9e9c933960b064e31d793757c145be83a"
 
   head "https://github.com/git/git.git", :shallow => false
 
@@ -14,32 +14,27 @@ class Git < Formula
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.1.3.tar.gz"
-    sha1 "68b07135b73ca05dab08eb909dfcecd0216230d2"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.2.0.tar.gz"
+    sha1 "6d068b6526ef035f48505894de7452df22e6ed40"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.1.3.tar.gz"
-    sha1 "5177f471c677ffb570e8618b7dce79e1024a628e"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.2.0.tar.gz"
+    sha1 "fef0a1944d9d94d5a97e2dae3e53b9818af7973d"
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
-  option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
   option 'with-brewed-svn', "Use Homebrew's version of SVN"
   option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
+  depends_on 'openssl'
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
-  depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
   depends_on 'subversion' => 'perl' if build.with? 'brewed-svn'
-
-  # This patch fixes Makefile bug contrib/subtree
-  # http://thread.gmane.org/gmane.comp.version-control.git/255347
-  patch :DATA
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -148,22 +143,3 @@ class Git < Formula
     end
   end
 end
-
-__END__
---- a/contrib/subtree/Makefile
-+++ b/contrib/subtree/Makefile
-@@ -1,3 +1,5 @@
-+all::
-+
- -include ../../config.mak.autogen
- -include ../../config.mak
- 
-@@ -34,7 +36,7 @@ GIT_SUBTREE_XML := git-subtree.xml
- GIT_SUBTREE_TXT := git-subtree.txt
- GIT_SUBTREE_HTML := git-subtree.html
- 
--all: $(GIT_SUBTREE)
-+all:: $(GIT_SUBTREE)
- 
- $(GIT_SUBTREE): $(GIT_SUBTREE_SH)
- 	sed -e '1s|#!.*/sh|#!$(SHELL_PATH_SQ)|' $< >$@
