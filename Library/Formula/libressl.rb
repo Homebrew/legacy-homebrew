@@ -29,6 +29,7 @@ class Libressl < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-openssldir=#{etc}/libressl",
+                          "--sysconfdir=#{etc}/libressl",
                           "--with-enginesdir=#{lib}/engines"
 
     system "make"
@@ -37,6 +38,22 @@ class Libressl < Formula
 
     mkdir_p "#{etc}/libressl"
     touch "#{etc}/libressl/openssl.cnf"
+  end
+
+  def post_install
+    if (etc/"openssl/cert.pem").exist?
+      cp "#{etc}/openssl/cert.pem", "#{etc}/libressl"
+    else
+      touch "#{etc}/libressl/cert.pem"
+    end
+  end
+
+  def caveats; <<-EOS.undent
+    If you have OpenSSL installed, the .pem file has been copied
+    from there. Otherwise, a blank .pem file has been touched.
+    To add additional certificates, place .pem files in
+      #{etc}/libressl
+    EOS
   end
 
   test do
