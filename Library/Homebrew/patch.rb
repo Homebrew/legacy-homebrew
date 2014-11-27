@@ -66,7 +66,7 @@ class EmbeddedPatch
 
   def apply
     data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
-    cmd, args = "/usr/bin/patch", %W[-g 0 -f -#{strip}]
+    cmd, args = OS::PATH_PATCH, %W[-g 0 -f -#{strip}]
     IO.popen("#{cmd} #{args.join(" ")}", "w") { |p| p.write(data) }
     raise ErrorDuringExecution.new(cmd, args) unless $?.success?
   end
@@ -129,7 +129,7 @@ class ExternalPatch
     resource.unpack do
       # Assumption: the only file in the staging directory is the patch
       patchfile = Pathname.pwd.children.first
-      safe_system "/usr/bin/patch", "-g", "0", "-f", "-d", dir, "-#{strip}", "-i", patchfile
+      safe_system OS::PATH_PATCH, "-g", "0", "-f", "-d", dir, "-#{strip}", "-i", patchfile
     end
   end
 
