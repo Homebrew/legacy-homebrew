@@ -8,9 +8,9 @@ class Ansible < Formula
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha1 "6089dd07930fab65177d092af811d8fb4b76f938" => :yosemite
-    sha1 "d072a8cfcb7bb5fbbbebadb5bc3d431b08617f7c" => :mavericks
-    sha1 "07ded867cee58160539ce79db73c895107873e06" => :mountain_lion
+    sha1 "fcba5a39e3a282ac6b91632608541270ab113678" => :yosemite
+    sha1 "d54bdcc27340dea40d6b8f41b4c1a752120be823" => :mavericks
+    sha1 "542cb2c0178da16eb2635cc2e3223e34fd1aec70" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
