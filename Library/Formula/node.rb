@@ -14,11 +14,6 @@ class Node < Formula
     sha1 "5db55f05590a23149b1459d522075b8b2facee79" => :mountain_lion
   end
 
-  devel do
-    url "http://nodejs.org/dist/v0.11.14/node-v0.11.14.tar.gz"
-    sha256 "ce08b0a2769bcc135ca25639c9d411a038e93e0f5f5a83000ecde9b763c4dd83"
-  end
-
   head do
     url "https://github.com/joyent/node.git", :branch => "v0.12"
 
@@ -37,7 +32,6 @@ class Node < Formula
   # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
   # over Node's shipped version with --shared-openssl.
   # Would allow us quicker security fixes than Node's release schedule.
-  # This particular affects the devel build, which is ultra-slow release.
   # See https://github.com/joyent/node/issues/3557 for prior discussion.
 
   fails_with :llvm do
