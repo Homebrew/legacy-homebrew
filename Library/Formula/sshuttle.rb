@@ -14,4 +14,17 @@ class Sshuttle < Formula
     libexec.install Dir['*']
     bin.write_exec_script libexec/'sshuttle'
   end
+
+  def caveats; <<-EOS.undent
+    sshuttle will set net.inet.ip.scopedroute to 0 which
+    will break break some things. Most notably,
+    OS X Internet Sharing but it might might
+    also affect other things (like other VPN clients).
+
+    To undo this change, which sshuttle will apply automatically
+    the first time you run it, you will need to manually edit
+    /Library/Preferences/SystemConfiguration/com.apple.Boot.plist
+    and reboot.
+  EOS
+  end
 end
