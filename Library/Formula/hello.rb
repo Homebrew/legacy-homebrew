@@ -2,8 +2,8 @@ require "formula"
 
 class Hello < Formula
   homepage "http://www.gnu.org/software/hello/"
-  url "http://ftpmirror.gnu.org/hello/hello-2.9.tar.gz"
-  sha1 "cb0470b0e8f4f7768338f5c5cfe1688c90fbbc74"
+  url "http://ftpmirror.gnu.org/hello/hello-2.10.tar.gz"
+  sha1 "f7bebf6f9c62a2295e889f66e05ce9bfaed9ace3"
 
   def install
     system "./configure", "--disable-debug",
