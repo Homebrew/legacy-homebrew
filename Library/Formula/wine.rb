@@ -30,8 +30,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.31.tar.bz2"
-    sha256 "3c6e62cb3bfab8505f8b9cbde0fe81072043875c4e655bd1dedd2a5f613ce490"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.32.tar.bz2"
+    sha256 "66a9c26089ad3b300aac1ac52e9515c69a7e6f26aff3250a7f1401e3f14de4db"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -75,8 +75,8 @@ class Wine < Formula
   end
 
   resource 'mono' do
-    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
-    sha256 'd9124edb41ba4418af10eba519dafb25ab4338c567d25ce0eb4ce1e1b4d7eaad'
+    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.4.msi', :using => :nounzip
+    sha256 '20bced7fee01f25279edf07670c5033d25c2c9834a839e7a20410ce1c611d6f2'
   end
 
   fails_with :llvm do
