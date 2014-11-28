@@ -2,7 +2,7 @@ require "formula"
 
 class Fontforge < Formula
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/releases/download/20141126/fontforge-20141126.tar.gz"
+  url "https://github.com/fontforge/fontforge/releases/download/20141126/fontforge-2014-11-26-Unix-Source.tar.gz"
   sha1 "ecd776480a47cdcbe1b30ce275172d7d52288e77"
   head "https://github.com/fontforge/fontforge.git"
 
