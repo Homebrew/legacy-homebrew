@@ -25,7 +25,11 @@ class Cmake < Formula
   url "http://www.cmake.org/files/v3.0/cmake-3.0.2.tar.gz"
   sha1 "379472e3578902a1d6f8b68a9987773151d6f21a"
 
-  head "http://cmake.org/cmake.git"
+  head do
+    url "http://cmake.org/cmake.git"
+
+    depends_on "xz" # For LZMA
+  end
 
   bottle do
     cellar :any
@@ -71,14 +75,8 @@ class Cmake < Formula
     if build.with? "docs"
       ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
       %w[markupsafe docutils pygments jinja2 sphinx].each do |r|
-        resource(r).stage do
-          pyargs = ["setup.py", "install", "--prefix=#{buildpath}/sphinx"]
-          unless r == "docutils"
-            pyargs << "--single-version-externally-managed" << "--record=installed.txt"
-          end
-          system "python", *pyargs
-        end
-      end
+        resource(r).stage { Language::Python.setup_install "python", buildpath/"sphinx" }
+    end
 
       # There is an existing issue around OS X & Python locale setting
       # See http://bugs.python.org/issue18378#msg215215 for explanation
