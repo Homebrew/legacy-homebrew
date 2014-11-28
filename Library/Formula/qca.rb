@@ -1,21 +1,24 @@
-require 'formula'
+require "formula"
 
 class Qca < Formula
-  homepage 'http://delta.affinix.com/qca/'
-  url 'http://delta.affinix.com/download/qca/2.0/qca-2.0.3.tar.bz2'
-  sha1 '9c868b05b81dce172c41b813de4de68554154c60'
+  homepage "http://delta.affinix.com/qca/"
+  url "http://delta.affinix.com/download/qca/2.0/qca-2.1.0.tar.gz"
+  sha1 "2b582b3ccc7e6098cd14d6f52a829ae1539e9cc8"
 
-  depends_on 'qt'
-
-  # Fix for clang adhering strictly to standard, see:
-  # http://clang.llvm.org/compatibility.html#dep_lookup_bases
-  patch do
-    url "http://quickgit.kde.org/?p=qca.git&a=commitdiff&h=312b69&o=plain"
-    sha1 "0c5e5349de083c1a35d9163d935f388d9742a597"
-  end
+  depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "qt"
+  depends_on "openssl"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-tests"
-    system "make install"
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "install"
+    end
+  end
+
+  test do
+    system "#{bin}/qcatool", "--noprompt", "--newpass=",
+                             "key", "make", "rsa", "2048", "test.key"
   end
 end
