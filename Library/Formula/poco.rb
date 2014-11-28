@@ -1,10 +1,9 @@
-require 'formula'
+require "formula"
 
 class Poco < Formula
-  homepage 'http://pocoproject.org/'
-  url 'http://pocoproject.org/releases/poco-1.4.7/poco-1.4.7-all.tar.gz'
-  sha1 '778bd5fca9d4169a2dd83265bc07123bd0d12273'
-  version '1.4.7-all'
+  homepage "http://pocoproject.org/"
+  url "http://pocoproject.org/releases/poco-1.4.7/poco-1.4.7p1-all.tar.bz2"
+  sha1 "29339fe4b9318d7f358f400e0847856a27ea6c4a"
 
   bottle do
     cellar :any
@@ -14,8 +13,8 @@ class Poco < Formula
   end
 
   devel do
-    url 'http://pocoproject.org/releases/poco-1.5.4/poco-1.5.4-all.tar.gz'
-    sha1 'd7f14c49472c4f333fe99d43cac021e90d24b024'
+    url "http://pocoproject.org/releases/poco-1.5.4/poco-1.5.4-all.tar.bz2"
+    sha1 "f44b57539511bb23f6bb5387347ca08bdd9c724d"
   end
 
   option :cxx11
