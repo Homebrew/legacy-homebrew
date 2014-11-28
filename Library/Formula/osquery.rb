@@ -4,6 +4,7 @@ class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git", :tag => "1.1.0"
+  revision 1
 
   bottle do
     sha1 "bc40b678cdbd4948059942d7f48ccc5facabe923" => :yosemite
@@ -36,12 +37,8 @@ class Osquery < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
-
-    resources.each do |r|
-      r.stage { system "python", "setup.py", "install",
-                                 "--prefix=#{buildpath}/third-party/python/",
-                                 "--single-version-externally-managed",
-                                 "--record=installed.txt"}
+     %w[markupsafe jinja2].each do |r|
+      resource(r).stage { Language::Python.setup_install "python", buildpath/"third-party/python/lib/python2.7/site-packages" }
     end
 
     system "cmake", ".", *std_cmake_args
