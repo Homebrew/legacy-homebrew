@@ -4,6 +4,7 @@ class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git", :tag => "1.1.0"
+  revision 1
 
   bottle do
     sha1 "bc40b678cdbd4948059942d7f48ccc5facabe923" => :yosemite
