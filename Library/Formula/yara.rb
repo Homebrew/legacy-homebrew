@@ -23,7 +23,7 @@ class Yara < Formula
     # Use of "inline" requires gnu89 semantics
     ENV.append "CFLAGS", "-std=gnu89" if ENV.compiler == :clang
 
-    # find Homebrew"s libpcre
+    # find Homebrew's libpcre
     ENV.append "LDFLAGS", "-L#{Formula["pcre"].opt_lib} -lpcre"
 
     system "./bootstrap.sh"
