@@ -6,6 +6,13 @@ class Yara < Formula
   sha1 "dd1a92b1469cd629f6cd368aec32f207375b125b"
   head "https://github.com/plusvic/yara.git"
 
+  bottle do
+    cellar :any
+    sha1 "3f77c2481bf0bfbd4be617a06b98611d9595ca41" => :yosemite
+    sha1 "19e0547d33cacea6807a515f7c42e65c3fc8d842" => :mavericks
+    sha1 "11e14894b2c26b452884fc3cf73f5cc4ebc71fcc" => :mountain_lion
+  end
+
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
