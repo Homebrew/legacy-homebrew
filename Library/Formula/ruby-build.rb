@@ -3,7 +3,7 @@ require "formula"
 class RubyBuild < Formula
   head "https://github.com/sstephenson/ruby-build.git"
   homepage "https://github.com/sstephenson/ruby-build"
-  url "https://codeload.github.com/sstephenson/ruby-build/20141128"
+  url "https://codeload.github.com/sstephenson/ruby-build/tar.gz/20141128"
   sha1 "c276684cc379db237503142c99c57f19bde16a64"
 
   depends_on "autoconf" => [:recommended, :run]
