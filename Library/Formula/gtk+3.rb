@@ -27,6 +27,13 @@ class Gtkx3 < Formula
   depends_on 'gobject-introspection'
   depends_on 'gsettings-desktop-schemas' => :recommended
 
+  # Fixes runtime error in 3.14.5; can probably be removed in later versions
+  # see http://comments.gmane.org/gmane.os.apple.macports.tickets/90114
+  patch do
+    url 'https://git.gnome.org/browse/gtk+/patch/?id=0b8f666e022d983db2cefaffb24315dc34b26673'
+    sha1 'f7f475905245324caa5e7eb037b0de021bf2d9ff'
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
