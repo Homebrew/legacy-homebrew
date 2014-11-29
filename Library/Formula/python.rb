@@ -14,6 +14,11 @@ class Python < Formula
     sha1 "f3708ea1d1f736527c428f0026aa42499c489fe2" => :mountain_lion
   end
 
+  devel do
+    url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9rc1.tgz"
+    sha1 "f2190373855724e22f4c11c68bd4aa83b1633fcd"
+  end
+
   option :universal
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
@@ -32,8 +37,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz"
-    sha1 "a681ba56c30c0eb66528215842d3e3fcb5157614"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-7.0.tar.gz"
+    sha1 "971d3efef71872c9d420df4cff6e04255024f9ae"
   end
 
   resource "pip" do
@@ -187,13 +192,11 @@ class Python < Formula
     (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
     (libexec/"pip").cd { system "#{bin}/python", *setup_args }
 
-    # When building from source, these symlinks will not exist, since
     # post_install happens after linking.
     %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
-    # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
       [global]
@@ -311,7 +314,7 @@ class Python < Formula
   end
 
   def caveats; <<-EOS.undent
-    Setuptools and Pip have been installed. To update them
+    Setuptools and pip have been installed. To update them
       pip install --upgrade setuptools
       pip install --upgrade pip
 
