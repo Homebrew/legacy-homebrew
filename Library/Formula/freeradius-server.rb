@@ -2,13 +2,12 @@ require "formula"
 
 class FreeradiusServer < Formula
   homepage "http://freeradius.org/"
-  url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.5.tar.gz"
-  sha1 "4d18ed8ff3fde4a29112ecc07f175b774ed5f702"
-  revision 2
+  url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.6.tar.gz"
+  sha1 "25b0a057b1fffad5a030946e8af0c6170e5cdf46"
 
   devel do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.4.tar.bz2"
-    sha1 "baa58979672f6fc57ab4f16e947b85b9a6eee969"
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.5.tar.bz2"
+    sha1 "53432d83618f0719f8cab5957567fc173959f6e7"
     depends_on "talloc" => :build
   end
 
