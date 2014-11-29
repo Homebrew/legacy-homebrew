@@ -26,5 +26,23 @@ class Leveldb < Formula
     lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.dylib'
     lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.1.dylib'
     system "install_name_tool", "-id", "#{lib}/libleveldb.1.dylib", "#{lib}/libleveldb.1.15.dylib"
+    (lib+'pkgconfig/leveldb.pc').write pc_file
   end
+
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include
+
+    Name: leveldb
+    Description: A fast key-value storage
+    Version: #{version}
+    Requires:
+    Conflicts:
+    Libs: -L${libdir} -lleveldb
+    Cflags: -I${includedir}
+    EOS
+  end
+
 end
