@@ -8,9 +8,10 @@ class Qca < Formula
   head "git://anongit.kde.org/qca.git", :branch => "master"
 
   bottle do
-    sha1 "3ff5e09bb690122d807b48470cf1bbafcca89b41" => :yosemite
-    sha1 "f01d8cbd41c97068185af2f4c6efdec8ff0c6ce7" => :mavericks
-    sha1 "4638b43c0ce83a2cccc64d678c7eefffd1844ba3" => :mountain_lion
+    revision 1
+    sha1 "356114a1ff4876b5027c679e05dbbca7a577bbfb" => :yosemite
+    sha1 "96c63fea66bed56cb8c00dcaee425c774aea04db" => :mavericks
+    sha1 "4c2620045877960f797c208b4c68e505fc02a39d" => :mountain_lion
   end
 
   option "with-api-docs", "Build API documentation"
