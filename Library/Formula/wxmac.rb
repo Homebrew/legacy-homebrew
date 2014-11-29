@@ -12,6 +12,8 @@ class Wxmac < Formula
     sha1 "d5f2ca56c1e7f27c43c714824a411740f1536b2b" => :mountain_lion
   end
 
+  option "without-mediactrl", "Don't build mediactrl, removes dependency on QuickTime"
+
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
@@ -52,7 +54,6 @@ class Wxmac < Formula
       "--enable-clipboard",
       "--enable-webkit",
       "--enable-svg",
-      "--enable-mediactrl",
       "--enable-graphics_ctx",
       "--enable-controls",
       "--enable-dataviewctrl",
@@ -63,6 +64,12 @@ class Wxmac < Formula
       # This is the default option, but be explicit
       "--disable-monolithic"
     ]
+
+    if build.without? "mediactrl"
+      args += ["--disable-mediactrl"]
+    else
+      args += ["--enable-mediactrl"]
+    end
 
     system "./configure", *args
     system "make", "install"
