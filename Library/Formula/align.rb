@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Align < Formula
-  homepage 'http://www.cs.indiana.edu/~kinzler/align/'
-  url 'http://www.cs.indiana.edu/~kinzler/align/align-1.7.3.tgz'
-  sha1 'fca5e53a7a3a95e740e7d12941f4edbee78ca084'
+  homepage "http://www.cs.indiana.edu/~kinzler/align/"
+  url "http://www.cs.indiana.edu/~kinzler/align/align-1.7.4.tgz"
+  sha1 "a1dff741a0080252d79b4b4466ca440dc772c7ae"
 
   bottle do
     cellar :any
@@ -13,7 +13,7 @@ class Align < Formula
   end
 
   def install
-    system 'make', 'install', "BINDIR=#{bin}"
+    system "make", "install", "BINDIR=#{bin}"
   end
 
   test do
