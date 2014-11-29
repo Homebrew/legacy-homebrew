@@ -7,9 +7,9 @@ class Align < Formula
 
   bottle do
     cellar :any
-    sha1 "6883eab5710385e8890fb52a8a6ac248f6bb29b7" => :mavericks
-    sha1 "12b51ccae39d06623f7475e289fd6eb6dbb89d7f" => :mountain_lion
-    sha1 "58e739c1df5c04ef37303c822fd4c859bf9e89eb" => :lion
+    sha1 "b9db933cf1129d4d29245e527feddefeb7e81ada" => :yosemite
+    sha1 "524a70b185b3c206d729e13cb2be5b36b50e575b" => :mavericks
+    sha1 "ac8557b4df591a67b47fa5d3206f553b8e0393d7" => :mountain_lion
   end
 
   def install
