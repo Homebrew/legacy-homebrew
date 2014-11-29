@@ -1,12 +1,33 @@
-require 'formula'
+require "formula"
 
 class Radare2 < Formula
-  homepage 'http://radare.org'
-  url 'http://radare.org/get/radare2-0.9.7.tar.xz'
-  sha1 '34af6c6ba53ac08c852b4e110ac6908054616b9d'
-  revision 1
+  homepage "http://radare.org"
+  revision 2
 
-  head 'http://radare.org/hg/radare2', :using => :hg
+  stable do
+    url "http://radare.org/get/radare2-0.9.7.tar.xz"
+    sha1 "34af6c6ba53ac08c852b4e110ac6908054616b9d"
+
+    # Fixes file name of dynamic libraries so that version goes before .dylib.
+    # *radare2 pull request #693
+    patch do
+      url "https://github.com/radare/radare2/commit/f0dbeb9950c55cdb75a2515b1cf6add4e0f4a591.diff"
+      sha1 "1b02e071728c2ef9b328e25ae46eac15eed391be"
+    end
+
+    resource "bindings" do
+      url "http://radare.org/get/radare2-bindings-0.9.7.tar.xz"
+      sha1 "b425e3faeebd3f212e6542a64dafa3b629535e7a"
+    end
+  end
+
+  head do
+    url "https://github.com/radare/radare2.git"
+
+    resource "bindings" do
+      url "https://github.com/radare/radare2-bindings.git"
+    end
+  end
 
   depends_on "pkg-config" => :build
   depends_on "valabind" => :build
@@ -15,22 +36,12 @@ class Radare2 < Formula
   depends_on "libewf"
   depends_on "libmagic"
   depends_on "gmp"
-  depends_on "lua"
-
-  # Fixes file name of dynamic libraries so that version goes before .dylib.
-  #  * radare2 pull request #693
-  patch do
-    url "https://github.com/radare/radare2/commit/f0dbeb9950c55cdb75a2515b1cf6add4e0f4a591.diff"
-    sha1 "1b02e071728c2ef9b328e25ae46eac15eed391be"
-  end
-
-  resource "bindings" do
-    url "http://radare.org/get/radare2-bindings-0.9.7.tar.xz"
-    sha1 "b425e3faeebd3f212e6542a64dafa3b629535e7a"
-  end
+  depends_on "lua51" # It seems to latch onto Lua51 rather than Lua. Enquire this upstream.
+  depends_on "openssl"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    # Build Radare2 before bindings, otherwise compile = nope.
+    system "./configure", "--prefix=#{prefix}", "--with-openssl"
     system "make"
     system "make", "install"
 
@@ -38,7 +49,7 @@ class Radare2 < Formula
       ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
 
       # https://github.com/radare/radare2-bindings/pull/18
-      inreplace "python-config-wrapper", '\s', '\ '
+      inreplace "python-config-wrapper", '\s', '\ ' if build.stable?
 
       system "./configure", "--prefix=#{prefix}"
       system "make"
