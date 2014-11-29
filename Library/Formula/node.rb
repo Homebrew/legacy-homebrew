@@ -5,20 +5,21 @@ class Node < Formula
   homepage "http://nodejs.org/"
   url "http://nodejs.org/dist/v0.10.33/node-v0.10.33.tar.gz"
   sha256 "75dc26c33144e6d0dc91cb0d68aaf0570ed0a7e4b0c35f3a7a726b500edd081e"
+  revision 1
 
   bottle do
-    revision 8
-    sha1 "032e6534d85435ecfe30effc8fa95ec0dfc0506b" => :yosemite
-    sha1 "6e07b257eb33fd752db10fc1ada41ccf78ffdb74" => :mavericks
-    sha1 "646c68412a627602c917b126bd83e092587bb84e" => :mountain_lion
+    revision 9
+    sha1 "c9d4bffeae1a6996715efcde907f98bab1f7bd57" => :yosemite
+    sha1 "a75fd66670c781b0b8248c5000e652bc20dcb924" => :mavericks
+    sha1 "5db55f05590a23149b1459d522075b8b2facee79" => :mountain_lion
   end
 
-  devel do
-    url "http://nodejs.org/dist/v0.11.14/node-v0.11.14.tar.gz"
-    sha256 "ce08b0a2769bcc135ca25639c9d411a038e93e0f5f5a83000ecde9b763c4dd83"
-  end
+  head do
+    url "https://github.com/joyent/node.git", :branch => "v0.12"
 
-  head "https://github.com/joyent/node.git", :branch => "v0.12"
+    depends_on "pkg-config" => :build
+    depends_on "icu4c"
+  end
 
   deprecated_option "enable-debug" => "with-debug"
 
@@ -31,7 +32,6 @@ class Node < Formula
   # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
   # over Node's shipped version with --shared-openssl.
   # Would allow us quicker security fixes than Node's release schedule.
-  # This particular affects the devel build, which is ultra-slow release.
   # See https://github.com/joyent/node/issues/3557 for prior discussion.
 
   fails_with :llvm do
@@ -39,14 +39,21 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.8.tgz"
-    sha1 "0023e311e13514fc874b4f60ac28ad9ca7ff07f8"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.10.tgz"
+    sha1 "a571ae408ac1b5e515f6c34c033503a7bb828cb4"
   end
 
   def install
     args = %W{--prefix=#{prefix} --without-npm}
     args << "--debug" if build.with? "debug"
     args << "--without-ssl2" << "--without-ssl3" if build.stable?
+
+    # This should eventually be able to use the system icu4c, but right now
+    # it expects to find this dependency using pkgconfig.
+    if build.head?
+      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_prefix}/lib/pkgconfig"
+      args << "--with-intl=system-icu"
+    end
 
     system "./configure", *args
     system "make", "install"
@@ -94,8 +101,8 @@ class Node < Formula
 
     if build.with? "npm"
       s += <<-EOS.undent
-        If you update npm itself do NOT use the npm upgrade command
-        Instead execute:
+        If you update npm itself, do NOT use the npm update command.
+        The upstream-recommended way to update npm is:
           npm install -g npm@latest
       EOS
     else

@@ -34,11 +34,11 @@ module Homebrew
 
   def homebrew_git_repo tap=nil
     if tap
-        user, repo = tap.split "/"
-        HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
-      else
-        HOMEBREW_REPOSITORY
-      end
+      user, repo = tap.split "/"
+      HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
+    else
+      HOMEBREW_REPOSITORY
+    end
   end
 
   class Step
@@ -170,19 +170,8 @@ module Homebrew
       @steps = []
       @tap = tap
       @repository = Homebrew.homebrew_git_repo @tap
-      @repository_requires_tapping = !@repository.directory?
 
       url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-
-      # Tap repository if required, this is done before everything else
-      # because Formula parsing and/or git commit hash lookup depends on it.
-      if @tap
-        if @repository_requires_tapping
-          test "brew", "tap", @tap
-        else
-          test "brew", "tap", "--repair"
-        end
-      end
 
       begin
         formula = Formulary.factory(argument)
@@ -416,7 +405,13 @@ module Homebrew
       test "brew", "audit", formula_name
       if install_passed
         unless ARGV.include? '--no-bottle'
-          test "brew", "bottle", "--rb", formula_name, :puts_output_on_success => true
+          bottle_args = ["--rb", formula_name]
+          if @tap
+            tap_user, tap_repo = @tap.split "/"
+            bottle_args << "--root-url=#{BottleSpecification::DEFAULT_ROOT_URL}/#{tap_repo}"
+          end
+          bottle_args << { :puts_output_on_success => true }
+          test "brew", "bottle", *bottle_args
           bottle_step = steps.last
           if bottle_step.passed? and bottle_step.has_output?
             bottle_filename =
@@ -481,8 +476,6 @@ module Homebrew
         test "brew", "cleanup"
       end
 
-      test "brew", "untap", @tap if @tap && @repository_requires_tapping
-
       FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
     end
 
@@ -546,6 +539,20 @@ module Homebrew
   def test_bot
     tap = ARGV.value('tap')
 
+    if !tap && ENV['UPSTREAM_BOT_PARAMS']
+      bot_argv = ENV['UPSTREAM_BOT_PARAMS'].split " "
+      bot_argv.extend HomebrewArgvExtension
+      tap ||= bot_argv.value('tap')
+    end
+
+    git_url = ENV['UPSTREAM_GIT_URL'] || ENV['GIT_URL']
+    if !tap && git_url
+      # Also can get tap from Jenkins GIT_URL.
+      url_path = git_url.gsub(%r{^https?://github\.com/}, "").gsub(%r{/$}, "")
+      HOMEBREW_TAP_ARGS_REGEX =~ url_path
+      tap = "#{$1}/#{$3}" if $1 && $3
+    end
+
     if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
       odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
     end
@@ -574,6 +581,18 @@ module Homebrew
       ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
     end
 
+    repository = Homebrew.homebrew_git_repo tap
+
+    # Tap repository if required, this is done before everything else
+    # because Formula parsing and/or git commit hash lookup depends on it.
+    if tap
+      if !repository.directory?
+        safe_system "brew", "tap", tap
+      else
+        safe_system "brew", "tap", "--repair"
+      end
+    end
+
     if ARGV.include? '--ci-upload'
       jenkins = ENV['JENKINS_HOME']
       job = ENV['UPSTREAM_JOB_NAME']
@@ -586,7 +605,7 @@ module Homebrew
 
       ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
       ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
-      ENV["GIT_WORK_TREE"] = Homebrew.homebrew_git_repo tap
+      ENV["GIT_WORK_TREE"] = repository
       ENV["GIT_DIR"] = "#{ENV["GIT_WORK_TREE"]}/.git"
 
       pr = ENV['UPSTREAM_PULL_REQUEST']
@@ -597,17 +616,32 @@ module Homebrew
       safe_system "git", "checkout", "-f", "master"
       safe_system "git", "reset", "--hard", "origin/master"
       safe_system "brew", "update"
-      safe_system "brew", "pull", "--clean", pr if pr
+
+      if pr
+        pull_pr = if tap
+          user, repo = tap.split "/"
+          "https://github.com/#{user}/homebrew-#{repo}/pull/#{pr}"
+        else
+          pr
+        end
+        safe_system "brew", "pull", "--clean", pull_pr
+      end
 
       ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
       safe_system "brew", "bottle", "--merge", "--write", *Dir["*.bottle.rb"]
 
-      remote = "git@github.com:BrewTestBot/homebrew.git"
+      remote_repo = tap ? tap.gsub("/", "-") : "homebrew"
+
+      remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
       tag = pr ? "pr-#{pr}" : "testing-#{number}"
       safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
       path = "/home/frs/project/m/ma/machomebrew/Bottles/"
+      if tap
+        tap_user, tap_repo = tap.split "/"
+        path += "#{tap_repo}/"
+      end
       url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
 
       rsync_args = %w[--partial --progress --human-readable --compress]

@@ -2,9 +2,9 @@ require "formula"
 
 class Giter8 < Formula
   homepage "https://github.com/n8han/giter8"
-  url "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar"
-  sha1 "b78a29b8db7ae0fc90a7890a84a4617975e1d450"
-  version "0.6.2"
+  url "https://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.7/sbt-launch.jar"
+  sha1 "b407b2a76ad72165f806ac7e7ea09132b951ef53"
+  version "0.6.6"
 
   def exec_script; <<-EOS.undent
     #!/bin/sh
@@ -19,11 +19,11 @@ class Giter8 < Formula
       name: giter8
       class: giter8.Giter8
     [scala]
-      version: 2.9.1
+      version: 2.10.4
     [repositories]
       local
-      scala-tools-releases
       maven-central
+      sonatype-releases: https://oss.sonatype.org/content/repositories/releases/
     [boot]
       directory: #{prefix}/boot
     EOS
@@ -36,9 +36,9 @@ class Giter8 < Formula
   end
 
   def caveats; <<-EOS.undent
-    Giter8 will download the Scala runtime from scala-tools.org
-    and the rest of the giter8 binaries the first time you run it.
-    You can do that now running "g8".
+    Giter8 will download the Scala runtime and the rest of the
+    giter8 binaries the first time you run it.
+    You can do that now by running "g8".
 
     If the download of a resources fails, try cleaning your
     ~/.ivy2/cache folder and rerun / reinstall giter8.

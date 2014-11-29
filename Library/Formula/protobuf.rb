@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class OldOrNoDateutilUnlessGoogleApputils < Requirement
   # https://github.com/Homebrew/homebrew/issues/32571
@@ -35,16 +35,20 @@ class OldOrNoDateutilUnlessGoogleApputils < Requirement
 end
 
 class Protobuf < Formula
-  homepage 'http://code.google.com/p/protobuf/'
+  homepage "https://github.com/google/protobuf/"
   url 'https://github.com/google/protobuf/releases/download/2.6.1/protobuf-2.6.1.tar.bz2'
   sha1 '6421ee86d8fb4e39f21f56991daa892a3e8d314b'
 
   bottle do
     cellar :any
-    sha1 "e15c6944fabbce96a3aebe59d1314c6626359177" => :yosemite
-    sha1 "cc4044ef1fe19826f08f449893da83d0f031a55c" => :mavericks
-    sha1 "4acb8d1239cd352b4b90691114b4abe8a0ef4d65" => :mountain_lion
+    revision 1
+    sha1 "fa7019a4ee16a4bdf0c653dc3fd932dc5a7e1e3b" => :yosemite
+    sha1 "f3ba19bdabe4994c7c69d05897a52be8b13117bf" => :mavericks
+    sha1 "9239ad264a7327cc90d1d3ddb26a27a4de10527f" => :mountain_lion
   end
+
+  # this will double the build time approximately if enabled
+  option "with-check", "Run build-time check"
 
   option :universal
   option :cxx11
@@ -60,7 +64,7 @@ class Protobuf < Formula
     # Don't build in debug mode. See:
     # https://github.com/Homebrew/homebrew/issues/9279
     # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
-    ENV.prepend 'CXXFLAGS', '-DNDEBUG'
+    ENV.prepend "CXXFLAGS", "-DNDEBUG"
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
 
@@ -68,20 +72,36 @@ class Protobuf < Formula
                           "--prefix=#{prefix}",
                           "--with-zlib"
     system "make"
-    system "make install"
+    system "make", "check" if build.with? "check"
+    system "make", "install"
 
     # Install editor support and examples
     doc.install %w( editors examples )
 
-    if build.with? 'python'
-      chdir 'python' do
+    if build.with? "python"
+      chdir "python" do
         ENV.append_to_cflags "-I#{include}"
         ENV.append_to_cflags "-L#{lib}"
-        system 'python', 'setup.py', 'build'
-        system 'python', 'setup.py', 'install', '--cpp_implementation', "--prefix=#{prefix}",
-               '--single-version-externally-managed', '--record=installed.txt'
+        system "python", "setup.py", "build"
+        system "python", "setup.py", "install", "--cpp_implementation", "--prefix=#{prefix}",
+               "--single-version-externally-managed", "--record=installed.txt"
       end
     end
+  end
+
+  test do
+    def testdata; <<-EOS.undent
+      package test;
+      message TestCase {
+        required string name = 4;
+      }
+      message Test {
+        repeated TestCase case = 1;
+      }
+      EOS
+    end
+    (testpath/"test.proto").write(testdata)
+    system "protoc", "test.proto", "--cpp_out=."
   end
 
   def caveats; <<-EOS.undent

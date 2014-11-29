@@ -4,10 +4,11 @@ class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git", :tag => "1.1.0"
+  revision 1
 
   bottle do
-    sha1 "bc40b678cdbd4948059942d7f48ccc5facabe923" => :yosemite
-    sha1 "1ff2f50334ca44170a969f25707a5b4018d7e28d" => :mavericks
+    sha1 "f1defab77ba329ecbe64da7f3b3f4812bff3e656" => :yosemite
+    sha1 "5b374d8a4bddf9058abd78a7974436815611306c" => :mavericks
   end
 
   # Build currently fails on Mountain Lion:

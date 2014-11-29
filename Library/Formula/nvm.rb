@@ -3,8 +3,8 @@ require "formula"
 class Nvm < Formula
   homepage "https://github.com/creationix/nvm"
   head "https://github.com/creationix/nvm.git"
-  url "https://github.com/creationix/nvm/archive/v0.18.0.tar.gz"
-  sha1 "3f59d1662c17a123ca50403f61ed2c5721103307"
+  url "https://github.com/creationix/nvm/archive/v0.19.0.tar.gz"
+  sha1 "5bb53115e3319b36989acc65dfb2755f75246a47"
 
   def install
     prefix.install "nvm.sh"

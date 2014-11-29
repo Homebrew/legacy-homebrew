@@ -1,12 +1,12 @@
 require "formula"
 
 class Flac < Formula
-  homepage "http://xiph.org/flac/"
-  url "http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz"
-  sha1 "a136e5748f8fb1e6c524c75000a765fc63bb7b1b"
+  homepage "https://xiph.org/flac/"
+  url "http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz"
+  sha1 "38e17439d11be26207e4af0ff50973815694b26f"
 
   head do
-    url "git://git.xiph.org/flac.git"
+    url "https://git.xiph.org/flac.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -14,10 +14,9 @@ class Flac < Formula
 
   bottle do
     cellar :any
-    revision 5
-    sha1 "3263a013f0ef3181c4bb94fc0b033784a7bc6b0f" => :yosemite
-    sha1 "43efcb1ad0516523a008b5b8fd656083f2b8d827" => :mavericks
-    sha1 "df55c22600a8360d0848c2801a009208740189e9" => :mountain_lion
+    sha1 "fcb2c97ae1a204372210e89b49a12cd8f18a14c8" => :yosemite
+    sha1 "ba8cd91c32faddb537929fad6dee7ef363c30f3d" => :mavericks
+    sha1 "0e117a98f7a267b019d7dba31d5b65f5d57c530c" => :mountain_lion
   end
 
   option :universal

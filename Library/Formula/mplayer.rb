@@ -51,6 +51,9 @@ class Mplayer < Formula
     cause 'Inline asm errors during compile on 32bit Snow Leopard.'
   end unless MacOS.prefer_64_bit?
 
+  # ld fails with: Unknown instruction for architecture x86_64
+  fails_with :llvm
+
   def install
     # It turns out that ENV.O1 fixes link errors with llvm.
     ENV.O1 if ENV.compiler == :llvm

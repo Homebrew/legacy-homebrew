@@ -1,7 +1,7 @@
 # Homebrew and Python
 ## Overview
 
-This page describes how Python is handled in Homebrew.
+This page describes how Python is handled in Homebrew for users. See [Python for Formula Authors](Python-for-Formula-Authors.md) for advice on writing formulae to install packages written in Python.
 
 Homebrew should work with any [CPython](http://stackoverflow.com/questions/2324208/is-there-any-difference-between-cpython-and-python) and defaults to the OS X system Python.
 
@@ -67,7 +67,7 @@ Some formulae provide python bindings. Sometimes a `--with-python` or `--with-py
 
 Homebrew builds bindings against the first `python` (and `python-config`) in your `PATH`. (Check with `which python`).
 
-**Warning!** Python may crash (see [Common Issues](Common-Issues.md)) if you `import <module>` from a brewed Python if you ran `brew install <formula_with_python_bindings>` against the system Python. If you decide to switch to the brewed Python, then reinstall all formulae with python bindings (e.g. `pyside`, `wxwidgets`, `pygtk`, `pygobject`, `opencv`, `vtk` and `boost`).
+**Warning!** Python may crash (see [Common Issues](Common-Issues.md)) if you `import <module>` from a brewed Python if you ran `brew install <formula_with_python_bindings>` against the system Python. If you decide to switch to the brewed Python, then reinstall all formulae with python bindings (e.g. `pyside`, `wxwidgets`, `pygtk`, `pygobject`, `opencv`, `vtk` and `boost-python`).
 
 ## Policy for non-brewed Python bindings
 
@@ -76,7 +76,7 @@ These should be installed via `pip install <x>`. To discover, you can use `pip s
 
 ## Brewed Python modules
 
-For brewed Python, modules installed with `pip` or `python setup.py install` will be installed to `$(brew --prefix)/lib/pythonX.Y/site-packages` directory (explained above). Executable python scripts will be in `$(brew --prefix)/bin`. (To better conform to standard behavior, `brew` no longer puts Python scripts into `share/python/$(brew --prefix)`.)
+For brewed Python, modules installed with `pip` or `python setup.py install` will be installed to `$(brew --prefix)/lib/pythonX.Y/site-packages` directory (explained above). Executable python scripts will be in `$(brew --prefix)/bin`.
 
 The system Python may not know which compiler flags to set in order to build bindings for software installed in Homebrew so you may need to:
 
@@ -92,71 +92,6 @@ Homebrew will still install Python modules into Homebrew's `site-packages` and *
 
 Virtualenv has a switch to allow "global" (i.e. Homebrew's) `site-packages` to be accessible from within the virtualenv.
 
-## Creating a formulae with nice Python bindings
+## Why is Homebrew's Python being installed as a dependency?
 
-You can add the following :special dependency to the formula:
-
-    depends_on :python
-
-This assures that Homebrew looks for a suitable Python 2.7 and sets up `PATH` accordingly (as well as a few other things; see below). Omitting this line may lead to error messages like `Python.h not found`.
-
-To allow the user to opt-out (via `--without-python`):
-
-    depends_on :python => :recommended
-
-To allow the user to opt-in (via `--with-python3` for Python3):
-
-    depends_on :python3 => :optional
-
-These options are automatically generated. In the formula you can check via `build.with? 'python'` what the user has decided.
-
-If you need to specify that specific Python modules (rather than just Python itself) are needed:
-
-    depends_on 'numpy' => :python
-
-Or if the import name is different to the module name:
-
-    depends_on "MacFSEvents" => [:python, "fsevents"]
-
-### Python bottles
-
-If the formula is installed from a bottle and `:python` is a required or `:recommended` dependency (not `:optional`) then it will use the Homebrew `python` formula as a dependency. This is because we cannot create a binary package that works against both versions of Python. If you wish to override this behaviour you can install using `--build-from-source` which will link against the system Python (if it's the first in your `PATH`).
-
-### If the software provides a `setup.py`
-
-Usually this line will do the trick:
-
-    system "python", "setup.py", "--prefix=#{prefix}"
-
-The `--prefix=#{prefix}` part is to ensure that Python bindings are installed into the Cellar for that specific formula in:
-
-    $(brew --prefix)/Cellar/<formula>/<version>/lib/python2.7/site-packages
-
-When `brew link` is run (automatically at the end of `brew install`), the Python modules should be linked into `$(brew --prefix)/lib/pythonX.Y/site-packages`, and the scripts should go into `$(brew --prefix)/bin`. This enables brew to `unlink`/`link`/`uninstall` cleanly.
-
-If the `setup.py` is older, it may need two additional arguments to avoid writing an `easy-install.pth` file (which will conflict with the `easy-install.pth` already installed by `pip`/`setuptools`). So, if you get a `brew link` problem mentioning this file, add this to the `setup.py` args:
-
-    "--single-version-externally-managed", "--record=installed.txt"
-
-### If the formula uses `configure`/`make`
-
-Generally, the `./configure` files provided by software Homebrew installs can find `python` or `python-config` (and/or look at the `PYTHON` var). Both are set up by Homebrew during brewing.
-
-Often, a `--with-python` or similar flag can be given to `configure`. Check with `./configure --help`.
-
-If the `configure` and `make` scripts do not want to install into the Cellar, one option is to:
-
-1. Call `./configure --without-python` (or a similar named option)
-1. `cd` into the directory containing the Python bindings
-1. Call `setup.py` explicitly (as described above)
-
-Sometimes we have to `inreplace` a `Makefile` to use our prefix for the python bindings. (`inreplace` is one of Homebrew's helper methods, which greps and edits text files on-the-fly.)
-
-## Technical details
-
-Formula authors necessarily don't need to read this.
-
-Adding `depends_on :python` triggers the following actions:
-
-- The user `PATH` (the original `PATH`, not the superenv `PATH`) is searched for a suitable `python` executable (`python3` for 3.x).
-- The `PYTHONPATH` is set (internally only), so the system Python can find brewed python modules.
+Formulae that depend on the special :python target are bottled against the Homebrew Python and require it to be installed. You can avoid installing Homebrew's Python by building these formulae with `--build-from-source`.
