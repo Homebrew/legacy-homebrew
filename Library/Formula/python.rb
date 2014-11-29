@@ -14,6 +14,11 @@ class Python < Formula
     sha1 "f3708ea1d1f736527c428f0026aa42499c489fe2" => :mountain_lion
   end
 
+  devel do
+    url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9rc1.tgz"
+    sha1 "f2190373855724e22f4c11c68bd4aa83b1633fcd"
+  end
+
   option :universal
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
@@ -153,8 +158,10 @@ class Python < Formula
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
 
-    (libexec/'setuptools').install resource('setuptools')
-    (libexec/'pip').install resource('pip')
+    if build.stable?
+      (libexec/'setuptools').install resource('setuptools')
+      (libexec/'pip').install resource('pip')
+    end
   end
 
   def post_install
@@ -179,13 +186,17 @@ class Python < Formula
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
 
-    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force",
-                  "--verbose",
-                  "--install-scripts=#{bin}",
-                  "--install-lib=#{site_packages}"]
+    if build.stable?
+      setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force",
+                    "--verbose",
+                    "--install-scripts=#{bin}",
+                    "--install-lib=#{site_packages}"]
 
-    (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
-    (libexec/"pip").cd { system "#{bin}/python", *setup_args }
+      (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
+      (libexec/"pip").cd { system "#{bin}/python", *setup_args }
+    else
+      system bin/"python", "-m", "ensurepip", "--upgrade"
+    end
 
     # When building from source, these symlinks will not exist, since
     # post_install happens after linking.
@@ -311,7 +322,7 @@ class Python < Formula
   end
 
   def caveats; <<-EOS.undent
-    Setuptools and Pip have been installed. To update them
+    Setuptools and pip have been installed. To update them
       pip install --upgrade setuptools
       pip install --upgrade pip
 
