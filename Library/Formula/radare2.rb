@@ -21,6 +21,12 @@ class Radare2 < Formula
     end
   end
 
+  bottle do
+    sha1 "7bece65a73bd1aab23c5765b3bee164a6e6fdfb6" => :yosemite
+    sha1 "e9fca9c3e8aa86c32f8fda6c1a6d15b6064bbcd6" => :mavericks
+    sha1 "5a872355becc0ab276eee5297b951a5814c1e6a6" => :mountain_lion
+  end
+
   head do
     url "https://github.com/radare/radare2.git"
 
