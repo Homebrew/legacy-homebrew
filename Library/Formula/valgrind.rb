@@ -4,8 +4,8 @@ class Valgrind < Formula
   homepage "http://www.valgrind.org/"
 
   stable do
-    url "http://valgrind.org/downloads/valgrind-3.10.0.tar.bz2"
-    sha1 "aec0b8cd042ec36c8cce4f6027b98627ab202f26"
+    url "http://valgrind.org/downloads/valgrind-3.10.1.tar.bz2"
+    sha1 "15518427de842547ffa84eff8b2b67f3b16581a8"
 
     # Look for headers in the SDK on Xcode-only systems: https://bugs.kde.org/show_bug.cgi?id=295084
     # Fix duplicate symbols error on Lion: https://bugs.kde.org/show_bug.cgi?id=307415
