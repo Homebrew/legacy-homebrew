@@ -40,6 +40,10 @@ object SparkJobUtils {
     // Set the Jetty port to 0 to find a random port
     conf.set("spark.ui.port", "0")
 
+    // Set spark broadcast factory
+    if (config.getString("spark.master") == "yarn-client")
+      conf.set("spark.broadcast.factory", config.getString("spark.jobserver.broadcast.factory"))
+
     // Set number of akka threads
     // TODO: need to figure out how many extra threads spark needs, besides the job threads
     conf.set("spark.akka.threads", (getMaxRunningJobs(config) + 4).toString)

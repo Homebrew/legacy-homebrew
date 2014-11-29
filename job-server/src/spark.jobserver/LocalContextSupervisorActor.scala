@@ -54,6 +54,7 @@ object ContextSupervisor {
  *   spark {
  *     jobserver {
  *       context-creation-timeout = 15 s
+ *       yarn-context-creation-timeout = 40 s
  *     }
  *
  *     # Default settings for all context creation
@@ -70,7 +71,7 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
 
   val config = context.system.settings.config
   val defaultContextConfig = config.getConfig("spark.context-settings")
-  val contextTimeout = config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000
+  val contextTimeout = getcontextTimeout
   import context.dispatcher   // to get ExecutionContext for futures
 
   private val contexts = mutable.HashMap.empty[String, ActorRef]
@@ -186,6 +187,15 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
         }
         Thread sleep 500 // Give some spacing so multiple contexts can be created
       }
+    }
+  }
+
+  private def getcontextTimeout: Int = {
+    if (config.getString("spark.master") == "yarn-client") {
+      Try(config.getMilliseconds("spark.jobserver.yarn-context-creation-timeout").toInt / 1000)
+        .getOrElse(40)
+    } else {
+      Try(config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000).getOrElse(15)
     }
   }
 }
