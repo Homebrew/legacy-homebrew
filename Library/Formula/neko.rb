@@ -12,7 +12,7 @@ class Neko < Formula
     version "2.0.0-6ab8f48"
 
     # Revisit with each stable release. Could be a while though.
-    depends_on MaximumMacOSRequirement => :mavericks
+    depends_on MaximumMacOSRequirement => :yosemite
   end
 
   bottle do
