@@ -8,9 +8,9 @@ class Dropbear < Formula
 
   bottle do
     cellar :any
-    sha1 "dae9dacc360506b417401b5ac33beda6648c38b3" => :mavericks
-    sha1 "5f932b296fb9764d5d982e63f1196ab220c2aa3f" => :mountain_lion
-    sha1 "6cb51ab0dadbe813aacd66251c84507a9c5006d1" => :lion
+    sha1 "b7fc99831d70610973f7978fdbfdd170c562c93b" => :yosemite
+    sha1 "1b52833468598772dc72b08defe5bfe8d592f9a1" => :mavericks
+    sha1 "3665d3c991cc865f6d2de2b7b3268ed6040a2a26" => :mountain_lion
   end
 
   head do
