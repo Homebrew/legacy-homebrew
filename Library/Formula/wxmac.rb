@@ -52,7 +52,10 @@ class Wxmac < Formula
       "--enable-clipboard",
       "--enable-webkit",
       "--enable-svg",
-      "--enable-mediactrl",
+      # On 64-bit, enabling mediactrl leads to wxconfig trying to pull
+      # in a non-existent 64 bit QuickTime framework. This is submitted
+      # upstream and will eventually be fixed, but for now...
+      MacOS.prefer_64_bit? ? "--disable-mediactrl" : "--enable-mediactrl",
       "--enable-graphics_ctx",
       "--enable-controls",
       "--enable-dataviewctrl",
