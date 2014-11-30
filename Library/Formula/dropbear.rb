@@ -20,6 +20,13 @@ class Dropbear < Formula
     depends_on "autoconf" => :build
   end
 
+  head do
+    url "https://github.com/mkj/dropbear.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
+
   def install
     if build.head?
       system "autoconf"
