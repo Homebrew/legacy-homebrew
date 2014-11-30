@@ -76,13 +76,6 @@ These commands have been contributed by Homebrew users but are not included in t
 > $ brew install telemachus/desc/brew-desc
 > ```
 
-### brew-gem and brew-pip
->Install any gem pip package into a self-contained Homebrew cellar location
->
->[https://github.com/josh/brew-gem](https://github.com/josh/brew-gem), [https://github.com/josh/brew-pip](https://github.com/josh/brew-pip)
->
->*Note:* These can also be installed with `brew install brew-gem` and `brew install brew-pip`
-
 ### brew-growl
 >Get Growl notifications for Homebrew https://github.com/secondplanet/brew-growl
 
