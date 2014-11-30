@@ -6,6 +6,7 @@ spark {
   # spark.master will be passed to each job's JobContext
   master = "local[4]"
   # master = "mesos://vm28-hulk-pub:5050"
+  # master = "yarn-client"
 
   # Default # of CPUs for jobs to use for Spark standalone cluster
   job-number-cpus = 4
