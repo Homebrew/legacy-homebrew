@@ -91,7 +91,7 @@ All you need to make a formula is a URL to the tarball.
 
 This creates:
 
-`/usr/local/Library/Formula/foo.rb`
+`$HOMEBREW_PREFIX/Library/Formula/foo.rb`
 
 And opens it in your `$EDITOR`. It'll look like:
 
