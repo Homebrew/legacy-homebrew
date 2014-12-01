@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Subversion < Formula
-  homepage 'https://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.10.tar.bz2'
-  sha1 'd6896d94bb53c1b4c6e9c5bb1a5c466477b19b2b'
+  homepage "https://subversion.apache.org/"
+  url "http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2"
+  mirror "http://archive.apache.org/dist/subversion/subversion-1.8.10.tar.bz2"
+  sha1 "d6896d94bb53c1b4c6e9c5bb1a5c466477b19b2b"
   revision 1
 
   bottle do
@@ -14,35 +14,43 @@ class Subversion < Formula
     sha1 "7b78b1abd3bb77ef8ee8f711d3bbc0eec8a9390a" => :mountain_lion
   end
 
-  option :universal
-  option 'java', 'Build Java bindings'
-  option 'perl', 'Build Perl bindings'
-  option 'ruby', 'Build Ruby bindings'
+  deprecated_option "java" => "with-java"
+  deprecated_option "perl" => "with-perl"
+  deprecated_option "ruby" => "with-ruby"
 
-  resource 'serf' do
-    url 'https://serf.googlecode.com/svn/src_releases/serf-1.3.7.tar.bz2', :using => :curl
-    sha1 'db9ae339dba10a2b47f9bdacf30a58fd8e36683a'
+  option :universal
+  option "with-java", "Build Java bindings"
+  option "with-perl", "Build Perl bindings"
+  option "with-ruby", "Build Ruby bindings"
+  option "with-gpg-agent", "Build with support for GPG Agent"
+
+  resource "serf" do
+    url "https://serf.googlecode.com/svn/src_releases/serf-1.3.7.tar.bz2", :using => :curl
+    sha1 "db9ae339dba10a2b47f9bdacf30a58fd8e36683a"
   end
 
   depends_on "pkg-config" => :build
   depends_on :apr => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on 'sqlite'
+  depends_on "sqlite"
   depends_on :python => :optional
 
   # Bindings require swig
-  depends_on 'swig' if build.include? 'perl' or build.with? 'python' or build.include? 'ruby'
+  depends_on "swig" if build.with? "perl" or build.with? "python" or build.with? "ruby"
 
   # For Serf
-  depends_on 'scons' => :build
-  depends_on 'openssl'
+  depends_on "scons" => :build
+  depends_on "openssl"
+
+  # Other optional dependencies
+  depends_on "gpg-agent" => :optional
 
   # Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
-  # Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
+  # Prevent "-arch ppc" from being pulled in from Perl's $Config{ccflags}
   patch :DATA
 
-  if build.include? "perl" or build.include? "ruby"
+  if build.with? "perl" or build.with? "ruby"
     # If building bindings, allow non-system interpreters
     # Currently the serf -> scons dependency forces stdenv, so this isn't
     # strictly necessary
@@ -58,14 +66,14 @@ class Subversion < Formula
   end
 
   def install
-    serf_prefix = libexec+'serf'
+    serf_prefix = libexec+"serf"
 
-    resource('serf').stage do
+    resource("serf").stage do
       # SConstruct merges in gssapi linkflags using scons's MergeFlags,
       # but that discards duplicate values - including the duplicate
       # values we want, like multiple -arch values for a universal build.
       # Passing 0 as the `unique` kwarg turns this behaviour off.
-      inreplace 'SConstruct', 'unique=1', 'unique=0'
+      inreplace "SConstruct", "unique=1", "unique=0"
 
       ENV.universal_binary if build.universal?
       # scons ignores our compiler and flags unless explicitly passed
@@ -76,7 +84,7 @@ class Subversion < Formula
       scons "install"
     end
 
-    if build.include? 'unicode-path'
+    if build.include? "unicode-path"
       raise <<-EOS.undent
         The --unicode-path patch is not supported on Subversion 1.8.
 
@@ -88,15 +96,17 @@ class Subversion < Formula
       EOS
     end
 
-    if build.include? 'java'
+    if build.with? "java"
       # Java support doesn't build correctly in parallel:
       # https://github.com/Homebrew/homebrew/issues/20415
       ENV.deparallelize
 
       unless build.universal?
         opoo "A non-Universal Java build was requested."
-        puts "To use Java bindings with various Java IDEs, you might need a universal build:"
-        puts "  brew install subversion --universal --java"
+        puts <<-EOS.undent
+        To use Java bindings with various Java IDEs, you might need a universal build:
+          `brew install subversion --universal --java`
+        EOS
       end
 
       if ENV["JAVA_HOME"]
@@ -120,9 +130,10 @@ class Subversion < Formula
             "--without-apache-libexecdir",
             "--without-berkeley-db"]
 
-    args << "--enable-javahl" << "--without-jikes" if build.include? 'java'
+    args << "--enable-javahl" << "--without-jikes" if build.with? "java"
+    args << "--without-gpg-agent" if build.without? "gpg-agent"
 
-    if build.include? 'ruby'
+    if build.with? "ruby"
       args << "--with-ruby-sitedir=#{lib}/ruby"
       # Peg to system Ruby
       args << "RUBY=/usr/bin/ruby"
@@ -130,26 +141,26 @@ class Subversion < Formula
 
     # The system Python is built with llvm-gcc, so we override this
     # variable to prevent failures due to incompatible CFLAGS
-    ENV['ac_cv_python_compile'] = ENV.cc
+    ENV["ac_cv_python_compile"] = ENV.cc
 
-    inreplace 'Makefile.in',
-              'toolsdir = @bindir@/svn-tools',
-              'toolsdir = @libexecdir@/svn-tools'
+    inreplace "Makefile.in",
+              "toolsdir = @bindir@/svn-tools",
+              "toolsdir = @libexecdir@/svn-tools"
 
     system "./configure", *args
     system "make"
-    system "make install"
-    bash_completion.install 'tools/client-side/bash_completion' => 'subversion'
+    system "make", "install"
+    bash_completion.install "tools/client-side/bash_completion" => "subversion"
 
-    system "make tools"
-    system "make install-tools"
+    system "make", "tools"
+    system "make", "install-tools"
 
-    if build.with? 'python'
-      system "make swig-py"
-      system "make install-swig-py"
+    if build.with? "python"
+      system "make", "swig-py"
+      system "make", "install-swig-py"
     end
 
-    if build.include? 'perl'
+    if build.with? "perl"
       # In theory SWIG can be built in parallel, in practice...
       ENV.deparallelize
       # Remove hard-coded ppc target, add appropriate ones
@@ -170,7 +181,7 @@ class Subversion < Formula
         s.change_make_var! "SWIG_PL_INCLUDES",
           "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I#{perl_core}"
       end
-      system "make swig-pl"
+      system "make", "swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
 
       # Some of the libraries get installed into the wrong place, they end up having the
@@ -179,21 +190,21 @@ class Subversion < Formula
       lib.install Dir["#{prefix}/#{lib}/*"]
     end
 
-    if build.include? 'java'
-      system "make javahl"
-      system "make install-javahl"
+    if build.with? "java"
+      system "make", "javahl"
+      system "make", "install-javahl"
     end
 
-    if build.include? 'ruby'
+    if build.with? "ruby"
       # Peg to system Ruby
-      system "make swig-rb EXTRA_SWIG_LDFLAGS=-L/usr/lib"
-      system "make install-swig-rb"
+      system "make", "swig-rb", "EXTRA_SWIG_LDFLAGS=-L/usr/lib"
+      system "make", "install-swig-rb"
     end
   end
 
   test do
-    system "#{bin}/svnadmin", 'create', 'test'
-    system "#{bin}/svnadmin", 'verify', 'test'
+    system "#{bin}/svnadmin", "create", "test"
+    system "#{bin}/svnadmin", "verify", "test"
   end
 
   def caveats
@@ -202,7 +213,7 @@ class Subversion < Formula
         #{opt_libexec}
     EOS
 
-    if build.include? 'perl'
+    if build.with? "perl"
       s += <<-EOS.undent
 
         The perl bindings are located in various subdirectories of:
@@ -210,7 +221,7 @@ class Subversion < Formula
       EOS
     end
 
-    if build.include? 'ruby'
+    if build.with? "ruby"
       s += <<-EOS.undent
 
         You may need to add the Ruby bindings to your RUBYLIB from:
@@ -218,7 +229,7 @@ class Subversion < Formula
       EOS
     end
 
-    if build.include? 'java'
+    if build.with? "java"
       s += <<-EOS.undent
 
         You may need to link the Java bindings into the Java Extensions folder:
