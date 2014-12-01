@@ -16,8 +16,8 @@ class Volatility < Formula
   depends_on "yara"
 
   resource "yara-python" do
-    url "https://github.com/plusvic/yara/archive/v3.0.0.tar.gz"
-    sha1 "43e7e0df03043cab1ab8299ef7ebee4d2c5d39dc"
+    url "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz"
+    sha1 "dd1a92b1469cd629f6cd368aec32f207375b125b"
   end
 
   resource "distorm3" do
