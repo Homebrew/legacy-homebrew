@@ -5,9 +5,9 @@ class Caudec < Formula
   url 'http://caudec.net/downloads/caudec-1.7.5.tar.gz'
   sha1 'e3b8ccdb976e02f82be07041a624d1f0cdd005d4'
   bottle do
-    sha1 "4fcd8647ac1bcd81911f437e6a6fa2d2bc1a6c6a" => :mavericks
-    sha1 "ff95a111531d9dcc88b51a713543ca03df7605f6" => :mountain_lion
-    sha1 "c33863b2e29bf5433039dfb187a1b91bc448305b" => :lion
+    sha1 "e225732d654439421126d0c4192a0a778dc5c031" => :yosemite
+    sha1 "5005b2e4daf1ffd2f5e84eddb79b8f427f918baf" => :mavericks
+    sha1 "a611215d98ffc01584055b84866e4bee949bfb02" => :mountain_lion
   end
 
   revision 1
