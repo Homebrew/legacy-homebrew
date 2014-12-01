@@ -1,9 +1,9 @@
 require 'formula'
 
 class Caudec < Formula
-  homepage 'http://caudec.outpost.fr/'
-  url 'http://caudec.outpost.fr/downloads/caudec-1.6.4.tar.gz'
-  sha1 '4c4ad207e86c8f8bf15545bab1c434525cd79f7d'
+  homepage 'http://caudec.net'
+  url 'http://caudec.net/downloads/caudec-1.7.5.tar.gz'
+  sha1 'e3b8ccdb976e02f82be07041a624d1f0cdd005d4'
   bottle do
     sha1 "4fcd8647ac1bcd81911f437e6a6fa2d2bc1a6c6a" => :mavericks
     sha1 "ff95a111531d9dcc88b51a713543ca03df7605f6" => :mountain_lion
