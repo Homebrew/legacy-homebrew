@@ -108,7 +108,11 @@ class Caveats
       destination = f.plist_startup ? '/Library/LaunchDaemons' \
                                     : '~/Library/LaunchAgents'
 
-      plist_filename = f.plist_path.basename
+      plist_filename = if f.plist
+        f.plist_path.basename
+      else
+        File.basename Dir["#{keg}/*.plist"].first
+      end
       plist_link = "#{destination}/#{plist_filename}"
       plist_domain = f.plist_path.basename('.plist')
       destination_path = Pathname.new File.expand_path destination

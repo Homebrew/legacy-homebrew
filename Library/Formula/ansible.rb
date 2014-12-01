@@ -2,15 +2,16 @@ require "formula"
 
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.8.tar.gz"
-  sha1 "0fff5fcbb559c22107d80e7d452aca1e154d841b"
+  url "http://releases.ansible.com/ansible/ansible-1.8.1.tar.gz"
+  sha1 "f911952d21a82e067157f41d42677f163e7b2d23"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha1 "6089dd07930fab65177d092af811d8fb4b76f938" => :yosemite
-    sha1 "d072a8cfcb7bb5fbbbebadb5bc3d431b08617f7c" => :mavericks
-    sha1 "07ded867cee58160539ce79db73c895107873e06" => :mountain_lion
+    revision 1
+    sha1 "e052618230a6864d5584a39385699836d6776ed9" => :yosemite
+    sha1 "ff4bcdaad0da2308bcaf6d2e4037473ee9745f73" => :mavericks
+    sha1 "1ff10d88f96a7fc1e6c1c5235f208b2a4461fa01" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -42,8 +43,8 @@ class Ansible < Formula
   end
 
   resource "boto" do
-    url "https://pypi.python.org/packages/source/b/boto/boto-2.32.1.tar.gz"
-    sha1 "4fdecde66245b7fc0295e22d2c2d3c9b08c2b1fa"
+    url "https://pypi.python.org/packages/source/b/boto/boto-2.34.0.tar.gz"
+    sha1 "e19d252b58054a7711fae910324e26b2b551a44d"
   end
 
   resource "pyyaml" do

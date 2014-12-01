@@ -15,8 +15,6 @@ class Gnupg2 < Formula
     sha1 "ad0e8129ffbaf615f8b43aa93b89eb1cdc517f1f" => :mountain_lion
   end
 
-  option "8192", "Build with support for private keys of up to 8192 bits"
-
   depends_on "libgpg-error"
   depends_on "libgcrypt"
   depends_on "libksba"
@@ -43,8 +41,6 @@ class Gnupg2 < Formula
               "gpg-agent --quiet --daemon sh"
     end
     inreplace "tools/gpgkey2ssh.c", "gpg --list-keys", "gpg2 --list-keys"
-
-    inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
 
     (var/"run").mkpath
 
