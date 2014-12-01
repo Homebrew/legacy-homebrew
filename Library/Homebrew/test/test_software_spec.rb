@@ -74,7 +74,7 @@ class SoftwareSpecTests < Homebrew::TestCase
 
   def test_deprecated_option
     @spec.deprecated_option('foo' => 'bar')
-    assert @spec.deprecated_options.any?
+    refute_empty @spec.deprecated_options
     assert_equal "foo", @spec.deprecated_options.first.old
     assert_equal "bar", @spec.deprecated_options.first.current
   end
