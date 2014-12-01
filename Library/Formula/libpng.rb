@@ -2,15 +2,14 @@ require "formula"
 
 class Libpng < Formula
   homepage "http://www.libpng.org/pub/png/libpng.html"
-  url "https://downloads.sf.net/project/libpng/libpng16/1.6.13/libpng-1.6.13.tar.xz"
-  sha1 "5ae32b6b99cef6c5c85feab8edf9d619e1773b15"
+  url "https://downloads.sf.net/project/libpng/libpng16/1.6.15/libpng-1.6.15.tar.xz"
+  sha1 "bddeac8ca97fbcf54d6d32c6eefed5d94b49df88"
 
   bottle do
     cellar :any
-    sha1 "c4c5f94b771ea53620d9b6c508b382b3a40d6c80" => :yosemite
-    sha1 "09af92d209c67dd0719d16866dc26c05bbbef77b" => :mavericks
-    sha1 "23812e76bf0e3f98603c6d22ab69258b219918ca" => :mountain_lion
-    sha1 "af1fe6844a0614652bbc9b60fd84c57e24da93ee" => :lion
+    sha1 "daec718eb2f617cdf67d2347b05457ea361e35b3" => :yosemite
+    sha1 "059d99d0321a8519252ae860667237a838d2a557" => :mavericks
+    sha1 "9c87522225b3c94e3239d6a8a29c4c000dd29c2e" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
@@ -22,6 +21,8 @@ class Libpng < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make"
+    system "make", "test"
+    system "make", "install"
   end
 end

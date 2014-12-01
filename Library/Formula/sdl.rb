@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Sdl < Formula
-  homepage 'http://www.libsdl.org/'
-  url 'http://www.libsdl.org/release/SDL-1.2.15.tar.gz'
-  sha1 '0c5f193ced810b0d7ce3ab06d808cbb5eef03a2c'
+  homepage "http://www.libsdl.org/"
+  url "https://www.libsdl.org/release/SDL-1.2.15.tar.gz"
+  sha1 "0c5f193ced810b0d7ce3ab06d808cbb5eef03a2c"
 
   bottle do
     cellar :any
@@ -14,21 +14,22 @@ class Sdl < Formula
   end
 
   head do
-    url 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
+    url "http://hg.libsdl.org/SDL", :branch => "SDL-1.2", :using => :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  option 'with-x11', 'Compile with support for X11 video driver'
+  option "with-x11", "Compile with support for X11 video driver"
+  option "with-tests", "Compile and install the tests"
   option :universal
 
   deprecated_option "with-x11-driver" => "with-x11"
 
   depends_on :x11 => :optional
 
-  if build.with? 'x11'
+  if build.with? "x11"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -57,23 +58,43 @@ class Sdl < Formula
     # we have to do this because most build scripts assume that all sdl modules
     # are installed to the same prefix. Consequently SDL stuff cannot be
     # keg-only but I doubt that will be needed.
-    inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
+    inreplace %w[sdl.pc.in sdl-config.in], "@prefix@", HOMEBREW_PREFIX
 
     ENV.universal_binary if build.universal?
 
-    system "./autogen.sh" if build.head? or build.with? 'x11'
+    system "./autogen.sh" if build.head? or build.with? "x11"
 
     args = %W[--prefix=#{prefix}]
     args << "--disable-nasm" unless MacOS.version >= :mountain_lion # might work with earlier, might only work with new clang
     # LLVM-based compilers choke on the assembly code packaged with SDL.
-    args << '--disable-assembly' if ENV.compiler == :llvm or (ENV.compiler == :clang and MacOS.clang_build_version < 421)
-    args << "--without-x" if build.without? 'x11'
+    args << "--disable-assembly" if ENV.compiler == :llvm or (ENV.compiler == :clang and MacOS.clang_build_version < 421)
+    args << "--without-x" if build.without? "x11"
+    args << "--with-x" if build.with? "x11"
 
-    system './configure', *args
-    system "make install"
+    system "./configure", *args
+    system "make", "install"
 
     # Copy source files needed for Ojective-C support.
-    libexec.install Dir["src/main/macosx/*"] unless build.head?
+    libexec.install Dir["src/main/macosx/*"] if build.stable?
+
+    # The resulting script in bin is hardcoded to /usr/local, which can cause pain.
+    inreplace "#{bin}/sdl-config", "prefix=/usr/local", "prefix=#{prefix}"
+
+    if build.with? "tests"
+      ENV.prepend_path "PATH", "#{bin}"
+      cd "test" do
+        system "./configure", "--prefix=#{libexec}/tests"
+        system "make"
+        # Upstream - Why no make install? Why?
+        (share+"tests").install %w{ checkkeys graywin loopwave testalpha testbitmap testblitspeed testcdrom
+                        testcursor testdyngl testerror testfile testgamma testgl testhread testiconv
+                        testjoystick testkeys testloadso testlock testoverlay testoverlay2 testpalette
+                        testplatform testsem testsprite testtimer testver testvidinfo testwin testwm
+                        threadwin torturethread }
+        (share+"test_extras").install %w{ icon.bmp moose.dat picture.xbm sail.bmp sample.bmp sample.wav }
+        bin.write_exec_script Dir["#{share}/tests/*"]
+      end
+    end
   end
 
   test do

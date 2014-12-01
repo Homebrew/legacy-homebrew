@@ -279,11 +279,16 @@ Note that these flags should only appear after a command.
 
     If `--installed` is passed, show options for all installed formulae.
 
-  * `outdated [--quiet]`:
+  * `outdated [--quiet|--verbose]`:
     Show formulae that have an updated version available.
 
-    If `--quiet` is passed, list only the names of outdated brews. Otherwise,
-    the versions are printed as well.
+    By default, version information is displayed in interactive shells, and
+    suppressed otherwise.
+
+    If `--quiet` is passed, list only the names of outdated brews (takes
+    precedence over `--verbose`).
+
+    If `--verbose` is passed, display detailed version information.
 
   * `pin` <formulae>:
     Pin the specified <formulae>, preventing them from being upgraded when
@@ -435,13 +440,7 @@ scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
 `brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
 to create your own commands without modifying Homebrew's internals.
 
-A number of (useful, but unsupported) external commands are included and enabled
-by default:
-
-    $ ls $(brew --repository)/Library/Contributions/cmd
-
-Documentation for the included external commands as well as instructions for
-creating your own can be found in the docs:
+Instructions for creating your own commands can be found in the docs:
 <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md>
 
 ## SPECIFYING FORMULAE

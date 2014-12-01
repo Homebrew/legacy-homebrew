@@ -2,14 +2,17 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.4.tar.xz'
-  sha256 'a006c716d723dab0c623491566e3292af84c87d9198a30199051d23cfc7bef2f'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.5.tar.xz'
+  sha256 'ba70f5ccde6646c6d8aa5a6398794b7bcf23fc45af22580a215d258f392dbbe2'
 
   bottle do
-    sha1 "54ad82781a6f423b00acfdfc8425f21099b8ef1d" => :yosemite
-    sha1 "d182700a63a4de1d82db7036b7a728a23b5111f0" => :mavericks
-    sha1 "cee7dfbdecacadd2b8dea994ce698364fd2045c6" => :mountain_lion
+    revision 1
+    sha1 "b49906d801960f2e5171f8999d7f3754d70a1bf3" => :yosemite
+    sha1 "9e7565ecff66692fdc46920967a8528f60360ab9" => :mavericks
+    sha1 "9b5a82a7a7e9a78fd6d81f3624ece8e7bc268b7a" => :mountain_lion
   end
+
+  option :universal
 
   depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
@@ -21,25 +24,20 @@ class Gtkx3 < Formula
   depends_on 'cairo'
   depends_on 'jasper' => :optional
   depends_on 'atk'
-  depends_on 'at-spi2-atk'
+  depends_on 'at-spi2-atk' if build.with? "x11"
   depends_on 'gobject-introspection'
   depends_on 'gsettings-desktop-schemas' => :recommended
 
-  # These two patches fix a compilation error on Snow Leopard when
-  # using quartz backend (no effect on later OS versions)
-  # Can be removed when upstream releases these commits (3.14.5?)
-  # See: https://bugzilla.gnome.org/show_bug.cgi?id=737561
+  # Fixes runtime error in 3.14.5; can probably be removed in later versions
+  # see http://comments.gmane.org/gmane.os.apple.macports.tickets/90114
   patch do
-    url "https://git.gnome.org/browse/gtk+/patch/?id=7d3991f2757de8374e11891e21e82f61242b4034"
-    sha1 "66dc9d63ba6d2f9219d0dbe27f2dd8343b07ab0c"
-  end
-
-  patch do
-    url "https://git.gnome.org/browse/gtk+/patch/?id=830a72b307b33815179aa0b03dad498c9ac1bb14"
-    sha1 "5a39469d8923ac9ce1f6511c4e304f7e1cba781c"
+    url 'https://git.gnome.org/browse/gtk+/patch/?id=0b8f666e022d983db2cefaffb24315dc34b26673'
+    sha1 'f7f475905245324caa5e7eb037b0de021bf2d9ff'
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W[
       --disable-debug
       --disable-dependency-tracking

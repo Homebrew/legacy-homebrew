@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "October 2014" "Homebrew" "brew"
+.TH "BREW" "1" "November 2014" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -298,11 +298,17 @@ If \fB\-\-all\fR is passed, show options for all formulae\.
 If \fB\-\-installed\fR is passed, show options for all installed formulae\.
 .
 .TP
-\fBoutdated [\-\-quiet]\fR
+\fBoutdated [\-\-quiet|\-\-verbose]\fR
 Show formulae that have an updated version available\.
 .
 .IP
-If \fB\-\-quiet\fR is passed, list only the names of outdated brews\. Otherwise, the versions are printed as well\.
+By default, version information is displayed in interactive shells, and suppressed otherwise\.
+.
+.IP
+If \fB\-\-quiet\fR is passed, list only the names of outdated brews (takes precedence over \fB\-\-verbose\fR)\.
+.
+.IP
+If \fB\-\-verbose\fR is passed, display detailed version information\.
 .
 .TP
 \fBpin\fR \fIformulae\fR
@@ -463,20 +469,7 @@ Print the version number of brew to standard error and exit\.
 Homebrew, like \fBgit\fR(1), supports external commands\. These are executable scripts that reside somewhere in the PATH, named \fBbrew\-<cmdname>\fR or \fBbrew\-<cmdname>\.rb\fR, which can be invoked like \fBbrew cmdname\fR\. This allows you to create your own commands without modifying Homebrew\'s internals\.
 .
 .P
-A number of (useful, but unsupported) external commands are included and enabled by default:
-.
-.IP "" 4
-.
-.nf
-
-$ ls $(brew \-\-repository)/Library/Contributions/cmd
-.
-.fi
-.
-.IP "" 0
-.
-.P
-Documentation for the included external commands as well as instructions for creating your own can be found in the docs: \fIhttps://github\.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External\-Commands\.md\fR
+Instructions for creating your own commands can be found in the docs: \fIhttps://github\.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External\-Commands\.md\fR
 .
 .SH "SPECIFYING FORMULAE"
 Many Homebrew commands accept one or more \fIformula\fR arguments\. These arguments can take several different forms:

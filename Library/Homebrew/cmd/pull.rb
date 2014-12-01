@@ -124,7 +124,7 @@ module Homebrew
         message = `git log HEAD^.. --format=%B`
 
         if ARGV.include? '--bump'
-          onoe 'Can only bump one changed formula' unless changed_formulae.length == 1
+          odie 'Can only bump one changed formula' unless changed_formulae.length == 1
           f = changed_formulae.first
           subject = "#{f.name} #{f.version}"
           ohai "New bump commit subject: #{subject}"
@@ -132,14 +132,18 @@ module Homebrew
         end
 
         # If this is a pull request, append a close message.
-        unless message.include? 'Closes #'
+        unless message.include? "Closes ##{issue}."
           message += "\nCloses ##{issue}."
           safe_system 'git', 'commit', '--amend', '--signoff', '-q', '-m', message
         end
       end
 
       if ARGV.include? "--bottle"
-        pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+        if tap_name
+          pull_url "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
+        else
+          pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+        end
       end
 
       ohai 'Patch changed:'

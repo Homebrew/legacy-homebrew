@@ -56,6 +56,19 @@ These commands have been contributed by Homebrew users but are not included in t
 
 >*NOTE:* They are largely untested, and as always, be careful about running untested code on your machine.
 
+### brew-any-tap
+
+> Like `brew tap` but works on *any* git repository, whether public or private, on GitHub or not.
+>
+> Install using (ironically enough) `brew tap`:
+>
+> ```
+> brew tap telemachus/anytap
+> brew install brew-any-tap
+> ```
+>
+> See the  [`README`](https://github.com/telemachus/homebrew-anytap/blob/master/README.md) for further explanation and examples of use.
+
 ### brew-cask
 
 >Install .app and other "Drag to install" packages from Homebrew.

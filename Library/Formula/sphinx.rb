@@ -8,9 +8,10 @@ class Sphinx < Formula
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   bottle do
-    sha1 "39090ca7d66167464aed584caf5ec21dcd234fc3" => :mavericks
-    sha1 "95cc0d4a21c091a91e50c3ce4000b2c7196c71bc" => :mountain_lion
-    sha1 "57564d0b2d3e788f9b5e78fad94cac39d9d991e0" => :lion
+    revision 2
+    sha1 "8f9004812b5545eb923917a4c20e08ae6c491a0d" => :yosemite
+    sha1 "fb8af1e261bfd2ddfa82098ecb192f97451f7c29" => :mavericks
+    sha1 "065c4ad66e0f5253b70281cbbdc824b9f7ab8ca7" => :mountain_lion
   end
 
   option 'mysql', 'Force compiling against MySQL'
@@ -24,7 +25,7 @@ class Sphinx < Formula
   # http://snowball.tartarus.org/
   resource 'stemmer' do
     url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-    sha1 '9b0f120a68a3c688b2f5a8d0f681620465c29d38'
+    sha1 '1ac6bb16e829e9f3a58f62c27047c26784975aa1'
   end
 
   fails_with :llvm do

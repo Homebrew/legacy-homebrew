@@ -3,11 +3,12 @@ require "formula"
 class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.0.5"
+  url "https://github.com/facebook/osquery.git", :tag => "1.1.0"
+  revision 1
 
   bottle do
-    sha1 "0bf8208e6d0605273f67ac1ba180d7918bc2c927" => :yosemite
-    sha1 "bf5767f49e29a3cf783419324eb3d53c1e3fd6d4" => :mavericks
+    sha1 "f1defab77ba329ecbe64da7f3b3f4812bff3e656" => :yosemite
+    sha1 "5b374d8a4bddf9058abd78a7974436815611306c" => :mavericks
   end
 
   # Build currently fails on Mountain Lion:

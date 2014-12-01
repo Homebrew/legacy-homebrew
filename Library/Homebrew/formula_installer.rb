@@ -201,9 +201,9 @@ class FormulaInstaller
   def check_conflicts
     return if ARGV.force?
 
-    conflicts = formula.conflicts.reject do |c|
-      keg = Formulary.factory(c.name).prefix
-      not keg.directory? && Keg.new(keg).linked?
+    conflicts = formula.conflicts.select do |c|
+      formula = Formulary.factory(c.name)
+      formula.linked_keg.exist? && formula.opt_prefix.exist?
     end
 
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
@@ -395,7 +395,12 @@ class FormulaInstaller
     link(keg)
     fix_install_names(keg) if OS.mac?
 
-    post_install
+    if build_bottle?
+      ohai "Not running post_install as we're building a bottle"
+      puts "You can run it manually using `brew postinstall #{formula.name}`"
+    else
+      post_install
+    end
 
     ohai "Summary" if verbose? or show_summary_heading?
     puts summary
