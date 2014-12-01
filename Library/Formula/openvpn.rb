@@ -2,10 +2,9 @@ require "formula"
 
 class Openvpn < Formula
   homepage "https://openvpn.net/index.php/download/community-downloads.html"
-  url "http://build.openvpn.net/downloads/releases/openvpn-2.3.4.tar.gz"
-  mirror "http://swupdate.openvpn.org/community/releases/openvpn-2.3.4.tar.gz"
-  sha256 "af506d5f48568fa8d2f2435cb3fad35f9a9a8f263999ea6df3ba296960cec85a"
-  revision 1
+  url "http://build.openvpn.net/downloads/releases/openvpn-2.3.6.tar.gz"
+  mirror "http://swupdate.openvpn.org/community/releases/openvpn-2.3.6.tar.gz"
+  sha256 "7baed2ff39c12e1a1a289ec0b46fcc49ff094ca58b8d8d5f29b36ac649ee5b26"
 
   bottle do
     sha1 "126ac2407abc24948fb125fe5f40fee7f5730f57" => :mavericks
@@ -27,6 +26,8 @@ class Openvpn < Formula
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--with-crypto-library=openssl",
                           "--prefix=#{prefix}",
                           "--enable-password-save"
     system "make", "install"
@@ -36,8 +37,10 @@ class Openvpn < Formula
 
     (doc/"sample").install Dir["sample/sample-*"]
 
-    (etc + 'openvpn').mkpath
-    (var + 'run/openvpn').mkpath
+    (etc+"openvpn").mkpath
+    (var+"run/openvpn").mkpath
+    # We don't use PolarSSL, so this file is unnecessary and somewhat confusing.
+    rm "#{share}/doc/openvpn/README.polarssl"
   end
 
   def caveats; <<-EOS.undent
@@ -80,5 +83,9 @@ class Openvpn < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{sbin}/openvpn", "--show-ciphers"
   end
 end
