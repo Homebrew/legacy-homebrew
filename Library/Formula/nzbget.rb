@@ -2,8 +2,8 @@ require "formula"
 
 class Nzbget < Formula
   homepage "http://nzbget.net/"
-  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.0/nzbget-14.0.tar.gz"
-  sha1 "bb45cbf7c53d94544b03d15adec327df6dfaeb19"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.1/nzbget-14.1.tar.gz"
+  sha1 "671c0d0b554643e1b58665004c65519a330766db"
 
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
