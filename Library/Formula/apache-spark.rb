@@ -7,6 +7,8 @@ class ApacheSpark < Formula
   version "1.1.1"
   sha1 "d1ef3edfe9174010c66ed39fbbc961b7db765a35"
 
+  conflicts_with 'hive', :because => 'both install `beeline` binaries'
+
   def install
     rm_f Dir["bin/*.cmd"]
     libexec.install Dir["*"]
