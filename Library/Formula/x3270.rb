@@ -2,8 +2,8 @@ require "formula"
 
 class X3270 < Formula
   homepage "http://x3270.bgp.nu/"
-  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.15ga5/suite3270-3.3.15ga5-src.tgz"
-  sha1 "7f918e21c9134ce4bccb7e0f661763f9f18946ee"
+  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.15ga6/suite3270-3.3.15ga6-src.tgz"
+  sha1 "c2d492b11db25b53aca9e9643e6522982cc479b4"
 
   bottle do
     sha1 "c8d06fd2d78e89f65976c45c99b69e8b3f585102" => :yosemite
