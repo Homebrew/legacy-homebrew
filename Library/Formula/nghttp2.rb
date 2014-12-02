@@ -2,8 +2,8 @@ require "formula"
 
 class Nghttp2 < Formula
   homepage "https://nghttp2.org"
-  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.6.6/nghttp2-0.6.6.tar.bz2"
-  sha1 "89af02e74fcd2d6d3fad4e64ddad6d80ec24f69e"
+  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.6.7/nghttp2-0.6.7.tar.bz2"
+  sha1 "67c5851658851f5e3e38d8a571812ba32d301ab9"
 
   depends_on "pkg-config" => :build
   depends_on "cunit" => :build
