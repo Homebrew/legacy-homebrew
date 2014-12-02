@@ -14,7 +14,7 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
     - Need e.g. older or newer versions of Python? Newer versions of GCC?
 
 *   [homebrew/games](https://github.com/Homebrew/homebrew-games)
-    - Game formulae.
+    - Game or gaming-emulation related formulae.
 
 *   [homebrew/apache](https://github.com/Homebrew/homebrew-apache)
     - A tap for Apache modules, extending OS X's built-in Apache. These brews may require unconventional additional setup, as explained in the caveats.
@@ -60,12 +60,6 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 *   [besport/ocaml](https://github.com/besport/homebrew-ocaml)
     - A tap for Ocaml libraries, though with caveats, it requires you install its customized ocaml formula. Perhaps a template for more work.
 
-*   [nolith/embedded](https://github.com/nolith/homebrew-embedded)
-    - Flashing tools for embedded devices and olsrd for mesh network routing.
-
-*   [anarchivist/forensics](https://github.com/anarchivist/homebrew-forensics)
-    - Digital forensics-related formulae; mostly head-only, binary-only, or unstable.
-
 *   [petere/postgresql](https://github.com/petere/homebrew-postgresql)
     - Allows installing multiple PostgreSQL versions in parallel.
 
@@ -80,23 +74,14 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 *   [mistydemeo/tigerbrew](https://github.com/mistydemeo/tigerbrew)
     - Experimental Tiger PowerPC version
 
-*   [codebutler](https://github.com/codebutler/homebrew/commits/master)
-    - Preliminary support for GTK+ using the Quartz (native OS X) back-end
-
-*   [paxan/linux](https://github.com/paxan/homebrew/commits/linux)
-    - Experimental Linux version
-
 *   [homebrew/linuxbrew](https://github.com/Homebrew/linuxbrew)
     - Experimental Linux version
 
-*   [rmyers/homebrew](https://github.com/rmyers/homebrew)
-    - Experimental Solaris version
-
-*   [nddrylliog/winbrew](https://github.com/nddrylliog/winbrew)
-    - Experimental Windows version
-
 *   [wilmoore/homebrew-home](https://github.com/wilmoore/homebrew-home)
     - Homebrew install for those that like to Homebrew @ $HOME (i.e. ~/.homebrew).
+
+*   [nddrylliog/homebrew-mingw](https://github.com/nddrylliog/homebrew-mingw)
+    - An experimental port of Homebrew for Windows (with an MSYS/MinGW environment).
 
 
 ## Technical Details
