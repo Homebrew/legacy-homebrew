@@ -19,6 +19,14 @@ class Ola < Formula
     depends_on "libtool" => :build
   end
 
+  head do
+    url "https://github.com/OpenLightingProject/ola.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   option :universal
 
   depends_on "pkg-config" => :build
