@@ -14,9 +14,6 @@ class GitExtras < Formula
     sha1 "54df32fa640c8cd05616c8ebb5cbf1ec8cc95565" => :mountain_lion
   end
 
-  # Don't take +x off these files
-  skip_clean "bin"
-
   def install
     inreplace "Makefile", %r|\$\(DESTDIR\)(?=/etc/bash_completion\.d)|, "$(DESTDIR)$(PREFIX)"
     system "make", "PREFIX=#{prefix}", "install"
