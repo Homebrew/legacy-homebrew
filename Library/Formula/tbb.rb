@@ -7,6 +7,10 @@ class Tbb < Formula
   version "4.3-20141023"
 
   bottle do
+    cellar :any
+    sha1 "f3111568e5b600345ca518027771a5169fa4f981" => :yosemite
+    sha1 "79e0ed2f2f78f7686a22f155df083ed3a678159a" => :mavericks
+    sha1 "ef6d80cc918ee3a2305cf470cb81c48b48e73bd2" => :mountain_lion
   end
 
   # requires malloc features first introduced in Lion
