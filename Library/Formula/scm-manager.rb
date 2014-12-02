@@ -7,9 +7,9 @@ class ScmManager < Formula
   sha1 'afaf2a416400a4075fe629659836e29ddf262295'
 
   bottle do
-    sha1 "e7005d66f236a1ed483771e0990e122e0901c49c" => :yosemite
-    sha1 "e2b340b6059e14dfda83fb7a733792cd21b4a58a" => :mavericks
-    sha1 "0c0b1e47a35333b6320534c2d22c3433a60a6eaf" => :mountain_lion
+    sha1 "d874a0767dcc261ec6a6410199da7cefe75c6d0d" => :yosemite
+    sha1 "8a65af08420cea107814a993fc315359f34a8c6d" => :mavericks
+    sha1 "6e27729657c1609979d5264a66fc97c132f8ea0c" => :mountain_lion
   end
 
   resource 'client' do
