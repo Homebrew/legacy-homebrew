@@ -6,9 +6,9 @@ class Ola < Formula
   sha1 "f6a81087761218063a4bb8006b73ffa407cd0170"
 
   bottle do
-    sha1 "d9f67796fc3228e94d07cead6a91dfccbe3a2f2b" => :mavericks
-    sha1 "1b2577335ce33aa83e4bceb27260a585bce06b91" => :mountain_lion
-    sha1 "de23fe04b9a29273c61d58287d540f90db9ab662" => :lion
+    sha1 "084b25099b2eaf5d90a69ebc20b43c0cf338b614" => :yosemite
+    sha1 "64e7e1a34c1840a7315449a3cc037f07bb75407a" => :mavericks
+    sha1 "4a4d4b3b9909d0e40b9c4658fc7f41713bc20a0a" => :mountain_lion
   end
 
   head do
