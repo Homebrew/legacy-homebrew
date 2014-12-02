@@ -9,9 +9,9 @@ class GitExtras < Formula
 
   bottle do
     cellar :any
-    sha1 "c8c8a635d8555679422c6d7a06e32e3c08b4e32c" => :mavericks
-    sha1 "cb24ad03c24209431b4242f5cfc863046fcfc163" => :mountain_lion
-    sha1 "f1bdf0558b495a466eba8be250c6fda94a94c1fc" => :lion
+    sha1 "43d178ce9c98a28a6ce7cc337119bb500c0fddec" => :yosemite
+    sha1 "85b967c0c3b2b7eae0af37d18b9b90bad08f79cc" => :mavericks
+    sha1 "54df32fa640c8cd05616c8ebb5cbf1ec8cc95565" => :mountain_lion
   end
 
   # Don't take +x off these files
