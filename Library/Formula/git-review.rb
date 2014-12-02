@@ -35,12 +35,12 @@ class GitReview < Formula
   end
 
   test do
-    system "git init"
-    system "git remote add gerrit https://github.com/Homebrew/homebrew.github.io"
-    (testpath/".git/hooks/commit-msg").write("# empty - make git-review happy")
-    (testpath/"foo").write("test file")
-    system "git add foo"
-    system "git commit -m \"test\""
+    system "git", "init"
+    system "git", "remote", "add", "gerrit", "https://github.com/Homebrew/homebrew.github.io"
+    (testpath/".git/hooks/commit-msg").write "# empty - make git-review happy"
+    (testpath/"foo").write "test file"
+    system "git", "add", "foo"
+    system "git", "commit", "-m", "test"
     system "#{bin}/git-review", "--dry-run"
   end
 end
