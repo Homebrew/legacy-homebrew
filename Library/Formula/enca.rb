@@ -2,8 +2,8 @@ require "formula"
 
 class Enca < Formula
   homepage "http://cihar.com/software/enca/"
-  url "http://dl.cihar.com/enca/enca-1.15.tar.gz"
-  sha1 "8a62202521e36d4159cbe6de64c2e7a0ec797e94"
+  url "http://dl.cihar.com/enca/enca-1.16.tar.gz"
+  sha1 "8cc606a5c0efa49a42374c060faa4fb7a9501d23"
   head "https://github.com/nijel/enca.git"
 
   bottle do
