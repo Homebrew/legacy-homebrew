@@ -29,7 +29,7 @@ A shell script for an command named `extcmd` should be named `brew-extcmd`. This
 	</tr>
   <tr>
     <td>HOMEBREW_CACHE</td>
-		<td>Where Homebrew caches downloaded tarballs to, typically <code>~/Library/Caches/Homebrew</code>. </td>
+		<td>Where Homebrew caches downloaded tarballs to, typically <code>/Library/Caches/Homebrew</code>. </td>
 	</tr>
   <tr>
     <td>HOMEBREW_CELLAR</td>
