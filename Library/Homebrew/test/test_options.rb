@@ -32,17 +32,11 @@ class DeprecatedOptionTests < Homebrew::TestCase
 
   def test_old
     assert_equal "foo", @deprecated_option.old
-  end
-
-  def test_current
-    assert_equal "bar", @deprecated_option.current
-  end
-
-  def test_old
     assert_equal "--foo", @deprecated_option.old_flag
   end
 
   def test_current
+    assert_equal "bar", @deprecated_option.current
     assert_equal "--bar", @deprecated_option.current_flag
   end
 
