@@ -679,16 +679,18 @@ module Homebrew
     if ARGV.include? "--junit"
       xml_document = REXML::Document.new
       xml_document << REXML::XMLDecl.new
-      testsuites = xml_document.add_element 'testsuites'
+      testsuites = xml_document.add_element "testsuites"
+
       tests.each do |test|
-        testsuite = testsuites.add_element 'testsuite'
-        testsuite.attributes['name'] = "brew-test-bot.#{MacOS.cat}"
-        testsuite.attributes['tests'] = test.steps.count
+        testsuite = testsuites.add_element "testsuite"
+        testsuite.add_attribute "name", "brew-test-bot.#{MacOS.cat}"
+        testsuite.add_attribute "tests", test.steps.count
+
         test.steps.each do |step|
-          testcase = testsuite.add_element 'testcase'
-          testcase.attributes['name'] = step.command_short
-          testcase.attributes['status'] = step.status
-          testcase.attributes['time'] = step.time
+          testcase = testsuite.add_element "testcase"
+          testcase.add_attribute "name", step.command_short
+          testcase.add_attribute "status", step.status
+          testcase.add_attribute "time", step.time
 
           if step.has_output?
             # Remove invalid XML CData characters from step output.
