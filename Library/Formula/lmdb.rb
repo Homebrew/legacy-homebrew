@@ -8,9 +8,9 @@ class Lmdb < Formula
 
   bottle do
     cellar :any
-    sha1 "55a9e7543df012aa3e9431805c8e55d00597f6f5" => :mavericks
-    sha1 "fbfc5f6cbe2ec4799cfa153672217a028374bcb2" => :mountain_lion
-    sha1 "61d3a5414a97a5e69b91aea6fbf108c192cde088" => :lion
+    sha1 "7e7e4fb592dccd7c34553760930a9cc59d58c7fb" => :yosemite
+    sha1 "835766327dd8a41e993a7e5e54ca415cceec1f15" => :mavericks
+    sha1 "5914b3dfe5980896f5242b67cf66fadfb59a0ce5" => :mountain_lion
   end
 
   def install
