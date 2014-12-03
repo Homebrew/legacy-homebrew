@@ -2,8 +2,8 @@ require "formula"
 
 class Burp < Formula
   homepage "http://burp.grke.org/"
-  url "https://downloads.sourceforge.net/project/burp/burp-1.4.20/burp-1.4.20.tar.bz2"
-  sha1 "8c72010210fcfb6a7a18f2c4a181ea377581b8cf"
+  url "https://downloads.sourceforge.net/project/burp/burp-1.4.28/burp-1.4.28.tar.bz2"
+  sha1 "ddd5340db6aac1fa2e58c1e66c89730d8fd9bfb5"
   head "https://github.com/grke/burp.git"
 
   bottle do
@@ -13,6 +13,7 @@ class Burp < Formula
   end
 
   depends_on "librsync"
+  depends_on "openssl"
 
   # patches to change directories to brew conventions in Makefile and config files
   patch :DATA
