@@ -36,10 +36,12 @@ class Curl < Formula
   end
 
   depends_on "pkg-config" => :build
+
   depends_on "libidn" => :optional
-  depends_on "libmetalink" => :optional
-  depends_on "c-ares" => :optional
   depends_on "rtmpdump" => :optional
+  depends_on "libssh2" => :optional
+  depends_on "c-ares" => :optional
+  depends_on "libmetalink" => :optional
   depends_on "libressl" => :optional
 
   def install
