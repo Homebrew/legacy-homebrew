@@ -689,7 +689,7 @@ module Homebrew
           testcase.attributes['name'] = step.command_short
           testcase.attributes['status'] = step.status
           testcase.attributes['time'] = step.time
-          failure = testcase.add_element 'failure' if step.failed?
+
           if step.has_output?
             output = step.output
 
@@ -705,6 +705,7 @@ module Homebrew
               system_out = testcase.add_element 'system-out'
               system_out.text = output
             else
+              failure = testcase.add_element 'failure'
               failure.attributes["message"] = "#{step.status}: #{step.command.join(" ")}"
               failure.text = output
             end
