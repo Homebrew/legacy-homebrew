@@ -13,6 +13,7 @@ class Burp < Formula
   end
 
   depends_on "librsync"
+  depends_on "openssl"
 
   # patches to change directories to brew conventions in Makefile and config files
   patch :DATA
