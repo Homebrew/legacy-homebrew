@@ -5,7 +5,7 @@ class Sysdig < Formula
   url "https://github.com/draios/sysdig/archive/0.1.92.tar.gz"
   sha1 "77c43f76b1dc987c2d1f5929bf669e9f11b22aaa"
 
-  head "https://github.com/draios/sysdig.git", :branch => "master"
+  head "https://github.com/draios/sysdig.git"
 
   bottle do
     sha1 "a02f92e350fe20bbdd0e3024280cec76978d46b4" => :yosemite

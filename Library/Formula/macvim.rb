@@ -8,7 +8,7 @@ class Macvim < Formula
   sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
   revision 1
 
-  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
+  head 'https://github.com/b4winckler/macvim.git'
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"

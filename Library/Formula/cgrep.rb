@@ -7,7 +7,7 @@ class Cgrep < Formula
   homepage "https://github.com/awgn/cgrep"
   url "https://github.com/awgn/cgrep/archive/v6.4.6.tar.gz"
   sha1 "e177e200b2f94d18bf9de614695dfe2c8d37638f"
-  head "https://github.com/awgn/cgrep.git", :branch => "master"
+  head "https://github.com/awgn/cgrep.git"
 
   bottle do
     cellar :any

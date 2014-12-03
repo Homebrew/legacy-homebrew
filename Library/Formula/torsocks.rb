@@ -4,7 +4,7 @@ class Torsocks < Formula
   homepage 'https://gitweb.torproject.org/torsocks.git/'
   url 'https://git.torproject.org/torsocks.git', :tag => 'v2.0.0'
 
-  head 'https://git.torproject.org/torsocks.git', :branch => 'master'
+  head 'https://git.torproject.org/torsocks.git'
 
   bottle do
     sha1 "75a53b9a12c5f3b1dbcdfd659f9bdecf6703a2f8" => :yosemite
