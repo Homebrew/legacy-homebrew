@@ -57,7 +57,7 @@ These commands have been contributed by Homebrew users but are not included in t
 >*NOTE:* They are largely untested, and as always, be careful about running untested code on your machine.
 
 ### brew-livecheck
-> Check for new version of a formula in the upstream.
+> Check if there is a new upstream version of a formula.
 >
 > See the [`README`](https://github.com/youtux/homebrew-livecheck/blob/master/README.md) for more info and usage.
 >
@@ -65,11 +65,7 @@ These commands have been contributed by Homebrew users but are not included in t
 > ``` 
 > $ brew tap youtux/livecheck
 > ```
->
-> Usage:
-> ```
-> $ brew livecheck <formula> ...
-> ```
+
 
 ### brew-any-tap
 
