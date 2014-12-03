@@ -12,6 +12,7 @@ class X3270 < Formula
   end
 
   depends_on :x11
+  depends_on "openssl"
 
   option "with-c3270", "Include c3270 (curses-based version)"
   option "with-s3270", "Include s3270 (displayless version)"
