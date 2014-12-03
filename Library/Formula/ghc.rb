@@ -81,6 +81,14 @@ class Ghc < Formula
     rm_rf orig_cabal
 
     resource("binary").stage do
+      # Change the dynamic linker and RPATH of the binary executables.
+      if OS.linux? && Formula["glibc"].installed?
+        keg = Keg.new(prefix)
+        Dir["ghc/stage2/build/tmp/ghc-stage2", "utils/*/dist*/build/tmp/*"].each { |file|
+          keg.change_rpath(Pathname.new(file), HOMEBREW_PREFIX.to_s)
+        }
+      end
+
       # Define where the subformula will temporarily install itself
       subprefix = buildpath+"subfo"
 
