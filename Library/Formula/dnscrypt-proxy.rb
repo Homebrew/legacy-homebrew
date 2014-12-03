@@ -6,7 +6,7 @@ class DnscryptProxy < Formula
   sha256 "b53822841bd275d81ff9faa4784a42618b7acc3c76a86c75be40379c503d69de"
 
   head do
-    url "https://github.com/jedisct1/dnscrypt-proxy.git", :branch => "master"
+    url "https://github.com/jedisct1/dnscrypt-proxy.git"
 
     depends_on :autoconf
     depends_on :automake

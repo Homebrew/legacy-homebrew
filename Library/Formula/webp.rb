@@ -4,7 +4,7 @@ class Webp < Formula
   homepage 'http://code.google.com/speed/webp/'
   url 'http://downloads.webmproject.org/releases/webp/libwebp-0.4.2.tar.gz'
   sha256 '14d825d7c2ef7d49621bcb6b83466be455585e671ae0a2ebc1f2e07775a1722d'
-  head 'https://chromium.googlesource.com/webm/libwebp', :branch => 'master'
+  head 'https://chromium.googlesource.com/webm/libwebp'
 
   bottle do
     cellar :any

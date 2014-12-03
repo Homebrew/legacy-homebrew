@@ -5,7 +5,7 @@ class GitExtras < Formula
   url "https://github.com/tj/git-extras/archive/2.2.0.tar.gz"
   sha1 "cb3df2bc8953fdae7b73c3d309e79ee5316bb90d"
 
-  head "https://github.com/tj/git-extras.git", :branch => "master"
+  head "https://github.com/tj/git-extras.git"
 
   bottle do
     cellar :any

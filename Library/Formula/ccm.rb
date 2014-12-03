@@ -12,7 +12,7 @@ class Ccm < Formula
     sha1 "7f7178f0b6901a756fbcddaa4450902bc5390dae" => :lion
   end
 
-  head "https://github.com/pcmanus/ccm.git", :branch => "master"
+  head "https://github.com/pcmanus/ccm.git"
 
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
