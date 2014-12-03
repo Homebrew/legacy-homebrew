@@ -691,24 +691,24 @@ module Homebrew
           testcase.attributes['time'] = step.time
 
           if step.has_output?
-            output = step.output
-
             # Remove invalid XML CData characters from step output.
-            output = output.delete("\000\a\b\e\f")
+            output = step.output.delete("\000\a\b\e\f")
 
             if output.bytesize > BYTES_IN_1_MEGABYTE
               output = "truncated output to 1MB:\n" \
                 + output.slice(-BYTES_IN_1_MEGABYTE, BYTES_IN_1_MEGABYTE)
             end
-            output = REXML::CData.new output
+
+            cdata = REXML::CData.new output
+
             if step.passed?
-              system_out = testcase.add_element 'system-out'
-              system_out.text = output
+              elem = testcase.add_element "system-out"
             else
-              failure = testcase.add_element 'failure'
-              failure.attributes["message"] = "#{step.status}: #{step.command.join(" ")}"
-              failure.text = output
+              elem = testcase.add_element "failure"
+              elem.add_attribute "message", "#{step.status}: #{step.command.join(" ")}"
             end
+
+            elem << cdata
           end
         end
       end
