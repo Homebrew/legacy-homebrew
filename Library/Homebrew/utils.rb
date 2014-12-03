@@ -198,6 +198,8 @@ def which_editor
   # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 
+  # Find SublimeText
+  return 'subl' if which "subl"
   # Find Textmate
   return 'mate' if which "mate"
   # Find BBEdit / TextWrangler
