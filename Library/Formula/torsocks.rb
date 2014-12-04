@@ -12,9 +12,9 @@ class Torsocks < Formula
     sha1 "d10034aa108b8a4baf2a6ecd73457cf279681eb3" => :mountain_lion
   end
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     system "./autogen.sh"
