@@ -7,10 +7,9 @@ class Libstxxl < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "7ce7a89ba656cd26a64ffedcaeda2f35c06ef01a" => :yosemite
-    sha1 "6a2ee5d2a7b32c1195e7aa0f48630cbb66f10adf" => :mavericks
-    sha1 "3275c9447279ebbcbdceda59fd7ad3d99fc7afbb" => :mountain_lion
+    sha1 "2e9e956e2b3500e526a119b980c2854535d5edb0" => :yosemite
+    sha1 "50fcd3bca1975e47922a986e7fba52e24e49ae55" => :mavericks
+    sha1 "1d54cfe7453bc91b00dfefbe23839a61e376d6c5" => :mountain_lion
   end
 
   depends_on "cmake" => :build
