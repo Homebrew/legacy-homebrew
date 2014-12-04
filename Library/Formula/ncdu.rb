@@ -8,8 +8,8 @@ class Ncdu < Formula
   head do
     url 'git://g.blicky.net/ncdu.git'
 
-    depends_on :automake
-    depends_on :autoconf
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
   end
 
   def install
