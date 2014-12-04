@@ -1,9 +1,9 @@
 require 'formula'
 
 class HtopOsx < Formula
-  homepage 'https://github.com/max-horvath/htop-osx'
-  url 'https://github.com/max-horvath/htop-osx/archive/0.8.2.2.tar.gz'
-  sha1 '17c56fe5efe81cf6b0f4c13a958fa7e4d8591b23'
+  homepage 'https://github.com/sunzx/htop-osx.git'
+  url 'https://github.com/sunzx/htop-osx/archive/0.8.2.2-2014-11-10.zip'
+  sha1 '6373fc8db9ede0b2e054bb8f38cd61b0d39a2177'
 
   bottle do
     sha1 "1979feaa7dc6dc9ea8eba0eeba0903451b6dcb60" => :mavericks
