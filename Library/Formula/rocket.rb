@@ -43,8 +43,8 @@ class Rocket < Formula
   end
 
   test do
-    system "#{bin}/actool help"
-    system "#{bin}/rkt help"
+    system "#{bin}/actool", "help"
+    system "#{bin}/rkt", "help"
     assert_equal "sha256-08699361d40a0728924ffe6fcd67dc933d7311cf8e6f403048c9271181b20e2e\n",
       `#{bin}/rkt --dir=$PWD fetch https://github.com/coreos/rocket/releases/download/v0.1.0/ace-validator-main.aci`
   end
