@@ -8,10 +8,10 @@ class Sphinx < Formula
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   bottle do
-    revision 2
-    sha1 "8f9004812b5545eb923917a4c20e08ae6c491a0d" => :yosemite
-    sha1 "fb8af1e261bfd2ddfa82098ecb192f97451f7c29" => :mavericks
-    sha1 "065c4ad66e0f5253b70281cbbdc824b9f7ab8ca7" => :mountain_lion
+    revision 3
+    sha1 "54795e51f2b91242fc9f301b5b56da25099fcc16" => :yosemite
+    sha1 "802d7dc2389142f2d4447a64a700b92d7c6679f5" => :mavericks
+    sha1 "ffd45b506761c0cd20472ab1a6f565377e8cfcb1" => :mountain_lion
   end
 
   option 'mysql', 'Force compiling against MySQL'
