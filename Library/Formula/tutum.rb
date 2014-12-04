@@ -2,14 +2,14 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/v0.10.5.tar.gz"
-  sha1 "82238e8eba3a69879a523dd348baf9d47d00eba5"
+  url "https://github.com/tutumcloud/tutum-cli/archive/v0.11.0.tar.gz"
+  sha1 "c4cffb5a1df6252165a3ee76e640afa86d4bccad"
 
   bottle do
     cellar :any
-    sha1 "3c1e3375479104505398e93977a85a8102651fe0" => :yosemite
-    sha1 "1755746e4e6c3281ad7a7c0147434c3f806236de" => :mavericks
-    sha1 "c390a4c6dc4915d256db7e340327ade39fcbe798" => :mountain_lion
+    sha1 "4f30e05c597ef8b5d2a042462c9f3e363eb717ee" => :yosemite
+    sha1 "d1579461073f847893ea9280cddf63aae14fccab" => :mavericks
+    sha1 "54a28205d4c06e291367394c428db40bdcd0682c" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -41,8 +41,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.10.5.tar.gz"
-    sha1 "4e14fd392f69e0efd91f05f7a9dfc257677eb04f"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.11.0.tar.gz"
+    sha1 "a8b011697fe015c468eeeed33ce242631e11d39a"
   end
 
   resource "six" do
