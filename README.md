@@ -2,6 +2,7 @@
 
 spark-jobserver provides a RESTful interface for submitting and managing [Apache Spark](http://spark-project.org) jobs, jars, and job contexts.
 This repo contains the complete Spark job server project, including unit tests and deploy scripts.
+It was originally started at [Ooyala](http://www.ooyala.com), but this is now the main development repo.
 
 See [Troubleshooting Tips](docs/troubleshooting.md).
 
@@ -53,7 +54,7 @@ Then go ahead and start the job server using the instructions above.
 
 Let's upload the jar:
 
-    curl --data-binary @job-server-tests/target/job-server-tests-0.4.0.jar localhost:8090/jars/test
+    curl --data-binary @job-server-tests/target/job-server-tests-0.4.1.jar localhost:8090/jars/test
     OK⏎
 
 The above jar is uploaded as app `test`.  Next, let's start an ad-hoc word count job, meaning that the job
@@ -119,7 +120,7 @@ In your `build.sbt`, add this to use the job server jar:
 
 	resolvers += "Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven"
 
-	libraryDependencies += "spark.jobserver" % "job-server-api" % "0.4.0" % "provided"
+	libraryDependencies += "spark.jobserver" % "job-server-api" % "0.4.1" % "provided"
 
 For most use cases it's better to have the dependencies be "provided" because you don't want SBT assembly to include the whole job server jar.
 
