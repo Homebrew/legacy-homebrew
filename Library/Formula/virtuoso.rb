@@ -8,9 +8,9 @@ class Virtuoso < Formula
   head do
     url 'https://github.com/openlink/virtuoso-opensource.git', :branch => 'develop/7'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   # If gawk isn't found, make fails deep into the process.
