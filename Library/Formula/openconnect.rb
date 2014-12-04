@@ -2,9 +2,8 @@ require "formula"
 
 class Openconnect < Formula
   homepage "http://www.infradead.org/openconnect.html"
-  url "ftp://ftp.infradead.org/pub/openconnect/openconnect-6.00.tar.gz"
-  sha1 "405f0563a82660fa492d8c9ad248198adb8793f9"
-  revision 1
+  url "ftp://ftp.infradead.org/pub/openconnect/openconnect-7.01.tar.gz"
+  sha1 "69edfa8d4af93ef33e90b21f25f2949d1997c83a"
 
   bottle do
     revision 1
@@ -29,8 +28,8 @@ class Openconnect < Formula
   depends_on "oath-toolkit" => :optional
 
   resource "vpnc-script" do
-    url "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/a78b3ddfc56ab457104c88e94dca72d8738f4fad:/vpnc-script"
-    sha1 "9516b6e303392cfb5518de3f44767f226c690a1c"
+    url "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/df5808b301ba767578ffbec966db3b9ff154f588:/vpnc-script"
+    sha1 "c4cb07222ed5b6c4a52f5c094dec9933ade87344"
   end
 
   def install
@@ -52,13 +51,5 @@ class Openconnect < Formula
 
     system "./configure", *args
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    OpenConnect requires the use of a TUN/TAP driver.
-
-    You can download one at http://tuntaposx.sourceforge.net/
-    and install it prior to running OpenConnect.
-    EOS
   end
 end
