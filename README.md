@@ -10,7 +10,7 @@ Install Linuxbrew (tl;dr)
 Paste at a Terminal prompt:
 
 ``` sh
-ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/linuxbrew/go/install)"
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
 ```
 
 See [Dependencies](#dependencies) and [Installation](#installation) below for more details.
@@ -49,7 +49,7 @@ Installation
 Paste at a Terminal prompt:
 
 ``` sh
-ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/linuxbrew/go/install)"
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
 ```
 
 Or if you prefer:
