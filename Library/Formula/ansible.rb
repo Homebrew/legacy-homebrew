@@ -38,8 +38,8 @@ class Ansible < Formula
   end
 
   resource "pycrypto" do
-    url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz"
-    sha1 "c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84"
+    url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz"
+    sha1 "aeda3ed41caf1766409d4efc689b9ca30ad6aeb2"
   end
 
   resource "boto" do
@@ -118,5 +118,10 @@ class Ansible < Formula
 
   test do
     system "#{bin}/ansible", "--version"
+    # Check the "pycrypto" has installed properly. There are some bottling issues on ML.
+    assert (libexec/"vendor/lib/python2.7/site-packages/Crypto").exist?, "pycrypto must exist"
+    # Check that it can be imported by Python
+    ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
+    system "python", "-c", "from Crypto.Hash import SHA256"
   end
 end
