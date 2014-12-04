@@ -96,7 +96,10 @@ class Ansible < Formula
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
-    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
+    resource("pycrypto").stage { system "python", "setup.py", "install", "--prefix=#{libexec}/vendor" }
+    system "python", "-c", "from Crypto.Hash import SHA256"
+
+    res = %w[boto pyyaml paramiko markupsafe jinja2]
     res += %w[isodate xmltodict pywinrm] # windows support
     res += %w[six requests websocket-client docker-py] # docker support
     res += %w[pyasn1 python-keyczar] # accelerate support
