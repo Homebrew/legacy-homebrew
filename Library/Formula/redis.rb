@@ -6,9 +6,9 @@ class Redis < Formula
   sha1 "129629262fea2bc60daa542f52457e65e6aa7fd5"
 
   bottle do
-    sha1 "749cb76075887dae929b91b4a14fd376e4c2c1c5" => :mavericks
-    sha1 "601257c4bc1b39bfb450e6dc6f113fa9a73fb8f8" => :mountain_lion
-    sha1 "3716fd757f9911610f9d24cb51ecd9a52d71228c" => :lion
+    sha1 "f569122156b3029ecef204a9bfe840f713504e13" => :yosemite
+    sha1 "4f6bbef844010227487a278bf5f477688dd515d7" => :mavericks
+    sha1 "da97629782ef58e777c3335dd610a1c5246aeb46" => :mountain_lion
   end
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
