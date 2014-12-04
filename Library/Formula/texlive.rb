@@ -3,9 +3,9 @@ require "formula"
 class Texlive < Formula
   homepage "http://www.tug.org/texlive/"
 
-  url "http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz"
-  sha1 "997d2be24706327845925b0ef34544cb4a6fd2f1"
-  version "20141120"
+  url "https://downloads.sourceforge.net/project/linuxbrew/mirror/texlive-20141204.tar.gz"
+  mirror "http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz"
+  sha1 "bff2fd78c9c4c0818fe3d0c1c795813777d6a5d0"
 
   option "with-full", "install everything"
   option "with-medium", "install small + more packages and languages"
