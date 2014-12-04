@@ -6,6 +6,12 @@ class DnscryptProxy < Formula
   mirror "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.2.tar.bz2"
   sha256 "766bcd8874cd6cbfeeeb7246c75c39ddc14317ad81ad713bd6cfc9529b2f0c0d"
 
+  bottle do
+    sha1 "2a09152f68e40dd76d2415cb7afebf0480881578" => :yosemite
+    sha1 "80fa7111d860b34bb312381886e2b73128db906e" => :mavericks
+    sha1 "401db4fb2a2dcee39edcbeb8b04e30ef669a8b4a" => :mountain_lion
+  end
+
   head do
     url "https://github.com/jedisct1/dnscrypt-proxy.git"
 
