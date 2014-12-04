@@ -7,7 +7,7 @@ class Ctags < Formula
 
   head do
     url 'https://svn.code.sf.net/p/ctags/code/trunk'
-    depends_on :autoconf
+    depends_on "autoconf" => :build
   end
 
   # fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556
