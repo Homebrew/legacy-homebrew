@@ -4,7 +4,7 @@ class Ssdb < Formula
   homepage "http://ssdb.io/?lang=en"
   url "https://github.com/ideawu/ssdb/archive/1.7.0.1.tar.gz"
   sha1 "90c06e31a5e7c921363ea88d2595d593d42ff607"
-  head "https://github.com/ideawu/ssdb.git", :branch => "master"
+  head "https://github.com/ideawu/ssdb.git"
 
   bottle do
     sha1 "78f7a3a181202a181c7d02a5dc4fda56fee1535b" => :yosemite

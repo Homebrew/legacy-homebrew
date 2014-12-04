@@ -18,7 +18,7 @@ class Ledger < Formula
     sha1 "4f05d2f03df1d7f1709ca4a5ecb832d34cb2fbfe" => :mountain_lion
   end
 
-  head "https://github.com/ledger/ledger.git", :branch => "master"
+  head "https://github.com/ledger/ledger.git"
 
   option "debug", "Build with debugging symbols enabled"
   option "with-docs", "Build HTML documentation"

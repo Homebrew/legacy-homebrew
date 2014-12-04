@@ -679,35 +679,38 @@ module Homebrew
     if ARGV.include? "--junit"
       xml_document = REXML::Document.new
       xml_document << REXML::XMLDecl.new
-      testsuites = xml_document.add_element 'testsuites'
-      tests.each do |test|
-        testsuite = testsuites.add_element 'testsuite'
-        testsuite.attributes['name'] = "brew-test-bot.#{MacOS.cat}"
-        testsuite.attributes['tests'] = test.steps.count
-        test.steps.each do |step|
-          testcase = testsuite.add_element 'testcase'
-          testcase.attributes['name'] = step.command_short
-          testcase.attributes['status'] = step.status
-          testcase.attributes['time'] = step.time
-          failure = testcase.add_element 'failure' if step.failed?
-          if step.has_output?
-            output = step.output
+      testsuites = xml_document.add_element "testsuites"
 
+      tests.each do |test|
+        testsuite = testsuites.add_element "testsuite"
+        testsuite.add_attribute "name", "brew-test-bot.#{MacOS.cat}"
+        testsuite.add_attribute "tests", test.steps.count
+
+        test.steps.each do |step|
+          testcase = testsuite.add_element "testcase"
+          testcase.add_attribute "name", step.command_short
+          testcase.add_attribute "status", step.status
+          testcase.add_attribute "time", step.time
+
+          if step.has_output?
             # Remove invalid XML CData characters from step output.
-            output = output.delete("\000\a\b\e\f")
+            output = step.output.delete("\000\a\b\e\f")
 
             if output.bytesize > BYTES_IN_1_MEGABYTE
               output = "truncated output to 1MB:\n" \
                 + output.slice(-BYTES_IN_1_MEGABYTE, BYTES_IN_1_MEGABYTE)
             end
-            output = REXML::CData.new output
+
+            cdata = REXML::CData.new output
+
             if step.passed?
-              system_out = testcase.add_element 'system-out'
-              system_out.text = output
+              elem = testcase.add_element "system-out"
             else
-              failure.attributes["message"] = "#{step.status}: #{step.command.join(" ")}"
-              failure.text = output
+              elem = testcase.add_element "failure"
+              elem.add_attribute "message", "#{step.status}: #{step.command.join(" ")}"
             end
+
+            elem << cdata
           end
         end
       end
