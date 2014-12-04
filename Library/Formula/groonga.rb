@@ -4,6 +4,7 @@ class Groonga < Formula
   homepage "http://groonga.org/"
   url "http://packages.groonga.org/source/groonga/groonga-4.0.7.tar.gz"
   sha1 "b00c56c6d7318fe1a87f6f55366182ace4014a2a"
+  revision 1
 
   bottle do
     sha1 "2775b6f11f9e37b2c217232a8c1330d96399f247" => :yosemite
