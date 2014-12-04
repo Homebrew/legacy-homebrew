@@ -3,18 +3,10 @@ require "formula"
 class Duti < Formula
   homepage "http://duti.org/"
   head "https://github.com/moretension/duti.git"
-  url "https://github.com/moretension/duti/archive/duti-1.5.2.tar.gz"
-  sha1 "1833c0a56646a132fa09bcb31c557d4393f19a3b"
+  url "https://github.com/moretension/duti/archive/duti-1.5.3.tar.gz"
+  sha1 "2a4e34002db33133feb8057968d1f670bf422ea5"
 
   depends_on "autoconf" => :build
-
-  # Fix for hardcoded SDK paths. See https://github.com/moretension/duti/pull/7
-  if MacOS.version == :yosemite
-    patch do
-        url "https://github.com/moretension/duti/pull/7.patch"
-        sha1 "6bbdba1cb3cbfe5aad9c0560046216c68112f6e8"
-    end
-  end
 
   def install
     system "autoreconf", "-vfi"
