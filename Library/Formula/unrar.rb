@@ -2,8 +2,8 @@ require 'formula'
 
 class Unrar < Formula
   homepage 'http://www.rarlab.com'
-  url 'http://www.rarlab.com/rar/unrarsrc-5.2.2.tar.gz'
-  sha1 '5e30ab23aab82d2f8b747c5b6f7187e364eb360c'
+  url 'http://www.rarlab.com/rar/unrarsrc-5.2.3.tar.gz'
+  sha1 '31e7dad7424635e7a3ae823b5dd9e50db54393ec'
 
   bottle do
     cellar :any
