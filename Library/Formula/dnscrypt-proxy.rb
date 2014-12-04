@@ -2,8 +2,9 @@ require "formula"
 
 class DnscryptProxy < Formula
   homepage "http://dnscrypt.org"
-  url "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.1.tar.gz"
-  sha256 "b53822841bd275d81ff9faa4784a42618b7acc3c76a86c75be40379c503d69de"
+  url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.4.2/dnscrypt-proxy-1.4.2.tar.bz2"
+  mirror "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.2.tar.bz2"
+  sha256 "766bcd8874cd6cbfeeeb7246c75c39ddc14317ad81ad713bd6cfc9529b2f0c0d"
 
   head do
     url "https://github.com/jedisct1/dnscrypt-proxy.git"
