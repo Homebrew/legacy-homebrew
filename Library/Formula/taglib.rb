@@ -5,6 +5,8 @@ class Taglib < Formula
   url 'https://github.com/taglib/taglib/archive/v1.9.1.tar.gz'
   sha1 '44165eda04d49214a0c4de121a4d99ae18b9670b'
 
+  head "https://github.com/taglib/taglib.git"
+
   bottle do
     cellar :any
     revision 1
