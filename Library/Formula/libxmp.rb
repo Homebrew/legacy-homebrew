@@ -14,7 +14,7 @@ class Libxmp < Formula
 
   head do
     url "git://git.code.sf.net/p/xmp/libxmp"
-    depends_on :autoconf
+    depends_on "autoconf" => :build
   end
 
   def install
