@@ -16,6 +16,7 @@ class EnginePkcs11 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libp11'
+  depends_on "openssl"
 
   def install
     system "./bootstrap" if build.head?
