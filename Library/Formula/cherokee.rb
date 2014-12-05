@@ -24,6 +24,7 @@ class Cherokee < Formula
   end
 
   depends_on 'gettext'
+  depends_on "openssl"
 
   def install
     if build.head?
