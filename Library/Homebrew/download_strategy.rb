@@ -66,6 +66,10 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def clear_cache
     cached_location.rmtree if cached_location.exist?
   end
+
+  def head?
+    resource.version.head?
+  end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
@@ -350,7 +354,7 @@ end
 
 class SubversionDownloadStrategy < VCSDownloadStrategy
   def cache_tag
-    resource.version.head? ? "svn-HEAD" : "svn"
+    head? ? "svn-HEAD" : "svn"
   end
 
   def repo_valid?
