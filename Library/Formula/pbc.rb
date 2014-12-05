@@ -6,6 +6,13 @@ class Pbc < Formula
   sha1 "8947f1a5a32d5c2d1f5113ccbb1e0d25ca5ce1c9"
   head "http://repo.or.cz/r/pbc.git"
 
+  bottle do
+    cellar :any
+    sha1 "57180c03e2d82474c205d60783f5c657de8f5bd5" => :yosemite
+    sha1 "9519b2e974ff93fb7e33ff776c008a3a0083d70b" => :mavericks
+    sha1 "2a3e05bc353b12436aad2ad6fdd67224651e6e44" => :mountain_lion
+  end
+
   depends_on "gmp"
 
   def install
