@@ -10,9 +10,9 @@ class Dante < Formula
 
   bottle do
     cellar :any
-    sha1 "b284bad2754b9c65df5750a90a5be7ceda4062df" => :mavericks
-    sha1 "25d0199e64d429180f999507f98a87d9050d6d9b" => :mountain_lion
-    sha1 "55c59f4650036ed6364740059f8f749976a535fe" => :lion
+    sha1 "2d75acdb4024c23ea3834eb2f5e95813f93c8b94" => :yosemite
+    sha1 "7f078e852cc57c0265ce8b334b2aa1111397fd76" => :mavericks
+    sha1 "d09ccfb1ad49ec06acd1200f43716eb79d71618d" => :mountain_lion
   end
 
   def install
