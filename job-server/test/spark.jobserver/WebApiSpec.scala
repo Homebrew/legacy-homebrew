@@ -30,7 +30,7 @@ with ScalatestRouteTest with HttpService {
   val masterConfVal = "spark://localhost:7077"
   val config = ConfigFactory.parseString(s"""
     spark {
-      master = "spark://localhost:7077"
+      master = "${masterConfVal}"
       jobserver.bind-address = "${bindConfVal}"
     }
                                  """)

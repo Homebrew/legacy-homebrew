@@ -40,9 +40,9 @@ object SparkJobUtils {
     // Set the Jetty port to 0 to find a random port
     conf.set("spark.ui.port", "0")
 
-    // Set spark broadcast factory
+    // Set spark broadcast factory in yarn-client mode
     if (config.getString("spark.master") == "yarn-client")
-      conf.set("spark.broadcast.factory", config.getString("spark.jobserver.broadcast.factory"))
+      conf.set("spark.broadcast.factory", config.getString("spark.jobserver.yarn-broadcast-factory"))
 
     // Set number of akka threads
     // TODO: need to figure out how many extra threads spark needs, besides the job threads
@@ -62,5 +62,17 @@ object SparkJobUtils {
   def getMaxRunningJobs(config: Config): Int = {
     val cpuCores = Runtime.getRuntime.availableProcessors
     Try(config.getInt("spark.jobserver.max-jobs-per-context")).getOrElse(cpuCores)
+  }
+
+  /**
+   * According "spark.master", returns the timeout of create sparkContext
+   */
+  def getContextTimeout(config: Config): Int = {
+    config.getString("spark.master") match {
+      case "yarn-client" =>
+        config.getMilliseconds("spark.jobserver.yarn-context-creation-timeout").toInt / 1000
+      case _               =>
+        config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000
+    }
   }
 }

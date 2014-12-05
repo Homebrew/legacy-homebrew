@@ -9,6 +9,7 @@ import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import spark.jobserver.SparkWebUiActor.{SparkWorkersErrorInfo, SparkWorkersInfo, GetWorkerStatus}
+import spark.jobserver.util.SparkJobUtils
 import scala.concurrent.{Await, ExecutionContext}
 import scala.util.Try
 import spark.jobserver.io.JobInfo
@@ -37,7 +38,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
   val StatusKey = "status"
   val ResultKey = "result"
 
-  val contextTimeout = getcontextTimeout
+  val contextTimeout = SparkJobUtils.getContextTimeout(config)
   val sparkAliveWorkerThreshold = Try(config.getInt("spark.jobserver.sparkAliveWorkerThreshold")).getOrElse(1)
   val bindAddress = config.getString("spark.jobserver.bind-address")
 
@@ -402,12 +403,4 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
     }
   }
 
-  private def getcontextTimeout: Int = {
-    config.getString("spark.master") match {
-      case "yarn-client" =>
-        Try(config.getMilliseconds("spark.jobserver.yarn-context-creation-timeout").toInt / 1000).getOrElse(40)
-      case _               =>
-        Try(config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000).getOrElse(15)
-    }
-  }
 }

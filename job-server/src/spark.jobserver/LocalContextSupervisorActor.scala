@@ -7,6 +7,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import ooyala.common.akka.InstrumentedActor
 import spark.jobserver.io.JobDAO
+import spark.jobserver.util.SparkJobUtils
 import scala.collection.mutable
 import scala.util.{Failure, Success, Try}
 import org.joda.time.DateTime
@@ -71,7 +72,7 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
 
   val config = context.system.settings.config
   val defaultContextConfig = config.getConfig("spark.context-settings")
-  val contextTimeout = getcontextTimeout
+  val contextTimeout = SparkJobUtils.getContextTimeout(config)
   import context.dispatcher   // to get ExecutionContext for futures
 
   private val contexts = mutable.HashMap.empty[String, ActorRef]
@@ -190,12 +191,4 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
     }
   }
 
-  private def getcontextTimeout: Int = {
-    if (config.getString("spark.master") == "yarn-client") {
-      Try(config.getMilliseconds("spark.jobserver.yarn-context-creation-timeout").toInt / 1000)
-        .getOrElse(40)
-    } else {
-      Try(config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000).getOrElse(15)
-    }
-  }
 }
