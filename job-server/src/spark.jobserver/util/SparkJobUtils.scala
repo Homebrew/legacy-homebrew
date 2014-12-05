@@ -70,9 +70,9 @@ object SparkJobUtils {
   def getContextTimeout(config: Config): Int = {
     config.getString("spark.master") match {
       case "yarn-client" =>
-        config.getMilliseconds("spark.jobserver.yarn-context-creation-timeout").toInt / 1000
+        Try(config.getMilliseconds("spark.jobserver.yarn-context-creation-timeout").toInt / 1000).getOrElse(40)
       case _               =>
-        config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000
+        Try(config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000).getOrElse(15)
     }
   }
 }
