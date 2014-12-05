@@ -2,8 +2,8 @@ require "formula"
 
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
-  homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.33/node-v0.10.33.tar.gz"
+  homepage "https://nodejs.org/"
+  url "https://nodejs.org/dist/v0.10.33/node-v0.10.33.tar.gz"
   sha256 "75dc26c33144e6d0dc91cb0d68aaf0570ed0a7e4b0c35f3a7a726b500edd081e"
   revision 1
 
@@ -39,8 +39,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.10.tgz"
-    sha1 "a571ae408ac1b5e515f6c34c033503a7bb828cb4"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.11.tgz"
+    sha1 "1eed4c04e4c8c745bc721baba1b4fe42f2af140c"
   end
 
   def install
