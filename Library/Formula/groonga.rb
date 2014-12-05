@@ -45,7 +45,7 @@ class Groonga < Formula
 
     # autoreconf must be run, otherwise prebuilt configure may complain
     # about a version mismatch between included automake and Homebrew's
-    system "autoreconf --force --install"
+    system "autoreconf", "--force", "--install"
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
     system "make install"
