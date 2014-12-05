@@ -3,8 +3,10 @@ require 'formula'
 class Nimrod < Formula
   homepage "http://nimrod-lang.org/"
 
-  url "https://github.com/Araq/Nimrod/archive/v0.9.6.tar.gz"
-  sha1 "5052ef6faada272392cec415d9cd64cb530724b9"
+  stable do
+    url "https://github.com/Araq/Nimrod/archive/v0.9.6.tar.gz"
+    sha1 "5052ef6faada272392cec415d9cd64cb530724b9"
+  end
 
   resource "csources" do
     url "https://github.com/nimrod-code/csources.git"
@@ -14,22 +16,14 @@ class Nimrod < Formula
   patch :DATA
 
   def install
-    csources_path = buildpath/"csources"
-
-    # Some advanced tools like c2nim require files from the compiler
-    # directory. Make a fresh one so we can move it after we build.
-    cp_r "compiler", "compiler.orig"
-
     resource("csources").stage do
-      csources_staging = Pathname.pwd
+      pathname = Pathname.pwd
 
-      cd ".." do
-        mv csources_staging, csources_path
-        mkdir csources_staging
-      end
+      buildpath.install pathname => "csources"
+      mkdir pathname
     end
 
-    cd csources_path do
+    cd "csources" do
       system "/bin/sh", "./build.sh"
     end
 
@@ -42,7 +36,7 @@ class Nimrod < Formula
     inreplace "compiler/nimrod.ini", "${mingw}", "mingw32"
 
     system "./koch", "install", prefix
-    mv "compiler.orig", prefix/"nimrod/compiler"
+    (prefix/"nimrod").install "compiler"
     bin.install_symlink prefix/"nimrod/bin/nimrod"
   end
 
