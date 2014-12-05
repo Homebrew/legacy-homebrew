@@ -7,9 +7,9 @@ class Owamp < Formula
 
   bottle do
     cellar :any
-    sha1 "bae5fbfcde1fa634d1a97dcf085722e7d4f3e7cc" => :yosemite
-    sha1 "40052c815375a344fecc8985a72612fe91320269" => :mavericks
-    sha1 "34531c931ad6b22e4328b3823f2c2f38027db2c6" => :mountain_lion
+    sha1 "e1746058ddd62ec75ec1b62be837e22c3527c37a" => :yosemite
+    sha1 "45429f2d582a54caa0979b9aa533f6dff1c74ec1" => :mavericks
+    sha1 "1020642e1ca36fd067828ed344799023aca8ff09" => :mountain_lion
   end
 
   depends_on "i2util"
