@@ -90,7 +90,7 @@ class Resource
   end
 
   def verify_download_integrity fn
-    if fn.respond_to?(:file?) && fn.file?
+    if fn.file?
       ohai "Verifying #{fn.basename} checksum" if ARGV.verbose?
       fn.verify_checksum(checksum)
     end
