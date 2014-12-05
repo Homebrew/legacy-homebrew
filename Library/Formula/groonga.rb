@@ -12,6 +12,9 @@ class Groonga < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "libtool" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "pcre"
   depends_on "msgpack"
   depends_on "mecab" => :optional
@@ -40,6 +43,9 @@ class Groonga < Formula
     args << "--with-mecab" if build.with? "mecab"
     args << "--with-lz4" if build.with? "lz4"
 
+    # autoreconf must be run, otherwise prebuilt configure may complain
+    # about a version mismatch between included automake and Homebrew's
+    system "autoreconf --force --install"
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
     system "make install"
