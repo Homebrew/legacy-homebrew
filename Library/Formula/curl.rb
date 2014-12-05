@@ -36,7 +36,6 @@ class Curl < Formula
   end
 
   depends_on "pkg-config" => :build
-
   depends_on "libidn" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "libssh2" => :optional

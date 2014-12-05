@@ -8,10 +8,10 @@ class Sphinx < Formula
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   bottle do
-    revision 2
-    sha1 "8f9004812b5545eb923917a4c20e08ae6c491a0d" => :yosemite
-    sha1 "fb8af1e261bfd2ddfa82098ecb192f97451f7c29" => :mavericks
-    sha1 "065c4ad66e0f5253b70281cbbdc824b9f7ab8ca7" => :mountain_lion
+    revision 3
+    sha1 "54795e51f2b91242fc9f301b5b56da25099fcc16" => :yosemite
+    sha1 "802d7dc2389142f2d4447a64a700b92d7c6679f5" => :mavericks
+    sha1 "ffd45b506761c0cd20472ab1a6f565377e8cfcb1" => :mountain_lion
   end
 
   option 'mysql', 'Force compiling against MySQL'
@@ -22,10 +22,9 @@ class Sphinx < Formula
   depends_on :mysql if build.include? 'mysql'
   depends_on :postgresql if build.include? 'pgsql'
 
-  # http://snowball.tartarus.org/
   resource 'stemmer' do
-    url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-    sha1 '1ac6bb16e829e9f3a58f62c27047c26784975aa1'
+    url "https://github.com/snowballstem/snowball.git",
+      :revision => "9b58e92c965cd7e3208247ace3cc00d173397f3c"
   end
 
   fails_with :llvm do
@@ -39,7 +38,10 @@ class Sphinx < Formula
   end
 
   def install
-    (buildpath/'libstemmer_c').install resource('stemmer')
+    resource('stemmer').stage do
+      system "make", "dist_libstemmer_c"
+      system "tar", "xzf", "dist/libstemmer_c.tgz", "-C", buildpath
+    end
 
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking

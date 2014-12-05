@@ -28,8 +28,8 @@ class Cardpeek < Formula
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on :autoconf
-  depends_on :automake
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on :x11
   depends_on "openssl"
   depends_on "gtk+3"
