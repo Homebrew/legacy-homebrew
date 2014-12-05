@@ -13,10 +13,16 @@ class AflFuzz < Formula
   end
 
   test do
-    # afl-fuzz only runs interactively and doesn't have a version flag to
-    # simply test if it installed successfully. Instead we just run it and
-    # hope that it prints its name somewhere in its output (which we expect it
-    # to in its banner).
-    assert `#{bin}/afl-fuzz`.include? "afl-fuzz"
+    # Try a sample compilation.
+    sample_file = <<-eos
+      #include <iostream>
+
+      int main() {
+          std::cout << "Hello, world!" << std::endl;
+      }
+    eos
+    (testpath/"main.cpp").write(sample_file)
+
+    system "afl-clang++", (testpath/"main.cpp")
   end
 end
