@@ -650,7 +650,7 @@ class Formula
 
       specs.each do |spec|
         instance.options.each do |opt, desc|
-          spec.option(opt[/^--(.+)$/, 1], desc)
+          spec.option(opt[Option.OPTION_NAME_REGEX, 1], desc)
         end
       end
 
@@ -732,7 +732,7 @@ class Formula
     end
 
     def option name, description=""
-      specs.each { |spec| spec.option(name, description) }
+      specs.each { |spec| spec.option(name[Option.OPTION_NAME_REGEX, 1], description) }
     end
 
     def deprecated_option hash
