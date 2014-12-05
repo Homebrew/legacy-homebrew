@@ -35,11 +35,4 @@ class Nimble < Formula
   test do
     system "#{bin}/nimble", "--version"
   end
-
-  def caveats; <<-EOS.undent
-    nimble"s bin directory can be included in $PATH for easier access to
-    executables installed by nimble packages:
-      ~/.babel/bin
-    EOS
-  end
 end
