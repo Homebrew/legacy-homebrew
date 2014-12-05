@@ -1,7 +1,7 @@
 require "formula"
 
 class Nimble < Formula
-  homepage "https://github.com/nimrod-code/nimble"
+  homepage "https://github.com/nim-lang/nimble"
 
   stable do
     url "https://github.com/nim-lang/nimble/archive/v0.4.tar.gz"
