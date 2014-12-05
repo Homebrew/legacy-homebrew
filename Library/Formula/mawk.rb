@@ -19,12 +19,12 @@ class Mawk < Formula
                           "--disable-silent-rules",
                           "--with-readline=/usr/lib",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
     version=`mawk '/version/ { print $2 }' #{prefix}/README`
+    assert_equal 0, $?.exitstatus
     assert_equal version, "#{version}"
   end
-
 end
