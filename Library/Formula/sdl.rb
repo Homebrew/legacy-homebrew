@@ -77,13 +77,13 @@ class Sdl < Formula
     # Copy source files needed for Ojective-C support.
     libexec.install Dir["src/main/macosx/*"] if build.stable?
 
-    # The resulting script in bin is hardcoded to /usr/local, which can cause pain.
-    inreplace "#{bin}/sdl-config", "prefix=/usr/local", "prefix=#{prefix}"
-
     if build.with? "tests"
       ENV.prepend_path "PATH", "#{bin}"
+      # This is stupid but necessary. Blurgh. Otherwise, test building fails, even
+      # with various flags, prepending & pkg_config_path tinkering.
+      inreplace "#{bin}/sdl-config", "prefix=#{HOMEBREW_PREFIX}", "prefix=#{prefix}"
       cd "test" do
-        system "./configure", "--prefix=#{libexec}/tests"
+        system "./configure"
         system "make"
         # Upstream - Why no make install? Why?
         (share+"tests").install %w{ checkkeys graywin loopwave testalpha testbitmap testblitspeed testcdrom
@@ -94,6 +94,8 @@ class Sdl < Formula
         (share+"test_extras").install %w{ icon.bmp moose.dat picture.xbm sail.bmp sample.bmp sample.wav }
         bin.write_exec_script Dir["#{share}/tests/*"]
       end
+      # And then we undo stupid but necessary so it doesn't break all the other things.
+      inreplace "#{bin}/sdl-config", "prefix=#{prefix}", "prefix=#{HOMEBREW_PREFIX}"
     end
   end
 
