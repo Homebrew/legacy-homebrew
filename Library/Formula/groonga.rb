@@ -26,8 +26,14 @@ class Groonga < Formula
 
   option "enable-benchmark", "Enable benchmark program for developer use"
 
-  # Groonga issue #253, #254, #256
-  # already fixed at master
+  # These patches are already merged into upstream.
+  # Please remove next version of Groonga Formula.
+  # pull #253 https://github.com/groonga/groonga/pull/253
+  # fixed at: https://github.com/groonga/groonga/commit/c019cfbfbf5365c28ce727a46448aa6f77de8543
+  # issue #254: https://github.com/groonga/groonga/issues/254
+  # fixed at: https://github.com/groonga/groonga/commit/340085f132c640f03e32a7878f0bd31de9f74eaa
+  # issue #256: https://github.com/groonga/groonga/issues/256
+  # fixed at: https://github.com/groonga/groonga/commit/e2aa5217f0967457ae4f7edf799dbf8767400916
   patch :DATA
 
   def install
