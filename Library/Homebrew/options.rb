@@ -3,6 +3,12 @@ require 'set'
 class Option
   attr_reader :name, :description, :flag
 
+  def self.OPTION_NAME_REGEX
+    # This regular expression parses out option names, paying special attention
+    # to names that have values. Example: "--foo=bar" will be parsed as "foo="
+    /^(?:--)?([^=]+=?)(.+)?$/
+  end
+
   def initialize(name, description="")
     @name = name
     @flag = "--#{name}"
@@ -58,7 +64,7 @@ class Options
   include Enumerable
 
   def self.create(array)
-    new array.map { |e| Option.new(e[/^--([^=]+=?)(.+)?$/, 1] || e) }
+    new array.map { |e| Option.new(e[Option.OPTION_NAME_REGEX, 1] || e) }
   end
 
   def initialize(*args)
