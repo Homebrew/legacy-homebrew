@@ -73,6 +73,11 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     @mirrors ||= resource.mirrors.dup
   end
 
+  def use_mirror
+    return 1 if ARGV.include?("--use-mirror")
+    ARGV.value("use-mirror").to_i if ARGV.value("use-mirror")
+  end
+
   def tarball_path
     @tarball_path ||= Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
   end
@@ -99,6 +104,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
+    if mirrors.any? && use_mirror
+      @url = mirrors.slice!(use_mirror-1) if use_mirror <= mirrors.size
+    end
+
     ohai "Downloading #{@url}"
     unless tarball_path.exist?
       had_incomplete_download = temporary_path.exist?
