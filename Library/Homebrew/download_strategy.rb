@@ -75,6 +75,9 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def clone_repo
   end
 
+  def update
+  end
+
   def extract_ref(specs)
     key = REF_TYPES.find { |type| specs.key?(type) }
     return key, specs[key]
@@ -466,13 +469,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
     if @clone.exist? && repo_valid?
       puts "Updating #@clone"
-      @clone.cd do
-        config_repo
-        update_repo
-        checkout
-        reset
-        update_submodules if submodules?
-      end
+      update
     elsif @clone.exist?
       puts "Removing invalid .git repo from cache"
       clear_cache
@@ -496,6 +493,16 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def cache_tag
     "git"
+  end
+
+  def update
+    @clone.cd do
+      config_repo
+      update_repo
+      checkout
+      reset
+      update_submodules if submodules?
+    end
   end
 
   def shallow_clone?
@@ -591,7 +598,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
     if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      @clone.cd { safe_system cvspath, "up" }
+      update
     elsif @clone.exist?
       puts "Removing invalid CVS repo from cache"
       clear_cache
@@ -628,6 +635,10 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     end
   end
 
+  def update
+    @clone.cd { safe_system cvspath, "up" }
+  end
+
   def split_url(in_url)
     parts=in_url.sub(%r[^cvs://], '').split(/:/)
     mod=parts.pop
@@ -651,7 +662,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
 
     if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      @clone.cd { quiet_safe_system hgpath, 'pull', '--update' }
+      update
     elsif @clone.exist?
       puts "Removing invalid hg repo from cache"
       clear_cache
@@ -688,6 +699,10 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
     safe_system hgpath, "clone", url, @clone
   end
 
+  def update
+    @clone.cd { quiet_safe_system hgpath, "pull", "--update" }
+  end
+
   def hgpath
     @path ||= %W[
       #{which("hg")}
@@ -703,7 +718,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
 
     if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      @clone.cd { safe_system bzrpath, 'update' }
+      update
     elsif @clone.exist?
       puts "Removing invalid bzr repo from cache"
       clear_cache
@@ -736,6 +751,10 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
     safe_system bzrpath, "checkout", "--lightweight", url, @clone
   end
 
+  def update
+    @clone.cd { safe_system bzrpath, 'update' }
+  end
+
   def bzrpath
     @path ||= %W[
       #{which("bzr")}
@@ -750,7 +769,7 @@ class FossilDownloadStrategy < VCSDownloadStrategy
 
     if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      safe_system fossilpath, "pull", "-R", @clone
+      update
     elsif @clone.exist?
       puts "Removing invalid fossil repo from cache"
       clear_cache
@@ -782,6 +801,10 @@ class FossilDownloadStrategy < VCSDownloadStrategy
   def clone_repo
     url = @url.sub(%r[^fossil://], "")
     safe_system fossilpath, "clone", url, @clone
+  end
+
+  def update
+    safe_system fossilpath, "pull", "-R", @clone
   end
 
   def fossilpath
