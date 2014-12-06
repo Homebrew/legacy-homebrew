@@ -13,6 +13,8 @@ class Bwctl < Formula
   end
 
   depends_on "i2util"
+  depends_on "iperf3" => :optional
+  depends_on "thrulay" => :optional
 
   def install
     system "./configure", "--disable-debug",
