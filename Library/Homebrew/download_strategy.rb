@@ -794,10 +794,6 @@ class FossilDownloadStrategy < VCSDownloadStrategy
     "fossil"
   end
 
-  def repo_valid?
-    true
-  end
-
   def clone_repo
     url = @url.sub(%r[^fossil://], "")
     safe_system fossilpath, "clone", url, @clone
