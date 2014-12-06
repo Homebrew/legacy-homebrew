@@ -46,19 +46,6 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
-  def extract_ref(specs)
-    key = REF_TYPES.find { |type| specs.key?(type) }
-    return key, specs[key]
-  end
-
-  def cache_filename
-    "#{name}--#{cache_tag}"
-  end
-
-  def cache_tag
-    "__UNKNOWN__"
-  end
-
   def cached_location
     @clone
   end
@@ -69,6 +56,21 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 
   def head?
     resource.version.head?
+  end
+
+  private
+
+  def cache_tag
+    "__UNKNOWN__"
+  end
+
+  def cache_filename
+    "#{name}--#{cache_tag}"
+  end
+
+  def extract_ref(specs)
+    key = REF_TYPES.find { |type| specs.key?(type) }
+    return key, specs[key]
   end
 end
 
