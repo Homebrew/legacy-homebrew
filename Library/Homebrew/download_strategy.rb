@@ -628,7 +628,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def update
-    @clone.cd { safe_system cvspath, "up" }
+    @clone.cd { quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "up" }
   end
 
   def split_url(in_url)
