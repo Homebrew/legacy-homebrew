@@ -34,7 +34,7 @@ class Libgosu < Formula
     #
     # Also, make install is incomplete for gem builds.  Do our own install.
     cd "ext/gosu" do
-      system "ruby extconf.rb"
+      system "ruby", "extconf.rb"
       inreplace "Makefile" do |s|
         # Build native instead of forcing i386.
         s.gsub! "-arch i386", ""
@@ -44,35 +44,32 @@ class Libgosu < Formula
         s.gsub! "$(TARGET).bundle", "lib$(TARGET).dylib"
       end
       system "make"
-      mkdir lib
       lib.install "libgosu.dylib"
     end
-    mkdir include
     include.install "Gosu"
   end
 
   test do
-    f = File.new("test.cpp", mode="w")
-    f.write("""
-#include <Gosu/Gosu.hpp>
+    Pathname("test.cpp").write <<-EOS.undent
+      #include <Gosu/Gosu.hpp>
 
-class MyWindow : public Gosu::Window
-{
-public:
-    MyWindow()
-    :   Gosu::Window(640, 480, false)
-    {
-        setCaption(L\"Hello World!\");
-    }
-};
+      class MyWindow : public Gosu::Window
+      {
+      public:
+          MyWindow()
+          :   Gosu::Window(640, 480, false)
+          {
+              setCaption(L\"Hello World!\");
+          }
+      };
 
-int main()
-{
-    MyWindow window;
-    window.show();
-}
-""")
-    f.close
-    system "c++ test.cpp -L#{lib} -lgosu -I#{include} -std=c++11"
+      int main()
+      {
+          MyWindow window;
+          window.show();
+      }
+    EOS
+
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-lgosu", "-I#{include}", "-std=c++11"
   end
 end
