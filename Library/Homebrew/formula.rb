@@ -98,6 +98,8 @@ class Formula
     @pin = FormulaPin.new(self)
   end
 
+  private
+
   def set_spec(name)
     spec = self.class.send(name)
     if spec.url
@@ -118,6 +120,8 @@ class Formula
       end
     end
   end
+
+  public
 
   def stable?
     active_spec == stable
