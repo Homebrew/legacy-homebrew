@@ -729,8 +729,9 @@ end
 class FossilDownloadStrategy < VCSDownloadStrategy
   def stage
     super
-    safe_system fossilpath, "open", @clone
-    safe_system fossilpath, "checkout", @ref if @ref_type && @ref
+    args = [fossilpath, "open", @clone]
+    args << @ref if @ref_type && @ref
+    safe_system(*args)
   end
 
   private
