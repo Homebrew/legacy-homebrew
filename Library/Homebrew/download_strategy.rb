@@ -46,6 +46,21 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
+  def fetch
+    ohai "Cloning #{@url}"
+
+    if cached_location.exist? && repo_valid?
+      puts "Updating #{cached_location}"
+      update
+    elsif cached_location.exist?
+      puts "Removing invalid repository from cache"
+      clear_cache
+      clone_repo
+    else
+      clone_repo
+    end
+  end
+
   def cached_location
     @clone
   end
@@ -372,15 +387,11 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def fetch
-    ohai "Checking out #{@url}"
+    clear_cache unless @url.chomp("/") == repo_url or quiet_system "svn", "switch", @url, @clone
+    super
+  end
 
-    clear_cache unless @url.chomp("/") == repo_url or quiet_system 'svn', 'switch', @url, @clone
-
-    if @clone.exist? and not repo_valid?
-      puts "Removing invalid SVN repo from cache"
-      clear_cache
-    end
-
+  def clone_repo
     case @ref_type
     when :revision
       fetch_repo @clone, @url, @ref
@@ -396,6 +407,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
       fetch_repo @clone, @url
     end
   end
+  alias_method :update, :clone_repo
 
   def stage
     quiet_safe_system 'svn', 'export', '--force', @clone, Dir.pwd
@@ -466,21 +478,6 @@ class GitDownloadStrategy < VCSDownloadStrategy
     @ref_type ||= :branch
     @ref ||= "master"
     @shallow = resource.specs.fetch(:shallow) { true }
-  end
-
-  def fetch
-    ohai "Cloning #@url"
-
-    if @clone.exist? && repo_valid?
-      puts "Updating #@clone"
-      update
-    elsif @clone.exist?
-      puts "Removing invalid .git repo from cache"
-      clear_cache
-      clone_repo
-    else
-      clone_repo
-    end
   end
 
   def stage
@@ -597,21 +594,6 @@ class GitDownloadStrategy < VCSDownloadStrategy
 end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
-  def fetch
-    ohai "Checking out #{@url}"
-
-    if @clone.exist? && repo_valid?
-      puts "Updating #{@clone}"
-      update
-    elsif @clone.exist?
-      puts "Removing invalid CVS repo from cache"
-      clear_cache
-      clone_repo
-    else
-      clone_repo
-    end
-  end
-
   def stage
     FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
   end
@@ -661,21 +643,6 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
-  def fetch
-    ohai "Cloning #{@url}"
-
-    if @clone.exist? && repo_valid?
-      puts "Updating #{@clone}"
-      update
-    elsif @clone.exist?
-      puts "Removing invalid hg repo from cache"
-      clear_cache
-      clone_repo
-    else
-      clone_repo
-    end
-  end
-
   def stage
     dst = Dir.getwd
     @clone.cd do
@@ -717,21 +684,6 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
 end
 
 class BazaarDownloadStrategy < VCSDownloadStrategy
-  def fetch
-    ohai "Cloning #{@url}"
-
-    if @clone.exist? && repo_valid?
-      puts "Updating #{@clone}"
-      update
-    elsif @clone.exist?
-      puts "Removing invalid bzr repo from cache"
-      clear_cache
-      clone_repo
-    else
-      clone_repo
-    end
-  end
-
   def stage
     # FIXME: The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
@@ -768,21 +720,6 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
 end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
-  def fetch
-    ohai "Cloning #{@url}"
-
-    if @clone.exist? && repo_valid?
-      puts "Updating #{@clone}"
-      update
-    elsif @clone.exist?
-      puts "Removing invalid fossil repo from cache"
-      clear_cache
-      clone_repo
-    else
-      clone_repo
-    end
-  end
-
   def stage
     # TODO: The 'open' and 'checkout' commands are very noisy and have no '-q' option.
     safe_system fossilpath, 'open', @clone
