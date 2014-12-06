@@ -61,6 +61,10 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  def stage
+    ohai "Checking out #{@ref_type} #{@ref}" if @ref_type && @ref
+  end
+
   def cached_location
     @clone
   end
@@ -387,7 +391,8 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def stage
-    quiet_safe_system 'svn', 'export', '--force', @clone, Dir.pwd
+    super
+    quiet_safe_system "svn", "export", "--force", @clone, Dir.pwd
   end
 
   private
@@ -481,9 +486,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def stage
+    super
+
     dst = Dir.getwd
     @clone.cd do
-      ohai "Checking out #{@ref_type} #{@ref}"
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
       checkout_submodules(dst) if submodules?
@@ -644,10 +650,11 @@ end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
   def stage
+    super
+
     dst = Dir.getwd
     @clone.cd do
       if @ref_type and @ref
-        ohai "Checking out #{@ref_type} #{@ref}"
         safe_system hgpath, 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
       else
         safe_system hgpath, 'archive', '--subrepos', '-y', '-t', 'files', dst
@@ -721,12 +728,9 @@ end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
   def stage
-    # TODO: The 'open' and 'checkout' commands are very noisy and have no '-q' option.
-    safe_system fossilpath, 'open', @clone
-    if @ref_type and @ref
-      ohai "Checking out #{@ref_type} #{@ref}"
-      safe_system fossilpath, 'checkout', @ref
-    end
+    super
+    safe_system fossilpath, "open", @clone
+    safe_system fossilpath, "checkout", @ref if @ref_type && @ref
   end
 
   private
