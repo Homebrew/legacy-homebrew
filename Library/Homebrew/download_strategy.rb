@@ -68,6 +68,10 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     "#{name}--#{cache_tag}"
   end
 
+  def repo_valid?
+    true
+  end
+
   def extract_ref(specs)
     key = REF_TYPES.find { |type| specs.key?(type) }
     return key, specs[key]
@@ -609,6 +613,10 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     "cvs"
   end
 
+  def repo_valid?
+    @clone.join("CVS").directory?
+  end
+
   def split_url(in_url)
     parts=in_url.sub(%r[^cvs://], '').split(/:/)
     mod=parts.pop
@@ -750,6 +758,10 @@ class FossilDownloadStrategy < VCSDownloadStrategy
 
   def cache_tag
     "fossil"
+  end
+
+  def repo_valid?
+    true
   end
 
   def fossilpath
