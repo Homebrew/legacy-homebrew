@@ -6,12 +6,6 @@ class Kawa < Formula
   mirror 'http://ftp.gnu.org/gnu/kawa/kawa-2.0.jar'
   sha1 '150dacc0b1dbf55c5493da022a590d9d8549b3b6'
 
-  devel do
-    url 'http://ftpmirror.gnu.org/kawa/kawa-1.90.jar'
-    mirror 'http://ftp.gnu.org/gnu/kawa/kawa-1.90.jar'
-    sha1 '19f63dd5f4a170fbd94e37908edc5e85fa365c44'
-  end
-
   def install
     prefix.install "kawa-#{version}.jar"
     (bin+'kawa').write <<-EOS.undent
