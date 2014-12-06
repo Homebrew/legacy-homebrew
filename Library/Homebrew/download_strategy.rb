@@ -579,15 +579,6 @@ class GitDownloadStrategy < VCSDownloadStrategy
 end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
-  def cvspath
-    @path ||= %W[
-      /usr/bin/cvs
-      #{HOMEBREW_PREFIX}/bin/cvs
-      #{HOMEBREW_PREFIX}/opt/cvs/bin/cvs
-      #{which("cvs")}
-      ].find { |p| File.executable? p }
-  end
-
   def fetch
     ohai "Checking out #{@url}"
 
@@ -624,17 +615,18 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     url=parts.join(':')
     [ mod, url ]
   end
+
+  def cvspath
+    @path ||= %W[
+      /usr/bin/cvs
+      #{HOMEBREW_PREFIX}/bin/cvs
+      #{HOMEBREW_PREFIX}/opt/cvs/bin/cvs
+      #{which("cvs")}
+      ].find { |p| File.executable? p }
+  end
 end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
-  def hgpath
-    @path ||= %W[
-      #{which("hg")}
-      #{HOMEBREW_PREFIX}/bin/hg
-      #{HOMEBREW_PREFIX}/opt/mercurial/bin/hg
-      ].find { |p| File.executable? p }
-  end
-
   def fetch
     ohai "Cloning #{@url}"
 
@@ -676,16 +668,17 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   def cache_tag
     "hg"
   end
+
+  def hgpath
+    @path ||= %W[
+      #{which("hg")}
+      #{HOMEBREW_PREFIX}/bin/hg
+      #{HOMEBREW_PREFIX}/opt/mercurial/bin/hg
+      ].find { |p| File.executable? p }
+  end
 end
 
 class BazaarDownloadStrategy < VCSDownloadStrategy
-  def bzrpath
-    @path ||= %W[
-      #{which("bzr")}
-      #{HOMEBREW_PREFIX}/bin/bzr
-      ].find { |p| File.executable? p }
-  end
-
   def repo_valid?
     @clone.join(".bzr").directory?
   end
@@ -723,16 +716,16 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   def cache_tag
     "bzr"
   end
+
+  def bzrpath
+    @path ||= %W[
+      #{which("bzr")}
+      #{HOMEBREW_PREFIX}/bin/bzr
+      ].find { |p| File.executable? p }
+  end
 end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
-  def fossilpath
-    @path ||= %W[
-      #{which("fossil")}
-      #{HOMEBREW_PREFIX}/bin/fossil
-      ].find { |p| File.executable? p }
-  end
-
   def fetch
     ohai "Cloning #{@url}"
     unless @clone.exist?
@@ -757,6 +750,13 @@ class FossilDownloadStrategy < VCSDownloadStrategy
 
   def cache_tag
     "fossil"
+  end
+
+  def fossilpath
+    @path ||= %W[
+      #{which("fossil")}
+      #{HOMEBREW_PREFIX}/bin/fossil
+      ].find { |p| File.executable? p }
   end
 end
 
