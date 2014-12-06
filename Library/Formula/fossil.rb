@@ -8,6 +8,10 @@ class Fossil < Formula
   version "1.29"
 
   bottle do
+    cellar :any
+    sha1 "977cde0938a0b751938aaac28cab1fe7ef479e9b" => :yosemite
+    sha1 "f45d99ad80bdda2852a8dcb9e1292b5117d0ae56" => :mavericks
+    sha1 "b00e434097adba303767426916654da1f17d7f39" => :mountain_lion
   end
 
   option "without-json", "Build without 'json' command support"
