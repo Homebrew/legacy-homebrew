@@ -32,6 +32,6 @@ class Libbpg < Formula
   end
 
   test do
-    system "#{bin}/bpgenc", "#{HOMEBREW_PREFIX}/Library/Homebrew/test/fixtures/test.png"
+    system "#{bin}/bpgenc", test_fixtures("test.png")
   end
 end
