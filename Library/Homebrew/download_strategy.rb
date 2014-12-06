@@ -382,35 +382,19 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     @url = @url.sub(/^svn\+/, "") if @url.start_with?("svn+http://")
   end
 
-  def repo_url
-    `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
-  end
-
   def fetch
     clear_cache unless @url.chomp("/") == repo_url or quiet_system "svn", "switch", @url, @clone
     super
   end
 
-  def clone_repo
-    case @ref_type
-    when :revision
-      fetch_repo @clone, @url, @ref
-    when :revisions
-      # nil is OK for main_revision, as fetch_repo will then get latest
-      main_revision = @ref[:trunk]
-      fetch_repo @clone, @url, main_revision, true
-
-      get_externals do |external_name, external_url|
-        fetch_repo @clone+external_name, external_url, @ref[external_name], true
-      end
-    else
-      fetch_repo @clone, @url
-    end
-  end
-  alias_method :update, :clone_repo
-
   def stage
     quiet_safe_system 'svn', 'export', '--force', @clone, Dir.pwd
+  end
+
+  private
+
+  def repo_url
+    `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
   end
 
   def shell_quote str
@@ -445,8 +429,6 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     quiet_safe_system(*args)
   end
 
-  private
-
   def cache_tag
     head? ? "svn-HEAD" : "svn"
   end
@@ -454,6 +436,24 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   def repo_valid?
     @clone.join(".svn").directory?
   end
+
+  def clone_repo
+    case @ref_type
+    when :revision
+      fetch_repo @clone, @url, @ref
+    when :revisions
+      # nil is OK for main_revision, as fetch_repo will then get latest
+      main_revision = @ref[:trunk]
+      fetch_repo @clone, @url, main_revision, true
+
+      get_externals do |external_name, external_url|
+        fetch_repo @clone+external_name, external_url, @ref[external_name], true
+      end
+    else
+      fetch_repo @clone, @url
+    end
+  end
+  alias_method :update, :clone_repo
 end
 
 StrictSubversionDownloadStrategy = SubversionDownloadStrategy
@@ -463,6 +463,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
   def fetch_args
     %w[--non-interactive --trust-server-cert]
   end
+  private :fetch_args
 end
 
 class GitDownloadStrategy < VCSDownloadStrategy
