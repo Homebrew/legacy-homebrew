@@ -12,9 +12,10 @@ class Cvs < Formula
 
   bottle do
     cellar :any
-    sha1 "473cd957aca17950993e24ded8cb4b5f39aa94ac" => :mavericks
-    sha1 "a6685b66caee1dc7230409db6043c984ba8ccbd3" => :mountain_lion
-    sha1 "14effa6cf4ffdbff110ce9134537a0984f3fbb21" => :lion
+    revision 1
+    sha1 "054097e7fccf4a8ba60b9d1c364c411a6cd5de3c" => :yosemite
+    sha1 "8e84ffd198414118da1ffb18f9d18a885e68d60f" => :mavericks
+    sha1 "dea18dfba299690f2d8ed5dfc2205323207bc856" => :mountain_lion
   end
 
   keg_only :provided_until_xcode5
