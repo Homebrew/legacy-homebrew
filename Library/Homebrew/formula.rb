@@ -574,6 +574,9 @@ class Formula
 
   protected
 
+  def install
+  end
+
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
