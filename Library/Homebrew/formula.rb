@@ -82,6 +82,8 @@ class Formula
   # state that we're trying to eliminate.
   attr_accessor :build
 
+  protected
+
   def initialize(name, path, spec)
     @name = name
     @path = path
@@ -118,6 +120,8 @@ class Formula
       end
     end
   end
+
+  public
 
   def stable?
     active_spec == stable
