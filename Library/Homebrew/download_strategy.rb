@@ -73,16 +73,13 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  def mirrors
-    @mirrors ||= resource.mirrors.dup
-  end
+  attr_reader :mirrors, :tarball_path, :temporary_path
 
-  def tarball_path
-    @tarball_path ||= Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
-  end
-
-  def temporary_path
-    @temporary_path ||= Pathname.new("#{tarball_path}.incomplete")
+  def initialize(name, resource)
+    super
+    @mirrors = resource.mirrors.dup
+    @tarball_path = HOMEBREW_CACHE.join("#{name}-#{resource.version}#{ext}")
+    @temporary_path = Pathname.new("#{tarball_path}.incomplete")
   end
 
   def cached_location
