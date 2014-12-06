@@ -362,12 +362,16 @@ class S3DownloadStrategy < CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(/^svn\+/, "") if @url =~ %r[^svn\+http://]
+  end
+
   def repo_url
     `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
   end
 
   def fetch
-    @url = @url.sub(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
 
     clear_cache unless @url.chomp("/") == repo_url or quiet_system 'svn', 'switch', @url, @clone
