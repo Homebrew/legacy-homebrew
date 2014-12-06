@@ -11,11 +11,9 @@ require 'install_renamed'
 require 'pkg_version'
 
 class Formula
-  # :startdoc:
   include FileUtils
   include Utils::Inreplace
   extend Enumerable
-  # :stopdoc:
 
   attr_reader :name, :path
   attr_reader :stable, :devel, :head, :active_spec
@@ -156,8 +154,6 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  # :startdoc:
-
   # The directory in the cellar that the formula is installed to.
   # This directory contains the formula's name and version.
   def prefix(v=pkg_version)
@@ -270,8 +266,6 @@ class Formula
     false
   end
 
-  # :stopdoc:
-
   # yields self with current working directory set to the uncompressed tarball
   def brew
     validate_attributes :name, :version
@@ -335,8 +329,6 @@ class Formula
     "#<#{self.class.name}: #{path}>"
   end
 
-  # :startdoc:
-
   # Standard parameters for CMake builds.
   # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
   # Setting it to Release would ignore our flags.
@@ -354,8 +346,6 @@ class Formula
       -Wno-dev
     ]
   end
-
-  # :stopdoc:
 
   # Deprecated
   def python(options={}, &block)
@@ -525,8 +515,6 @@ class Formula
 
   protected
 
-  # :startdoc:
-
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
@@ -588,8 +576,6 @@ class Formula
       log.close
     end
   end
-
-  # :stopdoc:
 
   private
 
