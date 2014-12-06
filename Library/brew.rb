@@ -109,7 +109,7 @@ begin
 
   # Add contributed commands to PATH before checking.
   Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/cmd"].each do |tap_cmd_dir|
-    ENV["PATH"] = "#{tap_cmd_dir}#{File::PATH_SEPARATOR}" + ENV["PATH"]
+    ENV["PATH"] = "#{tap_cmd_dir}#{File::PATH_SEPARATOR}#{ENV["PATH"]}"
   end
 
   # Add SCM wrappers.
