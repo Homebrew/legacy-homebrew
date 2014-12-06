@@ -8,12 +8,14 @@ class Nimrod < Formula
     sha1 "5052ef6faada272392cec415d9cd64cb530724b9"
   end
 
+  head "https://github.com/Araq/Nimrod.git"
+
   resource "csources" do
     url "https://github.com/nimrod-code/csources.git"
   end
 
   # Small patch to fix http://github.com/Araq/Nimrod/issues/1701
-  patch :DATA
+  patch :DATA unless build.head?
 
   def install
     resource("csources").stage do
@@ -33,7 +35,7 @@ class Nimrod < Formula
     # For some reason the mingw variable doesn"t get passed through,
     # so hardcode it until upstream fixes it. In some ways the mingw
     # variable is unneeded because it is always mingw32.
-    inreplace "compiler/nimrod.ini", "${mingw}", "mingw32"
+    inreplace "compiler/nimrod.ini", "${mingw}", "mingw32" unless build.head?
 
     system "./koch", "install", prefix
     (prefix/"nimrod").install "compiler"
