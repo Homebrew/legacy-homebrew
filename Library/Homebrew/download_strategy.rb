@@ -187,7 +187,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       with_system_path { buffered_write("bunzip2") }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
-      # TODO check if it's really a tar archive
       with_system_path { safe_system 'tar', 'xf', tarball_path }
       chdir
     when :xz
