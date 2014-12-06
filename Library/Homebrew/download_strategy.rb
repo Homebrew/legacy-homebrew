@@ -352,10 +352,6 @@ class S3DownloadStrategy < CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy < VCSDownloadStrategy
-  def cache_tag
-    head? ? "svn-HEAD" : "svn"
-  end
-
   def repo_valid?
     @clone.join(".svn").directory?
   end
@@ -426,6 +422,12 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     args << '--ignore-externals' if ignore_externals
     quiet_safe_system(*args)
   end
+
+  private
+
+  def cache_tag
+    head? ? "svn-HEAD" : "svn"
+  end
 end
 
 StrictSubversionDownloadStrategy = SubversionDownloadStrategy
@@ -451,8 +453,6 @@ class GitDownloadStrategy < VCSDownloadStrategy
     @ref ||= "master"
     @shallow = resource.specs.fetch(:shallow) { true }
   end
-
-  def cache_tag; "git" end
 
   def fetch
     ohai "Cloning #@url"
@@ -486,6 +486,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   private
+
+  def cache_tag
+    "git"
+  end
 
   def shallow_clone?
     @shallow && support_depth?
@@ -584,8 +588,6 @@ class CVSDownloadStrategy < VCSDownloadStrategy
       ].find { |p| File.executable? p }
   end
 
-  def cache_tag; "cvs" end
-
   def fetch
     ohai "Checking out #{@url}"
 
@@ -612,6 +614,10 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
   private
 
+  def cache_tag
+    "cvs"
+  end
+
   def split_url(in_url)
     parts=in_url.sub(%r[^cvs://], '').split(/:/)
     mod=parts.pop
@@ -621,8 +627,6 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
-  def cache_tag; "hg" end
-
   def hgpath
     @path ||= %W[
       #{which("hg")}
@@ -666,11 +670,15 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
       end
     end
   end
+
+  private
+
+  def cache_tag
+    "hg"
+  end
 end
 
 class BazaarDownloadStrategy < VCSDownloadStrategy
-  def cache_tag; "bzr" end
-
   def bzrpath
     @path ||= %W[
       #{which("bzr")}
@@ -709,11 +717,15 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
     FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
     FileUtils.rm_r ".bzr"
   end
+
+  private
+
+  def cache_tag
+    "bzr"
+  end
 end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
-  def cache_tag; "fossil" end
-
   def fossilpath
     @path ||= %W[
       #{which("fossil")}
@@ -739,6 +751,12 @@ class FossilDownloadStrategy < VCSDownloadStrategy
       ohai "Checking out #{@ref_type} #{@ref}"
       safe_system fossilpath, 'checkout', @ref
     end
+  end
+
+  private
+
+  def cache_tag
+    "fossil"
   end
 end
 
