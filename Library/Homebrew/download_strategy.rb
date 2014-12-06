@@ -72,6 +72,9 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     true
   end
 
+  def clone_repo
+  end
+
   def extract_ref(specs)
     key = REF_TYPES.find { |type| specs.key?(type) }
     return key, specs[key]
@@ -586,20 +589,15 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   def fetch
     ohai "Checking out #{@url}"
 
-    # URL of cvs cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml
-    # will become:
-    # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML login
-    # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML co gccxml
-    mod, url = split_url(@url)
-
-    unless @clone.exist?
-      HOMEBREW_CACHE.cd do
-        safe_system cvspath, '-d', url, 'login'
-        safe_system cvspath, '-d', url, 'checkout', '-d', cache_filename, mod
-      end
-    else
+    if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      @clone.cd { safe_system cvspath, 'up' }
+      @clone.cd { safe_system cvspath, "up" }
+    elsif @clone.exist?
+      puts "Removing invalid CVS repo from cache"
+      clear_cache
+      clone_repo
+    else
+      clone_repo
     end
   end
 
@@ -615,6 +613,19 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
   def repo_valid?
     @clone.join("CVS").directory?
+  end
+
+  def clone_repo
+    # URL of cvs cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml
+    # will become:
+    # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML login
+    # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML co gccxml
+    mod, url = split_url(@url)
+
+    HOMEBREW_CACHE.cd do
+      safe_system cvspath, "-d", url, "login"
+      safe_system cvspath, "-d", url, "checkout", "-d", cache_filename, mod
+    end
   end
 
   def split_url(in_url)
@@ -650,11 +661,6 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
     end
   end
 
-  def clone_repo
-    url = @url.sub(%r[^hg://], '')
-    safe_system hgpath, 'clone', url, @clone
-  end
-
   def stage
     dst = Dir.getwd
     @clone.cd do
@@ -675,6 +681,11 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
 
   def repo_valid?
     @clone.join(".hg").directory?
+  end
+
+  def clone_repo
+    url = @url.sub(%r[^hg://], "")
+    safe_system hgpath, "clone", url, @clone
   end
 
   def hgpath
@@ -702,12 +713,6 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
     end
   end
 
-  def clone_repo
-    url = @url.sub(%r[^bzr://], '')
-    # 'lightweight' means history-less
-    safe_system bzrpath, 'checkout', '--lightweight', url, @clone
-  end
-
   def stage
     # FIXME: The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
@@ -725,6 +730,12 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
     @clone.join(".bzr").directory?
   end
 
+  def clone_repo
+    url = @url.sub(%r[^bzr://], "")
+    # "lightweight" means history-less
+    safe_system bzrpath, "checkout", "--lightweight", url, @clone
+  end
+
   def bzrpath
     @path ||= %W[
       #{which("bzr")}
@@ -736,12 +747,16 @@ end
 class FossilDownloadStrategy < VCSDownloadStrategy
   def fetch
     ohai "Cloning #{@url}"
-    unless @clone.exist?
-      url=@url.sub(%r[^fossil://], '')
-      safe_system fossilpath, 'clone', url, @clone
-    else
+
+    if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      safe_system fossilpath, 'pull', '-R', @clone
+      safe_system fossilpath, "pull", "-R", @clone
+    elsif @clone.exist?
+      puts "Removing invalid fossil repo from cache"
+      clear_cache
+      clone_repo
+    else
+      clone_repo
     end
   end
 
@@ -762,6 +777,11 @@ class FossilDownloadStrategy < VCSDownloadStrategy
 
   def repo_valid?
     true
+  end
+
+  def clone_repo
+    url = @url.sub(%r[^fossil://], "")
+    safe_system fossilpath, "clone", url, @clone
   end
 
   def fossilpath
