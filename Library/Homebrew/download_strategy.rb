@@ -352,10 +352,6 @@ class S3DownloadStrategy < CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy < VCSDownloadStrategy
-  def repo_valid?
-    @clone.join(".svn").directory?
-  end
-
   def repo_url
     `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
   end
@@ -427,6 +423,10 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
 
   def cache_tag
     head? ? "svn-HEAD" : "svn"
+  end
+
+  def repo_valid?
+    @clone.join(".svn").directory?
   end
 end
 
@@ -642,10 +642,6 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
     end
   end
 
-  def repo_valid?
-    @clone.join(".hg").directory?
-  end
-
   def clone_repo
     url = @url.sub(%r[^hg://], '')
     safe_system hgpath, 'clone', url, @clone
@@ -669,6 +665,10 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
     "hg"
   end
 
+  def repo_valid?
+    @clone.join(".hg").directory?
+  end
+
   def hgpath
     @path ||= %W[
       #{which("hg")}
@@ -679,10 +679,6 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
 end
 
 class BazaarDownloadStrategy < VCSDownloadStrategy
-  def repo_valid?
-    @clone.join(".bzr").directory?
-  end
-
   def fetch
     ohai "Cloning #{@url}"
 
@@ -715,6 +711,10 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
 
   def cache_tag
     "bzr"
+  end
+
+  def repo_valid?
+    @clone.join(".bzr").directory?
   end
 
   def bzrpath
