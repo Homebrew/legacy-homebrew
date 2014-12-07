@@ -92,6 +92,10 @@ class Ansible < Formula
   end
 
   def install
+    # pycrypto needs this on 10.8
+    # https://github.com/Homebrew/homebrew/pull/34682#issuecomment-65813603
+    ENV.refurbish_args
+
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
@@ -116,6 +120,18 @@ class Ansible < Formula
   end
 
   test do
-    system "#{bin}/ansible", "--version"
+    ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
+    system "python", "-c", "from Crypto.Hash import SHA256"
+    ENV["ANSIBLE_REMOTE_TEMP"] = testpath/"tmp"
+    (testpath/"playbook.yml").write <<-EOF.undent
+      ---
+      - hosts: all
+        gather_facts: False
+        tasks:
+        - name: ping
+          ping:
+    EOF
+    (testpath/"hosts.ini").write("localhost ansible_connection=local\n")
+    system bin/"ansible-playbook", testpath/"playbook.yml", "-i", testpath/"hosts.ini"
   end
 end
