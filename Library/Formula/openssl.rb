@@ -97,9 +97,7 @@ class Openssl < Formula
   end
 
   def openssldir
-    # Don't set this to HOMEBREW_PREFIX/etc directly.
-    # See https://github.com/Homebrew/homebrew/issues/34728
-    prefix/"etc/openssl"
+    etc/"openssl"
   end
 
   def post_install
@@ -108,21 +106,8 @@ class Openssl < Formula
       /System/Library/Keychains/SystemRootCertificates.keychain
     ]
 
-    # If HOMEBREW_PREFIX/etc/openssl exists, kill it to ensure postinstall is successful.
-    if (etc/"openssl").exist?
-      rm_rf etc/"openssl"
-    end
-
-    # Manually create these etc dirs, else brew removes them as empty.
-    # Our setup prior to this change would install directly into
-    # HOMEBREW_PREFIX/etc & wouldn't always install openssl.cnf from bottles
     openssldir.mkpath
     (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
-    mkdir_p prefix/"etc/openssl/private"
-    mkdir_p prefix/"etc/openssl/certs"
-
-    # Deliberately break the sandbox here, as other things require finding the certs.
-    ln_sf prefix/"etc/openssl", "#{etc}"
   end
 
   def caveats; <<-EOS.undent
@@ -136,7 +121,7 @@ class Openssl < Formula
   end
 
   test do
-    # the .cnf isn't generated in etc in certain bottled circumstances. Test for it.
+    # Make sure the necessary .cnf file exists, otherwise OpenSSL gets moody.
     assert (HOMEBREW_PREFIX/"etc/openssl/openssl.cnf").exist?,
             "OpenSSL requires the .cnf file for some functionality"
 
