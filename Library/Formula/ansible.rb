@@ -121,8 +121,18 @@ class Ansible < Formula
   end
 
   test do
-    system "#{bin}/ansible", "--version"
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     system "python", "-c", "from Crypto.Hash import SHA256"
+    ENV["ANSIBLE_REMOTE_TEMP"] = testpath/"tmp"
+    (testpath/"playbook.yml").write <<-EOF.undent
+      ---
+      - hosts: all
+        gather_facts: False
+        tasks:
+        - name: ping
+          ping:
+    EOF
+    (testpath/"hosts.ini").write("localhost ansible_connection=local\n")
+    system bin/"ansible-playbook", testpath/"playbook.yml", "-i", testpath/"hosts.ini"
   end
 end
