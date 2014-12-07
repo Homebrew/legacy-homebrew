@@ -595,7 +595,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   def checkout_submodules(dst)
     escaped_clone_path = @clone.to_s.gsub(/\//, '\/')
     sub_cmd = "git checkout-index -a -f --prefix=#{dst}/${toplevel/#{escaped_clone_path}/}/$path/"
-    safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
+    quiet_safe_system "git", "submodule", "foreach", "--recursive", sub_cmd
   end
 end
 
