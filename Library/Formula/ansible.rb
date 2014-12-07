@@ -92,6 +92,10 @@ class Ansible < Formula
   end
 
   def install
+    # pycrypto needs this on 10.8
+    # https://github.com/Homebrew/homebrew/pull/34682#issuecomment-65813603
+    ENV.refurbish_args
+
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
