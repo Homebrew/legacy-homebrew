@@ -8,6 +8,9 @@ class Openssl < Formula
   revision 1
 
   bottle do
+    sha1 "ffc47898c5c5599745b644c1889e473418a18d5a" => :yosemite
+    sha1 "65e125a4777eb6dfb63f01a18f724246123dd79e" => :mavericks
+    sha1 "511057d68144943d149cea76718db55656c73dff" => :mountain_lion
   end
 
   option :universal
