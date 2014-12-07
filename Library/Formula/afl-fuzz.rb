@@ -20,19 +20,19 @@ class AflFuzz < Formula
 
   test do
     cpp_file = testpath/"main.cpp"
-    exe_file = testpath/"a.out"
+    exe_file = testpath/"test"
 
-    cpp_file.write(
-    <<-EOS.undent
+    cpp_file.write <<-EOS.undent
       #include <iostream>
 
       int main() {
-          std::cout << "Hello, world!";
+        std::cout << "Hello, world!";
       }
     EOS
-    )
 
-    system "afl-clang++", cpp_file, "-o", exe_file
-    assert_equal `#{exe_file}`, "Hello, world!"
+    system "#{bin}/afl-clang++", "-g", cpp_file, "-o", exe_file
+    output = `#{exe_file}`
+    assert_equal 0, $?.exitstatus
+    assert_equal output, "Hello, world!"
   end
 end
