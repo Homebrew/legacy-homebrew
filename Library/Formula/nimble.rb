@@ -33,6 +33,15 @@ class Nimble < Formula
   end
 
   test do
-    system "#{bin}/nimble", "--version"
+    # BrewTestBot installs to a directory with a space in it. We create a
+    # directory with a space in it to test nimble's behavior when there's a
+    # space in the install path.
+    mkdir "Path Space Test"
+    ENV["HOME"] = Pathname.pwd/"Path Space Test"
+
+    # Test nimble by installing the IRC package. The IRC package was chosen
+    # because it's an official package and it doesn't rely on compiler
+    # internals.
+    system "#{bin}/nimble", "install", "-y", "irc"
   end
 end
