@@ -23,7 +23,7 @@ class OpenZwave < Formula
         return 0;
       }
     EOS
-    system(ENV.cxx, "-o", "test", "-I", prefix/"include/openzwave", "-L", prefix/"lib", "-lopenzwave", "test.cpp")
+    system(ENV.cxx, "-o", "test", "-I", prefix/"include/openzwave", "-lopenzwave", "test.cpp")
     system "./test"
   end
 end
