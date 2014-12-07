@@ -122,5 +122,7 @@ class Ansible < Formula
 
   test do
     system "#{bin}/ansible", "--version"
+    ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
+    system "python", "-c", "from Crypto.Hash import SHA256"
   end
 end
