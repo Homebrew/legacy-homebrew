@@ -73,9 +73,6 @@ class Mkvtoolnix < Formula
   def install
     ENV.cxx11
 
-    ENV["ZLIB_CFLAGS"] = "-I/usr/include"
-    ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
-
     boost = Formula["boost"]
     ogg = Formula["libogg"]
     vorbis = Formula["libvorbis"]
