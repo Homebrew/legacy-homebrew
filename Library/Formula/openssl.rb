@@ -7,10 +7,10 @@ class Openssl < Formula
   sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
 
   bottle do
-    sha1 "f6cdb5c0ec14896a385dacf0746768e56e65aed9" => :yosemite
-    sha1 "595305062ba76824570d5c52b2add7f53422dafb" => :mavericks
-    sha1 "dc26c0ea2a7e38451a1b213f7e0f3694f70e460d" => :mountain_lion
-    sha1 "ba064e1f82e3eb54a7272d20c8114d8910bbdf01" => :lion
+    revision 4
+    sha1 "9ac9da986008ee019829840d566e7c271eb31f60" => :yosemite
+    sha1 "adfc35b6800ea36498d8f39c2404579f06a46f0d" => :mavericks
+    sha1 "d71caedc4bec4f6a3d37584637e699e354a22ee2" => :mountain_lion
   end
 
   option :universal
