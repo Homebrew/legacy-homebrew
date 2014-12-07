@@ -14,7 +14,7 @@ class Recode < Formula
     ENV.append 'LDFLAGS', '-liconv'
     ENV.append 'LDFLAGS', '-lintl'
 
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
