@@ -2,9 +2,9 @@ require "formula"
 
 class PltRacket < Formula
   homepage "http://racket-lang.org/"
-  url "http://mirror.racket-lang.org/installers/6.1/racket-minimal-6.1-src-builtpkgs.tgz"
-  sha1 "988cc297eb35e26585cceac67ae00ebfd47174e2"
-  version "6.1"
+  url "http://mirror.racket-lang.org/installers/6.1.1/racket-minimal-6.1.1-src-builtpkgs.tgz"
+  sha1 "8800c89a981f7b86808c7d9f2173c7f2a47147bc"
+  version "6.1.1"
 
   bottle do
     sha1 "91605ef5aca76449ad465669f21b940fa5ffd8fd" => :mavericks
