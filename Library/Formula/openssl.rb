@@ -5,12 +5,9 @@ class Openssl < Formula
   url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1j.tar.gz"
   sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
+  revision 1
 
   bottle do
-    revision 4
-    sha1 "9ac9da986008ee019829840d566e7c271eb31f60" => :yosemite
-    sha1 "adfc35b6800ea36498d8f39c2404579f06a46f0d" => :mavericks
-    sha1 "d71caedc4bec4f6a3d37584637e699e354a22ee2" => :mountain_lion
   end
 
   option :universal
