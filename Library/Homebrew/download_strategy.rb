@@ -715,7 +715,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   end
 
   def update
-    @clone.cd { safe_system bzrpath, 'update' }
+    @clone.cd { quiet_safe_system bzrpath, "update" }
   end
 
   def bzrpath
