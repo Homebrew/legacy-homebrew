@@ -8,6 +8,10 @@ class Libfreenect < Formula
   head "https://github.com/OpenKinect/libfreenect.git"
 
   bottle do
+    cellar :any
+    sha1 "431e5bc789920cdc34e2a786fd44eb4485dd7e3d" => :yosemite
+    sha1 "98c11049dd822039eaa7325fa9dc2131c4a4b3dd" => :mavericks
+    sha1 "1e5ec1cc7a91d583f3de9c5f12d5eac8321970e4" => :mountain_lion
   end
 
   option :universal
