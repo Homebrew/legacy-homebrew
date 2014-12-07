@@ -2,15 +2,8 @@ require "formula"
 
 class Libbpg < Formula
   homepage "http://bellard.org/bpg/"
-  url "http://bellard.org/bpg/libbpg-0.9.tar.gz"
-  sha1 "d40209384adf517c773a7a28cec0d4759051bf2c"
-
-  bottle do
-    cellar :any
-    sha1 "5ce24008a63d1362c54f63765fefbf0fd8fcd2d0" => :yosemite
-    sha1 "458ac4571970643dd81352d3a9591377c5004327" => :mavericks
-    sha1 "8b906bd6b3f1537f6805e3bbd2df84dad93bcf43" => :mountain_lion
-  end
+  url "http://bellard.org/bpg/libbpg-0.9.1.tar.gz"
+  sha1 "0ece88372e178985d3327bbb7a0c94947586b3f1"
 
   depends_on "libpng"
   depends_on "jpeg"
@@ -23,8 +16,7 @@ class Libbpg < Formula
     end
 
     inreplace "Makefile" do |s|
-      s.gsub! "--gc-sections", "-dead_strip"
-      s.gsub! "LIBS:=-lrt -lm -lpthread", "LIBS:=-lm -lpthread"
+      s.gsub! "#CONFIG_APPLE=y", "CONFIG_APPLE=y"
     end
 
     bin.mkpath
