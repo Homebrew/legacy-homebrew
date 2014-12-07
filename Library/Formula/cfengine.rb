@@ -2,14 +2,12 @@ require 'formula'
 
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.2.tar.gz'
-  sha1 '036dae35dfce559f5807a13f4de2985f28d3e5d1'
+  url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.3.tar.gz'
+  sha1 '90b5577bbeb6215e0ffbc19bf0fe6c2e01bda596'
 
-  bottle do
-    cellar :any
-    sha1 "43ea51c13d9ce4cb4de2875d32ce6e389e3465af" => :yosemite
-    sha1 "6cf3b0aa002c1a93702ed1687fa4d72aaa0f3a1d" => :mavericks
-    sha1 "d6193124ee2324ed0cd279a6e8b47a95a586d5f7" => :mountain_lion
+  resource "masterfiles" do
+    url "http://s3.amazonaws.com/cfengine.package-repos/tarballs/masterfiles-3.6.3.tar.gz"
+    sha1 "23496c323ee9d8204d78a2047ef7a90c61d12b18"
   end
 
   depends_on 'pcre'
@@ -30,6 +28,7 @@ class Cfengine < Formula
                           "--without-mysql",
                           "--without-postgresql"
     system "make install"
+    (share/"cfengine/CoreBase").install resource("masterfiles")
   end
 
   test do
