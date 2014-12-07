@@ -16,6 +16,10 @@ class Nimble < Formula
     url "https://github.com/philip-wernersbach/nimble-wrapper.git"
   end
 
+  # This patch fixes symlinking issues when there's a space in a path.
+  # See https://github.com/nim-lang/nimble/pull/73
+  patch :DATA unless build.head?
+
   def install
     (prefix/"nimble_wrapper").install buildpath => "nimble"
     mkdir buildpath
@@ -45,3 +49,16 @@ class Nimble < Formula
     system "#{bin}/nimble", "install", "-y", "irc"
   end
 end
+
+__END__
+--- a/src/babel.nim
++++ b/src/babel.nim
+@@ -511,7 +511,7 @@ proc installFromDir(dir: string, latest: bool, options: TOptions,
+         # some other package's binary!
+         if existsFile(binDir / bin): removeFile(binDir / cleanBin)
+         echo("Creating symlink: ", pkgDestDir / bin, " -> ", binDir / cleanBin)
+-        doCmd("ln -s \"" & pkgDestDir / bin & "\" " & binDir / cleanBin)
++        createSymlink(pkgDestDir / bin, binDir / cleanBin)
+       elif defined(windows):
+         let dest = binDir / cleanBin.changeFileExt("bat")
+         echo("Creating stub: ", pkgDestDir / bin, " -> ", dest)
