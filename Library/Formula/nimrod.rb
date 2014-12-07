@@ -14,7 +14,8 @@ class Nimrod < Formula
     url "https://github.com/nimrod-code/csources.git"
   end
 
-  # Small patch to fix http://github.com/Araq/Nimrod/issues/1701
+  # This patch fixes an OS X-specific codegen issue.
+  # See http://github.com/Araq/Nimrod/issues/1701
   patch :DATA unless build.head?
 
   def install
