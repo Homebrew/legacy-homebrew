@@ -1,7 +1,7 @@
 require "formula"
 
 class Libpointing < Formula
-  homepage "http://pointing.org"
+  homepage "http://libpointing.org/libpointing/index.html"
   url "http://libpointing.org/libpointing-0.92.tar.gz"
   sha1 "f2206fe87c46d089b8e1db01382aed03080e3a64"
 
