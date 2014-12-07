@@ -396,8 +396,10 @@ class FormulaInstaller
     fix_install_names(keg) if OS.mac?
 
     if build_bottle?
-      ohai "Not running post_install as we're building a bottle"
-      puts "You can run it manually using `brew postinstall #{formula.name}`"
+      unless formula.method(:post_install).owner.equal? Formula
+        ohai "Not running post_install as we're building a bottle"
+        puts "You can run it manually using `brew postinstall #{formula.name}`"
+      end
     else
       post_install
     end
