@@ -6,6 +6,9 @@ class Afflib < Formula
   sha1 "2793532fb048b145a60f5a2e951e3922bb4e9c96"
 
   bottle do
+    cellar :any
+    sha1 "d6147493de42ab17c383c63502ced1c04e3789c2" => :mavericks
+    sha1 "93a0873ab6ce491714623a1a140128252b76b775" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
