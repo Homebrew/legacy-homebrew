@@ -2,14 +2,11 @@ require 'formula'
 
 class Ssdb < Formula
   homepage "http://ssdb.io/?lang=en"
-  url "https://github.com/ideawu/ssdb/archive/1.7.0.1.tar.gz"
-  sha1 "90c06e31a5e7c921363ea88d2595d593d42ff607"
+  url "https://github.com/ideawu/ssdb/archive/1.8.0.tar.gz"
+  sha1 "ed9f016bdfef9543a866144fee4a37544f39155e"
   head "https://github.com/ideawu/ssdb.git"
 
   bottle do
-    sha1 "78f7a3a181202a181c7d02a5dc4fda56fee1535b" => :yosemite
-    sha1 "dbbee617f78d489526d6c1565013cddc33c53dc1" => :mavericks
-    sha1 "ca8048fbf774604109d8344dcf1a099eaa4e9f0e" => :mountain_lion
   end
 
   def install
