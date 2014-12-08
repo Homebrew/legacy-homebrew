@@ -6,10 +6,9 @@ class Openconnect < Formula
   sha1 "69edfa8d4af93ef33e90b21f25f2949d1997c83a"
 
   bottle do
-    revision 1
-    sha1 "8f824c3d71fe5879335275225922158b5da4076f" => :mavericks
-    sha1 "60947b9e8cada4dc82135499afa92c68ef65f849" => :mountain_lion
-    sha1 "4afb9be94d8288c1c1ac729a2abc421ccfb7dc7a" => :lion
+    sha1 "4b2a69e83336d0817e7a5e3a1a3360be6caadeb2" => :yosemite
+    sha1 "a2149452cb673b6e16042bc607a80369fde91589" => :mavericks
+    sha1 "b59dc9fdf8b070bd897b1d879b791635cb0d1dd7" => :mountain_lion
   end
 
   head do
