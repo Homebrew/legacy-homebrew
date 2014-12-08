@@ -592,6 +592,11 @@ class Formula
       pretty_args.delete "--disable-dependency-tracking"
       pretty_args.delete "--disable-debug"
     end
+    pretty_args.each_index do |i|
+      if pretty_args[i].to_s.start_with? "import setuptools"
+        pretty_args[i] = "import setuptools..."
+      end
+    end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
     @exec_count ||= 0
