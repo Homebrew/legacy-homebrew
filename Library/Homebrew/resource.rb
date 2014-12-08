@@ -16,6 +16,28 @@ class Resource
   # formula name before initialization of the formula
   attr_accessor :name, :owner
 
+  class Download
+    def initialize(resource)
+      @resource = resource
+    end
+
+    def url
+      @resource.url
+    end
+
+    def specs
+      @resource.specs
+    end
+
+    def version
+      @resource.version
+    end
+
+    def mirrors
+      @resource.mirrors
+    end
+  end
+
   def initialize name=nil, &block
     @name = name
     @url = nil
@@ -28,7 +50,7 @@ class Resource
   end
 
   def downloader
-    @downloader ||= download_strategy.new(download_name, self)
+    @downloader ||= download_strategy.new(download_name, Download.new(self))
   end
 
   # Removes /s from resource names; this allows go package names
@@ -90,7 +112,7 @@ class Resource
   end
 
   def verify_download_integrity fn
-    if fn.respond_to?(:file?) && fn.file?
+    if fn.file?
       ohai "Verifying #{fn.basename} checksum" if ARGV.verbose?
       fn.verify_checksum(checksum)
     end

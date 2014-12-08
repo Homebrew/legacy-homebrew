@@ -19,7 +19,7 @@ class JpegTurbo < Formula
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
 
   def install
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--with-jpeg8", "--mandir=#{man}"]
     if MacOS.prefer_64_bit?
       # Auto-detect our 64-bit nasm

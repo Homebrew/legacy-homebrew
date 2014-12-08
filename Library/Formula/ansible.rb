@@ -2,16 +2,16 @@ require "formula"
 
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.8.1.tar.gz"
-  sha1 "f911952d21a82e067157f41d42677f163e7b2d23"
+  url "http://releases.ansible.com/ansible/ansible-1.8.2.tar.gz"
+  sha1 "4cfbec3a0850639384c908e77e2823acb1297e1e"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 1
-    sha1 "e052618230a6864d5584a39385699836d6776ed9" => :yosemite
-    sha1 "ff4bcdaad0da2308bcaf6d2e4037473ee9745f73" => :mavericks
-    sha1 "1ff10d88f96a7fc1e6c1c5235f208b2a4461fa01" => :mountain_lion
+    revision 2
+    sha1 "ecedf8f29c9ebb482c1f3d56f8a97591d9a55ad5" => :yosemite
+    sha1 "4abe1bb420b7396bb213702bee06da733c044f39" => :mavericks
+    sha1 "6140887ca00017c45a2dfe5d699db072a8e035a7" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -93,6 +93,10 @@ class Ansible < Formula
   end
 
   def install
+    # pycrypto needs this on 10.8
+    # https://github.com/Homebrew/homebrew/pull/34682#issuecomment-65813603
+    ENV.refurbish_args
+
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
@@ -117,6 +121,16 @@ class Ansible < Formula
   end
 
   test do
-    system "#{bin}/ansible", "--version"
+    ENV["ANSIBLE_REMOTE_TEMP"] = testpath/"tmp"
+    (testpath/"playbook.yml").write <<-EOF.undent
+      ---
+      - hosts: all
+        gather_facts: False
+        tasks:
+        - name: ping
+          ping:
+    EOF
+    (testpath/"hosts.ini").write("localhost ansible_connection=local\n")
+    system bin/"ansible-playbook", testpath/"playbook.yml", "-i", testpath/"hosts.ini"
   end
 end

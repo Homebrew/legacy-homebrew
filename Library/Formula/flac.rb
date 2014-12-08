@@ -34,8 +34,6 @@ class Flac < Formula
 
     ENV.append "CFLAGS", "-std=gnu89"
 
-    system "./autogen.sh" if build.head?
-
     args = %W[
       --disable-dependency-tracking
       --disable-debug
@@ -45,8 +43,10 @@ class Flac < Formula
       --enable-static
     ]
 
+    args << "--disable-asm-optimizations" if build.universal? || Hardware.is_32_bit?
     args << "--without-ogg" if build.without? "libogg"
 
+    system "./autogen.sh" if build.head?
     system "./configure", *args
 
     ENV["OBJ_FORMAT"] = "macho"

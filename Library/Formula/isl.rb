@@ -8,6 +8,9 @@ class Isl < Formula
   # and update isl_version() function accordingly.  All other names will
   # result in isl_version() function returning "UNKNOWN" and hence break
   # package detection.
+  #
+  # 0.13 is out, but we can't upgrade until a compatible version of cloog is
+  # released.
   url 'http://isl.gforge.inria.fr/isl-0.12.2.tar.bz2'
   sha1 'ca98a91e35fb3ded10d080342065919764d6f928'
 
