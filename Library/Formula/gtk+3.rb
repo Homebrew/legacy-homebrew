@@ -7,10 +7,9 @@ class Gtkx3 < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "b49906d801960f2e5171f8999d7f3754d70a1bf3" => :yosemite
-    sha1 "9e7565ecff66692fdc46920967a8528f60360ab9" => :mavericks
-    sha1 "9b5a82a7a7e9a78fd6d81f3624ece8e7bc268b7a" => :mountain_lion
+    sha1 "29963c0a2a650a2cf9bd00646c92634c2c8127db" => :yosemite
+    sha1 "dd2f95b15fc7f5df62083bc06ac4ddd6417bfa2a" => :mavericks
+    sha1 "5f9715c0cb2c69c7c8be12d7965124283444a4cd" => :mountain_lion
   end
 
   option :universal
