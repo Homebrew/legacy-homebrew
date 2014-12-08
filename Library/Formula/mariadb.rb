@@ -83,14 +83,20 @@ class Mariadb < Formula
 
     # Compile with ARCHIVE engine enabled if chosen
     if build.with? 'archive-storage-engine'
-      args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.stable?
-      args << "-DPLUGIN_ARCHIVE=YES" if build.devel?
+      if build.stable?
+        args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1"
+      else
+        args << "-DPLUGIN_ARCHIVE=YES"
+      end
     end
 
     # Compile with BLACKHOLE engine enabled if chosen
     if build.with? 'blackhole-storage-engine'
-      args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.stable?
-      args << "-DPLUGIN_BLACKHOLE=YES" if build.devel?
+      if build.stable?
+        args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1"
+      else
+        args << "-DPLUGIN_BLACKHOLE=YES"
+      end
     end
 
     # Make universal for binding to universal applications
