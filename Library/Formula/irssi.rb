@@ -4,7 +4,7 @@ class Irssi < Formula
   homepage "http://irssi.org/"
   url "http://irssi.org/files/irssi-0.8.17.tar.bz2"
   sha1 "3bdee9a1c1f3e99673143c275d2c40275136664a"
-  revision 1
+  revision 2
 
   bottle do
     sha1 "5d9cf38c35b97dc6056adb77759ad930f912f5fb" => :yosemite
@@ -32,20 +32,26 @@ class Irssi < Formula
       --enable-ipv6
       --enable-true-color
       --with-socks
-      --with-perl=no
       --with-ncurses=#{MacOS.sdk_path}/usr
     ]
 
     args << "--disable-ssl" if build.without? "openssl"
 
-    # It'd be nice to stick Perl support back in at some point but right now
-    # even explicitly setting a Perl libdir gets ignored by configure
-    # and it attempts to dump things in $HOME, causing permission hell. See:
-    # https://github.com/Homebrew/homebrew/issues/34685
+    if build.with? "perl"
+      args << "--with-perl=yes"
+    else
+      args << "--with-perl=no"
+    end
+
+    ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
     system "./configure", *args
     # "make" and "make install" must be done separately on some systems
     system "make"
     system "make", "install"
+
+    # Sandbox the Perl elements for now, to prevent $HOME contamination.
+    # https://github.com/Homebrew/homebrew/issues/34685
+    mv "#{lib}/perl5/darwin-thread-multi-2level", "#{libexec}/lib/perl5/darwin-thread-multi-2level"
   end
 end
 
