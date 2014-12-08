@@ -91,6 +91,7 @@ class Python < Formula
              --datadir=#{share}
            ]
 
+    args << "--enable-shared" if OS.linux?
     args << "--without-gcc" if ENV.compiler == :clang
     args << "--with-dtrace" if build.with? "dtrace"
 
