@@ -8,9 +8,9 @@ class Ode < Formula
   head do
     url 'http://opende.svn.sourceforge.net/svnroot/opende/trunk'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option 'enable-double-precision', 'Compile ODE with double precision'

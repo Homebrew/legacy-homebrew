@@ -7,9 +7,10 @@ class Cppunit < Formula
 
   bottle do
     cellar :any
-    sha1 "2454890509b3b673e6a2bc7f53d755df7d5abb8f" => :mavericks
-    sha1 "07ace28a30f222a55adc2cd351524e5c8d8783a1" => :mountain_lion
-    sha1 "fcc7a7f99e35235a8cee728a3165d0db4da5dd5c" => :lion
+    revision 1
+    sha1 "18dfd9a7ceb08906e112c192af525908bcc42663" => :yosemite
+    sha1 "e27e6f4f3faac5c2f280b088a48d7c83e7faf491" => :mavericks
+    sha1 "06f8e404202b942139a979911b94c725ed83795a" => :mountain_lion
   end
 
   option :universal

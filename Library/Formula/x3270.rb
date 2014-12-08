@@ -2,16 +2,17 @@ require "formula"
 
 class X3270 < Formula
   homepage "http://x3270.bgp.nu/"
-  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.15ga5/suite3270-3.3.15ga5-src.tgz"
-  sha1 "7f918e21c9134ce4bccb7e0f661763f9f18946ee"
+  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.15ga6/suite3270-3.3.15ga6-src.tgz"
+  sha1 "c2d492b11db25b53aca9e9643e6522982cc479b4"
 
   bottle do
-    sha1 "c8d06fd2d78e89f65976c45c99b69e8b3f585102" => :yosemite
-    sha1 "305257a2615698a57341793cbda367588244faf8" => :mavericks
-    sha1 "c35fdab2f4223da207164eff643313b2ee291b37" => :mountain_lion
+    sha1 "9c468a256bb675508326eb64a1c01d797606c776" => :yosemite
+    sha1 "556ca35df10981f820c361befef2ed48f6e4b957" => :mavericks
+    sha1 "7fb2901635816b138b97dd445c2c85d57919e40a" => :mountain_lion
   end
 
   depends_on :x11
+  depends_on "openssl"
 
   option "with-c3270", "Include c3270 (curses-based version)"
   option "with-s3270", "Include s3270 (displayless version)"

@@ -5,7 +5,7 @@ class Qca < Formula
   url "http://delta.affinix.com/download/qca/2.0/qca-2.1.0.tar.gz"
   sha1 "2b582b3ccc7e6098cd14d6f52a829ae1539e9cc8"
 
-  head "git://anongit.kde.org/qca.git", :branch => "master"
+  head "git://anongit.kde.org/qca.git"
 
   bottle do
     revision 1

@@ -5,7 +5,7 @@ class Httpry < Formula
   url "http://dumpsterventures.com/jason/httpry/httpry-0.1.8.tar.gz"
   sha1 "163dcd1ab8cb2e8cef3cda2d7f0dea1b04deb338"
 
-  depends_on :bsdmake
+  depends_on "bsdmake" => :build
 
   def install
     system "bsdmake"

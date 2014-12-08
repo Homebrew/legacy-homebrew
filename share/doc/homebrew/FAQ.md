@@ -18,6 +18,15 @@ Or upgrade a specific formula with:
 
 <a name="cleanup"></a>
 
+### How do I stop certain formulae from being updated?
+To stop something from being updated/upgraded:
+
+    brew pin $FORMULA
+
+To allow that formulae to update again:
+
+    brew unpin $FORMULA
+
 ### How do I uninstall old versions of a formula?
 By default, Homebrew does not uninstall old versions of a formula, so
 over time you will accumulate old versions. To remove them, simply use:

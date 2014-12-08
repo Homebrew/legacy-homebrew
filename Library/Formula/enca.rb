@@ -2,14 +2,14 @@ require "formula"
 
 class Enca < Formula
   homepage "http://cihar.com/software/enca/"
-  url "http://dl.cihar.com/enca/enca-1.15.tar.gz"
-  sha1 "8a62202521e36d4159cbe6de64c2e7a0ec797e94"
+  url "http://dl.cihar.com/enca/enca-1.16.tar.gz"
+  sha1 "8cc606a5c0efa49a42374c060faa4fb7a9501d23"
   head "https://github.com/nijel/enca.git"
 
   bottle do
-    sha1 "73833b5b16a9d7e0bee09a8a59d222a5a9a7079f" => :mavericks
-    sha1 "f8e7c4152e5b52a0e89a2ba9a7bba63758055e7a" => :mountain_lion
-    sha1 "068d6210c606fc464f18916e2ae0f3ed8ea8e3bf" => :lion
+    sha1 "d5714f14f7075feb1a74f5975709cab64981d8ea" => :yosemite
+    sha1 "7e1c1698456b4aecc16f2f1c6f4dbdf48d0e44b0" => :mavericks
+    sha1 "a71d75fa0a058b3eb57cf2885cfe57cabc842d6e" => :mountain_lion
   end
 
   def install

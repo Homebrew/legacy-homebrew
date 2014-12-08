@@ -4,18 +4,20 @@ class Irssi < Formula
   homepage "http://irssi.org/"
   url "http://irssi.org/files/irssi-0.8.17.tar.bz2"
   sha1 "3bdee9a1c1f3e99673143c275d2c40275136664a"
+  revision 1
 
   bottle do
-    sha1 "cf15f3d0cadb37218e164250c44d78b4c892d177" => :mavericks
-    sha1 "c57f169abb6818eec4fce7581bb0f85a79ce55b2" => :mountain_lion
-    sha1 "7bd34bbdc9f67dd9bdaed0b7e84e29c1518b07f1" => :lion
+    sha1 "5d9cf38c35b97dc6056adb77759ad930f912f5fb" => :yosemite
+    sha1 "d29d8be78c3276be275137864297cce6e5de13e9" => :mavericks
+    sha1 "4ffe450dca6b9e1fb67099f87bb0ca88cb761316" => :mountain_lion
   end
 
   option "without-perl", "Build without perl support"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "openssl" => :optional
+  depends_on "openssl" => :recommended
+  depends_on "dante" => :optional
 
   # Fix Perl build flags and paths in man page
   patch :DATA
@@ -24,26 +26,23 @@ class Irssi < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --sysconfdir=#{etc}
+      --sysconfdir=#{etc}/irssi
       --with-bot
       --with-proxy
       --enable-ipv6
       --enable-true-color
       --with-socks
+      --with-perl=no
       --with-ncurses=#{MacOS.sdk_path}/usr
     ]
 
-    if build.with? "perl"
-      args << "--with-perl=yes"
-      args << "--with-perl-lib=#{lib}/perl5/site_perl"
-    else
-      args << "--with-perl=no"
-    end
+    args << "--disable-ssl" if build.without? "openssl"
 
-    args << "--enable-ssl" if build.with? "openssl"
-
+    # It'd be nice to stick Perl support back in at some point but right now
+    # even explicitly setting a Perl libdir gets ignored by configure
+    # and it attempts to dump things in $HOME, causing permission hell. See:
+    # https://github.com/Homebrew/homebrew/issues/34685
     system "./configure", *args
-
     # "make" and "make install" must be done separately on some systems
     system "make"
     system "make", "install"

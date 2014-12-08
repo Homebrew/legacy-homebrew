@@ -12,7 +12,7 @@ class Erlang < Formula
     sha256 "bb8036c43b1aae12b2940968f2480701e7f431f09d46a0f204d94bf53b0b2b50"
   end
 
-  head 'https://github.com/erlang/otp.git', :branch => 'master'
+  head 'https://github.com/erlang/otp.git'
 
   bottle do
     sha1 "d7ef1f3f93a1e7f404c1581d814bf7f78599e48d" => :yosemite

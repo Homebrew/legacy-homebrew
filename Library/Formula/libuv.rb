@@ -14,7 +14,7 @@ class Libuv < Formula
   end
 
   head do
-    url "https://github.com/joyent/libuv.git", :branch => "master"
+    url "https://github.com/joyent/libuv.git"
 
     depends_on "automake" => :build
     depends_on "autoconf" => :build

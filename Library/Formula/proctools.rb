@@ -6,7 +6,7 @@ class Proctools < Formula
   version '0.4pre1'
   sha1 '2e60ac272532406e595698b1315ccfb481e76d42'
 
-  depends_on :bsdmake
+  depends_on "bsdmake" => :build
 
   {
     "pfind-Makefile"        => "7929b43b3eb63589c49ff37d09ec627659317327",

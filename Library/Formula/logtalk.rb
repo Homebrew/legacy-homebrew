@@ -7,9 +7,9 @@ class Logtalk < Formula
   version "2.44.1"
 
   devel do
-    url "http://logtalk.org/files/logtalk-3.00.0-rc4.tar.bz2"
-    sha256 "d40a52b79b4c82051287f4142d73b2a625652b8e712d1a2607ab7a89bca86e38"
-    version "3.00.0-rc4"
+    url "http://logtalk.org/files/logtalk-3.00.0-rc7.tar.bz2"
+    sha256 "50664e28eaa75eb0b293345919a9178bc9b2e2135a43f066265cfa99cb2c042a"
+    version "3.00.0-rc7"
   end
 
   head "https://github.com/LogtalkDotOrg/logtalk3.git"
