@@ -14,6 +14,11 @@ class Python < Formula
     sha1 "f3708ea1d1f736527c428f0026aa42499c489fe2" => :mountain_lion
   end
 
+  devel do
+    url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9rc1.tgz"
+    sha1 "f2190373855724e22f4c11c68bd4aa83b1633fcd"
+  end
+
   option :universal
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
@@ -32,8 +37,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz"
-    sha1 "a681ba56c30c0eb66528215842d3e3fcb5157614"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-7.0.tar.gz"
+    sha1 "971d3efef71872c9d420df4cff6e04255024f9ae"
   end
 
   resource "pip" do
@@ -93,11 +98,7 @@ class Python < Formula
     args << "--without-gcc" if ENV.compiler == :clang
     args << "--with-dtrace" if build.with? "dtrace"
 
-    if superenv?
-      distutils_fix_superenv(args)
-    else
-      distutils_fix_stdenv
-    end
+   distutils_fix_superenv(args)
 
     if build.universal?
       ENV.universal_binary
@@ -187,13 +188,11 @@ class Python < Formula
     (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
     (libexec/"pip").cd { system "#{bin}/python", *setup_args }
 
-    # When building from source, these symlinks will not exist, since
     # post_install happens after linking.
     %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
-    # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
       [global]
@@ -235,29 +234,6 @@ class Python < Formula
     inreplace "setup.py",
               "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
               "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
-  end
-
-  def distutils_fix_stdenv
-    # Python scans all "-I" dirs but not "-isysroot", so we add
-    # the needed includes with "-I" here to avoid this err:
-    #     building dbm using ndbm
-    #     error: /usr/include/zlib.h: No such file or directory
-    ENV.append "CPPFLAGS", "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
-
-    # Don't use optimizations other than "-Os" here, because Python's distutils
-    # remembers (hint: `python-config --cflags`) and reuses them for C
-    # extensions which can break software (such as scipy 0.11 fails when
-    # "-msse4" is present.)
-    ENV.minimal_optimization
-
-    # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
-    ENV.enable_warnings
-    if ENV.compiler == :clang
-      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-      ENV.append_to_cflags "-Wno-unused-value"
-      ENV.append_to_cflags "-Wno-empty-body"
-    end
   end
 
   def sitecustomize
@@ -311,7 +287,7 @@ class Python < Formula
   end
 
   def caveats; <<-EOS.undent
-    Setuptools and Pip have been installed. To update them
+    Setuptools and pip have been installed. To update them
       pip install --upgrade setuptools
       pip install --upgrade pip
 
