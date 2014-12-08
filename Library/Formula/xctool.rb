@@ -7,8 +7,8 @@ end
 
 class Xctool < Formula
   homepage 'https://github.com/facebook/xctool'
-  url 'https://github.com/facebook/xctool/archive/v0.2.1.tar.gz'
-  sha1 '49182de7136447f86cfe0c86035a9858befcbbdf'
+  url 'https://github.com/facebook/xctool/archive/v0.2.2.tar.gz'
+  sha1 '7c1f5610d0543a2a93b87aeebd7dfb642d91d50d'
   head 'https://github.com/facebook/xctool.git'
 
   bottle do
