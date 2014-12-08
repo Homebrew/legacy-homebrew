@@ -19,7 +19,7 @@ class Ffmpeg < Formula
   option "without-qtkit", "Disable deprecated QuickTime framework"
 
   option "with-rtmpdump", "Enable RTMP protocol"
-  option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
+  option "without-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
   option "with-opencore-amr", "Enable Opencore AMR NR/WB audio format"
   option "with-openjpeg", "Enable JPEG 2000 image format"
@@ -39,10 +39,11 @@ class Ffmpeg < Formula
   depends_on "yasm" => :build
 
   depends_on "x264" => :recommended
-  depends_on "faac" => :recommended
   depends_on "lame" => :recommended
+  depends_on "libvo-aacenc" => :recommended
   depends_on "xvid" => :recommended
 
+  depends_on "faac" => :optional
   depends_on "fontconfig" => :optional
   depends_on "freetype" => :optional
   depends_on "theora" => :optional
@@ -50,7 +51,6 @@ class Ffmpeg < Formula
   depends_on "libvpx" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "opencore-amr" => :optional
-  depends_on "libvo-aacenc" => :optional
   depends_on "libass" => :optional
   depends_on "openjpeg" => :optional
   depends_on "sdl" if build.with? "ffplay"
@@ -73,7 +73,6 @@ class Ffmpeg < Formula
             "--enable-pthreads",
             "--enable-gpl",
             "--enable-version3",
-            "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-avresample",
             "--cc=#{ENV.cc}",
@@ -113,6 +112,12 @@ class Ffmpeg < Formula
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
       args << "--extra-cflags=" + %x[pkg-config --cflags libopenjpeg].chomp
+    end
+
+    # These librares are GPL-incompatible, and require ffmpeg be built with
+    # the "--enable-nonfree" flag, which produces unredistributable libraries
+    if %w[faac fdk-aac openssl].any? {|f| build.with? f}
+      args << "--enable-nonfree"
     end
 
     # A bug in a dispatch header on 10.10, included via CoreFoundation,
