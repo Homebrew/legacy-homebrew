@@ -4,14 +4,14 @@ class AndroidNdk < Formula
   homepage "http://developer.android.com/sdk/ndk/index.html"
 
   if MacOS.prefer_64_bit?
-    url "http://dl.google.com/android/ndk/android-ndk-r10c-darwin-x86_64.bin"
-    sha1 "a136ca2ad87771422c2cfa9474196cd29ffd9bb1"
+    url "http://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86_64.bin"
+    sha1 "6b89cb0c84e2d2bd802a5b78540327c1b3c2d7b8"
   else
-    url "http://dl.google.com/android/ndk/android-ndk-r10c-darwin-x86.bin"
-    sha1 "b083f9a1a4dd66d55ced8ea41eea6a0a91ea1ac9"
+    url "http://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86.bin"
+    sha1 "fc1f9593eb9669076c25381322a1386869ac02f0"
   end
 
-  version "r10c"
+  version "r10d"
 
   depends_on "android-sdk" => :recommended
 
@@ -19,15 +19,15 @@ class AndroidNdk < Formula
     bin.mkpath
 
     if MacOS.prefer_64_bit?
-      system "chmod", "a+x", "./android-ndk-r10c-darwin-x86_64.bin"
-      system "./android-ndk-r10c-darwin-x86_64.bin"
+      system "chmod", "a+x", "./android-ndk-r10d-darwin-x86_64.bin"
+      system "./android-ndk-r10d-darwin-x86_64.bin"
     else
-      system "chmod", "a+x", "./android-ndk-r10c-darwin-x86.bin"
-      system "./android-ndk-r10c-darwin-x86.bin"
+      system "chmod", "a+x", "./android-ndk-r10d-darwin-x86.bin"
+      system "./android-ndk-r10d-darwin-x86.bin"
     end
 
     # Now we can install both 64-bit and 32-bit targeting toolchains
-    prefix.install Dir["android-ndk-r10c/*"]
+    prefix.install Dir["android-ndk-r10d/*"]
 
     # Create a dummy script to launch the ndk apps
     ndk_exec = prefix+"ndk-exec.sh"
