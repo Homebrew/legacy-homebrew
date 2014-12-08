@@ -7,6 +7,9 @@ class Ssdb < Formula
   head "https://github.com/ideawu/ssdb.git"
 
   bottle do
+    sha1 "b1a7566fcd83d479a03e7b47be9a68359b36cc77" => :yosemite
+    sha1 "b68643eb0c93132b41c8f09fca4005e683db9d73" => :mavericks
+    sha1 "99f7b2b71217e236fa6dee657562b3efbf4a9750" => :mountain_lion
   end
 
   def install
