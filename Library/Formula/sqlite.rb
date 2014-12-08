@@ -2,15 +2,11 @@ require "formula"
 
 class Sqlite < Formula
   homepage "http://sqlite.org/"
-  url "https://www.sqlite.org/2014/sqlite-autoconf-3080701.tar.gz"
-  version "3.8.7.1"
-  sha1 "5601be1263842209d7c5dbf6128f1cc0b6bbe2e5"
+  url "https://www.sqlite.org/2014/sqlite-autoconf-3080703.tar.gz"
+  version "3.8.7.3"
+  sha1 "5cbe9aa4af1b32787045a251dba6debee3f061c0"
 
   bottle do
-    cellar :any
-    sha1 "acbebfa695ddbc0e23d5d534a6971b7765afb893" => :yosemite
-    sha1 "914eef56a08e8ad31666fb5fd786164dd736f635" => :mavericks
-    sha1 "a6967299c0749a473f3473554067bc467e34d368" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -32,9 +28,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://www.sqlite.org/2014/sqlite-doc-3080701.zip"
-    version "3.8.7.1"
-    sha1 "712b4ce64317646f27a046d5850515cd710bd00a"
+    url "https://www.sqlite.org/2014/sqlite-doc-3080703.zip"
+    version "3.8.7.3"
+    sha1 "c4a0d51d0fc2fc9c74aa774aa12623b7f2a99db1"
   end
 
   def install
