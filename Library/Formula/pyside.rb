@@ -1,41 +1,37 @@
-require 'formula'
+require "formula"
 
 class Pyside < Formula
-  homepage 'http://www.pyside.org'
-  url 'https://download.qt-project.org/official_releases/pyside/pyside-qt4.8+1.2.2.tar.bz2'
-  mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.2.tar.bz2'
-  sha1 '955e32d193d173faa64edc51111289cdcbe3b96e'
+  homepage "http://www.pyside.org"
+  url "https://download.qt-project.org/official_releases/pyside/pyside-qt4.8+1.2.2.tar.bz2"
+  mirror "https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.2.tar.bz2"
+  sha1 "955e32d193d173faa64edc51111289cdcbe3b96e"
 
-  head 'git://gitorious.org/pyside/pyside.git'
+  head "git://gitorious.org/pyside/pyside.git"
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
   option "without-docs", "Skip building documentation"
 
-  depends_on 'cmake' => :build
-  depends_on 'qt'
+  depends_on "cmake" => :build
+  depends_on "qt"
 
-  if build.with? 'python3'
-    depends_on 'shiboken' => 'with-python3'
+  if build.with? "python3"
+    depends_on "shiboken" => "with-python3"
   else
-    depends_on 'shiboken'
+    depends_on "shiboken"
   end
 
-  resource 'sphinx' do
-    url 'https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.2.tar.gz'
-    sha1 '9e424b03fe1f68e0326f3905738adcf27782f677'
+  resource "sphinx" do
+    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.2.tar.gz"
+    sha1 "9e424b03fe1f68e0326f3905738adcf27782f677"
   end
 
   def install
     if build.with? "docs"
-      (buildpath/"sphinx").mkpath
-
-      resource("sphinx").stage do
-        system "python", "setup.py", "install",
-                                     "--prefix=#{buildpath}/sphinx",
-                                     "--record=installed.txt",
-                                     "--single-version-externally-managed"
+      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      resources.each do |r|
+        r.stage { system "python", *Language::Python.setup_install_args(buildpath/"sphinx") }
       end
 
       ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
