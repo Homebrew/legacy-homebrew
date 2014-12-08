@@ -5,6 +5,13 @@ class Cfengine < Formula
   url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.3.tar.gz'
   sha1 '90b5577bbeb6215e0ffbc19bf0fe6c2e01bda596'
 
+  bottle do
+    cellar :any
+    sha1 "143856c4d884af447e8c5b395ff5232745007a18" => :yosemite
+    sha1 "784285e682e6b170bef1d36d8c60112a4b90bad5" => :mavericks
+    sha1 "d38f9436790f4754cadc63bc0870b48c85901ea2" => :mountain_lion
+  end
+
   resource "masterfiles" do
     url "http://s3.amazonaws.com/cfengine.package-repos/tarballs/masterfiles-3.6.3.tar.gz"
     sha1 "23496c323ee9d8204d78a2047ef7a90c61d12b18"
