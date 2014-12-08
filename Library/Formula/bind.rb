@@ -2,8 +2,9 @@ require "formula"
 
 class Bind < Formula
   homepage "http://www.isc.org/software/bind/"
-  url "http://ftp.isc.org/isc/bind9/9.10.1/bind-9.10.1.tar.gz"
-  sha1 "96aa28c6112c6a8c33a19efeac98c715f03b35ca"
+  url "http://ftp.isc.org/isc/bind9/9.10.1-P1/bind-9.10.1-P1.tar.gz"
+  sha1 "24a81ba458a762c27be47461301fcf336cfb1d43"
+  version "9.10.1-P1"
 
   bottle do
     revision 4
