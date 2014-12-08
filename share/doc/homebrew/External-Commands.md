@@ -96,7 +96,7 @@ These commands have been contributed by Homebrew users but are not included in t
 
 >You can install manually or using `brew tap`:
 > ```
-> $ brew install telemachus/desc/brew-desc
+> $ brew tap telemachus/desc
 > ```
 
 ### brew-gem
