@@ -19,6 +19,7 @@ class Python < Formula
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
   option "with-dtrace", "Experimental DTrace support (http://bugs.python.org/issue13405)"
+  option "with-ucs4", "Enable support for 'wide' Unicode Python build"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -92,6 +93,9 @@ class Python < Formula
 
     args << "--without-gcc" if ENV.compiler == :clang
     args << "--with-dtrace" if build.with? "dtrace"
+
+    # Build with 4-byte unicode support (UCS-4)
+    args << "--enable-unicode=ucs4" if build.with? "ucs4"
 
     if superenv?
       distutils_fix_superenv(args)
