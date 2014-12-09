@@ -19,15 +19,15 @@ class AndroidNdk < Formula
     bin.mkpath
 
     if MacOS.prefer_64_bit?
-      system "chmod", "a+x", "./android-ndk-r10d-darwin-x86_64.bin"
-      system "./android-ndk-r10d-darwin-x86_64.bin"
+      system "chmod", "a+x", "./android-ndk-#{version}-darwin-x86_64.bin"
+      system "./android-ndk-#{version}-darwin-x86_64.bin"
     else
-      system "chmod", "a+x", "./android-ndk-r10d-darwin-x86.bin"
-      system "./android-ndk-r10d-darwin-x86.bin"
+      system "chmod", "a+x", "./android-ndk-#{version}-darwin-x86.bin"
+      system "./android-ndk-#{version}-darwin-x86.bin"
     end
 
     # Now we can install both 64-bit and 32-bit targeting toolchains
-    prefix.install Dir["android-ndk-r10d/*"]
+    prefix.install Dir["android-ndk-#{version}/*"]
 
     # Create a dummy script to launch the ndk apps
     ndk_exec = prefix+"ndk-exec.sh"
