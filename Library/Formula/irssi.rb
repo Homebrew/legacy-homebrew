@@ -26,7 +26,7 @@ class Irssi < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --sysconfdir=#{etc}/irssi
+      --sysconfdir=#{etc}
       --with-bot
       --with-proxy
       --enable-ipv6
