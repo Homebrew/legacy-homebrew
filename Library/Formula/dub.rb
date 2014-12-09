@@ -4,8 +4,8 @@ require "formula"
 # To not break this, we provide a custom download strategy.
 class DubHeadDownloadStrategy < GitDownloadStrategy
   def stage
-    @clone.cd {reset}
-    safe_system "git", "clone", @clone, "."
+    cached_location.cd { reset }
+    safe_system "git", "clone", cached_location, "."
   end
 end
 
