@@ -40,7 +40,7 @@ class Qt5 < Formula
   # https://bugreports.qt-project.org/browse/QTBUG-41136
   patch :DATA
 
-  head "git://gitorious.org/qt/qt5.git", :branch => "stable",
+  head "https://gitorious.org/qt/qt5.git", :branch => "5.3",
     :using => Qt5HeadDownloadStrategy, :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
