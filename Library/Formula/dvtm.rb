@@ -13,8 +13,8 @@ class Dvtm < Formula
   end
 
   test do
-      expected = "dvtm-0.13 © 2007-2014 Marc André Tanner\n"
-      version = `dvtm -v`
-      assert_equal expected, version
+    expected = "dvtm-0.13 © 2007-2014 Marc André Tanner\n"
+    version = `dvtm -v`
+    assert_equal expected, version
   end
 end
