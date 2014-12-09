@@ -622,8 +622,8 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     mod, url = split_url(@url)
 
     HOMEBREW_CACHE.cd do
-      safe_system cvspath, "-d", url, "login"
-      safe_system cvspath, "-d", url, "checkout", "-d", cache_filename, mod
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", url, "login"
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", url, "checkout", "-d", cache_filename, mod
     end
   end
 
