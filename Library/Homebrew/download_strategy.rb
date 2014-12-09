@@ -37,6 +37,49 @@ class AbstractDownloadStrategy
   def stage; end
   def cached_location; end
   def clear_cache; end
+
+  private
+
+  def xzpath
+    "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
+  end
+
+  def lzippath
+    "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
+  end
+
+  def cvspath
+    @cvspath ||= %W[
+      /usr/bin/cvs
+      #{HOMEBREW_PREFIX}/bin/cvs
+      #{HOMEBREW_PREFIX}/opt/cvs/bin/cvs
+      #{which("cvs")}
+      ].find { |p| File.executable? p }
+  end
+
+  def hgpath
+    @hgpath ||= %W[
+      #{which("hg")}
+      #{HOMEBREW_PREFIX}/bin/hg
+      #{HOMEBREW_PREFIX}/opt/mercurial/bin/hg
+      ].find { |p| File.executable? p }
+  end
+
+  def bzrpath
+    @bzrpath ||= %W[
+      #{which("bzr")}
+      #{HOMEBREW_PREFIX}/bin/bzr
+      #{HOMEBREW_PREFIX}/opt/bazaar/bin/bzr
+      ].find { |p| File.executable? p }
+  end
+
+  def fossilpath
+    @fossilpath ||= %W[
+      #{which("fossil")}
+      #{HOMEBREW_PREFIX}/bin/fossil
+      #{HOMEBREW_PREFIX}/opt/fossil/bin/fossil
+      ].find { |p| File.executable? p }
+  end
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
@@ -215,14 +258,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   def curl(*args)
     args << '--connect-timeout' << '5' unless mirrors.empty?
     super
-  end
-
-  def xzpath
-    "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
-  end
-
-  def lzippath
-    "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
   def chdir
@@ -637,15 +672,6 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     url=parts.join(':')
     [ mod, url ]
   end
-
-  def cvspath
-    @path ||= %W[
-      /usr/bin/cvs
-      #{HOMEBREW_PREFIX}/bin/cvs
-      #{HOMEBREW_PREFIX}/opt/cvs/bin/cvs
-      #{which("cvs")}
-      ].find { |p| File.executable? p }
-  end
 end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
@@ -680,14 +706,6 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   def update
     cached_location.cd { quiet_safe_system hgpath, "pull", "--update" }
   end
-
-  def hgpath
-    @path ||= %W[
-      #{which("hg")}
-      #{HOMEBREW_PREFIX}/bin/hg
-      #{HOMEBREW_PREFIX}/opt/mercurial/bin/hg
-      ].find { |p| File.executable? p }
-  end
 end
 
 class BazaarDownloadStrategy < VCSDownloadStrategy
@@ -717,13 +735,6 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   def update
     cached_location.cd { quiet_safe_system bzrpath, "update" }
   end
-
-  def bzrpath
-    @path ||= %W[
-      #{which("bzr")}
-      #{HOMEBREW_PREFIX}/bin/bzr
-      ].find { |p| File.executable? p }
-  end
 end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
@@ -749,12 +760,6 @@ class FossilDownloadStrategy < VCSDownloadStrategy
     safe_system fossilpath, "pull", "-R", cached_location
   end
 
-  def fossilpath
-    @path ||= %W[
-      #{which("fossil")}
-      #{HOMEBREW_PREFIX}/bin/fossil
-      ].find { |p| File.executable? p }
-  end
 end
 
 class DownloadStrategyDetector
