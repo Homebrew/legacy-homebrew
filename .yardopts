@@ -1,6 +1,8 @@
 --title "Homebrew"
 --main Library/Homebrew/README.md
---exclude Library/Homebrew/test/vendor/
+--markup markdown
+--no-private
+--exclude Library/Homebrew/test/
 --exclude Library/Homebrew/vendor/
 Library/Homebrew/**/*.rb
 -

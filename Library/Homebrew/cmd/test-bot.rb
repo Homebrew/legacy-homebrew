@@ -600,8 +600,10 @@ module Homebrew
       raise "Missing Jenkins variables!" unless jenkins and job and id
 
       ARGV << '--verbose'
-      cp_args = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"] + ["."]
-      return unless system "cp", *cp_args
+
+      bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
+      return if bottles.empty?
+      FileUtils.cp bottles, Dir.pwd, :verbose => true
 
       ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
       ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
