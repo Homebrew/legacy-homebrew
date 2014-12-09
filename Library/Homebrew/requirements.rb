@@ -13,11 +13,23 @@ require 'requirements/x11_dependency'
 class XcodeDependency < Requirement
   fatal true
 
-  satisfy(:build_env => false) { MacOS::Xcode.installed? }
+  satisfy(:build_env => false) { xcode_installed_version }
+
+  def initialize(tags)
+    @version = tags.each {|t| break tags.delete(t) if t.is_a? String }
+    super
+  end
+
+  def xcode_installed_version
+    return false unless MacOS::Xcode.installed?
+    return true unless @version
+    MacOS::Xcode.version >= @version
+  end
 
   def message
+    version = " #{@version}" if @version
     message = <<-EOS.undent
-      A full installation of Xcode.app is required to compile this software.
+      A full installation of Xcode.app#{version} is required to compile this software.
       Installing just the Command Line Tools is not sufficient.
     EOS
     if MacOS.version >= :lion
