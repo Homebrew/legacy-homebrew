@@ -9,9 +9,9 @@ class Unbound < Formula
   depends_on "libevent"
 
   bottle do
-    sha1 "e0146e449a9b72fd80760c11f093c35595db0c86" => :yosemite
-    sha1 "07d53e51e9ffda66e655ce44ee888fd46fac0d3e" => :mavericks
-    sha1 "774744eb63626555c9877ce857e0a774e961f428" => :mountain_lion
+    sha1 "98610e627047f9a5df8b8a2fed73b6d3f5153f31" => :yosemite
+    sha1 "e29b138c0d056405e98bd4c86282c2ac3072c1c9" => :mavericks
+    sha1 "ba39f11d28f588616c0a0bc6f42197856c6035e5" => :mountain_lion
   end
 
   def install
