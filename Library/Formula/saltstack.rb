@@ -5,8 +5,8 @@ require "formula"
 # This is populated from git information unfortunately.
 class SaltHeadDownloadStrategy < GitDownloadStrategy
   def stage
-    @clone.cd {reset}
-    safe_system "git", "clone", @clone, "."
+    cached_location.cd { reset }
+    safe_system "git", "clone", cached_location, "."
   end
 end
 
