@@ -2,8 +2,8 @@ require 'formula'
 
 class Flowgrind < Formula
   homepage 'https://launchpad.net/flowgrind'
-  url 'https://launchpad.net/flowgrind/trunk/flowgrind-0.6.1/+download/flowgrind-0.6.1.tar.bz2'
-  sha1 'aaa4714dbbe2bb8d5eb249a0d526f4bc7023db2c'
+  url 'https://launchpad.net/flowgrind/trunk/flowgrind-0.7.5/+download/flowgrind-0.7.5.tar.bz2'
+  sha1 '77cccd3a5111a03153de8278d33430f36ef0a92c'
 
   depends_on 'gsl'
   depends_on 'xmlrpc-c'
@@ -14,5 +14,9 @@ class Flowgrind < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/flowgrind", "--version"
   end
 end
