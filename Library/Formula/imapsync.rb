@@ -2,10 +2,16 @@ require "formula"
 
 class Imapsync < Formula
   homepage "http://ks.lamiral.info/imapsync/"
-  url "https://fedorahosted.org/released/imapsync/imapsync-1.592.tgz"
-  sha1 "f107917ee01ef46d97408226a083871a7d660d0b"
+  url "https://fedorahosted.org/released/imapsync/imapsync-1.607.tgz"
+  sha1 "c9d6dd43cf10ba7f90a363900484085d9ce682a4"
 
   head "https://git.fedorahosted.org/git/imapsync.git"
+
+  resource "Unicode::String" do
+    url "http://www.cpan.org/authors/id/G/GA/GAAS/Unicode-String-2.09.tar.gz"
+    mirror "http://www.mcpan.org/authors/id/G/GA/GAAS/Unicode-String-2.09.tar.gz"
+    sha1 "7cc47c5a1c5e38f23886bbc613b27a4a4a3d5459"
+  end
 
   resource "File::Copy::Recursive" do
     url "http://search.cpan.org/CPAN/authors/id/D/DM/DMUEY/File-Copy-Recursive-0.38.tar.gz"
