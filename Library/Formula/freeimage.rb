@@ -3,7 +3,7 @@ require 'formula'
 class FreeimageHttpDownloadStrategy < CurlDownloadStrategy
   def stage
     # need to convert newlines or patch chokes
-    safe_system '/usr/bin/unzip', '-aaqq', @tarball_path
+    quiet_safe_system "/usr/bin/unzip", { :quiet_flag => "-qq" }, "-aa", cached_location
     chdir
   end
 end

@@ -6,7 +6,7 @@ require "formula"
 class SaltHeadDownloadStrategy < GitDownloadStrategy
   def stage
     cached_location.cd { reset }
-    safe_system "git", "clone", cached_location, "."
+    quiet_safe_system "git", "clone", cached_location, "."
   end
 end
 

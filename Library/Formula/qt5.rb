@@ -5,9 +5,9 @@ class Qt5HeadDownloadStrategy < GitDownloadStrategy
 
   def stage
     cached_location.cd { reset }
-    safe_system "git", "clone", cached_location, "."
+    quiet_safe_system "git", "clone", cached_location, "."
     ln_s cached_location, "qt"
-    safe_system "./init-repository", "--mirror", "#{Dir.pwd}/"
+    quiet_safe_system "./init-repository", "--mirror", "#{Dir.pwd}/"
     rm "qt"
   end
 end
