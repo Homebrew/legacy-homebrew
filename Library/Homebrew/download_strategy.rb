@@ -1,6 +1,8 @@
 require 'utils/json'
 
 class AbstractDownloadStrategy
+  include FileUtils
+
   attr_reader :name, :resource
 
   def initialize name, resource
@@ -204,7 +206,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :p7zip
       safe_system '7zr', 'x', tarball_path
     else
-      FileUtils.cp tarball_path, basename_without_params
+      cp tarball_path, basename_without_params
     end
   end
 
@@ -301,7 +303,7 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   def stage
-    FileUtils.cp tarball_path, basename_without_params
+    cp tarball_path, basename_without_params
   end
 end
 
@@ -599,7 +601,7 @@ end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
   def stage
-    FileUtils.cp_r Dir[cached_location+"{.}"], Dir.pwd
+    cp_r Dir[cached_location+"{.}"], Dir.pwd
   end
 
   private
@@ -692,8 +694,8 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   def stage
     # The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
-    FileUtils.cp_r Dir[cached_location+"{.}"], Dir.pwd
-    FileUtils.rm_r ".bzr"
+    cp_r Dir[cached_location+"{.}"], Dir.pwd
+    rm_r ".bzr"
   end
 
   private

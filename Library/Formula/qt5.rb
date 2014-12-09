@@ -1,8 +1,6 @@
 require "formula"
 
 class Qt5HeadDownloadStrategy < GitDownloadStrategy
-  include FileUtils
-
   def stage
     cached_location.cd { reset }
     quiet_safe_system "git", "clone", cached_location, "."
