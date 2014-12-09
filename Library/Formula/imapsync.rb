@@ -7,6 +7,12 @@ class Imapsync < Formula
 
   head "https://git.fedorahosted.org/git/imapsync.git"
 
+  bottle do
+    sha1 "3e0967b9f61fd147242089ab6e93fd573fef7c31" => :yosemite
+    sha1 "667c9e72e7b361147fa419e3b61fe8e021662d85" => :mavericks
+    sha1 "a15bf0b97404cc06c9ca6b366e0fcce9cf4f554d" => :mountain_lion
+  end
+
   resource "Unicode::String" do
     url "http://www.cpan.org/authors/id/G/GA/GAAS/Unicode-String-2.09.tar.gz"
     mirror "http://www.mcpan.org/authors/id/G/GA/GAAS/Unicode-String-2.09.tar.gz"
