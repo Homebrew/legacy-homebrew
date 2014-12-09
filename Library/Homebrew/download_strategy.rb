@@ -162,8 +162,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     puts "Trying a mirror..."
     @url = mirrors.shift
     retry
-  else
-    tarball_path
   end
 
   # gunzip and bunzip2 write the output file in the same directory as the input
