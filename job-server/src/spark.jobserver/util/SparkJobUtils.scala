@@ -49,6 +49,14 @@ object SparkJobUtils {
       conf.set(e.getKey, e.getValue.unwrapped.toString)
     }
 
+    // Set any other settings in context config that start with "passthrough"
+    // These settings will be directly set in sparkConf, but with "passthrough." stripped
+    // This is useful for setting configurations for hadoop connectors such as
+    // elasticsearch, cassandra, etc.
+    for (e <- contextConfig.entrySet().asScala if e.getKey.startsWith("passthrough.")) {
+      conf.set(e.getKey.stripPrefix("passthrough."), e.getValue.unwrapped.toString)
+    }
+
     conf
   }
 
