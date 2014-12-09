@@ -2,9 +2,8 @@ require "formula"
 
 class Unbound < Formula
   homepage "http://www.unbound.net"
-  url "http://unbound.net/downloads/unbound-1.4.22.tar.gz"
-  sha256 "1caf5081b2190ecdb23fc4d998b7999e28640c941f53baff7aee03c092a7d29f"
-  revision 1
+  url "http://unbound.net/downloads/unbound-1.5.1.tar.gz"
+  sha256 "0ff82709fb2bd7ecbde8dbdcf60fa417d2b43379570a3d460193a76a169900ec"
 
   depends_on "openssl"
   depends_on "libevent"
