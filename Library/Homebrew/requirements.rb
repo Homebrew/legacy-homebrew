@@ -22,7 +22,7 @@ class XcodeDependency < Requirement
 
   def xcode_installed_version
     return false unless MacOS::Xcode.installed?
-    return true unless @version
+    return true unless @version.is_a? String
     MacOS::Xcode.version >= @version
   end
 
