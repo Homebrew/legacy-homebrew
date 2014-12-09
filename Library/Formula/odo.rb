@@ -2,8 +2,8 @@ require "formula"
 
 class Odo < Formula
   homepage "https://github.com/atomicobject/odo"
-  url "https://github.com/atomicobject/odo/archive/v0.1.0.tar.gz"
-  sha1 "36cbe1b626612e0bbdf719640801d84b8234d7af"
+  url "https://github.com/atomicobject/odo/archive/v0.2.2.tar.gz"
+  sha1 "2024e3afeee76eb9f4f7e798ac986f4ce8b489d6"
 
   bottle do
     cellar :any
