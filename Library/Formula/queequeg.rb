@@ -16,22 +16,21 @@ class Queequeg < Formula
   depends_on "wordnet"
 
   def install
-    # Build the dictionary
     system "make", "dict", "WORDNETDICT=#{Formula["wordnet"].opt_prefix}/dict"
 
-    # Install python files and dictionary into libexec
-    install_list = ["abstfilter.py", "constraint.py", "convdict.py",
+    libexec.install "abstfilter.py", "constraint.py", "convdict.py",
                     "dictionary.py", "document.py",
                     "grammarerror.py", "markupbase_rev.py", "output.py",
                     "postagfix.py", "pstring.py", "qq", "regpat.py",
-                    "sentence.py", "sgmllib_rev.py", "texparser.py", "unification.py"]
-    libexec.install install_list
+                    "sentence.py", "sgmllib_rev.py", "texparser.py",
+                    "unification.py"
+
     if File.exist? "dict.cdb"
       libexec.install "dict.cdb"
     else
       libexec.install "dict.txt"
     end
-    # Write a wrapper for qq
+
     bin.write_exec_script "#{libexec}/qq"
   end
 
