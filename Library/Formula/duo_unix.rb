@@ -21,7 +21,8 @@ class DuoUnix < Formula
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--includedir=#{include}/duo",
-                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}",
+                          "--with-pam=#{lib}/pam/"
     system "make", "install"
   end
 
