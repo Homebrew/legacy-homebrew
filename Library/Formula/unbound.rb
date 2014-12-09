@@ -15,8 +15,10 @@ class Unbound < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-libevent=#{Formula["libevent"].opt_prefix}",
-                          "--sysconfdir=#{etc}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--with-libevent=#{Formula["libevent"].opt_prefix}",
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 
