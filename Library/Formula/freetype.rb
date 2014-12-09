@@ -2,9 +2,8 @@ require 'formula'
 
 class Freetype < Formula
   homepage 'http://www.freetype.org'
-  url 'https://downloads.sf.net/project/freetype/freetype2/2.5.3/freetype-2.5.3.tar.bz2'
-  sha1 'd3c26cc17ec7fe6c36f4efc02ef92ab6aa3f4b46'
-  revision 1
+  url 'https://downloads.sf.net/project/freetype/freetype2/2.5.4/freetype-2.5.4.tar.bz2'
+  sha1 'f30b929e2edc5d7ca64c1ccc65f0c2068e84c5e2'
 
   bottle do
     cellar :any
