@@ -28,9 +28,7 @@ class Ttfautohint < Formula
 
   def install
     if build.head?
-      inreplace "configure.ac", "gnits", "gnu"
-      system "git init"
-      system "git add ."
+      ln_s cached_download/".git", ".git"
       system "./bootstrap"
     end
 
