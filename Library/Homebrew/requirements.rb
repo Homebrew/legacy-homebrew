@@ -16,13 +16,13 @@ class XcodeDependency < Requirement
   satisfy(:build_env => false) { xcode_installed_version }
 
   def initialize(tags)
-    @version = tags.each {|t| break tags.delete(t) if t.is_a? String }
+    @version = tags.find { |t| tags.delete(t) if /(\d\.)+\d/ === t }
     super
   end
 
   def xcode_installed_version
     return false unless MacOS::Xcode.installed?
-    return true unless @version.is_a? String
+    return true unless @version
     MacOS::Xcode.version >= @version
   end
 
