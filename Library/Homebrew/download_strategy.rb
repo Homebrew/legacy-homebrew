@@ -384,19 +384,19 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def fetch
-    clear_cache unless @url.chomp("/") == repo_url or quiet_system "svn", "switch", @url, @clone
+    clear_cache unless @url.chomp("/") == repo_url or quiet_system "svn", "switch", @url, cached_location
     super
   end
 
   def stage
     super
-    quiet_safe_system "svn", "export", "--force", @clone, Dir.pwd
+    quiet_safe_system "svn", "export", "--force", cached_location, Dir.pwd
   end
 
   private
 
   def repo_url
-    `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
+    `svn info '#{cached_location}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
   end
 
   def shell_quote str
@@ -436,23 +436,23 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    @clone.join(".svn").directory?
+    cached_location.join(".svn").directory?
   end
 
   def clone_repo
     case @ref_type
     when :revision
-      fetch_repo @clone, @url, @ref
+      fetch_repo cached_location, @url, @ref
     when :revisions
       # nil is OK for main_revision, as fetch_repo will then get latest
       main_revision = @ref[:trunk]
-      fetch_repo @clone, @url, main_revision, true
+      fetch_repo cached_location, @url, main_revision, true
 
       get_externals do |external_name, external_url|
-        fetch_repo @clone+external_name, external_url, @ref[external_name], true
+        fetch_repo cached_location+external_name, external_url, @ref[external_name], true
       end
     else
-      fetch_repo @clone, @url
+      fetch_repo cached_location, @url
     end
   end
   alias_method :update, :clone_repo
@@ -487,7 +487,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
     super
 
     dst = Dir.getwd
-    @clone.cd do
+    cached_location.cd do
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
       checkout_submodules(dst) if submodules?
@@ -501,7 +501,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def update
-    @clone.cd do
+    cached_location.cd do
       config_repo
       update_repo
       checkout
@@ -519,7 +519,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def git_dir
-    @clone.join(".git")
+    cached_location.join(".git")
   end
 
   def has_ref?
@@ -531,7 +531,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def submodules?
-    @clone.join(".gitmodules").exist?
+    cached_location.join(".gitmodules").exist?
   end
 
   def clone_args
@@ -542,7 +542,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
     when :branch, :tag then args << '--branch' << @ref
     end
 
-    args << @url << @clone
+    args << @url << cached_location
   end
 
   def refspec
@@ -566,7 +566,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     safe_system 'git', *clone_args
-    @clone.cd { update_submodules } if submodules?
+    cached_location.cd { update_submodules } if submodules?
   end
 
   def checkout
@@ -591,7 +591,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def checkout_submodules(dst)
-    escaped_clone_path = @clone.to_s.gsub(/\//, '\/')
+    escaped_clone_path = cached_location.to_s.gsub(/\//, '\/')
     sub_cmd = "git checkout-index -a -f --prefix=#{dst}/${toplevel/#{escaped_clone_path}/}/$path/"
     quiet_safe_system "git", "submodule", "foreach", "--recursive", sub_cmd
   end
@@ -599,7 +599,7 @@ end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
   def stage
-    FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
+    FileUtils.cp_r Dir[cached_location+"{.}"], Dir.pwd
   end
 
   private
@@ -609,7 +609,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    @clone.join("CVS").directory?
+    cached_location.join("CVS").directory?
   end
 
   def clone_repo
@@ -626,7 +626,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def update
-    @clone.cd { quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "up" }
+    cached_location.cd { quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "up" }
   end
 
   def split_url(in_url)
@@ -651,7 +651,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
     super
 
     dst = Dir.getwd
-    @clone.cd do
+    cached_location.cd do
       if @ref_type and @ref
         safe_system hgpath, 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
       else
@@ -667,16 +667,16 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    @clone.join(".hg").directory?
+    cached_location.join(".hg").directory?
   end
 
   def clone_repo
     url = @url.sub(%r[^hg://], "")
-    safe_system hgpath, "clone", url, @clone
+    safe_system hgpath, "clone", url, cached_location
   end
 
   def update
-    @clone.cd { quiet_safe_system hgpath, "pull", "--update" }
+    cached_location.cd { quiet_safe_system hgpath, "pull", "--update" }
   end
 
   def hgpath
@@ -692,7 +692,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   def stage
     # The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
-    FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
+    FileUtils.cp_r Dir[cached_location+"{.}"], Dir.pwd
     FileUtils.rm_r ".bzr"
   end
 
@@ -703,17 +703,17 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    @clone.join(".bzr").directory?
+    cached_location.join(".bzr").directory?
   end
 
   def clone_repo
     url = @url.sub(%r[^bzr://], "")
     # "lightweight" means history-less
-    safe_system bzrpath, "checkout", "--lightweight", url, @clone
+    safe_system bzrpath, "checkout", "--lightweight", url, cached_location
   end
 
   def update
-    @clone.cd { quiet_safe_system bzrpath, "update" }
+    cached_location.cd { quiet_safe_system bzrpath, "update" }
   end
 
   def bzrpath
@@ -727,7 +727,7 @@ end
 class FossilDownloadStrategy < VCSDownloadStrategy
   def stage
     super
-    args = [fossilpath, "open", @clone]
+    args = [fossilpath, "open", cached_location]
     args << @ref if @ref_type && @ref
     safe_system(*args)
   end
@@ -740,11 +740,11 @@ class FossilDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     url = @url.sub(%r[^fossil://], "")
-    safe_system fossilpath, "clone", url, @clone
+    safe_system fossilpath, "clone", url, cached_location
   end
 
   def update
-    safe_system fossilpath, "pull", "-R", @clone
+    safe_system fossilpath, "pull", "-R", cached_location
   end
 
   def fossilpath
