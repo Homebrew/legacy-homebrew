@@ -7,7 +7,7 @@ class Qt5HeadDownloadStrategy < GitDownloadStrategy
     cached_location.cd { reset }
     quiet_safe_system "git", "clone", cached_location, "."
     ln_s cached_location, "qt"
-    quiet_safe_system "./init-repository", "--mirror", "#{Dir.pwd}/"
+    quiet_safe_system "./init-repository", { :quiet_flag => "-q" }, "--mirror", "#{Dir.pwd}/"
     rm "qt"
   end
 end
