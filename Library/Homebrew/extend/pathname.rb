@@ -241,6 +241,7 @@ class Pathname
     when /^Rar!/n               then :rar
     when /^7z\xBC\xAF\x27\x1C/n then :p7zip
     when /^xar!/n               then :xar
+    when /^\xed\xab\xee\xdb/n   then :rpm
     else
       # This code so that bad-tarballs and zips produce good error messages
       # when they don't unarchive properly.
