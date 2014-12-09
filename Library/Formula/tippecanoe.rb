@@ -20,14 +20,12 @@ class Tippecanoe < Formula
   end
 
   test do
-    path = testpath/"test.geojson"
-    outputPath = testpath/"test.mbtiles"
-    path.write <<-EOS
+    path = testpath/"test.json"
+    path.write <<-EOS.undent
       {"type":"Feature","properties":{},"geometry":{"type":"Point","coordinates":[0,0]}}
     EOS
-    puts "#{bin}/tippecanoe #{path} -o #{outputPath}"
-    output = `#{bin}/tippecanoe < #{path} -o #{outputPath}`.strip
-    assert_equal "bbox: 80000000 80000000 80000000 80000000\nusing layer name test", output
+    output = `#{bin}/tippecanoe -o test.mbtiles #{path}`.strip
     assert_equal 0, $?.exitstatus
+    assert_equal "bbox: 80000000 80000000 80000000 80000000\nusing layer name test", output
   end
 end
