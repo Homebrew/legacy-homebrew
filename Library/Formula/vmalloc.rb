@@ -3,7 +3,7 @@ require "formula"
 class Vmalloc < Formula
   homepage "http://www2.research.att.com/sw/download/"
   url "http://www2.research.att.com/~astopen/download/tgz/vmalloc.2013-05-31.tgz",
-    :using => AttResearchDownloadStrategy
+    :user => "I accept www.opensource.org/licenses/eclipse:."
   sha1 "c656a820503c2f6e7ec19d6b42f2fa0fcefc33b0"
   version "2013-05-31"
 

@@ -258,6 +258,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   def curl(*args)
     args << '--connect-timeout' << '5' unless mirrors.empty?
+    args << "--user" << meta.fetch(:user) if meta.key?(:user)
     super
   end
 
@@ -412,13 +413,6 @@ class S3DownloadStrategy < CurlDownloadStrategy
     end
 
     curl s3url, '-C', downloaded_size, '-o', temporary_path
-  end
-end
-
-class AttResearchDownloadStrategy < CurlDownloadStrategy
-  def curl(*args)
-    args << "--user" << "I accept www.opensource.org/licenses/eclipse:."
-    super
   end
 end
 
