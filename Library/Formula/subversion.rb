@@ -244,9 +244,18 @@ end
 
 __END__
 diff --git a/configure b/configure
-index 445251b..3ed9485 100755
+index 445251b..6ff4332 100755
 --- a/configure
 +++ b/configure
+@@ -10348,7 +10348,7 @@ $as_echo "$lt_cv_ld_force_load" >&6; }
+       case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
+ 	10.0,*86*-darwin8*|10.0,*-darwin[91]*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+-	10.[012]*)
++	10.[012][,.]*)
+ 	  _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;
+ 	10.*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
 @@ -25205,6 +25205,8 @@ fi
  SWIG_CPPFLAGS="$CPPFLAGS"
  
