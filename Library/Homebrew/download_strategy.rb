@@ -3,12 +3,13 @@ require 'utils/json'
 class AbstractDownloadStrategy
   include FileUtils
 
-  attr_reader :meta, :name, :resource
+  attr_reader :meta, :name, :version, :resource
 
   def initialize name, resource
     @name = name
     @resource = resource
     @url = resource.url
+    @version = resource.version
     @meta = resource.specs
   end
 
@@ -120,7 +121,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   end
 
   def head?
-    resource.version.head?
+    version.head?
   end
 
   private
@@ -155,7 +156,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   def initialize(name, resource)
     super
     @mirrors = resource.mirrors.dup
-    @tarball_path = HOMEBREW_CACHE.join("#{name}-#{resource.version}#{ext}")
+    @tarball_path = HOMEBREW_CACHE.join("#{name}-#{version}#{ext}")
     @temporary_path = Pathname.new("#{cached_location}.incomplete")
   end
 

@@ -2,7 +2,7 @@ require 'testing_env'
 require 'download_strategy'
 
 class ResourceDouble
-  attr_reader :url, :specs
+  attr_reader :url, :specs, :version
 
   def initialize(url="http://example.com/foo.tar.gz", specs={})
     @url = url
