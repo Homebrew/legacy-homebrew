@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sproxy < Formula
-  homepage 'http://www.joedog.org/index/sproxy-home'
-  url 'http://www.joedog.org/pub/sproxy/sproxy-1.02.tar.gz'
-  sha1 'afda6727f7a65445556cd849161c0c752c47a7f6'
+  homepage 'http://www.joedog.org/sproxy-home/'
+  url 'http://download.joedog.org/sproxy/sproxy-1.02.tar.gz'
+  sha1 'c218b3a49d3acc3aca39ac658b2013846ee7c5b9'
 
   bottle do
     sha1 "704405b86b25ab918c032f1acd1406c6d3cd9303" => :mavericks
