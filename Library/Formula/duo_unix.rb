@@ -4,6 +4,8 @@ class DuoUnix < Formula
   homepage "https://www.duosecurity.com/docs/duounix"
   url "https://dl.duosecurity.com/duo_unix-1.9.13.tar.gz"
   sha1 "96120910cbaa75c3a59e4c12006738b267c3e9f0"
+  revision 1
+
   bottle do
     cellar :any
     revision 1
@@ -11,8 +13,6 @@ class DuoUnix < Formula
     sha1 "77933fb49091788f90db88f0d41963889652ab6f" => :mavericks
     sha1 "68ccaf5aeb4811f2f7c548c676f7a15957768dd5" => :mountain_lion
   end
-
-  revision 1
 
   depends_on "openssl"
 
@@ -28,6 +28,7 @@ class DuoUnix < Formula
   end
 
   test do
-    system "#{sbin}/login_duo", "-d", "-c", "#{etc}/login_duo.conf", "-f", "foobar", "echo", "SUCCESS"
+    system "#{sbin}/login_duo", "-d", "-c", "#{etc}/login_duo.conf",
+                                "-f", "foobar", "echo", "SUCCESS"
   end
 end
