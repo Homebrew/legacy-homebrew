@@ -93,10 +93,6 @@ class Ansible < Formula
   end
 
   def install
-    # pycrypto needs this on 10.8
-    # https://github.com/Homebrew/homebrew/pull/34682#issuecomment-65813603
-    ENV.refurbish_args
-
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
@@ -105,7 +101,9 @@ class Ansible < Formula
     res += %w[six requests websocket-client docker-py] # docker support
     res += %w[pyasn1 python-keyczar] # accelerate support
     res.each do |r|
-      resource(r).stage { Language::Python.setup_install "python", libexec/"vendor" }
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
     inreplace "lib/ansible/constants.py" do |s|
@@ -113,7 +111,7 @@ class Ansible < Formula
       s.gsub! "/etc/ansible", etc/"ansible"
     end
 
-    Language::Python.setup_install "python", libexec
+    system "python", *Language::Python.setup_install_args(libexec)
 
     man1.install Dir["docs/man/man1/*.1"]
     bin.install Dir["#{libexec}/bin/*"]
