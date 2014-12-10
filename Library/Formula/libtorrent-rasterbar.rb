@@ -14,9 +14,9 @@ class LibtorrentRasterbar < Formula
 
   bottle do
     cellar :any
-    sha1 "56be7ef5c8bcd273fa2a3ae325bf585672f477da" => :yosemite
-    sha1 "9620521b39f3f9d207226a809a56a2313153707d" => :mavericks
-    sha1 "8aa0013a1ffabce258820c5b2bba4f69efd63292" => :mountain_lion
+    sha1 "9e270e0c4c512697b0684793b2e729823da40d0f" => :yosemite
+    sha1 "5af3a0855ae25f39809b3531930e6de970f54cfa" => :mavericks
+    sha1 "7c0b65bc0d436396df9556916a99e40248f55ad9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
