@@ -5,13 +5,12 @@ class Subversion < Formula
   url "http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2"
   mirror "http://archive.apache.org/dist/subversion/subversion-1.8.10.tar.bz2"
   sha1 "d6896d94bb53c1b4c6e9c5bb1a5c466477b19b2b"
-  revision 1
+  revision 2
 
   bottle do
-    revision 4
-    sha1 "91915d626c5e843b2a035e4cfa00898c6c79b353" => :yosemite
-    sha1 "c0d4416a5dc4db63d37bbfae2af29538699b28ca" => :mavericks
-    sha1 "7b78b1abd3bb77ef8ee8f711d3bbc0eec8a9390a" => :mountain_lion
+    sha1 "fea8a67fd177ba418c9185423d4ce8055d8f2ef5" => :yosemite
+    sha1 "ab3d546951f17ce2f2159a4e6bbf0c10b0c6a4c0" => :mavericks
+    sha1 "18a00000ae92b6b6bad79f3b84f0ffcba4e655f7" => :mountain_lion
   end
 
   deprecated_option "java" => "with-java"
@@ -244,9 +243,18 @@ end
 
 __END__
 diff --git a/configure b/configure
-index 445251b..3ed9485 100755
+index 445251b..6ff4332 100755
 --- a/configure
 +++ b/configure
+@@ -10348,7 +10348,7 @@ $as_echo "$lt_cv_ld_force_load" >&6; }
+       case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
+ 	10.0,*86*-darwin8*|10.0,*-darwin[91]*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+-	10.[012]*)
++	10.[012][,.]*)
+ 	  _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;
+ 	10.*)
+ 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
 @@ -25205,6 +25205,8 @@ fi
  SWIG_CPPFLAGS="$CPPFLAGS"
  

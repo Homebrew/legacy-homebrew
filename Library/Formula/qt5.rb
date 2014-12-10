@@ -1,13 +1,11 @@
 require "formula"
 
 class Qt5HeadDownloadStrategy < GitDownloadStrategy
-  include FileUtils
-
   def stage
-    @clone.cd { reset }
-    safe_system "git", "clone", @clone, "."
-    ln_s @clone, "qt"
-    safe_system "./init-repository", "--mirror", "#{Dir.pwd}/"
+    cached_location.cd { reset }
+    quiet_safe_system "git", "clone", cached_location, "."
+    ln_s cached_location, "qt"
+    quiet_safe_system "./init-repository", { :quiet_flag => "-q" }, "--mirror", "#{Dir.pwd}/"
     rm "qt"
   end
 end
@@ -40,7 +38,7 @@ class Qt5 < Formula
   # https://bugreports.qt-project.org/browse/QTBUG-41136
   patch :DATA
 
-  head "git://gitorious.org/qt/qt5.git", :branch => "stable",
+  head "https://gitorious.org/qt/qt5.git", :branch => "5.3",
     :using => Qt5HeadDownloadStrategy, :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."

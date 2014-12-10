@@ -1,12 +1,16 @@
 require 'utils/json'
 
 class AbstractDownloadStrategy
-  attr_reader :name, :resource
+  include FileUtils
+
+  attr_reader :meta, :name, :version, :resource
 
   def initialize name, resource
     @name = name
     @resource = resource
-    @url  = resource.url
+    @url = resource.url
+    @version = resource.version
+    @meta = resource.specs
   end
 
   def expand_safe_system_args args
@@ -35,6 +39,49 @@ class AbstractDownloadStrategy
   def stage; end
   def cached_location; end
   def clear_cache; end
+
+  private
+
+  def xzpath
+    "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
+  end
+
+  def lzippath
+    "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
+  end
+
+  def cvspath
+    @cvspath ||= %W[
+      /usr/bin/cvs
+      #{HOMEBREW_PREFIX}/bin/cvs
+      #{HOMEBREW_PREFIX}/opt/cvs/bin/cvs
+      #{which("cvs")}
+      ].find { |p| File.executable? p }
+  end
+
+  def hgpath
+    @hgpath ||= %W[
+      #{which("hg")}
+      #{HOMEBREW_PREFIX}/bin/hg
+      #{HOMEBREW_PREFIX}/opt/mercurial/bin/hg
+      ].find { |p| File.executable? p }
+  end
+
+  def bzrpath
+    @bzrpath ||= %W[
+      #{which("bzr")}
+      #{HOMEBREW_PREFIX}/bin/bzr
+      #{HOMEBREW_PREFIX}/opt/bazaar/bin/bzr
+      ].find { |p| File.executable? p }
+  end
+
+  def fossilpath
+    @fossilpath ||= %W[
+      #{which("fossil")}
+      #{HOMEBREW_PREFIX}/bin/fossil
+      #{HOMEBREW_PREFIX}/opt/fossil/bin/fossil
+      ].find { |p| File.executable? p }
+  end
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
@@ -42,7 +89,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 
   def initialize name, resource
     super
-    @ref_type, @ref = extract_ref(resource.specs)
+    @ref_type, @ref = extract_ref(meta)
     @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
@@ -74,7 +121,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   end
 
   def head?
-    resource.version.head?
+    version.head?
   end
 
   private
@@ -109,30 +156,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   def initialize(name, resource)
     super
     @mirrors = resource.mirrors.dup
-    @tarball_path = HOMEBREW_CACHE.join("#{name}-#{resource.version}#{ext}")
-    @temporary_path = Pathname.new("#{tarball_path}.incomplete")
-  end
-
-  def cached_location
-    tarball_path
-  end
-
-  def clear_cache
-    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
-  end
-
-  def downloaded_size
-    temporary_path.size? or 0
-  end
-
-  # Private method, can be overridden if needed.
-  def _fetch
-    curl @url, '-C', downloaded_size, '-o', temporary_path
+    @tarball_path = HOMEBREW_CACHE.join("#{name}-#{version}#{ext}")
+    @temporary_path = Pathname.new("#{cached_location}.incomplete")
   end
 
   def fetch
     ohai "Downloading #{@url}"
-    unless tarball_path.exist?
+    unless cached_location.exist?
       had_incomplete_download = temporary_path.exist?
       begin
         _fetch
@@ -153,37 +183,21 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
           raise CurlDownloadStrategyError, msg
         end
       end
-      ignore_interrupts { temporary_path.rename(tarball_path) }
+      ignore_interrupts { temporary_path.rename(cached_location) }
     else
-      puts "Already downloaded: #{tarball_path}"
+      puts "Already downloaded: #{cached_location}"
     end
   rescue CurlDownloadStrategyError
     raise if mirrors.empty?
     puts "Trying a mirror..."
     @url = mirrors.shift
     retry
-  else
-    tarball_path
-  end
-
-  # gunzip and bunzip2 write the output file in the same directory as the input
-  # file regardless of the current working directory, so we need to write it to
-  # the correct location ourselves.
-  def buffered_write(tool)
-    target = File.basename(basename_without_params, tarball_path.extname)
-
-    Utils.popen_read(tool, "-f", tarball_path.to_s, "-c") do |pipe|
-      File.open(target, "wb") do |f|
-        buf = ""
-        f.write(buf) while pipe.read(1024, buf)
-      end
-    end
   end
 
   def stage
-    case tarball_path.compression_type
+    case cached_location.compression_type
     when :zip
-      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, tarball_path }
+      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, cached_location }
       chdir
     when :gzip_only
       with_system_path { buffered_write("gunzip") }
@@ -191,38 +205,48 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       with_system_path { buffered_write("bunzip2") }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
-      with_system_path { safe_system 'tar', 'xf', tarball_path }
+      with_system_path { safe_system 'tar', 'xf', cached_location }
       chdir
     when :xz
-      with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf -" }
+      with_system_path { safe_system "#{xzpath} -dc \"#{cached_location}\" | tar xf -" }
       chdir
     when :lzip
-      with_system_path { safe_system "#{lzippath} -dc \"#{tarball_path}\" | tar xf -" }
+      with_system_path { safe_system "#{lzippath} -dc \"#{cached_location}\" | tar xf -" }
       chdir
     when :xar
-      safe_system "/usr/bin/xar", "-xf", tarball_path
+      safe_system "/usr/bin/xar", "-xf", cached_location
     when :rar
-      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, tarball_path
+      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, cached_location
     when :p7zip
-      safe_system '7zr', 'x', tarball_path
+      safe_system '7zr', 'x', cached_location
     else
-      FileUtils.cp tarball_path, basename_without_params
+      cp cached_location, basename_without_params
     end
+  end
+
+  def cached_location
+    tarball_path
+  end
+
+  def clear_cache
+    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
   end
 
   private
 
+  # Private method, can be overridden if needed.
+  def _fetch
+    curl @url, "-C", downloaded_size, "-o", temporary_path
+  end
+
+  def downloaded_size
+    temporary_path.size? || 0
+  end
+
   def curl(*args)
     args << '--connect-timeout' << '5' unless mirrors.empty?
+    args << "--user" << meta.fetch(:user) if meta.key?(:user)
     super
-  end
-
-  def xzpath
-    "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
-  end
-
-  def lzippath
-    "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
   def chdir
@@ -230,6 +254,20 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     case entries.length
     when 0 then raise "Empty archive"
     when 1 then Dir.chdir entries.first rescue nil
+    end
+  end
+
+  # gunzip and bunzip2 write the output file in the same directory as the input
+  # file regardless of the current working directory, so we need to write it to
+  # the correct location ourselves.
+  def buffered_write(tool)
+    target = File.basename(basename_without_params, cached_location.extname)
+
+    Utils.popen_read(tool, "-f", cached_location.to_s, "-c") do |pipe|
+      File.open(target, "wb") do |f|
+        buf = ""
+        f.write(buf) while pipe.read(1024, buf)
+      end
     end
   end
 
@@ -303,7 +341,7 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   def stage
-    FileUtils.cp tarball_path, basename_without_params
+    cp cached_location, basename_without_params
   end
 end
 
@@ -325,7 +363,7 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
   end
 
   def stage
-    ohai "Pouring #{tarball_path.basename}"
+    ohai "Pouring #{cached_location.basename}"
     super
   end
 end
@@ -338,7 +376,7 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
   end
 
   def stage
-    ohai "Pouring #{tarball_path.basename}"
+    ohai "Pouring #{cached_location.basename}"
     super
   end
 end
@@ -386,19 +424,19 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def fetch
-    clear_cache unless @url.chomp("/") == repo_url or quiet_system "svn", "switch", @url, @clone
+    clear_cache unless @url.chomp("/") == repo_url or quiet_system "svn", "switch", @url, cached_location
     super
   end
 
   def stage
     super
-    quiet_safe_system "svn", "export", "--force", @clone, Dir.pwd
+    quiet_safe_system "svn", "export", "--force", cached_location, Dir.pwd
   end
 
   private
 
   def repo_url
-    `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
+    `svn info '#{cached_location}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
   end
 
   def shell_quote str
@@ -438,23 +476,23 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    @clone.join(".svn").directory?
+    cached_location.join(".svn").directory?
   end
 
   def clone_repo
     case @ref_type
     when :revision
-      fetch_repo @clone, @url, @ref
+      fetch_repo cached_location, @url, @ref
     when :revisions
       # nil is OK for main_revision, as fetch_repo will then get latest
       main_revision = @ref[:trunk]
-      fetch_repo @clone, @url, main_revision, true
+      fetch_repo cached_location, @url, main_revision, true
 
       get_externals do |external_name, external_url|
-        fetch_repo @clone+external_name, external_url, @ref[external_name], true
+        fetch_repo cached_location+external_name, external_url, @ref[external_name], true
       end
     else
-      fetch_repo @clone, @url
+      fetch_repo cached_location, @url
     end
   end
   alias_method :update, :clone_repo
@@ -482,14 +520,14 @@ class GitDownloadStrategy < VCSDownloadStrategy
     super
     @ref_type ||= :branch
     @ref ||= "master"
-    @shallow = resource.specs.fetch(:shallow) { true }
+    @shallow = meta.fetch(:shallow) { true }
   end
 
   def stage
     super
 
     dst = Dir.getwd
-    @clone.cd do
+    cached_location.cd do
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
       checkout_submodules(dst) if submodules?
@@ -503,7 +541,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def update
-    @clone.cd do
+    cached_location.cd do
       config_repo
       update_repo
       checkout
@@ -521,7 +559,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def git_dir
-    @clone.join(".git")
+    cached_location.join(".git")
   end
 
   def has_ref?
@@ -533,7 +571,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def submodules?
-    @clone.join(".gitmodules").exist?
+    cached_location.join(".gitmodules").exist?
   end
 
   def clone_args
@@ -544,7 +582,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
     when :branch, :tag then args << '--branch' << @ref
     end
 
-    args << @url << @clone
+    args << @url << cached_location
   end
 
   def refspec
@@ -568,7 +606,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     safe_system 'git', *clone_args
-    @clone.cd { update_submodules } if submodules?
+    cached_location.cd { update_submodules } if submodules?
   end
 
   def checkout
@@ -593,7 +631,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def checkout_submodules(dst)
-    escaped_clone_path = @clone.to_s.gsub(/\//, '\/')
+    escaped_clone_path = cached_location.to_s.gsub(/\//, '\/')
     sub_cmd = "git checkout-index -a -f --prefix=#{dst}/${toplevel/#{escaped_clone_path}/}/$path/"
     quiet_safe_system "git", "submodule", "foreach", "--recursive", sub_cmd
   end
@@ -601,7 +639,7 @@ end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
   def stage
-    FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
+    cp_r Dir[cached_location+"{.}"], Dir.pwd
   end
 
   private
@@ -611,7 +649,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    @clone.join("CVS").directory?
+    cached_location.join("CVS").directory?
   end
 
   def clone_repo
@@ -622,13 +660,13 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     mod, url = split_url(@url)
 
     HOMEBREW_CACHE.cd do
-      safe_system cvspath, "-d", url, "login"
-      safe_system cvspath, "-d", url, "checkout", "-d", cache_filename, mod
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", url, "login"
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", url, "checkout", "-d", cache_filename, mod
     end
   end
 
   def update
-    @clone.cd { quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "up" }
+    cached_location.cd { quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "up" }
   end
 
   def split_url(in_url)
@@ -637,15 +675,6 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     url=parts.join(':')
     [ mod, url ]
   end
-
-  def cvspath
-    @path ||= %W[
-      /usr/bin/cvs
-      #{HOMEBREW_PREFIX}/bin/cvs
-      #{HOMEBREW_PREFIX}/opt/cvs/bin/cvs
-      #{which("cvs")}
-      ].find { |p| File.executable? p }
-  end
 end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
@@ -653,7 +682,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
     super
 
     dst = Dir.getwd
-    @clone.cd do
+    cached_location.cd do
       if @ref_type and @ref
         safe_system hgpath, 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
       else
@@ -669,24 +698,16 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    @clone.join(".hg").directory?
+    cached_location.join(".hg").directory?
   end
 
   def clone_repo
     url = @url.sub(%r[^hg://], "")
-    safe_system hgpath, "clone", url, @clone
+    safe_system hgpath, "clone", url, cached_location
   end
 
   def update
-    @clone.cd { quiet_safe_system hgpath, "pull", "--update" }
-  end
-
-  def hgpath
-    @path ||= %W[
-      #{which("hg")}
-      #{HOMEBREW_PREFIX}/bin/hg
-      #{HOMEBREW_PREFIX}/opt/mercurial/bin/hg
-      ].find { |p| File.executable? p }
+    cached_location.cd { quiet_safe_system hgpath, "pull", "--update" }
   end
 end
 
@@ -694,8 +715,8 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   def stage
     # The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
-    FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
-    FileUtils.rm_r ".bzr"
+    cp_r Dir[cached_location+"{.}"], Dir.pwd
+    rm_r ".bzr"
   end
 
   private
@@ -705,31 +726,24 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    @clone.join(".bzr").directory?
+    cached_location.join(".bzr").directory?
   end
 
   def clone_repo
     url = @url.sub(%r[^bzr://], "")
     # "lightweight" means history-less
-    safe_system bzrpath, "checkout", "--lightweight", url, @clone
+    safe_system bzrpath, "checkout", "--lightweight", url, cached_location
   end
 
   def update
-    @clone.cd { quiet_safe_system bzrpath, "update" }
-  end
-
-  def bzrpath
-    @path ||= %W[
-      #{which("bzr")}
-      #{HOMEBREW_PREFIX}/bin/bzr
-      ].find { |p| File.executable? p }
+    cached_location.cd { quiet_safe_system bzrpath, "update" }
   end
 end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
   def stage
     super
-    args = [fossilpath, "open", @clone]
+    args = [fossilpath, "open", cached_location]
     args << @ref if @ref_type && @ref
     safe_system(*args)
   end
@@ -742,19 +756,13 @@ class FossilDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     url = @url.sub(%r[^fossil://], "")
-    safe_system fossilpath, "clone", url, @clone
+    safe_system fossilpath, "clone", url, cached_location
   end
 
   def update
-    safe_system fossilpath, "pull", "-R", @clone
+    safe_system fossilpath, "pull", "-R", cached_location
   end
 
-  def fossilpath
-    @path ||= %W[
-      #{which("fossil")}
-      #{HOMEBREW_PREFIX}/bin/fossil
-      ].find { |p| File.executable? p }
-  end
 end
 
 class DownloadStrategyDetector

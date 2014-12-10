@@ -2,17 +2,14 @@ require 'formula'
 
 class Freetype < Formula
   homepage 'http://www.freetype.org'
-  url 'https://downloads.sf.net/project/freetype/freetype2/2.5.3/freetype-2.5.3.tar.bz2'
-  sha1 'd3c26cc17ec7fe6c36f4efc02ef92ab6aa3f4b46'
-  revision 1
+  url 'https://downloads.sf.net/project/freetype/freetype2/2.5.4/freetype-2.5.4.tar.bz2'
+  sha1 'f30b929e2edc5d7ca64c1ccc65f0c2068e84c5e2'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "1c955caa22b5226b6ad18c03fb9a6ffb9c88659b" => :yosemite
-    sha1 "f31e54b32a34a69998e120706ba13a99a948c190" => :mavericks
-    sha1 "d2f7099c87fe2dc8e969337326f1fe3036d4874e" => :mountain_lion
-    sha1 "df246259dde3352bac99dc08af757604c06a2e09" => :lion
+    sha1 "f4359a08667fa05b71e10ad32ef10015dfed432b" => :yosemite
+    sha1 "5121b7819b0d4df955779f030f9afcb9ace6184d" => :mavericks
+    sha1 "a9a1bc440a482fc050edb5234052a9468d9ab4fb" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
