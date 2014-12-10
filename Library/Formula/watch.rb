@@ -1,16 +1,20 @@
 require 'formula'
 
 class Watch < Formula
-  homepage 'http://procps.sourceforge.net/'
-  url 'http://procps.sourceforge.net/procps-3.2.8.tar.gz'
-  version '0.2.0' # watch command itself is version 0.2.0
-  sha1 'a0c86790569dec26b5d9037e8868ca907acc9829'
+  homepage 'http://www.sveinbjorn.org'
+  url 'http://www.sveinbjorn.org/files/software/watch-0.3-macosx.zip'
+
+  version '0.3.0'
+  sha1 '8c11b9fabd0adda4f3717f1a1e2bc01b54bcbd6c'
 
   conflicts_with 'visionmedia-watch'
 
   def install
-    system "make", "watch", "PKG_LDFLAGS=-Wl"
-    bin.install "watch"
-    man1.install "watch.1"
+    cd "watch-0.3-macosx" do
+      system "rm", "watch"
+      system "make", "watch"
+      bin.install "watch"
+      man1.install "watch.1"
+    end
   end
 end
