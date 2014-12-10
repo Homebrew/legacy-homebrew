@@ -2,7 +2,7 @@ require "formula"
 
 class Pulse < Formula
   homepage "https://ind.ie/pulse/"
-  url "https://source.ind.ie/project/pulse.git", :tag => "0.1.1"
+  url "https://source.ind.ie/project/pulse.git", :tag => "0.1.3"
   head "https://source.ind.ie/project/pulse.git"
 
   bottle do
@@ -25,7 +25,7 @@ class Pulse < Formula
     ln_s cached_download/".git", ".git"
 
     system "./build.sh", "noupgrade"
-    prefix.install %w{ CONTRIBUTING.md CONTRIBUTORS LICENSE README.md }
+    prefix.install %w{ CONTRIBUTING.md LICENSE README.md }
     bin.install "pulse"
   end
 
