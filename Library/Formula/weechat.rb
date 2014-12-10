@@ -28,7 +28,9 @@ class Weechat < Formula
     # builds against the python in PATH by asking cmake to use introspected
     # values instead of ignoring them
     # https://github.com/weechat/weechat/pull/217
-    inreplace "cmake/FindPython.cmake", "PATHS ${", "HINTS ${"
+    if build.stable?
+      inreplace "cmake/FindPython.cmake", "PATHS ${", "HINTS ${"
+    end
 
     args = std_cmake_args + %W[
       -DPREFIX=#{prefix}
