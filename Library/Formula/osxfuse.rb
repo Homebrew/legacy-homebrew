@@ -11,14 +11,20 @@ class Osxfuse < Formula
     sha1 "8ea5bc28976456c62ff1a5e734518f927fbf81c2" => :mountain_lion
   end
 
+
   depends_on :macos => :snow_leopard
   depends_on :xcode => :build
-  depends_on ConflictsWithBinaryOsxfuse
-  depends_on UnsignedKextRequirement
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "gettext" => :build
+  depends_on ConflictsWithBinaryOsxfuse
+  depends_on UnsignedKextRequirement =>
+    [
+      :binary => "http://sourceforge.net/projects/osxfuse/files/",
+      :cask => "osxfuse"
+    ]
+
 
   conflicts_with "fuse4x", :because => "both install `fuse.pc`"
 
