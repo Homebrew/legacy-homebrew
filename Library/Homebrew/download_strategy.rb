@@ -415,6 +415,13 @@ class S3DownloadStrategy < CurlDownloadStrategy
   end
 end
 
+class AttResearchDownloadStrategy < CurlDownloadStrategy
+  def curl(*args)
+    args << "--user" << "I accept www.opensource.org/licenses/eclipse:."
+    super
+  end
+end
+
 class SubversionDownloadStrategy < VCSDownloadStrategy
   def initialize(name, resource)
     super
