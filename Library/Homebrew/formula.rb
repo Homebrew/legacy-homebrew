@@ -661,8 +661,12 @@ class Formula
     # Turn on argument filtering in the superenv compiler wrapper.
     # We should probably have a better mechanism for this than adding
     # special cases to this method.
-    if cmd == "python" && %w[setup.py build.py].include?(args.first)
-      ENV.refurbish_args
+    if cmd == "python"
+      setup_py_in_args = %w[setup.py build.py].include?(args.first)
+      setuptools_shim_in_args = args.any? { |a| a.start_with? "import setuptools" }
+      if setup_py_in_args || setuptools_shim_in_args
+        ENV.refurbish_args
+      end
     end
 
     $stdout.reopen(out)
