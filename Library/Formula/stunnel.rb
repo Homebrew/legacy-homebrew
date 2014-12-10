@@ -2,9 +2,9 @@ require "formula"
 
 class Stunnel < Formula
   homepage "https://www.stunnel.org/"
-  url "https://www.stunnel.org/downloads/stunnel-5.07.tar.gz"
-  mirror "http://www.usenix.org.uk/mirrors/stunnel/stunnel-5.07.tar.gz"
-  sha256 "505c6c63c4a20fc0cce8c35ef1ab7626c7b01071e3fca4ac6ea417afe8065309"
+  url "https://www.stunnel.org/downloads/stunnel-5.08.tar.gz"
+  mirror "http://www.usenix.org.uk/mirrors/stunnel/stunnel-5.08.tar.gz"
+  sha256 "830b21d24cd237e96f4d7993be43553d4eba4d3cfa2660faa78dec8d41d314fc"
 
   bottle do
     sha1 "24b0625b1e8bf6dbeadd06c0356046cb6d78d953" => :yosemite
