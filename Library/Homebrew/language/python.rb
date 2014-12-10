@@ -54,6 +54,13 @@ module Language
 
     # deprecated; use system "python", *setup_install_args(prefix) instead
     def self.setup_install python, prefix, *args
+      opoo <<-EOS.undent
+        Language::Python.setup_install is deprecated.
+        If you are a formula author, please use
+          system "python", *Language::Python.setup_install_args(prefix)
+        instead.
+      EOS
+
       # force-import setuptools, which monkey-patches distutils, to make
       # sure that we always call a setuptools setup.py. trick borrowed from pip:
       # https://github.com/pypa/pip/blob/043af83/pip/req/req_install.py#L743-L780
