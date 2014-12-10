@@ -5,13 +5,9 @@ class Subversion < Formula
   url "http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2"
   mirror "http://archive.apache.org/dist/subversion/subversion-1.8.10.tar.bz2"
   sha1 "d6896d94bb53c1b4c6e9c5bb1a5c466477b19b2b"
-  revision 1
+  revision 2
 
   bottle do
-    revision 4
-    sha1 "91915d626c5e843b2a035e4cfa00898c6c79b353" => :yosemite
-    sha1 "c0d4416a5dc4db63d37bbfae2af29538699b28ca" => :mavericks
-    sha1 "7b78b1abd3bb77ef8ee8f711d3bbc0eec8a9390a" => :mountain_lion
   end
 
   deprecated_option "java" => "with-java"
