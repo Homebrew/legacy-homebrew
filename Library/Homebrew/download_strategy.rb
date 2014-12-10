@@ -156,12 +156,12 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     super
     @mirrors = resource.mirrors.dup
     @tarball_path = HOMEBREW_CACHE.join("#{name}-#{resource.version}#{ext}")
-    @temporary_path = Pathname.new("#{tarball_path}.incomplete")
+    @temporary_path = Pathname.new("#{cached_location}.incomplete")
   end
 
   def fetch
     ohai "Downloading #{@url}"
-    unless tarball_path.exist?
+    unless cached_location.exist?
       had_incomplete_download = temporary_path.exist?
       begin
         _fetch
@@ -182,9 +182,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
           raise CurlDownloadStrategyError, msg
         end
       end
-      ignore_interrupts { temporary_path.rename(tarball_path) }
+      ignore_interrupts { temporary_path.rename(cached_location) }
     else
-      puts "Already downloaded: #{tarball_path}"
+      puts "Already downloaded: #{cached_location}"
     end
   rescue CurlDownloadStrategyError
     raise if mirrors.empty?
@@ -194,9 +194,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    case tarball_path.compression_type
+    case cached_location.compression_type
     when :zip
-      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, tarball_path }
+      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, cached_location }
       chdir
     when :gzip_only
       with_system_path { buffered_write("gunzip") }
@@ -204,22 +204,22 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       with_system_path { buffered_write("bunzip2") }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
-      with_system_path { safe_system 'tar', 'xf', tarball_path }
+      with_system_path { safe_system 'tar', 'xf', cached_location }
       chdir
     when :xz
-      with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf -" }
+      with_system_path { safe_system "#{xzpath} -dc \"#{cached_location}\" | tar xf -" }
       chdir
     when :lzip
-      with_system_path { safe_system "#{lzippath} -dc \"#{tarball_path}\" | tar xf -" }
+      with_system_path { safe_system "#{lzippath} -dc \"#{cached_location}\" | tar xf -" }
       chdir
     when :xar
-      safe_system "/usr/bin/xar", "-xf", tarball_path
+      safe_system "/usr/bin/xar", "-xf", cached_location
     when :rar
-      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, tarball_path
+      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, cached_location
     when :p7zip
-      safe_system '7zr', 'x', tarball_path
+      safe_system '7zr', 'x', cached_location
     else
-      cp tarball_path, basename_without_params
+      cp cached_location, basename_without_params
     end
   end
 
@@ -260,9 +260,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   # file regardless of the current working directory, so we need to write it to
   # the correct location ourselves.
   def buffered_write(tool)
-    target = File.basename(basename_without_params, tarball_path.extname)
+    target = File.basename(basename_without_params, cached_location.extname)
 
-    Utils.popen_read(tool, "-f", tarball_path.to_s, "-c") do |pipe|
+    Utils.popen_read(tool, "-f", cached_location.to_s, "-c") do |pipe|
       File.open(target, "wb") do |f|
         buf = ""
         f.write(buf) while pipe.read(1024, buf)
@@ -340,7 +340,7 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   def stage
-    cp tarball_path, basename_without_params
+    cp cached_location, basename_without_params
   end
 end
 
@@ -362,7 +362,7 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
   end
 
   def stage
-    ohai "Pouring #{tarball_path.basename}"
+    ohai "Pouring #{cached_location.basename}"
     super
   end
 end
@@ -375,7 +375,7 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
   end
 
   def stage
-    ohai "Pouring #{tarball_path.basename}"
+    ohai "Pouring #{cached_location.basename}"
     super
   end
 end

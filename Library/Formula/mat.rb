@@ -5,7 +5,7 @@ require "formula"
 # into "mat-cli" here.
 class MatDownloadStrategy < CurlDownloadStrategy
   def stage
-    with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf - -s ',/mat$,/mat-cli,'" }
+    with_system_path { safe_system "#{xzpath} -dc \"#{cached_location}\" | tar xf - -s ',/mat$,/mat-cli,'" }
     chdir
   end
 end
