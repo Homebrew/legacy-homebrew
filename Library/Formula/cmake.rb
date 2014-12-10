@@ -75,7 +75,9 @@ class Cmake < Formula
     if build.with? "docs"
       ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
       resources.each do |r|
-        r.stage { Language::Python.setup_install "python", buildpath/"sphinx" }
+        r.stage do
+          system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
+        end
       end
 
       # There is an existing issue around OS X & Python locale setting

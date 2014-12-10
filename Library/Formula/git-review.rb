@@ -22,11 +22,11 @@ class GitReview < Formula
   def install
     ENV.prepend_create_path "PYTHONPATH", "#{libexec}/vendor/lib/python2.7/site-packages"
     resource("requests").stage do
-      Language::Python.setup_install "python", libexec/"vendor"
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
     ENV.prepend_create_path "PYTHONPATH", "#{libexec}/lib/python2.7/site-packages"
-    Language::Python.setup_install "python", libexec
+    system "python", *Language::Python.setup_install_args(libexec)
 
     man1.install gzip("git-review.1")
 

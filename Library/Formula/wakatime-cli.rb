@@ -17,7 +17,7 @@ class WakatimeCli < Formula
   def install
     ENV["PYTHONPATH"] = libexec+"lib/python2.7/site-packages"
 
-    Language::Python.setup_install "python", libexec
+    system "python", *Language::Python.setup_install_args(libexec)
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
