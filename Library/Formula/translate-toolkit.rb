@@ -65,12 +65,18 @@ class TranslateToolkit < Formula
 
     res = %w[six lxml pylev diffmatch beautifulsoup4 iniparse vobject cherrypy pytest]
     res.each do |r|
-      resource(r).stage { Language::Python.setup_install "python", libexec/"vendor" }
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
+    # install_data tries to install to /Library because translate-toolkit's
+    # heuristic for extracting a relative site-packages path fails with Apple's
+    # layout
+    inreplace "setup.py", /^sitepackages =.+/, "sitepackages = 'lib/python2.7/site-packages'"
+
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
-    # Explicitly specify the install data path otherwise it goes all Easter Bunny on us.
-    Language::Python.setup_install "python", libexec, "--install-data=#{libexec}/share"
+    system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
