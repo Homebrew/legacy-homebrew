@@ -7,9 +7,9 @@ class Stunnel < Formula
   sha256 "830b21d24cd237e96f4d7993be43553d4eba4d3cfa2660faa78dec8d41d314fc"
 
   bottle do
-    sha1 "24b0625b1e8bf6dbeadd06c0356046cb6d78d953" => :yosemite
-    sha1 "d7f393c179a476a71fb782920feb60161be50406" => :mavericks
-    sha1 "be84862ed87f0a6e36327da9b02bb76bbc84e0ea" => :mountain_lion
+    sha1 "aab0c4a1dcdfcdfdac9d9b9c06fda6b1933475af" => :yosemite
+    sha1 "4f3e8b4b30793258391cd9b355e15e8f4b3e5f56" => :mavericks
+    sha1 "48d18d655dd0a75a28488cc9c244ee6d99c55849" => :mountain_lion
   end
 
   depends_on "openssl"
