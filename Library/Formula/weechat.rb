@@ -63,6 +63,7 @@ class Weechat < Formula
   end
 
   test do
+    ENV["TERM"] = "xterm"
     system "weechat", "-r", "/quit"
   end
 end
