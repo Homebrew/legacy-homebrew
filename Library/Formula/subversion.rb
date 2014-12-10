@@ -8,6 +8,9 @@ class Subversion < Formula
   revision 2
 
   bottle do
+    sha1 "fea8a67fd177ba418c9185423d4ce8055d8f2ef5" => :yosemite
+    sha1 "ab3d546951f17ce2f2159a4e6bbf0c10b0c6a4c0" => :mavericks
+    sha1 "18a00000ae92b6b6bad79f3b84f0ffcba4e655f7" => :mountain_lion
   end
 
   deprecated_option "java" => "with-java"
