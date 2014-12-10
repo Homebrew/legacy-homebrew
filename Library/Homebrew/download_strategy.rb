@@ -3,12 +3,13 @@ require 'utils/json'
 class AbstractDownloadStrategy
   include FileUtils
 
-  attr_reader :name, :resource
+  attr_reader :meta, :name, :resource
 
   def initialize name, resource
     @name = name
     @resource = resource
-    @url  = resource.url
+    @url = resource.url
+    @meta = resource.specs
   end
 
   def expand_safe_system_args args
@@ -87,7 +88,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 
   def initialize name, resource
     super
-    @ref_type, @ref = extract_ref(resource.specs)
+    @ref_type, @ref = extract_ref(meta)
     @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
@@ -517,7 +518,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
     super
     @ref_type ||= :branch
     @ref ||= "master"
-    @shallow = resource.specs.fetch(:shallow) { true }
+    @shallow = meta.fetch(:shallow) { true }
   end
 
   def stage
