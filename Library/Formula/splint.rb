@@ -5,10 +5,8 @@ class Splint < Formula
   url 'http://www.splint.org/downloads/splint-3.1.2.src.tgz'
   sha1 '0df489cb228dcfffb149b38c57614c2c3e200501'
 
-  def patches
-    # fix compiling error of osd.c
-    DATA
-  end
+  # fix compiling error of osd.c
+  patch :DATA
 
   def install
     ENV.j1 # build is not parallel-safe
@@ -18,6 +16,23 @@ class Splint < Formula
                           "--mandir=#{man}"
     system "make"
     system "make install"
+  end
+
+  test do
+    path = testpath/"test.c"
+    path.write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+          char c;
+          printf("%c", c);
+          return 0;
+      }
+    EOS
+
+    output = `#{bin}/splint #{path} 2>&1`
+    assert output.include?("5:18: Variable c used before definition")
+    assert_equal 1, $?.exitstatus
   end
 end
 

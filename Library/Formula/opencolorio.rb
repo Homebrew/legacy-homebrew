@@ -2,8 +2,8 @@ require 'formula'
 
 class Opencolorio < Formula
   homepage 'http://opencolorio.org/'
-  url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.8.tar.gz'
-  sha1 '83b28202bdb1f692f74a80affea95d832354ec23'
+  url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.9.tar.gz'
+  sha1 '45efcc24db8f8830b6892830839da085e19eeb6d'
 
   head 'https://github.com/imageworks/OpenColorIO.git'
 
@@ -16,6 +16,16 @@ class Opencolorio < Formula
   option 'with-java', 'Build ocio with java bindings'
   option 'with-docs', 'Build the documentation'
 
+  # Fix build with libc++
+  patch do
+    url "https://github.com/imageworks/OpenColorIO/commit/ebd6efc036b6d0b17c869e3342f17f9c5ef8bbfc.diff"
+    sha1 "f4acc4028090ea8d438c6e0093e931afd836314c"
+  end
+
+  # Fix includes on recent Clang; reported upstream:
+  # https://github.com/imageworks/OpenColorIO/issues/338#issuecomment-36589039
+  patch :DATA
+
   def install
     args = std_cmake_args
     args << "-DOCIO_BUILD_JNIGLUE=ON" if build.with? 'java'
@@ -26,15 +36,7 @@ class Opencolorio < Formula
     # Python note:
     # OCIO's PyOpenColorIO.so doubles as a shared library. So it lives in lib, rather
     # than the usual HOMEBREW_PREFIX/lib/python2.7/site-packages per developer choice.
-
-    if python do
-      # For Xcode-only systems, the headers of system's python are inside of Xcode:
-      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
-      # Cmake picks up the system's python dylib, even if we have a brewed one:
-      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
-    end; else
-      args << "-DOCIO_BUILD_PYGLUE=OFF"
-    end
+    args << "-DOCIO_BUILD_PYGLUE=OFF" if build.without? 'python'
 
     args << '..'
 
@@ -64,3 +66,17 @@ class Opencolorio < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/export/OpenColorIO/OpenColorIO.h b/export/OpenColorIO/OpenColorIO.h
+index 561ce50..796ca84 100644
+--- a/export/OpenColorIO/OpenColorIO.h
++++ b/export/OpenColorIO/OpenColorIO.h
+@@ -34,6 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include <iosfwd>
+ #include <string>
+ #include <cstddef>
++#include <unistd.h>
+ 
+ #include "OpenColorABI.h"
+ #include "OpenColorTypes.h"

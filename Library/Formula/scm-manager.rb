@@ -1,19 +1,22 @@
 require 'formula'
 
-class ScmManagerCliClient < Formula
-  homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.32/scm-cli-client-1.32-jar-with-dependencies.jar'
-  version '1.32'
-  sha1 '6a35e9e9806a6917f56c7cf25e57a658a1df4dde'
-end
-
 class ScmManager < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.32/scm-server-1.32-app.tar.gz'
-  version '1.32'
-  sha1 '6a7b84f2f7ab8e39da4573d5d1ec9fefe594b83e'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.43/scm-server-1.43-app.tar.gz'
+  version '1.43'
+  sha1 'afaf2a416400a4075fe629659836e29ddf262295'
 
-  skip_clean 'libexec/var/log'
+  bottle do
+    sha1 "d874a0767dcc261ec6a6410199da7cefe75c6d0d" => :yosemite
+    sha1 "8a65af08420cea107814a993fc315359f34a8c6d" => :mavericks
+    sha1 "6e27729657c1609979d5264a66fc97c132f8ea0c" => :mountain_lion
+  end
+
+  resource 'client' do
+    url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.43/scm-cli-client-1.43-jar-with-dependencies.jar'
+    version '1.43'
+    sha1 '7608231db16c9edf62ad2cab9fb486430779139a'
+  end
 
   def install
     rm_rf Dir['bin/*.bat']
@@ -30,7 +33,7 @@ class ScmManager < Formula
     chmod 0755, bin/'scm-server'
 
     tools = libexec/'tools'
-    ScmManagerCliClient.new.brew { tools.install Dir['*'] }
+    tools.install resource('client')
 
     scmCliClient = bin+'scm-cli-client'
     scmCliClient.write <<-EOS.undent
@@ -51,7 +54,7 @@ class ScmManager < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/scm-server</string>
+          <string>#{opt_bin}/scm-server</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>

@@ -1,51 +1,58 @@
-require 'formula'
+require "formula"
 
 class Disco < Formula
-  homepage 'http://discoproject.org/'
-  url 'https://github.com/discoproject/disco/archive/0.4.5.tar.gz'
-  sha1 'c098ad91aa1a0676944c5548f8f860fb9b223002'
-  # Periods in the install path cause disco-worker to complain so change to underscores.
-  version '0_4_5'
+  homepage "http://discoproject.org/"
+  url "https://github.com/discoproject/disco/archive/0.5.4.tar.gz"
+  sha1 "43bc8fac5d5d657a81a8d7b628d1f72f97470b6e"
 
-  depends_on :python
-  depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.version <= :leopard
-  depends_on 'libcmph'
-
-  def patches
-    # Modifies config for single-node operation
-    DATA
+  bottle do
+    cellar :any
+    sha1 "f1a4e9775053971dac6ab3b183ebb13d6928c050" => :yosemite
+    sha1 "286325ec178e1bd06a78127333c835a1bf5a2763" => :mavericks
+    sha1 "da6e23c51a8ca6c353e83724746f0e11dba37a99" => :mountain_lion
   end
 
+  depends_on :python if MacOS.version <= :snow_leopard
+  depends_on "erlang"
+  depends_on "simplejson" => :python if MacOS.version <= :leopard
+  depends_on "libcmph"
+
+  # Modifies config for single-node operation
+  patch :DATA
+
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+
     inreplace "Makefile" do |s|
       s.change_make_var! "prefix", prefix
       s.change_make_var! "sysconfdir", etc
       s.change_make_var! "localstatedir", var
     end
 
-    python do
-      # Disco's "rebar" build tool refuses to build unless it's in a git repo, so
-      # make a dummy one
-      system "git init && git add master/rebar && git commit -a -m 'dummy commit'"
+    # Disco's "rebar" build tool refuses to build unless it's in a git repo, so
+    # make a dummy one
+    system "git init && git add master/rebar && git commit -a -m 'dummy commit'"
 
-      system "make"
-      system "make install"
-      prefix.install %w[contrib doc examples]
+    system "make"
+    system "make install"
+    prefix.install %w[contrib doc examples]
 
-      # Fix the config file to point at the linked files, not in to cellar
-      # This isn't ideal - if there's a settings.py file left over from a previous disco
-      # installation, it'll issue a Warning
-      inreplace "#{etc}/disco/settings.py" do |s|
-        s.gsub!("Cellar/disco/"+version+"/", "")
-      end
+    # Fix the config file to point at the linked files, not in to cellar
+    # This isn't ideal - if there's a settings.py file left over from a previous disco
+    # installation, it'll issue a Warning
+    inreplace "#{etc}/disco/settings.py" do |s|
+      s.gsub!("Cellar/disco/"+version+"/", "")
     end
+
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+  end
+
+  test do
+    system "#{bin}/disco"
   end
 
   def caveats
-    s = ''
-    s += python.standard_caveats if python
-    s += <<-EOS.undent
+    <<-EOS.undent
       Please copy #{etc}/disco/settings.py to ~/.disco and edit it if necessary.
       The DDFS_*_REPLICA settings have been set to 1 assuming a single-machine install.
       Please see http://discoproject.org/doc/disco/start/install.html for further instructions.

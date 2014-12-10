@@ -11,7 +11,7 @@ class Fastjar < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/fastjar", "-V"
     system "#{bin}/grepjar", "-V"
   end

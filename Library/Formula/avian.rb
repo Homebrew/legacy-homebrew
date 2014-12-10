@@ -1,29 +1,29 @@
-require 'formula'
+require "formula"
 
 class Avian < Formula
-  homepage 'http://oss.readytalk.com/avian/'
-  url 'http://oss.readytalk.com/avian/avian-0.6.tar.bz2'
-  sha1 '763e1d99af624416aac60f0e222df938aaa3510b'
-
-  head 'https://github.com/ReadyTalk/avian.git'
+  homepage "http://oss.readytalk.com/avian/"
+  head "https://github.com/ReadyTalk/avian.git"
+  url "https://github.com/ReadyTalk/avian/archive/v1.1.tar.gz"
+  sha1 "de51fb048b0b81a131ddbb3387adb229d3eddf2f"
 
   depends_on :macos => :lion
 
   def install
-    system 'make', 'JAVA_HOME=/Library/Java/Home'
-    bin.install Dir['build/darwin-*/avian*']
-    lib.install Dir['build/darwin-*/*.dylib'] + Dir['build/darwin-*/*.a']
+    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
+    system "make", "use-clang=true"
+    bin.install Dir["build/macosx-*/avian*"]
+    lib.install Dir["build/macosx-*/*.dylib", "build/macosx-*/*.a"]
   end
 
   test do
-    (testpath/'Test.java').write <<-EOS.undent
+    (testpath/"Test.java").write <<-EOS.undent
       public class Test {
         public static void main(String arg[]) {
           System.out.print("OK");
         }
       }
     EOS
-    system 'javac', 'Test.java'
-    assert_equal 'OK', `avian Test`.strip
+    system "javac", "Test.java"
+    assert_equal "OK", shell_output("#{bin}/avian Test")
   end
 end

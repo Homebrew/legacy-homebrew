@@ -5,14 +5,22 @@ class Libsamplerate < Formula
   url 'http://www.mega-nerd.com/SRC/libsamplerate-0.1.8.tar.gz'
   sha1 'e5fe82c4786be2fa33ca6bd4897db4868347fe70'
 
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "7bdee60fa49e368546369cafdbff37a772970492" => :yosemite
+    sha1 "a60d3e18f126fe69826cd8e4ab9944574e1ac9b6" => :mavericks
+    sha1 "64fd25bc4134aa6f3d3d463892c662e0e73bc333" => :mountain_lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'libsndfile' => :optional
   depends_on 'fftw' => :optional
 
   # configure adds `/Developer/Headers/FlatCarbon` to the include, but this is
   # very deprecated. Correct the use of Carbon.h to the non-flat location.
-  # See: https://github.com/mxcl/homebrew/pull/10875
-  def patches; DATA; end
+  # See: https://github.com/Homebrew/homebrew/pull/10875
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

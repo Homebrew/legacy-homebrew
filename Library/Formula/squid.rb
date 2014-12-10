@@ -1,29 +1,25 @@
-require 'formula'
-
-class NoBdb5 < Requirement
-  satisfy(:build_env => false) { !Formula.factory("berkeley-db").installed? }
-
-  def message; <<-EOS.undent
-    This software can fail to compile when Berkeley-DB 5.x is installed.
-    You may need to try:
-      brew unlink berkeley-db
-      brew install squid
-      brew link berkeley-db
-    EOS
-  end
-end
+require "formula"
 
 class Squid < Formula
-  homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.3/squid-3.3.8.tar.gz'
-  sha1 '853b7619b65f91424f0d2c4089c095a67d79fc9b'
+  homepage "http://www.squid-cache.org/"
+  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.9.tar.bz2"
+  sha1 "a356cadc324d91c41119f96a7d1a20330866c1ac"
 
-  depends_on NoBdb5
+  bottle do
+    sha1 "26d026bc8523fed17870fcdd7ef935687208232d" => :yosemite
+    sha1 "7fa50fc50e2525175d733068b3fc8c00d72eedf1" => :mavericks
+    sha1 "bdae1232126a1aa7a9eec3380d1d95184a2923ed" => :mountain_lion
+  end
+
+  depends_on "openssl"
 
   def install
+    # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
+    ENV.append "LDFLAGS",  "-lresolv"
+
     # For --disable-eui, see:
     # http://squid-web-proxy-cache.1019090.n4.nabble.com/ERROR-ARP-MAC-EUI-operations-not-supported-on-this-operating-system-td4659335.html
-    args =%W[
+    args = %W[
       --disable-debug
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -31,7 +27,8 @@ class Squid < Formula
       --enable-ssl
       --enable-ssl-crtd
       --disable-eui
-      --enable-ipfw-transparent
+      --enable-pf-transparent
+      --with-included-ltdl
     ]
 
     system "./configure", *args
@@ -49,10 +46,9 @@ class Squid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/squid</string>
+        <string>#{opt_sbin}/squid</string>
         <string>-N</string>
         <string>-d 1</string>
-        <string>-D</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

@@ -1,38 +1,43 @@
 require 'formula'
 
-# Use the official github mirror, it is easier to find tags there
-# .even versions are stable, .odd releases are devel. Kind of:
+# When trunk is 3.x, then 3.x is devel and 3.(x-1)
+# is stable.
 # https://code.google.com/p/v8/issues/detail?id=2545
 # http://omahaproxy.appspot.com/
 
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
-  url 'https://github.com/v8/v8/archive/3.18.5.tar.gz'
-  sha1 'd11c925898c5a0480aa947b1ed03b8f039d7e5d2'
+  url 'https://github.com/v8/v8/archive/3.25.30.tar.gz'
+  sha1 '207d0bb1dd5954fe691570e799b3c1e318741290'
 
-  devel do
-    url 'https://github.com/v8/v8/archive/3.19.16.tar.gz'
-    sha1 'fa9862f805ce07d1dbaf5a9229ebbbbe616298f2'
+  option 'with-readline', 'Use readline instead of libedit'
+
+  # not building on Snow Leopard:
+  # https://github.com/Homebrew/homebrew/issues/21426
+  depends_on :macos => :lion
+
+  depends_on :python => :build # gyp doesn't run under 2.6 or lower
+  depends_on 'readline' => :optional
+
+  resource 'gyp' do
+    url 'http://gyp.googlecode.com/svn/trunk', :revision => 1831
+    version '1831'
   end
 
-  head 'https://github.com/v8/v8.git'
-
-  # gyp currently depends on a full xcode install
-  # https://code.google.com/p/gyp/issues/detail?id=292
-  depends_on :xcode
-
   def install
-    system 'make dependencies'
-    system 'make', 'native',
-                   "-j#{ENV.make_jobs}",
+    # Download gyp ourselves because running "make dependencies" pulls in ICU.
+    (buildpath/'build/gyp').install resource('gyp')
+
+    system "make", "native",
                    "library=shared",
                    "snapshot=on",
-                   "console=readline"
+                   "console=readline",
+                   "i18nsupport=off"
 
     prefix.install 'include'
     cd 'out/native' do
       lib.install Dir['lib*']
-      bin.install 'd8', 'lineprocessor', 'preparser', 'process', 'shell' => 'v8'
+      bin.install 'd8', 'lineprocessor', 'process', 'shell' => 'v8'
       bin.install Dir['mksnapshot.*']
     end
   end

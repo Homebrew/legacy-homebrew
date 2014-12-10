@@ -11,7 +11,7 @@ class Mpegdemux < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/mpegdemux", "--help"
   end
 end

@@ -1,23 +1,36 @@
-require 'formula'
+require "formula"
 
 class Libimobiledevice < Formula
-  homepage 'http://www.libimobiledevice.org/'
-  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.5.tar.bz2'
-  sha1 '1c2ce186787fe661d2ef5a1be170ddbe5f85db77'
+  homepage "http://www.libimobiledevice.org/"
+  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.7.tar.bz2"
+  sha1 "ac47ba39e7f8d8cb9379756773ece30458b93c80"
 
-  head 'http://cgit.sukimashita.com/libimobiledevice.git'
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "39f7ff7216e593d6afe2737ed42b30a8565060d5" => :yosemite
+    sha1 "bcdb212d83c8b863e2ac81bd560cbbb3b6268bc2" => :mavericks
+    sha1 "e288c30272a07b9dc2fce2f804a4c19d5d3971b1" => :mountain_lion
+  end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libtasn1'
-  depends_on 'libplist'
-  depends_on 'usbmuxd'
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
+  head do
+    url "http://cgit.sukimashita.com/libimobiledevice.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "libxml2"
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "libtasn1"
+  depends_on "libplist"
+  depends_on "usbmuxd"
+  depends_on "openssl"
 
   def install
-    ENV.append_to_cflags "-std=gnu89" if ENV.compiler == :clang
-
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           # As long as libplist builds without Cython
                           # bindings, libimobiledevice must as well.

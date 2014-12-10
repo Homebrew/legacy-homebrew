@@ -1,9 +1,16 @@
-require 'formula'
+require "formula"
 
 class Exiftool < Formula
-  homepage 'http://www.sno.phy.queensu.ca/~phil/exiftool/index.html'
-  url 'http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.33.tar.gz'
-  sha1 '237fefed9ffa0e427451ac34d76327157a99cb2f'
+  homepage "http://www.sno.phy.queensu.ca/~phil/exiftool/index.html"
+  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.76.tar.gz"
+  sha1 "79bfc6beab0bdff6aa59324434e576e20785a320"
+
+  bottle do
+    cellar :any
+    sha1 "b501ee8d89ecf9c87ca426bc3e6be57ad639b33e" => :yosemite
+    sha1 "1fcac9cf2f8f80a9b33932bf9a79175536d0e40f" => :mavericks
+    sha1 "68ca72ee036aea5a46f47f6d4952b7f1cbadd42f" => :mountain_lion
+  end
 
   def install
     system "perl", "Makefile.PL"
@@ -13,7 +20,7 @@ class Exiftool < Formula
     libexec.install "exiftool", "lib"
 
     # Link the executable script into "bin"
-    (bin + 'exiftool').write <<-EOBIN
+    (bin + "exiftool").write <<-EOBIN
 #!/bin/bash
 
 which_exiftool=`which $0`
@@ -24,7 +31,7 @@ $dirname_unlinked_exiftool/../libexec/exiftool "$@"
 EOBIN
   end
 
-  def test
+  test do
     system "#{libexec}/exiftool"
   end
 end

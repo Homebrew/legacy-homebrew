@@ -2,13 +2,13 @@ require 'formula'
 
 class DyldHeaders < Formula
   homepage 'http://opensource.apple.com/'
-  url 'http://opensource.apple.com/tarballs/dyld/dyld-210.2.3.tar.gz'
-  sha1 'fd1c6b6e08d0bb8a4682ffb705f5921d10bdbd64'
+  url 'https://opensource.apple.com/tarballs/dyld/dyld-239.4.tar.gz'
+  sha1 '9a366d4d31423c959b249c45245d93ea9acc14b9'
 
   keg_only :provided_by_osx
 
   # Use Tiger-style availability macros
-  def patches; DATA; end if MacOS.version < :leopard
+  patch :DATA if MacOS.version < :leopard
 
   def install
     include.install Dir['include/*']
@@ -17,20 +17,33 @@ end
 
 __END__
 diff --git a/include/dlfcn.h b/include/dlfcn.h
-index 7e4ae35..60557d2 100644
+index bcb0c09..ab77069 100644
 --- a/include/dlfcn.h
 +++ b/include/dlfcn.h
 @@ -58,7 +58,7 @@ extern void * dlopen(const char * __path, int __mode);
  extern void * dlsym(void * __handle, const char * __symbol);
  
  #if !defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE)
--extern bool dlopen_preflight(const char* __path) AVAILABLE_MAC_OS_X_VERSION_10_5_AND_LATER;
+-extern bool dlopen_preflight(const char* __path) __OSX_AVAILABLE_STARTING(__MAC_10_5, __IPHONE_2_0);
 +extern bool dlopen_preflight(const char* __path) __attribute__((unavailable));
  #endif /* not POSIX */
  
  
+diff --git a/include/dlfcn.h b/include/dlfcn.h
+index ab77069..60557d2 100644
+--- a/include/dlfcn.h
++++ b/include/dlfcn.h
+@@ -38,7 +38,7 @@ extern "C" {
+ 
+ #if !defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE)
+ #include <stdbool.h>
+-#include <Availability.h>
++#include <AvailabilityMacros.h>
+ /*
+  * Structure filled in by dladdr().
+  */
 diff --git a/include/mach-o/dyld.h b/include/mach-o/dyld.h
-index 3f579ef..3bc084c 100644
+index 642ca42..3436d81 100644
 --- a/include/mach-o/dyld.h
 +++ b/include/mach-o/dyld.h
 @@ -29,7 +29,7 @@
@@ -122,13 +135,13 @@ index 3f579ef..3bc084c 100644
 +extern NSObjectFileImageReturnCode NSCreateObjectFileImageFromMemory(const void *address, size_t size, NSObjectFileImage *objectFileImage) AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
 +extern bool                        NSDestroyObjectFileImage(NSObjectFileImage objectFileImage)                                             AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
 +
-+extern uint32_t     NSSymbolDefinitionCountInObjectFileImage(NSObjectFileImage objectFileImage)                   AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
-+extern const char*  NSSymbolDefinitionNameInObjectFileImage(NSObjectFileImage objectFileImage, uint32_t ordinal)  AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
-+extern uint32_t     NSSymbolReferenceCountInObjectFileImage(NSObjectFileImage objectFileImage)                    AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
-+extern const char*  NSSymbolReferenceNameInObjectFileImage(NSObjectFileImage objectFileImage, uint32_t ordinal, bool *tentative_definition) AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
-+extern bool         NSIsSymbolDefinedInObjectFileImage(NSObjectFileImage objectFileImage, const char* symbolName) AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4;
-+extern void*        NSGetSectionDataInObjectFileImage(NSObjectFileImage objectFileImage, const char* segmentName, const char* sectionName, size_t *size) AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
-+extern bool         NSHasModInitObjectFileImage(NSObjectFileImage objectFileImage)                                AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
++extern uint32_t    NSSymbolDefinitionCountInObjectFileImage(NSObjectFileImage objectFileImage)                    AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
++extern const char* NSSymbolDefinitionNameInObjectFileImage(NSObjectFileImage objectFileImage, uint32_t ordinal)   AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
++extern uint32_t    NSSymbolReferenceCountInObjectFileImage(NSObjectFileImage objectFileImage)                     AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
++extern const char* NSSymbolReferenceNameInObjectFileImage(NSObjectFileImage objectFileImage, uint32_t ordinal, bool *tentative_definition) AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
++extern bool        NSIsSymbolDefinedInObjectFileImage(NSObjectFileImage objectFileImage, const char* symbolName)  AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4;
++extern void*       NSGetSectionDataInObjectFileImage(NSObjectFileImage objectFileImage, const char* segmentName, const char* sectionName, size_t *size) AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
++extern bool        NSHasModInitObjectFileImage(NSObjectFileImage objectFileImage)                                 AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
  
  typedef struct __NSModule* NSModule;
 -extern const char*  NSNameOfModule(NSModule m)         __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_1,__MAC_10_5,__IPHONE_NA,__IPHONE_NA);
@@ -229,12 +242,12 @@ index 3f579ef..3bc084c 100644
 +extern void _dyld_lookup_and_bind_with_hint(const char* symbol_name, const char* library_name_hint, void** address, NSModule* module) AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER_BUT_DEPRECATED_IN_MAC_OS_X_VERSION_10_4;
 +extern void _dyld_lookup_and_bind_fully(const char* symbol_name, void** address, NSModule* module) AVAILABLE_MAC_OS_X_VERSION_10_1_AND_LATER;
 +
-+extern const struct mach_header*  _dyld_get_image_header_containing_address(const void* address) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
++extern const struct mach_header* _dyld_get_image_header_containing_address(const void* address) AVAILABLE_MAC_OS_X_VERSION_10_3_AND_LATER;
  
  
  #if __cplusplus
 diff --git a/include/mach-o/dyld_priv.h b/include/mach-o/dyld_priv.h
-index 9464fb8..a6fdf5e 100644
+index 49d5775..2467b29 100644
 --- a/include/mach-o/dyld_priv.h
 +++ b/include/mach-o/dyld_priv.h
 @@ -25,7 +25,7 @@
@@ -246,4 +259,3 @@ index 9464fb8..a6fdf5e 100644
  #include <mach-o/dyld.h>
  #include <mach-o/dyld_images.h>
  
-

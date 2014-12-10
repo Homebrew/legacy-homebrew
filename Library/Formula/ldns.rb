@@ -2,29 +2,34 @@ require 'formula'
 
 class Ldns < Formula
   homepage 'http://nlnetlabs.nl/projects/ldns/'
-  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.16.tar.gz'
-  sha1 '5b4fc6c5c3078cd061905c47178478cb1015c62a'
+  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.17.tar.gz'
+  sha1 '4218897b3c002aadfc7280b3f40cda829e05c9a4'
+  revision 1
+
+  bottle do
+    revision 3
+    sha1 "29548cdff439f712695fc5ca9f662b958ce98765" => :mavericks
+    sha1 "e55a981bf3a3ce87f914043c36c6c1eb0a0d9b38" => :mountain_lion
+    sha1 "ba53827d4834ae71cb66c437f16e631cde014cff" => :lion
+  end
 
   depends_on :python => :optional
-  depends_on 'swig' if build.with? 'python'
+  depends_on 'openssl'
+  depends_on 'swig' => :build if build.with? 'python'
 
   def install
-    # gost requires OpenSSL >= 1.0.0
     args = %W[
       --prefix=#{prefix}
-      --disable-gost
       --with-drill
-      --with-ssl=#{MacOS.sdk_path}/usr
+      --with-ssl=#{Formula["openssl"].opt_prefix}
     ]
 
-    if build.with? 'python'
-      args << "--with-pyldns"
-      ENV['PYTHON_SITE_PKG'] = python.site_packages
-    end
+    args << "--with-pyldns" if build.with? 'python'
 
     system "./configure", *args
     system "make"
     system "make install"
     system "make", "install-pyldns" if build.with? 'python'
+    (lib/"pkgconfig").install "packaging/libldns.pc"
   end
 end

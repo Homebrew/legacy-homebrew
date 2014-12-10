@@ -1,2 +1,3 @@
-/coverage
-/prof
+/.bundle/
+/bin/
+/vendor/

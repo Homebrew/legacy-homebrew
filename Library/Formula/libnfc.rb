@@ -2,8 +2,15 @@ require 'formula'
 
 class Libnfc < Formula
   homepage 'http://www.libnfc.org/'
-  url 'http://libnfc.googlecode.com/files/libnfc-1.7.0-rc6.tar.gz'
-  sha1 'c4ff27dd126fad013297ea035a5f5a1fb02d8f33'
+  url 'https://libnfc.googlecode.com/files/libnfc-1.7.0.tar.bz2'
+  sha1 '5adfb6c6238b1659ad8609837dc8e59eb41a8768'
+
+  bottle do
+    revision 1
+    sha1 "330b1d514c35dcf992e691b0b37b0ac295c1ff92" => :yosemite
+    sha1 "cc8ed520b9f18458802d6737faacaa47c6d834ec" => :mavericks
+    sha1 "bdae0709e9278e58a5438a93922055e7831ed90a" => :mountain_lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
@@ -12,13 +19,11 @@ class Libnfc < Formula
   # Reported upstream:
   # https://groups.google.com/forum/?fromgroups=#!topic/libnfc-devel/K0cwIdPuqJg
   # Another patch adds support for USB CDC / ACM type serial ports (tty.usbmodem)
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}", "--enable-serial-autoprobe"
     system "make install"
     (prefix/'etc/nfc/libnfc.conf').write "allow_intrusive_scan=yes"
   end
@@ -45,16 +50,16 @@ index ec9e2fc..41797b2 100644
  /**
   * @macro HAL
   * @brief Execute corresponding driver function if exists.
-diff --git a/libnfc/buses/uart_posix.c b/libnfc/buses/uart_posix.c
+diff --git a/libnfc/buses/uart.c b/libnfc/buses/uart.c
 index 7b687c1..686f9ed 100644
---- a/libnfc/buses/uart_posix.c
-+++ b/libnfc/buses/uart_posix.c
+--- a/libnfc/buses/uart.c
++++ b/libnfc/buses/uart.c
 @@ -46,7 +46,7 @@
  #define LOG_CATEGORY "libnfc.bus.uart"
 
  #  if defined(__APPLE__)
 -const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", NULL };
-+const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", "tty.usbmodem", NULL };
++const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", "tty.usbmodem", "tty.usbserial", NULL };
  #  elif defined (__FreeBSD__) || defined (__OpenBSD__)
  const char *serial_ports_device_radix[] = { "cuaU", "cuau", NULL };
  #  elif defined (__linux__)

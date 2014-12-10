@@ -1,59 +1,60 @@
-require 'formula'
-
-class Libpar2 < Formula
-  homepage 'http://parchive.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/parchive/libpar2/0.2/libpar2-0.2.tar.gz'
-  sha1 '4b3da928ea6097a8299aadafa703fc6d59bdfb4b'
-
-  fails_with :clang do
-    build 425
-    cause <<-EOS.undent
-      ./par2fileformat.h:87:25: error: flexible array member 'entries' of non-POD element type 'FILEVERIFICATIONENTRY []'
-    EOS
-  end
-
-  def patches
-    # Patch libpar2 - bugfixes and ability to cancel par2 repair
-    "https://gist.github.com/raw/4576230/e722f2113195ee9b8ee67c1c424aa3f2085b1066/libpar2-0.2-nzbget.patch"
-  end
-end
+require "formula"
 
 class Nzbget < Formula
-  homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/10.2/nzbget-10.2.tar.gz'
-  sha1 'd113525d43eaa5e0f1a4a357d30fe44267f48138'
+  homepage "http://nzbget.net/"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.1/nzbget-14.1.tar.gz"
+  sha1 "671c0d0b554643e1b58665004c65519a330766db"
 
-  head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk'
+  head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libsigc++'
+  bottle do
+    sha1 "b8fa821bf43c2c5ccd2842ce0a57ba0131b150bc" => :yosemite
+    sha1 "78df733e6f5983b32dd66a391cb1c6f6b1a8570a" => :mavericks
+    sha1 "ba78b8016b214a18c80499eb3d17a4aa4a45983b" => :mountain_lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
+  depends_on "libsigc++"
 
   fails_with :clang do
-    build 425
+    build 500
     cause <<-EOS.undent
-      Configure errors out when testing the libpar2 headers because
-      Clang does not support flexible arrays of non-POD types.
+      Clang older than 5.1 requires flexible array members to be POD types.
+      More recent versions require only that they be trivially destructible.
       EOS
   end
 
+  resource "libpar2" do
+    url "https://launchpad.net/libpar2/trunk/0.4/+download/libpar2-0.4.tar.gz"
+    sha1 "c4a5318edac0898dcc8b1d90668cfca2ccfe0375"
+  end
+
   def install
-    # Install libpar2 privately
-    libpar2_prefix = libexec/'libpar2'
-    Libpar2.new('libpar2').brew do
-      system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                            "--prefix=#{libpar2_prefix}"
-      system "make install"
+    resource("libpar2").stage do
+      system "./configure", "--disable-dependency-tracking",
+                            "--prefix=#{libexec}/lp2"
+      system "make", "install"
     end
 
     # Tell configure where libpar2 is, and tell it to use OpenSSL
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libpar2-includes=#{libpar2_prefix}/include",
-                          "--with-libpar2-libraries=#{libpar2_prefix}/lib",
+                          "--with-libpar2-includes=#{libexec}/lp2/include",
+                          "--with-libpar2-libraries=#{libexec}/lp2/lib",
                           "--with-tlslib=OpenSSL"
     system "make"
     ENV.j1
-    system "make install"
-    system "make install-conf"
+    system "make", "install"
+    etc.install "nzbget.conf"
+  end
+
+  test do
+    # Start nzbget as a server in daemon-mode
+    system "#{bin}/nzbget", "-D"
+    # Query server for version information
+    system "#{bin}/nzbget", "-V"
+    # Shutdown server daemon
+    system "#{bin}/nzbget", "-Q"
   end
 end

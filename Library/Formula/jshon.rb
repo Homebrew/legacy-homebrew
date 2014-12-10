@@ -15,11 +15,6 @@ class Jshon < Formula
   end
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/jshon", "-l") do |stdin, stdout, _|
-      stdin.write("[true,false,null]")
-      stdin.close
-      assert_equal "3", stdout.read.strip
-    end
+    assert_equal "3", pipe_output("#{bin}/jshon -l", "[true,false,null]").strip
   end
 end

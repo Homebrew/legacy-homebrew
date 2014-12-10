@@ -1,0 +1,5 @@
+#!/bin/bash
+export HOMEBREW_CCCFG="O$HOMEBREW_CCCFG"
+ant=/usr/bin/ant
+[ -x "$ant" ] || ant="$(${HOMEBREW_BREW_FILE} --prefix ant)/bin/ant"
+exec "$ant" "$@"

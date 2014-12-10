@@ -2,13 +2,11 @@ require 'formula'
 
 class Cconv < Formula
   homepage 'http://code.google.com/p/cconv/'
-  url 'http://cconv.googlecode.com/files/cconv-0.6.2.tar.gz'
+  url 'https://cconv.googlecode.com/files/cconv-0.6.2.tar.gz'
   sha1 '9775f91fd5600d176552a88625aaa1f64ece09c1'
 
   # fix link with iconv: http://code.google.com/p/cconv/issues/detail?id=18
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

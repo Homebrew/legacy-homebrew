@@ -1,22 +1,23 @@
-require 'formula'
+require "formula"
 
 class Zabbix < Formula
-  homepage 'http://www.zabbix.com/'
-  url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.0.6/zabbix-2.0.6.tar.gz'
-  sha1 '75a747ddcfa4bcd5792f69dc8d7de9c5839b8595'
+  homepage "http://www.zabbix.com/"
+  url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.0/zabbix-2.4.0.tar.gz"
+  sha1 "d81ec961baf9ddc264e56cfca60cf10a2e29f74f"
 
-  option 'with-mysql', 'Use Zabbix Server with MySQL library instead PostgreSQL.'
-  option 'agent-only', 'Install only the Zabbix Agent without Server and Proxy.'
+  option "with-mysql", "Use Zabbix Server with MySQL library instead PostgreSQL."
+  option "agent-only", "Install only the Zabbix Agent without Server and Proxy."
 
-  unless build.include?('agent-only')
-    depends_on (build.include?('with-mysql') ? :mysql : :postgresql)
-    depends_on 'fping'
-    depends_on 'libssh2'
+  unless build.include? "agent-only"
+    depends_on :mysql => :optional
+    depends_on :postgresql if build.without? "mysql"
+    depends_on "fping"
+    depends_on "libssh2"
   end
 
   def brewed_or_shipped(db_config)
     brewed_db_config = "#{HOMEBREW_PREFIX}/bin/#{db_config}"
-    (File.exists?(brewed_db_config) && brewed_db_config) || which(db_config)
+    (File.exist?(brewed_db_config) && brewed_db_config) || which(db_config)
   end
 
   def install
@@ -24,35 +25,35 @@ class Zabbix < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --enable-agent
+      --with-iconv=#{MacOS.sdk_path}/usr
     }
 
-    unless build.include?('agent-only')
-      db_adapter = if build.include?('with-mysql')
-        "--with-mysql=#{brewed_or_shipped('mysql_config')}"
-      else
-        "--with-postgresql=#{brewed_or_shipped('pg_config')}"
-      end
+    unless build.include? "agent-only"
       args += %W{
         --enable-server
         --enable-proxy
-        #{db_adapter}
         --enable-ipv6
         --with-net-snmp
         --with-libcurl
         --with-ssh2
       }
+      if build.with? "mysql"
+        args << "--with-mysql=#{brewed_or_shipped('mysql_config')}"
+      else
+        args << "--with-postgresql=#{brewed_or_shipped('pg_config')}"
+      end
     end
 
     system "./configure", *args
     system "make install"
 
-    unless build.include?('agent-only')
-      (share/'zabbix').install 'frontends/php',
-        "database/#{build.include?('with-mysql') ? :mysql : :postgresql}"
+    unless build.include? "agent-only"
+      db = build.with?("mysql") ? "mysql" : "postgresql"
+      (share/"zabbix").install "frontends/php", "database/#{db}"
     end
   end
 
-  def test
+  test do
     system "#{sbin}/zabbix_agentd", "--print"
   end
 end

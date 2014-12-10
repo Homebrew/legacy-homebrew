@@ -1,31 +1,48 @@
-require 'formula'
+require "formula"
 
 class Postgresql < Formula
-  homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.2.4/postgresql-9.2.4.tar.bz2'
-  sha1 '75b53c884cb10ed9404747b51677358f12082152'
+  homepage "http://www.postgresql.org/"
+  revision 1
 
+  stable do
+    url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
+    sha256 "14176ffb1f90a189e7626214365be08ea2bfc26f26994bafb4235be314b9b4b0"
+
+    # ossp-uuid is no longer required for uuid support since 9.4beta2:
+    depends_on "ossp-uuid" => :recommended
+    # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
+    patch :DATA
+  end
+
+  bottle do
+    revision 1
+    sha1 "00d8f44111b8585fc2fa045fb33098cde3bcf230" => :yosemite
+    sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
+    sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
+    sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
+  end
+
+  devel do
+    url 'http://ftp.postgresql.org/pub/source/v9.4rc1/postgresql-9.4rc1.tar.bz2'
+    sha256 '6ce91d78fd6c306536f5734dbaca10889814b9d0fe0b38a41b3e635d95241c7c'
+  end
+
+  option '32-bit'
+  option 'no-perl', 'Build without Perl support'
+  option 'no-tcl', 'Build without Tcl support'
+  option 'enable-dtrace', 'Build with DTrace support'
+
+  depends_on 'openssl'
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
-  depends_on 'ossp-uuid' => :recommended
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   conflicts_with 'postgres-xc',
     :because => 'postgresql and postgres-xc install the same binaries.'
 
-  option '32-bit'
-  option 'no-perl', 'Build without Perl support'
-  option 'enable-dtrace', 'Build with DTrace support'
-
   fails_with :clang do
     build 211
     cause 'Miscompilation resulting in segfault on queries'
-  end
-
-  # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
-  # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-  def patches
-    DATA
   end
 
   def install
@@ -39,60 +56,49 @@ class Postgresql < Formula
       --enable-thread-safety
       --with-bonjour
       --with-gssapi
-      --with-krb5
       --with-ldap
       --with-openssl
       --with-pam
-      --with-tcl
       --with-libxml
       --with-libxslt
     ]
 
-    args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
+
+    # The CLT is required to build tcl support on 10.7 and 10.8 because
+    # tclConfig.sh is not part of the SDK
+    unless build.include?("no-tcl") || MacOS.version < :mavericks && MacOS::CLT.installed?
+      args << "--with-tcl"
+
+      if File.exist?("#{MacOS.sdk_path}/usr/lib/tclConfig.sh")
+        args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+      end
+    end
+
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    if build.with? 'ossp-uuid'
+    if build.with?("ossp-uuid")
+      args << "--with-ossp-uuid"
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
-    end
-
-    if not build.build_32_bit? and MacOS.prefer_64_bit? and build.with? 'python'
-      args << "ARCHFLAGS='-arch x86_64'"
-      check_python_arch
+    elsif build.devel?
+      # Apple's UUID implementation is compatible with e2fs NOT bsd
+      args << "--with-uuid=e2fs"
     end
 
     if build.build_32_bit?
-      ENV.append 'CFLAGS', '-arch i386'
-      ENV.append 'LDFLAGS', '-arch i386'
+      ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     system "./configure", *args
     system "make install-world"
   end
 
-  def check_python_arch
-    # On 64-bit systems, we need to avoid a 32-bit Framework Python.
-    if python.framework?
-      unless archs_for_command(python.binary).include? :x86_64
-        opoo "Detected a framework Python that does not have 64-bit support in:"
-        puts <<-EOS.undent
-          #{python.prefix}
-
-          The configure script seems to prefer this version of Python over any others,
-          so you may experience linker problems as described in:
-            http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
-
-          To fix this issue, you may need to either delete the version of Python
-          shown above, or move it out of the way before brewing PostgreSQL.
-
-          Note that a framework Python in /Library/Frameworks/Python.framework is
-          the "MacPython" version, and not the system-provided version which is in:
-            /System/Library/Frameworks/Python.framework
-        EOS
-      end
+  def post_install
+    unless File.exist? "#{var}/postgres"
+      system "#{bin}/initdb", "#{var}/postgres"
     end
   end
 
@@ -100,22 +106,13 @@ class Postgresql < Formula
     s = <<-EOS.undent
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
-      https://github.com/mxcl/homebrew/issues/issue/2510
+      https://github.com/Homebrew/homebrew/issues/issue/2510
 
-
-    If this is your first install, create a database with:
-      initdb #{var}/postgres -E utf8
-
-
-    To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
-      http://www.postgresql.org/docs/9.2/static/upgrading.html
-
-
-    Some machines may require provisioning of shared memory:
-      http://www.postgresql.org/docs/9.2/static/kernel-resources.html#SYSVIPC
+    To migrate existing data from a previous major version (pre-9.3) of PostgreSQL, see:
+      http://www.postgresql.org/docs/9.3/static/upgrading.html
     EOS
 
-    s << gem_caveats if MacOS.prefer_64_bit?
+    s << "\n" << gem_caveats if MacOS.prefer_64_bit?
     return s
   end
 
@@ -123,11 +120,12 @@ class Postgresql < Formula
     When installing the postgres gem, including ARCHFLAGS is recommended:
       ARCHFLAGS="-arch x86_64" gem install pg
 
-    To install gems without sudo, see the Homebrew wiki.
+    To install gems without sudo, see the Homebrew documentation:
+    https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Gems,-Eggs-and-Perl-Modules.md
     EOS
   end
 
-  plist_options :manual => "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start"
+  plist_options :manual => "postgres -D #{HOMEBREW_PREFIX}/var/postgres"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -140,7 +138,7 @@ class Postgresql < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/postgres</string>
+        <string>#{opt_bin}/postgres</string>
         <string>-D</string>
         <string>#{var}/postgres</string>
         <string>-r</string>
@@ -156,21 +154,14 @@ class Postgresql < Formula
     </plist>
     EOS
   end
+
+  test do
+    system "#{bin}/initdb", testpath
+  end
 end
 
 
 __END__
---- a/src/pl/plpython/Makefile	2011-09-23 08:03:52.000000000 +1000
-+++ b/src/pl/plpython/Makefile	2011-10-26 21:43:40.000000000 +1100
-@@ -24,8 +24,6 @@
- # Darwin (OS X) has its own ideas about how to do this.
- ifeq ($(PORTNAME), darwin)
- shared_libpython = yes
--override python_libspec = -framework Python
--override python_additional_libs =
- endif
- 
- # If we don't have a shared library and the platform doesn't allow it
 --- a/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:34:53.000000000 -0700
 +++ b/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:35:03.000000000 -0700
 @@ -9,6 +9,8 @@

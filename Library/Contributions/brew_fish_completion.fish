@@ -10,10 +10,6 @@ for command in (ls (brew --repository)/Library/Homebrew/cmd | sed -e "s/\.rb//g"
   set commands $command $commands
 end
 
-for command in (ls -p (brew --repository)/Library/Contributions/cmd | sed -e "s/\.rb//g" -e "s/brew-//g" -e "s/.*\///g")
-  set commands $command $commands
-end
-
 for command in abv ln ls remove rm
   set commands $command $commands
 end
@@ -34,11 +30,6 @@ function __fish_complete_brew_argument
     
     if contains -- $cmd cleanup link ln missing rm remove test unlink uninstall upgrade pin unpin
       ls (brew --prefix)/Cellar
-      return 0
-    end
-
-    if contains -- $cmd tap
-      brew ls-taps
       return 0
     end
 
@@ -136,10 +127,6 @@ complete -c brew -s d -l debug -n '__fish_complete_brew_command install' -d "Ope
 complete -c brew -s f -l force -n '__fish_complete_brew_command force' -d "Install formula even if blacklisted"
 complete -c brew -s i -l interactive -n '__fish_complete_brew_command install' -d "Open a subshell to install manually"
 complete -c brew -l git -n '__fish_complete_brew_command install' -d 'Create a git repo (useful for making patches)'
-complete -c brew -l fresh -n '__fish_complete_brew_command install' -d "Do not reuse options from previous installs"
-complete -c brew -l use-clang -n '__fish_complete_brew_command install' -d "Attempt to compile using Clang"
-complete -c brew -l use-llvm -n '__fish_complete_brew_command install' -d "Attempt to compile using LLVM"
-complete -c brew -l use-gcc -n '__fish_complete_brew_command install' -d "Attempt to compile using GCC"
 complete -c brew -l build-from-source -n '__fish_complete_brew_command install' -d "Compile from source even if a bottle is provided"
 complete -c brew -l devel -n '__fish_complete_brew_command install' -d "Install the development version"
 complete -c brew -l HEAD -n '__fish_complete_brew_command install' -d "Install the HEAD version"

@@ -8,6 +8,14 @@ class Liblqr < Formula
 
   head 'git://repo.or.cz/liblqr.git'
 
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "7bbd4ffd6c1a531d35781943ca2b69187c3dc435" => :yosemite
+    sha1 "3d4a549790100beea4b5382a29dd725e300acebe" => :mavericks
+    sha1 "bd524e0373ad841ccd7c838eccb279f710502633" => :mountain_lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 

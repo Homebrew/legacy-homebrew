@@ -1,6 +1,6 @@
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def unpin
     raise FormulaUnspecifiedError if ARGV.named.empty?
 

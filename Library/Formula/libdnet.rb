@@ -2,23 +2,26 @@ require 'formula'
 
 class Libdnet < Formula
   homepage 'http://code.google.com/p/libdnet/'
-  url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
+  url 'https://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
-  depends_on :automake => :build
-  depends_on :libtool => :build
-  depends_on :python => :optional
-
-  # Fix use of deprecated macros
-  # http://code.google.com/p/libdnet/issues/detail?id=27
-  def patches
-    DATA
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "d50344d91979822e446a28997c4b25f4c047e405" => :yosemite
+    sha1 "0b7296e9d6d6a3a17268611171df4b944e853bbf" => :mavericks
+    sha1 "e1570018c6ace49b52f2d77a660c7720e6250660" => :mountain_lion
   end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on :python => :optional
 
   def install
     # autoreconf to get '.dylib' extension on shared lib
-    ENV['ACLOCAL'] = 'aclocal -I config'
-    system 'autoreconf', '-ivf'
+    ENV.append_path "ACLOCAL_PATH", "config"
+    system "autoreconf", "-ivf"
 
     args = %W[
       --disable-dependency-tracking
@@ -30,19 +33,3 @@ class Libdnet < Formula
     system "make install"
   end
 end
-
-
-__END__
-diff --git a/configure.in b/configure.in
-index 72ac63c..109dc63 100644
---- a/configure.in
-+++ b/configure.in
-@@ -10,7 +10,7 @@ AC_CONFIG_AUX_DIR(config)
- AC_SUBST(ac_aux_dir)
- 
- AM_INIT_AUTOMAKE(libdnet, 1.12)
--AM_CONFIG_HEADER(include/config.h)
-+AC_CONFIG_HEADERS(include/config.h)
- 
- dnl XXX - stop the insanity!@#$
- AM_MAINTAINER_MODE

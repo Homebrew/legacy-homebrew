@@ -2,12 +2,20 @@ require 'formula'
 
 class Aalib < Formula
   homepage 'http://aa-project.sourceforge.net/aalib/'
-  url 'http://downloads.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz'
+  url 'https://downloads.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz'
   sha1 'a23269e950a249d2ef93625837cace45ddbce03b'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "bad7bebd32c57b4448895d9630bd26b81d7381a9" => :yosemite
+    sha1 "703020d9ca9218f85ccccb04aa8c0443d386eb13" => :mavericks
+    sha1 "7df0f5feb8621497d06c64a67a4b0d0350e6ecb1" => :mountain_lion
+  end
 
   # Fix malloc/stdlib issue on OS X
   # Fix underquoted definition of AM_PATH_AALIB in aalib.m4
-  def patches; DATA end
+  patch :DATA
 
   def install
     ENV.ncurses_define

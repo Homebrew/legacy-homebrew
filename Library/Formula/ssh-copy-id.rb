@@ -1,11 +1,18 @@
 require 'formula'
 
 class SshCopyId < Formula
-  homepage 'http://openssh.org/'
-  url 'http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.2p2.tar.gz'
-  mirror 'http://ftp.spline.de/pub/OpenBSD/OpenSSH/portable/openssh-6.2p2.tar.gz'
-  version '6.2p2'
-  sha256 '7f29b9d2ad672ae0f9e1dcbff871fc5c2e60a194e90c766432e32161b842313b'
+  homepage 'http://www.openssh.com/'
+  url 'http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.7p1.tar.gz'
+  mirror 'http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.7p1.tar.gz'
+  version '6.7p1'
+  sha1 '14e5fbed710ade334d65925e080d1aaeb9c85bf6'
+
+  bottle do
+    cellar :any
+    sha1 "5e9e5c5e53951435d1a6b408401301fbba2e6ee4" => :yosemite
+    sha1 "4ea46c7153cf26546b9d794cf9b63722c191faec" => :mavericks
+    sha1 "409ea4f6ba8a6f6d6fce94d33d6c8a59091ab89b" => :mountain_lion
+  end
 
   def install
     bin.install 'contrib/ssh-copy-id'

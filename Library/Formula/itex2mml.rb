@@ -8,8 +8,8 @@ require 'formula'
 
 class Itex2mml < Formula
   homepage 'http://golem.ph.utexas.edu/~distler/blog/itex2MML.html'
-  url 'http://golem.ph.utexas.edu/~distler/blog/files/itexToMML-1.4.10.tar.gz'
-  sha1 '445657b5939f75d0c3c4e5fea5cc51d6594cb932'
+  url 'http://golem.ph.utexas.edu/~distler/blog/files/itexToMML-1.5.1.tar.gz'
+  sha1 'e87cb48c9e0ad357d9e20186e4bd34fc8750b59c'
 
   def install
     bin.mkpath

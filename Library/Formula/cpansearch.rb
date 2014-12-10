@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class Cpansearch < Formula
-  homepage 'https://github.com/c9s/cpansearch'
-  url 'https://github.com/c9s/cpansearch/archive/0.1.1.tar.gz'
-  sha1 '8ffab37023886f3c1e287de574001ff720c8b1e5'
+  homepage "https://github.com/c9s/cpansearch"
+  url "https://github.com/c9s/cpansearch/archive/0.2.tar.gz"
+  sha1 "302638f78f2b09630cabd3975c38d5fc591c43e7"
 
-  head 'https://github.com/c9s/cpansearch.git'
+  head "https://github.com/c9s/cpansearch.git"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
 
   def install
     system "make"

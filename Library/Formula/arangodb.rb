@@ -2,67 +2,61 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.org/repositories/archive/arangodb-1.3.2.tar.gz'
-  sha1 '00d59f4f61f6c94c6d6a0a0673949f4f27693633'
+  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.3.1.tar.gz'
+  sha1 '5c87d9b60bf2758829d75336b42e590214dbe9be'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
-  depends_on 'icu4c'
-  depends_on 'libev'
-  depends_on 'v8'
+  bottle do
+    sha1 "c0e375b4c9468ba36c6780b394ceb9968834d02c" => :yosemite
+    sha1 "0803e2ae467d15172e095b8f726cd98c32c9a6b9" => :mavericks
+    sha1 "c0e58d4037b833b0aaa6341ad1bf1e1d3eea1134" => :mountain_lion
+  end
+
+  depends_on 'go' => :build
+  depends_on 'openssl'
+
+  needs :cxx11
 
   def install
+    # clang on 10.8 will still try to build against libstdc++,
+    # which fails because it doesn't have the C++0x features
+    # arangodb requires.
+    ENV.libcxx
+
+    # Bundled V8 tries to build with a 10.5 deployment target,
+    # which causes clang to error out b/c a 10.5 deployment target
+    # and -stdlib=libc++ are not valid together.
+    inreplace "3rdParty/V8/build/standalone.gypi",
+      "'mac_deployment_target%': '10.5',",
+      "'mac_deployment_target%': '#{MacOS.version}',"
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-relative
-      --disable-all-in-one-icu
-      --disable-all-in-one-libev
-      --disable-all-in-one-v8
+      --enable-all-in-one-icu
+      --enable-all-in-one-libev
+      --enable-all-in-one-v8
       --enable-mruby
       --datadir=#{share}
       --localstatedir=#{var}
     ]
 
-    if build.devel?
-      args << "--program-suffix=-#{version}"
-    end
-
-    if build.head?
-      args << "--program-suffix=-unstable"
-    end
+    args << "--program-suffix=unstable" if build.head?
 
     system "./configure", *args
     system "make install"
 
-    (var+'arangodb').mkpath
-    (var+'log/arangodb').mkpath
+    (var/'arangodb').mkpath
+    (var/'log/arangodb').mkpath
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod"
-
-  def caveats; <<-EOS.undent
-    ArangoDB (http://www.arangodb.org)
-      A universal open-source database with a flexible data model for documents,
-      graphs, and key-values.
-
-    First Steps with ArangoDB:
-      http:/www.arangodb.org/quickstart
-
-    Upgrading ArangoDB:
-      http://www.arangodb.org/manuals/current/Upgrading.html
-
-    Configuration file:
-      /usr/local/etc/arangodb/arangod.conf
-
-    Start ArangoDB server:
-      unix> /usr/local/sbin/arangod
-
-    Start ArangoDB shell client (use empty password):
-      unix> /usr/local/bin/arangosh
-
-    EOS
+  def post_install
+    system "#{sbin}/arangod", "--upgrade", "--log.file", "-"
   end
+
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod --log.file -"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -75,7 +69,7 @@ class Arangodb < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/arangod</string>
+          <string>#{opt_sbin}/arangod</string>
           <string>-c</string>
           <string>#{etc}/arangodb/arangod.conf</string>
         </array>

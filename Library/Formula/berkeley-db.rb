@@ -2,8 +2,16 @@ require 'formula'
 
 class BerkeleyDb < Formula
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
-  url 'http://download.oracle.com/berkeley-db/db-5.3.21.tar.gz'
-  sha1 '32e43c4898c8996750c958a90c174bd116fcba83'
+  url 'http://download.oracle.com/berkeley-db/db-5.3.28.tar.gz'
+  sha1 'fa3f8a41ad5101f43d08bc0efb6241c9b6fc1ae9'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "a134b5effaa73fd296b2601180520292c0a6d095" => :yosemite
+    sha1 "910660e253bf32a1ce730d4ba27e3090f645f5f6" => :mavericks
+    sha1 "aaafa41026335a6b7e6c0792d1511325c79409fa" => :mountain_lion
+  end
 
   option 'with-java', 'Compile with Java support.'
   option 'enable-sql', 'Compile with SQL support.'
@@ -11,7 +19,7 @@ class BerkeleyDb < Formula
   # Fix build under Xcode 4.6
   # Double-underscore names are reserved, and __atomic_compare_exchange is now
   # a built-in, so rename this to something non-conflicting.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # BerkeleyDB dislikes parallel builds
@@ -25,7 +33,7 @@ class BerkeleyDb < Formula
       --enable-cxx
       --enable-compat185
     ]
-    args << "--enable-java" if build.include? "with-java"
+    args << "--enable-java" if build.with? "java"
     args << "--enable-sql" if build.include? "enable-sql"
 
     # BerkeleyDB requires you to build everything from the build_unix subdirectory

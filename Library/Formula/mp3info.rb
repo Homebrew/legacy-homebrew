@@ -5,10 +5,9 @@ class Mp3info < Formula
   url 'http://www.ibiblio.org/pub/linux/apps/sound/mp3-utils/mp3info/mp3info-0.8.5a.tgz'
   sha1 '54df29eb6c2e581899affc12be698b0a71d91ca6'
 
-  def patches
-    { :p0 =>
-      "https://svn.macports.org/repository/macports/!svn/bc/34602/trunk/dports/audio/mp3info/files/patch-mp3tech.c.diff"
-    }
+  patch :p0 do
+    url "https://trac.macports.org/export/34602/trunk/dports/audio/mp3info/files/patch-mp3tech.c.diff"
+    sha1 "ca270ee34f87c560d0e508096a1becaae3d5feff"
   end
 
   def install

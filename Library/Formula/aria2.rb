@@ -1,28 +1,49 @@
-require 'formula'
+require "formula"
 
 class Aria2 < Formula
-  homepage 'http://aria2.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.17.1/aria2-1.17.1.tar.bz2'
-  sha1 'a40730013501554cdb0ce2b56a919f3ee971c06e'
+  homepage "http://aria2.sourceforge.net/"
+  revision 1
 
-  option 'with-appletls', 'Build with Secure Transport for SSL support'
+  stable do
+    url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.8/aria2-1.18.8.tar.bz2"
+    sha1 "b6ad7064b1ea769e78f6a7dc9787a12cfc1e153f"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gnutls'
-  depends_on 'sqlite'
-  depends_on 'curl-ca-bundle' => :recommended
+    # Upstream patch to fix crash on OSX when proxy is used
+    # See: https://github.com/tatsuhiro-t/aria2/commit/9a931e7
+    patch do
+      url "https://github.com/tatsuhiro-t/aria2/commit/9a931e7.diff"
+      sha1 "386c2a831e9ab91524a1af1eeb3037a819b85ec5"
+    end
+  end
 
-  # Leopard's libxml2 is too old.
-  depends_on 'libxml2' if MacOS.version <= :leopard
+  bottle do
+    cellar :any
+    sha1 "0bfe8bc96b7d95c0d45c9f84e725eb5eae64d1bf" => :yosemite
+    sha1 "1c8c6558e0016c7e1ac2f01485a676b28df8ac55" => :mavericks
+    sha1 "9199de445bcc3c9dd932781e96d1fa53dd7e922e" => :mountain_lion
+  end
+
+  depends_on "pkg-config" => :build
+
+  needs :cxx11
 
   def install
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
-    args << "--with-ca-bundle=#{HOMEBREW_PREFIX}/share/ca-bundle.crt" if build.with? 'curl-ca-bundle'
-    if build.with? 'appletls'
-      args << "--with-appletls"
-    else
-      args << "--without-appletls"
-    end
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-appletls
+      --without-openssl
+      --without-gnutls
+      --without-libgmp
+      --without-libnettle
+      --without-libgcrypt
+    ]
+
+    # system zlib and sqlite don't include .pc files
+    ENV["ZLIB_CFLAGS"] = "-I/usr/include"
+    ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
+    ENV["SQLITE3_CFLAGS"] = "-I/usr/include"
+    ENV["SQLITE3_LIBS"] = "-L/usr/lib -lsqlite3"
 
     system "./configure", *args
     system "make install"

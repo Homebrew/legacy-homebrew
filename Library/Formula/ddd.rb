@@ -9,6 +9,19 @@ class Ddd < Formula
   depends_on 'lesstif'
   depends_on :x11
 
+  # Needed for OSX 10.9 DP6 build failure:
+  # https://savannah.gnu.org/patch/?8178
+  patch :p0 do
+    url "https://savannah.gnu.org/patch/download.php?file_id=29114"
+    sha1 "4f7406e7698f54f609ced955f0cc90374cc45431"
+  end if MacOS.version >= :mavericks
+
+  # https://savannah.gnu.org/bugs/?41997
+  patch do
+    url "https://savannah.gnu.org/patch/download.php?file_id=31132"
+    sha1 "a004e64cbfa46333b3bba1a910a4f4e9049dc5d2"
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

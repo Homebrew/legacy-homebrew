@@ -2,7 +2,7 @@ require 'formula'
 
 class Pixz < Formula
   homepage 'https://github.com/vasi/pixz'
-  url 'http://downloads.sourceforge.net/project/pixz/pixz-1.0.2.tgz'
+  url 'https://downloads.sourceforge.net/project/pixz/pixz-1.0.2.tgz'
   sha1 '953b2b55504ba349f1e7e47bdfcd4165ba206827'
 
   head 'https://github.com/vasi/pixz.git'

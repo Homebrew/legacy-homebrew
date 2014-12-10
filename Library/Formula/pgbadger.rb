@@ -1,9 +1,16 @@
-require 'formula'
+require "formula"
 
 class Pgbadger < Formula
-  homepage 'http://dalibo.github.io/pgbadger/'
-  url 'http://downloads.sourceforge.net/project/pgbadger/3.3/pgbadger-3.3.tar.gz'
-  sha1 '26c8006fd64ca12f75a945bf697eaea9654dc2fd'
+  homepage "http://dalibo.github.io/pgbadger/"
+  url "https://downloads.sourceforge.net/project/pgbadger/6.2/pgbadger-6.2.tar.gz"
+  sha1 "46f6935ff746f8b2002009ebbcae60d23aaff8b3"
+
+  bottle do
+    cellar :any
+    sha1 "9616da60ee7c521b8f03e747ac7ec558059be8ed" => :yosemite
+    sha1 "41b734655e5c158be3e585e8108b8cab67017004" => :mavericks
+    sha1 "029768bd3f29fc116c531bc16edc42fb77c30ff7" => :mountain_lion
+  end
 
   def install
     system "perl", "Makefile.PL", "DESTDIR=."
@@ -11,8 +18,8 @@ class Pgbadger < Formula
     system "make install"
     bin.install "usr/local/bin/pgbadger"
     man1.install "usr/local/share/man/man1/pgbadger.1"
-    chmod 0755, bin+'pgbadger' # has 555 by default
-    chmod 0644, man1+'pgbadger.1' # has 444 by default
+    chmod 0755, bin+"pgbadger" # has 555 by default
+    chmod 0644, man1+"pgbadger.1" # has 444 by default
   end
 
   def caveats; <<-EOS.undent

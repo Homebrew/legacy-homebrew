@@ -16,7 +16,7 @@ class Jbigkit < Formula
 
     # It needs j1 to make the tests happen in sequence.
     ENV.deparallelize
-    system "make test" if build.include? 'with-check'
+    system "make test" if build.with? "check"
 
     # Install the files using three common styles of syntax:
     prefix.install %w[contrib examples]

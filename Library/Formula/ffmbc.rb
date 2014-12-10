@@ -2,8 +2,15 @@ require 'formula'
 
 class Ffmbc < Formula
   homepage 'http://code.google.com/p/ffmbc/'
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
+  url 'https://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
   sha1 '85a9673ac82a698bb96057fe027222efe6ebae28'
+  revision 1
+
+  bottle do
+    sha1 "2ec4e61817f6dca744a74f366b9c9d8912fb3d89" => :mavericks
+    sha1 "f9fd79a535a052862c3695a1525990c6df31e5d4" => :mountain_lion
+    sha1 "bccbff468429c7af94e8047688b5452184826c22" => :lion
+  end
 
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
@@ -18,11 +25,13 @@ class Ffmbc < Formula
   depends_on 'lame' => :recommended
   depends_on 'xvid' => :recommended
 
-  depends_on :freetype => :optional
+  depends_on 'freetype' => :optional
   depends_on 'theora'  => :optional
   depends_on 'libvorbis' => :optional
   depends_on 'libogg' => :optional
   depends_on 'libvpx' => :optional
+
+  patch :DATA # fix man page generation, fixed in upstream ffmpeg
 
   def install
     args = ["--prefix=#{prefix}",
@@ -32,10 +41,10 @@ class Ffmbc < Formula
             "--enable-nonfree",
             "--cc=#{ENV.cc}"]
 
-    args << "--enable-libx264" unless build.without? 'x264'
-    args << "--enable-libfaac" unless build.without? 'faac'
-    args << "--enable-libmp3lame" unless build.without? 'lame'
-    args << "--enable-libxvid" unless build.without? 'xvid'
+    args << "--enable-libx264" if build.with? 'x264'
+    args << "--enable-libfaac" if build.with? 'faac'
+    args << "--enable-libmp3lame" if build.with? 'lame'
+    args << "--enable-libxvid" if build.with? 'xvid'
 
     args << "--enable-libfreetype" if build.with? 'freetype'
     args << "--enable-libtheora" if build.with? 'theora'
@@ -50,10 +59,6 @@ class Ffmbc < Formula
     # This formula will only install the commandline tools
     mv "ffprobe", "ffprobe-bc"
     bin.install "ffmbc", "ffprobe-bc"
-    cd "doc" do
-      #mv "ffprobe.1", "ffprobe-bc.1"
-      #man1.install "ffmbc.1", "ffprobe-bc.1"
-    end
   end
 
   def caveats
@@ -66,7 +71,22 @@ class Ffmbc < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/ffmbc", "-h"
   end
 end
+
+__END__
+diff --git a/doc/texi2pod.pl b/doc/texi2pod.pl
+index 18531be..88b0a3f 100755
+--- a/doc/texi2pod.pl
++++ b/doc/texi2pod.pl
+@@ -297,6 +297,8 @@ $inf = pop @instack;
+ 
+ die "No filename or title\n" unless defined $fn && defined $tl;
+ 
++print "=encoding utf8\n\n";
++
+ $sects{NAME} = "$fn \- $tl\n";
+ $sects{FOOTNOTES} .= "=back\n" if exists $sects{FOOTNOTES};
+ 

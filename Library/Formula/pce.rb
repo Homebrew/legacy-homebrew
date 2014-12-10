@@ -2,14 +2,14 @@ require 'formula'
 
 class Pce < Formula
   homepage 'http://www.hampa.ch/pce/'
-  url 'http://www.hampa.ch/pub/pce/pce-0.2.1.tar.gz'
-  sha1 '72b9de82fc966a0ba037002605df7fbb7c7f5fb3'
+  url 'http://www.hampa.ch/pub/pce/pce-0.2.2.tar.gz'
+  sha1 'b12dffbacaad44532b5c576bcffae5d11f17cc56'
 
   head 'git://git.hampa.ch/pce.git'
 
   devel do
-    url 'http://www.hampa.ch/pub/pce/pre/pce-20120904-92b57a0.tar.gz'
-    sha1 '577f5ad48e9b65ff01b8a6be655c83e3fda0a778'
+    url 'http://www.hampa.ch/pub/pce/pre/pce-20140222-4b05f0c.tar.gz'
+    sha1 '980bf6cf02c074d3a70b9dbb262358e0518461b8'
   end
 
   depends_on 'sdl'

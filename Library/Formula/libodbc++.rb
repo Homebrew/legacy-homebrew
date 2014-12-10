@@ -2,17 +2,20 @@ require 'formula'
 
 class Libodbcxx < Formula
   homepage 'http://libodbcxx.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/libodbcxx/libodbc++/0.2.5/libodbc++-0.2.5.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libodbcxx/libodbc++/0.2.5/libodbc++-0.2.5.tar.gz'
   sha1 'e59842266b981caab24a6fae1f7d48b6799420f8'
+
+  bottle do
+    cellar :any
+    sha1 "2bbe061284cc6a3188e776c8bb9544fad672862e" => :mountain_lion
+  end
 
   # Two patches are included:
   # The first: Fixes a compilation error on 64bit machines:
   # http://sourceforge.net/tracker/?func=detail&aid=3590196&group_id=19075&atid=319075
   # The second: Fixes a memory corruption error on 64bit systems:
   # https://sourceforge.net/tracker/?func=detail&aid=3601361&group_id=19075&atid=319075
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

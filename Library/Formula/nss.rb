@@ -1,63 +1,68 @@
-require 'formula'
+require "formula"
 
 class Nss < Formula
-  homepage 'http://www.mozilla.org/projects/security/pki/nss/'
-  url 'http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_14_1_RTM/src/nss-3.14.1.tar.gz'
-  sha1 '764773e869aaee314e6f3ca675e04c55075d88a8'
+  homepage "https://developer.mozilla.org/docs/NSS"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_2_RTM/src/nss-3.17.2.tar.gz"
+  sha256 "134929e44e44b968a4883f4ee513a71ae45d55b486cee41ee8e26c3cc84dab8b"
 
-  depends_on 'nspr'
+  bottle do
+    cellar :any
+    sha1 "a95ed894654e8c276746826703461f70dda3b2d5" => :yosemite
+    sha1 "0e88f0e26ad4f57d3cf8ccee7930f278c8bac0c2" => :mavericks
+    sha1 "df5cceadcdf7c37af42c7b7950dd987fb9f47ab5" => :mountain_lion
+  end
 
-  keg_only 'NSS installs a libssl which conflicts with OpenSSL.'
+  depends_on "nspr"
 
   def install
     ENV.deparallelize
+    cd "nss"
 
     args = [
-      'BUILD_OPT=1',
-      'NSS_ENABLE_ECC=1',
-      'NS_USE_GCC=1',
-      'NO_MDUPDATE=1',
-      'NSS_USE_SYSTEM_SQLITE=1',
+      "BUILD_OPT=1",
+      "NSS_USE_SYSTEM_SQLITE=1",
       "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
       "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
     ]
-    args << 'USE_64=1' if MacOS.prefer_64_bit?
+    args << "USE_64=1" if MacOS.prefer_64_bit?
 
     # Remove the broken (for anyone but Firefox) install_name
-    inreplace "mozilla/security/coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
-    inreplace "mozilla/security/nss/lib/freebl/config.mk", "@executable_path", lib
+    inreplace "coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
+    inreplace "lib/freebl/config.mk", "@executable_path", lib
 
-    system "make", "build_coreconf", "build_dbm", "all", "-C", "mozilla/security/nss", *args
+    system "make", "all", *args
 
     # We need to use cp here because all files get cross-linked into the dist
     # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
     # rather than copying the referenced file.
-
-    bin.mkdir
-    Dir['mozilla/dist/Darwin*/bin/*'].each do |file|
-      cp file, bin
+    cd "../dist"
+    bin.mkpath
+    Dir.glob("Darwin*/bin/*") do |file|
+      cp file, bin unless file.include? ".dylib"
     end
 
-    include.mkdir
     include_target = include + "nss"
-    include_target.mkdir
-    ['dbm', 'nss'].each do |dir|
-      Dir["mozilla/dist/public/#{dir}/*"].each do |file|
-        cp file, include_target
+    include_target.mkpath
+    Dir.glob("public/{dbm,nss}/*") { |file| cp file, include_target }
+
+    lib.mkpath
+    libexec.mkpath
+    Dir.glob("Darwin*/lib/*") do |file|
+      if file.include? ".chk"
+        cp file, libexec
+      else
+        cp file, lib
       end
     end
+    # resolves conflict with openssl, see #28258
+    rm lib/"libssl.a"
 
-    lib.mkdir
-    Dir['mozilla/dist/Darwin*/lib/*'].each do |file|
-      cp file, lib
-    end
-
-    (lib+'pkgconfig/nss.pc').write pc_file
+    (lib+"pkgconfig/nss.pc").write pc_file
   end
 
   test do
     # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
-    (testpath/'passwd').write("It's a secret to everyone.")
+    (testpath/"passwd").write("It's a secret to everyone.")
     system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
     system "#{bin}/certutil", "-L", "-d", pwd
   end

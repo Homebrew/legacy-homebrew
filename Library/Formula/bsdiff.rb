@@ -5,11 +5,9 @@ class Bsdiff < Formula
   url 'http://www.daemonology.net/bsdiff/bsdiff-4.3.tar.gz'
   sha1 '0c0a89d604fc55ef2b5e69cd18372b2972edd8b8'
 
-  depends_on :bsdmake
+  depends_on "bsdmake" => :build
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "bsdmake"

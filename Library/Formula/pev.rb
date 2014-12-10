@@ -2,8 +2,8 @@ require 'formula'
 
 class Pev < Formula
   homepage 'http://pev.sf.net/'
-  url 'http://downloads.sourceforge.net/project/pev/pev-0.60/pev-0.60.tar.gz'
-  sha1 '8d5e0bafb6dd4da0dcda6837928ad4babb6c8a94'
+  url 'https://downloads.sourceforge.net/project/pev/pev-0.70/pev-0.70.tar.gz'
+  sha1 'b2d1191c3b57049c78ef77b8f54f7f78838af129'
 
   head 'https://github.com/merces/pev.git'
 
@@ -11,13 +11,13 @@ class Pev < Formula
 
   def install
     inreplace 'src/Makefile' do |s|
-      s.change_make_var! "PREFIX", prefix
+      s.gsub! '/usr', prefix
       s.change_make_var! "SHAREDIR", share
       s.change_make_var! "MANDIR", man
     end
 
     inreplace 'lib/libpe/Makefile' do |s|
-      s.change_make_var! "PREFIX", prefix
+      s.gsub! '/usr', prefix
     end
 
     system "make", "CC=#{ENV.cc}"

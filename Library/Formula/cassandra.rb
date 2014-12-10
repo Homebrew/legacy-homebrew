@@ -2,8 +2,8 @@ require 'formula'
 
 class Cassandra < Formula
   homepage 'http://cassandra.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.6/apache-cassandra-1.2.6-bin.tar.gz'
-  sha1 '25b9c63eb33c3ce483390e6edab4a5d1bb95eb4c'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/2.1.2/apache-cassandra-2.1.2-bin.tar.gz'
+  sha1 '93d89de9aadc50acfee84b502daa3f96c9eca782'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -11,22 +11,31 @@ class Cassandra < Formula
     (etc+"cassandra").mkpath
 
     inreplace "conf/cassandra.yaml", "/var/lib/cassandra", "#{var}/lib/cassandra"
-    inreplace "conf/log4j-server.properties", "/var/log/cassandra", "#{var}/log/cassandra"
     inreplace "conf/cassandra-env.sh", "/lib/", "/"
 
+    inreplace "bin/cassandra", "-Dcassandra.logdir\=$CASSANDRA_HOME/logs", "-Dcassandra.logdir\=#{var}/log/cassandra"
     inreplace "bin/cassandra.in.sh" do |s|
-      s.gsub! "CASSANDRA_HOME=`dirname $0`/..", "CASSANDRA_HOME=#{prefix}"
+      s.gsub! "CASSANDRA_HOME=\"`dirname \"$0\"`/..\"", "CASSANDRA_HOME=\"#{prefix}\""
       # Store configs in etc, outside of keg
-      s.gsub! "CASSANDRA_CONF=$CASSANDRA_HOME/conf", "CASSANDRA_CONF=#{etc}/cassandra"
+      s.gsub! "CASSANDRA_CONF=\"$CASSANDRA_HOME/conf\"", "CASSANDRA_CONF=\"#{etc}/cassandra\""
       # Jars installed to prefix, no longer in a lib folder
-      s.gsub! "$CASSANDRA_HOME/lib/*.jar", "$CASSANDRA_HOME/*.jar"
+      s.gsub! "\"$CASSANDRA_HOME\"/lib/*.jar", "\"$CASSANDRA_HOME\"/*.jar"
+      # The jammm Java agent is not in a lib/ subdir either:
+      s.gsub! "JAVA_AGENT=\"$JAVA_AGENT -javaagent:$CASSANDRA_HOME/lib/jamm-", "JAVA_AGENT=\"$JAVA_AGENT -javaagent:$CASSANDRA_HOME/jamm-"
+      # Storage path
+      s.gsub! "cassandra_storagedir\=\"$CASSANDRA_HOME/data\"", "cassandra_storagedir\=\"#{var}/lib/cassandra\""
     end
 
-    rm Dir["bin/*.bat"]
+    rm Dir["bin/*.bat", "bin/*.ps1"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
+    prefix.install Dir["*.txt", "{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
+
+    share.install [bin+'cassandra.in.sh', bin+'stop-server']
+    inreplace Dir["#{bin}/cassandra*", "#{bin}/debug-cql", "#{bin}/nodetool", "#{bin}/sstable*"],
+              /`dirname "?\$0"?`\/cassandra.in.sh/,
+              "#{share}/cassandra.in.sh"
   end
 
   def caveats; <<-EOS.undent
@@ -51,7 +60,7 @@ class Cassandra < Formula
 
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/cassandra</string>
+            <string>#{opt_bin}/cassandra</string>
             <string>-f</string>
         </array>
 

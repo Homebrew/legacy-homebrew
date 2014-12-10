@@ -2,12 +2,12 @@ require 'formula'
 
 class Glui < Formula
   homepage 'http://glui.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/glui/Source/2.36/glui-2.36.tgz'
+  url 'https://downloads.sourceforge.net/project/glui/Source/2.36/glui-2.36.tgz'
   sha256 'c1ef5e83cf338e225ce849f948170cd681c99661a5c2158b4074515926702787'
 
   # Fix compiler warnings in glui.h. Reported upstream:
   # http://sourceforge.net/p/glui/patches/12/
-  def patches; DATA; end
+  patch :DATA
 
   def install
     cd 'src' do

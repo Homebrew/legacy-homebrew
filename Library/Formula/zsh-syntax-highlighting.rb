@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class ZshSyntaxHighlighting < Formula
-  homepage 'https://github.com/zsh-users/zsh-syntax-highlighting'
-  url 'https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.1.3.zip'
-  sha1 '889b041af29ff1aab0a8e3a3b99ba24f02ddc881'
+  homepage "https://github.com/zsh-users/zsh-syntax-highlighting"
+  url "https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.2.1.tar.gz"
+  sha1 "767c5fff7a5823647c733091348c3c52a5c2d1b0"
 
-  head 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+  head "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
   def install
-    (share/'zsh-syntax-highlighting').install Dir['*']
+    (share/"zsh-syntax-highlighting").install Dir["*"]
   end
 
   def caveats

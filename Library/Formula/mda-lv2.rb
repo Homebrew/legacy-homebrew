@@ -2,8 +2,8 @@ require 'formula'
 
 class MdaLv2 < Formula
   homepage 'http://drobilla.net/software/mda-lv2/'
-  url 'http://download.drobilla.net/mda-lv2-1.0.0.tar.bz2'
-  sha1 '03ad1115405bbc870b3cd10f557f326b38cbb74d'
+  url 'http://download.drobilla.net/mda-lv2-1.2.2.tar.bz2'
+  sha1 'f96f56f92160e4f1e3813fedec43775d1cc621ef'
 
   depends_on 'pkg-config' => :build
   depends_on 'lv2'

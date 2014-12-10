@@ -2,8 +2,8 @@ require 'formula'
 
 class Multitail < Formula
   homepage 'http://www.vanheusden.com/multitail/download.html'
-  url 'http://www.vanheusden.com/multitail/multitail-5.2.12.tgz'
-  sha1 '3d4979b8be1daaf99e4fd983366e0131aa3d0d3b'
+  url 'http://www.vanheusden.com/multitail/multitail-6.2.1.tgz'
+  sha1 '30bd77c4f542cd6ad6f1a0351f7d9e0a6cef6585'
 
   def install
     ENV['DESTDIR'] = prefix

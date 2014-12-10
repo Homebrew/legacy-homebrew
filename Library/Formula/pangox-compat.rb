@@ -6,7 +6,6 @@ class PangoxCompat < Formula
   sha256 '552092b3b6c23f47f4beee05495d0f9a153781f62a1c4b7ec53857a37dfce046'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'pango'
 
   def install

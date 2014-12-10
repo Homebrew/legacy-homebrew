@@ -11,7 +11,7 @@ class Mpssh < Formula
     man1.install "mpssh.man" => "mpssh.1"
   end
 
-  def test
+  test do
     system "#{bin}/mpssh"
   end
 end

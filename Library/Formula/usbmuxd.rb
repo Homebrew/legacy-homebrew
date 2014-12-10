@@ -1,30 +1,35 @@
-require 'formula'
+require "formula"
 
 class Usbmuxd < Formula
-  homepage 'http://marcansoft.com/blog/iphonelinux/usbmuxd/'
-  url 'http://www.libimobiledevice.org/downloads/usbmuxd-1.0.8.tar.bz2'
-  sha1 '56bd90d5ff94c1d9c528f8b49deffea25b7384e8'
+  homepage "http://www.libimobiledevice.org"
+  url "http://www.libimobiledevice.org/downloads/libusbmuxd-1.0.10.tar.bz2"
+  sha1 "9d4ce8ac058cfea66e6785d2bad5bb9c93681b16"
 
-  head 'http://cgit.sukimashita.com/usbmuxd.git'
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "f9cb14678e5e2dbee3f189641d8d390bee938fd3" => :yosemite
+    sha1 "1ee806476cda65d5904431815f949dd6074e7a7e" => :mavericks
+    sha1 "09014c177d40d10c0a10b5540c92023316382a5f" => :mountain_lion
+  end
 
-  depends_on 'cmake' => :build
-  depends_on 'pkg-config' => :build
+  head do
+    url "http://git.sukimashita.com/libusbmuxd.git"
 
-  depends_on 'libusb'
-  depends_on 'libplist'
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "libusb"
+  depends_on "libplist"
 
   def install
-    libusb = Formula.factory 'libusb'
-    inreplace 'Modules/VersionTag.cmake', '"sh"', '"bash"'
-
-    # The CMake scripts responsible for locating libusb headers are broken. So,
-    # we explicitly point the build script at the proper directory.
-    mkdir 'build' do
-      system "cmake", "..",
-                      "-DLIB_SUFFIX=",
-                      "-DUSB_INCLUDE_DIR=#{libusb.include.children.first}",
-                      *std_cmake_args
-      system 'make install'
-    end
+    system "./autogen.sh" if build.head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

@@ -1,26 +1,37 @@
-require 'formula'
+require "formula"
 
 class Tbb < Formula
-  homepage 'http://www.threadingbuildingblocks.org/'
-  url 'http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb41_20130314oss_src.tgz'
-  sha1 'e2bf74c1e492b06faf3ecdf2321e64ca698c0921'
-  version '4.1u3'
+  homepage "http://www.threadingbuildingblocks.org/"
+  url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20141023oss_src.tgz"
+  sha1 "aaecdc97049fbe3c623be46c4e1261b74a1a41a3"
+  version "4.3-20141023"
 
-  fails_with :clang do
-    cause "Undefined symbols for architecture x86_64: vtable for tbb::tbb_exception"
+  bottle do
+    cellar :any
+    sha1 "f3111568e5b600345ca518027771a5169fa4f981" => :yosemite
+    sha1 "79e0ed2f2f78f7686a22f155df083ed3a678159a" => :mavericks
+    sha1 "ef6d80cc918ee3a2305cf470cb81c48b48e73bd2" => :mountain_lion
   end
+
+  # requires malloc features first introduced in Lion
+  # https://github.com/Homebrew/homebrew/issues/32274
+  depends_on :macos => :lion
+
+  option :cxx11
 
   def install
     # Intel sets varying O levels on each compile command.
     ENV.no_optimization
-    # Override build prefix so we can copy the dylibs out of the same place
-    # no matter what system we're on, and use our compilers.
-    args = ['tbb_build_prefix=BUILDPREFIX',
-            "CONLY=#{ENV.cc}",
-            "CPLUS=#{ENV.cxx}"]
-    args << (MacOS.prefer_64_bit? ? "arch=intel64" : "arch=ia32")
+
+    args = %W[tbb_build_prefix=BUILDPREFIX]
+
+    if build.cxx11?
+      ENV.cxx11
+      args << "cpp0x=1" << "stdlib=libc++"
+    end
+
     system "make", *args
-    lib.install Dir['build/BUILDPREFIX_release/*.dylib']
-    include.install 'include/tbb'
+    lib.install Dir["build/BUILDPREFIX_release/*.dylib"]
+    include.install "include/tbb"
   end
 end

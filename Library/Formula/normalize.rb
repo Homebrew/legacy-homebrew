@@ -9,6 +9,8 @@ class Normalize < Formula
 
   depends_on 'mad' => :recommended
 
+  conflicts_with 'num-utils', :because => 'both install `normalize` binaries'
+
   def install
     args = %W[
       --disable-debug
@@ -22,7 +24,7 @@ class Normalize < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/normalize"
   end
 end

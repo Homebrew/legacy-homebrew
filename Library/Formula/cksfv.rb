@@ -9,4 +9,11 @@ class Cksfv < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
+
+  test do
+    path = testpath/"foo"
+    path.write "abcd"
+
+    assert shell_output("#{bin}/cksfv #{path}").include?("#{path} ED82CD11")
+  end
 end

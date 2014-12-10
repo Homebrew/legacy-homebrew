@@ -2,39 +2,38 @@ require 'formula'
 
 class Libvpx < Formula
   homepage 'http://www.webmproject.org/code/'
-  url 'http://webm.googlecode.com/files/libvpx-v1.1.0.tar.bz2'
-  sha1 '356af5f770c50cd021c60863203d8f30164f6021'
+  url 'https://webm.googlecode.com/files/libvpx-v1.3.0.tar.bz2'
+  sha1 '191b95817aede8c136cc3f3745fb1b8c50e6d5dc'
+  revision 1
+
+  head "https://chromium.googlesource.com/webm/libvpx", :using => :git
+
+  bottle do
+    revision 1
+    sha1 "9ce8fe3ae1d8fa737bc3d900b289da0838c2500a" => :yosemite
+    sha1 "65a8b42abf0c83ed0e9faec7791150b68836f862" => :mavericks
+  end
 
   depends_on 'yasm' => :build
 
   option 'gcov', 'Enable code coverage'
   option 'mem-tracker', 'Enable tracking memory usage'
   option 'visualizer', 'Enable post processing visualizer'
-
-  # Fixes build error on ML, discussed in:
-  # https://github.com/mxcl/homebrew/issues/12567
-  # yasm: FATAL: unable to open include file `asm_enc_offsets.asm'.  Reported to:
-  # https://groups.google.com/a/webmproject.org/group/webm-discuss/browse_thread/thread/39d1166feac1061c
-  # Not yet in HEAD as of 20 JUN 2012.
-  def patches; DATA; end
+  option "with-examples", "Build examples (vpxdec/vpxenc)"
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--enable-pic",
-            "--disable-examples",
-            "--disable-runtime-cpu-detect"]
+    args = ["--prefix=#{prefix}", "--enable-pic", "--disable-unit-tests"]
+    args << (build.with?("examples") ? "--enable-examples" : "--disable-examples")
     args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
     args << "--enable-mem-tracker" if build.include? "mem-tracker"
     args << "--enable-postproc-visualizer" if build.include? "visualizer"
 
-    # see http://code.google.com/p/webm/issues/detail?id=401
-    # Configure misdetects 32-bit 10.6.
-    # Determine if the computer runs Darwin 9, 10, or 11 using uname -r.
-    osver = %x[uname -r | cut -d. -f1].chomp
-    if MacOS.prefer_64_bit? then
-      args << "--target=x86_64-darwin#{osver}-gcc"
-    else
-      args << "--target=x86-darwin#{osver}-gcc"
+    ENV.append "CXXFLAGS", "-DGTEST_USE_OWN_TR1_TUPLE=1" # Mavericks uses libc++ which doesn't supply <TR1/tuple>
+
+    # configure misdetects 32-bit 10.6
+    # http://code.google.com/p/webm/issues/detail?id=401
+    if MacOS.version == "10.6" && Hardware.is_32_bit?
+      args << "--target=x86-darwin10-gcc"
     end
 
     mkdir 'macbuild' do
@@ -43,16 +42,3 @@ class Libvpx < Formula
     end
   end
 end
-
-__END__
---- a/build/make/gen_asm_deps.sh	2012-05-08 16:14:00.000000000 -0700
-+++ b/build/make/gen_asm_deps.sh	2012-06-19 20:26:54.000000000 -0700
-@@ -42,7 +42,7 @@
- 
- [ -n "$srcfile" ] || show_help
- sfx=${sfx:-asm}
--includes=$(LC_ALL=C egrep -i "include +\"?+[a-z0-9_/]+\.${sfx}" $srcfile |
-+includes=$(LC_ALL=C egrep -i "include +\"+[a-z0-9_/]+\.${sfx}" $srcfile |
-            perl -p -e "s;.*?([a-z0-9_/]+.${sfx}).*;\1;")
- #" restore editor state
- for inc in ${includes}; do

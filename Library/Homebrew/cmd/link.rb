@@ -1,7 +1,6 @@
 require 'ostruct'
 
-module Homebrew extend self
-
+module Homebrew
   def link
     raise KegUnspecifiedError if ARGV.named.empty?
 
@@ -13,29 +12,35 @@ module Homebrew extend self
     ARGV.kegs.each do |keg|
       if keg.linked?
         opoo "Already linked: #{keg}"
-        puts "To relink: brew unlink #{keg.fname} && brew link #{keg.fname}"
+        puts "To relink: brew unlink #{keg.name} && brew link #{keg.name}"
         next
-      elsif keg_only?(keg.fname) && !ARGV.force?
-        opoo "#{keg.fname} is keg-only and must be linked with --force"
+      elsif keg_only?(keg.name) && !ARGV.force?
+        opoo "#{keg.name} is keg-only and must be linked with --force"
         puts "Note that doing so can interfere with building software."
         next
       elsif mode.dry_run && mode.overwrite
-        print "Would remove:\n" do
-          keg.link(mode)
-        end
+        puts "Would remove:"
+        keg.link(mode)
 
         next
       elsif mode.dry_run
-        print "Would link:\n" do
-          keg.link(mode)
-        end
+        puts "Would link:"
+        keg.link(mode)
 
         next
       end
 
       keg.lock do
-        print "Linking #{keg}... " do
-          puts "#{keg.link(mode)} symlinks created"
+        print "Linking #{keg}... "
+        puts if ARGV.verbose?
+
+        begin
+          n = keg.link(mode)
+        rescue Keg::LinkError
+          puts
+          raise
+        else
+          puts "#{n} symlinks created"
         end
       end
     end
@@ -44,26 +49,8 @@ module Homebrew extend self
   private
 
   def keg_only?(name)
-    Formula.factory(name).keg_only?
+    Formulary.factory(name).keg_only?
   rescue FormulaUnavailableError
     false
   end
-
-  # Allows us to ensure a puts happens before the block exits so that if say,
-  # an exception is thrown, its output starts on a new line.
-  def print str, &block
-    Kernel.print str
-    puts_capture = Class.new do
-      def self.puts str
-        $did_puts = true
-        Kernel.puts str
-      end
-    end
-
-    puts_capture.instance_eval(&block)
-
-  ensure
-    puts unless $did_puts
-  end
-
 end

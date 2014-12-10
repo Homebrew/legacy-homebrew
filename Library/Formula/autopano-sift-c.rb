@@ -2,7 +2,7 @@ require 'formula'
 
 class AutopanoSiftC < Formula
   homepage 'http://wiki.panotools.org/Autopano-sift-C'
-  url 'http://downloads.sourceforge.net/project/hugin/autopano-sift-C/autopano-sift-C-2.5.1/autopano-sift-C-2.5.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/hugin/autopano-sift-C/autopano-sift-C-2.5.1/autopano-sift-C-2.5.1.tar.gz'
   sha1 'f8c5f4004ae51cb58acc5cedb065ae0ef3e19a8c'
 
   depends_on 'libpano'
@@ -14,7 +14,7 @@ class AutopanoSiftC < Formula
   end
 
   test do
-    pipe = IO.popen("#{bin}/autopano-sift-c")
-    assert_match /Version #{Regexp.escape(version)}/, pipe.read
+    assert_match /Version #{Regexp.escape(version)}/,
+                 pipe_output("#{bin}/autopano-sift-c")
   end
 end

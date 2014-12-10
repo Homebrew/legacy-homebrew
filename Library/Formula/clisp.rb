@@ -9,23 +9,20 @@ class Clisp < Formula
   depends_on 'libsigsegv'
   depends_on 'readline'
 
-  # -Os causes the build to fail with C_CODE_ALIGNMENT is wrong
-  # superenv doeesn't yet support changing the optimization level
-  env :std
-
   fails_with :llvm do
     build 2334
     cause "Configure fails on XCode 4/Snow Leopard."
   end
 
-  def patches
-    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff",
-      :p1 => DATA }
+  patch :DATA
+  patch :p0 do
+    url "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff"
+    sha1 "8324152a1db755db6c66ce5c059092d55576f37b"
   end
 
   def install
     ENV.j1 # This build isn't parallel safe.
-    ENV.remove_from_cflags /-O./
+    ENV.O0 # Any optimization breaks the build
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.
@@ -57,7 +54,7 @@ class Clisp < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/clisp", "--version"
   end
 end

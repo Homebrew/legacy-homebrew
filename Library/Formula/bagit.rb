@@ -1,25 +1,21 @@
 require 'formula'
 
 class Bagit < Formula
-  homepage 'http://sourceforge.net/projects/loc-xferutils/files/loc-bil-java-library/4.4/'
-  url 'http://downloads.sourceforge.net/project/loc-xferutils/loc-bil-java-library/4.4/bagit-4.4-bin.zip'
-  sha1 '2ef049e2d53a0cbb8e9959a6e2433d82a2c0c11b'
-
-  skip_clean 'logs'
+  homepage 'https://github.com/LibraryOfCongress/bagit-java'
+  url 'https://github.com/LibraryOfCongress/bagit-java/releases/download/bagit-4.9.0/bagit-4.9.0-bin.zip'
+  sha1 '6ca4c2a202ce6c975b130a180cd3bd2dcbe5a756'
 
   def install
-    prefix.install %w{conf logs}
+    # put logs in var, not in the Cellar
+    (var/'log/bagit').mkpath
+    inreplace "conf/log4j.properties", "${app.home}/logs", "#{var}/log/bagit"
 
-    libexec.install Dir['lib/*']
+    libexec.install Dir['*']
 
-    # Point to libexec, and move conf file
-    inreplace "bin/bag" do |s|
-      s.gsub! "$APP_HOME/lib", "$APP_HOME/libexec"
-      s.gsub! "/bin/$APP_NAME.classworlds.conf", "/conf/$APP_NAME.classworlds.conf"
-    end
-    inreplace "bin/bag.classworlds.conf", "${app.home}/lib", "${app.home}/libexec"
+    bin.install_symlink libexec/"bin/bag"
+  end
 
-    bin.install 'bin/bag'
-    (prefix+'conf').install 'bin/bag.classworlds.conf'
+  test do
+    system bin/'bag'
   end
 end

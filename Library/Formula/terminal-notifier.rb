@@ -2,42 +2,29 @@ require 'formula'
 
 class TerminalNotifier < Formula
   homepage 'https://github.com/alloy/terminal-notifier'
-  url 'https://github.com/alloy/terminal-notifier/archive/1.4.2.tar.gz'
-  sha1 'eaa201650be05ff10aecde03df7f0acb161eefd8'
+  url 'https://github.com/alloy/terminal-notifier/archive/1.6.2.tar.gz'
+  sha1 'ffd01b5a832e0167b9382c7ebec3e34349103b89'
 
   head 'https://github.com/alloy/terminal-notifier.git'
 
-  depends_on :macos => :mountain_lion
-  depends_on :xcode
-
-  def patches
-    # Disable code signing because we don't have the cert of the dev.
-    DATA
+  bottle do
+    cellar :any
+    sha1 "32a5d80adcf6c1e54ce7cc1ea282a12abc0cbf0f" => :yosemite
+    sha1 "a4ea9dbf9e8260390f7ab7d9fc9471e95a6b3517" => :mavericks
+    sha1 "f7ebd182b5a88663a1c98e64b77130c4508fc3f0" => :mountain_lion
   end
 
+  depends_on :macos => :mountain_lion
+  depends_on :xcode => :build
+
   def install
-    system 'xcodebuild', "-project", "Terminal Notifier.xcodeproj",
-                         "-target", "terminal-notifier",
-                         "SYMROOT=build",
-                         "-verbose"
+    xcodebuild "-project", "Terminal Notifier.xcodeproj",
+               "-target", "terminal-notifier",
+               "SYMROOT=build",
+               "-verbose"
     prefix.install Dir['build/Release/*']
     inner_binary = "#{prefix}/terminal-notifier.app/Contents/MacOS/terminal-notifier"
     bin.write_exec_script inner_binary
-    chmod 0755, Pathname.new(bin+"terminal-notifier")
+    chmod 0755, bin/'terminal-notifier'
   end
-
 end
-
-__END__
-diff --git a/Terminal Notifier.xcodeproj/project.pbxproj b/Terminal Notifier.xcodeproj/project.pbxproj
-index 163020e..bc0597e 100644
---- a/Terminal Notifier.xcodeproj/project.pbxproj	
-+++ b/Terminal Notifier.xcodeproj/project.pbxproj	
-@@ -275,7 +275,6 @@
- 		5199793415B1F92B003AFC57 /* Release */ = {
- 			isa = XCBuildConfiguration;
- 			buildSettings = {
--				CODE_SIGN_IDENTITY = "Developer ID Application: Fingertips B.V.";
- 				COMBINE_HIDPI_IMAGES = YES;
- 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
- 				GCC_PREFIX_HEADER = "Terminal Notifier/Terminal Notifier-Prefix.pch";

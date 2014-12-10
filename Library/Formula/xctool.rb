@@ -2,20 +2,22 @@ require 'formula'
 
 class Xctool < Formula
   homepage 'https://github.com/facebook/xctool'
-  url 'https://github.com/facebook/xctool/archive/v0.1.5.tar.gz'
-  sha1 '6b7442963a069b28c823c727756c747def29f773'
+  url 'https://github.com/facebook/xctool/archive/v0.2.2.tar.gz'
+  sha1 '7c1f5610d0543a2a93b87aeebd7dfb642d91d50d'
   head 'https://github.com/facebook/xctool.git'
 
-  depends_on :xcode
+  bottle do
+    cellar :any
+    sha1 "71034d5372fa3cee7bde82febf2be7dd3d56ec45" => :yosemite
+    sha1 "5a842c2aac6d6e04ab8d51061fd7052011b6a6b8" => :mavericks
+    sha1 "384f13a1e0750e1c16cf112eb97c1f44bb724cd2" => :mountain_lion
+  end
+
+  depends_on :xcode => "5.0"
 
   def install
-    system './build.sh'
-    # Install all files together in libexec so the binary can find the dylibs.
-    libexec.install 'build/Products/Release/xctool'
-    libexec.install Dir['build/Products/Release/*.dylib']
-    libexec.install 'build/Products/Release/mobile-installation-helper.app'
-    # Link the binary into bin
-    bin.install_symlink libexec/'xctool'
+    system "./scripts/build.sh", "XT_INSTALL_ROOT=#{libexec}"
+    bin.install_symlink "#{libexec}/bin/xctool"
   end
 
   test do

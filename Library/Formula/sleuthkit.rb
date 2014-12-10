@@ -2,19 +2,31 @@ require 'formula'
 
 class Sleuthkit < Formula
   homepage 'http://www.sleuthkit.org/'
-  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.0/sleuthkit-4.1.0.tar.gz'
-  sha1 '0622173bd4f20bc83cbea4e20e7db4c5b2d6c9c1'
 
-  head 'https://github.com/sleuthkit/sleuthkit.git'
+  stable do
+    url "https://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.3/sleuthkit-4.1.3.tar.gz"
+    sha1 "9350bb59bb5fbe41d6e29a8d0494460b937749ef"
+
+    # Upstream fix for https://github.com/sleuthkit/sleuthkit/issues/345
+    patch do
+      url "https://github.com/sleuthkit/sleuthkit/commit/39c62d6d169f8723c821ca7decdb8e124e126782.diff"
+      sha1 "9da053e839ef8c4a454ac2f4f80b368884ff959c"
+    end
+  end
+
+  head do
+    url "https://github.com/sleuthkit/sleuthkit.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  conflicts_with 'irods', :because => 'both install `ils`'
 
   option 'with-jni', "Build Sleuthkit with JNI bindings"
 
-  if build.head?
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
-  end
-
+  depends_on :ant => :build
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 

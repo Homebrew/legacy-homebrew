@@ -6,7 +6,7 @@ class Cssembed < Formula
   sha1 'c170f4a6a19f2f86ebd04208cc71d017b3a6f907'
 
   def install
-    libexec.install "cssembed-0.4.5.jar"
-    bin.write_jar_script libexec/'cssembed-0.4.5', 'cssembed'
+    libexec.install "cssembed-#{version}.jar"
+    bin.write_jar_script libexec/"cssembed-#{version}.jar", "cssembed"
   end
 end

@@ -1,23 +1,53 @@
 module ArchitectureListExtension
+  def fat?
+    length > 1
+  end
+
+  def intel_universal?
+    intersects_all?(Hardware::CPU::INTEL_32BIT_ARCHS, Hardware::CPU::INTEL_64BIT_ARCHS)
+  end
+
+  def ppc_universal?
+    intersects_all?(Hardware::CPU::PPC_32BIT_ARCHS, Hardware::CPU::PPC_64BIT_ARCHS)
+  end
+
+  # Old-style 32-bit PPC/Intel universal, e.g. ppc7400 and i386
+  def cross_universal?
+    intersects_all?(Hardware::CPU::PPC_32BIT_ARCHS, Hardware::CPU::INTEL_32BIT_ARCHS)
+  end
+
   def universal?
-    self.include? :i386 and self.include? :x86_64
+    intel_universal? || ppc_universal? || cross_universal?
   end
 
   def ppc?
-    self.include? :ppc7400 or self.include? :ppc64
+    (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).any? {|a| self.include? a}
   end
 
   def remove_ppc!
-    self.delete :ppc7400
-    self.delete :ppc64
+    (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).each {|a| self.delete a}
   end
 
   def as_arch_flags
     self.collect{ |a| "-arch #{a}" }.join(' ')
   end
+
+  def as_cmake_arch_flags
+    self.join(';')
+  end
+
+  protected
+
+  def intersects_all?(*set)
+    set.all? do |archset|
+      archset.any? {|a| self.include? a}
+    end
+  end
 end
 
 module MachO
+  OTOOL_RX = /\t(.*) \(compatibility version (?:\d+\.)*\d+, current version (?:\d+\.)*\d+\)/
+
   # Mach-O binary methods, see:
   # /usr/include/mach-o/loader.h
   # /usr/include/mach-o/fat.h
@@ -112,5 +142,45 @@ module MachO
 
   def mach_o_bundle?
     mach_data.any? { |m| m.fetch(:type) == :bundle }
+  end
+
+  class Metadata
+    attr_reader :path, :dylib_id, :dylibs
+
+    def initialize(path)
+      @path = path
+      @dylib_id, @dylibs = parse_otool_L_output
+    end
+
+    def parse_otool_L_output
+      ENV["HOMEBREW_MACH_O_FILE"] = path.expand_path.to_s
+      libs = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split("\n")
+
+      libs.shift # first line is the filename
+
+      id = libs.shift[OTOOL_RX, 1] if path.dylib?
+      libs.map! { |lib| lib[OTOOL_RX, 1] }.compact!
+
+      return id, libs
+    ensure
+      ENV.delete "HOMEBREW_MACH_O_FILE"
+    end
+  end
+
+  def mach_metadata
+    @mach_metadata ||= Metadata.new(self)
+  end
+
+  # Returns an array containing all dynamically-linked libraries, based on the
+  # output of otool. This returns the install names, so these are not guaranteed
+  # to be absolute paths.
+  # Returns an empty array both for software that links against no libraries,
+  # and for non-mach objects.
+  def dynamically_linked_libraries
+    mach_metadata.dylibs
+  end
+
+  def dylib_id
+    mach_metadata.dylib_id
   end
 end

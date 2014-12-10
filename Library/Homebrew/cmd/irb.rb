@@ -4,19 +4,19 @@ require 'irb'
 
 class Symbol
   def f
-    Formula.factory(self.to_s)
+    Formulary.factory(to_s)
   end
 end
 class String
   def f
-    Formula.factory(self)
+    Formulary.factory(self)
   end
 end
 
-module Homebrew extend self
+module Homebrew
   def irb
     if ARGV.include? "--help"
-      puts "'v8'.f # => instance of the Ack formula"
+      puts "'v8'.f # => instance of the v8 formula"
       puts ":hub.f.installed?"
       puts ":lua.f.methods - 1.methods"
       puts ":mpd.f.recursive_dependencies.reject(&:installed?)"

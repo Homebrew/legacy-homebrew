@@ -2,10 +2,16 @@ require 'formula'
 
 class Direnv < Formula
   homepage 'http://www.direnv.net'
-  url 'https://github.com/zimbatm/direnv/archive/v2.0.1.tar.gz'
-  sha1 '9942d40f96778f44c370c854360faca05d9a91af'
+  url 'https://github.com/zimbatm/direnv/archive/v2.5.0.tar.gz'
+  sha1 '48aa6a9dc5748b8043fb6f8ccdc8f3b538301382'
 
   head 'https://github.com/zimbatm/direnv.git'
+
+  bottle do
+    sha1 "fb5340876bc488bd38aba9e00d52fff0f029f797" => :yosemite
+    sha1 "fbc2ed0cadad4543df0d09e3afe756866e0e44b3" => :mavericks
+    sha1 "353d3f25f0b7e3bd57bc91dd855635163bc426e7" => :mountain_lion
+  end
 
   depends_on "go" => :build
 

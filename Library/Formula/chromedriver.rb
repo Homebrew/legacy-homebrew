@@ -1,9 +1,10 @@
 require 'formula'
 
 class Chromedriver < Formula
-  homepage 'http://code.google.com/p/chromedriver/'
-  url 'https://chromedriver.googlecode.com/files/chromedriver_mac32_2.1.zip'
-  sha1 'c8db9cbe1bbcc202206606225e0954c709af3fe8'
+  homepage 'https://sites.google.com/a/chromium.org/chromedriver/'
+  url 'http://chromedriver.storage.googleapis.com/2.12/chromedriver_mac32.zip'
+  sha256 'f93464dd4e57f7d59601e9ab92ad0770493f9ea00b69ddba8da3886c35852d4b'
+  version '2.12'
 
   def install
     bin.install 'chromedriver'

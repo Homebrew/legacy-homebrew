@@ -1,18 +1,23 @@
-require 'formula'
+require "formula"
 
 class Libxmlxx < Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.34/libxml++-2.34.2.tar.bz2'
-  homepage 'http://libxmlplusplus.sourceforge.net'
-  sha256 '38f20632a711d06166b03a2a92ce71b08130ac30e014805a7052ae3f4c0b15e8'
+  homepage "http://libxmlplusplus.sourceforge.net"
+  url "http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.36/libxml++-2.36.0.tar.xz"
+  sha256 "bfdf327bf9ebd12946b7aa6a152045f209d5c9fecd06ebfcdf9b3e7c1af6e2e1"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glibmm'
+  bottle do
+    revision 1
+    sha1 "bb673ee532003e956f2e36a28e511ada53bfedfe" => :yosemite
+    sha1 "014015ca42d6cc9fdaac471d0dcfbae417e4f3a8" => :mavericks
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "glibmm"
   # LibXML++ can't compile agains the version of LibXML shipped with Leopard
-  depends_on 'libxml2' if MacOS.version <= :leopard
+  depends_on "libxml2" if MacOS.version <= :leopard
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

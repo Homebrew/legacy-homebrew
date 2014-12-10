@@ -2,8 +2,8 @@ require 'formula'
 
 class Atarixx < Formula
   homepage 'http://www.xl-project.com'
-  url 'http://www.xl-project.com/download/atari++_1.71.tar.gz'
-  sha1 '6d18494068bf491077cff32de514a1118bb133b1'
+  url 'http://www.xl-project.com/download/atari++_1.72.tar.gz'
+  sha1 '64e31389032292cd4a82a972e83bb2b3ee723068'
 
   option 'with-curses'
 
@@ -12,8 +12,8 @@ class Atarixx < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--disable-CURSES" unless build.include? 'with-curses'
-    args << "--disable-SDL" unless build.include? 'with-sdl'
+    args << "--disable-CURSES" if build.without? "curses"
+    args << "--disable-SDL" if build.without? "sdl"
 
     system "./configure", *args
     system "make"

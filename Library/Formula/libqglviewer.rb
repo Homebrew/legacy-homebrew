@@ -2,16 +2,22 @@ require 'formula'
 
 class Libqglviewer < Formula
   homepage 'http://www.libqglviewer.com/'
-  url 'http://www.libqglviewer.com/src/libQGLViewer-2.4.0.tar.gz'
-  sha1 '91e3c889822909dc3684e1be6d7f9ff734cc8047'
+  url 'http://www.libqglviewer.com/src/libQGLViewer-2.5.1.tar.gz'
+  sha1 '21e10a28153cb649e29bbe9a288eecc280b30f0e'
 
   head 'https://github.com/GillesDebunne/libQGLViewer.git'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "9fa813e1c6af88267a9d76ef9bcd6bcf778c6fb5" => :yosemite
+    sha1 "65093ea7674244be57591ec6ad5ee692c47573cd" => :mavericks
+    sha1 "2e472e6ff337837cc9fd9d61e4c4fd5856e28589" => :mountain_lion
+  end
 
   option :universal
 
   depends_on 'qt'
-
-  def patches; DATA; end
 
   def install
     args = ["PREFIX=#{prefix}"]
@@ -22,22 +28,4 @@ class Libqglviewer < Formula
       system "make"
     end
   end
-
-  def caveats; <<-EOS.undent
-    To avoid issues with runtime linking and facilitate usage of the library:
-      sudo ln -s "#{prefix}/QGLViewer.framework" "/Library/Frameworks/QGLViewer.framework"
-    EOS
-  end
 end
-
-__END__
---- a/QGLViewer/QGLViewer.pro
-+++ b/QGLViewer/QGLViewer.pro
-@@ -250,7 +250,7 @@
-     FRAMEWORK_HEADERS.path = Headers
-     QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
-
--    DESTDIR = $${HOME_DIR}/Library/Frameworks/
-+    DESTDIR = $${PREFIX}
-
-     QMAKE_POST_LINK=cd $$DESTDIR/QGLViewer.framework/Headers && ln -s . QGLViewer

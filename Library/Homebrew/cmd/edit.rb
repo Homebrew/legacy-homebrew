@@ -1,6 +1,6 @@
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def edit
     unless (HOMEBREW_REPOSITORY/'.git').directory?
       raise <<-EOS.undent
@@ -26,12 +26,8 @@ module Homebrew extend self
     else
       # Don't use ARGV.formulae as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
-        name = Formula.canonical_name name
-        if name.include? '/'
-          Pathname.new(name)
-        else
-          HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
-        end
+        name = Formulary.canonical_name(name)
+        Formula.path(name)
       end
       unless ARGV.force?
         paths.each do |path|
@@ -43,7 +39,7 @@ module Homebrew extend self
   end
 
   def library_folders
-    Dir["#{HOMEBREW_REPOSITORY}/Library/*"].reject do |d|
+    Dir["#{HOMEBREW_LIBRARY}/*"].reject do |d|
       case File.basename(d) when 'LinkedKegs', 'Aliases' then true end
     end
   end

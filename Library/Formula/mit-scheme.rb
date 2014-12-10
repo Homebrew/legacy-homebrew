@@ -1,12 +1,22 @@
-require 'formula'
+require "formula"
 
 class MitScheme < Formula
-  homepage 'http://www.gnu.org/software/mit-scheme/'
-  url 'http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
-  sha1 '8f175a40061bdfc0248535e198cc7f5b5a0dce32'
+  homepage "http://www.gnu.org/software/mit-scheme/"
+  url "http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz"
+  sha1 "d2820ee76da109d370535fec6e19910a673aa7ee"
 
-  depends_on :x11 if MacOS::X11.installed?
+  bottle do
+    revision 1
+    sha1 "af57614a2fba575d897aead31686ee5cd363fb4f" => :yosemite
+    sha1 "7bdca846c5d7efb137b05fa6bff6b755e8eed3fa" => :mavericks
+    sha1 "f1c8d3788f6308be61948350ea33dd7ce085307f" => :mountain_lion
+  end
+
+  conflicts_with "tinyscheme", :because => "both install a `scheme` binary"
+
+  depends_on "openssl"
+  depends_on :x11
 
   def install
     # The build breaks __HORRIBLY__ with parallel make -- one target will erase something
@@ -14,28 +24,22 @@ class MitScheme < Formula
     # change_make_var, because there are Makefiles littered everywhere
     ENV.j1
 
-    # Fix hard-coded locations of MACOSX_SYSROOT.
-    ['src/lib/include/configure', 'src/configure'].each do |configure|
-      inreplace configure, 'MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk',
-                           "MACOSX_SYSROOT=/#{MacOS.sdk_path}"
-    end
-
     # Liarc builds must launch within the src dir, not using the top-level Makefile
     cd "src"
 
     # Take care of some hard-coded paths
-    inreplace %w(6001/edextra.scm 6001/floppy.scm compiler/etc/disload.scm configure
-    edwin/techinfo.scm edwin/unix.scm lib/include/configure lib/include/option.c
+    inreplace %w(6001/edextra.scm 6001/floppy.scm compiler/etc/disload.scm microcode/configure
+    edwin/techinfo.scm edwin/unix.scm lib/include/configure
     swat/c/tk3.2-custom/Makefile swat/c/tk3.2-custom/tcl/Makefile swat/scheme/other/btest.scm) do |s|
       s.gsub! "/usr/local", prefix
     end
 
-    # The configure script will add '-isysroot' to CPPFLAGS, so it didn't check .h here
+    # The configure script will add "-isysroot" to CPPFLAGS, so it didn't check .h here
     # by default even Homebrew is installed in /usr/local. This breaks things when gdbm
     # or other optional dependencies was installed using Homebrew
-    ENV.prepend 'CPPFLAGS', "-I#{HOMEBREW_PREFIX}/include"
-    ENV['MACOSX_SYSROOT'] = MacOS.sdk_path
+    ENV.prepend "CPPFLAGS", "-I#{HOMEBREW_PREFIX}/include"
+    ENV["MACOSX_SYSROOT"] = MacOS.sdk_path
     system "etc/make-liarc.sh", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end

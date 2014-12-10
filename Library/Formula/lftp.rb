@@ -1,45 +1,28 @@
-require 'formula'
+require "formula"
 
 class Lftp < Formula
-  homepage 'http://lftp.yar.ru/'
-  url 'http://ftp.yar.ru/pub/source/lftp/lftp-4.4.8.tar.bz2'
-  mirror 'ftp://ftp.cs.tu-berlin.de/pub/net/ftp/lftp/lftp-4.4.8.tar.bz2'
-  sha1 'c825849d90b8132ed43ea5b73fdbb6a63f3e44de'
+  homepage "http://lftp.yar.ru/"
+  url "http://lftp.yar.ru/ftp/lftp-4.6.0.tar.gz"
+  sha1 "8bc43080c3c467d1aeb659382d95ef5ac7436504"
 
-  # https://github.com/mxcl/homebrew/issues/18749
-  env :std
-
-  depends_on 'pkg-config' => :build
-  depends_on 'readline'
-  depends_on 'gnutls'
-
-  # Hotfix for compiling on Snow Leopard; check if still needed in next release
-  # https://github.com/mxcl/homebrew/pull/20435
-  # http://comments.gmane.org/gmane.network.lftp.user/2253
-  def patches
-    DATA
+  bottle do
+    sha1 "87b4743143c4e28acb8f5b41640aeb5e914d2401" => :mavericks
+    sha1 "3b5b583e2c72963730f58124b73e5d237fbbb2ba" => :mountain_lion
+    sha1 "f407aa7c77b33e26edab841aa84fa6050248a0f0" => :lion
   end
+
+  depends_on "pkg-config" => :build
+  depends_on "readline"
+  depends_on "openssl"
 
   def install
-    # Bus error
-    # TODO what are the more specific circumstances?
-    ENV.no_optimization if MacOS.version <= :leopard
-
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "make install"
+                          "--prefix=#{prefix}",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/lftp", "-c", "open ftp://mirrors.kernel.org; ls"
   end
 end
-
-__END__
-diff --git a/src/buffer_zlib.cc b/src/buffer_zlib.cc
-index 2ceaee9..ef79e6f 100644
---- a/src/buffer_zlib.cc
-+++ b/src/buffer_zlib.cc
-@@ -87,5 +87,5 @@ DataInflator::~DataInflator()
- }
- void DataInflator::ResetTranslation()
- {
--   z_err = inflateReset2(&z, 16+MAX_WBITS);
-+   z_err = inflateReset(&z);
- }

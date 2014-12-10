@@ -1,13 +1,20 @@
 require 'formula'
 
 class Nspr < Formula
-  homepage 'http://www.mozilla.org/projects/nspr/'
-  url 'https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.9.3/src/nspr-4.9.3.tar.gz'
-  sha256 '9ca3f30b5ae6784f9820b32939284a7f14f67230a916c5752acd8ddace72f3c5'
+  homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
+  url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.7/src/nspr-4.10.7.tar.gz"
+  sha256 "389af5cfa863ea9bc6de7b30c15f8a4f9bddd8002f8c6fdc8b33caef43893938"
+
+  bottle do
+    cellar :any
+    sha1 "0b5ae7b07ce671c57c590eb37807fb8391537284" => :yosemite
+    sha1 "ac2f2904dd4c6e47fde68f3ac7c38a4745ec0702" => :mavericks
+    sha1 "1180562bef675d27bf8b6d33da4e045927819538" => :mountain_lion
+  end
 
   def install
     ENV.deparallelize
-    cd "mozilla/nsprpub" do
+    cd "nspr" do
       # Fixes a bug with linking against CoreFoundation, needed to work with SpiderMonkey
       # See: http://openradar.appspot.com/7209349
       target_frameworks = (Hardware.is_32_bit? or MacOS.version <= :leopard) ? "-framework Carbon" : ""
@@ -19,6 +26,7 @@ class Nspr < Formula
         --enable-strip
         --enable-pthreads
         --enable-ipv6
+        --enable-macos-target=#{MacOS.version}
       ]
       args << "--enable-64bit" if MacOS.prefer_64_bit?
       system "./configure", *args
@@ -27,6 +35,9 @@ class Nspr < Formula
 
       system "make"
       system "make install"
+
+      (bin/"compile-et.pl").unlink
+      (bin/"prerr.properties").unlink
     end
   end
 end

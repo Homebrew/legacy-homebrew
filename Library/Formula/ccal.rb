@@ -9,4 +9,9 @@ class Ccal < Formula
     system "make", "-e", "BINDIR=#{bin}", "install"
     system "make", "-e", "MANDIR=#{man}", "install-man"
   end
+
+  test do
+    output = shell_output("#{bin}/ccal 2 2014")
+    assert output.include?("Year JiaWu, Month 1X")
+  end
 end

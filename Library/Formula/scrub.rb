@@ -8,12 +8,22 @@ class Scrub < Formula
   # in src/genrand.c:109 the `return;` statement should be `return 0;` for clang
   # in src/util.h we need <sys/types.h> to get off_t which is reported:
   # https://code.google.com/p/diskscrub/issues/detail?id=21
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+  end
+
+  test do
+    path = testpath/"foo.txt"
+    path.write "foo"
+
+    output = `#{bin}/scrub -r -p dod #{path}`
+    assert output.include?("scrubbing #{path}")
+    assert_equal 0, $?.exitstatus
+    assert !File.exist?(path)
   end
 end
 

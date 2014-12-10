@@ -9,9 +9,7 @@ class Fcgi < Formula
   # Affects programs linking this library. Reported at
   # http://mailman.fastcgi.com/pipermail/fastcgi-developers/2009-January/000152.html
   # https://trac.macports.org/browser/trunk/dports/www/fcgi/files/patch-libfcgi-fcgi_stdio.c.diff
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

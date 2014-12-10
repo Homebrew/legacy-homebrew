@@ -1,8 +1,8 @@
 require 'formula'
 
 class Gsmartcontrol < Formula
-  homepage 'http://gsmartcontrol.berlios.de/'
-  url 'http://download.berlios.de/gsmartcontrol/gsmartcontrol-0.8.7.tar.bz2'
+  homepage 'http://gsmartcontrol.sourceforge.net/home/index.php'
+  url 'https://downloads.sourceforge.net/project/gsmartcontrol/0.8.7/gsmartcontrol-0.8.7.tar.bz2'
   sha1 '36c255e8f493b003a616cb1eff3a86ccc6b8f80a'
 
   depends_on 'pkg-config' => :build
@@ -14,9 +14,7 @@ class Gsmartcontrol < Formula
 
   # Fix bad includes with gtkmm-2.24.3
   # Check if this is still needed with new versions of gsmartcontrol and gtkmm
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -25,7 +23,7 @@ class Gsmartcontrol < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/gsmartcontrol", "--version"
   end
 end

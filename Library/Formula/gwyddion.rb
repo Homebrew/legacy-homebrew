@@ -2,15 +2,18 @@ require 'formula'
 
 class Gwyddion < Formula
   homepage 'http://gwyddion.net/'
-  url 'http://downloads.sourceforge.net/project/gwyddion/gwyddion/2.31/gwyddion-2.31.tar.xz'
-  sha1 '0e0b78970bd3c8272f69f48fc5c7180514c859a1'
+  url 'http://gwyddion.net/download/2.38/gwyddion-2.38.tar.gz'
+  sha1 '6fff92a9e98c11b0dae4333d8df3d4495b822e31'
 
+  depends_on :x11 => :optional
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gtk+'
   depends_on 'libxml2'
   depends_on 'fftw'
   depends_on 'gtkglext'
+  depends_on :python => :optional
+  depends_on 'pygtk' if build.with? 'python'
+  depends_on 'gtksourceview' if build.with? 'python'
 
   def install
     system "./configure", "--disable-dependency-tracking",

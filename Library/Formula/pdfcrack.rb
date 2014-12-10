@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Pdfcrack < Formula
-  homepage 'http://pdfcrack.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/pdfcrack/pdfcrack/pdfcrack-0.11/pdfcrack-0.11.tar.gz'
-  sha1 'e8069837d879677ecc388326db8a005e83702fc1'
+  homepage "http://pdfcrack.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/pdfcrack/pdfcrack/pdfcrack-0.14/pdfcrack-0.14.tar.gz"
+  sha1 "15d74431a06430b910c8e9ad2b1f5b8635c94181"
 
   def install
     system "make all"

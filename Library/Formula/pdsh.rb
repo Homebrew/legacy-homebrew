@@ -2,8 +2,12 @@ require 'formula'
 
 class Pdsh < Formula
   homepage 'https://code.google.com/p/pdsh/'
-  url 'http://pdsh.googlecode.com/files/pdsh-2.29.tar.bz2'
-  sha1 'a3e44ffba151f023d72df67cd7a7d37b4a80c80e'
+  url 'https://code.google.com/p/pdsh/', :tag => 'pdsh-2.31', :using => :git
+  sha1 '03f1f82761162e5f0d382f4e586aae9fb0ef7ef9'
+
+  head 'https://code.google.com/p/pdsh/', :using => :git
+
+  conflicts_with 'clusterit', :because => 'both install `dshbak`'
 
   option "without-dshgroups", "Compile without dshgroups which conflicts with genders. The option should be specified to load genders module first instead of dshgroups."
 
@@ -20,9 +24,13 @@ class Pdsh < Formula
             "--without-xcpu"]
 
     args << '--with-genders' if build.with? 'genders'
-    args << ((build.include? 'without-dshgroups') ? '--without-dshgroups' : '--with-dshgroups')
+    args << ((build.without? "dshgroups") ? '--without-dshgroups' : '--with-dshgroups')
 
     system "./configure", *args
     system "make install"
+  end
+
+  test do
+    system "#{bin}/pdsh", "-V"
   end
 end

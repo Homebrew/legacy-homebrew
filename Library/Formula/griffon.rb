@@ -2,8 +2,8 @@ require 'formula'
 
 class Griffon < Formula
   homepage 'http://griffon.codehaus.org/'
-  url 'http://dist.codehaus.org/griffon/griffon/1.1.x/griffon-1.1.0-bin.zip'
-  sha1 '3cb6ffa15a5bce3d3e7e2a56b210d9c40853b442'
+  url 'http://dl.bintray.com/content/aalmiray/Griffon/griffon-1.5.0-bin.tgz'
+  sha1 'de28b792c37cf103b5745f2f323403ec6990c58a'
 
   def install
     rm_f Dir["bin/*.bat"]

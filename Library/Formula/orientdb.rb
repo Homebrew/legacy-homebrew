@@ -2,12 +2,28 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'https://orient.googlecode.com/files/orientdb-graphed-1.3.0.tar.gz'
-  sha1 '124e37d2994d2908cc36fd036841b53caeed046c'
+  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-1.7.10.tar.gz&os=mac'
+  version '1.7.10'
+  sha1 '71c38c2e91ec6e92bf9d6c166af750f491380852'
 
-  def patches
-    # Fixing OrientDB init scripts
-    "https://raw.github.com/gist/5468357/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
+  devel do
+    url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0-M3.tar.gz&os=mac'
+    version '2.0-M3'
+    sha1 '8e5f9410eed54e6ea4b3aa5d527e6ea0262f790d'
+  end
+
+
+  bottle do
+    cellar :any
+    sha1 "ce4b7060fc28b4e686fae9cea7d6c016c988ef57" => :yosemite
+    sha1 "a6320a3d1b705aea9bdb5c73f7e15cfeae50b0eb" => :mavericks
+    sha1 "e58a8099e08788365b2d8ad4148e6e46ee1021f5" => :mountain_lion
+  end
+
+  # Fixing OrientDB init scripts
+  patch do
+    url "https://gist.githubusercontent.com/maggiolo00/84835e0b82a94fe9970a/raw/1ed577806db4411fd8b24cd90e516580218b2d53/orientdbsh"
+    sha1 "280284f3a8b6e280e46078b746f8250aa5648979"
   end
 
   def install
@@ -30,11 +46,5 @@ class Orientdb < Formula
 
   def caveats
     "Use `orientdb <start | stop | status>`, `orientdb-console` and `orientdb-gremlin`."
-  end
-
-  test do
-    system "#{bin}/orientdb", "start"
-    system "#{bin}/orientdb status | grep PID"
-    system "#{bin}/orientdb", "stop"
   end
 end
