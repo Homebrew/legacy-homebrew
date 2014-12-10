@@ -159,23 +159,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     @temporary_path = Pathname.new("#{tarball_path}.incomplete")
   end
 
-  def cached_location
-    tarball_path
-  end
-
-  def clear_cache
-    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
-  end
-
-  def downloaded_size
-    temporary_path.size? or 0
-  end
-
-  # Private method, can be overridden if needed.
-  def _fetch
-    curl @url, '-C', downloaded_size, '-o', temporary_path
-  end
-
   def fetch
     ohai "Downloading #{@url}"
     unless tarball_path.exist?
@@ -210,20 +193,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     retry
   end
 
-  # gunzip and bunzip2 write the output file in the same directory as the input
-  # file regardless of the current working directory, so we need to write it to
-  # the correct location ourselves.
-  def buffered_write(tool)
-    target = File.basename(basename_without_params, tarball_path.extname)
-
-    Utils.popen_read(tool, "-f", tarball_path.to_s, "-c") do |pipe|
-      File.open(target, "wb") do |f|
-        buf = ""
-        f.write(buf) while pipe.read(1024, buf)
-      end
-    end
-  end
-
   def stage
     case tarball_path.compression_type
     when :zip
@@ -254,7 +223,24 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  def cached_location
+    tarball_path
+  end
+
+  def clear_cache
+    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
+  end
+
   private
+
+  # Private method, can be overridden if needed.
+  def _fetch
+    curl @url, "-C", downloaded_size, "-o", temporary_path
+  end
+
+  def downloaded_size
+    temporary_path.size? || 0
+  end
 
   def curl(*args)
     args << '--connect-timeout' << '5' unless mirrors.empty?
@@ -267,6 +253,20 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     case entries.length
     when 0 then raise "Empty archive"
     when 1 then Dir.chdir entries.first rescue nil
+    end
+  end
+
+  # gunzip and bunzip2 write the output file in the same directory as the input
+  # file regardless of the current working directory, so we need to write it to
+  # the correct location ourselves.
+  def buffered_write(tool)
+    target = File.basename(basename_without_params, tarball_path.extname)
+
+    Utils.popen_read(tool, "-f", tarball_path.to_s, "-c") do |pipe|
+      File.open(target, "wb") do |f|
+        buf = ""
+        f.write(buf) while pipe.read(1024, buf)
+      end
     end
   end
 
