@@ -6,9 +6,9 @@ class Pulse < Formula
   head "https://source.ind.ie/project/pulse.git"
 
   bottle do
-    sha1 "a74e7d0c530321cd9bd83fd382f28b53aa306606" => :yosemite
-    sha1 "b85b68c551bbff3c5f5a3ca0c151d60687b4ebc3" => :mavericks
-    sha1 "2e4797f4a3b1a51296beb61b60f2eb273c1155fb" => :mountain_lion
+    sha1 "3a317698b3e2cc48de45852ded68e683d3237db1" => :yosemite
+    sha1 "7e4692f0e48b959c28efe7c1619affd51e4a95c4" => :mavericks
+    sha1 "d6a0a72a1c19d38a685579b6f12b28be1c878900" => :mountain_lion
   end
 
   depends_on "go" => :build
