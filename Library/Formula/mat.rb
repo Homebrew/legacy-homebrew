@@ -5,14 +5,8 @@ require "formula"
 # into "mat-cli" here.
 class MatDownloadStrategy < CurlDownloadStrategy
   def stage
-    if tarball_path.compression_type == :xz
-      with_system_path do
-        safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf - -s ',/mat$,/mat-cli,'"
-      end
-      chdir
-    else
-      super
-    end
+    with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf - -s ',/mat$,/mat-cli,'" }
+    chdir
   end
 end
 
