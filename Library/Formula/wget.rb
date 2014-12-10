@@ -5,9 +5,9 @@ require "formula"
 
 class Wget < Formula
   homepage "https://www.gnu.org/software/wget/"
-  url "http://ftpmirror.gnu.org/wget/wget-1.16.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.tar.xz"
-  sha1 "08d991acc80726abe57043a278f9da469c454503"
+  url "http://ftpmirror.gnu.org/wget/wget-1.16.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.1.tar.xz"
+  sha1 "21cd7eee08ab5e5a14fccde22a7aec55b5fcd6fc"
 
   bottle do
     sha1 "97196dab9c0eb7afc7060afec98fc8cda54459c2" => :yosemite
@@ -31,6 +31,7 @@ class Wget < Formula
 
   depends_on "openssl"
   depends_on "libidn" if build.with? "iri"
+  depends_on "pcre" => :optional
 
   def install
     if build.head?
@@ -47,6 +48,7 @@ class Wget < Formula
 
     args << "--disable-debug" if build.without? "debug"
     args << "--disable-iri" if build.without? "iri"
+    args << "--disable-pcre" if build.without? "pcre"
 
     system "./configure", *args
     system "make", "install"
