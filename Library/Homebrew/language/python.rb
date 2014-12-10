@@ -52,6 +52,7 @@ module Language
       quiet_system python, "-c", script
     end
 
+    # deprecated; use system "python", *setup_install_args(prefix) instead
     def self.setup_install python, prefix, *args
       # force-import setuptools, which monkey-patches distutils, to make
       # sure that we always call a setuptools setup.py. trick borrowed from pip:
@@ -65,6 +66,23 @@ module Language
       args += %w[--single-version-externally-managed --record=installed.txt]
       args << "--prefix=#{prefix}"
       system python, "-c", shim, "install", *args
+    end
+
+    def self.setup_install_args prefix
+      shim = <<-EOS.undent
+        import setuptools, tokenize
+        __file__ = 'setup.py'
+        exec(compile(getattr(tokenize, 'open', open)(__file__).read()
+          .replace('\\r\\n', '\\n'), __file__, 'exec'))
+      EOS
+      %W[
+        -c
+        #{shim}
+        install
+        --prefix=#{prefix}
+        --single-version-externally-managed
+        --record=installed.txt
+      ]
     end
   end
 end
