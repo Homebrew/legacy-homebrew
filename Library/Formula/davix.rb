@@ -2,8 +2,8 @@ require "formula"
 
 class Davix < Formula
   homepage "http://dmc.web.cern.ch/projects/davix/home"
-  url "https://git.cern.ch/pub/davix.git", :tag => "R_0_3_6-2"
-  version "0.3.6-2"
+  url "https://git.cern.ch/pub/davix.git", :tag => "R_0_4_0-1"
+  version "0.4.0-1"
 
   head "https://git.cern.ch/pub/davix.git"
 
