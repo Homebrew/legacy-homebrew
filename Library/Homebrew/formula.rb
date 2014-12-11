@@ -592,6 +592,11 @@ class Formula
       pretty_args.delete "--disable-dependency-tracking"
       pretty_args.delete "--disable-debug"
     end
+    pretty_args.each_index do |i|
+      if pretty_args[i].to_s.start_with? "import setuptools"
+        pretty_args[i] = "import setuptools..."
+      end
+    end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
     @exec_count ||= 0
@@ -656,8 +661,12 @@ class Formula
     # Turn on argument filtering in the superenv compiler wrapper.
     # We should probably have a better mechanism for this than adding
     # special cases to this method.
-    if cmd == "python" && %w[setup.py build.py].include?(args.first)
-      ENV.refurbish_args
+    if cmd == "python"
+      setup_py_in_args = %w[setup.py build.py].include?(args.first)
+      setuptools_shim_in_args = args.any? { |a| a.start_with? "import setuptools" }
+      if setup_py_in_args || setuptools_shim_in_args
+        ENV.refurbish_args
+      end
     end
 
     $stdout.reopen(out)

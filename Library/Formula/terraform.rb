@@ -3,13 +3,13 @@ require "language/go"
 
 class Terraform < Formula
   homepage "http://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.3.1.tar.gz"
-  sha1 "818d75a0d7d4e46876a6a63a6d5d5a4f8570a0ca"
+  url "https://github.com/hashicorp/terraform/archive/v0.3.5.tar.gz"
+  sha1 "2c53b217faedbcffcdf5fb78f1ab585f36e5f21f"
 
   bottle do
-    sha1 "a21451209263faf134912d1bb212c753929c2879" => :yosemite
-    sha1 "eb83f3c7931c35bce59dacc0b4a192ddd47783b7" => :mavericks
-    sha1 "572381cadce869d3402c9e306d5f033ff137e31e" => :mountain_lion
+    sha1 "71b4d2cf75a292ef44f6fe8c688d3396275ff7bb" => :yosemite
+    sha1 "2a9b71e0a58d2b07eedd33eb43ec11ba6e859996" => :mavericks
+    sha1 "2a5dcd44de95b2f95cd0bb0264398d9a71798990" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -39,7 +39,7 @@ class Terraform < Formula
   end
 
   go_resource "github.com/mitchellh/goamz" do
-    url "https://github.com/mitchellh/goamz.git", :revision => "835bb759f66f80805f855201eb6bc6243b059a65"
+    url "https://github.com/mitchellh/goamz.git", :revision => "ab653226ea8718749271e08212506d411714e865"
   end
 
   go_resource "github.com/vaughan0/go-ini" do
@@ -55,7 +55,7 @@ class Terraform < Formula
   end
 
   go_resource "github.com/pearkes/digitalocean" do
-    url "https://github.com/pearkes/digitalocean.git", :revision => "ff10277f356f92c61e6d7703c24f3ba42e867dcb"
+    url "https://github.com/pearkes/digitalocean.git", :revision => "454ebf8720a34e077ebe62c7cd5a248cbf7ca8ff"
   end
 
   go_resource "github.com/pearkes/dnsimple" do
@@ -130,6 +130,10 @@ class Terraform < Formula
       :using => :hg
   end
 
+  go_resource "github.com/hashicorp/atlas-go" do
+    url "https://github.com/hashicorp/atlas-go.git", :revision => "072814b5d05e34466c6c0fdd62cdecf184dc3521"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
     # For the gox buildtool used by terraform, which doesn't need to
@@ -146,7 +150,9 @@ class Terraform < Formula
     end
 
     cd terrapath do
-      system "make", "test"
+      # Clear ATLAS_TOKEN env var to not run atlas acceptance tests
+      # that would require an active atlas account
+      system "make", "test", "ATLAS_TOKEN="
 
       mkdir "bin"
       arch = MacOS.prefer_64_bit? ? "amd64" : "386"
