@@ -6,6 +6,13 @@ class Abcmidi < Formula
   version '2014-11-18'
   sha1 '8a4ab723c689300535f0e7eeb7c1dc50629018f3'
 
+  bottle do
+    cellar :any
+    sha1 "caa541f475f5a062989ab28ba02f0e81bfaa301a" => :yosemite
+    sha1 "5ae503fe5b1753c9c0a29a64b105c3986757d5b0" => :mavericks
+    sha1 "5d4c6bad566b33e63739a8a085d9689ac3609c20" => :mountain_lion
+  end
+
   def install
     # configure creates a "Makefile" file. A "makefile" file already exist in
     # the tarball. On case-sensitive file-systems, the "makefile" file won't
