@@ -6,9 +6,9 @@ class Abcm2ps < Formula
   sha1 "93e016cf933d88d817be76bd3eb4163851f3b132"
 
   bottle do
-    sha1 "553e4b09045b5693a06faf5e202336ec5a87a9c2" => :mavericks
-    sha1 "829e8538a7766248b37c7e6ad83703eda97289fa" => :mountain_lion
-    sha1 "36219f8fa08cd14e376fc5e8b3a4f1627d8470da" => :lion
+    sha1 "1381e1f180e685182193a4392fc664cc16e5bc87" => :yosemite
+    sha1 "ccb022e97dac73bae23be04cc8bdf99ce10e09d8" => :mavericks
+    sha1 "d6b852cb4761a91f16ff9de9b189e0faf238de90" => :mountain_lion
   end
 
   devel do
