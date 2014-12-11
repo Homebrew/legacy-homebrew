@@ -2,8 +2,8 @@ require 'formula'
 
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
-  url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk2/PebbleSDK-2.8.tar.gz'
-  sha1 'a12e3299339c210c0948069a27fe83b20385fa34'
+  url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk2/PebbleSDK-2.8.1.tar.gz'
+  sha1 'b96d158fda8b9846d8a1e994a5dc0760412fe8d7'
 
   bottle do
     sha1 "fc2fd29a798853c97ab1d9220d5b21debd1caa4e" => :yosemite
@@ -46,8 +46,8 @@ class PebbleSdk < Formula
   end
 
   resource 'pyserial' do
-    url 'https://pypi.python.org/packages/source/p/pyserial/pyserial-2.6.tar.gz'
-    sha1 '39e6d9a37b826c48eab6959591a174135fc2873c'
+    url 'https://pypi.python.org/packages/source/p/pyserial/pyserial-2.7.tar.gz'
+    sha1 'f15694b1bea9e4369c1931dc5cf09e37e5c562cf'
   end
 
   resource 'pypng' do
