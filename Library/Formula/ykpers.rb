@@ -2,8 +2,15 @@ require 'formula'
 
 class Ykpers < Formula
   homepage 'http://yubico.github.io/yubikey-personalization/'
-  url 'https://developers.yubico.com/yubikey-personalization/releases/ykpers-1.16.1.tar.gz'
-  sha1 'ff7cf92551ee06da198a2cccd29d55b388ce172b'
+  url 'https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.16.2.tar.gz'
+  sha1 'cb8ae32eb2c2eca6c2c156e8f26a3576cb839c52'
+
+  head do
+    url 'https://github.com/Yubico/yubikey-personalization.git'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -21,6 +28,7 @@ class Ykpers < Formula
   def install
     ENV.universal_binary if build.universal?
     libyubikey_prefix = Formula["libyubikey"].opt_prefix
+    system "autoreconf --install" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
