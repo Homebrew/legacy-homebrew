@@ -155,6 +155,7 @@ module MachO
     def parse_otool_L_output
       ENV["HOMEBREW_MACH_O_FILE"] = path.expand_path.to_s
       libs = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split("\n")
+      return nil, [] if libs.empty?
 
       libs.shift # first line is the filename
 
