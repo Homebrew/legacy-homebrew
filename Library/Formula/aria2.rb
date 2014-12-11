@@ -39,14 +39,8 @@ class Aria2 < Formula
       --without-libgcrypt
     ]
 
-    # system zlib and sqlite don't include .pc files
-    ENV["ZLIB_CFLAGS"] = "-I/usr/include"
-    ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
-    ENV["SQLITE3_CFLAGS"] = "-I/usr/include"
-    ENV["SQLITE3_LIBS"] = "-L/usr/lib -lsqlite3"
-
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
     bash_completion.install "doc/bash_completion/aria2c"
   end

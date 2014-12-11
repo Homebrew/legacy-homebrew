@@ -54,27 +54,14 @@ class Pdf2htmlex < Formula
       # Fix linker error; see: http://trac.macports.org/ticket/25012
       ENV.append "LDFLAGS", "-lintl"
 
-      # And fix the zlib hunting.
-      ENV.append "ZLIB_CFLAGS", "-I/usr/include"
-      ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
-
       # Reset ARCHFLAGS to match how we build
       ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
       system "./autogen.sh"
       system "./configure", *args
 
-      # Fix hard-coded install locations that don't respect the target bindir
-      inreplace "Makefile", "/Applications", "$(prefix)"
-
       system "make"
       system "make", "install"
-
-      # Fix breaking zlib pkg-config file issue.
-      inreplace "#{prefix}/fontforge/lib/pkgconfig/libfontforge.pc", "zlib", " "
-
-      # Fix breaking zlib pkg-config file issue number 2.
-      inreplace "#{prefix}/fontforge/lib/pkgconfig/libfontforgeexe.pc", "zlib", " "
     end
 
     # Prepend the paths to always find this dep fontforge instead of another.
