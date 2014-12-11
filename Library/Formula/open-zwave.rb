@@ -5,6 +5,9 @@ class OpenZwave < Formula
   url "http://old.openzwave.com/downloads/openzwave-1.2.919.tar.gz"
   sha1 "514fa8a9e8468d264a6e4fffc377f2e18368ef41"
 
+  # Patch to build a .dylib instead of a .so
+  # This patch has been merged upstream and can be removed after the next release:
+  # https://code.google.com/p/open-zwave/source/detail?r=954
   patch :DATA
 
   def install
@@ -23,7 +26,7 @@ class OpenZwave < Formula
         return 0;
       }
     EOS
-    system(ENV.cxx, "-o", "test", "-I", prefix/"include/openzwave", "-lopenzwave", "test.cpp")
+    system ENV.cxx, "-o", "test", "-I", prefix/"include/openzwave", "-lopenzwave", "test.cpp"
     system "./test"
   end
 end
