@@ -2,8 +2,8 @@ require "formula"
 
 class Cheat < Formula
   homepage "https://github.com/chrisallenlane/cheat"
-  url "https://github.com/chrisallenlane/cheat/archive/2.0.9.tar.gz"
-  sha1 "cf4a76badd8d0e58c9299037703ba4abbd2217df"
+  url "https://github.com/chrisallenlane/cheat/archive/2.1.1.tar.gz"
+  sha1 "9fc16db7a8eca46b484fe0d03c6cbbfe88674c48"
   head "https://github.com/chrisallenlane/cheat.git"
 
   bottle do
@@ -16,13 +16,13 @@ class Cheat < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "docopt" do
-    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.1.tar.gz"
-    sha1 "3d0ad1cf495d2c801327042e02d67b4ee4b85cd4"
+    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
+    sha1 "224a3ec08b56445a1bd1583aad06b00692671e04"
   end
 
   resource "Pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
-    sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.1.tar.gz"
+    sha1 "b9e9236693ccf6e86414e8578bf8874181f409de"
   end
 
   def install
@@ -30,10 +30,10 @@ class Cheat < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+      r.stage { system "python", *Language::Python.setup_install_args(libexec) }
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", *Language::Python.setup_install_args(prefix)
 
     bash_completion.install "cheat/autocompletion/cheat.bash"
     zsh_completion.install "cheat/autocompletion/cheat.zsh" => "_cheat"
