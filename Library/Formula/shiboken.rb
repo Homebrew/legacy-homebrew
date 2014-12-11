@@ -29,11 +29,11 @@ class Shiboken < Formula
         # Building the tests also runs them.
         args << "-DBUILD_TESTS=ON"
         # if not System Python
-        python_framework = "#{Formula[python].prefix}/Frameworks/Python.framework/Versions/#{version}"
+        python_framework = "#{Formula[python].opt_prefix}/Frameworks/Python.framework/Versions/#{version}"
         if version.to_s[0,1] == "2" && Formula["python"].installed?
           args << "-DPYTHON_INCLUDE_DIR:PATH=#{python_framework}/Headers"
           args << "-DPYTHON_LIBRARY:FILEPATH=#{python_framework}/lib/libpython#{version}.dylib"
-        elsif version.to_s[0,1] == "3"
+        elsif version.to_s[0,1] == "3" && Formula["python3"].installed?
           args << "-DPYTHON3_INCLUDE_DIR:PATH=#{python_framework}/Headers"
           args << "-DPYTHON3_LIBRARY:FILEPATH=#{python_framework}/lib/libpython#{version}.dylib"
           args << "-DUSE_PYTHON3:BOOL=ON"
