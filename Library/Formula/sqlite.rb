@@ -2,9 +2,9 @@ require "formula"
 
 class Sqlite < Formula
   homepage "http://sqlite.org/"
-  url "https://www.sqlite.org/2014/sqlite-autoconf-3080703.tar.gz"
-  version "3.8.7.3"
-  sha1 "5cbe9aa4af1b32787045a251dba6debee3f061c0"
+  url "https://www.sqlite.org/2014/sqlite-autoconf-3080704.tar.gz"
+  version "3.8.7.4"
+  sha1 "70ca0b8884a6b145b7f777724670566e2b4f3cde"
 
   bottle do
     cellar :any
@@ -32,9 +32,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://www.sqlite.org/2014/sqlite-doc-3080703.zip"
-    version "3.8.7.3"
-    sha1 "c4a0d51d0fc2fc9c74aa774aa12623b7f2a99db1"
+    url "https://www.sqlite.org/2014/sqlite-doc-3080704.zip"
+    version "3.8.7.4"
+    sha1 "734908373118d61338ca020e3c7dcbd1e0ccd985"
   end
 
   def install
