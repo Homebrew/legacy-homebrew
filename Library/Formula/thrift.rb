@@ -45,13 +45,14 @@ class Thrift < Formula
 
   depends_on "boost"
   depends_on "openssl"
+  depends_on "libevent"
   depends_on :python => :optional
   depends_on "bison" => :build
 
   def install
     system "./bootstrap.sh" unless build.stable?
 
-    exclusions = ["--without-ruby", "--disable-tests", "--without-php_extension"]
+    exclusions = ["--without-ruby", "--disable-tests", "--without-php_extension", "--with-libevent", "--with-openssl"]
 
     exclusions << "--without-python" if build.without? "python"
     exclusions << "--without-haskell" if build.without? "haskell"
