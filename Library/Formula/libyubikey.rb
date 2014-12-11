@@ -2,8 +2,16 @@ require 'formula'
 
 class Libyubikey < Formula
   homepage 'http://yubico.github.io/yubico-c/'
-  url 'http://yubico.github.io/yubico-c/releases/libyubikey-1.11.tar.gz'
-  sha1 'a939abc129ed66af193d979765a8d8ac59ad7c40'
+  url 'https://developers.yubico.com/yubico-c/Releases/libyubikey-1.12.tar.gz'
+  sha1 '6a73d548e61f0b622a9447917f03c78686ab386d'
+
+  head do
+    url 'https://github.com/Yubico/yubico-c.git'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "asciidoc" => :build
+  end
 
   bottle do
     cellar :any
@@ -16,6 +24,13 @@ class Libyubikey < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    if build.head?
+      inreplace "Makefile.am",
+          "$(A2X) --format=manpage",
+          "$(A2X) --format=manpage --no-xmllint"
+      system "autoreconf --install"
+    end
 
     system "./configure", "--prefix=#{prefix}"
     system "make install"
