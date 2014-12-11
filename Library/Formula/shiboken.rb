@@ -9,9 +9,10 @@ class Shiboken < Formula
   head 'git://gitorious.org/pyside/shiboken.git'
 
   bottle do
-    sha1 "dd4d9cbbfcaf77bd7c0c45e55c41edab374b4216" => :yosemite
-    sha1 "a2b38ded09743f12668275783b03aeb0f178e8d9" => :mavericks
-    sha1 "1d567cda7cbccf13315a2d62baf0d73c9f137fec" => :mountain_lion
+    revision 1
+    sha1 "9dd0d0026901e52cf489bd715f0e297bd53d5ce3" => :yosemite
+    sha1 "2b6b704bc0b7dbd0ab666275f0fd415dfe5590ad" => :mavericks
+    sha1 "082137538998bde0e874011670a65a497c9157bf" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
