@@ -7,6 +7,12 @@ class Go < Formula
   version '1.4'
   sha1 '6a7d9bd90550ae1e164d7803b3e945dc8309252b'
 
+  bottle do
+    sha1 "33aa691a93a3c9aa40334e3ce6daa49420696fe4" => :yosemite
+    sha1 "9fa24700a5187fd8272178bd731fb3f9aa485188" => :mavericks
+    sha1 "359fe25e6755c2362d619c01363a7f80ec59efca" => :mountain_lion
+  end
+
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
   option 'without-cgo', "Build without cgo"
