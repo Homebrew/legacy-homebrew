@@ -274,6 +274,15 @@ or in the job config when using POST /jobs,
         spark.cores.max = 10
     }
 
+To pass settings directly to the sparkConf that do not use the "spark." prefix "as-is", use the "passthrough" section.
+
+    spark.context-settings {
+        spark.cores.max = 10
+        passthrough {
+          some.custom.hadoop.config = "192.168.1.1"
+        }
+    }
+
 For the exact context configuration parameters, see JobManagerActor docs as well as application.conf.
 
 ### Job Result Serialization
