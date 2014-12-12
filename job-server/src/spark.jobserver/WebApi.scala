@@ -9,6 +9,7 @@ import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import spark.jobserver.SparkWebUiActor.{SparkWorkersErrorInfo, SparkWorkersInfo, GetWorkerStatus}
+import spark.jobserver.util.SparkJobUtils
 import scala.concurrent.{Await, ExecutionContext}
 import scala.util.Try
 import spark.jobserver.io.JobInfo
@@ -20,7 +21,7 @@ import spray.json.DefaultJsonProtocol._
 import spray.routing.{ HttpService, Route, RequestContext }
 
 class WebApi(system: ActorSystem, config: Config, port: Int,
-             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef, sparkWebUiActor: ActorRef)
+             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef, sparkWebUiActor: Option[ActorRef] = None)
     extends HttpService with CommonRoutes {
   import CommonMessages._
   import ContextSupervisor._
@@ -37,8 +38,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
   val StatusKey = "status"
   val ResultKey = "result"
 
-  val contextTimeout = Try(config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000)
-                         .getOrElse(15)
+  val contextTimeout = SparkJobUtils.getContextTimeout(config)
   val sparkAliveWorkerThreshold = Try(config.getInt("spark.jobserver.sparkAliveWorkerThreshold")).getOrElse(1)
   val bindAddress = config.getString("spark.jobserver.bind-address")
 
@@ -116,7 +116,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
           } else {
             parameterMap { (params) =>
               val config = ConfigFactory.parseMap(params.asJava)
-              val future = supervisor ? AddContext(contextName, config)
+              val future = (supervisor ? AddContext(contextName, config))(contextTimeout.seconds)
               respondWithMediaType(MediaTypes.`application/json`) { ctx =>
                 future.map {
                   case ContextInitialized   => ctx.complete(StatusCodes.OK)
@@ -151,24 +151,29 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
   def sparkHealthzRoutes: Route = pathPrefix("sparkHealthz") {
     get { ctx =>
       logger.info("Receiving sparkHealthz check request")
-      val future = sparkWebUiActor ? GetWorkerStatus()
-      future.map {
-        case SparkWorkersInfo(alive, dead) =>
-          if ( dead > 0 ) {
-            logger.warn( "Spark dead worker non-zero: " + dead)
-          }
-          if ( alive >  sparkAliveWorkerThreshold ) {
-            ctx.complete("OK")
-          } else {
-            logger.error( "Spark alive worker below threshold: " + alive)
+      if (config.getString("spark.master") == "yarn-client") {
+        logger.warn("Can't get sparkHealthz in yarn-client mode")
+        ctx.complete("OK")
+      } else {
+        val future = sparkWebUiActor.get ? GetWorkerStatus()
+        future.map {
+          case SparkWorkersInfo(alive, dead) =>
+            if (dead > 0) {
+              logger.warn("Spark dead worker non-zero: " + dead)
+            }
+            if (alive > sparkAliveWorkerThreshold) {
+              ctx.complete("OK")
+            } else {
+              logger.error("Spark alive worker below threshold: " + alive)
+              ctx.complete("ERROR")
+            }
+
+          case SparkWorkersErrorInfo =>
             ctx.complete("ERROR")
-          }
 
-        case SparkWorkersErrorInfo =>
-          ctx.complete("ERROR")
-
-      }.recover {
-        case e: Exception => ctx.complete(500, errMap(e, "ERROR"))
+        }.recover {
+          case e: Exception => ctx.complete(500, errMap(e, "ERROR"))
+        }
       }
     }
   }
@@ -390,10 +395,12 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
       } else {
         GetAdHocContext(classPath, contextConfig)
       }
-    Await.result(supervisor ? msg, contextTimeout.seconds) match {
+    val future = (supervisor ? msg)(contextTimeout.seconds)
+    Await.result(future, contextTimeout.seconds) match {
       case (manager: ActorRef, resultActor: ActorRef) => Some(manager)
       case NoSuchContext                              => None
       case ContextInitError(err)                      => throw new RuntimeException(err)
     }
   }
+
 }

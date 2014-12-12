@@ -20,6 +20,7 @@ object LocalContextSupervisorSpec {
       }
       jobserver.job-result-cache-size = 100
       jobserver.context-creation-timeout = 5 s
+      jobserver.yarn-context-creation-timeout = 40 s
       jobserver.context-factory = spark.jobserver.util.DefaultSparkContextFactory
       contexts {
         olap-demo {

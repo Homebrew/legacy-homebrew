@@ -26,7 +26,15 @@ with ScalatestRouteTest with HttpService {
 
   val bindConfKey = "spark.jobserver.bind-address"
   val bindConfVal = "127.0.0.1"
-  val config = ConfigFactory.parseString(s"""$bindConfKey = "${bindConfVal}" """)
+  val masterConfKey = "spark.master"
+  val masterConfVal = "spark://localhost:7077"
+  val config = ConfigFactory.parseString(s"""
+    spark {
+      master = "${masterConfVal}"
+      jobserver.bind-address = "${bindConfVal}"
+    }
+                                 """)
+
   val dummyPort = 9999
 
   // See http://doc.akka.io/docs/akka/2.2.4/scala/actors.html#Deprecated_Variants;
@@ -34,7 +42,7 @@ with ScalatestRouteTest with HttpService {
   val dummyActor = system.actorOf(Props(classOf[DummyActor], this))
   val statusActor = system.actorOf(Props(classOf[JobStatusActor], new InMemoryDAO))
 
-  val api = new WebApi(system, config, dummyPort, dummyActor, dummyActor, dummyActor, dummyActor)
+  val api = new WebApi(system, config, dummyPort, dummyActor, dummyActor, dummyActor, Some(dummyActor))
   val routes = api.myRoutes
 
   val dt = DateTime.parse("2013-05-29T00Z")
@@ -171,7 +179,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }
@@ -193,7 +201,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }
@@ -205,7 +213,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }
