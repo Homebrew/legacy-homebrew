@@ -11,6 +11,8 @@ class Pure < Formula
     sha1 "f8fd5804cdf52cb45321fedeb5d4ba42a219a08d" => :lion
   end
 
+  needs :cxx11
+
   depends_on "llvm"
   depends_on "gmp"
   depends_on "readline"
