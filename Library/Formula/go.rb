@@ -72,8 +72,8 @@ class Go < Formula
       http://golang.org/doc/go1.2#go_tools_godoc
 
     To get `go vet` and `go doc` run:
-      go get code.google.com/p/go.tools/cmd/godoc
-      go get code.google.com/p/go.tools/cmd/vet
+      go get golang.org/x/tools/cmd/vet
+      go get golang.org/x/tools/cmd/godoc
 
     You may wish to add the GOROOT-based install location to your PATH:
       export PATH=$PATH:#{opt_libexec}/bin

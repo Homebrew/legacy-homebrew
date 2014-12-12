@@ -29,6 +29,11 @@ class Flac < Formula
     cause "Undefined symbols when linking"
   end
 
+  fails_with :clang do
+    build 500
+    cause "Undefined symbols ___cpuid and ___cpuid_count"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 

@@ -9,9 +9,10 @@ class Shiboken < Formula
   head 'git://gitorious.org/pyside/shiboken.git'
 
   bottle do
-    sha1 "dd4d9cbbfcaf77bd7c0c45e55c41edab374b4216" => :yosemite
-    sha1 "a2b38ded09743f12668275783b03aeb0f178e8d9" => :mavericks
-    sha1 "1d567cda7cbccf13315a2d62baf0d73c9f137fec" => :mountain_lion
+    revision 1
+    sha1 "9dd0d0026901e52cf489bd715f0e297bd53d5ce3" => :yosemite
+    sha1 "2b6b704bc0b7dbd0ab666275f0fd415dfe5590ad" => :mavericks
+    sha1 "082137538998bde0e874011670a65a497c9157bf" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
@@ -29,11 +30,11 @@ class Shiboken < Formula
         # Building the tests also runs them.
         args << "-DBUILD_TESTS=ON"
         # if not System Python
-        python_framework = "#{Formula[python].prefix}/Frameworks/Python.framework/Versions/#{version}"
+        python_framework = "#{Formula[python].opt_prefix}/Frameworks/Python.framework/Versions/#{version}"
         if version.to_s[0,1] == "2" && Formula["python"].installed?
           args << "-DPYTHON_INCLUDE_DIR:PATH=#{python_framework}/Headers"
           args << "-DPYTHON_LIBRARY:FILEPATH=#{python_framework}/lib/libpython#{version}.dylib"
-        elsif version.to_s[0,1] == "3"
+        elsif version.to_s[0,1] == "3" && Formula["python3"].installed?
           args << "-DPYTHON3_INCLUDE_DIR:PATH=#{python_framework}/Headers"
           args << "-DPYTHON3_LIBRARY:FILEPATH=#{python_framework}/lib/libpython#{version}.dylib"
           args << "-DUSE_PYTHON3:BOOL=ON"

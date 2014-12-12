@@ -12,12 +12,16 @@ class Editorconfig < Formula
     sha1 "84b22980c00b6c779f6308561b06058f5e3d5b11" => :lion
   end
 
+  option :universal
+
   head 'https://github.com/editorconfig/editorconfig-core-c.git'
 
   depends_on 'cmake' => :build
   depends_on 'pcre'
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "cmake", ".", "-DCMAKE_INSTALL_PREFIX:PATH=#{prefix}"
     system "make install"
   end

@@ -58,7 +58,7 @@ Applications should be installed to `libexec`. This prevents the app's Python mo
 
 In your formula's `install` method, first set the `PYTHONPATH` environment variable to your package's libexec site-packages directory with:
 ```ruby
-ENV.prepend_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 ```
 Then, use `system` with `Language::Python.setup_install_args` to invoke `setup.py` like:
 ```ruby
@@ -81,7 +81,7 @@ Each dependency **should** be explicitly installed; please do not rely on setup.
 
 Set `PYTHONPATH` to include the `libexec/"vendor"` site-packages path with:
 ```ruby
-ENV.prepend_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 ```
 before staging and installing each resourced dependency with:
 ```ruby
@@ -107,14 +107,14 @@ class Foo < Formula
   end
 
   def install
-    ENV.prepend_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     %w[six parsedatetime].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
 
-    ENV.prepend_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir[libexec/"bin/*"]
