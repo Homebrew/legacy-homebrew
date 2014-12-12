@@ -18,8 +18,7 @@ class Libdrawtext < Formula
   depends_on 'glew'
 
   def install
-    system "./configure", "--disable-dbg", "--enable-opt",
-           "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dbg", "--enable-opt", "--prefix=#{prefix}"
     system "make", "install"
   end
 end
