@@ -32,9 +32,9 @@ class Wellington < Formula
       system "./configure", "--prefix=#{prefix}",
              "--disable-silent-rules",
              "--disable-dependency-tracking"
-      system "make", "prefix=#{prefix}", "install"
+      system "make", "install"
       # Make libsass.a available to Go compiler
-      ln_s "#{prefix}/lib/libsass.a", "/usr/local/lib/libsass.a"
+      ln_s "#{prefix}/lib/libsass.a", "/usr/local/lib/libsass.a", :force => true
       cleanup = true
     }
 
