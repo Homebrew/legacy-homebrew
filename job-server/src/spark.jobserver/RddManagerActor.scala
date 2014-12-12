@@ -28,7 +28,9 @@ object RddManagerActorMessages {
 class RddManagerActor(sparkContext: SparkContext) extends InstrumentedActor with YammerMetrics {
   import RddManagerActorMessages._
 
-  private val namesToIds = new mutable.HashMap[String, Int]()
+  // we must store a reference to the RDD even though only its ID is used here
+  // this reference prevents the RDD from being GCed and cleaned by sparks ContextCleaner
+  private val namesToRDDs = new mutable.HashMap[String, RDD[_]]()
   private val waiters =
     new mutable.HashMap[String, mutable.Set[ActorRef]] with mutable.MultiMap[String, ActorRef]
   private val inProgress = mutable.Set[String]()
@@ -53,7 +55,7 @@ class RddManagerActor(sparkContext: SparkContext) extends InstrumentedActor with
 
     case CreateRddResult(name, Right(rdd)) =>
       val oldRddOption = getExistingRdd(name)
-      namesToIds(name) = rdd.id
+      namesToRDDs(name) = rdd
       notifyAndClearWaiters(name, Right(rdd))
       // Note: unpersist the old rdd we just replaced, if there was one
       if (oldRddOption.isDefined && oldRddOption.get.id != rdd.id) {
@@ -61,26 +63,26 @@ class RddManagerActor(sparkContext: SparkContext) extends InstrumentedActor with
       }
 
     case DestroyRdd(name) => getExistingRdd(name).foreach { rdd =>
-      namesToIds.remove(name)
+      namesToRDDs.remove(name)
       rdd.unpersist(blocking = false)
     }
 
     case GetRddNames =>
       val persistentRdds = sparkContext.getPersistentRDDs
-      val result = namesToIds.collect { case (name, id) if persistentRdds.contains(id) => name }
+      val result = namesToRDDs.collect { case (name, rdd) if persistentRdds.contains(rdd.id) => name }
       // optimization: can remove stale names from our map if the SparkContext has unpersisted them.
-      (namesToIds.keySet -- result).foreach { staleName => namesToIds.remove(staleName) }
+      (namesToRDDs.keySet -- result).foreach { staleName => namesToRDDs.remove(staleName) }
       sender ! result
   }
 
   private def getExistingRdd(name: String): Option[RDD[_]] =
-    namesToIds.get(name).flatMap { id => sparkContext.getPersistentRDDs.get(id) } match {
+    namesToRDDs.get(name).flatMap { rdd => sparkContext.getPersistentRDDs.get(rdd.id) } match {
       case Some(rdd) => Some(rdd)
       case None =>
         // If this happens, maybe we never knew about this RDD, or maybe we had a name -> id mapping, but
         // spark's MetadataCleaner has evicted this RDD from the cache because it was too old, and we need
         // to forget about it. Remove it from our names -> ids map and respond as if we never knew about it.
-        namesToIds.remove(name)
+        namesToRDDs.remove(name)
         None
     }
 
