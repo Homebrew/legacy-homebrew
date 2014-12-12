@@ -10,6 +10,7 @@ class Opencc < Formula
   needs :cxx11
 
   def install
+    ENV.cxx11
     args = std_cmake_args
     args << '-DBUILD_DOCUMENTATION:BOOL=OFF'
     system 'cmake', '.', *args
