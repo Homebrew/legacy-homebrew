@@ -23,7 +23,7 @@ class Qt < Formula
     sha1 "668ac1a65811e0ff23230a698725b383c61c1d13" => :mountain_lion
   end
 
-  head "git://gitorious.org/qt/qt.git", :branch => '4.8'
+  head "https://gitorious.org/qt/qt.git", :branch => "4.8"
 
   option :universal
   option 'with-qt3support', 'Build with deprecated Qt3Support module support'

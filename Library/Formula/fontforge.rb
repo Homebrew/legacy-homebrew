@@ -5,6 +5,7 @@ class Fontforge < Formula
   url "https://github.com/fontforge/fontforge/releases/download/20141126/fontforge-2014-11-26-Unix-Source.tar.gz"
   sha1 "ecd776480a47cdcbe1b30ce275172d7d52288e77"
   head "https://github.com/fontforge/fontforge.git"
+  version "20141126"
 
   bottle do
     sha1 "9cb3881adf612eae21aa4c70eb17907a96f05d8d" => :yosemite

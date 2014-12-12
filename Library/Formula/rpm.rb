@@ -1,14 +1,10 @@
 require 'formula'
 
 class RpmDownloadStrategy < CurlDownloadStrategy
-  def initialize name, resource
-    super
-    @tarball_name = "#{name}-#{resource.version}.tar.gz"
-  end
-
   def stage
-    safe_system "rpm2cpio.pl <#{tarball_path} | cpio -vi #{@tarball_name}"
-    safe_system "/usr/bin/tar -xzf #{@tarball_name} && rm #{@tarball_name}"
+    tarball_name = "#{name}-#{version}.tar.gz"
+    safe_system "rpm2cpio.pl <#{cached_location} | cpio -vi #{tarball_name}"
+    safe_system "/usr/bin/tar -xzf #{tarball_name} && rm #{tarball_name}"
     chdir
   end
 

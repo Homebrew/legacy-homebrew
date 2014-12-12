@@ -3,17 +3,17 @@ require "formula"
 class Python < Formula
   homepage "https://www.python.org"
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
-  sha1 "511960dd78451a06c9df76509635aeec05b2051a"
-  revision 2
+  url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz"
+  sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 3
-    sha1 "9f8d1d3bf62e78c0918822517a041a845b6703d8" => :yosemite
-    sha1 "307042fc8dd7f736b450ee5fc631197290483cf7" => :mavericks
-    sha1 "f3708ea1d1f736527c428f0026aa42499c489fe2" => :mountain_lion
+    sha1 "9b476ce6b95d152635dfe96ca6e43266841ba745" => :yosemite
+    sha1 "e1436febf6af07689d6d7c5fa79071494604632b" => :mavericks
+    sha1 "184f8820f6eb31b470df564da09e14a0fce38970" => :mountain_lion
   end
 
+  # Please don't add a wide/ucs4 option as it won't be accepted.
+  # More details in: https://github.com/Homebrew/homebrew/pull/32368
   option :universal
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
@@ -32,8 +32,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz"
-    sha1 "a681ba56c30c0eb66528215842d3e3fcb5157614"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-7.0.tar.gz"
+    sha1 "971d3efef71872c9d420df4cff6e04255024f9ae"
   end
 
   resource "pip" do

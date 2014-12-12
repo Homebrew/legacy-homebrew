@@ -1,13 +1,11 @@
 require "formula"
 
 class Qt5HeadDownloadStrategy < GitDownloadStrategy
-  include FileUtils
-
   def stage
-    @clone.cd { reset }
-    safe_system "git", "clone", @clone, "."
-    ln_s @clone, "qt"
-    safe_system "./init-repository", "--mirror", "#{Dir.pwd}/"
+    cached_location.cd { reset }
+    quiet_safe_system "git", "clone", cached_location, "."
+    ln_s cached_location, "qt"
+    quiet_safe_system "./init-repository", { :quiet_flag => "-q" }, "--mirror", "#{Dir.pwd}/"
     rm "qt"
   end
 end
@@ -40,7 +38,7 @@ class Qt5 < Formula
   # https://bugreports.qt-project.org/browse/QTBUG-41136
   patch :DATA
 
-  head "git://gitorious.org/qt/qt5.git", :branch => "stable",
+  head "https://gitorious.org/qt/qt5.git", :branch => "5.3",
     :using => Qt5HeadDownloadStrategy, :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
@@ -51,6 +49,9 @@ class Qt5 < Formula
   option "developer", "Build and link with developer options"
   option "with-oci", "Build with Oracle OCI plugin"
 
+  # Snow Leopard is untested and support is being officially removed in 5.4
+  # https://qt.gitorious.org/qt/qtbase/commit/5be81925d7be19dd0f1022c3cfaa9c88624b1f08
+  depends_on :macos => :lion
   depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on :mysql => :optional

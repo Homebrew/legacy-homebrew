@@ -2,10 +2,10 @@ GEM
   remote: https://rubygems.org/
   specs:
     metaclass (0.0.4)
-    minitest (5.4.1)
+    minitest (5.4.3)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
-    rake (10.3.2)
+    rake (10.4.2)
 
 PLATFORMS
   ruby

@@ -12,9 +12,9 @@ class CrosstoolNg < Formula
     sha1 "fc2cfb94d4edb31624c5703c07e536e7becb2fa0" => :mountain_lion
   end
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on 'coreutils' => :build
   depends_on 'wget'
   depends_on 'gnu-sed'

@@ -2,8 +2,21 @@ require 'formula'
 
 class Id3lib < Formula
   homepage 'http://id3lib.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz'
-  sha1 'c92c880da41d1ec0b242745a901702ae87970838'
+
+  stable do
+    url 'https://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz'
+    sha1 'c92c880da41d1ec0b242745a901702ae87970838'
+
+    patch do
+      url "https://trac.macports.org/export/112431/trunk/dports/audio/id3lib/files/id3lib-vbr-overflow.patch"
+      sha1 "2fc0d348469980b30d7844dad63cac91ccd421c9"
+    end
+
+    patch do
+      url "https://trac.macports.org/export/90780/trunk/dports/audio/id3lib/files/id3lib-main.patch"
+      sha1 "8e52e21bd37fcd57bfaa8b1a8c11bf897d73a476"
+    end
+  end
 
   head "cvs://:pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel"
 
@@ -17,16 +30,6 @@ class Id3lib < Formula
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
-
-  patch do
-    url "https://trac.macports.org/export/112431/trunk/dports/audio/id3lib/files/id3lib-vbr-overflow.patch"
-    sha1 "2fc0d348469980b30d7844dad63cac91ccd421c9"
-  end
-
-  patch do
-    url "https://trac.macports.org/export/90780/trunk/dports/audio/id3lib/files/id3lib-main.patch"
-    sha1 "8e52e21bd37fcd57bfaa8b1a8c11bf897d73a476"
-  end
 
   patch do
     url "https://trac.macports.org/export/112430/trunk/dports/audio/id3lib/files/no-iomanip.h.patch"

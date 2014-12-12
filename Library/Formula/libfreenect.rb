@@ -2,17 +2,16 @@ require "formula"
 
 class Libfreenect < Formula
   homepage "http://openkinect.org"
-  url "https://github.com/OpenKinect/libfreenect/archive/v0.5.0.tar.gz"
-  sha1 "3a0c6ca9b2515132a59232ed5719ee2731f6e580"
+  url "https://github.com/OpenKinect/libfreenect/archive/v0.5.1.tar.gz"
+  sha1 "1f7296e50c27c07e2f57ee906c195cabf97c1438"
 
   head "https://github.com/OpenKinect/libfreenect.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "01f9e79b4be90a3a5487fe19e2ee54a62b732ed9" => :yosemite
-    sha1 "61ee80a144a0ca7a2b89ab6fec33524aa745bd67" => :mavericks
-    sha1 "39b2d3e43dc3e0de01b000c6ea9347b276af8383" => :mountain_lion
+    sha1 "431e5bc789920cdc34e2a786fd44eb4485dd7e3d" => :yosemite
+    sha1 "98c11049dd822039eaa7325fa9dc2131c4a4b3dd" => :mavericks
+    sha1 "1e5ec1cc7a91d583f3de9c5f12d5eac8321970e4" => :mountain_lion
   end
 
   option :universal

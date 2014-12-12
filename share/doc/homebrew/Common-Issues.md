@@ -63,7 +63,7 @@ Could not open job overrides database at: /private/var/db/launchd.db/com.apple.l
 launch_msg(): Socket is not connected
 ```
 
-These are likely due to one of three issues:
+These are likely due to one of four issues:
 
 1. You are using iTerm. The solution is to use Terminal.app when interacting with `launchctl`.
 2. You are using a terminal multiplexer such as `tmux` or `screen`. You should interact with `launchctl` from a separate Terminal.app shell.

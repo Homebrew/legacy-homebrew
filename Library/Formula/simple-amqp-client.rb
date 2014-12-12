@@ -4,7 +4,7 @@ class SimpleAmqpClient < Formula
   homepage "https://github.com/alanxz/SimpleAmqpClient"
   url "https://github.com/alanxz/SimpleAmqpClient/archive/v2.4.0.tar.gz"
   sha1 "5b24c79a34dc8c97ff5dd0c78d545b9f507478a5"
-  head "https://github.com/alanxz/SimpleAmqpClient.git", :branch => "master"
+  head "https://github.com/alanxz/SimpleAmqpClient.git"
 
   bottle do
     cellar :any

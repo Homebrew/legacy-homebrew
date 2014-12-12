@@ -5,8 +5,7 @@ class Imagemagick < Formula
   url "http://www.imagemagick.org/download/releases/ImageMagick-6.8.9-8.tar.xz"
   sha256 "27360449c6f3d4cca548d1780ecd5f8313a57a0a83d6d953a5088cc81714e9b0"
 
-  head "https://www.imagemagick.org/subversion/ImageMagick/trunk",
-    :using => UnsafeSubversionDownloadStrategy
+  head "http://www.imagemagick.org/subversion/ImageMagick/trunk"
 
   bottle do
     sha1 "c395c3d14542a6c002fef70dca747f79df7a2df2" => :yosemite

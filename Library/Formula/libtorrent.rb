@@ -6,6 +6,7 @@ class Libtorrent < Formula
   sha1 "3a3ca87054d020bc376abe2c1ea15bbbaef31131"
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # https://github.com/Homebrew/homebrew/issues/24132
   fails_with :clang do

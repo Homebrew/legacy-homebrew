@@ -10,22 +10,76 @@ require 'software_spec'
 require 'install_renamed'
 require 'pkg_version'
 
+# A formula provides instructions and metadata for Homebrew to install a piece
+# of software. Every Homebrew formula is a {Formula}.
+# All subclasses of {Formula} (and all Ruby classes) have to be named
+# `UpperCase` and `not-use-dashes`.
+# A formula specified in `this-formula.rb` should have a class named
+# `ThisFormula`. Homebrew does enforce that the name of the file and the class
+# correspond.
+# Make sure you check with `brew search` that the name is free!
+# @abstract
 class Formula
-  # :startdoc:
   include FileUtils
   include Utils::Inreplace
   extend Enumerable
-  # :stopdoc:
 
-  attr_reader :name, :path
-  attr_reader :stable, :devel, :head, :active_spec
-  attr_reader :pkg_version, :revision
+  # The name of this {Formula}.
+  # e.g. `this-formula`
+  attr_reader :name
 
-  # The current working directory during builds and tests.
-  # Will only be non-nil inside #stage and #test.
-  attr_reader :buildpath, :testpath
+  # The full path to this {Formula}.
+  # e.g. `/usr/local/Library/Formula/this-formula.rb`
+  attr_reader :path
 
+  # The stable (and default) {SoftwareSpec} for this {Formula}
+  # This contains all the attributes like e.g. {#url}, {.sha1} that apply to
+  # the stable version of this formula.
+  attr_reader :stable
+
+  # The development {SoftwareSpec} for this {Formula}.
+  # Installed when using `brew install --devel`
+  # `nil` if there is no development version.
+  # @see #stable
+  attr_reader :devel
+
+  # The HEAD {SoftwareSpec} for this {Formula}.
+  # Installed when using `brew install --HEAD`
+  # This is always installed with the version `HEAD` and taken from the latest
+  # commit in the version control system.
+  # `nil` if there is no HEAD version.
+  # @see #stable
+  attr_reader :head
+
+  # The currently active SoftwareSpec.
+  # Defaults to stable unless `--devel` or `--HEAD` is passed.
+  # @private
+  attr_reader :active_spec
+
+  # The {PkgVersion} for this formula with version and {#revision} information.
+  attr_reader :pkg_version
+
+  # Used for creating new Homebrew versions of software without new upstream
+  # versions.
+  # @see .revision
+  attr_reader :revision
+
+  # The current working directory during builds.
+  # Will only be non-`nil` inside {#install}.
+  attr_reader :buildpath
+
+  # The current working directory during tests.
+  # Will only be non-`nil` inside {#test}.
+  attr_reader :testpath
+
+  # When installing a bottle (binary package) from a local path this will be
+  # set to the full path to the bottle tarball. If not, it will be `nil`.
   attr_accessor :local_bottle_path
+
+  # The {BuildOptions} for this {Formula}. Lists the arguments passed and any
+  # {#options} in the {Formula}. Note that these may differ at different times
+  # during the installation of a {Formula}. This is annoying but the result of
+  # state that we're trying to eliminate.
   attr_accessor :build
 
   def initialize(name, path, spec)
@@ -43,6 +97,8 @@ class Formula
     @build = active_spec.build
     @pin = FormulaPin.new(self)
   end
+
+  private
 
   def set_spec(name)
     spec = self.class.send(name)
@@ -64,6 +120,8 @@ class Formula
       end
     end
   end
+
+  public
 
   def stable?
     active_spec == stable
@@ -156,8 +214,6 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  # :startdoc:
-
   # The directory in the cellar that the formula is installed to.
   # This directory contains the formula's name and version.
   def prefix(v=pkg_version)
@@ -237,8 +293,10 @@ class Formula
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
-  # Deprecated
+  # @deprecated
   DATA = :DATA
+
+  # @deprecated
   def patches; {} end
 
   # rarely, you don't want your library symlinked into the main prefix
@@ -270,9 +328,8 @@ class Formula
     false
   end
 
-  # :stopdoc:
-
   # yields self with current working directory set to the uncompressed tarball
+  # @private
   def brew
     validate_attributes :name, :version
 
@@ -335,8 +392,6 @@ class Formula
     "#<#{self.class.name}: #{path}>"
   end
 
-  # :startdoc:
-
   # Standard parameters for CMake builds.
   # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
   # Setting it to Release would ignore our flags.
@@ -355,9 +410,7 @@ class Formula
     ]
   end
 
-  # :stopdoc:
-
-  # Deprecated
+  # @deprecated
   def python(options={}, &block)
     opoo 'Formula#python is deprecated and will go away shortly.'
     block.call if block_given?
@@ -525,7 +578,8 @@ class Formula
 
   protected
 
-  # :startdoc:
+  def install
+  end
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -537,6 +591,11 @@ class Formula
     if cmd == "./configure" and not verbose
       pretty_args.delete "--disable-dependency-tracking"
       pretty_args.delete "--disable-debug"
+    end
+    pretty_args.each_index do |i|
+      if pretty_args[i].to_s.start_with? "import setuptools"
+        pretty_args[i] = "import setuptools..."
+      end
     end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
@@ -589,8 +648,6 @@ class Formula
     end
   end
 
-  # :stopdoc:
-
   private
 
   def exec_cmd(cmd, args, out, logfn)
@@ -604,8 +661,12 @@ class Formula
     # Turn on argument filtering in the superenv compiler wrapper.
     # We should probably have a better mechanism for this than adding
     # special cases to this method.
-    if cmd == "python" && %w[setup.py build.py].include?(args.first)
-      ENV.refurbish_args
+    if cmd == "python"
+      setup_py_in_args = %w[setup.py build.py].include?(args.first)
+      setuptools_shim_in_args = args.any? { |a| a.start_with? "import setuptools" }
+      if setup_py_in_args || setuptools_shim_in_args
+        ENV.refurbish_args
+      end
     end
 
     $stdout.reopen(out)
@@ -662,8 +723,32 @@ class Formula
   class << self
     include BuildEnvironmentDSL
 
+    # The reason for why this software is not linked (by default) to
+    # {::HOMEBREW_PREFIX}.
     attr_reader :keg_only_reason
-    attr_rw :homepage, :plist_startup, :plist_manual, :revision
+
+    # @!attribute [rw]
+    # The homepage for the software. Used by users to get more information
+    # about the software and Homebrew maintainers as a point of contact for
+    # e.g. submitting patches.
+    # Can be opened by running `brew home example-formula`.
+    attr_rw :homepage
+
+    # @!attribute [rw]
+    # The `:startup` attribute set by {.plist_options}.
+    attr_rw :plist_startup
+
+    # @!attribute [rw]
+    # The `:manual` attribute set by {.plist_options}.
+    attr_rw :plist_manual
+
+    # @!attribute [rw]
+    # Used for creating new Homebrew versions of software without new upstream
+    # versions. For example, if we bump the major version of a library this
+    # {Formula} {.depends_on} then we may need to update the `revision` of this
+    # {Formula} to install a new version linked against the new library version.
+    # `0` if unset.
+    attr_rw :revision
 
     def specs
       @specs ||= [stable, devel, head].freeze

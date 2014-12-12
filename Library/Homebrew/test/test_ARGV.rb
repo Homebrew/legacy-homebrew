@@ -11,6 +11,11 @@ class ArgvExtensionTests < Homebrew::TestCase
     assert_raises(FormulaUnavailableError) { @argv.formulae }
   end
 
+  def test_argv_casks
+    @argv.unshift 'mxcl'
+    assert_equal [], @argv.casks
+  end
+
   def test_argv_kegs
     keg = HOMEBREW_CELLAR + "mxcl/10.0"
     keg.mkpath

@@ -8,9 +8,10 @@ class TranslateToolkit < Formula
 
   bottle do
     cellar :any
-    sha1 "e1baa8c110b368218be49ac3973e5bea9ec63964" => :yosemite
-    sha1 "b80d249ad5f1efba7431a7ead95f3ebe7d4ba2e2" => :mavericks
-    sha1 "dd5a36eaaec9477beee917b2cfae173e45ad5823" => :mountain_lion
+    revision 1
+    sha1 "b06dbd6f29d109d1afe8854ea4e3256a0305c775" => :yosemite
+    sha1 "a2642c64d692c38b057be500196fcfaad76c69fb" => :mavericks
+    sha1 "5b36a52a091ee936ed0ed414cd86879f742827d0" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -65,12 +66,18 @@ class TranslateToolkit < Formula
 
     res = %w[six lxml pylev diffmatch beautifulsoup4 iniparse vobject cherrypy pytest]
     res.each do |r|
-      resource(r).stage { Language::Python.setup_install "python", libexec/"vendor" }
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
+    # install_data tries to install to /Library because translate-toolkit's
+    # heuristic for extracting a relative site-packages path fails with Apple's
+    # layout
+    inreplace "setup.py", /^sitepackages =.+/, "sitepackages = 'lib/python2.7/site-packages'"
+
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
-    # Explicitly specify the install data path otherwise it goes all Easter Bunny on us.
-    Language::Python.setup_install "python", libexec, "--install-data=#{libexec}/share"
+    system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])

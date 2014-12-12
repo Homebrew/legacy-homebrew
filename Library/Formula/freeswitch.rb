@@ -12,9 +12,9 @@ class Freeswitch < Formula
     sha1 "dc5a331f94eb51353d01dfe6d2319985e7844a96" => :lion
   end
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on 'pkg-config' => :build
 
   depends_on 'jpeg'

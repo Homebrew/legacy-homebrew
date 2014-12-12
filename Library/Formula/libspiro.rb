@@ -16,9 +16,9 @@ class Libspiro < Formula
   head do
     url 'https://github.com/fontforge/libspiro.git'
 
-    depends_on :automake
-    depends_on :autoconf
-    depends_on :libtool
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   def install

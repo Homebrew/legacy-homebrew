@@ -13,9 +13,9 @@ class Gdnsd < Formula
 
   head do
     url "https://github.com/gdnsd/gdnsd.git"
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "libev"

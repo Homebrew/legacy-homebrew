@@ -15,9 +15,9 @@ class Fakeroot < Formula
 
   head "https://anonscm.debian.org/git/users/clint/fakeroot.git"
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     system "./bootstrap"

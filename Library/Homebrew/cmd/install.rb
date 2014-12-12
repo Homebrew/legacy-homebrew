@@ -19,13 +19,25 @@ module Homebrew
         msg = blacklisted? name
         raise "No available formula for #{name}\n#{msg}" if msg
       end
-      if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
+      if !File.exist?(name) && (name =~ HOMEBREW_TAP_FORMULA_REGEX \
+                                || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
         install_tap $1, $2
       end
     end unless ARGV.force?
 
     begin
       formulae = []
+
+      if ARGV.casks.any?
+        brew_cask = Formulary.factory("brew-cask")
+        install_formula(brew_cask) unless brew_cask.installed?
+
+        ARGV.casks.each do |c|
+          cmd = "brew", "cask", "install", c
+          ohai cmd.join " "
+          system *cmd
+        end
+      end
 
       ARGV.formulae.each do |f|
         # Building head-only without --HEAD is an error
