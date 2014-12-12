@@ -2,8 +2,9 @@ require 'formula'
 
 class Libdrawtext < Formula
   homepage 'http://nuclear.mutantstargoat.com/sw/libdrawtext/'
-  url 'http://nuclear.mutantstargoat.com/sw/libdrawtext/libdrawtext-0.1.tar.gz'
-  sha1 '0d7166bbb1479553abf82b71a56ec565d861fe81'
+  url 'http://nuclear.mutantstargoat.com/sw/libdrawtext/libdrawtext-0.2.1.tar.gz'
+  sha1 'dd12c67e7c7898a5941a92d616e9dbbbab4b9a38'
+  head 'https://github.com/jtsiomb/libdrawtext.git'
 
   bottle do
     cellar :any
