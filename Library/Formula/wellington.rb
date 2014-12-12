@@ -10,25 +10,35 @@ class Wellington < Formula
   option :cxx11
 
   depends_on "go" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   go_resource "github.com/wellington/spritewell" do
     url "http://github.com/wellington/spritewell.git",
       :revision => "3a43f26d94a6da8e40884d1edca0ff372ab7487d"
   end
 
-  #why is this necessary?
-  go_resource "github.com/wellington/wellington" do
-    url "http://github.com/wellington/wellington.git",
-      :revision => "0af6dddfbcef30888e0dde6e68ef8e3ca8e5be0c"
+  resource "github.com/drewwells/libsass" do
+    url "http://github.com/drewwells/libsass.git"
+    sha1 "1738c7f"
   end
 
   def install
+    resource("github.com/drewwells/libsass").stage {
+      ENV["LIBSASS_VERSION"]="1738c7f"
+      system "autoreconf", "-fvi"
+      system "./configure", "--prefix=#{prefix}",
+             "--disable-silent-rules",
+             "--disable-dependency-tracking"
+      system "make", "install"
+    }
 
-    ENV["GOPATH"] = buildpath
-    system "echo","$GOPATH"
+    mkdir_p buildpath/"src/github.com/wellington"
+    ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
     Language::Go.stage_deps resources, buildpath/"src"
+    ENV["GOPATH"] = buildpath
 
-    system "make deps"
     system "go", "build", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
   end
