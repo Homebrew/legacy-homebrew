@@ -7,6 +7,9 @@ class Nut < Formula
   revision 1
 
   bottle do
+    sha1 "21681b1e72256bddffaf579b3ed7097c48ed14cd" => :yosemite
+    sha1 "e21f9d0b15040138ece75160b1d9c72680611fc3" => :mavericks
+    sha1 "691e803014feeb6267fb50784848cb698912ae54" => :mountain_lion
   end
 
   head do
