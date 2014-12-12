@@ -7,9 +7,9 @@ class Docker < Formula
   url "https://github.com/docker/docker.git", :tag => "v1.3.3"
 
   bottle do
-    sha1 "9ebe5d8c93bdfacc83b95ada937503189d5368a2" => :yosemite
-    sha1 "7aa8a5484104008254c7815739c3257a00a75a0b" => :mavericks
-    sha1 "811f911e31fdf9feff208b075ba6f60cb546a874" => :mountain_lion
+    sha1 "aa72e6dd64d8b2f6f4f733e20cd2bdaa1bb923e3" => :yosemite
+    sha1 "18c1660c6baa6b9b03c0acb33627c70f98856e6f" => :mavericks
+    sha1 "3d40663273ceda30b0bfac70447742d2ea11fcd4" => :mountain_lion
   end
 
   option "without-completions", "Disable bash/zsh completions"
