@@ -34,6 +34,8 @@ class Groonga < Formula
   # fixed at: https://github.com/groonga/groonga/commit/340085f132c640f03e32a7878f0bd31de9f74eaa
   # issue #256: https://github.com/groonga/groonga/issues/256
   # fixed at: https://github.com/groonga/groonga/commit/e2aa5217f0967457ae4f7edf799dbf8767400916
+  # issue #264: https://github.com/groonga/groonga/issues/264
+  # fixed at: https://github.com/groonga/groonga/commit/91207ecd816e873cdf7070ec7a1c5ae4870f7e6e
   patch :DATA
 
   def install
@@ -102,3 +104,44 @@ index 03083bd..9219783 100644
  if WITH_SHARED_ONIGMO
  INSTALL_DEPEND_TARGETS += onigmo-install
  endif
+diff --git a/lib/grn.h b/lib/grn.h
+index 868133c..b7f78e2 100644
+--- a/lib/grn.h
++++ b/lib/grn.h
+@@ -546,7 +546,7 @@ typedef int grn_cond;
+ #  define GRN_MKOSTEMP(template,flags,mode) mkostemp(template,flags)
+ # else /* HAVE_MKOSTEMP */
+ #  define GRN_MKOSTEMP(template,flags,mode) \
+-  (mktemp(template), GRN_OPEN((template),flags,mode))
++  (mktemp(template), GRN_OPEN((template),((flags)|O_RDWR|O_CREAT|O_EXCL),mode))
+ # endif /* HAVE_MKOSTEMP */
+
+ #elif (defined(WIN32) || defined (_WIN64)) /* __GNUC__ */
+@@ -579,7 +579,7 @@ typedef int grn_cond;
+ # define GRN_BIT_SCAN_REV0(v,r) GRN_BIT_SCAN_REV(v,r)
+
+ # define GRN_MKOSTEMP(template,flags,mode) \
+-  (mktemp(template), GRN_OPEN((template),((flags)|O_BINARY),mode))
++  (mktemp(template), GRN_OPEN((template),((flags)|O_RDWR|O_CREAT),mode))
+
+ #else /* __GNUC__ */
+
+diff --git a/lib/ii.c b/lib/ii.c
+index 3e48bef..2ec4949 100644
+--- a/lib/ii.c
++++ b/lib/ii.c
+@@ -7428,13 +7428,10 @@ grn_ii_buffer_open(grn_ctx *ctx, grn_ii *ii,
+       if (ii_buffer->counters) {
+         ii_buffer->block_buf = GRN_MALLOCN(grn_id, II_BUFFER_BLOCK_SIZE);
+         if (ii_buffer->block_buf) {
+-          int open_flags = O_WRONLY|O_CREAT;
++          int open_flags = 0;
+ #ifdef WIN32
+           open_flags |= O_BINARY;
+ #endif
+-#ifdef BSD
+-          open_flags &= O_APPEND|O_DIRECT|O_SHLOCK|O_EXLOCK|O_SYNC|O_CLOEXEC;
+-#endif
+           snprintf(ii_buffer->tmpfpath, PATH_MAX,
+                    "%sXXXXXX", grn_io_path(ii->seg));
+           ii_buffer->block_buf_size = II_BUFFER_BLOCK_SIZE;
