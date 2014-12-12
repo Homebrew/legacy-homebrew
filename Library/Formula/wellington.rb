@@ -32,6 +32,8 @@ class Wellington < Formula
              "--disable-silent-rules",
              "--disable-dependency-tracking"
       system "make", "install"
+      # Force the install of libsass to /usr/local/lib
+      lib.install ".lib/libsass.a"
     }
 
     mkdir_p buildpath/"src/github.com/wellington"
