@@ -4,6 +4,7 @@ class Libsass < Formula
   homepage "https://github.com/sass/libsass"
   url "https://github.com/sass/libsass/archive/3.0.2.tar.gz"
   sha1 "415e4377ec73fcf0bd7af949d65f7ca730be1e5c"
+  head "https://github.com/sass/libsass.git"
 
   bottle do
     cellar :any
@@ -19,6 +20,7 @@ class Libsass < Formula
 
   def install
     ENV.cxx11
+    ENV["LIBSASS_VERSION"] = "HEAD" if build.head?
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}", "--disable-silent-rules",
                           "--disable-dependency-tracking"
