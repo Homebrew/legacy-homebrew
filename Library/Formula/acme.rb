@@ -6,6 +6,12 @@ class Acme < Formula
   version '0.91'
   sha1 '7104ea01a2ca2962294aaac4974e10c6486534a8'
 
+  devel do
+    url "http://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/current/acme093testing.tar.bz2"
+    sha1 "59bde69dcbb3242fc29fc019052cbdff10dbb8f8"
+    version "0.93"
+  end
+
   def install
     system "make", "-C", "src", "install", "BINDIR=#{bin}"
   end
