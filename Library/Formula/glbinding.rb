@@ -22,10 +22,6 @@ class Glbinding < Formula
 
   def install
     ENV.cxx11
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
