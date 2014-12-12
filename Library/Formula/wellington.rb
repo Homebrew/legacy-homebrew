@@ -25,15 +25,17 @@ class Wellington < Formula
   end
 
   def install
+    cleanup = false
     resource("github.com/drewwells/libsass").stage {
       ENV["LIBSASS_VERSION"]="1738c7f"
       system "autoreconf", "-fvi"
       system "./configure", "--prefix=#{prefix}",
              "--disable-silent-rules",
              "--disable-dependency-tracking"
-      system "make", "install"
-      # Force the install of libsass to /usr/local/lib
-      lib.install ".lib/libsass.a"
+      system "make", "prefix=#{prefix}", "install"
+      # Make libsass.a available to Go compiler
+      ln_s "#{prefix}/lib/libsass.a", "/usr/local/lib/libsass.a"
+      cleanup = true
     }
 
     mkdir_p buildpath/"src/github.com/wellington"
@@ -42,6 +44,10 @@ class Wellington < Formula
     ENV["GOPATH"] = buildpath
 
     system "go", "build", "-o", "dist/wt", "wt/main.go"
+    # Clean up libsass lib, it will be linked by homebrew after
+    if cleanup
+      rm "/usr/local/lib/libsass.a"
+    end
     bin.install "dist/wt"
   end
 
