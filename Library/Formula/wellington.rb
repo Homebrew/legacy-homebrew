@@ -3,7 +3,7 @@ require "language/go"
 
 class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/v0.4.0.tar.gz"
+  url "https://github.com/wellington/wellington/archive/f1ef09a7b86e5c96aabe52e76513baa02e929cc7.tar.gz"
   sha1 "a5aa2866bcb914fd40542089628d5604de85c207"
   head "https://github.com/wellington/wellington.git"
 
@@ -25,7 +25,6 @@ class Wellington < Formula
   end
 
   def install
-    cleanup = false
     resource("github.com/drewwells/libsass").stage {
       ENV["LIBSASS_VERSION"]="1738c7f"
       system "autoreconf", "-fvi"
@@ -33,9 +32,6 @@ class Wellington < Formula
              "--disable-silent-rules",
              "--disable-dependency-tracking"
       system "make", "install"
-      # Make libsass.a available to Go compiler
-      ln_s "#{prefix}/lib/libsass.a", "/usr/local/lib/libsass.a", :force => true
-      cleanup = true
     }
 
     mkdir_p buildpath/"src/github.com/wellington"
@@ -44,10 +40,6 @@ class Wellington < Formula
     ENV["GOPATH"] = buildpath
 
     system "go", "build", "-o", "dist/wt", "wt/main.go"
-    # Clean up libsass lib, it will be linked by homebrew after
-    if cleanup
-      rm "/usr/local/lib/libsass.a"
-    end
     bin.install "dist/wt"
   end
 
