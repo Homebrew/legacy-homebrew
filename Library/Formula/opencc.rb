@@ -6,6 +6,9 @@ class Opencc < Formula
   sha1 "101b9f46aca95d2039a955572c394ca6bdb2d88d"
 
   bottle do
+    sha1 "f49556768692c346a700382cec6746ee3d425ff3" => :yosemite
+    sha1 "e7024a546b9b322a5cdb43703004a93a5dcd21b9" => :mavericks
+    sha1 "535532648a4f756a5c20ddda3da12953c7520128" => :mountain_lion
   end
 
   depends_on "cmake" => :build
