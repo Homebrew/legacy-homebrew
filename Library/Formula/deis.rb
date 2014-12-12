@@ -5,6 +5,13 @@ class Deis < Formula
   url "https://github.com/deis/deis/archive/v1.1.0.tar.gz"
   sha1 "c57fb6073b374b95262c36959c6d2b6c508cda59"
 
+  bottle do
+    cellar :any
+    sha1 "d20e7452e995edac3805866b1b215ebe7f40541b" => :yosemite
+    sha1 "b4313da76967ea6d110f76fd6a9833299638f95c" => :mavericks
+    sha1 "3dca69365aff18d64b8df106a5103a104306472a" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
