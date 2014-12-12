@@ -44,7 +44,7 @@ spark {
     # If you wish to pass any settings directly to the sparkConf as-is, add them here in passthrough,
     # such as hadoop connection settings that don't use the "spark." prefix
     passthrough {
-      #es.nodes = 192.1.1.1
+      #es.nodes = "192.1.1.1"
     }
   }
 
