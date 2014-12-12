@@ -14,7 +14,7 @@ See [Troubleshooting Tips](docs/troubleshooting.md).
 - Kill running jobs via stop context
 - Separate jar uploading step for faster job startup
 - Asynchronous and synchronous job API.  Synchronous API is great for low latency jobs!
-- Works with Standalone Spark as well as Mesos
+- Works with Standalone Spark as well as Mesos and yarn-client
 - Job and jar info is persisted via a pluggable DAO interface
 - Named RDDs to cache and retrieve RDDs by name, improving RDD sharing and reuse among jobs. 
 
