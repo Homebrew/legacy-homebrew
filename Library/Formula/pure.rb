@@ -25,8 +25,8 @@ class Pure < Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-release",
-                          "--without-elisp",
-                          "--disable-c++11"
+                          "--without-elisp"
+
     system "make"
     system "make install"
     resource("docs").stage { system "make", "prefix=#{prefix}", "install" }
