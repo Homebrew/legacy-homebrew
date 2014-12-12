@@ -8,10 +8,6 @@ class Glbinding < Formula
   depends_on "cmake" => :build
   needs :cxx11
 
-  def caveats
-      "glbinding requires a C++11 compliant compiler"
-  end
-
   fails_with :gcc do
     cause 'glbinding requires a C++11 compliant compiler.'
   end
