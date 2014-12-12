@@ -29,7 +29,7 @@ class Pure < Formula
                           "--enable-release",
                           "--without-elisp"
 
-    ENV.cxx11 if MacOS.version =< :mountain_lion
+    ENV.cxx11 if MacOS.version <= :mountain_lion
     system "make"
     system "make install"
     resource("docs").stage { system "make", "prefix=#{prefix}", "install" }
