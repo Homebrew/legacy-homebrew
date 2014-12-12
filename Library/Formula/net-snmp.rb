@@ -11,6 +11,8 @@ class NetSnmp < Formula
   depends_on "openssl"
   depends_on :python => :optional
 
+  keg_only :provided_by_osx
+
   def install
     args = [
       "--disable-debugging",
