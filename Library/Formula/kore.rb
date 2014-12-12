@@ -7,6 +7,12 @@ class Kore < Formula
 
   head "https://github.com/jorisvink/kore.git"
 
+  bottle do
+    sha1 "d0423698323272274a2642e19176696fec6003cd" => :yosemite
+    sha1 "cb230b9303f4c8201ad78a4a28da5fb5083dbfdb" => :mavericks
+    sha1 "6742b88959e925e0416f734d55913923a836d1da" => :mountain_lion
+  end
+
   depends_on "openssl"
   depends_on "postgresql" => :recommended
 
