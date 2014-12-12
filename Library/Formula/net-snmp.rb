@@ -6,6 +6,8 @@ class NetSnmp < Formula
   sha1 "97dc25077257680815de44e34128d365c76bd839"
 
   bottle do
+    sha1 "6b7c2019c338a70336de0e8e808fbb4787a34fe8" => :mavericks
+    sha1 "83cc6e796ebb6748e2c458a6bb54e99bb42c30e6" => :mountain_lion
   end
 
   depends_on "openssl"
