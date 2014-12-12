@@ -1,0 +1,4 @@
+#Scala #akka @ApacheSpark
+
+* yarn-client support (Thanks @CurryGaifan)
+* Fix for NamedRdds RDD cleaner timeout issue (Thanks @Ankit1010)
