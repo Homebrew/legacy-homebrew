@@ -2,8 +2,8 @@ require "formula"
 
 class Ace < Formula
   homepage "http://www.cse.wustl.edu/~schmidt/ACE.html"
-  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.2.8.tar.bz2"
-  sha1 "937fb405226a5aee1dd2fad9d67a3218ac830ca2"
+  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.0.tar.bz2"
+  sha1 "f7f0ba28f61774e3b269af65461819f31c999529"
 
   bottle do
     sha1 "5a245967287d14d0dbd0ddc35fe971e8509a7792" => :mavericks
