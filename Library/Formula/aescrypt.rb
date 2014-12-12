@@ -8,6 +8,18 @@ class Aescrypt < Formula
   def install
     system "./configure"
     system "make"
-    bin.install 'aescrypt', 'aesget'
+    bin.install "aescrypt", "aesget"
+  end
+
+  test do
+    (testpath/"key").write "kk=12345678901234567890123456789abc0"
+
+    require "open3"
+    Open3.popen3("#{bin}/aescrypt", "-k", testpath/"key") do |stdin, stdout, _|
+      stdin.write("hello")
+      stdin.close
+      # we can't predict the output
+      stdout.read.length > 0
+    end
   end
 end
