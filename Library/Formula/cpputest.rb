@@ -1,10 +1,10 @@
 require "formula"
 
 class Cpputest < Formula
-  head "https://github.com/cpputest/cpputest.git"
   homepage "http://www.cpputest.org/"
   url "https://github.com/cpputest/cpputest/archive/v3.6.tar.gz"
   sha1 "308a4200adfb86182251d435e09f42360d9ed8ea"
+  head "https://github.com/cpputest/cpputest.git"
 
   head do
     depends_on 'autoconf' => :build
