@@ -4,7 +4,7 @@ module Homebrew
 
     raise "A name is required" if name.nil?
 
-    template = <<-EOS
+    template = <<-EOS.undent
     Homebrew-#{name}
     =========#{'=' * name.size}
 
