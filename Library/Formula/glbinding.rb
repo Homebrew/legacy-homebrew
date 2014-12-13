@@ -8,14 +8,6 @@ class Glbinding < Formula
   depends_on "cmake" => :build
   needs :cxx11
 
-  fails_with :gcc do
-    cause 'glbinding requires a C++11 compliant compiler.'
-  end
-
-  fails_with :llvm do
-    cause 'glbinding requires a C++11 compliant compiler.'
-  end
-
   def install
     ENV.cxx11
     system "cmake", ".", *std_cmake_args
