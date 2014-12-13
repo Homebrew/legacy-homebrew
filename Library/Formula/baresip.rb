@@ -14,13 +14,13 @@ class Baresip < Formula
                               "LIBRE_MK=#{libre.opt_share}/re/re.mk",
                               "LIBRE_INC=#{libre.opt_include}/re",
                               "LIBRE_SO=#{libre.opt_lib}",
-      "MOD_AUTODETECT=",
-      "USE_AVCAPTURE=1",
-      "USE_COREAUDIO=1",
-      "USE_G711=1",
-      "USE_OPENGL=1",
-      "USE_STDIO=1",
-      "USE_UUID=1"
+                              "MOD_AUTODETECT=",
+                              "USE_AVCAPTURE=1",
+                              "USE_COREAUDIO=1",
+                              "USE_G711=1",
+                              "USE_OPENGL=1",
+                              "USE_STDIO=1",
+                              "USE_UUID=1"
   end
 
 end
