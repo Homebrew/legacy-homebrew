@@ -20,7 +20,7 @@ class Wellington < Formula
 
   resource "github.com/drewwells/libsass" do
     url "http://github.com/drewwells/libsass.git"
-    sha1 "1738c7f"
+    sha1 "48e97c25be75d60429569d406dc482283e213359"
   end
 
   def install
@@ -44,9 +44,13 @@ class Wellington < Formula
 
   test do
     path = testpath/"file.scss"
-    path.write "div { p { color: red; } }"
-    lines = `#{bin}/wt #{path}`
-    assert_equal(`div p {
-  color: red; }`, lines)
+    path.write "div { p { color: red; }}"
+    expected = <<-EOS.undent
+      /* line 6, stdin */
+      div p {
+        color: red; }
+    EOS
+    output = `#{bin}/wt #{path}`
+    assert_equal(expected, output)
   end
 end
