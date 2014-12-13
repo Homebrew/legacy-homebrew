@@ -7,9 +7,10 @@ class Python < Formula
   sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    sha1 "9b476ce6b95d152635dfe96ca6e43266841ba745" => :yosemite
-    sha1 "e1436febf6af07689d6d7c5fa79071494604632b" => :mavericks
-    sha1 "184f8820f6eb31b470df564da09e14a0fce38970" => :mountain_lion
+    revision 4
+    sha1 "12f246ccb25d1024864916f643d819ff7572afdf" => :yosemite
+    sha1 "453c0c36a69059d2746628d468a67572adc94100" => :mavericks
+    sha1 "3bc89dbc02095d229b05a5c82bc11b4081211182" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
