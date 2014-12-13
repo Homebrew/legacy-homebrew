@@ -4,6 +4,7 @@ class Sip < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
   url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.3/sip-4.16.3.tar.gz"
   sha1 "7c4079d164ccbfe4a5274eaeebe8e3cc86e3a75a"
+  revision 1
 
   bottle do
     revision 1
