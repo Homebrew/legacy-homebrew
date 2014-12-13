@@ -576,10 +576,10 @@ class Formula
     HOMEBREW_LIBRARY.join("Homebrew", "test", "fixtures", file)
   end
 
-  protected
-
   def install
   end
+
+  protected
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
