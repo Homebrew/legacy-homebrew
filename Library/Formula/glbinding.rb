@@ -31,8 +31,9 @@ class Glbinding < Formula
         glbinding::Binding::initialize();
       }
       EOS
-    flags = ["-std=c++11", "-stdlib=libc++", "-I#{include}/glbinding", "-I#{lib}/glbinding", "-lglbinding"]
-    system ENV.cxx, "-o", "test", "test.cpp", *(flags + ENV.cflags.to_s.split)
+    system ENV.cxx, "-o", "test", "test.cpp", "-std=c++11", "-stdlib=libc++",
+                    "-I#{include}/glbinding", "-I#{lib}/glbinding",
+                    "-lglbinding", *(ENV.cflags.to_s.split)
     system "./test"
   end
 
