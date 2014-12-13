@@ -2,8 +2,8 @@ require "formula"
 
 class Libscrypt < Formula
   homepage "https://lolware.net/libscrypt.html"
-  url "https://github.com/technion/libscrypt/archive/v1.19.tar.gz"
-  sha1 "fb457aab4561a929dda2872da52b02710c07b7a5"
+  url "https://github.com/technion/libscrypt/archive/v1.20.tar.gz"
+  sha1 "e4d510038c593d404961edbc5822948a6b450610"
 
   bottle do
     cellar :any
