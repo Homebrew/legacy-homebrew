@@ -8,8 +8,8 @@ class Restund < Formula
   depends_on "libre"
 
   patch :p0 do
-    url "http://www.creytiv.com/tmp/restund-setsize.patch"
-    sha1 "0719be292589325f08a91d0ca30922ec07170408"
+    url "http://www.creytiv.com/tmp/restund-homebrew.patch"
+    sha1 "a7ddaf0da0396e50ffe40552eeab5436b3141180"
   end
 
   def install
@@ -26,6 +26,6 @@ class Restund < Formula
   end
 
   test do
-    system "#{sbin}/restund", "-h"
+    system "#{sbin}/restund", "-tdnf", "#{etc}/restund.conf"
   end
 end
