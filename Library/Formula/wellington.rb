@@ -4,11 +4,10 @@ require "language/go"
 class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
   url "https://github.com/wellington/wellington/archive/f1ef09a7b86e5c96aabe52e76513baa02e929cc7.tar.gz"
-  sha1 "a5aa2866bcb914fd40542089628d5604de85c207"
+  sha1 "90dcae87a3dccd675505b2f23ad47b2ce31fa8fb"
   head "https://github.com/wellington/wellington.git"
 
-  option :cxx11
-
+  depends_on "pkg-config" => :build
   depends_on "go" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -28,12 +27,12 @@ class Wellington < Formula
     resource("github.com/drewwells/libsass").stage {
       ENV["LIBSASS_VERSION"]="1738c7f"
       system "autoreconf", "-fvi"
-      system "./configure", "--prefix=#{prefix}",
+      system "./configure", "--prefix=#{buildpath}/libsass",
              "--disable-silent-rules",
              "--disable-dependency-tracking"
       system "make", "install"
     }
-
+    ENV.append_path "PKG_CONFIG_PATH", buildpath/"libsass/lib/pkgconfig"
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
     Language::Go.stage_deps resources, buildpath/"src"
