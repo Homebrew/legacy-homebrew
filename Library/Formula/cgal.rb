@@ -6,9 +6,9 @@ class Cgal < Formula
   sha1 'd505d4257f214b200949d67570ad743d3a913633'
 
   bottle do
-    sha1 "c1ea7f91f163f9a1273690571022287a97545d53" => :yosemite
-    sha1 "db2eda449c8aea97ad5b8f486ffea3c3586d814a" => :mavericks
-    sha1 "e4a3ea10e202c521caf7e7a368bb00a7f1e408ac" => :mountain_lion
+    sha1 "01d337030d2848fb4b6fe6bd35f886c43693b5bf" => :yosemite
+    sha1 "1821091bafdcf45b25bbb1d4075fc31e1e7cf6a3" => :mavericks
+    sha1 "f070e9f3d03d2287daa4af0440f24e4f0e7e2fcf" => :mountain_lion
   end
 
   option :cxx11
