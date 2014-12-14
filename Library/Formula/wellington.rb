@@ -3,7 +3,7 @@ require "language/go"
 
 class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/64e1fcd9546ccfee8d2eb8faf6c8990d21312317.tar.gz"
+  url "https://github.com/wellington/wellington/archive/cf60648.tar.gz"
   sha1 "c8365c89e12db55b5ad2a57bd84688f8053ce42c"
   head "https://github.com/wellington/wellington.git"
 
@@ -42,9 +42,9 @@ class Wellington < Formula
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
     Language::Go.stage_deps resources, buildpath/"src"
     ENV["GOPATH"] = buildpath
-
     system "go", "build", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
+    lib.install Dir["libsass/lib/*dylib"]
   end
 
   test do
