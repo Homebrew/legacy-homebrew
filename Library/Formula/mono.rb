@@ -20,13 +20,32 @@ class Mono < Formula
     sha1 "a674c47cd60786c49185fb3512410c43689be43e"
   end
 
+  resource "libgdiplus" do
+    url "https://github.com/mono/libgdiplus/archive/3.8.tar.gz"
+    sha1 "4dee0aeee34e1188bb7f5a44b7bf10e274a62b5a"
+  end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "gtk+3"
+
   def install
     # a working mono is required for the the build - monolite is enough
     # for the job
     (buildpath+"mcs/class/lib/monolite").install resource("monolite")
 
+    resource("libgdiplus").stage do
+      system "./autogen.sh", "--prefix=#{prefix}"
+      system "make"
+      system "make", "install"
+    end
+
     args = %W[
       --prefix=#{prefix}
+      --with-libgdiplus=#{lib}/libgdiplus.dylib
       --enable-nls=no
     ]
     args << "--build=" + (MacOS.prefer_64_bit? ? "x86_64": "i686") + "-apple-darwin"
