@@ -10,7 +10,14 @@ class Afsctool < Formula
     ENV.fast
     cd "afsctool_34" do
       system "#{ENV.cc} #{ENV.cflags} -lz -framework CoreServices -o afsctool afsctool.c"
-      bin.install 'afsctool'
+      bin.install "afsctool"
     end
+  end
+
+  test do
+    path = testpath/"foo"
+    path.write "some text here."
+    system "#{bin}/afsctool", "-c", path
+    system "#{bin}/afsctool", "-v", path
   end
 end
