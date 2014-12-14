@@ -2,6 +2,7 @@ require 'formula'
 
 class Binwalk < Formula
   homepage 'http://binwalk.org/'
+  revision 1
   stable do
     url "https://github.com/devttys0/binwalk/archive/v2.0.1.tar.gz"
     sha1 "b0ec783cbf72db358c5118a3052fc1ccf446d8f3"

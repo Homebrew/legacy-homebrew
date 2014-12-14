@@ -7,6 +7,7 @@ class Mpich2 < Formula
   url 'http://www.mpich.org/static/downloads/3.1.3/mpich-3.1.3.tar.gz'
   mirror 'http://fossies.org/linux/misc/mpich-3.1.3.tar.gz'
   sha1 'aa9907891ef4a4a584ab2f90a86775f29ca0dec0'
+  revision 1
 
   bottle do
     sha1 "8542cf77b01f4b5ada4d7d1643729daf2fd23ebf" => :yosemite
