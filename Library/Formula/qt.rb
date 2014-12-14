@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Qt < Formula
   homepage "http://qt-project.org/"
@@ -26,15 +26,17 @@ class Qt < Formula
   head "https://gitorious.org/qt/qt.git", :branch => "4.8"
 
   option :universal
-  option 'with-qt3support', 'Build with deprecated Qt3Support module support'
-  option 'with-docs', 'Build documentation'
-  option 'developer', 'Build and link with developer options'
+  option "with-qt3support", "Build with deprecated Qt3Support module support"
+  option "with-docs", "Build documentation"
+  option "with-developer-options", "Build and link with developer options"
 
-  depends_on "d-bus" => :optional
+  depends_on "openssl" => :optional
+  depends_on "d-bus" => :recommended
   depends_on "mysql" => :optional
   depends_on "postgresql" => :optional
 
   deprecated_option "qtdbus" => "with-d-bus"
+  deprecated_option "developer" => "with-developer-options"
 
   def install
     ENV.universal_binary if build.universal?
@@ -56,10 +58,11 @@ class Qt < Formula
         end
     end
 
-    args << "-plugin-sql-mysql" if build.with? 'mysql'
-    args << "-plugin-sql-psql" if build.with? 'postgresql'
+    args << "-openssl-linked" if build.with? "openssl"
+    args << "-plugin-sql-mysql" if build.with? "mysql"
+    args << "-plugin-sql-psql" if build.with? "postgresql"
 
-    if build.with? 'd-bus'
+    if build.with? "d-bus"
       dbus_opt = Formula["d-bus"].opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
@@ -68,34 +71,34 @@ class Qt < Formula
       args << "-dbus-linked"
     end
 
-    if build.with? 'qt3support'
+    if build.with? "qt3support"
       args << "-qt3support"
     else
       args << "-no-qt3support"
     end
 
-    args << "-nomake" << "docs" if build.without? 'docs'
+    args << "-nomake" << "docs" if build.without? "docs"
 
     if MacOS.prefer_64_bit? or build.universal?
-      args << '-arch' << 'x86_64'
+      args << "-arch" << "x86_64"
     end
 
     if !MacOS.prefer_64_bit? or build.universal?
-      args << '-arch' << 'x86'
+      args << "-arch" << "x86"
     end
 
-    args << '-developer-build' if build.include? 'developer'
+    args << "-developer-build" if build.with? "developer-options"
 
     system "./configure", *args
     system "make"
     ENV.j1
-    system "make install"
+    system "make", "install"
 
     # what are these anyway?
-    (bin+'pixeltool.app').rmtree
-    (bin+'qhelpconverter.app').rmtree
+    (bin+"pixeltool.app").rmtree
+    (bin+"qhelpconverter.app").rmtree
     # remove porting file for non-humans
-    (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
+    (prefix+"q3porting.xml").unlink if build.without? "qt3support"
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.install_symlink Dir["#{lib}/*.framework"]
@@ -111,7 +114,7 @@ class Qt < Formula
   end
 
   test do
-    system "#{bin}/qmake", '-project'
+    system "#{bin}/qmake", "-project"
   end
 
   def caveats; <<-EOS.undent
