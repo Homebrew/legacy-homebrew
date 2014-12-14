@@ -7,6 +7,8 @@ class Restund < Formula
 
   depends_on "libre"
 
+  # this patch is needed for restund to work on OSX, because it is
+  # using select() for polling with max 1024 file descriptors.
   patch :p0 do
     url "http://www.creytiv.com/tmp/restund-homebrew.patch"
     sha1 "a7ddaf0da0396e50ffe40552eeab5436b3141180"
