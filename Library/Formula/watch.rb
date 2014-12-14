@@ -18,6 +18,6 @@ class Watch < Formula
   end
 
   test do
-    system "#{bin}/watch", "--version"
+    system "#{bin}/watch", "--errexit", "--chgexit", "--interval", "1", "date"
   end
 end
