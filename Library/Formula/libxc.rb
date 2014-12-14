@@ -8,10 +8,9 @@ class Libxc < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "fb4744280dc39b09b4e911c1791710b3f32b8c73" => :yosemite
-    sha1 "690f285d57eb498b07538c0c5c03a45f64082ed8" => :mavericks
-    sha1 "185f827d949459e98e0ed491280dbab363bc1bfb" => :mountain_lion
+    sha1 "552995f0f0415f65369e20c02d65ce521289fb2f" => :yosemite
+    sha1 "3b2aea28723d7fc6240582f7363eceb1f71bc4ac" => :mavericks
+    sha1 "92761485a4a6e72b8340c6a4f0ec394a62cfb4b4" => :mountain_lion
   end
 
   depends_on :fortran
