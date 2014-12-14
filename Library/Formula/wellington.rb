@@ -3,8 +3,8 @@ require "language/go"
 
 class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/f1ef09a7b86e5c96aabe52e76513baa02e929cc7.tar.gz"
-  sha1 "90dcae87a3dccd675505b2f23ad47b2ce31fa8fb"
+  url "https://github.com/wellington/wellington/archive/64e1fcd9546ccfee8d2eb8faf6c8990d21312317.tar.gz"
+  sha1 "c8365c89e12db55b5ad2a57bd84688f8053ce42c"
   head "https://github.com/wellington/wellington.git"
 
   needs :cxx11
@@ -27,9 +27,12 @@ class Wellington < Formula
 
   def install
     resource("github.com/drewwells/libsass").stage do
-      ENV["LIBSASS_VERSION"]="1738c7f"
+      ENV["LIBSASS_VERSION"] = "48e97c25be75d60429569d406dc482283e213359"
       system "autoreconf", "-fvi"
-      system "./configure", "--prefix=#{buildpath}/libsass",
+      system "./configure",
+             "--enable-static",
+             "PKG_CONFIG=\"pkg-config --static\"",
+             "--prefix=#{buildpath}/libsass",
              "--disable-silent-rules",
              "--disable-dependency-tracking"
       system "make", "install"
