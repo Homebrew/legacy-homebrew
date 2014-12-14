@@ -51,6 +51,7 @@ class Qt5 < Formula
   depends_on "d-bus" => :optional
   depends_on :mysql => :optional
   depends_on :xcode => :build
+  depends_on "openssl"
 
   # There needs to be an OpenSSL dep here ideally, but qt keeps ignoring it.
   # Keep nagging upstream for a fix to this problem, and revision when possible.
