@@ -29,7 +29,7 @@ We want your formula to be awesome, and the cookbook will tell you how.
     </tr>
     <tr>
       <th>Tap</th>
-      <td>An optional repository (git) of Formulae</td>
+      <td>An optional repository (git) of Formula</td>
       <td><code>/usr/local/Library/Taps</code></td>
     </tr>
     <tr>
@@ -49,7 +49,7 @@ Did you see `/usr/local/.git`? Homebrew is built on Git. This means you can just
 
 Homebrew installs to the `Cellar`, it then symlinks some of the installation into `/usr/local` so that other programs can see what's going on. We suggest you `brew ls` a few of the kegs in your Cellar to see how it is all arranged.
 
-Packages are installed according to their formulae, which live in `$(brew --repository)/Library/Formula`. Check some out. You can view any formula at anytime; e.g. `brew edit wget`.
+Packages are installed according to their formula, which live in `$(brew --repository)/Library/Formula`. Check some out. You can view any formula at anytime; e.g. `brew edit wget`.
 
 
 
@@ -59,7 +59,7 @@ Make sure you run `brew update` before you start. This turns your Homebrew insta
 
 Before contributing, make sure your package:
 
-*   meets all our [Acceptable Formulae](Acceptable-Formulae.md) requirements
+*   meets all our [Acceptable Formula](Acceptable-Formulae.md) requirements
 *   isn't already in Homebrew (check `brew search $FORMULA`)
 *   isn't in another [Homebrew tap](https://github.com/Homebrew)
 *   isn't already waiting to be merged (check the [issue tracker](http://github.com/Homebrew/homebrew/issues))
@@ -73,11 +73,11 @@ Be sure to look over the [contributing guidelines](https://github.com/Homebrew/h
 
 ## Will we merge your formula?
 
-Probably. But we have rules to keep the quality and goals of Homebrew intact: Please read [Acceptable Formulae](Acceptable-Formulae.md).
+Probably. But we have rules to keep the quality and goals of Homebrew intact: Please read [Acceptable Formula](Acceptable-Formulae.md).
 
 ## Some Quick Examples Before You Get Started
 
-Formulae aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/etl.rb) is as simple as it gets.
+Formula aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/etl.rb) is as simple as it gets.
 
 And then [Git](http://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](http://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
 
@@ -119,7 +119,7 @@ end
 
 ## Fill in the Homepage
 
-**We don’t accept formulae without homepages!**
+**We don’t accept formula without homepages!**
 
 Homebrew doesn’t have a description field because the homepage is always up to date, and Homebrew is not. That’s way less maintenance for us. Try `brew home qt`.
 
@@ -151,14 +151,14 @@ We try to not duplicate libraries and complicated tools in core Homebrew. We dup
 
 The one special exception is OpenSSL. Anything that uses OpenSSL *should* be built using Homebrew’s shipped OpenSSL and our test bot's post-install audit will warn of this when it is detected. (*Of course, there are exceptions to the exception. Not everything can be forced onto our OpenSSL)*.
 
-Because Homebrew’s OpenSSL is `keg_only` to avoid conflicting with the system sometimes formulae need to have environmental variables set or special configuration flags passed to locate our preferred OpenSSL; you can see this mechanism in the [clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28) formula. Usually this is unnecessary because when OpenSSL is specified as a dependency Homebrew temporarily prepends the $PATH with that prefix.
+Because Homebrew’s OpenSSL is `keg_only` to avoid conflicting with the system sometimes formula need to have environmental variables set or special configuration flags passed to locate our preferred OpenSSL; you can see this mechanism in the [clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28) formula. Usually this is unnecessary because when OpenSSL is specified as a dependency Homebrew temporarily prepends the $PATH with that prefix.
 
 Homebrew maintains a special [tap that provides other useful dupes](https://github.com/Homebrew/homebrew-dupes).
 
 *Important:* Since the introduction of `superenv`, `brew --prefix`/bin is NOT on the `$PATH` during formula installation. If you have dependencies at build time, you must specify them and brew will add them to the `$PATH`. You can test around this with `--env=std`.
 
 
-## Specifying other formulae as dependencies
+## Specifying other formula as dependencies
 
 ```ruby
 class Foo < Formula
@@ -200,15 +200,15 @@ A Hash specifies a formula dependency with some additional information. Given a 
     depends_on "foo" => [:optional, "with-bar"]
     ```
 
-## Formulae Revisions
+## Formula Revisions
 
-In Homebrew we sometimes accept formulae updates that don’t include a version bump. These include homepage changes, resource updates, new patches or fixing a security issue with a formula.
+In Homebrew we sometimes accept formula updates that don’t include a version bump. These include homepage changes, resource updates, new patches or fixing a security issue with a formula.
 
-Occasionally, these updates require a forced-recompile of the formula itself or its dependents to either ensure formulae continue to function as expected or to close a security issue. This forced-recompile is known as a `revision` and inserted underneath the homepage/url/sha block.
+Occasionally, these updates require a forced-recompile of the formula itself or its dependents to either ensure formula continue to function as expected or to close a security issue. This forced-recompile is known as a `revision` and inserted underneath the homepage/url/sha block.
 
 Where a dependent of a formula fails against a new version of that dependency it must receive a `revision`. An example of such failure can be seen [here](https://github.com/Homebrew/homebrew/issues/31195) and the fix [here](https://github.com/Homebrew/homebrew/pull/31207).
 
-`Revisions` are also used for formulae that move from the system OpenSSL to the Homebrew-shipped OpenSSL without any other changes to that formula. This ensures users aren’t left exposed to the potential security issues of the outdated OpenSSL. An example of this can be seen in [this commit](https://github.com/Homebrew/homebrew/commit/6b9d60d474d72b1848304297d91adc6120ea6f96).
+`Revisions` are also used for formula that move from the system OpenSSL to the Homebrew-shipped OpenSSL without any other changes to that formula. This ensures users aren’t left exposed to the potential security issues of the outdated OpenSSL. An example of this can be seen in [this commit](https://github.com/Homebrew/homebrew/commit/6b9d60d474d72b1848304297d91adc6120ea6f96).
 
 ## Double-check for dependencies
 
@@ -263,7 +263,7 @@ class Foo < Formula
 end
 ```
 
-Note that we probably won't accept the formulae in this case; it's a far worse user experience than vendoring libraries with resources.
+Note that we probably won't accept the formula in this case; it's a far worse user experience than vendoring libraries with resources.
 
 ## Test the formula
 
@@ -306,7 +306,7 @@ If you’re not sure about the name check the homepage, and check the Wikipedia 
 
 Where Homebrew already has a formula called `foo` we typically do not accept requests to replace that formula with something else also named `foo`. This is to avoid both confusing and surprising users’ expectation.
 
-When two formulae share an upstream name, e.g. [`AESCrypt`](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/aescrypt.rb) and [`AESCrypt`](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/aescrypt-packetizer.rb) the newer formula must typically adapt the name to avoid conflict with the current formula.
+When two formula share an upstream name, e.g. [`AESCrypt`](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/aescrypt.rb) and [`AESCrypt`](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/aescrypt-packetizer.rb) the newer formula must typically adapt the name to avoid conflict with the current formula.
 
 If you’re *still* not sure, just commit. We’ll apply some arbitrary rule and make a decision ;)
 
@@ -322,7 +322,7 @@ Add aliases by creating symlinks in `Library/Aliases`.
 
 ## Audit the formula
 
-You can run `brew audit` to test formulae for adherence to Homebrew house style. This includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
+You can run `brew audit` to test formula for adherence to Homebrew house style. This includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
 
 
 ## Commit
@@ -349,7 +349,7 @@ This may seem crazy short, but you’ll find that forcing yourself to summarise 
 
 The preferred commit message format for simple version updates is "foobar 7.3".
 
-Ensure you reference any relevant GitHub issue `#12345` in the commit message. Homebrew’s history is the first thing future contributors will look to when trying to understand the current state of formulae they’re interested in.
+Ensure you reference any relevant GitHub issue `#12345` in the commit message. Homebrew’s history is the first thing future contributors will look to when trying to understand the current state of formula they’re interested in.
 
 
 ## Push
@@ -409,7 +409,7 @@ end
 
 ## bin.install "foo"
 
-You’ll see stuff like that in other formulae. This installs the file foo into the Formula’s `bin` directory (`/usr/local/Cellar/pkg/0.1/bin`) and makes it executable (`chmod 0555 foo`).
+You’ll see stuff like that in other formula. This installs the file foo into the Formula’s `bin` directory (`/usr/local/Cellar/pkg/0.1/bin`) and makes it executable (`chmod 0555 foo`).
 
 ## inreplace
 
@@ -533,7 +533,7 @@ If anything isn’t clear, you can usually figure it out with some `grep` and th
 
 ## Unstable versions (`HEAD`, `devel`)
 
-Formulae can specify alternate downloads for the upstream project’s `devel` release (unstable but not `trunk`) or `HEAD` (`master/trunk`).
+Formula can specify alternate downloads for the upstream project’s `devel` release (unstable but not `trunk`) or `HEAD` (`master/trunk`).
 
 ### HEAD
 
@@ -557,7 +557,7 @@ class Foo < Formula
 end
 ```
 
-Formulae that only have `head` versions should be submitted to [homebrew/headonly](https://github.com/Homebrew/homebrew-headonly) instead of Homebrew/homebrew.
+Formula that only have `head` versions should be submitted to [homebrew/headonly](https://github.com/Homebrew/homebrew-headonly) instead of Homebrew/homebrew.
 
 ### devel
 
@@ -874,22 +874,22 @@ For example, Ruby 1.9’s gems should be installed to `var/lib/ruby/` so that ge
 
 Homebrew provides two Formula methods for launchd plist files. `plist_name` will return `homebrew.mxcl.<formula>`, and `plist_path` will return, for example, `/usr/local/Cellar/foo/0.1/homebrew.mxcl.foo.plist`.
 
-## Updating formulae
+## Updating formula
 
 Eventually a new version of the software will be released. In this case you should update the `url` and `sha1`/`sha256`. Please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
 
-Check if the formula you are updating is a dependency for any other formulae by running `brew uses UPDATED_FORMULA`. If it is a dependency please `brew reinstall` all the dependencies after it is installed and verify they work correctly.
+Check if the formula you are updating is a dependency for any other formula by running `brew uses UPDATED_FORMULA`. If it is a dependency please `brew reinstall` all the dependencies after it is installed and verify they work correctly.
 
 # Style guide
 
-Homebrew wants to maintain a consistent Ruby style across all formulae based on [Ruby Style Guide](https://github.com/styleguide/ruby). Other formulae may not have been updated to match this guide yet but all new ones should. Also:
+Homebrew wants to maintain a consistent Ruby style across all formula based on [Ruby Style Guide](https://github.com/styleguide/ruby). Other formula may not have been updated to match this guide yet but all new ones should. Also:
 
-* The order of methods in a formula should be consistent with other formulae (e.g.: `def patches` goes before `def install`)
+* The order of methods in a formula should be consistent with other formula (e.g.: `def patches` goes before `def install`)
 * An empty line is required before the `__END__` line
 
 
 
-# Troubleshooting for people writing new formulae
+# Troubleshooting for people writing new formula
 
 ### Version detection fails
 
