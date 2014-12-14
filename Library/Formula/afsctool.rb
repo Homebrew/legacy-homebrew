@@ -7,7 +7,6 @@ class Afsctool < Formula
   sha1 '216d7ff54bad947781d9b49f9754c5d3c07349be'
 
   def install
-    ENV.fast
     cd "afsctool_34" do
       system "#{ENV.cc} #{ENV.cflags} -lz -framework CoreServices -o afsctool afsctool.c"
       bin.install "afsctool"
