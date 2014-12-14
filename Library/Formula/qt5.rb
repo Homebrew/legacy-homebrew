@@ -23,22 +23,17 @@ end
 
 class Qt5 < Formula
   homepage "http://qt-project.org/"
-  url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
-  mirror "http://download.qt-project.org/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
-  sha1 "502dd2db1e9ce349bb8ac48b4edf7f768df1cafe"
+  url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
+  mirror "http://download.qt-project.org/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
+  sha1 "2f5558b87f8cea37c377018d9e7a7047cc800938"
 
   bottle do
-    revision 1
     sha1 "a622384b646da163271514546498a5fcd53203b7" => :yosemite
     sha1 "06b31931f5b75352f605a7d22dbc9a66b2583002" => :mavericks
     sha1 "8056e8b4c814b3e0044db7eb11457ba7c6509559" => :mountain_lion
   end
 
-  # Patch to fix compile errors on Yosemite. Can be removed with 5.4.
-  # https://bugreports.qt-project.org/browse/QTBUG-41136
-  patch :DATA
-
-  head "https://gitorious.org/qt/qt5.git", :branch => "5.3",
+  head "https://gitorious.org/qt/qt5.git", :branch => "5.4",
     :using => Qt5HeadDownloadStrategy, :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
@@ -49,7 +44,7 @@ class Qt5 < Formula
   option "developer", "Build and link with developer options"
   option "with-oci", "Build with Oracle OCI plugin"
 
-  # Snow Leopard is untested and support is being officially removed in 5.4
+  # Snow Leopard is untested and support has been removed in 5.4
   # https://qt.gitorious.org/qt/qtbase/commit/5be81925d7be19dd0f1022c3cfaa9c88624b1f08
   depends_on :macos => :lion
   depends_on "pkg-config" => :build
@@ -57,23 +52,25 @@ class Qt5 < Formula
   depends_on :mysql => :optional
   depends_on :xcode => :build
 
+  # There needs to be an OpenSSL dep here ideally, but qt keeps ignoring it.
+  # Keep nagging upstream for a fix to this problem, and revision when possible.
+  # https://github.com/Homebrew/homebrew/pull/34929
+  # https://bugreports.qt-project.org/browse/QTBUG-42161
+
   depends_on OracleHomeVar if build.with? "oci"
 
   deprecated_option "qtdbus" => "with-d-bus"
 
   def install
     ENV.universal_binary if build.universal?
+
     args = ["-prefix", prefix,
             "-system-zlib",
             "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
-            "-nomake", "tests",
-            "-release"]
+            "-nomake", "tests", "-release"]
 
     args << "-nomake" << "examples" if build.without? "examples"
-
-    # https://bugreports.qt-project.org/browse/QTBUG-34382
-    args << "-no-xcb"
 
     args << "-plugin-sql-mysql" if build.with? "mysql"
 
@@ -121,7 +118,7 @@ class Qt5 < Formula
       include.install_symlink path => path.parent.basename(".framework")
     end
 
-    # configure saved the PKG_CONFIG_LIBDIR set up by superenv; remove it
+    # configure saved PKG_CONFIG_LIBDIR set up by superenv; remove it
     # see: https://github.com/Homebrew/homebrew/issues/27184
     inreplace prefix/"mkspecs/qconfig.pri", /\n\n# pkgconfig/, ""
     inreplace prefix/"mkspecs/qconfig.pri", /\nPKG_CONFIG_.*=.*$/, ""
@@ -139,18 +136,3 @@ class Qt5 < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm b/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
-index a73974c..d3f3eae 100644
---- a/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
-+++ b/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
-@@ -322,7 +322,7 @@ static void *AVFMediaPlayerSessionObserverCurrentItemObservationContext = &AVFMe
-     //AVPlayerItem "status" property value observer.
-     if (context == AVFMediaPlayerSessionObserverStatusObservationContext)
-     {
--        AVPlayerStatus status = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
-+        AVPlayerStatus status = (AVPlayerStatus)[[change objectForKey:NSKeyValueChangeNewKey] integerValue];
-         switch (status)
-         {
-             //Indicates that the status of the player is not yet known because
