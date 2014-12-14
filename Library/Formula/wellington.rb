@@ -7,6 +7,8 @@ class Wellington < Formula
   sha1 "90dcae87a3dccd675505b2f23ad47b2ce31fa8fb"
   head "https://github.com/wellington/wellington.git"
 
+  needs :cxx11
+
   depends_on "pkg-config" => :build
   depends_on "go" => :build
   depends_on "autoconf" => :build
@@ -24,14 +26,14 @@ class Wellington < Formula
   end
 
   def install
-    resource("github.com/drewwells/libsass").stage {
+    resource("github.com/drewwells/libsass").stage do
       ENV["LIBSASS_VERSION"]="1738c7f"
       system "autoreconf", "-fvi"
       system "./configure", "--prefix=#{buildpath}/libsass",
              "--disable-silent-rules",
              "--disable-dependency-tracking"
       system "make", "install"
-    }
+    end
     ENV.append_path "PKG_CONFIG_PATH", buildpath/"libsass/lib/pkgconfig"
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
