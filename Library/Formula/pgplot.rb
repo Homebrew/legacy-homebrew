@@ -5,6 +5,12 @@ class Pgplot < Formula
   url 'ftp://ftp.astro.caltech.edu/pub/pgplot/pgplot522.tar.gz'
   version '5.2.2'
   sha1 '1f1c9aa17eeec9a2fb23fd15a0e4a91dcc49ddc1'
+  bottle do
+    sha1 "01f6c78460a693cdf4f12fe3d07160924ea728d2" => :yosemite
+    sha1 "d453d38628035bef7c793c433a92a6f22c6ce77f" => :mavericks
+    sha1 "cefc1cac43d17dc86f6424a75bfec3a5dd63b3d9" => :mountain_lion
+  end
+
   revision 1
 
   option 'with-button', 'Install libbutton'
