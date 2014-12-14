@@ -10,9 +10,9 @@ class Mpich2 < Formula
   revision 1
 
   bottle do
-    sha1 "8542cf77b01f4b5ada4d7d1643729daf2fd23ebf" => :yosemite
-    sha1 "662fa2b53e2504c7c9335e82c9ad69cecaa7c902" => :mavericks
-    sha1 "a83acbfaaafc46da53d3be743037f197cbb34bfb" => :mountain_lion
+    sha1 "9cb9688f9c881de7e4874f670ad007710dc90483" => :yosemite
+    sha1 "8baa4c6da6ce09b952dae3c9969de017d7d195ba" => :mavericks
+    sha1 "8262cef2b486879381161e7100fd6d273c14851c" => :mountain_lion
   end
 
   head do
