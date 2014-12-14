@@ -7,10 +7,9 @@ class Inkscape < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "ad338136463ee2a73dc0922e4f059bd1dc3a8a10" => :mavericks
-    sha1 "8160eb07157e6b969b50d9ff15d737d0f2365089" => :mountain_lion
-    sha1 "866814f911ba37e2214c8a983e91c0bdc668736e" => :lion
+    sha1 "5d5fa915ff5cb8a245c7e8e2295cda07149c311d" => :yosemite
+    sha1 "6687b6ee83263d4c64e06a8e4432d3be77d95be9" => :mavericks
+    sha1 "63052a052b408edf1755ff78cc00fdb6ffc058b2" => :mountain_lion
   end
 
   stable do
