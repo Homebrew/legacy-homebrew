@@ -18,6 +18,7 @@ class Watch < Formula
   end
 
   test do
+    ENV["TERM"] = "xterm"
     system "#{bin}/watch", "--errexit", "--chgexit", "--interval", "1", "date"
   end
 end
