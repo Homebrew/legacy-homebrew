@@ -14,7 +14,7 @@ class Kore < Formula
   end
 
   depends_on "openssl"
-  depends_on "postgresql" => :recommended
+  depends_on "postgresql" => :optional
 
   def install
     args = []
