@@ -18,7 +18,7 @@ class Watch < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
 
     # AM_LDFLAGS contains a non-existing library './proc/libprocps.la' that
-    # breaks the linking process. Upstream developers have been informed (see 
+    # breaks the linking process. Upstream developers have been informed (see
     # https://github.com/Homebrew/homebrew/pull/34852/files#r21796727).
     system "make", "watch", "AM_LDFLAGS="
     bin.install "watch"
