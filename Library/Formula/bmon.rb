@@ -6,9 +6,9 @@ class Bmon < Formula
   sha1 "abbe4362061493a1120eed074debd875916dd49a"
 
   bottle do
-    sha1 "403e402182813cc1f63a6b75c2a40db32e328626" => :mavericks
-    sha1 "3a5cd94abd456aa3b49cc375ceb72115a4c3a1ad" => :mountain_lion
-    sha1 "081de28fe55bf0285c6310fffe8d25ce843b769f" => :lion
+    sha1 "a6288882c0c468f2d3d3c484c2f58c3ec2ec1856" => :yosemite
+    sha1 "b1735717a26afeb7e5d06172ba7ed0f14d2e70a0" => :mavericks
+    sha1 "70b7cb76fa2f1f3f53e0baaaf3b089276ca7a5db" => :mountain_lion
   end
 
   head do
