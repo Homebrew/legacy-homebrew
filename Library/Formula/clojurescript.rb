@@ -3,8 +3,8 @@ require "formula"
 class Clojurescript < Formula
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2371.tar.gz"
-  sha1 "63284f043f2f61adcc78de60998520b382b5f135"
+  url "https://github.com/clojure/clojurescript/archive/r2411.tar.gz"
+  sha1 "99022cf050aa5f712b295e74aa8e845ad6cdb4b8"
 
   bottle do
     cellar :any
@@ -28,6 +28,12 @@ class Clojurescript < Formula
   end
 
   test do
-    system "#{bin}/cljsc"
+    (testpath/"t.cljs").write <<-EOF.undent
+    (ns hello)
+    (defn ^:export greet [n]
+      (str "Hello " n))
+    EOF
+
+    system "#{bin}/cljsc", testpath/"t.cljs"
   end
 end
