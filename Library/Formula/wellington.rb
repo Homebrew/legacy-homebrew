@@ -3,40 +3,21 @@ require "language/go"
 
 class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/cf60648.tar.gz"
-  sha1 "c8365c89e12db55b5ad2a57bd84688f8053ce42c"
+  url "https://github.com/wellington/wellington/archive/2a1f88c8a5bbb151a1c24694fef6602775a98347.tar.gz"
+  sha1 "92eb6556a24a9796adb9d238ade41f650c9f7bc0"
   head "https://github.com/wellington/wellington.git"
 
   needs :cxx11
 
   depends_on "pkg-config" => :build
-  depends_on "go" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on "libsass" => :build
 
   go_resource "github.com/wellington/spritewell" do
     url "http://github.com/wellington/spritewell.git",
       :revision => "3a43f26d94a6da8e40884d1edca0ff372ab7487d"
   end
 
-  resource "github.com/drewwells/libsass" do
-    url "http://github.com/drewwells/libsass.git"
-    sha1 "48e97c25be75d60429569d406dc482283e213359"
-  end
-
   def install
-    resource("github.com/drewwells/libsass").stage do
-      ENV["LIBSASS_VERSION"] = "48e97c25be75d60429569d406dc482283e213359"
-      system "autoreconf", "-fvi"
-      system "./configure",
-             "--enable-static",
-             "PKG_CONFIG=\"pkg-config --static\"",
-             "--prefix=#{buildpath}/libsass",
-             "--disable-silent-rules",
-             "--disable-dependency-tracking"
-      system "make", "install"
-    end
     ENV.append_path "PKG_CONFIG_PATH", buildpath/"libsass/lib/pkgconfig"
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
@@ -44,7 +25,6 @@ class Wellington < Formula
     ENV["GOPATH"] = buildpath
     system "go", "build", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
-    lib.install Dir["libsass/lib/*dylib"]
   end
 
   test do
