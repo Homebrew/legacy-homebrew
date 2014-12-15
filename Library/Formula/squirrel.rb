@@ -2,9 +2,9 @@ require 'formula'
 
 class Squirrel < Formula
   homepage 'http://www.squirrel-lang.org'
-  url 'https://squirrel.googlecode.com/files/squirrel_3_0_4_stable.tar.gz'
-  version '3.0.4'
-  sha1 '384d278630040902bc111d8b9fb607d4d4941904'
+  url 'https://downloads.sourceforge.net/project/squirrel/squirrel3/squirrel%203.0.6%20stable/squirrel_3_0_6_stable.tar.gz'
+  version '3.0.6'
+  sha1 'b4ab6055f8cd8997df54193ac92bd3dc041f054b'
 
   def install
     # -s causes the linker to crash
