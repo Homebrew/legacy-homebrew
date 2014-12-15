@@ -2,7 +2,7 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  head 'https://go.googlesource.com/go'
+  head 'https://go.googlesource.com/go', :using => :git
   url 'https://storage.googleapis.com/golang/go1.4.src.tar.gz'
   version '1.4'
   sha1 '6a7d9bd90550ae1e164d7803b3e945dc8309252b'

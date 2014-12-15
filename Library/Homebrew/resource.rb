@@ -72,8 +72,11 @@ class Resource
     downloader.clear_cache
   end
 
-  # Fetch, verify, and unpack the resource
   def stage(target=nil, &block)
+    unless target || block
+      raise ArgumentError, "target directory or block is required"
+    end
+
     verify_download_integrity(fetch)
     unpack(target, &block)
   end

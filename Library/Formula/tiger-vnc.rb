@@ -2,9 +2,8 @@ require 'formula'
 
 class TigerVnc < Formula
   homepage 'http://tigervnc.org/'
-  url 'https://downloads.sourceforge.net/project/tigervnc/tigervnc/1.3.1/tigervnc-1.3.1.tar.gz'
-  sha1 '308ec9a9a627d20406eebfaeac4f3d4398278cc1'
-  revision 1
+  url 'https://github.com/TigerVNC/tigervnc/archive/v1.4.0.tar.gz'
+  sha1 '36252b10912bcbef44d43c5fa7977ae97988fff3'
 
   depends_on 'cmake' => :build
   depends_on 'gnutls' => :recommended

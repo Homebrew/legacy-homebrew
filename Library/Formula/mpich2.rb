@@ -7,11 +7,12 @@ class Mpich2 < Formula
   url 'http://www.mpich.org/static/downloads/3.1.3/mpich-3.1.3.tar.gz'
   mirror 'http://fossies.org/linux/misc/mpich-3.1.3.tar.gz'
   sha1 'aa9907891ef4a4a584ab2f90a86775f29ca0dec0'
+  revision 1
 
   bottle do
-    sha1 "8542cf77b01f4b5ada4d7d1643729daf2fd23ebf" => :yosemite
-    sha1 "662fa2b53e2504c7c9335e82c9ad69cecaa7c902" => :mavericks
-    sha1 "a83acbfaaafc46da53d3be743037f197cbb34bfb" => :mountain_lion
+    sha1 "9cb9688f9c881de7e4874f670ad007710dc90483" => :yosemite
+    sha1 "8baa4c6da6ce09b952dae3c9969de017d7d195ba" => :mavericks
+    sha1 "8262cef2b486879381161e7100fd6d273c14851c" => :mountain_lion
   end
 
   head do
