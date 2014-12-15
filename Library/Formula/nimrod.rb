@@ -14,6 +14,13 @@ class Nimrod < Formula
 
   head "https://github.com/Araq/Nimrod.git", :branch => "devel"
 
+  bottle do
+    cellar :any
+    sha1 "3a42be18ae05f497900cba5ba484314c68f62aa1" => :yosemite
+    sha1 "f30db501f57632a4872c0dde84a02ff326b58adb" => :mavericks
+    sha1 "af153261facdba0a6be325296e82b7c5707ebac6" => :mountain_lion
+  end
+
   def install
     # For some reason the mingw variable doesn't get passed through,
     # so hardcode it. This is fixed in HEAD.
