@@ -24,7 +24,7 @@ class Gringo < Formula
     ENV.libcxx
     inreplace "SConstruct",
               "env['CXX']            = 'g++'",
-              "env['CXX']            = '#{ENV['CXX']}'"
+              "env['CXX']            = '#{ENV.cxx}'"
     scons "--build-dir=release", "gringo", "clingo"
     bin.install "build/release/gringo", "build/release/clingo"
   end
