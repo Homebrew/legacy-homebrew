@@ -4,6 +4,7 @@ class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
   url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.3.tar.bz2'
   sha1 '4be9c5d2a8baee6a80bde94c6485931979a428fe'
+  revision 1
 
   bottle do
     revision 1
