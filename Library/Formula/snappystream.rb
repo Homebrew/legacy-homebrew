@@ -7,6 +7,13 @@ class Snappystream < Formula
 
   head "https://github.com/hoxnox/snappystream.git"
 
+  bottle do
+    cellar :any
+    sha1 "91ab0e9f503246dc9f9ffaf988c277b1c8799b79" => :yosemite
+    sha1 "8b18651bcb5fbfd4ffd221300883a96759bc093f" => :mavericks
+    sha1 "37d9572034e5d3227401cd3688c586f790691196" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
   depends_on "snappy"
 
