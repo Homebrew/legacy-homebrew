@@ -7,6 +7,12 @@ class Couchpotatoserver < Formula
 
   head "https://github.com/RuudBurger/CouchPotatoServer.git"
 
+  bottle do
+    sha1 "51646a81a472465367ad2fdf3fd352a5010603fd" => :yosemite
+    sha1 "2d9fa437d8be3478eb98aeaf5e1d9ea43ec74939" => :mavericks
+    sha1 "fde0bf248a2ee10e56d7865d3d0bcb21cc12d868" => :mountain_lion
+  end
+
   def install
     prefix.install_metafiles
     libexec.install Dir["*"]
