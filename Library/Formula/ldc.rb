@@ -2,8 +2,8 @@ require "formula"
 
 class Ldc < Formula
   homepage "http://wiki.dlang.org/LDC"
-  url "https://github.com/ldc-developers/ldc/releases/download/v0.14.0/ldc-0.14.0-src.tar.gz"
-  sha1 "843c9fb374bb900560f9548d5c4646788f967103"
+  url "https://github.com/ldc-developers/ldc/releases/download/v0.15.1/ldc-0.15.1-src.tar.gz"
+  sha1 "06db0c07d73bf714e6fc7a4aca4c44123e4a585a"
 
   bottle do
     sha1 "824272b3e29e1a5cdf03669099690f5c10021396" => :mavericks
