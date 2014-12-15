@@ -38,6 +38,7 @@ class Wireshark < Formula
   option "with-gtk+", "Build the wireshark command with gtk+"
   option "with-qt", "Build the wireshark-qt command (can be used with or without either GTK option)"
   option "with-headers", "Install Wireshark library headers for plug-in development"
+  option "with-app", "Build a .app bundle"
 
   depends_on "pkg-config" => :build
 
@@ -57,6 +58,7 @@ class Wireshark < Formula
   depends_on "gtk+" => :optional
   depends_on "homebrew/dupes/libpcap" => :optional
   depends_on "gnome-icon-theme" if build.with? "gtk+3"
+  depends_on "platypus" => :build if build.with? "app"
 
   def install
     args = ["--disable-dependency-tracking",
@@ -91,6 +93,24 @@ class Wireshark < Formula
       (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
       (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
       (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
+    end
+
+    if build.with? "app"
+      inreplace "packaging/macosx/Resources/script", "$CWD/bin/wireshark", "#{bin}/wireshark"
+      inreplace "packaging/macosx/Resources/script", "test", "#test"
+      system "platypus",
+        "-a", "Wireshark",
+        "-o", "None",
+        "-i", "packaging/macosx/Resources/Wireshark.icns",
+        "-Q", "packaging/macosx/Resources/Wiresharkdoc.icns",
+        "-p", "/bin/sh",
+        "-V", "version",
+        "-u", "Copyright 1998-2014 Wireshark Development Team",
+        "-I", "org.wireshark.Wireshark",
+        "-X", "pcap|pcapng|ntar",
+        "-G", "-l", "-x", "-R", "-D",
+        "packaging/macosx/Resources/script",
+        "#{prefix}/Wireshark.app"
     end
   end
 
