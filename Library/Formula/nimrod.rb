@@ -6,13 +6,13 @@ class Nimrod < Formula
   stable do
     url "http://nimrod-lang.org/download/nimrod_0.9.6.zip"
     sha1 "a0be99cd67ca2283c6cf076bb7edee74d2f32dc5"
+
+    # This patch fixes an OS X-specific codegen issue.
+    # See http://github.com/Araq/Nimrod/issues/1701
+    patch :DATA
   end
 
   head "https://github.com/Araq/Nimrod.git", :branch => "devel"
-
-  # This patch fixes an OS X-specific codegen issue.
-  # See http://github.com/Araq/Nimrod/issues/1701
-  patch :DATA unless build.head?
 
   def install
     # For some reason the mingw variable doesn't get passed through,
