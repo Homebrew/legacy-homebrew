@@ -6,6 +6,13 @@ class Curaengine < Formula
   sha1 "4d50fcd32e402f37b658691a4338e73fb4aaf3ec"
   head "https://github.com/Ultimaker/CuraEngine.git"
 
+  bottle do
+    cellar :any
+    sha1 "5181149b63d2d62e515cb8fdebdf331dbbfc64c0" => :yosemite
+    sha1 "2fa9eb0f56c238d7cf8279c64f0215a321f846e6" => :mavericks
+    sha1 "cdc1b2ceaa41b6e71ed541e5f2d85936c4d08aa3" => :mountain_lion
+  end
+
   def install
     ENV.deparallelize
     system "make"
