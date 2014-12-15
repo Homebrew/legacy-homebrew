@@ -39,7 +39,7 @@ class Pypy3 < Formula
 
     Dir.chdir "pypy/goal" do
       system "python", buildpath/"rpython/bin/rpython",
-             "-Ojit", "--shared", "--cc", ENV["CC"], "--translation-verbose",
+             "-Ojit", "--shared", "--cc", ENV.cc, "--translation-verbose",
              "--make-jobs", ENV.make_jobs, "targetpypystandalone.py"
       system "install_name_tool", "-change", "libpypy-c.dylib", libexec/"lib/libpypy3-c.dylib", "pypy-c"
       system "install_name_tool", "-id", opt_libexec/"lib/libpypy3-c.dylib", "libpypy-c.dylib"
