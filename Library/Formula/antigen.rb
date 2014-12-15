@@ -1,9 +1,5 @@
 require "formula"
 
-# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-#                /usr/local/Library/Contributions/example-formula.rb
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Antigen < Formula
   homepage "http://antigen.sharats.me/"
 
@@ -26,12 +22,12 @@ class Antigen < Formula
 
     Add the following to your ~/.zshenv to start using Antigen:
 
-       source /usr/local/lib/antigen.zsh
+       source #{share}/antigen.zsh
 
   TXT
   end
 
   test do
-    system "source #{prefix}/lib/antigen.zsh"
+    system "source #{share}/antigen.zsh"
   end
 end
