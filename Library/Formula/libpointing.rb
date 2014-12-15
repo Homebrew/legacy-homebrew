@@ -5,6 +5,14 @@ class Libpointing < Formula
   url "http://libpointing.org/homebrew/libpointing-0.92.tar.gz"
   sha1 "a7f20c405e87a4b6fae369f977c0615a621ab143"
 
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "02be7b605af13fbc724fd0d7df55577a81441b54" => :yosemite
+    sha1 "5b97a2c58b9101aba98f43de0b7e4753dd32b85b" => :mavericks
+    sha1 "402cb8cf65ea6712ad9b0dca43361bdf3fabc9a4" => :mountain_lion
+  end
+
   def install
     system "make"
     system "make", "install", "PREFIX=#{prefix}"
