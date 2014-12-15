@@ -10,7 +10,7 @@ class Ldc < Formula
     sha1 "fd8121391a3528604cfb65da4dbf16ca499b8f76" => :mountain_lion
     sha1 "fc18d767e69eca7d9a7a5456a5524c7ce1cb3d29" => :lion
   end
-  
+
   needs :cxx11
 
   depends_on "cmake" => :build
@@ -18,6 +18,7 @@ class Ldc < Formula
   depends_on "libconfig"
 
   def install
+    ENV.cxx11
     mkdir "build"
     cd "build" do
       system "cmake", "..", *std_cmake_args
