@@ -6,9 +6,9 @@ class Dmd < Formula
   sha1 "7be9737f97a494870446c881e185bec41f337792"
 
   bottle do
-    sha1 "1cbca6f4f1b0d2af27ad6571c0b2f4b37b928423" => :mavericks
-    sha1 "a61c224f5d15c7b846b3348e196dde6a86cf6b0a" => :mountain_lion
-    sha1 "051c88ee54bebc15c3908fd2f31ec18b6634b9c1" => :lion
+    sha1 "6cb24133ba8e8973442d13b358dc14ea7f9d8c43" => :yosemite
+    sha1 "19e104830f0e6dbb4a422fd141254af784268a4d" => :mavericks
+    sha1 "c7c4f4b32f5e88c73f0efb8eb90d92a7956694e6" => :mountain_lion
   end
 
   resource "druntime" do
