@@ -7,10 +7,10 @@ class Python < Formula
   sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 4
-    sha1 "12f246ccb25d1024864916f643d819ff7572afdf" => :yosemite
-    sha1 "453c0c36a69059d2746628d468a67572adc94100" => :mavericks
-    sha1 "3bc89dbc02095d229b05a5c82bc11b4081211182" => :mountain_lion
+    revision 5
+    sha1 "b09c3279b03dbff74166196785af1d8c65a18e05" => :yosemite
+    sha1 "fb87d78832b895b2e41886b12a36cb4b77dc72a3" => :mavericks
+    sha1 "348f7cc5b70e3889713c7c48be59df18920198d6" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -33,8 +33,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.0.tar.gz"
-    sha1 "735a65e0df5781b43a542ffc7fe1ffb42fede843"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.0.2.tar.gz"
+    sha1 "bacdf139b210ea6c16ffa98eefa2eb8074dc7869"
   end
 
   resource "pip" do

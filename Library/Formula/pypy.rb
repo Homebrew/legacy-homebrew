@@ -6,10 +6,10 @@ class Pypy < Formula
   sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
   bottle do
     cellar :any
-    revision 3
-    sha1 "0c73377c31d8eee09906a4fdb11072c50576bcfd" => :yosemite
-    sha1 "404ca9b256757b65e6436f7c2d97ce7e9c468cb4" => :mavericks
-    sha1 "865f5c7ca87aeb9cb0e6f03fd6fe48fb6012dc7a" => :mountain_lion
+    revision 4
+    sha1 "eeabc98df0fc228fb61b7a16f94bedb0230a0ba7" => :yosemite
+    sha1 "bc47bbc0a4988ddf6df0eec8f4acea3ef38902c3" => :mavericks
+    sha1 "fb7fc84ae70bc20947b97946fa93fbcd1e6d9443" => :mountain_lion
   end
 
   revision 2
@@ -19,8 +19,8 @@ class Pypy < Formula
   depends_on "openssl"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.0.tar.gz"
-    sha1 "735a65e0df5781b43a542ffc7fe1ffb42fede843"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.0.2.tar.gz"
+    sha1 "bacdf139b210ea6c16ffa98eefa2eb8074dc7869"
   end
 
   resource "pip" do

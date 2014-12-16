@@ -2,9 +2,16 @@ require 'formula'
 
 class Squirrel < Formula
   homepage 'http://www.squirrel-lang.org'
-  url 'https://squirrel.googlecode.com/files/squirrel_3_0_4_stable.tar.gz'
-  version '3.0.4'
-  sha1 '384d278630040902bc111d8b9fb607d4d4941904'
+  url 'https://downloads.sourceforge.net/project/squirrel/squirrel3/squirrel%203.0.6%20stable/squirrel_3_0_6_stable.tar.gz'
+  version '3.0.6'
+  sha1 'b4ab6055f8cd8997df54193ac92bd3dc041f054b'
+
+  bottle do
+    cellar :any
+    sha1 "306d52e2b2bb99df7b9622a4bfcb31e0585a3618" => :yosemite
+    sha1 "232448b9e82a130d9717d8e1119a5fd24e2801e1" => :mavericks
+    sha1 "e473092003e6e71b7c15adaf1dcbfe9ea258bc98" => :mountain_lion
+  end
 
   def install
     # -s causes the linker to crash
