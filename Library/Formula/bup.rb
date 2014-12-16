@@ -7,6 +7,9 @@ class Bup < Formula
   sha1 "86e636818590fe40e1074c67545bb74de6e8306b"
 
   option "run-tests", "Run unit tests after compilation"
+  option "with-manpage", "build and install the manpage (depends on pandoc)"
+
+  depends_on "pandoc" => :build if build.with? "manpage"
 
   # Fix compilation on 10.10
   # https://github.com/bup/bup/commit/75d089e7cdb7a7eb4d69c352f56dad5ad3aa1f97
