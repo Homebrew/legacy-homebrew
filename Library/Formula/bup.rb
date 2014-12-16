@@ -9,7 +9,7 @@ class Bup < Formula
   option "run-tests", "Run unit tests after compilation"
   option "with-pandoc", "build and install the manpage (depends on pandoc)"
 
-  depends_on "pandoc" => :build
+  depends_on "pandoc" => [:optional, :build]
 
   # Fix compilation on 10.10
   # https://github.com/bup/bup/commit/75d089e7cdb7a7eb4d69c352f56dad5ad3aa1f97
