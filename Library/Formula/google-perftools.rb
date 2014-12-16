@@ -7,9 +7,9 @@ class GooglePerftools < Formula
 
   bottle do
     cellar :any
-    sha1 "c5f3fcc3e72965cdf5a60b3ff26e5b8fcc1f6bd2" => :yosemite
-    sha1 "c930c122d93509860ed775647b6087ff47209646" => :mavericks
-    sha1 "012d32851ca538fd32cd85db4fe8b033cfe38755" => :mountain_lion
+    sha1 "8449da34214f2a095d8f41c3d63b0d0832e5e8e8" => :yosemite
+    sha1 "87000f9e996ad5c6f14c4489df7152740c6a0464" => :mavericks
+    sha1 "a518d03fe9773c34d337a81023afae873e2abced" => :mountain_lion
   end
 
   fails_with :llvm do
