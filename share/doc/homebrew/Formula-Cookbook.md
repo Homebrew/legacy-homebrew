@@ -96,8 +96,6 @@ This creates:
 And opens it in your `$EDITOR`. It'll look like:
 
 ```ruby
-require "formula"
-
 class Foo < Formula
   url "http://example.com/foo-0.1.tar.gz"
   homepage ""
