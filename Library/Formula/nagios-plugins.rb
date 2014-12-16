@@ -1,5 +1,3 @@
-require "formula"
-
 class NagiosPlugins < Formula
   homepage "https://www.nagios-plugins.org/"
   url "https://www.nagios-plugins.org/download/nagios-plugins-2.0.3.tar.gz"
@@ -11,8 +9,7 @@ class NagiosPlugins < Formula
     sha1 "0f3bb80908ff0cdfaae651c2100b48a048d69257" => :mountain_lion
   end
 
-  depends_on "openssl" => :optional
-  depends_on "gnutls" => :optional
+  depends_on "openssl"
   depends_on "postgresql" => :optional
   depends_on :mysql => :optional
 
@@ -21,15 +18,10 @@ class NagiosPlugins < Formula
       --disable-dependency-tracking
       --prefix=#{libexec}
       --libexecdir=#{libexec}/sbin
+      --with-openssl=#{Formula["openssl"].opt_prefix}
     ]
 
     args << "--with-pgsql=#{Formula["postgresql"].opt_prefix}" if build.with? "postgresql"
-
-    if build.with? "gnutls"
-      args << "--with-gnutls=#{Formula["gnutls"].opt_prefix}"
-    else
-      args << "--with-openssl=#{Formula["openssl"].opt_prefix}"
-    end
 
     system "./configure", *args
     system "make", "install"
@@ -42,9 +34,5 @@ class NagiosPlugins < Formula
     All plugins have been installed in:
       #{HOMEBREW_PREFIX}/sbin
     EOS
-  end
-
-  test do
-    system "#{sbin}/check_ntp_time", "-H", "pool.ntp.org"
   end
 end
