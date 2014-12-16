@@ -30,21 +30,21 @@ module OS
         elsif File.executable?(path = "#{HOMEBREW_PREFIX}/bin/#{tool}")
           Pathname.new path
         else
-          path = `/usr/bin/xcrun -no-cache -find #{tool} 2>/dev/null`.chomp
+          path = Utils.popen_read("/usr/bin/xcrun", "-no-cache", "-find", tool).chomp
           Pathname.new(path) if File.executable?(path)
         end
       end
     end
 
     def active_developer_dir
-      @active_developer_dir ||= `xcode-select -print-path 2>/dev/null`.strip
+      @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end
 
     def sdk_path(v = version)
       (@sdk_path ||= {}).fetch(v.to_s) do |key|
         opts = []
         # First query Xcode itself
-        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp
+        opts << Utils.popen_read(locate("xcodebuild"), "-version", "-sdk", "macosx#{v}", "Path").chomp
         # Xcode.prefix is pretty smart, so lets look inside to find the sdk
         opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
         # Xcode < 4.3 style
