@@ -31,6 +31,9 @@ class Ffmpeg < Formula
   option "with-libvidstab", "Enable vid.stab support for video stabilization"
   option "with-x265", "Enable x265 encoder"
   option "with-libsoxr", "Enable the soxr resample library"
+  option "with-libfaac", "Enable the FAAC encoder"
+  option "with-libvorbis", "Enable the Ogg Vorbis encoder"
+  option "with-theora", "Enable the Ogg Theora encoder"
 
   depends_on "pkg-config" => :build
 
