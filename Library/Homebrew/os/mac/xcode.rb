@@ -77,7 +77,7 @@ module OS
 
         %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
           if File.file? path
-            `#{path} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+            Utils.popen_read(path, "-version") =~ /Xcode (\d(\.\d)*)/
             return $1 if $1
           end
         end
