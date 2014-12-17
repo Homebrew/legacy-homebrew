@@ -2,8 +2,8 @@ require "formula"
 
 class Capnp < Formula
   homepage "http://kentonv.github.io/capnproto/"
-  url "http://capnproto.org/capnproto-c++-0.4.1.tar.gz"
-  sha1 "18ce1a404c2bf68e6625e44927bfe6b67186cb15"
+  url "http://capnproto.org/capnproto-c++-0.5.0.tar.gz"
+  sha1 "5eec5929d9b64628b2e7b6646369f112079a1f61"
 
   bottle do
     cellar :any
