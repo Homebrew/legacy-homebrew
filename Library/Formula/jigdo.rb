@@ -4,6 +4,12 @@ class Jigdo < Formula
   sha1 "7b83c35af71f908b31b9aa55b0dda9dfb4d224f0"
   revision 1
 
+  bottle do
+    sha1 "082410ddb96160d7dad904396e54c628e395efd6" => :yosemite
+    sha1 "3728075c968660a34393a2c8657d2e3f18fb0017" => :mavericks
+    sha1 "f059fdafb3d3891c27e86ef0d31ef20d14bf7c2c" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "wget" => :recommended
   depends_on "berkeley-db4"
