@@ -6,10 +6,9 @@ class Capnp < Formula
   sha1 "5eec5929d9b64628b2e7b6646369f112079a1f61"
 
   bottle do
-    cellar :any
-    sha1 "e980920f619a0682b1335550844b065894ed43ac" => :yosemite
-    sha1 "37a57c4a451723d7aa63dce453d35c65dce38a6e" => :mavericks
-    sha1 "8d7cc81fe1e7356eea9b422cc59ecbb1cef8f808" => :mountain_lion
+    sha1 "c73a3d2118d22e1741cea71b5557a98f1f9123d3" => :yosemite
+    sha1 "25029d69b65d8cb98dc5015a9c215e5109e889ba" => :mavericks
+    sha1 "06576d9fbc1ee122828bf7f41ceb5cb12bc41a32" => :mountain_lion
   end
 
   needs :cxx11
