@@ -40,7 +40,7 @@ class Libcouchbase < Formula
       args << '-DLCB_NO_PLUGINS=1'
     end
 
-    ln_s cached_download/".git", ".git" if build.head?
+    ENV["GIT_DIR"] = cached_download/".git" if build.head?
     mkdir 'LCB-BUILD' do
       system "cmake", "..", *args
       system 'make install'

@@ -13,12 +13,8 @@ class LSmash < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--enable-shared"]
-
-    # For getting version information correctly in the configure
-    buildpath.install_symlink cached_download/".git"
-
-    system "./configure", *args
+    ENV["GIT_DIR"] = cached_download/".git"
+    system "./configure", "--prefix=#{prefix}", "--enable-shared"
     system "make", "install"
   end
 

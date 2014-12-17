@@ -2,12 +2,12 @@ require "formula"
 
 class Syncthing < Formula
   homepage "http://syncthing.net"
-  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.11"
+  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.12"
 
   bottle do
-    sha1 "66a7ee0fe785ec77b0ef49c47be459545d32bb7d" => :yosemite
-    sha1 "b16d423647d0eb8c7238d79971a99db7ecc4fdaa" => :mavericks
-    sha1 "6a77a8a0c2741bec388e414874679fb7ec2003a6" => :mountain_lion
+    sha1 "a98be854eb18c0ea59b6fdbc245682c1a5a45dc5" => :yosemite
+    sha1 "80164b9027518d4976c498dc5f4a6732b6fbe034" => :mavericks
+    sha1 "ff092a3db1058eee471b95137bd895fc92e0098d" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -17,11 +17,12 @@ class Syncthing < Formula
     ENV["GOPATH"] = cached_download/".gopath"
     ENV.append_path "PATH", "#{ENV["GOPATH"]}/bin"
 
+    # FIXME do this without mutating the cache!
     hack_dir = cached_download/".gopath/src/github.com/syncthing"
     rm_rf  hack_dir
     mkdir_p hack_dir
     ln_s cached_download, "#{hack_dir}/syncthing"
-    ln_s cached_download/".git", ".git"
+    ENV["GIT_DIR"] = cached_download/".git"
 
     system "./build.sh", "noupgrade"
     bin.install "syncthing"

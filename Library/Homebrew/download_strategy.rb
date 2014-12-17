@@ -436,17 +436,11 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   private
 
   def repo_url
-    `svn info '#{cached_location}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
-  end
-
-  def shell_quote str
-    # Oh god escaping shell args.
-    # See http://notetoself.vrensk.com/2008/08/escaping-single-quotes-in-ruby-harder-than-expected/
-    str.gsub(/\\|'/) { |c| "\\#{c}" }
+    Utils.popen_read("svn", "info", cached_location.to_s).strip[/^URL: (.+)$/, 1]
   end
 
   def get_externals
-    `svn propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+    Utils.popen_read("svn", "propget", "svn:externals", @url).chomp.each_line do |line|
       name, url = line.split(/\s+/)
       yield name, url
     end
