@@ -1,11 +1,9 @@
-require "formula"
-
 class Links < Formula
   homepage "http://links.twibright.com/"
   url "http://links.twibright.com/download/links-2.8.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/links2/links2_2.8.orig.tar.bz2"
   sha1 "a808d80d910b7d3ad86f4c5089e64f35113b69f2"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any

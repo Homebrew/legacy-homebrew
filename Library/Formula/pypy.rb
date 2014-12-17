@@ -1,9 +1,9 @@
-require "formula"
-
 class Pypy < Formula
   homepage "http://pypy.org/"
   url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-src.tar.bz2"
   sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
+  revision 1
+
   bottle do
     cellar :any
     revision 4

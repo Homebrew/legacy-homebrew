@@ -1,12 +1,14 @@
-require "formula"
-
 class AircrackNg < Formula
   homepage "http://aircrack-ng.org/"
   # We can't update this due to linux-only dependencies in >1.1.
   # See https://github.com/Homebrew/homebrew/issues/29450
+  # 1.2RC1 is actually more portable, libnl detection has been fixed.
+  # If you inreplace the <endian.h> in src/osdep/radiotap/platform.h with
+  # </usr/include/sys/_endian.h> it almost compiles, with only arch errors.
+  # Monitor this going forwards.
   url "http://download.aircrack-ng.org/aircrack-ng-1.1.tar.gz"
   sha1 "16eed1a8cf06eb8274ae382150b56589b23adf77"
-  revision 1
+  revision 2
 
   depends_on "pkg-config" => :build
   depends_on "sqlite"

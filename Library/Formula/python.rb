@@ -1,10 +1,9 @@
-require "formula"
-
 class Python < Formula
   homepage "https://www.python.org"
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz"
   sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
+  revision 1
 
   bottle do
     revision 5

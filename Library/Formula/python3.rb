@@ -1,10 +1,8 @@
-require "formula"
-
 class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tar.xz"
   sha1 "0727d8a8498733baabe6f51632b9bab0cbaa9ada"
-  revision 1
+  revision 2
 
   bottle do
     revision 1

@@ -1,9 +1,8 @@
-require "formula"
-
 class Alpine < Formula
   homepage "http://patches.freeiz.com/alpine/"
   url "http://patches.freeiz.com/alpine/release/src/alpine-2.11.tar.xz"
   sha1 "656556f5d2e5ec7e3680d1760cd02aa3a0072c46"
+  revision 1
 
   bottle do
     sha1 "51fb44fd30777e0a64924689978e4f2d795176a5" => :yosemite

@@ -1,9 +1,8 @@
-require "formula"
-
 class Libtorrent < Formula
   homepage "http://libtorrent.rakshasa.no/"
   url "http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.4.tar.gz"
   sha1 "3a3ca87054d020bc376abe2c1ea15bbbaef31131"
+  revision 1
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
@@ -25,6 +24,6 @@ class Libtorrent < Formula
                           "--with-kqueue",
                           "--enable-ipv6"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,11 +1,9 @@
-require "formula"
-
 class Openssl < Formula
   homepage "https://openssl.org"
   url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1j.tar.gz"
   sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
-  revision 1
+  revision 2
 
   bottle do
     sha1 "ffc47898c5c5599745b644c1889e473418a18d5a" => :yosemite
@@ -30,8 +28,9 @@ class Openssl < Formula
 
   def configure_args; %W[
       --prefix=#{prefix}
-      --openssldir=#{openssldir}
+      --openssldir=#{etc}/openssl
       no-ssl2
+      no-ssl3
       zlib-dynamic
       shared
       enable-cms
@@ -60,6 +59,7 @@ class Openssl < Formula
       end
 
       ENV.deparallelize
+      mkdir_p "#{etc}/openssl"
       system "perl", "./Configure", *(configure_args + arch_args[arch])
       system "make", "depend"
       system "make"
@@ -96,24 +96,19 @@ class Openssl < Formula
     end
   end
 
-  def openssldir
-    etc/"openssl"
-  end
-
   def post_install
     keychains = %w[
       /Library/Keychains/System.keychain
       /System/Library/Keychains/SystemRootCertificates.keychain
     ]
 
-    openssldir.mkpath
-    (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+    (etc/"openssl/cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 
   def caveats; <<-EOS.undent
     A CA file has been bootstrapped using certificates from the system
     keychain. To add additional certificates, place .pem files in
-      #{openssldir}/certs
+      #{etc}/openssl/certs
 
     and run
       #{opt_bin}/c_rehash

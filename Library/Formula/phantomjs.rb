@@ -1,7 +1,6 @@
-require "formula"
-
 class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
+  revision 1
 
   stable do
     url "https://github.com/ariya/phantomjs/archive/1.9.8.tar.gz"

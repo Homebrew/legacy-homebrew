@@ -1,10 +1,9 @@
-require 'formula'
-
 class Nmap < Formula
   homepage "http://nmap.org/"
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
   url "http://nmap.org/dist/nmap-6.47.tar.bz2"
   sha1 "0c917453a91a5e85c2a217d27c3853b0f3e0e6ac"
+  revision 1
 
   bottle do
     revision 1
@@ -15,7 +14,7 @@ class Nmap < Formula
 
   depends_on "openssl"
 
-  conflicts_with 'ndiff', :because => 'both install `ndiff` binaries'
+  conflicts_with "ndiff", :because => "both install `ndiff` binaries"
 
   fails_with :llvm do
     build 2334
@@ -40,6 +39,6 @@ class Nmap < Formula
   end
 
   test do
-    system "#{bin}/nmap", '-p80,443', 'google.com'
+    system "#{bin}/nmap", "-p80,443", "google.com"
   end
 end

@@ -1,10 +1,9 @@
-require "formula"
-
 class Peervpn < Formula
   homepage "http://www.peervpn.net"
   url "http://www.peervpn.net/files/peervpn-0-041.tar.gz"
   version "0.041"
   sha1 "b05bb88bfe73976714f559c8aaf545d75b026768"
+  revision 1
 
   bottle do
     cellar :any
