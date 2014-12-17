@@ -166,6 +166,10 @@ module MachO
       return nil, [] unless OS.mac?
       ENV["HOMEBREW_MACH_O_FILE"] = path.expand_path.to_s
       libs = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split("\n")
+      unless $?.success?
+        raise ErrorDuringExecution.new(MacOS.locate("otool"),
+          ["-L", ENV["HOMEBREW_MACH_O_FILE"]])
+      end
 
       libs.shift # first line is the filename
 

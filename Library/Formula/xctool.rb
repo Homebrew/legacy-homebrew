@@ -1,10 +1,5 @@
 require 'formula'
 
-class Xcode5 < Requirement
-  fatal true
-  satisfy { MacOS::Xcode.version >= "5.0" }
-end
-
 class Xctool < Formula
   homepage 'https://github.com/facebook/xctool'
   url 'https://github.com/facebook/xctool/archive/v0.2.2.tar.gz'
@@ -18,8 +13,7 @@ class Xctool < Formula
     sha1 "384f13a1e0750e1c16cf112eb97c1f44bb724cd2" => :mountain_lion
   end
 
-  depends_on :xcode
-  depends_on Xcode5
+  depends_on :xcode => "5.0"
 
   def install
     system "./scripts/build.sh", "XT_INSTALL_ROOT=#{libexec}"

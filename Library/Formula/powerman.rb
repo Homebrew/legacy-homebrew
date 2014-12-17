@@ -4,11 +4,12 @@ class Powerman < Formula
   homepage "http://code.google.com/p/powerman/"
   url "https://github.com/chaos/powerman/releases/download/2.3.20/powerman-2.3.20.tar.gz"
   sha256 "a4b0858d1214aab18e2673596b00ac9bad976cb7b777209e10732467c3551b88"
+  revision 1
 
   bottle do
-    sha1 "13cb32e10f668dbb4aa5c45f875b1f6eefe51add" => :mavericks
-    sha1 "01782db5105f648477202f5d6864a16f84024401" => :mountain_lion
-    sha1 "750e16ba1c0f6bed9d63b8c89c7e4a5484276723" => :lion
+    sha1 "8885a67eba6e20904ba15c10256738eb30d5a53d" => :yosemite
+    sha1 "a1ae6b1798c6b141a716d47d26e75882beb970fc" => :mavericks
+    sha1 "fc67de36f5e2035c61d0877bc1477886ab30ab35" => :mountain_lion
   end
 
   head do
@@ -27,9 +28,10 @@ class Powerman < Formula
   depends_on "genders" => :optional
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--localstatedir=#{HOMEBREW_PREFIX}/var"
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--localstatedir=#{var}"
     ]
 
     args << (build.with?("curl") ? "--with-httppower" : "--without-httppower")

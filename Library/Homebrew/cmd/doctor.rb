@@ -463,6 +463,19 @@ def check_access_logs
   end
 end
 
+def check_access_cache
+  if HOMEBREW_CACHE.exist? && !HOMEBREW_CACHE.writable_real?
+    <<-EOS.undent
+      #{HOMEBREW_CACHE} isn't writable.
+      This can happen if you ran `brew install` or `brew fetch` as another user.
+
+      Homebrew caches downloaded files to this location.
+
+      You should probably `chown` #{HOMEBREW_CACHE}
+    EOS
+  end
+end
+
 def check_ruby_version
   return unless OS.mac?
   ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
@@ -1207,6 +1220,25 @@ end
         mkdir -p #{user_site_packages}
         echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
     EOS
+  end
+
+  def check_for_external_cmd_name_conflict
+    cmds = paths.map { |p| Dir["#{p}/brew-*"] }.flatten.uniq
+    cmds = cmds.select { |cmd| File.file?(cmd) && File.executable?(cmd) }
+    cmd_map = {}
+    cmds.each do |cmd|
+      cmd_name = File.basename(cmd, ".rb")
+      cmd_map[cmd_name] ||= []
+      cmd_map[cmd_name] << cmd
+    end
+    cmd_map.reject! { |cmd_name, cmd_paths| cmd_paths.size == 1 }
+    return if cmd_map.empty?
+    s = "You have external commands with conflicting names."
+    cmd_map.each do |cmd_name, cmd_paths|
+      s += "\n\nFound command `#{cmd_name}` in following places:\n"
+      s += cmd_paths.map { |f| "  #{f}" }.join("\n")
+    end
+    s
   end
 
   def all

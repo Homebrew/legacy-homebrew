@@ -2,15 +2,15 @@ require "formula"
 
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://www.ffmpeg.org/releases/ffmpeg-2.4.4.tar.bz2"
-  sha1 "c0a0829fbb4cf423eed77f39d3661d1a34ac7c35"
+  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.tar.bz2"
+  sha1 "ec0111e8298bdb2291d82e3b4f67354ba48fab19"
 
   head "git://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha1 "eaf00b6332d255a5fe9f31d9b05534a58a7bbd06" => :yosemite
-    sha1 "7c343331c2d2238dd8a581852995db5fa3372807" => :mavericks
-    sha1 "6c1db716958670038b44e9eefcc7b502f87eca66" => :mountain_lion
+    sha1 "cfb48e5a427fb8e7337c91aaf48cba7213e4e0d5" => :yosemite
+    sha1 "cab71d2849a657112edfac9918891b8a13c9dc3f" => :mavericks
+    sha1 "5167ec5127484c341408113ff041bae0147c8aa4" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -19,7 +19,7 @@ class Ffmpeg < Formula
   option "without-qtkit", "Disable deprecated QuickTime framework"
 
   option "with-rtmpdump", "Enable RTMP protocol"
-  option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
+  option "without-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
   option "with-opencore-amr", "Enable Opencore AMR NR/WB audio format"
   option "with-openjpeg", "Enable JPEG 2000 image format"
@@ -39,10 +39,11 @@ class Ffmpeg < Formula
   depends_on "yasm" => :build
 
   depends_on "x264" => :recommended
-  depends_on "faac" => :recommended
   depends_on "lame" => :recommended
+  depends_on "libvo-aacenc" => :recommended
   depends_on "xvid" => :recommended
 
+  depends_on "faac" => :optional
   depends_on "fontconfig" => :optional
   depends_on "freetype" => :optional
   depends_on "theora" => :optional
@@ -50,7 +51,6 @@ class Ffmpeg < Formula
   depends_on "libvpx" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "opencore-amr" => :optional
-  depends_on "libvo-aacenc" => :optional
   depends_on "libass" => :optional
   depends_on "openjpeg" => :optional
   depends_on "sdl" if build.with? "ffplay"
@@ -73,7 +73,6 @@ class Ffmpeg < Formula
             "--enable-pthreads",
             "--enable-gpl",
             "--enable-version3",
-            "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-avresample",
             "--cc=#{ENV.cc}",
@@ -113,6 +112,12 @@ class Ffmpeg < Formula
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
       args << "--extra-cflags=" + %x[pkg-config --cflags libopenjpeg].chomp
+    end
+
+    # These librares are GPL-incompatible, and require ffmpeg be built with
+    # the "--enable-nonfree" flag, which produces unredistributable libraries
+    if %w[faac fdk-aac openssl].any? {|f| build.with? f}
+      args << "--enable-nonfree"
     end
 
     # A bug in a dispatch header on 10.10, included via CoreFoundation,

@@ -10,9 +10,7 @@ without modifying Homebrew's internals.
 ## COMMAND TYPES
 External commands come in two flavors: Ruby commands and shell scripts.
 
-In both cases, the command file should be `chmod +x` (executable) and live somewhere in `$PATH`.
-
-Internally, Homebrew finds commands with `which`(1).
+In both cases, the command file should be executable (`chmod +x`) and live somewhere in `$PATH`.
 
 ### RUBY COMMANDS
 An external command `extcmd` implemented as a Ruby command should be named `brew-extcmd.rb`. The command is executed by doing a `require` on the full pathname. As the command is `require`d, it has full access to the Homebrew "environment", i.e. all global variables and modules that any internal command has access to.
@@ -115,5 +113,3 @@ These commands have been contributed by Homebrew users but are not included in t
 
 ## SEE ALSO
 Homebrew Docs: <https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew>
-
-`brew`(1), `which`(1), `grep`(1), [`ronn`(1)](http://rtomayko.github.com/ronn/)

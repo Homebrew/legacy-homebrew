@@ -2,15 +2,15 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  version '23.0.2'
+  version '24'
   if OS.mac?
-      url "https://dl.google.com/android/android-sdk_r23.0.2-macosx.zip"
-      sha1 "1ef502577ca4403ae81f3d68c1813995cb412354"
+    url 'http://dl.google.com/android/android-sdk_r24-macosx.zip'
+    sha1 '89b256c82e6ab432881fa7d726bdd0541c656616'
   elsif OS.linux?
-      url "https://dl.google.com/android/android-sdk_r23.0.2-linux.tgz"
-      sha1 "6b79b05bc876a8126f5ba034602e01306706de75"
+    url 'http://dl.google.com/android/android-sdk_r24-linux.tgz'
+    sha1 '3cc1fcec302a8478e240e42b94dd2de73b9d0cc9'
   else
-      raise "Unknown operating system"
+    raise "Unknown operating system"
   end
 
   conflicts_with 'android-platform-tools',
