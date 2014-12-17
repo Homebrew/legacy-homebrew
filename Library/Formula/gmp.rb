@@ -16,7 +16,7 @@ class Gmp < Formula
   end
 
   option '32-bit'
-  option :cxx11
+  option 'cxx11'
 
   def install
     ENV.cxx11 if build.cxx11?
