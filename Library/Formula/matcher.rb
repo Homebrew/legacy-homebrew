@@ -1,3 +1,5 @@
+require "open3"
+
 class Matcher < Formula
   homepage "https://github.com/burke/matcher"
   url "https://github.com/burke/matcher/archive/1.0.0.tar.gz"
@@ -9,6 +11,6 @@ class Matcher < Formula
   end
 
   test do
-    system "matcher"
+    !!(Open3.capture3('echo "hello\nworld\nhello" | matcher ll | wc -l')[0] =~ /2/)
   end
 end
