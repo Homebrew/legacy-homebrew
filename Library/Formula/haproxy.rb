@@ -2,15 +2,8 @@ require "formula"
 
 class Haproxy < Formula
   homepage "http://haproxy.1wt.eu"
-  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.3.tar.gz"
-  sha1 "b86c9490dea5bade767d43f544ced383764f879d"
-
-  bottle do
-    cellar :any
-    sha1 "41d6a7dfd7b72c7f4a4c63c5c35caf1088268a55" => :mavericks
-    sha1 "1dbc7bf90ba7742e6f586b4777758547870b099e" => :mountain_lion
-    sha1 "5c595b4953060f7a0aa78cc62f8cf1056ec72707" => :lion
-  end
+  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.9.tar.gz"
+  sha1 "62620311db4b18f10464ffcbcc0398161f5c8a6b"
 
   depends_on "pcre"
 
