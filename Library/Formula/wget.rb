@@ -32,6 +32,7 @@ class Wget < Formula
   depends_on "openssl"
   depends_on "libidn" if build.with? "iri"
   depends_on "pcre" => :optional
+  depends_on "libuuid" if OS.linux?
 
   def install
     if build.head?
