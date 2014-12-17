@@ -21,7 +21,7 @@ class Monetdb < Formula
   depends_on "libtool" => :build # Needed for bootstrapping (when building the HEAD)
   depends_on "gettext" => :build # Needed for bootstrapping (when building the HEAD)
   depends_on "pcre"
-  depends_on "readline" # Compilation fails with libedit.o
+  depends_on "readline" # Compilation fails with libedit.
   depends_on "openssl"
   depends_on "libatomic_ops" => :recommended
 
