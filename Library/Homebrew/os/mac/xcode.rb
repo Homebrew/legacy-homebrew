@@ -156,6 +156,7 @@ module OS
       # Returns true even if outdated tools are installed, e.g.
       # tools from Xcode 4.x on 10.9
       def installed?
+        return true if OS.linux?
         !!detect_version
       end
 
