@@ -25,6 +25,7 @@ module SharedEnvExtension
     MACOSX_DEPLOYMENT_TARGET SDKROOT DEVELOPER_DIR
     CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
     GOBIN
+    LIBRARY_PATH
   ]
 
   def setup_build_environment(formula=nil)
