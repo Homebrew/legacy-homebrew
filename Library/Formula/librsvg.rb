@@ -7,6 +7,10 @@ class Librsvg < Formula
   revision 1
 
   bottle do
+    cellar :any
+    sha1 "16b3c1e1e2f2662e837a223b5534d8d2c2f77a17" => :yosemite
+    sha1 "6d3306b10ca89f4c7ba0a68f240a8bbba197e90d" => :mavericks
+    sha1 "ab5c9bcad344e53fc5f6c53af902971ec1a9505e" => :mountain_lion
   end
 
   depends_on :x11
