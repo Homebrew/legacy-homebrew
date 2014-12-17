@@ -7,6 +7,13 @@ class GameMusicEmu < Formula
 
   head "http://game-music-emu.googlecode.com/svn/trunk/"
 
+  bottle do
+    cellar :any
+    sha1 "ceef76e75ac6ba2cc10f3d909fa42884a54a7833" => :yosemite
+    sha1 "bc298aea7a024e60411c1cb2f6f778656dad7bc1" => :mavericks
+    sha1 "5f5ceca1e279614d32a06134d0f35585fd0d2446" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
 
   def install
