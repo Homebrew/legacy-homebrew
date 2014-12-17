@@ -7,6 +7,11 @@ class Luajit < Formula
   head 'http://luajit.org/git/luajit-2.0.git'
   revision 1
 
+  devel do
+    version '2.1'
+    url 'http://luajit.org/git/luajit-2.0.git', :branch => 'v2.1'
+  end
+
   bottle do
     sha1 "9a6fc01ed0659ecc07a1e34daecdcf82cd150ca4" => :yosemite
     sha1 "7ed3346a644ca5cd73c51131c54060b13038208e" => :mavericks
@@ -32,6 +37,9 @@ class Luajit < Formula
 
     # This doesn't yet work under superenv because it removes '-g'
     args << 'CCDEBUG=-g' if build.include? 'enable-debug'
+
+    # The development branch of LuaJIT normally does not install "luajit".
+    args << 'INSTALL_TNAME=luajit' if build.devel?
 
     system 'make', 'amalg', *args
     system 'make', 'install', *args
