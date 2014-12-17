@@ -11,29 +11,31 @@ class Monetdb < Formula
     sha1 "484c94edf77b0acb72aa0e0cb7a8017c149be95c" => :mountain_lion
   end
 
-  head "http://dev.monetdb.org/hg/MonetDB", :using => :hg
+  head do
+    url "http://dev.monetdb.org/hg/MonetDB", :using => :hg
 
+    depends_on "libtool" => :build
+    depends_on "gettext" => :build
+  end
+  
   option "with-java"
   option "with-rintegration"
 
   depends_on "pkg-config" => :build
   depends_on :ant => :build
-  depends_on "libtool" => :build # Needed for bootstrapping (when building the HEAD)
-  depends_on "gettext" => :build # Needed for bootstrapping (when building the HEAD)
   depends_on "pcre"
   depends_on "readline" # Compilation fails with libedit.
   depends_on "openssl"
   depends_on "libatomic_ops" => :recommended
 
-  depends_on "unixodbc" => :optional # Build ODBC driver
+  depends_on "unixodbc" => :optional # Build the ODBC driver
   depends_on "geos" => :optional # Build the GEOM module
   depends_on "gsl" => :optional
   depends_on "cfitsio" => :optional
   depends_on "homebrew/php/libsphinxclient" => :optional
 
   def install
-    ENV["PKG_CONFIG_PATH"] = "/usr/local/opt/zlib/lib/pkgconfig" if build.head?
-    ENV["M4DIRS"] = "/usr/local/opt/gettext/share/aclocal" if build.head?
+    ENV["M4DIRS"] = "#{Formula["gettext"].opt_share}/aclocal" if build.head?
     system "./bootstrap" if build.head?
 
     args = ["--prefix=#{prefix}",
@@ -41,7 +43,7 @@ class Monetdb < Formula
             "--enable-assert=no",
             "--enable-optimize=yes",
             "--enable-testing=no",
-            "--with-readline=/usr/local/opt/readline", # Use the correct readline
+            "--with-readline=#{Formula["readline"].opt_prefix}", # Use the correct readline
             "--without-rubygem"]
 
     args << "--with-java=no" if build.without? "java"
