@@ -9,9 +9,9 @@ class Cyassl < Formula
 
   bottle do
     cellar :any
-    sha1 "af3935e69de8e276da44489ee06d7bd02f12d611" => :mavericks
-    sha1 "3d46f2e384ded4b9d1fd6854ea9f5b45a2582e6b" => :mountain_lion
-    sha1 "3d3bae7a0f09f77cad6219b75ca9193fe5931bda" => :lion
+    sha1 "47a068ee29646ef26b3f7e2a62268f62ed73dbec" => :yosemite
+    sha1 "57f47edc303e4f7f07d893a0724c67e068ca4883" => :mavericks
+    sha1 "c5de09829f89696a73a8f3818bbf413eae99e5ac" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
