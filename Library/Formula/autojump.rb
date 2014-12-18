@@ -5,6 +5,10 @@ class Autojump < Formula
 
   head "https://github.com/joelthelion/autojump.git"
 
+
+  # Fix autojump not loading shell completions because of wrong directory:
+  # "modify_autojump_sh" must use of the share_dir, which is where the
+  # shell completions are installed, instead of the etc_dir.
   # This patch applies to v22.2.2. The patch has been submitted to the upstream:
   # https://github.com/joelthelion/autojump/pull/339
   patch :DATA
