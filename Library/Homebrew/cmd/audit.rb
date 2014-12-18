@@ -627,7 +627,7 @@ class ResourceAuditor
 
     if using == :ssl3 || using == CurlSSL3DownloadStrategy
       problem "The SSL3 download strategy is deprecated, please choose a different URL"
-    elsif using == CurlUnsafeDownloadStrategy
+    elsif using == CurlUnsafeDownloadStrategy || using == UnsafeSubversionDownloadStrategy
       problem "#{using.name} is deprecated, please choose a different URL"
     end
 
