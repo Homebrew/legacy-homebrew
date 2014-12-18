@@ -9,10 +9,9 @@ class Postgresql < Formula
   end
 
   bottle do
-    sha1 "00d8f44111b8585fc2fa045fb33098cde3bcf230" => :yosemite
-    sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
-    sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
-    sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
+    sha1 "1cf71ee1cfc061cdc82f6164e72ffba1ac8dd8e8" => :yosemite
+    sha1 "9dbd8dc89c4d3d941bc6f5fa34ef0f321f440780" => :mavericks
+    sha1 "efd661ace5a5f2657d047098dec15136aa4f0249" => :mountain_lion
   end
 
   option '32-bit'
