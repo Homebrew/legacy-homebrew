@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "November 2014" "Homebrew" "brew"
+.TH "BREW" "1" "December 2014" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -251,8 +251,11 @@ If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which
 If \fB\-\-force\fR is passed, Homebrew will allow keg\-only formulae to be linked\.
 .
 .TP
-\fBlinkapps [\-\-local]\fR
-Find all installed formulae that have compiled \fB\.app\fR\-style "application" packages for OS X, and symlink those apps into \fB/Applications\fR, allowing for easier access\.
+\fBlinkapps [\-\-local] [<formulae>]\fR
+Find installed formulae that have compiled \fB\.app\fR\-style "application" packages for OS X, and symlink those apps into \fB/Applications\fR, allowing for easier access\.
+.
+.IP
+If no \fIformulae\fR are provided, all of them will have their \.apps symlinked\.
 .
 .IP
 If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR folder instead of the system folder\. It may need to be created, first\.
@@ -376,8 +379,11 @@ Example: \fBbrew install jruby && brew test jruby\fR
 Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
 .
 .TP
-\fBunlinkapps [\-\-local]\fR
+\fBunlinkapps [\-\-local] [<formulae>]\fR
 Removes links created by \fBbrew linkapps\fR\.
+.
+.IP
+If no \fIformulae\fR are provided, all linked app will be removed\.
 .
 .TP
 \fBunpack [\-\-git|\-\-patch] [\-\-destdir=<path>]\fR \fIformulae\fR:
