@@ -6,9 +6,9 @@ class Emscripten < Formula
   sha1 "6d90ed5bb4aa3b54a626e451937754a9ae34650f"
 
   bottle do
-    sha1 "5d981b548c225cd4d8efc6bcc06ddd635483af28" => :yosemite
-    sha1 "ff71534e13b36cafd5d3fa89a7cb32a4ce6abed8" => :mavericks
-    sha1 "4e8831fe22a636971d59d7968c2fce704928244f" => :mountain_lion
+    sha1 "a5fe0b92e8d915988ca5bce83b4f5d739a1f154b" => :yosemite
+    sha1 "c59c1306fcba0acc6ab4f749977f65dd52ad3c2f" => :mavericks
+    sha1 "7fd747e61f0fc764124c27b20c5d3625496b3297" => :mountain_lion
   end
 
   head do
