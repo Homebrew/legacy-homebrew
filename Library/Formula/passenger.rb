@@ -2,8 +2,8 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz'
-  sha1 'dce2a83e66abb1fac1cd3cdc2ef284f098bc9390'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.56.tar.gz'
+  sha1 'd566c196b10f55d12f6f73c4cbcb48e7de560fb3'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
