@@ -534,6 +534,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
     "git"
   end
 
+  def cache_version
+    0
+  end
+
   def update
     cached_location.cd do
       config_repo
@@ -600,7 +604,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     safe_system 'git', *clone_args
-    cached_location.cd { update_submodules } if submodules?
+    cached_location.cd do
+      safe_system "git", "config", "homebrew.cacheversion", cache_version
+      update_submodules if submodules?
+    end
   end
 
   def checkout
