@@ -1,9 +1,7 @@
-require "formula"
-
 class Clhep < Formula
   homepage "http://proj-clhep.web.cern.ch/proj-clhep/"
-  url "http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.2.0.3.tgz"
-  sha1 "6e56f80c2db3c4f8828dec27815beae6655c8d9e"
+  url "http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.2.0.4.tgz"
+  sha1 "60a291b940fdc78bea4aaeaffc147cc25a42cfef"
 
   bottle do
     cellar :any
@@ -17,7 +15,7 @@ class Clhep < Formula
   def install
     mkdir "clhep-build" do
       system "cmake", "../CLHEP", *std_cmake_args
-      system "make install"
+      system "make", "install"
     end
   end
 end
