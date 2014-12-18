@@ -23,10 +23,10 @@ class Monetdb < Formula
 
   depends_on "pkg-config" => :build
   depends_on :ant => :build
+  depends_on "libatomic_ops" => [:build, :recommended]
   depends_on "pcre"
   depends_on "readline" # Compilation fails with libedit.
   depends_on "openssl"
-  depends_on "libatomic_ops" => :recommended
 
   depends_on "unixodbc" => :optional # Build the ODBC driver
   depends_on "geos" => :optional # Build the GEOM module
