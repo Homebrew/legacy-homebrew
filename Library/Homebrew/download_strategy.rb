@@ -639,6 +639,11 @@ class GitDownloadStrategy < VCSDownloadStrategy
 end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^cvs://], "")
+  end
+
   def stage
     cp_r Dir[cached_location+"{.}"], Dir.pwd
   end
@@ -671,7 +676,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def split_url(in_url)
-    parts=in_url.sub(%r[^cvs://], '').split(/:/)
+    parts = in_url.split(/:/)
     mod=parts.pop
     url=parts.join(':')
     [ mod, url ]
@@ -679,6 +684,11 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^hg://], "")
+  end
+
   def stage
     super
 
@@ -703,7 +713,6 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    url = @url.sub(%r[^hg://], "")
     safe_system hgpath, "clone", url, cached_location
   end
 
@@ -713,6 +722,11 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
 end
 
 class BazaarDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^bzr://], "")
+  end
+
   def stage
     # The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
@@ -731,7 +745,6 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    url = @url.sub(%r[^bzr://], "")
     # "lightweight" means history-less
     safe_system bzrpath, "checkout", "--lightweight", url, cached_location
   end
@@ -742,6 +755,11 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
 end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^fossil://], "")
+  end
+
   def stage
     super
     args = [fossilpath, "open", cached_location]
@@ -756,7 +774,6 @@ class FossilDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    url = @url.sub(%r[^fossil://], "")
     safe_system fossilpath, "clone", url, cached_location
   end
 
