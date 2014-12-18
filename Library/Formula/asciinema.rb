@@ -31,7 +31,8 @@ class Asciinema < Formula
   end
 
   test do
-    assert_match /asciinema \d/, pipe_output("#{bin}/asciinema --version")
+    assert_match /browser/, pipe_output("HOME=#{testpath} #{bin}/asciinema auth")
+    assert File.exists?("#{testpath}/.asciinema/config")
   end
 
 end
