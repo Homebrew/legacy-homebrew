@@ -1,5 +1,3 @@
-require "formula"
-
 class GpgAgent < Formula
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
@@ -20,6 +18,8 @@ class GpgAgent < Formula
   depends_on "pth"
   depends_on "pinentry"
 
+  conflicts_with "gnupg21", :because => "GPG2.1.x ships a built-in gpg-agent it wants to use."
+
   # Adjust package name to fit our scheme of packaging both
   # gnupg 1.x and 2.x, and gpg-agent separately
   patch :DATA
@@ -33,7 +33,7 @@ class GpgAgent < Formula
                           "--enable-agent-only",
                           "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry",
                           "--with-scdaemon-pgm=#{Formula["gnupg2"].opt_libexec}/scdaemon"
-    system "make install"
+    system "make", "install"
   end
 end
 

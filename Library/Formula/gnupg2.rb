@@ -1,5 +1,3 @@
-require "formula"
-
 class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
@@ -26,6 +24,8 @@ class Gnupg2 < Formula
   depends_on "dirmngr" => :recommended
   depends_on "libusb-compat" => :recommended
   depends_on "readline" => :optional
+
+  conflicts_with "gnupg21", :because => "GPG2.1.x is incompatible with the 2.0.x branch."
 
   def install
     # Adjust package name to fit our scheme of packaging both gnupg 1.x and

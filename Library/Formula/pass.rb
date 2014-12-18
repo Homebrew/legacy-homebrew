@@ -1,5 +1,3 @@
-require 'formula'
-
 class GpgRequirement < Requirement
   fatal true
   default_formula 'gnupg2'
@@ -11,6 +9,7 @@ class GpgRequirement < Requirement
   def message; <<-EOS.undent
     pass requires GPG to be installed. Please install GPG in one of three ways:
     - Install the gnupg2 package through Homebrew
+    - Install the gnupg21 package through Homebrew
     - Install the gpgtools package through Homebrew Cask
     - Download and install gpgtools from https://gpgtools.org/
     EOS
@@ -18,9 +17,9 @@ class GpgRequirement < Requirement
 end
 
 class Pass < Formula
-  homepage 'http://www.passwordstore.org/'
-  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.6.3.tar.xz'
-  sha256 'd419d40aa165c1f893e994dd706733374a9db8cf5314124702a061e70e0340f7'
+  homepage "http://www.passwordstore.org/"
+  url "http://git.zx2c4.com/password-store/snapshot/password-store-1.6.3.tar.xz"
+  sha256 "d419d40aa165c1f893e994dd706733374a9db8cf5314124702a061e70e0340f7"
 
   bottle do
     cellar :any
@@ -29,11 +28,11 @@ class Pass < Formula
     sha1 "289089c797ae46fe7ef93e4755f3847ecd38098c" => :lion
   end
 
-  head 'http://git.zx2c4.com/password-store', :using => :git
+  head "http://git.zx2c4.com/password-store", :using => :git
 
-  depends_on 'pwgen'
-  depends_on 'tree'
-  depends_on 'gnu-getopt'
+  depends_on "pwgen"
+  depends_on "tree"
+  depends_on "gnu-getopt"
   depends_on GpgRequirement
 
   def install
