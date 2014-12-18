@@ -2,7 +2,7 @@ require 'formula'
 
 class Disktype < Formula
   homepage 'http://disktype.sourceforge.net/'
-  head 'cvs://:pserver:anonymous:@disktype.cvs.sourceforge.net:/cvsroot/disktype:disktype'
+  head ':pserver:anonymous:@disktype.cvs.sourceforge.net:/cvsroot/disktype:disktype', :using => :cvs
   url 'https://downloads.sourceforge.net/project/disktype/disktype/9/disktype-9.tar.gz'
   sha1 '5ccc55d1c47f9a37becce7336c4aa3a7a43cc89c'
 
