@@ -19,7 +19,7 @@ class Monetdb < Formula
     depends_on "automake" => :build
     depends_on "autoconf" => :build
   end
-  
+
   option "with-java" # Build the JDBC dirver
   option "with-r" # Build the R integration module
 
