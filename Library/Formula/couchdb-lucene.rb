@@ -4,7 +4,7 @@ class CouchdbLucene < Formula
   sha1 '75e0c55a87f47903c6cd122286ea3e4568809f7e'
 
   depends_on 'couchdb'
-  depends_on 'maven'
+  depends_on 'maven' => :build
 
   def install
     ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
