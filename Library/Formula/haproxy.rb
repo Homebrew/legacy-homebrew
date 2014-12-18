@@ -2,8 +2,8 @@ require "formula"
 
 class Haproxy < Formula
   homepage "http://haproxy.1wt.eu"
-  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.3.tar.gz"
-  sha1 "b86c9490dea5bade767d43f544ced383764f879d"
+  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.9.tar.gz"
+  sha1 "62620311db4b18f10464ffcbcc0398161f5c8a6b"
 
   bottle do
     cellar :any
@@ -12,6 +12,7 @@ class Haproxy < Formula
     sha1 "5c595b4953060f7a0aa78cc62f8cf1056ec72707" => :lion
   end
 
+  depends_on "openssl"
   depends_on "pcre"
 
   def install
