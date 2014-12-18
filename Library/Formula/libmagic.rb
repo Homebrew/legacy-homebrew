@@ -7,10 +7,9 @@ class Libmagic < Formula
   sha1 '9836603b75dde99664364b0e7a8b5492461ac0fe'
 
   bottle do
-    revision 1
-    sha1 "6baadff8fb4c75b791843d89b9c4ea9d49372588" => :yosemite
-    sha1 "c3b661f0a7f7bf2ce31e10676d1192f9393c48de" => :mavericks
-    sha1 "eb205a948d8054253e23725a1046883eb7fc7f4c" => :mountain_lion
+    sha1 "48f5a8481f904c30569972982ca9b1a582fe64c2" => :yosemite
+    sha1 "f0070fd9530f58bae35bb46d08cc8ac9b81a4397" => :mavericks
+    sha1 "1d3122c63a3cc529722b92d6e9280b329d98f6af" => :mountain_lion
   end
 
   option :universal
