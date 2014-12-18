@@ -1,5 +1,3 @@
-require 'formula'
-
 class Inkscape < Formula
   homepage 'http://inkscape.org/'
   url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.5/inkscape-0.48.5.tar.gz'
@@ -59,7 +57,7 @@ class Inkscape < Formula
     args << "--disable-poppler-cairo" if build.without? "poppler"
     system "./configure", *args
 
-    system "make install"
+    system "make", "install"
   end
 
   test do
