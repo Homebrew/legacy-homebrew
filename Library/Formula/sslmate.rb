@@ -2,8 +2,8 @@ require "formula"
 
 class Sslmate < Formula
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-0.6.1.tar.gz"
-  sha256 "4c5ff4cdb3582a5264612c54469e360b6073cd16aed94018f7c8df12829bde05"
+  url "https://packages.sslmate.com/other/sslmate-0.6.2.tar.gz"
+  sha256 "b8a7752864d52ebb92e225268774811b6eccce746ac2098b7bc3119173bffb93"
 
   bottle do
     cellar :any
