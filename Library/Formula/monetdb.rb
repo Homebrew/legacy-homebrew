@@ -20,8 +20,8 @@ class Monetdb < Formula
     depends_on "autoconf" => :build
   end
   
-  option "with-java"
-  option "with-r"
+  option "with-java" # Build the JDBC dirver
+  option "with-r" # Build the R integration module
 
   depends_on "pkg-config" => :build
   depends_on :ant => :build
@@ -46,7 +46,7 @@ class Monetdb < Formula
             "--enable-optimize=yes",
             "--enable-testing=no",
             "--with-readline=#{Formula["readline"].opt_prefix}", # Use the correct readline
-            "--without-rubygem"]
+            "--without-rubygem"] # Installing the RubyGems requires root permissions
 
     args << "--with-java=no" if build.without? "java"
     args << "--disable-rintegration" if build.without? "r"
