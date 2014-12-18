@@ -835,6 +835,7 @@ class DownloadStrategyDetector
     when :ssl3    then CurlSSL3DownloadStrategy
     when :cvs     then CVSDownloadStrategy
     when :post    then CurlPostDownloadStrategy
+    when :fossil  then FossilDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end
