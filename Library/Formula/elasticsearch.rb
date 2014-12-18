@@ -9,7 +9,7 @@ class Elasticsearch < Formula
 
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
-    depends_on "maven"
+    depends_on "maven" => :build
   end
 
   def cluster_name

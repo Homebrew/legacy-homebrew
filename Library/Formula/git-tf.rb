@@ -7,7 +7,7 @@ class GitTf < Formula
 
   head do
     url 'https://git01.codeplex.com/gittf', :using => :git
-    depends_on 'maven'
+    depends_on 'maven' => :build
   end
 
   def install
