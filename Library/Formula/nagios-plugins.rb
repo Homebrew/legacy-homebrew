@@ -4,9 +4,9 @@ class NagiosPlugins < Formula
   sha1 "29b6183ab9d796299dc17c395eef493415d1e9d6"
 
   bottle do
-    sha1 "78fbc5df2f4426e7fc435ea9d597d14180d9e950" => :yosemite
-    sha1 "52560d1d02b9710df9c4a2315d8357ee6d7bfda4" => :mavericks
-    sha1 "0f3bb80908ff0cdfaae651c2100b48a048d69257" => :mountain_lion
+    sha1 "85ad17ccfbd5f5e89395608155a212f25f67f22f" => :yosemite
+    sha1 "4eabfc3289ab822260636560941c4e02bd4185ca" => :mavericks
+    sha1 "e4d99ed31bfbe4e721434bba41fc0f869e8b4314" => :mountain_lion
   end
 
   depends_on "openssl"
