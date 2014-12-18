@@ -2,8 +2,8 @@ require "formula"
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.2.0.tar.gz"
-  sha1 "b59ad3f9e9c933960b064e31d793757c145be83a"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.2.1.tar.gz"
+  sha1 "02ae13b144fa5b83733987791cacaa3de855ff0b"
 
   head "https://github.com/git/git.git", :shallow => false
 
@@ -15,13 +15,13 @@ class Git < Formula
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.2.0.tar.gz"
-    sha1 "6d068b6526ef035f48505894de7452df22e6ed40"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.2.1.tar.gz"
+    sha1 "b914710a4fee2b3d13cdf15fa2f835461c53dd57"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.2.0.tar.gz"
-    sha1 "fef0a1944d9d94d5a97e2dae3e53b9818af7973d"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.2.1.tar.gz"
+    sha1 "211cea89850804ec92a3135c53d237a9c69704f0"
   end
 
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"
