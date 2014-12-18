@@ -1,3 +1,4 @@
+require "fileutils"
 require "formula"
 
 class Gitfs < Formula
@@ -22,26 +23,60 @@ class Gitfs < Formula
     sha1 "f7d677de26c56ab0f23edd7fe6812ec23b79b8f6"
   end
 
-  def install
-    ENV.prepend_create_path "PYTHONPATH", libexec + "lib/python2.7/site-packages"
-
-    install_args = "setup.py", "install", "--prefix=#{libexec}"
-
-    resource("fusepy").stage { system "python", *install_args }
-    resource("pygit2").stage { system "python", *install_args }
-
-    system "python", *install_args
-
-    (bin/"gitfs").write_env_script libexec/"bin/gitfs", :PYTHONPATH => ENV["PYTHONPATH"]
+  resource "atomiclong" do
+    url "https://pypi.python.org/packages/source/a/atomiclong/atomiclong-0.1.1.tar.gz"
+    sha1 "4b3cab22c1910426fff41eef4cc69f418ec78a35"
   end
 
-  def caveats
-    "gitfs clones repos in /var/lib/gitfs. You can either create it with \n" +
-    "sudo mkdir -m 1777 /var/lib/gitfs or use another folder with the \n" +
-    "repos_path argument."
+  resource "cffi" do
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-0.8.6.tar.gz"
+    sha1 "4e82390201e6f30e9df8a91cd176df19b8f2d547"
+  end
+
+  resource "pycparser" do
+    url "https://pypi.python.org/packages/source/p/pycparser/pycparser-2.10.tar.gz"
+    sha1 "378a7a987d40e2c1c42cad0b351a6fc0a51ed004"
+  end
+
+  def install
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    %w[fusepy pygit2 atomiclong cffi pycparser].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
+
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+  end
+
+  def caveats; <<-EOS.undent
+    gitfs clones repos in /var/lib/gitfs. You can either create it with
+    sudo mkdir -m 1777 /var/lib/gitfs or use another folder with the
+    repo_path argument.
+    EOS
   end
 
   test do
-    system "gitfs"
+    testing_path = "/tmp/testing"
+    repo_path = "/tmp/repo"
+
+    Dir.mkdir testing_path
+    Dir.mkdir repo_path
+
+    system "gitfs", "https://github.com/PressLabs/gitfs", testing_path, "-o",
+    "repo_path=#{repo_path}"
+
+    sleep 2
+
+    assert Dir.exists? testing_path + "/current"
+
+    system "umount", testing_path
+
+    FileUtils.rm_rf testing_path
+    FileUtils.rm_rf repo_path
   end
 end
