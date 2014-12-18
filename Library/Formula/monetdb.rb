@@ -2,7 +2,7 @@ require "formula"
 
 class Monetdb < Formula
   homepage "https://www.monetdb.org/"
-  url "https://dev.monetdb.org/downloads/sources/Oct2014/MonetDB-11.19.7.zip"
+  url "https://dev.monetdb.org/downloads/sources/Oct2014-SP1/MonetDB-11.19.7.zip"
   sha1 "af542dc85a8474eb4bcf32565eccae3ea5d22768"
 
   bottle do
