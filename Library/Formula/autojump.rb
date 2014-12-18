@@ -5,14 +5,14 @@ class Autojump < Formula
 
   head "https://github.com/joelthelion/autojump.git"
 
-  # This patch applies to v22.2.2. The patch has been submitted to the upstream.
+  # This patch applies to v22.2.2. The patch has been submitted to the upstream:
+  # https://github.com/joelthelion/autojump/pull/339
   patch :DATA
 
   def install
     system "./install.py", "-d", prefix, "-z", zsh_completion
 
-    libexec.mkpath
-    mv bin, libexec/"bin"
+    libexec.install bin
     bin.write_exec_script libexec/"bin/autojump"
   end
 
