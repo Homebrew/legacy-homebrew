@@ -30,4 +30,8 @@ class Asciinema < Formula
     bin.install "asciinema"
   end
 
+  test do
+    assert_match /asciinema \d/, pipe_output("#{bin}/asciinema --version")
+  end
+
 end
