@@ -1,42 +1,63 @@
-require "formula"
-
 class Autojump < Formula
   homepage "https://github.com/joelthelion/autojump"
-  url "https://github.com/joelthelion/autojump/archive/release-v21.7.1.tar.gz"
-  sha1 "bc19d40b3ebe29dc44da950f2c6dbd7da26fb6a3"
+  url "https://github.com/joelthelion/autojump/archive/release-v22.2.2.tar.gz"
+  sha1 "d23d482077049fb07dcdc1e7764694f95937db24"
 
   head "https://github.com/joelthelion/autojump.git"
 
+
+  # Fix autojump not loading shell completions because of wrong directory:
+  # "modify_autojump_sh" must use of the share_dir, which is where the
+  # shell completions are installed, instead of the etc_dir.
+  # This patch applies to v22.2.2. The patch has been submitted to the upstream:
+  # https://github.com/joelthelion/autojump/pull/339
+  patch :DATA
+
   def install
-    inreplace "bin/autojump.sh", " /etc/profile.d/", " #{prefix}/etc/" if build.stable?
-    inreplace "bin/autojump.sh", " /usr/local/share/", " #{share}" if build.head?
+    system "./install.py", "-d", prefix, "-z", zsh_completion
 
-
-    libexec.install "bin/autojump"
-    libexec.install "bin/autojump_argparse.py", "bin/autojump_data.py", "bin/autojump_utils.py" if build.head?
-    man1.install "docs/autojump.1"
-    (prefix/"etc").install "bin/autojump.sh", "bin/autojump.bash", "bin/autojump.zsh"
-    zsh_completion.install "bin/_j"
-    (prefix/"etc").install "bin/autojump.fish"
-
-    bin.write_exec_script libexec+"autojump"
+    libexec.install bin
+    bin.write_exec_script libexec/"bin/autojump"
   end
 
-  def caveats;
-    msg = <<-EOS.undent
+  def caveats; <<-EOS.undent
     Add the following line to your ~/.bash_profile or ~/.zshrc file (and remember
     to source the file to update your current session):
-      [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+      [[ -s `brew --prefix`/etc/profile.d/autojump.sh ]] && . `brew --prefix`/etc/profile.d/autojump.sh
+
+    If you use the Fish shell then add the following line to your ~/.config/fish/config.fish:
+      if test -f /usr/local/share/autojump/autojump.fish; . /usr/local/share/autojump/autojump.fish; end
     EOS
-
-    if build.head?
-      msg += <<-EOS.undent
-
-      Add the following line to your ~/.config/fish/config.fish:
-        . /usr/local/Cellar/autojump/HEAD/etc/autojump.fish
-      EOS
-    end
-
-    msg
   end
 end
+
+__END__
+diff --git a/install.py b/install.py
+index 09fd557..039c6a2 100755
+--- a/install.py
++++ b/install.py
+@@ -29,13 +29,13 @@ def mkdir(path, dryrun=False):
+         os.makedirs(path)
+ 
+ 
+-def modify_autojump_sh(etc_dir, dryrun=False):
++def modify_autojump_sh(etc_dir, share_dir, dryrun=False):
+     """Append custom installation path to autojump.sh"""
+     custom_install = "\
+         \n# check custom install \
+         \nif [ -s %s/autojump.${shell} ]; then \
+             \n\tsource %s/autojump.${shell} \
+-        \nfi\n" % (etc_dir, etc_dir)
++        \nfi\n" % (share_dir, share_dir)
+ 
+     with open(os.path.join(etc_dir, 'autojump.sh'), 'a') as f:
+         f.write(custom_install)
+@@ -207,7 +207,7 @@ def main(args):
+         cp('./bin/_j', zshshare_dir, args.dryrun)
+ 
+         if args.custom_install:
+-            modify_autojump_sh(etc_dir, args.dryrun)
++            modify_autojump_sh(etc_dir, share_dir, args.dryrun)
+ 
+     show_post_installation_message(etc_dir, share_dir, bin_dir)
+ 
