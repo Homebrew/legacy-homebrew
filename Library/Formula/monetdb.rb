@@ -16,10 +16,12 @@ class Monetdb < Formula
 
     depends_on "libtool" => :build
     depends_on "gettext" => :build
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
   end
   
   option "with-java"
-  option "with-rintegration"
+  option "with-r"
 
   depends_on "pkg-config" => :build
   depends_on :ant => :build
@@ -47,7 +49,7 @@ class Monetdb < Formula
             "--without-rubygem"]
 
     args << "--with-java=no" if build.without? "java"
-    args << "--disable-rintegration" if build.without? "rintegration"
+    args << "--disable-rintegration" if build.without? "r"
 
     system "./configure", *args
     system "make install"
