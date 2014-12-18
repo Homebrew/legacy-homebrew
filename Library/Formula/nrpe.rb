@@ -4,6 +4,12 @@ class Nrpe < Formula
   sha1 "45f434758c547c0af516e8b3324717f8dcd100a3"
   revision 1
 
+  bottle do
+    sha1 "77296b8467517f9f44db6fafcf59ded8ee539cb1" => :yosemite
+    sha1 "b9dc272a925a241b44eb4cbcdbca24875148faa0" => :mavericks
+    sha1 "a9397e15adb111ad52db175cd7d3221f4ae6f863" => :mountain_lion
+  end
+
   depends_on "nagios-plugins"
   depends_on "openssl"
 
