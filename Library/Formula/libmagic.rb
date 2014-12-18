@@ -2,9 +2,9 @@ require 'formula'
 
 class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
-  url 'ftp://ftp.astron.com/pub/file/file-5.20.tar.gz'
-  mirror 'http://fossies.org/unix/misc/file-5.20.tar.gz'
-  sha1 '4e93e9ae915f1812b05cc6012ae968fdb6416f8f'
+  url 'ftp://ftp.astron.com/pub/file/file-5.21.tar.gz'
+  mirror 'http://fossies.org/unix/misc/file-5.21.tar.gz'
+  sha1 '9836603b75dde99664364b0e7a8b5492461ac0fe'
 
   bottle do
     revision 1
@@ -17,17 +17,8 @@ class Libmagic < Formula
 
   depends_on :python => :optional
 
-  # Fixed upstream, should be in next release
   # See http://bugs.gw.com/view.php?id=230
   patch :DATA if MacOS.version < :lion
-
-  # Fixed upstream, should be in next release.
-  # See: http://bugs.gw.com/view.php?id=387
-  #      http://bugs.gw.com/view.php?id=388
-  patch :p1 do
-    url 'https://gist.githubusercontent.com/kwilczynski/350e83c291b536ce9b5b/raw/1961a222d13cd3e010ecd7b0ebbc6909def27ad6/337-338.diff'
-    sha1 'b220e2b0639cba97296e25c07c58a4d675104c8f'
-  end
 
   def install
     ENV.universal_binary if build.universal?
