@@ -4,13 +4,9 @@ class Librsvg < Formula
   homepage 'https://live.gnome.org/LibRsvg'
   url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.3.tar.xz'
   sha256 '3d7d583271030e21acacc60cb6b81ee305713c9da5e98429cbd609312aea3632'
+  revision 1
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "4e83e5f0691db664289df16b3c491618d400b12c" => :yosemite
-    sha1 "e08617797236e3cffc78adaca0c254af7cfb4d50" => :mavericks
-    sha1 "7b20f7d74b54ad6c03fd290ccd4ebb3707b00a89" => :mountain_lion
   end
 
   depends_on :x11
@@ -30,7 +26,9 @@ class Librsvg < Formula
     args << "--enable-svgz" if build.with? 'libgsf'
 
     system "./configure", *args
-    system "make install"
+    system "make", "install",
+      "gdk_pixbuf_binarydir=#{lib}/gdk-pixbuf-2.0/2.10.0/loaders",
+      "gdk_pixbuf_moduledir=#{lib}/gdk-pixbuf-2.0/2.10.0/loaders"
   end
 
   def post_install
