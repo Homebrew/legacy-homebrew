@@ -14,15 +14,18 @@ class Asciinema < Formula
   depends_on "go" => :build
 
   go_resource "github.com/kr/pty" do
-    url "https://github.com/kr/pty.git", :revision => "67e2db24c831afa6c64fc17b4a143390674365ef"
+    url "https://github.com/kr/pty.git",
+      :revision => "67e2db24c831afa6c64fc17b4a143390674365ef"
   end
 
   go_resource "code.google.com/p/go.crypto" do
-    url "https://code.google.com/p/go.crypto/", :revision => "aa2644fe4aa5", :using => :hg
+    url "https://code.google.com/p/go.crypto/",
+      :revision => "aa2644fe4aa5", :using => :hg
   end
 
   go_resource "code.google.com/p/gcfg" do
-    url "https://code.google.com/p/gcfg/", :revision => "c2d3050044d05357eaf6c3547249ba57c5e235cb", :using => :git
+    url "https://code.google.com/p/gcfg/",
+      :revision => "c2d3050044d05357eaf6c3547249ba57c5e235cb", :using => :git
   end
 
   def install
@@ -37,8 +40,7 @@ class Asciinema < Formula
   end
 
   test do
-    assert_match /browser/, pipe_output("HOME=#{testpath} #{bin}/asciinema auth")
-    assert File.exists?("#{testpath}/.asciinema/config")
+    system "#{bin}/asciinema", "-v"
+    system "#{bin}/asciinema", "-h"
   end
-
 end
