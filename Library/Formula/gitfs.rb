@@ -6,7 +6,7 @@ class Gitfs < Formula
   url "https://github.com/PressLabs/gitfs/archive/0.2.5.tar.gz"
   sha1 "a54056c1ba4095daae63e3a6e3c2505943691a34"
 
-  head "http://github.com/PressLabs/gitfs.git"
+  head "https://github.com/PressLabs/gitfs.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
 
