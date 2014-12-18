@@ -9,7 +9,7 @@ class Autojump < Formula
   patch :DATA
 
   def install
-    system "./install.py", "-d", "#{prefix}", "-z", "#{zsh_completion}"
+    system "./install.py", "-d", prefix, "-z", zsh_completion
 
     libexec.mkpath
     mv bin, libexec/"bin"
