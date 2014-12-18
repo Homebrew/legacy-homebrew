@@ -623,6 +623,10 @@ class ResourceAuditor
   end
 
   def audit_download_strategy
+    if url =~ %r[^(cvs|bzr|hg|fossil)://] || url =~ %r[^(svn)\+http://]
+      problem "Use of the #{$&} scheme is deprecated, pass `:using => :#{$1}` instead"
+    end
+
     return unless using
 
     if using == :ssl3 || using == CurlSSL3DownloadStrategy
