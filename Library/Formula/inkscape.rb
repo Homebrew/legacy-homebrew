@@ -14,14 +14,22 @@ class Inkscape < Formula
     # boost 1.56 compatibility
     # https://bugs.launchpad.net/inkscape/+bug/1357411
     patch :p0, :DATA
+
+    # poppler 0.29 compatibility
+    # https://bugs.launchpad.net/inkscape/+bug/1399811
+    patch :p0 do
+      url "https://launchpadlibrarian.net/192286866/1399811-fix-build-with-poppler-0.29.0-048x-v1.diff"
+      sha1 "82ad02357a2405c11f29f2e516b1a7f55953e807"
+    end
   end
 
   head do
     url 'lp:inkscape/0.48.x', :using => :bzr
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
   end
+
+  # needed on stable for poppler patch
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
@@ -49,7 +57,12 @@ class Inkscape < Formula
   def install
     ENV.cxx11
 
-    system "./autogen.sh" if build.head?
+    if build.head?
+      system "./autogen.sh"
+    elsif build.with? "poppler"
+      system "autoconf"
+      system "autoheader"
+    end
 
     args = [ "--disable-dependency-tracking",
              "--prefix=#{prefix}",
