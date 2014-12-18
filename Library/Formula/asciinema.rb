@@ -1,5 +1,3 @@
-require 'formula'
-
 class Asciinema < Formula
   homepage 'https://asciinema.org/'
   url 'https://github.com/asciinema/asciinema-cli/archive/v0.9.9.tar.gz'
