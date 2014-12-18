@@ -1,9 +1,7 @@
-require "formula"
-
 class Clib < Formula
   homepage "https://github.com/clibs/clib"
-  url "https://github.com/clibs/clib/archive/1.4.0.tar.gz"
-  sha1 "75b8b04047150d9bdd492f2f1ffe50954555ba48"
+  url "https://github.com/clibs/clib/archive/1.4.1.tar.gz"
+  sha1 "f1d5dbd76d8ad75204d182f9db1b197e311fa25e"
 
   head "https://github.com/clibs/clib.git"
 
