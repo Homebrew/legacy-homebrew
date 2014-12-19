@@ -19,7 +19,7 @@ class Gnuplot < Formula
   end
 
   head do
-    url 'cvs://:pserver:anonymous:@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
+    url ':pserver:anonymous:@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
