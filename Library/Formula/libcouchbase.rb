@@ -7,9 +7,9 @@ class Libcouchbase < Formula
   head "https://github.com/couchbase/libcouchbase", :using => :git
 
   bottle do
-    sha1 "4ba5ae9595f41e025743fa5e0e1c1417333cb03f" => :yosemite
-    sha1 "0b0665dca60d21a121e671cd17dae7b1be672434" => :mavericks
-    sha1 "604d3f6ce4f107628cd3aad676a84029d0939ccb" => :mountain_lion
+    sha1 "9a7ff0b864146b94ec8dcfe365432f4137557729" => :yosemite
+    sha1 "5146a3f780cb89741d72d001406193603bfe788d" => :mavericks
+    sha1 "6933915760408fc7c6b0dffadf947f3aeafdf7ff" => :mountain_lion
   end
 
   option :universal
