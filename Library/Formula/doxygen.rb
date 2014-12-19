@@ -2,16 +2,17 @@ require "formula"
 
 class Doxygen < Formula
   homepage "http://www.doxygen.org/"
-  head "https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk"
+  head "https://github.com/doxygen/doxygen.git"
   url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz"
   mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.8/doxygen-1.8.8.src.tar.gz"
   sha1 "cd511c73e7669dde5ac3e14a5d1abae093aaf1d9"
 
   bottle do
     cellar :any
-    sha1 "458ae347add858cd2c1dcb2ac56630e32819c005" => :mavericks
-    sha1 "8da163fb89076eebe1ea022ce839aee134e1e55b" => :mountain_lion
-    sha1 "61cfa999f80f65caf1588ffa293e9a64cbc54910" => :lion
+    revision 1
+    sha1 "7333771de328171fbd376a341ff5cff3c9bcf81a" => :yosemite
+    sha1 "2d537233288de44363156eb8664535e82ae12f2d" => :mavericks
+    sha1 "befbe63ba7afc2afb9199a73ccf578ea923348a2" => :mountain_lion
   end
 
   option "with-dot", "Build with dot command support from Graphviz."
@@ -98,7 +99,7 @@ index 1020492..c88a012 100755
              libclang_link="-L $i -lclang"
            else
 -            libclang_link="$i/libclang.a $i/libclangFrontend.a $i/libclangSerialization.a $i/libclangParse.a $i/libclangSema.a $i/libclangAnalysis.a $i/libclangStaticAnalyzerCore.a $i/libclangAST.a $i/libclangBasic.a $i/libclangDriver.a $i/libclangEdit.a $i/libclangLex.a $i/libclangRewriteCore.a $i/libLLVMBitReader.a $i/libLLVMMC.a $i/libLLVMMCParser.a $i/libLLVMSupport.a -ldl -lpthread"
-+            libclang_link="$i/libclang.a $i/libclangFrontend.a $i/libclangSerialization.a $i/libclangParse.a $i/libclangSema.a $i/libclangAnalysis.a $i/libclangStaticAnalyzerCore.a $i/libclangAST.a $i/libclangBasic.a $i/libclangDriver.a $i/libclangEdit.a $i/libclangLex.a $i/libclangRewriteCore.a $i/libLLVMBitReader.a $i/libLLVMMC.a $i/libLLVMMCParser.a $i/libLLVMSupport.a $i/libClangIndex.a -ldl -lpthread -lncurses -lLLVM-3.4"
++            libclang_link="$i/libclang.a $i/libclangFrontend.a $i/libclangSerialization.a $i/libclangParse.a $i/libclangSema.a $i/libclangAnalysis.a $i/libclangStaticAnalyzerCore.a $i/libclangAST.a $i/libclangBasic.a $i/libclangDriver.a $i/libclangEdit.a $i/libclangFormat.a $i/libclangLex.a $i/libclangRewrite.a $i/libclangTooling.a $i/libLLVMBitReader.a $i/libLLVMMC.a $i/libLLVMMCParser.a $i/libLLVMSupport.a $i/libClangIndex.a -ldl -lpthread -lncurses -lLLVM-3.5 -lz"
            fi
            break
          fi

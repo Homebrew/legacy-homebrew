@@ -7,17 +7,18 @@ class Libusrsctp < Formula
 
   bottle do
     cellar :any
-    sha1 "5a44c6618451a1a7958997a8f1c7781353c8a4c4" => :mavericks
-    sha1 "455cdb36885107c097aaccc3da17bedfe6d83bf3" => :mountain_lion
-    sha1 "a6675fb97024d0d59210cee40f7f6f94159dd3a6" => :lion
+    revision 1
+    sha1 "5b540e94ed9273d09eba0e213014d2060cb27a0c" => :yosemite
+    sha1 "04778d2ae6555f8916eea463e70441de02665da0" => :mavericks
+    sha1 "b4c7f0a6851ce53f9d48091995bd523d4dbc7262" => :mountain_lion
   end
 
   head do
     url 'http://sctp-refimpl.googlecode.com/svn/trunk/KERN/usrsctp'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install

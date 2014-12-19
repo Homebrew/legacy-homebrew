@@ -2,8 +2,15 @@ require "formula"
 
 class Aha < Formula
   homepage "https://github.com/theZiz/aha"
-  url "https://github.com/theZiz/aha/archive/0.4.7.2.tar.gz"
-  sha1 "09933fddb02b3129a690eb3d7d140edb97ac0627"
+  url "https://github.com/theZiz/aha/archive/0.4.7.3.tar.gz"
+  sha1 "cc158029efb9dcf138fa20696f07f15ab785b035"
+
+  bottle do
+    cellar :any
+    sha1 "58fb4e7cd5a7c4bf18aded8d8d8ab16ce65fae1e" => :yosemite
+    sha1 "a2dd6ea63dbe26867c6cbe51d998fe1a09c7692e" => :mavericks
+    sha1 "9f3de31efaa60c4302c10a30a2e4bcd7a50f7af8" => :mountain_lion
+  end
 
   def install
     system "make"

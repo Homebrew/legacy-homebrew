@@ -7,9 +7,10 @@ class Gawk < Formula
   sha1 "547feb48d20e923aff58daccee97c94e047fdc18"
 
   bottle do
-    sha1 "8fa017184dc02cdc122d5681b6824fd12be01def" => :mavericks
-    sha1 "141a930482411bf368444dc214b87bd97a44360a" => :mountain_lion
-    sha1 "a01d86d2749c9757c4e45e48154844f8fa5edce3" => :lion
+    revision 1
+    sha1 "7efb956662b3283b96271179bd7c3fc1cc367197" => :yosemite
+    sha1 "93f05ee77b9ae24aa7ae874b0e397439cd1b9192" => :mavericks
+    sha1 "2205db37be8b453fd1d63d4bf8b19ce6bd2ee863" => :mountain_lion
   end
 
   fails_with :llvm do

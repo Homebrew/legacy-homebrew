@@ -8,14 +8,18 @@ class Isl < Formula
   # and update isl_version() function accordingly.  All other names will
   # result in isl_version() function returning "UNKNOWN" and hence break
   # package detection.
+  #
+  # 0.13 is out, but we can't upgrade until a compatible version of cloog is
+  # released.
   url 'http://isl.gforge.inria.fr/isl-0.12.2.tar.bz2'
   sha1 'ca98a91e35fb3ded10d080342065919764d6f928'
 
   bottle do
     cellar :any
-    sha1 "2d878327e26853c0f17004787233ddee9060f788" => :mavericks
-    sha1 "42550979c1911f818a4a124b263be08cc094bcdf" => :mountain_lion
-    sha1 "08c5044ae3bbaf9e6cf5d6329addf886430696bb" => :lion
+    revision 2
+    sha1 "502db664090c83f36515b901e8a066d9ef4f0bb4" => :yosemite
+    sha1 "f669eadf21a26782f4700facbec71f8d3d1dff7d" => :mavericks
+    sha1 "808982b34df706187f041d7b21e644aa3d74b747" => :mountain_lion
   end
 
   head do

@@ -4,7 +4,7 @@ class Euca2ools < Formula
   homepage "https://github.com/eucalyptus/euca2ools"
   url "https://github.com/eucalyptus/euca2ools/archive/v3.1.0.tar.gz"
   sha1 "5290172546707f3729da314535a7a9a429edda24"
-  head "https://github.com/eucalyptus/euca2ools.git", :branch => "master"
+  head "https://github.com/eucalyptus/euca2ools.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
 

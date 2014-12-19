@@ -13,7 +13,7 @@ class Ifuse < Formula
   depends_on "libtool" => :build
   depends_on "glib"
   depends_on "libimobiledevice"
-  depends_on "osxfuse"
+  depends_on :osxfuse
 
   def install
     system "./autogen.sh"

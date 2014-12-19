@@ -6,9 +6,10 @@ class Texi2html < Formula
   sha1 'e7bbe1197147566250abd5c456b94c8e37e0a81f'
 
   bottle do
-    sha1 "ee0099661cd70c241925a3e4209331b0a4a74758" => :mavericks
-    sha1 "d37da7d38ccd13121a94855bae7b9e93a10fc832" => :mountain_lion
-    sha1 "353a17e497893b956b3a6afc8b47911a70f4a537" => :lion
+    revision 1
+    sha1 "8a7d68b823f65d99cc3946b54f5cb58daeda2674" => :yosemite
+    sha1 "0131f620ee0369d1bfb0beb9cf98ff42b43bee61" => :mavericks
+    sha1 "2eefa2d9e010b7e6e9d67e2e847fa6d5ae9c9983" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion

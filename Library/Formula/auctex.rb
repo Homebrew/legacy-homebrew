@@ -8,7 +8,7 @@ class Auctex < Formula
 
   head do
     url 'git://git.savannah.gnu.org/auctex.git'
-    depends_on :autoconf
+    depends_on "autoconf" => :build
   end
 
   depends_on :tex

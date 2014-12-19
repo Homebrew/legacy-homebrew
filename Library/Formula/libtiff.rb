@@ -8,6 +8,7 @@ class Libtiff < Formula
 
   bottle do
     cellar :any
+    sha1 "888fa993035b5af4b62daa6cf63c2b06988f4f8e" => :yosemite
     sha1 "8e2a7f7509689733c0762e01410e247b7ccb98af" => :mavericks
     sha1 "611e3478187bbcdb5f35970914ee4fe269aeb585" => :mountain_lion
     sha1 "889158ea146de39f42a489b18af4321004cd54d8" => :lion

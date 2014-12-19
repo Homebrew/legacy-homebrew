@@ -2,18 +2,19 @@ require "formula"
 
 class GsettingsDesktopSchemas < Formula
   homepage "http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.12/gsettings-desktop-schemas-3.12.2.tar.xz"
-  sha256 "da75021e9c45a60d0a97ea3486f93444275d0ace86dbd1b97e5d09000d8c4ad1"
+  url "http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.14/gsettings-desktop-schemas-3.14.0.tar.xz"
+  sha256 "cf3ba58f6257155080b1872b4a6ce4a2424bb7af3f08e607b428cb47b065f2d7"
 
   bottle do
-    sha1 "02af81f7475b27301648a4b20fb4a9e16995bdc4" => :mavericks
-    sha1 "89e7f475d70629e957c0a6e1dbceb7a51a5b4efb" => :mountain_lion
-    sha1 "f9285f500be14dd9f6624c4a8765e6ffedf615d1" => :lion
+    revision 1
+    sha1 "23d7c8b2d97fc5a9957573c140da28afe8acfacb" => :yosemite
+    sha1 "2bcb5e43cdefd81eef7e3bc45b9df4b7d8c2c847" => :mavericks
+    sha1 "b812cc34c9f54f053707cd4a5f5995cf903dd278" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
-  depends_on "glib" => :build # Yep, for glib-mkenums
+  depends_on "glib" => :build # for glib-mkenums
   depends_on "gobject-introspection" => :build
   depends_on "gettext"
   depends_on "libffi"

@@ -1,75 +1,158 @@
-require 'debrew/menu'
-require 'debrew/raise_plus'
-require 'set'
+require "mutex_m"
 
-unless ENV['HOMEBREW_NO_READLINE']
-  begin
-    require 'rubygems'
-    require 'ruby-debug'
-  rescue LoadError
+module Debrew
+  extend Mutex_m
+
+  Ignorable = Module.new
+
+  module Raise
+    def raise(*)
+      super
+    rescue Exception => e
+      e.extend(Ignorable)
+      super(e) unless Debrew.debug(e) == :ignore
+    end
+
+    alias_method :fail, :raise
   end
 
-  require 'debrew/irb'
-end
+  module Formula
+    def install
+      Debrew.debrew { super }
+    end
 
-class Object
-  include RaisePlus
-end
+    def test
+      Debrew.debrew { super }
+    end
+  end
 
-module ResourceDebugger
-  def stage(target=nil, &block)
-    return super if target
+  module Resource
+    def unpack(target=nil)
+      return super if target
+      super do
+        begin
+          yield self
+        rescue Exception => e
+          Debrew.debug(e)
+        end
+      end
+    end
+  end
 
-    super do
-      begin
-        block.call(self)
-      rescue Exception => e
-        if ARGV.debug?
-          debrew e
+  class Menu
+    Entry = Struct.new(:name, :action)
+
+    attr_accessor :prompt, :entries
+
+    def initialize
+      @entries = []
+    end
+
+    def choice(name, &action)
+      entries << Entry.new(name.to_s, action)
+    end
+
+    def self.choose
+      menu = new
+      yield menu
+
+      choice = nil
+      while choice.nil?
+        menu.entries.each_with_index { |e, i| puts "#{i+1}. #{e.name}" }
+        print menu.prompt unless menu.prompt.nil?
+
+        input = $stdin.gets or exit
+        input.chomp!
+
+        i = input.to_i
+        if i > 0
+          choice = menu.entries[i-1]
         else
-          raise
+          possible = menu.entries.find_all { |e| e.name.start_with?(input) }
+
+          case possible.size
+          when 0 then puts "No such option"
+          when 1 then choice = possible.first
+          else puts "Multiple options match: #{possible.map(&:name).join(" ")}"
+          end
         end
       end
+
+      choice[:action].call
     end
   end
-end
 
-$debugged_exceptions = Set.new
+  class << self
+    alias_method :original_raise, :raise
+  end
 
-def debrew(exception, formula=nil)
-  raise exception unless $debugged_exceptions.add?(exception)
+  @active = false
+  @debugged_exceptions = Set.new
 
-  puts "#{exception.backtrace.first}"
-  puts "#{Tty.red}#{exception.class.name}#{Tty.reset}: #{exception}"
+  def self.active?
+    @active
+  end
 
-  begin
-    again = false
-    choose do |menu|
-      menu.prompt = "Choose an action: "
-      menu.choice(:raise) { original_raise exception }
-      menu.choice(:ignore) { exception.restart } if exception.continuation
-      menu.choice(:backtrace) { puts exception.backtrace; again = true }
-      menu.choice(:debug) do
-        puts "When you exit the debugger, execution will continue."
-        exception.restart { debugger }
-      end if Object.const_defined?(:Debugger)
-      menu.choice(:irb) do
-        puts "When you exit this IRB session, execution will continue."
-        exception.restart do
-          # we need to capture the binding after returning from raise
-          set_trace_func proc { |event, file, line, id, binding, classname|
-            if event == 'return'
-              set_trace_func nil
-              IRB.start_within(binding)
-            end
-          }
-        end
-      end if Object.const_defined?(:IRB) && exception.continuation
-      menu.choice(:shell) do
-        puts "When you exit this shell, you will return to the menu."
-        interactive_shell formula
-        again=true
-      end
+  def self.debugged_exceptions
+    @debugged_exceptions
+  end
+
+  def self.debrew
+    @active = true
+    Object.send(:include, Raise)
+
+    begin
+      yield
+    rescue SystemExit
+      original_raise
+    rescue Exception => e
+      debug(e)
+    ensure
+      @active = false
     end
-  end while again
+  end
+
+  def self.debug(e)
+    original_raise(e) unless active? &&
+                             debugged_exceptions.add?(e) &&
+                             try_lock
+
+    begin
+      puts "#{e.backtrace.first}"
+      puts "#{Tty.red}#{e.class.name}#{Tty.reset}: #{e}"
+
+      loop do
+        Menu.choose do |menu|
+          menu.prompt = "Choose an action: "
+
+          menu.choice(:raise) { original_raise(e) }
+          menu.choice(:ignore) { return :ignore } if Ignorable === e
+          menu.choice(:backtrace) { puts e.backtrace }
+
+          unless ENV["HOMEBREW_NO_READLINE"]
+            require "debrew/irb"
+
+            menu.choice(:irb) do
+              puts "When you exit this IRB session, execution will continue."
+              set_trace_func proc { |event, _, _, id, binding, klass|
+                if klass == Raise && id == :raise && event == "return"
+                  set_trace_func(nil)
+                  synchronize { IRB.start_within(binding) }
+                end
+              }
+
+              return :ignore
+            end if Ignorable === e
+          end
+
+          menu.choice(:shell) do
+            puts "When you exit this shell, you will return to the menu."
+            interactive_shell
+          end
+        end
+      end
+    ensure
+      unlock
+    end
+  end
 end

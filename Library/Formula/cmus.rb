@@ -3,22 +3,14 @@ require "formula"
 class Cmus < Formula
   homepage "https://cmus.github.io/"
   head "https://github.com/cmus/cmus.git"
+  url "https://github.com/cmus/cmus/archive/v2.6.0.tar.gz"
+  sha1 "aba00eb75335532c0413f7c819c2e2d12fcd4314"
+  revision 1
 
   bottle do
-    sha1 "584b513eda4887a001a6a4613160f1181620ba94" => :mavericks
-    sha1 "b7ff43fa726aff8d9e26f7dbf1d2c136cb416910" => :mountain_lion
-    sha1 "5b455c2550115d65edb2b1ee537b0bdbfd62384e" => :lion
-  end
-
-  stable do
-    url "https://github.com/cmus/cmus/archive/v2.6.0.tar.gz"
-    sha1 "aba00eb75335532c0413f7c819c2e2d12fcd4314"
-  end
-
-  devel do
-    url "https://github.com/cmus/cmus/archive/v2.6.0-rc0.tar.gz"
-    version "2.6.0-rc0"
-    sha1 "08f7f038d4fa14fe0e1b7dea5df137ada11401f3"
+    sha1 "da0f9ffb5fc18e25f5f3d9dafebdc24c5121a89e" => :mavericks
+    sha1 "c59670990bc5055fae97c62732e6c4162b78e64c" => :mountain_lion
+    sha1 "4bba9a8ce200e9ab6348bcc87f459ad328d5862c" => :lion
   end
 
   depends_on "pkg-config" => :build

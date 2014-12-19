@@ -3,26 +3,28 @@ require "formula"
 class Fwknop < Formula
   homepage "http://www.cipherdyne.org/fwknop/"
   head "https://github.com/mrash/fwknop.git"
-  url "https://github.com/mrash/fwknop/archive/2.6.3.tar.gz"
-  sha1 "ea83821d082e640bc70438f00578d3c049d4de8a"
+  url "https://github.com/mrash/fwknop/archive/2.6.4.tar.gz"
+  sha1 "b13ef022ade7da6dc5b08335d5a1d29dd898887b"
+  revision 1
 
   bottle do
-    sha1 "a8f0c47a80109c15bbdbee4c6b768a5970d87786" => :mavericks
-    sha1 "28c45793806d7cdd6bdce5001a44645ce3c258b8" => :mountain_lion
-    sha1 "c963e977da7c1171b56b9e5dce523b7ddbc42b35" => :lion
+    sha1 "f82b7596356044e1b6b0c41ede54bfcc11b3585a" => :yosemite
+    sha1 "6488990ef06c578ab92c6fb74dd0b3af24e5c934" => :mavericks
+    sha1 "20fc1fc8b38e1e24d33f1d7197aa1dae5dbc9d70" => :mountain_lion
   end
 
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
+  depends_on "wget" => :optional
   depends_on "gpgme"
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-gpgme"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--disable-silent-rules",
+                          "--prefix=#{prefix}", "--with-gpgme",
+                          "--with-gpg=#{Formula["gnupg2"].opt_prefix}/bin/gpg2"
+    system "make", "install"
   end
 
   test do

@@ -1,5 +1,6 @@
 require "extend/ENV"
 require "timeout"
+require "debrew"
 
 module Homebrew
   TEST_TIMEOUT_SECONDS = 5*60
@@ -50,11 +51,12 @@ module Homebrew
 
       f.extend(Test::Unit::Assertions)
       f.extend(Homebrew::Assertions)
+      f.extend(Debrew::Formula) if ARGV.debug?
 
       begin
         # tests can also return false to indicate failure
         Timeout::timeout TEST_TIMEOUT_SECONDS do
-          raise if f.test == false
+          raise if f.run_test == false
         end
       rescue FailedAssertion => e
         ofail "#{f.name}: failed"

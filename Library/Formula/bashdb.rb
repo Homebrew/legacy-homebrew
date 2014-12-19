@@ -1,12 +1,13 @@
-require 'formula'
+require "formula"
 
 class Bashdb < Formula
-  homepage 'http://bashdb.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/bashdb/bashdb/4.2-0.8/bashdb-4.2-0.8.tar.bz2'
-  sha1 'fc893fbe58416036815daa0e5e99f5fa409670ef'
-  version '4.2-0.8'
+  homepage "http://bashdb.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/bashdb/bashdb/4.3-0.9/bashdb-4.3-0.9.tar.bz2"
+  sha1 "0eed12b3d0c23e75feb97ef885a60cb81cc997a3"
+  version "4.3-0.9"
 
-  depends_on 'bash'
+  depends_on "bash"
+  depends_on :macos => :mountain_lion
 
   def install
     system "./configure", "--with-bash=#{HOMEBREW_PREFIX}/bin/bash",

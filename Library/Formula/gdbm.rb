@@ -8,9 +8,10 @@ class Gdbm < Formula
 
   bottle do
     cellar :any
-    sha1 "8d6f002454ffe4ea8332fa10a9f91be45c5ba34c" => :mavericks
-    sha1 "5473f06f355c17825f388a0bf4717905b209ce2e" => :mountain_lion
-    sha1 "bbce3c28c939be838375a99fa965e488d4186b2a" => :lion
+    revision 1
+    sha1 "51d9c80b023a12571843e10984aa026c55d487f9" => :yosemite
+    sha1 "73f8a00866a510eb8b6aac08ab0462aec6aa56ff" => :mavericks
+    sha1 "11e8b6c44f03db030339aaaf05187b208d67d168" => :mountain_lion
   end
 
   option :universal
@@ -18,9 +19,8 @@ class Gdbm < Formula
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--infodir=#{info}"
-    system "make install"
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

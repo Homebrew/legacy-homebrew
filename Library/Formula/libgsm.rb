@@ -7,9 +7,10 @@ class Libgsm < Formula
 
   bottle do
     cellar :any
-    sha1 "95282a450ccbf397b79045a1ccb0e5a110962e75" => :mavericks
-    sha1 "4eccce20579c4fe49892aebda0a11c46ce598de0" => :mountain_lion
-    sha1 "2c9220ef6c1de5246f1d771a27bfbd8c3129b2f9" => :lion
+    revision 1
+    sha1 "832cbeb382112a042221bdef53980c1432d9acb5" => :yosemite
+    sha1 "90ebcfff95c504b5e3b0a1dca09164a4342239ae" => :mavericks
+    sha1 "45ce069c68066f2a93148379ec1539f5bf398280" => :mountain_lion
   end
 
   option :universal

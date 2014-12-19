@@ -10,20 +10,76 @@ require 'software_spec'
 require 'install_renamed'
 require 'pkg_version'
 
+# A formula provides instructions and metadata for Homebrew to install a piece
+# of software. Every Homebrew formula is a {Formula}.
+# All subclasses of {Formula} (and all Ruby classes) have to be named
+# `UpperCase` and `not-use-dashes`.
+# A formula specified in `this-formula.rb` should have a class named
+# `ThisFormula`. Homebrew does enforce that the name of the file and the class
+# correspond.
+# Make sure you check with `brew search` that the name is free!
+# @abstract
 class Formula
   include FileUtils
   include Utils::Inreplace
   extend Enumerable
 
-  attr_reader :name, :path
-  attr_reader :stable, :devel, :head, :active_spec
-  attr_reader :pkg_version, :revision
+  # The name of this {Formula}.
+  # e.g. `this-formula`
+  attr_reader :name
 
-  # The current working directory during builds and tests.
-  # Will only be non-nil inside #stage and #test.
-  attr_reader :buildpath, :testpath
+  # The full path to this {Formula}.
+  # e.g. `/usr/local/Library/Formula/this-formula.rb`
+  attr_reader :path
 
+  # The stable (and default) {SoftwareSpec} for this {Formula}
+  # This contains all the attributes like e.g. {#url}, {.sha1} that apply to
+  # the stable version of this formula.
+  attr_reader :stable
+
+  # The development {SoftwareSpec} for this {Formula}.
+  # Installed when using `brew install --devel`
+  # `nil` if there is no development version.
+  # @see #stable
+  attr_reader :devel
+
+  # The HEAD {SoftwareSpec} for this {Formula}.
+  # Installed when using `brew install --HEAD`
+  # This is always installed with the version `HEAD` and taken from the latest
+  # commit in the version control system.
+  # `nil` if there is no HEAD version.
+  # @see #stable
+  attr_reader :head
+
+  # The currently active SoftwareSpec.
+  # Defaults to stable unless `--devel` or `--HEAD` is passed.
+  # @private
+  attr_reader :active_spec
+
+  # The {PkgVersion} for this formula with version and {#revision} information.
+  attr_reader :pkg_version
+
+  # Used for creating new Homebrew versions of software without new upstream
+  # versions.
+  # @see .revision
+  attr_reader :revision
+
+  # The current working directory during builds.
+  # Will only be non-`nil` inside {#install}.
+  attr_reader :buildpath
+
+  # The current working directory during tests.
+  # Will only be non-`nil` inside {#test}.
+  attr_reader :testpath
+
+  # When installing a bottle (binary package) from a local path this will be
+  # set to the full path to the bottle tarball. If not, it will be `nil`.
   attr_accessor :local_bottle_path
+
+  # The {BuildOptions} for this {Formula}. Lists the arguments passed and any
+  # {#options} in the {Formula}. Note that these may differ at different times
+  # during the installation of a {Formula}. This is annoying but the result of
+  # state that we're trying to eliminate.
   attr_accessor :build
 
   def initialize(name, path, spec)
@@ -41,6 +97,8 @@ class Formula
     @build = active_spec.build
     @pin = FormulaPin.new(self)
   end
+
+  private
 
   def set_spec(name)
     spec = self.class.send(name)
@@ -61,6 +119,20 @@ class Formula
         raise FormulaValidationError.new(attr, value)
       end
     end
+  end
+
+  public
+
+  def stable?
+    active_spec == stable
+  end
+
+  def devel?
+    active_spec == devel
+  end
+
+  def head?
+    active_spec == head
   end
 
   def bottle
@@ -106,12 +178,16 @@ class Formula
     active_spec.options
   end
 
+  def deprecated_options
+    active_spec.deprecated_options
+  end
+
   def option_defined?(name)
     active_spec.option_defined?(name)
   end
 
-  def fails_with?(compiler)
-    active_spec.fails_with?(compiler)
+  def compiler_failures
+    active_spec.compiler_failures
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -217,8 +293,10 @@ class Formula
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
-  # Deprecated
+  # @deprecated
   DATA = :DATA
+
+  # @deprecated
   def patches; {} end
 
   # rarely, you don't want your library symlinked into the main prefix
@@ -251,14 +329,13 @@ class Formula
   end
 
   # yields self with current working directory set to the uncompressed tarball
+  # @private
   def brew
     validate_attributes :name, :version
 
     stage do
       begin
         patch
-        # we allow formulae to do anything they want to the Ruby process
-        # so load any deps before this point! And exit asap afterwards
         yield self
       ensure
         cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
@@ -333,7 +410,7 @@ class Formula
     ]
   end
 
-  # Deprecated
+  # @deprecated
   def python(options={}, &block)
     opoo 'Formula#python is deprecated and will go away shortly.'
     block.call if block_given?
@@ -391,6 +468,13 @@ class Formula
       "Homebrew/homebrew"
     else
       "path or URL"
+    end
+  end
+
+  def print_tap_action options={}
+    if tap?
+      verb = options[:verb] || "Installing"
+      ohai "#{verb} #{name} from #{tap}"
     end
   end
 
@@ -463,29 +547,36 @@ class Formula
 
   end
 
-  # For brew-fetch and others.
   def fetch
     active_spec.fetch
   end
 
-  # For FormulaInstaller.
   def verify_download_integrity fn
     active_spec.verify_download_integrity(fn)
   end
 
-  def test
+  def run_test
     self.build = Tab.for_formula(self)
-    ret = nil
     mktemp do
       @testpath = Pathname.pwd
-      ret = instance_eval(&self.class.test)
-      @testpath = nil
+      test
     end
-    ret
+  ensure
+    @testpath = nil
   end
 
   def test_defined?
     false
+  end
+
+  def test
+  end
+
+  def test_fixtures(file)
+    HOMEBREW_LIBRARY.join("Homebrew", "test", "fixtures", file)
+  end
+
+  def install
   end
 
   protected
@@ -493,14 +584,18 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    rd, wr = IO.pipe
-
+    verbose = ARGV.verbose?
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not verbose
       pretty_args.delete "--disable-dependency-tracking"
       pretty_args.delete "--disable-debug"
+    end
+    pretty_args.each_index do |i|
+      if pretty_args[i].to_s.start_with? "import setuptools"
+        pretty_args[i] = "import setuptools..."
+      end
     end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
@@ -510,44 +605,30 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    pid = fork do
-      ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+    log = File.open(logfn, "w")
+    begin
+      log.puts Time.now, "", cmd, args, ""
+      log.flush
 
-      # TODO system "xcodebuild" is deprecated, this should be removed soon.
-      if cmd.to_s.start_with? "xcodebuild"
-        ENV.remove_cc_etc
-      end
+      if verbose
+        rd, wr = IO.pipe
+        begin
+          pid = fork do
+            rd.close
+            log.close
+            exec_cmd(cmd, args, wr, logfn)
+          end
+          wr.close
 
-      # Turn on argument filtering in the superenv compiler wrapper.
-      # We should probably have a better mechanism for this than adding
-      # special cases to this method.
-      if cmd == "python" && %w[setup.py build.py].include?(args.first)
-        ENV.refurbish_args
-      end
-
-      rd.close
-      $stdout.reopen wr
-      $stderr.reopen wr
-      args.collect!{|arg| arg.to_s}
-      exec(cmd, *args) rescue nil
-      puts "Failed to execute: #{cmd}"
-      exit! 1 # never gets here unless exec threw or failed
-    end
-    wr.close
-
-    File.open(logfn, 'w') do |f|
-      f.puts Time.now, "", cmd, args, ""
-
-      if ARGV.verbose?
-        while buf = rd.gets
-          f.puts buf
-          puts buf
+          while buf = rd.gets
+            log.puts buf
+            puts buf
+          end
+        ensure
+          rd.close
         end
-      elsif IO.respond_to?(:copy_stream)
-        IO.copy_stream(rd, f)
       else
-        buf = ""
-        f.write(buf) while rd.read(1024, buf)
+        pid = fork { exec_cmd(cmd, args, log, logfn) }
       end
 
       Process.wait(pid)
@@ -555,19 +636,47 @@ class Formula
       $stdout.flush
 
       unless $?.success?
-        f.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
-        f.puts
+        log.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
+        log.puts
         require 'cmd/config'
-        Homebrew.dump_build_config(f)
-        raise BuildError.new(self, cmd, args)
+        Homebrew.dump_build_config(log)
+        raise BuildError.new(self, cmd, args, ENV.to_hash)
       end
+    ensure
+      log.close
     end
-  ensure
-    rd.close unless rd.closed?
   end
 
   private
+
+  def exec_cmd(cmd, args, out, logfn)
+    ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+
+    # TODO system "xcodebuild" is deprecated, this should be removed soon.
+    if cmd.to_s.start_with? "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
+    # Turn on argument filtering in the superenv compiler wrapper.
+    # We should probably have a better mechanism for this than adding
+    # special cases to this method.
+    if cmd == "python"
+      setup_py_in_args = %w[setup.py build.py].include?(args.first)
+      setuptools_shim_in_args = args.any? { |a| a.to_s.start_with? "import setuptools" }
+      if setup_py_in_args || setuptools_shim_in_args
+        ENV.refurbish_args
+      end
+    end
+
+    $stdout.reopen(out)
+    $stderr.reopen(out)
+    out.close
+    args.collect!{|arg| arg.to_s}
+    exec(cmd, *args) rescue nil
+    puts "Failed to execute: #{cmd}"
+    exit! 1 # never gets here unless exec threw or failed
+  end
 
   def stage
     active_spec.stage do
@@ -581,7 +690,7 @@ class Formula
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
 
-    active_spec.patches.grep(DATAPatch).each { |p| p.path = path }
+    active_spec.patches.grep(DATAPatch) { |p| p.path = path }
 
     active_spec.patches.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
@@ -614,8 +723,32 @@ class Formula
   class << self
     include BuildEnvironmentDSL
 
+    # The reason for why this software is not linked (by default) to
+    # {::HOMEBREW_PREFIX}.
     attr_reader :keg_only_reason
-    attr_rw :homepage, :plist_startup, :plist_manual, :revision
+
+    # @!attribute [rw]
+    # The homepage for the software. Used by users to get more information
+    # about the software and Homebrew maintainers as a point of contact for
+    # e.g. submitting patches.
+    # Can be opened by running `brew home example-formula`.
+    attr_rw :homepage
+
+    # @!attribute [rw]
+    # The `:startup` attribute set by {.plist_options}.
+    attr_rw :plist_startup
+
+    # @!attribute [rw]
+    # The `:manual` attribute set by {.plist_options}.
+    attr_rw :plist_manual
+
+    # @!attribute [rw]
+    # Used for creating new Homebrew versions of software without new upstream
+    # versions. For example, if we bump the major version of a library this
+    # {Formula} {.depends_on} then we may need to update the `revision` of this
+    # {Formula} to install a new version linked against the new library version.
+    # `0` if unset.
+    attr_rw :revision
 
     def specs
       @specs ||= [stable, devel, head].freeze
@@ -685,6 +818,10 @@ class Formula
 
     def option name, description=""
       specs.each { |spec| spec.option(name, description) }
+    end
+
+    def deprecated_option hash
+      specs.each { |spec| spec.deprecated_option(hash) }
     end
 
     def patch strip=:p1, src=nil, &block
@@ -760,9 +897,8 @@ class Formula
     end
 
     def test &block
-      return @test unless block_given?
       define_method(:test_defined?) { true }
-      @test = block
+      define_method(:test, &block)
     end
   end
 end

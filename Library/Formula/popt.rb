@@ -6,9 +6,10 @@ class Popt < Formula
   sha1 'cfe94a15a2404db85858a81ff8de27c8ff3e235e'
 
   bottle do
-    sha1 "ab6a9ee02a3e472537170cca2062a7714d1d896d" => :mavericks
-    sha1 "ee206729448db1e914db7d2722a0942e4d08a1f4" => :mountain_lion
-    sha1 "1f5fdb9324fa0ef2c590e33d119af66eb35d8ba8" => :lion
+    revision 1
+    sha1 "20ebf6ad6a0e618c6e14249179ebfaa49ceea1a0" => :yosemite
+    sha1 "ffa33727245492f9583a7e6905bbeef7454b96c8" => :mavericks
+    sha1 "d4736bc9459f25b0d4c267d364798e6614fbbbda" => :mountain_lion
   end
 
   option :universal

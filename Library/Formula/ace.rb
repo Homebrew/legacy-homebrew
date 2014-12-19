@@ -2,13 +2,13 @@ require "formula"
 
 class Ace < Formula
   homepage "http://www.cse.wustl.edu/~schmidt/ACE.html"
-  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.2.7.tar.bz2"
-  sha1 "b2be560c84d87f3bb8577caf581e519d0c76ceae"
+  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.0.tar.bz2"
+  sha1 "f7f0ba28f61774e3b269af65461819f31c999529"
 
   bottle do
-    sha1 "adadd2939fb8f973aff0e96e97d82cf76ddb490e" => :mavericks
-    sha1 "f1b7a5454d4e1b0b8cc9eb8099b059532507730d" => :mountain_lion
-    sha1 "1b9dbe41211d0a96ee7634c2d05ab5a816029f74" => :lion
+    sha1 "90cb518c4554949453de2eb406a7d1ef8fda3880" => :yosemite
+    sha1 "2a58aa9a687ed6b8d3eef8f982b0c96554d85de7" => :mavericks
+    sha1 "faa49b7abaf6661f0e4cff46715755985a4a980a" => :mountain_lion
   end
 
   def install

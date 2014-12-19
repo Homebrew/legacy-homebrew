@@ -20,7 +20,7 @@ class ShrewsoftVpnClient < Formula
 
   depends_on "cmake" => :build
   depends_on "openssl"
-  depends_on "tuntap"
+  depends_on :tuntap
   depends_on "qt" if build.with? "gui"
 
   def install
@@ -36,12 +36,13 @@ class ShrewsoftVpnClient < Formula
 
     # there is no suport for an alternate Applications folder, must change hard-coded paths
     if build.with? "gui"
-      %w{
+      files = %w{
         package/macosx/vpn-client-install.packproj
         source/qikea/CMakeLists.txt
         source/qikea/root.cpp
         source/qikec/CMakeLists.txt
-      }.each { |path| inreplace path, "/Applications", prefix }
+      }
+      inreplace files, "/Applications", prefix
     end
 
     cmake_args = std_cmake_args + [
@@ -78,7 +79,7 @@ class ShrewsoftVpnClient < Formula
         <string>net.shrew.iked</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/iked</string>
+          <string>#{opt_sbin}/iked</string>
           <string>-F</string>
         </array>
         <key>RunAtLoad</key>

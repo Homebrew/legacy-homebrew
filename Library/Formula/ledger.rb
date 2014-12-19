@@ -4,8 +4,8 @@ class Ledger < Formula
   homepage "http://ledger-cli.org"
 
   stable do
-    url "https://github.com/ledger/ledger/archive/v3.0.3.tar.gz"
-    sha1 "b65c2dc78f366fc3c2db9e2b7900b727b91f4656"
+    url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
+    sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
 
     resource "utfcpp" do
       url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
@@ -14,11 +14,11 @@ class Ledger < Formula
   end
 
   bottle do
-    sha1 "a40e25cd2449c3c44bd9385c895d55f4967ca3bc" => :mavericks
-    sha1 "3383a59b4a242dc537bb3be81f3e8e588622b442" => :mountain_lion
+    sha1 "71811722531f13093e8664e5178af7f07180e5a1" => :mavericks
+    sha1 "4f05d2f03df1d7f1709ca4a5ecb832d34cb2fbfe" => :mountain_lion
   end
 
-  head "https://github.com/ledger/ledger.git", :branch => "master"
+  head "https://github.com/ledger/ledger.git"
 
   option "debug", "Build with debugging symbols enabled"
   option "with-docs", "Build HTML documentation"
@@ -30,9 +30,9 @@ class Ledger < Formula
   depends_on :python => :optional
 
   boost_opts = []
-  boost_opts << "with-python" if build.with? "python"
   boost_opts << "c++11" if MacOS.version < "10.9"
   depends_on "boost" => boost_opts
+  depends_on "boost-python" => boost_opts if build.with? "python"
 
   needs :cxx11
 

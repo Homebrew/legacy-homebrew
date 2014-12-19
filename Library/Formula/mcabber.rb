@@ -13,8 +13,8 @@ class Mcabber < Formula
     depends_on "libtool" => :build
   end
 
-  option 'enable-enchant', 'Enable spell checking support via enchant'
-  option 'enable-aspell', 'Enable spell checking support via aspell'
+  deprecated_option "enable-aspell" => "with-aspell"
+  deprecated_option "enable-enchant" => "with-enchant"
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -23,8 +23,8 @@ class Mcabber < Formula
   depends_on 'libgcrypt'
   depends_on 'libotr'
   depends_on 'libidn'
-  depends_on 'aspell' if build.include? 'enable-aspell'
-  depends_on 'enchant' if build.include? 'enable-enchant'
+  depends_on "aspell" => :optional
+  depends_on "enchant" => :optional
 
   def install
     if build.head?
@@ -37,8 +37,8 @@ class Mcabber < Formula
             "--prefix=#{prefix}",
             "--enable-otr"]
 
-    args << "--enable-aspell" if build.include? 'enable-aspell'
-    args << "--enable-enchant" if build.include? 'enable-enchant'
+    args << "--enable-aspell" if build.with? "aspell"
+    args << "--enable-enchant" if build.with? "enchant"
 
     system "./configure", *args
     system "make install"

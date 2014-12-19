@@ -2,10 +2,10 @@ require "formula"
 
 class ClutterGtk < Formula
   homepage "https://wiki.gnome.org/Projects/Clutter"
-  url "http://ftp.gnome.org/pub/gnome/sources/clutter-gtk/1.2/clutter-gtk-1.2.2.tar.xz"
-  sha256 "743702bb230519553ca597b585b25af0b8783575fcd09c7fe5bed7dde292893c"
+  url "http://ftp.gnome.org/pub/gnome/sources/clutter-gtk/1.6/clutter-gtk-1.6.0.tar.xz"
+  sha256 "883550b574a036363239442edceb61cf3f6bedc8adc97d3404278556dc82234d"
 
-  option "without-x", "Build without X11 support"
+  deprecated_option "without-x" => "without-x11"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
@@ -14,7 +14,7 @@ class ClutterGtk < Formula
   depends_on "atk"
   depends_on "pango"
   depends_on "json-glib"
-  depends_on :x11 => "2.5.1" if build.with? "x"
+  depends_on :x11 => ["2.5.1", :recommended]
   depends_on "gtk+3"
   depends_on "clutter"
   depends_on "gobject-introspection"
@@ -32,7 +32,7 @@ class ClutterGtk < Formula
       --disable-gtk-doc-html
     ]
 
-    if build.with? "x"
+    if build.with? "x11"
       args.concat %w{
         --with-x --enable-x11-backend=yes
         --enable-gdk-pixbuf=yes

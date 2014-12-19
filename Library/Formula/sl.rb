@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Sl < Formula
-  homepage 'https://github.com/mtoyoda/sl'
-  url 'https://github.com/mtoyoda/sl/archive/5.01.tar.gz'
-  sha256 'b16fcaa40cb195105e97f86280e3f37a9011d0c01d7e534946386d126408f6da'
+  homepage "https://github.com/mtoyoda/sl"
+  url "https://github.com/mtoyoda/sl/archive/5.02.tar.gz"
+  sha256 "1e5996757f879c81f202a18ad8e982195cf51c41727d3fea4af01fdcbbb5563a"
 
-  head 'https://github.com/mtoyoda/sl.git'
+  head "https://github.com/mtoyoda/sl.git"
 
   fails_with :clang do
     build 318

@@ -1,29 +1,28 @@
-require 'formula'
+require "formula"
 
 class Logstalgia < Formula
-  homepage 'http://code.google.com/p/logstalgia/'
-  url 'https://github.com/acaudwell/Logstalgia/releases/download/logstalgia-1.0.5/logstalgia-1.0.5.tar.gz'
-  sha1 '3687d67033ef4fa0abebda66fd77c56f7f05bcc7'
-  revision 1
+  homepage "http://code.google.com/p/logstalgia/"
+  url "https://github.com/acaudwell/Logstalgia/releases/download/logstalgia-1.0.6/logstalgia-1.0.6.tar.gz"
+  sha1 "92b2b037d289840517d6648bf72f09afbf3f09d5"
 
   head do
-    url 'https://github.com/acaudwell/Logstalgia.git'
+    url "https://github.com/acaudwell/Logstalgia.git"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
-  depends_on 'sdl2'
-  depends_on 'sdl2_image'
-  depends_on 'freetype'
-  depends_on 'pkg-config' => :build
-  depends_on 'boost' => :build
-  depends_on 'glm' => :build
-  depends_on 'glew'
-  depends_on 'libpng'
-  depends_on 'jpeg'
-  depends_on 'pcre'
+  depends_on "sdl2"
+  depends_on "sdl2_image"
+  depends_on "freetype"
+  depends_on "pkg-config" => :build
+  depends_on "boost" => :build
+  depends_on "glm" => :build
+  depends_on "glew"
+  depends_on "libpng"
+  depends_on "jpeg"
+  depends_on "pcre"
 
   needs :cxx11
 

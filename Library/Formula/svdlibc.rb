@@ -8,10 +8,10 @@ class Svdlibc < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "8cb13d197689b2fb40b939ff1346ea86e6e94a8a" => :mavericks
-    sha1 "21889860321bb5593fe0125c4e9ffa4e0fdd1805" => :mountain_lion
-    sha1 "53cd8f618f8b37eddff753fa2d2d347c93f07953" => :lion
+    revision 2
+    sha1 "108aa560888b8b759a7e0da243397917da52b143" => :yosemite
+    sha1 "af943e46846a41be5c039c3d825003c30e2632d4" => :mavericks
+    sha1 "3a2b0a33888f387d531fc4a0f7de1d9ad370e5f5" => :mountain_lion
   end
 
   def install

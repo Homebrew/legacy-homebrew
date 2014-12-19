@@ -10,10 +10,13 @@ class BpmTools < Formula
   option 'with-bpm-tag', 'Install audio file tagging script'
 
   depends_on 'gnuplot' if build.with? 'bpm-graph'
-  depends_on 'sox' if build.with? 'bpm-tag'
-  depends_on 'id3v2' if build.with? 'bpm-tag'
-  depends_on 'flac' if build.with? 'bpm-tag'
-  depends_on 'vorbis-tools' if build.with? 'bpm-tag'
+
+  if build.with? "bpm-tag"
+    depends_on 'sox'
+    depends_on 'id3v2'
+    depends_on 'flac'
+    depends_on 'vorbis-tools'
+  end
 
   def install
     system "make"

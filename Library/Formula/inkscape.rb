@@ -4,11 +4,18 @@ class Inkscape < Formula
   homepage 'http://inkscape.org/'
   url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.5/inkscape-0.48.5.tar.gz'
   sha1 'e14789da0f6b5b84ef26f6759e295bc4be7bd34d'
+  revision 1
 
   bottle do
-    sha1 "284ea91d099a9561e0c87001641539c2a4038baf" => :mavericks
-    sha1 "bafdb00a9a3b23243e2ae03d2ae1155c3ffc246c" => :mountain_lion
-    sha1 "56127cf9ebfe7c476e8b8bb2cb334bc5af4f4296" => :lion
+    sha1 "5d5fa915ff5cb8a245c7e8e2295cda07149c311d" => :yosemite
+    sha1 "6687b6ee83263d4c64e06a8e4432d3be77d95be9" => :mavericks
+    sha1 "63052a052b408edf1755ff78cc00fdb6ffc058b2" => :mountain_lion
+  end
+
+  stable do
+    # boost 1.56 compatibility
+    # https://bugs.launchpad.net/inkscape/+bug/1357411
+    patch :p0, :DATA
   end
 
   head do
@@ -59,3 +66,16 @@ class Inkscape < Formula
     system "#{bin}/inkscape", "-V"
   end
 end
+__END__
+=== modified file 'src/object-snapper.cpp'
+--- src/object-snapper.cpp	2010-07-19 06:51:04 +0000
++++ src/object-snapper.cpp	2014-08-15 15:43:28 +0000
+@@ -561,7 +561,7 @@
+                         // When it's within snapping range, then return it
+                         // (within snapping range == between p_min_on_cl and p_max_on_cl == 0 < ta < 1)
+                         Geom::Coord dist = Geom::L2(_snapmanager->getDesktop()->dt2doc(p_proj_on_cl) - p_inters);
+-                        SnappedPoint s(_snapmanager->getDesktop()->doc2dt(p_inters), p.getSourceType(), p.getSourceNum(), k->target_type, dist, getSnapperTolerance(), getSnapperAlwaysSnap(), true, k->target_bbox);
++                        SnappedPoint s(_snapmanager->getDesktop()->doc2dt(p_inters), p.getSourceType(), p.getSourceNum(), k->target_type, dist, getSnapperTolerance(), getSnapperAlwaysSnap(), true, false, k->target_bbox);
+                         sc.points.push_back(s);
+                     }
+                 }

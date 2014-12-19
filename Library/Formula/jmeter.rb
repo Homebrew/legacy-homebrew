@@ -2,12 +2,12 @@ require 'formula'
 
 class Jmeter < Formula
   homepage 'http://jmeter.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.11.tgz'
-  sha1 'e9b24f8b5f34565831aafcb046e72bdfa9537386'
+  url 'http://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.12.tgz'
+  sha1 '2b3de1d1ebc4c85a1fc5da12279649d97ca45788'
 
   resource "jmeterplugins-standard" do
-    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.1.3.zip"
-    sha1 "ceec5be5d5aef21f9af3b251637a97fdfde0ffd3"
+    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.2.0.zip"
+    sha1 "1700158e5ce23748db5f59b8c5b9b608a345eef7"
   end
 
   resource "serveragent" do
@@ -16,23 +16,23 @@ class Jmeter < Formula
   end
 
   resource "jmeterplugins-extras" do
-    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Extras-1.1.3.zip"
-    sha1 "b7d74f79c309e50bd01d6fd0d2138eb9d47cb1e7"
+    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Extras-1.2.0.zip"
+    sha1 "abd19f4befbd2dc992cc41abbb6f8a772b2fb4d6"
   end
 
   resource "jmeterplugins-extraslibs" do
-    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-ExtrasLibs-1.1.3.zip"
-    sha1 "dadeee54854aff2f46efc51f6d89a5bfb541b40f"
+    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-ExtrasLibs-1.2.0.zip"
+    sha1 "549ec55da3b7a2bcf73b9ceecd0d66c1e7675d53"
   end
 
   resource "jmeterplugins-webdriver" do
-    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-WebDriver-1.1.3.zip"
-    sha1 "5ac53a9d881a2192872d06153a8a212fa3a8ee11"
+    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-WebDriver-1.2.0.zip"
+    sha1 "6519c05d9cd93d1f44fc733b772f232bb4568846"
   end
 
   resource "jmeterplugins-hadoop" do
-    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Hadoop-1.1.2.zip"
-    sha1 "2d7362ea0e10215647eccd9505c49bb55269be27"
+    url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Hadoop-1.2.0.zip"
+    sha1 "83ce7b84349acb40c5f8f63c7bbc8f9eaf38c542"
   end
 
   option "with-plugins", "add JMeterPlugins Standard, Extras, ExtrasLibs, WebDriver and Hadoop"

@@ -17,7 +17,7 @@ class Ori < Formula
   depends_on "pkg-config" => :build
   depends_on "scons" => :build
   depends_on "boost"
-  depends_on "osxfuse"
+  depends_on :osxfuse
   depends_on "libevent"
   depends_on "openssl"
 

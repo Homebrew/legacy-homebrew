@@ -36,7 +36,7 @@ module Homebrew
       f.brew { cp_r getwd, stage_dir }
       ENV['VERBOSE'] = nil
 
-      if ARGV.flag? "--git"
+      if ARGV.git?
         ohai "Setting up git repository"
         cd stage_dir
         system "git", "init", "-q"

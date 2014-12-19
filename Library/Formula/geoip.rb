@@ -4,22 +4,17 @@ class Geoip < Formula
   homepage "https://github.com/maxmind/geoip-api-c"
 
   stable do
-    url "https://github.com/maxmind/geoip-api-c/archive/v1.6.2.tar.gz"
-    sha1 "aa9a91b61667b605f62964c613e15400cbca2cae"
-
-    # Download test data so `make check` works. Fixed in HEAD.
-    # See https://github.com/maxmind/geoip-api-c/commit/722707cc3a0adc06aec3e98bc36e7262f67ec0da
-    patch :DATA
+    url "https://github.com/maxmind/geoip-api-c/archive/v1.6.3.tar.gz"
+    sha1 "7561dcb5ba928a3f190426709063829093283c32"
   end
 
   head "https://github.com/maxmind/geoip-api-c.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "3ebd898cb31012b641b471b4cf5cd537f9226afd" => :mavericks
-    sha1 "d3798825d01b45a40e6015e637f82965dbe49fdc" => :mountain_lion
-    sha1 "ba096b834f4c251c2b6c6d63349574aab3a336fb" => :lion
+    sha1 "51d9d1e2377d1ca0a7a7b0ddad1dd0186fc5943d" => :yosemite
+    sha1 "b6a33ccda947755487c46785d2b956fee1126509" => :mavericks
+    sha1 "474c737c49886154cf7801e17f219b8e08af27d8" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -67,24 +62,3 @@ class Geoip < Formula
     system "#{bin}/geoiplookup", "-f", "GeoIP.dat", "8.8.8.8"
   end
 end
-
-__END__
-diff --git a/bootstrap b/bootstrap
-index 30fc0f9..f20f095 100755
---- a/bootstrap
-+++ b/bootstrap
-@@ -1,5 +1,14 @@
- #!/bin/sh
-
-+# dl the dat file if needed
-+DIR="$( cd "$( dirname "$0"  )" && pwd  )"
-+
-+# download geolite database for the tests
-+mkdir -p $DIR/data
-+if [ ! -f $DIR/data/GeoIP.dat  ]; then
-+      curl http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gzip -d > $DIR/data/GeoIP.dat
-+fi
-+
- # make sure  to use the installed libtool
- rm -f ltmain.sh
- autoreconf -fiv

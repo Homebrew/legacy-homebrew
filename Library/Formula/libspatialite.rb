@@ -7,9 +7,10 @@ class Libspatialite < Formula
 
   bottle do
     cellar :any
-    sha1 "2590b61596c773689886f44d589c4ec7436a35e6" => :mavericks
-    sha1 "4fbc52ea4718dd46d68051f5bed24764040ed2d8" => :mountain_lion
-    sha1 "29b0babb1e163018ba0bdbf22b16587efe4dcad5" => :lion
+    revision 1
+    sha1 "73eec7d2153460dafb974b55a759cd59ddd3c808" => :yosemite
+    sha1 "91af90e4f3934937cd84fa756b6730b16ebd26bb" => :mavericks
+    sha1 "737cbfa79e3b4f78d56fa515e678bb64439cb27a" => :mountain_lion
   end
 
   head do

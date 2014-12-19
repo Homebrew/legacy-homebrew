@@ -17,6 +17,8 @@ module Homebrew
 
     puts "Fetching: #{bucket * ', '}" if bucket.size > 1
     bucket.each do |f|
+      f.print_tap_action :verb => "Fetching"
+
       if fetch_bottle?(f)
         fetch_formula(f.bottle)
       else
@@ -61,7 +63,7 @@ module Homebrew
 
   def retry_fetch? f
     @fetch_failed ||= Set.new
-    if ARGV.include?("--retry") && @fetch_failed.add?(f.name)
+    if ARGV.include?("--retry") && @fetch_failed.add?(f)
       ohai "Retrying download"
       f.clear_cache
       true

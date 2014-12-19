@@ -102,9 +102,6 @@ class DependencyCollector
 
   def parse_symbol_spec(spec, tags)
     case spec
-    when :autoconf, :automake, :bsdmake, :libtool
-      # Xcode no longer provides autotools or some other build tools
-      autotools_dep(spec, tags)
     when :x11        then X11Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
@@ -115,19 +112,25 @@ class DependencyCollector
     when :tex        then TeXDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
-    # python2 is deprecated
-    when :python, :python2 then PythonDependency.new(tags)
+    when :python     then PythonDependency.new(tags)
     when :python3    then Python3Dependency.new(tags)
     when :java       then JavaDependency.new(tags)
+    when :osxfuse    then OsxfuseDependency.new(tags)
+    when :tuntap     then TuntapDependency.new(tags)
+    when :ant        then ant_dep(spec, tags)
+    when :apr        then AprDependency.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
-    when :ant        then ant_dep(spec, tags)
     when :clt # deprecated
+    when :autoconf, :automake, :bsdmake, :libtool # deprecated
+      autotools_dep(spec, tags)
     when :cairo, :fontconfig, :freetype, :libpng, :pixman # deprecated
       Dependency.new(spec.to_s, tags)
     when :libltdl # deprecated
       tags << :run
       Dependency.new("libtool", tags)
+    when :python2
+      PythonDependency.new(tags)
     else
       raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end

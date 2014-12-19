@@ -6,10 +6,10 @@ class Libsecret < Formula
   sha1 "af62de3958bbe0ccf59a02101a6704e036378a6f"
 
   bottle do
-    revision 1
-    sha1 "d66a78d9886a1c3264efc8837f76be38b5f537a5" => :mavericks
-    sha1 "413b3bc851bc3c9cdc1e9a8f0d325ad974f97fcc" => :mountain_lion
-    sha1 "d2118e640acacfc9028e9d4e9b4f90149d560e10" => :lion
+    revision 2
+    sha1 "6716e52cad2d6f84a0cf4a5211bb7cc4cd38dde8" => :yosemite
+    sha1 "05bed826d27824dc9e0588126473bba2e2e31428" => :mavericks
+    sha1 "aa373554171d40655dff546a66c4f45d372a04d7" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

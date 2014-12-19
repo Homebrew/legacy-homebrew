@@ -13,7 +13,11 @@ module HomebrewArgvExtension
 
   def formulae
     require "formula"
-    @formulae ||= downcased_unique_named.map { |name| Formulary.factory(name, spec) }
+    @formulae ||= (downcased_unique_named - casks).map { |name| Formulary.factory(name, spec) }
+  end
+
+  def casks
+    @casks ||= downcased_unique_named.grep HOMEBREW_CASK_TAP_FORMULA_REGEX
   end
 
   def kegs
@@ -84,6 +88,10 @@ module HomebrewArgvExtension
   end
   def dry_run?
     include?('--dry-run') || switch?('n')
+  end
+
+  def git?
+    flag? "--git"
   end
 
   def homebrew_developer?

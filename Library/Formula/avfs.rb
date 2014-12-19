@@ -1,24 +1,31 @@
-require 'formula'
+require "formula"
 
 class Avfs < Formula
-  homepage 'http://avf.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/avf/avfs/1.0.1/avfs-1.0.1.tar.gz'
-  sha1 '77ce08fb10c680e6d5821ea8634d06a351b747f2'
+  homepage "http://avf.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/avf/avfs/1.0.2/avfs-1.0.2.tar.bz2"
+  sha1 "e4f8377ea2565c1ac59f7b66893905b778ddf849"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'osxfuse'
+  depends_on "pkg-config" => :build
+  depends_on :osxfuse
+  depends_on "xz" => :recommended # Upstream recommends building with lzma support.
+  depends_on "openssl" => :optional
 
   # Fix scripts to work on Mac OS X.
+  # Nothing the patch fixes has been changed in 1.0.2, so still necessary.
   patch :DATA
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--enable-fuse",
-                          "--enable-library",
-                          "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}",
+            "--disable-debug",
+            "--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--enable-fuse",
+            "--enable-library",
+    ]
 
+    args << "--with-ssl=#{Formula["openssl"].opt_prefix}" if build.with? "openssl"
+
+    system "./configure", *args
     system "make", "install"
   end
 

@@ -7,9 +7,10 @@ class LibreadlineJava < Formula
 
   bottle do
     cellar :any
-    sha1 "f6384cc881f3fcd60aeef481808c006dd0444f26" => :mavericks
-    sha1 "4bb94e4a09c1b34f42fb321e29c70f5689e2d0a5" => :mountain_lion
-    sha1 "fc8c12b579f0f18b71dcacf3ec06230647ecc425" => :lion
+    revision 1
+    sha1 "6e108ba60e76149db1d0d1275ba5806eda0f2a69" => :yosemite
+    sha1 "d69632b706e1bc325f53a2fab43d86258760368d" => :mavericks
+    sha1 "7bd2a8227ce2c9055471fd864a19faf943a10263" => :mountain_lion
   end
 
   depends_on 'readline'

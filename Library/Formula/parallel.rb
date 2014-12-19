@@ -2,14 +2,15 @@ require "formula"
 
 class Parallel < Formula
   homepage "http://savannah.gnu.org/projects/parallel/"
-  url "http://ftpmirror.gnu.org/parallel/parallel-20140822.tar.bz2"
-  mirror "http://ftp.gnu.org/gnu/parallel/parallel-20140822.tar.bz2"
-  sha256 "8a146a59bc71218921d561f2c801b85e06fe3a21571083b58e6e0966dd397fd4"
+  url "http://ftpmirror.gnu.org/parallel/parallel-20141122.tar.bz2"
+  mirror "http://ftp.gnu.org/gnu/parallel/parallel-20141122.tar.bz2"
+  sha256 "68bcbc1e1a09b298433768f8c60c9506c13a16a96a5eebec316851d2bc22edce"
 
   bottle do
-    sha1 "54069a978ae98bb32cd27cabb92bd4d54f83d65d" => :mavericks
-    sha1 "9ee4590045684e5e29fb341f496bea5ec732f23e" => :mountain_lion
-    sha1 "aad86080cc2d9ae2f4e9db3f765672334eca3802" => :lion
+    cellar :any
+    sha1 "2a9f8b6ab359e71f3505126c51e530439183c21f" => :yosemite
+    sha1 "f60f073719078dc8e4e6279b25954ad21144d707" => :mavericks
+    sha1 "12b24eb130c5a41b71fc0b8bdcca23340940d14b" => :mountain_lion
   end
 
   conflicts_with "moreutils",

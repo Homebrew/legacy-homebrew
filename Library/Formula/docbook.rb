@@ -6,9 +6,10 @@ class Docbook < Formula
   sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 
   bottle do
-    sha1 "bf3e1674f6e1db1c38e5f56ecc7297f13c3c13f5" => :mavericks
-    sha1 "2878dc39a8d6125e3ecc2512462fb22dfba7b9bb" => :mountain_lion
-    sha1 "1c8362d72527056fede232590c18c1c23dce41e1" => :lion
+    revision 1
+    sha1 "b6666858a43379c827ba9a62df987bcbcfffc6f3" => :yosemite
+    sha1 "ac3a230baa6c7a2d9accada9d956a566f3520151" => :mavericks
+    sha1 "8cbf8d315805395f2ca483161daa2c8bc3c4e19c" => :mountain_lion
   end
 
   resource 'xml412' do

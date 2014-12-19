@@ -7,9 +7,10 @@ class Libnatpmp < Formula
 
   bottle do
     cellar :any
-    sha1 "e6d42daee6bdd2d0854a2402cde606a880c54bbf" => :mavericks
-    sha1 "380a32ba2f2b7383784693a4fc41968e94aa2356" => :mountain_lion
-    sha1 "b106068d2535580dc36de4943aef2ed48014c2e9" => :lion
+    revision 1
+    sha1 "75db0fd068b01482b95c315751bb316d16cb69b0" => :yosemite
+    sha1 "afe8b7fe9baabfa890989697566d20eaa1542c86" => :mavericks
+    sha1 "0f1274f31f8a718d640e72327ecc814af16edef7" => :mountain_lion
   end
 
   def install

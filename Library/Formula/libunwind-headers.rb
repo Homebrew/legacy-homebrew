@@ -7,9 +7,10 @@ class LibunwindHeaders < Formula
 
   bottle do
     cellar :any
-    sha1 "705028cedd90bb0a71247a7437efb86b26ef10ce" => :mavericks
-    sha1 "4feb79bee6a976d025537036e47b33a025901cfd" => :mountain_lion
-    sha1 "8f17a4a2c393d78f696cdce464b9c060038cdd84" => :lion
+    revision 1
+    sha1 "48f3fb9243e6a5cd3255a9bc43755aedde545a5d" => :yosemite
+    sha1 "022d85a3a7e2368bd9a3cbc679d69f074534f50f" => :mavericks
+    sha1 "260e0407173d01261b9a2cb79ccc73ca92866437" => :mountain_lion
   end
 
   keg_only :provided_by_osx,
@@ -22,10 +23,8 @@ class LibunwindHeaders < Formula
       inreplace "include/libunwind.h", /__OSX_AVAILABLE_STARTING\(__MAC_NA,.*\)/,
         "__attribute__((unavailable))"
 
-      %w[include/libunwind.h include/unwind.h src/AddressSpace.hpp
-        src/InternalMacros.h].each do |header|
-        inreplace header, "Availability.h", "AvailabilityMacros.h"
-      end
+      inreplace %w[include/libunwind.h include/unwind.h src/AddressSpace.hpp src/InternalMacros.h],
+        "Availability.h", "AvailabilityMacros.h"
     end
 
     include.install Dir['include/*']

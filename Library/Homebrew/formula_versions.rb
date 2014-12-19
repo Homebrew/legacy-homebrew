@@ -4,6 +4,7 @@ class FormulaVersions
   IGNORED_EXCEPTIONS = [
     ArgumentError, NameError, SyntaxError, TypeError,
     FormulaSpecificationError, FormulaValidationError,
+    ErrorDuringExecution,
   ]
 
   attr_reader :f

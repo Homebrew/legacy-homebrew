@@ -8,6 +8,7 @@ class Nettle < Formula
   bottle do
     cellar :any
     revision 1
+    sha1 "41d80787422ed29f084c147b49e2f7c3a223eded" => :yosemite
     sha1 "89238f83e4f3f18145553d3c442fe022680cbd7b" => :mavericks
     sha1 "8f2a4c261926f2f62e9d8f197a8466a2489b37e0" => :mountain_lion
     sha1 "6c56084887da5b7e99d7c730bf22a68c9af360e9" => :lion

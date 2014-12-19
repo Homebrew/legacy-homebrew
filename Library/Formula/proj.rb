@@ -9,10 +9,10 @@ class Proj < Formula
   option "with-vdatum", "Install vertical datum files (~380 MB)"
 
   bottle do
-    revision 1
-    sha1 "8033b20110932a5bbbb0c88876c6e612cb8aafed" => :mavericks
-    sha1 "213a5bb235c8bda454c84cb46b741d1bb99879f5" => :mountain_lion
-    sha1 "b3e5a064514313586947ccdc5563366719eb2c0c" => :lion
+    revision 2
+    sha1 "66efa5cca3047ce7cfa8414163c92a2f92f3aed9" => :yosemite
+    sha1 "8cf4680113ab1acf4251d8310b1f2e7a5231b150" => :mavericks
+    sha1 "57c74a55e948b3cb8565faa360a754e63a294084" => :mountain_lion
   end
 
   # The datum grid files are required to support datum shifting

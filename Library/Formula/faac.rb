@@ -7,9 +7,10 @@ class Faac < Formula
 
   bottle do
     cellar :any
-    sha1 "923f62ca1292dcf930a4def01da662d5facf3b87" => :mavericks
-    sha1 "aab2425c764152a2f4ea7eb99072153d1eed1654" => :mountain_lion
-    sha1 "88bd2a82586156372015b7a884809a2d14d127cb" => :lion
+    revision 1
+    sha1 "46a8facbfd103d787d198e6fb802d6f0948222e0" => :yosemite
+    sha1 "2a1e8a1decd52fcdf6498edd7f8437536d05d453" => :mavericks
+    sha1 "9ea199f750c83887bb9e3d66759a60872672865f" => :mountain_lion
   end
 
   def install

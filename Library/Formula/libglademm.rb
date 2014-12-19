@@ -7,9 +7,9 @@ class Libglademm < Formula
 
   bottle do
     cellar :any
-    sha1 "5b84255676239202a2f6f1223f78044424a9a16f" => :mavericks
-    sha1 "513f15414a23dcf70f9e662b10ab6483139858bd" => :mountain_lion
-    sha1 "908256dc2bba24e8de92e3420b6bbabcc3ea1451" => :lion
+    revision 1
+    sha1 "b618a33313899fc7ed85097ed501358f06a40174" => :yosemite
+    sha1 "ab0607b43ba9195b3f18fc38cdabd3a72d5c499c" => :mavericks
   end
 
   depends_on 'pkg-config' => :build

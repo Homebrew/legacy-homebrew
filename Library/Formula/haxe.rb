@@ -1,10 +1,13 @@
-require 'formula'
+require "formula"
 
 class Haxe < Formula
-  homepage 'http://haxe.org'
-  url 'https://github.com/HaxeFoundation/haxe.git', :tag => '3.1.3'
+  homepage "http://haxe.org"
 
-  head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
+  stable do
+    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.1.3"
+    # Remove the below with the next stable release
+    depends_on MaximumMacOSRequirement => :mavericks
+  end
 
   bottle do
     cellar :any
@@ -13,8 +16,13 @@ class Haxe < Formula
     sha1 "408dbaf0110cb38ee52900bd4910c56913681bab" => :lion
   end
 
-  depends_on 'neko'
-  depends_on 'objective-caml'
+  head do
+    url "https://github.com/HaxeFoundation/haxe.git", :branch => "development"
+  end
+
+  depends_on "objective-caml" => :build
+  depends_on "camlp4" => :build
+  depends_on "neko" => :optional
 
   def install
     # Build requires targets to be built in specific order

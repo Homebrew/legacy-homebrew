@@ -7,9 +7,10 @@ class Halibut < Formula
 
   bottle do
     cellar :any
-    sha1 "23b5d68b11cf6a8edcfe7d691b0db7a64e7251c9" => :mavericks
-    sha1 "a1c3f434f9a017a6777e04e1f820daf9b2d4b756" => :mountain_lion
-    sha1 "4d7826b3adb0f4da43f2011a4fa2cb049b0ee21d" => :lion
+    revision 1
+    sha1 "27a4552810abd6b9df1cf35d4f9b6b450de08dc9" => :yosemite
+    sha1 "bfc2c0ca0bea4953fc0beea4f6dd009617b72f89" => :mavericks
+    sha1 "8cfc5a662b31be69a88f92dd492c005db936e21e" => :mountain_lion
   end
 
   def install

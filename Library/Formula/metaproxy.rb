@@ -2,14 +2,14 @@ require "formula"
 
 class Metaproxy < Formula
   homepage "http://www.indexdata.com/metaproxy"
-  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.5.10.tar.gz"
-  sha1 "898a694131e260569b1b42943e2197d51bc395ce"
+  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.7.0.tar.gz"
+  sha1 "e53650a18590e063a5be1439025902ba531c08f6"
 
   bottle do
     cellar :any
-    sha1 "77da0c40789630927c161545f591b5d4b54fda70" => :mavericks
-    sha1 "28bfc2375fa226f11abe8e64ae7298423b4958ec" => :mountain_lion
-    sha1 "3cbb6e9fe7c49fc55a4c0eebfd692d6b32d555a5" => :lion
+    sha1 "cf6b466ead595af3e3765f2daa9bc28a3cd1de9d" => :yosemite
+    sha1 "9ff3ec1b61a28e5c577975f5629aafb2f816e0a5" => :mavericks
+    sha1 "7ecaa044f8f01edaa6e56995aa8d8efdccdd8973" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

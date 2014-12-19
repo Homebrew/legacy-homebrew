@@ -5,9 +5,9 @@ class Sqsh < Formula
   url 'https://downloads.sourceforge.net/project/sqsh/sqsh/sqsh-2.5/sqsh-2.5.16.1.tgz'
   sha1 '1bdbab03ab96f53d0a0a279ba2518643225c6460'
 
-  option "enable-x", "Enable X windows support"
+  deprecated_option "enable-x" => "with-x11"
 
-  depends_on :x11 if build.include? "enable-x"
+  depends_on :x11 => :optional
   depends_on 'freetds'
   depends_on 'readline'
 
@@ -26,7 +26,7 @@ class Sqsh < Formula
     ENV['LIBDIRS'] = readline.opt_lib
     ENV['INCDIRS'] = readline.opt_include
 
-    if build.include? "enable-x"
+    if build.with? "x11"
       args << "--with-x"
       args << "--x-libraries=#{MacOS::X11.lib}"
       args << "--x-includes=#{MacOS::X11.include}"

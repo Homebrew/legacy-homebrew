@@ -7,9 +7,10 @@ class Libcsv < Formula
 
   bottle do
     cellar :any
-    sha1 "81a516debf829ccf7232234abf8c89f83b312ee3" => :mavericks
-    sha1 "7a55b80deebbfef143978927829b22d20d8c4a5e" => :mountain_lion
-    sha1 "a3c670cf58ed91cce8c5cece8b998557395e043c" => :lion
+    revision 1
+    sha1 "d247cc385fefdc1cadcb124f37df76ca173b4700" => :yosemite
+    sha1 "601cf88b49e3c3a4e06265d4cf1ff0dac3cccb37" => :mavericks
+    sha1 "6e87f90f6541f6cbf2f4df1b7e8c1a15059b509b" => :mountain_lion
   end
 
   def install

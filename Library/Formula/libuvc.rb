@@ -8,9 +8,10 @@ class Libuvc < Formula
   head "https://github.com/ktossell/libuvc.git"
 
   bottle do
-    sha1 "592b2190a35ab15f07c25d39f3e34a0baae971e2" => :mavericks
-    sha1 "c13fafbeab7ebc19565be18423bb34248c9557a6" => :mountain_lion
-    sha1 "82645fb85228750be0aba5d2fd2b10bbc9ed888c" => :lion
+    revision 1
+    sha1 "600fa35a693bccc80b44f731acc9cd945c35181d" => :yosemite
+    sha1 "b292f190f52e1e659aa3c2e51c19f15b421fb01e" => :mavericks
+    sha1 "6216c3b15fc83f9612b8573999d0dc537381a20b" => :mountain_lion
   end
 
   depends_on "cmake" => :build

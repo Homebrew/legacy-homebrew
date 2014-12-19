@@ -7,9 +7,10 @@ class Libntlm < Formula
 
   bottle do
     cellar :any
-    sha1 "8804ed8011884a460f8f6b0f6097623c31a68a9b" => :mavericks
-    sha1 "8412db1ae3c69bdb3d96b144ef69af450637f5a5" => :mountain_lion
-    sha1 "95872dc71ec6220794923681f4a364ba9f538bd7" => :lion
+    revision 1
+    sha1 "7c5f98bf311289a1aa49c08a5d2fa23ffb3fcc30" => :yosemite
+    sha1 "550250645169374bf9275ff3e8c8f805560f3416" => :mavericks
+    sha1 "a417f1bd4b1403094dddc8406d1f390832dabf53" => :mountain_lion
   end
 
   def install

@@ -1,36 +1,34 @@
-require 'formula'
+require "formula"
 
 class Ruby < Formula
-  homepage 'https://www.ruby-lang.org/'
-  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.bz2"
-  sha256 "6948b02570cdfb89a8313675d4aa665405900e27423db408401473f30fc6e901"
-  revision 3
+  homepage "https://www.ruby-lang.org/"
+  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.5.tar.bz2"
+  sha256 "0241b40f1c731cb177994a50b854fb7f18d4ad04dcefc18acc60af73046fb0a9"
 
   bottle do
-    revision 2
-    sha1 "43b7f90a5329fd4a5afb7dce9fceff8d8d8e1ac8" => :mavericks
-    sha1 "ac5dddb26583e72701691e8f89d6d5d9b1f64890" => :mountain_lion
-    sha1 "2c55b4727bcc7ef3b1c5dd3207773ff1d52a5b38" => :lion
+    sha1 "5bca9a9b689a3fb23e4c6660e1e3256c39fc62c9" => :yosemite
+    sha1 "80c5424e125d3493d3423399a9c3933b4108ac98" => :mavericks
+    sha1 "601037982116fbdd5389cb7dcf2e1bf2c5abea4e" => :mountain_lion
   end
 
   head do
-    url 'http://svn.ruby-lang.org/repos/ruby/trunk/'
+    url "http://svn.ruby-lang.org/repos/ruby/trunk/"
     depends_on "autoconf" => :build
   end
 
   option :universal
-  option 'with-suffix', 'Suffix commands with "21"'
-  option 'with-doc', 'Install documentation'
-  option 'with-tcltk', 'Install with Tcl/Tk support'
+  option "with-suffix", "Suffix commands with '21'"
+  option "with-doc", "Install documentation"
+  option "with-tcltk", "Install with Tcl/Tk support"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'readline' => :recommended
-  depends_on 'gdbm' => :optional
-  depends_on 'gmp' => :optional
-  depends_on 'libffi' => :optional
-  depends_on 'libyaml'
-  depends_on 'openssl'
-  depends_on :x11 if build.with? 'tcltk'
+  depends_on "pkg-config" => :build
+  depends_on "readline" => :recommended
+  depends_on "gdbm" => :optional
+  depends_on "gmp" => :optional
+  depends_on "libffi" => :optional
+  depends_on "libyaml"
+  depends_on "openssl"
+  depends_on :x11 if build.with? "tcltk"
 
   fails_with :llvm do
     build 2326
@@ -43,13 +41,21 @@ class Ruby < Formula
       --prefix=#{prefix} --enable-shared --disable-silent-rules
       --with-sitedir=#{HOMEBREW_PREFIX}/lib/ruby/site_ruby
       --with-vendordir=#{HOMEBREW_PREFIX}/lib/ruby/vendor_ruby
-      ]
+    ]
+
+    if build.universal?
+      ENV.universal_binary
+      args << "--with-arch=#{Hardware::CPU.universal_archs.join(",")}"
+    end
+
     args << "--program-suffix=21" if build.with? "suffix"
-    args << "--with-arch=#{Hardware::CPU.universal_archs.join(',')}" if build.universal?
     args << "--with-out-ext=tk" if build.without? "tcltk"
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
     args << "--without-gmp" if build.without? "gmp"
+
+    # Reported upstream: https://bugs.ruby-lang.org/issues/10272
+    args << "--with-setjmp-type=setjmp" if MacOS.version == :lion
 
     paths = [
       Formula["libyaml"].opt_prefix,
@@ -64,11 +70,15 @@ class Ruby < Formula
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Customize rubygems to look/install in the global gem directory
     # instead of in the Cellar, making gems last across reinstalls
-    (lib/"ruby/2.1.0/rubygems/defaults/operating_system.rb").write rubygems_config
+    (lib/"ruby/#{abi_version}/rubygems/defaults/operating_system.rb").write rubygems_config
+  end
+
+  def abi_version
+    "2.1.0"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -85,7 +95,7 @@ class Ruby < Formula
           "lib",
           "ruby",
           "gems",
-          "2.1.0"
+          "#{abi_version}"
         ]
 
         @default_dir ||= File.join(*path)
@@ -132,7 +142,7 @@ class Ruby < Formula
   end
 
   test do
-    output = `#{bin}/ruby -e 'puts "hello"'`
+    output = `#{bin}/ruby -e "puts 'hello'"`
     assert_equal "hello\n", output
     assert_equal 0, $?.exitstatus
   end

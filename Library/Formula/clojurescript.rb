@@ -3,14 +3,14 @@ require "formula"
 class Clojurescript < Formula
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2311.tar.gz"
-  sha1 "dfce06b02f8e89ab60cd87d02d7092c30ec1f362"
+  url "https://github.com/clojure/clojurescript/archive/r2411.tar.gz"
+  sha1 "99022cf050aa5f712b295e74aa8e845ad6cdb4b8"
 
   bottle do
     cellar :any
-    sha1 "4dc103c7f1e1216affa15c1ccc73eca82731df6c" => :mavericks
-    sha1 "9796fa561d4b13830a7a7384a24599c0a0219bb1" => :mountain_lion
-    sha1 "58c0a3d966e36819c85593b19c338886d71dd3cc" => :lion
+    sha1 "09c172126af27f251d97faf51bccec08701b02b4" => :yosemite
+    sha1 "01b25ba53a056b9a5bbd895c69c8a9d7bb981ff8" => :mavericks
+    sha1 "67852244cdfaaf0df84b8bcec440fe43fb719b6f" => :mountain_lion
   end
 
   def install
@@ -28,6 +28,12 @@ class Clojurescript < Formula
   end
 
   test do
-    system "#{bin}/cljsc"
+    (testpath/"t.cljs").write <<-EOF.undent
+    (ns hello)
+    (defn ^:export greet [n]
+      (str "Hello " n))
+    EOF
+
+    system "#{bin}/cljsc", testpath/"t.cljs"
   end
 end

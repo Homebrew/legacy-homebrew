@@ -7,8 +7,8 @@ class Dash < Formula
 
   head do
     url 'https://git.kernel.org/pub/scm/utils/dash/dash.git'
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   def install

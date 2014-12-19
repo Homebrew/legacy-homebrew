@@ -2,16 +2,16 @@ require "formula"
 
 class Clutter < Formula
   homepage "https://wiki.gnome.org/Projects/Clutter"
-  url "http://ftp.gnome.org/pub/gnome/sources/clutter/1.18/clutter-1.18.4.tar.xz"
-  sha256 "4eea1015cd6d4b4945cb5d4a60e52275b0d70e13852d6d99c9abc0cd4deeb60c"
+  url "http://ftp.gnome.org/pub/gnome/sources/clutter/1.20/clutter-1.20.0.tar.xz"
+  sha256 "cc940809e6e1469ce349c4bddb0cbcc2c13c087d4fc15cda9278d855ee2d1293"
 
   bottle do
-    sha1 "de24b028cfc61d47b60e9d539dc5e3e2a8b41c8e" => :mavericks
-    sha1 "5ae46c3e3f7196e7df4c467d38fb8ce2b6942584" => :mountain_lion
-    sha1 "daf3abee60ec5e8cbbaa99c56223ae520e0d4fc3" => :lion
+    sha1 "f9ef97d254247e2e0ab98fbaf3723d577c115ab4" => :mavericks
+    sha1 "063234b823140c65483e9ac0dbbf4af63764431b" => :mountain_lion
+    sha1 "7565ae43a559f988271cfdf8a745cc7919659efe" => :lion
   end
 
-  option "without-x", "Build without X11 support"
+  deprecated_option "without-x" => "without-x11"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
@@ -21,7 +21,7 @@ class Clutter < Formula
   depends_on "atk"
   depends_on "pango"
   depends_on "json-glib"
-  depends_on :x11 => "2.5.1" if build.with? "x"
+  depends_on :x11 => ["2.5.1", :recommended]
   depends_on "gobject-introspection"
 
   def install
@@ -37,7 +37,7 @@ class Clutter < Formula
       --disable-gtk-doc-html
     ]
 
-    if build.with? "x"
+    if build.with? "x11"
       args.concat %w{
         --with-x --enable-x11-backend=yes
         --enable-gdk-pixbuf=yes

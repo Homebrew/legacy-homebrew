@@ -2,42 +2,49 @@ require 'formula'
 
 class Libcouchbase < Formula
   homepage 'http://couchbase.com/communities/c'
-  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.1.tar.gz'
-  sha1 '08de7dc4199549857abe3443f3680f203ca6e0b5'
+  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.4.tar.gz'
+  sha1 'eedc67ef4f85fd51b6bc43cb222e07f6d07241a8'
+  head "https://github.com/couchbase/libcouchbase", :using => :git
 
   bottle do
-    sha1 "404761e3088259cd6819c4a39b8777241042800e" => :mavericks
-    sha1 "3bb41c024108b989d6cc57e42a42de8db643c70d" => :mountain_lion
-    sha1 "9bc84fc8a8db04ae3b59061107faacd53bd05282" => :lion
+    sha1 "9bb6e3e3a8e7ea35a9bbed61276ae151646c852f" => :yosemite
+    sha1 "8da9e14594a3565d2746107ac0f00e4cb30f5840" => :mavericks
+    sha1 "b9074a78a2ac0106cb19b8c810980ba7f8ce0005" => :mountain_lion
   end
 
   option :universal
-  option 'with-libev-plugin', 'Build libev IO plugin (will pull libev dependency)'
-  option 'without-libevent-plugin', 'Do not build libevent plugin (will remove libevent dependency)'
+  option "with-libev", "Build libev plugin"
+  option "without-libevent", "Do not build libevent plugin"
 
-  depends_on 'libev' if build.with?('libev-plugin')
-  depends_on 'libevent' if build.with?('libevent-plugin')
-  depends_on 'openssl'
+  deprecated_option "with-libev-plugin" => "with-libev"
+  deprecated_option "without-libevent-plugin" => "without-libevent"
+
+  depends_on "libev" => :optional
+  depends_on "libuv" => :optional
+  depends_on "libevent" => :recommended
+  depends_on "openssl"
+  depends_on 'cmake' => :build
 
   def install
-    args = [
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--disable-examples",
-      "--disable-tests", # don't download google-test framework
-      "--disable-couchbasemock"
-    ]
+    args = std_cmake_args
+    args << '-DLCB_NO_TESTS=1'
+
+    ['libev', 'libevent', 'libuv'].each do |pname|
+        args << "-DLCB_BUILD_#{pname.upcase}=" + (build.with?("#{pname}") ? 'ON' : 'OFF')
+    end
     if build.universal?
-      args << "--enable-fat-binary"
+      args << '-DLCB_UNIVERSAL_BINARY=1'
       ENV.universal_binary
     end
-    if build.without?('libev-plugin') && build.without?("libevent-plugin")
-      # do not do plugin autodiscovery
-      args << "--disable-plugins"
+    if build.without?('libev') && build.without?('libuv') && build.without?('libevent')
+      args << '-DLCB_NO_PLUGINS=1'
     end
-    system "./configure", *args
-    system "make install"
+
+    ENV["GIT_DIR"] = cached_download/".git" if build.head?
+    mkdir 'LCB-BUILD' do
+      system "cmake", "..", *args
+      system 'make install'
+    end
   end
 
   test do

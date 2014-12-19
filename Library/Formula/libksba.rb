@@ -2,15 +2,15 @@ require 'formula'
 
 class Libksba < Formula
   homepage 'http://www.gnupg.org/related_software/libksba/index.en.html'
-  url 'ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.0.tar.bz2'
-  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.0.tar.bz2'
-  sha1 '241afcb2dfbf3f3fc27891a53a33f12d9084d772'
+  url 'ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.2.tar.bz2'
+  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.2.tar.bz2'
+  sha1 '37d0893a587354af2b6e49f6ae701ca84f52da67'
 
   bottle do
     cellar :any
-    sha1 "45f55ff042d927fda0d9ae290a509b1ceb285ce6" => :mavericks
-    sha1 "e10515a7634d58e5948c78f378f0690e8e7274ac" => :mountain_lion
-    sha1 "fbe0bd166c4766fcacbbee7df0320b77b8ef6f0b" => :lion
+    sha1 "d7ad259546f648c7187b0d213df2d747267affff" => :yosemite
+    sha1 "fb1657abc91ef16076fe005b42f77d0a67ab849f" => :mavericks
+    sha1 "f0a2bd05b9cb065384230ed3c2054af847ce4b67" => :mountain_lion
   end
 
   depends_on 'libgpg-error'

@@ -1,4 +1,4 @@
-require 'cmd/install'
+require "formula_installer"
 
 module Homebrew
   def reinstall
@@ -20,8 +20,7 @@ module Homebrew
 
     fi = FormulaInstaller.new(f)
     fi.options             = options
-    fi.build_bottle        = ARGV.build_bottle?
-    fi.build_bottle      ||= tab.built_as_bottle && !tab.poured_from_bottle
+    fi.build_bottle        = ARGV.build_bottle? || tab.build_bottle?
     fi.build_from_source   = ARGV.build_from_source?
     fi.force_bottle        = ARGV.force_bottle?
     fi.verbose             = ARGV.verbose?
@@ -32,8 +31,6 @@ module Homebrew
     fi.finish
   rescue FormulaInstallationAlreadyAttemptedError
     # next
-  rescue FormulaAlreadyInstalledError => e
-    opoo e.message
   rescue Exception
     ignore_interrupts { restore_backup(keg, f) }
     raise

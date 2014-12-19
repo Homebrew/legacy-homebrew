@@ -2,14 +2,14 @@ require "formula"
 
 class Libsodium < Formula
   homepage "https://github.com/jedisct1/libsodium/"
-  url "https://github.com/jedisct1/libsodium/releases/download/0.7.0/libsodium-0.7.0.tar.gz"
-  sha256 "4ccaffd1a15be67786e28a61b602492a97eb5bcb83455ed53c02fa038b8e9168"
+  url "https://github.com/jedisct1/libsodium/releases/download/1.0.1/libsodium-1.0.1.tar.gz"
+  sha256 "c3090887a4ef9e2d63af1c1e77f5d5a0656fadb5105ebb9fb66a302210cb3af5"
 
   bottle do
     cellar :any
-    sha1 "ca839a670db890368991ed87aa5b3d67411ba9d6" => :mavericks
-    sha1 "a79059314bfdee0c91b1899e73e5135a70bde753" => :mountain_lion
-    sha1 "1bb615898bd7751553069c76e9ddd901b568ef9b" => :lion
+    sha1 "37715a34a7ee3af1b584d4ad1f7ae1561f414a04" => :yosemite
+    sha1 "ae23cbaac10d5b77c89e8bc16ac3fbe5f0965633" => :mavericks
+    sha1 "d80e8038aed95ccaf681317615346cb0255a52b9" => :mountain_lion
   end
 
   head do
@@ -28,7 +28,7 @@ class Libsodium < Formula
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 end

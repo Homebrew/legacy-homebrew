@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Ack < Formula
-  homepage 'http://beyondgrep.com/'
-  url 'http://beyondgrep.com/ack-2.12-single-file'
-  sha1 '667b5f2dd83143848a5bfa47f7ba848cbe556e93'
-  version '2.12'
+  homepage "http://beyondgrep.com/"
+  url "http://beyondgrep.com/ack-2.14-single-file"
+  sha1 "49c43603420521e18659ce3c50778a4894dd4a5f"
+  version "2.14"
 
   def install
     bin.install "ack-#{version}-single-file" => "ack"

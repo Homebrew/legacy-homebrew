@@ -5,28 +5,29 @@ require 'formula'
 # elixir are compatible.
 class Erlang < Formula
   homepage 'http://www.erlang.org'
-  # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/archive/OTP-17.1.tar.gz"
-  sha1 "f983a14152948a23418133155b5f9ba070544292"
-  revision 1
 
-  head 'https://github.com/erlang/otp.git', :branch => 'master'
+  stable do
+    # Download tarball from GitHub; it is served faster than the official tarball.
+    url "https://github.com/erlang/otp/archive/OTP-17.4.tar.gz"
+    sha256 "3fe1de7915cd603ebabe103d5d94b8f440fe57ad8e6f62bd6837b6949e08ba1a"
+  end
+
+  head 'https://github.com/erlang/otp.git'
 
   bottle do
-    revision 1
-    sha1 "960880f03335f05b18c77d5a4d50d9956ab8efe4" => :mavericks
-    sha1 "918dd8f0029ae00f204a9b49b667e099896b79b6" => :mountain_lion
-    sha1 "12793763351b6854e377bf9fa363f4f203a8b30c" => :lion
+    sha1 "d57bf012cf0ce9eb4ba8afc862c668c2f5c56142" => :yosemite
+    sha1 "e6c6a773e22bc37b1045ca70d23a264775d0d39e" => :mavericks
+    sha1 "b8cb36e2af07ebe98d79c9a1ac5d3429f3800a1e" => :mountain_lion
   end
 
   resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_17.1.tar.gz"
-    sha1 "c23cc3c9d4b9ba5d1a61b2156be0edd16ce6144d"
+    url "http://www.erlang.org/download/otp_doc_man_17.4.tar.gz"
+    sha256 "6c1cdb8e9d367c7b6dc6b20706de9fd0a0f0b7dffd66532663b2a24ed7679a58"
   end
 
   resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_17.1.tar.gz"
-    sha1 "6a8af3937fc87450b0c1acf4a35d311fd8042bf9"
+    url "http://www.erlang.org/download/otp_doc_html_17.4.tar.gz"
+    sha256 "dd42b0104418de18e2247608a337bcd3bb24c59bbc36294deb5fae73ab6c90d6"
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
@@ -45,8 +46,6 @@ class Erlang < Formula
   fails_with :llvm
 
   def install
-    ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
-
     # Unset these so that building wx, kernel, compiler and
     # other modules doesn't fail with an unintelligable error.
     %w[LIBS FLAGS AFLAGS ZFLAGS].each { |k| ENV.delete("ERL_#{k}") }

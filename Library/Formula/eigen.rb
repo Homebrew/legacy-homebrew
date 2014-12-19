@@ -7,9 +7,10 @@ class Eigen < Formula
 
   bottle do
     cellar :any
-    sha1 "5a64fff74d8c341cfcc36666810531261e0fd7a0" => :mavericks
-    sha1 "28fb90c14195d63016ff9783cb4dd259fab257db" => :mountain_lion
-    sha1 "7d09cae778259591337bf397b061fe7cd516c3a5" => :lion
+    revision 1
+    sha1 "5e6fb3f9fbd51f270285a5c9f2ed4f98b59b2279" => :yosemite
+    sha1 "21743daea899324556b877aedb986a459a11e89d" => :mavericks
+    sha1 "9654532e0b9f6762ee73c3938696cf95bc20a813" => :mountain_lion
   end
 
   head 'https://bitbucket.org/eigen/eigen', :using => :hg
@@ -28,5 +29,24 @@ class Eigen < Formula
       system 'cmake', *args
       system 'make install'
     end
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <iostream>
+      #include <Eigen/Dense>
+      using Eigen::MatrixXd;
+      int main()
+      {
+        MatrixXd m(2,2);
+        m(0,0) = 3;
+        m(1,0) = 2.5;
+        m(0,1) = -1;
+        m(1,1) = m(1,0) + m(0,1);
+        std::cout << m << std::endl;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-I#{include}/eigen3", "-o", "test"
+    assert_equal `./test`.split, %w[3 -1 2.5 1.5]
   end
 end

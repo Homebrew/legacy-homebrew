@@ -1,40 +1,27 @@
-require 'formula'
-
-class SnowLeopardOrOlder < Requirement
-  fatal true
-  def satisfied?
-    MacOS.version <= :snow_leopard
-  end
-
-  def message; <<-EOS.undent
-    This version of ld64 will only build on 10.6 and older.
-    It is provided for older versions of OS X.
-    EOS
-  end
-end
+require "formula"
 
 class Ld64 < Formula
-  homepage 'http://opensource.apple.com/'
+  homepage "http://opensource.apple.com/"
   # Latest is 134.9, but it no longer supports building for PPC.
   # 127.2 won't build on Tiger, at least without some patching.
   # Leopard users: if you like, add a 127.2 option or fix the build
   # on Tiger.
   #
-  url 'http://opensource.apple.com/tarballs/ld64/ld64-97.17.tar.gz'
-  sha1 '7c1d816c2fec02e558f4a528d16d8161f0e379b5'
+  url "http://opensource.apple.com/tarballs/ld64/ld64-97.17.tar.gz"
+  sha1 "7c1d816c2fec02e558f4a528d16d8161f0e379b5"
 
   resource "makefile" do
     url "https://trac.macports.org/export/123511/trunk/dports/devel/ld64/files/Makefile-97", :using => :nounzip
     sha1 "581688eb31a44b406dfb7476a770d2cff190f2bd"
   end
 
-  depends_on SnowLeopardOrOlder
+  depends_on MaximumMacOSRequirement => :snow_leopard
 
   # Tiger either includes old versions of these headers,
   # or doesn't ship them at all
-  depends_on 'cctools-headers' => :build
-  depends_on 'dyld-headers' => :build
-  depends_on 'libunwind-headers' => :build
+  depends_on "cctools-headers" => :build
+  depends_on "dyld-headers" => :build
+  depends_on "libunwind-headers" => :build
 
   keg_only :provided_by_osx,
     "ld64 is an updated version of the ld shipped by Apple."
@@ -64,16 +51,16 @@ class Ld64 < Formula
   def install
     buildpath.install resource("makefile")
     mv "Makefile-97", "Makefile"
-    inreplace 'src/ld/Options.cpp', '@@VERSION@@', version
+    inreplace "src/ld/Options.cpp", "@@VERSION@@", version
 
     if MacOS.version < :leopard
       # No CommonCrypto
-      inreplace 'src/ld/MachOWriterExecutable.hpp' do |s|
-        s.gsub! '<CommonCrypto/CommonDigest.h>', '<openssl/md5.h>'
-        s.gsub! 'CC_MD5', 'MD5'
+      inreplace "src/ld/MachOWriterExecutable.hpp" do |s|
+        s.gsub! "<CommonCrypto/CommonDigest.h>", "<openssl/md5.h>"
+        s.gsub! "CC_MD5", "MD5"
       end
 
-      inreplace 'Makefile', "-Wl,-exported_symbol,__mh_execute_header", ""
+      inreplace "Makefile", "-Wl,-exported_symbol,__mh_execute_header", ""
     end
 
     args = %W[
@@ -87,9 +74,9 @@ class Ld64 < Formula
     args << "OTHER_LDFLAGS_LD64=-lcrypto" if MacOS.version < :leopard
 
     # Macports makefile hardcodes optimization
-    inreplace 'Makefile' do |s|
-      s.change_make_var! 'CFLAGS', ENV.cflags
-      s.change_make_var! 'CXXFLAGS', ENV.cxxflags
+    inreplace "Makefile" do |s|
+      s.change_make_var! "CFLAGS", ENV.cflags
+      s.change_make_var! "CXXFLAGS", ENV.cxxflags
     end
 
     system "make", *args

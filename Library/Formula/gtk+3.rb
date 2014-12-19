@@ -1,49 +1,54 @@
-require 'formula'
+require "formula"
 
 class Gtkx3 < Formula
-  homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.12/gtk+-3.12.2.tar.xz'
-  sha256 '61d74eea74231b1ea4b53084a9d6fc9917ab0e1d71b69d92cbf60a4b4fb385d0'
+  homepage "http://gtk.org/"
+  url "http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.6.tar.xz"
+  sha256 "cfc424e6e10ffeb34a33762aeb77905c3ed938f0b4006ddb7e880aad234ef119"
 
   bottle do
-    sha1 "fccd14776278ef85a2e50303d761648f01c7932a" => :mavericks
-    sha1 "227f2d2b607285abd9251519529f895c99776cbb" => :mountain_lion
-    sha1 "a024c7978ddc23887ad740d1302cc94ce1d95f03" => :lion
+    sha1 "f2074aa249d5695a575a210d2452e8182f8c3435" => :yosemite
+    sha1 "406cc2d01dadccd00a995459c8f16d0e4fab7299" => :mavericks
+    sha1 "abe63c674b9bf60027629c480536ae8454a6ab29" => :mountain_lion
   end
 
-  depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'jpeg'
-  depends_on 'libtiff'
-  depends_on 'gdk-pixbuf'
-  depends_on 'pango'
-  depends_on 'cairo'
-  depends_on 'jasper' => :optional
-  depends_on 'atk'
-  depends_on 'at-spi2-atk'
-  depends_on 'gobject-introspection'
-  depends_on 'gsettings-desktop-schemas' => :recommended
+  option :universal
+
+  depends_on :x11 => ["2.5", :recommended] # needs XInput2, introduced in libXi 1.3
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "gdk-pixbuf"
+  depends_on "pango"
+  depends_on "cairo"
+  depends_on "jasper" => :optional
+  depends_on "atk"
+  depends_on "at-spi2-atk" if build.with? "x11"
+  depends_on "gobject-introspection"
+  depends_on "gsettings-desktop-schemas" => :recommended
 
   def install
-    # gtk-update-icon-cache is used during installation, and
-    # we don't want to add a dependency on gtk+2 just for this.
-    inreplace %w[ gtk/makefile.msc.in
-                  demos/gtk-demo/Makefile.in
-                  demos/widget-factory/Makefile.in ],
-                  /gtk-update-icon-cache --(force|ignore-theme-index)/,
-                  "#{buildpath}/gtk/\\0"
+    ENV.universal_binary if build.universal?
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-glibtest",
-                          "--enable-introspection=yes",
-                          "--enable-x11-backend",
-                          "--disable-schemas-compile"
-    system "make install"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-glibtest
+      --enable-introspection=yes
+      --disable-schemas-compile
+    ]
+
+    if build.without? "x11"
+      args << "--enable-quartz-backend" << "--enable-quartz-relocation"
+    else
+      args << "--enable-x11-backend"
+    end
+
+    system "./configure", *args
+    system "make", "install"
     # Prevent a conflict between this and Gtk+2
-    mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
+    mv bin/"gtk-update-icon-cache", bin/"gtk3-update-icon-cache"
   end
 
   def post_install

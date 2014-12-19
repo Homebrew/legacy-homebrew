@@ -1,14 +1,15 @@
-require 'formula'
+require "formula"
 
 class Libtrace < Formula
-  homepage 'http://research.wand.net.nz/software/libtrace.php'
-  url 'http://research.wand.net.nz/software/libtrace/libtrace-3.0.19.tar.bz2'
-  sha1 'feadbd3ca4f1363055f305e445fdd02995c07f3f'
+  homepage "http://research.wand.net.nz/software/libtrace.php"
+  url "http://research.wand.net.nz/software/libtrace/libtrace-3.0.21.tar.bz2"
+  sha1 "208908ceee0dde9a556dc4cf1d5dac7320f6bae3"
 
   bottle do
-    sha1 "8a81dce47f39b1f226cde176f818dfadd93baf6d" => :mavericks
-    sha1 "fcad7f2f195f8fc54baeca27b183d58172e6f5e1" => :mountain_lion
-    sha1 "027b68f4638e318801693a85fc699c33b91065b6" => :lion
+    revision 1
+    sha1 "21ed3acff5c080c76ff0e49f21b7d8e0333478d8" => :yosemite
+    sha1 "d2cf23b52f028f5094daef2c0e62c8340927c717" => :mavericks
+    sha1 "0e334011d10d9212b30bf633cdadbaa714f90007" => :mountain_lion
   end
 
   def install

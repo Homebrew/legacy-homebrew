@@ -5,6 +5,7 @@ class Sqlmap < Formula
   url "https://github.com/sqlmapproject/sqlmap/archive/0.9.tar.gz"
   sha1 "25d7c13fc6e8bb55a1b4d9ba60a7ebd558ad0374"
   head "https://github.com/sqlmapproject/sqlmap.git"
+  revision 1
 
   option "with-mysql", "Install with support for direct connection to MySQL"
   option "with-postgresql", "Install with support for direct connection to PostgreSQL"

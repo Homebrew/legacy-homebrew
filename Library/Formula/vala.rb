@@ -2,14 +2,13 @@ require "formula"
 
 class Vala < Formula
   homepage "http://live.gnome.org/Vala"
-  head "git://git.gnome.org/vala"
-  url "http://ftp.acc.umu.se/pub/gnome/sources/vala/0.24/vala-0.24.0.tar.xz"
-  sha1 "33a71a21e12e80cf1f4e0aa3b6a6523ff38e92c8"
+  url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.26/vala-0.26.1.tar.xz"
+  sha256 "8407abb19ab3a58bbfc0d288abb47666ef81f76d0540258c03965e7545f59e6b"
 
   bottle do
-    sha1 "96f56ca5ec48b7e0822a6693818d38ca21499014" => :mavericks
-    sha1 "1562fe59048fe478e05914c4ae7f239c8e29bb4b" => :mountain_lion
-    sha1 "2aa1c2c25eda470464541c6d5d76d4d0cabb92e4" => :lion
+    sha1 "9e829527c2662e38375a04116802f8975109fc5b" => :yosemite
+    sha1 "22d08887de342be1704472063003caa6c3a33f03" => :mavericks
+    sha1 "0ad74c02e196ac61098dddc8b8c4caec7d91a044" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -18,6 +17,7 @@ class Vala < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make" # Fails to compile as a single step
     system "make", "install"

@@ -7,9 +7,10 @@ class Libart < Formula
 
   bottle do
     cellar :any
-    sha1 "9f94f4fdc6a9817aa3c5949a2b7fea26d576418c" => :mavericks
-    sha1 "2641e109b753dc8156fa35cffe72a9f1b36e4809" => :mountain_lion
-    sha1 "153050c4f1160411d33ac4fb57477bf5efb79568" => :lion
+    revision 1
+    sha1 "aac404192ca03b3d0ae86f0a099d8c513e741d3c" => :yosemite
+    sha1 "f366dbf500cb5d0ce96f76447cce108b3db95468" => :mavericks
+    sha1 "1bb45d0e252483791006c138a83b133e84676f2a" => :mountain_lion
   end
 
   def install

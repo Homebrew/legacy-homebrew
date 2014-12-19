@@ -8,7 +8,7 @@ require "build_options"
 require "cxxstdlib"
 require "keg"
 require "extend/ENV"
-require "debrew" if ARGV.debug?
+require "debrew"
 require "fcntl"
 
 class Build
@@ -109,8 +109,13 @@ class Build
       end
     end
 
+    if ARGV.debug?
+      formula.extend(Debrew::Formula)
+      formula.resources.each { |r| r.extend(Debrew::Resource) }
+    end
+
     formula.brew do
-      if ARGV.flag? '--git'
+      if ARGV.git?
         system "git", "init"
         system "git", "add", "-A"
       end
@@ -119,7 +124,7 @@ class Build
         puts "Type `exit' to return and finalize the installation"
         puts "Install to this prefix: #{formula.prefix}"
 
-        if ARGV.flag? '--git'
+        if ARGV.git?
           puts "This directory is now a git repo. Make your changes and then use:"
           puts "  git diff | pbcopy"
           puts "to copy the diff to the clipboard."
@@ -129,17 +134,7 @@ class Build
       else
         formula.prefix.mkpath
 
-        formula.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
-
-        begin
-          formula.install
-        rescue Exception => e
-          if ARGV.debug?
-            debrew(e, formula)
-          else
-            raise
-          end
-        end
+        formula.install
 
         stdlibs = detect_stdlibs
         Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
@@ -172,7 +167,7 @@ class Build
     end
     Keg.new(path).optlink
   rescue StandardError
-    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
+    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f.name}. Sorry :("
   end
 end
 
@@ -190,7 +185,6 @@ begin
   build   = Build.new(formula, options)
   build.install
 rescue Exception => e
-  e.continuation = nil if ARGV.debug?
   Marshal.dump(e, error_pipe)
   error_pipe.close
   exit! 1

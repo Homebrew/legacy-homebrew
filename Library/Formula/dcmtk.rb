@@ -18,7 +18,7 @@ class Dcmtk < Formula
   depends_on 'cmake' => :build
   depends_on "libpng"
   depends_on 'libtiff'
-  depends_on 'doxygen' if build.with? "docs"
+  depends_on "doxygen" => :build if build.with? "docs"
 
   # This roughly corresponds to thefollowing upstream patch:
   #

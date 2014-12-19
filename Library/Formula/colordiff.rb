@@ -7,6 +7,7 @@ class Colordiff < Formula
 
   bottle do
     cellar :any
+    sha1 "b4715b46336a19e8580a1978be0efa815f4f0f3d" => :yosemite
     sha1 "724512050ef11d4b0f99eb46b2fa98a44520e5a6" => :mavericks
     sha1 "7cf723ad9a524e8b7159c57e7a7d97687c3df067" => :mountain_lion
     sha1 "37447591b2cea0958f2f695ad9a56012cc4cba9b" => :lion

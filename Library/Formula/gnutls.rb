@@ -1,34 +1,33 @@
-require 'formula'
+require "formula"
 
 # GnuTLS has previous, current, and next stable branches, we use current.
+# From 3.4.0 GnuTLS will be permanently disabling SSLv3. Every brew uses will need a revision with that.
+# http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
-  homepage 'http://gnutls.org'
-  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.17.tar.xz'
-  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.17.tar.xz'
-  sha1 'c48b02912c5dc77b627f1f17dcc05c2be1d59b0f'
+  homepage "http://gnutls.org"
+  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.10.tar.xz"
+  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.10.tar.xz"
+  sha256 "e27553981d48d9211a7e5e94f6e78c575205202a181c2345a1c8466ebf1d2219"
 
   bottle do
     cellar :any
-    sha1 "3e4d0c1cd43da26defe0620b1c619be532e5b536" => :mavericks
-    sha1 "3eb9d4d68f26cf9589d417db111da503951799e9" => :mountain_lion
-    sha1 "d5cef16200d281b8ac69957d2f4c0c436b2c766e" => :lion
+    sha1 "5d22a5706f229e27b48c3279b8c6139f5e273a0c" => :yosemite
+    sha1 "b6636c0b6a7d85c263b911bf3d75019bde1fb7eb" => :mavericks
+    sha1 "348f799829b8e62ce0544a9caacdf2e2ebb1508e" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libtasn1'
-  depends_on 'gmp'
-  depends_on 'nettle'
-  depends_on 'guile' => :optional
-  depends_on 'p11-kit' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "libtasn1"
+  depends_on "gmp"
+  depends_on "nettle"
+  depends_on "guile" => :optional
+  depends_on "p11-kit" => :optional
+  depends_on "unbound" => :optional
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
-
-  # Fix use of stdnoreturn header on Lion
-  # https://www.gitorious.org/gnutls/gnutls/commit/9d2a2d17c0e483f056f98084955fba82b166bd56
-  patch :DATA
 
   def install
     args = %W[
@@ -37,42 +36,27 @@ class Gnutls < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --with-default-trust-store-file=#{etc}/openssl/cert.pem
+      --disable-heartbeat-support
     ]
 
-    if build.with? 'guile'
-      args << '--enable-guile'
-      args << '--with-guile-site-dir=no'
+    if build.with? "guile"
+      args << "--enable-guile"
+      args << "--with-guile-site-dir=no"
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
     # certtool shadows the OS X certtool utility
-    mv bin+'certtool', bin+'gnutls-certtool'
-    mv man1+'certtool.1', man1+'gnutls-certtool.1'
+    mv bin+"certtool", bin+"gnutls-certtool"
+    mv man1+"certtool.1", man1+"gnutls-certtool.1"
   end
 
   def post_install
     Formula["openssl"].post_install
   end
-end
 
-__END__
---- a/src/libopts/autoopts.h
-+++ b/src/libopts/autoopts.h
-@@ -32,7 +32,14 @@
- 
- #ifndef AUTOGEN_AUTOOPTS_H
- #define AUTOGEN_AUTOOPTS_H
--#include <stdnoreturn.h>
-+
-+#ifdef HAVE_STDNORETURN_H
-+# include <stdnoreturn.h>
-+#else
-+# ifndef noreturn
-+#  define noreturn
-+# endif
-+#endif
- 
- #define AO_NAME_LIMIT           127
- #define AO_NAME_SIZE            ((size_t)(AO_NAME_LIMIT + 1))
+  test do
+    system "#{bin}/gnutls-cli", "--version"
+  end
+end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Chruby < Formula
   homepage 'https://github.com/postmodern/chruby#readme'
-  url 'https://github.com/postmodern/chruby/archive/v0.3.8.tar.gz'
-  sha1 '320d13bacafeae72631093dba1cd5526147d03cc'
+  url 'https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz'
+  sha1 '64365226210f82b58092ed01a3fb57d379b99c80'
 
   head 'https://github.com/postmodern/chruby.git'
 
@@ -20,16 +20,16 @@ class Chruby < Formula
     ~/.rubies/. For non-standard installation locations, simply set the RUBIES
     variable after loading chruby.sh:
 
-      RUBIES=(
+      RUBIES+=(
         /opt/jruby-1.7.0
         $HOME/src/rubinius
       )
 
     If you are migrating from another Ruby manager, set `RUBIES` accordingly:
 
-      RVM:   RUBIES=(~/.rvm/rubies/*)
-      rbenv: RUBIES=(~/.rbenv/versions/*)
-      rbfu:  RUBIES=(~/.rbfu/rubies/*)
+      RVM:   RUBIES+=(~/.rvm/rubies/*)
+      rbenv: RUBIES+=(~/.rbenv/versions/*)
+      rbfu:  RUBIES+=(~/.rbfu/rubies/*)
 
     To enable auto-switching of Rubies specified by .ruby-version files,
     add the following to ~/.bashrc or ~/.zshrc:

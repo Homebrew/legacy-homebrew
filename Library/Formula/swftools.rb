@@ -32,8 +32,7 @@ class Swftools < Formula
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/png2swf", "swftools_test.swf", test_png
+    system "#{bin}/png2swf", "swftools_test.swf", test_fixtures("test.png")
   end
 end
 

@@ -33,7 +33,7 @@ class Cmd
     @args = args.freeze
     @brewfix = ENV['HOMEBREW_PREFIX']
     @brewtmp = ENV['HOMEBREW_TEMP']
-    @sysroot = ENV['HOMEBREW_SYSROOT']
+    @sysroot = ENV['HOMEBREW_SDKROOT']
   end
 
   def mode
@@ -93,7 +93,7 @@ class Cmd
       if tool == "ld"
         args << "-syslibroot" << sysroot
       else
-        args << "--sysroot=#{sysroot}"
+        args << "-isysroot" << sysroot << "--sysroot=#{sysroot}"
       end
     end
 

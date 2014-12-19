@@ -2,22 +2,22 @@ require 'formula'
 
 class GstPluginsBad < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.0.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.0.tar.xz'
-  sha256 'ff2cb754f7725b205aec66002b1406e440f3a03194b6cad2d126ef5cd00902f9'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.4.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.4.tar.xz'
+  sha256 'e41b36105c0a13a2cb1ff9f559714e839b82dc3841484cd664790fb7947e55c7'
 
   bottle do
-    sha1 "f8079f35006fb7cfe3f853425d2f6c49904346ac" => :mavericks
-    sha1 "5b0fa02c6824fd1171d958f9101eb52990b86781" => :mountain_lion
-    sha1 "24c489fa9fcfa224451e5ae7c55a70fea995b39f" => :lion
+    sha1 "305cae1ca296427ae68f4b641ea985466486586e" => :yosemite
+    sha1 "96b48ba16e465cdf8fd6db64fcf3a22a8b89d5f8" => :mavericks
+    sha1 "f395b147b64092881bab0cc79b8bad9f44c6690f" => :mountain_lion
   end
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-bad'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on 'pkg-config' => :build

@@ -75,6 +75,7 @@ module Homebrew
   end
 
   def cleanup_cache
+    return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
       next unless (version = file.version)
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
@@ -111,7 +112,7 @@ module Homebrew
   end
 
   def rm_DS_Store
-    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete 2>/dev/null"
+    quiet_system "find", HOMEBREW_PREFIX.to_s, "-name", ".DS_Store", "-delete"
   end
 
 end

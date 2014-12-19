@@ -47,7 +47,7 @@ class Keg
 
       begin
         first.atomic_write(s)
-      rescue Errno::EACCES
+      rescue SystemCallError
         first.ensure_writable do
           first.open("wb") { |f| f.write(s) }
         end
@@ -58,12 +58,12 @@ class Keg
   end
 
   def change_dylib_id(id, file)
-    puts "Changing dylib ID in #{file} to #{id}" if ARGV.debug?
+    puts "Changing dylib ID of #{file}\n  from #{file.dylib_id}\n    to #{id}" if ARGV.debug?
     install_name_tool("-id", id, file)
   end
 
   def change_install_name(old, new, file)
-    puts "Changing install name in #{file} from #{old} to #{new}" if ARGV.debug?
+    puts "Changing install name in #{file}\n  from #{old}\n    to #{new}" if ARGV.debug?
     install_name_tool("-change", old, new, file)
   end
 
@@ -100,7 +100,8 @@ class Keg
   end
 
   def install_name_tool(*args)
-    system(MacOS.locate("install_name_tool"), *args)
+    tool = MacOS.locate("install_name_tool")
+    system(tool, *args) or raise ErrorDuringExecution.new(tool, args)
   end
 
   # If file is a dylib or bundle itself, look for the dylib named by
@@ -153,15 +154,9 @@ class Keg
 
   def mach_o_files
     mach_o_files = []
-    dirs = %w{bin sbin lib Frameworks}
-    dirs.map! { |dir| path.join(dir) }
-    dirs.reject! { |dir| not dir.directory? }
-
-    dirs.each do |dir|
-      dir.find do |pn|
-        next if pn.symlink? or pn.directory?
-        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
-      end
+    path.find do |pn|
+      next if pn.symlink? or pn.directory?
+      mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
     end
 
     mach_o_files

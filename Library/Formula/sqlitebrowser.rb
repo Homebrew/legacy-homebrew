@@ -2,16 +2,16 @@ require 'formula'
 
 class Sqlitebrowser < Formula
   homepage 'http://sqlitebrowser.org'
-  url 'https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.3.1.tar.gz'
-  sha1 '5d05093d602113b27d594878fcf0d8974fe91d20'
+  url 'https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.4.0.tar.gz'
+  sha1 'c60e953639ce8294155fa819a4538b05f8d58b64'
 
   head 'https://github.com/sqlitebrowser/sqlitebrowser.git'
 
   bottle do
     cellar :any
-    sha1 "b84a47145f9bbf241b280e6ccd4646ba38cb1f7a" => :mavericks
-    sha1 "fc8e7173447061f096248e6e468d423a38fd5074" => :mountain_lion
-    sha1 "4f2814aa785bd36b5da13226d0da7a67863a3aeb" => :lion
+    sha1 "b87cee7ab96ddd8892c3e4007f802ca5bf6f7045" => :yosemite
+    sha1 "3ae7a4752bc3c0ba487d1096f47da72876655c7c" => :mavericks
+    sha1 "b633087ab28885f058bc5bcf24ca834828d1c894" => :mountain_lion
   end
 
   depends_on 'qt'

@@ -7,9 +7,9 @@ class Libhid < Formula
 
   bottle do
     cellar :any
-    sha1 "9424e6f77834d9f55ac8d84c25b6395638d8ca45" => :mavericks
-    sha1 "ca68d66b989d1438ca4c80212cc5cf099d3a7b7b" => :mountain_lion
-    sha1 "593119b5c876519fcc9eebe543a4570d1adeabe4" => :lion
+    revision 1
+    sha1 "906bbdb53b10becc5fa7662513ac7ee98bef5b24" => :yosemite
+    sha1 "fcd7fdf048247a5ecb01abbd56f7c03e330c62ca" => :mavericks
   end
 
   depends_on "libusb"

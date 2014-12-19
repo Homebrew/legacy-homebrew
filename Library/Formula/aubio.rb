@@ -5,6 +5,8 @@ class Aubio < Formula
   url 'http://aubio.org/pub/aubio-0.4.1.tar.bz2'
   sha1 '338ec9f633e82c371a370b9727d6f0b86b0ba376'
 
+  head 'https://github.com/piem/aubio.git', :branch => 'develop'
+
   bottle do
     cellar :any
     sha1 "959a1e4eb7bf72573f565af2ebe2c51eb7a6eef4" => :mavericks
@@ -18,7 +20,13 @@ class Aubio < Formula
 
   depends_on :python => :optional
   depends_on 'pkg-config' => :build
-  depends_on :libtool => :build
+  depends_on "libtool" => :build
+
+  depends_on 'libav' => :optional
+  depends_on 'libsndfile' => :optional
+  depends_on 'libsamplerate' => :optional
+  depends_on 'fftw' => :optional
+  depends_on 'jack' => :optional
 
   if build.with? 'python'
     depends_on 'numpy' => :python

@@ -7,9 +7,10 @@ class Libp11 < Formula
 
   bottle do
     cellar :any
-    sha1 "58fbca51b3aa53a8c1ce65a1af5f825d7d8fb774" => :mavericks
-    sha1 "9bf3d942d69e6bdc8f2006478f0ed0769a550885" => :mountain_lion
-    sha1 "64e34bd9d896b95b196f04c7c980b2274f16ff8f" => :lion
+    revision 1
+    sha1 "fc0e0c6804dec4fceb529cefa3a8e756b3cc0633" => :yosemite
+    sha1 "3e955e07a8981bd543283ca58c9698e5cdf163d0" => :mavericks
+    sha1 "c6b65a79de96ef4185e1582a7b5fca98827efde1" => :mountain_lion
   end
 
   head do

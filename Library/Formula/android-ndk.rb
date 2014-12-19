@@ -1,42 +1,36 @@
-require 'formula'
+require "formula"
 
 class AndroidNdk < Formula
-  homepage 'http://developer.android.com/sdk/ndk/index.html'
-  version 'r10'
+  homepage "http://developer.android.com/sdk/ndk/index.html"
 
   if MacOS.prefer_64_bit?
-    url "https://dl.google.com/android/ndk/android-ndk64-r10-darwin-x86_64.tar.bz2"
-    sha1 '9ecda655e448d3b249be17f1d66f7e4f9535a3b8'
-
-    resource "32bit_target" do
-      url "https://dl.google.com/android/ndk/android-ndk32-r10-darwin-x86_64.tar.bz2"
-      sha1 '4a1d226ee7361b51c02e723b5758e3da536cdf8b'
-    end
+    url "http://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86_64.bin"
+    sha1 "6b89cb0c84e2d2bd802a5b78540327c1b3c2d7b8"
   else
-    url "https://dl.google.com/android/ndk/android-ndk64-r10-darwin-x86.tar.bz2"
-    sha1 '0fbfd9b3af17cdab56ac475e1998f53c31fb9c1d'
-
-    resource "32bit_target" do
-      url "https://dl.google.com/android/ndk/android-ndk32-r10-darwin-x86.tar.bz2"
-      sha1 'd38f5fce29e07d8b4deb538ebc2ba1ba4c067afd'
-    end
+    url "http://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86.bin"
+    sha1 "fc1f9593eb9669076c25381322a1386869ac02f0"
   end
 
-  depends_on 'android-sdk'
+  version "r10d"
+
+  depends_on "android-sdk" => :recommended
 
   def install
     bin.mkpath
 
-    # Unpack 32-bit target into current directory
-    target = resource("32bit_target")
-    target.verify_download_integrity(target.fetch)
-    system "tar", "xf", target.cached_download
+    if MacOS.prefer_64_bit?
+      system "chmod", "a+x", "./android-ndk-#{version}-darwin-x86_64.bin"
+      system "./android-ndk-#{version}-darwin-x86_64.bin"
+    else
+      system "chmod", "a+x", "./android-ndk-#{version}-darwin-x86.bin"
+      system "./android-ndk-#{version}-darwin-x86.bin"
+    end
 
     # Now we can install both 64-bit and 32-bit targeting toolchains
-    prefix.install Dir['*']
+    prefix.install Dir["android-ndk-#{version}/*"]
 
     # Create a dummy script to launch the ndk apps
-    ndk_exec = prefix+'ndk-exec.sh'
+    ndk_exec = prefix+"ndk-exec.sh"
     ndk_exec.write <<-EOS.undent
       #!/bin/sh
       BASENAME=`basename $0`

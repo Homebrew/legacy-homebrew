@@ -1,10 +1,9 @@
 require "formula"
 
 class LibtorrentRasterbar < Formula
-  homepage "http://www.rasterbar.com/products/libtorrent/"
-  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.1.tar.gz"
-  sha1 "98f0117bb716cc6210d5698068aa491bc0ac8ad0"
-  revision 1
+  homepage "http://sourceforge.net/projects/libtorrent/"
+  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.3.tar.gz"
+  sha1 "ccdd8bdba178b300921b15b18dfe8c0705f7eb07"
 
   head do
     url "https://libtorrent.googlecode.com/svn/trunk"
@@ -15,30 +14,25 @@ class LibtorrentRasterbar < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "969beb9ebd5d43e9883b099f5e437f124ada4eab" => :mavericks
-    sha1 "7be7e96575fb8e7ec9e52d095d27088379650460" => :mountain_lion
-    sha1 "8146b1dfa41312b545706a9a98cb3cc111c56c89" => :lion
+    sha1 "9e270e0c4c512697b0684793b2e729823da40d0f" => :yosemite
+    sha1 "5af3a0855ae25f39809b3531930e6de970f54cfa" => :mavericks
+    sha1 "7c0b65bc0d436396df9556916a99e40248f55ad9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
   depends_on :python => :optional
   depends_on "geoip" => :optional
-
-  if build.with? "python"
-    depends_on "boost" => "with-python"
-  else
-    depends_on "boost"
-  end
+  depends_on "boost"
+  depends_on "boost-python" if build.with? "python"
 
   def install
-    boost = Formula["boost"]
-
     args = [ "--disable-debug",
              "--disable-dependency-tracking",
+             "--disable-silent-rules",
+             "--enable-encryption",
              "--prefix=#{prefix}",
-             "--with-boost=#{boost.opt_prefix}" ]
+             "--with-boost=#{Formula["boost"].opt_prefix}" ]
 
     # Build python bindings requires forcing usage of the mt version of boost_python.
     if build.with? "python"
@@ -57,6 +51,6 @@ class LibtorrentRasterbar < Formula
       system "./configure", *args
     end
 
-    system "make install"
+    system "make", "install"
   end
 end

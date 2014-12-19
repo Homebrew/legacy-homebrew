@@ -1,21 +1,34 @@
-require 'formula'
+require "formula"
 
 class Hydra < Formula
-  homepage 'http://www.thc.org/thc-hydra/'
-  url 'http://www.thc.org/releases/hydra-8.0.tar.gz'
-  sha1 'd1a705985846caf77c291461f391a43457cc76e5'
+  homepage "https://www.thc.org/thc-hydra/"
+  url "https://www.thc.org/releases/hydra-8.1.tar.gz"
+  sha256 "e4bc2fd11f97a8d985a38a31785c86d38cc60383e47a8f4a5c436351e5135f19"
+
+  head "https://github.com/vanhauser-thc/thc-hydra.git"
 
   bottle do
     cellar :any
-    sha1 "b36a930ea26de765fe8b7f5c7b9b7a81006f291a" => :mavericks
-    sha1 "005cc151ced33f728bef85ef09d437e9482d02e9" => :mountain_lion
-    sha1 "0a44df2fc931a367d41d3c2147802359a9d997f7" => :lion
+    sha1 "1e4448de82ef48e4dd8290b0ebec5fc84690437e" => :yosemite
+    sha1 "df94e14ed8bf4553590545da8a9ac1cdcb72fd8d" => :mavericks
+    sha1 "16c8738d0cdf625c6144c2c2939d3922e2f3b697" => :mountain_lion
   end
 
+  depends_on "pkg-config" => :build
+  depends_on :mysql
+  depends_on "openssl"
+  depends_on "subversion" => :optional
+  depends_on "libidn" => :optional
+  depends_on "libssh" => :optional
+  depends_on "pcre" => :optional
+  depends_on "gtk+" => :optional
+
   def install
+    # Having our gcc in the PATH first can cause issues. Monitor this.
+    # https://github.com/vanhauser-thc/thc-hydra/issues/22
     system "./configure", "--prefix=#{prefix}"
     bin.mkpath
-    system "make all install"
+    system "make", "all", "install"
     share.install prefix/"man" # Put man pages in correct place
   end
 end

@@ -7,9 +7,10 @@ class Libmrss < Formula
 
   bottle do
     cellar :any
-    sha1 "fe2bb6d0b1d869d36a87db51512a37f6d1cb8b74" => :mavericks
-    sha1 "a553e758df554af1b2620ed086f4ee3deabbb325" => :mountain_lion
-    sha1 "48b819d85c99a9b84eff59c3904758478f4d2dab" => :lion
+    revision 1
+    sha1 "e4dacacbaa4b228d3660a2fe3d4126539512a6df" => :yosemite
+    sha1 "195152600295c55989c1c10f423a318f8c612227" => :mavericks
+    sha1 "639128c63408fc8c6960bd8b17ab789418716bfa" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

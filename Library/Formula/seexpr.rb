@@ -6,8 +6,8 @@ class Seexpr < Formula
   sha1 "80890cedd684a93b012b0964dc3b59910aaf5a10"
 
   depends_on "cmake" => :build
+  depends_on "doxygen" => :build
   depends_on "libpng"
-  depends_on "doxygen"
 
   # fix for macosx
   # already present in HEAD so it can be removed after version 1.0.1

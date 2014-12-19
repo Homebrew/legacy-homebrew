@@ -10,9 +10,10 @@ class Liblqr < Formula
 
   bottle do
     cellar :any
-    sha1 "fae0de618015a4f7dd0c2aac8a1985cb4d3677d9" => :mavericks
-    sha1 "6c30f4fc12c409563331db4cee50748db9ae06d3" => :mountain_lion
-    sha1 "cf93eddf8f11497d4354023f7763d5a60ef5d6c5" => :lion
+    revision 1
+    sha1 "7bbd4ffd6c1a531d35781943ca2b69187c3dc435" => :yosemite
+    sha1 "3d4a549790100beea4b5382a29dd725e300acebe" => :mavericks
+    sha1 "bd524e0373ad841ccd7c838eccb279f710502633" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

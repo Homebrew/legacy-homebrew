@@ -21,9 +21,10 @@ class Libkml < Formula
 
   bottle do
     cellar :any
-    sha1 "fd05eca1ca215f88295488af18b2d1c1e410b7a7" => :mavericks
-    sha1 "0a83c29449cf8b6af9770d04dcad2d65c2d1cc0a" => :mountain_lion
-    sha1 "0dcde8dbaf1d05fb30e617c84ba13bd5ad9df289" => :lion
+    revision 1
+    sha1 "604dafcf5fb8135e89f4636af4ecb21b404b4e4b" => :yosemite
+    sha1 "61000bffb52eb852149276e37b42461fd5f710a7" => :mavericks
+    sha1 "68d01ed7b9748caa23f6309c62e836cb030f673d" => :mountain_lion
   end
 
   head do

@@ -2,10 +2,25 @@ require "formula"
 
 class Minidlna < Formula
   homepage "http://sourceforge.net/projects/minidlna/"
-  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.3/minidlna-1.1.3.tar.gz"
-  sha1 "3e5b907fd35b667eb50af98e1f986c7f461a6042"
+  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.4/minidlna-1.1.4.tar.gz"
+  sha1 "56f333f8af91105ce5f0861d1f1918ebf5b0a028"
+  revision 1
 
-  depends_on "libav"
+  bottle do
+    cellar :any
+    sha1 "f49443165618a73072821cdc481902d676791502" => :mavericks
+    sha1 "88bf53f515ddcd48ce3cbee067717ef1f0b4d5f6" => :mountain_lion
+    sha1 "00a4fbe01ab17fb3c09c68cccf4fc902a1d9a859" => :lion
+  end
+
+  head do
+    url "git://git.code.sf.net/p/minidlna/git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "gettext" => :build
+  end
+
   depends_on "libexif"
   depends_on "jpeg"
   depends_on "libid3tag"
@@ -15,13 +30,9 @@ class Minidlna < Formula
   depends_on "sqlite"
   depends_on "ffmpeg"
 
-  patch do
-    url "http://sourceforge.net/p/minidlna/patches/104/attachment/0001-Remove-check-for-getifaddr-returning-IFF_SLAVE-if-IF.patch"
-    sha1 "768b119a59c803af4d074138b70b245aa72e426f"
-  end
-
   def install
     ENV.append_to_cflags "-std=gnu89"
+    system "./autogen.sh" if build.head?
     system "./configure", "--exec-prefix=#{prefix}"
     system "make", "install"
     sample_config_path.write sample_config

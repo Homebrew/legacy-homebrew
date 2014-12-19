@@ -7,9 +7,9 @@ class Libtommath < Formula
 
   bottle do
     cellar :any
-    sha1 "2a4fe84f016de2fa55f610fce1671fe8b561a43f" => :mavericks
-    sha1 "57a06b4dc313447d1032d43e3a2fec2f939896c7" => :mountain_lion
-    sha1 "a6eb6cf4910a879832026765152f821976c776c7" => :lion
+    revision 1
+    sha1 "fe3bb489505e96a505676c1cbca5ebc554c8990c" => :yosemite
+    sha1 "59fa62fa21fbdb2e938d40cf6171c074db8f2e05" => :mavericks
   end
 
   def install

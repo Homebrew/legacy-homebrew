@@ -23,11 +23,18 @@ class Wine < Formula
     end
   end
 
+  bottle do
+    sha1 "348f15e19880888d19d04d2fe4bad42048fe6828" => :yosemite
+    sha1 "69f05602ecde44875cf26297871186aaa0b26cd7" => :mavericks
+    sha1 "a89371854006687b74f4446a52ddb1f68cfafa7e" => :mountain_lion
+  end
+
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.25.tar.bz2"
-    sha256 "f5e35e82e57d49e83d3246a9d84684ecd095705628db59ac0516dab2bb8cf540"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.33.tar.bz2"
+    sha256 "e3519d6fa2c0bb91e58da38f14f02607cf366a0154ff1effe528966106d49275"
 
     depends_on "samba" => :optional
+    depends_on "gnutls"
 
     # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
     # https://bugs.winehq.org/show_bug.cgi?id=34166
@@ -62,14 +69,14 @@ class Wine < Formula
   depends_on 'libgsm' => :optional
 
   resource 'gecko' do
-    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
-    version '2.24'
-    sha1 'b4923c0565e6cbd20075a0d4119ce3b48424f962'
+    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.34-x86.msi', :using => :nounzip
+    version '2.34'
+    sha256 '956c26bf302b1864f4d7cb6caee4fc83d4c1281157731761af6395b876e29ca7'
   end
 
   resource 'mono' do
-    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
-    sha256 'd9124edb41ba4418af10eba519dafb25ab4338c567d25ce0eb4ce1e1b4d7eaad'
+    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.4.msi', :using => :nounzip
+    sha256 '20bced7fee01f25279edf07670c5033d25c2c9834a839e7a20410ce1c611d6f2'
   end
 
   fails_with :llvm do
@@ -109,7 +116,7 @@ class Wine < Formula
     ENV.libxml2
 
     args = ["--prefix=#{prefix}"]
-    args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
+    args << "--disable-win16" if MacOS.version <= :leopard
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
@@ -118,11 +125,25 @@ class Wine < Formula
 
     system "./configure", *args
 
-    unless ENV.compiler == :clang or ENV.compiler == :llvm
-      # The Mac driver uses blocks and must be compiled with clang even if the rest of
-      # Wine is built with gcc. This must be done after configure.
-      system 'make', 'dlls/winemac.drv/Makefile'
-      inreplace 'dlls/winemac.drv/Makefile', /^CC\s*=\s*[^\s]+/, "CC = clang"
+    # The Mac driver uses blocks and must be compiled with an Apple compiler
+    # even if the rest of Wine is built with A GNU compiler.
+    unless ENV.compiler == :clang || ENV.compiler == :llvm || ENV.compiler == :gcc
+      system "make", "dlls/winemac.drv/Makefile"
+      inreplace "dlls/winemac.drv/Makefile" do |s|
+        # We need to use the real compiler, not the superenv shim, which will exec the
+        # configured compiler no matter what name is used to invoke it.
+        cc, cxx = s.get_make_var("CC"), s.get_make_var("CXX")
+        s.change_make_var! "CC", cc.sub(ENV.cc, "xcrun clang") if cc
+        s.change_make_var! "CXX", cc.sub(ENV.cxx, "xcrun clang++") if cxx
+
+        # Emulate some things that superenv would normally handle for us
+        # We're configured to use GNU GCC, so remote an unsupported flag
+        s.gsub! "-gstabs+", ""
+        # Pass the sysroot to support Xcode-only systems
+        cflags  = s.get_make_var("CFLAGS")
+        cflags += " --sysroot=#{MacOS.sdk_path}"
+        s.change_make_var! "CFLAGS", cflags
+      end
     end
 
     system "make install"

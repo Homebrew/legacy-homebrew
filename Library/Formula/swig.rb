@@ -6,9 +6,10 @@ class Swig < Formula
   sha1 "e695a14acf39b25f3ea2d7303e23e39dfe284e31"
 
   bottle do
-    sha1 "1736d03e7704234b4729262cdb4077f6004a87b9" => :mavericks
-    sha1 "dd3ddbbfdc77d9d20f4754fde6bc254568e73920" => :mountain_lion
-    sha1 "f08edf42ba3db64e03e90f6bb17d225e0e5218df" => :lion
+    revision 1
+    sha1 "b8576d0116c858d46655ed5bf19cc31509813f1b" => :yosemite
+    sha1 "a3c2bd9d87e17cfd72197dd798e0b29fd5b25565" => :mavericks
+    sha1 "2ad69b9ef6edb06930914fcb2865a9b09a63366b" => :mountain_lion
   end
 
   option :universal

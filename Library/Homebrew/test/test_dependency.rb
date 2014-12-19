@@ -47,5 +47,8 @@ class DependencyTests < Homebrew::TestCase
     assert_eql foo1, foo2
     refute_equal foo1, bar
     refute_eql foo1, bar
+    foo3 = Dependency.new("foo", [:build])
+    refute_equal foo1, foo3
+    refute_eql foo1, foo3
   end
 end

@@ -10,10 +10,8 @@ module Homebrew
     # Things below use the CELLAR, which doesn't until the first formula is installed.
     return unless HOMEBREW_CELLAR.exist?
 
-    if ARGV.include? '--pinned'
-      list_pinned
-    elsif ARGV.include? '--versions'
-      list_versions
+    if ARGV.include? '--pinned' or ARGV.include? '--versions'
+      filtered_list
     elsif ARGV.named.empty?
       ENV['CLICOLOR'] = nil
       exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
@@ -33,6 +31,7 @@ module Homebrew
     lib/gio/*
     lib/node_modules/*
     lib/python[23].[0-9]/*
+    share/doc/homebrew/*
     share/info/dir
     share/man/man1/brew.1
     share/man/whatis
@@ -57,28 +56,29 @@ module Homebrew
     exec 'find', *args
   end
 
-  def list_versions
-    if ARGV.named.empty?
+  def filtered_list
+    names = if ARGV.named.empty?
       HOMEBREW_CELLAR.subdirs
     else
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
-    end.each do |d|
-      versions = d.subdirs.map { |pn| pn.basename.to_s }
-      next if ARGV.include?('--multiple') && versions.count < 2
-      puts "#{d.basename} #{versions*' '}"
     end
-  end
-
-  def list_pinned
-    if ARGV.named.empty?
-      HOMEBREW_CELLAR.subdirs
-    else
-      ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
-    end.select do |d|
-      keg_pin = (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s)
-      keg_pin.exist? or keg_pin.symlink?
-    end.each do |d|
-      puts d.basename
+    if ARGV.include? '--pinned'
+      pinned_versions = {}
+      names.each do |d|
+        keg_pin = (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s)
+        if keg_pin.exist? or keg_pin.symlink?
+          pinned_versions[d] = keg_pin.readlink.basename.to_s
+        end
+      end
+      pinned_versions.each do |d, version|
+        puts "#{d.basename}".concat(ARGV.include?('--versions') ? " #{version}" : '')
+      end
+    else # --versions without --pinned
+      names.each do |d|
+        versions = d.subdirs.map { |pn| pn.basename.to_s }
+        next if ARGV.include?('--multiple') && versions.count < 2
+        puts "#{d.basename} #{versions*' '}"
+      end
     end
   end
 end

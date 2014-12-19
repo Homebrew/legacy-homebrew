@@ -2,16 +2,22 @@ require "formula"
 
 class Libplist < Formula
   homepage "http://www.libimobiledevice.org"
-  url "http://www.libimobiledevice.org/downloads/libplist-1.11.tar.bz2"
-  sha1 "1a105757596131e3230382c21e06407090505427"
-
-  head "http://git.sukimashita.com/libplist.git"
+  url "http://www.libimobiledevice.org/downloads/libplist-1.12.tar.bz2"
+  sha1 "48f071c723387637ef2cc2980d4ca0627aab067b"
 
   bottle do
     cellar :any
-    sha1 "704dc72fd28c670551533f438ab642e80d269ce2" => :mavericks
-    sha1 "0393087a627ed94d2755717360ad110aef1276f3" => :mountain_lion
-    sha1 "b7e92b4a4b92e46fe9e57dcfdd382a558d04832f" => :lion
+    sha1 "abd1c58c509b305549310367feab44bca513d647" => :yosemite
+    sha1 "e7bf9fbf14a51449b6b8dd5c2f084ace824f553f" => :mavericks
+    sha1 "40172d50d4c836931dbfd38700a9088842c56b6c" => :mountain_lion
+  end
+
+  head do
+    url "http://git.sukimashita.com/libplist.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   option "with-python", "Enable Cython Python bindings"
@@ -21,8 +27,8 @@ class Libplist < Formula
   depends_on :python => :optional
 
   resource "cython" do
-    url "http://cython.org/release/Cython-0.20.2.tar.gz"
-    sha1 "e3fd4c32bdfa4a388cce9538417237172c656d55"
+    url "http://cython.org/release/Cython-0.21.tar.gz"
+    sha1 "f5784539870715e33b51374e9c4451ff6ff21c7f"
   end
 
   def install
@@ -36,14 +42,16 @@ class Libplist < Formula
     if build.with? "python"
       resource("cython").stage do
         ENV.prepend_create_path "PYTHONPATH", buildpath+"lib/python2.7/site-packages"
-        system "python", "setup.py", "build", "install", "--prefix=#{buildpath}"
+        system "python", "setup.py", "build", "install", "--prefix=#{buildpath}",
+                 "--single-version-externally-managed", "--record=installed.txt"
       end
       ENV.prepend_path "PATH", "#{buildpath}/bin"
     else
       args << "--without-cython"
     end
 
+    system "./autogen.sh" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

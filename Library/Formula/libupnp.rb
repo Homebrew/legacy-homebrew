@@ -7,9 +7,9 @@ class Libupnp < Formula
 
   bottle do
     cellar :any
-    sha1 "1034504a16dd58821bf1ca90c302301c3a9884e9" => :mavericks
-    sha1 "4af1bc09d1c4325ba3b726ddcd6206a9cf6cd3cc" => :mountain_lion
-    sha1 "f5068736c9ca5fc46fb8aeb27abc2735c1beda33" => :lion
+    revision 1
+    sha1 "52432174b87b12486f78f8d4c45d0ac7b23e11eb" => :yosemite
+    sha1 "09c01a27803cc08266a601e401b9556f87e760d3" => :mavericks
   end
 
   def install

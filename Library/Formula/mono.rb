@@ -2,29 +2,22 @@ require "formula"
 
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.6.0.tar.bz2"
-  sha1 "54150bf88d6ebdaaa40c474c66680b06a875f060"
+  url "http://download.mono-project.com/sources/mono/mono-3.10.0.tar.bz2"
+  sha1 "74e43604ea48e941c39a43ebc153abee4ddba56c"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha1 "722d16d7fd1546fab4a3514e726a5f0e0255470c" => :mavericks
-    sha1 "8bbc7ba72f9cd758aced741502db4494d8d350fe" => :mountain_lion
-    sha1 "6e166b2b5f51086750a67a561103c996df18e55b" => :lion
+    sha1 "b30c33f4fee61ab76bbd66fd482a6fb389b58dd3" => :yosemite
+    sha1 "fa0b56a4cfa2e48dc1c71573ced4c08c835e19cd" => :mavericks
+    sha1 "2b1b55b8a8b9e0825538a64722234ddd84e72ee2" => :mountain_lion
   end
 
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/latest/monolite-111-latest.tar.gz"
     sha1 "af90068351895082f03fdaf2840b7539e23e3f32"
-  end
-
-  # help mono find its MonoPosixHelper lib when it is not in a system path
-  # see https://bugzilla.xamarin.com/show_bug.cgi?id=18555
-  patch do
-    url "https://bugzilla.xamarin.com/attachment.cgi?id=6399"
-    sha1 "d011dc55f341feea0bdb8aa645688b815910b734"
   end
 
   def install

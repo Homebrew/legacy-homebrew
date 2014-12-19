@@ -6,8 +6,9 @@ class Macvim < Formula
   url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
   version '7.4-73'
   sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
+  revision 1
 
-  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
+  head 'https://github.com/b4winckler/macvim.git'
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
@@ -34,9 +35,6 @@ class Macvim < Formula
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
 
-    # macvim only works with the current Ruby.framework because it builds with -framework Ruby
-    system_ruby = "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
-
     args = %W[
       --with-features=huge
       --enable-multibyte
@@ -44,7 +42,6 @@ class Macvim < Formula
       --enable-perlinterp
       --enable-rubyinterp
       --enable-tclinterp
-      --with-ruby-command=#{system_ruby}
       --with-tlib=ncurses
       --with-compiledby=Homebrew
       --with-local-dir=#{HOMEBREW_PREFIX}

@@ -7,9 +7,10 @@ class Libmaxminddb < Formula
 
   bottle do
     cellar :any
-    sha1 "eaad5ea370b658f2a2f419b34c66a2422c30ffb9" => :mavericks
-    sha1 "550b8196208842a2a9b23260bee6e2f0af046fb5" => :mountain_lion
-    sha1 "9d90e4c33df2e464d825103da1adf1496715aecc" => :lion
+    revision 1
+    sha1 "9ef726ff11d9933e9aa1df2ce8adc21493714259" => :yosemite
+    sha1 "0e3a37a3ad55d27220ec49ee653016ecc649d952" => :mavericks
+    sha1 "3888352b39e903d2f30d6947db0c041ecaa3540a" => :mountain_lion
   end
 
   head do

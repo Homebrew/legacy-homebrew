@@ -7,8 +7,6 @@ class Voldemort < Formula
 
   depends_on :ant => :build
 
-  skip_clean 'libexec/config'
-
   def install
     system "ant"
     libexec.install %w(bin lib dist contrib)

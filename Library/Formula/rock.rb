@@ -9,9 +9,10 @@ class Rock < Formula
 
   bottle do
     cellar :any
-    sha1 "340f82221554850f6f448e8a419eb4076c29af70" => :mavericks
-    sha1 "aeb288109b82299dae4d5149c58915cd1bb973af" => :mountain_lion
-    sha1 "f5e7ac002051485e95874157bdca2ec606da13e0" => :lion
+    revision 1
+    sha1 "8d8dc4f1c1507758216242a7dabea4344395712c" => :mavericks
+    sha1 "74e99570d8e3b12cba3da7c83b4a07dbe1da0f6b" => :mountain_lion
+    sha1 "d6d12b185228741f0a34b7a4836413092c5968a5" => :lion
   end
 
   depends_on 'bdw-gc'
@@ -25,6 +26,15 @@ class Rock < Formula
 
       # install misc authorship files & rock binary in place
       # copy the sdk, libs and docs
-      prefix.install "rock.use", 'README.md', "sdk", "docs"
+      prefix.install "rock.use", "sdk.use", "sdk-net.use", "sdk-dynlib.use", "pcre.use", "sdk", "README.md"
+      doc.install Dir["docs/*"]
+  end
+
+  test do
+    (testpath/"hello.ooc").write <<-EOS.undent
+      import os/Time
+      Time dateTime() println()
+    EOS
+    system "#{bin}/rock", "--run", "hello.ooc"
   end
 end

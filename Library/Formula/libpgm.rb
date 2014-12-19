@@ -8,9 +8,10 @@ class Libpgm < Formula
 
   bottle do
     cellar :any
-    sha1 "a6ef54c95ebc2839235e41d0efc707b2dd666a18" => :mavericks
-    sha1 "6e0993c5ce4ae20d1602564e3d52b27e7e3deccd" => :mountain_lion
-    sha1 "7d25ac41693edf40af6618b411a8e054f0f6c38b" => :lion
+    revision 1
+    sha1 "6e6e3733c7d612a7632e602191f06698ab8e57a3" => :yosemite
+    sha1 "0c0e8cd6d5ac936c9f4c40cc0b83e1ddc2398d6d" => :mavericks
+    sha1 "c68362f62ee7796ed3fbea2f6d93480fd7f6564d" => :mountain_lion
   end
 
   option :universal

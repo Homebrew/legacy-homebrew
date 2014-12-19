@@ -4,30 +4,27 @@ class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
 
   stable do
-    url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
-    sha1 "124b017d493d5ccabd22afaf078d0650ac048840"
-
-    patch do
-      url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
-      sha1 "d3efd38e0f3f0da08530d0bf603ea72ebdf06b78"
-    end
+    url "https://github.com/ariya/phantomjs/archive/1.9.8.tar.gz"
+    sha256 "3a321561677f678ca00137c47689e3379c7fe6b83f7597d2d5de187dd243f7be"
   end
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "3f775a08beeee3c2ec1f491b9621e1ec93ace92a" => :mavericks
-    sha1 "e3a2b1e5a77afea0b3d8913dfa3f791eee3aab9c" => :mountain_lion
-    sha1 "273dbe33d1edbdd034c903d919278d33d7ebe5dd" => :lion
+    sha1 "d7016751675b1b7948e712b7c90e38f698527ae7" => :yosemite
+    sha1 "cb2da81b59d7b5825645d4a598876539a99bf65c" => :mavericks
+    sha1 "c43984e9ffb64d628f27b64bae5b75cbfd9dcfc2" => :mountain_lion
   end
 
   head "https://github.com/ariya/phantomjs.git"
+
+  depends_on "openssl"
 
   def install
     if build.stable? && MacOS.prefer_64_bit?
       inreplace "src/qt/preconfig.sh", "-arch x86", "-arch x86_64"
     end
-    system "./build.sh", "--confirm", "--jobs", ENV.make_jobs
+    system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
+      "--qt-config", "-openssl-linked"
     bin.install "bin/phantomjs"
     (share+"phantomjs").install "examples"
   end

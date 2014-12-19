@@ -7,9 +7,10 @@ class Libpqxx < Formula
 
   bottle do
     cellar :any
-    sha1 "5d81bd92d2249273b5a5eb05d25f24dd4f50c63c" => :mavericks
-    sha1 "b113518319dc1ea6de5b450c55b8faa87daa36cb" => :mountain_lion
-    sha1 "7123ca135b7a02e0618ab36ce982aef00f5fc73d" => :lion
+    revision 1
+    sha1 "dfd78c4be99cf1b24cd99fa01a8dcb97afb18557" => :yosemite
+    sha1 "730d222c2c3329f894edc25df8052d0e6ad8f460" => :mavericks
+    sha1 "3061cee2fd2c387febcbf02a08820d56b8abbda7" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

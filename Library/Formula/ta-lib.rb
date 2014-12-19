@@ -7,9 +7,10 @@ class TaLib < Formula
 
   bottle do
     cellar :any
-    sha1 "3b41107bf0e91d2a7e12f06dddd94e2e8ffb52c3" => :mavericks
-    sha1 "2ab9b06907158d2e57aa281f9efb75954d778fce" => :mountain_lion
-    sha1 "a6c6e471d583eb467c59e0252b44ce9e552b03fc" => :lion
+    revision 1
+    sha1 "54316570c4a461b76b542cd23d862af2142e9157" => :yosemite
+    sha1 "8c930f8da95a9ebc47eacfe5dee8738701f31878" => :mavericks
+    sha1 "8d880bc6c5688afada7c144710827765b1c1a3d4" => :mountain_lion
   end
 
   option :universal

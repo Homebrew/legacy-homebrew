@@ -8,14 +8,14 @@ class Kytea < Formula
     sha1 '2fb22c64a7babff26d95874877d83a9ef1f09617'
 
     # Upstream patch to fix compilation on OS X
-    patch :p1 do
+    patch do
       url "https://github.com/neubig/kytea/commit/782553f61bde4f3366f946c9a390500c028fa17f.diff"
       sha1 "260d62738e53622873b1d467b44576860e5141fe"
     end
   end
 
   head do
-    url 'https://github.com/neubig/kytea.git', :branch => 'master'
+    url 'https://github.com/neubig/kytea.git'
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'libtool' => :build

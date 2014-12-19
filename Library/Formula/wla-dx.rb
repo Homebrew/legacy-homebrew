@@ -4,6 +4,7 @@ class WlaDx < Formula
   homepage 'http://www.villehelin.com/wla.html'
   url 'http://www.villehelin.com/wla_dx_9.5a.tar.gz'
   sha1 '2d14c33b985a594686ca8343488de7c41d690b9d'
+  version "9.5a"
 
   head 'https://wladx.svn.sourceforge.net/svnroot/wladx'
 

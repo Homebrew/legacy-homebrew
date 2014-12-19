@@ -6,13 +6,14 @@ class Hamlib < Formula
   sha1 '15ab404ea37e5627abea89f9e051d393966918ba'
 
   bottle do
-    sha1 "3b8a435d8f65ac2188eb6adc875c939ac9451eb5" => :mavericks
-    sha1 "fcd7912952665e7e6e7c8ae7de37dbe2c66d21f3" => :mountain_lion
-    sha1 "5653222a95a51001c0ca9eff84e7f0443628b8f8" => :lion
+    revision 1
+    sha1 "065230b0278836ac59ff9cfaef2c0c5a3447c4be" => :yosemite
+    sha1 "a84950c2f3415fddd514121d3638b53671d74727" => :mavericks
+    sha1 "febb53a406f79f38d8a7ba1cbdebb88e3aeca966" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :libltdl
+  depends_on 'libtool' => :run
   depends_on 'libusb-compat'
 
   def install

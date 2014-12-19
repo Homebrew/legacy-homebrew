@@ -1,5 +1,5 @@
 require 'testing_env'
-require 'test/testball'
+require 'testball'
 
 class ChecksumVerificationTests < Homebrew::TestCase
   def assert_checksum_good

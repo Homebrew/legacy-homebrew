@@ -7,9 +7,10 @@ class Libltc < Formula
 
   bottle do
     cellar :any
-    sha1 "d0979ebd91c34b428d3b11fc076c42e2082e2149" => :mavericks
-    sha1 "f7ca44ef990b7c3e9d3d2bf65875f1c6c6b90b72" => :mountain_lion
-    sha1 "2bca5d496106a59b582914f55c3348096f1e5a94" => :lion
+    revision 1
+    sha1 "7c4a5165544c7219c9ed12bc39bc1cf384c995bb" => :yosemite
+    sha1 "c55d95885439c8d8696679742ea189db8beaca32" => :mavericks
+    sha1 "75242d6344965aab837d2e66569a8f128d084ff7" => :mountain_lion
   end
 
   def install

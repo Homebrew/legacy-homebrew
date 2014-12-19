@@ -7,13 +7,14 @@ class Speex < Formula
 
   bottle do
     cellar :any
-    sha1 "231116d30e70bf1256773247ae3fec510ed5730e" => :mavericks
-    sha1 "a225f5ca56787ae1172438012d7f2738dbb27430" => :mountain_lion
-    sha1 "1660d549305cc565e903ecf0429a82418981de00" => :lion
+    revision 2
+    sha1 "035c405657c5debb5e41d291bb44f508797a7b51" => :yosemite
+    sha1 "123e086d2548614ff66691f46e6f6e3dce3fa362" => :mavericks
+    sha1 "d9cb07f7de4d226c25d0b8ddbddd3fb0de5f5c53" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'libogg' => :optional
+  depends_on 'libogg' => :recommended
 
   def install
     ENV.j1

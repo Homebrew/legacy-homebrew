@@ -4,11 +4,12 @@ class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
   url "http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
   sha1 "6275f3818579d7b307052e9735c42a8a64313229"
+  revision 1
 
   bottle do
-    sha1 "fffe93d2e67f729cfa36b74e38ba078b7a9b7f2e" => :mavericks
-    sha1 "288802699ff78750cb325a5841d548ae0a12a342" => :mountain_lion
-    sha1 "74a35893e066b2da33342a83dd9e3c9f7548c74e" => :lion
+    sha1 "5de6d96453578bcb65a89dd68128efb856f8e99d" => :mavericks
+    sha1 "f1aeadfbc607c179a54d9c68f45dbb8eb85a57cd" => :mountain_lion
+    sha1 "8170817f314f8136ae2504ec58b7a936f1d316c7" => :lion
   end
 
   head do

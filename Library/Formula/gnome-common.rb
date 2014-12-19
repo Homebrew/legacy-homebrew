@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class GnomeCommon < Formula
-  homepage 'http://git.gnome.org/browse/gnome-common/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gnome-common/3.12/gnome-common-3.12.0.tar.xz'
-  sha256 '18712bc2df6b2dd88a11b9f7f874096d1c0c6e7ebc9cfc0686ef963bd590e1d8'
+  homepage "http://git.gnome.org/browse/gnome-common/"
+  url "http://ftp.gnome.org/pub/gnome/sources/gnome-common/3.14/gnome-common-3.14.0.tar.xz"
+  sha256 "4c00242f781bb441289f49dd80ed1d895d84de0c94bfc2c6818a104c9e39262c"
 
   def install
     system "./configure", "--prefix=#{prefix}"

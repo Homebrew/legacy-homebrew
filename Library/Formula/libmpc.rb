@@ -8,9 +8,9 @@ class Libmpc < Formula
 
   bottle do
     cellar :any
-    sha1 "e16e54c7407b4d69c60d984c5c3b5bd535f367e4" => :mavericks
-    sha1 "432b857c0368882c21df2b92399ba2cb0e5c185c" => :mountain_lion
-    sha1 "8b8959c9c098a1c96a4d017058cc792c6f19c00d" => :lion
+    revision 2
+    sha1 "656a38feba0a27261f7e71060449731f3e18f7ee" => :yosemite
+    sha1 "0f02ce11ca69a24e02e2abd08b01b48192cdac59" => :mavericks
   end
 
   depends_on 'gmp'

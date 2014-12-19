@@ -2,13 +2,13 @@ require 'formula'
 
 class Libgeotiff < Formula
   homepage 'http://geotiff.osgeo.org/'
-  url 'http://download.osgeo.org/geotiff/libgeotiff/libgeotiff-1.4.0.tar.gz'
-  sha1 '4c6f405869826bb7d9f35f1d69167e3b44a57ef0'
+  url 'http://download.osgeo.org/geotiff/libgeotiff/libgeotiff-1.4.1.tar.gz'
+  sha1 'bc9e2bb43f3877b795b4b191e7aec6267f4a1c7e'
 
   bottle do
-    sha1 "81c251028852c1e1cdd0f9ba8f6e023222db4099" => :mavericks
-    sha1 "58398ab68357c0d5ed104eaecf1f52f684df685c" => :mountain_lion
-    sha1 "5c3f8cd77572592d30d542b7d25c354aca8ef932" => :lion
+    sha1 "36537de4979760793a529685086eba83f6bdf5d4" => :yosemite
+    sha1 "8d98c26cef589169e70db65455ee2df94cedc9ef" => :mavericks
+    sha1 "552b698613f5eab0842d408406185ca069fbb0d8" => :mountain_lion
   end
 
   depends_on 'libtiff'

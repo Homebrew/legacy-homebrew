@@ -90,6 +90,13 @@ class TabTests < Homebrew::TestCase
     assert_equal @tab.compiler, tab.compiler
     assert_equal @tab.stdlib, tab.stdlib
   end
+
+  def test_remap_deprecated_options
+    deprecated_options = [DeprecatedOption.new("with-foo", "with-foo-new")]
+    remapped_options = Tab.remap_deprecated_options(deprecated_options, @tab.used_options)
+    assert_includes remapped_options, Option.new("without-bar")
+    assert_includes remapped_options, Option.new("with-foo-new")
+  end
 end
 
 class TabLoadingTests < Homebrew::TestCase

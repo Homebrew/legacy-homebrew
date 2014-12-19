@@ -1,19 +1,20 @@
 require "formula"
 
 class Python < Formula
-  homepage "http://www.python.org"
-  head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
-  sha1 "511960dd78451a06c9df76509635aeec05b2051a"
-  revision 1
+  homepage "https://www.python.org"
+  head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
+  url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz"
+  sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 2
-    sha1 "f1244c117036a733742f128f8a168dcb0568675d" => :mavericks
-    sha1 "41f27fc515410ff728316e994be6f471520e5c90" => :mountain_lion
-    sha1 "cab018e86b60e5a8a8115581a2aa3390b18b3080" => :lion
+    revision 5
+    sha1 "b09c3279b03dbff74166196785af1d8c65a18e05" => :yosemite
+    sha1 "fb87d78832b895b2e41886b12a36cb4b77dc72a3" => :mavericks
+    sha1 "348f7cc5b70e3889713c7c48be59df18920198d6" => :mountain_lion
   end
 
+  # Please don't add a wide/ucs4 option as it won't be accepted.
+  # More details in: https://github.com/Homebrew/homebrew/pull/32368
   option :universal
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
@@ -32,8 +33,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz"
-    sha1 "a681ba56c30c0eb66528215842d3e3fcb5157614"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.0.2.tar.gz"
+    sha1 "bacdf139b210ea6c16ffa98eefa2eb8074dc7869"
   end
 
   resource "pip" do
@@ -234,7 +235,7 @@ class Python < Formula
     # superenv handles that cc finds includes/libs!
     inreplace "setup.py",
               "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-              "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
+              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
   end
 
   def distutils_fix_stdenv
@@ -321,7 +322,7 @@ class Python < Formula
     They will install into the site-package directory
       #{site_packages}
 
-    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md
     EOS
   end
 

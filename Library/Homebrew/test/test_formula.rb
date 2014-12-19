@@ -1,5 +1,5 @@
 require 'testing_env'
-require 'test/testball'
+require 'testball'
 
 class FormulaTests < Homebrew::TestCase
   def test_formula_instantiation
@@ -91,7 +91,7 @@ class FormulaTests < Homebrew::TestCase
     f.rack.rmtree
   end
 
-  def test_installed_prefix_head_active_spec
+  def test_installed_prefix_head
     f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
       head 'foo'
       devel do
@@ -103,7 +103,7 @@ class FormulaTests < Homebrew::TestCase
     assert_equal prefix, f.installed_prefix
   end
 
-  def test_installed_prefix_devel_active_spec
+  def test_installed_prefix_devel
     f = formula("test", Pathname.new(__FILE__).expand_path, :devel) do
       head 'foo'
       devel do
@@ -171,7 +171,7 @@ class FormulaTests < Homebrew::TestCase
 
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
-    assert_equal f.stable, f.active_spec
+    assert_predicate f, :stable?
 
     assert_instance_of SoftwareSpec, f.stable
     assert_instance_of SoftwareSpec, f.devel

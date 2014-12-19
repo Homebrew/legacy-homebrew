@@ -7,9 +7,10 @@ class Libshout < Formula
 
   bottle do
     cellar :any
-    sha1 "c8539d5b6f27a42d5c481d5de7f71370f7d29d8a" => :mavericks
-    sha1 "eb9c3d98cd68e15eab1661cb54252c71d4dc667a" => :mountain_lion
-    sha1 "c40f3d65386a7de3845ea5751e25c0e377debccc" => :lion
+    revision 1
+    sha1 "2930b7d9284829191c5ebbcbda184654b215a12b" => :yosemite
+    sha1 "6e72e6169d9e0b332135e4b123b0989cea80ee7a" => :mavericks
+    sha1 "946c3352ba99927dcb798c44b77928128fffd653" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

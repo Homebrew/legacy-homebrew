@@ -7,9 +7,10 @@ class Lastfmlib < Formula
 
   bottle do
     cellar :any
-    sha1 "eebec974f31e94d6987e108127e1ab1af606f176" => :mavericks
-    sha1 "4807c28f6d74217022fd9230adee4d3ad0ca858a" => :mountain_lion
-    sha1 "981967e12bb1511b82b145d17e5ac68f3aef1f5f" => :lion
+    revision 1
+    sha1 "764db4a4f10b803d6fccf6552a47427634e70c18" => :yosemite
+    sha1 "dcb26b1acf66e30f694543ad32f3b4433745667d" => :mavericks
+    sha1 "61c0b04548eefedd3c546e3bbf392987d667c2b9" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

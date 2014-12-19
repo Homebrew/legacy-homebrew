@@ -16,10 +16,13 @@ class Keg
   class LinkError < RuntimeError
     attr_reader :keg, :src, :dst
 
-    def initialize(keg, src, dst)
+    def initialize(keg, src, dst, cause)
       @src = src
       @dst = dst
       @keg = keg
+      @cause = cause
+      super(cause.message)
+      set_backtrace(cause.backtrace)
     end
   end
 
@@ -227,6 +230,10 @@ class Keg
     path.join("lib", "python2.7", "site-packages").directory?
   end
 
+  def python_pth_files_installed?
+    Dir["#{path}/lib/python2.7/site-packages/*.pth"].any?
+  end
+
   def app_installed?
     Dir["#{path}/{,libexec/}*.app"].any?
   end
@@ -322,19 +329,34 @@ class Keg
   private
 
   def resolve_any_conflicts dst, mode
+    return unless dst.symlink?
+
     src = dst.resolved_path
+
     # src itself may be a symlink, so check lstat to ensure we are dealing with
     # a directory, and not a symlink pointing at a directory (which needs to be
     # treated as a file). In other words, we only want to resolve one symlink.
-    # If it isn't a directory, make_relative_symlink will raise an exception.
-    if dst.symlink? && src.lstat.directory?
-      keg = Keg.for(src)
+
+    begin
+      stat = src.lstat
+    rescue Errno::ENOENT
+      # dst is a broken symlink, so remove it.
+      dst.unlink unless mode.dry_run
+      return
+    end
+
+    if stat.directory?
+      begin
+        keg = Keg.for(src)
+      rescue NotAKegError
+        puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
+        return
+      end
+
       dst.unlink unless mode.dry_run
       keg.link_dir(src, mode) { :mkpath }
       return true
     end
-  rescue NotAKegError
-    puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
   def make_relative_symlink dst, src, mode
@@ -361,17 +383,17 @@ class Keg
 
     dst.delete if mode.overwrite && (dst.exist? || dst.symlink?)
     dst.make_relative_symlink(src)
-  rescue Errno::EEXIST
+  rescue Errno::EEXIST => e
     if dst.exist?
-      raise ConflictError.new(self, src.relative_path_from(path), dst)
+      raise ConflictError.new(self, src.relative_path_from(path), dst, e)
     elsif dst.symlink?
       dst.unlink
       retry
     end
-  rescue Errno::EACCES
-    raise DirectoryNotWritableError.new(self, src.relative_path_from(path), dst)
-  rescue SystemCallError
-    raise LinkError.new(self, src.relative_path_from(path), dst)
+  rescue Errno::EACCES => e
+    raise DirectoryNotWritableError.new(self, src.relative_path_from(path), dst, e)
+  rescue SystemCallError => e
+    raise LinkError.new(self, src.relative_path_from(path), dst, e)
   end
 
   protected

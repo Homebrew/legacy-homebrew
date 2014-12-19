@@ -9,11 +9,7 @@ class BuildOptions
   end
 
   def with? val
-    if val.respond_to?(:option_name)
-      name = val.option_name
-    else
-      name = val
-    end
+    name = val.respond_to?(:option_name) ? val.option_name : val
 
     if option_defined? "with-#{name}"
       include? "with-#{name}"

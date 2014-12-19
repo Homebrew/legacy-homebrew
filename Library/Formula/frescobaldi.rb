@@ -2,8 +2,8 @@ require "formula"
 
 class Frescobaldi < Formula
   homepage "http://frescobaldi.org/"
-  url "https://github.com/wbsoft/frescobaldi/releases/download/v2.0.15/frescobaldi-2.0.15.tar.gz"
-  sha1 "e110ca2be338ca4fb9a0369c6f733dbdf731a027"
+  url "https://github.com/wbsoft/frescobaldi/releases/download/v2.0.16/frescobaldi-2.0.16.tar.gz"
+  sha1 "6b7e72def3f93aa9521d7a1cdb72399f1a5765c5"
 
   option "without-launcher", "Don't build Mac .app launcher"
   option "without-lilypond", "Don't install Lilypond"
@@ -13,7 +13,7 @@ class Frescobaldi < Formula
   depends_on "lilypond" => :recommended
 
   # python-poppler-qt4 dependencies
-  depends_on "poppler" => "with-qt4"
+  depends_on "poppler" => "with-qt"
   depends_on "pyqt"
   depends_on "pkg-config" => :build
 
@@ -23,14 +23,28 @@ class Frescobaldi < Formula
   end
 
   def install
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resource("python-poppler-qt4").stage do
-      system "python", "setup.py", "build"
-      system "python", "setup.py", "install"
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    rm "setup.cfg"
+    system "python", *Language::Python.setup_install_args(libexec)
+
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+
     if build.with? "launcher"
-      system "python", "macosx/mac-app.py", "--force", "--version",  version, "--script", bin/"frescobaldi"
+      system "python", "macosx/mac-app.py", "--force", "--version",  version, "--script", libexec/"bin/frescobaldi"
+      inreplace "dist/Frescobaldi.app/Contents/Resources/__boot__.py",
+                "_path_inject(['#{libexec}/bin'])",
+                "_path_inject(['#{libexec}/bin', '#{libexec}/lib/python2.7/site-packages', '#{libexec}/vendor/lib/python2.7/site-packages'])"
       prefix.install "dist/Frescobaldi.app"
     end
+  end
+
+  test do
+    system bin/"frescobaldi", "--version"
   end
 end

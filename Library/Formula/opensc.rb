@@ -1,27 +1,29 @@
-require 'formula'
+require "formula"
 
 class Opensc < Formula
-  homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz'
-  sha1 '4a898e351b0a6d2a5d81576daa7ebed45baf9138'
+  homepage "https://github.com/OpenSC/OpenSC/wiki"
+  url "https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz"
+  sha1 "4a898e351b0a6d2a5d81576daa7ebed45baf9138"
+  revision 1
 
   bottle do
-    sha1 "58e3ad4248bc4a10258560a6dd186ec1c86467a4" => :mavericks
-    sha1 "d7b65a4e3c7997340dc102ff3196b594731b2977" => :mountain_lion
-    sha1 "cf7e11fe49ca6910d9374211f6421980f7e0f94f" => :lion
+    sha1 "82b08c2bd2b58b7080797a441f8c641cbb101064" => :mavericks
+    sha1 "b5107cad1a7b5c7808d8b93f497bfe64127fcbce" => :mountain_lion
+    sha1 "26bc12047a4ca119fd37ff76ea4055226d88dc34" => :lion
   end
 
   head do
-    url 'https://github.com/OpenSC/OpenSC.git'
+    url "https://github.com/OpenSC/OpenSC.git"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
-  option 'with-man-pages', 'Build manual pages'
+  option "with-man-pages", "Build manual pages"
 
-  depends_on 'docbook-xsl' if build.with? "man-pages"
+  depends_on "docbook-xsl" if build.with? "man-pages"
+  depends_on "openssl"
 
   def install
     args = []
@@ -38,6 +40,10 @@ class Opensc < Formula
                           "--enable-pcsc",
                           *args
 
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/opensc-tool", "-i"
   end
 end

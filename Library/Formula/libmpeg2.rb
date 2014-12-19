@@ -7,9 +7,10 @@ class Libmpeg2 < Formula
 
   bottle do
     cellar :any
-    sha1 "d023c1fcec1355bc1a21cc9e6ab76bf493196dbb" => :mavericks
-    sha1 "e7d39e0be6bc10414624e4f04d13b8394295119e" => :mountain_lion
-    sha1 "92d3f35c6f9e881e38049b677685cd37225e220a" => :lion
+    revision 1
+    sha1 "39cdc686342af5981a71b97ac6c1682b5faf547c" => :yosemite
+    sha1 "24e079241e46a6bad3527ea0662cb79b8c74260c" => :mavericks
+    sha1 "6e13bb1b550c921c749cacf50792efdd2f6a8903" => :mountain_lion
   end
 
   depends_on 'sdl'

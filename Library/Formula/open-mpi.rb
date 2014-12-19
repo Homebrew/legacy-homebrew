@@ -2,17 +2,26 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.1.tar.bz2'
-  sha1 'e6e85da3e54784ee3d7b0bb0ff4d365ef2899c49'
+  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.3.tar.bz2'
+  sha1 '4be9c5d2a8baee6a80bde94c6485931979a428fe'
+  revision 1
 
-  option 'disable-fortran', 'Do not build the Fortran bindings'
-  option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
+  bottle do
+    sha1 "5e5b1f1e287aff134069af22d527f32db4b48646" => :yosemite
+    sha1 "3e3a966d4c99486087a4712e45f587739a8d7eac" => :mavericks
+    sha1 "b03989bc09951a9a3f8510f65b65a448017c4a53" => :mountain_lion
+  end
+
+  deprecated_option "disable-fortran" => "without-fortran"
+  deprecated_option "enable-mpi-thread-multiple" => "with-mpi-thread-multiple"
+
+  option "with-mpi-thread-multiple", "Enable MPI_THREAD_MULTIPLE"
   option :cxx11
 
   conflicts_with 'mpich2', :because => 'both install mpi__ compiler wrappers'
   conflicts_with 'lcdf-typetools', :because => 'both install same set of binaries.'
 
-  depends_on :fortran unless build.include? 'disable-fortran'
+  depends_on :fortran => :recommended
   depends_on 'libevent'
 
   def install
@@ -25,25 +34,20 @@ class OpenMpi < Formula
       --enable-ipv6
       --with-libevent=#{Formula["libevent"].opt_prefix}
     ]
-    if build.include? 'disable-fortran'
-      args << '--disable-mpi-f77' << '--disable-mpi-f90'
-    end
-
-    if build.include? 'enable-mpi-thread-multiple'
-      args << '--enable-mpi-thread-multiple'
-    end
+    args << "--disable-mpi-fortran" if build.without? "fortran"
+    args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
 
     system './configure', *args
     system 'make', 'all'
     system 'make', 'check'
     system 'make', 'install'
 
-    # If Fortran bindings were built, there will be a stray `.mod` file
-    # (Fortran header) in `lib` that needs to be moved to `include`.
-    include.install lib/'mpi.mod' if File.exist? "#{lib}/mpi.mod"
+    # If Fortran bindings were built, there will be stray `.mod` files
+    # (Fortran header) in `lib` that need to be moved to `include`.
+    include.install Dir["#{lib}/*.mod"]
 
-    # Not sure why the wrapped script has a jar extension - adamv
+    # Move vtsetup.jar from bin to libexec.
     libexec.install bin/'vtsetup.jar'
-    bin.write_jar_script libexec/'vtsetup.jar', 'vtsetup.jar'
+    inreplace bin/'vtsetup', '$bindir/vtsetup.jar', '$prefix/libexec/vtsetup.jar'
   end
 end

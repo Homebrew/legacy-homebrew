@@ -2,8 +2,8 @@ require 'formula'
 
 class Pango < Formula
   homepage "http://www.pango.org/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.6.tar.xz"
-  sha256 "4c53c752823723875078b91340f32136aadb99e91c0f6483f024f978a02c8624"
+  url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.8.tar.xz"
+  sha256 "18dbb51b8ae12bae0ab7a958e7cf3317c9acfc8a1e1103ec2f147164a0fc2d07"
 
   head do
     url 'git://git.gnome.org/pango'
@@ -15,10 +15,13 @@ class Pango < Formula
   end
 
   bottle do
-    sha1 "1f65fb8dfd16ff03f5c53025799cd7d824438e20" => :mavericks
-    sha1 "e4258678bf9873af0f36468ac3e43bd3d163fe95" => :mountain_lion
-    sha1 "dfd82ea21bf3355bafaa6b3aaa5a7a97115087df" => :lion
+    revision 1
+    sha1 "b30d81e5b4b90792e14aa02b273fcf93e9675fc7" => :yosemite
+    sha1 "eb30e96c1d896cd8fc7e1053513b3e298645c9af" => :mavericks
+    sha1 "ea288645c2ca58b4addf29c0140fb3ecec6ea3ab" => :mountain_lion
   end
+
+  option :universal
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -34,6 +37,8 @@ class Pango < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules

@@ -7,9 +7,10 @@ class Libbs2b < Formula
 
   bottle do
     cellar :any
-    sha1 "2a571c586d841c5a738502a769850f1f14a7b021" => :mavericks
-    sha1 "a54117fe5502cdef097fd829f9c6c6436230439e" => :mountain_lion
-    sha1 "bec684ed5d6c8210b0c0ac5dcc76fddbb200cee9" => :lion
+    revision 1
+    sha1 "ec0656043ebafa2c7fe71f9577d3edb8d0d2cb48" => :yosemite
+    sha1 "7d89520466e0755a3b536f2940dc067478e9b05c" => :mavericks
+    sha1 "248d58ff800499e8ff97f8ab7357f3aa604a8ce4" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

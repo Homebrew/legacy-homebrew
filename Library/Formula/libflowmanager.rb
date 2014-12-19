@@ -7,9 +7,10 @@ class Libflowmanager < Formula
 
   bottle do
     cellar :any
-    sha1 "0d16250d56ea2294d8efa59267402d4d7b063875" => :mavericks
-    sha1 "633bdb981f0996db2d751ee540b5831d9ca2cab6" => :mountain_lion
-    sha1 "c3a5ace38da4ffbf34f164b308a3b5afaf714072" => :lion
+    revision 1
+    sha1 "9b6193c50e29254bf47838367cad8611e4a2f47e" => :yosemite
+    sha1 "0a63e32382390f51c86332c9592ad9cff1789585" => :mavericks
+    sha1 "7292b002e1ffff88f0156610253ad52e2d552820" => :mountain_lion
   end
 
   depends_on 'libtrace'

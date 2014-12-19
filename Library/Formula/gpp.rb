@@ -7,9 +7,10 @@ class Gpp < Formula
 
   bottle do
     cellar :any
-    sha1 "94fbc6d6c17cc299e9b583d72000bde67e931d49" => :mavericks
-    sha1 "0391db6ff96c79077aec04cd3ea6dbbfedbcc977" => :mountain_lion
-    sha1 "706df4f172e242d6a69ecafb14bb27bd97113077" => :lion
+    revision 1
+    sha1 "481357229fc529fbc72fd129e5fce856db2920c1" => :yosemite
+    sha1 "61bc9c993cdb79a20b81351e77c6d0b92827910e" => :mavericks
+    sha1 "6cce4a597e3c424471172be048a556e03a1afafc" => :mountain_lion
   end
 
   def install

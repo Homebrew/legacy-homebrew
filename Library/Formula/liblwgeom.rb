@@ -18,9 +18,10 @@ class Liblwgeom < Formula
 
   bottle do
     cellar :any
-    sha1 "222c662b18e0f8682a545fd924b6f5446951a9c2" => :mavericks
-    sha1 "918ba2b824b202f0fb9eff14f3f4dae1c3b2b5d7" => :mountain_lion
-    sha1 "8c047d21560626ddd88e76923a0b38a69b204ee5" => :lion
+    revision 1
+    sha1 "064733dceb874e5a0adb5ec66b943af3694b7dfd" => :yosemite
+    sha1 "63e0c7f24359169788ad34bdaa80c5795af5cee1" => :mavericks
+    sha1 "3b1a0aae4a0dc0446c1cf8f626ed0b4156fd906c" => :mountain_lion
   end
 
   head do
@@ -58,7 +59,7 @@ class Liblwgeom < Formula
     ]
 
     if build.head?
-      args << "--with-pgconfig=#{Formula["postgresql"].opt_prefix.realpath}/bin/pg_config"
+      args << "--with-pgconfig=#{Formula["postgresql"].opt_bin}/pg_config"
     end
 
     system './autogen.sh'
@@ -69,8 +70,7 @@ class Liblwgeom < Formula
       system 'make', 'install', "DESTDIR=#{buildpath}/stage"
     end
 
-    # NOTE: lib.install Dir['stage/**/lib/*'] fails (symlink is not resolved)
-    prefix.install Dir["stage/**/lib"]
+    lib.install Dir["stage/**/lib/*"]
     include.install Dir["stage/**/include/*"]
   end
 end

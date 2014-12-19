@@ -2,9 +2,15 @@ require 'formula'
 
 class TomcatNative < Formula
   homepage 'http://tomcat.apache.org/native-doc/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.31/source/tomcat-native-1.1.31-src.tar.gz'
-  sha1 '177b1f43f3dbc16eeea39d85147355be29a6089f'
-  revision 1
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.32/source/tomcat-native-1.1.32-src.tar.gz'
+  sha1 'a4bfb7f79316c49cfed3a0c5c71ba11b51fe0922'
+
+  bottle do
+    cellar :any
+    sha1 "2294b2ecde5a96eb38e28223d622d5c443c9a04b" => :yosemite
+    sha1 "04e8e6d8de9064eeacbf06101a029a2463de4649" => :mavericks
+    sha1 "03d417ff8af69aba03c872e3bf7b3de9ca43d44b" => :mountain_lion
+  end
 
   depends_on "libtool" => :build
   depends_on "tomcat" => :recommended

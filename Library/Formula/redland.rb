@@ -4,6 +4,7 @@ class Redland < Formula
   homepage 'http://librdf.org/'
   url 'http://download.librdf.org/source/redland-1.0.16.tar.gz'
   sha1 '0dc3d65bee6d580cae84ed261720b5b4e6b1f856'
+  revision 1
 
   option 'with-php', 'Build with php support'
   option 'with-ruby', 'Build with ruby support'

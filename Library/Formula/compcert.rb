@@ -2,9 +2,8 @@ require "formula"
 
 class Compcert < Formula
   homepage "http://compcert.inria.fr"
-  url "http://compcert.inria.fr/release/compcert-2.3pl2.tgz"
-  sha1 "8d7b9d5b18bd52487686db2acd534c978b1e1421"
-  version "2.3pl2"
+  url "http://compcert.inria.fr/release/compcert-2.4.tgz"
+  sha1 "065eef31d1a59547fb3275ba7566867757b176f6"
 
   depends_on "objective-caml" => :build
   depends_on "coq" => :build

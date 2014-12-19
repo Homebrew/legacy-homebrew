@@ -7,9 +7,10 @@ class Asciidoc < Formula
 
   bottle do
     cellar :any
-    sha1 "fe0cb89bae6cc28250c29141d349436c6d7c180e" => :mavericks
-    sha1 "b4a455acf5666da7e13d4dc419069fc8220f111c" => :mountain_lion
-    sha1 "b1769d0672ec6b2993ed816d4ad6c21683777983" => :lion
+    revision 1
+    sha1 "14ff65fa337658acf5011b24a728a2f6f413fd3c" => :yosemite
+    sha1 "84793575a498025283f81295feeee74103386b70" => :mavericks
+    sha1 "7c932bea7c4d3e56072a7adb5cd4914cd5972414" => :mountain_lion
   end
 
   head do

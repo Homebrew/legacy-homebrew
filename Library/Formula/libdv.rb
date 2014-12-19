@@ -7,9 +7,10 @@ class Libdv < Formula
 
   bottle do
     cellar :any
-    sha1 "0ab33938816dfcef7dce110e2cea98519eb5a958" => :mavericks
-    sha1 "5a7346e4b2871f55c1823dab7620a88d5e3e2f69" => :mountain_lion
-    sha1 "851394c94147765570f9d06825f28af081e9fbfb" => :lion
+    revision 1
+    sha1 "52e46dd26669bd9b226bfb774eac76a4f3cab442" => :yosemite
+    sha1 "035268b04e85f298530c3791b272e124fc62fa89" => :mavericks
+    sha1 "cc99e4e39bd24188d03b841eb24a39d31574b83a" => :mountain_lion
   end
 
   depends_on 'popt'

@@ -6,9 +6,10 @@ class Libical < Formula
   sha1 "25c75f6f947edb6347404a958b1444cceeb9f117"
 
   bottle do
-    sha1 "53a9904cb6430f736cf154bacfa425e09a6b1d73" => :mavericks
-    sha1 "17d644dc8d704576d66807be82a82ff18e19feb6" => :mountain_lion
-    sha1 "60b0f803e80ad08fda001af2f54b0cbcb257f935" => :lion
+    revision 1
+    sha1 "18d0e60043b3b78eb6872f53a0508537d7fcd5db" => :yosemite
+    sha1 "cea6dad5171431e1f7a5d7e12beb7c6eb4c3951c" => :mavericks
+    sha1 "e19ed113cb312dfeea12fba84f21f29f5866db99" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

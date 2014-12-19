@@ -3,34 +3,22 @@ require "formula"
 class Valabind < Formula
   homepage "http://radare.org/"
   head "https://github.com/radare/valabind.git"
-  url "https://github.com/radare/valabind/archive/0.8.0.tar.gz"
-  sha1 "f677110477e14c2e18ac61c56730ab0e51ac450d"
+  url "https://github.com/radare/valabind/archive/0.9.0.tar.gz"
+  sha1 "65af558a0116c1d8598992637cfd994cc7e23407"
+
+  bottle do
+    cellar :any
+    sha1 "960e67a45a8b486e4d38d2d8bbfd16a93658f747" => :yosemite
+    sha1 "369e7b1c0a1cc1ab88d7a2fe0700d57a957dd9d3" => :mavericks
+    sha1 "4fd99adf2bb6ad5ca350c4ac76bf4ba7b1b0737c" => :mountain_lion
+  end
 
   depends_on "pkg-config" => :build
   depends_on "swig" => :run
   depends_on "vala"
-
-  # Fixes an issue in the vala version detection script.
-  # https://github.com/radare/valabind/pull/24
-  patch :DATA
 
   def install
     system "make"
     system "make", "install", "PREFIX=#{prefix}"
   end
 end
-
-__END__
-diff --git i/getvv w/getvv
-index 14183dc..59a42bb 100755
---- i/getvv
-+++ w/getvv
-@@ -3,7 +3,7 @@ IFS=:
- [ -z "${VALAC}" ] && VALAC=valac
- for a in $PATH; do
- 	if [ -e "$a/valac" ]; then
--		v=$(strings $a/${VALAC} | grep vala- | grep -v lib)
-+		v=$(cat $a/${VALAC} | strings | grep vala- | grep -v lib)
- 		if [ -n "$v" ]; then
- 			printf lib$v
- 			exit 0

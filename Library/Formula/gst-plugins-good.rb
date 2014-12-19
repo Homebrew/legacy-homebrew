@@ -4,25 +4,25 @@ class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.0.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.0.tar.xz'
-    sha256 '48a62e7987fffa289a091dfc8ccc80b401d110632b8fc1adce5b82fc092f2685'
+    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.4.tar.xz'
+    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.4.tar.xz'
+    sha256 '2df90e99da45211c7b2525ae4ac34830a9e7784bd48c072c406c0cf014bdb277'
 
     depends_on 'check' => :optional
   end
 
   bottle do
-    sha1 "e4962534c01fa90443ebc05fcc153b8d1a17e3f9" => :mavericks
-    sha1 "9be1005b6db6ad4877547262b1277c3dbe9dd43e" => :mountain_lion
-    sha1 "13d6763c57af2fc6eb7f515b28d020048761a603" => :lion
+    sha1 "42ddc43233247a8cb90da2fc64b90ffd83c25dd1" => :yosemite
+    sha1 "07ab214b44b9e78a7d963f164454a1cb19da7372" => :mavericks
+    sha1 "89e2f6c8b1b738c24058e38b17e2286922ad63f9" => :mountain_lion
   end
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-good'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
     depends_on 'check'
   end
 

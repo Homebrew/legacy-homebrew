@@ -2,15 +2,15 @@ require "formula"
 
 class Libav < Formula
   homepage "https://libav.org/"
-  url "https://libav.org/releases/libav-10.4.tar.xz"
-  sha1 "d274abba24aa926d9bdbd6ebec6e07c2bf5639be"
+  url "https://libav.org/releases/libav-11.1.tar.xz"
+  sha1 "4cd3337c6c67481b7165c9c618f1fcf6998942ce"
 
   head "git://git.libav.org/libav.git"
 
   bottle do
-    sha1 "9c74fefe7d0c5a7f4b8998fde3eec38b24be8f3b" => :mavericks
-    sha1 "944979bf5bf2f96a96360258d352f772e9e03d99" => :mountain_lion
-    sha1 "5d6162a62f169a8d893847bccfa7f717ba8c1b6b" => :lion
+    sha1 "450f32ac0b9be44d70e7cad574ed5937ef040050" => :yosemite
+    sha1 "ddd3dea8eea023d750b1e9644460b4d0dd12e311" => :mavericks
+    sha1 "169b1f483e117f253196956876c03092ddaba01e" => :mountain_lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"
@@ -97,8 +97,8 @@ class Libav < Formula
 
     system "make"
 
-    bin.install "avconv", "avprobe", "avserver"
-    man1.install "doc/avconv.1", "doc/avprobe.1", "doc/avserver.1"
+    bin.install "avconv", "avprobe"
+    man1.install "doc/avconv.1", "doc/avprobe.1"
     if build.with? "sdl"
       bin.install "avplay"
       man1.install "doc/avplay.1"

@@ -1,16 +1,16 @@
 require 'formula'
 
 class Moreutils < Formula
-  homepage 'http://packages.debian.org/unstable/utils/moreutils'
-  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.51.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.51.tar.gz'
-  sha1 '374b8c3bea962bbcde4a8158051c570a1fec6811'
+  homepage 'http://joeyh.name/code/moreutils/'
+  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
+  mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
+  sha1 '32047f935178b490a12c370d8f695f1273dc5895'
 
   bottle do
-    revision 1
-    sha1 "45325b7fe093276eb3b5634f8fa4d023e93ae9d6" => :mavericks
-    sha1 "4e1b3ec11ff2fc9de2e0a8eeeaf89193199dc275" => :mountain_lion
-    sha1 "7f3dbe0f6487d829201076705952aad171b9cbaa" => :lion
+    revision 2
+    sha1 "09c41223be308962ffb8014fdbcedba9c9288a8c" => :yosemite
+    sha1 "07383e8aa340c226800d36fb0d2107073c05392d" => :mavericks
+    sha1 "7ed2b97a47512e47e7a74ee11ebf8b3cc5d1697e" => :mountain_lion
   end
 
   depends_on "docbook-xsl" => :build

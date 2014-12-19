@@ -4,12 +4,13 @@ class Ruby19Dependency < Requirement
   fatal true
 
   satisfy do
-    `ruby --version` =~ /ruby (\d\.\d).\d/
+    ruby = which("ruby")
+    `#{ruby} --version` =~ /ruby (\d\.\d).\d/
     $1.to_f >= 1.9
   end
 
   def message
-    "Selecta requires Ruby 1.9 or better."
+    "Selecta requires Ruby 1.9 or greater."
   end
 end
 

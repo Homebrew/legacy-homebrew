@@ -21,6 +21,8 @@ module OS
         "2.7.52" => "2.7.5_rc3",
         "2.7.53" => "2.7.5_rc4",
         "2.7.54" => "2.7.5",
+        "2.7.61" => "2.7.6",
+        "2.7.73" => "2.7.7",
       }.freeze
 
       # This returns the version number of XQuartz, not of the upstream X.org.
@@ -47,7 +49,7 @@ module OS
         when "10.5"
           "2.6.3"
         else
-          "2.7.6"
+          "2.7.7"
         end
       end
 
@@ -88,8 +90,8 @@ module OS
       end
 
       # This should really be private, but for compatibility reasons it must
-      # remain public. New code should use MacOS::X11.{bin,lib,include}
-      # instead, as that accounts for Xcode-only systems.
+      # remain public. New code should use MacOS::X11.bin, MacOS::X11.lib and
+      # MacOS::X11.include instead, as that accounts for Xcode-only systems.
       def prefix
         @prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
           Pathname.new('/opt/X11')

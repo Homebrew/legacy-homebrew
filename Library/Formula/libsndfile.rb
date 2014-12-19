@@ -1,15 +1,17 @@
-require 'formula'
+require "formula"
 
 class Libsndfile < Formula
-  homepage 'http://www.mega-nerd.com/libsndfile/'
-  url 'http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.25.tar.gz'
-  sha1 'e95d9fca57f7ddace9f197071cbcfb92fa16748e'
+  homepage "http://www.mega-nerd.com/libsndfile/"
+  url "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.25.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/libs/libsndfile/libsndfile_1.0.25.orig.tar.gz"
+  sha1 "e95d9fca57f7ddace9f197071cbcfb92fa16748e"
 
   bottle do
     cellar :any
-    sha1 "bd27edb2cd2a4f9c61a544826560efb1344c00c9" => :mavericks
-    sha1 "aebbedbecf6f288a7ef627232cca93391967009d" => :mountain_lion
-    sha1 "f3c80b95ef44874272104d8eadc41aa417523766" => :lion
+    revision 1
+    sha1 "6bbba8972b492d3a287e6f10d39115ca980224ec" => :yosemite
+    sha1 "07d424bd9d4f051495538edd0899b191495457c5" => :mavericks
+    sha1 "9ed12d6cc31e2a63d14fb175bba7b5d68145cc94" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -44,6 +46,6 @@ class Libsndfile < Formula
 
     system "autoreconf", "-i"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -7,8 +7,7 @@ module Language
     # The resource names should be the import name of the package,
     # e.g. `resource "github.com/foo/bar"`
     def self.stage_deps resources, target
-      godeps = resources.grep(Resource::Go)
-      godeps.each {|resource| resource.stage target}
+      resources.grep(Resource::Go) { |resource| resource.stage(target) }
     end
   end
 end

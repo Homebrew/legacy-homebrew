@@ -2,6 +2,7 @@ require 'formula'
 
 class Encfs < Formula
   homepage 'https://vgough.github.io/encfs/'
+  revision 1
 
   stable do
     url 'https://github.com/vgough/encfs/archive/v1.7.5.tar.gz'
@@ -10,14 +11,26 @@ class Encfs < Formula
     # Fix link times and xattr on links for OSX
     # Proper fix is already in upstream/dev
     patch :DATA
+
+    # Fix pod2man errors
+    # https://github.com/vgough/encfs/issues/28
+    patch do
+      url "https://github.com/vgough/encfs/commit/61dc26fd8b3630e31e7ae8202ef9f31f1a4f9644.diff"
+      sha1 "beaa7214b9cbd2e5c1680bca1bd72d5a6398420e"
+    end
+
+    patch do
+      url "https://github.com/vgough/encfs/commit/5fa5f02109855446c9d96b11ae8a2ee56f921595.diff"
+      sha1 "4b229f3172a2d68f2f61cef57569d918b7b95bc5"
+    end
   end
 
   head 'https://github.com/vgough/encfs.git'
 
   bottle do
-    sha1 "4d047345b8638a56c6dbc0b74d37265b6c1d2405" => :mavericks
-    sha1 "1ed3978a5ef1a8dfcf35132142a507df8f709bcf" => :mountain_lion
-    sha1 "dc7f74e52ca54d3716639ee5ef6d701d50ee4def" => :lion
+    sha1 "4e09e41ac19b52a14ea58644d6a3fcb61fdaea64" => :mavericks
+    sha1 "ef7ea8cb89515be5e19b45a0af8704e65acbb150" => :mountain_lion
+    sha1 "559bbec86eb4176fad7cb28368cc462f6470157f" => :lion
   end
 
   depends_on 'pkg-config' => :build
@@ -29,7 +42,7 @@ class Encfs < Formula
   depends_on 'boost'
   depends_on 'rlog'
   depends_on 'openssl'
-  depends_on 'osxfuse'
+  depends_on :osxfuse
   depends_on 'xz'
 
   def install
@@ -59,11 +72,24 @@ class Encfs < Formula
     end
 
     system "make", "-f", "Makefile.dist"
+    # This provides a workaround for https://github.com/vgough/encfs/issues/18
+    # osxfuse's installation directory cannot be given as a parameter to configure script
+    inreplace "configure", "/usr/include/osxfuse /usr/local/include/osxfuse",
+      "/usr/include/osxfuse /usr/local/include/osxfuse #{HOMEBREW_PREFIX}/include/osxfuse"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"
     system "make"
     system "make install"
+  end
+
+  test do
+    if Pathname.new("/Library/Filesystems/osxfusefs.fs/Support/load_osxfusefs").exist?
+      (testpath/"print-password").write("#!/bin/sh\necho password")
+      chmod 0755, testpath/"print-password"
+      system "yes | #{bin}/encfs --standard --extpass=#{testpath}/print-password #{testpath}/a #{testpath}/b"
+      system "umount", testpath/"b"
+    end
   end
 end
 
