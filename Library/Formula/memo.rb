@@ -4,9 +4,18 @@ class Memo < Formula
   sha1 "0b4c1b22fac0644b54d7de1e89cb20a54c8fff25"
   version "1.4"
 
-  depends_on "make"
 
   def install
-    system "make", "install"
+    system "make", "PREFIX=#{prefix}"
+    bin.install "memo"
+    man1.install "memo.1"
+    prefix.install
+  end
+
+
+  test do
+    system "#{bin}/memo", "-a", "Lorem ipsum dolor sit amet."
+    system "#{bin}/memo", "-m", "1"
+    system "#{bin}/memo", "-d", "1"
   end
 end
