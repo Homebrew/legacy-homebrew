@@ -20,8 +20,26 @@ class Monetdb < Formula
     depends_on "autoconf" => :build
   end
 
-  option "with-java" # Build the JDBC dirver
-  option "with-r" # Build the R integration module
+  class RRequirement < Requirement
+      fatal true
+
+      satisfy { which('r') }
+
+      def message; <<-EOS.undent
+          R not found. The R integration module requires R.
+          Do one of the following:
+          - install R
+          - remove the --with-r option
+          EOS
+      end
+  end
+
+  option "with-java", 'Build the JDBC dirver'
+  option "with-r", 'Build the R integration module'
+
+  if build.with? "r"
+      depends_on RRequirement
+  end
 
   depends_on "pkg-config" => :build
   depends_on :ant => :build
