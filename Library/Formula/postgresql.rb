@@ -84,7 +84,7 @@ class Postgresql < Formula
     s = <<-EOS.undent
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
-      https://github.com/Homebrew/homebrew/issues/issue/2510
+      https://github.com/Homebrew/homebrew/issues/2510
 
     To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
       http://www.postgresql.org/docs/9.4/static/upgrading.html
