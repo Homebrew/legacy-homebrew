@@ -1,11 +1,8 @@
-require "formula"
-
 class Fwknop < Formula
   homepage "http://www.cipherdyne.org/fwknop/"
   head "https://github.com/mrash/fwknop.git"
-  url "https://github.com/mrash/fwknop/archive/2.6.4.tar.gz"
-  sha1 "b13ef022ade7da6dc5b08335d5a1d29dd898887b"
-  revision 1
+  url "https://github.com/mrash/fwknop/archive/2.6.5.tar.gz"
+  sha1 "52f5a191f37aeeb2716d2ad5a25dbf41d6593100"
 
   bottle do
     sha1 "f82b7596356044e1b6b0c41ede54bfcc11b3585a" => :yosemite
@@ -17,7 +14,7 @@ class Fwknop < Formula
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
   depends_on "wget" => :optional
-  depends_on "gpgme"
+  depends_on "gpgme" => "with-gnupg2"
 
   def install
     system "./autogen.sh"
