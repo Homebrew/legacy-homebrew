@@ -2,29 +2,17 @@ require "formula"
 
 class Postgresql < Formula
   homepage "http://www.postgresql.org/"
-  revision 1
 
   stable do
-    url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
-    sha256 "14176ffb1f90a189e7626214365be08ea2bfc26f26994bafb4235be314b9b4b0"
-
-    # ossp-uuid is no longer required for uuid support since 9.4beta2:
-    depends_on "ossp-uuid" => :recommended
-    # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-    patch :DATA
+    url "http://ftp.postgresql.org/pub/source/v9.4.0/postgresql-9.4.0.tar.bz2"
+    sha256 "7a35c3cb77532f7b15702e474d7ef02f0f419527ee80a4ca6036fffb551625a5"
   end
 
   bottle do
-    revision 1
     sha1 "00d8f44111b8585fc2fa045fb33098cde3bcf230" => :yosemite
     sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
     sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
     sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
-  end
-
-  devel do
-    url 'http://ftp.postgresql.org/pub/source/v9.4rc1/postgresql-9.4rc1.tar.bz2'
-    sha256 '6ce91d78fd6c306536f5734dbaca10889814b9d0fe0b38a41b3e635d95241c7c'
   end
 
   option '32-bit'
@@ -77,16 +65,7 @@ class Postgresql < Formula
     end
 
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
-
-    if build.with?("ossp-uuid")
-      args << "--with-ossp-uuid"
-      ENV.append 'CFLAGS', `uuid-config --cflags`.strip
-      ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
-      ENV.append 'LIBS', `uuid-config --libs`.strip
-    elsif build.devel?
-      # Apple's UUID implementation is compatible with e2fs NOT bsd
-      args << "--with-uuid=e2fs"
-    end
+    args << "--with-uuid=e2fs"
 
     if build.build_32_bit?
       ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
@@ -108,8 +87,8 @@ class Postgresql < Formula
     you may need to remove the previous version first. See:
       https://github.com/Homebrew/homebrew/issues/issue/2510
 
-    To migrate existing data from a previous major version (pre-9.3) of PostgreSQL, see:
-      http://www.postgresql.org/docs/9.3/static/upgrading.html
+    To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
+      http://www.postgresql.org/docs/9.4/static/upgrading.html
     EOS
 
     s << "\n" << gem_caveats if MacOS.prefer_64_bit?
@@ -159,17 +138,3 @@ class Postgresql < Formula
     system "#{bin}/initdb", testpath
   end
 end
-
-
-__END__
---- a/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:34:53.000000000 -0700
-+++ b/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:35:03.000000000 -0700
-@@ -9,6 +9,8 @@
-  *-------------------------------------------------------------------------
-  */
-
-+#define _XOPEN_SOURCE
-+
- #include "postgres.h"
- #include "fmgr.h"
- #include "utils/builtins.h"
