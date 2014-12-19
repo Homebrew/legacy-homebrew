@@ -713,7 +713,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    safe_system hgpath, "clone", url, cached_location
+    safe_system hgpath, "clone", @url, cached_location
   end
 
   def update
@@ -746,7 +746,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     # "lightweight" means history-less
-    safe_system bzrpath, "checkout", "--lightweight", url, cached_location
+    safe_system bzrpath, "checkout", "--lightweight", @url, cached_location
   end
 
   def update
@@ -774,7 +774,7 @@ class FossilDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    safe_system fossilpath, "clone", url, cached_location
+    safe_system fossilpath, "clone", @url, cached_location
   end
 
   def update
