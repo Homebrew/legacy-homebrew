@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libcouchbase < Formula
-  homepage 'http://couchbase.com/communities/c'
+  homepage 'http://docs.couchbase.com/developer/c-2.4/c-intro.html'
   url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.5.tar.gz'
   sha1 'f5b66ca143b41f9e7993e5d9583014d3ddecb7bf'
   head "https://github.com/couchbase/libcouchbase", :using => :git
