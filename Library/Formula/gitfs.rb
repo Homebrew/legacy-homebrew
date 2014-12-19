@@ -1,4 +1,3 @@
-require "fileutils"
 require "formula"
 
 class Gitfs < Formula
@@ -61,8 +60,8 @@ class Gitfs < Formula
   end
 
   test do
-    testing_path = "/tmp/testing"
-    repo_path = "/tmp/repo"
+    testing_path = "testing"
+    repo_path = "repo"
 
     Dir.mkdir testing_path
     Dir.mkdir repo_path
@@ -70,13 +69,15 @@ class Gitfs < Formula
     system "gitfs", "https://github.com/PressLabs/gitfs", testing_path, "-o",
     "repo_path=#{repo_path}"
 
-    sleep 2
+    sleep 1
 
-    assert Dir.exists? testing_path + "/current"
+    current_exists =  Dir.exists? testing_path + "/current"
 
     system "umount", testing_path
 
-    FileUtils.rm_rf testing_path
-    FileUtils.rm_rf repo_path
+    rm_rf testing_path
+    rm_rf repo_path
+
+    assert current_exists
   end
 end
