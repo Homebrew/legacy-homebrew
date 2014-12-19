@@ -311,7 +311,7 @@ class Formula
 
   # sometimes the formula cleaner breaks things
   # skip cleaning paths in a formula with a class method like this:
-  #   skip_clean "bin/foo", "lib"bar"
+  #   skip_clean "bin/foo", "lib/bar"
   # keep .la files with:
   #   skip_clean :la
   def skip_clean? path
