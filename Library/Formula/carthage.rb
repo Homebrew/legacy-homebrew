@@ -8,6 +8,12 @@ class Carthage < Formula
 
   depends_on :xcode => ["6.1.1", :build]
 
+  bottle do
+    cellar :any
+    sha1 "42ab2b503d01cbf31ffb35007d0844fbfbb4784d" => :yosemite
+    sha1 "57ca3f3ef352719fff9d1b7a3efe49f7f7c59480" => :mavericks
+  end
+
   def install
     # Carthage likes to do stuff with submodules itself so we need a "real"
     # git clone rather than letting it play with our cache.
