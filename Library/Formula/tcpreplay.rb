@@ -2,12 +2,8 @@ require "formula"
 
 class Tcpreplay < Formula
   homepage "http://tcpreplay.appneta.com"
-<<<<<<< HEAD
   url "https://github.com/appneta/tcpreplay/releases/download/v4.1.0/tcpreplay-4.1.0.tar.gz"
   sha1 "9723d82a0136d963bcc2665d562cb562d216a1c1"
-=======
-  url "https://github.com/appneta/tcpreplay/releases/download/v4.0.5/tcpreplay-4.0.5.tar.gz"
-  sha1 "878970d77e1482c9b26ac19eb2d125915a900f9b"
 
   bottle do
     cellar :any
@@ -24,7 +20,6 @@ class Tcpreplay < Formula
     sha1 "63c2e5cb17e65bd5072661b43553dc7efc48e881"
     version "4.1.0-b2"
   end
->>>>>>> homebrew/master
 
   def install
     system "./configure", "--disable-dependency-tracking",
