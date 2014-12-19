@@ -2,8 +2,8 @@ require "formula"
 
 class ShadowsocksLibev < Formula
   homepage "https://github.com/madeye/shadowsocks-libev"
-  url "https://github.com/madeye/shadowsocks-libev/archive/v1.5.3.tar.gz"
-  sha1 "afb285b8d84bea44f4f844f00907f139c321b2e4"
+  url "https://github.com/madeye/shadowsocks-libev/archive/v1.6.1.tar.gz"
+  sha1 "2cb88051e43c800dfe9ea55c8a2a3aee11d40ae2"
 
   bottle do
     sha1 "505df68f724008fb39b064763cb3d06ac0c9a0ee" => :yosemite
@@ -45,8 +45,7 @@ class ShadowsocksLibev < Formula
     EOS
     etc.install "shadowsocks-libev.json"
 
-    inreplace "shadowsocks.8", "/etc/shadowsocks/config.json", "#{etc}/shadowsocks-libev.json"
-    man8.install "shadowsocks.8"
+    man8.install "shadowsocks-libev.8"
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/shadowsocks-libev/bin/ss-local -c #{HOMEBREW_PREFIX}/etc/shadowsocks-libev.json"
