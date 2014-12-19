@@ -2,8 +2,8 @@ require "formula"
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.2.0.tar.gz"
-  sha1 "b59ad3f9e9c933960b064e31d793757c145be83a"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.2.1.tar.gz"
+  sha1 "02ae13b144fa5b83733987791cacaa3de855ff0b"
 
   head "https://github.com/git/git.git", :shallow => false
 
