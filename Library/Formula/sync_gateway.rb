@@ -3,8 +3,8 @@ require "formula"
 class SyncGateway < Formula
   homepage "http://docs.couchbase.com/sync-gateway"
   head "https://github.com/couchbase/sync_gateway.git"
-  url "https://github.com/couchbase/sync_gateway.git", :branch => "release/1.0.2"
-  version "1.0.2"
+  url "https://github.com/couchbase/sync_gateway.git", :branch => "release/1.0.4"
+  version "1.0.4"
 
   bottle do
     sha1 "c562b5a600af346900a97ffba3941ec7bf143cc3" => :mavericks
