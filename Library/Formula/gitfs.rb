@@ -56,28 +56,8 @@ class Gitfs < Formula
     gitfs clones repos in /var/lib/gitfs. You can either create it with
     sudo mkdir -m 1777 /var/lib/gitfs or use another folder with the
     repo_path argument.
+
+    Also make sure OSXFUSE is properly installed by running brew info osxfuse.
     EOS
-  end
-
-  test do
-    testing_path = "testing"
-    repo_path = "repo"
-
-    Dir.mkdir testing_path
-    Dir.mkdir repo_path
-
-    system "gitfs", "https://github.com/PressLabs/gitfs", testing_path, "-o",
-    "repo_path=#{repo_path}"
-
-    sleep 1
-
-    current_exists =  Dir.exists? testing_path + "/current"
-
-    system "umount", testing_path
-
-    rm_rf testing_path
-    rm_rf repo_path
-
-    assert current_exists
   end
 end
