@@ -18,8 +18,8 @@ class Pypy3 < Formula
   depends_on "openssl"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.0.2.tar.gz"
-    sha1 "bacdf139b210ea6c16ffa98eefa2eb8074dc7869"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.2.1.tar.gz"
+    sha1 "ddb4454303142be3446437e4fafb13bbd4570133"
   end
 
   resource "pip" do
