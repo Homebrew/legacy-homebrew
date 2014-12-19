@@ -22,14 +22,9 @@ end
 
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.0/cmake-3.0.2.tar.gz"
-  sha1 "379472e3578902a1d6f8b68a9987773151d6f21a"
-
-  head do
-    url "http://cmake.org/cmake.git"
-
-    depends_on "xz" # For LZMA
-  end
+  url "http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz"
+  sha1 "cc20c40f5480c83a0204f516a490b470bd3a963a"
+  head "http://cmake.org/cmake.git"
 
   bottle do
     cellar :any
@@ -41,7 +36,7 @@ class Cmake < Formula
 
   option "without-docs", "Don't build man pages"
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
-
+  depends_on "xz" # For LZMA
   depends_on "qt" => :optional
 
   resource "sphinx" do
@@ -55,8 +50,8 @@ class Cmake < Formula
   end
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
-    sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.1.tar.gz"
+    sha1 "b9e9236693ccf6e86414e8578bf8874181f409de"
   end
 
   resource "jinja2" do
@@ -88,6 +83,7 @@ class Cmake < Formula
     args = %W[
       --prefix=#{prefix}
       --system-libs
+      --parallel=#{ENV.make_jobs}
       --no-system-libarchive
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
