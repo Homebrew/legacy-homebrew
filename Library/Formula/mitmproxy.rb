@@ -9,6 +9,7 @@ class Mitmproxy < Formula
   option 'with-cssutils', 'Enable beautification of CSS responses'
 
   depends_on 'freetype'
+  depends_on 'openssl'
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'protobuf' => :optional
 
@@ -57,30 +58,66 @@ class Mitmproxy < Formula
     sha1 '341e57dbb02b699745b13a9a3296634209d26169'
   end
 
-  def install
-    ENV.prepend_create_path "PYTHONPATH", lib + "python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec + "lib/python2.7/site-packages"
+  resource 'cryptography' do
+    url 'https://pypi.python.org/packages/source/c/cryptography/cryptography-0.7.tar.gz'
+    sha1 'f57311a150be673724c724b873e363d96a359b3a'
+  end
 
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+  resource 'cffi' do
+    url 'https://pypi.python.org/packages/source/c/cffi/cffi-0.8.6.tar.gz'
+    sha1 '4e82390201e6f30e9df8a91cd176df19b8f2d547'
+  end
+
+  resource 'pycparser' do
+    url 'https://pypi.python.org/packages/source/p/pycparser/pycparser-2.10.tar.gz'
+    sha1 '378a7a987d40e2c1c42cad0b351a6fc0a51ed004'
+  end
+
+  resource 'werkzeug' do
+    url 'https://pypi.python.org/packages/source/W/Werkzeug/Werkzeug-0.9.6.tar.gz'
+    sha1 'd1bc1153ea45c6951845338a8499d94bad46e316'
+  end
+
+  resource 'markupsafe' do
+    url 'https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz'
+    sha1 'cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a'
+  end
+
+  resource 'jinja2' do
+    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz'
+    sha1 '25ab3881f0c1adfcf79053b58de829c5ae65d3ac'
+  end
+
+  resource 'itsdangerous' do
+    url 'https://pypi.python.org/packages/source/i/itsdangerous/itsdangerous-0.24.tar.gz'
+    sha1 '0a6ae9c20cd72e89d75314ebc7b0f390f93e6a0d'
+  end
+
+  resource 'six' do
+    url 'https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz'
+    sha1 'aa3b0659cbc85c6c7a91efc51f2d1007040070cd'
+  end
+
+  def install
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
     resource("pillow").stage do
       inreplace "setup.py", "'brew', '--prefix'", "'#{HOMEBREW_PREFIX}/bin/brew', '--prefix'"
-      system "python", *install_args
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
-    res = %w(pyopenssl flask lxml netlib pyasn1 urwid)
+    res = %w(cffi cryptography flask itsdangerous jinja2 lxml markupsafe netlib pyasn1 pycparser pyopenssl six urwid werkzeug)
     res << 'pyamf' if build.with? 'pyamf'
     res << 'cssutils' if build.with? 'cssutils'
 
     res.each do |r|
-      resource(r).stage { system "python", *install_args }
+      resource(r).stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", *Language::Python.setup_install_args(libexec)
 
-    FileUtils.rm Dir[bin + "pil*"]
-    FileUtils.rm Dir[bin + "easy_install*"]
-
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 end
