@@ -2,22 +2,22 @@ require "formula"
 
 class Mkvdts2ac3 < Formula
   homepage "https://github.com/JakeWharton/mkvdts2ac3"
+  revision 2
 
   stable do
     url "https://github.com/JakeWharton/mkvdts2ac3/archive/1.6.0.tar.gz"
-  bottle do
-    cellar :any
-    sha1 "375129c89ce29fe5135b45d5f9a046b2372f39a4" => :mavericks
-    sha1 "dc7850a65fd6d181396a69deb0713b9ae7dad7a6" => :mountain_lion
-  end
-
     sha1 "e427eb6875d935dc228c42e99c3cd19c7ceaa322"
 
     # patch with upstream fix for newer mkvtoolnix compatibility
     # https://github.com/JakeWharton/mkvdts2ac3/commit/f5008860e7ec2cbd950a0628c979f06387bf76d0
     patch :DATA
   end
-  revision 2
+
+  bottle do
+    cellar :any
+    sha1 "375129c89ce29fe5135b45d5f9a046b2372f39a4" => :mavericks
+    sha1 "dc7850a65fd6d181396a69deb0713b9ae7dad7a6" => :mountain_lion
+  end
 
   head "https://github.com/JakeWharton/mkvdts2ac3.git"
 
