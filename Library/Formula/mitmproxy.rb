@@ -2,15 +2,8 @@ require 'formula'
 
 class Mitmproxy < Formula
   homepage 'http://mitmproxy.org'
-  url 'http://mitmproxy.org/download/mitmproxy-0.10.1.tar.gz'
-  sha1 '8feb1b4d8d7b8e6713d08aa434667275215f14c4'
-
-  bottle do
-    cellar :any
-    sha1 "aab837625b57a7a7ab95f9833f7afa498b78d4c1" => :mavericks
-    sha1 "c4c7b63a6f431ea8437758cc4317cf9524fb99fb" => :mountain_lion
-    sha1 "ebf95085b473743e11efb38731317ce7f4b828b0" => :lion
-  end
+  url 'https://mitmproxy.org/download/mitmproxy-0.11.1.tar.gz'
+  sha1 '130e233f815525ee5cd78daa7d061319dd1b39c1'
 
   option 'with-pyamf', 'Enable action message format (AMF) support for python'
   option 'with-cssutils', 'Enable beautification of CSS responses'
@@ -65,8 +58,9 @@ class Mitmproxy < Formula
   end
 
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    ENV.prepend_create_path "PYTHONPATH", lib + "python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec + "lib/python2.7/site-packages"
+
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
     resource("pillow").stage do
@@ -83,6 +77,9 @@ class Mitmproxy < Formula
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    FileUtils.rm Dir[bin + "pil*"]
+    FileUtils.rm Dir[bin + "easy_install*"]
 
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
