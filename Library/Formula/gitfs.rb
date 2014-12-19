@@ -7,6 +7,12 @@ class Gitfs < Formula
 
   head "https://github.com/PressLabs/gitfs.git"
 
+  bottle do
+    cellar :any
+    sha1 "4787280d565c24d411c22fcb62c194eb0a7eebe7" => :mavericks
+    sha1 "1ff9f5341a0524aeba3d9cb39e24085acd1d6606" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   depends_on "libgit2" => "with-libssh2"
