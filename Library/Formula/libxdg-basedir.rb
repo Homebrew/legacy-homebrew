@@ -12,4 +12,18 @@ class LibxdgBasedir < Formula
                            "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/'test.cpp').write <<-EOS.undent
+      #include <basedir.h>
+      int main() {
+        xdgHandle handle;
+        if (!xdgInitHandle(&handle)) return 1;
+        xdgWipeHandle(&handle);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.cpp", "-lxdg-basedir", "-o", "test"
+    system "./test"
+  end
 end
