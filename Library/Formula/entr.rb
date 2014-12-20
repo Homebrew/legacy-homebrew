@@ -2,8 +2,8 @@ require 'formula'
 
 class Entr < Formula
   homepage 'http://entrproject.org/'
-  url 'http://entrproject.org/code/entr-2.9.tar.gz'
-  sha1 '445bc3b4ebe8aca936d2b73309df98817106a738'
+  url 'http://entrproject.org/code/entr-3.0.tar.gz'
+  sha1 'e7c5f589b2bce839464052b116a051b4d8f43f23'
 
   bottle do
     cellar :any
