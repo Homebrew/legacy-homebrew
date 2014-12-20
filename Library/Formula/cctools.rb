@@ -11,6 +11,12 @@ class Cctools < Formula
   end
 
   option "with-llvm", "Build with LTO support" if MacOS.version >= :snow_leopard
+  bottle do
+    cellar :any
+    sha1 "1acad163d4a245f5bd7ad2668cc87a5c9102163a" => :yosemite
+    sha1 "2629465c3d063d3a108adc987bbaa910a49db5f4" => :mavericks
+    sha1 "b5ccf7ea27f82e7eb8aeed1e327079c8a07434fb" => :mountain_lion
+  end
 
   depends_on "cctools-headers" => :build if MacOS.version < :snow_leopard
   depends_on :ld64
