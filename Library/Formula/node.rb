@@ -5,7 +5,6 @@ class Node < Formula
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.10.34/node-v0.10.34.tar.gz"
   sha256 "d7f8473b5849873039f7e62595e12dcdb78c8dffda317e1253b3123876bf3415"
-  revision 1
 
   bottle do
     revision 10
