@@ -127,6 +127,7 @@ class Mitmproxy < Formula
   end
 
   test do
+    ENV["LANG"] = "en_US.UTF-8"
     system bin/"mitmproxy", "--version"
   end
 end
