@@ -2,9 +2,8 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.3.tar.bz2'
-  sha1 '4be9c5d2a8baee6a80bde94c6485931979a428fe'
-  revision 1
+  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2'
+  sha1 '88ae39850fcf0db05ac20e35dd9e4cacc75bde4d'
 
   bottle do
     sha1 "5e5b1f1e287aff134069af22d527f32db4b48646" => :yosemite
