@@ -2,8 +2,8 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url "http://download.redis.io/releases/redis-2.8.18.tar.gz"
-  sha1 "129629262fea2bc60daa542f52457e65e6aa7fd5"
+  url "http://download.redis.io/releases/redis-2.8.19.tar.gz"
+  sha1 "3e362f4770ac2fdbdce58a5aa951c1967e0facc8"
 
   bottle do
     sha1 "f569122156b3029ecef204a9bfe840f713504e13" => :yosemite
