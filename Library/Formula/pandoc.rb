@@ -1,12 +1,11 @@
-require "formula"
 require "language/haskell"
 
 class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://hackage.haskell.org/package/pandoc-1.13.1/pandoc-1.13.1.tar.gz"
-  sha1 "8f3df1977cf9daa848640754515b733c13fd934a"
+  url "https://hackage.haskell.org/package/pandoc-1.13.2/pandoc-1.13.2.tar.gz"
+  sha1 "20f6e4c8d17748979efd011ef870dbfd1fb6dbb3"
 
   bottle do
     revision 1
