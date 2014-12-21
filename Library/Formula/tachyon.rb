@@ -4,9 +4,15 @@ class Tachyon < Formula
   sha1 "3e83f7ea7ca262689bac8acd51b6bff0cce0a1df"
 
   def install
+    mkdir_p "#{etc}/tachyon"
     libexec.install %w[bin client conf core libexec]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
     doc.install Dir["docs/*"]
+
+    unless File.exist?("#{etc}/tachyon/tachyon-env.sh")
+      cp "#{libexec}/conf/tachyon-env.sh.template", "#{etc}/tachyon/tachyon-env.sh"
+    end
+    ln_sf "#{etc}/tachyon/tachyon-env.sh", "#{libexec}/conf/tachyon-env.sh"
   end
 
   test do
@@ -14,10 +20,9 @@ class Tachyon < Formula
   end
 
   def caveats; <<-EOS.undent
-    Before starting, you must create your conf file from the template:
-      #{libexec}/conf/tachyon-env.sh.template
-    by copying it to:
-      #{libexec}/conf/tachyon-env.sh
+    Before starting, make sure you set TACHYON_UNDERFS_ADDRESS in
+      #{etc}/tacyon/tachyon-env.sh
+    to some tmp directory in your local filesystem, e.g. /tmp.
     EOS
   end
 end
