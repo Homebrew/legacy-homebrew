@@ -38,13 +38,9 @@ class Scantailor < Formula
   depends_on 'libtiff'
   depends_on :x11
 
-  # Makes Scan Tailor work with Clang on OS X Mavericks
-  # Approved by maintainer and included in official repository.
-  # See: http://sourceforge.net/p/scantailor/mailman/message/31884956/
-  patch do
-    url "https://gist.githubusercontent.com/muellermartin/8569243/raw/b09215037b346787e0f501ae60966002fd79602e/scantailor-0.9.11.1-clang.patch"
-    sha1 "4594b28bcf9409ef252638830c633dd42c63bc40"
-  end
+  # bad interaction with boost 1.57
+  # https://github.com/scantailor/scantailor/issues/125
+  fails_with :clang
 
   def install
     system "cmake", ".", "-DPNG_INCLUDE_DIR=#{MacOS::X11.include}", *std_cmake_args
