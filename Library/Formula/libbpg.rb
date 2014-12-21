@@ -7,9 +7,9 @@ class Libbpg < Formula
 
   bottle do
     cellar :any
-    sha1 "b9c507c559617a5e916343aea3a943605626eefb" => :yosemite
-    sha1 "256adcd800c53765e41b9bb302a0ff2f412a5e93" => :mavericks
-    sha1 "4947077e367879313d4fed3f9e4c95988663a664" => :mountain_lion
+    sha1 "86e6f94e92e03d116d260e8fcf06399b0ad93154" => :yosemite
+    sha1 "b620193447e678cee2397193c52f0f38ba44a3a8" => :mavericks
+    sha1 "297f3aa90675c20e1241da9adcf61e9cfafaf248" => :mountain_lion
   end
 
   depends_on "libpng"
