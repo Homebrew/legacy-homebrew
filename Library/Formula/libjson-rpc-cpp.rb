@@ -17,6 +17,6 @@ class LibjsonRpcCpp < Formula
   end
 
   test do
-    system "#{bin}/jsonrpcstub"
+    system "#{bin}/jsonrpcstub","-h"
   end
 end
