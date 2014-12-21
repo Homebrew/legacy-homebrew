@@ -37,9 +37,7 @@ class Monetdb < Formula
   option "with-java", 'Build the JDBC dirver'
   option "with-r", 'Build the R integration module'
 
-  if build.with? "r"
-    depends_on RRequirement => :optional
-  end
+  depends_on RRequirement => :optional
 
   depends_on "pkg-config" => :build
   depends_on :ant => :build
