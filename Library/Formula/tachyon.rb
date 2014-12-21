@@ -6,11 +6,11 @@ class Tachyon < Formula
   def install
     libexec.install %w[bin client conf core libexec]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
-    doc.install Dir['docs/*']
+    doc.install Dir["docs/*"]
   end
 
   test do
-    system "tachyon", "version"
+    system bin/"tachyon", "version"
   end
 
   def caveats; <<-EOS.undent
