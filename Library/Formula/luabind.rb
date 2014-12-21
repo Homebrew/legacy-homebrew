@@ -10,6 +10,14 @@ class Luabind < Formula
   depends_on 'boost'
   depends_on 'boost-build' => :build
 
+  # boost 1.57 compatibility
+  # https://github.com/Homebrew/homebrew/pull/33890#issuecomment-67723688
+  # https://github.com/luabind/luabind/issues/27
+  patch do
+    url "https://gist.githubusercontent.com/tdsmith/e6d9d3559ec1d9284c0b/raw/4ac01936561ef9d7541cf8e78a230bebef1a8e10/luabind.diff"
+    sha1 "1f68317f840fb4e72fddbd94e0b2f57efc3df9e4"
+  end
+
   # patch Jamroot to perform lookup for shared objects with .dylib suffix
   patch do
     url "https://gist.githubusercontent.com/DennisOSRM/3728987/raw/052251fcdc23602770f6c543be9b3e12f0cac50a/Jamroot.diff"
