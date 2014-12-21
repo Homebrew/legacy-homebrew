@@ -2,6 +2,7 @@ package spark.jobserver
 
 import ooyala.common.akka.InstrumentedActor
 import spark.jobserver.io.JobDAO
+import spark.jobserver.util.JarUtils
 import org.joda.time.DateTime
 
 // Messages to JarManager actor

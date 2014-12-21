@@ -4,7 +4,7 @@ import java.net.URL
 import org.apache.spark.{SparkContext, SparkEnv}
 import org.joda.time.DateTime
 import spark.jobserver.io.JobDAO
-import spark.jobserver.util.{ContextURLClassLoader, LRUCache}
+import spark.jobserver.util.{ContextURLClassLoader, JarUtils, LRUCache}
 
 case class JobJarInfo(constructor: () => SparkJobBase,
                       className: String,
