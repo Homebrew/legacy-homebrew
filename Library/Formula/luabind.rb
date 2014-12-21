@@ -53,4 +53,28 @@ class Luabind < Formula
     args << "--prefix=#{prefix}"
     system "bjam", *args
   end
+
+  test do
+    (testpath/"hello.cpp").write <<-EOS.undent
+      extern "C" {
+      #include <lua.h>
+      }
+      #include <iostream>
+      #include <luabind/luabind.hpp>
+      void greet() { std::cout << "hello world!\\n"; }
+      extern "C" int init(lua_State* L)
+      {
+          using namespace luabind;
+          open(L);
+          module(L)
+          [
+              def("greet", &greet)
+          ];
+          return 0;
+      }
+    EOS
+    system ENV.cxx, "-shared", "-o", "hello.dylib", "-I#{HOMEBREW_PREFIX}/include/lua-5.1",
+           testpath/"hello.cpp", "-lluabind", "-llua5.1"
+    assert_match /hello world!/, `lua5.1 -e "package.loadlib('#{testpath}/hello.dylib', 'init')(); greet()"`
+  end
 end
