@@ -6,9 +6,9 @@ class OpenMpi < Formula
   sha1 '88ae39850fcf0db05ac20e35dd9e4cacc75bde4d'
 
   bottle do
-    sha1 "5e5b1f1e287aff134069af22d527f32db4b48646" => :yosemite
-    sha1 "3e3a966d4c99486087a4712e45f587739a8d7eac" => :mavericks
-    sha1 "b03989bc09951a9a3f8510f65b65a448017c4a53" => :mountain_lion
+    sha1 "a6ec98d40ab34bf2eb4dbe9223d5aa430ba749ed" => :yosemite
+    sha1 "9d7366e69787c6b331fe5473c8025d86d8b79691" => :mavericks
+    sha1 "8c8627010c9390cb72054fba3f8eea419a67bb2b" => :mountain_lion
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
