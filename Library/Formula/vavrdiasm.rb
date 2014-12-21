@@ -2,8 +2,8 @@ require 'formula'
 
 class Vavrdiasm < Formula
   homepage 'https://github.com/vsergeev/vAVRdisasm'
-  url "https://github.com/vsergeev/vavrdisasm.git", :revision => "v3.1", :using => :git
-  version "3.1"
+  url "https://github.com/vsergeev/vavrdisasm/archive/v3.1.tar.gz"
+  sha1 "8ac78c7ec26760ac76e25a1ff399cfc255b2bc52"
 
   # Patch:
   # - BSD `install(1)' does not have a GNU-compatible `-D' (create intermediate
