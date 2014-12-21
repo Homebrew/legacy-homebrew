@@ -21,24 +21,24 @@ class Monetdb < Formula
   end
 
   class RRequirement < Requirement
-      fatal true
+    fatal true
 
-      satisfy { which('r') }
+    satisfy { which('r') }
 
-      def message; <<-EOS.undent
-          R not found. The R integration module requires R.
-          Do one of the following:
-          - install R
-          - remove the --with-r option
-          EOS
-      end
+    def message; <<-EOS.undent
+      R not found. The R integration module requires R.
+      Do one of the following:
+      - install R
+      - remove the --with-r option
+      EOS
+    end
   end
 
   option "with-java", 'Build the JDBC dirver'
   option "with-r", 'Build the R integration module'
 
   if build.with? "r"
-      depends_on RRequirement
+    depends_on RRequirement => :optional
   end
 
   depends_on "pkg-config" => :build
