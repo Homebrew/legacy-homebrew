@@ -318,6 +318,8 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
                       ctx.complete(400, errMap(ex, "VALIDATION FAILED"))
                     case NoSuchApplication => notFound(ctx, "appName " + appName + " not found")
                     case NoSuchClass       => notFound(ctx, "classPath " + classPath + " not found")
+                    case WrongJobType      =>
+                      ctx.complete(400, errMap("Invalid job type for this context"))
                     case JobLoadingError(err) =>
                       ctx.complete(500, errMap(err, "JOB LOADING FAILED"))
                     case NoJobSlotsAvailable(maxJobSlots) =>

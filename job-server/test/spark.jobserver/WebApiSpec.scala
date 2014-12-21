@@ -85,6 +85,7 @@ with ScalatestRouteTest with HttpService {
       // These routes are part of JobManagerActor
       case StartJob("no-app", _, _, _)   =>  sender ! NoSuchApplication
       case StartJob(_, "no-class", _, _) =>  sender ! NoSuchClass
+      case StartJob("wrong-type", _, _, _) => sender ! WrongJobType
       case StartJob("err", _, config, _) =>  sender ! JobErroredOut("foo", dt,
                                                         new RuntimeException("oops",
                                                           new IllegalArgumentException("foo")))
@@ -260,6 +261,14 @@ with ScalatestRouteTest with HttpService {
 
       Post("/jobs?appName=foobar&classPath=no-class&context=one", " ") ~> sealRoute(routes) ~> check {
         status should be (NotFound)
+      }
+    }
+
+    it("should respond with 400 if job is of the wrong type") {
+      Post("/jobs?appName=wrong-type&classPath=com.abc.meme", " ") ~> sealRoute(routes) ~> check {
+        status should be (BadRequest)
+        val resultMap = responseAs[Map[String, String]]
+        resultMap(StatusKey) should be ("ERROR")
       }
     }
 
