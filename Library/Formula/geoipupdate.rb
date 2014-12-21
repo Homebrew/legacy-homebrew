@@ -1,9 +1,7 @@
-require "formula"
-
 class Geoipupdate < Formula
   homepage "https://github.com/maxmind/geoipupdate"
-  url "https://github.com/maxmind/geoipupdate/releases/download/v2.0.2/geoipupdate-2.0.2.tar.gz"
-  sha1 "14274698cacb5468475a008b8db61e162ff1ce73"
+  url "https://github.com/maxmind/geoipupdate/releases/download/v2.1.0/geoipupdate-2.1.0.tar.gz"
+  sha1 "3b77c88d43ab7ad5056cbd5bc2f557b193fa5100"
 
   bottle do
     sha1 "583c8a6af265daf2ff07abeb0e2d77ac028814e8" => :mavericks
