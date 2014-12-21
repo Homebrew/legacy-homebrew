@@ -10,6 +10,11 @@ class Luabind < Formula
   depends_on 'boost'
   depends_on 'boost-build' => :build
 
+  # boost 1.57 compatibility
+  # https://github.com/Homebrew/homebrew/pull/33890#issuecomment-67723688
+  # https://github.com/luabind/luabind/issues/27
+  patch :DATA
+
   # patch Jamroot to perform lookup for shared objects with .dylib suffix
   patch do
     url "https://gist.githubusercontent.com/DennisOSRM/3728987/raw/052251fcdc23602770f6c543be9b3e12f0cac50a/Jamroot.diff"
@@ -46,3 +51,24 @@ class Luabind < Formula
     system "bjam", *args
   end
 end
+__END__
+diff --git a/luabind/object.hpp b/luabind/object.hpp
+index f7b7ca5..5bb3fc3 100644
+--- a/luabind/object.hpp
++++ b/luabind/object.hpp
+@@ -536,6 +536,7 @@ namespace detail
+       handle m_key;
+   };
+ 
++#if BOOST_VERSION < 105700
+ // Needed because of some strange ADL issues.
+ 
+ #define LUABIND_OPERATOR_ADL_WKND(op) \\
+@@ -557,6 +558,8 @@ namespace detail
+   LUABIND_OPERATOR_ADL_WKND(!=)
+ 
+ #undef LUABIND_OPERATOR_ADL_WKND
++
++#endif // BOOST_VERSION < 105700
+  
+ } // namespace detail
