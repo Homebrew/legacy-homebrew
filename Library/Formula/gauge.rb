@@ -5,6 +5,12 @@ class Gauge < Formula
   url "https://github.com/getgauge/gauge/archive/v0.0.3.tar.gz"
   sha1 "5cb64ce8d803c739c3e21513b334e0d2216cc68a"
 
+  bottle do
+    sha1 "6b503ea7ac28bd315a8a7fa55917aaccb20e9e87" => :yosemite
+    sha1 "b353b1dc155055ed3b8f94f6f1ebe2e470246c97" => :mavericks
+    sha1 "10eacac84c0de5491bea5368bc6d33d65d49a2f4" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "code.google.com/p/goprotobuf" do
