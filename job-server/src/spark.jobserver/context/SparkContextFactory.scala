@@ -1,8 +1,9 @@
-package spark.jobserver.util
+package spark.jobserver.context
 
 import com.typesafe.config.Config
 import org.apache.spark.SparkContext
 import spark.jobserver.{ContextLike, SparkJob, SparkJobBase}
+import spark.jobserver.util.SparkJobUtils
 
 /**
  * Factory trait for creating a SparkContext or any derived Contexts,

@@ -52,7 +52,7 @@ object JobManagerActor {
  *   spark {
  *     jobserver {
  *       max-jobs-per-context = 16      # Number of jobs that can be run simultaneously per context
- *       context-factory = "spark.jobserver.DefaultSparkContextFactory"
+ *       context-factory = "spark.jobserver.context.DefaultSparkContextFactory"
  *     }
  *   }
  * }}}
@@ -256,7 +256,7 @@ class JobManagerActor(dao: JobDAO,
   def createContextFromConfig(contextName: String = contextName): ContextLike = {
     val factoryClassName = config.getString("spark.jobserver.context-factory")
     val factoryClass = jarLoader.loadClass(factoryClassName)
-    val factory = factoryClass.newInstance.asInstanceOf[spark.jobserver.util.SparkContextFactory]
+    val factory = factoryClass.newInstance.asInstanceOf[spark.jobserver.context.SparkContextFactory]
     Thread.currentThread.setContextClassLoader(jarLoader)
     factory.makeContext(config, contextConfig, contextName)
   }

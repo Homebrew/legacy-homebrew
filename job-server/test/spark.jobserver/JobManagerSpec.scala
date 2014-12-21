@@ -25,7 +25,7 @@ object JobManagerSpec {
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
       "akka.log-dead-letters" -> 0,
       "spark.master" -> "local[4]",
-      "spark.jobserver.context-factory" -> "spark.jobserver.util.DefaultSparkContextFactory"
+      "spark.jobserver.context-factory" -> "spark.jobserver.context.DefaultSparkContextFactory"
     )
     ConfigFactory.parseMap(ConfigMap.asJava)
   }
