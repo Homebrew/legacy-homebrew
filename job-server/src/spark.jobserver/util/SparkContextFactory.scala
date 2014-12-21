@@ -2,7 +2,7 @@ package spark.jobserver.util
 
 import com.typesafe.config.Config
 import org.apache.spark.SparkContext
-import spark.jobserver.ContextLike
+import spark.jobserver.{ContextLike, SparkJob, SparkJobBase}
 
 /**
  * Factory trait for creating a SparkContext or any derived Contexts,
@@ -39,6 +39,7 @@ class DefaultSparkContextFactory extends SparkContextFactory {
     val conf = configToSparkConf(config, contextConfig, contextName)
     new SparkContext(conf) with ContextLike {
       def sparkContext = this
+      def isValidJob(job: SparkJobBase) = job.isInstanceOf[SparkJob]
     }
   }
 }

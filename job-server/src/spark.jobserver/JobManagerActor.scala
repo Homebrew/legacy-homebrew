@@ -99,10 +99,13 @@ class JobManagerActor(dao: JobDAO,
     case Initialize =>
       try {
         // Load side jars first in case the ContextFactory comes from it
-        getSideJars(contextConfig).foreach { jarUri => jarLoader.addURL(new URL(convertJarUriSparkToJava(jarUri))) }
+        getSideJars(contextConfig).foreach { jarUri =>
+          jarLoader.addURL(new URL(convertJarUriSparkToJava(jarUri)))
+        }
         jobContext = createContextFromConfig()
         sparkEnv = SparkEnv.get
-        rddManagerActor = context.actorOf(Props(classOf[RddManagerActor], jobContext.sparkContext), "rdd-manager-actor")
+        rddManagerActor = context.actorOf(Props(classOf[RddManagerActor], jobContext.sparkContext),
+                                          "rdd-manager-actor")
         getSideJars(contextConfig).foreach { jarUri => jobContext.sparkContext.addJar(jarUri) }
         sender ! Initialized(resultActor)
       } catch {
@@ -148,6 +151,13 @@ class JobManagerActor(dao: JobDAO,
           postEachJob()
           break
           null
+      }
+
+      // Validate that job fits the type of context we launched
+      val job = jobJarInfo.constructor()
+      if (!jobContext.isValidJob(job)) {
+        sender ! WrongJobType
+        break
       }
 
       // Automatically subscribe the sender to events so it starts getting them right away
@@ -207,8 +217,6 @@ class JobManagerActor(dao: JobDAO,
       try {
         statusActor ! JobStatusActor.JobInit(jobInfo)
 
-        // NOTE: Need to convert sth like SparkContext with ContextLike to SparkContext (Job.C)
-        // TODO(velvia): Validate that jobContext can be cast to job.C (compatible context type)
         job.validate(jobContext.asInstanceOf[job.C], jobConfig) match {
           case SparkJobInvalid(reason) => {
             val err = new Throwable(reason)

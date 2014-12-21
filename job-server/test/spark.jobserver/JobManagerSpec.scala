@@ -60,6 +60,7 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll with
 
   val classPrefix = "spark.jobserver."
   private val wordCountClass = classPrefix + "WordCountExample"
+  private val sqlTestClass = classPrefix + "SqlTestJob"
   protected val stringConfig = ConfigFactory.parseString("input.string = The lazy dog jumped over the fish")
   protected val emptyConfig = ConfigFactory.parseString("spark.master = bar")
 
@@ -84,6 +85,14 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll with
       expectMsgClass(classOf[JobManagerActor.Initialized])
       manager ! JobManagerActor.StartJob("notajar", "no.such.class", emptyConfig, Set.empty[Class[_]])
       expectMsg(CommonMessages.NoSuchClass)
+    }
+
+    it("should get WrongJobType if loading SQL job in a plain SparkContext context") {
+      uploadTestJar()
+      manager ! JobManagerActor.Initialize
+      expectMsgClass(classOf[JobManagerActor.Initialized])
+      manager ! JobManagerActor.StartJob("demo", sqlTestClass, emptyConfig, errorEvents)
+      expectMsg(CommonMessages.WrongJobType)
     }
 
     it("should error out if job validation fails") {
