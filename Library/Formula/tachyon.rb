@@ -9,9 +9,7 @@ class Tachyon < Formula
     bin.write_exec_script Dir["#{libexec}/bin/*"]
     doc.install Dir["docs/*"]
 
-    unless File.exist?("#{etc}/tachyon/tachyon-env.sh")
-      cp "#{libexec}/conf/tachyon-env.sh.template", "#{etc}/tachyon/tachyon-env.sh"
-    end
+    (etc/"tachyon").install libexec/"conf/tachyon-env.sh.template" => "tachyon-env.sh"
     ln_sf "#{etc}/tachyon/tachyon-env.sh", "#{libexec}/conf/tachyon-env.sh"
   end
 
