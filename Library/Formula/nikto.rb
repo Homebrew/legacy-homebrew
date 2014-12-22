@@ -1,15 +1,11 @@
-require "formula"
-
 class Nikto < Formula
   homepage "http://cirt.net/nikto2"
   url "https://www.cirt.net/nikto/nikto-2.1.5.tar.bz2"
   sha1 "9fafa51f630ce241aff58b217882e514d577939f"
 
   def install
-    # adjust default paths in perl script
     inreplace "nikto.pl", "/etc/nikto.conf", "#{etc}/nikto.conf"
 
-    # adjust default paths in configuration file
     inreplace "nikto.conf" do |s|
       s.gsub! "# EXECDIR=/opt/nikto", "EXECDIR=#{prefix}"
       s.gsub! "# PLUGINDIR=/opt/nikto/plugins", "PLUGINDIR=#{prefix}/plugins"
