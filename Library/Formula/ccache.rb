@@ -2,8 +2,8 @@ require 'formula'
 
 class Ccache < Formula
   homepage 'http://ccache.samba.org/'
-  url 'http://samba.org/ftp/ccache/ccache-3.2.tar.bz2'
-  sha1 '2dce973a0dc0208108202983ccb7332c30e3b0fd'
+  url 'http://samba.org/ftp/ccache/ccache-3.2.1.tar.bz2'
+  sha1 '6441f394720b3ab0498fa8e817e2851399c23095'
 
   bottle do
     sha1 "5f2b5557da18bbaf56ddf0082714f4174587f48e" => :yosemite
