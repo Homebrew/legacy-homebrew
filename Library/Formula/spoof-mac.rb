@@ -4,6 +4,12 @@ class SpoofMac < Formula
   sha1 "6a1d44ee300f30c1e2406fa612950adedc7367d2"
   head "https://github.com/feross/SpoofMAC.git"
 
+  bottle do
+    sha1 "13efa686db9f20bc7cfb69f2ebc18583c2bb990e" => :yosemite
+    sha1 "2d68dfc7103ce1c3f99d1a6a48460bc7370310a2" => :mavericks
+    sha1 "bdecbe4eb2ccd5ddb2f340922c37f652e1b3b1f2" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "docopt" do
