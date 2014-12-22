@@ -1,9 +1,7 @@
-require "formula"
-
 class GitCola < Formula
   homepage "http://git-cola.github.io/"
-  url "https://github.com/git-cola/git-cola/archive/v2.0.6.tar.gz"
-  sha1 "8fd261bf7aa49515d2bc2be3028562921c4eef02"
+  url "https://github.com/git-cola/git-cola/archive/v2.0.8.tar.gz"
+  sha1 "38db3432ca90047448c8f3b6f20ef0ad37c15fa1"
 
   head "https://github.com/git-cola/git-cola.git"
 
@@ -35,4 +33,7 @@ class GitCola < Formula
     end
   end
 
+  test do
+    system "#{bin}/git-cola", "--version"
+  end
 end
