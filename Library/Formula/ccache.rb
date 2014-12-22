@@ -6,9 +6,9 @@ class Ccache < Formula
   sha1 '6441f394720b3ab0498fa8e817e2851399c23095'
 
   bottle do
-    sha1 "5f2b5557da18bbaf56ddf0082714f4174587f48e" => :yosemite
-    sha1 "6fd29412eb8863abfb823dfdc6b14971a447c0ee" => :mavericks
-    sha1 "a2f3ed24c30f6402ab646cf55b7a4914af9e0551" => :mountain_lion
+    sha1 "ad628a17b9e5a2ddea525f6d2d5a62fd1e4b760e" => :yosemite
+    sha1 "0f418e54212ce0f3794cb07b696dae355bb98616" => :mavericks
+    sha1 "daec380da3fe10e2daad3ea80d7db86f43d5e00c" => :mountain_lion
   end
 
   head do
