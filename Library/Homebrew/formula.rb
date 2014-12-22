@@ -53,7 +53,7 @@ class Formula
 
   # The currently active SoftwareSpec.
   # Defaults to stable unless `--devel` or `--HEAD` is passed.
-  # @private
+  # @api private
   attr_reader :active_spec
 
   # The {PkgVersion} for this formula with version and {#revision} information.
@@ -329,7 +329,7 @@ class Formula
   end
 
   # yields self with current working directory set to the uncompressed tarball
-  # @private
+  # @api private
   def brew
     validate_attributes :name, :version
 
