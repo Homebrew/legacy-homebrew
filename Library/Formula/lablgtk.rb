@@ -10,6 +10,7 @@ class Lablgtk < Formula
   depends_on 'objective-caml'
   depends_on 'gtk+'
   depends_on 'librsvg'
+  depends_on 'camlp4'
 
   def install
     system "./configure", "--bindir=#{bin}",
