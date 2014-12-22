@@ -10,8 +10,8 @@ class Carthage < Formula
 
   bottle do
     cellar :any
-    sha1 "42ab2b503d01cbf31ffb35007d0844fbfbb4784d" => :yosemite
-    sha1 "57ca3f3ef352719fff9d1b7a3efe49f7f7c59480" => :mavericks
+    sha1 "38a4e1a2409e009c77b1cc2e6697c91102461a64" => :yosemite
+    sha1 "1ac83c143cc366ee81c2a810b2fbb0206967a513" => :mavericks
   end
 
   def install
