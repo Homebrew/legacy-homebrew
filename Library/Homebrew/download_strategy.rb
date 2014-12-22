@@ -645,6 +645,8 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
     if meta.key?(:module)
       @module = meta.fetch(:module)
+    elsif @url !~ %r[:[^/]+$]
+      @module = name
     else
       @module, @url = split_url(@url)
     end
