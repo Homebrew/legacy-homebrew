@@ -725,6 +725,7 @@ class Formula
 
     # The reason for why this software is not linked (by default) to
     # {::HOMEBREW_PREFIX}.
+    # @api private
     attr_reader :keg_only_reason
 
     # @!attribute [rw]
