@@ -7,6 +7,13 @@ class F3 < Formula
 
   head "https://github.com/AltraMayor/f3.git"
 
+  bottle do
+    cellar :any
+    sha1 "939ab204d6e1ff0be2c487fd6cce4ba5bcad66f7" => :yosemite
+    sha1 "6ae3660786be6daa0641bbaaae7b7e66fc5f5886" => :mavericks
+    sha1 "f83fb9c34469ea937f51874a70f3ec94d48980db" => :mountain_lion
+  end
+
   def install
     system "make", "mac"
     bin.install "f3read", "f3write"
