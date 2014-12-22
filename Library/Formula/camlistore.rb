@@ -17,8 +17,6 @@ class Camlistore < Formula
   depends_on 'sqlite'
 
   def install
-    ENV['GIT_DIR'] = cached_download+".git"
-
     system "go", "run", "make.go"
     prefix.install "bin/README"
     prefix.install "bin"

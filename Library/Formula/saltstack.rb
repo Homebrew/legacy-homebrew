@@ -80,7 +80,6 @@ class Saltstack < Formula
       end
     end
 
-    ln_s cached_download/".git", ".git"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
     man1.install Dir["doc/man/*.1"]

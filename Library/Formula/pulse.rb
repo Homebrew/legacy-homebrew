@@ -23,7 +23,6 @@ class Pulse < Formula
     rm_rf  hack_dir
     mkdir_p hack_dir
     ln_s cached_download, "#{hack_dir}/pulse"
-    ENV["GIT_DIR"] = cached_download/".git"
 
     system "./build.sh", "noupgrade"
     prefix.install %w{ CONTRIBUTING.md LICENSE README.md }

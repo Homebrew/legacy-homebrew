@@ -17,7 +17,6 @@ class Dub < Formula
   depends_on "dmd"  => :build
 
   def install
-    ENV["GIT_DIR"] = cached_download/".git"
     system "./build.sh"
     bin.install "bin/dub"
   end

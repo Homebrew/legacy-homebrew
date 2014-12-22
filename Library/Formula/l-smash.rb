@@ -13,7 +13,6 @@ class LSmash < Formula
   end
 
   def install
-    ENV["GIT_DIR"] = cached_download/".git"
     system "./configure", "--prefix=#{prefix}", "--enable-shared"
     system "make", "install"
   end
