@@ -345,9 +345,7 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-# This strategy is provided for use with sites that only provide HTTPS and
-# also have a broken cert. Try not to need this, as we probably won't accept
-# the formula.
+# @deprecated
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-C', downloaded_size, '-o', temporary_path
@@ -492,9 +490,10 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   alias_method :update, :clone_repo
 end
 
+# @deprecated
 StrictSubversionDownloadStrategy = SubversionDownloadStrategy
 
-# Download from SVN servers with invalid or self-signed certs
+# @deprecated
 class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
   def fetch_args
     %w[--non-interactive --trust-server-cert]
@@ -642,6 +641,14 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   def initialize(name, resource)
     super
     @url = @url.sub(%r[^cvs://], "")
+
+    if meta.key?(:module)
+      @module = meta.fetch(:module)
+    elsif @url !~ %r[:[^/]+$]
+      @module = name
+    else
+      @module, @url = split_url(@url)
+    end
   end
 
   def stage
@@ -659,15 +666,9 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    # URL of cvs cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml
-    # will become:
-    # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML login
-    # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML co gccxml
-    mod, url = split_url(@url)
-
     HOMEBREW_CACHE.cd do
-      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", url, "login"
-      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", url, "checkout", "-d", cache_filename, mod
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login"
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "checkout", "-d", cache_filename, @module
     end
   end
 

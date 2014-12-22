@@ -5,7 +5,13 @@ class Mozjpeg < Formula
   url "https://github.com/mozilla/mozjpeg/archive/v2.1.tar.gz"
   sha1 "07f8df93cd54adbec37869833de987eb12ce7062"
 
-  head "https://github.com/mozilla/mozjpeg.git"
+  head do
+    url "https://github.com/mozilla/mozjpeg.git"
+
+    # Both these can be shifted into the main block with next release.
+    depends_on "pkg-config" => :build
+    depends_on "libpng" => :optional
+  end
 
   bottle do
     cellar :any

@@ -344,7 +344,10 @@ class FormulaAuditor
     if line =~ /# if your formula requires any X11\/XQuartz components/
       problem "Please remove default template comments"
     end
-    if line =~ /# if your formula's build system can't parallelize/
+    if line =~ /# if your formula fails when building in parallel/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# Remove unrecognized options if warned by configure/
       problem "Please remove default template comments"
     end
 
@@ -566,9 +569,10 @@ end
 
 class ResourceAuditor
   attr_reader :problems
-  attr_reader :version, :checksum, :using, :specs, :url
+  attr_reader :version, :checksum, :using, :specs, :url, :name
 
   def initialize(resource)
+    @name     = resource.name
     @version  = resource.version
     @checksum = resource.checksum
     @url      = resource.url
@@ -623,6 +627,10 @@ class ResourceAuditor
   end
 
   def audit_download_strategy
+    if url =~ %r[^(cvs|bzr|hg|fossil)://] || url =~ %r[^(svn)\+http://]
+      problem "Use of the #{$&} scheme is deprecated, pass `:using => :#{$1}` instead"
+    end
+
     return unless using
 
     if using == :ssl3 || using == CurlSSL3DownloadStrategy
@@ -631,11 +639,29 @@ class ResourceAuditor
       problem "#{using.name} is deprecated, please choose a different URL"
     end
 
+    if using == :cvs
+      mod = specs[:module]
+
+      if mod == name
+        problem "Redundant :module value in URL"
+      end
+
+      if url =~ %r[:[^/]+$]
+        mod = url.split(":").last
+
+        if mod == name
+          problem "Redundant CVS module appended to URL"
+        else
+          problem "Specify CVS module as `:module => \"#{mod}\"` instead of appending it to the URL"
+        end
+      end
+    end
+
     url_strategy   = DownloadStrategyDetector.detect(url)
     using_strategy = DownloadStrategyDetector.detect('', using)
 
     if url_strategy == using_strategy
-      problem "redundant :using specification in URL"
+      problem "Redundant :using value in URL"
     end
   end
 

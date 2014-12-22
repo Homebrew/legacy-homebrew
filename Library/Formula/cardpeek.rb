@@ -5,13 +5,6 @@ class Cardpeek < Formula
 
   stable do
     url "http://downloads.pannetrat.com/get/302b8a00996e9f4180ad/cardpeek-0.8.3.tar.gz"
-  bottle do
-    cellar :any
-    sha1 "71775a85560719e72a31284f1852b236daebab7c" => :mavericks
-    sha1 "8801e8e235850927169195d1beac9a44566ba33c" => :mountain_lion
-    sha1 "d6522d6a501745e2a3ef0744a06e78a6690f81be" => :lion
-  end
-
     mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Cardpeek/cardpeek-0.8.3.tar.gz"
     sha1 "8cc9c0652f0214ec06badb5b86974c66ca035a43"
 
@@ -22,9 +15,14 @@ class Cardpeek < Formula
     end
   end
 
-  head do
-    url "https://cardpeek.googlecode.com/svn/trunk/"
+  bottle do
+    cellar :any
+    sha1 "71775a85560719e72a31284f1852b236daebab7c" => :mavericks
+    sha1 "8801e8e235850927169195d1beac9a44566ba33c" => :mountain_lion
+    sha1 "d6522d6a501745e2a3ef0744a06e78a6690f81be" => :lion
   end
+
+  head "https://cardpeek.googlecode.com/svn/trunk/"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
