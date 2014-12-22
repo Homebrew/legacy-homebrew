@@ -344,7 +344,10 @@ class FormulaAuditor
     if line =~ /# if your formula requires any X11\/XQuartz components/
       problem "Please remove default template comments"
     end
-    if line =~ /# if your formula's build system can't parallelize/
+    if line =~ /# if your formula fails when building in parallel/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# Remove unrecognized options if warned by configure/
       problem "Please remove default template comments"
     end
 
