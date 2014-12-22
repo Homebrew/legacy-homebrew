@@ -6,8 +6,10 @@ class Redpen < Formula
   depends_on :java => "1.8"
 
   def install
-    libexec.install %w[bin lib]
-    bin.install_symlink libexec+"bin/redpen"
+    # Don't need Windows files.
+    rm_f Dir["bin/*.bat"]
+    libexec.install %w(bin conf lib sample-doc)
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   test do
