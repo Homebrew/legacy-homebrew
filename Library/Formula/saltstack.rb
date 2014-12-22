@@ -1,15 +1,5 @@
 require "formula"
 
-# We use a custom download strategy to properly configure
-# salt's version information when built against HEAD.
-# This is populated from git information unfortunately.
-class SaltHeadDownloadStrategy < GitDownloadStrategy
-  def stage
-    cached_location.cd { reset }
-    quiet_safe_system "git", "clone", cached_location, "."
-  end
-end
-
 class Saltstack < Formula
   homepage "http://www.saltstack.org"
   url "https://github.com/saltstack/salt/archive/v2014.7.0.tar.gz"
@@ -21,8 +11,7 @@ class Saltstack < Formula
     sha1 "a3776f39e5c18b660dcabf3127286eddfdfc445c" => :mountain_lion
   end
 
-  head "https://github.com/saltstack/salt.git", :branch => "develop",
-    :using => SaltHeadDownloadStrategy, :shallow => false
+  head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "swig" => :build
@@ -91,6 +80,7 @@ class Saltstack < Formula
       end
     end
 
+    ln_s cached_download/".git", ".git"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
     man1.install Dir["doc/man/*.1"]

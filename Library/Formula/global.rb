@@ -13,7 +13,7 @@ class Global < Formula
   end
 
   head do
-    url "cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global"
+    url ":pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global", :using => :cvs
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

@@ -6,9 +6,10 @@ class HtopOsx < Formula
   sha1 '17c56fe5efe81cf6b0f4c13a958fa7e4d8591b23'
 
   bottle do
-    sha1 "1979feaa7dc6dc9ea8eba0eeba0903451b6dcb60" => :mavericks
-    sha1 "60dfb6d300afd103aa5533b52302de3bb0dd067f" => :mountain_lion
-    sha1 "ffed10bd7a4a6649120d8db66ac7b0daf686b982" => :lion
+    revision 1
+    sha1 "846c2f8b7711960139af43f407d23f058825ca8f" => :yosemite
+    sha1 "3c6b4366aae7b1dad12275a66c4fa68e2c0312b7" => :mavericks
+    sha1 "3736ab4a1ac5cc0c3593e882a51d65a99ed359f0" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

@@ -3,13 +3,13 @@ require "formula"
 class SyncGateway < Formula
   homepage "http://docs.couchbase.com/sync-gateway"
   head "https://github.com/couchbase/sync_gateway.git"
-  url "https://github.com/couchbase/sync_gateway.git", :branch => "release/1.0.2"
-  version "1.0.2"
+  url "https://github.com/couchbase/sync_gateway.git", :branch => "release/1.0.4"
+  version "1.0.4"
 
   bottle do
-    sha1 "c562b5a600af346900a97ffba3941ec7bf143cc3" => :mavericks
-    sha1 "f0e322874588bc5328ec5ab4880def47026960e4" => :mountain_lion
-    sha1 "b7b9d259e0ed15757f30b2e44881266d9dd2a4de" => :lion
+    sha1 "cd5eef55308a0cbbfbd92e774b86d47344abea7e" => :yosemite
+    sha1 "6b9a112f3ff48989aea5380e8b7bcbccf7a6b385" => :mavericks
+    sha1 "daff7035dd82ab3c9f44a521ab1ea99f93a10343" => :mountain_lion
   end
 
   depends_on "go" => :build

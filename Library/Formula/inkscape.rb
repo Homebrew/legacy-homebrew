@@ -1,29 +1,35 @@
-require 'formula'
-
 class Inkscape < Formula
   homepage 'http://inkscape.org/'
   url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.5/inkscape-0.48.5.tar.gz'
   sha1 'e14789da0f6b5b84ef26f6759e295bc4be7bd34d'
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "ad338136463ee2a73dc0922e4f059bd1dc3a8a10" => :mavericks
-    sha1 "8160eb07157e6b969b50d9ff15d737d0f2365089" => :mountain_lion
-    sha1 "866814f911ba37e2214c8a983e91c0bdc668736e" => :lion
+    sha1 "5d5fa915ff5cb8a245c7e8e2295cda07149c311d" => :yosemite
+    sha1 "6687b6ee83263d4c64e06a8e4432d3be77d95be9" => :mavericks
+    sha1 "63052a052b408edf1755ff78cc00fdb6ffc058b2" => :mountain_lion
   end
 
   stable do
     # boost 1.56 compatibility
     # https://bugs.launchpad.net/inkscape/+bug/1357411
     patch :p0, :DATA
+
+    # poppler 0.29 compatibility
+    # https://bugs.launchpad.net/inkscape/+bug/1399811
+    patch :p0 do
+      url "https://launchpadlibrarian.net/192286866/1399811-fix-build-with-poppler-0.29.0-048x-v1.diff"
+      sha1 "82ad02357a2405c11f29f2e516b1a7f55953e807"
+    end
   end
 
   head do
     url 'lp:inkscape/0.48.x', :using => :bzr
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
   end
+
+  # needed on stable for poppler patch
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
@@ -51,7 +57,12 @@ class Inkscape < Formula
   def install
     ENV.cxx11
 
-    system "./autogen.sh" if build.head?
+    if build.head?
+      system "./autogen.sh"
+    elsif build.with? "poppler"
+      system "autoconf"
+      system "autoheader"
+    end
 
     args = [ "--disable-dependency-tracking",
              "--prefix=#{prefix}",
@@ -59,7 +70,7 @@ class Inkscape < Formula
     args << "--disable-poppler-cairo" if build.without? "poppler"
     system "./configure", *args
 
-    system "make install"
+    system "make", "install"
   end
 
   test do

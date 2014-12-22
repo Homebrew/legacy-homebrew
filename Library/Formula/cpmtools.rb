@@ -2,8 +2,14 @@ require 'formula'
 
 class Cpmtools < Formula
   homepage 'http://www.moria.de/~michael/cpmtools/'
-  url 'http://www.moria.de/~michael/cpmtools/files/cpmtools-2.19.tar.gz'
-  sha1 '7c66bd04ecc05c05e99232a55a427f7b29a2f4cf'
+  url 'http://www.moria.de/~michael/cpmtools/files/cpmtools-2.20.tar.gz'
+  sha1 '5a2703265d903fe615ec3c71e3ce4ff8d58637af'
+
+  bottle do
+    sha1 "a437721156fa15a612e823e4f1ee0fdbfe2d0ed7" => :yosemite
+    sha1 "43ea7f0a371628133d4c46e249c32f0a619ad45f" => :mavericks
+    sha1 "537d26d243827c8d1506305fce70e9eab7604eaa" => :mountain_lion
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}"

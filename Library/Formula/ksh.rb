@@ -3,8 +3,7 @@ require "formula"
 class Ksh < Formula
   homepage "http://www.kornshell.com"
   url  "http://www2.research.att.com/~astopen/download/tgz/ast-ksh.2012-08-01.tgz",
-    :using => NoUnzipCurlDownloadStrategy,
-    :user => "I accept www.opensource.org/licenses/eclipse:."
+    :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."
   sha1 "316428e9937806183a134aa1669dea40c3a73695"
   version "93u+" # Versioning scheme: + means "+ patches", - means "beta/alpha".
 
@@ -18,8 +17,7 @@ class Ksh < Formula
 
   resource "init" do
     url "http://www2.research.att.com/~astopen/download/tgz/INIT.2012-08-01.tgz",
-      :using => NoUnzipCurlDownloadStrategy,
-      :user => "I accept www.opensource.org/licenses/eclipse:."
+      :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."
     sha1 "0b472a615db384fe707042baaa3347dc1aa1c81e"
   end
 

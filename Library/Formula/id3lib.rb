@@ -18,7 +18,7 @@ class Id3lib < Formula
     end
   end
 
-  head "cvs://:pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel"
+  head ":pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel", :using => :cvs
 
   bottle do
     cellar :any

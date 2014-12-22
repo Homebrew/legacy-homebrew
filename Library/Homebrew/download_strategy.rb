@@ -436,17 +436,11 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   private
 
   def repo_url
-    `svn info '#{cached_location}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
-  end
-
-  def shell_quote str
-    # Oh god escaping shell args.
-    # See http://notetoself.vrensk.com/2008/08/escaping-single-quotes-in-ruby-harder-than-expected/
-    str.gsub(/\\|'/) { |c| "\\#{c}" }
+    Utils.popen_read("svn", "info", cached_location.to_s).strip[/^URL: (.+)$/, 1]
   end
 
   def get_externals
-    `svn propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+    Utils.popen_read("svn", "propget", "svn:externals", @url).chomp.each_line do |line|
       name, url = line.split(/\s+/)
       yield name, url
     end
@@ -540,6 +534,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
     "git"
   end
 
+  def cache_version
+    0
+  end
+
   def update
     cached_location.cd do
       config_repo
@@ -606,7 +604,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     safe_system 'git', *clone_args
-    cached_location.cd { update_submodules } if submodules?
+    cached_location.cd do
+      safe_system "git", "config", "homebrew.cacheversion", cache_version
+      update_submodules if submodules?
+    end
   end
 
   def checkout
@@ -638,6 +639,11 @@ class GitDownloadStrategy < VCSDownloadStrategy
 end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^cvs://], "")
+  end
+
   def stage
     cp_r Dir[cached_location+"{.}"], Dir.pwd
   end
@@ -670,7 +676,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def split_url(in_url)
-    parts=in_url.sub(%r[^cvs://], '').split(/:/)
+    parts = in_url.split(/:/)
     mod=parts.pop
     url=parts.join(':')
     [ mod, url ]
@@ -678,6 +684,11 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^hg://], "")
+  end
+
   def stage
     super
 
@@ -702,8 +713,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    url = @url.sub(%r[^hg://], "")
-    safe_system hgpath, "clone", url, cached_location
+    safe_system hgpath, "clone", @url, cached_location
   end
 
   def update
@@ -712,6 +722,11 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
 end
 
 class BazaarDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^bzr://], "")
+  end
+
   def stage
     # The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
@@ -730,9 +745,8 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    url = @url.sub(%r[^bzr://], "")
     # "lightweight" means history-less
-    safe_system bzrpath, "checkout", "--lightweight", url, cached_location
+    safe_system bzrpath, "checkout", "--lightweight", @url, cached_location
   end
 
   def update
@@ -741,6 +755,11 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
 end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^fossil://], "")
+  end
+
   def stage
     super
     args = [fossilpath, "open", cached_location]
@@ -755,8 +774,7 @@ class FossilDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    url = @url.sub(%r[^fossil://], "")
-    safe_system fossilpath, "clone", url, cached_location
+    safe_system fossilpath, "clone", @url, cached_location
   end
 
   def update
@@ -817,6 +835,7 @@ class DownloadStrategyDetector
     when :ssl3    then CurlSSL3DownloadStrategy
     when :cvs     then CVSDownloadStrategy
     when :post    then CurlPostDownloadStrategy
+    when :fossil  then FossilDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end

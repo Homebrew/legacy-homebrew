@@ -13,9 +13,6 @@ class Groonga < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "libtool" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
   depends_on "pcre"
   depends_on "msgpack"
   depends_on "mecab" => :optional
@@ -33,8 +30,6 @@ class Groonga < Formula
   # fixed at: https://github.com/groonga/groonga/commit/c019cfbfbf5365c28ce727a46448aa6f77de8543
   # issue #254: https://github.com/groonga/groonga/issues/254
   # fixed at: https://github.com/groonga/groonga/commit/340085f132c640f03e32a7878f0bd31de9f74eaa
-  # issue #256: https://github.com/groonga/groonga/issues/256
-  # fixed at: https://github.com/groonga/groonga/commit/e2aa5217f0967457ae4f7edf799dbf8767400916
   # issue #264: https://github.com/groonga/groonga/issues/264
   # fixed at: https://github.com/groonga/groonga/commit/91207ecd816e873cdf7070ec7a1c5ae4870f7e6e
   patch :DATA
@@ -52,11 +47,9 @@ class Groonga < Formula
     args << "--with-mecab" if build.with? "mecab"
     args << "--with-lz4" if build.with? "lz4"
 
-    # remove autoreconf when patches are removed
-    system "autoreconf", "--force", "--install"
-
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
+    system "make"
     system "make install"
   end
 end
@@ -92,19 +85,6 @@ index ab720ef..868133c 100644
  # ifndef PATH_MAX
  #  if defined(MAXPATHLEN)
  #   define PATH_MAX MAXPATHLEN
-diff --git a/vendor/onigmo/Makefile.am b/vendor/onigmo/Makefile.am
-index 03083bd..9219783 100644
---- a/vendor/onigmo/Makefile.am
-+++ b/vendor/onigmo/Makefile.am
-@@ -7,7 +7,7 @@ CONFIGURE_DEPENDENCIES =			\
- ALL_DEPEND_TARGETS = onigmo-all
- CLEAN_DEPEND_TARGETS = onigmo-clean
-
--INSTALL_DEPEND_TARGETS =
-+INSTALL_DEPEND_TARGETS = onigmo-all
- if WITH_SHARED_ONIGMO
- INSTALL_DEPEND_TARGETS += onigmo-install
- endif
 diff --git a/lib/grn.h b/lib/grn.h
 index 868133c..b7f78e2 100644
 --- a/lib/grn.h

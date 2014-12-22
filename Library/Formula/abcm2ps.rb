@@ -28,7 +28,7 @@ class Abcm2ps < Formula
     (testpath/"voices.abc").write <<-EOF.undent
       X:7
       T:Qui Tolis (Trio)
-      C:André Raison
+      C:Andre Raison
       M:3/4
       L:1/4
       Q:1/4=92

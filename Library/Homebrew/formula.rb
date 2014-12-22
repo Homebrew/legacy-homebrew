@@ -311,7 +311,7 @@ class Formula
 
   # sometimes the formula cleaner breaks things
   # skip cleaning paths in a formula with a class method like this:
-  #   skip_clean "bin/foo", "lib"bar"
+  #   skip_clean "bin/foo", "lib/bar"
   # keep .la files with:
   #   skip_clean :la
   def skip_clean? path
@@ -576,10 +576,10 @@ class Formula
     HOMEBREW_LIBRARY.join("Homebrew", "test", "fixtures", file)
   end
 
-  protected
-
   def install
   end
+
+  protected
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -663,7 +663,7 @@ class Formula
     # special cases to this method.
     if cmd == "python"
       setup_py_in_args = %w[setup.py build.py].include?(args.first)
-      setuptools_shim_in_args = args.any? { |a| a.start_with? "import setuptools" }
+      setuptools_shim_in_args = args.any? { |a| a.to_s.start_with? "import setuptools" }
       if setup_py_in_args || setuptools_shim_in_args
         ENV.refurbish_args
       end

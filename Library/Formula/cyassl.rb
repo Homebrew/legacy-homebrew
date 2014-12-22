@@ -2,16 +2,16 @@ require "formula"
 
 class Cyassl < Formula
   homepage "http://yassl.com/yaSSL/Products-cyassl.html"
-  url "https://github.com/cyassl/cyassl/archive/v3.2.0.tar.gz"
-  sha256 "4b82b6cd54aec42abc557e7dc3ec8239867c5373166b9346998fbe1232b3177c"
+  url "https://github.com/cyassl/cyassl/archive/v3.3.0.tar.gz"
+  sha256 "585ca95b23a44da2d0e042bd0aef95ce770cd541028b76dc45f29ab62ad3ad4a"
 
   head "https://github.com/cyassl/cyassl.git"
 
   bottle do
     cellar :any
-    sha1 "af3935e69de8e276da44489ee06d7bd02f12d611" => :mavericks
-    sha1 "3d46f2e384ded4b9d1fd6854ea9f5b45a2582e6b" => :mountain_lion
-    sha1 "3d3bae7a0f09f77cad6219b75ca9193fe5931bda" => :lion
+    sha1 "47a068ee29646ef26b3f7e2a62268f62ed73dbec" => :yosemite
+    sha1 "57f47edc303e4f7f07d893a0724c67e068ca4883" => :mavericks
+    sha1 "c5de09829f89696a73a8f3818bbf413eae99e5ac" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

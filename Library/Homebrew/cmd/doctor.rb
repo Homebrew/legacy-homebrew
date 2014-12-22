@@ -462,6 +462,19 @@ def check_access_logs
   end
 end
 
+def check_access_cache
+  if HOMEBREW_CACHE.exist? && !HOMEBREW_CACHE.writable_real?
+    <<-EOS.undent
+      #{HOMEBREW_CACHE} isn't writable.
+      This can happen if you ran `brew install` or `brew fetch` as another user.
+
+      Homebrew caches downloaded files to this location.
+
+      You should probably `chown` #{HOMEBREW_CACHE}
+    EOS
+  end
+end
+
 def check_ruby_version
   ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
   if RUBY_VERSION[/\d\.\d/] != ruby_version then <<-EOS.undent

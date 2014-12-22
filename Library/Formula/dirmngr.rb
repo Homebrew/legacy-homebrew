@@ -8,9 +8,10 @@ class Dirmngr < Formula
   revision 1
 
   bottle do
-    sha1 "a0e3054879e746f6f8c3c9cd52ffc086df0baf63" => :mavericks
-    sha1 "55a72926469641815471da58e2f727142865b175" => :mountain_lion
-    sha1 "5aa4fbc1050bfebe9f7319183204dc0ac818a832" => :lion
+    revision 1
+    sha1 "55a34a49127b13bf4b118b404b5fe9c204dffb96" => :yosemite
+    sha1 "d59388da85e392b7ab6b4057b2b7db270d29807f" => :mavericks
+    sha1 "ae23c406d2c1b181ad987d08121cea3f20e04a6e" => :mountain_lion
   end
 
   depends_on 'libassuan'
