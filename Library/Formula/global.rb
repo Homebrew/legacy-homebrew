@@ -1,5 +1,3 @@
-require "formula"
-
 class Global < Formula
   homepage "https://www.gnu.org/software/global/"
   url "http://ftpmirror.gnu.org/global/global-6.3.2.tar.gz"
@@ -13,7 +11,7 @@ class Global < Formula
   end
 
   head do
-    url ":pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global", :using => :cvs
+    url ":pserver:anonymous:@cvs.savannah.gnu.org:/sources/global", :using => :cvs
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

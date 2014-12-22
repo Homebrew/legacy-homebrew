@@ -566,9 +566,10 @@ end
 
 class ResourceAuditor
   attr_reader :problems
-  attr_reader :version, :checksum, :using, :specs, :url
+  attr_reader :version, :checksum, :using, :specs, :url, :name
 
   def initialize(resource)
+    @name     = resource.name
     @version  = resource.version
     @checksum = resource.checksum
     @url      = resource.url
@@ -635,11 +636,29 @@ class ResourceAuditor
       problem "#{using.name} is deprecated, please choose a different URL"
     end
 
+    if using == :cvs
+      mod = specs[:module]
+
+      if mod == name
+        problem "Redundant :module value in URL"
+      end
+
+      if url =~ %r[:[^/]+$]
+        mod = url.split(":").last
+
+        if mod == name
+          problem "Redundant CVS module appended to URL"
+        else
+          problem "Specify CVS module as `:module => \"#{mod}\"` instead of appending it to the URL"
+        end
+      end
+    end
+
     url_strategy   = DownloadStrategyDetector.detect(url)
     using_strategy = DownloadStrategyDetector.detect('', using)
 
     if url_strategy == using_strategy
-      problem "redundant :using specification in URL"
+      problem "Redundant :using value in URL"
     end
   end
 

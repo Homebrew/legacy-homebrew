@@ -1,5 +1,3 @@
-require 'formula'
-
 class LuaRequirement < Requirement
   fatal true
   default_formula 'lua'
@@ -19,7 +17,7 @@ class Gnuplot < Formula
   end
 
   head do
-    url ':pserver:anonymous:@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
+    url ":pserver:anonymous:@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot", :using => :cvs
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
