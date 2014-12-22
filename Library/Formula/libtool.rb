@@ -11,11 +11,9 @@ class Libtool < Formula
 
   bottle do
     cellar :any
-    revision 3
-    sha1 "e172450c5686c7f7e13237c927cb49cce4c0ac0c" => :yosemite
-    sha1 "bbf17c08138fb53a4512732a2dab4f5c8dbec364" => :mavericks
-    sha1 "c749e65dee61cd23b7e757a1308761d8396689e4" => :mountain_lion
-    sha1 "d709c921f42e1f299b5bf09314eb73ab0dfa716d" => :lion
+    sha1 "ab16612e09788dd35da992db1bdd05e28a457299" => :yosemite
+    sha1 "c7ec9da0dc5103bf21c414299b1accb8c42e23a5" => :mavericks
+    sha1 "f49fc49a492031b657a65ba168ac14a5c3705bdc" => :mountain_lion
   end
 
   keg_only :provided_until_xcode43
