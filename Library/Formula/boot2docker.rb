@@ -22,8 +22,6 @@ class Boot2docker < Formula
     cd "src/github.com/boot2docker/boot2docker-cli" do
       ENV["GOPATH"] = buildpath
       system "go", "get", "-d"
-
-      ENV["GIT_DIR"] = cached_download/".git"
       system "make", "goinstall"
     end
 
