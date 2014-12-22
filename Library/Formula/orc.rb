@@ -2,8 +2,8 @@ require 'formula'
 
 class Orc < Formula
   homepage 'http://cgit.freedesktop.org/gstreamer/orc/'
-  url 'http://gstreamer.freedesktop.org/src/orc/orc-0.4.22.tar.xz'
-  sha1 'c50cf2f2a9a7e4ab400fd79f706e831ace1936bc'
+  url 'http://gstreamer.freedesktop.org/src/orc/orc-0.4.23.tar.xz'
+  sha256 "767eaebce2941737b43368225ec54598b3055ca78b4dc50c4092f5fcdc0bdfe7"
 
   bottle do
     cellar :any
