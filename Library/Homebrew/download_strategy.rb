@@ -345,9 +345,7 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-# This strategy is provided for use with sites that only provide HTTPS and
-# also have a broken cert. Try not to need this, as we probably won't accept
-# the formula.
+# @deprecated
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-C', downloaded_size, '-o', temporary_path
@@ -492,9 +490,10 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   alias_method :update, :clone_repo
 end
 
+# @deprecated
 StrictSubversionDownloadStrategy = SubversionDownloadStrategy
 
-# Download from SVN servers with invalid or self-signed certs
+# @deprecated
 class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
   def fetch_args
     %w[--non-interactive --trust-server-cert]
