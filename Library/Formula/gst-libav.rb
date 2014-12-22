@@ -2,9 +2,9 @@ require 'formula'
 
 class GstLibav < Formula
   homepage 'http://gstreamer.freedesktop.org'
-  url 'http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.4.4.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-libav-1.4.4.tar.xz'
-  sha256 '2ec7285e5ec6731963b0955487cceb9eb04e285ca682f3ef575996c068cde8aa'
+  url 'http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.4.5.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-libav-1.4.5.tar.xz'
+  sha256 "605c62624604f3bb5c870844cc1f2711779cc533b004c2aa1d8c0d58557afbbc"
 
   bottle do
     sha1 "77e0e0a6e08f928fb68b491bad6d0115490e2cef" => :yosemite
