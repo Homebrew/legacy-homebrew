@@ -27,9 +27,7 @@ class FormulaValidationError < StandardError
 
   def initialize(attr, value)
     @attr = attr
-    msg = "invalid attribute: #{attr}"
-    msg << " (#{value.inspect})" unless value.empty?
-    super msg
+    super "invalid attribute: #{attr} (#{value.inspect})"
   end
 end
 
