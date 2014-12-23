@@ -38,7 +38,7 @@ class Ipe < Formula
 
   def install
     cd 'src' do
-      system "make", "IPEPREFIX=#{prefix}"
+      system "make", "IPEPREFIX=#{HOMEBREW_PREFIX}"
       ENV.j1 # Parallel install fails
       system "make", "IPEPREFIX=#{prefix}", "install"
     end
