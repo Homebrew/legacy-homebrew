@@ -28,6 +28,7 @@ class AbstractDownloadStrategy
   # Remove {#cached_location} and any other files associated with the resource
   # from the cache.
   def clear_cache
+    rm_rf(cached_location)
   end
 
   def expand_safe_system_args args
@@ -125,10 +126,6 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location
     @clone
-  end
-
-  def clear_cache
-    cached_location.rmtree if cached_location.exist?
   end
 
   def head?
@@ -240,7 +237,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def clear_cache
-    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
+    super
+    rm_rf(temporary_path)
   end
 
   private
