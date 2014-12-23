@@ -57,6 +57,10 @@ class Pypy < Formula
     # scripts will find it.
     bin.install_symlink libexec/"bin/pypy"
     lib.install_symlink libexec/"lib/libpypy-c.dylib"
+
+    %w[setuptools pip].each do |r|
+      (libexec/r).install resource(r)
+    end
   end
 
   def post_install
@@ -83,8 +87,12 @@ class Pypy < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    resource("setuptools").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
-    resource("pip").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    %w[setuptools pip].each do |pkg|
+      (libexec/pkg).cd do
+        system bin/"pypy", "-s", "setup.py", "--no-user-cfg", "install",
+               "--force", "--verbose"
+      end
+    end
 
     # Symlinks to easy_install_pypy and pip_pypy
     bin.install_symlink scripts_folder/"easy_install" => "easy_install_pypy"
