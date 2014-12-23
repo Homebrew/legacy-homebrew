@@ -33,6 +33,16 @@ class Python3 < Formula
   skip_clean "bin/pip3", "bin/pip-#{VER}"
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.2.1.tar.gz"
+    sha1 "ddb4454303142be3446437e4fafb13bbd4570133"
+  end
+
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.3.tar.gz"
+    sha1 "67d4affd83ee2f3514ac1386bee59f10f672517c"
+  end
+
   patch :DATA if build.with? "brewed-tk"
 
   def site_packages_cellar
@@ -128,6 +138,10 @@ class Python3 < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+
+    %w[setuptools pip].each do |r|
+      (libexec/r).install resource(r)
+    end
   end
 
   def post_install
@@ -152,8 +166,20 @@ class Python3 < Formula
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
 
-    # Install the bundled pip if it's newer than the installed version
-    system bin/"python3", "-m", "ensurepip", "--upgrade"
+    %w[setuptools pip].each do |pkg|
+      (libexec/pkg).cd do
+        system bin/"python3", "-s", "setup.py", "--no-user-cfg", "install",
+               "--force", "--verbose", "--install-scripts=#{bin}",
+               "--install-lib=#{site_packages}"
+      end
+    end
+
+    rm_rf [bin/"pip", bin/"easy_install"]
+
+    # post_install happens after link
+    %W[pip3 pip#{VER} easy_install-#{VER}].each do |e|
+      (HOMEBREW_PREFIX/"bin").install_symlink bin/e
+    end
 
     # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
@@ -272,6 +298,7 @@ class Python3 < Formula
     system "#{bin}/python#{VER}", "-c", "import sqlite3"
     # Check if some other modules import. Then the linked libs are working.
     system "#{bin}/python#{VER}", "-c", "import tkinter; root = tkinter.Tk()"
+    system bin/"pip3", "list"
   end
 end
 
