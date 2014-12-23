@@ -2,9 +2,9 @@ require 'formula'
 
 class ScmManager < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.43/scm-server-1.43-app.tar.gz'
-  version '1.43'
-  sha1 'afaf2a416400a4075fe629659836e29ddf262295'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.44/scm-server-1.44-app.tar.gz'
+  version '1.44'
+  sha1 '341ec08b75c9da21e5cfb165848478de3ad38b2e'
 
   bottle do
     sha1 "d874a0767dcc261ec6a6410199da7cefe75c6d0d" => :yosemite
@@ -13,9 +13,9 @@ class ScmManager < Formula
   end
 
   resource 'client' do
-    url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.43/scm-cli-client-1.43-jar-with-dependencies.jar'
-    version '1.43'
-    sha1 '7608231db16c9edf62ad2cab9fb486430779139a'
+    url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.44/scm-cli-client-1.44-jar-with-dependencies.jar'
+    version '1.44'
+    sha1 '35203ef1d6761233600144cf881748e3c939848f'
   end
 
   def install
