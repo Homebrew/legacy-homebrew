@@ -2,14 +2,10 @@ require "formula"
 
 class Libpng < Formula
   homepage "http://www.libpng.org/pub/png/libpng.html"
-  url "https://downloads.sf.net/project/libpng/libpng16/1.6.15/libpng-1.6.15.tar.xz"
-  sha1 "bddeac8ca97fbcf54d6d32c6eefed5d94b49df88"
+  url "https://downloads.sf.net/project/libpng/libpng16/1.6.16/libpng-1.6.16.tar.xz"
+  sha1 "31855a8438ae795d249574b0da15b34eb0922e13"
 
   bottle do
-    cellar :any
-    sha1 "daec718eb2f617cdf67d2347b05457ea361e35b3" => :yosemite
-    sha1 "059d99d0321a8519252ae860667237a838d2a557" => :mavericks
-    sha1 "9c87522225b3c94e3239d6a8a29c4c000dd29c2e" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
