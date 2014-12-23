@@ -1,7 +1,7 @@
 # Code of Conduct
 The Homebrew community is made up of members from around the globe with a diverse set of skills, personalities, and experiences. It is through these differences that our community experiences great successes and continued growth. When you're working with members of the community, we encourage you to follow these guidelines which help steer our interactions and strive to keep Homebrew a positive, successful, and growing community.
 
-A member of the Homebrew community is:
+Members of the Homebrew community are:
 
 ## Open
 Members of the community are open to collaboration, whether it's on GitHub, email, IRC or otherwise. We're receptive to constructive comment and criticism, as the experiences and skill sets of other members contribute to the whole of our efforts. We're accepting of all who wish to take part in our activities, fostering an environment where anyone can participate and everyone can make a difference.
