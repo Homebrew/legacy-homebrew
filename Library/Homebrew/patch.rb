@@ -61,7 +61,6 @@ class EmbeddedPatch
   end
 
   def contents
-    raise NotImplementedError
   end
 
   def apply
