@@ -59,18 +59,15 @@ class SpoofMac < Formula
 
   def caveats; <<-EOS.undent
     Although spoof-mac can run without root, you must be root to change the MAC.
-    This is a hard OS X Requirement and not something Homebrew can change.
 
     The launchdaemon is set to randomize en0.
     You can find the interfaces available by running:
-
         "spoof-mac list"
 
-    If you wish to change interface randomized at startup modify the plist:
+    If you wish to change interface randomized at startup change the plist line:
         <string>en0</string>
-    to
+    to e.g.:
         <string>en1</string>
-    Or similar, for example.
     EOS
   end
 
