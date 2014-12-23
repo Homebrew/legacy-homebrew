@@ -354,8 +354,8 @@ module Homebrew
       changed_dependences = dependencies - unchanged_dependencies
 
       dependents = `brew uses #{formula_name}`.split("\n")
-      testable_dependents = dependents.map {|d| Formulary.factory(d)}
-      testable_dependents.select! {|d| d.test_defined? && d.stable.bottled? }
+      dependents = dependents.map {|d| Formulary.factory(d)}
+      testable_dependents = dependents.select {|d| d.test_defined? && d.stable.bottled? }
       uninstalled_testable_dependents = testable_dependents.reject {|d| d.installed? }
       testable_dependents.map! &:name
       uninstalled_testable_dependents.map! &:name
