@@ -37,8 +37,8 @@ class Python < Formula
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
-    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.3.tar.gz"
+    sha1 "67d4affd83ee2f3514ac1386bee59f10f672517c"
   end
 
   # Patch for pyport.h macro issue
@@ -330,6 +330,7 @@ class Python < Formula
     system "#{bin}/python", "-c", "import sqlite3"
     # Check if some other modules import. Then the linked libs are working.
     system "#{bin}/python", "-c", "import Tkinter; root = Tkinter.Tk()"
+    system bin/"pip", "list"
   end
 end
 
