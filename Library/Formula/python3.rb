@@ -79,11 +79,7 @@ class Python3 < Formula
 
     args << "--without-gcc" if ENV.compiler == :clang
 
-    if superenv?
-      distutils_fix_superenv(args)
-    else
-      distutils_fix_stdenv
-    end
+    distutils_fix_superenv(args)
 
     if build.universal?
       ENV.universal_binary
@@ -193,29 +189,6 @@ class Python3 < Formula
     inreplace "setup.py",
               "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
               "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
-  end
-
-  def distutils_fix_stdenv
-    # Python scans all "-I" dirs but not "-isysroot", so we add
-    # the needed includes with "-I" here to avoid this err:
-    #     building dbm using ndbm
-    #     error: /usr/include/zlib.h: No such file or directory
-    ENV.append "CPPFLAGS", "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
-
-    # Don't use optimizations other than "-Os" here, because Python's distutils
-    # remembers (hint: `python3-config --cflags`) and reuses them for C
-    # extensions which can break software (such as scipy 0.11 fails when
-    # "-msse4" is present.)
-    ENV.minimal_optimization
-
-    # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
-    ENV.enable_warnings
-    if ENV.compiler == :clang
-      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-      ENV.append_to_cflags "-Wno-unused-value"
-      ENV.append_to_cflags "-Wno-empty-body"
-    end
   end
 
   def sitecustomize
