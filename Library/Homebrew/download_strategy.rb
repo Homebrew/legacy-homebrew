@@ -21,6 +21,7 @@ class AbstractDownloadStrategy
   def stage
   end
 
+  # @!attribute [r] cached_location
   # The path to the cached file or directory associated with the resource.
   def cached_location
   end
