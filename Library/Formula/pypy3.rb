@@ -56,6 +56,10 @@ class Pypy3 < Formula
     # scripts will find it.
     bin.install_symlink libexec/"bin/pypy" => "pypy3"
     lib.install_symlink libexec/"lib/libpypy3-c.dylib"
+
+    %w[setuptools pip].each do |r|
+      (libexec/r).install resource(r)
+    end
   end
 
   def post_install
@@ -82,8 +86,11 @@ class Pypy3 < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    resource("setuptools").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
-    resource("pip").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    %w[setuptools pip].each do |pkg|
+      (libexec/pkg).cd do
+        system bin/"pypy3", "-s", "setup.py", "install", "--force", "--verbose"
+      end
+    end
 
     # Symlinks to easy_install_pypy3 and pip_pypy3
     bin.install_symlink scripts_folder/"easy_install" => "easy_install_pypy3"
