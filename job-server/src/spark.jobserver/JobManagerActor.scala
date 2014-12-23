@@ -42,7 +42,6 @@ object JobManagerActor {
  *  memory-per-node = 512m    # -Xmx style memory string for total memory to use for executor on one node
  *  dependent-jar-uris = ["local://opt/foo/my-foo-lib.jar"]
  *                            # URIs for dependent jars to load for entire context
- *  max-jobs-per-context = 4  # Max # of jobs to run at the same time
  *  spark.mesos.coarse = true  # per-context, rather than per-job, resource allocation
  *  rdd-ttl = 24 h            # time-to-live for RDDs in a SparkContext.  Don't specify = forever
  * }}}
