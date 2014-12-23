@@ -2,8 +2,8 @@ require 'formula'
 
 class Slimerjs < Formula
   homepage 'http://www.slimerjs.org'
-  url "http://download.slimerjs.org/v0.9/0.9.1/slimerjs-0.9.1.zip"
-  sha1 "15eed855c462c5b7ff2502d028702dcebae797cd"
+  url "http://download.slimerjs.org/releases/0.9.4/slimerjs-0.9.4-mac.tar.bz2"
+  sha256 "3c9c7d01c58796e56f5d5b73f643bd99ddafd4ef2b1cc246d9e3b78108aceb5e"
 
   head 'https://github.com/laurentj/slimerjs.git'
 
