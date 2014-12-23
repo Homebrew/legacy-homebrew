@@ -9,9 +9,8 @@ class Slimerjs < Formula
 
   bottle do
     cellar :any
-    sha1 "f777909179024c69332199893897d30eb7c104d5" => :mavericks
-    sha1 "00ffe91192f50232cde4169d2a80d5e950edeef5" => :mountain_lion
-    sha1 "a05a67c5a7366bf6b1ef6de7dc74fb4f35c4d9cb" => :lion
+    sha1 "2913341c917994a4c49d464b93a6aa25d12fc4d3" => :mavericks
+    sha1 "8ffe412b951816b089246d8b3587a441aa7c973b" => :mountain_lion
   end
 
   if MacOS.version > :snow_leopard
