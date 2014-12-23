@@ -13,10 +13,18 @@ class YleDl < Formula
 
   def install
     system "make", "install", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"
+
+    # yle-dl installed AdobeHDS.php in $PREFIX/bin before 2014-12-26,
+    # so only install it for more recent versions.
+    # https://github.com/aajanki/yle-dl/commit/ad9ef7fa40b39ec315bb51fc509af7416278966c
+    if build.head? then
+      # TODO: when 2.3.2 is released, remove the surrounding if
+      system "make", "install-adobehds", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"
+    end
   end
 
   test do
-    assert_match /rtmpdump: This program dumps the media content streamed over RTMP/,
-                 shell_output("#{bin}/yle-dl --help 2>&1")
+    assert_equal "3 minuuttia-2012-05-30T10:51:00\n",
+                 shell_output("#{bin}/yle-dl --showtitle http://areena.yle.fi/tv/1570236")
   end
 end
