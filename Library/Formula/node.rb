@@ -1,10 +1,8 @@
-require "formula"
-
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.10.34/node-v0.10.34.tar.gz"
-  sha256 "d7f8473b5849873039f7e62595e12dcdb78c8dffda317e1253b3123876bf3415"
+  url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
+  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
 
   bottle do
     sha1 "4eb82594b4f9368d7081b599b686e7a61f7c77f7" => :yosemite
