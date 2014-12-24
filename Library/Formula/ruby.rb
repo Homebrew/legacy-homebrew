@@ -143,7 +143,7 @@ class Ruby < Formula
       end
 
       def self.ruby
-        "#{opt_bin}/ruby"
+        "#{opt_bin}/ruby#{"21" if build.with? "suffix"}"
       end
     end
     EOS
