@@ -7,6 +7,8 @@ class Luabridge < Formula
     version "2.0"
     sha1 "15545335bbc5912d6e4bf19ca344be92a688c7d6"
 
+    # Fix error: no matching function for call to 'lua_pushstring'
+    # https://github.com/vinniefalco/LuaBridge/pull/83
     patch :DATA
   end
 
