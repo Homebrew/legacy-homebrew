@@ -6,9 +6,10 @@ class Ruby < Formula
   sha256 "0241b40f1c731cb177994a50b854fb7f18d4ad04dcefc18acc60af73046fb0a9"
 
   bottle do
-    sha1 "5bca9a9b689a3fb23e4c6660e1e3256c39fc62c9" => :yosemite
-    sha1 "80c5424e125d3493d3423399a9c3933b4108ac98" => :mavericks
-    sha1 "601037982116fbdd5389cb7dcf2e1bf2c5abea4e" => :mountain_lion
+    revision 1
+    sha1 "01d8ae485fd4f5dd886f194681e4d1b1cc87033a" => :yosemite
+    sha1 "90706ccb76ecc88276c69aafa7b1c17115a6bf20" => :mavericks
+    sha1 "44fff8c95c89b6a458a79ab829a9e74b429054d2" => :mountain_lion
   end
 
   head do
