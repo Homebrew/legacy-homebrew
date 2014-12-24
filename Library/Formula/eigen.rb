@@ -27,6 +27,7 @@ class Eigen < Formula
       system "cmake", *args
       system "make install"
     end
+    (share/"cmake/Modules").install "cmake/FindEigen3.cmake"
   end
 
   test do
