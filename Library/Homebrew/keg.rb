@@ -30,7 +30,7 @@ class Keg
     def suggestion
       conflict = Keg.for(dst)
     rescue NotAKegError, Errno::ENOENT
-      "already exists. You may want to remove it:\n  rm #{dst}\n"
+      "already exists. You may want to remove it:\n  rm '#{dst}'\n"
     else
       <<-EOS.undent
       is a symlink belonging to #{conflict.name}. You can unlink it:
