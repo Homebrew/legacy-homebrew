@@ -3,9 +3,8 @@ class Luabridge < Formula
   homepage "https://github.com/vinniefalco/LuaBridge"
 
   stable do
-    url "https://github.com/vinniefalco/LuaBridge/archive/master.tar.gz"
+    url "https://github.com/vinniefalco/LuaBridge.git", :revision => "04b47d723d35b47ff8efce63d54ef264a59152b5"
     version "2.0"
-    sha1 "15545335bbc5912d6e4bf19ca344be92a688c7d6"
 
     # Fix error: no matching function for call to 'lua_pushstring'
     # https://github.com/vinniefalco/LuaBridge/pull/83
