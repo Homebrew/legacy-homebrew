@@ -25,7 +25,11 @@ class Couchdb < Formula
 
   depends_on "spidermonkey"
   depends_on "icu4c"
-  depends_on "erlang"
+  if MacOS.version <= :snow_leopard
+	  depends_on "erlang-r16"
+	else
+	  depends_on "erlang"
+	end
   depends_on "curl" if MacOS.version <= :leopard
 
   def install
