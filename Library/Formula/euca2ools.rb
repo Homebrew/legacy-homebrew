@@ -4,6 +4,13 @@ class Euca2ools < Formula
   sha1 "a29646fe312ae90c625304a9b969f5ab8bec44d8"
   head "https://github.com/eucalyptus/euca2ools.git"
 
+  bottle do
+    cellar :any
+    sha1 "e5937cd5b80eb378a375f8488d20063583325e04" => :yosemite
+    sha1 "6b648aed9dbc3b7cafafba8dafc7dc90d875e0cd" => :mavericks
+    sha1 "3f9f60ed9faddc376adffe09ae8e3fdd35836bcf" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "requestbuilder" do
