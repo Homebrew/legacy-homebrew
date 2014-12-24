@@ -1,9 +1,7 @@
-require "formula"
-
 class Euca2ools < Formula
   homepage "https://github.com/eucalyptus/euca2ools"
-  url "https://github.com/eucalyptus/euca2ools/archive/v3.1.0.tar.gz"
-  sha1 "5290172546707f3729da314535a7a9a429edda24"
+  url "https://github.com/eucalyptus/euca2ools/archive/v3.1.1.tar.gz"
+  sha1 "a29646fe312ae90c625304a9b969f5ab8bec44d8"
   head "https://github.com/eucalyptus/euca2ools.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -48,6 +46,7 @@ class Euca2ools < Formula
   end
 
   test do
+    system "#{bin}/euca-version"
     system "#{bin}/euca-describe-instances", "--help"
   end
 end
