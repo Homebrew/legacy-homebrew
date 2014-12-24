@@ -1,7 +1,7 @@
 class Eigen < Formula
   homepage "http://eigen.tuxfamily.org/"
-  url "http://bitbucket.org/eigen/eigen/get/3.2.2.tar.bz2"
-  sha1 "1e1a85681777314805003db5469d1a00785c58df"
+  url "http://bitbucket.org/eigen/eigen/get/3.2.3.tar.bz2"
+  sha1 "303e8241aaa879a328d675de368525a591c42e51"
 
   bottle do
     cellar :any
