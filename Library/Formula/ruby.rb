@@ -71,7 +71,9 @@ class Ruby < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+  end
 
+  def post_install
     # Customize rubygems to look/install in the global gem directory
     # instead of in the Cellar, making gems last across reinstalls
     (lib/"ruby/#{abi_version}/rubygems/defaults/operating_system.rb").write rubygems_config
