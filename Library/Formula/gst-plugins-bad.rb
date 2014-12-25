@@ -34,15 +34,18 @@ class GstPluginsBad < Formula
   depends_on 'rtmpdump' => :optional
   depends_on 'schroedinger' => :optional
 
+  option 'with-applemedia', 'Build with applemedia support'
+
   def install
     args = %W[
       --prefix=#{prefix}
-      --disable-apple_media
       --disable-yadif
       --disable-sdl
       --disable-debug
       --disable-dependency-tracking
     ]
+
+    args << "--disable-apple_media" if build.without? "applemedia"
 
     if build.head?
       ENV["NOCONFIGURE"] = "yes"
