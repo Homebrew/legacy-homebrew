@@ -738,6 +738,19 @@ def check_DYLD_vars
   end
 end
 
+
+def check_acess_cellar
+  return unless HOMEBREW_CELLAR.exist?
+  
+  unless File.writable_real?(HOMEBREW_CELLAR) then <<-EOS.undent
+  #{HOMEBREW_CELLAR} isn't writable.
+  
+  You should probably `chown -R` #{HOMEBREW_CELLAR}
+  EOS
+  end
+  
+end
+
 def check_for_symlinked_cellar
   return unless HOMEBREW_CELLAR.exist?
   if HOMEBREW_CELLAR.symlink?
