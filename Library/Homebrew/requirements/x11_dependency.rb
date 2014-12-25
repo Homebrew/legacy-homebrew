@@ -12,8 +12,10 @@ class X11Dependency < Requirement
     @name = name
     if /(\d\.)+\d/ === tags.first
       @min_version = Version.new(tags.shift)
+      @min_version_string = " #{@min_version}"
     else
       @min_version = Version.new("0.0.0")
+      @min_version_string = ""
     end
     super(tags)
   end
@@ -23,8 +25,10 @@ class X11Dependency < Requirement
   end
 
   def message; <<-EOS.undent
-    Unsatisfied dependency: XQuartz #{@min_version}
-    Homebrew does not package XQuartz. Installers may be found at:
+    You can install XQuartz#{@min_version_string} with:
+      brew cask install xquartz
+
+    Or from:
       https://xquartz.macosforge.org
     EOS
   end
