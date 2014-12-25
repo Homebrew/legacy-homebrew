@@ -404,9 +404,12 @@ def check_access_share_man
   __check_subdir_access 'share/man'
 end
 
-
 def check_access_usr_local_bin
   __check_subdir_access 'bin'
+end
+
+def check_access_usr_local_bin
+  __check_subdir_access 'opt'
 end
 
 def check_access_usr_local
