@@ -28,6 +28,11 @@ class Pypy < Formula
     sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
   end
 
+  resource "bootstrap" do
+    url "https://downloads.sf.net/project/machomebrew/Bottles/pypy-2.4.0_2.mountain_lion.bottle.5.tar.gz"
+    sha1 "cce0ddd2900bd49e4988bcdcdffdf8ee3c51828d"
+  end
+
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
   fails_with :gcc
 
@@ -35,11 +40,18 @@ class Pypy < Formula
     # Having PYTHONPATH set can cause the build to fail if another
     # Python is present, e.g. a Homebrew-provided Python 2.x
     # See https://github.com/Homebrew/homebrew/issues/24364
-    ENV["PYTHONPATH"] = ""
+    ENV.delete "PYTHONPATH"
     ENV["PYPY_USESSION_DIR"] = buildpath
 
+    resource("bootstrap").stage buildpath/"bootstrap/pypy"
+    bootstrap_prefix = Pathname.new(Dir[buildpath/"bootstrap/pypy/*"].first)
+    bootstrap_keg = Keg.new(bootstrap_prefix)
+    bootstrap_keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX,
+                                         Keg::CELLAR_PLACEHOLDER, buildpath/"bootstrap"
+    bootstrap_pypy = bootstrap_prefix/"bin/pypy"
+
     Dir.chdir "pypy/goal" do
-      system "python", buildpath/"rpython/bin/rpython",
+      system bootstrap_pypy, buildpath/"rpython/bin/rpython",
              "-Ojit", "--shared", "--cc", ENV.cc, "--translation-verbose",
              "--make-jobs", ENV.make_jobs, "targetpypystandalone.py"
       system "install_name_tool", "-change", "libpypy-c.dylib", libexec/"lib/libpypy-c.dylib", "pypy-c"
