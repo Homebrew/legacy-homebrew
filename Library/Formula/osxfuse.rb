@@ -16,7 +16,7 @@ class Osxfuse < Formula
 
   depends_on ConflictsWithBinaryOsxfuse
   depends_on UnsignedKextRequirement => [ :cask => "osxfuse",
-      :binary => "http://sourceforge.net/projects/osxfuse/files/" ]
+      :download => "http://sourceforge.net/projects/osxfuse/files/" ]
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
