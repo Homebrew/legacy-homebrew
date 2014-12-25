@@ -5,6 +5,8 @@ class X11Dependency < Requirement
   attr_reader :min_version
 
   fatal true
+  cask "xquartz"
+  download "https://xquartz.macosforge.org"
 
   env { ENV.x11 }
 
@@ -24,13 +26,10 @@ class X11Dependency < Requirement
     MacOS::XQuartz.installed? && min_version <= Version.new(MacOS::XQuartz.version)
   end
 
-  def message; <<-EOS.undent
-    You can install XQuartz#{@min_version_string} with:
-      brew cask install xquartz
-
-    Or from:
-      https://xquartz.macosforge.org
-    EOS
+  def message
+    s = "XQuartz#{@min_version_string} is required to install this formula."
+    s += super
+    s
   end
 
   def <=> other
