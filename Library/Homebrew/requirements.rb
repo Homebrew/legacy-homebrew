@@ -73,7 +73,10 @@ class TeXDependency < Requirement
     <<-EOS.undent
     A LaTeX distribution is required for Homebrew to install this formula.
 
-    You can install MacTeX distribution from:
+    You can install MacTeX distribution with:
+      brew cask install mactex
+
+    Or from:
       http://www.tug.org/mactex/
 
     Make sure that "/usr/texbin", or the location you installed it to, is in
@@ -136,10 +139,11 @@ class JavaDependency < Requirement
     <<-EOS.undent
       Java#{version_string} is required to install this formula.
 
-      You can install Java from:
-        http://www.oracle.com/technetwork/java/javase/downloads/index.html
+      You can install the Java Development Kit (JDK) with:
+        brew cask install java
 
-      Make sure you install both the JRE and JDK.
+      Or from:
+        http://www.oracle.com/technetwork/java/javase/downloads/index.html
     EOS
   end
 end
