@@ -404,11 +404,11 @@ def check_access_share_man
   __check_subdir_access 'share/man'
 end
 
-def check_access_usr_local_bin
+def check_access_bin
   __check_subdir_access 'bin'
 end
 
-def check_access_usr_local_bin
+def check_access_opt
   __check_subdir_access 'opt'
 end
 
@@ -747,16 +747,16 @@ def check_DYLD_vars
 end
 
 
-def check_acess_cellar
+def check_access_cellar
   return unless HOMEBREW_CELLAR.exist?
-  
+
   unless File.writable_real?(HOMEBREW_CELLAR) then <<-EOS.undent
-  #{HOMEBREW_CELLAR} isn't writable.
-  
-  You should probably `chown -R` #{HOMEBREW_CELLAR}
-  EOS
+    #{HOMEBREW_CELLAR} isn't writable.
+
+    You should probably chown -R  `whoami` #{HOMEBREW_CELLAR}
+    EOS
   end
-  
+
 end
 
 def check_for_symlinked_cellar
