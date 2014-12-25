@@ -14,6 +14,7 @@ class Hub < Formula
 
   def install
     if build.head?
+      ENV["GIT_DIR"] = cached_download/".git"
       system "script/build"
       bin.install "hub"
     else
