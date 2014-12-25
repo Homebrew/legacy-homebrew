@@ -42,6 +42,7 @@ object JobManagerActor {
  *  memory-per-node = 512m    # -Xmx style memory string for total memory to use for executor on one node
  *  dependent-jar-uris = ["local://opt/foo/my-foo-lib.jar"]
  *                            # URIs for dependent jars to load for entire context
+ *  context-factory = "spark.jobserver.context.DefaultSparkContextFactory"
  *  spark.mesos.coarse = true  # per-context, rather than per-job, resource allocation
  *  rdd-ttl = 24 h            # time-to-live for RDDs in a SparkContext.  Don't specify = forever
  * }}}
@@ -51,7 +52,6 @@ object JobManagerActor {
  *   spark {
  *     jobserver {
  *       max-jobs-per-context = 16      # Number of jobs that can be run simultaneously per context
- *       context-factory = "spark.jobserver.context.DefaultSparkContextFactory"
  *     }
  *   }
  * }}}
@@ -253,7 +253,7 @@ class JobManagerActor(dao: JobDAO,
   // our class loader when it spins off threads, and ensures SparkContext can find the job and dependent jars
   // when doing serialization, for example.
   def createContextFromConfig(contextName: String = contextName): ContextLike = {
-    val factoryClassName = config.getString("spark.jobserver.context-factory")
+    val factoryClassName = contextConfig.getString("context-factory")
     val factoryClass = jarLoader.loadClass(factoryClassName)
     val factory = factoryClass.newInstance.asInstanceOf[spark.jobserver.context.SparkContextFactory]
     Thread.currentThread.setContextClassLoader(jarLoader)

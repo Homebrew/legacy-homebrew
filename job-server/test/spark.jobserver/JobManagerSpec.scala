@@ -25,7 +25,7 @@ object JobManagerSpec {
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
       "akka.log-dead-letters" -> 0,
       "spark.master" -> "local[4]",
-      "spark.jobserver.context-factory" -> "spark.jobserver.context.DefaultSparkContextFactory"
+      "context-factory" -> "spark.jobserver.context.DefaultSparkContextFactory"
     )
     ConfigFactory.parseMap(ConfigMap.asJava)
   }
@@ -60,7 +60,7 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll with
 
   val classPrefix = "spark.jobserver."
   private val wordCountClass = classPrefix + "WordCountExample"
-  private val sqlTestClass = classPrefix + "SqlTestJob"
+  private val sqlTestClass = classPrefix + "SqlLoaderJob"
   protected val stringConfig = ConfigFactory.parseString("input.string = The lazy dog jumped over the fish")
   protected val emptyConfig = ConfigFactory.parseString("spark.master = bar")
 
@@ -194,7 +194,7 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll with
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", classPrefix + "ZookeeperJob", stringConfig,
         syncEvents ++ errorEvents)
-      expectMsgPF(4 seconds, "Did not get JobResult") {
+      expectMsgPF(3 seconds, "Did not get JobResult") {
         case JobResult(_, result: Array[Product]) =>
           result.length should equal (1)
           result(0).getClass.getName should include ("Animal")
