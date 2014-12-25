@@ -2,8 +2,8 @@ require 'formula'
 
 class Hub < Formula
   homepage 'http://hub.github.com/'
-  url 'https://github.com/github/hub/archive/v1.12.2.tar.gz'
-  sha1 '65359d3dcc8e1a0986aab3726f6047bfb9df3d7c'
+  url 'https://github.com/github/hub/archive/v1.12.4.tar.gz'
+  sha1 '25135167108cd777ba6ec2dd5a9a25e248d98d4b'
 
   head do
     url "https://github.com/github/hub.git"
