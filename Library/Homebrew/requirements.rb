@@ -60,28 +60,20 @@ end
 
 class TeXDependency < Requirement
   fatal true
+  cask "mactex"
+  download "http://www.tug.org/mactex/"
 
   satisfy { which('tex') || which('latex') }
 
-  def message;
-    if File.exist?("/usr/texbin")
-      texbin_path = "/usr/texbin"
-    else
-      texbin_path = "its bin directory"
-    end
+  def message
+    s = <<-EOS.undent
+      A LaTeX distribution is required for Homebrew to install this formula.
 
-    <<-EOS.undent
-    A LaTeX distribution is required for Homebrew to install this formula.
-
-    You can install MacTeX distribution with:
-      brew cask install mactex
-
-    Or from:
-      http://www.tug.org/mactex/
-
-    Make sure that "/usr/texbin", or the location you installed it to, is in
-    your PATH before proceeding.
+      Make sure that "/usr/texbin", or the location you installed it to, is in
+      your PATH before proceeding.
     EOS
+    s += super
+    s
   end
 end
 
@@ -120,6 +112,9 @@ end
 
 class JavaDependency < Requirement
   fatal true
+  cask "java"
+  download "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
+
   satisfy { java_version }
 
   def initialize(tags)
@@ -136,15 +131,9 @@ class JavaDependency < Requirement
   def message
     version_string = " #{@version}" if @version
 
-    <<-EOS.undent
-      Java#{version_string} is required to install this formula.
-
-      You can install the Java Development Kit (JDK) with:
-        brew cask install java
-
-      Or from:
-        http://www.oracle.com/technetwork/java/javase/downloads/index.html
-    EOS
+    s = "Java#{version_string} is required to install this formula."
+    s += super
+    s
   end
 end
 
