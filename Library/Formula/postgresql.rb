@@ -80,26 +80,13 @@ class Postgresql < Formula
     end
   end
 
-  def caveats
-    s = <<-EOS.undent
+  def caveats; <<-EOS.undent
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
       https://github.com/Homebrew/homebrew/issues/2510
 
     To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
       http://www.postgresql.org/docs/9.4/static/upgrading.html
-    EOS
-
-    s << "\n" << gem_caveats if MacOS.prefer_64_bit?
-    return s
-  end
-
-  def gem_caveats; <<-EOS.undent
-    When installing the postgres gem, including ARCHFLAGS is recommended:
-      ARCHFLAGS="-arch x86_64" gem install pg
-
-    To install gems without sudo, see the Homebrew documentation:
-    https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Gems,-Eggs-and-Perl-Modules.md
     EOS
   end
 
