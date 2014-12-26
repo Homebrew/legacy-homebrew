@@ -51,9 +51,9 @@ class Formula
   # @see #stable
   attr_reader :head
 
-  # The currently active SoftwareSpec.
+  # The currently active {SoftwareSpec}.
   # Defaults to stable unless `--devel` or `--HEAD` is passed.
-  # @api private
+  # @private
   attr_reader :active_spec
 
   # The {PkgVersion} for this formula with version and {#revision} information.
@@ -82,6 +82,7 @@ class Formula
   # state that we're trying to eliminate.
   attr_accessor :build
 
+  # @private
   def initialize(name, path, spec)
     @name = name
     @path = path
@@ -123,82 +124,120 @@ class Formula
 
   public
 
+  # Is the currently active {SoftwareSpec} a {#stable} build?
   def stable?
     active_spec == stable
   end
 
+  # Is the currently active {SoftwareSpec} a {#devel} build?
   def devel?
     active_spec == devel
   end
 
+  # Is the currently active {SoftwareSpec} a {#head} build?
   def head?
     active_spec == head
   end
 
+  # The Bottle object for the currently active {SoftwareSpec}.
+  # @private
   def bottle
     Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
   end
 
+  # The homepage for the software.
+  # @see .homepage
   def homepage
     self.class.homepage
   end
 
-  def url;      active_spec.url;     end
-  def version;  active_spec.version; end
+  # The URL used to download the source for the currently active {SoftwareSpec}.
+  # @see .url
+  # @deprecated
+  # @private
+  def url
+    active_spec.url
+  end
 
+  # The version for the currently active {SoftwareSpec}.
+  # The version is autodetected from the URL and/or tag so only needs to be
+  # declared if it cannot be autodetected correctly.
+  # @see .version
+  def version
+    active_spec.version
+  end
+
+  # A named Resource for the currently active {SoftwareSpec}.
   def resource(name)
     active_spec.resource(name)
   end
 
+  # The {Resource}s for the currently active {SoftwareSpec}.
   def resources
     active_spec.resources.values
   end
 
+  # The {Dependency}s for the currently active {SoftwareSpec}.
   def deps
     active_spec.deps
   end
 
+  # The {Requirement}s for the currently active {SoftwareSpec}.
   def requirements
     active_spec.requirements
   end
 
+  # The cached download of {.url} for the currently active {SoftwareSpec}.
   def cached_download
     active_spec.cached_download
   end
 
+  # Deletes the download of {.url} for the currently active {SoftwareSpec}.
   def clear_cache
     active_spec.clear_cache
   end
 
+  # The list of patches for the currently active {SoftwareSpec}.
   def patchlist
     active_spec.patches
   end
 
+  # The options for the currently active {SoftwareSpec}.
   def options
     active_spec.options
   end
 
+  # The deprecated options for the currently active {SoftwareSpec}.
   def deprecated_options
     active_spec.deprecated_options
   end
 
+  # If a named option is defined for the currently active {SoftwareSpec}.
   def option_defined?(name)
     active_spec.option_defined?(name)
   end
 
+  # All the {.fails_with} for the currently active {SoftwareSpec}.
   def compiler_failures
     active_spec.compiler_failures
   end
 
-  # if the dir is there, but it's empty we consider it not installed
+  # If this {Formula} is installed.
+  # This is actually just a check for if the {#installed_prefix} directory
+  # exists and is not empty.
   def installed?
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
+  # @deprecated
+  # The `LinkedKegs` directory for this {Formula}.
+  # You probably want {.opt_prefix} instead.
   def linked_keg
     Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
   end
 
+  # The latest prefix for this formula. Checks for {#head}, then #{devel}
+  # and then #{stable}'s #{.prefix}
   def installed_prefix
     if head && (head_prefix = prefix(head.version)).directory?
       head_prefix
@@ -329,7 +368,7 @@ class Formula
   end
 
   # yields self with current working directory set to the uncompressed tarball
-  # @api private
+  # @private
   def brew
     validate_attributes :name, :version
 
@@ -419,7 +458,7 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
-  # an array of all Formula names
+  # an array of all {Formula} names
   def self.names
     Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
   end
@@ -437,7 +476,7 @@ class Formula
     end
   end
 
-  # An array of all installed formulae
+  # An array of all installed {Formula}
   def self.installed
     return [] unless HOMEBREW_CELLAR.directory?
 
@@ -725,23 +764,23 @@ class Formula
 
     # The reason for why this software is not linked (by default) to
     # {::HOMEBREW_PREFIX}.
-    # @api private
+    # @private
     attr_reader :keg_only_reason
 
     # @!attribute [rw]
     # The homepage for the software. Used by users to get more information
     # about the software and Homebrew maintainers as a point of contact for
     # e.g. submitting patches.
-    # Can be opened by running `brew home example-formula`.
+    # Can be opened with running `brew home`.
     attr_rw :homepage
 
-    # @!attribute [rw]
     # The `:startup` attribute set by {.plist_options}.
-    attr_rw :plist_startup
+    # @private
+    attr_reader :plist_startup
 
-    # @!attribute [rw]
     # The `:manual` attribute set by {.plist_options}.
-    attr_rw :plist_manual
+    # @private
+    attr_reader :plist_manual
 
     # @!attribute [rw]
     # Used for creating new Homebrew versions of software without new upstream
@@ -751,21 +790,47 @@ class Formula
     # `0` if unset.
     attr_rw :revision
 
+    # A list of the {.stable}, {.devel} and {.head} {SoftwareSpec}s.
+    # @private
     def specs
       @specs ||= [stable, devel, head].freeze
     end
 
+    # @!attribute [rw] url
+    # The URL used to download the source for the currently active {SoftwareSpec}.
+    # We prefer `https` for security and proxy reasons.
     def url val, specs={}
       stable.url(val, specs)
     end
 
+    # @!attribute [w] version
+    # The version for the currently active {SoftwareSpec}.
+    # The version is autodetected from the URL and/or tag so only needs to be
+    # declared if it cannot be autodetected correctly.
     def version val=nil
       stable.version(val)
     end
 
+    # @!attribute [rw] mirror
+    # Additional {.url}s for the currently active {SoftwareSpec}.
+    # These are only used if the {.url} fails to download. It's optional and
+    # there can be more than one. Generally we add them when the main {.url}
+    # is unreliable. If {.url} is really unreliable then we may swap the
+    # {.mirror} and {.url}.
     def mirror val
       stable.mirror(val)
     end
+
+    # @!attribute [rw] sha1
+    # @scope class
+    # To verify the {#cached_download}'s integrity and security we verify the
+    # SHA-1 hash matches what we've declared in the {Formula}. To quickly fill
+    # this value you can leave it blank and run `brew fetch --force` and it'll
+    # tell you the currently valid value.
+
+    # @!attribute [rw] sha256
+    # @scope class
+    # Similar to {.sha1} but using a SHA-256 hash instead.
 
     Checksum::TYPES.each do |type|
       define_method(type) { |val| stable.send(type, val) }
@@ -802,7 +867,7 @@ class Formula
       end
     end
 
-    # Define a named resource using a SoftwareSpec style block
+    # Define a named resource using a {SoftwareSpec} style block
     def resource name, klass=Resource, &block
       specs.each do |spec|
         spec.resource(name, klass, &block) unless spec.resource_defined?(name)
