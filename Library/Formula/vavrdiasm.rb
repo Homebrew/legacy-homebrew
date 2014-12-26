@@ -26,11 +26,13 @@ class Vavrdiasm < Formula
     # Compiled with avra:
     ## avra file.S && mv file.S.hex file.hex
 
-    (testpath/"file.hex").write("""\
-:020000020000FC
-:040000000EEF1FEFF1
-:00000001FF
-""")
+    hexfile = <<-EOS.gsub(/^\s*\|/, '')
+      |:020000020000FC
+      |:040000000EEF1FEFF1
+      |:00000001FF
+      EOS
+
+    (testpath/"file.hex").write(hexfile)
 
     output = `vavrdisasm file.hex`.lines
     testerr = "Unexpected disassembly"
