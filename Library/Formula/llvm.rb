@@ -111,10 +111,6 @@ class Llvm < Formula
     <<-EOS.undent
       LLVM executables are installed in #{opt_bin}.
       Extra tools are installed in #{opt_share}/llvm.
-
-      If you already have LLVM installed, then "brew upgrade llvm" might not work.
-      Instead, try:
-          brew rm llvm && brew install llvm
     EOS
   end
 end
