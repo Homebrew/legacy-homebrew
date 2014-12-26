@@ -35,7 +35,7 @@ module Homebrew
         ARGV.casks.each do |c|
           cmd = "brew", "cask", "install", c
           ohai cmd.join " "
-          system *cmd
+          system(*cmd)
         end
       end
 
