@@ -1,5 +1,3 @@
-require 'formula'
-
 class Vavrdiasm < Formula
   homepage 'https://github.com/vsergeev/vAVRdisasm'
   url "https://github.com/vsergeev/vavrdisasm/archive/v3.1.tar.gz"
