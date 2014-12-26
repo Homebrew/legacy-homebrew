@@ -46,14 +46,6 @@ class FormulaValidationTests < Homebrew::TestCase
     end
   end
 
-  def test_validates_when_initialize_overridden
-    assert_invalid :name do
-      formula do
-        def initialize(*); end
-      end.brew {}
-    end
-  end
-
   def test_devel_only_valid
     f = formula do
       devel do
