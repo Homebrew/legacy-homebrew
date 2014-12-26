@@ -2,9 +2,9 @@ require "formula"
 
 class Libassuan < Formula
   homepage "https://www.gnupg.org/related_software/libassuan/index.en.html"
-  url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.1.3.tar.bz2"
-  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libassuan/libassuan-2.1.3.tar.bz2"
-  sha1 "56ac91973c2818a91d4f16ed48265a2b5daf45d3"
+  url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.2.0.tar.bz2"
+  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libassuan/libassuan-2.2.0.tar.bz2"
+  sha1 "7cf0545955ce414044bb99b871d324753dd7b2e5"
 
   bottle do
     cellar :any
