@@ -115,6 +115,8 @@ class Build
     end
 
     formula.brew do
+      formula.patch
+
       if ARGV.git?
         system "git", "init"
         system "git", "add", "-A"
