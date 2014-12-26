@@ -45,7 +45,7 @@ class Tab < OpenStruct
 
   def self.remap_deprecated_options deprecated_options, options
     deprecated_options.each do |deprecated_option|
-      option = options.find {|option| option.name == deprecated_option.old }
+      option = options.find { |o| o.name == deprecated_option.old }
       next unless option
       options -= [option]
       options << Option.new(deprecated_option.current, option.description)
