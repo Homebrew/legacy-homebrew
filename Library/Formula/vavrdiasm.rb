@@ -15,6 +15,29 @@ class Vavrdiasm < Formula
     system "make"
     system "make", "install"
   end
+
+  test do
+# Code to generate `file.hex':
+## .device ATmega88
+##
+## LDI     R16, 0xfe
+## SER     R17
+#
+# Compiled with avra:
+## avra file.S && mv file.S.hex file.hex
+
+    (testpath/"file.hex").write("""\
+:020000020000FC
+:040000000EEF1FEFF1
+:00000001FF
+""")
+
+    output = %x[vavrdisasm file.hex].split("\n")
+    testerr = "Unexpected disassembly"
+
+    raise testerr unless output[0].match(/ldi\s+R16,\s0xfe/).length == 1
+    raise testerr unless output[1].match(/ser\s+R17/).length == 1
+  end
 end
 
 __END__
