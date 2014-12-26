@@ -93,7 +93,7 @@ class Formula
     set_spec :head
 
     @active_spec = determine_active_spec(spec)
-    validate_attributes :url, :name, :version
+    validate_attributes!
     @pkg_version = PkgVersion.new(version, revision)
     @build = active_spec.build
     @pin = FormulaPin.new(self)
@@ -114,11 +114,18 @@ class Formula
     spec or raise FormulaSpecificationError, "formulae require at least a URL"
   end
 
-  def validate_attributes(*attrs)
-    attrs.each do |attr|
-      if (value = send(attr).to_s).empty? || value =~ /\s/
-        raise FormulaValidationError.new(attr, value)
-      end
+  def validate_attributes!
+    if name.nil? || name.empty? || name =~ /\s/
+      raise FormulaValidationError.new(:name, name)
+    end
+
+    if url.nil? || url.empty? || url =~ /\s/
+      raise FormulaValidationError.new(:url, url)
+    end
+
+    val = version.respond_to?(:to_str) ? version.to_str : version
+    if val.nil? || val.empty? || val =~ /\s/
+      raise FormulaValidationError.new(:version, val)
     end
   end
 

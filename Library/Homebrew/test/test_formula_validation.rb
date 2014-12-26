@@ -44,6 +44,13 @@ class FormulaValidationTests < Homebrew::TestCase
         version ""
       end
     end
+
+    assert_invalid :version do
+      formula do
+        url "foo"
+        version nil
+      end
+    end
   end
 
   def test_devel_only_valid
