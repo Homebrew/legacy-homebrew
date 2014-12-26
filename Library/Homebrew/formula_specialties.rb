@@ -20,11 +20,12 @@ end
 class AmazonWebServicesFormula < Formula
   # Use this method to peform a standard install for Java-based tools,
   # keeping the .jars out of HOMEBREW_PREFIX/lib
-  def standard_install
+  def install
     rm Dir['bin/*.cmd'] # Remove Windows versions
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"] - ["#{libexec}/bin/service"]
   end
+  alias_method :standard_install, :install
 
   # Use this method to generate standard caveats.
   def standard_instructions home_name, home_value=libexec
