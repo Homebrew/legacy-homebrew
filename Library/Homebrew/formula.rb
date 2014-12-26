@@ -33,8 +33,8 @@ class Formula
   attr_reader :path
 
   # The stable (and default) {SoftwareSpec} for this {Formula}
-  # This contains all the attributes like e.g. {#url}, {.sha1} that apply to
-  # the stable version of this formula.
+  # This contains all the attributes (e.g. URL, checksum) that apply to the
+  # stable version of this formula.
   attr_reader :stable
 
   # The development {SoftwareSpec} for this {Formula}.
@@ -119,6 +119,7 @@ class Formula
       raise FormulaValidationError.new(:name, name)
     end
 
+    url = active_spec.url
     if url.nil? || url.empty? || url =~ /\s/
       raise FormulaValidationError.new(:url, url)
     end
@@ -158,14 +159,6 @@ class Formula
     self.class.homepage
   end
 
-  # The URL used to download the source for the currently active {SoftwareSpec}.
-  # @see .url
-  # @deprecated
-  # @private
-  def url
-    active_spec.url
-  end
-
   # The version for the currently active {SoftwareSpec}.
   # The version is autodetected from the URL and/or tag so only needs to be
   # declared if it cannot be autodetected correctly.
@@ -194,12 +187,12 @@ class Formula
     active_spec.requirements
   end
 
-  # The cached download of {.url} for the currently active {SoftwareSpec}.
+  # The cached download for the currently active {SoftwareSpec}.
   def cached_download
     active_spec.cached_download
   end
 
-  # Deletes the download of {.url} for the currently active {SoftwareSpec}.
+  # Deletes the download for the currently active {SoftwareSpec}.
   def clear_cache
     active_spec.clear_cache
   end
