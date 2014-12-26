@@ -1,5 +1,3 @@
-require 'formula'
-
 class JavaRequirement < Requirement
   fatal true
 
@@ -26,20 +24,20 @@ class JavaRequirement < Requirement
 end
 
 class Hamsterdb < Formula
-  homepage 'http://hamsterdb.com'
+  homepage "http://hamsterdb.com"
   url "http://files.hamsterdb.com/dl/hamsterdb-2.1.8.tar.gz"
   sha1 "f91af65d19cdbd75ec52f6d18e331e22e4f198a7"
   revision 1
 
-  option 'without-java', 'Do not build the Java wrapper'
-  option 'without-remote', 'Disable access to remote databases'
+  option "without-java", "Do not build the Java wrapper"
+  option "without-remote", "Disable access to remote databases"
 
   head do
-    url 'https://github.com/cruppstahl/hamsterdb.git', :branch => 'topic/next'
+    url "https://github.com/cruppstahl/hamsterdb.git", :branch => "topic/next"
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   stable do
@@ -49,25 +47,24 @@ class Hamsterdb < Formula
     end
   end
 
-  depends_on 'boost'
-  depends_on 'gnutls'
-  depends_on JavaRequirement if build.with? 'java'
+  depends_on "boost"
+  depends_on "gnutls"
+  depends_on JavaRequirement if build.with? "java"
 
-  if build.with? 'remote'
-    depends_on 'protobuf'
-    depends_on 'libuv'
+  if build.with? "remote"
+    depends_on "protobuf"
   end
 
   def install
-    system '/bin/sh', 'bootstrap.sh' if build.head?
+    system "/bin/sh", "bootstrap.sh" if build.head?
 
     features = []
-    features << '--disable-remote' if build.without? 'remote'
+    features << "--disable-remote" if build.without? "remote"
 
-    if build.with? 'java'
+    if build.with? "java"
       features << "JDK=#{JavaRequirement.jdk_home}"
     else
-      features << '--disable-java'
+      features << "--disable-java"
     end
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
