@@ -189,7 +189,6 @@ class FormulaTests < Homebrew::TestCase
     path.dirname.mkpath
     File.open(path, 'w') do |f|
       f << %{
-        require 'formula'
         class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
         end
