@@ -9,10 +9,9 @@ end
 
 # See browser for an example
 class GithubGistFormula < ScriptFileFormula
-  def initialize(*)
-    url = self.class.stable.url
-    self.class.stable.version(File.basename(File.dirname(url))[0,6])
+  def self.url(val)
     super
+    version File.basename(File.dirname(val))[0, 6]
   end
 end
 
