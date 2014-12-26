@@ -32,7 +32,7 @@ class Vavrdiasm < Formula
       :00000001FF
     EOS
 
-    output = `vavrdisasm file.hex`.lines
+    output = `vavrdisasm file.hex`.lines.to_a
 
     assert output[0].match(/ldi\s+R16,\s0xfe/).length == 1
     assert output[1].match(/ser\s+R17/).length == 1
