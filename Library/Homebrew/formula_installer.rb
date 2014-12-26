@@ -202,8 +202,8 @@ class FormulaInstaller
     return if ARGV.force?
 
     conflicts = formula.conflicts.select do |c|
-      formula = Formulary.factory(c.name)
-      formula.linked_keg.exist? && formula.opt_prefix.exist?
+      f = Formulary.factory(c.name)
+      f.linked_keg.exist? && f.opt_prefix.exist?
     end
 
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
