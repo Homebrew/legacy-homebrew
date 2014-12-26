@@ -898,7 +898,6 @@ class Formula
     end
 
     def test &block
-      define_method(:test_defined?) { true }
       define_method(:test, &block)
     end
   end
