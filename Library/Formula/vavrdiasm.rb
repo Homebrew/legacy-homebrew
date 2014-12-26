@@ -1,5 +1,5 @@
 class Vavrdiasm < Formula
-  homepage 'https://github.com/vsergeev/vAVRdisasm'
+  homepage "https://github.com/vsergeev/vAVRdisasm"
   url "https://github.com/vsergeev/vavrdisasm/archive/v3.1.tar.gz"
   sha1 "8ac78c7ec26760ac76e25a1ff399cfc255b2bc52"
 
@@ -11,7 +11,7 @@ class Vavrdiasm < Formula
   patch :DATA
 
   def install
-    ENV['PREFIX'] = prefix
+    ENV["PREFIX"] = prefix
     system "make"
     system "make", "install"
   end
