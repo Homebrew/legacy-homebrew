@@ -367,12 +367,18 @@ class Formula
     false
   end
 
+  def patch
+    ohai "Patching"
+    active_spec.patches.each(&:apply)
+  end
+
   # yields self with current working directory set to the uncompressed tarball
   # @private
   def brew
     stage do
+      prepare_patches
+
       begin
-        patch
         yield self
       ensure
         cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
@@ -723,7 +729,7 @@ class Formula
     end
   end
 
-  def patch
+  def prepare_patches
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
 
@@ -732,9 +738,6 @@ class Formula
     active_spec.patches.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
     end
-
-    ohai "Patching"
-    active_spec.patches.each(&:apply)
   end
 
   def self.method_added method
