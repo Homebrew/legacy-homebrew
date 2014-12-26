@@ -1,10 +1,8 @@
-require "formula"
-
-# Note that x.even are stable releases, x.odd are devel releases
 class Libuv < Formula
-  homepage "https://github.com/joyent/libuv"
-  url "https://github.com/joyent/libuv/archive/v0.10.29.tar.gz"
-  sha1 "c04d8e4bf1ccab1e13e8fa0e409b6e41b27eb6a7"
+  homepage "https://github.com/libuv/libuv"
+  url "https://github.com/libuv/libuv/archive/v1.1.0.tar.gz"
+  sha1 "0c5d68bbfecd0bf2a6331403d375f791e34c298d"
+  head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
     cellar :any
@@ -13,40 +11,37 @@ class Libuv < Formula
     sha1 "071893cfe4e4a07a53d9feb8b928e8449f30485c" => :mountain_lion
   end
 
-  head do
-    url "https://github.com/joyent/libuv.git"
-
-    depends_on "automake" => :build
-    depends_on "autoconf" => :build
-    depends_on "libtool" => :build
-  end
-
-  devel do
-    url "https://github.com/joyent/libuv/archive/v1.0.0-rc2.tar.gz"
-    sha1 "914c74fd2a1ff92e852f37e39c3fa086e255bb3f"
-    version "1.0.0-rc2"
-
-    depends_on "pkg-config" => :build
-    depends_on "automake" => :build
-    depends_on "autoconf" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on "pkg-config" => :build
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "libtool" => :build
 
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
 
-    if build.stable?
-      system "make", "libuv.dylib"
-      prefix.install "include"
-      lib.install "libuv.dylib"
-    else
-      system "./autogen.sh"
-      system "./configure", "--disable-dependency-tracking",
-                            "--disable-silent-rules",
-                            "--prefix=#{prefix}"
-      system "make", "install"
-    end
+    system "./autogen.sh"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <uv.h>
+
+      int main()
+      {
+        uv_loop_t* loop = malloc(sizeof *loop);
+        uv_loop_init(loop);
+        uv_loop_close(loop);
+        free(loop);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-luv", "-o", "test"
+    system "./test"
   end
 end
