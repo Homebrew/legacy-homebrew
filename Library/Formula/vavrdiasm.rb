@@ -17,14 +17,14 @@ class Vavrdiasm < Formula
   end
 
   test do
-# Code to generate `file.hex':
-## .device ATmega88
-##
-## LDI     R16, 0xfe
-## SER     R17
-#
-# Compiled with avra:
-## avra file.S && mv file.S.hex file.hex
+    # Code to generate `file.hex':
+    ## .device ATmega88
+    ##
+    ## LDI     R16, 0xfe
+    ## SER     R17
+    #
+    # Compiled with avra:
+    ## avra file.S && mv file.S.hex file.hex
 
     (testpath/"file.hex").write("""\
 :020000020000FC
