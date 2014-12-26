@@ -370,8 +370,6 @@ class Formula
   # yields self with current working directory set to the uncompressed tarball
   # @private
   def brew
-    validate_attributes :name, :version
-
     stage do
       begin
         patch
