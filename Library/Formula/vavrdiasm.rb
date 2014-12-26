@@ -32,7 +32,7 @@ class Vavrdiasm < Formula
 :00000001FF
 """)
 
-    output = %x[vavrdisasm file.hex].split("\n")
+    output = `vavrdisasm file.hex`.lines
     testerr = "Unexpected disassembly"
 
     raise testerr unless output[0].match(/ldi\s+R16,\s0xfe/).length == 1
