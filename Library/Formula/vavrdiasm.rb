@@ -35,10 +35,9 @@ class Vavrdiasm < Formula
     (testpath/"file.hex").write(hexfile)
 
     output = `vavrdisasm file.hex`.lines
-    testerr = "Unexpected disassembly"
 
-    raise testerr unless output[0].match(/ldi\s+R16,\s0xfe/).length == 1
-    raise testerr unless output[1].match(/ser\s+R17/).length == 1
+    assert output[0].match(/ldi\s+R16,\s0xfe/).length == 1
+    assert output[1].match(/ser\s+R17/).length == 1
   end
 end
 
