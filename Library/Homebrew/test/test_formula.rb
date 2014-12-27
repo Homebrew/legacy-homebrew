@@ -171,9 +171,9 @@ class FormulaTests < Homebrew::TestCase
     assert_version_equal '0.1', f.version
     assert_predicate f, :stable?
 
-    assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of SoftwareSpec, f.devel
-    assert_instance_of HeadSoftwareSpec, f.head
+    assert_version_equal "0.1", f.stable.version
+    assert_version_equal "0.2", f.devel.version
+    assert_version_equal "HEAD", f.head.version
   end
 
   def test_path
