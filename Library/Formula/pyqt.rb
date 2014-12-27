@@ -1,5 +1,3 @@
-require "formula"
-
 class Pyqt < Formula
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
   url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
@@ -19,7 +17,7 @@ class Pyqt < Formula
     odie "pyqt: --with-python3 must be specified when using --without-python"
   end
 
-  depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
+  depends_on "qt"
 
   if build.with? "python3"
     depends_on "sip" => "with-python3"
