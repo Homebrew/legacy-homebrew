@@ -37,7 +37,7 @@ class Mysql < Formula
   end
 
   def install
-    # Don"t hard-code the libtool path. See:
+    # Don't hard-code the libtool path. See:
     # https://github.com/Homebrew/homebrew/issues/20185
     inreplace "cmake/libutils.cmake",
       "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
@@ -103,7 +103,7 @@ class Mysql < Formula
     system "make"
     system "make", "install"
 
-    # Don"t create databases inside of the prefix!
+    # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975
     rm_rf prefix+"data"
 
