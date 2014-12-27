@@ -13,6 +13,8 @@ class Polipo < Formula
     sha1 "e293417dcc1d1708cdef6cc5476445741ee97bb4" => :mountain_lion
   end
 
+  option 'with-large-chunks', 'Set chunk size to 16k (more RAM, but more performance)'
+
   def install
     cache_root = (var + "cache/polipo")
     cache_root.mkpath
@@ -22,6 +24,7 @@ class Polipo < Formula
               MANDIR=#{man}
               INFODIR=#{info}
               PLATFORM_DEFINES=-DHAVE_IPv6]
+    args << 'EXTRA_DEFINES="-DCHUNK_SIZE=16384"' if build.with? "large-chunks"
 
     system "make", "all", *args
     system "make", "install", *args
