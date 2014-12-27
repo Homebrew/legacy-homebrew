@@ -234,6 +234,15 @@ module Homebrew
         git("rev-list", "--count", "#{start_revision}..#{end_revision}").to_i == 1
       end
 
+      def diff_formulae start_revision, end_revision, path, filter
+        git(
+          "diff-tree", "-r", "--name-only", "--diff-filter=#{filter}",
+          start_revision, end_revision, "--", path
+        ).lines.map do |line|
+          File.basename(line.chomp, ".rb")
+        end
+      end
+
       @category = __method__
       @start_branch = current_branch
 
@@ -299,12 +308,9 @@ module Homebrew
         formula_path = "Library/Formula"
       end
 
-      git(
-        "diff-tree", "-r", "--name-only", "--diff-filter=AM",
-        diff_start_sha1, diff_end_sha1, "--", formula_path
-      ).each_line do |line|
-        @formulae << File.basename(line.chomp, ".rb")
-      end
+      @added_formulae = diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "A")
+      @modified_formula = diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "M")
+      @formulae += @added_formulae + @modified_formula
     end
 
     def skip formula_name
@@ -410,7 +416,9 @@ module Homebrew
       ENV["HOMEBREW_DEVELOPER"] = "1"
       test "brew", "install", *install_args
       install_passed = steps.last.passed?
-      test "brew", "audit", formula_name
+      audit_args = [formula_name]
+      audit_args << "--strict" if @added_formulae.include? formula_name
+      test "brew", "audit", *audit_args
       if install_passed
         unless ARGV.include? '--no-bottle'
           bottle_args = ["--rb", formula_name]
@@ -442,7 +450,7 @@ module Homebrew
         test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
         test "brew", "install", "--devel", "--verbose", formula_name
         devel_install_passed = steps.last.passed?
-        test "brew", "audit", "--devel", formula_name
+        test "brew", "audit", "--devel", *audit_args
         if devel_install_passed
           test "brew", "test", "--devel", "--verbose", formula_name if formula.test_defined?
           test "brew", "uninstall", "--devel", "--force", formula_name
