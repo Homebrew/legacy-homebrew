@@ -30,19 +30,6 @@ module Debrew
     end
   end
 
-  module Resource
-    def unpack(target=nil)
-      return super if target
-      super do
-        begin
-          yield self
-        rescue Exception => e
-          Debrew.debug(e)
-        end
-      end
-    end
-  end
-
   class Menu
     Entry = Struct.new(:name, :action)
 
