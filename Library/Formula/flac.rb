@@ -63,4 +63,14 @@ class Flac < Formula
 
     system "make", "install"
   end
+
+  test do
+    raw_data = "pseudo audio data that stays the same \x00\xff\xda"
+    (testpath/"in.raw").write raw_data
+    # encode and decode
+    system "#{bin}/flac", "--endian=little", "--sign=signed", "--channels=1", "--bps=8", "--sample-rate=8000", "--output-name=in.flac", "in.raw"
+    system "#{bin}/flac", "--decode", "--force-raw", "--endian=little", "--sign=signed", "--output-name=out.raw", "in.flac"
+    # diff input and output
+    system "diff", "in.raw", "out.raw"
+  end
 end
