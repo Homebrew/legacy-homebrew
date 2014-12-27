@@ -168,6 +168,15 @@ class FormulaAuditor
     end
   end
 
+  def audit_options
+    formula.options.each do |o|
+      next unless @strict
+      if o.name !~ /with(out)?-/ && o.name != "c++11" && o.name != "universal"
+        problem "Options should begin with with/without. Migrate '--#{o.name}' with `deprecated_option`."
+      end
+    end
+  end
+
   def audit_urls
     homepage = formula.homepage
 
@@ -553,6 +562,7 @@ class FormulaAuditor
     audit_urls
     audit_deps
     audit_conflicts
+    audit_options
     audit_patches
     audit_text
     text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
