@@ -81,22 +81,8 @@ class Pyqt < Formula
 
   test do
     Pathname("test.py").write <<-EOS.undent
-      import sys
-      from PyQt4 import QtGui, QtCore
-
-      class Test(QtGui.QWidget):
-          def __init__(self, parent=None):
-              QtGui.QWidget.__init__(self, parent)
-              self.setGeometry(300, 300, 400, 150)
-              self.setWindowTitle('Homebrew')
-              QtGui.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
-                           " working with PyQt4. Quitting now...", self).move(50, 50)
-              QtCore.QTimer.singleShot(1500, QtGui.qApp, QtCore.SLOT("quit()"))
-
-      app = QtGui.QApplication([])
-      window = Test()
-      window.show()
-      sys.exit(app.exec_())
+      from PyQt4 import QtNetwork
+      QtNetwork.QNetworkAccessManager().networkAccessible()
     EOS
 
     Language::Python.each_python(build) do |python, version|
