@@ -37,7 +37,7 @@ class Libmagic < Formula
       system "python", "setup.py", "install", "--prefix=#{prefix}"
     end
 
-    # Don"t dupe this system utility
+    # Don't dupe this system utility
     rm bin/"file"
     rm man1/"file.1"
   end
