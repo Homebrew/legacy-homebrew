@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libmagic < Formula
-  homepage 'http://www.darwinsys.com/file/'
-  url 'ftp://ftp.astron.com/pub/file/file-5.21.tar.gz'
-  mirror 'http://fossies.org/unix/misc/file-5.21.tar.gz'
-  sha1 '9836603b75dde99664364b0e7a8b5492461ac0fe'
+  homepage "http://www.darwinsys.com/file/"
+  url "ftp://ftp.astron.com/pub/file/file-5.21.tar.gz"
+  mirror "http://fossies.org/unix/misc/file-5.21.tar.gz"
+  sha1 "9836603b75dde99664364b0e7a8b5492461ac0fe"
 
   bottle do
     revision 2
@@ -33,13 +31,13 @@ class Libmagic < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-fsect-man5"
-    system "make install"
+    system "make", "install"
 
     cd "python" do
       system "python", "setup.py", "install", "--prefix=#{prefix}"
     end
 
-    # Don't dupe this system utility
+    # Don"t dupe this system utility
     rm bin/"file"
     rm man1/"file.1"
   end
