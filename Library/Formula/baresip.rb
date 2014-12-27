@@ -1,5 +1,3 @@
-require "formula"
-
 class Baresip < Formula
   homepage "http://www.creytiv.com/"
   url "http://www.creytiv.com/pub/baresip-0.4.12.tar.gz"
@@ -26,5 +24,4 @@ class Baresip < Formula
   test do
     system "#{bin}/baresip", "-t"
   end
-
 end
