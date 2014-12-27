@@ -10,7 +10,7 @@ class Pyqt < Formula
     sha1 "e058c40214fa5bed6391e815cfe7b2473b2bbc98" => :mountain_lion
   end
 
-  depends_on :python => :recommended
+  option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
 
   if build.without?("python3") && build.without?("python")
