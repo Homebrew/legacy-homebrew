@@ -5,6 +5,13 @@ class Avra < Formula
   url 'https://downloads.sourceforge.net/project/avra/1.3.0/avra-1.3.0.tar.bz2'
   sha1 '7ad7d168b02107d4f2d72951155798c2fd87d5a9'
 
+  bottle do
+    cellar :any
+    sha1 "e2421ffa73e2cce740fdf6d03083931511ba729c" => :yosemite
+    sha1 "93af396271220b7b110c8506affea3703c914482" => :mavericks
+    sha1 "9a850a1c6ca9634a2a8e33b1f399d272cf2c78ee" => :mountain_lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
 
