@@ -17,6 +17,7 @@ class Avra < Formula
       system "./configure", "--prefix=#{prefix}"
       system "make install"
     end
+    (share/"avra").install Dir["includes/*"]
   end
 
   test do
