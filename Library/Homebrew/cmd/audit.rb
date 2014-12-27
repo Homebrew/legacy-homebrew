@@ -542,6 +542,14 @@ class FormulaAuditor
       method = $2
       problem "Use the `#{method}` Ruby method instead of `system #{system}`"
     end
+
+    if @strict
+      if line =~ /system (["'][^"' ]*\s[^"' ]*["'])/
+        bad_system = $1
+        good_system = bad_system.gsub(" ", "\", \"")
+        problem "Use `system #{good_system}` instead of `system #{bad_system}` "
+      end
+    end
   end
 
   def audit_conditional_dep(dep, condition, line)
