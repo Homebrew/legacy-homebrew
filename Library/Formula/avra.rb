@@ -17,6 +17,8 @@ class Avra < Formula
       system "./configure", "--prefix=#{prefix}"
       system "make install"
     end
+    mkdir_p share/"avra"
+    cp_r "includes", share/"avra"
   end
 
   test do
