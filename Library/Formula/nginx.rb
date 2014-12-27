@@ -1,5 +1,3 @@
-require "formula"
-
 class Nginx < Formula
   homepage "http://nginx.org/"
   url "http://nginx.org/download/nginx-1.6.2.tar.gz"
@@ -79,7 +77,7 @@ class Nginx < Formula
       system "./configure", *args
     end
     system "make"
-    system "make install"
+    system "make", "install"
     man8.install "objs/nginx.8"
     (var/"run/nginx").mkpath
   end
