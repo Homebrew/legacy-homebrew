@@ -41,7 +41,6 @@ class FormulaText
     @text = path.open("rb", &:read)
   end
 
-
   def without_patch
     @text.split("\n__END__").first
   end
@@ -56,10 +55,6 @@ class FormulaText
 
   def has_trailing_newline?
     /\Z\n/ =~ @text
-  end
-
-  def has_test?
-    @text.include? "test do"
   end
 end
 
@@ -109,9 +104,11 @@ class FormulaAuditor
     unless text.has_trailing_newline?
       problem "File should end with a newline"
     end
+  end
 
+  def audit_class
     if @strict
-      unless text.has_test?
+      unless formula.test_defined?
         problem "A `test do` test block should be added"
       end
     end
@@ -595,6 +592,7 @@ class FormulaAuditor
 
   def audit
     audit_file
+    audit_class
     audit_specs
     audit_urls
     audit_deps
