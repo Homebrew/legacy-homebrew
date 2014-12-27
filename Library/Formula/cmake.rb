@@ -1,5 +1,3 @@
-require "formula"
-
 class NoExpatFramework < Requirement
   def expat_framework
     "/Library/Frameworks/expat.framework"
