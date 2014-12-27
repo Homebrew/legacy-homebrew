@@ -1,5 +1,3 @@
-require "formula"
-
 class Libassuan < Formula
   homepage "https://www.gnupg.org/related_software/libassuan/index.en.html"
   url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.2.0.tar.bz2"
