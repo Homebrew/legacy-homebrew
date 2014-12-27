@@ -32,7 +32,7 @@ class Emacs < Formula
 
   devel do
     url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-24"
-    version "24dev"
+    version "24.4-dev"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
