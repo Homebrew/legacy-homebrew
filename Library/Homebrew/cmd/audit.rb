@@ -17,8 +17,10 @@ module Homebrew
       ARGV.formulae
     end
 
+    strict = ARGV.include? "--strict"
+
     ff.each do |f|
-      fa = FormulaAuditor.new f
+      fa = FormulaAuditor.new(f, :strict => strict)
       fa.audit
 
       unless fa.problems.empty?
@@ -76,8 +78,9 @@ class FormulaAuditor
     swig
   ]
 
-  def initialize(formula)
+  def initialize(formula, options={})
     @formula = formula
+    @strict = !!options[:strict]
     @problems = []
     @text = FormulaText.new(formula.path)
     @specs = %w{stable devel head}.map { |s| formula.send(s) }.compact
