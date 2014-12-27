@@ -1,5 +1,3 @@
-require 'formula'
-
 class JavaRequirement < Requirement
   fatal true
 
@@ -26,48 +24,69 @@ class JavaRequirement < Requirement
 end
 
 class Hamsterdb < Formula
-  homepage 'http://hamsterdb.com'
-  url "http://files.hamsterdb.com/dl/hamsterdb-2.1.8.tar.gz"
-  sha1 "f91af65d19cdbd75ec52f6d18e331e22e4f198a7"
-  revision 1
+  homepage "http://hamsterdb.com"
+  url "http://files.hamsterdb.com/dl/hamsterdb-2.1.9.tar.gz"
+  sha1 "036817e4ccc9c4b23affb987c149ebd04696f1d0"
 
-  option 'without-java', 'Do not build the Java wrapper'
-  option 'without-remote', 'Disable access to remote databases'
+  option "without-java", "Do not build the Java wrapper"
+  option "without-remote", "Disable access to remote databases"
 
   head do
-    url 'https://github.com/cruppstahl/hamsterdb.git', :branch => 'topic/next'
+    url "https://github.com/cruppstahl/hamsterdb.git"
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "boost"
+  depends_on "gnutls"
+  depends_on JavaRequirement if build.with? "java"
+  depends_on "protobuf" if build.with? "remote"
+
+  resource "libuv" do
+    url "https://github.com/libuv/libuv/archive/v0.10.31.tar.gz"
+    sha1 "9ab8ecb10f90ce13404ff58ff85cb774472e2cb9"
   end
 
   stable do
+    # patch upstream commits:
+    # https://github.com/cruppstahl/hamsterdb/commit/6a8dd20ec9bd2ec718d1136db7667e0e58911003
+    # https://github.com/cruppstahl/hamsterdb/commit/1447ba4eb217532e8fb49c4a84a0dc3b982a3ffe
     patch do
-      url "https://github.com/cruppstahl/hamsterdb/commit/6eed38f26a0805fe976ead92b467767e1448b124.diff"
-      sha1 "13928ceca137eb1cf680d3d25d18819c44dc743e"
+      url "https://gist.githubusercontent.com/xu-cheng/0d5fa0b6b81426f68271/raw/47ff326c43a1865cda8e9fa9d00434c68efa7e13/hamsterdb.diff"
+      sha1 "e83346c3afc92d6450ceef1c34adce1a515b245e"
     end
   end
 
-  depends_on 'boost'
-  depends_on 'gnutls'
-  depends_on JavaRequirement if build.with? 'java'
-
-  if build.with? 'remote'
-    depends_on 'protobuf'
-    depends_on 'libuv'
+  fails_with :clang do
+    build 503
+    cause "error: member access into incomplete type 'const std::type_info'"
   end
 
   def install
-    system '/bin/sh', 'bootstrap.sh' if build.head?
+    system "/bin/sh", "bootstrap.sh" if build.head?
 
     features = []
-    features << '--disable-remote' if build.without? 'remote'
 
-    if build.with? 'java'
+    if build.with? "java"
       features << "JDK=#{JavaRequirement.jdk_home}"
     else
-      features << '--disable-java'
+      features << "--disable-java"
+    end
+
+    if build.with? "remote"
+      resource("libuv").stage do
+        system "make", "libuv.dylib"
+        (libexec/"libuv/lib").install "libuv.dylib"
+        (libexec/"libuv").install "include"
+      end
+
+      ENV.prepend "LDFLAGS", "-L#{libexec}/libuv/lib"
+      ENV.prepend "CFLAGS", "-I#{libexec}/libuv/include"
+      ENV.prepend "CPPFLAGS", "-I#{libexec}/libuv/include"
+    else
+      features << "--disable-remote"
     end
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
