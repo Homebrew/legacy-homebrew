@@ -1,5 +1,5 @@
 TAP_MIGRATIONS = {
-  "agedu" => "homebrew/headonly",
+  "agedu" => "homebrew/head-only",
   "aimage" => "homebrew/boneyard",
   "aplus" => "homebrew/boneyard",
   "apple-gcc42" => "homebrew/dupes",
@@ -79,7 +79,7 @@ TAP_MIGRATIONS = {
   "jsl" => "homebrew/binary",
   "jstalk" => "homebrew/boneyard",
   "justniffer" => "homebrew/boneyard",
-  "kerl" => "homebrew/headonly",
+  "kerl" => "homebrew/head-only",
   "kernagic" => "homebrew/x11",
   "kismet" => "homebrew/boneyard",
   "klavaro" => "homebrew/x11",

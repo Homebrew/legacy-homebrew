@@ -277,7 +277,7 @@ class FormulaAuditor
   end
 
   def audit_specs
-    if head_only?(formula) && formula.tap != "homebrew/homebrew-headonly"
+    if head_only?(formula) && formula.tap != "homebrew/homebrew-head-only"
       problem "Head-only (no stable download)"
     end
 
