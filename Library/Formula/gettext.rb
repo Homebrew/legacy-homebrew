@@ -1,5 +1,3 @@
-require "formula"
-
 class Gettext < Formula
   homepage "https://www.gnu.org/software/gettext/"
   url "http://ftpmirror.gnu.org/gettext/gettext-0.19.4.tar.xz"
@@ -38,5 +36,9 @@ class Gettext < Formula
     system "make"
     ENV.deparallelize # install doesn't support multiple make jobs
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gettext", "test"
   end
 end
