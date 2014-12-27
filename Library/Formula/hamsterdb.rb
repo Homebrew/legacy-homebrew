@@ -62,6 +62,11 @@ class Hamsterdb < Formula
     end
   end
 
+  fails_with :clang do
+    build 503
+    cause "error: member access into incomplete type 'const std::type_info'"
+  end
+
   def install
     system "/bin/sh", "bootstrap.sh" if build.head?
 
