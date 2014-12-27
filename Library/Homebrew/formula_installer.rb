@@ -154,7 +154,7 @@ class FormulaInstaller
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    formula.active_spec.deprecated_flags.each do |deprecated_option|
+    formula.deprecated_flags.each do |deprecated_option|
       old_flag = deprecated_option.old_flag
       new_flag = deprecated_option.current_flag
       opoo "#{formula.name}: #{old_flag} was deprecated; using #{new_flag} instead!"
