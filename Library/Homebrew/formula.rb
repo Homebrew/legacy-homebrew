@@ -212,6 +212,10 @@ class Formula
     active_spec.deprecated_options
   end
 
+  def deprecated_flags
+    active_spec.deprecated_flags
+  end
+
   # If a named option is defined for the currently active {SoftwareSpec}.
   def option_defined?(name)
     active_spec.option_defined?(name)
