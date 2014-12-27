@@ -39,7 +39,7 @@ class Vim < Formula
   def install
     ENV["LUA_PREFIX"] = HOMEBREW_PREFIX if build.with?("lua") || build.with?("luajit")
 
-    # vim doesn"t require any Python package, unset PYTHONPATH.
+    # vim doesn't require any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
 
     opts = []
