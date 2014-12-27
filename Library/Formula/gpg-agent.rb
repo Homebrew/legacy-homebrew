@@ -1,5 +1,3 @@
-require "formula"
-
 class GpgAgent < Formula
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
@@ -33,7 +31,11 @@ class GpgAgent < Formula
                           "--enable-agent-only",
                           "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry",
                           "--with-scdaemon-pgm=#{Formula["gnupg2"].opt_libexec}/scdaemon"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gpg-agent", "--help"
   end
 end
 
@@ -44,7 +46,7 @@ index c022805..96ea7ed 100755
 +++ b/configure
 @@ -578,8 +578,8 @@ MFLAGS=
  MAKEFLAGS=
- 
+
  # Identity of this package.
 -PACKAGE_NAME='gnupg'
 -PACKAGE_TARNAME='gnupg'
