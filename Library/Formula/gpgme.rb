@@ -1,5 +1,3 @@
-require "formula"
-
 class Gpgme < Formula
   homepage "https://www.gnupg.org/related_software/gpgme/"
   url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.1.tar.bz2"
