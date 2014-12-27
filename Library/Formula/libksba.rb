@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libksba < Formula
-  homepage 'http://www.gnupg.org/related_software/libksba/index.en.html'
-  url 'ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.2.tar.bz2'
-  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.2.tar.bz2'
-  sha1 '37d0893a587354af2b6e49f6ae701ca84f52da67'
+  homepage "http://www.gnupg.org/related_software/libksba/index.en.html"
+  url "ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.2.tar.bz2"
+  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.2.tar.bz2"
+  sha1 "37d0893a587354af2b6e49f6ae701ca84f52da67"
 
   bottle do
     cellar :any
@@ -13,10 +11,14 @@ class Libksba < Formula
     sha1 "f0a2bd05b9cb065384230ed3c2054af847ce4b67" => :mountain_lion
   end
 
-  depends_on 'libgpg-error'
+  depends_on "libgpg-error"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/ksba-config", "--libs"
   end
 end
