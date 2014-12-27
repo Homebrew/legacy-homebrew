@@ -162,8 +162,6 @@ class FormulaTests < Homebrew::TestCase
         sha256 TEST_SHA256
       end
 
-      bottle { sha1 TEST_SHA1 => bottle_tag }
-
       def initialize
         super "test", Pathname.new(__FILE__).expand_path, :stable
       end
