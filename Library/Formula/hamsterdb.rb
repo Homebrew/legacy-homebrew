@@ -42,10 +42,7 @@ class Hamsterdb < Formula
   depends_on "boost"
   depends_on "gnutls"
   depends_on JavaRequirement if build.with? "java"
-
-  if build.with? "remote"
-    depends_on "protobuf"
-  end
+  depends_on "protobuf" if build.with? "remote"
 
   resource "libuv" do
     url "https://github.com/libuv/libuv/archive/v0.10.31.tar.gz"
