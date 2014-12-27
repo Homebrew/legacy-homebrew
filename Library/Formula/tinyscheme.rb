@@ -11,8 +11,6 @@ class Tinyscheme < Formula
     sha1 "f2f6def9dc2ef11876dd1e307634ac454302ed11" => :lion
   end
 
-  conflicts_with 'mit-scheme', :because => 'both install a `scheme` binary'
-
   # Modify compile flags for Mac OS X per instructions
   patch :DATA
 
