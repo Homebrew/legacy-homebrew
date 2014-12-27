@@ -558,12 +558,6 @@ class FormulaAuditor
         problem "Use `system #{good_system}` instead of `system #{bad_system}` "
       end
 
-      if line =~ /^[^#"]*('[^']*')/
-        bad_quotes = $1
-        good_quotes = bad_quotes.gsub "'", "\""
-        problem "use double-quotes for `#{good_quotes}` instead of `#{bad_quotes}`"
-      end
-
       if line =~ /(require ["']formula["'])/
         problem "`#{$1}` is now unnecessary"
       end
