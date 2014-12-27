@@ -1,5 +1,3 @@
-require "formula"
-
 # Upstream project has requested we use a mirror as the main URL
 # https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
@@ -17,7 +15,7 @@ class Xz < Formula
   end
 
   devel do
-    url 'http://tukaani.org/xz/xz-5.1.4beta.tar.gz'
+    url "http://tukaani.org/xz/xz-5.1.4beta.tar.gz"
     sha256 "7c47b9e2cfb5be93245d9fcf2bec5b459412b7628c333896dded373dcd0cf0e0"
   end
 
