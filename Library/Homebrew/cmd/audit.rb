@@ -549,6 +549,12 @@ class FormulaAuditor
         good_system = bad_system.gsub(" ", "\", \"")
         problem "Use `system #{good_system}` instead of `system #{bad_system}` "
       end
+
+      if line =~ /^[^#"]*('[^']*')/
+        bad_quotes = $1
+        good_quotes = bad_quotes.gsub "'", "\""
+        problem "use double-quotes for `#{good_quotes}` instead of `#{bad_quotes}`"
+      end
     end
   end
 
