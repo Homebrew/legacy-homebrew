@@ -7,7 +7,7 @@ Features, usage and installation instructions are [summarised on the homepage](h
 3. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
 
 ## More Documentation
-`brew help` or `man brew` or check our [documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
+`brew help`, `man brew` or check [our documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
 
 ## Troubleshooting
 First, please run `brew update` and `brew doctor`.
