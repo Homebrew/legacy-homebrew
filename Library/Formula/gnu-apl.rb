@@ -23,7 +23,10 @@ class GnuApl < Formula
   end
 
   test do
-    ENV["TERM"] = "dumb"
-    system "#{bin}/apl", "--version"
+    (testpath/"hello.apl").write <<-EOS.undent
+      'Hello world'
+      )OFF
+    EOS
+    assert_match /Hello world/, shell_output("#{bin}/apl -s -f hello.apl")
   end
 end
