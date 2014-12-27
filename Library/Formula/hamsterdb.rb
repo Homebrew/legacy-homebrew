@@ -28,6 +28,13 @@ class Hamsterdb < Formula
   url "http://files.hamsterdb.com/dl/hamsterdb-2.1.9.tar.gz"
   sha1 "036817e4ccc9c4b23affb987c149ebd04696f1d0"
 
+  bottle do
+    cellar :any
+    sha1 "b4b9b5642f17f3fd22f435309c6bfdb3eb4be13a" => :yosemite
+    sha1 "d8766c2c04563e2e471bed85e43945bcd402c4dc" => :mavericks
+    sha1 "f08ff2613c4caaba89d21d8bb3ddc5be332847c1" => :mountain_lion
+  end
+
   option "without-java", "Do not build the Java wrapper"
   option "without-remote", "Disable access to remote databases"
 
