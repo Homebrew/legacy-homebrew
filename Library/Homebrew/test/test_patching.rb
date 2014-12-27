@@ -33,7 +33,10 @@ class PatchingTests < Homebrew::TestCase
         def patches
           PATCH_URL_A
         end
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -44,7 +47,10 @@ class PatchingTests < Homebrew::TestCase
           url PATCH_URL_A
           sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
         end
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -55,7 +61,10 @@ class PatchingTests < Homebrew::TestCase
           url PATCH_URL_A
           sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
         end
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -67,7 +76,7 @@ class PatchingTests < Homebrew::TestCase
             url PATCH_URL_A
             sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
           end
-        end.brew { }
+        end.brew(&:patch)
       end
     end
   end
@@ -79,7 +88,10 @@ class PatchingTests < Homebrew::TestCase
           url PATCH_URL_B
           sha1 "3b54bd576f998ef6d6623705ee023b55062b9504"
         end
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -89,7 +101,10 @@ class PatchingTests < Homebrew::TestCase
         def patches
           { :p0 => PATCH_URL_B }
         end
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -99,7 +114,10 @@ class PatchingTests < Homebrew::TestCase
         def patches
           [PATCH_URL_A]
         end
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -109,7 +127,10 @@ class PatchingTests < Homebrew::TestCase
         def patches
           { :p1 => PATCH_URL_A }
         end
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -119,7 +140,10 @@ class PatchingTests < Homebrew::TestCase
         def patches
           { :p1 => [PATCH_URL_A] }
         end
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -127,7 +151,10 @@ class PatchingTests < Homebrew::TestCase
     shutup do
       formula do
         patch PATCH_A_CONTENTS
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -135,7 +162,10 @@ class PatchingTests < Homebrew::TestCase
     shutup do
       formula do
         patch :p0, PATCH_B_CONTENTS
-      end.brew { assert_patched 'libexec/NOOP' }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 
@@ -145,7 +175,10 @@ class PatchingTests < Homebrew::TestCase
         def patches
           Formula::DATA
         end
-      end.brew { assert_patched "libexec/NOOP" }
+      end.brew do |f|
+        f.patch
+        assert_patched 'libexec/NOOP'
+      end
     end
   end
 end
