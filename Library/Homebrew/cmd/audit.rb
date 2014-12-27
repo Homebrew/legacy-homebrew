@@ -78,6 +78,8 @@ class FormulaAuditor
     swig
   ]
 
+  FILEUTILS_METHODS = FileUtils.singleton_methods(false).join "|"
+
   def initialize(formula, options={})
     @formula = formula
     @strict = !!options[:strict]
@@ -533,6 +535,12 @@ class FormulaAuditor
 
     if line =~ /(Dir\[("[^\*{},]+")\])/
       problem "#{$1} is unnecessary; just use #{$2}"
+    end
+
+    if line =~ /system (["'](#{FILEUTILS_METHODS}))["' ]/
+      system = $1
+      method = $2
+      problem "Use the `#{method}` Ruby method instead of `system #{system}`"
     end
   end
 
