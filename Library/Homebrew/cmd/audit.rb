@@ -548,7 +548,7 @@ class FormulaAuditor
       problem "#{$1} is unnecessary; just use #{$2}"
     end
 
-    if line =~ /system (["'](#{FILEUTILS_METHODS}))["' ]/
+    if line =~ /system (["'](#{FILEUTILS_METHODS})["' ])/o
       system = $1
       method = $2
       problem "Use the `#{method}` Ruby method instead of `system #{system}`"
