@@ -1,5 +1,3 @@
-require "formula"
-
 class Git < Formula
   homepage "http://git-scm.com"
   url "https://www.kernel.org/pub/software/scm/git/git-2.2.1.tar.gz"
