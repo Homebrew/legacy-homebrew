@@ -56,6 +56,10 @@ class FormulaText
   def has_trailing_newline?
     /\Z\n/ =~ @text
   end
+
+  def has_test?
+    @text.include? "test do"
+  end
 end
 
 class FormulaAuditor
@@ -103,6 +107,12 @@ class FormulaAuditor
 
     unless text.has_trailing_newline?
       problem "File should end with a newline"
+    end
+
+    if @strict
+      unless text.has_test?
+        problem "A `test do` test block should be added"
+      end
     end
   end
 
