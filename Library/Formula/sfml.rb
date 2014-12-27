@@ -3,15 +3,8 @@ require "formula"
 class Sfml < Formula
   homepage "http://www.sfml-dev.org/"
 
-  stable do
-    url "http://www.sfml-dev.org/download/sfml/2.1/SFML-2.1-sources.zip"
-    sha1 "c27bdffdc4bedb5f6a20db03ceca715d42aa5752"
-
-    # Too many upstream differences to fix Yosemite compile.
-    # Big code changes upstream since previous release 15 months ago.
-    # Please remove this block with the next stable release.
-    depends_on MaximumMacOSRequirement => :mavericks
-  end
+  url "http://www.sfml-dev.org/download/sfml/2.2/SFML-2.2-sources.zip"
+  sha1 "b21721a3dc221a790e4b81d6ba358c16cb1c1cd3"
 
   bottle do
     cellar :any
