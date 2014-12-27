@@ -41,6 +41,7 @@ class FormulaText
     @text = path.open("rb", &:read)
   end
 
+
   def without_patch
     @text.split("\n__END__").first
   end
@@ -564,6 +565,10 @@ class FormulaAuditor
         bad_quotes = $1
         good_quotes = bad_quotes.gsub "'", "\""
         problem "use double-quotes for `#{good_quotes}` instead of `#{bad_quotes}`"
+      end
+
+      if line =~ /(require ["']formula["'])/
+        problem "`#{$1}` is now unnecessary"
       end
     end
   end
