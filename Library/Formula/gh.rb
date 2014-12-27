@@ -1,5 +1,3 @@
-require "formula"
-
 class Gh < Formula
   homepage "https://github.com/jingweno/gh"
   url "https://github.com/jingweno/gh/archive/v2.1.0.tar.gz"
@@ -31,7 +29,7 @@ class Gh < Formula
 
   test do
     HOMEBREW_REPOSITORY.cd do
-      assert_equal 'bin/brew', `#{bin}/gh ls-files -- bin`.strip
+      assert_equal "bin/brew", `#{bin}/gh ls-files -- bin`.strip
     end
   end
 end
