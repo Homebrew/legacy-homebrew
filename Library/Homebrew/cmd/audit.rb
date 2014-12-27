@@ -173,7 +173,7 @@ class FormulaAuditor
   def audit_options
     formula.options.each do |o|
       next unless @strict
-      if o.name !~ /with(out)?-/ && o.name != "c++11" && o.name != "universal"
+      if o.name !~ /with(out)?-/ && o.name != "c++11" && o.name != "universal" && o.name != "32-bit"
         problem "Options should begin with with/without. Migrate '--#{o.name}' with `deprecated_option`."
       end
     end
