@@ -148,6 +148,7 @@ TAP_MIGRATIONS = {
   "viewglob" => "homebrew/x11",
   "wkhtmltopdf" => "homebrew/boneyard",
   "wmctrl" => "homebrew/x11",
+  "x3270" => "homebrew/x11",
   "xchat" => "homebrew/x11",
   "xclip" => "homebrew/x11",
   "xdotool" => "homebrew/x11",
