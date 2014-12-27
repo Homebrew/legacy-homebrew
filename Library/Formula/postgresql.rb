@@ -1,5 +1,3 @@
-require "formula"
-
 class Postgresql < Formula
   homepage "http://www.postgresql.org/"
 
@@ -14,22 +12,26 @@ class Postgresql < Formula
     sha1 "efd661ace5a5f2657d047098dec15136aa4f0249" => :mountain_lion
   end
 
-  option '32-bit'
-  option 'no-perl', 'Build without Perl support'
-  option 'no-tcl', 'Build without Tcl support'
-  option 'enable-dtrace', 'Build with DTrace support'
+  option "32-bit"
+  option "without-perl", "Build without Perl support"
+  option "without-tcl", "Build without Tcl support"
+  option "with-dtrace", "Build with DTrace support"
 
-  depends_on 'openssl'
-  depends_on 'readline'
-  depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
+  deprecated_option "no-perl" => "without-perl"
+  deprecated_option "no-tcl" => "without-tcl"
+  deprecated_option "enable-dtrace" => "with-dtrace"
+
+  depends_on "openssl"
+  depends_on "readline"
+  depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on :python => :optional
 
-  conflicts_with 'postgres-xc',
-    :because => 'postgresql and postgres-xc install the same binaries.'
+  conflicts_with "postgres-xc",
+    :because => "postgresql and postgres-xc install the same binaries."
 
   fails_with :clang do
     build 211
-    cause 'Miscompilation resulting in segfault on queries'
+    cause "Miscompilation resulting in segfault on queries"
   end
 
   def install
@@ -50,12 +52,12 @@ class Postgresql < Formula
       --with-libxslt
     ]
 
-    args << "--with-python" if build.with? 'python'
-    args << "--with-perl" unless build.include? 'no-perl'
+    args << "--with-python" if build.with? "python"
+    args << "--with-perl" if build.with? "no-perl"
 
     # The CLT is required to build tcl support on 10.7 and 10.8 because
     # tclConfig.sh is not part of the SDK
-    unless build.include?("no-tcl") || MacOS.version < :mavericks && MacOS::CLT.installed?
+    if build.with?("tcl") && (MacOS.version >= :mavericks || MacOS::CLT.installed?)
       args << "--with-tcl"
 
       if File.exist?("#{MacOS.sdk_path}/usr/lib/tclConfig.sh")
@@ -63,7 +65,7 @@ class Postgresql < Formula
       end
     end
 
-    args << "--enable-dtrace" if build.include? 'enable-dtrace'
+    args << "--enable-dtrace" if build.with? "dtrace"
     args << "--with-uuid=e2fs"
 
     if build.build_32_bit?
@@ -71,7 +73,7 @@ class Postgresql < Formula
     end
 
     system "./configure", *args
-    system "make install-world"
+    system "make", "install-world"
   end
 
   def post_install
