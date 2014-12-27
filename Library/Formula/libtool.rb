@@ -1,5 +1,3 @@
-require "formula"
-
 # Xcode 4.3 provides the Apple libtool.
 # This is not the same so as a result we must install this as glibtool.
 
