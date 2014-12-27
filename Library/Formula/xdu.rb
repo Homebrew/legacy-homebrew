@@ -1,9 +1,9 @@
 require "formula"
 
 class Xdu < Formula
-  homepage "http://sd.wareonearth.com/~phil/xdu/"
-  url "http://sd.wareonearth.com/~phil/xdu/xdu-3.0.tar.Z"
-  sha1 "196e2ba03253fd6b8a88fafe6b00e40632183d0c"
+  homepage "https://github.com/msvticket/xdu/"
+  url "https://github.com/msvticket/xdu/archive/3.1.tar.gz"
+  sha1 "f990fdd118a57c49ee97ffec8e7f1af10ebee8ab"
 
   depends_on :x11
 
