@@ -1,5 +1,3 @@
-require "formula"
-
 class Dnsmasq < Formula
   homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
   url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.72.tar.gz"
@@ -77,5 +75,9 @@ class Dnsmasq < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/dnsmasq", "--test"
   end
 end
