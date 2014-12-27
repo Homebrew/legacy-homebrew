@@ -7,6 +7,12 @@ class Polipo < Formula
 
   head 'git://git.wifi.pps.jussieu.fr/polipo'
 
+  bottle do
+    sha1 "b8a3690483249552c1ca12c8173767b847f7e296" => :yosemite
+    sha1 "40c9e227cc80b2378d0c5c0c397e7638628d694f" => :mavericks
+    sha1 "e293417dcc1d1708cdef6cc5476445741ee97bb4" => :mountain_lion
+  end
+
   def install
     cache_root = (var + "cache/polipo")
     cache_root.mkpath
