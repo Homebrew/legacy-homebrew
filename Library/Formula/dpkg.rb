@@ -1,5 +1,3 @@
-require "formula"
-
 class Dpkg < Formula
   homepage "https://wiki.debian.org/Teams/Dpkg"
   url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.21.tar.xz"
