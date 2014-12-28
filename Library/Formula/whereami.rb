@@ -10,6 +10,6 @@ class Whereami < Formula
   end
 
   test do
-    system "whereami" # can't do any better yet, each tester will have their own output
+    system "whereami"
   end
 end
