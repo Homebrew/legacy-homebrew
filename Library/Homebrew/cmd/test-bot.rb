@@ -438,8 +438,10 @@ module Homebrew
         end
         test "brew", "test", "--verbose", formula_name if formula.test_defined?
         if testable_dependents.any?
-          test "brew", "fetch", *uninstalled_testable_dependents
-          test "brew", "install", *uninstalled_testable_dependents
+          if uninstalled_testable_dependents.any?
+            test "brew", "fetch", *uninstalled_testable_dependents
+            test "brew", "install", *uninstalled_testable_dependents
+          end
           test "brew", "test", *testable_dependents
         end
         test "brew", "uninstall", "--force", formula_name
