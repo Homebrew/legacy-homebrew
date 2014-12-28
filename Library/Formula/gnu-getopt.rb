@@ -22,4 +22,8 @@ class GnuGetopt < Formula
     end
     system "make", "prefix=#{prefix}", "mandir=#{man}", "install"
   end
+
+  test do
+    system "#{bin}/getopt", "-o", "--test"
+  end
 end
