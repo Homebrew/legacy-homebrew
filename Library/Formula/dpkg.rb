@@ -12,6 +12,7 @@ class Dpkg < Formula
 
   depends_on "pkg-config" => :build
   depends_on "gnu-tar"
+  depends_on "xz"
 
   # Fixes the PERL_LIBDIR and MD5/SHA tool names & usage. Reported upstream:
   # https://lists.debian.org/debian-dpkg/2014/11/msg00024.html
