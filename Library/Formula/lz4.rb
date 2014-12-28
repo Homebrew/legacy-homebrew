@@ -2,9 +2,9 @@ require "formula"
 
 class Lz4 < Formula
   homepage "http://code.google.com/p/lz4/"
-  url "https://github.com/Cyan4973/lz4/archive/r124.tar.gz"
-  sha1 "ee4943e07d08605041c86c2d2c649b375cee6c13"
-  version "r124"
+  url "https://github.com/Cyan4973/lz4/archive/r126.tar.gz"
+  sha1 "4e22222844b914f9f2878e9acf0ed1d9deca7f12"
+  version "r126"
 
   bottle do
     cellar :any
