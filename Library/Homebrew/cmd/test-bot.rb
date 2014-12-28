@@ -475,7 +475,8 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "--force", "-dx"
+      git "clean", "-fdx"
+      # TODO: on failure rerun with: -ffdx
     end
 
     def cleanup_after
@@ -483,7 +484,8 @@ module Homebrew
 
       checkout_args = []
       if ARGV.include? '--cleanup'
-        test "git", "clean", "--force", "-dx"
+        test "git", "clean", "-fdx"
+        test "git", "clean", "-ffdx" if steps.last.failed?
         checkout_args << "-f"
       end
 
