@@ -3,7 +3,7 @@ class Whereami < Formula
   url "https://github.com/victor/whereami/archive/v1.0.tar.gz"
   sha1 "2f81e4b05af5f6806590d7212c0dbfbea00a75e0"
 
-  depends_on :macos => :yosemite
+  depends_on :xcode => ["6.1.1", :build]
 
   def install
     system "xcodebuild", "install", "DSTROOT=#{prefix}", "INSTALL_PATH=/bin"
