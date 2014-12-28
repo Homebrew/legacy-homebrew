@@ -161,11 +161,7 @@ class FormulaTests < Homebrew::TestCase
         mirror 'http://example.org/test-0.2.tbz'
         sha256 TEST_SHA256
       end
-
-      def initialize
-        super "test", Pathname.new(__FILE__).expand_path, :stable
-      end
-    end.new
+    end.new("test", Pathname.new(__FILE__).expand_path, :stable)
 
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
