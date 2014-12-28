@@ -42,7 +42,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_installed_prefix
-    f = Class.new(TestBall).new
+    f = TestBall.new
     assert_equal f.prefix, f.installed_prefix
   end
 
