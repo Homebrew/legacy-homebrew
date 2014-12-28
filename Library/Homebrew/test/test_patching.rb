@@ -1,6 +1,5 @@
 require 'testing_env'
 require 'formula'
-require 'testball'
 
 class PatchingTests < Homebrew::TestCase
   PATCH_URL_A = "file://#{TEST_DIRECTORY}/patches/noop-a.diff"
