@@ -35,4 +35,20 @@ class Gmp < Formula
     ENV.deparallelize
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gmp.h>
+
+      int main()
+      {
+        mpz_t integ;
+        mpz_init (integ);
+        mpz_clear (integ);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lgmp", "-o", "test"
+    system "./test"
+  end
 end
