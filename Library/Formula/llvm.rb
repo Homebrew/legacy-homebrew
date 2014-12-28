@@ -13,23 +13,27 @@ class Llvm < Formula
   stable do
     url "http://llvm.org/releases/3.5.0/llvm-3.5.0.src.tar.xz"
     sha1 "58d817ac2ff573386941e7735d30702fe71267d5"
-    resource 'clang' do
+
+    resource "clang" do
       url "http://llvm.org/releases/3.5.0/cfe-3.5.0.src.tar.xz"
       sha1 "834cee2ed8dc6638a486d8d886b6dce3db675ffa"
     end
-    resource 'lld' do
+
+    resource "lld" do
       url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
       sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
     end
   end
 
   head do
-    url "http://llvm.org/svn/llvm-project/llvm/trunk", :using => :svn
-    resource 'clang' do
-      url "http://llvm.org/svn/llvm-project/cfe/trunk", :using => :svn
+    url "http://llvm.org/git/llvm.git"
+
+    resource "clang" do
+      url "http://llvm.org/git/clang.git"
     end
-    resource 'lld' do
-      url "http://llvm.org/svn/llvm-project/lld/trunk", :using => :svn
+
+    resource "lld" do
+      url "http://llvm.org/git/lld.git"
     end
   end
 
@@ -107,10 +111,6 @@ class Llvm < Formula
     <<-EOS.undent
       LLVM executables are installed in #{opt_bin}.
       Extra tools are installed in #{opt_share}/llvm.
-
-      If you already have LLVM installed, then "brew upgrade llvm" might not work.
-      Instead, try:
-          brew rm llvm && brew install llvm
     EOS
   end
 end

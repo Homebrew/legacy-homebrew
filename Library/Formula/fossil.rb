@@ -2,7 +2,7 @@ require "formula"
 
 class Fossil < Formula
   homepage "http://www.fossil-scm.org/"
-  head "fossil://http://www.fossil-scm.org/"
+  head "http://www.fossil-scm.org/", :using => :fossil
   url "http://www.fossil-scm.org/download/fossil-src-20140612172556.tar.gz"
   sha1 "173c3350ba39ecfee6e660f866b4f3104e351b33"
   version "1.29"

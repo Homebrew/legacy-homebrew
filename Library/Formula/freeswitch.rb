@@ -1,10 +1,7 @@
-require 'formula'
-
 class Freeswitch < Formula
-  homepage 'http://freeswitch.org'
-  url 'https://stash.freeswitch.org/scm/fs/freeswitch.git', :tag => 'v1.4.6'
-
-  head 'https://stash.freeswitch.org/scm/fs/freeswitch.git'
+  homepage "http://freeswitch.org"
+  url "https://stash.freeswitch.org/scm/fs/freeswitch.git", :tag => "v1.4.6"
+  head "https://stash.freeswitch.org/scm/fs/freeswitch.git"
 
   bottle do
     sha1 "a1ff029908457b7a992474b8abd4428c88858128" => :mavericks
@@ -15,14 +12,15 @@ class Freeswitch < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
+  depends_on :apr => :build
 
-  depends_on 'jpeg'
-  depends_on 'curl'
-  depends_on 'openssl'
-  depends_on 'pcre'
-  depends_on 'speex'
-  depends_on 'sqlite'
+  depends_on "jpeg"
+  depends_on "curl"
+  depends_on "openssl"
+  depends_on "pcre"
+  depends_on "speex"
+  depends_on "sqlite"
 
   def install
     system "./bootstrap.sh -j#{ENV.make_jobs}"
@@ -39,8 +37,8 @@ class Freeswitch < Formula
                           "--exec_prefix=#{prefix}"
 
     system "make"
-    system "make install"
-    system "make all cd-sounds-install cd-moh-install"
+    system "make", "install"
+    system "make", "all", "cd-sounds-install", "cd-moh-install"
   end
 
   plist_options :manual => "freeswitch -nc --nonat"

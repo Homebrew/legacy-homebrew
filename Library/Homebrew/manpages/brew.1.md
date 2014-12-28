@@ -38,11 +38,14 @@ Note that these flags should only appear after a command.
 
 ## COMMANDS
 
-  * `audit` [<formulae>]:
+  * `audit` [--strict] [<formulae>]:
     Check <formulae> for Homebrew coding style violations. This should be
     run before submitting a new formula.
 
     If no <formulae> are provided, all of them are checked.
+
+    If `--strict` is passed, additional checks are run. This should be used
+    when creating for new formulae.
 
     `audit` exits with a non-zero status if any errors are found. This is useful,
     for instance, for implementing pre-commit hooks.
@@ -234,10 +237,12 @@ Note that these flags should only appear after a command.
 
     If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
 
-  * `linkapps [--local]`:
-    Find all installed formulae that have compiled `.app`-style "application"
+  * `linkapps [--local] [<formulae>]`:
+    Find installed formulae that have compiled `.app`-style "application"
     packages for OS X, and symlink those apps into `/Applications`, allowing
     for easier access.
+
+    If no <formulae> are provided, all of them will have their .apps symlinked.
 
     If provided, `--local` will move them into the user's `~/Applications`
     folder instead of the system folder. It may need to be created, first.
@@ -355,8 +360,10 @@ Note that these flags should only appear after a command.
     for temporarily disabling a formula:
     `brew unlink foo && commands && brew link foo`.
 
-  * `unlinkapps [--local]`:
+  * `unlinkapps [--local] [<formulae>]`:
     Removes links created by `brew linkapps`.
+
+    If no <formulae> are provided, all linked app will be removed.
 
   * `unpack [--git|--patch] [--destdir=<path>]` <formulae>:
 

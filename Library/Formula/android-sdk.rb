@@ -2,10 +2,10 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  version '24'
+  version '24.0.1'
   if OS.mac?
     url 'http://dl.google.com/android/android-sdk_r24-macosx.zip'
-    sha1 '89b256c82e6ab432881fa7d726bdd0541c656616'
+    sha1 '7097c09c72645d7ad33c81a37b1a1363a9df2a54'
   elsif OS.linux?
     url 'http://dl.google.com/android/android-sdk_r24-linux.tgz'
     sha1 '3cc1fcec302a8478e240e42b94dd2de73b9d0cc9'

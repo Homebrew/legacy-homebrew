@@ -1,8 +1,7 @@
-require "formula"
-
 class Tor < Formula
   homepage "https://www.torproject.org/"
   url "https://dist.torproject.org/tor-0.2.5.10.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.5.10.tar.gz"
   sha256 "b3dd02a5dcd2ffe14d9a37956f92779d4427edf7905c0bba9b1e3901b9c5a83b"
 
   bottle do
@@ -13,17 +12,20 @@ class Tor < Formula
 
   devel do
     url "https://dist.torproject.org/tor-0.2.6.1-alpha.tar.gz"
-    version "0.2.6.1-a1"
+    mirror "https://tor.eff.org/dist/tor-0.2.6.1-alpha.tar.gz"
     sha256 "83154b8e5514978722add6c888d050420342405d4567e5945e89ae40b78b8761"
+    version "0.2.6.1-a1"
   end
 
   depends_on "libevent"
   depends_on "openssl"
+  depends_on "libscrypt" => :optional
   depends_on "libnatpmp" => :optional
   depends_on "miniupnpc" => :optional
 
   def install
     args = ["--disable-dependency-tracking",
+            "--disable-silent-rules",
             "--prefix=#{prefix}",
             "--sysconfdir=#{etc}",
             "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"]
@@ -58,6 +60,15 @@ class Tor < Formula
         <string>#{HOMEBREW_PREFIX}</string>
       </dict>
     </plist>
+    EOS
+  end
+
+  def caveats; <<-EOS.undent
+    You will find a sample `torrc` file in #{etc}/tor.
+    It is advisable to edit the sample `torrc` to suit
+    your own security needs:
+      https://www.torproject.org/docs/faq#torrc
+    After editing the `torrc` you need to restart tor.
     EOS
   end
 end

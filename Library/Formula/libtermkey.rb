@@ -13,10 +13,14 @@ class Libtermkey < Formula
     sha1 "c77ce1bf195352319b3f09da116a67922d4b4265" => :mountain_lion
   end
 
+  option :universal
+
   depends_on "pkg-config" => :build
   depends_on "libtool" => :build
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
   end

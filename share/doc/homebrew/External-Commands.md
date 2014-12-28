@@ -109,7 +109,12 @@ These commands have been contributed by Homebrew users but are not included in t
 >Scrapes a formula's homepage to get more information: [https://gist.github.com/475200](https://gist.github.com/475200)
 
 ### brew-services
->Simple support to start formulae using launchctl, has out of the box support for any formula which defines `startup_plist` (e.g. mysql, postgres, redis u.v.m.): [https://gist.github.com/766293](https://gist.github.com/766293)
+>Simple support to start formulae using launchctl, has out of the box support for any formula which defines `startup_plist` (e.g. mysql, postgres, redis u.v.m.): [https://github.com/gapple/homebrew-services](https://github.com/gapple/homebrew-services)
+
+> Install using:
+> ```
+  $ brew tap gapple/services
+> ```
 
 ## SEE ALSO
 Homebrew Docs: <https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew>

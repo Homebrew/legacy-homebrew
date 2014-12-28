@@ -2,28 +2,28 @@ require "formula"
 
 class Dmd < Formula
   homepage "http://dlang.org"
-  url "https://github.com/D-Programming-Language/dmd/archive/v2.066.0.tar.gz"
-  sha1 "4ad09f680b249bb10b014b61ccb791a24f7a84c6"
+  url "https://github.com/D-Programming-Language/dmd/archive/v2.066.1.tar.gz"
+  sha1 "7be9737f97a494870446c881e185bec41f337792"
 
   bottle do
-    sha1 "1cbca6f4f1b0d2af27ad6571c0b2f4b37b928423" => :mavericks
-    sha1 "a61c224f5d15c7b846b3348e196dde6a86cf6b0a" => :mountain_lion
-    sha1 "051c88ee54bebc15c3908fd2f31ec18b6634b9c1" => :lion
+    sha1 "6cb24133ba8e8973442d13b358dc14ea7f9d8c43" => :yosemite
+    sha1 "19e104830f0e6dbb4a422fd141254af784268a4d" => :mavericks
+    sha1 "c7c4f4b32f5e88c73f0efb8eb90d92a7956694e6" => :mountain_lion
   end
 
   resource "druntime" do
-    url "https://github.com/D-Programming-Language/druntime/archive/v2.066.0.tar.gz"
-    sha1 "e1a5a29898127b4775a7b60c2534c3f4fc4387a9"
+    url "https://github.com/D-Programming-Language/druntime/archive/v2.066.1.tar.gz"
+    sha1 "614e2944c470944125ba6bc94a78c1cf0a41ad5a"
   end
 
   resource "phobos" do
-    url "https://github.com/D-Programming-Language/phobos/archive/v2.066.0.tar.gz"
-    sha1 "92385871df5883034055a20f8e8da5c398d11dd6"
+    url "https://github.com/D-Programming-Language/phobos/archive/v2.066.1.tar.gz"
+    sha1 "58e48b33cffbab4acb5e6d6f376ea209ce8e2114"
   end
 
   resource "tools" do
-    url "https://github.com/D-Programming-Language/tools/archive/v2.066.0.tar.gz"
-    sha1 "03384e9237c778e9afcecd10e756111fd4f323de"
+    url "https://github.com/D-Programming-Language/tools/archive/v2.066.1.tar.gz"
+    sha1 "fc64b35364cf76d7270e4a8fe41203e0b4dde11c"
   end
 
   def install

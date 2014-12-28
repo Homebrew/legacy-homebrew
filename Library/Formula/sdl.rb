@@ -7,10 +7,10 @@ class Sdl < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "349711f92cec0b02b53439b3126fe540bfea04e1" => :yosemite
-    sha1 "77ec0e596a9a66c60f843a2528b38d2ef2e4c9f5" => :mavericks
-    sha1 "d27291ac68ac7c22e6c7b35d0e658a65a6f2d189" => :mountain_lion
+    revision 2
+    sha1 "3f767029ead055192d70e143cf1e5b18a1b18a3e" => :yosemite
+    sha1 "4396e988f0c34d6859f994a4fa89d50a6e4a8cf9" => :mavericks
+    sha1 "1917ce67939b9b539cd33469749e881e7b611b0d" => :mountain_lion
   end
 
   head do
@@ -77,13 +77,13 @@ class Sdl < Formula
     # Copy source files needed for Ojective-C support.
     libexec.install Dir["src/main/macosx/*"] if build.stable?
 
-    # The resulting script in bin is hardcoded to /usr/local, which can cause pain.
-    inreplace "#{bin}/sdl-config", "prefix=/usr/local", "prefix=#{prefix}"
-
     if build.with? "tests"
       ENV.prepend_path "PATH", "#{bin}"
+      # This is stupid but necessary. Blurgh. Otherwise, test building fails, even
+      # with various flags, prepending & pkg_config_path tinkering.
+      inreplace "#{bin}/sdl-config", "prefix=#{HOMEBREW_PREFIX}", "prefix=#{prefix}"
       cd "test" do
-        system "./configure", "--prefix=#{libexec}/tests"
+        system "./configure"
         system "make"
         # Upstream - Why no make install? Why?
         (share+"tests").install %w{ checkkeys graywin loopwave testalpha testbitmap testblitspeed testcdrom
@@ -94,6 +94,8 @@ class Sdl < Formula
         (share+"test_extras").install %w{ icon.bmp moose.dat picture.xbm sail.bmp sample.bmp sample.wav }
         bin.write_exec_script Dir["#{share}/tests/*"]
       end
+      # And then we undo stupid but necessary so it doesn't break all the other things.
+      inreplace "#{bin}/sdl-config", "prefix=#{prefix}", "prefix=#{HOMEBREW_PREFIX}"
     end
   end
 

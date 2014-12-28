@@ -1,14 +1,13 @@
-require "formula"
-
 class Dnsmasq < Formula
   homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
   url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.72.tar.gz"
   sha1 "c2dc54b142ec5676d6e22951bc5b61863b0503fe"
 
   bottle do
-    sha1 "b4bb00ef3c8fd8ffa48a08b0de4f95fa5cef09d2" => :mavericks
-    sha1 "6ae8c98b3c600c1a6f1f0263a5d7612887d8e768" => :mountain_lion
-    sha1 "66c145b8ed68c93ae0e7dcbc755b2151f94f5772" => :lion
+    revision 1
+    sha1 "68baa9fab86c8f30738984f2d734d537a0e815e5" => :yosemite
+    sha1 "926b6cf81ecd09011a64ded5922231cb13aae7d8" => :mavericks
+    sha1 "86e05946e01f650595ea72332fcce61e5e489ed4" => :mountain_lion
   end
 
   option "with-libidn", "Compile with IDN support"
@@ -76,5 +75,9 @@ class Dnsmasq < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/dnsmasq", "--test"
   end
 end

@@ -2,14 +2,14 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz'
-  sha1 'dce2a83e66abb1fac1cd3cdc2ef284f098bc9390'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.56.tar.gz'
+  sha1 'd566c196b10f55d12f6f73c4cbcb48e7de560fb3'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "c24320e2f139f7ba3c63b7e5443b9167e50ff527" => :mavericks
-    sha1 "a04e5acf5671738c8466548bcd51c5f69d96a554" => :mountain_lion
-    sha1 "7158b7d6cca6a9be67861db8b455c58ca5d83f62" => :lion
+    sha1 "d9ef85175ad0b80c8986f00cfde62c0614a69d8d" => :yosemite
+    sha1 "c684bca71c83c3b228e20b31748b50fd70a15984" => :mavericks
+    sha1 "0147d5feb002f91d06ef957858260bfb93dce805" => :mountain_lion
   end
 
   depends_on 'pcre'

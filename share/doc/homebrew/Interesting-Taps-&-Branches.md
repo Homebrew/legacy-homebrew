@@ -11,7 +11,7 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
     - Need GDB or a newer Tk? System duplicates go here.
 
 *   [homebrew/versions](https://github.com/Homebrew/homebrew-versions)
-    - Need e.g. older or newer versions of Python? Newer versions of GCC?
+    - Need e.g. older or newer versions of Postgresql? Older versions of GCC?
 
 *   [homebrew/games](https://github.com/Homebrew/homebrew-games)
     - Game or gaming-emulation related formulae.
@@ -19,8 +19,11 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
 *   [homebrew/apache](https://github.com/Homebrew/homebrew-apache)
     - A tap for Apache modules, extending OS X's built-in Apache. These brews may require unconventional additional setup, as explained in the caveats.
 
-*   [homebrew/headonly](https://github.com/Homebrew/homebrew-headonly)
-    - A tap for brews that don't have stable versions.
+*   [homebrew/head-only](https://github.com/Homebrew/homebrew-head-only)
+    - A tap for brews that only have unstable, unreleased versions.
+
+*   [homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only)
+    - A tap for brews that only have pre-release/development versions.
 
 *   [homebrew/php](https://github.com/Homebrew/homebrew-php)
     - Repository for php-related formulae.

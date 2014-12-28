@@ -62,13 +62,13 @@ from source. Binary-only formulae should go to
 [Homebrew/homebrew-binary](https://github.com/Homebrew/homebrew-binary).
 
 ### Stable versions
-Formulae in the core repository should have a stable version tagged by
+Formulae in the core repository must have a stable version tagged by
 the upstream project. Tarballs are preferred to git checkouts, and
 tarballs should include the version in the filename whenever possible.
 
 Software that does not provide a stable, tagged version, or had guidance to
 always install the most recent version, should be put in
-[Homebrew/homebrew-headonly](https://github.com/Homebrew/homebrew-headonly).
+[Homebrew/homebrew-head-only](https://github.com/Homebrew/homebrew-headonly) or [homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only).
 
 ### Bindings
 First check that there is not already a binding available via

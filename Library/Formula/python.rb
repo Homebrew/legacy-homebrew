@@ -7,10 +7,10 @@ class Python < Formula
   sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 4
-    sha1 "12f246ccb25d1024864916f643d819ff7572afdf" => :yosemite
-    sha1 "453c0c36a69059d2746628d468a67572adc94100" => :mavericks
-    sha1 "3bc89dbc02095d229b05a5c82bc11b4081211182" => :mountain_lion
+    revision 6
+    sha1 "d08397195650b39e2c066df6e69d4e0fac1bbf87" => :yosemite
+    sha1 "e984c0f3410ff12111d52e9d7453e84dc7b2ccfd" => :mavericks
+    sha1 "44b321eac71565a41ebcec91b5558be56d496805" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -19,7 +19,6 @@ class Python < Formula
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
-  option "with-dtrace", "Experimental DTrace support (http://bugs.python.org/issue13405)"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -33,8 +32,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.0.tar.gz"
-    sha1 "735a65e0df5781b43a542ffc7fe1ffb42fede843"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.2.1.tar.gz"
+    sha1 "ddb4454303142be3446437e4fafb13bbd4570133"
   end
 
   resource "pip" do
@@ -93,7 +92,6 @@ class Python < Formula
 
     args << "--enable-shared" if OS.linux?
     args << "--without-gcc" if ENV.compiler == :clang
-    args << "--with-dtrace" if build.with? "dtrace"
 
     if superenv?
       distutils_fix_superenv(args)

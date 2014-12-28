@@ -6,10 +6,10 @@ class Pypy < Formula
   sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
   bottle do
     cellar :any
-    revision 3
-    sha1 "0c73377c31d8eee09906a4fdb11072c50576bcfd" => :yosemite
-    sha1 "404ca9b256757b65e6436f7c2d97ce7e9c468cb4" => :mavericks
-    sha1 "865f5c7ca87aeb9cb0e6f03fd6fe48fb6012dc7a" => :mountain_lion
+    revision 5
+    sha1 "77813b96e04fe46de87532e7177a0ecfe4a84005" => :yosemite
+    sha1 "bae7b2be9d770062b582faffdbadb113135b1d57" => :mavericks
+    sha1 "cce0ddd2900bd49e4988bcdcdffdf8ee3c51828d" => :mountain_lion
   end
 
   revision 2
@@ -19,8 +19,8 @@ class Pypy < Formula
   depends_on "openssl"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.0.tar.gz"
-    sha1 "735a65e0df5781b43a542ffc7fe1ffb42fede843"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.2.1.tar.gz"
+    sha1 "ddb4454303142be3446437e4fafb13bbd4570133"
   end
 
   resource "pip" do
@@ -40,7 +40,7 @@ class Pypy < Formula
 
     Dir.chdir "pypy/goal" do
       system "python", buildpath/"rpython/bin/rpython",
-             "-Ojit", "--shared", "--cc", ENV["CC"], "--translation-verbose",
+             "-Ojit", "--shared", "--cc", ENV.cc, "--translation-verbose",
              "--make-jobs", ENV.make_jobs, "targetpypystandalone.py"
       system "install_name_tool", "-change", "libpypy-c.dylib", libexec/"lib/libpypy-c.dylib", "pypy-c"
       system "install_name_tool", "-id", opt_libexec/"lib/libpypy-c.dylib", "libpypy-c.dylib"

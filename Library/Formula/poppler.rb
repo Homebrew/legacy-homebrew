@@ -34,9 +34,6 @@ class Poppler < Formula
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
 
-  conflicts_with 'pdf2image', 'xpdf',
-    :because => 'poppler, pdf2image, and xpdf install conflicting executables'
-
   resource 'font-data' do
     url 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'
     sha1 '556a5bebd0eb743e0d91819ba11fd79947d8c674'

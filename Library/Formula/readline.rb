@@ -1,5 +1,3 @@
-require "formula"
-
 class Readline < Formula
   homepage "http://tiswww.case.edu/php/chet/readline/rltop.html"
   url "http://ftpmirror.gnu.org/readline/readline-6.3.tar.gz"
@@ -16,11 +14,11 @@ class Readline < Formula
     sha1 "86d5b9260720202a1eb4b43980f175264294dd1e" => :x86_64_linux
   end
 
-  keg_only :shadowed_by_osx, <<-EOS
-OS X provides the BSD libedit library, which shadows libreadline.
-In order to prevent conflicts when programs look for libreadline we are
-defaulting this GNU Readline installation to keg-only.
-EOS
+  keg_only :shadowed_by_osx, <<-EOS.undent
+    OS X provides the BSD libedit library, which shadows libreadline.
+    In order to prevent conflicts when programs look for libreadline we are
+    defaulting this GNU Readline installation to keg-only.
+  EOS
 
   # Vendor the patches.
   # The mirrors are unreliable for getting the patches, and the more patches
@@ -36,7 +34,7 @@ EOS
   def install
     ENV.universal_binary
     system "./configure", "--prefix=#{prefix}", "--enable-multibyte"
-    system "make install"
+    system "make", "install"
 
     # The 6.3 release notes say:
     #   When creating shared libraries on Mac OS X, the pathname written into the

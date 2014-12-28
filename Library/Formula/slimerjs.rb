@@ -2,16 +2,15 @@ require 'formula'
 
 class Slimerjs < Formula
   homepage 'http://www.slimerjs.org'
-  url "http://download.slimerjs.org/v0.9/0.9.1/slimerjs-0.9.1.zip"
-  sha1 "15eed855c462c5b7ff2502d028702dcebae797cd"
+  url "http://download.slimerjs.org/releases/0.9.4/slimerjs-0.9.4-mac.tar.bz2"
+  sha256 "3c9c7d01c58796e56f5d5b73f643bd99ddafd4ef2b1cc246d9e3b78108aceb5e"
 
   head 'https://github.com/laurentj/slimerjs.git'
 
   bottle do
     cellar :any
-    sha1 "f777909179024c69332199893897d30eb7c104d5" => :mavericks
-    sha1 "00ffe91192f50232cde4169d2a80d5e950edeef5" => :mountain_lion
-    sha1 "a05a67c5a7366bf6b1ef6de7dc74fb4f35c4d9cb" => :lion
+    sha1 "2913341c917994a4c49d464b93a6aa25d12fc4d3" => :mavericks
+    sha1 "8ffe412b951816b089246d8b3587a441aa7c973b" => :mountain_lion
   end
 
   if MacOS.version > :snow_leopard

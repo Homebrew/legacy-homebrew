@@ -1,5 +1,3 @@
-require "formula"
-
 class Coreutils < Formula
   homepage "https://www.gnu.org/software/coreutils"
   url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
@@ -28,7 +26,7 @@ class Coreutils < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--program-prefix=g",
                           "--without-gmp"
-    system "make install"
+    system "make", "install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix
     coreutils_filenames(bin).each do |cmd|
@@ -74,6 +72,12 @@ class Coreutils < Formula
       filenames << path.basename.to_s.sub(/^g/,"")
     end
     filenames.sort
+  end
+
+  test do
+    (testpath/"test").write("test")
+    (testpath/"test.sha1").write("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 test")
+    system "#{bin}/gsha1sum", "-c", "test.sha1"
   end
 end
 

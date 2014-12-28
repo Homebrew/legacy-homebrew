@@ -1,5 +1,6 @@
 require "formula"
 
+# FIXME this can be removed on the next release
 # OSX has case-insensitive file names, and the Mat archive contains a "MAT"
 # directory *and* a "mat" file. `tar xf` will fail on it, so we rename "mat"
 # into "mat-cli" here.

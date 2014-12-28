@@ -85,13 +85,13 @@ class Resource
   # If block is given, yield to that block
   # A target or a block must be given, but not both
   def unpack(target=nil)
-    if target
-      mkdir_p(target)
-      chdir(target) { downloader.stage }
-    elsif block_given?
-      mktemp(download_name) do
-        downloader.stage
+    mktemp(download_name) do
+      downloader.stage
+      if block_given?
         yield self
+      elsif target
+        target = Pathname.new(target) unless target.is_a? Pathname
+        target.install Dir['*']
       end
     end
   end

@@ -12,6 +12,11 @@ class Pidgin < Formula
     sha1 "8c03819ed1317164cc29b5de882604a7a017a89f" => :mountain_lion
   end
 
+  deprecated_option "perl" => "with-perl"
+
+  option "with-perl", "Build Pidgin with Perl support"
+  option "without-GUI", "Build Finch instead of Pidgin"
+
   depends_on :x11 => :optional
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
@@ -33,11 +38,6 @@ class Pidgin < Formula
     url "https://otr.cypherpunks.ca/pidgin-otr-4.0.1.tar.gz"
     sha1 "e231a2dc72c960f2aa70d8c9d4b05abc6d123085"
   end
-
-  deprecated_option "perl" => "with-perl"
-
-  option "with-perl", "Build Pidgin with Perl support"
-  option "without-GUI", "Build Finch instead of Pidgin"
 
   def install
     args = %W[

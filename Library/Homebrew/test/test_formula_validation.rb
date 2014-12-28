@@ -44,13 +44,12 @@ class FormulaValidationTests < Homebrew::TestCase
         version ""
       end
     end
-  end
 
-  def test_validates_when_initialize_overridden
-    assert_invalid :name do
+    assert_invalid :version do
       formula do
-        def initialize(*); end
-      end.brew {}
+        url "foo"
+        version nil
+      end
     end
   end
 
