@@ -1,11 +1,9 @@
-require 'formula'
-
 class Gmp < Formula
-  homepage 'http://gmplib.org/'
-  url 'http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2'
-  mirror 'ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2'
-  sha1 '360802e3541a3da08ab4b55268c80f799939fddc'
+  homepage "http://gmplib.org/"
+  url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
+  mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
+  mirror "http://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
+  sha1 "360802e3541a3da08ab4b55268c80f799939fddc"
 
   bottle do
     cellar :any
@@ -15,7 +13,7 @@ class Gmp < Formula
     sha1 "466b7549553bf0e8f14ab018bd89c48cbd29a379" => :lion
   end
 
-  option '32-bit'
+  option "32-bit"
   option :cxx11
 
   def install
@@ -33,8 +31,8 @@ class Gmp < Formula
 
     system "./configure", *args
     system "make"
-    system "make check"
+    system "make", "check"
     ENV.deparallelize
-    system "make install"
+    system "make", "install"
   end
 end
