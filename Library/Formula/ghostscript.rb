@@ -111,6 +111,18 @@ class Ghostscript < Formula
 
     (man+"de").rmtree
   end
+
+  test do
+    (testpath/"test.ps").write <<-EOS.undent
+
+      /Courier
+      20 selectfont
+      72 500 moveto
+      (Hello World!) show
+      showpage
+    EOS
+    assert_match /Hello World!/, shell_output("#{bin}/ps2ascii test.ps")
+  end
 end
 
 __END__
