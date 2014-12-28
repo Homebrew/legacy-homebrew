@@ -750,7 +750,7 @@ module Homebrew
       failed_steps = []
       tests.each do |test|
         test.steps.each do |step|
-          next unless step.failed?
+          next if step.passed?
           failed_steps << step.command_short
         end
       end
