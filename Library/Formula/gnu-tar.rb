@@ -1,5 +1,3 @@
-require "formula"
-
 class GnuTar < Formula
   homepage "http://www.gnu.org/software/tar/"
   url "http://ftpmirror.gnu.org/tar/tar-1.28.tar.gz"
@@ -43,5 +41,11 @@ class GnuTar < Formula
           PATH="#{opt_libexec}/gnubin:$PATH"
       EOS
     end
+  end
+
+  test do
+    (testpath/"test").write("test")
+    system "#{bin}/gtar", "-czvf", "test.tar.gz", "test"
+    assert_match /test/, shell_output("#{bin}/gtar -xOzf test.tar.gz")
   end
 end
