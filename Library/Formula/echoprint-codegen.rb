@@ -7,9 +7,10 @@ class EchoprintCodegen < Formula
   head 'https://github.com/echonest/echoprint-codegen.git'
   bottle do
     cellar :any
-    sha1 "f5b4717ff9bf8477d1bbade0a0366ebd04f8418a" => :mavericks
-    sha1 "c56f2c25dc55d0d3904c741b75626f9d4f92d1f2" => :mountain_lion
-    sha1 "0a684bf5d441627d830e1f52e02ffca5201b3470" => :lion
+    revision 1
+    sha1 "64d6275b2830c9eb0543e2a0cb9c9807a3fc8995" => :yosemite
+    sha1 "f0f20a5b66a1dd4f16b5676c0593ebb8872f20fb" => :mavericks
+    sha1 "0a7c0d80cfe1213e2831d5bf26351de4886da60a" => :mountain_lion
   end
 
   revision 1
