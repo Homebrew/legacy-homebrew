@@ -23,7 +23,8 @@ class Libnfc < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-serial-autoprobe"
+                          "--prefix=#{prefix}", "--enable-serial-autoprobe",
+                          "--with-drivers=all"
     system "make install"
     (prefix/'etc/nfc/libnfc.conf').write "allow_intrusive_scan=yes"
   end
