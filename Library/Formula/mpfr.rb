@@ -39,4 +39,21 @@ class Mpfr < Formula
     system "make", "check"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gmp.h>
+      #include <mpfr.h>
+
+      int main()
+      {
+        mpfr_t x;
+        mpfr_init(x);
+        mpfr_clear(x);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lgmp", "-lmpfr", "-o", "test"
+    system "./test"
+  end
 end
