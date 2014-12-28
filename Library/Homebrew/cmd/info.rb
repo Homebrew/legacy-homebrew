@@ -14,6 +14,8 @@ module Homebrew
       print_json
     elsif ARGV.flag? '--github'
       exec_browser(*ARGV.formulae.map { |f| github_info(f) })
+    elsif ARGV.flag? '--path'
+      print_path
     else
       print_info
     end
@@ -39,6 +41,24 @@ module Homebrew
         end
       end
     end
+  end
+
+  def print_path
+    if ARGV.named.empty?
+      if HOMEBREW_CELLAR.exist?
+        puts "#{HOMEBREW_CELLAR}"
+      end
+    else
+      puts ARGV.named.map { |f| Formulary.factory(f) }
+        .keep_if { |f| f.rack.directory? }
+        .map { |f| path_formula f }
+        .join(File::PATH_SEPARATOR)
+    end
+  end
+
+  def path_formula f
+    kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
+    kegs.detect(&:linked?) || kegs.first
   end
 
   def print_json
