@@ -30,7 +30,7 @@ class Pdf2htmlex < Formula
   # Fontforge dependencies
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "libtool"
+  depends_on "libtool" => :run
   depends_on "glib"
   depends_on "pango"
   depends_on "gettext"
