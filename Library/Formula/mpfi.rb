@@ -15,4 +15,20 @@ class Mpfi < Formula
     system "make", "check"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <mpfi.h>
+
+      int main()
+      {
+        mpfi_t x;
+        mpfi_init(x);
+        mpfi_clear(x);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lgmp", "-lmpfr", "-lmpfi", "-o", "test"
+    system "./test"
+  end
 end
