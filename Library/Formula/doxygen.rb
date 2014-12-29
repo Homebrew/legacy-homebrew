@@ -4,7 +4,7 @@ class Doxygen < Formula
   homepage "http://www.doxygen.org/"
   head "https://github.com/doxygen/doxygen.git"
   url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.9.src.tar.gz"
-  mirror "http://downloads.sourceforge.net/projects/doxygen/rel-1.8.9/doxygen-1.8.9.src.tar.gz"
+  mirror "https://downloads.sourceforge.net/projects/doxygen/rel-1.8.9/doxygen-1.8.9.src.tar.gz"
   sha1 "b447251d32343ecf867f0a20cb63da4b478bfbab"
 
   bottle do
