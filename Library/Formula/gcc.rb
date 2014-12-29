@@ -111,7 +111,7 @@ class Gcc < Formula
     end
     args += [
       "--prefix=#{prefix}",
-      "--libdir=#{lib}/gcc/#{version_suffix}",
+      ("--libdir=#{lib}/gcc/#{version_suffix}" if OS.mac?),
       "--enable-languages=#{languages.join(",")}",
       # Make most executables versioned to avoid conflicts.
       "--program-suffix=-#{version_suffix}",
