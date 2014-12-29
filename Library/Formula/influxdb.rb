@@ -2,8 +2,8 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.com"
-  url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.7.src.tar.gz"
-  sha1 "306faf54878276c374b129fab4afee9556e413cc"
+  url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.8.src.tar.gz"
+  sha1 "a5686d0374ec5ab616e335e9c5fb1aeacd17fb00"
 
   bottle do
     sha1 "c62e03d3fb326c5a591bc1ee2462596301e67944" => :yosemite
@@ -34,7 +34,7 @@ class Influxdb < Formula
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}", "--with-rocksdb"
     system "make", "parser", "protobuf"
-    system "go", "build", "-tags", "rocksdb", "-o", "influxdb", "github.com/influxdb/influxdb/daemon"
+    system "go", "build", "-tags", "leveldb rocksdb", "-o", "influxdb", "github.com/influxdb/influxdb/daemon"
 
     inreplace "config.sample.toml" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
