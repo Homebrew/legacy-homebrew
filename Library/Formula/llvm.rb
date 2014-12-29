@@ -40,7 +40,7 @@ class Llvm < Formula
   option :universal
   option 'with-clang', 'Build Clang support library'
   option 'with-lld', 'Build LLD linker'
-  option 'disable-shared', "Don't build LLVM as a shared library"
+  option 'enable-shared', "Build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
@@ -56,10 +56,6 @@ class Llvm < Formula
   def install
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
-
-    if build.with? "python" and build.include? 'disable-shared'
-      raise 'The Python bindings need the shared library.'
-    end
 
     (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
 
@@ -86,7 +82,7 @@ class Llvm < Formula
     else
       args << "--enable-targets=host"
     end
-    args << "--enable-shared" unless build.include? 'disable-shared'
+    args << "--enable-shared" if build.include? 'enable-shared'
 
     args << "--disable-assertions" if build.include? 'disable-assertions'
 
