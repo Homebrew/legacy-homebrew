@@ -37,6 +37,7 @@ module OS
     end
 
     def active_developer_dir
+      return "" unless OS.mac?
       @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end
 
