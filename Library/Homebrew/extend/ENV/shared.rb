@@ -240,6 +240,7 @@ module SharedEnvExtension
       end
 
       if !gcc_formula.opt_prefix.exist?
+        return if OS.linux? && which("gcc-#{gcc}")
         raise <<-EOS.undent
         The requested Homebrew GCC, #{gcc_name}, was not installed.
         You must:
