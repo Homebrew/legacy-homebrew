@@ -55,8 +55,8 @@ class Formulary
     def klass
       begin
         have_klass = Formulary.formula_class_defined? class_name
-      rescue NameError
-        raise FormulaUnavailableError.new(name)
+      rescue NameError => e
+        raise FormulaUnavailableError, name, e.backtrace
       end
 
       load_file unless have_klass
@@ -78,9 +78,8 @@ class Formulary
         # This is a programming error in an existing formula, and should not
         # have a "no such formula" message.
         raise
-      rescue LoadError, NameError
-        raise if ARGV.debug?  # let's see the REAL error
-        raise FormulaUnavailableError.new(name)
+      rescue LoadError, NameError => e
+        raise FormulaUnavailableError, name, e.backtrace
       end
     end
   end
@@ -174,8 +173,8 @@ class Formulary
 
     def get_formula(spec)
       super
-    rescue FormulaUnavailableError
-      raise TapFormulaUnavailableError.new(tapped_name)
+    rescue FormulaUnavailableError => e
+      raise TapFormulaUnavailableError, tapped_name, e.backtrace
     end
   end
 
