@@ -681,6 +681,11 @@ class Aspell < Formula
       end
     end
   end
+
+  test do
+    assert_equal shell_output("echo \"misspell worrd\" | #{bin}/aspell list -d en_US").strip,
+                 "worrd"
+  end
 end
 
 __END__
