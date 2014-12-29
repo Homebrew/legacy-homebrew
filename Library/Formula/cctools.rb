@@ -4,13 +4,12 @@ class Cctools < Formula
   if MacOS.version >= :snow_leopard
     url "http://opensource.apple.com/tarballs/cctools/cctools-855.tar.gz"
     sha1 "b6997939aa9f4f3c4ac70ec819e719330dcd7bcb"
-  # 806 (from Xcode 4.1) is the latest version that supports Tiger or PowerPC
   else
+    # 806 (from Xcode 4.1) is the latest version that supports Tiger or PowerPC
     url "http://opensource.apple.com/tarballs/cctools/cctools-806.tar.gz"
     sha1 "e4f9a7ee0eef930e81d50b6b7300b8ddc1c7b341"
   end
 
-  option "with-llvm", "Build with LTO support" if MacOS.version >= :snow_leopard
   bottle do
     cellar :any
     sha1 "1acad163d4a245f5bd7ad2668cc87a5c9102163a" => :yosemite
@@ -18,15 +17,48 @@ class Cctools < Formula
     sha1 "b5ccf7ea27f82e7eb8aeed1e327079c8a07434fb" => :mountain_lion
   end
 
-  depends_on "cctools-headers" => :build if MacOS.version < :snow_leopard
   depends_on :ld64
-  depends_on "llvm" => :optional if MacOS.version >= :snow_leopard
 
   keg_only :provided_by_osx,
     "This package duplicates tools shipped by Xcode."
 
-  # This set of patches only applies to cctools 806, for older OSes
-  if MacOS.version < :snow_leopard
+  if MacOS.version >= :snow_leopard
+    option "with-llvm", "Build with LTO support"
+    depends_on "llvm" => :optional
+
+    # These patches apply to cctools 855, for newer OSes
+    patch :p0 do
+      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/cctools-829-lto.patch"
+      sha1 "b774fb58dbc0e1b5ad9c6a5d6e35d4207018a338"
+    end
+
+    patch :p0 do
+      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/PR-37520.patch"
+      sha1 "338faf38ee7eca09185f6eab30cc01b0ad2253ae"
+    end
+
+    patch :p0 do
+      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/cctools-839-static-dis_info.patch"
+      sha1 "125b42ddc081b70d1ef03a340feb1e827eb36cea"
+    end
+
+    # Fix building libtool with LTO disabled
+    patch do
+      url "https://gist.githubusercontent.com/mistydemeo/9fc5589d568d2fc45fb5/raw/c752d5c4567809c10b14d623b6c2d7416211b33a/libtool-no-lto.diff"
+      sha1 "f4750ffad99d034e874972e67e57841dd4225065"
+    end
+
+    # strnlen patch only needed on Snow Leopard
+    if MacOS.version == :snow_leopard
+      patch :p0 do
+        url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/snowleopard-strnlen.patch"
+        sha1 "31c083b056d4510702484436fc66f24cc8635060"
+      end
+    end
+  else
+    depends_on "cctools-headers" => :build
+
+    # This set of patches only applies to cctools 806, for older OSes
     patch :p0 do
       url "https://trac.macports.org/export/103959/trunk/dports/devel/cctools/files/cctools-806-lto.patch"
       sha1 "f8a2059a4730119687d2ba6a5d9e7b49b66840e8"
@@ -59,40 +91,12 @@ class Cctools < Formula
     end
   end
 
-  # These patches apply to cctools 855, for newer OSes
-  if MacOS.version >= :snow_leopard
-    patch :p0 do
-      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/cctools-829-lto.patch"
-      sha1 "b774fb58dbc0e1b5ad9c6a5d6e35d4207018a338"
-    end
-
-    patch :p0 do
-      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/PR-37520.patch"
-      sha1 "338faf38ee7eca09185f6eab30cc01b0ad2253ae"
-    end
-
-    patch :p0 do
-      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/cctools-839-static-dis_info.patch"
-      sha1 "125b42ddc081b70d1ef03a340feb1e827eb36cea"
-    end
-
-    # Fix building libtool with LTO disabled
-    patch do
-      url "https://gist.githubusercontent.com/mistydemeo/9fc5589d568d2fc45fb5/raw/c752d5c4567809c10b14d623b6c2d7416211b33a/libtool-no-lto.diff"
-      sha1 "f4750ffad99d034e874972e67e57841dd4225065"
-    end
-  end
-
-  # strnlen patch only needed on Snow Leopard
-  patch :p0 do
-    url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/snowleopard-strnlen.patch"
-    sha1 "31c083b056d4510702484436fc66f24cc8635060"
-  end if MacOS.version == :snow_leopard
-
   def install
     ENV.j1 # see https://github.com/mistydemeo/tigerbrew/issues/102
 
-    inreplace "libstuff/lto.c", "@@LLVM_LIBDIR@@", Formula["llvm"].opt_lib if build.with? "llvm"
+    if build.with? "llvm"
+      inreplace "libstuff/lto.c", "@@LLVM_LIBDIR@@", Formula["llvm"].opt_lib
+    end
 
     args = %W[
       RC_ProjectSourceVersion=#{version}
