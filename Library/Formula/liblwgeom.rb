@@ -17,9 +17,9 @@ class Liblwgeom < Formula
 
   bottle do
     cellar :any
-    sha1 "064733dceb874e5a0adb5ec66b943af3694b7dfd" => :yosemite
-    sha1 "63e0c7f24359169788ad34bdaa80c5795af5cee1" => :mavericks
-    sha1 "3b1a0aae4a0dc0446c1cf8f626ed0b4156fd906c" => :mountain_lion
+    sha1 "c225e0bcc23cc38b026cde2b6ea8a1403ab09bcd" => :yosemite
+    sha1 "077710818cff94dc707197dcc5794c49b67d080e" => :mavericks
+    sha1 "6432a799ec96fd4583610f64c1ca88f3c5931fc4" => :mountain_lion
   end
 
   head do
