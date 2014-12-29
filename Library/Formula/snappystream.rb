@@ -1,5 +1,3 @@
-require "formula"
-
 class Snappystream < Formula
   homepage "https://github.com/hoxnox/snappystream"
   url "https://github.com/hoxnox/snappystream/archive/0.1.2.tar.gz"
