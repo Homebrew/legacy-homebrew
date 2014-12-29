@@ -42,6 +42,7 @@ module OS
     end
 
     def sdk_path(v = version)
+      return nil if OS.linux?
       (@sdk_path ||= {}).fetch(v.to_s) do |key|
         opts = []
         # First query Xcode itself
