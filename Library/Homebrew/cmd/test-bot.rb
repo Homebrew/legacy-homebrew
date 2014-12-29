@@ -476,7 +476,7 @@ module Homebrew
       git "reset", "--hard"
       git "checkout", "-f", "master"
       git "clean", "-fdx"
-      # TODO: on failure rerun with: -ffdx
+      git "clean", "-ffdx" unless $?.success?
     end
 
     def cleanup_after
