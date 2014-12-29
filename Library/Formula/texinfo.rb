@@ -31,4 +31,16 @@ class Texinfo < Formula
       cp "doc/epsf.tex", "#{HOMEBREW_PREFIX}/share/texmf-dist/tex/generic/dvips/"
     end
   end
+
+  test do
+    (testpath/"test.texinfo").write <<-EOS.undent
+      @ifnottex
+      @node Top
+      @top Hello World!
+      @end ifnottex
+      @bye
+    EOS
+    system "#{bin}/makeinfo", "test.texinfo"
+    assert_match /Hello World!/, File.read("test.info")
+  end
 end
