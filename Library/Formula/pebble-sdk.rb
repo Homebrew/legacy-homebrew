@@ -85,6 +85,7 @@ class PebbleSdk < Formula
     resource('pyserial').stage { system "python", *install_args }
     resource('pypng').stage { system "python", *install_args }
 
+    rm_rf "Examples/.git"
     doc.install %w[Documentation Examples README.txt]
     prefix.install %w[Pebble bin tools requirements.txt version.txt]
 
