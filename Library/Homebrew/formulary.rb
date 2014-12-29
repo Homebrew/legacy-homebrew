@@ -59,25 +59,29 @@ class Formulary
         raise FormulaUnavailableError.new(name)
       end
 
-      unless have_klass
-        STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
-        begin
-          require path
-        rescue NoMethodError
-          # This is a programming error in an existing formula, and should not
-          # have a "no such formula" message.
-          raise
-        rescue LoadError, NameError
-          raise if ARGV.debug?  # let's see the REAL error
-          raise FormulaUnavailableError.new(name)
-        end
-      end
+      load_file unless have_klass
 
       klass = Formulary.get_formula_class(class_name)
       if klass == Formula || !(klass < Formula)
         raise FormulaUnavailableError.new(name)
       end
       klass
+    end
+
+    private
+
+    def load_file
+      STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
+      begin
+        require(path)
+      rescue NoMethodError
+        # This is a programming error in an existing formula, and should not
+        # have a "no such formula" message.
+        raise
+      rescue LoadError, NameError
+        raise if ARGV.debug?  # let's see the REAL error
+        raise FormulaUnavailableError.new(name)
+      end
     end
   end
 
