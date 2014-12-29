@@ -381,7 +381,10 @@ module Homebrew
 
       begin
         deps.each do |dep|
-          system "brew", "tap", dep.tap if dep.is_a? TapDependency
+          if dep.is_a?(TapDependency) && dep.tap
+            tap_dir = Homebrew.homebrew_git_repo dep.tap
+            test "brew", "tap", dep.tap unless tap_dir.directory?
+          end
           CompilerSelector.select_for(dep.to_formula)
         end
         CompilerSelector.select_for(formula)
