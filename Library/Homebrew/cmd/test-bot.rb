@@ -380,7 +380,10 @@ module Homebrew
       end
 
       begin
-        deps.each { |d| CompilerSelector.select_for(d.to_formula) }
+        deps.each do |dep|
+          system "brew", "tap", dep.tap if dep.is_a? TapDependency
+          CompilerSelector.select_for(dep.to_formula)
+        end
         CompilerSelector.select_for(formula)
       rescue CompilerSelectionError => e
         unless installed_gcc
