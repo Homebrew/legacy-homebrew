@@ -167,6 +167,8 @@ module Homebrew
       @hash = nil
       @url = nil
       @formulae = []
+      @added_formulae = []
+      @modified_formula = []
       @steps = []
       @tap = tap
       @repository = Homebrew.homebrew_git_repo @tap
@@ -308,8 +310,8 @@ module Homebrew
         formula_path = "Library/Formula"
       end
 
-      @added_formulae = diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "A")
-      @modified_formula = diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "M")
+      @added_formulae += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "A")
+      @modified_formula += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "M")
       @formulae += @added_formulae + @modified_formula
     end
 
