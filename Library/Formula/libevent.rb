@@ -54,4 +54,20 @@ class Libevent < Formula
       man3.install Dir["doxygen/man/man3/*.3"]
     end
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <event2/event.h>
+
+      int main()
+      {
+        struct event_base *base;
+        base = event_base_new();
+        event_base_free(base);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-levent", "-o", "test"
+    system "./test"
+  end
 end
