@@ -4,6 +4,12 @@ class Aspell < Formula
   mirror "http://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz"
   sha1 "ff1190db8de279f950c242c6f4c5d5cdc2cbdc49"
 
+  bottle do
+    sha1 "2dc302f844040241b90625896d90f8167a7fed2e" => :yosemite
+    sha1 "1bbcc135fd6b28bd3c604805b1e24aee42d4b194" => :mavericks
+    sha1 "8408ca154004072598e294aad2d17d4665d5b313" => :mountain_lion
+  end
+
   option "with-lang-af", "Install af dictionary"
   resource "af" do
     url "http://ftpmirror.gnu.org/aspell/dict/af/aspell-af-0.50-0.tar.bz2"
