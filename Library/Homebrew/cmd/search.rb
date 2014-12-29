@@ -76,6 +76,7 @@ module Homebrew
     %w{Homebrew binary},
     %w{Homebrew python},
     %w{Homebrew php},
+    %w{Homebrew x11},
     %w{Caskroom cask},
   ]
 
