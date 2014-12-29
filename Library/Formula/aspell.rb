@@ -1,10 +1,8 @@
-require 'formula'
-
 class Aspell < Formula
-  homepage 'http://aspell.net/'
-  url 'http://ftpmirror.gnu.org/aspell/aspell-0.60.6.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz'
-  sha1 'ff1190db8de279f950c242c6f4c5d5cdc2cbdc49'
+  homepage "http://aspell.net/"
+  url "http://ftpmirror.gnu.org/aspell/aspell-0.60.6.1.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz"
+  sha1 "ff1190db8de279f950c242c6f4c5d5cdc2cbdc49"
 
   option "with-lang-af", "Install af dictionary"
   resource "af" do
@@ -660,9 +658,9 @@ class Aspell < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
 
-    ENV.prepend_path 'PATH', bin
+    ENV.prepend_path "PATH", bin
 
     languages = []
 
@@ -679,7 +677,7 @@ class Aspell < Formula
     languages.each do |lang|
       resource(lang).stage do
         system "./configure", "--vars", "ASPELL=#{bin}/aspell", "PREZIP=#{bin}/prezip"
-        system "make install"
+        system "make", "install"
       end
     end
   end
