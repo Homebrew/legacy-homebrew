@@ -7,10 +7,9 @@ class Doxygen < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7333771de328171fbd376a341ff5cff3c9bcf81a" => :yosemite
-    sha1 "2d537233288de44363156eb8664535e82ae12f2d" => :mavericks
-    sha1 "befbe63ba7afc2afb9199a73ccf578ea923348a2" => :mountain_lion
+    sha1 "eafc0d0538c3fab13d59d019b7050440eabbd34f" => :yosemite
+    sha1 "8525a07222e6d674ca831e431d23d9df8ed327f2" => :mavericks
+    sha1 "86a99e57afefcb69476b5a13012bef6009e60be2" => :mountain_lion
   end
 
   option "with-dot", "Build with dot command support from Graphviz."
