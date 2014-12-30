@@ -9,9 +9,7 @@ class Quagga < Formula
   depends_on "gawk" => :build
 
   def install
-    ENV.deparallelize
-    # Quagga's autotools setup requires some help
-    # enable all protocols and management 
+    # enable all protocol daemons and remote management tools
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
@@ -29,9 +27,9 @@ class Quagga < Formula
                           "--enable-multipath=0",
                           "--enable-rtadv",
                           "--enable-watchquagga",
-                          "--enable-user=quagga",
-                          "--enable-group=quagga",
-                          "--enable-vty-group=quagga",
+                          "--enable-user=daemon",
+                          "--enable-group=daemon",
+                          "--enable-vty-group=daemon",
                           "--enable-configfile-mask=0640",
                           "--enable-logfile-mask=0640"                         
     system "make", "install"
@@ -47,6 +45,6 @@ class Quagga < Formula
     #
     # The installed folder is not in the path, so use the entire path to any
     # executables being tested: `system "#{bin}/program", "do", "something"`.
-    system "false"
+    system "make", "check"
   end
 end
