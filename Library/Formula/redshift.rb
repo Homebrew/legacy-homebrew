@@ -5,7 +5,7 @@ class Redshift < Formula
   sha1 "66a3a6011cdccb0b9ee77fde0de65da437c72ec5"
   head "https://github.com/jonls/redshift.git"
 
-    depends_on "automake" => :build
+  depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
