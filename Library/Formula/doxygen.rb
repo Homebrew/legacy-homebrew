@@ -67,6 +67,11 @@ class Doxygen < Formula
     # MAN1DIR, relative to the given prefix
     system "make", "MAN1DIR=share/man/man1", "install"
   end
+
+  test do
+    system "#{bin}/doxygen", "-g"
+    system "#{bin}/doxygen", "Doxyfile"
+  end
 end
 
 __END__
