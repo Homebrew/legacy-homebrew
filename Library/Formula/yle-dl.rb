@@ -2,25 +2,39 @@ require 'formula'
 
 class YleDl < Formula
   homepage 'http://aajanki.github.io/yle-dl/'
-  url 'https://github.com/aajanki/yle-dl/archive/2.3.1.tar.gz'
-  sha1 '5ec3516db2a5ecd793223636e27ed0c23657b575'
+  url 'https://github.com/aajanki/yle-dl/archive/2.4.0.tar.gz'
+  sha1 'da10ebb538d3bca738a36f332678ac0164220b53'
 
   head 'https://github.com/aajanki/yle-dl.git'
 
   depends_on 'rtmpdump'
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on "pycrypto" => [:python, "Crypto"]
+
+  resource "AdobeHDS.php" do
+    # NOTE: yle-dl always installs the HEAD version of AdobeHDS.php. We use a specific commit.
+    # Check if there are bugfixes at https://github.com/K-S-V/Scripts/commits/master/AdobeHDS.php
+    url "https://raw.githubusercontent.com/K-S-V/Scripts/9c1afcc4b452cb9bf75f8653495c80180e2bf086/AdobeHDS.php"
+    sha1 "bd562cb02087c83eea70a4e9a306be27980ee12c"
+  end
+
+  resource "pycrypto" do
+    url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz"
+    sha1 "aeda3ed41caf1766409d4efc689b9ca30ad6aeb2"
+  end
 
   def install
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    resource("pycrypto").stage do
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
+    end
+
+    resource("AdobeHDS.php").stage(share/"yle-dl")
     system "make", "install", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"
 
-    # yle-dl installed AdobeHDS.php in $PREFIX/bin before 2014-12-26,
-    # so only install it for more recent versions.
-    # https://github.com/aajanki/yle-dl/commit/ad9ef7fa40b39ec315bb51fc509af7416278966c
-    if build.head? then
-      # TODO: when 2.3.2 is released, remove the surrounding if
-      system "make", "install-adobehds", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"
-    end
+    # change shebang to plain python (python2 is not guaranteed to exist)
+    inreplace bin/"yle-dl", "#!/usr/bin/env python2", "#!/usr/bin/env python"
+
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
