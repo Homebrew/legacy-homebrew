@@ -16,8 +16,8 @@ class Mono < Formula
   end
 
   resource "monolite" do
-    url "http://storage.bos.xamarin.com/mono-dist-master/latest/monolite-111-latest.tar.gz"
-    sha1 "af90068351895082f03fdaf2840b7539e23e3f32"
+    url "http://storage.bos.xamarin.com/mono-dist-master/cb/cb33b94c853049a43222288ead1e0cb059b22783/monolite-111-latest.tar.gz"
+    sha1 "a674c47cd60786c49185fb3512410c43689be43e"
   end
 
   def install
