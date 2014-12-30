@@ -1,16 +1,14 @@
-require "formula"
-
 class Mozjpeg < Formula
   homepage "https://github.com/mozilla/mozjpeg"
-  url "https://github.com/mozilla/mozjpeg/archive/v2.1.tar.gz"
-  sha1 "07f8df93cd54adbec37869833de987eb12ce7062"
+  url "https://github.com/mozilla/mozjpeg/releases/download/v3.0/mozjpeg-3.0-release-source.tar.gz"
+  sha1 "9b56af77ce376300e1f6de78b52b2ce9b6f19596"
 
   head do
     url "https://github.com/mozilla/mozjpeg.git"
 
-    # Both these can be shifted into the main block with next release.
-    depends_on "pkg-config" => :build
-    depends_on "libpng" => :optional
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   bottle do
@@ -20,15 +18,14 @@ class Mozjpeg < Formula
     sha1 "6e289260bb131bb2e4da792dc926ae245e8d7665" => :lion
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
   depends_on "nasm" => :build
+  depends_on "libpng" => :optional
 
   keg_only "mozjpeg is not linked to prevent conflicts with the standard libjpeg."
 
   def install
-    system "autoreconf", "-i"
+    system "autoreconf", "-i" if build.head?
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--with-jpeg8"
