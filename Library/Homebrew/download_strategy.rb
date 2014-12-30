@@ -184,12 +184,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
           had_incomplete_download = false
           retry
         else
-          if @url =~ %r[^file://]
-            msg = "File does not exist: #{@url.sub(%r[^file://], "")}"
-          else
-            msg = "Download failed: #{@url}"
-          end
-          raise CurlDownloadStrategyError, msg
+          raise CurlDownloadStrategyError.new(@url)
         end
       end
       ignore_interrupts { temporary_path.rename(cached_location) }
