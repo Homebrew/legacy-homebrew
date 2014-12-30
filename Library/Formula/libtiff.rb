@@ -29,4 +29,21 @@ class Libtiff < Formula
                           "--with-jpeg-lib-dir=#{jpeg}/lib"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <tiffio.h>
+
+      int main(int argc, char* argv[])
+      {
+        TIFF *out = TIFFOpen(argv[1], "w");
+        TIFFSetField(out, TIFFTAG_IMAGEWIDTH, (uint32) 10);
+        TIFFClose(out);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-ltiff", "-o", "test"
+    system "./test", "test.tif"
+    assert_match /ImageWidth.*10/, shell_output("#{bin}/tiffdump test.tif")
+  end
 end
