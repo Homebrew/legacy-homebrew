@@ -1,5 +1,3 @@
-require "formula"
-
 class Zeromq < Formula
   homepage "http://www.zeromq.org/"
   url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
@@ -47,5 +45,21 @@ class Zeromq < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <assert.h>
+      #include <zmq.h>
+
+      int main()
+      {
+        zmq_msg_t query;
+        assert(0 == zmq_msg_init_size(&query, 1));
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lzmq", "-o", "test"
+    system "./test"
   end
 end
