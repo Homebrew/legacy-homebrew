@@ -1,12 +1,6 @@
 class Llvm < Formula
   homepage 'http://llvm.org/'
-
-  bottle do
-    revision 1
-    sha1 "29ba25a9a3c2217c6f1e1bae670bb35d450f629a" => :yosemite
-    sha1 "07f8b675aa98c79a3058f1b51b2ba3e3f33e2875" => :mavericks
-    sha1 "5f31150228cbbee9294a8396bf69af756b7d33b3" => :mountain_lion
-  end
+  revision 1
 
   stable do
     url "http://llvm.org/releases/3.5.0/llvm-3.5.0.src.tar.xz"
@@ -26,6 +20,9 @@ class Llvm < Formula
       url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
       sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
     end
+  end
+
+  bottle do
   end
 
   head do
