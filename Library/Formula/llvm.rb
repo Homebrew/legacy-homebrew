@@ -1,5 +1,3 @@
-require 'formula'
-
 class Llvm < Formula
   homepage 'http://llvm.org/'
 
@@ -36,6 +34,9 @@ class Llvm < Formula
       url "http://llvm.org/git/lld.git"
     end
   end
+
+  # Use absolute paths for shared library IDs
+  patch :DATA
 
   option :universal
   option 'with-clang', 'Build Clang support library'
@@ -114,3 +115,23 @@ class Llvm < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/Makefile.rules b/Makefile.rules
+index ebebc0a..b0bb378 100644
+--- a/Makefile.rules
++++ b/Makefile.rules
+@@ -599,7 +599,12 @@ ifneq ($(HOST_OS), $(filter $(HOST_OS), Cygwin MingW))
+ ifneq ($(HOST_OS),Darwin)
+   LD.Flags += $(RPATH) -Wl,'$$ORIGIN'
+ else
+-  LD.Flags += -Wl,-install_name  -Wl,"@rpath/lib$(LIBRARYNAME)$(SHLIBEXT)"
++  LD.Flags += -Wl,-install_name
++  ifdef LOADABLE_MODULE
++    LD.Flags += -Wl,"$(PROJ_libdir)/$(LIBRARYNAME)$(SHLIBEXT)"
++  else
++    LD.Flags += -Wl,"$(PROJ_libdir)/$(SharedPrefix)$(LIBRARYNAME)$(SHLIBEXT)"
++  endif
+ endif
+ endif
+ endif
