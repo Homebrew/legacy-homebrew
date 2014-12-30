@@ -27,4 +27,20 @@ class Libmpc < Formula
     system "make", "check"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <mpc.h>
+
+      int main()
+      {
+        mpc_t x;
+        mpc_init2 (x, 256);
+        mpc_clear (x);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lgmp", "-lmpfr", "-lmpc", "-o", "test"
+    system "./test"
+  end
 end
