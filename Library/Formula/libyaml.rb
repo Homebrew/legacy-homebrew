@@ -1,5 +1,3 @@
-require "formula"
-
 class Libyaml < Formula
   homepage "http://pyyaml.org/wiki/LibYAML"
   url "http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz"
@@ -21,5 +19,21 @@ class Libyaml < Formula
 
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <yaml.h>
+
+      int main()
+      {
+        yaml_parser_t parser;
+        yaml_parser_initialize(&parser);
+        yaml_parser_delete(&parser);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lyaml", "-o", "test"
+    system "./test"
   end
 end
