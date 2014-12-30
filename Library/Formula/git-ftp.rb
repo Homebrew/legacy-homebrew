@@ -9,6 +9,7 @@ class GitFtp < Formula
 
   option "with-manpage", "build and install the manpage (depends on pandoc)"
 
+  depends_on "curl" => [:optional, "with-libssh2"]
   depends_on "pandoc" => :build if build.with? "manpage"
 
   def install
