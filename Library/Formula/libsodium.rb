@@ -1,5 +1,3 @@
-require "formula"
-
 class Libsodium < Formula
   homepage "https://github.com/jedisct1/libsodium/"
   url "https://github.com/jedisct1/libsodium/releases/download/1.0.1/libsodium-1.0.1.tar.gz"
@@ -30,5 +28,20 @@ class Libsodium < Formula
                           "--prefix=#{prefix}"
     system "make", "check"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <assert.h>
+      #include <sodium.h>
+
+      int main()
+      {
+        assert(sodium_init() != -1);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lsodium", "-o", "test"
+    system "./test"
   end
 end
