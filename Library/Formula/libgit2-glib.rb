@@ -3,6 +3,12 @@ class Libgit2Glib < Formula
   url "http://ftp.gnome.org/pub/GNOME/sources/libgit2-glib/0.0/libgit2-glib-0.0.24.tar.xz"
   sha256 "8a0a6f65d86f2c8cb9bcb20c5e0ea6fd02271399292a71fc7e6852f13adbbdb8"
 
+  bottle do
+    sha1 "7224409d10d2d6e2f23ca18ea5e1025a085583ae" => :yosemite
+    sha1 "123377a53b05679cd1ef197ee52698ffc5122df1" => :mavericks
+    sha1 "40a596eed3adcea6dc523b3574fb90cd6a219acf" => :mountain_lion
+  end
+
   head do
     url "https://github.com/GNOME/libgit2-glib.git"
 
