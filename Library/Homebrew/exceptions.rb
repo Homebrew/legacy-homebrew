@@ -208,7 +208,16 @@ class DownloadError < RuntimeError
 end
 
 # raised in CurlDownloadStrategy.fetch
-class CurlDownloadStrategyError < RuntimeError; end
+class CurlDownloadStrategyError < RuntimeError
+  def initialize(url)
+    case url
+    when %r[^file://(.+)]
+      super "File does not exist: #{$1}"
+    else
+      super "Download failed: #{url}"
+    end
+  end
+end
 
 # raised by safe_system in utils.rb
 class ErrorDuringExecution < RuntimeError
