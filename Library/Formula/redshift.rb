@@ -2,7 +2,7 @@ class Redshift < Formula
   homepage "http://jonls.dk/redshift/"
   url "https://github.com/jonls/redshift/archive/59023d86f4275128751bcb84ecda5a630bf51857.tar.gz"
   version "1.9.1.59023d8"
-  sha1 "1b858f1b8802172e2c682d30a7765ed88080eccb"
+  sha1 "66a3a6011cdccb0b9ee77fde0de65da437c72ec5"
   head "https://github.com/jonls/redshift.git"
 
   depends_on 'autoconf' => :build
@@ -23,6 +23,6 @@ class Redshift < Formula
   end
 
   test do
-    system "redshift -x"
+    system "redshift", "-x"
   end
 end
