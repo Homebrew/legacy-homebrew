@@ -56,6 +56,7 @@ class Llvm < Formula
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
   depends_on :python => :optional
+  depends_on 'cmake' => [:build, :optional]
 
   keg_only :provided_by_osx
 
@@ -86,6 +87,38 @@ class Llvm < Formula
 
     ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'
 
+    # the CMake build requires a pristine source directory, so install the CMake
+    # modules before actually building LLVM
+    if build.with? "cmake"
+      mkdir "cmake-modules-build" do
+        args = std_cmake_args
+
+        if build.include? 'all-targets'
+          args << "-DLLVM_TARGETS_TO_BUILD=all"
+        else
+          args << "-DLLVM_TARGETS_TO_BUILD=host"
+        end
+
+        if build.include? 'disable-assertions'
+          args << "-DLLVM_ENABLE_ASSERTIONS=False"
+        else
+          args << "-DLLVM_ENABLE_ASSERTIONS=True"
+        end
+
+        if build.include? 'disable-shared'
+          args << "-DBUILD_SHARED_LIBS=False"
+        else
+          args << "-DBUILD_SHARED_LIBS=True"
+        end
+
+        system "cmake", "..", *args
+        # only install the CMake modules
+        cd "cmake/modules" do
+          system "make", "install"
+        end
+      end
+    end
+
     args = [
       "--prefix=#{prefix}",
       "--enable-optimized",
@@ -111,8 +144,6 @@ class Llvm < Formula
       system "make", "-C", "projects/libcxx", "install",
         "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
     end
-
-    (share/'llvm/cmake').install buildpath/'cmake/modules'
 
     # install llvm python bindings
     if build.with? "python"
