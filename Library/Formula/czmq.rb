@@ -1,5 +1,3 @@
-require "formula"
-
 class Czmq < Formula
   homepage "http://czmq.zeromq.org/"
   url "http://download.zeromq.org/czmq-2.2.0.tar.gz"
@@ -24,8 +22,13 @@ class Czmq < Formula
   option :universal
 
   depends_on "pkg-config" => :build
-  depends_on "zeromq"
-  depends_on "libsodium" => :recommended
+  depends_on "libsodium" => :optional
+
+  if build.with? "libsodium"
+    depends_on "zeromq" => "with-libsodium"
+  else
+    depends_on "zeromq"
+  end
 
   def install
     ENV.universal_binary if build.universal?
