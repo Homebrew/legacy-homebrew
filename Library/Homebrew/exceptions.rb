@@ -198,11 +198,12 @@ end
 
 # Raised in Resource.fetch
 class DownloadError < RuntimeError
-  def initialize(resource, e)
+  def initialize(resource, cause)
     super <<-EOS.undent
       Failed to download resource #{resource.download_name.inspect}
-      #{e.message}
+      #{cause.message}
       EOS
+    set_backtrace(cause.backtrace)
   end
 end
 
