@@ -17,6 +17,11 @@ class Llvm < Formula
       sha1 "834cee2ed8dc6638a486d8d886b6dce3db675ffa"
     end
 
+    resource "libcxx" do
+      url "http://llvm.org/releases/3.5.0/libcxx-3.5.0.src.tar.xz"
+      sha1 "c98beed86ae1adf9ab7132aeae8fd3b0893ea995"
+    end
+
     resource "lld" do
       url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
       sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
@@ -28,6 +33,10 @@ class Llvm < Formula
 
     resource "clang" do
       url "http://llvm.org/git/clang.git"
+    end
+
+    resource "libcxx" do
+      url "http://llvm.org/git/libcxx.git"
     end
 
     resource "lld" do
@@ -62,7 +71,10 @@ class Llvm < Formula
       raise 'The Python bindings need the shared library.'
     end
 
-    (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
+    if build.with? "clang"
+      (buildpath/"projects/libcxx").install resource("libcxx")
+      (buildpath/"tools/clang").install resource("clang")
+    end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
 
@@ -92,8 +104,13 @@ class Llvm < Formula
     args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
-    system 'make'
-    system 'make', 'install'
+    system "make"
+    system "make", "install"
+
+    if build.with? "clang"
+      system "make", "-C", "projects/libcxx", "install",
+        "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
+    end
 
     (share/'llvm/cmake').install buildpath/'cmake/modules'
 
