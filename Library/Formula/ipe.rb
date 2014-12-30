@@ -4,6 +4,12 @@ class Ipe < Formula
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.6-src.tar.gz"
   sha1 "72fc2532cfa0a8591447dde3f60e5e4b2ecbf0d6"
 
+  bottle do
+    sha1 "53408fdfff0f17a6e60a6cc539ccf56b50c52168" => :yosemite
+    sha1 "ade5a611e2a0afac642147acbdacbc47e3167b0a" => :mavericks
+    sha1 "19d21ebd060dcdd4d6b37da15b93bbfa3dba4f79" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "makeicns" => :build
   depends_on "lua"
