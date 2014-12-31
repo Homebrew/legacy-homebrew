@@ -30,7 +30,7 @@ module Homebrew
       ACLOCAL_PATH PATH CPATH].select { |key| env.key?(key) }
   end
 
-  def dump_build_env env
+  def dump_build_env env, f=$stdout
     keys = build_env_keys(env)
     keys -= %w[CC CXX OBJC OBJCXX] if env["CC"] == env["HOMEBREW_CC"]
 
@@ -41,7 +41,7 @@ module Homebrew
       when "CC", "CXX", "LD"
         s << " => #{Pathname.new(value).realpath}" if File.symlink?(value)
       end
-      puts s
+      f.puts s
     end
   end
 end

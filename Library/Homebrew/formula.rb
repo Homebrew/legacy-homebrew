@@ -686,9 +686,17 @@ class Formula
         log.flush
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
         log.puts
-        require 'cmd/config'
+
+        require "cmd/config"
+        require "cmd/--env"
+
+        env = ENV.to_hash
+
         Homebrew.dump_verbose_config(log)
-        raise BuildError.new(self, cmd, args, ENV.to_hash)
+        log.puts
+        Homebrew.dump_build_env(env, log)
+
+        raise BuildError.new(self, cmd, args, env)
       end
     ensure
       log.close
