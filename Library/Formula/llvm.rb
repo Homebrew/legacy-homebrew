@@ -1,6 +1,6 @@
 class Llvm < Formula
   homepage 'http://llvm.org/'
-  revision 1
+  revision 2
 
   stable do
     url "http://llvm.org/releases/3.5.0/llvm-3.5.0.src.tar.xz"
