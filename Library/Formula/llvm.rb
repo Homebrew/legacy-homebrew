@@ -20,6 +20,11 @@ class Llvm < Formula
       url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
       sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
     end
+
+    resource "clang-tools-extra" do
+      url "http://llvm.org/releases/3.5.0/clang-tools-extra-3.5.0.src.tar.xz"
+      sha1 "74a84493e3313c180490a4affbb92d61ee4f0d21"
+    end
   end
 
   bottle do
@@ -41,6 +46,10 @@ class Llvm < Formula
 
     resource "lld" do
       url "http://llvm.org/git/lld.git"
+    end
+
+    resource "clang-tools-extra" do
+      url "http://llvm.org/git/clang-tools-extra.git"
     end
   end
 
@@ -74,6 +83,7 @@ class Llvm < Formula
     if build.with? "clang"
       (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"tools/clang").install resource("clang")
+      (buildpath/"tools/clang/tools/extra").install resource("clang-tools-extra")
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
