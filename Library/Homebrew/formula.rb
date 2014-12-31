@@ -687,7 +687,7 @@ class Formula
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
         log.puts
         require 'cmd/config'
-        Homebrew.dump_build_config(log)
+        Homebrew.dump_verbose_config(log)
         raise BuildError.new(self, cmd, args, ENV.to_hash)
       end
     ensure
