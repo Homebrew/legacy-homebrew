@@ -7,4 +7,9 @@ class Colortail < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.txt").write("Hello\nWorld!\n")
+    assert_match /World!/, shell_output("#{bin}/colortail -n 1 test.txt")
+  end
 end
