@@ -32,6 +32,13 @@ class Emacs < Formula
     depends_on "automake" => :build
   end
 
+  devel do
+    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-24"
+    version "24.4-dev"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
+
   head do
     url "http://git.sv.gnu.org/r/emacs.git"
     depends_on "autoconf" => :build
