@@ -48,4 +48,23 @@ class Tinyxml < Formula
     Cflags: -I${includedir}
     EOS
   end
+
+  test do
+    (testpath/"test.xml").write <<-EOS.undent
+      <?xml version="1.0" ?>
+      <Hello>World</Hello>
+    EOS
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <tinyxml.h>
+
+      int main()
+      {
+        TiXmlDocument doc ("test.xml");
+        doc.LoadFile();
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-ltinyxml", "-o", "test"
+    system "./test"
+  end
 end
