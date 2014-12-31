@@ -11,6 +11,7 @@ module Homebrew
     used_formulae = ARGV.formulae
     formulae = (ARGV.include? "--installed") ? Formula.installed : Formula
     recursive = ARGV.flag? "--recursive"
+    single = ARGV.flag? "--1"
 
     uses = formulae.select do |f|
       used_formulae.all? do |ff|
@@ -29,6 +30,10 @@ module Homebrew
       end
     end
 
-    puts_columns uses.map(&:name)
+      if single
+        puts uses.map(&:name)
+      else
+        puts_columns uses.map(&:name)
+      end
   end
 end
