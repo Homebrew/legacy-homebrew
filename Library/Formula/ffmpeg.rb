@@ -1,5 +1,3 @@
-require "formula"
-
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
   url "https://www.ffmpeg.org/releases/ffmpeg-2.5.2.tar.bz2"
@@ -168,5 +166,12 @@ class Ffmpeg < Formula
         -c:a aac -strict -2
       EOS
     end
+  end
+
+  test do
+    # Create an example mp4 file
+    system "#{bin}/ffmpeg", "-y", "-filter_complex",
+        "testsrc=rate=1:duration=1", "#{testpath}/video.mp4"
+    assert (testpath/"video.mp4").exist?
   end
 end
