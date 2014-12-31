@@ -15,4 +15,28 @@ class Cpptest < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <assert.h>
+      #include <cpptest.h>
+
+      class TestCase: public Test::Suite
+      {
+      public:
+        TestCase() { TEST_ADD(TestCase::test); }
+        void test() { TEST_ASSERT(1 + 1 == 2); }
+      };
+
+      int main()
+      {
+        TestCase ts;
+        Test::TextOutput output(Test::TextOutput::Verbose);
+        assert(ts.run(output));
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-lcpptest", "-o", "test"
+    system "./test"
+  end
 end
