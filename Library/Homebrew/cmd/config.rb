@@ -94,6 +94,21 @@ module Homebrew
     @ponk.join(", ") unless @ponk.empty?
   end
 
+  def describe_system_ruby
+    s = ""
+    case RUBY_VERSION
+    when /^1\.[89]/, /^2\.0/
+      s << "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}"
+    else
+      s << RUBY_VERSION
+    end
+
+    if RUBY_PATH.to_s !~ %r[^/System/Library/Frameworks/Ruby.framework/Versions/[12]\.[089]/usr/bin/ruby]
+      s << " => #{RUBY_PATH}"
+    end
+    s
+  end
+
   def dump_verbose_config(f=$stdout)
     f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     f.puts "ORIGIN: #{origin}"
@@ -111,7 +126,7 @@ module Homebrew
     f.puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
     f.puts "MacPorts/Fink: #{macports_or_fink}" if macports_or_fink
     f.puts "X11: #{describe_x11}"
-    f.puts "System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
+    f.puts "System Ruby: #{describe_system_ruby}"
     f.puts "Perl: #{describe_perl}"
     f.puts "Python: #{describe_python}"
     f.puts "Ruby: #{describe_ruby}"
