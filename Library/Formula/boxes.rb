@@ -2,9 +2,9 @@ require 'formula'
 
 class Boxes < Formula
   homepage 'http://boxes.thomasjensen.com/'
-  url 'http://boxes.thomasjensen.com/download/boxes-1.1.1.src.tar.gz'
+  url 'https://github.com/ascii-boxes/boxes/archive/v1.1.1.tar.gz'
   head 'https://github.com/ascii-boxes/boxes.git'
-  sha1 '9b09f8c59276a3978ecaf985029b8459aa69e9c1'
+  sha1 'fff0d7636c50a4ffa88389981a3d32e8d7a83b39'
 
   def install
     ENV.m32
