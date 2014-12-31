@@ -72,11 +72,8 @@ class Formulary
 
     def load_file
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
-      begin
-        require(path)
-      rescue LoadError => e
-        raise FormulaUnavailableError, name, e.backtrace
-      end
+      raise FormulaUnavailableError.new(name) unless path.file?
+      require(path)
     end
   end
 
