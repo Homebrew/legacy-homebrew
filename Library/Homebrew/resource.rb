@@ -148,6 +148,8 @@ class Resource
   private
 
   def detect_version(val)
+    return if val.nil? && url.nil?
+
     case val
     when nil     then Version.detect(url, specs)
     when String  then Version.new(val)
