@@ -35,6 +35,12 @@ class Osquery < Formula
   end
 
   def install
+    # Apply upstream commit to fix illegal hardware instruction:
+    # https://github.com/facebook/osquery/commit/20259a
+    # https://github.com/facebook/osquery/issues/563
+    # https://github.com/Homebrew/homebrew/issues/35343
+    inreplace "CMakeLists.txt", "-Wl,-all_load", "-Wl,-force_load"
+
     ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
 
     resources.each do |r|
