@@ -84,7 +84,7 @@ class Llvm < Formula
       ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
 
-    ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'
+    ENV["REQUIRES_RTTI"] = "1" if build.include? "rtti" or build.with? "clang"
 
     args = [
       "--prefix=#{prefix}",
