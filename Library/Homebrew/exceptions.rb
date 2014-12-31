@@ -166,7 +166,7 @@ class BuildError < RuntimeError
         puts "Path: #{formula.path}"
       end
       ohai "Configuration"
-      Homebrew.dump_build_config
+      Homebrew.dump_verbose_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
       puts
