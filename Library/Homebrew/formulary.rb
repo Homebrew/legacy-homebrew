@@ -74,11 +74,7 @@ class Formulary
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
       begin
         require(path)
-      rescue NoMethodError
-        # This is a programming error in an existing formula, and should not
-        # have a "no such formula" message.
-        raise
-      rescue LoadError, NameError => e
+      rescue LoadError => e
         raise FormulaUnavailableError, name, e.backtrace
       end
     end
