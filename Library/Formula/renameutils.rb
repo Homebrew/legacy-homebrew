@@ -3,6 +3,13 @@ class Renameutils < Formula
   url "http://download.savannah.gnu.org/releases/renameutils/renameutils-0.12.0.tar.gz"
   sha1 "8c6edae4ee374330a01a95257fd552b5cb7540bc"
 
+  bottle do
+    cellar :any
+    sha1 "f2ad6649f1636f36308781ca75d80757ddf03d5c" => :yosemite
+    sha1 "7e9d5223ce53c47d32dacbfb841c44b6f4e0361f" => :mavericks
+    sha1 "00fe259bce0743080676d617e9a521d7d4732418" => :mountain_lion
+  end
+
   depends_on "readline" # Use instead of system libedit
   depends_on "coreutils"
 
