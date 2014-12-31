@@ -4,9 +4,9 @@ class Fontforge < Formula
   sha1 "62268018d4b0080f8b976943f36ecbeed5aa6c9a"
 
   bottle do
-    sha1 "9cb3881adf612eae21aa4c70eb17907a96f05d8d" => :yosemite
-    sha1 "a079566b826ae865e2f393eaaa56cdc097d1f458" => :mavericks
-    sha1 "dcb8c5630310b8a7c534e90e4579d2734a0154ab" => :mountain_lion
+    sha1 "96155e138d5c9f0eff459f85a8ee1198fa6ffbae" => :yosemite
+    sha1 "780a877b74381ee256812406c4d68f5523631ee1" => :mavericks
+    sha1 "84b0969c5370be9a949e2c174c9a1e8735a63797" => :mountain_lion
   end
 
   deprecated_option "with-x" => "with-x11"
