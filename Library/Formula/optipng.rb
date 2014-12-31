@@ -1,10 +1,8 @@
-require 'formula'
-
 class Optipng < Formula
-  homepage 'http://optipng.sourceforge.net/'
-  head 'http://hg.code.sf.net/p/optipng/mercurial', :using => :hg
-  url 'https://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.5/optipng-0.7.5.tar.gz'
-  sha1 '30b6c333d74fc0f5dc83004aace252fa3321368b'
+  homepage "http://optipng.sourceforge.net/"
+  head "http://hg.code.sf.net/p/optipng/mercurial", :using => :hg
+  url "https://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.5/optipng-0.7.5.tar.gz"
+  sha1 "30b6c333d74fc0f5dc83004aace252fa3321368b"
 
   # Fix compilation on 10.10
   # http://sourceforge.net/p/optipng/bugs/47/
@@ -14,7 +12,7 @@ class Optipng < Formula
     system "./configure", "--with-system-zlib",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
 
