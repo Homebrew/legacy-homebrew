@@ -26,4 +26,9 @@ class LittleCms2 < Formula
     system "./configure", *args
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/jpgicc", test_fixtures("test.jpg"), "out.jpg"
+    assert File.exist?("out.jpg")
+  end
 end
