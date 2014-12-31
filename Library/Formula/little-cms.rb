@@ -34,4 +34,9 @@ class LittleCms < Formula
     ENV.deparallelize
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/jpegicc", test_fixtures("test.jpg"), "out.jpg"
+    assert File.exist?("out.jpg")
+  end
 end
