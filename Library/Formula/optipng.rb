@@ -14,6 +14,10 @@ class Optipng < Formula
                           "--mandir=#{man}"
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/optipng", "-simulate", test_fixtures("test.png")
+  end
 end
 
 __END__
