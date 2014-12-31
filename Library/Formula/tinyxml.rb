@@ -1,13 +1,11 @@
-require 'formula'
-
 class Tinyxml < Formula
-  homepage 'http://www.grinninglizard.com/tinyxml/'
-  url 'https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz'
-  sha1 'cba3f50dd657cb1434674a03b21394df9913d764'
+  homepage "http://www.grinninglizard.com/tinyxml/"
+  url "https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz"
+  sha1 "cba3f50dd657cb1434674a03b21394df9913d764"
 
   option :universal
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   # The first two patches are taken from the debian packaging of tinyxml.
   #   The first patch enforces use of stl strings, rather than a custom string type.
