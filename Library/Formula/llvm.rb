@@ -112,8 +112,6 @@ class Llvm < Formula
         "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
     end
 
-    (share/'llvm/cmake').install buildpath/'cmake/modules'
-
     # install llvm python bindings
     if build.with? "python"
       (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
