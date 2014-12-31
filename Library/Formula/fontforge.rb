@@ -1,11 +1,7 @@
-require "formula"
-
 class Fontforge < Formula
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/releases/download/20141126/fontforge-2014-11-26-Unix-Source.tar.gz"
-  sha1 "ecd776480a47cdcbe1b30ce275172d7d52288e77"
-  head "https://github.com/fontforge/fontforge.git"
-  version "20141126"
+  url "https://github.com/fontforge/fontforge/archive/20141230.tar.gz"
+  sha1 "62268018d4b0080f8b976943f36ecbeed5aa6c9a"
 
   bottle do
     sha1 "9cb3881adf612eae21aa4c70eb17907a96f05d8d" => :yosemite
@@ -19,7 +15,8 @@ class Fontforge < Formula
   option "with-giflib", "Build with GIF support"
 
   # Autotools are required to build from source in all releases.
-  # I have upstreamed a request to change this, so keep monitoring the situation.
+  # The upstream tarball is now 235MB in size and still requires us to autotool
+  # so seriously consider using the much smaller Github tag if we don't lose anything.
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
@@ -28,15 +25,14 @@ class Fontforge < Formula
   depends_on "pango"
   depends_on "zeromq"
   depends_on "czmq"
-  depends_on "libpng"   => :recommended
-  depends_on "jpeg"     => :recommended
-  depends_on "libtiff"  => :recommended
-  depends_on :x11 => :optional
-  depends_on "gtk+" => :optional
-  depends_on "giflib" => :optional
-  depends_on "libspiro" => :optional
   depends_on "fontconfig"
   depends_on "cairo"
+  depends_on "libpng" => :recommended
+  depends_on "jpeg" => :recommended
+  depends_on "libtiff" => :recommended
+  depends_on "giflib" => :optional
+  depends_on "libspiro" => :optional
+  depends_on :x11 => :optional
   depends_on :python if MacOS.version <= :snow_leopard
 
   fails_with :llvm do
@@ -45,10 +41,17 @@ class Fontforge < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
+    args = %W[
+      --prefix=#{prefix}
+      --disable-silent-rules
+      --disable-dependency-tracking
+    ]
 
-    args << "--with-x" if build.with? "x11"
-    args << "--enable-gtk2-use" if build.with? "gtk+"
+    if build.with? "x11"
+      args << "--with-x"
+    else
+      args << "--without-x"
+    end
 
     args << "--without-libpng" if build.without? "libpng"
     args << "--without-libjpeg" if build.without? "jpeg"
@@ -59,10 +62,6 @@ class Fontforge < Formula
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
 
-    # Add environment variables for system libs
-    ENV.append "ZLIB_CFLAGS", "-I/usr/include"
-    ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
-
     # And finding Homebrew's Python
     ENV.append_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/"
     ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
@@ -70,15 +69,26 @@ class Fontforge < Formula
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
-    # Bootstrap in every build. See the link below.
-    system "./bootstrap" #https://github.com/fontforge/fontforge/issues/1806
+    # Bootstrap in every build: https://github.com/fontforge/fontforge/issues/1806
+    system "./bootstrap"
     system "./configure", *args
     system "make"
     system "make", "install"
+  end
 
+  def post_install
     # Link this to enable symlinking into /Applications with brew linkapps.
     # The name is case-sensitive. It breaks without both F's capitalised.
-    ln_s "#{share}/fontforge/osx/FontForge.app", prefix
+    # If you build with x11 now, it automatically creates an dynamic link from bin/fontforge
+    # to @executable_path/../Frameworks/Breakpad.framework/Versions/A/Breakpad which
+    # obviously doesn't exist given fontforge and FontForge.app are in different places.
+    # If this isn't fixed within a couple releases, consider dumping everything in libexec.
+    # https://github.com/fontforge/fontforge/issues/2022
+    if build.with? "x11"
+      ln_s "#{share}/fontforge/osx/FontForge.app", prefix
+      system "install_name_tool", "-change", "@executable_path/../Frameworks/Breakpad.framework/Versions/A/Breakpad",
+             "#{bin}/fontforge", "#{share}/fontforge/osx/FontForge.app/Contents/Frameworks/Breakpad.framework/Versions/A/Breakpad"
+    end
   end
 
   test do
