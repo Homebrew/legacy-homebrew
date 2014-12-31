@@ -25,11 +25,6 @@ class Emacs < Formula
     sha1 "e3c6ab764c4b39b983e57d94c9f43acb7dad31f7" => :mountain_lion
   end
 
-  option "cocoa", "Build a Cocoa version of emacs"
-  option "keep-ctags", "Don't remove the ctags executable that emacs provides"
-
-  deprecated_option "with-x" => "with-x11"
-
   devel do
     url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-24"
     version "24.4-dev"
@@ -42,6 +37,11 @@ class Emacs < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
+
+  option "cocoa", "Build a Cocoa version of emacs"
+  option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+
+  deprecated_option "with-x" => "with-x11"
 
   depends_on "pkg-config" => :build
   depends_on :x11 => :optional
