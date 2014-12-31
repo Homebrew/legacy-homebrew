@@ -155,16 +155,18 @@ class Ffmpeg < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    FFmpeg has been built without libfaac for licensing reasons.
-    To install with libfaac, you can:
-      brew reinstall ffmpeg --with-faac
+  def caveats
+    if build.without? "faac" then <<-EOS.undent
+      FFmpeg has been built without libfaac for licensing reasons.
+      To install with libfaac, you can:
+        brew reinstall ffmpeg --with-faac
 
-    You can also use the libvo-acenc or experimental FFmpeg encoder to
-    encode AAC audio:
-      -c:a libvo_aacenc
-    Or:
-      -c:a aac -strict -2
-    EOS
-  end unless build.with? "faac"
+      You can also use the libvo-acenc or experimental FFmpeg encoder to
+      encode AAC audio:
+        -c:a libvo_aacenc
+      Or:
+        -c:a aac -strict -2
+      EOS
+    end
+  end
 end
