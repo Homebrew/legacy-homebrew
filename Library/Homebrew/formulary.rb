@@ -56,6 +56,7 @@ class Formulary
       begin
         have_klass = Formulary.formula_class_defined? class_name
       rescue NameError => e
+        raise unless e.name.to_s == class_name
         raise FormulaUnavailableError, name, e.backtrace
       end
 
