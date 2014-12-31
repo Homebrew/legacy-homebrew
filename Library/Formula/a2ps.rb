@@ -1,10 +1,8 @@
-require 'formula'
-
 class A2ps < Formula
-  homepage 'http://www.gnu.org/software/a2ps/'
-  url 'http://ftpmirror.gnu.org/a2ps/a2ps-4.14.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/a2ps/a2ps-4.14.tar.gz'
-  sha1 '365abbbe4b7128bf70dad16d06e23c5701874852'
+  homepage "http://www.gnu.org/software/a2ps/"
+  url "http://ftpmirror.gnu.org/a2ps/a2ps-4.14.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/a2ps/a2ps-4.14.tar.gz"
+  sha1 "365abbbe4b7128bf70dad16d06e23c5701874852"
 
   # Software was last updated in 2007, so take MacPorts patches to get
   # it working on 10.6. See:
@@ -23,6 +21,6 @@ class A2ps < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
