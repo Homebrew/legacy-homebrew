@@ -1,9 +1,7 @@
-require "formula"
-
 class Yazpp < Formula
   homepage "http://www.indexdata.com/yazpp"
-  url "http://ftp.indexdata.dk/pub/yazpp/yazpp-1.6.1.tar.gz"
-  sha1 "bcf73ff9b69af90f4a4097545948013a2c006c90"
+  url "http://ftp.indexdata.dk/pub/yazpp/yazpp-1.6.2.tar.gz"
+  sha1 "faafbc5f1f78c6951533188eb400a7d56c2e6cf1"
 
   bottle do
     cellar :any
@@ -17,6 +15,6 @@ class Yazpp < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
