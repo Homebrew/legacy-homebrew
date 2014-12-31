@@ -652,8 +652,7 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    log = File.open(logfn, "w")
-    begin
+    File.open(logfn, "w") do |log|
       log.puts Time.now, "", cmd, args, ""
       log.flush
 
@@ -698,8 +697,6 @@ class Formula
 
         raise BuildError.new(self, cmd, args, env)
       end
-    ensure
-      log.close
     end
   end
 
