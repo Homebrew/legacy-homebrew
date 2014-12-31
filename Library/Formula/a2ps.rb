@@ -23,4 +23,10 @@ class A2ps < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.txt").write("Hello World!\n")
+    system "#{bin}/a2ps", "test.txt", "-o", "test.ps"
+    assert File.read("test.ps").start_with?("")
+  end
 end
