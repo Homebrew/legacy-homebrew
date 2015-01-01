@@ -1,6 +1,6 @@
 language: ruby
 rvm: 2.2.0
-install:
+script:
  - unset DYLD_LIBRARY_PATH
  - PATH=$PWD/bin:$PATH
  # Warning: You have a non-Homebrew 'pkg-config' in your PATH
@@ -9,7 +9,4 @@ install:
  - sudo rm -f /usr/local/clang-3.4/bin/llvm-config
  # Incorrect file permissions: chmod 644
  - chmod 644 Library/Formula/*.rb
- # Error: cannot load such file -- test/unit/assertions
- - sudo apt-get install ruby-test-unit
-script:
  - brew test-bot --dry-run $TRAVIS_COMMIT |sed 's/^==> //' |sh -ex
