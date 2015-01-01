@@ -7,6 +7,13 @@ class GitFtp < Formula
 
   head 'https://github.com/git-ftp/git-ftp.git'
 
+  bottle do
+    cellar :any
+    sha1 "b509c296643f9b4725f12673739d2bd9e63b7cd4" => :yosemite
+    sha1 "f150cef49610efdbbfb98560c11b09dbf61f2d3e" => :mavericks
+    sha1 "d27bdf1dbd1d3e9f01e2a34e7cffcea06e3d799b" => :mountain_lion
+  end
+
   option "with-manpage", "build and install the manpage (depends on pandoc)"
 
   depends_on "curl" => [:optional, "with-libssh2"]
