@@ -3,6 +3,13 @@ class Debianutils < Formula
   url "http://ftp.de.debian.org/debian/pool/main/d/debianutils/debianutils_4.4.tar.gz"
   sha1 "019b969ab698c83117254b50fc8f469f10a5d8d6"
 
+  bottle do
+    cellar :any
+    sha1 "398ac6655a7d27ddcd1d7fd03591982496608d1b" => :yosemite
+    sha1 "794a83a5c92785c3b867fece70cf6b1c3646ba04" => :mavericks
+    sha1 "b2ea1e5f9f1a0bfa57e0179799da1cf427762c1c" => :mountain_lion
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
