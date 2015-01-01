@@ -7,10 +7,9 @@ class Libsvm < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "90aa0337c4b35d26d3c51283dc69a3f6d3221824" => :yosemite
-    sha1 "dd4e5a85187a0729083cdb1adfb69bd54d5c2cd9" => :mavericks
-    sha1 "697539637c9cb4e007f1124822ef1c92bc5f90ed" => :mountain_lion
+    sha1 "9a87d885fd4d943448c9107fe572ed0b5687bf5b" => :yosemite
+    sha1 "8fcd71c75841c4def48a4f57312ab5aae4ee628e" => :mavericks
+    sha1 "90e7456fa54524a2a12f563ae3e9bcab57d6ade7" => :mountain_lion
   end
 
   def install
