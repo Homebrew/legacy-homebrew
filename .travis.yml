@@ -10,6 +10,6 @@ install:
  # Incorrect file permissions: chmod 644
  - chmod 644 Library/Formula/*.rb
  # Error: cannot load such file -- test/unit/assertions
- - gem install test-unit
+ - sudo apt-get install ruby-test-unit
 script:
  - brew test-bot --dry-run $TRAVIS_COMMIT |sed 's/^==> //' |sh -ex
