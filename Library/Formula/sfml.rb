@@ -2,7 +2,6 @@ require "formula"
 
 class Sfml < Formula
   homepage "http://www.sfml-dev.org/"
-
   url "http://www.sfml-dev.org/download/sfml/2.2/SFML-2.2-sources.zip"
   sha1 "b21721a3dc221a790e4b81d6ba358c16cb1c1cd3"
 
