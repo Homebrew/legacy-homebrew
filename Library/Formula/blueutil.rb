@@ -7,9 +7,10 @@ class Blueutil < Formula
 
   bottle do
     cellar :any
-    sha1 "b28c95c99e71944e7e3027c124715eeda0558759" => :mavericks
-    sha1 "2d0b35b8b9bfab35d0a2c1dc3f7fdece65471b11" => :mountain_lion
-    sha1 "409af2fed8bd34eb070c89ea763039373ace8197" => :lion
+    revision 1
+    sha1 "179a9df22a362166d3e1ba8a902dfe34e126609d" => :yosemite
+    sha1 "8fb356c326d1644cd31602d23dde6720ce844f27" => :mavericks
+    sha1 "b267d3761cf1ac1415318c16b64332e44cdbaa2e" => :mountain_lion
   end
 
   depends_on :xcode => :build
