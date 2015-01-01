@@ -8,7 +8,7 @@ class MaximumMacOSRequirement < Requirement
     super
   end
 
-  satisfy { MacOS.version <= @version }
+  satisfy { !OS.mac? || MacOS.version <= @version }
 
   def message
     <<-EOS.undent

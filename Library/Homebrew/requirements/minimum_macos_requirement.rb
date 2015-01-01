@@ -8,7 +8,7 @@ class MinimumMacOSRequirement < Requirement
     super
   end
 
-  satisfy { MacOS.version >= @version }
+  satisfy { !OS.mac? || MacOS.version >= @version }
 
   def message
     "OS X #{@version.pretty_name} or newer is required."
