@@ -50,7 +50,8 @@ class Valgrind < Formula
       --prefix=#{prefix}
     ]
     if MacOS.prefer_64_bit?
-      args << "--enable-only64bit" << "--build=amd64-darwin"
+      args << "--enable-only64bit"
+      args << "--build=amd64-darwin" if OS.mac?
     else
       args << "--enable-only32bit"
     end
