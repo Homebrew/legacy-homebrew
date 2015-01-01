@@ -463,7 +463,7 @@ module Homebrew
 
     def homebrew
       @category = __method__
-      test "brew", "tests"
+      test "brew", "tests" unless OS.linux?
       test "brew", "readall"
     end
 
