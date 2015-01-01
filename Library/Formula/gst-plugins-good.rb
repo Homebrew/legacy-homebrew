@@ -12,9 +12,9 @@ class GstPluginsGood < Formula
   end
 
   bottle do
-    sha1 "42ddc43233247a8cb90da2fc64b90ffd83c25dd1" => :yosemite
-    sha1 "07ab214b44b9e78a7d963f164454a1cb19da7372" => :mavericks
-    sha1 "89e2f6c8b1b738c24058e38b17e2286922ad63f9" => :mountain_lion
+    sha1 "c4e04ab1b2a9f85cb1ecf09844cf2797fa7d6aa9" => :yosemite
+    sha1 "2e3355b746cd25d6153449f6ff8208216301ca1b" => :mavericks
+    sha1 "6bc77cab1c10d557d086f228640ae5e42080cf8b" => :mountain_lion
   end
 
   head do
