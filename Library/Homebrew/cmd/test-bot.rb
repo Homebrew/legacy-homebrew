@@ -602,7 +602,8 @@ module Homebrew
     ENV['HOMEBREW_NO_EMOJI'] = '1'
     if ARGV.include? '--ci-master' or ARGV.include? '--ci-pr' \
        or ARGV.include? '--ci-testing'
-      ARGV << '--cleanup' << '--junit' << '--local'
+      ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS_COMMIT"]
+      ARGV << "--junit" << "--local"
     end
     if ARGV.include? '--ci-master'
       ARGV << '--no-bottle' << '--email'
