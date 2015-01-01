@@ -14,4 +14,21 @@ class LibvoAacenc < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <vo-aacenc/cmnMemory.h>
+
+      int main()
+      {
+        VO_MEM_INFO info; info.Size = 1;
+        VO_S32 uid = 0;
+        VO_PTR pMem = cmnMemAlloc(uid, &info);
+        cmnMemFree(uid, pMem);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lvo-aacenc", "-o", "test"
+    system "./test"
+  end
 end
