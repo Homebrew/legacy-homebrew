@@ -1,7 +1,7 @@
 class TigerVnc < Formula
   homepage "http://tigervnc.org/"
-  url "https://github.com/TigerVNC/tigervnc/archive/v1.4.0.tar.gz"
-  sha1 "36252b10912bcbef44d43c5fa7977ae97988fff3"
+  url "https://github.com/TigerVNC/tigervnc/archive/v1.4.1.tar.gz"
+  sha1 "bdc5d6c5e55a275b645260e01c1e7aa71ba79984"
 
   depends_on "cmake" => :build
   depends_on "gnutls" => :recommended
@@ -21,6 +21,6 @@ class TigerVnc < Formula
   end
 
   test do
-    assert `#{bin}/vncviewer --help 2>&1` =~ /TigerVNC Viewer.*v1\.4\.0/
+    assert `#{bin}/vncviewer --help 2>&1` =~ /TigerVNC Viewer.*v1\.4\.1/
   end
 end
