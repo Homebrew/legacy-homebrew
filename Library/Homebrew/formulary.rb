@@ -165,6 +165,16 @@ class Formulary
     end
   end
 
+  class NullLoader < FormulaLoader
+    def initialize(name)
+      @name = name
+    end
+
+    def get_formula(spec)
+      raise FormulaUnavailableError.new(name)
+    end
+  end
+
   # Return a Formula instance for the given reference.
   # `ref` is string containing:
   # * a formula name
@@ -208,6 +218,6 @@ class Formulary
       return FormulaLoader.new(ref, possible_cached_formula)
     end
 
-    return FormulaLoader.new(ref, Formula.path(ref))
+    return NullLoader.new(ref)
   end
 end
