@@ -1,6 +1,6 @@
 language: ruby
 rvm: 2.2.0
-post-install:
+before_script:
  - unset DYLD_LIBRARY_PATH
  # Warning: You have a non-Homebrew 'pkg-config' in your PATH
  - sudo rm -f /usr/bin/pkg-config
