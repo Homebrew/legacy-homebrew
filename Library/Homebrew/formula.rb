@@ -436,7 +436,7 @@ class Formula
   end
 
   def inspect
-    "#<#{self.class.name}: #{path}>"
+    "#<#{self.class.name.split("::").last}: #{path}>"
   end
 
   # Standard parameters for CMake builds.
