@@ -8,4 +8,4 @@ install:
  # Warning: "config" scripts exist outside your system or Homebrew directories.
  - sudo rm -f /usr/local/clang-3.4/bin/llvm-config
 script:
- - brew test-bot FETCH_HEAD
+ - brew test-bot $TRAVIS_COMMIT
