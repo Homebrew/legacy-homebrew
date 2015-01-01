@@ -1,3 +1,8 @@
 language: ruby
 rvm: 2.2.0
-script: PATH=$PWD/bin:$PATH brew test-bot
+install:
+ - unset DYLD_LIBRARY_PATH
+ - PATH=$PWD/bin:$PATH
+ - brew install pkg-config
+script:
+ - brew test-bot
