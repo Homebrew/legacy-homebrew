@@ -2,6 +2,7 @@ require "formula"
 
 class JdkDownloadStrategy < CurlDownloadStrategy
   def _fetch
+    raise "On Mac OS try instead `brew cask install java`" if OS.mac?
     curl @url, "-C", downloaded_size, "-o", temporary_path,
       "--cookie", "oraclelicense=accept-securebackup-cookie"
   end
@@ -16,7 +17,7 @@ class Jdk < Formula
       :using => JdkDownloadStrategy
     sha1 "0eb0448641c21c435cddc4705d23668d45f29fff"
   elsif OS.mac?
-    raise "On Mac OS try instead `brew cask install java`"
+    url "jdk", :using => JdkDownloadStrategy
   else
     raise "Unknown operating system"
   end
