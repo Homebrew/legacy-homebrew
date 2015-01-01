@@ -10,9 +10,9 @@ class Nimrod < Formula
 
   bottle do
     cellar :any
-    sha1 "3a42be18ae05f497900cba5ba484314c68f62aa1" => :yosemite
-    sha1 "f30db501f57632a4872c0dde84a02ff326b58adb" => :mavericks
-    sha1 "af153261facdba0a6be325296e82b7c5707ebac6" => :mountain_lion
+    sha1 "d982481f09e677a7cf707d0cfe214c388ee0de9d" => :yosemite
+    sha1 "f481f9c658255a480dd562552e2f67d1bdf2b1f2" => :mavericks
+    sha1 "496b2e4b50e69d73e1299d478ab0a1c94c1804ee" => :mountain_lion
   end
 
   def install
