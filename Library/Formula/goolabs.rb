@@ -1,4 +1,3 @@
-require "formula"
 
 class Goolabs < Formula
   homepage "https://pypi.python.org/pypi/goolabs"
