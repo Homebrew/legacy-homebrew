@@ -1,5 +1,5 @@
 language: ruby
-before_script:
+install:
  - unset DYLD_LIBRARY_PATH
  # Warning: You have a non-Homebrew 'pkg-config' in your PATH
  - sudo rm -f /usr/bin/pkg-config
