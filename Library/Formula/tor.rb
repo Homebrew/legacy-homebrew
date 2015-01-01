@@ -11,24 +11,28 @@ class Tor < Formula
   end
 
   devel do
-    url "https://dist.torproject.org/tor-0.2.6.1-alpha.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.6.1-alpha.tar.gz"
-    sha256 "83154b8e5514978722add6c888d050420342405d4567e5945e89ae40b78b8761"
-    version "0.2.6.1-a1"
+    url "https://dist.torproject.org/tor-0.2.6.2-alpha.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.6.2-alpha.tar.gz"
+    sha256 "b0e765736b17b91088a2016e7f09e4fafee81282f8bc8647987f975b6a583379"
+    version "0.2.6.2-alpha"
+
+    # Move this to the main block when devel = stable release.
+    depends_on "libscrypt" => :optional
   end
 
   depends_on "libevent"
   depends_on "openssl"
-  depends_on "libscrypt" => :optional
   depends_on "libnatpmp" => :optional
   depends_on "miniupnpc" => :optional
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}",
-            "--sysconfdir=#{etc}",
-            "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"]
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+      --with-openssl-dir=#{Formula["openssl"].opt_prefix}
+    ]
 
     args << "--with-libnatpmp-dir=#{Formula["libnatpmp"].opt_prefix}" if build.with? "libnatpmp"
     args << "--with-libminiupnpc-dir=#{Formula["miniupnpc"].opt_prefix}" if build.with? "miniupnpc"
