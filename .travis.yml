@@ -1,3 +1,5 @@
 language: ruby
 rvm: 2.2.0
-script: bin/brew test-bot
+script:
+  - pwd
+  - PATH=$PWD/bin brew test-bot
