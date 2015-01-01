@@ -4,5 +4,7 @@ install:
  - unset DYLD_LIBRARY_PATH
  - PATH=$PWD/bin:$PATH
  - brew install pkg-config
+ # Warning: "config" scripts exist outside your system or Homebrew directories.
+ - sudo rm -rf /usr/local/clang-3.4/bin/llvm-config
 script:
  - brew test-bot
