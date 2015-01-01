@@ -1,12 +1,13 @@
 language: ruby
 rvm: 2.2.0
-script:
+post-install:
  - unset DYLD_LIBRARY_PATH
- - PATH=$PWD/bin:$PATH
  # Warning: You have a non-Homebrew 'pkg-config' in your PATH
  - sudo rm -f /usr/bin/pkg-config
  # Warning: "config" scripts exist outside your system or Homebrew directories.
  - sudo rm -f /usr/local/clang-3.4/bin/llvm-config
  # Incorrect file permissions: chmod 644
  - chmod 644 Library/Formula/*.rb
+ - PATH=$PWD/bin:$PATH
+script:
  - brew test-bot --dry-run $TRAVIS_COMMIT |sed 's/^==> //' |sh -ex
