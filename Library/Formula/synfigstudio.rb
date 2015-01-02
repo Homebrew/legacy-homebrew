@@ -2,8 +2,8 @@ require "formula"
 
 class Synfigstudio < Formula
   homepage "http://synfig.org"
-  url "https://downloads.sourceforge.net/project/synfig/releases/0.64.2/source/synfigstudio-0.64.2.tar.gz"
-  sha1 "632a3cb09c384c0ced398a2de00e7dc4ecfd481f"
+  url "https://downloads.sourceforge.net/project/synfig/releases/0.64.3/source/synfigstudio-0.64.3.tar.gz"
+  sha1 "63655509a6a5920eb067021730abbb52164436f5"
 
   bottle do
     sha1 "feaa6217d845867d674f81f4380f46b98daf9aef" => :yosemite
