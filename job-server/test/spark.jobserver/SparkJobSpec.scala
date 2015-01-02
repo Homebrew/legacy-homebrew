@@ -1,9 +1,8 @@
 package spark.jobserver
 
-import org.scalatest.FunSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers, FunSpec}
 
-class SparkJobSpec extends FunSpec with ShouldMatchers{
+class SparkJobSpec extends FunSpec with Matchers {
   val validSparkValidation = SparkJobValid
   val invalidSparkValidation = SparkJobInvalid("Sample message 1")
   val invalidSparkValidation2 = SparkJobInvalid("Sample message 2")

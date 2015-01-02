@@ -60,7 +60,7 @@ object JsonUtils {
     if (compact) jsonAst.compactPrint else jsonAst.prettyPrint
   }
 
-  def mapFromJson(json: String): Map[String, Any] = json.asJson.convertTo[Map[String, Any]]
+  def mapFromJson(json: String): Map[String, Any] = json.parseJson.convertTo[Map[String, Any]]
 
-  def listFromJson(json: String): Seq[Any] = json.asJson.convertTo[Seq[Any]]
+  def listFromJson(json: String): Seq[Any] = json.parseJson.convertTo[Seq[Any]]
 }

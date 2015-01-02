@@ -3,7 +3,7 @@ package spark.jobserver
 import akka.actor.{Props, PoisonPill, ActorRef, ActorSystem}
 import akka.testkit.{TestKit, ImplicitSender}
 import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
+import org.scalatest._
 
 
 object JobResultActorSpec {
@@ -11,7 +11,7 @@ object JobResultActorSpec {
 }
 
 class JobResultActorSpec extends TestKit(JobResultActorSpec.system) with ImplicitSender
-with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
+with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll {
 
   import CommonMessages._
 

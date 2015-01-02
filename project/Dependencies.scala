@@ -42,7 +42,7 @@ object Dependencies {
   )
 
   lazy val coreTestDeps = Seq(
-    "org.scalatest" %% "scalatest" % "1.9.1" % "test",
+    "org.scalatest" %% "scalatest" % "2.2.1" % "test",
     "com.typesafe.akka" %% "akka-testkit" % "2.3.4" % "test",
     "io.spray" %% "spray-testkit" % "1.3.2" % "test"
   )

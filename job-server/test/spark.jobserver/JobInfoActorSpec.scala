@@ -2,8 +2,7 @@ package spark.jobserver
 
 import akka.actor.{Props, ActorRef, ActorSystem}
 import akka.testkit.{TestKit, ImplicitSender}
-import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest._
 import spark.jobserver.io.JobDAO
 
 object JobInfoActorSpec {
@@ -11,7 +10,7 @@ object JobInfoActorSpec {
 }
 
 class JobInfoActorSpec extends TestKit(JobInfoActorSpec.system) with ImplicitSender
-with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
+with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll {
 
   import com.typesafe.config._
   import CommonMessages.NoSuchJobId
