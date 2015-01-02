@@ -1,15 +1,17 @@
-require 'formula'
-
 class HtmlXmlUtils < Formula
-  homepage 'http://www.w3.org/Tools/HTML-XML-utils/'
-  url 'http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.7.tar.gz'
-  sha1 'f67fc705802ef0b10b9bf84c5b2fa4253b260acd'
+  homepage "http://www.w3.org/Tools/HTML-XML-utils/"
+  url "http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.7.tar.gz"
+  sha1 "f67fc705802ef0b10b9bf84c5b2fa4253b260acd"
 
   def install
-    ENV.append 'CFLAGS', '-std=gnu89'
+    ENV.append "CFLAGS", "-std=gnu89"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     ENV.j1 # install is not thread-safe
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert_equal "&#20320;&#22909;", pipe_output("#{bin}/xml2asc", "你好")
   end
 end
