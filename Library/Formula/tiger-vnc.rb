@@ -21,6 +21,6 @@ class TigerVnc < Formula
   end
 
   test do
-    assert `#{bin}/vncviewer --help 2>&1` =~ /TigerVNC Viewer.*v1\.4\.1/
+    assert `#{bin}/vncviewer --help 2>&1`.include? "TigerVNC Viewer"
   end
 end
