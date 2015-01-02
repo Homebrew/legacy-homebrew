@@ -3,6 +3,13 @@ class NumUtils < Formula
   url "http://suso.suso.org/programs/num-utils/downloads/num-utils-0.5.tar.gz"
   sha1 "3fc6130874129fe1e98db6db8b3dc43f0e1a89ac"
 
+  bottle do
+    cellar :any
+    sha1 "47f40b81881dc56d9966b7567accb17d597a4d5e" => :yosemite
+    sha1 "97e1e6391d8c31ab79085466c86227ebb60ca779" => :mavericks
+    sha1 "4a610ddbfa56751bc9aeb8954a60f56648d5b2d8" => :mountain_lion
+  end
+
   conflicts_with "normalize", :because => "both install `normalize` binaries"
 
   def install
