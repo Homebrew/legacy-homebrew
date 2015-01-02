@@ -22,4 +22,8 @@ class Plotutils < Formula
     system "make"
     system "make", "install"
   end
+
+  test do
+    assert pipe_output("#{bin}/graph -T ps", "0.0 0.0\n1.0 0.2\n").start_with?("")
+  end
 end
