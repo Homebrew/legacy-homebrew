@@ -3,8 +3,8 @@ require "formula"
 class Qemu < Formula
   homepage "http://www.qemu.org/"
   head "git://git.qemu-project.org/qemu.git"
-  url "http://wiki.qemu-project.org/download/qemu-2.1.2.tar.bz2"
-  sha1 "f5f9eefa8fece7dead0487a2cca25f90e3dab3d9"
+  url "http://wiki.qemu-project.org/download/qemu-2.2.0.tar.bz2"
+  sha1 "9a16623775a92fd25334f4eced4e6a56ab536233"
 
   bottle do
     sha1 "6ddb5245e0669258d8514143166f520749080fec" => :mavericks
