@@ -1,9 +1,7 @@
-require "formula"
-
 class Xmp < Formula
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.9/xmp-4.0.9.tar.gz"
-  sha1 "f22871d5e5be1a0b08d11a0b3bd28f6723a69ee3"
+  url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.10/xmp-4.0.10.tar.gz"
+  sha1 "e6a39a5158a9e36d437b233d68a8dc7756a971e1"
 
   bottle do
     sha1 "f9b3c62d4952cd0ede1c131dcdf973903316d87d" => :mavericks
