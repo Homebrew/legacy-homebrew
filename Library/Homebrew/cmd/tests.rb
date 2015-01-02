@@ -6,7 +6,7 @@ module Homebrew
       quiet_system("bundle", "check") || \
         system("bundle", "install", "--path", "vendor/bundle")
       system "bundle", "exec", "rake", "test"
-      exit $?.exitstatus
+      Homebrew.failed = !$?.success?
     end
   end
 end
