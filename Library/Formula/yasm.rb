@@ -49,4 +49,26 @@ class Yasm < Formula
     system "./configure", *args
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.asm").write <<-EOS.undent
+      global start
+      section .text
+      start:
+          mov     rax, 0x2000004 ; write
+          mov     rdi, 1 ; stdout
+          mov     rsi, qword msg
+          mov     rdx, msg.len
+          syscall
+          mov     rax, 0x2000001 ; exit
+          mov     rdi, 0
+          syscall
+      section .data
+      msg:    db      "Hello, world!", 10
+      .len:   equ     $ - msg
+    EOS
+    system "#{bin}/yasm", "-f", "macho64", "test.asm"
+    system "/usr/bin/ld", "-macosx_version_min", "10.7.0", "-lSystem", "-o", "test", "test.o"
+    system "./test"
+  end
 end
