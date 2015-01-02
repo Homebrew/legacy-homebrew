@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Clasp < Formula
-  homepage 'http://potassco.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/potassco/clasp/3.1.0/clasp-3.1.0-source.tar.gz'
-  sha1 '57297b641d6900a639e09c2a1c73549707f337b7'
+  homepage "http://potassco.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/potassco/clasp/3.1.1/clasp-3.1.1-source.tar.gz"
+  sha1 "01a35f05fb4c138bb0bfd8759f36b2eebafa7069"
 
   bottle do
     cellar :any
@@ -12,16 +12,16 @@ class Clasp < Formula
     sha1 "47b98da2e221a1387780e3c262b96147efffd61e" => :lion
   end
 
-  option 'with-mt', 'Enable multi-thread support'
+  option "with-mt", "Enable multi-thread support"
 
-  depends_on 'tbb' if build.with? "mt"
+  depends_on "tbb" if build.with? "mt"
 
   def install
     if build.with? "mt"
-      ENV['TBB30_INSTALL_DIR'] = Formula["tbb"].opt_prefix
-      build_dir = 'build/release_mt'
+      ENV["TBB30_INSTALL_DIR"] = Formula["tbb"].opt_prefix
+      build_dir = "build/release_mt"
     else
-      build_dir = 'build/release'
+      build_dir = "build/release"
     end
 
     args = %W[
