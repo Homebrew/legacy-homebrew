@@ -34,7 +34,10 @@ class Cmake < Formula
   option "without-docs", "Don't build man pages"
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
   depends_on "xz" # For LZMA
-  depends_on "qt" => :optional
+
+  # The `with-qt` GUI option was removed due to circular dependencies if
+  # CMake is built with Qt support and Qt is built with MySQL support as MySQL uses CMake.
+  # For the GUI application please instead use brew install caskroom/cask/cmake.
 
   resource "sphinx" do
     url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
@@ -91,12 +94,9 @@ class Cmake < Formula
       args << "--sphinx-man" << "--sphinx-build=#{buildpath}/sphinx/bin/sphinx-build"
     end
 
-    args << "--qt-gui" if build.with? "qt"
-
     system "./bootstrap", *args
     system "make"
     system "make", "install"
-    bin.install_symlink Dir["#{prefix}/CMake.app/Contents/bin/*"] if build.with? "qt"
   end
 
   test do
