@@ -32,6 +32,7 @@ object LocalContextSupervisorSpec {
         num-cpu-cores = 2
         memory-per-node = 512m
         passthrough {
+          spark.driver.allowMultipleContexts = true
           spark.ui.enabled = false
         }
       }
@@ -82,12 +83,10 @@ class LocalContextSupervisorSpec extends TestKit(LocalContextSupervisorSpec.syst
     }
 
     it("should be able to add multiple new contexts") {
-      import scala.concurrent.duration._
       supervisor ! AddContext("c1", contextConfig)
+      expectMsg(ContextInitialized)
       supervisor ! AddContext("c2", contextConfig)
-      expectMsg(5 minutes, ContextInitialized)
-
-      expectMsg(5 minutes, ContextInitialized)
+      expectMsg(ContextInitialized)
       supervisor ! ListContexts
       expectMsg(Seq("c1", "c2"))
       supervisor ! GetResultActor("c1")
