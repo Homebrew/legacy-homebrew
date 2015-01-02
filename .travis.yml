@@ -9,4 +9,4 @@ install:
  - chmod 644 Library/Formula/*.rb
  - PATH=$PWD/bin:$PATH
 script:
- - brew test-bot --dry-run $TRAVIS_COMMIT |sed 's/^==> //' |sh -ex
+ - brew test-bot --dry-run $TRAVIS_COMMIT |sed -n 's/^==> //p' |sh -ex
