@@ -119,6 +119,14 @@ module Homebrew
   def self.git_last_commit
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
   end
+
+  def self.install_gem_setup_path! gem
+    return if quiet_system "gem", "list", "--installed", gem
+    system "gem", "install", "--no-ri", "--no-rdoc",
+           "--user-install", gem
+    require "rubygems"
+    ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
+  end
 end
 
 def with_system_path
