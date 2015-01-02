@@ -6,9 +6,9 @@ class Ktoblzcheck < Formula
   sha1 "80d1a586e2d581dce62094fed61b9292f2c72c6b"
 
   bottle do
-    sha1 "7190e0fde6f0cbeb76b28981a7a6c497ed766455" => :mavericks
-    sha1 "fcb5cb779e4a70797fc979a99bb9a3a6305607f4" => :mountain_lion
-    sha1 "0627b12d557570f55d8c9d944199c08406d70732" => :lion
+    sha1 "9575535aa28c130cd738edce67a6cc95789dcf10" => :yosemite
+    sha1 "59920a94f3347e9954e8ca692730fc48900224c2" => :mavericks
+    sha1 "ce8c954020e3436d57983d7be273a5c9b1070313" => :mountain_lion
   end
 
   def install
