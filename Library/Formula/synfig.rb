@@ -8,9 +8,9 @@ class Synfig < Formula
   head "git://synfig.git.sourceforge.net/gitroot/synfig/synfig"
 
   bottle do
-    sha1 "1353dc1b8855ae972fe5b2aa74c4725c919ec233" => :yosemite
-    sha1 "f5d93ec9e09a37b0d9529d6282395facba82d9e0" => :mavericks
-    sha1 "0feeffbb682c86a11fae0a405232fb3f5d67f51d" => :mountain_lion
+    sha1 "89c964ef3cf533bf684f068edf859e8fcffeab3e" => :yosemite
+    sha1 "e18ee1a88afa30edf481230dfb61ee35eab8d76a" => :mavericks
+    sha1 "678579ebdb05f32f405fde48151ef3523a9249fc" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
