@@ -38,11 +38,14 @@ Note that these flags should only appear after a command.
 
 ## COMMANDS
 
-  * `audit` [<formulae>]:
+  * `audit` [--strict] [<formulae>]:
     Check <formulae> for Homebrew coding style violations. This should be
     run before submitting a new formula.
 
     If no <formulae> are provided, all of them are checked.
+
+    If `--strict` is passed, additional checks are run. This should be used
+    when creating for new formulae.
 
     `audit` exits with a non-zero status if any errors are found. This is useful,
     for instance, for implementing pre-commit hooks.

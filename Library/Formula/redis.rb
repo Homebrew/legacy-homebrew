@@ -1,7 +1,5 @@
-require 'formula'
-
 class Redis < Formula
-  homepage 'http://redis.io/'
+  homepage "http://redis.io/"
   url "http://download.redis.io/releases/redis-2.8.19.tar.gz"
   sha1 "3e362f4770ac2fdbdce58a5aa951c1967e0facc8"
 
@@ -11,11 +9,11 @@ class Redis < Formula
     sha1 "4b8100b40edd0e6ef695e28bf4fd30360939c3f3" => :mountain_lion
   end
 
-  head 'https://github.com/antirez/redis.git', :branch => 'unstable'
+  head "https://github.com/antirez/redis.git", :branch => "unstable"
 
   fails_with :llvm do
     build 2334
-    cause 'Fails with "reference out of range from _linenoise"'
+    cause "Fails with \"reference out of range from _linenoise\""
   end
 
   def install
@@ -23,7 +21,7 @@ class Redis < Formula
     ENV["OBJARCH"] = "-arch #{MacOS.preferred_arch}"
 
     # Head and stable have different code layouts
-    src = (buildpath/'src/Makefile').exist? ? buildpath/'src' : buildpath
+    src = (buildpath/"src/Makefile").exist? ? buildpath/"src" : buildpath
     system "make", "-C", src, "CC=#{ENV.cc}"
 
     %w[benchmark cli server check-dump check-aof sentinel].each { |p| bin.install src/"redis-#{p}" }
@@ -36,8 +34,8 @@ class Redis < Formula
       s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
-    etc.install 'redis.conf'
-    etc.install 'sentinel.conf' => 'redis-sentinel.conf'
+    etc.install "redis.conf"
+    etc.install "sentinel.conf" => "redis-sentinel.conf"
   end
 
   plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"

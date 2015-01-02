@@ -27,9 +27,7 @@ class FormulaValidationError < StandardError
 
   def initialize(attr, value)
     @attr = attr
-    msg = "invalid attribute: #{attr}"
-    msg << " (#{value.inspect})" unless value.empty?
-    super msg
+    super "invalid attribute: #{attr} (#{value.inspect})"
   end
 end
 
@@ -168,7 +166,7 @@ class BuildError < RuntimeError
         puts "Path: #{formula.path}"
       end
       ohai "Configuration"
-      Homebrew.dump_build_config
+      Homebrew.dump_verbose_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
       puts
@@ -200,16 +198,26 @@ end
 
 # Raised in Resource.fetch
 class DownloadError < RuntimeError
-  def initialize(resource, e)
+  def initialize(resource, cause)
     super <<-EOS.undent
       Failed to download resource #{resource.download_name.inspect}
-      #{e.message}
+      #{cause.message}
       EOS
+    set_backtrace(cause.backtrace)
   end
 end
 
 # raised in CurlDownloadStrategy.fetch
-class CurlDownloadStrategyError < RuntimeError; end
+class CurlDownloadStrategyError < RuntimeError
+  def initialize(url)
+    case url
+    when %r[^file://(.+)]
+      super "File does not exist: #{$1}"
+    else
+      super "Download failed: #{url}"
+    end
+  end
+end
 
 # raised by safe_system in utils.rb
 class ErrorDuringExecution < RuntimeError

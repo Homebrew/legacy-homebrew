@@ -30,7 +30,7 @@ class Keg
     def suggestion
       conflict = Keg.for(dst)
     rescue NotAKegError, Errno::ENOENT
-      "already exists. You may want to remove it:\n  rm #{dst}\n"
+      "already exists. You may want to remove it:\n  rm '#{dst}'\n"
     else
       <<-EOS.undent
       is a symlink belonging to #{conflict.name}. You can unlink it:
@@ -259,8 +259,8 @@ class Keg
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
 
-    link_dir('share', mode) do |path|
-      case path.to_s
+    link_dir('share', mode) do |relative_path|
+      case relative_path.to_s
       when 'locale/locale.alias' then :skip_file
       when INFOFILE_RX then :info
       when LOCALEDIR_RX then :mkpath
@@ -273,8 +273,8 @@ class Keg
       end
     end
 
-    link_dir('lib', mode) do |path|
-      case path.to_s
+    link_dir('lib', mode) do |relative_path|
+      case relative_path.to_s
       when 'charset.alias' then :skip_file
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
@@ -294,12 +294,12 @@ class Keg
       end
     end
 
-    link_dir('Frameworks', mode) do |path|
+    link_dir('Frameworks', mode) do |relative_path|
       # Frameworks contain symlinks pointing into a subdir, so we have to use
       # the :link strategy. However, for Foo.framework and
       # Foo.framework/Versions we have to use :mkpath so that multiple formulae
       # can link their versions into it and `brew [un]link` works.
-      if path.to_s =~ /[^\/]*\.framework(\/Versions)?$/
+      if relative_path.to_s =~ /[^\/]*\.framework(\/Versions)?$/
         :mkpath
       else
         :link

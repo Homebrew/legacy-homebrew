@@ -15,6 +15,8 @@ class Fig < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
+  conflicts_with "tutum", :because => "both install `wsdump.py` binaries"
+
   resource "docopt" do
     url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.1.tar.gz"
     sha1 "3d0ad1cf495d2c801327042e02d67b4ee4b85cd4"

@@ -7,10 +7,10 @@ class Pypy3 < Formula
 
   bottle do
     cellar :any
-    revision 4
-    sha1 "436d9f72ecfe83b50a045a68874d7aaab67fbe7d" => :yosemite
-    sha1 "cce8dc0fd43e58d962b0747a4901f261d2ccd287" => :mavericks
-    sha1 "94d8d0bbf5baffac4c453e742686f2380d5e7f2d" => :mountain_lion
+    revision 5
+    sha1 "5913e695ae9324959515fa1308764d52155d2a64" => :yosemite
+    sha1 "f71603e7c10af67fd5c756c821e9985416eec4da" => :mavericks
+    sha1 "e9bf22ef9f4ab158ffce6ddc6f51728ced7cfaac" => :mountain_lion
   end
 
   depends_on :arch => :x86_64
@@ -18,13 +18,13 @@ class Pypy3 < Formula
   depends_on "openssl"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.2.1.tar.gz"
-    sha1 "ddb4454303142be3446437e4fafb13bbd4570133"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-9.1.tar.gz"
+    sha1 "b068a670c84df7b961730c6a0d00cd06c7b767f0"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
-    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.3.tar.gz"
+    sha1 "67d4affd83ee2f3514ac1386bee59f10f672517c"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
@@ -56,6 +56,10 @@ class Pypy3 < Formula
     # scripts will find it.
     bin.install_symlink libexec/"bin/pypy" => "pypy3"
     lib.install_symlink libexec/"lib/libpypy3-c.dylib"
+
+    %w[setuptools pip].each do |r|
+      (libexec/r).install resource(r)
+    end
   end
 
   def post_install
@@ -82,8 +86,11 @@ class Pypy3 < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    resource("setuptools").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
-    resource("pip").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    %w[setuptools pip].each do |pkg|
+      (libexec/pkg).cd do
+        system bin/"pypy3", "-s", "setup.py", "install", "--force", "--verbose"
+      end
+    end
 
     # Symlinks to easy_install_pypy3 and pip_pypy3
     bin.install_symlink scripts_folder/"easy_install" => "easy_install_pypy3"

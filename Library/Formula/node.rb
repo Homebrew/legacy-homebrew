@@ -1,15 +1,13 @@
-require "formula"
-
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.10.34/node-v0.10.34.tar.gz"
-  sha256 "d7f8473b5849873039f7e62595e12dcdb78c8dffda317e1253b3123876bf3415"
+  url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
+  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
 
   bottle do
-    sha1 "4eb82594b4f9368d7081b599b686e7a61f7c77f7" => :yosemite
-    sha1 "ad33eb03850df294962152157d4958d5778fe380" => :mavericks
-    sha1 "c52c72c86cca56f736f7f723bf0291da5ebda9b2" => :mountain_lion
+    sha1 "ca78513c44fc13be68573508ecd7d232653d6e60" => :yosemite
+    sha1 "e9d4506087e8b235ed4e639e785da9cb9c092666" => :mavericks
+    sha1 "156ff749e8cf14012a27619ddea15685715d36ab" => :mountain_lion
   end
 
   head do

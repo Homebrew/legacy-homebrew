@@ -1,21 +1,19 @@
-require 'formula'
-
 class Freetype < Formula
-  homepage 'http://www.freetype.org'
-  url 'https://downloads.sf.net/project/freetype/freetype2/2.5.4/freetype-2.5.4.tar.bz2'
-  sha1 'f30b929e2edc5d7ca64c1ccc65f0c2068e84c5e2'
+  homepage "http://www.freetype.org"
+  url "https://downloads.sf.net/project/freetype/freetype2/2.5.5/freetype-2.5.5.tar.bz2"
+  sha1 "7b7460ef51a8fdb17baae53c6658fc1ad000a1c2"
 
   bottle do
     cellar :any
-    sha1 "f4359a08667fa05b71e10ad32ef10015dfed432b" => :yosemite
-    sha1 "5121b7819b0d4df955779f030f9afcb9ace6184d" => :mavericks
-    sha1 "a9a1bc440a482fc050edb5234052a9468d9ab4fb" => :mountain_lion
+    sha1 "f3c9868e2f0cad854d1f24c5dcc98e304ce9c59e" => :yosemite
+    sha1 "c2cab6b497af1b07ce940139bb7dec65c8a2117c" => :mavericks
+    sha1 "341bb165aa5c67cecace843be154ef71723d6268" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
 
   option :universal
-  option 'without-subpixel', "Disable sub-pixel rendering (a.k.a. LCD rendering, or ClearType)"
+  option "without-subpixel", "Disable sub-pixel rendering (a.k.a. LCD rendering, or ClearType)"
 
   depends_on "libpng"
 
@@ -33,7 +31,7 @@ class Freetype < Formula
   end
 
   test do
-    system "#{bin}/freetype-config", '--cflags', '--libs', '--ftversion',
-      '--exec-prefix', '--prefix'
+    system "#{bin}/freetype-config", "--cflags", "--libs", "--ftversion",
+      "--exec-prefix", "--prefix"
   end
 end

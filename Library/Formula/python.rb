@@ -7,10 +7,10 @@ class Python < Formula
   sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 6
-    sha1 "d08397195650b39e2c066df6e69d4e0fac1bbf87" => :yosemite
-    sha1 "e984c0f3410ff12111d52e9d7453e84dc7b2ccfd" => :mavericks
-    sha1 "44b321eac71565a41ebcec91b5558be56d496805" => :mountain_lion
+    revision 7
+    sha1 "a81d7c350cebe4e50cfaa7bcfebec8174fc0d83a" => :yosemite
+    sha1 "f25fcc726f9fee63d9450da2788c71d76a4337b3" => :mavericks
+    sha1 "903b4cd31563b3bbf6beea3ecce95ae35689d5e1" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -32,13 +32,13 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.2.1.tar.gz"
-    sha1 "ddb4454303142be3446437e4fafb13bbd4570133"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-9.1.tar.gz"
+    sha1 "b068a670c84df7b961730c6a0d00cd06c7b767f0"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
-    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.3.tar.gz"
+    sha1 "67d4affd83ee2f3514ac1386bee59f10f672517c"
   end
 
   # Patch for pyport.h macro issue
@@ -92,11 +92,7 @@ class Python < Formula
 
     args << "--without-gcc" if ENV.compiler == :clang
 
-    if superenv?
-      distutils_fix_superenv(args)
-    else
-      distutils_fix_stdenv
-    end
+    distutils_fix_superenv(args)
 
     if build.universal?
       ENV.universal_binary
@@ -236,29 +232,6 @@ class Python < Formula
               "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
   end
 
-  def distutils_fix_stdenv
-    # Python scans all "-I" dirs but not "-isysroot", so we add
-    # the needed includes with "-I" here to avoid this err:
-    #     building dbm using ndbm
-    #     error: /usr/include/zlib.h: No such file or directory
-    ENV.append "CPPFLAGS", "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
-
-    # Don't use optimizations other than "-Os" here, because Python's distutils
-    # remembers (hint: `python-config --cflags`) and reuses them for C
-    # extensions which can break software (such as scipy 0.11 fails when
-    # "-msse4" is present.)
-    ENV.minimal_optimization
-
-    # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
-    ENV.enable_warnings
-    if ENV.compiler == :clang
-      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-      ENV.append_to_cflags "-Wno-unused-value"
-      ENV.append_to_cflags "-Wno-empty-body"
-    end
-  end
-
   def sitecustomize
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
@@ -330,6 +303,7 @@ class Python < Formula
     system "#{bin}/python", "-c", "import sqlite3"
     # Check if some other modules import. Then the linked libs are working.
     system "#{bin}/python", "-c", "import Tkinter; root = Tkinter.Tk()"
+    system bin/"pip", "list"
   end
 end
 

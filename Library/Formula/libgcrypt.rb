@@ -1,5 +1,3 @@
-require "formula"
-
 class Libgcrypt < Formula
   homepage "https://gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.2.tar.bz2"
@@ -41,5 +39,9 @@ class Libgcrypt < Formula
     system "make"
     system "make", "check"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/libgcrypt-config", "--libs"
   end
 end

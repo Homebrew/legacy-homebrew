@@ -1,5 +1,3 @@
-require "formula"
-
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
   url "https://pypi.python.org/packages/source/a/awscli/awscli-1.6.5.tar.gz"

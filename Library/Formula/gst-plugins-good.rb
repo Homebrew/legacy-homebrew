@@ -4,17 +4,17 @@ class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.4.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.4.tar.xz'
-    sha256 '2df90e99da45211c7b2525ae4ac34830a9e7784bd48c072c406c0cf014bdb277'
+    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.5.tar.xz'
+    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.5.tar.xz'
+    sha256 "79b1b5f3f7bcaa8a615202eb5e176121eeb8336960f70687e536ad78dbc7e641"
 
     depends_on 'check' => :optional
   end
 
   bottle do
-    sha1 "42ddc43233247a8cb90da2fc64b90ffd83c25dd1" => :yosemite
-    sha1 "07ab214b44b9e78a7d963f164454a1cb19da7372" => :mavericks
-    sha1 "89e2f6c8b1b738c24058e38b17e2286922ad63f9" => :mountain_lion
+    sha1 "184f6be9e300566f37e7b014cca49f78018c36d4" => :yosemite
+    sha1 "a05a8f0dc08ea2626623f30dcb2cc458bd973b7e" => :mavericks
+    sha1 "7ce582ddab67b58d87469d112745144a0cf0edd2" => :mountain_lion
   end
 
   head do
@@ -48,6 +48,7 @@ class GstPluginsGood < Formula
   depends_on 'speex' => :optional
   depends_on 'taglib' => :optional
   depends_on 'libpng' => :optional
+  depends_on 'libvpx' => :optional
 
   depends_on 'libogg' if build.with? 'flac'
 

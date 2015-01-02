@@ -2,7 +2,7 @@ require "formula"
 
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
-  url "https://github.com/Carthage/Carthage.git", :tag => "0.3.1",
+  url "https://github.com/Carthage/Carthage.git", :tag => "0.5",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
@@ -10,8 +10,8 @@ class Carthage < Formula
 
   bottle do
     cellar :any
-    sha1 "42ab2b503d01cbf31ffb35007d0844fbfbb4784d" => :yosemite
-    sha1 "57ca3f3ef352719fff9d1b7a3efe49f7f7c59480" => :mavericks
+    sha1 "a09cb5216f7a9f7978be190e323f8d093a0f275a" => :yosemite
+    sha1 "754349bcd9a068611706ff6bdeea22b8f6ceb76c" => :mavericks
   end
 
   def install

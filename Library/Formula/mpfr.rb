@@ -1,5 +1,3 @@
-require "formula"
-
 class Mpfr < Formula
   homepage "http://www.mpfr.org/"
   # Upstream is down a lot, so use the GNU mirror + Gist for patches
@@ -38,7 +36,24 @@ class Mpfr < Formula
     ENV.m32 if build.build_32_bit?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gmp.h>
+      #include <mpfr.h>
+
+      int main()
+      {
+        mpfr_t x;
+        mpfr_init(x);
+        mpfr_clear(x);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lgmp", "-lmpfr", "-o", "test"
+    system "./test"
   end
 end

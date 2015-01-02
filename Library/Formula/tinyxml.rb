@@ -1,13 +1,18 @@
-require 'formula'
-
 class Tinyxml < Formula
-  homepage 'http://www.grinninglizard.com/tinyxml/'
-  url 'https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz'
-  sha1 'cba3f50dd657cb1434674a03b21394df9913d764'
+  homepage "http://www.grinninglizard.com/tinyxml/"
+  url "https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz"
+  sha1 "cba3f50dd657cb1434674a03b21394df9913d764"
+
+  bottle do
+    cellar :any
+    sha1 "c0939c0120467f4f27f53e62ed9e262935a240f7" => :yosemite
+    sha1 "4c8aa1d3c529a87e3aebae4e2f7c425e0c96e29f" => :mavericks
+    sha1 "a36a2ebad9f8ec43591edbb522cc7371c60a490d" => :mountain_lion
+  end
 
   option :universal
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   # The first two patches are taken from the debian packaging of tinyxml.
   #   The first patch enforces use of stl strings, rather than a custom string type.
@@ -49,5 +54,24 @@ class Tinyxml < Formula
     Libs: -L${libdir} -ltinyxml
     Cflags: -I${includedir}
     EOS
+  end
+
+  test do
+    (testpath/"test.xml").write <<-EOS.undent
+      <?xml version="1.0" ?>
+      <Hello>World</Hello>
+    EOS
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <tinyxml.h>
+
+      int main()
+      {
+        TiXmlDocument doc ("test.xml");
+        doc.LoadFile();
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-ltinyxml", "-o", "test"
+    system "./test"
   end
 end

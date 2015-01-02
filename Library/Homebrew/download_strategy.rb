@@ -13,6 +13,25 @@ class AbstractDownloadStrategy
     @meta = resource.specs
   end
 
+  # Download and cache the resource as {#cached_location}.
+  def fetch
+  end
+
+  # Unpack {#cached_location} into the current working directory.
+  def stage
+  end
+
+  # @!attribute [r] cached_location
+  # The path to the cached file or directory associated with the resource.
+  def cached_location
+  end
+
+  # Remove {#cached_location} and any other files associated with the resource
+  # from the cache.
+  def clear_cache
+    rm_rf(cached_location)
+  end
+
   def expand_safe_system_args args
     args = args.dup
     args.each_with_index do |arg, ii|
@@ -33,12 +52,6 @@ class AbstractDownloadStrategy
   def quiet_safe_system *args
     safe_system(*expand_safe_system_args(args))
   end
-
-  # All download strategies are expected to implement these methods
-  def fetch; end
-  def stage; end
-  def cached_location; end
-  def clear_cache; end
 
   private
 
@@ -116,10 +129,6 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     @clone
   end
 
-  def clear_cache
-    cached_location.rmtree if cached_location.exist?
-  end
-
   def head?
     version.head?
   end
@@ -175,12 +184,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
           had_incomplete_download = false
           retry
         else
-          if @url =~ %r[^file://]
-            msg = "File does not exist: #{@url.sub(%r[^file://], "")}"
-          else
-            msg = "Download failed: #{@url}"
-          end
-          raise CurlDownloadStrategyError, msg
+          raise CurlDownloadStrategyError.new(@url)
         end
       end
       ignore_interrupts { temporary_path.rename(cached_location) }
@@ -229,7 +233,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def clear_cache
-    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
+    super
+    rm_rf(temporary_path)
   end
 
   private

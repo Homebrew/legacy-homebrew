@@ -21,21 +21,12 @@ module Debrew
       Debrew.debrew { super }
     end
 
-    def test
+    def patch
       Debrew.debrew { super }
     end
-  end
 
-  module Resource
-    def unpack(target=nil)
-      return super if target
-      super do
-        begin
-          yield self
-        rescue Exception => e
-          Debrew.debug(e)
-        end
-      end
+    def test
+      Debrew.debrew { super }
     end
   end
 

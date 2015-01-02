@@ -5,6 +5,8 @@ class X11Dependency < Requirement
   attr_reader :min_version
 
   fatal true
+  cask "xquartz"
+  download "https://xquartz.macosforge.org"
 
   env { ENV.x11 }
 
@@ -12,8 +14,10 @@ class X11Dependency < Requirement
     @name = name
     if /(\d\.)+\d/ === tags.first
       @min_version = Version.new(tags.shift)
+      @min_version_string = " #{@min_version}"
     else
       @min_version = Version.new("0.0.0")
+      @min_version_string = ""
     end
     super(tags)
   end
@@ -22,11 +26,10 @@ class X11Dependency < Requirement
     MacOS::XQuartz.installed? && min_version <= Version.new(MacOS::XQuartz.version)
   end
 
-  def message; <<-EOS.undent
-    Unsatisfied dependency: XQuartz #{@min_version}
-    Homebrew does not package XQuartz. Installers may be found at:
-      https://xquartz.macosforge.org
-    EOS
+  def message
+    s = "XQuartz#{@min_version_string} is required to install this formula."
+    s += super
+    s
   end
 
   def <=> other
