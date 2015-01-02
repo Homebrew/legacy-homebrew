@@ -2,8 +2,8 @@ require "formula"
 
 class Ktoblzcheck < Formula
   homepage "http://ktoblzcheck.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.47.tar.gz"
-  sha1 "bf099879916d22c9334ef94b4e782afecd319226"
+  url "https://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.48.tar.gz"
+  sha1 "80d1a586e2d581dce62094fed61b9292f2c72c6b"
 
   bottle do
     sha1 "7190e0fde6f0cbeb76b28981a7a6c497ed766455" => :mavericks
