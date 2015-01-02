@@ -1,5 +1,3 @@
-require "formula"
-
 class Twister < Formula
   homepage "http://twister.net.co"
   url "https://github.com/miguelfreitas/twister-core/archive/v0.9.28.tar.gz"
@@ -42,9 +40,6 @@ class Twister < Formula
   end
 
   test do
-    data_dir = "twister-#{Time.now.strftime '%Y%m%d%H%M%S'}"
-    Dir.mkdir(data_dir) unless File.exists? data_dir
-    system "#{bin}/twisterd -daemon -datadir=#{data_dir} -rpcuser=user -rpcpassword=password -rpcallowip=127.0.0.1"
-    rm_r data_dir
+    system "#{bin}/twisterd getinfo"
   end
 end
