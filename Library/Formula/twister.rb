@@ -9,20 +9,16 @@ class Twister < Formula
     url "https://github.com/miguelfreitas/twister-core.git"
   end
 
-  depends_on "boost" => :build
-  depends_on "miniupnpc" => :build
-  depends_on "openssl" => :build
-  depends_on "berkeley-db4" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "berkeley-db4"
+  depends_on "boost"
   depends_on "libtool" => :build
-
-  option "without-webui", "Build without web ui"
+  depends_on "miniupnpc" => :build
+  depends_on "openssl"
 
   def install
-    if build.head?
-      ln_s cached_download/".git", ".git"
-    end
+    ENV["GIT_DIR"] = cached_download/".git" if build.head?
 
     system "./autotool.sh"
 
@@ -34,21 +30,19 @@ class Twister < Formula
 
     system "./configure", *args
     system "make", "install"
+  end
 
-    if build.with? "webui"
-      html_dir = "#{ENV['HOME']}/Library/Application\ Support/Twister/html"
+  def caveats; <<-EOS.undent
 
-      if File.exists? html_dir
-        File.rename html_dir, "#{ENV['HOME']}/Library/Application\ Support/Twister/html.bak-#{Time.now.strftime '%Y%m%d%H%M%S'}"
-      end
+    To use Web UI, you need to clone twister-webui project to your Library directory:
 
-      mkdir_p html_dir
-      system "git clone https://github.com/miguelfreitas/twister-html.git ${HOME}/Library/Application\\ Support/Twister/html"
-    end
+      git clone https://github.com/miguelfreitas/twister-html.git ${HOME}/Library/Application\\ Support/Twister/html
+
+    EOS
   end
 
   test do
-    data_dir = "/tmp/twister-#{Time.now.strftime '%Y%m%d%H%M%S'}"
+    data_dir = "twister-#{Time.now.strftime '%Y%m%d%H%M%S'}"
     Dir.mkdir(data_dir) unless File.exists? data_dir
     system "#{bin}/twisterd -daemon -datadir=#{data_dir} -rpcuser=user -rpcpassword=password -rpcallowip=127.0.0.1"
     rm_r data_dir
