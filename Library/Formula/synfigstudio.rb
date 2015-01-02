@@ -6,9 +6,9 @@ class Synfigstudio < Formula
   sha1 "63655509a6a5920eb067021730abbb52164436f5"
 
   bottle do
-    sha1 "feaa6217d845867d674f81f4380f46b98daf9aef" => :yosemite
-    sha1 "08ee70dd675457e4664cfc091f094ac34b485a40" => :mavericks
-    sha1 "ea2bf39df2c1798ac479c3a3c08c73b4815724cf" => :mountain_lion
+    sha1 "c8eb2ea83ffc2ca9959c20588ee7c18fdcf706b4" => :yosemite
+    sha1 "3f868438ff5edfe8468ab07637ee6235be824cf6" => :mavericks
+    sha1 "efb9e2ae0fc67b8c66ed71b815962e7ac82a35f2" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
