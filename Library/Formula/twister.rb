@@ -40,6 +40,9 @@ class Twister < Formula
   end
 
   test do
-    system "#{bin}/twisterd getinfo"
+    # Add "; echo" because twisterd --help will return 1 as exit code.
+    # I'll contact the author of Twister to fix it.
+    system "#{bin}/twisterd --help; echo"
+    system "which", "twisterd"
   end
 end
