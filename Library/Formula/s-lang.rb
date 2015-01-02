@@ -25,4 +25,8 @@ class SLang < Formula
     system "make"
     system "make", "install"
   end
+
+  test do
+    assert_equal "Hello World!", shell_output("#{bin}/slsh -e 'message(\"Hello World!\");'").strip
+  end
 end
