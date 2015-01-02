@@ -1,21 +1,24 @@
-require 'formula'
-
 class Png2ico < Formula
-  homepage 'http://www.winterdrache.de/freeware/png2ico/'
-  url 'http://www.winterdrache.de/freeware/png2ico/data/png2ico-src-2002-12-08.tar.gz'
-  sha1 '955004bee9a20f12b225aa01895762cbbafaeb28'
+  homepage "http://www.winterdrache.de/freeware/png2ico/"
+  url "http://www.winterdrache.de/freeware/png2ico/data/png2ico-src-2002-12-08.tar.gz"
+  sha1 "955004bee9a20f12b225aa01895762cbbafaeb28"
   revision 1
 
-  depends_on 'libpng'
+  depends_on "libpng"
 
   # Fix build with recent clang
   patch :DATA
 
   def install
-    inreplace 'Makefile', 'g++', '$(CXX)'
+    inreplace "Makefile", "g++", "$(CXX)"
     system "make", "CPPFLAGS=#{ENV.cxxflags} #{ENV.cppflags} #{ENV.ldflags}"
-    bin.install 'png2ico'
-    man1.install 'doc/png2ico.1'
+    bin.install "png2ico"
+    man1.install "doc/png2ico.1"
+  end
+
+  test do
+    system "#{bin}/png2ico", "out.ico", test_fixtures("test.png")
+    assert File.exist?("out.ico")
   end
 end
 
