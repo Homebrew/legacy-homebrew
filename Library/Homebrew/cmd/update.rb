@@ -18,8 +18,7 @@ module Homebrew
 
     tapped_formulae = []
     HOMEBREW_LIBRARY.join("Formula").children.each do |path|
-      next unless path.symlink?
-      tapped_formulae << path.resolved_path
+      tapped_formulae << path.resolved_path if path.symlink?
     end
     unlink_tap_formula(tapped_formulae)
 
@@ -181,8 +180,11 @@ class Updater
         next unless paths.any? { |p| File.dirname(p) == formula_directory }
 
         case status
-        when "A", "M", "D"
+        when "A", "D"
           map[status.to_sym] << repository.join(src)
+        when "M"
+          path = repository.join(src)
+          map[status.to_sym] << path if substantial_change path
         when /^R\d{0,3}/
           map[:D] << repository.join(src) if File.dirname(src) == formula_directory
           map[:A] << repository.join(dst) if File.dirname(dst) == formula_directory
@@ -216,6 +218,24 @@ class Updater
       "git", "diff-tree", "-r", "--name-status", "--diff-filter=AMDR",
       "-M85%", initial_revision, current_revision
     )
+  end
+
+  def last_commit_messages(path, max=1)
+    Utils.popen_read(
+      "git", "log", "--pretty=format:%s", "-n", max.to_s,
+      initial_revision, current_revision, path
+    ).split(/\n/)
+  end
+
+  # Test if a formula file has been substantially changed, e.g. version bump or
+  # updated bottle.
+  def substantial_change(path)
+    unacceptable_patterns = [
+      /: modernize\.?$/,
+    ]
+    last_commit_messages(path).all? do |msg|
+      unacceptable_patterns.any? { |p| p =~ msg }
+    end
   end
 
   def `(cmd)
