@@ -122,10 +122,10 @@ module Homebrew
 
   def self.install_gem_setup_path! gem
     return if quiet_system "gem", "list", "--installed", gem
-    system "gem", "install", "--no-ri", "--no-rdoc",
-           "--user-install", gem
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
+    system "gem", "install", "--no-ri", "--no-rdoc",
+           "--user-install", gem
   end
 end
 
