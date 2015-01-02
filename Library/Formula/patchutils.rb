@@ -14,4 +14,9 @@ class Patchutils < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    assert_match /a\/libexec\/NOOP/,
+          shell_output("#{bin}/lsdiff #{HOMEBREW_LIBRARY.join("Homebrew", "test", "patches", "noop-a.diff")}")
+  end
 end
