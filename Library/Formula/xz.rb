@@ -2,9 +2,9 @@
 # https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
   homepage "http://tukaani.org/xz/"
-  url "http://fossies.org/linux/misc/xz-5.0.7.tar.bz2"
-  mirror "http://tukaani.org/xz/xz-5.0.7.tar.bz2"
-  sha256 "e8851dc749df2340dac6c9297cb2653eff684e73c3dedf690930119502edd616"
+  url "http://fossies.org/linux/misc/xz-5.2.0.tar.gz"
+  mirror "http://tukaani.org/xz/xz-5.2.0.tar.gz"
+  sha256 "231ef369982240bb20ed7cffa52bb12a4a297ce6871f480ab85e8a7ba98bf3d6"
 
   bottle do
     cellar :any
@@ -12,11 +12,6 @@ class Xz < Formula
     sha1 "c54becb676547560824fb873d6a04f24aa3e27aa" => :mavericks
     sha1 "d3ee779d021906abde55b3672135a0cac27c73b0" => :mountain_lion
     sha1 "99d721024996c74abf542373a03d85e121a0714a" => :lion
-  end
-
-  devel do
-    url "http://tukaani.org/xz/xz-5.1.4beta.tar.gz"
-    sha256 "7c47b9e2cfb5be93245d9fcf2bec5b459412b7628c333896dded373dcd0cf0e0"
   end
 
   option :universal
