@@ -2,13 +2,12 @@ require "formula"
 
 class Dvtm < Formula
   homepage "http://www.brain-dump.org/projects/dvtm/"
-  url "http://www.brain-dump.org/projects/dvtm/dvtm-0.12.tar.gz"
-  sha1 "1b433db25d9751e820fc8213874eb57fd15e5552"
+  url "http://www.brain-dump.org/projects/dvtm/dvtm-0.13.tar.gz"
+  sha1 "8a4fc2440faa3050244e5a492fb6766899e0c0d7"
   head "git://repo.or.cz/dvtm.git"
 
   def install
-    inreplace "config.mk", "LIBS = -lc -lutil -lncursesw", "LIBS = -lc -lutil -lncurses"
-    inreplace "Makefile", "strip -s", "strip"
-    system "make", "PREFIX=#{prefix}", "install"
+    ENV.append_to_cflags "-D_DARWIN_C_SOURCE"
+    system "make", "PREFIX=#{prefix}", "LIBS=-lc -lutil -lncurses", "install"
   end
 end
