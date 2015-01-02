@@ -8,10 +8,9 @@ class Xz < Formula
 
   bottle do
     cellar :any
-    sha1 "9e340d49dcfd08d82b59211ec7778b384bfa59f8" => :yosemite
-    sha1 "c54becb676547560824fb873d6a04f24aa3e27aa" => :mavericks
-    sha1 "d3ee779d021906abde55b3672135a0cac27c73b0" => :mountain_lion
-    sha1 "99d721024996c74abf542373a03d85e121a0714a" => :lion
+    sha1 "3ff6acf698890f64dd8c78e447f5f2e329d2d77a" => :yosemite
+    sha1 "b4d71a6a28aaf4e0f85d54d6f5221e9548130b60" => :mavericks
+    sha1 "80f2f7c33a227f57daa63fe5beb8e1f90c8ce6e9" => :mountain_lion
   end
 
   option :universal
