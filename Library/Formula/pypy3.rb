@@ -18,13 +18,13 @@ class Pypy3 < Formula
   depends_on "openssl"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-9.1.tar.gz"
-    sha1 "b068a670c84df7b961730c6a0d00cd06c7b767f0"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.0.tar.gz"
+    sha1 "6dcd7f04f946cf572036cf81e4d9594a28f66c06"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.3.tar.gz"
-    sha1 "67d4affd83ee2f3514ac1386bee59f10f672517c"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
+    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
