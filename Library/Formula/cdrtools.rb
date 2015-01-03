@@ -5,6 +5,12 @@ class Cdrtools < Formula
 
   stable do
     url "https://downloads.sourceforge.net/project/cdrtools/cdrtools-3.00.tar.bz2"
+  bottle do
+    sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
+    sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
+    sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
+  end
+
     sha1 "6464844d6b936d4f43ee98a04d637cd91131de4e"
 
     patch :p0 do
