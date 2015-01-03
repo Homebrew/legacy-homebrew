@@ -3,6 +3,13 @@ class Audiofile < Formula
   url "http://audiofile.68k.org/audiofile-0.3.6.tar.gz"
   sha1 "3aba3ef724b1b5f88cfc20ab9f8ce098e6c35a0e"
 
+  bottle do
+    cellar :any
+    sha1 "3ee5b808776b2ee6269aad02db795e8da61fa181" => :yosemite
+    sha1 "a15e1ae96b15c18c62cfd19e387eb5d21f0992f2" => :mavericks
+    sha1 "9994dc853442647fee82bf7291df0a2d35b93d16" => :mountain_lion
+  end
+
   head do
     url "https://github.com/mpruett/audiofile.git"
     depends_on "asciidoc" => :build
