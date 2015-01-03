@@ -290,7 +290,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * Jonatan Lindström
 * [AYSTech Consulting](http://aystech.net)
 * [Josh Dick](http://joshdick.net)
-* [Alexey Mirniy](http://www.linkedin.com/in/pharmazone)
+* [Alexey Mirniy](https://www.linkedin.com/in/pharmazone)
 * [Simon Gate](Http://smgt.me)
 * [Josh Yaganeh](https://github.com/jyaganeh)
 * Dirk Kraft
