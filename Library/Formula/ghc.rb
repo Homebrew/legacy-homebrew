@@ -2,7 +2,7 @@ require 'formula'
 
 class Ghc < Formula
   homepage "http://haskell.org/ghc/"
-  url "https://www.haskell.org/ghc/dist/7.8.4/ghc-7.8.4-src.tar.xz"
+  url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-src.tar.xz"
   sha256 "c319cd94adb284177ed0e6d21546ed0b900ad84b86b87c06a99eac35152982c4"
 
   bottle do
@@ -22,25 +22,25 @@ class Ghc < Formula
 
   if build.build_32_bit? || !MacOS.prefer_64_bit?
     resource "binary" do
-      url "https://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
-      sha256 "80c946e6d66e46ca5d40755f3fbe3100e24c0f8036b850fd8767c4f9efd02bef"
+      url "https://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-i386-apple-darwin.tar.bz2"
+      sha256 "cc298a03b5450e0cc93cf6929a47a31165733348d2d98f50627ea69532c19391"
     end
   elsif MacOS.version <= :lion
     # https://ghc.haskell.org/trac/ghc/ticket/9257
     resource "binary" do
-      url "https://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
+      url "https://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
     end
   else
     resource "binary" do
       # there is currently no 7.8.4 binary download for darwin
-      url "https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-x86_64-apple-darwin.tar.xz"
+      url "https://downloads.haskell.org/~ghc/7.8.3/ghc-7.8.3-x86_64-apple-darwin.tar.xz"
       sha256 "dba74c4cfb3a07d243ef17c4aebe7fafe5b43804468f469fb9b3e5e80ae39e38"
     end
   end
 
   resource "testsuite" do
-    url "https://www.haskell.org/ghc/dist/7.8.4/ghc-7.8.4-testsuite.tar.xz"
+    url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
     sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
   end
 
