@@ -6,7 +6,6 @@ class Julius < Formula
   depends_on "libsndfile"
 
   def install
-
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
@@ -14,5 +13,4 @@ class Julius < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
-
 end
