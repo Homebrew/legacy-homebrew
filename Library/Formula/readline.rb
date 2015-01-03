@@ -44,4 +44,20 @@ class Readline < Formula
     lib.install_symlink "libhistory.6.3.dylib" => "libhistory.6.2.dylib",
                         "libreadline.6.3.dylib" => "libreadline.6.2.dylib"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
+      #include <stdlib.h>
+      #include <readline/readline.h>
+
+      int main()
+      {
+        printf("%s\\n", readline("test> "));
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lreadline", "-o", "test"
+    assert_equal "Hello, World!", pipe_output("./test", "Hello, World!\n").strip
+  end
 end
