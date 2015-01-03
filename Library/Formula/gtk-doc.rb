@@ -4,9 +4,9 @@ class GtkDoc < Formula
   sha256 "5d934d012ee08edd1585544792efa80da271652587ba5b843d2cea8e8b80ee3e"
 
   bottle do
-    sha1 "be13f6a01fed97680dfce7c18704885d6cb7ed8f" => :mavericks
-    sha1 "48b5f384aeebd39494794f46ed801f35f5bcfb6e" => :mountain_lion
-    sha1 "0f88dda0c51d73acebc3b2ec1513f67ff7d5c87c" => :lion
+    sha1 "3499509d4916f5ec0eea321a5dc9f81d5dadb702" => :yosemite
+    sha1 "1de0d6fc4ffdb851c8b61a4a32fee965b8f23293" => :mavericks
+    sha1 "9a49cfeeeb239bab0be244871657fa3aba9a2f0a" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
