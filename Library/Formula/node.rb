@@ -3,6 +3,7 @@ class Node < Formula
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
   sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
+  revision 1
 
   bottle do
     sha1 "ca78513c44fc13be68573508ecd7d232653d6e60" => :yosemite
@@ -35,8 +36,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.14.tgz"
-    sha1 "02f7a15112adc859191c9be9b9a601e866931aea"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.17.tgz"
+    sha1 "80fa7873188659037ec0ed8ebc95c2b2723c8ac4"
   end
 
   def install
