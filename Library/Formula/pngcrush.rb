@@ -1,9 +1,7 @@
-require "formula"
-
 class Pngcrush < Formula
   homepage "http://pmt.sourceforge.net/pngcrush/"
-  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.81/pngcrush-1.7.81.tar.gz"
-  sha1 "c5f4c2aeb7b15b8bb49df7e66d7c1a7843cb39f8"
+  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.82/pngcrush-1.7.82.tar.gz"
+  sha1 "a9d7305908810a7da981611e7aea8830b3ff1f43"
 
   bottle do
     cellar :any
