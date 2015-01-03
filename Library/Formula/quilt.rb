@@ -4,9 +4,10 @@ class Quilt < Formula
   sha1 "19f2ba0384521eb3d8269b8a1097b16b07339be5"
 
   bottle do
-    sha1 "04771a84ee741ad82390373e126db9969cb1abae" => :mavericks
-    sha1 "2516d559ab9d366d510972c48e7c9250b04b1edc" => :mountain_lion
-    sha1 "1e30a1d5d3df8af87ae2b34e1423aec0761992a9" => :lion
+    revision 1
+    sha1 "035ec6126a3b82e8ea86cf1804bf1da650f48cd4" => :yosemite
+    sha1 "369aee1a032fb132b1177aa6b51254e8d1751d5a" => :mavericks
+    sha1 "5e323ed88f03a34f4d290a2341fc09cc6c63c1c1" => :mountain_lion
   end
 
   depends_on "gnu-sed"
