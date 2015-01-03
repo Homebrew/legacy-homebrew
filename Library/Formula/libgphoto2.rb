@@ -4,9 +4,9 @@ class Libgphoto2 < Formula
   sha1 "260cc57751a4598dd56564b4ab1e06a74442ee38"
 
   bottle do
-    revision 1
-    sha1 "e5328c0af1095854562796d6cda6a876fa32a516" => :yosemite
-    sha1 "1feb2f99709d1c802a2a82c89d8aee643b9d6a79" => :mavericks
+    sha1 "f6115d0ea66a9acc4186f2976b662832d1469517" => :yosemite
+    sha1 "e6d052ea0aa12a58c950fcf0daea1288779714ab" => :mavericks
+    sha1 "0899334514b196fec3bdcc603f195eef2386205d" => :mountain_lion
   end
 
   option :universal
