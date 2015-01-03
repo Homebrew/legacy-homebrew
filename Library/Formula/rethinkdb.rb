@@ -1,5 +1,3 @@
-require "formula"
-
 class Rethinkdb < Formula
   homepage "http://www.rethinkdb.com/"
   url "http://download.rethinkdb.com/dist/rethinkdb-1.15.2.tgz"
@@ -74,6 +72,11 @@ class Rethinkdb < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    shell_output("#{bin}/rethinkdb create -d test")
+    assert File.read("test/metadata").start_with?("RethinkDB")
   end
 end
 __END__
