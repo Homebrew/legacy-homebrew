@@ -4,9 +4,9 @@ class Libgetdata < Formula
   sha1 "57f12393916a658123c759d04ed88fe0348cbac6"
 
   bottle do
-    sha1 "845fc0330d8e4ae33987e898c1cbf20d7217b847" => :yosemite
-    sha1 "016aaefb4e68d95604d454545bf25eb1d4f34205" => :mavericks
-    sha1 "1787e29cddbfd694b15860d0af697657d0602210" => :mountain_lion
+    sha1 "b61a26ca98f6c5b6ee39a0830596f444a8cc51cb" => :yosemite
+    sha1 "233d08e7430bccc79843d7e2b7fa52ce70077ef7" => :mavericks
+    sha1 "44b04b72452d00f50e600a7c2774e8dfb254ddaa" => :mountain_lion
   end
 
   option "with-fortran", "Build Fortran 77 bindings"
