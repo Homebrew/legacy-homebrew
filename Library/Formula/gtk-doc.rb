@@ -1,9 +1,7 @@
-require "formula"
-
 class GtkDoc < Formula
   homepage "http://www.gtk.org/gtk-doc/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/1.20/gtk-doc-1.20.tar.xz"
-  sha256 "3e6ecf134dbf92a74c24d79848fea3a48e59ab95408a38c6405905d95a293011"
+  url "http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/1.21/gtk-doc-1.21.tar.xz"
+  sha256 "5d934d012ee08edd1585544792efa80da271652587ba5b843d2cea8e8b80ee3e"
 
   bottle do
     sha1 "be13f6a01fed97680dfce7c18704885d6cb7ed8f" => :mavericks
@@ -28,6 +26,11 @@ class GtkDoc < Formula
                           "--prefix=#{prefix}",
                           "--with-xml-catalog=#{etc}/xml/catalog"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gtkdoc-scan", "--module=test"
+    system "#{bin}/gtkdoc-mkdb", "--module=test"
   end
 end
