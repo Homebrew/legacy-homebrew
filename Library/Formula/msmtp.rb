@@ -1,10 +1,7 @@
-require "formula"
-
 class Msmtp < Formula
   homepage "http://msmtp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.4.32/msmtp-1.4.32.tar.bz2"
-  sha1 "03186a70035dbbf7a31272a20676b96936599704"
-  revision 1
+  url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.6.0/msmtp-1.6.0.tar.xz"
+  sha1 "39e597619f797ec3550c0146cd3d9e55e85947eb"
 
   bottle do
     revision 2
