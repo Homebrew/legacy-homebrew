@@ -39,11 +39,7 @@ class Cdrtools < Formula
   end
 
   test do
-    system "#{bin}/cdrecord", "-version"
     system "#{bin}/cdrecord", "-scanbus"
-    system "#{bin}/mkisofs", "-version"
-    system "#{bin}/cdda2wav", "-version"
-    system "#{bin}/readcd", "-version"
   end
 end
 
