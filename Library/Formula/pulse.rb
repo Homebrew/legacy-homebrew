@@ -1,8 +1,6 @@
-require "formula"
-
 class Pulse < Formula
   homepage "https://ind.ie/pulse/"
-  url "https://source.ind.ie/project/pulse.git", :tag => "0.1.3"
+  url "https://source.ind.ie/project/pulse.git", :tag => "0.1.4"
   head "https://source.ind.ie/project/pulse.git"
 
   bottle do
@@ -18,7 +16,7 @@ class Pulse < Formula
     ENV["GOPATH"] = cached_download/".gopath"
     ENV.append_path "PATH", "#{ENV["GOPATH"]}/bin"
 
-    # FIXME do this without mutating the cache!
+    # FIXTHIS: do this without mutating the cache!
     hack_dir = cached_download/".gopath/src/source.ind.ie/project/"
     rm_rf  hack_dir
     mkdir_p hack_dir
