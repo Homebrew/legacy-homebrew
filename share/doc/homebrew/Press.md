@@ -6,7 +6,7 @@
 * [Conheça o Homebrew, o Melhor Gerenciador de Pacotes para Mac OS](http://pedromenezes.com/conheca-o-homebrew-o-melhor-gerenciador-de-pacotes-para-mac-os) (pt-BR)
 * [Homebrew on The Unofficial Apple Weblog (Homebrew, the perfect gift for command line lovers)](http://www.tuaw.com/2009/12/25/homebrew-the-perfect-gift-for-command-line-lovers/) (Dec, 2009)
 * [Homebrew](http://blog.secondplanetanimation.com/2011/04/16/homebrew/)
-* [Gource visualization](http://www.youtube.com/watch?v=ZX0xCWANfW4)
+* [Gource visualization](https://www.youtube.com/watch?v=ZX0xCWANfW4)
 
 ### Mentioned
 -   [Celery Quick
@@ -14,4 +14,4 @@
 -   [CouchDB: The Definitive Guide (Installing on OS X, Appendix
     B)](http://oreilly.com/catalog/9780596155902)
 -   [Installing ActiveMQ on OS
-    X](http://activemq.apache.org/getting-started.html#GettingStarted-UsingHomebrewinstalleronOSX)
+    X](https://activemq.apache.org/getting-started.html#GettingStarted-UsingHomebrewinstalleronOSX)

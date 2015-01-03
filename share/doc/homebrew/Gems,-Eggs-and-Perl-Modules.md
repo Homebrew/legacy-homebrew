@@ -44,7 +44,7 @@ _This is only recommended if you **don't** use a brewed Python._
 
 On OS X, any [Python version X.Y also searches in
 `~/Library/Python/X.Y/lib/python/site-packages` for
-modules](http://docs.python.org/2/install/index.html#inst-alt-install-user).
+modules](https://docs.python.org/2/install/index.html#inst-alt-install-user).
 That dir might not yet exist, but you can create it:
 `mkdir -p ~/Library/Python/2.7/lib/python/site-packages`
 
