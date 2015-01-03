@@ -56,6 +56,6 @@ class AtlassianBamboo < Formula
   end
 
   test do
-    system "#{bin}/version.sh"
+    system "#{libexec}/bin/version.sh"
   end
 end
