@@ -1,8 +1,8 @@
 class Xrootd < Formula
   homepage "http://xrootd.org"
-  head "git://github.com/xrootd/xrootd.git"
   url "http://xrootd.org/download/v4.1.1/xrootd-4.1.1.tar.gz"
   sha1 "ed19edf50e0c641f74a78e13b78d2d70d59410f7"
+  head "https://github.com/xrootd/xrootd.git"
 
   bottle do
     cellar :any
@@ -17,7 +17,7 @@ class Xrootd < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      system "make install"
+      system "make", "install"
     end
     share.install prefix/"man"
   end
