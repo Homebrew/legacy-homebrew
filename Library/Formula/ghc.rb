@@ -4,6 +4,7 @@ class Ghc < Formula
   homepage "http://haskell.org/ghc/"
   url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-src.tar.xz"
   sha256 "c319cd94adb284177ed0e6d21546ed0b900ad84b86b87c06a99eac35152982c4"
+  head "https://git.haskell.org/ghc.git"
 
   bottle do
     revision 1
