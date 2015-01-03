@@ -13,4 +13,8 @@ class Julius < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    shell_output("#{bin}/julius.dSYM --help", 1)
+  end
 end
