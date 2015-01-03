@@ -1,5 +1,3 @@
-require "formula"
-
 class Cyassl < Formula
   homepage "http://yassl.com/yaSSL/Products-cyassl.html"
   url "https://github.com/cyassl/cyassl/archive/v3.3.0.tar.gz"
@@ -14,39 +12,53 @@ class Cyassl < Formula
     sha1 "c5de09829f89696a73a8f3818bbf413eae99e5ac" => :mountain_lion
   end
 
+  option "without-check", "Skip compile-time tests."
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
 
   def install
-    args = %W[--infodir=#{info}
-              --mandir=#{man}
-              --prefix=#{prefix}
-              --disable-bump
-              --disable-fortress
-              --disable-sniffer
-              --disable-webserver
-              --enable-aesccm
-              --enable-aesgcm
-              --enable-blake2
-              --enable-camellia
-              --enable-certgen
-              --enable-crl
-              --enable-crl-monitor
-              --enable-dtls
-              --enable-ecc
-              --enable-filesystem
-              --enable-hc128
-              --enable-inline
-              --enable-keygen
-              --enable-md4
-              --enable-ocsp
-              --enable-opensslextra
-              --enable-psk
-              --enable-rabbit
-              --enable-ripemd
-              --enable-sha512
-              --enable-sni
+    args = %W[
+      --disable-silent-rules
+      --disable-dependency-tracking
+      --infodir=#{info}
+      --mandir=#{man}
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+      --disable-bump
+      --disable-fortress
+      --disable-sniffer
+      --disable-webserver
+      --enable-aesccm
+      --enable-aesgcm
+      --enable-blake2
+      --enable-camellia
+      --enable-certgen
+      --enable-certreq
+      --enable-chacha
+      --enable-crl
+      --enable-crl-monitor
+      --enable-dtls
+      --enable-ecc
+      --enable-eccencrypt
+      --enable-filesystem
+      --enable-hc128
+      --enable-hkdf
+      --enable-inline
+      --enable-keygen
+      --enable-ocsp
+      --enable-opensslextra
+      --enable-poly1305
+      --enable-psk
+      --enable-rabbit
+      --enable-ripemd
+      --enable-savesession
+      --enable-savecert
+      --enable-sessioncerts
+      --enable-sha512
+      --enable-sni
+      --enable-supportedcurves
     ]
 
     if MacOS.prefer_64_bit?
@@ -54,6 +66,8 @@ class Cyassl < Formula
     else
       args << "--disable-fastmath" << "--disable-fasthugemath"
     end
+
+    args << "--enable-aesni" if Hardware::CPU.aes? && !build.bottle?
 
     # Extra flag is stated as a needed for the Mac platform.
     # http://yassl.com/yaSSL/Docs-cyassl-manual-2-building-cyassl.html
@@ -63,6 +77,11 @@ class Cyassl < Formula
     system "./autogen.sh"
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "check" if build.with? "check"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"cyassl-config", "--cflags", "--libs", "--prefix"
   end
 end
