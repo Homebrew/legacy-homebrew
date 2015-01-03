@@ -1,5 +1,3 @@
-require "formula"
-
 class Fabric < Formula
   homepage "http://www.fabfile.org"
   url "https://github.com/fabric/fabric/archive/1.10.1.tar.gz"
