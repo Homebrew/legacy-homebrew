@@ -1,6 +1,6 @@
 # Kickstarter Supporters
 This file contains a list of the awesome people who gave £5 or more to
-[our Kickstarter](http://www.kickstarter.com/projects/homebrew/brew-test-bot).
+[our Kickstarter](https://www.kickstarter.com/projects/homebrew/brew-test-bot).
 
 This list is still incomplete as we need addresses for everyone who receives
 a physical reward. Kickstarter recommends asking only when we are ready to
@@ -154,14 +154,14 @@ These awesome people supported our Kickstarter by giving us £50 or more:
 
 These brilliant people supported our Kickstarter by giving us £15 or more:
 
-* [Brian Lalor](http://github.com/blalor)
+* [Brian Lalor](https://github.com/blalor)
 * [Aaron Ackerman](https://twitter.com/_aaronackerman_)
 * [Rodreegez](http://rodreegez.com)
 * [Stephan Diederich](https://github.com/diederich)
 * [Andrew Nesbitt](http://nesbitt.io)
 * [Blaine Cook](http://romeda.org/)
 * [Raquel Hernandez](http://raquelhernandez.net)
-* [JD Harrington](http://twitter.com/psi)
+* [JD Harrington](https://twitter.com/psi)
 * [P.J. Onori](http://www.somerandomdude.com)
 * [Egbert Veenstra](http://egbert.co)
 * [Bramus Van Damme](http://www.bram.us/)
@@ -169,13 +169,13 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Matt Cannon](http://www.mattcannon.co.uk)
 * [Dannel Jurado](http://demarko.org)
 * [Benjamin Esham](http://www.bdesham.info)
-* [Nick Rogers](http://twitter.com/zikolas)
+* [Nick Rogers](https://twitter.com/zikolas)
 * [Abe Estrada](http://abeestrada.com)
 * [Mattias Larsson](http://www.yahoo.com/)
 * [Dave  Ross](http://davidmichaelross.com)
 * [Andrian Budantsov](http://andrian.io/)
 * [Jason Smith](https://twitter.com/waitingallday)
-* [Martin Coxall](http://twitter.com/grabcocque)
+* [Martin Coxall](https://twitter.com/grabcocque)
 * [Nick Jones](mailto:nick@dischord.org)
 * [Esmé Cowles](https://github.com/escowles)
 * [Garrett L. Ward](http://glward.net)
@@ -208,7 +208,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [aiusepsi](http://aiusepsi.co.uk)
 * [Stefan Borsje](https://yourkarma.com)
 * [Mark Goody](http://markgoody.ie/)
-* [Terje Sten Bjerkseth](http://github.com/terjesb)
+* [Terje Sten Bjerkseth](https://github.com/terjesb)
 * [Wade Winningham](http://www.updrift.com)
 * [Opendream](http://www.opendream.co.th)
 * [Todd Grooms](http://toddgrooms.com)
@@ -219,10 +219,10 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * derBernd
 * [toolbear](http://tool-man.org/)
 * [S Schreiber](http://www.stevenfschreiber.com)
-* [Paul Bowsher](http://github.com/boffbowsh/)
+* [Paul Bowsher](https://github.com/boffbowsh/)
 * [Daniel Lindsley](http://toastdriven.com/)
 * [Felipe Coury](http://gistia.com)
-* [noahhendrix](http://twitter.com/noahhendrix)
+* [noahhendrix](https://twitter.com/noahhendrix)
 * [Kevin Davies](http://theausguild.org)
 * [Geknowm](http://geknowm.com)
 * [Tod Olson](http://www.lib.uchicago.edu/~tod/)
@@ -262,7 +262,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Martin Tithonium](http://martian.at/)
 * [Ivan De Marino](http://ivandemarino.me)
 * [Jørgen Tjernø](http://jorgenpt.tumblr.com)
-* [Peter Souter](http://github.com/petems)
+* [Peter Souter](https://github.com/petems)
 * Marco
 * [Steve McKinney](http://stephenmckinney.me)
 * Felix Adusei
@@ -276,13 +276,13 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Pascal Jungblut](http://pascalj.de)
 * [Absolight](http://www.absolight.fr/)
 * [Ben Hagen](https://plus.google.com/102873090274552422645/)
-* [Wilbur Smith](http://twitter.com/thewilbur)
+* [Wilbur Smith](https://twitter.com/thewilbur)
 * bup
 * [epiGenesys](http://www.epigenesys.co.uk/)
 * Greg Clarke
 * [CoEPP](http://www.coepp.org.au)
 * [Jérôme Foray](http://foray-jero.me/)
-* [bobuk](http://twitter.com/bobuk)
+* [bobuk](https://twitter.com/bobuk)
 * [Christoph Hochstrasser](http://christophh.net)
 * [João Bolila](http://Bolila.com)
 * [Yaroslav Markin](https://github.com/yaroslav)
@@ -292,7 +292,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Josh Dick](http://joshdick.net)
 * [Alexey Mirniy](http://www.linkedin.com/in/pharmazone)
 * [Simon Gate](Http://smgt.me)
-* [Josh Yaganeh](http://github.com/jyaganeh)
+* [Josh Yaganeh](https://github.com/jyaganeh)
 * Dirk Kraft
 * [stefan crain](https://github.com/stefancrain)
 * [xorbyte](http://hackd.net)
@@ -332,10 +332,10 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Andrew Broman](http://cccultura.com)
 * [Chris Metcalf](http://chrismetcalf.net)
 * [smartwatermelon](http://projectinsomnia.com)
-* [Ursul_polar](http://twitter.com/ursul_polar)
+* [Ursul_polar](https://twitter.com/ursul_polar)
 * David Hodo
 * [Jeff Field](https://twitter.com/jfield)
-* [dholm](http://github.com/dholm/)
+* [dholm](https://github.com/dholm/)
 * [Chase Southard](http://southard.co)
 * Paul Jenkins
 * [Johnneylee Jack Rollins](http://Spaceghost.github.com)
@@ -393,7 +393,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [David Rekowski](http://rekowski.info)
 * [Roland Leth](http://rolandleth.com)
 * [Maurice Kelly](http://blog.chatswood.org.uk/)
-* [Daryl Spitzer](http://twitter.com/yacitus)
+* [Daryl Spitzer](https://twitter.com/yacitus)
 * [Jose Peleteiro](http://peleteiro.net)
 * [Mikael Hultgren](http://www.artsoftheinsane.com)
 * [Richard Japenga](http://japenga.eu)
@@ -467,7 +467,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [David Cristofaro](http://davidcristofaro.com/)
 * Steve Salkin
 * [Kristopher Johnson](http://undefinedvalue.com/)
-* [Kumar McMillan](http://twitter.com/kumar303)
+* [Kumar McMillan](https://twitter.com/kumar303)
 * [Brannon Sherry](http://code-junkie.com)
 * [Neo Innovation - Lean Consultancy](http://neo.com/)
 * [Jeff Warner](http://www.stormysoftware.com)
@@ -496,11 +496,11 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [Christopher Vander Poel](http://www.wlvrn.com)
 * [Weiyin LIANG](http://pyology.com)
 * [Epic Awesome](http://epicawesome.co/)
-* [Evan Oxfeld](http://twitter.com/evanoxfeld)
+* [Evan Oxfeld](https://twitter.com/evanoxfeld)
 * [Alexander Lash](http://alexla.sh)
 * [Ferran Selles](http://www.nulltrace.com)
 * [Rick Companje](http://www.companje.nl)
-* [Alexander Zubko](http://www.youtube.com/watch?v=jqxENMKaeCU)
+* [Alexander Zubko](https://www.youtube.com/watch?v=jqxENMKaeCU)
 * [Iain Beeston](http://iainbeeston.com/)
 * [Geoff Bowers](http://www.daemon.com.au)
 * [Logan Cox](http://lo5an.com)
