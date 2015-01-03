@@ -13,6 +13,7 @@ class Yacas < Formula
   patch :p1, :DATA
 
   def install
+    ENV.cxx11
     args = [ "--disable-silent-rules",
              "--disable-dependency-tracking",
              "--prefix=#{prefix}"
