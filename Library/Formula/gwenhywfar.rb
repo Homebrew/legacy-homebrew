@@ -4,6 +4,12 @@ class Gwenhywfar < Formula
   sha1 "c4f37eb7fed069f3478e06a9311193a98cc9ddbf"
   head "http://devel.aqbanking.de/svn/gwenhywfar/trunk"
 
+  bottle do
+    sha1 "3855ce27d2b51561e7d5fbb720bb13363051d742" => :yosemite
+    sha1 "567cf27a34cb43468ade7422aeec1e410ff819a8" => :mavericks
+    sha1 "746a3db32ec9f3f033752fc594761b596fec7f2d" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "gnutls"
