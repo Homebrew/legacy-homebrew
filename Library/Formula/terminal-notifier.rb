@@ -25,4 +25,8 @@ class TerminalNotifier < Formula
     bin.write_exec_script inner_binary
     chmod 0755, bin/"terminal-notifier"
   end
+
+  test do
+    system "#{bin}/terminal-notifier", "-message", "Hello World!"
+  end
 end
