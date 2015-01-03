@@ -19,4 +19,16 @@ class Quilt < Formula
     system "make"
     system "make", "install"
   end
+
+  test do
+    mkdir "patches"
+    (testpath/"test.txt").write "Hello, World!"
+    system "#{bin}/quilt", "new", "test.patch"
+    system "#{bin}/quilt", "add", "test.txt"
+    rm "test.txt"
+    (testpath/"test.txt").write "Hi!"
+    system "#{bin}/quilt", "refresh"
+    assert_match /-Hello, World!/, File.read("patches/test.patch")
+    assert_match /\+Hi!/, File.read("patches/test.patch")
+  end
 end
