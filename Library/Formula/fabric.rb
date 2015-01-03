@@ -5,6 +5,13 @@ class Fabric < Formula
 
   head "https://github.com/fabric/fabric.git"
 
+  bottle do
+    cellar :any
+    sha1 "374785f7ecd2987f93370ff86e884655ccdc8a35" => :yosemite
+    sha1 "6047b970eee66ce79fefd33ce49b60805b20db8d" => :mavericks
+    sha1 "a75ad6a04ce7becd283ed8ba1a9bc6319025a05d" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "paramiko" do
