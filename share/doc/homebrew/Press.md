@@ -1,6 +1,6 @@
 # Press
 ### Featured
-* [Homebrew: OS X’s Missing Package Manager](http://www.engineyard.com/blog/2010/homebrew-os-xs-missing-package-manager/)
+* [Homebrew: OS X’s Missing Package Manager](https://blog.engineyard.com/2010/homebrew-os-xs-missing-package-manager/)
 * [MacPorts to Homebrew : New Packaging system for Mac OS X](http://blog.abhiomkar.in/2010/01/02/macports-to-homebrew-new-packaging-system-for-mac-os-x/)
 * [Installing the homebrew package manager for OS X](http://userprimary.net/posts/2010/08/19/installing-homebrew-for-OSX/)
 * [Conheça o Homebrew, o Melhor Gerenciador de Pacotes para Mac OS](http://pedromenezes.com/conheca-o-homebrew-o-melhor-gerenciador-de-pacotes-para-mac-os) (pt-BR)
