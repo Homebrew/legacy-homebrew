@@ -1,9 +1,7 @@
-require 'formula'
-
 class Lame < Formula
-  homepage 'http://lame.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/sourceforge/lame/lame-3.99.5.tar.gz'
-  sha1 '03a0bfa85713adcc6b3383c12e2cc68a9cfbf4c4'
+  homepage "http://lame.sourceforge.net/"
+  url "https://downloads.sourceforge.net/sourceforge/lame/lame-3.99.5.tar.gz"
+  sha1 "03a0bfa85713adcc6b3383c12e2cc68a9cfbf4c4"
 
   bottle do
     cellar :any
@@ -22,6 +20,10 @@ class Lame < Formula
                           "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-nasm"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/lame", "--genre-list", test_fixtures("test.mp3")
   end
 end
