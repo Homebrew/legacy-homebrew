@@ -8,6 +8,13 @@ module Homebrew
     formula_count = 0
     problem_count = 0
 
+    strict = ARGV.include? "--strict"
+    if strict && ARGV.formulae.any?
+      require "cmd/style"
+      ohai "brew style #{ARGV.formulae.join " "}"
+      style
+    end
+
     ENV.activate_extensions!
     ENV.setup_build_environment
 
@@ -17,13 +24,19 @@ module Homebrew
       ARGV.formulae
     end
 
-    strict = ARGV.include? "--strict"
+    output_header = !strict
 
     ff.each do |f|
       fa = FormulaAuditor.new(f, :strict => strict)
       fa.audit
 
       unless fa.problems.empty?
+        unless output_header
+          puts
+          ohai "audit problems"
+          output_header = true
+        end
+
         formula_count += 1
         problem_count += fa.problems.size
         puts "#{f.name}:", fa.problems.map { |p| " * #{p}" }, ""
