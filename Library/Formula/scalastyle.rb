@@ -10,13 +10,13 @@ class Scalastyle < Formula
   end
 
   def install
-    libexec.install "scalastyle_2.10-0.6.0-batch.jar"
+    libexec.install "scalastyle_2.10-#{version}-batch.jar"
 
     etc.install resource("default_config")
 
     (bin/"scalastyle").write <<-EOS.undent
       #!/bin/sh
-      java -jar "#{libexec}/scalastyle_2.10-0.6.0-batch.jar" --config "#{etc}/scalastyle_config.xml" "$@"
+      java -jar "#{libexec}/scalastyle_2.10-#{version}-batch.jar" --config "#{etc}/scalastyle_config.xml" "$@"
     EOS
   end
 
