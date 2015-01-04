@@ -27,10 +27,6 @@ class CabalInstall < Formula
     inreplace "bootstrap.sh", "list --global",
       "list --global --no-user-package-db"
 
-    # Avoid a nasty bug in Cabal by forcing the bootstrap script to pull a later version.
-    # (q.v. https://github.com/haskell/cabal/issues/1740)
-    inreplace "bootstrap.sh", 'CABAL_VER="1.20.0.0";', 'CABAL_VER="1.20.0.3";'
-
     system "sh", "bootstrap.sh"
     bin.install "bin/cabal"
     bash_completion.install "bash-completion/cabal"
