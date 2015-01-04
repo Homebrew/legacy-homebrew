@@ -807,14 +807,14 @@ class Formula
     end
 
     # @!attribute [rw] url
-    # The URL used to download the source for the currently active {SoftwareSpec}.
+    # The URL used to download the source for the {#stable} version of the formula.
     # We prefer `https` for security and proxy reasons.
     def url val, specs={}
       stable.url(val, specs)
     end
 
     # @!attribute [w] version
-    # The version for the currently active {SoftwareSpec}.
+    # The version string for the {#stable} version of the formula.
     # The version is autodetected from the URL and/or tag so only needs to be
     # declared if it cannot be autodetected correctly.
     def version val=nil
@@ -822,7 +822,7 @@ class Formula
     end
 
     # @!attribute [rw] mirror
-    # Additional {.url}s for the currently active {SoftwareSpec}.
+    # Additional URLs for the {#stable} version of the formula.
     # These are only used if the {.url} fails to download. It's optional and
     # there can be more than one. Generally we add them when the main {.url}
     # is unreliable. If {.url} is really unreliable then we may swap the
