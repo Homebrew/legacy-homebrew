@@ -1,9 +1,9 @@
 class Doxygen < Formula
   homepage "http://www.doxygen.org/"
   head "https://github.com/doxygen/doxygen.git"
-  url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.9.src.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.9/doxygen-1.8.9.src.tar.gz"
-  sha1 "b447251d32343ecf867f0a20cb63da4b478bfbab"
+  url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.9.1.src.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.9.1/doxygen-1.8.9.1.src.tar.gz"
+  sha1 "eb6b7e5f8dc8302e67053aba841f485017f246fd"
 
   bottle do
     cellar :any
