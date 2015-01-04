@@ -1,9 +1,7 @@
-require 'formula'
-
 class HtopOsx < Formula
-  homepage 'https://github.com/max-horvath/htop-osx'
-  url 'https://github.com/max-horvath/htop-osx/archive/0.8.2.2.tar.gz'
-  sha1 '17c56fe5efe81cf6b0f4c13a958fa7e4d8591b23'
+  homepage "https://github.com/max-horvath/htop-osx"
+  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.2.tar.gz"
+  sha1 "17c56fe5efe81cf6b0f4c13a958fa7e4d8591b23"
 
   bottle do
     revision 1
@@ -34,5 +32,11 @@ class HtopOsx < Formula
 
     You should be certain that you trust any software you grant root privileges.
     EOS
+  end
+
+  test do
+    ENV["TERM"] = "xterm"
+    pipe_output("#{bin}/htop", "q")
+    assert $?.success?
   end
 end
