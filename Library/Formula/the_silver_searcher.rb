@@ -44,6 +44,7 @@ class TheSilverSearcher < Formula
   end
 
   test do
-    system "#{bin}/ag", "--version"
+    (testpath/"Hello.txt").write("Hello World!")
+    system "#{bin}/ag", "Hello World!"
   end
 end
