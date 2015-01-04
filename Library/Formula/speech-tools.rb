@@ -3,6 +3,13 @@ class SpeechTools < Formula
   url "http://festvox.org/packed/festival/2.4/speech_tools-2.4-release.tar.gz"
   sha1 "5b0ebd39bb7afa33e4093724a2123bdc62a6aebc"
 
+  bottle do
+    cellar :any
+    sha1 "861a04fc277c90118cf88641c2ea2d07e7afa636" => :yosemite
+    sha1 "c4b33389281c09184012fb79f53cc1112c8e11ce" => :mavericks
+    sha1 "2fe64f901cd995effbcb26edf0ebce2b0a1141fd" => :mountain_lion
+  end
+
   def install
     ENV.deparallelize
     system "./configure"
