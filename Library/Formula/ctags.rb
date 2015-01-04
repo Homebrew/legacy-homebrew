@@ -10,7 +10,7 @@ class Ctags < Formula
     depends_on "autoconf" => :build
   end
 
-  # fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556
+  # fixes https://sourceforge.net/p/ctags/bugs/312/
   patch :p2, :DATA
 
   def install

@@ -6,7 +6,7 @@ class Glui < Formula
   sha256 'c1ef5e83cf338e225ce849f948170cd681c99661a5c2158b4074515926702787'
 
   # Fix compiler warnings in glui.h. Reported upstream:
-  # http://sourceforge.net/p/glui/patches/12/
+  # https://sourceforge.net/p/glui/patches/12/
   patch :DATA
 
   def install

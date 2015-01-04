@@ -6,7 +6,7 @@ class Pyside < Formula
   mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.2.tar.bz2'
   sha1 '955e32d193d173faa64edc51111289cdcbe3b96e'
 
-  head 'git://gitorious.org/pyside/pyside.git'
+  head 'https://gitorious.org/pyside/pyside.git'
 
   bottle do
     sha1 "8137d4ab768f0b621c76f3e8f51aff9594527b7a" => :yosemite

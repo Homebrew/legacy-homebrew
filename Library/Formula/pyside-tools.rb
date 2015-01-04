@@ -5,7 +5,7 @@ class PysideTools < Formula
   url 'https://github.com/PySide/Tools/archive/0.2.15.tar.gz'
   sha1 'b668d15e8d67e25a653db5abf8f542802e2ee2dd'
 
-  head 'git://gitorious.org/pyside/pyside-tools.git'
+  head 'https://gitorious.org/pyside/pyside-tools.git'
 
   depends_on 'cmake' => :build
   depends_on 'pyside'

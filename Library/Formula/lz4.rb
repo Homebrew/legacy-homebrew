@@ -1,7 +1,7 @@
 require "formula"
 
 class Lz4 < Formula
-  homepage "http://code.google.com/p/lz4/"
+  homepage "https://code.google.com/p/lz4/"
   url "https://github.com/Cyan4973/lz4/archive/r126.tar.gz"
   sha1 "4e22222844b914f9f2878e9acf0ed1d9deca7f12"
   version "r126"

@@ -14,7 +14,7 @@ class Squid < Formula
   depends_on "openssl"
 
   def install
-    # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
+    # https://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
     ENV.append "LDFLAGS",  "-lresolv"
 
     # For --disable-eui, see:

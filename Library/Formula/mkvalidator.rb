@@ -5,7 +5,7 @@ class Mkvalidator < Formula
   url 'https://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.4.2.tar.bz2'
   sha1 'e0e431e6ca7011e7e4547f3166e532553a1d6a79'
 
-  # see https://sourceforge.net/tracker/?group_id=68739&atid=522230
+  # see https://sourceforge.net/p/matroska/patches/
   patch :DATA if MacOS.prefer_64_bit?
 
   def install

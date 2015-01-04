@@ -54,7 +54,7 @@ class Pdf2htmlex < Formula
               "--disable-python-extension",
       ]
 
-      # Fix linker error; see: http://trac.macports.org/ticket/25012
+      # Fix linker error; see: https://trac.macports.org/ticket/25012
       ENV.append "LDFLAGS", "-lintl"
 
       # Reset ARCHFLAGS to match how we build

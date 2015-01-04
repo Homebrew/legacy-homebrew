@@ -13,7 +13,7 @@ class Itstool < Formula
   end
 
   head do
-    url 'git://gitorious.org/itstool/itstool.git'
+    url 'https://gitorious.org/itstool/itstool.git'
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

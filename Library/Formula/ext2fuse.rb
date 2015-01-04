@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ext2fuse < Formula
-  homepage 'http://sourceforge.net/projects/ext2fuse'
+  homepage 'https://sourceforge.net/projects/ext2fuse'
   url 'https://downloads.sourceforge.net/project/ext2fuse/ext2fuse/0.8.1/ext2fuse-src-0.8.1.tar.gz'
   sha1 '6a13fce7842ead1485a4f48cb57c1272d990b5a5'
 

@@ -32,7 +32,7 @@ index 3fb2022..29554a5 100755
 -CP=$( echo `dirname $0`/../lib/*.jar . | sed 's/ /:/g')
 -CP=$CP:$( echo `dirname $0`/../ext/*.jar . | sed 's/ /:/g')
 -#echo $CP
-+# From: http://stackoverflow.com/a/246128
++# From: https://stackoverflow.com/a/246128
 +#   - To resolve finding the directory after symlinks
 +SOURCE="${BASH_SOURCE[0]}"
 +# resolve $SOURCE until the file is no longer a symlink

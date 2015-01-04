@@ -47,7 +47,7 @@ class Ghostscript < Formula
 
   conflicts_with "gambit-scheme", :because => "both install `gsc` binaries"
 
-  # http://sourceforge.net/projects/gs-fonts/
+  # https://sourceforge.net/projects/gs-fonts/
   resource "fonts" do
     url "https://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz"
     sha1 "2a7198e8178b2e7dba87cb5794da515200b568f5"
@@ -62,7 +62,7 @@ class Ghostscript < Formula
   def move_included_source_copies
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
-    # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
+    # Taken from the MacPorts portfile - https://trac.macports.org/browser/trunk/dports/print/ghostscript/Portfile
     renames = %w{freetype jbig2dec jpeg libpng tiff}
     renames.each { |lib| mv lib, "#{lib}_local" }
   end

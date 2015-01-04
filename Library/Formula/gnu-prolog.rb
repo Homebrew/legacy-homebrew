@@ -10,7 +10,7 @@ class GnuProlog < Formula
   end
 
   # Upstream patch:
-  # http://sourceforge.net/p/gprolog/code/ci/784b3443a0a2f087c1d1e7976739fa517efe6af6
+  # https://sourceforge.net/p/gprolog/code/ci/784b3443a0a2f087c1d1e7976739fa517efe6af6
   patch do
     url "https://gist.githubusercontent.com/jacknagel/7549696/raw/3078eef282ca141c95a0bf74396f4248bbe34775/gprolog-clang.patch"
     sha1 "8af7816a97bd1319fbd3ae52cedc02ccc9164d27"

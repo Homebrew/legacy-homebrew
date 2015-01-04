@@ -24,7 +24,7 @@ class Tuntap < Formula
   end
 
   depends_on UnsignedKextRequirement => [ :cask => "tuntap",
-      :download => "http://sourceforge.net/projects/tuntaposx/files/tuntap/" ]
+      :download => "https://sourceforge.net/projects/tuntaposx/files/tuntap/" ]
 
   def install
     cd "tuntap" if build.head?

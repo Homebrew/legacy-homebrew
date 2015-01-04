@@ -5,7 +5,7 @@ class Optipng < Formula
   sha1 "30b6c333d74fc0f5dc83004aace252fa3321368b"
 
   # Fix compilation on 10.10
-  # http://sourceforge.net/p/optipng/bugs/47/
+  # https://sourceforge.net/p/optipng/bugs/47/
   patch :DATA
 
   def install

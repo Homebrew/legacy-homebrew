@@ -1,7 +1,7 @@
 require 'formula'
 
 class Xmltoman < Formula
-  homepage 'http://sourceforge.net/projects/xmltoman/'
+  homepage 'https://sourceforge.net/projects/xmltoman/'
   url 'https://downloads.sourceforge.net/project/xmltoman/xmltoman/xmltoman-0.4.tar.gz/xmltoman-0.4.tar.gz'
   sha1 '151f75d78d1fa53bca25b94dc00e46a27fabfee8'
 
@@ -15,4 +15,3 @@ class Xmltoman < Formula
     (share+'xmltoman').install %w(xmltoman.xsl xmltoman.dtd xmltoman.css)
   end
 end
-

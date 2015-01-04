@@ -22,9 +22,9 @@ class Libquicktime < Formula
   depends_on 'libvorbis' => :optional
 
   # Fixes compilation with ffmpeg 2.x; applied upstream
-  # http://sourceforge.net/p/libquicktime/mailman/message/30792767/
+  # https://sourceforge.net/p/libquicktime/mailman/message/30792767/
   patch :p0 do
-    url "http://sourceforge.net/p/libquicktime/mailman/attachment/51812B9E.3090802%40mirriad.com/1/"
+    url "https://sourceforge.net/p/libquicktime/mailman/attachment/51812B9E.3090802%40mirriad.com/1/"
     sha1 "58c19548a7ae71fb20ee94ef41fd0c3a967c96c0"
   end
   patch :DATA

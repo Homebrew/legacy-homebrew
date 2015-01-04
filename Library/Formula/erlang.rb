@@ -79,7 +79,7 @@ class Erlang < Formula
 
     if build.include? 'disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
-      # http://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
+      # https://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
       # http://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
       args << '--disable-hipe'
     else

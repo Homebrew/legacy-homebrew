@@ -7,9 +7,9 @@ class Sshguard < Formula
 
   # Fix blacklist flag (-b) so that it doesn't abort on first usage.
   # Upstream bug report:
-  # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
+  # https://sourceforge.net/p/sshguard/bugs/12/
   patch do
-    url "http://sourceforge.net/p/sshguard/bugs/_discuss/thread/3d94b7ef/c062/attachment/sshguard.c.diff"
+    url "https://sourceforge.net/p/sshguard/bugs/_discuss/thread/3d94b7ef/c062/attachment/sshguard.c.diff"
     sha1 "68cd0910d310e4d23e7752dee1b077ccfe715c0b"
   end
 

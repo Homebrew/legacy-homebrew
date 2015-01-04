@@ -1,7 +1,7 @@
 require "formula"
 
 class Bibutils < Formula
-  homepage "http://sourceforge.net/p/bibutils/home/Bibutils/"
+  homepage "https://sourceforge.net/p/bibutils/home/Bibutils/"
   url "https://downloads.sourceforge.net/project/bibutils/bibutils_5.5_src.tgz"
   sha1 "f7cb7a8bd62ac3b5f0caf63a4a6a793355a417f2"
 

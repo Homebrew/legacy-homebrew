@@ -16,7 +16,7 @@ class LibreadlineJava < Formula
   depends_on 'readline'
 
   # Fix "non-void function should return a value"-Error
-  # https://sourceforge.net/tracker/?func=detail&atid=453822&aid=3566332&group_id=48669
+  # https://sourceforge.net/p/java-readline/patches/2/
   patch :DATA
 
   def install

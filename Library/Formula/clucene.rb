@@ -17,7 +17,7 @@ class Clucene < Formula
   depends_on "cmake" => :build
 
   # Portability fixes for 10.9+
-  # Upstream ticket: http://sourceforge.net/p/clucene/bugs/219/
+  # Upstream ticket: https://sourceforge.net/p/clucene/bugs/219/
   patch do
     url "https://trac.macports.org/export/126047/trunk/dports/devel/clucene/files/patch-src-shared-CLucene-LuceneThreads.h.diff"
     sha1 "b68104eea0ce8f8bf1cd0d622260765ff3798bc3"

@@ -15,7 +15,7 @@ class Mitie < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "models-english" do
-    url "http://sourceforge.net/projects/mitie/files/binaries/MITIE-models-v0.2.tar.bz2"
+    url "https://downloads.sourceforge.net/project/mitie/binaries/MITIE-models-v0.2.tar.bz2"
     sha1 "a193e0a133926b5355b4e840ddd7f5112d785999"
   end
 

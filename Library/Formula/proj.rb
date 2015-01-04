@@ -1,7 +1,7 @@
 require 'formula'
 
 class Proj < Formula
-  homepage 'http://trac.osgeo.org/proj/'
+  homepage 'https://trac.osgeo.org/proj/'
   url 'http://download.osgeo.org/proj/proj-4.8.0.tar.gz'
   sha1 '5c8d6769a791c390c873fef92134bf20bb20e82a'
   head "http://svn.osgeo.org/metacrs/proj/trunk/proj/"

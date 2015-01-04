@@ -1,7 +1,7 @@
 require "formula"
 
 class Librevenge < Formula
-  homepage 'http://sourceforge.net/p/libwpd/wiki/librevenge/'
+  homepage 'https://sourceforge.net/p/libwpd/wiki/librevenge/'
   url 'http://dev-www.libreoffice.org/src/librevenge-0.0.1.tar.bz2'
   sha1 '738d68bf54ec97fd48c41284aabbfd5a0d2db4ce'
 

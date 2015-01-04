@@ -17,7 +17,7 @@ class Tinyxml < Formula
   # The first two patches are taken from the debian packaging of tinyxml.
   #   The first patch enforces use of stl strings, rather than a custom string type.
   #   The second patch is a fix for incorrect encoding of elements with special characters
-  #   originally posted at http://sourceforge.net/p/tinyxml/patches/51/
+  #   originally posted at https://sourceforge.net/p/tinyxml/patches/51/
   # The third patch adds a CMakeLists.txt file to build a shared library and provide an install target
   #   submitted upstream as https://sourceforge.net/p/tinyxml/patches/66/
   patch do

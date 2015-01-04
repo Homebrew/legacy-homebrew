@@ -1,7 +1,7 @@
 require 'formula'
 
 class Plowshare < Formula
-  homepage 'http://code.google.com/p/plowshare/'
+  homepage 'https://code.google.com/p/plowshare/'
   url 'https://code.google.com/p/plowshare/', :tag => 'v1.0.5', :using => :git
   head 'https://code.google.com/p/plowshare/', :using => :git
 

@@ -1,7 +1,7 @@
 require 'formula'
 
 class OpenOcd < Formula
-  homepage 'http://sourceforge.net/projects/openocd/'
+  homepage 'https://sourceforge.net/projects/openocd/'
   url 'https://downloads.sourceforge.net/project/openocd/openocd/0.8.0/openocd-0.8.0.tar.bz2'
   sha1 '10bf9eeb54e03083cb1a101785b2d69fbdf18f31'
 

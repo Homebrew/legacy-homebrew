@@ -1,7 +1,7 @@
 require "formula"
 
 class Libodfgen < Formula
-  homepage "http://sourceforge.net/p/libwpd/wiki/libodfgen/"
+  homepage "https://sourceforge.net/p/libwpd/wiki/libodfgen/"
   url "http://dev-www.libreoffice.org/src/libodfgen-0.1.1.tar.bz2"
   sha1 "13dc7a9fa69b8eb9af903596bbefaf044a3e76cc"
 

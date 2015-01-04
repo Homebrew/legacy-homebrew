@@ -28,7 +28,7 @@ class Mediatomb < Formula
 
   # This is for libav 0.7 support. See:
   # https://bugs.launchpad.net/ubuntu/+source/mediatomb/+bug/784431
-  # http://sourceforge.net/tracker/?func=detail&aid=3291062&group_id=129766&atid=715780
+  # https://sourceforge.net/p/mediatomb/bugs/90/
   patch do
     url "https://launchpadlibrarian.net/71985647/libav_0.7_support.patch"
     sha1 "8f8811d3879f4b8d2e1132fe2016a54b4fdf5b87"
@@ -45,11 +45,11 @@ class Mediatomb < Formula
   end
 
   patch do
-    url "http://sourceforge.net/p/mediatomb/patches/_discuss/thread/57c47fb9/8ad8/attachment/mediatomb-urifix.patch"
+    url "https://sourceforge.net/p/mediatomb/patches/_discuss/thread/57c47fb9/8ad8/attachment/mediatomb-urifix.patch"
     sha1 "7f4f9ef10fcbb05de95780f43bf4df9bd6563918"
   end
 
-  # Upstream patch: http://sourceforge.net/p/mediatomb/patches/35/
+  # Upstream patch: https://sourceforge.net/p/mediatomb/patches/35/
   patch do
     url "https://gist.githubusercontent.com/jacknagel/0971b2626b3a3c86c055/raw/31e568792918b57622dba559658e4161ad87f519/0010_fix_libmp4v2_build.patch"
     sha1 "5b879fc1640e2283941075e555212d4b81dd8e48"

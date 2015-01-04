@@ -1,7 +1,7 @@
 require 'formula'
 
 class PostgresXc < Formula
-  homepage 'http://postgres-xc.sourceforge.net/'
+  homepage 'https://postgres-xc.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.3.tar.gz'
   sha1 '76774cf32810dfa14b2174f2e939d3b28eb211a9'
   revision 1
@@ -38,7 +38,7 @@ class PostgresXc < Formula
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
 
-    # See http://sourceforge.net/mailarchive/forum.php?thread_name=82E44F89-543A-44F2-8AF8-F6909B5DC561%40uniud.it&forum_name=postgres-xc-bugs
+    # See https://sourceforge.net/p/postgres-xc/mailman/postgres-xc-bugs/thread/82E44F89-543A-44F2-8AF8-F6909B5DC561@uniud.it/
     ENV.append 'CFLAGS', '-D_FORTIFY_SOURCE=0 -O2' if MacOS.version >= :mavericks
 
     args = ["--disable-debug",
@@ -109,7 +109,7 @@ class PostgresXc < Formula
 
   def caveats; <<-EOS.undent
     To get started with Postgres-XC, read the documents at
-      http://sourceforge.net/projects/postgres-xc/files/Publication/
+      https://sourceforge.net/projects/postgres-xc/files/Publication/
       http://postgres-xc.sourceforge.net/docs/1_0/tutorial-start.html
 
     For a first cluster, you may start with a single GTM (Global Transaction Manager),

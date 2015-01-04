@@ -1,7 +1,7 @@
 require "formula"
 
 class LibtorrentRasterbar < Formula
-  homepage "http://sourceforge.net/projects/libtorrent/"
+  homepage "https://sourceforge.net/projects/libtorrent/"
   url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.3.tar.gz"
   sha1 "ccdd8bdba178b300921b15b18dfe8c0705f7eb07"
 

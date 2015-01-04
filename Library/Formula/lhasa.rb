@@ -1,7 +1,7 @@
 require "formula"
 
 class Lhasa < Formula
-  homepage "http://fragglet.github.io/lhasa/"
+  homepage "https://fragglet.github.io/lhasa/"
   url "https://github.com/fragglet/lhasa/archive/v0.2.0.tar.gz"
   sha1 "95dae252410648f629b275dedef218f81b835b3b"
   head "https://github.com/fragglet/lhasa.git"

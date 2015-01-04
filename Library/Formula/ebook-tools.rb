@@ -1,7 +1,7 @@
 require "formula"
 
 class EbookTools < Formula
-  homepage "http://sourceforge.net/projects/ebook-tools"
+  homepage "https://sourceforge.net/projects/ebook-tools"
   url "https://downloads.sourceforge.net/project/ebook-tools/ebook-tools/0.2.2/ebook-tools-0.2.2.tar.gz"
   sha1 "1f10bef62c9125cf804366134e486a58308f07ff"
 

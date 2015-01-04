@@ -1,8 +1,8 @@
 require 'formula'
 
 class Samba < Formula
-  homepage 'http://samba.org/'
-  url 'http://www.samba.org/samba/ftp/stable/samba-3.6.23.tar.gz'
+  homepage 'https://samba.org/'
+  url 'https://download.samba.org/pub/samba/stable/samba-3.6.23.tar.gz'
   sha1 '5ba2f8323ab17fa6c04bf87c11d20f10a4fcfe17'
 
   conflicts_with 'talloc', :because => 'both install `include/talloc.h`'

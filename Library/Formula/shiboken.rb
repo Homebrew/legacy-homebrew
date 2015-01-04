@@ -6,7 +6,7 @@ class Shiboken < Formula
   mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.2.2.tar.bz2'
   sha1 '55731616791500750ef373f382057a43e133fa08'
 
-  head 'git://gitorious.org/pyside/shiboken.git'
+  head 'https://gitorious.org/pyside/shiboken.git'
 
   bottle do
     revision 2

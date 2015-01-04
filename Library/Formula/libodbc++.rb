@@ -12,9 +12,9 @@ class Libodbcxx < Formula
 
   # Two patches are included:
   # The first: Fixes a compilation error on 64bit machines:
-  # http://sourceforge.net/tracker/?func=detail&aid=3590196&group_id=19075&atid=319075
+  # https://sourceforge.net/p/libodbcxx/patches/13/
   # The second: Fixes a memory corruption error on 64bit systems:
-  # https://sourceforge.net/tracker/?func=detail&aid=3601361&group_id=19075&atid=319075
+  # https://sourceforge.net/p/libodbcxx/patches/14/
   patch :DATA
 
   def install

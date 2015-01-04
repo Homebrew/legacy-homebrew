@@ -29,12 +29,12 @@ class Pup < Formula
   # discovered via
   # find . -name "*.go" -exec head -20 "{}" ";" | grep ".*\..*/" | sort | uniq
   go_resource "github.com/fatih/color" do
-    url "git://github.com/fatih/color.git",
+    url "https://github.com/fatih/color.git",
         # this was just the `master` at the time of this Formula
         :revision => "3161cccfa22c6243e02aa984cf2886d022024cec"
   end
   go_resource "github.com/mattn/go-colorable" do
-    url "git://github.com/mattn/go-colorable.git",
+    url "https://github.com/mattn/go-colorable.git",
         # this was just the `master` at the time of this Formula
         :revision => "043ae16291351db8465272edf465c9f388161627"
   end
