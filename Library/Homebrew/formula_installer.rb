@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require 'cxxstdlib'
 require 'exceptions'
 require 'formula'
