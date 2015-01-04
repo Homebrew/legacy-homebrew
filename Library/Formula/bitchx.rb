@@ -3,6 +3,12 @@ class Bitchx < Formula
   url "https://downloads.sourceforge.net/project/bitchx/ircii-pana/bitchx-1.2.1/bitchx-1.2.1.tar.gz"
   sha1 "48ca956d43d6d62e32040bddfae49e88c1188927"
 
+  bottle do
+    sha1 "8ad5407a90b61e1d20f59486c2ca750383bcc595" => :yosemite
+    sha1 "3581e44130a9bcf64636355c09d5dae36ea30d1c" => :mavericks
+    sha1 "01ca96037d259ab3b17354e65001672140b4cfa9" => :mountain_lion
+  end
+
   depends_on "openssl"
 
   def install
