@@ -25,8 +25,8 @@
 require 'stringio'
 
 # Some parts adapted from
-# http://golang.org/src/pkg/json/decode.go and
-# http://golang.org/src/pkg/utf8/utf8.go
+# https://golang.org/src/encoding/json/decode.go and
+# https://golang.org/src/unicode/utf8/utf8.go
 module Vendor
   module OkJson
     Upstream = '43'
