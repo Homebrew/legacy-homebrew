@@ -18,8 +18,7 @@ module Homebrew
 
     tapped_formulae = []
     HOMEBREW_LIBRARY.join("Formula").children.each do |path|
-      next unless path.symlink?
-      tapped_formulae << path.resolved_path
+      tapped_formulae << path.resolved_path if path.symlink?
     end
     unlink_tap_formula(tapped_formulae)
 
@@ -173,6 +172,7 @@ class Updater
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
+      updated = updated_paths
       diff.each_line do |line|
         status, *paths = line.split
         src, dst = paths.first, paths.last
@@ -181,8 +181,10 @@ class Updater
         next unless paths.any? { |p| File.dirname(p) == formula_directory }
 
         case status
-        when "A", "M", "D"
+        when "A", "D"
           map[status.to_sym] << repository.join(src)
+        when "M"
+          map[status.to_sym] << repository.join(src) if updated.include? src.to_s
         when /^R\d{0,3}/
           map[:D] << repository.join(src) if File.dirname(src) == formula_directory
           map[:A] << repository.join(dst) if File.dirname(dst) == formula_directory
@@ -216,6 +218,27 @@ class Updater
       "git", "diff-tree", "-r", "--name-status", "--diff-filter=AMDR",
       "-M85%", initial_revision, current_revision
     )
+  end
+
+  # Return a Set of updated formula paths. If {include_ignored} is false
+  # (default), formulae only modified by commits including "#homebrew-ignore"
+  # in their message will be ignored.
+  def updated_paths(include_ignored=false)
+    # log commits separated by \0's, then split on \0's to get an array
+    commits = Utils.popen_read(
+      "git", "log", "--pretty=format:%x00%s%n%b%x00", "--name-only",
+      initial_revision, current_revision
+    ).scan(/\x0([^\x0]+?\n)?\x0\n([^\x0]*)/)
+
+    changes = Set.new
+
+    commits.each do |msg, files|
+      if include_ignored || !msg.include?("#homebrew-ignore")
+        files.strip.split(/\n+/).each { |f| changes << f }
+      end
+    end
+
+    changes
   end
 
   def `(cmd)
