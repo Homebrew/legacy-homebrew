@@ -159,7 +159,77 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   end
 end
 
-class CurlDownloadStrategy < AbstractDownloadStrategy
+class AbstractFileDownloadStrategy < AbstractDownloadStrategy
+  def stage
+    case cached_location.compression_type
+    when :zip
+      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, cached_location }
+      chdir
+    when :gzip_only
+      with_system_path { buffered_write("gunzip") }
+    when :bzip2_only
+      with_system_path { buffered_write("bunzip2") }
+    when :gzip, :bzip2, :compress, :tar
+      # Assume these are also tarred
+      with_system_path { safe_system 'tar', 'xf', cached_location }
+      chdir
+    when :xz
+      with_system_path { safe_system "#{xzpath} -dc \"#{cached_location}\" | tar xf -" }
+      chdir
+    when :lzip
+      with_system_path { safe_system "#{lzippath} -dc \"#{cached_location}\" | tar xf -" }
+      chdir
+    when :xar
+      safe_system "/usr/bin/xar", "-xf", cached_location
+    when :rar
+      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, cached_location
+    when :p7zip
+      safe_system '7zr', 'x', cached_location
+    else
+      cp cached_location, basename_without_params
+    end
+  end
+
+  private
+
+  def chdir
+    entries = Dir['*']
+    case entries.length
+    when 0 then raise "Empty archive"
+    when 1 then Dir.chdir entries.first rescue nil
+    end
+  end
+
+  # gunzip and bunzip2 write the output file in the same directory as the input
+  # file regardless of the current working directory, so we need to write it to
+  # the correct location ourselves.
+  def buffered_write(tool)
+    target = File.basename(basename_without_params, cached_location.extname)
+
+    Utils.popen_read(tool, "-f", cached_location.to_s, "-c") do |pipe|
+      File.open(target, "wb") do |f|
+        buf = ""
+        f.write(buf) while pipe.read(1024, buf)
+      end
+    end
+  end
+
+  def basename_without_params
+    # Strip any ?thing=wad out of .c?thing=wad style extensions
+    File.basename(@url)[/[^?]+/]
+  end
+
+  def ext
+    # We need a Pathname because we've monkeypatched extname to support double
+    # extensions (e.g. tar.gz).
+    # We can't use basename_without_params, because given a URL like
+    #   https://example.com/download.php?file=foo-1.0.tar.gz
+    # the extension we want is ".tar.gz", not ".php".
+    Pathname.new(@url).extname[/[^?]+/]
+  end
+end
+
+class CurlDownloadStrategy < AbstractFileDownloadStrategy
   attr_reader :mirrors, :tarball_path, :temporary_path
 
   def initialize(name, resource)
@@ -198,36 +268,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     retry
   end
 
-  def stage
-    case cached_location.compression_type
-    when :zip
-      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, cached_location }
-      chdir
-    when :gzip_only
-      with_system_path { buffered_write("gunzip") }
-    when :bzip2_only
-      with_system_path { buffered_write("bunzip2") }
-    when :gzip, :bzip2, :compress, :tar
-      # Assume these are also tarred
-      with_system_path { safe_system 'tar', 'xf', cached_location }
-      chdir
-    when :xz
-      with_system_path { safe_system "#{xzpath} -dc \"#{cached_location}\" | tar xf -" }
-      chdir
-    when :lzip
-      with_system_path { safe_system "#{lzippath} -dc \"#{cached_location}\" | tar xf -" }
-      chdir
-    when :xar
-      safe_system "/usr/bin/xar", "-xf", cached_location
-    when :rar
-      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, cached_location
-    when :p7zip
-      safe_system '7zr', 'x', cached_location
-    else
-      cp cached_location, basename_without_params
-    end
-  end
-
   def cached_location
     tarball_path
   end
@@ -252,42 +292,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     args << '--connect-timeout' << '5' unless mirrors.empty?
     args << "--user" << meta.fetch(:user) if meta.key?(:user)
     super
-  end
-
-  def chdir
-    entries = Dir['*']
-    case entries.length
-    when 0 then raise "Empty archive"
-    when 1 then Dir.chdir entries.first rescue nil
-    end
-  end
-
-  # gunzip and bunzip2 write the output file in the same directory as the input
-  # file regardless of the current working directory, so we need to write it to
-  # the correct location ourselves.
-  def buffered_write(tool)
-    target = File.basename(basename_without_params, cached_location.extname)
-
-    Utils.popen_read(tool, "-f", cached_location.to_s, "-c") do |pipe|
-      File.open(target, "wb") do |f|
-        buf = ""
-        f.write(buf) while pipe.read(1024, buf)
-      end
-    end
-  end
-
-  def basename_without_params
-    # Strip any ?thing=wad out of .c?thing=wad style extensions
-    File.basename(@url)[/[^?]+/]
-  end
-
-  def ext
-    # We need a Pathname because we've monkeypatched extname to support double
-    # extensions (e.g. tar.gz).
-    # We can't use basename_without_params, because given a URL like
-    #   https://example.com/download.php?file=foo-1.0.tar.gz
-    # the extension we want is ".tar.gz", not ".php".
-    Pathname.new(@url).extname[/[^?]+/]
   end
 end
 
