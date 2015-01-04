@@ -140,7 +140,7 @@ module SharedEnvExtension
   end
 
   # Snow Leopard defines an NCURSES value the opposite of most distros
-  # See: http://bugs.python.org/issue6848
+  # See: https://bugs.python.org/issue6848
   # Currently only used by aalib in core
   def ncurses_define
     append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
