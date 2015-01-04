@@ -218,6 +218,37 @@ class FormulaAuditor
       problem "Google Code homepage should end with a slash (URL is #{homepage})."
     end
 
+    # Automatic redirect exists, but this is another hugely common error.
+    if homepage =~ %r[^http://code\.google\.com/]
+      problem "Google Code homepages should be https:// links (URL is #{homepage})."
+    end
+
+    # GNU has full SSL/TLS support but no auto-redirect.
+    if homepage =~ %r[^http://www\.gnu\.org/]
+      problem "GNU homepages should be https:// links (URL is #{homepage})."
+    end
+
+    # Savannah has full SSL/TLS support but no auto-redirect.
+    # Doesn't apply to the download links (boo), only the homepage.
+    if homepage =~ %r[^http://savannah\.nongnu\.org/]
+      problem "Savannah homepages should be https:// links (URL is #{homepage})."
+    end
+
+    # There's an auto-redirect here, but this mistake is incredibly common too.
+    if homepage =~ %r[^http://packages\.debian\.org]
+      problem "Debian homepage should be https:// links (URL is #{homepage})."
+    end
+
+    if homepage =~ %r[^http://((?:trac|tools|www)\.)?ietf\.org]
+      problem "ietf homepages should be https:// links (URL is #{homepage})."
+    end
+
+    # There's an auto-redirect here, but this mistake is incredibly common too.
+    # Only applies to the homepage and subdomains for now, not the FTP links.
+    if homepage =~ %r[^http://((?:build|cloud|developer|download|extensions|git|glade|help|library|live|nagios|news|people|projects|rt|static|wiki|www)\.)?gnome\.org]
+      problem "Gnome homepages should be https:// links (URL is #{homepage})."
+    end
+
     urls = @specs.map(&:url)
 
     # Check GNU urls; doesn't apply to mirrors
@@ -225,8 +256,28 @@ class FormulaAuditor
       problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
-    # the rest of the checks apply to mirrors as well
+    # the rest of the checks apply to mirrors as well.
     urls.concat(@specs.map(&:mirrors).flatten)
+
+    # Check a variety of SSL/TLS links that don't consistently auto-redirect
+    # or are overly common errors that need to be reduced & fixed over time.
+    urls.each do |p|
+      # Skip the main url link, as it can't be made SSL/TLS yet.
+      next if p =~ %r[/ftpmirror\.gnu\.org]
+
+      case p
+      when %r[^http://ftp\.gnu\.org/]
+        problem "ftp.gnu.org urls should be https://, not http:// (url is #{p})."
+      when %r[^http://code\.google\.com/]
+        problem "code.google.com urls should be https://, not http (url is #{p})."
+      when %r[^http://fossies\.org/]
+        problem "Fossies urls should be https://, not http (url is #{p})."
+      when %r[^http://mirrors\.kernel\.org/]
+        problem "mirrors.kernel urls should be https://, not http (url is #{p})."
+      when %r[^http://tools\.ietf\.org/]
+        problem "ietf urls should be https://, not http (url is #{p})."
+      end
+    end
 
     # Check SourceForge urls
     urls.each do |p|
@@ -268,9 +319,19 @@ class FormulaAuditor
       problem "Use https:// URLs for downloads from Google Code (url is #{u})."
     end
 
+    # Check for new-url Google Code download urls, https:// is preferred
+    urls.grep(%r[^http://code\.google\.com/]) do |u|
+      problem "Use https:// URLs for downloads from code.google (url is #{u})."
+    end
+
     # Check for git:// GitHub repo urls, https:// is preferred.
     urls.grep(%r[^git://[^/]*github\.com/]) do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
+    end
+
+    # Check for git:// Gitorious repo urls, https:// is preferred.
+    urls.grep(%r[^git://[^/]*gitorious\.org/]) do |u|
+      problem "Use https:// URLs for accessing Gitorious repositories (url is #{u})."
     end
 
     # Check for http:// GitHub repo urls, https:// is preferred.
@@ -336,6 +397,10 @@ class FormulaAuditor
       end
     when %r[macports/trunk]
       problem "MacPorts patches should specify a revision instead of trunk:\n#{patch.url}"
+    when %r[^http://trac\.macports\.org]
+      problem "Patches from MacPorts Trac should be https://, not http:\n#{patch.url}"
+    when %r[^http://bugs\.debian\.org]
+      problem "Patches from Debian should be https://, not http:\n#{patch.url}"
     when %r[^https?://github\.com/.*commit.*\.patch$]
       problem "GitHub appends a git version to patches; use .diff instead."
     end
