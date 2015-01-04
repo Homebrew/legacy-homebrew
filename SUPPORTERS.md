@@ -60,7 +60,7 @@ These awesome people supported our Kickstarter by giving us £50 or more:
 * [Simon Lundström](http://soy.se)
 * [Samir Talwar](http://samirtalwar.com/)
 * [John Wu](http://www.johnwu.com)
-* [Jan Lehnardt](http://couchdb.apache.org)
+* [Jan Lehnardt](https://couchdb.apache.org)
 * [Adam Auden](http://bimble.net/)
 * [closure.jp](http://closure.jp/)
 * Scott S.
@@ -128,7 +128,7 @@ These awesome people supported our Kickstarter by giving us £50 or more:
 * Glen Hunt
 * [Venantius](http://www.venanti.us)
 * Matt Jones
-* [Jen Savage](http://savagejen.github.io/)
+* [Jen Savage](https://savagejen.github.io/)
 * [Trenton Schulz](http://www.norwegianrockcat.com)
 * Jake Kaufman
 * [Hiro](http://blog.qli.jp/)
@@ -197,7 +197,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [beanieboi](http://abwesend.com)
 * [dirkr](http://niebegeg.net)
 * [ouvanous](http://ouvanous.com)
-* [dlinsin](http://dlinsin.github.io)
+* [dlinsin](https://dlinsin.github.io)
 * [Alex Morega](http://grep.ro/)
 * [Chris McGrath](https://twitter.com/chrismcg)
 * [Ben](http://blog.bueti-online.ch)
@@ -295,7 +295,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Josh Yaganeh](https://github.com/jyaganeh)
 * Dirk Kraft
 * [stefan crain](https://github.com/stefancrain)
-* [xorbyte](http://hackd.net)
+* [xorbyte](https://hackd.net)
 * Dom
 * [kmcphillips](http://kevinmcphillips.ca)
 * [Justin Kolberg](http://www.aelatis.com)
@@ -303,13 +303,13 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Hibri Marzook](http://www.hibri.net)
 * [Jeremy Pinnix](http://pixelgrazer.com)
 * [Arne de Bree](http://www.arnedebree.nl)
-* [Oleksandr Skrypnyk](http://sxua.github.com)
+* [Oleksandr Skrypnyk](https://sxua.github.io)
 * [Ilya Otyutskiy](https://twitter.com/thesharp)
 * Chris Hellmuth
 * Unknown Comic
 * Brian Miller
 * [Zhang Yi](http://tomodachi.name)
-* [Romain Lespinasse](http://dandelion.github.io)
+* [Romain Lespinasse](https://dandelion.github.io)
 * [achiiive.com](http://achiiive.com)
 * [Michael Hawkins](http://hawkinsunlimited.com)
 * [Tim Sutton](https://github.com/timsutton)
@@ -338,9 +338,9 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [dholm](https://github.com/dholm/)
 * [Chase Southard](http://southard.co)
 * Paul Jenkins
-* [Johnneylee Jack Rollins](http://Spaceghost.github.com)
+* [Johnneylee Jack Rollins](https://spaceghost.github.io)
 * [Jose Marcelino](http://metavurt.net)
-* [Adam](http://example.com)
+* [Adam](https://example.com)
 * [François Lamboley](http://www.frostland.fr/)
 * [Mike Anderson](http://mrmikea.com)
 * [Ian Johnson](http://ialsotakephotos.com/)
@@ -350,7 +350,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Denny Lee](http://dennyglee.com)
 * [Ernie Hershey](http://www.ernie.org)
 * [Hao Gao](http://www.haogao.me)
-* [Tim Gilbert](http://timgilbert.wordpress.com/)
+* [Tim Gilbert](https://timgilbert.wordpress.com/)
 * [Keith Thompson](http://keiththomps.com)
 
 These wonderful people supported our Kickstarter by giving us £10 or more:
@@ -377,7 +377,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * Ciarán Walsh
 * [Andrew Brown](http://pvalu.es)
 * [Bethany Sumner](http://www.bethanysumner.com/)
-* [Orta](http://orta.github.com)
+* [Orta](http://orta.io)
 * [Michał Gołębiowski](http://mgol.eu)
 * [Adam C. Foltzer](http://www.acfoltzer.net/)
 * [Steve Hiemstra](http://www.speg.com)
@@ -523,7 +523,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [Michael McCarthy](https://github.com/mikeycmccarthy)
 * [Scott Courtney](http://www.sinenomine.net/)
 * [Courtney Wilburn](http://blog.cjwilburn.com)
-* [Gregory Man](http://gregory-m.github.com/)
+* [Gregory Man](https://github.com/gregory-m)
 * [Sean Porter](http://seanporter.com)
 * [Jerome Glacken](http://www.jeromeglacken.com)
 * Chris Severs
