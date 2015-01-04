@@ -72,7 +72,7 @@ always install the most recent version, should be put in
 
 ### Bindings
 First check that there is not already a binding available via
-[`gem`](http://rubygems.org/) or [`pip`](http://www.pip-installer.org/)
+[`gem`](https://rubygems.org/) or [`pip`](http://www.pip-installer.org/)
 etc..
 
 If not, then put bindings in the formula they bind to. This is more

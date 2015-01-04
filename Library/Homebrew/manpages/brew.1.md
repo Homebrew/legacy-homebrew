@@ -473,7 +473,7 @@ can take several different forms:
   * AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY:
     When using the S3 download strategy, Homebrew will look in
     these variables for access credentials (see
-    <http://docs.aws.amazon.com/fws/1.1/GettingStartedGuide/index.html?AWSCredentials.html>
+    <https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment>
     to retrieve these access credentials from AWS).  If they are not set,
     the S3 download strategy will download with a public
     (unsigned) URL.
@@ -537,7 +537,7 @@ can take several different forms:
     A personal GitHub API Access token, which you can create at
     <https://github.com/settings/applications>. If set, GitHub will allow you a
     greater number of API requests. See
-    <http://developer.github.com/v3/#rate-limiting> for more information.
+    <https://developer.github.com/v3/#rate-limiting> for more information.
     Homebrew uses the GitHub API for features such as `brew search`.
 
   * HOMEBREW\_MAKE\_JOBS:
@@ -616,4 +616,4 @@ Homebrew was originally created by Max Howell.
 
 ## BUGS
 
-See Issues on GitHub: <http://github.com/Homebrew/homebrew/issues>
+See Issues on GitHub: <https://github.com/Homebrew/homebrew/issues>
