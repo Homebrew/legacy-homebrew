@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class HtmlXmlUtils < Formula
   homepage "http://www.w3.org/Tools/HTML-XML-utils/"
   url "http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.7.tar.gz"
