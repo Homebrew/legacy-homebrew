@@ -376,10 +376,12 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
 end
 
 # This strategy extracts local binary packages.
-class LocalBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize formula
-    super formula.name, formula.active_spec
-    @tarball_path = formula.local_bottle_path
+class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
+  attr_reader :cached_location
+
+  def initialize(formula)
+    @name = name
+    @cached_location = formula.local_bottle_path
   end
 
   def stage
