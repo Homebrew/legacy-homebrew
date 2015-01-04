@@ -77,10 +77,10 @@ Which is usually: `/Library/Caches/Homebrew`
 GUI apps on OS X don’t have `/usr/local/bin` in their `PATH` by default.
 If you’re on Mountain Lion, you can fix this by running
 `launchctl setenv PATH "/usr/local/bin:$PATH"`. [More details
-here](http://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/5444960#5444960),
+here](https://stackoverflow.com/questions/135688/setting-environment-variables-in-os-x/5444960#5444960),
 including how to set this across reboots. If you’re pre-Mountain Lion,
 [here’s an official
-alternative](http://developer.apple.com/library/mac/#qa/qa1067/_index.html).
+alternative](https://developer.apple.com/legacy/library/qa/qa1067/_index.html).
 
 ### How do I contribute to Homebrew?
 Read everything in https://github.com/Homebrew/homebrew/blob/master/CONTRIBUTING.md.
@@ -125,11 +125,11 @@ We aim to bottle everything.
 
 Or:
 
-`brew install http://raw.github.com/user/repo/branch/formula.rb`
+`brew install https://raw.github.com/user/repo/branch/formula.rb`
 
 Or:
 
-`brew pull http://github.com/Homebrew/homebrew/pulls/1234`
+`brew pull https://github.com/Homebrew/homebrew/pulls/1234`
 
 ### Why does Homebrew insist I install to `/usr/local` with such vehemence?
 <a name="usrlocal"></a>

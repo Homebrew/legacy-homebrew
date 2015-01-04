@@ -14,8 +14,8 @@ This is all that really matters:
 -   Add aliases
 -   Ensure it is not a dupe of anything that comes with OS X
 -   Ensure it is not a library that can be installed with
-    [gem](http://en.wikipedia.org/wiki/RubyGems),
-    [cpan](http://en.wikipedia.org/wiki/Cpan) or
+    [gem](https://en.wikipedia.org/wiki/RubyGems),
+    [cpan](https://en.wikipedia.org/wiki/Cpan) or
     [pip](https://pip.pypa.io/en/latest).
 -   Ensure the name is not in Ruby’s stdlib (Try
     `Formula.factory('readline')` in the `brew irb` shell)
@@ -96,7 +96,7 @@ try to make this work.
 
 ## Common “Gotchas”
 1.  [Ensure you have set your username and email address
-    properly](http://help.github.com/git-email-settings/)
+    properly](https://help.github.com/articles/setting-your-email-in-git/)
 2.  Sign off cherry-picks if you amended them, [GitX-dev](https://github.com/rowanj/gitx) can do this,
     otherwise there is a command line flag for it)
 3.  If the commit fixes a bug, use “Fixes \#104” syntax to close the bug
