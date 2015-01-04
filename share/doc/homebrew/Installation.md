@@ -17,7 +17,7 @@ flexibility. They are listed below the requirements.
 * OS X 10.6 or higher <sup>[2](#2)</sup>
 * Command Line Tools for Xcode: `xcode-select --install`,
   https://developer.apple.com/downloads or
-  [Xcode](http://itunes.apple.com/us/app/xcode/id497799835) <sup>[3](#3)</sup>
+  [Xcode](https://itunes.apple.com/us/app/xcode/id497799835) <sup>[3](#3)</sup>
 * A Bourne-compatible shell for installation (e.g. bash or zsh) <sup>[4](#4)</sup>
 
 If you want to build software that utilizes X11 components, you’ll need
