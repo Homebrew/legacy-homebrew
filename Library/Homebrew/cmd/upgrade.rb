@@ -6,7 +6,7 @@ module Homebrew
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      outdated = Homebrew.outdated_brews
+      outdated = Homebrew.outdated_brews(Formula.installed)
       exit 0 if outdated.empty?
     else
       outdated = ARGV.formulae.select do |f|
