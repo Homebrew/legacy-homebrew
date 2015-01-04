@@ -45,7 +45,7 @@ class Cdrtools < Formula
   end
 
   test do
-    system "#{bin}/cdrecord", "-scanbus"
+    system "#{bin}/cdrecord", "-version"
   end
 end
 
