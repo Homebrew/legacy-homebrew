@@ -235,13 +235,13 @@ class Formula
 
   # @deprecated
   # The `LinkedKegs` directory for this {Formula}.
-  # You probably want {.opt_prefix} instead.
+  # You probably want {#opt_prefix} instead.
   def linked_keg
     Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
   end
 
-  # The latest prefix for this formula. Checks for {#head}, then #{devel}
-  # and then #{stable}'s #{.prefix}
+  # The latest prefix for this formula. Checks for {#head}, then {#devel}
+  # and then {#stable}'s {#prefix}
   def installed_prefix
     if head && (head_prefix = prefix(head.version)).directory?
       head_prefix
