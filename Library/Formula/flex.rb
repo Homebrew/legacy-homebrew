@@ -1,7 +1,7 @@
 class Flex < Formula
   homepage "http://flex.sourceforge.net"
-  url "https://downloads.sourceforge.net/flex/flex-2.5.37.tar.bz2"
-  sha1 "db4b140f2aff34c6197cab919828cc4146aae218"
+  url "https://downloads.sourceforge.net/flex/flex-2.5.39.tar.bz2"
+  sha1 "267794c709d5c50f2dcb48ff5d8dcbbfe40f953e"
 
   bottle do
     revision 1
@@ -16,6 +16,7 @@ class Flex < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-shared",
                           "--prefix=#{prefix}"
     system "make", "install"
   end
