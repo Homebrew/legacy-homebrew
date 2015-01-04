@@ -301,7 +301,7 @@ class Version
     m = /_((?:\d+\.)+\d+[abc]?)[.]orig$/.match(stem)
     return m.captures.first unless m.nil?
 
-    # e.g. http://www.openssl.org/source/openssl-0.9.8s.tar.gz
+    # e.g. https://www.openssl.org/source/openssl-0.9.8s.tar.gz
     m = /-v?([^-]+)/.match(stem)
     return m.captures.first unless m.nil?
 

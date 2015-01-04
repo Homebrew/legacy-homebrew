@@ -285,7 +285,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     # We need a Pathname because we've monkeypatched extname to support double
     # extensions (e.g. tar.gz).
     # We can't use basename_without_params, because given a URL like
-    #   http://example.com/download.php?file=foo-1.0.tar.gz
+    #   https://example.com/download.php?file=foo-1.0.tar.gz
     # the extension we want is ".tar.gz", not ".php".
     Pathname.new(@url).extname[/[^?]+/]
   end
@@ -526,7 +526,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
     dst = Dir.getwd
     cached_location.cd do
-      # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
+      # https://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
       checkout_submodules(dst) if submodules?
     end
