@@ -3,7 +3,7 @@ require 'formula'
 class GnuSmalltalk < Formula
   homepage 'http://smalltalk.gnu.org/'
   url 'http://ftpmirror.gnu.org/smalltalk/smalltalk-3.2.5.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.5.tar.xz'
+  mirror 'https://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.5.tar.xz'
   sha1 '0eb5895b9b5bebe4f75308efbe34f8721fc2fd6b'
   revision 1
 

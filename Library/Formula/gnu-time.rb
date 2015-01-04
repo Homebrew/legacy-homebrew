@@ -1,9 +1,9 @@
 require 'formula'
 
 class GnuTime < Formula
-  homepage 'http://www.gnu.org/software/time/'
+  homepage 'https://www.gnu.org/software/time/'
   url 'http://ftpmirror.gnu.org/time/time-1.7.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/time/time-1.7.tar.gz'
+  mirror 'https://ftp.gnu.org/gnu/time/time-1.7.tar.gz'
   sha1 'dde0c28c7426960736933f3e763320680356cc6a'
 
   bottle do
@@ -16,8 +16,8 @@ class GnuTime < Formula
   option "with-default-names", "Do not prepend 'g' to the binary"
 
   # Fixes issue with main returning void rather than int
-  # http://trac.macports.org/ticket/32860
-  # http://trac.macports.org/browser/trunk/dports/sysutils/gtime/files/patch-time.c.diff?rev=88924
+  # https://trac.macports.org/ticket/32860
+  # https://trac.macports.org/browser/trunk/dports/sysutils/gtime/files/patch-time.c.diff?rev=88924
   patch :DATA
 
   def install

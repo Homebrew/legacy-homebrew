@@ -1,8 +1,8 @@
 require 'formula'
 
 class Jq < Formula
-  homepage 'http://stedolan.github.io/jq/'
-  url 'http://stedolan.github.io/jq/download/source/jq-1.4.tar.gz'
+  homepage 'https://stedolan.github.io/jq/'
+  url 'https://stedolan.github.io/jq/download/source/jq-1.4.tar.gz'
   sha1 '71da3840839ec74ae65241e182ccd46f6251c43e'
 
   depends_on 'bison' => :build # jq depends on bison > 2.5

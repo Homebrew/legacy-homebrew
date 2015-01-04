@@ -10,7 +10,7 @@ class Enchant < Formula
   depends_on 'glib'
   depends_on 'aspell'
 
-  # http://pythonhosted.org/pyenchant/
+  # https://pythonhosted.org/pyenchant/
   resource 'pyenchant' do
     url 'https://pypi.python.org/packages/source/p/pyenchant/pyenchant-1.6.5.tar.gz'
     sha1 '6f01b8657b64e970a11945c2a9b4d6d8023997bc'

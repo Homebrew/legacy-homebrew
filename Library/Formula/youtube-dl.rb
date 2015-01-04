@@ -4,7 +4,7 @@ require "formula"
 # many releases for us to update to every single one:
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
-  homepage "http://rg3.github.io/youtube-dl/"
+  homepage "https://rg3.github.io/youtube-dl/"
   url "https://yt-dl.org/downloads/2015.01.03/youtube-dl-2015.01.03.tar.gz"
   sha256 "1c3c6dabe8672c13e7925f17493930889a34c556e229d7b69df56d1ded812b4d"
 

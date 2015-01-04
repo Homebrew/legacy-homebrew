@@ -3,7 +3,7 @@ require "formula"
 class Getmail < Formula
   homepage "http://pyropus.ca/software/getmail/"
   url "http://pyropus.ca/software/getmail/old-versions/getmail-4.46.0.tar.gz"
-  mirror "http://fossies.org/linux/misc/getmail-4.46.0.tar.gz"
+  mirror "https://fossies.org/linux/misc/getmail-4.46.0.tar.gz"
   sha1 "0e20fcfed6c422e5135304c3728c11c7cee7081a"
 
   # See: https://github.com/Homebrew/homebrew/pull/28739

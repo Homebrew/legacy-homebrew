@@ -37,7 +37,7 @@ class Sqlmap < Formula
   end
 
   resource "pyodbc" do
-    url "http://pyodbc.googlecode.com/files/pyodbc-3.0.7.zip"
+    url "https://pyodbc.googlecode.com/files/pyodbc-3.0.7.zip"
     sha1 "88cb519411116012402aa0a0d5d7484949ddd99c"
   end
 

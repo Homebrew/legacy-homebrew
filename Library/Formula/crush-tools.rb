@@ -1,7 +1,7 @@
 require 'formula'
 
 class CrushTools < Formula
-  homepage 'http://crush-tools.googlecode.com/'
+  homepage 'https://code.google.com/p/crush-tools/'
   url 'https://crush-tools.googlecode.com/files/crush-tools-2013-04.tar.gz'
   version '2013-04'
   sha1 'a03a9d4719e8e049d836413598b636fd00f6a4cc'

@@ -1,7 +1,7 @@
 require 'formula'
 
 class AwsCloudsearch < Formula
-  homepage 'http://aws.amazon.com/developertools/9054800585729911'
+  homepage 'https://aws.amazon.com/developertools/9054800585729911'
   url 'https://s3.amazonaws.com/amazon-cloudsearch-data/cloud-search-tools-1.0.1.4-2013.01.11.tar.gz'
   version '1.0.1.4-2013.01.11'
   sha1 '8bd06d2b2660fb9bae2503b2540ca61036b1a169'

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Urlview < Formula
-  homepage 'http://packages.debian.org/unstable/misc/urlview'
-  url 'http://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
+  homepage 'https://packages.debian.org/unstable/misc/urlview'
+  url 'https://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
   mirror 'http://ftp.us.debian.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
   sha1 '323af9ba30ba87ec600531629f5dd84c720984b6'
 

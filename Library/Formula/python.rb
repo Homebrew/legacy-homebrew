@@ -18,7 +18,7 @@ class Python < Formula
   option :universal
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
-  option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
+  option "with-poll", "Enable select.poll, which is not fully implemented on OS X (https://bugs.python.org/issue5154)"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -42,10 +42,10 @@ class Python < Formula
   end
 
   # Patch for pyport.h macro issue
-  # http://bugs.python.org/issue10910
+  # https://bugs.python.org/issue10910
   # https://trac.macports.org/ticket/44288
   patch do
-    url "http://bugs.python.org/file30805/issue10910-workaround.txt"
+    url "https://bugs.python.org/file30805/issue10910-workaround.txt"
     sha1 "9926640cb7c8e273e4b451469a2b13d4b9df5ba3"
   end
 
@@ -74,7 +74,7 @@ class Python < Formula
 
   def install
     if build.with? "poll"
-      opoo "The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154)."
+      opoo "The given option --with-poll enables a somewhat broken poll() on OS X (https://bugs.python.org/issue5154)."
     end
 
     # Unset these so that installing pip and setuptools puts them where we want
@@ -100,7 +100,7 @@ class Python < Formula
     end
 
     # Allow sqlite3 module to load extensions:
-    # http://docs.python.org/library/sqlite3.html#f1
+    # https://docs.python.org/library/sqlite3.html#f1
     if build.with? "sqlite"
       inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', '')
     end
@@ -122,8 +122,8 @@ class Python < Formula
     system "./configure", *args
 
     # HAVE_POLL is "broken" on OS X. See:
-    # http://trac.macports.org/ticket/18376
-    # http://bugs.python.org/issue5154
+    # https://trac.macports.org/ticket/18376
+    # https://bugs.python.org/issue5154
     if build.without? "poll"
       inreplace "pyconfig.h", /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'
     end
@@ -139,7 +139,7 @@ class Python < Formula
 
     # Fixes setting Python build flags for certain software
     # See: https://github.com/Homebrew/homebrew/pull/20182
-    # http://bugs.python.org/issue3588
+    # https://bugs.python.org/issue3588
     inreplace lib_cellar/"config/Makefile" do |s|
       s.change_make_var! "LINKFORSHARED",
         "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
@@ -223,7 +223,7 @@ class Python < Formula
     end
     args << cflags
     args << ldflags
-    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
+    # Avoid linking to libgcc https://code.activestate.com/lists/python-dev/112195/
     args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
     # We want our readline! This is just to outsmart the detection code,
     # superenv handles that cc finds includes/libs!

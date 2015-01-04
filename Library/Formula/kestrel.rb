@@ -1,8 +1,8 @@
 require 'formula'
 
 class Kestrel < Formula
-  homepage 'http://robey.github.io/kestrel/'
-  url 'http://robey.github.com/kestrel/download/kestrel-2.4.1.zip'
+  homepage 'https://robey.github.io/kestrel/'
+  url 'https://robey.github.io/kestrel/download/kestrel-2.4.1.zip'
   sha1 'd6e6dabf1848fea306419c19ada0b89b6d1ad571'
 
   def install

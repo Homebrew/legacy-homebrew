@@ -1,9 +1,9 @@
 require "formula"
 
 class Libmicrohttpd < Formula
-  homepage "http://www.gnu.org/software/libmicrohttpd/"
+  homepage "https://www.gnu.org/software/libmicrohttpd/"
   url "http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.38.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.38.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.38.tar.gz"
   sha1 "1d0a6685b984b022a6be565f7b179c449944b3f1"
 
   option "with-ssl", "Enable SSL support"

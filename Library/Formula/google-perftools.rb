@@ -1,7 +1,7 @@
 require 'formula'
 
 class GooglePerftools < Formula
-  homepage 'http://code.google.com/p/gperftools/'
+  homepage 'https://code.google.com/p/gperftools/'
   url "https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-2.3.tar.gz"
   sha1 "3f7d48a8dfd519f744d94cd2dc6a7875e456e632"
 

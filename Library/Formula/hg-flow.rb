@@ -5,7 +5,7 @@ class HgFlow < Formula
   url 'https://bitbucket.org/yujiewu/hgflow/downloads/hgflow-v0.9.6.tar.bz2'
   sha1 'f4f71daee139dcee882b9ab199f14b7214167498'
 
-  head "http://bitbucket.org/yujiewu/hgflow", :using => :hg, :branch => 'develop'
+  head "https://bitbucket.org/yujiewu/hgflow", :using => :hg, :branch => 'develop'
 
   depends_on :python if MacOS.version <= :snow_leopard
 
@@ -20,7 +20,7 @@ class HgFlow < Formula
   def caveats; <<-EOS.undent
     1. Put following lines into your ~/.hgrc
     2. Restart your shell and try "hg flow".
-    3. For more information go to http://bitbucket.org/yinwm/hgflow
+    3. For more information go to https://bitbucket.org/yinwm/hgflow
 
         [extensions]
         hgflow=

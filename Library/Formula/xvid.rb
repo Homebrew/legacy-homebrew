@@ -2,7 +2,7 @@ require 'formula'
 
 class Xvid < Formula
   homepage 'http://www.xvid.org'
-  url 'http://fossies.org/unix/privat/xvidcore-1.3.3.tar.gz'
+  url 'https://fossies.org/linux/privat/xvidcore-1.3.3.tar.gz'
   # Official download takes a long time to fail, so set it as the mirror for now
   mirror 'http://downloads.xvid.org/downloads/xvidcore-1.3.3.tar.gz'
   sha1 '465763c92679ca230526d4890d17dbf6d6974b08'

@@ -1,7 +1,7 @@
 require 'formula'
 
 class GoogleSparsehash < Formula
-  homepage 'http://code.google.com/p/google-sparsehash/'
+  homepage 'https://code.google.com/p/sparsehash/'
   url 'https://sparsehash.googlecode.com/files/sparsehash-2.0.2.tar.gz'
   sha1 '12c7552400b3e20464b3362286653fc17366643e'
 

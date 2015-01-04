@@ -7,7 +7,7 @@ require 'formula'
 
 class Cvs < Formula
   homepage 'http://cvs.nongnu.org/'
-  url 'http://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2'
+  url 'https://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2'
   sha1 '93a8dacc6ff0e723a130835713235863f1f5ada9'
 
   bottle do

@@ -1,9 +1,9 @@
 require "formula"
 
 class Parallel < Formula
-  homepage "http://savannah.gnu.org/projects/parallel/"
+  homepage "https://savannah.gnu.org/projects/parallel/"
   url "http://ftpmirror.gnu.org/parallel/parallel-20141122.tar.bz2"
-  mirror "http://ftp.gnu.org/gnu/parallel/parallel-20141122.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20141122.tar.bz2"
   sha256 "68bcbc1e1a09b298433768f8c60c9506c13a16a96a5eebec316851d2bc22edce"
 
   bottle do

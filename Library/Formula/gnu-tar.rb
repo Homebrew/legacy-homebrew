@@ -1,7 +1,7 @@
 class GnuTar < Formula
-  homepage "http://www.gnu.org/software/tar/"
+  homepage "https://www.gnu.org/software/tar/"
   url "http://ftpmirror.gnu.org/tar/tar-1.28.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz"
   sha1 "cd30a13bbfefb54b17e039be7c43d2592dd3d5d0"
 
   option "with-default-names", "Do not prepend 'g' to the binary"

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Go < Formula
-  homepage 'http://golang.org'
+  homepage 'https://golang.org'
   head 'https://go.googlesource.com/go', :using => :git
   url 'https://storage.googleapis.com/golang/go1.4.src.tar.gz'
   version '1.4'
@@ -42,7 +42,7 @@ class Go < Formula
     end
 
     # The version check is due to:
-    # http://codereview.appspot.com/5654068
+    # https://codereview.appspot.com/5654068
     (buildpath/'VERSION').write('default') if build.head?
 
     cd 'src' do
@@ -66,10 +66,10 @@ class Go < Formula
 
   def caveats; <<-EOS.undent
     As of go 1.2, a valid GOPATH is required to use the `go get` command:
-      http://golang.org/doc/code.html#GOPATH
+      https://golang.org/doc/code.html#GOPATH
 
     `go vet` and `go doc` are now part of the go.tools sub repo:
-      http://golang.org/doc/go1.2#go_tools_godoc
+      https://golang.org/doc/go1.2#go_tools_godoc
 
     To get `go vet` and `go doc` run:
       go get golang.org/x/tools/cmd/vet

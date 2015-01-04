@@ -2,8 +2,8 @@ require "formula"
 
 class Ctemplate < Formula
   homepage "https://ctemplate.googlecode.com/"
-  head "http://ctemplate.googlecode.com/svn/trunk/"
-  url "http://ctemplate.googlecode.com/svn/tags/ctemplate-2.3/"
+  head "https://ctemplate.googlecode.com/svn/trunk/"
+  url "https://ctemplate.googlecode.com/svn/tags/ctemplate-2.3/"
   version "2.3"
 
   def install

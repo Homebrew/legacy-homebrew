@@ -6,7 +6,7 @@ require 'formula'
 # http://omahaproxy.appspot.com/
 
 class V8 < Formula
-  homepage 'http://code.google.com/p/v8/'
+  homepage 'https://code.google.com/p/v8/'
   url 'https://github.com/v8/v8/archive/3.25.30.tar.gz'
   sha1 '207d0bb1dd5954fe691570e799b3c1e318741290'
 
@@ -20,7 +20,7 @@ class V8 < Formula
   depends_on 'readline' => :optional
 
   resource 'gyp' do
-    url 'http://gyp.googlecode.com/svn/trunk', :revision => 1831
+    url 'https://gyp.googlecode.com/svn/trunk', :revision => 1831
     version '1831'
   end
 

@@ -2,7 +2,7 @@
 # https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
   homepage "http://tukaani.org/xz/"
-  url "http://fossies.org/linux/misc/xz-5.2.0.tar.gz"
+  url "https://fossies.org/linux/misc/xz-5.2.0.tar.gz"
   mirror "http://tukaani.org/xz/xz-5.2.0.tar.gz"
   sha256 "231ef369982240bb20ed7cffa52bb12a4a297ce6871f480ab85e8a7ba98bf3d6"
 

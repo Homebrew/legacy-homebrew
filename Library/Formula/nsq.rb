@@ -2,7 +2,7 @@ require "formula"
 require "language/go"
 
 class Nsq < Formula
-  homepage "http://bitly.github.io/nsq"
+  homepage "http://nsq.io/"
   url "https://github.com/bitly/nsq/archive/v0.2.31.tar.gz"
   sha1 "614e66746c6b785cffb48a6412e44dd5e0c7b0bd"
 

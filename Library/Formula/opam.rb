@@ -36,7 +36,7 @@ class Opam < Formula
   end
 
   resource "extlib" do
-    url "http://ocaml-extlib.googlecode.com/files/extlib-1.5.3.tar.gz"
+    url "https://ocaml-extlib.googlecode.com/files/extlib-1.5.3.tar.gz"
     sha1 "6e395ae70e690d5ec6f166cce4761798ce494580"
   end
 

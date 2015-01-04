@@ -1,7 +1,7 @@
 class Libmagic < Formula
   homepage "http://www.darwinsys.com/file/"
   url "ftp://ftp.astron.com/pub/file/file-5.21.tar.gz"
-  mirror "http://fossies.org/unix/misc/file-5.21.tar.gz"
+  mirror "https://fossies.org/linux/misc/file-5.21.tar.gz"
   sha1 "9836603b75dde99664364b0e7a8b5492461ac0fe"
 
   bottle do

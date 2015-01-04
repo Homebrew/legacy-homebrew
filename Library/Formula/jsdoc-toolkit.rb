@@ -1,7 +1,7 @@
 require 'formula'
 
 class JsdocToolkit < Formula
-  homepage 'http://code.google.com/p/jsdoc-toolkit/'
+  homepage 'https://code.google.com/p/jsdoc-toolkit/'
   url 'https://jsdoc-toolkit.googlecode.com/files/jsdoc_toolkit-2.4.0.zip'
   sha1 'bd276ec58dbd419326760226174eba09810d26ee'
 

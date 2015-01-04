@@ -3,7 +3,7 @@ require 'formula'
 class Autogen < Formula
   homepage 'http://autogen.sourceforge.net'
   url 'http://ftpmirror.gnu.org/autogen/rel5.18.4/autogen-5.18.4.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/autogen/rel5.18.4/autogen-5.18.4.tar.xz'
+  mirror 'https://ftp.gnu.org/gnu/autogen/rel5.18.4/autogen-5.18.4.tar.xz'
   sha1 '3d5aa8d99742e92098bb438c684bee5e978a8dd7'
 
   bottle do

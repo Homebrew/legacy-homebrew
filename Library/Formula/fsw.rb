@@ -1,7 +1,7 @@
 require "formula"
 
 class Fsw < Formula
-  homepage "http://emcrisostomo.github.io/fsw/"
+  homepage "https://emcrisostomo.github.io/fsw/"
   url "https://github.com/emcrisostomo/fsw/releases/download/v1.3.1/fsw-1.3.1.tar.gz"
   sha1 "f9c0f1c75e72f1a29c1e8433ca3f7aa408a94c4e"
 
