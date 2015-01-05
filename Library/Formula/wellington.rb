@@ -6,6 +6,12 @@ class Wellington < Formula
   sha1 "c7d1c391f9e929796f92c4496f011c62546a12cd"
   head "https://github.com/wellington/wellington.git"
 
+  bottle do
+    sha1 "4c2de0af6f0d18032e3d3722a328cbab4ca555d2" => :yosemite
+    sha1 "93fe2f24e449f8892d1401cf3fb8f9642d11d1ff" => :mavericks
+    sha1 "84d4941117e47a9c865aa5b9ac1c1f97295a04f9" => :mountain_lion
+  end
+
   needs :cxx11
 
   depends_on "go" => :build
