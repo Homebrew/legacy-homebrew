@@ -174,10 +174,10 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
       with_system_path { safe_system 'tar', 'xf', cached_location }
       chdir
     when :xz
-      with_system_path { safe_system "#{xzpath} -dc \"#{cached_location}\" | tar xf -" }
+      with_system_path { pipe_to_tar(xzpath) }
       chdir
     when :lzip
-      with_system_path { safe_system "#{lzippath} -dc \"#{cached_location}\" | tar xf -" }
+      with_system_path { pipe_to_tar(lzippath) }
       chdir
     when :xar
       safe_system "/usr/bin/xar", "-xf", cached_location
@@ -197,6 +197,15 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
     case entries.length
     when 0 then raise "Empty archive"
     when 1 then Dir.chdir entries.first rescue nil
+    end
+  end
+
+  def pipe_to_tar(tool)
+    Utils.popen_read(tool, "-dc", cached_location.to_s) do |rd|
+      Utils.popen_write("tar", "xf", "-") do |wr|
+        buf = ""
+        wr.write(buf) while rd.read(16384, buf)
+      end
     end
   end
 
