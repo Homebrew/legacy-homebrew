@@ -94,7 +94,7 @@ with ImplicitSender with ShouldMatchers with BeforeAndAfter with BeforeAndAfterA
       namedRdds.get[Int]("rdd") should equal (Some(rdd2))
     }
 
-    it("update() should replace existing RDD even if it was persisted before") {
+    it("update() should update an RDD even if it was persisted before") {
       // The result of some computations (ie: a MatrixFactorizationModel after training ALS) might have been
       // persisted before so they might have a specific storageLevel.
       val rdd1 = sc.parallelize(Seq(1, 2, 3))
