@@ -64,7 +64,6 @@ class Avidemux < Formula
         ENV.O2
         ENV.enable_warnings
         args << "-DCMAKE_BUILD_TYPE=Debug"
-        args << "-DCMAKE_VERBOSE_MAKEFILE=true"
         unless ENV.compiler == :clang
           args << "-DCMAKE_C_FLAGS_DEBUG=-ggdb3"
           args << "-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3"
@@ -111,7 +110,6 @@ class Avidemux < Formula
 
         if build.with? "debug"
           args << "-DCMAKE_BUILD_TYPE=Debug"
-          args << "-DCMAKE_VERBOSE_MAKEFILE=true"
           unless ENV.compiler == :clang
             args << "-DCMAKE_C_FLAGS_DEBUG=-ggdb3"
             args << "-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3"
