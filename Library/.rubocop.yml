@@ -22,14 +22,9 @@ Metrics/ClassLength:
 Metrics/PerceivedComplexity:
     Enabled: false
 
-# respect width, but be smart
+# we often need very long lines
 Metrics/LineLength:
-    AllowURI: true
-    URISchemes:
-        - http
-        - https
-        - ftp
-        - git
+    Enabled: false
 
 # formulas have no mandatory doc
 Style/Documentation:
@@ -48,10 +43,6 @@ Lint/ParenthesesAsGroupedExpression:
 # compact style
 Style/EmptyLineBetweenDefs:
     AllowAdjacentOneLineDefs: true
-
-# and/or as flow control
-Style/AndOr:
-    EnforcedStyle: conditionals
 
 # port numbers and such tech stuff
 Style/NumericLiterals:
@@ -94,7 +85,7 @@ Style/AlignParameters:
 Style/GuardClause:
     Enabled: false
 Style/IfUnlessModifier:
-  Enabled: false
+    Enabled: false
 
 # dashes in filenames are typical
 # TODO: enforce when rubocop has fixed this
