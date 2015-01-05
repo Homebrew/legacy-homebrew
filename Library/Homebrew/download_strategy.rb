@@ -209,7 +209,7 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
     Utils.popen_read(tool, "-f", cached_location.to_s, "-c") do |pipe|
       File.open(target, "wb") do |f|
         buf = ""
-        f.write(buf) while pipe.read(1024, buf)
+        f.write(buf) while pipe.read(16384, buf)
       end
     end
   end
