@@ -120,12 +120,21 @@ module Homebrew
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
   end
 
-  def self.install_gem_setup_path! gem
+  def self.install_gem_setup_path! gem, executable=gem
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
-    return if quiet_system "gem", "list", "--installed", gem
-    system "gem", "install", "--no-ri", "--no-rdoc",
-           "--user-install", gem
+
+    unless quiet_system "gem", "list", "--installed", gem
+      safe_system "gem", "install", "--no-ri", "--no-rdoc",
+                                    "--user-install", gem
+    end
+
+    unless which executable
+      odie <<-EOS.undent
+        The '#{gem}' gem is installed but couldn't find '#{executable}' in the PATH:
+        #{ENV["PATH"]}
+      EOS
+    end
   end
 end
 
