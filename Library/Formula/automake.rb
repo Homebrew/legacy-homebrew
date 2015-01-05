@@ -5,10 +5,9 @@ class Automake < Formula
   sha1 "c279b35ca6c410809dac8ade143b805fb48b7655"
 
   bottle do
-    sha1 "b7f153654e9a99194f13a8da140b3d861f046af0" => :yosemite
-    sha1 "8720e073a828e5b7e29e5cacd01b3ccca88a6d40" => :mavericks
-    sha1 "ed3cba7f2a806a4192e875e809bb73b65a128757" => :mountain_lion
-    sha1 "12d0d7d3b6d31ea4faf9551076225343e9a5af1f" => :lion
+    sha1 "493f0b3b591fd72412d0b048539df4d94127ec9c" => :yosemite
+    sha1 "a50e536f4cb8b7c45d51ab44fbc0825866553268" => :mavericks
+    sha1 "9430f3bca0176048b418440e57ca6b9d6773fc31" => :mountain_lion
   end
 
   depends_on "autoconf" => :run
