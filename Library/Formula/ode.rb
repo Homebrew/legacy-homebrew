@@ -5,6 +5,13 @@ class Ode < Formula
   url 'https://bitbucket.org/odedevs/ode/downloads/ode-0.13.1.tar.gz'
   sha1 '2fea08792e8f0fe606e929097fbec78ba926bcab'
 
+  bottle do
+    cellar :any
+    sha1 "f4c142dc1276434e7482955e6932182065c9131c" => :yosemite
+    sha1 "f69f17cd9bf1eed526959049c41cf3f28caed0da" => :mavericks
+    sha1 "ca4743cc4e6cdce4ada98187f139c3e2acb4facb" => :mountain_lion
+  end
+
   head do
     url 'http://bitbucket.org/odedevs/ode/', :using => :hg
 
