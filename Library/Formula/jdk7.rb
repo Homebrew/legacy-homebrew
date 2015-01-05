@@ -11,7 +11,7 @@ end
 class Jdk7 < Formula
   homepage "http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html"
 
-  version "1.7.0_75"
+  version "1.7.0.75"
   if OS.linux?
     url "http://download.oracle.com/otn-pub/java/jdk/7u75-b13/jdk-7u75-linux-x64.tar.gz",
       :using => JdkDownloadStrategy
