@@ -1,5 +1,3 @@
-require "formula"
-
 class Automake < Formula
   homepage "http://www.gnu.org/software/automake/"
   url "http://ftpmirror.gnu.org/automake/automake-1.15.tar.xz"
