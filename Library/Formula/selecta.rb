@@ -1,5 +1,3 @@
-require "formula"
-
 class Ruby19Dependency < Requirement
   fatal true
 
@@ -16,8 +14,8 @@ end
 
 class Selecta < Formula
   homepage "https://github.com/garybernhardt/selecta"
-  url "https://github.com/garybernhardt/selecta/archive/v0.0.3.tar.gz"
-  sha1 "0530f2145d5eb018ba9cf7108bd78d3e5bb03434"
+  url "https://github.com/garybernhardt/selecta/archive/v0.0.6.tar.gz"
+  sha1 "bf8881b2d545847921b1a05d23b88e2037c358e4"
 
   depends_on Ruby19Dependency
 
