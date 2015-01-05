@@ -18,9 +18,32 @@ class Coreutils < Formula
   # Patch adapted from upstream commits:
   # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
   # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
-  patch :DATA
+  stable do
+    patch :DATA
+  end
+
+  head do
+    url "git://git.sv.gnu.org/coreutils"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "bison" => :build
+    depends_on "gettext" => :build
+    depends_on "texinfo" => :build
+    depends_on "xz" => :build
+
+    resource "gnulib" do
+      url "http://git.savannah.gnu.org/cgit/gnulib.git/snapshot/gnulib-0.1.tar.gz"
+      sha1 "b29e165bf276ce0a0c12ec8ec1128189bd786155"
+    end
+  end
 
   def install
+    if build.head?
+      resource("gnulib").stage "gnulib"
+      ENV["GNULIB_SRCDIR"] = "gnulib"
+      system "./bootstrap"
+    end
     system "./configure", "--prefix=#{prefix}",
                           "--program-prefix=g",
                           "--without-gmp"
@@ -52,11 +75,11 @@ class Coreutils < Formula
     EOS
   end
 
-  def coreutils_filenames (dir)
+  def coreutils_filenames(dir)
     filenames = []
     dir.find do |path|
-      next if path.directory? or path.basename.to_s == ".DS_Store"
-      filenames << path.basename.to_s.sub(/^g/,"")
+      next if path.directory? || path.basename.to_s == ".DS_Store"
+      filenames << path.basename.to_s.sub(/^g/, "")
     end
     filenames.sort
   end
