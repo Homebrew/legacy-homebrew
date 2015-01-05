@@ -1,6 +1,6 @@
 class Syncthing < Formula
   homepage "http://syncthing.net"
-  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.14"
+  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.17"
 
   bottle do
     sha1 "004d50a3cff69db64c265963352877343be467e3" => :yosemite
