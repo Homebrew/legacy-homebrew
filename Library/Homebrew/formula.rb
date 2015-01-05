@@ -436,7 +436,9 @@ class Formula
   end
 
   def inspect
-    "#<#{self.class.name}: #{path}>"
+    s = "#<Formula #{name} ("
+    s << if head? then "head" elsif devel? then "devel" else "stable" end
+    s << ") #{path}>"
   end
 
   # Standard parameters for CMake builds.
