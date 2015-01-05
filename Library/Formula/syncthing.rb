@@ -1,11 +1,11 @@
 class Syncthing < Formula
   homepage "http://syncthing.net"
-  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.13"
+  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.17"
 
   bottle do
-    sha1 "4cb5aea8a9c063700498a7144d192e085010cc4e" => :yosemite
-    sha1 "bf05daef2e9ae5c7de424a3a6f33e28e898f6a31" => :mavericks
-    sha1 "a17f9c4942a53ff713455bf60df167060063c021" => :mountain_lion
+    sha1 "662ecddb853ea40e7ff4ce2dd78fc95a2753cbf5" => :yosemite
+    sha1 "a3e4911be66dbd3d6d3fc16ce340e355422deed0" => :mavericks
+    sha1 "55d0fb3a54f50706d6b96de4c2701ea0f6dc8f8e" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -15,7 +15,7 @@ class Syncthing < Formula
     ENV["GOPATH"] = cached_download/".gopath"
     ENV.append_path "PATH", "#{ENV["GOPATH"]}/bin"
 
-    # FIXME do this without mutating the cache!
+    # FIXTHIS: do this without mutating the cache!
     hack_dir = cached_download/".gopath/src/github.com/syncthing"
     rm_rf  hack_dir
     mkdir_p hack_dir
@@ -47,6 +47,8 @@ class Syncthing < Formula
         </array>
         <key>RunAtLoad</key>
         <true/>
+        <key>ProcessType</key>
+        <string>Background</string>
       </dict>
     </plist>
     EOS

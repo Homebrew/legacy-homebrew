@@ -1,5 +1,3 @@
-require "formula"
-
 class Tbb < Formula
   homepage "http://www.threadingbuildingblocks.org/"
   url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20141023oss_src.tgz"
@@ -37,5 +35,20 @@ class Tbb < Formula
       lib.install Dir["build/BUILDPREFIX_release/*.so*"]
     end
     include.install "include/tbb"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <tbb/task_scheduler_init.h>
+      #include <iostream>
+
+      int main()
+      {
+        std::cout << tbb::task_scheduler_init::default_num_threads();
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-ltbb", "-o", "test"
+    system "./test"
   end
 end

@@ -6,7 +6,7 @@ require 'formula'
 
 module Homebrew
   def tap arg
-    match = arg.match(%r[homebrew-(\w+)/])
+    match = arg.match(%r[homebrew-([\w-]+)/])
     match[1].downcase if match
   end
 

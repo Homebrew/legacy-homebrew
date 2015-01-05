@@ -2,15 +2,14 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  version '24.0.1'
+
+  version '24.0.2'
   if OS.mac?
-    url 'http://dl.google.com/android/android-sdk_r24-macosx.zip'
-    sha1 '7097c09c72645d7ad33c81a37b1a1363a9df2a54'
+    url 'http://dl.google.com/android/android-sdk_r24.0.2-macosx.zip'
+      sha1 '3ab5e0ab0db5e7c45de9da7ff525dee6cfa97455'
   elsif OS.linux?
-    url 'http://dl.google.com/android/android-sdk_r24-linux.tgz'
-    sha1 '3cc1fcec302a8478e240e42b94dd2de73b9d0cc9'
-  else
-    raise "Unknown operating system"
+    url 'http://dl.google.com/android/android-sdk_r24.0.2-linux.tgz'
+    sha1 'b6fd75e8b06b0028c2427e6da7d8a09d8f956a86'
   end
 
   conflicts_with 'android-platform-tools',
@@ -23,7 +22,7 @@ class AndroidSdk < Formula
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "20.0.0"
+    "21.1.2"
   end
 
   def install

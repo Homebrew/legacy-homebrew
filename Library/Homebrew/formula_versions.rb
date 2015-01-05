@@ -4,7 +4,7 @@ class FormulaVersions
   IGNORED_EXCEPTIONS = [
     ArgumentError, NameError, SyntaxError, TypeError,
     FormulaSpecificationError, FormulaValidationError,
-    ErrorDuringExecution,
+    ErrorDuringExecution, LoadError,
   ]
 
   attr_reader :f
@@ -54,7 +54,7 @@ class FormulaVersions
     formula_at_revision(rev) { |f| f.version }
   end
 
-  def formula_at_revision rev, &block
+  def formula_at_revision(rev)
     FileUtils.mktemp(f.name) do
       path = Pathname.pwd.join("#{f.name}.rb")
       path.write file_contents_at_revision(rev)

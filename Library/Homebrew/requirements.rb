@@ -61,7 +61,7 @@ end
 class TeXDependency < Requirement
   fatal true
   cask "mactex"
-  download "http://www.tug.org/mactex/"
+  download "https://www.tug.org/mactex/"
 
   satisfy { which('tex') || which('latex') }
 

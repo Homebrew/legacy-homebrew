@@ -1,10 +1,7 @@
-require 'formula'
-
 class Postgis < Formula
-  homepage 'http://postgis.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.1.4.tar.gz'
-  sha256 'cd73c2a38428c8736f6cae73b955aee0bd42f9ca4fd8d93c1af464524cb100fc'
-  revision 1
+  homepage "http://postgis.net"
+  url "http://download.osgeo.org/postgis/source/postgis-2.1.5.tar.gz"
+  sha256 "0d0e27f72f12b8dba456fbde25ed0f6913f42baf57332a7f1b9bbc6f29fddbf4"
 
   def pour_bottle?
     # Postgres extensions must live in the Postgres prefix, which precludes
@@ -21,23 +18,23 @@ class Postgis < Formula
     depends_on "libtool" => :build
   end
 
-  option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
-  option 'without-gdal', 'Disable postgis raster support'
+  option "with-gui", "Build shp2pgsql-gui in addition to command line tools"
+  option "without-gdal", "Disable postgis raster support"
 
   depends_on "pkg-config" => :build
-  depends_on 'gpp' => :build
-  depends_on 'postgresql'
-  depends_on 'proj'
-  depends_on 'geos'
+  depends_on "gpp" => :build
+  depends_on "postgresql"
+  depends_on "proj"
+  depends_on "geos"
 
-  depends_on 'gtk+' if build.with? "gui"
+  depends_on "gtk+" if build.with? "gui"
 
   # For GeoJSON and raster handling
-  depends_on 'json-c'
-  depends_on 'gdal' => :recommended
+  depends_on "json-c"
+  depends_on "gdal" => :recommended
 
   # For advanced 2D/3D functions
-  depends_on 'sfcgal' => :recommended
+  depends_on "sfcgal" => :recommended
 
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
@@ -56,42 +53,42 @@ class Postgis < Formula
       # Postgresql keg.
       "--with-pgconfig=#{postgres_realpath}/bin/pg_config",
       # Unfortunately, NLS support causes all kinds of headaches because
-      # PostGIS gets all of it's compiler flags from the PGXS makefiles. This
+      # PostGIS gets all of its compiler flags from the PGXS makefiles. This
       # makes it nigh impossible to tell the buildsystem where our keg-only
       # gettext installations are.
       "--disable-nls"
     ]
 
-    args << '--with-gui' if build.with? "gui"
-    args << '--without-raster' if build.without? "gdal"
+    args << "--with-gui" if build.with? "gui"
+    args << "--without-raster" if build.without? "gdal"
 
     system "./autogen.sh" if build.head?
-    system './configure', *args
-    system 'make'
+    system "./configure", *args
+    system "make"
 
     # PostGIS includes the PGXS makefiles and so will install __everything__
     # into the Postgres keg instead of the PostGIS keg. Unfortunately, some
     # things have to be inside the Postgres keg in order to be function. So, we
     # install everything to a staging directory and manually move the pieces
     # into the appropriate prefixes.
-    mkdir 'stage'
-    system 'make', 'install', "DESTDIR=#{buildpath}/stage"
+    mkdir "stage"
+    system "make", "install", "DESTDIR=#{buildpath}/stage"
 
     # Install PostGIS plugin libraries into the Postgres keg so that they can
     # be loaded and so PostGIS databases will continue to function even if
     # PostGIS is removed.
-    (postgres_realpath/'lib').install Dir['stage/**/*.so']
+    (postgres_realpath/"lib").install Dir["stage/**/*.so"]
 
     # Install extension scripts to the Postgres keg.
     # `CREATE EXTENSION postgis;` won't work if these are located elsewhere.
-    (postgres_realpath/'share/postgresql/extension').install Dir['stage/**/extension/*']
+    (postgres_realpath/"share/postgresql/extension").install Dir["stage/**/extension/*"]
 
-    bin.install Dir['stage/**/bin/*']
-    lib.install Dir['stage/**/lib/*']
-    include.install Dir['stage/**/include/*']
+    bin.install Dir["stage/**/bin/*"]
+    lib.install Dir["stage/**/lib/*"]
+    include.install Dir["stage/**/include/*"]
 
     # Stand-alone SQL files will be installed the share folder
-    (share/'postgis').install Dir['stage/**/contrib/postgis-2.1/*']
+    (share/"postgis").install Dir["stage/**/contrib/postgis-2.1/*"]
 
     # Extension scripts
     bin.install %w[
@@ -105,7 +102,7 @@ class Postgis < Formula
       utils/test_joinestimation.pl
     ]
 
-    man1.install Dir['doc/**/*.1']
+    man1.install Dir["doc/**/*.1"]
   end
 
   def caveats;
@@ -114,7 +111,7 @@ class Postgis < Formula
       To create a spatially-enabled database, see the documentation:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
       If you are currently using PostGIS 2.0+, you can go the soft upgrade path:
-        ALTER EXTENSION postgis UPDATE TO "2.1.4";
+        ALTER EXTENSION postgis UPDATE TO "2.1.5";
       Users of 1.5 and below will need to go the hard-upgrade path, see here:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#upgrading
 

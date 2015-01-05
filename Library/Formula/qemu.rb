@@ -3,13 +3,13 @@ require "formula"
 class Qemu < Formula
   homepage "http://www.qemu.org/"
   head "git://git.qemu-project.org/qemu.git"
-  url "http://wiki.qemu-project.org/download/qemu-2.1.2.tar.bz2"
-  sha1 "f5f9eefa8fece7dead0487a2cca25f90e3dab3d9"
+  url "http://wiki.qemu-project.org/download/qemu-2.2.0.tar.bz2"
+  sha1 "9a16623775a92fd25334f4eced4e6a56ab536233"
 
   bottle do
-    sha1 "6ddb5245e0669258d8514143166f520749080fec" => :mavericks
-    sha1 "db0a11aded67b12bdfd9923b91de3d2fd2115423" => :mountain_lion
-    sha1 "5ca2a1a9937190238ddc7ec416bd7d70f7d62a3f" => :lion
+    sha1 "becc370764c6a1408112cd0bfd534842591cdda5" => :yosemite
+    sha1 "fbd6ec4d831ecf814a47a4dd1b0811223ecef5be" => :mavericks
+    sha1 "27cc527a607c4c9d818e78eba2a0bd55ad5e52b9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

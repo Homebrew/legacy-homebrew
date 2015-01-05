@@ -52,9 +52,9 @@ class Formula
   attr_reader :head
 
   # The currently active {SoftwareSpec}.
-  # Defaults to stable unless `--devel` or `--HEAD` is passed.
-  # @private
+  # @see #determine_active_spec
   attr_reader :active_spec
+  protected :active_spec
 
   # The {PkgVersion} for this formula with version and {#revision} information.
   attr_reader :pkg_version
@@ -235,13 +235,13 @@ class Formula
 
   # @deprecated
   # The `LinkedKegs` directory for this {Formula}.
-  # You probably want {.opt_prefix} instead.
+  # You probably want {#opt_prefix} instead.
   def linked_keg
     Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
   end
 
-  # The latest prefix for this formula. Checks for {#head}, then #{devel}
-  # and then #{stable}'s #{.prefix}
+  # The latest prefix for this formula. Checks for {#head}, then {#devel}
+  # and then {#stable}'s {#prefix}
   def installed_prefix
     if head && (head_prefix = prefix(head.version)).directory?
       head_prefix
@@ -436,7 +436,9 @@ class Formula
   end
 
   def inspect
-    "#<#{self.class.name}: #{path}>"
+    s = "#<Formula #{name} ("
+    s << if head? then "head" elsif devel? then "devel" else "stable" end
+    s << ") #{path}>"
   end
 
   # Standard parameters for CMake builds.
@@ -652,8 +654,7 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    log = File.open(logfn, "w")
-    begin
+    File.open(logfn, "w") do |log|
       log.puts Time.now, "", cmd, args, ""
       log.flush
 
@@ -686,12 +687,18 @@ class Formula
         log.flush
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
         log.puts
-        require 'cmd/config'
-        Homebrew.dump_build_config(log)
-        raise BuildError.new(self, cmd, args, ENV.to_hash)
+
+        require "cmd/config"
+        require "cmd/--env"
+
+        env = ENV.to_hash
+
+        Homebrew.dump_verbose_config(log)
+        log.puts
+        Homebrew.dump_build_env(env, log)
+
+        raise BuildError.new(self, cmd, args, env)
       end
-    ensure
-      log.close
     end
   end
 
@@ -772,7 +779,7 @@ class Formula
     # @private
     attr_reader :keg_only_reason
 
-    # @!attribute [rw]
+    # @!attribute [w]
     # The homepage for the software. Used by users to get more information
     # about the software and Homebrew maintainers as a point of contact for
     # e.g. submitting patches.
@@ -787,7 +794,7 @@ class Formula
     # @private
     attr_reader :plist_manual
 
-    # @!attribute [rw]
+    # @!attribute [w]
     # Used for creating new Homebrew versions of software without new upstream
     # versions. For example, if we bump the major version of a library this
     # {Formula} {.depends_on} then we may need to update the `revision` of this
@@ -801,23 +808,23 @@ class Formula
       @specs ||= [stable, devel, head].freeze
     end
 
-    # @!attribute [rw] url
-    # The URL used to download the source for the currently active {SoftwareSpec}.
+    # @!attribute [w] url
+    # The URL used to download the source for the {#stable} version of the formula.
     # We prefer `https` for security and proxy reasons.
     def url val, specs={}
       stable.url(val, specs)
     end
 
     # @!attribute [w] version
-    # The version for the currently active {SoftwareSpec}.
+    # The version string for the {#stable} version of the formula.
     # The version is autodetected from the URL and/or tag so only needs to be
     # declared if it cannot be autodetected correctly.
     def version val=nil
       stable.version(val)
     end
 
-    # @!attribute [rw] mirror
-    # Additional {.url}s for the currently active {SoftwareSpec}.
+    # @!attribute [w] mirror
+    # Additional URLs for the {#stable} version of the formula.
     # These are only used if the {.url} fails to download. It's optional and
     # there can be more than one. Generally we add them when the main {.url}
     # is unreliable. If {.url} is really unreliable then we may swap the
@@ -826,14 +833,14 @@ class Formula
       stable.mirror(val)
     end
 
-    # @!attribute [rw] sha1
+    # @!attribute [w] sha1
     # @scope class
     # To verify the {#cached_download}'s integrity and security we verify the
     # SHA-1 hash matches what we've declared in the {Formula}. To quickly fill
     # this value you can leave it blank and run `brew fetch --force` and it'll
     # tell you the currently valid value.
 
-    # @!attribute [rw] sha256
+    # @!attribute [w] sha256
     # @scope class
     # Similar to {.sha1} but using a SHA-256 hash instead.
 

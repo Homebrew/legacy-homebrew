@@ -167,6 +167,8 @@ module Homebrew
       @hash = nil
       @url = nil
       @formulae = []
+      @added_formulae = []
+      @modified_formula = []
       @steps = []
       @tap = tap
       @repository = Homebrew.homebrew_git_repo @tap
@@ -308,8 +310,8 @@ module Homebrew
         formula_path = "Library/Formula"
       end
 
-      @added_formulae = diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "A")
-      @modified_formula = diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "M")
+      @added_formulae += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "A")
+      @modified_formula += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "M")
       @formulae += @added_formulae + @modified_formula
     end
 
@@ -378,7 +380,13 @@ module Homebrew
       end
 
       begin
-        deps.each { |d| CompilerSelector.select_for(d.to_formula) }
+        deps.each do |dep|
+          if dep.is_a?(TapDependency) && dep.tap
+            tap_dir = Homebrew.homebrew_git_repo dep.tap
+            test "brew", "tap", dep.tap unless tap_dir.directory?
+          end
+          CompilerSelector.select_for(dep.to_formula)
+        end
         CompilerSelector.select_for(formula)
       rescue CompilerSelectionError => e
         unless installed_gcc
@@ -476,7 +484,7 @@ module Homebrew
       git "reset", "--hard"
       git "checkout", "-f", "master"
       git "clean", "-fdx"
-      # TODO: on failure rerun with: -ffdx
+      git "clean", "-ffdx" unless $?.success?
     end
 
     def cleanup_after
@@ -594,7 +602,8 @@ module Homebrew
     ENV['HOMEBREW_NO_EMOJI'] = '1'
     if ARGV.include? '--ci-master' or ARGV.include? '--ci-pr' \
        or ARGV.include? '--ci-testing'
-      ARGV << '--cleanup' << '--junit' << '--local'
+      ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS_COMMIT"]
+      ARGV << "--junit" << "--local"
     end
     if ARGV.include? '--ci-master'
       ARGV << '--no-bottle' << '--email'

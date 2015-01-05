@@ -148,7 +148,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_formula_spec_integration
-    f = Class.new(Formula) do
+    f = formula do
       homepage 'http://example.com'
       url 'http://example.com/test-0.1.tbz'
       mirror 'http://example.org/test-0.1.tbz'
@@ -161,7 +161,7 @@ class FormulaTests < Homebrew::TestCase
         mirror 'http://example.org/test-0.2.tbz'
         sha256 TEST_SHA256
       end
-    end.new("test", Pathname.new(__FILE__).expand_path, :stable)
+    end
 
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version

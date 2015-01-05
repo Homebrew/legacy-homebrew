@@ -1,22 +1,20 @@
-require 'formula'
-
 class Gphoto2 < Formula
-  homepage 'http://gphoto.org/'
-  url 'https://downloads.sourceforge.net/project/gphoto/gphoto/2.5.4/gphoto2-2.5.4.tar.bz2'
-  sha1 'c557ee5cdea28f6cff1d2bc1d6ace58be48b65d3'
+  homepage "http://gphoto.org/"
+  url "https://downloads.sourceforge.net/project/gphoto/gphoto/2.5.6/gphoto2-2.5.6.tar.bz2"
+  sha1 "5094fd8b0f3b473a5fc3e869166c2f552132bbb2"
 
   bottle do
     cellar :any
-    sha1 "11a6058dda360a35674e156c324d9973d039ee33" => :mavericks
-    sha1 "8e82208a1cc540b6dca788d0ed1c0b4d0f8ec779" => :mountain_lion
-    sha1 "459af859c8a218d45ecbb36228afde156f3fccab" => :lion
+    sha1 "49afbd5764c72ab04513f1db5556f6d44f94cb3d" => :yosemite
+    sha1 "ffa581599c7e9097052de4e5c974c965d41e8435" => :mavericks
+    sha1 "a898338454285c9ab1d01f4b55e464701a403faf" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'jpeg'
-  depends_on 'libgphoto2'
-  depends_on 'popt'
-  depends_on 'readline'
+  depends_on "pkg-config" => :build
+  depends_on "jpeg"
+  depends_on "libgphoto2"
+  depends_on "popt"
+  depends_on "readline"
 
   def install
     system "./configure", "--disable-dependency-tracking",

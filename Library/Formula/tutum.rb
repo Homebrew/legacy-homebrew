@@ -15,6 +15,8 @@ class Tutum < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
+  conflicts_with "fig", :because => "both install `wsdump.py` binaries"
+
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
     sha1 "476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73"
