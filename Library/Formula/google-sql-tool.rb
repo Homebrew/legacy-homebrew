@@ -2,7 +2,7 @@ require 'formula'
 
 class GoogleSqlTool < Formula
   homepage 'https://developers.google.com/cloud-sql/docs/commandline'
-  url 'http://dl.google.com/cloudsql/tools/google_sql_tool.zip'
+  url 'https://dl.google.com/cloudsql/tools/google_sql_tool.zip'
   sha1 '67111a75a1c37b34527b3954795b179f62e88632'
   version 'r10'
 

@@ -5,7 +5,7 @@ require 'formula'
 class Mpich2 < Formula
   homepage 'http://www.mpich.org/'
   url 'http://www.mpich.org/static/downloads/3.1.3/mpich-3.1.3.tar.gz'
-  mirror 'http://fossies.org/linux/misc/mpich-3.1.3.tar.gz'
+  mirror 'https://fossies.org/linux/misc/mpich-3.1.3.tar.gz'
   sha1 'aa9907891ef4a4a584ab2f90a86775f29ca0dec0'
   revision 1
 

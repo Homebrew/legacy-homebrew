@@ -1,7 +1,7 @@
 require 'formula'
 
 class Mariadb < Formula
-  homepage 'http://mariadb.org/'
+  homepage 'https://mariadb.org/'
   url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.15/source/mariadb-10.0.15.tar.gz"
   sha1 "edd8ba315fffa727b52833df453ac9b88961130e"
 

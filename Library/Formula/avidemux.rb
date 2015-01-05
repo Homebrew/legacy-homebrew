@@ -6,7 +6,7 @@ class Avidemux < Formula
   homepage 'http://fixounet.free.fr/avidemux/'
   url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz'
   sha1 '50f3dfe270e6272fce46d725b198b9d0dd95664b'
-  head 'git://gitorious.org/avidemux2-6/avidemux2-6.git'
+  head 'https://gitorious.org/avidemux2-6/avidemux2-6.git'
 
   bottle do
     sha1 "5a168ebcb9661ba351bc09d734437fc93ef57cd0" => :mavericks
@@ -47,7 +47,7 @@ class Avidemux < Formula
     ENV['REV'] = version.to_s
 
     # For 32-bit compilation under gcc 4.2, see:
-    # http://trac.macports.org/ticket/20938#comment:22
+    # https://trac.macports.org/ticket/20938#comment:22
     if MacOS.version <= :leopard or Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
       inreplace 'cmake/admFFmpegBuild.cmake',
         '${CMAKE_INSTALL_PREFIX})',

@@ -13,7 +13,7 @@ class Ngrep < Formula
     sha1 "03fb46935a159ef96a5905b0f8c39900113a024d" => :lion
   end
 
-  # http://sourceforge.net/p/ngrep/bugs/27/
+  # https://sourceforge.net/p/ngrep/bugs/27/
   patch do
     url  'https://launchpadlibrarian.net/44952147/ngrep-fix-ipv6-support.patch'
     sha1 '84ff02f59b4fab8692a3ff2a61b45a4b9d067177'

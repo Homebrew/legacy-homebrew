@@ -15,7 +15,7 @@ class Mpg321 < Formula
   #    This patch was seen in the wild for an app called lscube:
   #       http://lscube.org/pipermail/lscube-commits/2009-March/000500.html
   # Both patches have been reported upstream here:
-  # https://sourceforge.net/tracker/?func=detail&aid=3587769&group_id=36274&atid=416544
+  # https://sourceforge.net/p/mpg321/patches/20/
   # Remove these at: Unknown.  These have not been merged as of 0.3.2.
   patch :DATA
 

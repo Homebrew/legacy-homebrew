@@ -1,7 +1,7 @@
 require "formula"
 
 class Ettercap < Formula
-  homepage "http://ettercap.github.io/ettercap/"
+  homepage "https://ettercap.github.io/ettercap/"
 
   stable do
     url "https://github.com/Ettercap/ettercap/archive/v0.8.1.tar.gz"

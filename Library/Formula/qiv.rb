@@ -5,7 +5,7 @@ class Qiv < Formula
   url 'http://spiegl.de/qiv/download/qiv-2.3.1.tgz'
   sha1 '8f8455951047ed41c773b9214375d02f7acaf814'
 
-  head 'http://bitbucket.org/ciberandy/qiv/', :using => :hg
+  head 'https://bitbucket.org/ciberandy/qiv/', :using => :hg
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+'

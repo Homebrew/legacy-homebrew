@@ -1,7 +1,7 @@
 require 'formula'
 
 class Oscats < Formula
-  homepage 'http://code.google.com/p/oscats/'
+  homepage 'https://code.google.com/p/oscats/'
   url 'https://oscats.googlecode.com/files/oscats-0.6.tar.gz'
   sha1 'f57fa06ee0d842ed4c547dd7ab599fd5090d7550'
 

@@ -14,7 +14,7 @@ class Libusrsctp < Formula
   end
 
   head do
-    url 'http://sctp-refimpl.googlecode.com/svn/trunk/KERN/usrsctp'
+    url 'https://sctp-refimpl.googlecode.com/svn/trunk/KERN/usrsctp'
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

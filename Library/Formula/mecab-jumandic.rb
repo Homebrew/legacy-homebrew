@@ -1,7 +1,7 @@
 require 'formula'
 
 class MecabJumandic < Formula
-  homepage 'http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html'
+  homepage 'https://mecab.googlecode.com/svn/trunk/mecab/doc/index.html'
   url 'https://downloads.sourceforge.net/project/mecab/mecab-jumandic/5.1-20070304/mecab-jumandic-5.1-20070304.tar.gz'
   sha1 '0672cb267b8fde6268a69d57add7ab1544e62154'
 

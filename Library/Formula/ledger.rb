@@ -8,7 +8,7 @@ class Ledger < Formula
     sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
 
     resource "utfcpp" do
-      url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+      url "https://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
       sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
     end
   end

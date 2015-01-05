@@ -13,7 +13,7 @@ class Openlitespeed < Formula
   depends_on "geoip"
   # SPDY needs openssl >= 1.0.1 for NPN; see:
   # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
-  # http://www.openssl.org/news/changelog.html
+  # https://www.openssl.org/news/changelog.html
   depends_on "openssl" if build.with? 'spdy'
 
   def install

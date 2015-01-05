@@ -1,7 +1,7 @@
 require 'formula'
 
 class Hub < Formula
-  homepage 'http://hub.github.com/'
+  homepage 'https://hub.github.com/'
   url 'https://github.com/github/hub/archive/v1.12.4.tar.gz'
   sha1 '25135167108cd777ba6ec2dd5a9a25e248d98d4b'
 

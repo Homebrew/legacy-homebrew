@@ -1,8 +1,8 @@
 require 'formula'
 
 class AndroidSdk < Formula
-  homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r24.0.2-macosx.zip'
+  homepage 'https://developer.android.com/index.html'
+  url 'https://dl.google.com/android/android-sdk_r24.0.2-macosx.zip'
   version '24.0.2'
   sha1 '3ab5e0ab0db5e7c45de9da7ff525dee6cfa97455'
 

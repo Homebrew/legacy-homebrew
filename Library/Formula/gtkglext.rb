@@ -20,7 +20,7 @@ class Gtkglext < Formula
   depends_on :x11
 
   # fixes an incompatibility with recent GTK versions
-  # patch from: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=585155
+  # patch from: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=585155
   patch :DATA
 
   def install

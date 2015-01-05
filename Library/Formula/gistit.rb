@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gistit < Formula
-  homepage 'http://gistit.herokuapp.com/'
+  homepage 'https://gistit.herokuapp.com/'
   url 'https://github.com/jrbasso/gistit/archive/v0.1.2.tar.gz'
   sha1 '9b20f3c0f81a9cb07e904e4f98f727e07caab8f3'
 

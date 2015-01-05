@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gdmap < Formula
-  homepage 'http://sourceforge.net/projects/gdmap/'
+  homepage 'https://sourceforge.net/projects/gdmap/'
   url 'https://downloads.sourceforge.net/project/gdmap/gdmap/0.8.1/gdmap-0.8.1.tar.gz'
   sha1 'd97cc7c107dbaf9f3f3ed22ee6cef6172c115295'
 

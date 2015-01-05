@@ -8,7 +8,7 @@ class Aldo < Formula
   depends_on 'libao'
 
   # Reported upstream:
-  # http://savannah.nongnu.org/bugs/index.php?42127
+  # https://savannah.nongnu.org/bugs/index.php?42127
   patch :DATA
 
   def install

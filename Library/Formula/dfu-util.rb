@@ -14,7 +14,7 @@ class DfuUtil < Formula
   end
 
   head do
-    url "git://gitorious.org/dfu-util/dfu-util.git"
+    url "https://gitorious.org/dfu-util/dfu-util.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build

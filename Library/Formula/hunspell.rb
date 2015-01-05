@@ -8,7 +8,7 @@ class Hunspell < Formula
   depends_on "readline"
 
   # hunspell does not prepend $HOME to all USEROODIRs
-  # http://sourceforge.net/p/hunspell/bugs/236/
+  # https://sourceforge.net/p/hunspell/bugs/236/
   patch :p0, :DATA
 
   def install

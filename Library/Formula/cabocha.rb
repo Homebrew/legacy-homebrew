@@ -1,7 +1,7 @@
 require 'formula'
 
 class Cabocha < Formula
-  homepage 'http://code.google.com/p/cabocha/'
+  homepage 'https://code.google.com/p/cabocha/'
   url 'https://cabocha.googlecode.com/files/cabocha-0.68.tar.bz2'
   sha1 '5e22a71eb86d778fdeb1b725c0b27f1fb4af7f4b'
 

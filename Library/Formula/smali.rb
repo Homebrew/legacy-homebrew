@@ -1,7 +1,7 @@
 require "formula"
 
 class Smali < Formula
-  homepage "http://smali.googlecode.com/"
+  homepage "https://code.google.com/p/smali/"
   url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.0.3.jar", :using => :nounzip
   sha1 "42774f5d949add1739299785feb83f3dec32f240"
 

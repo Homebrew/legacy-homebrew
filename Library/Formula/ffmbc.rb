@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ffmbc < Formula
-  homepage 'http://code.google.com/p/ffmbc/'
+  homepage 'https://code.google.com/p/ffmbc/'
   url 'https://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
   sha1 '85a9673ac82a698bb96057fe027222efe6ebae28'
   revision 1

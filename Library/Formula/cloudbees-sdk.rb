@@ -2,7 +2,7 @@ require 'formula'
 
 class CloudbeesSdk < Formula
   homepage 'http://wiki.cloudbees.com/bin/view/RUN/BeesSDK'
-  url 'http://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-1.5.2-bin.zip'
+  url 'https://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-1.5.2-bin.zip'
   sha1 '8c0d0e6ef3c412d07b5a939afd70dcdc0b4b913b'
 
   def shim_script target

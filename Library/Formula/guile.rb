@@ -1,9 +1,9 @@
 require "formula"
 
 class Guile < Formula
-  homepage "http://www.gnu.org/software/guile/"
+  homepage "https://www.gnu.org/software/guile/"
   url "http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz"
   sha1 "3cdd1c4956414bffadea13e5a1ca08949016a802"
   revision 1
 

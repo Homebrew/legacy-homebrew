@@ -1,7 +1,7 @@
 require "formula"
 
 class Osxfuse < Formula
-  homepage "http://osxfuse.github.io"
+  homepage "https://osxfuse.github.io"
   url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.3"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
@@ -16,7 +16,7 @@ class Osxfuse < Formula
 
   depends_on ConflictsWithBinaryOsxfuse
   depends_on UnsignedKextRequirement => [ :cask => "osxfuse",
-      :download => "http://sourceforge.net/projects/osxfuse/files/" ]
+      :download => "https://sourceforge.net/projects/osxfuse/files/" ]
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

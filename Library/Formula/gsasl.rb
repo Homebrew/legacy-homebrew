@@ -11,7 +11,7 @@ class Gsasl < Formula
     sha1 "bf3355e1963568a4282ec50bb3d2dfebb5f6b190" => :mountain_lion
   end
 
-  mirror 'http://ftp.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
+  mirror 'https://ftp.gnu.org/gnu/gsasl/gsasl-1.8.0.tar.gz'
   sha1 '343fd97ae924dc406986c02fb9b889f4114239ae'
 
   def install

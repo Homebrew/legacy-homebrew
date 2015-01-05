@@ -12,7 +12,7 @@ class Doxymacs < Formula
   end
 
   def install
-    # https://sourceforge.net/tracker/?func=detail&aid=3577208&group_id=23584&atid=378985
+    # https://sourceforge.net/p/doxymacs/support-requests/5/
     ENV.append 'CFLAGS', '-std=gnu89'
 
     system "./bootstrap" if build.head?

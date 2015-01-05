@@ -6,7 +6,7 @@ class Minisat < Formula
   sha1 "28c14eed485f4adb8dde9e26f05476f7eedc8f77"
 
   # Fix some declaration errors; see:
-  # http://groups.google.com/group/minisat/browse_thread/thread/f5b6a180cadbb214
+  # https://groups.google.com/group/minisat/browse_thread/thread/f5b6a180cadbb214
   patch :DATA
 
   fails_with :clang do

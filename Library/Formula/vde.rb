@@ -8,7 +8,7 @@ class Vde < Formula
   def install
     system "./configure", "--prefix=#{prefix}"
     # 2.3.1 built in parallel but 2.3.2 does not. See:
-    # https://sourceforge.net/tracker/?func=detail&aid=3501432&group_id=95403&atid=611248
+    # https://sourceforge.net/p/vde/bugs/54/
     ENV.j1
     system "make install"
   end

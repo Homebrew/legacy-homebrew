@@ -3,7 +3,7 @@ require "formula"
 class Vim < Formula
   homepage "http://www.vim.org/"
   head "https://vim.googlecode.com/hg/"
-  # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
+  # This package tracks debian-unstable: https://packages.debian.org/unstable/vim
   url "http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.488.orig.tar.gz"
   sha1 "6edad8cf9a08acb6a6e415b89bb13ccbd887d7c3"
 
@@ -91,7 +91,7 @@ class Vim < Formula
     system "make"
     # If stripping the binaries is not enabled, vim will segfault with
     # statically-linked interpreters like ruby
-    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    # https://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end

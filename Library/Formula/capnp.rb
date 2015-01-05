@@ -1,7 +1,7 @@
 require "formula"
 
 class Capnp < Formula
-  homepage "http://kentonv.github.io/capnproto/"
+  homepage "https://kentonv.github.io/capnproto/"
   url "http://capnproto.org/capnproto-c++-0.5.0.tar.gz"
   sha1 "5eec5929d9b64628b2e7b6646369f112079a1f61"
 

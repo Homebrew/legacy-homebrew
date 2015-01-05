@@ -2,7 +2,7 @@ require 'formula'
 
 class XmlrpcC < Formula
   homepage 'http://xmlrpc-c.sourceforge.net/'
-  url 'http://svn.code.sf.net/p/xmlrpc-c/code/stable', :revision => 2489
+  url 'https://svn.code.sf.net/p/xmlrpc-c/code/stable', :revision => 2489
   version '1.33.03'
 
   def install

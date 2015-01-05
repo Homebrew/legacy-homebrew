@@ -1,9 +1,9 @@
 require 'formula'
 
 class Automake < Formula
-  homepage 'http://www.gnu.org/software/automake/'
+  homepage 'https://www.gnu.org/software/automake/'
   url 'http://ftpmirror.gnu.org/automake/automake-1.14.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.14.1.tar.gz'
+  mirror 'https://ftp.gnu.org/gnu/automake/automake-1.14.1.tar.gz'
   sha1 '0bb1714b78d70cab9907d2013082978a28f48a46'
 
   bottle do

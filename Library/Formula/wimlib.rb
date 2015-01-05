@@ -1,7 +1,7 @@
 require "formula"
 
 class Wimlib < Formula
-  homepage "http://sourceforge.net/projects/wimlib/"
+  homepage "https://sourceforge.net/projects/wimlib/"
   url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.7.3.tar.gz"
   sha1 "3e6633b932dec774fa348511efb1ec505159a481"
 

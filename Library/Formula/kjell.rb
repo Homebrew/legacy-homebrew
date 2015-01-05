@@ -1,7 +1,7 @@
 require 'formula'
 
 class Kjell < Formula
-  homepage 'http://karlll.github.io/kjell/'
+  homepage 'https://karlll.github.io/kjell/'
   url 'https://github.com/karlll/kjell.git', :tag => '0.2.2'
   sha1 '514fc79b62093edd4149b9d1ab54874d4e9e3fae'
 

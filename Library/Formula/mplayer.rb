@@ -63,7 +63,7 @@ class Mplayer < Formula
     # Specify our compiler to stop ffmpeg from defaulting to gcc.
     # Disable openjpeg because it defines int main(), which hides mplayer's main().
     # This issue was reported upstream against openjpeg 1.5.0:
-    # http://code.google.com/p/openjpeg/issues/detail?id=152
+    # https://code.google.com/p/openjpeg/issues/detail?id=152
     args = %W[
       --prefix=#{prefix}
       --cc=#{ENV.cc}

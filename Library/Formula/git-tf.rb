@@ -1,7 +1,7 @@
 require 'formula'
 
 class GitTf < Formula
-  homepage 'http://gittf.codeplex.com/'
+  homepage 'https://gittf.codeplex.com/'
   url 'http://download.microsoft.com/download/A/E/2/AE23B059-5727-445B-91CC-15B7A078A7F4/git-tf-2.0.3.20131219.zip'
   sha1 'a16f98aa1cd6bff2931b2fa361711ca7051258f4'
 

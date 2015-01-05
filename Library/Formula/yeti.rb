@@ -1,7 +1,7 @@
 require 'formula'
 
 class Yeti < Formula
-  homepage 'http://mth.github.io/yeti/'
+  homepage 'https://mth.github.io/yeti/'
   url 'https://github.com/mth/yeti/archive/v0.9.9.tar.gz'
   sha1 'd4b3fee9e9e1c117f1a73b147695a24a217c2658'
 

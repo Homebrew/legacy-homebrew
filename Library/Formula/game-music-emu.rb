@@ -5,7 +5,7 @@ class GameMusicEmu < Formula
   url "https://game-music-emu.googlecode.com/files/game-music-emu-0.6.0.tar.bz2"
   sha1 "53f9af30dc1c8110135207c9ca35c1fa6716ddcf"
 
-  head "http://game-music-emu.googlecode.com/svn/trunk/"
+  head "https://game-music-emu.googlecode.com/svn/trunk/"
 
   bottle do
     cellar :any

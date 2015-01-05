@@ -76,7 +76,7 @@ class Cmake < Formula
       end
 
       # There is an existing issue around OS X & Python locale setting
-      # See http://bugs.python.org/issue18378#msg215215 for explanation
+      # See https://bugs.python.org/issue18378#msg215215 for explanation
       ENV["LC_ALL"] = "en_US.UTF-8"
     end
 

@@ -3,7 +3,7 @@ require 'formula'
 class Clisp < Formula
   homepage 'http://www.clisp.org/'
   url 'http://ftpmirror.gnu.org/clisp/release/2.49/clisp-2.49.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/clisp/release/2.49/clisp-2.49.tar.bz2'
+  mirror 'https://ftp.gnu.org/gnu/clisp/release/2.49/clisp-2.49.tar.bz2'
   sha1 '7e8d585ef8d0d6349ffe581d1ac08681e6e670d4'
 
   depends_on 'libsigsegv'

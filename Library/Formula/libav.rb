@@ -5,7 +5,7 @@ class Libav < Formula
   url "https://libav.org/releases/libav-11.1.tar.xz"
   sha1 "4cd3337c6c67481b7165c9c618f1fcf6998942ce"
 
-  head "git://git.libav.org/libav.git"
+  head "https://git.libav.org/libav.git"
 
   bottle do
     sha1 "450f32ac0b9be44d70e7cad574ed5937ef040050" => :yosemite

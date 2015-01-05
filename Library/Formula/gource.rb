@@ -1,7 +1,7 @@
 require "formula"
 
 class Gource < Formula
-  homepage "http://code.google.com/p/gource/"
+  homepage "https://code.google.com/p/gource/"
   url "https://github.com/acaudwell/Gource/releases/download/gource-0.43/gource-0.43.tar.gz"
   sha1 "dda56952f9cc19821ae7c146736b00556ef51edf"
 

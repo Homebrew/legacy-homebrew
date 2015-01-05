@@ -13,7 +13,7 @@ class Openjpeg < Formula
     sha1 "adf2186e0a1962e495cd6e1d17ec89087dd48635" => :mountain_lion
   end
 
-  head 'http://openjpeg.googlecode.com/svn/trunk/'
+  head 'https://openjpeg.googlecode.com/svn/trunk/'
 
   depends_on 'little-cms2'
   depends_on 'libtiff'

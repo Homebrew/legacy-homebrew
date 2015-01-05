@@ -11,8 +11,8 @@ class Pngnq < Formula
 
   # Fixes compilation on OSX Lion
   # png.h on Lion does not, in fact, include zlib.h
-  # See: http://sourceforge.net/tracker/?func=detail&aid=3353513&group_id=213072&atid=1024252
-  # See: http://sourceforge.net/tracker/?func=detail&aid=3402960&group_id=213072&atid=1024252
+  # See: https://sourceforge.net/p/pngnq/bugs/13/
+  # See: https://sourceforge.net/p/pngnq/bugs/14/
   patch :DATA
 
   def install

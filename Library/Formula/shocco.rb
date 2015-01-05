@@ -7,14 +7,14 @@ class MarkdownProvider < Requirement
 end
 
 class Shocco < Formula
-  homepage "http://rtomayko.github.io/shocco/"
+  homepage "https://rtomayko.github.io/shocco/"
   url "https://github.com/rtomayko/shocco/archive/1.0.tar.gz"
   sha1 "e29d58fb8109040b4fb4a816f330bb1c67064f6d"
 
   depends_on MarkdownProvider
 
   resource "pygments" do
-    url "http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
     sha1 "4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5"
   end
 

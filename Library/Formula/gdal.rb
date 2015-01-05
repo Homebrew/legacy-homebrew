@@ -75,8 +75,8 @@ class Gdal < Formula
   stable do
     # REMOVE when 1.11.2 is released
     # Fix segfault when executing OGR2SQLITE_Register() when compiled against sqlite 3.8.7
-    # See: http://trac.osgeo.org/gdal/ticket/5725, https://github.com/OSGeo/gdal/commit/12d3b98
-    # Fixes issue with QGIS's Save as... for vector layers: http://hub.qgis.org/issues/11526
+    # See: https://trac.osgeo.org/gdal/ticket/5725, https://github.com/OSGeo/gdal/commit/12d3b98
+    # Fixes issue with QGIS's Save as... for vector layers: https://hub.qgis.org/issues/11526
     patch :p2 do
       url "https://github.com/OSGeo/gdal/commit/12d3b984a052c59ee336f952902b82ace01ba31c.diff"
       sha1 "844bb827327f9c64918499f3cce3ded9414952c4"
@@ -93,7 +93,7 @@ class Gdal < Formula
   end if build.include? "enable-armadillo"
 
   resource 'numpy' do
-    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz'
+    url 'https://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz'
     sha1 '8fe1d5f36bab3f1669520b4c7d8ab59a21a984da'
   end
 
@@ -274,7 +274,7 @@ class Gdal < Formula
     # Reset ARCHFLAGS to match how we build.
     ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
 
-    # Fix hardcoded mandir: http://trac.osgeo.org/gdal/ticket/5092
+    # Fix hardcoded mandir: https://trac.osgeo.org/gdal/ticket/5092
     inreplace 'configure', %r[^mandir='\$\{prefix\}/man'$], ''
 
     # These libs are statically linked in vendored libkml and libkml formula

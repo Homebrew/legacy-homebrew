@@ -10,7 +10,7 @@ class Ffmpeg2theora < Formula
 
     # Fixes build with ffmpeg 2.x by removing use of deprecated constant
     patch do
-      url "http://git.xiph.org/?p=ffmpeg2theora.git;a=patch;h=d3435a6a83dc656379de9e6523ecf8d565da6ca6"
+      url "https://git.xiph.org/?p=ffmpeg2theora.git;a=patch;h=d3435a6a83dc656379de9e6523ecf8d565da6ca6"
       sha1 "5a3e48c386ac077ab58afa6c49631c88f8f85929"
     end
 
@@ -26,7 +26,7 @@ class Ffmpeg2theora < Formula
   end
 
   head do
-    url "git://git.xiph.org/ffmpeg2theora.git"
+    url "https://git.xiph.org/ffmpeg2theora.git"
 
     depends_on "libkate" => :recommended
   end

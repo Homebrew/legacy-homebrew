@@ -56,7 +56,7 @@ class Fontforge < Formula
     args << "--without-giflib" if build.without? "giflib"
     args << "--without-libspiro" if build.without? "libspiro"
 
-    # Fix linker error; see: http://trac.macports.org/ticket/25012
+    # Fix linker error; see: https://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
 
     # Add environment variables for system libs

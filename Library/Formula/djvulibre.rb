@@ -7,8 +7,8 @@ class Djvulibre < Formula
     url 'http://ftp.de.debian.org/debian/pool/main/d/djvulibre/djvulibre_3.5.25.4.orig.tar.gz'
     sha1 'c7044201703f30df0f1732c54c6544467412811d'
     # Fixes 10.9 clang/libcxx:
-    # http://sourceforge.net/p/djvu/bugs/236/#ce5c/a7ca
-    # http://sourceforge.net/p/djvu/djvulibre-git/ci/2c904e/
+    # https://sourceforge.net/p/djvu/bugs/236/#ce5c/a7ca
+    # https://sourceforge.net/p/djvu/djvulibre-git/ci/2c904e/
     patch :DATA
   end
 

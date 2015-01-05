@@ -1,13 +1,13 @@
 require "formula"
 
 class AndroidNdk < Formula
-  homepage "http://developer.android.com/sdk/ndk/index.html"
+  homepage "https://developer.android.com/sdk/ndk/index.html"
 
   if MacOS.prefer_64_bit?
-    url "http://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86_64.bin"
+    url "https://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86_64.bin"
     sha1 "6b89cb0c84e2d2bd802a5b78540327c1b3c2d7b8"
   else
-    url "http://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86.bin"
+    url "https://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86.bin"
     sha1 "fc1f9593eb9669076c25381322a1386869ac02f0"
   end
 
@@ -46,10 +46,10 @@ class AndroidNdk < Formula
     If this is unacceptable you should uninstall.
 
     License information at:
-    http://developer.android.com/sdk/terms.html
+    https://developer.android.com/sdk/terms.html
 
     Software and System requirements at:
-    http://developer.android.com/sdk/ndk/index.html#requirements
+    https://developer.android.com/sdk/ndk/index.html#requirements
 
     For more documentation on Android NDK, please check:
       #{prefix}/docs

@@ -1,7 +1,7 @@
 require "formula"
 
 class ChibiScheme < Formula
-  homepage "http://code.google.com/p/chibi-scheme/"
+  homepage "https://code.google.com/p/chibi-scheme/"
 
   stable do
     url "http://abrek.synthcode.com/chibi-scheme-0.7.2.tgz"
@@ -31,4 +31,3 @@ class ChibiScheme < Formula
     assert_equal 0, $?.exitstatus
   end
 end
-

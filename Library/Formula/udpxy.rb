@@ -13,7 +13,7 @@ class Udpxy < Formula
   end
 
   # Fix gzip path in Makefile for uname Darwin, this is needed to fix the install task
-  # http://sourceforge.net/p/udpxy/patches/4/
+  # https://sourceforge.net/p/udpxy/patches/4/
   patch :DATA
 
   def install

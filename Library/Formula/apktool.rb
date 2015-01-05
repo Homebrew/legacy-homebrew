@@ -1,7 +1,7 @@
 require 'formula'
 
 class Apktool < Formula
-  homepage 'http://android-apktool.googlecode.com/'
+  homepage 'https://code.google.com/p/android-apktool/'
   url 'https://android-apktool.googlecode.com/files/apktool1.5.2.tar.bz2'
   sha1 '2dd828cf79467730c7406aa918f1da1bd21aaec8'
 

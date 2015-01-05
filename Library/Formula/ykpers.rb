@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ykpers < Formula
-  homepage 'http://yubico.github.io/yubikey-personalization/'
+  homepage 'https://yubico.github.io/yubikey-personalization/'
   url 'https://developers.yubico.com/yubikey-personalization/releases/ykpers-1.16.1.tar.gz'
   sha1 'ff7cf92551ee06da198a2cccd29d55b388ce172b'
 

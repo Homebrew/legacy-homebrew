@@ -43,12 +43,12 @@ class Binwalk < Formula
   end
 
   resource 'numpy' do
-    url "http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz"
+    url "https://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz"
     sha1 "8fe1d5f36bab3f1669520b4c7d8ab59a21a984da"
   end
 
   resource 'scipy' do
-    url "http://downloads.sourceforge.net/project/scipy/scipy/0.14.0/scipy-0.14.0.tar.gz"
+    url "https://downloads.sourceforge.net/project/scipy/scipy/0.14.0/scipy-0.14.0.tar.gz"
     sha1 "faf16ddf307eb45ead62a92ffadc5288a710feb8"
   end
 

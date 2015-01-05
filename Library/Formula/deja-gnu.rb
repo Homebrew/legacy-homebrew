@@ -1,9 +1,9 @@
 require 'formula'
 
 class DejaGnu < Formula
-  homepage 'http://www.gnu.org/software/dejagnu/'
+  homepage 'https://www.gnu.org/software/dejagnu/'
   url 'http://ftpmirror.gnu.org/dejagnu/dejagnu-1.5.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/dejagnu/dejagnu-1.5.1.tar.gz'
+  mirror 'https://ftp.gnu.org/gnu/dejagnu/dejagnu-1.5.1.tar.gz'
   sha1 'eb16fb455690592a97f22acd17e8fc2f1b5c54c2'
 
   head 'http://git.sv.gnu.org/r/dejagnu.git'

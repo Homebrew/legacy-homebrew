@@ -21,7 +21,7 @@ class Gcc < Formula
     `uname -r`.chomp
   end
 
-  homepage "http://gcc.gnu.org"
+  homepage "https://gcc.gnu.org"
   url "http://ftpmirror.gnu.org/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2"
   mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2"
   sha1 "79dbcb09f44232822460d80b033c962c0237c6d8"
@@ -115,7 +115,7 @@ class Gcc < Formula
     args << "--enable-plugin" if MacOS.version > :tiger
 
     # Otherwise make fails during comparison at stage 3
-    # See: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
+    # See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
     args << "--with-dwarf2" if MacOS.version < :leopard
 
     args << "--disable-nls" if build.without? "nls"

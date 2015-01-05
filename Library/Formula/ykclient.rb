@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ykclient < Formula
-  homepage 'http://yubico.github.io/yubico-c-client/'
-  url 'http://yubico.github.io/yubico-c-client/releases/ykclient-2.12.tar.gz'
+  homepage 'https://yubico.github.io/yubico-c-client/'
+  url 'https://yubico.github.io/yubico-c-client/releases/ykclient-2.12.tar.gz'
   sha1 '518ce53ba9ef61a619f9150778f19fad23014a9c'
 
   option :universal

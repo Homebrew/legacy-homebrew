@@ -5,7 +5,7 @@ class Sphinx < Formula
   url 'http://sphinxsearch.com/files/sphinx-2.2.5-release.tar.gz'
   sha1 '27e1a37fdeff12b866b33d3bb5602894af10bb5e'
 
-  head 'http://sphinxsearch.googlecode.com/svn/trunk/'
+  head 'https://sphinxsearch.googlecode.com/svn/trunk/'
 
   bottle do
     revision 3

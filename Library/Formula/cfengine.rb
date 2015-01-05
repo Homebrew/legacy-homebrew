@@ -2,7 +2,7 @@ require 'formula'
 
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.3.tar.gz'
+  url 'https://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.3.tar.gz'
   sha1 '90b5577bbeb6215e0ffbc19bf0fe6c2e01bda596'
 
   bottle do
@@ -13,7 +13,7 @@ class Cfengine < Formula
   end
 
   resource "masterfiles" do
-    url "http://s3.amazonaws.com/cfengine.package-repos/tarballs/masterfiles-3.6.3.tar.gz"
+    url "https://s3.amazonaws.com/cfengine.package-repos/tarballs/masterfiles-3.6.3.tar.gz"
     sha1 "23496c323ee9d8204d78a2047ef7a90c61d12b18"
   end
 

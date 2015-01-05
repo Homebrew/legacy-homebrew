@@ -8,7 +8,7 @@ class Gmtl < Formula
     sha1 "473a454d17956d3ce3babafdb57f73c0685579fd"
 
     # Build assumes that Python is a framework, which isn't always true. See:
-    # https://sourceforge.net/tracker/?func=detail&aid=3172856&group_id=43735&atid=437247
+    # https://sourceforge.net/p/ggt/bugs/22/
     # The SConstruct from gmtl's HEAD doesn't need to be patched
     patch :DATA
   end
