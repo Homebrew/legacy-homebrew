@@ -5,21 +5,8 @@ class Uwsgi < Formula
   head "https://github.com/unbit/uwsgi.git"
 
   stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
-    sha1 "f017faf259f409907dc8c37541370d3e803fba32"
-
-    # Upstream ntohll fix - Kill on next stable release.
-    # https://github.com/unbit/uwsgi/issues/760
-    # https://github.com/unbit/uwsgi/commit/1964c9758
-    patch do
-      url "https://github.com/unbit/uwsgi/commit/1964c975.diff"
-      sha1 "5cad23c43ce933d723bf9961b3af303383386f92"
-    end
-    # Patches the patch to make it more ML & Mavericks friendly.
-    patch do
-      url "https://github.com/unbit/uwsgi/commit/48314cb903b.diff"
-      sha1 "4cd25b2c5ff39edacdac942f91839465e246d687"
-    end
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.9.tar.gz"
+    sha1 "318d1d6d4bb57eb48b58361201cdc1cc7feedcbb"
   end
 
   bottle do
