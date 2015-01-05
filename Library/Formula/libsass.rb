@@ -6,9 +6,9 @@ class Libsass < Formula
 
   bottle do
     cellar :any
-    sha1 "88f00899fb612aabe04a324cfc83bcf025aeb47e" => :yosemite
-    sha1 "6e0616f8296f687f8efdcbf4ddc66527a9676a25" => :mavericks
-    sha1 "d435e14e0a8a3886ba9dc301aed4db4baceb9fe6" => :mountain_lion
+    sha1 "af2bbeb2d2221df2fece3eaa054a65270768bb92" => :yosemite
+    sha1 "c626b584ef3e650e3ea3e05db123958c8a00d947" => :mavericks
+    sha1 "9c7460ce74317a03c996f215a890e0ab88b6c73d" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
