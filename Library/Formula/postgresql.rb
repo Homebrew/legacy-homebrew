@@ -1,9 +1,11 @@
 class Postgresql < Formula
   homepage "http://www.postgresql.org/"
+  revision 1
 
   stable do
     url "http://ftp.postgresql.org/pub/source/v9.4.0/postgresql-9.4.0.tar.bz2"
     sha256 "7a35c3cb77532f7b15702e474d7ef02f0f419527ee80a4ca6036fffb551625a5"
+    version "9.4"
   end
 
   bottle do
@@ -72,13 +74,14 @@ class Postgresql < Formula
       ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
+    system "pkill postgres || true"
     system "./configure", *args
     system "make", "install-world"
   end
 
   def post_install
-    unless File.exist? "#{var}/postgres"
-      system "#{bin}/initdb", "#{var}/postgres"
+    unless File.exist? "#{var}/postgres-#{version}"
+      system "#{bin}/initdb", "#{var}/postgres-#{version}"
     end
   end
 
@@ -89,6 +92,10 @@ class Postgresql < Formula
 
     To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
       http://www.postgresql.org/docs/9.4/static/upgrading.html
+
+    Your existing data from the last major version, such as 9.3, has been preserved in
+    #{var}/postgres-9.3 (for example). There is a new #{var}/postgres-#{version} directory
+    for this version's data. Migrate data between the two as desired.
     EOS
   end
 
@@ -107,16 +114,16 @@ class Postgresql < Formula
       <array>
         <string>#{opt_bin}/postgres</string>
         <string>-D</string>
-        <string>#{var}/postgres</string>
+        <string>#{var}/postgres-#{version}</string>
         <string>-r</string>
-        <string>#{var}/postgres/server.log</string>
+        <string>#{var}/postgres-#{version}/server.log</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>
-      <string>#{var}/postgres/server.log</string>
+      <string>#{var}/postgres-#{version}/server.log</string>
     </dict>
     </plist>
     EOS
