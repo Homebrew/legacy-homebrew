@@ -3,13 +3,13 @@ require 'keg'
 require 'irb'
 
 class Symbol
-  def f
-    Formulary.factory(to_s)
+  def f(*args)
+    Formulary.factory(to_s, *args)
   end
 end
 class String
-  def f
-    Formulary.factory(self)
+  def f(*args)
+    Formulary.factory(self, *args)
   end
 end
 
