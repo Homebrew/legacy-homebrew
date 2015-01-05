@@ -1,7 +1,7 @@
 class Redpen < Formula
   homepage "http://redpen.cc/"
-  url "https://github.com/recruit-tech/redpen/releases/download/v1.0/redpen-1.0.tar.gz"
-  sha1 "409c06450c35529d53ce5fe669c9fae662832cdf"
+  url "https://github.com/recruit-tech/redpen/releases/download/v1.0.1/redpen-cli-1.0.1.tar.gz"
+  sha1 "df0324348af5e07840454cd088ea7d26f490e6bf"
 
   depends_on :java => "1.8"
 
