@@ -4,9 +4,9 @@ class Msmtp < Formula
   sha1 "ac70151bcb53af5e192cbb147fd2b8139c637089"
 
   bottle do
-    sha1 "fbaed1978a9563b9959f1bff2d6f8c4fe891bdfc" => :yosemite
-    sha1 "922ed1dfb73c3d41f1adfb92d19c283b09b65f0d" => :mavericks
-    sha1 "c417014238a47adbd59eb45810f463163c1eefa2" => :mountain_lion
+    sha1 "fdc446edaff06269af325e4b95c10788d187b79e" => :yosemite
+    sha1 "cdb0533ee36dbcb9fe249adbc74f0394a605fa78" => :mavericks
+    sha1 "dc7336d5b49a22dc7b014529d08c6c98b7ad0c9f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
