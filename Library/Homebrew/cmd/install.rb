@@ -53,6 +53,11 @@ module Homebrew
           raise "No head is defined for #{f.name}"
         end
 
+        # Building stable-only with --devel is an error
+        if ARGV.build_devel? and f.devel.nil?
+          raise "No devel block is defined for #{f.name}"
+        end
+
         if f.installed?
           msg = "#{f.name}-#{f.installed_version} already installed"
           msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
