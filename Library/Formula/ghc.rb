@@ -22,7 +22,7 @@ class Ghc < Formula
   if build.build_32_bit? || !MacOS.prefer_64_bit?
     resource "binary" do
       url "https://downloads.haskell.org/~ghc/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
-      sha256 "cc298a03b5450e0cc93cf6929a47a31165733348d2d98f50627ea69532c19391"
+      sha256 "80c946e6d66e46ca5d40755f3fbe3100e24c0f8036b850fd8767c4f9efd02bef"
     end
   elsif MacOS.version <= :lion
     # https://ghc.haskell.org/trac/ghc/ticket/9257
