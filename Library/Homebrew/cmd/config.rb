@@ -119,6 +119,11 @@ module Homebrew
     s
   end
 
+  def java_version
+    java = `java -version 2>&1`.lines.first.chomp
+    java =~ /java version "(.+?)"/ ? $1 : java
+  end
+
   def dump_verbose_config(f=$stdout)
     f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     f.puts "ORIGIN: #{origin}"
@@ -140,5 +145,6 @@ module Homebrew
     f.puts "Perl: #{describe_perl}"
     f.puts "Python: #{describe_python}"
     f.puts "Ruby: #{describe_ruby}"
+    f.puts "Java: #{java_version}"
   end
 end
