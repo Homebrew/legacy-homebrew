@@ -1,4 +1,5 @@
 require 'requirement'
+require 'requirements/apr_dependency'
 require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
 require 'requirements/minimum_macos_requirement'
@@ -134,29 +135,5 @@ class JavaDependency < Requirement
     s = "Java#{version_string} is required to install this formula."
     s += super
     s
-  end
-end
-
-class AprDependency < Requirement
-  fatal true
-
-  satisfy(:build_env => false) { MacOS::CLT.installed? }
-
-  def message
-    message = <<-EOS.undent
-      Due to packaging problems on Apple's part, software that compiles
-      against APR requires the standalone Command Line Tools.
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Run `xcode-select --install` to install them.
-      EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
-      EOS
-    end
   end
 end
