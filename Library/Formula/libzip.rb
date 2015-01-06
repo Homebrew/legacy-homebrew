@@ -20,4 +20,12 @@ class Libzip < Formula
                           "CXXFLAGS=#{ENV.cflags}"
     system "make", "install"
   end
+
+  test do
+    touch "file1"
+    system "zip", "file1.zip", "file1"
+    touch "file2"
+    system "zip", "file2.zip", "file1", "file2"
+    assert_match /\+.*file2/, shell_output("#{bin}/zipcmp -v file1.zip file2.zip", 1)
+  end
 end
