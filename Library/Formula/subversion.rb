@@ -1,5 +1,3 @@
-require "formula"
-
 class Subversion < Formula
   homepage "https://subversion.apache.org/"
   url "http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2"
@@ -79,6 +77,12 @@ class Subversion < Formula
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
                 OPENSSL=#{Formula["openssl"].opt_prefix}]
+
+      unless MacOS::CLT.installed?
+        args << "APR=#{Formula["apr"].opt_prefix}"
+        args << "APU=#{Formula["apr-util"].opt_prefix}"
+      end
+
       scons *args
       scons "install"
     end
@@ -120,7 +124,6 @@ class Subversion < Formula
     # Don't mess with Apache modules (since we're not sudo)
     args = ["--disable-debug",
             "--prefix=#{prefix}",
-            "--with-apr=#{which("apr-1-config").dirname}",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula["sqlite"].opt_prefix}",
             "--with-serf=#{serf_prefix}",
@@ -131,6 +134,15 @@ class Subversion < Formula
 
     args << "--enable-javahl" << "--without-jikes" if build.with? "java"
     args << "--without-gpg-agent" if build.without? "gpg-agent"
+
+    unless MacOS::CLT.installed?
+      args << "--with-apr=#{Formula["apr"].opt_prefix}"
+      args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
+      args << "--with-apxs=no"
+    else
+      args << "--with-apr=/usr"
+      args << "--with-apr-util=/usr"
+    end
 
     if build.with? "ruby"
       args << "--with-ruby-sitedir=#{lib}/ruby"
