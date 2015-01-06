@@ -5,8 +5,10 @@ class Src < Formula
 
   bottle do
     cellar :any
-    sha1 "30728356bf11780f2c9c4894bd381b4b107f8661" => :yosemite
-    sha1 "bbabdfe74081f4624a487d845f20750b142c5b05" => :mavericks
+    revision 1
+    sha1 "65716b34afa534be339e0a954cc2206398002401" => :yosemite
+    sha1 "0a43a156e56b9dc7b62f8fe9cfc9095aa5d3cf64" => :mavericks
+    sha1 "cd51d4f5714a360549d9548a25c27a508aa9ae1b" => :mountain_lion
   end
 
   depends_on "rcs"
