@@ -1,9 +1,7 @@
-require 'formula'
-
 class Ghc < Formula
   homepage "http://haskell.org/ghc/"
-  url "https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-src.tar.xz"
-  sha256 "b0cd96a549ba3b5e512847a4a8cd1a3174e4b2b75dadfc41c568fb812887b958"
+  url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-src.tar.xz"
+  sha256 "c319cd94adb284177ed0e6d21546ed0b900ad84b86b87c06a99eac35152982c4"
 
   bottle do
     revision 1
@@ -22,30 +20,26 @@ class Ghc < Formula
 
   if build.build_32_bit? || !MacOS.prefer_64_bit?
     resource "binary" do
-      url "https://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
+      url "https://downloads.haskell.org/~ghc/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
       sha256 "80c946e6d66e46ca5d40755f3fbe3100e24c0f8036b850fd8767c4f9efd02bef"
     end
   elsif MacOS.version <= :lion
     # https://ghc.haskell.org/trac/ghc/ticket/9257
     resource "binary" do
-      url "https://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
+      url "https://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
     end
   else
     resource "binary" do
-      url "https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-x86_64-apple-darwin.tar.xz"
+      # there is currently no 7.8.4 binary download for darwin
+      url "https://downloads.haskell.org/~ghc/7.8.3/ghc-7.8.3-x86_64-apple-darwin.tar.xz"
       sha256 "dba74c4cfb3a07d243ef17c4aebe7fafe5b43804468f469fb9b3e5e80ae39e38"
     end
   end
 
   resource "testsuite" do
-    url "https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-testsuite.tar.xz"
-    sha256 "91ef5bd19d0bc1cd496de08218f7ac8a73c69de64d903e314c6beac51ad06254"
-  end
-
-  resource "Cabal" do
-    url "https://www.haskell.org/cabal/release/cabal-1.18.1.4/Cabal-1.18.1.4.tar.gz"
-    sha1 "3d23d0ad3c5dc0bc4440b50ca2c9a9a47396836a"
+    url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
+    sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
   end
 
   if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
@@ -60,20 +54,6 @@ class Ghc < Formula
   def install
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
-
-    # Here we imitate the Haskell Platform's packaging of GHC by including
-    # a later version of Cabal, “which fixes a particularly nasty problem with
-    # haddock, -XCPP, and clang based systems.”
-    # (q.v. https://www.haskell.org/platform/mac.html)
-    cabal_dir = buildpath/"Ghcsource/libraries/Cabal"
-    orig_cabal = cabal_dir/"Cabal.bak"
-    mv cabal_dir/"Cabal", orig_cabal
-    (cabal_dir/"Cabal").install resource("Cabal")
-    # there are some GHC-related files that don't come in Cabal's tarball
-    mv orig_cabal/"GNUmakefile", cabal_dir/"Cabal/GNUmakefile"
-    mv orig_cabal/"ghc.mk", cabal_dir/"Cabal/ghc.mk"
-    mv orig_cabal/"prologue.txt", cabal_dir/"Cabal/prologue.txt"
-    rm_rf orig_cabal
 
     resource("binary").stage do
       # Define where the subformula will temporarily install itself
