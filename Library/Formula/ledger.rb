@@ -1,5 +1,3 @@
-require "formula"
-
 class Ledger < Formula
   homepage "http://ledger-cli.org"
 
@@ -20,14 +18,15 @@ class Ledger < Formula
 
   head "https://github.com/ledger/ledger.git"
 
-  option "debug", "Build with debugging symbols enabled"
+  deprecated_option "debug" => "with-debug"
+
+  option "with-debug", "Build with debugging symbols enabled"
   option "with-docs", "Build HTML documentation"
 
-  depends_on "cmake" => :build
-  depends_on "ninja" => :build
   depends_on "mpfr"
   depends_on "gmp"
   depends_on :python => :optional
+  depends_on "cmake" => :build
 
   boost_opts = []
   boost_opts << "c++11" if MacOS.version < "10.9"
@@ -41,11 +40,11 @@ class Ledger < Formula
 
     (buildpath/"lib/utfcpp").install resource("utfcpp") unless build.head?
 
-    flavor = build.include?("debug") ? "debug" : "opt"
+    flavor = (build.with? "debug") ? "debug" : "opt"
 
-    opts = %W[-- -DBUILD_DOCS=1]
+    opts = %w[-- -DBUILD_DOCS=1]
     args = %W[
-      --ninja --jobs=#{ENV.make_jobs}
+      --jobs=#{ENV.make_jobs}
       --output=build
       --prefix=#{prefix}
       --boost=#{Formula["boost"].opt_prefix}
@@ -68,6 +67,7 @@ class Ledger < Formula
 
     args += opts
 
+    system "./acprep", flavor, "make", *args
     system "./acprep", flavor, "make", "doc", *args
     system "./acprep", flavor, "make", "install", *args
     (share+"ledger/examples").install Dir["test/input/*.dat"]
