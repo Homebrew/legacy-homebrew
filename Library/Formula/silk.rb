@@ -1,9 +1,7 @@
-require "formula"
-
 class Silk < Formula
-  homepage "http://tools.netsa.cert.org/silk/"
-  url "http://tools.netsa.cert.org/releases/silk-3.9.0.tar.gz"
-  sha1 "40dd51401f8688cf5e9a9b0146e1a9e0ccb654aa"
+  homepage "https://tools.netsa.cert.org/silk/"
+  url "https://tools.netsa.cert.org/releases/silk-3.10.0.tar.gz"
+  sha1 "ba139c0685456208cb51b74be627894558cf0126"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
@@ -17,8 +15,14 @@ class Silk < Formula
                           "--enable-ipv6",
                           "--enable-data-rootdir=#{var}/silk"
     system "make"
-    system "make install"
+    system "make", "install"
 
     (var+"silk").mkpath
+  end
+
+  test do
+    input = test_fixtures("test.pcap")
+    output = shell_output("yaf --in #{input} | #{bin}/rwipfix2silk | #{bin}/rwcount --no-titles --no-column")
+    assert_equal "2014/10/02T10:29:00|2.00|1031.00|12.00|", output.strip
   end
 end
