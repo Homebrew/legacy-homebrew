@@ -6,6 +6,13 @@ class Dvtm < Formula
   sha1 "8a4fc2440faa3050244e5a492fb6766899e0c0d7"
   head "git://repo.or.cz/dvtm.git"
 
+  bottle do
+    cellar :any
+    sha1 "5f90807a984ea18940aa62b31fccf1d5360fd904" => :yosemite
+    sha1 "0cc466200f2eb56604e6222055d3860dc66804e1" => :mavericks
+    sha1 "55a10e62092fed633e9252d07134a7cad1df8217" => :mountain_lion
+  end
+
   def install
     ENV.append_to_cflags "-D_DARWIN_C_SOURCE"
     system "make", "PREFIX=#{prefix}", "LIBS=-lc -lutil -lncurses", "install"
