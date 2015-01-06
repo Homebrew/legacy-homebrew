@@ -3,6 +3,12 @@ class AprUtil < Formula
   url "http://www.apache.org/dyn/closer.cgi?path=apr/apr-util-1.5.4.tar.bz2"
   sha1 "b00038b5081472ed094ced28bcbf2b5bb56c589d"
 
+  bottle do
+    sha1 "c0807fd64a46a6c0d1dfd3e3a5cfff3812356251" => :yosemite
+    sha1 "c3d8fa3f0b6d5c4923ab8bda382614d81d412c0b" => :mavericks
+    sha1 "4af28090bda520eabde6dfc039ea7d20da4f3db6" => :mountain_lion
+  end
+
   keg_only :provided_by_osx, "Apple's CLT package contains apr."
 
   depends_on "apr"
