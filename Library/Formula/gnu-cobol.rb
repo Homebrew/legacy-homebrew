@@ -32,6 +32,7 @@ class GnuCobol < Formula
   depends_on "automake" => :build
   depends_on "berkeley-db4"
   depends_on "gmp"
+  depends_on "gcc"
 
   def install
     # both environment variables are needed to be set
