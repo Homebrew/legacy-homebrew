@@ -1,20 +1,24 @@
-require 'formula'
-
 class Lout < Formula
-  homepage 'http://savannah.nongnu.org/projects/lout'
-  url 'http://download.savannah.gnu.org/releases/lout/lout-3.40.tar.gz'
-  sha1 'adb7f632202319a370eaada162fa52cf334f40b3'
+  homepage "https://savannah.nongnu.org/projects/lout"
+  url "http://download.savannah.gnu.org/releases/lout/lout-3.40.tar.gz"
+  sha1 "adb7f632202319a370eaada162fa52cf334f40b3"
 
   def install
-    inreplace "makefile" do |s|
-      s.change_make_var! "PREFIX", prefix
-      s.change_make_var! "LOUTLIBDIR", lib
-      s.change_make_var! "LOUTDOCDIR", doc
-      s.change_make_var! "MANDIR", man1
-    end
     bin.mkpath
     man1.mkpath
-    (doc/'lout').mkpath
-    system "make allinstall"
+    (doc/"lout").mkpath
+    system "make", "PREFIX=#{prefix}", "LOUTLIBDIR=#{lib}", "LOUTDOCDIR=#{doc}", "MANDIR=#{man}", "allinstall"
+  end
+
+  test do
+    input = "test.lout"
+    (testpath/input).write <<-EOS.undent
+      @SysInclude { doc }
+      @Doc @Text @Begin
+      @Display @Heading { Blindtext }
+      The quick brown fox jumps over the lazy dog.
+      @End @Text
+    EOS
+    assert_match /^\s+Blindtext\s+The quick brown fox.*\n+$/, shell_output("#{bin}/lout -p #{input}")
   end
 end
