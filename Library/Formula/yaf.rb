@@ -3,6 +3,12 @@ class Yaf < Formula
   url "https://tools.netsa.cert.org/releases/yaf-2.6.0.tar.gz"
   sha1 "ac1ac70a8d1ed8b8dbbfd5ec803880a74fa2894b"
 
+  bottle do
+    sha1 "08cbd663f3673eef87f3c086ad149a289c24959b" => :yosemite
+    sha1 "3f44f3792eb169334cbc8bfacabf6883fdc79b83" => :mavericks
+    sha1 "75c573eef68f5e27bffcf04919974759ba73a471" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libfixbuf"
