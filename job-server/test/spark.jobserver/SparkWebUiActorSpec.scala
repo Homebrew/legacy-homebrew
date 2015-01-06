@@ -1,24 +1,20 @@
 package spark.jobserver
 
-import akka.actor.{Props, ActorRef, ActorSystem}
+import akka.actor.{ActorRef, ActorSystem, Props, _}
 import akka.io.IO
 import akka.pattern.ask
-import akka.testkit.{TestKit, ImplicitSender}
-import com.typesafe.config.ConfigFactory
-import org.scalatest._
-import org.scalatest.matchers.ShouldMatchers
-import spray.client.pipelining._
-
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
+import akka.testkit.{ImplicitSender, TestKit}
 import akka.util.Timeout
-import akka.actor._
+import com.typesafe.config.ConfigFactory
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSpecLike, Matchers}
+import spark.jobserver.SparkWebUiActor._
 import spray.can.Http
+import spray.client.pipelining._
+import spray.http.HttpMethods._
 import spray.http._
-import HttpMethods._
-import SparkWebUiActor._
 
-import scala.util.{Failure, Success}
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 object SparkWebUiActorSpec {
   val sparkWebUrl = "localhost"

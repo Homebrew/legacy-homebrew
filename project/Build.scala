@@ -75,7 +75,6 @@ object JobServerBuild extends Build {
     settings =
       commonSettings210 ++ ourReleaseSettings ++ Seq(
       parallelExecution in Test := false,
-      fork in Test := false,
       publishArtifact := false,
       concurrentRestrictions := Seq(
         Tags.limit(Tags.CPU, java.lang.Runtime.getRuntime().availableProcessors()),
@@ -114,9 +113,6 @@ object JobServerBuild extends Build {
     resolvers    ++= Dependencies.repos,
     libraryDependencies ++= apiDeps,
     parallelExecution in Test := false,
-    testForkedParallel in Test := false,
-    fork in Test := false,
-    fork := false,
     // We need to exclude jms/jmxtools/etc because it causes undecipherable SBT errors  :(
     ivyXML :=
       <dependencies>
