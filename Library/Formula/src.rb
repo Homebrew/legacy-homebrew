@@ -9,6 +9,8 @@ class Src < Formula
     sha1 "bbabdfe74081f4624a487d845f20750b142c5b05" => :mavericks
   end
 
+  depends_on "rcs"
+
   # test is failing on Mountain Lion
   depends_on :macos => :mavericks
 
