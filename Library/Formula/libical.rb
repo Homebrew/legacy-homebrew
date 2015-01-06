@@ -2,8 +2,8 @@ require "formula"
 
 class Libical < Formula
   homepage "http://www.citadel.org/doku.php/documentation:featured_projects:libical"
-  url "https://downloads.sourceforge.net/project/freeassociation/libical/libical-1.0/libical-1.0.tar.gz"
-  sha1 "25c75f6f947edb6347404a958b1444cceeb9f117"
+  url "https://github.com/libical/libical/releases/download/v1.0.1/libical-1.0.1.tar.gz"
+  sha1 "904b2c2b5c2b30f0a508f9d56eaf316dd42fc923"
 
   bottle do
     revision 1
@@ -12,13 +12,12 @@ class Libical < Formula
     sha1 "e19ed113cb312dfeea12fba84f21f29f5866db99" => :mountain_lion
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on "cmake" => :build
 
   def install
-    system "./bootstrap"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    mkdir "build" do
+      system "cmake", "..", "-DSHARED_ONLY=true", *std_cmake_args
+      system "make", "install"
+    end
   end
 end
