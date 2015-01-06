@@ -3,10 +3,8 @@ package spark.jobserver
 import akka.actor._
 import akka.testkit.{TestKit, ImplicitSender}
 import com.typesafe.config.ConfigFactory
-import org.scalatest.time.Second
 import spark.jobserver.io.JobDAO
-import org.scalatest._
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers, FunSpecLike, BeforeAndAfterAll, BeforeAndAfter}
 
 
 object LocalContextSupervisorSpec {

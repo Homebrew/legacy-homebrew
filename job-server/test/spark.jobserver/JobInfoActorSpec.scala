@@ -2,7 +2,9 @@ package spark.jobserver
 
 import akka.actor.{Props, ActorRef, ActorSystem}
 import akka.testkit.{TestKit, ImplicitSender}
-import org.scalatest._
+import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
+
 import spark.jobserver.io.JobDAO
 
 object JobInfoActorSpec {
