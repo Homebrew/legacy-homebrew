@@ -11,9 +11,6 @@ class Src < Formula
 
   depends_on "rcs"
 
-  # test is failing on Mountain Lion
-  depends_on :macos => :mavericks
-
   def install
     # OSX doesn't provide a /usr/bin/python2. Upstream has been notified but
     # cannot fix the issue. See:
