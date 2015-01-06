@@ -1,6 +1,7 @@
 class Freetype < Formula
   homepage "http://www.freetype.org"
   url "https://downloads.sf.net/project/freetype/freetype2/2.5.5/freetype-2.5.5.tar.bz2"
+  mirror "http://download.savannah.gnu.org/releases/freetype/freetype-2.5.5.tar.bz2"
   sha1 "7b7460ef51a8fdb17baae53c6658fc1ad000a1c2"
 
   bottle do
