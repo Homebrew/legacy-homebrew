@@ -163,4 +163,5 @@ TAP_MIGRATIONS = {
   "xplot" => "homebrew/x11",
   "xspringies" => "homebrew/x11",
   "yarp" => "homebrew/x11",
+  "zenity" => "homebrew/x11",
 }
