@@ -2,9 +2,8 @@ require 'formula'
 
 class Librsvg < Formula
   homepage 'https://live.gnome.org/LibRsvg'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.3.tar.xz'
-  sha256 '3d7d583271030e21acacc60cb6b81ee305713c9da5e98429cbd609312aea3632'
-  revision 1
+  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.40/librsvg-2.40.6.tar.xz'
+  sha256 '8af349f241677b04b7a1ea6b9b33a6343e781bcccc8a09d00208a47342584f06'
 
   bottle do
     cellar :any
