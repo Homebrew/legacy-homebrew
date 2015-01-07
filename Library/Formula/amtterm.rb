@@ -1,10 +1,9 @@
-require 'formula'
-
 class Amtterm < Formula
-  head 'git://git.kraxel.org/amtterm'
-  homepage 'http://www.kraxel.org/blog/linux/amtterm/'
-  url 'http://www.kraxel.org/releases/amtterm/amtterm-1.3.tar.gz'
-  sha1 'cfd199cc870f48a59caa89408b039239eab85322'
+  homepage "http://www.kraxel.org/blog/linux/amtterm/"
+  url "http://www.kraxel.org/releases/amtterm/amtterm-1.3.tar.gz"
+  sha1 "cfd199cc870f48a59caa89408b039239eab85322"
+
+  head "git://git.kraxel.org/amtterm"
 
   resource "SOAP::Lite" do
     url "http://search.cpan.org/CPAN/authors/id/P/PH/PHRED/SOAP-Lite-1.11.tar.gz"
@@ -21,7 +20,11 @@ class Amtterm < Formula
       system "make", "install"
     end
 
-    system "make","prefix=#{prefix}", "install"
+    system "make", "prefix=#{prefix}", "install"
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
+  end
+
+  test do
+    system "#{bin}/amtterm", "-h"
   end
 end

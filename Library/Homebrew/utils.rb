@@ -119,6 +119,23 @@ module Homebrew
   def self.git_last_commit
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
   end
+
+  def self.install_gem_setup_path! gem, executable=gem
+    require "rubygems"
+    ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
+
+    unless quiet_system "gem", "list", "--installed", gem
+      safe_system "gem", "install", "--no-ri", "--no-rdoc",
+                                    "--user-install", gem
+    end
+
+    unless which executable
+      odie <<-EOS.undent
+        The '#{gem}' gem is installed but couldn't find '#{executable}' in the PATH:
+        #{ENV["PATH"]}
+      EOS
+    end
+  end
 end
 
 def with_system_path
@@ -191,17 +208,24 @@ end
 
 def which_editor
   editor = ENV.values_at('HOMEBREW_EDITOR', 'VISUAL', 'EDITOR').compact.first
-  # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 
   # Find Textmate
-  return 'mate' if which "mate"
+  editor = "mate" if which "mate"
   # Find BBEdit / TextWrangler
-  return 'edit' if which "edit"
+  editor ||= "edit" if which "edit"
   # Find vim
-  return 'vim' if which "vim"
+  editor ||= "vim" if which "vim"
   # Default to standard vim
-  return '/usr/bin/vim'
+  editor ||= "/usr/bin/vim"
+
+  opoo <<-EOS.undent
+    Using #{editor} because no editor was set in the environment.
+    This may change in the future, so we recommend setting EDITOR, VISUAL,
+    or HOMEBREW_EDITOR to your preferred text editor.
+  EOS
+
+  editor
 end
 
 def exec_editor *args
@@ -306,7 +330,7 @@ module GitHub extend self
     # This is a no-op if the user is opting out of using the GitHub API.
     return if ENV['HOMEBREW_NO_GITHUB_API']
 
-    safely_load_net_https
+    require "net/https"
 
     default_headers = {
       "User-Agent" => HOMEBREW_USER_AGENT,
@@ -402,25 +426,5 @@ module GitHub extend self
   def private_repo?(user, repo)
     uri = URI.parse("https://api.github.com/repos/#{user}/#{repo}")
     open(uri) { |json| json["private"] }
-  end
-
-  private
-
-  # If the zlib formula is loaded, TypeError will be raised when we try to load
-  # net/https. This monkeypatch prevents that and lets Net::HTTP fall back to
-  # the non-gzip codepath.
-  def safely_load_net_https
-    return if defined?(Net::HTTP)
-    if defined?(Zlib) && RUBY_VERSION >= "1.9"
-      require "net/protocol"
-      http = Class.new(Net::Protocol) do
-        def self.require(lib)
-          raise LoadError if lib == "zlib"
-          super
-        end
-      end
-      Net.const_set(:HTTP, http)
-    end
-    require "net/https"
   end
 end

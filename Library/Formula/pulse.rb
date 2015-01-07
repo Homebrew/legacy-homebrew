@@ -1,14 +1,12 @@
-require "formula"
-
 class Pulse < Formula
   homepage "https://ind.ie/pulse/"
-  url "https://source.ind.ie/project/pulse.git", :tag => "0.1.3"
+  url "https://source.ind.ie/project/pulse.git", :tag => "0.1.4"
   head "https://source.ind.ie/project/pulse.git"
 
   bottle do
-    sha1 "3a317698b3e2cc48de45852ded68e683d3237db1" => :yosemite
-    sha1 "7e4692f0e48b959c28efe7c1619affd51e4a95c4" => :mavericks
-    sha1 "d6a0a72a1c19d38a685579b6f12b28be1c878900" => :mountain_lion
+    sha1 "4d6954c4467e73a6fc341b6321fd063a3ed96b4d" => :yosemite
+    sha1 "afe5f7172c2d83529c9c922ef173b6fc85f59456" => :mavericks
+    sha1 "e2a0f268ad9a5fe754a7c9f1afa9b0a36603b9dd" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -18,7 +16,7 @@ class Pulse < Formula
     ENV["GOPATH"] = cached_download/".gopath"
     ENV.append_path "PATH", "#{ENV["GOPATH"]}/bin"
 
-    # FIXME do this without mutating the cache!
+    # FIXTHIS: do this without mutating the cache!
     hack_dir = cached_download/".gopath/src/source.ind.ie/project/"
     rm_rf  hack_dir
     mkdir_p hack_dir

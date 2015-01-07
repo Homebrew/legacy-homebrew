@@ -1,7 +1,5 @@
-require "formula"
-
 class Sqlite < Formula
-  homepage "http://sqlite.org/"
+  homepage "https://sqlite.org/"
   url "https://www.sqlite.org/2014/sqlite-autoconf-3080704.tar.gz"
   version "3.8.7.4"
   sha1 "70ca0b8884a6b145b7f777724670566e2b4f3cde"
@@ -26,7 +24,7 @@ class Sqlite < Formula
   depends_on "icu4c" => :optional
 
   resource "functions" do
-    url "http://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
+    url "https://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
     version "2010-01-06"
     sha1 "c68fa706d6d9ff98608044c00212473f9c14892f"
   end
@@ -43,12 +41,12 @@ class Sqlite < Formula
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA"
 
     if build.with? "icu4c"
-      icu4c = Formula['icu4c']
+      icu4c = Formula["icu4c"]
       icu4cldflags = `#{icu4c.opt_bin}/icu-config --ldflags`.tr("\n", " ")
       icu4ccppflags = `#{icu4c.opt_bin}/icu-config --cppflags`.tr("\n", " ")
       ENV.append "LDFLAGS", icu4cldflags
       ENV.append "CPPFLAGS", icu4ccppflags
-      ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_ICU"
+      ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_ICU"
     end
 
     ENV.universal_binary if build.universal?
@@ -75,7 +73,7 @@ class Sqlite < Formula
         In your application, call sqlite3_enable_load_extension(db,1) to
         allow loading external libraries.  Then load the library libsqlitefunctions
         using sqlite3_load_extension; the third argument should be 0.
-        See http://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
+        See https://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
         Select statements may now use these functions, as in
         SELECT cos(radians(inclination)) FROM satsum WHERE satnum = 25544;
 
