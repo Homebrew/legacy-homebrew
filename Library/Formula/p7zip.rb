@@ -18,7 +18,8 @@ class P7zip < Formula
       mv 'makefile.macosx_32bits', 'makefile.machine'
     else
       mv 'makefile.macosx_64bits', 'makefile.machine'
-    end
+    end if OS.mac?
+    mv 'makefile.linux_any_cpu', 'makefile.machine' if OS.linux?
 
     system "make", "all3",
                    "CC=#{ENV.cc} $(ALLFLAGS)",
