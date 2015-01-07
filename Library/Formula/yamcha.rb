@@ -3,6 +3,12 @@ class Yamcha < Formula
   url "http://chasen.org/~taku/software/yamcha/src/yamcha-0.33.tar.gz"
   sha1 "4ee6d8150557761f86fcb8af118636b7c23920c0"
 
+  bottle do
+    sha1 "7ba7244f3d95d350ee13686492d04267090cf024" => :yosemite
+    sha1 "5900e590dad8c01bb3598bdd0cb512f929130646" => :mavericks
+    sha1 "4f7d40d5d02e0a431486450d119e83564f795a70" => :mountain_lion
+  end
+
   depends_on "tinysvm"
 
   def install
