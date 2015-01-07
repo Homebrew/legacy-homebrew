@@ -3,6 +3,12 @@ class Enchant < Formula
   url "http://www.abisource.com/downloads/enchant/1.6.0/enchant-1.6.0.tar.gz"
   sha1 "321f9cf0abfa1937401676ce60976d8779c39536"
 
+  bottle do
+    sha1 "12a7edc42b202159012238e0c0d3da0c1d43a74e" => :yosemite
+    sha1 "e6766b97a2db560403d6a1a26b3129a5c3057991" => :mavericks
+    sha1 "6dd74cd9a3c9f0ca1252820ada1f1e27fbf57c44" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on :python => :optional
   depends_on "glib"
