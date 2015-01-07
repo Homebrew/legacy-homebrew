@@ -3,6 +3,12 @@ class Silk < Formula
   url "https://tools.netsa.cert.org/releases/silk-3.10.0.tar.gz"
   sha1 "ba139c0685456208cb51b74be627894558cf0126"
 
+  bottle do
+    sha1 "ce6ca0370886314428887737416c5df315db0148" => :yosemite
+    sha1 "e2edff04e899095205c595912cb41c640e9b3071" => :mavericks
+    sha1 "5bc85db293f56e772732625744a3636c9f206b72" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libfixbuf"
