@@ -38,7 +38,7 @@ class Gost < Formula
   end
 
   test do
-    (testpath/'test.txt').write <<-EOS.undent
+    (testpath/"test.txt").write <<-EOS.undent
     42
     EOS
     system bin/"gost", "--file=test.txt"
