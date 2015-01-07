@@ -236,7 +236,7 @@ class Version
 
   def self.parse spec
     version = _parse(spec)
-    Version.new(version, true) unless version.nil?
+    new(version, true) unless version.nil?
   end
 
   def self._parse spec
