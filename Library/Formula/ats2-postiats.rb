@@ -7,9 +7,9 @@ class Ats2Postiats < Formula
 
   bottle do
     cellar :any
-    sha1 "dd6ca443572a1a752653f6917bcd956a0d49d4b5" => :yosemite
-    sha1 "752798d63c87159bd5960ad7ff6008c1322db1e2" => :mavericks
-    sha1 "325d4886ac380238ac4434d3fb5969556c2cc49d" => :mountain_lion
+    sha1 "3805d6bdb7ed10e6dc06ec624e290f544fd0f7fb" => :yosemite
+    sha1 "631beaaf1a7454a3fbbbe8b11bdf02567d57c1d0" => :mavericks
+    sha1 "03ba510ac561f55cbecdc1aa5d74968b8ae2cf77" => :mountain_lion
   end
 
   depends_on "gmp"
