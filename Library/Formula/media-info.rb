@@ -2,9 +2,9 @@ require "formula"
 
 class MediaInfo < Formula
   homepage "https://mediaarea.net/"
-  url "https://mediaarea.net/download/binary/mediainfo/0.7.71/MediaInfo_CLI_0.7.71_GNU_FromSource.tar.bz2"
-  version "0.7.71"
-  sha1 "d650d3202d1aa2b8af02a7ca53e04ee2c0f227d0"
+  url "https://mediaarea.net/download/binary/mediainfo/0.7.72/MediaInfo_CLI_0.7.72_GNU_FromSource.tar.bz2"
+  version "0.7.72"
+  sha1 "e0f495f8c589ec2dc1c84011ddbf8946f28ab186"
 
   bottle do
     cellar :any
