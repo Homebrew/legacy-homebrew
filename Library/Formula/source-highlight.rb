@@ -1,7 +1,7 @@
 require 'formula'
 
 class SourceHighlight < Formula
-  homepage 'http://www.gnu.org/software/src-highlite/'
+  homepage 'https://www.gnu.org/software/src-highlite/'
   head 'git://git.savannah.gnu.org/src-highlite.git'
   url 'http://ftpmirror.gnu.org/src-highlite/source-highlight-3.1.7.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/src-highlite/source-highlight-3.1.7.tar.gz'
