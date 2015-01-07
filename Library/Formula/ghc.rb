@@ -4,10 +4,9 @@ class Ghc < Formula
   sha256 "c319cd94adb284177ed0e6d21546ed0b900ad84b86b87c06a99eac35152982c4"
 
   bottle do
-    revision 1
-    sha1 "f988a8c86bf9f03d4bedf936fbbca922f0639e56" => :yosemite
-    sha1 "96c5264cd455d81c3146c743aec2bade759bac28" => :mavericks
-    sha1 "2c9cdb57800d07a48ebe9bf720470e11a13df44f" => :mountain_lion
+    sha1 "34077e696ada63791ff32e044c51c8e538834b83" => :yosemite
+    sha1 "3780f6768dc740fb51fa3906cccb28ab06ce5acc" => :mavericks
+    sha1 "296802648e2b2bc26fcb01025fb1fa8ab583e64a" => :mountain_lion
   end
 
   option "32-bit"
