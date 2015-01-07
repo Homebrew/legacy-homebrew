@@ -28,6 +28,7 @@ class Znc < Formula
     args = ["--prefix=#{prefix}"]
     args << "--enable-debug" if build.include? "enable-debug"
 
+    system "git submodule update --init --recursive" if build.head?
     system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make install"
