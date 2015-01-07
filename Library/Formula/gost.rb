@@ -17,6 +17,6 @@ class Gost < Formula
   end
 
   test do
-    system bin/"gost", "-version"
+    system bin/"gost", "--version"
   end
 end
