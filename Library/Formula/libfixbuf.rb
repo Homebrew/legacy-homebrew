@@ -1,9 +1,7 @@
-require "formula"
-
 class Libfixbuf < Formula
-  homepage "http://tools.netsa.cert.org/fixbuf/"
-  url "http://tools.netsa.cert.org/releases/libfixbuf-1.6.1.tar.gz"
-  sha1 "5362e7ae866c418b1ae5576ad9ea3095bd7f2681"
+  homepage "https://tools.netsa.cert.org/fixbuf/"
+  url "https://tools.netsa.cert.org/releases/libfixbuf-1.6.2.tar.gz"
+  sha1 "5bb7a46927b33081820241586fb1112c7802c9de"
 
   bottle do
     cellar :any
@@ -20,6 +18,6 @@ class Libfixbuf < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
