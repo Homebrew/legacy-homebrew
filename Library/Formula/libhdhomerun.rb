@@ -1,5 +1,3 @@
-require "formula"
-
 class Libhdhomerun < Formula
   homepage "https://www.silicondust.com/support/downloads/linux/"
   url "http://download.silicondust.com/hdhomerun/libhdhomerun_20141210.tgz"
