@@ -4,6 +4,12 @@ class Chapel < Formula
   sha1 "9c05c48f9309a7f685390df37753c086d1637c96"
   head "https://github.com/chapel-lang/chapel.git"
 
+  bottle do
+    sha1 "1bd6c9d0ed88cd0c93e531df5895b7f24cc18a09" => :yosemite
+    sha1 "194d9dbbe62e30158e0da08a5ff8984bb4d153af" => :mavericks
+    sha1 "ef219e0b2eeea53b28d8ce00448afcbf36c9e917" => :mountain_lion
+  end
+
   def install
     # Remove the deparallelize with the 1.11.0 release, circa April 2015.
     ENV.deparallelize
