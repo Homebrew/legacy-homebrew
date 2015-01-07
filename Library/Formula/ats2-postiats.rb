@@ -2,8 +2,8 @@ require "formula"
 
 class Ats2Postiats < Formula
   homepage "http://www.ats-lang.org/"
-  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.5/ATS2-Postiats-0.1.5.tgz"
-  sha1 "8775d3ddfba30e61a50a3b3a8c7573a5dde716d1"
+  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.6/ATS2-Postiats-0.1.6.tgz"
+  sha1 "32f093102c8e32197dc182fc7801c5d16bdc92e5"
 
   bottle do
     cellar :any
