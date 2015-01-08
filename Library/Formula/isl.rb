@@ -1,7 +1,5 @@
-require 'formula'
-
 class Isl < Formula
-  homepage 'http://freecode.com/projects/isl'
+  homepage "http://freecode.com/projects/isl"
   # Note: Always use tarball instead of git tag for stable version.
   #
   # Currently isl detects its version using source code directory name
@@ -11,8 +9,8 @@ class Isl < Formula
   #
   # 0.13 is out, but we can't upgrade until a compatible version of cloog is
   # released.
-  url 'http://isl.gforge.inria.fr/isl-0.12.2.tar.bz2'
-  sha1 'ca98a91e35fb3ded10d080342065919764d6f928'
+  url "http://isl.gforge.inria.fr/isl-0.12.2.tar.bz2"
+  sha1 "ca98a91e35fb3ded10d080342065919764d6f928"
 
   bottle do
     cellar :any
@@ -23,14 +21,14 @@ class Isl < Formula
   end
 
   head do
-    url 'http://repo.or.cz/r/isl.git'
+    url "http://repo.or.cz/r/isl.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  depends_on 'gmp'
+  depends_on "gmp"
 
   def install
     system "./autogen.sh" if build.head?
