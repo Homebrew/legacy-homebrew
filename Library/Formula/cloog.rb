@@ -1,8 +1,8 @@
 class Cloog < Formula
   homepage "http://www.cloog.org/"
-  url "http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.1.tar.gz"
-  mirror "http://gcc.cybermirror.org/infrastructure/cloog-0.18.1.tar.gz"
-  sha1 "2dc70313e8e2c6610b856d627bce9c9c3f848077"
+  url "http://repo.or.cz/r/cloog.git", :revision => "dc1161c0f5ace1edf720c090fba09de8bb7e0365"
+  version "0.18.3"
+  head "http://repo.or.cz/r/cloog.git"
 
   bottle do
     cellar :any
@@ -12,19 +12,15 @@ class Cloog < Formula
     sha1 "06252f0a9c453818c319b21647ebaa9a26c3f4ac" => :mountain_lion
   end
 
-  head do
-    url "http://repo.or.cz/r/cloog.git"
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "gmp"
   depends_on "isl"
 
   def install
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh"
 
     args = [
       "--disable-dependency-tracking",
@@ -36,7 +32,7 @@ class Cloog < Formula
       "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
     ]
 
-    args << "--with-osl=bundled" if build.head?
+    args << "--with-osl=bundled"
 
     system "./configure", *args
     system "make", "install"
