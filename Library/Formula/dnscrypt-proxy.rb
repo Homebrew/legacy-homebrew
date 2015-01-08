@@ -1,8 +1,8 @@
 class DnscryptProxy < Formula
   homepage "http://dnscrypt.org"
-  url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.4.2/dnscrypt-proxy-1.4.2.tar.bz2"
-  mirror "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.2.tar.bz2"
-  sha256 "766bcd8874cd6cbfeeeb7246c75c39ddc14317ad81ad713bd6cfc9529b2f0c0d"
+  url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.4.3/dnscrypt-proxy-1.4.3.tar.gz"
+  mirror "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.3.tar.gz"
+  sha256 "f10f10c18e25ced3c5ec5d0c4145d33270f9cfa991fd1b18d5d9af00e4d9b68e"
 
   bottle do
     sha1 "2a09152f68e40dd76d2415cb7afebf0480881578" => :yosemite
