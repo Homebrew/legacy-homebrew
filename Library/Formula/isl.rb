@@ -41,4 +41,19 @@ class Isl < Formula
     system "make", "install"
     (share/"gdb/auto-load").install Dir["#{lib}/*-gdb.py"]
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <isl/ctx.h>
+
+      int main()
+      {
+        isl_ctx* ctx = isl_ctx_alloc();
+        isl_ctx_free(ctx);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lisl", "-o", "test"
+    system "./test"
+  end
 end
