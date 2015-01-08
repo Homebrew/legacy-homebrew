@@ -119,7 +119,7 @@ class JavaDependency < Requirement
   satisfy { java_version }
 
   def initialize(tags)
-    @version = tags.pop
+    @version = tags.shift if /(\d\.)+\d/ === tags.first
     super
   end
 
