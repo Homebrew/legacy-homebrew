@@ -8,10 +8,10 @@ class Pypy < Formula
 
   bottle do
     cellar :any
-    revision 6
-    sha1 "16fe931416b3b2a22618dc8279623099895dd795" => :yosemite
-    sha1 "341e674f2e2f27d4fca54155ed1247b7b43c7fa9" => :mavericks
-    sha1 "7f085dc680a416d4f5c0788ffa024487d16ebabd" => :mountain_lion
+    revision 7
+    sha1 "1da63da6868e2a493e3bc3810a83a0d23c35ffc5" => :yosemite
+    sha1 "2a44201751a139e185da27b16fd8e00e4e3c13c2" => :mavericks
+    sha1 "611621d9b67eb7c4b131851ad06a50e0370c4ca7" => :mountain_lion
   end
 
   depends_on :arch => :x86_64
@@ -19,13 +19,13 @@ class Pypy < Formula
   depends_on "openssl"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-9.1.tar.gz"
-    sha1 "b068a670c84df7b961730c6a0d00cd06c7b767f0"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
+    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.3.tar.gz"
-    sha1 "67d4affd83ee2f3514ac1386bee59f10f672517c"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
+    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
