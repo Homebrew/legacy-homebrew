@@ -4,6 +4,11 @@ class Docx2txt < Formula
   head "https://github.com/Killeroid/docx2txt.git"
   sha1 "c4be6ce70e0bb3216542b95bf6574c2ee40f660a"
 
+  resource "test.docx" do
+    url "https://github.com/Killeroid/docx2txt/blob/homebrew/test.docx"
+    sha1 "df30e87cb64c5f87320b634b1fbe1d4dc4093aca"
+  end
+
   def install
     inreplace "README", "docx2txt.pl", "docx2txt"
 
@@ -16,7 +21,6 @@ class Docx2txt < Formula
   end
 
   test do
-    system bin/"docx2txt", "-h"
+    system bin/"docx2txt", resource("test.docx"), "-"
   end
-
 end
