@@ -29,9 +29,9 @@ class Wireshark < Formula
   end
 
   devel do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.0.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.0.tar.bz2"
-    sha1 "2e5cf3209104b98251350b3a5e52401866916aec"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.1.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.1.tar.bz2"
+    sha1 "5ea32f83709a90fd5fdf5d331992e46a42ec27aa"
   end
 
   option "with-gtk+3", "Build the wireshark command with gtk+3"
