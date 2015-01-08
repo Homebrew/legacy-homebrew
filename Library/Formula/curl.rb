@@ -2,9 +2,9 @@ require "formula"
 
 class Curl < Formula
   homepage "http://curl.haxx.se/"
-  url "http://curl.haxx.se/download/curl-7.39.0.tar.bz2"
-  mirror "ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.39.0.tar.bz2"
-  sha256 "b222566e7087cd9701b301dd6634b360ae118cc1cbc7697e534dc451102ea4e0"
+  url "http://curl.haxx.se/download/curl-7.40.0.tar.bz2"
+  mirror "ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.40.0.tar.bz2"
+  sha256 "899109eb3900fa6b8a2f995df7f449964292776a04763e94fae640700f883fba"
 
   bottle do
     cellar :any
