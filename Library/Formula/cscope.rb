@@ -1,9 +1,7 @@
-require 'formula'
-
 class Cscope < Formula
-  homepage 'http://cscope.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/cscope/cscope/15.8a/cscope-15.8a.tar.gz'
-  sha1 '00f76825791b895532778f720c509cd13b9d6846'
+  homepage "http://cscope.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/cscope/cscope/15.8a/cscope-15.8a.tar.gz"
+  sha1 "00f76825791b895532778f720c509cd13b9d6846"
 
   # Patch from http://bugs.gentoo.org/show_bug.cgi?ctype=html&id=111621
   patch :DATA
@@ -11,7 +9,7 @@ class Cscope < Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
 
