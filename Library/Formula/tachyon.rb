@@ -18,9 +18,8 @@ class Tachyon < Formula
   end
 
   def caveats; <<-EOS.undent
-    Before starting, make sure you set TACHYON_UNDERFS_ADDRESS in
+    To configure tachyon, edit
       #{etc}/tacyon/tachyon-env.sh
-    to some tmp directory in your local filesystem, e.g. /tmp.
     EOS
   end
 end
