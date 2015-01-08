@@ -3,6 +3,13 @@ class Ctags < Formula
   url "https://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz"
   sha1 "482da1ecd182ab39bbdc09f2f02c9fba8cd20030"
 
+  bottle do
+    cellar :any
+    sha1 "7da87475dee54acc46b0a38afc52122d9cbe6188" => :yosemite
+    sha1 "afc599e7097afd5eb185925dc81f8e9e437b5be8" => :mavericks
+    sha1 "cee93b102782dde467bb091589dd4315c19dfd0c" => :mountain_lion
+  end
+
   head do
     url "https://svn.code.sf.net/p/ctags/code/trunk"
     depends_on "autoconf" => :build
