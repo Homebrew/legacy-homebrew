@@ -8,11 +8,11 @@ class Redpen < Formula
   def install
     # Don't need Windows files.
     rm_f Dir["bin/*.bat"]
-    libexec.install %w(bin conf lib sample-doc)
+    libexec.install %w[bin conf lib sample-doc]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   test do
-    system "#{bin}/redpen", "version"
+    system "#{bin}/redpen", "-version"
   end
 end
