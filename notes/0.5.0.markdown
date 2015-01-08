@@ -4,3 +4,4 @@
 * Fix for NamedRdds RDD cleaner timeout issue (Thanks @Ankit1010)
 * Passthrough of Hadoop and non-spark config (Thanks @jeffsteinmetz)
 * Increase default jar upload limit to 30MB
+* Minor README fix for Bintray https: (Thanks @devesh)
