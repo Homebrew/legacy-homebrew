@@ -92,8 +92,8 @@ class Qt < Formula
     system "make install"
 
     # what are these anyway?
-    (bin+'pixeltool.app').rmtree
-    (bin+'qhelpconverter.app').rmtree
+    (bin+'pixeltool.app').rmtree if OS.mac?
+    (bin+'qhelpconverter.app').rmtree if OS.mac?
     # remove porting file for non-humans
     (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
 
