@@ -1,5 +1,3 @@
-require "formula"
-
 class DnscryptProxy < Formula
   homepage "http://dnscrypt.org"
   url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.4.2/dnscrypt-proxy-1.4.2.tar.bz2"
@@ -20,7 +18,8 @@ class DnscryptProxy < Formula
     depends_on "libtool" => :build
   end
 
-  option "plugins", "Support plugins and install example plugins."
+  option "with-plugins", "Support plugins and install example plugins."
+  deprecated_option "plugins" => "with-plugins"
 
   depends_on "libsodium"
 
@@ -28,7 +27,7 @@ class DnscryptProxy < Formula
     system "autoreconf", "-if" if build.head?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    if build.include? "plugins"
+    if build.with? "plugins"
       args << "--enable-plugins"
       args << "--enable-relaxed-plugins-permissions"
       args << "--enable-plugins-root"
@@ -93,5 +92,9 @@ class DnscryptProxy < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/hostip", "-r", "8.8.8.8", "www.google.com"
   end
 end
