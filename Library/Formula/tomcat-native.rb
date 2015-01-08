@@ -18,12 +18,12 @@ class TomcatNative < Formula
   depends_on "tomcat" => :recommended
   depends_on :java => "1.7"
   depends_on "openssl"
-  depends_on "homebrew/apache/apr" => :optional
+  depends_on "apr" => :optional
 
   def install
     cd "jni/native" do
       if build.with? 'apr'
-        apr_path = "#{Formula['homebrew/apache/apr'].prefix}"
+        apr_path = "#{Formula['apr'].prefix}"
       else
         apr_path = "#{MacOS.sdk_path}/usr"
       end
