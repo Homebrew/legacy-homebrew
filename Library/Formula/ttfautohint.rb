@@ -1,9 +1,7 @@
-require "formula"
-
 class Ttfautohint < Formula
   homepage "http://www.freetype.org/ttfautohint"
-  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.2/ttfautohint-1.2.tar.gz"
-  sha1 "d4c4c570139da9667744e086da57ee5a21872630"
+  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.3/ttfautohint-1.3.tar.gz"
+  sha1 "5de45f0b5e3f87ad0a6b4153e5382765f17974ed"
 
   head do
     url "http://repo.or.cz/ttfautohint.git"
