@@ -1,6 +1,21 @@
 require "formula"
 
-class Monetdb < Formula
+class RRequirement < Requirement
+  fatal true
+
+  satisfy { which('r') }
+
+  def message; <<-EOS.undent
+    R not found. The R integration module requires R.
+    Do one of the following:
+    - install R
+    -- run brew install homebrew/science/r or brew install Caskroom/cask/r
+    - remove the --with-r option
+    EOS
+  end
+end
+
+class RRequirement < Formula
   homepage "https://www.monetdb.org/"
   url "https://dev.monetdb.org/downloads/sources/Oct2014-SP1/MonetDB-11.19.7.zip"
   sha1 "af542dc85a8474eb4bcf32565eccae3ea5d22768"
@@ -18,20 +33,6 @@ class Monetdb < Formula
     depends_on "gettext" => :build
     depends_on "automake" => :build
     depends_on "autoconf" => :build
-  end
-
-  class RRequirement < Requirement
-    fatal true
-
-    satisfy { which('r') }
-
-    def message; <<-EOS.undent
-      R not found. The R integration module requires R.
-      Do one of the following:
-      - install R
-      - remove the --with-r option
-      EOS
-    end
   end
 
   option "with-java", 'Build the JDBC dirver'
