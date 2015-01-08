@@ -6,6 +6,7 @@ class Trash < Formula
   sha1 '4e1273a08e7f67f48a8d4aea5119ea733556b8a9'
 
   conflicts_with 'osxutils', :because => 'both install a trash binary'
+  conflicts_with 'tools-osx', :because => 'both install a trash binary'
 
   def install
     system "make"
