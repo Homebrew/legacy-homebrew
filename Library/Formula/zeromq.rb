@@ -21,7 +21,7 @@ class Zeromq < Formula
 
   option :universal
   option "with-libpgm", "Build with PGM extension"
-  option 'enable-static', "Build zeromq as a shared library"
+  option 'enable-static', "Build zeromq as a static library"
   option 'disable-shared', "Don't build zeromq as a shared library"
 
   deprecated_option "with-pgm" => "with-libpgm"
