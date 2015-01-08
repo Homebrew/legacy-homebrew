@@ -365,9 +365,6 @@ module Homebrew
       dependents -= @formulae
       dependents = dependents.map {|d| Formulary.factory(d)}
       testable_dependents = dependents.select {|d| d.test_defined? && d.stable.bottled? }
-      uninstalled_testable_dependents = testable_dependents.reject {|d| d.installed? }
-      testable_dependents.map! &:name
-      uninstalled_testable_dependents.map! &:name
 
       formula = Formulary.factory(formula_name)
       return unless satisfied_requirements?(formula, :stable)
@@ -446,12 +443,16 @@ module Homebrew
           end
         end
         test "brew", "test", "--verbose", formula_name if formula.test_defined?
-        if testable_dependents.any?
-          if uninstalled_testable_dependents.any?
-            test "brew", "fetch", *uninstalled_testable_dependents
-            test "brew", "install", *uninstalled_testable_dependents
+        testable_dependents.each do |dependent|
+          unless dependent.installed?
+            test "brew", "fetch", "--retry", dependent.name
+            next if steps.last.failed?
+            test "brew", "install", dependent.name
+            next if steps.last.failed?
           end
-          test "brew", "test", *testable_dependents
+          if dependent.installed?
+            test "brew", "test", "--verbose", dependent.name
+          end
         end
         test "brew", "uninstall", "--force", formula_name
       end
