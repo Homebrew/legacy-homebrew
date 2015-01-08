@@ -11,6 +11,27 @@ class Cscope < Formula
                           "--mandir=#{man}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
+      #include <stdlib.h>
+
+      void func()
+      {
+        printf("Hello World!");
+      }
+
+      int main()
+      {
+        func();
+        return 0;
+      }
+    EOS
+    (testpath/"cscope.files").write ("./test.c\n")
+    system "#{bin}/cscope", "-b", "-k"
+    assert_match /test\.c.*func/, shell_output("#{bin}/cscope -L1func")
+  end
 end
 
 __END__
