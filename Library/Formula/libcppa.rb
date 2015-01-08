@@ -1,12 +1,10 @@
-require "formula"
-
 class Libcppa < Formula
+  # TODO: since libcppa has been renamed to CAF, this formula should eventually
+  # be renamed to 'caf.rb'.
   homepage "http://actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/0.11.0.tar.gz"
-  sha1 "202f2fd72a5af59d7ace6b7300df1fcc19f1857f"
-
-  # since upstream has rename the project to actor-framework (or libcaf in its
-  # pkgconfig file), we need to rename libcppa to libcaf in the future
+  url "https://github.com/actor-framework/actor-framework/archive/0.12.0.tar.gz"
+  sha1 "cb4e2c9a859d2d3095014237d4cdad63c1853c8c"
+  head "https://github.com/actor-framework/actor-framework.git"
 
   bottle do
     cellar :any
@@ -19,24 +17,34 @@ class Libcppa < Formula
 
   needs :cxx11
 
-  option "with-opencl", "Build with OpenCL actors"
-  option "with-examples", "Build examples"
-  option "without-check", "Skip build-time tests (not recommended)"
+  option "with-opencl", "build with support for OpenCL actors"
+  option "without-check", "skip unit tests (not recommended)"
 
   def install
-    ENV.cxx11
-
-    args = %W[
-      --prefix=#{prefix}
-      --build-static
-    ]
-
+    args = %W[./configure --prefix=#{prefix} --no-examples --build-static]
     args << "--no-opencl" if build.without? "opencl"
-    args << "--no-examples" if build.without? "examples"
 
-    system "./configure", *args
+    system *args
     system "make"
     system "make", "test" if build.with? "check"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <iostream>
+      #include <caf/all.hpp>
+      using namespace caf;
+      int main() {
+        scoped_actor self;
+        self->spawn([] {
+          std::cout << "test" << std::endl;
+        });
+        self->await_all_other_actors_done();
+        return 0;
+      }
+    EOS
+    system *%W[#{ENV.cxx} -std=c++11 -stdlib=libc++ test.cpp -lcaf_core -o test]
+    system "./test"
   end
 end
