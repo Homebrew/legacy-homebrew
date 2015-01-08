@@ -2,7 +2,6 @@ class Openssl < Formula
   homepage "https://openssl.org"
   url "https://www.openssl.org/source/openssl-1.0.1k.tar.gz"
   sha256 "8f9faeaebad088e772f4ef5e38252d472be4d878c6b3a2718c10a4fcebe7a41c"
-  revision 1
 
   bottle do
     sha1 "ffc47898c5c5599745b644c1889e473418a18d5a" => :yosemite
