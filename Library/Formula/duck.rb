@@ -1,11 +1,9 @@
-require "formula"
-
 class Duck < Formula
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-16323.tar.gz"
-  version "4.6.2.16323"
+  url "https://dist.duck.sh/duck-src-16336.tar.gz"
+  version "4.6.2.16336"
   head "https://svn.cyberduck.io/trunk/"
-  sha1 "4835fde547c4467a2863f31dd775034da6b83be3"
+  sha1 "377f8ca3d111416a20122e0e5f41f189c5eda99e"
 
   depends_on :java => ["1.7", :build]
   depends_on :xcode => :build
@@ -13,7 +11,7 @@ class Duck < Formula
   depends_on "openssl"
 
   def install
-    system "ant", "-Dbuild.compile.target=1.7", "-Drevision=16323", "cli"
+    system "ant", "-Dbuild.compile.target=1.7", "-Drevision=16336", "cli"
     system "install_name_tool", "-change", "/usr/lib/libcrypto.0.9.8.dylib", "/usr/local/opt/openssl/lib/libcrypto.dylib", "build/duck.bundle/Contents/Frameworks/libPrime.dylib"
     system "install_name_tool", "-change", "/usr/lib/libcrypto.0.9.8.dylib", "/usr/local/opt/openssl/lib/libcrypto.dylib", "build/duck.bundle/Contents/Frameworks/librococoa.dylib"
     libexec.install Dir["build/duck.bundle/*"]
@@ -21,8 +19,8 @@ class Duck < Formula
   end
 
   test do
-    unless "Cyberduck 4.6.2 (16323)\n".eql? %x[#{bin}/duck -version]
-      raise "Version mismatch"
+    unless "Cyberduck 4.6.2 (16336)\n".eql? %x(#{bin}/duck -version)
+      fail "Version mismatch"
     end
     filename = (testpath/"test")
     system "#{bin}/duck", "--download", stable.url, filename
