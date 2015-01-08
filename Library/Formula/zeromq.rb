@@ -21,6 +21,8 @@ class Zeromq < Formula
 
   option :universal
   option "with-libpgm", "Build with PGM extension"
+  option 'enable-static', "Build zeromq as a shared library"
+  option 'disable-shared', "Don't build zeromq as a shared library"
 
   deprecated_option "with-pgm" => "with-libpgm"
 
@@ -40,6 +42,16 @@ class Zeromq < Formula
     end
 
     args << "--with-libsodium" if build.with? "libsodium"
+
+    if build.include? 'enable-static'
+      args << "--enable-static"
+    end
+
+    if build.include? 'disable-shared'
+      args << "--disable-shared"
+      # temporary workaround
+      args << "LDFLAGS=-lstdc++"
+    end
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
