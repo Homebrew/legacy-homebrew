@@ -1,7 +1,7 @@
 class Cheat < Formula
   homepage "https://github.com/chrisallenlane/cheat"
-  url "https://github.com/chrisallenlane/cheat/archive/2.1.2.tar.gz"
-  sha1 "68f8120bb3369cb1daf2f84023c212c4777ce8ef"
+  url "https://github.com/chrisallenlane/cheat/archive/2.1.3.tar.gz"
+  sha1 "968c6f88181af37e9cdb7e93e46b97c935c864d1"
   head "https://github.com/chrisallenlane/cheat.git"
 
   bottle do
