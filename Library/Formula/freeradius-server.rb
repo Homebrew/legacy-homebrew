@@ -13,9 +13,9 @@ class FreeradiusServer < Formula
   end
 
   bottle do
-    sha1 "2affaaaf690de0bd3ca517dc1283877a5a46efbb" => :yosemite
-    sha1 "a71f6a94fe566a27df346e510a5bda47f6341c30" => :mavericks
-    sha1 "fca12b3864a4149689f9d586f03a9d7a98154ca5" => :mountain_lion
+    sha1 "3a583d46e2c12badc7addf99fa1db83a8d5315b4" => :yosemite
+    sha1 "ee905079281616a48339201938d11fe525d8b23f" => :mavericks
+    sha1 "2e8de634e8fcf37a2a4d969d33371281667e5d2d" => :mountain_lion
   end
 
   depends_on "openssl"
