@@ -118,7 +118,7 @@ Note the addition of `context=` and `sync=true`.
 ## Create a Job Server Project
 In your `build.sbt`, add this to use the job server jar:
 
-	resolvers += "Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven"
+	resolvers += "Job Server Bintray" at "https://dl.bintray.com/spark-jobserver/maven"
 
 	libraryDependencies += "spark.jobserver" % "job-server-api" % "0.4.1" % "provided"
 
