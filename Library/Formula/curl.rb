@@ -8,9 +8,9 @@ class Curl < Formula
 
   bottle do
     cellar :any
-    sha1 "ecb492c18c73bd4beb64b9b16d817bdef0f1b989" => :yosemite
-    sha1 "581f76814f982c87e6d281a55efd0da75f8e26e6" => :mavericks
-    sha1 "fb53da99991975bfdbc8d4c7e7e967ae4c0329b6" => :mountain_lion
+    sha1 "a5ba00d51a113752e962ba8ee0911c1c496d6cbc" => :yosemite
+    sha1 "c36652236b7b624913370adf309c9e838c571018" => :mavericks
+    sha1 "624a82135884081cef194e5313e0652a16b240b0" => :mountain_lion
   end
 
   keg_only :provided_by_osx
