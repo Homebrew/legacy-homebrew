@@ -36,6 +36,26 @@ class Ctags < Formula
       link.
     EOS
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
+      #include <stdlib.h>
+
+      void func()
+      {
+        printf("Hello World!");
+      }
+
+      int main()
+      {
+        func();
+        return 0;
+      }
+    EOS
+    system "#{bin}/ctags", "-R", "."
+    assert_match /func.*test\.c/, File.read("tags")
+  end
 end
 
 __END__
