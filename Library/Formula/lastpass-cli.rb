@@ -5,6 +5,7 @@ class LastpassCli < Formula
   url "https://github.com/lastpass/lastpass-cli/archive/v0.4.0.tar.gz"
   sha1 "2c5766be2ad5bca398ed7615ddadde9c5bbf0ecd"
   head "https://github.com/lastpass/lastpass-cli.git"
+  revision 1
 
   bottle do
     cellar :any

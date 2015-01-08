@@ -3,6 +3,7 @@ class Tor < Formula
   url "https://dist.torproject.org/tor-0.2.5.10.tar.gz"
   mirror "https://tor.eff.org/dist/tor-0.2.5.10.tar.gz"
   sha256 "b3dd02a5dcd2ffe14d9a37956f92779d4427edf7905c0bba9b1e3901b9c5a83b"
+  revision 1
 
   bottle do
     sha1 "0bf6ef6985285bac9e67fbc78cef7ebb78844de2" => :yosemite
