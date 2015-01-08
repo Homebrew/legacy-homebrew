@@ -7,9 +7,7 @@ class Docx2txt < Formula
   def install
     inreplace "README", "docx2txt.pl", "docx2txt"
 
-    inreplace "docx2txt.pl" do |s|
-      s.gsub! "our \$systemConfigDir = \"/etc\"", "our \$systemConfigDir = \"#{etc}\""
-    end
+    inreplace "docx2txt.pl", "our \$systemConfigDir = \"/etc\"", "our \$systemConfigDir = \"#{etc}\""
 
     bin.install "docx2txt.pl" => "docx2txt"
     etc.install "docx2txt.config"
