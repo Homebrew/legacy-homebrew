@@ -1,12 +1,10 @@
-require 'formula'
-
 class Ctags < Formula
-  homepage 'http://ctags.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz'
-  sha1 '482da1ecd182ab39bbdc09f2f02c9fba8cd20030'
+  homepage "http://ctags.sourceforge.net/"
+  url "https://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz"
+  sha1 "482da1ecd182ab39bbdc09f2f02c9fba8cd20030"
 
   head do
-    url 'https://svn.code.sf.net/p/ctags/code/trunk'
+    url "https://svn.code.sf.net/p/ctags/code/trunk"
     depends_on "autoconf" => :build
   end
 
@@ -22,7 +20,7 @@ class Ctags < Formula
                           "--enable-macro-patterns",
                           "--mandir=#{man}",
                           "--with-readlib"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats
