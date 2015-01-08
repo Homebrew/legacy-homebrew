@@ -3,6 +3,13 @@ class Atool < Formula
   url "http://savannah.nongnu.org/download/atool/atool-0.39.0.tar.gz"
   sha1 "40865bdc533f95fcaffdf8002889eb2ac67224a9"
 
+  bottle do
+    cellar :any
+    sha1 "5bae1ea5b44d870cf9181ed061fe9ff2bb96351e" => :yosemite
+    sha1 "886601266294c7e337f0f75f3b04c09a60590807" => :mavericks
+    sha1 "22b2f19cfa180dd72929e5fb43d1444a206e660a" => :mountain_lion
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
