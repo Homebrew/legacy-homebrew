@@ -605,13 +605,16 @@ class Formula
   end
 
   def run_test
+    @oldhome = ENV["HOME"]
     self.build = Tab.for_formula(self)
     mktemp do
       @testpath = Pathname.pwd
+      ENV["HOME"] = @testpath
       test
     end
   ensure
     @testpath = nil
+    ENV["HOME"] = @oldhome
   end
 
   def test_defined?
