@@ -101,6 +101,7 @@ TAP_MIGRATIONS = {
   "msgpack-rpc" => "homebrew/boneyard",
   "mupdf" => "homebrew/x11",
   "mydumper" => "homebrew/boneyard",
+  "newick-utils" => "homebrew/science",
   "nlopt" => "homebrew/science",
   "octave" => "homebrew/science",
   "opencv" => "homebrew/science",
