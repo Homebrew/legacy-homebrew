@@ -109,7 +109,9 @@ class FormulaCreator
 
     if fetch? && version
       r = Resource.new
-      r.url, r.version, r.owner = url, version, self
+      r.url(url)
+      r.version(version)
+      r.owner = self
       @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
     end
 
