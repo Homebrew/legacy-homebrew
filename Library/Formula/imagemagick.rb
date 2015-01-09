@@ -8,6 +8,9 @@ class Imagemagick < Formula
   head "http://www.imagemagick.org/subversion/ImageMagick/trunk"
 
   bottle do
+    sha1 "9e788e5e325c50da3accb53228fdcda87bd43929" => :yosemite
+    sha1 "f260b2e5c574fe7159a093769a9cabad7970ef9b" => :mavericks
+    sha1 "e277ef9ac3df4771851a8e061025ba8005fd292c" => :mountain_lion
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
