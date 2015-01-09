@@ -1,9 +1,7 @@
 class Libevent < Formula
   homepage "http://libevent.org"
-  url "https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/libe/libevent/libevent_2.0.21-stable.orig.tar.gz"
-  sha1 "3e6674772eb77de24908c6267c698146420ab699"
-  revision 1
+  url "https://downloads.sourceforge.net/project/levent/libevent/libevent-2.0/libevent-2.0.22-stable.tar.gz"
+  sha1 "a586882bc93a208318c70fc7077ed8fca9862864"
 
   bottle do
     cellar :any
