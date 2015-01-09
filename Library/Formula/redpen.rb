@@ -8,8 +8,10 @@ class Redpen < Formula
   def install
     # Don't need Windows files.
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf lib sample-doc]
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    libexec.install %w[conf lib sample-doc]
+
+    prefix.install "bin"
+    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "`/usr/libexec/java_home`")
   end
 
   test do
