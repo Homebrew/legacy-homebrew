@@ -9,7 +9,7 @@ class Resource
   include FileUtils
 
   attr_reader :checksum, :mirrors, :specs, :using
-  attr_writer :url, :checksum, :version
+  attr_writer :checksum, :version
   attr_accessor :download_strategy
 
   # Formula name must be set after the DSL, as we have no access to the
@@ -50,7 +50,7 @@ class Resource
   end
 
   def downloader
-    @downloader ||= download_strategy.new(download_name, Download.new(self))
+    download_strategy.new(download_name, Download.new(self))
   end
 
   # Removes /s from resource names; this allows go package names

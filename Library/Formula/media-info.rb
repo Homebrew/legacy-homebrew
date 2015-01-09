@@ -2,15 +2,15 @@ require "formula"
 
 class MediaInfo < Formula
   homepage "https://mediaarea.net/"
-  url "https://mediaarea.net/download/binary/mediainfo/0.7.71/MediaInfo_CLI_0.7.71_GNU_FromSource.tar.bz2"
-  version "0.7.71"
-  sha1 "d650d3202d1aa2b8af02a7ca53e04ee2c0f227d0"
+  url "https://mediaarea.net/download/binary/mediainfo/0.7.72/MediaInfo_CLI_0.7.72_GNU_FromSource.tar.bz2"
+  version "0.7.72"
+  sha1 "e0f495f8c589ec2dc1c84011ddbf8946f28ab186"
 
   bottle do
     cellar :any
-    sha1 "93961776e55ad1c47a989f921426b8984ec5ae92" => :yosemite
-    sha1 "25bdcd8df95d77095eb304ed4633ddea6c6dee0c" => :mavericks
-    sha1 "e580796e61e1f30b05ac376089a3ec000b416a47" => :mountain_lion
+    sha1 "aa9ad2b2c7f6a813041f85a228fb92539ecb9841" => :yosemite
+    sha1 "5a4712da44a81a22f4f3d0a61ec0f590bcbc4d85" => :mavericks
+    sha1 "7b0dbd9ef29ae856fee906373e9d53bc383ff062" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

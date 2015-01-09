@@ -7,10 +7,10 @@ class Python3 < Formula
   revision 1
 
   bottle do
-    revision 2
-    sha1 "002d1166ecd46152d28624d76975a0ef0ddc30bf" => :yosemite
-    sha1 "e45dcee9dd1ccb0bd43e26bb973129e1a8c7009b" => :mavericks
-    sha1 "ec746f61f08329d8d25d9148f9ce6622868381cd" => :mountain_lion
+    revision 3
+    sha1 "61018aa7eb9055cf7f5e1b2fadc48ecdb20c02e7" => :yosemite
+    sha1 "2eda82cd5f0420ccf8f58e4c78f561d5d5c1e824" => :mavericks
+    sha1 "6ca6870ef9cab3c1851b02402f12fbaec79bf9c5" => :mountain_lion
   end
 
   VER="3.4"  # The <major>.<minor> is used so often.
@@ -34,13 +34,13 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-9.1.tar.gz"
-    sha1 "b068a670c84df7b961730c6a0d00cd06c7b767f0"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
+    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.3.tar.gz"
-    sha1 "67d4affd83ee2f3514ac1386bee59f10f672517c"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
+    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
   end
 
   patch :DATA if build.with? "brewed-tk"

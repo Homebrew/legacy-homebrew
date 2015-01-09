@@ -336,5 +336,5 @@ if __FILE__ == $PROGRAM_NAME
   LOGGER.log!
 
   args << { :close_others => false } if RUBY_VERSION >= "2.0"
-  exec "xcrun", tool, *args
+  exec "#{File.dirname($0)}/xcrun", tool, *args
 end

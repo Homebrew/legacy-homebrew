@@ -7,10 +7,10 @@ class Python < Formula
   sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 7
-    sha1 "a81d7c350cebe4e50cfaa7bcfebec8174fc0d83a" => :yosemite
-    sha1 "f25fcc726f9fee63d9450da2788c71d76a4337b3" => :mavericks
-    sha1 "903b4cd31563b3bbf6beea3ecce95ae35689d5e1" => :mountain_lion
+    revision 8
+    sha1 "c2fee90806151869f150b49183fc563a5c7efd99" => :yosemite
+    sha1 "76390ee6c068b56d3c0c87846a0da35c496e36d4" => :mavericks
+    sha1 "a175b47961b9da49266d3407a0a7cc5fe3bbc032" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -32,13 +32,13 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-9.1.tar.gz"
-    sha1 "b068a670c84df7b961730c6a0d00cd06c7b767f0"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
+    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.3.tar.gz"
-    sha1 "67d4affd83ee2f3514ac1386bee59f10f672517c"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
+    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
   end
 
   # Patch for pyport.h macro issue
