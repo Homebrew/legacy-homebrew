@@ -89,6 +89,7 @@ module Language
         --prefix=#{prefix}
         --single-version-externally-managed
         --record=installed.txt
+        --no-user-cfg
       ]
     end
   end
