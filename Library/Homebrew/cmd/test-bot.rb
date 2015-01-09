@@ -447,6 +447,10 @@ module Homebrew
           unless dependent.installed?
             test "brew", "fetch", "--retry", dependent.name
             next if steps.last.failed?
+            conflicts = dependent.conflicts.map { |c| Formulary.factory(c.name) }.select { |f| f.installed? }
+            conflicts.each do |conflict|
+              test "brew", "unlink", conflict.name
+            end
             test "brew", "install", dependent.name
             next if steps.last.failed?
           end
