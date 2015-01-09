@@ -1,11 +1,9 @@
-require "formula"
-
 # No head build supported; if you need head builds of Mercurial, do so outside
 # of Homebrew.
 class Mercurial < Formula
   homepage "http://mercurial.selenic.com/"
-  url "http://mercurial.selenic.com/release/mercurial-3.2.3.tar.gz"
-  sha1 "7c870aebcfd7720813c53c75b0939cee8a0e1168"
+  url "http://mercurial.selenic.com/release/mercurial-3.2.4.tar.gz"
+  sha1 "6adc45a99f036a3fe3433a4d24e5641c91acb693"
 
   bottle do
     cellar :any
