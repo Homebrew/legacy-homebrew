@@ -5,9 +5,9 @@ class Libevent < Formula
 
   bottle do
     cellar :any
-    sha1 "02d25e21d04bdef22de822daf70f13c90147b504" => :yosemite
-    sha1 "bbf14123e381177a6423a064ff82b5b3adc3d85a" => :mavericks
-    sha1 "b1de9d394f4df8561760e3c34c23bb9b518e372f" => :mountain_lion
+    sha1 "d70fff6a306440f4104ff934eec1fd35683724a4" => :yosemite
+    sha1 "7d86d36fff109699bcec092f708d1be61c86ef78" => :mavericks
+    sha1 "e074607f84ab34a1e939f6a93bf3fc2b6c90d9bd" => :mountain_lion
   end
 
   head do
