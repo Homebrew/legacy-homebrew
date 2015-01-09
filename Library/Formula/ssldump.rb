@@ -20,14 +20,15 @@ class Ssldump < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "osx"
     system "make"
-    bin.install "ssldump"
-    man1.install "ssldump.1"
+    # force install as make got confused by install target and INSTALL file.
+    system "make", "install", "-B"
   end
 
   test do
-    system "#{bin}/ssldump", "-v"
+    system "#{sbin}/ssldump", "-v"
   end
 end
 
