@@ -1,5 +1,3 @@
-require "formula"
-
 class Curl < Formula
   homepage "http://curl.haxx.se/"
   url "http://curl.haxx.se/download/curl-7.40.0.tar.bz2"
@@ -56,13 +54,19 @@ class Curl < Formula
     args = %W[
       --disable-debug
       --disable-dependency-tracking
+      --disable-silent-rules
       --prefix=#{prefix}
     ]
 
+    # cURL has a new firm desire to find ssl with PKG_CONFIG_PATH instead of using
+    # "--with-ssl" any more. "when possible, set the PKG_CONFIG_PATH environment
+    # variable instead of using this option". Multi-SSL choice breaks w/o using it.
     if MacOS.version < :mountain_lion or build.with? "openssl"
+      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_prefix}/lib/pkgconfig"
       args << "--with-ssl=#{Formula["openssl"].opt_prefix}"
       args << "--with-ca-bundle=#{etc}/openssl/cert.pem"
     elsif build.with? "libressl"
+      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["libressl"].opt_prefix}/lib/pkgconfig"
       args << "--with-ssl=#{Formula["libressl"].opt_prefix}"
       args << "--with-ca-bundle=#{etc}/libressl/cert.pem"
     else
