@@ -25,6 +25,10 @@ class Ssldump < Formula
     bin.install "ssldump"
     man1.install "ssldump.1"
   end
+
+  test do
+    system "#{bin}/ssldump", "-v"
+  end
 end
 
 __END__
