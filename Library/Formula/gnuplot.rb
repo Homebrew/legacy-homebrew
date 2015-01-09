@@ -10,10 +10,9 @@ class Gnuplot < Formula
   sha256 "417d4bc5bc914a60409bb75cf18dd14f48b07f53c6ad3c4a4d3cd9a8d7370faf"
 
   bottle do
-    revision 1
-    sha1 "c6a2e3f30495c1bd790ea5091f40b7644d695112" => :yosemite
-    sha1 "03d507d87eedd8c4bf3e460931081a10403f379d" => :mavericks
-    sha1 "24618fd48a6d5fa2f69843da8ac2aaa8d631ff48" => :mountain_lion
+    sha1 "ba387ee75f15b1220f1c77469609841cb7155f83" => :yosemite
+    sha1 "3a4cd6881a231c5e0da155147be85c053a1f2faa" => :mavericks
+    sha1 "e35173ded72e0ce48acc80cd72981679c32960c7" => :mountain_lion
   end
 
   head do
