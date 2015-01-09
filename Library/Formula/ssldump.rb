@@ -3,6 +3,13 @@ class Ssldump < Formula
   url "http://www.rtfm.com/ssldump/ssldump-0.9b3.tar.gz"
   sha1 "a633a9a811a138eac5ed440d583473b644135ef5"
 
+  bottle do
+    cellar :any
+    sha1 "2f2991ea0ade04d87d4fd96a597a1819dca4b401" => :yosemite
+    sha1 "4380b5a93a10d8bef570daa785aee6f41545b20f" => :mavericks
+    sha1 "e2bf36216f202d48c694435c61be43c94f562eb6" => :mountain_lion
+  end
+
   depends_on "openssl"
 
   # reorder include files
