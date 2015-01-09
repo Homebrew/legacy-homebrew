@@ -88,8 +88,8 @@ class JobServerNamedRdds(val rddManager: ActorRef) extends NamedRdds {
     val rdd = rddGen
     rdd.setName(name)
     rdd.getStorageLevel match {
-      case StorageLevel.NONE => rdd.persist(storageLevel) 
-      case currentLevel => rdd.persist(currentLevel) 
+      case StorageLevel.NONE => rdd.persist(storageLevel)
+      case currentLevel => rdd.persist(currentLevel)
     }
     // TODO: figure out if there is a better way to force the RDD to be computed
     if (forceComputation) rdd.count()
