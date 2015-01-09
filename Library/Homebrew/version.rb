@@ -89,7 +89,7 @@ class Version
   class AlphaToken < CompositeToken
     PATTERN = Regexp.union(
       /alpha[0-9]*/i,
-      /a[0-9]+/,
+      /a[0-9]+/
     )
 
     def <=>(other)
@@ -107,7 +107,7 @@ class Version
   class BetaToken < CompositeToken
     PATTERN = Regexp.union(
       /beta[0-9]*/i,
-      /b[0-9]+/,
+      /b[0-9]+/
     )
 
     def <=>(other)
