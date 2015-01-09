@@ -1,9 +1,7 @@
-require "formula"
-
 class Curl < Formula
   homepage "http://curl.haxx.se/"
   url "http://curl.haxx.se/download/curl-7.40.0.tar.bz2"
-  mirror "ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.40.0.tar.bz2"
+  mirror "http://ftp.sunet.se/pub/www/utilities/curl/curl-7.40.0.tar.bz2"
   sha256 "899109eb3900fa6b8a2f995df7f449964292776a04763e94fae640700f883fba"
 
   bottle do
@@ -46,7 +44,7 @@ class Curl < Formula
   def install
     # Throw an error if someone actually tries to rock both SSL choices.
     # Long-term, make this singular-ssl-option-only a requirement.
-    if build.with? "libressl" and build.with? "openssl"
+    if build.with?("libressl") && build.with?("openssl")
       ohai <<-EOS.undent
       --with-openssl and --with-libressl are both specified and
       curl can only use one at a time; proceeding with openssl.
@@ -59,7 +57,7 @@ class Curl < Formula
       --prefix=#{prefix}
     ]
 
-    if MacOS.version < :mountain_lion or build.with? "openssl"
+    if MacOS.version < :mountain_lion || build.with?("openssl")
       args << "--with-ssl=#{Formula["openssl"].opt_prefix}"
       args << "--with-ca-bundle=#{etc}/openssl/cert.pem"
     elsif build.with? "libressl"
