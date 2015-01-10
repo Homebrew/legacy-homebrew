@@ -1,9 +1,7 @@
-require "formula"
-
 class Zabbix < Formula
   homepage "http://www.zabbix.com/"
-  url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.2/zabbix-2.4.2.tar.gz"
-  sha1 "627ed5196b81a1f4e36690695dfbcaa1803890e3"
+  url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.3/zabbix-2.4.3.tar.gz"
+  sha1 "2173ef62bd0cd499677eae235d803956f4f72d0c"
 
   bottle do
     sha1 "5e335b2e0fe5ccae9dbc375ca15a6c60b1560f1d" => :yosemite
