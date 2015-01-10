@@ -1,6 +1,6 @@
 class Gtkextra < Formula
   homepage "http://gtkextra.sourceforge.net/"
-  url "https//downloads.sourceforge.net/project/gtkextra/3.1/gtkextra-3.1.2.tar.gz"
+  url "https://downloads.sourceforge.net/project/gtkextra/3.1/gtkextra-3.1.2.tar.gz"
   sha1 "f3c85b7edb3980ae2390d951d62c24add4b45eb9"
 
   # uses whatever backend gtk+ is built with: x11 or quartz
