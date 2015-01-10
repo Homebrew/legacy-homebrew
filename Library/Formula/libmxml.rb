@@ -1,9 +1,9 @@
-require "formula"
-
 class Libmxml < Formula
   homepage "http://www.minixml.org/"
-  url "http://www.msweet.org/files/project3/mxml-2.8.tar.gz"
-  sha1 "09d88f1720f69b64b76910dfe2a5c5fa24a8b361"
+  url "https://www.msweet.org/files/project3/mxml-2.9.tar.gz"
+  sha1 "a3d9c1f8cf8c7f85d76bb6954af1888d55f926f0"
+
+  head "http://svn.msweet.org/mxml/"
 
   bottle do
     cellar :any
@@ -20,6 +20,10 @@ class Libmxml < Formula
                           "--enable-shared",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert shell_output("#{bin}/mxmldoc --version").include?("2.9")
   end
 end

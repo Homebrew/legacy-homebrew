@@ -1,25 +1,23 @@
-require 'formula'
-
 # NOTE: When updating Wine, please check Wine-Gecko and Wine-Mono for updates
 # too:
 #  - http://wiki.winehq.org/Gecko
 #  - http://wiki.winehq.org/Mono
 class Wine < Formula
-  homepage 'https://www.winehq.org/'
+  homepage "https://www.winehq.org/"
 
   stable do
-    url 'https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
-    sha256 'f0ab9eede5a0ccacbf6e50682649f9377b9199e49cf55641f1787cf72405acbe'
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2"
+    sha256 "f0ab9eede5a0ccacbf6e50682649f9377b9199e49cf55641f1787cf72405acbe"
 
-    resource 'gecko' do
-      url 'https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-      version '2.21'
-      sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+    resource "gecko" do
+      url "https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi", :using => :nounzip
+      version "2.21"
+      sha1 "a514fc4d53783a586c7880a676c415695fe934a3"
     end
 
-    resource 'mono' do
-      url 'https://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-      sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
+    resource "mono" do
+      url "https://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi", :using => :nounzip
+      sha256 "3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402"
     end
   end
 
@@ -45,7 +43,7 @@ class Wine < Formula
   end
 
   head do
-    url "git://source.winehq.org/git/wine.git"
+    url "https://source.winehq.org/git/wine.git"
     depends_on "samba" => :optional
   end
 
@@ -58,30 +56,30 @@ class Wine < Formula
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
-  depends_on 'pkg-config' => :build
-  depends_on 'freetype'
-  depends_on 'jpeg'
-  depends_on 'libgphoto2'
-  depends_on 'little-cms2'
-  depends_on 'libicns'
-  depends_on 'libtiff'
-  depends_on 'sane-backends'
-  depends_on 'libgsm' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "freetype"
+  depends_on "jpeg"
+  depends_on "libgphoto2"
+  depends_on "little-cms2"
+  depends_on "libicns"
+  depends_on "libtiff"
+  depends_on "sane-backends"
+  depends_on "libgsm" => :optional
 
-  resource 'gecko' do
-    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.34-x86.msi', :using => :nounzip
-    version '2.34'
-    sha256 '956c26bf302b1864f4d7cb6caee4fc83d4c1281157731761af6395b876e29ca7'
+  resource "gecko" do
+    url "https://downloads.sourceforge.net/wine/wine_gecko-2.34-x86.msi", :using => :nounzip
+    version "2.34"
+    sha256 "956c26bf302b1864f4d7cb6caee4fc83d4c1281157731761af6395b876e29ca7"
   end
 
-  resource 'mono' do
-    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.4.msi', :using => :nounzip
-    sha256 '20bced7fee01f25279edf07670c5033d25c2c9834a839e7a20410ce1c611d6f2'
+  resource "mono" do
+    url "https://downloads.sourceforge.net/wine/wine-mono-4.5.4.msi", :using => :nounzip
+    sha256 "20bced7fee01f25279edf07670c5033d25c2c9834a839e7a20410ce1c611d6f2"
   end
 
   fails_with :llvm do
     build 2336
-    cause 'llvm-gcc does not respect force_align_arg_pointer'
+    cause "llvm-gcc does not respect force_align_arg_pointer"
   end
 
   fails_with :clang do
@@ -99,7 +97,7 @@ class Wine < Formula
 
   def library_path
     paths = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
-    paths.unshift(MacOS::X11.lib) if build.with? 'x11'
+    paths.unshift(MacOS::X11.lib) if build.with? "x11"
     paths.join(':')
   end
 
@@ -112,7 +110,7 @@ class Wine < Formula
   def install
     ENV.m32 # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
 
-    # Help configure find libxml2 in an XCode only (no CLT) installation.
+    # Help configure find libxml2 in an Xcode only (no CLT) installation.
     ENV.libxml2
 
     args = ["--prefix=#{prefix}"]
@@ -147,16 +145,16 @@ class Wine < Formula
     end
 
     system "make install"
-    (share/'wine/gecko').install resource('gecko')
-    (share/'wine/mono').install resource('mono')
+    (share/"wine/gecko").install resource("gecko")
+    (share/"wine/mono").install resource("mono")
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
-    mv bin/'wine', bin/'wine.bin'
-    (bin/'wine').write(wine_wrapper)
+    mv bin/"wine", bin/"wine.bin"
+    (bin/"wine").write(wine_wrapper)
 
     # Don't need Gnome desktop support
-    (share/'applications').rmtree
+    (share/"applications").rmtree
   end
 
   def caveats
@@ -171,7 +169,7 @@ class Wine < Formula
         https://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
 
-    if build.with? 'x11'
+    if build.with? "x11"
       s += <<-EOS.undent
 
         By default Wine uses a native Mac driver. To switch to the X11 driver, use

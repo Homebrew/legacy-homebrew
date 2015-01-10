@@ -1,5 +1,3 @@
-require "formula"
-
 class Harbour < Formula
   homepage "https://harbour.github.io"
   url "https://downloads.sourceforge.net/harbour-project/source/3.0.0/harbour-3.0.0.tar.bz2"
