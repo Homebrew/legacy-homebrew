@@ -1,10 +1,8 @@
-require "formula"
-
 class Clojurescript < Formula
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2411.tar.gz"
-  sha1 "99022cf050aa5f712b295e74aa8e845ad6cdb4b8"
+  url "https://github.com/clojure/clojurescript/archive/r2665.tar.gz"
+  sha1 "364e799e9a4f2c79d1058ec10909a96071d1b5a3"
 
   bottle do
     cellar :any
