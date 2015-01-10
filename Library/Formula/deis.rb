@@ -1,9 +1,7 @@
-require "formula"
-
 class Deis < Formula
   homepage "http://deis.io"
-  url "https://github.com/deis/deis/archive/v1.1.0.tar.gz"
-  sha1 "c57fb6073b374b95262c36959c6d2b6c508cda59"
+  url "https://github.com/deis/deis/archive/v1.2.0.tar.gz"
+  sha1 "564784fb52124f6549afbd2b4b4465b057deeb5f"
 
   bottle do
     cellar :any
@@ -31,8 +29,8 @@ class Deis < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.4.3.tar.gz"
-    sha1 "411f1bfa44556f7dd0f34cd822047c31baa7d741"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
+    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
   end
 
   resource "termcolor" do
@@ -41,8 +39,8 @@ class Deis < Formula
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
-    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
   end
 
   def install
