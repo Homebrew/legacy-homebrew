@@ -362,11 +362,9 @@ module Homebrew
       changed_dependences = dependencies - unchanged_dependencies
 
       dependents = `brew uses #{formula_name}`.split("\n")
+      dependents -= @formulae
       dependents = dependents.map {|d| Formulary.factory(d)}
       testable_dependents = dependents.select {|d| d.test_defined? && d.stable.bottled? }
-      uninstalled_testable_dependents = testable_dependents.reject {|d| d.installed? }
-      testable_dependents.map! &:name
-      uninstalled_testable_dependents.map! &:name
 
       formula = Formulary.factory(formula_name)
       return unless satisfied_requirements?(formula, :stable)
@@ -445,12 +443,20 @@ module Homebrew
           end
         end
         test "brew", "test", "--verbose", formula_name if formula.test_defined?
-        if testable_dependents.any?
-          if uninstalled_testable_dependents.any?
-            test "brew", "fetch", *uninstalled_testable_dependents
-            test "brew", "install", *uninstalled_testable_dependents
+        testable_dependents.each do |dependent|
+          unless dependent.installed?
+            test "brew", "fetch", "--retry", dependent.name
+            next if steps.last.failed?
+            conflicts = dependent.conflicts.map { |c| Formulary.factory(c.name) }.select { |f| f.installed? }
+            conflicts.each do |conflict|
+              test "brew", "unlink", conflict.name
+            end
+            test "brew", "install", dependent.name
+            next if steps.last.failed?
           end
-          test "brew", "test", *testable_dependents
+          if dependent.installed?
+            test "brew", "test", "--verbose", dependent.name
+          end
         end
         test "brew", "uninstall", "--force", formula_name
       end
@@ -602,7 +608,8 @@ module Homebrew
     ENV['HOMEBREW_NO_EMOJI'] = '1'
     if ARGV.include? '--ci-master' or ARGV.include? '--ci-pr' \
        or ARGV.include? '--ci-testing'
-      ARGV << '--cleanup' << '--junit' << '--local'
+      ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS_COMMIT"]
+      ARGV << "--junit" << "--local"
     end
     if ARGV.include? '--ci-master'
       ARGV << '--no-bottle' << '--email'

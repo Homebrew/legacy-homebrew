@@ -4,28 +4,28 @@ class Pypy < Formula
   homepage "http://pypy.org/"
   url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-src.tar.bz2"
   sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
+  revision 2
+
   bottle do
     cellar :any
-    revision 5
-    sha1 "77813b96e04fe46de87532e7177a0ecfe4a84005" => :yosemite
-    sha1 "bae7b2be9d770062b582faffdbadb113135b1d57" => :mavericks
-    sha1 "cce0ddd2900bd49e4988bcdcdffdf8ee3c51828d" => :mountain_lion
+    revision 7
+    sha1 "1da63da6868e2a493e3bc3810a83a0d23c35ffc5" => :yosemite
+    sha1 "2a44201751a139e185da27b16fd8e00e4e3c13c2" => :mavericks
+    sha1 "611621d9b67eb7c4b131851ad06a50e0370c4ca7" => :mountain_lion
   end
-
-  revision 2
 
   depends_on :arch => :x86_64
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-8.2.1.tar.gz"
-    sha1 "ddb4454303142be3446437e4fafb13bbd4570133"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
+    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
-    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
+    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
@@ -57,6 +57,10 @@ class Pypy < Formula
     # scripts will find it.
     bin.install_symlink libexec/"bin/pypy"
     lib.install_symlink libexec/"lib/libpypy-c.dylib"
+
+    %w[setuptools pip].each do |r|
+      (libexec/r).install resource(r)
+    end
   end
 
   def post_install
@@ -83,8 +87,12 @@ class Pypy < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    resource("setuptools").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
-    resource("pip").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    %w[setuptools pip].each do |pkg|
+      (libexec/pkg).cd do
+        system bin/"pypy", "-s", "setup.py", "--no-user-cfg", "install",
+               "--force", "--verbose"
+      end
+    end
 
     # Symlinks to easy_install_pypy and pip_pypy
     bin.install_symlink scripts_folder/"easy_install" => "easy_install_pypy"

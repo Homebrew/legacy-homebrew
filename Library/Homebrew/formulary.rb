@@ -2,22 +2,43 @@
 # It is not meant to be used directy from formulae.
 
 class Formulary
+  module Formulae
+    class << self
+      if instance_method(:const_defined?).arity == -1
+        def formula_const_defined?(name)
+          const_defined?(name, false)
+        end
+
+        def formula_const_get(name)
+          const_get(name, false)
+        end
+      else
+        def formula_const_defined?(name)
+          const_defined?(name)
+        end
+
+        def formula_const_get(name)
+          const_get(name)
+        end
+      end
+
+      def remove_formula_const(name)
+        remove_const(name)
+      end
+
+      def formula_const_set(name, value)
+        const_set(name, value)
+      end
+    end
+  end
 
   def self.unload_formula formula_name
-    Object.send(:remove_const, class_s(formula_name))
-  end
-
-  def self.formula_class_defined? class_name
-    Object.const_defined?(class_name)
-  end
-
-  def self.get_formula_class class_name
-    Object.const_get(class_name)
+    Formulae.remove_formula_const(class_s(formula_name))
   end
 
   def self.restore_formula formula_name, value
     old_verbose, $VERBOSE = $VERBOSE, nil
-    Object.const_set(class_s(formula_name), value)
+    Formulae.formula_const_set(class_s(formula_name), value)
   ensure
     $VERBOSE = old_verbose
   end
@@ -50,37 +71,25 @@ class Formulary
       klass.new(name, path, spec)
     end
 
-    # Return the Class for this formula, `require`-ing it if
-    # it has not been parsed before.
     def klass
       begin
-        have_klass = Formulary.formula_class_defined? class_name
+        have_klass = Formulae.formula_const_defined?(class_name)
       rescue NameError => e
+        raise unless e.name.to_s == class_name
         raise FormulaUnavailableError, name, e.backtrace
       end
 
       load_file unless have_klass
 
-      klass = Formulary.get_formula_class(class_name)
-      if klass == Formula || !(klass < Formula)
-        raise FormulaUnavailableError.new(name)
-      end
-      klass
+      Formulae.formula_const_get(class_name)
     end
 
     private
 
     def load_file
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
-      begin
-        require(path)
-      rescue NoMethodError
-        # This is a programming error in an existing formula, and should not
-        # have a "no such formula" message.
-        raise
-      rescue LoadError, NameError => e
-        raise FormulaUnavailableError, name, e.backtrace
-      end
+      raise FormulaUnavailableError.new(name) unless path.file?
+      Formulae.module_eval(path.read, path)
     end
   end
 
@@ -105,13 +114,6 @@ class Formulary
       formula = super
       formula.local_bottle_path = @bottle_filename
       formula
-    end
-  end
-
-  # Loads formulae from Homebrew's provided Library
-  class StandardLoader < FormulaLoader
-    def initialize name, path=Formula.path(name)
-      super
     end
   end
 
@@ -178,6 +180,16 @@ class Formulary
     end
   end
 
+  class NullLoader < FormulaLoader
+    def initialize(name)
+      @name = name
+    end
+
+    def get_formula(spec)
+      raise FormulaUnavailableError.new(name)
+    end
+  end
+
   # Return a Formula instance for the given reference.
   # `ref` is string containing:
   # * a formula name
@@ -208,7 +220,7 @@ class Formulary
 
     formula_with_that_name = Formula.path(ref)
     if formula_with_that_name.file?
-      return StandardLoader.new(ref, formula_with_that_name)
+      return FormulaLoader.new(ref, formula_with_that_name)
     end
 
     possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{ref}")
@@ -218,9 +230,9 @@ class Formulary
 
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
     if possible_cached_formula.file?
-      return StandardLoader.new(ref, possible_cached_formula)
+      return FormulaLoader.new(ref, possible_cached_formula)
     end
 
-    return StandardLoader.new(ref)
+    return NullLoader.new(ref)
   end
 end

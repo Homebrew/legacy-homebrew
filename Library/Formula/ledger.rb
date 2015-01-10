@@ -1,5 +1,3 @@
-require "formula"
-
 class Ledger < Formula
   homepage "http://ledger-cli.org"
 
@@ -14,20 +12,23 @@ class Ledger < Formula
   end
 
   bottle do
-    sha1 "71811722531f13093e8664e5178af7f07180e5a1" => :mavericks
-    sha1 "4f05d2f03df1d7f1709ca4a5ecb832d34cb2fbfe" => :mountain_lion
+    revision 1
+    sha1 "30561863474adf48bf79f91cd2857fc710c6b3bf" => :yosemite
+    sha1 "3bec38e55625664d73acd980e1858eac286b803d" => :mavericks
+    sha1 "33ad9b6c16c8e0803728a772ae78a555678fc603" => :mountain_lion
   end
 
   head "https://github.com/ledger/ledger.git"
 
-  option "debug", "Build with debugging symbols enabled"
+  deprecated_option "debug" => "with-debug"
+
+  option "with-debug", "Build with debugging symbols enabled"
   option "with-docs", "Build HTML documentation"
 
-  depends_on "cmake" => :build
-  depends_on "ninja" => :build
   depends_on "mpfr"
   depends_on "gmp"
   depends_on :python => :optional
+  depends_on "cmake" => :build
 
   boost_opts = []
   boost_opts << "c++11" if MacOS.version < "10.9"
@@ -41,11 +42,11 @@ class Ledger < Formula
 
     (buildpath/"lib/utfcpp").install resource("utfcpp") unless build.head?
 
-    flavor = build.include?("debug") ? "debug" : "opt"
+    flavor = (build.with? "debug") ? "debug" : "opt"
 
-    opts = %W[-- -DBUILD_DOCS=1]
+    opts = %w[-- -DBUILD_DOCS=1]
     args = %W[
-      --ninja --jobs=#{ENV.make_jobs}
+      --jobs=#{ENV.make_jobs}
       --output=build
       --prefix=#{prefix}
       --boost=#{Formula["boost"].opt_prefix}
@@ -68,6 +69,7 @@ class Ledger < Formula
 
     args += opts
 
+    system "./acprep", flavor, "make", *args
     system "./acprep", flavor, "make", "doc", *args
     system "./acprep", flavor, "make", "install", *args
     (share+"ledger/examples").install Dir["test/input/*.dat"]

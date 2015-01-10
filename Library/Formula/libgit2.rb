@@ -5,7 +5,7 @@ class Libgit2 < Formula
   url "https://github.com/libgit2/libgit2/archive/v0.21.3.tar.gz"
   sha1 "d116cb15f76edf2283c85da40389e4fecc8d5aeb"
 
-  head "https://github.com/libgit2/libgit2.git", :branch => "development"
+  head "https://github.com/libgit2/libgit2.git"
 
   bottle do
     cellar :any

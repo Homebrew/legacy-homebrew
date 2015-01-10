@@ -155,26 +155,30 @@ class Version
     StringToken::PATTERN
   )
 
-  def self.detect(url, specs={})
-    if specs.has_key?(:tag)
-      new(specs[:tag][/((?:\d+\.)*\d+)/, 1], true)
-    else
-      parse(url)
+  class FromURL < Version
+    def detected_from_url?
+      true
     end
   end
 
-  def initialize(val, detected=false)
+  def self.detect(url, specs={})
+    if specs.has_key?(:tag)
+      FromURL.new(specs[:tag][/((?:\d+\.)*\d+)/, 1])
+    else
+      FromURL.parse(url)
+    end
+  end
+
+  def initialize(val)
     if val.respond_to?(:to_str)
       @version = val.to_str
     else
       raise TypeError, "Version value must be a string"
     end
-
-    @detected_from_url = detected
   end
 
   def detected_from_url?
-    @detected_from_url
+    false
   end
 
   def head?
@@ -236,7 +240,7 @@ class Version
 
   def self.parse spec
     version = _parse(spec)
-    Version.new(version, true) unless version.nil?
+    new(version) unless version.nil?
   end
 
   def self._parse spec
@@ -301,7 +305,7 @@ class Version
     m = /_((?:\d+\.)+\d+[abc]?)[.]orig$/.match(stem)
     return m.captures.first unless m.nil?
 
-    # e.g. http://www.openssl.org/source/openssl-0.9.8s.tar.gz
+    # e.g. https://www.openssl.org/source/openssl-0.9.8s.tar.gz
     m = /-v?([^-]+)/.match(stem)
     return m.captures.first unless m.nil?
 

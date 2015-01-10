@@ -1,10 +1,8 @@
-require 'formula'
-
 class Moreutils < Formula
-  homepage 'http://joeyh.name/code/moreutils/'
-  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
-  sha1 '32047f935178b490a12c370d8f695f1273dc5895'
+  homepage "http://joeyh.name/code/moreutils/"
+  url "http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz"
+  mirror "http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz"
+  sha1 "32047f935178b490a12c370d8f695f1273dc5895"
 
   bottle do
     revision 2
@@ -61,5 +59,12 @@ class Moreutils < Formula
     system "make", "check"
     system "make", "install", "PREFIX=#{prefix}"
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
+  end
+
+  test do
+    pipe_output("#{bin}/isutf8", "hello")
+    assert $?.success?
+    pipe_output("#{bin}/isutf8", "\xca\xc0\xbd\xe7")
+    assert (!$?.success?)
   end
 end

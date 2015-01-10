@@ -5,7 +5,7 @@ require 'formula'
 #  - http://wiki.winehq.org/Gecko
 #  - http://wiki.winehq.org/Mono
 class Wine < Formula
-  homepage 'http://winehq.org/'
+  homepage 'https://www.winehq.org/'
 
   stable do
     url 'https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
@@ -30,8 +30,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.33.tar.bz2"
-    sha256 "e3519d6fa2c0bb91e58da38f14f02607cf366a0154ff1effe528966106d49275"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.34.tar.bz2"
+    sha256 "4d5a3b25450fb232aa9d0d0dd859b7d50b8ffb6180f24aefb6eb4e400d32330b"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -168,7 +168,7 @@ class Wine < Formula
       which may cause text rendering issues in applications such as Steam.
       We recommend that you run winecfg, add an override for dwrite in the
       Libraries tab, and edit the override mode to "disable". See:
-        http://bugs.winehq.org/show_bug.cgi?id=31374
+        https://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
 
     if build.with? 'x11'
@@ -179,7 +179,7 @@ class Wine < Formula
         "x11" (or use winetricks).
 
         For best results with X11, install the latest version of XQuartz:
-          http://xquartz.macosforge.org/
+          https://xquartz.macosforge.org/
       EOS
     end
     return s
