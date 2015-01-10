@@ -3,6 +3,13 @@ class Pgcli < Formula
   url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.10.2.tar.gz"
   sha1 "c34330335e08418aba1c406ac846b37daaf21262"
 
+  bottle do
+    cellar :any
+    sha1 "3b215a030f7a46840d0a3f0e43a3888c0e4a54b7" => :yosemite
+    sha1 "fe811167e529ca7b87da5608d831207ea2b98000" => :mavericks
+    sha1 "5877b78ca0243107a4c1baebf635d1e5fa6ee1fb" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "openssl"
   depends_on :postgresql
