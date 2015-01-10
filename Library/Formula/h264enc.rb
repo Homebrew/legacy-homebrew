@@ -3,9 +3,7 @@ class H264enc < Formula
   url "https://downloads.sourceforge.net/project/h264enc/h264enc/h264enc-9.9.0.tar.gz"
   sha1 "8bfa7017386a4b7612acd21e48dedf940652582d"
 
-  # depends_on "cmake" => :build
-  # depends_on :x11 # if your formula requires any X11/XQuartz components
-  # [encode, x264], mplayer needs x264 installed first 
+   # mplayer needs x264 installed first 
   depends_on "x264"
   depends_on "mplayer"
   depends_on "lsdvd"
@@ -29,8 +27,6 @@ class H264enc < Formula
     	onoe "MEncoder wasn't built with x264. Uninstall 'brew uninstall mplayer' then reinstall 'brew install x264 mplayer'"
 	raise
     end
-
-    # ENV.deparallelize  # if your formula fails when building in parallel
 
     bin.mkpath
     man.mkpath
