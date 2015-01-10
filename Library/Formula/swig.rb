@@ -1,7 +1,7 @@
 class Swig < Formula
   homepage "http://www.swig.org/"
-  url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.2/swig-3.0.2.tar.gz"
-  sha1 "e695a14acf39b25f3ea2d7303e23e39dfe284e31"
+  url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.3/swig-3.0.3.tar.gz"
+  sha1 "e68e1fbdf92ae34c0949c9babef10c8800377b93"
 
   bottle do
     revision 1
