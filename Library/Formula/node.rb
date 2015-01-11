@@ -3,12 +3,6 @@ class Node < Formula
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
   sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
-  bottle do
-    sha1 "8fd61f7a0c6307a44b150fd81939bbf7c69216c9" => :yosemite
-    sha1 "c4866999f23fbfdf1e80d7bf0ddd04c338985c51" => :mavericks
-    sha1 "8b07a08623662ecf73d6f228d7b31cb854ead449" => :mountain_lion
-  end
-
   revision 2
 
   head do
