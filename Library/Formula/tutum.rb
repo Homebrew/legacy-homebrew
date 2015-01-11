@@ -56,17 +56,18 @@ class Tutum < Formula
   end
 
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
-
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
-    system "python", "setup.py", "install", "--prefix=#{libexec}"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
 
-    (bin/"tutum").write_env_script libexec/"bin/tutum", :PYTHONPATH => ENV["PYTHONPATH"]
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
