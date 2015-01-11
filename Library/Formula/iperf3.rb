@@ -1,17 +1,9 @@
-require "formula"
-
 class Iperf3 < Formula
   homepage "https://github.com/esnet/iperf"
 
   stable do
-    url "https://github.com/esnet/iperf/archive/3.0.9.tar.gz"
-    sha256 "985d87e2bc3f302dd5e864022f61b053cdeafd2e6a325711a317ed6aa1b68771"
-
-    # Fix Compile errors for Yosemite - https://github.com/esnet/iperf/issues/213
-    patch do
-      url "https://github.com/esnet/iperf/commit/cc4a7fa75d94.diff"
-      sha1 "6792c1a0cfddb2249d4ae2a3e202cd652b70b729"
-    end
+    url "https://github.com/esnet/iperf/archive/3.0.11.tar.gz"
+    sha256 "c774b807ea4db20e07558c47951df186b6fb1dd0cdef4282c078853ad87cc712"
   end
 
   head do
