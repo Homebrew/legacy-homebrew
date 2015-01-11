@@ -21,6 +21,7 @@ class Flickcurl < Formula
   end
 
   test do
-    system "#{bin}/flickcurl", "-h"
+    output = shell_output("#{bin}/flickcurl -h 2>&1", 1)
+    assert_includes output, "flickcurl: Configuration file"
   end
 end
