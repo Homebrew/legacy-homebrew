@@ -3,7 +3,13 @@ class Node < Formula
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
   sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
-  revision 2
+  revision 1
+
+  bottle do
+    sha1 "652168b4eed7141cdd648e9463dc246a6b7f2e60" => :yosemite
+    sha1 "9b117ec5da09b2d62f19b7ce7686f0e9dbd5e74a" => :mavericks
+    sha1 "524ff7c572ec83611347951f370c97de8e240ea5" => :mountain_lion
+  end
 
   head do
     url "https://github.com/joyent/node.git", :branch => "v0.12"
@@ -30,8 +36,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.18.tgz"
-    sha1 "e2af4c5f848fb023851cd2ec129005d33090bd57"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.17.tgz"
+    sha1 "80fa7873188659037ec0ed8ebc95c2b2723c8ac4"
   end
 
   def install
@@ -49,54 +55,42 @@ class Node < Formula
     system "./configure", *args
     system "make", "install"
 
-    if build.with? "npm"
-      resource("npm").stage libexec/"npm_i"
-
-      # make sure npm can find node
-      ENV["PATH"] = "#{Formula["node"].prefix}/bin:#{ENV["PATH"]}"
-
-      # set log level temporarily for npm's `make install`
-      ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
-
-      (libexec/"npm_i").cd { system "./configure", "--prefix=#{libexec}/npm" }
-      (libexec/"npm_i").cd { system "make", "install" }
-
-      # Manpages aren't currently linking, which is frustrating.
-      # FIXTHIS before merge, ideally.
-      rm_rf libexec/"npm/lib/node_modules/npm/share"
-
-      if build.with? "completion"
-        bash_completion.install \
-          libexec/"npm_i/lib/utils/completion.sh" => "npm"
-      end
-    end
+    resource("npm").stage libexec/"npm" if build.with? "npm"
   end
 
   def post_install
     return if build.without? "npm"
 
+    (libexec/"npm").cd { system "make", "uninstall" }
+    Pathname.glob(HOMEBREW_PREFIX/"share/man/*") do |man|
+      next unless man.directory?
+      man.children.each do |file|
+        next unless file.symlink?
+        file.unlink if file.readlink.to_s.include? "/node_modules/npm/man/"
+      end
+    end
+
     node_modules = HOMEBREW_PREFIX/"lib/node_modules"
     node_modules.mkpath
-    npm_exec = node_modules/"npm/bin/npm-cli.js"
-    # Kill npm but preserve all other modules across node updates/upgrades.
-    rm_rf node_modules/"npm" if (node_modules/"npm").exist?
-
-    cp_r libexec/"npm/lib/node_modules/npm", node_modules
-    # This symlink doesn't hop into homebrew_prefix/bin
-    # automatically so remove it and make our own.
-    # This is a small consequence of our bottle npm make install workaround.
-    # All other installs **do** symlink to homebrew_prefix/bin correctly.
-    # We ln rather than cp this because doing so mimics npm's normal install.
-    ln_sf npm_exec, "#{HOMEBREW_PREFIX}/bin/npm"
+    cp_r libexec/"npm", node_modules
 
     npm_root = node_modules/"npm"
-
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
-    rm_rf libexec
+    # set log level temporarily for npm's `make install`
+    ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
+
+    # make sure npm can find node
+    ENV["PATH"] = "#{opt_bin}:#{ENV["PATH"]}"
 
     ENV["NPM_CONFIG_USERCONFIG"] = npmrc
+    npm_root.cd { system "make", "install" }
+
+    if build.with? "completion"
+      bash_completion.install_symlink \
+        npm_root/"lib/utils/completion.sh" => "npm"
+    end
   end
 
   def caveats
