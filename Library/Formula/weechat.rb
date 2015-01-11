@@ -6,10 +6,9 @@ class Weechat < Formula
   head "https://github.com/weechat/weechat.git"
 
   bottle do
-    revision 1
-    sha1 "e5cbebaca9b73342b07bf8302eb78157a8929660" => :yosemite
-    sha1 "36a7f4ac899bd4aec97a6cdba9c769bc1b0815c8" => :mavericks
-    sha1 "a76c212cf886cef42113bef355936ac58ff3084a" => :mountain_lion
+    sha1 "e36f032f19ec591c3d7864e2a95ca9afe3ba1771" => :yosemite
+    sha1 "02d3c62b3ff86ac19b9c5ac0e972f63a5746a52e" => :mavericks
+    sha1 "ec70b13654147081d8b8823bee45ee99542dd96c" => :mountain_lion
   end
 
   option "with-perl", "Build the perl module"
