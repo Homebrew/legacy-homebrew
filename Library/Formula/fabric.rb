@@ -7,9 +7,10 @@ class Fabric < Formula
 
   bottle do
     cellar :any
-    sha1 "374785f7ecd2987f93370ff86e884655ccdc8a35" => :yosemite
-    sha1 "6047b970eee66ce79fefd33ce49b60805b20db8d" => :mavericks
-    sha1 "a75ad6a04ce7becd283ed8ba1a9bc6319025a05d" => :mountain_lion
+    revision 1
+    sha1 "e500fd3a80a2492c2c51792e5f39ff6638416280" => :yosemite
+    sha1 "7fbb18fc9647d46e2b0a18132d38835399f1d55a" => :mavericks
+    sha1 "176cd8c7889ca1dfea0a0c91c628f1919ec13e1b" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
