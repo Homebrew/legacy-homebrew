@@ -5,12 +5,15 @@ class Node < Formula
   sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
   revision 2
 
+<<<<<<< HEAD
   bottle do
     sha1 "8fd61f7a0c6307a44b150fd81939bbf7c69216c9" => :yosemite
     sha1 "c4866999f23fbfdf1e80d7bf0ddd04c338985c51" => :mavericks
     sha1 "8b07a08623662ecf73d6f228d7b31cb854ead449" => :mountain_lion
   end
 
+=======
+>>>>>>> 57e2708... Revert "node: add 0.10.35_2 bottle."
   head do
     url "https://github.com/joyent/node.git", :branch => "v0.12"
 
