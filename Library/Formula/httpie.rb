@@ -1,7 +1,5 @@
-require "formula"
-
 class Httpie < Formula
-  homepage "http://httpie.org"
+  homepage "https://github.com/jakubroztocil/httpie"
   url "https://github.com/jakubroztocil/httpie/archive/0.8.0.tar.gz"
   sha1 "bfffe9d782a896ca57f3dafef3d02bf81a07e5a8"
 
@@ -28,19 +26,22 @@ class Httpie < Formula
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec + "lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", prefix + "lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    %w[pygments requests].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
 
-    install_args = "setup.py", "install", "--prefix=#{libexec}"
-    resource("pygments").stage { system "python", *install_args }
-    resource("requests").stage { system "python", *install_args }
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
 
-    system "python", "setup.py", "install", "--prefix=#{libexec}"
-
-    (bin/"http").write_env_script libexec/"bin/http", :PYTHONPATH => ENV["PYTHONPATH"]
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
-    system "#{bin}/http", "https://google.com"
+    output = shell_output("#{bin}/http https://raw.githubusercontent.com/Homebrew/homebrew/master/Library/Formula/httpie.rb")
+    assert output.include?("PYTHONPATH")
   end
 end
