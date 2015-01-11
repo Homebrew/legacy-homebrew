@@ -5,9 +5,9 @@ class Deis < Formula
 
   bottle do
     cellar :any
-    sha1 "d20e7452e995edac3805866b1b215ebe7f40541b" => :yosemite
-    sha1 "b4313da76967ea6d110f76fd6a9833299638f95c" => :mavericks
-    sha1 "3dca69365aff18d64b8df106a5103a104306472a" => :mountain_lion
+    sha1 "bd876e59177eda9440eaa16ce36c62c3878b808b" => :yosemite
+    sha1 "2957df19c6c933f795ba489054fdb98e58b346a4" => :mavericks
+    sha1 "c6331fe7333a9ba59d0ecdb4f49d1d2652ad84e3" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
