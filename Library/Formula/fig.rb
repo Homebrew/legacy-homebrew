@@ -56,12 +56,9 @@ class Fig < Formula
       r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", "setup.py", "install", "--prefix=#{libexec}"
 
-    rm "#{lib}/python2.7/site-packages/site.py"
-    rm "#{lib}/python2.7/site-packages/easy-install.pth"
-
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    (bin/"fig").write_env_script libexec/"bin/fig", :PYTHONPATH => ENV["PYTHONPATH"]
   end
 
   test do
