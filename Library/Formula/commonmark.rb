@@ -3,6 +3,13 @@ class Commonmark < Formula
   url "https://github.com/jgm/CommonMark/archive/0.15.tar.gz"
   sha1 "877665a96fdc5fcc42ec2cd605d8535344a27b72"
 
+  bottle do
+    cellar :any
+    sha1 "fbaebb5f33ffad7deb3b744d37e00bfab8d6251a" => :yosemite
+    sha1 "3cd4d72d841ff4e95cb3fac25451b2979161b5a1" => :mavericks
+    sha1 "f67567a2bf4bf4f619b3631a1c575f16a58df25c" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
   depends_on :python3 => :build
 
