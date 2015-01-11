@@ -159,7 +159,7 @@ class Ffmpeg < Formula
       To install with libfaac, you can:
         brew reinstall ffmpeg --with-faac
 
-      You can also use the libvo-acenc or experimental FFmpeg encoder to
+      You can also use the libvo-aacenc or experimental FFmpeg encoder to
       encode AAC audio:
         -c:a libvo_aacenc
       Or:
