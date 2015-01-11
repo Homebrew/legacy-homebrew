@@ -48,19 +48,17 @@ end
 # formulae for Python related tools.
 class PythonAppFormula < Formula
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
-
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
 
-    rm "#{lib}/python2.7/site-packages/site.py"
-    rm "#{lib}/python2.7/site-packages/easy-install.pth"
-
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 end
