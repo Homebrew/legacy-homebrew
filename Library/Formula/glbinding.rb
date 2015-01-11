@@ -1,9 +1,7 @@
-require "formula"
-
 class Glbinding < Formula
   homepage "https://github.com/hpicgs/glbinding"
-  url "https://github.com/hpicgs/glbinding/archive/v1.0.2.tar.gz"
-  sha1 "19d6d143bd4106582af4c197e882222e86323820"
+  url "https://github.com/hpicgs/glbinding/archive/v1.0.4.tar.gz"
+  sha1 "1f371b40f6c9c42807aa14d9ef9e1153c95472bf"
 
   bottle do
     cellar :any
