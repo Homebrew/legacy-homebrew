@@ -1,9 +1,7 @@
-require "formula"
-
 class IosSim < Formula
   homepage "https://github.com/phonegap/ios-sim"
-  url "https://github.com/phonegap/ios-sim/archive/3.0.0.tar.gz"
-  sha1 "e5b5dd2a622549f105935c3f6fc3cce93aba7b45"
+  url "https://github.com/phonegap/ios-sim/archive/3.1.1.tar.gz"
+  sha1 "fbed1bf01253d99ab643e6cdf9fa4e999111324c"
   head "https://github.com/phonegap/ios-sim.git"
 
   bottle do
