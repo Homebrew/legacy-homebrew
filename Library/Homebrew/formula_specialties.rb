@@ -46,7 +46,7 @@ end
 
 # This formula serves as the base class for several very similar
 # formulae for Python related tools.
-class PythonFormula < Formula
+class PythonAppFormula < Formula
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
