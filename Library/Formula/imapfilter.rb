@@ -1,10 +1,7 @@
-require "formula"
-
 class Imapfilter < Formula
   homepage "https://github.com/lefcha/imapfilter/"
-  url "https://github.com/lefcha/imapfilter/archive/v2.5.6.tar.gz"
-  sha1 "49ac7b7fb937b40eb42a162314de4f8866e33c11"
-  revision 2
+  url "https://github.com/lefcha/imapfilter/archive/v2.5.7.tar.gz"
+  sha1 "216ec7b8563729cf446e9b2839bdcdf3eae351ed"
 
   bottle do
     sha1 "77ecd8c0a08e81054f5e4dea3fbe85b51e7f94e0" => :mavericks
