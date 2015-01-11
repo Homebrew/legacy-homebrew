@@ -1,8 +1,9 @@
 package spark.jobserver
 
-import akka.actor.{PoisonPill, Props, ActorRef, ActorSystem}
+import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
 import org.apache.spark.SparkContext
+import org.apache.spark.storage.StorageLevel
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.{FunSpec, BeforeAndAfterAll, BeforeAndAfter}
 
@@ -91,6 +92,15 @@ with ImplicitSender with ShouldMatchers with BeforeAndAfter with BeforeAndAfterA
       namedRdds.getOrElseCreate("rdd", rdd1) should equal (rdd1)
       namedRdds.update("rdd", rdd2)
       namedRdds.get[Int]("rdd") should equal (Some(rdd2))
+    }
+
+    it("update() should update an RDD even if it was persisted before") {
+      // The result of some computations (ie: a MatrixFactorizationModel after training ALS) might have been
+      // persisted before so they might have a specific storageLevel.
+      val rdd1 = sc.parallelize(Seq(1, 2, 3))
+      rdd1.persist(StorageLevel.MEMORY_AND_DISK)
+      namedRdds.update("rdd", rdd1)
+      namedRdds.get[Int]("rdd") should equal (Some(rdd1))
     }
 
     it("should include underlying exception when error occurs") {
