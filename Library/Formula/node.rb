@@ -3,13 +3,13 @@ class Node < Formula
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
   sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
+  revision 2
+
   bottle do
     sha1 "8fd61f7a0c6307a44b150fd81939bbf7c69216c9" => :yosemite
     sha1 "c4866999f23fbfdf1e80d7bf0ddd04c338985c51" => :mavericks
     sha1 "8b07a08623662ecf73d6f228d7b31cb854ead449" => :mountain_lion
   end
-
-  revision 2
 
   head do
     url "https://github.com/joyent/node.git", :branch => "v0.12"
@@ -25,6 +25,7 @@ class Node < Formula
   option "without-completion", "npm bash completion will not be installed"
 
   depends_on :python => :build
+  depends_on :xcode => :build
 
   # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
   # over Node's shipped version with --shared-openssl.
@@ -56,7 +57,7 @@ class Node < Formula
     system "make", "install"
 
     if build.with? "npm"
-      resource("npm").stage libexec/"npm_i"
+      resource("npm").stage libexec/"npm_install"
 
       # make sure npm can find node
       ENV["PATH"] = "#{Formula["node"].prefix}/bin:#{ENV["PATH"]}"
@@ -64,16 +65,15 @@ class Node < Formula
       # set log level temporarily for npm's `make install`
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
-      (libexec/"npm_i").cd { system "./configure", "--prefix=#{libexec}/npm" }
-      (libexec/"npm_i").cd { system "make", "install" }
+      (libexec/"npm_install").cd { system "./configure", "--prefix=#{libexec}/npm" }
+      (libexec/"npm_install").cd { system "make", "install" }
 
-      # Manpages aren't currently linking, which is frustrating.
-      # FIXTHIS before merge, ideally.
+      # FIXTHIS: Manpages aren't currently linking, which is frustrating.
       rm_rf libexec/"npm/lib/node_modules/npm/share"
 
       if build.with? "completion"
         bash_completion.install \
-          libexec/"npm_i/lib/utils/completion.sh" => "npm"
+          libexec/"npm_install/lib/utils/completion.sh" => "npm"
       end
     end
   end
@@ -85,22 +85,21 @@ class Node < Formula
     node_modules.mkpath
     npm_exec = node_modules/"npm/bin/npm-cli.js"
     # Kill npm but preserve all other modules across node updates/upgrades.
-    rm_rf node_modules/"npm" if (node_modules/"npm").exist?
+    rm_rf node_modules/"npm"
 
     cp_r libexec/"npm/lib/node_modules/npm", node_modules
-    # This symlink doesn't hop into homebrew_prefix/bin
-    # automatically so remove it and make our own.
-    # This is a small consequence of our bottle npm make install workaround.
-    # All other installs **do** symlink to homebrew_prefix/bin correctly.
-    # We ln rather than cp this because doing so mimics npm's normal install.
+    # This symlink doesn't hop into homebrew_prefix/bin automatically so
+    # remove it and make our own. This is a small consequence of our bottle
+    # npm make install workaround. All other installs **do** symlink to
+    # homebrew_prefix/bin correctly. We ln rather than cp this because doing
+    # so mimics npm's normal install.
     ln_sf npm_exec, "#{HOMEBREW_PREFIX}/bin/npm"
 
     npm_root = node_modules/"npm"
-
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
-    rm_rf libexec
+    rm_rf libexec if (node_modules/"npm").exist?
 
     ENV["NPM_CONFIG_USERCONFIG"] = npmrc
   end
