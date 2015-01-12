@@ -26,8 +26,10 @@ class Libmagic < Formula
                           "--enable-fsect-man5"
     system "make", "install"
 
-    cd "python" do
-      system "python", "setup.py", "install", "--prefix=#{prefix}"
+    if build.with? "python"
+      cd "python" do
+        system "python", *Language::Python.setup_install_args(prefix)
+      end
     end
 
     # Don't dupe this system utility
