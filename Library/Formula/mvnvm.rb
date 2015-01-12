@@ -2,8 +2,8 @@ require "formula"
 
 class Mvnvm < Formula
   homepage "http://mvnvm.org"
-  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.zip"
-  sha1 "3f0e0217290d6db39c4ff504b9fcc254e52d70fb"
+  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.1.zip"
+  sha1 "b9d4c10f934ece42e6148272d0be710c9e0cf1b6"
 
   head "https://bitbucket.org/mjensen/mvnvm.git"
 
