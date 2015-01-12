@@ -4,8 +4,7 @@ class Pythonpy < Formula
   sha1 "180e4cd00f89cc00d8a657fc7a2d8af4da8b487c"
   head "https://github.com/Russell91/pythonpy.git"
 
-  option "without-python", "Build without python 2 support"
-  depends_on :python => :recommended if MacOS.version <= :snow_leopard
+  depends_on :python => :recommended
   depends_on :python3 => :optional
 
   def install
