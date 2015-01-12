@@ -9,6 +9,10 @@ class Pythonpy < Formula
   depends_on :python3 => :optional
 
   def install
+    if build.without?("python") && build.without?("python3")
+      odie "You need to build against one python version."
+    end
+
     Language::Python.each_python(build) do |python, version|
       ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{version}/site-packages"
       system python, *Language::Python.setup_install_args(libexec)
