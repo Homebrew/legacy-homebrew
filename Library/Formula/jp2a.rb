@@ -23,6 +23,8 @@ class Jp2a < Formula
   end
 
   test do
+    # the test fails if this is not set
+    ENV["TERM"] = "xterm-256color"
     system "#{bin}/jp2a", test_fixtures("test.jpg")
   end
 end
