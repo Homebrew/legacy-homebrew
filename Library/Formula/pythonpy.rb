@@ -17,11 +17,9 @@ class Pythonpy < Formula
       ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{version}/site-packages"
       system python, *Language::Python.setup_install_args(libexec)
 
-      # Hack: direct string access for ruby 1.8 returns an integer
-      version = version.to_s.split(//)
-
       # Cannot use bin.env_script_all_files since it would overwrite python2
       # executables, if both versions are going to be installed
+      version = version.to_s
       execs_to_wrap = [
         "py#{version}", "py#{version[0]}",
         "pycompleter#{version}", "pycompleter#{version[0]}"
@@ -52,7 +50,7 @@ class Pythonpy < Formula
     end
 
     if build.with? "python3"
-      assert_equal "3", `#{bin}/py3 sys.version`[0..0]
+      assert_equal "3", `#{bin}/py3 sys.version`[0]
     end
   end
 end
