@@ -3,6 +3,13 @@ class Gtkextra < Formula
   url "https://downloads.sourceforge.net/project/gtkextra/3.1/gtkextra-3.1.2.tar.gz"
   sha1 "f3c85b7edb3980ae2390d951d62c24add4b45eb9"
 
+  bottle do
+    cellar :any
+    sha1 "6ff80fc1fdcc15aad24dbba2428006d2cb6ef491" => :yosemite
+    sha1 "0854acd0dd2d38123a2aa98c7e4449e89c532900" => :mavericks
+    sha1 "a8d200588c69a98b063b16426cc49f29c549cf4a" => :mountain_lion
+  end
+
   # uses whatever backend gtk+ is built with: x11 or quartz
   depends_on "gtk+"
   depends_on "pkg-config" => :build
