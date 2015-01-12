@@ -8,9 +8,9 @@ require 'version'
 class Resource
   include FileUtils
 
-  attr_reader :checksum, :mirrors, :specs, :using
-  attr_writer :checksum, :version
-  attr_accessor :download_strategy
+  attr_reader :mirrors, :specs, :using
+  attr_writer :version
+  attr_accessor :download_strategy, :checksum
 
   # Formula name must be set after the DSL, as we have no access to the
   # formula name before initialization of the formula
