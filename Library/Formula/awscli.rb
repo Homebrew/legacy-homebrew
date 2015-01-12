@@ -1,11 +1,11 @@
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.6.10.tar.gz"
-  sha1 "47aa6d8212fa268bcc520a51210ec72e49c488d5"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.0.tar.gz"
+  sha1 "c8bf5bb7f812376f6a6b6f116f237e2f5575ac61"
 
   bottle do
     cellar :any
-    sha1 "2b7b0584b304411faab4c24d38db430361319942" => :yosemite
+    sha1 "ded393ddc505e89acdc2dd7403c83a35ce666de7" => :yosemite
     sha1 "f78fab48f23111df7ba38f5771697fedbf0fcb8e" => :mavericks
     sha1 "cab72243a68cc7051e42f4198a3172f8b442e0bd" => :mountain_lion
   end
@@ -29,18 +29,18 @@ class Awscli < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
-    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
   end
 
   resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
-    sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
+    sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
   end
 
   resource "colorama" do
-    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.2.tar.gz"
-    sha1 "f2da891543421eeb423c469dff13faf1e70187e5"
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.2.5.tar.gz"
+    sha1 "87507210c5a7d400b27d23e8dd42734198663d66"
   end
 
   resource "jmespath" do
@@ -49,8 +49,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.76.0.tar.gz"
-    sha1 "7c4021228bee72880d960e09f88bc893368045e9"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.81.0.tar.gz"
+    sha1 "6d85690eca45733d1c04b52f44f40a77a6c7614c"
   end
 
   resource "docutils" do
@@ -69,8 +69,8 @@ class Awscli < Formula
   end
 
   resource "rsa" do
-    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.4.tar.gz"
-    sha1 "208583c49489b7ab415a4455eae7618b7055feca"
+    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.2.tar.gz"
+    sha1 "ebf54ad3fff8bc1df09f5d777d5a913e5aef8df5"
   end
 
   def install
