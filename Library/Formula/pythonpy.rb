@@ -20,8 +20,8 @@ class Pythonpy < Formula
       # executables, if both versions are going to be installed
       version = version.to_s
       execs_to_wrap = [
-        "py#{version}", "py#{version[0]}",
-        "pycompleter#{version}", "pycompleter#{version[0]}"
+        "py#{version}", "py#{version[0..0]}",
+        "pycompleter#{version}", "pycompleter#{version[0..0]}"
       ]
       execs_to_wrap.each do |e|
         (bin/e).write_env_script(libexec/"bin"/e, :PYTHONPATH => ENV["PYTHONPATH"])
@@ -49,7 +49,7 @@ class Pythonpy < Formula
     end
 
     if build.with? "python3"
-      assert_equal "3", `#{bin}/py3 sys.version`[0]
+      assert_equal "3", `#{bin}/py3 sys.version`[0..0]
     end
   end
 end
