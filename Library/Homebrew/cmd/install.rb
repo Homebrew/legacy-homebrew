@@ -40,20 +40,32 @@ module Homebrew
       end
 
       ARGV.formulae.each do |f|
-        # Building head-only without --HEAD is an error
-        if not ARGV.build_head? and f.stable.nil?
+        # head-only without --HEAD is an error
+        if not ARGV.build_head? and f.stable.nil? and f.devel.nil?
           raise <<-EOS.undent
           #{f.name} is a head-only formula
           Install with `brew install --HEAD #{f.name}`
           EOS
         end
 
-        # Building stable-only with --HEAD is an error
+        # devel-only without --devel is an error
+        if not ARGV.build_devel? and f.stable.nil?
+          if f.head.nil?
+            raise <<-EOS.undent
+            #{f.name} is a devel-only formula
+            Install with `brew install --devel #{f.name}`
+            EOS
+          else
+            raise "#{f.name} has no stable download, please choose --devel or --HEAD"
+          end
+        end
+
+        # --HEAD, fail with no head defined
         if ARGV.build_head? and f.head.nil?
           raise "No head is defined for #{f.name}"
         end
 
-        # Building stable-only with --devel is an error
+        # --devel, fail with no devel defined
         if ARGV.build_devel? and f.devel.nil?
           raise "No devel block is defined for #{f.name}"
         end
