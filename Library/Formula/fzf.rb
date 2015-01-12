@@ -2,8 +2,8 @@ require "formula"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.8.8.tar.gz"
-  sha1 "b063d409251fddd3602c1f8b7b52494a85607050"
+  url "https://github.com/junegunn/fzf/archive/0.8.9.tar.gz"
+  sha1 "efbe5955aa09e9d94f304c6177e55060b1926e28"
 
   def install
     prefix.install "install", "uninstall", "fzf", "fzf-completion.bash", "fzf-completion.zsh"
