@@ -42,6 +42,7 @@ class Thrift < Formula
   option "with-java", "Install Java binding"
   option "with-perl", "Install Perl binding"
   option "with-php", "Install PHP binding"
+  option "with-libevent", "Install nonblocking server libraries"
 
   depends_on "boost"
   depends_on "openssl"
