@@ -4,10 +4,9 @@ class Qwt < Formula
   sha1 "6af82b6ee4132f779d1c8c2db872f01463b0d61c"
 
   bottle do
-    revision 1
-    sha1 "0700a69f236146d304991a7e40235eb295ecbdd3" => :yosemite
-    sha1 "b2ac42c6ef27b2347b2b5d32edc5a71c0e773f16" => :mavericks
-    sha1 "f3ca621e583256c9baae99e6aff689abe3bf8ccb" => :mountain_lion
+    sha1 "a2882aaaff55c53881e82a97181d907e6d6edc46" => :yosemite
+    sha1 "02f9e3920fa64ff44393aa339a784e93e786fc8b" => :mavericks
+    sha1 "12f8a7d2a4cd125918d40f11db1dcbbfd424cec2" => :mountain_lion
   end
 
   option "with-qwtmathml", "Build the qwtmathml library"
