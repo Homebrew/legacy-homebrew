@@ -1,5 +1,3 @@
-require "formula"
-
 class HtopOsx < Formula
   homepage "https://github.com/max-horvath/htop-osx"
   url "https://github.com/max-horvath/htop-osx/archive/0.8.2.3.tar.gz"
