@@ -29,7 +29,7 @@ class Gtkextra < Formula
     EOS
     cflags = `pkg-config --cflags gtkextra-3.0`.chomp.split
     libs = `pkg-config --libs gtkextra-3.0`.chomp.split
-    system ENV.cc, "-o", "test", *cflags, "test.c", *libs
+    system ENV.cc, "-o", "test", "test.c", *(cflags+libs)
     system "./test"
   end
 end
