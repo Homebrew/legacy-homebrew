@@ -5,6 +5,13 @@ class Uncrustify < Formula
 
   head "https://github.com/bengardner/uncrustify.git"
 
+  bottle do
+    cellar :any
+    sha1 "82e6f950648e0a04411e84a563ff96a50b2b8efc" => :yosemite
+    sha1 "9040d701020412937138be6e1521d136d44961b3" => :mavericks
+    sha1 "999421447b999f73f5850e3275e5f47775e0cc27" => :mountain_lion
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
