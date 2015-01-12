@@ -1,4 +1,3 @@
-require "formula"
 require "language/haskell"
 
 class PandocCiteproc < Formula
