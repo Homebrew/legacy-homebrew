@@ -6,7 +6,6 @@ class Gtkextra < Formula
   # uses whatever backend gtk+ is built with: x11 or quartz
   depends_on "gtk+"
   depends_on "pkg-config" => :build
-  depends_on :x11
 
   def install
     system "./configure", "--disable-debug",
@@ -19,6 +18,7 @@ class Gtkextra < Formula
   end
 
   test do
+    ENV.prepend "PKG_CONFIG_PATH", OS::Mac::X11.lib/"pkgconfig"
     (testpath/"test.c").write <<-EOS.undent
     #include <gtkextra/gtkextra.h>
     #include <cairo-ps.h>
