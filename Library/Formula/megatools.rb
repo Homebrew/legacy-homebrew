@@ -2,8 +2,8 @@ require "formula"
 
 class Megatools < Formula
   homepage "http://megatools.megous.com/"
-  url "http://megatools.megous.com/builds/megatools-1.9.93.tar.gz"
-  sha1 "06411d7ee19a3acaae97346c87ed3194d7d0c321"
+  url "http://megatools.megous.com/builds/megatools-1.9.94.tar.gz"
+  sha1 "d9d664047496c38495cd7196c481164eaa1d51e0"
 
   bottle do
     cellar :any
