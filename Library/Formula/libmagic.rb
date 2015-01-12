@@ -1,8 +1,8 @@
 class Libmagic < Formula
   homepage "http://www.darwinsys.com/file/"
-  url "ftp://ftp.astron.com/pub/file/file-5.21.tar.gz"
-  mirror "http://fossies.org/unix/misc/file-5.21.tar.gz"
-  sha1 "9836603b75dde99664364b0e7a8b5492461ac0fe"
+  url "ftp://ftp.astron.com/pub/file/file-5.22.tar.gz"
+  mirror "https://fossies.org/unix/misc/file-5.22.tar.gz"
+  sha1 "20fa06592291555f2b478ea2fb70b53e9e8d1f7c"
 
   bottle do
     revision 2
@@ -14,13 +14,6 @@ class Libmagic < Formula
   option :universal
 
   depends_on :python => :optional
-
-  # Patch applied upstream, should be in 5.22
-  # See http://bugs.gw.com/view.php?id=230
-  patch do
-    url "https://github.com/file/file/commit/f79e16aebe701fdb8e821c3c1f3504568d0c10f5.diff"
-    sha1 "7dcbf309bf013c11a6c5367bab8834050d762bd5"
-  end
 
   def install
     ENV.universal_binary if build.universal?
