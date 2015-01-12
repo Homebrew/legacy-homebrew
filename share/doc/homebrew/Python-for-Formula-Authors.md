@@ -123,6 +123,25 @@ class Foo < Formula
 end
 ```
 
+If all requirements are pypi packages and the staging is not important,
+the formula will look like this:
+
+```ruby
+class Foo < PythonFormula
+  url ...
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
+    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+  end
+
+   resource "parsedatetime" do
+    url "https://pypi.python.org/packages/source/p/parsedatetime/parsedatetime-1.4.tar.gz"
+    sha1 "4b9189d38f819cc8144f30d91779716a696d97f8"
+  end
+end
+```
+
 # Bindings
 
 To add an option to a formula to build Python bindings, use `depends_on :python => :recommended` and install the bindings conditionally on `build.with? "python"` in your `install` method.
