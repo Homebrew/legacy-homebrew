@@ -3,6 +3,13 @@ class Csmith < Formula
   url "http://embed.cs.utah.edu/csmith/csmith-2.2.0.tar.gz"
   sha1 "3435ce22e645977e03cf6418da076ff3f7a1d4f0"
 
+  bottle do
+    cellar :any
+    sha1 "148f6ff8f8bfbca55af569fa6db560e6917c6d98" => :yosemite
+    sha1 "98647f884d0e48cf487a47d627c9c66f01aef06e" => :mavericks
+    sha1 "551902d606958f2e504103a648b0fcca6edc5e69" => :mountain_lion
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
