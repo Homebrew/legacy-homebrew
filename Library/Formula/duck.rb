@@ -16,7 +16,8 @@ class Duck < Formula
   depends_on "ant" => :build
 
   def install
-    system "ant", "-Dbuild.compile.target=1.7", "-Drevision=#{version.to_str[/(\d\.\d(\.\d)?)\.(\d+)/, 3]}", "cli"
+    revision = version.to_s.rpartition(".").last
+    system "ant", "-Dbuild.compile.target=1.7", "-Drevision=#{revision}", "cli"
     libexec.install Dir["build/duck.bundle/*"]
     bin.install_symlink "#{libexec}/Contents/MacOS/duck" => "duck"
   end
