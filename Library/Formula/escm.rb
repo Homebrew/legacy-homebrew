@@ -4,15 +4,14 @@ class Escm < Formula
   sha1 "a1ddcbd88d9c26270f38c200abf5c8745c783faa"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
-    mkdir_p "#{bin}"
+    system "./configure", "--prefix=#{prefix}"
+    bin.mkpath
     system "make", "install"
+    man1.install "escm.1"
+    prefix.install "escm.esc"
   end
 
   test do
-    system "#{bin}/escm", "-v"
+    system bin/"escm", "-E", prefix/"escm.esc"
   end
 end
