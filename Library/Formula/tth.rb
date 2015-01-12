@@ -5,6 +5,13 @@ class Tth < Formula
   sha1 "27b44970d93f1e1964c92ffa0fa964e6045bae37"
   version "4.06"
 
+  bottle do
+    cellar :any
+    sha1 "dac2cc7df5b0f2f6c77a186fcf799f12a29aff2e" => :yosemite
+    sha1 "d869523cd588ee381ae315aed247f57be379b3be" => :mavericks
+    sha1 "2dc34ba1293a14891456d91bc2b243233f7a06fd" => :mountain_lion
+  end
+
   def install
     system ENV.cc, "-o", "tth", "tth.c"
     bin.install %w[tth latex2gif ps2gif ps2png]
