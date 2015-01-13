@@ -419,7 +419,7 @@ def check_access_usr_local
   end
 end
 
-%w{include etc lib lib/pkgconfig share}.each do |d|
+(Keg::TOP_LEVEL_DIRECTORIES + ["lib/pkgconfig"]).each do |d|
   define_method("check_access_#{d.sub("/", "_")}") do
     dir = HOMEBREW_PREFIX.join(d)
     if dir.exist? && !dir.writable_real? then <<-EOS.undent
