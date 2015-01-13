@@ -12,7 +12,8 @@ class Gtkextra < Formula
 
   # uses whatever backend gtk+ is built with: x11 or quartz
   depends_on "gtk+"
-  depends_on "pkg-config" => :build
+  # needed at runtime only for the test block
+  depends_on "pkg-config"
 
   def install
     system "./configure", "--disable-debug",
