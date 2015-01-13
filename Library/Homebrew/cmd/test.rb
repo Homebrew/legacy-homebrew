@@ -35,7 +35,7 @@ module Homebrew
       begin
         # tests can also return false to indicate failure
         Timeout::timeout TEST_TIMEOUT_SECONDS do
-          raise if f.run_test == false
+          raise "test returned false" if f.run_test == false
         end
       rescue Assertions::FailedAssertion => e
         ofail "#{f.name}: failed"
