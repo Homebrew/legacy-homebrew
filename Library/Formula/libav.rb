@@ -62,6 +62,7 @@ class Libav < Formula
     args = [
       "--disable-debug",
       "--disable-shared",
+      "--disable-indev=jack",
       "--prefix=#{prefix}",
       "--enable-gpl",
       "--enable-nonfree",
