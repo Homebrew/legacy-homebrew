@@ -462,10 +462,8 @@ def check_access_cache
   if HOMEBREW_CACHE.exist? && !HOMEBREW_CACHE.writable_real?
     <<-EOS.undent
       #{HOMEBREW_CACHE} isn't writable.
-      This can happen if you ran `brew install` or `brew fetch` as another user.
-
+      This can happen if you run `brew install` or `brew fetch` as another user.
       Homebrew caches downloaded files to this location.
-
       You should probably `chown` #{HOMEBREW_CACHE}
     EOS
   end
