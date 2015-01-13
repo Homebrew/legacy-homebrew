@@ -11,6 +11,8 @@ class Apr < Formula
 
   keg_only :provided_by_osx, "Apple's CLT package contains apr."
 
+  option :universal
+
   def install
     # Configure switch unconditionally adds the -no-cpp-precomp switch
     # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
@@ -23,8 +25,12 @@ class Apr < Formula
     # The internal libtool throws an enormous strop if we don't do...
     ENV.deparallelize
 
+    args = %W[--prefix=#{libexec}]
+
+    args << "--build=i386-apple-darwin" if build.universal?
+
     # Stick it in libexec otherwise it pollutes lib with a .exp file.
-    system "./configure", "--prefix=#{libexec}"
+    system "./configure", *args
     system "make", "install"
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
