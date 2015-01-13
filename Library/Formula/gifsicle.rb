@@ -3,6 +3,13 @@ class Gifsicle < Formula
   url "http://www.lcdf.org/gifsicle/gifsicle-1.87.tar.gz"
   sha1 "0c22ba0fb0f5d005bd3bb579c2e07620fdd3ca5f"
 
+  bottle do
+    cellar :any
+    sha1 "d618aaf92098835824b8dee876fa1953fc4b8ecb" => :yosemite
+    sha1 "e4fd24422757c63836e9fa608ac00d9d5345b6c8" => :mavericks
+    sha1 "c0fa1e99faced73ee843fd7e0936ebd0a3d2e37b" => :mountain_lion
+  end
+
   head do
     url "https://github.com/kohler/gifsicle.git"
 
