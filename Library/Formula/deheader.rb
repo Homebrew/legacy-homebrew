@@ -1,10 +1,8 @@
-require 'formula'
-
 class Deheader < Formula
-  homepage 'http://www.catb.org/~esr/deheader'
-  url 'http://www.catb.org/~esr/deheader/deheader-0.8.tar.gz'
-  sha1 '4527b4675a7b06d728cfa989a3b7844cdf091b40'
-  head 'https://git.gitorious.org/deheader/deheader.git'
+  homepage "http://www.catb.org/~esr/deheader"
+  url "http://www.catb.org/~esr/deheader/deheader-1.0.tar.gz"
+  sha1 "dc9fc816af1631a84ace7f94a85a3a424d72dbed"
+  head "https://git.gitorious.org/deheader/deheader.git"
 
   def install
     bin.install "deheader"
@@ -20,6 +18,6 @@ class Deheader < Formula
         return 0;
       }
     EOS
-    assert_equal "121", `deheader test.c | tr -cd 0-9`
+    assert_equal "121", shell_output("deheader test.c | tr -cd 0-9")
   end
 end
