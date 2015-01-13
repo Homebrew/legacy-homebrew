@@ -469,6 +469,15 @@ def check_access_cache
   end
 end
 
+def check_access_cellar
+  if HOMEBREW_CELLAR.exist? && !HOMEBREW_CELLAR.writable_real?
+    <<-EOS.undent
+      #{HOMEBREW_CELLAR} isn't writable.
+      You should `chown` #{HOMEBREW_CELLAR}
+    EOS
+  end
+end
+
 def check_ruby_version
   ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
   if RUBY_VERSION[/\d\.\d/] != ruby_version then <<-EOS.undent
