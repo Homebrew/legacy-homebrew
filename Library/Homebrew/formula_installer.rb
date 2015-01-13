@@ -383,7 +383,7 @@ class FormulaInstaller
     link(keg)
     fix_install_names(keg) if OS.mac?
 
-    if build_bottle?
+    if build_bottle? && formula.post_install_defined?
       ohai "Not running post_install as we're building a bottle"
       puts "You can run it manually using `brew postinstall #{formula.name}`"
     else

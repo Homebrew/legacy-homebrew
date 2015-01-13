@@ -1,14 +1,12 @@
-require "formula"
-
 class Gdnsd < Formula
   homepage "http://gdnsd.org/"
-  url "https://github.com/gdnsd/gdnsd/releases/download/v2.1.0/gdnsd-2.1.0.tar.xz"
-  sha1 "138c7542005de457e756bf84fd7f727d690efe56"
+  url "https://github.com/gdnsd/gdnsd/releases/download/v2.2.0/gdnsd-2.2.0.tar.xz"
+  sha1 "5546b68296d7bbca3c9ca9308589fd224ba3e2a1"
 
   bottle do
-    sha1 "72e912a4de41afda8ea8b806086c7291c308e72c" => :yosemite
-    sha1 "ef4d3d7b6c0a7eab61ac4b2ae1f188a2eaec0e37" => :mavericks
-    sha1 "5acbc203b2687aec9c2506906172122a680133f5" => :mountain_lion
+    sha1 "417699f0b71b184131db79fd6e466c0f80d90a55" => :yosemite
+    sha1 "40f29aa1659183526ef70f229d842d928a3f3d19" => :mavericks
+    sha1 "90600419a4ef662adb4c9d05c65bd8cabf953e32" => :mountain_lion
   end
 
   head do

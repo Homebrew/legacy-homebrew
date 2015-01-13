@@ -2,14 +2,14 @@ require "formula"
 
 class Megatools < Formula
   homepage "http://megatools.megous.com/"
-  url "http://megatools.megous.com/builds/megatools-1.9.93.tar.gz"
-  sha1 "06411d7ee19a3acaae97346c87ed3194d7d0c321"
+  url "http://megatools.megous.com/builds/megatools-1.9.94.tar.gz"
+  sha1 "d9d664047496c38495cd7196c481164eaa1d51e0"
 
   bottle do
     cellar :any
-    sha1 "5eb36e9319cf36da464113512f0234ad415cba8b" => :yosemite
-    sha1 "686394945133e0cb535fb92cbb4e3d98d103ddad" => :mavericks
-    sha1 "a6ccf99952c6c701191ead83c6a693bf65a1d4a4" => :mountain_lion
+    sha1 "164906449d8130713bd1fe8852871cada91cd280" => :yosemite
+    sha1 "cf1c682531f8e0fa59d4d3490fded31eed08df61" => :mavericks
+    sha1 "e025e14f30ad6f2a7dd13e116f1d3c55fffcef9b" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -1,23 +1,31 @@
-require 'formula'
-
 class Csmith < Formula
-  homepage 'http://embed.cs.utah.edu/csmith/'
-  url 'http://embed.cs.utah.edu/csmith/csmith-2.1.0.tar.gz'
-  sha1 '2c3c1f5f5e4283af4c835c48dbdaf9431623c45c'
+  homepage "http://embed.cs.utah.edu/csmith/"
+  url "http://embed.cs.utah.edu/csmith/csmith-2.2.0.tar.gz"
+  sha1 "3435ce22e645977e03cf6418da076ff3f7a1d4f0"
+
+  bottle do
+    cellar :any
+    sha1 "148f6ff8f8bfbca55af569fa6db560e6917c6d98" => :yosemite
+    sha1 "98647f884d0e48cf487a47d627c9c66f01aef06e" => :mavericks
+    sha1 "551902d606958f2e504103a648b0fcca6edc5e69" => :mountain_lion
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    ENV.j1 # 2.1.0 fails install without this
-    system "make install"
-    runtime = include+"csmith-#{version}/runtime"
-    runtime.install Dir['runtime/*.h']
+    system "make", "install"
+    mv "#{bin}/compiler_test.in", share
+    (include/"csmith-#{version}/runtime").install Dir["runtime/*.h"]
   end
 
   def caveats; <<-EOS.undent
     It is recommended that you set the environment variable 'CSMITH_PATH' to
       #{include}/csmith-#{version}
     EOS
+  end
+
+  test do
+    system "#{bin}/csmith", "-o", "test.c"
   end
 end
