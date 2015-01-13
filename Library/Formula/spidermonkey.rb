@@ -1,25 +1,24 @@
-require 'formula'
+require "formula"
 
 class Spidermonkey < Formula
-  homepage 'https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey'
-  url 'https://ftp.mozilla.org/pub/mozilla.org/js/mozjs-24.2.0.tar.bz2'
-  version '24.2.0'
-  sha1 'ce779081cc11bd0c871c6f303fc4a0091cf4fe66'
+  homepage "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
+  url "https://ftp.mozilla.org/pub/mozilla.org/js/mozjs-24.2.0.tar.bz2"
+  sha1 "ce779081cc11bd0c871c6f303fc4a0091cf4fe66"
 
-  depends_on 'yasm'
-  depends_on 'gawk'
-  depends_on 'libidl'
-  depends_on 'ccache'
+  depends_on "yasm" => :build
+  depends_on "gawk" => :build
+  depends_on "libidl" => :build
+  depends_on "ccache" => :build
 
   head do
-    depends_on 'https://raw.github.com/Homebrew/homebrew-versions/master/autoconf213.rb'
-    url 'https://hg.mozilla.org/mozilla-central/archive/tip.tar.bz2'
+    depends_on "homebrew/versions/autoconf213"
+    url "https://hg.mozilla.org/mozilla-central/archive/tip.tar.bz2"
   end
 
-  conflicts_with 'narwhal', :because => 'both install a js binary'
+  conflicts_with "narwhal", :because => "both install a js binary"
 
-  depends_on 'readline'
-  depends_on 'nspr'
+  depends_on "readline"
+  depends_on "nspr"
 
   def install
     if build.head?
