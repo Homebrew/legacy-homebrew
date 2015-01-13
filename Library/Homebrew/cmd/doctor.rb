@@ -478,6 +478,16 @@ def check_access_cellar
   end
 end
 
+def check_access_prefix_opt
+  opt = HOMEBREW_PREFIX.join("opt")
+  if opt.exist? && !opt.writable_real?
+    <<-EOS.undent
+      #{opt} isn't writable.
+      You should `chown` #{opt}
+    EOS
+  end
+end
+
 def check_ruby_version
   ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
   if RUBY_VERSION[/\d\.\d/] != ruby_version then <<-EOS.undent
