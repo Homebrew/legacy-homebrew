@@ -4,6 +4,12 @@ class H2o < Formula
   sha1 "37b84750900cdb56c3be574477d6f3327d92a4d7"
   head "https://github.com/h2o/h2o.git"
 
+  bottle do
+    sha1 "44985fe8eb1e5c32754d7b3b3b4dfc1ccbdd181b" => :yosemite
+    sha1 "05559a33588d48ad7b330f9f98b37ceae2af84dd" => :mavericks
+    sha1 "90e3cdc944871b81620ab76b6e09311da99e516c" => :mountain_lion
+  end
+
   option "with-libuv", "Build the H2O library as well as the executable."
 
   depends_on "cmake" => :build
