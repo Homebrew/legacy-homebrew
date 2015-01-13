@@ -2,7 +2,7 @@ require "formula"
 
 class SeleniumServerStandalone < Formula
   homepage "http://seleniumhq.org/"
-  url "http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.1.jar"
+  url "http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar"
   sha1 "ef1b5f8ae9c99332f99ba8794988a1d5b974d27b"
 
   bottle do
