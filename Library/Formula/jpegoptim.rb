@@ -1,7 +1,7 @@
 class Jpegoptim < Formula
   homepage "https://github.com/tjko/jpegoptim"
-  url "https://github.com/tjko/jpegoptim/archive/RELEASE.1.4.1.tar.gz"
-  sha1 "07561b8a06806c4a2172a62e3f5e45b961353b2d"
+  url "https://github.com/tjko/jpegoptim/archive/RELEASE.1.4.2.tar.gz"
+  sha1 "7eb558f2fa240d6ef2f8476aa8ea51f7903666ad"
   head "https://github.com/tjko/jpegoptim.git"
 
   bottle do
@@ -14,13 +14,15 @@ class Jpegoptim < Formula
   depends_on "jpeg"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     ENV.j1 # Install is not parallel-safe
     system "make", "install"
   end
 
   test do
-    assert_match /OK/, shell_output("#{bin}/jpegoptim --noaction #{test_fixtures("test.jpg")}")
+    source = test_fixtures("test.jpg")
+    assert_match(/OK/, shell_output("#{bin}/jpegoptim --noaction #{source}"))
   end
 end
