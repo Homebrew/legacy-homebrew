@@ -5,6 +5,13 @@ class Bam < Formula
 
   head "https://github.com/matricks/bam.git"
 
+  bottle do
+    cellar :any
+    sha1 "7ec0b273b35f7e543cc6a1810a14e14062f81639" => :yosemite
+    sha1 "6b531fb8df899d603f93262f87cfdcb8001b8436" => :mavericks
+    sha1 "dce2512abc5625827a16becba635941b007c16dd" => :mountain_lion
+  end
+
   def install
     system "./make_unix.sh"
     bin.install "bam"
