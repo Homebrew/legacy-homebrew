@@ -53,6 +53,8 @@ module Homebrew
       f.extend(Homebrew::Assertions)
       f.extend(Debrew::Formula) if ARGV.debug?
 
+      env = ENV.to_hash
+
       begin
         # tests can also return false to indicate failure
         Timeout::timeout TEST_TIMEOUT_SECONDS do
@@ -64,6 +66,8 @@ module Homebrew
       rescue Exception => e
         ofail "#{f.name}: failed"
         puts e, e.backtrace
+      ensure
+        ENV.replace(env)
       end
     end
   end
