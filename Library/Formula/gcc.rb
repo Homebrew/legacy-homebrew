@@ -203,7 +203,7 @@ class Gcc < Formula
     system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
     assert_equal "Hello, world!\n", `./hello-c`
 
-    (testpath/"hello-cc.cc").write <<-EOS.undent
+    (testpath/"hello-cc.cc").write <<-'EOS'.undent
       #include <iostream>
       int main()
       {
