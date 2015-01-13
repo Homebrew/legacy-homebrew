@@ -1,15 +1,21 @@
-require 'formula'
-
 class Babeld < Formula
-  homepage 'http://www.pps.univ-paris-diderot.fr/~jch/software/babel/'
-  url 'http://www.pps.univ-paris-diderot.fr/~jch/software/files/babeld-1.4.2.tar.gz'
-  sha1 '53c02193e191fa3ab6ac5c4df9cde9795d4fb8b0'
+  homepage "http://www.pps.univ-paris-diderot.fr/~jch/software/babel/"
+  url "http://www.pps.univ-paris-diderot.fr/~jch/software/files/babeld-1.5.1.tar.gz"
+  sha1 "6ff3a7685e62034df83b143a36a4960b2e4d89b9"
+  head "https://github.com/jech/babeld.git"
 
+  # https://lists.alioth.debian.org/pipermail/babel-users/2015-January/001826.html
   patch :DATA
 
   def install
     system "make", "LDLIBS=''"
     system "make", "install", "PREFIX=#{prefix}"
+  end
+
+  def caveats; <<-EOS.undent
+    Due to changing network interfaces, this tool
+    requires the usage of `sudo` at runtime.
+    EOS
   end
 end
 
