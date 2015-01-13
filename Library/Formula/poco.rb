@@ -1,4 +1,5 @@
 require "formula"
+require "fileutils"
 
 class Poco < Formula
   homepage "http://pocoproject.org/"
@@ -18,18 +19,83 @@ class Poco < Formula
   end
 
   option :cxx11
+  option :universal
 
   depends_on "openssl"
 
   def install
+
     ENV.cxx11 if build.cxx11?
 
-    arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'
-    system "./configure", "--prefix=#{prefix}",
-                          "--config=#{arch}",
-                          "--omit=Data/MySQL,Data/ODBC",
-                          "--no-samples",
-                          "--no-tests"
-    system "make", "install", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}"
+    # the poco project handles most of the architecture specific configuration
+    if build.universal?
+      archs = {
+        "i386" => "Darwin32",
+        "x86_64" => "Darwin64"
+      }
+    elsif MacOS.prefer_64_bit?
+      archs = {
+        "x86_64" => "Darwin64"
+      }
+    else
+      archs = {
+        "i386" => "Darwin32"
+      }
+    end
+
+    arch_dir = ""
+    arch_dirs = []
+
+    archs.each do |arch, arch_mac|
+      if build.universal?
+        # create an architecture specific temporary directory
+        arch_dir = File.join(Dir.pwd, "build-#{arch}")
+        rm_rf arch_dir
+        arch_dirs << arch_dir
+        mkdir arch_dir
+
+        # clean the project before compiling
+        system "make", "clean"
+      end
+
+      # homebrew sets -march=native by default, need to override to compile for i386
+      if arch == "i386"
+        ENV['HOMEBREW_OPTFLAGS'] = '-m32'
+      else
+        ENV['HOMEBREW_OPTFLAGS'] = '-m64'
+      end
+
+      system "./configure", "--prefix=#{prefix}",
+                            "--config=#{arch_mac}",
+                            "--omit=Data/MySQL,Data/ODBC",
+                            "--no-samples",
+                            "--no-tests"
+
+      system "make"
+
+      if build.universal?
+        # move the compiled architecture specific library files to a temporary directory
+        arch_libs_dir = File.join(Dir.pwd, "lib/Darwin/#{arch}")
+        Dir.glob(File.join(arch_libs_dir, '*')).each do |lib_filename|
+          if !File.directory?(lib_filename) && !File.symlink?(lib_filename)
+            cp(lib_filename, File.join(arch_dir, File.basename(lib_filename)))
+          end
+        end
+      end
+    end
+
+    # install everything else
+    system "make", "install"
+
+    if build.universal?
+      # combine the compiled architecture specific libraries into universal ones
+      Dir.glob(File.join(arch_dirs.first, '*')).each do |path|
+        lib_filename = File.basename path
+        system "lipo", "-create", File.join(arch_dirs.first, lib_filename),
+                                  File.join(arch_dirs.last, lib_filename),
+                       "-output", File.join(lib, lib_filename)
+      end
+    end
   end
 end
+
