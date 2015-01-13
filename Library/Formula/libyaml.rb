@@ -3,6 +3,7 @@ class Libyaml < Formula
   url "http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/liby/libyaml/libyaml_0.1.6.orig.tar.gz"
   sha1 "f3d404e11bec3c4efcddfd14c42d46f1aabe0b5d"
+  revision 1
 
   bottle do
     cellar :any
@@ -13,6 +14,13 @@ class Libyaml < Formula
   end
 
   option :universal
+
+  # address CVE-2014-9130
+  # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-9130
+  patch do
+    url "https://bitbucket.org/xi/libyaml/commits/2b9156756423e967cfd09a61d125d883fca6f4f2/raw/"
+    sha1 "174dbe1f5161853cdb1c6ba94df6a826cf25870c"
+  end
 
   def install
     ENV.universal_binary if build.universal?
