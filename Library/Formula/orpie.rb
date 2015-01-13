@@ -1,5 +1,3 @@
-require "formula"
-
 class Orpie < Formula
   homepage "http://pessimization.com/software/orpie/"
   url "http://pessimization.com/software/orpie/orpie-1.5.2.tar.gz"
@@ -7,11 +5,12 @@ class Orpie < Formula
 
   depends_on "gsl"
   depends_on "objective-caml"
+  depends_on "camlp4" => :build
 
   def install
     ENV.deparallelize
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
