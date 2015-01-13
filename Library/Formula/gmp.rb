@@ -48,7 +48,7 @@ class Gmp < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-lgmp", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-lgmp", "-o", "test"
     system "./test"
   end
 end
