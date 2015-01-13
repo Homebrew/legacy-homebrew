@@ -333,6 +333,10 @@ class Formula
   # Can be overridden to run commands on both source and bottle installation.
   def post_install; end
 
+  def post_install_defined?
+    method(:post_install).owner == self.class
+  end
+
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
