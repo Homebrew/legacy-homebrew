@@ -52,6 +52,7 @@ class Spidermonkey < Formula
 
       # Also install js REPL.
       bin.install jsbin => "js"
+      bin.install jsconfig => "js-config"
     end
   end
 
