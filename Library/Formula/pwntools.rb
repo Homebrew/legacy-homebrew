@@ -3,6 +3,13 @@ class Pwntools < Formula
   url "https://github.com/Gallopsled/pwntools/archive/2.2.0.tar.gz"
   sha256 "67bfaf6e1e24812fdde5093422c6c76bcd581f4b85760779b823b75950817a2d"
 
+  bottle do
+    cellar :any
+    sha1 "87fed8f94e634d05aadd333881c5cb74e7e5630f" => :yosemite
+    sha1 "7ba91a20ec1360bb78175640a751282dbc8af428" => :mavericks
+    sha1 "e3587201ac03b6d98492b1592d16535ad1965348" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "binutils" => :recommended
 
