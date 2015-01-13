@@ -5,9 +5,10 @@ class Autogen < Formula
   sha1 "3d5aa8d99742e92098bb438c684bee5e978a8dd7"
 
   bottle do
-    sha1 "f5f1c973b425a97b41899d7b57bea1c263c58bb1" => :mavericks
-    sha1 "4696d1839b4bf30b542ab18c225ca861aa3d8f4d" => :mountain_lion
-    sha1 "c6ba1e2ac9781b558f4f40389d40ba6f89451c01" => :lion
+    revision 1
+    sha1 "caa1ffc8b0b5403586694ca15846145e731b935d" => :yosemite
+    sha1 "def1fe9af81c138662c763b2527aed3f19e24f56" => :mavericks
+    sha1 "c7507958613ed6dc9027037d34b117c806867434" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
