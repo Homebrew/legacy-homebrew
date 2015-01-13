@@ -452,11 +452,7 @@ def check_access_logs
   if HOMEBREW_LOGS.exist? and not HOMEBREW_LOGS.writable_real?
     <<-EOS.undent
       #{HOMEBREW_LOGS} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew.
-
       Homebrew writes debugging logs to this location.
-
       You should probably `chown` #{HOMEBREW_LOGS}
     EOS
   end
