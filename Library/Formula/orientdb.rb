@@ -7,9 +7,9 @@ class Orientdb < Formula
   sha1 '71c38c2e91ec6e92bf9d6c166af750f491380852'
 
   devel do
-    url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0-rc1.tar.gz&os=mac'
-    version '2.0-RC1'
-    sha1 '882a9502310e91ff026dce15890b4e019aaf9dda'
+    url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0-rc2.tar.gz&os=mac'
+    version '2.0-RC2'
+    sha1 '84369ce34c749f2fab6bcbb90f92aaaa63deb44f'
   end
 
 
