@@ -1,5 +1,3 @@
-require "formula"
-
 class Surfraw < Formula
   homepage "http://surfraw.alioth.debian.org/"
   head "git://git.debian.org/surfraw/surfraw.git"
@@ -14,5 +12,10 @@ class Surfraw < Formula
     system "make"
     ENV.j1
     system "make", "install"
+  end
+
+  test do
+    output = shell_output("#{bin}/surfraw -p google -results=1 homebrew")
+    assert_equal "http://www.google.com/search?q=homebrew&num=1\n", output
   end
 end
