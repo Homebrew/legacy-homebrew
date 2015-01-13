@@ -6,9 +6,9 @@ class Jpegoptim < Formula
 
   bottle do
     cellar :any
-    sha1 "dca2904e50276aa6ef58dbd0ee6abb909c2c179d" => :mavericks
-    sha1 "90e9948dc8dbed0d143315c38e83c57c225cefb3" => :mountain_lion
-    sha1 "9907f652fb2e72447ddbb192bd83988e382d8271" => :lion
+    sha1 "8c4bdc923d599e73c00e515354cac08e345a640a" => :yosemite
+    sha1 "0594a4efa134faa6e731349ad0a4eb26d1e07910" => :mavericks
+    sha1 "9bac06c05cc397f80f576db119b7dc89337b46ab" => :mountain_lion
   end
 
   depends_on "jpeg"
