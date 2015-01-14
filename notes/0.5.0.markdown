@@ -5,4 +5,4 @@
 * Passthrough of Hadoop and non-spark config (Thanks @jeffsteinmetz)
 * Increase default jar upload limit to 30MB
 * Support storing rdds that have a storeLevel already set (Thanks @zeitos)
-* Minor README fix for Bintray https: (Thanks @devesh)
+* README / doc fixes: (Thanks @devesh, @WangTaoTheTonic)
