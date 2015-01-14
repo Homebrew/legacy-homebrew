@@ -1,9 +1,7 @@
-require 'formula'
-
 class Gistit < Formula
-  homepage 'http://gistit.herokuapp.com/'
-  url 'https://github.com/jrbasso/gistit/archive/v0.1.2.tar.gz'
-  sha1 '9b20f3c0f81a9cb07e904e4f98f727e07caab8f3'
+  homepage "http://gistit.herokuapp.com/"
+  url "https://github.com/jrbasso/gistit/archive/v0.1.3.tar.gz"
+  sha1 "62b9797a656b15da9196b6c9ee355c0c81bdc3ac"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -14,7 +12,7 @@ class Gistit < Formula
     system "./autogen.sh", "--disable-dependency-tracking",
                            "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
