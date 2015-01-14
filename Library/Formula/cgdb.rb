@@ -13,6 +13,7 @@ class Cgdb < Formula
 
   head do
     url "https://github.com/cgdb/cgdb.git"
+
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
