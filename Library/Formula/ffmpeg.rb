@@ -158,8 +158,8 @@ class Ffmpeg < Formula
       FFmpeg has been built without libfaac for licensing reasons.
       To install with libfaac, you can:
         brew reinstall ffmpeg --with-faac
-      
-      You can also use the experimental FFmpeg encoder, libfdk-aac, or 
+
+      You can also use the experimental FFmpeg encoder, libfdk-aac, or
       libvo_aacenc to encode AAC audio:
         ffmpeg -i input.wav -c:a aac -strict experimental output.m4a
       Or:
