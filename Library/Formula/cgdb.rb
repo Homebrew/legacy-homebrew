@@ -1,9 +1,9 @@
 require "formula"
 
 class Cgdb < Formula
-  homepage "http://cgdb.github.io/"
-  url "http://cgdb.me/files/cgdb-0.6.7.tar.gz"
-  sha1 "5e29e306502888dd660a9dd55418e5c190ac75bb"
+  homepage "https://cgdb.github.io/"
+  url "http://cgdb.me/files/cgdb-0.6.8.tar.gz"
+  sha1 "0892ae59358fa98264269cf6fe57928314ef7942"
 
   bottle do
     sha1 "97d618f51a59e82d00e9957e545cbf8c55430919" => :mavericks
@@ -16,14 +16,13 @@ class Cgdb < Formula
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
-    depends_on "help2man" => :build
   end
 
+  depends_on "help2man" => :build
   depends_on "readline"
 
   def install
     system "sh", "autogen.sh" if build.head?
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-readline=#{Formula['readline'].opt_prefix}"
