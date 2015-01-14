@@ -7,10 +7,9 @@ class YubicoPivTool < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "f6b43a9e9cc47e364d6ab485ef839512a1703a36" => :yosemite
-    sha1 "f5075927f40449a679b481b35d6199f4dc19aa7b" => :mavericks
-    sha1 "497a7c7c92514985126b41f6630a92dcbd09f23b" => :mountain_lion
+    sha1 "4fc3bc4b53afbec9773d468435e23013c1718c55" => :yosemite
+    sha1 "5c1509845c4d1d1726098e15cb5692e187c99aa2" => :mavericks
+    sha1 "c9de161633dfcf2337390aec11826950d4dca00e" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
