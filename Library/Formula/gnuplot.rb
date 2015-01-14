@@ -7,6 +7,7 @@ end
 class Gnuplot < Formula
   homepage "http://www.gnuplot.info"
   url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
+  mirror "http://ftp.cstug.cz/pub/CTAN/graphics/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
   sha256 "417d4bc5bc914a60409bb75cf18dd14f48b07f53c6ad3c4a4d3cd9a8d7370faf"
 
   bottle do
@@ -25,8 +26,9 @@ class Gnuplot < Formula
 
   option "with-cairo",  "Build the Cairo based terminals"
   option "without-lua",  "Build without the lua/TikZ terminal"
-  option "with-tests",  "Verify the build with make check (1 min)"
+  option "with-tests",  "Verify the build with make check"
   option "without-emacs", "Do not build Emacs lisp files"
+  option "with-wxmac", "Build wxmac support. Need with-cairo to build wxt terminal"
   option "with-latex",  "Build with LaTeX support"
   option "with-aquaterm", "Build with AquaTerm support"
 
@@ -65,7 +67,6 @@ class Gnuplot < Formula
     end
 
     # Help configure find libraries
-    readline = Formula["readline"].opt_prefix
     pdflib = Formula["pdflib-lite"].opt_prefix
     gd = Formula["gd"].opt_prefix
 
@@ -73,7 +74,7 @@ class Gnuplot < Formula
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
-      --with-readline=#{readline}
+      --with-readline=#{Formula["readline"].opt_prefix}
     ]
 
     args << "--with-pdf=#{pdflib}" if build.with? "pdflib-lite"

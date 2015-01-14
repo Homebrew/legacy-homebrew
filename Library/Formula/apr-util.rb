@@ -11,11 +11,15 @@ class AprUtil < Formula
 
   keg_only :provided_by_osx, "Apple's CLT package contains apr."
 
+  option :universal
+
   depends_on "apr"
   depends_on "openssl"
   depends_on "postgresql" => :optional
 
   def install
+    ENV.universal_binary if build.universal?
+
     # Stick it in libexec otherwise it pollutes lib with a .exp file.
     args = %W[
       --prefix=#{libexec}
