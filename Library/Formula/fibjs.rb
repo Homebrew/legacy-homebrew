@@ -17,7 +17,7 @@ class Fibjs < Formula
   depends_on "cmake" => :build
 
   def install
-    system "./build", "Release", "-j#{ENV["HOMEBREW_MAKE_JOBS"]}"
+    system "./build", "Release", "-j#{ENV.make_jobs}"
     bin.install "bin/Darwin_Release/fibjs"
   end
 

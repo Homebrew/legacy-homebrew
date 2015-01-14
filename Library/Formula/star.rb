@@ -8,7 +8,7 @@ class Star < Formula
   depends_on "smake" => :build
 
   def install
-    ENV.delete 'MAKEFLAGS' # smake does not like -j
+    ENV.deparallelize # smake does not like -j
 
     system "smake", "GMAKE_NOWARN=true", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
 
