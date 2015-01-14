@@ -2,8 +2,8 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.3.4.tar.gz'
-  sha1 '380fd0edaaabf4762f869fa9e2768427b88c89b8'
+  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.4.0.tar.gz'
+  sha1 '1c2096f68d6e0ccb6a24226b79e9d2f29af22fa6'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
@@ -23,13 +23,6 @@ class Arangodb < Formula
     # which fails because it doesn't have the C++0x features
     # arangodb requires.
     ENV.libcxx
-
-    # Bundled V8 tries to build with a 10.5 deployment target,
-    # which causes clang to error out b/c a 10.5 deployment target
-    # and -stdlib=libc++ are not valid together.
-    inreplace "3rdParty/V8/build/standalone.gypi",
-      "'mac_deployment_target%': '10.5',",
-      "'mac_deployment_target%': '#{MacOS.version}',"
 
     args = %W[
       --disable-dependency-tracking
