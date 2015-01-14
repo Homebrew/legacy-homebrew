@@ -1,7 +1,7 @@
 class Duck < Formula
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-4.6.2.16366.tar.gz"
-  sha1 "135f7ca7315fd478607e590eaa2df43418d85e0d"
+  url "https://dist.duck.sh/duck-src-4.6.2.16455.tar.gz"
+  sha1 "ffc57033c5e29787f871423f181bfbf9ec8ee807"
   head "https://svn.cyberduck.io/trunk/"
 
   depends_on :java => [:build, "1.7"]
@@ -9,7 +9,8 @@ class Duck < Formula
   depends_on "ant" => :build
 
   def install
-    system "ant", "-Dbuild.compile.target=1.7", "-Drevision=#{version.to_str[/(\d\.\d(\.\d)?)\.(\d+)/, 3]}", "cli"
+    revision = version.to_s.rpartition(".").last
+    system "ant", "-Dbuild.compile.target=1.7", "-Drevision=#{revision}", "cli"
     libexec.install Dir["build/duck.bundle/*"]
     bin.install_symlink "#{libexec}/Contents/MacOS/duck" => "duck"
   end
