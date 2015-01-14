@@ -18,6 +18,7 @@ class Libass < Formula
   depends_on 'freetype'
   depends_on 'fribidi'
   depends_on 'fontconfig'
+  depends_on 'harfbuzz' => :optional
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

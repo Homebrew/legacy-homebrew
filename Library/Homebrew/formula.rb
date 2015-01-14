@@ -333,6 +333,10 @@ class Formula
   # Can be overridden to run commands on both source and bottle installation.
   def post_install; end
 
+  def post_install_defined?
+    method(:post_install).owner == self.class
+  end
+
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
@@ -605,13 +609,16 @@ class Formula
   end
 
   def run_test
+    @oldhome = ENV["HOME"]
     self.build = Tab.for_formula(self)
     mktemp do
       @testpath = Pathname.pwd
+      ENV["HOME"] = @testpath
       test
     end
   ensure
     @testpath = nil
+    ENV["HOME"] = @oldhome
   end
 
   def test_defined?

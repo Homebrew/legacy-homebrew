@@ -25,7 +25,6 @@ class Fwknop < Formula
   end
 
   test do
-    ENV["HOME"] = testpath
     touch testpath/".fwknoprc"
     chmod 0600, testpath/".fwknoprc"
     system "#{bin}/fwknop", "--version"

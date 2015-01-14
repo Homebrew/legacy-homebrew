@@ -1,21 +1,14 @@
 class Weechat < Formula
   homepage "https://www.weechat.org"
-  url "https://weechat.org/files/src/weechat-1.0.1.tar.gz"
-  sha1 "1d33591b6c0adc2c30b36a7b349603cbdbcb40b2"
-
-  devel do
-    url "https://github.com/weechat/weechat/archive/v1.1-rc1.tar.gz"
-    sha1 "3cf06cfead34fe351a0e3eb53144cbf3f68bc7e5"
-    version "1.1-rc1"
-  end
+  url "https://weechat.org/files/src/weechat-1.1.tar.gz"
+  sha1 "8cc055051b0df6755e8310e4fd624623707e81dc"
 
   head "https://github.com/weechat/weechat.git"
 
   bottle do
-    revision 1
-    sha1 "e5cbebaca9b73342b07bf8302eb78157a8929660" => :yosemite
-    sha1 "36a7f4ac899bd4aec97a6cdba9c769bc1b0815c8" => :mavericks
-    sha1 "a76c212cf886cef42113bef355936ac58ff3084a" => :mountain_lion
+    sha1 "e36f032f19ec591c3d7864e2a95ca9afe3ba1771" => :yosemite
+    sha1 "02d3c62b3ff86ac19b9c5ac0e972f63a5746a52e" => :mavericks
+    sha1 "ec70b13654147081d8b8823bee45ee99542dd96c" => :mountain_lion
   end
 
   option "with-perl", "Build the perl module"
@@ -33,12 +26,6 @@ class Weechat < Formula
   depends_on "curl" => :optional
 
   def install
-    # builds against the python in PATH by asking cmake to use introspected
-    # values instead of ignoring them
-    # https://github.com/weechat/weechat/pull/217
-    if build.stable?
-      inreplace "cmake/FindPython.cmake", "PATHS ${", "HINTS ${"
-    end
 
     args = std_cmake_args
 

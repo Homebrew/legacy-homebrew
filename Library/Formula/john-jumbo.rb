@@ -59,7 +59,6 @@ class JohnJumbo < Formula
   end
 
   test do
-    ENV["HOME"] = testpath
     touch "john2.pot"
     system "echo dave:`printf secret | openssl md5` > test"
     output = shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test")
