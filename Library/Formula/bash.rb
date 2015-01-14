@@ -1,21 +1,18 @@
-require "formula"
-
 class Bash < Formula
-  homepage "http://www.gnu.org/software/bash/"
+  homepage "https://www.gnu.org/software/bash/"
 
   stable do
     url "http://ftpmirror.gnu.org/bash/bash-4.3.tar.gz"
-
-    mirror "http://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
+    mirror "https://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
     sha256 "afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4"
-    version "4.3.30"
+    version "4.3.33"
 
     # Vendor the patches. The mirrors are unreliable for getting the patches,
     # and the more patches there are, the more unreliable they get. Upstream
     # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
     patch do
-      url "https://gist.githubusercontent.com/jacknagel/c1cf23775c774e2b4b6d/raw/c2b0a715efbc8a302741e6b682605940042fc2b8/bash-4.3.30.diff"
-      sha1 "61996c0a78d2d07184576783a56a7b315eb16d55"
+      url "https://gist.githubusercontent.com/jacknagel/c1cf23775c774e2b4b6d/raw/838118bf0e07dcde8a552cb8556600b7e453d4ac/bash-4.3.33.diff"
+      sha1 "71fc36bced0d15a2c221cfcbff02ea412d4bf5fa"
     end
   end
 
