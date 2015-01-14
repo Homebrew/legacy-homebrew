@@ -8,6 +8,7 @@ TAP_MIGRATIONS = {
   "atari++" => "homebrew/x11",
   "authexec" => "homebrew/boneyard",
   "aws-iam-tools" => "homebrew/boneyard",
+  "bcwipe" => "homebrew/boneyard",
   "blackbox" => "homebrew/boneyard",
   "bochs" => "homebrew/x11",
   "boost149" => "homebrew/versions",
