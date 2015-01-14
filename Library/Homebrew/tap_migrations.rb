@@ -56,6 +56,7 @@ TAP_MIGRATIONS = {
   "gpredict" => "homebrew/x11",
   "grace" => "homebrew/x11",
   "grads" => "homebrew/binary",
+  "graylog2-server" => "homebrew/boneyard",
   "gromacs" => "homebrew/science",
   "gsmartcontrol" => "homebrew/x11",
   "gtk-chtheme" => "homebrew/x11",
