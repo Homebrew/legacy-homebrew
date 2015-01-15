@@ -1,8 +1,8 @@
 class Bison < Formula
-  homepage "http://www.gnu.org/software/bison/"
-  url "http://ftpmirror.gnu.org/bison/bison-3.0.2.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/bison/bison-3.0.2.tar.gz"
-  sha1 "4bbb9a1bdc7e4328eb4e6ef2479b3fe15cc49e54"
+  homepage "https://www.gnu.org/software/bison/"
+  url "https://ftpmirror.gnu.org/bison/bison-3.0.3.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/bison/bison-3.0.3.tar.gz"
+  sha1 "1fb1b831d53e2da3834e4e1eb2e14f93e9a9111d"
 
   bottle do
     revision 1
