@@ -4,6 +4,13 @@ class Duck < Formula
   sha1 "6e38a90c97bbe7d577791a4fbdd07872e8457101"
   head "https://svn.cyberduck.io/trunk/"
 
+  bottle do
+    cellar :any
+    sha1 "05353941783e34f1931b0cdd78a89f245d8daf33" => :yosemite
+    sha1 "a2120b7b4b7ae15f9b941c24bb9d4f7c36392e74" => :mavericks
+    sha1 "fb6e8e20d702cf3d9808e758328cd7ebc8830283" => :mountain_lion
+  end
+
   depends_on :java => [:build, "1.7"]
   depends_on :xcode => :build
   depends_on "ant" => :build
