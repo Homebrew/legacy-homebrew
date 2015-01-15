@@ -5,8 +5,6 @@ class Sqlmap < Formula
   head "https://github.com/sqlmapproject/sqlmap.git"
   revision 1
 
-  depends_on :python if MacOS.version <= :snow_leopard
-
   def install
     libexec.install Dir["*"]
 
