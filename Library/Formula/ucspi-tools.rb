@@ -1,7 +1,8 @@
 class UcspiTools < Formula
   homepage "https://github.com/younix/ucspi/blob/master/README.md"
-  url "https://github.com/younix/ucspi/archive/v1.1.tar.gz"
-  sha1 "9196a1033f3131a888acf091d0acbc1a83a02702"
+  url "https://github.com/younix/ucspi/archive/7c59e7649cbce470452116595b5c00a26840d4cf.tar.gz"
+  sha1 "cd3ae141b8d3e7783564ad5c3f2566f8d6fb5c82"
+  version "1.1"
 
   depends_on "pkg-config" => :build
   depends_on "ucspi-tcp"
