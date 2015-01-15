@@ -7,9 +7,9 @@ class Mongodb < Formula
   sha1 "c11c9d31063f2fc126249f7580e8417a8f4ef2b5"
 
   bottle do
-    sha1 "d3fcb9439978028b32369b02b0588552d1cc8fed" => :yosemite
-    sha1 "d64073327b46e14a223039af734e39611c493cad" => :mavericks
-    sha1 "758d4b7e128a26b2d61a54d93eaf24ed227de682" => :mountain_lion
+    sha1 "4b1749b645a744b38b4959daac46bf80353e3b32" => :yosemite
+    sha1 "95725282b89443fafcdc0974e60b10bd295b48ee" => :mavericks
+    sha1 "2da546a136e48a5f9dc86287c329b5741b77bd14" => :mountain_lion
   end
 
   devel do
