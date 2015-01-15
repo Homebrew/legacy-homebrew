@@ -3,6 +3,13 @@ class Bibutils < Formula
   url "https://downloads.sourceforge.net/project/bibutils/bibutils_5.5_src.tgz"
   sha1 "f7cb7a8bd62ac3b5f0caf63a4a6a793355a417f2"
 
+  bottle do
+    cellar :any
+    sha1 "5fbb88c0bcab944cfa2a1445465632cc73f2d591" => :yosemite
+    sha1 "4da4df14956e2261ed22360a6c734c84baa412c0" => :mavericks
+    sha1 "7b108573b7bbcb3dd635ea96a01336607deaaae3" => :mountain_lion
+  end
+
   def install
     system "./configure", "--install-dir", prefix
     system "make", "CC=#{ENV.cc}"
