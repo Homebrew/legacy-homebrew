@@ -11,7 +11,8 @@ class Redpen < Formula
     libexec.install %w[conf lib sample-doc]
 
     prefix.install "bin"
-    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "`/usr/libexec/java_home`")
+    java_home = `/usr/libexec/java_home`.chomp
+    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => java_home)
   end
 
   test do
