@@ -13,8 +13,8 @@ end
 
 class Mu < Formula
   homepage "http://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/archive/v0.9.10.tar.gz"
-  sha1 "5c21aeed9471f2d0aaa76307a3ec70fc86f0817b"
+  url "https://github.com/djcb/mu/archive/v0.9.11.tar.gz"
+  sha1 "080b69bfb4876cb683acb961e8b71d6ebba90fa0"
 
   head "https://github.com/djcb/mu.git"
 
