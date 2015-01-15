@@ -1,4 +1,3 @@
-require "formula"
 require "language/haskell"
 
 class Idris < Formula
@@ -19,8 +18,14 @@ class Idris < Formula
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
+  depends_on "libffi" => :recommended
+  depends_on "pkg-config" => :build if build.with? "libffi"
+
   def install
-    install_cabal_package
+    flags = []
+    flags << "-f FFI" if build.with? "libffi"
+    flags << "-f release" if build.stable?
+    install_cabal_package flags
   end
 
   test do
@@ -32,5 +37,11 @@ class Idris < Formula
     shell_output "#{bin}/idris #{testpath}/hello.idr -o #{testpath}/hello"
     result = shell_output "#{testpath}/hello"
     assert_match /Hello, Homebrew!/, result
+
+    if build.with? "libffi"
+      cmd = "#{bin}/idris --exec 'putStrLn \"Hello, interpreter!\"'"
+      result = shell_output cmd
+      assert_match /Hello, interpreter!/, result
+    end
   end
 end
