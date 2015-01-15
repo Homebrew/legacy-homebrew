@@ -3,8 +3,8 @@ require "formula"
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
 
-  url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.6.tar.gz"
-  sha1 "cffc982ef23b207430e0357f4ce2f18f5460b422"
+  url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.7.tar.gz"
+  sha1 "c11c9d31063f2fc126249f7580e8417a8f4ef2b5"
 
   bottle do
     sha1 "d3fcb9439978028b32369b02b0588552d1cc8fed" => :yosemite
