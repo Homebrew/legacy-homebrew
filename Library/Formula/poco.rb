@@ -1,5 +1,4 @@
 require "formula"
-require "fileutils"
 
 class Poco < Formula
   homepage "http://pocoproject.org/"
@@ -24,7 +23,7 @@ class Poco < Formula
   depends_on "openssl"
 
   def install
-
+    ENV.permit_arch_flags
     ENV.cxx11 if build.cxx11?
 
     # the poco project handles most of the architecture specific configuration
@@ -49,20 +48,13 @@ class Poco < Formula
     archs.each do |arch, arch_mac|
       if build.universal?
         # create an architecture specific temporary directory
-        arch_dir = File.join(Dir.pwd, "build-#{arch}")
+        arch_dir = "#{Dir.pwd}/build-#{arch}"
         rm_rf arch_dir
         arch_dirs << arch_dir
         mkdir arch_dir
 
         # clean the project before compiling
         system "make", "clean"
-      end
-
-      # homebrew sets -march=native by default, need to override to compile for i386
-      if arch == "i386"
-        ENV['HOMEBREW_OPTFLAGS'] = '-m32'
-      else
-        ENV['HOMEBREW_OPTFLAGS'] = '-m64'
       end
 
       system "./configure", "--prefix=#{prefix}",
@@ -75,10 +67,10 @@ class Poco < Formula
 
       if build.universal?
         # move the compiled architecture specific library files to a temporary directory
-        arch_libs_dir = File.join(Dir.pwd, "lib/Darwin/#{arch}")
-        Dir.glob(File.join(arch_libs_dir, '*')).each do |lib_filename|
+        arch_libs_dir = "#{Dir.pwd}/lib/Darwin/#{arch}"
+        Dir.glob("#{arch_libs_dir}/*").each do |lib_filename|
           if !File.directory?(lib_filename) && !File.symlink?(lib_filename)
-            cp(lib_filename, File.join(arch_dir, File.basename(lib_filename)))
+            cp(lib_filename, "#{arch_dir}/#{File.basename(lib_filename)}")
           end
         end
       end
@@ -89,13 +81,12 @@ class Poco < Formula
 
     if build.universal?
       # combine the compiled architecture specific libraries into universal ones
-      Dir.glob(File.join(arch_dirs.first, '*')).each do |path|
+      Dir.glob("#{arch_dirs.first}/*").each do |path|
         lib_filename = File.basename path
-        system "lipo", "-create", File.join(arch_dirs.first, lib_filename),
-                                  File.join(arch_dirs.last, lib_filename),
-                       "-output", File.join(lib, lib_filename)
+        system "lipo", "-create", "#{arch_dirs.first}/#{lib_filename}",
+                                  "#{arch_dirs.last}/#{lib_filename}",
+                       "-output", "#{lib}/#{lib_filename}"
       end
     end
   end
 end
-
