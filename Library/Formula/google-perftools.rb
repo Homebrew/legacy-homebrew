@@ -1,5 +1,5 @@
 class GooglePerftools < Formula
-  homepage "http://code.google.com/p/gperftools/"
+  homepage "https://code.google.com/p/gperftools/"
   url "https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-2.4.tar.gz"
   sha1 "13b904d0d1f220e43e4495f3403ee280c6da26ea"
 
@@ -20,6 +20,25 @@ class GooglePerftools < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <assert.h>
+      #include <gperftools/tcmalloc.h>
+
+      int main()
+      {
+        void *p1 = tc_malloc(10);
+        assert(p1 != NULL);
+
+        tc_free(p1);
+
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-ltcmalloc", "-o", "test"
+    system "./test"
   end
 end
