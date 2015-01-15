@@ -12,7 +12,7 @@ class UcspiTools < Formula
   end
 
   test do
-    output = `#{bin}/socks`
+    `#{bin}/socks`
     assert_equal 1, $?.exitstatus
   end
 end
