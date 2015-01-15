@@ -2,8 +2,8 @@ require 'formula'
 
 class Cookiecutter < Formula
   homepage 'https://github.com/audreyr/cookiecutter'
-  url 'https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-0.8.0.tar.gz'
-  sha1 'f8d68f73b5a36540a8798c0aee4eebda028653c5'
+  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-0.9.0.tar.gz"
+  sha1 "2e9c483c66d1f32e9be67d38733d9b660a666cd7"
 
   bottle do
     cellar :any
