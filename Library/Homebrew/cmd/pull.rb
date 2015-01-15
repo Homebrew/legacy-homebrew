@@ -85,8 +85,9 @@ module Homebrew
       # The cache directory seems like a good place to put patches.
       HOMEBREW_CACHE.mkpath
 
-      # Store current revision
+      # Store current revision and branch
       revision = `git rev-parse --short HEAD`.strip
+      branch = `git symbolic-ref --short HEAD`.strip
 
       pull_url url
 
@@ -139,11 +140,17 @@ module Homebrew
       end
 
       if ARGV.include? "--bottle"
+        bottle_branch = "pull-bottle-#{issue}"
+        safe_system "git", "checkout", "-B", bottle_branch, revision
         if tap_name
           pull_url "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
         else
           pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
         end
+        safe_system "git", "rebase", branch
+        safe_system "git", "checkout", branch
+        safe_system "git", "merge", "--ff-only", "--no-edit", bottle_branch
+        safe_system "git", "branch", "-D", bottle_branch
       end
 
       ohai 'Patch changed:'
