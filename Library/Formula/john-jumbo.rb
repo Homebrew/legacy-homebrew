@@ -5,10 +5,10 @@ class JohnJumbo < Formula
   version "1.8.0"
 
   bottle do
-    revision 1
-    sha1 "e1bbded6163855cbe005e468ce63d7078694108e" => :yosemite
-    sha1 "6ca279b1df3cc6e98cb43ecbc1237f5e1ef42d3b" => :mavericks
-    sha1 "f4569b99a353a7995371ba41c69d7302c40ca36d" => :mountain_lion
+    revision 2
+    sha1 "5ab9f75db6b8303b793fca20948c0d9645a912fe" => :yosemite
+    sha1 "ac84043c8d73c2db6e11b7741685cb46275d37f8" => :mavericks
+    sha1 "7764fe2e72d3f695936e4a05bd7a1f063fd8dda9" => :mountain_lion
   end
 
   conflicts_with "john", :because => "both install the same binaries"
