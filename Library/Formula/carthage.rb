@@ -2,7 +2,7 @@ require "formula"
 
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
-  url "https://github.com/Carthage/Carthage.git", :tag => "0.5.1",
+  url "https://github.com/Carthage/Carthage.git", :tag => "0.5.2",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
