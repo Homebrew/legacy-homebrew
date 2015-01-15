@@ -1,7 +1,7 @@
 class Libuv < Formula
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.1.0.tar.gz"
-  sha1 "0c5d68bbfecd0bf2a6331403d375f791e34c298d"
+  url "https://github.com/libuv/libuv/archive/v1.2.1.tar.gz"
+  sha1 "500421538aaa84aa6ab054205275f59968556654"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
