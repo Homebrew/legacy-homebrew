@@ -29,7 +29,7 @@ class Cntlm < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{bin}/cntlm</string>
+          <string>#{opt_bin}/cntlm</string>
         </array>
         <key>KeepAlive</key>
         <false/>
