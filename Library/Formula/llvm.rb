@@ -1,5 +1,5 @@
 class Llvm < Formula
-  homepage 'http://llvm.org/'
+  homepage "http://llvm.org/"
 
   stable do
     url "http://llvm.org/releases/3.5.1/llvm-3.5.1.src.tar.xz"
@@ -56,12 +56,17 @@ class Llvm < Formula
   patch :DATA
 
   option :universal
-  option 'with-clang', 'Build Clang support library'
-  option 'with-lld', 'Build LLD linker'
-  option 'disable-shared', "Don't build LLVM as a shared library"
-  option 'all-targets', 'Build all target backends'
-  option 'rtti', 'Build with C++ RTTI'
-  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
+  option "with-clang", "Build Clang support library"
+  option "with-lld", "Build LLD linker"
+  option "with-rtti", "Build with C++ RTTI"
+  option "with-all-targets", "Build all target backends"
+  option "without-shared", "Don't build LLVM as a shared library"
+  option "without-assertions", "Speeds up LLVM, but provides less debug information"
+
+  deprecated_option "rtti" => "with-rtti"
+  deprecated_option "all-targets" => "with-all-targets"
+  deprecated_option "disable-shared" => "without-shared"
+  deprecated_option "disable-assertions" => "without-assertions"
 
   depends_on :python => :optional
 
@@ -75,8 +80,8 @@ class Llvm < Formula
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
 
-    if build.with? "python" and build.include? 'disable-shared'
-      raise 'The Python bindings need the shared library.'
+    if build.with?("python") && build.without?("shared")
+      fail "The Python bindings need the shared library."
     end
 
     if build.with? "clang"
@@ -89,11 +94,11 @@ class Llvm < Formula
 
     if build.universal?
       ENV.permit_arch_flags
-      ENV['UNIVERSAL'] = '1'
-      ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
+      ENV["UNIVERSAL"] = "1"
+      ENV["UNIVERSAL_ARCH"] = Hardware::CPU.universal_archs.join(" ")
     end
 
-    ENV["REQUIRES_RTTI"] = "1" if build.include? "rtti" or build.with? "clang"
+    ENV["REQUIRES_RTTI"] = "1" if build.with?("rtti") || build.with?("clang")
 
     args = [
       "--prefix=#{prefix}",
@@ -103,14 +108,14 @@ class Llvm < Formula
       "--disable-bindings",
     ]
 
-    if build.include? 'all-targets'
+    if build.with? "all-targets"
       args << "--enable-targets=all"
     else
       args << "--enable-targets=host"
     end
-    args << "--enable-shared" unless build.include? 'disable-shared'
+    args << "--enable-shared" if build.with? "shared"
 
-    args << "--disable-assertions" if build.include? 'disable-assertions'
+    args << "--disable-assertions" if build.without? "assertions"
 
     system "./configure", *args
     system "make"
@@ -128,8 +133,8 @@ class Llvm < Formula
 
     # install llvm python bindings
     if build.with? "python"
-      (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
-      (lib+'python2.7/site-packages').install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
+      (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
+      (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
     end
   end
 
