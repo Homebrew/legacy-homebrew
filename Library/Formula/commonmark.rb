@@ -1,7 +1,7 @@
 class Commonmark < Formula
   homepage "http://commonmark.org"
-  url "https://github.com/jgm/CommonMark/archive/0.15.tar.gz"
-  sha1 "877665a96fdc5fcc42ec2cd605d8535344a27b72"
+  url "https://github.com/jgm/CommonMark/archive/0.16.tar.gz"
+  sha1 "932c3af5c7357070b8f3d2f418b78e1f56f6df19"
 
   bottle do
     cellar :any
@@ -16,7 +16,6 @@ class Commonmark < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      ENV.deparallelize # https://github.com/jgm/CommonMark/issues/279
       system "make"
       system "make", "test"
       system "make", "install"
