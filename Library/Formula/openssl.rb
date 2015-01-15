@@ -1,8 +1,8 @@
 class Openssl < Formula
   homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.1k.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1k.tar.gz"
-  sha256 "8f9faeaebad088e772f4ef5e38252d472be4d878c6b3a2718c10a4fcebe7a41c"
+  url "https://www.openssl.org/source/openssl-1.0.1l.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1l.tar.gz"
+  sha256 "b2cf4d48fe5d49f240c61c9e624193a6f232b5ed0baf010681e725963c40d1d4"
 
   bottle do
     sha1 "3d0e5529a124be70266dd2a2074f4f84db38bb19" => :yosemite
