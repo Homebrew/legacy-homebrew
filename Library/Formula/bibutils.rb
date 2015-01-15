@@ -1,5 +1,3 @@
-require "formula"
-
 class Bibutils < Formula
   homepage "http://sourceforge.net/p/bibutils/home/Bibutils/"
   url "https://downloads.sourceforge.net/project/bibutils/bibutils_5.5_src.tgz"
@@ -10,9 +8,24 @@ class Bibutils < Formula
     system "make", "CC=#{ENV.cc}"
 
     cd "bin" do
-      bin.install %w{bib2xml ris2xml end2xml endx2xml med2xml isi2xml copac2xml
-        biblatex2xml ebi2xml wordbib2xml xml2ads xml2bib xml2end xml2isi xml2ris
-        xml2wordbib modsclean}
+      bin.install %w[bib2xml ris2xml end2xml endx2xml med2xml isi2xml copac2xml
+                     biblatex2xml ebi2xml wordbib2xml xml2ads xml2bib xml2end
+                     xml2isi xml2ris xml2wordbib modsclean]
     end
+  end
+
+  test do
+    (testpath/"test.bib").write <<-EOS.undent
+      @article{Homebrew,
+          title   = {Something},
+          author  = {Someone},
+          journal = {Something},
+          volume  = {1},
+          number  = {2},
+          pages   = {3--4}
+      }
+    EOS
+
+    system "#{bin}/bib2xml", "test.bib"
   end
 end
