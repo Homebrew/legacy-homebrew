@@ -5,8 +5,8 @@ class GitAnnex < Formula
   include Language::Haskell::Cabal
 
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-5.20141125/git-annex-5.20141125.tar.gz"
-  sha1 "45445bfef32f380624cbf415813a1a69010ecb13"
+  url "https://hackage.haskell.org/package/git-annex-5.20150113/git-annex-5.20150113.tar.gz"
+  sha1 "b45b285ef4b75ffd4fd0fa7d9795c507e8edbcfb"
 
   bottle do
     cellar :any
@@ -19,6 +19,8 @@ class GitAnnex < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "pkg-config" => :build
+  # wget is workaround for http://git-annex.branchable.com/bugs/Build_fails_when_no_wget_avalible/
+  depends_on "wget" => :build
   depends_on "gsasl"
   depends_on "libidn"
   depends_on "gnutls"
