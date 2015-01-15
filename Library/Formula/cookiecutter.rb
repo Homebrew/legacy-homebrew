@@ -12,6 +12,7 @@ class Cookiecutter < Formula
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
+
   resource "binaryornot" do
     url "https://pypi.python.org/packages/source/b/binaryornot/binaryornot-0.3.0.tar.gz"
     sha1 "97142e0d9f1fe77e86e6183510d5a4ca796349ad"
