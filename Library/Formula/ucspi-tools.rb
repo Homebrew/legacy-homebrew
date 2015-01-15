@@ -1,5 +1,3 @@
-require "formula"
-
 class UcspiTools < Formula
   homepage "https://github.com/younix/ucspi/blob/master/README.md"
   url "https://github.com/younix/ucspi/archive/v1.1.tar.gz"
@@ -13,4 +11,8 @@ class UcspiTools < Formula
     system "make", "PREFIX=#{prefix}", "install"
   end
 
+  test do
+    output = `#{bin}/socks`
+    assert_equal 1, $?.exitstatus
+  end
 end
