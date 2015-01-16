@@ -108,6 +108,10 @@ class CompilerSelector
           version = compiler_version(name)
           yield Compiler.new(name, version) if version
         end
+        if OS.linux?
+          version = versions.non_apple_gcc_version("gcc")
+          yield Compiler.new("gcc", version) if version
+        end
       else
         version = compiler_version(compiler)
         yield Compiler.new(compiler, version) if version
