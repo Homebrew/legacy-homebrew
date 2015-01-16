@@ -9,9 +9,12 @@ class Sqlmap < Formula
     libexec.install Dir["*"]
 
     bin.install_symlink libexec/"sqlmap.py"
-    bin.install_symlink libexec/"sqlmapapi.py" if build.head?
-
     bin.install_symlink bin/"sqlmap.py" => "sqlmap"
+
+    if build.head?
+      bin.install_symlink libexec/"sqlmapapi.py"
+      bin.install_symlink bin/"sqlmapapi.py" => "sqlmapapi"
+    end
   end
 
   test do
