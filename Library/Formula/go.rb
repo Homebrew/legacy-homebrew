@@ -10,9 +10,9 @@ class Go < Formula
   head "https://go.googlesource.com/go", :using => :git
 
   bottle do
-    sha1 "33aa691a93a3c9aa40334e3ce6daa49420696fe4" => :yosemite
-    sha1 "9fa24700a5187fd8272178bd731fb3f9aa485188" => :mavericks
-    sha1 "359fe25e6755c2362d619c01363a7f80ec59efca" => :mountain_lion
+    sha1 "d4dea35b225b79bf93214a4ccc37272d5b4095b6" => :yosemite
+    sha1 "4209bab85e24002de969f1d96aaad5061bea068b" => :mavericks
+    sha1 "b4bb2d3cd8ed997536d1504ed75cb92b0497c1b9" => :mountain_lion
   end
 
   option "with-cc-all", "Build with cross-compilers and runtime support for all supported platforms"
