@@ -1,7 +1,7 @@
 class Pyqt < Formula
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
-  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
-  sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
+  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.3/PyQt-mac-gpl-4.11.3.tar.gz"
+  sha1 "8c53254b38686e5366d74eba81f02f9611f39166"
 
   bottle do
     revision 2
