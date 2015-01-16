@@ -4,14 +4,14 @@ class Lsyncd < Formula
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
   sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"
+  revision 2
+
   bottle do
     cellar :any
     sha1 "9d8e796c4e05ca50bcbdae0053ed14d03626be6c" => :yosemite
     sha1 "ebab9b36017e541234bcd6d5bb5fef1062fca245" => :mavericks
     sha1 "6241af90c682dbe7fb10918faa0d0a1ad63d22f2" => :mountain_lion
   end
-
-  revision 1
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -48,6 +48,14 @@ class Lsyncd < Formula
       url "http://www.opensource.apple.com/tarballs/xnu/#{tarball}"
       sha1 checksum
     end
+  end
+
+  # patch for CVE-2014-8990
+  # https://github.com/axkibe/lsyncd/commit/e9ffda07f0145f50f2756f8ee3fb0775b455122b
+  # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-8990
+  patch do
+    url "https://gist.githubusercontent.com/tdsmith/d807811d3c6965b0221e/raw/965545662eec39b60d50645487e6ade9d7d43834/cve-2014-8990.diff"
+    sha1 "3ef7d28db8a5e1719a0b7298cb204809f6b5d9d7"
   end
 
   def install
