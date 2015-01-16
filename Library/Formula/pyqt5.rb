@@ -2,8 +2,8 @@ require 'formula'
 
 class Pyqt5 < Formula
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt/download5"
-  url "https://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.3.2/PyQt-gpl-5.3.2.tar.gz"
-  sha1 "bb34d826a50b0735d1319dc51be6a094ba64b800"
+  url "https://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.4/PyQt-gpl-5.4.tar.gz"
+  sha1 "057e6b32c43e673e79f876fb9b6f33d3072edfc2"
 
   option 'enable-debug', "Build with debug symbols"
   option 'with-docs', "Install HTML documentation and python examples"
@@ -24,8 +24,6 @@ class Pyqt5 < Formula
   end
 
   def install
-    # addresses https://github.com/Homebrew/homebrew/issues/32370
-    inreplace "configure.py", "qmake_QT=['webkitwidgets']", "qmake_QT=['webkitwidgets', 'printsupport']"
     Language::Python.each_python(build) do |python, version|
       args = [ "--confirm-license",
                "--bindir=#{bin}",
