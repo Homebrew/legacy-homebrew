@@ -2,9 +2,8 @@ require 'formula'
 
 class Sip < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.3/sip-4.16.3.tar.gz"
-  sha1 "7c4079d164ccbfe4a5274eaeebe8e3cc86e3a75a"
-  revision 1
+  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.5/sip-4.16.5.tar.gz"
+  sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
 
   bottle do
     sha1 "c0b29a37354215b3c0078951e9b68675e8fa7e51" => :yosemite
