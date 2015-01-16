@@ -22,10 +22,6 @@ class Idris < Formula
   depends_on "pkg-config" => :build if build.with? "libffi"
 
   def install
-    if build.with? "libffi"
-      ENV.prepend_path "PKG_CONFIG_PATH",
-                       "#{Formula["libffi"].opt_prefix}/lib/pkgconfig"
-    end
     cabal_sandbox do
       flags = []
       flags << "-f FFI" if build.with? "libffi"
