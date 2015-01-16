@@ -75,8 +75,7 @@ class Stormssh < Formula
     sshconfig_path = (testpath/"sshconfig")
     FileUtils.touch sshconfig_path
 
-    system bin/"storm", "add", "--config", "sshconfig", "aliastest",
-      "user@example.com:22"
+    system bin/"storm", "add", "--config", "sshconfig", "aliastest", "user@example.com:22"
 
     expected_output = <<-EOS.undent
       Host aliastest
