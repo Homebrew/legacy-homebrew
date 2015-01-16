@@ -6,7 +6,16 @@ class Libdistance < Formula
   def install
     # The build system is incredibly simple.
     system "make"
+    system "make -C test"
+
     include.install "distance.h"
     lib.install "libdistance.a"
+
+    system "mkdir #{prefix}/test"
+    system "cp test/test #{prefix}/test/"
+  end
+
+  def test
+    system "#{prefix}/test/test"
   end
 end
