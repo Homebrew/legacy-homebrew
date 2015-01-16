@@ -36,14 +36,4 @@ class Sqlmap < Formula
     assert_match /Sue,\s12/, output
     assert_match /Tim,\s13/, output
   end
-
-  def caveats; <<-EOS.undent
-    The current version of sqlmap (0.9) is very outdated (April 2011) and
-    project developers recommend to use the latest version from the
-    repository.
-
-    You can do this with:
-      brew reinstall --HEAD sqlmap
-    EOS
-  end unless build.head?
 end
