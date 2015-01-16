@@ -5,9 +5,9 @@ class Trafficserver < Formula
   sha1 "907edeebd3a10d4787ad550e735ea196f03deb04"
 
   bottle do
-    sha1 "e073851a656cec3a052c9dab8ce7b7658b11dccc" => :mavericks
-    sha1 "9f76a7d1b206220a47a60144f9844f6f30f2921b" => :mountain_lion
-    sha1 "73736e9882f28d2265e923fbb1f5830f3d462bd6" => :lion
+    sha1 "325ab9eb8e222bbe5ef940506ff9b08b70290f49" => :yosemite
+    sha1 "290456e3c321683b93552c4cc718a85456fed663" => :mavericks
+    sha1 "4c46bba84d3dc150b1cfd841d6c2d4e6f7c39950" => :mountain_lion
   end
 
   depends_on "openssl"
