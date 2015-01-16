@@ -1,20 +1,18 @@
-require "formula"
-
 class ObjectiveCaml < Formula
   homepage "http://ocaml.org"
   url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.1.tar.gz"
   sha1 "6af8c67f2badece81d8e1d1ce70568a16e42313e"
+  revision 2
 
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
-  revision 1
 
   option "with-x11", "Install with the Graphics module"
   depends_on :x11 => :optional
 
   bottle do
-    sha1 "9a734836f27712fbd3a454152100fcd696932bf8" => :yosemite
-    sha1 "4d80628d7bea7d38888dd3ceb4fb1393613ccea1" => :mavericks
-    sha1 "625826bbc9c7fc5b082abbe59b099f17032a3a00" => :mountain_lion
+    sha1 "d3f09d213f57210e4a9e1b482ca8e2fdf39d5836" => :yosemite
+    sha1 "5fb1b744f2e8efa49d00d5bcf01547db2b3d32c4" => :mavericks
+    sha1 "e551c48370a3b5a43d843510b81032fccc2197ec" => :mountain_lion
   end
 
   def install
@@ -33,12 +31,5 @@ class ObjectiveCaml < Formula
     system "make", "opt"
     system "make", "opt.opt"
     system "make", "PREFIX=#{prefix}", "install"
-    (lib/"ocaml/site-lib").mkpath
-  end
-
-  def post_install
-    # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location,
-    # which is mkpath'd by Keg#link when something installs into it
-    (lib/"ocaml").install_symlink HOMEBREW_PREFIX/"lib/ocaml/site-lib"
   end
 end

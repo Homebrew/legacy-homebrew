@@ -1,14 +1,14 @@
 class Duck < Formula
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-4.6.2.16366.tar.gz"
-  sha1 "135f7ca7315fd478607e590eaa2df43418d85e0d"
+  url "https://dist.duck.sh/duck-src-4.6.2.16480.tar.gz"
+  sha1 "6e38a90c97bbe7d577791a4fbdd07872e8457101"
   head "https://svn.cyberduck.io/trunk/"
 
   bottle do
     cellar :any
-    sha1 "05353941783e34f1931b0cdd78a89f245d8daf33" => :yosemite
-    sha1 "a2120b7b4b7ae15f9b941c24bb9d4f7c36392e74" => :mavericks
-    sha1 "fb6e8e20d702cf3d9808e758328cd7ebc8830283" => :mountain_lion
+    sha1 "1455577527b024dd1ddf28fba3ab11f91458e7e7" => :yosemite
+    sha1 "cdbefd6d85244b658515fa639c07f2b05c37c4eb" => :mavericks
+    sha1 "d67d55eabd017376079eaed8ded19bc4c28f83d0" => :mountain_lion
   end
 
   depends_on :java => [:build, "1.7"]

@@ -1158,7 +1158,7 @@ end
     if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success? then <<-EOS.undent
       You have not agreed to the Xcode license.
       Builds will fail! Agree to the license by opening Xcode.app or running:
-          xcodebuild -license
+          sudo xcodebuild -license
       EOS
     end
   end
