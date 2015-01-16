@@ -4,10 +4,9 @@ class Pyqt < Formula
   sha1 "8c53254b38686e5366d74eba81f02f9611f39166"
 
   bottle do
-    revision 2
-    sha1 "6e5d9bd61aa0d9f888f7d61496322db45499b7a1" => :yosemite
-    sha1 "4c1d4d5600013bd12fe630290d8b669c8f78b081" => :mavericks
-    sha1 "379c1f1800a61f66b84b77b1602d8bf483fed058" => :mountain_lion
+    sha1 "7d0b71a8c80401f6026172f22605e5a4e9eff8a3" => :yosemite
+    sha1 "455a2cc8c46f64b2d27d2248b3bd6387e345377f" => :mavericks
+    sha1 "30c74d1bfad2bc16c0052fd767fdb21b461e41e6" => :mountain_lion
   end
 
   option "without-python", "Build without python 2 support"
