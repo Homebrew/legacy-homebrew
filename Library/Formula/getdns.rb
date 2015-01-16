@@ -8,9 +8,9 @@ class Getdns < Formula
   head "https://github.com/getdnsapi/getdns.git"
 
   bottle do
-    sha1 "efad47ff71c7205beb6ab03c133853909031c538" => :mavericks
-    sha1 "860489f9eab66b247e32e8a960e0960a1d0109f0" => :mountain_lion
-    sha1 "7bdfa25a8aa1c9729dda8cfb1f106aea1a9e1aba" => :lion
+    sha1 "86879ca8d95414125287abc89393781bcd801f88" => :yosemite
+    sha1 "c826c175dc647cf68bd8ba12dcc9c78da232fb87" => :mavericks
+    sha1 "1c393a248ef0633265f1e40c335a6ddf1fd7794e" => :mountain_lion
   end
 
   depends_on "ldns"
