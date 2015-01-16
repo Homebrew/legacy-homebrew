@@ -1,5 +1,3 @@
-require "formula"
-
 class SourceKitten < Formula
   homepage "https://github.com/jpsim/SourceKitten"
   url "https://github.com/jpsim/SourceKitten.git", :tag => "0.3.0"
