@@ -49,7 +49,7 @@ module Homebrew
          else
            ARGV.formulae
          end
-    json = ff.map {|f| f.to_hash}
+    json = ff.map(&:to_hash)
     puts Utils::JSON.dump(json)
   end
 
