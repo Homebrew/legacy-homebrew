@@ -13,6 +13,7 @@ class Henplus < Formula
 
     inreplace 'bin/henplus' do |s|
       s.gsub! "LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH"
+      s.change_make_var! "DYLD_LIBRARY_PATH", Formula["libreadline-java"].opt_lib
       s.gsub! "$THISDIR/..", HOMEBREW_PREFIX
       s.gsub! "share/java/libreadline-java.jar",
               "share/libreadline-java/libreadline-java.jar"

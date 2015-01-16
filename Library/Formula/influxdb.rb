@@ -2,13 +2,13 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.com"
-  url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.5.src.tar.gz"
-  sha1 "bbb361db2e54686c90cbf5ec253d1a89c170ca75"
+  url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.8.src.tar.gz"
+  sha1 "a5686d0374ec5ab616e335e9c5fb1aeacd17fb00"
 
   bottle do
-    sha1 "4b6fa7d8ba82b2bcc30ca10689786785f1b0070e" => :yosemite
-    sha1 "635af68566e91ff92b7b949407e05daf5d7c88a1" => :mavericks
-    sha1 "5bb355a8e176220d92aae1cdec7f14be5abd3471" => :mountain_lion
+    sha1 "f59ea0b22a3e67bedd7114eab969b96a2d7b24e4" => :yosemite
+    sha1 "c8eabdc0de535474dae4de8a77bae7f4a2711029" => :mavericks
+    sha1 "693a7b3ab9a445a9e681048ecb7aba3582821fe8" => :mountain_lion
   end
 
   depends_on "leveldb"
@@ -19,6 +19,7 @@ class Influxdb < Formula
   depends_on "flex" => :build
   depends_on "go" => :build
   depends_on "gawk" => :build
+  depends_on :hg => :build
 
   def install
     ENV["GOPATH"] = buildpath
@@ -27,9 +28,13 @@ class Influxdb < Formula
     flex = Formula["flex"].bin/"flex"
     bison = Formula["bison"].bin/"bison"
 
-    system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
+    inreplace "configure" do |s|
+      s.gsub! "echo -n", "$as_echo_n"
+    end
+
+    system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}", "--with-rocksdb"
     system "make", "parser", "protobuf"
-    system "go", "build", "-tags", "rocksdb", "-o", "influxdb", "github.com/influxdb/influxdb/daemon"
+    system "go", "build", "-tags", "leveldb rocksdb", "-o", "influxdb", "github.com/influxdb/influxdb/daemon"
 
     inreplace "config.sample.toml" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"

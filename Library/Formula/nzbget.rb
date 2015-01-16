@@ -2,15 +2,15 @@ require "formula"
 
 class Nzbget < Formula
   homepage "http://nzbget.net/"
-  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.0/nzbget-14.0.tar.gz"
-  sha1 "bb45cbf7c53d94544b03d15adec327df6dfaeb19"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.1/nzbget-14.1.tar.gz"
+  sha1 "671c0d0b554643e1b58665004c65519a330766db"
 
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
   bottle do
-    sha1 "39db25fa2d79c924cf0aa706c7180c0650734c32" => :yosemite
-    sha1 "43478c1ccb216da5d58e8dfee64d7c3e13086d8e" => :mavericks
-    sha1 "21db9c9bbcf94ce4ef0862f1c2f1b4a5d59d6f68" => :mountain_lion
+    sha1 "b8fa821bf43c2c5ccd2842ce0a57ba0131b150bc" => :yosemite
+    sha1 "78df733e6f5983b32dd66a391cb1c6f6b1a8570a" => :mavericks
+    sha1 "ba78b8016b214a18c80499eb3d17a4aa4a45983b" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

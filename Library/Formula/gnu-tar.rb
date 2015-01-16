@@ -1,10 +1,10 @@
-require "formula"
-
 class GnuTar < Formula
   homepage "http://www.gnu.org/software/tar/"
   url "http://ftpmirror.gnu.org/tar/tar-1.28.tar.gz"
   mirror "http://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz"
   sha1 "cd30a13bbfefb54b17e039be7c43d2592dd3d5d0"
+
+  option "with-default-names", "Do not prepend 'g' to the binary"
 
   bottle do
     revision 2
@@ -22,22 +22,30 @@ class GnuTar < Formula
 
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
-    args << "--program-prefix=g"
+    args << "--program-prefix=g" if build.without? "default-names"
 
     system "./configure", *args
     system "make", "install"
 
     # Symlink the executable into libexec/gnubin as "tar"
-    (libexec/"gnubin").install_symlink bin/"gtar" => "tar"
+    (libexec/"gnubin").install_symlink bin/"gtar" => "tar" if build.without? "default-names"
   end
 
-  def caveats; <<-EOS.undent
-    gnu-tar has been installed as "gtar".
+  def caveats
+    if build.without? "default-names" then <<-EOS.undent
+      gnu-tar has been installed as "gtar".
 
-    If you really need to use it as "tar", you can add a "gnubin" directory
-    to your PATH from your bashrc like:
+      If you really need to use it as "tar", you can add a "gnubin" directory
+      to your PATH from your bashrc like:
 
-        PATH="#{opt_libexec}/gnubin:$PATH"
-    EOS
+          PATH="#{opt_libexec}/gnubin:$PATH"
+      EOS
+    end
+  end
+
+  test do
+    (testpath/"test").write("test")
+    system "#{bin}/gtar", "-czvf", "test.tar.gz", "test"
+    assert_match /test/, shell_output("#{bin}/gtar -xOzf test.tar.gz")
   end
 end

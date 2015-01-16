@@ -2,14 +2,14 @@ require "formula"
 
 class Bind < Formula
   homepage "http://www.isc.org/software/bind/"
-  url "http://ftp.isc.org/isc/bind9/9.10.1/bind-9.10.1.tar.gz"
-  sha1 "96aa28c6112c6a8c33a19efeac98c715f03b35ca"
+  url "http://ftp.isc.org/isc/bind9/9.10.1-P1/bind-9.10.1-P1.tar.gz"
+  sha1 "24a81ba458a762c27be47461301fcf336cfb1d43"
+  version "9.10.1-P1"
 
   bottle do
-    revision 4
-    sha1 "fbef96e8741894256851dd93b1136cbf83ed4518" => :yosemite
-    sha1 "9b79a3276cd9a0bd80ae2f6d2b216a780ce72f49" => :mavericks
-    sha1 "5efa168d357725842a24ce21d247a570b458cf88" => :mountain_lion
+    sha1 "4d87599a42bd14e8b1f2e7d36a294f70fc6e5c91" => :yosemite
+    sha1 "fd0a785c3a49800b36cb151ba7b5515058e1e230" => :mavericks
+    sha1 "974a2840ad5f84b940cd5c948efd48a52fe39b91" => :mountain_lion
   end
 
   head "https://source.isc.org/git/bind9.git"

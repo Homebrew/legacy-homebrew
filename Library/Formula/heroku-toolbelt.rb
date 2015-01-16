@@ -1,36 +1,9 @@
 require 'formula'
 
-class Ruby19 < Requirement
-  fatal true
-  default_formula 'ruby'
-
-  satisfy :build_env => false do
-    next unless which 'ruby'
-    version = /\d\.\d/.match `ruby --version 2>&1`
-
-    next unless version
-    Version.new(version.to_s) >= Version.new("1.9")
-  end
-
-  def modify_build_environment
-    ruby = which "ruby"
-    return unless ruby
-
-    ENV.prepend_path "PATH", ruby.dirname
-  end
-
-  def message; <<-EOS.undent
-    The Heroku Toolbelt requires Ruby >= 1.9
-    EOS
-  end
-end
-
 class HerokuToolbelt < Formula
   homepage 'https://toolbelt.heroku.com/other'
-  url 'http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-3.15.0.tgz'
-  sha1 '262f25eeb1d31ea8940acb49fd81b77bd0bdd6d6'
-
-  depends_on Ruby19
+  url 'http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-3.21.4.tgz'
+  sha1 '703be79c0c6917582e4f6811b96cea147670a7a2'
 
   def install
     libexec.install Dir["*"]
@@ -39,10 +12,5 @@ class HerokuToolbelt < Formula
 
   test do
     system "#{bin}/heroku", "version"
-  end
-
-  def caveats; <<-EOS.undent
-    heroku-toolbelt requires an installation of Ruby 1.9 or greater.
-    EOS
   end
 end

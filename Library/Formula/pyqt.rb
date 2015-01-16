@@ -1,25 +1,23 @@
-require "formula"
-
 class Pyqt < Formula
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
   url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
   sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
 
   bottle do
-    revision 1
-    sha1 "251fb1a136972de87c98d3d06a3f5e1d6b8351d4" => :yosemite
-    sha1 "43f5b59a2b08d5ed035016459ffce566577a6e42" => :mavericks
-    sha1 "e058c40214fa5bed6391e815cfe7b2473b2bbc98" => :mountain_lion
+    revision 2
+    sha1 "6e5d9bd61aa0d9f888f7d61496322db45499b7a1" => :yosemite
+    sha1 "4c1d4d5600013bd12fe630290d8b669c8f78b081" => :mavericks
+    sha1 "379c1f1800a61f66b84b77b1602d8bf483fed058" => :mountain_lion
   end
 
-  depends_on :python => :recommended
+  option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
 
   if build.without?("python3") && build.without?("python")
     odie "pyqt: --with-python3 must be specified when using --without-python"
   end
 
-  depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
+  depends_on "qt"
 
   if build.with? "python3"
     depends_on "sip" => "with-python3"
@@ -83,22 +81,8 @@ class Pyqt < Formula
 
   test do
     Pathname("test.py").write <<-EOS.undent
-      import sys
-      from PyQt4 import QtGui, QtCore
-
-      class Test(QtGui.QWidget):
-          def __init__(self, parent=None):
-              QtGui.QWidget.__init__(self, parent)
-              self.setGeometry(300, 300, 400, 150)
-              self.setWindowTitle('Homebrew')
-              QtGui.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
-                           " working with PyQt4. Quitting now...", self).move(50, 50)
-              QtCore.QTimer.singleShot(1500, QtGui.qApp, QtCore.SLOT("quit()"))
-
-      app = QtGui.QApplication([])
-      window = Test()
-      window.show()
-      sys.exit(app.exec_())
+      from PyQt4 import QtNetwork
+      QtNetwork.QNetworkAccessManager().networkAccessible()
     EOS
 
     Language::Python.each_python(build) do |python, version|

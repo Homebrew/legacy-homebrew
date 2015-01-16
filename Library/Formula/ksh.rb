@@ -1,21 +1,9 @@
 require "formula"
 
-class KshDownloadStrategy < NoUnzipCurlDownloadStrategy
-  # AT&T requires the following credentials to "assent" to the OSS license.
-  def credentials
-    "I.accept.www.opensource.org.licenses.eclipse:."
-  end
-
-  def curl(*args)
-    args << "-u" << credentials
-    super
-  end
-end
-
 class Ksh < Formula
   homepage "http://www.kornshell.com"
   url  "http://www2.research.att.com/~astopen/download/tgz/ast-ksh.2012-08-01.tgz",
-    :using => KshDownloadStrategy
+    :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."
   sha1 "316428e9937806183a134aa1669dea40c3a73695"
   version "93u+" # Versioning scheme: + means "+ patches", - means "beta/alpha".
 
@@ -29,7 +17,7 @@ class Ksh < Formula
 
   resource "init" do
     url "http://www2.research.att.com/~astopen/download/tgz/INIT.2012-08-01.tgz",
-      :using => KshDownloadStrategy
+      :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."
     sha1 "0b472a615db384fe707042baaa3347dc1aa1c81e"
   end
 
@@ -54,8 +42,8 @@ class Ksh < Formula
   end
 
   def caveats; <<-EOS.undent
-    We have agreed to the Eclipse Public License on your behalf.
-    If this is unacceptable for any reason, please uninstall.
+    We agreed to the Eclipse Public License 1.0 for you.
+    If this is unacceptable you should uninstall.
     EOS
   end
 end

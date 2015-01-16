@@ -6,10 +6,6 @@ class AutoScaling < AmazonWebServicesFormula
   version  '1.0.61.6'
   sha1 '2e3aaaa2567f4dcafcedbfc05678270ab02ed341'
 
-  def install
-    standard_install
-  end
-
   def caveats
     <<-EOS.undent
       Before you can use these tools you must populate a file and export some variables to your $SHELL.

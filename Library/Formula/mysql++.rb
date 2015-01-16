@@ -1,9 +1,17 @@
 require 'formula'
 
 class Mysqlxx < Formula
-  url 'http://tangentsoft.net/mysql++/releases/mysql++-3.2.0.tar.gz'
   homepage 'http://tangentsoft.net/mysql++/'
-  sha1 '4bd50f5b8259b5f12e42d6a810e5941eaddaf24a'
+  url 'http://tangentsoft.net/mysql++/releases/mysql++-3.2.1.tar.gz'
+  sha1 '1ce5a4484b66d9852718412315e1409cafd8c397'
+
+  bottle do
+    cellar :any
+    sha1 "51f59174988a858aabde99fbb4bee90da14b3f05" => :yosemite
+    sha1 "8efb125df0553a8c7e764c02846e258f8de73ebd" => :mavericks
+    sha1 "9fedd7c2ae4b463a0ff730e29a0e493274896d2b" => :mountain_lion
+  end
+
 
   depends_on 'mysql-connector-c'
 

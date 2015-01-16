@@ -1,5 +1,3 @@
-require "formula"
-
 class Icu4c < Formula
   homepage "http://site.icu-project.org/"
   head "http://source.icu-project.org/repos/icu/icu/trunk/", :using => :svn
@@ -30,5 +28,9 @@ class Icu4c < Formula
       system "make"
       system "make", "install"
     end
+  end
+
+  test do
+    system "#{bin}/gendict", "--uchars", "/usr/share/dict/words", "dict"
   end
 end

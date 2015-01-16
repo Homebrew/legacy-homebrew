@@ -1,33 +1,34 @@
 require 'formula'
 
 class Nimrod < Formula
-  homepage 'http://nimrod-code.org/'
-  url 'http://nimrod-code.org/download/nimrod_0.9.2.zip'
-  sha1 '326ecd61d6df45afdc04cb8685ef46f8fb8f9e47'
+  homepage "http://nim-lang.org/"
 
-  head 'https://github.com/Araq/Nimrod.git'
+  url "http://nim-lang.org/download/nim-0.10.2.zip"
+  sha1 "0a54d6d7f257cdade5bf950d318066959c48a6dc"
 
-  # Install to libexec until an upstream fix appears for
-  # https://github.com/Araq/Nimrod/issues/459
+  head "https://github.com/Araq/Nim.git", :branch => "devel"
+
+  bottle do
+    cellar :any
+    sha1 "d982481f09e677a7cf707d0cfe214c388ee0de9d" => :yosemite
+    sha1 "f481f9c658255a480dd562552e2f67d1bdf2b1f2" => :mavericks
+    sha1 "496b2e4b50e69d73e1299d478ab0a1c94c1804ee" => :mountain_lion
+  end
+
   def install
-    system "/bin/sh", "./build.sh"
-    inreplace 'install.sh', '$1/nimrod', '$1'
-    system "/bin/sh", "./install.sh", libexec
+    system "/bin/sh", "build.sh"
+    system "/bin/sh", "install.sh", prefix
+
+    (prefix/"nim").install "compiler"
+    bin.install_symlink prefix/"nim/bin/nim"
+    bin.install_symlink prefix/"nim/bin/nim" => "nimrod"
   end
 
   test do
-    (testpath/'hello.nim').write <<-EOS.undent
+    (testpath/"hello.nim").write <<-EOS.undent
       echo("Hi!")
     EOS
-    system "#{libexec}/bin/nimrod", "compile", "--run", "hello.nim"
-  end
-
-  def caveats; <<-EOS.undent
-    Nimrod has been installed to #{libexec}.
-    The compiler will currently fail to find system.nim if called through a
-    symlink. To compile nim files, specify the full path to the compiler:
-
-      #{libexec}/bin/nimrod compile --run hello.nim
-    EOS
+    system "#{bin}/nim", "compile", "--run", "hello.nim"
   end
 end
+

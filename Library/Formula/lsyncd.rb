@@ -4,6 +4,13 @@ class Lsyncd < Formula
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
   sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"
+  bottle do
+    cellar :any
+    sha1 "9d8e796c4e05ca50bcbdae0053ed14d03626be6c" => :yosemite
+    sha1 "ebab9b36017e541234bcd6d5bb5fef1062fca245" => :mavericks
+    sha1 "6241af90c682dbe7fb10918faa0d0a1ad63d22f2" => :mountain_lion
+  end
+
   revision 1
 
   depends_on "autoconf" => :build
@@ -31,6 +38,7 @@ class Lsyncd < Formula
     "10.9.4" => ["xnu-2422.110.17.tar.gz", "64eff89852eaa10b298ee58c0a1c92da8283f459"],
     "10.9.5" => ["xnu-2422.115.4.tar.gz", "48207e250422be7e78d238cd8b4d741ac98856df"],
     "10.10"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
+    "10.10.1"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
   }
 
   # TODO wrap MACOS_FULL_VERSION in a MacOS module method

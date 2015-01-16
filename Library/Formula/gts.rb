@@ -12,8 +12,6 @@ class Gts < Formula
   depends_on 'glib'
   depends_on 'netpbm'
 
-  conflicts_with 'pcb', :because => 'both install `include/gts.h`'
-
   # Fix for newer netpbm.
   # This software hasn't been updated in seven years
   patch :DATA

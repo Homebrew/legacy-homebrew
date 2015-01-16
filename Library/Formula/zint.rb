@@ -8,11 +8,12 @@ class Zint < Formula
 
   head 'git://zint.git.sourceforge.net/gitroot/zint/zint'
 
-  option 'qt', 'Build the zint-qt GUI.'
+  option "with-qt", "Build the zint-qt GUI"
+  deprecated_option "qt" => "with-qt"
 
   depends_on 'cmake' => :build
   depends_on 'libpng'
-  depends_on 'qt' if build.include? 'qt'
+  depends_on 'qt' => :optional
 
   def install
     mkdir 'zint-build' do

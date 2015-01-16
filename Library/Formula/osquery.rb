@@ -3,17 +3,16 @@ require "formula"
 class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.0.3"
-  sha1 "529d9a9abc0eb282fd0e61884e2c9f0ee24eddd0"
+  url "https://github.com/facebook/osquery.git", :tag => "1.2.2"
 
   bottle do
-    cellar :any
-    sha1 "2124957f09ba002ad3f4e63e2ef063bcc8065dd9" => :yosemite
-    sha1 "5220b65b3de9e766828295ba1cdb66d0a965085b" => :mavericks
+    revision 1
+    sha1 "a8142c2f22c3547d343a9eb86e3329ed1e4d464c" => :yosemite
+    sha1 "a45c7c5b005bb11e8ac414eca0af4dcce77cbe53" => :mavericks
   end
 
   # Build currently fails on Mountain Lion:
-  # https://github.com/facebook/osquery/issues/277
+  # https://github.com/facebook/osquery/issues/409
   # Will welcome PRs to fix this!
   depends_on :macos => :mavericks
 
@@ -36,13 +35,13 @@ class Osquery < Formula
     sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
   end
 
-  # Fix build on mountain lion (https://github.com/facebook/osquery/issues/277)
-  patch do
-    url "https://github.com/facebook/osquery/commit/cd7454.diff"
-    sha1 "0555bef180598a8846a3aa5d27db4d3a37b5ba2e"
-  end
-
   def install
+    # Apply upstream commit to fix illegal hardware instruction:
+    # https://github.com/facebook/osquery/commit/20259a
+    # https://github.com/facebook/osquery/issues/563
+    # https://github.com/Homebrew/homebrew/issues/35343
+    inreplace "CMakeLists.txt", "-Wl,-all_load", "-Wl,-force_load"
+
     ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
 
     resources.each do |r|
@@ -55,7 +54,7 @@ class Osquery < Formula
     system "cmake", ".", *std_cmake_args
     system "make", "install"
 
-    prefix.install "tools/com.facebook.osqueryd.plist"
+    prefix.install "tools/deployment/com.facebook.osqueryd.plist"
   end
 
   plist_options :startup => true, :manual => "osqueryd"

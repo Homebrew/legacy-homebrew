@@ -17,9 +17,9 @@ class Cdrdao < Formula
   end
 
   # first patch fixes build problems under 10.6
-  # see http://sourceforge.net/tracker/index.php?func=detail&aid=2981804&group_id=2171&atid=302171
+  # see http://sourceforge.net/p/cdrdao/patches/23/
   patch do
-    url "http://sourceforge.net/tracker/download.php?group_id=2171&atid=302171&file_id=369387&aid=2981804"
+    url "http://sourceforge.net/p/cdrdao/patches/_discuss/thread/205354b0/141e/attachment/cdrdao-mac.patch"
     sha1 "1c0663d13d0f0b7ebbb281f69751eff0afed7c8c"
   end
 

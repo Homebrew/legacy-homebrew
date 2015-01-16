@@ -15,7 +15,7 @@ class Freeling < Formula
   end
 
   depends_on "icu4c"
-  depends_on "boost" => "with-icu"
+  depends_on "boost" => "with-icu4c"
   depends_on "libtool" => :build
 
   def install

@@ -12,6 +12,14 @@ module Homebrew
           keg.unlink
           keg.uninstall
           rm_pin keg.name
+
+          rack = keg/".."
+          if rack.directory?
+            versions = rack.subdirs.map(&:basename)
+            verb = versions.length == 1 ? "is" : "are"
+            puts "#{keg.name} #{versions.join(", ")} #{verb} still installed."
+            puts "Remove them all with `brew uninstall --force #{keg.name}`."
+          end
         end
       end
     else

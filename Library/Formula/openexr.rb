@@ -13,9 +13,6 @@ class Openexr < Formula
     sha1 "f32df24d8a0c74d0b8e53b9e0e15d60dceaf0b6a" => :mountain_lion
   end
 
-  # included for reference only - repository doesn't have 'configure' script
-  # head 'cvs://:pserver:anonymous@cvs.sv.gnu.org:/sources/openexr:OpenEXR'
-
   depends_on 'pkg-config' => :build
   depends_on 'ilmbase'
 

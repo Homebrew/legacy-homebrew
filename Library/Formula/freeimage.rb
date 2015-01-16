@@ -3,7 +3,7 @@ require 'formula'
 class FreeimageHttpDownloadStrategy < CurlDownloadStrategy
   def stage
     # need to convert newlines or patch chokes
-    safe_system '/usr/bin/unzip', '-aaqq', @tarball_path
+    quiet_safe_system "/usr/bin/unzip", { :quiet_flag => "-qq" }, "-aa", cached_location
     chdir
   end
 end
@@ -11,7 +11,7 @@ end
 class Freeimage < Formula
   homepage 'http://sf.net/projects/freeimage'
   url 'https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.16.0/FreeImage3160.zip',
-        :using => FreeimageHttpDownloadStrategy
+    :using => FreeimageHttpDownloadStrategy
   version '3.16.0'
   sha1 'a70600d288fe5bd11131e85e6f857a93bb100ad8'
 

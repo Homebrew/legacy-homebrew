@@ -53,4 +53,4 @@ Thank you!
 [Gist]:https://gist.github.com
 [Apple Developer]:https://developer.apple.com/downloads
 [Java Developer Update]:http://support.apple.com/kb/DL1572
-[JDK 7]:http://docs.oracle.com/javase/7/docs/webnotes/install/mac/mac-install-faq.html
+[JDK 7]:https://docs.oracle.com/javase/7/docs/webnotes/install/mac/mac-install-faq.html

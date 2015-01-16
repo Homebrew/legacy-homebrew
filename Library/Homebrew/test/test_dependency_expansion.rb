@@ -100,16 +100,15 @@ class DependencyExpansionTests < Homebrew::TestCase
   end
 
   def test_keep_dep_but_prune_recursive_deps
-    f = stub(:name => "f", :deps => [
-      build_dep(:foo, [:build], [@bar]),
-      build_dep(:baz, [:build]),
-    ])
+    foo = build_dep(:foo, [:build], @bar)
+    baz = build_dep(:baz, [:build])
+    f = stub(:name => "f", :deps => [foo, baz])
 
     deps = Dependency.expand(f) do |dependent, dep|
       Dependency.keep_but_prune_recursive_deps if dep.build?
     end
 
-    assert_equal [@foo, @baz], deps
+    assert_equal [foo, baz], deps
   end
 
   def test_deps_with_collection_argument

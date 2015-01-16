@@ -7,8 +7,6 @@ class Pdsh < Formula
 
   head 'https://code.google.com/p/pdsh/', :using => :git
 
-  conflicts_with 'clusterit', :because => 'both install `dshbak`'
-
   option "without-dshgroups", "Compile without dshgroups which conflicts with genders. The option should be specified to load genders module first instead of dshgroups."
 
   depends_on 'readline'

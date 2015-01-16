@@ -25,24 +25,26 @@ class Emacs < Formula
     sha1 "e3c6ab764c4b39b983e57d94c9f43acb7dad31f7" => :mountain_lion
   end
 
-  option "cocoa", "Build a Cocoa version of emacs"
-  option "with-x", "Include X11 support"
-  option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
-  option "keep-ctags", "Don't remove the ctags executable that emacs provides"
-
-  head do
-    if build.include? "use-git-head"
-      url "http://git.sv.gnu.org/r/emacs.git"
-    else
-      url "bzr://http://bzr.savannah.gnu.org/r/emacs/trunk"
-    end
-
+  devel do
+    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-24"
+    version "24.4-dev"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
 
+  head do
+    url "http://git.sv.gnu.org/r/emacs.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
+
+  option "cocoa", "Build a Cocoa version of emacs"
+  option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+
+  deprecated_option "with-x" => "with-x11"
+
   depends_on "pkg-config" => :build
-  depends_on :x11 if build.with? "x"
+  depends_on :x11 => :optional
   depends_on "d-bus" => :optional
   depends_on "gnutls" => :optional
   depends_on "librsvg" => :optional
@@ -56,11 +58,6 @@ class Emacs < Formula
   end
 
   def install
-    # HEAD builds blow up when built in parallel as of April 20 2012
-    # FIXME is this still necessary? It's been more than two years, surely any
-    # race conditions would have made it into release by now.
-    ENV.deparallelize unless build.stable?
-
     args = ["--prefix=#{prefix}",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
@@ -95,7 +92,7 @@ class Emacs < Formula
         exec #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
       EOS
     else
-      if build.with? "x"
+      if build.with? "x11"
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/Homebrew/homebrew/issues/8156

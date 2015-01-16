@@ -1,16 +1,18 @@
-require "formula"
-
 class Pidgin < Formula
   homepage "https://pidgin.im/"
-  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.10/pidgin-2.10.10.tar.bz2"
-  sha1 "81267c35c8d27f2c62320b564fc11af2cc1f3a4a"
+  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.11/pidgin-2.10.11.tar.bz2"
+  sha1 "5e0062b81bdb01300804e12bc0b6a04a91984631"
 
   bottle do
-    revision 2
-    sha1 "62b0b06637fabb960543e61e4652ee09dfbc1d8f" => :yosemite
-    sha1 "7e20e7691b7ebd105e512c4bfb251a9f71c0d21b" => :mavericks
-    sha1 "8c03819ed1317164cc29b5de882604a7a017a89f" => :mountain_lion
+    sha1 "7b54cf4adf86babc1ad1cb6ef4984bc1320f58e4" => :yosemite
+    sha1 "0d2a06822e30562d812c7e9919cd356ea35811e4" => :mavericks
+    sha1 "613a6eba69a416c37595d34452a75ecd465a7a86" => :mountain_lion
   end
+
+  deprecated_option "perl" => "with-perl"
+
+  option "with-perl", "Build Pidgin with Perl support"
+  option "without-GUI", "Build Finch instead of Pidgin"
 
   depends_on :x11 => :optional
   depends_on "pkg-config" => :build
@@ -33,11 +35,6 @@ class Pidgin < Formula
     url "https://otr.cypherpunks.ca/pidgin-otr-4.0.1.tar.gz"
     sha1 "e231a2dc72c960f2aa70d8c9d4b05abc6d123085"
   end
-
-  deprecated_option "perl" => "with-perl"
-
-  option "with-perl", "Build Pidgin with Perl support"
-  option "without-GUI", "Build Finch instead of Pidgin"
 
   def install
     args = %W[

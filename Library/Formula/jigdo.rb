@@ -1,13 +1,19 @@
-require 'formula'
-
 class Jigdo < Formula
-  homepage 'http://atterer.org/jigdo/'
-  url 'http://atterer.org/sites/atterer/files/2009-08/jigdo/jigdo-0.7.3.tar.bz2'
-  sha1 '7b83c35af71f908b31b9aa55b0dda9dfb4d224f0'
+  homepage "http://atterer.org/jigdo/"
+  url "http://atterer.org/sites/atterer/files/2009-08/jigdo/jigdo-0.7.3.tar.bz2"
+  sha1 "7b83c35af71f908b31b9aa55b0dda9dfb4d224f0"
+  revision 1
 
-  depends_on 'pkg-config' => :build
-  depends_on 'berkeley-db'
-  depends_on 'gtk+'
+  bottle do
+    sha1 "082410ddb96160d7dad904396e54c628e395efd6" => :yosemite
+    sha1 "3728075c968660a34393a2c8657d2e3f18fb0017" => :mavericks
+    sha1 "f059fdafb3d3891c27e86ef0d31ef20d14bf7c2c" => :mountain_lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "wget" => :recommended
+  depends_on "berkeley-db4"
+  depends_on "gtk+"
 
   # Use MacPorts patch for compilation on 10.9; this software is no longer developed.
   patch :p0 do
@@ -21,7 +27,7 @@ class Jigdo < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

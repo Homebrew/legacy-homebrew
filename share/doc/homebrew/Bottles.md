@@ -23,24 +23,22 @@ Bottles have a DSL to be used in formulae which is contained in the `bottle do .
 A simple (and typical) example:
 ```ruby
 bottle do
-  sha1 'd3d13fe6f42416765207503a946db01378131d7b' => :mountain_lion
-  sha1 'cdc48e79de2dee796bb4ba1ad987f6b35ce1c1ee' => :lion
-  sha1 'a19b544c8c645d7daad1d39a070a0eb86dfe9b9c' => :snow_leopard
+  sha1 "23ef6a81af2f37166d7d7423b88f7716bf9b0629" => :yosemite
+  sha1 "fdc919d750012fbfeeec8b3f95d07000adc3c946" => :mavericks
+  sha1 "0d08b3ca611f47a25a922b2d942f157f1d6268c1" => :mountain_lion
 end
 ```
 
 A full example:
 ```ruby
 bottle do
-  root_url 'http://mikemcquaid.com'
-  prefix '/opt/homebrew'
-  cellar '/opt/homebrew/Cellar'
+  root_url "http://mikemcquaid.com"
+  prefix "/opt/homebrew"
+  cellar "/opt/homebrew/Cellar"
   revision 4
-  sha1 'd3d13fe6f42416765207503a946db01378131d7b' => :mountain_lion
-  sha1 'cdc48e79de2dee796bb4ba1ad987f6b35ce1c1ee' => :lion
-  sha1 'a19b544c8c645d7daad1d39a070a0eb86dfe9b9c' => :snow_leopard
-  sha1 '583dc9d98604c56983e17d66cfca2076fc56312b' => :snow_leopard_32
-  sha1 '2ef5f57afae319a3e7618d5723059eae568276fa' => :leopard
+  sha1 "23ef6a81af2f37166d7d7423b88f7716bf9b0629" => :yosemite
+  sha1 "fdc919d750012fbfeeec8b3f95d07000adc3c946" => :mavericks
+  sha1 "0d08b3ca611f47a25a922b2d942f157f1d6268c1" => :mountain_lion
 end
 ```
 

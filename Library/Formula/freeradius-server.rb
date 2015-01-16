@@ -2,20 +2,20 @@ require "formula"
 
 class FreeradiusServer < Formula
   homepage "http://freeradius.org/"
-  url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.5.tar.gz"
-  sha1 "4d18ed8ff3fde4a29112ecc07f175b774ed5f702"
-  revision 2
+  url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.6.tar.gz"
+  sha1 "25b0a057b1fffad5a030946e8af0c6170e5cdf46"
+  revision 1
 
   devel do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.4.tar.bz2"
-    sha1 "baa58979672f6fc57ab4f16e947b85b9a6eee969"
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.5.tar.bz2"
+    sha1 "53432d83618f0719f8cab5957567fc173959f6e7"
     depends_on "talloc" => :build
   end
 
   bottle do
-    sha1 "588867d47d85bbbf558d8e4332227bc3d5f9eb79" => :mavericks
-    sha1 "a5c11d2365f5ea91a7563d1090fa3f57761834a3" => :mountain_lion
-    sha1 "5b061feeae193e2f1bf1e816fb7c49e85155bd71" => :lion
+    sha1 "3a583d46e2c12badc7addf99fa1db83a8d5315b4" => :yosemite
+    sha1 "ee905079281616a48339201938d11fe525d8b23f" => :mavericks
+    sha1 "2e8de634e8fcf37a2a4d969d33371281667e5d2d" => :mountain_lion
   end
 
   depends_on "openssl"

@@ -2,9 +2,9 @@ require 'formula'
 
 class Sqoop < Formula
   homepage 'http://sqoop.apache.org/'
-  url 'http://apache.mirror.iphh.net/sqoop/1.4.4/sqoop-1.4.4.bin__hadoop-1.0.0.tar.gz'
-  version '1.4.4'
-  sha1 '1af2fa62b194794f50d3b2c5b064d3220bc1fc0d'
+  url 'http://www.apache.org/dyn/closer.cgi?path=sqoop/1.4.5/sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz'
+  version '1.4.5'
+  sha1 'cb1831d0da2b6f508f62b144d405d859e371e111'
 
   depends_on 'hadoop'
   depends_on 'hbase'

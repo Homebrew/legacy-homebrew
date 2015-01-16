@@ -2,8 +2,8 @@ require "formula"
 
 class Jbake < Formula
   homepage "http://jbake.org"
-  url "http://jbake.org/files/jbake-2.3.1-bin.zip"
-  sha1 "b429a89a66c021a70394e0207d71a703de58d85b"
+  url "http://jbake.org/files/jbake-2.3.2-bin.zip"
+  sha1 "8daa2603b0277ee92ba216cf1d7e2d706f489382"
 
   def install
     rm_f Dir["bin/*.bat"]

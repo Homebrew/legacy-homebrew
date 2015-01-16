@@ -1,5 +1,3 @@
-require "formula"
-
 class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
@@ -14,8 +12,6 @@ class Gnupg2 < Formula
     sha1 "1735c876de43f9635e191e6b1f1ed3f1ae04068d" => :mavericks
     sha1 "ad0e8129ffbaf615f8b43aa93b89eb1cdc517f1f" => :mountain_lion
   end
-
-  option "8192", "Build with support for private keys of up to 8192 bits"
 
   depends_on "libgpg-error"
   depends_on "libgcrypt"
@@ -43,8 +39,6 @@ class Gnupg2 < Formula
               "gpg-agent --quiet --daemon sh"
     end
     inreplace "tools/gpgkey2ssh.c", "gpg --list-keys", "gpg2 --list-keys"
-
-    inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
 
     (var/"run").mkpath
 
@@ -76,5 +70,9 @@ class Gnupg2 < Formula
     # Conflicts with a manpage from the 1.x formula, and
     # gpg-zip isn't installed by this formula anyway
     rm man1/"gpg-zip.1"
+  end
+
+  test do
+    system "#{bin}/gpgconf"
   end
 end

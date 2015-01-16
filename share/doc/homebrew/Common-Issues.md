@@ -63,7 +63,7 @@ Could not open job overrides database at: /private/var/db/launchd.db/com.apple.l
 launch_msg(): Socket is not connected
 ```
 
-These are likely due to one of three issues:
+These are likely due to one of four issues:
 
 1. You are using iTerm. The solution is to use Terminal.app when interacting with `launchctl`.
 2. You are using a terminal multiplexer such as `tmux` or `screen`. You should interact with `launchctl` from a separate Terminal.app shell.
@@ -76,7 +76,7 @@ When running `brew upgrade`, you see something like this:
 $ brew upgrade
 Error: undefined method `include?' for nil:NilClass
 Please report this bug:
-    https://github.com/Homebrew/homebrew/wiki/checklist-before-filing-a-new-issue
+    https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Troubleshooting.md
 /usr/local/Library/Homebrew/formula.rb:393:in `canonical_name'
 /usr/local/Library/Homebrew/formula.rb:425:in `factory'
 /usr/local/Library/Contributions/examples/brew-upgrade.rb:7

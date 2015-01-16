@@ -11,10 +11,14 @@ class ProtobufC < Formula
     sha1 "b3990ecc09a996fef5a976f59a16ffb7e8d87ecb" => :lion
   end
 
+  option :universal
+
   depends_on "pkg-config" => :build
   depends_on "protobuf"
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

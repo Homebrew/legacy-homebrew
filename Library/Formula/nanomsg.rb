@@ -2,8 +2,15 @@ require 'formula'
 
 class Nanomsg < Formula
   homepage 'http://nanomsg.org'
-  url 'http://download.nanomsg.org/nanomsg-0.4-beta.tar.gz'
-  sha1 'a511f19f8574875e8e43f7ba27f7951f67fbe161'
+  url 'http://download.nanomsg.org/nanomsg-0.5-beta.tar.gz'
+  sha1 '2826bf58fe29550777dbe610e12ed20d386a6974'
+
+  bottle do
+    cellar :any
+    sha1 "3a645be193f896f1a3b4f8593c1554656abdc4c1" => :yosemite
+    sha1 "874eb890390defb22b89cbf4303d218d384bd9b6" => :mavericks
+    sha1 "66775cd465f4351a92cb05824e279ed597b90270" => :mountain_lion
+  end
 
   head do
     url 'https://github.com/nanomsg/nanomsg.git'

@@ -20,6 +20,6 @@ class AwsSnsCli < AmazonWebServicesFormula
   end
 
   def caveats
-    standard_instructions "AWS_SNS_HOME"
+    standard_instructions "AWS_SNS_HOME", prefix/'jars'
   end
 end

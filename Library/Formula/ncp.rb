@@ -1,10 +1,8 @@
-require "formula"
-
 class Ncp < Formula
   homepage "http://www.fefe.de/ncp/"
   url "http://dl.fefe.de/ncp-1.2.4.tar.bz2"
   sha1 "bd33e5311c249948559d17bfd59df93ae72e1f17"
-  head "cvs://:pserver:cvs:@cvs.fefe.de:/cvs:ncp"
+  head ":pserver:cvs:@cvs.fefe.de:/cvs", :using => :cvs
 
   depends_on "libowfat"
 

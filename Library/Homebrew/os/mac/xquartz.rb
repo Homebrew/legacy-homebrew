@@ -42,8 +42,8 @@ module OS
         end
       end
 
-      # http://xquartz.macosforge.org/trac/wiki
-      # http://xquartz.macosforge.org/trac/wiki/Releases
+      # https://xquartz.macosforge.org/trac/wiki
+      # https://xquartz.macosforge.org/trac/wiki/Releases
       def latest_version
         case MacOS.version
         when "10.5"

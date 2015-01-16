@@ -22,4 +22,4 @@ We have created this diversity statement because we believe that a diverse Homeb
 Although we have phrased the formal diversity statement generically to make it all-inclusive, we recognise that there are specific attributes that are used to discriminate against people. In alphabetical order, some of these attributes include (but are not limited to): age, culture, ethnicity, gender identity or expression, national origin, physical or mental difference, politics, race, religion, sex, sexual orientation, socio-economic status, and subculture. We welcome people regardless of the values of these or other attributes.
 
 # Attribution
-This code of conduct is heavily based on the [Python Community Code of Conduct](http://www.python.org/psf/codeofconduct/) and the [Python Diversity Statement](http://www.python.org/community/diversity/).
+This code of conduct is heavily based on the [Python Community Code of Conduct](https://www.python.org/psf/codeofconduct/) and the [Python Diversity Statement](https://www.python.org/community/diversity/).

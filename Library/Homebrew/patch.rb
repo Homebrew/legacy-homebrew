@@ -61,7 +61,6 @@ class EmbeddedPatch
   end
 
   def contents
-    raise NotImplementedError
   end
 
   def apply
@@ -129,7 +128,7 @@ class ExternalPatch
     resource.unpack do
       # Assumption: the only file in the staging directory is the patch
       patchfile = Pathname.pwd.children.first
-      safe_system "/usr/bin/patch", "-g", "0", "-f", "-d", dir, "-#{strip}", "-i", patchfile
+      dir.cd { safe_system "/usr/bin/patch", "-g", "0", "-f", "-#{strip}", "-i", patchfile }
     end
   end
 
@@ -162,7 +161,7 @@ end
 class LegacyPatch < ExternalPatch
   def initialize(strip, url)
     super(strip)
-    resource.url = url
+    resource.url(url)
     resource.download_strategy = CurlDownloadStrategy
   end
 

@@ -1,11 +1,9 @@
-require 'formula'
-
 class Re2 < Formula
-  homepage 'https://code.google.com/p/re2/'
-  url 'https://re2.googlecode.com/files/re2-20140304.tgz'
-  sha1 'f30dda8e530921b623c32aa58a5dabbe9157f6ca'
+  homepage "https://github.com/google/re2"
+  url "https://re2.googlecode.com/files/re2-20140304.tgz"
+  sha1 "f30dda8e530921b623c32aa58a5dabbe9157f6ca"
 
-  head 'https://re2.googlecode.com/hg'
+  head "https://github.com/google/re2.git"
 
   bottle do
     cellar :any

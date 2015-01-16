@@ -1,5 +1,3 @@
-require "formula"
-
 class Gcc < Formula
   def arch
     if Hardware::CPU.type == :intel
@@ -25,11 +23,12 @@ class Gcc < Formula
   url "http://ftpmirror.gnu.org/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2"
   mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2"
   sha1 "79dbcb09f44232822460d80b033c962c0237c6d8"
+  revision 1
 
   bottle do
-    sha1 "178f037a3970fb9a86c07aad8215acbb9467ab63" => :yosemite
-    sha1 "a3e86973036b15371f2443eb05056d942f7d3dff" => :mavericks
-    sha1 "3d909968fc9bd6c505fd4ff20cf4bc5f4e0ba197" => :mountain_lion
+    sha1 "8cc5eefa405e7d818a13fa1ad5a144b4442bed40" => :yosemite
+    sha1 "cc9726a7866c6ff09115f30812de81e5b810a72b" => :mavericks
+    sha1 "02ae2cff32c5a317552f4d0df993bc874b35d70c" => :mountain_lion
   end
 
   option "with-java", "Build the gcj compiler"
@@ -53,6 +52,7 @@ class Gcc < Formula
   end
 
   fails_with :gcc_4_0
+  fails_with :llvm
 
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
@@ -87,6 +87,7 @@ class Gcc < Formula
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
       "--prefix=#{prefix}",
+      "--libdir=#{lib}/gcc/#{version_suffix}",
       "--enable-languages=#{languages.join(",")}",
       # Make most executables versioned to avoid conflicts.
       "--program-suffix=-#{version_suffix}",
@@ -96,10 +97,6 @@ class Gcc < Formula
       "--with-cloog=#{Formula["cloog"].opt_prefix}",
       "--with-isl=#{Formula["isl"].opt_prefix}",
       "--with-system-zlib",
-      # This ensures lib, libexec, include are sandboxed so that they
-      # don't wander around telling little children there is no Santa
-      # Claus.
-      "--enable-version-specific-runtime-libs",
       "--enable-libstdcxx-time=yes",
       "--enable-stage1-checking",
       "--enable-checking=release",
@@ -131,6 +128,10 @@ class Gcc < Formula
       args << "--enable-multilib"
     end
 
+    # Ensure correct install names when linking against libgcc_s;
+    # see discussion in https://github.com/Homebrew/homebrew/pull/34303
+    inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
+
     mkdir "build" do
       unless MacOS::CLT.installed?
         # For Xcode-only systems, we need to tell the sysroot path.
@@ -160,10 +161,10 @@ class Gcc < Formula
     # Rename java properties
     if build.with?("java") || build.with?("all-languages")
       config_files = [
-        "#{lib}/logging.properties",
-        "#{lib}/security/classpath.security",
-        "#{lib}/i386/logging.properties",
-        "#{lib}/i386/security/classpath.security"
+        "#{lib}/gcc/#{version_suffix}/logging.properties",
+        "#{lib}/gcc/#{version_suffix}/security/classpath.security",
+        "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
+        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security",
       ]
       config_files.each do |file|
         add_suffix file, version_suffix if File.exist? file
@@ -171,7 +172,7 @@ class Gcc < Formula
     end
   end
 
-  def add_suffix file, suffix
+  def add_suffix(file, suffix)
     dir = File.dirname(file)
     ext = File.extname(file)
     base = File.basename(file, ext)
@@ -189,6 +190,28 @@ class Gcc < Formula
   end
 
   test do
+    (testpath/"hello-c.c").write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+        puts("Hello, world!");
+        return 0;
+      }
+    EOS
+    system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
+    assert_equal "Hello, world!\n", `./hello-c`
+
+    (testpath/"hello-cc.cc").write <<-EOS.undent
+      #include <iostream>
+      int main()
+      {
+        std::cout << "Hello, world!" << std::endl;
+        return 0;
+      }
+    EOS
+    system "#{bin}/g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
+    assert_equal "Hello, world!\n", `./hello-cc`
+
     if build.with?("fortran") || build.with?("all-languages")
       fixture = <<-EOS.undent
         integer,parameter::m=10000

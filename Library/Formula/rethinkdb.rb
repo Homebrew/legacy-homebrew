@@ -1,14 +1,13 @@
-require "formula"
-
 class Rethinkdb < Formula
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.1.tgz"
-  sha1 "8ffb3d2eb8d8b8309a663a2307eb097b5c897379"
+  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.3-1.tgz"
+  version "1.15.3-1"
+  sha1 "16b6ff1eedd592287b841c0c5fc0bae3ab896a44"
 
   bottle do
-    sha1 "91ea2e7b40d2bcf72169bc747eb141091ce2752f" => :mavericks
-    sha1 "2ac7c41541fbefa9d9ea9cd1f9c40aee8b7525dc" => :mountain_lion
-    sha1 "b9a82b546675d67caa321b9fb7df039cb7f31834" => :lion
+    sha1 "06487ec43710bbfae00586d5ed3324b4ae2f1f6e" => :yosemite
+    sha1 "535de5a50649be803c111fb2ace8a2bf2b21cfbd" => :mavericks
+    sha1 "d549b2044132c0686dcddaf431fea57ae20e6dc5" => :mountain_lion
   end
 
   depends_on :macos => :lion
@@ -16,6 +15,7 @@ class Rethinkdb < Formula
   # Reported upstream: https://github.com/rethinkdb/rethinkdb/issues/2581
   depends_on :xcode => :build
   depends_on "boost" => :build
+  depends_on "openssl"
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
@@ -73,6 +73,11 @@ class Rethinkdb < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    shell_output("#{bin}/rethinkdb create -d test")
+    assert File.read("test/metadata").start_with?("RethinkDB")
   end
 end
 __END__

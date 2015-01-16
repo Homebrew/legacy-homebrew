@@ -6,11 +6,11 @@ class UnsignedKextRequirement < Requirement
   satisfy { MacOS.version < :yosemite }
 
   def message
-    <<-EOS.undent
-      OS X Mavericks or older is required for this package.
-      OS X Yosemite introduced a strict unsigned kext ban which breaks this package.
-      You should remove this package from your system and attempt to find upstream
-      binaries to use instead.
+    s = <<-EOS.undent
+      Building this formula from source isn't possible due to OS X
+      Yosemite and above's strict unsigned kext ban.
     EOS
+    s += super
+    s
   end
 end

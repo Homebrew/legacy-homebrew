@@ -2,22 +2,21 @@ require 'formula'
 
 class Ccache < Formula
   homepage 'http://ccache.samba.org/'
-  url 'http://samba.org/ftp/ccache/ccache-3.1.10.tar.bz2'
-  sha1 'f78154d526b98546c27e5ef480354f3ce021abe2'
+  url 'http://samba.org/ftp/ccache/ccache-3.2.1.tar.bz2'
+  sha1 '6441f394720b3ab0498fa8e817e2851399c23095'
 
   bottle do
-    cellar :any
-    sha1 "5679d6b03cb483ea5a410b64683879351b417bd5" => :yosemite
-    sha1 "a8ea6388d840a5010cc1335aac6a16f937618446" => :mavericks
-    sha1 "5562df8168b3cc70cf8ca74c70c2baa2df5be6a6" => :mountain_lion
+    sha1 "ad628a17b9e5a2ddea525f6d2d5a62fd1e4b760e" => :yosemite
+    sha1 "0f418e54212ce0f3794cb07b696dae355bb98616" => :mavericks
+    sha1 "daec380da3fe10e2daad3ea80d7db86f43d5e00c" => :mountain_lion
   end
 
   head do
     url 'https://github.com/jrosdahl/ccache.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install

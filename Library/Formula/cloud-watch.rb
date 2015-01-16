@@ -6,10 +6,6 @@ class CloudWatch < AmazonWebServicesFormula
   version '1.0.20.0'
   sha1 'c3f5b856b3ff8e1ae06d0ad5db5dd27c214c4881'
 
-  def install
-    standard_install
-  end
-
   def caveats
     s = standard_instructions "AWS_CLOUDWATCH_HOME"
     s += <<-EOS.undent

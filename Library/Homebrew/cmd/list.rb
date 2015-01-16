@@ -31,6 +31,7 @@ module Homebrew
     lib/gio/*
     lib/node_modules/*
     lib/python[23].[0-9]/*
+    share/doc/homebrew/*
     share/info/dir
     share/man/man1/brew.1
     share/man/whatis

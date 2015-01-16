@@ -13,12 +13,12 @@ module OS
         when "10.6"  then "3.2.6"
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
-        when "10.9"  then "6.1"
-        when "10.10" then "6.1"
+        when "10.9"  then "6.1.1"
+        when "10.10" then "6.1.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
           if MacOS.version > "10.10"
-            "6.1"
+            "6.1.1"
           else
             raise "Mac OS X '#{MacOS.version}' is invalid"
           end
@@ -53,7 +53,7 @@ module OS
 
       # Ask Spotlight where Xcode is. If the user didn't install the
       # helper tools and installed Xcode in a non-conventional place, this
-      # is our only option. See: http://superuser.com/questions/390757
+      # is our only option. See: https://superuser.com/questions/390757
       def bundle_path
         MacOS.app_with_bundle_id(V4_BUNDLE_ID, V3_BUNDLE_ID)
       end
@@ -77,7 +77,7 @@ module OS
 
         %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
           if File.file? path
-            `#{path} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+            Utils.popen_read(path, "-version") =~ /Xcode (\d(\.\d)*)/
             return $1 if $1
           end
         end
@@ -160,8 +160,8 @@ module OS
 
       def latest_version
         case MacOS.version
-        when "10.10" then "600.0.54"
-        when "10.9"  then "600.0.54"
+        when "10.10" then "600.0.56"
+        when "10.9"  then "600.0.56"
         when "10.8"  then "503.0.40"
         else
           "425.0.28"

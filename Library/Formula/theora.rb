@@ -19,7 +19,7 @@ class Theora < Formula
   depends_on "libvorbis"
 
   def install
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-oggtest",

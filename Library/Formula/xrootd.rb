@@ -1,15 +1,15 @@
-require "formula"
-
 class Xrootd < Formula
   homepage "http://xrootd.org"
-  url "http://xrootd.org/download/v4.0.4/xrootd-4.0.4.tar.gz"
-  sha1 "e19432bfc016319f6e653674cfe71b308b296925"
+  url "http://xrootd.org/download/v4.1.1/xrootd-4.1.1.tar.gz"
+  sha1 "ed19edf50e0c641f74a78e13b78d2d70d59410f7"
+  head "https://github.com/xrootd/xrootd.git"
 
   bottle do
     cellar :any
-    sha1 "755130a388fb467ddaf44a93494172876ba9af71" => :yosemite
-    sha1 "26bcf7eff4cf9dc93ba5940764ed5671fe1fe1d9" => :mavericks
-    sha1 "f5f476756b9f03fa0c3900861c08b28237c6c330" => :mountain_lion
+    revision 1
+    sha1 "9a9d65cd4671a62253bf1d270d0e7e789e4385f7" => :yosemite
+    sha1 "81dc9c675bb2fff6a63079bd0d61c0a8dbad2344" => :mavericks
+    sha1 "02b5631c4943e11c45d03ce75fbd133f90170265" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -18,7 +18,7 @@ class Xrootd < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      system "make install"
+      system "make", "install"
     end
     share.install prefix/"man"
   end

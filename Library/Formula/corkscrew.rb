@@ -8,7 +8,7 @@ class Corkscrew < Formula
   depends_on "libtool" => :build
 
   def install
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

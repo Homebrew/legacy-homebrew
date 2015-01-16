@@ -2,17 +2,18 @@ require "formula"
 
 class Burp < Formula
   homepage "http://burp.grke.org/"
-  url "https://downloads.sourceforge.net/project/burp/burp-1.4.20/burp-1.4.20.tar.bz2"
-  sha1 "8c72010210fcfb6a7a18f2c4a181ea377581b8cf"
+  url "https://downloads.sourceforge.net/project/burp/burp-1.4.28/burp-1.4.28.tar.bz2"
+  sha1 "ddd5340db6aac1fa2e58c1e66c89730d8fd9bfb5"
   head "https://github.com/grke/burp.git"
 
   bottle do
-    sha1 "939c4d703cf7d872f26dc1548d06c6d50346f9f6" => :mavericks
-    sha1 "d9e93bc2f214ee3c86d2c64bd8e4dd9d8c651455" => :mountain_lion
-    sha1 "0c2be2b9fc6cec00e69dccce60f9ae87ca343929" => :lion
+    sha1 "d27f35a6552777084aac22adadb989d3bd6fab90" => :yosemite
+    sha1 "48e9795082e84df84155bd0d23f4613aecd5b278" => :mavericks
+    sha1 "9ef6db0acae148b70d4fc266db84b7174904aa52" => :mountain_lion
   end
 
   depends_on "librsync"
+  depends_on "openssl"
 
   # patches to change directories to brew conventions in Makefile and config files
   patch :DATA

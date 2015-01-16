@@ -21,6 +21,8 @@ class Pango < Formula
     sha1 "ea288645c2ca58b4addf29c0140fb3ecec6ea3ab" => :mountain_lion
   end
 
+  option :universal
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'cairo'
@@ -35,6 +37,8 @@ class Pango < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules

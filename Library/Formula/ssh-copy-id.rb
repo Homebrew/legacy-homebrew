@@ -1,22 +1,23 @@
-require 'formula'
-
 class SshCopyId < Formula
-  homepage 'http://www.openssh.com/'
-  url 'http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.6p1.tar.gz'
-  mirror 'http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.6p1.tar.gz'
-  version '6.6p1'
-  sha1 'b850fd1af704942d9b3c2eff7ef6b3a59b6a6b6e'
+  homepage "http://www.openssh.com/"
+  url "http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.7p1.tar.gz"
+  mirror "http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.7p1.tar.gz"
+  version "6.7p1"
+  sha1 "14e5fbed710ade334d65925e080d1aaeb9c85bf6"
 
   bottle do
     cellar :any
-    sha1 "744408742dfae4e3bedd78014bcabc1693ca0d46" => :yosemite
-    sha1 "c62e6863235b9cb0dc9c78c04971b8692332f935" => :mavericks
-    sha1 "76b719c4c3391344d5aa2d22ded2fcc0db45f2c9" => :mountain_lion
-    sha1 "4b679aea29d2ec0e9fd2292cc7ea6b3955747096" => :lion
+    sha1 "5e9e5c5e53951435d1a6b408401301fbba2e6ee4" => :yosemite
+    sha1 "4ea46c7153cf26546b9d794cf9b63722c191faec" => :mavericks
+    sha1 "409ea4f6ba8a6f6d6fce94d33d6c8a59091ab89b" => :mountain_lion
   end
 
   def install
-    bin.install 'contrib/ssh-copy-id'
-    man1.install 'contrib/ssh-copy-id.1'
+    bin.install "contrib/ssh-copy-id"
+    man1.install "contrib/ssh-copy-id.1"
+  end
+
+  test do
+    shell_output bin/"ssh-copy-id -h", 1
   end
 end

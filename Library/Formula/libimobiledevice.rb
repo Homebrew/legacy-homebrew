@@ -1,5 +1,3 @@
-require "formula"
-
 class Libimobiledevice < Formula
   homepage "http://www.libimobiledevice.org/"
   url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.7.tar.bz2"
@@ -14,7 +12,7 @@ class Libimobiledevice < Formula
   end
 
   head do
-    url "http://cgit.sukimashita.com/libimobiledevice.git"
+    url "http://git.sukimashita.com/libimobiledevice.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build

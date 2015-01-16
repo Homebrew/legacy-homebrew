@@ -4,13 +4,12 @@ class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url "http://download.osgeo.org/gdal/1.11.1/gdal-1.11.1.tar.gz"
   sha1 "e2c67481932ec9fb6ec3c0faadc004f715c4eef4"
-  revision 1
+  revision 3
 
   bottle do
-    revision 2
-    sha1 "bc2a281841b0b5179ceeb352a6c1c63e468903cc" => :yosemite
-    sha1 "cff8c3c89558603d579255e9a8fd7b00f4c99f34" => :mavericks
-    sha1 "93908f8c4570af931a9096aa73a7c2b03b692d33" => :mountain_lion
+    sha1 "672ef7894b473fbe7650bd442c06e8e61a2415f0" => :yosemite
+    sha1 "ccfd06fd15e86bbc24e5475e2be27a2bdb487986" => :mavericks
+    sha1 "fd2b45f6412a9459bcda143baa57cda6c63aad61" => :mountain_lion
   end
 
   head do
@@ -61,6 +60,7 @@ class Gdal < Formula
     depends_on "cfitsio"
     depends_on "epsilon"
     depends_on "libdap"
+    depends_on "libxml2"
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
@@ -70,6 +70,17 @@ class Gdal < Formula
     depends_on "xz" # get liblzma compression algorithm library from XZutils
     depends_on "poppler"
     depends_on "json-c"
+  end
+
+  stable do
+    # REMOVE when 1.11.2 is released
+    # Fix segfault when executing OGR2SQLITE_Register() when compiled against sqlite 3.8.7
+    # See: http://trac.osgeo.org/gdal/ticket/5725, https://github.com/OSGeo/gdal/commit/12d3b98
+    # Fixes issue with QGIS's Save as... for vector layers: http://hub.qgis.org/issues/11526
+    patch :p2 do
+      url "https://github.com/OSGeo/gdal/commit/12d3b984a052c59ee336f952902b82ace01ba31c.diff"
+      sha1 "844bb827327f9c64918499f3cce3ded9414952c4"
+    end
   end
 
   # Extra linking libraries in configure test of armadillo may throw warning
@@ -259,8 +270,6 @@ class Gdal < Formula
     sqlite = Formula["sqlite"]
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
     ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
-    # Needed by libdap
-    ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.
     ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"

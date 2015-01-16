@@ -29,12 +29,12 @@ class Lilypond < Formula
   depends_on "pango"
   depends_on "ghostscript"
   depends_on "mftrace"
-  depends_on "fontforge" => ["with-x"]
+  depends_on "fontforge" => "with-x11"
   depends_on "fondu"
   depends_on "texinfo"
 
   # Additional dependencies for guile1.8.
-  depends_on :libtool
+  depends_on "libtool" => :build
   depends_on "libffi"
   depends_on "libunistring"
   depends_on "bdw-gc"

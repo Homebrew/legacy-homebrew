@@ -1,5 +1,3 @@
-require "formula"
-
 class Zeromq < Formula
   homepage "http://www.zeromq.org/"
   url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
@@ -16,23 +14,25 @@ class Zeromq < Formula
   head do
     url "https://github.com/zeromq/libzmq.git"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option :universal
-  option "with-pgm", "Build with PGM extension"
+  option "with-libpgm", "Build with PGM extension"
+
+  deprecated_option "with-pgm" => "with-libpgm"
 
   depends_on "pkg-config" => :build
-  depends_on "libpgm" if build.with? "pgm"
+  depends_on "libpgm" => :optional
   depends_on "libsodium" => :optional
 
   def install
     ENV.universal_binary if build.universal?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    if build.with? "pgm"
+    if build.with? "libpgm"
       # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
       ENV['OpenPGM_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
       ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
@@ -47,11 +47,19 @@ class Zeromq < Formula
     system "make", "install"
   end
 
-  def caveats; <<-EOS.undent
-    To install the zmq gem on 10.6 with the system Ruby on a 64-bit machine,
-    you may need to do:
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <assert.h>
+      #include <zmq.h>
 
-        ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{opt_prefix}
+      int main()
+      {
+        zmq_msg_t query;
+        assert(0 == zmq_msg_init_size(&query, 1));
+        return 0;
+      }
     EOS
+    system ENV.cc, "test.c", "-lzmq", "-o", "test"
+    system "./test"
   end
 end

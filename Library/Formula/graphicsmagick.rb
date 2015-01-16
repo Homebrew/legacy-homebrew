@@ -4,7 +4,7 @@ class Graphicsmagick < Formula
   homepage 'http://www.graphicsmagick.org/'
   url 'https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.20/GraphicsMagick-1.3.20.tar.bz2'
   sha256 '7caf27691ec21682de1f0259c9243725db7cdeca699c40958c28aece99e4f1dc'
-  head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
+  head 'http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick', :using => :hg
 
   bottle do
     sha1 "3e681ecf2e126ee5322a6c05e4228670de8b7f8e" => :mavericks

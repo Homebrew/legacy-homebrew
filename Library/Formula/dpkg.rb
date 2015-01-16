@@ -1,19 +1,41 @@
-require 'formula'
-
 class Dpkg < Formula
-  homepage 'https://wiki.debian.org/Teams/Dpkg'
-  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.10.tar.xz'
-  sha1 '2d88ef04db662d046fadb005bb31667fc0ba64de'
+  homepage "https://wiki.debian.org/Teams/Dpkg"
+  url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.21.tar.xz"
+  mirror "http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.21.tar.xz"
+  sha256 "3ed776627181cb9c1c9ba33f94a6319084be2e9ec9c23dd61ce784c4f602cf05"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gnu-tar'
+  bottle do
+    sha1 "15101b6619ae657e7d59e72d30155dd6fd7498fd" => :yosemite
+    sha1 "05b2f939c6b43d338dbfb83757fa358641ef7bb1" => :mavericks
+    sha1 "f57689470ce7af05f25fa7a31ee158db1d0711e5" => :mountain_lion
+  end
 
-  # Fixes the PERL_LIBDIR.
-  patch :DATA
+  depends_on "pkg-config" => :build
+  depends_on "gnu-tar"
+  depends_on "xz"
+
+  # Fixes the PERL_LIBDIR and MD5/SHA tool names & usage. Reported upstream:
+  # https://lists.debian.org/debian-dpkg/2014/11/msg00024.html
+  # https://lists.debian.org/debian-dpkg/2014/11/msg00027.html
+  patch do
+    url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/dpkg/dpkgosx.diff"
+    sha1 "b74e5a0738bd4f6e8244d49b04ed9cb44bf5de6e"
+  end
 
   def install
+    # There was a commit merged prior to this release that forgot to add ; to the end of function lines
+    # Consequently = Build failure. Put the ; in here to fix the issue.
+    # Also removes a function left over from previous refactoring which causes issues now.
+    # This will all be in the 1.17.22 release.
+    # https://lists.debian.org/debian-dpkg/2014/11/msg00029.html
+    inreplace "lib/dpkg/fdio.c" do |s|
+      s.gsub! "fs_preallocate_setup(&fs, F_ALLOCATECONTIG, offset, len);", "fd_preallocate_setup(&fs, F_ALLOCATECONTIG, offset, len);"
+      s.gsub! "fs_preallocate_setup(&fs, F_ALLOCATEALL, offset, len);", "fd_preallocate_setup(&fs, F_ALLOCATEALL, offset, len);"
+      s.gsub! "rc = fcntl(fd, F_PREALLOCATE, &fs)", "rc = fcntl(fd, F_PREALLOCATE, &fs);"
+    end
+
     # We need to specify a recent gnutar, otherwise various dpkg C programs will
-    # use the system 'tar', which will fail because it lacks certain switches.
+    # use the system "tar", which will fail because it lacks certain switches.
     ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -22,7 +44,7 @@ class Dpkg < Formula
                           "--disable-start-stop-daemon",
                           "--disable-update-alternatives"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
@@ -30,92 +52,23 @@ class Dpkg < Formula
     commands such as `dpkg -i`, `dpkg --configure` will fail.
     EOS
   end
-end
 
-__END__
-diff --git a/configure b/configure
-index 668eefd..2f54912 100755
---- a/configure
-+++ b/configure
-@@ -8875,9 +8875,7 @@ if test "$PERL" = "no" || test ! -x "$PERL"; then
- fi
- # Let the user override the variable.
- if test -z "$PERL_LIBDIR"; then
--PERL_LIBDIR=$($PERL -MConfig -e 'my $r = $Config{vendorlibexp};
--                                 $r =~ s/$Config{vendorprefixexp}/\$(prefix)/;
--                                 print $r')
-+PERL_LIBDIR="$prefix/perl"
- fi
- 
- 
-diff --git a/scripts/Dpkg/Checksums.pm b/scripts/Dpkg/Checksums.pm
-index 07a917c..86d267a 100644
---- a/scripts/Dpkg/Checksums.pm
-+++ b/scripts/Dpkg/Checksums.pm
-@@ -51,15 +51,15 @@ about supported checksums.
- 
- my $CHECKSUMS = {
-     md5 => {
--	program => [ 'md5sum' ],
-+	program => [ 'md5', '-q' ],
- 	regex => qr/[0-9a-f]{32}/,
-     },
-     sha1 => {
--	program => [ 'sha1sum' ],
-+	program => [ 'shasum', '-a', '1' ],
- 	regex => qr/[0-9a-f]{40}/,
-     },
-     sha256 => {
--	program => [ 'sha256sum' ],
-+	program => [ 'shasum', '-a', '256' ],
- 	regex => qr/[0-9a-f]{64}/,
-     },
- };
-diff --git a/scripts/Dpkg/Source/Archive.pm b/scripts/Dpkg/Source/Archive.pm
-index 6257702..af6101d 100644
---- a/scripts/Dpkg/Source/Archive.pm
-+++ b/scripts/Dpkg/Source/Archive.pm
-@@ -48,7 +48,7 @@ sub create {
-     $spawn_opts{from_pipe} = \*$self->{tar_input};
-     # Call tar creation process
-     $spawn_opts{delete_env} = [ 'TAR_OPTIONS' ];
--    $spawn_opts{exec} = [ 'tar', '--null', '-T', '-', '--numeric-owner',
-+    $spawn_opts{exec} = [ 'gtar', '--null', '-T', '-', '--numeric-owner',
-                             '--owner', '0', '--group', '0',
-                             @{$opts{options}}, '-cf', '-' ];
-     *$self->{pid} = spawn(%spawn_opts);
-@@ -125,7 +125,7 @@ sub extract {
- 
-     # Call tar extraction process
-     $spawn_opts{delete_env} = [ 'TAR_OPTIONS' ];
--    $spawn_opts{exec} = [ 'tar', '--no-same-owner', '--no-same-permissions',
-+    $spawn_opts{exec} = [ 'gtar', '--no-same-owner', '--no-same-permissions',
-                             @{$opts{options}}, '-xf', '-' ];
-     spawn(%spawn_opts);
-     $self->close();
-diff --git a/scripts/Makefile.am b/scripts/Makefile.am
-index 45cb3d4..bd55234 100644
---- a/scripts/Makefile.am
-+++ b/scripts/Makefile.am
-@@ -119,7 +119,7 @@ nobase_dist_perllib_DATA = \
- man3_MANS =
- 
- do_perl_subst = $(AM_V_GEN) \
--		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL):" \
-+		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL) -I$(PERL_LIBDIR):" \
- 		    -e "s:\$$CONFDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$CONFDIR='$(pkgconfdir)':" \
- 		    -e "s:\$$ADMINDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$ADMINDIR='$(admindir)':" \
- 		    -e "s:\$$LIBDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$LIBDIR='$(pkglibdir)':" \
-diff --git a/scripts/Makefile.in b/scripts/Makefile.in
-index 098c202..4b089d7 100644
---- a/scripts/Makefile.in
-+++ b/scripts/Makefile.in
-@@ -490,7 +490,7 @@ nobase_dist_perllib_DATA = \
- # Keep it even if empty to have man3dir correctly set
- man3_MANS = 
- do_perl_subst = $(AM_V_GEN) \
--		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL):" \
-+		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL) -I$(PERL_LIBDIR):" \
- 		    -e "s:\$$CONFDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$CONFDIR='$(pkgconfdir)':" \
- 		    -e "s:\$$ADMINDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$ADMINDIR='$(admindir)':" \
- 		    -e "s:\$$LIBDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$LIBDIR='$(pkglibdir)':" \
+  test do
+    # Do not remove the empty line from the end of the control file
+    # All deb control files MUST end with an empty line
+    mkdir_p "test/DEBIAN"
+    mkdir_p "test/data"
+    touch "test/data/empty.txt"
+
+    (testpath/"test"/"DEBIAN"/"control").write <<-EOS.undent
+      Package: test
+      Version: 1.40.99
+      Architecture: amd64
+      Description: I am a test
+      Maintainer: Dpkg Developers <test@test.org>
+
+    EOS
+    system "#{bin}/dpkg", "-b", testpath/"test", "test.deb"
+    assert File.exist?("test.deb")
+  end
+end

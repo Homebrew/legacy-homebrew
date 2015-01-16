@@ -1,20 +1,18 @@
-require "formula"
-
 class Libxmp < Formula
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.0/libxmp-4.3.0.tar.gz"
-  sha1 "7cc6acef4d3b86b9073851649d1b5f6f4a904e43"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.3/libxmp-4.3.3.tar.gz"
+  sha1 "96587f6412dedbba80558ef6c25a5bf966fa5887"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "05a81df01e7861ccefd955673bd1a17604bd4100" => :yosemite
-    sha1 "772668a1ad68de0596a42ee9c75c37b82f5d027f" => :mavericks
+    sha1 "6c1d8e11eeed747b2c3eef68580242aa54fd534d" => :yosemite
+    sha1 "95b085e5280cd384298f4076670b2c748dd57f14" => :mavericks
+    sha1 "baa6fa4eb7e74e3212ede70e140c3ac535bd68c9" => :mountain_lion
   end
 
   head do
     url "git://git.code.sf.net/p/xmp/libxmp"
-    depends_on :autoconf
+    depends_on "autoconf" => :build
   end
 
   def install

@@ -3,26 +3,13 @@ require "formula"
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
 
-  stable do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.5.tar.gz"
-    sha1 "f5a68505a0de1152b534d62a8f0147d258d503a0"
-
-    # Review this patch with the next stable release.
-    # Note it is a different patch to the one applied to all builds further below.
-    # This is already fixed in the devel & HEAD builds.
-    if MacOS.version == :yosemite
-      patch do
-        url "https://github.com/mongodb/mongo/commit/759b6e8.diff"
-        sha1 "63d901ac81681fbe8b92dc918954b247990ab2fb"
-      end
-    end
-  end
+  url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.7.tar.gz"
+  sha1 "c11c9d31063f2fc126249f7580e8417a8f4ef2b5"
 
   bottle do
-    revision 2
-    sha1 "e6da509908fdacf9eb0f16e850e0516cd0898072" => :yosemite
-    sha1 "5ab96fe864e725461eea856e138417994f50bb32" => :mavericks
-    sha1 "193e639b7b79fbb18cb2e0a6bbabfbc9b8cbc042" => :mountain_lion
+    sha1 "4b1749b645a744b38b4959daac46bf80353e3b32" => :yosemite
+    sha1 "95725282b89443fafcdc0974e60b10bd295b48ee" => :mavericks
+    sha1 "2da546a136e48a5f9dc86287c329b5741b77bd14" => :mountain_lion
   end
 
   devel do

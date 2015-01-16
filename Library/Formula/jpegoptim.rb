@@ -1,5 +1,3 @@
-require "formula"
-
 class Jpegoptim < Formula
   homepage "https://github.com/tjko/jpegoptim"
   url "https://github.com/tjko/jpegoptim/archive/RELEASE.1.4.1.tar.gz"
@@ -19,6 +17,10 @@ class Jpegoptim < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     ENV.j1 # Install is not parallel-safe
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert_match /OK/, shell_output("#{bin}/jpegoptim --noaction #{test_fixtures("test.jpg")}")
   end
 end

@@ -8,10 +8,6 @@ class AwsCfnTools < AmazonWebServicesFormula
 
   depends_on 'ec2-api-tools'
 
-  def install
-    standard_install
-  end
-
   def caveats
     s = standard_instructions "AWS_CLOUDFORMATION_HOME"
     s += <<-EOS.undent

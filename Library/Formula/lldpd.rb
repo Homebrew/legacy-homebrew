@@ -2,8 +2,14 @@ require 'formula'
 
 class Lldpd < Formula
   homepage 'http://vincentbernat.github.io/lldpd/'
-  url 'http://media.luffy.cx/files/lldpd/lldpd-0.7.8.tar.gz'
-  sha1 '78cd2848a2d5822ebae5a78a922d69596d3222e0'
+  url 'http://media.luffy.cx/files/lldpd/lldpd-0.7.12.tar.gz'
+  sha1 '2d602aaaad01d1f76f8e1c87e48dca1c6725ba78'
+
+  bottle do
+    sha1 "c77debb346c325a44b8e91a7b983b251dc1db76f" => :yosemite
+    sha1 "52737f6933bc2d052ece4877d36c021fd6e648c1" => :mavericks
+    sha1 "6d6d4f6d4b7e23b9f707db180c99c24174ff9293" => :mountain_lion
+  end
 
   option 'with-snmp', "Build SNMP subagent support"
   option 'with-json', "Build JSON support for lldpcli"

@@ -1,9 +1,9 @@
 require "formula"
 
 class Jenkins < Formula
-  homepage "http://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.589/jenkins.war"
-  sha1 "a2c520c4b1ece67c57f4c9d38c3106e1a8ddf714"
+  homepage "https://jenkins-ci.org"
+  url "http://mirrors.jenkins-ci.org/war/1.596/jenkins.war"
+  sha1 "82b77e3a34a6a5f2a35ce1e75dee0e9730b1fdc0"
 
   head "https://github.com/jenkinsci/jenkins.git"
 
@@ -14,9 +14,10 @@ class Jenkins < Formula
     else
       libexec.install "jenkins.war"
     end
+    bin.write_jar_script libexec/"jenkins.war", "jenkins"
   end
 
-  plist_options :manual => "java -jar #{HOMEBREW_PREFIX}/opt/jenkins/libexec/jenkins.war"
+  plist_options :manual => "jenkins"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

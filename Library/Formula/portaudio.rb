@@ -18,6 +18,7 @@ class Portaudio < Formula
   option :universal
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",

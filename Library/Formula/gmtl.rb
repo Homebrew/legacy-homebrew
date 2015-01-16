@@ -5,19 +5,19 @@ class Gmtl < Formula
 
   stable do
     url "https://downloads.sourceforge.net/project/ggt/Generic%20Math%20Template%20Library/0.6.1/gmtl-0.6.1.tar.gz"
-  bottle do
-    cellar :any
-    sha1 "905af4149c167870069b22d3cb082897f8bf1259" => :mavericks
-    sha1 "09ef2b92b09f46a1ee33866fda35494bbe545819" => :mountain_lion
-    sha1 "3444ed4b6eb1859a64f3f7250656ae5c1e074fd3" => :lion
-  end
-
     sha1 "473a454d17956d3ce3babafdb57f73c0685579fd"
 
     # Build assumes that Python is a framework, which isn't always true. See:
     # https://sourceforge.net/tracker/?func=detail&aid=3172856&group_id=43735&atid=437247
     # The SConstruct from gmtl's HEAD doesn't need to be patched
     patch :DATA
+  end
+
+  bottle do
+    cellar :any
+    sha1 "905af4149c167870069b22d3cb082897f8bf1259" => :mavericks
+    sha1 "09ef2b92b09f46a1ee33866fda35494bbe545819" => :mountain_lion
+    sha1 "3444ed4b6eb1859a64f3f7250656ae5c1e074fd3" => :lion
   end
 
   head 'https://ggt.svn.sourceforge.net/svnroot/ggt/trunk/'

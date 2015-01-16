@@ -13,7 +13,7 @@ module Homebrew
       end
     end
 
-    which("ronn") || odie("You need to \"gem install ronn\" and put it in your path.")
+    Homebrew.install_gem_setup_path! "ronn"
 
     if ARGV.include?("--server") || ARGV.include?("-s")
       puts "Man page test server: http://localhost:1207/"
