@@ -3,6 +3,13 @@ class Sqlmap < Formula
   url "https://github.com/sqlmapproject/sqlmap/archive/0.9.tar.gz"
   sha1 "25d7c13fc6e8bb55a1b4d9ba60a7ebd558ad0374"
   head "https://github.com/sqlmapproject/sqlmap.git"
+  bottle do
+    cellar :any
+    sha1 "7873a7afe52b4799d46aabcb33f70e034b892153" => :yosemite
+    sha1 "2ac99f9ed995d834cb31022f557599edf0e3776d" => :mavericks
+    sha1 "db0f7c28bcd5dcc58f0af60608d5f4e67cee149f" => :mountain_lion
+  end
+
   revision 1
 
   def install
