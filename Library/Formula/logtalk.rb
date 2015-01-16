@@ -1,5 +1,3 @@
-require "formula"
-
 class Logtalk < Formula
   desc "Object-oriented logic programming language"
   homepage "http://logtalk.org"
@@ -14,16 +12,50 @@ class Logtalk < Formula
     sha256 "197132d44948afbc3c0ae1c811ff8c2b81a93934f099be8a4271eb49d82ceabf" => :mountain_lion
   end
 
-  option "swi-prolog", "Build using SWI Prolog as backend"
-  option "gnu-prolog", "Build using GNU Prolog as backend (Default)"
+  option "with-swi-prolog", "Build using SWI Prolog as backend"
+  option "with-gnu-prolog", "Build using GNU Prolog as backend"
+  option "with-yap-prolog", "Build using YAP Prolog as backend (Default)"
 
-  if build.include?("swi-prolog")
+  deprecated_option "swi-prolog" => "with-swi-prolog"
+  deprecated_option "gnu-prolog" => "with-gnu-prolog"
+
+  if build.with?("swi-prolog")
     depends_on "swi-prolog"
-  else
+  elsif build.with?("gnu-prolog")
     depends_on "gnu-prolog"
+  else
+    depends_on "yap"
   end
 
   def install
     cd("scripts") { system "./install.sh", "-p", prefix }
+  end
+
+  def caveats; <<-EOS.undent
+    You must set the LOGTALKHOME and LOGTALKUSER environment variables before
+    using logtalk:
+
+      export LOGTALKHOME=#{share}/logtalk-#{version}-stable
+      export LOGTALKUSER=~/logtalk
+  EOS
+  end
+
+  test do
+    user_setup = testpath/"test-logtalk"
+    home = "#{share}/logtalk-#{version}-stable"
+    ENV["LOGTALKHOME"] = home
+    ENV["LOGTALKUSER"] = user_setup
+    system "#{bin}/logtalk_user_setup"
+    assert File.directory? user_setup
+
+    lgt = if build.with?("swi-prolog")
+            "swilgt"
+          elsif build.with?("gnu-prolog")
+            "gplgt"
+          else
+            "yaplgt"
+          end
+
+    pipe_output("#{lgt} #{home}/examples/ack/ack.lgt 2>/dev/null", "", 0)
   end
 end
