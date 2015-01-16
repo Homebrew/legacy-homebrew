@@ -49,15 +49,15 @@ module Homebrew
         end
 
         # devel-only without --devel is an error
-        if not ARGV.build_devel? and f.stable.nil?
-          if f.head.nil?
-            raise <<-EOS.undent
-            #{f.name} is a devel-only formula
-            Install with `brew install --devel #{f.name}`
-            EOS
-          else
-            raise "#{f.name} has no stable download, please choose --devel or --HEAD"
-          end
+        if not ARGV.build_devel? and f.stable.nil? and f.head.nil?
+          raise <<-EOS.undent
+          #{f.name} is a devel-only formula
+          Install with `brew install --devel #{f.name}`
+          EOS
+        end
+
+        if ARGV.build_stable? and f.stable.nil?
+          raise "#{f.name} has no stable download, please choose --devel or --HEAD"
         end
 
         # --HEAD, fail with no head defined
