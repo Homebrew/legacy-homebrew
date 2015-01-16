@@ -2,8 +2,8 @@ require 'formula'
 
 class Dash < Formula
   homepage 'http://gondor.apana.org.au/~herbert/dash/'
-  url 'http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.7.tar.gz'
-  sha1 'a3ebc16f2e2c7ae8adf64e5e62ae3dcb631717c6'
+  url "http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.8.tar.gz"
+  sha1 "cd058935bba545427caa375337afe8a6309477d2"
 
   head do
     url 'https://git.kernel.org/pub/scm/utils/dash/dash.git'
