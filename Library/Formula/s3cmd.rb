@@ -2,15 +2,9 @@ require 'formula'
 
 class S3cmd < Formula
   homepage 'http://s3tools.org/s3cmd'
-  url 'https://github.com/s3tools/s3cmd/archive/v1.0.1.tar.gz'
-  sha1 '98ef9ea9e2dc56ab98f84610883d3d371c65e43a'
+  url 'https://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.0/s3cmd-1.5.0.tar.gz'
+  sha1 '53ebc485329cb15cad8f61ca0c8c2d06563ee2f3'
   head 'https://github.com/s3tools/s3cmd.git'
-
-  devel do
-    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-rc1.tar.gz'
-    sha1 '49ce9e6d81b3697529e6a4b9749b1c6862c1751f'
-    version "1.5.0-rc1"
-  end
 
   bottle do
     cellar :any
