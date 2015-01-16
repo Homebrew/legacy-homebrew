@@ -73,7 +73,7 @@ class Stormssh < Formula
     system bin/"storm", "--version"
 
     sshconfig_path = (testpath/"sshconfig")
-    FileUtils.touch sshconfig_path
+    touch sshconfig_path
 
     system bin/"storm", "add", "--config", "sshconfig", "aliastest", "user@example.com:22"
 
