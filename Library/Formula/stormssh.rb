@@ -4,6 +4,13 @@ class Stormssh < Formula
   sha1 "3788fca510dc1a46aa21adea98749c354d85b3cc"
   head "https://github.com/emre/storm.git"
 
+  bottle do
+    cellar :any
+    sha1 "9eea265af64ced78ae0b8019a7ee351ebe8740cf" => :yosemite
+    sha1 "e1f25f89dabc1bdc52bced707b1199e7abd50696" => :mavericks
+    sha1 "258a35abfd77d8e2f69230db4aca27dd3fc8a586" => :mountain_lion
+  end
+
   conflicts_with "storm", :because => "both install 'storm' binary"
 
   resource "pycrypto" do
