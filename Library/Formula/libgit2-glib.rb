@@ -2,6 +2,7 @@ class Libgit2Glib < Formula
   homepage "https://github.com/GNOME/libgit2-glib"
   url "http://ftp.gnome.org/pub/GNOME/sources/libgit2-glib/0.0/libgit2-glib-0.0.24.tar.xz"
   sha256 "8a0a6f65d86f2c8cb9bcb20c5e0ea6fd02271399292a71fc7e6852f13adbbdb8"
+  revision 1
 
   bottle do
     sha1 "7224409d10d2d6e2f23ca18ea5e1025a085583ae" => :yosemite
