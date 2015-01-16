@@ -4,7 +4,7 @@ class Stormssh < Formula
   sha1 "3788fca510dc1a46aa21adea98749c354d85b3cc"
   head "https://github.com/emre/storm.git"
 
-  conflicts_with "storm"
+  conflicts_with "storm", :because => "both install 'storm' binary"
 
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz"
@@ -70,8 +70,6 @@ class Stormssh < Formula
   end
 
   test do
-    system bin/"storm", "--version"
-
     sshconfig_path = (testpath/"sshconfig")
     touch sshconfig_path
 
