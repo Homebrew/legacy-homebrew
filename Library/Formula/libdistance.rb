@@ -11,8 +11,8 @@ class Libdistance < Formula
     include.install "distance.h"
     lib.install "libdistance.a"
 
-    system "mkdir #{prefix}/test"
-    system "cp test/test #{prefix}/test/"
+    mkdir "#{prefix}/test"
+    cp "test/test", "#{prefix}/test/"
   end
 
   def test
