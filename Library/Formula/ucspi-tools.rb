@@ -13,7 +13,7 @@ class UcspiTools < Formula
   end
 
   test do
-    `#{bin}/socks`
-    assert_equal 1, $?.exitstatus
+    out = shell_output("#{bin}/socks 2>&1", 1)
+    assert_equal "tcpclient PROXY-HOST PROXY-PORT socks HOST PORT PROGRAM [ARGS...]\n", out
   end
 end
