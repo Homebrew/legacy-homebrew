@@ -7,9 +7,9 @@ class Fzf < Formula
   sha1 "bf912638def189729a4be8455855469b8559f49b"
 
   bottle do
-    sha1 "279c90b368719c32dc4573cbe1b61eeae9476eec" => :yosemite
-    sha1 "78a43ee898cebef1166b96cbd0964cc69fd1d0a7" => :mavericks
-    sha1 "048bd537360330b20ba03e77f2a58bf2157d10a3" => :mountain_lion
+    sha1 "79538bea4c6fc3d2542ea0faf8df17c74327a055" => :yosemite
+    sha1 "ee2b759ecb4e8808f6007760846fec48ac23a982" => :mavericks
+    sha1 "043cd9c8578d26042d6bbb8de76aeebb18c714de" => :mountain_lion
   end
 
   depends_on "go" => :build
