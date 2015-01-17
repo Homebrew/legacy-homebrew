@@ -28,11 +28,13 @@ class Odb < Formula
       system "make", "install"
     }
     
-    ENV.append "CXXFLAGS", "-fno-devirtualize -I#{prefix}/libcutl/include -L#{prefix}/libcutl/lib -I/usr/local/opt/gcc/lib/gcc/4.9/gcc/x86_64-apple-darwin14.0.0/4.9.2/plugin/include -I/usr/local/include"
+    ENV.append "CXXFLAGS", "-fno-devirtualize -I#{prefix}/libcutl/include -L#{prefix}/libcutl/lib -I/usr/local/include"
     #print ENV["CXXFLAGS"]
-    system "./configure", "--prefix=#{prefix}", "--enable-static=yes"
+    system "./configure", "--prefix=#{prefix}"
     system "make", "install"
     bin.env_script_all_files(libexec/"bin", {})
+    (libexec/"libexec/odb").dirname.mkpath
+    (libexec/"libexec").install_symlink(libexec/"odb")
   end
 
   test do
