@@ -100,7 +100,7 @@ class Node < Formula
       # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
       rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      Dir[libexec/"npm/share/man/#{man}/npm*"].each {|f| ln_sf f, HOMEBREW_PREFIX/"share/man/#{man}" }
+      ln_sf Dir[libexec/"npm/share/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     npm_root = node_modules/"npm"
