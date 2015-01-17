@@ -364,14 +364,24 @@ module Homebrew
       dependents = `brew uses #{formula_name}`.split("\n")
       dependents -= @formulae
       dependents = dependents.map {|d| Formulary.factory(d)}
+
       testable_dependents = dependents.select {|d| d.test_defined? && d.stable.bottled? }
 
       formula = Formulary.factory(formula_name)
-      return unless satisfied_requirements?(formula, :stable)
-
       installed_gcc = false
-      deps = formula.stable.deps.to_a
-      reqs = formula.stable.requirements.to_a
+
+      deps = []
+      reqs = []
+
+      if formula.stable
+        return unless satisfied_requirements?(formula, :stable)
+
+        deps |= formula.stable.deps.to_a
+        reqs |= formula.stable.requirements.to_a
+      elsif formula.devel
+        return unless satisfied_requirements?(formula, :devel)
+      end
+
       if formula.devel && !ARGV.include?('--HEAD')
         deps |= formula.devel.deps.to_a
         reqs |= formula.devel.requirements.to_a
