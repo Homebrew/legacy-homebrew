@@ -22,14 +22,10 @@ class Idris < Formula
   depends_on "pkg-config" => :build if build.with? "libffi"
 
   def install
-    cabal_sandbox do
-      flags = []
-      flags << "-f FFI" if build.with? "libffi"
-      flags << "-f release" if build.stable?
-      cabal_install "--only-dependencies", *flags
-      cabal_install "--prefix=#{prefix}", *flags
-    end
-    cabal_clean_lib
+    flags = []
+    flags << "-f FFI" if build.with? "libffi"
+    flags << "-f release" if build.stable?
+    install_cabal_package flags
   end
 
   test do
