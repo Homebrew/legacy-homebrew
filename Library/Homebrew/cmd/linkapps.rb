@@ -4,6 +4,7 @@ require 'keg'
 module Homebrew
   def linkapps
     target_dir = ARGV.include?("--local") ? File.expand_path("~/Applications") : "/Applications"
+    should_copy = ARGV.include?("--copy")
 
     unless File.exist? target_dir
       opoo "#{target_dir} does not exist, stopping."
@@ -33,7 +34,11 @@ module Homebrew
           onoe "#{target} already exists, skipping."
           next
         end
-        system "ln", "-sf", app, target_dir
+        if should_copy
+          system "cp", "-r", app, target_dir
+        else
+          system "ln", "-sf", app, target_dir
+        end
       end
     end
 
