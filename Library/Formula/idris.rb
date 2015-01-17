@@ -9,9 +9,9 @@ class Idris < Formula
   head "https://github.com/idris-lang/Idris-dev.git"
 
   bottle do
-    sha1 "1fd1c7c3f223512d2869e8790c4e5afb0f196409" => :yosemite
-    sha1 "b8a7ffc5ed4429665658e54cefe400bacbc26c53" => :mavericks
-    sha1 "6dc50e41562eef4d18987f6f673b8a77f22a5512" => :mountain_lion
+    sha1 "c25ba4b91264c187485111c5b8c18670c7f0441b" => :yosemite
+    sha1 "df1773cb1800d6c629db9ba194666faf0019de31" => :mavericks
+    sha1 "bbbe93cbd829bb02a9cdbb680805470f29702bbb" => :mountain_lion
   end
 
   depends_on "ghc" => :build
