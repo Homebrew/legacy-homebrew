@@ -2,8 +2,8 @@ require "formula"
 
 class Libbpg < Formula
   homepage "http://bellard.org/bpg/"
-  url "http://bellard.org/bpg/libbpg-0.9.4.tar.gz"
-  sha1 "6c1c950c0ff9a051e4f48bf2ff63f73bc859830d"
+  url "http://bellard.org/bpg/libbpg-0.9.5.tar.gz"
+  sha1 "1eee24f9d9d381b574b86a28d2af1073ab07bb55"
 
   bottle do
     cellar :any
