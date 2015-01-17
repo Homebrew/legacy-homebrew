@@ -21,18 +21,18 @@ class Odb < Formula
     url "http://codesynthesis.com/~boris/tmp/odb/odb-2.3.0-gcc-4.9.0.patch"
     sha1 "9d0fe9db9d8667c76cd6a1bb15e911560796b656"
   end
-
+  
   def install
-    print HOMEBREW_PREFIX.class
     resource("libcutl").stage{
       system "./configure", "--prefix=#{prefix}/libcutl"
       system "make", "install"
     }
-    ENV.append "CXXFLAGS", "-fno-devirtualize -I#{prefix}/libcutl/include -L#{prefix}/libcutl/lib"
-    system "./configure", "--prefix=#{prefix}"
+    
+    ENV.append "CXXFLAGS", "-fno-devirtualize -I#{prefix}/libcutl/include -L#{prefix}/libcutl/lib -I/usr/local/opt/gcc/lib/gcc/4.9/gcc/x86_64-apple-darwin14.0.0/4.9.2/plugin/include -I/usr/local/include"
+    #print ENV["CXXFLAGS"]
+    system "./configure", "--prefix=#{prefix}", "--enable-static=yes"
     system "make", "install"
-
-    #HOMEBREW_PREFIX.install_symlink libexec/"odb.so"
+    bin.env_script_all_files(libexec/"bin", {})
   end
 
   test do
