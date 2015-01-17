@@ -1,7 +1,7 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.2.tar.bz2"
-  sha1 "e167475426e8edf55601e79d3367c2210baa5f11"
+  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.3.tar.bz2"
+  sha1 "160d53a0d6b8df18336fac7f068c390ac2d34cef"
 
   head "git://git.videolan.org/ffmpeg.git"
 
@@ -75,7 +75,7 @@ class Ffmpeg < Formula
             "--enable-avresample",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
-            "--host-ldflags=#{ENV.ldflags}"
+            "--host-ldflags=#{ENV.ldflags}",
            ]
 
     args << "--enable-libx264" if build.with? "x264"
@@ -109,12 +109,12 @@ class Ffmpeg < Formula
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
-      args << "--extra-cflags=" + %x[pkg-config --cflags libopenjpeg].chomp
+      args << "--extra-cflags=" + %x(pkg-config --cflags libopenjpeg).chomp
     end
 
     # These librares are GPL-incompatible, and require ffmpeg be built with
     # the "--enable-nonfree" flag, which produces unredistributable libraries
-    if %w[faac fdk-aac openssl].any? {|f| build.with? f}
+    if %w[faac fdk-aac openssl].any? { |f| build.with? f }
       args << "--enable-nonfree"
     end
 
@@ -149,7 +149,7 @@ class Ffmpeg < Formula
 
     if build.with? "tools"
       system "make", "alltools"
-      bin.install Dir['tools/*'].select {|f| File.executable? f}
+      bin.install Dir["tools/*"].select { |f| File.executable? f }
     end
   end
 
