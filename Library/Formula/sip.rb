@@ -1,7 +1,5 @@
-require 'formula'
-
 class Sip < Formula
-  homepage 'http://www.riverbankcomputing.co.uk/software/sip'
+  homepage "http://www.riverbankcomputing.co.uk/software/sip"
   url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.5/sip-4.16.5.tar.gz"
   sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
 
@@ -11,7 +9,7 @@ class Sip < Formula
     sha1 "0c103fbd3a6dac723336f968d6e1faae23e34a32" => :mountain_lion
   end
 
-  head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
+  head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
@@ -49,5 +47,55 @@ class Sip < Formula
 
   def caveats
     "The sip-dir for Python is #{HOMEBREW_PREFIX}/share/sip."
+  end
+
+  test do
+    (testpath/"test.h").write <<-EOS.undent
+      #pragma once
+      class Test {
+      public:
+        Test();
+        void test();
+      };
+    EOS
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include "test.h"
+      #include <iostream>
+      Test::Test() {}
+      void Test::test()
+      {
+        std::cout << "Hello World!" << std::endl;
+      }
+    EOS
+    (testpath/"test.sip").write <<-EOS.undent
+      %Module test
+      class Test {
+      %TypeHeaderCode
+      #include "test.h"
+      %End
+      public:
+        Test();
+        void test();
+      };
+    EOS
+    (testpath/"run.py").write <<-EOS.undent
+      from test import Test
+      t = Test()
+      t.test()
+    EOS
+    system "#{bin}/sip", "-c", ".", "test.sip"
+    Language::Python.each_python(build) do |python, _version|
+      cppflags = `#{python}-config --cflags`.strip.split
+      ldflags = `#{python}-config --ldflags`.strip.split
+      cppflags << "-I#{include}"
+      ldflags += %w[-L#{lib} -shared -undefined dynamic_lookup]
+      Dir[testpath/"*.cpp"].each do |source|
+        object = File.basename(source, ".cpp") + ".o"
+        system ENV.cxx, "-c", source, "-o", object, *cppflags
+      end
+      link_args= Dir[testpath/"*.o"] + %w[-o test.so] + ldflags
+      system ENV.cxx, *link_args
+      system python, "run.py"
+    end
   end
 end
