@@ -26,6 +26,10 @@ class ClangFormat < Formula
   depends_on "ninja" => :build
   depends_on "subversion" => :build
 
+  # It'll link to GCC's libatomic in this case so need to manually specify
+  # the dependency for runtime linking.
+  depends_on "gcc" if MacOS.version <= :mountain_lion
+
   fails_with :clang do
     build 503
     cause "Host Clang must be able to find libstdc++4.7 or newer!"
