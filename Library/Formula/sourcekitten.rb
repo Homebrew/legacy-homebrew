@@ -6,8 +6,7 @@ class Sourcekitten < Formula
   depends_on :xcode => ["6.1.1", :build]
 
   def install
-    system "make", "prefix_install", "PREFIX=#{prefix}"
-    system "make", "clean" # remove temporary installation files in /tmp/SourceKitten.dst
+    system "make", "prefix_install", "PREFIX=#{prefix}", "TEMPORARY_FOLDER=#{buildpath}/SourceKitten.dst"
   end
 
   test do
