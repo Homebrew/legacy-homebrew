@@ -4,10 +4,9 @@ class LibodbBoost < Formula
   sha1 "38c8552db872cc32144fb653c19277cfec1df2ec"
 
   depends_on "libodb"
-  depends_on "boost"
+  depends_on "boost" => :build
   
   def install
-    ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
