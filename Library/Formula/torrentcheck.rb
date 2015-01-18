@@ -10,8 +10,4 @@ class Torrentcheck < Formula
     system ENV.cc, "torrentcheck.c", "sha1.c", "-o", "torrentcheck", *ENV.cflags.to_s.split
     bin.install 'torrentcheck'
   end
-
-  test do
-    system "#{bin}/torrentcheck"
-  end
 end
