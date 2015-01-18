@@ -1,3 +1,5 @@
+require 'formula'
+
 class Autoconf < Formula
   homepage "http://www.gnu.org/software/autoconf"
   url "http://ftpmirror.gnu.org/autoconf/autoconf-2.69.tar.gz"
