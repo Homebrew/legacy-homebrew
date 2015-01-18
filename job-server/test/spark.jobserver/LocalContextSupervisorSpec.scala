@@ -81,6 +81,8 @@ class LocalContextSupervisorSpec extends TestKit(LocalContextSupervisorSpec.syst
     }
 
     it("should be able to add multiple new contexts") {
+      // serializing the creation at least until SPARK-2243 gets
+      // solved.
       supervisor ! AddContext("c1", contextConfig)
       expectMsg(ContextInitialized)
       supervisor ! AddContext("c2", contextConfig)
