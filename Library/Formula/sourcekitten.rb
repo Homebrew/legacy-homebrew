@@ -6,7 +6,11 @@ class Sourcekitten < Formula
   depends_on :xcode => ["6.1.1", :build]
 
   def install
-    system "make", "prefix_install", "PREFIX=#{prefix}", "TEMPORARY_FOLDER=#{buildpath}/SourceKitten.dst"
+    # FIXME: Support installing with a custom TEMPORARY_FOLDER so that
+    #        homebrew can automatically clean up the directory.
+    #        https://github.com/jpsim/SourceKitten/issues/28
+    system "make", "prefix_install", "PREFIX=#{prefix}"
+    system "make", "clean" # remove temporary installation files in /tmp/SourceKitten.dst
   end
 
   test do
