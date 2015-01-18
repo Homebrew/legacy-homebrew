@@ -4,6 +4,10 @@ class Ykpers < Formula
   sha1 "cb8ae32eb2c2eca6c2c156e8f26a3576cb839c52"
 
   bottle do
+    cellar :any
+    sha1 "0dada94f9df986ada86796f85b17b85732eb05c7" => :yosemite
+    sha1 "2bfc7c38f9ddb776b843418901566c9808f96660" => :mavericks
+    sha1 "8249521d7f21a8749160730d6cecf35837403279" => :mountain_lion
   end
 
   option :universal
