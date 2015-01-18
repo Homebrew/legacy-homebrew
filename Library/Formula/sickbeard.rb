@@ -7,6 +7,9 @@ class Sickbeard < Formula
   sha1 "c7939a58f38d55e1db6a732047c37eb31588cc7d"
 
   bottle do
+    sha1 "d144a55f9a667036255b373f7fcf294455d447e2" => :yosemite
+    sha1 "2c47e5cec2a12f46f57cff89f29cb34f14b72183" => :mavericks
+    sha1 "1a2abb4fcbae529e5c378d5ca75f506c726a8a0b" => :mountain_lion
   end
 
   resource "Markdown" do
