@@ -5,6 +5,12 @@ class Csync < Formula
 
   head "git://git.csync.org/projects/csync.git"
 
+  bottle do
+    sha1 "c7934c397dc23b7f91bc73da7fc2a1086caf0644" => :yosemite
+    sha1 "4678a5c8787a3ef569ec8bc3ae62dbc011aa67dd" => :mavericks
+    sha1 "a47861728aa4d4cb4c26423afcc45ae942a415e5" => :mountain_lion
+  end
+
   depends_on 'check' => :build
   depends_on 'cmake' => :build
   depends_on 'doxygen' => [:build, :optional]
