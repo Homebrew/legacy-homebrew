@@ -53,7 +53,7 @@ private:
   unsigned short age_;
 };
 EOS
-    system "odb", "-d common", "--generate-query", "person.hxx"
+    system "odb", "-d", "common", "--generate-query", "person.hxx"
   end
 
 end
