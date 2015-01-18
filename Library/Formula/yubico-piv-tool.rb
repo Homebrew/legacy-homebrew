@@ -2,8 +2,8 @@ require "formula"
 
 class YubicoPivTool < Formula
   homepage "http://opensource.yubico.com/yubico-piv-tool/"
-  url "http://opensource.yubico.com/yubico-piv-tool/releases/yubico-piv-tool-0.1.0.tar.gz"
-  sha1 "bebf01280e0ace0c43ab398a06cc0bc2e7fe2af9"
+  url "https://developers.yubico.com/yubico-piv-tool/Releases/yubico-piv-tool-0.1.2.tar.gz"
+  sha1 "cea66a3f50c41676a7a5ff0ffab08e2f60826a12"
 
   bottle do
     cellar :any
