@@ -1,7 +1,7 @@
 class Libsodium < Formula
   homepage "https://github.com/jedisct1/libsodium/"
-  url "https://github.com/jedisct1/libsodium/releases/download/1.0.1/libsodium-1.0.1.tar.gz"
-  sha256 "c3090887a4ef9e2d63af1c1e77f5d5a0656fadb5105ebb9fb66a302210cb3af5"
+  url "https://github.com/jedisct1/libsodium/releases/download/1.0.2/libsodium-1.0.2.tar.gz"
+  sha256 "961d8f10047f545ae658bcc73b8ab0bf2c312ac945968dd579d87c768e5baa19"
 
   bottle do
     cellar :any
