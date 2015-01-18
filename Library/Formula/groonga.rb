@@ -6,9 +6,10 @@ class Groonga < Formula
   sha1 "186a2fd7c1634bce6a9a0c2629eaf7e486d1e56c"
 
   bottle do
-    sha1 "f81a338a7327cadc880ead1974043eef78259725" => :yosemite
-    sha1 "e873d8f85b81e024141be462809749ecf8a929a4" => :mavericks
-    sha1 "0f92e8fd538abf0505edf189ad5c04b9ab0e55b0" => :mountain_lion
+    revision 1
+    sha1 "34746158c1739ae41e05197b9a0ae1591a903572" => :yosemite
+    sha1 "6f04fa4f84f2cdbb09d696133fbd16a71e20bc8e" => :mavericks
+    sha1 "29d79dcc357ebcf19645522d5d85ff5852f80859" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -28,7 +29,7 @@ class Groonga < Formula
       --prefix=#{prefix}
       --with-zlib
       --disable-zeromq
-      --with-mruby
+      --enable-mruby
       --without-libstemmer
     ]
 
