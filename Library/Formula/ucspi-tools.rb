@@ -12,7 +12,17 @@ class UcspiTools < Formula
   end
 
   test do
-    out = shell_output("#{bin}/socks 2>&1", 1)
-    assert_equal "tcpclient PROXY-HOST PROXY-PORT socks HOST PORT PROGRAM [ARGS...]\n", out
+    (testpath/"http.sh").write <<-EOL
+#!/bin/sh
+printf "GET / HTTP/1.1\\r\\n" >&6
+printf "Host: github.com\\r\\n" >&6
+printf "\\r\\n" >&6
+cat - <&7
+EOL
+    system "chmod +x #{testpath}/http.sh"
+    out = shell_output("tcpclient github.com 443 #{bin}/tlsc -CH #{testpath}/http.sh", 1)
+    assert_match /HTTP\/1.1 200 OK/, out
+    assert_match /Status: 200 OK/, out
+    assert_match /<!DOCTYPE html>/, out
   end
 end
