@@ -7,7 +7,7 @@ class Torrentcheck < Formula
 
   def install
     inreplace "torrentcheck.c", "#include <malloc.h>", ""
-    system ENV.cc, "torrentcheck.c", "sha1.c", "-o", "torrentcheck", *ENV.cflags.split
+    system ENV.cc, "torrentcheck.c", "sha1.c", "-o", "torrentcheck", *ENV.cflags.to_s.split
     bin.install 'torrentcheck'
   end
 
