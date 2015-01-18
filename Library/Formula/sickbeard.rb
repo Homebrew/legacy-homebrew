@@ -3,7 +3,7 @@ require "formula"
 class Sickbeard < Formula
   homepage "http://www.sickbeard.com/"
   head "https://github.com/midgetspy/Sick-Beard.git"
-  url "https://github.com/midgetspy/Sick-Beard/archive/build-506.tar.gz"
+  url "https://github.com/midgetspy/Sick-Beard/archive/build-507.tar.gz"
   sha1 "01ca51feb871f07b3fa1b92ad31d4aa4d72c68f9"
 
   bottle do
