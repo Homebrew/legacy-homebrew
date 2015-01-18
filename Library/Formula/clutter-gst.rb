@@ -1,9 +1,7 @@
-require "formula"
-
 class ClutterGst < Formula
-  homepage "https://wiki.gnome.org/Clutter"
-  url "http://ftp.gnome.org/pub/gnome/sources/clutter-gst/2.0/clutter-gst-2.0.10.tar.xz"
-  sha256 "f00cf492a6d4f1036c70d8a0ebd2f0f47586ea9a9b49b1ffda79c9dc7eadca00"
+  homepage "https://developer.gnome.org/clutter-gst/"
+  url "http://ftp.gnome.org/pub/gnome/sources/clutter-gst/2.0/clutter-gst-2.0.12.tar.xz"
+  sha256 "c2f1453692b0c3ff6a500113bc1d2c95d2bde11caca0809610a6d1424bbbffb5"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
@@ -28,7 +26,7 @@ class ClutterGst < Formula
     ENV.append "LDFLAGS", "-framework OpenGL"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
 
