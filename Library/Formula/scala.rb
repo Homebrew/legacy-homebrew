@@ -7,7 +7,7 @@ class Scala < Formula
 
   bottle do
     cellar :any
-    sha1 "888353d0e10f6449c97439677c8a820f408d9e71" => :yosemite
+    sha1 "3135e56649f81649a90ef0cddb3fa9c9a8208864" => :yosemite
     sha1 "80c33a2bd51cefb57c2e6df0c9956ab49824bb78" => :mavericks
     sha1 "53f58473692d16a1d88b2e515ab04723573232dc" => :mountain_lion
   end
@@ -64,4 +64,3 @@ class Scala < Formula
     assert_equal "4", shell_output("#{bin}/scala #{file}").strip
   end
 end
-
