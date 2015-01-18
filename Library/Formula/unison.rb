@@ -7,10 +7,9 @@ class Unison < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "dd7f286a9b2604953e8d0733c316d7e087a48016" => :yosemite
-    sha1 "8ca37b6fc00c806cf7f453a4b4bf0b287280b2e5" => :mavericks
-    sha1 "6972899653b6f368a0c9fd232504922414d5cbfa" => :mountain_lion
+    sha1 "05c2f2b41d9cf864901577829fb71e05fe66d25b" => :yosemite
+    sha1 "681d82f73649d0580acfbce2a6ce66f32ad6da9c" => :mavericks
+    sha1 "0d83d72a11c558eec59ae9aa20476165dc56cb85" => :mountain_lion
   end
 
   depends_on 'objective-caml' => :build
