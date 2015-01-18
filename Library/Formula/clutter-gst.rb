@@ -3,6 +3,12 @@ class ClutterGst < Formula
   url "http://ftp.gnome.org/pub/gnome/sources/clutter-gst/2.0/clutter-gst-2.0.12.tar.xz"
   sha256 "c2f1453692b0c3ff6a500113bc1d2c95d2bde11caca0809610a6d1424bbbffb5"
 
+  bottle do
+    sha1 "ff6322e999926cc302578cd5de6ac65be942cc64" => :yosemite
+    sha1 "e6bd1433a8fe044451d85e1b4f92d4acaf98fc88" => :mavericks
+    sha1 "0ddad83d563bb159d40b80918c40ef8db0c7113c" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gst-plugins-base"
