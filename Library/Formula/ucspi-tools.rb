@@ -19,9 +19,9 @@ printf "Host: github.com\\r\\n" >&6
 printf "\\r\\n" >&6
 cat - <&7
 EOL
-    system "chmod +x #{testpath}/http.sh"
+    chmod 0755, testpath/"http.sh"
     out = shell_output("tcpclient github.com 443 #{bin}/tlsc -CH #{testpath}/http.sh", 1)
-    assert_match /HTTP\/1.1 200 OK/, out
+    assert_match %r{HTTP/1.1 200 OK}, out
     assert_match /Status: 200 OK/, out
     assert_match /<!DOCTYPE html>/, out
   end
