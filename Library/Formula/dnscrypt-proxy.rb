@@ -106,6 +106,7 @@ class DnscryptProxy < Formula
     ohai cmd
     pid = Process.spawn(cmd, [:err, :out] => :close, :pgroup => true)
     begin
+      system "dig", "txt", "@127.0.0.1", "-p", port, "debug.opendns.com"
       assert shell_output("dig txt @127.0.0.1 -p #{port} debug.opendns.com").include?("dnscrypt enabled")
     ensure
       Process.kill 9, pid
