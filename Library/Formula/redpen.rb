@@ -17,8 +17,7 @@ class Redpen < Formula
 
   test do
     path = "#{libexec}/sample-doc/en/sampledoc-en.txt"
-    output = `#{bin}/redpen -c #{libexec}/conf/redpen-conf-en.xml #{path}`
-    errors = output.split("\n").select { |line| line.start_with?(file_name) }
-    assert errors.find { |e|(e.start_with?("#{file_name}:1: ValidationError[SymbolWithSpace]")) }
+    output = "#{bin}/redpen -c #{libexec}/conf/redpen-conf-en.xml #{path}"
+    assert_match /^sampledoc-en.txt:1: ValidationError[SymbolWithSpace]*/, shell_output(output).split("\n").select { |line| line.start_with?("sampledoc-en.txt") }[0]
   end
 end
