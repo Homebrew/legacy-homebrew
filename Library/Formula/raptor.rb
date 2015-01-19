@@ -1,9 +1,7 @@
-require 'formula'
-
 class Raptor < Formula
-  homepage 'http://librdf.org/raptor/'
-  url 'http://download.librdf.org/source/raptor2-2.0.15.tar.gz'
-  sha1 '504231f87024df9aceb90eb957196b557b4b8e38'
+  homepage "http://librdf.org/raptor/"
+  url "http://download.librdf.org/source/raptor2-2.0.15.tar.gz"
+  sha1 "504231f87024df9aceb90eb957196b557b4b8e38"
 
   bottle do
     cellar :any
