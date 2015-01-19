@@ -8,9 +8,9 @@ class Lsyncd < Formula
 
   bottle do
     cellar :any
-    sha1 "9d8e796c4e05ca50bcbdae0053ed14d03626be6c" => :yosemite
-    sha1 "ebab9b36017e541234bcd6d5bb5fef1062fca245" => :mavericks
-    sha1 "6241af90c682dbe7fb10918faa0d0a1ad63d22f2" => :mountain_lion
+    sha1 "f42be91eff9963543d9b42a34f8cf5b6be720152" => :yosemite
+    sha1 "9519e202543d0f371f4f9827e707937e23442854" => :mavericks
+    sha1 "cb180347af72d91152cfb510f2f7f583543bf4f5" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
