@@ -11,9 +11,4 @@ class Libodb < Formula
     system "make", "install"
   end
 
-  def caveats; <<-EOS.undent
-        ODB is undel GPL v2 or NCUEL.
-        Please read http://codesynthesis.com/products/odb/license.xhtml before use.
-        EOS
-  end
 end
