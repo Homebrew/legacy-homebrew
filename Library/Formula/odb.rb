@@ -33,7 +33,7 @@ class Odb < Formula
     (libexec/"libexec").install_symlink(libexec/"odb")
   end
 
-  # test do
+  test do
   #   (testpath/'person.hxx').write <<-EOS.undent
   #     #include <string>
   #     #include <odb/core.hxx>     
@@ -50,7 +50,7 @@ class Odb < Formula
   #    };
   #   EOS
     
-  #   system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
-  # end
+    system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
+  end
 
 end
