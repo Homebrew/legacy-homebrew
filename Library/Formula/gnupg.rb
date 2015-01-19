@@ -1,5 +1,3 @@
-require "formula"
-
 class Gnupg < Formula
   homepage "http://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.18.tar.bz2"
@@ -22,11 +20,27 @@ class Gnupg < Formula
                           "--prefix=#{prefix}",
                           "--disable-asm"
     system "make"
-    system "make check"
+    system "make", "check"
 
     # we need to create these directories because the install target has the
     # dependency order wrong
     [bin, libexec/"gnupg"].each(&:mkpath)
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"gen-key-script").write <<-EOS.undent
+      Key-Type: RSA
+      Key-Length: 4096
+      Subkey-Type: RSA
+      Subkey-Length: 4096
+      Name-Real: Homebrew Test
+      Name-Email: test@example.com
+      Expire-Date: 0
+    EOS
+    system "#{bin}/gpg", "--batch", "--gen-key", "gen-key-script"
+    (testpath/"test.txt").write ("Hello World!")
+    system "#{bin}/gpg", "--armor", "--sign", "test.txt"
+    system "#{bin}/gpg", "--verify", "test.txt.asc"
   end
 end
