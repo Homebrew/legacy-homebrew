@@ -1,7 +1,7 @@
 class Gphoto2 < Formula
   homepage "http://gphoto.org/"
-  url "https://downloads.sourceforge.net/project/gphoto/gphoto/2.5.6/gphoto2-2.5.6.tar.bz2"
-  sha1 "5094fd8b0f3b473a5fc3e869166c2f552132bbb2"
+  url "https://downloads.sourceforge.net/project/gphoto/gphoto/2.5.7/gphoto2-2.5.7.tar.bz2"
+  sha1 "0f0ebe1c953eab598c6a53477b81be762ab9047f"
 
   bottle do
     cellar :any
