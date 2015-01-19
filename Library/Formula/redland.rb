@@ -4,6 +4,13 @@ class Redland < Formula
   homepage 'http://librdf.org/'
   url 'http://download.librdf.org/source/redland-1.0.17.tar.gz'
   sha1 'a47a7e98f934d17d60a241db90be407a0abe3c5d'
+
+  bottle do
+    sha1 "5f4840ede53c1f9ab9c7387355fc682be3a524b7" => :yosemite
+    sha1 "db4d3fdde92412bafe55e19def76b3447168595c" => :mavericks
+    sha1 "523752a1bd434159e361f66a7a72b45412d30a7a" => :mountain_lion
+  end
+
   revision 1
 
   option 'with-php', 'Build with php support'
