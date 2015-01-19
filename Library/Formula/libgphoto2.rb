@@ -1,7 +1,7 @@
 class Libgphoto2 < Formula
   homepage "http://www.gphoto.org/proj/libgphoto2/"
-  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.6/libgphoto2-2.5.6.tar.bz2"
-  sha1 "260cc57751a4598dd56564b4ab1e06a74442ee38"
+  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.7/libgphoto2-2.5.7.tar.bz2"
+  sha1 "0f0ebe1c953eab598c6a53477b81be762ab9047f"
 
   bottle do
     sha1 "f6115d0ea66a9acc4186f2976b662832d1469517" => :yosemite
