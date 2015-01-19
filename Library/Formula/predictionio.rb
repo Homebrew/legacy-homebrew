@@ -17,10 +17,10 @@ class Predictionio < Formula
     libexec.install Dir['*']
     bin.write_exec_script libexec/"bin/pio"
 
-	inreplace libexec/"conf/pio-env.sh" do |f|
-		f.gsub! /#\s*ES_CONF_DIR=.+$/, "ES_CONF_DIR=#{HOMEBREW_PREFIX}/opt/elasticsearch/config"
-		f.gsub! /SPARK_HOME=.+$/, "SPARK_HOME=#{HOMEBREW_PREFIX}/opt/apache-spark"
-	end
+    inreplace libexec/"conf/pio-env.sh" do |f|
+       f.gsub! /#\s*ES_CONF_DIR=.+$/, "ES_CONF_DIR=#{HOMEBREW_PREFIX}/opt/elasticsearch/config"
+       f.gsub! /SPARK_HOME=.+$/, "SPARK_HOME=#{HOMEBREW_PREFIX}/opt/apache-spark"
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -29,10 +29,11 @@ class Predictionio < Formula
     Conf: #{libexec}/conf/pio-env.sh
 
     Check status
-	       pio status
+       pio status
 
     For more details:
-	       http://docs.prediction.io/install/install-linux/
+      http://docs.prediction.io/install/install-linux/
     EOS
   end
+
 end
