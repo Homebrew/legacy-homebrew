@@ -11,9 +11,9 @@ class Teampostgresql < Formula
     prefix.install_metafiles
     lib.install Dir["*"]
 
-    libs    = lib/"webapp"/"WEB-INF"/"lib"/"*"
+    libs = lib/"webapp"/"WEB-INF"/"lib"/"*"
     classes = lib/"webapp"/"WEB-INF"/"classes"
-    main    = "dbexplorer.TeamPostgreSQL"
+    main = "dbexplorer.TeamPostgreSQL"
 
     (bin/"teampostgresql").write <<-EOS.undent
       #!/bin/sh
