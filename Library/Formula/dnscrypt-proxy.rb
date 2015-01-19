@@ -95,6 +95,22 @@ class DnscryptProxy < Formula
   end
 
   test do
-    system "#{bin}/hostip", "-r", "8.8.8.8", "www.google.com"
+    # Find a open port
+    require "socket"
+    socket = Socket.new(:INET, :STREAM, 0)
+    socket.bind(Addrinfo.tcp("127.0.0.1", 0))
+    port = socket.local_address.ip_port
+    socket.close
+
+    cmd = "#{sbin}/dnscrypt-proxy -R opendns --local-address=127.0.0.1:#{port}"
+    ohai cmd
+    pid = Process.spawn(cmd, [:err, :out] => :close, :pgroup => true)
+    begin
+      system "dig", "txt", "@127.0.0.1", "-p", port, "debug.opendns.com"
+      assert shell_output("dig txt @127.0.0.1 -p #{port} debug.opendns.com").include?("dnscrypt enabled")
+    ensure
+      Process.kill 9, pid
+      Process.wait pid
+    end
   end
 end
