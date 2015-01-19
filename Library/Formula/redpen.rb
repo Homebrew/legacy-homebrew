@@ -16,8 +16,6 @@ class Redpen < Formula
   end
 
   test do
-    system "#{bin}/redpen", "-version"
-
     file_name = "sampledoc-en.txt"
     path = "#{libexec}/sample-doc/en/#{file_name}"
     output = `#{bin}/redpen -c #{libexec}/conf/redpen-conf-en.xml #{path}`
