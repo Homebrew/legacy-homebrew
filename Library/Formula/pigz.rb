@@ -6,9 +6,9 @@ class Pigz < Formula
 
   bottle do
     cellar :any
-    sha1 "3aa3d204457ffda3815b62f3f1530caedfede0f4" => :yosemite
-    sha1 "836f8a39e7e524da44cb03a34a5962c690668378" => :mavericks
-    sha1 "65c9d79d6610f35008549afab203e9058f937a20" => :mountain_lion
+    sha1 "6eb3c6cad2d259e6a3230b9ac596a0357c54c170" => :yosemite
+    sha1 "f208f507c57ab7f32d34dc9e9d5ab7d131558d33" => :mavericks
+    sha1 "4348380310afb99b698813e76a4ba01e4d024a1a" => :mountain_lion
   end
 
   # avoid directory traversal vulnerability CVE-2015-1191
