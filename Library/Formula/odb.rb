@@ -35,24 +35,21 @@ class Odb < Formula
 
   test do
     (testpath/'person.hxx').write <<-EOS.undent
-#include <string>
-
-#include <odb/core.hxx>     
-
-#pragma db object           
-class person
-{
-private:
-  friend class odb::access; 
-
-  #pragma db id auto        
-  unsigned long id_;        
-
-  std::string first_;
-  std::string last_;
-  unsigned short age_;
-};
-EOS
+      #include <string>
+      #include <odb/core.hxx>     
+      #pragma db object           
+      class person
+      {
+      private:
+        friend class odb::access; 
+        #pragma db id auto        
+        unsigned long id_;        
+        std::string first_;
+        std::string last_;
+        unsigned short age_;
+     };
+    EOS
+    
     system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
   end
 
