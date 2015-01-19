@@ -81,9 +81,9 @@ foo-ruby foo-perl etc. sucks.
 
 ### Niche (or self-submitted) Stuff<a name="Niche_Stuff"></a>
 The software in question must be
-* maintained
+* maintained (e.g. upstream is still making new releases)
 * known
-* stable
+* stable (e.g. not declared "unstable" or "beta" by upstream)
 * used
 * have a homepage
 
@@ -94,6 +94,11 @@ We frown on authors submitting their own work unless it is very popular.
 
 Don’t forget Homebrew is all git underneath! Maintain your own fork or
 tap if you have to!
+
+There may be exceptions to these rules in the main repository, we may
+include things that don't meet these criteria or reject things that do.
+Please trust that we need to use our discretion based on our experience
+running a package manager.
 
 ### Stuff that builds a .app
 Don’t make your formula build an `.app` (native OS X Application), we

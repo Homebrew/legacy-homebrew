@@ -79,8 +79,12 @@ class Gnuplot < Formula
 
     args << "--with-pdf=#{pdflib}" if build.with? "pdflib-lite"
     args << ((build.with? "gd") ? "--with-gd=#{gd}" : "--without-gd")
-    args << "--disable-wxwidgets"  if build.without? "wxmac"
-    args << "--without-cairo"      if build.without? "cairo"
+
+    if build.without? "wxmac"
+      args << "--disable-wxwidgets"
+      args << "--without-cairo" if build.without? "cairo"
+    end
+
     args << "--enable-qt"          if build.with? "qt"
     args << "--without-lua"        if build.without? "lua"
     args << "--without-lisp-files" if build.without? "emacs"

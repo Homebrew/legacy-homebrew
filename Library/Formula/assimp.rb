@@ -35,7 +35,7 @@ class Assimp < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.cpp", "-lassimp", "-o", "test"
+    system ENV.cc, "test.cpp", "-L#{lib}", "-lassimp", "-o", "test"
     system "./test"
 
     # Application test.
