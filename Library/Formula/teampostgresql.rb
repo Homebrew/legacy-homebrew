@@ -65,7 +65,7 @@ class Teampostgresql < Formula
       "/usr/bin/java",
       "-cp", "#{lib}/webapp/WEB-INF/lib/*:#{lib}/webapp/WEB-INF/classes",
       "dbexplorer.TeamPostgreSQL", "12345",
-      "#{(lib/"webapp").relative_path_from(testpath)}"
+      (lib/"webapp").relative_path_from(testpath)
     ].join(" ")
 
     pipe_cmd_in, pipe_cmd_out = IO.pipe
@@ -82,7 +82,6 @@ class Teampostgresql < Formula
     begin
       Timeout.timeout(5) do
         sleep(0.1) while @exitstatus == :not_done
-        success = false
       end
     rescue Timeout::Error
       Process.kill("TERM", -Process.getpgid(cmd_pid))
