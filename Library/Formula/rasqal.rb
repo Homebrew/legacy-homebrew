@@ -2,8 +2,8 @@ require 'formula'
 
 class Rasqal < Formula
   homepage 'http://librdf.org/rasqal/'
-  url 'http://download.librdf.org/source/rasqal-0.9.32.tar.gz'
-  sha1 'e16621cdc939cba3e35a9205fa4697de4940961b'
+  url 'http://download.librdf.org/source/rasqal-0.9.33.tar.gz'
+  sha1 '281c2e0a352c53ef1656bfe778c380226d61726f'
 
   bottle do
     cellar :any
