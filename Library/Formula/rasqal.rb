@@ -7,9 +7,9 @@ class Rasqal < Formula
 
   bottle do
     cellar :any
-    sha1 "ae7032203542c925adf5d0a34534800dcef977da" => :yosemite
-    sha1 "6eaf0dff02885a7bb47c95e81c946ae2c20ce4d7" => :mavericks
-    sha1 "fe5e343d56bb7c255f7ac18729ec54928d3be73a" => :mountain_lion
+    sha1 "8c0c46000f6722eeeb94ebe41c8faca108fd807d" => :yosemite
+    sha1 "d86ff8b2e52b8a09ce018a757b84c1b2b66fb2ee" => :mavericks
+    sha1 "14efc7d7f18b8b9697cdacb43000cfa478579405" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
