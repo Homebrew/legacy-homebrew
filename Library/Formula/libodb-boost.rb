@@ -5,7 +5,7 @@ class LibodbBoost < Formula
 
   depends_on "libodb"
   depends_on "boost"
-  
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

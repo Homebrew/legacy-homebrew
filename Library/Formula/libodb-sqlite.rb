@@ -5,7 +5,7 @@ class LibodbSqlite < Formula
 
   depends_on "sqlite"
   depends_on "odb"
-  
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -36,7 +36,7 @@ class LibodbSqlite < Formula
     EOS
 
     system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
-    system "g++", "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/sqlite/lib", "main.cxx", "person-odb.cxx", "-lodb", "-lsqlite3", "-lodb-sqlite", "-o", "person"
+    system "#{ENV.cxx}", "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/sqlite/lib", "main.cxx", "person-odb.cxx", "-lodb", "-lsqlite3", "-lodb-sqlite", "-o", "person"
     system "./person"
   end
   
