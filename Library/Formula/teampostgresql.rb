@@ -11,14 +11,14 @@ class Teampostgresql < Formula
     prefix.install_metafiles
     lib.install Dir["*"]
 
-    libs    = lib/"webapp"/"WEB-INF"/"lib"
+    libs    = lib/"webapp"/"WEB-INF"/"lib"/"*"
     classes = lib/"webapp"/"WEB-INF"/"classes"
     main    = "dbexplorer.TeamPostgreSQL"
 
     (bin/"teampostgresql").write <<-EOS.undent
       #!/bin/sh
       cd #{lib}
-      java -cp #{libs}/*:#{classes} #{main} "$@"
+      java -cp #{libs}:#{classes} #{main} "$@"
     EOS
   end
 
@@ -65,7 +65,7 @@ class Teampostgresql < Formula
       "/usr/bin/java",
       "-cp", "#{lib}/webapp/WEB-INF/lib/*:#{lib}/webapp/WEB-INF/classes",
       "dbexplorer.TeamPostgreSQL", "12345",
-      "#{(lib/"webapp").relative_path_from(Pathname.new(`/bin/pwd`))}"
+      "#{(lib/"webapp").relative_path_from(testpath)}"
     ].join(" ")
 
     pipe_cmd_in, pipe_cmd_out = IO.pipe
