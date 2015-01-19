@@ -2,33 +2,37 @@ require 'formula'
 
 class Predictionio < Formula
   homepage 'http://prediction.io/'
-  url 'http://download.prediction.io/PredictionIO-0.7.3.zip'
-  sha1 '5380f7f7d447ec04371753b060822e004c76a5fa'
+  url 'http://download.prediction.io/PredictionIO-0.8.5.tar.gz'
+  sha1 '1cc68733d2f8dbad1ae01e960f74085db24c7e74'
 
-  depends_on 'mongodb'
+  depends_on 'elasticsearch'
   depends_on 'hadoop'
+  depends_on 'hbase'
+  depends_on 'apache-spark'
+  depends_on :java => "1.7"
 
   def install
     rm_f Dir["bin/*.bat"]
 
     libexec.install Dir['*']
-    bin.write_exec_script Dir["#{libexec}/bin/*"]
+    bin.write_exec_script libexec/"bin/pio"
 
-    mv "#{bin}/start-all.sh", "#{bin}/predictionio-start-all.sh"
-    mv "#{bin}/stop-all.sh", "#{bin}/predictionio-stop-all.sh"
+	inreplace libexec/"conf/pio-env.sh" do |f|
+		f.gsub! /#\s*ES_CONF_DIR=.+$/, "ES_CONF_DIR=#{HOMEBREW_PREFIX}/opt/elasticsearch/config"
+		f.gsub! /SPARK_HOME=.+$/, "SPARK_HOME=#{HOMEBREW_PREFIX}/opt/apache-spark"
+	end
   end
 
   def caveats; <<-EOS.undent
-    Before use, you must generate the database and create a user. Run:
-      #{bin}/setup-vendors.sh
-      #{bin}/setup.sh
-      #{bin}/users
+    Be sure to have Elasticsearch and HBase running, and that the below conf reflects your current environment.
 
-    After that, PredictionIO is ready.
-    Start using:
-      predictionio-start-all.sh
-    Stop using:
-      predictionio-stop-all.sh
+    Conf: #{libexec}/conf/pio-env.sh
+
+    Check status
+	       pio status
+
+    For more details:
+	       http://docs.prediction.io/install/install-linux/
     EOS
   end
 end
