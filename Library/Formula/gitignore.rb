@@ -1,7 +1,7 @@
 class Gitignore < Formula
   homepage "https://github.com/karan/joe"
-  url "https://github.com/karan/joe/archive/0.0.2.tar.gz"
-  sha1 "da3abe49d76a4844d0744951b61c3dd71fd9959c"
+  url "https://pypi.python.org/packages/source/j/joe/joe-0.0.5.tar.gz"
+  sha1 "60d65bcaf809fda3bb54d21892e7855c0fe6ac8e"
 
   depends_on :python if MacOS.version <= :snow_leopard
 
@@ -27,6 +27,6 @@ class Gitignore < Formula
   end
 
   test do
-    system "#{bin}/joe", "--version"
+    system "#{bin}/joe", "ls"
   end
 end
