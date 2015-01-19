@@ -2,6 +2,7 @@ class Pigz < Formula
   homepage 'http://www.zlib.net/pigz/'
   url 'http://www.zlib.net/pigz/pigz-2.3.1.tar.gz'
   sha1 '2d5c9a70a6afcf1d8986890026d70c96b9346c07'
+  revision 1
 
   bottle do
     cellar :any
