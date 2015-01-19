@@ -27,7 +27,7 @@ class Gauche < Formula
   end
 
   test do
-    result = `#{bin}/gosh -q -E 'display (gauche-version)' -E 'newline' -E 'exit'`
+    result = `#{bin}/gosh -q -E 'display (gauche-version)' -E 'exit'`
     assert_equal '0.9.4', result
   end
 end
