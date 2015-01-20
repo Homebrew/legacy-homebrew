@@ -1,5 +1,3 @@
-require "formula"
-
 class Mpw < Formula
   homepage "http://masterpasswordapp.com"
   url "https://ssl.masterpasswordapp.com/mpw-2.1-cli3-3-gd5ff215.tar.gz"
@@ -18,7 +16,7 @@ class Mpw < Formula
     resource("libscrypt").stage buildpath/"lib/scrypt"
     touch "lib/scrypt/.unpacked"
 
-    ENV["targets"]="mpw mpw-tests"
+    ENV["targets"] = "mpw mpw-tests"
     system "./build"
     system "./mpw-tests"
 
