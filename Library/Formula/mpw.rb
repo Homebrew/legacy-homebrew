@@ -1,7 +1,7 @@
 class Mpw < Formula
   homepage "http://masterpasswordapp.com"
-  url "https://ssl.masterpasswordapp.com/mpw-2.1-cli4-0-gcaf361c.tar.gz"
-  sha1 "96e85af0aa4be005aa71f6e97fe774412644963f"
+  url "https://ssl.masterpasswordapp.com/mpw-2.1-cli4-0-gf6b2287.tar.gz"
+  sha1 "036b3d8f4bd6f0676ae16e7e9c3de65f6030874f"
   version "2.1-cli4"
 
   depends_on "automake" => :build
