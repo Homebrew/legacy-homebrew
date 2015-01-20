@@ -2,8 +2,8 @@ require "formula"
 
 class Mruby < Formula
   homepage "http://www.mruby.org"
-  url "https://github.com/mruby/mruby/archive/1.0.0.tar.gz"
-  sha1 "6d4cb1b3594b1c609cc3e39d458d2ff27e4f9b4d"
+  url "https://github.com/mruby/mruby/archive/1.1.0.tar.gz"
+  sha1 "828eadbc0640d3f670a5eb24bf8d99f6bb90b5fc"
 
   head "https://github.com/mruby/mruby.git"
 
