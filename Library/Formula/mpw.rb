@@ -11,7 +11,6 @@ class Mpw < Formula
   resource "libscrypt" do
     url "http://masterpasswordapp.com/libscrypt-b12b554.tar.gz"
     sha1 "ee871e0f93a786c4e3622561f34565337cfdb815"
-    version "b12b554"
   end
 
   def install
