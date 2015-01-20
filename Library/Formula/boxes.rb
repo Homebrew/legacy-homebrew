@@ -2,9 +2,9 @@ require 'formula'
 
 class Boxes < Formula
   homepage 'http://boxes.thomasjensen.com/'
-  url 'https://github.com/ascii-boxes/boxes/archive/v1.1.1.tar.gz'
+  url 'https://github.com/ascii-boxes/boxes/archive/v1.1.2.tar.gz'
   head 'https://github.com/ascii-boxes/boxes.git'
-  sha1 'fff0d7636c50a4ffa88389981a3d32e8d7a83b39'
+  sha1 'dcd466efe1878e4ee612a5eee8f4caf8baac7f31'
 
   bottle do
     sha1 "6ace9ba08d5d1b528015598c5ed44b86c35c15f3" => :yosemite
@@ -20,7 +20,6 @@ class Boxes < Formula
       "GLOBALCONF=#{share}/boxes-config",
       "CC=#{ENV.cc}",
       # Force 32 bit compile
-      # These flags are only (as of 1.1.1) supported on HEAD
       "CFLAGS_ADDTL=-m32",
       "LDFLAGS_ADDTL=-m32"
 
