@@ -4,9 +4,9 @@ class Freeswitch < Formula
   head "https://stash.freeswitch.org/scm/fs/freeswitch.git"
 
   bottle do
-    sha1 "a1ff029908457b7a992474b8abd4428c88858128" => :mavericks
-    sha1 "05c391e0c3f2f795ec7b87485a5ad54fbdd57259" => :mountain_lion
-    sha1 "dc5a331f94eb51353d01dfe6d2319985e7844a96" => :lion
+    sha1 "4e9636023d8cc82441b3594a4cd83d581990e718" => :yosemite
+    sha1 "5b80a6caa21ea19eb803c722ca94e42a9696f5ab" => :mavericks
+    sha1 "909b8b27c3c98c9f63d47bdc3ec60a30a953842d" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
