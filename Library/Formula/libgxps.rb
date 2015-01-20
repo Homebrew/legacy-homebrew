@@ -23,11 +23,12 @@ class Libgxps < Formula
   depends_on "gtk+" => :optional
 
   def install
-    args = [ "--disable-debug",
-             "--disable-dependency-tracking",
-             "--disable-silent-rules",
-             "--enable-man",
-             "--prefix=#{prefix}"
+    args = [
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
+      "--enable-man",
+      "--prefix=#{prefix}",
     ]
 
     args << "--without-libjpeg" if build.without? "libjpeg"
@@ -44,6 +45,6 @@ class Libgxps < Formula
   end
 
   test do
-    system "#{bin}/xpstopdf --help"
+    system "#{bin}/xpstopdf", "--help"
   end
 end
