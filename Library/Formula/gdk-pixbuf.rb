@@ -4,10 +4,9 @@ class GdkPixbuf < Formula
   sha256 "9e467ed09894c802499fb2399cd9a89ed21c81700ce8f27f970a833efb1e47aa"
 
   bottle do
-    revision 1
-    sha1 "fb4261dd767c0e88888ef210e7c6bf91c4e2549e" => :yosemite
-    sha1 "06dc916f0fc6018e390285cb4b882478b10417fd" => :mavericks
-    sha1 "b3e286bf4e15e8e2e522f049c8e8d9a39c5b4f36" => :mountain_lion
+    sha1 "4f6b7b2f3324001230f13875d1549e4b81e31b0c" => :yosemite
+    sha1 "f365fe6ac4a8adbf1a474c0864fe6faf920e995a" => :mavericks
+    sha1 "0e0e7d4baa212b6cdf699e2273937d9a89d979e8" => :mountain_lion
   end
 
   option :universal
