@@ -1,7 +1,8 @@
 class Mpw < Formula
   homepage "http://masterpasswordapp.com"
-  url "https://ssl.masterpasswordapp.com/mpw-2.1-cli3-3-gd5ff215.tar.gz"
-  sha1 "c9fca230cd0c2b22082bc54fe85053219888212a"
+  url "https://ssl.masterpasswordapp.com/mpw-2.1-cli4-0-gcaf361c.tar.gz"
+  sha1 "96e85af0aa4be005aa71f6e97fe774412644963f"
+  version "2.1-cli4"
 
   depends_on "automake" => :build
   depends_on "autoconf" => :build
@@ -10,6 +11,7 @@ class Mpw < Formula
   resource "libscrypt" do
     url "http://masterpasswordapp.com/libscrypt-b12b554.tar.gz"
     sha1 "ee871e0f93a786c4e3622561f34565337cfdb815"
+    version "b12b554"
   end
 
   def install
