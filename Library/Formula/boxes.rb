@@ -7,9 +7,9 @@ class Boxes < Formula
   sha1 'dcd466efe1878e4ee612a5eee8f4caf8baac7f31'
 
   bottle do
-    sha1 "6ace9ba08d5d1b528015598c5ed44b86c35c15f3" => :yosemite
-    sha1 "132294a712de399d24b7ebdc55ea611a1f9b0fe6" => :mavericks
-    sha1 "3078e1f6738312c3bc7b3c4a38043b037cc01fa0" => :mountain_lion
+    sha1 "fc7adbf52e65497a6203df64bd46c5187b6202ca" => :yosemite
+    sha1 "692ee3b2ce7a9209fb2e5dea6b210e05d93a4ffd" => :mavericks
+    sha1 "7a53ae56f1202d8c908cbaa8caddf7f501b07158" => :mountain_lion
   end
 
   def install
