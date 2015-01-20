@@ -1,9 +1,7 @@
-require "formula"
-
 class Libgit2 < Formula
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.21.3.tar.gz"
-  sha1 "d116cb15f76edf2283c85da40389e4fecc8d5aeb"
+  url "https://github.com/libgit2/libgit2/archive/v0.22.0.tar.gz"
+  sha1 "a37dc29511422eec9828e129ad057e77ca962c5e"
 
   head "https://github.com/libgit2/libgit2.git"
 
@@ -22,7 +20,7 @@ class Libgit2 < Formula
 
   def install
     args = std_cmake_args
-    args << "-DBUILD_TESTS=NO"
+    args << "-DBUILD_CLAR=NO" # Don't build tests.
 
     if build.universal?
       ENV.universal_binary
