@@ -41,7 +41,6 @@ class Odb < Formula
       {
       private:
         friend class odb::access; 
-        #pragma db id auto
         unsigned long id_;        
       };
     EOS
