@@ -2,8 +2,8 @@ require "formula"
 
 class Saltstack < Formula
   homepage "http://www.saltstack.org"
-  url "https://github.com/saltstack/salt/archive/v2014.7.0.tar.gz"
-  sha256 "a6b3a68733b3fd608d0dcc721fb56490b8079245dbaf22c05274cd6122d19659"
+  url "https://github.com/saltstack/salt/archive/v2014.7.1.tar.gz"
+  sha256 "5fcf2cff700d0719b419c9cb489552645ce1287a15c7b3a8745959773d9b0dd1"
 
   bottle do
     sha1 "c1c30977edb597b959452417b38fc518994316b4" => :yosemite
