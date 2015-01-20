@@ -32,7 +32,7 @@ class Mpw < Formula
   end
 
   test do
-    assert_equal "Jejr5[RepuSosp",
-        shell_output("mpw -u 'Robert Lee Mitchell' -P 'banana colored duckling' masterpasswordapp.com").strip
+    assert_equal "RoliQeka7/Deqi",
+      shell_output("mpw -u user -P password test.com 2>/dev/null").strip
   end
 end
