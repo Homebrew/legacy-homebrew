@@ -9,10 +9,9 @@ class Mruby < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "0c35394977329935628dbc4c104f2bb435ca6501" => :mavericks
-    sha1 "1205fd6c0d6ea2caff16e276e86b9b876ae354f6" => :mountain_lion
-    sha1 "d7c75455a7d02d97eaf0926ed70c5520848e13b4" => :lion
+    sha1 "fc1d5229e1194203799bd2d59861d3a6919e04c9" => :yosemite
+    sha1 "3e5b89430eca272eff626c5bd45eb6845ba33bcc" => :mavericks
+    sha1 "4b3da67cad42fd5beba2ef64af5c58e3adc9ae7c" => :mountain_lion
   end
 
   depends_on "bison" => :build
