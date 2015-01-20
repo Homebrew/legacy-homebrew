@@ -2,8 +2,8 @@ require "formula"
 
 class Fibjs < Formula
   homepage "http://fibjs.org"
-  url "https://github.com/xicilion/fibjs/archive/v0.1.1.tar.gz"
-  sha1 "59b819ee4d22b2a339f3bfc0dff115a5d8452256"
+  url "https://github.com/xicilion/fibjs/archive/v0.1.2.tar.gz"
+  sha1 "7c81adf3bc9f3d0188be3f50795660e2be093ca0"
 
   head "https://github.com/xicilion/fibjs.git"
 
