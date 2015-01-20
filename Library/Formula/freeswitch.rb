@@ -1,6 +1,6 @@
 class Freeswitch < Formula
   homepage "http://freeswitch.org"
-  url "https://stash.freeswitch.org/scm/fs/freeswitch.git", :tag => "v1.4.6"
+  url "https://stash.freeswitch.org/scm/fs/freeswitch.git", :tag => "v1.4.15"
   head "https://stash.freeswitch.org/scm/fs/freeswitch.git"
 
   bottle do
@@ -23,7 +23,7 @@ class Freeswitch < Formula
   depends_on "sqlite"
 
   def install
-    system "./bootstrap.sh -j#{ENV.make_jobs}"
+    system "./bootstrap.sh", "-j#{ENV.make_jobs}"
 
     # tiff will fail to find OpenGL unless told not to use X
     inreplace "libs/tiff-4.0.2/configure.gnu", "--with-pic", "--with-pic --without-x"
@@ -37,8 +37,7 @@ class Freeswitch < Formula
                           "--exec_prefix=#{prefix}"
 
     system "make"
-    system "make", "install"
-    system "make", "all", "cd-sounds-install", "cd-moh-install"
+    system "make", "install", "all", "cd-sounds-install", "cd-moh-install"
   end
 
   plist_options :manual => "freeswitch -nc --nonat"
