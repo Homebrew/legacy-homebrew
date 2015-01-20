@@ -8,8 +8,13 @@ class Wordgrinder < Formula
 
   def install
     system "make"
-    (bin).install "bin/wordgrinder"
-    (man1).install "wordgrinder.man" => "wordgrinder.1"
-    (doc).install "README.wg"
+    bin.install "bin/wordgrinder"
+    man1.install "wordgrinder.man" => "wordgrinder.1"
+    doc.install "README.wg"
+  end
+
+  test do
+    system "#{bin}/wordgrinder", "-c", "#{doc}/README.wg", "#{testpath}/README.odt"
+    assert (testpath/"README.odt").exist?
   end
 end
