@@ -54,7 +54,7 @@ class Llvm < Formula
 
     resource "clang-tools-extra" do
       url "http://llvm.org/git/clang-tools-extra.git"
-	end
+    end
 
     resource "compiler-rt" do
       url "http://llvm.org/git/compiler-rt.git"
