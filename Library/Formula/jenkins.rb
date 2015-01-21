@@ -10,6 +10,8 @@ class Jenkins < Formula
     depends_on "maven" => :build
   end
 
+  depends_on :java => "1.6"
+
   def install
     if build.head?
       system "mvn clean install -pl war -am -DskipTests"
