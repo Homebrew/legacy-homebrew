@@ -1,23 +1,17 @@
 class SchemeInstalled < Requirement
+  default_formula 'gauche'
   fatal true
 
-  satisfy { which('bigloo') || which('gsi') || which('gosh') ||
-            which('guile') || which('kawa') || which('scheme48') ||
-            which('scsh') || which('sisc') }
+  satisfy { which('gsi') || which('gosh') || which('guile') }
 
   def message; <<-EOS.undent
     A Scheme implementation is required to use SLIB.
 
     You can install one of the SLIB supported Scheme
     implementation with Homebrew:
-      brew install bigloo
       brew install gambit-scheme
       brew install gauche
       brew install guile
-      brew install kawa
-      brew install scheme48
-      brew install scsh
-      brew install sisc-scheme
 
     Or you can use one of several different prepackaged installers
     that are available.
@@ -39,6 +33,52 @@ class Slib < Formula
   end
 
   test do
-    system "#{bin}/slib", "-v"
+    success = false
+
+    ENV["SCHEME_LIBRARY_PATH"] = "#{lib}/slib/"
+
+    (testpath/"test.scm").write <<-EOS.undent
+      (require 'new-catalog)
+      (require 'format)
+      (format #t "slib")
+      (exit)
+    EOS
+
+    gambit_bin = which('gsi')
+    unless gambit_bin.to_s == ''
+
+      ENV["GAMBIT_IMPLEMENTATION_PATH"] = Formula["gambit-scheme"].prefix
+
+      result = `#{gambit_bin} -:s ${SCHEME_LIBRARY_PATH}gambit.init #{testpath}/test.scm`
+      assert_equal "slib", result
+      success = true
+    end
+
+    gauche_bin = which('gosh')
+    unless gauche_bin.to_s == ''
+
+      (testpath/"test-gosh.scm").write <<-EOS.undent
+        (use slib)
+        (require 'format)
+        (format #t "slib")
+        (exit)
+      EOS
+
+      result = `#{gauche_bin} -l #{testpath}/test-gosh.scm`
+      assert_equal "slib", result
+      success = true
+    end
+
+    guile_bin = which('guile')
+    unless guile_bin.to_s == ''
+      ENV["GUILE_IMPLEMENTATION_PATH"] = Formula["guile"].prefix
+      ENV["GUILE_WARN_DEPRECATED"] = "no"
+
+      result = `#{guile_bin} -l ${SCHEME_LIBRARY_PATH}guile.init -l ${SCHEME_LIBRARY_PATH}guile.use test.scm`
+      assert_equal "slib", result
+      success = true
+    end
+
+    assert success, "No Scheme implementation is tested"
   end
 end
