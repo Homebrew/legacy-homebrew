@@ -2,19 +2,19 @@ require 'formula'
 
 class Strongswan < Formula
   homepage 'http://www.strongswan.org'
-  url 'http://download.strongswan.org/strongswan-5.2.1.tar.bz2'
-  sha1 '3035fc0c38e0698b0d85a94dbc25944abd2a8722'
+  url 'http://download.strongswan.org/strongswan-5.2.2.tar.bz2'
+  sha1 '5dcf6e8e50e11e4009375fda5ce2b49049123e18'
 
   bottle do
-    sha1 "ebcf0937245258aede64c79278f96f2bd9b50756" => :yosemite
-    sha1 "1e35a8281bfb5c3341fb9bb004a79f141f88eedb" => :mavericks
-    sha1 "38635c861ee0e8e8ac5638734e58b9415256d378" => :mountain_lion
+    sha1 "bcceab4dccbbaef7815b0e4b0c5fd800c9323edd" => :yosemite
+    sha1 "7ecdc03048bdb90143588c229a3d5422af2feae2" => :mavericks
+    sha1 "8c1bb11c6d21f5d4c80a43fbffdf5ac432eaaa3f" => :mountain_lion
   end
 
   option 'with-curl', 'Build with libcurl based fetcher'
   option 'with-suite-b', 'Build with Suite B support (does not use the IPsec implementation provided by the kernel)'
 
-  depends_on 'openssl' if build.with? "suite-b" or MacOS.version <= :leopard
+  depends_on 'openssl'
   depends_on 'curl' => :optional
 
   def install

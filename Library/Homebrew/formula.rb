@@ -147,10 +147,20 @@ class Formula
     active_spec == head
   end
 
+  # @private
+  def bottled?
+    active_spec.bottled?
+  end
+
+  # @private
+  def bottle_specification
+    active_spec.bottle_specification
+  end
+
   # The Bottle object for the currently active {SoftwareSpec}.
   # @private
   def bottle
-    Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
+    Bottle.new(self, bottle_specification) if bottled?
   end
 
   # The homepage for the software.

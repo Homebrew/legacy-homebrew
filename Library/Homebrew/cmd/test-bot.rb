@@ -365,7 +365,7 @@ module Homebrew
       dependents -= @formulae
       dependents = dependents.map {|d| Formulary.factory(d)}
 
-      testable_dependents = dependents.select {|d| d.test_defined? && d.stable.bottled? }
+      testable_dependents = dependents.select { |d| d.test_defined? && d.bottled? }
 
       formula = Formulary.factory(formula_name)
       installed_gcc = false
