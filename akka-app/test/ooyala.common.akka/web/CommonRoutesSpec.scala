@@ -2,15 +2,14 @@ package ooyala.common.akka.web
 
 import java.util.concurrent.TimeUnit
 
-import org.scalatest.FunSpec
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers, FunSpec}
 import spray.testkit.ScalatestRouteTest
 
 import spray.http.StatusCodes._
 import com.yammer.metrics.Metrics
 import com.yammer.metrics.core.Gauge
 
-class CommonRoutesSpec extends FunSpec with ShouldMatchers with ScalatestRouteTest with CommonRoutes {
+class CommonRoutesSpec extends FunSpec with Matchers with ScalatestRouteTest with CommonRoutes {
   def actorRefFactory = system
 
 
@@ -37,7 +36,7 @@ class CommonRoutesSpec extends FunSpec with ShouldMatchers with ScalatestRouteTe
       Get("/metricz") ~> commonRoutes ~> check {
         status === OK
 
-        val metricsMap = JsonUtils.mapFromJson(entityAs[String])
+        val metricsMap = JsonUtils.mapFromJson(responseAs[String])
         val classMetrics = metricsMap(getClass.getName).asInstanceOf[Map[String, Any]]
 
         classMetrics.keys.toSet should equal (Set("test-counter", "test-meter", "test-hist", "test-timer", "test-gauge"))

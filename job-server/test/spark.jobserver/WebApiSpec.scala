@@ -5,8 +5,7 @@ import com.typesafe.config.ConfigFactory
 import spark.jobserver.SparkWebUiActor.{GetWorkerStatus, SparkWorkersInfo}
 import spark.jobserver.io.{JobInfo, JarInfo}
 import org.joda.time.DateTime
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{FunSpec, BeforeAndAfterAll}
+import org.scalatest.{Matchers, FunSpec, BeforeAndAfterAll}
 import spray.http.StatusCodes._
 import spray.routing.HttpService
 import spray.testkit.ScalatestRouteTest
@@ -15,7 +14,7 @@ import spray.testkit.ScalatestRouteTest
 // Tests web response codes and formatting
 // Does NOT test underlying Supervisor / JarManager functionality
 // HttpService trait is needed for the sealRoute() which wraps exception handling
-class WebApiSpec extends FunSpec with ShouldMatchers with BeforeAndAfterAll
+class WebApiSpec extends FunSpec with Matchers with BeforeAndAfterAll
 with ScalatestRouteTest with HttpService {
   import scala.collection.JavaConverters._
   import spray.httpx.SprayJsonSupport._

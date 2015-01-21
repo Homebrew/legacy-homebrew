@@ -101,6 +101,7 @@ class JobManagerActor(dao: JobDAO,
         // Load side jars first in case the ContextFactory comes from it
         getSideJars(contextConfig).foreach { jarUri => jarLoader.addURL(new URL(convertJarUriSparkToJava(jarUri))) }
         sparkContext = createContextFromConfig()
+
         sparkEnv = SparkEnv.get
         rddManagerActor = context.actorOf(Props(classOf[RddManagerActor], sparkContext), "rdd-manager-actor")
         getSideJars(contextConfig).foreach { jarUri => sparkContext.addJar(jarUri) }

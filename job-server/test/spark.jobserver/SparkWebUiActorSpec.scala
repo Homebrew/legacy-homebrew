@@ -1,24 +1,20 @@
 package spark.jobserver
 
-import akka.actor.{Props, ActorRef, ActorSystem}
+import akka.actor._
 import akka.io.IO
 import akka.pattern.ask
-import akka.testkit.{TestKit, ImplicitSender}
-import com.typesafe.config.ConfigFactory
-import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
-import org.scalatest.matchers.ShouldMatchers
-import spray.client.pipelining._
-
-import scala.concurrent.{Await, Future}
-import scala.concurrent.duration._
+import akka.testkit.{ImplicitSender, TestKit}
 import akka.util.Timeout
-import akka.actor._
+import com.typesafe.config.ConfigFactory
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSpecLike, Matchers}
+import spark.jobserver.SparkWebUiActor._
 import spray.can.Http
+import spray.client.pipelining._
+import spray.http.HttpMethods._
 import spray.http._
-import HttpMethods._
-import SparkWebUiActor._
 
-import scala.util.{Failure, Success}
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 object SparkWebUiActorSpec {
   val sparkWebUrl = "localhost"
@@ -79,7 +75,7 @@ class SimpleHttpServer extends Actor with ActorLogging {
 }
 
 class SparkWebUiActorSpec extends TestKit(SparkWebUiActorSpec.system) with ImplicitSender
-  with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
+  with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll {
 
   // Used in the asks (?) below to request info from contextSupervisor and resultActor
   implicit val ShortTimeout = Timeout(3 seconds)

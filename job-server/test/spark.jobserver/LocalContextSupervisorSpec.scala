@@ -3,11 +3,8 @@ package spark.jobserver
 import akka.actor._
 import akka.testkit.{TestKit, ImplicitSender}
 import com.typesafe.config.ConfigFactory
-import org.scalatest.time.Second
 import spark.jobserver.io.JobDAO
-import org.scalatest.FunSpec
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfter}
+import org.scalatest.{Matchers, FunSpecLike, BeforeAndAfterAll, BeforeAndAfter}
 
 
 object LocalContextSupervisorSpec {
@@ -28,9 +25,14 @@ object LocalContextSupervisorSpec {
           memory-per-node = 512m
         }
       }
+
       context-settings {
         num-cpu-cores = 2
         memory-per-node = 512m
+        passthrough {
+          spark.driver.allowMultipleContexts = true
+          spark.ui.enabled = false
+        }
       }
     }
     akka.log-dead-letters = 0
@@ -40,7 +42,7 @@ object LocalContextSupervisorSpec {
 }
 
 class LocalContextSupervisorSpec extends TestKit(LocalContextSupervisorSpec.system) with ImplicitSender
-    with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
+    with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll {
 
   override def afterAll() {
     ooyala.common.akka.AkkaTestUtils.shutdownAndWait(LocalContextSupervisorSpec.system)
@@ -79,9 +81,11 @@ class LocalContextSupervisorSpec extends TestKit(LocalContextSupervisorSpec.syst
     }
 
     it("should be able to add multiple new contexts") {
+      // serializing the creation at least until SPARK-2243 gets
+      // solved.
       supervisor ! AddContext("c1", contextConfig)
-      supervisor ! AddContext("c2", contextConfig)
       expectMsg(ContextInitialized)
+      supervisor ! AddContext("c2", contextConfig)
       expectMsg(ContextInitialized)
       supervisor ! ListContexts
       expectMsg(Seq("c1", "c2"))
@@ -92,7 +96,6 @@ class LocalContextSupervisorSpec extends TestKit(LocalContextSupervisorSpec.syst
     }
 
     it("should be able to stop contexts already running") {
-      import scala.concurrent.duration._
       supervisor ! AddContext("c1", contextConfig)
       expectMsg(ContextInitialized)
       supervisor ! ListContexts
