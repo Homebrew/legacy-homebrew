@@ -1,8 +1,8 @@
 class SchemeInstalled < Requirement
-  default_formula 'gauche'
+  default_formula "gauche"
   fatal true
 
-  satisfy { which('gsi') || which('gosh') || which('guile') }
+  satisfy { which("gsi") || which("gosh") || which("guile") }
 
   def message; <<-EOS.undent
     A Scheme implementation is required to use SLIB.
@@ -44,8 +44,8 @@ class Slib < Formula
       (exit)
     EOS
 
-    gambit_bin = which('gsi')
-    unless gambit_bin.to_s == ''
+    gambit_bin = which("gsi")
+    unless gambit_bin.to_s == ""
 
       ENV["GAMBIT_IMPLEMENTATION_PATH"] = Formula["gambit-scheme"].prefix
 
@@ -54,8 +54,8 @@ class Slib < Formula
       success = true
     end
 
-    gauche_bin = which('gosh')
-    unless gauche_bin.to_s == ''
+    gauche_bin = which("gosh")
+    unless gauche_bin.to_s == ""
 
       (testpath/"test-gosh.scm").write <<-EOS.undent
         (use slib)
@@ -69,8 +69,8 @@ class Slib < Formula
       success = true
     end
 
-    guile_bin = which('guile')
-    unless guile_bin.to_s == ''
+    guile_bin = which("guile")
+    unless guile_bin.to_s == ""
       ENV["GUILE_IMPLEMENTATION_PATH"] = Formula["guile"].prefix
       ENV["GUILE_WARN_DEPRECATED"] = "no"
 
