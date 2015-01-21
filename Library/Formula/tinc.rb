@@ -1,5 +1,3 @@
-require "formula"
-
 class Tinc < Formula
   homepage "http://www.tinc-vpn.org"
   url "http://tinc-vpn.org/packages/tinc-1.0.25.tar.gz"
@@ -22,7 +20,10 @@ class Tinc < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}",
                           "--with-openssl=#{Formula["openssl"].opt_prefix}"
-    system "make"
     system "make", "install"
+  end
+
+  test do
+    assert_match /^tinc version [-0-9a-z.]/, `#{sbin}/tincd --version`
   end
 end
