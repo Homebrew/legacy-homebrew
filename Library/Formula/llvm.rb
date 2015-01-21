@@ -71,6 +71,7 @@ class Llvm < Formula
   option "with-all-targets", "Build all target backends"
   option "without-shared", "Don't build LLVM as a shared library"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
+  option "with-asan", "Include support for -faddress-sanitizer (from compiler-rt)"
 
   deprecated_option "rtti" => "with-rtti"
   deprecated_option "all-targets" => "with-all-targets"
@@ -97,7 +98,7 @@ class Llvm < Formula
       (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"tools/clang").install resource("clang")
       (buildpath/"tools/clang/tools/extra").install resource("clang-tools-extra")
-      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
+      (buildpath/"projects/compiler-rt").install resource("compiler-rt") if build.with? "asan"
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
@@ -118,7 +119,7 @@ class Llvm < Formula
       "--disable-bindings",
     ]
 
-    if build.with? "all-targets"
+    if build.with? "all-targets" or build.with? "asan"
       args << "--enable-targets=all"
     else
       args << "--enable-targets=host"
