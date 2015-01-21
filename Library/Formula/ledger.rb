@@ -1,14 +1,11 @@
 class Ledger < Formula
   homepage "http://ledger-cli.org"
+  url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
+  sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
 
-  stable do
-    url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
-    sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
-
-    resource "utfcpp" do
-      url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
-      sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
-    end
+  resource "utfcpp" do
+    url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+    sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
   end
 
   bottle do
@@ -41,6 +38,7 @@ class Ledger < Formula
     ENV.cxx11
 
     (buildpath/"lib/utfcpp").install resource("utfcpp") unless build.head?
+    resource("utfcpp").stage { include.install Dir["source/*"] }
 
     flavor = (build.with? "debug") ? "debug" : "opt"
 
