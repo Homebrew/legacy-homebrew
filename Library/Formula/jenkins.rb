@@ -15,11 +15,12 @@ class Jenkins < Formula
   def install
     if build.head?
       system "mvn clean install -pl war -am -DskipTests"
-      libexec.install "war/target/jenkins.war"
     else
-      libexec.install "jenkins.war"
+      system "jar", "xvf", "jenkins.war"
     end
+    libexec.install Dir["**/jenkins.war", "**/jenkins-cli.jar"]
     bin.write_jar_script libexec/"jenkins.war", "jenkins"
+    bin.write_jar_script libexec/"jenkins-cli.jar", "jenkins-cli"
   end
 
   plist_options :manual => "jenkins"
