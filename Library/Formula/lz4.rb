@@ -6,9 +6,9 @@ class Lz4 < Formula
 
   bottle do
     cellar :any
-    sha1 "41c29b21cde036ed9a2d6d7f2461fb8ec4b78ba5" => :yosemite
-    sha1 "9d158cf88ad8752ae91114323725267e0995a45b" => :mavericks
-    sha1 "abe1e9d6210f597235b864a6ee1225ddc1adcf76" => :mountain_lion
+    sha1 "2d3b5ecafed3be8c54a6f87d4f2b7d5d84ebea2b" => :yosemite
+    sha1 "9fb811e3c5c485c36cc4dbea9e4d8884587e0f48" => :mavericks
+    sha1 "15e183eef77fd47f9fbfe94fda34a43b9f68f12b" => :mountain_lion
   end
 
   def install
