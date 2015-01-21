@@ -35,5 +35,4 @@ class Predictionio < Formula
       http://docs.prediction.io/install/install-linux/
     EOS
   end
-
 end
