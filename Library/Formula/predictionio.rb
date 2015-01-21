@@ -17,9 +17,9 @@ class Predictionio < Formula
     libexec.install Dir['*']
     bin.write_exec_script libexec/"bin/pio"
 
-    inreplace libexec/"conf/pio-env.sh" do |f|
-       f.gsub! /#\s*ES_CONF_DIR=.+$/, "ES_CONF_DIR=#{HOMEBREW_PREFIX}/opt/elasticsearch/config"
-       f.gsub! /SPARK_HOME=.+$/, "SPARK_HOME=#{HOMEBREW_PREFIX}/opt/apache-spark"
+    inreplace libexec/"conf/pio-env.sh" do |s|
+       s.gsub! /#\s*ES_CONF_DIR=.+$/, "ES_CONF_DIR=#{Formula['elasticsearch'].opt_prefix}/config"
+       s.gsub! /SPARK_HOME=.+$/, "SPARK_HOME=#{Formula['apache-spark'].opt_prefix}"
     end
   end
 
