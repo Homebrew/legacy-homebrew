@@ -1,10 +1,8 @@
-require "formula"
-
 class Lz4 < Formula
-  homepage "http://code.google.com/p/lz4/"
-  url "https://github.com/Cyan4973/lz4/archive/r126.tar.gz"
-  sha1 "4e22222844b914f9f2878e9acf0ed1d9deca7f12"
-  version "r126"
+  homepage "https://code.google.com/p/lz4/"
+  url "https://github.com/Cyan4973/lz4/archive/r127.tar.gz"
+  sha1 "1aa7d4bb62eb79f88b33f86f9890dc9f96797af5"
+  version "r127"
 
   bottle do
     cellar :any
