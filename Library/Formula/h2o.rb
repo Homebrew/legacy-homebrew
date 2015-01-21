@@ -1,7 +1,7 @@
 class H2o < Formula
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v0.9.0.tar.gz"
-  sha1 "37b84750900cdb56c3be574477d6f3327d92a4d7"
+  url "https://github.com/h2o/h2o/archive/v0.9.1.tar.gz"
+  sha1 "1e701935d71be5253413e2263739a792c9ed4f51"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
@@ -30,7 +30,9 @@ class H2o < Formula
     mkdir_p etc/"h2o"
     mkdir_p var/"h2o"
     (var+"h2o").install "examples/doc_root/index.html"
-    (etc+"h2o/h2o.conf").write conf_example
+    # Write up a basic example conf for testing.
+    (buildpath+"brew/h2o.conf").write conf_example
+    (etc+"h2o").install buildpath/"brew/h2o.conf"
   end
 
   # This is simplified from examples/h2o/h2o.conf upstream.
