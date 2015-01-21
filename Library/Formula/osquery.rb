@@ -3,7 +3,7 @@ require "formula"
 class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.2.2"
+  url "https://github.com/facebook/osquery.git", :tag => "1.3.1"
 
   bottle do
     revision 1
@@ -36,12 +36,6 @@ class Osquery < Formula
   end
 
   def install
-    # Apply upstream commit to fix illegal hardware instruction:
-    # https://github.com/facebook/osquery/commit/20259a
-    # https://github.com/facebook/osquery/issues/563
-    # https://github.com/Homebrew/homebrew/issues/35343
-    inreplace "CMakeLists.txt", "-Wl,-all_load", "-Wl,-force_load"
-
     ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
 
     resources.each do |r|
@@ -52,6 +46,7 @@ class Osquery < Formula
     end
 
     system "cmake", ".", *std_cmake_args
+    system "make"
     system "make", "install"
 
     prefix.install "tools/deployment/com.facebook.osqueryd.plist"
