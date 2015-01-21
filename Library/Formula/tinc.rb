@@ -12,8 +12,8 @@ class Tinc < Formula
   end
 
   devel do
-    url "http://www.tinc-vpn.org/packages/tinc-1.1pre10.tar.gz"
-    sha1 "085dcb66858dfb2ddaa6c0082c2b22b18bc65a97"
+    url "http://www.tinc-vpn.org/packages/tinc-1.1pre11.tar.gz"
+    sha1 "ee6920d87b377c39da71d7ad5807a37f55e4e3be"
   end
 
   depends_on "lzo"
