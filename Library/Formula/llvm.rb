@@ -24,11 +24,6 @@ class Llvm < Formula
       url "http://llvm.org/releases/3.5.1/clang-tools-extra-3.5.1.src.tar.xz"
       sha1 "7a0dd880d7d8fe48bdf0f841eca318337d27a345"
     end
-
-    resource "compiler-rt" do
-      url "http://llvm.org/releases/3.5.1/compiler-rt-3.5.1.src.tar.xz"
-      sha1 "620d59dcc375b24c5663f2793b2bcd74f848435d"
-    end
   end
 
   bottle do
@@ -54,10 +49,6 @@ class Llvm < Formula
 
     resource "clang-tools-extra" do
       url "http://llvm.org/git/clang-tools-extra.git"
-    end
-
-    resource "compiler-rt" do
-      url "http://llvm.org/git/compiler-rt.git"
     end
   end
 
@@ -97,7 +88,6 @@ class Llvm < Formula
       (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"tools/clang").install resource("clang")
       (buildpath/"tools/clang/tools/extra").install resource("clang-tools-extra")
-      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
