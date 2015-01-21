@@ -3,6 +3,13 @@ class Libgxps < Formula
   url "http://ftp.gnome.org/pub/gnome/sources/libgxps/0.2/libgxps-0.2.2.tar.xz"
   sha256 "39d104739bf0db43905c315de1d8002460f1a098576f4418f69294013a5820be"
 
+  bottle do
+    cellar :any
+    sha1 "924309fd03db773717136c28f18c252287fb594e" => :yosemite
+    sha1 "824b1ccbe6227f3daf53ba511186f45b7e57a8d2" => :mavericks
+    sha1 "1782c7a78c41172a401cef801e0995818ec23e33" => :mountain_lion
+  end
+
   head do
     url "https://github.com/GNOME/libgxps.git"
 
