@@ -2,8 +2,8 @@ require 'formula'
 
 class Libcouchbase < Formula
   homepage 'http://docs.couchbase.com/developer/c-2.4/c-intro.html'
-  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.5_1_gd7f6ecf.tar.gz'
-  sha1 '4b768c141c6007d8221ae9f88e6e223eff320354'
+  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.6.tar.gz'
+  sha1 '2a4ce6b0f6a934a3fa3ef697d26ed6c4737aacae'
   head "https://github.com/couchbase/libcouchbase", :using => :git
 
   bottle do
