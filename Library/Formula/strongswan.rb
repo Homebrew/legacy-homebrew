@@ -14,7 +14,7 @@ class Strongswan < Formula
   option 'with-curl', 'Build with libcurl based fetcher'
   option 'with-suite-b', 'Build with Suite B support (does not use the IPsec implementation provided by the kernel)'
 
-  depends_on 'openssl' if build.with? "suite-b" or MacOS.version <= :leopard
+  depends_on 'openssl'
   depends_on 'curl' => :optional
 
   def install
