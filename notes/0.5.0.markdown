@@ -1,5 +1,6 @@
 #Scala #akka @ApacheSpark
 
+* Spark 1.2.0 support (Thanks @zeitos and others)
 * yarn-client support (Thanks @CurryGaifan)
 * Fix for NamedRdds RDD cleaner timeout issue (Thanks @Ankit1010)
 * Passthrough of Hadoop and non-spark config (Thanks @jeffsteinmetz)
