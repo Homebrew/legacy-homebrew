@@ -23,14 +23,14 @@ class Agda < Formula
 
   def install
     if build.with? "epic-backend"
-      epicFlag = "-fepic"
+      epic_flag = "-fepic"
     else
-      epicFlag = "-f-epic"
+      epic_flag = "-f-epic"
     end
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "cpphs"
-      cabal_install "--only-dependencies", epicFlag
-      cabal_install "--prefix=#{prefix}", epicFlag
+      cabal_install "--only-dependencies", epic_flag
+      cabal_install "--prefix=#{prefix}", epic_flag
     end
     cabal_clean_lib
   end
