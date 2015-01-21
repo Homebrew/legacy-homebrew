@@ -2,14 +2,8 @@ require "formula"
 
 class Vala < Formula
   homepage "http://live.gnome.org/Vala"
-  url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.26/vala-0.26.1.tar.xz"
-  sha256 "8407abb19ab3a58bbfc0d288abb47666ef81f76d0540258c03965e7545f59e6b"
-
-  bottle do
-    sha1 "9e829527c2662e38375a04116802f8975109fc5b" => :yosemite
-    sha1 "22d08887de342be1704472063003caa6c3a33f03" => :mavericks
-    sha1 "0ad74c02e196ac61098dddc8b8c4caec7d91a044" => :mountain_lion
-  end
+  url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.27/vala-0.27.1.tar.xz"
+  sha256 "0bce939c011c34478da840f869b3c24d02e8f1c92691c587c1fe289a5533cd77"
 
   depends_on "pkg-config" => :run
   depends_on "gettext"
