@@ -2,16 +2,9 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-1.7.10.tar.gz&os=mac'
-  version '1.7.10'
-  sha1 '71c38c2e91ec6e92bf9d6c166af750f491380852'
-
-  devel do
-    url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0-rc2.tar.gz&os=mac'
-    version '2.0-RC2'
-    sha1 '84369ce34c749f2fab6bcbb90f92aaaa63deb44f'
-  end
-
+  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.1.tar.gz&os=mac'
+  version '2.0.1'
+  sha1 '6e31c99406453b7f0fb115f83a7cfd20eb1e318f'
 
   bottle do
     cellar :any
@@ -44,7 +37,13 @@ class Orientdb < Formula
     bin.install_symlink "#{libexec}/bin/gremlin.sh" => 'orientdb-gremlin'
   end
 
-  def caveats
-    "Use `orientdb <start | stop | status>`, `orientdb-console` and `orientdb-gremlin`."
+  def caveats; <<-EOS.undent
+    The root password is in
+    #{opt_libexec}/config/orientdb-server-config.xml
+    after orientdb is started for the first time.
+
+    Use `orientdb <start | stop | status>`, `orientdb-console` and
+    `orientdb-gremlin`.
+    EOS
   end
 end
