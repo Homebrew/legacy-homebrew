@@ -5,6 +5,8 @@ class Jenkins < Formula
   url "http://mirrors.jenkins-ci.org/war/1.597/jenkins.war"
   sha1 "a177d463af1e334a92874378b5c32a923fb62c66"
 
+  depends_on :java => "1.6"
+
   head do
     url "https://github.com/jenkinsci/jenkins.git"
     depends_on "maven" => :build
