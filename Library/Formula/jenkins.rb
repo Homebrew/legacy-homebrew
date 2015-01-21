@@ -13,7 +13,7 @@ class Jenkins < Formula
   def install
     if build.head?
       system "mvn clean install -pl war -am -DskipTests"
-      libexec.install "war/target/jenkins.war", "."
+      libexec.install "war/target/jenkins.war"
     else
       libexec.install "jenkins.war"
     end
