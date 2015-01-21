@@ -9,10 +9,10 @@ class Ledger < Formula
   end
 
   bottle do
-    revision 1
-    sha1 "30561863474adf48bf79f91cd2857fc710c6b3bf" => :yosemite
-    sha1 "3bec38e55625664d73acd980e1858eac286b803d" => :mavericks
-    sha1 "33ad9b6c16c8e0803728a772ae78a555678fc603" => :mountain_lion
+    revision 2
+    sha1 "661106efe731cb8934269f0e9141b6c846b65710" => :yosemite
+    sha1 "80b7a33291be43598d5084da49d8783ee7780679" => :mavericks
+    sha1 "087576750c2d1df2367a7bac2617e54dbedc2866" => :mountain_lion
   end
 
   head "https://github.com/ledger/ledger.git"
