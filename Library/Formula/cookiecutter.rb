@@ -52,6 +52,8 @@ class Cookiecutter < Formula
   end
 
   test do
-    system "#{bin}/cookiecutter", "--help"
+    system "git", "clone", "https://github.com/audreyr/cookiecutter-pypackage.git"
+    system bin/"cookiecutter", "--no-input", "cookiecutter-pypackage"
+    assert (testpath/"boilerplate").directory?
   end
 end
