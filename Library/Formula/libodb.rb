@@ -11,4 +11,17 @@ class Libodb < Formula
     system "make", "install"
   end
 
+  test do
+  (testpath/'main.cxx').write <<-EOS.undent
+    #include <odb/core.hxx>
+    int main()
+    {
+      return 0;
+    }
+  EOS
+
+  system "#{ENV.cxx}", "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-lodb", "main.cxx", "-o", "test"
+  system "./test"
+  end
+
 end

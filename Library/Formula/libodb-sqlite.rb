@@ -39,5 +39,5 @@ class LibodbSqlite < Formula
     system "#{ENV.cxx}", "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/sqlite/lib", "main.cxx", "person-odb.cxx", "-lodb", "-lsqlite3", "-lodb-sqlite", "-o", "person"
     system "./person"
   end
-  
+
 end

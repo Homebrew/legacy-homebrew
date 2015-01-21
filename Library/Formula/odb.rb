@@ -9,7 +9,7 @@ class Odb < Formula
   fails_with :llvm
   depends_on "gcc"
   depends_on "libodb"
-  
+
   resource "libcutl" do
     url "http://www.codesynthesis.com/download/libcutl/1.8/libcutl-1.8.1.tar.gz"
     sha1 "5411892a2959b6164321ebfb6e8e52255786b143"
@@ -45,7 +45,7 @@ class Odb < Formula
         unsigned long id_;        
       };
     EOS
-    
+
     system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
   end
 

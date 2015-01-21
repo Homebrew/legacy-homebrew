@@ -14,4 +14,17 @@ class LibodbBoost < Formula
     system "make", "install"
   end
 
+    test do
+  (testpath/'main.cxx').write <<-EOS.undent
+    #include <odb/boost/version.hxx>
+    int main()
+    {
+      return 0;
+    }
+  EOS
+
+  system "#{ENV.cxx}", "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-lodb", "-lodb-boost", "main.cxx", "-o", "test"
+  system "./test"
+  end
+
 end
