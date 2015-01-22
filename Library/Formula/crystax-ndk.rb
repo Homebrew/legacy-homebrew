@@ -41,9 +41,7 @@ class CrystaxNdk < Formula
 
   test do
     system "#{bin}/ndk-build", "--version"
-    fail unless $?.success?
     system "#{bin}/ndk-gdb", "--help"
-    fail unless $?.success?
   end
 
   def caveats; <<-EOS.undent
