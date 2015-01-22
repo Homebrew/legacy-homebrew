@@ -20,6 +20,7 @@ class YoutubeDl < Formula
     depends_on "pandoc" => :build
   end
 
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "rtmpdump" => :optional
 
   def install
