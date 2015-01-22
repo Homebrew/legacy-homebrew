@@ -387,7 +387,7 @@ class Formula
 
   def patch
     ohai "Patching"
-    active_spec.patches.each(&:apply)
+    patchlist.each(&:apply)
   end
 
   # yields self with current working directory set to the uncompressed tarball
@@ -761,9 +761,9 @@ class Formula
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
 
-    active_spec.patches.grep(DATAPatch) { |p| p.path = path }
+    patchlist.grep(DATAPatch) { |p| p.path = path }
 
-    active_spec.patches.select(&:external?).each do |patch|
+    patchlist.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
     end
   end
