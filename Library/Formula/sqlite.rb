@@ -1,8 +1,8 @@
 class Sqlite < Formula
   homepage "https://sqlite.org/"
-  url "https://www.sqlite.org/2014/sqlite-autoconf-3080704.tar.gz"
-  version "3.8.7.4"
-  sha1 "70ca0b8884a6b145b7f777724670566e2b4f3cde"
+  url "https://sqlite.org/2015/sqlite-autoconf-3080801.tar.gz"
+  version "3.8.8.1"
+  sha1 "a140e3ada8a91a7bacf7a58cfd8f5f0e76796258"
 
   bottle do
     cellar :any
@@ -32,9 +32,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://www.sqlite.org/2014/sqlite-doc-3080704.zip"
-    version "3.8.7.4"
-    sha1 "734908373118d61338ca020e3c7dcbd1e0ccd985"
+    url "https://sqlite.org/2015/sqlite-doc-3080801.zip"
+    version "3.8.8.1"
+    sha1 "43d0fbc6a9126d617cf7dd066cbd6171c1007d59"
   end
 
   def install
@@ -56,7 +56,7 @@ class Sqlite < Formula
     ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
-    system "make install"
+    system "make", "install"
 
     if build.with? "functions"
       buildpath.install resource("functions")
