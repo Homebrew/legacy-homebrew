@@ -23,16 +23,4 @@ class Predictionio < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    Be sure to have Elasticsearch and HBase running, and that the below conf reflects your current environment.
-
-    Conf: #{libexec}/conf/pio-env.sh
-
-    Check status
-       pio status
-
-    For more details:
-      http://docs.prediction.io/install/install-linux/
-    EOS
-  end
 end
