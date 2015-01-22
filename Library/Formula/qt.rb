@@ -29,6 +29,7 @@ class Qt < Formula
   option 'with-qt3support', 'Build with deprecated Qt3Support module support'
   option 'with-docs', 'Build documentation'
   option 'developer', 'Build and link with developer options'
+  option 'without-sse4', 'Build without sse4 and newer instructions'
 
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
@@ -45,6 +46,12 @@ class Qt < Formula
             "-confirm-license", "-opensource",
             "-nomake", "demos", "-nomake", "examples",
             "-cocoa", "-fast", "-release"]
+
+    if build.with? 'without-sse4'
+      ENV.append_to_cflags "-mno-sse4.1 -mno-sse4.2 -mno-avx -mno-avx2"
+      ENV.append 'LDFLAGS', "-mno-sse4.1 -mno-sse4.2 -mno-avx -mno-avx2"
+      args << "-no-sse4.1"
+    end
 
     if ENV.compiler == :clang
         args << "-platform"
