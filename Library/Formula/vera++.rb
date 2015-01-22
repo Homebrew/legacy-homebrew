@@ -6,6 +6,10 @@ class Veraxx < Formula
   sha1 "696c143e42df6854c9e5674b9e713fa8b9dae6f0"
 
   bottle do
+    cellar :any
+    sha1 "4a3cb73eb8bc6144e1a2387ab5b39c14e68a1b11" => :yosemite
+    sha1 "db722169da4ef85bc970832976055acaf9068fcf" => :mavericks
+    sha1 "65dcc261bc60d4387ce72536a9c4f3948be36e5b" => :mountain_lion
   end
 
   depends_on "cmake" => :build
