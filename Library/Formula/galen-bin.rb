@@ -18,7 +18,23 @@ class GalenBin < Formula
   end
 
   test do
-    output = shell_output("#{bin}/galen -v")
-    assert output.include?("Galen Framework")
+    (testpath/"homepage.spec").write <<-EOS.undent
+      ==================================================
+      header              id      header
+      ==================================================
+
+      header
+          height: 100px
+    EOS
+
+    (testpath/"my.test").write <<-EOS.undent
+      Homepage in local Firefox browser
+          selenium firefox http://samples.galenframework.com/tutorial1/tutorial1.html 640x480
+              check #{testpath}/homepage.spec
+    EOS
+
+    output = shell_output("#{bin}/galen test #{testpath}/my.test")
+    # print output
+    assert output.include?("Status: PASS")
   end
 end
