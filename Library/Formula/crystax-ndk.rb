@@ -1,5 +1,3 @@
-require "formula"
-
 class CrystaxNdk < Formula
   homepage "https://www.crystax.net/android/ndk"
 
@@ -20,12 +18,13 @@ class CrystaxNdk < Formula
     bin.mkpath
 
     if MacOS.prefer_64_bit?
-      system "7z x crystax-ndk-#{version}-darwin-x86_64.7z"
+      arch = :x86_64
     else
-      system "7z x crystax-ndk-#{version}-darwin-x86.7z"
+      arch = :x86
     end
 
-    # Now we can install both 64-bit and 32-bit targeting toolchains
+    system "7z", "x", "crystax-ndk-#{version}-darwin-#{arch}.7z"
+
     prefix.install Dir["crystax-ndk-#{version}/*"]
 
     # Create a dummy script to launch the ndk apps
@@ -38,6 +37,13 @@ class CrystaxNdk < Formula
     EOS
     ndk_exec.chmod 0755
     %w[ndk-build ndk-gdb ndk-stack].each { |app| bin.install_symlink ndk_exec => app }
+  end
+
+  test do
+    system "#{bin}/ndk-build", "--version"
+    raise "Can't run ndk-build" unless $?.success?
+    system "#{bin}/ndk-gdb", "--help"
+    raise "Can't run ndk-gdb" unless $?.success?
   end
 
   def caveats; <<-EOS.undent
