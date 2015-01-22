@@ -21,7 +21,7 @@ class Dos2unix < Formula
                    "CPP=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
                    "CFLAGS_OS=-I#{gettext.include}",
-                   "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl",
+                   "LDFLAGS_EXTRA=-L#{gettext.lib} #{"-lintl" if OS.mac?}",
                    "install"
   end
 
