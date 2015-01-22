@@ -386,8 +386,10 @@ class Formula
   end
 
   def patch
-    ohai "Patching"
-    patchlist.each(&:apply)
+    unless patchlist.empty?
+      ohai "Patching"
+      patchlist.each(&:apply)
+    end
   end
 
   # yields self with current working directory set to the uncompressed tarball
