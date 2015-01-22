@@ -20,7 +20,7 @@ class Xrootd < Formula
       system "cmake", "..", *std_cmake_args
       system "make", "install"
     end
-    share.install prefix/"man"
+    share.install prefix/"man" unless OS.linux?
   end
 
   test do
