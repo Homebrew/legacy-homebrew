@@ -36,6 +36,22 @@ class Agda < Formula
   end
 
   test do
-    system "#{bin}/agda", "--test"
+    # run Agda's built-in test suite
+    system bin/"agda", "--test"
+    
+    # typecheck and compile a simple module
+    path = testpath/"test.agda"
+    path.write <<-EOS.undent
+      module test where
+      open import Agda.Primitive
+      infixr 6 _::_
+      data List {i} (A : Set i) : Set i where
+        [] : List A
+        _::_ : A -> List A -> List A
+      snoc : forall {i} {A : Set i} -> List A -> A -> List A
+      snoc [] x = x :: []
+      snoc (x :: xs) y = x :: (snoc xs y)
+    EOS
+    system bin/"agda", "-c", "--no-main", "--safe", "--without-K", path
   end
 end
