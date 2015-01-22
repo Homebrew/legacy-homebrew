@@ -38,7 +38,7 @@ class Agda < Formula
   test do
     # run Agda's built-in test suite
     system bin/"agda", "--test"
-    
+
     # typecheck and compile a simple module
     path = testpath/"test.agda"
     path.write <<-EOS.undent
