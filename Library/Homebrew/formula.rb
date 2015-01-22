@@ -761,7 +761,6 @@ class Formula
 
   def prepare_patches
     active_spec.add_legacy_patches(patches)
-    return if patchlist.empty?
 
     patchlist.grep(DATAPatch) { |p| p.path = path }
 
