@@ -23,6 +23,11 @@ class Passenger < Formula
     rake "nginx"
     rake "webhelper"
 
+    # Fixes https://github.com/phusion/passenger/issues/1288
+    rm_rf "buildout/libev"
+    rm_rf "buildout/libeio"
+    rm_rf "buildout/cache"
+
     necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
       "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
