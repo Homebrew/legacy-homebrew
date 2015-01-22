@@ -7,9 +7,9 @@ class Libressl < Formula
   option "without-libtls", "Build without libtls"
 
   bottle do
-    sha1 "fca5d55a55ea69eea9bd462d788f9157ba68853b" => :yosemite
-    sha1 "b8ba84dd423acb17976a17437c91ed33d59636f0" => :mavericks
-    sha1 "dd58fa644e7fc23a7883696372174fbfa1451930" => :mountain_lion
+    sha1 "a27d907fe3d72f735b2c546fb470b5794dadb731" => :yosemite
+    sha1 "880ef498373994ac459e026d7e2e48d3145653a8" => :mavericks
+    sha1 "8ebe481e3399d1e833e293caf90bf6936a286145" => :mountain_lion
   end
 
   head do
