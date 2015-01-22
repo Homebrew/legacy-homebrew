@@ -1,5 +1,5 @@
 class AwsElasticbeanstalk < AmazonWebServicesFormula
-  homepage "http://aws.amazon.com/code/6752709412171743"
+  homepage "http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
   url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.0.10.tar.gz"
   sha1 "60cb08e1946c6fa141c4708c2ea2020e2c03f0fc"
 
