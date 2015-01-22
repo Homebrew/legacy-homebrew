@@ -14,7 +14,7 @@ class Jenkins < Formula
 
   def install
     if build.head?
-      system "mvn clean install -pl war -am -DskipTests"
+      system "mvn", "clean", "install", "-pl", "war", "-am", "-DskipTests"
     else
       system "jar", "xvf", "jenkins.war"
     end
