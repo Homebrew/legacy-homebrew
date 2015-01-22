@@ -11,7 +11,6 @@ class CrystaxNdk < Formula
     sha1 "d502f57ea314e5a572387b4492c297f77e68a982"
   end
 
-  depends_on "p7zip"
   depends_on "android-sdk" => :recommended
 
   def install
