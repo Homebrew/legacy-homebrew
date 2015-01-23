@@ -12,6 +12,11 @@ class Node < Formula
     sha1 "977332381c033626b991002c27e738c144ebbaac" => :mountain_lion
   end
 
+  devel do
+    url "http://nodejs.org/dist/v0.11.15/node-v0.11.15.tar.gz"
+    sha256 "e613d274baa4c99a0518038192491433f7877493a66d8505af263f6310991d01"
+  end
+
   head do
     url "https://github.com/joyent/node.git", :branch => "v0.12"
 
