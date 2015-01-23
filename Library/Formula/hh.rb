@@ -5,9 +5,9 @@ class Hh < Formula
 
   bottle do
     cellar :any
-    sha1 "3110fabac2e10d0bd49f0893a9bff1babf8ad4d3" => :yosemite
-    sha1 "9e7f8e5fab6fdfb0151eb426a97187e7abeb8519" => :mavericks
-    sha1 "e31eebb154535a7fc7e35a498178e1163068e4fb" => :mountain_lion
+    sha1 "59c41d99d39acb84ef835312816cff5be669caa3" => :yosemite
+    sha1 "a9cadc7c3cd27290bdaf3d388735795eb394d475" => :mavericks
+    sha1 "2cf6414834cf8dc214cf8ef2c1427e2b37a177a8" => :mountain_lion
   end
 
   head do
