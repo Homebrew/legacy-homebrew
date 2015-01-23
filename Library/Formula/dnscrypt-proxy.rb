@@ -95,6 +95,6 @@ class DnscryptProxy < Formula
   end
 
   test do
-    system "#{bin}/hostip", "-r", "8.8.8.8", "www.google.com"
+    system "#{sbin}/dnscrypt-proxy", "--version"
   end
 end
