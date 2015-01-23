@@ -125,6 +125,10 @@ class FormulaAuditor
         problem "A `test do` test block should be added"
       end
     end
+
+    if formula.class < GithubGistFormula
+      problem "GithubGistFormula is deprecated, use Formula instead"
+    end
   end
 
   @@aliases ||= Formula.aliases
