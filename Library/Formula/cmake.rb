@@ -4,7 +4,7 @@ class NoExpatFramework < Requirement
   end
 
   satisfy :build_env => false do
-    not File.exist? expat_framework
+    !File.exist? expat_framework
   end
 
   def message; <<-EOS.undent
@@ -20,8 +20,8 @@ end
 
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz"
-  sha1 "cc20c40f5480c83a0204f516a490b470bd3a963a"
+  url "http://www.cmake.org/files/v3.1/cmake-3.1.1.tar.gz"
+  sha1 "e96098e402903e09f56d0c4cfef516e591088d78"
   head "http://cmake.org/cmake.git"
 
   bottle do
@@ -50,8 +50,8 @@ class Cmake < Formula
   end
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.1.tar.gz"
-    sha1 "b9e9236693ccf6e86414e8578bf8874181f409de"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
+    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
   end
 
   resource "jinja2" do
