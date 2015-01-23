@@ -13,10 +13,16 @@ end
 
 class Mu < Formula
   homepage "http://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/archive/v0.9.10.tar.gz"
-  sha1 "5c21aeed9471f2d0aaa76307a3ec70fc86f0817b"
+  url "https://github.com/djcb/mu/archive/v0.9.11.tar.gz"
+  sha1 "080b69bfb4876cb683acb961e8b71d6ebba90fa0"
 
   head "https://github.com/djcb/mu.git"
+
+  bottle do
+    sha1 "b9e3a478300b3391f6a38639e32694f5444bea2d" => :yosemite
+    sha1 "61b8eadfbfa482de3d1194c5cb8bc5a3cb0933d6" => :mavericks
+    sha1 "ef81baa0a3210ba9c4a7eeb9224574e1cc89e5d8" => :mountain_lion
+  end
 
   option "with-emacs", "Build with emacs support"
 

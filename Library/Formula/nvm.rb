@@ -1,10 +1,8 @@
-require "formula"
-
 class Nvm < Formula
   homepage "https://github.com/creationix/nvm"
   head "https://github.com/creationix/nvm.git"
-  url "https://github.com/creationix/nvm/archive/v0.22.0.tar.gz"
-  sha1 "8e1ec2f27fd99c834e2f69ee2a8e0f40f152ab2c"
+  url "https://github.com/creationix/nvm/archive/v0.23.1.tar.gz"
+  sha1 "a6e10eaaa413b6929b29ec74c4444bc41c94e53e"
 
   def install
     prefix.install "nvm.sh"
@@ -21,6 +19,8 @@ class Nvm < Formula
       the source line to move install location and prevent this:
 
         export NVM_DIR=~/.nvm
+
+      You may need to `mkdir ~/.nvm` for that to work successfully.
 
       Type `nvm help` for further information.
     EOS

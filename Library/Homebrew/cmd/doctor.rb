@@ -419,7 +419,7 @@ def check_access_usr_local
   end
 end
 
-%w{include etc lib lib/pkgconfig share}.each do |d|
+(Keg::TOP_LEVEL_DIRECTORIES + ["lib/pkgconfig"]).each do |d|
   define_method("check_access_#{d.sub("/", "_")}") do
     dir = HOMEBREW_PREFIX.join(d)
     if dir.exist? && !dir.writable_real? then <<-EOS.undent
@@ -452,11 +452,7 @@ def check_access_logs
   if HOMEBREW_LOGS.exist? and not HOMEBREW_LOGS.writable_real?
     <<-EOS.undent
       #{HOMEBREW_LOGS} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew.
-
       Homebrew writes debugging logs to this location.
-
       You should probably `chown` #{HOMEBREW_LOGS}
     EOS
   end
@@ -466,11 +462,28 @@ def check_access_cache
   if HOMEBREW_CACHE.exist? && !HOMEBREW_CACHE.writable_real?
     <<-EOS.undent
       #{HOMEBREW_CACHE} isn't writable.
-      This can happen if you ran `brew install` or `brew fetch` as another user.
-
+      This can happen if you run `brew install` or `brew fetch` as another user.
       Homebrew caches downloaded files to this location.
-
       You should probably `chown` #{HOMEBREW_CACHE}
+    EOS
+  end
+end
+
+def check_access_cellar
+  if HOMEBREW_CELLAR.exist? && !HOMEBREW_CELLAR.writable_real?
+    <<-EOS.undent
+      #{HOMEBREW_CELLAR} isn't writable.
+      You should `chown` #{HOMEBREW_CELLAR}
+    EOS
+  end
+end
+
+def check_access_prefix_opt
+  opt = HOMEBREW_PREFIX.join("opt")
+  if opt.exist? && !opt.writable_real?
+    <<-EOS.undent
+      #{opt} isn't writable.
+      You should `chown` #{opt}
     EOS
   end
 end
@@ -1145,7 +1158,7 @@ end
     if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success? then <<-EOS.undent
       You have not agreed to the Xcode license.
       Builds will fail! Agree to the license by opening Xcode.app or running:
-          xcodebuild -license
+          sudo xcodebuild -license
       EOS
     end
   end

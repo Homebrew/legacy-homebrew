@@ -1,10 +1,8 @@
-require "formula"
-
 class Headphones < Formula
   homepage "https://github.com/rembo10/headphones"
   head "https://github.com/rembo10/headphones.git"
-  url "https://github.com/rembo10/headphones/archive/v0.4.tar.gz"
-  sha1 "bce89dc89a9adb6c660de277b6988afd09635fa5"
+  url "https://github.com/rembo10/headphones/archive/v0.5.2.tar.gz"
+  sha1 "299ec2265a6f362b777712d945b1dff98fc02bf7"
 
   resource "Markdown" do
     url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.tar.gz"

@@ -1,7 +1,7 @@
 class PyenvVirtualenv < Formula
   homepage "https://github.com/yyuu/pyenv-virtualenv"
-  url "https://github.com/yyuu/pyenv-virtualenv/archive/v20141106.tar.gz"
-  sha1 "5410f16c3ebb611fe7e0e9f5c808b80902201b25"
+  url "https://github.com/yyuu/pyenv-virtualenv/archive/v20150119.tar.gz"
+  sha1 "8f91e04fb87b0f05b127a557c08ccbe1b42ef32f"
 
   head "https://github.com/yyuu/pyenv-virtualenv.git"
 

@@ -1,15 +1,13 @@
 class Libevent < Formula
   homepage "http://libevent.org"
-  url "https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/libe/libevent/libevent_2.0.21-stable.orig.tar.gz"
-  sha1 "3e6674772eb77de24908c6267c698146420ab699"
-  revision 1
+  url "https://downloads.sourceforge.net/project/levent/libevent/libevent-2.0/libevent-2.0.22-stable.tar.gz"
+  sha1 "a586882bc93a208318c70fc7077ed8fca9862864"
 
   bottle do
     cellar :any
-    sha1 "02d25e21d04bdef22de822daf70f13c90147b504" => :yosemite
-    sha1 "bbf14123e381177a6423a064ff82b5b3adc3d85a" => :mavericks
-    sha1 "b1de9d394f4df8561760e3c34c23bb9b518e372f" => :mountain_lion
+    sha1 "d70fff6a306440f4104ff934eec1fd35683724a4" => :yosemite
+    sha1 "7d86d36fff109699bcec092f708d1be61c86ef78" => :mavericks
+    sha1 "e074607f84ab34a1e939f6a93bf3fc2b6c90d9bd" => :mountain_lion
   end
 
   head do

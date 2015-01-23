@@ -15,6 +15,6 @@ module Homebrew
     current_formulae = `brew list`.lines.map(&:strip)
     uninstall_formulae = current_formulae - kept_formulae
     return if uninstall_formulae.empty?
-    safe_system "brew", "uninstall", *uninstall_formulae
+    safe_system "brew", "uninstall", "--force", *uninstall_formulae
   end
 end

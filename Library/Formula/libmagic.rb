@@ -1,26 +1,18 @@
 class Libmagic < Formula
   homepage "http://www.darwinsys.com/file/"
-  url "ftp://ftp.astron.com/pub/file/file-5.21.tar.gz"
-  mirror "http://fossies.org/unix/misc/file-5.21.tar.gz"
-  sha1 "9836603b75dde99664364b0e7a8b5492461ac0fe"
+  url "ftp://ftp.astron.com/pub/file/file-5.22.tar.gz"
+  mirror "https://fossies.org/unix/misc/file-5.22.tar.gz"
+  sha1 "20fa06592291555f2b478ea2fb70b53e9e8d1f7c"
 
   bottle do
-    revision 2
-    sha1 "ecfd27c64c9e35bb4411931ec6638b350de353a3" => :yosemite
-    sha1 "1b39fac95723524d2f413ee9239cc57ae8404d5d" => :mavericks
-    sha1 "df255124f0a0460480380bc3c0d7ec4cc99896b3" => :mountain_lion
+    sha1 "2a725b5f45d5c534ac59cfee87fde8b09e7f764f" => :yosemite
+    sha1 "2e493cfb219635780b4cf01a05c23dc60a6806cb" => :mavericks
+    sha1 "f626fc50838bc8d3be6e57a79e6f977b2d7c64c2" => :mountain_lion
   end
 
   option :universal
 
   depends_on :python => :optional
-
-  # Patch applied upstream, should be in 5.22
-  # See http://bugs.gw.com/view.php?id=230
-  patch do
-    url "https://github.com/file/file/commit/f79e16aebe701fdb8e821c3c1f3504568d0c10f5.diff"
-    sha1 "7dcbf309bf013c11a6c5367bab8834050d762bd5"
-  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -33,8 +25,10 @@ class Libmagic < Formula
                           "--enable-fsect-man5"
     system "make", "install"
 
-    cd "python" do
-      system "python", "setup.py", "install", "--prefix=#{prefix}"
+    if build.with? "python"
+      cd "python" do
+        system "python", *Language::Python.setup_install_args(prefix)
+      end
     end
 
     # Don't dupe this system utility

@@ -2,30 +2,18 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/v0.11.0.1.tar.gz"
-  sha1 "501b0ec1582b741b2eca81bb5a27b11499b42f0c"
+  url "https://github.com/tutumcloud/tutum-cli/archive/v0.11.2.tar.gz"
+  sha1 "b4b85c487b0f020f266ca2f3964d12c716186371"
 
   bottle do
     cellar :any
-    sha1 "f6693bd01d54467a0674ff2f8280b4cda04e50d8" => :yosemite
-    sha1 "5c7c3b1902d3d5e8b16394b95e38281634a1e25e" => :mavericks
-    sha1 "cc9c71ee46b8b693a3fcf71749978ff41802aaa6" => :mountain_lion
+    sha1 "9c4debf9ae5b7efd6273a73f268970a52e30653d" => :yosemite
+    sha1 "be5b3b6bd56af1cd0d4412636883bbcce75514e6" => :mavericks
+    sha1 "5d22fdde5d05dd42ccef08d66c08d35d2775e221" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
-
-  conflicts_with "fig", :because => "both install `wsdump.py` binaries"
-
-  resource "pyyaml" do
-    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
-    sha1 "476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73"
-  end
-
-  resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.4.3.tar.gz"
-    sha1 "411f1bfa44556f7dd0f34cd822047c31baa7d741"
-  end
 
   resource "ago" do
     url "https://pypi.python.org/packages/source/a/ago/ago-0.0.6.tar.gz"
@@ -37,19 +25,34 @@ class Tutum < Formula
     sha1 "11708a7021e3d0d522e145c057256d7d2acaec07"
   end
 
+  resource "pyyaml" do
+    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
+    sha1 "476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73"
+  end
+
+  resource "python-tutum" do
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.11.1.tar.gz"
+    sha1 "03c43c6c8c263bbd7b8b1aede0079353ced2ae60"
+  end
+
+  resource "backports.ssl-match-hostname" do
+    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.4.0.2.tar.gz"
+    sha1 "da4e41f3b110279d2382df47ac1e4f10c63cf954"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+  end
+
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
     sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
   end
 
-  resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.11.0.tar.gz"
-    sha1 "a8b011697fe015c468eeeed33ce242631e11d39a"
-  end
-
-  resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
-    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
+    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
   end
 
   resource "tabulate" do
@@ -57,21 +60,29 @@ class Tutum < Formula
     sha1 "da057c6d4faab9847436c3221c98f34911e623df"
   end
 
-  def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
+  resource "websocket-client" do
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.23.0.tar.gz"
+    sha1 "3348c226eb44324417db777e962fec6bda8134b9"
+  end
 
+  resource "future" do
+    url "https://pypi.python.org/packages/source/f/future/future-0.14.3.tar.gz"
+    sha1 "44fdd9323913d21068b29ecda795a98c07dc8a40"
+  end
+
+  def install
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
 
-    rm "#{lib}/python2.7/site-packages/site.py"
-    rm "#{lib}/python2.7/site-packages/easy-install.pth"
-
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

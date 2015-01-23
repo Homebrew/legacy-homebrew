@@ -1,36 +1,35 @@
 class Llvm < Formula
-  homepage 'http://llvm.org/'
-  revision 2
+  homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.5.0/llvm-3.5.0.src.tar.xz"
-    sha1 "58d817ac2ff573386941e7735d30702fe71267d5"
+    url "http://llvm.org/releases/3.5.1/llvm-3.5.1.src.tar.xz"
+    sha1 "79638cf00584b08fd6eeb1e73ea69b331561e7f6"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.5.0/cfe-3.5.0.src.tar.xz"
-      sha1 "834cee2ed8dc6638a486d8d886b6dce3db675ffa"
+      url "http://llvm.org/releases/3.5.1/cfe-3.5.1.src.tar.xz"
+      sha1 "39d79c0b40cec548a602dcac3adfc594b18149fe"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.5.0/libcxx-3.5.0.src.tar.xz"
-      sha1 "c98beed86ae1adf9ab7132aeae8fd3b0893ea995"
+      url "http://llvm.org/releases/3.5.1/libcxx-3.5.1.src.tar.xz"
+      sha1 "aa8d221f4db99f5a8faef6b594cbf7742cc55ad2"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
-      sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
+      url "http://llvm.org/releases/3.5.1/lld-3.5.1.src.tar.xz"
+      sha1 "9af270a79ae0aeb0628112073167495c43ab836a"
     end
 
     resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.5.0/clang-tools-extra-3.5.0.src.tar.xz"
-      sha1 "74a84493e3313c180490a4affbb92d61ee4f0d21"
+      url "http://llvm.org/releases/3.5.1/clang-tools-extra-3.5.1.src.tar.xz"
+      sha1 "7a0dd880d7d8fe48bdf0f841eca318337d27a345"
     end
   end
 
   bottle do
-    sha1 "b438ffa15440a1f6ee7efbc7ddc3adb32e757ad6" => :yosemite
-    sha1 "47e4f98e8fa4ea845f5acd6ea568b9ddc73729df" => :mavericks
-    sha1 "244cb85540b4ec6a33356e3e02fd8e0caa89224d" => :mountain_lion
+    sha1 "3e2dd43db3c45a3bcf96174e0b195267f66f0307" => :yosemite
+    sha1 "e0314fabbc5791fb665225ca91602b3fdd745072" => :mavericks
+    sha1 "59857e2f5670c9edb4adfd3cc3f03af2411e9c30" => :mountain_lion
   end
 
   head do
@@ -57,12 +56,17 @@ class Llvm < Formula
   patch :DATA
 
   option :universal
-  option 'with-clang', 'Build Clang support library'
-  option 'with-lld', 'Build LLD linker'
-  option 'disable-shared', "Don't build LLVM as a shared library"
-  option 'all-targets', 'Build all target backends'
-  option 'rtti', 'Build with C++ RTTI'
-  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
+  option "with-clang", "Build Clang support library"
+  option "with-lld", "Build LLD linker"
+  option "with-rtti", "Build with C++ RTTI"
+  option "with-all-targets", "Build all target backends"
+  option "without-shared", "Don't build LLVM as a shared library"
+  option "without-assertions", "Speeds up LLVM, but provides less debug information"
+
+  deprecated_option "rtti" => "with-rtti"
+  deprecated_option "all-targets" => "with-all-targets"
+  deprecated_option "disable-shared" => "without-shared"
+  deprecated_option "disable-assertions" => "without-assertions"
 
   depends_on :python => :optional
 
@@ -76,8 +80,8 @@ class Llvm < Formula
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
 
-    if build.with? "python" and build.include? 'disable-shared'
-      raise 'The Python bindings need the shared library.'
+    if build.with?("python") && build.without?("shared")
+      fail "The Python bindings need the shared library."
     end
 
     if build.with? "clang"
@@ -90,11 +94,11 @@ class Llvm < Formula
 
     if build.universal?
       ENV.permit_arch_flags
-      ENV['UNIVERSAL'] = '1'
-      ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
+      ENV["UNIVERSAL"] = "1"
+      ENV["UNIVERSAL_ARCH"] = Hardware::CPU.universal_archs.join(" ")
     end
 
-    ENV["REQUIRES_RTTI"] = "1" if build.include? "rtti" or build.with? "clang"
+    ENV["REQUIRES_RTTI"] = "1" if build.with?("rtti") || build.with?("clang")
 
     args = [
       "--prefix=#{prefix}",
@@ -104,14 +108,14 @@ class Llvm < Formula
       "--disable-bindings",
     ]
 
-    if build.include? 'all-targets'
+    if build.with? "all-targets"
       args << "--enable-targets=all"
     else
       args << "--enable-targets=host"
     end
-    args << "--enable-shared" unless build.include? 'disable-shared'
+    args << "--enable-shared" if build.with? "shared"
 
-    args << "--disable-assertions" if build.include? 'disable-assertions'
+    args << "--disable-assertions" if build.without? "assertions"
 
     system "./configure", *args
     system "make"
@@ -129,8 +133,8 @@ class Llvm < Formula
 
     # install llvm python bindings
     if build.with? "python"
-      (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
-      (lib+'python2.7/site-packages').install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
+      (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
+      (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
     end
   end
 
