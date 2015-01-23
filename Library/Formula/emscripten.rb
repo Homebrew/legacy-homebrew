@@ -41,6 +41,7 @@ class Emscripten < Formula
   depends_on "yuicompressor"
 
   def install
+    ENV.cxx11
     # OSX doesn't provide a "python2" binary so use "python" instead.
     python2_shebangs = `grep --recursive --files-with-matches ^#!/usr/bin/.*python2$ #{buildpath}`
     python2_shebang_files = python2_shebangs.lines.sort.uniq
