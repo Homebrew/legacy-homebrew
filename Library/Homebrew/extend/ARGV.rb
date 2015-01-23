@@ -146,6 +146,10 @@ module HomebrewArgvExtension
     switch?("s") || include?("--build-from-source") || !!ENV["HOMEBREW_BUILD_FROM_SOURCE"]
   end
 
+  def kext_dev_mode?
+      include?("--kext-dev-mode") || !!ENV["HOMEBREW_KEXT_DEV_MODE"]
+  end
+
   def flag? flag
     options_only.include?(flag) || switch?(flag[2, 1])
   end
