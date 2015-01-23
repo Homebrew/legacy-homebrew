@@ -3,13 +3,13 @@ require "language/go"
 
 class Nsq < Formula
   homepage "http://bitly.github.io/nsq"
-  url "https://github.com/bitly/nsq/archive/v0.2.31.tar.gz"
-  sha1 "614e66746c6b785cffb48a6412e44dd5e0c7b0bd"
+  url "https://github.com/bitly/nsq/archive/v0.3.1.tar.gz"
+  sha1 "f711cb61c1f5ed9865afbec95d57bcca6653b658"
 
   bottle do
-    sha1 "3aceae6d99df6b3fca37a80d4392ea289cf6d39f" => :mavericks
-    sha1 "177831494751c7c171132209cb7f2f0c8ec0cc46" => :mountain_lion
-    sha1 "14d245c6b2112e5d75ad6d7cf06395ad2447538c" => :lion
+    sha1 "6348ab65e201725cb40865ee2b5fbbbf656e54a0" => :yosemite
+    sha1 "63969063698ed231f93294551ac3c2ff56701d2a" => :mavericks
+    sha1 "2054e1000115aeb3934b01762881c6cb52afed19" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -31,7 +31,7 @@ class Nsq < Formula
 
   go_resource "github.com/bitly/go-nsq" do
     url "https://github.com/bitly/go-nsq.git",
-      :revision => "ac221df5bdb6d5bfc624a297b5b00b59d7065be2"
+      :revision => "b2219913d42659994fd0b68a9692b64fd00e079f"
   end
 
   go_resource "github.com/bitly/go-simplejson" do
@@ -46,7 +46,7 @@ class Nsq < Formula
 
   go_resource "github.com/mreiferson/go-options" do
     url "https://github.com/mreiferson/go-options.git",
-      :revision => "896a539cd709f4f39d787562d1583c016ce7517e"
+      :revision => "2cf7eb1fdd83e2bb3375fef6fdadb04c3ad564da"
   end
 
   go_resource "github.com/mreiferson/go-snappystream" do
