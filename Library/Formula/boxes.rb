@@ -1,10 +1,8 @@
-require 'formula'
-
 class Boxes < Formula
-  homepage 'http://boxes.thomasjensen.com/'
-  url 'https://github.com/ascii-boxes/boxes/archive/v1.1.2.tar.gz'
-  head 'https://github.com/ascii-boxes/boxes.git'
-  sha1 'dcd466efe1878e4ee612a5eee8f4caf8baac7f31'
+  homepage "http://boxes.thomasjensen.com/"
+  url "https://github.com/ascii-boxes/boxes/archive/v1.1.2.tar.gz"
+  head "https://github.com/ascii-boxes/boxes.git"
+  sha1 "dcd466efe1878e4ee612a5eee8f4caf8baac7f31"
 
   bottle do
     sha1 "fc7adbf52e65497a6203df64bd46c5187b6202ca" => :yosemite
@@ -23,8 +21,12 @@ class Boxes < Formula
       "CFLAGS_ADDTL=-m32",
       "LDFLAGS_ADDTL=-m32"
 
-    bin.install 'src/boxes'
-    man1.install 'doc/boxes.1'
-    share.install 'boxes-config'
+    bin.install "src/boxes"
+    man1.install "doc/boxes.1"
+    share.install "boxes-config"
+  end
+
+  test do
+    assert_match "/* test brew */", pipe_output("#{bin}/boxes", "test brew")
   end
 end
