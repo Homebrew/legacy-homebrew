@@ -1,9 +1,7 @@
-require "formula"
-
 class Hh < Formula
   homepage "https://github.com/dvorka/hstr"
-  url "https://github.com/dvorka/hstr/releases/download/1.13/hh-1.13-src.tgz"
-  sha1 "09fee6d687a8b8a7c6f508ced071fb88b0a9bb28"
+  url "https://github.com/dvorka/hstr/releases/download/1.15/hh-1.15-src.tgz"
+  sha1 "c97d27687512d1e26828062df300d56159dfa05b"
 
   bottle do
     cellar :any
@@ -22,12 +20,10 @@ class Hh < Formula
   depends_on "readline"
 
   def install
+    system "autoreconf", "-fvi" if build.head?
     # Upstream bug report for curses/ncursesw:
     # https://github.com/dvorka/hstr/issues/103
-    if build.head?
-      inreplace %w(src/hstr.c src/include/hstr_curses.h), "ncursesw/", ""
-      system "autoreconf", "-fvi"
-    end
+    inreplace %w[src/hstr.c src/include/hstr_curses.h], "ncursesw/", ""
     inreplace "configure", "ncursesw", "ncurses"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
