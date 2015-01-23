@@ -7,6 +7,12 @@ class Agda < Formula
   url "http://hackage.haskell.org/package/Agda-2.4.2.2/Agda-2.4.2.2.tar.gz"
   sha1 "fbdf7df3d5a036e683210ac7ccf4f8ec0c9fea05"
 
+  bottle do
+    sha1 "d0827796e1d0ac2ba33ef73c8bec7f99ee95b02a" => :yosemite
+    sha1 "7e49026d601135596b830b4a6b7032e463b1a51c" => :mavericks
+    sha1 "0db7eb99ae43f17dc0509dbbf48341c20c534ef4" => :mountain_lion
+  end
+
   devel do
     url "https://github.com/agda/agda.git", :branch => "maint-2.4.2"
     version "2.4.2.3-beta"
