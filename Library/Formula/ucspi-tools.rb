@@ -22,7 +22,12 @@ class UcspiTools < Formula
       grep -m 1 "HTTP/1.1 200 OK" <&7
     EOS
     chmod 0755, testpath/"http.sh"
-    out = shell_output("tcpclient -4 #{github} 443 #{bin}/tlsc -C #{testpath}/http.sh", 1)
+    ping_out = shell_output("ping -c1 github.com")
+    ns_out = shell_output("nslookup github.com")
+    out = shell_output("tcpclient -4 #{github} 443 #{bin}/tlsc -CH #{testpath}/http.sh", 1)
+    puts ping_out
+    puts ns_out
     assert_match %r{HTTP/1.1 200 OK}, out
+    assert_match /^64 bytes from/, ping_out
   end
 end
