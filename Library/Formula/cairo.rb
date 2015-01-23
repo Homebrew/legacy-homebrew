@@ -33,6 +33,7 @@ class Cairo < Formula
       --prefix=#{prefix}
       --enable-gobject=yes
       --enable-svg=yes
+      --enable-tee=yes
       --with-x
     ]
 
