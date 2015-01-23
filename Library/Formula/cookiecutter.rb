@@ -1,14 +1,14 @@
 class Cookiecutter < Formula
   homepage "https://github.com/audreyr/cookiecutter"
-  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-0.9.0.tar.gz"
-  sha1 "2e9c483c66d1f32e9be67d38733d9b660a666cd7"
+  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-0.9.1.tar.gz"
+  sha1 "570fd2b17cb49c6d6966ed08ed1e89b8559581ba"
   head "https://github.com/audreyr/cookiecutter.git"
 
   bottle do
     cellar :any
-    sha1 "9a22153459acc63e865edbf269f7f184fb4cee28" => :yosemite
-    sha1 "b505e0d5d975be2a0b4ab2581cc2b57f46271fcc" => :mavericks
-    sha1 "6a2268b6b188d28126d1ea9d2712b1b532b70464" => :mountain_lion
+    sha1 "c01d592a6fd8873145753ddba5378b4df95c5861" => :yosemite
+    sha1 "b5cde887f1c4fdb9e61bffb7383060eac76d3706" => :mavericks
+    sha1 "25d1f4a6b95dbd294734fb37f873a00fbeeecefb" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -52,6 +52,8 @@ class Cookiecutter < Formula
   end
 
   test do
-    system "#{bin}/cookiecutter", "--help"
+    system "git", "clone", "https://github.com/audreyr/cookiecutter-pypackage.git"
+    system bin/"cookiecutter", "--no-input", "cookiecutter-pypackage"
+    assert (testpath/"boilerplate").directory?
   end
 end

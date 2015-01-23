@@ -4,7 +4,7 @@ The following commands are used by Homebrew's contributors to setup a fork of Ho
 To setup a your own fork of the Homebrew repository:
 
 1. Change to the directory containing your Homebrew installation with `cd $(brew --repository)`
-2. Fork the Homebrew repository on GitHub. This creates a pushable, personal remote repository. This is needed as only Homebrew maintainers have push access to the main repository.
+2. [Fork the Homebrew repository](https://github.com/Homebrew/homebrew/fork) on GitHub. This creates a pushable, personal remote repository. This is needed as only Homebrew maintainers have push access to the main repository.
 3. Add the pushable forked repository with `git remote add YOUR_USERNAME https://github.com/YOUR_USERNAME/homebrew.git`
 
 To make a new branch and submit it for review:

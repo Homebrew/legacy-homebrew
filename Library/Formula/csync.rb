@@ -25,20 +25,10 @@ class Csync < Formula
 
   def install
     mkdir "build" unless build.head?
-    cd 'build' do
+    cd "build" do
       system "cmake", "..", *std_cmake_args
-      # We need to run make csync first to make the "core",
-      # or the build system will freak out and try to link
-      # modules against core functions that aren't compiled
-      # yet. We also have to patch "link.txt" for all module
-      # targets. This should probably be reported upstream.
-      system "make csync"
-      inreplace Dir['modules/CMakeFiles/*/link.txt'] do |s|
-        s.gsub! '-o', "../src/libcsync.dylib ../src/std/libcstdlib.a -o"
-      end
-      # Now we can make and install.
-      system "make all"
-      system "make install"
+      system "make", "all"
+      system "make", "install"
     end
   end
 

@@ -125,6 +125,10 @@ class FormulaAuditor
         problem "A `test do` test block should be added"
       end
     end
+
+    if formula.class < GithubGistFormula
+      problem "GithubGistFormula is deprecated, use Formula instead"
+    end
   end
 
   @@aliases ||= Formula.aliases
@@ -376,6 +380,15 @@ class FormulaAuditor
         problem "devel version #{formula.devel.version} is older than stable version #{formula.stable.version}"
       elsif formula.devel.version == formula.stable.version
         problem "stable and devel versions are identical"
+      end
+    end
+
+    stable = formula.stable
+    if stable && stable.url =~ /#{Regexp.escape("ftp.gnome.org/pub/GNOME/sources")}/i
+      minor_version = stable.version.to_s[/\d\.(\d+)/, 1].to_i
+
+      if minor_version.odd?
+        problem "#{stable.version} is a development release"
       end
     end
   end
