@@ -78,7 +78,7 @@ class Subversion < Formula
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
                 OPENSSL=#{Formula["openssl"].opt_prefix}]
 
-      unless MacOS::CLT.installed?
+      unless OS.mac? && MacOS::CLT.installed?
         args << "APR=#{Formula["apr"].opt_prefix}"
         args << "APU=#{Formula["apr-util"].opt_prefix}"
       end
@@ -135,7 +135,7 @@ class Subversion < Formula
     args << "--enable-javahl" << "--without-jikes" if build.with? "java"
     args << "--without-gpg-agent" if build.without? "gpg-agent"
 
-    unless MacOS::CLT.installed?
+    unless OS.mac? && MacOS::CLT.installed?
       args << "--with-apr=#{Formula["apr"].opt_prefix}"
       args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
       args << "--with-apxs=no"
