@@ -12,6 +12,7 @@ class UcspiTools < Formula
   end
 
   test do
+    github = "192.30.252.129"
     (testpath/"http.sh").write <<-EOS.undent
       #!/bin/sh
       printf "GET / HTTP/1.1\\r\\n" >&6
@@ -21,7 +22,7 @@ class UcspiTools < Formula
       grep -m 1 "HTTP/1.1 200 OK" <&7
     EOS
     chmod 0755, testpath/"http.sh"
-    out = shell_output("tcpclient -4 GitHub.com 443 #{bin}/tlsc -C #{testpath}/http.sh", 1)
+    out = shell_output("tcpclient -4 #{github} 443 #{bin}/tlsc -C #{testpath}/http.sh", 1)
     assert_match %r{HTTP/1.1 200 OK}, out
   end
 end
