@@ -1,7 +1,7 @@
 class Emscripten < Formula
   homepage "https://kripken.github.io/emscripten-site/"
-  url "https://github.com/kripken/emscripten/archive/1.28.2.tar.gz"
-  sha1 "39f25db710874d835ac1ffe1941ef854a0a8f23a"
+  url "https://github.com/kripken/emscripten/archive/1.29.5.tar.gz"
+  sha1 "c6fedc0275ec6f74c4beba7f081eb5bd5a88d258"
 
   bottle do
     sha1 "f73edf45833d349803c37f911eb3be78a8053a5c" => :yosemite
@@ -23,13 +23,13 @@ class Emscripten < Formula
 
   stable do
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.28.2.tar.gz"
-      sha1 "967aa51c32b806ad15af3d8d61d66a004ada453d"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.29.5.tar.gz"
+      sha1 "a4b1df3949026d9a20eb504eb2fbbf30c0170384"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.28.2.tar.gz"
-      sha1 "87cdf58e83ef6bf0af813b336515ada52b124588"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.29.5.tar.gz"
+      sha1 "1f38fd69a74553df1d2e2fd4e61c70512479b50c"
     end
   end
 
