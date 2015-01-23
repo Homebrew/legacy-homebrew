@@ -8,9 +8,10 @@ class S3cmd < Formula
 
   bottle do
     cellar :any
-    sha1 "254a78674d86587e18419099e20059c61b5a257a" => :yosemite
-    sha1 "03ec4493b583447b5e0db95f8b98066866920ce8" => :mavericks
-    sha1 "ec0dd6f3298c8b8aa5dab60e395d7c013a6747c9" => :mountain_lion
+    revision 2
+    sha1 "5923f4a71ccc26ac8e4d603f667ea32cdddfe1ae" => :yosemite
+    sha1 "0a6f4d5b585d618189ea7dd2f417583c818c75e9" => :mavericks
+    sha1 "473b664c50c6673c4b14b92084780d350da36c51" => :mountain_lion
   end
 
   resource "six" do
