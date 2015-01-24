@@ -23,7 +23,7 @@ class LibodbBoost < Formula
     }
   EOS
 
-  system "#{ENV.cxx}", "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-lodb", "-lodb-boost", "main.cxx", "-o", "test"
+  system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-lodb", "-lodb-boost", "main.cxx", "-o", "test"
   system "./test"
   end
 

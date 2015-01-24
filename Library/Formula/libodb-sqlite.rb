@@ -16,14 +16,14 @@ class LibodbSqlite < Formula
 
     test do
     (testpath/'person.hxx').write <<-EOS.undent
-      #include <odb/core.hxx>     
-      #pragma db object           
+      #include <odb/core.hxx>
+      #pragma db object
       class person
       {
       private:
-        friend class odb::access; 
+        friend class odb::access;
         #pragma db id auto
-        unsigned long id_;        
+        unsigned long id_;
       };
     EOS
 
@@ -36,7 +36,7 @@ class LibodbSqlite < Formula
     EOS
 
     system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
-    system "#{ENV.cxx}", "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/sqlite/lib", "main.cxx", "person-odb.cxx", "-lodb", "-lsqlite3", "-lodb-sqlite", "-o", "person"
+    system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/sqlite/lib", "main.cxx", "person-odb.cxx", "-lodb", "-lsqlite3", "-lodb-sqlite", "-o", "person"
     system "./person"
   end
 

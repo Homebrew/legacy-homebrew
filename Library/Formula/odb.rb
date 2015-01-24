@@ -22,10 +22,10 @@ class Odb < Formula
 
   def install
     resource("libcutl").stage{
-      system "./configure", "--prefix=#{prefix}/libcutl"
+      system "./configure", "--prefix=#{prefix}/cutl"
       system "make", "install"
     }
-    ENV.append "CXXFLAGS", "-fno-devirtualize -I#{prefix}/libcutl/include -L#{prefix}/libcutl/lib"
+    ENV.append "CXXFLAGS", "-fno-devirtualize -I#{prefix}/cutl/include -L#{prefix}/cutl/lib"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
     bin.env_script_all_files(libexec/"bin", {})
@@ -35,14 +35,14 @@ class Odb < Formula
 
   test do
     (testpath/'person.hxx').write <<-EOS.undent
-      #include <odb/core.hxx>     
-      #pragma db object           
+      #include <odb/core.hxx>
+      #pragma db object
       class person
       {
       private:
-        friend class odb::access; 
+        friend class odb::access;
         #pragma db id auto
-        unsigned long id_;        
+        unsigned long id_;
       };
     EOS
 
