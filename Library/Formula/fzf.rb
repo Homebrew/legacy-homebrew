@@ -3,8 +3,8 @@ require "language/go"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.9.1.tar.gz"
-  sha1 "bf912638def189729a4be8455855469b8559f49b"
+  url "https://github.com/junegunn/fzf/archive/0.9.2.tar.gz"
+  sha1 "b065794baa83b418ee2ca1e87c46a19c0478bd7c"
 
   bottle do
     sha1 "79538bea4c6fc3d2542ea0faf8df17c74327a055" => :yosemite
