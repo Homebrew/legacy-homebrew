@@ -20,30 +20,33 @@ class Mdk < Formula
   end
 
   test do
-    helloworld = '
-*                                                        (1)
-* hello.mixal: say "hello world" in MIXAL                (2)
-*                                                        (3)
-* label ins    operand     comment                       (4)
-TERM    EQU    19          the MIX console device number (5)
-        ORIG   1000        start address                 (6)
-START   OUT    MSG(TERM)   output data at address MSG    (7)
-        HLT                halt execution                (8)
-MSG     ALF    "MIXAL"                                   (9)
-        ALF    " HELL"                                   (10)
-        ALF    "O WOR"                                   (11)
-        ALF    "LD"                                      (12)
-        END    START       end of the program            (13)
-'
 
-    expected = 'Program loaded. Start address: 1000
-Running ...
-MIXAL HELLO WORLD                                                     
-... done
-'
-    (testpath/"hello.mixal").write(helloworld)
+    (testpath/"hello.mixal").write  <<-EOS.undent
+      *                                                        (1)
+      * hello.mixal: say "hello world" in MIXAL                (2)
+      *                                                        (3)
+      * label ins    operand     comment                       (4)
+      TERM    EQU    19          the MIX console device number (5)
+              ORIG   1000        start address                 (6)
+      START   OUT    MSG(TERM)   output data at address MSG    (7)
+              HLT                halt execution                (8)
+      MSG     ALF    "MIXAL"                                   (9)
+              ALF    " HELL"                                   (10)
+              ALF    "O WOR"                                   (11)
+              ALF    "LD"                                      (12)
+              END    START       end of the program            (13)
+    EOS
     system "#{bin}/mixasm",  "hello"
     output = `#{bin}/mixvm -r hello`
+
+    expected =  <<-EOS.undent
+    Program loaded. Start address: 1000
+    Running ...
+    MIXAL HELLO WORLDXXX
+    ... done
+    EOS
+    .gsub("XXX", " " *53)
+
     assert_equal expected, output
   end
 end
