@@ -621,7 +621,7 @@ class Formula
   end
 
   def run_test
-    @oldhome = ENV["HOME"]
+    @oldenv = ENV
     self.build = Tab.for_formula(self)
     mktemp do
       @testpath = Pathname.pwd
@@ -630,7 +630,7 @@ class Formula
     end
   ensure
     @testpath = nil
-    ENV["HOME"] = @oldhome
+    ENV.replace @oldenv
   end
 
   def test_defined?
