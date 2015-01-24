@@ -3,6 +3,12 @@ class Openwsman < Formula
   url "https://github.com/Openwsman/openwsman/archive/v2.4.12.tar.gz"
   sha1 "15fbe4454c3d48ab229036b09400afd5037f4ef2"
 
+  bottle do
+    sha1 "70ba82023cb43276b4fa40103e1e32a7f9fdb74c" => :yosemite
+    sha1 "bcc6baeef902d33028a4eed009ff10e40edcdfe4" => :mavericks
+    sha1 "abd6f5988eca5fa75c4c18dfd9f1ab2b93eac8b3" => :mountain_lion
+  end
+
   depends_on "libxml2"
   depends_on "sblim-sfcc"
   depends_on "automake"   => :build
