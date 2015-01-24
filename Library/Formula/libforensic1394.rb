@@ -4,6 +4,13 @@ class Libforensic1394 < Formula
   sha1 "179526652977c291303e4f7edc3c7ed487eb0eca"
   head "git://git.freddie.witherden.org/forensic1394.git"
 
+  bottle do
+    cellar :any
+    sha1 "325248a31ee7f4c57126d77afe4268cf572a9dc5" => :yosemite
+    sha1 "311dddfc3d77a5ceb316fd909ad3cfae2268483b" => :mavericks
+    sha1 "55ed86e44ef8c35019fc7e68743e0443b95cf2f7" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
 
   def install
