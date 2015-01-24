@@ -1,6 +1,7 @@
 class Mdk < Formula
   homepage "https://www.gnu.org/software/mdk/mdk.html"
-  url "https://ftpmirror.gnu.org/gnu/mdk/v1.2.8/mdk-1.2.8.tar.gz"
+  url "http://ftpmirror.gnu.org/mdk/v1.2.8/mdk-1.2.8.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/mdk/v1.2.8/mdk-1.2.8.tar.gz"
   sha1 "43bd40a48f88b3458c3bb6ccfd62d254b85c5fb8"
 
   depends_on "gtk+3"
