@@ -1,5 +1,5 @@
 class Weechat < Formula
-  homepage "https://www.weechat.org"
+  homepage "https://weechat.org"
   url "https://weechat.org/files/src/weechat-1.1.tar.gz"
   sha1 "8cc055051b0df6755e8310e4fd624623707e81dc"
 
@@ -13,6 +13,7 @@ class Weechat < Formula
 
   option "with-perl", "Build the perl module"
   option "with-ruby", "Build the ruby module"
+  option "with-tcl", "Build the tcl module"
   option "with-curl", "Build with brewed curl"
 
   depends_on "cmake" => :build
@@ -24,6 +25,7 @@ class Weechat < Formula
   depends_on "lua" => :optional
   depends_on :python => :optional
   depends_on "curl" => :optional
+  depends_on "tcl" => :optional
 
   def install
 
@@ -35,6 +37,7 @@ class Weechat < Formula
     args << "-DENABLE_ASPELL=OFF" if build.without? "aspell"
     args << "-DENABLE_GUILE=OFF"  if build.without? "guile"
     args << "-DENABLE_PYTHON=OFF" if build.without? "python"
+    args << "-DENABLE_TCL=OFF"    if build.without? "tcl"
 
     mkdir "build" do
       system "cmake", "..", *args
