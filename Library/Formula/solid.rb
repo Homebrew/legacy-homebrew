@@ -8,7 +8,9 @@ class Solid < Formula
 
   option "with-doubles", "Use internal double precision floats"
   option "with-tracer", "Use rounding error tracer"
-
+  
+  # This patch fixes a broken build on clang-600.0.56.
+  # Was reported to bugs@dtecta.com (since it also applies to solid-3.5.6)
   patch :DATA
 
   def install
@@ -30,8 +32,6 @@ class Solid < Formula
   end
 end
 
-# This patch fixes a broken build on clang-600.0.56.
-# Was reported to bugs@dtecta.com (since it also applies to solid-3.5.6)
 __END__
 diff --git a/include/MT/Quaternion.h b/include/MT/Quaternion.h
 index 3726b4f..3393697 100644
