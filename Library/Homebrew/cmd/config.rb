@@ -119,9 +119,13 @@ module Homebrew
     s
   end
 
-  def java_version
-    java = `java -version 2>&1`.lines.first.chomp
-    java =~ /java version "(.+?)"/ ? $1 : java
+  def describe_java
+    if which("java").nil? || !quiet_system("/usr/libexec/java_home --failfast")
+      "N/A"
+    else
+      java = `java -version 2>&1`.lines.first.chomp
+      java =~ /java version "(.+?)"/ ? $1 : java
+    end
   end
 
   def dump_verbose_config(f=$stdout)
@@ -145,6 +149,6 @@ module Homebrew
     f.puts "Perl: #{describe_perl}"
     f.puts "Python: #{describe_python}"
     f.puts "Ruby: #{describe_ruby}"
-    f.puts "Java: #{java_version}"
+    f.puts "Java: #{describe_java}"
   end
 end
