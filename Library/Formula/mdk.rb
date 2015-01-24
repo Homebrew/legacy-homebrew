@@ -42,10 +42,8 @@ MIXAL HELLO WORLD
 ... done
 '
     (testpath/"hello.mixal").write(helloworld)
-    system "echo", (testpath)
     system "#{bin}/mixasm",  "hello"
     output = `#{bin}/mixvm -r hello`
-    #system "sleep", "100000"
     assert_equal expected, output
   end
 end
