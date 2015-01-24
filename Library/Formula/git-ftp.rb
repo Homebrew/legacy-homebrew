@@ -5,7 +5,7 @@ class GitFtp < Formula
   url 'https://github.com/git-ftp/git-ftp/archive/1.0.0.tar.gz'
   sha1 '69df312a1e0cbb1224ec7571c4b83113211b5a4f'
 
-  head 'https://github.com/git-ftp/git-ftp.git'
+  head 'https://github.com/git-ftp/git-ftp.git', :branch => 'develop'
 
   bottle do
     cellar :any
