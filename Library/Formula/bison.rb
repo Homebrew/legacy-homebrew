@@ -5,9 +5,9 @@ class Bison < Formula
   sha1 "ec1f2706a7cfedda06d29dc394b03e092a1e1b74"
 
   bottle do
-    sha1 "b0406db2d7126e9e978356751db6eba530bfbea9" => :yosemite
-    sha1 "eac748515a1c256913d6d2f07b7fcc8fa93d49ec" => :mavericks
-    sha1 "55091763e3688a564173074a145b3e5597bf0f21" => :mountain_lion
+    sha1 "4a2c74267f6adff751ed407b18ba5a7e21f756fa" => :yosemite
+    sha1 "d8d02a4fce3fcdcdb8369fd8865f98ca95d12348" => :mavericks
+    sha1 "77b214901733883a054619cc0075af60494d6fb8" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "Some formulae require a newer version of bison."
