@@ -1,10 +1,9 @@
 class Iojs < Formula
   homepage "https://iojs.org/"
   url "https://iojs.org/dist/v1.0.4/iojs-v1.0.4.tar.xz"
-  version "1.0.4"
-  sha1 "6247d3bb544353cf134e0857f4a60e7e04959bd4"
+  sha256 "c902f5abbd59c56346680f0b4a71056c51610847b9576acf83a9c210bf664e98"
 
-  keg_only "`iojs` symlinks conflict with `node` but can be used by prefixing your path"
+  keg_only "`iojs` symlinks conflict with `node` but can be used by prepending your PATH"
 
   option "with-debug", "Build with debugger hooks"
 
@@ -24,7 +23,7 @@ class Iojs < Formula
 
     To intall `npm` and have it use `iojs`, install `node` and add
     iojs to the front of your path:
-      export PATH=#{HOMEBREW_PREFIX}/opt/iojs/bin:$PATH
+      export PATH=#{Formula["iojs"].opt_bin}:$PATH
     EOS
   end
 
