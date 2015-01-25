@@ -24,15 +24,9 @@ class Iojs < Formula
   end
 
   def caveats; <<-EOS.undent
-    iojs was installed without npm. To install npm either:
-      brew install node
-    or follow:
-      https://github.com/npm/npm#fancy-install-unix
+    iojs was installed without npm.
 
-    To prepend iojs to your PATH add to your ~/.bashrc:
-      export PATH="#{Formula["iojs"].opt_bin}:$PATH"
-
-    This will also e.g. make npm use iojs's node.
+    iojs currently requires a patched npm (i.e. not the npm installed by node).
     EOS
   end
 
