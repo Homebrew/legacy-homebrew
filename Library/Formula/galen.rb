@@ -5,20 +5,17 @@ class Galen < Formula
 
   depends_on :java => "1.6"
 
-  def galen_wrapper; <<-EOS.undent
-    #!/bin/sh
-    set -e
-    java -cp "#{libexec}/galen.jar:lib/*:libs/*" net.mindengine.galen.GalenMain "$@"
+  def install
+    libexec.install "galen.jar"
+    (bin/"galen").write <<-EOS.undent
+      #!/bin/sh
+      set -e
+      java -cp "#{libexec}/galen.jar:lib/*:libs/*" net.mindengine.galen.GalenMain "$@"
     EOS
   end
 
-  def install
-    libexec.install "galen.jar"
-    (bin/"galen").write(galen_wrapper)
-  end
-
   test do
-    output = shell_output("#{bin}/galen -v")
-    assert output.include?("Galen Framework\nVersion: 1.4.10")
+    output = shell_output "#{bin}/galen -v"
+    assert_match /Galen Framework\nVersion: 1.4.10/, output
   end
 end
