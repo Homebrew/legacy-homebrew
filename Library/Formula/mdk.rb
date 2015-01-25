@@ -21,8 +21,7 @@ class Mdk < Formula
   end
 
   test do
-
-    (testpath/"hello.mixal").write  <<-EOS.undent
+    (testpath/"hello.mixal").write <<-EOS.undent
       *                                                        (1)
       * hello.mixal: say "hello world" in MIXAL                (2)
       *                                                        (3)
@@ -41,12 +40,12 @@ class Mdk < Formula
     output = `#{bin}/mixvm -r hello`
 
     expected =  <<-EOS.undent
-    Program loaded. Start address: 1000
-    Running ...
-    MIXAL HELLO WORLDXXX
-    ... done
+      Program loaded. Start address: 1000
+      Running ...
+      MIXAL HELLO WORLDXXX
+      ... done
     EOS
-    .gsub("XXX", " " *53)
+    expected = expected.gsub("XXX", " " *53)
 
     assert_equal expected, output
   end
