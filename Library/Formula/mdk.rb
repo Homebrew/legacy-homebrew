@@ -4,6 +4,12 @@ class Mdk < Formula
   mirror "https://ftp.gnu.org/gnu/mdk/v1.2.8/mdk-1.2.8.tar.gz"
   sha1 "43bd40a48f88b3458c3bb6ccfd62d254b85c5fb8"
 
+  bottle do
+    sha1 "027992f17eb6d137af1b2c2fecd2ae58acb4c66d" => :yosemite
+    sha1 "522285e46831ecacb0bb3d4d8358adf23ab910a2" => :mavericks
+    sha1 "73dd16e090ff87bee664f4b45858462a8235c1ab" => :mountain_lion
+  end
+
   depends_on "gtk+3"
   depends_on "glib"
   depends_on "libglade"
