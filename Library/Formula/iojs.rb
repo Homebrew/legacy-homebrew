@@ -9,7 +9,6 @@ class Iojs < Formula
 
   depends_on :python => :build
 
-
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
