@@ -9,7 +9,7 @@ class Iojs < Formula
     sha1 "f62a32113ae476095c7bcdee8dffe6c87f3675a8" => :mountain_lion
   end
 
-  keg_only "`iojs` symlinks conflict with `node` but can be used by prepending your PATH"
+  keg_only "iojs conflicts with node (which is currently more established)"
 
   option "with-debug", "Build with debugger hooks"
 
@@ -24,11 +24,15 @@ class Iojs < Formula
   end
 
   def caveats; <<-EOS.undent
-    `iojs` was installed without `npm`.
+    iojs was installed without npm. To install npm either:
+      brew install node
+    or follow:
+      https://github.com/npm/npm#fancy-install-unix
 
-    To intall `npm` and have it use `iojs`, install `node` and add
-    iojs to the front of your path:
-      export PATH=#{Formula["iojs"].opt_bin}:$PATH
+    To prepend iojs to your PATH add to your ~/.bashrc:
+      export PATH="#{Formula["iojs"].opt_bin}:$PATH"
+
+    This will also e.g. make npm use iojs's node.
     EOS
   end
 
