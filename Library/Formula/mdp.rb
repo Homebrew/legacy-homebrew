@@ -1,9 +1,8 @@
-require "formula"
-
 class Mdp < Formula
   homepage "https://github.com/visit1985/mdp"
-  url "https://github.com/visit1985/mdp/archive/0.92.2.tar.gz"
-  sha1 "d01db33bb3ce1206c48e0c191adb14746f3fcdd5"
+  url "https://github.com/visit1985/mdp/archive/0.93.0.tar.gz"
+  sha1 "5e267c8d9d3c2b30bd1951e854f1d4ad7c8679cf"
+  head "https://github.com/visit1985/mdp.git"
 
   bottle do
     cellar :any
@@ -21,6 +20,6 @@ class Mdp < Formula
   test do
     # Go through two slides and quit.
     ENV["TERM"] = "xterm"
-    system "echo jjq | #{bin}/mdp #{share}/sample.md"
+    pipe_output "#{bin}/mdp #{share}/sample.md", "jjq", 0
   end
 end
