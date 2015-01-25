@@ -22,8 +22,8 @@ class Agda < Formula
 
   option "without-epic-backend", "Exclude the 'epic' compiler backend"
 
-  depends_on "ghc" => :build
   depends_on "cabal-install" => :build
+  depends_on "ghc"
   depends_on "gmp"
   depends_on "bdw-gc" if build.with? "epic-backend"
 
