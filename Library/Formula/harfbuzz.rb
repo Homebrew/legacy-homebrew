@@ -5,9 +5,9 @@ class Harfbuzz < Formula
 
   bottle do
     cellar :any
-    sha1 "6a678869e7401ee144383f9e2001adc666b079f0" => :yosemite
-    sha1 "36ad382c9db0bee4bd418303cec80217102c3103" => :mavericks
-    sha1 "c2304fab98abcc8a2a1798cc4d02bf6a1144c942" => :mountain_lion
+    sha1 "edcff2779c5a7917a434777838dde51c88c987e7" => :yosemite
+    sha1 "61ac677612d40e13e00c39090ffa19d74d135246" => :mavericks
+    sha1 "a7a35c62e4cdfe95868bc923c0c8871ebc25c694" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
