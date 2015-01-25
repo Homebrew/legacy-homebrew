@@ -5,6 +5,8 @@ class Ipmitool < Formula
   url 'https://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.15/ipmitool-1.8.15.tar.bz2'
   sha1 '2c9c5d7c5a285586df508ad933577f275684353a'
 
+  depends_on "openssl"
+
   def install
     # tracking upstream: http://sourceforge.net/p/ipmitool/feature-requests/47/
     # fix build errors w/ clang
