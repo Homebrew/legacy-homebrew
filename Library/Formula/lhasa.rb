@@ -26,7 +26,7 @@ class Lhasa < Formula
   end
 
   test do
-    str = "MQAtbGgwLQQAAAAEAAAA9ZQTUyACg2JVBQAA" +
+    str = "MQAtbGgwLQQAAAAEAAAA9ZQTUyACg2JVBQAA" \
           "hloGAAFmb28FAFCkgQcAURQA9QEAAGZvbwoA"
     system "echo #{str} | /usr/bin/base64 -D | #{bin}/lha x -"
     assert_equal "foo\n", `cat foo`
