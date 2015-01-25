@@ -1,27 +1,9 @@
-# Note that x.even are stable releases, x.odd are devel releases
-class Node < Formula
-  homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
-  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
-  revision 2
+class Iojs < Formula
+  homepage "https://iojs.org/"
+  url "https://iojs.org/dist/v1.0.2/iojs-v1.0.2.tar.gz"
+  sha256 "39fa602bf8dda874682d9c0380311de3295997c0b674b5e8aec0b988912cd9d1"
 
-  conflicts_with "iojs", :because => "io.js includes a symlink named node for compatibility."
-
-  bottle do
-    revision 1
-    sha1 "a98a1df66cfb0712b14489186c46f7087ba35bd7" => :yosemite
-    sha1 "0cd45412840a67d5d65e6bc3c0c3bcf8bc23153c" => :mavericks
-    sha1 "977332381c033626b991002c27e738c144ebbaac" => :mountain_lion
-  end
-
-  head do
-    url "https://github.com/joyent/node.git", :branch => "v0.12"
-
-    depends_on "pkg-config" => :build
-    depends_on "icu4c"
-  end
-
-  deprecated_option "enable-debug" => "with-debug"
+  conflicts_with "node", :because => "io.js includes a symlink named node for compatibility."
 
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
@@ -29,31 +11,14 @@ class Node < Formula
 
   depends_on :python => :build
 
-  # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
-  # over Node's shipped version with --shared-openssl.
-  # Would allow us quicker security fixes than Node's release schedule.
-  # See https://github.com/joyent/node/issues/3557 for prior discussion.
-
-  fails_with :llvm do
-    build 2326
-  end
-
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.18.tgz"
-    sha1 "e2af4c5f848fb023851cd2ec129005d33090bd57"
+    url "https://registry.npmjs.org/npm/-/npm-2.2.0.tgz"
+    sha1 "e9a1c4971558019f3d14f7a33aa7a7492bc195ed"
   end
 
   def install
-    args = %W{--prefix=#{prefix} --without-npm}
+    args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
-    args << "--without-ssl2" << "--without-ssl3" if build.stable?
-
-    # This should eventually be able to use the system icu4c, but right now
-    # it expects to find this dependency using pkgconfig.
-    if build.head?
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_prefix}/lib/pkgconfig"
-      args << "--with-intl=system-icu"
-    end
 
     system "./configure", *args
     system "make", "install"
@@ -61,7 +26,7 @@ class Node < Formula
     if build.with? "npm"
       resource("npm").stage buildpath/"npm_install"
 
-      # make sure npm can find node
+      # make sure npm can find iojs
       ENV.prepend_path "PATH", bin
 
       # set log level temporarily for npm's `make install`
@@ -85,7 +50,7 @@ class Node < Formula
     node_modules = HOMEBREW_PREFIX/"lib/node_modules"
     node_modules.mkpath
     npm_exec = node_modules/"npm/bin/npm-cli.js"
-    # Kill npm but preserve all other modules across node updates/upgrades.
+    # Kill npm but preserve all other modules across iojs updates/upgrades.
     rm_rf node_modules/"npm"
 
     cp_r libexec/"npm/lib/node_modules/npm", node_modules
@@ -99,10 +64,9 @@ class Node < Formula
     # Let's do the manpage dance. It's just a jump to the left.
     # And then a step to the right, with your hand on rm_f.
     ["man1", "man3", "man5", "man7"].each do |man|
-      # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
       rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      ln_sf Dir[libexec/"npm/share/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
+      Dir[libexec/"npm/share/man/#{man}/npm*"].each { |f| ln_sf f, HOMEBREW_PREFIX/"share/man/#{man}" }
     end
 
     npm_root = node_modules/"npm"
@@ -134,7 +98,7 @@ class Node < Formula
     path = testpath/"test.js"
     path.write "console.log('hello');"
 
-    output = `#{bin}/node #{path}`.strip
+    output = `#{bin}/iojs #{path}`.strip
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
 
