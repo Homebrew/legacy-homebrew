@@ -1,5 +1,3 @@
-require "formula"
-
 class Bvi < Formula
   homepage "http://bvi.sourceforge.net"
   url "https://downloads.sourceforge.net/bvi/bvi-1.4.0.src.tar.gz"
@@ -7,6 +5,11 @@ class Bvi < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    ENV["TERM"] = "xterm"
+    system "#{bin}/bvi", "-c", "q"
   end
 end
