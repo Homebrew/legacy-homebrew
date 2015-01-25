@@ -1,10 +1,8 @@
-require "formula"
-
 class Parallel < Formula
-  homepage "http://savannah.gnu.org/projects/parallel/"
-  url "http://ftpmirror.gnu.org/parallel/parallel-20141122.tar.bz2"
-  mirror "http://ftp.gnu.org/gnu/parallel/parallel-20141122.tar.bz2"
-  sha256 "68bcbc1e1a09b298433768f8c60c9506c13a16a96a5eebec316851d2bc22edce"
+  homepage "https://savannah.gnu.org/projects/parallel/"
+  url "http://ftpmirror.gnu.org/parallel/parallel-20150122.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150122.tar.bz2"
+  sha256 "ede876f9cb84b8dce0d8d0088fa61ccb12a6f3f61479f3720a96ee54d4bce991"
 
   bottle do
     cellar :any
@@ -18,6 +16,6 @@ class Parallel < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
