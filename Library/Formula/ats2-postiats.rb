@@ -1,5 +1,3 @@
-require "formula"
-
 class Ats2Postiats < Formula
   homepage "http://www.ats-lang.org/"
   url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.8/ATS2-Postiats-0.1.8.tgz"
