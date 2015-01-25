@@ -2,8 +2,8 @@ require 'formula'
 
 class GitFtp < Formula
   homepage 'http://git-ftp.github.io/git-ftp'
-  url 'https://github.com/git-ftp/git-ftp/archive/1.0.0.tar.gz'
-  sha1 '69df312a1e0cbb1224ec7571c4b83113211b5a4f'
+  url 'https://github.com/git-ftp/git-ftp/archive/1.0.1.tar.gz'
+  sha1 'ee0ff7525a88aafffe7e09b6cb95d6dde6bacf93'
 
   head 'https://github.com/git-ftp/git-ftp.git', :branch => 'develop'
 
