@@ -1,7 +1,7 @@
 class Commonmark < Formula
   homepage "http://commonmark.org"
-  url "https://github.com/jgm/CommonMark/archive/0.16.tar.gz"
-  sha1 "932c3af5c7357070b8f3d2f418b78e1f56f6df19"
+  url "https://github.com/jgm/cmark/archive/0.17.tar.gz"
+  sha1 "a0bce3d321822ca96f312e9210fc8cd149a8f527"
 
   bottle do
     cellar :any
