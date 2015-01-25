@@ -60,6 +60,11 @@ class Teampostgresql < Formula
     EOS
   end
 
+  def caveats; <<-EOS.undent
+    Note: When using launchctl the port will be 8082.
+    EOS
+  end
+
   test do
     cmd = [
       "/usr/bin/java",
