@@ -21,6 +21,15 @@ class Node < Formula
     depends_on "openssl" => :optional
   end
 
+  devel do
+    url "https://nodejs.org/dist/v0.11.15/node-v0.11.15.tar.gz"
+    sha256 "e613d274baa4c99a0518038192491433f7877493a66d8505af263f6310991d01"
+
+    depends_on "pkg-config" => :build
+    depends_on "icu4c" => :optional
+    depends_on "openssl" => :optional
+  end
+
   head do
     url "https://github.com/joyent/node.git", :branch => "v0.12"
 
