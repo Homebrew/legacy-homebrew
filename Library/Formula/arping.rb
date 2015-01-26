@@ -1,9 +1,7 @@
-require "formula"
-
 class Arping < Formula
   homepage "https://github.com/ThomasHabets/arping"
-  url "https://github.com/ThomasHabets/arping/archive/arping-2.14.tar.gz"
-  sha1 "f691b19e1ad20b853202ee12eaf178232b466bb2"
+  url "https://github.com/ThomasHabets/arping/archive/arping-2.15.tar.gz"
+  sha1 "ed0b08a8c425a03b3ea52f0fb36be1a34d015b6c"
 
   bottle do
     cellar :any
@@ -18,9 +16,12 @@ class Arping < Formula
 
   def install
     system "./bootstrap.sh"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{sbin}/arping", "--help"
   end
 end
