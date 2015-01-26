@@ -305,7 +305,7 @@ class FormulaAuditor
       end
 
       if p =~ %r[^https?://prdownloads\.]
-        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
+        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" \
                 "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
 
@@ -608,7 +608,7 @@ class FormulaAuditor
     end
 
     if line =~ /skip_clean\s+:all/
-      problem "`skip_clean :all` is deprecated; brew no longer strips symbols\n" +
+      problem "`skip_clean :all` is deprecated; brew no longer strips symbols\n" \
               "\tPass explicit paths to prevent Homebrew from removing empty folders."
     end
 
