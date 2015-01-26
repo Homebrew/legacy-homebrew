@@ -14,8 +14,8 @@ class LibodbSqlite < Formula
     system "make", "install"
   end
 
-    test do
-    (testpath/'person.hxx').write <<-EOS.undent
+  test do
+    (testpath/"person.hxx").write <<-EOS.undent
       #include <odb/core.hxx>
       #pragma db object
       class person
@@ -25,9 +25,9 @@ class LibodbSqlite < Formula
         #pragma db id auto
         unsigned long id_;
       };
-    EOS
+  EOS
 
-    (testpath/'main.cxx').write <<-EOS.undent
+    (testpath/"main.cxx").write <<-EOS.undent
       #include <iostream>
       int main()
       {
@@ -39,5 +39,4 @@ class LibodbSqlite < Formula
     system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/sqlite/lib", "main.cxx", "person-odb.cxx", "-lodb", "-lsqlite3", "-lodb-sqlite", "-o", "person"
     system "./person"
   end
-
 end

@@ -21,10 +21,11 @@ class Odb < Formula
   end
 
   def install
-    resource("libcutl").stage{
+    resource("libcutl").stage do
       system "./configure", "--prefix=#{prefix}/cutl"
       system "make", "install"
-    }
+    end
+
     ENV.append "CXXFLAGS", "-fno-devirtualize -I#{prefix}/cutl/include -L#{prefix}/cutl/lib"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
@@ -34,7 +35,7 @@ class Odb < Formula
   end
 
   test do
-    (testpath/'person.hxx').write <<-EOS.undent
+    (testpath/"person.hxx").write <<-EOS.undent
       #include <odb/core.hxx>
       #pragma db object
       class person
@@ -48,5 +49,4 @@ class Odb < Formula
 
     system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
   end
-
 end

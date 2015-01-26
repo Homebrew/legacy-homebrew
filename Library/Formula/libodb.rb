@@ -12,16 +12,15 @@ class Libodb < Formula
   end
 
   test do
-  (testpath/'main.cxx').write <<-EOS.undent
+    (testpath/"main.cxx").write <<-EOS.undent
     #include <odb/core.hxx>
     int main()
     {
       return 0;
     }
-  EOS
+    EOS
 
-  system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-lodb", "main.cxx", "-o", "test"
-  system "./test"
+    system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-lodb", "main.cxx", "-o", "test"
+    system "./test"
   end
-
 end
