@@ -7,9 +7,9 @@ class Neo4j < Formula
   version "2.1.6"
 
   devel do
-    url "http://dist.neo4j.org/neo4j-community-2.2.0-M01-unix.tar.gz"
-    sha1 "ec31ebf7b928711b200a24797bc84a2fb99ffb6c"
-    version "2.2.0-M01"
+    url "http://dist.neo4j.org/neo4j-community-2.2.0-M02-unix.tar.gz"
+    sha1 "1ccc22000ea52e6f0d6c802fbb12da5c29b34607"
+    version "2.2.0-M02"
   end
 
   def install
@@ -21,6 +21,10 @@ class Neo4j < Formula
 
     # Symlink binaries
     bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
+
+    if build.devel?
+        bin.install_symlink Dir["#{libexec}/bin/neo4j-import"]
+    end
 
     # Adjust UDC props
     open("#{libexec}/conf/neo4j-wrapper.conf", "a") { |f|
