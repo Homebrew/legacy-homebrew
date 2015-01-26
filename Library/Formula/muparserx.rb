@@ -9,11 +9,6 @@ class Muparserx < Formula
 
   depends_on "cmake" => :build
 
-  resource "CMakeLists.txt" do
-    url "http://leezii.com/CMakeLists.txt"
-    sha1 "1e1222af1ebdc502c2441d8bf985c918b119c606"
-  end
-
   def install
     (buildpath/"CMakeLists.txt").write <<-EOS.undent
       cmake_minimum_required(VERSION 2.8)
@@ -38,7 +33,7 @@ class Muparserx < Formula
          return 0;
       }
     EOS
-    system ENV.cxx, "-std=c++11", "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-lmuparserx", "main.cpp", "-o", "test"
+    system ENV.cxx, "-std=c++11", "-I#{include}", "-L#{lib}", "-lmuparserx", "main.cpp", "-o", "test"
     system "./test"
   end
 end
