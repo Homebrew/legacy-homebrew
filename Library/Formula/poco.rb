@@ -7,9 +7,9 @@ class Poco < Formula
 
   bottle do
     cellar :any
-    sha1 "3deaf590ff6e90c7c9ddd70f38a39ad4e85ebafd" => :yosemite
-    sha1 "e42e56f7bf77d64ce7decc089a948a04feeccceb" => :mavericks
-    sha1 "270e0119505e7608d86d897cdb65f3452f9850a2" => :mountain_lion
+    sha1 "32c3d4f754f5fd1b01fa2455a070f5057582a1a4" => :yosemite
+    sha1 "1d844a6baf5ffa6c19697623aceb0d0035e4be38" => :mavericks
+    sha1 "4f039170113a69a61657d35a2a0206743bd7f416" => :mountain_lion
   end
 
   option :cxx11
