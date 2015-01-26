@@ -20,7 +20,7 @@ class Libodb < Formula
     }
     EOS
 
-    system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-lodb", "main.cxx", "-o", "test"
+    system ENV.cxx, "-I#{include}", "-L#{lib}", "-lodb", "main.cxx", "-o", "test"
     system "./test"
   end
 end

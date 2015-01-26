@@ -47,6 +47,6 @@ class Odb < Formula
       };
     EOS
 
-    system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
+    system "odb", "-I#{include}", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
   end
 end

@@ -35,8 +35,8 @@ class LibodbSqlite < Formula
       }
     EOS
 
-    system "odb", "-I#{HOMEBREW_PREFIX}/include", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
-    system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/sqlite/lib", "main.cxx", "person-odb.cxx", "-lodb", "-lsqlite3", "-lodb-sqlite", "-o", "person"
+    system "odb", "-I#{include}", "-m", "dynamic", "-d", "common", "--generate-query", "person.hxx"
+    system ENV.cxx, "-I#{include}", "-L#{lib}", "-L#{HOMEBREW_PREFIX}/opt/sqlite/lib", "main.cxx", "person-odb.cxx", "-lodb", "-lsqlite3", "-lodb-sqlite", "-o", "person"
     system "./person"
   end
 end
