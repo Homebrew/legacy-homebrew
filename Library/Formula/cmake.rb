@@ -4,7 +4,7 @@ class NoExpatFramework < Requirement
   end
 
   satisfy :build_env => false do
-    not File.exist? expat_framework
+    !File.exist? expat_framework
   end
 
   def message; <<-EOS.undent
@@ -20,15 +20,15 @@ end
 
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz"
-  sha1 "cc20c40f5480c83a0204f516a490b470bd3a963a"
+  url "http://www.cmake.org/files/v3.1/cmake-3.1.1.tar.gz"
+  sha1 "e96098e402903e09f56d0c4cfef516e591088d78"
   head "http://cmake.org/cmake.git"
 
   bottle do
     cellar :any
-    sha1 "7a015c43f30830ffc722dbd548b014d725b1cc64" => :yosemite
-    sha1 "73716b458ef13282f84a870c9faf0cea52b0c508" => :mavericks
-    sha1 "d19131db9de47fa03ad08edce1c1c1b6eb6c3aa0" => :mountain_lion
+    sha1 "07f01687556e245b2315707fb267d4cf110d54a9" => :yosemite
+    sha1 "b2ca8a4a1bf32b71bc48a8415e7ffd2641dcac12" => :mavericks
+    sha1 "a251d4e9dafec01479b6be991ebce25b25cf231c" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"
@@ -51,8 +51,8 @@ class Cmake < Formula
   end
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.1.tar.gz"
-    sha1 "b9e9236693ccf6e86414e8578bf8874181f409de"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
+    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
   end
 
   resource "jinja2" do

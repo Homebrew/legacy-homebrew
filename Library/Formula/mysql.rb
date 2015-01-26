@@ -9,6 +9,13 @@ class Mysql < Formula
     sha1 "8987fcf7576f6985b741b19f6b12f6a636be52d3" => :mountain_lion
   end
 
+  # Fixes compilation with OpenSSL 1.0.2
+  # http://bugs.mysql.com/bug.php?id=75623
+  patch do
+    url "https://github.com/mysql/mysql-server/pull/3.diff"
+    sha1 "6b17a31ee32e373dca0f257f7c7884ac6dcf8e1f"
+  end
+
   option :universal
   option "with-tests", "Build with unit tests"
   option "with-embedded", "Build the embedded server"

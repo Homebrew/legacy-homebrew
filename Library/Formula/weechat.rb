@@ -1,14 +1,14 @@
 class Weechat < Formula
   homepage "https://www.weechat.org"
-  url "https://weechat.org/files/src/weechat-1.1.tar.gz"
-  sha1 "8cc055051b0df6755e8310e4fd624623707e81dc"
+  url "https://weechat.org/files/src/weechat-1.1.1.tar.gz"
+  sha1 "25a595ce738c401c583edebee259acf755fd5f17"
 
   head "https://github.com/weechat/weechat.git"
 
   bottle do
-    sha1 "e36f032f19ec591c3d7864e2a95ca9afe3ba1771" => :yosemite
-    sha1 "02d3c62b3ff86ac19b9c5ac0e972f63a5746a52e" => :mavericks
-    sha1 "ec70b13654147081d8b8823bee45ee99542dd96c" => :mountain_lion
+    sha1 "c377d403426bda1fd6b9c6b6b960828a9a76120c" => :yosemite
+    sha1 "b9d703f8c661aed1cd3bf20e92ad95d178361fb6" => :mavericks
+    sha1 "9f5ba4d88436a6ba73b6edb4eb08f91e37d7f849" => :mountain_lion
   end
 
   option "with-perl", "Build the perl module"

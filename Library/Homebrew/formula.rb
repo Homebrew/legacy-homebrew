@@ -147,10 +147,20 @@ class Formula
     active_spec == head
   end
 
+  # @private
+  def bottled?
+    active_spec.bottled?
+  end
+
+  # @private
+  def bottle_specification
+    active_spec.bottle_specification
+  end
+
   # The Bottle object for the currently active {SoftwareSpec}.
   # @private
   def bottle
-    Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
+    Bottle.new(self, bottle_specification) if bottled?
   end
 
   # The homepage for the software.
@@ -376,8 +386,10 @@ class Formula
   end
 
   def patch
-    ohai "Patching"
-    active_spec.patches.each(&:apply)
+    unless patchlist.empty?
+      ohai "Patching"
+      patchlist.each(&:apply)
+    end
   end
 
   # yields self with current working directory set to the uncompressed tarball
@@ -749,11 +761,10 @@ class Formula
 
   def prepare_patches
     active_spec.add_legacy_patches(patches)
-    return if patchlist.empty?
 
-    active_spec.patches.grep(DATAPatch) { |p| p.path = path }
+    patchlist.grep(DATAPatch) { |p| p.path = path }
 
-    active_spec.patches.select(&:external?).each do |patch|
+    patchlist.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
     end
   end

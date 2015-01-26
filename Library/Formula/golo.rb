@@ -2,8 +2,8 @@ require "formula"
 
 class Golo < Formula
   homepage "http://golo-lang.org"
-  url "http://search.maven.org/remotecontent?filepath=org/golo-lang/golo/1.1.0/golo-1.1.0-distribution.tar.gz"
-  sha1 "ec0163eadbef21b88c7477bb7cfddc86ebe98b66"
+  url "http://search.maven.org/remotecontent?filepath=org/golo-lang/golo/2.0.0/golo-2.0.0-distribution.tar.gz"
+  sha1 "8d9f8433518885b5d8aa0015b19c230fd425d3da"
 
   head do
     url "https://github.com/golo-lang/golo-lang.git"

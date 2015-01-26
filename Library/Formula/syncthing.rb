@@ -1,11 +1,11 @@
 class Syncthing < Formula
   homepage "http://syncthing.net"
-  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.20"
+  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.21"
 
   bottle do
-    sha1 "349060dc160834541c5f01e690425c1b7b0ed4a6" => :yosemite
-    sha1 "64227b52cc5898c341be4a94bee2c0971bc0a9bd" => :mavericks
-    sha1 "87d89b03f992bc92a4ce2e5ce9a5e201ef42e8f7" => :mountain_lion
+    sha1 "87c76438d035fad9fcf1e42ef903ba77bf47581d" => :yosemite
+    sha1 "b9056d135b4c7360351ec70934b7d121236e1eb1" => :mavericks
+    sha1 "6a43e3fd625dbc9694acb666b4573fc0c4b2bebb" => :mountain_lion
   end
 
   depends_on "go" => :build

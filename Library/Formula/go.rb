@@ -4,7 +4,7 @@ class Go < Formula
   # Perhaps we can use our previous bottles, ala the discussion around PyPy?
   # https://docs.google.com/document/d/1OaatvGhEAq7VseQ9kkavxKNAfepWy2yhPUBs96FGV28
   url "https://storage.googleapis.com/golang/go1.4.1.src.tar.gz"
-  sha1 "d77dbbb06d7a005966ced0b837bc6c97d541210f"
+  sha1 "c7a683e8d39b835e333199d68d0c0baefcd24a68"
   version "1.4.1"
 
   head "https://go.googlesource.com/go", :using => :git

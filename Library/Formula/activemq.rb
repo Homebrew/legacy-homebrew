@@ -2,8 +2,8 @@ require "formula"
 
 class Activemq < Formula
   homepage "http://activemq.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=/activemq/5.10.0/apache-activemq-5.10.0-bin.tar.gz"
-  sha1 "e08179216b4c7cbcd2024716c62c51434481fabf"
+  url "http://www.apache.org/dyn/closer.cgi?path=/activemq/5.10.1/apache-activemq-5.10.1-bin.tar.gz"
+  sha1 "5e62deb1ccd103ec1765f836756a7889f6131ab0"
 
   def install
     rm_rf Dir["bin/linux-x86-*"] unless OS.linux?
