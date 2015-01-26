@@ -6,37 +6,35 @@ class Autojump < Formula
   head "https://github.com/joelthelion/autojump.git"
 
   def install
-    inreplace "bin/autojump.sh", " /usr/local/share/autojump/", " #{prefix}/etc/"
+    system "./install.py", "-d", prefix, "-z", zsh_completion
 
-    libexec.install "bin/autojump"
-    libexec.install "bin/autojump_argparse.py", "bin/autojump_data.py", "bin/autojump_utils.py"
-    man1.install "docs/autojump.1"
-    (prefix/"etc").install "bin/autojump.sh", "bin/autojump.bash", "bin/autojump.zsh",
-                           "bin/autojump.fish", "bin/autojump.tcsh"
-    zsh_completion.install "bin/_j"
+    # Backwards compatibility for users that have the old path in .bash_profile
+    # or .zshrc
+    (prefix/"etc").install_symlink prefix/"etc/profile.d/autojump.sh"
 
-    bin.write_exec_script libexec+"autojump"
+    libexec.install bin
+    bin.write_exec_script libexec/"bin/autojump"
   end
 
   def caveats; <<-EOS.undent
     Add the following line to your ~/.bash_profile or ~/.zshrc file (and remember
     to source the file to update your current session):
-      [[ -s $(brew --prefix)/etc/autojump.sh ]] && . $(brew --prefix)/etc/autojump.sh
+      [[ -s `brew --prefix`/etc/profile.d/autojump.sh ]] && . `brew --prefix`/etc/profile.d/autojump.sh
 
-    Add the following line to your ~/.config/fish/config.fish:
-      . #{etc}/autojump.fish
+    If you use the Fish shell then add the following line to your ~/.config/fish/config.fish:
+      if test -f #{HOMEBREW_PREFIX}/share/autojump/autojump.fish; . #{HOMEBREW_PREFIX}/share/autojump/autojump.fish; end
     EOS
   end
 
   test do
     path = testpath/"foo"
     path.mkdir
-    output = %x{
-      source #{HOMEBREW_PREFIX}/etc/autojump.sh
+    output = %x(
+      source #{HOMEBREW_PREFIX}/etc/profile.d/autojump.sh
       j -a foo
       j foo >/dev/null
       pwd
-    }.strip
+    ).strip
     assert_equal path.to_s, output
   end
 end
