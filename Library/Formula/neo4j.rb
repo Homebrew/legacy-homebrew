@@ -29,9 +29,7 @@ class Neo4j < Formula
     # Symlink binaries
     bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
 
-    if build.devel?
-      bin.install_symlink libexec/"bin/neo4j-import"
-    end
+    bin.install_symlink libexec/"bin/neo4j-import" if build.devel?
 
     # Eventually, install neo4j-shell-tools
     # omiting "opencsv-2.3.jar" because it already comes with neo4j (see libexec/lib)
