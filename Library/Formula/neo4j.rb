@@ -23,7 +23,7 @@ class Neo4j < Formula
     bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
 
     if build.devel?
-        bin.install_symlink Dir["#{libexec}/bin/neo4j-import"]
+      bin.install_symlink libexec/"bin/neo4j-import"
     end
 
     # Adjust UDC props
