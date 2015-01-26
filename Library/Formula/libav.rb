@@ -1,9 +1,7 @@
-require "formula"
-
 class Libav < Formula
   homepage "https://libav.org/"
-  url "https://libav.org/releases/libav-11.1.tar.xz"
-  sha1 "4cd3337c6c67481b7165c9c618f1fcf6998942ce"
+  url "https://libav.org/releases/libav-11.2.tar.xz"
+  sha1 "52ba52cabe5d86b45ce62f56e11fa7912c6e5083"
 
   head "git://git.libav.org/libav.git"
 
@@ -18,7 +16,7 @@ class Libav < Formula
   option "without-x264", "Disable H.264 encoder via x264"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder via xvid"
 
-  option "with-opencore-amr", "Enable AMR-NB de/encoding and AMR-WB decoding " +
+  option "with-opencore-amr", "Enable AMR-NB de/encoding and AMR-WB decoding " \
     "via libopencore-amrnb and libopencore-amrwb"
   option "with-openjpeg", "Enable JPEG 2000 de/encoding via OpenJPEG"
   option "with-openssl", "Enable SSL support"
@@ -70,7 +68,7 @@ class Libav < Formula
       "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
-      "--host-ldflags=#{ENV.ldflags}"
+      "--host-ldflags=#{ENV.ldflags}",
     ]
 
     args << "--enable-frei0r" if build.with? "frei0r"
@@ -107,6 +105,9 @@ class Libav < Formula
   end
 
   test do
-    system "#{bin}/avconv -h"
+    # Create an example mp4 file
+    system "#{bin}/avconv", "-y", "-filter_complex",
+        "testsrc=rate=1:duration=1", "#{testpath}/video.mp4"
+    assert (testpath/"video.mp4").exist?
   end
 end
