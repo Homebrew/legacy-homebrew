@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.15/source/mariadb-10.0.15.tar.gz"
-  sha1 "edd8ba315fffa727b52833df453ac9b88961130e"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.16/source/mariadb-10.0.16.tar.gz"
+  sha1 "8113a03a90f98d7ada96802e07b64c197960e566"
 
   bottle do
     sha1 "96be0c291a73e273b3910f7c609cdfa45fc25347" => :yosemite
