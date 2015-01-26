@@ -1,14 +1,12 @@
 class Galen < Formula
   homepage "http://galenframework.com/"
-  url "https://github.com/galenframework/galen/archive/galen-1.5.1.tar.gz"
-  sha1 "a4089c4084b1d21a9c67bddb8df13933e818ad7e"
+  url "https://github.com/galenframework/galen/releases/download/galen-1.5.1/galen-bin-1.5.1.zip"
+  sha1 "ea3e261e0409c8797a3c627536444bfd4c5ff311"
 
   depends_on :java => "1.6"
-  depends_on "maven" => :build
 
   def install
-    system "./makeDist.sh"
-    libexec.install "dist/galen-bin-#{version}/galen.jar"
+    libexec.install "galen.jar"
     (bin/"galen").write <<-EOS.undent
       #!/bin/sh
       set -e
@@ -18,6 +16,6 @@ class Galen < Formula
 
   test do
     output = shell_output "#{bin}/galen -v"
-    assert_match /Galen Framework\nVersion: 1.5.1/, output
+    assert_match /Galen Framework\nVersion: #{version}/, output
   end
 end
