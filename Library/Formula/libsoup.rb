@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libsoup < Formula
-  homepage 'http://live.gnome.org/LibSoup'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.46/libsoup-2.46.0.tar.xz'
-  sha256 'fa3d5574c1a2df521242e2ca624a2b3057121798cab9f8f40525aa186a7b15a3'
+  homepage 'https://live.gnome.org/LibSoup'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.48/libsoup-2.48.1.tar.xz'
+  sha256 '9b0d14b36e36a3131a06c6e3aa7245716e6904e3e636df81c0b6c8bd3f646f9a'
 
   bottle do
     revision 1
