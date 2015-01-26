@@ -1,9 +1,7 @@
-require "formula"
-
 class Aha < Formula
   homepage "https://github.com/theZiz/aha"
-  url "https://github.com/theZiz/aha/archive/0.4.7.3.tar.gz"
-  sha1 "cc158029efb9dcf138fa20696f07f15ab785b035"
+  url "https://github.com/theZiz/aha/archive/0.4.8.tar.gz"
+  sha1 "45d91e1cda8663e8bf0c5fa8b94e4d2290aa9895"
 
   bottle do
     cellar :any
