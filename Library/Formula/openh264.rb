@@ -1,9 +1,7 @@
-require "formula"
-
 class Openh264 < Formula
   homepage "http://www.openh264.org"
-  url "https://github.com/cisco/openh264/archive/v1.1.tar.gz"
-  sha256 "d1d8e0087adfd372c22fd84746092a04627355468e70420451b2c2dbd4c37699"
+  url "https://github.com/cisco/openh264/archive/v1.3.1.tar.gz"
+  sha256 "b0a9a61840b4a58fbadd2a0640a81917c0ee84e922d2476c1dbcb9f29b85d7a0"
   head "https://github.com/cisco/openh264.git"
 
   bottle do
