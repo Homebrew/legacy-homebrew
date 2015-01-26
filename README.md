@@ -40,7 +40,7 @@ sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl
 ### Fedora
 
 ```sh
-sudo yum groupinstall 'Development Tools' && sudo yum install curl git m4 ruby texinfo bzip2-devel curl-devel expat-devel ncurses-devel zlib-devel
+sudo yum groupinstall 'Development Tools' && sudo yum install curl git irb m4 ruby texinfo bzip2-devel curl-devel expat-devel ncurses-devel zlib-devel
 ```
 
 Installation
