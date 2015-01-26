@@ -3,6 +3,13 @@ class FbAdb < Formula
   url "https://github.com/facebook/fb-adb/archive/1.2.0.tar.gz"
   sha1 "a86939f72c8c52c2fc7bc2ec756f179863076622"
 
+  bottle do
+    cellar :any
+    sha1 "21d0566e25712be5e04caa8c23980e80575abda7" => :yosemite
+    sha1 "336e8fcd1b4061d2a62bc04a7581be46b85736c1" => :mavericks
+    sha1 "19f9cd0ae30d27ea80e42808bbf9803bdd10d548" => :mountain_lion
+  end
+
   depends_on "android-ndk" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
