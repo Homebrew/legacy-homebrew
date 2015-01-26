@@ -78,7 +78,7 @@ class Mutt < Formula
             "--disable-warnings",
             "--prefix=#{prefix}",
             "--with-ssl=#{Formula['openssl'].opt_prefix}",
-            "--with-sasl",
+            (if OS.mac? then "--with-sasl" else "--with-sasl2" end),
             "--with-gss",
             "--enable-imap",
             "--enable-smtp",
