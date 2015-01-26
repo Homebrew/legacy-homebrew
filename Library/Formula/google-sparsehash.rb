@@ -1,11 +1,10 @@
-require 'formula'
-
 class GoogleSparsehash < Formula
-  homepage 'http://code.google.com/p/google-sparsehash/'
-  url 'https://sparsehash.googlecode.com/files/sparsehash-2.0.2.tar.gz'
-  sha1 '12c7552400b3e20464b3362286653fc17366643e'
+  homepage "https://code.google.com/p/google-sparsehash/"
+  url "https://sparsehash.googlecode.com/files/sparsehash-2.0.2.tar.gz"
+  sha1 "12c7552400b3e20464b3362286653fc17366643e"
 
   option :cxx11
+  option "without-check", "Skip build-time tests (not recommended)"
 
   # Patch from upstream issue: https://code.google.com/p/sparsehash/issues/detail?id=99
   patch do
@@ -17,7 +16,7 @@ class GoogleSparsehash < Formula
     ENV.cxx11 if build.cxx11?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make check"
-    system "make install"
+    system "make", "check" if build.with? "check"
+    system "make", "install"
   end
 end
