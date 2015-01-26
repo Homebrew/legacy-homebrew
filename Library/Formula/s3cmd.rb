@@ -24,6 +24,16 @@ class S3cmd < Formula
     sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
   end
 
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+  end
+
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
+    sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
