@@ -2,8 +2,8 @@ require 'formula'
 
 class BerkeleyDb < Formula
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
-  url 'http://download.oracle.com/berkeley-db/db-5.3.28.tar.gz'
-  sha1 'fa3f8a41ad5101f43d08bc0efb6241c9b6fc1ae9'
+  url 'http://download.oracle.com/berkeley-db/db-6.1.19.tar.gz'
+  sha1 'e266f8ab73f4f1ea276d203ce85426e5a6831501'
 
   bottle do
     cellar :any
@@ -15,11 +15,6 @@ class BerkeleyDb < Formula
 
   option 'with-java', 'Compile with Java support.'
   option 'enable-sql', 'Compile with SQL support.'
-
-  # Fix build under Xcode 4.6
-  # Double-underscore names are reserved, and __atomic_compare_exchange is now
-  # a built-in, so rename this to something non-conflicting.
-  patch :DATA
 
   def install
     # BerkeleyDB dislikes parallel builds
@@ -47,27 +42,3 @@ class BerkeleyDb < Formula
     end
   end
 end
-
-__END__
-diff --git a/src/dbinc/atomic.h b/src/dbinc/atomic.h
-index 096176a..561037a 100644
---- a/src/dbinc/atomic.h
-+++ b/src/dbinc/atomic.h
-@@ -144,7 +144,7 @@ typedef LONG volatile *interlocked_val;
- #define	atomic_inc(env, p)	__atomic_inc(p)
- #define	atomic_dec(env, p)	__atomic_dec(p)
- #define	atomic_compare_exchange(env, p, o, n)	\
--	__atomic_compare_exchange((p), (o), (n))
-+	__atomic_compare_exchange_db((p), (o), (n))
- static inline int __atomic_inc(db_atomic_t *p)
- {
- 	int	temp;
-@@ -176,7 +176,7 @@ static inline int __atomic_dec(db_atomic_t *p)
-  * http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
-  * which configure could be changed to use.
-  */
--static inline int __atomic_compare_exchange(
-+static inline int __atomic_compare_exchange_db(
- 	db_atomic_t *p, atomic_value_t oldval, atomic_value_t newval)
- {
- 	atomic_value_t was;
