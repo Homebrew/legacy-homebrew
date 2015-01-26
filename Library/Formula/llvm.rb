@@ -20,6 +20,11 @@ class Llvm < Formula
       sha1 "9af270a79ae0aeb0628112073167495c43ab836a"
     end
 
+    resource "lldb" do
+      url "http://llvm.org/releases/3.5.1/lldb-3.5.1.src.tar.xz"
+      sha1 "32728e25e6e513528c8c793ae65981150bec7c0d"
+    end
+
     resource "clang-tools-extra" do
       url "http://llvm.org/releases/3.5.1/clang-tools-extra-3.5.1.src.tar.xz"
       sha1 "7a0dd880d7d8fe48bdf0f841eca318337d27a345"
@@ -47,6 +52,10 @@ class Llvm < Formula
       url "http://llvm.org/git/lld.git"
     end
 
+    resource "lldb" do
+      url "http://llvm.org/git/lldb.git"
+    end
+
     resource "clang-tools-extra" do
       url "http://llvm.org/git/clang-tools-extra.git"
     end
@@ -58,6 +67,7 @@ class Llvm < Formula
   option :universal
   option "with-clang", "Build Clang support library"
   option "with-lld", "Build LLD linker"
+  option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
   option "with-all-targets", "Build all target backends"
   option "without-shared", "Don't build LLVM as a shared library"
@@ -69,6 +79,7 @@ class Llvm < Formula
   deprecated_option "disable-assertions" => "without-assertions"
 
   depends_on :python => :optional
+  depends_on "swig" if build.with? "lldb"
 
   keg_only :provided_by_osx
 
@@ -84,6 +95,10 @@ class Llvm < Formula
       fail "The Python bindings need the shared library."
     end
 
+    if build.with?("lldb") && build.without?("clang")
+      fail "Building LLDB needs Clang support library."
+    end
+
     if build.with? "clang"
       (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"tools/clang").install resource("clang")
@@ -91,6 +106,7 @@ class Llvm < Formula
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
+    (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
 
     if build.universal?
       ENV.permit_arch_flags
