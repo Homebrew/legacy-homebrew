@@ -1,7 +1,7 @@
 class Clib < Formula
   homepage "https://github.com/clibs/clib"
-  url "https://github.com/clibs/clib/archive/1.4.1.tar.gz"
-  sha1 "f1d5dbd76d8ad75204d182f9db1b197e311fa25e"
+  url "https://github.com/clibs/clib/archive/1.4.2.tar.gz"
+  sha1 "47287adfdbb498fa8dfeee32d507c1787d09c435"
 
   head "https://github.com/clibs/clib.git"
 
