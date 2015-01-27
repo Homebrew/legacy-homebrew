@@ -4,6 +4,13 @@ class Keepassc < Formula
   sha1 "edc39b0aaaeaca101ab722cba7b19804b4b8f9b7"
   head "https://github.com/raymontag/keepassc.git", :branch => "development"
 
+  bottle do
+    cellar :any
+    sha1 "fba4d1c078e87272829edb0450d415ba69f65928" => :yosemite
+    sha1 "7a20f233d82f09d1fde95e382e83a321b05d04a7" => :mavericks
+    sha1 "be234b537c09d85d9cc75d4085196f796f0994fa" => :mountain_lion
+  end
+
   depends_on :python3
 
   resource "pycrypto" do
