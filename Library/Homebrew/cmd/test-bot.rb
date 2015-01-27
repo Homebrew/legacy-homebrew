@@ -446,7 +446,7 @@ module Homebrew
       audit_args << "--strict" if @added_formulae.include? formula_name
       test "brew", "audit", *audit_args
       if install_passed
-        unless ARGV.include? '--no-bottle'
+        unless ARGV.include? "--no-bottle" or head_only_tap? formula or devel_only_tap? formula
           bottle_args = ["--rb", formula_name]
           if @tap
             tap_user, tap_repo = @tap.split "/"
