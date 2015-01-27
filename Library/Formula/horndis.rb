@@ -5,9 +5,8 @@ class Horndis < Formula
 
   bottle do
     cellar :any
-    sha1 "e37bc2997a594e67eaeac3c0f8d1ff5f51da7d99" => :mavericks
-    sha1 "1fb6c9910e96a67f34d48260d3d41ebeefb1749a" => :mountain_lion
-    sha1 "af083937c77de9d628d9cf6858296be61846ad63" => :lion
+    sha1 "0d55b2656caeb26a77ee1eb5d6785bbf85529a0b" => :mavericks
+    sha1 "5f8c5a67a3c3eaa99e60f59e1b2910a95ca2bdb6" => :mountain_lion
   end
 
   depends_on UnsignedKextRequirement
