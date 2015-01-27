@@ -2,8 +2,8 @@ class Libcppa < Formula
   # TODO: since libcppa has been renamed to CAF, this formula should eventually
   # be renamed to 'caf.rb'.
   homepage "http://actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/0.12.1.tar.gz"
-  sha1 "a8267a2f5ab4f9124ab0b10279a6600c2867243b"
+  url "https://github.com/actor-framework/actor-framework/archive/0.12.2.tar.gz"
+  sha1 "003655f524a727fa8ccb5b41b6d997b299f5b496"
   head "https://github.com/actor-framework/actor-framework.git"
 
   bottle do
