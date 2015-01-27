@@ -41,10 +41,13 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
     - Formula are not deleted, they are moved here.
 
 *   [homebrew/nginx](https://github.com/Homebrew/homebrew-nginx)
-    - Feature rich Nginx tap for modules
+    - Feature rich Nginx tap for modules.
 
 *   [homebrew/binary](https://github.com/Homebrew/homebrew-binary)
     - Precompiled binary formulae.
+
+*   [homebrew/brewdler](https://github.com/Homebrew/homebrew-brewdler)
+    - A Bundler-equivalent for installing project dependencies from Homebrew.
 
 
 `brew search` looks in these main taps and as well in [Homebrew/homebrew](https://github.com/Homebrew/homebrew). So don't worry about missing stuff. We will add other taps to the search as they become well maintained and popular.
