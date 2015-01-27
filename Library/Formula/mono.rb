@@ -16,6 +16,9 @@ class Mono < Formula
     sha1 "ffa3cf10d50caa8bba3e8a6b9ae85964ef73be55" => :mountain_lion
   end
 
+  # http://www.mono-project.com/docs/compiling-mono/mac/#building-mono-from-a-release-package
+  option 'with-64bit', 'Compile Mono in 64-bit mode'
+
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/cb/cb33b94c853049a43222288ead1e0cb059b22783/monolite-111-latest.tar.gz"
     sha1 "a674c47cd60786c49185fb3512410c43689be43e"
@@ -30,7 +33,13 @@ class Mono < Formula
       --prefix=#{prefix}
       --enable-nls=no
     ]
-    args << "--build=" + (MacOS.prefer_64_bit? ? "x86_64": "i686") + "-apple-darwin"
+
+    if build.with? '64bit'
+      args << "--build=x86_64-apple-darwin"
+    else
+      # no option specified
+      args << "--build=" + (MacOS.prefer_64_bit? ? "x86_64": "i686") + "-apple-darwin"
+    end
 
     system "./configure", *args
     system "make"
