@@ -1,5 +1,3 @@
-require "formula"
-
 class Cabextract < Formula
   homepage "http://www.cabextract.org.uk/"
   url "http://www.cabextract.org.uk/cabextract-1.4.tar.gz"
@@ -16,5 +14,17 @@ class Cabextract < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    # probably the smallest valid .cab file
+    cab = <<-EOS.gsub(/\s+/, "")
+      4d5343460000000046000000000000002c000000000000000301010001000000d20400003
+      e00000001000000000000000000000000003246899d200061000000000000000000
+    EOS
+    (testpath/"test.cab").binwrite [cab].pack("H*")
+
+    system "#{bin}/cabextract", "test.cab"
+    assert File.exist? "a"
   end
 end

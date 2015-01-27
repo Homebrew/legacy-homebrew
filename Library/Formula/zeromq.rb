@@ -59,7 +59,7 @@ class Zeromq < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-lzmq", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-lzmq", "-o", "test"
     system "./test"
   end
 end

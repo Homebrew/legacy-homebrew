@@ -78,7 +78,7 @@ class FormulaVersions
     map = Hash.new { |h, k| h[k] = [] }
     rev_list(branch) do |rev|
       formula_at_revision(rev) do |f|
-        bottle = f.stable.bottle_specification
+        bottle = f.bottle_specification
         unless bottle.checksums.empty?
           map[f.pkg_version] << bottle.revision
         end

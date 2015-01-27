@@ -3,13 +3,13 @@ require "language/go"
 
 class Terraform < Formula
   homepage "http://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.3.5.tar.gz"
-  sha1 "2c53b217faedbcffcdf5fb78f1ab585f36e5f21f"
+  url "https://github.com/hashicorp/terraform/archive/v0.3.6.tar.gz"
+  sha1 "27b95dc159b8fa9c9611bb18a236d2b46d7f6a95"
 
   bottle do
-    sha1 "71b4d2cf75a292ef44f6fe8c688d3396275ff7bb" => :yosemite
-    sha1 "2a9b71e0a58d2b07eedd33eb43ec11ba6e859996" => :mavericks
-    sha1 "2a5dcd44de95b2f95cd0bb0264398d9a71798990" => :mountain_lion
+    sha1 "cba89a212c639eb9bb3c8a903c56e92aeed4ffee" => :yosemite
+    sha1 "cf9c544dd2555e8db364790ed4983c9e3a9ca9ed" => :mavericks
+    sha1 "8847237302ad9f7d3d369cc6dc8937feaed736e0" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -39,7 +39,7 @@ class Terraform < Formula
   end
 
   go_resource "github.com/mitchellh/goamz" do
-    url "https://github.com/mitchellh/goamz.git", :revision => "ab653226ea8718749271e08212506d411714e865"
+    url "https://github.com/mitchellh/goamz.git", :revision => "2441a8d0fab90553ec345cfdf3db24bb61ea61c3"
   end
 
   go_resource "github.com/vaughan0/go-ini" do
@@ -132,6 +132,10 @@ class Terraform < Formula
 
   go_resource "github.com/hashicorp/atlas-go" do
     url "https://github.com/hashicorp/atlas-go.git", :revision => "072814b5d05e34466c6c0fdd62cdecf184dc3521"
+  end
+
+  go_resource "github.com/xanzy/go-cloudstack" do
+    url "https://github.com/xanzy/go-cloudstack.git", :revision => "c2c4143ae294b5df4b7b5ae6e087ead01264167f"
   end
 
   def install

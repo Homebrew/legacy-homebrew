@@ -1,28 +1,40 @@
-require 'formula'
-
 class S3cmd < Formula
   homepage 'http://s3tools.org/s3cmd'
-  url 'https://github.com/s3tools/s3cmd/archive/v1.0.1.tar.gz'
-  sha1 '98ef9ea9e2dc56ab98f84610883d3d371c65e43a'
+  url 'https://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.0/s3cmd-1.5.0.tar.gz'
+  sha1 '53ebc485329cb15cad8f61ca0c8c2d06563ee2f3'
   head 'https://github.com/s3tools/s3cmd.git'
 
-  devel do
-    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-rc1.tar.gz'
-    sha1 '49ce9e6d81b3697529e6a4b9749b1c6862c1751f'
-    version "1.5.0-rc1"
-  end
+  depends_on :python if MacOS.version <= :snow_leopard
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7493692a3dc0b34a8d3a617bd4e36df9fed16226" => :mavericks
-    sha1 "5161ab336e7f34d8442b4a0c5964a99004ff03d9" => :mountain_lion
-    sha1 "198a88c5490cdc705fee324a131a44360c826f63" => :lion
+    revision 2
+    sha1 "5923f4a71ccc26ac8e4d603f667ea32cdddfe1ae" => :yosemite
+    sha1 "0a6f4d5b585d618189ea7dd2f417583c818c75e9" => :mavericks
+    sha1 "473b664c50c6673c4b14b92084780d350da36c51" => :mountain_lion
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+  end
+
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
+    sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
   end
 
   def install
-    libexec.install 's3cmd', 'S3'
-    man1.install 's3cmd.1'
-    bin.install_symlink libexec+'s3cmd'
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    resources.each do |r|
+      r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
+    end
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
+
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    man1.install Dir[libexec/"share/man/man1/*"]
   end
 end

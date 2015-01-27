@@ -63,7 +63,7 @@ class OpenMpi < Formula
         MPI_Comm_size(MPI_COMM_WORLD, &size);
         MPI_Comm_rank(MPI_COMM_WORLD, &rank);
         MPI_Get_processor_name(name, &nameLen);
-        printf("[%d/%d] Hello, world! My name is %s.\n", rank, size, name);
+        printf("[%d/%d] Hello, world! My name is %s.\\n", rank, size, name);
         MPI_Finalize();
         return 0;
       }

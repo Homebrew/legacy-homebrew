@@ -1,17 +1,22 @@
-require "formula"
-
 class Orpie < Formula
   homepage "http://pessimization.com/software/orpie/"
   url "http://pessimization.com/software/orpie/orpie-1.5.2.tar.gz"
   sha1 "9786df20fb272fd36f87868bed04cab504602282"
 
+  bottle do
+    sha1 "a6213155ff44a5816391c80a1919ac2d992b739f" => :yosemite
+    sha1 "86b170484abd8f7ebb07fac0dd82ef7d060b75ed" => :mavericks
+    sha1 "d8849eadb8d77de5132658a19fac1a7b7ce7936b" => :mountain_lion
+  end
+
   depends_on "gsl"
   depends_on "objective-caml"
+  depends_on "camlp4" => :build
 
   def install
     ENV.deparallelize
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

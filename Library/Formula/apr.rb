@@ -11,7 +11,11 @@ class Apr < Formula
 
   keg_only :provided_by_osx, "Apple's CLT package contains apr."
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
+
     # Configure switch unconditionally adds the -no-cpp-precomp switch
     # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
     # builds under non-Apple compilers and which may or may not do anything anymore.
