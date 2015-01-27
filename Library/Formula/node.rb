@@ -2,7 +2,7 @@
 class Node < Formula
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.10.36/node-v0.10.36.tar.gz"
-  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
+  sha256 "b9d7d1d0294bce46686b13a05da6fc5b1e7743b597544aa888e8e64a9f178c81"
 
   bottle do
     sha1 "47488bdb1f2454429d6a080c22e6e2c4cfe1f339" => :yosemite
