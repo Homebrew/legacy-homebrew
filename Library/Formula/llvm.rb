@@ -70,6 +70,7 @@ class Llvm < Formula
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
   option "with-all-targets", "Build all target backends"
+  option "with-python", "Build Python bindings against Homebrew Python"
   option "without-shared", "Don't build LLVM as a shared library"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
@@ -78,7 +79,11 @@ class Llvm < Formula
   deprecated_option "disable-shared" => "without-shared"
   deprecated_option "disable-assertions" => "without-assertions"
 
-  depends_on :python => :optional
+  if MacOS.version <= :snow_leopard
+    depends_on :python
+  else
+    depends_on :python => :optional
+  end
   depends_on "swig" if build.with? "lldb"
 
   keg_only :provided_by_osx
@@ -90,10 +95,6 @@ class Llvm < Formula
   def install
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
-
-    if build.with?("python") && build.without?("shared")
-      fail "The Python bindings need the shared library."
-    end
 
     if build.with?("lldb") && build.without?("clang")
       fail "Building LLDB needs Clang support library."
@@ -148,10 +149,8 @@ class Llvm < Formula
     end
 
     # install llvm python bindings
-    if build.with? "python"
-      (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
-      (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
-    end
+    (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
+    (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
   end
 
   test do
