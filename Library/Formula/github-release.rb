@@ -6,9 +6,9 @@ class GithubRelease < Formula
   head "https://github.com/aktau/github-release.git"
 
   bottle do
-    sha1 "c06950368dc90e472c0d6ec991ad639882240d25" => :mavericks
-    sha1 "2a32068dfebc31be1a4610f778f300acb10e619c" => :mountain_lion
-    sha1 "e6568e7a6ab65e13d54f7cfe2109ec621953f707" => :lion
+    sha1 "1ad266fc6c56b6631214785c764fee4e19aaeb4e" => :yosemite
+    sha1 "31c085f718e68352a2b2f22f601512a1ba9adb65" => :mavericks
+    sha1 "0e120d55f94ea274ead008610a86b46d478f41b7" => :mountain_lion
   end
 
   depends_on "go" => :build
