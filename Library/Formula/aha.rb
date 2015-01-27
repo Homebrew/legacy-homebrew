@@ -17,6 +17,6 @@ class Aha < Formula
 
   test do
     out = pipe_output(bin/"aha", "[35mrain[34mpill[00m")
-    assert_match /color:purple;">rain.*color:blue;">pill/, out
+    assert_match(/color:purple;">rain.*color:blue;">pill/, out)
   end
 end
