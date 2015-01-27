@@ -359,6 +359,10 @@ class FormulaAuditor
       problem "Head-only (no stable download)"
     end
 
+    if devel_only?(formula) && formula.tap != "homebrew/homebrew-devel-only"
+      problem "Devel-only (no stable download)"
+    end
+
     %w[Stable Devel HEAD].each do |name|
       next unless spec = formula.send(name.downcase)
 
@@ -696,7 +700,11 @@ class FormulaAuditor
   end
 
   def head_only?(formula)
-    formula.head && formula.stable.nil?
+    formula.head && formula.devel.nil? && formula.stable.nil?
+  end
+
+  def devel_only?(formula)
+    formula.devel && formula.stable.nil?
   end
 end
 

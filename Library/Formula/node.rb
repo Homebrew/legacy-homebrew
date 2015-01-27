@@ -6,10 +6,19 @@ class Node < Formula
   revision 2
 
   bottle do
-    revision 1
-    sha1 "a98a1df66cfb0712b14489186c46f7087ba35bd7" => :yosemite
-    sha1 "0cd45412840a67d5d65e6bc3c0c3bcf8bc23153c" => :mavericks
-    sha1 "977332381c033626b991002c27e738c144ebbaac" => :mountain_lion
+    revision 2
+    sha1 "47488bdb1f2454429d6a080c22e6e2c4cfe1f339" => :yosemite
+    sha1 "fbb207787027eceda84ac05cd40f6b0b733b3aef" => :mavericks
+    sha1 "d72f12249dbb91a9e882d29dd0585ff623ae8769" => :mountain_lion
+  end
+
+  devel do
+    url "https://nodejs.org/dist/v0.11.15/node-v0.11.15.tar.gz"
+    sha256 "e613d274baa4c99a0518038192491433f7877493a66d8505af263f6310991d01"
+
+    depends_on "pkg-config" => :build
+    depends_on "icu4c" => :optional
+    depends_on "openssl" => :optional
   end
 
   head do
@@ -27,30 +36,39 @@ class Node < Formula
 
   depends_on :python => :build
 
-  # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
-  # over Node's shipped version with --shared-openssl.
-  # Would allow us quicker security fixes than Node's release schedule.
-  # See https://github.com/joyent/node/issues/3557 for prior discussion.
+  # Once we kill off SSLv3 in our OpenSSL consider making our OpenSSL
+  # an optional dep across the whole range of Node releases.
 
   fails_with :llvm do
     build 2326
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.18.tgz"
-    sha1 "e2af4c5f848fb023851cd2ec129005d33090bd57"
+    url "https://registry.npmjs.org/npm/-/npm-2.3.0.tgz"
+    sha1 "3588ec5c18fb5ac41e5721b0ea8ece3a85ab8b4b"
   end
 
   def install
-    args = %W{--prefix=#{prefix} --without-npm}
+    args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
     args << "--without-ssl2" << "--without-ssl3" if build.stable?
 
-    # This should eventually be able to use the system icu4c, but right now
-    # it expects to find this dependency using pkgconfig.
     if build.head?
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_prefix}/lib/pkgconfig"
+      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
       args << "--with-intl=system-icu"
+    end
+
+    if build.devel?
+      if build.with? "icu4c"
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
+        args << "--with-intl=system-icu"
+      end
+
+      if build.with? "openssl"
+        args << "--shared-openssl"
+      else
+        args << "--without-ssl2" << "--without-ssl3"
+      end
     end
 
     system "./configure", *args
