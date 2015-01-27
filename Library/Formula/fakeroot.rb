@@ -6,9 +6,10 @@ class Fakeroot < Formula
 
   bottle do
     cellar :any
-    sha1 "1780485693e73b2c411e2c49d34aab5c139a095d" => :yosemite
-    sha1 "d7bd430316af3b01f641dc6a3cc1d66eaa5a4eee" => :mavericks
-    sha1 "82f4abf913c28ea7c32910537dcf8b87716168cc" => :mountain_lion
+    revision 1
+    sha1 "33ae18f3adadf47b0266d5e8ef7d2ec6d87f49a4" => :yosemite
+    sha1 "96ab6f2489b44639d575f61604401eba046ff08c" => :mavericks
+    sha1 "3f4c8d4554f6311d38dcdccc7844e1a62e4de13b" => :mountain_lion
   end
 
   # Compile is broken. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=766649
