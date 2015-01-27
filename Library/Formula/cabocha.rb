@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Cabocha < Formula
   homepage "https://code.google.com/p/cabocha/"
   url "https://googledrive.com/host/0B4y35FiV1wh7cGRCUUJHVTNJRnM/cabocha-0.69.tar.bz2"
