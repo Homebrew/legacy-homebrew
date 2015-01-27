@@ -2,8 +2,8 @@ require "formula"
 
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.10.0.tar.bz2"
-  sha1 "74e43604ea48e941c39a43ebc153abee4ddba56c"
+  url "http://download.mono-project.com/sources/mono/mono-3.12.0.tar.bz2"
+  sha1 "cec83efd13ffc1e212c632395a5aac75772a09e7"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
