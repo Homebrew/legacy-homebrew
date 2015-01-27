@@ -37,7 +37,7 @@ class Cabocha < Formula
   end
 
   test do
-    result = `echo "CaboCha はフリーソフトウェアです。" | cabocha | md5`.chomp 
+    result = `echo "CaboCha はフリーソフトウェアです。" | cabocha | md5`.chomp
     assert_equal "a5b8293e6ebcb3246c54ecd66d6e18ee", result
   end
 end
