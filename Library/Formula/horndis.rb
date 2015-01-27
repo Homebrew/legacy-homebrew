@@ -1,9 +1,7 @@
-require "formula"
-
 class Horndis < Formula
   homepage "http://joshuawise.com/horndis"
-  url "https://github.com/jwise/HoRNDIS/archive/rel6.tar.gz"
-  sha1 "e41ed0c5c06ee555a4a418696b112c955a356ce0"
+  url "https://github.com/jwise/HoRNDIS/archive/rel7.tar.gz"
+  sha1 "b3186de7c43ff0398e429f1af8e73cb3a255e5cd"
 
   bottle do
     cellar :any
@@ -16,7 +14,11 @@ class Horndis < Formula
   depends_on :xcode => :build
 
   def install
-    xcodebuild "-configuration", "Release", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET=", "GCC_VERSION=", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build"
+    xcodebuild "-configuration", "Release", "SDKROOT=",
+                                            "MACOSX_DEPLOYMENT_TARGET=",
+                                            "GCC_VERSION=",
+                                            "ONLY_ACTIVE_ARCH=YES",
+                                            "SYMROOT=build"
     kext_prefix.install "build/Release/HoRNDIS.kext"
   end
 
