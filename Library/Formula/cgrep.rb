@@ -1,12 +1,11 @@
-require "formula"
 require "language/haskell"
 
 class Cgrep < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/awgn/cgrep"
-  url "https://github.com/awgn/cgrep/archive/v6.4.9.tar.gz"
-  sha1 "0b5bc5bb96b2c70a7353ac036ce5949bbe2a9bc1"
+  url "https://github.com/awgn/cgrep/archive/v6.4.12.tar.gz"
+  sha1 "4933c1ae055d5c04f567c9405339ce4f972ef62b"
   head "https://github.com/awgn/cgrep.git"
 
   bottle do
