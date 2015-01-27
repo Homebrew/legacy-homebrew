@@ -5,6 +5,12 @@ class Cabocha < Formula
   url "https://googledrive.com/host/0B4y35FiV1wh7cGRCUUJHVTNJRnM/cabocha-0.69.tar.bz2"
   sha1 "9196098628c5d1f0b83b371a03352b6652c04001"
 
+  bottle do
+    sha1 "c6d6a98dedfe7466c454101174b3d5cbc2752f9b" => :yosemite
+    sha1 "de55a785d8dcce5696a36f69b67168c913405259" => :mavericks
+    sha1 "40106c50d68d5bd03941946378679ff490ae679a" => :mountain_lion
+  end
+
   depends_on "crf++"
   depends_on "mecab"
 
