@@ -19,10 +19,10 @@ class Autojump < Formula
   def caveats; <<-EOS.undent
     Add the following line to your ~/.bash_profile or ~/.zshrc file (and remember
     to source the file to update your current session):
-      [[ -s `brew --prefix`/etc/profile.d/autojump.sh ]] && . `brew --prefix`/etc/profile.d/autojump.sh
+      [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
 
     If you use the Fish shell then add the following line to your ~/.config/fish/config.fish:
-      if test -f #{HOMEBREW_PREFIX}/share/autojump/autojump.fish; . #{HOMEBREW_PREFIX}/share/autojump/autojump.fish; end
+      [ -f #{HOMEBREW_PREFIX}/share/autojump/autojump.fish ] && . #{HOMEBREW_PREFIX}/share/autojump/autojump.fish
     EOS
   end
 
