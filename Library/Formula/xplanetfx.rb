@@ -2,8 +2,8 @@ require "formula"
 
 class Xplanetfx < Formula
   homepage "http://mein-neues-blog.de/xplanetFX/"
-  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.0_all.tar.gz"
-  sha1 "2ca247f2388eb49cb1786d1afc4bc4534f11b6ce"
+  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.1_all.tar.gz"
+  sha1 "e6cec26b6f211477011071ff34a4bd683630a8e5"
   version "2.6"
 
   bottle do
