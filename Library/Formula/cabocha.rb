@@ -35,4 +35,9 @@ class Cabocha < Formula
     system "./configure", *args
     system "make", "install"
   end
+
+  test do
+    result = `echo "CaboCha はフリーソフトウェアです。" | cabocha | md5`.chomp 
+    assert_equal "a5b8293e6ebcb3246c54ecd66d6e18ee", result
+  end
 end
