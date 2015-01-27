@@ -1,9 +1,7 @@
-require "formula"
-
 class GithubRelease < Formula
   homepage "https://github.com/aktau/github-release"
-  url "https://github.com/aktau/github-release/archive/v0.5.2.tar.gz"
-  sha1 "684391c8bfbb80e43e9aa328b640aaca10345bd7"
+  url "https://github.com/aktau/github-release/archive/v0.5.3.tar.gz"
+  sha1 "f2816cee7a9a0c7eea22ab5ae1d5a6aa1caefc5e"
 
   head "https://github.com/aktau/github-release.git"
 
@@ -22,6 +20,8 @@ class GithubRelease < Formula
   end
 
   test do
-    system "#{bin}/github-release", "info", "--user", "aktau", "--repo", "github-release", "--tag", "v#{version}"
+    system "#{bin}/github-release", "info", "--user", "aktau",
+                                            "--repo", "github-release",
+                                            "--tag", "v#{version}"
   end
 end
