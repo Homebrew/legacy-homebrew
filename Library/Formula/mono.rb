@@ -50,6 +50,8 @@ class Mono < Formula
   end
 
   test do
+    ohai "Remember to set MONO_GAC_PREFIX=\"#{HOMEBREW_PREFIX}\" to finalize the installation."
+
     test_str = "Hello Homebrew"
     test_name = "hello.cs"
     (testpath/test_name).write <<-EOS.undent
@@ -85,6 +87,10 @@ class Mono < Formula
   def caveats; <<-EOS.undent
     To use the assemblies from other formulae you need to set:
       export MONO_GAC_PREFIX="#{HOMEBREW_PREFIX}"
+
+    It can be useful to unlink the brew-installed mono, which you can do
+    with:
+      brew unlink mono
     EOS
   end
 end
