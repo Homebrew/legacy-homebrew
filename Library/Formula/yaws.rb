@@ -4,6 +4,12 @@ class Yaws < Formula
   sha1 "ea407afe7b080ed065182d73503899a75360dfaf"
   head "https://github.com/klacke/yaws.git"
 
+  bottle do
+    sha1 "22a14414e75ac551799dfae222c65b13732e8e2a" => :yosemite
+    sha1 "b8485c79ccb25b36a3591e5962389b5cd97c9eaa" => :mavericks
+    sha1 "75802258262ab4a400136cb702a92f9b74904e81" => :mountain_lion
+  end
+
   option "without-yapp", "Omit yaws applications"
   option "32-bit"
 
