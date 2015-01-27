@@ -1,7 +1,7 @@
 class Deis < Formula
   homepage "http://deis.io"
-  url "https://github.com/deis/deis/archive/v1.2.0.tar.gz"
-  sha1 "564784fb52124f6549afbd2b4b4465b057deeb5f"
+  url "https://github.com/deis/deis/archive/v1.2.2.tar.gz"
+  sha1 "c92121c88aa8c2548526199837fad334fae74b01"
 
   bottle do
     cellar :any
