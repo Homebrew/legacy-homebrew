@@ -13,6 +13,7 @@ class SoundTouch < Formula
   end
 
   option "with-integer-samples", "Build using integer samples? (default is float)"
+  option :universal
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -24,6 +25,8 @@ class SoundTouch < Formula
             "--disable-silent-rules",
             "--prefix=#{prefix}"]
     args << "--enable-integer-samples" if build.with? "integer-samples"
+
+    ENV.universal_binary if build.universal?
 
     system "./configure",*args
     system "make", "install"
