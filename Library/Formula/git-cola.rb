@@ -1,7 +1,7 @@
 class GitCola < Formula
   homepage "http://git-cola.github.io/"
-  url "https://github.com/git-cola/git-cola/archive/v2.0.8.tar.gz"
-  sha1 "38db3432ca90047448c8f3b6f20ef0ad37c15fa1"
+  url "https://github.com/git-cola/git-cola/archive/v2.1.0.tar.gz"
+  sha1 "c93e74b021e6e5df92a46a3d05ac8a6377571fa8"
 
   head "https://github.com/git-cola/git-cola.git"
 
