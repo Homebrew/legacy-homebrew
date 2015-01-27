@@ -4,6 +4,13 @@ class Mpssh < Formula
   sha1 "ba11dfe7607cac3d47f1c86db236a2e440700ce7"
   head "https://github.com/ndenev/mpssh.git"
 
+  bottle do
+    cellar :any
+    sha1 "3f673d4d3e00110be048b3a18c876ec8e9ccab2f" => :yosemite
+    sha1 "5ad290e9a62712e43a2b624c2d9e73b1b2d445e7" => :mavericks
+    sha1 "86902eb4b59dbf70f41fc8a7c9dabc3b30e5e140" => :mountain_lion
+  end
+
   stable do
     patch do
       # don't install binaries as root (upstream PR merged in HEAD)
