@@ -1,12 +1,10 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
-  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
-  revision 2
+  url "https://nodejs.org/dist/v0.10.36/node-v0.10.36.tar.gz"
+  sha256 "b9d7d1d0294bce46686b13a05da6fc5b1e7743b597544aa888e8e64a9f178c81"
 
   bottle do
-    revision 2
     sha1 "47488bdb1f2454429d6a080c22e6e2c4cfe1f339" => :yosemite
     sha1 "fbb207787027eceda84ac05cd40f6b0b733b3aef" => :mavericks
     sha1 "d72f12249dbb91a9e882d29dd0585ff623ae8769" => :mountain_lion
