@@ -7,6 +7,7 @@ class Anttweakbar < Formula
   # See
   # http://sourceforge.net/p/anttweakbar/code/ci/5a076d13f143175a6bda3c668e29a33406479339/tree/src/LoadOGLCore.h?diff=5528b167ed12395a60949d7c643262b6668f15d5&diformat=regular
   # https://sourceforge.net/p/anttweakbar/tickets/14/
+  # Makefile.osx patch fixes g++ compilation error where -ObjC++ expects a number following the O
   patch :DATA
 
   def install
