@@ -342,4 +342,18 @@ class VersionParsingTests < Homebrew::TestCase
     assert_version_detected '2.4c',
       'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
   end
+
+  def test_win_style
+    assert_version_detected '0.9.17',
+      'http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.17-w32.zip'
+    assert_version_detected '1.29',
+      'http://ftpmirror.gnu.org/libidn/libidn-1.29-win64.zip'
+  end
+
+  def test_with_arch
+    assert_version_detected '4.0.18-1',
+      'http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm'
+    assert_version_detected '2.8',
+      'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x86.zip'
+  end
 end

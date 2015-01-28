@@ -293,6 +293,16 @@ class Version
     m = /-((?:\d+\.)*\d+-beta\d*)$/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. http://ftpmirror.gnu.org/libidn/libidn-1.29-win64.zip
+    # e.g. http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.17-w32.zip
+    m = /-(\d+\.\d+(?:\.\d+)?)-w(?:in)?(?:32|64)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm
+    # e.g. http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x86.zip
+    m = /-(\d+\.\d+(?:\.\d+)?(?:-\d+)?)[-_.](?:i686|x86(?:[-_](?:32|64))?)$/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. foobar4.5.1
     m = /((?:\d+\.)*\d+)$/.match(stem)
     return m.captures.first unless m.nil?
