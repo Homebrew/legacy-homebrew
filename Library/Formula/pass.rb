@@ -1,7 +1,7 @@
 class Pass < Formula
   homepage "http://www.passwordstore.org/"
-  url "http://git.zx2c4.com/password-store/snapshot/password-store-1.6.3.tar.xz"
-  sha256 "d419d40aa165c1f893e994dd706733374a9db8cf5314124702a061e70e0340f7"
+  url "http://git.zx2c4.com/password-store/snapshot/password-store-1.6.4.tar.xz"
+  sha256 "dcf69c2b063a2d54b01b857fe0f0b145c0eadf0ebcd93ed6f37e01178a7387d6"
 
   bottle do
     cellar :any
