@@ -7,9 +7,9 @@ class Terraform < Formula
   sha1 "27b95dc159b8fa9c9611bb18a236d2b46d7f6a95"
 
   bottle do
-    sha1 "71b4d2cf75a292ef44f6fe8c688d3396275ff7bb" => :yosemite
-    sha1 "2a9b71e0a58d2b07eedd33eb43ec11ba6e859996" => :mavericks
-    sha1 "2a5dcd44de95b2f95cd0bb0264398d9a71798990" => :mountain_lion
+    sha1 "cba89a212c639eb9bb3c8a903c56e92aeed4ffee" => :yosemite
+    sha1 "cf9c544dd2555e8db364790ed4983c9e3a9ca9ed" => :mavericks
+    sha1 "8847237302ad9f7d3d369cc6dc8937feaed736e0" => :mountain_lion
   end
 
   depends_on "go" => :build
