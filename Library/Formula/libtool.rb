@@ -2,10 +2,10 @@
 # This is not the same so as a result we must install this as glibtool.
 
 class Libtool < Formula
-  homepage "http://www.gnu.org/software/libtool/"
-  url "http://ftpmirror.gnu.org/libtool/libtool-2.4.4.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/libtool/libtool-2.4.4.tar.xz"
-  sha1 "a62d0f9a5c8ddf2de2a3210a5ab712fd3b4531e9"
+  homepage "https://www.gnu.org/software/libtool/"
+  url "http://ftpmirror.gnu.org/libtool/libtool-2.4.5.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/libtool/libtool-2.4.5.tar.xz"
+  sha1 "b75650190234ed898757ec8ca033ffabbee89e7c"
 
   bottle do
     cellar :any
