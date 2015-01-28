@@ -1,5 +1,3 @@
-require "formula"
-
 class ZshSyntaxHighlighting < Formula
   homepage "https://github.com/zsh-users/zsh-syntax-highlighting"
   url "https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.2.1.tar.gz"
@@ -26,5 +24,9 @@ class ZshSyntaxHighlighting < Formula
 
       export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=#{HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/highlighters
     EOS
+  end
+
+  test do
+    system "#{share}/zsh-syntax-highlighting/tests/test-highlighting.zsh", "main"
   end
 end

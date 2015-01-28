@@ -28,7 +28,7 @@ class Libqalculate < Formula
   end
 
   test do
-    system "#{bin}/qalc", "(2+2)/4 hours to minutes"
+    system "#{bin}/qalc", "-nocurrencies", "(2+2)/4 hours to minutes"
   end
 end
 

@@ -2,14 +2,14 @@ require 'formula'
 
 class GitCrypt < Formula
   homepage 'https://www.agwa.name/projects/git-crypt/'
-  url 'https://www.agwa.name/projects/git-crypt/downloads/git-crypt-0.4.tar.gz'
-  sha1 '18cffadc905d69e221e6f2d4ec92b013413596f3'
+  url "https://www.agwa.name/projects/git-crypt/downloads/git-crypt-0.4.1.tar.gz"
+  sha1 "b82aca26385ffd96432fa25fda7c4753874d917f"
 
   bottle do
     cellar :any
-    sha1 "b9815f5095538a2cb15a468a386e3489da1171f5" => :yosemite
-    sha1 "0e144374d72709fe3288a693638c1b3a5e3b1a14" => :mavericks
-    sha1 "84acf8b81ad75945aa0ee529ddfe4c1674efabd9" => :mountain_lion
+    sha1 "cf82899f5909b6f4fba7375f0ca14328f2b3d6af" => :yosemite
+    sha1 "f15f0c82ad1114c2bdc676db25a0801c915eabdf" => :mavericks
+    sha1 "0cbd44ee06d875c9784307cc8a45e593dbb5bdd7" => :mountain_lion
   end
 
   depends_on "openssl"

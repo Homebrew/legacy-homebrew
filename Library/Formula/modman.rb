@@ -2,8 +2,8 @@ require "formula"
 
 class Modman < Formula
   homepage "https://github.com/colinmollenhour/modman"
-  url "https://github.com/colinmollenhour/modman/archive/1.9.9.tar.gz"
-  sha1 "248d68856d66941359a62db5a4a788545369c026"
+  url "https://github.com/colinmollenhour/modman/archive/1.10.tar.gz"
+  sha1 "6469426438d4f932f6863d6e2669a264b254944d"
 
   def install
     bin.install "modman"

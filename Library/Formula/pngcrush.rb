@@ -1,15 +1,13 @@
-require "formula"
-
 class Pngcrush < Formula
   homepage "http://pmt.sourceforge.net/pngcrush/"
-  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.81/pngcrush-1.7.81.tar.gz"
-  sha1 "c5f4c2aeb7b15b8bb49df7e66d7c1a7843cb39f8"
+  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.82/pngcrush-1.7.82.tar.gz"
+  sha1 "a9d7305908810a7da981611e7aea8830b3ff1f43"
 
   bottle do
     cellar :any
-    sha1 "53f7387c74770525785c8c8db39ce68eaf0d8a27" => :yosemite
-    sha1 "293bcf3d61802bb66c3d89f0ab43f320668c0c2b" => :mavericks
-    sha1 "5a0151c3adfb20300a85702189a87cfd8ae5a411" => :mountain_lion
+    sha1 "ddb569fe21bd966d5d3f51416bc824bd6772f9f3" => :yosemite
+    sha1 "0c8cca15817311bacdc7b0fa4919b2dbfc3e1e62" => :mavericks
+    sha1 "5774590804ab1bf665b1ec6f1a3b0abfaade3d05" => :mountain_lion
   end
 
   def install

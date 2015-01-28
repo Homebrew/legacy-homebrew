@@ -1,18 +1,15 @@
-require "formula"
-
 class Doxygen < Formula
   homepage "http://www.doxygen.org/"
   head "https://github.com/doxygen/doxygen.git"
-  url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.8/doxygen-1.8.8.src.tar.gz"
-  sha1 "cd511c73e7669dde5ac3e14a5d1abae093aaf1d9"
+  url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.9.1.src.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.9.1/doxygen-1.8.9.1.src.tar.gz"
+  sha1 "eb6b7e5f8dc8302e67053aba841f485017f246fd"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7333771de328171fbd376a341ff5cff3c9bcf81a" => :yosemite
-    sha1 "2d537233288de44363156eb8664535e82ae12f2d" => :mavericks
-    sha1 "befbe63ba7afc2afb9199a73ccf578ea923348a2" => :mountain_lion
+    sha1 "f327b4bc93e17884edd17638697566ae6b0a669e" => :yosemite
+    sha1 "d92088aeb037bc881830d508076d88713ba00c96" => :mavericks
+    sha1 "a1108f0c553124209cf2b1b65b8cb879a1d8cb47" => :mountain_lion
   end
 
   option "with-dot", "Build with dot command support from Graphviz."
@@ -69,6 +66,11 @@ class Doxygen < Formula
     system "make"
     # MAN1DIR, relative to the given prefix
     system "make", "MAN1DIR=share/man/man1", "install"
+  end
+
+  test do
+    system "#{bin}/doxygen", "-g"
+    system "#{bin}/doxygen", "Doxyfile"
   end
 end
 

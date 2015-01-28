@@ -1,30 +1,27 @@
 module Homebrew
   def tap_readme
     name = ARGV.first
-
     raise "A name is required" if name.nil?
 
+    titleized_name = name.dup
+    titleized_name[0] = titleized_name[0].upcase
+
     template = <<-EOS.undent
-    Homebrew-#{name}
-    =========#{'=' * name.size}
+    # Homebrew #{titleized_name}
 
-    How do I install these formulae?
-    --------------------------------
-    Just `brew tap homebrew/#{name}` and then `brew install <formula>`.
+    ## How do I install these formulae?
+    `brew install homebrew/#{name}/<formula>`
 
-    If the formula conflicts with one from Homebrew/homebrew or another tap, you can `brew install homebrew/#{name}/<formula>`.
+    Or `brew tap homebrew/#{name}` and then `brew install <formula>`.
 
-    You can also install via URL:
+    Or install via URL (which will not receive updates):
 
     ```
     brew install https://raw.githubusercontent.com/Homebrew/homebrew-#{name}/master/<formula>.rb
     ```
 
-    Docs
-    ----
-    `brew help`, `man brew`, or the Homebrew [docs][].
-
-    [docs]:https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/README.md#readme
+    ## Documentation
+    `brew help`, `man brew` or check [Homebrew's documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
     EOS
 
     puts template if ARGV.verbose?

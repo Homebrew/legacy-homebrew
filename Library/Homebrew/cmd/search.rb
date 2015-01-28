@@ -9,11 +9,11 @@ module Homebrew
 
   def search
     if ARGV.include? '--macports'
-      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     elsif ARGV.include? '--debian'
-      exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+      exec_browser "https://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.include? '--opensuse'
       exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
     elsif ARGV.include? '--fedora'
@@ -76,6 +76,7 @@ module Homebrew
     %w{Homebrew binary},
     %w{Homebrew python},
     %w{Homebrew php},
+    %w{Homebrew x11},
     %w{Caskroom cask},
   ]
 

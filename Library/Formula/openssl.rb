@@ -1,16 +1,13 @@
-require "formula"
-
 class Openssl < Formula
   homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1j.tar.gz"
-  sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
-  revision 1
+  url "https://www.openssl.org/source/openssl-1.0.2.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2.tar.gz"
+  sha256 "8c48baf3babe0d505d16cfc0cf272589c66d3624264098213db0fb00034728e9"
 
   bottle do
-    sha1 "ffc47898c5c5599745b644c1889e473418a18d5a" => :yosemite
-    sha1 "65e125a4777eb6dfb63f01a18f724246123dd79e" => :mavericks
-    sha1 "511057d68144943d149cea76718db55656c73dff" => :mountain_lion
+    sha1 "0e5844609ea57a7f5361dca42d05578c6cf45643" => :yosemite
+    sha1 "56a6407b6a9179084a760d6f463cd0e6ea083c0e" => :mavericks
+    sha1 "8e36006185156281d487a2b1f04322701d0bef7b" => :mountain_lion
   end
 
   option :universal
@@ -63,7 +60,10 @@ class Openssl < Formula
       system "perl", "./Configure", *(configure_args + arch_args[arch])
       system "make", "depend"
       system "make"
-      system "make", "test" if build.with? "check"
+
+      if (MacOS.prefer_64_bit? || arch == MacOS.preferred_arch) && build.with?("check")
+        system "make", "test"
+      end
 
       if build.universal?
         cp Dir["*.?.?.?.dylib", "*.a", "apps/openssl"], dir

@@ -42,7 +42,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_installed_prefix
-    f = Class.new(TestBall).new
+    f = TestBall.new
     assert_equal f.prefix, f.installed_prefix
   end
 
@@ -148,7 +148,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_formula_spec_integration
-    f = Class.new(Formula) do
+    f = formula do
       homepage 'http://example.com'
       url 'http://example.com/test-0.1.tbz'
       mirror 'http://example.org/test-0.1.tbz'
@@ -161,21 +161,15 @@ class FormulaTests < Homebrew::TestCase
         mirror 'http://example.org/test-0.2.tbz'
         sha256 TEST_SHA256
       end
-
-      bottle { sha1 TEST_SHA1 => bottle_tag }
-
-      def initialize
-        super "test", Pathname.new(__FILE__).expand_path, :stable
-      end
-    end.new
+    end
 
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
     assert_predicate f, :stable?
 
-    assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of SoftwareSpec, f.devel
-    assert_instance_of HeadSoftwareSpec, f.head
+    assert_version_equal "0.1", f.stable.version
+    assert_version_equal "0.2", f.devel.version
+    assert_version_equal "HEAD", f.head.version
   end
 
   def test_path
@@ -189,7 +183,6 @@ class FormulaTests < Homebrew::TestCase
     path.dirname.mkpath
     File.open(path, 'w') do |f|
       f << %{
-        require 'formula'
         class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
         end

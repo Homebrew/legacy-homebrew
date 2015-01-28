@@ -1,13 +1,11 @@
-require "formula"
-
 class Nginx < Formula
   homepage "http://nginx.org/"
   url "http://nginx.org/download/nginx-1.6.2.tar.gz"
   sha1 "1a5458bc15acf90eea16353a1dd17285cf97ec35"
 
   devel do
-    url "http://nginx.org/download/nginx-1.7.7.tar.gz"
-    sha1 "c8e1caaa0dc6cfe540082c52ecd856ab794e38dc"
+    url "http://nginx.org/download/nginx-1.7.9.tar.gz"
+    sha1 "44ef4770db281cea26a1b2e66c0e34193e1d1f1f"
   end
 
   head "http://hg.nginx.org/nginx/", :using => :hg
@@ -79,7 +77,7 @@ class Nginx < Formula
       system "./configure", *args
     end
     system "make"
-    system "make install"
+    system "make", "install"
     man8.install "objs/nginx.8"
     (var/"run/nginx").mkpath
   end

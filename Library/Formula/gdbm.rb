@@ -1,10 +1,8 @@
-require 'formula'
-
 class Gdbm < Formula
-  homepage 'http://www.gnu.org/software/gdbm/'
-  url 'http://ftpmirror.gnu.org/gdbm/gdbm-1.11.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gdbm/gdbm-1.11.tar.gz'
-  sha1 'ce433d0f192c21d41089458ca5c8294efe9806b4'
+  homepage "http://www.gnu.org/software/gdbm/"
+  url "http://ftpmirror.gnu.org/gdbm/gdbm-1.11.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/gdbm/gdbm-1.11.tar.gz"
+  sha1 "ce433d0f192c21d41089458ca5c8294efe9806b4"
 
   bottle do
     cellar :any
@@ -22,5 +20,11 @@ class Gdbm < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    pipe_output("#{bin}/gdbmtool --norc --newdb test", "store 1 2\nquit\n")
+    assert File.exist?("test")
+    assert_match /2/, pipe_output("#{bin}/gdbmtool --norc test", "fetch 1\nquit\n")
   end
 end

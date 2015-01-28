@@ -9,17 +9,42 @@ require 'build_environment'
 class Requirement
   include Dependable
 
-  attr_reader :tags, :name
+  attr_reader :tags, :name, :cask, :download
   alias_method :option_name, :name
 
   def initialize(tags=[])
+    @cask ||= self.class.cask
+    @download ||= self.class.download
+    tags.each do |tag|
+      next unless tag.is_a? Hash
+      @cask ||= tag[:cask]
+      @download ||= tag[:download]
+    end
     @tags = tags
     @tags << :build if self.class.build
     @name ||= infer_name
   end
 
   # The message to show when the requirement is not met.
-  def message; "" end
+  def message
+    s = ""
+    if cask
+      s +=  <<-EOS.undent
+
+        You can install with Homebrew Cask:
+          brew install Caskroom/cask/#{cask}
+      EOS
+    end
+
+    if download
+      s += <<-EOS.undent
+
+        You can download from:
+          #{download}
+      EOS
+    end
+    s
+  end
 
   # Overriding #satisfied? is deprecated.
   # Pass a block or boolean to the satisfy DSL method instead.
@@ -110,6 +135,7 @@ class Requirement
 
     attr_reader :env_proc
     attr_rw :fatal, :default_formula
+    attr_rw :cask, :download
     # build is deprecated, use `depends_on <requirement> => :build` instead
     attr_rw :build
 

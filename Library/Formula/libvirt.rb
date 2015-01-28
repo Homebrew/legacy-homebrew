@@ -47,7 +47,7 @@ class Libvirt < Formula
 
     system "./configure", *args
 
-    # Compilation of docs doesn"t get done if we jump straight to "make install"
+    # Compilation of docs doesn't get done if we jump straight to "make install"
     system "make"
     system "make install"
 

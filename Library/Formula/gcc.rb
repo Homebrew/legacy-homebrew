@@ -1,5 +1,3 @@
-require "formula"
-
 class Gcc < Formula
   def arch
     if Hardware::CPU.type == :intel
@@ -166,7 +164,7 @@ class Gcc < Formula
         "#{lib}/gcc/#{version_suffix}/logging.properties",
         "#{lib}/gcc/#{version_suffix}/security/classpath.security",
         "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
-        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security"
+        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security",
       ]
       config_files.each do |file|
         add_suffix file, version_suffix if File.exist? file
@@ -174,7 +172,7 @@ class Gcc < Formula
     end
   end
 
-  def add_suffix file, suffix
+  def add_suffix(file, suffix)
     dir = File.dirname(file)
     ext = File.extname(file)
     base = File.basename(file, ext)
@@ -203,11 +201,11 @@ class Gcc < Formula
     system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
     assert_equal "Hello, world!\n", `./hello-c`
 
-    (testpath/"hello-cc.cc").write <<-'EOS'.undent
+    (testpath/"hello-cc.cc").write <<-EOS.undent
       #include <iostream>
       int main()
       {
-        std::cout << "Hello, world!\n";
+        std::cout << "Hello, world!" << std::endl;
         return 0;
       }
     EOS

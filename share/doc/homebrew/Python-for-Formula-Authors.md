@@ -188,7 +188,7 @@ Distribute (not to be confused with distutils) is an obsolete fork of setuptools
 
 ## What is `--single-version-externally-managed`?
 
-`--single-version-externally-managed` ("SVEM") is a setuptools-only [argument to setup.py install](http://pythonhosted.org/setuptools/setuptools.html#install-run-easy-install-or-old-style-installation). The primary effect of SVEM is to use distutils to perform the install instead of using setuptools' `easy_install`.
+`--single-version-externally-managed` ("SVEM") is a setuptools-only [argument to setup.py install](https://pythonhosted.org/setuptools/setuptools.html#install-run-easy-install-or-old-style-installation). The primary effect of SVEM is to use distutils to perform the install instead of using setuptools' `easy_install`.
 
 `easy_install` does a few things that we need to avoid:
 

@@ -1,5 +1,3 @@
-require "formula"
-
 class Geoip < Formula
   homepage "https://github.com/maxmind/geoip-api-c"
 

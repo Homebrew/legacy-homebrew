@@ -136,9 +136,9 @@ module OS
     end
 
     # See these issues for some history:
-    # http://github.com/Homebrew/homebrew/issues/13
-    # http://github.com/Homebrew/homebrew/issues/41
-    # http://github.com/Homebrew/homebrew/issues/48
+    # https://github.com/Homebrew/homebrew/issues/13
+    # https://github.com/Homebrew/homebrew/issues/41
+    # https://github.com/Homebrew/homebrew/issues/48
     def macports_or_fink
       paths = []
 

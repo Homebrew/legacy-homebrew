@@ -13,6 +13,25 @@ class AbstractDownloadStrategy
     @meta = resource.specs
   end
 
+  # Download and cache the resource as {#cached_location}.
+  def fetch
+  end
+
+  # Unpack {#cached_location} into the current working directory.
+  def stage
+  end
+
+  # @!attribute [r] cached_location
+  # The path to the cached file or directory associated with the resource.
+  def cached_location
+  end
+
+  # Remove {#cached_location} and any other files associated with the resource
+  # from the cache.
+  def clear_cache
+    rm_rf(cached_location)
+  end
+
   def expand_safe_system_args args
     args = args.dup
     args.each_with_index do |arg, ii|
@@ -33,12 +52,6 @@ class AbstractDownloadStrategy
   def quiet_safe_system *args
     safe_system(*expand_safe_system_args(args))
   end
-
-  # All download strategies are expected to implement these methods
-  def fetch; end
-  def stage; end
-  def cached_location; end
-  def clear_cache; end
 
   private
 
@@ -116,10 +129,6 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     @clone
   end
 
-  def clear_cache
-    cached_location.rmtree if cached_location.exist?
-  end
-
   def head?
     version.head?
   end
@@ -150,7 +159,86 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   end
 end
 
-class CurlDownloadStrategy < AbstractDownloadStrategy
+class AbstractFileDownloadStrategy < AbstractDownloadStrategy
+  def stage
+    case cached_location.compression_type
+    when :zip
+      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, cached_location }
+      chdir
+    when :gzip_only
+      with_system_path { buffered_write("gunzip") }
+    when :bzip2_only
+      with_system_path { buffered_write("bunzip2") }
+    when :gzip, :bzip2, :compress, :tar
+      # Assume these are also tarred
+      with_system_path { safe_system 'tar', 'xf', cached_location }
+      chdir
+    when :xz
+      with_system_path { pipe_to_tar(xzpath) }
+      chdir
+    when :lzip
+      with_system_path { pipe_to_tar(lzippath) }
+      chdir
+    when :xar
+      safe_system "/usr/bin/xar", "-xf", cached_location
+    when :rar
+      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, cached_location
+    when :p7zip
+      safe_system '7zr', 'x', cached_location
+    else
+      cp cached_location, basename_without_params
+    end
+  end
+
+  private
+
+  def chdir
+    entries = Dir['*']
+    case entries.length
+    when 0 then raise "Empty archive"
+    when 1 then Dir.chdir entries.first rescue nil
+    end
+  end
+
+  def pipe_to_tar(tool)
+    Utils.popen_read(tool, "-dc", cached_location.to_s) do |rd|
+      Utils.popen_write("tar", "xf", "-") do |wr|
+        buf = ""
+        wr.write(buf) while rd.read(16384, buf)
+      end
+    end
+  end
+
+  # gunzip and bunzip2 write the output file in the same directory as the input
+  # file regardless of the current working directory, so we need to write it to
+  # the correct location ourselves.
+  def buffered_write(tool)
+    target = File.basename(basename_without_params, cached_location.extname)
+
+    Utils.popen_read(tool, "-f", cached_location.to_s, "-c") do |pipe|
+      File.open(target, "wb") do |f|
+        buf = ""
+        f.write(buf) while pipe.read(16384, buf)
+      end
+    end
+  end
+
+  def basename_without_params
+    # Strip any ?thing=wad out of .c?thing=wad style extensions
+    File.basename(@url)[/[^?]+/]
+  end
+
+  def ext
+    # We need a Pathname because we've monkeypatched extname to support double
+    # extensions (e.g. tar.gz).
+    # We can't use basename_without_params, because given a URL like
+    #   https://example.com/download.php?file=foo-1.0.tar.gz
+    # the extension we want is ".tar.gz", not ".php".
+    Pathname.new(@url).extname[/[^?]+/]
+  end
+end
+
+class CurlDownloadStrategy < AbstractFileDownloadStrategy
   attr_reader :mirrors, :tarball_path, :temporary_path
 
   def initialize(name, resource)
@@ -175,12 +263,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
           had_incomplete_download = false
           retry
         else
-          if @url =~ %r[^file://]
-            msg = "File does not exist: #{@url.sub(%r[^file://], "")}"
-          else
-            msg = "Download failed: #{@url}"
-          end
-          raise CurlDownloadStrategyError, msg
+          raise CurlDownloadStrategyError.new(@url)
         end
       end
       ignore_interrupts { temporary_path.rename(cached_location) }
@@ -194,42 +277,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     retry
   end
 
-  def stage
-    case cached_location.compression_type
-    when :zip
-      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, cached_location }
-      chdir
-    when :gzip_only
-      with_system_path { buffered_write("gunzip") }
-    when :bzip2_only
-      with_system_path { buffered_write("bunzip2") }
-    when :gzip, :bzip2, :compress, :tar
-      # Assume these are also tarred
-      with_system_path { safe_system 'tar', 'xf', cached_location }
-      chdir
-    when :xz
-      with_system_path { safe_system "#{xzpath} -dc \"#{cached_location}\" | tar xf -" }
-      chdir
-    when :lzip
-      with_system_path { safe_system "#{lzippath} -dc \"#{cached_location}\" | tar xf -" }
-      chdir
-    when :xar
-      safe_system "/usr/bin/xar", "-xf", cached_location
-    when :rar
-      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, cached_location
-    when :p7zip
-      safe_system '7zr', 'x', cached_location
-    else
-      cp cached_location, basename_without_params
-    end
-  end
-
   def cached_location
     tarball_path
   end
 
   def clear_cache
-    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
+    super
+    rm_rf(temporary_path)
   end
 
   private
@@ -247,42 +301,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     args << '--connect-timeout' << '5' unless mirrors.empty?
     args << "--user" << meta.fetch(:user) if meta.key?(:user)
     super
-  end
-
-  def chdir
-    entries = Dir['*']
-    case entries.length
-    when 0 then raise "Empty archive"
-    when 1 then Dir.chdir entries.first rescue nil
-    end
-  end
-
-  # gunzip and bunzip2 write the output file in the same directory as the input
-  # file regardless of the current working directory, so we need to write it to
-  # the correct location ourselves.
-  def buffered_write(tool)
-    target = File.basename(basename_without_params, cached_location.extname)
-
-    Utils.popen_read(tool, "-f", cached_location.to_s, "-c") do |pipe|
-      File.open(target, "wb") do |f|
-        buf = ""
-        f.write(buf) while pipe.read(1024, buf)
-      end
-    end
-  end
-
-  def basename_without_params
-    # Strip any ?thing=wad out of .c?thing=wad style extensions
-    File.basename(@url)[/[^?]+/]
-  end
-
-  def ext
-    # We need a Pathname because we've monkeypatched extname to support double
-    # extensions (e.g. tar.gz).
-    # We can't use basename_without_params, because given a URL like
-    #   http://example.com/download.php?file=foo-1.0.tar.gz
-    # the extension we want is ".tar.gz", not ".php".
-    Pathname.new(@url).extname[/[^?]+/]
   end
 end
 
@@ -345,9 +363,7 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-# This strategy is provided for use with sites that only provide HTTPS and
-# also have a broken cert. Try not to need this, as we probably won't accept
-# the formula.
+# @deprecated
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-C', downloaded_size, '-o', temporary_path
@@ -369,10 +385,11 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
 end
 
 # This strategy extracts local binary packages.
-class LocalBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize formula
-    super formula.name, formula.active_spec
-    @tarball_path = formula.local_bottle_path
+class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
+  attr_reader :cached_location
+
+  def initialize(formula)
+    @cached_location = formula.local_bottle_path
   end
 
   def stage
@@ -492,9 +509,10 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   alias_method :update, :clone_repo
 end
 
+# @deprecated
 StrictSubversionDownloadStrategy = SubversionDownloadStrategy
 
-# Download from SVN servers with invalid or self-signed certs
+# @deprecated
 class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
   def fetch_args
     %w[--non-interactive --trust-server-cert]
@@ -522,7 +540,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
     dst = Dir.getwd
     cached_location.cd do
-      # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
+      # https://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
       checkout_submodules(dst) if submodules?
     end
@@ -642,6 +660,14 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   def initialize(name, resource)
     super
     @url = @url.sub(%r[^cvs://], "")
+
+    if meta.key?(:module)
+      @module = meta.fetch(:module)
+    elsif @url !~ %r[:[^/]+$]
+      @module = name
+    else
+      @module, @url = split_url(@url)
+    end
   end
 
   def stage
@@ -659,15 +685,9 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def clone_repo
-    # URL of cvs cvs://:pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML:gccxml
-    # will become:
-    # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML login
-    # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML co gccxml
-    mod, url = split_url(@url)
-
     HOMEBREW_CACHE.cd do
-      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", url, "login"
-      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", url, "checkout", "-d", cache_filename, mod
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login"
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "checkout", "-d", cache_filename, @module
     end
   end
 

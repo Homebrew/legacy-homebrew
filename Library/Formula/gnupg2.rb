@@ -1,5 +1,3 @@
-require "formula"
-
 class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
@@ -72,5 +70,9 @@ class Gnupg2 < Formula
     # Conflicts with a manpage from the 1.x formula, and
     # gpg-zip isn't installed by this formula anyway
     rm man1/"gpg-zip.1"
+  end
+
+  test do
+    system "#{bin}/gpgconf"
   end
 end

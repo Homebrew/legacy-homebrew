@@ -15,13 +15,8 @@ class Cppunit < Formula
 
   option :universal
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
-
   def install
     ENV.universal_binary if build.universal?
-    system "autoreconf", "-fvi"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end

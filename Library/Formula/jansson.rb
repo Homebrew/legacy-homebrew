@@ -1,9 +1,7 @@
-require 'formula'
-
 class Jansson < Formula
-  homepage 'http://www.digip.org/jansson/'
-  url 'http://www.digip.org/jansson/releases/jansson-2.7.tar.gz'
-  sha1 '7d8686d84fd46c7c28d70bf2d5e8961bc002845e'
+  homepage "http://www.digip.org/jansson/"
+  url "http://www.digip.org/jansson/releases/jansson-2.7.tar.gz"
+  sha1 "7d8686d84fd46c7c28d70bf2d5e8961bc002845e"
 
   bottle do
     cellar :any
@@ -18,6 +16,25 @@ class Jansson < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <jansson.h>
+      #include <assert.h>
+
+      int main()
+      {
+        json_t *json;
+        json_error_t error;
+        json = json_loads("\\"foo\\"", JSON_DECODE_ANY, &error);
+        assert(json && json_is_string(json));
+        json_decref(json);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-ljansson", "-o", "test"
+    system "./test"
   end
 end

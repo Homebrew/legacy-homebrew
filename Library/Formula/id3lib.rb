@@ -1,5 +1,3 @@
-require 'formula'
-
 class Id3lib < Formula
   homepage 'http://id3lib.sourceforge.net/'
 
@@ -18,7 +16,8 @@ class Id3lib < Formula
     end
   end
 
-  head ":pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel", :using => :cvs
+  head ":pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib",
+    :using => :cvs, :module => "id3lib-devel"
 
   bottle do
     cellar :any

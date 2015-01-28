@@ -1,5 +1,3 @@
-require "formula"
-
 class Memcached < Formula
   homepage "http://memcached.org/"
   url "http://www.memcached.org/files/memcached-1.4.20.tar.gz"
@@ -14,18 +12,21 @@ class Memcached < Formula
 
   depends_on "libevent"
 
-  option "enable-sasl", "Enable SASL support -- disables ASCII protocol!"
-  option "enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"
+  option "with-sasl", "Enable SASL support -- disables ASCII protocol!"
+  option "with-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"
+
+  deprecated_option "enable-sasl" => "with-sasl"
+  deprecated_option "enable-sasl-pwdb" => "with-sasl-pwdb"
 
   conflicts_with "mysql-cluster", :because => "both install `bin/memcached`"
 
   def install
     args = ["--prefix=#{prefix}", "--disable-coverage"]
-    args << "--enable-sasl" if build.include? "enable-sasl"
-    args << "--enable-sasl-pwdb" if build.include? "enable-sasl-pwdb"
+    args << "--enable-sasl" if build.with? "sasl"
+    args << "--enable-sasl-pwdb" if build.with? "sasl-pwdb"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/memcached/bin/memcached"
@@ -52,5 +53,9 @@ class Memcached < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/memcached", "-h"
   end
 end

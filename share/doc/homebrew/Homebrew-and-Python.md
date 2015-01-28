@@ -3,7 +3,7 @@
 
 This page describes how Python is handled in Homebrew for users. See [Python for Formula Authors](Python-for-Formula-Authors.md) for advice on writing formulae to install packages written in Python.
 
-Homebrew should work with any [CPython](http://stackoverflow.com/questions/2324208/is-there-any-difference-between-cpython-and-python) and defaults to the OS X system Python.
+Homebrew should work with any [CPython](https://stackoverflow.com/questions/2324208/is-there-any-difference-between-cpython-and-python) and defaults to the OS X system Python.
 
 Homebrew provides formulae to brew a more up-to-date Python 2.7.x (and 3.x).
 
@@ -14,7 +14,7 @@ Homebrew provides formulae to brew a more up-to-date Python 2.7.x (and 3.x).
 
 Homebrew provides a formula for Python 2.7.x and one for Python 3.x. They don't conflict, so they can both be installed. The executable `python` will always point to the 2.x and `python3` to the 3.x version.
 
-([Wondering which one to choose?](http://wiki.python.org/moin/Python2orPython3))
+([Wondering which one to choose?](https://wiki.python.org/moin/Python2orPython3))
 
 
 ## Setuptools, Pip, etc.
@@ -71,7 +71,7 @@ Homebrew builds bindings against the first `python` (and `python-config`) in you
 
 ## Policy for non-brewed Python bindings
 
-These should be installed via `pip install <x>`. To discover, you can use `pip search` or <http://pypi.python.org/pypi>. (**Note:** System Python does not provide `pip`. Simply `easy_install pip` to fix that.)
+These should be installed via `pip install <x>`. To discover, you can use `pip search` or <https://pypi.python.org/pypi>. (**Note:** System Python does not provide `pip`. Simply `easy_install pip` to fix that.)
 
 
 ## Brewed Python modules

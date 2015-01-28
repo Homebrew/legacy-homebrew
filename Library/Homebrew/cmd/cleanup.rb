@@ -86,8 +86,7 @@ module Homebrew
         next
       end
 
-      spec = f.stable || f.devel || f.head
-      if spec.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
+      if f.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
         cleanup_cached_file(file)
       end
     end

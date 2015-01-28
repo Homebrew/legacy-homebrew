@@ -28,8 +28,6 @@ class Libvpx < Formula
     args << "--enable-mem-tracker" if build.include? "mem-tracker"
     args << "--enable-postproc-visualizer" if build.include? "visualizer"
 
-    ENV.append "CXXFLAGS", "-DGTEST_USE_OWN_TR1_TUPLE=1" # Mavericks uses libc++ which doesn't supply <TR1/tuple>
-
     # configure misdetects 32-bit 10.6
     # http://code.google.com/p/webm/issues/detail?id=401
     if MacOS.version == "10.6" && Hardware.is_32_bit?

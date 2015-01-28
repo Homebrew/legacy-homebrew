@@ -62,17 +62,17 @@ from source. Binary-only formulae should go to
 [Homebrew/homebrew-binary](https://github.com/Homebrew/homebrew-binary).
 
 ### Stable versions
-Formulae in the core repository should have a stable version tagged by
+Formulae in the core repository must have a stable version tagged by
 the upstream project. Tarballs are preferred to git checkouts, and
 tarballs should include the version in the filename whenever possible.
 
 Software that does not provide a stable, tagged version, or had guidance to
 always install the most recent version, should be put in
-[Homebrew/homebrew-headonly](https://github.com/Homebrew/homebrew-headonly).
+[Homebrew/homebrew-head-only](https://github.com/Homebrew/homebrew-headonly) or [homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only).
 
 ### Bindings
 First check that there is not already a binding available via
-[`gem`](http://rubygems.org/) or [`pip`](http://www.pip-installer.org/)
+[`gem`](https://rubygems.org/) or [`pip`](http://www.pip-installer.org/)
 etc..
 
 If not, then put bindings in the formula they bind to. This is more
@@ -81,9 +81,9 @@ foo-ruby foo-perl etc. sucks.
 
 ### Niche (or self-submitted) Stuff<a name="Niche_Stuff"></a>
 The software in question must be
-* maintained
+* maintained (e.g. upstream is still making new releases)
 * known
-* stable
+* stable (e.g. not declared "unstable" or "beta" by upstream)
 * used
 * have a homepage
 
@@ -94,6 +94,11 @@ We frown on authors submitting their own work unless it is very popular.
 
 Don’t forget Homebrew is all git underneath! Maintain your own fork or
 tap if you have to!
+
+There may be exceptions to these rules in the main repository, we may
+include things that don't meet these criteria or reject things that do.
+Please trust that we need to use our discretion based on our experience
+running a package manager.
 
 ### Stuff that builds a .app
 Don’t make your formula build an `.app` (native OS X Application), we

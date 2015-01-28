@@ -155,7 +155,8 @@ class Cmd
     when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
       /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/,
       /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
-      '-pedantic', '-pedantic-errors', '-Wno-long-double'
+      '-pedantic', '-pedantic-errors', '-Wno-long-double',
+      '-Wno-unused-but-set-variable'
     when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
       '-mno-dynamic-no-pic', '-fearly-inlining', /^-f(?:no-)?inline-functions-called-once/,
       /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
@@ -336,5 +337,5 @@ if __FILE__ == $PROGRAM_NAME
   LOGGER.log!
 
   args << { :close_others => false } if RUBY_VERSION >= "2.0"
-  exec "xcrun", tool, *args
+  exec "#{File.dirname($0)}/xcrun", tool, *args
 end

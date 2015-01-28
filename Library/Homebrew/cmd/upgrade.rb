@@ -6,18 +6,17 @@ module Homebrew
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      outdated = Homebrew.outdated_brews
+      outdated = Homebrew.outdated_brews(Formula.installed)
       exit 0 if outdated.empty?
     else
-      outdated = ARGV.formulae.select do |f|
-        if f.installed?
-          onoe "#{f.name}-#{f.installed_version} already installed"
-          false
-        elsif not f.rack.directory? or f.rack.subdirs.empty?
-          onoe "#{f.name} not installed"
-          false
+      outdated = Homebrew.outdated_brews(ARGV.formulae)
+
+      (ARGV.formulae - outdated).each do |f|
+        if f.rack.directory?
+          version = f.rack.subdirs.map { |d| Keg.new(d).version }.max
+          onoe "#{f.name} #{version} already installed"
         else
-          true
+          onoe "#{f.name} not installed"
         end
       end
       exit 1 if outdated.empty?

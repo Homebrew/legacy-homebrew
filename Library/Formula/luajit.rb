@@ -23,6 +23,7 @@ class Luajit < Formula
   deprecated_option "enable-debug" => "with-debug"
 
   option "with-debug", "Build with debugging symbols"
+  option "with-52compat", "Build with additional Lua 5.2 compatibility"
 
   def install
     # 1 - Override the hardcoded gcc.
@@ -42,6 +43,8 @@ class Luajit < Formula
 
     # The development branch of LuaJIT normally does not install "luajit".
     args << "INSTALL_TNAME=luajit" if build.devel?
+
+    args << "XCFLAGS=-DLUAJIT_ENABLE_LUA52COMPAT" if build.with? "52compat"
 
     system "make", "amalg", *args
     system "make", "install", *args

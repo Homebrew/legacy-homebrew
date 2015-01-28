@@ -1,5 +1,3 @@
-require "formula"
-
 class Elasticsearch < Formula
   homepage "http://www.elasticsearch.org"
   url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.tar.gz"
@@ -118,5 +116,9 @@ class Elasticsearch < Formula
         </dict>
       </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/plugin", "--list"
   end
 end

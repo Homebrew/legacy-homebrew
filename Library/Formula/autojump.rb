@@ -11,9 +11,9 @@ class Autojump < Formula
     libexec.install "bin/autojump"
     libexec.install "bin/autojump_argparse.py", "bin/autojump_data.py", "bin/autojump_utils.py"
     man1.install "docs/autojump.1"
-    (prefix/"etc").install "bin/autojump.sh", "bin/autojump.bash", "bin/autojump.zsh"
+    (prefix/"etc").install "bin/autojump.sh", "bin/autojump.bash", "bin/autojump.zsh",
+                           "bin/autojump.fish", "bin/autojump.tcsh"
     zsh_completion.install "bin/_j"
-    (prefix/"etc").install "bin/autojump.fish"
 
     bin.write_exec_script libexec+"autojump"
   end
@@ -21,10 +21,10 @@ class Autojump < Formula
   def caveats; <<-EOS.undent
     Add the following line to your ~/.bash_profile or ~/.zshrc file (and remember
     to source the file to update your current session):
-      [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+      [[ -s $(brew --prefix)/etc/autojump.sh ]] && . $(brew --prefix)/etc/autojump.sh
 
     Add the following line to your ~/.config/fish/config.fish:
-      . /usr/local/Cellar/autojump/HEAD/etc/autojump.fish
+      . #{etc}/autojump.fish
     EOS
   end
 

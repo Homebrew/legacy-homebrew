@@ -262,7 +262,7 @@ class Pathname
       digest.file(self)
     else
       buf = ""
-      open("rb") { |f| digest << buf while f.read(1024, buf) }
+      open("rb") { |f| digest << buf while f.read(16384, buf) }
     end
     digest.hexdigest
   end

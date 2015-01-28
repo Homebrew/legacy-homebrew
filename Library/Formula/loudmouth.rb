@@ -14,6 +14,22 @@ class Loudmouth < Formula
     sha1 "0b77821cecfa2ea9e3cd9789c21b2e8857f43be0" => :mountain_lion
   end
 
+  head "https://github.com/mcabber/loudmouth.git"
+
+  head do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+
+    # Fixes configure.ac subdir-objects for recent autoconf version
+    # Remove this once the following pull request has been applied to master
+    # https://github.com/mcabber/loudmouth/pull/11
+    patch do
+      url "https://github.com/languitar/loudmouth/commit/f22dd6.diff"
+      sha1 "776f6c20259579e542ef588570956f26d71a46e5"
+    end
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libidn"
@@ -22,12 +38,15 @@ class Loudmouth < Formula
   # Fix compilation on 10.9. Sent upstream:
   # https://github.com/mcabber/loudmouth/pull/9
   # Has been merged and will be in next release, if there is one.
-  patch do
-    url "https://github.com/mcabber/loudmouth/commit/369844a0fc.diff"
-    sha1 "e52ee2e24a06ebea52b90866a347daf1f1d28382"
+  stable do
+    patch do
+      url "https://github.com/mcabber/loudmouth/commit/369844a0fc.diff"
+      sha1 "e52ee2e24a06ebea52b90866a347daf1f1d28382"
+    end
   end
 
   def install
+    system "./autogen.sh", "-n" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--with-ssl=gnutls"
     system "make", "install"
