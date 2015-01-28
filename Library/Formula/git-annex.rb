@@ -25,6 +25,7 @@ class GitAnnex < Formula
   depends_on "libidn"
   depends_on "gnutls"
   depends_on "gmp"
+  depends_on "quvi"
 
   fails_with(:clang) { build 425 } # clang segfaults on Lion
 
