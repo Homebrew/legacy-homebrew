@@ -4,7 +4,7 @@ class Mono < Formula
   homepage "http://www.mono-project.com/"
   url "http://download.mono-project.com/sources/mono/mono-3.12.0.tar.bz2"
   sha1 "cec83efd13ffc1e212c632395a5aac75772a09e7"
-  head 'https://github.com/mono/mono.git'
+  head "https://github.com/mono/mono.git"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
@@ -18,7 +18,7 @@ class Mono < Formula
   end
 
   # http://www.mono-project.com/docs/compiling-mono/mac/#building-mono-from-a-release-package
-  option 'with-64bit', 'Compile Mono in 64-bit mode'
+  option "with-64bit", "Compile Mono in 64-bit mode"
 
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/cb/cb33b94c853049a43222288ead1e0cb059b22783/monolite-111-latest.tar.gz"
@@ -35,7 +35,7 @@ class Mono < Formula
       --enable-nls=no
     ]
 
-    if build.with? '64bit'
+    if build.with? "64bit"
       args << "--build=x86_64-apple-darwin"
     else
       # no option specified
@@ -69,7 +69,7 @@ class Mono < Formula
     assert_match test_str, output.strip
 
     # Tests that xbuild is able to execute lib/mono/*/mcs.exe
-    (testpath/'test.csproj').write <<-EOS.undent
+    (testpath/"test.csproj").write <<-EOS.undent
       <?xml version="1.0" encoding="utf-8"?>
       <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
         <PropertyGroup>
