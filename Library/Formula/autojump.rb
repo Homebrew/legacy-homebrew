@@ -1,7 +1,7 @@
 class Autojump < Formula
   homepage "https://github.com/joelthelion/autojump"
-  url "https://github.com/joelthelion/autojump/archive/release-v22.2.2.tar.gz"
-  sha1 "d23d482077049fb07dcdc1e7764694f95937db24"
+  url "https://github.com/joelthelion/autojump/archive/release-v22.2.4.tar.gz"
+  sha1 "df9ff56e128efb8a8e1af574dbac9e4b3c47c1d6"
 
   head "https://github.com/joelthelion/autojump.git"
 
