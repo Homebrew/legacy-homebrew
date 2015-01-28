@@ -3,6 +3,13 @@ class Rfcdiff < Formula
   url "https://tools.ietf.org/tools/rfcdiff/rfcdiff-1.41.tgz"
   sha1 "02bcd3bf6078caec001bf677530c97893edf34a1"
 
+  bottle do
+    cellar :any
+    sha1 "23297713cb69a8e6f0ee50a4fb48ba788c79c11a" => :yosemite
+    sha1 "2bc1ebe0ac57a4d7bb7ae98fec2f8c3ff26f8fe6" => :mavericks
+    sha1 "6234be51164d3f204fb34cd22046cfd1c5e34c0a" => :mountain_lion
+  end
+
   depends_on "wdiff"
   depends_on "gawk" => :recommended
   depends_on "txt2man" => :build
