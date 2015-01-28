@@ -4,7 +4,7 @@ class Xplanetfx < Formula
   homepage "http://mein-neues-blog.de/xplanetFX/"
   url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.1_all.tar.gz"
   sha1 "e6cec26b6f211477011071ff34a4bd683630a8e5"
-  version "2.6"
+  version "2.6.1"
 
   bottle do
     cellar :any
