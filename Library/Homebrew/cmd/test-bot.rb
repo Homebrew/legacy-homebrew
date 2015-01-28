@@ -420,6 +420,8 @@ module Homebrew
       formula_fetch_options = []
       formula_fetch_options << "--build-bottle" unless ARGV.include? "--no-bottle"
       formula_fetch_options << "--force" if ARGV.include? "--cleanup"
+      formula_fetch_options << "--devel" if formula.devel && formula.stable.nil?
+      formula_fetch_options << "--HEAD" if formula.head && formula.devel.nil? && formula.stable.nil?
       formula_fetch_options << formula_name
       test "brew", "fetch", "--retry", *formula_fetch_options
       test "brew", "uninstall", "--force", formula_name if formula.installed?
@@ -429,9 +431,9 @@ module Homebrew
 
       # Pass --devel or --HEAD to install in the event formulae lack stable. Supports devel-only/head-only.
       # head-only should not have devel, but devel-only can have head. Stable can have all three.
-      if devel_only_tap? formula
+      if formula.devel && formula.stable.nil?
         install_args << "--devel"
-      elsif head_only_tap? formula
+      elsif formula.head && formula.devel.nil? && formula.stable.nil?
         install_args << "--HEAD"
       end
 
@@ -580,14 +582,6 @@ module Homebrew
       changed_formulae.map!(&:first)
       unchanged_formulae = @formulae - changed_formulae
       changed_formulae + unchanged_formulae
-    end
-
-    def head_only_tap? formula
-      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap == "homebrew/homebrew-head-only"
-    end
-
-    def devel_only_tap? formula
-      formula.devel && formula.stable.nil? && formula.tap == "homebrew/homebrew-devel-only"
     end
 
     def run
