@@ -1,7 +1,7 @@
 class Rfcdiff < Formula
   homepage "https://tools.ietf.org/tools/rfcdiff/"
-  url "https://tools.ietf.org/tools/rfcdiff/rfcdiff-1.41.tgz"
-  sha1 "02bcd3bf6078caec001bf677530c97893edf34a1"
+  url "https://tools.ietf.org/tools/rfcdiff/rfcdiff-1.42.tgz"
+  sha1 "fc5b40cc262d169d92a8e0454ec1ebaf3444b594"
 
   bottle do
     cellar :any
@@ -14,12 +14,6 @@ class Rfcdiff < Formula
   depends_on "wdiff"
   depends_on "gawk" => :recommended
   depends_on "txt2man" => :build
-
-  # don't use sudo to install rfcdiff (patch sent to upstream)
-  patch do
-    url "https://gist.githubusercontent.com/bfontaine/76c96e4ebd4c39fe6ba0/raw/3bf592c37dcae7b36080ac7f8dd8bc7b901e9490/0001-Don-t-use-sudo-to-install-rfcdiff.patch"
-    sha1 "4f7a83f507b1ffe1602a3900ffb6e2c5ee9eb192"
-  end
 
   resource "rfc42" do
     url "https://tools.ietf.org/rfc/rfc42.txt"
