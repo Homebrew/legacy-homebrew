@@ -30,4 +30,8 @@ class Peco < Formula
     end
     bin.install "peco"
   end
+
+  test do
+    system "#{bin}/peco", "--version"
+  end
 end
