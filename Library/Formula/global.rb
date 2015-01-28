@@ -1,8 +1,8 @@
 class Global < Formula
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.3.2.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.3.2.tar.gz"
-  sha1 "46b681a0ccb84c928a67f6901ca60227ad71b5bd"
+  url "http://ftpmirror.gnu.org/global/global-6.3.3.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.3.3.tar.gz"
+  sha1 "2e66fb1529fe1fb2c473507de91814df4eb50b93"
 
   bottle do
     sha1 "1bce9bd552e38d9cc12eda4998233c20a33321e4" => :mavericks
@@ -44,16 +44,16 @@ class Global < Formula
     end
 
     if build.with? "pygments"
-      ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-      pygments_args = [ "build", "install", "--prefix=#{libexec}" ]
-      resource('pygments').stage { system "python", "setup.py", *pygments_args }
+      ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
+      pygments_args = %W[build install --prefix=#{libexec}]
+      resource("pygments").stage { system "python", "setup.py", *pygments_args }
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
     if build.with? "pygments"
-      bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+      bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     end
 
     etc.install "gtags.conf"
@@ -64,12 +64,12 @@ class Global < Formula
     end
   end
   test do
-    (testpath/'test.c').write <<-EOF.undent
+    (testpath/"test.c").write <<-EOF.undent
        int c2func (void) { return 0; }
        void cfunc (void) {int cvar = c2func(); }")
     EOF
-    if build.with? "pygments" or build.with? "exuberant-ctags"
-      (testpath/'test.py').write <<-EOF
+    if build.with?("pygments") || build.with?("exuberant-ctags")
+      (testpath/"test.py").write <<-EOF
         def py2func ():
              return 0
         def pyfunc ():
