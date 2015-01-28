@@ -18,7 +18,7 @@ class Ziproxy < Formula
 
     system "make", "install"
 
-    (etc/"ziproxy").install Dir["etc/ziproxy/*"]
+    etc.install "etc/ziproxy" unless File.exist?("#{ etc }/ziproxy")
   end
 
   test do
