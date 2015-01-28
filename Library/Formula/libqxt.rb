@@ -1,9 +1,7 @@
-require 'formula'
-
 class Libqxt < Formula
-  homepage 'http://libqxt.org/'
-  url 'http://dev.libqxt.org/libqxt/get/v0.6.2.tar.gz'
-  sha1 'e72a115895d6469972d3f1464bebeab72c497244'
+  homepage "http://libqxt.org/"
+  url "http://dev.libqxt.org/libqxt/get/v0.6.2.tar.gz"
+  sha1 "e72a115895d6469972d3f1464bebeab72c497244"
 
   bottle do
     revision 1
@@ -12,8 +10,10 @@ class Libqxt < Formula
     sha1 "14ce9bb17e24f36a53745d5bd4c1b0341fb76e51" => :mountain_lion
   end
 
-  depends_on 'qt'
-  depends_on 'berkeley-db' => :optional
+  # As of 26/07/2014 this formula is no longer maintained upstream.
+  # http://dev.libqxt.org/libqxt/wiki/commits/7e7a0ad676e649bf6f64a2cad1ea6dd204fb766c
+  depends_on "qt"
+  depends_on "berkeley-db" => :optional
 
   # Patch src/gui/qxtglobalshortcut_mac.cpp to fix a bug caused by obsolete
   # constants in Mac OS X 10.6.
@@ -30,10 +30,10 @@ class Libqxt < Formula
             "-docdir", "#{prefix}/doc",
             "-featuredir", "#{prefix}/features",
             "-release"]
-    args << "-no-db" if build.without? 'berkeley-db'
+    args << "-no-db" if build.without? "berkeley-db"
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
