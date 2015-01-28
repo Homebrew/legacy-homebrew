@@ -2,8 +2,8 @@ require "formula"
 
 class Openconnect < Formula
   homepage "http://www.infradead.org/openconnect.html"
-  url "ftp://ftp.infradead.org/pub/openconnect/openconnect-7.03.tar.gz"
-  sha1 "2b0dff69ed67b40c2402125e6b13af336fd01dc8"
+  url "ftp://ftp.infradead.org/pub/openconnect/openconnect-7.04.tar.gz"
+  sha1 "1a87bebcc615fd96146a8afd05491883ef2b4daf"
 
   bottle do
     sha1 "2e3cc19a4ae5d78ed0de3413cfe372e8746cbe1f" => :yosemite
