@@ -22,11 +22,11 @@ class Ziproxy < Formula
   end
 
   test do
-    system "ziproxy -d -p ziproxy.pid"
+    system "ziproxy", "-d", "-p", "ziproxy.pid"
 
     # Check ziproxy response headers
-    assert shell_output("curl -s -I http://127.0.0.1:8080").include?('ziproxy')
+    assert shell_output("curl -s -I http://127.0.0.1:8080").include?("ziproxy")
 
-    system "ziproxy -k -p ziproxy.pid"
+    system "ziproxy", "-k", "-p", "ziproxy.pid"
   end
 end
