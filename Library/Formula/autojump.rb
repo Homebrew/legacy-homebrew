@@ -22,7 +22,7 @@ class Autojump < Formula
       [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
 
     If you use the Fish shell then add the following line to your ~/.config/fish/config.fish:
-      [ -f #{HOMEBREW_PREFIX}/share/autojump/autojump.fish ] && . #{HOMEBREW_PREFIX}/share/autojump/autojump.fish
+      [ -f #{HOMEBREW_PREFIX}/share/autojump/autojump.fish ]; and . #{HOMEBREW_PREFIX}/share/autojump/autojump.fish
     EOS
   end
 
