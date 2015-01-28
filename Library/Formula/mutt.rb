@@ -9,7 +9,7 @@ require "formula"
 class Mutt < Formula
   homepage "http://www.mutt.org/"
   url "ftp://ftp.mutt.org/mutt/mutt-1.5.23.tar.gz"
-  mirror "http://fossies.org/linux/misc/mutt-1.5.23.tar.gz"
+  mirror "https://fossies.org/linux/misc/mutt-1.5.23.tar.gz"
   sha1 "8ac821d8b1e25504a31bf5fda9c08d93a4acc862"
   revision 2
 
@@ -42,6 +42,7 @@ class Mutt < Formula
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
+  option "with-sidebar-patch", "Apply sidebar patch"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -72,6 +73,12 @@ class Mutt < Formula
     url "https://gist.githubusercontent.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
     sha1 "94da52d50508d8951aa78ca4b073023414866be1"
   end if build.with? "confirm-attachment-patch"
+
+  # Incompatible with ignore-thread-patch
+  patch do
+    url "https://raw.github.com/nedos/mutt-sidebar-patch/7ba0d8db829fe54c4940a7471ac2ebc2283ecb15/mutt-sidebar.patch"
+    sha1 "1e151d4ff3ce83d635cf794acf0c781e1b748ff1"
+  end if build.with? "sidebar-patch"
 
   def install
     args = ["--disable-dependency-tracking",
