@@ -5,9 +5,9 @@ class Global < Formula
   sha1 "2e66fb1529fe1fb2c473507de91814df4eb50b93"
 
   bottle do
-    sha1 "1bce9bd552e38d9cc12eda4998233c20a33321e4" => :mavericks
-    sha1 "907a3a0180b4b4ea6ecc029b864a7ed4c8e1fa21" => :mountain_lion
-    sha1 "254d7f4444b1890b1195f35a6e1f43ed34dace7d" => :lion
+    sha1 "4262d5470592541e62fe7cc81613aa2397cea091" => :yosemite
+    sha1 "79955ca97a91adbd0e7642244ca2a89ffd9c8b0d" => :mavericks
+    sha1 "d4f3c419c93742e2740f268d00a185a8593cf0d8" => :mountain_lion
   end
 
   head do
