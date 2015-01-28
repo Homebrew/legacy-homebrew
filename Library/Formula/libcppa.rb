@@ -8,9 +8,9 @@ class Libcppa < Formula
 
   bottle do
     cellar :any
-    sha1 "f25112267d00fb02519e4f797232ec940db41663" => :yosemite
-    sha1 "94bbdc9254f635a04bd71e3279404eb3d1cf3e53" => :mavericks
-    sha1 "093d8296dac70db13c09aa0845bb31625bd76929" => :mountain_lion
+    sha1 "d147228e33f56e7d8d583d049c7983e6dea4c418" => :yosemite
+    sha1 "2b2916dc07ca27f5b98d8d78d363c04fee860abf" => :mavericks
+    sha1 "88e3a062a1ed03d4b8297daf3670f8f834ee60dd" => :mountain_lion
   end
 
   depends_on "cmake" => :build
