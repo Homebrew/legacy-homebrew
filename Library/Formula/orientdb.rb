@@ -2,13 +2,13 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.tar.gz&os=mac'
-  version '2.0'
-  sha1 'efea11487de39af5b4353be4738fc61216a539de'
+  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.1.tar.gz&os=mac'
+  version '2.0.1'
+  sha1 '6e31c99406453b7f0fb115f83a7cfd20eb1e318f'
 
   bottle do
     cellar :any
-    sha1 "1739b8d50719aca8c793eb149b7624d93eda9e0b" => :yosemite
+    sha1 "0ed8e6530c2a4352056bc0449cd69575cae4a1aa" => :yosemite
     sha1 "83da164bf03743f9ffd49c176e71f0b6da25e7b6" => :mavericks
     sha1 "480888449b87760e320c16bb9d2d67eddc0a790b" => :mountain_lion
   end
