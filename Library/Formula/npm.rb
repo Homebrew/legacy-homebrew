@@ -19,7 +19,7 @@ class Npm < Formula
     system "make", "install"
 
     if build.with? "completion"
-        bash_completion.install \
+      bash_completion.install \
         buildpath/"lib/utils/completion.sh" => "npm"
     end
   end
@@ -31,7 +31,7 @@ class Npm < Formula
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
   end
 
-  def caveats;
+  def caveats
     s = ""
     s += <<-EOS.undent
       npm is prefixed to #{HOMEBREW_PREFIX} so global modules are installed to
@@ -51,10 +51,10 @@ class Npm < Formula
   end
 
   test do
-      assert_equal which("node"), HOMEBREW_PREFIX/"bin/node"
-      assert (HOMEBREW_PREFIX/"bin/npm").exist?, "npm must exist"
-      assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
-      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
+    assert_equal which("node"), HOMEBREW_PREFIX/"bin/node"
+    assert (HOMEBREW_PREFIX/"bin/npm").exist?, "npm must exist"
+    assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
+    system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
   end
 end
 
