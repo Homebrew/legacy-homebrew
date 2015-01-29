@@ -51,9 +51,10 @@ class Npm < Formula
   end
 
   test do
+      assert_equal which("node"), HOMEBREW_PREFIX/"bin/node"
       assert (HOMEBREW_PREFIX/"bin/npm").exist?, "npm must exist"
       assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
-      assert_equal which("npm"), opt_bin/"npm"
+      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
   end
 end
 
