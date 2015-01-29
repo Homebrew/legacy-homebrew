@@ -1,5 +1,3 @@
-require "formula"
-
 class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tar.xz"
@@ -34,13 +32,13 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
-    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
+    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
-    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.7.tar.gz"
+    sha1 "d2539dcd3d938863c7f6d7197d2f53066c92cf23"
   end
 
   patch :DATA if build.with? "brewed-tk"
