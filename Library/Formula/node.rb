@@ -74,8 +74,7 @@ class Node < Formula
     system "make", "install"
 
     if build.with? "npm"
-      npm_buildpath = buildpath/"npm_install"
-      resource("npm").stage npm_buildpath
+      resource("npm").stage npm_buildpath = buildpath/"npm_install"
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
 
@@ -94,7 +93,8 @@ class Node < Formula
       end
 
       if build.with? "completion"
-        bash_completion.install npm_buildpath/"lib/utils/completion.sh" => "npm"
+        bash_completion.install \
+          npm_buildpath/"lib/utils/completion.sh" => "npm"
       end
     end
   end
