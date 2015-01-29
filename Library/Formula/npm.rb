@@ -5,7 +5,7 @@ class Npm < Formula
 
   option "without-completion", "npm bash completion will not be installed"
 
-  depends_on "node" # || "iojs"  how?
+  depends_on :node
 
   # Patch node-gyp until github.com/TooTallNate/node-gyp/pull/564 is resolved
   patch :DATA
