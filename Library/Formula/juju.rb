@@ -2,8 +2,8 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.20/1.20.14/+download/juju-core_1.20.14.tar.gz'
-  sha1 'aca9765276c3c60c0c4d6c4b7a8d72d0ab3c5fcd'
+  url 'https://launchpad.net/juju-core/1.21/1.21.1/+download/juju-core_1.21.1.tar.gz'
+  sha1 '760281b70c33b6f7fd2c24525d9a892a3deec5df'
 
   bottle do
     sha1 "ac3d5c6a9db95e1019cef093588441ad23c30d63" => :yosemite
