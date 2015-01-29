@@ -29,7 +29,7 @@ class Ffmpeg < Formula
   option "with-libvidstab", "Enable vid.stab support for video stabilization"
   option "with-x265", "Enable x265 encoder"
   option "with-libsoxr", "Enable the soxr resample library"
-  option "with-libwebp", "Enable using libwebp to encode WEBP images"
+  option "with-webp", "Enable using libwebp to encode WEBP images"
 
   depends_on "pkg-config" => :build
 
@@ -65,7 +65,7 @@ class Ffmpeg < Formula
   depends_on "libvidstab" => :optional
   depends_on "x265" => :optional
   depends_on "openssl" => :optional
-  depends_on "webp" if build.with? "libwebp"
+  depends_on "webp" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
