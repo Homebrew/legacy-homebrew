@@ -5,6 +5,12 @@ class Autojump < Formula
 
   head "https://github.com/joelthelion/autojump.git"
 
+  bottle do
+    sha1 "d166d64df27ba146e99f57fd54a67255da2c6908" => :yosemite
+    sha1 "903b1b5137cc95cf97f3ed7161770a961b46627a" => :mavericks
+    sha1 "5570968a674c23d5f15092a4e438c860c03bd8a9" => :mountain_lion
+  end
+
   def install
     system "./install.py", "-d", prefix, "-z", zsh_completion
 
