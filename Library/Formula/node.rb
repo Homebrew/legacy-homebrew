@@ -72,4 +72,10 @@ class Node < Formula
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
   end
+
+  def caveats; <<-EOS.undent
+    you probrably also want to install npm
+      `brew install npm`
+    EOS
+  end
 end

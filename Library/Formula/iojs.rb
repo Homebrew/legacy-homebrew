@@ -14,7 +14,6 @@ class Iojs < Formula
   option "with-debug", "Build with debugger hooks"
 
   depends_on :python => :build
-  # Install "npm" with this package :recomended ??? How do I do that?
 
   def install
     args = %W[--prefix=#{prefix} --without-npm]
@@ -31,5 +30,11 @@ class Iojs < Formula
     output = `#{bin}/iojs #{path}`.strip
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
+  end
+
+  def caveats; <<-EOS.undent
+    you probrably also want to install npm
+      `brew install npm`
+    EOS
   end
 end
