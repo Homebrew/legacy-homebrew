@@ -1,5 +1,3 @@
-require "formula"
-
 class Gitfs < Formula
   homepage "http://www.presslabs.com/gitfs"
   url "https://github.com/PressLabs/gitfs/archive/0.2.5.tar.gz"
@@ -13,19 +11,20 @@ class Gitfs < Formula
     sha1 "1ff9f5341a0524aeba3d9cb39e24085acd1d6606" => :mountain_lion
   end
 
-  depends_on :python if MacOS.version <= :snow_leopard
-
   depends_on "libgit2" => "with-libssh2"
   depends_on :osxfuse
+  depends_on :python if MacOS.version <= :snow_leopard
 
   resource "fusepy" do
     url "https://pypi.python.org/packages/source/f/fusepy/fusepy-2.0.2.tar.gz"
     sha1 "d838388a122006614cd699cbcc5aa681194a5ae1"
   end
 
+  # MUST update this every time libgit2 gets a major update.
+  # Check if upstream have updated the requirements, and patch if necessary.
   resource "pygit2" do
-    url "https://pypi.python.org/packages/source/p/pygit2/pygit2-0.21.4.tar.gz"
-    sha1 "f7d677de26c56ab0f23edd7fe6812ec23b79b8f6"
+    url "https://pypi.python.org/packages/source/p/pygit2/pygit2-0.22.0.tar.gz"
+    sha1 "f60501293c2ed18224f880e419de10b6f52209d9"
   end
 
   resource "atomiclong" do
@@ -44,6 +43,11 @@ class Gitfs < Formula
   end
 
   def install
+    # This exactly replicates how upstream handled the last pygit2 update
+    # https://github.com/PressLabs/gitfs/commit/8a53f6ba5ce2a4497779077a9249e7b4b5fcc32b
+    # https://github.com/PressLabs/gitfs/pull/178
+    inreplace "requirements.txt", "pygit2==0.21.4", "pygit2==0.22.0"
+
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     %w[fusepy pygit2 atomiclong cffi pycparser].each do |r|
       resource(r).stage do
@@ -65,5 +69,23 @@ class Gitfs < Formula
 
     Also make sure OSXFUSE is properly installed by running brew info osxfuse.
     EOS
+  end
+
+  test do
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+
+    Pathname("test.py").write <<-EOS.undent
+     import gitfs
+     import pygit2
+     pygit2.init_repository('testing/.git', True)
+    EOS
+
+    system "python", "test.py"
+    assert File.exist?("testing/.git/config")
+    cd "testing" do
+      system "git", "remote", "add", "homebrew", "https://github.com/Homebrew/homebrew.git"
+      assert_match /homebrew/, shell_output("git remote")
+    end
   end
 end
