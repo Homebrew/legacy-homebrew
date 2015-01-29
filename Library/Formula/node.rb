@@ -82,6 +82,8 @@ class Node < Formula
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
       cd buildpath/"npm_install" do
+        # Patch node-gyp until github.com/TooTallNate/node-gyp/pull/564 is resolved
+        patch :DATA
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
       end
@@ -162,3 +164,28 @@ class Node < Formula
     end
   end
 end
+
+__END__
+diff --git a/node_modules/node-gyp/lib/install.js b/node_modules/node-gyp/lib/install.js
+index 6f72e6a..ebc4e57 100644
+--- a/node_modules/node-gyp/lib/install.js
++++ b/node_modules/node-gyp/lib/install.js
+@@ -39,7 +39,7 @@ function install (gyp, argv, callback) {
+     }
+   }
+
+-  var distUrl = gyp.opts['dist-url'] || gyp.opts.disturl || 'http://nodejs.org/dist'
++  var distUrl = gyp.opts['dist-url'] || gyp.opts.disturl || 'https://iojs.org/dist'
+
+
+   // Determine which node dev files version we are installing
+@@ -185,7 +185,7 @@ function install (gyp, argv, callback) {
+
+       // now download the node tarball
+       var tarPath = gyp.opts['tarball']
+-      var tarballUrl = tarPath ? tarPath : distUrl + '/v' + version + '/node-v' + version + '.tar.gz'
++      var tarballUrl = tarPath ? tarPath : distUrl + '/v' + version + '/iojs-v' + version + '.tar.gz'
+         , badDownload = false
+         , extractCount = 0
+         , gunzip = zlib.createGunzip()
+
