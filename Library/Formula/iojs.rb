@@ -9,11 +9,12 @@ class Iojs < Formula
     sha1 "f62a32113ae476095c7bcdee8dffe6c87f3675a8" => :mountain_lion
   end
 
-  keg_only "iojs conflicts with node (which is currently more established)"
+  conflicts_with "node", :because => "node and iojs both install a binary/link named node"
 
   option "with-debug", "Build with debugger hooks"
 
   depends_on :python => :build
+  # Install "npm" with this package :recomended ??? How do I do that?
 
   def install
     args = %W[--prefix=#{prefix} --without-npm]
@@ -21,13 +22,6 @@ class Iojs < Formula
 
     system "./configure", *args
     system "make", "install"
-  end
-
-  def caveats; <<-EOS.undent
-    iojs was installed without npm.
-
-    iojs currently requires a patched npm (i.e. not the npm installed by node).
-    EOS
   end
 
   test do
