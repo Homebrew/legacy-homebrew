@@ -94,8 +94,7 @@ class Node < Formula
       end
 
       if build.with? "completion"
-        bash_completion.install \
-          npm_buildpath/"lib/utils/completion.sh" => "npm"
+        bash_completion.install npm_buildpath/"lib/utils/completion.sh" => "npm"
       end
     end
   end
