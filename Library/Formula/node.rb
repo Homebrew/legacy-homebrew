@@ -31,6 +31,7 @@ class Node < Formula
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
+  option "with-iojs-patch", "Patch npm for iojs compatibility"
 
   depends_on :python => :build
 
@@ -73,24 +74,28 @@ class Node < Formula
     system "make", "install"
 
     if build.with? "npm"
-      resource("npm").stage buildpath/"npm_install"
-
+      npm_buildpath = buildpath/"npm_install"
+      resource("npm").stage npm_buildpath
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
 
       # set log level temporarily for npm's `make install`
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
-      cd buildpath/"npm_install" do
-        # Patch node-gyp until github.com/TooTallNate/node-gyp/pull/564 is resolved
-        patch :DATA
+      cd npm_buildpath do
+        if build.with? "iojs-patch"
+          p = Patch.create(:p1, :DATA)
+          p.path = Pathname.new(__FILE__).expand_path
+          p.apply
+        end
+
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
       end
 
       if build.with? "completion"
         bash_completion.install \
-          buildpath/"npm_install/lib/utils/completion.sh" => "npm"
+          npm_buildpath/"lib/utils/completion.sh" => "npm"
       end
     end
   end
