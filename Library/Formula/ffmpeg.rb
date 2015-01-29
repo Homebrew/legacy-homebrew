@@ -106,7 +106,7 @@ class Ffmpeg < Formula
     args << "--enable-libquvi" if build.with? "libquvi"
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
-    args << "--enable-libwebp" if build.with? "libwebp"
+    args << "--enable-libwebp" if build.with? "webp"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"
