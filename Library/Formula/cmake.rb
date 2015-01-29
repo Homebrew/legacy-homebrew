@@ -20,9 +20,18 @@ end
 
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.1/cmake-3.1.1.tar.gz"
-  sha1 "e96098e402903e09f56d0c4cfef516e591088d78"
   head "http://cmake.org/cmake.git"
+  revision 1
+
+  stable do
+    url "http://www.cmake.org/files/v3.1/cmake-3.1.1.tar.gz"
+    sha1 "e96098e402903e09f56d0c4cfef516e591088d78"
+
+    # Patching CMake for OpenSSL 1.0.2
+    # Already commited upstream, should be in next release & the HEAD.
+    # http://www.cmake.org/gitweb?p=cmake.git;a=commit;h=de4ccee75a89519f95fcbcca75abc46577bfefea
+    patch :DATA
+  end
 
   bottle do
     cellar :any
@@ -32,6 +41,7 @@ class Cmake < Formula
   end
 
   option "without-docs", "Don't build man pages"
+
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
   depends_on "xz" # For LZMA
 
@@ -104,3 +114,19 @@ class Cmake < Formula
     system "#{bin}/cmake", "."
   end
 end
+
+__END__
+
+diff --git a/Modules/FindOpenSSL.cmake b/Modules/FindOpenSSL.cmake
+index 340b417..6b4f985 100644
+--- a/Modules/FindOpenSSL.cmake
++++ b/Modules/FindOpenSSL.cmake
+@@ -279,7 +279,7 @@ if (OPENSSL_INCLUDE_DIR)
+     set(OPENSSL_VERSION "${_OPENSSL_VERSION}")
+   elseif(OPENSSL_INCLUDE_DIR AND EXISTS "${OPENSSL_INCLUDE_DIR}/openssl/opensslv.h")
+     file(STRINGS "${OPENSSL_INCLUDE_DIR}/openssl/opensslv.h" openssl_version_str
+-         REGEX "^#define[\t ]+OPENSSL_VERSION_NUMBER[\t ]+0x([0-9a-fA-F])+.*")
++         REGEX "^# *define[\t ]+OPENSSL_VERSION_NUMBER[\t ]+0x([0-9a-fA-F])+.*")
+
+     # The version number is encoded as 0xMNNFFPPS: major minor fix patch status
+     # The status gives if this is a developer or prerelease and is ignored here.
