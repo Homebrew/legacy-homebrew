@@ -6,6 +6,10 @@ class Nss < Formula
   sha256 "1d98ad1881a4237ec98cbe472fc851480f0b0e954dfe224d047811fb96ff9d79"
 
   bottle do
+    cellar :any
+    sha1 "889e6e9b0fca634d3a8a33178db763067520d6a7" => :yosemite
+    sha1 "f850ef686c6437b4b690caa577ed1f8716a44303" => :mavericks
+    sha1 "bc980cf76bf8f6c2b7cd0d34fa9cca02bb1c342b" => :mountain_lion
   end
 
   depends_on "nspr"
