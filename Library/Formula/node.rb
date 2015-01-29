@@ -61,7 +61,6 @@ class Node < Formula
 
     system "./configure", *args
     system "make", "install"
-
   end
 
   test do

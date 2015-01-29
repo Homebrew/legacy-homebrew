@@ -7,11 +7,10 @@ class Npm < Formula
 
   depends_on "node" # || "iojs"  how?
 
-  # Patch node-gyp untill github.com/TooTallNate/node-gyp/pull/564 is resolved
+  # Patch node-gyp until github.com/TooTallNate/node-gyp/pull/564 is resolved
   patch :DATA
 
   def install
-    #TODO: Patch node-gyp for iojs compatability
     ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
@@ -24,7 +23,7 @@ class Npm < Formula
 
   def post_install
     # This is what makes everyone happy
-    # make npm everything to #{HOMEBREW_PREFIX}/lib/node_modules
+    # make npm install everything to #{HOMEBREW_PREFIX}/lib/node_modules
     npmrc = lib/"node_modules/npm/npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
   end
