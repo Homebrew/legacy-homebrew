@@ -353,7 +353,13 @@ class VersionParsingTests < Homebrew::TestCase
   def test_with_arch
     assert_version_detected '4.0.18-1',
       'http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm'
+    assert_version_detected '5.5.7-5',
+      'http://ftpmirror.gnu.org/autogen/autogen-5.5.7-5.i386.rpm'
     assert_version_detected '2.8',
       'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x86.zip'
+    assert_version_detected '2.8',
+      'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x64.zip'
+    assert_version_detected '4.0.18',
+      'http://ftpmirror.gnu.org/mtools/mtools_4.0.18_i386.deb'
   end
 end
