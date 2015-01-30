@@ -5,6 +5,12 @@ class Slrn < Formula
 
   head "git://git.jedsoft.org/git/slrn.git"
 
+  bottle do
+    sha1 "e340d7c49f46ddb2ce83a1fdaf3bf51e6c6e4cc0" => :yosemite
+    sha1 "15707ce07fb09b9220ec56955f16aa9ef8e14760" => :mavericks
+    sha1 "8f308966cc962b23a0f340ad524febbbc94cfd34" => :mountain_lion
+  end
+
   depends_on "s-lang"
   depends_on "openssl"
 
