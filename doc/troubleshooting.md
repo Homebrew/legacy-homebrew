@@ -19,3 +19,7 @@ after upgrading spark to 1.1 in job server machine, jobs can be submitted to spa
 after this fixed, I can run jobs submitted from a remote job server successfully.
 
 (Thanks to @pcliu)
+
+## Akka Deadletters / Workers disconnect from Job Server
+
+Most likely a networking issue. Try using IP addresses instead of DNS.  (happens in AWS)

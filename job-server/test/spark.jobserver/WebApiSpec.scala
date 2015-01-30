@@ -5,8 +5,7 @@ import com.typesafe.config.ConfigFactory
 import spark.jobserver.SparkWebUiActor.{GetWorkerStatus, SparkWorkersInfo}
 import spark.jobserver.io.{JobInfo, JarInfo}
 import org.joda.time.DateTime
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{FunSpec, BeforeAndAfterAll}
+import org.scalatest.{Matchers, FunSpec, BeforeAndAfterAll}
 import spray.http.StatusCodes._
 import spray.routing.HttpService
 import spray.testkit.ScalatestRouteTest
@@ -15,7 +14,7 @@ import spray.testkit.ScalatestRouteTest
 // Tests web response codes and formatting
 // Does NOT test underlying Supervisor / JarManager functionality
 // HttpService trait is needed for the sealRoute() which wraps exception handling
-class WebApiSpec extends FunSpec with ShouldMatchers with BeforeAndAfterAll
+class WebApiSpec extends FunSpec with Matchers with BeforeAndAfterAll
 with ScalatestRouteTest with HttpService {
   import scala.collection.JavaConverters._
   import spray.httpx.SprayJsonSupport._
@@ -26,7 +25,15 @@ with ScalatestRouteTest with HttpService {
 
   val bindConfKey = "spark.jobserver.bind-address"
   val bindConfVal = "127.0.0.1"
-  val config = ConfigFactory.parseString(s"""$bindConfKey = "${bindConfVal}" """)
+  val masterConfKey = "spark.master"
+  val masterConfVal = "spark://localhost:7077"
+  val config = ConfigFactory.parseString(s"""
+    spark {
+      master = "${masterConfVal}"
+      jobserver.bind-address = "${bindConfVal}"
+    }
+                                 """)
+
   val dummyPort = 9999
 
   // See http://doc.akka.io/docs/akka/2.2.4/scala/actors.html#Deprecated_Variants;
@@ -34,7 +41,7 @@ with ScalatestRouteTest with HttpService {
   val dummyActor = system.actorOf(Props(classOf[DummyActor], this))
   val statusActor = system.actorOf(Props(classOf[JobStatusActor], new InMemoryDAO))
 
-  val api = new WebApi(system, config, dummyPort, dummyActor, dummyActor, dummyActor, dummyActor)
+  val api = new WebApi(system, config, dummyPort, dummyActor, dummyActor, dummyActor, Some(dummyActor))
   val routes = api.myRoutes
 
   val dt = DateTime.parse("2013-05-29T00Z")
@@ -172,7 +179,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }
@@ -194,7 +201,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }
@@ -206,7 +213,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
         ))
       }
     }

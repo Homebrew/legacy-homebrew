@@ -37,13 +37,13 @@ class SparkWebUiActor extends InstrumentedActor {
 
   val config = context.system.settings.config
 
-  val sparkWebHostUrl = getSparkHostName()
+  val sparkWebHostUrl = getSparkHostName
   val sparkWebHostPort = config.getInt("spark.webUrlPort")
 
   val pipeline: Future[SendReceive] =
     for (
       Http.HostConnectorInfo(connector, _) <-
-        IO(Http) ? Http.HostConnectorSetup(sparkWebHostUrl, port = sparkWebHostPort)
+      IO(Http) ? Http.HostConnectorSetup(sparkWebHostUrl, port = sparkWebHostPort)
     ) yield sendReceive(connector)
 
   override def postStop() {
@@ -59,7 +59,7 @@ class SparkWebUiActor extends InstrumentedActor {
       val responseFuture: Future[HttpResponse] = pipeline.flatMap(_(request))
       responseFuture onComplete {
         case Success(httpResponse) =>
-          val content = httpResponse.entity.asString;
+          val content = httpResponse.entity.asString
 
           val aliveWorkerNum = "<td>ALIVE</td>".r.findAllIn(content).length
           val deadWorkerNum = "<td>DEAD</td>".r.findAllIn(content).length
@@ -72,15 +72,16 @@ class SparkWebUiActor extends InstrumentedActor {
       }
   }
 
-  def getSparkHostName(): String = {
+  def getSparkHostName: String = {
     val master = config.getString("spark.master")
     // Regular expression used for local[N] and local[*] master formats
     val LOCAL_N_REGEX = """local\[([0-9\*]+)\]""".r
     // Regular expression for connecting to Spark deploy clusters
     val SPARK_REGEX = """spark://(.*):.*""".r
+    val MESOS_REGEX = """mesos://(.*)""".r
 
     master match {
-      case "localhost" | "local" | LOCAL_N_REGEX(_) => "localhost"
+      case "localhost" | "local" | LOCAL_N_REGEX(_) | MESOS_REGEX(_) => "localhost"
       case SPARK_REGEX(sparkUrl) => sparkUrl
       case _ => throw new RuntimeException("Could not parse Master URL: '" + master + "'")
     }

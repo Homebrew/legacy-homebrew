@@ -42,12 +42,12 @@ if [ -z "$SPARK_HOME" ]; then
   exit 1
 fi
 
-if [ -z "$SPARK_CONF_HOME" ]; then
-  SPARK_CONF_HOME=$SPARK_HOME/conf
+if [ -z "$SPARK_CONF_DIR" ]; then
+  SPARK_CONF_DIR=$SPARK_HOME/conf
 fi
 
 # Pull in other env vars in spark config, such as MESOS_NATIVE_LIBRARY
-. $SPARK_CONF_HOME/spark-env.sh
+. $SPARK_CONF_DIR/spark-env.sh
 
 if [ -f "$PIDFILE" ] && kill -0 $(cat "$PIDFILE"); then
    echo 'Job server is already running'

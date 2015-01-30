@@ -2,13 +2,12 @@ package spark.jobserver.io
 
 import com.typesafe.config.{Config, ConfigFactory, ConfigValueFactory}
 import org.joda.time.DateTime
-import org.scalatest.{BeforeAndAfter, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers, FunSpecLike, BeforeAndAfter}
 import spark.jobserver.TestJarFinder
 import com.google.common.io.Files
 import java.io.File
 
-class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with BeforeAndAfter {
+class JobSqlDAOSpec extends TestJarFinder with FunSpecLike with Matchers with BeforeAndAfter {
   private val config = ConfigFactory.load("local.test.jobsqldao.conf")
 
   var dao: JobSqlDAO = _

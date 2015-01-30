@@ -1,14 +1,13 @@
 package spark.jobserver
 
-import akka.actor.{ActorSystem, ActorRef, PoisonPill}
+import akka.actor.{ActorSystem, ActorRef}
 import akka.testkit.ImplicitSender
 import akka.testkit.TestKit
 import com.typesafe.config.ConfigFactory
 import spark.jobserver.io.JobDAO
 import org.joda.time.DateTime
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
 import scala.collection.mutable
+import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSpecLike, Matchers}
 
 object JobManagerSpec {
   import collection.JavaConverters._
@@ -34,7 +33,7 @@ object JobManagerSpec {
 }
 
 abstract class JobManagerSpec extends TestKit(JobManagerSpec.getNewSystem) with ImplicitSender
-with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll with TestJarFinder {
+with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with TestJarFinder {
 
   import scala.concurrent.duration._
   import CommonMessages._
