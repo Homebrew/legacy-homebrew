@@ -10,4 +10,14 @@ class Honcho < Formula
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
+  test do
+    (testpath/'Procfile').write <<-EOS.undent
+      talk: echo $MY_VAR
+    EOS
+    (testpath/'.env').write <<-EOS.undent
+      MY_VAR=hi
+    EOS
+  
+    assert_match /talk\.\d+ | hi/, `#{bin}/honcho start`
+  end
 end
