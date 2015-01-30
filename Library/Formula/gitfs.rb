@@ -7,8 +7,9 @@ class Gitfs < Formula
 
   bottle do
     cellar :any
-    sha1 "4787280d565c24d411c22fcb62c194eb0a7eebe7" => :mavericks
-    sha1 "1ff9f5341a0524aeba3d9cb39e24085acd1d6606" => :mountain_lion
+    revision 1
+    sha1 "5c28b1731d96c22d97115869704d3f3ecf5ef825" => :mavericks
+    sha1 "fb78f15aaf634698e2ad0b985ecf5ed53d6b2e95" => :mountain_lion
   end
 
   depends_on "libgit2" => "with-libssh2"
