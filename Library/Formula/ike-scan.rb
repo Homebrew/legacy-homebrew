@@ -4,6 +4,12 @@ class IkeScan < Formula
   sha1 "e973742c32c7b65fe134233482c94e3e94db3b32"
   revision 1
 
+  bottle do
+    sha1 "43ea7f5447f086855d2b536555241c72d6e55df1" => :yosemite
+    sha1 "67c1151191bb54bccb2b899a4101eca4f71be022" => :mavericks
+    sha1 "2ebab8a22e925846ae35980944b82b142df21326" => :mountain_lion
+  end
+
   head do
     url "https://github.com/royhills/ike-scan.git"
 
