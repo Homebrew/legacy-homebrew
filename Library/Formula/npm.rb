@@ -7,12 +7,6 @@ class Npm < Formula
 
   depends_on :node
 
-  # Patch node-gyp until github.com/TooTallNate/node-gyp/pull/564 is resolved
-  patch :p3 do
-    url "https://github.com/iojs/io.js/commit/82227f3.diff"
-    sha1 "285ed82e27b088b9ad503187d810fd2d70defd51"
-  end
-
   def install
     ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
     system "./configure", "--prefix=#{prefix}"
