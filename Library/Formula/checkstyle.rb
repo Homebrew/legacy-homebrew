@@ -3,7 +3,7 @@ require "formula"
 class Checkstyle < Formula
   homepage "http://checkstyle.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.2/checkstyle-6.2-bin.tar.gz"
-  sha1 "f681a1f2126db151a2c60f7a21375cac97754351"
+  sha1 "5b92798c55cbc8cf87f1435a2fc64e04d50a6648"
 
   def install
     libexec.install "checkstyle-#{version}-all.jar", "sun_checks.xml"
