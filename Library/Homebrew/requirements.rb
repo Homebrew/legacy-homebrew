@@ -126,7 +126,8 @@ class JavaDependency < Requirement
   satisfy { java_version }
 
   def initialize(tags)
-    @version = tags.shift if /(\d\.)+\d/ === tags.first
+    # ignore trailing +
+    @version = tags.shift.sub(/\+$/, "") if /(\d\.)+\d/ === tags.first
     super
   end
 
