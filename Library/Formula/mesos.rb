@@ -1,5 +1,3 @@
-require "formula"
-
 class Mesos < Formula
   homepage "http://mesos.apache.org"
   url "http://mirror.cogentco.com/pub/apache/mesos/0.20.1/mesos-0.20.1.tar.gz"
@@ -11,7 +9,7 @@ class Mesos < Formula
     sha1 "410c88697079563e148b42d4f36ee3687e563b1d" => :mountain_lion
   end
 
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
   depends_on "maven" => :build
   # Use our Zookeeper for Yosemite and not the one shipped with Mesos
@@ -19,12 +17,11 @@ class Mesos < Formula
   # See https://github.com/Homebrew/homebrew/issues/32965
   depends_on "zookeeper" if MacOS.version == :yosemite
 
-
   def install
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
-            "--disable-silent-rules"
+            "--disable-silent-rules",
            ]
 
     args << "--with-zookeeper=#{Formula["zookeeper"].opt_prefix}" if MacOS.version == :yosemite
@@ -45,7 +42,7 @@ class Mesos < Formula
       exec "#{sbin}/mesos-slave", "--master=127.0.0.1:5050",
                                   "--work_dir=#{testpath}"
     end
-    Timeout::timeout(15) do
+    Timeout.timeout(15) do
       system "#{bin}/mesos", "execute",
                              "--master=127.0.0.1:5050",
                              "--name=execute-touch",
@@ -53,6 +50,6 @@ class Mesos < Formula
     end
     Process.kill("TERM", master)
     Process.kill("TERM", slave)
-    system "[ -e #{testpath}/executed ]"
+    assert File.exist?("#{testpath}/executed")
   end
 end
