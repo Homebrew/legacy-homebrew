@@ -118,6 +118,13 @@ class GitDependency < Requirement
   satisfy { !!which('git') }
 end
 
+class NodeDependency < Requirement
+  fatal true
+  default_formula "node"
+
+  satisfy { which("node") || which("iojs") }
+end
+
 class JavaDependency < Requirement
   fatal true
   cask "java"
