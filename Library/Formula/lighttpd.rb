@@ -5,9 +5,9 @@ class Lighttpd < Formula
   revision 2
 
   bottle do
-    sha1 "1e1149e3cd4a622a4d90e2e0243ee43ee6900b05" => :mavericks
-    sha1 "9005df016564ac3cf44757f14dab8d0ae98eec49" => :mountain_lion
-    sha1 "0dc5abe30f67397f4d0dcf0b04bbed96b8b23173" => :lion
+    sha1 "55e4c14cf1e20dd169a16756f03e4d973f85c5bc" => :yosemite
+    sha1 "8d5c27b5f3f0d405f70ece7037beeb472f32ceed" => :mavericks
+    sha1 "83623156747027dcf7aed971b8edba2befcb000c" => :mountain_lion
   end
 
   option "with-lua51", "Include Lua scripting support for mod_magnet"
