@@ -17,9 +17,9 @@ class Gpm < Formula
 
   bottle do
     cellar :any
-    sha1 "d07f2a511b3111d069dfc74ecbaccf7059e67c61" => :mavericks
-    sha1 "94975efcfb696ff95e37a3b845ed16ff9d00ff82" => :mountain_lion
-    sha1 "2623227176179dbdb5e828b93d590b432c4ab503" => :lion
+    sha1 "488291cfa92867caf806bb270e0734d0d5af5314" => :yosemite
+    sha1 "7339121dd321f16a146a6f9d752d5044452eefda" => :mavericks
+    sha1 "1fc18dc8ade7f9307648d603deb8a79ccf587fe7" => :mountain_lion
   end
 
   depends_on GoInstalled
