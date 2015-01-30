@@ -2,8 +2,8 @@ require "formula"
 
 class Checkstyle < Formula
   homepage "http://checkstyle.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.0/checkstyle-6.0-bin.tar.gz"
-  sha1 "55628df367e55127205bb3d8f333db26bdf28b3c"
+  url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.2/checkstyle-6.2-bin.tar.gz"
+  sha1 "f681a1f2126db151a2c60f7a21375cac97754351"
 
   def install
     libexec.install "checkstyle-#{version}-all.jar", "sun_checks.xml"
