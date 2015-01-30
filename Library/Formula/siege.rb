@@ -4,7 +4,6 @@ class Siege < Formula
   homepage 'http://www.joedog.org/index/siege-home'
   url 'http://download.joedog.org/siege/siege-3.0.9.tar.gz'
   sha256 '82376eb466414ef4872a979a372972658df9813778ee8572341d4736ed30cb8f'
-  revision 1
 
   depends_on 'openssl'
 
