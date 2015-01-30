@@ -4,11 +4,9 @@ class Peco < Formula
   sha1 "1c92cfa7f2dc6d85f11c4225c1b2afff506b141f"
   version "0.2.11"
 
-  head "https://github.com/peco/peco.git", :branch => "master"
-
-  if build.head?
+  head do
+    url "https://github.com/peco/peco.git"
     depends_on "go" => :build
-    depends_on "hg" => :build
   end
 
   def install
