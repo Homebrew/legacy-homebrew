@@ -28,9 +28,12 @@ class Cmake < Formula
     sha1 "e96098e402903e09f56d0c4cfef516e591088d78"
 
     # Patching CMake for OpenSSL 1.0.2
-    # Already commited upstream, should be in next release & the HEAD.
+    # Already commited upstream. Should be in next release.
     # http://www.cmake.org/gitweb?p=cmake.git;a=commit;h=de4ccee75a89519f95fcbcca75abc46577bfefea
-    patch :DATA
+    patch do
+      url "https://github.com/Kitware/CMake/commit/c5d9a828.diff"
+      sha1 "61b15b638c1409233f36e6e3383b98cab514c3bb"
+    end
   end
 
   bottle do
