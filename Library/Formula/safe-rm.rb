@@ -1,12 +1,12 @@
-require 'formula'
-
 class SafeRm < Formula
-  homepage 'https://launchpad.net/safe-rm'
-  url 'https://launchpad.net/safe-rm/trunk/0.10/+download/safe-rm-0.10.tar.gz'
-  sha1 '6b829ae68e1fa3c8016e15ab37fcc08caef7712f'
+  homepage "https://launchpad.net/safe-rm"
+  url "https://launchpad.net/safe-rm/trunk/0.10/+download/safe-rm-0.10.tar.gz"
+  sha1 "6b829ae68e1fa3c8016e15ab37fcc08caef7712f"
+
+  head "https://gitorious.org/safe-rm/mainline.git"
 
   def install
-    bin.install 'safe-rm'
+    bin.install "safe-rm"
   end
 
   test do
