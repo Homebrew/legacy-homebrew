@@ -216,7 +216,8 @@ class JobManagerActor(dao: JobDAO,
       try {
         statusActor ! JobStatusActor.JobInit(jobInfo)
 
-        job.validate(jobContext.asInstanceOf[job.C], jobConfig) match {
+        val jobC = jobContext.asInstanceOf[job.C]
+        job.validate(jobC, jobConfig) match {
           case SparkJobInvalid(reason) => {
             val err = new Throwable(reason)
             statusActor ! JobValidationFailed(jobId, DateTime.now(), err)
@@ -224,7 +225,7 @@ class JobManagerActor(dao: JobDAO,
           }
           case SparkJobValid => {
             statusActor ! JobStarted(jobId: String, contextName, jobInfo.startTime)
-            job.runJob(jobContext.asInstanceOf[job.C], jobConfig)
+            job.runJob(jobC, jobConfig)
           }
         }
       } finally {
