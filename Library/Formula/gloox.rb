@@ -4,6 +4,13 @@ class Gloox < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/g/gloox/gloox_1.0.12.orig.tar.bz2"
   sha1 "188ab51af7e410d4119a8dc3e1d96ca548dbd040"
 
+  bottle do
+    cellar :any
+    sha1 "5060164baddf38f05951775cfd5f70b2f52056d2" => :yosemite
+    sha1 "c2c278952e2256638c8165bf56168d069375fd7f" => :mavericks
+    sha1 "ce76ecc24eef8c32f79d6e65bf6eae8a0f6efdcf" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "openssl" => :recommended
   depends_on "gnutls" => :optional
