@@ -12,6 +12,11 @@ class Vice < Formula
   depends_on 'giflib' => :optional
   depends_on 'lame' => :optional
 
+  patch do
+    url 'https://gist.github.com/scottjg/bfa68b03ead796ce4559/raw/24c24cf1a803d25ab09d06d3778e0d6377301da3/vice-giflib5.patch'
+    sha1 'fb25771f115a0d3b5f202396fc1d3689fcea134f'
+  end
+
   fails_with :llvm do
     build 2335
   end

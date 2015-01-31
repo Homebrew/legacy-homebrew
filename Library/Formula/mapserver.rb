@@ -6,6 +6,11 @@ class Mapserver < Formula
   sha1 'bbe4234a4dcc179812c6598f68fe59a3dae63e44'
   revision 1
 
+  patch do
+    url 'https://gist.github.com/scottjg/3766197a478a84c383df/raw/70e90df370d65f8aa2f9dead7b1294bd1f984c79/mapserver-giflib5.patch'
+    sha1 'aed06cbb9d4a96645111d3eb86d66aa1d5261b19'
+  end
+
   option "with-fastcgi", "Build with fastcgi support"
   option "with-geos", "Build support for GEOS spatial operations"
   option "with-php", "Build PHP MapScript module"
