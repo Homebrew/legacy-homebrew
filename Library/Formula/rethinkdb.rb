@@ -80,17 +80,3 @@ class Rethinkdb < Formula
     assert File.read("test/metadata").start_with?("RethinkDB")
   end
 end
-__END__
-diff --git a/src/clustering/reactor/reactor_be_primary.cc b/src/clustering/reactor/reactor_be_primary.cc
-index 3f583fc..945f78b 100644
---- a/src/clustering/reactor/reactor_be_primary.cc
-+++ b/src/clustering/reactor/reactor_be_primary.cc
-@@ -290,7 +290,7 @@ void do_backfill(
-
- bool check_that_we_see_our_broadcaster(const boost::optional<boost::optional<broadcaster_business_card_t> > &maybe_a_
-     guarantee(maybe_a_business_card, "Not connected to ourselves\n");
--    return maybe_a_business_card.get();
-+    return static_cast<bool>(maybe_a_business_card.get());
- }
-
- bool reactor_t::attempt_backfill_from_peers(directory_entry_t *directory_entry,
