@@ -1,8 +1,8 @@
 class Rethinkdb < Formula
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.3-1.tgz"
-  version "1.15.3-1"
-  sha1 "16b6ff1eedd592287b841c0c5fc0bae3ab896a44"
+  url "http://download.rethinkdb.com/dist/rethinkdb-1.16.0-1.tgz"
+  version "1.16.0-1"
+  sha1 "1f6191bb508f738a1d4365cd90f83ba370e1e018"
 
   bottle do
     sha1 "06487ec43710bbfae00586d5ed3324b4ae2f1f6e" => :yosemite
