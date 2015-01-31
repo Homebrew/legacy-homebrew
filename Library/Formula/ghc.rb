@@ -12,7 +12,7 @@ class Ghc < Formula
   devel do
     url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-src.tar.xz"
     version "7.10.1-rc2"
-    sha256 "258e6fd9f5faa9cc3bd86c9d0d62e2c122a27af36f1e139027b86bce4d03a96e"
+    sha256 "766596f9b09b2cdd8bd477754f0e02ea8f7e40e4f5b0522cf585942fb2fec546"
   end
 
   option "32-bit"
@@ -46,13 +46,13 @@ class Ghc < Formula
 
   if build.devel?
     resource "testsuite" do
-      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
-      sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
+      url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-testsuite.tar.xz"
+      sha256 "051d4659421dec257827d7de7df8a99806f4bf575102013dda4006fccee11f76"
     end
   else
     resource "testsuite" do
-      url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-testsuite.tar.xz"
-      sha256 "2f668b63649be1734281c3d4167877f596a98ed644a4273bfbf0c60416cb18ec"
+      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
+      sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
     end
   end
 
