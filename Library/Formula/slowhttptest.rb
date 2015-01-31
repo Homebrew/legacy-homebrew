@@ -1,13 +1,14 @@
-require 'formula'
-
 class Slowhttptest < Formula
-  homepage 'http://code.google.com/p/slowhttptest/'
-  url 'https://slowhttptest.googlecode.com/files/slowhttptest-1.6.tar.gz'
-  sha1 'f5a64365b987083015ac98f6c20746021176292e'
+  homepage "https://code.google.com/p/slowhttptest/"
+  url "https://slowhttptest.googlecode.com/files/slowhttptest-1.6.tar.gz"
+  sha1 "f5a64365b987083015ac98f6c20746021176292e"
+  revision 1
+
+  depends_on "openssl"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
