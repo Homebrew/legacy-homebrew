@@ -1,10 +1,8 @@
-require "formula"
-
 class Help2man < Formula
-  homepage "http://www.gnu.org/software/help2man/"
-  url "http://ftpmirror.gnu.org/help2man/help2man-1.46.4.tar.xz"
-  mirror "http://ftp.gnu.org/gnu/help2man/help2man-1.46.4.tar.xz"
-  sha256 "1ae7f15f53b0cc55b070ae49df2ee5caa942c71529054e157599427bba3c5633"
+  homepage "https://www.gnu.org/software/help2man/"
+  url "http://ftpmirror.gnu.org/help2man/help2man-1.46.5.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/help2man/help2man-1.46.5.tar.xz"
+  sha256 "0ada23867183c5e779e06e6441801c5c74ff77af258e2f1bb5fce181fbc30ebf"
 
   bottle do
     cellar :any
@@ -19,6 +17,11 @@ class Help2man < Formula
     ENV.j1
 
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    cmd = "#{bin}/help2man #{bin}/help2man"
+    assert_match(/"help2man #{version}"/, shell_output(cmd))
   end
 end
