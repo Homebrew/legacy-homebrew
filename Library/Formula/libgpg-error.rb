@@ -1,8 +1,8 @@
 class LibgpgError < Formula
   homepage "http://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.17.tar.bz2"
-  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.17.tar.bz2"
-  sha1 "ba5858b2947e7272dd197c87bac9f32caf29b256"
+  url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.18.tar.bz2"
+  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.18.tar.bz2"
+  sha1 "7ba54f939da023af8f5b3e7a421a32eb742909c4"
 
   bottle do
     cellar :any
