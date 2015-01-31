@@ -2,8 +2,8 @@ require "formula"
 
 class Bmake < Formula
   homepage "http://www.crufty.net/help/sjg/bmake.html"
-  url "http://www.crufty.net/ftp/pub/sjg/bmake-20140214.tar.gz"
-  sha1 "844fc7ccf8219f8327f4f950b633b9d2bdac87b5"
+  url "http://www.crufty.net/ftp/pub/sjg/bmake-20141111.tar.gz"
+  sha1 "a6f670210f9ccde09a0e93a29a766f4726ddfeed"
 
   def install
     # The first, an oversight upstream; the second, don't pre-roff cat pages.
