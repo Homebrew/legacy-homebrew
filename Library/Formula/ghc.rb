@@ -16,7 +16,9 @@ class Ghc < Formula
   end
 
   option "32-bit"
-  option "tests", "Verify the build using the testsuite."
+  option "with-tests", "Verify the build using the testsuite."
+
+  deprecated_option "tests" => "with-tests"
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
@@ -113,7 +115,7 @@ class Ghc < Formula
                             "--with-gcc=#{ENV.cc}"
       system "make"
 
-      if build.include? "tests"
+      if build.with? "tests"
         resource("testsuite").stage do
           cd "testsuite" do
             (buildpath+"Ghcsource/config").install Dir["config/*"]
