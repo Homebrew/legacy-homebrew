@@ -9,7 +9,6 @@ require 'open-uri'
 class Tty
   class << self
     def blue; bold 34; end
-    def white; bold 39; end
     def red; underline 31; end
     def yellow; underline 33; end
     def reset; escape 0; end
@@ -44,13 +43,13 @@ end
 
 def ohai title, *sput
   title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
-  puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
+  puts "#{Tty.blue}==>#{Tty.gray} #{title}#{Tty.reset}"
   puts sput
 end
 
 def oh1 title
   title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
-  puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
+  puts "#{Tty.green}==>#{Tty.gray} #{title}#{Tty.reset}"
 end
 
 def opoo warning

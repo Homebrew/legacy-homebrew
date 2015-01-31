@@ -88,7 +88,7 @@ module Homebrew
 
     def puts_command
       cmd = @command.join(" ")
-      print "#{Tty.blue}==>#{Tty.white} #{cmd}#{Tty.reset}"
+      print "#{Tty.blue}==>#{Tty.gray} #{cmd}#{Tty.reset}"
       tabs = (80 - "PASSED".length + 1 - cmd.length) / 8
       tabs.times{ print "\t" }
       $stdout.flush
@@ -317,7 +317,7 @@ module Homebrew
     end
 
     def skip formula_name
-      puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula_name}#{Tty.reset}"
+      puts "#{Tty.blue}==>#{Tty.gray} SKIPPING: #{formula_name}#{Tty.reset}"
     end
 
     def satisfied_requirements? formula, spec, dependency=nil

@@ -54,8 +54,8 @@ module Homebrew
       rescue SystemCallError
         to = to.resolved_path if to.symlink?
         opoo <<-EOS.undent if warn_about_conflicts
-          Could not create link for #{Tty.white}#{tap_ref(path)}#{Tty.reset}, as it
-          conflicts with #{Tty.white}#{tap_ref(to)}#{Tty.reset}. You will need to use the
+          Could not create link for #{Tty.gray}#{tap_ref(path)}#{Tty.reset}, as it
+          conflicts with #{Tty.gray}#{tap_ref(to)}#{Tty.reset}. You will need to use the
           fully-qualified name when referring this formula, e.g.
             brew install #{tap_ref(path)}
           EOS
