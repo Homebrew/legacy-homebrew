@@ -10,7 +10,7 @@ class PythonWithoutPPC < Requirement
 end
 
 class Distcc < Formula
-  homepage 'http://code.google.com/p/distcc/'
+  homepage 'https://code.google.com/p/distcc/'
   url 'https://distcc.googlecode.com/files/distcc-3.2rc1.tar.gz'
   sha1 '7cd46fe0926a3a859a516274e6ae59fa8ba0262d'
 

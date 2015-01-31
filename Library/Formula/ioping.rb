@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ioping < Formula
-  homepage 'http://code.google.com/p/ioping/'
+  homepage 'https://code.google.com/p/ioping/'
   url 'https://ioping.googlecode.com/files/ioping-0.8.tar.gz'
   sha1 '7d4fe1414cdd5887c332426a8844e17eca5e5646'
 

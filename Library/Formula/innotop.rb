@@ -1,7 +1,7 @@
 require "formula"
 
 class Innotop < Formula
-  homepage "http://code.google.com/p/innotop/"
+  homepage "https://code.google.com/p/innotop/"
   url "https://innotop.googlecode.com/files/innotop-1.9.1.tar.gz"
   sha1 "6b0b5f492e7188152727f6c157043be180ba516a"
 

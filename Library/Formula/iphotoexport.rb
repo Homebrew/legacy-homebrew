@@ -1,7 +1,7 @@
 require 'formula'
 
 class Iphotoexport < Formula
-  homepage 'http://code.google.com/p/iphotoexport/'
+  homepage 'https://code.google.com/p/iphotoexport/'
   url 'https://iphotoexport.googlecode.com/files/iphotoexport-1.6.4.zip'
   sha1 '50fa0916cf9689efdfd33cd4680424234b4e9023'
 

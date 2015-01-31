@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ffmpegthumbnailer < Formula
-  homepage 'http://code.google.com/p/ffmpegthumbnailer/'
+  homepage 'https://code.google.com/p/ffmpegthumbnailer/'
   url 'https://ffmpegthumbnailer.googlecode.com/files/ffmpegthumbnailer-2.0.8.tar.gz'
   sha1 '2c54ca16efd953f46547e22799cfc40bd9c24533'
   bottle do

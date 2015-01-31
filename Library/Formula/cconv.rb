@@ -1,7 +1,7 @@
 require 'formula'
 
 class Cconv < Formula
-  homepage 'http://code.google.com/p/cconv/'
+  homepage 'https://code.google.com/p/cconv/'
   url 'https://cconv.googlecode.com/files/cconv-0.6.2.tar.gz'
   sha1 '9775f91fd5600d176552a88625aaa1f64ece09c1'
 

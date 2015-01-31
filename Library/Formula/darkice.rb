@@ -1,7 +1,7 @@
 require 'formula'
 
 class Darkice < Formula
-  homepage 'http://code.google.com/p/darkice/'
+  homepage 'https://code.google.com/p/darkice/'
   url 'https://darkice.googlecode.com/files/darkice-1.2.tar.gz'
   sha1 '508eb0560a7cdf0990a8793f4b8d324ae74bc343'
 
