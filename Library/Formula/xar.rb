@@ -1,7 +1,7 @@
 require 'formula'
 
 class Xar < Formula
-  homepage 'http://code.google.com/p/xar/'
+  homepage 'https://code.google.com/p/xar/'
   url 'https://xar.googlecode.com/files/xar-1.5.2.tar.gz'
   sha1 'eb411a92167387aa5d06a81970f7e929ec3087c9'
 
