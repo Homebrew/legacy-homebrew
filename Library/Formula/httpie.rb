@@ -1,7 +1,7 @@
 class Httpie < Formula
   homepage "https://github.com/jakubroztocil/httpie"
-  url "https://github.com/jakubroztocil/httpie/archive/0.8.0.tar.gz"
-  sha1 "bfffe9d782a896ca57f3dafef3d02bf81a07e5a8"
+  url "https://github.com/jakubroztocil/httpie/archive/0.9.0.tar.gz"
+  sha1 "4519c574979aa73e5a502f05a87c6a67e6b0db19"
 
   head "https://github.com/jakubroztocil/httpie.git"
 
@@ -16,13 +16,13 @@ class Httpie < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
-    sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
+    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz"
-    sha1 "f57bc125d35ec01a81afe89f97dc75913a927e65"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
+    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
   end
 
   def install
