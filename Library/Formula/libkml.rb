@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libkml < Formula
-  homepage 'http://code.google.com/p/libkml/'
+  homepage 'https://code.google.com/p/libkml/'
 
   stable do
     url "https://libkml.googlecode.com/files/libkml-1.2.0.tar.gz"
