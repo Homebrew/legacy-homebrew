@@ -9,6 +9,11 @@ class Ghc < Formula
     sha1 "296802648e2b2bc26fcb01025fb1fa8ab583e64a" => :mountain_lion
   end
 
+  devel do
+    url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-src.tar.xz"
+    sha256 "258e6fd9f5faa9cc3bd86c9d0d62e2c122a27af36f1e139027b86bce4d03a96e"
+  end
+
   option "32-bit"
   option "tests", "Verify the build using the testsuite."
 
@@ -36,9 +41,17 @@ class Ghc < Formula
     end
   end
 
-  resource "testsuite" do
-    url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
-    sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
+  if build.devel?
+    resource "testsuite" do
+      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
+      sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
+    end
+  else
+    resource "testsuite" do
+      url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-testsuite.tar.xz"
+      version "7.10.1-rc2"
+      sha256 "2f668b63649be1734281c3d4167877f596a98ed644a4273bfbf0c60416cb18ec"
+    end
   end
 
   if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
