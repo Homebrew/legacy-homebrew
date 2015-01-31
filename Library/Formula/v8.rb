@@ -6,7 +6,7 @@ require 'formula'
 # http://omahaproxy.appspot.com/
 
 class V8 < Formula
-  homepage 'http://code.google.com/p/v8/'
+  homepage 'https://code.google.com/p/v8/'
   url 'https://github.com/v8/v8/archive/3.25.30.tar.gz'
   sha1 '207d0bb1dd5954fe691570e799b3c1e318741290'
 
