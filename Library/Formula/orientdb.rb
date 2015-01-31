@@ -37,7 +37,13 @@ class Orientdb < Formula
     bin.install_symlink "#{libexec}/bin/gremlin.sh" => 'orientdb-gremlin'
   end
 
-  def caveats
-    "Use `orientdb <start | stop | status>`, `orientdb-console` and `orientdb-gremlin`."
+  def caveats; <<-EOS.undent
+    The root password is in
+    #{opt_libexec}/config/orientdb-server-config.xml
+    after orientdb is started for the first time.
+
+    Use `orientdb <start | stop | status>`, `orientdb-console` and
+    `orientdb-gremlin`.
+    EOS
   end
 end
