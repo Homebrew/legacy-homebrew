@@ -1,9 +1,8 @@
-require "formula"
-
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
   url "http://releases.ansible.com/ansible/ansible-1.8.2.tar.gz"
   sha1 "4cfbec3a0850639384c908e77e2823acb1297e1e"
+  revision 1
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
@@ -23,8 +22,8 @@ class Ansible < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.2.1.tar.gz"
-    sha1 "88eb1fd6a0dfb8b97262f8029978d7c75eebc16f"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
+    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
   end
 
   resource "websocket-client" do
