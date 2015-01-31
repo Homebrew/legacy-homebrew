@@ -1,7 +1,7 @@
 require 'formula'
 
 class Scrub < Formula
-  homepage 'http://code.google.com/p/diskscrub/'
+  homepage 'https://code.google.com/p/diskscrub/'
   url 'https://diskscrub.googlecode.com/files/scrub-2.5.2.tar.bz2'
   sha1 '863e5894e6acb3f922cb25f58e260f9c59b55c14'
 
