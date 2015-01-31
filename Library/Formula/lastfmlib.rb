@@ -1,7 +1,7 @@
 require 'formula'
 
 class Lastfmlib < Formula
-  homepage 'http://code.google.com/p/lastfmlib/'
+  homepage 'https://code.google.com/p/lastfmlib/'
   url 'https://lastfmlib.googlecode.com/files/lastfmlib-0.4.0.tar.gz'
   sha1 'b9e15e4eb42a9ccd9b3c5373054b0bd51a406fdd'
 
