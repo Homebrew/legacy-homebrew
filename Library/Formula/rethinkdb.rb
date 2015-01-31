@@ -22,10 +22,6 @@ class Rethinkdb < Formula
     cause "RethinkDB uses C++0x"
   end
 
-  # boost 1.56 compatibility
-  # https://github.com/rethinkdb/rethinkdb/issues/3044#issuecomment-55478774
-  patch :DATA
-
   def install
     args = ["--prefix=#{prefix}"]
 
