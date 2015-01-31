@@ -1,11 +1,9 @@
-require 'formula'
-
 class YleDl < Formula
-  homepage 'http://aajanki.github.io/yle-dl/'
-  url 'https://github.com/aajanki/yle-dl/archive/2.4.0.tar.gz'
-  sha1 'da10ebb538d3bca738a36f332678ac0164220b53'
+  homepage "https://aajanki.github.io/yle-dl/index-en.html"
+  url "https://github.com/aajanki/yle-dl/archive/2.5.0.tar.gz"
+  sha1 "6530a47b69a905f7ae92b97ded37c81437a8be72"
 
-  head 'https://github.com/aajanki/yle-dl.git'
+  head "https://github.com/aajanki/yle-dl.git"
 
   bottle do
     cellar :any
@@ -14,7 +12,7 @@ class YleDl < Formula
     sha1 "03e325d234a53afccba0081de8379abf080aa843" => :mountain_lion
   end
 
-  depends_on 'rtmpdump'
+  depends_on "rtmpdump"
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "AdobeHDS.php" do
