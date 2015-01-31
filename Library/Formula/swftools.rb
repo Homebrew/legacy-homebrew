@@ -24,6 +24,11 @@ class Swftools < Formula
   # Patch is merged upstream.  Remove at swftools-0.9.3.
   patch :DATA
 
+  patch do
+    url "https://gist.github.com/scottjg/19c85ba39817ceaba1c4/raw/d24ba3d06e213393b31cf54fd3811c7a7cd18b8f/swftools-giflib5.patch"
+    sha1 "cca79b9ae1e13c6c30451a1b902284cb3d07b229"
+  end
+
   def install
     (buildpath+'lib/pdf').install resource('xpdf') if build.with? "xpdf"
     system "./configure", "--prefix=#{prefix}"

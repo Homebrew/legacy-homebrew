@@ -6,6 +6,11 @@ class Imlib2 < Formula
   sha1 '20e111d822074593e8d657ecf8aafe504e9e2967'
   revision 1
 
+  patch do
+    url "https://gist.github.com/scottjg/07bc2ebf55f18a4e72fe/raw/1fb35b2dc31858603b7f50e266c95455d16de05c/imlib2-giflib.patch"
+    sha1 "1e6c550cbeb0ffcc0dfb25546f86b8ee22bdb88b"
+  end
+
   bottle do
     revision 1
     sha1 "c6cb08c880b91081f247e0ee7f3399c76f1392cf" => :yosemite

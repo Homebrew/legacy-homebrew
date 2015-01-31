@@ -5,6 +5,11 @@ class Xplanet < Formula
   url "https://downloads.sourceforge.net/project/xplanet/xplanet/1.3.0/xplanet-1.3.0.tar.gz"
   sha1 "7c5208b501b441a0184cbb334a5658d0309d7dac"
 
+  patch do
+    url "https://gist.github.com/scottjg/d84e01fe10b2b5aea08b/raw/b0f52f5d25eea6f7f0e978f08e6cdae2c65cf73d/xplanet-giflib5.patch"
+    sha1 "04806ba44cf904d85c6999356fbcb907dffee663"
+  end
+
   bottle do
     revision 2
     sha1 "f4494377cd80ce1332e9a171b914f9fa316406fb" => :mavericks
