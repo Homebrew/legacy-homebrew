@@ -1,17 +1,15 @@
-require "formula"
-
 class Libgit2 < Formula
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.21.3.tar.gz"
-  sha1 "d116cb15f76edf2283c85da40389e4fecc8d5aeb"
+  url "https://github.com/libgit2/libgit2/archive/v0.22.0.tar.gz"
+  sha1 "a37dc29511422eec9828e129ad057e77ca962c5e"
 
   head "https://github.com/libgit2/libgit2.git"
 
   bottle do
     cellar :any
-    sha1 "1eaa718a043b055902f0cd5c01a7a93b14836d85" => :yosemite
-    sha1 "9b5d5f3026c699e05ad9a623ea37e004e800af30" => :mavericks
-    sha1 "059ee25e0a3d46ad685b3d55394ae1c8a007da70" => :mountain_lion
+    sha1 "f38b591523f02a8d3310ec203f1ab7d2c6d825e4" => :yosemite
+    sha1 "ecfdcf794a06e2e501c2c95ca72cdc0f0a97c3ba" => :mavericks
+    sha1 "0daa906f4cf15f9e9de9637c41c0e600aae36c4b" => :mountain_lion
   end
 
   option :universal
@@ -22,7 +20,7 @@ class Libgit2 < Formula
 
   def install
     args = std_cmake_args
-    args << "-DBUILD_TESTS=NO"
+    args << "-DBUILD_CLAR=NO" # Don't build tests.
 
     if build.universal?
       ENV.universal_binary
