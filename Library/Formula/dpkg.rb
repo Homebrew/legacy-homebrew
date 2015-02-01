@@ -28,6 +28,8 @@ class Dpkg < Formula
     ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}",
                           "--disable-dselect",
                           "--disable-linker-optimisations",
                           "--disable-start-stop-daemon",
