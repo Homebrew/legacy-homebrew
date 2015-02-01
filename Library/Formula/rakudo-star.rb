@@ -6,6 +6,7 @@ class RakudoStar < Formula
   sha256 "c99acb6e7128aa950e97303c337603f831481d5a316e4a72ea3981606b2ce784"
 
   option "with-jvm", "Build also for jvm as an alternate backend."
+  option "with-parrot", "Build also for parrot as an alternate backend."
 
   conflicts_with "parrot"
 
@@ -20,15 +21,26 @@ class RakudoStar < Formula
     ENV.prepend "CPPFLAGS", "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
     ENV.j1  # An intermittent race condition causes random build failures.
+
+    backends = ["moar"]
+    generate = ["--gen-moar"]
+
     if build.with? "jvm"
-      system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=parrot,jvm", "--gen-parrot"
-    else
-      system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=parrot", "--gen-parrot"
+      backends << "jvm"
     end
+    if build.with? "parrot"
+      backends << "parrot"
+      generate << "--gen-parrot"
+    end
+    system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=" + backends.join(","), *generate
     system "make"
     system "make install"
-    # move the man pages out of the top level into share.
-    mv "#{prefix}/man", share
+
+    # Move the man pages out of the top level into share.
+    # Not all backends seem to generate man pages at this point.
+    if File.directory?("#{prefix}/man")
+        mv "#{prefix}/man", share
+    end
   end
 
   test do
