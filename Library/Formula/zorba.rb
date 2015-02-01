@@ -3,6 +3,11 @@ class Zorba < Formula
   url "https://github.com/28msec/zorba/archive/3.0.tar.gz"
   sha1 "c444cde689600aab1172b4974348dd6626e92261"
 
+  bottle do
+    sha1 "3eb71a93bb29f023eb53b17e4e3a5723fae80277" => :yosemite
+    sha1 "d6a151267820b1fbdcec678b38a2f85feda9e475" => :mavericks
+  end
+
   option "with-big-integer", "Use 64 bit precision instead of arbitrary precision for performance"
   option "with-ssl-verification", "Enable SSL peer certificate verification"
 
