@@ -1,9 +1,7 @@
-require "formula"
-
 class Sbcl < Formula
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.2/sbcl-1.2.2-source.tar.bz2"
-  sha1 "23449d376ac0b6112ad468adc11a5e521667d8fd"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.9/sbcl-1.2.9-source.tar.bz2"
+  sha1 "788e38d4c64fa1f99a5297dce72e87f3958e98a1"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
@@ -77,7 +75,7 @@ class Sbcl < Formula
 
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
-    ENV.delete_if do |key, value|
+    ENV.delete_if do |_, value|
       value =~ /[\x80-\xff]/n
     end
 
@@ -96,15 +94,14 @@ class Sbcl < Formula
     end
 
     ENV["INSTALL_ROOT"] = prefix
-    system "sh install.sh"
+    system "sh", "install.sh"
   end
 
   test do
-    (testpath/'simple.sbcl').write <<-EOS.undent
+    (testpath/"simple.sbcl").write <<-EOS.undent
       (write-line (write-to-string (+ 2 2)))
     EOS
-    output = `'#{bin}/sbcl' --script #{testpath}/simple.sbcl`
-    assert_equal '4', output.strip
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/sbcl --script #{testpath}/simple.sbcl")
+    assert_equal "4", output.strip
   end
 end
