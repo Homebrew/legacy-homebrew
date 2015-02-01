@@ -3,7 +3,8 @@ require 'formula'
 class EucjpMecabIpadic < Requirement
   fatal true
 
-  def initialize
+  def initialize tags=[]
+    super
     @mecab_ipadic_installed = Formula['mecab-ipadic'].installed?
   end
 
