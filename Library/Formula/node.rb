@@ -31,6 +31,7 @@ class Node < Formula
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
+  option "with-iojs-patch", "Patch npm for iojs compatibility"
 
   depends_on :python => :build
 
@@ -73,22 +74,27 @@ class Node < Formula
     system "make", "install"
 
     if build.with? "npm"
-      resource("npm").stage buildpath/"npm_install"
-
+      resource("npm").stage npm_buildpath = buildpath/"npm_install"
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
 
       # set log level temporarily for npm's `make install`
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
-      cd buildpath/"npm_install" do
+      cd npm_buildpath do
+        if build.with? "iojs-patch"
+          p = Patch.create(:p1, :DATA)
+          p.path = Pathname.new(__FILE__).expand_path
+          p.apply
+        end
+
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
       end
 
       if build.with? "completion"
         bash_completion.install \
-          buildpath/"npm_install/lib/utils/completion.sh" => "npm"
+          npm_buildpath/"lib/utils/completion.sh" => "npm"
       end
     end
   end
@@ -162,3 +168,28 @@ class Node < Formula
     end
   end
 end
+
+__END__
+diff --git a/node_modules/node-gyp/lib/install.js b/node_modules/node-gyp/lib/install.js
+index 6f72e6a..ebc4e57 100644
+--- a/node_modules/node-gyp/lib/install.js
++++ b/node_modules/node-gyp/lib/install.js
+@@ -39,7 +39,7 @@ function install (gyp, argv, callback) {
+     }
+   }
+
+-  var distUrl = gyp.opts['dist-url'] || gyp.opts.disturl || 'http://nodejs.org/dist'
++  var distUrl = gyp.opts['dist-url'] || gyp.opts.disturl || 'https://iojs.org/dist'
+
+
+   // Determine which node dev files version we are installing
+@@ -185,7 +185,7 @@ function install (gyp, argv, callback) {
+
+       // now download the node tarball
+       var tarPath = gyp.opts['tarball']
+-      var tarballUrl = tarPath ? tarPath : distUrl + '/v' + version + '/node-v' + version + '.tar.gz'
++      var tarballUrl = tarPath ? tarPath : distUrl + '/v' + version + '/iojs-v' + version + '.tar.gz'
+         , badDownload = false
+         , extractCount = 0
+         , gunzip = zlib.createGunzip()
+
