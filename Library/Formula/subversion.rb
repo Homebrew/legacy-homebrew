@@ -28,6 +28,12 @@ class Subversion < Formula
   depends_on "pkg-config" => :build
   depends_on :apr => :build
 
+  if build.universal?
+    depends_on :apr => [:build, :universal]
+  else
+    depends_on :apr => :build
+  end
+
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on "sqlite"
   depends_on :python => :optional
