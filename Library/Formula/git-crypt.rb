@@ -7,9 +7,9 @@ class GitCrypt < Formula
 
   bottle do
     cellar :any
-    sha1 "cf82899f5909b6f4fba7375f0ca14328f2b3d6af" => :yosemite
-    sha1 "f15f0c82ad1114c2bdc676db25a0801c915eabdf" => :mavericks
-    sha1 "0cbd44ee06d875c9784307cc8a45e593dbb5bdd7" => :mountain_lion
+    sha1 "f06679b30da507716f4db5fe06c8251e3702d5a7" => :yosemite
+    sha1 "bbe990ecebdefe37de0a46e4ad9f869e39a8076e" => :mavericks
+    sha1 "325e8630865b13f9d319d33777053921838d16e7" => :mountain_lion
   end
 
   depends_on "openssl"
