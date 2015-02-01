@@ -41,8 +41,7 @@ class Dpkg < Formula
                           "--localstatedir=#{var}",
                           "--disable-dselect",
                           "--disable-linker-optimisations",
-                          "--disable-start-stop-daemon",
-                          "--disable-update-alternatives"
+                          "--disable-start-stop-daemon"
     system "make"
     system "make", "install"
 
