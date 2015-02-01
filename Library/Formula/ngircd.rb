@@ -6,9 +6,9 @@ class Ngircd < Formula
   revision 1
 
   bottle do
-    sha1 "1a370c58b671a989c69e30d0c93755a8f1f79995" => :mavericks
-    sha1 "d79602eb6d27418d969e954513cc0870058109c3" => :mountain_lion
-    sha1 "a863f046eb03353d881221fc6a6a725ab098de57" => :lion
+    sha1 "cb000923d5f10a21957cb05751d07ec82014c515" => :yosemite
+    sha1 "c2488e5b46e8ae0a17eeb80366e54f7e3e4fdeec" => :mavericks
+    sha1 "8dc756fb808f99ab01c5806926761609c0eaaad8" => :mountain_lion
   end
 
   option "with-iconv", "Enable character conversion using libiconv."
