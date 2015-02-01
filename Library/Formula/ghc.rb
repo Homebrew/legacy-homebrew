@@ -44,15 +44,15 @@ class Ghc < Formula
     end
   end
 
-  if build.devel?
+  resource "testsuite" do
+    url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
+    sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
+  end
+
+  devel do
     resource "testsuite" do
       url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-testsuite.tar.xz"
       sha256 "051d4659421dec257827d7de7df8a99806f4bf575102013dda4006fccee11f76"
-    end
-  else
-    resource "testsuite" do
-      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
-      sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
     end
   end
 
