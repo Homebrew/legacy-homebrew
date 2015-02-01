@@ -1,7 +1,7 @@
 class Artifactory < Formula
   homepage "http://www.jfrog.com/artifactory/"
-  url "http://dl.bintray.com/jfrog/artifactory/artifactory-3.4.2.zip"
-  sha1 "394258c5fc8beffd60de821b6264660f5464b943"
+  url "http://dl.bintray.com/jfrog/artifactory/artifactory-3.5.0.zip"
+  sha1 "b11b34072bb07e956610c6671399fa189b4e59c4"
 
   depends_on :java => "1.7+"
 
