@@ -7,9 +7,9 @@ class YleDl < Formula
 
   bottle do
     cellar :any
-    sha1 "c947bdb69ed32fd61e73d07d9d8d341ae2d91319" => :yosemite
-    sha1 "87ab18f4863ed0213edca9d7160d0c6600fa9521" => :mavericks
-    sha1 "03e325d234a53afccba0081de8379abf080aa843" => :mountain_lion
+    sha1 "6816bec525d45aa0bfe2be7994cef9068bd4490f" => :yosemite
+    sha1 "16eef04cd07d899e6397a5d364e0499278553dc4" => :mavericks
+    sha1 "6d5fbf2f0daa11efeec1a660bc9ebf61ca834a04" => :mountain_lion
   end
 
   depends_on "rtmpdump"
