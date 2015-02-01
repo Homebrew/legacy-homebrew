@@ -15,6 +15,7 @@ TAP_MIGRATIONS = {
   "cantera" => "homebrew/science",
   "cardpeek" => "homebrew/x11",
   "catdoc" => "homebrew/boneyard",
+  "cdf" => "homebrew/boneyard",
   "clam" => "homebrew/boneyard",
   "cloudfoundry-cli" => "pivotal/tap",
   "clusterit" => "homebrew/x11",
