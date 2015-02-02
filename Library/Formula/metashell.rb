@@ -25,11 +25,9 @@ class Metashell < Formula
 
   test do
     (testpath/"test.hpp").write <<-EOS.undent
-      #include <boost/mpl/int.hpp>
-      #include <boost/mpl/plus.hpp>
-      using namespace boost::mpl;
-      plus<int_<6>, int_<7>>::type
+      template <class T> struct add_const { using type = const T; };
+      add_const<int>::type
     EOS
-    assert_match /mpl_::integral_c/, shell_output("cat #{testpath}/test.hpp | #{bin}/metashell")
+    assert_match /const int/, shell_output("cat #{testpath}/test.hpp | #{bin}/metashell -H")
   end
 end
