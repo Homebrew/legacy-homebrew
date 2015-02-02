@@ -4,10 +4,9 @@ class Osm2pgsql < Formula
   sha1 "6f302500e52d6e42147cc8dff8f344677e3131f8"
 
   bottle do
-    cellar :any
-    sha1 "1885597bd9c3edc2cc0ff3a77eeed32e696797a7" => :yosemite
-    sha1 "c4f84d422ea950111cc2cd1d0e70a3772ab7981e" => :mavericks
-    sha1 "08b6aa91ee4a5dc51fb5ceede2974b07aa90f5a4" => :mountain_lion
+    sha1 "613f83d5eec75fc35cf39dd74f6c93478f962d21" => :yosemite
+    sha1 "245a3e678eb6ff1f3af53cffb7fd1cd6ef3481a0" => :mavericks
+    sha1 "9c97bc588a3ddeb4c173327249437d485f4192a4" => :mountain_lion
   end
 
   depends_on :postgresql
