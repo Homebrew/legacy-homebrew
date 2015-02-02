@@ -13,7 +13,7 @@ class Osm2pgsql < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "boost" => :build
+  depends_on "boost"
   depends_on "geos"
   depends_on "proj"
   depends_on "protobuf-c" => :optional
