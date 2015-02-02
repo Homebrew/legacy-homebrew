@@ -1,9 +1,7 @@
-require 'formula'
-
 class Privoxy < Formula
-  homepage 'http://www.privoxy.org'
-  url 'https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.22%20%28stable%29/privoxy-3.0.22-stable-src.tar.gz'
-  sha1 '16cab9bb2055546a5f70815044dab893396c5686'
+  homepage "http://www.privoxy.org"
+  url "https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.23%20%28stable%29/privoxy-3.0.23-stable-src.tar.gz"
+  sha1 "72b6756cf532fdb85520640f0a1d4cb06bba1b7f"
 
   bottle do
     sha1 "9a7f048bebdfa6737775a2b3ccbffb9813b6e548" => :yosemite
