@@ -10,9 +10,9 @@ class YoutubeDl < Formula
 
   bottle do
     cellar :any
-    sha1 "1bb153e8937b9db3f522e77dabd901c06d7d99b3" => :yosemite
-    sha1 "9d3d303a025263ff254ab5d04e8f313b8cde0068" => :mavericks
-    sha1 "369dafec6524c79744e8e72e1c5fd00d8eb30b02" => :mountain_lion
+    sha1 "230506fdef6ba98978ebf7a949cb199c69e59621" => :yosemite
+    sha1 "1d2dde2f929328cc641fe01bbb4ca06a95cf4091" => :mavericks
+    sha1 "dde15b7d0674f14368f851ec982f21b850e64e77" => :mountain_lion
   end
 
   head do
