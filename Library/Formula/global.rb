@@ -1,8 +1,8 @@
 class Global < Formula
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.3.3.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.3.3.tar.gz"
-  sha1 "2e66fb1529fe1fb2c473507de91814df4eb50b93"
+  url "http://ftpmirror.gnu.org/global/global-6.3.4.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.3.4.tar.gz"
+  sha1 "6b73c0b3c7eea025c8004f8d82d836f2021d0c9e"
 
   bottle do
     sha1 "4262d5470592541e62fe7cc81613aa2397cea091" => :yosemite
