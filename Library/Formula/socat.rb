@@ -1,11 +1,7 @@
-require 'formula'
-
 class Socat < Formula
-  homepage 'http://www.dest-unreach.org/socat/'
-  url 'http://www.dest-unreach.org/socat/download/socat-1.7.2.4.tar.bz2'
-  mirror 'http://ftp.de.debian.org/debian/pool/main/s/socat/socat_1.7.2.4.orig.tar.bz2'
-  sha1 '55650f3c4c1a5cdc323b2e6eece416b6303d39b5'
-  revision 1
+  homepage "http://www.dest-unreach.org/socat/"
+  url "http://www.dest-unreach.org/socat/download/socat-1.7.3.0.tar.gz"
+  sha1 "c09ec6539647cebe8fccdfcf0f1ace1243231ec3"
 
   bottle do
     cellar :any
