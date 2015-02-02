@@ -36,6 +36,15 @@ class RakudoStar < Formula
     system "make"
     system "make install"
 
+    # TEMPORARY Workaround for http://stackoverflow.com/questions/9988125/shebang-pointing-to-script-also-having-shebang-is-effectively-ignored.
+    # rakudo-star 2014.12.1 has shebang lines in some scripts which point to other scripts with shebang
+    # lines, which will be ignored/fail on MacOS. This uses /usr/bin/env instead which is also implemented
+    # upstream (not released yet).
+    rakudo_shebangs = `grep --recursive --files-with-matches ^#!#{bin} #{prefix}`
+    rakudo_shebang_files = rakudo_shebangs.lines.sort.uniq
+    rakudo_shebang_files.map! {|f| Pathname(f.chomp)}
+    inreplace rakudo_shebang_files, %r{^(#!#{bin}/)}, "#!/usr/bin/env "
+
     # Move the man pages out of the top level into share.
     # Not all backends seem to generate man pages at this point.
     if File.directory?("#{prefix}/man")
