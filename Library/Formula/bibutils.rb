@@ -5,9 +5,9 @@ class Bibutils < Formula
 
   bottle do
     cellar :any
-    sha1 "5fbb88c0bcab944cfa2a1445465632cc73f2d591" => :yosemite
-    sha1 "4da4df14956e2261ed22360a6c734c84baa412c0" => :mavericks
-    sha1 "7b108573b7bbcb3dd635ea96a01336607deaaae3" => :mountain_lion
+    sha1 "036d3e0326d28f905d2b7cf8dac92a41f7e85f72" => :yosemite
+    sha1 "a0d6d70b5fc7f64977c1cddb9dcc6f9e20455da8" => :mavericks
+    sha1 "6648845e6ff3a5318ecfa08498cea7f4d3436de9" => :mountain_lion
   end
 
   def install
