@@ -33,6 +33,7 @@ class Erlang < Formula
   option "with-native-libs", "Enable native library compilation"
   option "with-dirty-schedulers", "Enable experimental dirty schedulers"
   option "without-docs", "Do not install documentation"
+  option "with-timer-patches", "Include WhatsApp patches to timers"
 
   deprecated_option "disable-hipe" => "without-hipe"
   deprecated_option "no-docs" => "without-docs"
@@ -46,6 +47,21 @@ class Erlang < Formula
   depends_on "wxmac" => :recommended # for GUI apps like observer
 
   fails_with :llvm
+
+  if build.with? "timer-patches" and build.stable?
+    # WhatsApp patches can make a significant improvement for some programs
+    # http://www.erlang-factory.com/upload/presentations/558/efsf2012-whatsapp-scaling.pdf
+    # these may be superseded in OTP 18.0. Originally https://github.com/reedr/otp.
+    patch :p1 do
+      url "https://github.com/erlang/otp/commit/c7c01f3f8cf7d7d21d8a3ef844bf5e29b4eb6ce7.patch"
+      sha1 "6f52dadb56e09e1df3bfa06b051b491b03d3cb74"
+    end
+
+    patch :p1 do
+      url "https://github.com/erlang/otp/commit/33468886454f18b991afddd89b4fe9982f56c4ad.patch"
+      sha1 "b1a5472a1502c4e6ae702e49c5f079e011285863"
+    end
+  end
 
   def install
     # Unset these so that building wx, kernel, compiler and
