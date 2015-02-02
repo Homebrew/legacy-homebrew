@@ -5,9 +5,9 @@ class Pngcrush < Formula
 
   bottle do
     cellar :any
-    sha1 "ddb569fe21bd966d5d3f51416bc824bd6772f9f3" => :yosemite
-    sha1 "0c8cca15817311bacdc7b0fa4919b2dbfc3e1e62" => :mavericks
-    sha1 "5774590804ab1bf665b1ec6f1a3b0abfaade3d05" => :mountain_lion
+    sha1 "60e7cfbb2c536a2af261226ba8553c632591e3e4" => :yosemite
+    sha1 "4be7065b761cc8245fbb077f59d6b721faf14810" => :mavericks
+    sha1 "e394e31b0526e84dc13ee40d8cd98442a90f9cfd" => :mountain_lion
   end
 
   def install
