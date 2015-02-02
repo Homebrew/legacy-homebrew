@@ -5,9 +5,9 @@ class GlobusToolkit < Formula
   sha1 "cb688858f96b26a92d72efedc1153a8cbf2516b8"
 
   bottle do
-    sha1 "b0a24a8d66dd36aa0ac48f0ae5dddfd02af22d6c" => :yosemite
-    sha1 "a9e19f50eed7f13d0200c107aabe20751071bc9b" => :mavericks
-    sha1 "1cbbe7a3d08711cbc5665e91558417d7b2028d3a" => :mountain_lion
+    sha1 "ad1c40f3be3184206addd9c8f5c091b6eac1023c" => :yosemite
+    sha1 "0388612635950a8c971e8fe61bc99a70293f4cb3" => :mavericks
+    sha1 "4ab429c5c616124872ba7102dfc0014232320371" => :mountain_lion
   end
 
   depends_on "openssl"
