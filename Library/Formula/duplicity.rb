@@ -4,10 +4,10 @@ class Duplicity < Formula
   sha1 "fe0b6b0b0dc7dbc02598d96567954b48c4308420"
 
   bottle do
-    revision 1
-    sha1 "6813d6be6f1f651d42f7ee33e1c8939c47699d78" => :yosemite
-    sha1 "84fe0d4e4502a2092c1838122c05f3beb2dd2288" => :mavericks
-    sha1 "d787b1de4116f8c803d609cea27923f6b3d3bd37" => :mountain_lion
+    revision 2
+    sha1 "bbc592bbe05ef6db7a780bb9ceb086a3e54833d6" => :yosemite
+    sha1 "ce78b8e6118f01a1448ce5816186ba398bf535c7" => :mavericks
+    sha1 "ec6a376afd0119b0d0abe0a661c35df2e4152450" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
