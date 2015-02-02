@@ -1,20 +1,7 @@
-require "formula"
-
 class Aria2 < Formula
   homepage "http://aria2.sourceforge.net/"
-  revision 1
-
-  stable do
-    url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.8/aria2-1.18.8.tar.bz2"
-    sha1 "b6ad7064b1ea769e78f6a7dc9787a12cfc1e153f"
-
-    # Upstream patch to fix crash on OSX when proxy is used
-    # See: https://github.com/tatsuhiro-t/aria2/commit/9a931e7
-    patch do
-      url "https://github.com/tatsuhiro-t/aria2/commit/9a931e7.diff"
-      sha1 "386c2a831e9ab91524a1af1eeb3037a819b85ec5"
-    end
-  end
+  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.9/aria2-1.18.9.tar.bz2"
+  sha1 "31ac90d9ffcdba4cdf936ddfbc3d8f08416360e6"
 
   bottle do
     cellar :any
@@ -43,5 +30,10 @@ class Aria2 < Formula
     system "make", "install"
 
     bash_completion.install "doc/bash_completion/aria2c"
+  end
+
+  test do
+    system "#{bin}/aria2c", "http://brew.sh"
+    assert File.exist? "index.html"
   end
 end
