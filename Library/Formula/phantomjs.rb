@@ -23,6 +23,14 @@ class Phantomjs < Formula
     sha1 "1e723f055ef5df9a2945cbce3e70322105313f47"
   end
 
+  # Qt Yosemite build fix. Upstream commit/PR:
+  # https://qt.gitorious.org/qt/qtbase/commit/70e442
+  # https://github.com/ariya/phantomjs/pull/12934
+  patch do
+    url "https://gist.githubusercontent.com/mikemcquaid/db645f7cbeec4f3b1b2e/raw/e664ecc5c259344d5a73a84b52e472bf8ad3733e/phantomjs-yosemite.patch"
+    sha1 "1e723f055ef5df9a2945cbce3e70322105313f47"
+  end
+
   head "https://github.com/ariya/phantomjs.git"
 
   depends_on "openssl"
