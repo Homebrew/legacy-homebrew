@@ -4,7 +4,7 @@ class AprDependency < Requirement
   fatal true
   default_formula "apr-util"
 
-  satisfy { MacOS::CLT.installed? || Formula["apr"].installed? }
+  satisfy { MacOS::CLT.installed? }
 
   env do
     unless MacOS::CLT.installed?
