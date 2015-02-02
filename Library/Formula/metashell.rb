@@ -24,13 +24,12 @@ class Metashell < Formula
   end
 
   test do
-    IO.popen("#{bin}/metashell", "w+") do |pipe|
-      pipe.puts("#include <boost/mpl/int.hpp>")
-      pipe.puts("#include <boost/mpl/plus.hpp>")
-      pipe.puts("using namespace boost::mpl;")
-      pipe.puts("plus<int_<6>, int_<7>>::type")
-      pipe.close_write
-      assert pipe.read.include?("integral_c")
-    end
+    (testpath/"test.hpp").write <<-EOS.undent
+      #include <boost/mpl/int.hpp>
+      #include <boost/mpl/plus.hpp>
+      using namespace boost::mpl;
+      plus<int_<6>, int_<7>>::type
+    EOS
+    assert_match /mpl_::integral_c/, shell_output("cat #{testpath}/test.hpp | #{bin}/metashell")
   end
 end
