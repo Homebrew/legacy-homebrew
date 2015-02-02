@@ -11,8 +11,8 @@ class Node < Formula
   end
 
   devel do
-    url "https://nodejs.org/dist/v0.11.15/node-v0.11.15.tar.gz"
-    sha256 "e613d274baa4c99a0518038192491433f7877493a66d8505af263f6310991d01"
+    url "https://nodejs.org/dist/v0.11.16/node-v0.11.16.tar.gz"
+    sha256 "f0d141faa1f7da3aff53e9615d76040d29c0650542be3b09ee80aca2f2cc61f6"
 
     depends_on "pkg-config" => :build
     depends_on "icu4c" => :optional
