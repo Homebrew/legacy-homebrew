@@ -8,6 +8,7 @@ class Metashell < Formula
   needs :cxx11
 
   def install
+    ENV.cxx11
     # Build internal Clang
     mkdir "templight/build" do
       system "cmake", "../llvm", "-DLIBCLANG_BUILD_STATIC=ON", *std_cmake_args
