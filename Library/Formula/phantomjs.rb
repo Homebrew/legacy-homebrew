@@ -10,9 +10,9 @@ class Phantomjs < Formula
 
   bottle do
     cellar :any
-    sha1 "d7016751675b1b7948e712b7c90e38f698527ae7" => :yosemite
-    sha1 "cb2da81b59d7b5825645d4a598876539a99bf65c" => :mavericks
-    sha1 "c43984e9ffb64d628f27b64bae5b75cbfd9dcfc2" => :mountain_lion
+    sha1 "f9dd71edb662479e0f832379368d4cd4878f940e" => :yosemite
+    sha1 "817ab92d4bfcd5496cf1c59173d48976610e5f70" => :mavericks
+    sha1 "887a96e55f67a3d350bc40f910926286c6cea240" => :mountain_lion
   end
 
   # Qt Yosemite build fix. Upstream commit/PR:
