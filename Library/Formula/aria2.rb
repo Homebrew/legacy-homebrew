@@ -11,6 +11,7 @@ class Aria2 < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl" unless OS.mac?
 
   needs :cxx11
 
@@ -18,8 +19,8 @@ class Aria2 < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --with-appletls
-      --without-openssl
+      #{if OS.mac? then "--with-appletls" else "--without-appletls" end}
+      #{if OS.mac? then "--without-openssl" else "--with-openssl" end}
       --without-gnutls
       --without-libgmp
       --without-libnettle
