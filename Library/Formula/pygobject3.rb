@@ -34,6 +34,14 @@ class Pygobject3 < Formula
     sha1 "1d7aad99256d87d616a41b7026cd05267bd9f97f"
   end if build.with? 'tests'
 
+  # resolves "error: redefinition of typedef 'PyGIFunctionCache'"
+  # https://github.com/Homebrew/homebrew/issues/34734
+  # https://bugzilla.gnome.org/show_bug.cgi?id=737874
+  patch do
+    url "https://github.com/GNOME/pygobject/commit/0de827190e7575f7e1e339337b78c7d6e46957b4.diff"
+    sha1 "6a9c1f510964e9c09531c47538ca376af14522c5"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
