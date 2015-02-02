@@ -1,7 +1,7 @@
 class Pngcrush < Formula
   homepage "http://pmt.sourceforge.net/pngcrush/"
-  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.82/pngcrush-1.7.82.tar.gz"
-  sha1 "a9d7305908810a7da981611e7aea8830b3ff1f43"
+  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.83/pngcrush-1.7.83.tar.gz"
+  sha1 "70ae10e40ee86a79b855697389516e36d3ac7fda"
 
   bottle do
     cellar :any
@@ -11,7 +11,8 @@ class Pngcrush < Formula
   end
 
   def install
-    # Required to enable "-cc" (color counting) option (disabled by default since 1.5.1)
+    # Required to enable "-cc" (color counting) option (disabled by default
+    # since 1.5.1)
     ENV.append_to_cflags "-DPNGCRUSH_COUNT_COLORS"
 
     system "make", "CC=#{ENV.cc}",
