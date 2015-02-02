@@ -14,4 +14,12 @@ class AprDependency < Requirement
       ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["apr-util"].opt_libexec}/lib/pkgconfig"
     end
   end
+
+  def to_dependency
+    super.extend Module.new {
+      def tags
+        super - [:build]
+      end
+    }
+  end
 end
