@@ -2,8 +2,8 @@
 # of Homebrew.
 class Mercurial < Formula
   homepage "http://mercurial.selenic.com/"
-  url "http://mercurial.selenic.com/release/mercurial-3.2.4.tar.gz"
-  sha1 "6adc45a99f036a3fe3433a4d24e5641c91acb693"
+  url "http://mercurial.selenic.com/release/mercurial-3.3.tar.gz"
+  sha1 "9bc03b6e82ce7bccb9d2608c7a5c4023adf2290c"
 
   bottle do
     cellar :any
@@ -23,10 +23,6 @@ class Mercurial < Formula
     # install the completion scripts
     bash_completion.install "contrib/bash_completion" => "hg-completion.bash"
     zsh_completion.install "contrib/zsh_completion" => "_hg"
-
-    # install the merge tool default configs
-    # http://mercurial.selenic.com/wiki/Packaging#Things_to_note
-    (etc/"mercurial"/"hgrc.d").install "contrib/mergetools.hgrc" => "mergetools.rc"
   end
 
   test do
