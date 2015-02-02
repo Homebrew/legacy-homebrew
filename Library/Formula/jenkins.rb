@@ -36,7 +36,7 @@ class Jenkins < Formula
           <string>-Dmail.smtp.starttls.enable=true</string>
           <string>-jar</string>
           <string>#{opt_libexec}/jenkins.war</string>
-          <string>--httpListenAddress=127.0.0.1</string>
+          <string>--httpListenAddress=0.0.0.0</string>
           <string>--httpPort=8080</string>
         </array>
         <key>RunAtLoad</key>
