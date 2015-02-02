@@ -668,6 +668,24 @@ class FormulaAuditor
     end
   end
 
+  def audit_prefix_has_contents
+    return unless formula.prefix.directory?
+
+    Pathname.glob("#{formula.prefix}/**/*") do |file|
+      next if file.directory?
+      basename = file.basename.to_s
+      next if Metafiles.copy?(basename)
+      next if %w[.DS_Store INSTALL_RECEIPT.json].include?(basename)
+      return
+    end
+
+    problem <<-EOS.undent
+      The installation seems to be empty. Please ensure the prefix
+      is set correctly and expected files are installed.
+      The prefix configure/make argument may be case-sensitive.
+    EOS
+  end
+
   def audit_conditional_dep(dep, condition, line)
     quoted_dep = quote_dep(dep)
     dep = Regexp.escape(dep.to_s)
@@ -700,6 +718,7 @@ class FormulaAuditor
     audit_text
     text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
     audit_installed
+    audit_prefix_has_contents
   end
 
   private
