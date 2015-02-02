@@ -4,8 +4,8 @@ class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
 
   stable do
-    url "https://github.com/ariya/phantomjs/archive/1.9.8.tar.gz"
-    sha256 "3a321561677f678ca00137c47689e3379c7fe6b83f7597d2d5de187dd243f7be"
+    url "https://github.com/ariya/phantomjs/archive/2.0.0.tar.gz"
+    sha256 "0a1338464ca37314037d139b3e0f7368325f5d8810628d9d9f2df9f9f535d407"
   end
 
   bottle do
@@ -15,14 +15,19 @@ class Phantomjs < Formula
     sha1 "c43984e9ffb64d628f27b64bae5b75cbfd9dcfc2" => :mountain_lion
   end
 
+  # Qt Yosemite build fix. Upstream commit/PR:
+  # https://qt.gitorious.org/qt/qtbase/commit/70e442
+  # https://github.com/ariya/phantomjs/pull/12934
+  patch do
+    url "https://gist.githubusercontent.com/mikemcquaid/db645f7cbeec4f3b1b2e/raw/e664ecc5c259344d5a73a84b52e472bf8ad3733e/phantomjs-yosemite.patch"
+    sha1 "1e723f055ef5df9a2945cbce3e70322105313f47"
+  end
+
   head "https://github.com/ariya/phantomjs.git"
 
   depends_on "openssl"
 
   def install
-    if build.stable? && MacOS.prefer_64_bit?
-      inreplace "src/qt/preconfig.sh", "-arch x86", "-arch x86_64"
-    end
     system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
       "--qt-config", "-openssl-linked"
     bin.install "bin/phantomjs"
