@@ -198,6 +198,25 @@ A Hash specifies a formula dependency with some additional information. Given a 
     depends_on "foo" => [:optional, "with-bar"]
     ```
 
+
+## Specifying other formulae as conflicts
+
+Sometimes there’s hard conflict between formulae, and it can’t be avoided or circumvented with `keg_only`.
+
+PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L36-L37) formula for minor conflict.
+
+PolarSSL ship GNU’s Hello, and compiles a `hello` binary. This is obviously non-essential to PolarSSL’s functionality, and conflict with the `hello` formula would be overkill, so we just remove it.
+
+However, also in the PolarSSL formulae is a [firm conflict](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L19) with `md5sha1sum`, because both `md5sha1sum` and `polarssl` compile identically-named binaries that *are* important for core functionality.
+
+As a general rule, `conflicts_with` should be a last-resort option. It’s a fairly blunt instrument.
+
+The syntax for conflict that can’t be worked around is
+
+```ruby
+conflicts_with "blueduck", :because => "yellowduck also ships a duck binary"
+```
+
 ## Formulae Revisions
 
 In Homebrew we sometimes accept formulae updates that don’t include a version bump. These include homepage changes, resource updates, new patches or fixing a security issue with a formula.

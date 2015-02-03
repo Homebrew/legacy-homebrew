@@ -9,8 +9,16 @@ class Ghc < Formula
     sha1 "296802648e2b2bc26fcb01025fb1fa8ab583e64a" => :mountain_lion
   end
 
+  devel do
+    url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-src.tar.xz"
+    version "7.10.1-rc2"
+    sha256 "766596f9b09b2cdd8bd477754f0e02ea8f7e40e4f5b0522cf585942fb2fec546"
+  end
+
   option "32-bit"
-  option "tests", "Verify the build using the testsuite."
+  option "with-tests", "Verify the build using the testsuite."
+
+  deprecated_option "tests" => "with-tests"
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
@@ -41,9 +49,18 @@ class Ghc < Formula
     end
   end
 
-  resource "testsuite" do
-    url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
-    sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
+  stable do
+    resource "testsuite" do
+      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
+      sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
+    end
+  end
+
+  devel do
+    resource "testsuite" do
+      url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-testsuite.tar.xz"
+      sha256 "051d4659421dec257827d7de7df8a99806f4bf575102013dda4006fccee11f76"
+    end
   end
 
   if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
@@ -113,7 +130,7 @@ class Ghc < Formula
                             "--with-gcc=#{ENV.cc}"
       system "make"
 
-      if build.include? "tests"
+      if build.with? "tests"
         resource("testsuite").stage do
           cd "testsuite" do
             (buildpath+"Ghcsource/config").install Dir["config/*"]

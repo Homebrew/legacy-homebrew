@@ -65,4 +65,9 @@ class BottleVersionParsingTests < Homebrew::TestCase
     assert_version_detected '2007f',
       'imap-uw-2007f.yosemite.bottle.tar.gz'
   end
+
+  def test_ngircd_style
+    assert_version_detected '22',
+      'ngircd-22.mavericks.bottle.tar.gz'
+  end
 end

@@ -1,19 +1,18 @@
-require "formula"
 require "language/haskell"
 
 class Cgrep < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/awgn/cgrep"
-  url "https://github.com/awgn/cgrep/archive/v6.4.9.tar.gz"
-  sha1 "0b5bc5bb96b2c70a7353ac036ce5949bbe2a9bc1"
+  url "https://github.com/awgn/cgrep/archive/v6.4.12.tar.gz"
+  sha1 "4933c1ae055d5c04f567c9405339ce4f972ef62b"
   head "https://github.com/awgn/cgrep.git"
 
   bottle do
     cellar :any
-    sha1 "08b871722472f4d2ee246ca59cf9266e7f37f78a" => :yosemite
-    sha1 "cd182ff755db1210bba15dce69d5cf90acfa9e82" => :mavericks
-    sha1 "57d998d3e8dfc19fc7d9fdb67e9ebf92e9e5ed26" => :mountain_lion
+    sha1 "f3879496816cd421a874c0c13f11749c2816bccc" => :yosemite
+    sha1 "935e68c7447007ddcffe49f48c4ceb9bab69a362" => :mavericks
+    sha1 "a446389f7b1977bf49b7ede278e731934659a647" => :mountain_lion
   end
 
   depends_on "ghc" => :build

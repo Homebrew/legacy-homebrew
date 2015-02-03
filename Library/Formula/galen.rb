@@ -1,9 +1,9 @@
 class Galen < Formula
   homepage "http://galenframework.com/"
-  url "https://github.com/galenframework/galen/releases/download/galen-1.4.10/galen-bin-1.4.10.zip"
-  sha1 "237896138a244d1a168a3220d07edd88f6f39da9"
+  url "https://github.com/galenframework/galen/releases/download/galen-1.5.2/galen-bin-1.5.2.zip"
+  sha1 "1f40d12153a9885f8ba33f50fac6ae89763ab584"
 
-  depends_on :java => "1.6"
+  depends_on :java => "1.6+"
 
   def install
     libexec.install "galen.jar"
@@ -15,7 +15,6 @@ class Galen < Formula
   end
 
   test do
-    output = shell_output "#{bin}/galen -v"
-    assert_match /Galen Framework\nVersion: 1.4.10/, output
+    assert_match "Version: #{version}", shell_output("#{bin}/galen -v")
   end
 end

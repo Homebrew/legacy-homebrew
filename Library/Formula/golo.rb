@@ -1,5 +1,3 @@
-require "formula"
-
 class Golo < Formula
   homepage "http://golo-lang.org"
   url "http://search.maven.org/remotecontent?filepath=org/golo-lang/golo/2.0.0/golo-2.0.0-distribution.tar.gz"
@@ -10,16 +8,16 @@ class Golo < Formula
     depends_on "maven" => :build
   end
 
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
 
   def install
     if build.head?
       rake "special:bootstrap"
-      libexec.install %w(target/appassembler/bin target/appassembler/lib)
+      libexec.install %w[target/appassembler/bin target/appassembler/lib]
     else
-      libexec.install %w(bin doc lib)
+      libexec.install %w[bin doc lib]
     end
-    libexec.install %w(share samples)
+    libexec.install %w[share samples]
 
     rm_f Dir["#{libexec}/bin/*.bat"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
@@ -29,9 +27,14 @@ class Golo < Formula
   end
 
   def caveats
-    if ENV["SHELL"].include? "zsh"; <<-EOS.undent
-For ZSH users, please add "golo" in yours plugins in ".zshrc"
+    if ENV["SHELL"].include? "zsh"
+      <<-EOS.undent
+        For ZSH users, please add "golo" in yours plugins in ".zshrc"
       EOS
     end
+  end
+
+  test do
+    system "#{bin}/golo", "golo", "--files", "#{libexec}/samples/helloworld.golo"
   end
 end

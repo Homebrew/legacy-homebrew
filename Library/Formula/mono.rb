@@ -2,18 +2,18 @@ require "formula"
 
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.10.0.tar.bz2"
-  sha1 "74e43604ea48e941c39a43ebc153abee4ddba56c"
+  url "http://download.mono-project.com/sources/mono/mono-3.12.0.tar.bz2"
+  sha1 "cec83efd13ffc1e212c632395a5aac75772a09e7"
+  head "https://github.com/mono/mono.git"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    revision 1
-    sha1 "c2cb9253a6d3b69ed6b916bf0071a698e7c12c04" => :yosemite
-    sha1 "c1b47e3c54c6617a968405c24ced6489d50e79e1" => :mavericks
-    sha1 "ffa3cf10d50caa8bba3e8a6b9ae85964ef73be55" => :mountain_lion
+    sha1 "5c6fe51dac9396ec10e8d45efdae24cf9e88bc3e" => :yosemite
+    sha1 "7d47061cb4f731398d2114a86010ab60e6dc88b4" => :mavericks
+    sha1 "48ccd72d404ef3a20255ed87c5fbc8a14ac10fb5" => :mountain_lion
   end
 
   resource "monolite" do
@@ -43,8 +43,7 @@ class Mono < Formula
   test do
     test_str = "Hello Homebrew"
     test_name = "hello.cs"
-    hello = testpath/test_name
-    hello.write <<-EOS.undent
+    (testpath/test_name).write <<-EOS.undent
       public class Hello1
       {
          public static void Main()
@@ -53,15 +52,12 @@ class Mono < Formula
          }
       }
     EOS
-    `#{bin}/mcs #{hello}`
-    assert $?.success?
-    output = `#{bin}/mono hello.exe`
-    assert $?.success?
-    assert_equal test_str, output.strip
+    shell_output "#{bin}/mcs #{test_name}"
+    output = shell_output "#{bin}/mono hello.exe"
+    assert_match test_str, output.strip
 
     # Tests that xbuild is able to execute lib/mono/*/mcs.exe
-    xbuild = testpath/"test.csproj"
-    xbuild.write <<-EOS.undent
+    (testpath/"test.csproj").write <<-EOS.undent
       <?xml version="1.0" encoding="utf-8"?>
       <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
         <PropertyGroup>
@@ -73,8 +69,7 @@ class Mono < Formula
         <Import Project="$(MSBuildBinPath)\\Microsoft.CSharp.targets" />
       </Project>
     EOS
-    system "#{bin}/xbuild", xbuild
-    assert $?.success?
+    shell_output "#{bin}/xbuild test.csproj"
   end
 
   def caveats; <<-EOS.undent
