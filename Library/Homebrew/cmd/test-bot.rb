@@ -430,10 +430,9 @@ module Homebrew
 
       # Pass --devel or --HEAD to install in the event formulae lack stable. Supports devel-only/head-only.
       # head-only should not have devel, but devel-only can have head. Stable can have all three.
-      if devel_only_tap? formula
+      if formula.devel && formula.stable.nil?
+        puts formula.tap
         install_args << "--devel"
-      elsif head_only_tap? formula
-        install_args << "--HEAD"
       end
 
       install_args << formula_name
@@ -581,14 +580,6 @@ module Homebrew
       changed_formulae.map!(&:first)
       unchanged_formulae = @formulae - changed_formulae
       changed_formulae + unchanged_formulae
-    end
-
-    def head_only_tap? formula
-      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap == "homebrew/homebrew-head-only"
-    end
-
-    def devel_only_tap? formula
-      formula.devel && formula.stable.nil? && formula.tap == "homebrew/homebrew-devel-only"
     end
 
     def run
