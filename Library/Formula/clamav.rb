@@ -4,9 +4,9 @@ class Clamav < Formula
   sha1 "03cb9a20a08aba9176b1f58d5527d06ec8261f9c"
 
   bottle do
-    sha1 "181a03aa6d5e1ebc7dd1a200a7cf0b3e574188cf" => :yosemite
-    sha1 "70333337e5f516c0e7a091a458f9cb166b805239" => :mavericks
-    sha1 "1e693ec6df51b2c8095feffce49850c32a409c35" => :mountain_lion
+    sha1 "b98d88af709fc48b4cad3e07e8bf2b243a64e36b" => :yosemite
+    sha1 "857c84af44eeeb1f8413f5034ff47be8f950075d" => :mavericks
+    sha1 "e0b8f89118ff2c0fe2d8bca37572f4b37d327ce6" => :mountain_lion
   end
 
   head do
