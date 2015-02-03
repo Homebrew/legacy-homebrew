@@ -1,5 +1,3 @@
-require "formula"
-
 class RbenvBinstubs < Formula
   homepage "https://github.com/ianheggie/rbenv-binstubs"
   url "https://github.com/ianheggie/rbenv-binstubs/archive/v1.4.tar.gz"
@@ -11,5 +9,9 @@ class RbenvBinstubs < Formula
 
   def install
     prefix.install Dir["*"]
+  end
+
+  test do
+    assert shell_output("rbenv hooks exec").include? "rbenv-binstubs.bash"
   end
 end
