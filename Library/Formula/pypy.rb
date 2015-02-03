@@ -1,10 +1,7 @@
-require "formula"
-
 class Pypy < Formula
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-src.tar.bz2"
-  sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
-  revision 2
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-src.tar.bz2"
+  sha1 "1d215a22ea16581de338700d556b21a8c02b4eff"
 
   bottle do
     cellar :any
@@ -18,14 +15,24 @@ class Pypy < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
+  option "without-bootstrap", "Translate Pypy with system Python instead of " \
+                              "downloading a Pypy binary distribution to " \
+                              "perform the translation (adds 30-60 minutes " \
+                              "to build)"
+
+  resource "bootstrap" do
+    url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-osx64.tar.bz2"
+    sha1 "ad47285526b1b3c14f4eecc874bb82a133a8e551"
+  end
+
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
-    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
+    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
-    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
+    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
@@ -38,11 +45,17 @@ class Pypy < Formula
     ENV["PYTHONPATH"] = ""
     ENV["PYPY_USESSION_DIR"] = buildpath
 
+    python = "python"
+    if build.with?("bootstrap") && OS.mac? && MacOS.preferred_arch == :x86_64
+      resource("bootstrap").stage buildpath/"bootstrap"
+      python = buildpath/"bootstrap/bin/pypy"
+    end
+
     Dir.chdir "pypy/goal" do
-      system "python", buildpath/"rpython/bin/rpython",
-             "-Ojit", "--shared", "--cc", ENV.cc, "--translation-verbose",
+      system python, buildpath/"rpython/bin/rpython",
+             "-Ojit", "--shared", "--cc", ENV.cc, "--verbose",
              "--make-jobs", ENV.make_jobs, "targetpypystandalone.py"
-      system "install_name_tool", "-change", "libpypy-c.dylib", libexec/"lib/libpypy-c.dylib", "pypy-c"
+      system "install_name_tool", "-change", "@rpath/libpypy-c.dylib", libexec/"lib/libpypy-c.dylib", "pypy-c"
       system "install_name_tool", "-id", opt_libexec/"lib/libpypy-c.dylib", "libpypy-c.dylib"
       (libexec/"bin").install "pypy-c" => "pypy"
       (libexec/"lib").install "libpypy-c.dylib"
@@ -135,5 +148,10 @@ class Pypy < Formula
   # The Cellar location of distutils
   def distutils
     libexec+"lib-python/2.7/distutils"
+  end
+
+  test do
+    system bin/"pypy", "-c", "print('Hello, world!')"
+    system scripts_folder/"pip", "list"
   end
 end
