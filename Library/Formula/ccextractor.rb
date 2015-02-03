@@ -10,9 +10,9 @@ class Ccextractor < Formula
 
   bottle do
     cellar :any
-    sha1 "12fc81b745160eaf4d664907defe87230ffa022e" => :yosemite
-    sha1 "4e4775826383cc891cb63f9f33f5d5a0f74ff5ac" => :mavericks
-    sha1 "9eefc9ce1714e675a9ef01841e79b6b72170173d" => :mountain_lion
+    sha1 "2bd02af2ba9c80f8cdf6871eaaf2daac5fdbf4ae" => :yosemite
+    sha1 "3a8e49c088e63b8d3b20e7819265c59d35b970cb" => :mavericks
+    sha1 "1d77c07e0c5477c813219b4fd44e8479e720ce92" => :mountain_lion
   end
 
   def install
