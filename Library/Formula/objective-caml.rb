@@ -19,10 +19,10 @@ class ObjectiveCaml < Formula
     args = %W[
       --prefix #{HOMEBREW_PREFIX}
       --mandir #{man}
-      -cc #{ENV.cc}
       -with-debug-runtime
     ]
-    args << "-aspp" << "#{ENV.cc} -c"
+    args << "-cc" << "#{ENV.cc} #{ENV.cflags}"
+    args << "-aspp" << "#{ENV.cc} #{ENV.cflags} -c"
     args << "-no-graph" if build.without? "x11"
 
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
