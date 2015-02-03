@@ -325,7 +325,8 @@ module Homebrew
 
       unsatisfied_requirements = requirements.reject do |requirement|
         satisfied = false
-        satisfied = true if requirement.satisfied?
+        satisfied ||= requirement.satisfied?
+        satisfied ||= requirement.optional?
         if !satisfied && requirement.default_formula?
           default = Formula[requirement.class.default_formula]
           satisfied = satisfied_requirements?(default, :stable, formula.name)
