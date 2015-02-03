@@ -3,6 +3,8 @@ require "formula"
 class Putty < Formula
   homepage "http://www.chiark.greenend.org.uk/~sgtatham/putty/"
   url "http://the.earth.li/~sgtatham/putty/0.63/putty-0.63.tar.gz"
+  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.63.tar.gz"
+  mirror "https://fossies.org/linux/misc/putty-0.63.tar.gz"
   sha1 "195c0603ef61082b91276faa8d4246ea472bba3b"
 
   head do
@@ -22,7 +24,13 @@ class Putty < Formula
       system "make", "-C", "doc"
     end
 
-    system "./configure", "--prefix=#{prefix}", "--disable-gtktest"
+    args = %W{
+       --prefix=#{prefix}
+       --disable-gtktest
+    }
+    args << ((build.with? "gtk+") ? "--with-gtk" : "--without-gtk")
+
+    system "./configure", *args
 
     build_version = build.head? ? "svn-#{version}" : version
     system "make", "VER=-DRELEASE=#{build_version}"
