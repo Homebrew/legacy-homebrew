@@ -3,6 +3,13 @@ class Cunit < Formula
   url "https://downloads.sourceforge.net/project/cunit/CUnit/2.1-3/CUnit-2.1-3.tar.bz2"
   sha1 "eac0c71167aa3fab83483ae1313b78163f0f7238"
 
+  bottle do
+    cellar :any
+    sha1 "7f56e9cd7509523403a9989ebdb4bde202c9b834" => :yosemite
+    sha1 "ecad657c01ac67e6da01d3d6de086f11ad9c06cf" => :mavericks
+    sha1 "a4fa117d4d1ba31a42b41645324919defea49f16" => :mountain_lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
