@@ -1,9 +1,8 @@
 class WirouterKeyrec < Formula
-  homepage ""
+  homepage "http://www.salvatorefresta.net/tools/"
   url "http://tools.salvatorefresta.net/WiRouter_KeyRec_1.1.2.zip"
   version "1.1.2"
   sha1 "3c17f2d0bf3d6201409862fd903ebfd60c1e8a2e"
-
 
   def install
   	ENV.deparallelize
