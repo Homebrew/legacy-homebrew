@@ -5,11 +5,8 @@ class WirouterKeyrec < Formula
   sha1 "3c17f2d0bf3d6201409862fd903ebfd60c1e8a2e"
 
   def install
-  	ENV.deparallelize
-    ENV.no_optimization
-	
-	inreplace "src/agpf.h", /\/etc\/wirouterkeyrec/, "#{prefix}/etc/config"
-	inreplace "src/teletu.h", /\/etc\/wirouterkeyrec/, "#{prefix}/etc/config"
+  	inreplace "src/agpf.h", /\/etc/, "#{prefix}/etc"
+	inreplace "src/teletu.h", /\/etc/, "#{prefix}/etc"
 	
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -18,9 +15,8 @@ class WirouterKeyrec < Formula
                           "--sysconfdir=#{prefix}",
                           "--exec-prefix=#{prefix}"
     system "make prefix=#{prefix}"
+    system "make", "install", "DESTDIR=#{prefix}", "BIN_DIR=bin/"
     
-    (bin).install "build/wirouterkeyrec"
-    (prefix/"etc").install "config"
   end
 
   test do
