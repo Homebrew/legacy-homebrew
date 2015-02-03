@@ -15,11 +15,9 @@ class WirouterKeyrec < Formula
                           "--exec-prefix=#{prefix}"
     system "make", "prefix=#{prefix}"
     system "make", "install", "DESTDIR=#{prefix}", "BIN_DIR=bin/"
-
   end
 
   test do
-
     system "#{bin}/wirouterkeyrec", "-s", "Alice-12345678"
   end
 end
