@@ -584,11 +584,13 @@ module Homebrew
     end
 
     def head_only_tap? formula
-      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap == "homebrew/homebrew-head-only"
+      puts formula.tap
+      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap == "Homebrew/homebrew"
     end
 
     def devel_only_tap? formula
-      formula.devel && formula.stable.nil? && formula.tap == "homebrew/homebrew-devel-only"
+      puts formula.tap
+      formula.devel && formula.stable.nil? && formula.tap == "Homebrew/homebrew"
     end
 
     def run
