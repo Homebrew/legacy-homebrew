@@ -41,8 +41,8 @@ class Ansible < Formula
   end
 
   resource "boto" do
-    url "https://pypi.python.org/packages/source/b/boto/boto-2.34.0.tar.gz"
-    sha1 "e19d252b58054a7711fae910324e26b2b551a44d"
+    url "https://pypi.python.org/packages/source/b/boto/boto-2.36.0.tar.gz"
+    sha1 "f230ff9b041d3b43244086e38b7b6029450898be"
   end
 
   resource "pyyaml" do
