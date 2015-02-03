@@ -1,9 +1,7 @@
-require "formula"
-
 class Clamav < Formula
   homepage "http://www.clamav.net/"
-  url "https://downloads.sourceforge.net/clamav/clamav-0.98.5.tar.gz"
-  sha1 "5f5e45735819e3ca61610899b779172a5639f70f"
+  url "https://downloads.sourceforge.net/clamav/clamav-0.98.6.tar.gz"
+  sha1 "03cb9a20a08aba9176b1f58d5527d06ec8261f9c"
 
   bottle do
     sha1 "181a03aa6d5e1ebc7dd1a200a7cf0b3e574188cf" => :yosemite
@@ -25,14 +23,15 @@ class Clamav < Formula
   skip_clean "share/clamav"
 
   def install
-    args = [ "--disable-dependency-tracking",
-             "--disable-silent-rules",
-             "--prefix=#{prefix}",
-             "--libdir=#{lib}",
-             "--sysconfdir=#{etc}/clamav",
-             "--disable-zlib-vcheck",
-             "--with-zlib=#{MacOS.sdk_path}/usr",
-             "--with-openssl=#{Formula["openssl"].opt_prefix}"
+    args = [
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
+      "--prefix=#{prefix}",
+      "--libdir=#{lib}",
+      "--sysconfdir=#{etc}/clamav",
+      "--disable-zlib-vcheck",
+      "--with-zlib=#{MacOS.sdk_path}/usr",
+      "--with-openssl=#{Formula["openssl"].opt_prefix}",
     ]
 
     args << "--with-libjson=#{Formula["json-c"].opt_prefix}" if build.with? "json-c"
