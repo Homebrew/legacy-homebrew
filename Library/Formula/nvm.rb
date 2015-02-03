@@ -1,8 +1,8 @@
 class Nvm < Formula
   homepage "https://github.com/creationix/nvm"
   head "https://github.com/creationix/nvm.git"
-  url "https://github.com/creationix/nvm/archive/v0.23.2.tar.gz"
-  sha1 "c20926c5b2f40b563e9db8d81917de3edd378d2e"
+  url "https://github.com/creationix/nvm/archive/v0.23.3.tar.gz"
+  sha1 "f40c9e766fb98ff32987944063c2b9b4a203b954"
 
   def install
     prefix.install "nvm.sh"
