@@ -21,9 +21,9 @@ class Monetdb < Formula
   sha1 "dde2cad29d2f5bbdd2e2845ee0663969eb0aeb3f"
 
   bottle do
-    sha1 "edb53b064fffddefe80a0447b00f521e4cac7a40" => :yosemite
-    sha1 "d00ba596fa14345d4cf114bab08b42e481ab65ce" => :mavericks
-    sha1 "b98435f66be2aa6dc04de3d373b2ce1e2d3d1f0d" => :mountain_lion
+    sha1 "a277df350c7758eee0dd9082f5b369da4aeb67b3" => :yosemite
+    sha1 "360ce097dd63e8af6caf94f0a1c422491d965c9b" => :mavericks
+    sha1 "d63d44cbc488f5f4d40d5ed169e92d2ece4964d6" => :mountain_lion
   end
 
   head do
