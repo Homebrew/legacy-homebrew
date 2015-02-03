@@ -2,8 +2,8 @@ require "formula"
 
 class RakudoStar < Formula
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2014.12.1.tar.gz"
-  sha256 "c99acb6e7128aa950e97303c337603f831481d5a316e4a72ea3981606b2ce784"
+  url "http://rakudo.org/downloads/star/rakudo-star-2014.12.2.tar.gz"
+  sha256 "55d47b0e36c9c21036fc0de8d195ef39e3fd589b1d88d9959932d0cc104d92a1"
 
   bottle do
     revision 1
@@ -42,15 +42,6 @@ class RakudoStar < Formula
     system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=" + backends.join(","), *generate
     system "make"
     system "make install"
-
-    # TEMPORARY Workaround for http://stackoverflow.com/questions/9988125/shebang-pointing-to-script-also-having-shebang-is-effectively-ignored.
-    # rakudo-star 2014.12.1 has shebang lines in some scripts which point to other scripts with shebang
-    # lines, which will be ignored/fail on MacOS. This uses /usr/bin/env instead which is also implemented
-    # upstream (not released yet).
-    rakudo_shebangs = `grep --recursive --files-with-matches ^#!#{bin} #{prefix}`
-    rakudo_shebang_files = rakudo_shebangs.lines.sort.uniq
-    rakudo_shebang_files.map! {|f| Pathname(f.chomp)}
-    inreplace rakudo_shebang_files, %r{^(#!#{bin}/)}, "#!/usr/bin/env "
 
     # Move the man pages out of the top level into share.
     # Not all backends seem to generate man pages at this point (moar does not, parrot does),
