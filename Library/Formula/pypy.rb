@@ -2,9 +2,8 @@ require "formula"
 
 class Pypy < Formula
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-src.tar.bz2"
-  sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
-  revision 2
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-src.tar.bz2"
+  sha1 "1d215a22ea16581de338700d556b21a8c02b4eff"
 
   bottle do
     cellar :any
