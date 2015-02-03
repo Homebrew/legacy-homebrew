@@ -7,6 +7,13 @@ class Putty < Formula
   mirror "https://fossies.org/linux/misc/putty-0.63.tar.gz"
   sha1 "195c0603ef61082b91276faa8d4246ea472bba3b"
 
+  bottle do
+    cellar :any
+    sha1 "e556bd7b79a16a7f002558d29d1ee2c32cea10eb" => :yosemite
+    sha1 "2d936017216448550b014391e7063fadd6545dbe" => :mavericks
+    sha1 "dba2d463ddcde5b15f0d0d06e18935c3a6465fd7" => :mountain_lion
+  end
+
   head do
     url "svn://svn.tartarus.org/sgt/putty"
     depends_on "halibut" => :build
