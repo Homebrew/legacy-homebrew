@@ -5,6 +5,13 @@ class RakudoStar < Formula
   url "http://rakudo.org/downloads/star/rakudo-star-2014.12.1.tar.gz"
   sha256 "c99acb6e7128aa950e97303c337603f831481d5a316e4a72ea3981606b2ce784"
 
+  bottle do
+    revision 1
+    sha1 "0cecf848006c3efb275c2d1fd005e948f5d74650" => :yosemite
+    sha1 "163f336f077e10bacbe6ab08da520336d0636d78" => :mavericks
+    sha1 "0387a42e9bfdd816312ff1b377391dbebc6e3185" => :mountain_lion
+  end
+
   option "with-jvm", "Build also for jvm as an alternate backend."
   option "with-parrot", "Build also for parrot as an alternate backend."
 
@@ -46,9 +53,10 @@ class RakudoStar < Formula
     inreplace rakudo_shebang_files, %r{^(#!#{bin}/)}, "#!/usr/bin/env "
 
     # Move the man pages out of the top level into share.
-    # Not all backends seem to generate man pages at this point.
+    # Not all backends seem to generate man pages at this point (moar does not, parrot does),
+    # so we need to check if the directory exists first.
     if File.directory?("#{prefix}/man")
-        mv "#{prefix}/man", share
+      mv "#{prefix}/man", share
     end
   end
 
