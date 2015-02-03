@@ -1,20 +1,18 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
-  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
-  revision 2
+  url "https://nodejs.org/dist/v0.10.36/node-v0.10.36.tar.gz"
+  sha256 "b9d7d1d0294bce46686b13a05da6fc5b1e7743b597544aa888e8e64a9f178c81"
 
   bottle do
-    revision 2
-    sha1 "47488bdb1f2454429d6a080c22e6e2c4cfe1f339" => :yosemite
-    sha1 "fbb207787027eceda84ac05cd40f6b0b733b3aef" => :mavericks
-    sha1 "d72f12249dbb91a9e882d29dd0585ff623ae8769" => :mountain_lion
+    sha1 "ca405f33a5c8e3356a0f477eee43e492e7925927" => :yosemite
+    sha1 "f17dfa5a02a7f83b46f0deb40a4746a1337ffa88" => :mavericks
+    sha1 "b5d7094ed826813b2cc35303bcde8269b1ad9292" => :mountain_lion
   end
 
   devel do
-    url "https://nodejs.org/dist/v0.11.15/node-v0.11.15.tar.gz"
-    sha256 "e613d274baa4c99a0518038192491433f7877493a66d8505af263f6310991d01"
+    url "https://nodejs.org/dist/v0.11.16/node-v0.11.16.tar.gz"
+    sha256 "f0d141faa1f7da3aff53e9615d76040d29c0650542be3b09ee80aca2f2cc61f6"
 
     depends_on "pkg-config" => :build
     depends_on "icu4c" => :optional

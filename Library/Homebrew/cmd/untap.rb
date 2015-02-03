@@ -4,25 +4,27 @@ module Homebrew
   def untap
     raise "Usage is `brew untap <tap-name>`" if ARGV.empty?
 
-    user, repo = tap_args
+    ARGV.each do |tapname|
+      user, repo = tap_args(tapname)
 
-    # we consistently downcase in tap to ensure we are not bitten by case-insensive
-    # filesystem issues. Which is the default on mac. The problem being the
-    # filesystem cares, but our regexps don't. So unless we resolve *every* path
-    # we will get bitten.
-    user.downcase!
-    repo.downcase!
+      # we consistently downcase in tap to ensure we are not bitten by case-insensive
+      # filesystem issues. Which is the default on mac. The problem being the
+      # filesystem cares, but our regexps don't. So unless we resolve *every* path
+      # we will get bitten.
+      user.downcase!
+      repo.downcase!
 
-    tapd = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
+      tapd = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
 
-    raise "No such tap!" unless tapd.directory?
+      raise "No such tap!" unless tapd.directory?
 
-    files = []
-    tapd.find_formula { |file| files << file }
-    unlink_tap_formula(files)
-    tapd.rmtree
-    tapd.dirname.rmdir_if_possible
-    puts "Untapped #{files.length} formula#{plural(files.length, 'e')}"
+      files = []
+      tapd.find_formula { |file| files << file }
+      unlink_tap_formula(files)
+      tapd.rmtree
+      tapd.dirname.rmdir_if_possible
+      puts "Untapped #{files.length} formula#{plural(files.length, 'e')}"
+    end
   end
 
   def unlink_tap_formula paths

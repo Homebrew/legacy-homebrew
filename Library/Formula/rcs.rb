@@ -1,17 +1,14 @@
-require "formula"
-
 class Rcs < Formula
   homepage "https://www.gnu.org/software/rcs/"
-  url "http://ftpmirror.gnu.org/rcs/rcs-5.9.3.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/rcs/rcs-5.9.3.tar.xz"
-  sha1 "e4a9549678618f5d69968b10c6c9b92b29519813"
+  url "http://ftpmirror.gnu.org/rcs/rcs-5.9.4.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/rcs/rcs-5.9.4.tar.xz"
+  sha1 "e87fb2e587fa165204ef69f69b7d5cd354c4e44d"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "9c2f2518aa1ffe52fa0a190d895c095078ab3a48" => :yosemite
-    sha1 "cff1c3e3090bbdcd980bc7faf333916872e0bf19" => :mavericks
-    sha1 "7ef0f63b4ddb1ad0ebfb2d72d15d4317018943f7" => :mountain_lion
+    sha1 "c1b9165adefc09d0ec1ed38ba7d25a47d61617b6" => :yosemite
+    sha1 "f3b9ff862830ecc7d84451b82a22d8b6db7ff9eb" => :mavericks
+    sha1 "f47df6b50e9d48d06a72b03e9425cf4bf4fbc429" => :mountain_lion
   end
 
   def install

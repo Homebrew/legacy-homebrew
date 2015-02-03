@@ -17,8 +17,8 @@ class Ant < Formula
   option "with-bcel", "Install Byte Code Engineering Library"
 
   resource "ivy" do
-    url "http://www.apache.org/dyn/closer.cgi?path=ant/ivy/2.3.0/apache-ivy-2.3.0-bin.tar.gz"
-    sha1 "878fab43ee9c70486a9ecec1ec44a2f034401687"
+    url "http://www.apache.org/dyn/closer.cgi?path=ant/ivy/2.4.0/apache-ivy-2.4.0-bin.tar.gz"
+    sha1 "97a206e3b6ec2ce9793d2ee151fa997a12647c7f"
   end
 
   resource "bcel" do

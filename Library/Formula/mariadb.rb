@@ -2,13 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.15/source/mariadb-10.0.15.tar.gz"
-  sha1 "edd8ba315fffa727b52833df453ac9b88961130e"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.16/source/mariadb-10.0.16.tar.gz"
+  sha1 "5164537bf222657ab5e3f47315fae96522285af1"
 
   bottle do
-    sha1 "96be0c291a73e273b3910f7c609cdfa45fc25347" => :yosemite
-    sha1 "432e13ac5b3f90008de0fcafeb42fe0d7a139229" => :mavericks
-    sha1 "cbffb3b121dad1e8602514613ac5f6aaf40a859a" => :mountain_lion
+    sha1 "5098b447222fbcb46069b3c1f56f17730a2471c8" => :yosemite
+    sha1 "48e948b01fecf27462503cf94d4d764b61c32c47" => :mavericks
+    sha1 "433a689752aee6fd9a753b1c35b4456bdb6c9369" => :mountain_lion
   end
 
   devel do

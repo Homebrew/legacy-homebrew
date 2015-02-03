@@ -7,10 +7,10 @@ class Cairo < Formula
   sha256 "2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7"
 
   bottle do
-    revision 1
-    sha1 "e2db7a27b4b9ddd78875f8fa1820c756b03ed1ac" => :yosemite
-    sha1 "2e975c2003ea16d8186e63c3e59dcc4963227a9e" => :mavericks
-    sha1 "b55dd832e2f702cb9685f3b3822b29f7dec0a34a" => :mountain_lion
+    revision 2
+    sha1 "9030254d5fb307ff28cddfad5a545ec09a64aa32" => :yosemite
+    sha1 "811b32fefaa1d57e1ef044a05c1e6d0181554b63" => :mavericks
+    sha1 "4d37e02c3ad9136eaf14a98c6a666d5c39a3766d" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
@@ -33,6 +33,7 @@ class Cairo < Formula
       --prefix=#{prefix}
       --enable-gobject=yes
       --enable-svg=yes
+      --enable-tee=yes
       --with-x
     ]
 
