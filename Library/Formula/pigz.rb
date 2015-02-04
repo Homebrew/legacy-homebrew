@@ -5,9 +5,9 @@ class Pigz < Formula
 
   bottle do
     cellar :any
-    sha1 "6eb3c6cad2d259e6a3230b9ac596a0357c54c170" => :yosemite
-    sha1 "f208f507c57ab7f32d34dc9e9d5ab7d131558d33" => :mavericks
-    sha1 "4348380310afb99b698813e76a4ba01e4d024a1a" => :mountain_lion
+    sha1 "90c40dbdaa9c9722496ef7e2f73da037d8996db1" => :yosemite
+    sha1 "5a641215041ea36eb15942ceb4dfcae1cd41a0a4" => :mavericks
+    sha1 "e4a79a31ddc5a540b7fbb74bb64837522c932ee9" => :mountain_lion
   end
 
   def install
