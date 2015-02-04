@@ -1,9 +1,7 @@
-require "formula"
-
 class Blink1 < Formula
   homepage "http://thingm.com/products/blink-1.html"
-  url "https://github.com/todbot/blink1/archive/v1.95.tar.gz"
-  sha1 "df305465360abe51de38684b82ea73c33a0fd2ae"
+  url "https://github.com/todbot/blink1/archive/v1.96.tar.gz"
+  sha1 "474487e72afa22b3dced246571546e8a6f49c939"
   head "https://github.com/todbot/blink1.git"
 
   bottle do
@@ -23,6 +21,6 @@ class Blink1 < Formula
   end
 
   test do
-    system "#{bin}/blink1-tool", "--version"
+    system bin/"blink1-tool", "--version"
   end
 end
