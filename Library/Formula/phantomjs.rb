@@ -25,8 +25,6 @@ class Phantomjs < Formula
 
   head "https://github.com/ariya/phantomjs.git"
 
-  depends_on "openssl"
-
   def install
     system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
       "--qt-config", "-openssl-linked"

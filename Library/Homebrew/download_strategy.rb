@@ -646,6 +646,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def update_submodules
+    quiet_safe_system "git", "submodule", "sync", "--recursive"
     quiet_safe_system "git", "submodule", "update", "--init", "--recursive"
   end
 
