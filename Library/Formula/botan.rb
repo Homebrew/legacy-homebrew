@@ -4,9 +4,9 @@ class Botan < Formula
   sha1 "e1c8e97b214b23931f7dc8aba44306fbeca9055c"
 
   bottle do
-    sha1 "89d491598019e57540e22089c3c7a3d45a845adc" => :yosemite
-    sha1 "aa5b7be38ab12c1755f3cb8dbee104d9514f27b2" => :mavericks
-    sha1 "2efea61b9f63b8344617a90eb4dc0445baab0243" => :mountain_lion
+    sha1 "3f9096cdf4156db3af972765fe9b8bb58a7b7261" => :yosemite
+    sha1 "d2f2f165eccbd6db984b83149a1f1df1b66dadbb" => :mavericks
+    sha1 "26196739a9584d6b3a129e32d3a2358484d6d8ed" => :mountain_lion
   end
 
   option "with-debug", "Enable debug build of Botan"
