@@ -4,6 +4,7 @@ class Ifuse < Formula
   homepage 'http://www.libimobiledevice.org/'
   url 'https://github.com/libimobiledevice/ifuse/archive/1.1.3.tar.gz'
   sha1 '447e9309fba1979be98ec83a4627b421dbd83032'
+  revision 1
 
   head 'http://cgit.sukimashita.com/ifuse.git'
 
