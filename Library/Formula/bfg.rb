@@ -5,9 +5,9 @@ class Bfg < Formula
 
   bottle do
     cellar :any
-    sha1 "aa138b3e29c4e1e091a34d454318a272ba7a07ef" => :yosemite
-    sha1 "b804d878d845fce21a33ae553a3e78cd7246bb70" => :mavericks
-    sha1 "b98e1cfe586b09b8d2f57cc590966cc677ffa595" => :mountain_lion
+    sha1 "7fde7526596e5070bb55723b6a03ccba698a3539" => :yosemite
+    sha1 "8ba104dc6eb4a6ae562d103df5ef439462bc725e" => :mavericks
+    sha1 "93b260fc22c0790d6a12d2eddbf2818728f29dd2" => :mountain_lion
   end
 
   def install
