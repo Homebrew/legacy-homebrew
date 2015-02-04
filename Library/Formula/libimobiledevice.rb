@@ -1,7 +1,7 @@
 class Libimobiledevice < Formula
   homepage "http://www.libimobiledevice.org/"
-  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.7.tar.bz2"
-  sha1 "ac47ba39e7f8d8cb9379756773ece30458b93c80"
+  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.2.0.tar.bz2"
+  sha1 "a8e3f21180b1d6df754d04a4080a29cf6891e701"
 
   bottle do
     cellar :any
