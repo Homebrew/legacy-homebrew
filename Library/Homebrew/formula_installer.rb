@@ -563,7 +563,7 @@ class FormulaInstaller
   end
 
   def install_plist
-    return unless formula.plist
+    return unless OS.mac? && formula.plist
     formula.plist_path.atomic_write(formula.plist)
     formula.plist_path.chmod 0644
   rescue Exception => e

@@ -103,6 +103,7 @@ class Caveats
   end
 
   def plist_caveats
+    return "" unless OS.mac?
     s = []
     if f.plist or (keg and keg.plist_installed?)
       destination = f.plist_startup ? '/Library/LaunchDaemons' \
