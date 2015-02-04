@@ -40,7 +40,7 @@ class Go < Formula
       targets = [
         ["linux",   ["386", "amd64", "arm"]],
         ["windows", ["386", "amd64"]],
-        ["darwin",  ["386", "amd64"]],
+        ["darwin",  ["", "amd64"]],
       ]
     else
       targets = [["darwin", [""]]]
