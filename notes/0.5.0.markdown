@@ -6,5 +6,5 @@
 * Passthrough of Hadoop and non-spark config (Thanks @jeffsteinmetz)
 * Increase default jar upload limit to 30MB
 * Support storing rdds that have a storeLevel already set (Thanks @zeitos)
-* README / doc fixes: (Thanks @devesh, @WangTaoTheTonic)
+* README / doc fixes: (Thanks @devesh, @WangTaoTheTonic, @KaiXinXiaoLei)
 * Change `SPARK_CONF_HOME` to `SPARK_CONF_DIR` (Thanks @WangTaoTheTonic)
