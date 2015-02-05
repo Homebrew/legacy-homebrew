@@ -82,7 +82,7 @@ begin
              }
 
   empty_argv = ARGV.empty?
-  help_regex = /(-h$|--help$|--usage$|-\?$|help$)/
+  help_regex = /(-h$|--help$|--usage$|-\?$|^help$)/
   help_flag = false
   cmd = nil
 
