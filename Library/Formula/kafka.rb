@@ -3,18 +3,17 @@ require "formula"
 class Kafka < Formula
   homepage "http://kafka.apache.org"
   head "http://git-wip-us.apache.org/repos/asf/kafka.git"
-  url "http://mirrors.ibiblio.org/apache/kafka/0.8.1.1/kafka-0.8.1.1-src.tgz"
-  mirror "http://mirror.sdunix.com/apache/kafka/0.8.1.1/kafka-0.8.1.1-src.tgz"
-  sha1 "104c15d22da36216a678e6a0c3243c552e47af87"
+  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.0/kafka-0.8.2.0-src.tgz"
+  mirror "http://mirror.sdunix.com/apache/kafka/0.8.2.0/kafka-0.8.2.0-src.tgz"
+  sha1 "d2c35b60a2f534fb552030dcc7855d13292b2414"
 
+  depends_on "gradle"
   depends_on "zookeeper"
   depends_on :java => "1.7"
 
   def install
+    system "gradle", "wrapper"
     system "./gradlew", "jar"
-
-    # Use 1 partition by default so individual consumers receive all topic messages
-    inreplace "config/server.properties", "num.partitions=2", "num.partitions=1"
 
     logs = var/"log/kafka"
     inreplace "config/log4j.properties", "kafka.logs.dir=logs", "kafka.logs.dir=#{logs}"
@@ -27,7 +26,7 @@ class Kafka < Formula
     inreplace "config/zookeeper.properties",
       "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
 
-    libexec.install %w(contrib core examples lib perf system_test)
+    libexec.install %w(contrib core examples system_test)
 
     prefix.install "bin"
     bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "`/usr/libexec/java_home`")
@@ -48,5 +47,8 @@ class Kafka < Formula
     If you have Java 7 installed along with other versions, try:
       JAVA_HOME=$(/usr/libexec/java_home -v 1.7) brew install kafka
     EOS
+  end
+
+  test do
   end
 end
