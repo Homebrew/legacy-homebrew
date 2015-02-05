@@ -5,6 +5,13 @@ class Tdb < Formula
 
   depends_on "gdbm" => :build
 
+  # older versions of the compiler allowed you to have a printf that
+  # spaned multiple lines, now that's no longer the case. There is a
+  # patch submitted upstream for this but it doesn't seem like it will
+  # ever be applied: http://sourceforge.net/p/tdb/patches/6/ as it
+  # dates back to 2003, and still hasn't been.
+  patch :DATA
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -14,13 +21,6 @@ class Tdb < Formula
                           "--host=6x86"
     system "make", "install"
   end
-
-  # older versions of the compiler allowed you to have a printf that
-  # spaned multiple lines, now that's no longer the case. There is a
-  # patch submitted upstream for this but it doesn't seem like it will
-  # ever be applied: http://sourceforge.net/p/tdb/patches/6/ as it
-  # dates back to 2003, and still hasn't been.
-  patch :DATA
 end
 __END__
 diff --git a/tdbtool.c b/tdbtool.c
