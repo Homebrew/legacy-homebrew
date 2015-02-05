@@ -3,6 +3,13 @@ class Flatbuffers < Formula
   url "https://github.com/google/flatbuffers/archive/v1.0.3.tar.gz"
   sha1 "8daba5be5436b7cb99f1883e3eb7f1c5da52d6b9"
 
+  bottle do
+    cellar :any
+    sha1 "2a82aec99c3b5ab9cd643dc7c6d2f88cfe953cce" => :yosemite
+    sha1 "a7222fe66033ca2749241e4d253534b3540b1e7c" => :mavericks
+    sha1 "d0de7bdea3b5fd43fddcfe20b857e4ec803a73f2" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
 
   def install
