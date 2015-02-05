@@ -3,6 +3,12 @@ class Calc < Formula
   url "http://www.isthe.com/chongo/src/calc/calc-2.12.5.0.tar.bz2"
   sha1 "65e5a6c77f7f5f3a500959a5deafd1b89a356335"
 
+  bottle do
+    sha1 "9d99ec472782f23cd5cd05a215cb3b8418b28032" => :yosemite
+    sha1 "23393e359956ed3b1c2717de019e5c803702273c" => :mavericks
+    sha1 "2eefd32770ca966b3c604f795af45a9717d15a13" => :mountain_lion
+  end
+
   depends_on "readline"
 
   def install
