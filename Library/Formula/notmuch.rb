@@ -2,8 +2,8 @@ require "formula"
 
 class Notmuch < Formula
   homepage "http://notmuchmail.org"
-  url "http://notmuchmail.org/releases/notmuch-0.18.1.tar.gz"
-  sha1 "ad82d6d5355594c4cab3c6d28c70ae4993acbec9"
+  url "http://notmuchmail.org/releases/notmuch-0.19.tar.gz"
+  sha1 "df023988f67e329357a5e8d00c4f6fc71249b89f"
 
   bottle do
     cellar :any
