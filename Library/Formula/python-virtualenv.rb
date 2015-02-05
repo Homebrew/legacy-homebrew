@@ -1,5 +1,5 @@
 class PythonVirtualenv < Formula
-  homepage ""
+  homepage "https://pypi.python.org/pypi/virtualenv/"
   url "https://pypi.python.org/packages/source/v/virtualenv/virtualenv-12.0.6.tar.gz"
   version "12.0.6"
   sha1 "0bb156834a60cc75763eb7c859383d6b86d4ac0c"
