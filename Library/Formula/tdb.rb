@@ -1,7 +1,6 @@
 class Tdb < Formula
   homepage "http://sourceforge.net/projects/tdb/"
-  url "http://downloads.sourceforge.net/project/tdb/tdb/1.0.6/tdb-1.0.6.tar.gz"
-  version "1.0.6"
+  url "https://downloads.sourceforge.net/project/tdb/tdb/1.0.6/tdb-1.0.6.tar.gz"
   sha1 "d1876522f1b8ffa8cf844a1f6605e0c32d387a7a"
 
   depends_on "gdbm" => :build
@@ -11,16 +10,17 @@ class Tdb < Formula
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-						  "--host=6x86"
+                          "--mandir=#{man}",
+                          "--host=6x86"
     system "make", "install"
   end
 
-    # older versions of the compiler allowed you to have a printf that 
-    # spaned multiple lines, now that's no longer the case. There is a 
-    # patch submitted upstream for this but it doesn't seem like it will
-    # ever be applied: http://sourceforge.net/p/tdb/patches/6/ as it
-    # dates back to 2003, and still hasn't been.
-	patch :DATA
+  # older versions of the compiler allowed you to have a printf that
+  # spaned multiple lines, now that's no longer the case. There is a
+  # patch submitted upstream for this but it doesn't seem like it will
+  # ever be applied: http://sourceforge.net/p/tdb/patches/6/ as it
+  # dates back to 2003, and still hasn't been.
+  patch :DATA
 end
 __END__
 diff --git a/tdbtool.c b/tdbtool.c
