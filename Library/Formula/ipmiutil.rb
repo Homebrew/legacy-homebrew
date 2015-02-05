@@ -5,6 +5,8 @@ class Ipmiutil < Formula
   url 'https://downloads.sourceforge.net/project/ipmiutil/ipmiutil-2.9.5.tar.gz'
   sha1 '265f022c876da373b2ecb4be2bc0f98e65f70977'
 
+  depends_on "openssl"
+
   patch :DATA
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
