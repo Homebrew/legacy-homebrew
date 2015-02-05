@@ -127,8 +127,7 @@ module FormulaCellarChecks
     <<-EOS.undent
       easy-install.pth files were found
       These .pth files are likely to cause link conflicts. Please invoke
-      setup.py with options
-        --single-version-externally-managed --record=install.txt
+      setup.py using Language::Python.setup_install_args.
       The offending files are
         #{pth_found * "\n        "}
     EOS
