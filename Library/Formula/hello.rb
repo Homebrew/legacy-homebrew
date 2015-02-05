@@ -13,6 +13,6 @@ class Hello < Formula
     system "make", "install"
   end
   test do
-     system "#{bin}/hello", "--next-generation", "--greeting=brew"
+     system "#{bin}/hello", "--greeting=brew"
   end
 end
