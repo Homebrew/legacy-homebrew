@@ -1,7 +1,7 @@
 package ooyala.common.akka.metrics
 
 import com.yammer.metrics.Metrics
-import com.yammer.metrics.core.{Histogram, Meter, Gauge}
+import com.yammer.metrics.core.{Histogram, Meter, Gauge, Timer}
 import java.util.concurrent.TimeUnit
 
 /**
@@ -17,4 +17,7 @@ trait YammerMetrics {
     })
 
   def histogram(name: String): Histogram = Metrics.newHistogram(getClass, name, true)
+  
+  def timer(name: String, durationUnit:TimeUnit=TimeUnit.NANOSECONDS, rateUnit:TimeUnit=TimeUnit.SECONDS): Timer =
+        Metrics.newTimer(getClass, name, durationUnit, rateUnit)
 }
