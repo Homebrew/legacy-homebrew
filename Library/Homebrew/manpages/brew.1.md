@@ -398,6 +398,9 @@ Note that these flags should only appear after a command.
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).
 
+  * `version <formulae>`
+    Print the version of <formulae>.
+
   * `uses [--installed] [--recursive] [--devel|--HEAD]` <formulae>:
     Show the formulae that specify <formulae> as a dependency. When given
     multiple formula arguments, show the intersection of formulae that use
