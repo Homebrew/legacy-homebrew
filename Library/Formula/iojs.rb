@@ -1,23 +1,31 @@
 class Iojs < Formula
   homepage "https://iojs.org/"
-  url "https://iojs.org/dist/v1.0.4/iojs-v1.0.4.tar.xz"
-  sha256 "c902f5abbd59c56346680f0b4a71056c51610847b9576acf83a9c210bf664e98"
+  url "https://iojs.org/dist/v1.1.0/iojs-v1.1.0.tar.xz"
+  sha256 "2baa9b076c84c13b0572de4618ac94058fc98a87266925bcd18fb70fb7d521a7"
 
   bottle do
-    sha1 "a88bf32209a487ed8329476325aeeed2cc5ddb33" => :yosemite
-    sha1 "1bb64de12cdbfc2c5fc4aa662c1025ee2bed84b2" => :mavericks
-    sha1 "f62a32113ae476095c7bcdee8dffe6c87f3675a8" => :mountain_lion
+    sha1 "c9788ec4ef2764db5b4f7c131d06517990802f8e" => :yosemite
+    sha1 "d771ecaeac05d8edb17c494dae459f48bed5130f" => :mavericks
+    sha1 "6c6cd07a5e7fb5c90146015984a8ae0e536fbefc" => :mountain_lion
   end
 
   keg_only "iojs conflicts with node (which is currently more established)"
 
   option "with-debug", "Build with debugger hooks"
+  option "with-icu4c", "Build with Intl (icu4c) support"
 
+  depends_on "pkg-config" => :build
+  depends_on "icu4c" => :optional
   depends_on :python => :build
 
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
+
+    if build.with? "icu4c"
+      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
+      args << "--with-intl=system-icu"
+    end
 
     system "./configure", *args
     system "make", "install"
