@@ -11,7 +11,7 @@ class Notmuch < Formula
     sha1 "60839b86690a3b8d095b98a788dedef6163b779e" => :mountain_lion
     sha1 "74cbad02dae99188baa190c6f3a8175bcea10e14" => :lion
   end
-  
+
   depends_on "pkg-config" => :build
   depends_on "emacs" => :optional
   depends_on "xapian"
