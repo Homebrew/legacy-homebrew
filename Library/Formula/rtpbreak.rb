@@ -5,6 +5,13 @@ class Rtpbreak < Formula
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Rtpbreak/rtpbreak-1.3a.tgz"
   sha1 "d22e9c37cc28c2fc36475d221b4eb2cc2c5aafbb"
 
+  bottle do
+    cellar :any
+    sha1 "0ba5286070de0faeb39197d9ce96a5b28cb5d01e" => :yosemite
+    sha1 "f2105bfaefd67bf150b6d3bb80afba5c43f82cf6" => :mavericks
+    sha1 "a58e0738e815217695e288c4b2f1b75207fe6767" => :mountain_lion
+  end
+
   depends_on "libnet"
 
   # main.c is missing the netinet/udp.h header; reported upstream by email
