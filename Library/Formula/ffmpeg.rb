@@ -22,6 +22,7 @@ class Ffmpeg < Formula
   option "with-opencore-amr", "Enable Opencore AMR NR/WB audio format"
   option "with-openjpeg", "Enable JPEG 2000 image format"
   option "with-openssl", "Enable SSL support"
+  option "with-libssh", "Enable SFTP protocol via libssh"
   option "with-schroedinger", "Enable Dirac video format"
   option "with-ffplay", "Enable FFplay media player"
   option "with-tools", "Enable additional FFmpeg tools"
@@ -65,6 +66,7 @@ class Ffmpeg < Formula
   depends_on "libvidstab" => :optional
   depends_on "x265" => :optional
   depends_on "openssl" => :optional
+  depends_on "libssh" => :optional
   depends_on "webp" => :optional
 
   def install
@@ -95,6 +97,7 @@ class Ffmpeg < Formula
     args << "--enable-libfaac" if build.with? "faac"
     args << "--enable-libass" if build.with? "libass"
     args << "--enable-ffplay" if build.with? "ffplay"
+    args << "--enable-libssh" if build.with? "libssh"
     args << "--enable-libspeex" if build.with? "speex"
     args << "--enable-libschroedinger" if build.with? "schroedinger"
     args << "--enable-libfdk-aac" if build.with? "fdk-aac"
