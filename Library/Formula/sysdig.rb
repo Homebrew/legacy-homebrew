@@ -2,8 +2,8 @@ require "formula"
 
 class Sysdig < Formula
   homepage "http://www.sysdig.org/"
-  url "https://github.com/draios/sysdig/archive/0.1.95.tar.gz"
-  sha1 "0e07da4fa4b9d8917e73591ee8d60f43e9bacef6"
+  url "https://github.com/draios/sysdig/archive/0.1.96.tar.gz"
+  sha1 "86a8b1d21a7cbb392f3127b98b08f1d56b0f3927"
 
   head "https://github.com/draios/sysdig.git"
 
