@@ -5,9 +5,10 @@ class Py2cairo < Formula
 
   bottle do
     cellar :any
-    sha1 "8be3b9ec52cb7eca0048b8d1cd935c007cf36a4c" => :yosemite
-    sha1 "c4691142f4d4ac59e55d413e43f01393327d7f00" => :mavericks
-    sha1 "bc34e6cf22e942d57a9618821e024c65c6a07fa3" => :mountain_lion
+    revision 1
+    sha1 "95e2aed8d8732484a5b98ffedeedb063cf997b59" => :yosemite
+    sha1 "752633a2f7eed1aefaa1cc7391b636d00fffb9eb" => :mavericks
+    sha1 "644f231336215c9f127b8191a32f4b28131ba4eb" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
