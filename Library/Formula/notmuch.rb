@@ -2,15 +2,9 @@ require "formula"
 
 class Notmuch < Formula
   homepage "http://notmuchmail.org"
-  url "http://notmuchmail.org/releases/notmuch-0.18.1.tar.gz"
-  sha1 "ad82d6d5355594c4cab3c6d28c70ae4993acbec9"
+  url "http://notmuchmail.org/releases/notmuch-0.19.tar.gz"
+  sha1 "df023988f67e329357a5e8d00c4f6fc71249b89f"
 
-  bottle do
-    cellar :any
-    sha1 "c2abec535c387b43719bb5775d2f5c574a0b26a6" => :mavericks
-    sha1 "60839b86690a3b8d095b98a788dedef6163b779e" => :mountain_lion
-    sha1 "74cbad02dae99188baa190c6f3a8175bcea10e14" => :lion
-  end
 
   depends_on "pkg-config" => :build
   depends_on "emacs" => :optional
