@@ -1,17 +1,13 @@
-require 'formula'
-
 class Calabash < Formula
-  homepage 'http://xmlcalabash.com'
-  url 'http://xmlcalabash.com/download/calabash-1.0.15-95.zip'
-  sha1 'd1cb6f0f26780a504e1f6890a6a3e9261fc28c81'
+  homepage "http://xmlcalabash.com"
+  url "http://xmlcalabash.com/download/calabash-1.0.24-95.zip"
+  sha1 "e5443324147891728277880046e5466aef74a8ad"
 
-  head 'https://github.com/ndw/xmlcalabash1.git'
-
-  depends_on 'saxon'
+  depends_on "saxon"
 
   def install
     libexec.install Dir["*"]
-    bin.write_jar_script libexec/'calabash.jar', 'calabash', '-Xmx1024m'
+    bin.write_jar_script libexec/"calabash.jar", "calabash", "-Xmx1024m"
   end
 
   test do
