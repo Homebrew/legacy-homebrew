@@ -4,9 +4,9 @@ class OpenSceneGraph < Formula
   sha1 "98697c3e3b3c6e7e2ec7a6a75ece8f790b709cd7"
 
   bottle do
-    sha1 "39ebd1c9cb19056e150b7087586e1e63a9546288" => :mavericks
-    sha1 "166b932d7d317cd32b1da89353bb3e03b4b13880" => :mountain_lion
-    sha1 "16055dc346e3a892c1083e08c40d32d37c2e10f0" => :lion
+    sha1 "2f7f0292cf0d66cc37f94ff9d769c7d397e4a19c" => :yosemite
+    sha1 "eb231106f731af9f9803e38a2aa152276d99bb79" => :mavericks
+    sha1 "f613127ed57c7fba5a8de44f65ea49501c9b1d83" => :mountain_lion
   end
 
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
