@@ -1,14 +1,12 @@
-require 'formula'
-
 # When trunk is 3.x, then 3.x is devel and 3.(x-1)
 # is stable.
 # https://code.google.com/p/v8/issues/detail?id=2545
 # http://omahaproxy.appspot.com/
 
 class V8 < Formula
-  homepage 'http://code.google.com/p/v8/'
-  url 'https://github.com/v8/v8/archive/3.25.30.tar.gz'
-  sha1 '207d0bb1dd5954fe691570e799b3c1e318741290'
+  homepage "https://code.google.com/p/v8/"
+  url "https://github.com/v8/v8-git-mirror/archive/3.30.33.16.tar.gz"
+  sha1 "c7456744cec231ae63ccf3f4f209509e40fc386d"
 
   option 'with-readline', 'Use readline instead of libedit'
 
@@ -24,6 +22,16 @@ class V8 < Formula
     version '1831'
   end
 
+  resource "gmock" do
+    url "http://googlemock.googlecode.com/svn/trunk", :revision => 485
+    version "485"
+  end
+
+  resource "gtest" do
+    url "http://googletest.googlecode.com/svn/trunk", :revision => 692
+    version "692"
+  end
+
   def install
     # fix up libv8.dylib install_name
     # https://github.com/Homebrew/homebrew/issues/36571
@@ -33,7 +41,9 @@ class V8 < Formula
               "\\0, 'DYLIB_INSTALL_NAME_BASE': '#{opt_lib}'"
 
     # Download gyp ourselves because running "make dependencies" pulls in ICU.
-    (buildpath/'build/gyp').install resource('gyp')
+    (buildpath/"build/gyp").install resource("gyp")
+    (buildpath/"testing/gmock").install resource("gmock")
+    (buildpath/"testing/gtest").install resource("gtest")
 
     system "make", "native",
                    "library=shared",
@@ -43,9 +53,9 @@ class V8 < Formula
 
     prefix.install 'include'
     cd 'out/native' do
+      rm ["libgmock.a", "libgtest.a"]
       lib.install Dir['lib*']
-      bin.install 'd8', 'lineprocessor', 'process', 'shell' => 'v8'
-      bin.install Dir['mksnapshot.*']
+      bin.install "d8", "lineprocessor", "mksnapshot", "process", "shell" => "v8"
     end
   end
 end
