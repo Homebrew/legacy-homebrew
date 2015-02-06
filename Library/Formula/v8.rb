@@ -51,9 +51,9 @@ class V8 < Formula
 
     prefix.install 'include'
     cd 'out/native' do
+      rm ["libgmock.a", "libgtest.a"]
       lib.install Dir['lib*']
-      bin.install 'd8', 'lineprocessor', 'process', 'shell' => 'v8'
-      bin.install Dir['mksnapshot.*']
+      bin.install "d8", "lineprocessor", "mksnapshot", "process", "shell" => "v8"
     end
   end
 end
