@@ -12,8 +12,8 @@ class Abcm2ps < Formula
   end
 
   devel do
-    url "http://moinejf.free.fr/abcm2ps-8.3.4.tar.gz"
-    sha1 "e3a92e89eb55d36e582e3529846f17c60dfb788b"
+    url "http://moinejf.free.fr/abcm2ps-8.5.2.tar.gz"
+    sha1 "71362859696c379b371814698d5272964e1aa2bd"
   end
 
   depends_on "pkg-config" => :build
