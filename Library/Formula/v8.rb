@@ -22,6 +22,16 @@ class V8 < Formula
     version '1831'
   end
 
+  resource "gmock" do
+    url "http://googlemock.googlecode.com/svn/trunk", :revision => 485
+    version "485"
+  end
+
+  resource "gtest" do
+    url "http://googletest.googlecode.com/svn/trunk", :revision => 692
+    version "692"
+  end
+
   # fix up libv8.dylib install_name
   # https://github.com/Homebrew/homebrew/issues/36571
   # https://code.google.com/p/v8/issues/detail?id=3871
@@ -29,7 +39,9 @@ class V8 < Formula
 
   def install
     # Download gyp ourselves because running "make dependencies" pulls in ICU.
-    (buildpath/'build/gyp').install resource('gyp')
+    (buildpath/"build/gyp").install resource("gyp")
+    (buildpath/"testing/gmock").install resource("gmock")
+    (buildpath/"testing/gtest").install resource("gtest")
 
     system "make", "native",
                    "library=shared",
