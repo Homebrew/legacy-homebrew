@@ -1,9 +1,7 @@
-require "formula"
-
 class Capnp < Formula
-  homepage "http://kentonv.github.io/capnproto/"
-  url "http://capnproto.org/capnproto-c++-0.5.0.tar.gz"
-  sha1 "5eec5929d9b64628b2e7b6646369f112079a1f61"
+  homepage "https://capnproto.org/"
+  url "https://capnproto.org/capnproto-c++-0.5.1.tar.gz"
+  sha1 "98565b2a79f4748f0f9e02fbff80fbb8803ac9fc"
 
   bottle do
     sha1 "c73a3d2118d22e1741cea71b5557a98f1f9123d3" => :yosemite
@@ -15,10 +13,12 @@ class Capnp < Formula
   option "without-shared", "Disable building shared library variant"
 
   def install
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}"]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+    ]
 
     args << "--disable-shared" if build.without? "shared"
 
