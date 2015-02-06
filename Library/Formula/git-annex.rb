@@ -24,6 +24,7 @@ class GitAnnex < Formula
   depends_on "libidn"
   depends_on "gnutls"
   depends_on "gmp"
+  depends_on "quvi"
 
   fails_with(:clang) { build 425 } # clang segfaults on Lion
 
@@ -33,7 +34,8 @@ class GitAnnex < Formula
       # gcc required to build gnuidn
       gcc = Formula["gcc"]
       cabal_install "--with-gcc=#{gcc.bin}/gcc-#{gcc.version_suffix}",
-                    "--only-dependencies"
+                    "--only-dependencies",
+                    "--constraint=utf8-string==0.3.8" # use older utf8-string until 'feed' is updated
       cabal_install "--prefix=#{prefix}"
     end
     bin.install_symlink "git-annex" => "git-annex-shell"
