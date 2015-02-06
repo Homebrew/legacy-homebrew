@@ -1,12 +1,10 @@
-require 'formula'
-
 # When trunk is 3.x, then 3.x is devel and 3.(x-1)
 # is stable.
 # https://code.google.com/p/v8/issues/detail?id=2545
 # http://omahaproxy.appspot.com/
 
 class V8 < Formula
-  homepage 'http://code.google.com/p/v8/'
+  homepage "https://code.google.com/p/v8/"
   url 'https://github.com/v8/v8/archive/3.25.30.tar.gz'
   sha1 '207d0bb1dd5954fe691570e799b3c1e318741290'
 
