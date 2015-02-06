@@ -61,7 +61,7 @@ class Boost < Formula
     # libdir should be set by --prefix but isn't
     bootstrap_args = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    if build.with? "icu"
+    if build.with? "icu4c"
       icu4c_prefix = Formula["icu4c"].opt_prefix
       bootstrap_args << "--with-icu=#{icu4c_prefix}"
     else

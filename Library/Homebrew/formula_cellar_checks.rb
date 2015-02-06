@@ -105,6 +105,7 @@ module FormulaCellarChecks
 
   def check_shadowed_headers
     return if formula.name == "libtool" || formula.name == "subversion"
+    return if MacOS.version < :mavericks && formula.name.start_with?("postgresql")
     return if formula.keg_only? || !formula.include.directory?
 
     files  = relative_glob(formula.include, "**/*.h")
@@ -127,8 +128,7 @@ module FormulaCellarChecks
     <<-EOS.undent
       easy-install.pth files were found
       These .pth files are likely to cause link conflicts. Please invoke
-      setup.py with options
-        --single-version-externally-managed --record=install.txt
+      setup.py using Language::Python.setup_install_args.
       The offending files are
         #{pth_found * "\n        "}
     EOS

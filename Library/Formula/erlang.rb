@@ -3,20 +3,19 @@
 # elixir are compatible.
 class Erlang < Formula
   homepage "http://www.erlang.org"
-  revision 1
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-17.4.tar.gz"
-    sha256 "3fe1de7915cd603ebabe103d5d94b8f440fe57ad8e6f62bd6837b6949e08ba1a"
+    url "https://github.com/erlang/otp/archive/OTP-17.4.1.tar.gz"
+    sha256 "3ff545f086c541d1d5fefc9777ed5ddc93f3a20bf30d93f38399fba417ccf58e"
   end
 
   head "https://github.com/erlang/otp.git"
 
   bottle do
-    sha1 "fe6260c83df8da8d7046348dc8457d9cc752366f" => :yosemite
-    sha1 "7dfd592e4bf03053f59b1bd8670d25a159a2c7ac" => :mavericks
-    sha1 "81d1eae5b7e8c186ec54ae3b82a8fb9139c8bae7" => :mountain_lion
+    sha1 "6194f633e00ffb805b514ace20ba4d12f51a4e33" => :yosemite
+    sha1 "a6a667c269d067717465de2cc7a3e0cf0901202f" => :mavericks
+    sha1 "cbea1cc87f07cc262cde7ae06ebe55963db8baec" => :mountain_lion
   end
 
   resource "man" do

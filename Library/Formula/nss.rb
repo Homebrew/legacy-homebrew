@@ -4,12 +4,13 @@ class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
   url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_4_RTM/src/nss-3.17.4.tar.gz"
   sha256 "1d98ad1881a4237ec98cbe472fc851480f0b0e954dfe224d047811fb96ff9d79"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "889e6e9b0fca634d3a8a33178db763067520d6a7" => :yosemite
-    sha1 "f850ef686c6437b4b690caa577ed1f8716a44303" => :mavericks
-    sha1 "bc980cf76bf8f6c2b7cd0d34fa9cca02bb1c342b" => :mountain_lion
+    sha1 "2b8a680e6639215188542cc54c4f08dcee62ae36" => :yosemite
+    sha1 "2fdb9e02eddf3c692d2de478ab7fbb630cd0dcb0" => :mavericks
+    sha1 "83a0cf6db62ff865b07347c4a94361869715e6b0" => :mountain_lion
   end
 
   depends_on "nspr"
@@ -57,6 +58,7 @@ class Nss < Formula
     # resolves conflict with openssl, see #28258
     rm lib/"libssl.a"
 
+    (bin+"nss-config").write config_file
     (lib+"pkgconfig/nss.pc").write pc_file
   end
 
@@ -67,8 +69,22 @@ class Nss < Formula
     system "#{bin}/certutil", "-L", "-d", pwd
   end
 
+  # A very minimal nss-config for configuring firefox etc. with this nss,
+  # see https://bugzil.la/530672 for the progress of upstream inclusion.
+  def config_file; <<-EOS.undent
+    #!/bin/sh
+    for opt; do :; done
+    case "$opt" in
+      --version) opt="--modversion";;
+      --cflags|--libs) ;;
+      *) exit 1;;
+    esac
+    pkg-config "$opt" nss
+    EOS
+  end
+
   def pc_file; <<-EOS.undent
-    prefix=#{opt_prefix}
+    prefix=#{prefix}
     exec_prefix=${prefix}
     libdir=${exec_prefix}/lib
     includedir=${prefix}/include/nss
@@ -76,7 +92,7 @@ class Nss < Formula
     Name: NSS
     Description: Mozilla Network Security Services
     Version: #{version}
-    Requires: nspr
+    Requires: nspr >= 4.10.7
     Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
     Cflags: -I${includedir}
     EOS
