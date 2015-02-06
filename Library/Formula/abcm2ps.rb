@@ -2,8 +2,8 @@ require "formula"
 
 class Abcm2ps < Formula
   homepage "http://moinejf.free.fr"
-  url "http://moinejf.free.fr/abcm2ps-7.8.11.tar.gz"
-  sha1 "93e016cf933d88d817be76bd3eb4163851f3b132"
+  url "http://moinejf.free.fr/abcm2ps-7.8.13.tar.gz"
+  sha1 "09bbcde58e358c11a5a28de05d48be3a7eb94a4e"
 
   bottle do
     sha1 "1381e1f180e685182193a4392fc664cc16e5bc87" => :yosemite
