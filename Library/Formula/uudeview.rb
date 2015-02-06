@@ -17,7 +17,7 @@ class Uudeview < Formula
                           "--disable-tcl"
     system "make install"
     lib.install "uulib/libuu.a"
-    include.install "uulib/crc32.h", "uulib/fptools.h", "uulib/uudeview.h", "uulib/uuint.h", "uulib/uustring.h"
+    include.install "uulib/uudeview.h"
   end
 
   test do
