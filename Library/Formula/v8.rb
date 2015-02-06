@@ -25,6 +25,13 @@ class V8 < Formula
   end
 
   def install
+    # fix up libv8.dylib install_name
+    # https://github.com/Homebrew/homebrew/issues/36571
+    # https://code.google.com/p/v8/issues/detail?id=3871
+    inreplace "tools/gyp/v8.gyp",
+              "'OTHER_LDFLAGS': ['-dynamiclib', '-all_load']",
+              "\\0, 'DYLIB_INSTALL_NAME_BASE': '#{opt_lib}'"
+
     # Download gyp ourselves because running "make dependencies" pulls in ICU.
     (buildpath/'build/gyp').install resource('gyp')
 
