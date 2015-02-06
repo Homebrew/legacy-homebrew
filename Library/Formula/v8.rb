@@ -32,12 +32,14 @@ class V8 < Formula
     version "692"
   end
 
-  # fix up libv8.dylib install_name
-  # https://github.com/Homebrew/homebrew/issues/36571
-  # https://code.google.com/p/v8/issues/detail?id=3871
-  patch :DATA
-
   def install
+    # fix up libv8.dylib install_name
+    # https://github.com/Homebrew/homebrew/issues/36571
+    # https://code.google.com/p/v8/issues/detail?id=3871
+    inreplace "tools/gyp/v8.gyp",
+              "'OTHER_LDFLAGS': ['-dynamiclib', '-all_load']",
+              "\\0, 'DYLIB_INSTALL_NAME_BASE': '#{opt_lib}'"
+
     # Download gyp ourselves because running "make dependencies" pulls in ICU.
     (buildpath/"build/gyp").install resource("gyp")
     (buildpath/"testing/gmock").install resource("gmock")
@@ -57,18 +59,3 @@ class V8 < Formula
     end
   end
 end
-__END__
-diff --git a/tools/gyp/v8.gyp b/tools/gyp/v8.gyp
-index f7bdf52..f17b3cf 100644
---- a/tools/gyp/v8.gyp
-+++ b/tools/gyp/v8.gyp
-@@ -87,7 +87,8 @@
-           'conditions': [
-             ['OS=="mac"', {
-               'xcode_settings': {
--                'OTHER_LDFLAGS': ['-dynamiclib', '-all_load']
-+                'OTHER_LDFLAGS': ['-dynamiclib', '-all_load'],
-+                'DYLIB_INSTALL_NAME_BASE': 'HOMEBREW_PREFIX/lib'
-               },
-             }],
-             ['soname_version!=""', {
