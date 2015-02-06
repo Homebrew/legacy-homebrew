@@ -5,8 +5,8 @@ class Rocket < Formula
   homepage "https://github.com/coreos/rocket"
   head "https://github.com/coreos/rocket.git"
 
-  url "https://github.com/coreos/rocket/archive/v0.1.0.tar.gz"
-  sha1 "04ae8cb9bac04eedacb03a7531e6b251556be653"
+  url "https://github.com/coreos/rocket/archive/v0.3.0.tar.gz"
+  sha1 "544046470a97abdc10c82b27b049857e690795b7"
 
   bottle do
     sha1 "cb111d426363b5df807800ccf6b2f6eba7cdf10f" => :yosemite
