@@ -16,6 +16,8 @@ class Uudeview < Formula
                           "--mandir=#{man}",
                           "--disable-tcl"
     system "make install"
+    lib.install "uulib/libuu.a"
+    include.install "uulib/crc32.h", "uulib/fptools.h", "uulib/uudeview.h", "uulib/uuint.h", "uulib/uustring.h"
   end
 
   test do
