@@ -3,12 +3,11 @@
 # elixir are compatible.
 class Erlang < Formula
   homepage "http://www.erlang.org"
-  revision 1
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-17.4.tar.gz"
-    sha256 "3fe1de7915cd603ebabe103d5d94b8f440fe57ad8e6f62bd6837b6949e08ba1a"
+    url "https://github.com/erlang/otp/archive/OTP-17.4.1.tar.gz"
+    sha256 "3ff545f086c541d1d5fefc9777ed5ddc93f3a20bf30d93f38399fba417ccf58e"
   end
 
   head "https://github.com/erlang/otp.git"
