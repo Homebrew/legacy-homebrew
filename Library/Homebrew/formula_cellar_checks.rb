@@ -105,6 +105,7 @@ module FormulaCellarChecks
 
   def check_shadowed_headers
     return if formula.name == "libtool" || formula.name == "subversion"
+    return if MacOS.version < :mavericks && formula.name.start_with?("postgresql")
     return if formula.keg_only? || !formula.include.directory?
 
     files  = relative_glob(formula.include, "**/*.h")
