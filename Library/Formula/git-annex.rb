@@ -1,12 +1,11 @@
-require "formula"
 require "language/haskell"
 
 class GitAnnex < Formula
   include Language::Haskell::Cabal
 
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-5.20150113/git-annex-5.20150113.tar.gz"
-  sha1 "b45b285ef4b75ffd4fd0fa7d9795c507e8edbcfb"
+  url "https://hackage.haskell.org/package/git-annex-5.20150205/git-annex-5.20150205.tar.gz"
+  sha1 "5df6114cb029531e429e2b423f5ae7f755ffa390"
 
   bottle do
     cellar :any
