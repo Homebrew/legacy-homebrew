@@ -30,12 +30,12 @@ class Rocket < Formula
     end
     ENV.prepend_path "PATH", buildpath/"bin"
 
-    inreplace "build", "GOOS=linux", "GOOS=#{`uname`.downcase}"
+    ENV["GOOS"] = `uname`.downcase.strip
 
-    # Fix non-POSIX commands realpath and mktemp
-    # See https://github.com/coreos/rocket/pull/196
-    inreplace "build", "$(mktemp -d)", "$(mktemp -d -t rocket-XXXXXX)"
-    inreplace "stage1/mkrootfs.sh", '$(realpath "${BINDIR}")', '"${PWD}${BINDIR}"'
+    # This stops [0] from executing, which is tied specifically to the Linux networking stack
+    # [0]: https://github.com/coreos/rocket/blob/6e0404bb0edc11c84a6ca5e3d0b7af9839f85cfa/build#L16-L23
+    inreplace "build", 'echo "Building network plugins"', "if false; then"
+    inreplace "build", 'echo "Building rkt (stage0)..."', "fi"
 
     system "./build"
     bin.install "bin/actool", "bin/rkt"
