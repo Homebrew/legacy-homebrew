@@ -24,6 +24,11 @@ class V8 < Formula
     version '1831'
   end
 
+  # fix up libv8.dylib install_name
+  # https://github.com/Homebrew/homebrew/issues/36571
+  # https://code.google.com/p/v8/issues/detail?id=3871
+  patch :DATA
+
   def install
     # Download gyp ourselves because running "make dependencies" pulls in ICU.
     (buildpath/'build/gyp').install resource('gyp')
@@ -42,3 +47,18 @@ class V8 < Formula
     end
   end
 end
+__END__
+diff --git a/tools/gyp/v8.gyp b/tools/gyp/v8.gyp
+index f7bdf52..f17b3cf 100644
+--- a/tools/gyp/v8.gyp
++++ b/tools/gyp/v8.gyp
+@@ -87,7 +87,8 @@
+           'conditions': [
+             ['OS=="mac"', {
+               'xcode_settings': {
+-                'OTHER_LDFLAGS': ['-dynamiclib', '-all_load']
++                'OTHER_LDFLAGS': ['-dynamiclib', '-all_load'],
++                'DYLIB_INSTALL_NAME_BASE': 'HOMEBREW_PREFIX/lib'
+               },
+             }],
+             ['soname_version!=""', {
