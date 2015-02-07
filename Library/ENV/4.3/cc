@@ -26,13 +26,14 @@ end
 LOGGER = Logger.new
 
 class Cmd
-  attr_reader :brewfix, :brewtmp, :sysroot
+  attr_reader :prefix, :cellar, :tmpdir, :sysroot
 
   def initialize path, args
     @arg0 = File.basename(path).freeze
     @args = args.freeze
-    @brewfix = ENV['HOMEBREW_PREFIX']
-    @brewtmp = ENV['HOMEBREW_TEMP']
+    @prefix = ENV['HOMEBREW_PREFIX']
+    @cellar = ENV['HOMEBREW_CELLAR']
+    @tmpdir = ENV['HOMEBREW_TEMP']
     @sysroot = ENV['HOMEBREW_SDKROOT']
   end
 
@@ -199,7 +200,7 @@ class Cmd
 
   def keep? path
     case path
-    when %r{^#{Regexp.escape(brewfix)}}o, %r{^#{Regexp.escape(brewtmp)}}o
+    when %r{^#{Regexp.escape(prefix)}}o, %r{^#{Regexp.escape(cellar)}}o, %r{^#{Regexp.escape(tmpdir)}}o
       # maybe homebrew is installed to /sw or /opt/brew
       true
     when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
