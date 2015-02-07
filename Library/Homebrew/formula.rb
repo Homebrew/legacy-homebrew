@@ -349,8 +349,10 @@ class Formula
 
   # @private
   def run_post_install
-    self.build = Tab.for_formula(self)
+    build, self.build = self.build, Tab.for_formula(self)
     post_install
+  ensure
+    self.build = build
   end
 
   # tell the user about any caveats regarding this package, return a string
@@ -628,7 +630,7 @@ class Formula
 
   def run_test
     old_home = ENV["HOME"]
-    self.build = Tab.for_formula(self)
+    build, self.build = self.build, Tab.for_formula(self)
     mktemp do
       @testpath = Pathname.pwd
       ENV["HOME"] = @testpath
@@ -636,6 +638,7 @@ class Formula
     end
   ensure
     @testpath = nil
+    self.build = build
     ENV["HOME"] = old_home
   end
 
