@@ -5,10 +5,9 @@ class Libraw < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7f451901d85f31ae94f315a9c89eb42660fdd61b" => :yosemite
-    sha1 "2343787be91bcb214f3806a38c1539ef8ee06ada" => :mavericks
-    sha1 "303ab92ea058626cf446efb4f0d2833b83ebe4f9" => :mountain_lion
+    sha1 "49b78411b56fbf825d5170fadb9e81cc0473ab11" => :yosemite
+    sha1 "af54b03cb2b500969ede436f0c15e282b89e8968" => :mavericks
+    sha1 "d527170bd8c1e2bc8b0d755ba69938c4f0cec335" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
