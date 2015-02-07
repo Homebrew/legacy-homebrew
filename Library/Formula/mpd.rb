@@ -9,9 +9,9 @@ class Mpd < Formula
   end
 
   bottle do
-    sha1 "b23ba34485a76f6270d70fb8ba554a6bece06837" => :yosemite
-    sha1 "46ba1c22c806d5af1eb23c9ea316de9b74c70dda" => :mavericks
-    sha1 "8aec1f58e6405b3ce1f62f5efc9ad2d6675a2418" => :mountain_lion
+    sha1 "dded981259ff9d3529b311f8fd48f3713a4e5811" => :yosemite
+    sha1 "8b2252c6fb581ed97ea95d16b953b1a64d0c6f02" => :mavericks
+    sha1 "2a3c681188f7db786f61b053aa0813549838718a" => :mountain_lion
   end
 
   head do
