@@ -614,6 +614,8 @@ class Formula
           "poured_from_bottle" => tab.poured_from_bottle
         }
       end
+
+      hsh["installed"].sort_by! { |i| Version.new(i["version"]) }
     end
 
     hsh
