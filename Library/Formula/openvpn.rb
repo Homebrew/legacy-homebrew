@@ -1,5 +1,3 @@
-require "formula"
-
 class Openvpn < Formula
   homepage "https://openvpn.net/index.php/download/community-downloads.html"
   url "http://build.openvpn.net/downloads/releases/openvpn-2.3.6.tar.gz"
@@ -11,11 +9,43 @@ class Openvpn < Formula
     sha1 "bddff060d3d3e70db96abcf6ccc95952cdb7a99c" => :mountain_lion
   end
 
+  option "with-easy-rsa", "Build with easy-rsa"
+
+  if build.with? "easy-rsa"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   depends_on "lzo"
   depends_on :tuntap
   depends_on "openssl"
 
+  resource "easy_rsa" do
+    url "https://github.com/OpenVPN/easy-rsa/archive/2.2.2.tar.gz"
+    sha256 "38f1f84e9b966df8b312365c7c75a455bdf003abdd5156e7106fa9c7771583ae"
+  end
+
   def install
+    if build.with? "easy-rsa"
+      resource("easy_rsa").stage do
+        system "autoreconf", "-fvi"
+        system "./configure", "--prefix=#{libexec}", "--disable-silent-rules"
+        system "make", "install"
+
+        bin.mkpath
+        mkdir_p etc/"easy-rsa"
+        mv libexec/"share/easy-rsa/vars", etc/"easy-rsa/vars.sample"
+        bins = (libexec/"share/easy-rsa").children.select { |f| f.executable? }
+
+        bins.each do |f|
+          execname = File.basename(f, "")
+          (bin/execname).write_env_script f, :EASY_RSA => libexec/"share/easy-rsa"
+          chmod 0755, bin+execname
+        end
+      end
+    end
+
     # pam_appl header is installed in a different location on Leopard
     # and older; reported upstream https://community.openvpn.net/openvpn/ticket/326
     if MacOS.version < :snow_leopard
