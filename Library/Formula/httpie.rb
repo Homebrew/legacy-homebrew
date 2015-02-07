@@ -1,7 +1,7 @@
 class Httpie < Formula
   homepage "https://github.com/jakubroztocil/httpie"
-  url "https://github.com/jakubroztocil/httpie/archive/0.9.0.tar.gz"
-  sha1 "4519c574979aa73e5a502f05a87c6a67e6b0db19"
+  url "https://github.com/jakubroztocil/httpie/archive/0.9.1.tar.gz"
+  sha1 "00071019c28a8deefaf65eddf9248998b446cdef"
 
   head "https://github.com/jakubroztocil/httpie.git"
 
