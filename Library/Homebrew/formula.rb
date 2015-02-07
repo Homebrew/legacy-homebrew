@@ -347,6 +347,12 @@ class Formula
     method(:post_install).owner == self.class
   end
 
+  # @private
+  def run_post_install
+    self.build = Tab.for_formula(self)
+    post_install
+  end
+
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
