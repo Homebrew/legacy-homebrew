@@ -1,8 +1,8 @@
 class Moreutils < Formula
   homepage "http://joeyh.name/code/moreutils/"
-  url "http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz"
-  mirror "http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz"
-  sha1 "32047f935178b490a12c370d8f695f1273dc5895"
+  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
+  mirror "http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
+  sha1 "050c73067d2b5373f2652b91e75699dd79a44590"
 
   bottle do
     revision 2
@@ -20,7 +20,7 @@ class Moreutils < Formula
       :because => "both install a 'parallel' executable. See the '--without-parallel' option"
   end
 
-  conflicts_with 'task-spooler',
+  conflicts_with "task-spooler",
     :because => "both install a 'ts' executable."
 
   resource "Time::Duration" do
@@ -62,9 +62,7 @@ class Moreutils < Formula
   end
 
   test do
-    pipe_output("#{bin}/isutf8", "hello")
-    assert $?.success?
-    pipe_output("#{bin}/isutf8", "\xca\xc0\xbd\xe7")
-    assert (!$?.success?)
+    pipe_output("#{bin}/isutf8", "hello", 0)
+    pipe_output("#{bin}/isutf8", "\xca\xc0\xbd\xe7", 1)
   end
 end
