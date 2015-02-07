@@ -1,17 +1,16 @@
-require "formula"
-
 class X264 < Formula
   homepage "https://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "https://git.videolan.org/git/x264.git", :revision => "021c0dc6c95c1bc239c9db78a80dd85fc856a4dd"
-  version "r2455"
-  head "https://git.videolan.org/git/x264.git"
+  url "https://git.videolan.org/git/x264.git", :revision => "6a301b6ee0ae8c78fb704e1cd86f4e861070f641"
+  version "r2495"
 
   devel do
     # the latest commit on the master branch
-    url "https://git.videolan.org/git/x264.git", :revision => "dd79a61e0e354a432907f2d1f7137b27a12dfce7"
-    version "r2479"
+    url "https://git.videolan.org/git/x264.git", :revision => "40bb56814e56ed342040bdbf30258aab39ee9e89"
+    version "r2525"
   end
+
+  head "https://git.videolan.org/git/x264.git"
 
   bottle do
     cellar :any
