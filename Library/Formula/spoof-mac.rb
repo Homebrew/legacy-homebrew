@@ -1,7 +1,7 @@
 class SpoofMac < Formula
-  homepage "http://feross.org/spoofmac/"
-  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.0.tar.gz"
-  sha1 "6a1d44ee300f30c1e2406fa612950adedc7367d2"
+  homepage "https://github.com/feross/SpoofMAC"
+  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.2.tar.gz"
+  sha1 "3a97b9efbc05beb6f4ea49650dcee3cf1c2f9db0"
   head "https://github.com/feross/SpoofMAC.git"
 
   bottle do
