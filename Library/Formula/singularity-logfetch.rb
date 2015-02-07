@@ -55,7 +55,7 @@ class SingularityLogfetch < Formula
       end
     end
 
-    Dir.chdir('scripts') {
+    Dir.chdir("scripts") {
       ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
       system "python", *Language::Python.setup_install_args(libexec)
     }
