@@ -50,17 +50,10 @@ class Node < Formula
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
     args << "--without-ssl2" << "--without-ssl3" if build.stable?
-
-    if build.head?
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
-      args << "--with-intl=system-icu"
-    end
+    args << "--with-intl=system-icu" if build.head?
 
     if build.devel?
-      if build.with? "icu4c"
-        ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
-        args << "--with-intl=system-icu"
-      end
+      args << "--with-intl=system-icu" if build.with? "icu4c"
 
       if build.with? "openssl"
         args << "--shared-openssl"
