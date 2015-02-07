@@ -13,7 +13,6 @@ class Wine < Formula
 
     resource 'gecko' do
       url 'https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-      version '2.21'
       sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
     end
 
@@ -30,8 +29,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.35.tar.bz2"
-    sha256 "eb2ef652a302c366d3f6ee9315790f162b1c0913d442cb5a856d9f7d95e31cfb"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.36.tar.bz2"
+    sha256 "21aabf3ab2c6055ae66c77647b123c978094f0c135817ceeaeaeebc5d8efe3bd"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -47,6 +46,8 @@ class Wine < Formula
   head do
     url "git://source.winehq.org/git/wine.git"
     depends_on "samba" => :optional
+    option "with-win64",
+           "Build with win64 emulator (won't run 32-bit binaries.)"
   end
 
   # note that all wine dependencies should declare a --universal option in their formula,
@@ -70,7 +71,6 @@ class Wine < Formula
 
   resource 'gecko' do
     url 'https://downloads.sourceforge.net/wine/wine_gecko-2.34-x86.msi', :using => :nounzip
-    version '2.34'
     sha256 '956c26bf302b1864f4d7cb6caee4fc83d4c1281157731761af6395b876e29ca7'
   end
 
@@ -117,6 +117,7 @@ class Wine < Formula
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard
+    args << "--enable-win64" if build.with? "win64"
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
