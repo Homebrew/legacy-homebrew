@@ -199,15 +199,7 @@ class Cmd
   end
 
   def keep? path
-    case path
-    when %r{^#{Regexp.escape(prefix)}}o, %r{^#{Regexp.escape(cellar)}}o, %r{^#{Regexp.escape(tmpdir)}}o
-      # maybe homebrew is installed to /sw or /opt/brew
-      true
-    when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
-      false
-    else
-      true
-    end
+    path.start_with?(prefix, cellar, tmpdir) || !path.start_with?("/opt", "/sw", "/usr/X11")
   end
 
   def cflags
