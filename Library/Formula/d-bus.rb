@@ -1,10 +1,8 @@
-require "formula"
-
 class DBus < Formula
   # releases: even (1.8.x) = stable, odd (1.9.x) = development
   homepage "http://www.freedesktop.org/wiki/Software/dbus"
-  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.12.tar.gz"
-  sha1 "9dc3003a53892b41eb61ade20051aba57be1b4b1"
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.14.tar.gz"
+  sha1 "d0b84d6d7af47b8cad7f55befee8e9001daefe01"
 
   bottle do
     sha1 "50c1012cd5f5b89f2f5a843fb9de22bc76dc5178" => :yosemite
