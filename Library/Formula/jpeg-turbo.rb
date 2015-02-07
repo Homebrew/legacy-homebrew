@@ -6,9 +6,9 @@ class JpegTurbo < Formula
 
   bottle do
     cellar :any
-    sha1 "d3bd70ed5eb4beecc84c782f69e2376915e978cc" => :yosemite
-    sha1 "d9456e1ae7d99dd88e7c7a0b34c52408f0d02f6a" => :mavericks
-    sha1 "9e7bd8532480479cd4011fa263c65b860e6d6928" => :mountain_lion
+    sha1 "847dab53f17c69fc8670407f42d6e6da30e3f527" => :yosemite
+    sha1 "d682021ac4745c3e3cfe4a6f1baf6bf07628966a" => :mavericks
+    sha1 "f5a667481af812c39caca21ec7842bf678864df3" => :mountain_lion
   end
 
   depends_on "libtool" => :build
