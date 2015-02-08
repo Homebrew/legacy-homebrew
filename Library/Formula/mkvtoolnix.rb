@@ -23,8 +23,8 @@ end
 
 class Mkvtoolnix < Formula
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.5.0.tar.xz"
-  sha1 "7d4aff0d65bdf797cf877d2c8bb649bd426c4879"
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.6.0.tar.xz"
+  sha1 "458db5c8f9e9afbf5fb210ebb26b380cf553d88f"
 
   bottle do
     sha1 "56cde38aad413ef85cdea858e4609abc4fc70491" => :yosemite
