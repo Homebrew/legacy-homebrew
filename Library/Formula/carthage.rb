@@ -2,7 +2,7 @@ require "formula"
 
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
-  url "https://github.com/Carthage/Carthage.git", :tag => "0.5.2",
+  url "https://github.com/Carthage/Carthage.git", :tag => "0.5.3",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
@@ -20,9 +20,6 @@ class Carthage < Formula
     cp_r cached_download/".git", "."
 
     system "make", "prefix_install", "PREFIX=#{prefix}"
-
-    # Carthage puts some stuff in /tmp so clean it up after we're done.
-    system "make", "clean"
   end
 
   test do
