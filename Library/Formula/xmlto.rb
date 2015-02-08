@@ -1,9 +1,9 @@
 require 'formula'
 
 class Xmlto < Formula
-  homepage 'http://cyberelk.net/tim/software/xmlto/'
-  url 'http://fedorahosted.org/releases/x/m/xmlto/xmlto-0.0.25.tar.bz2'
-  sha1 '5d1aecd59d519066f94b4591722767c4e41bdc0f'
+  homepage 'https://fedorahosted.org/xmlto/'
+  url 'http://fedorahosted.org/releases/x/m/xmlto/xmlto-0.0.26.tar.bz2'
+  sha1 'c5a982239c738c76d0e67bc416d835cf102cd422'
 
   bottle do
     cellar :any
@@ -14,6 +14,8 @@ class Xmlto < Formula
 
   depends_on 'docbook'
   depends_on 'docbook-xsl'
+  # Doesn't strictly depend on GNU getopt, but OS X system getopt(1)
+  # does not suport longopts in the optstring, so use GNU getopt.
   depends_on 'gnu-getopt'
 
   # xmlto forces --nonet on xsltproc, which causes it to fail when
@@ -22,7 +24,7 @@ class Xmlto < Formula
 
   def install
     # GNU getopt is keg-only, so point configure to it
-    ENV['GETOPT'] = Formula["gnu-getopt"].bin/"getopt"
+    ENV['GETOPT'] = Formula["gnu-getopt"].opt_prefix/"bin/getopt"
     # Find our docbook catalog
     ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
 
