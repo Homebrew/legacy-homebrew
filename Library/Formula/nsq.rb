@@ -7,9 +7,9 @@ class Nsq < Formula
   sha1 "3df203637e9b669486747e5ac18c93e7dd2d33bd"
 
   bottle do
-    sha1 "6348ab65e201725cb40865ee2b5fbbbf656e54a0" => :yosemite
-    sha1 "63969063698ed231f93294551ac3c2ff56701d2a" => :mavericks
-    sha1 "2054e1000115aeb3934b01762881c6cb52afed19" => :mountain_lion
+    sha1 "4eca017db1de9f3992da92a3eed95f6343393c74" => :yosemite
+    sha1 "0fcd44d0fc5bc26ad364b2e5c943160f06bffcbe" => :mavericks
+    sha1 "e3ce46fcb14aa4557a68ef7197b8a5889e556823" => :mountain_lion
   end
 
   depends_on "go" => :build
