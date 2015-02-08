@@ -5,6 +5,13 @@ class Ipmiutil < Formula
   url 'https://downloads.sourceforge.net/project/ipmiutil/ipmiutil-2.9.5.tar.gz'
   sha1 '265f022c876da373b2ecb4be2bc0f98e65f70977'
 
+  bottle do
+    cellar :any
+    sha1 "463fb38c4ac02170177e043ecddbd0b598bce163" => :yosemite
+    sha1 "91da6fd51706e874f8a72249339eb3a7bd22adba" => :mavericks
+    sha1 "15a3e15c010478e83bf1aa38f9369329f417220e" => :mountain_lion
+  end
+
   depends_on "openssl"
 
   # Ensure ipmiutil does not try to link against (disabled) OpenSSL's MD2
