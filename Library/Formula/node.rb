@@ -6,9 +6,9 @@ class Node < Formula
   head "https://github.com/joyent/node.git", :branch => "v0.12"
 
   bottle do
-    sha1 "ca405f33a5c8e3356a0f477eee43e492e7925927" => :yosemite
-    sha1 "f17dfa5a02a7f83b46f0deb40a4746a1337ffa88" => :mavericks
-    sha1 "b5d7094ed826813b2cc35303bcde8269b1ad9292" => :mountain_lion
+    sha1 "5c08bc7c8189453309009dbfc72f8b2e246dcd11" => :yosemite
+    sha1 "24aab50a6b65e6df9c683fa1a7d1a182052865f4" => :mavericks
+    sha1 "3d982a33612b1370540dffb53e17d23e6529ff5b" => :mountain_lion
   end
 
   option "with-debug", "Build with debugger hooks"
