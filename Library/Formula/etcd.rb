@@ -7,9 +7,9 @@ class Etcd < Formula
   head "https://github.com/coreos/etcd.git"
 
   bottle do
-    sha1 "dd7aff45b8fb94304047015343d03d692f7a991f" => :mavericks
-    sha1 "e548cb1d29e4d0b5a78a6cd9e30034fb669e8c5a" => :mountain_lion
-    sha1 "bc35b7c3315e899f4e6b96c9db7615de03c04dbd" => :lion
+    sha1 "ce4c0100d8b80cd1ccf654d21561c1f0124fdddb" => :yosemite
+    sha1 "1296fb789c837c58149ff01794f4bab6509aa584" => :mavericks
+    sha1 "ab9d979ce7867cf64c027bf915689ec6dd8bfdb3" => :mountain_lion
   end
 
   depends_on "go" => :build
