@@ -22,6 +22,19 @@ class Rocket < Formula
     sha1 "b348b4f39204a31a87fd396ea1418e2ef5b07e90"
   end
 
+  # This patch prevents non-linux OSs from trying to compile linux networking
+  # https://github.com/coreos/rocket/pull/490
+  patch do
+    url "https://github.com/jzelinskie/rocket/commit/67e4247e25bd8a19ab5acc7a08b83d85c4321132.diff"
+    sha1 "fce033178b7d970310c35dc4525e5d41eb817e9b"
+  end
+
+  # This patch fixes compilation on Go 1.4 due Godep not stripping import comments
+  patch do
+    url "https://github.com/coreos/rocket/commit/8f60b1afb350ff99c84583a0bd228298f6554b3e.diff"
+    sha1 "0ad1f3d118cbfd47c571b0bf358aa01dfea8c789"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
@@ -31,11 +44,6 @@ class Rocket < Formula
     ENV.prepend_path "PATH", buildpath/"bin"
 
     ENV["GOOS"] = `uname`.downcase.strip
-
-    # This stops [0] from executing, which is tied specifically to the Linux networking stack
-    # [0]: https://github.com/coreos/rocket/blob/6e0404bb0edc11c84a6ca5e3d0b7af9839f85cfa/build#L16-L23
-    inreplace "build", 'echo "Building network plugins"', "if false; then"
-    inreplace "build", 'echo "Building rkt (stage0)..."', "fi"
 
     system "./build"
     bin.install "bin/actool", "bin/rkt"
