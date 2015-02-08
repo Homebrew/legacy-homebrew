@@ -9,7 +9,7 @@ class Kafka < Formula
 
   depends_on "gradle"
   depends_on "zookeeper"
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
 
   def install
     system "gradle"
