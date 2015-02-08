@@ -32,7 +32,7 @@ class Kafka < Formula
     libexec.install %w(clients contrib core examples system_test)
 
     prefix.install "bin"
-    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "${JAVA_HOME:=`/usr/libexec/java_home`}")
+    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "`/usr/libexec/java_home`")
 
     mv "config", "kafka"
     etc.install "kafka"
