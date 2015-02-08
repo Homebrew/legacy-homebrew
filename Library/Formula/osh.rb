@@ -12,10 +12,9 @@ class Osh < Formula
   end
 
   bottle do
-    cellar :any
-    sha1 "3d552072c3b4e480ddba423af918d4e2d3d0cc4b" => :mavericks
-    sha1 "0f54312ecae702162e4e5326f1561215bee7a775" => :mountain_lion
-    sha1 "122f3ff69d9d6660de402047faec79d6adfa9441" => :lion
+    sha1 "7216e6df8d89efb36f07bdae0f7eedb667ad0ff5" => :yosemite
+    sha1 "5afde1b872117f02f951f6292c684e13d9f19332" => :mavericks
+    sha1 "b1f9dab5fcce8f3d8a1a791edb19d765a7361053" => :mountain_lion
   end
 
   def install
