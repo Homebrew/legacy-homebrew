@@ -3,8 +3,8 @@ require "language/go"
 
 class Nsq < Formula
   homepage "http://bitly.github.io/nsq"
-  url "https://github.com/bitly/nsq/archive/v0.3.1.tar.gz"
-  sha1 "f711cb61c1f5ed9865afbec95d57bcca6653b658"
+  url "https://github.com/bitly/nsq/archive/v0.3.2.tar.gz"
+  sha1 "3df203637e9b669486747e5ac18c93e7dd2d33bd"
 
   bottle do
     sha1 "6348ab65e201725cb40865ee2b5fbbbf656e54a0" => :yosemite
@@ -31,7 +31,7 @@ class Nsq < Formula
 
   go_resource "github.com/bitly/go-nsq" do
     url "https://github.com/bitly/go-nsq.git",
-      :revision => "b2219913d42659994fd0b68a9692b64fd00e079f"
+      :revision => "5a2abdba46a853a75ccdeeead30ad34eabc4d72a"
   end
 
   go_resource "github.com/bitly/go-simplejson" do
@@ -52,6 +52,11 @@ class Nsq < Formula
   go_resource "github.com/mreiferson/go-snappystream" do
     url "https://github.com/mreiferson/go-snappystream.git",
       :revision => "307a466b220aaf34bcee2d19c605ed9e96b4bcdb"
+  end
+
+  go_resource "github.com/bitly/timer_metrics" do
+    url "https://github.com/bitly/timer_metrics.git",
+      :revision => "afad1794bb13e2a094720aeb27c088aa64564895"
   end
 
   def install
