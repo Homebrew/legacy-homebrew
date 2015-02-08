@@ -10,11 +10,9 @@ class Libwebsockets < Formula
   depends_on "openssl"
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "11aaee95632443e8271d5633374f37de7b6ee7fa" => :yosemite
-    sha1 "fc2c6e8f445504876c4bc6bb6dda437794a646c7" => :mavericks
-    sha1 "2205679e9019c6d853b7455809baf9c7a963bed4" => :mountain_lion
+    sha1 "9d58b15a1b6cc37aac8871ec8ab7553a2931db1f" => :yosemite
+    sha1 "c33cac4bae88d866c7b318dbf0a4dc8ddbd23bbd" => :mavericks
+    sha1 "bf670cf9c8dd17ce92f60fdb52af8745250f6ea2" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
