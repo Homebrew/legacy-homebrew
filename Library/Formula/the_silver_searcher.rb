@@ -6,9 +6,9 @@ class TheSilverSearcher < Formula
 
   bottle do
     cellar :any
-    sha1 "9c496f3eda64573966e14f3d720336c956818817" => :yosemite
-    sha1 "3f794282f7ef77767fb2345221eeb228430170d5" => :mavericks
-    sha1 "8dafcdc4b708aa182a58691dc19be0ec04785508" => :mountain_lion
+    sha1 "b1e44c0d9cd3a37ab20f56c9ccb8a7c969e76b53" => :yosemite
+    sha1 "4fa6040bf03a04b94504c0259d0c92d9d168a9eb" => :mavericks
+    sha1 "5d1fcee7e46abcea478b3549a8b824ac9d84da2d" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
