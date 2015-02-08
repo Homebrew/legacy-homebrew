@@ -7,7 +7,11 @@ class Ipmiutil < Formula
 
   depends_on "openssl"
 
+  # Ensure ipmiutil does not try to link against (disabled) OpenSSL's MD2
+  # support. Patch submitted upstream in
+  # http://sourceforge.net/p/ipmiutil/mailman/message/33373858/
   patch :DATA
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
