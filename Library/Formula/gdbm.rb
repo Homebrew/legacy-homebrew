@@ -6,10 +6,10 @@ class Gdbm < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "51d9c80b023a12571843e10984aa026c55d487f9" => :yosemite
-    sha1 "73f8a00866a510eb8b6aac08ab0462aec6aa56ff" => :mavericks
-    sha1 "11e8b6c44f03db030339aaaf05187b208d67d168" => :mountain_lion
+    revision 2
+    sha1 "ae6850dce748a51b1d4270ae201dc50eb1a05d24" => :yosemite
+    sha1 "b6e5a8d874b0a28cf9405e625c0d99799ad78c68" => :mavericks
+    sha1 "a7786dbb967f0b42d6a25b6e25582270435de6c0" => :mountain_lion
   end
 
   option :universal
