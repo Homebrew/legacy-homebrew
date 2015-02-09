@@ -40,8 +40,8 @@ class Python3 < Formula
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.7.tar.gz"
-    sha1 "d2539dcd3d938863c7f6d7197d2f53066c92cf23"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
+    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
   end
 
   patch :DATA if build.with? "brewed-tk"
