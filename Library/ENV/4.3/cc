@@ -84,7 +84,8 @@ class Cmd
       # software uses gcc -v (wrongly) to sniff the GCC version.
       return @args.dup
     end
-    if !cccfg?("O") || tool == "ld" || configure?
+
+    if !refurbish_args? || tool == "ld" || configure?
       args = @args.dup
     else
       args = refurbished_args
@@ -128,13 +129,13 @@ class Cmd
     loop do
       case arg = enum.next
       when "-arch"
-        if cccfg?("K")
+        if permit_arch_flags?
           args << arg << enum.next
         else
           enum.next
         end
       when "-m32", "-m64"
-        args << arg if cccfg?("K")
+        args << arg if permit_arch_flags?
       when /^-Xarch_/
         refurbished = refurbish_arg(enum.next, enum)
         unless refurbished.empty?
@@ -205,7 +206,7 @@ class Cmd
   def cflags
     args = []
 
-    return args unless cccfg? 'O' or configure?
+    return args unless refurbish_args? || configure?
 
     args << '-pipe'
     args << '-w' unless configure?
@@ -217,9 +218,9 @@ class Cmd
 
   def cxxflags
     args = cflags
-    args << '-std=c++11' if cccfg? 'x'
-    args << '-stdlib=libc++' if cccfg? 'g'
-    args << '-stdlib=libstdc++' if cccfg? 'h'
+    args << "-std=c++11" if cxx11?
+    args << "-stdlib=libc++" if libcxx?
+    args << "-stdlib=libstdc++" if libstdcxx?
     args
   end
 
@@ -276,7 +277,7 @@ class Cmd
   end
 
   def make_fuss?
-    cccfg? 'O' and not configure?
+    refurbish_args? && !configure?
   end
 
   def configure?
@@ -286,6 +287,26 @@ class Cmd
 
   def cccfg? flags
     flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
+  end
+
+  def refurbish_args?
+    cccfg?("O")
+  end
+
+  def cxx11?
+    cccfg?("x")
+  end
+
+  def libcxx?
+    cccfg?("g")
+  end
+
+  def libstdcxx?
+    cccfg?("h")
+  end
+
+  def permit_arch_flags?
+    cccfg?("K")
   end
 
   def canonical_path(path)
