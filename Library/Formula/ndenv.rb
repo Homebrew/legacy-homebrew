@@ -7,12 +7,9 @@ class Ndenv < Formula
     inreplace "libexec/ndenv", "/usr/local", HOMEBREW_PREFIX
     prefix.install Dir["*"]
 
-    #  Create a plugin and link it into ndenv's opt_prefix. Only create if it
-    #    does not already exist (user might have installed stuff manually).
+    # Create a plugin and link it into ndenv's prefix.
     plugins_path = HOMEBREW_PREFIX/"share/ndenv/plugins"
-
     plugins_path.mkpath
-
     prefix.install_symlink "#{plugins_path}"
   end
 
@@ -26,6 +23,7 @@ class Ndenv < Formula
   end
 
   test do
+    # Simple test to verify the ndenv script executes.
     system "#{bin}/ndenv", "--version"
   end
 end
