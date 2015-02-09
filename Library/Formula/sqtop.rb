@@ -10,6 +10,6 @@ class Sqtop < Formula
   end
 
   test do
-    assert_match "#{version}", shell_output("#{bin}/sqtop --help | grep version | cut -d \" \" -f 2")
+    assert_match "#{version}", shell_output("#{bin}/sqtop --help")
   end
 end
