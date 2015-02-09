@@ -2,9 +2,8 @@ require "language/go"
 
 class Vegeta < Formula
   homepage "https://github.com/tsenart/vegeta"
-  url "https://github.com/tsenart/vegeta/archive/v5.5.2.zip"
-  version "5.5.2"
-  sha1 "f7f61a9512fe09490ea1e0114bb0bbcf450c9a52"
+  url "https://github.com/tsenart/vegeta/archive/v5.5.2.tar.gz"
+  sha1 "a0b2d4c4bca0023a8407a819f64c3f96e1ebe3bc"
 
   depends_on "go" => :build
 
@@ -19,7 +18,11 @@ class Vegeta < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system 'go', 'build', '-o', 'vegeta'
+    system "go", "build", "-o", "vegeta"
     bin.install "vegeta"
+  end
+
+  test do
+    system "#{bin}/vegeta", "attack", "-h"
   end
 end
