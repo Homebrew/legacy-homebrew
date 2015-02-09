@@ -1,11 +1,9 @@
-require 'formula'
-
 class Sqlitebrowser < Formula
-  homepage 'http://sqlitebrowser.org'
-  url 'https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.4.0.tar.gz'
-  sha1 'c60e953639ce8294155fa819a4538b05f8d58b64'
+  homepage "http://sqlitebrowser.org"
+  url "https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.5.0.tar.gz"
+  sha1 "b1c351ccc0dac626ddd303a27112e0b3682fc7ee"
 
-  head 'https://github.com/sqlitebrowser/sqlitebrowser.git'
+  head "https://github.com/sqlitebrowser/sqlitebrowser.git"
 
   bottle do
     cellar :any
@@ -14,12 +12,18 @@ class Sqlitebrowser < Formula
     sha1 "b633087ab28885f058bc5bcf24ca834828d1c894" => :mountain_lion
   end
 
-  depends_on 'qt'
-  depends_on 'cmake' => :build
-  depends_on 'sqlite' => 'with-functions'
+  depends_on "qt"
+  depends_on "cmake" => :build
+  depends_on "sqlite" => "with-functions"
+  depends_on "sqlcipher" => :optional
 
   def install
     system "cmake", ".", *std_cmake_args
-    system 'make install'
+    system "make", "install"
+  end
+
+  test do
+    shell_output("#{bin}/sqlitebrowser -h")
+    assert_equal 0, $?.exitstatus
   end
 end
