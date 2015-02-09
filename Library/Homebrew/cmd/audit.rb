@@ -455,7 +455,16 @@ class FormulaAuditor
     if line =~ /# PLEASE REMOVE/
       problem "Please remove default template comments"
     end
+    if line =~ /# Documentation:/
+      problem "Please remove default template comments"
+    end
     if line =~ /# if this fails, try separate make\/make install steps/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# The url of the archive/
+      problem "Please remove default template comments"
+    end
+    if line =~ /## Naming --/
       problem "Please remove default template comments"
     end
     if line =~ /# if your formula requires any X11\/XQuartz components/
