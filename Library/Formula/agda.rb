@@ -9,9 +9,9 @@ class Agda < Formula
   revision 1
 
   bottle do
-    sha1 "d0827796e1d0ac2ba33ef73c8bec7f99ee95b02a" => :yosemite
-    sha1 "7e49026d601135596b830b4a6b7032e463b1a51c" => :mavericks
-    sha1 "0db7eb99ae43f17dc0509dbbf48341c20c534ef4" => :mountain_lion
+    sha1 "ce3cd69caaa5644f23db06dba5a1b558badca8ad" => :yosemite
+    sha1 "8157fc67f29852e133e1e17f28530388a0f99d00" => :mavericks
+    sha1 "c6d0c8b66e676f4f7eae63b4fe9b3a40e5a6a36c" => :mountain_lion
   end
 
   devel do
