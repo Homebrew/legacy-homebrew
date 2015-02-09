@@ -646,12 +646,13 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def update_submodules
+    quiet_safe_system "git", "submodule", "sync", "--recursive"
     quiet_safe_system "git", "submodule", "update", "--init", "--recursive"
   end
 
   def checkout_submodules(dst)
     escaped_clone_path = cached_location.to_s.gsub(/\//, '\/')
-    sub_cmd = "git checkout-index -a -f --prefix=#{dst}/${toplevel/#{escaped_clone_path}/}/$path/"
+    sub_cmd = %[git checkout-index -a -f --prefix="#{dst}/${toplevel/#{escaped_clone_path}/}/$path/"]
     quiet_safe_system "git", "submodule", "foreach", "--recursive", sub_cmd
   end
 end

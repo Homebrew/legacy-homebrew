@@ -2,18 +2,18 @@ require "formula"
 
 class Abcm2ps < Formula
   homepage "http://moinejf.free.fr"
-  url "http://moinejf.free.fr/abcm2ps-7.8.11.tar.gz"
-  sha1 "93e016cf933d88d817be76bd3eb4163851f3b132"
+  url "http://moinejf.free.fr/abcm2ps-7.8.13.tar.gz"
+  sha1 "09bbcde58e358c11a5a28de05d48be3a7eb94a4e"
 
   bottle do
-    sha1 "1381e1f180e685182193a4392fc664cc16e5bc87" => :yosemite
-    sha1 "ccb022e97dac73bae23be04cc8bdf99ce10e09d8" => :mavericks
-    sha1 "d6b852cb4761a91f16ff9de9b189e0faf238de90" => :mountain_lion
+    sha1 "217a460210f211fcb7f55298d321c54fa3f6aa06" => :yosemite
+    sha1 "913c288274a40b8d5359384649650de5ec69962f" => :mavericks
+    sha1 "c714244c5af504abb74c1962c5574b6afac25b61" => :mountain_lion
   end
 
   devel do
-    url "http://moinejf.free.fr/abcm2ps-8.3.4.tar.gz"
-    sha1 "e3a92e89eb55d36e582e3529846f17c60dfb788b"
+    url "http://moinejf.free.fr/abcm2ps-8.5.2.tar.gz"
+    sha1 "71362859696c379b371814698d5272964e1aa2bd"
   end
 
   depends_on "pkg-config" => :build

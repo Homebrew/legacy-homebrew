@@ -2,13 +2,13 @@ require "formula"
 
 class Groonga < Formula
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-4.1.0.tar.gz"
-  sha1 "186a2fd7c1634bce6a9a0c2629eaf7e486d1e56c"
+  url "http://packages.groonga.org/source/groonga/groonga-4.1.1.tar.gz"
+  sha1 "ecbdc965c018986f0605bae0a5038940de668f39"
 
   bottle do
-    sha1 "f81a338a7327cadc880ead1974043eef78259725" => :yosemite
-    sha1 "e873d8f85b81e024141be462809749ecf8a929a4" => :mavericks
-    sha1 "0f92e8fd538abf0505edf189ad5c04b9ab0e55b0" => :mountain_lion
+    sha1 "d91eefddc996f4a131ae6d305c66d97ccffca504" => :yosemite
+    sha1 "3f762535c991663f97d9d9362f37ec3be4305201" => :mavericks
+    sha1 "a89120be3aaf6e86eed1e13ed111c7aa9c7a01e5" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -28,7 +28,7 @@ class Groonga < Formula
       --prefix=#{prefix}
       --with-zlib
       --disable-zeromq
-      --with-mruby
+      --enable-mruby
       --without-libstemmer
     ]
 

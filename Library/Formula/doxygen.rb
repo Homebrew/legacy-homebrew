@@ -12,11 +12,13 @@ class Doxygen < Formula
     sha1 "a1108f0c553124209cf2b1b65b8cb879a1d8cb47" => :mountain_lion
   end
 
-  option "with-dot", "Build with dot command support from Graphviz."
+  option "with-graphviz", "Build with dot command support from Graphviz."
   option "with-doxywizard", "Build GUI frontend with qt support."
   option "with-libclang", "Build with libclang support."
 
-  depends_on "graphviz" if build.with? "dot"
+  deprecated_option "with-dot" => "with-graphviz"
+
+  depends_on "graphviz" => :optional
   depends_on "qt" if build.with? "doxywizard"
   depends_on "llvm" => "with-clang" if build.with? "libclang"
 

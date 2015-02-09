@@ -10,19 +10,20 @@ class ObjectiveCaml < Formula
   depends_on :x11 => :optional
 
   bottle do
-    sha1 "d3f09d213f57210e4a9e1b482ca8e2fdf39d5836" => :yosemite
-    sha1 "5fb1b744f2e8efa49d00d5bcf01547db2b3d32c4" => :mavericks
-    sha1 "e551c48370a3b5a43d843510b81032fccc2197ec" => :mountain_lion
+    revision 1
+    sha1 "ff2aad908892c78304c153c4c744954f1dadc5c7" => :yosemite
+    sha1 "624ddd8c46b91daa51658e06d4ac1e3e20012779" => :mavericks
+    sha1 "fa162f9f75ea191f0f9dd59298a0b62c2c761118" => :mountain_lion
   end
 
   def install
     args = %W[
       --prefix #{HOMEBREW_PREFIX}
       --mandir #{man}
-      -cc #{ENV.cc}
       -with-debug-runtime
     ]
-    args << "-aspp" << "#{ENV.cc} -c"
+    args << "-cc" << "#{ENV.cc} #{ENV.cflags}"
+    args << "-aspp" << "#{ENV.cc} #{ENV.cflags} -c"
     args << "-no-graph" if build.without? "x11"
 
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores

@@ -74,11 +74,21 @@ module Homebrew
   end
 
   def describe_python
-    describe_path(which 'python')
+    python = which 'python'
+    if %r{/shims/python$} =~ python && which('pyenv')
+      "#{python} => #{Pathname.new(`pyenv which python`.strip).realpath}" rescue describe_path(python)
+    else
+      describe_path(python)
+    end
   end
 
   def describe_ruby
-    describe_path(which 'ruby')
+    ruby = which 'ruby'
+    if %r{/shims/ruby$} =~ ruby && which('rbenv')
+      "#{ruby} => #{Pathname.new(`rbenv which ruby`.strip).realpath}" rescue describe_path(ruby)
+    else
+      describe_path(ruby)
+    end
   end
 
   def hardware
@@ -109,6 +119,17 @@ module Homebrew
     s
   end
 
+  def describe_java
+    if which("java").nil?
+      "N/A"
+    elsif !(`/usr/libexec/java_home --failfast &>/dev/null` && $?.success?)
+      "N/A"
+    else
+      java = `java -version 2>&1`.lines.first.chomp
+      java =~ /java version "(.+?)"/ ? $1 : java
+    end
+  end
+
   def dump_verbose_config(f=$stdout)
     f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     f.puts "ORIGIN: #{origin}"
@@ -130,5 +151,6 @@ module Homebrew
     f.puts "Perl: #{describe_perl}"
     f.puts "Python: #{describe_python}"
     f.puts "Ruby: #{describe_ruby}"
+    f.puts "Java: #{describe_java}"
   end
 end

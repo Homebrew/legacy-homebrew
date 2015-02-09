@@ -5,14 +5,14 @@ require "formula"
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2015.01.15.1/youtube-dl-2015.01.15.1.tar.gz"
-  sha256 "33ca4587ada5fb57646d3ff32f8502ec5f2573043cbd9ce634305e299fb22a17"
+  url "https://yt-dl.org/downloads/2015.02.06/youtube-dl-2015.02.06.tar.gz"
+  sha256 "786870517a31f76fb614e2780f4e72352b27426aa33442d1fbefb0989d9bbab9"
 
   bottle do
     cellar :any
-    sha1 "14aefebc22705539a977065b737169f8520c04d3" => :yosemite
-    sha1 "28e6d04040b3d611a3c7622fd360a8b638e000ab" => :mavericks
-    sha1 "6195f68fdcd140305fd28e335fe831c47155060b" => :mountain_lion
+    sha1 "1f0dec559861cfcdf0806b7935f0697d61d2f00f" => :yosemite
+    sha1 "1eb6eb7f549c3debfe430d241adef4d0c401f18f" => :mavericks
+    sha1 "cac374a97cca51899a40e4c4cb63ccec5c153706" => :mountain_lion
   end
 
   head do
@@ -31,7 +31,7 @@ class YoutubeDl < Formula
   end
 
   def caveats
-    "To use post-processing options, `brew install ffmpeg`."
+    "To use post-processing options, `brew install ffmpeg` or `brew install libav`."
   end
 
   test do

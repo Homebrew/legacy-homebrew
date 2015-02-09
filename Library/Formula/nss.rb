@@ -2,14 +2,15 @@ require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_3_RTM/src/nss-3.17.3.tar.gz"
-  sha256 "f4d5e9035a2f84f25f35c283de3b0ff60d72e918748de25eaf017ed201fa21d5"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_4_RTM/src/nss-3.17.4.tar.gz"
+  sha256 "1d98ad1881a4237ec98cbe472fc851480f0b0e954dfe224d047811fb96ff9d79"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "cb402e77ecc3d4abd4bf1535ec78b059b3ca8d7d" => :yosemite
-    sha1 "4a88257a1784ff4e7d6a6f90485bf89beb585439" => :mavericks
-    sha1 "215e223607d1319ae395520aaed2f6022bab1220" => :mountain_lion
+    sha1 "2b8a680e6639215188542cc54c4f08dcee62ae36" => :yosemite
+    sha1 "2fdb9e02eddf3c692d2de478ab7fbb630cd0dcb0" => :mavericks
+    sha1 "83a0cf6db62ff865b07347c4a94361869715e6b0" => :mountain_lion
   end
 
   depends_on "nspr"
@@ -57,6 +58,7 @@ class Nss < Formula
     # resolves conflict with openssl, see #28258
     rm lib/"libssl.a"
 
+    (bin+"nss-config").write config_file
     (lib+"pkgconfig/nss.pc").write pc_file
   end
 
@@ -67,8 +69,22 @@ class Nss < Formula
     system "#{bin}/certutil", "-L", "-d", pwd
   end
 
+  # A very minimal nss-config for configuring firefox etc. with this nss,
+  # see https://bugzil.la/530672 for the progress of upstream inclusion.
+  def config_file; <<-EOS.undent
+    #!/bin/sh
+    for opt; do :; done
+    case "$opt" in
+      --version) opt="--modversion";;
+      --cflags|--libs) ;;
+      *) exit 1;;
+    esac
+    pkg-config "$opt" nss
+    EOS
+  end
+
   def pc_file; <<-EOS.undent
-    prefix=#{opt_prefix}
+    prefix=#{prefix}
     exec_prefix=${prefix}
     libdir=${exec_prefix}/lib
     includedir=${prefix}/include/nss
@@ -76,7 +92,7 @@ class Nss < Formula
     Name: NSS
     Description: Mozilla Network Security Services
     Version: #{version}
-    Requires: nspr
+    Requires: nspr >= 4.10.7
     Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
     Cflags: -I${includedir}
     EOS

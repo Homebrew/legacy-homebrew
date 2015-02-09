@@ -28,9 +28,9 @@ class Wireshark < Formula
   end
 
   devel do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.1.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.1.tar.bz2"
-    sha1 "5ea32f83709a90fd5fdf5d331992e46a42ec27aa"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.2.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.2.tar.bz2"
+    sha1 "8baea1300cca0fe4e5c552113e3521dc8fccdb48"
 
     depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
   end

@@ -2,13 +2,13 @@ require "formula"
 
 class Saltstack < Formula
   homepage "http://www.saltstack.org"
-  url "https://github.com/saltstack/salt/archive/v2014.7.0.tar.gz"
-  sha256 "a6b3a68733b3fd608d0dcc721fb56490b8079245dbaf22c05274cd6122d19659"
+  url "https://github.com/saltstack/salt/archive/v2014.7.1.tar.gz"
+  sha256 "5fcf2cff700d0719b419c9cb489552645ce1287a15c7b3a8745959773d9b0dd1"
 
   bottle do
-    sha1 "c1c30977edb597b959452417b38fc518994316b4" => :yosemite
-    sha1 "dffce0bce3e8a071ad1d132b99871dc75ef3601e" => :mavericks
-    sha1 "a3776f39e5c18b660dcabf3127286eddfdfc445c" => :mountain_lion
+    sha1 "4ef3922ffd2b36d775f22fce055ebf692d1e14b7" => :yosemite
+    sha1 "fbb96fe311befd1f68c063c398bfb4a011fc2dc4" => :mavericks
+    sha1 "738d8efecb7b916f10acf8707822945623226524" => :mountain_lion
   end
 
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false

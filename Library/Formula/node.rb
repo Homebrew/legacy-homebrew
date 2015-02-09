@@ -1,56 +1,45 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
-  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
-  revision 2
+  url "https://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz"
+  sha256 "9700e23af4e9b3643af48cef5f2ad20a1331ff531a12154eef2bfb0bb1682e32"
+  head "https://github.com/joyent/node.git", :branch => "v0.12"
 
   bottle do
-    revision 1
-    sha1 "a98a1df66cfb0712b14489186c46f7087ba35bd7" => :yosemite
-    sha1 "0cd45412840a67d5d65e6bc3c0c3bcf8bc23153c" => :mavericks
-    sha1 "977332381c033626b991002c27e738c144ebbaac" => :mountain_lion
+    sha1 "5c08bc7c8189453309009dbfc72f8b2e246dcd11" => :yosemite
+    sha1 "24aab50a6b65e6df9c683fa1a7d1a182052865f4" => :mavericks
+    sha1 "3d982a33612b1370540dffb53e17d23e6529ff5b" => :mountain_lion
   end
-
-  head do
-    url "https://github.com/joyent/node.git", :branch => "v0.12"
-
-    depends_on "pkg-config" => :build
-    depends_on "icu4c"
-  end
-
-  deprecated_option "enable-debug" => "with-debug"
 
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
 
-  depends_on :python => :build
+  deprecated_option "enable-debug" => "with-debug"
 
-  # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
-  # over Node's shipped version with --shared-openssl.
-  # Would allow us quicker security fixes than Node's release schedule.
-  # See https://github.com/joyent/node/issues/3557 for prior discussion.
+  depends_on :python => :build
+  depends_on "pkg-config" => :build
+  depends_on "icu4c" => :recommended
+  depends_on "openssl" => :optional
 
   fails_with :llvm do
     build 2326
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.18.tgz"
-    sha1 "e2af4c5f848fb023851cd2ec129005d33090bd57"
+    url "https://registry.npmjs.org/npm/-/npm-2.5.1.tgz"
+    sha1 "23e4b0fdd1ffced7d835780e692a9e5a0125bb02"
   end
 
   def install
-    args = %W{--prefix=#{prefix} --without-npm}
+    args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
-    args << "--without-ssl2" << "--without-ssl3" if build.stable?
+    args << "--with-intl=system-icu" if build.with? "icu4c"
 
-    # This should eventually be able to use the system icu4c, but right now
-    # it expects to find this dependency using pkgconfig.
-    if build.head?
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_prefix}/lib/pkgconfig"
-      args << "--with-intl=system-icu"
+    if build.with? "openssl"
+      args << "--shared-openssl"
+    else
+      args << "--without-ssl2" << "--without-ssl3"
     end
 
     system "./configure", *args
@@ -97,8 +86,10 @@ class Node < Formula
     # Let's do the manpage dance. It's just a jump to the left.
     # And then a step to the right, with your hand on rm_f.
     ["man1", "man3", "man5", "man7"].each do |man|
+      # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
+      mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
       rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      Dir[libexec/"npm/share/man/#{man}/npm*"].each {|f| ln_sf f, HOMEBREW_PREFIX/"share/man/#{man}" }
+      ln_sf Dir[libexec/"npm/share/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     npm_root = node_modules/"npm"

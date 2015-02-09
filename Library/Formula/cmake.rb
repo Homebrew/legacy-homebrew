@@ -4,7 +4,7 @@ class NoExpatFramework < Requirement
   end
 
   satisfy :build_env => false do
-    not File.exist? expat_framework
+    !File.exist? expat_framework
   end
 
   def message; <<-EOS.undent
@@ -20,18 +20,31 @@ end
 
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.1/cmake-3.1.0.tar.gz"
-  sha1 "cc20c40f5480c83a0204f516a490b470bd3a963a"
   head "http://cmake.org/cmake.git"
+  revision 1
+
+  stable do
+    url "http://www.cmake.org/files/v3.1/cmake-3.1.1.tar.gz"
+    sha1 "e96098e402903e09f56d0c4cfef516e591088d78"
+
+    # Patching CMake for OpenSSL 1.0.2
+    # Already commited upstream. Should be in next release.
+    # http://www.cmake.org/gitweb?p=cmake.git;a=commit;h=de4ccee75a89519f95fcbcca75abc46577bfefea
+    patch do
+      url "https://github.com/Kitware/CMake/commit/c5d9a828.diff"
+      sha1 "61b15b638c1409233f36e6e3383b98cab514c3bb"
+    end
+  end
 
   bottle do
     cellar :any
-    sha1 "7a015c43f30830ffc722dbd548b014d725b1cc64" => :yosemite
-    sha1 "73716b458ef13282f84a870c9faf0cea52b0c508" => :mavericks
-    sha1 "d19131db9de47fa03ad08edce1c1c1b6eb6c3aa0" => :mountain_lion
+    sha1 "4b2f2b564e8714815bcf7f2e739ecbee06880453" => :yosemite
+    sha1 "4819694722d8330444915b1696cb1b3f56c78881" => :mavericks
+    sha1 "ed7d6626d1c1685ff4a4bc795a3b559fab7aeb01" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"
+
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
   depends_on "xz" # For LZMA
 
@@ -50,8 +63,8 @@ class Cmake < Formula
   end
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.1.tar.gz"
-    sha1 "b9e9236693ccf6e86414e8578bf8874181f409de"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
+    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
   end
 
   resource "jinja2" do

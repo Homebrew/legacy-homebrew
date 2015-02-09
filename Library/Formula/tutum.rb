@@ -2,15 +2,14 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/v0.11.0.1.tar.gz"
-  sha1 "501b0ec1582b741b2eca81bb5a27b11499b42f0c"
+  url "https://github.com/tutumcloud/tutum-cli/archive/v0.11.5.1.tar.gz"
+  sha1 "cba0333eb55322320dbfad90840b2e260cb1e9bf"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "9ed06a00ba4580e9e322a3ff97df7fa6ecb33047" => :yosemite
-    sha1 "2c1be29999b79f4438c1f81aca8f98c0c2cd93cc" => :mavericks
-    sha1 "b19df240260d468f20b6b8c8acaab6a277b9c9aa" => :mountain_lion
+    sha1 "1d950e6fcc51ace7b4b11a4311c26434e7f439f7" => :yosemite
+    sha1 "c88aeeee454dac9eaba90450b248c5bf3a50c8a9" => :mavericks
+    sha1 "e3189cfa513d954a75c74b638f0d735488b3c282" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -32,8 +31,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.11.0.tar.gz"
-    sha1 "a8b011697fe015c468eeeed33ce242631e11d39a"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.11.2.tar.gz"
+    sha1 "eea0dd65fc0a4809d1956a1052788fe9e9290c10"
   end
 
   resource "backports.ssl-match-hostname" do
@@ -64,6 +63,11 @@ class Tutum < Formula
   resource "websocket-client" do
     url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.23.0.tar.gz"
     sha1 "3348c226eb44324417db777e962fec6bda8134b9"
+  end
+
+  resource "future" do
+    url "https://pypi.python.org/packages/source/f/future/future-0.14.3.tar.gz"
+    sha1 "44fdd9323913d21068b29ecda795a98c07dc8a40"
   end
 
   def install

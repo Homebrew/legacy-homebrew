@@ -27,6 +27,7 @@ require 'date'
 require 'rexml/document'
 require 'rexml/xmldecl'
 require 'rexml/cdata'
+require 'cmd/tap'
 
 module Homebrew
   EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
@@ -324,7 +325,8 @@ module Homebrew
 
       unsatisfied_requirements = requirements.reject do |requirement|
         satisfied = false
-        satisfied = true if requirement.satisfied?
+        satisfied ||= requirement.satisfied?
+        satisfied ||= requirement.optional?
         if !satisfied && requirement.default_formula?
           default = Formula[requirement.class.default_formula]
           satisfied = satisfied_requirements?(default, :stable, formula.name)
@@ -364,14 +366,24 @@ module Homebrew
       dependents = `brew uses #{formula_name}`.split("\n")
       dependents -= @formulae
       dependents = dependents.map {|d| Formulary.factory(d)}
-      testable_dependents = dependents.select {|d| d.test_defined? && d.stable.bottled? }
+
+      testable_dependents = dependents.select { |d| d.test_defined? && d.bottled? }
 
       formula = Formulary.factory(formula_name)
-      return unless satisfied_requirements?(formula, :stable)
-
       installed_gcc = false
-      deps = formula.stable.deps.to_a
-      reqs = formula.stable.requirements.to_a
+
+      deps = []
+      reqs = []
+
+      if formula.stable
+        return unless satisfied_requirements?(formula, :stable)
+
+        deps |= formula.stable.deps.to_a
+        reqs |= formula.stable.requirements.to_a
+      elsif formula.devel
+        return unless satisfied_requirements?(formula, :devel)
+      end
+
       if formula.devel && !ARGV.include?('--HEAD')
         deps |= formula.devel.deps.to_a
         reqs |= formula.devel.requirements.to_a
@@ -415,6 +427,15 @@ module Homebrew
       install_args = %w[--verbose]
       install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
       install_args << "--HEAD" if ARGV.include? "--HEAD"
+
+      # Pass --devel or --HEAD to install in the event formulae lack stable. Supports devel-only/head-only.
+      # head-only should not have devel, but devel-only can have head. Stable can have all three.
+      if devel_only_tap? formula
+        install_args << "--devel"
+      elsif head_only_tap? formula
+        install_args << "--HEAD"
+      end
+
       install_args << formula_name
       # Don't care about e.g. bottle failures for dependencies.
       ENV["HOMEBREW_DEVELOPER"] = nil
@@ -426,7 +447,7 @@ module Homebrew
       audit_args << "--strict" if @added_formulae.include? formula_name
       test "brew", "audit", *audit_args
       if install_passed
-        unless ARGV.include? '--no-bottle'
+        if formula.stable? && !ARGV.include?('--no-bottle')
           bottle_args = ["--rb", formula_name]
           if @tap
             tap_user, tap_repo = @tap.split "/"
@@ -461,7 +482,7 @@ module Homebrew
         test "brew", "uninstall", "--force", formula_name
       end
 
-      if formula.devel && !ARGV.include?('--HEAD') \
+      if formula.devel && formula.stable? && !ARGV.include?('--HEAD') \
          && satisfied_requirements?(formula, :devel)
         test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
         test "brew", "install", "--devel", "--verbose", formula_name
@@ -560,6 +581,14 @@ module Homebrew
       changed_formulae.map!(&:first)
       unchanged_formulae = @formulae - changed_formulae
       changed_formulae + unchanged_formulae
+    end
+
+    def head_only_tap? formula
+      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap == "homebrew/homebrew-head-only"
+    end
+
+    def devel_only_tap? formula
+      formula.devel && formula.stable.nil? && formula.tap == "homebrew/homebrew-devel-only"
     end
 
     def run

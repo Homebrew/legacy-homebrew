@@ -3,13 +3,13 @@ require "language/go"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.9.0.tar.gz"
-  sha1 "ccf8315fa092f59bd859eaeafd72bc86afdc91cc"
+  url "https://github.com/junegunn/fzf/archive/0.9.2.tar.gz"
+  sha1 "b065794baa83b418ee2ca1e87c46a19c0478bd7c"
 
   bottle do
-    sha1 "279c90b368719c32dc4573cbe1b61eeae9476eec" => :yosemite
-    sha1 "78a43ee898cebef1166b96cbd0964cc69fd1d0a7" => :mavericks
-    sha1 "048bd537360330b20ba03e77f2a58bf2157d10a3" => :mountain_lion
+    sha1 "36a1edab80c2afba434775977489b1a3bd978805" => :yosemite
+    sha1 "79a52c59094b56a6df6de727725ae47f2af396db" => :mavericks
+    sha1 "3e34541560524b53a95134f7786ab7057a48e330" => :mountain_lion
   end
 
   depends_on "go" => :build
