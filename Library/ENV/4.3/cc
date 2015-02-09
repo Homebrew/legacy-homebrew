@@ -27,6 +27,7 @@ LOGGER = Logger.new
 
 class Cmd
   attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
+  attr_reader :archflags, :optflags
 
   def initialize path, args
     @arg0 = File.basename(path).freeze
@@ -36,6 +37,8 @@ class Cmd
     @cellar = ENV['HOMEBREW_CELLAR']
     @tmpdir = ENV['HOMEBREW_TEMP']
     @sysroot = ENV['HOMEBREW_SDKROOT']
+    @archflags = ENV.fetch("HOMEBREW_ARCHFLAGS") { "" }.split(" ")
+    @optflags = ENV.fetch("HOMEBREW_OPTFLAGS") { "" }.split(" ")
   end
 
   def mode
@@ -211,6 +214,7 @@ class Cmd
 
     args << '-pipe'
     args << '-w' unless configure?
+    args << "-#{ENV["HOMEBREW_OPTIMIZATION_LEVEL"]}"
     args.concat(optflags)
     args.concat(archflags)
     args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
@@ -223,17 +227,6 @@ class Cmd
     args << "-stdlib=libc++" if libcxx?
     args << "-stdlib=libstdc++" if libstdcxx?
     args
-  end
-
-  def optflags
-    args = []
-    args << "-#{ENV['HOMEBREW_OPTIMIZATION_LEVEL']}"
-    args.concat ENV['HOMEBREW_OPTFLAGS'].split(' ') if ENV['HOMEBREW_OPTFLAGS']
-    args
-  end
-
-  def archflags
-    ENV["HOMEBREW_ARCHFLAGS"].split(" ")
   end
 
   def cppflags
