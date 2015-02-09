@@ -53,7 +53,7 @@ class Postgresql < Formula
     ]
 
     args << "--with-python" if build.with? "python"
-    args << "--with-perl" if build.with? "no-perl"
+    args << "--with-perl" if build.with? "perl"
 
     # The CLT is required to build tcl support on 10.7 and 10.8 because
     # tclConfig.sh is not part of the SDK
