@@ -7,9 +7,9 @@ class Xmlto < Formula
 
   bottle do
     cellar :any
-    sha1 "429f1b6a3186432fb0a130d1ee003269af6fc9d9" => :yosemite
-    sha1 "158eb206779654ac305d5948b79c950e64afaada" => :mavericks
-    sha1 "611a524653264cd414c74b60c50d4522bb63d570" => :mountain_lion
+    sha1 "1135350e4d76f2a2b6c86fc8554aa9bb7d2ca7d7" => :yosemite
+    sha1 "62c44bc17acaf2be24d10ada48b87d0d41fab60c" => :mavericks
+    sha1 "752ba9e2f015a8da4b4ab4e082493d010d49db86" => :mountain_lion
   end
 
   depends_on 'docbook'
