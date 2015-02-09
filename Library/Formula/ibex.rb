@@ -6,10 +6,10 @@ class Ibex < Formula
   option "with-java", "Build Java bindings for Choco solver."
   if build.with? "java"
     depends_on :java => "1.8+"
-    depends_on "pkg-config" => :build
   end
   depends_on "bison" => :build
   depends_on "flex" => :build
+  depends_on "pkg-config"
 
   def install
     if build.with? "java"
