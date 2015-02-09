@@ -78,23 +78,24 @@ class Sip < Formula
         void test();
       };
     EOS
+    (testpath/"generate.py").write <<-EOS.undent
+      from sipconfig import SIPModuleMakefile, Configuration
+      m = SIPModuleMakefile(Configuration(), "test.build")
+      m.extra_libs = ["test"]
+      m.extra_lib_dirs = ["."]
+      m.generate()
+    EOS
     (testpath/"run.py").write <<-EOS.undent
       from test import Test
       t = Test()
       t.test()
     EOS
-    system "#{bin}/sip", "-c", ".", "test.sip"
-    Language::Python.each_python(build) do |python, _version|
-      cppflags = `#{python}-config --cflags`.strip.split
-      ldflags = `#{python}-config --ldflags`.strip.split
-      cppflags << "-I#{include}"
-      ldflags += %w[-L#{lib} -shared -undefined dynamic_lookup]
-      Dir[testpath/"*.cpp"].each do |source|
-        object = File.basename(source, ".cpp") + ".o"
-        system ENV.cxx, "-c", source, "-o", object, *cppflags
-      end
-      link_args= Dir[testpath/"*.o"] + %w[-o test.so] + ldflags
-      system ENV.cxx, *link_args
+    system ENV.cxx, "-shared", "-o", "libtest.dylib", "test.cpp"
+    system "#{bin}/sip", "-b", "test.build", "-c", ".", "test.sip"
+    Language::Python.each_python(build) do |python, version|
+      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
+      system python, "generate.py"
+      system "make", "-j1", "clean", "all"
       system python, "run.py"
     end
   end
