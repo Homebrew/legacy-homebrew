@@ -17,6 +17,8 @@ class Xmlto < Formula
   # Doesn't strictly depend on GNU getopt, but OS X system getopt(1)
   # does not suport longopts in the optstring, so use GNU getopt.
   depends_on 'gnu-getopt'
+  # Doesn't strictly depend on GNU getopt, but OS X system getopt(1)
+  # does not suport longopts in the optstring, so use GNU getopt.
 
   # xmlto forces --nonet on xsltproc, which causes it to fail when
   # DTDs/entities aren't available locally.
