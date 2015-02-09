@@ -26,11 +26,12 @@ end
 LOGGER = Logger.new
 
 class Cmd
-  attr_reader :prefix, :cellar, :tmpdir, :sysroot
+  attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
 
   def initialize path, args
     @arg0 = File.basename(path).freeze
     @args = args.freeze
+    @config = ENV.fetch("HOMEBREW_CCCFG") { "" }
     @prefix = ENV['HOMEBREW_PREFIX']
     @cellar = ENV['HOMEBREW_CELLAR']
     @tmpdir = ENV['HOMEBREW_TEMP']
@@ -285,28 +286,24 @@ class Cmd
     ENV.key? 'as_nl'
   end
 
-  def cccfg? flags
-    flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
-  end
-
   def refurbish_args?
-    cccfg?("O")
+    config.include?("O")
   end
 
   def cxx11?
-    cccfg?("x")
+    config.include?("x")
   end
 
   def libcxx?
-    cccfg?("g")
+    config.include?("g")
   end
 
   def libstdcxx?
-    cccfg?("h")
+    config.include?("h")
   end
 
   def permit_arch_flags?
-    cccfg?("K")
+    config.include?("K")
   end
 
   def canonical_path(path)
