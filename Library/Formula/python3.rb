@@ -5,10 +5,10 @@ class Python3 < Formula
   revision 1
 
   bottle do
-    revision 4
-    sha1 "bafbd760dc7cdc3e0d782714e866006200f2f128" => :yosemite
-    sha1 "aeff86cffe18f6aea643e90e56032fb272c9612f" => :mavericks
-    sha1 "a27901327dad9d61f50be6e2dbde59116da682e2" => :mountain_lion
+    revision 5
+    sha1 "65ab2f902152ce86f23eecbb56d9a9fd60b3c22e" => :yosemite
+    sha1 "89ed42bd3070f1c2efca049d150b72f7f5cf3fe7" => :mavericks
+    sha1 "f2df5040f65cd509bbd33666fe09eb329d2b81bc" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg, :branch => "3.5"
