@@ -14,8 +14,7 @@ class Libmongoc < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libbson"
-  depends_on "openssl" => :optional
-
+  depends_on "openssl" => :recommended
 
   def install
     # --enable-sasl=no: https://jira.mongodb.org/browse/CDRIVER-447
