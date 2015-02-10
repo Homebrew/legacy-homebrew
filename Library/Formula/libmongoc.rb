@@ -1,6 +1,6 @@
 require "formula"
 
-class MongoC < Formula
+class Libmongoc < Formula
   homepage "http://docs.mongodb.org/ecosystem/drivers/c/"
   url "https://github.com/mongodb/mongo-c-driver/releases/download/1.1.0/mongo-c-driver-1.1.0.tar.gz"
   sha1 "9277fb0afcf595838da0d5e4715df1526d53e020"
