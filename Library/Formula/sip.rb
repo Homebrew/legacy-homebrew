@@ -92,7 +92,8 @@ class Sip < Formula
     EOS
     system ENV.cxx, "-shared", "-o", "libtest.dylib", "test.cpp"
     system "#{bin}/sip", "-b", "test.build", "-c", ".", "test.sip"
-    Language::Python.each_python(build) do |python, _version|
+    Language::Python.each_python(build) do |python, version|
+      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
       system python, "generate.py"
       system "make", "-j1", "clean", "all"
       system python, "run.py"
