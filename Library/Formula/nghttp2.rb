@@ -3,6 +3,13 @@ class Nghttp2 < Formula
   url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.3/nghttp2-0.7.3.tar.xz"
   sha1 "74f6626aa7ebbc13b8f5169d10020da9acb33440"
 
+  bottle do
+    cellar :any
+    sha1 "819e7bdcf35ddde67da11ee68120f5b45c1fdefd" => :yosemite
+    sha1 "c39244f6a7f5480f98399b1dca4626381b8adf1a" => :mavericks
+    sha1 "39f6f4ee59f7a79941120ee16f0cab5a4538cf70" => :mountain_lion
+  end
+
   head do
     url "https://github.com/tatsuhiro-t/nghttp2.git"
 
