@@ -7,6 +7,8 @@ class Launchdns < Formula
   def install
     ENV["PREFIX"] = prefix
     system "make", "install"
+
+    (prefix+"etc/resolver/dev").write("nameserver 127.0.0.1\nport 55353\n")
   end
 
   test do
@@ -15,8 +17,7 @@ class Launchdns < Formula
 
   def caveats; <<-EOS.undent
       To have *.dev resolved to 127.0.0.1:
-          sudo mkdir -p /etc/resolver
-          printf "nameserver 127.0.0.1\\nport 55353\\n" | sudo tee /etc/resolver/dev
+          sudo ln -s #{HOMEBREW_PREFIX}/etc/resolver /etc/resolver
     EOS
   end
 
