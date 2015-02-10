@@ -2,8 +2,8 @@ require 'formula'
 
 class Sqlitebrowser < Formula
   homepage 'http://sqlitebrowser.org'
-  url 'https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.4.0.tar.gz'
-  sha1 'c60e953639ce8294155fa819a4538b05f8d58b64'
+  url 'https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.5.1.tar.gz'
+  sha1 '2c915ccb1e869e98c9e4133ecef1ba003a304d87'
 
   head 'https://github.com/sqlitebrowser/sqlitebrowser.git'
 
