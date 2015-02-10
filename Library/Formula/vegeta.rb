@@ -23,6 +23,6 @@ class Vegeta < Formula
   end
 
   test do
-    system "echo", "GET", "http://localhost/", "|", "{bin}/vegeta", "attack", "-duration=1s", "-rate=1"
+    pipe_output("#{bin}/vegeta attack -duration=1s -rate=1", "GET http://localhost/")
   end
 end
