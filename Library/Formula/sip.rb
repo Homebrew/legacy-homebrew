@@ -4,9 +4,10 @@ class Sip < Formula
   sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
 
   bottle do
-    sha1 "92f54a37300cd0d1881a6d8d2e218ecd0532a70a" => :yosemite
-    sha1 "6b0a127bbb486c17c045788d85e92b3008469395" => :mavericks
-    sha1 "0c103fbd3a6dac723336f968d6e1faae23e34a32" => :mountain_lion
+    revision 1
+    sha1 "ac110e13e8b0f3f3c908fe4e9b4f6a010d483b64" => :yosemite
+    sha1 "d7cbfc32de5096fd1aa20a9123fba628ce546bf0" => :mavericks
+    sha1 "c67e51ac70a5258c16d6694010f2b9fd2363f346" => :mountain_lion
   end
 
   head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
