@@ -19,8 +19,11 @@ class Node < Formula
 
   depends_on :python => :build
   depends_on "pkg-config" => :build
-  depends_on "icu4c" => :recommended
   depends_on "openssl" => :optional
+
+  # https://github.com/joyent/node/issues/7919
+  # https://github.com/Homebrew/homebrew/issues/36681
+  depends_on "icu4c" => :optional
 
   fails_with :llvm do
     build 2326
@@ -111,6 +114,18 @@ class Node < Formula
         Homebrew has NOT installed npm. If you later install it, you should supplement
         your NODE_PATH with the npm module folder:
           #{HOMEBREW_PREFIX}/lib/node_modules
+      EOS
+    end
+
+    if build.with? "icu4c"
+      s += <<-EOS.undent
+
+        Please note `icu4c` is built with a newer deployment target than Node and
+        this may cause issues in certain usage. Node itself is built against the
+        outdated `libstdc++` target, which is the root cause. For more information see:
+          https://github.com/joyent/node/issues/7919
+
+        If this is an issue for you, do `brew install node --without-icu4c`.
       EOS
     end
 
