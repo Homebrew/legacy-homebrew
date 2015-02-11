@@ -3,27 +3,6 @@
 $:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
 require 'pathname'
 require 'set'
-require 'stringio'
-
-class Logger
-  def initialize
-    @io = StringIO.new
-  end
-
-  def puts(*args)
-    @io.puts(*args)
-  end
-
-  def log!
-    return unless ENV.key? 'HOMEBREW_CC_LOG_PATH'
-    path = "#{ENV['HOMEBREW_CC_LOG_PATH']}.cc"
-
-    puts
-    File.open(path, File::WRONLY | File::APPEND | File::CREAT) { |f| f.write(@io.string) }
-  end
-end
-
-LOGGER = Logger.new
 
 class Cmd
   attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
@@ -103,7 +82,7 @@ class Cmd
       end
     end
 
-    allflags = case mode
+    case mode
     when :ccld
       cflags + args + cppflags + ldflags
     when :cxxld
@@ -119,8 +98,6 @@ class Cmd
     when :ld
       ldflags + args
     end
-    make_fuss(allflags)
-    allflags
   end
 
   def refurbished_args
@@ -260,20 +237,6 @@ class Cmd
     %W{#{sysroot}/usr/lib /usr/local/lib}
   end
 
-  def make_fuss args
-    return unless make_fuss?
-
-    dels = @args - args
-    adds = args - @args
-
-    LOGGER.puts "superenv removed:  #{dels*' '}" unless dels.empty?
-    LOGGER.puts "superenv added:    #{adds*' '}" unless adds.empty?
-  end
-
-  def make_fuss?
-    refurbish_args? && !configure?
-  end
-
   def configure?
     # configure scripts generated with autoconf 2.61 or later export as_nl
     ENV.key? 'as_nl'
@@ -321,6 +284,20 @@ class Cmd
   end
 end
 
+def log(basename, argv, tool, args)
+  return unless ENV.key?("HOMEBREW_CC_LOG_PATH")
+
+  adds = args - argv
+  dels = argv - args
+
+  s = ""
+  s << "#{basename} called with: #{argv.join(" ")}\n"
+  s << "superenv removed:  #{dels.join(" ")}\n" unless dels.empty?
+  s << "superenv added:    #{adds.join(" ")}\n" unless adds.empty?
+  s << "superenv executed: #{tool} #{args.join(" ")}\n\n"
+  File.open("#{ENV["HOMEBREW_CC_LOG_PATH"]}.cc", "a+") { |f| f.write(s) }
+end
+
 if __FILE__ == $PROGRAM_NAME
   ##################################################################### sanity
   abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
@@ -334,13 +311,10 @@ if __FILE__ == $PROGRAM_NAME
 
   dirname, basename = File.split($0)
 
-  LOGGER.puts "#{basename} called with: #{ARGV.join(" ")}"
-
   cmd = Cmd.new(basename, ARGV)
   tool, args = cmd.tool, cmd.args
 
-  LOGGER.puts "superenv executed: #{tool} #{args.join(" ")}"
-  LOGGER.log!
+  log(basename, ARGV, tool, args)
 
   args << { :close_others => false } if RUBY_VERSION >= "2.0"
   exec "#{dirname}/xcrun", tool, *args
