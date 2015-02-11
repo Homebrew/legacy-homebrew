@@ -4,6 +4,12 @@ class Launchdns < Formula
   head "https://github.com/josh/launchdns.git"
   sha1 "7310bb558a3b910e98b5364652e3a4fb48375494"
 
+  bottle do
+    sha1 "592ca0ff9d89f00613dd850be91fa15a8d2cfc6a" => :yosemite
+    sha1 "9ff650e25b17a1f29e9965c5e5bc678fc82d32aa" => :mavericks
+    sha1 "ffb5f5e33aa4429c4ada07f5992dbef2853b2cb5" => :mountain_lion
+  end
+
   def install
     ENV["PREFIX"] = prefix
     system "make", "install"
