@@ -5,11 +5,14 @@ class Blackbox < Formula
   sha1 "dbe69ab20924ecc5c02ad917a52a57ec1f01addd"
 
   patch do
-    url "https://gist.githubusercontent.com/ekristen/84875c88ffd502f190cc/raw/770221fb0cefea9212fc987a08fad2bfe181c110/homebrew.patch"
-    sha1 "c507a4ba7daccd755e6505c34cdb241087bc0143"
+    url "https://gist.githubusercontent.com/ekristen/84875c88ffd502f190cc/raw/91cd3077209582b469719539674796fe5c114c10/blackbox.patch"
+    sha1 "dffc111f31538bc2127787d3c46c7c70cf209b04"
   end
 
   def install
+    include.install "bin/_blackbox_common.sh"
+    include.install "bin/_stack_lib.sh"
+
     chmod 0755, Dir["bin/*"]
     libexec.install Dir['*']
     
