@@ -234,7 +234,8 @@ class Bottle
   end
 
   def compatible_cellar?
-    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+    cellar == :any || cellar == HOMEBREW_CELLAR.to_s ||
+    (File.directory?(cellar) && Pathname.new(cellar).realpath().to_s == HOMEBREW_CELLAR.to_s)
   end
 
   def stage
