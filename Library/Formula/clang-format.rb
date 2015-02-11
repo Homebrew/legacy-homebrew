@@ -4,9 +4,9 @@ class ClangFormat < Formula
 
   bottle do
     cellar :any
-    sha1 "109a8ffc7237fccf1c404c9333de2c4fd5a2715f" => :yosemite
-    sha1 "ee71ece0c82ef48088dcba82bd126531f5e7c9c7" => :mavericks
-    sha1 "d3ef2c3eeab0e5366ade06272e693ebf0659878c" => :mountain_lion
+    sha1 "8914ee2952c7bcf08ae8899b3476bb3aa5ed1d27" => :yosemite
+    sha1 "dec6ae38d1bf84099417aac40403358fe5601c64" => :mavericks
+    sha1 "034eed4622e22d15dd9b5aa84923024dd7ef93c4" => :mountain_lion
   end
 
   stable do
