@@ -1,6 +1,6 @@
 class ClangFormat < Formula
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2014-12-03"
+  version "2015-01-13"
 
   bottle do
     cellar :any
@@ -10,10 +10,10 @@ class ClangFormat < Formula
   end
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2014-12-03/", :using => :svn
+    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-01-13/", :using => :svn
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2014-12-03/", :using => :svn
+      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-01-13/", :using => :svn
     end
 
     resource "libcxx" do
@@ -44,6 +44,7 @@ class ClangFormat < Formula
       system "ninja", "clang-format"
       bin.install "bin/clang-format"
     end
+    bin.install "tools/clang/tools/clang-format/git-clang-format"
   end
 
   test do
