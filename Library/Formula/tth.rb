@@ -6,9 +6,9 @@ class Tth < Formula
 
   bottle do
     cellar :any
-    sha1 "dac2cc7df5b0f2f6c77a186fcf799f12a29aff2e" => :yosemite
-    sha1 "d869523cd588ee381ae315aed247f57be379b3be" => :mavericks
-    sha1 "2dc34ba1293a14891456d91bc2b243233f7a06fd" => :mountain_lion
+    sha1 "694f5f4dea4af1acfcec5b53d949ec58dec75459" => :yosemite
+    sha1 "ea2b08272a5cc8f5e890d36624f1f94b003c0a0b" => :mavericks
+    sha1 "5be595e24438680c3c06f1812ff1e1e9a03c1732" => :mountain_lion
   end
 
   def install
