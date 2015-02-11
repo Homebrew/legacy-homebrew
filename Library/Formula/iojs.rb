@@ -1,12 +1,12 @@
 class Iojs < Formula
   homepage "https://iojs.org/"
-  url "https://iojs.org/dist/v1.1.0/iojs-v1.1.0.tar.xz"
-  sha256 "2baa9b076c84c13b0572de4618ac94058fc98a87266925bcd18fb70fb7d521a7"
+  url "https://iojs.org/dist/v1.2.0/iojs-v1.2.0.tar.xz"
+  sha256 "d33b448d173a0df675c471d24a33db57208c30b3e30b8c49f3b1d0666178e9cb"
 
   bottle do
-    sha1 "c9788ec4ef2764db5b4f7c131d06517990802f8e" => :yosemite
-    sha1 "d771ecaeac05d8edb17c494dae459f48bed5130f" => :mavericks
-    sha1 "6c6cd07a5e7fb5c90146015984a8ae0e536fbefc" => :mountain_lion
+    sha1 "f144662eb7b3a35a6bf02c991432a4c6d8f85fec" => :yosemite
+    sha1 "223c47b26449e6fd3094fcb71ecfbb4aef466557" => :mavericks
+    sha1 "0be6033eaa74eff52524efa6c0967bb1d5a78794" => :mountain_lion
   end
 
   keg_only "iojs conflicts with node (which is currently more established)"
@@ -21,11 +21,7 @@ class Iojs < Formula
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
-
-    if build.with? "icu4c"
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
-      args << "--with-intl=system-icu"
-    end
+    args << "--with-intl=system-icu" if build.with? "icu4c"
 
     system "./configure", *args
     system "make", "install"

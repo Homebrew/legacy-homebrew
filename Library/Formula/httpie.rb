@@ -1,15 +1,15 @@
 class Httpie < Formula
   homepage "https://github.com/jakubroztocil/httpie"
-  url "https://github.com/jakubroztocil/httpie/archive/0.9.0.tar.gz"
-  sha1 "4519c574979aa73e5a502f05a87c6a67e6b0db19"
+  url "https://github.com/jakubroztocil/httpie/archive/0.9.1.tar.gz"
+  sha1 "00071019c28a8deefaf65eddf9248998b446cdef"
 
   head "https://github.com/jakubroztocil/httpie.git"
 
   bottle do
     cellar :any
-    sha1 "439df07c64a6b3e081216e9d5e780862a76e015e" => :yosemite
-    sha1 "5148a218dbcf0647552164889bfb8a2937b7705d" => :mavericks
-    sha1 "6ccde40c2e438e9ffff0279fa903ce13e7aa8c56" => :mountain_lion
+    sha1 "7296ccd2bbe0b894fbaa76b988af9818214efa07" => :yosemite
+    sha1 "b64215e78e7e45decae1afe172613e794a8aadf0" => :mavericks
+    sha1 "f0d29626dd8032777738c3296e9a46a005e1d76a" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

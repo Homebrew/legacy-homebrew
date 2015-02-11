@@ -363,7 +363,7 @@ module Homebrew
       unchanged_dependencies = dependencies - @formulae
       changed_dependences = dependencies - unchanged_dependencies
 
-      dependents = `brew uses #{formula_name}`.split("\n")
+      dependents = `brew uses --skip-build --skip-optional #{formula_name}`.split("\n")
       dependents -= @formulae
       dependents = dependents.map {|d| Formulary.factory(d)}
 

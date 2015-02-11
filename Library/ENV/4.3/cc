@@ -26,14 +26,19 @@ end
 LOGGER = Logger.new
 
 class Cmd
-  attr_reader :brewfix, :brewtmp, :sysroot
+  attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
+  attr_reader :archflags, :optflags
 
   def initialize path, args
     @arg0 = File.basename(path).freeze
     @args = args.freeze
-    @brewfix = ENV['HOMEBREW_PREFIX']
-    @brewtmp = ENV['HOMEBREW_TEMP']
+    @config = ENV.fetch("HOMEBREW_CCCFG") { "" }
+    @prefix = ENV['HOMEBREW_PREFIX']
+    @cellar = ENV['HOMEBREW_CELLAR']
+    @tmpdir = ENV['HOMEBREW_TEMP']
     @sysroot = ENV['HOMEBREW_SDKROOT']
+    @archflags = ENV.fetch("HOMEBREW_ARCHFLAGS") { "" }.split(" ")
+    @optflags = ENV.fetch("HOMEBREW_OPTFLAGS") { "" }.split(" ")
   end
 
   def mode
@@ -83,7 +88,8 @@ class Cmd
       # software uses gcc -v (wrongly) to sniff the GCC version.
       return @args.dup
     end
-    if !cccfg?("O") || tool == "ld" || configure?
+
+    if !refurbish_args? || tool == "ld" || configure?
       args = @args.dup
     else
       args = refurbished_args
@@ -127,13 +133,13 @@ class Cmd
     loop do
       case arg = enum.next
       when "-arch"
-        if cccfg?("K")
+        if permit_arch_flags?
           args << arg << enum.next
         else
           enum.next
         end
       when "-m32", "-m64"
-        args << arg if cccfg?("K")
+        args << arg if permit_arch_flags?
       when /^-Xarch_/
         refurbished = refurbish_arg(enum.next, enum)
         unless refurbished.empty?
@@ -198,24 +204,17 @@ class Cmd
   end
 
   def keep? path
-    case path
-    when %r{^#{Regexp.escape(brewfix)}}o, %r{^#{Regexp.escape(brewtmp)}}o
-      # maybe homebrew is installed to /sw or /opt/brew
-      true
-    when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
-      false
-    else
-      true
-    end
+    path.start_with?(prefix, cellar, tmpdir) || !path.start_with?("/opt", "/sw", "/usr/X11")
   end
 
   def cflags
     args = []
 
-    return args unless cccfg? 'O' or configure?
+    return args unless refurbish_args? || configure?
 
     args << '-pipe'
     args << '-w' unless configure?
+    args << "-#{ENV["HOMEBREW_OPTIMIZATION_LEVEL"]}"
     args.concat(optflags)
     args.concat(archflags)
     args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
@@ -224,21 +223,10 @@ class Cmd
 
   def cxxflags
     args = cflags
-    args << '-std=c++11' if cccfg? 'x'
-    args << '-stdlib=libc++' if cccfg? 'g'
-    args << '-stdlib=libstdc++' if cccfg? 'h'
+    args << "-std=c++11" if cxx11?
+    args << "-stdlib=libc++" if libcxx?
+    args << "-stdlib=libstdc++" if libstdcxx?
     args
-  end
-
-  def optflags
-    args = []
-    args << "-#{ENV['HOMEBREW_OPTIMIZATION_LEVEL']}"
-    args.concat ENV['HOMEBREW_OPTFLAGS'].split(' ') if ENV['HOMEBREW_OPTFLAGS']
-    args
-  end
-
-  def archflags
-    ENV["HOMEBREW_ARCHFLAGS"].split(" ")
   end
 
   def cppflags
@@ -283,7 +271,7 @@ class Cmd
   end
 
   def make_fuss?
-    cccfg? 'O' and not configure?
+    refurbish_args? && !configure?
   end
 
   def configure?
@@ -291,8 +279,24 @@ class Cmd
     ENV.key? 'as_nl'
   end
 
-  def cccfg? flags
-    flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
+  def refurbish_args?
+    config.include?("O")
+  end
+
+  def cxx11?
+    config.include?("x")
+  end
+
+  def libcxx?
+    config.include?("g")
+  end
+
+  def libstdcxx?
+    config.include?("h")
+  end
+
+  def permit_arch_flags?
+    config.include?("K")
   end
 
   def canonical_path(path)

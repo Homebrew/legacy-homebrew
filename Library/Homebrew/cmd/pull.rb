@@ -129,6 +129,7 @@ module Homebrew
           f = changed_formulae.first
           subject = "#{f.name} #{f.version}"
           ohai "New bump commit subject: #{subject}"
+          system "/bin/echo -n #{subject} | pbcopy"
           message = "#{subject}\n\n#{message}"
         end
 

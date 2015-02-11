@@ -398,7 +398,7 @@ Note that these flags should only appear after a command.
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).
 
-  * `uses [--installed] [--recursive] [--devel|--HEAD]` <formulae>:
+  * `uses [--installed] [--recursive] [--skip-build] [--skip-optional] [--devel|--HEAD]` <formulae>:
     Show the formulae that specify <formulae> as a dependency. When given
     multiple formula arguments, show the intersection of formulae that use
     <formulae>.
@@ -406,6 +406,10 @@ Note that these flags should only appear after a command.
     Use `--recursive` to resolve more than one level of dependencies.
 
     If `--installed` is passed, only list installed formulae.
+
+    By default, `uses` shows all formulae that specify <formulae> as a dependency.
+    To skip the `:build` type dependencies, pass `--skip-build`. Similarly, pass
+    `--skip-optional` to skip `:optional` dependencies.
 
     By default, `uses` shows usages of `formula` by stable builds. To find
     cases where `formula` is used by development or HEAD build, pass

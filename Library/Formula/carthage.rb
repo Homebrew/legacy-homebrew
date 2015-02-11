@@ -2,7 +2,7 @@ require "formula"
 
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
-  url "https://github.com/Carthage/Carthage.git", :tag => "0.5.2",
+  url "https://github.com/Carthage/Carthage.git", :tag => "0.5.3",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
@@ -10,8 +10,8 @@ class Carthage < Formula
 
   bottle do
     cellar :any
-    sha1 "a65e585157e3a58e1496dedc85705694c5c2191c" => :yosemite
-    sha1 "1e5237464a5a2923739864f195e4eca3e184924e" => :mavericks
+    sha1 "7c6ec5815bea395b07da3561401763777d43c865" => :yosemite
+    sha1 "a4835184d68bc59f3a30654f5c25ed88b6667c40" => :mavericks
   end
 
   def install
@@ -20,9 +20,6 @@ class Carthage < Formula
     cp_r cached_download/".git", "."
 
     system "make", "prefix_install", "PREFIX=#{prefix}"
-
-    # Carthage puts some stuff in /tmp so clean it up after we're done.
-    system "make", "clean"
   end
 
   test do

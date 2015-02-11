@@ -1,15 +1,13 @@
-require "formula"
-
 class DBus < Formula
   # releases: even (1.8.x) = stable, odd (1.9.x) = development
   homepage "http://www.freedesktop.org/wiki/Software/dbus"
-  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.12.tar.gz"
-  sha1 "9dc3003a53892b41eb61ade20051aba57be1b4b1"
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.14.tar.gz"
+  sha1 "d0b84d6d7af47b8cad7f55befee8e9001daefe01"
 
   bottle do
-    sha1 "50c1012cd5f5b89f2f5a843fb9de22bc76dc5178" => :yosemite
-    sha1 "825bfc579a58d923697893d70fb2b9af157a9a77" => :mavericks
-    sha1 "5b53fa3634d6aaec601b0b5a1c6330392b240958" => :mountain_lion
+    sha1 "22806b6107833bea3b69099848c6f12add3625cc" => :yosemite
+    sha1 "d9271e1f6906883e42c9782b4ce43ce288ad8f8e" => :mavericks
+    sha1 "4162df1d33f03d55472155728bd2911653702798" => :mountain_lion
   end
 
   # Upstream fix for O_CLOEXEC portability

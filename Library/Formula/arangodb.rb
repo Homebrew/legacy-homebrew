@@ -2,15 +2,15 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.com/'
-  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.4.2.tar.gz'
-  sha1 '5e396cfcd0376cbcf2f7feac36270676f1b9e991'
+  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.4.3.tar.gz'
+  sha1 '5064f7f7045b9d34bd327d398d1bc30a16e97f67'
 
   head "https://github.com/arangodb/arangodb.git", :branch => 'unstable'
 
   bottle do
-    sha1 "e15c42bdac98b7430d3d895b650437353cdb0659" => :yosemite
-    sha1 "0b2a59822ae08af9ebd5dadde4037b2b342d0c92" => :mavericks
-    sha1 "b43016b809802a6be2d26be8c61b8d574bc2d827" => :mountain_lion
+    sha1 "59ecb4430461a905f2c0398e159a2d7b8f025b0d" => :yosemite
+    sha1 "938553f79b9e28fb98cff1e3ec4c83ad9ed51268" => :mavericks
+    sha1 "c8708807733fa6c404dba17e28323a665255318d" => :mountain_lion
   end
 
   depends_on 'go' => :build
