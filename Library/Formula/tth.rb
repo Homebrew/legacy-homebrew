@@ -1,9 +1,8 @@
 class Tth < Formula
   homepage "http://hutchinson.belmont.ma.us/tth/"
-  # upstream has been asked to provide versioned links (Jan 12, 2015)
-  url "http://hutchinson.belmont.ma.us/tth/tth-noncom/tth_C.tgz"
-  sha1 "27b44970d93f1e1964c92ffa0fa964e6045bae37"
-  version "4.06"
+  url "http://hutchinson.belmont.ma.us/tth/tth_distribution/tth_4.06.tgz"
+  sha1 "ba3c653bf05d25ac8a907fb1d51184da1ac42721"
+  revision 1
 
   bottle do
     cellar :any
