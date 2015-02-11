@@ -1,10 +1,7 @@
-require "formula"
-
 class Libvisio < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
-  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.0.tar.xz"
-  sha1 "c82e5c7ad25e513c268032cda9febd01b8879504"
-  revision 3
+  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.1.tar.xz"
+  sha1 "2284866af215a56683bfe4d49a921a053eff4cf9"
 
   bottle do
     cellar :any
@@ -16,6 +13,7 @@ class Libvisio < Formula
 
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
+  depends_on "cppunit" => :build
   depends_on "libwpd"
   depends_on "libwpg"
   depends_on "icu4c"
