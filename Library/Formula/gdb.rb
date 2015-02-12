@@ -17,6 +17,13 @@ class Gdb < Formula
   mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.8.2.tar.xz"
   sha1 "85a9cc2a4dfb748bc8eb74113af278524126a9bd"
 
+  bottle do
+    root_url "https://downloads.sf.net/project/machomebrew/Bottles/dupes"
+    sha1 "722efdf280ba1d052ebe199fed1f0c18e688c180" => :yosemite
+    sha1 "ed64143c69885bba8a302ee9e00f4b952fa80e7c" => :mavericks
+    sha1 "8f588913785434b7b3ce65654f19f4541a6273a1" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "readline"
   depends_on "xz"
