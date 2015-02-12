@@ -35,6 +35,10 @@ class Dpkg < Formula
                           "--disable-start-stop-daemon"
     system "make"
     system "make", "install"
+
+    (buildpath/"dummy").write "Vendor: dummy\n"
+    (etc/"dpkg/origins").install "dummy"
+    (etc/"dpkg/origins").install_symlink "dummy" => "default"
   end
 
   def caveats; <<-EOS.undent
