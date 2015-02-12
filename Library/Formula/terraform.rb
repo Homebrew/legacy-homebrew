@@ -6,6 +6,8 @@ class Terraform < Formula
   url "https://github.com/hashicorp/terraform/archive/v0.3.6.tar.gz"
   sha1 "27b95dc159b8fa9c9611bb18a236d2b46d7f6a95"
 
+  head "https://github.com/hashicorp/terraform.git"
+
   bottle do
     sha1 "cba89a212c639eb9bb3c8a903c56e92aeed4ffee" => :yosemite
     sha1 "cf9c544dd2555e8db364790ed4983c9e3a9ca9ed" => :mavericks
@@ -16,6 +18,14 @@ class Terraform < Formula
 
   go_resource "github.com/mitchellh/gox" do
     url "https://github.com/mitchellh/gox.git", :tag => "v0.3.0"
+  end
+
+  go_resource "golang.org/x/tools" do
+    url "https://go.googlesource.com/tools.git", :revision => "913f41fc5f1b7afd8f7c66c011c1ad368fa23fb8"
+  end
+
+  go_resource "github.com/hashicorp/consul" do
+    url "https://github.com/hashicorp/consul.git", :revision => "0b0deff4ce9046f953f332b4dbcebb6b8a4cfbf6"
   end
 
   go_resource "github.com/mitchellh/iochan" do
@@ -39,7 +49,7 @@ class Terraform < Formula
   end
 
   go_resource "github.com/mitchellh/goamz" do
-    url "https://github.com/mitchellh/goamz.git", :revision => "2441a8d0fab90553ec345cfdf3db24bb61ea61c3"
+    url "https://github.com/mitchellh/goamz.git", :revision => "0cb2b82e7867c77a88c7bbea11c867695b6a63a0"
   end
 
   go_resource "github.com/vaughan0/go-ini" do
@@ -102,6 +112,10 @@ class Terraform < Formula
     url "https://github.com/mitchellh/go-linereader.git", :revision => "07bab5fdd9580500aea6ada0e09df4aa28e68abd"
   end
 
+  go_resource "github.com/MSOpenTech/azure-sdk-for-go" do
+    url "https://github.com/MSOpenTech/azure-sdk-for-go.git", :revision => "0fbd37144de3adc2aef74db867c0e15e41c7f74a"
+  end
+
   go_resource "github.com/hashicorp/yamux" do
     url "https://github.com/hashicorp/yamux.git", :revision => "9feabe6854fadca1abec9cd3bd2a613fe9a34000"
   end
@@ -116,7 +130,7 @@ class Terraform < Formula
   end
 
   go_resource "code.google.com/p/google-api-go-client" do
-    url "https://code.google.com/p/google-api-go-client/", :revision => "e1c259484b49",
+    url "https://code.google.com/p/google-api-go-client/", :revision => "6ddfebb10ece",
       :using => :hg
   end
 
@@ -135,7 +149,8 @@ class Terraform < Formula
   end
 
   go_resource "github.com/xanzy/go-cloudstack" do
-    url "https://github.com/xanzy/go-cloudstack.git", :revision => "c2c4143ae294b5df4b7b5ae6e087ead01264167f"
+    url "https://github.com/xanzy/go-cloudstack.git",
+      :revision => build.head ? "6f5951088b74a98bd81e44cc5e8218170988c4a0" : "c2c4143ae294b5df4b7b5ae6e087ead01264167f"
   end
 
   def install
@@ -151,6 +166,11 @@ class Terraform < Formula
     cd "src/github.com/mitchellh/gox" do
       system "go", "build"
       buildpath.install "gox"
+    end
+
+    cd "src/golang.org/x/tools/cmd/stringer" do
+      system "go", "build"
+      buildpath.install "stringer"
     end
 
     cd terrapath do
