@@ -16,6 +16,8 @@ class Wxmac < Formula
   depends_on "libpng"
   depends_on "libtiff"
 
+  option "with-stl", "use standard C++ classes for everything"
+
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
   # Theoretically the above linked patch should still be needed, but it isn't. Try to find out why.
@@ -66,6 +68,8 @@ class Wxmac < Formula
       # This is the default option, but be explicit
       "--disable-monolithic"
     ]
+
+    args << "--enable-stl" if build.with? "stl"
 
     system "./configure", *args
     system "make", "install"
