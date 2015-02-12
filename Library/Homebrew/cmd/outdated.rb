@@ -23,9 +23,11 @@ module Homebrew
         keg = Keg.new dir
         version = keg.version
         all_versions << version
+        same_or_head_version = f.version == version || version.head?
 
         tap = Tab.for_keg(keg).tapped_from
-        if f.tap == tap || f.version == version
+        same_or_path_url_tap = f.tap == tap || tap == HOMEBREW_PATH_URL_TAP
+        if same_or_path_url_tap || same_or_head_version
           same_tap_versions << version
         end
       end
