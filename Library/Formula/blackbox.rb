@@ -14,7 +14,7 @@ class Blackbox < Formula
     include.install "bin/_stack_lib.sh"
 
     chmod 0755, Dir["bin/*"]
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     
     bin.install_symlink "#{libexec}/bin/blackbox_addadmin"
     bin.install_symlink "#{libexec}/bin/blackbox_cat"
