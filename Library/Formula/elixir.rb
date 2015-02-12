@@ -32,9 +32,9 @@ class Elixir < Formula
   head 'https://github.com/elixir-lang/elixir.git'
 
   bottle do
-    sha1 "4d57aa814ca74ec54e805eabcf3740c2c788fe8e" => :yosemite
-    sha1 "35e8c71a39c1f83ac7c53de5ef365d142775a47d" => :mavericks
-    sha1 "002e9ee58f9163a7bb5fefdaad99c905261ff6cd" => :mountain_lion
+    sha1 "e87e4e568d79d91e72732993579608b1c5a0a10d" => :yosemite
+    sha1 "2b306d49528a6031c2f2222e81abcc93952afbc6" => :mavericks
+    sha1 "1be346fd8b8a829ec839bb41f73547d8d3888d76" => :mountain_lion
   end
 
   depends_on ErlangInstalled
