@@ -40,6 +40,7 @@ class Emacs < Formula
 
   option "cocoa", "Build a Cocoa version of emacs"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+  option "with-lldb-gud-patch", "Apply lldb gud.el patch"
 
   deprecated_option "with-x" => "with-x11"
 
@@ -56,6 +57,19 @@ class Emacs < Formula
     build 2334
     cause "Duplicate symbol errors while linking."
   end
+
+  # patch for basic lldb support in gud.el from LLVM source repository
+  # http://lists.gnu.org/archive/html/emacs-devel/2015-02/msg00274.html
+
+  patch do
+    url "https://gist.githubusercontent.com/ptrv/71b93594589f3a5f27d2/raw/b7abd9a03ddf106ad2136059fdbc5d40dc4a6500/lldb-gud-emacs-24.patch"
+    sha1 "806d8250fa875f4b044439443c07d0b74f640fac"
+  end if build.with? "lldb-gud-patch" and !build.head?
+
+  patch do
+    url "https://gist.githubusercontent.com/ptrv/c7d118f32cdb42bb48bd/raw/b51b08e06101f449752ac57e056603e733b50111/lldb-gud-emacs-25.patch"
+    sha1 "736e7ec7e6ddd6fe5ab6f8153948bb41c498c930"
+  end if build.with? "lldb-gud-patch" and build.head?
 
   def install
     args = ["--prefix=#{prefix}",
