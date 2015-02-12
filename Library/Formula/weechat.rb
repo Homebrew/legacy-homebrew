@@ -1,7 +1,7 @@
 class Weechat < Formula
   homepage "https://www.weechat.org"
-  url "https://weechat.org/files/src/weechat-1.1.tar.gz"
-  sha1 "8cc055051b0df6755e8310e4fd624623707e81dc"
+  url "https://weechat.org/files/src/weechat-1.1.1.tar.gz"
+  sha1 "25a595ce738c401c583edebee259acf755fd5f17"
 
   head "https://github.com/weechat/weechat.git"
 
