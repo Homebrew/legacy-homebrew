@@ -11,6 +11,10 @@ class ObjcCodegenutils < Formula
     sha1 "115f70a9c8b61545630a14d7503d4e20c221f6cb" => :mountain_lion
   end
 
+  head do
+  url "https://github.com/square/objc-codegenutils.git"
+  end
+
   depends_on :macos => :mountain_lion
   depends_on :xcode => :build
 
