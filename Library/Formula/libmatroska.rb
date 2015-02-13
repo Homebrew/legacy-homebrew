@@ -20,10 +20,9 @@ class Libmatroska < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "d39ff1121fdf2be3602e355e348d75c97834c03e" => :yosemite
-    sha1 "3692b1c928884da200d91bc4158d3a0c340baaa9" => :mavericks
-    sha1 "4b99118975bfd6c0cf9df4e35e62e33eafb787ac" => :mountain_lion
+    sha1 "d053e9fa24d4cf44df2fed66135229c93730fadc" => :yosemite
+    sha1 "9e6ed0b827540637402c1486392caab57a643724" => :mavericks
+    sha1 "b364a51830e23a3ab15fc65ecaa04e40853073b3" => :mountain_lion
   end
 
   option :cxx11
