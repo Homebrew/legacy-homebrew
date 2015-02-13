@@ -6,9 +6,9 @@ class Gauge < Formula
   sha1 "d0bbfd4c782bccca5fbf3f8fa9ada71e1723a5eb"
 
   bottle do
-    sha1 "6b503ea7ac28bd315a8a7fa55917aaccb20e9e87" => :yosemite
-    sha1 "b353b1dc155055ed3b8f94f6f1ebe2e470246c97" => :mavericks
-    sha1 "10eacac84c0de5491bea5368bc6d33d65d49a2f4" => :mountain_lion
+    sha1 "0408f93bb04533a29662114fb7a6cb823b3d3acb" => :yosemite
+    sha1 "130942e5196154996d3589ab0d054af2f5e5d9e9" => :mavericks
+    sha1 "324e44c1dc852274a48123760e7bdeb03ce240b6" => :mountain_lion
   end
 
   depends_on "go" => :build
