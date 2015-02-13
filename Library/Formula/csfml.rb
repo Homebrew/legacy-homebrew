@@ -2,8 +2,12 @@ require "formula"
 
 class Csfml < Formula
   homepage "http://www.sfml-dev.org/"
-  url "http://www.sfml-dev.org/download/csfml/CSFML-2.0-sources.zip"
-  sha1 "6d831634a558593580296209af278322523f1e43"
+  # CSFML 2.1 and SFML 2.2 are incompatible with each other
+  # Making CSFML 2.1 build requires multiple patches
+  # Until there is no newer relese, this formula uses fixed revision from master
+  # Also, see: https://github.com/LaurentGomila/CSFML/issues/50
+  url "https://github.com/LaurentGomila/CSFML.git", :revision => "848b4d3aaa7646c4742222489416ced48335274f"
+  version "2.1-848b4d3aaa7646c4742222489416ced48335274f"
 
   bottle do
     cellar :any
@@ -16,8 +20,7 @@ class Csfml < Formula
   depends_on "sfml"
 
   def install
-    cp_r "#{Formula["sfml"].share}/SFML/cmake/Modules/", "cmake"
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", *std_cmake_args, "-DCMAKE_MODULE_PATH=#{Formula["sfml"].share}/SFML/cmake/Modules/"
     system "make", "install"
   end
 
