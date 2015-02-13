@@ -1,5 +1,8 @@
 class DomoticzDownloadStrategy < SubversionDownloadStrategy
   def stage
+    # Domoticz' build uses the svn revision for its version.
+    # Thus rather than the default behavior of exporting the working copy
+    # we must copy it including .svn folders.
     cp_r "#{cached_location}/.", Dir.pwd
   end
 end
@@ -9,15 +12,16 @@ class Domoticz < Formula
   head "http://svn.code.sf.net/p/domoticz/code/trunk/", :using => DomoticzDownloadStrategy
 
   depends_on "cmake" => :build
-  depends_on "boost" => :build
+  depends_on "boost" => :build # domoticz statically links boost
   depends_on "openssl"
   depends_on "libusb"
   depends_on "libusb-compat"
-  depends_on "homebrew/dupes/zlib"
 
   def install
-    system "sed", "-i", "-e", "s:DESTINATION\\ /opt/domoticz:DESTINATION\\ \\$\\{CMAKE_INSTALL_PREFIX\\}/opt/domoticz:", "CMakeLists.txt"
-    system "cmake", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_INSTALL_PREFIX=#{prefix}", "CMakeLists.txt"
+    # ensure to install files within the Cellar; an issue to include this is
+    # filed upstream: http://www.domoticz.com/forum/tracker.php?p=1&t=420
+    inreplace "CMakeLists.txt", %r{DESTINATION /opt/domoticz}, "DESTINATION ${CMAKE_INSTALL_PREFIX}/opt/domoticz"
+    system "cmake", *std_cmake_args
     system "make"
     system "make", "install"
   end
@@ -54,5 +58,9 @@ class Domoticz < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{prefix}/opt/domoticz/domoticz", "-h"
   end
 end
