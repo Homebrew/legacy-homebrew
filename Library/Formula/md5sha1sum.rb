@@ -14,7 +14,7 @@ class Md5sha1sum < Formula
 
   depends_on "openssl"
 
-  conflicts_with "polarssl", :because => "both install conflicting binaries"
+  conflicts_with "mbed-tls", :because => "both install conflicting binaries"
 
   def install
     system "./configure", "--prefix=#{prefix}"
