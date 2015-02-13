@@ -8,9 +8,9 @@ class Squirrel < Formula
 
   bottle do
     cellar :any
-    sha1 "306d52e2b2bb99df7b9622a4bfcb31e0585a3618" => :yosemite
-    sha1 "232448b9e82a130d9717d8e1119a5fd24e2801e1" => :mavericks
-    sha1 "e473092003e6e71b7c15adaf1dcbfe9ea258bc98" => :mountain_lion
+    sha1 "24ac32cfb018ba9ed7a68b1fd7314de307e6b60e" => :yosemite
+    sha1 "7a4e09d82eaf35d16962df098d9342c3f1a95b81" => :mavericks
+    sha1 "8d3ec975ba7dde650f11985df813ce49daa6f830" => :mountain_lion
   end
 
   def install
