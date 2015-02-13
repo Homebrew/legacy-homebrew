@@ -1,5 +1,3 @@
-require "formula"
-
 class ShadowsocksLibev < Formula
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
   url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.1.2.tar.gz"
@@ -13,19 +11,21 @@ class ShadowsocksLibev < Formula
 
   head "https://github.com/shadowsocks/shadowsocks-libev.git"
 
-  option "with-polarssl", "Use PolarSSL instead of OpenSSL"
+  option "with-mbedtls", "Use mbed-tls instead of OpenSSL"
 
-  depends_on "polarssl" => :optional
-  depends_on "openssl" if build.without? "polarssl"
+  deprecated_option "with-polarssl" => "with-mbedtls"
+
+  depends_on "mbed-tls" => :optional
+  depends_on "openssl" if build.without? "mbed-tls"
 
   def install
     args = ["--prefix=#{prefix}"]
 
-    if build.with? "polarssl"
-      polarssl = Formula["polarssl"]
+    if build.with? "mbed-tls"
+      mbedtls = Formula["mbed-tls"]
 
       args << "--with-crypto-library=polarssl"
-      args << "--with-polarssl=#{polarssl.opt_prefix}"
+      args << "--with-polarssl=#{mbedtls.opt_prefix}"
     end
 
     system "./configure", *args
