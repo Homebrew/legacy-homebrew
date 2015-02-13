@@ -2,9 +2,9 @@ require 'formula'
 
 class Squirrel < Formula
   homepage 'http://www.squirrel-lang.org'
-  url 'https://downloads.sourceforge.net/project/squirrel/squirrel3/squirrel%203.0.6%20stable/squirrel_3_0_6_stable.tar.gz'
-  version '3.0.6'
-  sha1 'b4ab6055f8cd8997df54193ac92bd3dc041f054b'
+  url 'https://downloads.sourceforge.net/project/squirrel/squirrel3/squirrel%203.0.7%20stable/squirrel_3_0_7_stable.tar.gz'
+  version '3.0.7'
+  sha1 '5ae3f669677ac5f5d663ec070d42ee68980e1911'
 
   bottle do
     cellar :any
@@ -14,8 +14,6 @@ class Squirrel < Formula
   end
 
   def install
-    # -s causes the linker to crash
-    inreplace "sq/Makefile", " -s ", " "
     system "make"
     prefix.install %w[bin include lib]
     doc.install Dir['doc/*.pdf']
