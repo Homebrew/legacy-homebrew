@@ -1,5 +1,3 @@
-require "formula"
-
 class Chuck < Formula
   homepage "http://chuck.cs.princeton.edu/"
   url "http://chuck.cs.princeton.edu/release/files/chuck-1.3.4.0.tgz"
@@ -21,6 +19,10 @@ class Chuck < Formula
     system "make", "-C", "src", "osx"
     bin.install "src/chuck"
     (share/"chuck").install "examples"
+  end
+
+  test do
+    assert_match /probe \[success\]/m, shell_output("#{bin}/chuck --probe 2>&1")
   end
 end
 
