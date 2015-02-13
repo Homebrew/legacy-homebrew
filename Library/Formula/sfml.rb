@@ -15,9 +15,9 @@ class Sfml < Formula
 
   bottle do
     cellar :any
-    sha1 "5c2ddfbbc587914a6c9b4f02831e607a398753e7" => :mavericks
-    sha1 "2be6977ed7c225032825ed4f521e9883d4cb5db1" => :mountain_lion
-    sha1 "ad6f666a6a23ddf5eab12a58f4c6dd0b8e6b777b" => :lion
+    sha1 "20b25af5d31dc15054fc4694ea6f767facb64b50" => :yosemite
+    sha1 "403433f1d5502f44c02cdb83b90d38db684030dc" => :mavericks
+    sha1 "fd9bc00ef82c0e63ac067f1ffd2bf8bd9f51bc56" => :mountain_lion
   end
 
   head "https://github.com/LaurentGomila/SFML.git"
