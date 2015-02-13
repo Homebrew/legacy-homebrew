@@ -5,9 +5,9 @@ class Chuck < Formula
 
   bottle do
     cellar :any
-    sha1 "54f55280bd5b153277bd7657a8338ae03f674a08" => :yosemite
-    sha1 "54a4b27ef78e49544134fbe688a356e4e9001dfc" => :mavericks
-    sha1 "515e650f18e765e023947a2f8c75334611f0f7ed" => :mountain_lion
+    sha1 "08c33bd5071ccbb466fa8347cc034702d1e6fd0b" => :yosemite
+    sha1 "513d888da91c755f743693a607075ee4d87b7661" => :mavericks
+    sha1 "f9831daea9100f13865049b40057fcec6b6e6203" => :mountain_lion
   end
 
   # Homebrew already takes care of setting the sysroot;
