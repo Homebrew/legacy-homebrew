@@ -97,23 +97,27 @@ class Couchdb < Formula
   end
 
   def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
+    To start manually as the current user:
+        #{prefix}/bin/couchdb
+
+    If you want to automatically load `couchdb` on login:
+      First install:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
+        cp #{prefix}/opt/couchdb/homebrew.mxcl.couchdb.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.couchdb.plist
 
-    If this is an upgrade and you already have the org.apache.couchdb.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.apache.couchdb.plist
-        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
+      Upgrade:
+        launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.couchdb.plist
+        cp #{prefix}/opt/couchdb/homebrew.mxcl.couchdb.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.couchdb.plist
 
-    Alternatively, automatically run on startup as a daemon with:
+    If you want to automatically load `couchdb` at boot:
+        # Note: Ensure that the couchdb user is set up according to 
+        # http://docs.couchdb.org/en/latest/install/mac.html#installation-with-homebrew
         sudo launchctl list org.apache.couchdb \>/dev/null 2\>\&1 \&\& \\
           sudo launchctl unload -w /Library/LaunchDaemons/org.apache.couchdb.plist
         sudo cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist /Library/LaunchDaemons/
         sudo launchctl load -w /Library/LaunchDaemons/org.apache.couchdb.plist
-
-    Or start manually as the current user with `couchdb`.
 
     To test CouchDB run:
         curl http://127.0.0.1:5984/
