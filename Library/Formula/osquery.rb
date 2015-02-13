@@ -3,7 +3,7 @@ require "formula"
 class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.3.1"
+  url "https://github.com/facebook/osquery.git", :tag => "1.4.1"
 
   bottle do
     sha1 "01f4d94a896512fa89649b3e4d241671840e2492" => :yosemite
@@ -19,7 +19,6 @@ class Osquery < Formula
 
   depends_on "boost"
   depends_on "gflags"
-  depends_on "glog"
   depends_on "openssl"
   depends_on "rocksdb"
   depends_on "thrift"
@@ -44,6 +43,7 @@ class Osquery < Formula
                                  "--record=installed.txt"}
     end
 
+    mkdir "generated"
     system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
