@@ -118,7 +118,7 @@ class Cmd
       args + cppflags
     when :ld
       ldflags + args
-    end.compact
+    end
     make_fuss(allflags)
     allflags
   end
