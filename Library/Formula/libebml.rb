@@ -13,9 +13,9 @@ class Libebml < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "50c10f93ac4f4d5d4f63d26b3175e2809dea4a0c" => :yosemite
-    sha1 "ce19e183dee7ed41071fade3518a6ddcd7481aef" => :mavericks
+    sha1 "5e3f974d17bd9f6fad89d19c403e3fd720f6c509" => :yosemite
+    sha1 "8bbd297bdca1e250bedf9f9a1800a8819fa97d34" => :mavericks
+    sha1 "c1ea1c44a4653770dd92ecfa64561f8f449f1da2" => :mountain_lion
   end
 
   option :cxx11
