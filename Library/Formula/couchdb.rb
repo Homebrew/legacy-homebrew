@@ -53,8 +53,7 @@ class Couchdb < Formula
     system "make"
     system "make install"
 
-    # Use our plist instead to avoid faffing with a new system user.
-    (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").delete
+    (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").chmod 0644
     (lib+"couchdb/bin/couchjs").chmod 0755
     (var+"lib/couchdb").mkpath
     (var+"log/couchdb").mkpath
@@ -98,6 +97,24 @@ class Couchdb < Formula
   end
 
   def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+        mkdir -p ~/Library/LaunchAgents
+        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
+
+    If this is an upgrade and you already have the org.apache.couchdb.plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/org.apache.couchdb.plist
+        cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
+
+    Alternatively, automatically run on startup as a daemon with:
+        sudo launchctl list org.apache.couchdb \>/dev/null 2\>\&1 \&\& \\
+          sudo launchctl unload -w /Library/LaunchDaemons/org.apache.couchdb.plist
+        sudo cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist /Library/LaunchDaemons/
+        sudo launchctl load -w /Library/LaunchDaemons/org.apache.couchdb.plist
+
+    Or start manually as the current user with `couchdb`.
+
     To test CouchDB run:
         curl http://127.0.0.1:5984/
 
