@@ -29,8 +29,8 @@ class Cmd
   attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
   attr_reader :archflags, :optflags
 
-  def initialize path, args
-    @arg0 = File.basename(path).freeze
+  def initialize(arg0, args)
+    @arg0 = arg0
     @args = args.freeze
     @config = ENV.fetch("HOMEBREW_CCCFG") { "" }
     @prefix = ENV['HOMEBREW_PREFIX']
@@ -332,14 +332,16 @@ if __FILE__ == $PROGRAM_NAME
 
   ####################################################################### main
 
-  LOGGER.puts "#{File.basename($0)} called with: #{ARGV.join(" ")}"
+  dirname, basename = File.split($0)
 
-  cmd = Cmd.new($0, ARGV)
+  LOGGER.puts "#{basename} called with: #{ARGV.join(" ")}"
+
+  cmd = Cmd.new(basename, ARGV)
   tool, args = cmd.tool, cmd.args
 
   LOGGER.puts "superenv executed: #{tool} #{args.join(" ")}"
   LOGGER.log!
 
   args << { :close_others => false } if RUBY_VERSION >= "2.0"
-  exec "#{File.dirname($0)}/xcrun", tool, *args
+  exec "#{dirname}/xcrun", tool, *args
 end
