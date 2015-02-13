@@ -12,8 +12,11 @@ def exec *args
   super
 end
 
+sys_ver = `/usr/bin/sw_vers -productVersion`.chomp
+
 case F.downcase
-  when 'git' then %W{HOMEBREW_GIT GIT}
+  when 'git' then %W{HOMEBREW_GIT} if sys_ver < "10.8"
+  when 'git' then %W{HOMEBREW_GIT GIT} if sys_ver >= "10.8"
   when 'svn' then %W{HOMEBREW_SVN}
   else []
 end.each do |key|
