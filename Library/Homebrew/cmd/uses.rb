@@ -12,8 +12,8 @@ module Homebrew
     formulae = (ARGV.include? "--installed") ? Formula.installed : Formula
     recursive = ARGV.flag? "--recursive"
     ignores = []
-    ignores << "build?" if ARGV.flag? "--skip-build"
-    ignores << "optional?" if ARGV.flag? "--skip-optional"
+    ignores << "build?" if ARGV.include? "--skip-build"
+    ignores << "optional?" if ARGV.include? "--skip-optional"
 
     uses = formulae.select do |f|
       used_formulae.all? do |ff|
