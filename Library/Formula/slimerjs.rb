@@ -1,5 +1,6 @@
 class FirefoxDependency < Requirement
   fatal true
+  default_formula "xulrunner" if MacOS.version < :yosemite
 
   def self.firefox_installation
     paths = ["~/Applications/FirefoxNightly.app", "~/Applications/Firefox.app",
@@ -7,10 +8,10 @@ class FirefoxDependency < Requirement
     paths.find { |p| File.exist? File.expand_path(p) }
   end
 
-  satisfy { FirefoxDependency.firefox_installation }
+  satisfy { Formula["xulrunner"].installed? || FirefoxDependency.firefox_installation }
 
   def message
-    "Firefox must be installed unless building with xulrunner"
+    "Firefox or xulrunner must be available."
   end
 end
 
@@ -30,15 +31,7 @@ class Slimerjs < Formula
 
   # Min supported OS X version by Firefox & xulrunner is 10.6
   depends_on :macos => :leopard
-
-  # xulrunner will not currently build on Yosemite.
-  if MacOS.version >= :yosemite
-    depends_on FirefoxDependency
-  elsif build.with? "xulrunner"
-    depends_on "xulrunner"
-  else
-    depends_on FirefoxDependency
-  end
+  depends_on FirefoxDependency
 
   def install
     cd "src" do
