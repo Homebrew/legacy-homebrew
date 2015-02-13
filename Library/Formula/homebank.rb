@@ -26,7 +26,7 @@ class Homebank < Formula
     args << "--with-ofx" if build.with? 'libofx'
 
     system "./configure", *args
-    chmod("+x", "install-sh")
+    chmod(0755 "install-sh")
     system "make install"
   end
 end
