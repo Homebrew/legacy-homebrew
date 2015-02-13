@@ -15,8 +15,8 @@ class Wxmac < Formula
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
-  
-  option "with-enable-stl", "use standard C++ classes for everything"
+
+  option "with-stl", "use standard C++ classes for everything"
 
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
@@ -68,8 +68,8 @@ class Wxmac < Formula
       # This is the default option, but be explicit
       "--disable-monolithic"
     ]
-    
-    args << "--enable-stl" if build.with? "enable-stl"
+
+    args << "--enable-stl" if build.with? "stl"
 
     system "./configure", *args
     system "make", "install"
