@@ -9,7 +9,7 @@ class ApacheSpark < Formula
 
   def install
     # Rename beeline to distinguish it from hive's beeline
-    File.rename "bin/beeline", "bin/spark-beeline"
+    mv "bin/beeline", "bin/spark-beeline"
 
     rm_f Dir["bin/*.cmd"]
     libexec.install Dir["*"]
