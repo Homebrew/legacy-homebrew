@@ -24,9 +24,7 @@ class Gdal < Formula
   option 'with-swig-java', 'Build the swig java bindings'
 
   depends_on :python => :optional
-  if build.with? "python"
-    depends_on :fortran => :build
-  end
+  depends_on :numpy if build.with? "python"
 
   depends_on 'libpng'
   depends_on 'jpeg'
@@ -82,11 +80,6 @@ class Gdal < Formula
     url "https://gist.githubusercontent.com/dakcarto/7abad108aa31a1e53fb4/raw/b56887208fd91d0434d5a901dae3806fb1bd32f8/gdal-armadillo.patch"
     sha1 "3af1cae94a977d55541adba0d86c697d77bd1320"
   end if build.include? "enable-armadillo"
-
-  resource 'numpy' do
-    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz'
-    sha1 '8fe1d5f36bab3f1669520b4c7d8ab59a21a984da'
-  end
 
   resource "libkml" do
     # Until 1.3 is stable, use master branch
@@ -227,13 +220,6 @@ class Gdal < Formula
   end
 
   def install
-    if build.with? 'python'
-      ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-      numpy_args = [ "build", "--fcompiler=gnu95",
-                     "install", "--prefix=#{libexec}" ]
-      resource('numpy').stage { system "python", "setup.py", *numpy_args }
-    end
-
     if build.with? "libkml"
       resource("libkml").stage do
         # See main `libkml` formula for info on patches
@@ -283,9 +269,11 @@ class Gdal < Formula
       ENV.append_to_cflags "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
-    cd 'swig/python' do
-      system "python", "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
-      bin.install Dir['scripts/*']
+    if build.with? "python"
+      cd "swig/python" do
+        system "python", *Language::Python.setup_install_args(prefix)
+        bin.install Dir["scripts/*"]
+      end
     end
 
     if build.with? "swig-java"
