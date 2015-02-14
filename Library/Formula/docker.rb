@@ -1,5 +1,3 @@
-require "formula"
-
 class Docker < Formula
   homepage "https://www.docker.com/"
   # Boot2docker and docker are generally updated at the same time.
@@ -17,7 +15,6 @@ class Docker < Formula
   depends_on "go" => :build
 
   def install
-    ENV["GIT_DIR"] = cached_download/".git"
     ENV["AUTO_GOPATH"] = "1"
     ENV["DOCKER_CLIENTONLY"] = "1"
 

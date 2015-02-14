@@ -1,5 +1,3 @@
-require "formula"
-
 class Saltstack < Formula
   homepage "http://www.saltstack.org"
   url "https://github.com/saltstack/salt/archive/v2014.7.1.tar.gz"
@@ -80,7 +78,6 @@ class Saltstack < Formula
       end
     end
 
-    ln_s cached_download/".git", ".git"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
     man1.install Dir["doc/man/*.1"]

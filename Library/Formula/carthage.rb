@@ -1,5 +1,3 @@
-require "formula"
-
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
   url "https://github.com/Carthage/Carthage.git", :tag => "0.6",
@@ -15,10 +13,6 @@ class Carthage < Formula
   end
 
   def install
-    # Carthage likes to do stuff with submodules itself so we need a "real"
-    # git clone rather than letting it play with our cache.
-    cp_r cached_download/".git", "."
-
     system "make", "prefix_install", "PREFIX=#{prefix}"
   end
 
