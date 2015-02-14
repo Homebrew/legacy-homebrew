@@ -1,5 +1,3 @@
-require "formula"
-
 class Boot2docker < Formula
   homepage "https://github.com/boot2docker/boot2docker-cli"
   # Boot2docker and docker are generally updated at the same time.
@@ -22,8 +20,6 @@ class Boot2docker < Formula
     cd "src/github.com/boot2docker/boot2docker-cli" do
       ENV["GOPATH"] = buildpath
       system "go", "get", "-d"
-
-      ENV["GIT_DIR"] = cached_download/".git"
       system "make", "goinstall"
     end
 
