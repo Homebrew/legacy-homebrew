@@ -672,7 +672,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def stage
-    cp_r Dir[cached_location+"{.}"], Dir.pwd
+    cp_r File.join(cached_location, "."), Dir.pwd
   end
 
   private
@@ -751,7 +751,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   def stage
     # The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
-    cp_r Dir[cached_location+"{.}"], Dir.pwd
+    cp_r File.join(cached_location, "."), Dir.pwd
     rm_r ".bzr"
   end
 
