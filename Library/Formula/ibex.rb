@@ -9,7 +9,7 @@ class Ibex < Formula
   end
   depends_on "bison" => :build
   depends_on "flex" => :build
-  depends_on "pkg-config"
+  depends_on "pkg-config" => :build
 
   def install
     if build.with? "java"
@@ -22,13 +22,20 @@ class Ibex < Formula
         "--prefix=#{prefix}"
     end
     system "./waf", "install"
+
+    #copy and compile examples and benchmark for the test
     share.install "examples"
     share.install "benchs"
+    cxxflags = "-frounding-math -ffloat-store -I#{include} -I#{include}/ibex"
+    libflags = "-L#{lib} -libex -lprim -lClp -lCoinUtils -lm"
+    cd "#{share}/examples"
+    system "make", "defaultsolver",
+      "LIBS=#{libflags}",
+      "CXXFLAGS=#{cxxflags}"
   end
 
   test do
     cp_r "#{share}/examples/.", "#{testpath}"
-    system "make", "defaultsolver"
     cp "#{share}/benchs/cyclohexan3D.bch", "#{testpath}"
     system "./defaultsolver", "cyclohexan3D.bch", "1e-05", "10"
   end
