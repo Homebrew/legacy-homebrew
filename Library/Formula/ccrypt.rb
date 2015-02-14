@@ -4,6 +4,12 @@ class Ccrypt < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/c/ccrypt/ccrypt_1.10.orig.tar.gz"
   sha1 "95d4e524abb146946fe6af9d53ed0e5e294b34e2"
 
+  bottle do
+    sha1 "89c604ac653e2bd1cbf7b56494ab14ac4a6de3f3" => :yosemite
+    sha1 "f6d046eb7552fe541bef3eda66a7155b2c284b80" => :mavericks
+    sha1 "70ed9462ae982f2939f76dab3b335d84db53479f" => :mountain_lion
+  end
+
   fails_with :clang do
     build 318
     cause "Tests fail when optimizations are enabled"
