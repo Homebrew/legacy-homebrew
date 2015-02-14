@@ -115,6 +115,7 @@ class DependencyCollector
     when :hg         then MercurialDependency.new(tags)
     when :python     then PythonDependency.new(tags)
     when :python3    then Python3Dependency.new(tags)
+    when :numpy      then NumpyDependency.new(tags)
     when :java       then JavaDependency.new(tags)
     when :ruby       then RubyRequirement.new(tags)
     when :osxfuse    then OsxfuseDependency.new(tags)
