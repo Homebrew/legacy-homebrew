@@ -1,5 +1,3 @@
-require "formula"
-
 class Augeas < Formula
   homepage "http://augeas.net"
   url "http://download.augeas.net/augeas-1.3.0.tar.gz"
@@ -25,14 +23,7 @@ class Augeas < Formula
   depends_on "readline"
 
   def install
-    if build.head?
-      # The bootstrap script run by autogen needs to check the state of the
-      # gnulib submodule.
-      ln_s cached_download + ".git", ".git"
-      ln_s cached_download + ".gnulib/.git", ".gnulib/.git"
-
-      system "./autogen.sh"
-    end
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 

@@ -25,11 +25,7 @@ class Ttfautohint < Formula
   depends_on "harfbuzz"
 
   def install
-    if build.head?
-      ln_s cached_download/".git", ".git"
-      system "./bootstrap"
-    end
-
+    system "./bootstrap" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
