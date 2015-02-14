@@ -14,9 +14,9 @@ class Znc < Formula
   end
 
   bottle do
-    sha1 "b899a3090ce637a09a12c22d76d130a5108b5b42" => :mavericks
-    sha1 "7b808554d026a795d2555b5c1a66419fab999689" => :mountain_lion
-    sha1 "bc2c4a31596a72d501d70b9e7b21b09580f58da2" => :lion
+    sha1 "4f695db064f9971100f917f35ab2bcb9ba758f84" => :yosemite
+    sha1 "6e3799aae4b598b61062eb0b67744a5caa5f264e" => :mavericks
+    sha1 "83597cccd275a3a4bf8fcc5d8dd5c9048403869a" => :mountain_lion
   end
 
   option "enable-debug", "Compile ZNC with --enable-debug"
