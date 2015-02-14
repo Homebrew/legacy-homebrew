@@ -7,9 +7,10 @@ class ApacheSpark < Formula
   version "1.2.1"
   sha1 "2c8023f339ee9a0a05ecf6cb854f1de70b324f41"
 
-  conflicts_with 'hive', :because => 'both install `beeline` binaries'
-
   def install
+    # Rename beeline to distinguish it from hive's beeline
+    File.rename "bin/beeline", "bin/spark-beeline"
+
     rm_f Dir["bin/*.cmd"]
     libexec.install Dir["*"]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
