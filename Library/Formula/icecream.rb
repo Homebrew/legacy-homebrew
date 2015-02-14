@@ -32,6 +32,12 @@ class Icecream < Formula
     end
   end
 
+  bottle do
+    sha1 "df2ce444f943ca2e5f9850f934e1098c043f6888" => :yosemite
+    sha1 "cfc146ad19cec4a60a10e8e68399f413b0f41bd7" => :mavericks
+    sha1 "f44f687d335131f79cbb70abe69235f880de48e8" => :mountain_lion
+  end
+
   devel do
     url "https://github.com/icecc/icecream/archive/1.1rc1.tar.gz"
     version "1.1rc1"
