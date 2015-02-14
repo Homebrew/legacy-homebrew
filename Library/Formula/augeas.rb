@@ -23,9 +23,13 @@ class Augeas < Formula
   depends_on "readline"
 
   def install
-    system "./autogen.sh" if build.head?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = %W[--disable-debug --disable-dependency-tracking --prefix=#{prefix}]
+
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
 
     # libfa example program doesn't compile cleanly on OSX, so skip it
     inreplace "Makefile" do |s|
