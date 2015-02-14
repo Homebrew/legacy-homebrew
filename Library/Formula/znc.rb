@@ -2,8 +2,8 @@ require "formula"
 
 class Znc < Formula
   homepage "http://wiki.znc.in/ZNC"
-  url "http://znc.in/releases/archive/znc-1.4.tar.gz"
-  sha1 "6dafcf12b15fdb95eac5b427c8507c1095e904b4"
+  url "http://znc.in/releases/archive/znc-1.6.0.tar.gz"
+  sha1 "548d31fa63d50494bdf4b1d3c0f43a8ceda66849"
 
   head do
     url "https://github.com/znc/znc.git"
@@ -11,7 +11,6 @@ class Znc < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on "openssl"
   end
 
   bottle do
@@ -23,8 +22,10 @@ class Znc < Formula
   option "enable-debug", "Compile ZNC with --enable-debug"
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   def install
+    ENV.cxx11
     args = ["--prefix=#{prefix}"]
     args << "--enable-debug" if build.include? "enable-debug"
 
