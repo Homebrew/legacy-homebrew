@@ -19,6 +19,7 @@ class Aubio < Formula
   depends_on :macos => :lion
 
   depends_on :python => :optional
+  depends_on :numpy if build.with? "python"
   depends_on 'pkg-config' => :build
   depends_on "libtool" => :build
 
@@ -27,10 +28,6 @@ class Aubio < Formula
   depends_on 'libsamplerate' => :optional
   depends_on 'fftw' => :optional
   depends_on 'jack' => :optional
-
-  if build.with? 'python'
-    depends_on 'numpy' => :python
-  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -44,8 +41,7 @@ class Aubio < Formula
 
     if build.with? 'python'
       cd 'python' do
-        system "python", "./setup.py", "build"
-        system "python", "./setup.py", "install", "--prefix", prefix
+        system "python", *Language::Python.setup_install_args(prefix)
         bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
       end
     end
