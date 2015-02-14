@@ -1,31 +1,17 @@
 class Hub < Formula
   homepage "http://hub.github.com/"
-  url "https://github.com/github/hub/archive/v1.12.4.tar.gz"
-  sha1 "25135167108cd777ba6ec2dd5a9a25e248d98d4b"
-
-  head do
-    url "https://github.com/github/hub.git"
-    depends_on "go" => :build
-  end
-
-  devel do
-    url "https://github.com/github/hub/archive/v2.2.0-rc1.tar.gz"
-    sha1 "029d154ce0f9c4999e4dd6ef23eab5e411370c4f"
-    version "2.2.0-rc1"
-
-    depends_on "go" => :build
-  end
+  url "https://github.com/github/hub/archive/v2.2.0.tar.gz"
+  sha1 "29744a370b71e5b054fd91e59472de6dbe573a91"
+  head "https://github.com/github/hub.git"
 
   option "without-completions", "Disable bash/zsh completions"
 
+  depends_on "go" => :build
+
   def install
-    if build.head? || build.devel?
-      system "script/build"
-      bin.install "hub"
-      man1.install Dir["man/*"]
-    else
-      rake "install", "prefix=#{prefix}"
-    end
+    system "script/build"
+    bin.install "hub"
+    man1.install Dir["man/*"]
 
     if build.with? "completions"
       bash_completion.install "etc/hub.bash_completion.sh"
