@@ -10,6 +10,7 @@ class Exim < Formula
 
   depends_on 'pcre'
   depends_on 'berkeley-db4'
+  depends_on 'openssl'
 
   def install
     cp 'src/EDITME', 'Local/Makefile'
