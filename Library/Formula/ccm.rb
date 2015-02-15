@@ -6,9 +6,9 @@ class Ccm < Formula
 
   bottle do
     cellar :any
-    sha1 "ac55457ea11b2c831affdaf892133ce4edea8f8f" => :mavericks
-    sha1 "de6894cdeb6067294f7dc184cd67acbda1727e44" => :mountain_lion
-    sha1 "7f7178f0b6901a756fbcddaa4450902bc5390dae" => :lion
+    sha1 "aed0f400e1e3b861da04a3c6ed9e5d54e7e0ec75" => :yosemite
+    sha1 "f0a9e43263c47f5c783627f97269a811b2b47e7b" => :mavericks
+    sha1 "29cd95cc6d45b506a4df1abd52a7a4fe738f4117" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
