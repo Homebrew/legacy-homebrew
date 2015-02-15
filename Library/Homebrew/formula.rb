@@ -411,6 +411,12 @@ class Formula
   # `brew link` for formulae that are not keg-only.
   def zsh_completion;  share+'zsh/site-functions'     end
 
+  # The directory where the formula's fish completion files should be
+  # installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not key-only.
+  def fish_completion; share+'fish/vendor_completions.d' end
+
   # The directory used for as the prefix for {#etc} and {#var} files on
   # installation so, despite not being in `HOMEBREW_CELLAR`, they are installed
   # there after pouring a bottle.
