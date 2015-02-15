@@ -3,6 +3,13 @@ class Wslay < Formula
   url "https://downloads.sourceforge.net/project/wslay/wslay-1.0.0/wslay-1.0.0.tar.xz"
   sha1 "199308322e67094ee803063eca0077dfc042bc77"
 
+  bottle do
+    cellar :any
+    sha1 "d5996cbcaefa8fb31052257c83eccb1121721a35" => :yosemite
+    sha1 "0352cd0da3febe6bfc917f620acd3b694899bcd4" => :mavericks
+    sha1 "04cfebe7140b51febd90b99e2a398bca966759dc" => :mountain_lion
+  end
+
   option "without-docs", "Don't generate or install documentation"
 
   head do
