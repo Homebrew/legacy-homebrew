@@ -21,6 +21,6 @@ class Abduco < Formula
   test do
     result = shell_output("#{bin}/abduco -v")
     result.force_encoding("UTF-8") if result.respond_to?(:force_encoding)
-    assert_match /^abduco-[0-9.]+ . 2013-\d{4} Marc Andr. Tanner$/, result
+    assert_match /^abduco-#{version}.*$/, result
   end
 end
