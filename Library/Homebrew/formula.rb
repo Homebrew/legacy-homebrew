@@ -403,13 +403,13 @@ class Formula
   # installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
   # `brew link` for formulae that are not keg-only.
-  def bash_completion; prefix+'etc/bash_completion.d' end
+  def bash_completion; prefix+'etc/bash_completion.d'    end
 
   # The directory where the formula's ZSH completion files should be
   # installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
   # `brew link` for formulae that are not keg-only.
-  def zsh_completion;  share+'zsh/site-functions'     end
+  def zsh_completion;  share+'zsh/site-functions'        end
 
   # The directory where the formula's fish completion files should be
   # installed.
