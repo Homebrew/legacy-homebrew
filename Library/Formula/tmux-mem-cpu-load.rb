@@ -2,8 +2,8 @@ require "formula"
 
 class TmuxMemCpuLoad < Formula
   homepage "https://github.com/thewtex/tmux-mem-cpu-load"
-  url "https://github.com/thewtex/tmux-mem-cpu-load/archive/v2.2.2.tar.gz"
-  sha1 "5c49317b072dec710268d3dafb205b4aeb0c1a5c"
+  url "https://github.com/thewtex/tmux-mem-cpu-load/archive/v3.1.0.tar.gz"
+  sha1 "b243a064a24bf86853ae9ab1daf0fb650a23bd97"
 
   depends_on "cmake" => :build
 
