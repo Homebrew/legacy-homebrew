@@ -2,8 +2,8 @@ require 'formula'
 
 class Direnv < Formula
   homepage 'http://www.direnv.net'
-  url 'https://github.com/zimbatm/direnv/archive/v2.5.0.tar.gz'
-  sha1 '48aa6a9dc5748b8043fb6f8ccdc8f3b538301382'
+  url 'https://github.com/zimbatm/direnv/archive/v2.6.0.tar.gz'
+  sha1 'ebfa8c087aadeffe2c8f84128082d670d22ea541'
 
   head 'https://github.com/zimbatm/direnv.git'
 
@@ -20,11 +20,7 @@ class Direnv < Formula
   end
 
   def caveats; <<-EOS.undent
-    At the END of your ~/.bashrc or ~/.zshrc, add the following line:
-      eval "$(direnv hook $0)"
-
-    See the wiki for docs and examples:
-      https://github.com/zimbatm/direnv/wiki/
+    Finish installation by reading: https://github.com/zimbatm/direnv#setup
     EOS
   end
 end
