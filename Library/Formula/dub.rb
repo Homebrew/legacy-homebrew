@@ -1,5 +1,3 @@
-require "formula"
-
 class Dub < Formula
   homepage "http://code.dlang.org/about"
   url  "https://github.com/D-Programming-Language/dub/archive/v0.9.22.tar.gz"
@@ -17,7 +15,6 @@ class Dub < Formula
   depends_on "dmd"  => :build
 
   def install
-    ENV["GIT_DIR"] = cached_download/".git"
     system "./build.sh"
     bin.install "bin/dub"
   end

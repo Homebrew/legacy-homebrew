@@ -36,7 +36,6 @@ class Openconnect < Formula
     chmod 0755, "#{etc}/vpnc-script"
 
     if build.head?
-      ENV["GIT_DIR"] = cached_download/".git"
       ENV["LIBTOOLIZE"] = "glibtoolize"
       system "./autogen.sh"
     end

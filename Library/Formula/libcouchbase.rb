@@ -1,5 +1,3 @@
-require 'formula'
-
 class Libcouchbase < Formula
   homepage 'http://docs.couchbase.com/developer/c-2.4/c-intro.html'
   url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.6.tar.gz'
@@ -40,7 +38,6 @@ class Libcouchbase < Formula
       args << '-DLCB_NO_PLUGINS=1'
     end
 
-    ENV["GIT_DIR"] = cached_download/".git" if build.head?
     mkdir 'LCB-BUILD' do
       system "cmake", "..", *args
       system 'make install'
