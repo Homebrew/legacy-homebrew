@@ -1,7 +1,7 @@
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.0.tar.gz"
-  sha1 "c8bf5bb7f812376f6a6b6f116f237e2f5575ac61"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.8.tar.gz"
+  sha1 "294a7230402bb1dc11981bc4e6136bfaa04a602b"
 
   bottle do
     cellar :any
@@ -44,13 +44,13 @@ class Awscli < Formula
   end
 
   resource "jmespath" do
-    url "https://pypi.python.org/packages/source/j/jmespath/jmespath-0.5.0.tar.gz"
-    sha1 "c9ce28e08fd24cdaa23e1183008b67ded302ef27"
+    url "https://pypi.python.org/packages/source/j/jmespath/jmespath-0.6.1.tar.gz"
+    sha1 "f3fc294e5225f2529968f58eb75c9da91fbeb9c1"
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.81.0.tar.gz"
-    sha1 "6d85690eca45733d1c04b52f44f40a77a6c7614c"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.89.0.tar.gz"
+    sha1 "15a4b154b49bc967d921253875cf41ff8f2b6816"
   end
 
   resource "docutils" do
