@@ -7,36 +7,35 @@ class Scalaenv < Formula
 
 	def install
 		inreplace "libexec/scalaenv", "/usr/local", HOMEBREW_PREFIX
-    	prefix.install "bin", "completions", "libexec"
-    	prefix.install "plugins" => "default-plugins"
+  	prefix.install "bin", "completions", "libexec"
+  	prefix.install "plugins" => "default-plugins"
 
-    	var_lib = "#{HOMEBREW_PREFIX}/var/lib/scalaenv"
+  	var_lib = "#{HOMEBREW_PREFIX}/var/lib/scalaenv"
 		%w[plugins versions].each do |dir|
-	      var_dir = "#{var_lib}/#{dir}"
-	      mkdir_p var_dir
-	      ln_sf var_dir, "#{prefix}/#{dir}"
-	    end
+      var_dir = "#{var_lib}/#{dir}"
+      mkdir_p var_dir
+      ln_sf var_dir, "#{prefix}/#{dir}"
+    end
 
-    	rm_f "#{var_lib}/plugins/scala-install"
-    	ln_sf "#{prefix}/default-plugins/scala-install", "#{var_lib}/plugins/scala-install"
+  	rm_f "#{var_lib}/plugins/scala-install"
+  	ln_sf "#{prefix}/default-plugins/scala-install", "#{var_lib}/plugins/scala-install"
 
 		%w[scalaenv-install].each do |cmd|
-	      bin.install_symlink "#{prefix}/default-plugins/scala-install/bin/#{cmd}"
-	    end
+      bin.install_symlink "#{prefix}/default-plugins/scala-install/bin/#{cmd}"
+    end
 
 	end
 
 	def caveats; <<-EOS.undent
-	    To use Homebrew's directories rather than ~/.scalaenv add to your profile:
-	      export SCALAENV_ROOT=#{var}/scalaenv
+    To use Homebrew's directories rather than ~/.scalaenv add to your profile:
+      export SCALAENV_ROOT=#{var}/scalaenv
 
-	    To enable shims and autocompletion add to your profile:
-	      eval "$(scalaenv init -)"
-	    EOS
-  	end
+    To enable shims and autocompletion add to your profile:
+      eval "$(scalaenv init -)"
+    EOS
+	end
 
-    test do
-    	shell_output("eval \"$(#{bin}/scalaenv init -)\" && scalaenv versions")
+  test do
+  	shell_output("eval \"$(#{bin}/scalaenv init -)\" && scalaenv versions")
  	end
-
 end
