@@ -1,12 +1,12 @@
 class Swig < Formula
   homepage "http://www.swig.org/"
-  url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.4/swig-3.0.4.tar.gz"
-  sha1 "088b2fb1f3167703f79fb187fdb3b80513426eb1"
+  url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.5/swig-3.0.5.tar.gz"
+  sha1 "271813b317e4836853d2249fc8ce2df34c2a062a"
 
   bottle do
-    sha1 "e81d0861e7cb44c19fcdb84aeabd665022d9b327" => :yosemite
-    sha1 "89275a079e1ecdc3317adecd5489240ebc0d8cfa" => :mavericks
-    sha1 "c202eefe12ccedf8a9a5ce8ae4e9e680b9869a7b" => :mountain_lion
+    sha1 "2f6a236c9c1d2bb97107c5d7f49584b0ed0f3a3a" => :yosemite
+    sha1 "c13fa26b8eab283489571d2be8ed6e2974e3b359" => :mavericks
+    sha1 "de9eaea18c94fffba837d14b9254af46621b4960" => :mountain_lion
   end
 
   option :universal

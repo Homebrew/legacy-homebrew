@@ -5,10 +5,10 @@ class Python < Formula
   sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 9
-    sha1 "b37e77b5fc9432f9b944ca36f8e33758bf751b31" => :yosemite
-    sha1 "1387fd922955e8522c7bcbfa124b80d3d6e4d3ef" => :mavericks
-    sha1 "4e2a3133a9e043f12f9a14c8006b71bc82a831ba" => :mountain_lion
+    revision 10
+    sha1 "bcce4130bceeadd2d23e4f06441c8dd5d23b14df" => :yosemite
+    sha1 "d2a142d25910f4b30979f799c2920f4bc6a9db31" => :mavericks
+    sha1 "e8f947a2380376d465c5eff71e012d69243e87e6" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -35,8 +35,8 @@ class Python < Formula
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.7.tar.gz"
-    sha1 "d2539dcd3d938863c7f6d7197d2f53066c92cf23"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
+    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
   end
 
   # Patch for pyport.h macro issue

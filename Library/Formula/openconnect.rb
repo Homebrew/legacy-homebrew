@@ -1,14 +1,13 @@
-require "formula"
-
 class Openconnect < Formula
   homepage "http://www.infradead.org/openconnect.html"
   url "ftp://ftp.infradead.org/pub/openconnect/openconnect-7.04.tar.gz"
   sha1 "1a87bebcc615fd96146a8afd05491883ef2b4daf"
+  revision 1
 
   bottle do
-    sha1 "304af06c460efee55cffd2086ca1a7b3a36ae6f7" => :yosemite
-    sha1 "5a151e79eff6550a7832aa9493d67e7194ce78b5" => :mavericks
-    sha1 "43a8ec2383668d00d1fbc4734c3d3de3069c264f" => :mountain_lion
+    sha1 "8d039f7fc3d67f2d0054e063362b4ed1b07f8637" => :yosemite
+    sha1 "59eebaa91254644babfbd79df555c2b5d60a2e1c" => :mavericks
+    sha1 "63137e094db87867d88f3a69ed6d5d25d369b4a6" => :mountain_lion
   end
 
   head do
@@ -18,12 +17,12 @@ class Openconnect < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-gnutls", "Use GnuTLS instead of OpenSSL"
+  # No longer compiles against OpenSSL 1.0.2 - It chooses the system OpenSSL instead.
+  # http://lists.infradead.org/pipermail/openconnect-devel/2015-February/002757.html
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
-  depends_on "openssl" if build.without? "gnutls"
-  depends_on "gnutls" => :optional
+  depends_on "gnutls"
   depends_on "oath-toolkit" => :optional
   depends_on "stoken" => :optional
 
@@ -37,7 +36,6 @@ class Openconnect < Formula
     chmod 0755, "#{etc}/vpnc-script"
 
     if build.head?
-      ENV["GIT_DIR"] = cached_download/".git"
       ENV["LIBTOOLIZE"] = "glibtoolize"
       system "./autogen.sh"
     end
@@ -50,6 +48,10 @@ class Openconnect < Formula
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert_match /AnyConnect VPN/, pipe_output("#{bin}/openconnect 2>&1")
   end
 end

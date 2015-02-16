@@ -65,13 +65,14 @@ module Homebrew
     if f.tap?
       user, repo = f.tap.split("/", 2)
       path = f.path.relative_path_from(HOMEBREW_LIBRARY.join("Taps", f.tap))
-    else
+      "https://github.com/#{user}/#{repo}/blob/master/#{path}"
+    elsif f.core_formula?
       user = f.path.parent.cd { github_fork }
-      repo = "homebrew"
       path = f.path.relative_path_from(HOMEBREW_REPOSITORY)
+      "https://github.com/#{user}/homebrew/blob/master/#{path}"
+    else
+      f.path
     end
-
-    "https://github.com/#{user}/#{repo}/blob/master/#{path}"
   end
 
   def info_formula f
@@ -122,7 +123,7 @@ module Homebrew
     unless f.deps.empty?
       ohai "Dependencies"
       %w{build required recommended optional}.map do |type|
-        deps = f.deps.send(type)
+        deps = f.deps.send(type).uniq
         puts "#{type.capitalize}: #{decorate_dependencies deps}" unless deps.empty?
       end
     end

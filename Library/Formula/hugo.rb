@@ -1,5 +1,3 @@
-require "formula"
-
 class Hugo < Formula
   homepage "http://hugo.spf13.com/"
   head "https://github.com/spf13/hugo.git"
@@ -18,7 +16,6 @@ class Hugo < Formula
   depends_on :hg => :build
 
   def install
-    ENV["GIT_DIR"] = cached_download/".git" if build.head?
     ENV["GOBIN"] = bin
     ENV["GOPATH"] = buildpath
     ENV["GOHOME"] = buildpath

@@ -1,72 +1,49 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.10.36/node-v0.10.36.tar.gz"
-  sha256 "b9d7d1d0294bce46686b13a05da6fc5b1e7743b597544aa888e8e64a9f178c81"
+  url "https://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz"
+  sha256 "9700e23af4e9b3643af48cef5f2ad20a1331ff531a12154eef2bfb0bb1682e32"
+  head "https://github.com/joyent/node.git", :branch => "v0.12"
 
   bottle do
-    sha1 "ca405f33a5c8e3356a0f477eee43e492e7925927" => :yosemite
-    sha1 "f17dfa5a02a7f83b46f0deb40a4746a1337ffa88" => :mavericks
-    sha1 "b5d7094ed826813b2cc35303bcde8269b1ad9292" => :mountain_lion
+    revision 1
+    sha1 "cf47b47fca78022a299f5353b968fb703fb90bc9" => :yosemite
+    sha1 "a0fc2c129428a0fcd50169857b240039d328463b" => :mavericks
+    sha1 "8312e7ea6ffec58e39ec7cc1f8671847a9d7b4bf" => :mountain_lion
   end
-
-  devel do
-    url "https://nodejs.org/dist/v0.11.16/node-v0.11.16.tar.gz"
-    sha256 "f0d141faa1f7da3aff53e9615d76040d29c0650542be3b09ee80aca2f2cc61f6"
-
-    depends_on "pkg-config" => :build
-    depends_on "icu4c" => :optional
-    depends_on "openssl" => :optional
-  end
-
-  head do
-    url "https://github.com/joyent/node.git", :branch => "v0.12"
-
-    depends_on "pkg-config" => :build
-    depends_on "icu4c"
-  end
-
-  deprecated_option "enable-debug" => "with-debug"
 
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
 
-  depends_on :python => :build
+  deprecated_option "enable-debug" => "with-debug"
 
-  # Once we kill off SSLv3 in our OpenSSL consider making our OpenSSL
-  # an optional dep across the whole range of Node releases.
+  depends_on :python => :build
+  depends_on "pkg-config" => :build
+  depends_on "openssl" => :optional
+
+  # https://github.com/joyent/node/issues/7919
+  # https://github.com/Homebrew/homebrew/issues/36681
+  depends_on "icu4c" => :optional
 
   fails_with :llvm do
     build 2326
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.3.0.tgz"
-    sha1 "3588ec5c18fb5ac41e5721b0ea8ece3a85ab8b4b"
+    url "https://registry.npmjs.org/npm/-/npm-2.5.1.tgz"
+    sha1 "23e4b0fdd1ffced7d835780e692a9e5a0125bb02"
   end
 
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
-    args << "--without-ssl2" << "--without-ssl3" if build.stable?
+    args << "--with-intl=system-icu" if build.with? "icu4c"
 
-    if build.head?
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
-      args << "--with-intl=system-icu"
-    end
-
-    if build.devel?
-      if build.with? "icu4c"
-        ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
-        args << "--with-intl=system-icu"
-      end
-
-      if build.with? "openssl"
-        args << "--shared-openssl"
-      else
-        args << "--without-ssl2" << "--without-ssl3"
-      end
+    if build.with? "openssl"
+      args << "--shared-openssl"
+    else
+      args << "--without-ssl2" << "--without-ssl3"
     end
 
     system "./configure", *args
@@ -138,6 +115,18 @@ class Node < Formula
         Homebrew has NOT installed npm. If you later install it, you should supplement
         your NODE_PATH with the npm module folder:
           #{HOMEBREW_PREFIX}/lib/node_modules
+      EOS
+    end
+
+    if build.with? "icu4c"
+      s += <<-EOS.undent
+
+        Please note `icu4c` is built with a newer deployment target than Node and
+        this may cause issues in certain usage. Node itself is built against the
+        outdated `libstdc++` target, which is the root cause. For more information see:
+          https://github.com/joyent/node/issues/7919
+
+        If this is an issue for you, do `brew install node --without-icu4c`.
       EOS
     end
 

@@ -12,9 +12,17 @@ class Libupnp < Formula
     sha1 "09c01a27803cc08266a601e401b9556f87e760d3" => :mavericks
   end
 
+  option "with-ipv6", "Enable IPv6 support"
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}"
+           ]
+
+    args << "--enable-ipv6" if build.with? "ipv6"
+
+    system "./configure", *args
     system "make install"
   end
 end

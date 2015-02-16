@@ -1,5 +1,3 @@
-require "formula"
-
 class Ruby19 < Requirement
   fatal true
   default_formula "ruby"
@@ -25,13 +23,13 @@ end
 
 class Mkvtoolnix < Formula
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.3.0.tar.xz"
-  sha1 "c5379fa684a0a5e6cf0db7404b72e7075989a1a3"
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.6.0.tar.xz"
+  sha1 "458db5c8f9e9afbf5fb210ebb26b380cf553d88f"
 
   bottle do
-    sha1 "56cde38aad413ef85cdea858e4609abc4fc70491" => :yosemite
-    sha1 "06dc3b91062deb677a95b9eb416232ff6c5e319c" => :mavericks
-    sha1 "db880af7a75c5979aed0c1f19e02c63e0d17e7c7" => :mountain_lion
+    sha1 "f171e01dc4eb563b1b1ca66c1013562537110329" => :yosemite
+    sha1 "1cb96469c187908fc76c3032513110625cac2c3c" => :mavericks
+    sha1 "ba93d7a12f7a1fff861c777fed4df2645c6c7793" => :mountain_lion
   end
 
   head do
@@ -48,8 +46,6 @@ class Mkvtoolnix < Formula
   depends_on Ruby19
   depends_on "libogg"
   depends_on "libvorbis"
-  depends_on "expat"
-  depends_on "pcre"
   depends_on "flac" => :recommended
   depends_on "libmagic" => :recommended
   depends_on "lzo" => :optional

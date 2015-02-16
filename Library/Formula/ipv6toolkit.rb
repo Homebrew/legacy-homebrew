@@ -1,5 +1,3 @@
-require "formula"
-
 class Ipv6toolkit < Formula
   homepage "http://www.si6networks.com/tools/ipv6toolkit/"
   url "http://www.si6networks.com/tools/ipv6toolkit/ipv6toolkit-v1.5.3.tar.gz"
@@ -7,7 +5,7 @@ class Ipv6toolkit < Formula
 
   def install
     system "make"
-    system "make", "install", "DESTDIR=#{prefix}", "PREFIX=", "MANPREFIX=share"
+    system "make", "install", "DESTDIR=#{prefix}", "PREFIX=", "MANPREFIX=/share"
   end
 
   test do
