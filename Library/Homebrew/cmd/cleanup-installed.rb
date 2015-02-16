@@ -1,3 +1,5 @@
+# DEPRECATED in favour of https://github.com/Homebrew/homebrew-brewdler
+#
 # brew-cleanup-installed: uninstall all non-whitelisted Homebrew formulae.
 #
 # Useful for maintainers/testers who regularly install lots of formulae
@@ -8,6 +10,12 @@
 
 module Homebrew
   def cleanup_installed
+    opoo <<-EOS.undent
+      brew cleanup-installed is deprecated and will be removed soon!
+
+      Please consider using the `brew brewdler dump` and `brew brewdler cleanup`
+      commands from https://github.com/Homebrew/homebrew-brewdler
+    EOS
     cleanup_file = Pathname.new "#{ENV["HOME"]}/.brew-cleanup-installed"
     return unless cleanup_file.exist?
 
