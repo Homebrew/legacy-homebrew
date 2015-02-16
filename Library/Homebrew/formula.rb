@@ -540,7 +540,7 @@ class Formula
     elsif core_formula?
       "Homebrew/homebrew"
     else
-      "path or URL"
+      HOMEBREW_PATH_URL_TAP
     end
   end
 

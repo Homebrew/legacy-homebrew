@@ -1,7 +1,7 @@
 class Elasticsearch < Formula
   homepage "http://www.elasticsearch.org"
-  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.tar.gz"
-  sha1 "ae381615ec7f657e2a08f1d91758714f13d11693"
+  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.3.tar.gz"
+  sha1 "d26828bef335a164175f5af14a2a7fc44cb063f2"
 
   depends_on :java => "1.7+"
 

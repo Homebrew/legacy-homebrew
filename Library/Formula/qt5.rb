@@ -1,15 +1,3 @@
-require "formula"
-
-class Qt5HeadDownloadStrategy < GitDownloadStrategy
-  def stage
-    cached_location.cd { reset }
-    quiet_safe_system "git", "clone", cached_location, "."
-    ln_s cached_location, "qt"
-    quiet_safe_system "./init-repository", { :quiet_flag => "-q" }, "--mirror", "#{Dir.pwd}/"
-    rm "qt"
-  end
-end
-
 class OracleHomeVar < Requirement
   fatal true
   satisfy ENV["ORACLE_HOME"]
@@ -33,8 +21,7 @@ class Qt5 < Formula
     sha1 "a6bbd39629a69c35c8a5d5e8ede4b6c752e3aecf" => :mountain_lion
   end
 
-  head "https://gitorious.org/qt/qt5.git", :branch => "5.4",
-    :using => Qt5HeadDownloadStrategy, :shallow => false
+  head "https://gitorious.org/qt/qt5.git", :branch => "5.4", :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 

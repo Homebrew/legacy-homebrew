@@ -2,14 +2,21 @@ require 'formula'
 
 class Exim < Formula
   homepage 'http://exim.org'
-  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.84.tar.bz2'
-  mirror 'http://www.mirrorservice.org/sites/ftp.exim.org/pub/exim/exim4/exim-4.84.tar.bz2'
-  sha1 'ffd59975821edc14abfe06c7b9715aedccfc998c'
+  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.85.tar.bz2'
+  mirror 'http://www.mirrorservice.org/sites/ftp.exim.org/pub/exim/exim4/exim-4.85.tar.bz2'
+  sha1 '6b40d5a6ae59f86b4780ad50aaf0d930330d7b67'
+
+  bottle do
+    sha1 "011a332c09baaf4d00c322b56b91e22bcc7a8334" => :yosemite
+    sha1 "16bc2450378a8061ad290cdbe47797381381d5bb" => :mavericks
+    sha1 "6d90530045d473748f044d00bc5b14957da17808" => :mountain_lion
+  end
 
   option 'support-maildir', 'Support delivery in Maildir format'
 
   depends_on 'pcre'
   depends_on 'berkeley-db4'
+  depends_on 'openssl'
 
   def install
     cp 'src/EDITME', 'Local/Makefile'

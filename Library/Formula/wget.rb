@@ -1,5 +1,3 @@
-require "formula"
-
 # NOTE: Configure will fail if using awk 20110810 from dupes.
 # Upstream issue: https://savannah.gnu.org/bugs/index.php?37063
 
@@ -36,11 +34,6 @@ class Wget < Formula
   depends_on "libuuid" if OS.linux?
 
   def install
-    if build.head?
-      ln_s cached_download/".git", ".git"
-      system "./bootstrap"
-    end
-
     args = %W[
       --prefix=#{prefix}
       --sysconfdir=#{etc}
@@ -52,6 +45,7 @@ class Wget < Formula
     args << "--disable-iri" if build.without? "iri"
     args << "--disable-pcre" if build.without? "pcre"
 
+    system "./bootstrap" if build.head?
     system "./configure", *args
     system "make", "install"
   end

@@ -43,9 +43,6 @@ class X264 < Formula
     end
     args << "--bit-depth=10" if build.include? "10-bit"
 
-    # For running version.sh correctly
-    buildpath.install_symlink cached_download/".git"
-
     system "./configure", *args
     system "make", "install"
   end

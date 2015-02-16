@@ -1,14 +1,14 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.3.tar.bz2"
-  sha1 "160d53a0d6b8df18336fac7f068c390ac2d34cef"
+  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.4.tar.bz2"
+  sha1 "e7d0bab14e82876762531a883c6b48918631d48c"
 
   head "git://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha1 "08d5a4b48139242805c77ed1e09edba5bc27f5e9" => :yosemite
-    sha1 "87286d9e8da3310e75b016db543777cc8ec084d9" => :mavericks
-    sha1 "017384ba81d06e8825fa22532100db8c587058cf" => :mountain_lion
+    sha1 "1d2f2630e86a06519f36263914ab79dc2f2fef72" => :yosemite
+    sha1 "d2dcb0fd8c650ad8b106ab3ab4fcd0b5512eb6aa" => :mavericks
+    sha1 "cddc9c78521770bc529e85f80f842dff678bc1e6" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -137,8 +137,6 @@ class Ffmpeg < Formula
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
     ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
-
-    ENV["GIT_DIR"] = cached_download/".git" if build.head?
 
     system "./configure", *args
 

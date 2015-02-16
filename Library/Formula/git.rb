@@ -76,8 +76,6 @@ class Git < Formula
 
     ENV["NO_GETTEXT"] = "1" if build.without? "gettext"
 
-    ENV["GIT_DIR"] = cached_download/".git" if build.head?
-
     system "make", "prefix=#{prefix}",
                    "sysconfdir=#{etc}",
                    "CC=#{ENV.cc}",
