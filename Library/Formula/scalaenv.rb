@@ -23,7 +23,6 @@ class Scalaenv < Formula
     %w[scalaenv-install].each do |cmd|
       bin.install_symlink "#{prefix}/default-plugins/scala-install/bin/#{cmd}"
     end
-
   end
 
   def caveats; <<-EOS.undent
