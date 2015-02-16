@@ -19,8 +19,7 @@ class Direnv < Formula
     system "make", "install", "DESTDIR=#{prefix}"
   end
 
-  def caveats; <<-EOS.undent
-    Finish installation by reading: https://github.com/zimbatm/direnv#setup
-    EOS
+  def caveats
+    "Finish setup by following: https://github.com/zimbatm/direnv#setup"
   end
 end
