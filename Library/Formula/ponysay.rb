@@ -1,5 +1,3 @@
-require "formula"
-
 class Ponysay < Formula
   homepage "http://erkin.co/ponysay/"
   url "https://github.com/erkin/ponysay/archive/3.0.2.tar.gz"
@@ -21,5 +19,9 @@ class Ponysay < Formula
            "--cache-dir=#{prefix}/var/cache",
            "--sysconf-dir=#{prefix}/etc",
            "install"
+  end
+
+  test do
+    system "#{bin}/ponysay", "-A"
   end
 end
