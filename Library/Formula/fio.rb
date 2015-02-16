@@ -1,9 +1,7 @@
-require "formula"
-
 class Fio < Formula
   homepage "http://freecode.com/projects/fio"
-  url "http://brick.kernel.dk/snaps/fio-2.1.11.tar.bz2"
-  sha1 "3a9e82477f29155fab531cb9d527469fef85042b"
+  url "http://brick.kernel.dk/snaps/fio-2.2.5.tar.bz2"
+  sha1 "36b1bcbeee1d1d6c08a14a2f7cad289162e20e21"
 
   def install
     system "./configure"
@@ -14,5 +12,9 @@ class Fio < Formula
                    "CC=#{ENV.cc}",
                    "V=true", # get normal verbose output from fio's makefile
                    "install"
+  end
+
+  test do
+    system "#{bin}/fio", "--parse-only"
   end
 end
