@@ -13,9 +13,17 @@ class Libical < Formula
 
   depends_on "cmake" => :build
 
+  option :universal
+
   def install
+    args = std_cmake_args
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
+
     mkdir "build" do
-      system "cmake", "..", "-DSHARED_ONLY=true", *std_cmake_args
+      system "cmake", "..", "-DSHARED_ONLY=true", *args
       system "make", "install"
     end
   end
