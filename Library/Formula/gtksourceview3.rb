@@ -11,7 +11,6 @@ class Gtksourceview3 < Formula
     sha1 "9cb6385b341def8476ed445ef2223f72601878f7" => :mountain_lion
   end
 
-  depends_on :x11
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gettext"
