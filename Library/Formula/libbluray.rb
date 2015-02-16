@@ -19,6 +19,8 @@ class Libbluray < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on "ant" => :build
+    depends_on "fontconfig"
   end
 
   depends_on "pkg-config" => :build
