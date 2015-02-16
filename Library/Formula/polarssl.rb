@@ -2,7 +2,7 @@ class Polarssl < Formula
   homepage "https://polarssl.org/"
   # 1.4.0 will need dependents recompiled due to breaking binary compat.
   url "https://polarssl.org/download/mbedtls-1.3.10-gpl.tgz"
-  sha256 "d221b02acc96fda8259d9e57798dee9de72977902afb0c63e552b5510c6503a3"
+  sha256 "746fd88e0c6623691fc56c4eed52e40a57b2da0ac80f6dd8995094aa6adb407e"
 
   head "https://github.com/polarssl/polarssl.git"
 
@@ -29,9 +29,9 @@ class Polarssl < Formula
     system "make"
     system "make", "install"
     # Why does PolarSSL ship with GNU's Hello included? Let's remove that.
-    rm "#{bin}/hello"
+    rm_f "#{bin}/hello"
     # Remove the pointless example application that hooks into system OpenSSL
-    rm "#{bin}/o_p_test"
+    rm_f "#{bin}/o_p_test"
   end
 
   test do
