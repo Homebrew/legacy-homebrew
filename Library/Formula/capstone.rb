@@ -1,5 +1,3 @@
-require "formula"
-
 class Capstone < Formula
   homepage "http://capstone-engine.org"
   url "http://capstone-engine.org/download/3.0.1/capstone-3.0.1.tgz"
@@ -21,6 +19,12 @@ class Capstone < Formula
     ENV["HOMEBREW_CAPSTONE"] = "1"
     system "./make.sh"
     system "./make.sh", "install"
+
+    # As per the above inreplace, the pkgconfig file needs fixing as well.
+    inreplace lib/"pkgconfig/capstone.pc" do |s|
+      s.gsub! "/usr/lib", lib
+      s.gsub! "/usr/include/capstone", include
+    end
   end
 
   test do
