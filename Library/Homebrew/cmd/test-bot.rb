@@ -736,15 +736,16 @@ module Homebrew
         version = BottleVersion.parse(filename).to_s
         formula = bottle_filename_formula_name filename
 
-        package_url = "https://api.bintray.com/packages/homebrew/#{repo}/#{formula}"
+        repo_url = "https://api.bintray.com/packages/homebrew/#{repo}"
+        package_url = "#{repo_url}/#{formula}"
         unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
-          safe_system "curl", "-u#{user}:#{key}",
+          safe_system "curl", "--fail", "-u#{user}:#{key}",
             "-H", "Content-Type: application/json",
-            "-d", "{'name':'#{formula}'}", package_url
+            "-d", "{\"name\":\"#{formula}\"}", repo_url
         end
 
-        safe_system "curl", "-u#{user}:#{key}", "-T", filename,
-          "#{package_url}/#{version}/#{filename}"
+        safe_system "curl", "--fail", "-u#{user}:#{key}",
+          "-T", filename, "#{package_url}/#{version}/#{filename}"
       end
 
       safe_system "git", "tag", "--force", tag
