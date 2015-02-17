@@ -5,6 +5,13 @@ class Internetarchive < Formula
   url "https://pypi.python.org/packages/source/i/internetarchive/internetarchive-0.7.9.tar.gz"
   sha1 "f52fd6cdece11da62bb8b32664da9271be3eaa91"
 
+  bottle do
+    cellar :any
+    sha1 "3e2652bc8bb090c55c58465fe3d89112e65f9f9f" => :yosemite
+    sha1 "d6d08b15f7e8a3ab9c1dc79494dec4278cd823c9" => :mavericks
+    sha1 "996ccdd1ee9ec8b5adf4b16063f1f02b2b03ba63" => :mountain_lion
+  end
+
   resource "PyYAML" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
     sha1 "476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73"
