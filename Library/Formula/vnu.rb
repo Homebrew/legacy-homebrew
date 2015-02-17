@@ -1,7 +1,7 @@
 class Vnu < Formula
   homepage "https://validator.github.io/validator/"
   url "https://github.com/validator/validator/releases/download/20150216/vnu-20150216.jar.zip"
-  sha1 "d4189c5f2687483f8edd4d5b1bb57b3c612cd611"
+  sha1 "76806240e7f07d210e23e0dd96a06f6f2c5f0162"
   version "20150216"
 
   def install
