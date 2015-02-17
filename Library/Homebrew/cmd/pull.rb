@@ -152,6 +152,10 @@ module Homebrew
         safe_system "git", "checkout", branch
         safe_system "git", "merge", "--ff-only", "--no-edit", bottle_branch
         safe_system "git", "branch", "-D", bottle_branch
+
+        # TODO: publish on bintray
+        # safe_system "curl", "-u#{user}:#{key}", "-X", "POST",
+        #   "https://api.bintray.com/content/homebrew/#{repo}/#{formula}/#{version}"
       end
 
       ohai 'Patch changed:'

@@ -666,6 +666,10 @@ module Homebrew
       id = ENV['UPSTREAM_BUILD_ID']
       raise "Missing Jenkins variables!" unless jenkins and job and id
 
+      user = ENV["BINTRAY_USER"]
+      key = ENV["BINTRAY_KEY"]
+      raise "Missing Bintray variables!" unless user && key
+
       ARGV << '--verbose'
 
       bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
@@ -706,6 +710,7 @@ module Homebrew
       tag = pr ? "pr-#{pr}" : "testing-#{number}"
       safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
+      # SourceForge upload (will be removed soon)
       path = "/home/frs/project/m/ma/machomebrew/Bottles/"
       if tap
         tap_user, tap_repo = tap.split "/"
@@ -717,6 +722,30 @@ module Homebrew
       rsync_args += Dir["*.bottle*.tar.gz"] + [url]
 
       safe_system "rsync", *rsync_args
+
+      # Bintray upload (will take over soon)
+      repo = if tap
+        tap.sub("/", "-") + "-bottles"
+      else
+        "bottles"
+      end
+
+      Dir.glob("*.bottle*.tar.gz") do |filename|
+        # Skip taps for now until we're using Bintray for Homebrew/homebrew
+        next if tap
+        version = BottleVersion.parse(filename).to_s
+        formula = bottle_filename_formula_name filename
+
+        package_url = "https://api.bintray.com/packages/homebrew/#{repo}/#{formula}"
+        unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
+          safe_system "curl", "-H", "Content-Type: application/json",
+            "-d", "{'name':'#{formula}','licenses':['MIT']}", package_url
+        end
+
+        safe_system "curl", "-u#{user}:#{key}", "-T", filename,
+          "#{package_url}/#{version}/#{filename}"
+      end
+
       safe_system "git", "tag", "--force", tag
       safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
       return
