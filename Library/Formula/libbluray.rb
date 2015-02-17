@@ -5,10 +5,9 @@ class Libbluray < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "a223bd0799d7dc26a05ad0d5751569c4964c248e" => :yosemite
-    sha1 "050786aa8393d98e0e72249f4933efa590c69a17" => :mavericks
-    sha1 "9170f553e8df68758d0ccddea706b1b2b0e16109" => :mountain_lion
+    sha1 "39d4a2de13f0c3302372c0fafa8587b78054d610" => :yosemite
+    sha1 "86036b1e6da82caeb8356b80d759bbce2aa31a08" => :mavericks
+    sha1 "7c2a0946331bf2cd658c9c99aed2bf40d957b55b" => :mountain_lion
   end
 
   head do
