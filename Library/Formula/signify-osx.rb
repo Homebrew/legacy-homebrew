@@ -8,9 +8,9 @@ class SignifyOsx < Formula
 
   bottle do
     cellar :any
-    sha1 "b327798f0dabb99de3ab4a57dffb9106ab98278b" => :mavericks
-    sha1 "626173becda370cf363c5e1f891c5132be4e22f9" => :mountain_lion
-    sha1 "271dffbae2ffbec4720250934caab7badadbace2" => :lion
+    sha1 "54e88a9c6e657d468dd4fcbcd0cb92e64b1c8823" => :yosemite
+    sha1 "8170c1a857d715ff3cc3945f503df12affb5a9f1" => :mavericks
+    sha1 "3d4cca64df2388c79b6060417be8550fbe661411" => :mountain_lion
   end
 
   def install
