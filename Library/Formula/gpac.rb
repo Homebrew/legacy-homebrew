@@ -12,14 +12,11 @@ class Gpac < Formula
   homepage 'http://gpac.wp.mines-telecom.fr/'
 
   stable do
-    url 'https://downloads.sourceforge.net/gpac/gpac-0.5.0.tar.gz'
-    sha1 '48ba16272bfa153abb281ff8ed31b5dddf60cf20'
-
-    # Fixes build against ffmpeg 2.x; backported from upstream SVN
-    patch :DATA
+    url 'https://github.com/gpac/gpac/archive/v0.5.2.tar.gz'
+    sha1 '467128110636dc793be89f33765b42543dd97f7c'
   end
 
-  head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac'
+  head 'https://github.com/gpac/gpac.git'
 
   depends_on :x11 => :recommended
 
@@ -64,14 +61,14 @@ index db7d65e..387966b 100644
 @@ -37,7 +37,11 @@
  #undef USE_AVCODEC2
  #endif
- 
+
 -
 +#if (LIBAVCODEC_VERSION_MAJOR >= 55)
 +#define USE_AVCTX3
 +#elif (LIBAVCODEC_VERSION_MAJOR >= 54) && (LIBAVCODEC_VERSION_MINOR >= 35)
 +#define USE_AVCTX3
 +#endif
- 
+
  /**
   * Allocates data for FFMPEG decoding
 @@ -169,8 +173,12 @@ static GF_Err FFDEC_AttachStream(GF_BaseDecoder *plug, GF_ESD *esd)
@@ -86,7 +83,7 @@ index db7d65e..387966b 100644
 + 	  *ctx = avcodec_alloc_context();
 +#endif
 +        }
- 
+
  	/*private FFMPEG DSI*/
  	if (ffd->oti == GPAC_OTI_MEDIA_FFMPEG) {
 @@ -317,7 +325,12 @@ static GF_Err FFDEC_AttachStream(GF_BaseDecoder *plug, GF_ESD *esd)
@@ -101,11 +98,11 @@ index db7d65e..387966b 100644
 +#endif
 +
  	}
- 
+
  	/*setup audio streams*/
 @@ -611,10 +624,11 @@ static GF_Err FFDEC_ProcessData(GF_MediaDecoder *plug,
  		if (ffd->frame_start>inBufferLength) ffd->frame_start = 0;
- 
+
  redecode:
 -		gotpic = AVCODEC_MAX_AUDIO_FRAME_SIZE;
  #ifdef USE_AVCODEC2
@@ -148,7 +145,7 @@ index 0f8ee50..8bb7948 100644
 @@ -52,6 +52,11 @@
  #define AVERROR_NOFMT AVERROR(EINVAL)
  #endif /* AVERROR_NOFMT */
- 
+
 +#if (LIBAVFORMAT_VERSION_MAJOR >= 54) && (LIBAVFORMAT_VERSION_MINOR >= 20)
 +#define av_find_stream_info(__c)        avformat_find_stream_info(__c, NULL)
 +#define FF_API_FORMAT_PARAMETERS        1
@@ -162,11 +159,11 @@ index 4b2bdf5..2cf8304 100644
 --- a/modules/ffmpeg_in/ffmpeg_in.h
 +++ b/modules/ffmpeg_in/ffmpeg_in.h
 @@ -117,7 +117,7 @@ typedef struct
- 
+
  	/*for audio packed frames*/
  	u32 frame_start;
 -	char audio_buf[AVCODEC_MAX_AUDIO_FRAME_SIZE];
 +	char audio_buf[19200];
  	Bool check_h264_isma;
- 
+
  	u32 base_ES_ID;
