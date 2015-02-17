@@ -54,7 +54,8 @@ class Node < Formula
 
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
-
+      # make sure user prefix settings in $HOME are ignored
+      ENV["HOME"] = buildpath/"home"
       # set log level temporarily for npm's `make install`
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
