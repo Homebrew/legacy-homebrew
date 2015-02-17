@@ -1,8 +1,8 @@
 class ScmManager < Formula
   homepage "http://www.scm-manager.org"
-  url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.44/scm-server-1.44-app.tar.gz"
-  version "1.44"
-  sha1 "341ec08b75c9da21e5cfb165848478de3ad38b2e"
+  url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.45/scm-server-1.45-app.tar.gz"
+  version "1.45"
+  sha1 "c8a2e9c694525a570460639bbb5cb01b23595ec4"
 
   bottle do
     sha1 "275c0cd713cffa2205c433ddf457956de8601ec9" => :yosemite
@@ -11,9 +11,9 @@ class ScmManager < Formula
   end
 
   resource "client" do
-    url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.44/scm-cli-client-1.44-jar-with-dependencies.jar"
-    version "1.44"
-    sha1 "35203ef1d6761233600144cf881748e3c939848f"
+    url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.45/scm-cli-client-1.45-jar-with-dependencies.jar"
+    version "1.45"
+    sha1 "debfe596c1d959f7c1c282c747f728818e62b321"
   end
 
   def install
