@@ -1,9 +1,7 @@
-require "formula"
-
 class Libdvdread < Formula
   homepage "https://dvdnav.mplayerhq.hu/"
-  url "http://download.videolan.org/pub/videolan/libdvdread/5.0.0/libdvdread-5.0.0.tar.bz2"
-  sha256 "66fb1a3a42aa0c56b02547f69c7eb0438c5beeaf21aee2ae2c6aa23ea8305f14"
+  url "https://download.videolan.org/pub/videolan/libdvdread/5.0.2/libdvdread-5.0.2.tar.bz2"
+  sha256 "82cbe693f2a3971671e7428790b5498392db32185b8dc8622f7b9cd307d3cfbf"
 
   head do
     url "git://git.videolan.org/libdvdread.git"
