@@ -168,7 +168,12 @@ class FormulaAuditor
         case dep.name
         when *BUILD_TIME_DEPS
           next if dep.build? or dep.run?
-          problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
+          problem <<-EOS.undent
+            #{dep} dependency should be
+              depends_on "#{dep}" => :build
+            Or if it is indeed a runtime denpendency
+              depends_on "#{dep}" => :run
+          EOS
         when "git", "ruby", "mercurial"
           problem "Don't use #{dep} as a dependency. We allow non-Homebrew #{dep} installations."
         when 'gfortran'
