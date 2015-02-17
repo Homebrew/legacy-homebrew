@@ -2,8 +2,8 @@ require "formula"
 
 class SignifyOsx < Formula
   homepage "http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/signify.1"
-  url "https://github.com/jpouellet/signify-osx/archive/1.1.tar.gz"
-  sha256 "e62649b908b2ae3b8940a452e95b034772cd2856603a196d4a50d78701ed6478"
+  url "https://github.com/jpouellet/signify-osx/archive/1.2.tar.gz"
+  sha256 "ac6c0cffc098abe5ad6ec444ff2d6eaf5cc61c84cbedf4f5d65766454b5f34fd"
   head "https://github.com/jpouellet/signify-osx.git"
 
   bottle do
