@@ -3,9 +3,9 @@
 
 class Libtool < Formula
   homepage "https://www.gnu.org/software/libtool/"
-  url "http://ftpmirror.gnu.org/libtool/libtool-2.4.5.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/libtool/libtool-2.4.5.tar.xz"
-  sha1 "b75650190234ed898757ec8ca033ffabbee89e7c"
+  url "http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz"
+  sha1 "3e7504b832eb2dd23170c91b6af72e15b56eb94e"
 
   bottle do
     cellar :any
