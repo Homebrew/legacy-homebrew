@@ -24,7 +24,7 @@ class Nimrod < Formula
     (testpath/"hello.nim").write <<-EOS.undent
       echo("Hi!")
     EOS
-    system "#{bin}/nim", "compile", "--run", "hello.nim"
+    system bin/"nim", "compile", "--run", "hello.nim"
   end
 end
 
