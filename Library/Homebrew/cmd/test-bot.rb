@@ -45,11 +45,12 @@ module Homebrew
   class Step
     attr_reader :command, :name, :status, :output, :time
 
-    def initialize test, command, options={}
+    def initialize test, command, options={:fatal=>true}
       @test = test
       @category = test.category
       @command = command
       @puts_output_on_success = options[:puts_output_on_success]
+      @fatal = options[:fatal]
       @name = command[1].delete("-")
       @status = :running
       @repository = options[:repository] || HOMEBREW_REPOSITORY
@@ -84,6 +85,10 @@ module Homebrew
 
     def failed?
       @status == :failed
+    end
+
+    def fatal?
+      @fatal
     end
 
     def puts_command
@@ -349,7 +354,7 @@ module Homebrew
     def setup
       @category = __method__
       return if ARGV.include? "--skip-setup"
-      test "brew", "doctor"
+      test "brew", "doctor", :fatal => false
       test "brew", "--env"
       test "brew", "config"
     end
@@ -549,15 +554,13 @@ module Homebrew
     end
 
     def check_results
-      status = :passed
-      steps.each do |step|
+      steps.all? do |step|
         case step.status
-        when :passed  then next
+        when :passed  then true
         when :running then raise
-        when :failed  then status = :failed
+        when :failed then !step.fatal?
         end
       end
-      status == :passed
     end
 
     def formulae
