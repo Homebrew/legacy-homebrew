@@ -549,15 +549,13 @@ module Homebrew
     end
 
     def check_results
-      status = :passed
-      steps.each do |step|
+      steps.all? do |step|
         case step.status
-        when :passed  then next
+        when :passed  then true
         when :running then raise
-        when :failed  then status = :failed
+        when :failed  then false
         end
       end
-      status == :passed
     end
 
     def formulae
