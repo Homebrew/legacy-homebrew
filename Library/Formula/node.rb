@@ -61,7 +61,7 @@ class Node < Formula
 
       cd buildpath/"npm_install" do
         system "./configure", "--prefix=#{libexec}/npm"
-        system "make", "install"
+        system "make", "install", "NPMOPTS=--prefix=#{libexec}/npm"
       end
 
       if build.with? "completion"
