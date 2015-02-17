@@ -739,13 +739,16 @@ module Homebrew
         repo_url = "https://api.bintray.com/packages/homebrew/#{repo}"
         package_url = "#{repo_url}/#{formula}"
         unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
-          safe_system "curl", "--fail", "-u#{user}:#{key}",
+          safe_system "curl", "--silent", "--fail", "-u#{user}:#{key}",
             "-H", "Content-Type: application/json",
             "-d", "{\"name\":\"#{formula}\"}", repo_url
+          puts
         end
 
-        safe_system "curl", "--fail", "-u#{user}:#{key}",
-          "-T", filename, "#{package_url}/#{version}/#{filename}"
+        content_url = "https://api.bintray.com/content/homebrew/#{repo}/#{formula}/#{version}/#{filename}"
+        safe_system "curl", "--silent", "--fail", "-u#{user}:#{key}",
+          "-T", filename, content_url
+        puts
       end
 
       safe_system "git", "tag", "--force", tag
