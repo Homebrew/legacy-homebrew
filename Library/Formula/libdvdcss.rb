@@ -1,11 +1,14 @@
-require "formula"
-
 class Libdvdcss < Formula
-  homepage "http://www.videolan.org/developers/libdvdcss.html"
-  url "http://download.videolan.org/pub/libdvdcss/1.3.0/libdvdcss-1.3.0.tar.bz2"
-  sha1 "b3ccd70a510aa04d644f32b398489a3122a7e11a"
+  homepage "https://www.videolan.org/developers/libdvdcss.html"
+  url "https://download.videolan.org/pub/videolan/libdvdcss/1.3.99/libdvdcss-1.3.99.tar.bz2"
+  sha1 "4da6ae5962a837f47a915def2cd64e685ea72668"
 
-  head "svn://svn.videolan.org/libdvdcss/trunk"
+  head do
+    url "git://git.videolan.org/libdvdcss"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -16,8 +19,8 @@ class Libdvdcss < Formula
   end
 
   def install
-    system "./bootstrap" if build.head?
+    system "autoreconf", "-if" if build.head?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
   end
 end
