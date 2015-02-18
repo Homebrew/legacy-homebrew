@@ -2,8 +2,8 @@ require 'formula'
 
 class Unrar < Formula
   homepage 'http://www.rarlab.com'
-  url 'http://www.rarlab.com/rar/unrarsrc-5.2.3.tar.gz'
-  sha1 '31e7dad7424635e7a3ae823b5dd9e50db54393ec'
+  url 'http://www.rarlab.com/rar/unrarsrc-5.2.6.tar.gz'
+  sha1 'bdd4c8936fd0deb460afe8b7afa9322dd63f3ecb'
 
   bottle do
     cellar :any
@@ -15,6 +15,11 @@ class Unrar < Formula
   def install
     system "make"
     bin.install 'unrar'
+    system "make", "clean"
+
+    system "make", "lib"
+    mv "./libunrar.so", "./libunrar.dylib"
+    lib.install 'libunrar.dylib'
   end
 
   test do
