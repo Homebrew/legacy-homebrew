@@ -23,7 +23,7 @@ class Ibex < Formula
     end
     system "./waf", "install"
 
-    #copy and compile examples and benchmark for the test
+    # copy and compile examples and benchmark for the test
     share.install "examples"
     share.install "benchs"
     cxxflags = "-frounding-math -ffloat-store -I#{include} -I#{include}/ibex"
