@@ -28,6 +28,13 @@ class PinentryMac < Formula
         :revision => "f1e458ab2daeb104328ea4ec2aa7c71e8fca758d"
   end
 
+  # Manual cloning of this repo is now the upstream default:
+  # https://github.com/GPGTools/pinentry-mac/commit/89dd47898188
+  resource "core_clone" do
+    url "https://github.com/GPGTools/GPGTools_Core.git",
+        :revision => "f1e458ab2daeb104328ea4ec2aa7c71e8fca758d"
+  end
+
   depends_on :xcode => :build
 
   def install
