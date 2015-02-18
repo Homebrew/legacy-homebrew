@@ -20,12 +20,12 @@ class Unrar < Formula
     system "make", "lib"
 
     bin.install 'unrar'
+    # NOTE: Sent an email to dev@rarlab.com (18-Feb-2015) asking them to look into the
+    #       need for the explicit clean, and to change the make to generate a dylib file
+    #       on OS X
     lib.install "libunrar.so" => "libunrar.dylib"
-  end
 
-  # NOTE: Sent an email to dev@rarlab.com (18-Feb-2015) asking them to look into the 
-  #       need for the explicit clean, and to change the make to generate a dylib file 
-  #       on OS X
+  end
 
   test do
     contentpath = "directory/file.txt"
