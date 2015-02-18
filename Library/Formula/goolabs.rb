@@ -39,9 +39,9 @@ class Goolabs < Formula
   end
 
   test do
-    require "open3"
-    Open3.popen3("#{bin}/goolabs", "morph", "test") do |stdin, stdout, stderr, _|
-        assert_equal "Usage: goolabs morph [OPTIONS] [SENTENCE]\n\nError: Missing option \"--app-id\" / \"-a\" or GOOLABS_APP_ID enviroment value.\n", stderr.read
-    end
+     require "open3"
+     Open3.popen3("#{bin}/goolabs", "morph", "test") do |stdin, stdout, stderr, _|
+         assert_match "Usage: goolabs morph", stderr, "goolabs morph test 2>&1"
+     end
   end
 end
