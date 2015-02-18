@@ -1,7 +1,7 @@
 class H2o < Formula
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v0.9.2.tar.gz"
-  sha1 "001f5aefcd829467ed64b328ff0d35b736593dec"
+  url "https://github.com/h2o/h2o/archive/v1.0.0.tar.gz"
+  sha1 "9215eb3ec6b7455ce20b3dc3d322c327d0e56dad"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
@@ -16,6 +16,7 @@ class H2o < Formula
   depends_on "libyaml"
   depends_on "openssl"
   depends_on "libuv" => :optional
+  depends_on "wslay" => :optional
 
   def install
     system "cmake", ".", *std_cmake_args
