@@ -4,6 +4,13 @@ class Gl2ps < Formula
   sha1 "792e11db0fe7a30a4dc4491af5098b047ec378b1"
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "ed85fb272142121ab9e28a79266cfcf6dd6e60ce" => :yosemite
+    sha1 "f80c1fbd51b505902fb8a00f7fd97133cc9be4b0" => :mavericks
+    sha1 "5650d4b48f26d1a5bf66b86db927cc672eef95d3" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
   depends_on "libpng"
 
