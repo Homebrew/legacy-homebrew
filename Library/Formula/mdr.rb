@@ -1,9 +1,7 @@
-require 'formula'
-
 class Mdr < Formula
   homepage "https://github.com/halffullheart/mdr"
-  url "https://github.com/halffullheart/mdr/archive/v1.0.0.tar.gz"
-  sha1 "4e2424363aa72f7e94997c91594f1f1c7901587d"
+  url "https://github.com/halffullheart/mdr/archive/v1.0.1.tar.gz"
+  sha1 "dbadda07e8ee7baaa1a3d6c82cbae8434b8327d5"
 
   bottle do
     cellar :any
@@ -15,6 +13,10 @@ class Mdr < Formula
   def install
     system "rake"
     libexec.install Dir["*"]
-    bin.install_symlink libexec+'mdr'
+    bin.install_symlink libexec/"build/dev/mdr"
+  end
+
+  test do
+    system "#{bin}/mdr", "-h"
   end
 end
