@@ -3,6 +3,12 @@ class SstpClient < Formula
   url "https://downloads.sourceforge.net/project/sstp-client/sstp-client/1.0.9/sstp-client-1.0.9.tar.gz"
   sha1 "b56c60fc6ecd8b1686d6c319a8adb3f988bcabbd"
 
+  bottle do
+    sha1 "e94c6a28d0e72b8bc9e28de00e2bd7a58238fd7f" => :yosemite
+    sha1 "20b1b9612c06b3ff4f45a426f6b9cb877e1eb737" => :mavericks
+    sha1 "a5018ff520b6a00ff735ace4461faa5ec2163d13" => :mountain_lion
+  end
+
   depends_on "libevent"
   depends_on "openssl"
 
