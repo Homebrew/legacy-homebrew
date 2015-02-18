@@ -1,9 +1,8 @@
-require "formula"
-
 class Librevenge < Formula
-  homepage 'http://sourceforge.net/p/libwpd/wiki/librevenge/'
-  url 'http://dev-www.libreoffice.org/src/librevenge-0.0.1.tar.bz2'
-  sha1 '738d68bf54ec97fd48c41284aabbfd5a0d2db4ce'
+  homepage "http://sourceforge.net/p/libwpd/wiki/librevenge/"
+  url "http://dev-www.libreoffice.org/src/librevenge-0.0.2.tar.bz2"
+  mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.2/librevenge-0.0.2.tar.bz2"
+  sha1 "a59cf2372b8deac044a407d05730befcd010e997"
 
   bottle do
     cellar :any
@@ -13,8 +12,8 @@ class Librevenge < Formula
     sha1 "205b4e1cbecbcb686fab50fafc1140438099756c" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'boost' => :build
+  depends_on "pkg-config" => :build
+  depends_on "boost" => :build
 
   def install
     system "./configure", "--without-docs",
@@ -27,7 +26,7 @@ class Librevenge < Formula
   end
 
   test do
-    (testpath/'test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <librevenge/librevenge.h>
       int main() {
         librevenge::RVNGString str;
