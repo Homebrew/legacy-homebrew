@@ -13,9 +13,6 @@ class Fdm < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules"
-    system "make"
-    bin.install "fdm"
-    man1.install "fdm.1"
-    man5.install "fdm.conf.5"
+    system "make", "install"
   end
 end
