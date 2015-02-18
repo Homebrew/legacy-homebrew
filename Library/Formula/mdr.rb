@@ -5,9 +5,9 @@ class Mdr < Formula
 
   bottle do
     cellar :any
-    sha1 "7e65ce807ef58e0e927020608f7b564202f78cce" => :mavericks
-    sha1 "aee5991938fd9da31c73404d3eff3bf9ce83d4f7" => :mountain_lion
-    sha1 "ddb745e21b318a2bb37b50dab7ca77df167dc8c2" => :lion
+    sha1 "d1a11e01a31b003c5f6ccb817af9299d176465f3" => :yosemite
+    sha1 "55ccdc1bff014dcea22853c8a3ad9cbaf0da6aa3" => :mavericks
+    sha1 "8a249a030c0a5139d8eb0f5a488dac8faf7705c0" => :mountain_lion
   end
 
   def install
