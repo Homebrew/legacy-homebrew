@@ -12,10 +12,9 @@ class Libdvdnav < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "8c2db56f7b72fb9dc3ab3c671895f849d6afd686" => :yosemite
-    sha1 "6719c51ec9f3d7746cc23996603ab7e66ea739c7" => :mavericks
-    sha1 "7a08652f39426feefc93525ecb6aceab4d3aa720" => :mountain_lion
+    sha1 "c99a864651ceff870b4a5826c80b6ef88ad8671d" => :yosemite
+    sha1 "30322b1a670e188773fea56f23604e02679530f8" => :mavericks
+    sha1 "c34ab3283adfcc429dbecebec5251a57ffd88a61" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
