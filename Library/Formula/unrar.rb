@@ -23,6 +23,10 @@ class Unrar < Formula
     lib.install "libunrar.so" => "libunrar.dylib"
   end
 
+  # NOTE: Sent an email to dev@rarlab.com (18-Feb-2015) asking them to look into the 
+  #       need for the explicit clean, and to change the make to generate a dylib file 
+  #       on OS X
+
   test do
     contentpath = "directory/file.txt"
     rarpath = testpath/"archive.rar"
