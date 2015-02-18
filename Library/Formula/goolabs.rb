@@ -1,4 +1,3 @@
-
 class Goolabs < Formula
   homepage "https://pypi.python.org/pypi/goolabs"
   url "https://pypi.python.org/packages/source/g/goolabs/goolabs-0.1.1.tar.gz"
@@ -39,9 +38,9 @@ class Goolabs < Formula
   end
 
   test do
-     require "open3"
-     Open3.popen3("#{bin}/goolabs morph test 2>&1") do |stdin, stdout, _|
-        assert_match "Usage: goolabs morph", stdout.read
-     end
+    require "open3"
+    Open3.popen3("#{bin}/goolabs morph test 2>&1") do |stdin, stdout, _|
+       assert_match "Usage: goolabs morph", stdout.read
+    end
   end
 end
