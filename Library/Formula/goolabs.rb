@@ -38,20 +38,10 @@ class Goolabs < Formula
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-  def caveats; <<-EOS.undent
-    To use this cli, it is recommended to set the environment variable GOOLABS_APP_ID.
-
-      # Write your shell setting files(ex ~/.bashrc).
-      export GOOLABS_APP_ID=[your goolabs app id]
-
-    You may pass the App id every time you use it, but it's not recommended.
-
-      goolabs morph --app-id [your goolabs app id] 日本語を分析します。
-
-    EOS
-  end
-
   test do
-    system bin+"goolabs", "--version"
+    require "open3"
+    Open3.popen3("#{bin}/goolabs", "morph", "test") do |stdin, stdout, stderr, _|
+        assert_equal "Usage: goolabs morph [OPTIONS] [SENTENCE]\n\nError: Missing option \"--app-id\" / \"-a\" or GOOLABS_APP_ID enviroment value.\n", stderr.read
+    end
   end
 end
