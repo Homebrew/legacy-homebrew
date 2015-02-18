@@ -707,8 +707,9 @@ module Homebrew
       Dir.glob("*.bottle*.tar.gz") do |filename|
         # Skip taps for now until we're using Bintray for Homebrew/homebrew
         next if tap
-        formula = bottle_filename_formula_name filename
-        existing_bottles[formula.name] = !!formula.bottle
+        formula_name = bottle_filename_formula_name filename
+        formula = Formulary.factory formula_name
+        existing_bottles[formula_name] = !!formula.bottle
       end
 
       ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
@@ -733,7 +734,7 @@ module Homebrew
         next if tap
         version = BottleVersion.parse(filename).to_s
         formula = bottle_filename_formula_name filename
-        existing_bottle = existing_bottles[formula.name]
+        existing_bottle = existing_bottles[formula]
 
         repo_url = "https://api.bintray.com/packages/homebrew/#{repo}"
         package_url = "#{repo_url}/#{formula}"
