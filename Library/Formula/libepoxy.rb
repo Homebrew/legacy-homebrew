@@ -36,13 +36,27 @@ class Libepoxy < Formula
 
   test do
     (testpath/"test.c").write <<-EOS.undent
+
       #include <epoxy/gl.h>
-      int main() {
-        glClear(GL_COLOR_BUFFER_BIT);
-        return 0;
+      #include <OpenGL/CGLContext.h>
+      #include <OpenGL/CGLTypes.h>
+      int main()
+      {
+          CGLPixelFormatAttribute attribs[] = {0};
+          CGLPixelFormatObj pix;
+          int npix;
+          CGLContextObj ctx;
+
+          CGLChoosePixelFormat( attribs, &pix, &npix );
+          CGLCreateContext(pix, (void*)0, &ctx);
+
+          glClear(GL_COLOR_BUFFER_BIT);
+          CGLReleasePixelFormat(pix);
+          CGLReleaseContext(pix);
+          return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-lepoxy", "-o", "test"
+    system ENV.cc, "test.c", "-lepoxy", "-framework", "OpenGL", "-o", "test"
     system "ls", "-lh", "test"
     system "file", "test"
     system "./test"
