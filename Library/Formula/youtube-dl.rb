@@ -4,9 +4,9 @@ require "formula"
 # many releases for us to update to every single one:
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
-  homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2015.02.16/youtube-dl-2015.02.16.tar.gz"
-  sha256 "1dab1a3184197ee2e1c3ce0a06fd6aae3af06dd6e42f6f3e2eb3acb457106350"
+  homepage "https://rg3.github.io/youtube-dl/"
+  url "https://yt-dl.org/downloads/2015.02.18.1/youtube-dl-2015.02.18.1.tar.gz"
+  sha256 "7eadc97c38a5d37e47a480120d760c416aead9f527107e08832f6dab9da211e3"
 
   bottle do
     cellar :any
