@@ -1,9 +1,7 @@
-require 'formula'
-
 class Unrar < Formula
-  homepage 'http://www.rarlab.com'
-  url 'http://www.rarlab.com/rar/unrarsrc-5.2.6.tar.gz'
-  sha1 'bdd4c8936fd0deb460afe8b7afa9322dd63f3ecb'
+  homepage "http://www.rarlab.com"
+  url "http://www.rarlab.com/rar/unrarsrc-5.2.6.tar.gz"
+  sha1 "bdd4c8936fd0deb460afe8b7afa9322dd63f3ecb"
 
   bottle do
     cellar :any
@@ -14,26 +12,25 @@ class Unrar < Formula
 
   def install
     system "make"
-    # Explicitly clean up for the library build to avoid an issue with an apparent
-    # implicit clean which confuses the dependencies.
+    # Explicitly clean up for the library build to avoid an issue with an
+    # apparent implicit clean which confuses the dependencies.
     system "make", "clean"
     system "make", "lib"
 
-    bin.install 'unrar'
-    # NOTE: Sent an email to dev@rarlab.com (18-Feb-2015) asking them to look into the
-    #       need for the explicit clean, and to change the make to generate a dylib file
-    #       on OS X
+    bin.install "unrar"
+    # Sent an email to dev@rarlab.com (18-Feb-2015) asking them to look into
+    # the need for the explicit clean, and to change the make to generate a
+    # dylib file on OS X
     lib.install "libunrar.so" => "libunrar.dylib"
-
   end
 
   test do
     contentpath = "directory/file.txt"
     rarpath = testpath/"archive.rar"
-    data =  'UmFyIRoHAM+QcwAADQAAAAAAAACaCHQggDIACQAAAAkAAAADtPej1LZwZE' +
-            'QUMBIApIEAAGRpcmVjdG9yeVxmaWxlLnR4dEhvbWVicmV3CsQ9ewBABwA='
+    data =  "UmFyIRoHAM+QcwAADQAAAAAAAACaCHQggDIACQAAAAkAAAADtPej1LZwZE" \
+            "QUMBIApIEAAGRpcmVjdG9yeVxmaWxlLnR4dEhvbWVicmV3CsQ9ewBABwA="
 
-    rarpath.write data.unpack('m').first
+    rarpath.write data.unpack("m").first
     assert_equal contentpath, `#{bin}/unrar lb #{rarpath}`.strip
     assert_equal 0, $?.exitstatus
 
