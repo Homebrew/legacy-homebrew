@@ -153,9 +153,25 @@ module Homebrew
         safe_system "git", "merge", "--ff-only", "--no-edit", bottle_branch
         safe_system "git", "branch", "-D", bottle_branch
 
-        # TODO: publish on bintray
-        # safe_system "curl", "-u#{user}:#{key}", "-X", "POST",
-        #   "https://api.bintray.com/content/homebrew/#{repo}/#{formula}/#{version}"
+        # Publish bottles on Bintray
+        bintray_user = ENV["BINTRAY_USER"]
+        bintray_key = ENV["BINTRAY_KEY"]
+        bintray_repo = if tap_name
+          tap_name.sub("/", "-") + "-bottles"
+        else
+          "bottles"
+        end
+
+        # Skip taps for now until we're using Bintray for Homebrew/homebrew
+        if bintray_user && bintray_key && !tap_name
+          changed_formulae.each do |f|
+            ohai "Publishing on Bintray:"
+            safe_system "curl", "--silent", "--fail",
+              "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
+              "https://api.bintray.com/content/homebrew/#{bintray_repo}/#{f.name}/#{f.version}/publish"
+            puts
+          end
+        end
       end
 
       ohai 'Patch changed:'
