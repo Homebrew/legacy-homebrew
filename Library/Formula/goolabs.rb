@@ -40,8 +40,8 @@ class Goolabs < Formula
 
   test do
      require "open3"
-     Open3.popen3("#{bin}/goolabs", "morph", "test") do |stdin, stdout, stderr, _|
-         assert_match "Usage: goolabs morph", stderr, "goolabs morph test 2>&1"
+     Open3.popen3("#{bin}/goolabs morph test 2>&1") do |stdin, stdout, _|
+        assert_match "Usage: goolabs morph", stdout.read
      end
   end
 end
