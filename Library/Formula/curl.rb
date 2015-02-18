@@ -20,6 +20,7 @@ class Curl < Formula
   option "with-gssapi", "Build with GSSAPI/Kerberos authentication support."
   option "with-libmetalink", "Build with libmetalink support."
   option "with-libressl", "Build with LibreSSL instead of Secure Transport or OpenSSL"
+  option "with-nghttp2", "Build with HTTP/2 support"
 
   deprecated_option "with-idn" => "with-libidn"
   deprecated_option "with-rtmp" => "with-rtmpdump"
@@ -40,6 +41,7 @@ class Curl < Formula
   depends_on "c-ares" => :optional
   depends_on "libmetalink" => :optional
   depends_on "libressl" => :optional
+  depends_on "nghttp2" => :optional
 
   def install
     # Throw an error if someone actually tries to rock both SSL choices.
@@ -48,6 +50,12 @@ class Curl < Formula
       ohai <<-EOS.undent
       --with-openssl and --with-libressl are both specified and
       curl can only use one at a time; proceeding with openssl.
+      EOS
+    end
+
+    if build.with?("nghttp2") && !(build.with?("libressl") || build.with?("openssl"))
+      ohai <<-EOS.undent
+      For HTTP/2 support over TLS, you must use --with-openssl or --with-libressl
       EOS
     end
 
@@ -78,6 +86,7 @@ class Curl < Formula
     args << (build.with?("libmetalink") ? "--with-libmetalink" : "--without-libmetalink")
     args << (build.with?("gssapi") ? "--with-gssapi" : "--without-gssapi")
     args << (build.with?("rtmpdump") ? "--with-librtmp" : "--without-librtmp")
+    args << (build.with?("nghttp2") ? "--with-nghttp2" : "--without-nghttp2")
 
     if build.with? "c-ares"
       args << "--enable-ares=#{Formula["c-ares"].opt_prefix}"
