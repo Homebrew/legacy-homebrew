@@ -15,9 +15,10 @@ class PinentryMac < Formula
 
   bottle do
     cellar :any
-    sha1 "d518025f018b5fbed420c4f1d0f9bee2bdd3fda8" => :yosemite
-    sha1 "cfe4459ff2aa5390e192046589063e14e33aee85" => :mavericks
-    sha1 "4d80f3954ddb16618074d9d978f3a83aedddb8db" => :mountain_lion
+    revision 1
+    sha1 "c4a4832d79deb076f727eebde1ca2a2148eb2104" => :yosemite
+    sha1 "c3fceef899c53c1b16fb2262f31fa5b46d6c13f5" => :mavericks
+    sha1 "49db48b86524242985fba13304a2c8116c087e6b" => :mountain_lion
   end
 
   # Manual cloning of this repo is now the upstream default:
