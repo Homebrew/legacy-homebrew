@@ -3,6 +3,13 @@ class Libepoxy < Formula
   url "https://github.com/anholt/libepoxy/archive/v1.2.tar.gz"
   sha256 "42c328440f60a5795835c5ec4bdfc1329e75bba16b6e22b3a87ed17e9679e8f6"
 
+  bottle do
+    cellar :any
+    sha1 "dabb8e5118bc90e09ecd908200dc2d3e7b4318a2" => :yosemite
+    sha1 "0f3d1752a4a3b6783ea5a94327bfdb67428c5041" => :mavericks
+    sha1 "d09e2a326f2bc061fae07f39c5a57421951bcda5" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "automake" => :build
   depends_on "autoconf" => :build
