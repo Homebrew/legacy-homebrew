@@ -14,12 +14,13 @@ class Unrar < Formula
 
   def install
     system "make"
-    bin.install 'unrar'
+    # Explicitly clean up for the library build to avoid an issue with an apparent
+    # implicit clean which confuses the dependencies.
     system "make", "clean"
-
     system "make", "lib"
-    mv "./libunrar.so", "./libunrar.dylib"
-    lib.install 'libunrar.dylib'
+
+    bin.install 'unrar'
+    lib.install "libunrar.so" => "libunrar.dylib"
   end
 
   test do
