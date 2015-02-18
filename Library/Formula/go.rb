@@ -3,9 +3,9 @@ class Go < Formula
   # Version 1.5 is going to require version 1.4 present to bootstrap 1.4
   # Perhaps we can use our previous bottles, ala the discussion around PyPy?
   # https://docs.google.com/document/d/1OaatvGhEAq7VseQ9kkavxKNAfepWy2yhPUBs96FGV28
-  url "https://storage.googleapis.com/golang/go1.4.1.src.tar.gz"
-  sha1 "c7a683e8d39b835e333199d68d0c0baefcd24a68"
-  version "1.4.1"
+  url "https://storage.googleapis.com/golang/go1.4.2.src.tar.gz"
+  sha1 "460caac03379f746c473814a65223397e9c9a2f6"
+  version "1.4.2"
 
   head "https://go.googlesource.com/go", :using => :git
 
