@@ -729,6 +729,8 @@ module Homebrew
         "bottles"
       end
 
+      formula_packaged = {}
+
       Dir.glob("*.bottle*.tar.gz") do |filename|
         # Skip taps for now until we're using Bintray for Homebrew/homebrew
         next if tap
@@ -736,14 +738,17 @@ module Homebrew
         formula = bottle_filename_formula_name filename
         existing_bottle = existing_bottles[formula]
 
-        repo_url = "https://api.bintray.com/packages/homebrew/#{repo}"
-        package_url = "#{repo_url}/#{formula}"
-        unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
-          safe_system "curl", "--silent", "--fail",
-            "-u#{bintray_user}:#{bintray_key}",
-            "-H", "Content-Type: application/json",
-            "-d", "{\"name\":\"#{formula}\"}", repo_url
-          puts
+        unless formula_packaged[formula]
+          repo_url = "https://api.bintray.com/packages/homebrew/#{repo}"
+          package_url = "#{repo_url}/#{formula}"
+          unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
+            safe_system "curl", "--silent", "--fail",
+              "-u#{bintray_user}:#{bintray_key}",
+              "-H", "Content-Type: application/json",
+              "-d", "{\"name\":\"#{formula}\"}", repo_url
+            puts
+          end
+          formula_packaged[formula] = true
         end
 
         content_url = "https://api.bintray.com/content/homebrew/#{repo}/#{formula}/#{version}/#{filename}"
