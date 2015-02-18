@@ -1,9 +1,7 @@
-require 'formula'
-
 class Jq < Formula
-  homepage 'http://stedolan.github.io/jq/'
-  url 'http://stedolan.github.io/jq/download/source/jq-1.4.tar.gz'
-  sha1 '71da3840839ec74ae65241e182ccd46f6251c43e'
+  homepage "https://stedolan.github.io/jq/"
+  url "http://stedolan.github.io/jq/download/source/jq-1.4.tar.gz"
+  sha1 "71da3840839ec74ae65241e182ccd46f6251c43e"
 
   bottle do
     cellar :any
@@ -12,15 +10,15 @@ class Jq < Formula
     sha1 "4c33838662ed6f806ac21db87d433c8722f488a4" => :mountain_lion
   end
 
-  depends_on 'bison' => :build # jq depends on bison > 2.5
+  depends_on "bison" => :build # jq depends on bison > 2.5
 
   head do
-    url 'https://github.com/stedolan/jq.git'
+    url "https://github.com/stedolan/jq.git"
 
-    depends_on 'oniguruma'
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
+    depends_on "oniguruma"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install
