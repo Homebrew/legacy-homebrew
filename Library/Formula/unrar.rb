@@ -2,8 +2,8 @@ require 'formula'
 
 class Unrar < Formula
   homepage 'http://www.rarlab.com'
-  url 'http://www.rarlab.com/rar/unrarsrc-5.2.3.tar.gz'
-  sha1 '31e7dad7424635e7a3ae823b5dd9e50db54393ec'
+  url 'http://www.rarlab.com/rar/unrarsrc-5.2.6.tar.gz'
+  sha1 'bdd4c8936fd0deb460afe8b7afa9322dd63f3ecb'
 
   bottle do
     cellar :any
@@ -14,7 +14,17 @@ class Unrar < Formula
 
   def install
     system "make"
+    # Explicitly clean up for the library build to avoid an issue with an apparent
+    # implicit clean which confuses the dependencies.
+    system "make", "clean"
+    system "make", "lib"
+
     bin.install 'unrar'
+    # NOTE: Sent an email to dev@rarlab.com (18-Feb-2015) asking them to look into the
+    #       need for the explicit clean, and to change the make to generate a dylib file
+    #       on OS X
+    lib.install "libunrar.so" => "libunrar.dylib"
+
   end
 
   test do
