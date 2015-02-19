@@ -6,9 +6,9 @@ class Yara < Formula
 
   bottle do
     cellar :any
-    sha1 "3f77c2481bf0bfbd4be617a06b98611d9595ca41" => :yosemite
-    sha1 "19e0547d33cacea6807a515f7c42e65c3fc8d842" => :mavericks
-    sha1 "11e14894b2c26b452884fc3cf73f5cc4ebc71fcc" => :mountain_lion
+    sha1 "75e874c69b0a326e200ec289fd7fd3bdb2d5c146" => :yosemite
+    sha1 "0459df8e18781fdaf365bb54d62b28585e36cda2" => :mavericks
+    sha1 "4b39059db000f82d8dde03b99db89354761e3c6a" => :mountain_lion
   end
 
   depends_on "libtool" => :build
