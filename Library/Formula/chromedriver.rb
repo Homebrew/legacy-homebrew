@@ -23,7 +23,7 @@ class Chromedriver < Formula
       <false/>
       <key>ProgramArguments</key>
       <array>
-        <string>/usr/local/bin/chromedriver</string>
+        <string>#{opt_bin}/chromedriver</string>
       </array>
       <key>ServiceDescription</key>
       <string>Chrome Driver</string>
