@@ -650,9 +650,10 @@ module Homebrew
     end
 
     if ARGV.include? "--ci-reset-and-update"
-      safe_system "git", "reset", "--hard"
       Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/*") do |tap_dir|
-        cd tap_dir { safe_system "git", "reset", "--hard" }
+        cd tap_dir do
+          safe_system "git", "reset", "--hard"
+        end
       end
       safe_system "brew", "update"
       return
