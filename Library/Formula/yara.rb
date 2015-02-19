@@ -1,9 +1,7 @@
-require "formula"
-
 class Yara < Formula
   homepage "https://github.com/plusvic/yara/"
-  url "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz"
-  sha1 "dd1a92b1469cd629f6cd368aec32f207375b125b"
+  url "https://github.com/plusvic/yara/archive/v3.3.0.tar.gz"
+  sha1 "6f72d80f21336c098f9013212d496d3920d9ef18"
   head "https://github.com/plusvic/yara.git"
 
   bottle do
@@ -18,6 +16,12 @@ class Yara < Formula
   depends_on "automake" => :build
   depends_on "pcre"
   depends_on "openssl"
+
+  # fixes a variable redefinition error with clang
+  patch do
+    url "https://github.com/plusvic/yara/pull/261.diff"
+    sha1 "17ed1efbd2c4575109bb7b7e2f0c883795dc3163"
+  end
 
   def install
     # Use of "inline" requires gnu89 semantics
