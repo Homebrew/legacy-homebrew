@@ -5,9 +5,10 @@ class SstpClient < Formula
   revision 1
 
   bottle do
-    sha1 "e94c6a28d0e72b8bc9e28de00e2bd7a58238fd7f" => :yosemite
-    sha1 "20b1b9612c06b3ff4f45a426f6b9cb877e1eb737" => :mavericks
-    sha1 "a5018ff520b6a00ff735ace4461faa5ec2163d13" => :mountain_lion
+    cellar :any
+    sha1 "844e03c512067d1f378acd6af678654915882edd" => :yosemite
+    sha1 "d8f68257b54af08c4942a60892c36616a8f03a05" => :mavericks
+    sha1 "0984d3b9beed2cf92a47218bfb43bf4ff3b606b1" => :mountain_lion
   end
 
   depends_on "libevent"
