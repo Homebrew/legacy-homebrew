@@ -2,9 +2,9 @@ require "formula"
 
 class Bind < Formula
   homepage "http://www.isc.org/software/bind/"
-  url "http://ftp.isc.org/isc/bind9/9.10.1-P1/bind-9.10.1-P1.tar.gz"
-  sha1 "24a81ba458a762c27be47461301fcf336cfb1d43"
-  version "9.10.1-P1"
+  url "http://ftp.isc.org/isc/bind9/9.10.1-P2/bind-9.10.1-P2.tar.gz"
+  sha1 "4a7475b4f2c1d257001ad40653379af52f090666"
+  version "9.10.1-P2"
 
   bottle do
     sha1 "4d87599a42bd14e8b1f2e7d36a294f70fc6e5c91" => :yosemite
