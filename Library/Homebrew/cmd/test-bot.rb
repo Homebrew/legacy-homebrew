@@ -452,11 +452,10 @@ module Homebrew
           bottle_args = ["--rb", formula_name]
           if @tap
             tap_user, tap_repo = @tap.split "/"
-            # Opt-in to Bintray tap support until we switch over
-            if ENV["HOMEBREW_BINTRAY_TESTING"]
-              bottle_args << "--root-url=#{BottleSpecification::DEFAULT_DOMAIN}/#{Bintray.repository(@tap)}"
-            else
+            if ENV["HOMEBREW_SOURCEFORGE_TESTING"]
               bottle_args << "--root-url=#{BottleSpecification::DEFAULT_ROOT_URL}/#{tap_repo}"
+            else
+              bottle_args << "--root-url=#{BottleSpecification::DEFAULT_DOMAIN}/#{Bintray.repository(@tap)}"
             end
           end
           bottle_args << { :puts_output_on_success => true }
