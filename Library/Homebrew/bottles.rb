@@ -49,7 +49,7 @@ end
 class Bintray
   def self.repository(tap=nil)
     return "bottles" if tap.to_s.empty?
-    "bottles-#{tap.sub(/^homebrew\/homebrew-/i, "")}"
+    "bottles-#{tap.sub(/^homebrew\/(homebrew-)?/i, "")}"
   end
 
   def self.version(path)
