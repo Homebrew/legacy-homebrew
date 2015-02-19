@@ -3,6 +3,13 @@ class Goolabs < Formula
   url "https://pypi.python.org/packages/source/g/goolabs/goolabs-0.1.1.tar.gz"
   sha1 "3201102ab0fad77d57a09dd7c879f6f163e05799"
 
+  bottle do
+    cellar :any
+    sha1 "bd352b581b812618862038b24d39d57d5b8c9df0" => :yosemite
+    sha1 "209c8c0dba0c09c8377c19b59874280ac9ff0861" => :mavericks
+    sha1 "37b79cd665b96b5d315345cec73d6c84a5d4e27f" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "six" do
