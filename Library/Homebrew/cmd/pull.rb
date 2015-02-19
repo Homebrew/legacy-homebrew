@@ -163,10 +163,12 @@ module Homebrew
         if bintray_user && bintray_key
           repo = Bintray.repository(tap_name)
           changed_formulae.each do |f|
-            next unless `git show --oneline --no-patch` =~ /: add .+ bottle./
+            # This means the formula has an existing bottle.
+            next if f.bottle
             ohai "Publishing on Bintray:"
             package = Bintray.package f.name
-            version = Bintray.version(f.bottle.url)
+            bottle = Bottle.new(f, f.bottle_specification)
+            version = Bintray.version(bottle.url)
             curl "--silent", "--fail",
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
