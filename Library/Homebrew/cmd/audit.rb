@@ -700,6 +700,14 @@ class FormulaAuditor
     end
   end
 
+  def audit_caveats
+    caveats = formula.caveats
+
+    if caveats =~ /setuid/
+      problem "Don't recommend setuid in the caveats, suggest sudo instead."
+    end
+  end
+
   def audit_prefix_has_contents
     return unless formula.prefix.directory?
 
@@ -748,6 +756,7 @@ class FormulaAuditor
     audit_options
     audit_patches
     audit_text
+    audit_caveats
     text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
     audit_installed
     audit_prefix_has_contents
