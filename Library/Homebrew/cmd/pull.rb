@@ -141,13 +141,16 @@ module Homebrew
       end
 
       if ARGV.include? "--bottle"
+        bottle_commit_url = if tap_name
+          "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
+        else
+          "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+        end
+        curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
+
         bottle_branch = "pull-bottle-#{issue}"
         safe_system "git", "checkout", "-B", bottle_branch, revision
-        if tap_name
-          pull_url "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
-        else
-          pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
-        end
+        pull_url bottle_commit_url
         safe_system "git", "rebase", branch
         safe_system "git", "checkout", branch
         safe_system "git", "merge", "--ff-only", "--no-edit", bottle_branch
