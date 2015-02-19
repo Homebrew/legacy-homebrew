@@ -47,6 +47,10 @@ def bottle_filename_formula_name filename
 end
 
 class Bintray
+  def self.package(formula_name)
+    formula_name.to_s.gsub "+", "x"
+  end
+
   def self.repository(tap=nil)
     return "bottles" if tap.to_s.empty?
     "bottles-#{tap.sub(/^homebrew\/(homebrew-)?/i, "")}"
