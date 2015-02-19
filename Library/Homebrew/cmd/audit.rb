@@ -174,8 +174,12 @@ class FormulaAuditor
             Or if it is indeed a runtime denpendency
               depends_on "#{dep}" => :run
           EOS
-        when "git", "ruby", "mercurial"
-          problem "Don't use #{dep} as a dependency. We allow non-Homebrew #{dep} installations."
+        when "git"
+          problem "Use `depends_on :git` instead of `depends_on 'git'`"
+        when "mercurial"
+          problem "Use `depends_on :hg` instead of `depends_on 'mercurial'`"
+        when "ruby"
+          problem "Don't use ruby as a dependency. We allow non-Homebrew ruby installations."
         when 'gfortran'
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
         when 'open-mpi', 'mpich2'
@@ -700,6 +704,14 @@ class FormulaAuditor
     end
   end
 
+  def audit_caveats
+    caveats = formula.caveats
+
+    if caveats =~ /setuid/
+      problem "Don't recommend setuid in the caveats, suggest sudo instead."
+    end
+  end
+
   def audit_prefix_has_contents
     return unless formula.prefix.directory?
 
@@ -748,6 +760,7 @@ class FormulaAuditor
     audit_options
     audit_patches
     audit_text
+    audit_caveats
     text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
     audit_installed
     audit_prefix_has_contents

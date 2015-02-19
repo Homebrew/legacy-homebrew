@@ -1,16 +1,14 @@
-require "formula"
-
 class Yara < Formula
   homepage "https://github.com/plusvic/yara/"
-  url "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz"
-  sha1 "dd1a92b1469cd629f6cd368aec32f207375b125b"
+  url "https://github.com/plusvic/yara/archive/v3.3.0.tar.gz"
+  sha1 "6f72d80f21336c098f9013212d496d3920d9ef18"
   head "https://github.com/plusvic/yara.git"
 
   bottle do
     cellar :any
-    sha1 "3f77c2481bf0bfbd4be617a06b98611d9595ca41" => :yosemite
-    sha1 "19e0547d33cacea6807a515f7c42e65c3fc8d842" => :mavericks
-    sha1 "11e14894b2c26b452884fc3cf73f5cc4ebc71fcc" => :mountain_lion
+    sha1 "75e874c69b0a326e200ec289fd7fd3bdb2d5c146" => :yosemite
+    sha1 "0459df8e18781fdaf365bb54d62b28585e36cda2" => :mavericks
+    sha1 "4b39059db000f82d8dde03b99db89354761e3c6a" => :mountain_lion
   end
 
   depends_on "libtool" => :build
@@ -18,6 +16,12 @@ class Yara < Formula
   depends_on "automake" => :build
   depends_on "pcre"
   depends_on "openssl"
+
+  # fixes a variable redefinition error with clang
+  patch do
+    url "https://github.com/plusvic/yara/pull/261.diff"
+    sha1 "17ed1efbd2c4575109bb7b7e2f0c883795dc3163"
+  end
 
   def install
     # Use of "inline" requires gnu89 semantics

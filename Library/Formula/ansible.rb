@@ -1,16 +1,14 @@
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.8.2.tar.gz"
-  sha1 "4cfbec3a0850639384c908e77e2823acb1297e1e"
-  revision 1
+  url "http://releases.ansible.com/ansible/ansible-1.8.3.tar.gz"
+  sha1 "c99f0e21f8243b3564c6ef6bd627bceadcb9992b"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 3
-    sha1 "93689450405d1308039947a8111377ef438a623d" => :yosemite
-    sha1 "f2a66990f5d09d00ff498f8b66d432ffc5e4941c" => :mavericks
-    sha1 "6373a987fce7627a6e2fddaaa6606351ee91a402" => :mountain_lion
+    sha1 "d1c2d2b56e3cf6890b3f7019f1a0dd670cc6d15d" => :yosemite
+    sha1 "41b0380219343b869aaca61fe0570bdc6ee1d790" => :mavericks
+    sha1 "b63949641de534d67e245c5ac9beadccf7aff075" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

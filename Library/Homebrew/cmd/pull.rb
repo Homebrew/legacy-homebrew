@@ -141,13 +141,16 @@ module Homebrew
       end
 
       if ARGV.include? "--bottle"
+        bottle_commit_url = if tap_name
+          "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
+        else
+          "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+        end
+        curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
+
         bottle_branch = "pull-bottle-#{issue}"
         safe_system "git", "checkout", "-B", bottle_branch, revision
-        if tap_name
-          pull_url "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
-        else
-          pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
-        end
+        pull_url bottle_commit_url
         safe_system "git", "rebase", branch
         safe_system "git", "checkout", branch
         safe_system "git", "merge", "--ff-only", "--no-edit", bottle_branch
@@ -156,21 +159,23 @@ module Homebrew
         # Publish bottles on Bintray
         bintray_user = ENV["BINTRAY_USER"]
         bintray_key = ENV["BINTRAY_KEY"]
-        bintray_repo = if tap_name
-          tap_name.sub("/", "-") + "-bottles"
-        else
-          "bottles"
-        end
 
-        # Skip taps for now until we're using Bintray for Homebrew/homebrew
-        if bintray_user && bintray_key && !tap_name
+        if bintray_user && bintray_key
+          repo = Bintray.repository(tap_name)
           changed_formulae.each do |f|
+            # This means the formula has an existing bottle.
+            next if f.bottle
             ohai "Publishing on Bintray:"
-            safe_system "curl", "--silent", "--fail",
+            package = Bintray.package f.name
+            bottle = Bottle.new(f, f.bottle_specification)
+            version = Bintray.version(bottle.url)
+            curl "--silent", "--fail",
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
-              "https://api.bintray.com/content/homebrew/#{bintray_repo}/#{f.name}/#{f.version}/publish"
+              "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
           end
+        else
+          opoo "Set BINTRAY_USER and BINTRAY_KEY to add new formula bottles on Bintray!"
         end
       end
 
