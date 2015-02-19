@@ -24,11 +24,7 @@ class HtopOsx < Formula
 
   def caveats; <<-EOS.undent
     htop-osx requires root privileges to correctly display all running processes.
-    You can either run the program via `sudo` or set the setuid bit:
-
-      sudo chown root:wheel #{bin}/htop
-      sudo chmod u+s #{bin}/htop
-
+    so you will need to run `sudo htop`.
     You should be certain that you trust any software you grant root privileges.
     EOS
   end
