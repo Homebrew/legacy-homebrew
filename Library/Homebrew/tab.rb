@@ -11,16 +11,23 @@ class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
   def self.create(formula, compiler, stdlib, build)
-    Tab.new :used_options => build.used_options.as_flags,
-            :unused_options => build.unused_options.as_flags,
-            :tabfile => formula.prefix.join(FILENAME),
-            :built_as_bottle => !!ARGV.build_bottle?,
-            :poured_from_bottle => false,
-            :tapped_from => formula.tap,
-            :time => Time.now.to_i,
-            :HEAD => Homebrew.git_head,
-            :compiler => compiler,
-            :stdlib => stdlib
+    attributes = {
+      :used_options => build.used_options.as_flags,
+      :unused_options => build.unused_options.as_flags,
+      :tabfile => formula.prefix.join(FILENAME),
+      :built_as_bottle => !!ARGV.build_bottle?,
+      :poured_from_bottle => false,
+      :tapped_from => formula.tap,
+      :time => Time.now.to_i,
+      :HEAD => Homebrew.git_head,
+      :compiler => compiler,
+      :stdlib => stdlib,
+      :source => {
+        :path => formula.path,
+      },
+    }
+
+    new(attributes)
   end
 
   def self.from_file path
@@ -148,7 +155,11 @@ class Tab < OpenStruct
       :time => time,
       :HEAD => self.HEAD,
       :stdlib => (stdlib.to_s if stdlib),
-      :compiler => (compiler.to_s if compiler)})
+      :compiler => (compiler.to_s if compiler),
+      :source => {
+        :path => source[:path].to_s,
+      },
+    })
   end
 
   def write
