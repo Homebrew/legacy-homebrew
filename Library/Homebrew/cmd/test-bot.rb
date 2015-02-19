@@ -747,24 +747,25 @@ module Homebrew
 
       Dir.glob("*.bottle*.tar.gz") do |filename|
         version = Bintray.version filename
-        formula = bottle_filename_formula_name filename
-        existing_bottle = existing_bottles[formula]
+        formula_name = bottle_filename_formula_name filename
+        bintray_package = Bintray.package formula_name
+        existing_bottle = existing_bottles[formula_name]
 
         # Disable taps temporarily until Bintray sorts our repositories.
         next if tap
 
-        unless formula_packaged[formula]
-          package_url = "#{bintray_repo_url}/#{formula}"
+        unless formula_packaged[formula_name]
+          package_url = "#{bintray_repo_url}/#{bintray_package}"
           unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
             curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
                  "-H", "Content-Type: application/json",
-                 "-d", "{\"name\":\"#{formula}\"}", bintray_repo_url
+                 "-d", "{\"name\":\"#{bintray_package}\"}", bintray_repo_url
             puts
           end
-          formula_packaged[formula] = true
+          formula_packaged[formula_name] = true
         end
 
-        content_url = "https://api.bintray.com/content/homebrew/#{bintray_repo}/#{formula}/#{version}/#{filename}"
+        content_url = "https://api.bintray.com/content/homebrew/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
         content_url += "?publish=1&override=1" if existing_bottle
         curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
              "-T", filename, content_url
