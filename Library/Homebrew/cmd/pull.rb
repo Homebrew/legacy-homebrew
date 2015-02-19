@@ -161,14 +161,15 @@ module Homebrew
         bintray_key = ENV["BINTRAY_KEY"]
 
         if bintray_user && bintray_key
-          bintray_repo = Bintray.repository(tap_name)
+          repo = Bintray.repository(tap_name)
           changed_formulae.each do |f|
             next unless `git show --oneline --no-patch` =~ /: add .+ bottle./
             ohai "Publishing on Bintray:"
+            package = Bintray.package f.name
             version = Bintray.version(f.bottle.url)
             curl "--silent", "--fail",
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
-              "https://api.bintray.com/content/homebrew/#{bintray_repo}/#{f.name}/#{version}/publish"
+              "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
           end
         end
