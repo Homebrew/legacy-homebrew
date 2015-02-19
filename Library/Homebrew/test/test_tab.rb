@@ -17,6 +17,7 @@ class TabTests < Homebrew::TestCase
       :HEAD               => TEST_SHA1,
       :compiler           => "clang",
       :stdlib             => "libcxx",
+      :source             => { :path => nil },
     })
   end
 
