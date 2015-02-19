@@ -16,10 +16,11 @@
 # --dry-run:      Just print commands, don't run them.
 # --fail-fast:    Immediately exit on a failing step.
 #
-# --ci-master:         Shortcut for Homebrew master branch CI options.
-# --ci-pr:             Shortcut for Homebrew pull request CI options.
-# --ci-testing:        Shortcut for Homebrew testing CI options.
-# --ci-upload:         Homebrew CI bottle upload.
+# --ci-master:           Shortcut for Homebrew master branch CI options.
+# --ci-pr:               Shortcut for Homebrew pull request CI options.
+# --ci-testing:          Shortcut for Homebrew testing CI options.
+# --ci-upload:           Homebrew CI bottle upload.
+# --ci-reset-and-update: Homebrew CI repository and tap reset and update.
 
 require 'formula'
 require 'utils'
@@ -658,6 +659,15 @@ module Homebrew
       else
         safe_system "brew", "tap", "--repair"
       end
+    end
+
+    if ARGV.include? "--ci-reset-and-update"
+      safe_system "git", "reset", "--hard"
+      Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/*") do |tap|
+        cd tap { safe_system "git", "reset", "--hard" }
+      end
+      safe_system "brew", "update"
+      return
     end
 
     if ARGV.include? '--ci-upload'
