@@ -745,6 +745,9 @@ module Homebrew
         formula = bottle_filename_formula_name filename
         existing_bottle = existing_bottles[formula]
 
+        # Disable taps temporarily until Bintray sorts our repositories.
+        next if tap
+
         unless formula_packaged[formula]
           package_url = "#{bintray_repo_url}/#{formula}"
           unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
