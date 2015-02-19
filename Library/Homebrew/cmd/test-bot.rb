@@ -649,6 +649,15 @@ module Homebrew
       ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
     end
 
+    if ARGV.include? "--ci-reset-and-update"
+      safe_system "git", "reset", "--hard"
+      Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/*") do |tap|
+        cd tap { safe_system "git", "reset", "--hard" }
+      end
+      safe_system "brew", "update"
+      return
+    end
+
     repository = Homebrew.homebrew_git_repo tap
 
     # Tap repository if required, this is done before everything else
@@ -659,15 +668,6 @@ module Homebrew
       else
         safe_system "brew", "tap", "--repair"
       end
-    end
-
-    if ARGV.include? "--ci-reset-and-update"
-      safe_system "git", "reset", "--hard"
-      Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/*") do |tap|
-        cd tap { safe_system "git", "reset", "--hard" }
-      end
-      safe_system "brew", "update"
-      return
     end
 
     if ARGV.include? '--ci-upload'
