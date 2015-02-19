@@ -50,9 +50,6 @@ class Wslay < Formula
   end
 
   def install
-    system "autoreconf", "-fvi" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--disable-silent-rules"
-
     if build.with? "docs"
       ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
       resources.each do |r|
@@ -61,11 +58,11 @@ class Wslay < Formula
         end
       end
       ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
-      cd "doc" do
-        system "make", "install", "man"
-      end
     end
 
+    system "autoreconf", "-fvi" if build.head?
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--disable-silent-rules"
+    system "make", "check"
     system "make", "install"
   end
 end
