@@ -174,6 +174,8 @@ module Homebrew
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
           end
+        else
+          opoo "Set BINTRAY_USER and BINTRAY_KEY to add new formula bottles on Bintray!"
         end
       end
 
