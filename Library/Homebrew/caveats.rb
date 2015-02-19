@@ -95,10 +95,17 @@ class Caveats
 
   def app_caveats
     if keg and keg.app_installed?
-      <<-EOS.undent
+      s = <<-EOS.undent
         .app bundles were installed.
         Run `brew linkapps #{keg.name}` to symlink these to /Applications.
       EOS
+      if HOMEBREW_PREFIX.to_s == "/usr/local" && `ls -dlO /usr` =~ /hidden/
+        s += <<-EOS.undent
+          If you want spotlight to index them, please run:
+            sudo chflags nohidden /usr
+        EOS
+      end
+      s
     end
   end
 
