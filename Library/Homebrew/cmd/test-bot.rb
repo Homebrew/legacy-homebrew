@@ -722,7 +722,7 @@ module Homebrew
       safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
       # Bintray upload (will take over soon)
-      bintray_repo = Bintray.repository(tap_name)
+      bintray_repo = Bintray.repository(tap)
       bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
       formula_packaged = {}
 
