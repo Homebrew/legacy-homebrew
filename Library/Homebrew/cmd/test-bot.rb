@@ -668,8 +668,7 @@ module Homebrew
 
       bintray_user = ENV["BINTRAY_USER"]
       bintray_key = ENV["BINTRAY_KEY"]
-      # Skip taps for now until we're using Bintray for Homebrew/homebrew
-      if !tap && (!bintray_user || !bintray_key)
+      if !bintray_user || !bintray_key
         raise "Missing BINTRAY_USER or BINTRAY_KEY variables!"
       end
 
@@ -703,10 +702,10 @@ module Homebrew
         safe_system "brew", "pull", "--clean", pull_pr
       end
 
+      # Check for existing bottles as we don't want them to be autopublished
+      # on Bintray until manually `brew pull`ed.
       existing_bottles = {}
       Dir.glob("*.bottle*.tar.gz") do |filename|
-        # Skip taps for now until we're using Bintray for Homebrew/homebrew
-        next if tap
         formula_name = bottle_filename_formula_name filename
         formula = Formulary.factory formula_name
         existing_bottles[formula_name] = !!formula.bottle
@@ -723,38 +722,30 @@ module Homebrew
       safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
       # Bintray upload (will take over soon)
-      repo = if tap
-        tap.sub("/", "-") + "-bottles"
-      else
-        "bottles"
-      end
-
+      bintray_repo = Bintray.repository(tap_name)
+      bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
       formula_packaged = {}
 
       Dir.glob("*.bottle*.tar.gz") do |filename|
-        # Skip taps for now until we're using Bintray for Homebrew/homebrew
-        next if tap
-        version = BottleVersion.parse(filename).to_s
+        version = Bintray.version(f.bottle.url)
         formula = bottle_filename_formula_name filename
         existing_bottle = existing_bottles[formula]
 
         unless formula_packaged[formula]
-          repo_url = "https://api.bintray.com/packages/homebrew/#{repo}"
-          package_url = "#{repo_url}/#{formula}"
+          package_url = "#{bintray_repo_url}/#{formula}"
           unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
-            safe_system "curl", "--silent", "--fail",
-              "-u#{bintray_user}:#{bintray_key}",
-              "-H", "Content-Type: application/json",
-              "-d", "{\"name\":\"#{formula}\"}", repo_url
+            curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
+                 "-H", "Content-Type: application/json",
+                 "-d", "{\"name\":\"#{formula}\"}", bintray_repo_url
             puts
           end
           formula_packaged[formula] = true
         end
 
-        content_url = "https://api.bintray.com/content/homebrew/#{repo}/#{formula}/#{version}/#{filename}"
+        content_url = "https://api.bintray.com/content/homebrew/#{bintray_repo}/#{formula}/#{version}/#{filename}"
         content_url += "?publish=1&override=1" if existing_bottle
-        safe_system "curl", "--silent", "--fail",
-          "-u#{bintray_user}:#{bintray_key}", "-T", filename, content_url
+        curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
+             "-T", filename, content_url
         puts
       end
 
