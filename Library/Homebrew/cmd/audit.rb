@@ -174,8 +174,12 @@ class FormulaAuditor
             Or if it is indeed a runtime denpendency
               depends_on "#{dep}" => :run
           EOS
-        when "git", "ruby", "mercurial"
-          problem "Don't use #{dep} as a dependency. We allow non-Homebrew #{dep} installations."
+        when "git"
+          problem "Use `depends_on :git` instead of `depends_on 'git'`"
+        when "mercurial"
+          problem "Use `depends_on :hg` instead of `depends_on 'mercurial'`"
+        when "ruby"
+          problem "Don't use ruby as a dependency. We allow non-Homebrew ruby installations."
         when 'gfortran'
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
         when 'open-mpi', 'mpich2'
