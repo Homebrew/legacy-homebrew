@@ -8,9 +8,9 @@ class VowpalWabbit < Formula
 
   bottle do
     cellar :any
-    sha1 "835e216e381b1b4f5b4483a3ce0f254023678357" => :mavericks
-    sha1 "621f557a6b9ce62670b285a1fbc3bbe83badb52b" => :mountain_lion
-    sha1 "165eca93fb9e839793c90f11da9336ee8388a01c" => :lion
+    sha1 "a7bd0836491357e0b148389126eabb520707360a" => :yosemite
+    sha1 "97d1725e7bdc7aa2518ce32aee164255244ee032" => :mavericks
+    sha1 "ad337507a088dadaa29ae839c09cbfd09a0eed6a" => :mountain_lion
   end
 
   if MacOS.version < :mavericks
