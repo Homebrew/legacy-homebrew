@@ -1,7 +1,6 @@
 class Libghthash < Formula
   homepage "http://www.bth.se/people/ska/sim_home/libghthash.html"
   url "http://www.bth.se/people/ska/sim_home/filer/libghthash-0.6.2.tar.gz"
-  version "0.6.2"
   sha1 "436146998c30a31b83adf4f58d978fccd78f2ba5"
 
   def install
