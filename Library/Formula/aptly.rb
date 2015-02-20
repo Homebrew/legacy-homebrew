@@ -9,6 +9,7 @@ class Aptly < Formula
   head "https://github.com/smira/aptly.git"
 
   bottle do
+    cellar :any
     sha1 "0c8c7a948f123d1a40bc2259d8445021094887b0" => :yosemite
     sha1 "e9fbdfb93bd116385478176835ca5b848b8c24d2" => :mavericks
     sha1 "73ee380d7e60ce73dfd37c91fcbdafea446f8910" => :mountain_lion
