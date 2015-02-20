@@ -1,7 +1,7 @@
 class Libxmp < Formula
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.3/libxmp-4.3.3.tar.gz"
-  sha1 "96587f6412dedbba80558ef6c25a5bf966fa5887"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.5/libxmp-4.3.5.tar.gz"
+  sha1 "39a5cef59e537062ae109972de95783bc2f256ab"
 
   bottle do
     cellar :any
