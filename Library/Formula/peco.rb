@@ -6,6 +6,7 @@ class Peco < Formula
   sha1 "438e76dc7f31215eb1195d5eb14a66cf7fef318e"
 
   bottle do
+    cellar :any
     sha1 "09dcbdd0a4cc55c36cc4578f237ac19c360651a1" => :yosemite
     sha1 "eaf5161f6ce66b67a026825a4f3047974d147500" => :mavericks
     sha1 "61e853d89cd34129cf0e010c36939491c3b11329" => :mountain_lion
