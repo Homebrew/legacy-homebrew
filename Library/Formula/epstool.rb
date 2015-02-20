@@ -4,6 +4,13 @@ class Epstool < Formula
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Epstool/epstool-3.08.tar.gz"
   sha1 "dc495934f06d3ea8b3209e8b02ea96c66c34f614"
 
+  bottle do
+    cellar :any
+    sha1 "72c9a1b0dcc2fba03d6ca3f798b511c32129f346" => :yosemite
+    sha1 "51ac90156f7dd505f717661814f72519657d6454" => :mavericks
+    sha1 "2ea650f6125f4325ffb74ebe9396f91de9785980" => :mountain_lion
+  end
+
   depends_on "ghostscript"
 
   def install
