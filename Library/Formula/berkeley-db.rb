@@ -33,25 +33,19 @@ class BerkeleyDb < Formula
       --enable-cxx
       --enable-compat185
     ]
+
     if build.with? "java"
-        java_home = ""
-        if ENV.has_key?("JAVA_HOME")
-            java_home = ENV["JAVA_HOME"]
-       else
-           java_home = `/usr/libexec/java_home`.chomp
-       end
+      java_home = ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
 
-        cflags = ""
-
-        # Current Oracle JDKs put the jni.h and jni_md.h in a different place than the
-        # original Apple/Sun JDK used to.
-        if File.exist? "#{java_home}/include/jni.h"
-            cflags << "-I#{java_home}/include"
-            cflags << " -I#{java_home}/include/darwin"
-        elsif File.exist? "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/jni.h"
-            cflags << "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
-        end
-        ENV['CFLAGS'] = cflags
+      # The Oracle JDK puts jni.h into #{java_home}/include and jni_md.h into
+      # #{java_home}/include/darwin.  The original Apple/SUN JDK placed jni.h
+      # and jni_md.h into
+      # /System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/
+      #
+      # Setup the include path with the Oracle JDK location first and the Apple JDK location second.
+      ENV["CFLAGS"] = "-I#{java_home}/include" <<
+                      " -I#{java_home}/include/darwin" <<
+                      " -I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
     end
     args << "--enable-java" if build.with? "java"
     args << "--enable-sql" if build.include? "enable-sql"
@@ -69,25 +63,73 @@ class BerkeleyDb < Formula
 end
 
 __END__
-diff --git a/src/dbinc/atomic.h b/src/dbinc/atomic.h
-index 096176a..561037a 100644
---- a/src/dbinc/atomic.h
-+++ b/src/dbinc/atomic.h
-@@ -144,7 +144,7 @@ typedef LONG volatile *interlocked_val;
- #define	atomic_inc(env, p)	__atomic_inc(p)
- #define	atomic_dec(env, p)	__atomic_dec(p)
- #define	atomic_compare_exchange(env, p, o, n)	\
--	__atomic_compare_exchange((p), (o), (n))
-+	__atomic_compare_exchange_db((p), (o), (n))
- static inline int __atomic_inc(db_atomic_t *p)
- {
- 	int	temp;
-@@ -176,7 +176,7 @@ static inline int __atomic_dec(db_atomic_t *p)
-  * http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
-  * which configure could be changed to use.
-  */
--static inline int __atomic_compare_exchange(
-+static inline int __atomic_compare_exchange_db(
- 	db_atomic_t *p, atomic_value_t oldval, atomic_value_t newval)
- {
- 	atomic_value_t was;
+diff -r -c -N ../db-5.3.28.orig/lang/java/src/com/sleepycat/asm/ClassReader.java ./lang/java/src/com/sleepycat/asm/ClassReader.java
+*** ../db-5.3.28.orig/lang/java/src/com/sleepycat/asm/ClassReader.java	2013-09-09 13:05:04.000000000 -0230
+--- ./lang/java/src/com/sleepycat/asm/ClassReader.java	2015-02-20 15:34:50.000000000 -0330
+***************
+*** 163,169 ****
+      public ClassReader(final byte[] b, final int off, final int len) {
+          this.b = b;
+          // checks the class version
+!         if (readShort(6) > Opcodes.V1_7) {
+              throw new IllegalArgumentException();
+          }
+          // parses the constant pool
+--- 163,169 ----
+      public ClassReader(final byte[] b, final int off, final int len) {
+          this.b = b;
+          // checks the class version
+!         if (readShort(6) > Opcodes.V1_8) {
+              throw new IllegalArgumentException();
+          }
+          // parses the constant pool
+diff -r -c -N ../db-5.3.28.orig/lang/java/src/com/sleepycat/asm/Opcodes.java ./lang/java/src/com/sleepycat/asm/Opcodes.java
+*** ../db-5.3.28.orig/lang/java/src/com/sleepycat/asm/Opcodes.java	2013-09-09 13:05:04.000000000 -0230
+--- ./lang/java/src/com/sleepycat/asm/Opcodes.java	2015-02-20 15:35:09.000000000 -0330
+***************
+*** 56,61 ****
+--- 56,62 ----
+      int V1_5 = 0 << 16 | 49;
+      int V1_6 = 0 << 16 | 50;
+      int V1_7 = 0 << 16 | 51;
++     int V1_8 = 0 << 16 | 52;
+  
+      // access flags
+  
+diff -r -c -N ../db-5.3.28.orig/src/dbinc/atomic.h ./src/dbinc/atomic.h
+*** ../db-5.3.28.orig/src/dbinc/atomic.h	2013-09-09 13:05:08.000000000 -0230
+--- ./src/dbinc/atomic.h	2015-02-20 15:33:31.000000000 -0330
+***************
+*** 144,150 ****
+  #define	atomic_inc(env, p)	__atomic_inc(p)
+  #define	atomic_dec(env, p)	__atomic_dec(p)
+  #define	atomic_compare_exchange(env, p, o, n)	\
+! 	__atomic_compare_exchange((p), (o), (n))
+  static inline int __atomic_inc(db_atomic_t *p)
+  {
+  	int	temp;
+--- 144,150 ----
+  #define	atomic_inc(env, p)	__atomic_inc(p)
+  #define	atomic_dec(env, p)	__atomic_dec(p)
+  #define	atomic_compare_exchange(env, p, o, n)	\
+! 	__atomic_compare_exchange_db((p), (o), (n))
+  static inline int __atomic_inc(db_atomic_t *p)
+  {
+  	int	temp;
+***************
+*** 176,182 ****
+   * http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
+   * which configure could be changed to use.
+   */
+! static inline int __atomic_compare_exchange(
+  	db_atomic_t *p, atomic_value_t oldval, atomic_value_t newval)
+  {
+  	atomic_value_t was;
+--- 176,182 ----
+   * http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
+   * which configure could be changed to use.
+   */
+! static inline int __atomic_compare_exchange_db(
+  	db_atomic_t *p, atomic_value_t oldval, atomic_value_t newval)
+  {
+  	atomic_value_t was;
