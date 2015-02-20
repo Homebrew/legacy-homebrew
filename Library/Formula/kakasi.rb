@@ -4,9 +4,10 @@ class Kakasi < Formula
   sha1 "5f2e02264dda11940fb7b5387c327d4c4324bdb3"
 
   bottle do
-    sha1 "8deab85f96629c49900ae301aeacaed1a4f8891f" => :mavericks
-    sha1 "a116a8ecbf84ad1a5955b134f2f2f8ff05319660" => :mountain_lion
-    sha1 "d8245a504319b627cc2c28cc0f012f7f2a898732" => :lion
+    revision 1
+    sha1 "3dc9fd7f8400f0f9881a85afd1031c6e4a3eec85" => :yosemite
+    sha1 "ebd2317184992b420fb44c2d5a287eb29a7c9cec" => :mavericks
+    sha1 "3fa224c221fd544782b8955f2988d918dea5caca" => :mountain_lion
   end
 
   def install
