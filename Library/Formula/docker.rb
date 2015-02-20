@@ -5,6 +5,7 @@ class Docker < Formula
   url "https://github.com/docker/docker.git", :tag => "v1.5.0"
 
   bottle do
+    cellar :any
     sha1 "3eccd8879767b3fc95048f7d40a60edb69741892" => :yosemite
     sha1 "9e65954b48b3feb53ba14aafcd5081a5ede54809" => :mavericks
     sha1 "5f22268864f33697d6988a49c4c73ddc7368cfa2" => :mountain_lion
