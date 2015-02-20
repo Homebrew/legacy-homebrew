@@ -7,6 +7,7 @@ class Fleetctl < Formula
   head "https://github.com/coreos/fleet.git"
 
   bottle do
+    cellar :any
     sha1 "9c19743e0bc3457147b72d66ee9162e0a9a6e3da" => :yosemite
     sha1 "99e7396f5bbf76ef18f917592edb5cd10bc5cf27" => :mavericks
     sha1 "48fa5e33e2805a0a76a8a341085bae8ea40dc4c7" => :mountain_lion
