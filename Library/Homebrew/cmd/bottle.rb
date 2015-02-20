@@ -33,30 +33,37 @@ BOTTLE_ERB = <<-EOS
 EOS
 
 module Homebrew
-  def keg_contains string, keg
-    if not ARGV.homebrew_developer?
-      return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg.to_s
+  def print_filename string, filename
+    unless @put_string_exists_header
+      opoo "String '#{string}' still exists in these files:"
+      @put_string_exists_header = true
     end
 
+    @put_filenames ||= []
+    unless @put_filenames.include? filename
+      puts "#{Tty.red}#{filename}#{Tty.reset}"
+      @put_filenames << filename
+    end
+  end
+
+  def keg_contains string, keg, ignores
     result = false
-    index = 0
 
     keg.each_unique_file_matching(string) do |file|
-      if ARGV.verbose?
-        opoo "String '#{string}' still exists in these files:" if index.zero?
-        puts "#{Tty.red}#{file}#{Tty.reset}"
-      end
+      put_filename = false
 
       # Check dynamic library linkage. Importantly, do not run otool on static
       # libraries, which will falsely report "linkage" to themselves.
       if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?
         linked_libraries = file.dynamically_linked_libraries
         linked_libraries = linked_libraries.select { |lib| lib.include? string }
+        result ||= linked_libraries.any?
       else
         linked_libraries = []
       end
 
       if ARGV.verbose?
+        print_filename(string, file) if linked_libraries.any?
         linked_libraries.each do |lib|
           puts " #{Tty.gray}-->#{Tty.reset} links to #{lib}"
         end
@@ -67,30 +74,32 @@ module Homebrew
         until io.eof?
           str = io.readline.chomp
 
+          next if ignores.any? {|i| i =~ str }
+
           next unless str.include? string
 
           offset, match = str.split(" ", 2)
 
           next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
+          result ||= true
+
           if ARGV.verbose?
+            print_filename string, file
             puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
           end
         end
       end
-
-      index += 1
-      result = true
     end
 
-    index = 0
+    put_symlink_header = false
     keg.find do |pn|
       if pn.symlink? && (link = pn.readlink).absolute?
-        if link.to_s.start_with?(string)
-          opoo "Absolute symlink starting with #{string}:" if index.zero?
+        if !put_symlink_header && link.to_s.start_with?(string)
+          opoo "Absolute symlink starting with #{string}:"
           puts "  #{pn} -> #{pn.resolved_path}"
+          put_symlink_header = true
         end
 
-        index += 1
         result = true
       end
     end
@@ -163,8 +172,13 @@ module Homebrew
           prefix_check = prefix
         end
 
-        relocatable = !keg_contains(prefix_check, keg)
-        relocatable = !keg_contains(cellar, keg) && relocatable
+        ignores = []
+        if f.deps.any? { |dep| dep.name == "go" }
+          ignores << %r{#{HOMEBREW_CELLAR}/go/[\d\.]+/libexec}
+        end
+
+        relocatable = !keg_contains(prefix_check, keg, ignores)
+        relocatable = !keg_contains(cellar, keg, ignores) && relocatable
         puts if !relocatable && ARGV.verbose?
       rescue Interrupt
         ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
