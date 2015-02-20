@@ -6,6 +6,7 @@ class Direnv < Formula
   head "https://github.com/zimbatm/direnv.git"
 
   bottle do
+    cellar :any
     sha1 "0cee43bd9df0e2f376e6edfaaebb6ca537df0692" => :yosemite
     sha1 "9d0cd4d5ec285daba2d2e4237cac58e963fd88fc" => :mavericks
     sha1 "26f4abf81efa2bcf23ae58c0a913ac6b93ef3f1d" => :mountain_lion
