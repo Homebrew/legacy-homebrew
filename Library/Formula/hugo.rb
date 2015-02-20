@@ -5,6 +5,7 @@ class Hugo < Formula
   sha1 "f0537942cde9645ee2d98aaaf927a80c79070e99"
 
   bottle do
+    cellar :any
     revision 1
     sha1 "e892d9a0fb7c832fb7f24db8682d4775dfbcfd04" => :yosemite
     sha1 "42ad7067cabf84b2015e8086eb84115fce3c0e58" => :mavericks
