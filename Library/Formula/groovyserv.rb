@@ -1,7 +1,7 @@
 require "formula"
 
 class Groovyserv < Formula
-  homepage "http://kobo.github.io/groovyserv/"
+  homepage "https://kobo.github.io/groovyserv/"
   url "https://bitbucket.org/kobo/groovyserv-mirror/downloads/groovyserv-1.0.0-src.zip"
   sha1 "46b946dee3e40457e667498b235bd8e1567ed9ed"
   head "https://github.com/kobo/groovyserv.git"
