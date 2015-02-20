@@ -1,7 +1,5 @@
-require "formula"
-
 class Kakasi < Formula
-  homepage "http://www.namazu.org/"
+  homepage "http://kakasi.namazu.org/"
   url "http://kakasi.namazu.org/stable/kakasi-2.3.6.tar.gz"
   sha1 "5f2e02264dda11940fb7b5387c327d4c4324bdb3"
 
@@ -18,8 +16,8 @@ class Kakasi < Formula
   end
 
   test do
-    hiragana = `echo '\xa4\xa2 \xa4\xab \xa4\xb5'`.chomp
-    romanji = `echo '#{hiragana}' | kakasi -rh -ieuc -Ha`.chomp
+    hiragana = "\xa4\xa2 \xa4\xab \xa4\xb5"
+    romanji = pipe_output("kakasi -rh -ieuc -Ha", hiragana).chomp
     assert_equal "a ka sa", romanji
   end
 end
