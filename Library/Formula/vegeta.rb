@@ -6,6 +6,7 @@ class Vegeta < Formula
   sha1 "a0b2d4c4bca0023a8407a819f64c3f96e1ebe3bc"
 
   bottle do
+    cellar :any
     sha1 "67f9935eab0712fdabae55b9a091cbbc5bd2b81c" => :yosemite
     sha1 "81f64990ddb69035ebbcb16c33db0f62fdd5dd66" => :mavericks
     sha1 "b0a7521f7b0b858782fd817ba24460cea55c2d80" => :mountain_lion
