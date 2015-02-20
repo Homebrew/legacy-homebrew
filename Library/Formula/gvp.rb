@@ -1,9 +1,7 @@
-require "formula"
-
 class Gvp < Formula
   homepage "https://github.com/pote/gvp"
-  url "https://github.com/pote/gvp/archive/v0.1.0.tar.gz"
-  sha1 "c48bae47f8589e9bfd8addc94a9073be4c004305"
+  url "https://github.com/pote/gvp/archive/v0.2.0.tar.gz"
+  sha1 "d05a2f04ba06127c95fb1d1fb10a2643d6d27ac6"
 
   bottle do
     cellar :any
@@ -18,10 +16,7 @@ class Gvp < Formula
   end
 
   test do
-    assert Kernel.system("#{bin}/gvp init"), "`gvp init` exited with a non-zero status"
-    assert File.directory?(".godeps"), "`gvp init` did not create the .godeps directory"
-    assert_equal `#{bin}/gvp in 'echo $GOPATH' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps:#{testpath}", "`gvp in` did not change the GOPATH"
-    assert_equal `#{bin}/gvp in 'echo $GOBIN' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps/bin", "`gvp in` did not change the GOBIN"
-    assert_equal `#{bin}/gvp in 'echo $PATH' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps/bin:#{ENV["PATH"]}", "`gvp in` did not change the PATH"
+    system "#{bin}/gvp", "init"
+    assert File.directory? ".godeps/src"
   end
 end
