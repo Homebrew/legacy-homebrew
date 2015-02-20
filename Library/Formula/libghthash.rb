@@ -9,6 +9,7 @@ class Libghthash < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+    doc.install Dir["#{lib}/*[^.a]"]
   end
 
   test do
