@@ -12,8 +12,8 @@ class Libghthash < Formula
   end
 
   test do
-      (testpath/"test.c").write <<-EOS.undent
-        #include <ght_hash_table.h>
+    (testpath/"test.c").write <<-EOS.undent
+      #include <ght_hash_table.h>
 
         int main() {
             ght_hash_table_t* table = ght_create(1);
@@ -21,7 +21,7 @@ class Libghthash < Formula
             return 0;
         }
       EOS
-      system ENV.cc "test.c", "-I#{include}", "-L#{lib}", "-lghthash", "-o", "test"
-      system "./test"
-    end
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lghthash", "-o", "test"
+    system "./test"
+  end
 end
