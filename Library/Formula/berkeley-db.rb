@@ -33,6 +33,26 @@ class BerkeleyDb < Formula
       --enable-cxx
       --enable-compat185
     ]
+    if build.with? "java"
+        java_home = ""
+        if ENV.has_key?("JAVA_HOME")
+            java_home = ENV["JAVA_HOME"]
+       else
+           java_home = `/usr/libexec/java_home`.chomp
+       end
+
+        cflags = ""
+
+        # Current Oracle JDKs put the jni.h and jni_md.h in a different place than the
+        # original Apple/Sun JDK used to.
+        if File.exist? "#{java_home}/include/jni.h"
+            cflags << "-I#{java_home}/include"
+            cflags << " -I#{java_home}/include/darwin"
+        elsif File.exist? "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/jni.h"
+            cflags << "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
+        end
+        ENV['CFLAGS'] = cflags
+    end
     args << "--enable-java" if build.with? "java"
     args << "--enable-sql" if build.include? "enable-sql"
 
