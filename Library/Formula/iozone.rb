@@ -3,6 +3,13 @@ class Iozone < Formula
   url "http://www.iozone.org/src/current/iozone3_430.tar"
   sha1 "de02b10fcde6bd60e0c805e3abfc0aed15e85ac1"
 
+  bottle do
+    cellar :any
+    sha1 "3e22c42f233911335ebff3183e118e2257ad9d52" => :yosemite
+    sha1 "23e9d8e14fa04c276f1c58af900d14a1254163ed" => :mavericks
+    sha1 "e43bdf632913d693aec55f89426cf38b67d792cc" => :mountain_lion
+  end
+
   # Patch by @nijotz, adds O_DIRECT support when using -I flag.
   # See: https://github.com/Homebrew/homebrew/pull/10585
   patch :DATA
