@@ -9,6 +9,7 @@ class Pup < Formula
   head "https://github.com/EricChiang/pup.git"
 
   bottle do
+    cellar :any
     sha1 "2738ba14aef491fc87d760edf1fbf23374cdf751" => :yosemite
     sha1 "db1dd87b6484c1f446882cd06636a6a6a6c8e89a" => :mavericks
     sha1 "f33ec888512347b9a12bdc19b365a4a81c04508a" => :mountain_lion
