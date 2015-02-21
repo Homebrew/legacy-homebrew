@@ -257,7 +257,7 @@ class Python < Formula
               sys.path = [ p for p in sys.path
                            if (not p.startswith('/System') and
                                not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
-                               not (p.startswith('#{rack}') and p.endswith('site-packages'))) ]
+                               not (p.startswith('#{rack}/') and p.endswith('site-packages'))) ]
 
               # LINKFORSHARED (and python-config --ldflags) return the
               # full path to the lib (yes, "Python" is actually the lib, not a
