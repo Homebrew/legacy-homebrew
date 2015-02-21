@@ -42,7 +42,7 @@ class Tab < OpenStruct
     if path.exist?
       from_file(path)
     else
-      dummy_tab
+      empty
     end
   end
 
@@ -83,16 +83,19 @@ class Tab < OpenStruct
       tab = from_file(path)
       used_options = remap_deprecated_options(f.deprecated_options, tab.used_options)
       tab.used_options = used_options.as_flags
-      tab
     else
-      dummy_tab(f)
+      tab = empty
+      tab.unused_options = f.options.as_flags
+      tab.source = { :path => f.path.to_s }
     end
+
+    tab
   end
 
-  def self.dummy_tab f=nil
+  def self.empty
     attributes = {
       :used_options => [],
-      :unused_options => f ? f.options.as_flags : [],
+      :unused_options => [],
       :built_as_bottle => false,
       :poured_from_bottle => false,
       :tapped_from => "",
@@ -101,7 +104,7 @@ class Tab < OpenStruct
       :stdlib => nil,
       :compiler => "clang",
       :source => {
-        :path => f ? f.path.to_s : nil,
+        :path => nil,
       },
     }
 

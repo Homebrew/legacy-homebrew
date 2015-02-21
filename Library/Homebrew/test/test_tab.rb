@@ -22,7 +22,7 @@ class TabTests < Homebrew::TestCase
   end
 
   def test_defaults
-    tab = Tab.dummy_tab
+    tab = Tab.empty
     assert_empty tab.unused_options
     assert_empty tab.used_options
     refute_predicate tab, :built_as_bottle
