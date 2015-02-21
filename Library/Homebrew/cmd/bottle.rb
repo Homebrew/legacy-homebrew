@@ -247,7 +247,12 @@ module Homebrew
             odie 'Bottle block update failed!' unless string
           else
             update_or_add = 'add'
-            string = s.sub!(/(  ((url|sha1|sha256|head|version|mirror) ['"][\S ]+['"]|revision \d+)\n+)+/m, '\0' + output + "\n")
+            if s.include? 'stable do'
+              indent = s.slice(/^ +stable do/).length - "stable do".length
+              string = s.sub!(/^ {#{indent}}stable do(.|\n)+?^ {#{indent}}end\n/m, '\0' + output + "\n")
+            else
+              string = s.sub!(/(  ((url|sha1|sha256|head|version|mirror) ['"][\S ]+['"]|revision \d+)\n+)+/m, '\0' + output + "\n")
+            end
             odie 'Bottle block addition failed!' unless string
           end
         end
