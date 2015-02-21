@@ -1,7 +1,7 @@
 class Cheat < Formula
   homepage "https://github.com/chrisallenlane/cheat"
-  url "https://github.com/chrisallenlane/cheat/archive/2.1.3.tar.gz"
-  sha1 "968c6f88181af37e9cdb7e93e46b97c935c864d1"
+  url "https://github.com/chrisallenlane/cheat/archive/2.1.7.tar.gz"
+  sha1 "ab61a6df220df76d1819db04d79e06a3d49768f1"
   head "https://github.com/chrisallenlane/cheat.git"
 
   bottle do
@@ -19,8 +19,8 @@ class Cheat < Formula
   end
 
   resource "Pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.1.tar.gz"
-    sha1 "b9e9236693ccf6e86414e8578bf8874181f409de"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
+    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
   end
 
   def install
