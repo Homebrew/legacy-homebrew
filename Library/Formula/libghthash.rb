@@ -9,7 +9,9 @@ class Libghthash < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
-    doc.install Dir["#{lib}/*[^.a]"]
+    Dir["#{lib}/*[^.a]"].each do |f|
+        File.rename(f, "#{lib}/" + File.basename(f) + ".dylib")
+    end
   end
 
   test do
