@@ -12,6 +12,8 @@ class MongoC < Formula
     sha1 "b547c663729e6ec4944462c8d305643dd83d452f" => :mountain_lion
   end
 
+  head "https://github.com/mongodb/mongo-c-driver.git"
+
   depends_on "pkg-config" => :build
   depends_on "libbson"
   depends_on "openssl"
