@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ssdb < Formula
-  homepage "http://ssdb.io/?lang=en"
+  homepage "http://ssdb.io/"
   url "https://github.com/ideawu/ssdb/archive/1.8.0.tar.gz"
-  sha1 "ed9f016bdfef9543a866144fee4a37544f39155e"
+  sha1 "88f4930ae6f3d0234c783546e1fb00638801c4e7"
   head "https://github.com/ideawu/ssdb.git"
 
   bottle do

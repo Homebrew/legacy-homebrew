@@ -2,8 +2,8 @@ require 'formula'
 
 class Yacas < Formula
   homepage 'http://yacas.sourceforge.net'
-  url 'http://yacas.sourceforge.net/backups/yacas-1.3.4.tar.gz'
-  sha1 'b0918e7f1e697fde48f09055528dacbf7513b931'
+  url 'http://downloads.sourceforge.net/project/yacas/yacas-source/1.3/yacas-1.3.4.tar.gz'
+  sha1 'c166fe92eaf3dd4218e4b10ac752457b980ae6e2'
 
   option "with-server", "Build the network server version"
 

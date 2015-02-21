@@ -3,7 +3,7 @@ require 'formula'
 class Unittest < Formula
   homepage 'http://unittest.red-bean.com/'
   url 'http://unittest.red-bean.com/tar/unittest-0.50-62.tar.gz'
-  sha1 '4a5a5683f26d15c46911a163411e56968c441849'
+  sha1 'c9012061963ac1330c6c6efc8cdbbb79360757fe'
 
   fails_with :llvm do
     build 2334
