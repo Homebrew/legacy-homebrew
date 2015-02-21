@@ -1,7 +1,10 @@
 class Fish < Formula
   homepage "http://fishshell.com"
-  url "https://github.com/fish-shell/fish-shell/releases/download/2.1.1/fish-2.1.1.tar.gz"
-  sha1 "8f97f39b92ea7dfef1f464b18e304045bf37546d"
+  url "https://github.com/fish-shell/fish-shell/archive/2.1.2.tar.gz"
+  sha1 "fd40ed8de7497bf1578f50df6674b2d0464395fe"
+
+  depends_on "autoconf" => :build
+  depends_on "doxygen" => :build
 
   bottle do
     sha1 "61736de475346ff8aba971429d217b827730bc65" => :mavericks
@@ -11,16 +14,12 @@ class Fish < Formula
 
   head do
     url "https://github.com/fish-shell/fish-shell.git", :shallow => false
-
-    depends_on "autoconf" => :build
-    # Indeed, the head build always builds documentation
-    depends_on "doxygen" => :build
   end
 
   skip_clean "share/doc"
 
   def install
-    system "autoconf" if build.head?
+    system "autoconf"
     # In Homebrew's 'superenv' sed's path will be incompatible, so
     # the correct path is passed into configure here.
     system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"
