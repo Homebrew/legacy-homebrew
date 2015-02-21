@@ -19,14 +19,15 @@ class Openhmd < Formula
             "--disable-debug",
             "--disable-silent-rules",
             "--disable-dependency-tracking",
-            "--bindir=#{prefix}/bin"]
+            "--bindir=#{bin}"]
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make", "install"
+    (share+"tests").install "#{bin}/unittests"
   end
 
   test do
-    system "#{prefix}/bin/unittests"
+    system "#{share}/tests/unittests"
   end
 end
