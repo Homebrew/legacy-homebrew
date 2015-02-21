@@ -3,11 +3,6 @@ class Fish < Formula
   url "https://github.com/fish-shell/fish-shell/archive/2.1.2.tar.gz"
   sha1 "fd40ed8de7497bf1578f50df6674b2d0464395fe"
 
-  # This pair of dependencies should be revisited upon fish's next release.
-  # (they're normally only necessary for HEAD builds)
-  depends_on "autoconf" => :build
-  depends_on "doxygen" => :build
-
   bottle do
     sha1 "61736de475346ff8aba971429d217b827730bc65" => :mavericks
     sha1 "1d8d3f5656a4a9ec53d22b908581109eecfc9769" => :mountain_lion
@@ -17,6 +12,11 @@ class Fish < Formula
   head do
     url "https://github.com/fish-shell/fish-shell.git", :shallow => false
   end
+
+  # This pair of dependencies should be revisited upon fish's next release.
+  # (they're normally only necessary for HEAD builds)
+  depends_on "autoconf" => :build
+  depends_on "doxygen" => :build
 
   skip_clean "share/doc"
 
