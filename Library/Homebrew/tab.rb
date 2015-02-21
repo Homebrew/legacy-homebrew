@@ -101,7 +101,7 @@ class Tab < OpenStruct
       :stdlib => nil,
       :compiler => "clang",
       :source => {
-        :path => nil,
+        :path => f ? f.path.to_s : nil,
       },
     }
 
