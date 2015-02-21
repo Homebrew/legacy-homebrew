@@ -54,7 +54,7 @@ class Icecream < Formula
            "--prefix=#{prefix}"
     args << "--without-man" if build.without? "docbook2X"
     args << "--enable-clang-wrappers" if build.with? "clang-wrappers"
-    args << "--enavle-clang-write-includes" if build.with? "clang-rewrite-includes"
+    args << "--enable-clang-write-includes" if build.with? "clang-rewrite-includes"
     system "./autogen.sh"
     system "./configure", *args
     system "make", "install"
