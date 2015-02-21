@@ -6,9 +6,9 @@ class Cheat < Formula
 
   bottle do
     cellar :any
-    sha1 "21368d2e4f0394e461c473a637be57c0eb1a17c4" => :yosemite
-    sha1 "c117c796c2be0b330ee3b91acc03a73ad14f9a79" => :mavericks
-    sha1 "7e889187dcef76f9ee8df1c581bb003a14abf8de" => :mountain_lion
+    sha1 "489836b136a52aa064cf641c518fc0818bf0567c" => :yosemite
+    sha1 "326a16552272135d92ca3792acddeca5748c1d9c" => :mavericks
+    sha1 "10d3ec04f8eaa4978cf3fe0a9d178741c1f926b7" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
