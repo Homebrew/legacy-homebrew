@@ -2,8 +2,8 @@ require "formula"
 
 class RakudoStar < Formula
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2015.01.tar.gz"
-  sha256 "30c22e729bb6290e120bf7eb9b28a691090183b010a7f91aefd4d25a2c2d12bf"
+  url "http://rakudo.org/downloads/star/rakudo-star-2015.02.tar.gz"
+  sha256 "e54309b0d79afc1491767110ec39a1aa7d9314d93e29dbaab082014cfb055611"
 
   bottle do
     sha1 "3475077e3a06cd6602228bfddd86617f9a565d80" => :yosemite
