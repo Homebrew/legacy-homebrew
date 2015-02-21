@@ -18,7 +18,8 @@ class Openhmd < Formula
     args = ["--prefix", prefix,
             "--disable-debug",
             "--disable-silent-rules",
-            "--disable-dependency-tracking"]
+            "--disable-dependency-tracking",
+            "--bindir=#{prefix}/bin"]
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
@@ -26,6 +27,6 @@ class Openhmd < Formula
   end
 
   test do
-    system "unittests"
+    system "#{prefix}/bin/unittests"
   end
 end
