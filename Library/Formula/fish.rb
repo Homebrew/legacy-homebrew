@@ -40,6 +40,12 @@ class Fish < Formula
     to /etc/shells. Run:
       chsh -s #{HOMEBREW_PREFIX}/bin/fish
     to make fish your default shell.
+
+    To set your colors, run 'fish_config'
+    To scan your man pages for completions, run 'fish_update_completions'
+    To autocomplete command suggestions press Ctrl + F or right arrow key.
+
+    Have fun!
     EOS
   end
 end
