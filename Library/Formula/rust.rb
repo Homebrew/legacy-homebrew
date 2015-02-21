@@ -25,7 +25,13 @@ class Rust < Formula
   end
 
   test do
-    system "#{bin}/rustc"
     system "#{bin}/rustdoc", "-h"
+    (testpath/"hello.rs").write <<-EOS.undent
+    fn main() {
+      println!("Hello World!");
+    }
+    EOS
+    system "#{bin}/rustc", "hello.rs"
+    assert_equal "Hello World!\n", `./hello`
   end
 end
