@@ -12,7 +12,12 @@ class MongoC < Formula
     sha1 "b547c663729e6ec4944462c8d305643dd83d452f" => :mountain_lion
   end
 
-  head "https://github.com/mongodb/mongo-c-driver.git"
+  head do
+    url "https://github.com/mongodb/mongo-c-driver.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   depends_on "pkg-config" => :build
   depends_on "libbson"
@@ -21,6 +26,10 @@ class MongoC < Formula
   def install
     # --enable-sasl=no: https://jira.mongodb.org/browse/CDRIVER-447
     args = ["--prefix=#{prefix}", "--enable-sasl=no"]
+
+    if build.head?
+      system "./autogen.sh"
+    end
 
     if build.with?('openssl')
       args << "--enable-ssl=yes"
