@@ -11,7 +11,7 @@ class Python3 < Formula
     sha1 "f2df5040f65cd509bbd33666fe09eb329d2b81bc" => :mountain_lion
   end
 
-  head "https://hg.python.org/cpython", :using => :hg, :branch => "3.5"
+  head "https://hg.python.org/cpython", :using => :hg
 
   devel do
     url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0a1.tgz"
