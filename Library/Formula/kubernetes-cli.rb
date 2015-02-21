@@ -3,6 +3,13 @@ class KubernetesCli < Formula
   url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.10.1.tar.gz"
   sha256 "76000917bae4d8002884f24d33aa3ed23938fd1e39e89c73b8dfdd2d9c06fe24"
 
+  bottle do
+    cellar :any
+    sha1 "6b5d4dcefb0bf290c68e06f9a2dde7ea73c72a45" => :yosemite
+    sha1 "787545924940ca943c38ccdc2263b7b4c1b92211" => :mavericks
+    sha1 "3e4b16e204f335cde95a08e27cddac7def5e6f4c" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   def install
