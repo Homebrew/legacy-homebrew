@@ -1,11 +1,10 @@
 class Openhmd < Formula
   homepage "http://openhmd.net"
-
   url "http://openhmd.net/releases/openhmd-0.1.0.tar.gz"
   sha1 "186c747399bd9a509ac8300acbae8823fc4fcc79"
 
   head do
-    url "https://github.com/OpenHMD/OpenHMD.git", :branch => "master"
+    url "https://github.com/OpenHMD/OpenHMD.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -22,9 +21,7 @@ class Openhmd < Formula
             "--disable-dependency-tracking"]
 
     system "./autogen.sh" if build.head?
-
     system "./configure", *args
-
     system "make", "install"
   end
 
