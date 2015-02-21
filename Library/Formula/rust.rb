@@ -2,9 +2,9 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'https://static.rust-lang.org/dist/rustc-1.0.0-alpha-src.tar.gz'
-  version "1.0.0-alpha"
-  sha256 '3a2285726e839fc57ad49ed8907a50bab2d29d8f898e2d5a02f620a0477fc25c'
+  url 'https://static.rust-lang.org/dist/rustc-1.0.0-alpha.2-src.tar.gz'
+  version "1.0.0-alpha.2"
+  sha256 'a931b945e98f409df68fdff23e98b688024461c28901106896e73708381956c8'
 
   head 'https://github.com/rust-lang/rust.git'
 
@@ -24,7 +24,13 @@ class Rust < Formula
   end
 
   test do
-    system "#{bin}/rustc"
     system "#{bin}/rustdoc", "-h"
+    (testpath/"hello.rs").write <<-EOS.undent
+    fn main() {
+      println!("Hello World!");
+    }
+    EOS
+    system "#{bin}/rustc", "hello.rs"
+    assert_equal "Hello World!\n", `./hello`
   end
 end
