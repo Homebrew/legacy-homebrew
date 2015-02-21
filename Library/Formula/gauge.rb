@@ -6,6 +6,7 @@ class Gauge < Formula
   sha1 "d0bbfd4c782bccca5fbf3f8fa9ada71e1723a5eb"
 
   bottle do
+    cellar :any
     sha1 "0408f93bb04533a29662114fb7a6cb823b3d3acb" => :yosemite
     sha1 "130942e5196154996d3589ab0d054af2f5e5d9e9" => :mavericks
     sha1 "324e44c1dc852274a48123760e7bdeb03ce240b6" => :mountain_lion

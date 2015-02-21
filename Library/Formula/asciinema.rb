@@ -6,6 +6,7 @@ class Asciinema < Formula
   sha1 "155c19366ffb3347e97026e9ab8006c16d2a52c6"
 
   bottle do
+    cellar :any
     sha1 "18071c7dc6d7fb738db64b864e7d5b48e935e0eb" => :yosemite
     sha1 "975785a19567a9a7aca8ea7a53b1cfea3f822734" => :mavericks
     sha1 "cba30872e33a44b4042ef768fd871175e76fc502" => :mountain_lion

@@ -99,7 +99,7 @@ class Tab < OpenStruct
       :time => nil,
       :HEAD => nil,
       :stdlib => nil,
-      :compiler => :clang,
+      :compiler => "clang",
       :source => {
         :path => nil,
       },

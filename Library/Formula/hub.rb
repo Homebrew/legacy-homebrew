@@ -5,6 +5,7 @@ class Hub < Formula
   head "https://github.com/github/hub.git"
 
   bottle do
+    cellar :any
     sha1 "e1473bd03a9a3d3a91ad823415d4e468d63e491b" => :yosemite
     sha1 "cbe513090da3faef854e43b0d0393708e7551500" => :mavericks
     sha1 "4ab401c95fadce34df9175188df237bf074f8f75" => :mountain_lion
