@@ -16,11 +16,19 @@ class MongoC < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libbson"
-  depends_on "openssl"
+  depends_on "openssl" => :recommended
 
   def install
     # --enable-sasl=no: https://jira.mongodb.org/browse/CDRIVER-447
-    system "./configure", "--prefix=#{prefix}", "--enable-sasl=no"
+    args = ["--prefix=#{prefix}", "--enable-sasl=no"]
+
+    if build.with?('openssl')
+      args << "--enable-ssl=yes"
+    else
+      args << "--enable-ssl=no"
+    end
+
+    system "./configure", *args
     system "make", "install"
   end
 end
