@@ -10,7 +10,7 @@ class Libghthash < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
     Dir["#{lib}/*[^.a]"].each do |f|
-        File.rename(f, "#{lib}/" + File.basename(f) + ".dylib")
+      File.rename(f, "#{lib}/" + File.basename(f) + ".dylib")
     end
   end
 
