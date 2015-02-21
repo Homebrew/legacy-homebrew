@@ -5,6 +5,13 @@ class Newsbeuter < Formula
 
   head "https://github.com/akrennmair/newsbeuter.git"
 
+  bottle do
+    cellar :any
+    sha1 "c0ba075c6d235a851361bc6315ad81ba8a93593f" => :yosemite
+    sha1 "ba32930fd5e0213b160d39a3bce1138b3661b4f6" => :mavericks
+    sha1 "4c8e48932bacd4c7cc0d2ff7ec2c583d99692855" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "json-c"
