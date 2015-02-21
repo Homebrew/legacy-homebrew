@@ -3,6 +3,13 @@ class Googlecl < Formula
   url 'https://googlecl.googlecode.com/files/googlecl-0.9.14.tar.gz'
   sha1 '810b2426e2c5e5292e507837ea425e66f4949a1d'
 
+  bottle do
+    cellar :any
+    sha1 "ecb5890566eae00f555e6e7e5e296681bf82dc65" => :yosemite
+    sha1 "4c76e56a7684777d256c97f827f24ad6f18452e2" => :mavericks
+    sha1 "45ef7433cb23ec05fbf202caac3c3c0cc095a080" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   conflicts_with 'osxutils', :because => 'both install a google binary'
