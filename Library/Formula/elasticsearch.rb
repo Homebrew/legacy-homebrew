@@ -15,6 +15,10 @@ class Elasticsearch < Formula
   end
 
   def install
+    # Preserve current configuration if it exists
+    if File.exists?(config_path)
+      cp config_path, temp_config_path
+    end
     if build.head?
       # Build the package from source
       system "mvn", "clean", "package", "-DskipTests"
@@ -75,6 +79,7 @@ class Elasticsearch < Formula
     (var/"elasticsearch/#{cluster_name}").mkpath
     (var/"log/elasticsearch").mkpath
     (var/"lib/elasticsearch/plugins").mkpath
+    mv temp_config_path, Pathname.new(config_path).dirname if File.exists?(temp_config_path)
   end
 
   def caveats; <<-EOS.undent
@@ -120,5 +125,19 @@ class Elasticsearch < Formula
 
   test do
     system "#{bin}/plugin", "--list"
+  end
+
+  private
+
+  def config_path
+    "#{opt_prefix}/config/elasticsearch.yml"
+  end
+
+  def temp_config_path
+    "/tmp/elasticsearch.yml.brew.pre-#{version}"
+  end
+
+  def config_backup_path
+    File.join("#{Pathname.new(config_path).dirname}", "#{Pathname.new(temp_config_path).basename}")
   end
 end
