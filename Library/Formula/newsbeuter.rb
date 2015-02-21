@@ -24,6 +24,9 @@ class Newsbeuter < Formula
     ENV.cxx11
     system "make"
     system "make", "install", "prefix=#{prefix}"
+
+    share.install "contrib"
+    (doc/"examples").install "doc/example-bookmark-plugin.sh"
   end
 
   test do
