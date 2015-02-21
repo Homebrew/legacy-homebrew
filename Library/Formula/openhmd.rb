@@ -19,7 +19,7 @@ class Openhmd < Formula
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "hidapi" => :build
+  depends_on "hidapi"
 
   def install
     args = ["--prefix", prefix,
