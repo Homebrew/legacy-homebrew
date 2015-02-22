@@ -4,6 +4,12 @@ class CenterIm < Formula
   sha1 "46fbac7a55f33b0d4f42568cca21ed83770650e5"
   revision 1
 
+  bottle do
+    sha1 "e5787bc7881f9f8ff841aba8884f2e75a5bf53de" => :yosemite
+    sha1 "6652a637a3a2cf79e79a721bda64a833f1ffcf0d" => :mavericks
+    sha1 "a53626fb4f16e7ba8266ab275070e5218c5e4213" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "openssl"
