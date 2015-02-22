@@ -1,10 +1,8 @@
-require 'formula'
-
 class Abcmidi < Formula
-  homepage 'http://www.ifdo.ca/~seymour/runabc/top.html'
-  url 'http://www.ifdo.ca/~seymour/runabc/abcMIDI-2014-11-18.zip'
-  version '2014-11-18'
-  sha1 '8a4ab723c689300535f0e7eeb7c1dc50629018f3'
+  homepage "http://www.ifdo.ca/~seymour/runabc/top.html"
+  url "http://www.ifdo.ca/~seymour/runabc/abcMIDI-2014-12-25.zip"
+  version "2014-12-25"
+  sha1 "a8d9509b32131015f38e0a31432b6c8990607888"
 
   bottle do
     cellar :any
@@ -17,7 +15,7 @@ class Abcmidi < Formula
     # configure creates a "Makefile" file. A "makefile" file already exist in
     # the tarball. On case-sensitive file-systems, the "makefile" file won't
     # be overridden and will be chosen over the "Makefile" file.
-    system "rm", "makefile"
+    rm "makefile"
 
     system "./configure", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
     # The Makefile is broken when using --prefix (value is added to path twice).
