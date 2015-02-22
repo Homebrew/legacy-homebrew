@@ -7,9 +7,9 @@ class Cereal < Formula
 
   bottle do
     cellar :any
-    sha1 "6adcd84314611446fb8926455217e207a47993be" => :mavericks
-    sha1 "5d9e8b45dbe08eaad5fe3088e70036a27d7ff581" => :mountain_lion
-    sha1 "47344b6e499bf21f54f6a59a462a9ada773f8a5e" => :lion
+    sha1 "e7bbce282665e7e1d392840a1a620371de9fb3af" => :yosemite
+    sha1 "2d1bc4e43e82c55eb57cf767683fb7223ab05fef" => :mavericks
+    sha1 "2b53401c5d32d2d6263678e2166db000df7dc013" => :mountain_lion
   end
 
   option "with-tests", "Build and run the test suite"
