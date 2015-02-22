@@ -5,10 +5,10 @@ class Capstone < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "78c4d8f9d3a9719edd74142985ccdbe8ac69876c" => :yosemite
-    sha1 "0084bc1ee7bc57097950eef229e052df6886f069" => :mavericks
-    sha1 "ed8318f71c886983d870ab47fc994ca95ad38dea" => :mountain_lion
+    revision 2
+    sha1 "12179821d14b839d25cb0371fdb33da5bd9c6e71" => :yosemite
+    sha1 "0f6fcb777a351817bbec8084643da1184669f9e8" => :mavericks
+    sha1 "635d65b51b01e1dc5977d154fd5fcfaa6e0c77d8" => :mountain_lion
   end
 
   def install
