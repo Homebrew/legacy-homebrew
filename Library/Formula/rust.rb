@@ -20,7 +20,6 @@ class Rust < Formula
     args << "--enable-clang" if ENV.compiler == :clang
     system "./configure", *args
     system "make"
-    system "make check"
     system "make install"
   end
 
