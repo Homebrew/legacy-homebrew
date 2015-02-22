@@ -652,7 +652,13 @@ class Formula
   end
 
   def test_fixtures(file)
-    HOMEBREW_LIBRARY.join("Homebrew", "test", "fixtures", file)
+    path = HOMEBREW_LIBRARY.join("Homebrew", "test", "fixtures", file)
+    unless @testpath.nil?
+      oldpath = path
+      path = @testpath/file
+      cp oldpath, path
+    end
+    path
   end
 
   def install
