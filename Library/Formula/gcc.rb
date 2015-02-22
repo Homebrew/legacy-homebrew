@@ -23,7 +23,7 @@ class Gcc < Formula
   url "http://ftpmirror.gnu.org/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2"
   mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2"
   sha1 "79dbcb09f44232822460d80b033c962c0237c6d8"
-  revision 1
+  revision 2
 
   bottle do
     sha1 "8cc5eefa405e7d818a13fa1ad5a144b4442bed40" => :yosemite
@@ -38,12 +38,24 @@ class Gcc < Formula
   # enabling multilib on a host that can't run 64-bit results in build failures
   option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
 
-  depends_on "gmp"
-  depends_on "libmpc"
-  depends_on "mpfr"
-  depends_on "cloog"
-  depends_on "isl"
   depends_on "ecj" if build.with?("java") || build.with?("all-languages")
+
+  resource "gmp" do
+    url "#{Formula["gmp"].stable.url}"
+    sha1 "#{Formula['gmp'].stable.checksum}"
+  end
+  resource "mpfr" do
+    url "#{Formula["mpfr"].stable.url}"
+    sha1 "#{Formula["mpfr"].stable.checksum}"
+  end
+  resource "libmpc" do
+    url "#{Formula["libmpc"].stable.url}"
+    sha1 "#{Formula["libmpc"].stable.checksum}"
+  end
+  resource "isl" do
+    url "#{Formula["isl"].stable.url}"
+    sha1 "#{Formula["isl"].stable.checksum}"
+  end
 
   if MacOS.version < :leopard
     # The as that comes with Tiger isn't capable of dealing with the
@@ -68,6 +80,43 @@ class Gcc < Formula
   end
 
   def install
+    resource("gmp").stage do
+      system "./configure", "--prefix=#{buildpath}/gmp",
+                            "--disable-shared",
+                            "--enable-static"
+      system "make"
+      system "make", "check"
+      system "make", "-j1", "install"
+    end
+    resource("mpfr").stage do
+      system "./configure", "--prefix=#{buildpath}/mpfr",
+                            "--disable-shared",
+                            "--enable-static",
+                            "--with-gmp=#{buildpath}/gmp"
+      system "make"
+      system "make", "check"
+      system "make", "-j1", "install"
+    end
+    resource("libmpc").stage do
+      system "./configure", "--prefix=#{buildpath}/libmpc",
+                            "--disable-shared",
+                            "--enable-static",
+                            "--with-gmp=#{buildpath}/gmp",
+                            "--with-mpfr=#{buildpath}/mpfr"
+      system "make"
+      system "make", "check"
+      system "make", "-j1", "install"
+    end
+    resource("isl").stage do
+      system "./configure", "--prefix=#{buildpath}/isl",
+                            "--disable-shared",
+                            "--enable-static",
+                            "--with-gmp-prefix=#{buildpath}/gmp"
+      system "make"
+      system "make", "check"
+      system "make", "-j1", "install"
+    end
+
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
 
@@ -91,11 +140,10 @@ class Gcc < Formula
       "--enable-languages=#{languages.join(",")}",
       # Make most executables versioned to avoid conflicts.
       "--program-suffix=-#{version_suffix}",
-      "--with-gmp=#{Formula["gmp"].opt_prefix}",
-      "--with-mpfr=#{Formula["mpfr"].opt_prefix}",
-      "--with-mpc=#{Formula["libmpc"].opt_prefix}",
-      "--with-cloog=#{Formula["cloog"].opt_prefix}",
-      "--with-isl=#{Formula["isl"].opt_prefix}",
+      "--with-gmp=#{buildpath}/gmp",
+      "--with-mpfr=#{buildpath}/mpfr",
+      "--with-mpc=#{buildpath}/libmpc",
+      "--with-isl=#{buildpath}/isl",
       "--with-system-zlib",
       "--enable-libstdcxx-time=yes",
       "--enable-stage1-checking",
