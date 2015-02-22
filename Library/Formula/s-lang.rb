@@ -1,9 +1,8 @@
 class SLang < Formula
   homepage "http://www.jedsoft.org/slang/"
-  url "ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.4.tar.bz2"
-  mirror "http://pkgs.fedoraproject.org/repo/pkgs/slang/slang-2.2.4.tar.bz2/7fcfd447e378f07dd0c0bae671fe6487/slang-2.2.4.tar.bz2"
-  sha1 "34e68a993888d0ae2ebc7bc31b40bc894813a7e2"
-  revision 1
+  url "http://www.jedsoft.org/releases/slang/slang-2.3.0.tar.bz2"
+  mirror "http://pkgs.fedoraproject.org/repo/pkgs/slang/slang-2.3.0.tar.bz2/3bcc790460d52db1316c20395b7ac2f1/slang-2.3.0.tar.bz2"
+  sha1 "6e26e90307d4569e5feef195648c0858ba27f7ac"
 
   bottle do
     revision 3
