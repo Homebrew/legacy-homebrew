@@ -5,9 +5,9 @@ class Ipbt < Formula
 
   bottle do
     cellar :any
-    sha1 "979bc5d479a2a232c45301737133bd008e50214a" => :mavericks
-    sha1 "556a13b85150ca19aaab8915d2d107d9101e1abd" => :mountain_lion
-    sha1 "9ddf633e6a677e4818b14788bf13c3263fd3e85d" => :lion
+    sha1 "94e2a914cf9064bfe6efd9657d207ea40ca79d57" => :yosemite
+    sha1 "3cdaf9b8d08e0df8c07abf5b5a1f032bb3ea9247" => :mavericks
+    sha1 "a8069949e4cc1e4a6cf7124ac3e2ecc3488a33ee" => :mountain_lion
   end
 
   def install
