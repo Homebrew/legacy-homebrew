@@ -1,10 +1,7 @@
-require 'formula'
-
 class Neon < Formula
-  homepage 'http://www.webdav.org/neon/'
-  url 'http://www.webdav.org/neon/neon-0.30.0.tar.gz'
-  sha1 '9e6297945226f90d66258b7ee05f757ff5cea10a'
-  revision 1
+  homepage "http://www.webdav.org/neon/"
+  url "http://www.webdav.org/neon/neon-0.30.1.tar.gz"
+  sha1 "efec2a6f17d9bd2323345320e3067349ddc9cf79"
 
   bottle do
     cellar :any
@@ -14,12 +11,12 @@ class Neon < Formula
     sha1 "2273ce25ead7be557b71101303cfda284364cd7b" => :mountain_lion
   end
 
-  keg_only :provided_by_osx
+  keg_only :provided_pre_mountain_lion
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'openssl'
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # Configure switch unconditionally adds the -no-cpp-precomp switch
   # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
@@ -37,13 +34,13 @@ class Neon < Formula
                           "--disable-nls",
                           "--with-ssl=openssl",
                           "--with-libs=#{Formula["openssl"].opt_prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 
 __END__
 diff --git a/configure b/configure
-index b0a7908..a0f2ceb 100755
+index d7702d2..5c3b5a3 100755
 --- a/configure
 +++ b/configure
 @@ -4224,7 +4224,6 @@ fi
