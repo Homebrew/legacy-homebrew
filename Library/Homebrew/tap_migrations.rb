@@ -44,6 +44,7 @@ TAP_MIGRATIONS = {
   "electric-fence" => "homebrew/boneyard",
   "fceux" => "homebrew/games",
   "feh" => "homebrew/x11",
+  "figtoipe" => "homebrew/head-only",
   "fox" => "homebrew/x11",
   "freeglut" => "homebrew/x11",
   "freerdp" => "homebrew/x11",
