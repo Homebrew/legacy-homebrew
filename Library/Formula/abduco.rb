@@ -1,9 +1,9 @@
-require "formula"
+# encoding: UTF-8
 
 class Abduco < Formula
   homepage "http://www.brain-dump.org/projects/abduco"
-  url "http://www.brain-dump.org/projects/abduco/abduco-0.2.tar.gz"
-  sha1 "e3a706b782fcb18fd70076ff3550bfdb4829b2ec"
+  url "http://www.brain-dump.org/projects/abduco/abduco-0.3.tar.gz"
+  sha1 "175b2c0eaf2a8b7fb044f1454d018dac4ec31293"
   head "git://repo.or.cz/abduco.git"
 
   bottle do
@@ -11,6 +11,13 @@ class Abduco < Formula
     sha1 "dc3f05e32b87e67d3b9da26e199fb92de369794a" => :mavericks
     sha1 "1fe57b58b3cdac26a667f19ad25bf0c06dcbf1f0" => :mountain_lion
     sha1 "d7c559b7d1a696d8ca34934276f715461ee0ed33" => :lion
+  end
+
+  # upstream fix for create-session: Invalid argument
+  # safe to remove in versions > 0.3
+  patch do
+    url "http://repo.or.cz/w/abduco.git/patch/91b733"
+    sha1 "4370ceb4c304ecd916e69c6c7c876666807f6fb8"
   end
 
   def install
