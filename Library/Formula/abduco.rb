@@ -6,9 +6,9 @@ class Abduco < Formula
 
   bottle do
     cellar :any
-    sha1 "dc3f05e32b87e67d3b9da26e199fb92de369794a" => :mavericks
-    sha1 "1fe57b58b3cdac26a667f19ad25bf0c06dcbf1f0" => :mountain_lion
-    sha1 "d7c559b7d1a696d8ca34934276f715461ee0ed33" => :lion
+    sha1 "2ac0afd13b4465b28e0688809131a5ff0055f2de" => :yosemite
+    sha1 "8653786cb86fbfb36fb03af3451e19bb55792cbf" => :mavericks
+    sha1 "bd2982595586f67eb747bc287be03fcd5418f4e6" => :mountain_lion
   end
 
   # upstream fix for create-session: Invalid argument
