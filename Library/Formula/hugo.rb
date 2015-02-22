@@ -1,8 +1,8 @@
 class Hugo < Formula
-  homepage "http://hugo.spf13.com/"
+  homepage "http://gohugo.io/"
   head "https://github.com/spf13/hugo.git"
-  url "https://github.com/spf13/hugo/archive/v0.12.tar.gz"
-  sha1 "f0537942cde9645ee2d98aaaf927a80c79070e99"
+  url "https://github.com/spf13/hugo/archive/v0.13.tar.gz"
+  sha1 "a821fcde92b03baf49a45970d0ae6b781a3b12c1"
 
   bottle do
     cellar :any
