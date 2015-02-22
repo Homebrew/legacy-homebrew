@@ -1,9 +1,7 @@
-require "formula"
-
 class Cereal < Formula
-  homepage "http://uscilab.github.io/cereal/"
-  url "https://github.com/USCiLab/cereal/archive/v1.0.0.tar.gz"
-  sha1 "a8e409deb2bdba6bdbc04d3eb2d5294d4cc4b9e2"
+  homepage "https://uscilab.github.io/cereal/"
+  url "https://github.com/USCiLab/cereal/archive/v1.1.0.tar.gz"
+  sha1 "a7036f3fdb43315b0b6aa6c112c5878c03f1aa9e"
 
   head "https://github.com/USCiLab/cereal.git", :branch => "develop"
 
