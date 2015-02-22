@@ -16,6 +16,7 @@ TAP_MIGRATIONS = {
   "cardpeek" => "homebrew/x11",
   "catdoc" => "homebrew/boneyard",
   "cdf" => "homebrew/boneyard",
+  "celt" => "homebrew/boneyard",
   "clam" => "homebrew/boneyard",
   "cloudfoundry-cli" => "pivotal/tap",
   "clusterit" => "homebrew/x11",
