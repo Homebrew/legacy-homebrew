@@ -1,10 +1,9 @@
-require 'formula'
-
 class Ssdb < Formula
-  homepage "http://ssdb.io/?lang=en"
+  homepage "http://ssdb.io/"
   url "https://github.com/ideawu/ssdb/archive/1.8.0.tar.gz"
-  sha1 "ed9f016bdfef9543a866144fee4a37544f39155e"
+  sha1 "88f4930ae6f3d0234c783546e1fb00638801c4e7"
   head "https://github.com/ideawu/ssdb.git"
+  revision 1
 
   bottle do
     sha1 "b1a7566fcd83d479a03e7b47be9a68359b36cc77" => :yosemite
@@ -76,7 +75,10 @@ class Ssdb < Formula
 
   test do
     pid = fork do
-      Signal.trap("TERM") { system("#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf"); exit }
+      Signal.trap("TERM") do
+        system("#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf")
+        exit
+      end
     end
     sleep(3)
     Process.kill("TERM", pid)
