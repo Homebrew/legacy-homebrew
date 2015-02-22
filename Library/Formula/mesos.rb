@@ -1,7 +1,7 @@
 class Mesos < Formula
   homepage "http://mesos.apache.org"
-  url "http://mirror.cogentco.com/pub/apache/mesos/0.20.1/mesos-0.20.1.tar.gz"
-  sha1 "8028366a2538551daaf290f7c62c4c8bfb415f61"
+  url "http://mirror.cogentco.com/pub/apache/mesos/0.21.1/mesos-0.21.1.tar.gz"
+  sha1 "275d211364699f2861c108fa80764785178f3eeb"
 
   bottle do
     revision 1
@@ -12,19 +12,33 @@ class Mesos < Formula
   depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
   depends_on "maven" => :build
-  # Use our Zookeeper for Yosemite and not the one shipped with Mesos
-  # Remove with next release.
-  # See https://github.com/Homebrew/homebrew/issues/32965
-  depends_on "zookeeper" if MacOS.version == :yosemite
+  depends_on :apr => :build
+  depends_on "subversion"
+
+
+  needs :cxx11
 
   def install
+    # work around distutils abusing CC instead of using CXX
+    # https://issues.apache.org/jira/browse/MESOS-799
+    # https://github.com/Homebrew/homebrew/pull/37087
+    inreplace "src/python/native/setup.py.in",
+              "import ext_modules",
+              "import os; os.environ['CC'] = '#{ENV.cxx}'\n\\0"
+
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
             "--disable-silent-rules",
+            "--without-python",
+            "--with-svn=#{Formula["subversion"].opt_prefix}"
            ]
 
-    args << "--with-zookeeper=#{Formula["zookeeper"].opt_prefix}" if MacOS.version == :yosemite
+    unless MacOS::CLT.installed?
+      args << "--with-apr=#{Formula["apr"].opt_prefix}/libexec"
+    end
+
+    ENV.cxx11
 
     system "./configure", *args
     system "make"
