@@ -1,5 +1,3 @@
-require "formula"
-
 class Bsdmake < Formula
   homepage "http://opensource.apple.com/"
   url "http://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz"
@@ -64,5 +62,15 @@ class Bsdmake < Formula
     bin.install "pmake" => "bsdmake"
     man1.install "make.1" => "bsdmake.1"
     (share/"mk/bsdmake").install Dir["mk/*"]
+  end
+
+  test do
+    (testpath/"Makefile").write <<-EOS.undent
+      foo:
+      \ttouch $@
+    EOS
+
+    system "#{bin}/bsdmake"
+    assert File.exist? "#{testpath}/foo"
   end
 end
