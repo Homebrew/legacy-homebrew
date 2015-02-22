@@ -1,6 +1,6 @@
 class SpoofMac < Formula
   homepage "https://github.com/feross/SpoofMAC"
-  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.2.tar.gz"
+  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.3.tar.gz"
   sha1 "3a97b9efbc05beb6f4ea49650dcee3cf1c2f9db0"
   head "https://github.com/feross/SpoofMAC.git"
 
