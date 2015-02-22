@@ -5,9 +5,9 @@ class Spiped < Formula
 
   bottle do
     cellar :any
-    sha1 "66d1c75b789043dad26a0615276a3cf447394c3d" => :mavericks
-    sha1 "2d57e00a7bd6e275bf0366c67d8b727818165c43" => :mountain_lion
-    sha1 "d947a62a7f03ea5c608b6ec43c9c5ed0333f4a06" => :lion
+    sha1 "dc03cb40b160fa0720b228fb54aafaff05425790" => :yosemite
+    sha1 "59ec8ccb0d50b8b80e8f6627b6842ab37a73777c" => :mavericks
+    sha1 "c971b8d141926434a69eb3ca7141217be10f9ecb" => :mountain_lion
   end
 
   depends_on "bsdmake" => :build
