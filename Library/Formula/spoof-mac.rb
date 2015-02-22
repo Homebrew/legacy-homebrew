@@ -5,9 +5,9 @@ class SpoofMac < Formula
   head "https://github.com/feross/SpoofMAC.git"
 
   bottle do
-    sha1 "6aee116b27955580e26dd0ae0ec6bb0c1baa4c17" => :yosemite
-    sha1 "74d8095361d48f864dea308a18e9621b32289139" => :mavericks
-    sha1 "7dc0da233509d6fb8cd4ece24c3a5c05691373de" => :mountain_lion
+    sha1 "39c3d357cf21945a30d3866874c81c7423737056" => :yosemite
+    sha1 "0dcd2f368e9f5c08c33e982bfc8fe746193bb6ab" => :mavericks
+    sha1 "06cae93bd22951b3d119737f5827759bf2f4f904" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
