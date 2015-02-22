@@ -1,9 +1,7 @@
-require "formula"
-
 class ClosureCompiler < Formula
   homepage "https://github.com/google/closure-compiler"
-  url "https://github.com/google/closure-compiler/archive/maven-release-v20141023.tar.gz"
-  sha1 "4551a74f0ccfd7e1de325d495b5f71f71a3b24c8"
+  url "https://github.com/google/closure-compiler/archive/maven-release-v20150126.tar.gz"
+  sha1 "2d21bd4faf8a982346d390391d7f6d0e60fe571b"
 
   head "https://github.com/google/closure-compiler.git"
 
@@ -15,7 +13,7 @@ class ClosureCompiler < Formula
   end
 
   depends_on :ant => :build
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
 
   def install
     system "ant", "clean"
