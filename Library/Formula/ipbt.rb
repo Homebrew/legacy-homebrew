@@ -1,10 +1,7 @@
-require 'formula'
-
 class Ipbt < Formula
-  homepage 'http://www.chiark.greenend.org.uk/~sgtatham/ipbt/'
-  url 'http://www.chiark.greenend.org.uk/~sgtatham/ipbt/ipbt-r9487.tar.gz'
-  sha1 'cd7c0b991a9422ed5f31ce13846f28fb5860b0dc'
-  version 'r9487'
+  homepage "http://www.chiark.greenend.org.uk/~sgtatham/ipbt/"
+  url "http://www.chiark.greenend.org.uk/~sgtatham/ipbt/ipbt-20141026.2197432.tar.gz"
+  sha1 "db190dda34611f0037c56b0cf8fb595d10f2b1a5"
 
   bottle do
     cellar :any
@@ -14,8 +11,9 @@ class Ipbt < Formula
   end
 
   def install
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
-    system "make install"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-dependency-tracking"
+    system "make", "install"
   end
 
   test do
