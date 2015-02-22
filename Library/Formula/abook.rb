@@ -1,26 +1,30 @@
-require 'formula'
-
 class Abook < Formula
-  homepage 'http://abook.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/abook/abook/0.5.6/abook-0.5.6.tar.gz'
-  sha1 '79f04f2264c8bd81bbc952b6560c86d69b21615d'
+  homepage "http://abook.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/abook/abook/0.5.6/abook-0.5.6.tar.gz"
+  sha1 "79f04f2264c8bd81bbc952b6560c86d69b21615d"
+  head "git://git.code.sf.net/p/abook/git"
 
   devel do
-    url 'http://abook.sourceforge.net/devel/abook-0.6.0pre2.tar.gz'
-    sha1 '42a939fba43e51aa011fa185113c12ec4bc1e1ec'
-    version '0.6.0pre2'
+    url "http://abook.sourceforge.net/devel/abook-0.6.0pre2.tar.gz"
+    sha1 "42a939fba43e51aa011fa185113c12ec4bc1e1ec"
+    version "0.6.0pre2"
 
     # Remove `inline` from function implementation for clang compatibility
     patch :DATA
   end
 
-  depends_on 'readline'
+  depends_on "readline"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/abook", "--formats"
   end
 end
 
