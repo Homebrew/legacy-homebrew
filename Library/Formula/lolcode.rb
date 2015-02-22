@@ -1,20 +1,19 @@
-require 'formula'
-
 class Lolcode < Formula
-  homepage 'http://lolcode.org'
-  head 'https://github.com/justinmeza/lolcode.git'
-  url 'https://github.com/justinmeza/lci/archive/v0.11.1.tar.gz'
-  sha1 '9949a2480a738ac566dbe66142dd351f778fb8b7'
+  homepage "http://lolcode.org"
+  head "https://github.com/justinmeza/lolcode.git"
+  # note: 0.10.* releases are stable versions, 0.11.* are dev ones
+  url "https://github.com/justinmeza/lci/archive/v0.11.2.tar.gz"
+  sha1 "6c5b996bb4defb77542a8fb525df9991b21139f9"
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
-  conflicts_with 'lci', :because => 'both install `lci` binaries'
+  conflicts_with "lci", :because => "both install `lci` binaries"
 
   def install
-    system "cmake ."
+    system "cmake", "."
     system "make"
     # Don't use `make install` for this one file
-    bin.install 'lci'
+    bin.install "lci"
   end
 
   test do
@@ -26,8 +25,6 @@ class Lolcode < Formula
       KTHXBYE
     EOS
 
-    output = `#{bin}/lci #{path}`
-    assert_equal "HAI WORLD\n", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "HAI WORLD\n", shell_output("#{bin}/lci #{path}")
   end
 end
