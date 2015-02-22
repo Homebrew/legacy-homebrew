@@ -1,7 +1,7 @@
 class Mesos < Formula
   homepage "http://mesos.apache.org"
-  url "http://mirror.cogentco.com/pub/apache/mesos/0.20.1/mesos-0.20.1.tar.gz"
-  sha1 "8028366a2538551daaf290f7c62c4c8bfb415f61"
+  url "http://mirror.cogentco.com/pub/apache/mesos/0.21.0/mesos-0.21.0.tar.gz"
+  sha1 "52cc62bd83903f42c289ecb647368881f918fa02"
 
   bottle do
     revision 1
@@ -12,10 +12,7 @@ class Mesos < Formula
   depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
   depends_on "maven" => :build
-  # Use our Zookeeper for Yosemite and not the one shipped with Mesos
-  # Remove with next release.
-  # See https://github.com/Homebrew/homebrew/issues/32965
-  depends_on "zookeeper" if MacOS.version == :yosemite
+
 
   def install
     args = ["--prefix=#{prefix}",
@@ -24,7 +21,6 @@ class Mesos < Formula
             "--disable-silent-rules",
            ]
 
-    args << "--with-zookeeper=#{Formula["zookeeper"].opt_prefix}" if MacOS.version == :yosemite
 
     system "./configure", *args
     system "make"
