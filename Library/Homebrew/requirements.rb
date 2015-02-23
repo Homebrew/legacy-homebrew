@@ -160,4 +160,8 @@ class JavaDependency < Requirement
     s += super
     s
   end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} version=#{@version.inspect}>"
+  end
 end
