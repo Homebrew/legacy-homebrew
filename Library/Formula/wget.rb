@@ -11,7 +11,7 @@ class Wget < Formula
     sha1 "0eef858e3208f2757f5105346bf79350f280a002" => :yosemite
     sha1 "9a02fd3da57a8afee248ebb09ea294c9d8729b3c" => :mavericks
     sha1 "0402cc64a2127d2b58ad8a9af3f161c1169a6dbd" => :mountain_lion
-    endsfds
+  end
 
   head do
     url "git://git.savannah.gnu.org/wget.git"
