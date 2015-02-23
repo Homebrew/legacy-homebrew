@@ -3,6 +3,12 @@ class Adplug < Formula
   url "https://downloads.sourceforge.net/project/adplug/AdPlug%20core%20library/2.2.1/adplug-2.2.1.tar.bz2"
   sha1 "5023282ff44f183c9b6d7da9f57f51595742a5f7"
 
+  bottle do
+    sha1 "9554ef2e879f3f9c50d151c1fc721bb9528ad772" => :yosemite
+    sha1 "364e92b8aafb2960759ebad9020604bcb15f6b17" => :mavericks
+    sha1 "45aedf1e4e5d240ec2014b19d27ea31574086447" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libbinio"
 
