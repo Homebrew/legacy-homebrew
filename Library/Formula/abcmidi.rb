@@ -6,9 +6,9 @@ class Abcmidi < Formula
 
   bottle do
     cellar :any
-    sha1 "caa541f475f5a062989ab28ba02f0e81bfaa301a" => :yosemite
-    sha1 "5ae503fe5b1753c9c0a29a64b105c3986757d5b0" => :mavericks
-    sha1 "5d4c6bad566b33e63739a8a085d9689ac3609c20" => :mountain_lion
+    sha1 "63b792b7623b9706183a9ea6513b53a536899403" => :yosemite
+    sha1 "d75b566f2cef9f3614b04d36847f95a162ae9341" => :mavericks
+    sha1 "1fdd827245c315ab25d8eb8a65e00d02d518e174" => :mountain_lion
   end
 
   def install
