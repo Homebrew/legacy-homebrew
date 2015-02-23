@@ -641,7 +641,7 @@ module Homebrew
     if ARGV.include? '--ci-master' or ARGV.include? '--ci-pr' \
        or ARGV.include? '--ci-testing'
       ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS_COMMIT"]
-      ARGV << "--junit" << "--local"
+      ARGV << "--junit" << "--local" << "--debug"
     end
     if ARGV.include? '--ci-master'
       ARGV << '--no-bottle' << '--email'
@@ -690,7 +690,7 @@ module Homebrew
         raise "Missing BINTRAY_USER or BINTRAY_KEY variables!"
       end
 
-      ARGV << '--verbose'
+      ARGV << '--verbose' << '--debug'
 
       bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
       return if bottles.empty?
