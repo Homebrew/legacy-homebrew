@@ -43,6 +43,10 @@ class XcodeDependency < Requirement
       EOS
     end
   end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} version=#{@version.inspect}>"
+  end
 end
 
 class MysqlDependency < Requirement
