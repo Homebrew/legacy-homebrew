@@ -34,6 +34,10 @@ class MPIDependency < Requirement
     quiet_system compiler, '--version'
   end
 
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} lang_list=#{@lang_list.inspect}>"
+  end
+
   satisfy do
     @lang_list.each do |lang|
       case lang
