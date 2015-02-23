@@ -1,5 +1,3 @@
-require "formula"
-
 class Afflib < Formula
   homepage "https://github.com/sshock/AFFLIBv3"
   url "https://github.com/sshock/AFFLIBv3/archive/v3.7.6.tar.gz"
@@ -33,7 +31,11 @@ class Afflib < Formula
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/affcat", "-v"
   end
 end
 
