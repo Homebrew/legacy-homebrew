@@ -1,7 +1,7 @@
 class Ipsumdump < Formula
   homepage "http://www.read.seas.harvard.edu/~kohler/ipsumdump/"
-  url "http://www.read.seas.harvard.edu/~kohler/ipsumdump/ipsumdump-1.84.tar.gz"
-  sha1 "3dc3ff9d97a65be25866d624a663be91e27d8628"
+  url "http://www.read.seas.harvard.edu/~kohler/ipsumdump/ipsumdump-1.85.tar.gz"
+  sha1 "53b7be092d94c1b28817e1c6920bb70293eb60b3"
   head "https://github.com/kohler/ipsumdump.git"
 
   bottle do
