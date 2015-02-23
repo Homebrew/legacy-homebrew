@@ -94,7 +94,7 @@ module Homebrew
       changed_formulae = []
 
       if tap_dir
-        system "brew", "tap", "--repair"
+        safe_system "brew", "tap", "--repair", "--debug"
         formula_dir = %w[Formula HomebrewFormula].find { |d| tap_dir.join(d).directory? } || ""
       else
         formula_dir = "Library/Formula"
