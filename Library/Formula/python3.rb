@@ -193,7 +193,7 @@ class Python3 < Formula
   end
 
   def xy
-    version.to_s.slice /(3.\d)/
+    version.to_s.slice(/(3.\d)/) || "3.5"
   end
 
   def distutils_fix_superenv(args)
