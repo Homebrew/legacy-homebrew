@@ -7,10 +7,9 @@ class BerkeleyDb < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "a134b5effaa73fd296b2601180520292c0a6d095" => :yosemite
-    sha1 "910660e253bf32a1ce730d4ba27e3090f645f5f6" => :mavericks
-    sha1 "aaafa41026335a6b7e6c0792d1511325c79409fa" => :mountain_lion
+    sha1 "1e80c66e55a970b39829cc98e41f3252557d3736" => :yosemite
+    sha1 "296738e8b7d2d23fafc19f3eaad6693e18bab05d" => :mavericks
+    sha1 "9573e87c5c4a5bf39f89b712c59b5329cb7c0b41" => :mountain_lion
   end
 
   option 'with-java', 'Compile with Java support.'
