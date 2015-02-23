@@ -5,7 +5,6 @@ class Te < Formula
 
   homepage "https://github.com/jetaggart/te"
   url "https://github.com/jetaggart/te/archive/v0.1.1.tar.gz"
-  version "0.1.0"
   sha1 "cbdb428308018bfcf3fca99c1118a2637d001a75"
 
   depends_on "ghc" => :build
