@@ -1,12 +1,11 @@
-require 'formula'
-
 class Libgadu < Formula
-  homepage 'http://libgadu.net/'
-  url 'http://toxygen.net/libgadu/files/libgadu-1.11.2.tar.gz'
-  sha1 '0e13836416b49212d5f17a74d8c2e72c5f915238'
+  homepage "http://libgadu.net/"
+  url "http://github.com/wojtekka/libgadu/releases/download/1.12.1/libgadu-1.12.1.tar.gz"
+  sha1 "a41435c0ae5dd5e7e3b998915639a8288398f86e"
 
   def install
-    system './configure', "--prefix=#{prefix}", '--disable-debug', '--disable-dependency-tracking'
-    system 'make install'
+    system "./configure", "--prefix=#{prefix}", "--disable-debug",
+                          "--disable-dependency-tracking"
+    system "make", "install"
   end
 end
