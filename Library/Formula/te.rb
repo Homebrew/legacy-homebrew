@@ -21,7 +21,6 @@ class Te < Formula
   end
 
   test do
-    system "te", "help", ">", "output.txt"
-    assert (Pathname.pwd/"output.txt").read.include? "Valid commands are"
+    system "te", "help"
   end
 end
