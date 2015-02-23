@@ -6,9 +6,9 @@ class Ssdb < Formula
   revision 1
 
   bottle do
-    sha1 "b1a7566fcd83d479a03e7b47be9a68359b36cc77" => :yosemite
-    sha1 "b68643eb0c93132b41c8f09fca4005e683db9d73" => :mavericks
-    sha1 "99f7b2b71217e236fa6dee657562b3efbf4a9750" => :mountain_lion
+    sha1 "61b35f6fc12408e55863344feab5af1a8fbd3d88" => :yosemite
+    sha1 "3e6a066798981b12d02885fa4ee3358bf3f251a2" => :mavericks
+    sha1 "807e32ab2af2db9fbaa1a4104c1a5e065c3a9231" => :mountain_lion
   end
 
   def install
