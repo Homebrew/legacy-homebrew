@@ -14,7 +14,7 @@ class Mesos < Formula
   depends_on "maven" => :build
   depends_on "subversion"
 
-  needs: cxx11
+  needs :cxx11
 
   def install
     args = ["--prefix=#{prefix}",
