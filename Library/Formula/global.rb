@@ -5,9 +5,10 @@ class Global < Formula
   sha1 "6b73c0b3c7eea025c8004f8d82d836f2021d0c9e"
 
   bottle do
-    sha1 "ca77f51d474b8cf4fdcc905b4f46f1a10610a105" => :yosemite
-    sha1 "b5c0f1426b5fc0ff6d1f04bff2cf13ae07b55160" => :mavericks
-    sha1 "d1695e9e8eeb46b36ad77cd2d98dd79cbecab039" => :mountain_lion
+    revision 1
+    sha1 "bb61eb5f9f950d47eaaa856c7fb18b354256d646" => :yosemite
+    sha1 "b295a8b0f40f07fccec741217dc05c38a4d42bc8" => :mavericks
+    sha1 "23d4ba161767bfe1d688442df1325a28cf0cc657" => :mountain_lion
   end
 
   head do
@@ -56,6 +57,7 @@ class Global < Formula
       bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     end
 
+    inreplace "gtags.conf", prefix, opt_prefix
     etc.install "gtags.conf"
 
     # we copy these in already

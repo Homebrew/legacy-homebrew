@@ -2,13 +2,13 @@ require "formula"
 
 class RakudoStar < Formula
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2015.01.tar.gz"
-  sha256 "30c22e729bb6290e120bf7eb9b28a691090183b010a7f91aefd4d25a2c2d12bf"
+  url "http://rakudo.org/downloads/star/rakudo-star-2015.02.tar.gz"
+  sha256 "e54309b0d79afc1491767110ec39a1aa7d9314d93e29dbaab082014cfb055611"
 
   bottle do
-    sha1 "3475077e3a06cd6602228bfddd86617f9a565d80" => :yosemite
-    sha1 "3a58076b45388fbbcf5598eb46c6acd516eabec3" => :mavericks
-    sha1 "c6135cdccafeefc44ae73406bf9909c071c5b12d" => :mountain_lion
+    sha1 "317094904815718655392b889726bea877c1be4b" => :yosemite
+    sha1 "16287a574e0281a0469083226c377ccbfd4ef7ee" => :mavericks
+    sha1 "61f4e27a76d371d8c7721f0d7a70df02fe4e97d8" => :mountain_lion
   end
 
   option "with-jvm", "Build also for jvm as an alternate backend."

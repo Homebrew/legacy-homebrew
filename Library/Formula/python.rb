@@ -234,7 +234,8 @@ class Python < Formula
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
-      # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
+      # <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md>
+      import re
       import os
       import sys
 
@@ -247,36 +248,35 @@ class Python < Formula
           exit('Your PYTHONPATH points to a site-packages dir for Python 2.x but you are running Python ' +
                str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
                '     You should `unset PYTHONPATH` to fix this.')
-      else:
-          # Only do this for a brewed python:
-          opt_executable = '#{opt_bin}/python2.7'
-          if os.path.commonprefix([os.path.realpath(e) for e in [opt_executable, sys.executable]]).startswith('#{rack}'):
-              # Remove /System site-packages, and the Cellar site-packages
-              # which we moved to lib/pythonX.Y/site-packages. Further, remove
-              # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
-              sys.path = [ p for p in sys.path
-                           if (not p.startswith('/System') and
-                               not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
-                               not (p.startswith('#{rack}') and p.endswith('site-packages'))) ]
 
-              # LINKFORSHARED (and python-config --ldflags) return the
-              # full path to the lib (yes, "Python" is actually the lib, not a
-              # dir) so that third-party software does not need to add the
-              # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
-              # Assume Framework style build (default since months in brew)
-              try:
-                  from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/2.7/Python'
-              except:
-                  pass  # remember: don't print here. Better to fail silently.
+      # Only do this for a brewed python:
+      if os.path.realpath(sys.executable).startswith('#{rack}'):
+          # Shuffle /Library site-packages to the end of sys.path and reject
+          # paths in /System pre-emptively (#14712)
+          library_site = '/Library/Python/2.7/site-packages'
+          library_packages = [p for p in sys.path if p.startswith(library_site)]
+          sys.path = [p for p in sys.path if not p.startswith(library_site) and
+                                             not p.startswith('/System')]
+          # .pth files have already been processed so don't use addsitedir
+          sys.path.extend(library_packages)
 
-              # Set the sys.executable to use the opt_prefix
-              sys.executable = opt_executable
+          # the Cellar site-packages is a symlink to the HOMEBREW_PREFIX
+          # site_packages; prefer the shorter paths
+          long_prefix = re.compile(r'#{rack}/[0-9\._abrc]+/Frameworks/Python\.framework/Versions/2\.7/lib/python2\.7/site-packages')
+          sys.path = [long_prefix.sub('#{site_packages}', p) for p in sys.path]
 
-          # Tell about homebrew's site-packages location.
-          # This is needed for Python to parse *.pth.
-          import site
-          site.addsitedir('#{site_packages}')
+          # LINKFORSHARED (and python-config --ldflags) return the
+          # full path to the lib (yes, "Python" is actually the lib, not a
+          # dir) so that third-party software does not need to add the
+          # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
+          try:
+              from _sysconfigdata import build_time_vars
+              build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/2.7/Python'
+          except:
+              pass  # remember: don't print here. Better to fail silently.
+
+          # Set the sys.executable to use the opt_prefix
+          sys.executable = '#{opt_bin}/python2.7'
     EOF
   end
 
