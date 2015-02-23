@@ -1,7 +1,7 @@
 class H2o < Formula
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.0.0.tar.gz"
-  sha1 "9215eb3ec6b7455ce20b3dc3d322c327d0e56dad"
+  url "https://github.com/h2o/h2o/archive/v1.0.1.tar.gz"
+  sha1 "1c66c59123a3e23172b610380af5e78d5e95a78a"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
