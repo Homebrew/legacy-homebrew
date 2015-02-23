@@ -1,9 +1,7 @@
-require "formula"
-
 class ActivemqCpp < Formula
   homepage "https://activemq.apache.org/cms/index.html"
-  url "http://www.apache.org/dyn/closer.cgi?path=activemq/activemq-cpp/3.8.3/activemq-cpp-library-3.8.3-src.tar.bz2"
-  sha1 "ea67d8b86a524ff57f2a2e0e2451deafacfd6d4b"
+  url "http://www.apache.org/dyn/closer.cgi?path=activemq/activemq-cpp/3.8.4/activemq-cpp-library-3.8.4-src.tar.bz2"
+  sha1 "7c0c79833f1647df3905948f3b8f2592bc7a8994"
 
   bottle do
     cellar :any
