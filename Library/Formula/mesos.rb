@@ -14,6 +14,7 @@ class Mesos < Formula
   depends_on "maven" => :build
   depends_on "subversion"
 
+  needs: cxx11
 
   def install
     args = ["--prefix=#{prefix}",
@@ -22,6 +23,7 @@ class Mesos < Formula
             "--disable-silent-rules",
            ]
 
+    ENV.cxx11
 
     system "./configure", *args
     system "make"
