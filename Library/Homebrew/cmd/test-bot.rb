@@ -736,7 +736,9 @@ module Homebrew
 
       ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
-      safe_system "brew", "bottle", "--merge", "--write", *Dir["*.bottle.rb"]
+      bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
+      bottle_args << "--tap=#{tap}" if tap
+      safe_system "brew", "bottle", *bottle_args
 
       remote_repo = tap ? tap.gsub("/", "-") : "homebrew"
 
