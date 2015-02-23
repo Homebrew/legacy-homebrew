@@ -3,6 +3,7 @@
 
 require 'utils'
 require 'formula'
+require 'cmd/tap'
 
 module Homebrew
   def tap arg
@@ -92,9 +93,9 @@ module Homebrew
       pull_url url
 
       changed_formulae = []
+      changed_formulae_paths = []
 
       if tap_dir
-        safe_system "brew", "tap", "--repair", "--debug"
         formula_dir = %w[Formula HomebrewFormula].find { |d| tap_dir.join(d).directory? } || ""
       else
         formula_dir = "Library/Formula"
@@ -104,7 +105,9 @@ module Homebrew
         "git", "diff-tree", "-r", "--name-only",
         "--diff-filter=AM", revision, "HEAD", "--", formula_dir
       ).each_line do |line|
-        name = File.basename(line.chomp, ".rb")
+        line = line.chomp
+        name = File.basename(line, ".rb")
+        changed_formulae_paths << Pathname.new("#{formula_dir}/#{line}")
 
         begin
           changed_formulae << Formula[name]
@@ -113,6 +116,8 @@ module Homebrew
           next
         end
       end
+
+      link_tap_formula(changed_formulae_paths, false)
 
       unless ARGV.include? '--bottle'
         changed_formulae.each do |f|
