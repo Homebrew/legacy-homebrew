@@ -24,7 +24,7 @@ class Capstone < Formula
     # As per the above inreplace, the pkgconfig file needs fixing as well.
     inreplace lib/"pkgconfig/capstone.pc" do |s|
       s.gsub! "/usr/lib", lib
-      s.gsub! "/usr/include/capstone", include
+      s.gsub! "/usr/include/capstone", "#{include}/capstone"
     end
   end
 
