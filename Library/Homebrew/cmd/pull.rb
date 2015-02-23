@@ -107,7 +107,7 @@ module Homebrew
       ).each_line do |line|
         line = line.chomp
         name = File.basename(line, ".rb")
-        changed_formulae_paths << Pathname.new("#{formula_dir}/#{line}")
+        changed_formulae_paths << Pathname.new("#{formula_dir}/#{line}") if tap_dir
 
         begin
           changed_formulae << Formula[name]
