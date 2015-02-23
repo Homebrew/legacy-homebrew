@@ -12,6 +12,7 @@ class Mesos < Formula
   depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
   depends_on "maven" => :build
+  depends_on "subversion"
 
 
   def install
