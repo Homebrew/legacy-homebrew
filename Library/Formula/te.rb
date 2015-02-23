@@ -5,7 +5,7 @@ class Te < Formula
 
   homepage "https://github.com/jetaggart/te"
   url "https://github.com/jetaggart/te/archive/v0.1.1.tar.gz"
-  sha1 "cbdb428308018bfcf3fca99c1118a2637d001a75"
+  sha1 "a6e4e9c7872844d84f300234d54897f0fa8f22ef"
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
