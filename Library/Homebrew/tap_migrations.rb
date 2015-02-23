@@ -31,6 +31,7 @@ TAP_MIGRATIONS = {
   "dbslayer" => "homebrew/boneyard",
   "ddd" => "homebrew/x11",
   "denyhosts" => "homebrew/boneyard",
+  "dgtal" => "homebrew/science",
   "dmenu" => "homebrew/x11",
   "dotwrp" => "homebrew/science",
   "drizzle" => "homebrew/boneyard",
