@@ -31,3 +31,12 @@ Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/ho
 We accept tips through [Gratipay](https://gratipay.com/Homebrew/).
 
 [![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://gratipay.com/Homebrew/)
+
+## Sponsors
+Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).
+
+Our CI infrastructure is hosted by [The Positive Internet Company](http://www.positive-internet.com).
+
+Our bottles (binary packages) are hosted by Bintray.
+
+[![Downloads by Bintray](https://bintray.com/docs/images/downloads_by_bintray_96.png)](https://bintray.com/homebrew)
