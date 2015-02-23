@@ -21,8 +21,8 @@ class Te < Formula
     cabal_clean_lib
   end
 
-  def test
-    system "te help > output.txt"
+  test do
+    system "te", "help", ">", "output.txt"
     assert (Pathname.pwd/"output.txt").read.include? "Valid commands are"
   end
 end
