@@ -2,15 +2,16 @@ class Polarssl < Formula
   homepage "https://polarssl.org/"
   # 1.4.0 will need dependents recompiled due to breaking binary compat.
   url "https://polarssl.org/download/mbedtls-1.3.10-gpl.tgz"
-  sha256 "d221b02acc96fda8259d9e57798dee9de72977902afb0c63e552b5510c6503a3"
+  sha256 "746fd88e0c6623691fc56c4eed52e40a57b2da0ac80f6dd8995094aa6adb407e"
 
   head "https://github.com/polarssl/polarssl.git"
 
   bottle do
     cellar :any
-    sha1 "8e96e686ff88e87ce6dac505e11a421f29dae80e" => :yosemite
-    sha1 "cad7f83713440bedb0bd8ccce39380366c54dac7" => :mavericks
-    sha1 "ec6014a8618ae437adc15b1bc0b7475cf6ce1593" => :mountain_lion
+    revision 1
+    sha1 "9f073fda6a57f9ce78768f9391c0c92850d187de" => :yosemite
+    sha1 "722cb2387ea35a3c394cb6854068fc124badca09" => :mavericks
+    sha1 "4a0effaa65d9fa92a0c6da1914de2dbdd318ecf4" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -29,9 +30,9 @@ class Polarssl < Formula
     system "make"
     system "make", "install"
     # Why does PolarSSL ship with GNU's Hello included? Let's remove that.
-    rm "#{bin}/hello"
+    rm_f "#{bin}/hello"
     # Remove the pointless example application that hooks into system OpenSSL
-    rm "#{bin}/o_p_test"
+    rm_f "#{bin}/o_p_test"
   end
 
   test do

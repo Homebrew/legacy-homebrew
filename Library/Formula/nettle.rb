@@ -1,6 +1,6 @@
 class Nettle < Formula
-  homepage "http://www.lysator.liu.se/~nisse/nettle/"
-  url "http://www.lysator.liu.se/~nisse/archive/nettle-2.7.1.tar.gz"
+  homepage "https://www.lysator.liu.se/~nisse/nettle/"
+  url "https://www.lysator.liu.se/~nisse/archive/nettle-2.7.1.tar.gz"
   sha1 "e7477df5f66e650c4c4738ec8e01c2efdb5d1211"
 
   bottle do

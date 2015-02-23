@@ -1,15 +1,12 @@
-require "formula"
-
 class Writerperfect < Formula
-  homepage "http://libwpd.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/libwpd/writerperfect/writerperfect-0.9.1/writerperfect-0.9.1.tar.bz2"
-  sha1 "3a71d699dfdcd5a74639c092d62f0566ecd0dce5"
+  homepage "http://sourceforge.net/p/libwpd/wiki/writerperfect/"
+  url "https://downloads.sourceforge.net/project/libwpd/writerperfect/writerperfect-0.9.2/writerperfect-0.9.2.tar.xz"
+  sha1 "a13b8b41d58574fb5b2d3e7ef886887914c34ed7"
 
   bottle do
     cellar :any
-    sha1 "f6787986d7acf9d615f128792842e76e5b996c34" => :mavericks
-    sha1 "a75fac916f334c5edd38d8636d25460a9cd8041e" => :mountain_lion
-    sha1 "9d2e62a9eb89f353f236a7e086fcd03829a12bb6" => :lion
+    sha1 "2c0b127d6a3488421ba9179f0f1642fb360a141c" => :yosemite
+    sha1 "7967b8d4de65dc7bc0add679975b7b546b4b838b" => :mavericks
   end
 
   depends_on "pkg-config" => :build

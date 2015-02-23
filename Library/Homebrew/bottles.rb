@@ -48,6 +48,21 @@ def bottle_filename_formula_name filename
   basename.rpartition("-#{version}").first
 end
 
+class Bintray
+  def self.package(formula_name)
+    formula_name.to_s.gsub "+", "x"
+  end
+
+  def self.repository(tap=nil)
+    return "bottles" if tap.to_s.empty?
+    "bottles-#{tap.sub(/^homebrew\/(homebrew-)?/i, "")}"
+  end
+
+  def self.version(path)
+    BottleVersion.parse(path).to_s
+  end
+end
+
 class BottleCollector
   def initialize
     @checksums = {}

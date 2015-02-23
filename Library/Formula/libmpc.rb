@@ -1,16 +1,14 @@
 class Libmpc < Formula
   homepage "http://multiprecision.org"
-  url "http://ftpmirror.gnu.org/mpc/mpc-1.0.2.tar.gz"
-  mirror "http://multiprecision.org/mpc/download/mpc-1.0.2.tar.gz"
-  sha1 "5072d82ab50ec36cc8c0e320b5c377adb48abe70"
+  url "http://ftpmirror.gnu.org/mpc/mpc-1.0.3.tar.gz"
+  mirror "http://multiprecision.org/mpc/download/mpc-1.0.3.tar.gz"
+  sha1 "b8be66396c726fdc36ebb0f692ed8a8cca3bcc66"
 
   bottle do
     cellar :any
-    revision 3
-    sha1 "6113e69eea132dfeb82db6edc10fdb964047f85d" => :yosemite
-    sha1 "206544ff8ee4234e456ab778bb4c7e9d84878582" => :mavericks
-    sha1 "5fe23420d4647f9447d976d19e402dbcea198c47" => :mountain_lion
-    sha1 "22284cde961b626fbe774ee2285d964e4789bf26" => :x86_64_linux
+    sha1 "c96c76d63b166fb13e6818a0ae7094455002b420" => :yosemite
+    sha1 "b1a74b2c579600f12002a842bc8ddd82785277ce" => :mavericks
+    sha1 "5fe25b2992da6773db6fec8a72260272a6058782" => :mountain_lion
   end
 
   depends_on "gmp"

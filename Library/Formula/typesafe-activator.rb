@@ -9,6 +9,7 @@ class TypesafeActivator < Formula
     rm Dir["*.bat"] # Remove Windows .bat files
     prefix.install_metafiles
     libexec.install Dir['*']
+    chmod 0755, libexec/'activator'
     bin.write_exec_script libexec/'activator'
   end
 end

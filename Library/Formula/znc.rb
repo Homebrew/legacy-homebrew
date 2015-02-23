@@ -1,5 +1,3 @@
-require "formula"
-
 class Znc < Formula
   homepage "http://wiki.znc.in/ZNC"
   url "http://znc.in/releases/archive/znc-1.6.0.tar.gz"
@@ -19,19 +17,23 @@ class Znc < Formula
     sha1 "83597cccd275a3a4bf8fcc5d8dd5c9048403869a" => :mountain_lion
   end
 
-  option "enable-debug", "Compile ZNC with --enable-debug"
+  option "with-debug", "Compile ZNC with debug support"
+  option "with-icu4c", "Build with icu4c for charset support"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
+  depends_on "icu4c" => :optional
 
   def install
     ENV.cxx11
     args = ["--prefix=#{prefix}"]
-    args << "--enable-debug" if build.include? "enable-debug"
+    args << "--enable-debug" if build.with? "debug"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   plist_options :manual => "znc --foreground"
@@ -59,5 +61,11 @@ class Znc < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    mkdir ".znc"
+    system bin/"znc", "--makepem"
+    assert File.exist?(".znc/znc.pem")
   end
 end

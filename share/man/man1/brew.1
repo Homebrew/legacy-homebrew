@@ -254,7 +254,7 @@ If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which
 If \fB\-\-force\fR is passed, Homebrew will allow keg\-only formulae to be linked\.
 .
 .TP
-\fBlinkapps [\-\-local] [<formulae>]\fR
+\fBlinkapps [\-\-local]\fR [\fIformulae\fR]
 Find installed formulae that have compiled \fB\.app\fR\-style "application" packages for OS X, and symlink those apps into \fB/Applications\fR, allowing for easier access\.
 .
 .IP
@@ -382,7 +382,7 @@ Example: \fBbrew install jruby && brew test jruby\fR
 Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
 .
 .TP
-\fBunlinkapps [\-\-local] [<formulae>]\fR
+\fBunlinkapps [\-\-local]\fR [\fIformulae\fR]
 Removes links created by \fBbrew linkapps\fR\.
 .
 .IP

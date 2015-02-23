@@ -30,6 +30,7 @@ class ThePlatinumSearcher < Formula
   depends_on "go" => :build
 
   bottle do
+    cellar :any
     sha1 "a7a984c9716c0cae11b37cc99724cdb7004058ca" => :yosemite
     sha1 "8ad4be8eb22d125ce6b448e4999dc4bdc1b89cdb" => :mavericks
     sha1 "c0ace5f1aeab2d6eb1f283f676fdc820f5aaa00a" => :mountain_lion

@@ -18,7 +18,7 @@ class Ghostscript < Formula
   head do
     url "git://git.ghostscript.com/ghostpdl.git"
 
-    resource 'djvu' do
+    resource "djvu" do
       url "git://git.code.sf.net/p/djvu/gsdjvu-git"
     end
 
@@ -63,7 +63,7 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w{freetype jbig2dec jpeg libpng tiff}
+    renames = %w[freetype jbig2dec jpeg libpng tiff]
     renames.each { |lib| mv lib, "#{lib}_local" }
   end
 
@@ -99,7 +99,7 @@ class Ghostscript < Formula
       inreplace "Makefile", "/$(GS_DOT_VERSION)", ""
 
       inreplace "Makefile" do |s|
-        s.change_make_var!("DEVICE_DEVS17","$(DD)djvumask.dev $(DD)djvusep.dev")
+        s.change_make_var!("DEVICE_DEVS17", "$(DD)djvumask.dev $(DD)djvusep.dev")
       end if build.with? "djvu"
 
       # Install binaries and libraries
@@ -114,7 +114,7 @@ class Ghostscript < Formula
 
   test do
     (testpath/"test.ps").write <<-EOS.undent
-
+      %!PS
       /Courier
       20 selectfont
       72 500 moveto

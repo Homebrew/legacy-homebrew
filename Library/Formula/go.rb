@@ -3,16 +3,16 @@ class Go < Formula
   # Version 1.5 is going to require version 1.4 present to bootstrap 1.4
   # Perhaps we can use our previous bottles, ala the discussion around PyPy?
   # https://docs.google.com/document/d/1OaatvGhEAq7VseQ9kkavxKNAfepWy2yhPUBs96FGV28
-  url "https://storage.googleapis.com/golang/go1.4.1.src.tar.gz"
-  sha1 "c7a683e8d39b835e333199d68d0c0baefcd24a68"
-  version "1.4.1"
+  url "https://storage.googleapis.com/golang/go1.4.2.src.tar.gz"
+  sha1 "460caac03379f746c473814a65223397e9c9a2f6"
+  version "1.4.2"
 
   head "https://go.googlesource.com/go", :using => :git
 
   bottle do
-    sha1 "d4dea35b225b79bf93214a4ccc37272d5b4095b6" => :yosemite
-    sha1 "4209bab85e24002de969f1d96aaad5061bea068b" => :mavericks
-    sha1 "b4bb2d3cd8ed997536d1504ed75cb92b0497c1b9" => :mountain_lion
+    sha1 "a9d249008e08149d31f054a1b91b92e1c85bca7f" => :yosemite
+    sha1 "bf8a2840a2086ce1c9ff8d9be029dbd1a5cef1a1" => :mavericks
+    sha1 "9f77c81dc4a371c504f83ee7cbce6980cb264aa8" => :mountain_lion
   end
 
   option "with-cc-all", "Build with cross-compilers and runtime support for all supported platforms"

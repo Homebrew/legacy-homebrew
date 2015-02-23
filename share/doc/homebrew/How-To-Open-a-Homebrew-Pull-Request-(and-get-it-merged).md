@@ -1,7 +1,7 @@
 # How To Open a Homebrew Pull Request (and get it merged)
 The following commands are used by Homebrew's contributors to setup a fork of Homebrew's Git repository on GitHub, create a new branch and create a GitHub pull request of the changes in that branch.
 
-To setup a your own fork of the Homebrew repository:
+To set up your own fork of the Homebrew repository:
 
 1. Change to the directory containing your Homebrew installation with `cd $(brew --repository)`
 2. [Fork the Homebrew repository](https://github.com/Homebrew/homebrew/fork) on GitHub. This creates a pushable, personal remote repository. This is needed as only Homebrew maintainers have push access to the main repository.

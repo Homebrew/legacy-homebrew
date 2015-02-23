@@ -615,7 +615,7 @@ class Formula
         }
       end
 
-      hsh["installed"].sort_by! { |i| Version.new(i["version"]) }
+      hsh["installed"] = hsh["installed"].sort_by { |i| Version.new(i["version"]) }
     end
 
     hsh

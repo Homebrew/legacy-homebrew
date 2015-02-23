@@ -22,6 +22,19 @@ class ClangFormat < Formula
     end
   end
 
+  head do
+    url "http://llvm.org/svn/llvm-project/llvm/trunk/", :using => :svn
+
+    resource "clang" do
+      url "http://llvm.org/svn/llvm-project/cfe/trunk/", :using => :svn
+    end
+
+    resource "libcxx" do
+      url "http://llvm.org/releases/3.5.0/libcxx-3.5.0.src.tar.xz"
+      sha1 "c98beed86ae1adf9ab7132aeae8fd3b0893ea995"
+    end
+  end
+
   depends_on "cmake" => :build
   depends_on "ninja" => :build
   depends_on "subversion" => :build
