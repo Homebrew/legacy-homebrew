@@ -725,7 +725,8 @@ module Homebrew
       existing_bottles = {}
       Dir.glob("*.bottle*.tar.gz") do |filename|
         formula_name = bottle_filename_formula_name filename
-        formula = Formulary.factory formula_name
+        formula = Formulary.factory formula_name rescue nil
+        next unless formula
         existing_bottles[formula_name] = !!formula.bottle
       end
 
