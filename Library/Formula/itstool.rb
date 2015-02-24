@@ -15,8 +15,8 @@ class Itstool < Formula
   head do
     url 'git://gitorious.org/itstool/itstool.git'
 
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   depends_on :python

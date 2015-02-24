@@ -1,5 +1,3 @@
-require "formula"
-
 class Readline < Formula
   homepage "http://tiswww.case.edu/php/chet/readline/rltop.html"
   url "http://ftpmirror.gnu.org/readline/readline-6.3.tar.gz"
@@ -15,11 +13,11 @@ class Readline < Formula
     sha1 "e84f9cd95503b284651ef24bc8e7da30372687d3" => :lion
   end
 
-  keg_only :shadowed_by_osx, <<-EOS
-OS X provides the BSD libedit library, which shadows libreadline.
-In order to prevent conflicts when programs look for libreadline we are
-defaulting this GNU Readline installation to keg-only.
-EOS
+  keg_only :shadowed_by_osx, <<-EOS.undent
+    OS X provides the BSD libedit library, which shadows libreadline.
+    In order to prevent conflicts when programs look for libreadline we are
+    defaulting this GNU Readline installation to keg-only.
+  EOS
 
   # Vendor the patches.
   # The mirrors are unreliable for getting the patches, and the more patches
@@ -35,7 +33,7 @@ EOS
   def install
     ENV.universal_binary
     system "./configure", "--prefix=#{prefix}", "--enable-multibyte"
-    system "make install"
+    system "make", "install"
 
     # The 6.3 release notes say:
     #   When creating shared libraries on Mac OS X, the pathname written into the
@@ -45,5 +43,21 @@ EOS
     # This should be removed at 6.4.
     lib.install_symlink "libhistory.6.3.dylib" => "libhistory.6.2.dylib",
                         "libreadline.6.3.dylib" => "libreadline.6.2.dylib"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
+      #include <stdlib.h>
+      #include <readline/readline.h>
+
+      int main()
+      {
+        printf("%s\\n", readline("test> "));
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lreadline", "-o", "test"
+    assert_equal "Hello, World!", pipe_output("./test", "Hello, World!\n").strip
   end
 end

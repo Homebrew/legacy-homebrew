@@ -1,16 +1,13 @@
-require "formula"
-
 class Openssl < Formula
   homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1j.tar.gz"
-  sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
+  url "https://www.openssl.org/source/openssl-1.0.1k.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1k.tar.gz"
+  sha256 "8f9faeaebad088e772f4ef5e38252d472be4d878c6b3a2718c10a4fcebe7a41c"
 
   bottle do
-    sha1 "f6cdb5c0ec14896a385dacf0746768e56e65aed9" => :yosemite
-    sha1 "595305062ba76824570d5c52b2add7f53422dafb" => :mavericks
-    sha1 "dc26c0ea2a7e38451a1b213f7e0f3694f70e460d" => :mountain_lion
-    sha1 "ba064e1f82e3eb54a7272d20c8114d8910bbdf01" => :lion
+    sha1 "3d0e5529a124be70266dd2a2074f4f84db38bb19" => :yosemite
+    sha1 "449b81391bd9718b1ed7a37678c686b712669f38" => :mavericks
+    sha1 "8f1b30f6352486726b8420e80cceeecd49a61f82" => :mountain_lion
   end
 
   option :universal
@@ -63,7 +60,10 @@ class Openssl < Formula
       system "perl", "./Configure", *(configure_args + arch_args[arch])
       system "make", "depend"
       system "make"
-      system "make", "test" if build.with? "check"
+
+      if (MacOS.prefer_64_bit? || arch == MacOS.preferred_arch) && build.with?("check")
+        system "make", "test"
+      end
 
       if build.universal?
         cp Dir["*.?.?.?.dylib", "*.a", "apps/openssl"], dir
@@ -121,6 +121,11 @@ class Openssl < Formula
   end
 
   test do
+    # Make sure the necessary .cnf file exists, otherwise OpenSSL gets moody.
+    assert (HOMEBREW_PREFIX/"etc/openssl/openssl.cnf").exist?,
+            "OpenSSL requires the .cnf file for some functionality"
+
+    # Check OpenSSL itself functions as expected.
     (testpath/"testfile.txt").write("This is a test file")
     expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
     system "#{bin}/openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"

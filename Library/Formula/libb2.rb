@@ -50,7 +50,7 @@ class Libb2 < Formula
           }
       }
     EOS
-    system ENV["CC"], "blake2test.c", "-lb2", "-o", "b2test"
+    system ENV.cc, "blake2test.c", "-lb2", "-o", "b2test"
     system "./b2test"
   end
 end

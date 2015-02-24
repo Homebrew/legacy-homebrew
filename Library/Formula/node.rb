@@ -1,22 +1,15 @@
-require "formula"
-
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
-  homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.33/node-v0.10.33.tar.gz"
-  sha256 "75dc26c33144e6d0dc91cb0d68aaf0570ed0a7e4b0c35f3a7a726b500edd081e"
-  revision 1
+  homepage "https://nodejs.org/"
+  url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
+  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
+  revision 2
 
   bottle do
-    revision 9
-    sha1 "c9d4bffeae1a6996715efcde907f98bab1f7bd57" => :yosemite
-    sha1 "a75fd66670c781b0b8248c5000e652bc20dcb924" => :mavericks
-    sha1 "5db55f05590a23149b1459d522075b8b2facee79" => :mountain_lion
-  end
-
-  devel do
-    url "http://nodejs.org/dist/v0.11.14/node-v0.11.14.tar.gz"
-    sha256 "ce08b0a2769bcc135ca25639c9d411a038e93e0f5f5a83000ecde9b763c4dd83"
+    revision 1
+    sha1 "a98a1df66cfb0712b14489186c46f7087ba35bd7" => :yosemite
+    sha1 "0cd45412840a67d5d65e6bc3c0c3bcf8bc23153c" => :mavericks
+    sha1 "977332381c033626b991002c27e738c144ebbaac" => :mountain_lion
   end
 
   head do
@@ -37,7 +30,6 @@ class Node < Formula
   # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
   # over Node's shipped version with --shared-openssl.
   # Would allow us quicker security fixes than Node's release schedule.
-  # This particular affects the devel build, which is ultra-slow release.
   # See https://github.com/joyent/node/issues/3557 for prior discussion.
 
   fails_with :llvm do
@@ -45,8 +37,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.10.tgz"
-    sha1 "a571ae408ac1b5e515f6c34c033503a7bb828cb4"
+    url "https://registry.npmjs.org/npm/-/npm-2.1.18.tgz"
+    sha1 "e2af4c5f848fb023851cd2ec129005d33090bd57"
   end
 
   def install
@@ -64,42 +56,54 @@ class Node < Formula
     system "./configure", *args
     system "make", "install"
 
-    resource("npm").stage libexec/"npm" if build.with? "npm"
+    if build.with? "npm"
+      resource("npm").stage buildpath/"npm_install"
+
+      # make sure npm can find node
+      ENV.prepend_path "PATH", bin
+
+      # set log level temporarily for npm's `make install`
+      ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
+
+      cd buildpath/"npm_install" do
+        system "./configure", "--prefix=#{libexec}/npm"
+        system "make", "install"
+      end
+
+      if build.with? "completion"
+        bash_completion.install \
+          buildpath/"npm_install/lib/utils/completion.sh" => "npm"
+      end
+    end
   end
 
   def post_install
     return if build.without? "npm"
 
-    (libexec/"npm").cd { system "make", "uninstall" }
-    Pathname.glob(HOMEBREW_PREFIX/"share/man/*") do |man|
-      next unless man.directory?
-      man.children.each do |file|
-        next unless file.symlink?
-        file.unlink if file.readlink.to_s.include? "/node_modules/npm/man/"
-      end
-    end
-
     node_modules = HOMEBREW_PREFIX/"lib/node_modules"
     node_modules.mkpath
-    cp_r libexec/"npm", node_modules
+    npm_exec = node_modules/"npm/bin/npm-cli.js"
+    # Kill npm but preserve all other modules across node updates/upgrades.
+    rm_rf node_modules/"npm"
+
+    cp_r libexec/"npm/lib/node_modules/npm", node_modules
+    # This symlink doesn't hop into homebrew_prefix/bin automatically so
+    # remove it and make our own. This is a small consequence of our bottle
+    # npm make install workaround. All other installs **do** symlink to
+    # homebrew_prefix/bin correctly. We ln rather than cp this because doing
+    # so mimics npm's normal install.
+    ln_sf npm_exec, "#{HOMEBREW_PREFIX}/bin/npm"
+
+    # Let's do the manpage dance. It's just a jump to the left.
+    # And then a step to the right, with your hand on rm_f.
+    ["man1", "man3", "man5", "man7"].each do |man|
+      rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
+      Dir[libexec/"npm/share/man/#{man}/npm*"].each {|f| ln_sf f, HOMEBREW_PREFIX/"share/man/#{man}" }
+    end
 
     npm_root = node_modules/"npm"
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
-
-    # set log level temporarily for npm's `make install`
-    ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
-
-    # make sure npm can find node
-    ENV["PATH"] = "#{opt_bin}:#{ENV["PATH"]}"
-
-    ENV["NPM_CONFIG_USERCONFIG"] = npmrc
-    npm_root.cd { system "make", "install" }
-
-    if build.with? "completion"
-      bash_completion.install_symlink \
-        npm_root/"lib/utils/completion.sh" => "npm"
-    end
   end
 
   def caveats

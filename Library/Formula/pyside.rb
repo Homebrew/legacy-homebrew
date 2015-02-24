@@ -8,7 +8,15 @@ class Pyside < Formula
 
   head 'git://gitorious.org/pyside/pyside.git'
 
-  depends_on :python => :recommended
+  bottle do
+    sha1 "8137d4ab768f0b621c76f3e8f51aff9594527b7a" => :yosemite
+    sha1 "23cceb7a03918cb1aa1e897c9ed1b3224610c2d2" => :mavericks
+    sha1 "370b1d0fc1099689977ba04eb3602c41b5def89c" => :mountain_lion
+  end
+
+  # don't use depends_on :python because then bottles install Homebrew's python
+  option "without-python", "Build without python 2 support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
 
   option "without-docs", "Skip building documentation"

@@ -1,19 +1,17 @@
-require "formula"
-
 # GnuTLS has previous, current, and next stable branches, we use current.
 # From 3.4.0 GnuTLS will be permanently disabling SSLv3. Every brew uses will need a revision with that.
 # http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
   homepage "http://gnutls.org"
-  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.10.tar.xz"
-  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.10.tar.xz"
-  sha256 "e27553981d48d9211a7e5e94f6e78c575205202a181c2345a1c8466ebf1d2219"
+  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.11.tar.xz"
+  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.11.tar.xz"
+  sha256 "aef28d629b6ba824bd435f9b23506525e657e3746d4aa021296b13cbaaa6ae71"
 
   bottle do
     cellar :any
-    sha1 "5d22a5706f229e27b48c3279b8c6139f5e273a0c" => :yosemite
-    sha1 "b6636c0b6a7d85c263b911bf3d75019bde1fb7eb" => :mavericks
-    sha1 "348f799829b8e62ce0544a9caacdf2e2ebb1508e" => :mountain_lion
+    sha1 "09178a60426edaa938111aa5dcf10f361a8669c5" => :yosemite
+    sha1 "7174f04eaba8478eb4df571fd618ae9dbd0ddaa8" => :mavericks
+    sha1 "d85219bb39f3d025e92d2124acd05f0865d369ae" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -32,6 +30,7 @@ class Gnutls < Formula
   def install
     args = %W[
       --disable-dependency-tracking
+      --disable-silent-rules
       --disable-static
       --prefix=#{prefix}
       --sysconfdir=#{etc}

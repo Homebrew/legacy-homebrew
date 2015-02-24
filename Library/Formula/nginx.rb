@@ -1,21 +1,20 @@
-require "formula"
-
 class Nginx < Formula
   homepage "http://nginx.org/"
   url "http://nginx.org/download/nginx-1.6.2.tar.gz"
   sha1 "1a5458bc15acf90eea16353a1dd17285cf97ec35"
 
   devel do
-    url "http://nginx.org/download/nginx-1.7.7.tar.gz"
-    sha1 "c8e1caaa0dc6cfe540082c52ecd856ab794e38dc"
+    url "http://nginx.org/download/nginx-1.7.9.tar.gz"
+    sha1 "44ef4770db281cea26a1b2e66c0e34193e1d1f1f"
   end
 
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    sha1 "7aa0fc40ada6fa9623817f3f5bac0310b7fb1b45" => :mavericks
-    sha1 "c1660c583f74b0829f752804f566769e607998a7" => :mountain_lion
-    sha1 "2f4810ccc3cb5687685028591668ecae50b3cb30" => :lion
+    revision 1
+    sha1 "67f757d71e7372b8ccd390c63c2d604792fde33e" => :yosemite
+    sha1 "25cc325ec468f84edd9300369a1845a87109c1d0" => :mavericks
+    sha1 "a75d729e45f85ccaf5ad53095d52b4ce1ae455f2" => :mountain_lion
   end
 
   env :userpaths
@@ -78,7 +77,7 @@ class Nginx < Formula
       system "./configure", *args
     end
     system "make"
-    system "make install"
+    system "make", "install"
     man8.install "objs/nginx.8"
     (var/"run/nginx").mkpath
   end

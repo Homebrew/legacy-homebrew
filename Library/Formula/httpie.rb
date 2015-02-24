@@ -1,7 +1,5 @@
-require "formula"
-
 class Httpie < Formula
-  homepage "http://httpie.org"
+  homepage "https://github.com/jakubroztocil/httpie"
   url "https://github.com/jakubroztocil/httpie/archive/0.8.0.tar.gz"
   sha1 "bfffe9d782a896ca57f3dafef3d02bf81a07e5a8"
 
@@ -9,10 +7,10 @@ class Httpie < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "22ddd11f67e37e7100ffd2e83cde865dbea86c5a" => :mavericks
-    sha1 "c401847c644005c08879ccb6ff165b6509b91d0f" => :mountain_lion
-    sha1 "c2b1509dad6a6bb8addca38292d152d2614e8aa9" => :lion
+    revision 2
+    sha1 "c9101c6d2acadf79f9deed22e4dbd9488f82136a" => :yosemite
+    sha1 "b1dc7275b82ae7444be68df3d10b3edd9f7e0c34" => :mavericks
+    sha1 "b6da6d0dd125252c75be5cbd5a6cf2a56f3e5461" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -28,19 +26,22 @@ class Httpie < Formula
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec + "lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", prefix + "lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    %w[pygments requests].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
 
-    install_args = "setup.py", "install", "--prefix=#{libexec}"
-    resource("pygments").stage { system "python", *install_args }
-    resource("requests").stage { system "python", *install_args }
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
 
-    system "python", "setup.py", "install", "--prefix=#{libexec}"
-
-    (bin/"http").write_env_script libexec/"bin/http", :PYTHONPATH => ENV["PYTHONPATH"]
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
-    system "#{bin}/http", "https://google.com"
+    output = shell_output("#{bin}/http https://raw.githubusercontent.com/Homebrew/homebrew/master/Library/Formula/httpie.rb")
+    assert output.include?("PYTHONPATH")
   end
 end

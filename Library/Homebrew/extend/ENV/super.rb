@@ -119,7 +119,7 @@ module Superenv
     when "gcc-4.2"
       begin
        apple_gcc42 = Formulary.factory('apple-gcc42')
-      rescue Exception # in --debug, catch bare exceptions too
+      rescue FormulaUnavailableError
       end
       paths << apple_gcc42.opt_bin.to_s if apple_gcc42
     when GNU_GCC_REGEXP

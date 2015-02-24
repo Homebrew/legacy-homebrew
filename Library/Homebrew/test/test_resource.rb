@@ -81,6 +81,10 @@ class ResourceTests < Homebrew::TestCase
     assert_raises(TypeError) { @resource.version(Object.new) }
   end
 
+  def test_version_when_url_is_not_set
+    assert_nil @resource.version
+  end
+
   def test_mirrors
     assert_empty @resource.mirrors
     @resource.mirror('foo')

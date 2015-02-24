@@ -1,37 +1,60 @@
-require 'formula'
-
 class Llvm < Formula
   homepage 'http://llvm.org/'
-
-  bottle do
-    revision 1
-    sha1 "29ba25a9a3c2217c6f1e1bae670bb35d450f629a" => :yosemite
-    sha1 "07f8b675aa98c79a3058f1b51b2ba3e3f33e2875" => :mavericks
-    sha1 "5f31150228cbbee9294a8396bf69af756b7d33b3" => :mountain_lion
-  end
+  revision 2
 
   stable do
     url "http://llvm.org/releases/3.5.0/llvm-3.5.0.src.tar.xz"
     sha1 "58d817ac2ff573386941e7735d30702fe71267d5"
-    resource 'clang' do
+
+    resource "clang" do
       url "http://llvm.org/releases/3.5.0/cfe-3.5.0.src.tar.xz"
       sha1 "834cee2ed8dc6638a486d8d886b6dce3db675ffa"
     end
-    resource 'lld' do
+
+    resource "libcxx" do
+      url "http://llvm.org/releases/3.5.0/libcxx-3.5.0.src.tar.xz"
+      sha1 "c98beed86ae1adf9ab7132aeae8fd3b0893ea995"
+    end
+
+    resource "lld" do
       url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
       sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
     end
+
+    resource "clang-tools-extra" do
+      url "http://llvm.org/releases/3.5.0/clang-tools-extra-3.5.0.src.tar.xz"
+      sha1 "74a84493e3313c180490a4affbb92d61ee4f0d21"
+    end
+  end
+
+  bottle do
+    sha1 "b438ffa15440a1f6ee7efbc7ddc3adb32e757ad6" => :yosemite
+    sha1 "47e4f98e8fa4ea845f5acd6ea568b9ddc73729df" => :mavericks
+    sha1 "244cb85540b4ec6a33356e3e02fd8e0caa89224d" => :mountain_lion
   end
 
   head do
-    url "http://llvm.org/svn/llvm-project/llvm/trunk", :using => :svn
-    resource 'clang' do
-      url "http://llvm.org/svn/llvm-project/cfe/trunk", :using => :svn
+    url "http://llvm.org/git/llvm.git"
+
+    resource "clang" do
+      url "http://llvm.org/git/clang.git"
     end
-    resource 'lld' do
-      url "http://llvm.org/svn/llvm-project/lld/trunk", :using => :svn
+
+    resource "libcxx" do
+      url "http://llvm.org/git/libcxx.git"
+    end
+
+    resource "lld" do
+      url "http://llvm.org/git/lld.git"
+    end
+
+    resource "clang-tools-extra" do
+      url "http://llvm.org/git/clang-tools-extra.git"
     end
   end
+
+  # Use absolute paths for shared library IDs
+  patch :DATA
 
   option :universal
   option 'with-clang', 'Build Clang support library'
@@ -57,7 +80,11 @@ class Llvm < Formula
       raise 'The Python bindings need the shared library.'
     end
 
-    (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
+    if build.with? "clang"
+      (buildpath/"projects/libcxx").install resource("libcxx")
+      (buildpath/"tools/clang").install resource("clang")
+      (buildpath/"tools/clang/tools/extra").install resource("clang-tools-extra")
+    end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
 
@@ -67,7 +94,7 @@ class Llvm < Formula
       ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
 
-    ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'
+    ENV["REQUIRES_RTTI"] = "1" if build.include? "rtti" or build.with? "clang"
 
     args = [
       "--prefix=#{prefix}",
@@ -87,10 +114,18 @@ class Llvm < Formula
     args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
-    system 'make'
-    system 'make', 'install'
+    system "make"
+    system "make", "install"
 
-    (share/'llvm/cmake').install buildpath/'cmake/modules'
+    if build.with? "clang"
+      system "make", "-C", "projects/libcxx", "install",
+        "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
+
+      (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
+      inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
+      bin.install_symlink share/"clang/tools/scan-build/scan-build", share/"clang/tools/scan-view/scan-view"
+      man1.install_symlink share/"clang/tools/scan-build/scan-build.1"
+    end
 
     # install llvm python bindings
     if build.with? "python"
@@ -107,10 +142,26 @@ class Llvm < Formula
     <<-EOS.undent
       LLVM executables are installed in #{opt_bin}.
       Extra tools are installed in #{opt_share}/llvm.
-
-      If you already have LLVM installed, then "brew upgrade llvm" might not work.
-      Instead, try:
-          brew rm llvm && brew install llvm
     EOS
   end
 end
+
+__END__
+diff --git a/Makefile.rules b/Makefile.rules
+index ebebc0a..b0bb378 100644
+--- a/Makefile.rules
++++ b/Makefile.rules
+@@ -599,7 +599,12 @@ ifneq ($(HOST_OS), $(filter $(HOST_OS), Cygwin MingW))
+ ifneq ($(HOST_OS),Darwin)
+   LD.Flags += $(RPATH) -Wl,'$$ORIGIN'
+ else
+-  LD.Flags += -Wl,-install_name  -Wl,"@rpath/lib$(LIBRARYNAME)$(SHLIBEXT)"
++  LD.Flags += -Wl,-install_name
++  ifdef LOADABLE_MODULE
++    LD.Flags += -Wl,"$(PROJ_libdir)/$(LIBRARYNAME)$(SHLIBEXT)"
++  else
++    LD.Flags += -Wl,"$(PROJ_libdir)/$(SharedPrefix)$(LIBRARYNAME)$(SHLIBEXT)"
++  endif
+ endif
+ endif
+ endif

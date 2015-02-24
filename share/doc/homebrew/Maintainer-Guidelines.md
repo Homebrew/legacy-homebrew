@@ -14,9 +14,9 @@ This is all that really matters:
 -   Add aliases
 -   Ensure it is not a dupe of anything that comes with OS X
 -   Ensure it is not a library that can be installed with
-    [gem](http://en.wikipedia.org/wiki/RubyGems),
-    [cpan](http://en.wikipedia.org/wiki/Cpan) or
-    [pip](https://crate.io).
+    [gem](https://en.wikipedia.org/wiki/RubyGems),
+    [cpan](https://en.wikipedia.org/wiki/Cpan) or
+    [pip](https://pip.pypa.io/en/latest).
 -   Ensure the name is not in Ruby’s stdlib (Try
     `Formula.factory('readline')` in the `brew irb` shell)
 -   Ensure that any dependencies are accurate
@@ -79,6 +79,7 @@ chances are it is fine. If you aren’t an expert in the tool in question,
 you can’t really gauge if the formula installed the program correctly.
 At some point an expert will come along, cry blue murder that it doesn’t
 work, and fix it. This is how open source works.
+Ideally, request a `test do` block to test that functionality is consistently available.
 
 If the formula uses a repository, then the `url` parameter should have a
 tag or revision. `url` s have versions and are stable (not yet
@@ -95,8 +96,8 @@ try to make this work.
 
 ## Common “Gotchas”
 1.  [Ensure you have set your username and email address
-    properly](http://help.github.com/git-email-settings/)
-2.  Sign off cherry-picks if you amended them (GitX can do this,
+    properly](https://help.github.com/articles/setting-your-email-in-git/)
+2.  Sign off cherry-picks if you amended them, [GitX-dev](https://github.com/rowanj/gitx) can do this,
     otherwise there is a command line flag for it)
 3.  If the commit fixes a bug, use “Fixes \#104” syntax to close the bug
     report and link to the commit
@@ -115,7 +116,7 @@ Still determine if it possible to avoid the dupe. Be thorough. Duped
 libs and tools cause bugs that are tricky to solve. Once the formula is
 pulled, we can’t go back on that willy-nilly.
 
-If it dupes anything ask another comtributor first. Some dupes are okay,
+If it dupes anything ask another contributor first. Some dupes are okay,
 some can cause subtle issues we don’t want to have to deal with in the
 future.
 

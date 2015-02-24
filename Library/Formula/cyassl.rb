@@ -1,52 +1,64 @@
-require "formula"
-
 class Cyassl < Formula
   homepage "http://yassl.com/yaSSL/Products-cyassl.html"
-  url "https://github.com/cyassl/cyassl/archive/v3.2.0.tar.gz"
-  sha256 "4b82b6cd54aec42abc557e7dc3ec8239867c5373166b9346998fbe1232b3177c"
+  url "https://github.com/cyassl/cyassl/archive/v3.3.0.tar.gz"
+  sha256 "585ca95b23a44da2d0e042bd0aef95ce770cd541028b76dc45f29ab62ad3ad4a"
 
   head "https://github.com/cyassl/cyassl.git"
 
   bottle do
     cellar :any
-    sha1 "af3935e69de8e276da44489ee06d7bd02f12d611" => :mavericks
-    sha1 "3d46f2e384ded4b9d1fd6854ea9f5b45a2582e6b" => :mountain_lion
-    sha1 "3d3bae7a0f09f77cad6219b75ca9193fe5931bda" => :lion
+    sha1 "47a068ee29646ef26b3f7e2a62268f62ed73dbec" => :yosemite
+    sha1 "57f47edc303e4f7f07d893a0724c67e068ca4883" => :mavericks
+    sha1 "c5de09829f89696a73a8f3818bbf413eae99e5ac" => :mountain_lion
   end
+
+  option "without-check", "Skip compile-time tests."
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
 
   def install
-    args = %W[--infodir=#{info}
-              --mandir=#{man}
-              --prefix=#{prefix}
-              --disable-bump
-              --disable-fortress
-              --disable-sniffer
-              --disable-webserver
-              --enable-aesccm
-              --enable-aesgcm
-              --enable-blake2
-              --enable-camellia
-              --enable-certgen
-              --enable-crl
-              --enable-crl-monitor
-              --enable-dtls
-              --enable-ecc
-              --enable-filesystem
-              --enable-hc128
-              --enable-inline
-              --enable-keygen
-              --enable-md4
-              --enable-ocsp
-              --enable-opensslextra
-              --enable-psk
-              --enable-rabbit
-              --enable-ripemd
-              --enable-sha512
-              --enable-sni
+    args = %W[
+      --disable-silent-rules
+      --disable-dependency-tracking
+      --infodir=#{info}
+      --mandir=#{man}
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+      --disable-bump
+      --disable-fortress
+      --disable-sniffer
+      --disable-webserver
+      --enable-aesccm
+      --enable-aesgcm
+      --enable-blake2
+      --enable-camellia
+      --enable-certgen
+      --enable-certreq
+      --enable-chacha
+      --enable-crl
+      --enable-crl-monitor
+      --enable-dtls
+      --enable-ecc
+      --enable-eccencrypt
+      --enable-filesystem
+      --enable-hc128
+      --enable-hkdf
+      --enable-inline
+      --enable-keygen
+      --enable-ocsp
+      --enable-opensslextra
+      --enable-poly1305
+      --enable-psk
+      --enable-rabbit
+      --enable-ripemd
+      --enable-savesession
+      --enable-savecert
+      --enable-sessioncerts
+      --enable-sha512
+      --enable-sni
+      --enable-supportedcurves
     ]
 
     if MacOS.prefer_64_bit?
@@ -54,6 +66,8 @@ class Cyassl < Formula
     else
       args << "--disable-fastmath" << "--disable-fasthugemath"
     end
+
+    args << "--enable-aesni" if Hardware::CPU.aes? && !build.bottle?
 
     # Extra flag is stated as a needed for the Mac platform.
     # http://yassl.com/yaSSL/Docs-cyassl-manual-2-building-cyassl.html
@@ -63,6 +77,11 @@ class Cyassl < Formula
     system "./autogen.sh"
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "check" if build.with? "check"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"cyassl-config", "--cflags", "--libs", "--prefix"
   end
 end

@@ -4,14 +4,14 @@ class Mpd < Formula
   homepage "http://www.musicpd.org/"
 
   stable do
-    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.5.tar.xz"
-    sha1 "59bab61cfc89c6ef7a1c3cbc877957df633ad1ac"
+    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.7.tar.xz"
+    sha1 "6f67d8ac14881c2d72c2907c2c1e14c6b2fd04c5"
   end
 
   bottle do
-    sha1 "b620a3d05f8359c42ce7a0f743537da74607db8a" => :yosemite
-    sha1 "8b4ff95ed536112b0411461cbdee5143a9384934" => :mavericks
-    sha1 "5eeddc4249cebfc84f1a0c7b3f1b51208aef3263" => :mountain_lion
+    sha1 "7127edb4393da87d22a2d683f18d3abfd3c3c8be" => :yosemite
+    sha1 "3f516ee89d70403d53214993723a46a63c772875" => :mavericks
+    sha1 "cd2705900d74ec5c2fba2c0de1b8c63397c347f2" => :mountain_lion
   end
 
   head do

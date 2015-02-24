@@ -1,5 +1,3 @@
-require "formula"
-
 class Pinentry < Formula
   homepage "http://www.gnupg.org/related_software/pinentry/index.en.html"
   url "ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.0.tar.bz2"

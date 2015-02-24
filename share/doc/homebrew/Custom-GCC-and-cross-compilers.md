@@ -9,6 +9,6 @@ Rather than merging in brews for either of these cases at this time, we're listi
 
 * Homebrew provides a `gcc` formula for use with Xcode 4.2+ or when needing C++11 support on earlier versions.
 * [Homebrew-versions](https://github.com/homebrew/homebrew-versions) provides an up to date GCC duplicates e.g. `brew install homebrew/versions/gcc48`
-* [MSP430 development](http://github.com/Homebrew/homebrew/issues/issue/2336)
+* [MSP430 development](https://github.com/Homebrew/homebrew/issues/issue/2336)
 * [OS161 development](https://github.com/maxpow4h/homebrew-os161) Your university probably uses a different version, replacing the URLs with your university's URLs will probably work.
 * [ARM-EABI](https://github.com/paxswill/homebrew-paxswill) provides an arm-none-eabi toolchain formula.

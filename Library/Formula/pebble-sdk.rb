@@ -2,13 +2,14 @@ require 'formula'
 
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
-  url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk2/PebbleSDK-2.8.tar.gz'
-  sha1 'a12e3299339c210c0948069a27fe83b20385fa34'
+  url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk2/PebbleSDK-2.8.1.tar.gz'
+  sha1 'b96d158fda8b9846d8a1e994a5dc0760412fe8d7'
 
   bottle do
-    sha1 "fc2fd29a798853c97ab1d9220d5b21debd1caa4e" => :yosemite
-    sha1 "57fc781dc6e6b03be884a44de2ab4c0fdf13dacc" => :mavericks
-    sha1 "07a7d92f86ff38c06f983011779ea79d865a7403" => :mountain_lion
+    revision 1
+    sha1 "b6fdf398ba146ca097add357b91bc230228532ab" => :yosemite
+    sha1 "47f18c0fa6ac2f133e9d1ad12dc1b864f906dad9" => :mavericks
+    sha1 "477f1ca4ea4df085e6490d952b7928312002979e" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion
@@ -46,8 +47,8 @@ class PebbleSdk < Formula
   end
 
   resource 'pyserial' do
-    url 'https://pypi.python.org/packages/source/p/pyserial/pyserial-2.6.tar.gz'
-    sha1 '39e6d9a37b826c48eab6959591a174135fc2873c'
+    url 'https://pypi.python.org/packages/source/p/pyserial/pyserial-2.7.tar.gz'
+    sha1 'f15694b1bea9e4369c1931dc5cf09e37e5c562cf'
   end
 
   resource 'pypng' do
@@ -85,6 +86,7 @@ class PebbleSdk < Formula
     resource('pyserial').stage { system "python", *install_args }
     resource('pypng').stage { system "python", *install_args }
 
+    rm_rf "Examples/.git"
     doc.install %w[Documentation Examples README.txt]
     prefix.install %w[Pebble bin tools requirements.txt version.txt]
 

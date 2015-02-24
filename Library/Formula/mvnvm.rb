@@ -2,8 +2,8 @@ require "formula"
 
 class Mvnvm < Formula
   homepage "http://mvnvm.org"
-  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-0.1.zip"
-  sha1 "ae75e26265c62daab4e9f751f5a6a44325247e23"
+  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.2.zip"
+  sha1 "53ac240787cc3a3f2743bb57a2e4448587519900"
 
   head "https://bitbucket.org/mjensen/mvnvm.git"
 
@@ -19,7 +19,7 @@ class Mvnvm < Formula
   test do
     ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
     (testpath/"mvnvm.properties").write <<-EOS.undent
-      mvn_version=3.0.5
+      mvn_version=3.2.5
     EOS
     (testpath/"pom.xml").write <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>

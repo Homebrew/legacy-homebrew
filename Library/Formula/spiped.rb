@@ -12,7 +12,7 @@ class Spiped < Formula
     sha1 "d947a62a7f03ea5c608b6ec43c9c5ed0333f4a06" => :lion
   end
 
-  depends_on :bsdmake
+  depends_on "bsdmake" => :build
   depends_on "openssl"
 
   def install

@@ -1,10 +1,8 @@
-require "formula"
-
 class Pyenv < Formula
   homepage "https://github.com/yyuu/pyenv"
   head "https://github.com/yyuu/pyenv.git"
-  url "https://github.com/yyuu/pyenv/archive/v20141127.tar.gz"
-  sha1 "f022f5f719380ec79c299ab95e313d3f5fd2ede8"
+  url "https://github.com/yyuu/pyenv/archive/v20141211.tar.gz"
+  sha1 "b7c20679aafeed8ebe2b346013cfe80fd813dc45"
 
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]
@@ -35,5 +33,9 @@ class Pyenv < Formula
     To use Homebrew's directories rather than ~/.pyenv add to your profile:
       export PYENV_ROOT=#{opt_prefix}
     EOS
+  end
+
+  test do
+    shell_output("eval \"$(#{bin}/pyenv init -)\" && pyenv versions")
   end
 end

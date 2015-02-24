@@ -6,7 +6,7 @@ class Pgtune < Formula
   sha1 'c638ee3be7bd33f313c280cff9dee2d47bb40e46'
 
   # 0.9.3 does not have settings for PostgreSQL 9.x, but the trunk does
-  head 'https://github.com/gregs1104/pgtune.git', :branch => 'master'
+  head 'https://github.com/gregs1104/pgtune.git'
 
   def install
     # By default, pgtune searches for settings in the directory

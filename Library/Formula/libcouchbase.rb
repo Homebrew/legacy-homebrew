@@ -1,15 +1,15 @@
 require 'formula'
 
 class Libcouchbase < Formula
-  homepage 'http://couchbase.com/communities/c'
-  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.4.tar.gz'
-  sha1 'eedc67ef4f85fd51b6bc43cb222e07f6d07241a8'
+  homepage 'http://docs.couchbase.com/developer/c-2.4/c-intro.html'
+  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.5_1_gd7f6ecf.tar.gz'
+  sha1 '4b768c141c6007d8221ae9f88e6e223eff320354'
   head "https://github.com/couchbase/libcouchbase", :using => :git
 
   bottle do
-    sha1 "9bb6e3e3a8e7ea35a9bbed61276ae151646c852f" => :yosemite
-    sha1 "8da9e14594a3565d2746107ac0f00e4cb30f5840" => :mavericks
-    sha1 "b9074a78a2ac0106cb19b8c810980ba7f8ce0005" => :mountain_lion
+    sha1 "9a7ff0b864146b94ec8dcfe365432f4137557729" => :yosemite
+    sha1 "5146a3f780cb89741d72d001406193603bfe788d" => :mavericks
+    sha1 "6933915760408fc7c6b0dffadf947f3aeafdf7ff" => :mountain_lion
   end
 
   option :universal
@@ -40,7 +40,7 @@ class Libcouchbase < Formula
       args << '-DLCB_NO_PLUGINS=1'
     end
 
-    ln_s cached_download/".git", ".git" if build.head?
+    ENV["GIT_DIR"] = cached_download/".git" if build.head?
     mkdir 'LCB-BUILD' do
       system "cmake", "..", *args
       system 'make install'

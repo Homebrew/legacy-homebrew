@@ -50,13 +50,12 @@ class Duplicity < Formula
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
-      r.stage { Language::Python.setup_install "python", libexec/"vendor" }
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
-    # Prevent clang from dying because of -fno-fused-madd on Mountain Lion
-    ENV.refurbish_args
-
-    Language::Python.setup_install "python", libexec
+    system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])

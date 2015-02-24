@@ -1,9 +1,7 @@
-require 'formula'
-
 class Nettle < Formula
-  homepage 'http://www.lysator.liu.se/~nisse/nettle/'
-  url 'http://www.lysator.liu.se/~nisse/archive/nettle-2.7.1.tar.gz'
-  sha1 'e7477df5f66e650c4c4738ec8e01c2efdb5d1211'
+  homepage "http://www.lysator.liu.se/~nisse/nettle/"
+  url "http://www.lysator.liu.se/~nisse/archive/nettle-2.7.1.tar.gz"
+  sha1 "e7477df5f66e650c4c4738ec8e01c2efdb5d1211"
 
   bottle do
     cellar :any
@@ -14,14 +12,42 @@ class Nettle < Formula
     sha1 "6c56084887da5b7e99d7c730bf22a68c9af360e9" => :lion
   end
 
-  depends_on 'gmp'
+  depends_on "gmp"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-shared"
     system "make"
-    system "make install"
-    system "make check"
+    system "make", "install"
+    system "make", "check"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <nettle/sha1.h>
+      #include <stdio.h>
+
+      int main()
+      {
+        struct sha1_ctx ctx;
+        uint8_t digest[SHA1_DIGEST_SIZE];
+        unsigned i;
+
+        sha1_init(&ctx);
+        sha1_update(&ctx, 4, "test");
+        sha1_digest(&ctx, SHA1_DIGEST_SIZE, digest);
+
+        printf("SHA1(test)=");
+
+        for (i = 0; i<SHA1_DIGEST_SIZE; i++)
+          printf("%02x", digest[i]);
+
+        printf("\\n");
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lnettle", "-o", "test"
+    system "./test"
   end
 end

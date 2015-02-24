@@ -29,12 +29,15 @@ class Flac < Formula
     cause "Undefined symbols when linking"
   end
 
+  fails_with :clang do
+    build 500
+    cause "Undefined symbols ___cpuid and ___cpuid_count"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
     ENV.append "CFLAGS", "-std=gnu89"
-
-    system "./autogen.sh" if build.head?
 
     args = %W[
       --disable-dependency-tracking
@@ -45,8 +48,10 @@ class Flac < Formula
       --enable-static
     ]
 
+    args << "--disable-asm-optimizations" if build.universal? || Hardware.is_32_bit?
     args << "--without-ogg" if build.without? "libogg"
 
+    system "./autogen.sh" if build.head?
     system "./configure", *args
 
     ENV["OBJ_FORMAT"] = "macho"
@@ -57,5 +62,15 @@ class Flac < Formula
     end
 
     system "make", "install"
+  end
+
+  test do
+    raw_data = "pseudo audio data that stays the same \x00\xff\xda"
+    (testpath/"in.raw").write raw_data
+    # encode and decode
+    system "#{bin}/flac", "--endian=little", "--sign=signed", "--channels=1", "--bps=8", "--sample-rate=8000", "--output-name=in.flac", "in.raw"
+    system "#{bin}/flac", "--decode", "--force-raw", "--endian=little", "--sign=signed", "--output-name=out.raw", "in.flac"
+    # diff input and output
+    system "diff", "in.raw", "out.raw"
   end
 end

@@ -5,6 +5,8 @@ class Getdns < Formula
   url "http://getdnsapi.net/dist/getdns-0.1.4.tar.gz"
   sha1 "9833f96cf23c845008405cec411c1f2005e40dc3"
 
+  head "https://github.com/getdnsapi/getdns.git"
+
   bottle do
     sha1 "efad47ff71c7205beb6ab03c133853909031c538" => :mavericks
     sha1 "860489f9eab66b247e32e8a960e0960a1d0109f0" => :mountain_lion

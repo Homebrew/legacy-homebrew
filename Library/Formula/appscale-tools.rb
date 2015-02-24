@@ -2,8 +2,8 @@ require "formula"
 
 class AppscaleTools < Formula
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.0.0.tar.gz"
-  sha1 "d6855bd6e91b56fd07d7bf59f81ea6cdd1a482b8"
+  url "https://github.com/AppScale/appscale-tools/archive/2.1.0.tar.gz"
+  sha1 "b20e358b40c5af4d095f0113128084de2f5c288e"
   head "https://github.com/AppScale/appscale-tools.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -61,9 +61,7 @@ class AppscaleTools < Formula
       r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
 
-    inreplace Dir["bin/appscale*"] do |s|
-      s.gsub! /^lib = os.*/, "lib = '#{libexec}'"
-    end
+    inreplace Dir["bin/appscale*"], /^  lib = os.*/, "  lib = '#{libexec}'"
 
     prefix.install "bin", "templates", "LICENSE", "README.md"
     libexec.install Dir["lib/*"]
@@ -73,5 +71,6 @@ class AppscaleTools < Formula
 
   test do
     system bin/"appscale", "help"
+    system bin/"appscale", "init", "cloud"
   end
 end

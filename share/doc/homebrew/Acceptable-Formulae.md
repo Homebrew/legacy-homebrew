@@ -31,13 +31,13 @@ There are exceptions:
 
   Formula         | Reason
   ---             | ---
-  ruby, python    | People want newer versions
+  ruby, python, perl    | People want newer versions
   bash            | OS X's bash is stuck at 3.2 because newer versions are licensed under GPLv3
   zsh             | This was a mistake, but it’s too late to remove it
   emacs, vim      | [Too popular to move to dupes](https://github.com/Homebrew/homebrew/pull/21594#issuecomment-21968819)
   subversion      | Originally added for 10.5, but people want the latest version
   libcurl         | Some formulae require a newer version than OS X provides
-  openssl         | OS X's openssl is deprecated
+  openssl         | OS X's openssl is deprecated & outdated.
   libxml2         | Historically, OS X's libxml2 has been buggy
 
 We also maintain [a tap](https://github.com/Homebrew/homebrew-dupes) that
@@ -62,17 +62,17 @@ from source. Binary-only formulae should go to
 [Homebrew/homebrew-binary](https://github.com/Homebrew/homebrew-binary).
 
 ### Stable versions
-Formulae in the core repository should have a stable version tagged by
+Formulae in the core repository must have a stable version tagged by
 the upstream project. Tarballs are preferred to git checkouts, and
 tarballs should include the version in the filename whenever possible.
 
 Software that does not provide a stable, tagged version, or had guidance to
 always install the most recent version, should be put in
-[Homebrew/homebrew-headonly](https://github.com/Homebrew/homebrew-headonly).
+[Homebrew/homebrew-head-only](https://github.com/Homebrew/homebrew-headonly) or [homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only).
 
 ### Bindings
 First check that there is not already a binding available via
-[`gem`](http://rubygems.org/) or [`pip`](http://www.pip-installer.org/)
+[`gem`](https://rubygems.org/) or [`pip`](http://www.pip-installer.org/)
 etc..
 
 If not, then put bindings in the formula they bind to. This is more
@@ -100,7 +100,7 @@ Don’t make your formula build an `.app` (native OS X Application), we
 don’t want those things in Homebrew. Make it build a command line tool
 or a library. However, we have a few exceptions to that, e.g. when the
 App is just additional to CLI or if the GUI-application is non-native
-for OS X and/or hard to get in binary elsewhere (example: font forge).
+for OS X and/or hard to get in binary elsewhere (example: fontforge).
 Check out the [homebrew-cask](https://github.com/caskroom/homebrew-cask)
 project if you’d like to brew native OS X Applications.
 

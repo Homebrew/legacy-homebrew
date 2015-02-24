@@ -7,7 +7,7 @@ class Golo < Formula
 
   head do
     url "https://github.com/golo-lang/golo-lang.git"
-    depends_on "maven"
+    depends_on "maven" => :build
   end
 
   depends_on :java => "1.7"

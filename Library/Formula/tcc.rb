@@ -14,4 +14,16 @@ class Tcc < Formula
     system "make", "install"
     system "make", "test"
   end
+
+  test do
+    (testpath/"hello-c.c").write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+        puts("Hello, world!");
+        return 0;
+      }
+    EOS
+    assert_equal "Hello, world!\n", shell_output("#{bin}/tcc -run hello-c.c")
+  end
 end

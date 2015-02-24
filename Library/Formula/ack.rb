@@ -1,5 +1,3 @@
-require "formula"
-
 class Ack < Formula
   homepage "http://beyondgrep.com/"
   url "http://beyondgrep.com/ack-2.14-single-file"

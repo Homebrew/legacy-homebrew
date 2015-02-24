@@ -17,6 +17,7 @@ class Smartmontools < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--sbindir=#{bin}",
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}",
                           "--enable-drivedb",

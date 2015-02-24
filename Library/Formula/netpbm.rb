@@ -4,7 +4,7 @@ class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
   # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
   # for versions and matching revisions
-  url 'svn+http://svn.code.sf.net/p/netpbm/code/advanced/', :revision => 2294
+  url 'http://svn.code.sf.net/p/netpbm/code/advanced', :revision => 2294
   version '10.68'
 
   head 'http://svn.code.sf.net/p/netpbm/code/trunk'

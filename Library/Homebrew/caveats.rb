@@ -97,7 +97,7 @@ class Caveats
     if keg and keg.app_installed?
       <<-EOS.undent
         .app bundles were installed.
-        Run `brew linkapps` to symlink these to /Applications.
+        Run `brew linkapps #{keg.name}` to symlink these to /Applications.
       EOS
     end
   end

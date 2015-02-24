@@ -1,14 +1,12 @@
-require 'formula'
-
 class HtopOsx < Formula
-  homepage 'https://github.com/max-horvath/htop-osx'
-  url 'https://github.com/max-horvath/htop-osx/archive/0.8.2.2.tar.gz'
-  sha1 '17c56fe5efe81cf6b0f4c13a958fa7e4d8591b23'
+  homepage "https://github.com/max-horvath/htop-osx"
+  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.3.tar.gz"
+  sha1 "43d63772dd610fb238e3b9a83c066658bd6218d9"
 
   bottle do
-    sha1 "1979feaa7dc6dc9ea8eba0eeba0903451b6dcb60" => :mavericks
-    sha1 "60dfb6d300afd103aa5533b52302de3bb0dd067f" => :mountain_lion
-    sha1 "ffed10bd7a4a6649120d8db66ac7b0daf686b982" => :lion
+    sha1 "9de4bee7456fe78f5569bac225cd9d23af1b72eb" => :yosemite
+    sha1 "30d4a704b72f2b05b95375c7308f67ea8b5ce272" => :mavericks
+    sha1 "a795b939866e1d130bf93762e4b8d755249c634e" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -33,5 +31,11 @@ class HtopOsx < Formula
 
     You should be certain that you trust any software you grant root privileges.
     EOS
+  end
+
+  test do
+    ENV["TERM"] = "xterm"
+    pipe_output("#{bin}/htop", "q")
+    assert $?.success?
   end
 end

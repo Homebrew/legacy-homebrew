@@ -7,8 +7,8 @@ class Povray < Formula
   revision 1
 
   depends_on :macos => :lion
-  depends_on :autoconf
-  depends_on :automake
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on 'libpng'
   depends_on 'boost'
   depends_on 'jpeg'

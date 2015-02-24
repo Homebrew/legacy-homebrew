@@ -2,14 +2,14 @@ require "formula"
 
 class Sslmate < Formula
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-0.5.0.tar.gz"
-  sha256 "481e345e25585bf3a449f0f5f987bdb7a5adcd26a5a8805f1e7e5919456e4977"
+  url "https://packages.sslmate.com/other/sslmate-0.6.2.tar.gz"
+  sha256 "b8a7752864d52ebb92e225268774811b6eccce746ac2098b7bc3119173bffb93"
 
   bottle do
     cellar :any
-    sha1 "8e6d2ef49a4dca0702a466cc49ac0d996ccd85e4" => :yosemite
-    sha1 "3781c6845bc01321149b8959c14523a321368044" => :mavericks
-    sha1 "f27e18e82467cbca19d9f17f1c83226f4e4ba620" => :mountain_lion
+    sha1 "7085c96229238b3426573e2d1b717ea44eaa2ed9" => :yosemite
+    sha1 "a481fae6553a4f56cf2d6ec3b5ef0d541f3e12fa" => :mavericks
+    sha1 "4936239b3a8ba67ca19b403229ed646bfac8e895" => :mountain_lion
   end
 
   if MacOS.version <= :snow_leopard

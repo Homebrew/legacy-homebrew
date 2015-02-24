@@ -54,10 +54,7 @@ class InstallTests < Homebrew::TestCase
     f = Class.new(ScriptFileFormula) do
       url "file://#{File.expand_path(__FILE__)}"
       version "1"
-      def initialize
-        super "test_script_formula", Pathname.new(__FILE__).expand_path, :stable
-      end
-    end.new
+    end.new("test_script_formula", Pathname.new(__FILE__).expand_path, :stable)
 
     temporary_install(f) { assert_equal 1, f.bin.children.length }
   end

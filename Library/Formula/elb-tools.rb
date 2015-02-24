@@ -8,10 +8,6 @@ class ElbTools < AmazonWebServicesFormula
 
   depends_on 'ec2-api-tools'
 
-  def install
-    standard_install
-  end
-
   def caveats
     standard_instructions "AWS_ELB_HOME"
   end

@@ -167,6 +167,8 @@ module Homebrew
       @hash = nil
       @url = nil
       @formulae = []
+      @added_formulae = []
+      @modified_formula = []
       @steps = []
       @tap = tap
       @repository = Homebrew.homebrew_git_repo @tap
@@ -234,6 +236,15 @@ module Homebrew
         git("rev-list", "--count", "#{start_revision}..#{end_revision}").to_i == 1
       end
 
+      def diff_formulae start_revision, end_revision, path, filter
+        git(
+          "diff-tree", "-r", "--name-only", "--diff-filter=#{filter}",
+          start_revision, end_revision, "--", path
+        ).lines.map do |line|
+          File.basename(line.chomp, ".rb")
+        end
+      end
+
       @category = __method__
       @start_branch = current_branch
 
@@ -299,12 +310,9 @@ module Homebrew
         formula_path = "Library/Formula"
       end
 
-      git(
-        "diff-tree", "-r", "--name-only", "--diff-filter=AM",
-        diff_start_sha1, diff_end_sha1, "--", formula_path
-      ).each_line do |line|
-        @formulae << File.basename(line.chomp, ".rb")
-      end
+      @added_formulae += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "A")
+      @modified_formula += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "M")
+      @formulae += @added_formulae + @modified_formula
     end
 
     def skip formula_name
@@ -352,6 +360,12 @@ module Homebrew
       dependencies -= `brew list`.split("\n")
       unchanged_dependencies = dependencies - @formulae
       changed_dependences = dependencies - unchanged_dependencies
+
+      dependents = `brew uses #{formula_name}`.split("\n")
+      dependents -= @formulae
+      dependents = dependents.map {|d| Formulary.factory(d)}
+      testable_dependents = dependents.select {|d| d.test_defined? && d.stable.bottled? }
+
       formula = Formulary.factory(formula_name)
       return unless satisfied_requirements?(formula, :stable)
 
@@ -364,7 +378,13 @@ module Homebrew
       end
 
       begin
-        deps.each { |d| CompilerSelector.select_for(d.to_formula) }
+        deps.each do |dep|
+          if dep.is_a?(TapDependency) && dep.tap
+            tap_dir = Homebrew.homebrew_git_repo dep.tap
+            test "brew", "tap", dep.tap unless tap_dir.directory?
+          end
+          CompilerSelector.select_for(dep.to_formula)
+        end
         CompilerSelector.select_for(formula)
       rescue CompilerSelectionError => e
         unless installed_gcc
@@ -402,7 +422,9 @@ module Homebrew
       ENV["HOMEBREW_DEVELOPER"] = "1"
       test "brew", "install", *install_args
       install_passed = steps.last.passed?
-      test "brew", "audit", formula_name
+      audit_args = [formula_name]
+      audit_args << "--strict" if @added_formulae.include? formula_name
+      test "brew", "audit", *audit_args
       if install_passed
         unless ARGV.include? '--no-bottle'
           bottle_args = ["--rb", formula_name]
@@ -421,6 +443,21 @@ module Homebrew
           end
         end
         test "brew", "test", "--verbose", formula_name if formula.test_defined?
+        testable_dependents.each do |dependent|
+          unless dependent.installed?
+            test "brew", "fetch", "--retry", dependent.name
+            next if steps.last.failed?
+            conflicts = dependent.conflicts.map { |c| Formulary.factory(c.name) }.select { |f| f.installed? }
+            conflicts.each do |conflict|
+              test "brew", "unlink", conflict.name
+            end
+            test "brew", "install", dependent.name
+            next if steps.last.failed?
+          end
+          if dependent.installed?
+            test "brew", "test", "--verbose", dependent.name
+          end
+        end
         test "brew", "uninstall", "--force", formula_name
       end
 
@@ -429,7 +466,7 @@ module Homebrew
         test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
         test "brew", "install", "--devel", "--verbose", formula_name
         devel_install_passed = steps.last.passed?
-        test "brew", "audit", "--devel", formula_name
+        test "brew", "audit", "--devel", *audit_args
         if devel_install_passed
           test "brew", "test", "--devel", "--verbose", formula_name if formula.test_defined?
           test "brew", "uninstall", "--devel", "--force", formula_name
@@ -452,7 +489,8 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "--force", "-dx"
+      git "clean", "-fdx"
+      git "clean", "-ffdx" unless $?.success?
     end
 
     def cleanup_after
@@ -460,7 +498,8 @@ module Homebrew
 
       checkout_args = []
       if ARGV.include? '--cleanup'
-        test "git", "clean", "--force", "-dx"
+        test "git", "clean", "-fdx"
+        test "git", "clean", "-ffdx" if steps.last.failed?
         checkout_args << "-f"
       end
 
@@ -569,7 +608,8 @@ module Homebrew
     ENV['HOMEBREW_NO_EMOJI'] = '1'
     if ARGV.include? '--ci-master' or ARGV.include? '--ci-pr' \
        or ARGV.include? '--ci-testing'
-      ARGV << '--cleanup' << '--junit' << '--local'
+      ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS_COMMIT"]
+      ARGV << "--junit" << "--local"
     end
     if ARGV.include? '--ci-master'
       ARGV << '--no-bottle' << '--email'
@@ -600,8 +640,10 @@ module Homebrew
       raise "Missing Jenkins variables!" unless jenkins and job and id
 
       ARGV << '--verbose'
-      cp_args = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"] + ["."]
-      return unless system "cp", *cp_args
+
+      bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
+      return if bottles.empty?
+      FileUtils.cp bottles, Dir.pwd, :verbose => true
 
       ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
       ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
@@ -679,35 +721,38 @@ module Homebrew
     if ARGV.include? "--junit"
       xml_document = REXML::Document.new
       xml_document << REXML::XMLDecl.new
-      testsuites = xml_document.add_element 'testsuites'
-      tests.each do |test|
-        testsuite = testsuites.add_element 'testsuite'
-        testsuite.attributes['name'] = "brew-test-bot.#{MacOS.cat}"
-        testsuite.attributes['tests'] = test.steps.count
-        test.steps.each do |step|
-          testcase = testsuite.add_element 'testcase'
-          testcase.attributes['name'] = step.command_short
-          testcase.attributes['status'] = step.status
-          testcase.attributes['time'] = step.time
-          failure = testcase.add_element 'failure' if step.failed?
-          if step.has_output?
-            output = step.output
+      testsuites = xml_document.add_element "testsuites"
 
+      tests.each do |test|
+        testsuite = testsuites.add_element "testsuite"
+        testsuite.add_attribute "name", "brew-test-bot.#{MacOS.cat}"
+        testsuite.add_attribute "tests", test.steps.count
+
+        test.steps.each do |step|
+          testcase = testsuite.add_element "testcase"
+          testcase.add_attribute "name", step.command_short
+          testcase.add_attribute "status", step.status
+          testcase.add_attribute "time", step.time
+
+          if step.has_output?
             # Remove invalid XML CData characters from step output.
-            output = output.delete("\000\a\b\e\f")
+            output = step.output.delete("\000\a\b\e\f")
 
             if output.bytesize > BYTES_IN_1_MEGABYTE
               output = "truncated output to 1MB:\n" \
                 + output.slice(-BYTES_IN_1_MEGABYTE, BYTES_IN_1_MEGABYTE)
             end
-            output = REXML::CData.new output
+
+            cdata = REXML::CData.new output
+
             if step.passed?
-              system_out = testcase.add_element 'system-out'
-              system_out.text = output
+              elem = testcase.add_element "system-out"
             else
-              failure.attributes["message"] = "#{step.status}: #{step.command.join(" ")}"
-              failure.text = output
+              elem = testcase.add_element "failure"
+              elem.add_attribute "message", "#{step.status}: #{step.command.join(" ")}"
             end
+
+            elem << cdata
           end
         end
       end
@@ -722,7 +767,7 @@ module Homebrew
       failed_steps = []
       tests.each do |test|
         test.steps.each do |step|
-          next unless step.failed?
+          next if step.passed?
           failed_steps << step.command_short
         end
       end

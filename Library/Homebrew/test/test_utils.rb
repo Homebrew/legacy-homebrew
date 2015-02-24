@@ -7,7 +7,7 @@ class UtilTests < Homebrew::TestCase
   end
 
   def test_popen_read
-    out = Utils.popen_read("/bin/sh", "-c", "echo success", &:read).chomp
+    out = Utils.popen_read("/bin/sh", "-c", "echo success").chomp
     assert_equal "success", out
     assert_predicate $?, :success?
   end

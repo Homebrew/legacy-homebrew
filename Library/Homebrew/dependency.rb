@@ -132,8 +132,11 @@ class Dependency
 end
 
 class TapDependency < Dependency
+  attr_reader :tap
+
   def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
-    super(name, tags, env_proc, name.split("/").last)
+    @tap, _, option_name = option_name.rpartition "/"
+    super(name, tags, env_proc, option_name)
   end
 
   def installed?

@@ -10,7 +10,6 @@ class Sshrc < Formula
   end
 
   test do
-    ENV["HOME"] = testpath
     touch testpath/".sshrc"
     (testpath/"ssh").write <<-EOS.undent
       #!/bin/sh

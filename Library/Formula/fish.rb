@@ -14,7 +14,7 @@ class Fish < Formula
   head do
     url "https://github.com/fish-shell/fish-shell.git", :shallow => false
 
-    depends_on :autoconf
+    depends_on "autoconf" => :build
     # Indeed, the head build always builds documentation
     depends_on "doxygen" => :build
   end

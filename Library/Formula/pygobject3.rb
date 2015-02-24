@@ -45,8 +45,7 @@ class Pygobject3 < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
-      ENV["PYTHON"] = "#{python}" if Formula[python].installed?
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "PYTHON=#{python}"
       system "make", "install"
       system "make", "check" if build.with? 'tests'
       system "make", "clean"

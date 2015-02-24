@@ -1,20 +1,20 @@
 require "formula"
 
 class Bfg < Formula
-  homepage "http://rtyley.github.io/bfg-repo-cleaner/"
-  url "http://repo1.maven.org/maven2/com/madgag/bfg/1.11.8/bfg-1.11.8.jar"
-  sha1 "9834ed826f2b3f1da1f28f663e3c5b9cf807ab1e"
+  homepage "https://rtyley.github.io/bfg-repo-cleaner/"
+  url "https://repo1.maven.org/maven2/com/madgag/bfg/1.11.10/bfg-1.11.10.jar"
+  sha1 "c514a5649e9440e4b174ccc46faf8c38c6fb824f"
 
   bottle do
     cellar :any
-    sha1 "2d5f40dcbeccdf9629d9a6a01ac6147ee27d625a" => :yosemite
-    sha1 "cfb607b5fd0b9f4449d68516bc348171f9745232" => :mavericks
-    sha1 "ee1a0dd42789fbfeaacd3c397224f52873eab98f" => :mountain_lion
+    sha1 "aa138b3e29c4e1e091a34d454318a272ba7a07ef" => :yosemite
+    sha1 "b804d878d845fce21a33ae553a3e78cd7246bb70" => :mavericks
+    sha1 "b98e1cfe586b09b8d2f57cc590966cc677ffa595" => :mountain_lion
   end
 
   def install
-    libexec.install "bfg-1.11.8.jar"
-    bin.write_jar_script libexec/"bfg-1.11.8.jar", "bfg"
+    libexec.install "bfg-1.11.10.jar"
+    bin.write_jar_script libexec/"bfg-1.11.10.jar", "bfg"
   end
 
   test do

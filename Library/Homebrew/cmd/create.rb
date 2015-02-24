@@ -10,7 +10,7 @@ module Homebrew
 
     # Allow searching MacPorts or Fink.
     if ARGV.include? '--macports'
-      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     end
@@ -62,7 +62,7 @@ module Homebrew
 
     fc.generate!
 
-    puts "Please `brew audit #{fc.name}` before submitting, thanks."
+    puts "Please `brew audit --strict #{fc.name}` before submitting, thanks."
     exec_editor fc.path
   end
 
@@ -109,7 +109,9 @@ class FormulaCreator
 
     if fetch? && version
       r = Resource.new
-      r.url, r.version, r.owner = url, version, self
+      r.url(url)
+      r.version(version)
+      r.owner = self
       @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
     end
 
@@ -117,8 +119,6 @@ class FormulaCreator
   end
 
   def template; <<-EOS.undent
-    require "formula"
-
     # Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
     #                #{HOMEBREW_CONTRIB}/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!

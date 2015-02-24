@@ -1,16 +1,14 @@
-require "formula"
-
 class Sqlite < Formula
-  homepage "http://sqlite.org/"
-  url "https://www.sqlite.org/2014/sqlite-autoconf-3080701.tar.gz"
-  version "3.8.7.1"
-  sha1 "5601be1263842209d7c5dbf6128f1cc0b6bbe2e5"
+  homepage "https://sqlite.org/"
+  url "https://www.sqlite.org/2014/sqlite-autoconf-3080704.tar.gz"
+  version "3.8.7.4"
+  sha1 "70ca0b8884a6b145b7f777724670566e2b4f3cde"
 
   bottle do
     cellar :any
-    sha1 "acbebfa695ddbc0e23d5d534a6971b7765afb893" => :yosemite
-    sha1 "914eef56a08e8ad31666fb5fd786164dd736f635" => :mavericks
-    sha1 "a6967299c0749a473f3473554067bc467e34d368" => :mountain_lion
+    sha1 "89e69674e5617d190a0906cf493d90f2a1d9df23" => :yosemite
+    sha1 "83853093fc0f839124f45440a90948400c18ebf5" => :mavericks
+    sha1 "de28188fb9da216c142922481962628a702e0ce3" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -26,15 +24,15 @@ class Sqlite < Formula
   depends_on "icu4c" => :optional
 
   resource "functions" do
-    url "http://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
+    url "https://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
     version "2010-01-06"
     sha1 "c68fa706d6d9ff98608044c00212473f9c14892f"
   end
 
   resource "docs" do
-    url "https://www.sqlite.org/2014/sqlite-doc-3080701.zip"
-    version "3.8.7.1"
-    sha1 "712b4ce64317646f27a046d5850515cd710bd00a"
+    url "https://www.sqlite.org/2014/sqlite-doc-3080704.zip"
+    version "3.8.7.4"
+    sha1 "734908373118d61338ca020e3c7dcbd1e0ccd985"
   end
 
   def install
@@ -43,12 +41,12 @@ class Sqlite < Formula
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA"
 
     if build.with? "icu4c"
-      icu4c = Formula['icu4c']
+      icu4c = Formula["icu4c"]
       icu4cldflags = `#{icu4c.opt_bin}/icu-config --ldflags`.tr("\n", " ")
       icu4ccppflags = `#{icu4c.opt_bin}/icu-config --cppflags`.tr("\n", " ")
       ENV.append "LDFLAGS", icu4cldflags
       ENV.append "CPPFLAGS", icu4ccppflags
-      ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_ICU"
+      ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_ICU"
     end
 
     ENV.universal_binary if build.universal?
@@ -75,7 +73,7 @@ class Sqlite < Formula
         In your application, call sqlite3_enable_load_extension(db,1) to
         allow loading external libraries.  Then load the library libsqlitefunctions
         using sqlite3_load_extension; the third argument should be 0.
-        See http://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
+        See https://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
         Select statements may now use these functions, as in
         SELECT cos(radians(inclination)) FROM satsum WHERE satnum = 25544;
 

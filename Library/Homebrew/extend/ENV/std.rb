@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 require 'hardware'
 require 'os/mac'
 require 'extend/ENV/shared'

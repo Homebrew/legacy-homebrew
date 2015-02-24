@@ -62,9 +62,9 @@ Before contributing, make sure your package:
 *   meets all our [Acceptable Formulae](Acceptable-Formulae.md) requirements
 *   isn't already in Homebrew (check `brew search $FORMULA`)
 *   isn't in another [Homebrew tap](https://github.com/Homebrew)
-*   isn't already waiting to be merged (check the [issue tracker](http://github.com/Homebrew/homebrew/issues))
+*   isn't already waiting to be merged (check the [issue tracker](https://github.com/Homebrew/homebrew/issues))
 *   is still supported by upstream
-*   has a stable, tagged version (i.e. not just a GitHub repository with no versions)
+*   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release and head-only versions belong.
 
 Make sure you search thoroughly (all aliases!). We don’t want you to waste your time.
 
@@ -79,7 +79,7 @@ Probably. But we have rules to keep the quality and goals of Homebrew intact: Pl
 
 Formulae aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/etl.rb) is as simple as it gets.
 
-And then [Git](http://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](http://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
+And then [Git](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
 
 A more complete [cheat-sheet](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/example-formula.rb) shows almost all the stuff you can use in a Formula.
 
@@ -91,13 +91,11 @@ All you need to make a formula is a URL to the tarball.
 
 This creates:
 
-`/usr/local/Library/Formula/foo.rb`
+`$HOMEBREW_REPOSITORY/Library/Formula/foo.rb`
 
 And opens it in your `$EDITOR`. It'll look like:
 
 ```ruby
-require "formula"
-
 class Foo < Formula
   url "http://example.com/foo-0.1.tar.gz"
   homepage ""
@@ -244,7 +242,7 @@ class Foo < Formula
   end
 
   def install
-    resource("pycrypto").stage { Language::Python.setup_install "python", libexec/"vendor" }
+    resource("pycrypto").stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
   end
 end
 ```
@@ -302,7 +300,7 @@ The only exception is stuff like “Apache Ant”. Apache sticks “Apache” in
 
 If you’re not sure about the name check the homepage, and check the Wikipedia page.
 
-[ALSO CHECK WHAT DEBIAN CALLS IT!](http://www.debian.org/distrib/packages)
+[ALSO CHECK WHAT DEBIAN CALLS IT!](https://www.debian.org/distrib/packages)
 
 Where Homebrew already has a formula called `foo` we typically do not accept requests to replace that formula with something else also named `foo`. This is to avoid both confusing and surprising users’ expectation.
 
@@ -356,7 +354,7 @@ Ensure you reference any relevant GitHub issue `#12345` in the commit message. H
 
 Now you just need to push back to GitHub.
 
-If you haven’t forked Homebrew yet, [go to the repo and hit the fork button](http://github.com/Homebrew/homebrew).
+If you haven’t forked Homebrew yet, [go to the repo and hit the fork button](https://github.com/Homebrew/homebrew).
 
 If you have already forked Homebrew on Github, then you can manually push (just make sure you have been pulling from the Homebrew/homebrew master):
 
@@ -366,7 +364,7 @@ Now, please open a Pull Request (on your github repo page) for new and updated b
 
 *   One formula per commit; one commit per formula
 *   Keep merge commits out of the request
-*   If you have any merge or mixup commits, please [squash](http://www.gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html) them.
+*   If you have any merge or mixup commits, please [squash](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html) them.
 
 If a commit touches multiple files, or isn’t one logical bug fix, or a file is touched in multiple commits, we’ll probably ask you to `rebase` and `squash` your commits. For this reason, you should avoid pushing to your `master` branch. Note, after rebase and/or squash, you'll need to push with `--force` to your remote.
 
@@ -845,6 +843,8 @@ end
 
 Option names should be prefixed with one of the words `with`, `without`, `no`, or a verb in the imperative tense describing the action to be taken. For example, an option to run a test suite should be named `--with-test` or `--with-check` rather than `--test`, and an option to enable a shared library should be named `--enable-shared` rather than `--shared`.
 
+Note that options that aren’t ` build.with? ` or ` build.without? ` should be actively deprecated where possible. See [wget](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/wget.rb#L27-L31) for an example.
+
 See the [graphviz](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/graphviz.rb) formula for an example.
 
 
@@ -921,7 +921,7 @@ class Foo < Formula
 end
 ```
 
-If that fixes it, please open an [issue](http://github.com/Homebrew/homebrew/issues) so that we can fix it for everyone.
+If that fixes it, please open an [issue](https://github.com/Homebrew/homebrew/issues) so that we can fix it for everyone.
 
 ## Still won’t work?
 

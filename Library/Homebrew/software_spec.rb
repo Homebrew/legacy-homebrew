@@ -224,7 +224,7 @@ class Bottle
     checksum, tag = spec.checksum_for(bottle_tag)
 
     filename = Filename.create(formula, tag, spec.revision)
-    @resource.url = build_url(spec.root_url, filename)
+    @resource.url(build_url(spec.root_url, filename))
     @resource.download_strategy = CurlBottleDownloadStrategy
     @resource.version = formula.pkg_version
     @resource.checksum = checksum

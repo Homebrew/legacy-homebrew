@@ -12,15 +12,23 @@ class TomcatNative < Formula
     sha1 "03d417ff8af69aba03c872e3bf7b3de9ca43d44b" => :mountain_lion
   end
 
+  option "with-apr", "Include APR support via Homebrew"
+
   depends_on "libtool" => :build
   depends_on "tomcat" => :recommended
   depends_on :java => "1.7"
   depends_on "openssl"
+  depends_on "apr" => :optional
 
   def install
     cd "jni/native" do
+      if build.with? 'apr'
+        apr_path = "#{Formula['apr'].prefix}"
+      else
+        apr_path = "#{MacOS.sdk_path}/usr"
+      end
       system "./configure", "--prefix=#{prefix}",
-                            "--with-apr=#{MacOS.sdk_path}/usr",
+                            "--with-apr=#{apr_path}",
                             "--with-java-home=#{`/usr/libexec/java_home`.chomp}",
                             "--with-ssl=#{Formula["openssl"].prefix}"
 

@@ -5,7 +5,7 @@ class Rgbds < Formula
   url "https://github.com/bentley/rgbds/releases/download/v0.1.2/rgbds-0.1.2.tar.gz"
   sha1 "5d83defd7ee101db409e638ff32e362b6ca25a32"
 
-  head "https://github.com/bentley/rgbds.git", :branch => "master"
+  head "https://github.com/bentley/rgbds.git"
 
   bottle do
     cellar :any

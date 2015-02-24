@@ -15,8 +15,9 @@ module Homebrew
 
           rack = keg/".."
           if rack.directory?
-            versions = rack.subdirs.map(&:basename).join(", ")
-            puts "#{keg.name} #{versions} are still installed."
+            versions = rack.subdirs.map(&:basename)
+            verb = versions.length == 1 ? "is" : "are"
+            puts "#{keg.name} #{versions.join(", ")} #{verb} still installed."
             puts "Remove them all with `brew uninstall --force #{keg.name}`."
           end
         end

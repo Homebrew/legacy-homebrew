@@ -4,18 +4,20 @@ class Irssi < Formula
   homepage "http://irssi.org/"
   url "http://irssi.org/files/irssi-0.8.17.tar.bz2"
   sha1 "3bdee9a1c1f3e99673143c275d2c40275136664a"
+  revision 2
 
   bottle do
-    sha1 "cf15f3d0cadb37218e164250c44d78b4c892d177" => :mavericks
-    sha1 "c57f169abb6818eec4fce7581bb0f85a79ce55b2" => :mountain_lion
-    sha1 "7bd34bbdc9f67dd9bdaed0b7e84e29c1518b07f1" => :lion
+    sha1 "91539fa7c4a770a8a1e800ed4dead75a73029bb5" => :yosemite
+    sha1 "d4b3cd1f46477346da9db9ccd273e1903818e190" => :mavericks
+    sha1 "2ac9a5c84246b40a744de869a0ed0972e685f8c7" => :mountain_lion
   end
 
   option "without-perl", "Build without perl support"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "openssl" => :optional
+  depends_on "openssl" => :recommended
+  depends_on "dante" => :optional
 
   # Fix Perl build flags and paths in man page
   patch :DATA
@@ -40,10 +42,13 @@ class Irssi < Formula
       args << "--with-perl=no"
     end
 
-    args << "--enable-ssl" if build.with? "openssl"
+    # confuses Perl library path configuration
+    # https://github.com/Homebrew/homebrew/issues/34685
+    ENV.delete "PERL_MM_OPT"
+
+    args << "--disable-ssl" if build.without? "openssl"
 
     system "./configure", *args
-
     # "make" and "make install" must be done separately on some systems
     system "make"
     system "make", "install"

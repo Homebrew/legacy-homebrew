@@ -1,5 +1,3 @@
-require "formula"
-
 class Apib < Formula
   homepage "https://github.com/apigee/apib"
   url "https://github.com/apigee/apib/archive/APIB_1_0.tar.gz"
@@ -17,6 +15,20 @@ class Apib < Formula
   depends_on "openssl"
 
   def install
+    # Upstream hardcodes finding apr in /usr/include. When CLT is not present
+    # we need to fix this so our apr requirement works.
+    # https://github.com/apigee/apib/issues/11
+    unless MacOS::CLT.installed?
+      inreplace "configure" do |s|
+        s.gsub! "/usr/include/apr-1.0", "#{Formula["apr"].opt_prefix}/libexec/include/apr-1"
+        s.gsub! "/usr/include/apr-1", "#{Formula["apr"].opt_prefix}/libexec/include/apr-1"
+      end
+      ENV.append "LDFLAGS", "-L#{Formula["apr-util"].opt_prefix}/libexec/lib"
+      ENV.append "LDFLAGS", "-L#{Formula["apr"].opt_prefix}/libexec/lib"
+      ENV.append "CFLAGS", "-I#{Formula["apr"].opt_prefix}/libexec/include/apr-1"
+      ENV.append "CFLAGS", "-I#{Formula["apr-util"].opt_prefix}/libexec/include/apr-1"
+    end
+
     system "./configure", "--prefix=#{prefix}"
     system "make"
     bin.install "apib", "apibmon"

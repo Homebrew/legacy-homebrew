@@ -1,14 +1,12 @@
-require "formula"
-
 class Emscripten < Formula
   homepage "https://kripken.github.io/emscripten-site/"
-  url "https://github.com/kripken/emscripten/archive/1.27.0.tar.gz"
-  sha1 "82feb97e78b87a159c7382b772f62fe5ba2bd0e2"
+  url "https://github.com/kripken/emscripten/archive/1.28.2.tar.gz"
+  sha1 "39f25db710874d835ac1ffe1941ef854a0a8f23a"
 
   bottle do
-    sha1 "5d981b548c225cd4d8efc6bcc06ddd635483af28" => :yosemite
-    sha1 "ff71534e13b36cafd5d3fa89a7cb32a4ce6abed8" => :mavericks
-    sha1 "4e8831fe22a636971d59d7968c2fce704928244f" => :mountain_lion
+    sha1 "f73edf45833d349803c37f911eb3be78a8053a5c" => :yosemite
+    sha1 "d5c0dc65320975927bffe7bd38c59d6a07ae4f9b" => :mavericks
+    sha1 "50318165485dda92de1fea4ccbacc627a4762264" => :mountain_lion
   end
 
   head do
@@ -25,13 +23,13 @@ class Emscripten < Formula
 
   stable do
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.27.0.tar.gz"
-      sha1 "77343ed1206a6407bcaafb901f699d4c5d2c3c83"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.28.2.tar.gz"
+      sha1 "967aa51c32b806ad15af3d8d61d66a004ada453d"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.27.0.tar.gz"
-      sha1 "53a4ee4482e79117fdd6979f6e2d80d18e2c9dca"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.28.2.tar.gz"
+      sha1 "87cdf58e83ef6bf0af813b336515ada52b124588"
     end
   end
 
@@ -65,10 +63,6 @@ class Emscripten < Formula
     ]
 
     cd "fastcomp" do
-      # Fix for parsing Mac OS X version numbers >= 10.10
-      # https://groups.google.com/forum/#!msg/emscripten-discuss/8gb88R5eyqs/p9_82Wi2pSAJ
-      inreplace "Makefile.rules", '10.([0-9])', '10.([0-9]+)'
-      inreplace "Makefile.rules", '(10.[0-9])', '(10.[0-9]+)'
       system "./configure", *args
       system "make"
       system "make", "install"

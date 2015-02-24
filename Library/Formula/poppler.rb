@@ -2,13 +2,13 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.28.1.tar.xz'
-  sha1 '017258af51cb556dc53af630c50165bb9fd76e4f'
+  url 'http://poppler.freedesktop.org/poppler-0.29.0.tar.xz'
+  sha1 'ba3330ab884e6a139ca63dd84d0c1c676f545b5e'
 
   bottle do
-    sha1 "acd2993598f19bbc43a97290ddad7e7a9ea057a7" => :yosemite
-    sha1 "51909b61a845b2a3a37b6a6605ce6e90a66f3c57" => :mavericks
-    sha1 "bbcebe2b5ac7d895ec6a3839f2fffbffd62c478e" => :mountain_lion
+    sha1 "b83e3b7fe032d69343367ceb481a0387e447e565" => :yosemite
+    sha1 "c1693c4f5dddc088b6ea53640610918416d7e08c" => :mavericks
+    sha1 "36ca1676e824fe8532ad6c6e826685c0e39ac808" => :mountain_lion
   end
 
   option "with-qt", "Build Qt backend"
@@ -33,9 +33,6 @@ class Poppler < Formula
   depends_on "little-cms2" => :optional
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
-
-  conflicts_with 'pdf2image', 'xpdf',
-    :because => 'poppler, pdf2image, and xpdf install conflicting executables'
 
   resource 'font-data' do
     url 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'

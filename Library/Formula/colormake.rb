@@ -1,5 +1,3 @@
-require "formula"
-
 class Colormake < Formula
   homepage "https://github.com/pagekite/Colormake"
   head "https://github.com/pagekite/Colormake.git"
@@ -22,5 +20,10 @@ class Colormake < Formula
     libexec.install "colormake.pl"
     bin.install "colormake", "clmake", "colormake-short", "clmake-short"
     man1.install "colormake.1", "clmake.1"
+  end
+
+  test do
+    (testpath/"Makefile").write("all:\n\techo Hello World!\n")
+    assert_match /Hello World!/, shell_output("#{bin}/colormake")
   end
 end

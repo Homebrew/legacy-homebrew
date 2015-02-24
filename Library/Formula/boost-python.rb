@@ -1,5 +1,3 @@
-require "formula"
-
 class UniversalPython < Requirement
   satisfy(:build_env => false) { archs_for_command("python").universal? }
 
@@ -26,8 +24,8 @@ end
 
 class BoostPython < Formula
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.bz2"
-  sha1 "f94bb008900ed5ba1994a1072140590784b9b5df"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.57.0/boost_1_57_0.tar.bz2"
+  sha1 "e151557ae47afd1b43dc3fac46f8b04a8fe51c12"
   head "https://github.com/boostorg/boost.git"
 
   option :universal

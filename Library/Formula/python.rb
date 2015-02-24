@@ -3,22 +3,22 @@ require "formula"
 class Python < Formula
   homepage "https://www.python.org"
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
-  sha1 "511960dd78451a06c9df76509635aeec05b2051a"
-  revision 2
+  url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz"
+  sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 3
-    sha1 "9f8d1d3bf62e78c0918822517a041a845b6703d8" => :yosemite
-    sha1 "307042fc8dd7f736b450ee5fc631197290483cf7" => :mavericks
-    sha1 "f3708ea1d1f736527c428f0026aa42499c489fe2" => :mountain_lion
+    revision 8
+    sha1 "c2fee90806151869f150b49183fc563a5c7efd99" => :yosemite
+    sha1 "76390ee6c068b56d3c0c87846a0da35c496e36d4" => :mavericks
+    sha1 "a175b47961b9da49266d3407a0a7cc5fe3bbc032" => :mountain_lion
   end
 
+  # Please don't add a wide/ucs4 option as it won't be accepted.
+  # More details in: https://github.com/Homebrew/homebrew/pull/32368
   option :universal
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
-  option "with-dtrace", "Experimental DTrace support (http://bugs.python.org/issue13405)"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -32,13 +32,13 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz"
-    sha1 "a681ba56c30c0eb66528215842d3e3fcb5157614"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
+    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
-    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
+    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
   end
 
   # Patch for pyport.h macro issue
@@ -91,13 +91,8 @@ class Python < Formula
            ]
 
     args << "--without-gcc" if ENV.compiler == :clang
-    args << "--with-dtrace" if build.with? "dtrace"
 
-    if superenv?
-      distutils_fix_superenv(args)
-    else
-      distutils_fix_stdenv
-    end
+    distutils_fix_superenv(args)
 
     if build.universal?
       ENV.universal_binary
@@ -237,29 +232,6 @@ class Python < Formula
               "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
   end
 
-  def distutils_fix_stdenv
-    # Python scans all "-I" dirs but not "-isysroot", so we add
-    # the needed includes with "-I" here to avoid this err:
-    #     building dbm using ndbm
-    #     error: /usr/include/zlib.h: No such file or directory
-    ENV.append "CPPFLAGS", "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
-
-    # Don't use optimizations other than "-Os" here, because Python's distutils
-    # remembers (hint: `python-config --cflags`) and reuses them for C
-    # extensions which can break software (such as scipy 0.11 fails when
-    # "-msse4" is present.)
-    ENV.minimal_optimization
-
-    # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
-    ENV.enable_warnings
-    if ENV.compiler == :clang
-      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-      ENV.append_to_cflags "-Wno-unused-value"
-      ENV.append_to_cflags "-Wno-empty-body"
-    end
-  end
-
   def sitecustomize
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
@@ -331,6 +303,7 @@ class Python < Formula
     system "#{bin}/python", "-c", "import sqlite3"
     # Check if some other modules import. Then the linked libs are working.
     system "#{bin}/python", "-c", "import Tkinter; root = Tkinter.Tk()"
+    system bin/"pip", "list"
   end
 end
 

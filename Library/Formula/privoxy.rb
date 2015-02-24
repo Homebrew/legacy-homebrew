@@ -2,8 +2,14 @@ require 'formula'
 
 class Privoxy < Formula
   homepage 'http://www.privoxy.org'
-  url 'https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.21%20%28stable%29/privoxy-3.0.21-stable-src.tar.gz'
-  sha1 '2d73a9146e87218b25989096f63ab0772ce24109'
+  url 'https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.22%20%28stable%29/privoxy-3.0.22-stable-src.tar.gz'
+  sha1 '16cab9bb2055546a5f70815044dab893396c5686'
+
+  bottle do
+    sha1 "9a7f048bebdfa6737775a2b3ccbffb9813b6e548" => :yosemite
+    sha1 "a1ffe0019d363486a9e8c6dabfc779596dcc7f52" => :mavericks
+    sha1 "b9c9795f397f6571bab68b2a0633b493cf60c4da" => :mountain_lion
+  end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

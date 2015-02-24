@@ -1,37 +1,34 @@
-require 'formula'
-
 class Mtr < Formula
-  homepage 'http://www.bitwizard.nl/mtr/'
+  homepage "http://www.bitwizard.nl/mtr/"
+  url "ftp://ftp.bitwizard.nl/mtr/mtr-0.86.tar.gz"
+  sha1 "2c81d0f4c9296861a1159f07eec6acfb4bebecf7"
 
-  stable do
-    url "ftp://ftp.bitwizard.nl/mtr/mtr-0.85.tar.gz"
-    sha1 "6e79584265f733bea7f1b2cb13eeb48f10e96bba"
-
-    patch do
-      url "https://github.com/traviscross/mtr/commit/edd425.diff"
-      sha1 "c1ed669cdf65d607f75abc729a333b180ee42343"
-    end
+  bottle do
+    cellar :any
+    sha1 "8c08e6d32997d6a82ee755de600ba5d63cc50a4e" => :yosemite
+    sha1 "8cc2160f36567c5a0e913c0e0a9f60b9e835ba28" => :mavericks
+    sha1 "be91d5c1ad604d190ef1e1d56842592b816197bf" => :mountain_lion
   end
 
   head do
-    url 'https://github.com/traviscross/mtr.git'
-    depends_on :autoconf
-    depends_on :automake
+    url "https://github.com/traviscross/mtr.git"
+    depends_on "automake" => :build
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gtk+' => :optional
-  depends_on 'glib' => :optional
+  depends_on "autoconf" => :build
+  depends_on "pkg-config" => :build
+  depends_on "gtk+" => :optional
+  depends_on "glib" => :optional
 
   def install
     # We need to add this because nameserver8_compat.h has been removed in Snow Leopard
-    ENV['LIBS'] = "-lresolv"
+    ENV["LIBS"] = "-lresolv"
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    args << "--without-gtk" if build.without? 'gtk+'
-    args << "--without-glib" if build.without? 'glib'
+    args << "--without-gtk" if build.without? "gtk+"
+    args << "--without-glib" if build.without? "glib"
     system "./bootstrap.sh" if build.head?
     system "./configure", *args
     system "make install"

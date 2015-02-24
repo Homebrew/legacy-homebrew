@@ -52,7 +52,15 @@ module Language
       quiet_system python, "-c", script
     end
 
+    # deprecated; use system "python", *setup_install_args(prefix) instead
     def self.setup_install python, prefix, *args
+      opoo <<-EOS.undent
+        Language::Python.setup_install is deprecated.
+        If you are a formula author, please use
+          system "python", *Language::Python.setup_install_args(prefix)
+        instead.
+      EOS
+
       # force-import setuptools, which monkey-patches distutils, to make
       # sure that we always call a setuptools setup.py. trick borrowed from pip:
       # https://github.com/pypa/pip/blob/043af83/pip/req/req_install.py#L743-L780
@@ -65,6 +73,24 @@ module Language
       args += %w[--single-version-externally-managed --record=installed.txt]
       args << "--prefix=#{prefix}"
       system python, "-c", shim, "install", *args
+    end
+
+    def self.setup_install_args prefix
+      shim = <<-EOS.undent
+        import setuptools, tokenize
+        __file__ = 'setup.py'
+        exec(compile(getattr(tokenize, 'open', open)(__file__).read()
+          .replace('\\r\\n', '\\n'), __file__, 'exec'))
+      EOS
+      %W[
+        -c
+        #{shim}
+        --no-user-cfg
+        install
+        --prefix=#{prefix}
+        --single-version-externally-managed
+        --record=installed.txt
+      ]
     end
   end
 end

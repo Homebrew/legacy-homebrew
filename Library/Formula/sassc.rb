@@ -2,15 +2,15 @@ require "formula"
 
 class Sassc < Formula
   homepage "https://github.com/sass/sassc"
-  url "https://github.com/sass/sassc/archive/3.0.2.tar.gz"
-  sha1 "4666a8452005613afe4129a8e0cb4dd9e54b2868"
+  url "https://github.com/sass/sassc/archive/3.1.0.tar.gz"
+  sha1 "573224ad922b46ea1a568807ddcbc7de41a4254d"
   head "https://github.com/sass/sassc.git"
 
   bottle do
     cellar :any
-    sha1 "65fb58f5c6fe34eeff1ea207b8757bcec2a3e1c9" => :yosemite
-    sha1 "262ebee2c5fddcb2e29789ab8114c83abf3aeded" => :mavericks
-    sha1 "740702bd6479be486197055af380bc941ccb312e" => :mountain_lion
+    sha1 "744cd165da007750644e6eb3cfb1a7b76d94c7a2" => :yosemite
+    sha1 "d6d38f5d139073162943d1a5828c1b8b38e998be" => :mavericks
+    sha1 "26c429c4b643c8cf8602e2534f44473e18859ab5" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -20,6 +20,7 @@ class Sassc < Formula
   depends_on "libsass"
 
   def install
+    ENV["SASSC_VERSION"] = "3.1.0"
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}", "--disable-silent-rules",
                           "--disable-dependency-tracking"

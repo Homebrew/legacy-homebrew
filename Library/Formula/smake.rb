@@ -17,7 +17,7 @@ class Smake < Formula
   env :std if MacOS.version <= :lion
 
   def install
-    ENV.delete 'MAKEFLAGS' # the bootstrap smake does not like -j
+    ENV.deparallelize # the bootstrap smake does not like -j
 
     system "make", "GMAKE_NOWARN=true", "INS_BASE=#{libexec}", "INS_RBASE=#{libexec}", "install"
     bin.install_symlink libexec/"bin/smake"

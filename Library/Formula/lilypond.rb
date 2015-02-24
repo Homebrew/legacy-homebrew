@@ -34,7 +34,7 @@ class Lilypond < Formula
   depends_on "texinfo"
 
   # Additional dependencies for guile1.8.
-  depends_on :libtool
+  depends_on "libtool" => :build
   depends_on "libffi"
   depends_on "libunistring"
   depends_on "bdw-gc"

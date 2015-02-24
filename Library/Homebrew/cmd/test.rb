@@ -1,32 +1,10 @@
 require "extend/ENV"
 require "timeout"
 require "debrew"
+require "formula_assertions"
 
 module Homebrew
   TEST_TIMEOUT_SECONDS = 5*60
-
-  if defined?(Gem)
-    begin
-      gem "minitest", "< 5.0.0"
-    rescue Gem::LoadError
-      require "test/unit/assertions"
-    else
-      require "minitest/unit"
-      require "test/unit/assertions"
-    end
-  else
-    require "test/unit/assertions"
-  end
-
-  if defined?(MiniTest::Assertion)
-    FailedAssertion = MiniTest::Assertion
-  elsif defined?(Minitest::Assertion)
-    FailedAssertion = Minitest::Assertion
-  else
-    FailedAssertion = Test::Unit::AssertionFailedError
-  end
-
-  require "formula_assertions"
 
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
@@ -49,21 +27,24 @@ module Homebrew
 
       puts "Testing #{f.name}"
 
-      f.extend(Test::Unit::Assertions)
-      f.extend(Homebrew::Assertions)
+      f.extend(Assertions)
       f.extend(Debrew::Formula) if ARGV.debug?
+
+      env = ENV.to_hash
 
       begin
         # tests can also return false to indicate failure
         Timeout::timeout TEST_TIMEOUT_SECONDS do
-          raise if f.run_test == false
+          raise "test returned false" if f.run_test == false
         end
-      rescue FailedAssertion => e
+      rescue Assertions::FailedAssertion => e
         ofail "#{f.name}: failed"
         puts e.message
       rescue Exception => e
         ofail "#{f.name}: failed"
         puts e, e.backtrace
+      ensure
+        ENV.replace(env)
       end
     end
   end

@@ -2,26 +2,18 @@ require "formula"
 
 class NetSnmp < Formula
   homepage "http://www.net-snmp.org/"
-
-  stable do
-    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.2.1/net-snmp-5.7.2.1.tar.gz"
-    sha1 "815d4e5520a1ed96a27def33e7534b4190599f0f"
-
-    depends_on MaximumMacOSRequirement => :mountain_lion
-  end
+  url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3/net-snmp-5.7.3.tar.gz"
+  sha1 "97dc25077257680815de44e34128d365c76bd839"
 
   bottle do
-    sha1 "6f1ff81bde5defe92b4a2062fba099c8310f9662" => :mountain_lion
-    sha1 "cfeb129e4130ed17656443efd728ae0812a78720" => :lion
+    sha1 "6b7c2019c338a70336de0e8e808fbb4787a34fe8" => :mavericks
+    sha1 "83cc6e796ebb6748e2c458a6bb54e99bb42c30e6" => :mountain_lion
   end
 
-  devel do
-    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3-pre-releases/net-snmp-5.7.3.pre3.tar.gz"
-    version "5.7.3.pre3"
-    sha1 "5e46232a2508a3cb6543f0438569090f78e4a20e"
-  end
-
+  depends_on "openssl"
   depends_on :python => :optional
+
+  keg_only :provided_by_osx
 
   def install
     args = [
@@ -42,6 +34,9 @@ class NetSnmp < Formula
       args << "--with-python-modules"
       ENV["PYTHONPROG"] = `which python`
     end
+
+    # https://sourceforge.net/p/net-snmp/bugs/2504/
+    ln_s "darwin13.h", "include/net-snmp/system/darwin14.h"
 
     system "./configure", *args
     system "make"

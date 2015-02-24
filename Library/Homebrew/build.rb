@@ -109,12 +109,11 @@ class Build
       end
     end
 
-    if ARGV.debug?
-      formula.extend(Debrew::Formula)
-      formula.resources.each { |r| r.extend(Debrew::Resource) }
-    end
+    formula.extend(Debrew::Formula) if ARGV.debug?
 
     formula.brew do
+      formula.patch
+
       if ARGV.git?
         system "git", "init"
         system "git", "add", "-A"

@@ -2,7 +2,7 @@ require "formula"
 
 class Ngrok < Formula
   homepage "https://ngrok.com"
-  head "https://github.com/inconshreveable/ngrok.git", :branch => "master"
+  head "https://github.com/inconshreveable/ngrok.git"
   url "https://github.com/inconshreveable/ngrok/archive/1.7.tar.gz"
   sha1 "4a6baf98a23193c21d7732c6573f53dbbede5033"
 

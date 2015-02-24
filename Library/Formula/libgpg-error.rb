@@ -1,5 +1,3 @@
-require "formula"
-
 class LibgpgError < Formula
   homepage "http://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.17.tar.bz2"
@@ -18,6 +16,10 @@ class LibgpgError < Formula
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gpg-error-config", "--libs"
   end
 end

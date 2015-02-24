@@ -86,7 +86,7 @@ def check_path_for_trailing_slashes
 end
 
 # Installing MacGPG2 interferes with Homebrew in a big way
-# http://sourceforge.net/projects/macgpg2/files/
+# https://github.com/GPGTools/MacGPG2
 def check_for_macgpg2
   return if File.exist? '/usr/local/MacGPG2/share/gnupg/VERSION'
 
@@ -419,7 +419,7 @@ def check_access_usr_local
   end
 end
 
-%w{include etc lib lib/pkgconfig share}.each do |d|
+(Keg::TOP_LEVEL_DIRECTORIES + ["lib/pkgconfig"]).each do |d|
   define_method("check_access_#{d.sub("/", "_")}") do
     dir = HOMEBREW_PREFIX.join(d)
     if dir.exist? && !dir.writable_real? then <<-EOS.undent
@@ -452,12 +452,38 @@ def check_access_logs
   if HOMEBREW_LOGS.exist? and not HOMEBREW_LOGS.writable_real?
     <<-EOS.undent
       #{HOMEBREW_LOGS} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew.
-
       Homebrew writes debugging logs to this location.
-
       You should probably `chown` #{HOMEBREW_LOGS}
+    EOS
+  end
+end
+
+def check_access_cache
+  if HOMEBREW_CACHE.exist? && !HOMEBREW_CACHE.writable_real?
+    <<-EOS.undent
+      #{HOMEBREW_CACHE} isn't writable.
+      This can happen if you run `brew install` or `brew fetch` as another user.
+      Homebrew caches downloaded files to this location.
+      You should probably `chown` #{HOMEBREW_CACHE}
+    EOS
+  end
+end
+
+def check_access_cellar
+  if HOMEBREW_CELLAR.exist? && !HOMEBREW_CELLAR.writable_real?
+    <<-EOS.undent
+      #{HOMEBREW_CELLAR} isn't writable.
+      You should `chown` #{HOMEBREW_CELLAR}
+    EOS
+  end
+end
+
+def check_access_prefix_opt
+  opt = HOMEBREW_PREFIX.join("opt")
+  if opt.exist? && !opt.writable_real?
+    <<-EOS.undent
+      #{opt} isn't writable.
+      You should `chown` #{opt}
     EOS
   end
 end
@@ -1068,8 +1094,8 @@ def check_for_pydistutils_cfg_in_home
   if File.exist? "#{ENV['HOME']}/.pydistutils.cfg" then <<-EOS.undent
     A .pydistutils.cfg file was found in $HOME, which may cause Python
     builds to fail. See:
-      http://bugs.python.org/issue6138
-      http://bugs.python.org/issue4655
+      https://bugs.python.org/issue6138
+      https://bugs.python.org/issue4655
     EOS
   end
 end
@@ -1179,6 +1205,25 @@ end
         mkdir -p #{user_site_packages}
         echo 'import site; site.addsitedir("#{homebrew_site_packages}")' >> #{user_site_packages}/homebrew.pth
     EOS
+  end
+
+  def check_for_external_cmd_name_conflict
+    cmds = paths.map { |p| Dir["#{p}/brew-*"] }.flatten.uniq
+    cmds = cmds.select { |cmd| File.file?(cmd) && File.executable?(cmd) }
+    cmd_map = {}
+    cmds.each do |cmd|
+      cmd_name = File.basename(cmd, ".rb")
+      cmd_map[cmd_name] ||= []
+      cmd_map[cmd_name] << cmd
+    end
+    cmd_map.reject! { |cmd_name, cmd_paths| cmd_paths.size == 1 }
+    return if cmd_map.empty?
+    s = "You have external commands with conflicting names."
+    cmd_map.each do |cmd_name, cmd_paths|
+      s += "\n\nFound command `#{cmd_name}` in following places:\n"
+      s += cmd_paths.map { |f| "  #{f}" }.join("\n")
+    end
+    s
   end
 
   def all

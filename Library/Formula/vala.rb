@@ -11,7 +11,7 @@ class Vala < Formula
     sha1 "0ad74c02e196ac61098dddc8b8c4caec7d91a044" => :mountain_lion
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
   depends_on "gettext"
   depends_on "glib"
 

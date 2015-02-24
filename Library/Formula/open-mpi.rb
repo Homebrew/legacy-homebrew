@@ -2,14 +2,13 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.3.tar.bz2'
-  sha1 '4be9c5d2a8baee6a80bde94c6485931979a428fe'
+  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2'
+  sha1 '88ae39850fcf0db05ac20e35dd9e4cacc75bde4d'
 
   bottle do
-    revision 1
-    sha1 "6f2e83991f28267fb693fdd840d6db244c39c1ad" => :yosemite
-    sha1 "605dc42b155eeda69592be9b63524a4323ebfaf5" => :mavericks
-    sha1 "4bd58e35a701b7b9bca3092d852b746e5975a866" => :mountain_lion
+    sha1 "a6ec98d40ab34bf2eb4dbe9223d5aa430ba749ed" => :yosemite
+    sha1 "9d7366e69787c6b331fe5473c8025d86d8b79691" => :mavericks
+    sha1 "8c8627010c9390cb72054fba3f8eea419a67bb2b" => :mountain_lion
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
@@ -49,5 +48,28 @@ class OpenMpi < Formula
     # Move vtsetup.jar from bin to libexec.
     libexec.install bin/'vtsetup.jar'
     inreplace bin/'vtsetup', '$bindir/vtsetup.jar', '$prefix/libexec/vtsetup.jar'
+  end
+
+  test do
+    (testpath/"hello.c").write <<-EOS.undent
+      #include <mpi.h>
+      #include <stdio.h>
+
+      int main()
+      {
+        int size, rank, nameLen;
+        char name[MPI_MAX_PROCESSOR_NAME];
+        MPI_Init(NULL, NULL);
+        MPI_Comm_size(MPI_COMM_WORLD, &size);
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        MPI_Get_processor_name(name, &nameLen);
+        printf("[%d/%d] Hello, world! My name is %s.\\n", rank, size, name);
+        MPI_Finalize();
+        return 0;
+      }
+    EOS
+    system "#{bin}/mpicc", "hello.c", "-o", "hello"
+    system "./hello"
+    system "#{bin}/mpirun", "-np", "4", "./hello"
   end
 end

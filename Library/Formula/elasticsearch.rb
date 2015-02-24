@@ -1,15 +1,13 @@
-require "formula"
-
 class Elasticsearch < Formula
   homepage "http://www.elasticsearch.org"
-  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.0.tar.gz"
-  sha1 "728913722bc94dad4cb5e759a362f09dc19ed6fe"
+  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.tar.gz"
+  sha1 "ae381615ec7f657e2a08f1d91758714f13d11693"
 
   depends_on :java => "1.7"
 
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
-    depends_on "maven"
+    depends_on "maven" => :build
   end
 
   def cluster_name
@@ -118,5 +116,9 @@ class Elasticsearch < Formula
         </dict>
       </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/plugin", "--list"
   end
 end

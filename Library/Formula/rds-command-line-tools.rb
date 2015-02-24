@@ -5,10 +5,6 @@ class RdsCommandLineTools < AmazonWebServicesFormula
   url 'https://s3.amazonaws.com/rds-downloads/RDSCli-1.14.001.zip'
   sha1 'd0853f066ba1dca699a4a1d91581e11e523ec83a'
 
-  def install
-    standard_install
-  end
-
   def caveats
     s = standard_instructions "AWS_RDS_HOME"
     s += <<-EOS.undent

@@ -3,6 +3,7 @@ require "requirement"
 class TuntapDependency < Requirement
   fatal true
   default_formula "tuntap"
+  cask "tuntap"
   satisfy { self.class.binary_tuntap_installed? || Formula["tuntap"].installed? }
 
   def self.binary_tuntap_installed?
