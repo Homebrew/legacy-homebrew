@@ -1,6 +1,7 @@
 class Tomcat < Formula
-  homepage "http://tomcat.apache.org/"
+  homepage "https://tomcat.apache.org/"
   url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.20/bin/apache-tomcat-8.0.20.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.20/bin/apache-tomcat-8.0.20.tar.gz"
   sha1 "f27e57423a5728216dfe0d38d6f7f4dc03ffee97"
 
   bottle do
@@ -14,6 +15,7 @@ class Tomcat < Formula
 
   resource "fulldocs" do
     url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.20/bin/apache-tomcat-8.0.20-fulldocs.tar.gz"
+    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.20/bin/apache-tomcat-8.0.20-fulldocs.tar.gz"
     version "8.0.20"
     sha1 "7ad70556833a952a084490788d9ea41262a8911c"
   end
