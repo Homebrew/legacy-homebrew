@@ -1,4 +1,5 @@
 TAP_MIGRATIONS = {
+  "adobe-air-sdk" => "homebrew/binary",
   "agedu" => "homebrew/head-only",
   "aimage" => "homebrew/boneyard",
   "aplus" => "homebrew/boneyard",
