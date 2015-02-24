@@ -73,10 +73,6 @@ class FormulaText
   def =~ regex
     regex =~ @text
   end
-
-  def !~ regex
-    regex !~ @text
-  end
 end
 
 class FormulaAuditor
