@@ -1,5 +1,3 @@
-require 'formula'
-
 # This now builds a version of JACKv1 which matches the current API
 # for JACKv2. JACKv2 is not buildable on a number of Mac OS X
 # distributions, and the JACK team instead suggests installation of
@@ -8,7 +6,7 @@ require 'formula'
 # operate fine.
 # Please see https://github.com/Homebrew/homebrew/pull/22043 for more info
 class Jack < Formula
-  homepage 'http://jackaudio.org'
+  homepage "http://jackaudio.org"
   url "http://jackaudio.org/downloads/jack-audio-connection-kit-0.124.1.tar.gz"
   sha1 "e9ba4a4c754ec95fbe653dcf7344edd6cc47cd60"
 
@@ -19,10 +17,10 @@ class Jack < Formula
     sha1 "01f34e585df06210bfc2f06d07d1ef7058d17f67" => :mountain_lion
   end
 
-  depends_on 'berkeley-db'
-  depends_on 'celt'
-  depends_on 'libsndfile'
-  depends_on 'libsamplerate'
+  depends_on "pkg-config" => :build
+  depends_on "berkeley-db"
+  depends_on "libsndfile"
+  depends_on "libsamplerate"
 
   # Change pThread header include from CarbonCore
   patch :p0, :DATA if MacOS.version >= :mountain_lion
@@ -54,9 +52,9 @@ class Jack < Formula
   end
 
   def install
-    ENV['LINKFLAGS'] = ENV.ldflags
+    ENV["LINKFLAGS"] = ENV.ldflags
     system "./configure", "--prefix=#{prefix}"
-    system "make","install"
+    system "make", "install"
   end
 end
 
