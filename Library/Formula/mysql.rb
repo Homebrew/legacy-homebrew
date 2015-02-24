@@ -1,6 +1,6 @@
 class Mysql < Formula
-  homepage "http://dev.mysql.com/doc/refman/5.6/en/"
-  url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.22.tar.gz"
+  homepage "https://dev.mysql.com/doc/refman/5.6/en/"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.22.tar.gz"
   sha1 "31ac6f799dd76950b4de9979320129ac04fb38e1"
 
   bottle do
@@ -10,7 +10,7 @@ class Mysql < Formula
   end
 
   # Fixes compilation with OpenSSL 1.0.2
-  # http://bugs.mysql.com/bug.php?id=75623
+  # https://bugs.mysql.com/bug.php?id=75623
   patch do
     url "https://github.com/mysql/mysql-server/pull/3.diff"
     sha1 "6b17a31ee32e373dca0f257f7c7884ac6dcf8e1f"
