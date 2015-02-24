@@ -71,7 +71,7 @@ class Tinyxml < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-ltinyxml", "-o", "test"
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-ltinyxml", "-o", "test"
     system "./test"
   end
 end

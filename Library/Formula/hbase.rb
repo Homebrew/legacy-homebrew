@@ -1,11 +1,9 @@
-require 'formula'
-
 class Hbase < Formula
-  homepage 'http://hbase.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.98.9/hbase-0.98.9-hadoop2-bin.tar.gz'
-  sha1 '88d83d4f287b0ee89a04052b2a81fe46b1ac10a1'
+  homepage "http://hbase.apache.org"
+  url "http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.98.10.1/hbase-0.98.10.1-hadoop2-bin.tar.gz"
+  sha1 "ffe3b17a0c44417f2f8dabf9f263699f471d403f"
 
-  depends_on 'hadoop'
+  depends_on "hadoop"
 
   def install
     rm_f Dir["bin/*.cmd", "conf/*.cmd"]

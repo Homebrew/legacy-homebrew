@@ -41,6 +41,10 @@ class BottleVersion < Version
     m = /-(\d+[a-z])/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. 22 from ngircd-22.mavericks.bottle.tar.gz
+    m = /-(\d{2})/.match(stem)
+    return m.captures.first unless m.nil?
+
     super
   end
 end

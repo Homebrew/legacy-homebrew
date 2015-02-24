@@ -1,5 +1,3 @@
-require "formula"
-
 class Python < Formula
   homepage "https://www.python.org"
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
@@ -7,10 +5,10 @@ class Python < Formula
   sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
 
   bottle do
-    revision 8
-    sha1 "c2fee90806151869f150b49183fc563a5c7efd99" => :yosemite
-    sha1 "76390ee6c068b56d3c0c87846a0da35c496e36d4" => :mavericks
-    sha1 "a175b47961b9da49266d3407a0a7cc5fe3bbc032" => :mountain_lion
+    revision 10
+    sha1 "bcce4130bceeadd2d23e4f06441c8dd5d23b14df" => :yosemite
+    sha1 "d2a142d25910f4b30979f799c2920f4bc6a9db31" => :mavericks
+    sha1 "e8f947a2380376d465c5eff71e012d69243e87e6" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -32,13 +30,13 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
-    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
+    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
-    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
+    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
   end
 
   # Patch for pyport.h macro issue
@@ -236,7 +234,8 @@ class Python < Formula
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
-      # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
+      # <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md>
+      import re
       import os
       import sys
 
@@ -249,41 +248,40 @@ class Python < Formula
           exit('Your PYTHONPATH points to a site-packages dir for Python 2.x but you are running Python ' +
                str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
                '     You should `unset PYTHONPATH` to fix this.')
-      else:
-          # Only do this for a brewed python:
-          opt_executable = '#{opt_bin}/python2.7'
-          if os.path.commonprefix([os.path.realpath(e) for e in [opt_executable, sys.executable]]).startswith('#{rack}'):
-              # Remove /System site-packages, and the Cellar site-packages
-              # which we moved to lib/pythonX.Y/site-packages. Further, remove
-              # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
-              sys.path = [ p for p in sys.path
-                           if (not p.startswith('/System') and
-                               not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
-                               not (p.startswith('#{rack}') and p.endswith('site-packages'))) ]
 
-              # LINKFORSHARED (and python-config --ldflags) return the
-              # full path to the lib (yes, "Python" is actually the lib, not a
-              # dir) so that third-party software does not need to add the
-              # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
-              # Assume Framework style build (default since months in brew)
-              try:
-                  from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/2.7/Python'
-              except:
-                  pass  # remember: don't print here. Better to fail silently.
+      # Only do this for a brewed python:
+      if os.path.realpath(sys.executable).startswith('#{rack}'):
+          # Shuffle /Library site-packages to the end of sys.path and reject
+          # paths in /System pre-emptively (#14712)
+          library_site = '/Library/Python/2.7/site-packages'
+          library_packages = [p for p in sys.path if p.startswith(library_site)]
+          sys.path = [p for p in sys.path if not p.startswith(library_site) and
+                                             not p.startswith('/System')]
+          # .pth files have already been processed so don't use addsitedir
+          sys.path.extend(library_packages)
 
-              # Set the sys.executable to use the opt_prefix
-              sys.executable = opt_executable
+          # the Cellar site-packages is a symlink to the HOMEBREW_PREFIX
+          # site_packages; prefer the shorter paths
+          long_prefix = re.compile(r'#{rack}/[0-9\._abrc]+/Frameworks/Python\.framework/Versions/2\.7/lib/python2\.7/site-packages')
+          sys.path = [long_prefix.sub('#{site_packages}', p) for p in sys.path]
 
-          # Tell about homebrew's site-packages location.
-          # This is needed for Python to parse *.pth.
-          import site
-          site.addsitedir('#{site_packages}')
+          # LINKFORSHARED (and python-config --ldflags) return the
+          # full path to the lib (yes, "Python" is actually the lib, not a
+          # dir) so that third-party software does not need to add the
+          # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
+          try:
+              from _sysconfigdata import build_time_vars
+              build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/2.7/Python'
+          except:
+              pass  # remember: don't print here. Better to fail silently.
+
+          # Set the sys.executable to use the opt_prefix
+          sys.executable = '#{opt_bin}/python2.7'
     EOF
   end
 
   def caveats; <<-EOS.undent
-    Setuptools and Pip have been installed. To update them
+    Setuptools and pip have been installed. To update them
       pip install --upgrade setuptools
       pip install --upgrade pip
 

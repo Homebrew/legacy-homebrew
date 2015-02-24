@@ -2,14 +2,14 @@
 # of Homebrew.
 class Mercurial < Formula
   homepage "http://mercurial.selenic.com/"
-  url "http://mercurial.selenic.com/release/mercurial-3.2.4.tar.gz"
-  sha1 "6adc45a99f036a3fe3433a4d24e5641c91acb693"
+  url "http://mercurial.selenic.com/release/mercurial-3.3.tar.gz"
+  sha1 "9bc03b6e82ce7bccb9d2608c7a5c4023adf2290c"
 
   bottle do
     cellar :any
-    sha1 "70793c59ab9c56e13df2dfc08af7d386794ea0e6" => :yosemite
-    sha1 "466d3dceb99256119196e06effd8bb18ea8accea" => :mavericks
-    sha1 "5adc409dc7655f094c19f1ec1026efbde4775109" => :mountain_lion
+    sha1 "7bb6b5981e4691e843fec9916dcc5462192f2f95" => :yosemite
+    sha1 "5f774994e0d2dd796555669de2374b8e693d5fc5" => :mavericks
+    sha1 "4919027d32f367e1b418b0798b4226bba76d3f56" => :mountain_lion
   end
 
   def install
@@ -23,10 +23,6 @@ class Mercurial < Formula
     # install the completion scripts
     bash_completion.install "contrib/bash_completion" => "hg-completion.bash"
     zsh_completion.install "contrib/zsh_completion" => "_hg"
-
-    # install the merge tool default configs
-    # http://mercurial.selenic.com/wiki/Packaging#Things_to_note
-    (etc/"mercurial"/"hgrc.d").install "contrib/mergetools.hgrc" => "mergetools.rc"
   end
 
   test do

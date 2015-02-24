@@ -1,5 +1,3 @@
-require "formula"
-
 class RbenvBundleExec < Formula
   homepage "https://github.com/maljub01/rbenv-bundle-exec"
   url "https://github.com/maljub01/rbenv-bundle-exec/archive/v1.0.0.tar.gz"
@@ -11,5 +9,9 @@ class RbenvBundleExec < Formula
 
   def install
     prefix.install Dir["*"]
+  end
+
+  test do
+    assert shell_output("rbenv hooks exec").include? "bundle-exec.bash"
   end
 end

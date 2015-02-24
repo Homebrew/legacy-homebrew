@@ -2,14 +2,15 @@ class Postgresql < Formula
   homepage "http://www.postgresql.org/"
 
   stable do
-    url "http://ftp.postgresql.org/pub/source/v9.4.0/postgresql-9.4.0.tar.bz2"
-    sha256 "7a35c3cb77532f7b15702e474d7ef02f0f419527ee80a4ca6036fffb551625a5"
+    url "http://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
+    sha256 "29ddb77c820095b8f52e5455e9c6c6c20cf979b0834ed1986a8857b84888c3a6"
   end
 
   bottle do
-    sha1 "1cf71ee1cfc061cdc82f6164e72ffba1ac8dd8e8" => :yosemite
-    sha1 "9dbd8dc89c4d3d941bc6f5fa34ef0f321f440780" => :mavericks
-    sha1 "efd661ace5a5f2657d047098dec15136aa4f0249" => :mountain_lion
+    revision 1
+    sha1 "4b5a1f7ebe10ec5aba088459a4faa2ba7c13a691" => :yosemite
+    sha1 "e7844fc53d1ffef1cb809332d88b5bb777927176" => :mavericks
+    sha1 "a5e70e04dba89fee99bb5fb7dae74e4a849813c4" => :mountain_lion
   end
 
   option "32-bit"
@@ -53,7 +54,7 @@ class Postgresql < Formula
     ]
 
     args << "--with-python" if build.with? "python"
-    args << "--with-perl" if build.with? "no-perl"
+    args << "--with-perl" if build.with? "perl"
 
     # The CLT is required to build tcl support on 10.7 and 10.8 because
     # tclConfig.sh is not part of the SDK

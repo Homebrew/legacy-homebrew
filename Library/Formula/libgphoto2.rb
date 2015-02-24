@@ -1,12 +1,12 @@
 class Libgphoto2 < Formula
   homepage "http://www.gphoto.org/proj/libgphoto2/"
-  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.6/libgphoto2-2.5.6.tar.bz2"
-  sha1 "260cc57751a4598dd56564b4ab1e06a74442ee38"
+  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.7/libgphoto2-2.5.7.tar.bz2"
+  sha1 "0f0ebe1c953eab598c6a53477b81be762ab9047f"
 
   bottle do
-    sha1 "f6115d0ea66a9acc4186f2976b662832d1469517" => :yosemite
-    sha1 "e6d052ea0aa12a58c950fcf0daea1288779714ab" => :mavericks
-    sha1 "0899334514b196fec3bdcc603f195eef2386205d" => :mountain_lion
+    sha1 "e3daec0e8f32cd4314560abc4a582832278c92b7" => :yosemite
+    sha1 "d4f9d264941a44585b17e288a5b91b0c53eb08f4" => :mavericks
+    sha1 "619ef05556816f98e84cfc900e74cf1ee8fd95f7" => :mountain_lion
   end
 
   option :universal

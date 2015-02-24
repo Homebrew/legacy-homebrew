@@ -42,7 +42,7 @@ class Libtiff < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-ltiff", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-ltiff", "-o", "test"
     system "./test", "test.tif"
     assert_match /ImageWidth.*10/, shell_output("#{bin}/tiffdump test.tif")
   end

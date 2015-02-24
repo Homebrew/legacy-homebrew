@@ -2,22 +2,22 @@ require 'formula'
 
 class Tomcat < Formula
   homepage "http://tomcat.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.15/bin/apache-tomcat-8.0.15.tar.gz"
-  sha1 "e9b6c04f3d337a7a1e50acd175295b8c30e9d3b2"
+  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.18/bin/apache-tomcat-8.0.18.tar.gz"
+  sha1 "4c0232cac19a0a07d840258a975deec438038712"
 
   bottle do
     cellar :any
-    sha1 "afcce9cce701aa992521e912a64820c5cf281d76" => :yosemite
-    sha1 "31ac8950914cd7cb17d51979d2e51c10e5071443" => :mavericks
-    sha1 "f4f9f3a45f15ff71e8f7a8c5468227cfc374f158" => :mountain_lion
+    sha1 "23a9b04f317fae7285a2e2b53a9992baf8c931e3" => :yosemite
+    sha1 "8577388903bd4e2295148d5f48a63fa824111dbb" => :mavericks
+    sha1 "0c9a206f0e69f75f0b641227747c13d2ac0fda5b" => :mountain_lion
   end
 
   option "with-fulldocs", "Install full documentation locally"
 
   resource "fulldocs" do
-    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.15/bin/apache-tomcat-8.0.15-fulldocs.tar.gz"
-    version "8.0.15"
-    sha1 "c010691b690f23b3320702f7a9b2fde51d885a44"
+    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.18/bin/apache-tomcat-8.0.18-fulldocs.tar.gz"
+    version "8.0.18"
+    sha1 "162e717f450ae97b990906e6ff7734dc3bd9e083"
   end
 
   def install

@@ -251,7 +251,12 @@ end
 class BottleSpecification
   DEFAULT_PREFIX = "/usr/local".freeze
   DEFAULT_CELLAR = "/usr/local/Cellar".freeze
-  DEFAULT_ROOT_URL = "https://downloads.sf.net/project/machomebrew/Bottles".freeze
+  if ENV["HOMEBREW_SOURCEFORGE_TESTING"]
+    DEFAULT_ROOT_URL = "https://downloads.sf.net/project/machomebrew/Bottles".freeze
+  else
+    DEFAULT_DOMAIN = "https://homebrew.bintray.com".freeze
+    DEFAULT_ROOT_URL = "#{DEFAULT_DOMAIN}/bottles".freeze
+  end
 
   attr_rw :root_url, :prefix, :cellar, :revision
   attr_reader :checksum, :collector

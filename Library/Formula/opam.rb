@@ -10,9 +10,10 @@ class Opam < Formula
 
   bottle do
     cellar :any
-    sha1 "a6cd98098c152c20b8e80921e909c8b2e199c395" => :yosemite
-    sha1 "eca0fd67eaf6f6e40512442ae2dec61a4acd6f4d" => :mavericks
-    sha1 "18160a6ea74da457dbbb2b54370b8b9bd83bdfb2" => :mountain_lion
+    revision 1
+    sha1 "e60d1329090f7e4dce5744a52b4fff05a99b1dcb" => :yosemite
+    sha1 "089632176a7fa526a37906f187601be96f2c618d" => :mavericks
+    sha1 "53469ef187c263b6faed914e67f3d11e0f2d2efe" => :mountain_lion
   end
 
   depends_on "objective-caml"

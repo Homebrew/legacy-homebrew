@@ -2,15 +2,15 @@ require "formula"
 
 class Sysdig < Formula
   homepage "http://www.sysdig.org/"
-  url "https://github.com/draios/sysdig/archive/0.1.92.tar.gz"
-  sha1 "77c43f76b1dc987c2d1f5929bf669e9f11b22aaa"
+  url "https://github.com/draios/sysdig/archive/0.1.96.tar.gz"
+  sha1 "86a8b1d21a7cbb392f3127b98b08f1d56b0f3927"
 
   head "https://github.com/draios/sysdig.git"
 
   bottle do
-    sha1 "a02f92e350fe20bbdd0e3024280cec76978d46b4" => :yosemite
-    sha1 "d4649ecb49a3444841be9d37a27e4b11733f0fac" => :mavericks
-    sha1 "4849853bc4fdb28f44af8f78f332e82fe9175cce" => :mountain_lion
+    sha1 "8b73abcdb344fc8f0439f54d34b549bbfb6baed0" => :yosemite
+    sha1 "15cf5d1a4d222fa21cd060575e787ff12f30b32b" => :mavericks
+    sha1 "d865dbde4d287c142a0f8c42a7a75cb55c30fd68" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -41,7 +41,7 @@ class Sysdig < Formula
     # uses a custom output format because evt.time (in default format) is not UTC
     expected_output = "1 open fd=5(<f>/tmp/sysdig/sample.scap) name=sample.scap(/tmp/sysdig/sample.scap) flags=262(O_TRUNC|O_CREAT|O_WRONLY) mode=0"
 
-    assert_equal expected_output, `#{bin}/sysdig -r #{share}/demos/sample.scap -p "%evt.num %evt.type %evt.args" evt.type=open fd.name contains /tmp/sysdig/sample.scap`.strip
+    assert_equal expected_output, `#{bin}/sysdig -r #{share}/demos/sample.scap -p "%evt.num %evt.type %evt.args" "evt.type=open and evt.arg.name contains /tmp/sysdig/sample.scap"`.strip
     assert_equal 0, $?.exitstatus
   end
 end

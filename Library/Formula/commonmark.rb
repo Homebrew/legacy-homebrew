@@ -1,13 +1,13 @@
 class Commonmark < Formula
   homepage "http://commonmark.org"
-  url "https://github.com/jgm/CommonMark/archive/0.15.tar.gz"
-  sha1 "877665a96fdc5fcc42ec2cd605d8535344a27b72"
+  url "https://github.com/jgm/cmark/archive/0.17.tar.gz"
+  sha1 "a0bce3d321822ca96f312e9210fc8cd149a8f527"
 
   bottle do
     cellar :any
-    sha1 "fbaebb5f33ffad7deb3b744d37e00bfab8d6251a" => :yosemite
-    sha1 "3cd4d72d841ff4e95cb3fac25451b2979161b5a1" => :mavericks
-    sha1 "f67567a2bf4bf4f619b3631a1c575f16a58df25c" => :mountain_lion
+    sha1 "c02997d6624c6a9ef4e627ff789cb83127a17b97" => :yosemite
+    sha1 "9777bbeb2d36fd1fc901261167af0452ecd21622" => :mavericks
+    sha1 "af4136806400ffcf35f984fbd52f16b5bf08f2e6" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -16,7 +16,6 @@ class Commonmark < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      ENV.deparallelize # https://github.com/jgm/CommonMark/issues/279
       system "make"
       system "make", "test"
       system "make", "install"

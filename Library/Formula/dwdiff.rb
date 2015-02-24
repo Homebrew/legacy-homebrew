@@ -1,5 +1,3 @@
-require "formula"
-
 class Dwdiff < Formula
   homepage "http://os.ghalkes.nl/dwdiff.html"
   url "http://os.ghalkes.nl/dist/dwdiff-2.0.9.tgz"
@@ -21,11 +19,18 @@ class Dwdiff < Formula
     ENV.append "CFLAGS", "-I#{gettext.include} -I#{icu4c.include}"
     ENV.append "LDFLAGS", "-L#{gettext.lib} -L#{icu4c.lib}"
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
 
     # Remove non-English man pages
-    (man+"nl").rmtree
-    (man+"nl.UTF-8").rmtree
-    (share+"locale/nl").rmtree
+    (man/"nl").rmtree
+    (man/"nl.UTF-8").rmtree
+    (share/"locale/nl").rmtree
+  end
+
+  test do
+    (testpath/"a").write "I like beers"
+    (testpath/"b").write "I like formulae"
+    diff = shell_output("#{bin}/dwdiff a b", 1)
+    assert_equal "I like [-beers-] {+formulae+}", diff
   end
 end

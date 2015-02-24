@@ -1,5 +1,3 @@
-require "formula"
-
 class RbenvBundlerRubyVersion < Formula
   homepage "https://github.com/aripollak/rbenv-bundler-ruby-version"
   url "https://github.com/aripollak/rbenv-bundler-ruby-version/archive/v0.1.tar.gz"
@@ -15,6 +13,6 @@ class RbenvBundlerRubyVersion < Formula
 
   test do
     (testpath/"Gemfile").write("ruby \"2.1.5\"")
-    system "rbenv bundler-ruby-version"
+    system "rbenv", "bundler-ruby-version"
   end
 end

@@ -108,8 +108,8 @@ module Homebrew
     end
   end
 
-  def tap_args
-    ARGV.first =~ HOMEBREW_TAP_ARGS_REGEX
+  def tap_args(tap_name=ARGV.first)
+    tap_name =~ HOMEBREW_TAP_ARGS_REGEX
     raise "Invalid tap name" unless $1 && $3
     [$1, $3]
   end

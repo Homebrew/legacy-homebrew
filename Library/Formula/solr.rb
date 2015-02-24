@@ -5,6 +5,8 @@ class Solr < Formula
   url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.10.2/solr-4.10.2.tgz"
   sha1 "b913204d07212d7bb814afe4641992f22404a27d"
 
+  skip_clean 'example/logs'
+
   def install
     libexec.install Dir["*"]
     bin.install "#{libexec}/bin/solr"

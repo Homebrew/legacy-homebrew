@@ -2,16 +2,15 @@ require 'formula'
 
 class Siege < Formula
   homepage 'http://www.joedog.org/index/siege-home'
-  url 'http://download.joedog.org/siege/siege-3.0.7.tar.gz'
-  sha256 'c651e2ae871cc680eb375f128b4809e97ceecf367f6bd65c3df00603fbceed4e'
-  revision 1
+  url 'http://download.joedog.org/siege/siege-3.0.9.tar.gz'
+  sha256 '82376eb466414ef4872a979a372972658df9813778ee8572341d4736ed30cb8f'
 
   depends_on 'openssl'
 
   bottle do
-    sha1 "cffb9fa9cd5faa1d0eb165ef08ca0be576e5f508" => :yosemite
-    sha1 "2095db3b977d0a81fe85e6852029df259eeddc8c" => :mavericks
-    sha1 "5885d68d262a660bf9b759053a6ecd02f1aa54ab" => :mountain_lion
+    sha1 "8fc40ce186470abb7b79dcae5bf0f79de19aa95a" => :yosemite
+    sha1 "b4db408f279d8b22f6c0aa74577a8204d5f60678" => :mavericks
+    sha1 "9d6ec76bee4bf1b145b62b5b166ffbfed5112182" => :mountain_lion
   end
 
   def install

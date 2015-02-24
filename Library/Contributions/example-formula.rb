@@ -30,8 +30,8 @@ class ExampleFormula < Formula
   version "1.2-final"
 
   # For integrity and security, we verify the hash (`openssl dgst -sha1 <FILE>`)
-  # You may also use sha256 if the software uses sha256 on their homepage.
-  # Leave it empty at first and `brew install` will tell you the expected.
+  # You may also use sha256 if the software uses sha256 on their homepage. Do not use md5.
+  # Either generate the sha locally or leave it empty & `brew install` will tell you the expected.
   sha1 "cafebabe78901234567890123456789012345678"
 
   # Stable-only dependencies should be nested inside a `stable` block rather than
@@ -48,6 +48,7 @@ class ExampleFormula < Formula
   # Optionally, specify a repository to be used. Brew then generates a
   # `--HEAD` option. Remember to also test it.
   # The download strategies (:using =>) are the same as for `url`.
+  # "master" is the default branch and doesn't need stating with a :branch conditional
   head "https://we.prefer.https.over.git.example.com/.git"
   head "https://example.com/.git", :branch => "name_of_branch", :revision => "abc123"
   head "https://hg.is.awesome.but.git.has.won.example.com/", :using => :hg # If autodetect fails.
@@ -89,6 +90,8 @@ class ExampleFormula < Formula
   # Bottles are pre-built and added by the Homebrew maintainers for you.
   # If you maintain your own repository, you can add your own bottle links.
   # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Bottles.md
+  # You can ignore this block entirely if submitting to Homebrew/Homebrew, It'll be
+  # handled for you by the Brew Test Bot.
   bottle do
     root_url "http://mikemcquaid.com" # Optional root to calculate bottle URLs
     prefix "/opt/homebrew" # Optional HOMEBREW_PREFIX in which the bottles were built.
@@ -154,7 +157,7 @@ class ExampleFormula < Formula
   depends_on :arch => :x86_64 # If this formula only build on intel x86 64bit.
   depends_on :arch => :ppc # Only builds on PowerPC?
   depends_on :ld64 # Sometimes ld fails on `MacOS.version < :leopard`. Then use this.
-  depends_on :x11 # X11/XQuartz components.
+  depends_on :x11 # X11/XQuartz components. Non-optional X11 deps should go in Homebrew/Homebrew-x11
   depends_on :osxfuse # Permits the use of the upstream signed binary or our source package.
   depends_on :tuntap # Does the same thing as above. This is vital for Yosemite and above.
   depends_on :mysql => :recommended
@@ -166,6 +169,8 @@ class ExampleFormula < Formula
 
   # If any Python >= 2.7 < 3.x is okay (either from OS X or brewed):
   depends_on :python
+  # to depend on Python >= 2.7 but use system Python where possible
+  depends_on :python if MacOS.version <= :snow_leopard
   # Python 3.x if the `--with-python3` is given to `brew install example`
   depends_on :python3 => :optional
 
@@ -188,7 +193,7 @@ class ExampleFormula < Formula
   end
 
   fails_with :clang do
-    build 425
+    build 600
     cause "multiple configure and compile errors"
   end
 
@@ -271,6 +276,19 @@ class ExampleFormula < Formula
     args << "--some-new-stuff" if build.head? # if head is used instead of url.
     args << "--universal-binary" if build.universal?
 
+    # If there are multiple conditional arguments use a block instead of lines.
+    if build.head?
+      args << "--i-want-pizza"
+      args << "--and-a-cold-beer" if build.with? "cold-beer"
+    end
+
+    # If a formula presents a user with a choice, but the choice must be fulfilled:
+    if build.with? "example2"
+      args << "--with-example2"
+    else
+      args << "--with-example1"
+    end
+
     # The `build.with?` and `build.without?` are smart enough to do the
     # right thing with respect to defaults defined via `:optional` and
     # `:recommended` dependencies.
@@ -282,12 +300,12 @@ class ExampleFormula < Formula
     # break if they remember that exact path. In contrast to that, the
     # `$(brew --prefix)/opt/formula` is the same path for all future
     # versions of the formula!
-    args << "--with-readline=#{Formula["readline"].opt_prefix}/lib" if build.with? "readline"
+    args << "--with-readline=#{Formula["readline"].opt_prefix}" if build.with? "readline"
 
     # Most software still uses `configure` and `make`.
     # Check with `./configure --help` what our options are.
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+                          "--disable-silent-rules", "--prefix=#{prefix}",
                           *args # our custom arg list (needs `*` to unpack)
 
     # If your formula's build system is not thread safe:
@@ -305,7 +323,30 @@ class ExampleFormula < Formula
 
     # Overwriting any env var:
     ENV["LDFLAGS"] = "--tag CC"
+    # Is the formula struggling to find the pkgconfig file? Point it to it.
+    # This is done automatically for `keg_only` formulae.
+    ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["glib"].opt_lib}/pkgconfig"
 
+    # Need to install into the bin but the makefile doesn't mkdir -p prefix/bin?
+    bin.mkpath
+    # A custom directory?
+    mkdir_p share/"example"
+    # And then move something from the buildpath to that directory?
+    mv "ducks.txt", share/"example/ducks.txt"
+    # No "make", "install" available?
+    bin.install "binary1"
+    include.install "example.h"
+    lib.install "example.dylib"
+    man1.install "example.1"
+    man3.install "example.3"
+    # All that README/LICENSE/NOTES/CHANGELOG stuff? Use "metafiles"
+    prefix.install_metafiles
+    # Maybe you'd like to remove a broken or unnecessary element?
+    # Empty directories will be removed by Homebrew automatically post-install!
+    rm "bin/example"
+    rm_rf "share/pointless"
+
+    # If there is a "make", "install" available, please use it!
     system "make", "install"
 
     # We are in a temporary directory and don't have to care about cleanup.
@@ -423,11 +464,20 @@ class ExampleFormula < Formula
     <plist version="1.0">
     <dict>
       <key>Label</key>
-      <string>#{plist_name}</string>
+        <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{bin}/example</string>
+        <string>--do-this</string>
+      </array>
       <key>RunAtLoad</key>
       <true/>
       <key>KeepAlive</key>
       <true/>
+      <key>StandardErrorPath</key>
+      <string>/dev/null</string>
+      <key>StandardOutPath</key>
+      <string>/dev/null</string>
     </plist>
     EOS
   end

@@ -1,56 +1,49 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz"
-  sha256 "0043656bb1724cb09dbdc960a2fd6ee37d3badb2f9c75562b2d11235daa40a03"
-  revision 2
+  url "https://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz"
+  sha256 "9700e23af4e9b3643af48cef5f2ad20a1331ff531a12154eef2bfb0bb1682e32"
+  head "https://github.com/joyent/node.git", :branch => "v0.12"
 
   bottle do
     revision 1
-    sha1 "a98a1df66cfb0712b14489186c46f7087ba35bd7" => :yosemite
-    sha1 "0cd45412840a67d5d65e6bc3c0c3bcf8bc23153c" => :mavericks
-    sha1 "977332381c033626b991002c27e738c144ebbaac" => :mountain_lion
+    sha1 "cf47b47fca78022a299f5353b968fb703fb90bc9" => :yosemite
+    sha1 "a0fc2c129428a0fcd50169857b240039d328463b" => :mavericks
+    sha1 "8312e7ea6ffec58e39ec7cc1f8671847a9d7b4bf" => :mountain_lion
   end
-
-  head do
-    url "https://github.com/joyent/node.git", :branch => "v0.12"
-
-    depends_on "pkg-config" => :build
-    depends_on "icu4c"
-  end
-
-  deprecated_option "enable-debug" => "with-debug"
 
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
 
-  depends_on :python => :build
+  deprecated_option "enable-debug" => "with-debug"
 
-  # Once we kill off SSLv3 in our OpenSSL consider forcing our OpenSSL
-  # over Node's shipped version with --shared-openssl.
-  # Would allow us quicker security fixes than Node's release schedule.
-  # See https://github.com/joyent/node/issues/3557 for prior discussion.
+  depends_on :python => :build
+  depends_on "pkg-config" => :build
+  depends_on "openssl" => :optional
+
+  # https://github.com/joyent/node/issues/7919
+  # https://github.com/Homebrew/homebrew/issues/36681
+  depends_on "icu4c" => :optional
 
   fails_with :llvm do
     build 2326
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.1.18.tgz"
-    sha1 "e2af4c5f848fb023851cd2ec129005d33090bd57"
+    url "https://registry.npmjs.org/npm/-/npm-2.5.1.tgz"
+    sha1 "23e4b0fdd1ffced7d835780e692a9e5a0125bb02"
   end
 
   def install
-    args = %W{--prefix=#{prefix} --without-npm}
+    args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
-    args << "--without-ssl2" << "--without-ssl3" if build.stable?
+    args << "--with-intl=system-icu" if build.with? "icu4c"
 
-    # This should eventually be able to use the system icu4c, but right now
-    # it expects to find this dependency using pkgconfig.
-    if build.head?
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_prefix}/lib/pkgconfig"
-      args << "--with-intl=system-icu"
+    if build.with? "openssl"
+      args << "--shared-openssl"
+    else
+      args << "--without-ssl2" << "--without-ssl3"
     end
 
     system "./configure", *args
@@ -61,7 +54,8 @@ class Node < Formula
 
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
-
+      # make sure user prefix settings in $HOME are ignored
+      ENV["HOME"] = buildpath/"home"
       # set log level temporarily for npm's `make install`
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
@@ -97,8 +91,10 @@ class Node < Formula
     # Let's do the manpage dance. It's just a jump to the left.
     # And then a step to the right, with your hand on rm_f.
     ["man1", "man3", "man5", "man7"].each do |man|
+      # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
+      mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
       rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      Dir[libexec/"npm/share/man/#{man}/npm*"].each {|f| ln_sf f, HOMEBREW_PREFIX/"share/man/#{man}" }
+      ln_sf Dir[libexec/"npm/share/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     npm_root = node_modules/"npm"
@@ -120,6 +116,18 @@ class Node < Formula
         Homebrew has NOT installed npm. If you later install it, you should supplement
         your NODE_PATH with the npm module folder:
           #{HOMEBREW_PREFIX}/lib/node_modules
+      EOS
+    end
+
+    if build.with? "icu4c"
+      s += <<-EOS.undent
+
+        Please note `icu4c` is built with a newer deployment target than Node and
+        this may cause issues in certain usage. Node itself is built against the
+        outdated `libstdc++` target, which is the root cause. For more information see:
+          https://github.com/joyent/node/issues/7919
+
+        If this is an issue for you, do `brew install node --without-icu4c`.
       EOS
     end
 

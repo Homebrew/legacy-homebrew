@@ -1,18 +1,17 @@
-require "formula"
-
 class Botan < Formula
   homepage "http://botan.randombit.net/"
-  url "http://files.randombit.net/botan/Botan-1.10.8.tgz"
-  sha1 "078fcb03c9ef0691621eda3ca312ebf08b3890cc"
-  revision 1
+  url "http://botan.randombit.net/releases/Botan-1.10.9.tgz"
+  sha1 "e1c8e97b214b23931f7dc8aba44306fbeca9055c"
 
   bottle do
-    sha1 "89d491598019e57540e22089c3c7a3d45a845adc" => :yosemite
-    sha1 "aa5b7be38ab12c1755f3cb8dbee104d9514f27b2" => :mavericks
-    sha1 "2efea61b9f63b8344617a90eb4dc0445baab0243" => :mountain_lion
+    sha1 "3f9096cdf4156db3af972765fe9b8bb58a7b7261" => :yosemite
+    sha1 "d2f2f165eccbd6db984b83149a1f1df1b66dadbb" => :mavericks
+    sha1 "26196739a9584d6b3a129e32d3a2358484d6d8ed" => :mountain_lion
   end
 
-  option "enable-debug", "Enable debug build of Botan"
+  option "with-debug", "Enable debug build of Botan"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
@@ -32,12 +31,16 @@ class Botan < Formula
       --with-bzip2
     ]
 
-    args << "--enable-debug" if build.include? "enable-debug"
+    args << "--enable-debug" if build.with? "debug"
 
     system "./configure.py", *args
     # A hack to force them use our CFLAGS. MACH_OPT is empty in the Makefile
     # but used for each call to cc/ld.
     system "make", "install", "MACH_OPT=#{ENV.cflags}"
+  end
+
+  test do
+    assert_match /lcrypto/, shell_output("#{bin}/botan-config-1.10 --libs")
   end
 end
 

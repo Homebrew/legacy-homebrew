@@ -1,17 +1,14 @@
-require "formula"
-
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.8.2.tar.gz"
-  sha1 "4cfbec3a0850639384c908e77e2823acb1297e1e"
+  url "http://releases.ansible.com/ansible/ansible-1.8.3.tar.gz"
+  sha1 "c99f0e21f8243b3564c6ef6bd627bceadcb9992b"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 2
-    sha1 "ecedf8f29c9ebb482c1f3d56f8a97591d9a55ad5" => :yosemite
-    sha1 "4abe1bb420b7396bb213702bee06da733c044f39" => :mavericks
-    sha1 "6140887ca00017c45a2dfe5d699db072a8e035a7" => :mountain_lion
+    sha1 "d1c2d2b56e3cf6890b3f7019f1a0dd670cc6d15d" => :yosemite
+    sha1 "41b0380219343b869aaca61fe0570bdc6ee1d790" => :mavericks
+    sha1 "b63949641de534d67e245c5ac9beadccf7aff075" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -23,8 +20,8 @@ class Ansible < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.2.1.tar.gz"
-    sha1 "88eb1fd6a0dfb8b97262f8029978d7c75eebc16f"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
+    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
   end
 
   resource "websocket-client" do
@@ -43,8 +40,8 @@ class Ansible < Formula
   end
 
   resource "boto" do
-    url "https://pypi.python.org/packages/source/b/boto/boto-2.34.0.tar.gz"
-    sha1 "e19d252b58054a7711fae910324e26b2b551a44d"
+    url "https://pypi.python.org/packages/source/b/boto/boto-2.36.0.tar.gz"
+    sha1 "f230ff9b041d3b43244086e38b7b6029450898be"
   end
 
   resource "pyyaml" do

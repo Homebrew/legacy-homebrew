@@ -2,16 +2,16 @@
 # This is not the same so as a result we must install this as glibtool.
 
 class Libtool < Formula
-  homepage "http://www.gnu.org/software/libtool/"
-  url "http://ftpmirror.gnu.org/libtool/libtool-2.4.4.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/libtool/libtool-2.4.4.tar.xz"
-  sha1 "a62d0f9a5c8ddf2de2a3210a5ab712fd3b4531e9"
+  homepage "https://www.gnu.org/software/libtool/"
+  url "http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz"
+  sha1 "3e7504b832eb2dd23170c91b6af72e15b56eb94e"
 
   bottle do
     cellar :any
-    sha1 "ab16612e09788dd35da992db1bdd05e28a457299" => :yosemite
-    sha1 "c7ec9da0dc5103bf21c414299b1accb8c42e23a5" => :mavericks
-    sha1 "f49fc49a492031b657a65ba168ac14a5c3705bdc" => :mountain_lion
+    sha1 "2d08e8a6d58d789194efcb3d6e4b822e6ad409cc" => :yosemite
+    sha1 "f545d684854815e7a5a5c1d4e6372ac26a7516ff" => :mavericks
+    sha1 "dd1e72102dda61ab33da205e9cfb507a269fd0b9" => :mountain_lion
   end
 
   keg_only :provided_until_xcode43

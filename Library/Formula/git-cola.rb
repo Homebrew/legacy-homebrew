@@ -1,14 +1,14 @@
 class GitCola < Formula
   homepage "http://git-cola.github.io/"
-  url "https://github.com/git-cola/git-cola/archive/v2.0.8.tar.gz"
-  sha1 "38db3432ca90047448c8f3b6f20ef0ad37c15fa1"
+  url "https://github.com/git-cola/git-cola/archive/v2.1.0.tar.gz"
+  sha1 "c93e74b021e6e5df92a46a3d05ac8a6377571fa8"
 
   head "https://github.com/git-cola/git-cola.git"
 
   bottle do
-    sha1 "bc3a197d229a4dbcefb593ee8ee0453d87eb7e8f" => :yosemite
-    sha1 "13d367b370dd4d0593e78608394eb381987b9847" => :mavericks
-    sha1 "4f1c8150aeb4273789527251e7c042152ed243d5" => :mountain_lion
+    sha1 "fc7b0c0eeed41bb42764a25b8b229f39b3dc4fb3" => :yosemite
+    sha1 "1f7e728856585487951f48b9e612cf628e112ac8" => :mavericks
+    sha1 "864bafa798ff86c6213238a6c9922549aee94a95" => :mountain_lion
   end
 
   option "with-docs", "Build man pages using asciidoc and xmlto"

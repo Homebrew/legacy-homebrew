@@ -1,21 +1,18 @@
 class Ledger < Formula
   homepage "http://ledger-cli.org"
+  url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
+  sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
 
-  stable do
-    url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
-    sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
-
-    resource "utfcpp" do
-      url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
-      sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
-    end
+  resource "utfcpp" do
+    url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+    sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
   end
 
   bottle do
-    revision 1
-    sha1 "30561863474adf48bf79f91cd2857fc710c6b3bf" => :yosemite
-    sha1 "3bec38e55625664d73acd980e1858eac286b803d" => :mavericks
-    sha1 "33ad9b6c16c8e0803728a772ae78a555678fc603" => :mountain_lion
+    revision 2
+    sha1 "661106efe731cb8934269f0e9141b6c846b65710" => :yosemite
+    sha1 "80b7a33291be43598d5084da49d8783ee7780679" => :mavericks
+    sha1 "087576750c2d1df2367a7bac2617e54dbedc2866" => :mountain_lion
   end
 
   head "https://github.com/ledger/ledger.git"
@@ -41,6 +38,7 @@ class Ledger < Formula
     ENV.cxx11
 
     (buildpath/"lib/utfcpp").install resource("utfcpp") unless build.head?
+    resource("utfcpp").stage { include.install Dir["source/*"] }
 
     flavor = (build.with? "debug") ? "debug" : "opt"
 

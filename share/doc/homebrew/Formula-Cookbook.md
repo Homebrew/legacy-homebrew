@@ -81,7 +81,7 @@ Formulae aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/b
 
 And then [Git](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
 
-A more complete [cheat-sheet](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/example-formula.rb) shows almost all the stuff you can use in a Formula.
+A more complete example-formula [cheat-sheet](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/example-formula.rb) shows almost all the stuff you can use in a Formula.
 
 ## Grab the URL
 
@@ -197,6 +197,25 @@ A Hash specifies a formula dependency with some additional information. Given a 
     depends_on "foo" => %w{with-bar with-baz}
     depends_on "foo" => [:optional, "with-bar"]
     ```
+
+
+## Specifying other formulae as conflicts
+
+Sometimes there’s hard conflict between formulae, and it can’t be avoided or circumvented with `keg_only`.
+
+PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L36-L37) formula for minor conflict.
+
+PolarSSL ship GNU’s Hello, and compiles a `hello` binary. This is obviously non-essential to PolarSSL’s functionality, and conflict with the `hello` formula would be overkill, so we just remove it.
+
+However, also in the PolarSSL formulae is a [firm conflict](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L19) with `md5sha1sum`, because both `md5sha1sum` and `polarssl` compile identically-named binaries that *are* important for core functionality.
+
+As a general rule, `conflicts_with` should be a last-resort option. It’s a fairly blunt instrument.
+
+The syntax for conflict that can’t be worked around is
+
+```ruby
+conflicts_with "blueduck", :because => "yellowduck also ships a duck binary"
+```
 
 ## Formulae Revisions
 

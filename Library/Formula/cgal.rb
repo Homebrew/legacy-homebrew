@@ -2,13 +2,13 @@ require 'formula'
 
 class Cgal < Formula
   homepage 'http://www.cgal.org/'
-  url 'https://gforge.inria.fr/frs/download.php/34149/CGAL-4.5.tar.gz'
-  sha1 'd505d4257f214b200949d67570ad743d3a913633'
+  url 'https://gforge.inria.fr/frs/download.php/file/34512/CGAL-4.5.2.tar.gz'
+  sha1 'd913b01b215d9aa30b07cec672ad31e55b5cc171'
 
   bottle do
-    sha1 "01d337030d2848fb4b6fe6bd35f886c43693b5bf" => :yosemite
-    sha1 "1821091bafdcf45b25bbb1d4075fc31e1e7cf6a3" => :mavericks
-    sha1 "f070e9f3d03d2287daa4af0440f24e4f0e7e2fcf" => :mountain_lion
+    sha1 "90343cefc02bfa700f7d50bfa0a728bf940e783d" => :yosemite
+    sha1 "b89d45a69f6ec900a83a81cff64d07d6fa67b292" => :mavericks
+    sha1 "137159687ff8dcbcad722c6e9cf74b0d0cf14466" => :mountain_lion
   end
 
   option :cxx11

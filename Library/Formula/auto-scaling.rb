@@ -1,10 +1,8 @@
-require 'formula'
-
 class AutoScaling < AmazonWebServicesFormula
-  homepage 'http://aws.amazon.com/developertools/2535'
-  url 'http://ec2-downloads.s3.amazonaws.com/AutoScaling-2011-01-01.zip'
-  version  '1.0.61.6'
-  sha1 '2e3aaaa2567f4dcafcedbfc05678270ab02ed341'
+  homepage "https://aws.amazon.com/developertools/2535"
+  url "https://ec2-downloads.s3.amazonaws.com/AutoScaling-2011-01-01.zip"
+  version "1.0.61.6"
+  sha1 "2e3aaaa2567f4dcafcedbfc05678270ab02ed341"
 
   def caveats
     <<-EOS.undent
@@ -24,7 +22,13 @@ class AutoScaling < AmazonWebServicesFormula
       export AWS_CREDENTIAL_FILE="<Path to credential file>"
 
       See the website for more details:
-      http://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/UsingTheCommandLineTools.html
+      https://docs.aws.amazon.com/AutoScaling/latest/DeveloperGuide/UsingTheCommandLineTools.html
     EOS
+  end
+
+  test do
+    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
+    ENV["AWS_AUTO_SCALING_HOME"] = libexec
+    assert_match version.to_s, shell_output("#{bin}/as-version")
   end
 end

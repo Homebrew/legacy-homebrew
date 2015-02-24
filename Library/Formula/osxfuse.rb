@@ -1,20 +1,20 @@
-require "formula"
-
 class Osxfuse < Formula
-  homepage "http://osxfuse.github.io"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.3"
+  homepage "https://osxfuse.github.io/"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.5"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
   bottle do
-    sha1 "95fc5d20836dca92cf815495a10cd01a8dee7389" => :mavericks
-    sha1 "8ea5bc28976456c62ff1a5e734518f927fbf81c2" => :mountain_lion
+    sha1 "332ce64ede6db163578ef893be7cbd18e8014b9c" => :mavericks
+    sha1 "58420e5c9cc687f5ddd6fb670ca25785f3f9468e" => :mountain_lion
   end
 
   depends_on :macos => :snow_leopard
   depends_on :xcode => :build
 
-  depends_on ConflictsWithBinaryOsxfuse
+  # A fairly heinous hack to workaround our dependency resolution getting upset
+  # See https://github.com/Homebrew/homebrew/issues/35073
+  depends_on ConflictsWithBinaryOsxfuse => :build
   depends_on UnsignedKextRequirement => [ :cask => "osxfuse",
       :download => "http://sourceforge.net/projects/osxfuse/files/" ]
 

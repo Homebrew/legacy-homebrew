@@ -82,7 +82,7 @@ begin
              }
 
   empty_argv = ARGV.empty?
-  help_regex = /(-h$|--help$|--usage$|-\?$|help$)/
+  help_regex = /(-h$|--help$|--usage$|-\?$|^help$)/
   help_flag = false
   cmd = nil
 
@@ -133,7 +133,6 @@ begin
 
   if internal_cmd
     Homebrew.send cmd.to_s.gsub('-', '_').downcase
-    exit 1 if Homebrew.failed?
   elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s

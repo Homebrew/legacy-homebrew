@@ -98,6 +98,8 @@ Style/FileName:
 # https://github.com/bbatsov/rubocop/issues/1543
 Style/WordArray:
     Enabled: false
+Style/UnneededCapitalW:
+    Enabled: false
 
 # percent-x is allowed for multiline
 # TODO: enforce when rubocop has fixed this

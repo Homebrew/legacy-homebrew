@@ -1,15 +1,3 @@
-require "formula"
-
-class Qt5HeadDownloadStrategy < GitDownloadStrategy
-  def stage
-    cached_location.cd { reset }
-    quiet_safe_system "git", "clone", cached_location, "."
-    ln_s cached_location, "qt"
-    quiet_safe_system "./init-repository", { :quiet_flag => "-q" }, "--mirror", "#{Dir.pwd}/"
-    rm "qt"
-  end
-end
-
 class OracleHomeVar < Requirement
   fatal true
   satisfy ENV["ORACLE_HOME"]
@@ -23,8 +11,8 @@ end
 
 class Qt5 < Formula
   homepage "http://qt-project.org/"
-  url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
-  mirror "http://download.qt-project.org/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
+  url "https://download.qt.io/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
+  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
   sha1 "2f5558b87f8cea37c377018d9e7a7047cc800938"
 
   bottle do
@@ -33,16 +21,18 @@ class Qt5 < Formula
     sha1 "a6bbd39629a69c35c8a5d5e8ede4b6c752e3aecf" => :mountain_lion
   end
 
-  head "https://gitorious.org/qt/qt5.git", :branch => "5.4",
-    :using => Qt5HeadDownloadStrategy, :shallow => false
+  head "https://gitorious.org/qt/qt5.git", :branch => "5.4", :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
   option :universal
   option "with-docs", "Build documentation"
   option "with-examples", "Build examples"
-  option "developer", "Build and link with developer options"
+  option "with-developer", "Build and link with developer options"
   option "with-oci", "Build with Oracle OCI plugin"
+
+  deprecated_option "developer" => "with-developer"
+  deprecated_option "qtdbus" => "with-d-bus"
 
   # Snow Leopard is untested and support has been removed in 5.4
   # https://qt.gitorious.org/qt/qtbase/commit/5be81925d7be19dd0f1022c3cfaa9c88624b1f08
@@ -55,11 +45,10 @@ class Qt5 < Formula
   # There needs to be an OpenSSL dep here ideally, but qt keeps ignoring it.
   # Keep nagging upstream for a fix to this problem, and revision when possible.
   # https://github.com/Homebrew/homebrew/pull/34929
-  # https://bugreports.qt-project.org/browse/QTBUG-42161
+  # https://bugreports.qt.io/browse/QTBUG-42161
+  # https://bugreports.qt.io/browse/QTBUG-43456
 
   depends_on OracleHomeVar if build.with? "oci"
-
-  deprecated_option "qtdbus" => "with-d-bus"
 
   def install
     ENV.universal_binary if build.universal?
@@ -97,12 +86,13 @@ class Qt5 < Formula
       args << "-plugin-sql-oci"
     end
 
-    args << "-developer-build" if build.include? "developer"
+    args << "-developer-build" if build.with? "developer"
 
     system "./configure", *args
     system "make"
     ENV.j1
-    system "make install"
+    system "make", "install"
+
     if build.with? "docs"
       system "make", "docs"
       system "make", "install_docs"

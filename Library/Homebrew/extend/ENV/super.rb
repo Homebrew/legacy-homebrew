@@ -45,6 +45,7 @@ module Superenv
     self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
     self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE.to_s
     self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX.to_s
+    self['HOMEBREW_CELLAR'] = HOMEBREW_CELLAR.to_s
     self['HOMEBREW_TEMP'] = HOMEBREW_TEMP.to_s
     self['HOMEBREW_SDKROOT'] = effective_sysroot
     self['HOMEBREW_OPTFLAGS'] = determine_optflags

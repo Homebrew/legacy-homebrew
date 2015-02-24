@@ -1,14 +1,14 @@
 class Clojurescript < Formula
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2665.tar.gz"
-  sha1 "364e799e9a4f2c79d1058ec10909a96071d1b5a3"
+  url "https://github.com/clojure/clojurescript/archive/r2760.tar.gz"
+  sha1 "c07900e9f63af89954722661f9a817ca9ea3417b"
 
   bottle do
     cellar :any
-    sha1 "a1e0a6ab52df6fc41697c5b669b0088a071fca94" => :yosemite
-    sha1 "58e46c032fb6059f6ce1ebb54e1ec9eb4bb17183" => :mavericks
-    sha1 "dd099b7132450b0458076e8eaa0db42ae2611ecc" => :mountain_lion
+    sha1 "28b50ad7793132d46dbec7821243b8e0cad332ed" => :yosemite
+    sha1 "6ad254ec5f8ab2e66de53dbf6240ff29703a6c1b" => :mavericks
+    sha1 "b090510a461c9e1274590e2840640c2195f9969e" => :mountain_lion
   end
 
   def install

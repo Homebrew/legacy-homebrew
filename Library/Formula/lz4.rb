@@ -1,16 +1,14 @@
-require "formula"
-
 class Lz4 < Formula
-  homepage "http://code.google.com/p/lz4/"
-  url "https://github.com/Cyan4973/lz4/archive/r126.tar.gz"
-  sha1 "4e22222844b914f9f2878e9acf0ed1d9deca7f12"
-  version "r126"
+  homepage "https://code.google.com/p/lz4/"
+  url "https://github.com/Cyan4973/lz4/archive/r127.tar.gz"
+  sha1 "1aa7d4bb62eb79f88b33f86f9890dc9f96797af5"
+  version "r127"
 
   bottle do
     cellar :any
-    sha1 "41c29b21cde036ed9a2d6d7f2461fb8ec4b78ba5" => :yosemite
-    sha1 "9d158cf88ad8752ae91114323725267e0995a45b" => :mavericks
-    sha1 "abe1e9d6210f597235b864a6ee1225ddc1adcf76" => :mountain_lion
+    sha1 "2d3b5ecafed3be8c54a6f87d4f2b7d5d84ebea2b" => :yosemite
+    sha1 "9fb811e3c5c485c36cc4dbea9e4d8884587e0f48" => :mavericks
+    sha1 "15e183eef77fd47f9fbfe94fda34a43b9f68f12b" => :mountain_lion
   end
 
   def install

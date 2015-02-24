@@ -1,15 +1,14 @@
 class Tth < Formula
   homepage "http://hutchinson.belmont.ma.us/tth/"
-  # upstream has been asked to provide versioned links (Jan 12, 2015)
-  url "http://hutchinson.belmont.ma.us/tth/tth-noncom/tth_C.tgz"
-  sha1 "27b44970d93f1e1964c92ffa0fa964e6045bae37"
-  version "4.06"
+  url "http://hutchinson.belmont.ma.us/tth/tth_distribution/tth_4.06.tgz"
+  sha1 "ba3c653bf05d25ac8a907fb1d51184da1ac42721"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "dac2cc7df5b0f2f6c77a186fcf799f12a29aff2e" => :yosemite
-    sha1 "d869523cd588ee381ae315aed247f57be379b3be" => :mavericks
-    sha1 "2dc34ba1293a14891456d91bc2b243233f7a06fd" => :mountain_lion
+    sha1 "694f5f4dea4af1acfcec5b53d949ec58dec75459" => :yosemite
+    sha1 "ea2b08272a5cc8f5e890d36624f1f94b003c0a0b" => :mavericks
+    sha1 "5be595e24438680c3c06f1812ff1e1e9a03c1732" => :mountain_lion
   end
 
   def install

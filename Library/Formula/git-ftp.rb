@@ -2,16 +2,16 @@ require 'formula'
 
 class GitFtp < Formula
   homepage 'http://git-ftp.github.io/git-ftp'
-  url 'https://github.com/git-ftp/git-ftp/archive/1.0.0.tar.gz'
-  sha1 '69df312a1e0cbb1224ec7571c4b83113211b5a4f'
+  url 'https://github.com/git-ftp/git-ftp/archive/1.0.1.tar.gz'
+  sha1 'ee0ff7525a88aafffe7e09b6cb95d6dde6bacf93'
 
-  head 'https://github.com/git-ftp/git-ftp.git'
+  head 'https://github.com/git-ftp/git-ftp.git', :branch => 'develop'
 
   bottle do
     cellar :any
-    sha1 "b509c296643f9b4725f12673739d2bd9e63b7cd4" => :yosemite
-    sha1 "f150cef49610efdbbfb98560c11b09dbf61f2d3e" => :mavericks
-    sha1 "d27bdf1dbd1d3e9f01e2a34e7cffcea06e3d799b" => :mountain_lion
+    sha1 "a50d3779a05f20c022634e521dbac54db3cb8bba" => :yosemite
+    sha1 "9ecb3e11463fb1ec6d961747e24be242fc8213ea" => :mavericks
+    sha1 "90bd8f913a3c01f8cdc55d77dd8ed455354bfa52" => :mountain_lion
   end
 
   option "with-manpage", "build and install the manpage (depends on pandoc)"

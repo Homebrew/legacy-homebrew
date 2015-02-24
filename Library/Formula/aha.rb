@@ -1,15 +1,13 @@
-require "formula"
-
 class Aha < Formula
   homepage "https://github.com/theZiz/aha"
-  url "https://github.com/theZiz/aha/archive/0.4.7.3.tar.gz"
-  sha1 "cc158029efb9dcf138fa20696f07f15ab785b035"
+  url "https://github.com/theZiz/aha/archive/0.4.8.tar.gz"
+  sha1 "45d91e1cda8663e8bf0c5fa8b94e4d2290aa9895"
 
   bottle do
     cellar :any
-    sha1 "58fb4e7cd5a7c4bf18aded8d8d8ab16ce65fae1e" => :yosemite
-    sha1 "a2dd6ea63dbe26867c6cbe51d998fe1a09c7692e" => :mavericks
-    sha1 "9f3de31efaa60c4302c10a30a2e4bcd7a50f7af8" => :mountain_lion
+    sha1 "93856bbcf2cd6b169f7a21d9b1a242c0bc031c7e" => :yosemite
+    sha1 "80a16f10a5c7417916f64e0df12b072baf29ba03" => :mavericks
+    sha1 "d756f3be34861bc510e3182cc406e099d857bdf9" => :mountain_lion
   end
 
   def install

@@ -69,6 +69,10 @@ class FormulaText
   def has_trailing_newline?
     /\Z\n/ =~ @text
   end
+
+  def =~ regex
+    regex =~ @text
+  end
 end
 
 class FormulaAuditor
@@ -125,6 +129,10 @@ class FormulaAuditor
         problem "A `test do` test block should be added"
       end
     end
+
+    if formula.class < GithubGistFormula
+      problem "GithubGistFormula is deprecated, use Formula instead"
+    end
   end
 
   @@aliases ||= Formula.aliases
@@ -164,9 +172,18 @@ class FormulaAuditor
         case dep.name
         when *BUILD_TIME_DEPS
           next if dep.build? or dep.run?
-          problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
-        when "git", "ruby", "mercurial"
-          problem "Don't use #{dep} as a dependency. We allow non-Homebrew #{dep} installations."
+          problem <<-EOS.undent
+            #{dep} dependency should be
+              depends_on "#{dep}" => :build
+            Or if it is indeed a runtime denpendency
+              depends_on "#{dep}" => :run
+          EOS
+        when "git"
+          problem "Use `depends_on :git` instead of `depends_on 'git'`"
+        when "mercurial"
+          problem "Use `depends_on :hg` instead of `depends_on 'mercurial'`"
+        when "ruby"
+          problem "Don't use ruby as a dependency. We allow non-Homebrew ruby installations."
         when 'gfortran'
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
         when 'open-mpi', 'mpich2'
@@ -234,13 +251,40 @@ class FormulaAuditor
       problem "Savannah homepages should be https:// links (URL is #{homepage})."
     end
 
+    if homepage =~ %r[^http://((?:trac|tools|www)\.)?ietf\.org]
+      problem "ietf homepages should be https:// links (URL is #{homepage})."
+    end
+
+    if homepage =~ %r[^http://((?:www)\.)?gnupg.org/]
+      problem "GnuPG homepages should be https:// links (URL is #{homepage})."
+    end
+
+    # Freedesktop is complicated to handle - It has SSL/TLS, but only on certain subdomains.
+    # To enable https Freedesktop change the url from http://project.freedesktop.org/wiki to
+    # https://wiki.freedesktop.org/project_name.
+    # "Software" is redirected to https://wiki.freedesktop.org/www/Software/project_name
+    if homepage =~ %r[^http://((?:www|nice|libopenraw|liboil|telepathy|xorg)\.)?freedesktop\.org/(?:wiki/)?]
+      if homepage =~ /Software/
+        problem "The url should be styled `https://wiki.freedesktop.org/www/Software/project_name`, not #{homepage})."
+      else
+        problem "The url should be styled `https://wiki.freedesktop.org/project_name`, not #{homepage})."
+      end
+    end
+
+    if homepage =~ %r[^http://wiki\.freedesktop\.org/]
+      problem "Freedesktop's Wiki subdomain should be https:// (URL is #{homepage})."
+    end
+
     # There's an auto-redirect here, but this mistake is incredibly common too.
     if homepage =~ %r[^http://packages\.debian\.org]
       problem "Debian homepage should be https:// links (URL is #{homepage})."
     end
 
-    if homepage =~ %r[^http://((?:trac|tools|www)\.)?ietf\.org]
-      problem "ietf homepages should be https:// links (URL is #{homepage})."
+    # People will run into mixed content sometimes, but we should enforce and then add
+    # exemptions as they are discovered. Treat mixed content on homepages as a bug.
+    # Justify each exemptions with a code comment so we can keep track here.
+    if homepage =~ %r[^http://[^/]*github\.io/]
+      problem "Github Pages links should be https:// (URL is #{homepage})."
     end
 
     # There's an auto-redirect here, but this mistake is incredibly common too.
@@ -351,8 +395,12 @@ class FormulaAuditor
   end
 
   def audit_specs
-    if head_only?(formula) && formula.tap != "homebrew/homebrew-head-only"
+    if head_only?(formula) && formula.tap != "Homebrew/homebrew-head-only"
       problem "Head-only (no stable download)"
+    end
+
+    if devel_only?(formula) && formula.tap != "Homebrew/homebrew-devel-only"
+      problem "Devel-only (no stable download)"
     end
 
     %w[Stable Devel HEAD].each do |name|
@@ -376,6 +424,15 @@ class FormulaAuditor
         problem "devel version #{formula.devel.version} is older than stable version #{formula.stable.version}"
       elsif formula.devel.version == formula.stable.version
         problem "stable and devel versions are identical"
+      end
+    end
+
+    stable = formula.stable
+    if stable && stable.url =~ /#{Regexp.escape("ftp.gnome.org/pub/GNOME/sources")}/i
+      minor_version = stable.version.to_s[/\d\.(\d+)/, 1].to_i
+
+      if minor_version.odd?
+        problem "#{stable.version} is a development release"
       end
     end
   end
@@ -438,7 +495,16 @@ class FormulaAuditor
     if line =~ /# PLEASE REMOVE/
       problem "Please remove default template comments"
     end
+    if line =~ /# Documentation:/
+      problem "Please remove default template comments"
+    end
     if line =~ /# if this fails, try separate make\/make install steps/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# The url of the archive/
+      problem "Please remove default template comments"
+    end
+    if line =~ /## Naming --/
       problem "Please remove default template comments"
     end
     if line =~ /# if your formula requires any X11\/XQuartz components/
@@ -642,6 +708,32 @@ class FormulaAuditor
     end
   end
 
+  def audit_caveats
+    caveats = formula.caveats
+
+    if caveats =~ /setuid/
+      problem "Don't recommend setuid in the caveats, suggest sudo instead."
+    end
+  end
+
+  def audit_prefix_has_contents
+    return unless formula.prefix.directory?
+
+    Pathname.glob("#{formula.prefix}/**/*") do |file|
+      next if file.directory?
+      basename = file.basename.to_s
+      next if Metafiles.copy?(basename)
+      next if %w[.DS_Store INSTALL_RECEIPT.json].include?(basename)
+      return
+    end
+
+    problem <<-EOS.undent
+      The installation seems to be empty. Please ensure the prefix
+      is set correctly and expected files are installed.
+      The prefix configure/make argument may be case-sensitive.
+    EOS
+  end
+
   def audit_conditional_dep(dep, condition, line)
     quoted_dep = quote_dep(dep)
     dep = Regexp.escape(dep.to_s)
@@ -672,8 +764,10 @@ class FormulaAuditor
     audit_options
     audit_patches
     audit_text
+    audit_caveats
     text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
     audit_installed
+    audit_prefix_has_contents
   end
 
   private
@@ -683,7 +777,11 @@ class FormulaAuditor
   end
 
   def head_only?(formula)
-    formula.head && formula.stable.nil?
+    formula.head && formula.devel.nil? && formula.stable.nil?
+  end
+
+  def devel_only?(formula)
+    formula.devel && formula.stable.nil?
   end
 end
 

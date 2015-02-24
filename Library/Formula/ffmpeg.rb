@@ -1,14 +1,14 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.2.tar.bz2"
-  sha1 "e167475426e8edf55601e79d3367c2210baa5f11"
+  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.4.tar.bz2"
+  sha1 "e7d0bab14e82876762531a883c6b48918631d48c"
 
   head "git://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha1 "5d5b37346fd3b87bbd48e6acd4e640f5cfdf1f16" => :yosemite
-    sha1 "b2c1ce59ee31569d33c72357bb19328769974d30" => :mavericks
-    sha1 "1732376b6c4e09a8ea9be11f1ec5d261970af760" => :mountain_lion
+    sha1 "1d2f2630e86a06519f36263914ab79dc2f2fef72" => :yosemite
+    sha1 "d2dcb0fd8c650ad8b106ab3ab4fcd0b5512eb6aa" => :mavericks
+    sha1 "cddc9c78521770bc529e85f80f842dff678bc1e6" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -22,6 +22,7 @@ class Ffmpeg < Formula
   option "with-opencore-amr", "Enable Opencore AMR NR/WB audio format"
   option "with-openjpeg", "Enable JPEG 2000 image format"
   option "with-openssl", "Enable SSL support"
+  option "with-libssh", "Enable SFTP protocol via libssh"
   option "with-schroedinger", "Enable Dirac video format"
   option "with-ffplay", "Enable FFplay media player"
   option "with-tools", "Enable additional FFmpeg tools"
@@ -29,6 +30,7 @@ class Ffmpeg < Formula
   option "with-libvidstab", "Enable vid.stab support for video stabilization"
   option "with-x265", "Enable x265 encoder"
   option "with-libsoxr", "Enable the soxr resample library"
+  option "with-webp", "Enable using libwebp to encode WEBP images"
 
   depends_on "pkg-config" => :build
 
@@ -64,6 +66,8 @@ class Ffmpeg < Formula
   depends_on "libvidstab" => :optional
   depends_on "x265" => :optional
   depends_on "openssl" => :optional
+  depends_on "libssh" => :optional
+  depends_on "webp" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -75,7 +79,7 @@ class Ffmpeg < Formula
             "--enable-avresample",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
-            "--host-ldflags=#{ENV.ldflags}"
+            "--host-ldflags=#{ENV.ldflags}",
            ]
 
     args << "--enable-libx264" if build.with? "x264"
@@ -93,6 +97,7 @@ class Ffmpeg < Formula
     args << "--enable-libfaac" if build.with? "faac"
     args << "--enable-libass" if build.with? "libass"
     args << "--enable-ffplay" if build.with? "ffplay"
+    args << "--enable-libssh" if build.with? "libssh"
     args << "--enable-libspeex" if build.with? "speex"
     args << "--enable-libschroedinger" if build.with? "schroedinger"
     args << "--enable-libfdk-aac" if build.with? "fdk-aac"
@@ -104,17 +109,18 @@ class Ffmpeg < Formula
     args << "--enable-libquvi" if build.with? "libquvi"
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
+    args << "--enable-libwebp" if build.with? "webp"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
-      args << "--extra-cflags=" + %x[pkg-config --cflags libopenjpeg].chomp
+      args << "--extra-cflags=" + %x(pkg-config --cflags libopenjpeg).chomp
     end
 
     # These librares are GPL-incompatible, and require ffmpeg be built with
     # the "--enable-nonfree" flag, which produces unredistributable libraries
-    if %w[faac fdk-aac openssl].any? {|f| build.with? f}
+    if %w[faac fdk-aac openssl].any? { |f| build.with? f }
       args << "--enable-nonfree"
     end
 
@@ -132,8 +138,6 @@ class Ffmpeg < Formula
     # http://trac.macports.org/ticket/20938#comment:22
     ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
 
-    ENV["GIT_DIR"] = cached_download/".git" if build.head?
-
     system "./configure", *args
 
     if MacOS.prefer_64_bit?
@@ -149,21 +153,23 @@ class Ffmpeg < Formula
 
     if build.with? "tools"
       system "make", "alltools"
-      bin.install Dir['tools/*'].select {|f| File.executable? f}
+      bin.install Dir["tools/*"].select { |f| File.executable? f }
     end
   end
 
   def caveats
     if build.without? "faac" then <<-EOS.undent
-      FFmpeg has been built without libfaac for licensing reasons.
+      FFmpeg has been built without libfaac for licensing reasons;
+      libvo-aacenc is used by default.
       To install with libfaac, you can:
         brew reinstall ffmpeg --with-faac
 
-      You can also use the libvo-aacenc or experimental FFmpeg encoder to
-      encode AAC audio:
-        -c:a libvo_aacenc
+      You can also use the experimental FFmpeg encoder, libfdk-aac, or
+      libvo_aacenc to encode AAC audio:
+        ffmpeg -i input.wav -c:a aac -strict experimental output.m4a
       Or:
-        -c:a aac -strict -2
+        brew reinstall ffmpeg --with-fdk-aac
+        ffmpeg -i input.wav -c:a libfdk_aac output.m4a
       EOS
     end
   end

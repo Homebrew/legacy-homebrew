@@ -2,14 +2,14 @@ require "formula"
 
 class Doitlive < Formula
   homepage "http://doitlive.readthedocs.org/en/latest/"
-  url "https://pypi.python.org/packages/source/d/doitlive/doitlive-2.3.0.tar.gz"
-  sha1 "e2729b81828966c775f396be8845da2c98f129cc"
+  url "https://pypi.python.org/packages/source/d/doitlive/doitlive-2.3.1.tar.gz"
+  sha1 "4afea3f3a4442ab614d878fb359c143b6080a38b"
 
   bottle do
     cellar :any
-    sha1 "5394798b68c5b88c4c9f475d0e01b7580fab87a0" => :yosemite
-    sha1 "3858f782fcc37f8035986636503f6db86bb12f0e" => :mavericks
-    sha1 "6b21ff9348022970a5089b16420f1ab5e0def101" => :mountain_lion
+    sha1 "8bdb41603a087ccb0b3f50e56e37a60eacdd46c7" => :yosemite
+    sha1 "1b976835aa074897a4aa5b3e8828813aaf3bb718" => :mavericks
+    sha1 "89faad888461a236a24a6964a0df58bb05c5496d" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

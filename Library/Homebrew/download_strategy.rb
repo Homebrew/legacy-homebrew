@@ -537,13 +537,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def stage
     super
-
-    dst = Dir.getwd
-    cached_location.cd do
-      # https://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
-      checkout_submodules(dst) if submodules?
-    end
+    cp_r File.join(cached_location, "."), Dir.pwd
   end
 
   private
@@ -646,13 +640,8 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def update_submodules
+    quiet_safe_system "git", "submodule", "foreach", "--recursive", "git submodule sync"
     quiet_safe_system "git", "submodule", "update", "--init", "--recursive"
-  end
-
-  def checkout_submodules(dst)
-    escaped_clone_path = cached_location.to_s.gsub(/\//, '\/')
-    sub_cmd = "git checkout-index -a -f --prefix=#{dst}/${toplevel/#{escaped_clone_path}/}/$path/"
-    quiet_safe_system "git", "submodule", "foreach", "--recursive", sub_cmd
   end
 end
 
@@ -671,7 +660,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def stage
-    cp_r Dir[cached_location+"{.}"], Dir.pwd
+    cp_r File.join(cached_location, "."), Dir.pwd
   end
 
   private
@@ -750,7 +739,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   def stage
     # The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
-    cp_r Dir[cached_location+"{.}"], Dir.pwd
+    cp_r File.join(cached_location, "."), Dir.pwd
     rm_r ".bzr"
   end
 

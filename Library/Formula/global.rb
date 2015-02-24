@@ -1,13 +1,14 @@
 class Global < Formula
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.3.2.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.3.2.tar.gz"
-  sha1 "46b681a0ccb84c928a67f6901ca60227ad71b5bd"
+  url "http://ftpmirror.gnu.org/global/global-6.3.4.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.3.4.tar.gz"
+  sha1 "6b73c0b3c7eea025c8004f8d82d836f2021d0c9e"
 
   bottle do
-    sha1 "1bce9bd552e38d9cc12eda4998233c20a33321e4" => :mavericks
-    sha1 "907a3a0180b4b4ea6ecc029b864a7ed4c8e1fa21" => :mountain_lion
-    sha1 "254d7f4444b1890b1195f35a6e1f43ed34dace7d" => :lion
+    revision 1
+    sha1 "bb61eb5f9f950d47eaaa856c7fb18b354256d646" => :yosemite
+    sha1 "b295a8b0f40f07fccec741217dc05c38a4d42bc8" => :mavericks
+    sha1 "23d4ba161767bfe1d688442df1325a28cf0cc657" => :mountain_lion
   end
 
   head do
@@ -44,18 +45,19 @@ class Global < Formula
     end
 
     if build.with? "pygments"
-      ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-      pygments_args = [ "build", "install", "--prefix=#{libexec}" ]
-      resource('pygments').stage { system "python", "setup.py", *pygments_args }
+      ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
+      pygments_args = %W[build install --prefix=#{libexec}]
+      resource("pygments").stage { system "python", "setup.py", *pygments_args }
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
     if build.with? "pygments"
-      bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+      bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     end
 
+    inreplace "gtags.conf", prefix, opt_prefix
     etc.install "gtags.conf"
 
     # we copy these in already
@@ -64,12 +66,12 @@ class Global < Formula
     end
   end
   test do
-    (testpath/'test.c').write <<-EOF.undent
+    (testpath/"test.c").write <<-EOF.undent
        int c2func (void) { return 0; }
        void cfunc (void) {int cvar = c2func(); }")
     EOF
-    if build.with? "pygments" or build.with? "exuberant-ctags"
-      (testpath/'test.py').write <<-EOF
+    if build.with?("pygments") || build.with?("exuberant-ctags")
+      (testpath/"test.py").write <<-EOF
         def py2func ():
              return 0
         def pyfunc ():

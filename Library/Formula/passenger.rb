@@ -2,14 +2,14 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.57.tar.gz'
-  sha1 '817e1fd7c3d96ddbdff27489122f39b3295d6ac0'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.59.tar.gz'
+  sha1 '5bbbd7577fbcf59d5e8e18ba61e265b89b98f0d0'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "3fb270caab2623ff6f1ee6909b992cd20f95c189" => :yosemite
-    sha1 "f5bf7d36cfd0c0ce7b75d71de147155b134be07b" => :mavericks
-    sha1 "00e5099bd25a9b36ffd0256dc36616da9f89f5ef" => :mountain_lion
+    sha1 "fe7b9c8de391e5ba7e5fa34c480bded17713eda6" => :yosemite
+    sha1 "f80b6a568b59cd368001b532c20151cf9b82758e" => :mavericks
+    sha1 "a8dc7378cad2b359de9fad26bb313fbeaeee6d53" => :mountain_lion
   end
 
   depends_on 'pcre'
@@ -22,6 +22,11 @@ class Passenger < Formula
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
+
+    # Fixes https://github.com/phusion/passenger/issues/1288
+    rm_rf "buildout/libev"
+    rm_rf "buildout/libeio"
+    rm_rf "buildout/cache"
 
     necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",

@@ -8,7 +8,6 @@ class Jsawk < Formula
   depends_on "spidermonkey"
 
   def install
-    mv "README.markdown", "README"
     bin.install "jsawk"
   end
 

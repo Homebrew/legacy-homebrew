@@ -2,10 +2,17 @@ require 'formula'
 
 class Vrpn < Formula
   homepage 'http://vrpn.org'
-  url 'http://www.cs.unc.edu/Research/vrpn/downloads/vrpn_07_31.zip'
-  sha1 'a78dd36cd301a7def2d54576cfa63604a8729ace'
+  url 'http://www.cs.unc.edu/Research/vrpn/downloads/vrpn_07_33.zip'
+  sha1 '3c908c333e501aeb5051484fafbb89e79064ba20'
 
   head 'git://git.cs.unc.edu/vrpn.git'
+
+  bottle do
+    cellar :any
+    sha1 "2f168416e7caaa0e7ed4237d3532cd6ee37ecad5" => :yosemite
+    sha1 "c8830aa818e3592eb2f6377ab452b7b35ee0eefd" => :mavericks
+    sha1 "e6b3bf7f324622ce133e0ab3cf851d9ead3e1b54" => :mountain_lion
+  end
 
   option 'clients', 'Build client apps and tests'
   option "with-docs", "Build doxygen-based API documentation"

@@ -1,5 +1,3 @@
-require 'formula'
-
 class Camlistore < Formula
   homepage 'http://camlistore.org'
   head 'https://camlistore.googlesource.com/camlistore', :using => :git
@@ -17,8 +15,6 @@ class Camlistore < Formula
   depends_on 'sqlite'
 
   def install
-    ENV['GIT_DIR'] = cached_download+".git"
-
     system "go", "run", "make.go"
     prefix.install "bin/README"
     prefix.install "bin"

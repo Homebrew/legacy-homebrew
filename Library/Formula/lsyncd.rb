@@ -4,14 +4,14 @@ class Lsyncd < Formula
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
   sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"
+  revision 2
+
   bottle do
     cellar :any
-    sha1 "9d8e796c4e05ca50bcbdae0053ed14d03626be6c" => :yosemite
-    sha1 "ebab9b36017e541234bcd6d5bb5fef1062fca245" => :mavericks
-    sha1 "6241af90c682dbe7fb10918faa0d0a1ad63d22f2" => :mountain_lion
+    sha1 "f42be91eff9963543d9b42a34f8cf5b6be720152" => :yosemite
+    sha1 "9519e202543d0f371f4f9827e707937e23442854" => :mavericks
+    sha1 "cb180347af72d91152cfb510f2f7f583543bf4f5" => :mountain_lion
   end
-
-  revision 1
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -39,6 +39,7 @@ class Lsyncd < Formula
     "10.9.5" => ["xnu-2422.115.4.tar.gz", "48207e250422be7e78d238cd8b4d741ac98856df"],
     "10.10"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
     "10.10.1"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
+    "10.10.2"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
   }
 
   # TODO wrap MACOS_FULL_VERSION in a MacOS module method
@@ -48,6 +49,14 @@ class Lsyncd < Formula
       url "http://www.opensource.apple.com/tarballs/xnu/#{tarball}"
       sha1 checksum
     end
+  end
+
+  # patch for CVE-2014-8990
+  # https://github.com/axkibe/lsyncd/commit/e9ffda07f0145f50f2756f8ee3fb0775b455122b
+  # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-8990
+  patch do
+    url "https://gist.githubusercontent.com/tdsmith/d807811d3c6965b0221e/raw/965545662eec39b60d50645487e6ade9d7d43834/cve-2014-8990.diff"
+    sha1 "3ef7d28db8a5e1719a0b7298cb204809f6b5d9d7"
   end
 
   def install
