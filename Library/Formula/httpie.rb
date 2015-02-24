@@ -1,7 +1,7 @@
 class Httpie < Formula
   homepage "https://github.com/jakubroztocil/httpie"
-  url "https://github.com/jakubroztocil/httpie/archive/0.9.1.tar.gz"
-  sha1 "00071019c28a8deefaf65eddf9248998b446cdef"
+  url "https://github.com/jakubroztocil/httpie/archive/0.9.2.tar.gz"
+  sha1 "39e9aab7f6f27973098c22c81fe5b9e7a5866a8b"
 
   head "https://github.com/jakubroztocil/httpie.git"
 
@@ -20,8 +20,8 @@ class Httpie < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.2.tar.gz"
+    sha1 "888e788f9e2343f297ae850b13f38b3b3416d3dc"
   end
 
   def install
