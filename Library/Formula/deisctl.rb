@@ -5,6 +5,13 @@ class Deisctl < Formula
   url "https://github.com/deis/deis/archive/v1.1.0.tar.gz"
   sha1 "c57fb6073b374b95262c36959c6d2b6c508cda59"
 
+  bottle do
+    cellar :any
+    sha1 "db686dbc4dc02122cd98a77c74ca2b57ab859fd9" => :yosemite
+    sha1 "e4e8d2339df740dd10f8a396eb2d9f7502cfba55" => :mavericks
+    sha1 "3effb5512f9ac39b69b639c067a62239b1171677" => :mountain_lion
+  end
+
   depends_on :hg => :build
   depends_on "go" => :build
 
