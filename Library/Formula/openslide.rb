@@ -15,7 +15,6 @@ class Openslide < Formula
   depends_on 'openjpeg'
   depends_on 'cairo'
   depends_on 'gdk-pixbuf'
-  depends_on 'sqlite'
 
   def install
     system "./configure", "--disable-dependency-tracking",
