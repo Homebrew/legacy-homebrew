@@ -38,6 +38,10 @@ class Hardware
     def ppc?
       type == :ppc
     end
+
+    def features
+      []
+    end
   end
 
   if OS.mac?
