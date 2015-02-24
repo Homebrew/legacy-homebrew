@@ -1,9 +1,7 @@
-require "formula"
-
 class Nzbget < Formula
   homepage "http://nzbget.net/"
-  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.1/nzbget-14.1.tar.gz"
-  sha1 "671c0d0b554643e1b58665004c65519a330766db"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.2/nzbget-14.2.tar.gz"
+  sha1 "25adf5565d228cf1cbb8fa305732f61a6f869aa0"
 
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
