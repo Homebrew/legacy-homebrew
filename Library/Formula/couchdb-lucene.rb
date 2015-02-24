@@ -1,13 +1,13 @@
 class CouchdbLucene < Formula
-  homepage 'https://github.com/rnewson/couchdb-lucene'
-  url 'https://github.com/rnewson/couchdb-lucene/archive/v1.0.2.tar.gz'
-  sha1 '75e0c55a87f47903c6cd122286ea3e4568809f7e'
+  homepage "https://github.com/rnewson/couchdb-lucene"
+  url "https://github.com/rnewson/couchdb-lucene/archive/v1.0.2.tar.gz"
+  sha1 "75e0c55a87f47903c6cd122286ea3e4568809f7e"
 
-  depends_on 'couchdb'
-  depends_on 'maven' => :build
+  depends_on "couchdb"
+  depends_on "maven" => :build
+  depends_on :java
 
   def install
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
     system "mvn"
     system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz", "--strip", "1"
 
