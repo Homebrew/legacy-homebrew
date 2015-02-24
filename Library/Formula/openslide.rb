@@ -4,7 +4,6 @@ class Openslide < Formula
   homepage 'http://openslide.org/'
   url 'https://github.com/openslide/openslide/releases/download/v3.4.0/openslide-3.4.0.tar.gz'
   sha1 'edd28a142f7801a354949c05e7f1b7dcb246db6b'
-  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'libpng'
