@@ -113,7 +113,7 @@ class ResourceTests < Homebrew::TestCase
 
     fn.stubs(:file? => true)
     fn.expects(:verify_checksum).raises(ChecksumMissingError)
-    fn.expects(:sha1)
+    fn.expects(:sha256)
 
     shutup { @resource.verify_download_integrity(fn) }
   end
