@@ -5,9 +5,9 @@ class Tomcat < Formula
 
   bottle do
     cellar :any
-    sha1 "23a9b04f317fae7285a2e2b53a9992baf8c931e3" => :yosemite
-    sha1 "8577388903bd4e2295148d5f48a63fa824111dbb" => :mavericks
-    sha1 "0c9a206f0e69f75f0b641227747c13d2ac0fda5b" => :mountain_lion
+    sha1 "2315d52b6a3dd5f178d02da6b84c67189d333cb1" => :yosemite
+    sha1 "63ac2a7f329f3620ea0505053dc90e25443c02f6" => :mavericks
+    sha1 "e5abae0c006059d41d9465776946f8ee8970aa9d" => :mountain_lion
   end
 
   option "with-fulldocs", "Install full documentation locally"
