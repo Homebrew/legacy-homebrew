@@ -99,7 +99,7 @@ And opens it in your `$EDITOR`. It'll look like:
 class Foo < Formula
   url "http://example.com/foo-0.1.tar.gz"
   homepage ""
-  sha1 "1234567890ABCDEF1234567890ABCDEF"
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 
   # depends_on "cmake" => :build
 
@@ -257,7 +257,7 @@ If you're installing an application then please locally vendor all the language-
 class Foo < Formula
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz"
-    sha1 "c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84"
+    sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
   end
 
   def install
@@ -476,7 +476,7 @@ External patches can be declared using resource-style blocks:
 ```rb
 patch do
   url "https://example.com/example_patch.diff"
-  sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 end
 ```
 
@@ -485,7 +485,7 @@ A strip level of -p1 is assumed. It can be overridden using a symbol argument:
 ```rb
 patch :p0 do
   url "https://example.com/example_patch.diff"
-  sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 end
 ```
 
@@ -497,7 +497,7 @@ stable do
 
   patch do
     url "https://example.com/example_patch.diff"
-    sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
   end
 end
 ```
@@ -583,7 +583,7 @@ The "devel" spec (activated by passing `--devel`) is used for a project’s unst
 ```ruby
 devel do
   url "https://foo.com/foo-0.1.tar.gz"
-  sha1 "deadbeefdeadbeefdeadbeafdeadbeefdeadbeef"
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 end
 ```
 
@@ -895,7 +895,7 @@ Homebrew provides two Formula methods for launchd plist files. `plist_name` will
 
 ## Updating formulae
 
-Eventually a new version of the software will be released. In this case you should update the `url` and `sha1`/`sha256`. Please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
+Eventually a new version of the software will be released. In this case you should update the `url` and `sha256`. Please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
 
 Check if the formula you are updating is a dependency for any other formulae by running `brew uses UPDATED_FORMULA`. If it is a dependency please `brew reinstall` all the dependencies after it is installed and verify they work correctly.
 

@@ -73,7 +73,7 @@ module Homebrew
 end
 
 class FormulaCreator
-  attr_reader :url, :sha1
+  attr_reader :url, :sha256
   attr_accessor :name, :version, :path, :mode
 
   def url= url
@@ -112,7 +112,7 @@ class FormulaCreator
       r.url(url)
       r.version(version)
       r.owner = self
-      @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
+      @sha256 = r.fetch.sha256 if r.download_strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
@@ -129,7 +129,7 @@ class FormulaCreator
     <% unless version.nil? or version.detected_from_url? %>
       version "#{version}"
     <% end %>
-      sha1 "#{sha1}"
+      sha256 "#{sha256}"
 
     <% if mode == :cmake %>
       depends_on "cmake" => :build

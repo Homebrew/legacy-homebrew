@@ -202,7 +202,7 @@ module Homebrew
     bottle.prefix prefix
     bottle.cellar relocatable ? :any : cellar
     bottle.revision bottle_revision
-    bottle.sha1 bottle_path.sha1 => bottle_tag
+    bottle.sha256 bottle_path.sha256 => bottle_tag
 
     output = bottle_output bottle
 

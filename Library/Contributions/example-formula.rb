@@ -29,17 +29,17 @@ class ExampleFormula < Formula
   # version is seldom needed, because it's usually autodetected from the URL/tag.
   version "1.2-final"
 
-  # For integrity and security, we verify the hash (`openssl dgst -sha1 <FILE>`)
-  # You may also use sha256 if the software uses sha256 on their homepage. Do not use md5.
+  # For integrity and security, we verify the hash (`openssl dgst -sha256 <FILE>`)
+  # You should use SHA256. Never use md5.
   # Either generate the sha locally or leave it empty & `brew install` will tell you the expected.
-  sha1 "cafebabe78901234567890123456789012345678"
+  sha256 "2a2ba417eebaadcb4418ee7b12fe2998f26d6e6f7fda7983412ff66a741ab6f7"
 
   # Stable-only dependencies should be nested inside a `stable` block rather than
   # using a conditional. It is preferrable to also pull the URL and checksum into
   # the block if one is necessary.
   stable do
     url "https://example.com/foo-1.0.tar.gz"
-    sha1 "cafebabe78901234567890123456789012345678"
+    sha256 "2a2ba417eebaadcb4418ee7b12fe2998f26d6e6f7fda7983412ff66a741ab6f7"
 
     depends_on "libxml2"
     depends_on "libffi"
@@ -65,7 +65,7 @@ class ExampleFormula < Formula
   # Use this to specify a not-yet-released version of a software.
   devel do
     url "https://example.com/archive-2.0-beta.tar.gz"
-    sha1 "1234567890123456789012345678901234567890"
+    sha256 "2a2ba417eebaadcb4418ee7b12fe2998f26d6e6f7fda7983412ff66a741ab6f7"
 
     depends_on "cairo"
     depends_on "pixman"
@@ -97,9 +97,9 @@ class ExampleFormula < Formula
     prefix "/opt/homebrew" # Optional HOMEBREW_PREFIX in which the bottles were built.
     cellar "/opt/homebrew/Cellar" # Optional HOMEBREW_CELLAR in which the bottles were built.
     revision 1 # Making the old bottle outdated without bumping the version of the formula.
-    sha1 "d3d13fe6f42416765207503a946db01378131d7b" => :yosemite
-    sha1 "cdc48e79de2dee796bb4ba1ad987f6b35ce1c1ee" => :mavericks
-    sha1 "a19b544c8c645d7daad1d39a070a0eb86dfe9b9c" => :mountain_lion
+    sha256 "2a2ba417eebaadcb4418ee7b12fe2998f26d6e6f7fda7983412ff66a741ab6f7" => :yosemite
+    sha256 "2a2ba417eebaadcb4418ee7b12fe2998f26d6e6f7fda7983412ff66a741ab6f7" => :mavericks
+    sha256 "2a2ba417eebaadcb4418ee7b12fe2998f26d6e6f7fda7983412ff66a741ab6f7" => :mountain_lion
   end
 
   def pour_bottle?
@@ -204,7 +204,7 @@ class ExampleFormula < Formula
   # head block. This mechanism replaces ad-hoc "subformula" classes.
   resource "additional_files" do
     url "https://example.com/additional-stuff.tar.gz"
-    sha1 "deadbeef7890123456789012345678901234567890"
+    sha256 "c6bc3f48ce8e797854c4b865f6a8ff969867bbcaebd648ae6fd825683e59fef2"
   end
 
 
@@ -213,14 +213,14 @@ class ExampleFormula < Formula
   # External patches can be declared using resource-style blocks.
   patch do
     url "https://example.com/example_patch.diff"
-    sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    sha256 "c6bc3f48ce8e797854c4b865f6a8ff969867bbcaebd648ae6fd825683e59fef2"
   end
 
   # A strip level of -p1 is assumed. It can be overridden using a symbol
   # argument:
   patch :p0 do
     url "https://example.com/example_patch.diff"
-    sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    sha256 "c6bc3f48ce8e797854c4b865f6a8ff969867bbcaebd648ae6fd825683e59fef2"
   end
 
   # Patches can be declared in stable, devel, and head blocks. This form is
@@ -228,7 +228,7 @@ class ExampleFormula < Formula
   stable do
     patch do
       url "https://example.com/example_patch.diff"
-      sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+      sha256 "c6bc3f48ce8e797854c4b865f6a8ff969867bbcaebd648ae6fd825683e59fef2"
     end
   end
 
