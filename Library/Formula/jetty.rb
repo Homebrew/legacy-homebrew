@@ -1,8 +1,8 @@
 class Jetty < Formula
   homepage "http://www.eclipse.org/jetty/"
-  url "http://download.eclipse.org/jetty/9.2.8.v20150217/dist/jetty-distribution-9.2.8.v20150217.tar.gz"
-  version "9.2.8.v20150217"
-  sha1 "d565cb0abe9c265f573a16c5dfd9ae36e769c908"
+  url "http://download.eclipse.org/jetty/9.2.9.v20150224/dist/jetty-distribution-9.2.9.v20150224.tar.gz"
+  version "9.2.9.v20150224"
+  sha1 "8f8b535841e524ea6f418dc9a8d01b701cd063ea"
 
   def install
     libexec.install Dir['*']
