@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmpdclient < Formula
   homepage 'http://www.musicpd.org/libs/libmpdclient/'
-  url 'http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.9.tar.gz'
-  sha1 'fe40dcb54f79648a17b68c93add2e601077a9311'
+  url 'http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.10.tar.gz'
+  sha1 '106de0e8f0e63ec3899c91c38d1bcc171df61637'
 
   bottle do
     cellar :any
