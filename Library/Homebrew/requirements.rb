@@ -43,6 +43,10 @@ class XcodeDependency < Requirement
       EOS
     end
   end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} version=#{@version.inspect}>"
+  end
 end
 
 class MysqlDependency < Requirement
@@ -125,16 +129,28 @@ class JavaDependency < Requirement
 
   satisfy { java_version }
 
+  env do
+    java_home = Pathname.new(@java_home)
+    ENV["JAVA_HOME"] = java_home
+    ENV.prepend_path "PATH", java_home/"bin"
+    if (java_home/"include").exist? # Oracle JVM
+      ENV.append_to_cflags "-I#{java_home}/include"
+      ENV.append_to_cflags "-I#{java_home}/include/darwin"
+    else # Apple JVM
+      ENV.append_to_cflags "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
+    end
+  end
+
   def initialize(tags)
-    # ignore trailing +
-    @version = tags.shift.sub(/\+$/, "") if /(\d\.)+\d/ === tags.first
+    @version = tags.shift if /(\d\.)+\d/ === tags.first
     super
   end
 
   def java_version
-    args = %w[/usr/libexec/java_home --failfast]
+    args = %w[--failfast]
     args << "--version" << "#{@version}+" if @version
-    quiet_system(*args)
+    @java_home = Utils.popen_read("/usr/libexec/java_home", *args).chomp
+    $?.success?
   end
 
   def message
@@ -143,5 +159,9 @@ class JavaDependency < Requirement
     s = "Java#{version_string} is required to install this formula."
     s += super
     s
+  end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} version=#{@version.inspect}>"
   end
 end

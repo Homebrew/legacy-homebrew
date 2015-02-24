@@ -1,6 +1,6 @@
 class Bsdmake < Formula
-  homepage "http://opensource.apple.com/"
-  url "http://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz"
+  homepage "https://opensource.apple.com/"
+  url "https://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz"
   sha1 "9ce3c3fc01e0eb47d82827b1eb227eb371fefd5c"
 
   bottle do

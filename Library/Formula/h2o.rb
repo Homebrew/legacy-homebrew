@@ -1,13 +1,13 @@
 class H2o < Formula
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.0.0.tar.gz"
-  sha1 "9215eb3ec6b7455ce20b3dc3d322c327d0e56dad"
+  url "https://github.com/h2o/h2o/archive/v1.0.1.tar.gz"
+  sha1 "1c66c59123a3e23172b610380af5e78d5e95a78a"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
-    sha1 "d24d3bc8ccc70d1477da59d491f7253a03c80e18" => :yosemite
-    sha1 "d6094ddfe20c65fab8c2aec40474e869444b43d0" => :mavericks
-    sha1 "fca51e0cc272fc98a57c8caa524835053cdecdde" => :mountain_lion
+    sha1 "3f62c3b78c9351e9c581c1242e1d999a0ba50555" => :yosemite
+    sha1 "cc13b80fe91ae1ee827ca745e7f3692c76c941b7" => :mavericks
+    sha1 "f58b952c6fc29d9db30f506e3bc3edef6422725c" => :mountain_lion
   end
 
   option "with-libuv", "Build the H2O library in addition to the executable."

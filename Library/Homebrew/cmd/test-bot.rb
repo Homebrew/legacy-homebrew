@@ -641,7 +641,7 @@ module Homebrew
     if ARGV.include? '--ci-master' or ARGV.include? '--ci-pr' \
        or ARGV.include? '--ci-testing'
       ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS_COMMIT"]
-      ARGV << "--junit" << "--local"
+      ARGV << "--junit" << "--local" << "--debug"
     end
     if ARGV.include? '--ci-master'
       ARGV << '--no-bottle' << '--email'
@@ -690,7 +690,7 @@ module Homebrew
         raise "Missing BINTRAY_USER or BINTRAY_KEY variables!"
       end
 
-      ARGV << '--verbose'
+      ARGV << '--verbose' << '--debug'
 
       bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
       return if bottles.empty?
@@ -725,13 +725,20 @@ module Homebrew
       existing_bottles = {}
       Dir.glob("*.bottle*.tar.gz") do |filename|
         formula_name = bottle_filename_formula_name filename
-        formula = Formulary.factory formula_name
+        canonical_formula_name = if tap
+          "#{tap}/#{formula_name}"
+        else
+          formula_name
+        end
+        formula = Formulary.factory canonical_formula_name
         existing_bottles[formula_name] = !!formula.bottle
       end
 
       ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
-      safe_system "brew", "bottle", "--merge", "--write", *Dir["*.bottle.rb"]
+      bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
+      bottle_args << "--tap=#{tap}" if tap
+      safe_system "brew", "bottle", *bottle_args
 
       remote_repo = tap ? tap.gsub("/", "-") : "homebrew"
 

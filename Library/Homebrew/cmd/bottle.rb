@@ -237,7 +237,13 @@ module Homebrew
       puts output
 
       if ARGV.include? '--write'
-        f = Formulary.factory(formula_name)
+        tap = ARGV.value('tap')
+        canonical_formula_name = if tap
+          "#{tap}/#{formula_name}"
+        else
+          formula_name
+        end
+        f = Formulary.factory(canonical_formula_name)
         update_or_add = nil
 
         Utils::Inreplace.inreplace(f.path) do |s|

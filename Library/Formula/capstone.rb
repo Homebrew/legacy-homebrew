@@ -5,10 +5,10 @@ class Capstone < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "12179821d14b839d25cb0371fdb33da5bd9c6e71" => :yosemite
-    sha1 "0f6fcb777a351817bbec8084643da1184669f9e8" => :mavericks
-    sha1 "635d65b51b01e1dc5977d154fd5fcfaa6e0c77d8" => :mountain_lion
+    revision 3
+    sha1 "63e887ea699a71bbd3f08d5dfa8cbbb8f061f768" => :yosemite
+    sha1 "210d46b2de72092f42df324e29297397405acbb0" => :mavericks
+    sha1 "eb835f4d9bdcd7d465224f7bd6ab47b21287da94" => :mountain_lion
   end
 
   def install
@@ -24,7 +24,7 @@ class Capstone < Formula
     # As per the above inreplace, the pkgconfig file needs fixing as well.
     inreplace lib/"pkgconfig/capstone.pc" do |s|
       s.gsub! "/usr/lib", lib
-      s.gsub! "/usr/include/capstone", include
+      s.gsub! "/usr/include/capstone", "#{include}/capstone"
     end
   end
 
