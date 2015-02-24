@@ -1,7 +1,7 @@
 class Samba < Formula
   homepage "https://samba.org/"
-  url "https://download.samba.org/pub/samba/stable/samba-3.6.24.tar.gz"
-  sha1 "6d48b55ab1e172b0c75035040f5aea65fbf0561e"
+  url "https://download.samba.org/pub/samba/stable/samba-3.6.25.tar.gz"
+  sha1 "86fbfcfe80454cc7dbe510e7d58c02922cac3efa"
 
   bottle do
     sha1 "839c682640aa3fce69b7b2ba02a017130143bbca" => :yosemite
@@ -21,11 +21,22 @@ class Samba < Formula
 
   def install
     cd "source3" do
+      # This stops samba dumping .msg and .dat files directly into lib
+      # It can't be set with a configure switch - There isn't one that fine-grained.
+      # https://bugzilla.samba.org/show_bug.cgi?id=11120
+      inreplace "configure", "${MODULESDIR}", "#{share}/codepages"
+
       system "./configure", "--disable-debug",
                             "--prefix=#{prefix}",
                             "--with-configdir=#{prefix}/etc",
                             "--without-ldap",
                             "--without-krb5"
+
+      # https://bugzilla.samba.org/show_bug.cgi?id=11113
+      inreplace "Makefile" do |s|
+        s.gsub! /(lib\w+).dylib(.[\.\d]+)/, "\\1\\2.dylib"
+      end
+
       system "make", "install"
       (prefix/"etc").mkpath
       touch prefix/"etc/smb.conf"
@@ -54,6 +65,10 @@ class Samba < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system bin/"eventlogadm", "-h"
   end
 end
 
