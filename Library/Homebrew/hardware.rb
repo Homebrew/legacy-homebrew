@@ -42,6 +42,10 @@ class Hardware
     def features
       []
     end
+
+    def feature?(name)
+      features.include?(name)
+    end
   end
 
   if OS.mac?
