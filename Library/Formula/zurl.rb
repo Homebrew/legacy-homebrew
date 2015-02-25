@@ -14,15 +14,7 @@ class Zurl < Formula
     sha1 "1dced02ea8527b5870ffdbe835d096aca5c01d2a"
   end
 
-  resource "tnetstring" do
-    url "https://pypi.python.org/packages/source/t/tnetstring/tnetstring-0.2.1.tar.gz"
-    sha1 "ffc35722f4ae978151acdc4801f20efa597c8b54"
-  end
-
   def install
-    resource("pyzmq").stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
-    resource("tnetstring").stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
-
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make", "install"
@@ -32,6 +24,8 @@ class Zurl < Formula
     conffile = testpath/"zurl.conf"
     ipcfile = testpath/"zurl-req"
     runfile = testpath/"test.py"
+
+    resource("pyzmq").stage { system "python", *Language::Python.setup_install_args(testpath/"vendor") }
 
     conffile.write(<<-EOS.undent
       [General]
@@ -46,7 +40,6 @@ class Zurl < Formula
       import threading
       from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
       import zmq
-      import tnetstring
       class TestHandler(BaseHTTPRequestHandler):
         def do_GET(self):
           self.send_response(200)
@@ -75,12 +68,12 @@ class Zurl < Formula
       sock = ctx.socket(zmq.REQ)
       sock.connect('ipc://#{ipcfile}')
       req = {'id': '1', 'method': 'GET', 'uri': 'http://localhost:%d/test' % port}
-      sock.send('T' + tnetstring.dumps(req))
+      sock.send('J' + json.dumps(req))
       poller = zmq.Poller()
       poller.register(sock, zmq.POLLIN)
       socks = dict(poller.poll(15000))
       assert(socks.get(sock) == zmq.POLLIN)
-      resp = tnetstring.loads(sock.recv()[1:])
+      resp = json.loads(sock.recv()[1:])
       assert('type' not in resp)
       assert(resp['body'] == 'test response\\n')
       EOS
@@ -91,7 +84,7 @@ class Zurl < Formula
     end
 
     begin
-      ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
+      ENV["PYTHONPATH"] = testpath/"vendor/lib/python2.7/site-packages"
       system "python", runfile
     ensure
       Process.kill("TERM", pid)
