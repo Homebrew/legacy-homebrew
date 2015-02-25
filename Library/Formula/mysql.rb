@@ -1,7 +1,7 @@
 class Mysql < Formula
   homepage "https://dev.mysql.com/doc/refman/5.6/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.22.tar.gz"
-  sha1 "31ac6f799dd76950b4de9979320129ac04fb38e1"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.23.tar.gz"
+  sha1 "2d610ba01ab97df042d5946ba0da411da5547c5d"
 
   bottle do
     sha1 "4cc6f18e16e07736466d71fd0a02ab6f01882948" => :yosemite
