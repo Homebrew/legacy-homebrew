@@ -1,7 +1,7 @@
 class Fish < Formula
   homepage "http://fishshell.com"
-  url "https://github.com/fish-shell/fish-shell/archive/2.1.2.tar.gz"
-  sha1 "fd40ed8de7497bf1578f50df6674b2d0464395fe"
+  url "http://fishshell.com/files/2.1.2/fish-2.1.2.tar.gz"
+  sha1 "f7f8d8d26721833be3458b8113c74b747296ec0b"
 
   bottle do
     sha1 "4fadd805fc166fd1692e7159339ded169577d195" => :yosemite
@@ -11,20 +11,16 @@ class Fish < Formula
 
   head do
     url "https://github.com/fish-shell/fish-shell.git", :shallow => false
-  end
 
-  # This pair of dependencies should be revisited upon fish's next release.
-  # (they're normally only necessary for HEAD builds)
-  depends_on "autoconf" => :build
-  depends_on "doxygen" => :build
+    depends_on "autoconf" => :build
+    # Indeed, the head build always builds documentation
+    depends_on "doxygen" => :build
+  end
 
   skip_clean "share/doc"
 
   def install
-    # As described above, needing autoconf on a release is temporary; once
-    # fish has another major release, we can probably restore the
-    # `if build.head?` statement modifier.
-    system "autoconf"
+    system "autoconf" if build.head?
     # In Homebrew's 'superenv' sed's path will be incompatible, so
     # the correct path is passed into configure here.
     system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"
