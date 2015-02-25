@@ -2,8 +2,8 @@ require 'formula'
 
 class Ecl < Formula
   homepage 'http://ecls.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/ecls/ecls/13.5/ecl-13.5.1.tgz'
-  sha1 'db7f732e5e12182118f00c02d8d2531f6d6aefb2'
+  url 'https://downloads.sourceforge.net/project/ecls/ecls/15.2/ecl-15.2.21.tgz'
+  sha1 'fcf70c11ddb1602e88972f0c1596037df229f473'
 
   depends_on 'gmp'
 
