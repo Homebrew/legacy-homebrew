@@ -3,6 +3,13 @@ class Jhead < Formula
   url "http://www.sentex.net/~mwandel/jhead/jhead-3.00.tar.gz"
   sha1 "6bd3faa38cc884b5370e8e8f15bc10cbb706ec7a"
 
+  bottle do
+    cellar :any
+    sha1 "185afa273417b275ff636c040ddcaef805bbf73f" => :yosemite
+    sha1 "00babbf26b32bc6b51b1e029209ad998cb579dd1" => :mavericks
+    sha1 "af148787c63b3fc3c4dc107f98ca72e54dececa0" => :mountain_lion
+  end
+
   # Patch to provide a proper install target to the Makefile. The patch has
   # been submitted upstream through email. We need to carry this patch until
   # upstream decides to incorporate it.
