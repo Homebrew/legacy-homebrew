@@ -4,9 +4,9 @@ class Mysql < Formula
   sha1 "2d610ba01ab97df042d5946ba0da411da5547c5d"
 
   bottle do
-    sha1 "4cc6f18e16e07736466d71fd0a02ab6f01882948" => :yosemite
-    sha1 "0499e0bf48a4669e066ac921cdfae125b587d244" => :mavericks
-    sha1 "8987fcf7576f6985b741b19f6b12f6a636be52d3" => :mountain_lion
+    sha1 "9edc48cf27c50b6f51bfd90af86716a4a36b39e8" => :yosemite
+    sha1 "e4aee77fd9a4882bd85a718b622fbd817d87e4ae" => :mavericks
+    sha1 "38ef7c81c209fd7ca55f3769c32c9ae593f4384d" => :mountain_lion
   end
 
   # Fixes compilation with OpenSSL 1.0.2
