@@ -382,6 +382,7 @@ class Pathname
   def env_script_all_files dst, env
     dst.mkpath
     Pathname.glob("#{self}/*") do |file|
+      next if file.directory?
       dst.install_p file
       new_file = dst+file.basename
       file.write_env_script(new_file, env)
