@@ -93,7 +93,6 @@ module Homebrew
       pull_url url
 
       changed_formulae = []
-      changed_formulae_paths = []
 
       if tap_dir
         formula_dir = %w[Formula HomebrewFormula].find { |d| tap_dir.join(d).directory? } || ""
@@ -105,9 +104,7 @@ module Homebrew
         "git", "diff-tree", "-r", "--name-only",
         "--diff-filter=AM", revision, "HEAD", "--", formula_dir
       ).each_line do |line|
-        line = line.chomp
-        name = File.basename(line, ".rb")
-        changed_formulae_paths << Pathname.new("#{formula_dir}/#{line}") if tap_dir
+        name = File.basename(line.chomp, ".rb")
 
         begin
           changed_formulae << Formula[name]
@@ -116,8 +113,6 @@ module Homebrew
           next
         end
       end
-
-      link_tap_formula(changed_formulae_paths, false)
 
       unless ARGV.include? '--bottle'
         changed_formulae.each do |f|

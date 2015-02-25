@@ -4,9 +4,10 @@ class GtkGnutella < Formula
   sha1 "aa4f21fe758f7ac52c15ee0156247443ce8c7d6f"
 
   bottle do
-    sha1 "e3f2a8ef6645ff8144b29e19a406a0f6abf70049" => :yosemite
-    sha1 "01718be6251ad2952a8bed4dfa4e53d8bb0fbd2e" => :mavericks
-    sha1 "df5e849051d70b623139dfa001b586b886cd13b0" => :mountain_lion
+    revision 1
+    sha1 "6c9217247f9a47d82ff9c689c1efd66d0ce17cae" => :yosemite
+    sha1 "942fd75c53801f6940ee4f4b5d92eb555f9e1e64" => :mavericks
+    sha1 "7be7004be7fa64ad3f7a0ecb63903f9f2d59041d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

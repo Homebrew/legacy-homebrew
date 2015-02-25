@@ -4,12 +4,24 @@ class Ice < Formula
   homepage 'http://www.zeroc.com'
   url 'http://www.zeroc.com/download/Ice/3.5/Ice-3.5.1.tar.gz'
   sha1 '63599ea22a1e9638a49356682c9e516b7c2c454f'
+  revision 1
+
+  bottle do
+    sha1 "52d43a08202206258c6fa33750aac25d2dc38703" => :yosemite
+    sha1 "df1279e47c8c213a57d04318443605b2871269a7" => :mavericks
+    sha1 "7bdb347052b8df900c2c2e6797726a79d9c0242d" => :mountain_lion
+  end
 
   option 'doc', 'Install documentation'
   option 'demo', 'Build demos'
 
-  depends_on 'berkeley-db'
-  depends_on 'mcpp'
+  resource "berkeley-db" do
+    url "http://download.oracle.com/berkeley-db/db-5.3.28.tar.gz"
+    sha1 "fa3f8a41ad5101f43d08bc0efb6241c9b6fc1ae9"
+  end
+
+  depends_on "openssl"
+  depends_on "mcpp"
   depends_on :python => :optional
 
   # 1. TODO: document the first patch
@@ -18,6 +30,35 @@ class Ice < Formula
   patch :DATA
 
   def install
+    resource("berkeley-db").stage do
+
+      # Fix build under Xcode 4.6
+      # Double-underscore names are reserved, and __atomic_compare_exchange is now
+      # a built-in, so rename this to something non-conflicting.
+      inreplace "src/dbinc/atomic.h" do |s|
+        s.gsub! "__atomic_compare_exchange", "__atomic_compare_exchange_db"
+      end
+
+      # BerkeleyDB dislikes parallel builds
+      ENV.deparallelize
+
+      # --enable-compat185 is necessary because our build shadows
+      # the system berkeley db 1.x
+      args = %W[
+        --disable-debug
+        --prefix=#{libexec}
+        --mandir=#{libexec}/man
+        --enable-cxx
+        --enable-compat185
+      ]
+
+      # BerkeleyDB requires you to build everything from the build_unix subdirectory
+      cd "build_unix" do
+        system "../dist/configure", *args
+        system "make", "install"
+      end
+    end
+
     ENV.O2
 
     # what do we want to build?
@@ -35,6 +76,9 @@ class Ice < Formula
       embedded_runpath_prefix=#{prefix}
       OPTIMIZE=yes
     ]
+
+    ENV["DB_HOME"] = "#{libexec}"
+
     args << "CXXFLAGS=#{ENV.cflags} -Wall -D_REENTRANT"
 
     # Unset ICE_HOME as it interferes with the build
