@@ -6,8 +6,8 @@ class Osquery < Formula
   url "https://github.com/facebook/osquery.git", :tag => "1.4.2"
 
   bottle do
-    sha1 "67c52b530899231866d4e035b39a843cb514b3d6" => :yosemite
-    sha1 "b267546c04fdffc8f02173473f7ebe155a7c9f74" => :mavericks
+    sha1 "ce6f4994b20a231c0f882dfd00697972a3fbf476" => :yosemite
+    sha1 "1ce7e6f2240c2d053629aff5db3579d454d6de87" => :mavericks
   end
 
   # Build currently fails on Mountain Lion:
