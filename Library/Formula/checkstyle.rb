@@ -12,7 +12,7 @@ class Checkstyle < Formula
     path = testpath/"foo.java"
     path.write "public class Foo{ }\n"
 
-    output = `#{bin}/checkstyle -c /sun_checks.xml -r #{path}`
+    output = `#{bin}/checkstyle -c /sun_checks.xml #{path}`
     errors = output.split("\n").select { |line| line.start_with?(path) }
     assert errors.include?("#{path}:1:17: '{' is not preceded with whitespace.")
     assert_equal errors.size, $?.exitstatus
