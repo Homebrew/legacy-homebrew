@@ -4,9 +4,10 @@ class Fish < Formula
   sha1 "f7f8d8d26721833be3458b8113c74b747296ec0b"
 
   bottle do
-    sha1 "4fadd805fc166fd1692e7159339ded169577d195" => :yosemite
-    sha1 "1feab6ebb28ba6acf7290a5054a04d3d81f3ef1f" => :mavericks
-    sha1 "6e3d623a17b6b0b566a8c466574ff32cfffaa3ea" => :mountain_lion
+    revision 1
+    sha1 "7560818f385831e3d18be1458b1c5e52216f121c" => :yosemite
+    sha1 "a158ae57a437e5f8b2fdff88177be13fa6f35502" => :mavericks
+    sha1 "8d0aa59ebb4cf446e0f0fdf0f91738ffee7edbae" => :mountain_lion
   end
 
   head do
