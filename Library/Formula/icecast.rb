@@ -17,6 +17,8 @@ class Icecast < Formula
   depends_on 'speex'  => :optional
   depends_on 'openssl'
   depends_on 'libvorbis'
+  depends_on "curl" unless OS.mac?
+  depends_on "libxslt" unless OS.mac?
 
   def install
     system "./configure", "--disable-dependency-tracking",
