@@ -3,6 +3,13 @@ class Zurl < Formula
   url "http://packages.fanout.io/source/zurl-1.3.1.tar.bz2"
   sha1 "8a04ad092a4fd9b174a352b910c190466fc39eb9"
 
+  bottle do
+    cellar :any
+    sha1 "1bdbedac8c648f56a5fa72724157e4f7d3861b3e" => :yosemite
+    sha1 "a8da3afaeb13e55de3abacbe03fd2500ecb23533" => :mavericks
+    sha1 "65a4a270eb23fe38d6d2e748224ae37c40edc17f" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "curl" if MacOS.version < :lion
   depends_on "qt"
