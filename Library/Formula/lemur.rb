@@ -18,11 +18,7 @@ class Lemur < Formula
     system "#{bin}/GenL2Norm"
     system "#{bin}/GenerateQueryModel"
     system "#{bin}/GenerateSmoothSupport"
-    system "#{bin}/IndriBuildIndex"
-    system "#{bin}/IndriDaemon"
-    system "#{bin}/IndriRunQuery"
     system "#{bin}/ModifyFields"
-    system "#{bin}/PDictManager"
     system "#{bin}/ParseInQueryOp"
     system "#{bin}/ParseQuery"
     system "#{bin}/ParseToFile"
@@ -34,11 +30,5 @@ class Lemur < Formula
     system "#{bin}/StructQueryEval"
     system "#{bin}/TwoStageRetEval"
     system "#{bin}/XlingRetEval"
-    system "#{bin}/dumpDoc"
-    system "#{bin}/dumpTerm"
-    system "#{bin}/dumpindex"
-    system "#{bin}/harvestlinks"
-    system "#{bin}/makeprior"
-    system "#{bin}/pagerank"
   end
 end
