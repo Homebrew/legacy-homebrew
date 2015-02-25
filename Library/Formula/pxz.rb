@@ -34,3 +34,16 @@ index b54f3fc..3e7e86a 100644
  		if (m == MAP_FAILED) {
  			perror("mmap failed");
  			exit(EXIT_FAILURE);
+diff --git a/Makefile.orig b/Makefile
+index 8540a1e..52c3ca6 100644
+--- a/Makefile.orig
++++ b/Makefile
+@@ -15,7 +15,7 @@ MANDIR?=/usr/share/man
+ all: $(OBJECTS) $(NAME)
+ 
+ $(NAME): $(SOURCES) $(OBJECTS)
+-	$(CC) $(WARNINGS) $(OBJECTS) $(CFLAGS) $(LDFLAGS) $(NAME).c -o $(NAME)
++	$(CC) $(WARNINGS) $(OBJECTS) $(CFLAGS) $(NAME).c -o $(NAME) $(LDFLAGS)
+ 
+ clean:
+ 	rm -f *.o $(NAME)
