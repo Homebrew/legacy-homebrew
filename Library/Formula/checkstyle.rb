@@ -1,5 +1,3 @@
-require "formula"
-
 class Checkstyle < Formula
   homepage "http://checkstyle.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.3/checkstyle-6.3-bin.tar.gz"
