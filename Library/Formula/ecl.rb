@@ -13,4 +13,13 @@ class Ecl < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    (testpath/'simple.cl').write <<-EOS.undent
+      (write-line (write-to-string (+ 2 2)))
+    EOS
+    output = `'#{bin}/ecl' -shell #{testpath}/simple.cl`
+    assert_equal '4', output.strip
+    assert_equal 0, $?.exitstatus
+  end
 end
