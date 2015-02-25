@@ -10,6 +10,7 @@ class Ec2ApiTools < AmazonWebServicesFormula
   end
 
   test do
+    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
     ENV["EC2_HOME"] = libexec
     assert_match version.to_s, shell_output("#{bin}/ec2-version")
   end
