@@ -5,6 +5,13 @@ class GitFixup < Formula
 
   head "https://github.com/keis/git-fixup.git", :branch => "master"
 
+  bottle do
+    cellar :any
+    sha1 "8785269ef827076ed2dd7bf510b759294774a995" => :yosemite
+    sha1 "22c609efffe6737c1cbb2b3abe7b152a07b4f6af" => :mavericks
+    sha1 "8c47db51e200c21cb69c7c64ace23412c6ee93b2" => :mountain_lion
+  end
+
   def install
     system "make", "prefix=#{prefix}", "install"
     zsh_completion.install "completion.zsh" => "_git-fixup"
