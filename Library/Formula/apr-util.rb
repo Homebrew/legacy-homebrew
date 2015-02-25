@@ -15,6 +15,7 @@ class AprUtil < Formula
 
   depends_on "apr"
   depends_on "openssl"
+  depends_on "berkeley-db"
   depends_on "postgresql" => :optional
 
   def install
@@ -25,6 +26,8 @@ class AprUtil < Formula
       --prefix=#{libexec}
       --with-apr=#{Formula["apr"].opt_prefix}
       --with-openssl=#{Formula["openssl"].opt_prefix}
+      --with-berkeley-db=#{Formula["berkeley-db"].opt_prefix}
+      --with-dbm=db#{Formula["berkeley-db"].version.to_str.gsub(/(\d+)\.(\d+).*/, '\1\2')}
     ]
 
     args << "--with-pgsql=#{Formula["postgresql"].opt_prefix}" if build.with? "postgresql"
