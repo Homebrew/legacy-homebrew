@@ -148,7 +148,7 @@ class JavaDependency < Requirement
 
   def java_version
     args = %w[--failfast]
-    args << "--version" << "#{@version}+" if @version
+    args << "--version" << "#{@version}" if @version
     @java_home = Utils.popen_read("/usr/libexec/java_home", *args).chomp
     $?.success?
   end
