@@ -66,6 +66,7 @@ class Go < Formula
           ENV["GOOS"]         = os
           ENV["GOARCH"]       = arch
           ENV["CGO_ENABLED"]  = cgo_enabled
+          ohai "Building go for #{arch}-#{os}"
           system "./make.bash", "--no-clean"
         end
       end
