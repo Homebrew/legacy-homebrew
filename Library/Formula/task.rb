@@ -12,6 +12,7 @@ class Task < Formula
 
   depends_on "cmake" => :build
   depends_on "gnutls" => :optional
+  depends_on "libuuid" unless OS.mac?
 
   def install
     system "cmake", ".", *std_cmake_args
