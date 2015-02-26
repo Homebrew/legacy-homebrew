@@ -3,13 +3,13 @@ require "formula"
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
 
-  url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.7.tar.gz"
-  sha1 "c11c9d31063f2fc126249f7580e8417a8f4ef2b5"
+  url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.8.tar.gz"
+  sha1 "d67254ef3ba5ba81e21c56be9b919c3a10e01b32"
 
   bottle do
-    sha1 "4b1749b645a744b38b4959daac46bf80353e3b32" => :yosemite
-    sha1 "95725282b89443fafcdc0974e60b10bd295b48ee" => :mavericks
-    sha1 "2da546a136e48a5f9dc86287c329b5741b77bd14" => :mountain_lion
+    sha1 "2841ae12013757c67605edd084a94c5a709c5345" => :yosemite
+    sha1 "2c5f3f581a322948140af65a51906b15b8b18778" => :mavericks
+    sha1 "8aa4750499fdeb325e7fe6d3a72aab186861ca90" => :mountain_lion
   end
 
   devel do
