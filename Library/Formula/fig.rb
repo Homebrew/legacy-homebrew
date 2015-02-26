@@ -1,5 +1,5 @@
 class Fig < Formula
-  homepage "http://www.fig.sh/"
+  homepage "http://docs.docker.com/compose/"
   url "https://github.com/docker/compose/archive/1.1.0.tar.gz"
   sha1 "175066934c19f455606b16f1b4e4b9f26fc3f599"
 
@@ -69,5 +69,19 @@ class Fig < Formula
 
   test do
     system "#{bin}/docker-compose", "help", "build"
+  end
+
+  def caveats; <<-EOS.undent
+      Docker Compose requires Docker and Boot2Docker to be installed to function.
+      Each of these packages can be installed thru homebrew, or manually installed.
+
+        brew install boot2docker
+        brew install docker
+
+      Or, to manually install follow instructions here:
+
+        http://docs.docker.com/installation/mac/
+
+    EOS
   end
 end
