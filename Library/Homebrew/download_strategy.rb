@@ -373,8 +373,10 @@ end
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def curl(*args)
-    mirror = ENV["HOMEBREW_SOURCEFORGE_MIRROR"]
-    args << "-G" << "-d" << "use_mirror=#{mirror}" if mirror
+    if ENV["HOMEBREW_SOURCEFORGE_TESTING"]
+      mirror = ENV["HOMEBREW_SOURCEFORGE_MIRROR"]
+      args << "-G" << "-d" << "use_mirror=#{mirror}" if mirror
+    end
     super
   end
 
