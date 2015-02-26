@@ -2,8 +2,8 @@ require 'formula'
 
 class TypesafeActivator < Formula
   homepage 'https://typesafe.com/activator'
-  url 'http://downloads.typesafe.com/typesafe-activator/1.2.12/typesafe-activator-1.2.12.zip'
-  sha1 '31a7ad0ccbbb9308150e9bf5df98e632c3293cb7'
+  url 'https://downloads.typesafe.com/typesafe-activator/1.3.0/typesafe-activator-1.3.0.zip'
+  sha1 '7980f77c70ddc933a099cd3d0e1de24373386a0a'
 
   def install
     rm Dir["*.bat"] # Remove Windows .bat files
