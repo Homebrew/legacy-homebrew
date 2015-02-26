@@ -1,7 +1,7 @@
 class GitFixup < Formula
   homepage "https://github.com/keis/git-fixup"
-  url "https://github.com/keis/git-fixup/archive/v1.0.0.tar.gz"
-  sha1 "836613c7b9d1ccafaa5f5250b6ff2e125fabf974"
+  url "https://github.com/keis/git-fixup/archive/v1.0.1.tar.gz"
+  sha1 "0c2f2dd1f6543e537291c0f9e0e06905725b0ccc"
 
   head "https://github.com/keis/git-fixup.git", :branch => "master"
 
