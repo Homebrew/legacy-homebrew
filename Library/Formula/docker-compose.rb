@@ -1,5 +1,3 @@
-require "formula"
-
 class DockerCompose < Formula
   homepage "http://www.fig.sh/"
   url "https://github.com/docker/compose/archive/1.1.0.tar.gz"
@@ -11,6 +9,8 @@ class DockerCompose < Formula
     cellar :any
     revision 1
     sha1 "af332540bdc40e6e574d92ca7169c71071af9a5d" => :yosemite
+    sha1 "1f29c6947f4d6a797041dae82d0e5e2463224043" => :mavericks
+    sha1 "53a11121643db837d8d684859e9141643366f63c" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
