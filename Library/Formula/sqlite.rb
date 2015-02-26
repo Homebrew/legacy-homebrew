@@ -1,8 +1,8 @@
 class Sqlite < Formula
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2015/sqlite-autoconf-3080802.tar.gz"
-  sha1 "1db237523419af7110e1d92c6b766e965f9322e4"
-  version "3.8.8.2"
+  url "https://sqlite.org/2015/sqlite-autoconf-3080803.tar.gz"
+  sha1 "2fe3f6226a2a08a2e814b97cd53e36bb3c597112"
+  version "3.8.8.3"
 
   bottle do
     cellar :any
@@ -32,9 +32,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://sqlite.org/2015/sqlite-doc-3080802.zip"
-    version "3.8.8.2"
-    sha1 "a11a6ea95d3d4a88b8d7d4e0cb6fcc3e5f4bf887"
+    url "https://sqlite.org/2015/sqlite-doc-3080803.zip"
+    version "3.8.8.3"
+    sha1 "27c2cada8e663f694c0469bcae09eb0d8c55dd7c"
   end
 
   def install
