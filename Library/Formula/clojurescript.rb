@@ -1,8 +1,8 @@
 class Clojurescript < Formula
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2760.tar.gz"
-  sha1 "c07900e9f63af89954722661f9a817ca9ea3417b"
+  url "https://github.com/clojure/clojurescript/archive/r2913.tar.gz"
+  sha1 "ff33a93516b3c91923667d667d34cc4b404489c8"
 
   bottle do
     cellar :any
@@ -13,7 +13,7 @@ class Clojurescript < Formula
 
   def install
     system "./script/bootstrap"
-    inreplace %w(bin/cljsc script/repl script/repljs script/browser-repl),
+    inreplace %w[bin/cljsc script/repl script/repljs script/browser-repl],
       "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{libexec}"
     libexec.install Dir["*"]
     bin.write_exec_script libexec/"bin/cljsc"
