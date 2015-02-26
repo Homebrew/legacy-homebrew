@@ -32,19 +32,18 @@ class Pushpin < Formula
   end
 
   def install
-    resource("pyzmq").stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
-    resource("setproctitle").stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
-    resource("jinja2").stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
-    resource("tnetstring").stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    inreplace "Makefile", /^prefix.*/, "prefix = #{prefix}"
-    inreplace "Makefile", /^varprefix.*/, "varprefix = #{prefix}/var"
+    %w[pyzmq setproctitle jinja2 tnetstring].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
 
-    inreplace "pushpin", /^import sys$/, "import sys\nsys.path.insert(0, '#{libexec/"vendor/lib/python2.7/site-packages"}')"
-    inreplace "handler/pushpin-handler", /^import sys$/, "import sys\nsys.path.insert(0, '#{libexec/"vendor/lib/python2.7/site-packages"}')"
+    system "make", "prefix=#{prefix}", "varprefix=#{var}"
+    system "make", "install", "prefix=#{prefix}", "varprefix=#{var}"
 
-    system "make"
-    system "make", "install"
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
@@ -52,9 +51,9 @@ class Pushpin < Formula
     routesfile = testpath/"routes"
     runfile = testpath/"test.py"
 
-    system "cp", prefix/"etc/pushpin/pushpin.conf", conffile
-    system "cp", prefix/"etc/pushpin/internal.conf", testpath/"internal.conf"
-    system "cp", prefix/"etc/pushpin/routes", routesfile
+    cp prefix/"etc/pushpin/pushpin.conf", conffile
+    cp prefix/"etc/pushpin/internal.conf", testpath/"internal.conf"
+    cp prefix/"etc/pushpin/routes", routesfile
 
     inreplace routesfile, "localhost:80", "localhost:10080"
 
@@ -97,7 +96,7 @@ class Pushpin < Formula
 
     begin
       sleep 3 # make sure pushpin processes have started
-      ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
       system "python", runfile
     ensure
       Process.kill("TERM", pid)
