@@ -1,9 +1,7 @@
-require "formula"
-
 class AppscaleTools < Formula
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.1.0.tar.gz"
-  sha1 "b20e358b40c5af4d095f0113128084de2f5c288e"
+  url "https://github.com/AppScale/appscale-tools/archive/2.2.0.tar.gz"
+  sha1 "74420507e21e14c780b020d487552964ecd1748f"
   head "https://github.com/AppScale/appscale-tools.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
