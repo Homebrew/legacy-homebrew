@@ -11,6 +11,16 @@ class Pushpin < Formula
   depends_on "mongrel2"
   depends_on "zurl"
 
+  resource "MarkupSafe" do
+    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
+    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+  end
+
+  resource "jinja2" do
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
+    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
+  end
+
   resource "pyzmq" do
     url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.5.0.tar.gz"
     sha1 "1dced02ea8527b5870ffdbe835d096aca5c01d2a"
@@ -21,11 +31,6 @@ class Pushpin < Formula
     sha1 "a23463feac8d99b5504efc22f0ca2cfe2c145930"
   end
 
-  resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
-  end
-
   resource "tnetstring" do
     url "https://pypi.python.org/packages/source/t/tnetstring/tnetstring-0.2.1.tar.gz"
     sha1 "ffc35722f4ae978151acdc4801f20efa597c8b54"
@@ -34,7 +39,7 @@ class Pushpin < Formula
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    %w[pyzmq setproctitle jinja2 tnetstring].each do |r|
+    %w[MarkupSafe jinja2 pyzmq setproctitle tnetstring].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -43,7 +48,11 @@ class Pushpin < Formula
     system "make", "prefix=#{prefix}", "varprefix=#{var}"
     system "make", "install", "prefix=#{prefix}", "varprefix=#{var}"
 
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    pyenv = { :PYTHONPATH => ENV["PYTHONPATH"] }
+    %w[pushpin pushpin-handler].each do |f|
+      (libexec/"bin").install bin/f
+      (bin/f).write_env_script libexec/"bin/#{f}", pyenv
+    end
   end
 
   test do
