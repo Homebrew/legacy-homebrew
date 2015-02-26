@@ -562,12 +562,6 @@ can take several different forms:
     Text printed before the installation summary of each successful build.
     Defaults to the beer emoji.
 
-  * HOMEBREW\_SOURCEFORGE\_MIRROR:
-    If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to
-    select a SourceForge mirror for downloading bottles.
-
-    *Example:* `export HOMEBREW_SOURCEFORGE_MIRROR='heanet'`
-
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
     a Homebrew-built Subversion if installed, or the system-provided binary.

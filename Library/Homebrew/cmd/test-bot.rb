@@ -452,11 +452,7 @@ module Homebrew
           bottle_args = ["--rb", formula_name]
           if @tap
             tap_user, tap_repo = @tap.split "/"
-            if ENV["HOMEBREW_SOURCEFORGE_TESTING"]
-              bottle_args << "--root-url=#{BottleSpecification::DEFAULT_ROOT_URL}/#{tap_repo}"
-            else
-              bottle_args << "--root-url=#{BottleSpecification::DEFAULT_DOMAIN}/#{Bintray.repository(@tap)}"
-            end
+            bottle_args << "--root-url=#{BottleSpecification::DEFAULT_DOMAIN}/#{Bintray.repository(@tap)}"
           end
           bottle_args << { :puts_output_on_success => true }
           test "brew", "bottle", *bottle_args
@@ -746,7 +742,6 @@ module Homebrew
       tag = pr ? "pr-#{pr}" : "testing-#{number}"
       safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
-      # Bintray upload (will take over soon)
       bintray_repo = Bintray.repository(tap)
       bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
       formula_packaged = {}
@@ -774,19 +769,6 @@ module Homebrew
              "-T", filename, content_url
         puts
       end
-
-      # SourceForge upload (will be removed soon)
-      path = "/home/frs/project/m/ma/machomebrew/Bottles/"
-      if tap
-        tap_user, tap_repo = tap.split "/"
-        path += "#{tap_repo}/"
-      end
-      url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
-
-      rsync_args = %w[--partial --progress --human-readable --compress]
-      rsync_args += Dir["*.bottle*.tar.gz"] + [url]
-
-      safe_system "rsync", *rsync_args
 
       safe_system "git", "tag", "--force", tag
       safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
