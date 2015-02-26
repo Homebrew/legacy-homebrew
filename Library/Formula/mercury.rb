@@ -1,9 +1,7 @@
-require "formula"
-
 class Mercury < Formula
   homepage "http://mercurylang.org/"
-  url "http://dl.mercurylang.org/release/mercury-srcdist-14.01.tar.gz"
-  sha1 "619680675c68a0b953024b7ee4d3886a885d94de"
+  url "http://dl.mercurylang.org/release/mercury-srcdist-14.01.1.tar.gz"
+  sha1 "8d8295aed6cadb6cd2e932490042de6075d18acf"
 
   bottle do
     revision 1
@@ -31,12 +29,12 @@ class Mercury < Formula
 
     # The build system doesn't quite honour the mandir/infodir autoconf
     # parameters.
-    system "make", "install", "PARALLEL=-j", "INSTALL_MAN_DIR=#{man}", "INSTALL_INFO_DIR=#{info}"
+    system "make", "install", "PARALLEL=-j",
+                              "INSTALL_MAN_DIR=#{man}",
+                              "INSTALL_INFO_DIR=#{info}"
 
     # Remove batch files for windows.
-    Dir.glob("#{bin}/*.bat") do |path|
-      rm path
-    end
+    rm Dir.glob("#{bin}/*.bat")
   end
 
   test do
@@ -54,8 +52,6 @@ class Mercury < Formula
     system "#{bin}/mmc", "--make", "hello"
     assert File.exist?(testpath/"hello")
 
-    output = `#{testpath}/hello`
-    assert_equal test_string, output
-    assert_equal 0, $?.exitstatus
+    assert_equal test_string, shell_output("#{testpath}/hello")
   end
 end
