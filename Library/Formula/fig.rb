@@ -70,18 +70,4 @@ class Fig < Formula
   test do
     system "#{bin}/docker-compose", "help", "build"
   end
-
-  def caveats; <<-EOS.undent
-      Docker Compose requires Docker and Boot2Docker to be installed to function.
-      Each of these packages can be installed thru homebrew, or manually installed.
-
-        brew install boot2docker
-        brew install docker
-
-      Or, to manually install follow instructions here:
-
-        http://docs.docker.com/installation/mac/
-
-    EOS
-  end
 end
