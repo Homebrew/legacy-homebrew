@@ -3,9 +3,9 @@
 # http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
   homepage "http://gnutls.org"
-  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.12.tar.xz"
-  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.12.tar.xz"
-  sha256 "67ab3e92c5d48f3323b897d7c1aa0bb2af6f3a84f5bd9931cda163a7ff32299b"
+  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.13.tar.xz"
+  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.13.tar.xz"
+  sha256 "91bf1ef5c159b7f2176f972184545b287af6507ab55a543f6007d31406b97a99"
 
   bottle do
     cellar :any
@@ -56,6 +56,6 @@ class Gnutls < Formula
   end
 
   test do
-    system "#{bin}/gnutls-cli", "--version"
+    system bin/"gnutls-cli", "--version"
   end
 end
