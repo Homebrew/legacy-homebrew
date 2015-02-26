@@ -43,14 +43,9 @@ class Mu < Formula
     # shipped by default with Mac OS X is too old.
     ENV["EMACS"] = "no" if build.without? "emacs"
 
-    # Make --related work on 10.9
     # https://github.com/djcb/mu/issues/380
-    ENV.O0 if MacOS.version >= :mavericks && ENV.compiler == :clang
-
-    # I dunno.
     # https://github.com/djcb/mu/issues/332
-    # https://github.com/Homebrew/homebrew/issues/25524
-    ENV.delete "MACOSX_DEPLOYMENT_TARGET"
+    ENV.O0 if MacOS.version >= :mavericks && ENV.compiler == :clang
 
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
