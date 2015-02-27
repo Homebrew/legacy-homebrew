@@ -13,7 +13,7 @@ class Qt5 < Formula
   homepage "http://qt-project.org/"
   url "https://download.qt.io/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
   mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
-  sha1 "7afb5f9235d8d42b5b6e832442a32a5d"
+  sha1 "daa3373af8d6656a1066ff23bc9100b5ca004ecf"
   
 bottle do
   sha1 "072ed2c806664fd1da3ba7c90c8e4887509fb91b" => :yosemite
