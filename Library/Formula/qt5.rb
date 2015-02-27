@@ -11,16 +11,10 @@ end
 
 class Qt5 < Formula
   homepage "http://qt-project.org/"
-  url "https://download.qt.io/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
-  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
-  sha1 "2f5558b87f8cea37c377018d9e7a7047cc800938"
-
-  bottle do
-    sha1 "072ed2c806664fd1da3ba7c90c8e4887509fb91b" => :yosemite
-    sha1 "1ca730d96a962a5c4fcbd605542b7bfb528d6c58" => :mavericks
-    sha1 "a6bbd39629a69c35c8a5d5e8ede4b6c752e3aecf" => :mountain_lion
-  end
-
+  url "https://download.qt.io/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
+  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
+  sha1 "7afb5f9235d8d42b5b6e832442a32a5d"
+        
   head "https://gitorious.org/qt/qt5.git", :branch => "5.4", :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
