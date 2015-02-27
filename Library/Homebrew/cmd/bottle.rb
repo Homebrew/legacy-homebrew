@@ -33,20 +33,22 @@ BOTTLE_ERB = <<-EOS
 EOS
 
 module Homebrew
-  def print_filename string, filename
-    unless @put_string_exists_header
-      opoo "String '#{string}' still exists in these files:"
-      @put_string_exists_header = true
-    end
-
-    @put_filenames ||= []
-    unless @put_filenames.include? filename
-      puts "#{Tty.red}#{filename}#{Tty.reset}"
-      @put_filenames << filename
-    end
-  end
-
   def keg_contains string, keg, ignores
+    @put_string_exists_header, @put_filenames = nil
+
+    def print_filename string, filename
+      unless @put_string_exists_header
+        opoo "String '#{string}' still exists in these files:"
+        @put_string_exists_header = true
+      end
+
+      @put_filenames ||= []
+      unless @put_filenames.include? filename
+        puts "#{Tty.red}#{filename}#{Tty.reset}"
+        @put_filenames << filename
+      end
+    end
+
     result = false
 
     keg.each_unique_file_matching(string) do |file|
