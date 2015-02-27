@@ -1,7 +1,7 @@
 class Mesos < Formula
   homepage "http://mesos.apache.org"
-  url "http://mirror.cogentco.com/pub/apache/mesos/0.21.0/mesos-0.21.0.tar.gz"
-  sha1 "52cc62bd83903f42c289ecb647368881f918fa02"
+  url "http://mirror.cogentco.com/pub/apache/mesos/0.21.1/mesos-0.21.1.tar.gz"
+  sha1 "275d211364699f2861c108fa80764785178f3eeb"
 
   bottle do
     revision 1
@@ -12,7 +12,9 @@ class Mesos < Formula
   depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
   depends_on "maven" => :build
+  depends_on :apr => :build
   depends_on "subversion"
+  
 
   needs :cxx11
 
