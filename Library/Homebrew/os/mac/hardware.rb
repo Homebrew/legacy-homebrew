@@ -135,7 +135,7 @@ module MacCPUs
     sysctl_bool('hw.optional.sse4_2')
   end
 
-  protected
+  private
 
   def sysctl_bool(key)
     sysctl_int(key) == 1
