@@ -1,7 +1,7 @@
 require "formula"
 
 class Wxmac < Formula
-  homepage "http://www.wxwidgets.org"
+  homepage "https://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
   sha1 "6461eab4428c0a8b9e41781b8787510484dea800"
 
@@ -70,14 +70,14 @@ class Wxmac < Formula
     ]
 
     system "./configure", *args
-    system "make", "install"
+    system "make","install"
 
     if build.with? "static"
       args.delete("--enable-shared")
       args << "--disable-shared"
 
       system "./configure", *args
-      system "make", "install"
+      system "make","install"
     end
   end
 end
