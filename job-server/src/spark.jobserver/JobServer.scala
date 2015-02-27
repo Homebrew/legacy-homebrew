@@ -55,12 +55,7 @@ object JobServer {
 
     // Create initial contexts
     supervisor ! ContextSupervisor.AddContextsFromConfig
-    val sparkWebUi = if (config.getString("spark.master") != "yarn-client") {
-      Some(system.actorOf(Props(classOf[SparkWebUiActor]), "spark-web-ui"))
-    } else {
-      None
-    }
-    new WebApi(system, config, port, jarManager, supervisor, jobInfo, sparkWebUi).start()
+    new WebApi(system, config, port, jarManager, supervisor, jobInfo).start()
 
   }
 
