@@ -15,8 +15,7 @@ module MacCPUs
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.
   def type
-    @type ||= sysctl_int("hw.cputype")
-    case @type
+    case sysctl_int("hw.cputype")
     when 7
       :intel
     when 18
@@ -28,7 +27,7 @@ module MacCPUs
 
   def family
     if intel?
-      case @intel_family ||= sysctl_int("hw.cpufamily")
+      case sysctl_int("hw.cpufamily")
       when 0x73d67300 # Yonah: Core Solo/Duo
         :core
       when 0x426f69ef # Merom: Core 2 Duo
@@ -49,7 +48,7 @@ module MacCPUs
         :dunno
       end
     elsif ppc?
-      case @ppc_family ||= sysctl_int("hw.cpusubtype")
+      case sysctl_int("hw.cpusubtype")
       when 9
         :g3  # PowerPC 750
       when 10
@@ -67,15 +66,15 @@ module MacCPUs
   end
 
   def extmodel
-    @extmodel ||= sysctl_int("machdep.cpu.extmodel")
+    sysctl_int("machdep.cpu.extmodel")
   end
 
   def cores
-    @cores ||= sysctl_int("hw.ncpu")
+    sysctl_int("hw.ncpu")
   end
 
   def bits
-    @bits ||= sysctl_bool("hw.cpu64bit_capable") ? 64 : 32
+    sysctl_bool("hw.cpu64bit_capable") ? 64 : 32
   end
 
   def arch_32_bit
@@ -138,10 +137,8 @@ module MacCPUs
 
   protected
 
-  def sysctl_bool(property)
-    (@properties ||= {}).fetch(property) do
-      @properties[property] = sysctl_int(property) == 1 && $?.success?
-    end
+  def sysctl_bool(key)
+    sysctl_int(key) == 1 && $?.success?
   end
 
   def sysctl_int(key)
@@ -149,6 +146,8 @@ module MacCPUs
   end
 
   def sysctl_n(key)
-    Utils.popen_read("/usr/sbin/sysctl", "-n", key)
+    (@properties ||= {}).fetch(key) do
+      @properties[key] = Utils.popen_read("/usr/sbin/sysctl", "-n", key)
+    end
   end
 end
