@@ -1,7 +1,7 @@
 class Iojs < Formula
   homepage "https://iojs.org/"
-  url "https://iojs.org/dist/v1.3.0/iojs-v1.3.0.tar.xz"
-  sha256 "0c20c0d26d8c8e8814f02fd20fb5e57098f747692cddfd7453ffae973ebcebda"
+  url "https://iojs.org/dist/v1.4.2/iojs-v1.4.2.tar.xz"
+  sha256 "3a79cb83086fa76e6b231bdf4c288cfb4784b8eb2c07103d69c55bb39912e47a"
 
   bottle do
     sha1 "336a6d77b2336896fbf3103c1fadae68201267d3" => :yosemite
