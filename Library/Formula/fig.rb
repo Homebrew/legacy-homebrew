@@ -68,6 +68,6 @@ class Fig < Formula
   end
 
   test do
-    system "#{bin}/docker-compose", "help", "build"
+    system "#{bin}/docker-compose", "--version"
   end
 end
