@@ -1,8 +1,8 @@
 class Pyenv < Formula
   homepage "https://github.com/yyuu/pyenv"
   head "https://github.com/yyuu/pyenv.git"
-  url "https://github.com/yyuu/pyenv/archive/v20150204.tar.gz"
-  sha1 "bba8eb5995897256ea8f038010be9a71bfb1f2cf"
+  url "https://github.com/yyuu/pyenv/archive/v20150226.tar.gz"
+  sha1 "31d681c33e1350c438c4bdce62a53ed58f8d1237"
 
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]
