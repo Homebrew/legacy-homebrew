@@ -138,7 +138,7 @@ module MacCPUs
   protected
 
   def sysctl_bool(key)
-    sysctl_int(key) == 1 && $?.success?
+    sysctl_int(key) == 1
   end
 
   def sysctl_int(key)
