@@ -15,7 +15,7 @@ module MacCPUs
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.
   def type
-    @type ||= `/usr/sbin/sysctl -n hw.cputype`.to_i
+    @type ||= sysctl_int("hw.cputype")
     case @type
     when 7
       :intel
@@ -28,7 +28,7 @@ module MacCPUs
 
   def family
     if intel?
-      case @intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
+      case @intel_family ||= sysctl_int("hw.cpufamily")
       when 0x73d67300 # Yonah: Core Solo/Duo
         :core
       when 0x426f69ef # Merom: Core 2 Duo
@@ -49,7 +49,7 @@ module MacCPUs
         :dunno
       end
     elsif ppc?
-      case @ppc_family ||= `/usr/sbin/sysctl -n hw.cpusubtype`.to_i
+      case @ppc_family ||= sysctl_int("hw.cpusubtype")
       when 9
         :g3  # PowerPC 750
       when 10
@@ -67,11 +67,11 @@ module MacCPUs
   end
 
   def extmodel
-    @extmodel ||= `/usr/sbin/sysctl -n machdep.cpu.extmodel`.to_i
+    @extmodel ||= sysctl_int("machdep.cpu.extmodel")
   end
 
   def cores
-    @cores ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
+    @cores ||= sysctl_int("hw.ncpu")
   end
 
   def bits
@@ -99,7 +99,7 @@ module MacCPUs
   end
 
   def features
-    @features ||= `/usr/sbin/sysctl -n machdep.cpu.features`.split(" ").map do |s|
+    @features ||= sysctl_n("machdep.cpu.features").split(" ").map do |s|
       s.downcase.intern
     end
   end
@@ -140,9 +140,15 @@ module MacCPUs
 
   def sysctl_bool(property)
     (@properties ||= {}).fetch(property) do
-      result = Utils.popen_read("/usr/sbin/sysctl", "-n", property, &:gets).to_i
-      # sysctl call succeded and printed 1
-      @properties[property] = $?.success? && result == 1
+      @properties[property] = sysctl_int(property) == 1 && $?.success?
     end
+  end
+
+  def sysctl_int(key)
+    sysctl_n(key).to_i
+  end
+
+  def sysctl_n(key)
+    Utils.popen_read("/usr/sbin/sysctl", "-n", key)
   end
 end
