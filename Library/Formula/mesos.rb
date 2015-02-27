@@ -23,8 +23,7 @@ class Mesos < Formula
             "--disable-debug",
             "--disable-dependency-tracking",
             "--disable-silent-rules",
-            "--with-svn=/usr/local/Cellar/subversion/1.8.11",
-            "--with-apr=/usr/local/Cellar/apr/1.5.1"
+            "--with-svn=#{Formula["subversion"].opt_prefix}"
            ]
 
     ENV.cxx11
