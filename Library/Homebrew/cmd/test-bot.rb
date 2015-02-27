@@ -513,6 +513,8 @@ module Homebrew
       git "checkout", "-f", "master"
       git "clean", "-fdx"
       git "clean", "-ffdx" unless $?.success?
+      pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/head.lock"
+      Dir.glob(pr_locks) {|lock| FileUtils.rm_rf lock }
     end
 
     def cleanup_after
