@@ -1,64 +1,19 @@
 package spark.jobserver
 
-import akka.actor.{ActorSystem, ActorRef}
-import akka.testkit.ImplicitSender
-import akka.testkit.TestKit
 import com.typesafe.config.ConfigFactory
-import spark.jobserver.io.JobDAO
-import org.joda.time.DateTime
 import scala.collection.mutable
-import org.scalatest.{BeforeAndAfter, BeforeAndAfterAll, FunSpecLike, Matchers}
+import spark.jobserver.io.JobDAO
 
-object JobManagerSpec {
-  import collection.JavaConverters._
+object JobManagerSpec extends JobSpecConfig
 
-  val JobResultCacheSize = 30
-  val NumCpuCores = Runtime.getRuntime.availableProcessors()  // number of cores to allocate. Required.
-  val MemoryPerNode = "512m"  // Executor memory per node, -Xmx style eg 512m, 1G, etc.
-  val MaxJobsPerContext = 2
-  val config = {
-    val ConfigMap = Map(
-      "spark.jobserver.job-result-cache-size" -> JobResultCacheSize,
-      "num-cpu-cores" -> NumCpuCores,
-      "memory-per-node" -> MemoryPerNode,
-      "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
-      "akka.log-dead-letters" -> 0,
-      "spark.master" -> "local[4]",
-      "spark.jobserver.context-factory" -> "spark.jobserver.util.DefaultSparkContextFactory"
-    )
-    ConfigFactory.parseMap(ConfigMap.asJava)
-  }
-
-  def getNewSystem = ActorSystem("test", config)
-}
-
-abstract class JobManagerSpec extends TestKit(JobManagerSpec.getNewSystem) with ImplicitSender
-with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with TestJarFinder {
-
+abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
   import scala.concurrent.duration._
   import CommonMessages._
   import JobManagerSpec.MaxJobsPerContext
 
-  var dao: JobDAO = _
-  var manager: ActorRef = _
-
-  after {
-    ooyala.common.akka.AkkaTestUtils.shutdownAndWait(manager)
-  }
-
-  override def afterAll() {
-    ooyala.common.akka.AkkaTestUtils.shutdownAndWait(system)
-  }
-
-  private def uploadJar(dao: JobDAO, jarFilePath: String, appName: String) {
-    val bytes = scala.io.Source.fromFile(jarFilePath, "ISO-8859-1").map(_.toByte).toArray
-    dao.saveJar(appName, DateTime.now, bytes)
-  }
-
-  protected def uploadTestJar(appName: String = "demo") { uploadJar(dao, testJar.getAbsolutePath, appName) }
-
   val classPrefix = "spark.jobserver."
   private val wordCountClass = classPrefix + "WordCountExample"
+  private val sqlTestClass = classPrefix + "SqlLoaderJob"
   protected val stringConfig = ConfigFactory.parseString("input.string = The lazy dog jumped over the fish")
   protected val emptyConfig = ConfigFactory.parseString("spark.master = bar")
 
@@ -78,11 +33,19 @@ with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with T
     }
 
     it("should error out if loading garbage jar") {
-      uploadJar(dao, "README.md", "notajar")
+      uploadJar(dao, "../README.md", "notajar")
       manager ! JobManagerActor.Initialize
       expectMsgClass(classOf[JobManagerActor.Initialized])
       manager ! JobManagerActor.StartJob("notajar", "no.such.class", emptyConfig, Set.empty[Class[_]])
       expectMsg(CommonMessages.NoSuchClass)
+    }
+
+    it("should get WrongJobType if loading SQL job in a plain SparkContext context") {
+      uploadTestJar()
+      manager ! JobManagerActor.Initialize
+      expectMsgClass(classOf[JobManagerActor.Initialized])
+      manager ! JobManagerActor.StartJob("demo", sqlTestClass, emptyConfig, errorEvents)
+      expectMsg(CommonMessages.WrongJobType)
     }
 
     it("should error out if job validation fails") {
@@ -95,12 +58,6 @@ with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with T
       expectNoMsg()
     }
   }
-
-  val errorEvents: Set[Class[_]] = Set(classOf[JobErroredOut], classOf[JobValidationFailed],
-    classOf[NoJobSlotsAvailable])
-  val asyncEvents = Set(classOf[JobStarted])
-  val syncEvents = Set(classOf[JobResult])
-  val allEvents = errorEvents ++ asyncEvents ++ syncEvents ++ Set(classOf[JobFinished])
 
   describe("starting jobs") {
     it("should start job and return result successfully (all events)") {
@@ -184,7 +141,7 @@ with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with T
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", classPrefix + "ZookeeperJob", stringConfig,
         syncEvents ++ errorEvents)
-      expectMsgPF(4 seconds, "Did not get JobResult") {
+      expectMsgPF(3 seconds, "Did not get JobResult") {
         case JobResult(_, result: Array[Product]) =>
           result.length should equal (1)
           result(0).getClass.getName should include ("Animal")

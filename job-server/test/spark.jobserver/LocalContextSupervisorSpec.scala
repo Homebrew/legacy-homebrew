@@ -18,7 +18,6 @@ object LocalContextSupervisorSpec {
       jobserver.job-result-cache-size = 100
       jobserver.context-creation-timeout = 5 s
       jobserver.yarn-context-creation-timeout = 40 s
-      jobserver.context-factory = spark.jobserver.util.DefaultSparkContextFactory
       contexts {
         olap-demo {
           num-cpu-cores = 4
@@ -29,6 +28,7 @@ object LocalContextSupervisorSpec {
       context-settings {
         num-cpu-cores = 2
         memory-per-node = 512m
+        context-factory = spark.jobserver.context.DefaultSparkContextFactory
         passthrough {
           spark.driver.allowMultipleContexts = true
           spark.ui.enabled = false

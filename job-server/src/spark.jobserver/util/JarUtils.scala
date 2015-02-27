@@ -1,4 +1,4 @@
-package spark.jobserver
+package spark.jobserver.util
 
 import java.io.File
 import java.lang.ClassLoader

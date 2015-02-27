@@ -1,7 +1,7 @@
 package spark.jobserver
 
 trait TestJarFinder {
-  val testJarDir = "job-server-tests/target/"
+  val testJarDir = "../job-server-tests/target/"
   val testJar = {
     val allJars = new java.io.File(testJarDir).listFiles.toSeq.filter { file =>
       val path = file.toString

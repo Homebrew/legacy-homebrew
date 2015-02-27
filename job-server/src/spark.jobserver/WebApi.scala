@@ -8,7 +8,6 @@ import java.util.NoSuchElementException
 import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
-import spark.jobserver.SparkWebUiActor.{SparkWorkersErrorInfo, SparkWorkersInfo, GetWorkerStatus}
 import spark.jobserver.util.SparkJobUtils
 import scala.concurrent.{Await, ExecutionContext}
 import scala.util.Try
@@ -20,8 +19,12 @@ import spray.httpx.SprayJsonSupport.sprayJsonMarshaller
 import spray.json.DefaultJsonProtocol._
 import spray.routing.{ HttpService, Route, RequestContext }
 
-class WebApi(system: ActorSystem, config: Config, port: Int,
-             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef, sparkWebUiActor: Option[ActorRef] = None)
+class WebApi(system: ActorSystem,
+             config: Config,
+             port: Int,
+             jarManager: ActorRef,
+             supervisor: ActorRef,
+             jobInfo: ActorRef)
     extends HttpService with CommonRoutes {
   import CommonMessages._
   import ContextSupervisor._
@@ -44,7 +47,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
 
   val logger = LoggerFactory.getLogger(getClass)
 
-  val myRoutes = jarRoutes ~ contextRoutes ~ jobRoutes ~ healthzRoutes ~ sparkHealthzRoutes ~ otherRoutes
+  val myRoutes = jarRoutes ~ contextRoutes ~ jobRoutes ~ healthzRoutes ~ otherRoutes
 
   def start() {
     logger.info("Starting browser web service...")
@@ -142,40 +145,6 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
           }
         }
       }
-  }
-
-  /**
-   * Routes for getting health status of Spark cluster
-   *    GET /sparkHealthz              - return OK or error message
-   */
-  def sparkHealthzRoutes: Route = pathPrefix("sparkHealthz") {
-    get { ctx =>
-      logger.info("Receiving sparkHealthz check request")
-      if (config.getString("spark.master") == "yarn-client") {
-        logger.warn("Can't get sparkHealthz in yarn-client mode")
-        ctx.complete("OK")
-      } else {
-        val future = sparkWebUiActor.get ? GetWorkerStatus()
-        future.map {
-          case SparkWorkersInfo(alive, dead) =>
-            if (dead > 0) {
-              logger.warn("Spark dead worker non-zero: " + dead)
-            }
-            if (alive > sparkAliveWorkerThreshold) {
-              ctx.complete("OK")
-            } else {
-              logger.error("Spark alive worker below threshold: " + alive)
-              ctx.complete("ERROR")
-            }
-
-          case SparkWorkersErrorInfo =>
-            ctx.complete("ERROR")
-
-        }.recover {
-          case e: Exception => ctx.complete(500, errMap(e, "ERROR"))
-        }
-      }
-    }
   }
 
   /**
@@ -323,6 +292,8 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
                       ctx.complete(400, errMap(ex, "VALIDATION FAILED"))
                     case NoSuchApplication => notFound(ctx, "appName " + appName + " not found")
                     case NoSuchClass       => notFound(ctx, "classPath " + classPath + " not found")
+                    case WrongJobType      =>
+                      ctx.complete(400, errMap("Invalid job type for this context"))
                     case JobLoadingError(err) =>
                       ctx.complete(500, errMap(err, "JOB LOADING FAILED"))
                     case NoJobSlotsAvailable(maxJobSlots) =>

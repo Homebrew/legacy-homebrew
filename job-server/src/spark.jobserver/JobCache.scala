@@ -4,9 +4,9 @@ import java.net.URL
 import org.apache.spark.{SparkContext, SparkEnv}
 import org.joda.time.DateTime
 import spark.jobserver.io.JobDAO
-import spark.jobserver.util.{ContextURLClassLoader, LRUCache}
+import spark.jobserver.util.{ContextURLClassLoader, JarUtils, LRUCache}
 
-case class JobJarInfo(constructor: () => SparkJob,
+case class JobJarInfo(constructor: () => SparkJobBase,
                       className: String,
                       jarFilePath: String)
 
@@ -28,7 +28,7 @@ class JobCache(maxEntries: Int, dao: JobDAO, sparkContext: SparkContext, loader:
       val jarFilePath = new java.io.File(dao.retrieveJarFile(appName, uploadTime)).getAbsolutePath()
       sparkContext.addJar(jarFilePath)   // Adds jar for remote executors
       loader.addURL(new URL("file:" + jarFilePath))   // Now jar added for local loader
-      val constructor = JarUtils.loadClassOrObject[SparkJob](classPath, loader)
+      val constructor = JarUtils.loadClassOrObject[SparkJobBase](classPath, loader)
       JobJarInfo(constructor, classPath, jarFilePath)
     })
   }
