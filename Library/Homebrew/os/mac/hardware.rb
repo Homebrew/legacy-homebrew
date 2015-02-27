@@ -98,9 +98,11 @@ module MacCPUs
   end
 
   def features
-    @features ||= sysctl_n("machdep.cpu.features").split(" ").map do |s|
-      s.downcase.intern
-    end
+    @features ||= sysctl_n(
+      "machdep.cpu.features",
+      "machdep.cpu.extfeatures",
+      "machdep.cpu.leaf7_features"
+    ).split(" ").map { |s| s.downcase.to_sym }
   end
 
   def aes?
@@ -145,9 +147,9 @@ module MacCPUs
     sysctl_n(key).to_i
   end
 
-  def sysctl_n(key)
-    (@properties ||= {}).fetch(key) do
-      @properties[key] = Utils.popen_read("/usr/sbin/sysctl", "-n", key)
+  def sysctl_n(*keys)
+    (@properties ||= {}).fetch(keys) do
+      @properties[keys] = Utils.popen_read("/usr/sbin/sysctl", "-n", *keys)
     end
   end
 end
