@@ -51,7 +51,10 @@ object JobServerBuild extends Build {
       javaOptions in Revolver.reStart += "-XX:MaxPermSize=256m",
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
       // This lets us add Spark back to the classpath without assembly barfing
-      fullClasspath in Revolver.reStart := (fullClasspath in Compile).value
+      fullClasspath in Revolver.reStart := (fullClasspath in Compile).value,
+      // Must run the examples and tests in separate JVMs to avoid mysterious
+      // scala.reflect.internal.MissingRequirementError errors. (TODO)
+      fork in Test := true
       ) ++ publishSettings
   ) dependsOn(akkaApp, jobServerApi)
 
@@ -74,6 +77,7 @@ object JobServerBuild extends Build {
     id = "root", base = file("."),
     settings =
       commonSettings210 ++ ourReleaseSettings ++ Seq(
+      // Must run Spark tests sequentially because they compete for port 4040!
       parallelExecution in Test := false,
       publishArtifact := false,
       concurrentRestrictions := Seq(

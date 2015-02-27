@@ -9,7 +9,7 @@ import org.apache.spark.sql.SQLContext
  * Just initializes some dummy data into a table.
  */
 object SqlLoaderJob extends SparkSqlJob {
-  case class Address(first: String, last: String, street: String, city: String)
+  case class Address(firstName: String, lastName: String, street: String, city: String)
 
   val addresses = Seq(
     Address("Bob", "Charles", "101 A St.", "San Jose"),
