@@ -1,7 +1,7 @@
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.8.tar.gz"
-  sha1 "294a7230402bb1dc11981bc4e6136bfaa04a602b"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.12.tar.gz"
+  sha1 "228713519ab8718a6e8ca744beeb9a7718e8d379"
 
   bottle do
     cellar :any
@@ -39,8 +39,8 @@ class Awscli < Formula
   end
 
   resource "colorama" do
-    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.2.5.tar.gz"
-    sha1 "87507210c5a7d400b27d23e8dd42734198663d66"
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.3.tar.gz"
+    sha1 "a8ee91adf4644bbdccfc73ead88f4cd0df7e3552"
   end
 
   resource "jmespath" do
@@ -49,8 +49,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.89.0.tar.gz"
-    sha1 "15a4b154b49bc967d921253875cf41ff8f2b6816"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.93.0.tar.gz"
+    sha1 "358f37ac907fbf1b14f9933b41deb01fed5f89a0"
   end
 
   resource "docutils" do
@@ -59,8 +59,8 @@ class Awscli < Formula
   end
 
   resource "bcdoc" do
-    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.12.2.tar.gz"
-    sha1 "31b2a714c2803658d9d028c8edf4623fd0daaf18"
+    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.13.0.tar.gz"
+    sha1 "1ab6dcdffa9a615f9aa36b99ed0f05bf63bdb854"
   end
 
   resource "pyasn1" do
@@ -69,8 +69,13 @@ class Awscli < Formula
   end
 
   resource "rsa" do
-    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.2.tar.gz"
-    sha1 "ebf54ad3fff8bc1df09f5d777d5a913e5aef8df5"
+    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.4.tar.gz"
+    sha1 "208583c49489b7ab415a4455eae7618b7055feca"
+  end
+
+  resource "wsgiref" do
+    url "https://pypi.python.org/packages/source/w/wsgiref/wsgiref-0.1.2.zip"
+    sha1 "80b7e9b039e40a2f8419e00b393a6516d80cf8de"
   end
 
   def install
@@ -96,6 +101,9 @@ class Awscli < Formula
   end
 
   def caveats; <<-EOS.undent
+    Python >2.7.2 is recommended to prevent urllib3 SSL warnings:
+      https://github.com/shazow/urllib3/issues/497#issuecomment-66942891
+
     The "examples" directory has been installed to:
       #{HOMEBREW_PREFIX}/share/awscli/examples
 
