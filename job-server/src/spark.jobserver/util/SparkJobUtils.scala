@@ -43,8 +43,9 @@ object SparkJobUtils {
     conf.set("spark.ui.port", "0")
 
     // Set spark broadcast factory in yarn-client mode
-    if (config.getString("spark.master") == "yarn-client")
+    if (config.getString("spark.master") == "yarn-client") {
       conf.set("spark.broadcast.factory", config.getString("spark.jobserver.yarn-broadcast-factory"))
+    }
 
     // Set number of akka threads
     // TODO: need to figure out how many extra threads spark needs, besides the job threads
@@ -82,9 +83,11 @@ object SparkJobUtils {
   def getContextTimeout(config: Config): Int = {
     config.getString("spark.master") match {
       case "yarn-client" =>
-        Try(config.getDuration("spark.jobserver.yarn-context-creation-timeout", TimeUnit.MILLISECONDS).toInt / 1000).getOrElse(40)
+        Try(config.getDuration("spark.jobserver.yarn-context-creation-timeout",
+              TimeUnit.MILLISECONDS).toInt / 1000).getOrElse(40)
       case _               =>
-        Try(config.getDuration("spark.jobserver.context-creation-timeout", TimeUnit.MILLISECONDS).toInt / 1000).getOrElse(15)
+        Try(config.getDuration("spark.jobserver.context-creation-timeout",
+              TimeUnit.MILLISECONDS).toInt / 1000).getOrElse(15)
     }
   }
 }

@@ -5,7 +5,6 @@ import AssemblyKeys._
 import spray.revolver.RevolverPlugin._
 import spray.revolver.Actions
 import com.typesafe.sbt.SbtScalariform._
-import org.scalastyle.sbt.ScalastylePlugin
 import scalariform.formatter.preferences._
 import bintray.Plugin.bintrayPublishSettings
 
@@ -104,8 +103,9 @@ object JobServerBuild extends Build {
     scalaBinaryVersion := "2.10",
     publishTo    := Some(Resolver.file("Unused repo", file("target/unusedrepo"))),
 
+    // scalastyleFailOnError := true,
     runScalaStyle := {
-      org.scalastyle.sbt.PluginKeys.scalastyle.toTask("").value
+      org.scalastyle.sbt.ScalastylePlugin.scalastyle.in(Compile).toTask("").value
     },
     (compile in Compile) <<= (compile in Compile) dependsOn runScalaStyle,
 
@@ -124,7 +124,7 @@ object JobServerBuild extends Build {
         <exclude module="jmxtools"/>
         <exclude module="jmxri"/>
       </dependencies>
-  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings
+  ) ++ scalariformPrefs ++ scoverageSettings
 
   lazy val scoverageSettings = {
     import ScoverageSbtPlugin._

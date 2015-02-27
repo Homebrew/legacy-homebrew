@@ -20,8 +20,13 @@ import spray.httpx.SprayJsonSupport.sprayJsonMarshaller
 import spray.json.DefaultJsonProtocol._
 import spray.routing.{ HttpService, Route, RequestContext }
 
-class WebApi(system: ActorSystem, config: Config, port: Int,
-             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef, sparkWebUiActor: Option[ActorRef] = None)
+class WebApi(system: ActorSystem,
+             config: Config,
+             port: Int,
+             jarManager: ActorRef,
+             supervisor: ActorRef,
+             jobInfo: ActorRef,
+             sparkWebUiActor: Option[ActorRef] = None)
     extends HttpService with CommonRoutes {
   import CommonMessages._
   import ContextSupervisor._

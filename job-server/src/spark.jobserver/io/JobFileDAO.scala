@@ -135,7 +135,8 @@ class JobFileDAO(config: Config) extends JobDAO {
   override def retrieveJarFile(appName: String, uploadTime: DateTime): String =
     new File(rootDir, createJarName(appName, uploadTime) + ".jar").getAbsolutePath
 
-  private def createJarName(appName: String, uploadTime: DateTime): String = appName + "-" + uploadTime.toString().replace(':', '_')
+  private def createJarName(appName: String, uploadTime: DateTime): String =
+    appName + "-" + uploadTime.toString().replace(':', '_')
 
   override def saveJobInfo(jobInfo: JobInfo) {
     writeJobInfo(jobsOutputStream, jobInfo)
