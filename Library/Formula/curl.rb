@@ -1,7 +1,7 @@
 class Curl < Formula
   homepage "http://curl.haxx.se/"
-  url "http://curl.haxx.se/download/curl-7.40.0.tar.bz2"
-  mirror "http://ftp.sunet.se/pub/www/utilities/curl/curl-7.40.0.tar.bz2"
+  url "http://curl.haxx.se/download/curl-7.41.0.tar.bz2"
+  mirror "http://ftp.sunet.se/pub/www/utilities/curl/curl-7.41.0.tar.bz2"
   sha256 "899109eb3900fa6b8a2f995df7f449964292776a04763e94fae640700f883fba"
 
   bottle do
