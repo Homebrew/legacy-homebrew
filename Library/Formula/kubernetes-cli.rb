@@ -1,7 +1,7 @@
 class KubernetesCli < Formula
   homepage "http://kubernetes.io/"
-  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.10.1.tar.gz"
-  sha256 "76000917bae4d8002884f24d33aa3ed23938fd1e39e89c73b8dfdd2d9c06fe24"
+  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.11.0.tar.gz"
+  sha256 "5eceee178649b12fbbae3a484457f067468db1811945502a36778c5e8807b2ff"
 
   bottle do
     cellar :any
@@ -18,11 +18,10 @@ class KubernetesCli < Formula
     system "make", "all", "WHAT=cmd/*", "GOFLAGS=-v"
 
     dir = "_output/local/bin/darwin/#{arch}"
-    bin.install "#{dir}/kubecfg", "#{dir}/kubectl", "#{dir}/kubernetes"
+    bin.install "#{dir}/kubectl", "#{dir}/kubernetes"
   end
 
   test do
-    assert_match /^Usage: kubecfg/, shell_output("#{bin}/kubecfg 2>&1", 1)
     assert_match /^kubectl controls the Kubernetes cluster manager./, shell_output("#{bin}/kubectl 2>&1", 0)
     assert_match %r{^Usage of #{bin}/kubernetes:}, shell_output("#{bin}/kubernetes --help 2>&1", 2)
   end
