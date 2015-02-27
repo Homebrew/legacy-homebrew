@@ -1,7 +1,8 @@
 #Scala #akka @ApacheSpark
 
+* Support for SQLContext and any other custom contexts!  Jobs can now share temporary tables and other state saved in any context object, not just the regular SparkContext.
 * Spark 1.2.0 support (Thanks @zeitos and others)
-* yarn-client support (Thanks @CurryGaifan)
+* yarn-client support (Thanks @CurryGaifan, @cerebraldna)
 * Fix for NamedRdds RDD cleaner timeout issue (Thanks @Ankit1010)
 * Passthrough of Hadoop and non-spark config (Thanks @jeffsteinmetz)
 * Increase default jar upload limit to 30MB
