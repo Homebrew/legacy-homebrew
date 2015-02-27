@@ -6,9 +6,9 @@ class Gnupg < Formula
   sha1 "5503f7faa0a0e84450838706a67621546241ca50"
 
   bottle do
-    sha1 "e1ea1c3bd682a15370f596a31297eb19ff87998e" => :yosemite
-    sha1 "71e3618e2f4ea550e194938f6742772fb7d376d9" => :mavericks
-    sha1 "f933064e91d20ebdb48f6f2180fdf7b99e814b8c" => :mountain_lion
+    sha1 "22482f6bceecb726ad428b06308d918308bf06e3" => :yosemite
+    sha1 "589cd445bdfaf05cb5f18021b7b7207037e05250" => :mavericks
+    sha1 "842a4c03eac710030e6257d00d7133b7a1c046cd" => :mountain_lion
   end
 
   depends_on "curl" if MacOS.version <= :mavericks
