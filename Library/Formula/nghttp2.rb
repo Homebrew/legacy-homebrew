@@ -1,7 +1,7 @@
 class Nghttp2 < Formula
   homepage "https://nghttp2.org"
-  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.3/nghttp2-0.7.3.tar.xz"
-  sha1 "74f6626aa7ebbc13b8f5169d10020da9acb33440"
+  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.5/nghttp2-0.7.5.tar.xz"
+  sha1 "7256ba19c031281cf2b5640cff5986c069ffcff5"
 
   bottle do
     cellar :any
