@@ -10,8 +10,8 @@ class Mariadb < Formula
   end
 
   devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.2/source/mariadb-10.1.2.tar.gz"
-    sha1 "56b035f31ec89f36555b7e7972efc5e5c4157f23"
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.3/source/mariadb-10.1.3.tar.gz"
+    sha1 "95a4e2640b40e79c58f22662ff76eb3f76f892e9"
   end
 
   depends_on "cmake" => :build
