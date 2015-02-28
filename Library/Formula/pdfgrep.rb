@@ -1,9 +1,7 @@
-require "formula"
-
 class Pdfgrep < Formula
   homepage "http://pdfgrep.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/pdfgrep/1.3.1/pdfgrep-1.3.1.tar.gz"
-  sha1 "8d15760af0803ccea32760d5f68abe4224169639"
+  url "https://downloads.sourceforge.net/project/pdfgrep/1.3.2/pdfgrep-1.3.2.tar.gz"
+  sha1 "77e82b80daf7859989f38ec3d09b3f03a73a91e8"
 
   head "https://git.gitorious.org/pdfgrep/pdfgrep.git"
 
@@ -12,7 +10,7 @@ class Pdfgrep < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
