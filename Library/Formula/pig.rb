@@ -1,21 +1,23 @@
-require 'formula'
-
 class Pig < Formula
-  homepage 'http://pig.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.14.0/pig-0.14.0.tar.gz'
-  sha256 '6aea66dda4791f82bad9654ec5290efc6179d333077b0ce9f07624c9c8b071a0'
+  homepage "http://pig.apache.org/"
+  url "http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.14.0/pig-0.14.0.tar.gz"
+  sha256 "6aea66dda4791f82bad9654ec5290efc6179d333077b0ce9f07624c9c8b071a0"
+
+  depends_on :java
 
   patch :DATA
 
   def install
-    bin.install 'bin/pig'
-    prefix.install ["pig-#{version}-core-h1.jar", "pig-#{version}-core-h2.jar"]
+    (libexec/"bin").install "bin/pig"
+    libexec.install ["pig-#{version}-core-h1.jar", "pig-#{version}-core-h2.jar", "lib"]
+    (bin/"pig").write_env_script libexec/"bin/pig", Language::Java.java_home_env.merge(:PIG_HOME => libexec)
   end
 
-  def caveats; <<-EOS.undent
-    You may need to set JAVA_HOME:
-      export JAVA_HOME="$(/usr/libexec/java_home)"
+  test do
+    (testpath/"test.pig").write <<-EOS.undent
+      sh echo "Hello World"
     EOS
+    system bin/"pig", "-x", "local", "test.pig"
   end
 end
 
