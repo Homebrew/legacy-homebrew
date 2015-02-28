@@ -3,6 +3,13 @@ class Pig < Formula
   url "http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.14.0/pig-0.14.0.tar.gz"
   sha256 "6aea66dda4791f82bad9654ec5290efc6179d333077b0ce9f07624c9c8b071a0"
 
+  bottle do
+    cellar :any
+    sha1 "fce3bdc6c643263546405826d48cf991683ac3d9" => :yosemite
+    sha1 "43cc11e90b60410a30946d919051d0fbda001605" => :mavericks
+    sha1 "e0eac12c79628e4426de5e72645df0b175cc8a07" => :mountain_lion
+  end
+
   depends_on :java
 
   patch :DATA
