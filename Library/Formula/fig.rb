@@ -1,5 +1,5 @@
 class Fig < Formula
-  homepage "http://docs.docker.com/compose/"
+  homepage "https://docs.docker.com/compose/"
   url "https://github.com/docker/compose/archive/1.1.0.tar.gz"
   sha1 "175066934c19f455606b16f1b4e4b9f26fc3f599"
 
