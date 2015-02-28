@@ -1,13 +1,11 @@
-require 'formula'
-
 class Qtspell < Formula
-  homepage 'https://github.com/manisandro/qtspell'
-  url 'https://github.com/manisandro/qtspell/releases/download/0.7.1/qtspell-0.7.1.tar.xz'
-  sha1 '7e959b8147192818fa56824bf39d4384b0242032'
+  homepage "https://github.com/manisandro/qtspell"
+  url "https://github.com/manisandro/qtspell/releases/download/0.7.1/qtspell-0.7.1.tar.xz"
+  sha1 "7e959b8147192818fa56824bf39d4384b0242032"
 
-  depends_on 'cmake' => :build
-  depends_on 'qt'
-  depends_on 'enchant'
+  depends_on "cmake" => :build
+  depends_on "qt"
+  depends_on "enchant"
 
   def install
     mkdir "build" do
@@ -16,5 +14,4 @@ class Qtspell < Formula
       system "make", "install"
     end
   end
-
 end
