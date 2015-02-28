@@ -3,6 +3,12 @@ class Fig < Formula
   url "https://github.com/docker/compose/archive/1.1.0.tar.gz"
   sha1 "175066934c19f455606b16f1b4e4b9f26fc3f599"
 
+  bottle do
+    sha1 "3a99b153c4d7b1f5cf77d392d11978ead0ab6014" => :yosemite
+    sha1 "5a4315f4c7aeb88d1f4b452cbe9cc769578fa12b" => :mavericks
+    sha1 "361e4cd9e2c625b2640696a918ecb2ba127363bb" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
