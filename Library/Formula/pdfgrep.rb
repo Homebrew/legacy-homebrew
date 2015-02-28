@@ -1,8 +1,8 @@
 class Pdfgrep < Formula
   desc "Search PDFs for strings matching a regular expression"
   homepage "http://pdfgrep.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/pdfgrep/1.3.1/pdfgrep-1.3.1.tar.gz"
-  sha1 "8d15760af0803ccea32760d5f68abe4224169639"
+  url "https://downloads.sourceforge.net/project/pdfgrep/1.3.2/pdfgrep-1.3.2.tar.gz"
+  sha256 "386b167434443dd299d389a0ef292d708123255cbab0e179e11b65ba51d9b386"
 
   head do
     url "https://gitlab.com/pdfgrep/pdfgrep.git"
