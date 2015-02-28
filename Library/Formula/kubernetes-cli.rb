@@ -5,9 +5,9 @@ class KubernetesCli < Formula
 
   bottle do
     cellar :any
-    sha1 "6b5d4dcefb0bf290c68e06f9a2dde7ea73c72a45" => :yosemite
-    sha1 "787545924940ca943c38ccdc2263b7b4c1b92211" => :mavericks
-    sha1 "3e4b16e204f335cde95a08e27cddac7def5e6f4c" => :mountain_lion
+    sha1 "a81ab21c839f0c5b35b8ed18de07035c43fc8f44" => :yosemite
+    sha1 "adf41773d958862c37c9daad73caca19bb74ba34" => :mavericks
+    sha1 "e48cce8c577be6d684c5b2aadce9d1ade990fb3f" => :mountain_lion
   end
 
   depends_on "go" => :build
