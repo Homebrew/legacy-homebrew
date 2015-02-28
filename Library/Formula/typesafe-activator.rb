@@ -2,7 +2,7 @@ require 'formula'
 
 class TypesafeActivator < Formula
   homepage 'https://typesafe.com/activator'
-  url 'http://downloads.typesafe.com/typesafe-activator/1.3.2/typesafe-activator-1.3.2.zip'
+  url 'https://downloads.typesafe.com/typesafe-activator/1.3.2/typesafe-activator-1.3.2.zip'
   sha1 'b222c96b082fe6e74e03e455fe3103817391f003'
 
   def install
