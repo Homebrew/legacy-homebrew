@@ -1,8 +1,9 @@
 require "formula"
 
 class Solr < Formula
-  homepage "http://lucene.apache.org/solr/"
+  homepage "https://lucene.apache.org/solr/"
   url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.0.0/solr-5.0.0.tgz"
+  mirror "https://archive.apache.org/dist/lucene/solr/5.0.0/solr-5.0.0.tgz"
   sha1 "0c14a5212c4b9d9491881d743390596a19a3e989"
 
   skip_clean 'example/logs'
