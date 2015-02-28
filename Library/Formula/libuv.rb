@@ -1,14 +1,14 @@
 class Libuv < Formula
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.4.1.tar.gz"
-  sha1 "c545efa7fee0e3f4850b2cbd03611ac4c76a8c90"
+  url "https://github.com/libuv/libuv/archive/v1.4.2.tar.gz"
+  sha1 "85882c7e0b6ce77c30240a895c62d158e04b361e"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
     cellar :any
-    sha1 "e363c6a0475b93f8357d274c1dca1b5c9cb6179e" => :yosemite
-    sha1 "8893b8d3004a443ef98f50ad84b29161a5e5e11a" => :mavericks
-    sha1 "4b7aa3844c5715465d3e427366f5fa8786789270" => :mountain_lion
+    sha1 "b2698a14753dfe1adc790472ad88a271b9aaf435" => :yosemite
+    sha1 "2aeb30d3fadf2ab172feeb4151a096104fb6267c" => :mavericks
+    sha1 "6027a89608cdf0c5e99b088ef360b654e8f1ce20" => :mountain_lion
   end
 
   option "without-docs", "Don't build and install documentation"

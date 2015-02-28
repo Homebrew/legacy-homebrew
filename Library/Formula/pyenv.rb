@@ -1,8 +1,14 @@
 class Pyenv < Formula
   homepage "https://github.com/yyuu/pyenv"
   head "https://github.com/yyuu/pyenv.git"
-  url "https://github.com/yyuu/pyenv/archive/v20150204.tar.gz"
-  sha1 "bba8eb5995897256ea8f038010be9a71bfb1f2cf"
+  url "https://github.com/yyuu/pyenv/archive/v20150226.tar.gz"
+  sha1 "31d681c33e1350c438c4bdce62a53ed58f8d1237"
+
+  bottle do
+    sha1 "4d256de5936dbb689726862db3521690eb27bf58" => :yosemite
+    sha1 "e7ac3085e6edeaa5f4f0bbf47f652beae5aa34cb" => :mavericks
+    sha1 "2c20ce150661552229a18a24f722e8603e9d40d3" => :mountain_lion
+  end
 
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]
