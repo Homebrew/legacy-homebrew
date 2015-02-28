@@ -1,5 +1,3 @@
-require "formula"
-
 class Pdfgrep < Formula
   homepage "http://pdfgrep.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/pdfgrep/1.3.1/pdfgrep-1.3.1.tar.gz"
@@ -12,10 +10,10 @@ class Pdfgrep < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    system "#{bin}/pdfgrep", "--version"
+    system bin/"pdfgrep", "-i", "homebrew", test_fixtures("test.pdf")
   end
 end
