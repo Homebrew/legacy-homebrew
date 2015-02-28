@@ -4,6 +4,13 @@ class AppscaleTools < Formula
   sha1 "74420507e21e14c780b020d487552964ecd1748f"
   head "https://github.com/AppScale/appscale-tools.git"
 
+  bottle do
+    cellar :any
+    sha1 "6dae0110db95a47f949e3c8369135220910d5615" => :yosemite
+    sha1 "d3078fbebb496d862b8fdb1c00dbb43de9c3def7" => :mavericks
+    sha1 "a9157eeea6487d7c488e4039c778fea5f4188f23" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
