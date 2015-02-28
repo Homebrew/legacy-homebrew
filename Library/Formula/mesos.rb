@@ -26,6 +26,10 @@ class Mesos < Formula
             "--with-svn=#{Formula["subversion"].opt_prefix}"
            ]
 
+    unless MacOS::CLT.installed?
+      args << "--with-apr=#{Formula["apr"].opt_prefix}/libexec"
+    end
+
     ENV.cxx11
 
     system "./configure", *args
