@@ -3,6 +3,13 @@ class Kanif < Formula
   url "http://gforge.inria.fr/frs/download.php/26773/kanif-1.2.2.tar.gz"
   sha1 "7a10fe0e74159875f004b6c4a12a0202ff092ce9"
 
+  bottle do
+    cellar :any
+    sha1 "62cfcf372822b0b17e74e4eddafb775a3cd0b43f" => :yosemite
+    sha1 "4f75cca495144043a4106ca4f51367cc2a01fa3d" => :mavericks
+    sha1 "8ae0a32afdad9dd6b4fa83af7a9587c760b41b5e" => :mountain_lion
+  end
+
   depends_on "taktuk" => :run
 
   def install
