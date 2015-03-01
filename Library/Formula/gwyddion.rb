@@ -2,8 +2,8 @@ require 'formula'
 
 class Gwyddion < Formula
   homepage 'http://gwyddion.net/'
-  url 'http://gwyddion.net/download/2.39/gwyddion-2.39.tar.gz'
-  sha1 '05ae35544b2f68939f6474fc8edb1f0395d10427'
+  url 'http://gwyddion.net/download/2.40/gwyddion-2.40.tar.gz'
+  sha1 '3e914985e5cde6303e2c842605014a9c66a1c030'
 
   bottle do
     sha1 "6248a7dc780ba3cbea3aad2ae8682183445a112d" => :yosemite
