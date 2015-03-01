@@ -4,10 +4,10 @@ class Nghttp2 < Formula
   sha1 "7256ba19c031281cf2b5640cff5986c069ffcff5"
 
   bottle do
-    cellar :any
-    sha1 "1cb5328d3f05b955aa82571a9a9210dec9dd91a5" => :yosemite
-    sha1 "94a3207d6119f38bd0b68c31e3752632e2f5942c" => :mavericks
-    sha1 "5d5d1d396d4502b85a9697e593301bd44b5356ee" => :mountain_lion
+    revision 1
+    sha1 "eda9d8ce56e07fb2040b61de1a61e13947572c9e" => :yosemite
+    sha1 "a690a5201979431cf3c17f13dd6e14fb508aa0b7" => :mavericks
+    sha1 "3f439e6f4183150cc9c439e7222309f5bac62f0e" => :mountain_lion
   end
 
   head do
