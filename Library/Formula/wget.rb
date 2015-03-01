@@ -3,9 +3,9 @@
 
 class Wget < Formula
   homepage "https://www.gnu.org/software/wget/"
-  url "http://ftpmirror.gnu.org/wget/wget-1.16.1.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.1.tar.xz"
-  sha1 "21cd7eee08ab5e5a14fccde22a7aec55b5fcd6fc"
+  url "http://ftpmirror.gnu.org/wget/wget-1.16.2.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.2.tar.xz"
+  sha1 "a77b455ad01620ea3b709db2e07e6841da518f38"
 
   bottle do
     sha1 "0eef858e3208f2757f5105346bf79350f280a002" => :yosemite
