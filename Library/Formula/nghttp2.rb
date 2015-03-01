@@ -82,6 +82,7 @@ class Nghttp2 < Formula
       --disable-threads
       --enable-app
       --with-boost=#{Formula["boost"].opt_prefix}
+      --enable-asio-lib
       --disable-python-bindings
     ]
 
