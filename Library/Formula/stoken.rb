@@ -14,7 +14,7 @@ class Stoken < Formula
 
   depends_on "gtk+3" => :optional
   if build.with? "gtk+3"
-    depends_on "gnome-icon-theme"
+    depends_on "adwaita-icon-theme"
     depends_on "hicolor-icon-theme"
   end
   depends_on "pkg-config" => :build
