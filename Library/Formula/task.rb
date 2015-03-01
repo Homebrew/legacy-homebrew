@@ -17,6 +17,8 @@ class Task < Formula
   depends_on "cmake" => :build
   depends_on "gnutls" => :recommended
 
+  needs :cxx11
+
   def install
     args = std_cmake_args
     args << "-DENABLE_SYNC=OFF" if build.without? "gnutls"
