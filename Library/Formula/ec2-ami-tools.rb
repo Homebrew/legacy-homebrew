@@ -8,7 +8,6 @@ class Ec2AmiTools < AmazonWebServicesFormula
   end
 
   test do
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
     ENV["EC2_AMITOOL_HOME"] = libexec
     assert_match version.to_s, shell_output("#{bin}/ec2-ami-tools-version")
   end
