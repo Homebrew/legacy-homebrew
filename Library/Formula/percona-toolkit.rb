@@ -1,8 +1,8 @@
 require "formula"
 
 class PerconaToolkit < Formula
-  homepage "http://www.percona.com/software/percona-toolkit/"
-  url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.13/tarball/percona-toolkit-2.2.13.tar.gz"
+  homepage "https://www.percona.com/software/percona-toolkit/"
+  url "https://www.percona.com/redir/downloads/percona-toolkit/2.2.13/tarball/percona-toolkit-2.2.13.tar.gz"
   sha1 "f3e0e59e6036bfabbd5db881848022e1e4881ab9"
 
   bottle do
