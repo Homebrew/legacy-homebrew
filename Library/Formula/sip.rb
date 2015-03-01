@@ -30,12 +30,12 @@ class Sip < Formula
 
     Language::Python.each_python(build) do |python, version|
       # Note the binary `sip` is the same for python 2.x and 3.x
-      system python, "configure.py",
-                     "--deployment-target=#{MacOS.version}",
+      system python, *["configure.py",
+                     ("--deployment-target=#{MacOS.version}" if OS.mac?),
                      "--destdir=#{lib}/python#{version}/site-packages",
                      "--bindir=#{bin}",
                      "--incdir=#{include}",
-                     "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
+                     "--sipdir=#{HOMEBREW_PREFIX}/share/sip"].compact
       system "make"
       system "make", "install"
       system "make", "clean"
