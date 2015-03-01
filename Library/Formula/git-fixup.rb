@@ -7,9 +7,9 @@ class GitFixup < Formula
 
   bottle do
     cellar :any
-    sha1 "8785269ef827076ed2dd7bf510b759294774a995" => :yosemite
-    sha1 "22c609efffe6737c1cbb2b3abe7b152a07b4f6af" => :mavericks
-    sha1 "8c47db51e200c21cb69c7c64ace23412c6ee93b2" => :mountain_lion
+    sha1 "51111ec8f5f517ea73a5c465dd5ce1b066bbc1f0" => :yosemite
+    sha1 "3d018cad30af595c34cb2a9eaa5457d6665abf09" => :mavericks
+    sha1 "324a7f422f26e2a84cb587b2005a0da36c3d08f7" => :mountain_lion
   end
 
   def install
