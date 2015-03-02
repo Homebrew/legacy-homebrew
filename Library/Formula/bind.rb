@@ -2,7 +2,7 @@ require "formula"
 
 class Bind < Formula
   homepage "https://www.isc.org/software/bind/"
-  url "https://www.isc.org/isc/bind9/9.10.2/bind-9.10.2.tar.gz"
+  url "http://ftp.isc.org/isc/bind9/9.10.2/bind-9.10.2.tar.gz"
   sha1 "4ddb2670976c06af7e86352616383958d82c51ce"
 
   bottle do
