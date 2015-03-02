@@ -248,7 +248,9 @@ the REST API.
 ### Context configuration
 
 A number of context-specific settings can be controlled when creating a context (POST /contexts) or running an
-ad-hoc job (which creates a context on the spot).
+ad-hoc job (which creates a context on the spot).  For example, add urls of dependent jars for a context.
+
+    POST '/contexts/my-new-context?dependent-jar-uris=file:///some/path/of/my-foo-lib.jar'
 
 When creating a context via POST /contexts, the query params are used to override the default configuration in
 spark.context-settings.  For example,
