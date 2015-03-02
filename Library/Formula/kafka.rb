@@ -2,7 +2,7 @@ class Kafka < Formula
   homepage "https://kafka.apache.org"
   head "https://git-wip-us.apache.org/repos/asf/kafka.git"
   url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.0/kafka-0.8.2.0-src.tgz"
-  mirror "http://mirror.sdunix.com/apache/kafka/0.8.2.0/kafka-0.8.2.0-src.tgz"
+  mirror "https://archive.apache.org/dist/kafka/0.8.2.0/kafka-0.8.2.0-src.tgz"
   sha1 "d2c35b60a2f534fb552030dcc7855d13292b2414"
 
   bottle do
