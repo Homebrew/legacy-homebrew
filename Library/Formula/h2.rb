@@ -1,10 +1,8 @@
-require 'formula'
-
 class H2 < Formula
   homepage 'http://www.h2database.com/'
-  url 'http://www.h2database.com/h2-2014-08-06.zip'
-  version '1.4.181'
-  sha1 '94d01f41361e1edb9cf07bf06d2c721e1870ff9e'
+  url 'http://www.h2database.com/h2-2015-03-02.zip'
+  version '1.4.186'
+  sha256 'e976017abb643b41c0bbc3282a2aefe22e8f2f6cfb328eeb7776807091d3e5ac'
 
   def script; <<-EOS.undent
     #!/bin/sh
@@ -21,6 +19,9 @@ class H2 < Formula
 
     libexec.install Dir['*']
     (bin+'h2').write script
+
+    # Expose the H2 JAR as version agnostic h2.jar
+    libexec.install_symlink libexec/"bin/h2-#{version}.jar" => "h2.jar"
   end
 
   plist_options :manual => 'h2'
