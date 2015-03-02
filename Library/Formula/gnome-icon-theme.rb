@@ -15,7 +15,7 @@ class GnomeIconTheme < Formula
   depends_on "gtk+3" => :build # for gtk3-update-icon-cache
   depends_on "icon-naming-utils" => :build
   depends_on "intltool" => :build
-  depends_on "librsvg" => :build
+  depends_on "librsvg"
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -29,14 +29,7 @@ class GnomeIconTheme < Formula
     # and that a file created late in the install process exists.
     # Someone who understands GTK+3 could probably write better tests that
     # check if GTK+3 can find the icons.
-    (testpath/"test.sh").write <<-EOS.undent
-    #!/usr/bin/env bash
-    if [ -r "#{share}/icons/Adwaita/96x96/status/weather-storm-symbolic.symbolic.png" ] && [ -r "#{share}/icons/Adwaita/index.theme" ]; then
-        exit 0;
-    else
-        exit 1;
-    fi
-    EOS
-    system "bash", "./test.sh"
+    assert (share/"icons/Adwaita/96x96/status/weather-storm-symbolic.symbolic.png").exist?
+    assert (share/"icons/Adwaita/index.theme").exist?
   end
 end
