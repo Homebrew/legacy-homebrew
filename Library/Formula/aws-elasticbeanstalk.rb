@@ -1,7 +1,7 @@
 class AwsElasticbeanstalk < AmazonWebServicesFormula
   homepage "http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.0.10.tar.gz"
-  sha1 "60cb08e1946c6fa141c4708c2ea2020e2c03f0fc"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.1.2.tar.gz"
+  sha1 "d64147b381574880b2f65e676b6e1b74a378d9cf"
 
   depends_on :python if MacOS.version <= :snow_leopard
 
