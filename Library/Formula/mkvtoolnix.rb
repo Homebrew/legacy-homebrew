@@ -23,13 +23,13 @@ end
 
 class Mkvtoolnix < Formula
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.6.0.tar.xz"
-  sha1 "458db5c8f9e9afbf5fb210ebb26b380cf553d88f"
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.7.0.tar.xz"
+  sha1 "9f24c02f8f0e4e40162dd5e5a305f2226186a046"
 
   bottle do
-    sha1 "f171e01dc4eb563b1b1ca66c1013562537110329" => :yosemite
-    sha1 "1cb96469c187908fc76c3032513110625cac2c3c" => :mavericks
-    sha1 "ba93d7a12f7a1fff861c777fed4df2645c6c7793" => :mountain_lion
+    sha1 "c0aa6d1f587159dfcf89f0f193c1fc97ae8554da" => :yosemite
+    sha1 "022ff93c8ee34b6958ccbcba2aa96e82e8b5410e" => :mavericks
+    sha1 "1ded8d87b52b495e9a94e0cfab5e4623532ff98a" => :mountain_lion
   end
 
   head do

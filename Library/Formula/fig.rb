@@ -1,23 +1,25 @@
-require "formula"
-
 class Fig < Formula
-  homepage "http://www.fig.sh/"
-  url "https://github.com/docker/fig/archive/1.0.1.tar.gz"
-  sha1 "8044dd8134af1215138c1e878cc1684bac8932d9"
+  homepage "https://docs.docker.com/compose/"
+  url "https://github.com/docker/compose/archive/1.1.0.tar.gz"
+  sha1 "175066934c19f455606b16f1b4e4b9f26fc3f599"
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "01583c5ed7b5d8bc593d1614801b67eaf8759b40" => :yosemite
-    sha1 "5b501d0cb7d839e96723308bded669c9aeab12e3" => :mavericks
-    sha1 "8018518bf6266ead170de96e5c838315caa09ddb" => :mountain_lion
+    sha1 "3a99b153c4d7b1f5cf77d392d11978ead0ab6014" => :yosemite
+    sha1 "5a4315f4c7aeb88d1f4b452cbe9cc769578fa12b" => :mavericks
+    sha1 "361e4cd9e2c625b2640696a918ecb2ba127363bb" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
+
+  # It's possible that the user wants to manually install Docker and Boot2Docker,
+  # for example, they want to compile Docker manually
+  depends_on "docker" => :recommended
+  depends_on "boot2docker" => :recommended
+
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.5.3.tar.gz"
-    sha1 "11708a7021e3d0d522e145c057256d7d2acaec07"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.7.2.tar.gz"
+    sha1 "c526e95ea974b2a40392dbe00d0ecbfffa6c5d4b"
   end
 
   resource "pyyaml" do
@@ -46,8 +48,8 @@ class Fig < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.4.3.tar.gz"
+    sha1 "411f1bfa44556f7dd0f34cd822047c31baa7d741"
   end
 
   resource "websocket-client" do
@@ -68,9 +70,10 @@ class Fig < Formula
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    ln_s bin/"docker-compose", bin/"fig"
   end
 
   test do
-    system "#{bin}/fig", "--version"
+    system "#{bin}/docker-compose", "--version"
   end
 end

@@ -3,14 +3,14 @@
 
 class Wget < Formula
   homepage "https://www.gnu.org/software/wget/"
-  url "http://ftpmirror.gnu.org/wget/wget-1.16.1.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.1.tar.xz"
-  sha1 "21cd7eee08ab5e5a14fccde22a7aec55b5fcd6fc"
+  url "http://ftpmirror.gnu.org/wget/wget-1.16.2.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.2.tar.xz"
+  sha1 "a77b455ad01620ea3b709db2e07e6841da518f38"
 
   bottle do
-    sha1 "0eef858e3208f2757f5105346bf79350f280a002" => :yosemite
-    sha1 "9a02fd3da57a8afee248ebb09ea294c9d8729b3c" => :mavericks
-    sha1 "0402cc64a2127d2b58ad8a9af3f161c1169a6dbd" => :mountain_lion
+    sha1 "4a25ec9c585fd7d9b661ae3ee865a990e933b34c" => :yosemite
+    sha1 "5548c03ce42dadf5bd59638ce9506817e78edd96" => :mavericks
+    sha1 "8d088a434ac541b630da448efc6a64bcaef84ffb" => :mountain_lion
   end
 
   head do
