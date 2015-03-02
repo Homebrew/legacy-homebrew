@@ -11,6 +11,10 @@ class Libharu < Formula
     sha1 "0a20c683544726d870f53c005f79a730b1effffe" => :mountain_lion
   end
 
+  head do
+    url "https://github.com/libharu/libharu.git"
+  end
+
   depends_on "libpng"
 
   def install
