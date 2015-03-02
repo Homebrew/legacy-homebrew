@@ -4,9 +4,10 @@ class Pushpin < Formula
   sha1 "6862c69eda7eef2e7fc8dd15d9800a3b21792acd"
 
   bottle do
-    sha1 "9f1bb4d47aab985fdc6f1d917f5350c36e62c234" => :yosemite
-    sha1 "54312277fdeb5eda02f0d24fa0ff46f5eb6c06f4" => :mavericks
-    sha1 "8d788cc4c7b4dbb0617c9f63ca961de22a3c07b6" => :mountain_lion
+    revision 1
+    sha1 "854f51c538d43ca60f920df23f7bcd49be45c1e4" => :yosemite
+    sha1 "76eb20ed5366d0287a57d859f6f1cf1ffd6c2bd6" => :mavericks
+    sha1 "7bbfbad5fbb80d82337e5c3cd9c90e9f1c3257a0" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
