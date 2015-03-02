@@ -5,6 +5,13 @@ class Kafka < Formula
   mirror "http://mirror.sdunix.com/apache/kafka/0.8.2.0/kafka-0.8.2.0-src.tgz"
   sha1 "d2c35b60a2f534fb552030dcc7855d13292b2414"
 
+  bottle do
+    cellar :any
+    sha1 "48b13bd07ff2783cc2470bb7ef212b30bb902645" => :yosemite
+    sha1 "6195e7875cb9d1c071a470f19947b1f8e54ad9cd" => :mavericks
+    sha1 "eb259c314ce7783327b7a7acc8fccb6b221bf529" => :mountain_lion
+  end
+
   depends_on "gradle"
   depends_on "zookeeper"
   depends_on :java => "1.7+"
