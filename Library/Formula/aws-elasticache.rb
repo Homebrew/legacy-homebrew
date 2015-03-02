@@ -5,14 +5,13 @@ class AwsElasticache < AmazonWebServicesFormula
   sha1 "aeed292beada4aabe7d88562af0f1353556c0767"
 
   depends_on "ec2-api-tools"
+  depends_on :java
 
-  def caveats
-    standard_instructions "AWS_ELASTICACHE_HOME"
+  def install
+    standard_install :env => { :AWS_ELASTICACHE_HOME => libexec }
   end
 
   test do
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
-    ENV["AWS_ELASTICACHE_HOME"] = libexec
     system "#{bin}/elasticache-version"
   end
 end
