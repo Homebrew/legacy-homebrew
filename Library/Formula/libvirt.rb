@@ -1,9 +1,9 @@
 require "formula"
 
 class Libvirt < Formula
-  homepage "http://www.libvirt.org"
-  url "http://libvirt.org/sources/libvirt-1.2.12.tar.gz"
-  sha1 "1ccbc1d2cdb88cc5f317e95218429d42cb0ff235"
+  homepage "https://www.libvirt.org"
+  url "https://libvirt.org/sources/libvirt-1.2.13.tar.gz"
+  sha1 "b4e76eb52a40a1c81e07d17f9b57b4b1aa86b059"
 
   bottle do
     sha1 "e96d37dfcf5b5764ea922f258380c62997920efd" => :yosemite
