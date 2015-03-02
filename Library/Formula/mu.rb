@@ -19,9 +19,10 @@ class Mu < Formula
   head "https://github.com/djcb/mu.git"
 
   bottle do
-    sha1 "b9e3a478300b3391f6a38639e32694f5444bea2d" => :yosemite
-    sha1 "61b8eadfbfa482de3d1194c5cb8bc5a3cb0933d6" => :mavericks
-    sha1 "ef81baa0a3210ba9c4a7eeb9224574e1cc89e5d8" => :mountain_lion
+    revision 1
+    sha1 "fa5412706e677fcc042e3e461e97cdc7e960185e" => :yosemite
+    sha1 "42cc5427d5de000729c51f627bb00927606c2be9" => :mavericks
+    sha1 "b7dda439293d64bdba9173318eeb381524cbdddb" => :mountain_lion
   end
 
   option "with-emacs", "Build with emacs support"
