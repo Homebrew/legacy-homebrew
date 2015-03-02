@@ -36,7 +36,7 @@ class Libharu < Formula
         HPDF_Doc pdf = HPDF_New(NULL, NULL);
 
         if (pdf) {
-          HPDF_Page page = HPDF_AddPage(pdf);
+          HPDF_AddPage(pdf);
 
           if (HPDF_SaveToFile(pdf, "test.pdf") == HPDF_OK)
             result = 0;
