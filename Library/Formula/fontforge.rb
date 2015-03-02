@@ -5,9 +5,9 @@ class Fontforge < Formula
   head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    sha1 "96155e138d5c9f0eff459f85a8ee1198fa6ffbae" => :yosemite
-    sha1 "780a877b74381ee256812406c4d68f5523631ee1" => :mavericks
-    sha1 "84b0969c5370be9a949e2c174c9a1e8735a63797" => :mountain_lion
+    sha1 "5cdcd9ec8f1679a9285b3b85a8c063fd7a1c7153" => :yosemite
+    sha1 "25382df7037e07d8cd72d10ac42657699d5005e1" => :mavericks
+    sha1 "b13d67164ecdad117681234e3dd9386ab7611671" => :mountain_lion
   end
 
   option "with-giflib", "Build with GIF support"
