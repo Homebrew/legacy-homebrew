@@ -4,7 +4,6 @@ class Bind < Formula
   homepage "http://www.isc.org/software/bind/"
   url "http://ftp.isc.org/isc/bind9/9.10.2/bind-9.10.2.tar.gz"
   sha1 "4ddb2670976c06af7e86352616383958d82c51ce"
-  version "9.10.2"
 
   bottle do
     sha1 "901a4706d23607927fadb78d5495d49f715fdde4" => :yosemite
