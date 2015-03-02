@@ -4,6 +4,8 @@ class A2ps < Formula
   mirror "http://ftp.gnu.org/gnu/a2ps/a2ps-4.14.tar.gz"
   sha1 "365abbbe4b7128bf70dad16d06e23c5701874852"
 
+  depends_on "homebrew/dupes/gperf" unless OS.mac?
+
   bottle do
     sha1 "c33f22a088a0b1ed22efff0165722e87495a4bd0" => :yosemite
     sha1 "7ae09c9835ebb1913b97cf5f06bab42a0d1f33a6" => :mavericks
