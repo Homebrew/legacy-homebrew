@@ -4,9 +4,9 @@ class Mariadb < Formula
   sha1 "240253b3ee21dea5e2f501778e8ee72b32a5d052"
 
   bottle do
-    sha1 "5098b447222fbcb46069b3c1f56f17730a2471c8" => :yosemite
-    sha1 "48e948b01fecf27462503cf94d4d764b61c32c47" => :mavericks
-    sha1 "433a689752aee6fd9a753b1c35b4456bdb6c9369" => :mountain_lion
+    sha1 "30bb3e16ab50ced951a582b30b3609b799a3c236" => :yosemite
+    sha1 "7f7a3cc62d684820b12970239bbcf0566816e770" => :mavericks
+    sha1 "68e5b41c2c33d8ac237470f6b55318c7fe31815f" => :mountain_lion
   end
 
   devel do
