@@ -1,7 +1,7 @@
 class Deis < Formula
   homepage "http://deis.io"
-  url "https://github.com/deis/deis/archive/v1.2.2.tar.gz"
-  sha1 "c92121c88aa8c2548526199837fad334fae74b01"
+  url "https://github.com/deis/deis/archive/v1.4.0.tar.gz"
+  sha1 "96bb7bb71bfe32cfb5e148ccb9deabd621ddbcd4"
 
   bottle do
     cellar :any
@@ -19,8 +19,8 @@ class Deis < Formula
   end
 
   resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
-    sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
+    sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
   end
 
   resource "PyYAML" do
