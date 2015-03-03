@@ -12,9 +12,9 @@ class Openssl < Formula
   end
 
   resource "cacert" do
-    #homepage "http://curl.haxx.se/docs/caextract.html"
+    # homepage "http://curl.haxx.se/docs/caextract.html"
     url "http://curl.haxx.se/ca/cacert.pem"
-    sha1 "e8e794392766cca1528858a229ac046b0f5d5801"
+    sha1 "1d6fef5a6a5ad01f52e31e274e2d811b2b794e80"
   end
 
   option :universal
