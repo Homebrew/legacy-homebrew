@@ -4,6 +4,12 @@ class AutoconfArchive < Formula
   mirror "https://ftp.gnu.org/gnu/autoconf-archive/autoconf-archive-2015.02.24.tar.xz"
   sha1 "3b85294775df75acce4b89d99ad268a6e7219d9c"
 
+  bottle do
+    sha1 "379b87f4f2a0ab895b98566a9d846e39143febb9" => :yosemite
+    sha1 "57aa4726af450fa77e509a29aeb03d6c819706cf" => :mavericks
+    sha1 "5c2d27e4a970cdc0ef102e0404a5eb13cc1f0543" => :mountain_lion
+  end
+
   # autoconf-archive is useless without autoconf
   depends_on "autoconf" => :run
 
