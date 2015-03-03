@@ -77,8 +77,8 @@ module Homebrew
     %w{Homebrew python},
     %w{Homebrew php},
     %w{Homebrew x11},
-    %w{Caskroom cask},
-  ]
+    (%w{Caskroom cask} if OS.mac?),
+  ].compact
 
   def query_regexp(query)
     case query
