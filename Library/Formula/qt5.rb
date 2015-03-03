@@ -10,15 +10,15 @@ class OracleHomeVar < Requirement
 end
 
 class Qt5 < Formula
-  homepage "http://qt-project.org/"
-  url "https://download.qt.io/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
-  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.0/single/qt-everywhere-opensource-src-5.4.0.tar.xz"
-  sha1 "2f5558b87f8cea37c377018d9e7a7047cc800938"
+  homepage "https://www.qt.io/"
+  url "https://download.qt.io/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
+  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
+  sha1 "daa3373af8d6656a1066ff23bc9100b5ca004ecf"
 
   bottle do
-    sha1 "072ed2c806664fd1da3ba7c90c8e4887509fb91b" => :yosemite
-    sha1 "1ca730d96a962a5c4fcbd605542b7bfb528d6c58" => :mavericks
-    sha1 "a6bbd39629a69c35c8a5d5e8ede4b6c752e3aecf" => :mountain_lion
+    sha1 "0c62b742770ae83a97063e688912a719f464dbff" => :yosemite
+    sha1 "0bd4601aac5e1d76aaa6295060312e1f93cd43ff" => :mavericks
+    sha1 "94634131524185beccae4dd5f749cbca6750c91d" => :mountain_lion
   end
 
   head "https://gitorious.org/qt/qt5.git", :branch => "5.4", :shallow => false

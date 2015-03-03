@@ -1,16 +1,14 @@
-# encoding: UTF-8
-
 class Dvtm < Formula
   homepage "http://www.brain-dump.org/projects/dvtm/"
-  url "http://www.brain-dump.org/projects/dvtm/dvtm-0.13.tar.gz"
-  sha1 "8a4fc2440faa3050244e5a492fb6766899e0c0d7"
+  url "http://www.brain-dump.org/projects/dvtm/dvtm-0.14.tar.gz"
+  sha1 "205a2165e70455309f7ed6a6f11b3072fb9b13c3"
   head "git://repo.or.cz/dvtm.git"
 
   bottle do
     cellar :any
-    sha1 "5f90807a984ea18940aa62b31fccf1d5360fd904" => :yosemite
-    sha1 "0cc466200f2eb56604e6222055d3860dc66804e1" => :mavericks
-    sha1 "55a10e62092fed633e9252d07134a7cad1df8217" => :mountain_lion
+    sha1 "98ec8e4a27a05b0e4fca36b938d40cb77eeb6745" => :yosemite
+    sha1 "8d6cd0a89a131cc77f1ef6886247cf8f8b21e5ec" => :mavericks
+    sha1 "5a41d7afa914e09c1f8fe51ed19edc12a07f44e0" => :mountain_lion
   end
 
   def install
@@ -21,6 +19,6 @@ class Dvtm < Formula
   test do
     result = shell_output("#{bin}/dvtm -v")
     result.force_encoding("UTF-8") if result.respond_to?(:force_encoding)
-    assert_match /^dvtm-[0-9.]+ © 2007-\d{4} Marc André Tanner$/, result
+    assert_match /^dvtm-#{version}/, result
   end
 end

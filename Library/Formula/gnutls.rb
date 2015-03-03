@@ -3,15 +3,15 @@
 # http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
   homepage "http://gnutls.org"
-  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.12.tar.xz"
-  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.12.tar.xz"
-  sha256 "67ab3e92c5d48f3323b897d7c1aa0bb2af6f3a84f5bd9931cda163a7ff32299b"
+  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.13.tar.xz"
+  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.13.tar.xz"
+  sha256 "91bf1ef5c159b7f2176f972184545b287af6507ab55a543f6007d31406b97a99"
 
   bottle do
     cellar :any
-    sha1 "cc94413cf3656369fa96a37b1cb91b082ff55238" => :yosemite
-    sha1 "1e599b81711d1989764a20c24ac4e777cfad575d" => :mavericks
-    sha1 "b3c5f03e351c0d0812807c5ebc455fa48bb3bb6c" => :mountain_lion
+    sha1 "6a05ad1be769f2f5de246941c5ece9917208f262" => :yosemite
+    sha1 "ba78f8cde13376cf49e8b8827ae07b26313f861e" => :mavericks
+    sha1 "fbb882e9d3dec27e18d306dc4a4438ff4b023e5f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -56,6 +56,6 @@ class Gnutls < Formula
   end
 
   test do
-    system "#{bin}/gnutls-cli", "--version"
+    system bin/"gnutls-cli", "--version"
   end
 end
