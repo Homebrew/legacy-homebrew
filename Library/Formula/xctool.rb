@@ -2,8 +2,8 @@ require 'formula'
 
 class Xctool < Formula
   homepage 'https://github.com/facebook/xctool'
-  url 'https://github.com/facebook/xctool/archive/v0.2.2.tar.gz'
-  sha1 '7c1f5610d0543a2a93b87aeebd7dfb642d91d50d'
+  url 'https://github.com/facebook/xctool/archive/v0.2.3.tar.gz'
+  sha1 'e22b947a4de7bc96feffb6cb24940f61574afbbc'
   head 'https://github.com/facebook/xctool.git'
 
   bottle do
