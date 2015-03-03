@@ -1,22 +1,20 @@
-require 'formula'
-
 class Nexus < Formula
-  homepage 'http://www.sonatype.org/'
-  url 'http://download.sonatype.com/nexus/oss/nexus-2.11.1-01-bundle.tar.gz'
-  version '2.11.1-01'
-  sha1 'fe55d57d00973ce18b2f4ff10caffa45bd42fdac'
+  homepage "http://www.sonatype.org/"
+  version "2.11.2-03"
+  url "https://download.sonatype.com/nexus/oss/nexus-2.11.2-03-bundle.tar.gz"
+  sha1 "d64fe117b1eb344ac0020819d31bdcc6d4ede123"
 
   def install
-    rm_f Dir['bin/*.bat']
+    rm_f Dir["bin/*.bat"]
     # Put the sonatype-work directory in the var directory, to persist across version updates
     inreplace "nexus-#{version}/conf/nexus.properties",
-      'nexus-work=${bundleBasedir}/../sonatype-work/nexus',
+      "nexus-work=${bundleBasedir}/../sonatype-work/nexus",
       "nexus-work=#{var}/nexus"
     libexec.install Dir["nexus-#{version}/*"]
-    bin.install_symlink libexec/'bin/nexus'
+    bin.install_symlink libexec/"bin/nexus"
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/nexus/libexec/bin/nexus start"
+  plist_options :manual => "nexus start"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -35,5 +33,10 @@ class Nexus < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    output = `#{bin}/nexus status`
+    assert_match "Nexus OSS is", output
   end
 end
