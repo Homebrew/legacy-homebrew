@@ -466,8 +466,6 @@ class Formula
   end
 
   # Standard parameters for CMake builds.
-  # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
-  # Setting it to Release would ignore our flags.
   # Setting CMAKE_FIND_FRAMEWORK to "LAST" tells CMake to search for our
   # libraries before trying to utilize Frameworks, many of which will be from
   # 3rd party installs.
@@ -475,8 +473,10 @@ class Formula
   # less consistent and the standard parameters are more memorable.
   def std_cmake_args
     %W[
+      -DCMAKE_C_FLAGS_RELEASE=
+      -DCMAKE_CXX_FLAGS_RELEASE=
       -DCMAKE_INSTALL_PREFIX=#{prefix}
-      -DCMAKE_BUILD_TYPE=None
+      -DCMAKE_BUILD_TYPE=Release
       -DCMAKE_FIND_FRAMEWORK=LAST
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
