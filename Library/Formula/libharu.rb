@@ -13,6 +13,7 @@ class Libharu < Formula
   end
 
   depends_on "automake" => :build
+  depends_on "autoconf" => :build
   depends_on "libpng"
 
   def install
