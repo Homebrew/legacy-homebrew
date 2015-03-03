@@ -2,8 +2,8 @@ require "formula"
 
 class JujuQuickstart < Formula
   homepage "https://launchpad.net/juju-quickstart"
-  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-1.6.0.tar.gz"
-  sha1 "6631c560bc26b88c85e281df4fe4b5199884ae5a"
+  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.0.0.tar.gz"
+  sha1 "5ae0f94b87b03405a09413a55317f42ed112f725"
 
   bottle do
     cellar :any
