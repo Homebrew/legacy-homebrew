@@ -16,6 +16,9 @@ class Mongodb < Formula
 
 
   bottle do
+    sha1 "1dbdf906491863fbd4b264c1d8c39c1dd795fc5f" => :yosemite
+    sha1 "2808b95d23a2b7c361f81a5d599a4047e9f57ef3" => :mavericks
+    sha1 "fde052a4159aac45108f81e4a9fc08a2dc153938" => :mountain_lion
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
