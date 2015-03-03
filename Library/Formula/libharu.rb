@@ -6,9 +6,9 @@ class Libharu < Formula
 
   bottle do
     cellar :any
-    sha1 "38e83c295e83e290a5df03f4932b07ca8bc18707" => :yosemite
-    sha1 "22384f48ee22ae06ccf0636a86c61fa27fd26797" => :mavericks
-    sha1 "0a20c683544726d870f53c005f79a730b1effffe" => :mountain_lion
+    sha1 "24ef451318dd8dba2a121585120bd29b0713001c" => :yosemite
+    sha1 "e0d113830d149a48a558f7eab1c44152f2e91fbf" => :mavericks
+    sha1 "0911c2c32d551471d7f0e185271bb48e06d2e9d7" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
