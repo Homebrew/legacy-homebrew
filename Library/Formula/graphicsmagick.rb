@@ -7,9 +7,9 @@ class Graphicsmagick < Formula
   head 'http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick', :using => :hg
 
   bottle do
-    sha1 "3e681ecf2e126ee5322a6c05e4228670de8b7f8e" => :mavericks
-    sha1 "6dbabb0a513590f9e000bdf6a9fc4cf15cc829ec" => :mountain_lion
-    sha1 "dbdef094a39a8052eb7b04bae77724b5c7c524e9" => :lion
+    sha1 "73175a47211a0e05b55b15cfbcefcb1fc34b93ca" => :yosemite
+    sha1 "d20dd246c9ae4f9bed6cd11a9de877490e5113ce" => :mavericks
+    sha1 "b9265254c6c11f0ff0e44960d514ef7087a89eeb" => :mountain_lion
   end
 
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
