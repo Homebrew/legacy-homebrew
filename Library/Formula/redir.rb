@@ -6,9 +6,8 @@ class Redir < Formula
 
   def install
     system "make"
-    system "install -d #{prefix}/bin #{man}/man1"
-    system "install redir #{prefix}/bin/redir"
-    system "install redir.man #{man}/man1/redir.1"
+    bin.install "redir"
+    man1.install "redir.man"
   end
 
   test do
@@ -26,10 +25,10 @@ class Redir < Formula
 
     begin
       # Check if the process is running
-      system "kill -0 #{redir_pid}"
+      system "kill", "-0", redir_pid
 
       # Check if the port redirect works
-      system "nc -z localhost 54321"
+      system "nc", "-z", "localhost", "54321"
     ensure
       Process.kill("TERM", redir_pid)
       Process.kill("TERM", nc_pid)
