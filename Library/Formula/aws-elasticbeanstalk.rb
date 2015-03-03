@@ -3,6 +3,13 @@ class AwsElasticbeanstalk < Formula
   url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.1.2.tar.gz"
   sha1 "d64147b381574880b2f65e676b6e1b74a378d9cf"
 
+  bottle do
+    cellar :any
+    sha1 "ed37af9d592efc5fd4b1922f106757d9a72b8915" => :yosemite
+    sha1 "64c3503c04a9c0b0cce204175e44ebd691f3d485" => :mavericks
+    sha1 "20eb4a35613dca9ef22b1a4caefde1690eeab483" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "pyyaml" do
