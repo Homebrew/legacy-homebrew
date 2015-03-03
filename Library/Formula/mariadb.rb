@@ -70,8 +70,14 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
-      -DWITHOUT_TOKUDB=1
     ]
+
+    # disable TokuDB, which is currently not supported on Mac OS X
+    if build.stable?
+      args << "-DWITHOUT_TOKUDB=1"
+    else
+      args << "-DPLUGIN_TOKUDB=NO"
+    end
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? "tests"
 
