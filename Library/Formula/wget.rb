@@ -5,7 +5,7 @@ class Wget < Formula
   homepage "https://www.gnu.org/software/wget/"
   url "http://ftpmirror.gnu.org/wget/wget-1.16.2.tar.xz"
   mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.2.tar.xz"
-  sha1 "a77b455ad01620ea3b709db2e07e6841da518f38"
+  sha256 "a7dfde1bcb0eb135addf587a649fd0e47c1a876edef359b9197cdffd1fdcd7d5"
 
   bottle do
     sha1 "4a25ec9c585fd7d9b661ae3ee865a990e933b34c" => :yosemite
@@ -28,7 +28,8 @@ class Wget < Formula
   option "with-iri", "Enable iri support"
   option "with-debug", "Build with debug support"
 
-  depends_on "openssl"
+  depends_on "openssl" => :recommended
+  depends_on "libressl" => :optional
   depends_on "libidn" if build.with? "iri"
   depends_on "pcre" => :optional
 
@@ -37,8 +38,13 @@ class Wget < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --with-ssl=openssl
-      --with-libssl-prefix=#{Formula["openssl"].opt_prefix}
     ]
+
+    if build.with? "libressl"
+      args << "--with-libssl-prefix=#{Formula["libressl"].opt_prefix}"
+    else
+      args << "--with-libssl-prefix=#{Formula["openssl"].opt_prefix}"
+    end
 
     args << "--disable-debug" if build.without? "debug"
     args << "--disable-iri" if build.without? "iri"
@@ -50,6 +56,6 @@ class Wget < Formula
   end
 
   test do
-    system "#{bin}/wget", "-O", "-", "www.google.com"
+    system bin/"wget", "-O", "-", "https://google.com"
   end
 end
