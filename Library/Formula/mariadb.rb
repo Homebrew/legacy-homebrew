@@ -142,6 +142,23 @@ class Mariadb < Formula
     end
 
     bin.install_symlink prefix/"support-files/mysql.server"
+
+    if build.devel?
+      # Move sourced non-executable out of bin into libexec
+      libexec.mkpath
+      libexec.install "#{bin}/wsrep_sst_common"
+      # Fix up references to wsrep_sst_common
+      %W[
+        wsrep_sst_mysqldump
+        wsrep_sst_rsync
+        wsrep_sst_xtrabackup
+        wsrep_sst_xtrabackup-v2
+      ].each do |f|
+        inreplace "#{bin}/#{f}" do |s|
+          s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
+        end
+      end
+    end
   end
 
   def post_install
