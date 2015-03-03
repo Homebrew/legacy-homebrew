@@ -7,10 +7,9 @@ class Libvorbis < Formula
 
   bottle do
     cellar :any
-    sha1 "d782a644646132fe3c583afc4db34a681a13f904" => :yosemite
-    sha1 "5888cafaeb4bb6001a24ceab46d993f104b0adc3" => :mavericks
-    sha1 "72fe81e0d9b761954c059e6a5bdd73379eecc33e" => :mountain_lion
-    sha1 "49865744038d60add35f19e123a43c3cce6b30f8" => :lion
+    sha1 "241550d9dc1c52eecfe2ca63d8609c1e8cf4d5fb" => :yosemite
+    sha1 "b216293debbca8baa7bfa848b81cb07e664be847" => :mavericks
+    sha1 "44ac5cf5991f063d5ed105379fceb84cd1ef8330" => :mountain_lion
   end
 
   head do
