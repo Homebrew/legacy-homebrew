@@ -1,5 +1,3 @@
-require "formula"
-
 class Run < Formula
   homepage "http://runscripts.org"
   url "https://github.com/runscripts/run/archive/0.3.6.tar.gz"
