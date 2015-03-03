@@ -16,6 +16,6 @@ class Run < Formula
   end
 
   test do
-    system "#{bin}/run", "--help"
+    system "#{bin}/run", "pt-summary"
   end
 end
