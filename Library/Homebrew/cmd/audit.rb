@@ -202,6 +202,10 @@ class FormulaAuditor
     if text =~ /JAVA_HOME/i && !formula.requirements.map(&:class).include?(JavaDependency)
       problem "Use `depends_on :java` to set JAVA_HOME"
     end
+
+    if formula.class < AmazonWebServicesFormula && !formula.requirements.map(&:class).include?(JavaDependency)
+      problem "AmazonWebServicesFormula requires `depends_on :java`"
+    end
   end
 
   def audit_conflicts

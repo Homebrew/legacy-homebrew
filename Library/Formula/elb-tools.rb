@@ -5,14 +5,13 @@ class ElbTools < AmazonWebServicesFormula
   sha1 "976f885c8a437183b2bb0c8127375e5f6371f498"
 
   depends_on "ec2-api-tools"
+  depends_on :java
 
-  def caveats
-    standard_instructions "AWS_ELB_HOME"
+  def install
+    standard_install :env => { :AWS_ELB_HOME => libexec }
   end
 
   test do
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
-    ENV["AWS_ELB_HOME"] = libexec
     assert_match version.to_s, shell_output("#{bin}/elb-version")
   end
 end
