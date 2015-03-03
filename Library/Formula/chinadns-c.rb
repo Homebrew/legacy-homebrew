@@ -1,7 +1,7 @@
 class ChinadnsC < Formula
   homepage "https://github.com/clowwindy/ChinaDNS-C"
-  url "https://github.com/clowwindy/ChinaDNS/releases/download/1.2.2/chinadns-1.2.2.tar.gz"
-  sha1 "6498dacfce023d56699f80bcf1fed9fd9eda99d9"
+  url "https://github.com/clowwindy/ChinaDNS/releases/download/1.3.0/chinadns-1.3.0.tar.gz"
+  sha1 "0877eed8bb385ca72cede3b3fca35f5d5e40e999"
 
   bottle do
     cellar :any
