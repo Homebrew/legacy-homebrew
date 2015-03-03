@@ -3,6 +3,13 @@ class Nu < Formula
   url 'https://github.com/timburks/nu/archive/v2.1.1.tar.gz'
   sha1 'ca0f9bbd5bbdb8528be516325f274d07d4be54bf'
 
+  bottle do
+    cellar :any
+    sha1 "b5abfa521c0983c057820e51e6edad1d2e26c79e" => :yosemite
+    sha1 "6f3cc8067845537ef5da9c7b702bba21c61dd86d" => :mavericks
+    sha1 "4d21aa4cbc078e3d6d052f65ec9eef3b43f34e64" => :mountain_lion
+  end
+
   depends_on :macos => :lion
   depends_on 'pcre'
 
