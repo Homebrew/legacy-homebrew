@@ -1,10 +1,8 @@
-require 'formula'
-
 class Xctool < Formula
-  homepage 'https://github.com/facebook/xctool'
-  url 'https://github.com/facebook/xctool/archive/v0.2.2.tar.gz'
-  sha1 '7c1f5610d0543a2a93b87aeebd7dfb642d91d50d'
-  head 'https://github.com/facebook/xctool.git'
+  homepage "https://github.com/facebook/xctool"
+  url "https://github.com/facebook/xctool/archive/v0.2.3.tar.gz"
+  sha256 "06415d901f05a469bfe63c07e1445d400a17702cec5abd0251adff24b663bbb8"
+  head "https://github.com/facebook/xctool.git"
 
   bottle do
     cellar :any
