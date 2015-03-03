@@ -1,5 +1,3 @@
-require 'formula'
-
 class Nu < Formula
   homepage 'http://programming.nu'
   url 'https://github.com/timburks/nu/archive/v2.1.1.tar.gz'
@@ -57,5 +55,9 @@ EOS
       EOS
     end
     return nil
+  end
+
+  test do
+    system bin/"nush", "-e", '(puts "Everything old is Nu again.")'
   end
 end
