@@ -46,6 +46,6 @@ class Libharu < Formula
       }
     EOS
     system ENV.cc, "test.c", "-lhpdf", "-lz", "-o", "test"
-    shell_output("./test")
+    system "./test"
   end
 end
