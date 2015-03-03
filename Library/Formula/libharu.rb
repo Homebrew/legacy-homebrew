@@ -12,6 +12,7 @@ class Libharu < Formula
     sha1 "0a20c683544726d870f53c005f79a730b1effffe" => :mountain_lion
   end
 
+  depends_on "automake" => :build
   depends_on "libpng"
 
   def install
