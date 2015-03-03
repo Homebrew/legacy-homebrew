@@ -3,7 +3,6 @@ class Libharu < Formula
   url "https://github.com/libharu/libharu/archive/RELEASE_2_3_0.tar.gz"
   sha1 "434177d4baaf2a37b2d2d16467dd786961919e0d"
   head "https://github.com/libharu/libharu.git"
-  revision 1
 
   bottle do
     cellar :any
@@ -47,5 +46,6 @@ class Libharu < Formula
       }
     EOS
     system ENV.cc, "test.c", "-lhpdf", "-lz", "-o", "test"
+    shell_output("./test")
   end
 end
