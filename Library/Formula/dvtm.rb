@@ -6,9 +6,9 @@ class Dvtm < Formula
 
   bottle do
     cellar :any
-    sha1 "5f90807a984ea18940aa62b31fccf1d5360fd904" => :yosemite
-    sha1 "0cc466200f2eb56604e6222055d3860dc66804e1" => :mavericks
-    sha1 "55a10e62092fed633e9252d07134a7cad1df8217" => :mountain_lion
+    sha1 "98ec8e4a27a05b0e4fca36b938d40cb77eeb6745" => :yosemite
+    sha1 "8d6cd0a89a131cc77f1ef6886247cf8f8b21e5ec" => :mavericks
+    sha1 "5a41d7afa914e09c1f8fe51ed19edc12a07f44e0" => :mountain_lion
   end
 
   def install
