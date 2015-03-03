@@ -4,12 +4,36 @@ class Redir < Formula
   version "2.2.1_9"
   sha1 "84ae75104d79432bbc15f67e4dc2980e0912b2b6"
 
-  depends_on "cmake" => :build
-
   def install
     system "make"
     system "install -d #{prefix}/bin #{man}/man1"
     system "install redir #{prefix}/bin/redir"
     system "install redir.man #{man}/man1/redir.1"
+  end
+
+  test do
+    redir_pid = fork do
+      exec "#{bin}/redir", "--cport=12345", "--lport=54321"
+    end
+    Process.detach(redir_pid)
+
+    nc_pid = fork do
+      exec "nc -l 12345"
+    end
+
+    # Give time to processes start
+    sleep(1)
+
+    begin
+      # Check if the process is running
+      system "kill -0 #{redir_pid}"
+
+      # Check if the port redirect works
+      system "nc -z localhost 54321"
+    ensure
+      Process.kill("TERM", redir_pid)
+      Process.kill("TERM", nc_pid)
+      Process.wait(nc_pid)
+    end
   end
 end
