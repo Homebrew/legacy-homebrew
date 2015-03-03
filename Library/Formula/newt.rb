@@ -19,7 +19,7 @@ class Newt < Formula
   patch :p0 do
     url "https://trac.macports.org/export/132914/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff"
     sha1 "f366a650ed100317344a3e7f49981a6dca1f4889"
-  end
+  end if OS.mac?
 
   def install
     args = ["--prefix=#{prefix}", "--without-tcl"]
@@ -36,7 +36,7 @@ class Newt < Formula
       # https://bugzilla.redhat.com/show_bug.cgi?id=1192286
       s.gsub! "`$$pyconfig --ldflags`", '"-undefined dynamic_lookup"'
       s.gsub! "`$$pyconfig --libs`", '""'
-    end
+    end if OS.mac?
 
     system "./configure", *args
     system "make", "install"
