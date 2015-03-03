@@ -5,6 +5,13 @@ class Peco < Formula
   url "https://github.com/peco/peco/archive/v0.2.12.tar.gz"
   sha1 "4f5caf6eab2f7c08191939dec7543afc32a6ddde"
 
+  bottle do
+    cellar :any
+    sha1 "c266e3919d01293aedfc7f4ce459be76ccacd954" => :yosemite
+    sha1 "9374ae50643d4b8b0e1d09c4b2076e5d3ee09355" => :mavericks
+    sha1 "a8e68353239ec1b48866f820b8e3c7915b6b5ec9" => :mountain_lion
+  end
+
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
       :revision => "5e118789801496c93ba210d34ef1f2ce5a9173bd"
