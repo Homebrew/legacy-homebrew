@@ -14,7 +14,7 @@ class Mesos < Formula
   depends_on "maven" => :build
   depends_on :apr => :build
   depends_on "subversion"
-  
+
 
   needs :cxx11
 
@@ -25,7 +25,7 @@ class Mesos < Formula
     inreplace "src/python/native/setup.py.in",
               "import ext_modules",
               "import os; os.environ['CC'] = '#{ENV.cxx}'\n\\0"
-          
+
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
