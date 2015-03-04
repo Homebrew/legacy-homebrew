@@ -1,8 +1,8 @@
 class Libressl < Formula
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.3.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.3.tar.gz"
-  sha256 "eb2f370971408fb10af6453e556465c8eee728ac333bf1eb47ec1a5112304f7c"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.4.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.4.tar.gz"
+  sha256 "e8e08535928774119a979412ee8e307444b7a1a42c8c47ac06ee09423ca9a04e"
 
   option "without-libtls", "Build without libtls"
 
@@ -64,7 +64,7 @@ class Libressl < Formula
   test do
     (testpath/"testfile.txt").write("This is a test file")
     expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
-    system "#{bin}/openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
+    system bin/"openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
     open("checksum.txt") do |f|
       checksum = f.read(100).split("=").last.strip
       assert_equal checksum, expected_checksum
