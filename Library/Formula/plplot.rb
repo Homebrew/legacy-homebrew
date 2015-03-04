@@ -5,6 +5,12 @@ class Plplot < Formula
   url 'https://downloads.sourceforge.net/project/plplot/plplot/5.10.0%20Source/plplot-5.10.0.tar.gz'
   sha1 'ea962cb0138c9b4cbf97ecab1fac1919ea0f939f'
 
+  bottle do
+    sha1 "1087a7643567d02bf7fe500726367539738856ab" => :yosemite
+    sha1 "63c644192722135b5239beb32b7abc6e221511a7" => :mavericks
+    sha1 "ee91aff30b0de02b6c8b48c1d68c1d9ebfc3155a" => :mountain_lion
+  end
+
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
   depends_on 'pango'
