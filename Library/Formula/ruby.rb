@@ -1,9 +1,7 @@
-require "formula"
-
 class Ruby < Formula
   homepage "https://www.ruby-lang.org/"
-  url "http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.bz2"
-  sha256 "1c031137999f832f86be366a71155113675b72420830ce432b777a0ff4942955"
+  url "http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.1.tar.bz2"
+  sha256 "4e5676073246b7ade207be3e80a930567a88100513591a0f19fc38e247370065"
 
   bottle do
     sha1 "8591ec9c138a4850a030f78d5ae3e4facc2ad6ba" => :yosemite
