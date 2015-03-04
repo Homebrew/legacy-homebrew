@@ -2,8 +2,8 @@ require 'formula'
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/files/archive/scala-2.11.5.tgz'
-  sha1 '10820b7d65727fe8d3d67855ef603c425cf65a4e'
+  url 'http://www.scala-lang.org/files/archive/scala-2.11.6.tgz'
+  sha1 'f30ff4104b0fed5c4beca2b599b8f67e66b7f4e6'
 
   bottle do
     cellar :any
@@ -16,13 +16,13 @@ class Scala < Formula
   option 'with-src', 'Also install sources for IDE support'
 
   resource 'docs' do
-    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.5.zip'
-    sha1 '4a6856a822fbdda7b76674e999a70666d0cdfc3a'
+    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.6.zip'
+    sha1 'b646de99bb38de779bdc65ce0e48c727da4778f7'
   end
 
   resource 'src' do
-    url 'https://github.com/scala/scala/archive/v2.11.5.tar.gz'
-    sha1 '065fbaa0b982256c84df20d444dff03368332b38'
+    url 'https://github.com/scala/scala/archive/v2.11.6.tar.gz'
+    sha1 '96911a7f5faf6768744322be59e6eb7df4a3af53'
   end
 
   resource 'completion' do
