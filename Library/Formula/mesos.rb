@@ -19,6 +19,13 @@ class Mesos < Formula
   needs :cxx11
 
   def install
+    # work around distutils abusing CC instead of using CXX
+    # https://issues.apache.org/jira/browse/MESOS-799
+    # https://github.com/Homebrew/homebrew/pull/37087
+    inreplace "src/python/native/setup.py.in",
+              "import ext_modules",
+              "import os; os.environ['CC'] = '#{ENV.cxx}'\n\\0"
+          
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
