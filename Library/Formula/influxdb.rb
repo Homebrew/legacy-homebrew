@@ -14,9 +14,9 @@ class Influxdb < Formula
   end
 
   devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc5.tar.gz"
-    sha1 "3aa889256f58253ee65ef276a7f375ff391f6482"
-    version "0.9.0-rc5"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc7.tar.gz"
+    sha1 "19de28078bbfeed81c89243b75de6b1f2b6e2f34"
+    version "0.9.0-rc7"
   end
 
   depends_on "go" => :build
@@ -62,10 +62,6 @@ class Influxdb < Formula
     go_resource "code.google.com/p/go-uuid" do
       url "https://code.google.com/p/go-uuid/", :revision => "35bc42037350", :using => :hg
     end
-
-    go_resource "code.google.com/p/log4go" do
-      url "https://code.google.com/p/log4go/", :revision => "c3294304d93f", :using => :hg
-    end
   end
 
   def install
@@ -104,7 +100,7 @@ class Influxdb < Formula
       Language::Go.stage_deps resources, buildpath/"src"
 
       cd influxdb_path do
-        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc5 -X main.commit 487cd2a1c19f201e329cba93a7b49204f8684b18", "./..."
+        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc7 -X main.commit 4c5beb96edecc468d8c4e7472dc515d90d97e089", "./..."
         system "go", "install", "./..."
       end
 

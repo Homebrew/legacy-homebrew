@@ -1,18 +1,34 @@
-class AwsElasticache < AmazonWebServicesFormula
+class AwsElasticache < Formula
   homepage "https://aws.amazon.com/developertools/2310261897259567"
   url "https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2014-09-30-1.12.000.zip"
   version "1.12.000"
   sha1 "aeed292beada4aabe7d88562af0f1353556c0767"
 
   depends_on "ec2-api-tools"
+  depends_on :java
+
+  def install
+    env = Language::Java.java_home_env.merge(:AWS_ELASTICACHE_HOME => libexec)
+    rm Dir["bin/*.cmd"] # Remove Windows versions
+    libexec.install Dir["*"]
+    Pathname.glob("#{libexec}/bin/*") do |file|
+      next if file.directory?
+      basename = file.basename
+      next if basename.to_s == "service"
+      (bin/basename).write_env_script file, env
+    end
+  end
 
   def caveats
-    standard_instructions "AWS_ELASTICACHE_HOME"
+    <<-EOS.undent
+      Before you can use these tools you must export some variables to your $SHELL.
+        export AWS_ACCESS_KEY="<Your AWS Access ID>"
+        export AWS_SECRET_KEY="<Your AWS Secret Key>"
+        export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
+    EOS
   end
 
   test do
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
-    ENV["AWS_ELASTICACHE_HOME"] = libexec
     system "#{bin}/elasticache-version"
   end
 end
