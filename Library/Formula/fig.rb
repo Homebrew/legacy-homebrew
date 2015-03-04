@@ -68,6 +68,8 @@ class Fig < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
+    bash_completion.install "contrib/completion/bash/docker-compose"
+
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     ln_s bin/"docker-compose", bin/"fig"
