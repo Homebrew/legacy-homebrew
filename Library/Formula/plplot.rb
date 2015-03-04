@@ -12,6 +12,8 @@ class Plplot < Formula
 
   option 'with-java'
 
+  # patch taken from upstream http://sourceforge.net/p/plplot/plplot/ci/772223c638ecf5dc740c9f3dd7a6883c6d2c83d2
+  # fixes https://github.com/Homebrew/homebrew/issues/36569
   patch :DATA
 
   def install
