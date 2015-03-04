@@ -2,8 +2,8 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.59.tar.gz'
-  sha1 '5bbbd7577fbcf59d5e8e18ba61e265b89b98f0d0'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.1.tar.gz'
+  sha1 'fb9915e854e91aebc8a16bf9429ea44515cca585'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
@@ -22,6 +22,8 @@ class Passenger < Formula
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
+
+    (libexec/"download_cache").mkpath
 
     # Fixes https://github.com/phusion/passenger/issues/1288
     rm_rf "buildout/libev"
