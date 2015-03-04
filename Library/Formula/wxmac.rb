@@ -74,14 +74,14 @@ class Wxmac < Formula
     args << "--enable-stl" if build.with? "stl"
 
     system "./configure", *args
-    system "make","install"
+    system "make", "install"
 
     if build.with? "static"
       args.delete("--enable-shared")
       args << "--disable-shared"
 
       system "./configure", *args
-      system "make","install"
+      system "make", "install"
     end
   end
 end
