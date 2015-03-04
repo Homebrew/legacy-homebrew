@@ -173,7 +173,8 @@ class Gcc < Formula
       end
 
       if OS.linux?
-        # Create gcc and g++ symlinks
+        # Create cpp, gcc and g++ symlinks
+        bin.install_symlink "cpp-#{version_suffix}" => "cpp"
         bin.install_symlink "gcc-#{version_suffix}" => "gcc"
         bin.install_symlink "g++-#{version_suffix}" => "g++"
       end
