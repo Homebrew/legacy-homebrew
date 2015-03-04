@@ -26,12 +26,17 @@ See [Troubleshooting Tips](doc/troubleshooting.md).
 | 0.3.1       | 0.9.1         |
 | 0.4.0       | 1.0.2         |
 | 0.4.1       | 1.1.0         |
+| 0.5.0       | 1.2.0         |
 
 For release notes, look in the `notes/` directory.  They should also be up on [ls.implicit.ly](http://ls.implicit.ly/spark-jobserver/spark-jobserver).
 
 ## Quick start / development mode
 
 You need to have [SBT](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html) installed.
+
+To set the current version, do something like this:
+
+    export VER=`sbt version | tail -1 | cut -f2`
 
 From SBT shell, simply type "reStart".  This uses a default configuration file.  An optional argument is a
 path to an alternative config file.  You can also specify JVM parameters after "---".  Including all the
@@ -55,7 +60,7 @@ Then go ahead and start the job server using the instructions above.
 
 Let's upload the jar:
 
-    curl --data-binary @job-server-tests/target/job-server-tests-0.4.1.jar localhost:8090/jars/test
+    curl --data-binary @job-server-tests/target/job-server-tests-$VER.jar localhost:8090/jars/test
     OK⏎
 
 The above jar is uploaded as app `test`.  Next, let's start an ad-hoc word count job, meaning that the job
@@ -121,7 +126,7 @@ In your `build.sbt`, add this to use the job server jar:
 
 	resolvers += "Job Server Bintray" at "https://dl.bintray.com/spark-jobserver/maven"
 
-	libraryDependencies += "spark.jobserver" % "job-server-api" % "0.4.1" % "provided"
+	libraryDependencies += "spark.jobserver" % "job-server-api" % "0.5.0" % "provided"
 
 For most use cases it's better to have the dependencies be "provided" because you don't want SBT assembly to include the whole job server jar.
 
