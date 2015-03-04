@@ -166,11 +166,9 @@ class BuildError < RuntimeError
       require 'cmd/config'
       require 'cmd/--env'
 
-      unless formula.core_formula?
-        ohai "Formula"
-        puts "Tap: #{formula.tap}"
-        puts "Path: #{formula.path}"
-      end
+      ohai "Formula"
+      puts "Tap: #{formula.tap}" if formula.tap?
+      puts "Path: #{formula.path}"
       ohai "Configuration"
       Homebrew.dump_verbose_config
       ohai "ENV"
