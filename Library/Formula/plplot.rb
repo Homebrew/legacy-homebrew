@@ -12,11 +12,14 @@ class Plplot < Formula
 
   option 'with-java'
 
+  patch :DATA
+
   def install
     args = std_cmake_args
     args << '-DPLD_wxwidgets=OFF' << '-DENABLE_wxwidgets=OFF'
     args << '-DENABLE_java=OFF' if build.without? 'java'
     args << '-DPLD_xcairo=OFF' if build.without? 'x11'
+    args << '-DENABLE_ada=OFF'
     mkdir "plplot-build" do
       system "cmake", "..", *args
       system "make"
@@ -24,3 +27,28 @@ class Plplot < Formula
     end
   end
 end
+__END__
+--- a/cmake/modules/pkg-config.cmake
++++ b/cmake/modules/pkg-config.cmake
+@@ -1,6 +1,6 @@
+ # cmake/modules/pkg-config.cmake
+ #
+-# Copyright (C) 2006  Alan W. Irwin
++# Copyright (C) 2006-2015 Alan W. Irwin
+ #
+ # This file is part of PLplot.
+ #
+@@ -94,7 +94,12 @@
+     set(_xprefix ${_prefix})
+   endif(FORCE_EXTERNAL_STATIC)
+   
+-  _pkg_check_modules_internal(0 0 ${_prefix} "${_package}")
++  if(CMAKE_VERSION VERSION_LESS "3.1")
++    _pkg_check_modules_internal(0 0 ${_prefix} "${_package}")
++  else(CMAKE_VERSION VERSION_LESS "3.1")
++    _pkg_check_modules_internal(0 0 0 0 ${_prefix} "${_package}")
++  endif(CMAKE_VERSION VERSION_LESS "3.1")
++    
+   if(${_prefix}_FOUND)
+     cmake_link_flags(${_link_FLAGS} "${${_xprefix}_LDFLAGS}")
+     # If libraries cannot be not found, then that is equivalent to whole
