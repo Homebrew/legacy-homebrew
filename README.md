@@ -6,6 +6,14 @@ It was originally started at [Ooyala](http://www.ooyala.com), but this is now th
 
 See [Troubleshooting Tips](doc/troubleshooting.md).
 
+## Users
+
+(Please add yourself to this list!)
+
+- Ooyala
+- Netflix
+- Avenida.com
+
 ## Features
 
 - *"Spark as a Service"*: Simple REST interface for all aspects of job, context management
