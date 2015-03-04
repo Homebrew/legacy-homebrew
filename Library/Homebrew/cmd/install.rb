@@ -28,7 +28,7 @@ module Homebrew
     begin
       formulae = []
 
-      if ARGV.casks.any?
+      if OS.mac? && ARGV.casks.any?
         brew_cask = Formulary.factory("brew-cask")
         install_formula(brew_cask) unless brew_cask.installed?
 

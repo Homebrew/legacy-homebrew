@@ -28,7 +28,7 @@ class Requirement
   # The message to show when the requirement is not met.
   def message
     s = ""
-    if cask
+    if OS.mac? && cask
       s +=  <<-EOS.undent
 
         You can install with Homebrew Cask:
