@@ -19,6 +19,8 @@ class Cppcheck < Formula
   depends_on "pcre" if build.with? "rules"
   depends_on "qt" if build.with? "gui"
 
+  patch :DATA
+
   def install
     # Man pages aren't installed as they require docbook schemas.
 
@@ -36,12 +38,8 @@ class Cppcheck < Formula
 
     if build.with? "gui"
       cd "gui" do
-        # fix make not finding cfg directory:
-        # https://github.com/Homebrew/homebrew/issues/27756
-        inreplace "gui.qrc", "../cfg/", "#{prefix}/cfg/"
-
         if build.with? "rules"
-          system "qmake"
+          system "qmake", "HAVE_RULES=yes"
         else
           system "qmake", "HAVE_RULES=no"
         end
@@ -66,3 +64,30 @@ class Cppcheck < Formula
     system "#{bin}/cppcheck", "test.cpp"
   end
 end
+__END__
+diff --git a/gui/gui.pro b/gui/gui.pro
+index 880b5c7..6dd82c3 100644
+--- a/gui/gui.pro
++++ b/gui/gui.pro
+@@ -146,6 +146,4 @@ win32 {
+     LIBS += -lshlwapi
+ }
+ 
+-contains(QMAKE_CC, gcc) {
+-    QMAKE_CXXFLAGS += -std=c++0x
+-}
++QMAKE_CXXFLAGS += -std=c++0x
+diff --git a/lib/tokenize.cpp b/lib/tokenize.cpp
+index 0833b59..1f608b3 100644
+--- a/lib/tokenize.cpp
++++ b/lib/tokenize.cpp
+@@ -2758,7 +2758,7 @@ void Tokenizer::setVarId()
+     }
+ 
+     // class members..
+-    std::map<std::string, std::map<std::string, unsigned int>> varlist;
++    std::map<std::string, std::map<std::string, unsigned int> > varlist;
+     for (Token *tok = list.front(); tok; tok = tok->next()) {
+         if (Token::Match(tok, "namespace|class|struct %var% {|:")) {
+             const std::string &classname(tok->next()->str());
+
