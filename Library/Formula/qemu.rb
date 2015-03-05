@@ -22,6 +22,14 @@ class Qemu < Formula
   depends_on "sdl" => :optional
   depends_on "gtk+" => :optional
 
+  option "with-32-nics", "Increase the max nics to 32"
+  
+  def patches
+    if build.include? 'with-32-nics'
+      return :DATA
+    end
+  end
+  
   def install
     args = %W[
       --prefix=#{prefix}
@@ -39,3 +47,18 @@ class Qemu < Formula
     system "make", "V=1", "install"
   end
 end
+
+__END__
+diff --git a/include/net/net.h b/include/net/net.h
+index 008d610..20cf9a6 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -160,7 +160,7 @@ void do_info_network(Monitor *mon, const QDict *qdict);
+ 
+ /* NIC info */
+ 
+-#define MAX_NICS 8
++#define MAX_NICS 32
+ 
+ struct NICInfo {
+     MACAddr macaddr;
