@@ -3,7 +3,7 @@ class Ffmpeg < Formula
   url "https://www.ffmpeg.org/releases/ffmpeg-2.5.4.tar.bz2"
   sha1 "e7d0bab14e82876762531a883c6b48918631d48c"
 
-  head "git://git.videolan.org/ffmpeg.git"
+  head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
     sha1 "1d2f2630e86a06519f36263914ab79dc2f2fef72" => :yosemite
@@ -125,7 +125,7 @@ class Ffmpeg < Formula
     end
 
     # A bug in a dispatch header on 10.10, included via CoreFoundation,
-    # prevents GCC from building VDA support. GCC has no probles on
+    # prevents GCC from building VDA support. GCC has no problems on
     # 10.9 and earlier.
     # See: https://github.com/Homebrew/homebrew/issues/33741
     if MacOS.version < :yosemite || ENV.compiler == :clang
