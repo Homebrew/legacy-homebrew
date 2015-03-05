@@ -22,7 +22,8 @@ class Libmagic < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-fsect-man5"
+                          "--enable-fsect-man5",
+                          "--enable-static"
     system "make", "install"
 
     if build.with? "python"
