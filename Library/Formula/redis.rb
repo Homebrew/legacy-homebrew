@@ -20,11 +20,8 @@ class Redis < Formula
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = "-arch #{MacOS.preferred_arch}"
 
-    # Head and stable have different code layouts
-    src = (buildpath/"src/Makefile").exist? ? buildpath/"src" : buildpath
-    system "make", "-C", src, "CC=#{ENV.cc}"
+    system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"
 
-    %w[benchmark cli server check-dump check-aof sentinel].each { |p| bin.install src/"redis-#{p}" }
     %w[run db/redis log].each { |p| (var+p).mkpath }
 
     # Fix up default conf file to match our paths
