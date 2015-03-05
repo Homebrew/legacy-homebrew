@@ -2,8 +2,8 @@ require "language/go"
 
 class Gauge < Formula
   homepage "http://getgauge.io"
-  url "https://github.com/getgauge/gauge/archive/v0.0.4.tar.gz"
-  sha1 "d0bbfd4c782bccca5fbf3f8fa9ada71e1723a5eb"
+  url "https://github.com/getgauge/gauge/archive/v0.0.5.tar.gz"
+  sha1 "4f0e51963f40d0a512f8fbd30b12a42d959abc25"
 
   bottle do
     cellar :any
@@ -21,7 +21,7 @@ class Gauge < Formula
 
   go_resource "github.com/getgauge/common" do
     url "https://github.com/getgauge/common.git",
-        :revision => "a947acc34020882e7a00d6366a66b24ec7f3f578"
+        :revision => "44ddedf61ebcff8e099aa534616676e43be3ed18"
   end
 
   go_resource "github.com/getgauge/mflag" do
