@@ -31,9 +31,13 @@ module Homebrew
       if ARGV.casks.any?
         brew_cask = Formulary.factory("brew-cask")
         install_formula(brew_cask) unless brew_cask.installed?
+        args = []
+        args << "--force" if ARGV.force?
+        args << "--debug" if ARGV.debug?
+        args << "--verbose" if ARGV.verbose?
 
         ARGV.casks.each do |c|
-          cmd = "brew", "cask", "install", c
+          cmd = "brew", "cask", "install", c, *args
           ohai cmd.join " "
           system(*cmd)
         end
