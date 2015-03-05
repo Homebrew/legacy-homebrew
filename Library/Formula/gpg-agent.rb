@@ -4,12 +4,12 @@ class GpgAgent < Formula
   mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
   sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
 
-  # bottle do
-  #   revision 1
-  #   sha1 "d35632224c39ebf9b1bba4cebcbea4a97f9bfc43" => :yosemite
-  #   sha1 "c9048d0f7dd157b0a6a24d725aac433f7a692b1f" => :mavericks
-  #   sha1 "7f39030a3d21587c6844209caa7286026de2e28e" => :mountain_lion
-  # end
+  bottle do
+    revision 1
+    sha1 "d35632224c39ebf9b1bba4cebcbea4a97f9bfc43" => :yosemite
+    sha1 "c9048d0f7dd157b0a6a24d725aac433f7a692b1f" => :mavericks
+    sha1 "7f39030a3d21587c6844209caa7286026de2e28e" => :mountain_lion
+  end
 
   depends_on "libgpg-error"
   depends_on "libgcrypt"
