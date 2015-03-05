@@ -1,8 +1,7 @@
 class Cyassl < Formula
   homepage "http://yassl.com/yaSSL/Products-cyassl.html"
-  url "https://github.com/cyassl/cyassl/archive/v3.3.0.tar.gz"
-  sha256 "585ca95b23a44da2d0e042bd0aef95ce770cd541028b76dc45f29ab62ad3ad4a"
-
+  url "https://github.com/cyassl/cyassl/archive/v3.3.2.tar.gz"
+  sha256 "737a5a4967280b96c775dcae0a5bcae88cbb0da220008fbbd39fd2fa914df8cd"
   head "https://github.com/cyassl/cyassl.git"
 
   bottle do
