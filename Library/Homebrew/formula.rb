@@ -1009,4 +1009,3 @@ class Formula
   end
 end
 
-require 'formula_specialties'
