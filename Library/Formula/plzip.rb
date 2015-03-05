@@ -16,6 +16,12 @@ class Plzip < Formula
     version "1.4-pre1"
   end
 
+  devel do
+    url "http://download.savannah.gnu.org/releases/lzip/plzip/plzip-1.4-pre1.tar.gz"
+    sha1 "817b9d1635be6db35907733f7eedcd2b7642ccdd"
+    version "1.4-pre1"
+  end
+
   depends_on "lzlib"
 
   def install
