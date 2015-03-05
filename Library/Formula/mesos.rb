@@ -30,6 +30,7 @@ class Mesos < Formula
             "--disable-debug",
             "--disable-dependency-tracking",
             "--disable-silent-rules",
+            "--without-python",
             "--with-svn=#{Formula["subversion"].opt_prefix}"
            ]
 
