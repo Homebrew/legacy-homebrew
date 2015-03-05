@@ -1,10 +1,10 @@
 require 'formula'
 
 class PerconaServer < Formula
-  homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.22-72.0.tar.gz'
-  version '5.6.22-72.0'
-  sha1 'ff65416c0c053c251bf091fa4a9db4723790c0a1'
+  homepage 'https://www.percona.com'
+  url 'https://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.23-72.1.tar.gz'
+  version '5.6.23-72.1'
+  sha256 '5382630b98dd05f72e372ede5535ddcad2e389b594311a69f03a3d95f68d4907'
 
   bottle do
     sha1 "8d7a3c0c83eccc94c0a89087b520a9df3c573572" => :yosemite
