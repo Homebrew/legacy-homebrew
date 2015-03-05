@@ -1,8 +1,8 @@
 class GpgAgent < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
 
   bottle do
     revision 1
@@ -52,6 +52,6 @@ index c022805..96ea7ed 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.26'
- PACKAGE_STRING='gnupg 2.0.26'
+ PACKAGE_VERSION='2.0.27'
+ PACKAGE_STRING='gnupg 2.0.27'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
