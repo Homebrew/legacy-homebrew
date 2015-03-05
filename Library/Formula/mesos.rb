@@ -139,6 +139,11 @@ class Mesos < Formula
     Process.kill("TERM", master)
     Process.kill("TERM", slave)
     assert File.exist?("#{testpath}/executed")
+
+    user_site = Language::Python.user_site_packages("python")
+    mkdir_p user_site
+    pth_contents = "import site; site.addsitedir('#{Language::Python.homebrew_site_packages}')\n"
+    (user_site/"homebrew.pth").atomic_write pth_contents
     system "python", "-c", "import mesos.native"
   end
 end
