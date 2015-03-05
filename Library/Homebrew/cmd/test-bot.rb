@@ -365,12 +365,12 @@ module Homebrew
       end
 
       test "brew", "uses", canonical_formula_name
-      dependencies = `brew deps #{canonical_formula_name}`.split("\n")
-      dependencies -= `brew list`.split("\n")
+      dependencies = Utils.popen_read("brew", "deps", canonical_formula_name).split("\n")
+      dependencies -= Utils.popen_read("brew", "list").split("\n")
       unchanged_dependencies = dependencies - @formulae
       changed_dependences = dependencies - unchanged_dependencies
 
-      dependents = `brew uses --skip-build --skip-optional #{canonical_formula_name}`.split("\n")
+      dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
       dependents -= @formulae
       dependents = dependents.map {|d| Formulary.factory(d)}
 
@@ -573,7 +573,7 @@ module Homebrew
       non_dependencies = []
 
       @formulae.each do |formula|
-        formula_dependencies = `brew deps #{formula}`.split("\n")
+        formula_dependencies = Utils.popen_read("brew", "deps", formula).split("\n")
         unchanged_dependencies = formula_dependencies - @formulae
         changed_dependences = formula_dependencies - unchanged_dependencies
         changed_dependences.each do |changed_formula|
