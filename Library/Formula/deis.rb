@@ -1,6 +1,6 @@
 class Deis < Formula
   homepage "http://deis.io"
-  url "https://github.com/deis/deis/archive/v1.4.0.tar.gz"
+  url "https://github.com/deis/deis/archive/v1.4.1.tar.gz"
   sha1 "96bb7bb71bfe32cfb5e148ccb9deabd621ddbcd4"
 
   bottle do
