@@ -11,12 +11,11 @@ class Activemq < Formula
     prefix.install_metafiles
     libexec.install Dir["*"]
 
-    bin.write_exec_script libexec/"bin/activemq"
-    bin.write_exec_script libexec/"bin/activemq-admin"
+    (bin/"activemq").write_env_script libexec/"bin/activemq", Language::Java.java_home_env("1.6+")
+    (bin/"activemq-admin").write_env_script libexec/"bin/activemq-admin", Language::Java.java_home_env("1.6+")
   end
 
   test do
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
     system "#{bin}/activemq-admin", "browse", "-h"
   end
 end

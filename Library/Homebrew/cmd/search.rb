@@ -17,7 +17,7 @@ module Homebrew
     elsif ARGV.include? '--opensuse'
       exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
     elsif ARGV.include? '--fedora'
-      exec_browser "https://admin.fedoraproject.org/pkgdb/acls/list/*#{ARGV.next}*"
+      exec_browser "https://admin.fedoraproject.org/pkgdb/packages/%2A#{ARGV.next}%2A/"
     elsif ARGV.include? '--ubuntu'
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.empty?

@@ -1,13 +1,13 @@
 class Ipsumdump < Formula
   homepage "http://www.read.seas.harvard.edu/~kohler/ipsumdump/"
-  url "http://www.read.seas.harvard.edu/~kohler/ipsumdump/ipsumdump-1.84.tar.gz"
-  sha1 "3dc3ff9d97a65be25866d624a663be91e27d8628"
+  url "http://www.read.seas.harvard.edu/~kohler/ipsumdump/ipsumdump-1.85.tar.gz"
+  sha1 "53b7be092d94c1b28817e1c6920bb70293eb60b3"
   head "https://github.com/kohler/ipsumdump.git"
 
   bottle do
-    sha1 "ffc203830f18bef05ebf053967683e05aac3367b" => :yosemite
-    sha1 "589c090e06857e09b3c4e3667f5eb7b050ff747d" => :mavericks
-    sha1 "b65adb35b7c8d36ee1ff9c187a84331ea93fad9c" => :mountain_lion
+    sha1 "5ae94f24b2a5bd37e86babecd1848ed18a8d2dcc" => :yosemite
+    sha1 "139139a0c3fcc8f0e6fdedeb396e3e65b85b758e" => :mavericks
+    sha1 "4acd0be3df8c6c81de7b9e28e20d93f84076f4fd" => :mountain_lion
   end
 
   def install

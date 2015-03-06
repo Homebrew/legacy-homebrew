@@ -1,14 +1,12 @@
 class Python3 < Formula
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tar.xz"
-  sha1 "0727d8a8498733baabe6f51632b9bab0cbaa9ada"
-  revision 1
+  url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
+  sha1 "7ca5cd664598bea96eec105aa6453223bb6b4456"
 
   bottle do
-    revision 5
-    sha1 "65ab2f902152ce86f23eecbb56d9a9fd60b3c22e" => :yosemite
-    sha1 "89ed42bd3070f1c2efca049d150b72f7f5cf3fe7" => :mavericks
-    sha1 "f2df5040f65cd509bbd33666fe09eb329d2b81bc" => :mountain_lion
+    sha1 "b8a3b54597788f38fe056c51b1de207c3e5287fb" => :yosemite
+    sha1 "b8a7e7370052734df0fe4286a4f86993745ddd12" => :mavericks
+    sha1 "c367a9fd8fb3480a3515df39a31dea70c16174d5" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
@@ -19,8 +17,10 @@ class Python3 < Formula
   end
 
   option :universal
-  option "quicktest", "Run `make quicktest` after the build"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
+  option "with-quicktest", "Run `make quicktest` after the build"
+
+  deprecated_option "quicktest" => "with-quicktest"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -35,8 +35,8 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
-    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.2.tar.gz"
+    sha1 "b36aaa86fe762eb66d2abc860405410158fadfe8"
   end
 
   resource "pip" do
@@ -44,6 +44,9 @@ class Python3 < Formula
     sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
   end
 
+  # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
+  # so we have to stop python from searching for frameworks and linking against
+  # X11.
   patch :DATA if build.with? "brewed-tk"
 
   def site_packages_cellar
@@ -100,14 +103,14 @@ class Python3 < Formula
     end
 
     # Allow sqlite3 module to load extensions: http://docs.python.org/library/sqlite3.html#f1
-    inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', 'pass') if build.with? "sqlite"
+    inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', "pass") if build.with? "sqlite"
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
     # even if homebrew is not a /usr/local/lib. Try this with:
     # `brew install enchant && pip install pyenchant`
     inreplace "./Lib/ctypes/macholib/dyld.py" do |f|
-      f.gsub! 'DEFAULT_LIBRARY_FALLBACK = [', "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
-      f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
+      f.gsub! "DEFAULT_LIBRARY_FALLBACK = [", "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
+      f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
     if build.with? "brewed-tk"
@@ -134,7 +137,7 @@ class Python3 < Formula
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
     # https://github.com/Homebrew/homebrew/issues/15943
     if OS.mac?
-      ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
+      ["Headers", "Python", "Resources"].each { |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
       rm prefix/"Frameworks/Python.framework/Versions/Current"
     end
 
@@ -197,7 +200,7 @@ class Python3 < Formula
   end
 
   def xy
-    version.to_s.slice /(3.\d)/
+    version.to_s.slice(/(3.\d)/) || "3.5"
   end
 
   def distutils_fix_superenv(args)
@@ -310,15 +313,11 @@ class Python3 < Formula
 end
 
 __END__
-# Homebrew's tcl-tk is build in a standard unix fashion (due to link errors)
-# and we have to stop python from searching for frameworks and link against
-# X11.
-
 diff --git a/setup.py b/setup.py
-index d4183d4..9f69520 100644
+index 2779658..902d0eb 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1623,9 +1623,6 @@ class PyBuildExt(build_ext):
+@@ -1699,9 +1699,6 @@ class PyBuildExt(build_ext):
          # Rather than complicate the code below, detecting and building
          # AquaTk is a separate method. Only one Tkinter will be built on
          # Darwin - either AquaTk, if it is found, or X11 based Tk.
@@ -328,7 +327,7 @@ index d4183d4..9f69520 100644
 
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
-@@ -1671,21 +1668,6 @@ class PyBuildExt(build_ext):
+@@ -1747,22 +1744,6 @@ class PyBuildExt(build_ext):
              if dir not in include_dirs:
                  include_dirs.append(dir)
 
@@ -347,10 +346,11 @@ index d4183d4..9f69520 100644
 -            # Assume default location for X11
 -            include_dirs.append('/usr/X11/include')
 -            added_lib_dirs.append('/usr/X11/lib')
-
+-
          # If Cygwin, then verify that X is installed before proceeding
          if host_platform == 'cygwin':
-@@ -1710,10 +1692,6 @@ class PyBuildExt(build_ext):
+             x11_inc = find_file('X11/Xlib.h', [], include_dirs)
+@@ -1786,10 +1767,6 @@ class PyBuildExt(build_ext):
          if host_platform in ['aix3', 'aix4']:
              libs.append('ld')
 

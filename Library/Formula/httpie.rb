@@ -1,15 +1,15 @@
 class Httpie < Formula
   homepage "https://github.com/jakubroztocil/httpie"
-  url "https://github.com/jakubroztocil/httpie/archive/0.9.1.tar.gz"
-  sha1 "00071019c28a8deefaf65eddf9248998b446cdef"
+  url "https://github.com/jakubroztocil/httpie/archive/0.9.2.tar.gz"
+  sha1 "39e9aab7f6f27973098c22c81fe5b9e7a5866a8b"
 
   head "https://github.com/jakubroztocil/httpie.git"
 
   bottle do
     cellar :any
-    sha1 "7296ccd2bbe0b894fbaa76b988af9818214efa07" => :yosemite
-    sha1 "b64215e78e7e45decae1afe172613e794a8aadf0" => :mavericks
-    sha1 "f0d29626dd8032777738c3296e9a46a005e1d76a" => :mountain_lion
+    sha1 "28655be4c5b1fc92442fc0fa200885954dcfda78" => :yosemite
+    sha1 "0c4b128c92b0db204fccad5bd9efbd96a6781817" => :mavericks
+    sha1 "388f9fdd1f34aec25131cb3d4d67a9164abef406" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -20,8 +20,8 @@ class Httpie < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.2.tar.gz"
+    sha1 "888e788f9e2343f297ae850b13f38b3b3416d3dc"
   end
 
   def install

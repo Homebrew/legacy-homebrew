@@ -1,15 +1,15 @@
 class Libressl < Formula
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.3.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.3.tar.gz"
-  sha256 "eb2f370971408fb10af6453e556465c8eee728ac333bf1eb47ec1a5112304f7c"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.4.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.4.tar.gz"
+  sha256 "e8e08535928774119a979412ee8e307444b7a1a42c8c47ac06ee09423ca9a04e"
 
   option "without-libtls", "Build without libtls"
 
   bottle do
-    sha1 "a27d907fe3d72f735b2c546fb470b5794dadb731" => :yosemite
-    sha1 "880ef498373994ac459e026d7e2e48d3145653a8" => :mavericks
-    sha1 "8ebe481e3399d1e833e293caf90bf6936a286145" => :mountain_lion
+    sha1 "f67adff1d5735453bd33dacbfdf091265faa0ca2" => :yosemite
+    sha1 "747aad9e3e402379a6b19940328b948c225f4c96" => :mavericks
+    sha1 "20bc24c3257e23b7cdb0074d8b0743146b2af1e7" => :mountain_lion
   end
 
   head do
@@ -64,7 +64,7 @@ class Libressl < Formula
   test do
     (testpath/"testfile.txt").write("This is a test file")
     expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
-    system "#{bin}/openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
+    system bin/"openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
     open("checksum.txt") do |f|
       checksum = f.read(100).split("=").last.strip
       assert_equal checksum, expected_checksum

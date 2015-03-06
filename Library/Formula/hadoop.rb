@@ -1,9 +1,10 @@
-require "formula"
-
 class Hadoop < Formula
-  homepage "http://hadoop.apache.org/"
+  homepage "https://hadoop.apache.org/"
   url "http://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz"
+  mirror "https://archive.apache.org/dist/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz"
   sha1 "5b5fb72445d2e964acaa62c60307168c009d57c5"
+
+  depends_on :java
 
   def install
     rm_f Dir["bin/*.cmd", "sbin/*.cmd", "libexec/*.cmd", "etc/hadoop/*.cmd"]
@@ -34,4 +35,8 @@ class Hadoop < Formula
       /usr/libexec/java_home
     EOS
   end if OS.mac?
+
+  test do
+    system bin/"hadoop", "fs", "-ls"
+  end
 end

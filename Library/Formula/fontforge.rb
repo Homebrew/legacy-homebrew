@@ -1,22 +1,21 @@
 class Fontforge < Formula
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/archive/20141230.tar.gz"
-  sha1 "62268018d4b0080f8b976943f36ecbeed5aa6c9a"
+  url "https://github.com/fontforge/fontforge/archive/20150228.tar.gz"
+  sha256 "5b4e66159856da0e231488f8e6d508ec158ba9cc6892ec34a491f469debedc20"
+  head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    sha1 "96155e138d5c9f0eff459f85a8ee1198fa6ffbae" => :yosemite
-    sha1 "780a877b74381ee256812406c4d68f5523631ee1" => :mavericks
-    sha1 "84b0969c5370be9a949e2c174c9a1e8735a63797" => :mountain_lion
+    sha1 "5cdcd9ec8f1679a9285b3b85a8c063fd7a1c7153" => :yosemite
+    sha1 "25382df7037e07d8cd72d10ac42657699d5005e1" => :mavericks
+    sha1 "b13d67164ecdad117681234e3dd9386ab7611671" => :mountain_lion
   end
+
+  option "with-giflib", "Build with GIF support"
 
   deprecated_option "with-x" => "with-x11"
   deprecated_option "with-gif" => "with-giflib"
 
-  option "with-giflib", "Build with GIF support"
-
   # Autotools are required to build from source in all releases.
-  # The upstream tarball is now 235MB in size and still requires us to autotool
-  # so seriously consider using the much smaller Github tag if we don't lose anything.
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
@@ -92,6 +91,6 @@ class Fontforge < Formula
   end
 
   test do
-    system "#{bin}/fontforge", "-version"
+    system bin/"fontforge", "-version"
   end
 end

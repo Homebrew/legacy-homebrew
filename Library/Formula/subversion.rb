@@ -1,7 +1,7 @@
 class Subversion < Formula
   homepage "https://subversion.apache.org/"
   url "http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.11.tar.bz2"
-  mirror "http://archive.apache.org/dist/subversion/subversion-1.8.11.tar.bz2"
+  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.11.tar.bz2"
   sha1 "161edaee328f4fdcfd2a7c10ecd3fbcd51c61275"
 
   bottle do
@@ -34,7 +34,7 @@ class Subversion < Formula
   depends_on :python => :optional
 
   # Bindings require swig
-  depends_on "swig" if build.with? "perl" or build.with? "python" or build.with? "ruby"
+  depends_on "swig" if build.with?("perl") || build.with?("python") || build.with?("ruby")
 
   # For Serf
   depends_on "scons" => :build
@@ -42,12 +42,13 @@ class Subversion < Formula
 
   # Other optional dependencies
   depends_on "gpg-agent" => :optional
+  depends_on :java => :optional
 
   # Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
   # Prevent "-arch ppc" from being pulled in from Perl's $Config{ccflags}
   patch :DATA
 
-  if build.with? "perl" or build.with? "ruby"
+  if build.with?("perl") || build.with?("ruby")
     # If building bindings, allow non-system interpreters
     # Currently the serf -> scons dependency forces stdenv, so this isn't
     # strictly necessary
@@ -88,7 +89,7 @@ class Subversion < Formula
     end if build.with? "serf"
 
     if build.include? "unicode-path"
-      raise <<-EOS.undent
+      fail <<-EOS.undent
         The --unicode-path patch is not supported on Subversion 1.8.
 
         Upgrading from a 1.7 version built with this patch is not supported.
@@ -111,10 +112,6 @@ class Subversion < Formula
           `brew install subversion --universal --java`
         EOS
       end
-
-      if ENV["JAVA_HOME"]
-        opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
-      end
     end
 
     ENV.universal_binary if build.universal?
@@ -135,13 +132,13 @@ class Subversion < Formula
     args << "--enable-javahl" << "--without-jikes" if build.with? "java"
     args << "--without-gpg-agent" if build.without? "gpg-agent"
 
-    unless OS.mac? && MacOS::CLT.installed?
+    if OS.mac? && MacOS::CLT.installed?
+      args << "--with-apr=/usr"
+      args << "--with-apr-util=/usr"
+    else
       args << "--with-apr=#{Formula["apr"].opt_prefix}"
       args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
       args << "--with-apxs=no"
-    else
-      args << "--with-apr=/usr"
-      args << "--with-apr-util=/usr"
     end
 
     if build.with? "ruby"
@@ -183,7 +180,7 @@ class Subversion < Formula
         arches = "-arch #{Hardware::CPU.arch_64_bit}"
       end
 
-      perl_core = Pathname.new(`perl -MConfig -e 'print $Config{archlib}'`)+'CORE'
+      perl_core = Pathname.new(`perl -MConfig -e 'print $Config{archlib}'`)+"CORE"
       unless perl_core.exist?
         onoe "perl CORE directory does not exist in '#{perl_core}'"
       end
@@ -249,7 +246,7 @@ class Subversion < Formula
       EOS
     end
 
-    return s.empty? ? nil : s
+    s
   end
 end
 

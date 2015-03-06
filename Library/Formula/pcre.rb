@@ -1,7 +1,7 @@
 class Pcre < Formula
   homepage "http://www.pcre.org/"
   url "https://downloads.sourceforge.net/project/pcre/pcre/8.36/pcre-8.36.tar.bz2"
-  mirror "ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.bz2"
+  mirror "http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.bz2"
   sha256 "ef833457de0c40e82f573e34528f43a751ff20257ad0e86d272ed5637eb845bb"
 
   bottle do
