@@ -36,9 +36,7 @@ class PythonDependency < Requirement
   def which_python
     python = which python_binary
     return unless python
-    executable = `#{python} -c "import sys; print(sys.executable)"`.strip
-    return unless executable
-    Pathname.new executable
+    Pathname.new Utils.popen_read(python, "-c", "import sys; print(sys.executable)").strip
   end
 
   def system_python; "/usr/bin/#{python_binary}" end
