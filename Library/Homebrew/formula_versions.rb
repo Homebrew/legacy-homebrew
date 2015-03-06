@@ -47,7 +47,7 @@ class FormulaVersions
   end
 
   def file_contents_at_revision(rev)
-    repository.cd { `git cat-file blob #{rev}:#{entry_name}` }
+    repository.cd { Utils.popen_read("git", "cat-file", "blob", "#{rev}:#{entry_name}") }
   end
 
   def version_at_revision(rev)
