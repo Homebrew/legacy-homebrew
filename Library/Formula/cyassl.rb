@@ -1,9 +1,8 @@
 class Cyassl < Formula
-  homepage "http://yassl.com/yaSSL/Products-cyassl.html"
-  url "https://github.com/cyassl/cyassl/archive/v3.3.0.tar.gz"
-  sha256 "585ca95b23a44da2d0e042bd0aef95ce770cd541028b76dc45f29ab62ad3ad4a"
-
-  head "https://github.com/cyassl/cyassl.git"
+  homepage "http://www.wolfssl.com/yaSSL/Home.html"
+  url "https://github.com/wolfSSL/wolfssl/archive/v3.4.0.tar.gz"
+  sha256 "e23b7939c04bf18efa353ff9abfeaba3bcf454e47c9ced45e2aadab6660245f0"
+  head "https://github.com/wolfSSL/wolfssl.git"
 
   bottle do
     cellar :any
@@ -19,6 +18,8 @@ class Cyassl < Formula
   depends_on "libtool" => :build
 
   def install
+    # At some point it'd be nice to be able to "--disable-md5" but:
+    # https://github.com/wolfSSL/wolfssl/issues/26
     args = %W[
       --disable-silent-rules
       --disable-dependency-tracking
@@ -27,6 +28,7 @@ class Cyassl < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --disable-bump
+      --disable-examples
       --disable-fortress
       --disable-sniffer
       --disable-webserver
@@ -40,8 +42,10 @@ class Cyassl < Formula
       --enable-crl
       --enable-crl-monitor
       --enable-dtls
+      --enable-dh
       --enable-ecc
       --enable-eccencrypt
+      --enable-ecc25519
       --enable-filesystem
       --enable-hc128
       --enable-hkdf
@@ -82,6 +86,6 @@ class Cyassl < Formula
   end
 
   test do
-    system bin/"cyassl-config", "--cflags", "--libs", "--prefix"
+    system bin/"wolfssl-config", "--cflags", "--libs", "--prefix"
   end
 end
