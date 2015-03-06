@@ -18,7 +18,7 @@ class PythonDependency < Requirement
     build? || system_python?
   end
 
-  def modify_build_environment
+  env do
     if system_python?
       if python_binary == "python"
         version = python_short_version
