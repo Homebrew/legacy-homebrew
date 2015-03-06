@@ -19,19 +19,20 @@ class Notmuch < Formula
   depends_on "xapian"
   depends_on "talloc"
   depends_on "gmime"
+  depends_on "homebrew/dupes/zlib" unless OS.mac?
 
   # Requires zlib >= 1.2.5.2
   resource "zlib" do
     url "http://zlib.net/zlib-1.2.8.tar.gz"
     sha1 "a4d316c404ff54ca545ea71a27af7dbc29817088"
-  end
+  end if OS.mac?
 
   def install
     resource("zlib").stage do
       system "./configure", "--prefix=#{buildpath}/zlib", "--static"
       system "make", "install"
       ENV.append_path "PKG_CONFIG_PATH", "#{buildpath}/zlib/lib/pkgconfig"
-    end
+    end if OS.mac?
 
     args = ["--prefix=#{prefix}"]
     if build.with? "emacs"
