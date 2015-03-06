@@ -111,7 +111,10 @@ module Homebrew
   end
 
   def rm_DS_Store
-    quiet_system "find", HOMEBREW_PREFIX.to_s, "-name", ".DS_Store", "-delete"
+    paths = %w[Cellar Frameworks Library bin etc include lib opt sbin share var].
+      map { |p| HOMEBREW_PREFIX/p }.select(&:exist?)
+    args = paths.map(&:to_s) + %w[-name .DS_Store -delete]
+    quiet_system "find", *args
   end
 
 end
