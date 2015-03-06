@@ -1,7 +1,7 @@
 class Run < Formula
   homepage "http://runscripts.org"
-  url "https://github.com/runscripts/run/archive/0.3.6.tar.gz"
-  sha1 "0f181b6a3bb56769cdbc46e6d0431a00d2cf3b9c"
+  url "https://github.com/runscripts/run/archive/0.4.0.tar.gz"
+  sha1 "f1a726df3e06be29190d854aa5ac7e1b2a53cecb"
   head "https://github.com/runscripts/run.git"
 
   depends_on "go" => :build
@@ -12,7 +12,7 @@ class Run < Formula
     system "go", "build", "-o", "run"
     bin.install "run"
     etc.install "run.conf"
-    (HOMEBREW_PREFIX+"run").mkpath
+    (var+"run").mkpath
   end
 
   test do
