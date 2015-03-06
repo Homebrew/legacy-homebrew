@@ -164,7 +164,7 @@ class Python < Formula
 
     # Write our sitecustomize.py
     rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
-    (site_packages/"sitecustomize.py").atomic_write(sitecustomize)
+    (site_packages/"sitecustomize.py").atomic_write(sitecustomize) if OS.mac?
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
