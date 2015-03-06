@@ -1,7 +1,7 @@
 class Tachyon < Formula
   homepage "http://tachyon-project.org/"
-  url "https://github.com/amplab/tachyon/releases/download/v0.5.0/tachyon-0.5.0-bin.tar.gz"
-  sha1 "3e83f7ea7ca262689bac8acd51b6bff0cce0a1df"
+  url "https://github.com/amplab/tachyon/releases/download/v0.6.0/tachyon-0.6.0-bin.tar.gz"
+  sha1 "74c17c9fb186740246cc23953c8811c47bdf699e"
 
   def install
     mkdir_p "#{etc}/tachyon"
