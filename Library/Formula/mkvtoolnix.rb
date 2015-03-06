@@ -9,10 +9,8 @@ class Ruby19 < Requirement
     Version.new(version.to_s) >= Version.new("1.9")
   end
 
-  def modify_build_environment
-    ruby = which "ruby"
-    return unless ruby
-    ENV.prepend_path "PATH", ruby.dirname
+  env do
+    ENV.prepend_path "PATH", which("ruby").dirname
   end
 
   def message; <<-EOS.undent
