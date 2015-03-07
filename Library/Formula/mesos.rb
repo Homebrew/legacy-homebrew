@@ -4,9 +4,10 @@ class Mesos < Formula
   sha1 "275d211364699f2861c108fa80764785178f3eeb"
 
   bottle do
-    sha1 "5c8e6b528c3742de1adfd784a7fb28adee875966" => :yosemite
-    sha1 "fe8c3b6d3e94cf23cf84eb4b6a8fb904e94887e9" => :mavericks
-    sha1 "fa1c65a429462e454edf1da9c9669548f7e8d5df" => :mountain_lion
+    revision 2
+    sha256 "4e8f04afbaada418723e510cacc03137e5ccd9168deabdea3b5e8d287cd1d2ef" => :yosemite
+    sha256 "7d350a2696b5d770e5e5de82819b0b2105ef210950000125ca6dbbe2a86f5623" => :mavericks
+    sha256 "ae0233e820085af19202dc98a85c8585e69245d4362d29cdbc328abb60b08017" => :mountain_lion
   end
 
   depends_on :java => "1.7+"
