@@ -617,7 +617,7 @@ module Homebrew
       tap ||= bot_argv.value('tap')
     end
 
-    tap.gsub! /homebrew\/homebrew-/i, "Homebrew/" if tap
+    tap.gsub!(/homebrew\/homebrew-/i, "Homebrew/") if tap
 
     git_url = ENV['UPSTREAM_GIT_URL'] || ENV['GIT_URL']
     if !tap && git_url
