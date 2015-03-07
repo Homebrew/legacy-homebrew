@@ -786,9 +786,9 @@ module Homebrew
     any_errors = false
     if ARGV.named.empty?
       # With no arguments just build the most recent commit.
-      test = Test.new('HEAD', tap)
-      any_errors = !test.run
-      tests << test
+      head_test = Test.new('HEAD', tap)
+      any_errors = !head_test.run
+      tests << head_test
     else
       ARGV.named.each do |argument|
         test_error = false
