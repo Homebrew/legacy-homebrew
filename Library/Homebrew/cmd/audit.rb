@@ -872,6 +872,14 @@ class ResourceAuditor
       problem "Use of the #{$&} scheme is deprecated, pass `:using => :#{$1}` instead"
     end
 
+    url_strategy = DownloadStrategyDetector.detect(url)
+
+    if using == :git || url_strategy == GitDownloadStrategy
+      if specs[:tag] && !specs[:revision]
+        problem "Git should specify :revision when a :tag is specified."
+      end
+    end
+
     return unless using
 
     if using == :ssl3 || using == CurlSSL3DownloadStrategy
@@ -898,7 +906,6 @@ class ResourceAuditor
       end
     end
 
-    url_strategy   = DownloadStrategyDetector.detect(url)
     using_strategy = DownloadStrategyDetector.detect('', using)
 
     if url_strategy == using_strategy
