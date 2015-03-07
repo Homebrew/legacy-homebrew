@@ -418,7 +418,7 @@ class S3DownloadStrategy < CurlDownloadStrategy
     # a dependency of S3 users, not all Homebrew users
     require 'rubygems'
     begin
-      require 'aws-sdk'
+      require 'aws-sdk-v1'
     rescue LoadError
       onoe "Install the aws-sdk gem into the gem repo used by brew."
       raise
