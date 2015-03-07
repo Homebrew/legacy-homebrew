@@ -1,5 +1,5 @@
 module InstallRenamed
-  def install_p src, new_basename = nil
+  def install_p _, new_basename = nil
     super do |src, dst|
       dst += "/#{File.basename(src)}" if File.directory? dst
 
