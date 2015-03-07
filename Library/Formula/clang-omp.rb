@@ -1,10 +1,11 @@
 require "formula"
 
 class ClangOmp < Formula
-  homepage "http://clang-omp.github.io/"
+  homepage "https://clang-omp.github.io/"
   url "https://github.com/clang-omp/llvm/archive/1013141148.tar.gz"
   sha1 "84b67237aa3a5603143eb22e967b8b35f127bc4e"
 
+  depends_on "libiomp"
   depends_on "cmake" => :build
 
   resource "compiler-rt" do
@@ -31,18 +32,25 @@ class ClangOmp < Formula
     testfile = <<-EOS.undent
       #include <stdlib.h>
       #include <stdio.h>
+      #include <libiomp/omp.h>
 
-      int main(void) {
-          #pragma omp parallel
+      int main() {
+          #pragma omp parallel num_threads(4)
           {
-            printf("hello world");
+            printf("Hello from thread %d, nthreads %d\\n", omp_get_thread_num(), omp_get_num_threads());
           }
           return EXIT_SUCCESS;
       }
     EOS
     (testpath/"test.c").write(testfile)
-    system "#{bin}/clang-omp", "-fopenmp", "-Werror", "-Wall", "test.c", "-o", "test"
-    system "./test"
+    system "#{bin}/clang-omp", "-liomp5", "-fopenmp", "-Werror", "-Wall", "test.c", "-o", "test"
+    system "./test > #{testpath}/testresult"
+
+    testStdOut = (testpath/"testresult").read
+    assert_includes testStdOut, "Hello from thread 0, nthreads 4"
+    assert_includes testStdOut, "Hello from thread 1, nthreads 4"
+    assert_includes testStdOut, "Hello from thread 2, nthreads 4"
+    assert_includes testStdOut, "Hello from thread 3, nthreads 4"
   end
 
 end
