@@ -28,7 +28,7 @@ class Trafshow < Formula
   end
 
   def install
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

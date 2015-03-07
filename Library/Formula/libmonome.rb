@@ -8,9 +8,10 @@ class Libmonome < Formula
   head 'https://github.com/monome/libmonome.git'
 
   bottle do
-    sha1 "9aa228d474a66e05881bb181469803a6a315cdaa" => :mavericks
-    sha1 "8015b84c94442cb21cf546e3c10214f237a5e181" => :mountain_lion
-    sha1 "f7ff9f61f8254cd0d0279d897aadb7197511a6bc" => :lion
+    revision 1
+    sha1 "c0b250665b0c97d68575ff9aed7e74249be1661e" => :yosemite
+    sha1 "71804657209d9292adbe3215cd44d9ce9894eb87" => :mavericks
+    sha1 "0ef839a2f1d96cd546d9aef7d7eaafba1ce39668" => :mountain_lion
   end
 
   depends_on 'liblo'

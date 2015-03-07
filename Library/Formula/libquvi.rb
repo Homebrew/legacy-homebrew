@@ -7,9 +7,10 @@ class Libquvi < Formula
   revision 1
 
   bottle do
-    sha1 "91f2b77a689f7086ab9d9c2342bcd7802718147f" => :mavericks
-    sha1 "d140b93f469bc9227913dab2ab98f3f7298bd792" => :mountain_lion
-    sha1 "8be78a6d012269633c435abd6a9b544ec098e05f" => :lion
+    revision 1
+    sha1 "2b219665889be92e7aae5bc93ccedd956a4a5bf6" => :yosemite
+    sha1 "6b9ec93ae6c4b064943befc40596b724a9773618" => :mavericks
+    sha1 "6a963aa4d1ce0eb5768a529f07227621b320bab0" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

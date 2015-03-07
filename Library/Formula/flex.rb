@@ -1,23 +1,43 @@
-require 'formula'
-
 class Flex < Formula
-  homepage 'http://flex.sourceforge.net'
-  url 'https://downloads.sourceforge.net/flex/flex-2.5.37.tar.bz2'
-  sha1 'db4b140f2aff34c6197cab919828cc4146aae218'
+  homepage "http://flex.sourceforge.net"
+  url "https://downloads.sourceforge.net/flex/flex-2.5.39.tar.bz2"
+  sha1 "267794c709d5c50f2dcb48ff5d8dcbbfe40f953e"
 
   bottle do
-    sha1 "ea93eb8bc57868e9e4cfe50ab39fc3c7f2ccbb58" => :mavericks
-    sha1 "ec164496e9eec22a920e935f57dea4bc16fa4afd" => :mountain_lion
-    sha1 "654c2f9978368c6f761720f7fa1a29127bf9deea" => :lion
+    sha1 "a1f8a76465942c6187b00dfa931ac56f22b7ba00" => :yosemite
+    sha1 "533d4351154274d9d68f517b85e1de8e524b2bd5" => :mavericks
+    sha1 "524d471123dbd4ca812e3fc3778afd865df616e6" => :mountain_lion
   end
 
-  keg_only :provided_by_osx, 'Some formulae require a newer version of flex.'
+  keg_only :provided_by_osx, "Some formulae require a newer version of flex."
 
-  depends_on 'gettext'
+  depends_on "gettext"
 
   def install
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-shared",
                           "--prefix=#{prefix}"
-    system 'make install'
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.flex").write <<-EOS.undent
+      CHAR   [a-z][A-Z]
+      %%
+      {CHAR}+      printf("%s", yytext);
+      [ \\t\\n]+   printf("\\n");
+      %%
+      int main()
+      {
+        yyin = stdin;
+        yylex();
+      }
+    EOS
+    system "#{bin}/flex", "test.flex"
+    system ENV.cc, "lex.yy.c", "-L#{lib}", "-lfl", "-o", "test"
+    assert_equal shell_output("echo \"Hello World\" | ./test"), <<-EOS.undent
+      Hello
+      World
+    EOS
   end
 end

@@ -2,14 +2,15 @@ require 'formula'
 
 class Libdrawtext < Formula
   homepage 'http://nuclear.mutantstargoat.com/sw/libdrawtext/'
-  url 'http://nuclear.mutantstargoat.com/sw/libdrawtext/libdrawtext-0.1.tar.gz'
-  sha1 '0d7166bbb1479553abf82b71a56ec565d861fe81'
+  url 'http://nuclear.mutantstargoat.com/sw/libdrawtext/libdrawtext-0.2.1.tar.gz'
+  sha1 'dd12c67e7c7898a5941a92d616e9dbbbab4b9a38'
+  head 'https://github.com/jtsiomb/libdrawtext.git'
 
   bottle do
     cellar :any
-    sha1 "598e85bf3fd3df14e212fa1eee9a2f79b570152b" => :mavericks
-    sha1 "de5a6352e9b1f0336f439ddaaa6c8f594da429d7" => :mountain_lion
-    sha1 "afc5256c5b5594aa08ca5b78d710eb0292081e68" => :lion
+    sha1 "7affeb228a309ba93ea0a9ea264bbd002bbd7647" => :yosemite
+    sha1 "a094e897e81a20ab2c285b63ba6f65cabbe07c7f" => :mavericks
+    sha1 "69b89d16fccd84752f9080863f6d5151320c7872" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
@@ -17,8 +18,7 @@ class Libdrawtext < Formula
   depends_on 'glew'
 
   def install
-    system "./configure", "--disable-dbg", "--enable-opt",
-           "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dbg", "--enable-opt", "--prefix=#{prefix}"
     system "make", "install"
   end
 end

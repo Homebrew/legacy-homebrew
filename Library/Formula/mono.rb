@@ -2,22 +2,23 @@ require "formula"
 
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.8.0.tar.bz2"
-  sha1 "0e1fcaa0ec228830f9b0a650b6cfd3c098c82afc"
+  url "http://download.mono-project.com/sources/mono/mono-3.12.0.tar.bz2"
+  sha1 "cec83efd13ffc1e212c632395a5aac75772a09e7"
+  head "https://github.com/mono/mono.git"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha1 "2184aeba1346c3cbbed0dbf077466bbd826c3559" => :mavericks
-    sha1 "982b56d443b6d0f65e0351f74afcf10175271fea" => :mountain_lion
-    sha1 "df60a0666a1aa750e3e64d12d16a80ca1f7997da" => :lion
+    sha1 "5c6fe51dac9396ec10e8d45efdae24cf9e88bc3e" => :yosemite
+    sha1 "7d47061cb4f731398d2114a86010ab60e6dc88b4" => :mavericks
+    sha1 "48ccd72d404ef3a20255ed87c5fbc8a14ac10fb5" => :mountain_lion
   end
 
   resource "monolite" do
-    url "http://storage.bos.xamarin.com/mono-dist-master/latest/monolite-111-latest.tar.gz"
-    sha1 "af90068351895082f03fdaf2840b7539e23e3f32"
+    url "http://storage.bos.xamarin.com/mono-dist-master/cb/cb33b94c853049a43222288ead1e0cb059b22783/monolite-111-latest.tar.gz"
+    sha1 "a674c47cd60786c49185fb3512410c43689be43e"
   end
 
   def install
@@ -42,8 +43,7 @@ class Mono < Formula
   test do
     test_str = "Hello Homebrew"
     test_name = "hello.cs"
-    hello = testpath/test_name
-    hello.write <<-EOS.undent
+    (testpath/test_name).write <<-EOS.undent
       public class Hello1
       {
          public static void Main()
@@ -52,15 +52,12 @@ class Mono < Formula
          }
       }
     EOS
-    `#{bin}/mcs #{hello}`
-    assert $?.success?
-    output = `#{bin}/mono hello.exe`
-    assert $?.success?
-    assert_equal test_str, output.strip
+    shell_output "#{bin}/mcs #{test_name}"
+    output = shell_output "#{bin}/mono hello.exe"
+    assert_match test_str, output.strip
 
     # Tests that xbuild is able to execute lib/mono/*/mcs.exe
-    xbuild = testpath/"test.csproj"
-    xbuild.write <<-EOS.undent
+    (testpath/"test.csproj").write <<-EOS.undent
       <?xml version="1.0" encoding="utf-8"?>
       <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
         <PropertyGroup>
@@ -72,8 +69,7 @@ class Mono < Formula
         <Import Project="$(MSBuildBinPath)\\Microsoft.CSharp.targets" />
       </Project>
     EOS
-    system "#{bin}/xbuild", xbuild
-    assert $?.success?
+    shell_output "#{bin}/xbuild test.csproj"
   end
 
   def caveats; <<-EOS.undent

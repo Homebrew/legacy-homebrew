@@ -5,6 +5,8 @@ class Ceylon < Formula
   url 'http://ceylon-lang.org/download/dist/1_1_0'
   sha1 '91d84e96f3a4468cc2e7de5a4003d5e945bd7c20'
 
+  depends_on :java => "1.7"
+
   def install
     rm_f Dir["bin/*.bat"]
 
@@ -14,10 +16,6 @@ class Ceylon < Formula
 
     # Symlink shell scripts but not args.sh
     bin.install_symlink Dir["#{libexec}/bin/ceylon*"]
-  end
-
-  def caveats
-    "Ceylon requires Java 7."
   end
 
   test do

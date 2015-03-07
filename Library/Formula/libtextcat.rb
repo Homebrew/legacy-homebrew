@@ -7,9 +7,10 @@ class Libtextcat < Formula
 
   bottle do
     cellar :any
-    sha1 "690077cff18427cb7d116a36eb3852bb5af86265" => :mavericks
-    sha1 "9a28c9360d649e2f17850667249f8ed428cfce78" => :mountain_lion
-    sha1 "d285c6f6047a4fbeb61f1aa039402f89c4a72fd2" => :lion
+    revision 1
+    sha1 "6d8cb21017710ede4222b52333ce7e77f83b950f" => :yosemite
+    sha1 "8a025923d5343b538b1147ea2242efdbf70dc4b5" => :mavericks
+    sha1 "975626aabfedfd7e3cf48025f26878e3b7fe78e3" => :mountain_lion
   end
 
   def install

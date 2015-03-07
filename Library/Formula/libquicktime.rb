@@ -7,9 +7,10 @@ class Libquicktime < Formula
   revision 1
 
   bottle do
-    sha1 "f9384524cbc1a0bf3f60f271c46de8788199c95a" => :mavericks
-    sha1 "eaa29f1dcc58bade8cc09cb83d2c55a8d2093320" => :mountain_lion
-    sha1 "636ba56cf11acd853f524df9a73720015ad11db6" => :lion
+    revision 1
+    sha1 "15ba1227bfc6f81475ea8d57d59019d211117a82" => :yosemite
+    sha1 "95a530bd3c46303f6df49fc0c0bb3d18b43706f2" => :mavericks
+    sha1 "97260df51e133923c94c88aeee5d84a216617490" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

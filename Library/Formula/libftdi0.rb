@@ -7,9 +7,10 @@ class Libftdi0 < Formula
 
   bottle do
     cellar :any
-    sha1 "9a27fbda1e4b6832d36eadf8e8ef305f5db029d4" => :mavericks
-    sha1 "d558f4f9a0754526df3f0c922e8029f9bc46c742" => :mountain_lion
-    sha1 "f64321f62bfefa007fd8cdd6368bea682c0e3455" => :lion
+    revision 1
+    sha1 "48a4609d612c41a79a57ceee49b24a119173559f" => :yosemite
+    sha1 "92073c13614ddbed4f3d5223105e2d25abe115d9" => :mavericks
+    sha1 "39d3653f05b71220ed1977abf6bdb37c0e00fed5" => :mountain_lion
   end
 
   depends_on 'libusb-compat'

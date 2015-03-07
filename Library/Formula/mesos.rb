@@ -1,26 +1,46 @@
-require "formula"
-
 class Mesos < Formula
   homepage "http://mesos.apache.org"
-  url "http://mirror.cogentco.com/pub/apache/mesos/0.20.1/mesos-0.20.1.tar.gz"
-  sha1 "8028366a2538551daaf290f7c62c4c8bfb415f61"
+  url "http://mirror.cogentco.com/pub/apache/mesos/0.21.1/mesos-0.21.1.tar.gz"
+  sha1 "275d211364699f2861c108fa80764785178f3eeb"
 
   bottle do
-    sha1 "ad8e8a6a5f5a0bd2de953d799999a23d11e60a04" => :mavericks
-    sha1 "78dfc152a6fd45aabd606683a88c699ff871ae31" => :mountain_lion
+    sha1 "5c8e6b528c3742de1adfd784a7fb28adee875966" => :yosemite
+    sha1 "fe8c3b6d3e94cf23cf84eb4b6a8fb904e94887e9" => :mavericks
+    sha1 "fa1c65a429462e454edf1da9c9669548f7e8d5df" => :mountain_lion
   end
 
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
-
   depends_on "maven" => :build
+  depends_on :apr => :build
+  depends_on "subversion"
+
+
+  needs :cxx11
 
   def install
-    system "./configure", "--disable-debug",
-                           "--disable-dependency-tracking",
-                           "--disable-silent-rules",
-                           "--prefix=#{prefix}"
+    # work around distutils abusing CC instead of using CXX
+    # https://issues.apache.org/jira/browse/MESOS-799
+    # https://github.com/Homebrew/homebrew/pull/37087
+    inreplace "src/python/native/setup.py.in",
+              "import ext_modules",
+              "import os; os.environ['CC'] = '#{ENV.cxx}'\n\\0"
 
+    args = ["--prefix=#{prefix}",
+            "--disable-debug",
+            "--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--without-python",
+            "--with-svn=#{Formula["subversion"].opt_prefix}"
+           ]
+
+    unless MacOS::CLT.installed?
+      args << "--with-apr=#{Formula["apr"].opt_prefix}/libexec"
+    end
+
+    ENV.cxx11
+
+    system "./configure", *args
     system "make"
     system "make", "install"
   end
@@ -36,7 +56,7 @@ class Mesos < Formula
       exec "#{sbin}/mesos-slave", "--master=127.0.0.1:5050",
                                   "--work_dir=#{testpath}"
     end
-    Timeout::timeout(15) do
+    Timeout.timeout(15) do
       system "#{bin}/mesos", "execute",
                              "--master=127.0.0.1:5050",
                              "--name=execute-touch",
@@ -44,6 +64,6 @@ class Mesos < Formula
     end
     Process.kill("TERM", master)
     Process.kill("TERM", slave)
-    system "[ -e #{testpath}/executed ]"
+    assert File.exist?("#{testpath}/executed")
   end
 end

@@ -129,12 +129,14 @@ class RequirementTests < Homebrew::TestCase
 
   def test_eql
     a, b = Requirement.new, Requirement.new
+    assert_equal a, b
     assert_eql a, b
     assert_equal a.hash, b.hash
   end
 
   def test_not_eql
     a, b = Requirement.new([:optional]), Requirement.new
+    refute_equal a, b
     refute_eql a, b
     refute_equal a.hash, b.hash
   end

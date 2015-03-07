@@ -75,6 +75,7 @@ module Homebrew
   end
 
   def cleanup_cache
+    return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
       next unless (version = file.version)
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
@@ -85,8 +86,7 @@ module Homebrew
         next
       end
 
-      spec = f.stable || f.devel || f.head
-      if spec.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
+      if f.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
         cleanup_cached_file(file)
       end
     end
@@ -111,7 +111,10 @@ module Homebrew
   end
 
   def rm_DS_Store
-    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete 2>/dev/null"
+    paths = %w[Cellar Frameworks Library bin etc include lib opt sbin share var].
+      map { |p| HOMEBREW_PREFIX/p }.select(&:exist?)
+    args = paths.map(&:to_s) + %w[-name .DS_Store -delete]
+    quiet_system "find", *args
   end
 
 end

@@ -1,14 +1,14 @@
 require 'formula'
 
 class Libsoup < Formula
-  homepage 'http://live.gnome.org/LibSoup'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.46/libsoup-2.46.0.tar.xz'
-  sha256 'fa3d5574c1a2df521242e2ca624a2b3057121798cab9f8f40525aa186a7b15a3'
+  homepage 'https://live.gnome.org/LibSoup'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.48/libsoup-2.48.1.tar.xz'
+  sha256 '9b0d14b36e36a3131a06c6e3aa7245716e6904e3e636df81c0b6c8bd3f646f9a'
 
   bottle do
-    sha1 "cf3892e012dd0c9273caeb7788c7152c7e552bf7" => :mavericks
-    sha1 "2adba3c1e1131bc2e75f5f2bde5c53b3dadbad6d" => :mountain_lion
-    sha1 "2d63bc470c1888cd71b0e09b37f61b3328ef3785" => :lion
+    sha1 "58bfb3f803cdb164301d33754d80cf0b12b44f4c" => :yosemite
+    sha1 "6701311c286723f87dc8699a150b9085f5b14431" => :mavericks
+    sha1 "94ad9a680bdd06cb14721217ffbe091c2f46c143" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

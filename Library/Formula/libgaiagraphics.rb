@@ -7,9 +7,10 @@ class Libgaiagraphics < Formula
 
   bottle do
     cellar :any
-    sha1 "2f529e4d286413b9fd423ef8ad10c6addfe6e278" => :mavericks
-    sha1 "d2c56a59614c33dcbd6604363c78f008e43cf22c" => :mountain_lion
-    sha1 "3cd754d017caf49793ae151a977101e87128e09a" => :lion
+    revision 1
+    sha1 "01d3f42ea440d68de828b842c5b8526f697a6b14" => :yosemite
+    sha1 "0cc91a527557a222c03ead9c4393a1b5decd7821" => :mavericks
+    sha1 "6d1fbadfa1580a1ae71ea22ea4ebbf215766ce6f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

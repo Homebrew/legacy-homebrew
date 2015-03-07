@@ -7,9 +7,10 @@ class ArgpStandalone < Formula
 
   bottle do
     cellar :any
-    sha1 "3e781159b73d2fbbb22ea626e568904d6f72bd2d" => :mavericks
-    sha1 "51228d446622730ba12dfa33e83d41ad79678fef" => :mountain_lion
-    sha1 "58936047ba691811df5aa11dbbb4ed2304ef3b8b" => :lion
+    revision 1
+    sha1 "72d7282e4ca51c5832e68f06bfdd5c144a73973a" => :yosemite
+    sha1 "500784846c3a83e25194cb578eedbbba6e2600fa" => :mavericks
+    sha1 "232276ab4611f2d1fa315de24fc062a53cfbd7c4" => :mountain_lion
   end
 
   # This patch fixes compilation with Clang.

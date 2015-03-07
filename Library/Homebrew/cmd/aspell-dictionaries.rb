@@ -5,7 +5,7 @@ require 'formula'
 module Homebrew
   def aspell_dictionaries
     dict_url    = "http://ftpmirror.gnu.org/aspell/dict"
-    dict_mirror = "http://ftp.gnu.org/gnu/aspell/dict"
+    dict_mirror = "https://ftp.gnu.org/gnu/aspell/dict"
     languages   = {}
 
     open("#{dict_url}/0index.html") do |content|
@@ -28,6 +28,7 @@ module Homebrew
       resources << r
     end.each(&:fetch).each do |r|
       puts <<-EOS
+        option "with-lang-#{r.name}", "Install #{r.name} dictionary"
         resource "#{r.name}" do
           url "#{r.url}"
           mirror "#{r.mirrors.first}"

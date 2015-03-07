@@ -45,8 +45,7 @@ class HachoirMetadata < Formula
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    output = `#{bin}/hachoir-metadata --mime #{test_png}`
+    output = `#{bin}/hachoir-metadata --mime #{test_fixtures("test.png")}`
     assert output.include?("image/png")
     assert_equal 0, $?.exitstatus
   end

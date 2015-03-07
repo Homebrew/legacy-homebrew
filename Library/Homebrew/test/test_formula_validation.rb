@@ -8,7 +8,7 @@ class FormulaValidationTests < Homebrew::TestCase
   end
 
   def test_cant_override_brew
-    e = assert_raises(RuntimeError) { Class.new(Formula) { def brew; end } }
+    e = assert_raises(RuntimeError) { formula { def brew; end } }
     assert_match %r{You cannot override Formula#brew}, e.message
   end
 
@@ -44,13 +44,12 @@ class FormulaValidationTests < Homebrew::TestCase
         version ""
       end
     end
-  end
 
-  def test_validates_when_initialize_overridden
-    assert_invalid :name do
+    assert_invalid :version do
       formula do
-        def initialize(*); end
-      end.brew {}
+        url "foo"
+        version nil
+      end
     end
   end
 
@@ -62,12 +61,12 @@ class FormulaValidationTests < Homebrew::TestCase
       end
     end
 
-    assert_equal "foo", f.url
+    assert_predicate f, :devel?
   end
 
   def test_head_only_valid
     f = formula { head "foo" }
-    assert_equal "foo", f.url
+    assert_predicate f, :head?
   end
 
   def test_empty_formula_invalid

@@ -2,15 +2,15 @@ require 'formula'
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.2.4-release.tar.gz'
-  sha1 'd89f2188f7d47cd8468708b15cc55f5d457009e0'
+  url 'http://sphinxsearch.com/files/sphinx-2.2.6-release.tar.gz'
+  sha1 '9c458ed999a3e771d417a704e12c469e06423e4a'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   bottle do
-    sha1 "2d58704fcd15ec7d9c8ac7f4bb4391b9105ea35f" => :mavericks
-    sha1 "5e3447a20996bd752d1b1793efef72b6dbf8421f" => :mountain_lion
-    sha1 "cd9566b61321cb1ae618c0937c5133219183b478" => :lion
+    sha1 "96a941abefc28d95a3db766311ee222435fbdc4b" => :yosemite
+    sha1 "087eda561408cc38e1bb1b86b32c441d169245f0" => :mavericks
+    sha1 "780a6615a3ca764461810c88720dd71bafb3b37b" => :mountain_lion
   end
 
   option 'mysql', 'Force compiling against MySQL'
@@ -21,10 +21,9 @@ class Sphinx < Formula
   depends_on :mysql if build.include? 'mysql'
   depends_on :postgresql if build.include? 'pgsql'
 
-  # http://snowball.tartarus.org/
   resource 'stemmer' do
-    url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-    sha1 '9b0f120a68a3c688b2f5a8d0f681620465c29d38'
+    url "https://github.com/snowballstem/snowball.git",
+      :revision => "9b58e92c965cd7e3208247ace3cc00d173397f3c"
   end
 
   fails_with :llvm do
@@ -38,7 +37,10 @@ class Sphinx < Formula
   end
 
   def install
-    (buildpath/'libstemmer_c').install resource('stemmer')
+    resource('stemmer').stage do
+      system "make", "dist_libstemmer_c"
+      system "tar", "xzf", "dist/libstemmer_c.tgz", "-C", buildpath
+    end
 
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
@@ -61,6 +63,9 @@ class Sphinx < Formula
   end
 
   def caveats; <<-EOS.undent
+    This is not sphinx - the Python Documentation Generator.
+    To install sphinx-python: use pip or easy_install,
+
     Sphinx has been compiled with libstemmer support.
 
     Sphinx depends on either MySQL or PostreSQL as a datasource.

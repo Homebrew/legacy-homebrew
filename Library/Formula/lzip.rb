@@ -7,9 +7,10 @@ class Lzip < Formula
 
   bottle do
     cellar :any
-    sha1 "1d027a061ab2107a18bf2819d29d40318eaf106a" => :mavericks
-    sha1 "8a3a453e1cc7d79d3cb6417a93e156edb44f7f9b" => :mountain_lion
-    sha1 "3dbd0d6992d923a23ec3c25c04cb141a7bf3792a" => :lion
+    revision 1
+    sha1 "c67e7822fbd4a7f2211b01fbfe85b7ada52ebfd5" => :yosemite
+    sha1 "61fe16d13397bb6713c3e60ce72ec63656db6055" => :mavericks
+    sha1 "6f8cb35b3a5068c83bc819c4c0d05d3fab366739" => :mountain_lion
   end
 
   def install

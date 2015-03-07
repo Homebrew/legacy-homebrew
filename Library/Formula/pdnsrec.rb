@@ -2,24 +2,26 @@ require "formula"
 
 class Pdnsrec < Formula
   homepage "http://wiki.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-recursor-3.6.1.tar.bz2"
-  sha1 "b77befa0a20d9822523dec44c2559ffda4ea689d"
-  revision 1
+  url "http://downloads.powerdns.com/releases/pdns-recursor-3.7.1.tar.bz2"
+  sha1 "1651bb2ba4414c4276d18b281c0156576c37f741"
 
   bottle do
     cellar :any
-    sha1 "e066a872aa2980893b0c9b2b2bc43d2352211db8" => :mavericks
-    sha1 "ec569f0492e99420d65739125e551b4834ccaeb0" => :mountain_lion
-    sha1 "c11d07c1c1805f4e4ffea6d12f298a092a53f0c6" => :lion
+    sha1 "7c84aefdff297bdd00e2777c9dbb2215e0fdf377" => :yosemite
+    sha1 "54f15f6c13ab46aed85caeadcb115dcc02abecbe" => :mavericks
+    sha1 "1f90d87f999b6c0ff3f9fc847cc1b2e1373566fc" => :mountain_lion
   end
 
   depends_on :macos => :lion
   depends_on "boost"
   depends_on "lua" => :optional
 
-  # Temporary workaround for Mavericks
-  # https://github.com/PowerDNS/pdns/issues/1707
-  patch :DATA
+  # Upstream patch for bug in 3.7.1 release (will be in next release)
+  # http://bert-hubert.blogspot.nl/2015/02/some-notes-on-sendmsg.html
+  patch :p1 do
+    url "https://gist.github.com/Habbie/107a297695dcac9efe9b/raw/78be11c907cf88ed41a725e97c8f5f1e2290309d/gistfile1.diff"
+    sha1 "63140c8a38dc9593f72ad80af9d87ca80764aebd"
+  end
 
   def install
     # Set overrides using environment variables
@@ -35,13 +37,13 @@ class Pdnsrec < Formula
     end
 
     # Adjust hard coded paths in Makefile
-    inreplace "Makefile", "/usr/sbin/", "#{sbin}/"
-    inreplace "Makefile", "/usr/bin/", "#{bin}/"
-    inreplace "Makefile", "/etc/powerdns/", "#{etc}/powerdns/"
-    inreplace "Makefile", "/var/run/", "#{var}/run/"
+    inreplace "Makefile.in", "/usr/sbin/", "#{sbin}/"
+    inreplace "Makefile.in", "/usr/bin/", "#{bin}/"
+    inreplace "Makefile.in", "/etc/powerdns/", "#{etc}/powerdns/"
+    inreplace "Makefile.in", "/var/run/", "#{var}/run/"
 
     # Compile
-    system "make", "basic_checks"
+    system "./configure"
     system "make"
 
     # Do the install manually
@@ -54,15 +56,3 @@ class Pdnsrec < Formula
     system "#{sbin}/pdns_recursor --config > #{prefix}/etc/powerdns/recursor.conf"
   end
 end
-
-__END__
---- pdns-recursor-3.6.1/rec_channel.hh.orig 2014-09-09 09:33:33 UTC
-+++ pdns-recursor-3.6.1/rec_channel.hh
-@@ -4,6 +4,7 @@
- #include <map>
- #include <inttypes.h>
- #include <sys/un.h>
-+#include <pthread.h>
-
-
- /** this class is used both to send and answer channel commands to the PowerDNS Recursor */

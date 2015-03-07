@@ -1,18 +1,34 @@
-require 'formula'
+class ElbTools < Formula
+  homepage "https://aws.amazon.com/developertools/2536"
+  url "https://ec2-downloads.s3.amazonaws.com/ElasticLoadBalancing.zip"
+  version "1.0.35.0"
+  sha1 "976f885c8a437183b2bb0c8127375e5f6371f498"
 
-class ElbTools < AmazonWebServicesFormula
-  homepage 'http://aws.amazon.com/developertools/2536'
-  url 'http://ec2-downloads.s3.amazonaws.com/ElasticLoadBalancing.zip'
-  version '1.0.35.0'
-  sha1 '976f885c8a437183b2bb0c8127375e5f6371f498'
-
-  depends_on 'ec2-api-tools'
+  depends_on "ec2-api-tools"
+  depends_on :java
 
   def install
-    standard_install
+    env = Language::Java.java_home_env.merge(:AWS_ELB_HOME => libexec)
+    rm Dir["bin/*.cmd"] # Remove Windows versions
+    libexec.install Dir["*"]
+    Pathname.glob("#{libexec}/bin/*") do |file|
+      next if file.directory?
+      basename = file.basename
+      next if basename.to_s == "service"
+      (bin/basename).write_env_script file, env
+    end
   end
 
   def caveats
-    standard_instructions "AWS_ELB_HOME"
+    <<-EOS.undent
+      Before you can use these tools you must export some variables to your $SHELL.
+        export AWS_ACCESS_KEY="<Your AWS Access ID>"
+        export AWS_SECRET_KEY="<Your AWS Secret Key>"
+        export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
+    EOS
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/elb-version")
   end
 end

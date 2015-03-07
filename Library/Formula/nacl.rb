@@ -1,9 +1,15 @@
-require 'formula'
-
 class Nacl < Formula
-  homepage 'http://nacl.cace-project.eu'
-  url 'http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2'
-  sha1 '6007a6aee249f5a534ec53fddfc364601fba9629'
+  homepage "http://nacl.cr.yp.to/"
+  url "https://hyperelliptic.org/nacl/nacl-20110221.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/n/nacl/nacl_20110221.orig.tar.bz2"
+  sha1 "6007a6aee249f5a534ec53fddfc364601fba9629"
+
+  bottle do
+    cellar :any
+    sha1 "a2fd2a9f121f7c20dee040ae70cdd3e05708b98f" => :yosemite
+    sha1 "ec947d17a2d50bca7e3ecd24ff24ef19481afac3" => :mavericks
+    sha1 "074b5a2eda0007f256830e44314e55c152b6c03e" => :mountain_lion
+  end
 
   def install
     system "./do" # This takes a while since it builds *everything*

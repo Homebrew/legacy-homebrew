@@ -1,15 +1,25 @@
-require 'formula'
+require "formula"
 
 class Ldapvi < Formula
-  homepage 'http://www.lichteblau.com/ldapvi/'
-  url 'http://www.lichteblau.com/download/ldapvi-1.7.tar.gz'
-  sha1 'd1cde4cbb618180f9ae0e77c56a1520b8ad61c9a'
+  homepage "http://www.lichteblau.com/ldapvi/"
+  url "http://www.lichteblau.com/download/ldapvi-1.7.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/l/ldapvi/ldapvi_1.7.orig.tar.gz"
+  sha1 "d1cde4cbb618180f9ae0e77c56a1520b8ad61c9a"
+  bottle do
+    cellar :any
+    sha1 "c87e30a0955bb200d8f88011ee8eec8291562b93" => :yosemite
+    sha1 "f3bd57a8d0ce4f7e19ade3cf051396169441bdcf" => :mavericks
+    sha1 "13d1720d60f6557a57214baa7622f7ffac889edc" => :mountain_lion
+  end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'popt'
-  depends_on 'readline'
+  revision 1
+
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "popt"
+  depends_on "readline"
+  depends_on "openssl"
 
   # Backporting the fix from the devel version
   # (namespace conflict with Lion's getline function)
@@ -20,7 +30,11 @@ class Ldapvi < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/ldapvi", "--version"
   end
 end
 

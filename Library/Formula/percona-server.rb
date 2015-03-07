@@ -1,19 +1,20 @@
 require 'formula'
 
 class PerconaServer < Formula
-  homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.21-69.0.tar.gz'
-  version '5.6.21-69.0'
-  sha1 '0071f263774d6acb9e8991a7574a79cc2b83bc0a'
+  homepage 'https://www.percona.com'
+  url 'https://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.23-72.1.tar.gz'
+  version '5.6.23-72.1'
+  sha256 '5382630b98dd05f72e372ede5535ddcad2e389b594311a69f03a3d95f68d4907'
 
   bottle do
-    sha1 "0bc089f58e454b66a27a87f462c68f4a77b507ea" => :mavericks
-    sha1 "d925b7eda20b620a41f00776a186745f20672c44" => :mountain_lion
-    sha1 "170f8cc74dc8995e2c863a59ee89dce444b9e42c" => :lion
+    sha256 "15bbf48b1e7e94631de80f04bafc4d2d31fc58d35fae1c6f80976dbe0344830b" => :yosemite
+    sha256 "54d1fefbdbd8b64f6c50ca2cf2e1eda3fdceb0d15e50fcc682c3afc0ae121b46" => :mavericks
+    sha256 "9d19d0e3910a0a23b82eb50ec9ca54fefdc806c85de3dc86251dccbf415d5e19" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   option :universal
   option 'with-tests', 'Build with unit tests'

@@ -1,14 +1,12 @@
-require 'formula'
-
 class ZshSyntaxHighlighting < Formula
-  homepage 'https://github.com/zsh-users/zsh-syntax-highlighting'
-  url 'https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.2.0.tar.gz'
-  sha1 '7c37129294aaf7cd61548ccfdf76cb478df3602f'
+  homepage "https://github.com/zsh-users/zsh-syntax-highlighting"
+  url "https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.2.1.tar.gz"
+  sha1 "767c5fff7a5823647c733091348c3c52a5c2d1b0"
 
-  head 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+  head "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
   def install
-    (share/'zsh-syntax-highlighting').install Dir['*']
+    (share/"zsh-syntax-highlighting").install Dir["*"]
   end
 
   def caveats
@@ -26,5 +24,9 @@ class ZshSyntaxHighlighting < Formula
 
       export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=#{HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/highlighters
     EOS
+  end
+
+  test do
+    system "#{share}/zsh-syntax-highlighting/tests/test-highlighting.zsh", "main"
   end
 end

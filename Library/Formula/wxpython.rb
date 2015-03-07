@@ -15,13 +15,13 @@ end
 
 class Wxpython < Formula
   homepage "http://www.wxwidgets.org"
-  url "https://downloads.sourceforge.net/project/wxpython/wxPython/3.0.1.1/wxPython-src-3.0.1.1.tar.bz2"
-  sha1 "d2c4719015d7c499a9765b1e5107fdf37a32abfb"
+  url "https://downloads.sourceforge.net/project/wxpython/wxPython/3.0.2.0/wxPython-src-3.0.2.0.tar.bz2"
+  sha1 "5053f3fa04f4eb3a9d4bfd762d963deb7fa46866"
 
   bottle do
-    sha1 "e7fad91e96497ecae7a12f55f092c74e07e41f5b" => :mavericks
-    sha1 "3cbb8428f88ac9363081cb79f18067895fdf35cf" => :mountain_lion
-    sha1 "e6db873562487f0135412f5fff9a367d0a29552b" => :lion
+    sha1 "e73ade83e5802db3b824ebdc8b8fc62d0c70ae6f" => :yosemite
+    sha1 "739ab76d3bc7e0f804ea487d14274630ae0e19cc" => :mavericks
+    sha1 "76bd0e1a6ce0fba459b4847836c3dfd0ac4a31af" => :mountain_lion
   end
 
   if MacOS.version <= :snow_leopard

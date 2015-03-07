@@ -1,11 +1,9 @@
-require 'formula'
-
 class SufficientlyRecentGit < Requirement
   fatal true
-  default_formula 'git'
+  default_formula "git"
 
   satisfy do
-    system 'git stripspace --comment-lines </dev/null 2>/dev/null'
+    system "git stripspace --comment-lines </dev/null 2>/dev/null"
   end
 
   def message
@@ -14,11 +12,11 @@ class SufficientlyRecentGit < Requirement
 end
 
 class GitIntegration < Formula
-  homepage 'http://johnkeeping.github.io/git-integration/'
-  url 'https://github.com/johnkeeping/git-integration/archive/v0.2.tar.gz'
-  sha1 '6ccfd21236112b546fa01e876a28ecb630b924ac'
+  homepage "http://johnkeeping.github.io/git-integration/"
+  url "https://github.com/johnkeeping/git-integration/archive/v0.3.tar.gz"
+  sha1 "fc64f987a2a6b73c61c8a5278d06bcaa46ee9312"
 
-  depends_on 'asciidoc' => [:build, :optional]
+  depends_on "asciidoc" => [:build, :optional]
   depends_on SufficientlyRecentGit
 
   def install

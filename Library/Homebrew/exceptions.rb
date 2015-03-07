@@ -27,9 +27,7 @@ class FormulaValidationError < StandardError
 
   def initialize(attr, value)
     @attr = attr
-    msg = "invalid attribute: #{attr}"
-    msg << " (#{value.inspect})" unless value.empty?
-    super msg
+    super "invalid attribute: #{attr} (#{value.inspect})"
   end
 end
 
@@ -80,8 +78,6 @@ class OperationInProgressError < RuntimeError
 end
 
 class CannotInstallFormulaError < RuntimeError; end
-
-class FormulaAlreadyInstalledError < RuntimeError; end
 
 class FormulaInstallationAlreadyAttemptedError < RuntimeError
   def initialize(formula)
@@ -157,20 +153,24 @@ class BuildError < RuntimeError
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
       if formula.tap?
-        puts "If reporting this issue please do so at (not Homebrew/homebrew):"
-        puts "  https://github.com/#{formula.tap}/issues"
+        case formula.tap
+        when "homebrew/homebrew-boneyard"
+          puts "#{formula} was moved to homebrew-boneyard because it has unfixable issues."
+          puts "Please do not file any issues about this. Sorry!"
+        else
+          puts "If reporting this issue please do so at (not Homebrew/homebrew):"
+          puts "  https://github.com/#{formula.tap}/issues"
+        end
       end
     else
       require 'cmd/config'
       require 'cmd/--env'
 
-      unless formula.core_formula?
-        ohai "Formula"
-        puts "Tap: #{formula.tap}"
-        puts "Path: #{formula.path}"
-      end
+      ohai "Formula"
+      puts "Tap: #{formula.tap}" if formula.tap?
+      puts "Path: #{formula.path}"
       ohai "Configuration"
-      Homebrew.dump_build_config
+      Homebrew.dump_verbose_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
       puts
@@ -202,16 +202,26 @@ end
 
 # Raised in Resource.fetch
 class DownloadError < RuntimeError
-  def initialize(resource, e)
+  def initialize(resource, cause)
     super <<-EOS.undent
       Failed to download resource #{resource.download_name.inspect}
-      #{e.message}
+      #{cause.message}
       EOS
+    set_backtrace(cause.backtrace)
   end
 end
 
 # raised in CurlDownloadStrategy.fetch
-class CurlDownloadStrategyError < RuntimeError; end
+class CurlDownloadStrategyError < RuntimeError
+  def initialize(url)
+    case url
+    when %r[^file://(.+)]
+      super "File does not exist: #{$1}"
+    else
+      super "Download failed: #{url}"
+    end
+  end
+end
 
 # raised by safe_system in utils.rb
 class ErrorDuringExecution < RuntimeError

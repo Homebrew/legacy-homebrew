@@ -4,15 +4,15 @@ require "formula"
 # many releases for us to update to every single one:
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
-  homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2014.10.05.2/youtube-dl-2014.10.05.2.tar.gz"
-  sha1 "defa32d81d4d88cb5ab041010ce9399d11f0763f"
+  homepage "https://rg3.github.io/youtube-dl/"
+  url "https://yt-dl.org/downloads/2015.03.03.1/youtube-dl-2015.03.03.1.tar.gz"
+  sha256 "31e4dd019c1564f9a2b9ad187b461d2fd0c9d1fa3f636ea36d5dd970fb77f539"
 
   bottle do
     cellar :any
-    sha1 "d56b7ea196ca6255ba14f198284ac7dd7bc0ca43" => :mavericks
-    sha1 "5cb6f80980337ae133b7d5c25fae03d1de26d1b9" => :mountain_lion
-    sha1 "eb3bcb7677d9cef89b692624543e344819ebf92e" => :lion
+    sha1 "890238440551cdc2151c837d19ef85da48bff295" => :yosemite
+    sha1 "c4c4108e140aa8b39386df2553f472f5faa57275" => :mavericks
+    sha1 "7618da485e69cc2514c631ad2c7d039a1c903e1b" => :mountain_lion
   end
 
   head do
@@ -27,10 +27,11 @@ class YoutubeDl < Formula
     bin.install "youtube-dl"
     man1.install "youtube-dl.1"
     bash_completion.install "youtube-dl.bash-completion"
+    zsh_completion.install "youtube-dl.zsh" => "_youtube-dl"
   end
 
   def caveats
-    "To use post-processing options, `brew install ffmpeg`."
+    "To use post-processing options, `brew install ffmpeg` or `brew install libav`."
   end
 
   test do

@@ -12,8 +12,7 @@ class MaximumMacOSRequirement < Requirement
 
   def message
     <<-EOS.undent
-      OS X #{@version.pretty_name} or older is required for stable.
-      Use `brew install devel or --HEAD` for newer.
+      OS X #{@version.pretty_name} or older is required.
     EOS
   end
 end

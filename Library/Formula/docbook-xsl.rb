@@ -7,9 +7,10 @@ class DocbookXsl < Formula
 
   bottle do
     cellar :any
-    sha1 "1e3f2c99e079fd558c388552c1844bde033e06f4" => :mavericks
-    sha1 "5e64aaef0b5e4efd37192fc8be39ed1388de5da4" => :mountain_lion
-    sha1 "4cc76192fcdc38b0d41177cb4263456c14d910f6" => :lion
+    revision 1
+    sha1 "2d71a5e24820de3f498f632b47ecaf7af7875312" => :yosemite
+    sha1 "236f05f3d22a6972eca770fcaf19063c6b0ec3aa" => :mavericks
+    sha1 "435ee69f4fc431bff00a973a70c5f24235f5392d" => :mountain_lion
   end
 
   depends_on 'docbook'

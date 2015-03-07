@@ -1,15 +1,14 @@
-require "formula"
-
 class Ocamlsdl < Formula
   homepage "http://ocamlsdl.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ocamlsdl/OCamlSDL/ocamlsdl-0.9.1/ocamlsdl-0.9.1.tar.gz"
   sha1 "2e54f8984b06cede493c3ad29006dde17077a79a"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "69e4eab5739ee4cece742d1064c36f61fb055395" => :mavericks
-    sha1 "d12bd3c25db05daa8e2a9a40f8f4d821b0e31073" => :mountain_lion
-    sha1 "c2d29344d6062efb1a5c5dced9de2b58d3778312" => :lion
+    sha1 "c158c8f04e5679333db3c074943c3ea37fe8c9a5" => :yosemite
+    sha1 "a64fd3f10a85599a9470b46a3b719e0d50d194e9" => :mavericks
+    sha1 "e39fd75cfdbc4f3c0fc570beb4bfbe6e58301014" => :mountain_lion
   end
 
   depends_on "sdl"

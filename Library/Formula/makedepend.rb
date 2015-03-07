@@ -1,5 +1,3 @@
-require "formula"
-
 class Makedepend < Formula
   homepage "http://x.org"
   url "http://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.5.tar.bz2"
@@ -45,5 +43,10 @@ class Makedepend < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    touch "Makefile"
+    system "#{bin}/makedepend"
   end
 end

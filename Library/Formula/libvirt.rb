@@ -1,14 +1,14 @@
 require "formula"
 
 class Libvirt < Formula
-  homepage "http://www.libvirt.org"
-  url "http://libvirt.org/sources/libvirt-1.2.9.tar.gz"
-  sha1 "f2de4cda8640b3abb13e6b30dd4882cc7e7b39e3"
+  homepage "https://www.libvirt.org"
+  url "https://libvirt.org/sources/libvirt-1.2.13.tar.gz"
+  sha1 "b4e76eb52a40a1c81e07d17f9b57b4b1aa86b059"
 
   bottle do
-    sha1 "1a655006a7d6245ef9242ad088d57f4a5e2d85f6" => :mavericks
-    sha1 "51294d1d1a7c309916dfebd33733171781713afb" => :mountain_lion
-    sha1 "5c577fc70097bdb0a7bc6032ffd004944f148df8" => :lion
+    sha1 "7695deb9a434c6b87542440f4c36ebfc6d21dc85" => :yosemite
+    sha1 "3ad9ae5a1e0acc48e4a4c6ebf21262fe33a48ba0" => :mavericks
+    sha1 "3c6a0bbfc0de2690a48372ddba5ff0a499fb92c7" => :mountain_lion
   end
 
   option "without-libvirtd", "Build only the virsh client and development libraries"
@@ -47,7 +47,7 @@ class Libvirt < Formula
 
     system "./configure", *args
 
-    # Compilation of docs doesn"t get done if we jump straight to "make install"
+    # Compilation of docs doesn't get done if we jump straight to "make install"
     system "make"
     system "make install"
 

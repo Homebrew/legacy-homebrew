@@ -1,18 +1,20 @@
-require "formula"
-
 class Ats2Postiats < Formula
   homepage "http://www.ats-lang.org/"
-  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.0/ATS2-Postiats-0.1.0.tgz"
-  sha1 "7767db094f7f050edf30518866892b6cd0e2277e"
+  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.8/ATS2-Postiats-0.1.8.tgz"
+  sha1 "00f7489375a834c902e08b248dac197c770bbf88"
 
   bottle do
     cellar :any
-    sha1 "d02cf136334e7c813a8a7dd041d6b1b24f352a85" => :mavericks
-    sha1 "59786888cee7152fdaf7a27f46d98e667c313339" => :mountain_lion
-    sha1 "b544d4480ad688d9d3f1320d25c5a784a215f49d" => :lion
+    sha1 "c4aa7ad5059cd88680dd560b7b11839bfe17b26a" => :yosemite
+    sha1 "518d0eac9f590a0eca8f4b8734270f1874bf532c" => :mavericks
+    sha1 "6fcef0c5e1a94ff4f4a3eae9059cd03d7cb83b9d" => :mountain_lion
   end
 
   depends_on "gmp"
+
+  fails_with :clang do
+    cause "Trying to compile this with Clang is failure-galore."
+  end
 
   def install
     ENV.deparallelize

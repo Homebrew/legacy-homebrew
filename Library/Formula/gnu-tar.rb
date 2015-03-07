@@ -1,16 +1,16 @@
-require "formula"
-
 class GnuTar < Formula
   homepage "http://www.gnu.org/software/tar/"
   url "http://ftpmirror.gnu.org/tar/tar-1.28.tar.gz"
   mirror "http://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz"
   sha1 "cd30a13bbfefb54b17e039be7c43d2592dd3d5d0"
 
+  option "with-default-names", "Do not prepend 'g' to the binary"
+
   bottle do
-    revision 1
-    sha1 "9bb446adc443bee53702301fd131b51993306cfb" => :mavericks
-    sha1 "6d9b3b71d490d599b15d313e61262cc9303b773a" => :mountain_lion
-    sha1 "e53b6fbcd67091197bacf96d032877d31bcbf649" => :lion
+    revision 2
+    sha1 "bc61f3210e6f8adaade8abe7e8bed4542ead62e2" => :yosemite
+    sha1 "01e82dddbbadb8a40af90f1f844cce3684a19399" => :mavericks
+    sha1 "63268147e47588ccbb33be80e3484611bfacc2f4" => :mountain_lion
   end
 
   # Fix for xattrs bug causing build failures on OS X:
@@ -22,22 +22,30 @@ class GnuTar < Formula
 
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
-    args << "--program-prefix=g"
+    args << "--program-prefix=g" if build.without? "default-names"
 
     system "./configure", *args
     system "make", "install"
 
     # Symlink the executable into libexec/gnubin as "tar"
-    (libexec/"gnubin").install_symlink bin/"gtar" => "tar"
+    (libexec/"gnubin").install_symlink bin/"gtar" => "tar" if build.without? "default-names"
   end
 
-  def caveats; <<-EOS.undent
-    gnu-tar has been installed as "gtar".
+  def caveats
+    if build.without? "default-names" then <<-EOS.undent
+      gnu-tar has been installed as "gtar".
 
-    If you really need to use it as "tar", you can add a "gnubin" directory
-    to your PATH from your bashrc like:
+      If you really need to use it as "tar", you can add a "gnubin" directory
+      to your PATH from your bashrc like:
 
-        PATH="#{opt_libexec}/gnubin:$PATH"
-    EOS
+          PATH="#{opt_libexec}/gnubin:$PATH"
+      EOS
+    end
+  end
+
+  test do
+    (testpath/"test").write("test")
+    system "#{bin}/gtar", "-czvf", "test.tar.gz", "test"
+    assert_match /test/, shell_output("#{bin}/gtar -xOzf test.tar.gz")
   end
 end

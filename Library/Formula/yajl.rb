@@ -7,9 +7,10 @@ class Yajl < Formula
 
   bottle do
     cellar :any
-    sha1 "418941bfd0684cf14ae0bebc65324e99b76a3aa4" => :mavericks
-    sha1 "f59aa705d9324e1c4a47bbba7ba50b74b3649ca3" => :mountain_lion
-    sha1 "1bea5088df669781cc1835a97ae991773ad7b36b" => :lion
+    revision 3
+    sha1 "3365b3fd3e47023adf9aacdff66dd5570bddb124" => :yosemite
+    sha1 "ba8a07a67cc0c8b4f6ea92f7dc7ef3008fdf222f" => :mavericks
+    sha1 "1017b9a117f55464eac2eb254e0d8aa9e181b5c9" => :mountain_lion
   end
 
   # Configure uses cmake internally

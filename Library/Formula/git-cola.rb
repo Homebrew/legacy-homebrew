@@ -1,17 +1,14 @@
-require "formula"
-
 class GitCola < Formula
   homepage "http://git-cola.github.io/"
-  url "https://github.com/git-cola/git-cola/archive/v2.0.6.tar.gz"
-  sha1 "8fd261bf7aa49515d2bc2be3028562921c4eef02"
+  url "https://github.com/git-cola/git-cola/archive/v2.1.0.tar.gz"
+  sha1 "c93e74b021e6e5df92a46a3d05ac8a6377571fa8"
 
   head "https://github.com/git-cola/git-cola.git"
 
   bottle do
-    cellar :any
-    sha1 "3d25d2a75de62577e8e9a681657fa2f5403c26c9" => :mavericks
-    sha1 "ee451c446b61864a44347d2f544c62a49bb021f1" => :mountain_lion
-    sha1 "88e4243fb3c9ee15465825c70a388235904c9f06" => :lion
+    sha1 "fc7b0c0eeed41bb42764a25b8b229f39b3dc4fb3" => :yosemite
+    sha1 "1f7e728856585487951f48b9e612cf628e112ac8" => :mavericks
+    sha1 "864bafa798ff86c6213238a6c9922549aee94a95" => :mountain_lion
   end
 
   option "with-docs", "Build man pages using asciidoc and xmlto"
@@ -35,4 +32,7 @@ class GitCola < Formula
     end
   end
 
+  test do
+    system "#{bin}/git-cola", "--version"
+  end
 end

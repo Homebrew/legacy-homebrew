@@ -7,9 +7,10 @@ class Libcoap < Formula
 
   bottle do
     cellar :any
-    sha1 "f02f899057ee8292239e0a697188002a0743e728" => :mavericks
-    sha1 "5a79a74f20beae8dc2ad7879bf8dec4f129d9a87" => :mountain_lion
-    sha1 "16534d8749735472dec30484de6de432fd7d4ab3" => :lion
+    revision 1
+    sha1 "977001f847ae286ba3fc3496ad140280e1c80ee9" => :yosemite
+    sha1 "b725f7d8be17fd319a1b3f4851396407e8da93f6" => :mavericks
+    sha1 "65b9a058dffdfac73dea9141c1a08cd828a5a0e2" => :mountain_lion
   end
 
   depends_on "doxygen" => :build

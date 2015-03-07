@@ -7,9 +7,10 @@ class LibpokerEval < Formula
 
   bottle do
     cellar :any
-    sha1 "527615af40e97768abaf974cd012c6dd9d01c7d5" => :mavericks
-    sha1 "2b6055b7c47012297522906ff2e77ba857bcf502" => :mountain_lion
-    sha1 "3a438207551d9d9f41ea9252e9621affa42ca170" => :lion
+    revision 1
+    sha1 "c9296719a25202cc2e285b9424765b323457a074" => :yosemite
+    sha1 "80b6927bcbcef1e0c64bed7c57e57ddf0fdef008" => :mavericks
+    sha1 "dd113717a5f0dabf6942217b6f48c65d62263755" => :mountain_lion
   end
 
   def install

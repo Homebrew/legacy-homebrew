@@ -2,14 +2,14 @@ require 'formula'
 
 class Libsvm < Formula
   homepage 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/'
-  url 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/oldfiles/libsvm-3.18.tar.gz'
-  sha1 '20bd3e2d21d79c3714007043475b92dfeed29135'
+  url 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/libsvm-3.20.tar.gz'
+  sha1 '6902c22afadc70034c0d1c0e25455df10fb01eaf'
 
   bottle do
     cellar :any
-    sha1 "91a43c30f20ec4ab045b4d021e379310c529b2d5" => :mavericks
-    sha1 "c7d23b9a0704339446c298a9e2f1014942de54f3" => :mountain_lion
-    sha1 "a0d618da51645b2c0fd63f1b25a95ef8bb39c63a" => :lion
+    sha1 "9a87d885fd4d943448c9107fe572ed0b5687bf5b" => :yosemite
+    sha1 "8fcd71c75841c4def48a4f57312ab5aae4ee628e" => :mavericks
+    sha1 "90e7456fa54524a2a12f563ae3e9bcab57d6ade7" => :mountain_lion
   end
 
   def install

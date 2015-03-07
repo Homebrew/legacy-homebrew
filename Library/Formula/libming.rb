@@ -8,9 +8,10 @@ class Libming < Formula
 
   bottle do
     cellar :any
-    sha1 "e7a7d3bb3e102bfadf7fd3af997a9fdb61cbbb11" => :mavericks
-    sha1 "4b88a6b8e9687b243a8ab6271a8e9e554bba9667" => :mountain_lion
-    sha1 "c046dd6bd1a4db541ece2d7de4f0d0a64d615a58" => :lion
+    revision 1
+    sha1 "32b39f8fa04d714d6bf347e949226083d047cbcb" => :yosemite
+    sha1 "74dede7e7d9cc92cf77f75ee3f9e3f203fc45a16" => :mavericks
+    sha1 "a17d5d4085eac1998e3cee52048870f569d37935" => :mountain_lion
   end
 
   option 'perl', 'Build the perl extension'

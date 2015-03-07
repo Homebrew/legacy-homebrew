@@ -1,22 +1,20 @@
-require 'formula'
-
 class Ykpers < Formula
-  homepage 'http://yubico.github.io/yubikey-personalization/'
-  url 'https://developers.yubico.com/yubikey-personalization/releases/ykpers-1.16.0.tar.gz'
-  sha1 '2536d8882d2b56303c3e9a089d92eb97a688fac6'
+  homepage "http://yubico.github.io/yubikey-personalization/"
+  url "https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.16.2.tar.gz"
+  sha1 "cb8ae32eb2c2eca6c2c156e8f26a3576cb839c52"
 
   bottle do
     cellar :any
-    sha1 "c6899d1553428cc61c1be94854b2e32ed4d85c0f" => :mavericks
-    sha1 "457639f87ec9056a36194f951cd13d55a2faeab7" => :mountain_lion
-    sha1 "798fbbaf1b9d51075cca1cfe4bd11e50b4c58623" => :lion
+    sha1 "0dada94f9df986ada86796f85b17b85732eb05c7" => :yosemite
+    sha1 "2bfc7c38f9ddb776b843418901566c9808f96660" => :mavericks
+    sha1 "8249521d7f21a8749160730d6cecf35837403279" => :mountain_lion
   end
 
   option :universal
 
-  depends_on 'libyubikey'
-  depends_on 'json-c' => :recommended
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
+  depends_on "libyubikey"
+  depends_on "json-c" => :recommended
 
   def install
     ENV.universal_binary if build.universal?

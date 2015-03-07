@@ -1,15 +1,13 @@
-require "formula"
-
 class Libsodium < Formula
   homepage "https://github.com/jedisct1/libsodium/"
-  url "https://github.com/jedisct1/libsodium/releases/download/1.0.0/libsodium-1.0.0.tar.gz"
-  sha256 "ced1fe3d2066953fea94f307a92f8ae41bf0643739a44309cbe43aa881dbc9a5"
+  url "https://github.com/jedisct1/libsodium/releases/download/1.0.2/libsodium-1.0.2.tar.gz"
+  sha256 "961d8f10047f545ae658bcc73b8ab0bf2c312ac945968dd579d87c768e5baa19"
 
   bottle do
     cellar :any
-    sha1 "212b7e48a175332fc1d79ecc4b64d1e1d23c03e3" => :mavericks
-    sha1 "ab999ec2d752494ea99ef94f224a69c83257aa4a" => :mountain_lion
-    sha1 "ae9a37f6b0e3bbb482cfdccafc8c66a91e5db330" => :lion
+    sha1 "2d9ca1930a9deddf2af536a615d0381f104108fa" => :yosemite
+    sha1 "08b594edee330ab79c9d413de65bb63927f0c606" => :mavericks
+    sha1 "5e35a4e883a13a1dc754793be15352eed9550dd0" => :mountain_lion
   end
 
   head do
@@ -28,7 +26,22 @@ class Libsodium < Formula
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <assert.h>
+      #include <sodium.h>
+
+      int main()
+      {
+        assert(sodium_init() != -1);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lsodium", "-o", "test"
+    system "./test"
   end
 end

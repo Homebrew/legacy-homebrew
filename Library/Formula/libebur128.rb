@@ -7,13 +7,15 @@ class Libebur128 < Formula
 
   bottle do
     cellar :any
-    sha1 "8ce0f24393cd9fb4e279f7433c5c6f6da103156d" => :mavericks
-    sha1 "193c2934725f5b5e3d2a3c2fae822820eec36716" => :mountain_lion
-    sha1 "b6fa1c43bac3b49a1c6440afa669b600f3c47970" => :lion
+    revision 2
+    sha1 "69b35529f8165ed8cac324b10d52ce3671e7ab66" => :yosemite
+    sha1 "5d44054e39a6f9c9ad27754ea94bd785e913847e" => :mavericks
+    sha1 "f064843d5ebf08a42d5e02809e398907a242e37d" => :mountain_lion
   end
 
   depends_on "cmake" => :build
-  depends_on "speex" => [:recommended, "with-libogg"]
+  depends_on "pkg-config" => :build
+  depends_on "speex" => :recommended
 
   def install
     system "cmake", ".", *std_cmake_args

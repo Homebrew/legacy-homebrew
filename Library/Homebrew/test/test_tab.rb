@@ -8,20 +8,21 @@ class TabTests < Homebrew::TestCase
     @unused = Options.create(%w(--with-baz --without-qux))
 
     @tab = Tab.new({
-      :used_options       => @used.as_flags,
-      :unused_options     => @unused.as_flags,
-      :built_as_bottle    => false,
-      :poured_from_bottle => true,
-      :tapped_from        => "Homebrew/homebrew",
-      :time               => nil,
-      :HEAD               => TEST_SHA1,
-      :compiler           => "clang",
-      :stdlib             => "libcxx",
+      "used_options"       => @used.as_flags,
+      "unused_options"     => @unused.as_flags,
+      "built_as_bottle"    => false,
+      "poured_from_bottle" => true,
+      "tapped_from"        => "Homebrew/homebrew",
+      "time"               => nil,
+      "HEAD"               => TEST_SHA1,
+      "compiler"           => "clang",
+      "stdlib"             => "libcxx",
+      "source"             => { "path" => nil },
     })
   end
 
   def test_defaults
-    tab = Tab.dummy_tab
+    tab = Tab.empty
     assert_empty tab.unused_options
     assert_empty tab.used_options
     refute_predicate tab, :built_as_bottle
@@ -89,6 +90,13 @@ class TabTests < Homebrew::TestCase
     assert_equal @tab.HEAD, tab.HEAD
     assert_equal @tab.compiler, tab.compiler
     assert_equal @tab.stdlib, tab.stdlib
+  end
+
+  def test_remap_deprecated_options
+    deprecated_options = [DeprecatedOption.new("with-foo", "with-foo-new")]
+    remapped_options = Tab.remap_deprecated_options(deprecated_options, @tab.used_options)
+    assert_includes remapped_options, Option.new("without-bar")
+    assert_includes remapped_options, Option.new("with-foo-new")
   end
 end
 

@@ -7,9 +7,10 @@ class Liboil < Formula
 
   bottle do
     cellar :any
-    sha1 "176c60456a40a7f288a60d759408a9221d4f30bd" => :mavericks
-    sha1 "1119a4fc9dbc042bd9be59f7f6235cbd0581a289" => :mountain_lion
-    sha1 "2b858e29b011a1393e79b5643f15cf8680d6e3b1" => :lion
+    revision 1
+    sha1 "1d7f799090d7ccfe52341971822d3af1269ea68f" => :yosemite
+    sha1 "14d746548dc6e18f900e4fe67d1f1958fda68016" => :mavericks
+    sha1 "41590a673b637d2307b1ce287ec692e4d47b3191" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

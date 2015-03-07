@@ -1,22 +1,26 @@
-require "formula"
-
 class Libassuan < Formula
-  homepage "http://www.gnupg.org/related_software/libassuan/index.en.html"
-  url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.1.2.tar.bz2"
-  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libassuan/libassuan-2.1.2.tar.bz2"
-  sha1 "7aed69734ba64b63004107cada671b5861d332a4"
+  homepage "https://www.gnupg.org/related_software/libassuan/index.en.html"
+  url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.2.0.tar.bz2"
+  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libassuan/libassuan-2.2.0.tar.bz2"
+  sha1 "7cf0545955ce414044bb99b871d324753dd7b2e5"
 
   bottle do
     cellar :any
-    sha1 "9ebb48d3bf64d7f9ca30940008488e7d76802236" => :mavericks
-    sha1 "f16850ab6cfd53096c21cd6f9d0da39210ded0dc" => :mountain_lion
-    sha1 "0369b0ef7e54a8845aff4f16470e39c814341d01" => :lion
+    sha1 "8c80c50672dff700e0b95f2319b5b3393cc6a00c" => :yosemite
+    sha1 "560d930da2edfeaa9e0d6197e83627d15e0be1cb" => :mavericks
+    sha1 "adbf32aefee6ef81a73007647ad49818f61416b7" => :mountain_lion
   end
 
   depends_on "libgpg-error"
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/libassuan-config", "--version"
   end
 end

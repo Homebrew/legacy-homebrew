@@ -1,23 +1,22 @@
-require "formula"
-
 class X264 < Formula
   homepage "https://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "https://git.videolan.org/git/x264.git", :revision => "021c0dc6c95c1bc239c9db78a80dd85fc856a4dd"
-  version "r2455"
-  head "https://git.videolan.org/git/x264.git"
+  url "https://git.videolan.org/git/x264.git", :revision => "6a301b6ee0ae8c78fb704e1cd86f4e861070f641"
+  version "r2495"
 
   devel do
     # the latest commit on the master branch
-    url "https://git.videolan.org/git/x264.git", :revision => "dd79a61e0e354a432907f2d1f7137b27a12dfce7"
-    version "r2479"
+    url "https://git.videolan.org/git/x264.git", :revision => "40bb56814e56ed342040bdbf30258aab39ee9e89"
+    version "r2525"
   end
+
+  head "https://git.videolan.org/git/x264.git"
 
   bottle do
     cellar :any
-    sha1 "22085504fe0af795428e8098424534131d025d50" => :mavericks
-    sha1 "d5dab543efc7abb240fff1c194bdae7b82244ee5" => :mountain_lion
-    sha1 "f25f0a7c3ae891c2a229614da345774f93d9e1b7" => :lion
+    sha1 "48aea1324df78e942257d63bcb9b1a0bbc32dfff" => :yosemite
+    sha1 "1cb4086a82a0f41925bfddfd69d868b882ffe197" => :mavericks
+    sha1 "f232c6e5ddad33c0b13e507c65cf760608957600" => :mountain_lion
   end
 
   depends_on "yasm" => :build
@@ -43,9 +42,6 @@ class X264 < Formula
       args << "--disable-lsmash"
     end
     args << "--bit-depth=10" if build.include? "10-bit"
-
-    # For running version.sh correctly
-    buildpath.install_symlink cached_download/".git"
 
     system "./configure", *args
     system "make", "install"

@@ -8,9 +8,10 @@ class Libreplaygain < Formula
 
   bottle do
     cellar :any
-    sha1 "f32ba6f8190b3f1509bedc80b61529b517e3d68a" => :mavericks
-    sha1 "072fb9552e50cdbb38ccc1008d43301384c5bfe6" => :mountain_lion
-    sha1 "69fe997a4ed990b62bc596046a190f450f2bb47c" => :lion
+    revision 1
+    sha1 "0e4609d3d583c0fd642e3d23185f690d9277f5c4" => :yosemite
+    sha1 "5bbd2faa6fd01aeb9e4a4ecd30e46d5ef98f0418" => :mavericks
+    sha1 "6baabf93ea2d9d9188081b92894736b26ca57ecd" => :mountain_lion
   end
 
   depends_on 'cmake' => :build

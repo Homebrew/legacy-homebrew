@@ -155,26 +155,30 @@ class Version
     StringToken::PATTERN
   )
 
-  def self.detect(url, specs={})
-    if specs.has_key?(:tag)
-      new(specs[:tag][/((?:\d+\.)*\d+)/, 1], true)
-    else
-      parse(url)
+  class FromURL < Version
+    def detected_from_url?
+      true
     end
   end
 
-  def initialize(val, detected=false)
+  def self.detect(url, specs={})
+    if specs.has_key?(:tag)
+      FromURL.new(specs[:tag][/((?:\d+\.)*\d+)/, 1])
+    else
+      FromURL.parse(url)
+    end
+  end
+
+  def initialize(val)
     if val.respond_to?(:to_str)
       @version = val.to_str
     else
       raise TypeError, "Version value must be a string"
     end
-
-    @detected_from_url = detected
   end
 
   def detected_from_url?
-    @detected_from_url
+    false
   end
 
   def head?
@@ -236,7 +240,7 @@ class Version
 
   def self.parse spec
     version = _parse(spec)
-    Version.new(version, true) unless version.nil?
+    new(version) unless version.nil?
   end
 
   def self._parse spec
@@ -269,8 +273,9 @@ class Version
     return m.captures.first.gsub('_', '.') unless m.nil?
 
     # e.g. foobar-4.5.1-1
+    # e.g. unrtf_0.20.4-1
     # e.g. ruby-1.9.1-p243
-    m = /-((?:\d+\.)*\d\.\d+-(?:p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
+    m = /[-_]((?:\d+\.)*\d\.\d+-(?:p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. lame-398-1
@@ -289,6 +294,19 @@ class Version
     m = /-((?:\d+\.)*\d+-beta\d*)$/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. http://ftpmirror.gnu.org/libidn/libidn-1.29-win64.zip
+    # e.g. http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.17-w32.zip
+    m = /-(\d+\.\d+(?:\.\d+)?)-w(?:in)?(?:32|64)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm
+    # e.g. http://ftpmirror.gnu.org/autogen/autogen-5.5.7-5.i386.rpm
+    # e.g. http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x86.zip
+    # e.g. http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x64.zip
+    # e.g. http://ftpmirror.gnu.org/mtools/mtools_4.0.18_i386.deb
+    m = /[-_](\d+\.\d+(?:\.\d+)?(?:-\d+)?)[-_.](?:i[36]86|x86|x64(?:[-_](?:32|64))?)$/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. foobar4.5.1
     m = /((?:\d+\.)*\d+)$/.match(stem)
     return m.captures.first unless m.nil?
@@ -301,7 +319,7 @@ class Version
     m = /_((?:\d+\.)+\d+[abc]?)[.]orig$/.match(stem)
     return m.captures.first unless m.nil?
 
-    # e.g. http://www.openssl.org/source/openssl-0.9.8s.tar.gz
+    # e.g. https://www.openssl.org/source/openssl-0.9.8s.tar.gz
     m = /-v?([^-]+)/.match(stem)
     return m.captures.first unless m.nil?
 

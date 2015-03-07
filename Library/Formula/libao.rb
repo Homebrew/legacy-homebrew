@@ -6,9 +6,10 @@ class Libao < Formula
   sha1 '6b1d2c6a2e388e3bb6ebea158d51afef18aacc56'
 
   bottle do
-    sha1 "0d085a74af49491b905bd61f3e600faa49ee5ca0" => :mavericks
-    sha1 "5d9e119ca1d6d5e0ae766006d484e05e97b5bc79" => :mountain_lion
-    sha1 "3194c697e416c4c215a80e6e1fcbf07e8141a5aa" => :lion
+    revision 1
+    sha1 "9654b94ab07fed570d4b1ea71473a9f9f8020e43" => :yosemite
+    sha1 "7a897f67a80378e5b4c838c7a45d03acc1f9b391" => :mavericks
+    sha1 "f6fac2951b26b0df3a91da55ad5763e23183eace" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

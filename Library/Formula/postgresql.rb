@@ -1,48 +1,38 @@
-require "formula"
-
 class Postgresql < Formula
   homepage "http://www.postgresql.org/"
-  revision 1
 
   stable do
-    url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
-    sha256 "14176ffb1f90a189e7626214365be08ea2bfc26f26994bafb4235be314b9b4b0"
-
-    # ossp-uuid is no longer required for uuid support since 9.4beta2:
-    depends_on "ossp-uuid" => :recommended
-    # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-    patch :DATA
+    url "http://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
+    sha256 "29ddb77c820095b8f52e5455e9c6c6c20cf979b0834ed1986a8857b84888c3a6"
   end
 
   bottle do
     revision 1
-    sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
-    sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
-    sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
+    sha1 "4b5a1f7ebe10ec5aba088459a4faa2ba7c13a691" => :yosemite
+    sha1 "e7844fc53d1ffef1cb809332d88b5bb777927176" => :mavericks
+    sha1 "a5e70e04dba89fee99bb5fb7dae74e4a849813c4" => :mountain_lion
   end
 
-  devel do
-    url 'http://ftp.postgresql.org/pub/source/v9.4beta2/postgresql-9.4beta2.tar.bz2'
-    version '9.4beta2'
-    sha256 '567406cf58386917916d8ef7ac892bf79e98742cd16909bb00fc920dd31a388c'
-  end
+  option "32-bit"
+  option "without-perl", "Build without Perl support"
+  option "without-tcl", "Build without Tcl support"
+  option "with-dtrace", "Build with DTrace support"
 
-  option '32-bit'
-  option 'no-perl', 'Build without Perl support'
-  option 'no-tcl', 'Build without Tcl support'
-  option 'enable-dtrace', 'Build with DTrace support'
+  deprecated_option "no-perl" => "without-perl"
+  deprecated_option "no-tcl" => "without-tcl"
+  deprecated_option "enable-dtrace" => "with-dtrace"
 
-  depends_on 'openssl'
-  depends_on 'readline'
-  depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
+  depends_on "openssl"
+  depends_on "readline"
+  depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on :python => :optional
 
-  conflicts_with 'postgres-xc',
-    :because => 'postgresql and postgres-xc install the same binaries.'
+  conflicts_with "postgres-xc",
+    :because => "postgresql and postgres-xc install the same binaries."
 
   fails_with :clang do
     build 211
-    cause 'Miscompilation resulting in segfault on queries'
+    cause "Miscompilation resulting in segfault on queries"
   end
 
   def install
@@ -63,30 +53,28 @@ class Postgresql < Formula
       --with-libxslt
     ]
 
-    args << "--with-python" if build.with? 'python'
-    args << "--with-perl" unless build.include? 'no-perl'
-    if !build.include? "no-tcl"
-      args << "--with-tcl"
-      args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
-    end
-    args << "--enable-dtrace" if build.include? 'enable-dtrace'
+    args << "--with-python" if build.with? "python"
+    args << "--with-perl" if build.with? "perl"
 
-    if build.with?("ossp-uuid")
-      args << "--with-ossp-uuid"
-      ENV.append 'CFLAGS', `uuid-config --cflags`.strip
-      ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
-      ENV.append 'LIBS', `uuid-config --libs`.strip
-    elsif build.devel?
-      # Apple's UUID implementation is compatible with e2fs NOT bsd
-      args << "--with-uuid=e2fs"
+    # The CLT is required to build tcl support on 10.7 and 10.8 because
+    # tclConfig.sh is not part of the SDK
+    if build.with?("tcl") && (MacOS.version >= :mavericks || MacOS::CLT.installed?)
+      args << "--with-tcl"
+
+      if File.exist?("#{MacOS.sdk_path}/usr/lib/tclConfig.sh")
+        args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+      end
     end
+
+    args << "--enable-dtrace" if build.with? "dtrace"
+    args << "--with-uuid=e2fs"
 
     if build.build_32_bit?
       ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     system "./configure", *args
-    system "make install-world"
+    system "make", "install-world"
   end
 
   def post_install
@@ -95,25 +83,13 @@ class Postgresql < Formula
     end
   end
 
-  def caveats
-    s = <<-EOS.undent
+  def caveats; <<-EOS.undent
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
-      https://github.com/Homebrew/homebrew/issues/issue/2510
+      https://github.com/Homebrew/homebrew/issues/2510
 
-    To migrate existing data from a previous major version (pre-9.3) of PostgreSQL, see:
-      http://www.postgresql.org/docs/9.3/static/upgrading.html
-    EOS
-
-    s << "\n" << gem_caveats if MacOS.prefer_64_bit?
-    return s
-  end
-
-  def gem_caveats; <<-EOS.undent
-    When installing the postgres gem, including ARCHFLAGS is recommended:
-      ARCHFLAGS="-arch x86_64" gem install pg
-
-    To install gems without sudo, see the Homebrew wiki.
+    To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
+      http://www.postgresql.org/docs/9.4/static/upgrading.html
     EOS
   end
 
@@ -151,17 +127,3 @@ class Postgresql < Formula
     system "#{bin}/initdb", testpath
   end
 end
-
-
-__END__
---- a/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:34:53.000000000 -0700
-+++ b/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:35:03.000000000 -0700
-@@ -9,6 +9,8 @@
-  *-------------------------------------------------------------------------
-  */
-
-+#define _XOPEN_SOURCE
-+
- #include "postgres.h"
- #include "fmgr.h"
- #include "utils/builtins.h"

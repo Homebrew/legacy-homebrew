@@ -19,34 +19,80 @@ module Homebrew
         msg = blacklisted? name
         raise "No available formula for #{name}\n#{msg}" if msg
       end
-      if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
+      if !File.exist?(name) && (name =~ HOMEBREW_TAP_FORMULA_REGEX \
+                                || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
         install_tap $1, $2
       end
     end unless ARGV.force?
 
     begin
+      formulae = []
+
+      if ARGV.casks.any?
+        brew_cask = Formulary.factory("brew-cask")
+        install_formula(brew_cask) unless brew_cask.installed?
+        args = []
+        args << "--force" if ARGV.force?
+        args << "--debug" if ARGV.debug?
+        args << "--verbose" if ARGV.verbose?
+
+        ARGV.casks.each do |c|
+          cmd = "brew", "cask", "install", c, *args
+          ohai cmd.join " "
+          system(*cmd)
+        end
+      end
+
       ARGV.formulae.each do |f|
-        # Building head-only without --HEAD is an error
-        if not ARGV.build_head? and f.stable.nil?
-          raise CannotInstallFormulaError, <<-EOS.undent
+        # head-only without --HEAD is an error
+        if not ARGV.build_head? and f.stable.nil? and f.devel.nil?
+          raise <<-EOS.undent
           #{f.name} is a head-only formula
           Install with `brew install --HEAD #{f.name}`
           EOS
         end
 
-        # Building stable-only with --HEAD is an error
+        # devel-only without --devel is an error
+        if not ARGV.build_devel? and f.stable.nil? and f.head.nil?
+          raise <<-EOS.undent
+          #{f.name} is a devel-only formula
+          Install with `brew install --devel #{f.name}`
+          EOS
+        end
+
+        if ARGV.build_stable? and f.stable.nil?
+          raise "#{f.name} has no stable download, please choose --devel or --HEAD"
+        end
+
+        # --HEAD, fail with no head defined
         if ARGV.build_head? and f.head.nil?
-          raise CannotInstallFormulaError, "No head is defined for #{f.name}"
+          raise "No head is defined for #{f.name}"
+        end
+
+        # --devel, fail with no devel defined
+        if ARGV.build_devel? and f.devel.nil?
+          raise "No devel block is defined for #{f.name}"
+        end
+
+        if f.installed?
+          msg = "#{f.name}-#{f.installed_version} already installed"
+          msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
+          opoo msg
+        else
+          formulae << f
         end
       end
 
       perform_preinstall_checks
 
-      ARGV.formulae.each { |f| install_formula(f) }
+      formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
       ofail e.message
+      query = query_regexp(e.name)
+      puts 'Searching formulae...'
+      puts_columns(search_formulae(query))
       puts 'Searching taps...'
-      puts_columns(search_taps(query_regexp(e.name)))
+      puts_columns(search_taps(query))
     end
   end
 
@@ -102,6 +148,8 @@ module Homebrew
   end
 
   def install_formula f
+    f.print_tap_action
+
     fi = FormulaInstaller.new(f)
     fi.options             = f.build.used_options
     fi.ignore_deps         = ARGV.ignore_deps?
@@ -110,9 +158,9 @@ module Homebrew
     fi.build_from_source   = ARGV.build_from_source?
     fi.force_bottle        = ARGV.force_bottle?
     fi.interactive         = ARGV.interactive?
-    fi.interactive       &&= :git if ARGV.flag? "--git"
+    fi.git                 = ARGV.git?
     fi.verbose             = ARGV.verbose?
-    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.quieter             = ARGV.quieter?
     fi.debug               = ARGV.debug?
     fi.prelude
     fi.install
@@ -121,10 +169,10 @@ module Homebrew
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to install f as part of the dependency tree of
     # another formula. In that case, don't generate an error, just move on.
-  rescue FormulaAlreadyInstalledError => e
-    opoo e.message
   rescue CannotInstallFormulaError => e
     ofail e.message
+  rescue BuildError
     check_macports
+    raise
   end
 end

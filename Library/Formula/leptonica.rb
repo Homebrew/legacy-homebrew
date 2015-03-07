@@ -4,18 +4,18 @@ class Leptonica < Formula
   homepage 'http://www.leptonica.org/'
   url 'http://www.leptonica.org/source/leptonica-1.71.tar.gz'
   sha1 '1ee59b06fd6c6402876f46c26c21b17ffd3c9b6b'
+  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ad82e1ecacdee2428e2c7426198969db363a09c5" => :mavericks
-    sha1 "971d13992a410a6d4907cb4c964151ae5cd5ffe2" => :mountain_lion
-    sha1 "9e58252edeb5ef713a24fe89a154cd25ec98b0a9" => :lion
+    sha1 "f492ae6f99b341c2fb1f32cadb44402963e3c8ae" => :yosemite
+    sha1 "793835a4e3b6bb19601f842c7a5de5873e340451" => :mavericks
+    sha1 "cba822e6f2e5d1c87789fbcd6c0e78cef487b134" => :mountain_lion
   end
 
   depends_on 'libpng' => :recommended
   depends_on 'jpeg' => :recommended
-  depends_on 'libtiff' => :optional
+  depends_on 'libtiff' => :recommended
   depends_on 'giflib' => :optional
   depends_on 'openjpeg' => :optional
   depends_on 'webp' => :optional

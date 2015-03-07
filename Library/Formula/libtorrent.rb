@@ -5,14 +5,8 @@ class Libtorrent < Formula
   url "http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.4.tar.gz"
   sha1 "3a3ca87054d020bc376abe2c1ea15bbbaef31131"
 
-  bottle do
-    cellar :any
-    sha1 "e64f87dc56f811ed638e21d6010efd671c461d1e" => :mavericks
-    sha1 "328d903212207eea0a9117eee3edbfb707612438" => :mountain_lion
-    sha1 "0061da39b678f0c0859de0ebbae14f5ad70d104a" => :lion
-  end
-
   depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # https://github.com/Homebrew/homebrew/issues/24132
   fails_with :clang do

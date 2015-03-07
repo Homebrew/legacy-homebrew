@@ -7,9 +7,10 @@ class Lzlib < Formula
 
   bottle do
     cellar :any
-    sha1 "9a805d032470d6d0f1f45fea1498e48709816bc7" => :mavericks
-    sha1 "c6591a5842abc95dbfeec294555193b3e1cd85c7" => :mountain_lion
-    sha1 "3e1261f5acf7ec50ea10dc55d6ed5e22368bf39c" => :lion
+    revision 1
+    sha1 "4b292d57f157ef8169b0aa7278708d8a902b7d72" => :yosemite
+    sha1 "1ad7ec901c9b949b70934a3f40a4693bb09d37c8" => :mavericks
+    sha1 "78a796e1a2c115b967ddde3fc014fb143bdfb351" => :mountain_lion
   end
 
   def install

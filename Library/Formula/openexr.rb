@@ -7,13 +7,11 @@ class Openexr < Formula
 
   bottle do
     cellar :any
-    sha1 "ea725dc6cbc2d136e76207c9d35a7be7458a3cfb" => :mavericks
-    sha1 "ed396fb53bd47b21972f543b7a5eb374d4f023f0" => :mountain_lion
-    sha1 "b22c4937ea4053246781c1469cb11b6eb9290d94" => :lion
+    revision 1
+    sha1 "be055103cf96edbd87f01d200ae97365a13dfd33" => :yosemite
+    sha1 "5263df7bfe3a4a6c5e8c21aaa9d1a49cad666e3d" => :mavericks
+    sha1 "f32df24d8a0c74d0b8e53b9e0e15d60dceaf0b6a" => :mountain_lion
   end
-
-  # included for reference only - repository doesn't have 'configure' script
-  # head 'cvs://:pserver:anonymous@cvs.sv.gnu.org:/sources/openexr:OpenEXR'
 
   depends_on 'pkg-config' => :build
   depends_on 'ilmbase'

@@ -7,9 +7,10 @@ class Sfcgal < Formula
   revision 1
 
   bottle do
-    sha1 "a0aecc3d53ba2b343ea0a62a50d0d3bbe1de85f9" => :mavericks
-    sha1 "0e34b4fad960a095b4009754c18860ac515eb486" => :mountain_lion
-    sha1 "e74e8ddb2eafa1a884663a1784bca8734d7ee438" => :lion
+    revision 1
+    sha1 "1a5ade35a1dcbe31b085e93c92fbe34f52f2239c" => :yosemite
+    sha1 "eaa2e1ba6ec094304639b74a90e1f43897af5055" => :mavericks
+    sha1 "904f9e44b4da3545d8bfec3fe862a1682cbdf25f" => :mountain_lion
   end
 
   depends_on "cmake" => :build

@@ -1,6 +1,7 @@
 require 'testing_env'
 require 'formula'
-require 'test/testball'
+require 'compat/formula_specialties'
+require 'testball'
 require 'keg'
 
 
@@ -35,9 +36,8 @@ class InstallTests < Homebrew::TestCase
       assert_predicate f.bin, :directory?
       assert_equal 3, f.bin.children.length
 
-      libexec = f.prefix+'libexec'
-      assert_predicate libexec, :directory?
-      assert_equal 1, libexec.children.length
+      assert_predicate f.libexec, :directory?
+      assert_equal 1, f.libexec.children.length
 
       refute_predicate f.prefix+'main.c', :exist?
       assert_predicate f, :installed?
@@ -55,10 +55,7 @@ class InstallTests < Homebrew::TestCase
     f = Class.new(ScriptFileFormula) do
       url "file://#{File.expand_path(__FILE__)}"
       version "1"
-      def initialize
-        super "test_script_formula", Pathname.new(__FILE__).expand_path, :stable
-      end
-    end.new
+    end.new("test_script_formula", Pathname.new(__FILE__).expand_path, :stable)
 
     temporary_install(f) { assert_equal 1, f.bin.children.length }
   end

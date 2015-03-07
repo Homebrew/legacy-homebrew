@@ -1,15 +1,14 @@
-require 'formula'
-
 class Ssdb < Formula
-  homepage "http://ssdb.io/?lang=en"
-  url "https://github.com/ideawu/ssdb/archive/1.6.8.8.tar.gz"
-  sha1 "2d63cb0ba176bf6c463a70e7a3b39f8cc326d5d7"
-  head "https://github.com/ideawu/ssdb.git", :branch => "master"
+  homepage "http://ssdb.io/"
+  url "https://github.com/ideawu/ssdb/archive/1.8.0.tar.gz"
+  sha1 "88f4930ae6f3d0234c783546e1fb00638801c4e7"
+  head "https://github.com/ideawu/ssdb.git"
+  revision 1
 
   bottle do
-    sha1 "2838529376cd00f1cecb57fbf2c0391abc4ef724" => :mavericks
-    sha1 "6b2fee94e88f70247ef70b1b514656063cbaee3e" => :mountain_lion
-    sha1 "df1e6924434c5d28c7b0df02f68f411b99292538" => :lion
+    sha1 "61b35f6fc12408e55863344feab5af1a8fbd3d88" => :yosemite
+    sha1 "3e6a066798981b12d02885fa4ee3358bf3f251a2" => :mavericks
+    sha1 "807e32ab2af2db9fbaa1a4104c1a5e065c3a9231" => :mountain_lion
   end
 
   def install
@@ -76,7 +75,10 @@ class Ssdb < Formula
 
   test do
     pid = fork do
-      Signal.trap("TERM") { system("#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf"); exit }
+      Signal.trap("TERM") do
+        system("#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf")
+        exit
+      end
     end
     sleep(3)
     Process.kill("TERM", pid)

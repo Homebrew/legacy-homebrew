@@ -22,10 +22,6 @@ _brew_outdated_formulae() {
   outdated_formulae=(`brew outdated`)
 }
 
-_brew_running_services() {
-  running_services=(`brew services list | awk '{print $1}'`)
-}
-
 local -a _1st_arguments
 _1st_arguments=(
   'audit:check formulae for Homebrew coding style'
@@ -51,8 +47,6 @@ _1st_arguments=(
   'prune:remove dead links'
   'remove:remove a formula'
   'search:search for a formula (/regex/ or string)'
-  'server:start a local web app that lets you browse formulae (requires Sinatra)'
-  'services:small wrapper around `launchctl` for supported formulae'
   'switch:switch between different versions of a formula'
   'tap:tap a new formula repository from GitHub, or list existing taps'
   'unlink:unlink a formula'
@@ -63,17 +57,8 @@ _1st_arguments=(
   'uses:show formulae which depend on a formula'
 )
 
-local -a _service_arguments
-_service_arguments=(
-  'cleanup:get rid of stale services and unused plists'
-  'list:list all services managed by `brew services`'
-  'restart:gracefully restart selected service'
-  'start:start selected service'
-  'stop:stop selected service'
-)
-
 local expl
-local -a formulae installed_formulae installed_taps outdated_formulae running_services
+local -a formulae installed_formulae installed_taps outdated_formulae
 
 _arguments \
   '(-v)-v[verbose]' \
@@ -112,16 +97,6 @@ case "$words[1]" in
     _arguments \
       '(--macports)--macports[search the macports repository]' \
       '(--fink)--fink[search the fink repository]' ;;
-  services)
-    if [[ -n "$words[2]" ]]; then
-      case "$words[2]" in
-        restart|start|stop)
-          _brew_running_services
-          _wanted running_services expl 'running services' compadd -a running_services ;;
-      esac
-    else
-      _describe -t commands "brew services subcommand" _service_arguments
-    fi ;;
   untap)
     _brew_installed_taps
     _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;

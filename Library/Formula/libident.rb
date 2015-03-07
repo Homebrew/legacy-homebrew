@@ -7,9 +7,10 @@ class Libident < Formula
 
   bottle do
     cellar :any
-    sha1 "93dddda445871d47c7e99d9ef372b17b81b4609f" => :mavericks
-    sha1 "a9b4d7027c22dd6dafb16f4cc98e213663490b33" => :mountain_lion
-    sha1 "8eddbc6d4d309262d729ac63e46a90d9f7cfc6bd" => :lion
+    revision 1
+    sha1 "64d49643f318b06a290951083fe02e28956288dc" => :yosemite
+    sha1 "2d309cbd2783f327c92ff5ea640e052059bb6d43" => :mavericks
+    sha1 "e449ccd40b06a2b32cc1c36d076354a5402e7df3" => :mountain_lion
   end
 
   def install

@@ -7,16 +7,17 @@ class Imlib2 < Formula
   revision 1
 
   bottle do
-    sha1 "77c484475ddf53a65a4a75a07a671614ecb18ea1" => :mavericks
-    sha1 "11cd0cc34575ffd2c764dc57527555fec6aa0963" => :mountain_lion
-    sha1 "45b3936eac39b9e4e5ef78f6383efba1492fd962" => :lion
+    revision 1
+    sha1 "c6cb08c880b91081f247e0ee7f3399c76f1392cf" => :yosemite
+    sha1 "452e184ee428ebf3dabd28c81570e04c267540a7" => :mavericks
+    sha1 "43617f8bb0c30c7de73dc5f2e07d6f1f10fd8e6c" => :mountain_lion
   end
 
-  option "without-x", "Build without X support"
+  deprecated_option "without-x" => "without-x11"
 
   depends_on 'freetype'
   depends_on 'libpng' => :recommended
-  depends_on :x11 if build.with? "x"
+  depends_on :x11 => :recommended
   depends_on 'pkg-config' => :build
   depends_on 'jpeg' => :recommended
 
@@ -26,14 +27,13 @@ class Imlib2 < Formula
       --prefix=#{prefix}
       --enable-amd64=no
     ]
-    args << "--without-x" if build.without? "x"
+    args << "--without-x" if build.without? "x11"
 
     system "./configure", *args
     system "make install"
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/imlib2_conv", test_png, "imlib2_test.png"
+    system "#{bin}/imlib2_conv", test_fixtures("test.png"), "imlib2_test.png"
   end
 end

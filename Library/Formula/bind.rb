@@ -1,14 +1,14 @@
 require "formula"
 
 class Bind < Formula
-  homepage "http://www.isc.org/software/bind/"
-  url "http://ftp.isc.org/isc/bind9/9.10.1/bind-9.10.1.tar.gz"
-  sha1 "96aa28c6112c6a8c33a19efeac98c715f03b35ca"
+  homepage "https://www.isc.org/software/bind/"
+  url "http://ftp.isc.org/isc/bind9/9.10.2/bind-9.10.2.tar.gz"
+  sha1 "4ddb2670976c06af7e86352616383958d82c51ce"
 
   bottle do
-    sha1 "acbc3d6c023a81a8521d1e7f3734390a405b986e" => :mavericks
-    sha1 "89accfff4961c1425a1b6b29c6a9f78cc451ace3" => :mountain_lion
-    sha1 "45af0b2a7ab9c38751a18b2901ce3670a9e93d4a" => :lion
+    sha1 "901a4706d23607927fadb78d5495d49f715fdde4" => :yosemite
+    sha1 "ce2cfdc2ebaab7cccc001f9fdefd2d55d6b9fa11" => :mavericks
+    sha1 "b9f513f74bb0ec23af29057fc0eb1e2c410c9769" => :mountain_lion
   end
 
   head "https://source.isc.org/git/bind9.git"
@@ -23,7 +23,7 @@ class Bind < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
                           "--enable-ipv6",
-                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}"
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
 
     # From the bind9 README: "Do not use a parallel "make"."
     ENV.deparallelize

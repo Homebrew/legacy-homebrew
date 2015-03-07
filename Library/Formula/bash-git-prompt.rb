@@ -2,8 +2,8 @@ require "formula"
 
 class BashGitPrompt < Formula
   homepage "https://github.com/magicmonty/bash-git-prompt"
-  url "https://github.com/magicmonty/bash-git-prompt/archive/2.3.tar.gz"
-  sha1 "a4e692ef33b691724df6ac9582c204d31dbb853a"
+  url "https://github.com/magicmonty/bash-git-prompt/archive/2.3.5.tar.gz"
+  sha1 "16e1a9ab0ac711de79fd3b823138c16fadb3d5de"
   head "https://github.com/magicmonty/bash-git-prompt.git"
 
   def install
@@ -16,9 +16,9 @@ class BashGitPrompt < Formula
 
   def caveats; <<-EOS.undent
     You should add the following to your .bashrc (or equivalent):
-      if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+      if [ -f "$(brew --prefix bash-git-prompt)/share/gitprompt.sh" ]; then
         GIT_PROMPT_THEME=Default
-        source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
+        source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"
       fi
     EOS
   end

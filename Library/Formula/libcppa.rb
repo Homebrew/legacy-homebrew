@@ -1,38 +1,50 @@
-require "formula"
-
 class Libcppa < Formula
-  homepage "http://libcppa.blogspot.it"
-  url "http://github.com/Neverlord/libcppa/archive/V0.9.4.tar.gz"
-  sha1 "eba8002f087e55498edc0bf996fb7f211d7feec6"
+  # TODO: since libcppa has been renamed to CAF, this formula should eventually
+  # be renamed to 'caf.rb'.
+  homepage "http://actor-framework.org/"
+  url "https://github.com/actor-framework/actor-framework/archive/0.12.2.tar.gz"
+  sha1 "003655f524a727fa8ccb5b41b6d997b299f5b496"
+  head "https://github.com/actor-framework/actor-framework.git"
 
   bottle do
     cellar :any
-    sha1 "a90dee39274040acf70868ccc636e8c14e7c7ad5" => :mavericks
-    sha1 "3ef83c6fad796a1e50f6fd417b81825a44f606d5" => :mountain_lion
+    sha1 "d147228e33f56e7d8d583d049c7983e6dea4c418" => :yosemite
+    sha1 "2b2916dc07ca27f5b98d8d78d363c04fee860abf" => :mavericks
+    sha1 "88e3a062a1ed03d4b8297daf3670f8f834ee60dd" => :mountain_lion
   end
 
   depends_on "cmake" => :build
 
   needs :cxx11
 
-  option "with-opencl", "Build with OpenCL actors"
-  option "with-examples", "Build examples"
+  option "with-opencl", "build with support for OpenCL actors"
+  option "without-check", "skip unit tests (not recommended)"
 
   def install
-    ENV.cxx11
+    args = %W[./configure --prefix=#{prefix} --no-examples --build-static]
+    args << "--no-opencl" if build.without? "opencl"
 
-    args = %W[
-      --prefix=#{prefix}
-      --build-static
-      --disable-context-switching
-    ]
-
-    args << "--with-opencl" if build.with? "opencl"
-    args << "--no-examples" if build.without? "examples"
-
-    system "./configure", *args
+    system *args
     system "make"
-    system "make", "test"
+    system "make", "test" if build.with? "check"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <iostream>
+      #include <caf/all.hpp>
+      using namespace caf;
+      int main() {
+        scoped_actor self;
+        self->spawn([] {
+          std::cout << "test" << std::endl;
+        });
+        self->await_all_other_actors_done();
+        return 0;
+      }
+    EOS
+    system *%W[#{ENV.cxx} -std=c++11 -stdlib=libc++ test.cpp -lcaf_core -o test]
+    system "./test"
   end
 end

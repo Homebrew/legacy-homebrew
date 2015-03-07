@@ -2,13 +2,13 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.5/rabbitmq-server-mac-standalone-3.3.5.tar.gz'
-  sha1 '3658add67d9ee7503bed8781c2073dca08460124'
+  url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.4.4/rabbitmq-server-mac-standalone-3.4.4.tar.gz'
+  sha1 '589da662ad896510de6b099b3e30015f7402da07'
 
   bottle do
-    sha1 "430548832c039eebe30c4e10d595b20833767112" => :mavericks
-    sha1 "b1b987e439f2f85a3297d575e0795ca550c2dbf1" => :mountain_lion
-    sha1 "f799b2372a2085fee9afdd5d4a4a964487ac1d31" => :lion
+    sha1 "4b4425cd3671910cbec4ba2af7e29b3b9483a539" => :yosemite
+    sha1 "83bac94d345cca7e4ea9bd989b79269dca355d70" => :mavericks
+    sha1 "d86eee84c1fec74bf7a95ef20d0ae0e046e57c47" => :mountain_lion
   end
 
   depends_on 'simplejson' => :python if MacOS.version <= :leopard

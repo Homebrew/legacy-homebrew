@@ -1,33 +1,41 @@
-require "formula"
-
 class Fig < Formula
-  homepage "http://www.fig.sh/"
-  url "https://github.com/docker/fig/archive/0.5.2.tar.gz"
-  sha1 "dea7120368833d3255e138c622572335b36d00fc"
+  homepage "https://docs.docker.com/compose/"
+  url "https://github.com/docker/compose/archive/1.1.0.tar.gz"
+  sha1 "175066934c19f455606b16f1b4e4b9f26fc3f599"
 
   bottle do
-    cellar :any
-    sha1 "9d5a8ff89b36221658baacced06f324015c76fc1" => :mavericks
-    sha1 "ce5a1a8a8d87b44792d74fc2de09e04b942a6735" => :mountain_lion
-    sha1 "0049d3e346098d2db4a2f063babb33f805da3417" => :lion
+    revision 1
+    sha1 "c1fbe70891a82e92aeaa417622e05bf2dd6c6bb5" => :yosemite
+    sha1 "a8faccbb07062db68e3b4ef94983d6bdc0c0c673" => :mavericks
+    sha1 "824ac264234c2769f80cba86f05ba7649b588e1d" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
-  resource "docopt" do
-    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.1.tar.gz"
-    sha1 "3d0ad1cf495d2c801327042e02d67b4ee4b85cd4"
+  # It's possible that the user wants to manually install Docker and Boot2Docker,
+  # for example, they want to compile Docker manually
+  depends_on "docker" => :recommended
+  depends_on "boot2docker" => :recommended
+
+  resource "docker-py" do
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.7.2.tar.gz"
+    sha1 "c526e95ea974b2a40392dbe00d0ecbfffa6c5d4b"
   end
 
   resource "pyyaml" do
-    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
-    sha1 "476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73"
+    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
+    sha1 "1a2d5df8b31124573efb9598ec6d54767f3c4cd4"
   end
 
-  resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.2.1.tar.gz"
-    sha1 "88eb1fd6a0dfb8b97262f8029978d7c75eebc16f"
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+  end
+
+  resource "dockerpty" do
+    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.2.tar.gz"
+    sha1 "4b323b7c2fce84452dc5950ff1b32d97d9a412aa"
   end
 
   resource "texttable" do
@@ -35,34 +43,40 @@ class Fig < Formula
     sha1 "ca505fb7424defa99f5a85bdaf433a6b24ffa82c"
   end
 
+  resource "docopt" do
+    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
+    sha1 "224a3ec08b56445a1bd1583aad06b00692671e04"
+  end
+
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.4.3.tar.gz"
+    sha1 "411f1bfa44556f7dd0f34cd822047c31baa7d741"
+  end
+
   resource "websocket-client" do
     url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.11.0.tar.gz"
     sha1 "a38cb6072a25b18faf11d31dd415750692c36f33"
   end
 
-  resource "dockerpty" do
-    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.2.1.tar.gz"
-    sha1 "6edf60955c274ee258ba4fe1ea7233c252fd179b"
-  end
-
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
-
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
 
-    rm "#{lib}/python2.7/site-packages/site.py"
-    rm "#{lib}/python2.7/site-packages/easy-install.pth"
+    bash_completion.install "contrib/completion/bash/docker-compose"
 
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    ln_s bin/"docker-compose", bin/"fig"
   end
 
   test do
-    system "#{bin}/fig", "--version"
+    system "#{bin}/docker-compose", "--version"
   end
 end

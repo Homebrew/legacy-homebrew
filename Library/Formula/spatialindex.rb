@@ -2,14 +2,14 @@ require 'formula'
 
 class Spatialindex < Formula
   homepage 'http://libspatialindex.github.io'
-  url "http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.1.tar.gz"
-  sha1 "c05f8d081316a163aef117b7fd99811539ec421c"
+  url "http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.5.tar.gz"
+  sha1 "08af1fefd0a30c895d7d714056c2a8f021f46eb4"
 
   bottle do
     cellar :any
-    sha1 "54cf31266bd31f2da68f907357ea82660d3e69a7" => :mavericks
-    sha1 "39d6c3cae399cfe21ce654099d91e235db568e6e" => :mountain_lion
-    sha1 "4b3a2cc81e92d7129b55c90a0c35014b200acf1d" => :lion
+    sha1 "ed7c92a7da78e4e7e5294ea52cd05c344094af98" => :yosemite
+    sha1 "07e4fe6747d4db327fadc2e3e4f12a975ff4aaba" => :mavericks
+    sha1 "2122a70a3dd9d966d8fdc7b9e0e285515356dd98" => :mountain_lion
   end
 
   def install

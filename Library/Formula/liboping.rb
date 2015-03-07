@@ -1,14 +1,14 @@
 require 'formula'
 
 class Liboping < Formula
-  homepage 'http://verplant.org/liboping/'
-  url 'http://verplant.org/liboping/files/liboping-1.6.2.tar.bz2'
-  sha256 '5f4ab4b127b5a8a79ab771002604bff0e2903622393e5602f336cad258bb73cf'
+  homepage 'http://noping.cc'
+  url 'http://noping.cc/files/liboping-1.8.0.tar.bz2'
+  sha256 '1dcb9182c981b31d67522ae24e925563bed57cf950dc681580c4b0abb6a65bdb'
 
   bottle do
-    sha1 "02ef638706e016e6f8f551be3be671a56f59ad42" => :mavericks
-    sha1 "0ea3b028984d2f7b0f1b5a54dbda97b222b916e4" => :mountain_lion
-    sha1 "d6802770af12ceb30742510c5505eed031dc3850" => :lion
+    sha1 "227e7e74330510ac76e8442c685b8a6a5edea9cb" => :yosemite
+    sha1 "77cfac843cbcff2f2c0d8040e76b2abe321c9a64" => :mavericks
+    sha1 "1bf78b5ae02d6ec9c7436da117f3f33e7cb61bee" => :mountain_lion
   end
 
   def install

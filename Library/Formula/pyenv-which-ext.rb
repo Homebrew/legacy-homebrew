@@ -1,5 +1,3 @@
-require "formula"
-
 class PyenvWhichExt < Formula
   homepage "https://github.com/yyuu/pyenv-which-ext"
   url "https://github.com/yyuu/pyenv-which-ext/archive/v0.0.2.tar.gz"
@@ -12,5 +10,9 @@ class PyenvWhichExt < Formula
   def install
     ENV["PREFIX"] = prefix
     system "./install.sh"
+  end
+
+  test do
+    shell_output("eval \"$(pyenv init -)\" && pyenv which python")
   end
 end

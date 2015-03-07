@@ -1,11 +1,20 @@
-require 'formula'
-
 class Botan < Formula
-  homepage 'http://botan.randombit.net/'
-  url 'http://botan.randombit.net/files/Botan-1.10.8.tbz'
-  sha1 'a7ba0be11629143043da078a4c044eac3369b4ec'
+  homepage "http://botan.randombit.net/"
+  url "http://botan.randombit.net/releases/Botan-1.10.9.tgz"
+  sha1 "e1c8e97b214b23931f7dc8aba44306fbeca9055c"
 
-  option 'enable-debug', 'Enable debug build of Botan'
+  bottle do
+    sha1 "3f9096cdf4156db3af972765fe9b8bb58a7b7261" => :yosemite
+    sha1 "d2f2f165eccbd6db984b83149a1f1df1b66dadbb" => :mavericks
+    sha1 "26196739a9584d6b3a129e32d3a2358484d6d8ed" => :mountain_lion
+  end
+
+  option "with-debug", "Enable debug build of Botan"
+
+  deprecated_option "enable-debug" => "with-debug"
+
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
   patch :DATA
@@ -22,12 +31,16 @@ class Botan < Formula
       --with-bzip2
     ]
 
-    args << "--enable-debug" if build.include? "enable-debug"
+    args << "--enable-debug" if build.with? "debug"
 
     system "./configure.py", *args
     # A hack to force them use our CFLAGS. MACH_OPT is empty in the Makefile
     # but used for each call to cc/ld.
     system "make", "install", "MACH_OPT=#{ENV.cflags}"
+  end
+
+  test do
+    assert_match /lcrypto/, shell_output("#{bin}/botan-config-1.10 --libs")
   end
 end
 

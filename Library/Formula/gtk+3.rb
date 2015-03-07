@@ -1,31 +1,34 @@
-require 'formula'
+require "formula"
 
 class Gtkx3 < Formula
-  homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.1.tar.xz'
-  sha256 '7e86eb7c8acc18524d7758ca2340b723ddeee1d0cd2cadd56de5a13322770a52'
+  homepage "http://gtk.org/"
+  url "http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.6.tar.xz"
+  sha256 "cfc424e6e10ffeb34a33762aeb77905c3ed938f0b4006ddb7e880aad234ef119"
 
   bottle do
-    sha1 "f86088908060d19c73afe2883dea0d7f2b9db7f7" => :mavericks
-    sha1 "8cb0138bbfee3942db106f413c3ed84c7d431e7e" => :mountain_lion
-    sha1 "f14082ff43736ec1b5dfa96fff9c64f493207625" => :lion
+    sha1 "f2074aa249d5695a575a210d2452e8182f8c3435" => :yosemite
+    sha1 "406cc2d01dadccd00a995459c8f16d0e4fab7299" => :mavericks
+    sha1 "abe63c674b9bf60027629c480536ae8454a6ab29" => :mountain_lion
   end
 
-  depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'jpeg'
-  depends_on 'libtiff'
-  depends_on 'gdk-pixbuf'
-  depends_on 'pango'
-  depends_on 'cairo'
-  depends_on 'jasper' => :optional
-  depends_on 'atk'
-  depends_on 'at-spi2-atk'
-  depends_on 'gobject-introspection'
-  depends_on 'gsettings-desktop-schemas' => :recommended
+  option :universal
+
+  depends_on :x11 => ["2.5", :recommended] # needs XInput2, introduced in libXi 1.3
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "gdk-pixbuf"
+  depends_on "pango"
+  depends_on "cairo"
+  depends_on "jasper" => :optional
+  depends_on "atk"
+  depends_on "at-spi2-atk" if build.with? "x11"
+  depends_on "gobject-introspection"
+  depends_on "gsettings-desktop-schemas" => :recommended
 
   def install
+    ENV.universal_binary if build.universal?
 
     args = %W[
       --disable-debug
@@ -43,9 +46,9 @@ class Gtkx3 < Formula
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
     # Prevent a conflict between this and Gtk+2
-    mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
+    mv bin/"gtk-update-icon-cache", bin/"gtk3-update-icon-cache"
   end
 
   def post_install

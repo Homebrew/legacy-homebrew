@@ -5,6 +5,13 @@ class Gmime < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/gmime/2.6/gmime-2.6.20.tar.xz'
   sha256 'e0a170fb264c2ae4cecd852f4e7aaddb8d58e8f3f0b569ce2d2a4704f55bdf65'
 
+  bottle do
+    cellar :any
+    sha1 "0c1a5cbbee06768e007d38b020b1246f766b9915" => :yosemite
+    sha1 "d95faea4b6b509c58c848aa06981723317df888a" => :mavericks
+    sha1 "d342a6800769b6ecdf0071591bf794ce810cd35b" => :mountain_lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'libgpg-error' => :build
   depends_on 'glib'

@@ -8,6 +8,7 @@ class Libffi < Formula
 
   bottle do
     cellar :any
+    sha1 "ab596256bb0dcd2c56ebde303dd163b58f00aa3a" => :yosemite
     sha1 "b6a9696c2a58f34f37cf2bca5a652ee6982c3c14" => :mavericks
     sha1 "421a0108078e79a1e32ccebea8eeadce0d0533db" => :mountain_lion
     sha1 "c2ad5c7f63e06566494d92baa1e31c0c2190ea05" => :lion

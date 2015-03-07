@@ -7,9 +7,9 @@ class Libwps < Formula
 
   bottle do
     cellar :any
-    sha1 "8c76c7efb60f8c268f7d6e7b8a1428fdcf2e9fc4" => :mavericks
-    sha1 "699410ea39b599ba65faf6741e6e8a9636dc58e3" => :mountain_lion
-    sha1 "2dcfb58aee6a117f78aae21596b683abda9d399d" => :lion
+    revision 1
+    sha1 "6da56fae08558950c9134a762f6e7491fabbb7b8" => :yosemite
+    sha1 "a1785cc9c07420d3e88a7000e7b42bb96091baea" => :mavericks
   end
 
   depends_on 'pkg-config' => :build

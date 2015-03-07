@@ -6,9 +6,10 @@ class Libglade < Formula
   sha256 'c41d189b68457976069073e48d6c14c183075d8b1d8077cb6dfb8b7c5097add3'
 
   bottle do
-    sha1 "c722d34f96736fcc6fa15790fc89ce86b2f60895" => :mavericks
-    sha1 "d56a34c15d65aa8b8f2f7dd81785c2dd55029491" => :mountain_lion
-    sha1 "c3f937e708166cd287386251c4b672b3af092791" => :lion
+    revision 1
+    sha1 "2f193f2ddc352de7050bd1d7279a81136c1e1522" => :yosemite
+    sha1 "a7920dc757aaf9353b360077f51dc323648855fb" => :mavericks
+    sha1 "f6777adb7998cd1de73f8a7f51c6b57786050872" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

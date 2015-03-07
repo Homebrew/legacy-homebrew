@@ -1,5 +1,3 @@
-require 'formula'
-
 # This now builds a version of JACKv1 which matches the current API
 # for JACKv2. JACKv2 is not buildable on a number of Mac OS X
 # distributions, and the JACK team instead suggests installation of
@@ -8,20 +6,21 @@ require 'formula'
 # operate fine.
 # Please see https://github.com/Homebrew/homebrew/pull/22043 for more info
 class Jack < Formula
-  homepage 'http://jackaudio.org'
+  homepage "http://jackaudio.org"
   url "http://jackaudio.org/downloads/jack-audio-connection-kit-0.124.1.tar.gz"
   sha1 "e9ba4a4c754ec95fbe653dcf7344edd6cc47cd60"
 
   bottle do
-    sha1 "1a6b9ef8bf76ac101b60469ce69c849487395bff" => :mavericks
-    sha1 "fba42da50d726fa86ed02ae7607feac6ad9c1537" => :mountain_lion
-    sha1 "89f26ade3b8e39a3fe8c888d6e67abb13fa508bd" => :lion
+    revision 2
+    sha1 "d81b70761532c0ab23e4ad05d1637a097a54013d" => :yosemite
+    sha1 "76ccc2252a0fd976c6e90e3473c1e3013646e7b3" => :mavericks
+    sha1 "31a06a65e0b68251172b1816df8c37bfdde7f5bd" => :mountain_lion
   end
 
-  depends_on 'berkeley-db'
-  depends_on 'celt'
-  depends_on 'libsndfile'
-  depends_on 'libsamplerate'
+  depends_on "pkg-config" => :build
+  depends_on "berkeley-db"
+  depends_on "libsndfile"
+  depends_on "libsamplerate"
 
   # Change pThread header include from CarbonCore
   patch :p0, :DATA if MacOS.version >= :mountain_lion
@@ -53,9 +52,9 @@ class Jack < Formula
   end
 
   def install
-    ENV['LINKFLAGS'] = ENV.ldflags
+    ENV["LINKFLAGS"] = ENV.ldflags
     system "./configure", "--prefix=#{prefix}"
-    system "make","install"
+    system "make", "install"
   end
 end
 

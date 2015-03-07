@@ -12,13 +12,6 @@ class DependenciesTests < Homebrew::TestCase
     assert_same @deps, @deps << Dependency.new("foo")
   end
 
-  def test_no_duplicate_deps
-    @deps << Dependency.new("foo")
-    @deps << Dependency.new("foo", [:build])
-    @deps << Dependency.new("foo", [:build])
-    assert_equal 1, @deps.count
-  end
-
   def test_preserves_order
     hash = { 0 => "foo", 1 => "bar", 2 => "baz" }
     @deps << Dependency.new(hash[0])

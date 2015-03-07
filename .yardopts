@@ -1,0 +1,12 @@
+--title "Homebrew"
+--main Library/Homebrew/README.md
+--markup markdown
+--no-private
+--exclude Library/Homebrew/test/
+--exclude Library/Homebrew/vendor/
+Library/Homebrew/**/*.rb
+-
+Library/Homebrew/*.md
+Library/Homebrew/manpages/*.md
+share/doc/homebrew/*.md
+*.md

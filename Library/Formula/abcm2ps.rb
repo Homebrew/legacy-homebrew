@@ -2,18 +2,18 @@ require "formula"
 
 class Abcm2ps < Formula
   homepage "http://moinejf.free.fr"
-  url "http://moinejf.free.fr/abcm2ps-7.8.7.tar.gz"
-  sha1 "2e2380016069461bc45950f472e6b1ea22a94c5b"
+  url "http://moinejf.free.fr/abcm2ps-7.8.13.tar.gz"
+  sha1 "09bbcde58e358c11a5a28de05d48be3a7eb94a4e"
 
   bottle do
-    sha1 "553e4b09045b5693a06faf5e202336ec5a87a9c2" => :mavericks
-    sha1 "829e8538a7766248b37c7e6ad83703eda97289fa" => :mountain_lion
-    sha1 "36219f8fa08cd14e376fc5e8b3a4f1627d8470da" => :lion
+    sha1 "217a460210f211fcb7f55298d321c54fa3f6aa06" => :yosemite
+    sha1 "913c288274a40b8d5359384649650de5ec69962f" => :mavericks
+    sha1 "c714244c5af504abb74c1962c5574b6afac25b61" => :mountain_lion
   end
 
   devel do
-    url "http://moinejf.free.fr/abcm2ps-8.1.5.tar.gz"
-    sha1 "a268290d12fec84429c91e86f4b734e3e155c40c"
+    url "http://moinejf.free.fr/abcm2ps-8.5.2.tar.gz"
+    sha1 "71362859696c379b371814698d5272964e1aa2bd"
   end
 
   depends_on "pkg-config" => :build
@@ -25,6 +25,27 @@ class Abcm2ps < Formula
   end
 
   test do
-    system "#{bin}/abcm2ps"
+    (testpath/"voices.abc").write <<-EOF.undent
+      X:7
+      T:Qui Tolis (Trio)
+      C:Andre Raison
+      M:3/4
+      L:1/4
+      Q:1/4=92
+      %%staves {(Pos1 Pos2) Trompette}
+      K:F
+      %
+      V:Pos1
+      %%MIDI program 78
+      "Positif"x3 |x3|c'>ba|Pga/g/f|:g2a |ba2 |g2c- |c2P=B  |c>de  |fga |
+      V:Pos2
+      %%MIDI program 78
+              Mf>ed|cd/c/B|PA2d |ef/e/d |:e2f |ef2 |c>BA |GA/G/F |E>FG |ABc- |
+      V:Trompette
+      %%MIDI program 56
+      "Trompette"z3|z3 |z3 |z3 |:Mc>BA|PGA/G/F|PE>EF|PEF/E/D|C>CPB,|A,G,F,-|
+    EOF
+
+    system "#{bin}/abcm2ps", (testpath/"voices")
   end
 end

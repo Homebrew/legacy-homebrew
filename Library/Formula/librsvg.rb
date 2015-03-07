@@ -1,22 +1,26 @@
-require 'formula'
-
 class Librsvg < Formula
   homepage 'https://live.gnome.org/LibRsvg'
   url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.3.tar.xz'
   sha256 '3d7d583271030e21acacc60cb6b81ee305713c9da5e98429cbd609312aea3632'
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "d01815e453ec00c29de8d5a57652e38df1ae81aa" => :mavericks
-    sha1 "5415045a2de814249515a5ec96cb773b6885d939" => :mountain_lion
-    sha1 "276af00164ceb754199b2aed99079378b581579e" => :lion
+    sha1 "16b3c1e1e2f2662e837a223b5534d8d2c2f77a17" => :yosemite
+    sha1 "6d3306b10ca89f4c7ba0a68f240a8bbba197e90d" => :mavericks
+    sha1 "ab5c9bcad344e53fc5f6c53af902971ec1a9505e" => :mountain_lion
   end
 
-  depends_on :x11
-  depends_on 'pkg-config' => :build
-  depends_on 'gtk+'
-  depends_on 'libcroco'
-  depends_on 'libgsf' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "cairo"
+  depends_on "gdk-pixbuf"
+  depends_on "glib"
+  depends_on "gtk+" => :recommended
+  depends_on "gtk+3" => :optional
+  depends_on "libcroco"
+  depends_on "libgsf" => :optional
+  depends_on "pango"
+  depends_on :x11 => :recommended
 
   def install
     args = ["--disable-dependency-tracking",
@@ -29,6 +33,15 @@ class Librsvg < Formula
     args << "--enable-svgz" if build.with? 'libgsf'
 
     system "./configure", *args
-    system "make install"
+    system "make", "install",
+      "gdk_pixbuf_binarydir=#{lib}/gdk-pixbuf-2.0/2.10.0/loaders",
+      "gdk_pixbuf_moduledir=#{lib}/gdk-pixbuf-2.0/2.10.0/loaders"
+  end
+
+  def post_install
+    # librsvg is not aware GDK_PIXBUF_MODULEDIR must be set
+    # set GDK_PIXBUF_MODULEDIR and update loader cache
+    ENV["GDK_PIXBUF_MODULEDIR"] = "#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+    system "#{Formula["gdk-pixbuf"].opt_bin}/gdk-pixbuf-query-loaders", "--update-cache"
   end
 end

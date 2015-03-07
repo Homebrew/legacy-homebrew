@@ -1,18 +1,23 @@
-require 'formula'
+require "formula"
 
 class Uwsgi < Formula
-  homepage "http://projects.unbit.it/uwsgi/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
-  sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
-  revision 1
+  homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
+  head "https://github.com/unbit/uwsgi.git"
+
+  stable do
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.9.tar.gz"
+    sha1 "318d1d6d4bb57eb48b58361201cdc1cc7feedcbb"
+  end
 
   bottle do
-    sha1 "d42895c7b7fdbc1be90e7ebd84258f7409a70e4c" => :mavericks
-    sha1 "ff677ccbb7ca824eaf8e8b8ba6fb1eec5a0acecb" => :mountain_lion
-    sha1 "6e6ac75b4f1fc85a3e18c4bd9a27621f480fe41b" => :lion
+    sha1 "952881effe96067637a123d7f552b58f793fcca3" => :yosemite
+    sha1 "4f0c25cf3b2f5859563803e16607c50c2350cce1" => :mavericks
+    sha1 "0bf33a67f2f6329f9d0aa9819129cd30ec35d36c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   depends_on "pcre"
   depends_on "yajl" if build.without? "jansson"
@@ -117,7 +122,7 @@ class Uwsgi < Formula
     bin.install "uwsgi"
   end
 
-  plist_options :manual => 'uwsgi'
+  plist_options :manual => "uwsgi"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

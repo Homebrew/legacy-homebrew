@@ -1,18 +1,17 @@
-require "formula"
-
 class Mpfr < Formula
   homepage "http://www.mpfr.org/"
   # Upstream is down a lot, so use the GNU mirror + Gist for patches
   url "http://ftpmirror.gnu.org/mpfr/mpfr-3.1.2.tar.bz2"
-  mirror "http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2"
   sha1 "46d5a11a59a4e31f74f73dd70c5d57a59de2d0b4"
   version "3.1.2-p10"
 
   bottle do
     cellar :any
-    sha1 "4612c09b4f5cb156d86f2e404a8b50821729dd34" => :mavericks
-    sha1 "f4cdf0f09d9fe0f29742720895f4f4cc84960bb7" => :mountain_lion
-    sha1 "606d4d79126cd3eb22e1cfa8cc6479186b07de39" => :lion
+    revision 1
+    sha1 "7950d0c8f2e68673099516b7c2026055e75d1f9d" => :yosemite
+    sha1 "6e63f815013d281187fd6017aeb8ee9f24ca9ad2" => :mavericks
+    sha1 "40956fd01c8882333cdaf447eb637480ac8520e8" => :mountain_lion
   end
 
   # http://www.mpfr.org/mpfr-current/allpatches
@@ -37,7 +36,24 @@ class Mpfr < Formula
     ENV.m32 if build.build_32_bit?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gmp.h>
+      #include <mpfr.h>
+
+      int main()
+      {
+        mpfr_t x;
+        mpfr_init(x);
+        mpfr_clear(x);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lgmp", "-lmpfr", "-o", "test"
+    system "./test"
   end
 end

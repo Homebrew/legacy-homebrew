@@ -2,17 +2,18 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.53.tar.gz'
-  sha1 'dce2a83e66abb1fac1cd3cdc2ef284f098bc9390'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.1.tar.gz'
+  sha1 'fb9915e854e91aebc8a16bf9429ea44515cca585'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "c24320e2f139f7ba3c63b7e5443b9167e50ff527" => :mavericks
-    sha1 "a04e5acf5671738c8466548bcd51c5f69d96a554" => :mountain_lion
-    sha1 "7158b7d6cca6a9be67861db8b455c58ca5d83f62" => :lion
+    sha1 "a34eeb9b144df3ca7055e7b8c28a9017b0fd2a99" => :yosemite
+    sha1 "50d32cb023c7b3f01f8e9a8a6ab57d621cbc54ec" => :mavericks
+    sha1 "3996629778e0b4fa4d549a63555f99a58ea9bba9" => :mountain_lion
   end
 
   depends_on 'pcre'
+  depends_on "openssl"
   depends_on :macos => :lion
 
   option 'without-apache2-module', 'Disable Apache2 module'
@@ -21,6 +22,13 @@ class Passenger < Formula
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
+
+    (libexec/"download_cache").mkpath
+
+    # Fixes https://github.com/phusion/passenger/issues/1288
+    rm_rf "buildout/libev"
+    rm_rf "buildout/libeio"
+    rm_rf "buildout/cache"
 
     necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",

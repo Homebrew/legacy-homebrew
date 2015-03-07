@@ -5,6 +5,12 @@ class Pygtk < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/pygtk/2.24/pygtk-2.24.0.tar.bz2'
   sha1 '344e6a32a5e8c7e0aaeb807e0636a163095231c2'
 
+  bottle do
+    sha1 "be4727a98966bb3c60d5f28b727dcab578361c1c" => :yosemite
+    sha1 "bf9ec63c71f74349cf23a6f37754cdb0f705eb33" => :mavericks
+    sha1 "c715bf7639a0c547441da94e5e9052fc5e756ef9" => :mountain_lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on :x11
   depends_on 'glib'

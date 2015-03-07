@@ -7,9 +7,10 @@ class Libb2 < Formula
 
   bottle do
     cellar :any
-    sha1 "00e0573eec5ff0873c1ffabf934dd25b24ebdce7" => :mavericks
-    sha1 "f3703fa2c3767b40335b3879975e0a56dbc509d1" => :mountain_lion
-    sha1 "0ba183fbae79a9393649ba53472b345d4070eb14" => :lion
+    revision 1
+    sha1 "ac09887e43b1913731fe348911703d99b5da6228" => :yosemite
+    sha1 "3697500c99090725a2af03c88bb32e08aa64eb9f" => :mavericks
+    sha1 "abecebfa782baceba70813c2c60333c4b9e92eae" => :mountain_lion
   end
 
   def install
@@ -49,7 +50,7 @@ class Libb2 < Formula
           }
       }
     EOS
-    system ENV["CC"], "blake2test.c", "-lb2", "-o", "b2test"
+    system ENV.cc, "blake2test.c", "-lb2", "-o", "b2test"
     system "./b2test"
   end
 end

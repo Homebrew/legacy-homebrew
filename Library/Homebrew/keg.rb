@@ -30,7 +30,7 @@ class Keg
     def suggestion
       conflict = Keg.for(dst)
     rescue NotAKegError, Errno::ENOENT
-      "already exists. You may want to remove it:\n  rm #{dst}\n"
+      "already exists. You may want to remove it:\n  rm '#{dst}'\n"
     else
       <<-EOS.undent
       is a symlink belonging to #{conflict.name}. You can unlink it:
@@ -230,6 +230,10 @@ class Keg
     path.join("lib", "python2.7", "site-packages").directory?
   end
 
+  def python_pth_files_installed?
+    Dir["#{path}/lib/python2.7/site-packages/*.pth"].any?
+  end
+
   def app_installed?
     Dir["#{path}/{,libexec/}*.app"].any?
   end
@@ -255,8 +259,8 @@ class Keg
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
 
-    link_dir('share', mode) do |path|
-      case path.to_s
+    link_dir('share', mode) do |relative_path|
+      case relative_path.to_s
       when 'locale/locale.alias' then :skip_file
       when INFOFILE_RX then :info
       when LOCALEDIR_RX then :mkpath
@@ -269,8 +273,8 @@ class Keg
       end
     end
 
-    link_dir('lib', mode) do |path|
-      case path.to_s
+    link_dir('lib', mode) do |relative_path|
+      case relative_path.to_s
       when 'charset.alias' then :skip_file
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
@@ -290,12 +294,12 @@ class Keg
       end
     end
 
-    link_dir('Frameworks', mode) do |path|
+    link_dir('Frameworks', mode) do |relative_path|
       # Frameworks contain symlinks pointing into a subdir, so we have to use
       # the :link strategy. However, for Foo.framework and
       # Foo.framework/Versions we have to use :mkpath so that multiple formulae
       # can link their versions into it and `brew [un]link` works.
-      if path.to_s =~ /[^\/]*\.framework(\/Versions)?$/
+      if relative_path.to_s =~ /[^\/]*\.framework(\/Versions)?$/
         :mkpath
       else
         :link
@@ -325,19 +329,34 @@ class Keg
   private
 
   def resolve_any_conflicts dst, mode
+    return unless dst.symlink?
+
     src = dst.resolved_path
+
     # src itself may be a symlink, so check lstat to ensure we are dealing with
     # a directory, and not a symlink pointing at a directory (which needs to be
     # treated as a file). In other words, we only want to resolve one symlink.
-    # If it isn't a directory, make_relative_symlink will raise an exception.
-    if dst.symlink? && src.lstat.directory?
-      keg = Keg.for(src)
+
+    begin
+      stat = src.lstat
+    rescue Errno::ENOENT
+      # dst is a broken symlink, so remove it.
+      dst.unlink unless mode.dry_run
+      return
+    end
+
+    if stat.directory?
+      begin
+        keg = Keg.for(src)
+      rescue NotAKegError
+        puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
+        return
+      end
+
       dst.unlink unless mode.dry_run
       keg.link_dir(src, mode) { :mkpath }
       return true
     end
-  rescue NotAKegError
-    puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
   def make_relative_symlink dst, src, mode

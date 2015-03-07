@@ -1,9 +1,13 @@
-require "formula"
-
 class Zabbix < Formula
   homepage "http://www.zabbix.com/"
-  url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.0/zabbix-2.4.0.tar.gz"
-  sha1 "d81ec961baf9ddc264e56cfca60cf10a2e29f74f"
+  url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.3/zabbix-2.4.3.tar.gz"
+  sha1 "2173ef62bd0cd499677eae235d803956f4f72d0c"
+
+  bottle do
+    sha1 "09ef6fd26dcbe5e0224d30316739a223c136376a" => :yosemite
+    sha1 "25e1d2c662813841ea3fce3f79e94ebf4dd9a46c" => :mavericks
+    sha1 "097a7239869abe08483e65437a9c3c031ca33f34" => :mountain_lion
+  end
 
   option "with-mysql", "Use Zabbix Server with MySQL library instead PostgreSQL."
   option "agent-only", "Install only the Zabbix Agent without Server and Proxy."

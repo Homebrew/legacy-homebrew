@@ -7,9 +7,10 @@ class Chmlib < Formula
 
   bottle do
     cellar :any
-    sha1 "e65fbdafd130028ed1383a8318612917e6f4eda5" => :mavericks
-    sha1 "bd7d91259ed29e4fd804ef8ae45ab57ac1559da8" => :mountain_lion
-    sha1 "cc6c36eca6407cfaa925aca3c86dc875adc7566a" => :lion
+    revision 1
+    sha1 "268c1b15456895dcf00e17826c60b115e8741dac" => :yosemite
+    sha1 "9857eebe67646472c638115c014289249992b515" => :mavericks
+    sha1 "e5c765036fd196e3c659b9cc21e3b024ab606f33" => :mountain_lion
   end
 
   def install

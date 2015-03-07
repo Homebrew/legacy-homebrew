@@ -2,14 +2,14 @@ require "formula"
 
 class Dos2unix < Formula
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
-  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.0.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.0.0/dos2unix-7.0.tar.gz"
-  sha1 "a0c5d20b95f87556ddad226217cc9998c5a0bb70"
+  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.2.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.2/dos2unix-7.2.tar.gz"
+  sha1 "a8f3d048859acb5483c8e15a1dfd0a01a2bcabe0"
 
   bottle do
-    sha1 "a616d74ea7f23a01f0cdc47a025eb3a258518ca1" => :mavericks
-    sha1 "2f977ec55907fdc5f707a24ad550d5f92853f482" => :mountain_lion
-    sha1 "a71748546f87f402ec70eb252c4c72a6812c4163" => :lion
+    sha1 "cf86c34ea9d8f2fefae59967deed0fd7364a04ae" => :yosemite
+    sha1 "a11ddbb12f414bd017aa53957f255fad58677878" => :mavericks
+    sha1 "3a7e49a6b78bffda1ead127b185e9a24ee14655e" => :mountain_lion
   end
 
   depends_on "gettext"

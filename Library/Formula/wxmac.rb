@@ -6,9 +6,10 @@ class Wxmac < Formula
   sha1 "6461eab4428c0a8b9e41781b8787510484dea800"
 
   bottle do
-    sha1 "334f2813829d4529c1076c3b5598d11ad4d16506" => :mavericks
-    sha1 "0f389fd69fc32d3b68cec2146710905bddbeda7c" => :mountain_lion
-    sha1 "8a17d400abe57c2f26ca49809b797e305f8025f2" => :lion
+    revision 9
+    sha1 "7a63c6715dea44ef7eee683355458e9203fb723a" => :yosemite
+    sha1 "5e6e114cff5901ec6f7586a844df713dc376fcf7" => :mavericks
+    sha1 "2f7ab6db7de665c76abe4546672e58cd48973c13" => :mountain_lion
   end
 
   depends_on "jpeg"
@@ -51,7 +52,10 @@ class Wxmac < Formula
       "--enable-clipboard",
       "--enable-webkit",
       "--enable-svg",
-      "--enable-mediactrl",
+      # On 64-bit, enabling mediactrl leads to wxconfig trying to pull
+      # in a non-existent 64 bit QuickTime framework. This is submitted
+      # upstream and will eventually be fixed, but for now...
+      MacOS.prefer_64_bit? ? "--disable-mediactrl" : "--enable-mediactrl",
       "--enable-graphics_ctx",
       "--enable-controls",
       "--enable-dataviewctrl",

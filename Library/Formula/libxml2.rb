@@ -1,23 +1,17 @@
-require 'formula'
-
 class Libxml2 < Formula
-  homepage 'http://xmlsoft.org'
-
-  stable do
-    url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz'
-    mirror 'http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz'
-    sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
-  end
+  homepage "http://xmlsoft.org"
+  url "http://xmlsoft.org/sources/libxml2-2.9.2.tar.gz"
+  mirror "ftp://xmlsoft.org/libxml2/libxml2-2.9.2.tar.gz"
+  sha256 "5178c30b151d044aefb1b08bf54c3003a0ac55c59c866763997529d60770d5bc"
 
   bottle do
-    revision 1
-    sha1 "beea5228f6757f6527aa4714f16c76f773a8c8fe" => :mavericks
-    sha1 "74b53656cc103b6c2c397ca0a96d9be1f3afa8c0" => :mountain_lion
-    sha1 "9590f024de3820d9b45de979ea9171b17058f69d" => :lion
+    sha1 "c5718c3b2a05f295e15d9b983eab3ddd1ec32ca2" => :yosemite
+    sha1 "24867f49b7680fbb56641d5738cf9d86062d9839" => :mavericks
+    sha1 "07d2f3f63fd909d1ad0b51fdb51c09b1163180eb" => :mountain_lion
   end
 
   head do
-    url 'https://git.gnome.org/browse/libxml2', :using => :git
+    url "https://git.gnome.org/browse/libxml2", :using => :git
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -38,8 +32,8 @@ class Libxml2 < Formula
   def install
     ENV.universal_binary if build.universal?
     if build.head?
-      inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
-      system './autogen.sh'
+      inreplace "autogen.sh", "libtoolize", "glibtoolize"
+      system "./autogen.sh"
     end
 
     system "./configure", "--disable-dependency-tracking",
@@ -48,14 +42,33 @@ class Libxml2 < Formula
                           "--without-lzma"
     system "make"
     ENV.deparallelize
-    system "make install"
+    system "make", "install"
 
-    if build.with? 'python'
-      cd 'python' do
+    if build.with? "python"
+      cd "python" do
         # We need to insert our include dir first
-        inreplace 'setup.py', 'includes_dir = [', "includes_dir = ['#{include}', '#{MacOS.sdk_path}/usr/include',"
-        system "python", 'setup.py', "install", "--prefix=#{prefix}"
+        inreplace "setup.py", "includes_dir = [", "includes_dir = ['#{include}', '#{MacOS.sdk_path}/usr/include',"
+        system "python", "setup.py", "install", "--prefix=#{prefix}"
       end
     end
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <libxml/tree.h>
+
+      int main()
+      {
+        xmlDocPtr doc = xmlNewDoc(BAD_CAST "1.0");
+        xmlNodePtr root_node = xmlNewNode(NULL, BAD_CAST "root");
+        xmlDocSetRootElement(doc, root_node);
+        xmlFreeDoc(doc);
+        return 0;
+      }
+    EOS
+    args = `#{bin}/xml2-config --cflags --libs`.split
+    args += %w[test.c -o test]
+    system ENV.cc, *args
+    system "./test"
   end
 end

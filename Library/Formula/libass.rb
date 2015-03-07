@@ -2,14 +2,14 @@ require 'formula'
 
 class Libass < Formula
   homepage 'https://github.com/libass/libass'
-  url 'https://github.com/libass/libass/releases/download/0.11.2/libass-0.11.2.tar.gz'
-  sha1 'cd9df9000b5a303be56b66fef7497a8ff60ad844'
+  url 'https://github.com/libass/libass/releases/download/0.12.1/libass-0.12.1.tar.gz'
+  sha1 'ddf61cf8e15fea7825667580b207d46fe34bd4ac'
 
   bottle do
     cellar :any
-    sha1 "f18d9921c8b5ec717683190a7d5dbc0daf79f9aa" => :mavericks
-    sha1 "dbf8931620ff7f90cb6628ee5bc1844394d4bbeb" => :mountain_lion
-    sha1 "9f4917a41524345f0ec112e1721cbd0777e015c6" => :lion
+    sha1 "8e9905cdb32977625f493b809371bf402d201f75" => :yosemite
+    sha1 "a17cdbc03fcb4a4e59da362dedbcc8f0dbdae286" => :mavericks
+    sha1 "d6040252dce55cf05bc1c7765877d25fadea81f4" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
@@ -18,6 +18,7 @@ class Libass < Formula
   depends_on 'freetype'
   depends_on 'fribidi'
   depends_on 'fontconfig'
+  depends_on 'harfbuzz' => :optional
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

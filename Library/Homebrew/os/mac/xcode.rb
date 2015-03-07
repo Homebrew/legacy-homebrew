@@ -13,12 +13,12 @@ module OS
         when "10.6"  then "3.2.6"
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
-        when "10.9"  then "6.0.1"
-        when "10.10" then "6.1"
+        when "10.9"  then "6.1.1"
+        when "10.10" then "6.1.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
           if MacOS.version > "10.10"
-            "6.1"
+            "6.1.1"
           else
             raise "Mac OS X '#{MacOS.version}' is invalid"
           end
@@ -53,7 +53,7 @@ module OS
 
       # Ask Spotlight where Xcode is. If the user didn't install the
       # helper tools and installed Xcode in a non-conventional place, this
-      # is our only option. See: http://superuser.com/questions/390757
+      # is our only option. See: https://superuser.com/questions/390757
       def bundle_path
         MacOS.app_with_bundle_id(V4_BUNDLE_ID, V3_BUNDLE_ID)
       end
@@ -77,7 +77,7 @@ module OS
 
         %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
           if File.file? path
-            `#{path} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+            Utils.popen_read(path, "-version") =~ /Xcode (\d(\.\d)*)/
             return $1 if $1
           end
         end
@@ -99,7 +99,7 @@ module OS
         when 2327..2333 then "3.2.5"
         when 2335
           # this build number applies to 3.2.6, 4.0 and 4.1
-          # https://github.com/Homebrew/homebrew/wiki/Xcode
+          # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Xcode.md
           "4.0"
         else
           case (MacOS.clang_version.to_f * 10).to_i
@@ -160,8 +160,8 @@ module OS
 
       def latest_version
         case MacOS.version
-        when "10.10" then "600.0.54"
-        when "10.9"  then "600.0.51"
+        when "10.10" then "600.0.56"
+        when "10.9"  then "600.0.56"
         when "10.8"  then "503.0.40"
         else
           "425.0.28"
@@ -187,6 +187,9 @@ module OS
 
       def detect_version
         [MAVERICKS_PKG_ID, MAVERICKS_NEW_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+          if MacOS.version >= :mavericks
+            next unless File.exist?("#{MAVERICKS_PKG_PATH}/usr/bin/clang")
+          end
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end

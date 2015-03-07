@@ -7,9 +7,9 @@ class Libconfig < Formula
 
   bottle do
     cellar :any
-    sha1 "d806bbf7d1539017ce946820cc998e21134bb04c" => :mavericks
-    sha1 "8b8bccfba26165fd0da9c680a4415d9ba8bcc1e1" => :mountain_lion
-    sha1 "fdb84a8722d963e77f0e845073c136bf21b78bb5" => :lion
+    revision 1
+    sha1 "28fca89d671c8ebf4f97ac7a6706675e8b957b2f" => :yosemite
+    sha1 "21f6d02c17ab809a63b076dec69d0bc5dbc8f605" => :mavericks
   end
 
   option :universal

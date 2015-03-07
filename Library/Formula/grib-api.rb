@@ -4,11 +4,12 @@ class GribApi < Formula
   homepage 'https://software.ecmwf.int/wiki/display/GRIB/Home'
   url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.12.3.tar.gz'
   sha1 '2764b262c8f081fefb81112f7f7463a3a34b6e66'
+  revision 1
 
   bottle do
-    sha1 "aaa46754fcaa6f19099a2045000ba8ee4e93f29e" => :mavericks
-    sha1 "92d2fae3c922dcb1aef946b03b6afc858c9403c1" => :mountain_lion
-    sha1 "6b4ffc9b85b1ba3581dcc9cfe4d4aa292542abf9" => :lion
+    sha1 "08dc51f4cdba79970fe8637fec16cfe47a9bb471" => :yosemite
+    sha1 "07779d6c8cc95a7dee2479b43c6f148f91f92b10" => :mavericks
+    sha1 "4b023028c85935df0891c6fdec3249ac439454ab" => :mountain_lion
   end
 
   depends_on :fortran

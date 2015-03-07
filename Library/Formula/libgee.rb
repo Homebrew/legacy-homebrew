@@ -7,9 +7,10 @@ class Libgee < Formula
 
   bottle do
     cellar :any
-    sha1 "b2aa5f6b7389323b9f040f3260732a93f2a41dbe" => :mavericks
-    sha1 "5e6fe305c3e56532c3c7e32cc6f41c9612263672" => :mountain_lion
-    sha1 "f5254c7996bd9546b209d8e73acd8e8de069104f" => :lion
+    revision 1
+    sha1 "d09eb775cbac0b46eb75e548f52026a1395162b7" => :yosemite
+    sha1 "ac4c971d1f2cb3e72f4670dd87e30447aaf11533" => :mavericks
+    sha1 "efd2606ad62ff3368e6a72fb1df087a2085ee143" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

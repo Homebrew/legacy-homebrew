@@ -1,16 +1,14 @@
-require "formula"
-
 class TheSilverSearcher < Formula
   homepage "https://github.com/ggreer/the_silver_searcher"
   head "https://github.com/ggreer/the_silver_searcher.git"
-  url "https://github.com/ggreer/the_silver_searcher/archive/0.25.0.tar.gz"
-  sha1 "f4d18e48aa8e7abae0b23fdb8a9d205a52efe94c"
+  url "https://github.com/ggreer/the_silver_searcher/archive/0.29.1.tar.gz"
+  sha1 "128c27749b7166800c00879b427a117dd4a17804"
 
   bottle do
     cellar :any
-    sha1 "3dd84d5152363ce92f74887f320db6a07a32684d" => :mavericks
-    sha1 "8c8b268811d2ecf483847e7d78ee2403495db426" => :mountain_lion
-    sha1 "4549ccc7662440df64b20a4cb86611d7faf3b1f3" => :lion
+    sha1 "b1e44c0d9cd3a37ab20f56c9ccb8a7c969e76b53" => :yosemite
+    sha1 "4fa6040bf03a04b94504c0259d0c92d9d168a9eb" => :mavericks
+    sha1 "5d1fcee7e46abcea478b3549a8b824ac9d84da2d" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -32,20 +30,21 @@ class TheSilverSearcher < Formula
 
   def install
     # Stable tarball does not include pre-generated configure script
-    system "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
+    system "aclocal", "-I #{HOMEBREW_PREFIX}/share/aclocal"
     system "autoconf"
     system "autoheader"
-    system "automake --add-missing"
+    system "automake", "--add-missing"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
 
     bash_completion.install "ag.bashcomp.sh"
   end
 
   test do
-    system "#{bin}/ag", "--version"
+    (testpath/"Hello.txt").write("Hello World!")
+    system "#{bin}/ag", "Hello World!", testpath
   end
 end

@@ -1,10 +1,15 @@
-require "formula"
-
 class AppscaleTools < Formula
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.0.0.tar.gz"
-  sha1 "d6855bd6e91b56fd07d7bf59f81ea6cdd1a482b8"
+  url "https://github.com/AppScale/appscale-tools/archive/2.2.0.tar.gz"
+  sha1 "74420507e21e14c780b020d487552964ecd1748f"
   head "https://github.com/AppScale/appscale-tools.git"
+
+  bottle do
+    cellar :any
+    sha1 "6dae0110db95a47f949e3c8369135220910d5615" => :yosemite
+    sha1 "d3078fbebb496d862b8fdb1c00dbb43de9c3def7" => :mavericks
+    sha1 "a9157eeea6487d7c488e4039c778fea5f4188f23" => :mountain_lion
+  end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
@@ -61,9 +66,7 @@ class AppscaleTools < Formula
       r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
 
-    inreplace Dir["bin/appscale*"] do |s|
-      s.gsub! /^lib = os.*/, "lib = '#{libexec}'"
-    end
+    inreplace Dir["bin/appscale*"], /^  lib = os.*/, "  lib = '#{libexec}'"
 
     prefix.install "bin", "templates", "LICENSE", "README.md"
     libexec.install Dir["lib/*"]
@@ -73,5 +76,6 @@ class AppscaleTools < Formula
 
   test do
     system bin/"appscale", "help"
+    system bin/"appscale", "init", "cloud"
   end
 end

@@ -1,29 +1,22 @@
 require 'formula'
 
 class Arangodb < Formula
-  homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.2.4.tar.gz'
-  sha1 '80d3db0afb07a8c6de98810cd3b74d63d37c182c'
+  homepage 'http://www.arangodb.com/'
+  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.4.4.tar.gz'
+  sha1 '013fecc546bd35e925e550817a81de7f3fb3da93'
 
-  head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
+  head "https://github.com/arangodb/arangodb.git", :branch => 'unstable'
 
   bottle do
-    sha1 "2e4806611b519f0063906675b6e846dccb951648" => :mavericks
-    sha1 "236fa46ecc3f46f148d7ca740b8becc35b5216be" => :mountain_lion
-    sha1 "9d707c9dfb6bf63f156b2d72820232e4fb2ad104" => :lion
+    sha1 "9e401f1681722fbd857bf518ca64bce833526240" => :yosemite
+    sha1 "f4928053d3489132fec0663427023377cbce91c9" => :mavericks
+    sha1 "45b40c888f91f617d51279aa514b8c02887243e5" => :mountain_lion
   end
 
   depends_on 'go' => :build
+  depends_on 'openssl'
 
   needs :cxx11
-
-  def suffix
-    if build.stable?
-      return ""
-    else
-      return "-" + (build.devel? ? version : "unstable")
-    end
-  end
 
   def install
     # clang on 10.8 will still try to build against libstdc++,
@@ -31,25 +24,16 @@ class Arangodb < Formula
     # arangodb requires.
     ENV.libcxx
 
-    # Bundled V8 tries to build with a 10.5 deployment target,
-    # which causes clang to error out b/c a 10.5 deployment target
-    # and -stdlib=libc++ are not valid together.
-    inreplace "3rdParty/V8/build/standalone.gypi",
-      "'mac_deployment_target%': '10.5',",
-      "'mac_deployment_target%': '#{MacOS.version}',"
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-relative
-      --enable-all-in-one-icu
-      --enable-all-in-one-libev
-      --enable-all-in-one-v8
       --enable-mruby
       --datadir=#{share}
       --localstatedir=#{var}
-      --program-suffix=#{suffix}
     ]
+
+    args << "--program-suffix=unstable" if build.head?
 
     system "./configure", *args
     system "make install"

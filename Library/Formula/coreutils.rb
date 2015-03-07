@@ -1,5 +1,3 @@
-require "formula"
-
 class Coreutils < Formula
   homepage "https://www.gnu.org/software/coreutils"
   url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
@@ -8,9 +6,10 @@ class Coreutils < Formula
   revision 1
 
   bottle do
-    sha1 "2e0bcc5019f66bfbe1d037883c21d8df807d3155" => :mavericks
-    sha1 "5241674b7ccd1aa0849f2bc4461137020473769f" => :mountain_lion
-    sha1 "599c8ceab94b433ee909b62aa6e20249c660f424" => :lion
+    revision 1
+    sha1 "380f3f5fbd0da33e69d19edba4ae30b7e7cf899c" => :yosemite
+    sha1 "edf8d1fc1ac7104b570bd72003e10ca3599302f5" => :mavericks
+    sha1 "fe7525c7ef751f07f1f7dd7b37d4f584d2891210" => :mountain_lion
   end
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
@@ -19,13 +18,36 @@ class Coreutils < Formula
   # Patch adapted from upstream commits:
   # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
   # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
-  patch :DATA
+  stable do
+    patch :DATA
+  end
+
+  head do
+    url "git://git.sv.gnu.org/coreutils"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "bison" => :build
+    depends_on "gettext" => :build
+    depends_on "texinfo" => :build
+    depends_on "xz" => :build
+
+    resource "gnulib" do
+      url "http://git.savannah.gnu.org/cgit/gnulib.git/snapshot/gnulib-0.1.tar.gz"
+      sha1 "b29e165bf276ce0a0c12ec8ec1128189bd786155"
+    end
+  end
 
   def install
+    if build.head?
+      resource("gnulib").stage "gnulib"
+      ENV["GNULIB_SRCDIR"] = "gnulib"
+      system "./bootstrap"
+    end
     system "./configure", "--prefix=#{prefix}",
                           "--program-prefix=g",
                           "--without-gmp"
-    system "make install"
+    system "make", "install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix
     coreutils_filenames(bin).each do |cmd|
@@ -53,13 +75,19 @@ class Coreutils < Formula
     EOS
   end
 
-  def coreutils_filenames (dir)
+  def coreutils_filenames(dir)
     filenames = []
     dir.find do |path|
-      next if path.directory? or path.basename.to_s == ".DS_Store"
-      filenames << path.basename.to_s.sub(/^g/,"")
+      next if path.directory? || path.basename.to_s == ".DS_Store"
+      filenames << path.basename.to_s.sub(/^g/, "")
     end
     filenames.sort
+  end
+
+  test do
+    (testpath/"test").write("test")
+    (testpath/"test.sha1").write("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 test")
+    system "#{bin}/gsha1sum", "-c", "test.sha1"
   end
 end
 

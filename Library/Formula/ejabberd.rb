@@ -1,18 +1,14 @@
-require "formula"
-
 class Ejabberd < Formula
-  homepage "http://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/14.07/ejabberd-14.07.tgz"
-  sha1 "321b28faedbc28f80664d4b301424b118dd0bad0"
-  revision 1
+  homepage "https://www.ejabberd.im"
+  url "https://www.process-one.net/downloads/ejabberd/15.02/ejabberd-15.02.tgz"
+  sha256 "58cc6b9b512f2f495993be735a8313a8a0591157e0f35a9a3702b59ff9eb6beb"
 
-  head 'https://github.com/processone/ejabberd.git'
+  head "https://github.com/processone/ejabberd.git"
 
   bottle do
-    revision 1
-    sha1 "bb51d214082e9e72f7f10f41d34dd0a3b5f81edf" => :mavericks
-    sha1 "3850af04f591854230ec4158b62520f121e32232" => :mountain_lion
-    sha1 "22871728227cb497381181794b8a7401d1c1beb8" => :lion
+    sha256 "4e5ae83ad6edeeea3a67ccdd4f1cd576916f413ea4516a0e66512507c4628667" => :yosemite
+    sha256 "0f073a85e94b5cdcb266a376c27cd146557a75ed376b1900c2c9868eddc20829" => :mavericks
+    sha256 "ee50b942bf62838b2ed5c474e379443da2d1bf352a18c68a5d0c7c96c1719017" => :mountain_lion
   end
 
   option "32-bit"
@@ -27,11 +23,9 @@ class Ejabberd < Formula
     ENV["TARGET_DIR"] = ENV["DESTDIR"] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
     ENV["MAN_DIR"] = man
     ENV["SBIN_DIR"] = sbin
-    # Homebrew's 'C compiler cannot create executables' bug workaround
-    ENV["HOMEBREW_ARCHFLAGS"] = " "
 
     if build.build_32_bit?
-      ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
+      ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     args = ["--prefix=#{prefix}",
@@ -78,5 +72,4 @@ class Ejabberd < Formula
     </plist>
     EOS
   end
-
 end

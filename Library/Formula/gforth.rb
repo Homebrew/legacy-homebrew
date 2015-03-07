@@ -10,7 +10,7 @@ class Gforth < Formula
   depends_on 'pcre'
 
   def install
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
     ENV.deparallelize
     system "./configure", "--prefix=#{prefix}"
     system "make" # Separate build steps.

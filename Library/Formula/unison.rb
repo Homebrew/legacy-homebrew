@@ -2,14 +2,14 @@ require 'formula'
 
 class Unison < Formula
   homepage 'http://www.cis.upenn.edu/~bcpierce/unison/'
-  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/unison-2.40.102/unison-2.40.102.tar.gz'
-  sha1 'bf18f64fa30bd04234e864d42190294e0d9a2910'
+  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz'
+  sha1 '74f1c087ee49dc1db4680ad779280f7333d5c968'
 
   bottle do
     cellar :any
-    sha1 "7ba71bfded9c6a3cf8097f3e293d0d5c43200ec8" => :mavericks
-    sha1 "b8a34310e3e8041756babc54661e3748821e0c1b" => :mountain_lion
-    sha1 "478ad4ac7d5e5f6d990dbf8e8576c5bd3f81c9cd" => :lion
+    sha1 "05c2f2b41d9cf864901577829fb71e05fe66d25b" => :yosemite
+    sha1 "681d82f73649d0580acfbce2a6ce66f32ad6da9c" => :mavericks
+    sha1 "0d83d72a11c558eec59ae9aa20476165dc56cb85" => :mountain_lion
   end
 
   depends_on 'objective-caml' => :build

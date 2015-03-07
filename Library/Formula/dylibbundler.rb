@@ -7,9 +7,10 @@ class Dylibbundler < Formula
 
   bottle do
     cellar :any
-    sha1 "9cb552b5a5aa59bc91d5d30957ddced29f1a3493" => :mavericks
-    sha1 "169b43be109b00d73d5f67fc10625eb7d3b0fb38" => :mountain_lion
-    sha1 "d2c32949637f3ca23cfe51bb2740024dfabf7673" => :lion
+    revision 1
+    sha1 "7796af4a80af52b2cda87f9a6af74919811cddb4" => :yosemite
+    sha1 "af56868cede7747f2559320659654e017cb0144a" => :mavericks
+    sha1 "81c315d6fbaea3b56ba78e967953f3f8a11d08ec" => :mountain_lion
   end
 
   def install

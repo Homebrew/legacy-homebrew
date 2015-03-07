@@ -34,6 +34,10 @@ class MPIDependency < Requirement
     quiet_system compiler, '--version'
   end
 
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} lang_list=#{@lang_list.inspect}>"
+  end
+
   satisfy do
     @lang_list.each do |lang|
       case lang
@@ -50,7 +54,7 @@ class MPIDependency < Requirement
   env do
     # Set environment variables to help configure scripts find MPI compilers.
     # Variable names taken from:
-    # http://www.gnu.org/software/autoconf-archive/ax_mpi.html
+    # https://www.gnu.org/software/autoconf-archive/ax_mpi.html
     @lang_list.each do |lang|
       compiler = 'mpi' + lang.to_s
       mpi_path = which compiler

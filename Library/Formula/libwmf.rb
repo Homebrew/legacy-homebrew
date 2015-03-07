@@ -7,9 +7,9 @@ class Libwmf < Formula
   revision 1
 
   bottle do
-    sha1 "5b106ee63e941401528165d3ea366b63f405ec09" => :mavericks
-    sha1 "7f76a4c7d64e1a4bf44d4cec46b3c73b2127ce09" => :mountain_lion
-    sha1 "08a60781f736ab6a5854e470cbc7d83f0eccce60" => :lion
+    revision 1
+    sha1 "47baf7411f61408bd715f3f0570531080b3d8665" => :yosemite
+    sha1 "d195e1c4297a0563a021a76a5e1ee61dd2b1be4d" => :mavericks
   end
 
   depends_on 'pkg-config' => :build

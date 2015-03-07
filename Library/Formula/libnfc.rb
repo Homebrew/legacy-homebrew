@@ -6,9 +6,10 @@ class Libnfc < Formula
   sha1 '5adfb6c6238b1659ad8609837dc8e59eb41a8768'
 
   bottle do
-    sha1 "6ef108d4cfb9dd7b7de6c8b487e84b013d791b6b" => :mavericks
-    sha1 "90ecfb5007d2536460e09331f9ac0ab3d5e99d4f" => :mountain_lion
-    sha1 "3797f5f195e93da48dea1b09ce2fc9d190df7365" => :lion
+    revision 2
+    sha1 "55ecc37dabd8c848975f3bbf20a8ab7eb191a788" => :yosemite
+    sha1 "13c61f303c9a2dc90d316f81ce7c615b8bb0e2f1" => :mavericks
+    sha1 "4d9b2216eb876d9a63fe0c0b168b2de0766d0a21" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
@@ -22,7 +23,8 @@ class Libnfc < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-serial-autoprobe"
+                          "--prefix=#{prefix}", "--enable-serial-autoprobe",
+                          "--with-drivers=all"
     system "make install"
     (prefix/'etc/nfc/libnfc.conf').write "allow_intrusive_scan=yes"
   end

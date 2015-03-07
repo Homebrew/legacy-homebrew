@@ -7,9 +7,10 @@ class LibatomicOps < Formula
 
   bottle do
     cellar :any
-    sha1 "3027c1a78e217eaae84c750897590002e85f19b7" => :mavericks
-    sha1 "c077b08a1bef2d36af10f50140e4a4891ec7a9bc" => :mountain_lion
-    sha1 "2fea667e556aec2efa27f64c9bdd4f54d09048dc" => :lion
+    revision 1
+    sha1 "5820ac7413428e5a0ade9b34cb3394b2abddfd58" => :yosemite
+    sha1 "b314405de1ecda4e8ee8082443b642f1a4b11ae6" => :mavericks
+    sha1 "7dbd87d8daef4b8a91397f07091323f2a2580b3b" => :mountain_lion
   end
 
   def install

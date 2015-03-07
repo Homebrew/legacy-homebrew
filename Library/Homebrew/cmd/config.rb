@@ -2,7 +2,7 @@ require 'hardware'
 
 module Homebrew
   def config
-    dump_verbose_config(STDOUT)
+    dump_verbose_config
   end
 
   def llvm
@@ -74,11 +74,21 @@ module Homebrew
   end
 
   def describe_python
-    describe_path(which 'python')
+    python = which 'python'
+    if %r{/shims/python$} =~ python && which('pyenv')
+      "#{python} => #{Pathname.new(`pyenv which python`.strip).realpath}" rescue describe_path(python)
+    else
+      describe_path(python)
+    end
   end
 
   def describe_ruby
-    describe_path(which 'ruby')
+    ruby = which 'ruby'
+    if %r{/shims/ruby$} =~ ruby && which('rbenv')
+      "#{ruby} => #{Pathname.new(`rbenv which ruby`.strip).realpath}" rescue describe_path(ruby)
+    else
+      describe_path(ruby)
+    end
   end
 
   def hardware
@@ -94,34 +104,33 @@ module Homebrew
     @ponk.join(", ") unless @ponk.empty?
   end
 
-  # we try to keep output minimal
-  def dump_build_config(f=STDOUT)
-    f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
-    f.puts "HEAD: #{head}"
-    f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}" if HOMEBREW_PREFIX.to_s != "/usr/local"
-    f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.to_s != "#{HOMEBREW_PREFIX}/Cellar"
-    f.puts hardware
-    f.puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
-    f.puts "Xcode: #{xcode}" if xcode
-    f.puts "CLT: #{clt}" if clt
-
-    ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
-    if RUBY_VERSION[/\d\.\d/] != ruby_version
-      f.puts "#{RUBY_PATH}:\n  #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
+  def describe_system_ruby
+    s = ""
+    case RUBY_VERSION
+    when /^1\.[89]/, /^2\.0/
+      s << "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}"
+    else
+      s << RUBY_VERSION
     end
 
-    unless MacOS.compilers_standard?
-      f.puts "GCC-4.0: build #{gcc_40}" if gcc_40
-      f.puts "GCC-4.2: build #{gcc_42}" if gcc_42
-      f.puts "LLVM-GCC: build #{llvm}"  if llvm
-      f.puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
+    if RUBY_PATH.to_s !~ %r[^/System/Library/Frameworks/Ruby.framework/Versions/[12]\.[089]/usr/bin/ruby]
+      s << " => #{RUBY_PATH}"
     end
-
-    f.puts "MacPorts/Fink: #{macports_or_fink}" if macports_or_fink
-    f.puts "X11: #{describe_x11}"
+    s
   end
 
-  def dump_verbose_config(f)
+  def describe_java
+    if which("java").nil?
+      "N/A"
+    elsif !(`/usr/libexec/java_home --failfast &>/dev/null` && $?.success?)
+      "N/A"
+    else
+      java = `java -version 2>&1`.lines.first.chomp
+      java =~ /java version "(.+?)"/ ? $1 : java
+    end
+  end
+
+  def dump_verbose_config(f=$stdout)
     f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     f.puts "ORIGIN: #{origin}"
     f.puts "HEAD: #{head}"
@@ -130,17 +139,18 @@ module Homebrew
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
     f.puts hardware
     f.puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
-    f.puts "Xcode: #{xcode}" if xcode
-    f.puts "CLT: #{clt}" if clt
+    f.puts "Xcode: #{xcode ? xcode : "N/A"}"
+    f.puts "CLT: #{clt ? clt : "N/A"}"
     f.puts "GCC-4.0: build #{gcc_40}" if gcc_40
     f.puts "GCC-4.2: build #{gcc_42}" if gcc_42
     f.puts "LLVM-GCC: build #{llvm}"  if llvm
     f.puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
     f.puts "MacPorts/Fink: #{macports_or_fink}" if macports_or_fink
     f.puts "X11: #{describe_x11}"
-    f.puts "System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
+    f.puts "System Ruby: #{describe_system_ruby}"
     f.puts "Perl: #{describe_perl}"
     f.puts "Python: #{describe_python}"
     f.puts "Ruby: #{describe_ruby}"
+    f.puts "Java: #{describe_java}"
   end
 end

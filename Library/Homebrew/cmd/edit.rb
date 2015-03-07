@@ -16,9 +16,9 @@ module Homebrew
       if editor == "mate" or editor == "subl"
         # If the user is using TextMate or Sublime Text,
         # give a nice project view instead.
-        exec editor, HOMEBREW_REPOSITORY+"bin/brew",
-                     HOMEBREW_REPOSITORY+'README.md',
-                     HOMEBREW_REPOSITORY+".gitignore",
+        exec_editor HOMEBREW_REPOSITORY+"bin/brew",
+                    HOMEBREW_REPOSITORY+'README.md',
+                    HOMEBREW_REPOSITORY+".gitignore",
                     *library_folders
       else
         exec_editor HOMEBREW_REPOSITORY

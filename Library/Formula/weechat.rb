@@ -1,54 +1,44 @@
-require 'formula'
-
 class Weechat < Formula
-  homepage 'http://www.weechat.org'
-  url 'http://weechat.org/files/src/weechat-1.0.1.tar.gz'
-  sha1 '1d33591b6c0adc2c30b36a7b349603cbdbcb40b2'
+  homepage "https://www.weechat.org"
+  url "https://weechat.org/files/src/weechat-1.1.1.tar.gz"
+  sha1 "25a595ce738c401c583edebee259acf755fd5f17"
 
-  head 'https://github.com/weechat/weechat.git'
+  head "https://github.com/weechat/weechat.git"
 
   bottle do
-    sha1 "d7112142ed11d2a1a55b367e01e0200b5ba0cae6" => :mavericks
-    sha1 "39d482d54d391ce27a0aff4de22b5a122ab27275" => :mountain_lion
-    sha1 "8cfbd8d53a85b88138bff6c4545efa955fa30c26" => :lion
+    sha1 "c377d403426bda1fd6b9c6b6b960828a9a76120c" => :yosemite
+    sha1 "b9d703f8c661aed1cd3bf20e92ad95d178361fb6" => :mavericks
+    sha1 "9f5ba4d88436a6ba73b6edb4eb08f91e37d7f849" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
-  depends_on 'guile' => :optional
-  depends_on 'aspell' => :optional
-  depends_on 'lua' => :optional
-  depends_on :python => :optional
+  option "with-perl", "Build the perl module"
+  option "with-ruby", "Build the ruby module"
+  option "with-curl", "Build with brewed curl"
 
-  option 'with-perl', 'Build the perl module'
-  option 'with-ruby', 'Build the ruby module'
+  depends_on "cmake" => :build
+  depends_on "gnutls"
+  depends_on "libgcrypt"
+  depends_on "gettext"
+  depends_on "guile" => :optional
+  depends_on "aspell" => :optional
+  depends_on "lua" => :optional
+  depends_on :python => :optional
+  depends_on "curl" => :optional
 
   def install
-    # builds against the python in PATH by asking cmake to use introspected
-    # values instead of ignoring them
-    # https://github.com/weechat/weechat/pull/217
-    inreplace "cmake/FindPython.cmake", "PATHS ${", "HINTS ${"
 
-    args = std_cmake_args + %W[
-      -DPREFIX=#{prefix}
-      -DENABLE_GTK=OFF
-    ]
-    args << '-DENABLE_LUA=OFF'    if build.without? 'lua'
-    args << '-DENABLE_PERL=OFF'   if build.without? 'perl'
-    args << '-DENABLE_RUBY=OFF'   if build.without? 'ruby'
-    args << '-DENABLE_ASPELL=OFF' if build.without? 'aspell'
-    args << '-DENABLE_GUILE=OFF'  if build.without? 'guile'
-    args << '-DENABLE_PYTHON=OFF' if build.without? 'python'
+    args = std_cmake_args
 
-    # NLS/gettext support disabled for now since it doesn't work in stdenv
-    # see https://github.com/Homebrew/homebrew/issues/18722
-    args << "-DENABLE_NLS=OFF"
-    args << '..'
+    args << "-DENABLE_LUA=OFF"    if build.without? "lua"
+    args << "-DENABLE_PERL=OFF"   if build.without? "perl"
+    args << "-DENABLE_RUBY=OFF"   if build.without? "ruby"
+    args << "-DENABLE_ASPELL=OFF" if build.without? "aspell"
+    args << "-DENABLE_GUILE=OFF"  if build.without? "guile"
+    args << "-DENABLE_PYTHON=OFF" if build.without? "python"
 
-    mkdir 'build' do
-      system 'cmake', *args
-      system 'make install'
+    mkdir "build" do
+      system "cmake", "..", *args
+      system "make", "install"
     end
   end
 
@@ -58,5 +48,10 @@ class Weechat < Formula
       you can choose the dictionaries you want.  If Aspell was installed
       automatically as part of weechat, there won't be any dictionaries.
     EOS
+  end
+
+  test do
+    ENV["TERM"] = "xterm"
+    system "weechat", "-r", "/quit"
   end
 end

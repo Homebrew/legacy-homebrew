@@ -2,7 +2,7 @@ require 'testing_env'
 require 'download_strategy'
 
 class ResourceDouble
-  attr_reader :url, :specs
+  attr_reader :url, :specs, :version
 
   def initialize(url="http://example.com/foo.tar.gz", specs={})
     @url = url
@@ -41,7 +41,7 @@ class VCSDownloadStrategyTests < Homebrew::TestCase
     resource = ResourceDouble.new("http://example.com/bar")
     strategy = Class.new(VCSDownloadStrategy) { def cache_tag; "foo"; end }
     downloader = strategy.new("baz", resource)
-    assert_equal "baz--foo", downloader.cache_filename
+    assert_equal HOMEBREW_CACHE.join("baz--foo"), downloader.cached_location
   end
 end
 

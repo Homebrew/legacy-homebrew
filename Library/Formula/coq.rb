@@ -13,10 +13,10 @@ class TransitionalMode < Requirement
 end
 
 class Coq < Formula
-  homepage "http://coq.inria.fr/"
-  url "http://coq.inria.fr/distrib/V8.4pl4/files/coq-8.4pl4.tar.gz"
-  version "8.4pl4"
-  sha1 "4dfc3a1ae65f5c480ddc4387d21549a526183e00"
+  homepage "https://coq.inria.fr/"
+  url "https://coq.inria.fr/distrib/V8.4pl5/files/coq-8.4pl5.tar.gz"
+  version "8.4pl5"
+  sha1 "107717cbaef3a469e8ff775ae54dbbc457935816"
 
   head "git://scm.gforge.inria.fr/coq/coq.git"
 

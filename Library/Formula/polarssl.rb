@@ -1,17 +1,17 @@
-require "formula"
-
 class Polarssl < Formula
   homepage "https://polarssl.org/"
-  url "https://polarssl.org/download/polarssl-1.3.8-gpl.tgz"
-  sha1 "82ed8ebcf3dd53621da5395b796fc0917083691d"
+  # 1.4.0 will need dependents recompiled due to breaking binary compat.
+  url "https://polarssl.org/download/mbedtls-1.3.10-gpl.tgz"
+  sha256 "746fd88e0c6623691fc56c4eed52e40a57b2da0ac80f6dd8995094aa6adb407e"
 
   head "https://github.com/polarssl/polarssl.git"
 
   bottle do
     cellar :any
-    sha1 "d4b03d57816b809d3ed454f338f36c4c586a6c8b" => :mavericks
-    sha1 "921a0256ff3be3e310a9a9d835341a01f9f5a46e" => :mountain_lion
-    sha1 "a2cf94a5c84fade311821c16382777b900c8c272" => :lion
+    revision 1
+    sha1 "9f073fda6a57f9ce78768f9391c0c92850d187de" => :yosemite
+    sha1 "722cb2387ea35a3c394cb6854068fc124badca09" => :mavericks
+    sha1 "4a0effaa65d9fa92a0c6da1914de2dbdd318ecf4" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -19,10 +19,26 @@ class Polarssl < Formula
   conflicts_with "md5sha1sum", :because => "both install conflicting binaries"
 
   def install
-    system "cmake", ".",  *std_cmake_args
+    # Kills SSL2 Handshake & SSLv3 using upstream's recommended method.
+    # Upstream, can you make this less hacky please?
+    inreplace "include/polarssl/config.h" do |s|
+      s.gsub! "#define POLARSSL_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO", "//#define POLARSSL_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO"
+      s.gsub! "#define POLARSSL_SSL_PROTO_SSL3", "//#define POLARSSL_SSL_PROTO_SSL3"
+    end
+
+    system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
     # Why does PolarSSL ship with GNU's Hello included? Let's remove that.
-    rm "#{bin}/hello"
+    rm_f "#{bin}/hello"
+    # Remove the pointless example application that hooks into system OpenSSL
+    rm_f "#{bin}/o_p_test"
+  end
+
+  test do
+    (testpath/"testfile.txt").write("This is a test file")
+    # Don't remove the space between the checksum and filename. It will break.
+    expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32  testfile.txt"
+    assert_equal expected_checksum, shell_output("#{bin}/sha1sum testfile.txt").strip
   end
 end

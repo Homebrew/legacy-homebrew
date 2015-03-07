@@ -8,9 +8,10 @@ class Libsvg < Formula
 
   bottle do
     cellar :any
-    sha1 "979610a80600f83956db765b442dabe647214107" => :mavericks
-    sha1 "1237bff5e02721865d3d293d7369b6f3d685ef16" => :mountain_lion
-    sha1 "bd21bd6ada56a3329a9e80105883da9114b0b9e6" => :lion
+    revision 1
+    sha1 "f81bd41636efb5f9bca9668e0d1eba49f2df5668" => :yosemite
+    sha1 "7666fa071f1f53c8b680be546b8801cb3067f5a2" => :mavericks
+    sha1 "a6644f62ac2844f1b73ad26febb49958a413a54f" => :mountain_lion
   end
 
   depends_on 'libpng'

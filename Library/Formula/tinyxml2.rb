@@ -4,7 +4,7 @@ class Tinyxml2 < Formula
   homepage "http://grinninglizard.com/tinyxml2"
   url "https://github.com/leethomason/tinyxml2/archive/2.2.0.tar.gz"
   sha1 "7869aa08241ce16f93ba3732c1cde155b1f2b6a0"
-  head "https://github.com/leethomason/tinyxml2.git", :branch => "master"
+  head "https://github.com/leethomason/tinyxml2.git"
 
   bottle do
     cellar :any
@@ -28,7 +28,7 @@ class Tinyxml2 < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.cpp", "-ltinyxml2", "-o", "test"
+    system ENV.cc, "test.cpp", "-L#{lib}", "-ltinyxml2", "-o", "test"
     system "./test"
   end
 end

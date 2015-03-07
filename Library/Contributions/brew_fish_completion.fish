@@ -10,10 +10,6 @@ for command in (ls (brew --repository)/Library/Homebrew/cmd | sed -e "s/\.rb//g"
   set commands $command $commands
 end
 
-for command in (ls -p (brew --repository)/Library/Contributions/cmd | sed -e "s/\.rb//g" -e "s/brew-//g" -e "s/.*\///g")
-  set commands $command $commands
-end
-
 for command in abv ln ls remove rm
   set commands $command $commands
 end

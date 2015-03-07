@@ -1,15 +1,13 @@
-require "formula"
-
 class Aria2 < Formula
   homepage "http://aria2.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.8/aria2-1.18.8.tar.bz2"
-  sha1 "b6ad7064b1ea769e78f6a7dc9787a12cfc1e153f"
+  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.9/aria2-1.18.9.tar.bz2"
+  sha1 "31ac90d9ffcdba4cdf936ddfbc3d8f08416360e6"
 
   bottle do
     cellar :any
-    sha1 "0d9ea391b7e7651df5abd4fb4e7eabd45e6e3d48" => :mavericks
-    sha1 "6be677ac2eefae9f5e658f3e340864d53ffb5f8b" => :mountain_lion
-    sha1 "b2aff43e5bffe9fe203b23e05060cc84944c20c0" => :lion
+    sha1 "a82e7baf0bf64cd3beb6ee2c5d16c10534138852" => :yosemite
+    sha1 "f0ab29fdeebb96b6f9594a7119b9210b820b28f4" => :mavericks
+    sha1 "b931e5c286c97a5cc5d5ef2e21336dfc9fe62ea6" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -28,15 +26,14 @@ class Aria2 < Formula
       --without-libgcrypt
     ]
 
-    # system zlib and sqlite don't include .pc files
-    ENV["ZLIB_CFLAGS"] = "-I/usr/include"
-    ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
-    ENV["SQLITE3_CFLAGS"] = "-I/usr/include"
-    ENV["SQLITE3_LIBS"] = "-L/usr/lib -lsqlite3"
-
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
     bash_completion.install "doc/bash_completion/aria2c"
+  end
+
+  test do
+    system "#{bin}/aria2c", "http://brew.sh"
+    assert File.exist? "index.html"
   end
 end

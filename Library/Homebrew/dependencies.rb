@@ -1,8 +1,8 @@
 class Dependencies
   include Enumerable
 
-  def initialize(*args)
-    @deps = Array.new(*args)
+  def initialize
+    @deps = []
   end
 
   def each(*args, &block)
@@ -10,7 +10,7 @@ class Dependencies
   end
 
   def <<(o)
-    @deps << o unless include?(o)
+    @deps << o
     self
   end
 
@@ -51,13 +51,17 @@ class Dependencies
     deps == other.deps
   end
   alias_method :eql?, :==
+
+  def inspect
+    "#<#{self.class.name}: #{to_a.inspect}>"
+  end
 end
 
 class Requirements
   include Enumerable
 
-  def initialize(*args)
-    @reqs = Set.new(*args)
+  def initialize
+    @reqs = Set.new
   end
 
   def each(*args, &block)

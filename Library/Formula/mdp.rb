@@ -1,26 +1,25 @@
-require "formula"
-
 class Mdp < Formula
   homepage "https://github.com/visit1985/mdp"
-  url "https://github.com/visit1985/mdp/archive/0.91.3.tar.gz"
-  sha1 "e8a0264068c21df1f00e391ec22e674141fddcc1"
+  url "https://github.com/visit1985/mdp/archive/0.93.0.tar.gz"
+  sha1 "5e267c8d9d3c2b30bd1951e854f1d4ad7c8679cf"
+  head "https://github.com/visit1985/mdp.git"
 
   bottle do
     cellar :any
-    sha1 "cc6da77fce8cc33d8e563d8069b07eb7de147601" => :mavericks
-    sha1 "ea647ad8b94575a91125c0b967c02ab8cdf141b2" => :mountain_lion
-    sha1 "7394b1dc8b9aa4e96debb0af0e75dca8828d119c" => :lion
+    sha1 "0df708dbbf816fe3d2430047e3e98908044b9ead" => :yosemite
+    sha1 "63260949aeaa48d1e41dfb3d682e7c894b5d26a6" => :mavericks
+    sha1 "72f8255820f988a26be93b40a9f8256ace349892" => :mountain_lion
   end
 
   def install
     system "make"
-    system "make", "install", "DESTDIR=#{bin}"
+    system "make", "install", "PREFIX=#{prefix}"
     share.install "sample.md"
   end
 
   test do
     # Go through two slides and quit.
     ENV["TERM"] = "xterm"
-    system "echo jjq | #{bin}/mdp #{share}/sample.md"
+    pipe_output "#{bin}/mdp #{share}/sample.md", "jjq", 0
   end
 end

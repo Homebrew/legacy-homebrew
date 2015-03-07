@@ -8,9 +8,9 @@ class LibsvgCairo < Formula
 
   bottle do
     cellar :any
-    sha1 "8b6021270a2184ac5c364bbb6e8e102a063e1343" => :mavericks
-    sha1 "1d3009933ab4c1c4087dbbc62934523e43aa709d" => :mountain_lion
-    sha1 "09e40be714fc8d5d33e1a3cdae17a4106c745f91" => :lion
+    revision 1
+    sha1 "8e6ca63907708f900f23e1da966a05731ff966eb" => :yosemite
+    sha1 "0ee61ff2dc93ca0eb2536c931bd187bb7d07a7ff" => :mavericks
   end
 
   depends_on 'pkg-config' => :build

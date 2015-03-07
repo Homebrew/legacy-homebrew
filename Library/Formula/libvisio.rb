@@ -1,20 +1,18 @@
-require "formula"
-
 class Libvisio < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
-  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.0.tar.xz"
-  sha1 "c82e5c7ad25e513c268032cda9febd01b8879504"
-  revision 2
+  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.1.tar.xz"
+  sha1 "2284866af215a56683bfe4d49a921a053eff4cf9"
 
   bottle do
     cellar :any
-    sha1 "bdfcdedd23af956b9368d2efcdcdd3a3c2ae149e" => :mavericks
-    sha1 "f91823c71abf65d1badc48ea249f21d6f85b9e88" => :mountain_lion
-    sha1 "6aec36a1622a98013865c6d3292eb4999fdccee5" => :lion
+    sha1 "df77602d026ee51bea001bcb7744b6d2e83579f1" => :yosemite
+    sha1 "ec7c204c7976255ee6e0b54a2e1e4957e2ed526f" => :mavericks
+    sha1 "f616d10990778b77edd54db39653332ac9e60195" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
+  depends_on "cppunit" => :build
   depends_on "libwpd"
   depends_on "libwpg"
   depends_on "icu4c"

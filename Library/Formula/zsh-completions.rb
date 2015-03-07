@@ -1,9 +1,7 @@
-require "formula"
-
 class ZshCompletions < Formula
   homepage "https://github.com/zsh-users/zsh-completions"
-  url "https://github.com/zsh-users/zsh-completions/archive/0.11.0.tar.gz"
-  sha1 "d6b28c9d617e821cdd27f7e20c3ee9e97c7a958b"
+  url "https://github.com/zsh-users/zsh-completions/archive/0.12.0.tar.gz"
+  sha1 "1c39734328b28c619a55fa52fa42e81c314aeadf"
 
   head "https://github.com/zsh-users/zsh-completions.git"
 

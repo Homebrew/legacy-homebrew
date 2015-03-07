@@ -11,12 +11,19 @@ module Homebrew
       exit 1
     end
 
-    HOMEBREW_CELLAR.subdirs.each do |rack|
-      kegs = rack.subdirs.map { |d| Keg.new(d) }
-      next if kegs.empty?
+    if ARGV.named.empty?
+      racks = HOMEBREW_CELLAR.subdirs
+      kegs = racks.map do |rack|
+        keg = rack.subdirs.map { |d| Keg.new(d) }
+        next if keg.empty?
+        keg.detect(&:linked?) || keg.max {|a,b| a.version <=> b.version}
+      end
+    else
+      kegs = ARGV.kegs
+    end
 
-      keg = kegs.detect(&:linked?) || kegs.max {|a,b| a.version <=> b.version}
-
+    kegs.each do |keg|
+      keg = keg.opt_record if keg.optlinked?
       Dir["#{keg}/*.app", "#{keg}/bin/*.app", "#{keg}/libexec/*.app"].each do |app|
         puts "Linking #{app}"
         app_name = File.basename(app)

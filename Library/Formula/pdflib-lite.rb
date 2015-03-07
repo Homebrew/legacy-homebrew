@@ -8,9 +8,9 @@ class PdflibLite < Formula
 
   bottle do
     cellar :any
-    sha1 "3a6acc7ff25b9738f6ba7511d23e5045874eafe0" => :mavericks
-    sha1 "503d37a1c3299f73125368aa46c186ac332a6074" => :mountain_lion
-    sha1 "2c56052904434bcec59986dba82cacf9b9be9adb" => :lion
+    revision 1
+    sha1 "a3312478c0af40820fc1970a79b85677a64cdf78" => :yosemite
+    sha1 "1681c61b3679e8a96dc42266d4a49d092f2798b4" => :mavericks
   end
 
   def install

@@ -7,10 +7,10 @@ class Libetonyek < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "bc49ceed23c6bbb529231c2b235f3b4eab942d3b" => :mavericks
-    sha1 "2e9fb0728d15de615a4f7c0749275f921c4601ba" => :mountain_lion
-    sha1 "12e753556b226cce7a8f8bd80ae95f76037984a5" => :lion
+    revision 2
+    sha1 "979c95b08b3675fbf4de2a545a7e5215d1b27fc4" => :yosemite
+    sha1 "2b8c5ba7fb1a0f8b810e0e73184430258d14defb" => :mavericks
+    sha1 "39814df03e02f6e583817ea57e5bf6352a7f655b" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

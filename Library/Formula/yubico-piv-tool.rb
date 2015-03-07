@@ -2,14 +2,14 @@ require "formula"
 
 class YubicoPivTool < Formula
   homepage "http://opensource.yubico.com/yubico-piv-tool/"
-  url "http://opensource.yubico.com/yubico-piv-tool/releases/yubico-piv-tool-0.1.0.tar.gz"
-  sha1 "bebf01280e0ace0c43ab398a06cc0bc2e7fe2af9"
+  url "http://opensource.yubico.com/yubico-piv-tool/releases/yubico-piv-tool-0.1.3.tar.gz"
+  sha1 "425269827da9f47a6277bd42b6415c8527d9ff8e"
 
   bottle do
     cellar :any
-    sha1 "97d204bea07ee9e00d6f3281a84f94e27b55e174" => :mavericks
-    sha1 "621490567eed24c753f712668308a84880940bcd" => :mountain_lion
-    sha1 "19547ccfa0e742e5258907c28e039d5ed8a7e707" => :lion
+    sha1 "4fc3bc4b53afbec9773d468435e23013c1718c55" => :yosemite
+    sha1 "5c1509845c4d1d1726098e15cb5692e187c99aa2" => :mavericks
+    sha1 "c9de161633dfcf2337390aec11826950d4dca00e" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

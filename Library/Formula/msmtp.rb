@@ -1,16 +1,12 @@
-require "formula"
-
 class Msmtp < Formula
   homepage "http://msmtp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.4.32/msmtp-1.4.32.tar.bz2"
-  sha1 "03186a70035dbbf7a31272a20676b96936599704"
-  revision 1
+  url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.6.1/msmtp-1.6.1.tar.xz"
+  sha1 "ac70151bcb53af5e192cbb147fd2b8139c637089"
 
   bottle do
-    revision 1
-    sha1 "482d3583ebc0964f56c970e0310ed4ba639229e6" => :mavericks
-    sha1 "d2c84e885cbf3e8910ade9c0c6715aac982dabe5" => :mountain_lion
-    sha1 "0f45147dfade4a1a236839e787c33848c51a8143" => :lion
+    sha1 "fdc446edaff06269af325e4b95c10788d187b79e" => :yosemite
+    sha1 "cdb0533ee36dbcb9fe249adbc74f0394a605fa78" => :mavericks
+    sha1 "dc7336d5b49a22dc7b014529d08c6c98b7ad0c9f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -21,10 +17,11 @@ class Msmtp < Formula
       --disable-dependency-tracking
       --with-macosx-keyring
       --prefix=#{prefix}
-      --with-ssl=openssl
+      --with-tls=openssl
     ]
 
     system "./configure", *args
     system "make", "install"
+    (share/"msmtp/scripts").install "scripts/msmtpq"
   end
 end

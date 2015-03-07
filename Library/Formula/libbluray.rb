@@ -1,15 +1,13 @@
-require "formula"
-
 class Libbluray < Formula
   homepage "https://www.videolan.org/developers/libbluray.html"
-  url "ftp://ftp.videolan.org/pub/videolan/libbluray/0.6.2/libbluray-0.6.2.tar.bz2"
-  sha1 "a1ab8c8c9310680fb1fe6a58f9fc5430613600fe"
+  url "ftp://ftp.videolan.org/pub/videolan/libbluray/0.7.0/libbluray-0.7.0.tar.bz2"
+  sha1 "12baf71accac2ae9efe7fb077999821ea1430d7b"
 
   bottle do
     cellar :any
-    sha1 "1279469297c7bc2c71d049c64dbd7ef421be69ca" => :mavericks
-    sha1 "c6fa0e3c42f874f096305663f1775faae9fa54d2" => :mountain_lion
-    sha1 "2b5429190d5471b58d4f6fcc44ea02c88081bf71" => :lion
+    sha1 "39d4a2de13f0c3302372c0fafa8587b78054d610" => :yosemite
+    sha1 "86036b1e6da82caeb8356b80d759bbce2aa31a08" => :mavericks
+    sha1 "7c2a0946331bf2cd658c9c99aed2bf40d957b55b" => :mountain_lion
   end
 
   head do
@@ -18,10 +16,12 @@ class Libbluray < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on "ant" => :build
   end
 
   depends_on "pkg-config" => :build
   depends_on "freetype" => :recommended
+  depends_on "fontconfig"
 
   def install
     # https://mailman.videolan.org/pipermail/libbluray-devel/2014-April/001401.html
@@ -34,6 +34,6 @@ class Libbluray < Formula
     system "./bootstrap" if build.head?
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

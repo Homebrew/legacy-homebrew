@@ -1,10 +1,9 @@
 require "formula"
 
 class LibtorrentRasterbar < Formula
-  homepage "http://www.rasterbar.com/products/libtorrent/"
-  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.2.tar.gz"
-  sha1 "bfb161825306abbd5c03775e75f5e094ee757a9a"
-  revision 1
+  homepage "http://sourceforge.net/projects/libtorrent/"
+  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.3.tar.gz"
+  sha1 "ccdd8bdba178b300921b15b18dfe8c0705f7eb07"
 
   head do
     url "https://libtorrent.googlecode.com/svn/trunk"
@@ -15,9 +14,9 @@ class LibtorrentRasterbar < Formula
 
   bottle do
     cellar :any
-    sha1 "ab6d57a760ab449140fe1343089884e5f7a77c9f" => :mavericks
-    sha1 "6561ef265172991b558e0e13c34b1f3e7fddb253" => :mountain_lion
-    sha1 "72e50533cf48186ca1442c0bbbb5a7d2e6049aee" => :lion
+    sha1 "9e270e0c4c512697b0684793b2e729823da40d0f" => :yosemite
+    sha1 "5af3a0855ae25f39809b3531930e6de970f54cfa" => :mavericks
+    sha1 "7c0b65bc0d436396df9556916a99e40248f55ad9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -28,12 +27,12 @@ class LibtorrentRasterbar < Formula
   depends_on "boost-python" if build.with? "python"
 
   def install
-    boost = Formula["boost"]
-
     args = [ "--disable-debug",
              "--disable-dependency-tracking",
+             "--disable-silent-rules",
+             "--enable-encryption",
              "--prefix=#{prefix}",
-             "--with-boost=#{boost.opt_prefix}" ]
+             "--with-boost=#{Formula["boost"].opt_prefix}" ]
 
     # Build python bindings requires forcing usage of the mt version of boost_python.
     if build.with? "python"
@@ -52,6 +51,6 @@ class LibtorrentRasterbar < Formula
       system "./configure", *args
     end
 
-    system "make install"
+    system "make", "install"
   end
 end

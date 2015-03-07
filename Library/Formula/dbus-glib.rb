@@ -6,9 +6,9 @@ class DbusGlib < Formula
   sha1 '58a8955972f6c221461a49f9c541c22e838a5776'
 
   bottle do
-    sha1 "6ca096253317cc2add57bd5af718924a391ea8f4" => :mavericks
-    sha1 "9fb847d04b08d4f6c17aa8e76e919c899c9c3be1" => :mountain_lion
-    sha1 "411565ac6f2a5b74d110c97955ec9d50a25f1996" => :lion
+    revision 1
+    sha1 "51b2423a45fd72b5476a2b3c7f8c7d3716c38976" => :yosemite
+    sha1 "a3ed176614007538b3fd7e788e0a72e4710b3762" => :mavericks
   end
 
   depends_on 'pkg-config' => :build

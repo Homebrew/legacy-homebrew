@@ -7,9 +7,10 @@ class Libtomcrypt < Formula
 
   bottle do
     cellar :any
-    sha1 "3ffbfb0eff2dd0c6cb8d6a14c69cf14aec93ccf2" => :mavericks
-    sha1 "018b39f5c06a418ee09e95bbf2da4e22a92a0b19" => :mountain_lion
-    sha1 "f85f1cd5b33cde3c2ef57165bbc6763e1a839a5f" => :lion
+    revision 1
+    sha1 "77bfa87994a726db794bf65153913dbc2dc7aad5" => :yosemite
+    sha1 "05559690a26660ed6c5979ff4661db2e57672491" => :mavericks
+    sha1 "eb5270eff08703ed0d72ece429f9df5f0273fb65" => :mountain_lion
   end
 
   depends_on 'libtommath'

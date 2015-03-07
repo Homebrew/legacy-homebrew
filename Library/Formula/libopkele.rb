@@ -13,12 +13,17 @@ class Libopkele < Formula
     end
   end
 
+  bottle do
+    cellar :any
+    sha1 "7f83e74f921f023c804c0b6956e384289a52ac6a" => :mountain_lion
+  end
+
   head do
     url 'https://github.com/hacker/libopkele.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option "with-docs", "Build and install documentation"

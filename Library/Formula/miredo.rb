@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class Miredo < Formula
-  homepage 'http://www.remlab.net/miredo/'
-  url 'http://www.remlab.net/files/miredo/miredo-1.2.6.tar.xz'
-  sha1 '630c84e9919952f6f4792ceda54a12e0aef43bbf'
+  homepage "http://www.remlab.net/miredo/"
+  url "http://www.remlab.net/files/miredo/miredo-1.2.6.tar.xz"
+  sha1 "630c84e9919952f6f4792ceda54a12e0aef43bbf"
 
-  depends_on 'tuntap'
-  depends_on 'judy'
+  depends_on :tuntap
+  depends_on "judy"
 
   patch :DATA
 
@@ -18,7 +18,7 @@ class Miredo < Formula
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
 

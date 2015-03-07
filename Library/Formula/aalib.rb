@@ -7,9 +7,10 @@ class Aalib < Formula
 
   bottle do
     cellar :any
-    sha1 "91868f0ce9e9bbcd9a81206ad925a571144ac866" => :mavericks
-    sha1 "0e5d656547a69220d3f146e00ea82747d0f33aee" => :mountain_lion
-    sha1 "3e46ae8165db31c9c87a7bb344c09211c800153e" => :lion
+    revision 1
+    sha1 "bad7bebd32c57b4448895d9630bd26b81d7381a9" => :yosemite
+    sha1 "703020d9ca9218f85ccccb04aa8c0443d386eb13" => :mavericks
+    sha1 "7df0f5feb8621497d06c64a67a4b0d0350e6ecb1" => :mountain_lion
   end
 
   # Fix malloc/stdlib issue on OS X

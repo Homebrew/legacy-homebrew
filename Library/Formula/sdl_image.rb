@@ -8,9 +8,10 @@ class SdlImage < Formula
 
   bottle do
     cellar :any
-    sha1 "2633470db61673b7c934e98a5f64c6ac838bd920" => :mavericks
-    sha1 "e430d59dd88e9365afac2b01149ca015a715a683" => :mountain_lion
-    sha1 "119c2a893214ad25fd1ee832165a14b1323ddc02" => :lion
+    revision 1
+    sha1 "8748809171bc755a7e359d6b229a1803eba5a3a8" => :yosemite
+    sha1 "f9d44a7ab0a8b97ff542f6b005cdc2d57a41884a" => :mavericks
+    sha1 "92e68a5f6681dfc0f884dfea752804c3876bf9d5" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

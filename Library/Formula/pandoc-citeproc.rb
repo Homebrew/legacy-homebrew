@@ -1,4 +1,3 @@
-require "formula"
 require "language/haskell"
 
 class PandocCiteproc < Formula
@@ -9,9 +8,10 @@ class PandocCiteproc < Formula
   sha1 "5236b4b4e201f94ab9f1bcd0d7e81c4271b46e8f"
 
   bottle do
-    sha1 "6babd3e9d6264bcf678c5ea02140512c129528b4" => :mavericks
-    sha1 "41af56ace751f9a5ac85618eb5d718fd1402d416" => :mountain_lion
-    sha1 "b72a998686381016c0646264545c6bd554f3253e" => :lion
+    revision 1
+    sha1 "7cb2d23e4bfa3a7f30156101db645e9fcc27a5a8" => :yosemite
+    sha1 "94d27055eca1df4d2a928583f5e428f6bf5d6621" => :mavericks
+    sha1 "b0093fe0c141c1c17a232909c595faee5285c564" => :mountain_lion
   end
 
   depends_on "ghc" => :build

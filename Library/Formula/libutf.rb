@@ -7,9 +7,10 @@ class Libutf < Formula
 
   bottle do
     cellar :any
-    sha1 "40adfa6e9c0dee0732d10052ddfc772cadbcef00" => :mavericks
-    sha1 "e4071ba620b492c667e78f6ce72be094ead85fd0" => :mountain_lion
-    sha1 "d9ea75fb3bc377d9719bb039f1fdec2051ff611b" => :lion
+    revision 1
+    sha1 "ff7ca7a52c3c3cf376a8e751627fd23728f08e14" => :yosemite
+    sha1 "ad54688e8da7c6d72aa85ec679a2f2b442ab5d7b" => :mavericks
+    sha1 "3c5dac2740872a0583db363a103af74ffd6fb7cd" => :mountain_lion
   end
 
   def install

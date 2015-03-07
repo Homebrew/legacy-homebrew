@@ -7,17 +7,18 @@ class Libspiro < Formula
 
   bottle do
     cellar :any
-    sha1 "4ebd6f91e64df94b0179cbf03c9501fc3b0529b4" => :mavericks
-    sha1 "0688c000586452e80912483a796cfca22603f861" => :mountain_lion
-    sha1 "9dd35b944eec51af1b795708fe5c4a8f53c92251" => :lion
+    revision 1
+    sha1 "ef44221e7e675704a36b0e0e8a78b350c22f67bf" => :yosemite
+    sha1 "a1beaa7f9e7d1733fd0ab905c4445c30352e876d" => :mavericks
+    sha1 "46e386cb03763d3de5b584afd77315ee044bcd2b" => :mountain_lion
   end
 
   head do
     url 'https://github.com/fontforge/libspiro.git'
 
-    depends_on :automake
-    depends_on :autoconf
-    depends_on :libtool
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   def install

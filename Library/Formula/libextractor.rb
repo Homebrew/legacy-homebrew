@@ -8,16 +8,15 @@ class Libextractor < Formula
 
   bottle do
     cellar :any
-    sha1 "b15e3b84d7a5ff3de9a4aaee6217cce88eda57d4" => :mavericks
-    sha1 "805f42f40bc00584dda99723ff136d2bce53fd87" => :mountain_lion
-    sha1 "d442f903c5157d5a1a8c68d06967814a30d4c666" => :lion
+    revision 1
+    sha1 "8e3741386b03c28bc8c24e785f3882d277d416e1" => :yosemite
+    sha1 "505b8c3cbbf23e91d80548dc2dd6011a1231a92e" => :mavericks
+    sha1 "bb525c96875785d893080702ef010605424147db" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "libtool" => :run
   depends_on "iso-codes" => :optional
-
-  conflicts_with "sptk", :because => "both install `extract`"
 
   def install
     ENV.deparallelize

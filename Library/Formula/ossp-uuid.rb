@@ -9,6 +9,7 @@ class OsspUuid < Formula
 
   bottle do
     cellar :any
+    sha1 "bc8c6f93dd36442dfc24199062a73d1b4c47701f" => :yosemite
     sha1 "93c3c44dc456e49bed9cb8b3672144fc348298dc" => :mavericks
     sha1 "8a922934644663915eedc97f1a7da83725c646d2" => :mountain_lion
     sha1 "3fbf704b60a660becfba68753285ec70ee47cdeb" => :lion

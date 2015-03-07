@@ -5,6 +5,12 @@ class Lua < Formula
   url "http://www.lua.org/ftp/lua-5.2.3.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.2/lua5.2_5.2.3.orig.tar.gz"
   sha1 "926b7907bc8d274e063d42804666b40a3f3c124c"
+  bottle do
+    sha1 "febde5bb25ed1a6d7cdf2b1a9ed798f29587f7f4" => :yosemite
+    sha1 "10d2bc30697656e6deb6fde98a8fafbd1385681c" => :mavericks
+    sha1 "ced438f2c14b0c7e26b356e4e13fb5a47c3c60fc" => :mountain_lion
+  end
+
   revision 1
 
   fails_with :llvm do

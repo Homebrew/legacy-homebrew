@@ -15,7 +15,7 @@ def blacklisted? name
     Installing TeX from source is weird and gross, requires a lot of patches,
     and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
 
-    We recommend using a MacTeX distribution: http://www.tug.org/mactex/
+    We recommend using a MacTeX distribution: https://www.tug.org/mactex/
     EOS
   when 'pip' then <<-EOS.undent
     Homebrew provides pip via: `brew install python`. However you will then
@@ -65,12 +65,6 @@ def blacklisted? name
     and then follow the tutorial:
       https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md
     EOS
-  when 'rubinius' then <<-EOS.undent
-    Rubinius requires an existing Ruby 2.0 to bootstrap.
-    Doing this through Homebrew is error-prone. Instead, consider using
-    `ruby-build` to build and install specific versions of Ruby:
-        brew install ruby-build
-    EOS
   when 'osmium' then <<-EOS.undent
     The creator of Osmium requests that it not be packaged and that people
     use the GitHub master branch instead.
@@ -84,8 +78,8 @@ def blacklisted? name
       brew install typesafe-activator
 
     You can read more about this change at:
-      http://www.playframework.com/documentation/2.3.x/Migration23
-      http://www.playframework.com/documentation/2.3.x/Highlights23
+      https://www.playframework.com/documentation/2.3.x/Migration23
+      https://www.playframework.com/documentation/2.3.x/Highlights23
     EOS
   when 'haskell-platform' then <<-EOS.undent
     We no longer package haskell-platform. Consider installing ghc

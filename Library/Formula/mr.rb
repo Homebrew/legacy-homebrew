@@ -2,7 +2,7 @@ require 'formula'
 
 class Mr < Formula
   homepage 'http://myrepos.branchable.com/'
-  url 'git://myrepos.branchable.com/', :tag => '1.20130826'
+  url 'git://myrepos.branchable.com/', :tag => '1.20141024'
 
   def install
     system "make"

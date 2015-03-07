@@ -1,33 +1,34 @@
-require 'formula'
+require "formula"
 
 class Guile < Formula
-  homepage 'http://www.gnu.org/software/guile/'
-  url 'http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz'
-  sha1 '3cdd1c4956414bffadea13e5a1ca08949016a802'
+  homepage "http://www.gnu.org/software/guile/"
+  url "http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz"
+  sha1 "3cdd1c4956414bffadea13e5a1ca08949016a802"
   revision 1
 
   bottle do
-    sha1 "144466e2a084ea75d295b98b995690969363b33f" => :mavericks
-    sha1 "ab535db3b510c80356df01a9a86e6a7f9ec1b15c" => :mountain_lion
-    sha1 "79baa2dfc742e413b5492aa7a876f8ff042497ae" => :lion
+    revision 1
+    sha1 "67bd9b8050bded7916db3622d7abd896e1376eac" => :yosemite
+    sha1 "818e7ac90634b60bcbf44509a512b542b0a87bd8" => :mavericks
+    sha1 "55790b96275804b2e5952b60e1071a318f3b1518" => :mountain_lion
   end
 
   head do
-    url 'http://git.sv.gnu.org/r/guile.git'
+    url "http://git.sv.gnu.org/r/guile.git"
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'gettext' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "gettext" => :build
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libtool' => :run
-  depends_on 'libffi'
-  depends_on 'libunistring'
-  depends_on 'bdw-gc'
-  depends_on 'gmp'
-  depends_on 'readline'
+  depends_on "pkg-config" => :build
+  depends_on "libtool" => :run
+  depends_on "libffi"
+  depends_on "libunistring"
+  depends_on "bdw-gc"
+  depends_on "gmp"
+  depends_on "readline"
 
   fails_with :llvm do
     build 2336
@@ -40,7 +41,10 @@ class Guile < Formula
   end
 
   def install
-    system './autogen.sh' if build.head?
+    if build.head?
+      inreplace "autogen.sh", "libtoolize", "glibtoolize"
+      system "./autogen.sh"
+    end
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -57,14 +61,14 @@ class Guile < Formula
   end
 
   test do
-    hello = testpath/'hello.scm'
+    hello = testpath/"hello.scm"
     hello.write <<-EOS.undent
     (display "Hello World")
     (newline)
     EOS
 
-    ENV['GUILE_AUTO_COMPILE'] = '0'
+    ENV["GUILE_AUTO_COMPILE"] = "0"
 
-    system bin/'guile', hello
+    system bin/"guile", hello
   end
 end

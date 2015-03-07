@@ -1,25 +1,24 @@
-require 'formula'
-
 class Fontconfig < Formula
-  homepage 'http://fontconfig.org/'
-  url 'http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2'
-  sha1 '08565feea5a4e6375f9d8a7435dac04e52620ff2'
+  homepage "http://fontconfig.org/"
+  url "http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2"
+  sha1 "08565feea5a4e6375f9d8a7435dac04e52620ff2"
 
   # The bottle tooling is too lenient and thinks fontconfig
   # is relocatable, but it has hardcoded paths in the executables.
   bottle do
-    revision 2
-    sha1 "7f481637395b324e3f84ca098f9cf85d1ac9f5cb" => :mavericks
-    sha1 "1a5cea57cdd15d077e829fe93a2d794655249ba5" => :mountain_lion
-    sha1 "5bbe702fb724ea913579f0b22cc36da93f3c7687" => :lion
+    cellar :any
+    revision 3
+    sha1 "aa8cd844a4740cb6458a4c4bd74746de6e75a02b" => :yosemite
+    sha1 "5d273ae804ff4c3f2ad735d77e9d25b2cb1ce910" => :mavericks
+    sha1 "17c0696a6e075db8d6822bdde341616d36cb0c0d" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'freetype'
+  depends_on "pkg-config" => :build
+  depends_on "freetype"
 
   # Reverts commit http://cgit.freedesktop.org/fontconfig/commit/?id=7a6622f25cdfab5ab775324bef1833b67109801b,
   # which breaks caching font directories containing subdirectories
@@ -40,6 +39,10 @@ class Fontconfig < Formula
 
   def post_install
     system "#{bin}/fc-cache", "-frv"
+  end
+
+  test do
+    system "#{bin}/fc-list"
   end
 end
 

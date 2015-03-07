@@ -1,10 +1,15 @@
-require "formula"
-
 class Euca2ools < Formula
   homepage "https://github.com/eucalyptus/euca2ools"
-  url "https://github.com/eucalyptus/euca2ools/archive/v3.1.0.tar.gz"
-  sha1 "5290172546707f3729da314535a7a9a429edda24"
-  head "https://github.com/eucalyptus/euca2ools.git", :branch => "master"
+  url "https://github.com/eucalyptus/euca2ools/archive/v3.1.1.tar.gz"
+  sha1 "a29646fe312ae90c625304a9b969f5ab8bec44d8"
+  head "https://github.com/eucalyptus/euca2ools.git"
+
+  bottle do
+    cellar :any
+    sha1 "e5937cd5b80eb378a375f8488d20063583325e04" => :yosemite
+    sha1 "6b648aed9dbc3b7cafafba8dafc7dc90d875e0cd" => :mavericks
+    sha1 "3f9f60ed9faddc376adffe09ae8e3fdd35836bcf" => :mountain_lion
+  end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
@@ -48,6 +53,7 @@ class Euca2ools < Formula
   end
 
   test do
+    system "#{bin}/euca-version"
     system "#{bin}/euca-describe-instances", "--help"
   end
 end

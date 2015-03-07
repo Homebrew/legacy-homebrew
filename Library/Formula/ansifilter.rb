@@ -1,19 +1,19 @@
-require 'formula'
+require "formula"
 
 class Ansifilter < Formula
-  homepage 'http://www.andre-simon.de/doku/ansifilter/ansifilter.html'
-  url 'http://www.andre-simon.de/zip/ansifilter-1.8.tar.gz'
-  sha1 '805bc0227c5972a971a82d3db749fb2431c107c1'
+  homepage "http://www.andre-simon.de/doku/ansifilter/ansifilter.html"
+  url "http://www.andre-simon.de/zip/ansifilter-1.11.tar.gz"
+  sha256 "bdbd6cda51be643e070c98139e79061ab3c2935c4b26c4a098bc64fa3328d1a3"
 
   bottle do
     cellar :any
-    sha1 "e28d7cd8ef0c42040b216d9eb6087ddc90cba855" => :mavericks
-    sha1 "6110cc501ebfe6a7d402b778880651314310ce3b" => :mountain_lion
-    sha1 "2ab9271e360293e599926909da601e511c270152" => :lion
+    sha1 "0206b02f9a153af5ae065636d6a0d3b5909b0f30" => :yosemite
+    sha1 "eaaeb1c8ad032d26afd990f426cc4b4da0dbd0ba" => :mavericks
+    sha1 "a726df12fc5b88a027225db2e16b736328b38267" => :mountain_lion
   end
 
   def install
-    # both steps required and with PREFIX, last checked v1.7
+    # both steps required and with PREFIX, last checked v1.11
     system "make", "PREFIX=#{prefix}"
     system "make", "PREFIX=#{prefix}", "install"
   end

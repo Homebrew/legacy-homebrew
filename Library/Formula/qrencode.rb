@@ -1,18 +1,37 @@
-require 'formula'
+require "formula"
 
 class Qrencode < Formula
-  homepage 'http://fukuchi.org/works/qrencode/index.html.en'
-  url 'http://fukuchi.org/works/qrencode/qrencode-3.4.3.tar.bz2'
-  sha1 'a5056cf2fdc699ecf1d3c0cbea7b50993b0bf54e'
-  revision 1
+  homepage "https://fukuchi.org/works/qrencode/index.html.en"
+  url "https://fukuchi.org/works/qrencode/qrencode-3.4.4.tar.gz"
+  sha1 "644054a76c8b593acb66a8c8b7dcf1b987c3d0b2"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libpng'
+  bottle do
+    cellar :any
+    sha1 "2a79a4f7f5dce4490e31cab8277f3a492e77aa4a" => :yosemite
+    sha1 "26e2a0641f7556fe3e7d44da7b05644c25b1ae04" => :mavericks
+    sha1 "f0797c8fd3b500f79300868248c07d3144712a96" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/fukuchi/libqrencode.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "libpng"
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/qrencode", "123456789", "-o", "test.png"
   end
 end

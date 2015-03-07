@@ -38,11 +38,14 @@ Note that these flags should only appear after a command.
 
 ## COMMANDS
 
-  * `audit` [<formulae>]:
+  * `audit` [--strict] [<formulae>]:
     Check <formulae> for Homebrew coding style violations. This should be
     run before submitting a new formula.
 
     If no <formulae> are provided, all of them are checked.
+
+    If `--strict` is passed, additional checks are run. This should be used
+    when creating for new formulae.
 
     `audit` exits with a non-zero status if any errors are found. This is useful,
     for instance, for implementing pre-commit hooks.
@@ -169,8 +172,8 @@ Note that these flags should only appear after a command.
     Pass `--all` to get information on all formulae, or `--installed` to get
     information on all installed formulae.
 
-    See the wiki for examples of using the JSON:
-    <https://github.com/Homebrew/homebrew/wiki/Querying-Brew>
+    See the docs for examples of using the JSON:
+    <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md>
 
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
@@ -234,10 +237,12 @@ Note that these flags should only appear after a command.
 
     If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
 
-  * `linkapps [--local]`:
-    Find all installed formulae that have compiled `.app`-style "application"
+  * `linkapps [--local]` [<formulae>]:
+    Find installed formulae that have compiled `.app`-style "application"
     packages for OS X, and symlink those apps into `/Applications`, allowing
     for easier access.
+
+    If no <formulae> are provided, all of them will have their .apps symlinked.
 
     If provided, `--local` will move them into the user's `~/Applications`
     folder instead of the system folder. It may need to be created, first.
@@ -279,11 +284,16 @@ Note that these flags should only appear after a command.
 
     If `--installed` is passed, show options for all installed formulae.
 
-  * `outdated [--quiet]`:
+  * `outdated [--quiet|--verbose]`:
     Show formulae that have an updated version available.
 
-    If `--quiet` is passed, list only the names of outdated brews. Otherwise,
-    the versions are printed as well.
+    By default, version information is displayed in interactive shells, and
+    suppressed otherwise.
+
+    If `--quiet` is passed, list only the names of outdated brews (takes
+    precedence over `--verbose`).
+
+    If `--verbose` is passed, display detailed version information.
 
   * `pin` <formulae>:
     Pin the specified <formulae>, preventing them from being upgraded when
@@ -317,7 +327,7 @@ Note that these flags should only appear after a command.
   * `sh [--env=std]`:
     Instantiate a Homebrew build environment. Uses our years-battle-hardened
     Homebrew build logic to help your `./configure && make && make install`
-    or even your `gem install` succeeed. Especially handy if you run Homebrew
+    or even your `gem install` succeed. Especially handy if you run Homebrew
     in a Xcode-only configuration since it adds tools like make to your PATH
     which otherwise build-systems would not find.
 
@@ -327,9 +337,8 @@ Note that these flags should only appear after a command.
     <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
 
   * `tap --repair`:
-
-    Ensures all tapped formula are symlinked into Library/Formula and prunes dead
-    formula from Library/Formula.
+    Ensure all tapped formulae are symlinked into Library/Formula and prune dead
+    formulae from Library/Formula.
 
   * `test` [--devel|--HEAD] [--debug] <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
@@ -350,11 +359,12 @@ Note that these flags should only appear after a command.
     for temporarily disabling a formula:
     `brew unlink foo && commands && brew link foo`.
 
-  * `unlinkapps [--local]`:
+  * `unlinkapps [--local]` [<formulae>]:
     Removes links created by `brew linkapps`.
 
-  * `unpack [--git|--patch] [--destdir=<path>]` <formulae>:
+    If no <formulae> are provided, all linked app will be removed.
 
+  * `unpack [--git|--patch] [--destdir=<path>]` <formulae>:
     Unpack the source files for <formulae> into subdirectories of the current
     working directory. If `--destdir=<path>` is given, the subdirectories will
     be created in the directory named by `<path>` instead.
@@ -386,7 +396,7 @@ Note that these flags should only appear after a command.
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).
 
-  * `uses [--installed] [--recursive] [--devel|--HEAD]` <formulae>:
+  * `uses [--installed] [--recursive] [--skip-build] [--skip-optional] [--devel|--HEAD]` <formulae>:
     Show the formulae that specify <formulae> as a dependency. When given
     multiple formula arguments, show the intersection of formulae that use
     <formulae>.
@@ -394,6 +404,10 @@ Note that these flags should only appear after a command.
     Use `--recursive` to resolve more than one level of dependencies.
 
     If `--installed` is passed, only list installed formulae.
+
+    By default, `uses` shows all formulae that specify <formulae> as a dependency.
+    To skip the `:build` type dependencies, pass `--skip-build`. Similarly, pass
+    `--skip-optional` to skip `:optional` dependencies.
 
     By default, `uses` shows usages of `formula` by stable builds. To find
     cases where `formula` is used by development or HEAD build, pass
@@ -435,14 +449,8 @@ scripts that reside somewhere in the PATH, named `brew-<cmdname>` or
 `brew-<cmdname>.rb`, which can be invoked like `brew cmdname`. This allows you
 to create your own commands without modifying Homebrew's internals.
 
-A number of (useful, but unsupported) external commands are included and enabled
-by default:
-
-    $ ls $(brew --repository)/Library/Contributions/cmd
-
-Documentation for the included external commands as well as instructions for
-creating your own can be found on the wiki:
-<http://wiki.github.com/Homebrew/homebrew/External-Commands>
+Instructions for creating your own commands can be found in the docs:
+<https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md>
 
 ## SPECIFYING FORMULAE
 
@@ -467,7 +475,7 @@ can take several different forms:
   * AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY:
     When using the S3 download strategy, Homebrew will look in
     these variables for access credentials (see
-    <http://docs.aws.amazon.com/fws/1.1/GettingStartedGuide/index.html?AWSCredentials.html>
+    <https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment>
     to retrieve these access credentials from AWS).  If they are not set,
     the S3 download strategy will download with a public
     (unsigned) URL.
@@ -531,7 +539,7 @@ can take several different forms:
     A personal GitHub API Access token, which you can create at
     <https://github.com/settings/applications>. If set, GitHub will allow you a
     greater number of API requests. See
-    <http://developer.github.com/v3/#rate-limiting> for more information.
+    <https://developer.github.com/v3/#rate-limiting> for more information.
     Homebrew uses the GitHub API for features such as `brew search`.
 
   * HOMEBREW\_MAKE\_JOBS:
@@ -553,12 +561,6 @@ can take several different forms:
   * HOMEBREW\_INSTALL\_BADGE:
     Text printed before the installation summary of each successful build.
     Defaults to the beer emoji.
-
-  * HOMEBREW\_SOURCEFORGE\_MIRROR:
-    If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to
-    select a SourceForge mirror for downloading bottles.
-
-    *Example:* `export HOMEBREW_SOURCEFORGE_MIRROR='heanet'`
 
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
@@ -598,14 +600,16 @@ If your proxy requires authentication:
 
 ## SEE ALSO
 
-Homebrew Wiki: <http://wiki.github.com/Homebrew/homebrew/>
+Homebrew Documentation: <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/>
 
 `git`(1), `git-log`(1)
 
 ## AUTHORS
 
-Max Howell, a splendid chap.
+Homebrew's current maintainers are Misty De Meo, Adam Vandenberg, Jack Nagel, Mike McQuaid, Brett Koonce and Tim Smith.
+
+Homebrew was originally created by Max Howell.
 
 ## BUGS
 
-See Issues on GitHub: <http://github.com/Homebrew/homebrew/issues>
+See Issues on GitHub: <https://github.com/Homebrew/homebrew/issues>

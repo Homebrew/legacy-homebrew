@@ -9,15 +9,15 @@ module Homebrew
 
   def search
     if ARGV.include? '--macports'
-      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     elsif ARGV.include? '--debian'
-      exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+      exec_browser "https://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.include? '--opensuse'
       exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
     elsif ARGV.include? '--fedora'
-      exec_browser "https://admin.fedoraproject.org/pkgdb/acls/list/*#{ARGV.next}*"
+      exec_browser "https://admin.fedoraproject.org/pkgdb/packages/%2A#{ARGV.next}%2A/"
     elsif ARGV.include? '--ubuntu'
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.empty?
@@ -76,6 +76,8 @@ module Homebrew
     %w{Homebrew binary},
     %w{Homebrew python},
     %w{Homebrew php},
+    %w{Homebrew x11},
+    %w{Caskroom cask},
   ]
 
   def query_regexp(query)
@@ -94,7 +96,10 @@ module Homebrew
   end
 
   def search_tap user, repo, rx
-    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory?
+    if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory? && \
+       "#{user}/#{repo}" != "Caskroom/cask"
+      return []
+    end
 
     results = []
     tree = {}
@@ -113,7 +118,7 @@ module Homebrew
       end
     end
 
-    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["."] || []
+    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["Casks"] || tree["."] || []
     paths.each do |path|
       name = File.basename(path, ".rb")
       results << "#{user}/#{repo}/#{name}" if rx === name

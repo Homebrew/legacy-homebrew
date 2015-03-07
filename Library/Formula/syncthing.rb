@@ -1,13 +1,11 @@
-require "formula"
-
 class Syncthing < Formula
   homepage "http://syncthing.net"
-  url "https://github.com/calmh/syncthing.git", :tag => "v0.10.1"
+  url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.24"
 
   bottle do
-    sha1 "d6f3b070e9f43c2caba3bd630a150dd7195dfd4d" => :mavericks
-    sha1 "84f35ae41c48fc9f2a8830859e9fd562d0f9a026" => :mountain_lion
-    sha1 "4e9abc8e955640d89d22c43f39314d9b626a6e04" => :lion
+    sha1 "7010ff80ae2a4309e5898e04c4e0ad78af68baff" => :yosemite
+    sha1 "083620fc00fdd6a25c9a077944e0d6237c4a6447" => :mavericks
+    sha1 "b20683d021ef06c0860afbe6533db54c4ae1b2d3" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -17,11 +15,11 @@ class Syncthing < Formula
     ENV["GOPATH"] = cached_download/".gopath"
     ENV.append_path "PATH", "#{ENV["GOPATH"]}/bin"
 
+    # FIXTHIS: do this without mutating the cache!
     hack_dir = cached_download/".gopath/src/github.com/syncthing"
     rm_rf  hack_dir
     mkdir_p hack_dir
     ln_s cached_download, "#{hack_dir}/syncthing"
-    ln_s cached_download/".git", ".git"
 
     system "./build.sh", "noupgrade"
     bin.install "syncthing"
@@ -32,11 +30,6 @@ class Syncthing < Formula
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
       <dict>
-        <key>EnvironmentVariables</key>
-        <dict>
-          <key>STNORESTART</key>
-          <string>yes</string>
-        </dict>
         <key>KeepAlive</key>
         <true/>
         <key>Label</key>
@@ -45,15 +38,18 @@ class Syncthing < Formula
         <array>
           <string>#{opt_bin}/syncthing</string>
           <string>-no-browser</string>
+          <string>-no-restart</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
+        <key>ProcessType</key>
+        <string>Background</string>
       </dict>
     </plist>
     EOS
   end
 
   test do
-    system "#{bin}/syncthing", "-generate", "./"
+    system bin/"syncthing", "-generate", "./"
   end
 end

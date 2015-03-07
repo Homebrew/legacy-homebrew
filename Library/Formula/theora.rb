@@ -7,9 +7,10 @@ class Theora < Formula
 
   bottle do
     cellar :any
-    sha1 "b00c3931509fdc80bb432525d0c538b958a9d6f3" => :mavericks
-    sha1 "8bf02895347ba10cb031c93bc7db123d43ac4fb3" => :mountain_lion
-    sha1 "be77a149c88d9f3f3619e4cd66d7ef81e4a15a7c" => :lion
+    revision 1
+    sha1 "af6b483eb5119d88559d435f457b6d12d5ecf5bc" => :yosemite
+    sha1 "1ef8982b17448df7e7a665ff74381a6013a430a9" => :mavericks
+    sha1 "55f7781fe5ae59ef1c0aa1dfe95fd4d4f37ce060" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -18,7 +19,7 @@ class Theora < Formula
   depends_on "libvorbis"
 
   def install
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-oggtest",

@@ -1,31 +1,29 @@
-require 'formula'
-
 class Freeswitch < Formula
-  homepage 'http://freeswitch.org'
-  url 'https://stash.freeswitch.org/scm/fs/freeswitch.git', :tag => 'v1.4.6'
-
-  head 'https://stash.freeswitch.org/scm/fs/freeswitch.git'
+  homepage "http://freeswitch.org"
+  url "https://stash.freeswitch.org/scm/fs/freeswitch.git", :tag => "v1.4.15"
+  head "https://stash.freeswitch.org/scm/fs/freeswitch.git"
 
   bottle do
-    sha1 "a1ff029908457b7a992474b8abd4428c88858128" => :mavericks
-    sha1 "05c391e0c3f2f795ec7b87485a5ad54fbdd57259" => :mountain_lion
-    sha1 "dc5a331f94eb51353d01dfe6d2319985e7844a96" => :lion
+    sha1 "4e9636023d8cc82441b3594a4cd83d581990e718" => :yosemite
+    sha1 "5b80a6caa21ea19eb803c722ca94e42a9696f5ab" => :mavericks
+    sha1 "909b8b27c3c98c9f63d47bdc3ec60a30a953842d" => :mountain_lion
   end
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'pkg-config' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
+  depends_on :apr => :build
 
-  depends_on 'jpeg'
-  depends_on 'curl'
-  depends_on 'openssl'
-  depends_on 'pcre'
-  depends_on 'speex'
-  depends_on 'sqlite'
+  depends_on "jpeg"
+  depends_on "curl"
+  depends_on "openssl"
+  depends_on "pcre"
+  depends_on "speex"
+  depends_on "sqlite"
 
   def install
-    system "./bootstrap.sh -j#{ENV.make_jobs}"
+    system "./bootstrap.sh", "-j#{ENV.make_jobs}"
 
     # tiff will fail to find OpenGL unless told not to use X
     inreplace "libs/tiff-4.0.2/configure.gnu", "--with-pic", "--with-pic --without-x"
@@ -39,8 +37,7 @@ class Freeswitch < Formula
                           "--exec_prefix=#{prefix}"
 
     system "make"
-    system "make install"
-    system "make all cd-sounds-install cd-moh-install"
+    system "make", "install", "all", "cd-sounds-install", "cd-moh-install"
   end
 
   plist_options :manual => "freeswitch -nc --nonat"

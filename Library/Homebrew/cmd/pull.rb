@@ -3,11 +3,47 @@
 
 require 'utils'
 require 'formula'
+require 'cmd/tap'
 
 module Homebrew
   def tap arg
-    match = arg.match(%r[homebrew-(\w+)/])
+    match = arg.match(%r[homebrew-([\w-]+)/])
     match[1].downcase if match
+  end
+
+  def pull_url url
+    # GitHub provides commits/pull-requests raw patches using this URL.
+    url += '.patch'
+
+    patchpath = HOMEBREW_CACHE + File.basename(url)
+    curl url, '-o', patchpath
+
+    ohai 'Applying patch'
+    patch_args = []
+    # Normally we don't want whitespace errors, but squashing them can break
+    # patches so an option is provided to skip this step.
+    if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
+      patch_args << '--whitespace=nowarn'
+    else
+      patch_args << '--whitespace=fix'
+    end
+
+    # Fall back to three-way merge if patch does not apply cleanly
+    patch_args << "-3"
+    patch_args << patchpath
+
+    begin
+      safe_system 'git', 'am', *patch_args
+    rescue ErrorDuringExecution
+      if ARGV.include? "--resolve"
+        odie "Patch failed to apply: try to resolve it."
+      else
+        system 'git', 'am', '--abort'
+        odie 'Patch failed to apply: aborted.'
+      end
+    ensure
+      patchpath.unlink
+    end
   end
 
   def pull
@@ -34,6 +70,10 @@ module Homebrew
         issue = url_match[3]
       end
 
+      if ARGV.include?("--bottle") && issue.nil?
+        raise "No pull request detected!"
+      end
+
       if tap_name = tap(url)
         user = url_match[1].downcase
         tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}/homebrew-#{tap_name}"
@@ -43,47 +83,14 @@ module Homebrew
         Dir.chdir HOMEBREW_REPOSITORY
       end
 
-      if ARGV.include? '--bottle'
-        if issue
-          url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
-        else
-          raise "No pull request detected!"
-        end
-      end
-
-      # GitHub provides commits'/pull-requests' raw patches using this URL.
-      url += '.patch'
-
       # The cache directory seems like a good place to put patches.
       HOMEBREW_CACHE.mkpath
-      patchpath = HOMEBREW_CACHE + File.basename(url)
-      curl url, '-o', patchpath
 
-      # Store current revision
+      # Store current revision and branch
       revision = `git rev-parse --short HEAD`.strip
+      branch = `git symbolic-ref --short HEAD`.strip
 
-      ohai 'Applying patch'
-      patch_args = []
-      # Normally we don't want whitespace errors, but squashing them can break
-      # patches so an option is provided to skip this step.
-      if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
-        patch_args << '--whitespace=nowarn'
-      else
-        patch_args << '--whitespace=fix'
-      end
-
-      # Fall back to three-way merge if patch does not apply cleanly
-      patch_args << "-3"
-      patch_args << patchpath
-
-      begin
-        safe_system 'git', 'am', *patch_args
-      rescue ErrorDuringExecution
-        system 'git', 'am', '--abort'
-        odie 'Patch failed to apply: aborted.'
-      ensure
-        patchpath.unlink
-      end
+      pull_url url
 
       changed_formulae = []
 
@@ -107,10 +114,10 @@ module Homebrew
         end
       end
 
-      unless ARGV.include?('--bottle')
+      unless ARGV.include? '--bottle'
         changed_formulae.each do |f|
           next unless f.bottle
-          opoo "#{f} has a bottle: do you need to update it with --bottle?"
+          opoo "#{f.name} has a bottle: do you need to update it with --bottle?"
         end
       end
 
@@ -119,17 +126,57 @@ module Homebrew
         message = `git log HEAD^.. --format=%B`
 
         if ARGV.include? '--bump'
-          onoe 'Can only bump one changed formula' unless changed_formulae.length == 1
+          odie 'Can only bump one changed formula' unless changed_formulae.length == 1
           f = changed_formulae.first
           subject = "#{f.name} #{f.version}"
           ohai "New bump commit subject: #{subject}"
+          system "/bin/echo -n #{subject} | pbcopy"
           message = "#{subject}\n\n#{message}"
         end
 
         # If this is a pull request, append a close message.
-        unless message.include? 'Closes #'
+        unless message.include? "Closes ##{issue}."
           message += "\nCloses ##{issue}."
-          safe_system 'git', 'commit', '--amend', '--signoff', '-q', '-m', message
+          safe_system 'git', 'commit', '--amend', '--signoff', '--allow-empty', '-q', '-m', message
+        end
+      end
+
+      if ARGV.include? "--bottle"
+        bottle_commit_url = if tap_name
+          "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
+        else
+          "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+        end
+        curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
+
+        bottle_branch = "pull-bottle-#{issue}"
+        safe_system "git", "checkout", "-B", bottle_branch, revision
+        pull_url bottle_commit_url
+        safe_system "git", "rebase", branch
+        safe_system "git", "checkout", branch
+        safe_system "git", "merge", "--ff-only", "--no-edit", bottle_branch
+        safe_system "git", "branch", "-D", bottle_branch
+
+        # Publish bottles on Bintray
+        bintray_user = ENV["BINTRAY_USER"]
+        bintray_key = ENV["BINTRAY_KEY"]
+
+        if bintray_user && bintray_key
+          repo = Bintray.repository(tap_name)
+          changed_formulae.each do |f|
+            # This means the formula has an existing bottle.
+            next if f.bottle
+            ohai "Publishing on Bintray:"
+            package = Bintray.package f.name
+            bottle = Bottle.new(f, f.bottle_specification)
+            version = Bintray.version(bottle.url)
+            curl "--silent", "--fail",
+              "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
+              "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
+            puts
+          end
+        else
+          opoo "Set BINTRAY_USER and BINTRAY_KEY to add new formula bottles on Bintray!"
         end
       end
 

@@ -1,20 +1,15 @@
-require "formula"
-
 class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/gnupg/gnupg-2.0.26.tar.bz2"
-  sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
 
   bottle do
-    revision 1
-    sha1 "c40e93d9d5176742c171ddb6002019fdfb4c428c" => :mavericks
-    sha1 "6ed3bdc238081dddeab4917c37436cc294f561d7" => :mountain_lion
-    sha1 "85ab322c61d2e46359b62d801b557f7d537684e5" => :lion
+    sha1 "68caf3377045b2ca989fbfb0dbea822f1c05886a" => :yosemite
+    sha1 "a43d2c5d929e6dd706774fdbfd1eeb282c4ca524" => :mavericks
+    sha1 "4e1697673d235ec19cf28d89f3ef015920c6e292" => :mountain_lion
   end
-
-  option "8192", "Build with support for private keys of up to 8192 bits"
 
   depends_on "libgpg-error"
   depends_on "libgcrypt"
@@ -23,6 +18,7 @@ class Gnupg2 < Formula
   depends_on "pinentry"
   depends_on "pth"
   depends_on "gpg-agent"
+  depends_on "curl" if MacOS.version <= :mavericks
   depends_on "dirmngr" => :recommended
   depends_on "libusb-compat" => :recommended
   depends_on "readline" => :optional
@@ -41,8 +37,6 @@ class Gnupg2 < Formula
               "gpg-agent --quiet --daemon sh"
     end
     inreplace "tools/gpgkey2ssh.c", "gpg --list-keys", "gpg2 --list-keys"
-
-    inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
 
     (var/"run").mkpath
 
@@ -73,6 +67,10 @@ class Gnupg2 < Formula
 
     # Conflicts with a manpage from the 1.x formula, and
     # gpg-zip isn't installed by this formula anyway
-    rm man1/"gpg-zip.1"
+    rm_f man1/"gpg-zip.1"
+  end
+
+  test do
+    system "#{bin}/gpgconf"
   end
 end

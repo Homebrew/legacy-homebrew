@@ -2,14 +2,14 @@ require "formula"
 
 class PltRacket < Formula
   homepage "http://racket-lang.org/"
-  url "http://mirror.racket-lang.org/installers/6.1/racket-minimal-6.1-src-builtpkgs.tgz"
-  sha1 "988cc297eb35e26585cceac67ae00ebfd47174e2"
-  version "6.1"
+  url "http://mirror.racket-lang.org/installers/6.1.1/racket-minimal-6.1.1-src-builtpkgs.tgz"
+  sha1 "8800c89a981f7b86808c7d9f2173c7f2a47147bc"
+  version "6.1.1"
 
   bottle do
-    sha1 "91605ef5aca76449ad465669f21b940fa5ffd8fd" => :mavericks
-    sha1 "9de25cf2475b3aba5a58a721325fc9d1a9656f12" => :mountain_lion
-    sha1 "a0862a96129f518d28625bf55fddb89b7fcb06f5" => :lion
+    sha1 "ce1209d975593554d7973bb30d06f4897672c3b5" => :yosemite
+    sha1 "04953a38b638ed718063f123da83a3eed9f3bb99" => :mavericks
+    sha1 "79bf69d88c0479cf180f56e9d67d48833ce0a34a" => :mountain_lion
   end
 
   def install

@@ -1,15 +1,14 @@
-require "formula"
-
 class Docker < Formula
-  homepage "http://docker.io"
+  homepage "https://www.docker.com/"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of boot2docker too
-  url "https://github.com/docker/docker.git", :tag => "v1.2.0"
+  url "https://github.com/docker/docker.git", :tag => "v1.5.0"
 
   bottle do
-    sha1 "92d2cb761ea3da18edfea52de6cb4ee113dba0aa" => :mavericks
-    sha1 "eccd8540a0c57eca11456b3f060e67c430907c05" => :mountain_lion
-    sha1 "6421cb3f6e5fd485e61731e004b2390629291867" => :lion
+    cellar :any
+    sha1 "3eccd8879767b3fc95048f7d40a60edb69741892" => :yosemite
+    sha1 "9e65954b48b3feb53ba14aafcd5081a5ede54809" => :mavericks
+    sha1 "5f22268864f33697d6988a49c4c73ddc7368cfa2" => :mountain_lion
   end
 
   option "without-completions", "Disable bash/zsh completions"
@@ -17,7 +16,6 @@ class Docker < Formula
   depends_on "go" => :build
 
   def install
-    ENV["GIT_DIR"] = cached_download/".git"
     ENV["AUTO_GOPATH"] = "1"
     ENV["DOCKER_CLIENTONLY"] = "1"
 

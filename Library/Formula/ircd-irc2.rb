@@ -62,7 +62,7 @@ class IrcdIrc2 < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/ircd</string>
+        <string>#{opt_sbin}/ircd</string>
         <string>-t</string>
       </array>
       <key>RunAtLoad</key>

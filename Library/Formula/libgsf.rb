@@ -6,9 +6,10 @@ class Libgsf < Formula
   sha256 'cb48c3480be4a691963548e664308f497d93c9d7bc12cf6a68d5ebae930a5b70'
 
   bottle do
-    sha1 "5bcdbd4365cf4304d8a1ae0230b8980f54eebe31" => :mavericks
-    sha1 "0882a21c7ed87f6435c59564fa3a582f1c626223" => :mountain_lion
-    sha1 "eb2f93e87fd8cfade15362547f2940d77ff7556f" => :lion
+    revision 1
+    sha1 "f48d8c6bd40eee7b9be7c64e7ea21cb76285fcf3" => :yosemite
+    sha1 "b7a8a49fba4d6d872441bba5e75d6ece2d37167d" => :mavericks
+    sha1 "c6b181013b45e099918d9b2a84d24c963ce914cb" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

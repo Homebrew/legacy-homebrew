@@ -5,16 +5,22 @@ class Taglib < Formula
   url 'https://github.com/taglib/taglib/archive/v1.9.1.tar.gz'
   sha1 '44165eda04d49214a0c4de121a4d99ae18b9670b'
 
+  head "https://github.com/taglib/taglib.git"
+
   bottle do
     cellar :any
-    sha1 "ffb7b35a5c94069ff5d9891f1f94aa5c555e7abc" => :mavericks
-    sha1 "c6487d4a603c82d912a6ae5925050f27a656f658" => :mountain_lion
-    sha1 "c28943778af7de98937e3bb3c96d408d334ee619" => :lion
+    revision 1
+    sha1 "431580f12a7811288b6e3b187ca75bf5e321fd7c" => :yosemite
+    sha1 "7b9a9466fcbfb5952b7c97e739fa38a94e110f16" => :mavericks
+    sha1 "9f12bf0949b250e67cb606cf389a99d7d2bc49ca" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
 
+  option :cxx11
+
   def install
+    ENV.cxx11 if build.cxx11?
     ENV.append 'CXXFLAGS', "-DNDEBUG=1"
     system "cmake", "-DWITH_MP4=ON", "-DWITH_ASF=ON", *std_cmake_args
     system "make"

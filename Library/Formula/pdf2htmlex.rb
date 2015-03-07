@@ -8,7 +8,10 @@ class Pdf2htmlex < Formula
   head "https://github.com/coolwanglu/pdf2htmlEX.git"
 
   bottle do
-    sha1 "180d74f4c3c43d2809b43c3e111129ceced47d53" => :mavericks
+    revision 1
+    sha1 "aac4350489fa9a23b583d509d83090f748e7bc2f" => :yosemite
+    sha1 "be836dde13e65eaf128d3fff264b9ba2eb34f6bf" => :mavericks
+    sha1 "45ed0a997274e332200a0bdd9f00ae7eb6663596" => :mountain_lion
   end
 
   # Pdf2htmlex use an outdated, customised Fontforge installation.
@@ -27,7 +30,7 @@ class Pdf2htmlex < Formula
   # Fontforge dependencies
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on "libtool" => :run
   depends_on "glib"
   depends_on "pango"
   depends_on "gettext"
@@ -54,27 +57,14 @@ class Pdf2htmlex < Formula
       # Fix linker error; see: http://trac.macports.org/ticket/25012
       ENV.append "LDFLAGS", "-lintl"
 
-      # And fix the zlib hunting.
-      ENV.append "ZLIB_CFLAGS", "-I/usr/include"
-      ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
-
       # Reset ARCHFLAGS to match how we build
       ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
       system "./autogen.sh"
       system "./configure", *args
 
-      # Fix hard-coded install locations that don't respect the target bindir
-      inreplace "Makefile", "/Applications", "$(prefix)"
-
       system "make"
       system "make", "install"
-
-      # Fix breaking zlib pkg-config file issue.
-      inreplace "#{prefix}/fontforge/lib/pkgconfig/libfontforge.pc", "zlib", " "
-
-      # Fix breaking zlib pkg-config file issue number 2.
-      inreplace "#{prefix}/fontforge/lib/pkgconfig/libfontforgeexe.pc", "zlib", " "
     end
 
     # Prepend the paths to always find this dep fontforge instead of another.

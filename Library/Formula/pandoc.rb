@@ -1,18 +1,16 @@
-require "formula"
 require "language/haskell"
 
 class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://hackage.haskell.org/package/pandoc-1.13.1/pandoc-1.13.1.tar.gz"
-  sha1 "8f3df1977cf9daa848640754515b733c13fd934a"
+  url "https://hackage.haskell.org/package/pandoc-1.13.2/pandoc-1.13.2.tar.gz"
+  sha1 "20f6e4c8d17748979efd011ef870dbfd1fb6dbb3"
 
   bottle do
-    sha1 "a2caf52195e88b36d0fb16f1b931c5630cc6ea57" => :yosemite
-    sha1 "cb797a12020892b2eee7131d448692309b184d99" => :mavericks
-    sha1 "0795ad1fdea3a1d47219753ebce5d34f7311ad5b" => :mountain_lion
-    sha1 "c9c2e4e7e74b4850bcbba148d8efc6af7da47605" => :lion
+    sha1 "b4d98399c366b63faed06a6184bb2a9d3c7bacf2" => :yosemite
+    sha1 "f8c3ba25bc44c7e8da1bf14d1fdeef04e2793926" => :mavericks
+    sha1 "592f4c65d534317172ce377a0d4524340e7177a8" => :mountain_lion
   end
 
   depends_on "ghc" => :build

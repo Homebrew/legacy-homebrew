@@ -1,17 +1,14 @@
-require 'formula'
-
 class Openssl < Formula
-  homepage 'http://openssl.org'
-  url 'https://www.openssl.org/source/openssl-1.0.1i.tar.gz'
-  mirror 'http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.1i.tar.gz'
-  sha256 '3c179f46ca77069a6a0bac70212a9b3b838b2f66129cb52d568837fc79d8fcc7'
+  homepage "https://openssl.org"
+  url "https://www.openssl.org/source/openssl-1.0.2.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2.tar.gz"
+  # Use sha1 for Tiger (which needs OpenSSL to compute sha256 hashes)
+  sha1 "2f264f7f6bb973af444cd9fc6ee65c8588f610cc"
 
   bottle do
-    revision 3
-    sha1 "007eb1203258bad0ed3c9c8ec208365de824acc0" => :yosemite
-    sha1 "0f669ad9b9910e3807f7b7db1be665306d5f3821" => :mavericks
-    sha1 "b9a769ae1b4dc7360b3d0081d921ebae2f2d2fc6" => :mountain_lion
-    sha1 "20de4f43e7ae42c8ba16b3923e6e33d06663ef49" => :lion
+    sha1 "0e5844609ea57a7f5361dca42d05578c6cf45643" => :yosemite
+    sha1 "56a6407b6a9179084a760d6f463cd0e6ea083c0e" => :mavericks
+    sha1 "8e36006185156281d487a2b1f04322701d0bef7b" => :mountain_lion
   end
 
   option :universal
@@ -20,7 +17,7 @@ class Openssl < Formula
   depends_on "makedepend" => :build
 
   keg_only :provided_by_osx,
-    "The OpenSSL provided by OS X is too old for some software."
+    "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
   def arch_args
     {
@@ -64,7 +61,10 @@ class Openssl < Formula
       system "perl", "./Configure", *(configure_args + arch_args[arch])
       system "make", "depend"
       system "make"
-      system "make", "test" if build.with? "check"
+
+      if (MacOS.prefer_64_bit? || arch == MacOS.preferred_arch) && build.with?("check")
+        system "make", "test"
+      end
 
       if build.universal?
         cp Dir["*.?.?.?.dylib", "*.a", "apps/openssl"], dir
@@ -122,9 +122,14 @@ class Openssl < Formula
   end
 
   test do
-    (testpath/'testfile.txt').write("This is a test file")
+    # Make sure the necessary .cnf file exists, otherwise OpenSSL gets moody.
+    assert (HOMEBREW_PREFIX/"etc/openssl/openssl.cnf").exist?,
+            "OpenSSL requires the .cnf file for some functionality"
+
+    # Check OpenSSL itself functions as expected.
+    (testpath/"testfile.txt").write("This is a test file")
     expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
-    system "#{bin}/openssl", 'dgst', '-sha1', '-out', 'checksum.txt', 'testfile.txt'
+    system "#{bin}/openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
     open("checksum.txt") do |f|
       checksum = f.read(100).split("=").last.strip
       assert_equal checksum, expected_checksum

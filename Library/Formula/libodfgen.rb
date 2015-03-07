@@ -1,15 +1,14 @@
-require "formula"
-
 class Libodfgen < Formula
   homepage "http://sourceforge.net/p/libwpd/wiki/libodfgen/"
-  url "http://dev-www.libreoffice.org/src/libodfgen-0.1.1.tar.bz2"
-  sha1 "13dc7a9fa69b8eb9af903596bbefaf044a3e76cc"
+  url "http://dev-www.libreoffice.org/src/libodfgen-0.1.3.tar.bz2"
+  mirror "https://downloads.sourceforge.net/project/libwpd/libodfgen/libodfgen-0.1.3/libodfgen-0.1.3.tar.bz2"
+  sha1 "f726a1811bc78c12b28995d1bff2561e820667ea"
 
   bottle do
     cellar :any
-    sha1 "8f8076250cc85c97dd42551cb7047961da2a40e3" => :mavericks
-    sha1 "32cc5c62aef1c8d9e94206c0b43d800d49e0a223" => :mountain_lion
-    sha1 "72b559f91f4df11b2f4a070165c7f9e285114d9a" => :lion
+    sha1 "ad5415189434aad9adb7611fc5da37aeb364ac0e" => :yosemite
+    sha1 "8d363b8a40520295190f6b27837348310dadc264" => :mavericks
+    sha1 "bf1050d243bee37249b6944b447326b3cc275c7f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

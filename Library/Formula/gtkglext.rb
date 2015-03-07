@@ -7,9 +7,10 @@ class Gtkglext < Formula
 
   bottle do
     cellar :any
-    sha1 "6974bc9e4f9961daf2a04b37959ca12298e50247" => :mavericks
-    sha1 "66c98247ac17327db0b1f2535a3657a5f6ce90d8" => :mountain_lion
-    sha1 "950523e1668c6097f52f6151b56fd69c49ce973f" => :lion
+    revision 1
+    sha1 "b858e7878b3106fbdc3060afb480f52415007e6c" => :yosemite
+    sha1 "93ffc6a0ce780238f417fc2d53b4408ddab1e462" => :mavericks
+    sha1 "03c196737dbef40fef3bd51f7feba9040a039d3a" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

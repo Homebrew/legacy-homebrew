@@ -2,8 +2,8 @@ require "formula"
 
 class Gource < Formula
   homepage "http://code.google.com/p/gource/"
-  url "https://github.com/acaudwell/Gource/releases/download/gource-0.42/gource-0.42.tar.gz"
-  sha1 "97ebaa5c9dd73698f578c0afd1c6e8d514d7452c"
+  url "https://github.com/acaudwell/Gource/releases/download/gource-0.43/gource-0.43.tar.gz"
+  sha1 "dda56952f9cc19821ae7c146736b00556ef51edf"
 
   head do
     url "https://github.com/acaudwell/Gource.git"

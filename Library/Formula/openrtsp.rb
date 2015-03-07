@@ -2,14 +2,14 @@ require 'formula'
 
 class Openrtsp < Formula
   homepage 'http://www.live555.com/openRTSP'
-  url 'http://www.live555.com/liveMedia/public/live.2014.03.25.tar.gz'
-  sha1 'cca0b497867e0dac4bf64647d24b6c5e53029270'
+  url 'http://www.live555.com/liveMedia/public/live.2014.10.21.tar.gz'
+  sha1 'e493e0d6f7f2bf4be8e88393bb3ba583136bb271'
 
   bottle do
     cellar :any
-    sha1 "21d6d05d03ecc8b563138bd35160d0aa90dcf29d" => :mavericks
-    sha1 "2bd52bbadecc80025ed6c51e48aac06d0ce85aef" => :mountain_lion
-    sha1 "714197f600b197b8e573a8c4983f8090fec30e0b" => :lion
+    sha1 "01a5a2676e3995e505fc092ca949b67691f2e812" => :yosemite
+    sha1 "f019de571028a7fa0027a2f4e464651e5a5259f9" => :mavericks
+    sha1 "ee10c6dd74631ae656f4482380a1ec81c86e779d" => :mountain_lion
   end
 
   option "32-bit"

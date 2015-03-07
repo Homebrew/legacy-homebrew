@@ -1,17 +1,20 @@
-require 'formula'
-
 class Pbzip2 < Formula
-  homepage 'http://compression.ca/pbzip2/'
-  url 'http://compression.ca/pbzip2/pbzip2-1.1.8.tar.gz'
-  sha1 '6957483690f00c33ffeabbe0e9e6475098820cd5'
+  homepage "http://compression.ca/pbzip2/"
+  url "https://launchpad.net/pbzip2/1.1/1.1.12/+download/pbzip2-1.1.12.tar.gz"
+  sha256 "573bb358a5a7d3bf5f42f881af324cedf960c786e8d66dd03d448ddd8a0166ee"
+
+  bottle do
+    cellar :any
+    sha256 "0fb0998fb35b62add5348bbf1c50372220052d52347be7b11e949e27b3997e1c" => :yosemite
+    sha256 "ac0e6128b16cb551a926fb713d8a4154e29ada2b71f231ecee2ebdab4d4bea96" => :mavericks
+    sha256 "7604662202fbb60acdb016da163b552b1c2cee6a4bdd21ca2be85afb1ce4c987" => :mountain_lion
+  end
 
   fails_with :llvm do
     build 2334
   end
 
   def install
-    inreplace "Makefile", "$(PREFIX)/man", "$(PREFIX)/share/man"
-
     system "make", "PREFIX=#{prefix}",
                    "CC=#{ENV.cxx}",
                    "CFLAGS=#{ENV.cflags}",

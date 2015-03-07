@@ -1,17 +1,17 @@
-require "formula"
-
 class Stunnel < Formula
   homepage "https://www.stunnel.org/"
-  url "ftp://ftp.nluug.nl/pub/networking/stunnel/stunnel-5.05.tar.gz"
-  mirror "https://www.stunnel.org/downloads/stunnel-5.05.tar.gz"
-  sha256 "c7e1653345150db7e48d00e1129cf571c7c85de8e7e1aa70b21cf1d76b1e31ef"
+  url "https://www.stunnel.org/downloads/stunnel-5.10.tar.gz"
+  mirror "http://www.usenix.org.uk/mirrors/stunnel/stunnel-5.10.tar.gz"
+  sha256 "032bfc1854f8a0b9e452343c36ec6b52c7e0daef0863423c6b13a61a7c92eb23"
 
   bottle do
-    sha1 "f1b5731e9c6191035797f0d046915a5cf34205bd" => :mavericks
-    sha1 "4a52a8dd2df0b0e1d0815fc75eca918546f08e86" => :mountain_lion
-    sha1 "d15b1611c5afd9f308d825ea1f03d0d926124019" => :lion
+    sha1 "b4233f4f1ff1e1cf5d8385b019ef15af3f041c75" => :yosemite
+    sha1 "cebb13b5918f30cad4807a42bf192a7f6fff9446" => :mavericks
+    sha1 "6fc6de4baf70393eeb3d82f20c07856a54b4aa41" => :mountain_lion
   end
 
+  # Please revision me whenever OpenSSL is updated
+  # "Update OpenSSL shared libraries or rebuild stunnel"
   depends_on "openssl"
 
   def install
@@ -20,7 +20,7 @@ class Stunnel < Formula
     stunnel_cnf.unlink
     stunnel_cnf.write <<-EOS.undent
       # OpenSSL configuration file to create a server certificate
-      # by Michal Trojnara 1998-2013
+      # by Michal Trojnara 1998-2015
 
       [ req ]
       # the default key length is secure and quite fast - do not change it
@@ -51,12 +51,15 @@ class Stunnel < Formula
     EOS
 
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}",
                           "--mandir=#{man}",
                           "--disable-libwrap",
+                          "--disable-systemd",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
-    system "make", "install"
+    system "make", "install", "cert"
   end
 
   def caveats
@@ -65,9 +68,29 @@ class Stunnel < Formula
         #{etc}/stunnel/stunnel.pem
 
       This certificate will be used by default unless a config file says otherwise!
+      Stunnel will refuse to load the sample configuration file if left unedited.
 
       In your stunnel configuration, specify a SSL certificate with
       the "cert =" option for each service.
     EOS
+  end
+
+  test do
+    (testpath/"tstunnel.conf").write <<-EOS.undent
+      cert = #{etc}/stunnel/stunnel.pem
+
+      setuid = nobody
+      setgid = nobody
+
+      [pop3s]
+      accept  = 995
+      connect = 110
+
+      [imaps]
+      accept  = 993
+      connect = 143
+    EOS
+
+    assert_match /successful/, pipe_output("#{bin}/stunnel #{testpath}/tstunnel.conf 2>&1")
   end
 end

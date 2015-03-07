@@ -6,9 +6,10 @@ class Libiptcdata < Formula
   sha1 '2e967be3aee9ae5393f208a3df2b52e08dcd98c8'
 
   bottle do
-    sha1 "d75dcfef6d607236366189345799326acaffc3e2" => :mavericks
-    sha1 "3f132d3a1e5348c1e5f41e53eb819960c92079e5" => :mountain_lion
-    sha1 "7e1c231bfa5cd74f58ca568073244f20791937b8" => :lion
+    revision 1
+    sha1 "bae5cce39a9a013a532265d911295085afc909f4" => :yosemite
+    sha1 "cc888c096c24e6215292dabaeaa25378429e8232" => :mavericks
+    sha1 "8794ce897c84182173496a3aed8577be0f2ec609" => :mountain_lion
   end
 
   depends_on 'gettext'

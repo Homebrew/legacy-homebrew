@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Etl < Formula
-  homepage 'http://synfig.org'
-  url 'https://downloads.sourceforge.net/project/synfig/releases/0.64.1/source/ETL-0.04.17.tar.gz'
-  sha1 '2ab2957140deaad90232533461513c5d425007bb'
+  homepage "http://synfig.org"
+  url "https://downloads.sourceforge.net/project/synfig/releases/0.64.3/source/ETL-0.04.17.tar.gz"
+  sha1 "cb7e83534274ef53ce841e8924f92048593e0cea"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

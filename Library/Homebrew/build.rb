@@ -109,13 +109,12 @@ class Build
       end
     end
 
-    if ARGV.debug?
-      formula.extend(Debrew::Formula)
-      formula.resources.each { |r| r.extend(Debrew::Resource) }
-    end
+    formula.extend(Debrew::Formula) if ARGV.debug?
 
     formula.brew do
-      if ARGV.flag? '--git'
+      formula.patch
+
+      if ARGV.git?
         system "git", "init"
         system "git", "add", "-A"
       end
@@ -124,7 +123,7 @@ class Build
         puts "Type `exit' to return and finalize the installation"
         puts "Install to this prefix: #{formula.prefix}"
 
-        if ARGV.flag? '--git'
+        if ARGV.git?
           puts "This directory is now a git repo. Make your changes and then use:"
           puts "  git diff | pbcopy"
           puts "to copy the diff to the clipboard."

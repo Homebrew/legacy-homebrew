@@ -7,9 +7,10 @@ class Librem < Formula
 
   bottle do
     cellar :any
-    sha1 "e1089e53d13bd264d8a6b95cce0401c7ae5b6aed" => :mavericks
-    sha1 "8da4a993fa287e444b649b045fdfb48718b733d5" => :mountain_lion
-    sha1 "cb6ace233af76a21ef463f005d13121686ffebeb" => :lion
+    revision 1
+    sha1 "d9e53e65a746d38c30e749ed06bde416d5c4b83d" => :yosemite
+    sha1 "658296136774b5bad7b94a84d24b290ed412e1f6" => :mavericks
+    sha1 "ca0405f5fd90ebbaf16dd49205c1416a823f41f7" => :mountain_lion
   end
 
   depends_on "libre"

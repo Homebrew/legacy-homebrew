@@ -1,18 +1,22 @@
-require "formula"
-
 class Pyqt < Formula
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
-  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
-  sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
+  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.3/PyQt-mac-gpl-4.11.3.tar.gz"
+  sha1 "8c53254b38686e5366d74eba81f02f9611f39166"
 
-  depends_on :python => :recommended
+  bottle do
+    sha1 "7d0b71a8c80401f6026172f22605e5a4e9eff8a3" => :yosemite
+    sha1 "455a2cc8c46f64b2d27d2248b3bd6387e345377f" => :mavericks
+    sha1 "30c74d1bfad2bc16c0052fd767fdb21b461e41e6" => :mountain_lion
+  end
+
+  option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
 
   if build.without?("python3") && build.without?("python")
     odie "pyqt: --with-python3 must be specified when using --without-python"
   end
 
-  depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
+  depends_on "qt"
 
   if build.with? "python3"
     depends_on "sip" => "with-python3"
@@ -27,12 +31,12 @@ class Pyqt < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", "#{Formula["sip"].opt_lib}/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
               "--destdir=#{lib}/python#{version}/site-packages",
-              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+              "--sipdir=#{share}/sip"]
 
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by QGIS, PyQWT (and many other PyQt interoperable
@@ -76,22 +80,8 @@ class Pyqt < Formula
 
   test do
     Pathname("test.py").write <<-EOS.undent
-      import sys
-      from PyQt4 import QtGui, QtCore
-
-      class Test(QtGui.QWidget):
-          def __init__(self, parent=None):
-              QtGui.QWidget.__init__(self, parent)
-              self.setGeometry(300, 300, 400, 150)
-              self.setWindowTitle('Homebrew')
-              QtGui.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
-                           " working with PyQt4. Quitting now...", self).move(50, 50)
-              QtCore.QTimer.singleShot(1500, QtGui.qApp, QtCore.SLOT("quit()"))
-
-      app = QtGui.QApplication([])
-      window = Test()
-      window.show()
-      sys.exit(app.exec_())
+      from PyQt4 import QtNetwork
+      QtNetwork.QNetworkAccessManager().networkAccessible()
     EOS
 
     Language::Python.each_python(build) do |python, version|

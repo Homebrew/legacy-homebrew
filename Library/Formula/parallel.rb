@@ -1,16 +1,14 @@
-require "formula"
-
 class Parallel < Formula
-  homepage "http://savannah.gnu.org/projects/parallel/"
-  url "http://ftpmirror.gnu.org/parallel/parallel-20140922.tar.bz2"
-  mirror "http://ftp.gnu.org/gnu/parallel/parallel-20140922.tar.bz2"
-  sha256 "4589e2c82b1ccb5be9060e010993214bb4d8ec87220be077f0c21bb5040cbd43"
+  homepage "https://savannah.gnu.org/projects/parallel/"
+  url "http://ftpmirror.gnu.org/parallel/parallel-20150122.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150122.tar.bz2"
+  sha256 "ede876f9cb84b8dce0d8d0088fa61ccb12a6f3f61479f3720a96ee54d4bce991"
 
   bottle do
     cellar :any
-    sha1 "f0db31d409f45e4fff5f44b7599bf21364a75c1e" => :mavericks
-    sha1 "191a9d0b9d6004bb4e5c0ed7a4fefd2a85c774d5" => :mountain_lion
-    sha1 "70753d782bcadde6ea1b7870c06184427bd80f5e" => :lion
+    sha1 "5499a1bb2bffd0aaf902b18443ddaadf92251d99" => :yosemite
+    sha1 "b65732571fa34ce4e3d6ffda812a52d5127b16c1" => :mavericks
+    sha1 "da5b304da8d628e92ea7e008f3d1c893babcc0b4" => :mountain_lion
   end
 
   conflicts_with "moreutils",
@@ -18,6 +16,6 @@ class Parallel < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

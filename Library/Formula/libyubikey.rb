@@ -1,15 +1,13 @@
-require 'formula'
-
 class Libyubikey < Formula
-  homepage 'http://yubico.github.io/yubico-c/'
-  url 'http://yubico.github.io/yubico-c/releases/libyubikey-1.11.tar.gz'
-  sha1 'a939abc129ed66af193d979765a8d8ac59ad7c40'
+  homepage "http://yubico.github.io/yubico-c/"
+  url "https://developers.yubico.com/yubico-c/Releases/libyubikey-1.12.tar.gz"
+  sha1 "6a73d548e61f0b622a9447917f03c78686ab386d"
 
   bottle do
     cellar :any
-    sha1 "e5cf353256f4e7ca7b18e00aeb9976eb772070e9" => :mavericks
-    sha1 "1b6c9c26b3cd5fd49fd9eae477b7cc2edd35e314" => :mountain_lion
-    sha1 "d7e5fbe2f2bbc8ac385f2b044539c686484357a4" => :lion
+    sha1 "220ecad49555d9b8fb07f27c45114d22d6d2c07a" => :yosemite
+    sha1 "554afeb53a8ea2cd5e94da98dee63107cb4f555a" => :mavericks
+    sha1 "131b7d2a109089877855f53eaf7784fe480afc8d" => :mountain_lion
   end
 
   option :universal

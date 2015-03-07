@@ -1,14 +1,12 @@
-require "formula"
-
 class Qwt < Formula
   homepage "http://qwt.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/qwt/qwt/qwt-6.1.1.tar.bz2"
-  sha1 "6d142cb9725da7e03fbb507532fc268b5212080a"
+  url "https://downloads.sourceforge.net/project/qwt/qwt/6.1.2/qwt-6.1.2.tar.bz2"
+  sha1 "6af82b6ee4132f779d1c8c2db872f01463b0d61c"
 
   bottle do
-    sha1 "a7b00da4a65066549672b7f074ff1b7a48435a36" => :mavericks
-    sha1 "932a7a3e7c97067ed44dff67e43c3bba7fa9b189" => :mountain_lion
-    sha1 "9782b3233d4dea80d22caa126a87fb2a80abff80" => :lion
+    sha1 "a2882aaaff55c53881e82a97181d907e6d6edc46" => :yosemite
+    sha1 "02f9e3920fa64ff44393aa339a784e93e786fc8b" => :mavericks
+    sha1 "12f8a7d2a4cd125918d40f11db1dcbbfd424cec2" => :mountain_lion
   end
 
   option "with-qwtmathml", "Build the qwtmathml library"

@@ -1,32 +1,36 @@
-require "formula"
-
 class Haproxy < Formula
   homepage "http://haproxy.1wt.eu"
-  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.3.tar.gz"
-  sha1 "b86c9490dea5bade767d43f544ced383764f879d"
+  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.10.tar.gz"
+  sha1 "2af3b740e84f10cbd0c90a78c30a222a24fb2945"
 
   bottle do
     cellar :any
-    sha1 "41d6a7dfd7b72c7f4a4c63c5c35caf1088268a55" => :mavericks
-    sha1 "1dbc7bf90ba7742e6f586b4777758547870b099e" => :mountain_lion
-    sha1 "5c595b4953060f7a0aa78cc62f8cf1056ec72707" => :lion
+    sha1 "6c80304f8eace5073797f04646ef197099ce39d4" => :yosemite
+    sha1 "3fdaeaae9c33cc73e7314cd4844b46b82572706b" => :mavericks
+    sha1 "c42557822dcf88fdc74d0090e50358d254db7509" => :mountain_lion
   end
 
+  depends_on "openssl"
   depends_on "pcre"
 
   def install
-    args = ["TARGET=generic",
-            "USE_KQUEUE=1",
-            "USE_POLL=1",
-            "USE_PCRE=1",
-            "USE_OPENSSL=1",
-            "USE_ZLIB=1",
-            "ADDLIB=-lcrypto",
+    args = %w[
+      TARGET=generic
+      USE_KQUEUE=1
+      USE_POLL=1
+      USE_PCRE=1
+      USE_OPENSSL=1
+      USE_ZLIB=1
+      ADDLIB=-lcrypto
     ]
 
     # We build generic since the Makefile.osx doesn't appear to work
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", *args
     man1.install "doc/haproxy.1"
     bin.install "haproxy"
+  end
+
+  test do
+    system bin/"haproxy", "-v"
   end
 end

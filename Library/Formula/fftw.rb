@@ -4,12 +4,13 @@ class Fftw < Formula
   homepage 'http://www.fftw.org'
   url 'http://www.fftw.org/fftw-3.3.4.tar.gz'
   sha1 'fd508bac8ac13b3a46152c54b7ac885b69734262'
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "61a72898867a9873ccf86e9ee9b1c397ec49a78a" => :mavericks
-    sha1 "90bb389f4f7b560e174cd7c5079dfc07feb30821" => :mountain_lion
-    sha1 "7ebd6f3498b6b32e19f83627d30780efc3c25a88" => :lion
+    sha1 "b5c2d04489567aff02e2e002d906ce7349057f6e" => :yosemite
+    sha1 "af376c8efd9de7501d56f763a1ead65a5d32e533" => :mavericks
+    sha1 "1585929f22c6851d87cf9d451cd26ff403991a8c" => :mountain_lion
   end
 
   option "with-fortran", "Enable Fortran bindings"

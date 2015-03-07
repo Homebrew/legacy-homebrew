@@ -1,24 +1,23 @@
-require 'formula'
+require "formula"
 
 class Synfigstudio < Formula
-  homepage 'http://synfig.org'
-  url 'https://downloads.sourceforge.net/project/synfig/releases/0.64.1/source/synfigstudio-0.64.1.tar.gz'
-  sha1 '0ba926d567fbfb79ba84899a2fcd79e54e33d4a4'
+  homepage "http://synfig.org"
+  url "https://downloads.sourceforge.net/project/synfig/releases/0.64.3/source/synfigstudio-0.64.3.tar.gz"
+  sha1 "63655509a6a5920eb067021730abbb52164436f5"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'gettext'
-  depends_on 'libsigc++'
-  depends_on 'gtkmm'
-  depends_on 'etl'
-  depends_on 'synfig'
-
-  # Candidate upstream patch for Xcode 5
-  # http://www.synfig.org/issues/thebuggenie/synfig/issues/504
-  patch do
-    url "http://www.synfig.org/issues/thebuggenie/files/show/80"
-    sha1 "b489670fca50ef2907f213dad9c2f4f51462da61"
+  bottle do
+    sha1 "c8eb2ea83ffc2ca9959c20588ee7c18fdcf706b4" => :yosemite
+    sha1 "3f868438ff5edfe8468ab07637ee6235be824cf6" => :mavericks
+    sha1 "efb9e2ae0fc67b8c66ed71b815962e7ac82a35f2" => :mountain_lion
   end
+
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "gettext"
+  depends_on "libsigc++"
+  depends_on "gtkmm"
+  depends_on "etl"
+  depends_on "synfig"
 
   def install
     system "./configure", "--disable-debug",

@@ -7,9 +7,10 @@ class Libfishsound < Formula
 
   bottle do
     cellar :any
-    sha1 "ef415e726cd7f54f1ac7c0a277ef2535ef8be867" => :mavericks
-    sha1 "663fc1ea81771c2e517514670ca8c7bfcb0af184" => :mountain_lion
-    sha1 "86915dd39751989c022a71ea81b6bbc6f7539b53" => :lion
+    revision 1
+    sha1 "d298837ad460c86599b65b8bdf4ca62a24ac8549" => :yosemite
+    sha1 "857f580172e6c109e962179db28085190c7dead1" => :mavericks
+    sha1 "1099a2dee3da3ef7748b0e752394e2a4de26d6af" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

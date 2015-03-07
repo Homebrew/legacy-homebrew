@@ -7,9 +7,10 @@ class Libantlr3c < Formula
 
   bottle do
     cellar :any
-    sha1 "bd008a59f21dd058a78f328471f9c06dc9988a57" => :mavericks
-    sha1 "3a1e53dd3d9253a0169b0bb7612ebc5c2f07671c" => :mountain_lion
-    sha1 "661793739582bad4df7520dc15f8d51e09398d06" => :lion
+    revision 1
+    sha1 "5340de248798194c46c5112c73a1ba409912059d" => :yosemite
+    sha1 "044b66cb95b396080f1729cc04f9a960f08e6ea5" => :mavericks
+    sha1 "b02f52cf3c696b52974e90532cf66964e61c750d" => :mountain_lion
   end
 
   def install
