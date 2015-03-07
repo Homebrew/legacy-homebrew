@@ -28,6 +28,6 @@ class Fossil < Formula
   end
 
   test do
-    system "#{bin}/fossil", "version"
+    system "#{bin}/fossil", "init", "test"
   end
 end
