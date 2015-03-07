@@ -2,10 +2,8 @@ require 'formula'
 
 class TaskSpooler < Formula
   homepage 'http://vicerveza.homeunix.net/~viric/soft/ts/'
-  url 'http://vicerveza.homeunix.net/~viric/soft/ts/ts-0.7.4.tar.gz'
-  sha1 '92813a3b0eedfe1d4a177727122e6d08695f6bc8'
-
-  patch :DATA
+  url 'http://vicerveza.homeunix.net/~viric/soft/ts/ts-0.7.5.tar.gz'
+  sha1 'c2a81abbc3bcec14629a3a288a06e1f0c57f175c'
 
   conflicts_with 'moreutils',
     :because => "both install a 'ts' executable."
@@ -14,17 +12,3 @@ class TaskSpooler < Formula
     system "make", "install", "PREFIX=#{prefix}"
   end
 end
-__END__
-diff --git a/server.c b/server.c
-index a58ad87..aec0c70 100644
---- a/server.c
-+++ b/server.c
-@@ -179,7 +179,8 @@ void server_main(int notify_fd, char *_path)
-     path = _path;
-
-     /* Move the server to the socket directory */
--    dirpath = strdup(path);
-+    dirpath = malloc(strlen(path)+1);
-+    strcpy(dirpath, path);
-     chdir(dirname(dirpath));
-     free(dirpath);
