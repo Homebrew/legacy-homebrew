@@ -2,8 +2,8 @@ require 'formula'
 
 class Gecode < Formula
   homepage 'http://www.gecode.org/'
-  url 'http://www.gecode.org/download/gecode-4.3.2.tar.gz'
-  sha1 '05c79e185197d85bf38dd074fe7c299d4976f552'
+  url 'http://www.gecode.org/download/gecode-4.3.3.tar.gz'
+  sha1 '392f079979a582e040ff1d58736f23e985ca53ff'
 
   bottle do
     cellar :any
