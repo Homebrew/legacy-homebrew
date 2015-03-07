@@ -8,9 +8,9 @@ class Flow < Formula
 
   bottle do
     cellar :any
-    sha1 "0442f581a9a5947369fa07ed23aeab1a487c1f6c" => :yosemite
-    sha1 "7a720d6cb9b7f5515b79cb4a15a1559081e80761" => :mavericks
-    sha1 "415ebe4c7bbdb865f5593ee65112c89ded72515e" => :mountain_lion
+    sha256 "b9082e71fdc9467c3e30a0e40c13fbdc3e45e188efe98545c1bc6ff7692a14d9" => :yosemite
+    sha256 "30615b11e91c9a53a4ef2d540b888ad3426254d573c010e2225b7dad2e7386f1" => :mavericks
+    sha256 "653c5f295a06299815f5f1bc781399608f58bb3febdb97510a0786f85b256115" => :mountain_lion
   end
 
   depends_on "objective-caml" => :build
