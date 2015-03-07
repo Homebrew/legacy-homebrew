@@ -2,7 +2,7 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.1.tar.gz'
+  url 'https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.1.tar.gz'
   sha1 'fb9915e854e91aebc8a16bf9429ea44515cca585'
   head 'https://github.com/phusion/passenger.git'
 
