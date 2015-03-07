@@ -3,8 +3,8 @@ require "formula"
 class Mapnik < Formula
   homepage "http://www.mapnik.org/"
   head "https://github.com/mapnik/mapnik.git"
-  url "http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
-  sha1 "e493ad87ca83471374a3b080f760df4b25f7060d"
+  url "https://s3.amazonaws.com/mapnik/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
+  sha256 "9b30de4e58adc6d5aa8478779d0a47fdabe6bf8b166b67a383b35f5aa5d6c1b0"
   revision 4
 
   bottle do
