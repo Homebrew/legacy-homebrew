@@ -6,9 +6,9 @@ class Cyassl < Formula
 
   bottle do
     cellar :any
-    sha1 "47a068ee29646ef26b3f7e2a62268f62ed73dbec" => :yosemite
-    sha1 "57f47edc303e4f7f07d893a0724c67e068ca4883" => :mavericks
-    sha1 "c5de09829f89696a73a8f3818bbf413eae99e5ac" => :mountain_lion
+    sha256 "17893cd56326d12cb3c8d0d7158255ad7ca5df30e5fa160b0309e8ab6805eaa8" => :yosemite
+    sha256 "452f4d57bbba4f48c9e148c5c4311236143d5f15933051d5bae6f5148ffd427f" => :mavericks
+    sha256 "3eeb925899dd6b339a1eb4d3f303e3bf628fa25dc6e5b93a2ed7bd079a2d4195" => :mountain_lion
   end
 
   option "without-check", "Skip compile-time tests."
