@@ -1,7 +1,7 @@
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.3.1.tar.gz"
-  sha256 "a447b8912ab6e9efd05bdd2e4bbb1e7f55498b0d2b92e03319c06efea7b6e46f"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.3.2.tar.gz"
+  sha256 "a35aea3a0f63f4cc3dd38fa32127e97273f335a14ea2586b649eb759ecf675a3"
 
   head "https://github.com/git/git.git", :shallow => false
 
@@ -12,13 +12,13 @@ class Git < Formula
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.3.1.tar.gz"
-    sha256 "89b4c81306fe77ea745292586efba42507bacced079e3ca015e85fbe244d13b8"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.3.2.tar.gz"
+    sha256 "a3ab309cfb8d8e6e6d8ac97c8ef5473f9dd898c3c0681c8abd04e10c75d89a0f"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.3.1.tar.gz"
-    sha256 "f86f72b12df7a899eb56f8dddd6c9b8be7eff0fffce62336f93c22e04616f824"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.3.2.tar.gz"
+    sha256 "3c2f3d0471cd0d85f1069325ea4bd273dffb1844e5dd1f5a92d0980be6d471ed"
   end
 
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"
