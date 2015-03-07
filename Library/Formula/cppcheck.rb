@@ -19,6 +19,12 @@ class Cppcheck < Formula
   depends_on "pcre" if build.with? "rules"
   depends_on "qt" if build.with? "gui"
 
+  # Upstream patches for OS X + Clang compilation
+  patch do
+    url "https://github.com/danmar/cppcheck/commit/141a071.diff"
+    sha1 "4ccc8d814709d0e221c533a5556da4b1aa5fbead"
+  end
+
   def install
     # Man pages aren't installed as they require docbook schemas.
 
@@ -36,18 +42,14 @@ class Cppcheck < Formula
 
     if build.with? "gui"
       cd "gui" do
-        # fix make not finding cfg directory:
-        # https://github.com/Homebrew/homebrew/issues/27756
-        inreplace "gui.qrc", "../cfg/", "#{prefix}/cfg/"
-
         if build.with? "rules"
-          system "qmake"
+          system "qmake", "HAVE_RULES=yes"
         else
           system "qmake", "HAVE_RULES=no"
         end
 
         system "make"
-        bin.install "cppcheck-gui.app"
+        prefix.install "cppcheck-gui.app"
       end
     end
   end
