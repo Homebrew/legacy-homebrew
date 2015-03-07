@@ -1,10 +1,8 @@
-require 'formula'
-
 class Passenger < Formula
-  homepage 'https://www.phusionpassenger.com/'
-  url 'https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.1.tar.gz'
-  sha1 'fb9915e854e91aebc8a16bf9429ea44515cca585'
-  head 'https://github.com/phusion/passenger.git'
+  homepage "https://www.phusionpassenger.com/"
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.1.tar.gz"
+  sha256 "4406f485a1b183da2d644b8295f7df21832fc26d0b0752a5ee11fd0fe31e52fb"
+  head "https://github.com/phusion/passenger.git"
 
   bottle do
     sha1 "a34eeb9b144df3ca7055e7b8c28a9017b0fd2a99" => :yosemite
@@ -12,11 +10,11 @@ class Passenger < Formula
     sha1 "3996629778e0b4fa4d549a63555f99a58ea9bba9" => :mountain_lion
   end
 
-  depends_on 'pcre'
+  depends_on "pcre"
   depends_on "openssl"
   depends_on :macos => :lion
 
-  option 'without-apache2-module', 'Disable Apache2 module'
+  option "without-apache2-module", "Disable Apache2 module"
 
   def install
     rake "apache2" if build.with? "apache2-module"
@@ -50,7 +48,7 @@ class Passenger < Formula
     system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
       "--nginx-module-config", libexec/"bin", libexec/"ext/nginx/config"
 
-    mv libexec/'man', share
+    mv libexec/"man", share
   end
 
   def caveats
@@ -73,7 +71,7 @@ class Passenger < Formula
   test do
     ruby_libdir = `#{HOMEBREW_PREFIX}/bin/passenger-config --ruby-libdir`.strip
     if ruby_libdir != (libexec/"lib").to_s
-      raise "Invalid installation"
+      fail "Invalid installation"
     end
   end
 end
