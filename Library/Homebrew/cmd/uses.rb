@@ -31,7 +31,7 @@ module Homebrew
             deps.any? { |dep| dep.to_formula.name == ff.name } ||
               f.requirements.any? { |req| req.name == ff.name }
           end
-        rescue FormulaUnavailableError => e
+        rescue FormulaUnavailableError
           # Silently ignore this case as we don't care about things used in
           # taps that aren't currently tapped.
         end
