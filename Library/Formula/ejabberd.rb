@@ -1,11 +1,9 @@
-require "formula"
-
 class Ejabberd < Formula
-  homepage "http://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/14.12/ejabberd-14.12.tgz"
-  sha1 "baf944fb15a31ea19a3bc6da685bbc0e7c0daeff"
+  homepage "https://www.ejabberd.im"
+  url "https://www.process-one.net/downloads/ejabberd/15.02/ejabberd-15.02.tgz"
+  sha256 "58cc6b9b512f2f495993be735a8313a8a0591157e0f35a9a3702b59ff9eb6beb"
 
-  head 'https://github.com/processone/ejabberd.git'
+  head "https://github.com/processone/ejabberd.git"
 
   bottle do
     sha1 "cdaca13e8fd41e5defc1290ab74d05a705886394" => :yosemite
@@ -27,7 +25,7 @@ class Ejabberd < Formula
     ENV["SBIN_DIR"] = sbin
 
     if build.build_32_bit?
-      ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
+      ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     args = ["--prefix=#{prefix}",
@@ -74,5 +72,4 @@ class Ejabberd < Formula
     </plist>
     EOS
   end
-
 end
