@@ -457,7 +457,6 @@ module Homebrew
         if formula.stable? && !ARGV.include?('--no-bottle')
           bottle_args = ["--rb", canonical_formula_name]
           if @tap
-            tap_user, tap_repo = @tap.split "/"
             bottle_args << "--root-url=#{BottleSpecification::DEFAULT_DOMAIN}/#{Bintray.repository(@tap)}"
           end
           bottle_args << { :puts_output_on_success => true }
@@ -569,8 +568,6 @@ module Homebrew
 
     def formulae
       changed_formulae_dependents = {}
-      dependencies = []
-      non_dependencies = []
 
       @formulae.each do |formula|
         formula_dependencies = Utils.popen_read("brew", "deps", formula).split("\n")
