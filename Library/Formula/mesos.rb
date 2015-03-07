@@ -1,5 +1,5 @@
 class Mesos < Formula
-  homepage "http://mesos.apache.org"
+  homepage "https://mesos.apache.org"
   url "http://mirror.cogentco.com/pub/apache/mesos/0.21.1/mesos-0.21.1.tar.gz"
   sha1 "275d211364699f2861c108fa80764785178f3eeb"
 
@@ -60,7 +60,7 @@ class Mesos < Formula
       system "python", *Language::Python.setup_install_args(libexec/"boto")
     end
     (lib/"python2.7/site-packages").mkpath
-    (lib/"python2.7/site-packages/homebrew-mesos-boto.pth").atomic_write boto_path + "\n"
+    (lib/"python2.7/site-packages/homebrew-mesos-boto.pth").write "#{boto_path}\n"
 
     # work around distutils abusing CC instead of using CXX
     # https://issues.apache.org/jira/browse/MESOS-799
@@ -88,11 +88,11 @@ class Mesos < Formula
 
     ENV.cxx11
 
-    system "./configure", *(args + ["--disable-python"])
+    system "./configure", "--disable-python", *args
     system "make"
     system "make", "install"
 
-    system "./configure", *(args + ["--enable-python"])
+    system "./configure", "--enable-python", *args
     ["native", "interface", ""].each do |p|
       cd "src/python/#{p}" do
         system "python", *Language::Python.setup_install_args(prefix)
@@ -114,7 +114,7 @@ class Mesos < Formula
       system "python", *Language::Python.setup_install_args(libexec/"protobuf")
     end
     pth_contents = "import site; site.addsitedir('#{protobuf_path}')\n"
-    (lib/"python2.7/site-packages/homebrew-mesos-protobuf.pth").atomic_write pth_contents
+    (lib/"python2.7/site-packages/homebrew-mesos-protobuf.pth").write pth_contents
 
     (share/"mesos").install "ec2"
   end
@@ -143,7 +143,7 @@ class Mesos < Formula
     user_site = Language::Python.user_site_packages("python")
     mkdir_p user_site
     pth_contents = "import site; site.addsitedir('#{Language::Python.homebrew_site_packages}')\n"
-    (user_site/"homebrew.pth").atomic_write pth_contents
+    (user_site/"homebrew.pth").write pth_contents
     system "python", "-c", "import mesos.native"
   end
 end
