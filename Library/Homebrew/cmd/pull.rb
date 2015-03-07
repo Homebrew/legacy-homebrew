@@ -109,7 +109,7 @@ module Homebrew
         begin
           changed_formulae << Formula[name]
         # Make sure we catch syntax errors.
-        rescue Exception => e
+        rescue Exception
           next
         end
       end
