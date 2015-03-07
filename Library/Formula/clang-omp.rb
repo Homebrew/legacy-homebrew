@@ -16,6 +16,8 @@ class ClangOmp < Formula
     sha256 "a18fe403933f31471f11e6365c742a4f932dec42a55589c36b570c53cc21d358"
   end
 
+  needs :cxx11
+
   def install
     resource("compiler-rt").stage { (buildpath/"projects/compiler-rt").install Dir["*"] }
     resource("clang").stage { (buildpath/"tools/clang").install Dir["*"] }
