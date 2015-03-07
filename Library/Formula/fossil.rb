@@ -1,9 +1,7 @@
-require "formula"
-
 class Fossil < Formula
-  homepage "http://www.fossil-scm.org/"
-  head "http://www.fossil-scm.org/", :using => :fossil
-  url "http://www.fossil-scm.org/download/fossil-src-20150223162734.tar.gz"
+  homepage "https://www.fossil-scm.org/"
+  head "https://www.fossil-scm.org/", :using => :fossil
+  url "https://www.fossil-scm.org/download/fossil-src-20150223162734.tar.gz"
   sha256 "c00f9e1487530adb921df730baf57e1aa23767a0afb60b865e5842bb50782942"
   version "1.31"
 
@@ -27,5 +25,9 @@ class Fossil < Formula
     system "./configure", *args
     system "make"
     bin.install "fossil"
+  end
+
+  test do
+    system "#{bin}/fossil", "init", "test"
   end
 end
