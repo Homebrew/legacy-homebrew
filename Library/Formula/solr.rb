@@ -1,12 +1,12 @@
-require "formula"
-
 class Solr < Formula
   homepage "https://lucene.apache.org/solr/"
   url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.0.0/solr-5.0.0.tgz"
   mirror "https://archive.apache.org/dist/lucene/solr/5.0.0/solr-5.0.0.tgz"
-  sha1 "0c14a5212c4b9d9491881d743390596a19a3e989"
+  sha256 "48c77aede40fceda73cf4e13e08e328899685446f80f76f2e893eaffea714297"
 
-  skip_clean 'example/logs'
+  depends_on :java
+
+  skip_clean "example/logs"
 
   def install
     libexec.install Dir["*"]
@@ -40,5 +40,9 @@ class Solr < Formula
       </dict>
       </plist>
     EOS
+  end
+
+  test do
+    system "solr"
   end
 end
