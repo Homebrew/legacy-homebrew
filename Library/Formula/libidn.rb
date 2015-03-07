@@ -1,10 +1,8 @@
-require "formula"
-
 class Libidn < Formula
-  homepage "http://www.gnu.org/software/libidn/"
-  url "http://ftpmirror.gnu.org/libidn/libidn-1.29.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/libidn/libidn-1.29.tar.gz"
-  sha256 "fb82747dbbf9b36f703ed27293317d818d7e851d4f5773dedf3efa4db32a7c7c"
+  homepage "https://www.gnu.org/software/libidn/"
+  url "http://ftpmirror.gnu.org/libidn/libidn-1.30.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libidn/libidn-1.30.tar.gz"
+  sha256 "39b9fc94d74081c185757b12e0891ce5a22db55268e7d1bb24533ff4432eb053"
 
   bottle do
     cellar :any
@@ -23,7 +21,7 @@ class Libidn < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-csharp"
-    system "make install"
+    system "make", "install"
   end
 
   test do
