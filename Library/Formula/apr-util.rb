@@ -1,6 +1,7 @@
 class AprUtil < Formula
   homepage "https://apr.apache.org/"
   url "http://www.apache.org/dyn/closer.cgi?path=apr/apr-util-1.5.4.tar.bz2"
+  mirror "https://archive.apache.org/dist/apr/apr-util-1.5.4.tar.bz2"
   sha1 "b00038b5081472ed094ced28bcbf2b5bb56c589d"
 
   bottle do
