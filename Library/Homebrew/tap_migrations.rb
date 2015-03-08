@@ -148,6 +148,7 @@ TAP_MIGRATIONS = {
   "sylpheed" => "homebrew/x11",
   "syslog-ng" => "homebrew/boneyard",
   "tabbed" => "homebrew/x11",
+  "tcpurify" => "homebrew/boneyard",
   "terminator" => "homebrew/x11",
   "tetgen" => "homebrew/science",
   "texmacs" => "homebrew/boneyard",
