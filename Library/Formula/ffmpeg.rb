@@ -1,17 +1,7 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  stable do
-    url "https://www.ffmpeg.org/releases/ffmpeg-2.5.4.tar.bz2"
-    sha256 "cc91c166c2b0ad9aacc533e4d5637912df583b43834c68aeec12ded7e082a286"
-
-    # Fixes -framework flags for 10.7 and lower;
-    # fixed upstream, can be removed in the next release.
-    # https://trac.ffmpeg.org/ticket/4238
-    patch do
-      url "https://github.com/FFmpeg/FFmpeg/commit/83808ee7e9e89b0c83d5ecd94b35952c44716b68.diff"
-      sha256 "1b10d10ccbae3198bf1ec09d5c99acee90bc196beebc9edecf1101a8ab14c048"
-    end
-  end
+  url "https://www.ffmpeg.org/releases/ffmpeg-2.6.tar.bz2"
+  sha256 "23c38ecc0dd6cae5e9a3c5c2c967b10480dc4f7159d094ade13b0775d1fd4791"
 
   head "git://git.videolan.org/ffmpeg.git"
 
