@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Libidn < Formula
   homepage "https://www.gnu.org/software/libidn/"
   url "http://ftpmirror.gnu.org/libidn/libidn-1.30.tar.gz"
@@ -25,6 +26,7 @@ class Libidn < Formula
   end
 
   test do
-    system "#{bin}/idn", "--version"
+    ENV["CHARSET"] = "UTF-8"
+    system "#{bin}/idn", "räksmörgås.se", "blåbærgrød.no"
   end
 end
