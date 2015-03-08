@@ -8,6 +8,6 @@ class C < Formula
   end
 
   test do
-    system "echo \"int main(void){return 0;}\" | #{bin}/c"
+    pipe_output("#{bin}/c", "int main(void){return 0;}", 0)
   end
 end
