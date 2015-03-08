@@ -117,6 +117,7 @@ TAP_MIGRATIONS = {
   "opengrm-ngram" => "homebrew/science",
   "pan" => "homebrew/boneyard",
   "pari" => "homebrew/x11",
+  "pathfinder" => "homebrew/boneyard",
   "pcb" => "homebrew/x11",
   "pdf2image" => "homebrew/x11",
   "pdf2svg" => "homebrew/x11",
