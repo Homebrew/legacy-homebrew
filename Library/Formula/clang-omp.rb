@@ -18,21 +18,11 @@ class ClangOmp < Formula
 
   needs :cxx11
 
-  fails_with :gcc_4_0 do
-    cause "There are numerous C++11 problems with 4.6's library, and we don't support GCCs or libstdc++ older than 4.7."
-  end
-
-  ("4.3".."4.6").each do |n|
-    fails_with :gcc => n do
-      cause "There are numerous C++11 problems with 4.6's library, and we don't support GCCs or libstdc++ older than 4.7."
-    end
-  end
-
   def install
     resource("compiler-rt").stage { (buildpath/"projects/compiler-rt").install Dir["*"] }
     resource("clang").stage { (buildpath/"tools/clang").install Dir["*"] }
 
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--enable-cxx11", "--enable-libcpp"
     system "make", "install"
 
     mv bin/"clang", bin/"clang-omp"
