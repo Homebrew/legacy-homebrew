@@ -67,6 +67,15 @@ class Macvim < Formula
     elsif build.with? "python"
       ENV.prepend "LDFLAGS", `python-config --ldflags`.chomp
       ENV.prepend "CFLAGS", `python-config --cflags`.chomp
+      framework_script = <<-EOS.undent
+        import distutils.sysconfig
+        print distutils.sysconfig.get_config_var("PYTHONFRAMEWORKPREFIX")
+      EOS
+      framework_prefix = `python -c '#{framework_script}'`.chuzzle
+      if framework_prefix
+        ENV.prepend "LDFLAGS", "-F#{framework_prefix}"
+        ENV.prepend "CFLAGS", "-F#{framework_prefix}"
+      end
       args << "--enable-pythoninterp"
     end
 
