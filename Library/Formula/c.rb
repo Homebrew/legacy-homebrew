@@ -8,6 +8,6 @@ class C < Formula
   end
 
   test do
-    system "echo", "int main(void){return 0;}", "|c"
+    system "echo \"int main(void){return 0;}\" | #{bin}/c"
   end
 end
