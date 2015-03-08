@@ -1,7 +1,16 @@
 class Cppcheck < Formula
   homepage "http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page"
-  url "https://github.com/danmar/cppcheck/archive/1.68.tar.gz"
-  sha1 "f08ef07f750f92fafe4f960166072e9d1088d74e"
+
+  stable do
+    url "https://github.com/danmar/cppcheck/archive/1.68.tar.gz"
+    sha1 "f08ef07f750f92fafe4f960166072e9d1088d74e"
+
+    # Upstream patches for OS X + Clang compilation
+    patch do
+      url "https://github.com/danmar/cppcheck/commit/141a071.diff"
+      sha1 "4ccc8d814709d0e221c533a5556da4b1aa5fbead"
+    end
+  end
 
   head "https://github.com/danmar/cppcheck.git"
 
@@ -19,11 +28,6 @@ class Cppcheck < Formula
   depends_on "pcre" if build.with? "rules"
   depends_on "qt" if build.with? "gui"
 
-  # Upstream patches for OS X + Clang compilation
-  patch do
-    url "https://github.com/danmar/cppcheck/commit/141a071.diff"
-    sha1 "4ccc8d814709d0e221c533a5556da4b1aa5fbead"
-  end
 
   def install
     # Man pages aren't installed as they require docbook schemas.
