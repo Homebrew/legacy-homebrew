@@ -46,15 +46,10 @@ class Tinyproxy < Formula
 
   def post_install
     log = prefix/"var/log/tinyproxy"
+    log.mkpath
+
     run = prefix/"var/run/tinyproxy"
-
-    if !log.exist?
-      log.mkpath
-    end
-
-    if !run.exist?
-      run.mkpath
-    end
+    run.mkpath
   end
 
   plist_options :manual => "tinyproxy"
