@@ -2,6 +2,8 @@ class Syncthing < Formula
   homepage "http://syncthing.net"
   url "https://github.com/syncthing/syncthing.git", :tag => "v0.10.25"
 
+  head "https://github.com/syncthing/syncthing.git"
+
   bottle do
     sha256 "41e77b56738159536e55a9cbacfd4a9e170f9fc236947ea7f7b9907df0e95ac2" => :yosemite
     sha256 "0fbb7328362a659ff0031ef00a643b8e0b53c673d306daaad9f9fdad3402b278" => :mavericks
