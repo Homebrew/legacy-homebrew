@@ -55,11 +55,11 @@ Note that these flags should only appear after a command.
 
   * `cleanup [--force] [-ns]` [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
-    cellar. By default, does not remove out-of-date keg-only brews, as other
+    cellar. By default, does not remove out-of-date keg-only formulae, as other
     software may link directly to specific versions. In addition old downloads from
     the Homebrew download-cache are deleted.
 
-    If `--force` is passed, remove out-of-date keg-only brews as well.
+    If `--force` is passed, remove out-of-date keg-only formulae as well.
 
     If `-n` is passed, show what would be removed, but do not actually remove anything.
 
@@ -272,7 +272,7 @@ Note that these flags should only appear after a command.
   * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.
 
-    If no <formulae> are given, check all installed brews.
+    If no <formulae> are given, check all installed formulae.
 
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
@@ -290,7 +290,7 @@ Note that these flags should only appear after a command.
     By default, version information is displayed in interactive shells, and
     suppressed otherwise.
 
-    If `--quiet` is passed, list only the names of outdated brews (takes
+    If `--quiet` is passed, list only the names of outdated formulae (takes
     precedence over `--verbose`).
 
     If `--verbose` is passed, display detailed version information.
@@ -389,11 +389,11 @@ Note that these flags should only appear after a command.
     If `--rebase` is specified then `git pull --rebase` is used.
 
   * `upgrade [install-options]` [<formulae>]:
-    Upgrade outdated, unpinned brews.
+    Upgrade outdated, unpinned formulae.
 
     Options for the `install` command are also valid here.
 
-    If <formulae> are given, upgrade only the specified brews (but do so even
+    If <formulae> are given, upgrade only the specified formulae (but do so even
     if they are pinned; see `pin`, `unpin`).
 
   * `uses [--installed] [--recursive] [--skip-build] [--skip-optional] [--devel|--HEAD]` <formulae>:

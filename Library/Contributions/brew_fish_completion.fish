@@ -94,7 +94,7 @@ complete -c brew --arguments '(__fish_brew_formula_arguments)'
 complete -c brew -x -a "$commands" -n '__fish_complete_brew_no_command'
 complete -c brew -x -a '(__fish_complete_brew_argument)' -n '__fish_complete_brew_has_command'
 
-complete -c brew -s f -l force -n '__fish_complete_brew_command cleanup' -d "Remove out-of-date keg-only brews"
+complete -c brew -s f -l force -n '__fish_complete_brew_command cleanup' -d "Remove out-of-date keg-only formulae"
 complete -c brew -s n -l dry-run -n '__fish_complete_brew_command cleanup' -d "Show what would be removed, but don't do anything"
 complete -c brew -s s -n '__fish_complete_brew_command cleanup' -d "Remove all downloads"
 
@@ -144,7 +144,7 @@ complete -c brew -l compact -n '__fish_complete_brew_command options' -d "Show o
 complete -c brew -l all -n '__fish_complete_brew_command options' -f -d "Show options for all formulae"
 complete -c brew -l installed -n '__fish_complete_brew_command options' -f -d "Show options for all installed formulae"
 
-complete -c brew -l quiet -n '__fish_complete_brew_command outdated' -d "Do not print names of outdated brews"
+complete -c brew -l quiet -n '__fish_complete_brew_command outdated' -d "Do not print names of outdated formulae"
 
 complete -c brew -s f -l force -n '__fish_complete_brew_command uninstall rm remove' -d "Delete all installed versions"
 
