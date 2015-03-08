@@ -43,4 +43,41 @@ class Tinyproxy < Formula
 
     system "make install"
   end
+
+  def post_install
+    log = prefix/"var/log/tinyproxy"
+    run = prefix/"var/run/tinyproxy"
+
+    if !log.exist?
+      log.mkpath
+    end
+
+    if !run.exist?
+      run.mkpath
+    end
+  end
+
+  plist_options :manual => "tinyproxy"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <false/>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_sbin}/tinyproxy</string>
+        </array>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+      </dict>
+    </plist>
+    EOS
+  end
 end
