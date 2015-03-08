@@ -1,12 +1,7 @@
-require 'formula'
-
 class Moc < Formula
   homepage 'http://moc.daper.net'
-
-  stable do
-    url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.0.tar.bz2"
-    sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
-  end
+  url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.0.tar.bz2"
+  sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
 
   bottle do
     sha1 "1a08c15f965d74614f142ee8ec2bea75b5d999cd" => :yosemite
@@ -14,15 +9,18 @@ class Moc < Formula
     sha1 "876c8a6cbf642db773e6c65794e7632422e9cafa" => :mountain_lion
   end
 
-  head 'svn://daper.net/moc/trunk'
+  head do
+    url "svn://daper.net/moc/trunk"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "gettext" => :build
+  end
 
   option 'with-ncurses', 'Build with wide character support.'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gettext' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
+  depends_on "libtool" => :run
   depends_on 'berkeley-db'
   depends_on 'jack'
   depends_on 'ffmpeg' => :recommended
@@ -38,7 +36,7 @@ class Moc < Formula
   depends_on 'homebrew/dupes/ncurses' => :optional
 
   def install
-    system "autoreconf", "-i" # required to fix ffmpeg issues (updated ffmpeg.m4)
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make", "install"
   end
