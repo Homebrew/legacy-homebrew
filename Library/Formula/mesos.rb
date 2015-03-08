@@ -1,8 +1,8 @@
 class Mesos < Formula
   homepage "https://mesos.apache.org"
-  url "http://mirror.cogentco.com/pub/apache/mesos/0.21.1/mesos-0.21.1.tar.gz"
+  url "http://www.apache.org/dyn/closer.cgi?path=mesos/0.21.1/mesos-0.21.1.tar.gz"
   mirror "https://archive.apache.org/dist/mesos/0.21.1/mesos-0.21.1.tar.gz"
-  sha1 "275d211364699f2861c108fa80764785178f3eeb"
+  sha256 "a953c76a7fb4a45662a6cd084d867372933902d2507cc3f753970dbbc5cce7e3"
 
   bottle do
     revision 2
