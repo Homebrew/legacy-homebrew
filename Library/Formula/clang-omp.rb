@@ -43,13 +43,20 @@ class ClangOmp < Formula
       }
     EOS
     (testpath/"test.c").write(testfile)
-    system "#{bin}/clang-omp", "-liomp5", "-fopenmp", "-Werror", "-Wall", "test.c", "-o", "test"
+    system "#{bin}/clang-omp", "-L/usr/local/lib", "-liomp5", "-fopenmp", "-Werror", "-Wall", "test.c", "-o", "test"
     system "./test>#{testpath}/testresult"
 
-    test_std_out = (testpath/"testresult").read
-    assert_includes test_std_out, "Hello from thread 0, nthreads 4"
-    assert_includes test_std_out, "Hello from thread 1, nthreads 4"
-    assert_includes test_std_out, "Hello from thread 2, nthreads 4"
-    assert_includes test_std_out, "Hello from thread 3, nthreads 4"
+    testresult = (testpath/"testresult").read
+    testresult_lines = testresult.split "\n"
+    sorted_testresult_lines = testresult_lines.sort
+    sorted_testresult = sorted_testresult_lines.join "\n"
+    expected_result = <<-EOS.undent
+      Hello from thread 0, nthreads 4
+      Hello from thread 1, nthreads 4
+      Hello from thread 2, nthreads 4
+      Hello from thread 3, nthreads 4
+    EOS
+
+    assert_equal expected_result.strip, sorted_testresult.strip
   end
 end
