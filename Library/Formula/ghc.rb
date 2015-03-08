@@ -16,7 +16,7 @@ class Ghc < Formula
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
-  depends_on "gmp"
+  depends_on "gmp" => :build
   depends_on "gcc" if MacOS.version == :mountain_lion
 
   if build.build_32_bit? || !MacOS.prefer_64_bit?
@@ -54,6 +54,10 @@ class Ghc < Formula
   end
 
   def install
+    # Copy gmp static libraries to build path (to avoid dynamic linking)
+    (buildpath/"gmp-lib-static").mkpath
+    cp Dir.glob("#{Formula["gmp"].lib}/*.a"), buildpath/"gmp-lib-static/"
+
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
 
@@ -100,7 +104,8 @@ class Ghc < Formula
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       system "./configure", "--prefix=#{prefix}",
                             "--build=#{arch}-apple-darwin",
-                            "--with-gcc=#{ENV.cc}"
+                            "--with-gcc=#{ENV.cc}",
+                            "--with-gmp-includes=#{buildpath}/gmp-lib-static"
       system "make"
 
       if build.with? "tests"
