@@ -44,6 +44,13 @@ class Ghc < Formula
     end
   end
 
+  fails_with :llvm do
+    cause <<-EOS.undent
+      cc1: error: unrecognized command line option "-Wno-invalid-pp-token"
+      cc1: error: unrecognized command line option "-Wno-unicode"
+    EOS
+  end
+
   if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
     fails_with :clang do
       cause <<-EOS.undent
