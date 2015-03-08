@@ -1,7 +1,7 @@
 class Geoip < Formula
   homepage "https://github.com/maxmind/geoip-api-c"
-  url "https://github.com/maxmind/geoip-api-c/archive/v1.6.4.tar.gz"
-  sha1 "f478c60e810be1ba3e4df1e4a3b839b8c604122f"
+  url "https://github.com/maxmind/geoip-api-c/archive/v1.6.5.tar.gz"
+  sha1 "55950b436718a32ff9f8c9cfb36cec0aa3674253"
 
   head "https://github.com/maxmind/geoip-api-c.git"
 
