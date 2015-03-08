@@ -505,7 +505,7 @@ module Homebrew
     def homebrew
       @category = __method__
       test "brew", "tests"
-      test "brew", "readall"
+      test "brew", "readall", "--syntax"
     end
 
     def cleanup_before
