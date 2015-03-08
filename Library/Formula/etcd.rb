@@ -1,9 +1,7 @@
-require "formula"
-
 class Etcd < Formula
   homepage "https://github.com/coreos/etcd"
-  url "https://github.com/coreos/etcd/archive/v2.0.0.tar.gz"
-  sha1 "56c1334c28d1013cfeee725ec864762cf8a13779"
+  url "https://github.com/coreos/etcd/archive/v2.0.4.tar.gz"
+  sha256 "37bba9ef5046df3d3b09789d87ef7e2186a32ceea400a94f3edc1efd10789e53"
   head "https://github.com/coreos/etcd.git"
 
   bottle do
@@ -18,6 +16,7 @@ class Etcd < Formula
     ENV["GOPATH"] = buildpath
     system "./build"
     bin.install "bin/etcd"
+    bin.install "bin/etcdctl"
   end
 
   def plist; <<-EOS.undent
