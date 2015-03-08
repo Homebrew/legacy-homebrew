@@ -1,7 +1,7 @@
 class Geoipupdate < Formula
   homepage "https://github.com/maxmind/geoipupdate"
-  url "https://github.com/maxmind/geoipupdate/releases/download/v2.1.0/geoipupdate-2.1.0.tar.gz"
-  sha1 "3b77c88d43ab7ad5056cbd5bc2f557b193fa5100"
+  url "https://github.com/maxmind/geoipupdate/releases/download/v2.2.1/geoipupdate-2.2.1.tar.gz"
+  sha1 "9e486101628143fc0525d28e817232463c657cbd"
 
   bottle do
     sha1 "38fee37aa1dec793929bbd02d6fb9165d076172e" => :yosemite
@@ -25,7 +25,7 @@ class Geoipupdate < Formula
     # See https://github.com/maxmind/geoip-api-c#150
     inreplace "conf/GeoIP.conf.default", "YOUR_USER_ID_HERE", "999999"
     inreplace "conf/GeoIP.conf.default", "YOUR_LICENSE_KEY_HERE", "000000000000"
-    inreplace "conf/GeoIP.conf.default", /^ProductIds .*$/, "ProductIds 506 533"
+    inreplace "conf/GeoIP.conf.default", /^ProductIds .*$/, "ProductIds 506 533 GeoLite2-City GeoLite2-Country"
 
     system "./bootstrap" if build.head?
 
