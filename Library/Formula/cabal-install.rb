@@ -5,9 +5,9 @@ class CabalInstall < Formula
 
   bottle do
     cellar :any
-    sha1 "29b12fb72f49990c68e8a6507ac22f6ea71e69ec" => :yosemite
-    sha1 "8ff0f8981b11799f9c91e81a7a5cde23993bdc79" => :mavericks
-    sha1 "905f9d75714667e86197571eabf1b434fbba567d" => :mountain_lion
+    sha256 "f79146e9d429b7f2c3ad990873eb67de99ec55383cc83d82229f73f44195d90c" => :yosemite
+    sha256 "669bc4766916ecf99ceb3c2ab173a6034362654b4869105bbae7ad98f9ff8ff0" => :mavericks
+    sha256 "cffdc3a8bec2a51c2a834bb73e0c56412a8cc0d4ecca036a678f497e91a62958" => :mountain_lion
   end
 
   depends_on "ghc"
