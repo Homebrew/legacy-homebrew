@@ -2,15 +2,10 @@ require "language/go"
 
 class Asciinema < Formula
   homepage "https://asciinema.org/"
-  url "https://github.com/asciinema/asciinema-cli/archive/v0.9.9.tar.gz"
-  sha1 "155c19366ffb3347e97026e9ab8006c16d2a52c6"
-  head "https://github.com/asciinema/asciinema-cli"
+  url "https://github.com/asciinema/asciinema/archive/v1.0.0.tar.gz"
+  sha1 "8e9862309a5bc1723cb27a40a412401ed05e4586"
 
-  devel do
-    url "https://github.com/asciinema/asciinema-cli/archive/v1.0.0.rc1.tar.gz"
-    sha1 "14bea5ed7fc3bda9a40c8a8173d7e9f107f6a78c"
-    version "1.0.0.rc1"
-  end
+  head "https://github.com/asciinema/asciinema.git"
 
   bottle do
     cellar :any
@@ -39,7 +34,7 @@ class Asciinema < Formula
   def install
     ENV["GOPATH"] = buildpath
     mkdir_p buildpath/"src/github.com/asciinema"
-    ln_s buildpath, buildpath/"src/github.com/asciinema/asciinema-cli"
+    ln_s buildpath, buildpath/"src/github.com/asciinema/asciinema"
     Language::Go.stage_deps resources, buildpath/"src"
 
     system "go", "build", "-o", "asciinema"
@@ -49,7 +44,7 @@ class Asciinema < Formula
 
   test do
     ENV["LC_ALL"] = "en_US.UTF-8"
-    system "#{bin}/asciinema", "-v"
-    system "#{bin}/asciinema", "-h"
+    system "#{bin}/asciinema", "--version"
+    system "#{bin}/asciinema", "--help"
   end
 end
