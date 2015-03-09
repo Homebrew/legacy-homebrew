@@ -1,7 +1,7 @@
 class Freegeoip < Formula
   homepage "https://github.com/fiorix/freegeoip/"
   url "https://github.com/fiorix/freegeoip/archive/v3.0.4.tar.gz"
-  sha1 "6be48a6cd41b699f887e3283c2f209349b7fa45f"
+  sha256 "e4c568135ec305d908bd191eb3885373e6a58f7f6e0a2ae80f2ac80826bb3fe9"
 
   depends_on "go" => :build
 
