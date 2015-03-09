@@ -13,9 +13,9 @@ end
 
 class Gdb < Formula
   homepage "https://www.gnu.org/software/gdb/"
-  url "http://ftpmirror.gnu.org/gdb/gdb-7.8.2.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.8.2.tar.xz"
-  sha1 "85a9cc2a4dfb748bc8eb74113af278524126a9bd"
+  url "http://ftpmirror.gnu.org/gdb/gdb-7.9.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.9.tar.xz"
+  sha256 "9b315651a16528f7af8c7d8284699fb0c965df316cc7339bb0b7bae335848392"
 
   bottle do
     root_url "https://downloads.sf.net/project/machomebrew/Bottles/dupes"
@@ -37,18 +37,13 @@ class Gdb < Formula
   option "with-version-suffix", "Add a version suffix to program"
   option "with-all-targets", "Build with support for all targets"
 
-  # Fix compilation on 10.10
-  # https://sourceware.org/bugzilla/show_bug.cgi?id=17046
-  # https://sourceware.org/ml/gdb-patches/2014-09/msg00510.html
-  patch :DATA
-
   def install
     args = [
       "--prefix=#{prefix}",
       "--disable-debug",
       "--disable-dependency-tracking",
       "--with-system-readline",
-      "--with-lzma"
+      "--with-lzma",
     ]
 
     args << "--with-guile" if build.with? "guile"
@@ -83,18 +78,3 @@ class Gdb < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/gdb/darwin-nat.c b/gdb/darwin-nat.c
-index 5714288..38f768f 100644
---- a/gdb/darwin-nat.c
-+++ b/gdb/darwin-nat.c
-@@ -42,7 +42,7 @@
-
- #include <sys/ptrace.h>
- #include <sys/signal.h>
--#include <machine/setjmp.h>
-+#include <setjmp.h>
- #include <sys/types.h>
- #include <unistd.h>
- #include <signal.h>
