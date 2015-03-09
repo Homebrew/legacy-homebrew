@@ -4,9 +4,10 @@ class Fig < Formula
   sha1 "175066934c19f455606b16f1b4e4b9f26fc3f599"
 
   bottle do
-    sha1 "3a99b153c4d7b1f5cf77d392d11978ead0ab6014" => :yosemite
-    sha1 "5a4315f4c7aeb88d1f4b452cbe9cc769578fa12b" => :mavericks
-    sha1 "361e4cd9e2c625b2640696a918ecb2ba127363bb" => :mountain_lion
+    revision 1
+    sha1 "c1fbe70891a82e92aeaa417622e05bf2dd6c6bb5" => :yosemite
+    sha1 "a8faccbb07062db68e3b4ef94983d6bdc0c0c673" => :mavericks
+    sha1 "824ac264234c2769f80cba86f05ba7649b588e1d" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -67,6 +68,8 @@ class Fig < Formula
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
+
+    bash_completion.install "contrib/completion/bash/docker-compose"
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])

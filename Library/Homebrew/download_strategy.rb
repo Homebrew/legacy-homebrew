@@ -98,11 +98,12 @@ class AbstractDownloadStrategy
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
-  REF_TYPES = [:branch, :revision, :revisions, :tag].freeze
+  REF_TYPES = [:tag, :branch, :revisions, :revision].freeze
 
   def initialize name, resource
     super
     @ref_type, @ref = extract_ref(meta)
+    @revision = meta[:revision]
     @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
@@ -118,6 +119,15 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
       clone_repo
     else
       clone_repo
+    end
+
+    if @ref_type == :tag && @revision && current_revision
+      unless current_revision == @revision
+        raise <<-EOS.undent
+          #{@ref} tag should be #{@revision}
+          but is actually #{current_revision}!
+        EOS
+      end
     end
   end
 
@@ -151,6 +161,9 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   end
 
   def update
+  end
+
+  def current_revision
   end
 
   def extract_ref(specs)
@@ -568,6 +581,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def has_ref?
     quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', "#{@ref}^{commit}"
+  end
+
+  def current_revision
+    Utils.popen_read('git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', "HEAD").strip
   end
 
   def repo_valid?

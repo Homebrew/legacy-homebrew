@@ -1,27 +1,27 @@
-require 'formula'
-
 class Passenger < Formula
-  homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.59.tar.gz'
-  sha1 '5bbbd7577fbcf59d5e8e18ba61e265b89b98f0d0'
-  head 'https://github.com/phusion/passenger.git'
+  homepage "https://www.phusionpassenger.com/"
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.2.tar.gz"
+  sha256 "93aa200fdc47597c0dcbe32ed6c55af0751114d2c268e4d30ff7f3d7afdbebe8"
+  head "https://github.com/phusion/passenger.git"
 
   bottle do
-    sha1 "fe7b9c8de391e5ba7e5fa34c480bded17713eda6" => :yosemite
-    sha1 "f80b6a568b59cd368001b532c20151cf9b82758e" => :mavericks
-    sha1 "a8dc7378cad2b359de9fad26bb313fbeaeee6d53" => :mountain_lion
+    sha256 "d61660ced7939883b714b34e25cbc559a5850fe904fcd4b06cc9a9c461ba8977" => :yosemite
+    sha256 "6ae2c4bb20003a7609c309c728f7064e4e10a8d6f0fe8c669c60b6466e581299" => :mavericks
+    sha256 "27bd9c1058d42d4eac80fdb2080e1b865fdf9b41a80f688c5199ecba0df7eeca" => :mountain_lion
   end
 
-  depends_on 'pcre'
+  depends_on "pcre"
   depends_on "openssl"
   depends_on :macos => :lion
 
-  option 'without-apache2-module', 'Disable Apache2 module'
+  option "without-apache2-module", "Disable Apache2 module"
 
   def install
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
+
+    (libexec/"download_cache").mkpath
 
     # Fixes https://github.com/phusion/passenger/issues/1288
     rm_rf "buildout/libev"
@@ -48,7 +48,7 @@ class Passenger < Formula
     system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
       "--nginx-module-config", libexec/"bin", libexec/"ext/nginx/config"
 
-    mv libexec/'man', share
+    mv libexec/"man", share
   end
 
   def caveats
@@ -71,7 +71,7 @@ class Passenger < Formula
   test do
     ruby_libdir = `#{HOMEBREW_PREFIX}/bin/passenger-config --ruby-libdir`.strip
     if ruby_libdir != (libexec/"lib").to_s
-      raise "Invalid installation"
+      fail "Invalid installation"
     end
   end
 end
