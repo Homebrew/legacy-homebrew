@@ -10,7 +10,7 @@ addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.6.0")
 
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "0.98.0")
+addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "1.0.4")
 
 resolvers += Resolver.url(
   "bintray-sbt-plugin-releases",

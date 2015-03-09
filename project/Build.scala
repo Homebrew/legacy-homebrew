@@ -99,8 +99,8 @@ object JobServerBuild extends Build {
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ implicitlySettings ++ Seq(
     organization := "spark.jobserver",
     crossPaths   := false,
-    scalaVersion := "2.10.4",
-    scalaBinaryVersion := "2.10",
+    scalaVersion := "2.11.6",
+    scalaBinaryVersion := "2.11",
     publishTo    := Some(Resolver.file("Unused repo", file("target/unusedrepo"))),
 
     // scalastyleFailOnError := true,
@@ -127,11 +127,9 @@ object JobServerBuild extends Build {
   ) ++ scalariformPrefs ++ scoverageSettings
 
   lazy val scoverageSettings = {
-    import ScoverageSbtPlugin._
-    instrumentSettings ++ Seq(
-      // Semicolon-separated list of regexs matching classes to exclude
-      ScoverageKeys.excludedPackages in scoverage := ".+Benchmark.*"
-    )
+    import scoverage.ScoverageSbtPlugin
+    // Semicolon-separated list of regexs matching classes to exclude
+    ScoverageSbtPlugin.ScoverageKeys.coverageExcludedPackages := ".+Benchmark.*"
   }
 
   lazy val publishSettings = bintrayPublishSettings ++ Seq(
