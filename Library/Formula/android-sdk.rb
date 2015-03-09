@@ -2,9 +2,9 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r24.0.2-macosx.zip'
-  version '24.0.2'
-  sha1 '3ab5e0ab0db5e7c45de9da7ff525dee6cfa97455'
+  url 'http://dl.google.com/android/android-sdk_r24.1.2-macosx.zip'
+  version '24.1.2'
+  sha1 '00e43ff1557e8cba7da53e4f64f3a34498048256'
 
   conflicts_with 'android-platform-tools',
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
