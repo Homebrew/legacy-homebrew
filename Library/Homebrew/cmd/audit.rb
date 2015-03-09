@@ -714,8 +714,10 @@ class FormulaAuditor
     if @strict
       if line =~ /system (["'][^"' ]*(?:\s[^"' ]*)+["'])/
         bad_system = $1
-        good_system = bad_system.gsub(" ", "\", \"")
-        problem "Use `system #{good_system}` instead of `system #{bad_system}` "
+        unless %w[| < > & ;].any? { |c| bad_system.include? c }
+          good_system = bad_system.gsub(" ", "\", \"")
+          problem "Use `system #{good_system}` instead of `system #{bad_system}` "
+        end
       end
 
       if line =~ /(require ["']formula["'])/
