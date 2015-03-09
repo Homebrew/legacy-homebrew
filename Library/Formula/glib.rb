@@ -75,12 +75,12 @@ class Glib < Formula
 
     if build.universal?
       buildpath.install resource("config.h.ed")
-      system "ed", "-s", "-", "config.h", "<config.h.ed"
+      system "ed -s - config.h <config.h.ed"
     end
 
     system "make"
     # the spawn-multithreaded tests require more open files
-    system "ulimit", "-n", "1024;", "make", "check" if build.include? "test"
+    system "ulimit -n 1024; make check" if build.with? "test"
     system "make", "install"
 
     # `pkg-config --libs glib-2.0` includes -lintl, and gettext itself does not
