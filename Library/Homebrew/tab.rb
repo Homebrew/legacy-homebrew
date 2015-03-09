@@ -15,7 +15,7 @@ class Tab < OpenStruct
       "used_options" => build.used_options.as_flags,
       "unused_options" => build.unused_options.as_flags,
       "tabfile" => formula.prefix.join(FILENAME),
-      "built_as_bottle" => !!ARGV.build_bottle?,
+      "built_as_bottle" => build.bottle?,
       "poured_from_bottle" => false,
       "tapped_from" => formula.tap,
       "time" => Time.now.to_i,

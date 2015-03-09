@@ -24,9 +24,10 @@ class Gmp < Formula
     if build.build_32_bit?
       ENV.m32
       args << "ABI=32"
+    end
+
+    if build.build_32_bit? || build.bottle?
       # https://github.com/Homebrew/homebrew/issues/20693
-      args << "--disable-assembly"
-    elsif build.bottle?
       args << "--disable-assembly"
     end
 

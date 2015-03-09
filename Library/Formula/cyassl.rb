@@ -1,15 +1,14 @@
 class Cyassl < Formula
-  homepage "http://yassl.com/yaSSL/Products-cyassl.html"
-  url "https://github.com/cyassl/cyassl/archive/v3.3.0.tar.gz"
-  sha256 "585ca95b23a44da2d0e042bd0aef95ce770cd541028b76dc45f29ab62ad3ad4a"
-
-  head "https://github.com/cyassl/cyassl.git"
+  homepage "http://www.wolfssl.com/yaSSL/Home.html"
+  url "https://github.com/wolfSSL/wolfssl/archive/v3.4.0.tar.gz"
+  sha256 "e23b7939c04bf18efa353ff9abfeaba3bcf454e47c9ced45e2aadab6660245f0"
+  head "https://github.com/wolfSSL/wolfssl.git"
 
   bottle do
     cellar :any
-    sha1 "47a068ee29646ef26b3f7e2a62268f62ed73dbec" => :yosemite
-    sha1 "57f47edc303e4f7f07d893a0724c67e068ca4883" => :mavericks
-    sha1 "c5de09829f89696a73a8f3818bbf413eae99e5ac" => :mountain_lion
+    sha256 "17893cd56326d12cb3c8d0d7158255ad7ca5df30e5fa160b0309e8ab6805eaa8" => :yosemite
+    sha256 "452f4d57bbba4f48c9e148c5c4311236143d5f15933051d5bae6f5148ffd427f" => :mavericks
+    sha256 "3eeb925899dd6b339a1eb4d3f303e3bf628fa25dc6e5b93a2ed7bd079a2d4195" => :mountain_lion
   end
 
   option "without-check", "Skip compile-time tests."
@@ -19,6 +18,8 @@ class Cyassl < Formula
   depends_on "libtool" => :build
 
   def install
+    # At some point it'd be nice to be able to "--disable-md5" but:
+    # https://github.com/wolfSSL/wolfssl/issues/26
     args = %W[
       --disable-silent-rules
       --disable-dependency-tracking
@@ -27,6 +28,7 @@ class Cyassl < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --disable-bump
+      --disable-examples
       --disable-fortress
       --disable-sniffer
       --disable-webserver
@@ -40,8 +42,10 @@ class Cyassl < Formula
       --enable-crl
       --enable-crl-monitor
       --enable-dtls
+      --enable-dh
       --enable-ecc
       --enable-eccencrypt
+      --enable-ecc25519
       --enable-filesystem
       --enable-hc128
       --enable-hkdf
@@ -82,6 +86,6 @@ class Cyassl < Formula
   end
 
   test do
-    system bin/"cyassl-config", "--cflags", "--libs", "--prefix"
+    system bin/"wolfssl-config", "--cflags", "--libs", "--prefix"
   end
 end

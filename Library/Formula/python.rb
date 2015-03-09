@@ -282,9 +282,8 @@ class Python < Formula
   end
 
   def caveats; <<-EOS.undent
-    Setuptools and pip have been installed. To update them
-      pip install --upgrade setuptools
-      pip install --upgrade pip
+    Pip and setuptools have been installed. To update them
+      pip install --upgrade pip setuptools
 
     You can install Python packages with
       pip install <package>

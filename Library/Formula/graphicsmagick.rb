@@ -34,6 +34,7 @@ class Graphicsmagick < Formula
   depends_on 'jasper' => :optional
   depends_on 'libwmf' => :optional
   depends_on 'ghostscript' => :optional
+  depends_on "webp" => :optional
 
   fails_with :llvm do
     build 2335
@@ -57,6 +58,7 @@ class Graphicsmagick < Formula
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? 'ghostscript'
     args << "--without-magick-plus-plus" if build.without? 'magick-plus-plus'
     args << "--with-perl" if build.with? "perl"
+    args << "--with-webp=yes" if build.with? "webp"
 
     if build.with? 'quantum-depth-32'
       quantum_depth = 32

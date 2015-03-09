@@ -113,15 +113,8 @@ class Ghostscript < Formula
   end
 
   test do
-    (testpath/"test.ps").write <<-EOS.undent
-      %!PS
-      /Courier
-      20 selectfont
-      72 500 moveto
-      (Hello World!) show
-      showpage
-    EOS
-    assert_match /Hello World!/, shell_output("#{bin}/ps2ascii test.ps")
+    ps = test_fixtures("test.ps")
+    assert_match /Hello World!/, shell_output("#{bin}/ps2ascii #{ps}")
   end
 end
 
