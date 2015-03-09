@@ -7,7 +7,7 @@ class Wcm < Formula
   depends_on "freetype"
   depends_on "libssh2"
   depends_on :x11
-  depends_on :macos => :mountain_lion
+  depends_on :macos => :mavericks
 
   needs :cxx11
 
