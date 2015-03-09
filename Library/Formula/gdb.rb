@@ -18,10 +18,10 @@ class Gdb < Formula
   sha256 "9b315651a16528f7af8c7d8284699fb0c965df316cc7339bb0b7bae335848392"
 
   bottle do
-    root_url "https://downloads.sf.net/project/machomebrew/Bottles/dupes"
-    sha1 "722efdf280ba1d052ebe199fed1f0c18e688c180" => :yosemite
-    sha1 "ed64143c69885bba8a302ee9e00f4b952fa80e7c" => :mavericks
-    sha1 "8f588913785434b7b3ce65654f19f4541a6273a1" => :mountain_lion
+    root_url "https://homebrew.bintray.com/bottles-dupes"
+    sha256 "10e88bdde65a5d16c9a6c755d44a95589b29f3b1a6709164afec0999d12c4db3" => :yosemite
+    sha256 "6255b9804cb274c6a25a876f3931e72933e73d087d018e76f606890b1f2ffb2b" => :mavericks
+    sha256 "d41dc2e5bda369f8b5017b9c1a20541b248d7a669fec54d43ccf45695e21bd4c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
