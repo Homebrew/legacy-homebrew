@@ -21,4 +21,21 @@ class Libechonest < Formula
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <echonest/Genre.h>
+      #include <echonest/Artist.h>
+      int main() {
+        Echonest::Genre test;
+        test.setName(QLatin1String("ambient trance"));
+        return 0;
+      }
+    EOS
+    qt = Formula["qt"]
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-lechonest", "-F#{qt.opt_lib}",
+      "-framework", "QtCore", "-I#{qt.opt_include}/QtCore",
+      "-I#{qt.opt_include}/QtNetwork", "-o", "test"
+    system "./test"
+  end
 end
