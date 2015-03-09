@@ -3,21 +3,16 @@ class Mpfr < Formula
   # Upstream is down a lot, so use the GNU mirror + Gist for patches
   url "http://ftpmirror.gnu.org/mpfr/mpfr-3.1.2.tar.bz2"
   mirror "https://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2"
-  sha1 "46d5a11a59a4e31f74f73dd70c5d57a59de2d0b4"
-  version "3.1.2-p10"
+  sha256 "79c73f60af010a30a5c27a955a1d2d01ba095b72537dab0ecaad57f5a7bb1b6b"
+  version "3.1.2-p11"
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "7950d0c8f2e68673099516b7c2026055e75d1f9d" => :yosemite
-    sha1 "6e63f815013d281187fd6017aeb8ee9f24ca9ad2" => :mavericks
-    sha1 "40956fd01c8882333cdaf447eb637480ac8520e8" => :mountain_lion
   end
 
   # http://www.mpfr.org/mpfr-current/allpatches
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/7f276cd60149a1ffc9a7/raw/39116c674a8c340fef880a393d7c7bdc6d73c59e/mpfr-3.1.2-p10.diff"
-    sha1 "c101708c6f7d86a3f7309c2e046d907ac36d6aa4"
+    url "https://gist.githubusercontent.com/jacknagel/7f276cd60149a1ffc9a7/raw/98bd4a4d77d57d91d501e66af2237dfa41b12719/mpfr-3.1.2-p11.diff"
+    sha256 "ef758e28d988180ce4e91860a890bab74a5ef2a0cd57b1174c59a6e81d4f5c64"
   end
 
   depends_on "gmp"
