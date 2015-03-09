@@ -2,8 +2,8 @@ require "formula"
 
 class Imagemagick < Formula
   homepage "http://www.imagemagick.org"
-  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.0-9.tar.xz"
-  sha256 "4f680e1ccfa31e18a8ca829e7749ebd62f2f81dfdba943f9504a824176f51c76"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.0-10.tar.xz"
+  sha256 "d1f5dcd32a93130feb9e980a8a97517d3a2c814a8b608d139d4756516548748c"
 
   head "http://www.imagemagick.org/subversion/ImageMagick/trunk"
 
