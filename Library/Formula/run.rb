@@ -1,7 +1,7 @@
 class Run < Formula
   homepage "http://runscripts.org"
   url "https://github.com/runscripts/run/archive/0.4.0.tar.gz"
-  sha1 "f1a726df3e06be29190d854aa5ac7e1b2a53cecb"
+  sha256 "a1dac02d105d3e28e978cbb61adefec7b6a53181181c443ad05ba95a37d87058"
   head "https://github.com/runscripts/run.git"
 
   depends_on "go" => :build
