@@ -128,7 +128,7 @@ class Pypy < Formula
     Setuptools and pip have been installed, so you can use easy_install_pypy and
     pip_pypy.
     To update setuptools and pip between pypy releases, run:
-        #{scripts_folder}/pip install --upgrade setuptools
+        pip_pypy install --upgrade pip setuptools
 
     See: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md
     EOS
