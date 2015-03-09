@@ -2,8 +2,8 @@ require 'formula'
 
 class Homebank < Formula
   homepage 'http://homebank.free.fr'
-  url 'http://homebank.free.fr/public/homebank-4.6.3.tar.gz'
-  sha1 '9393f947fca17cbdb31a2bc7fa03f99ced1c6e68'
+  url 'http://homebank.free.fr/public/homebank-5.0.0.tar.gz'
+  sha1 'b56659fa0b8c44c6f75b77e87ef22c6239b12b28'
 
   bottle do
     sha1 "03314830a1707ca0c6843258c36b68833d3184ae" => :mavericks
@@ -14,8 +14,8 @@ class Homebank < Formula
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'gtk+'
-  depends_on 'hicolor-icon-theme'
+  depends_on 'gtk+3'
+  depends_on 'gnome-icon-theme'
   depends_on 'freetype'
   depends_on 'fontconfig'
   depends_on 'libofx' => :optional
@@ -26,7 +26,7 @@ class Homebank < Formula
     args << "--with-ofx" if build.with? 'libofx'
 
     system "./configure", *args
-    system "chmod +x ./install-sh"
+    chmod 0755, "./install-sh"
     system "make install"
   end
 end
