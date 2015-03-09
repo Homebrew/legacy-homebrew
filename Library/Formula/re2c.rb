@@ -2,8 +2,8 @@ require "formula"
 
 class Re2c < Formula
   homepage "http://re2c.org"
-  url "https://downloads.sourceforge.net/project/re2c/re2c/0.13.7.5/re2c-0.13.7.5.tar.gz"
-  sha1 "4786a13be61f8249f4f388e60d94bb81db340d5c"
+  url "https://downloads.sourceforge.net/project/re2c/re2c/0.14.1/re2c-0.14.1.tar.gz"
+  sha1 "b6af07ed6b57ef20936555c95ffb9f177aae3c28"
 
   bottle do
     cellar :any
