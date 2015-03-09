@@ -1,6 +1,7 @@
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
-  url "https://github.com/Carthage/Carthage.git", :tag => "0.6.2",
+  url "https://github.com/Carthage/Carthage.git", :tag => "0.6.3",
+                                                  :revision => "cd6d4237d77c22559a8f6dc92c09ef297be91ea5",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
