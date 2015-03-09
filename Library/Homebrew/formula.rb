@@ -494,11 +494,16 @@ class Formula
 
   # an array of all {Formula} names
   def self.names
-    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+    (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+  end
+
+  # an array of all {Formula} names, which the tap formulae have the fully-qualified name
+  def self.full_names
+    core_names + tap_names
   end
 
   def self.each
-    names.each do |name|
+    full_names.each do |name|
       begin
         yield Formulary.factory(name)
       rescue StandardError => e
@@ -557,7 +562,22 @@ class Formula
   end
 
   def self.path name
-    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
+    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb")
+  end
+
+  def self.search_path name
+    p = Formula.path(name)
+    return p if p.file?
+    taps = Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"]
+    p = taps.map { |tap| Pathname.glob(["#{tap}#{name}.rb", "#{tap}Formula/#{name}.rb", "#{tap}HomebrewFormula/#{name}.rb"]) }
+    p = p.flatten.select { |f| f.file? }
+    case p.size
+    when 0
+      raise FormulaUnavailableError.new(name)
+    when 1 then p[0]
+    else
+      raise TapFormulaAmbiguityError.new(name, p)
+    end
   end
 
   def env
@@ -797,6 +817,22 @@ class Formula
 
       remove_method(:options)
     end
+  end
+
+  # an array of all core {Formula} names
+  def self.core_names
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
+  end
+
+  # an array of all tap {Formula} names
+  def self.tap_names
+    Pathname.glob("#{HOMEBREW_LIBRARY}/Taps/*/*/").reduce([]) do |formulae, tap|
+      tap.find_formula do |f|
+        f.to_s =~ HOMEBREW_TAP_PATH_REGEX
+        formulae << "#$1/#{$2.gsub(/^homebrew-/, "")}/#{f.basename(".rb")}"
+      end
+      formulae
+    end.sort
   end
 
   # The methods below define the formula DSL.

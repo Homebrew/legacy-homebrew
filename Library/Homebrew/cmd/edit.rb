@@ -26,13 +26,16 @@ module Homebrew
     else
       # Don't use ARGV.formulae as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
-        name = Formulary.canonical_name(name)
-        Formula.path(name)
-      end
-      unless ARGV.force?
-        paths.each do |path|
-          raise FormulaUnavailableError, path.basename('.rb').to_s unless path.file?
+        begin
+          name, path = Formulary.canonical_name_and_path(name)
+        rescue FormulaUnavailableError => e
+          if ARGV.force?
+            path = e.expected_path
+          else
+            raise
+          end
         end
+        path
       end
       exec_editor(*paths)
     end

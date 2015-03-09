@@ -1,5 +1,4 @@
 require 'cmd/tap'
-require 'cmd/untap'
 
 module Homebrew
   def update
@@ -21,15 +20,10 @@ module Homebrew
       next unless path.symlink?
       tapped_formulae << path.resolved_path
     end
-    unlink_tap_formula(tapped_formulae)
 
     report = Report.new
     master_updater = Updater.new(HOMEBREW_REPOSITORY)
-    begin
-      master_updater.pull!
-    ensure
-      link_tap_formula(tapped_formulae)
-    end
+    master_updater.pull!
     report.update(master_updater.report)
 
     # rename Taps directories
@@ -52,10 +46,6 @@ module Homebrew
       end
     end
 
-    # we unlink first in case the formula has moved to another tap
-    Homebrew.unlink_tap_formula(report.removed_tapped_formula)
-    Homebrew.link_tap_formula(report.new_tapped_formula)
-
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
       next unless (HOMEBREW_CELLAR/f).exist?
@@ -64,6 +54,9 @@ module Homebrew
       tap_user, tap_repo = migration.split '/'
       install_tap tap_user, tap_repo
     end if load_tap_migrations
+
+    # migrate to new directories based tap structure
+    migrate_taps
 
     if report.empty?
       puts "Already up-to-date."
@@ -95,7 +88,6 @@ module Homebrew
   end
 
   def rename_taps_dir_if_necessary
-    need_repair_taps = false
     Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
       begin
         tapd_basename = File.basename(tapd)
@@ -107,7 +99,6 @@ module Homebrew
 
             FileUtils.mkdir_p("#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}")
             FileUtils.mv(tapd, "#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase}")
-            need_repair_taps = true
 
             if tapd_basename.count("-") >= 2
               opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
@@ -123,8 +114,6 @@ module Homebrew
         next # next tap directory
       end
     end
-
-    repair_taps if need_repair_taps
   end
 
   def load_tap_migrations

@@ -45,6 +45,10 @@ class FormulaUnavailableError < RuntimeError
     "(dependency of #{dependent})" if dependent and dependent != name
   end
 
+  def expected_path
+    HOMEBREW_LIBRARY/"Formula/#{name}.rb"
+  end
+
   def to_s
     "No available formula for #{name} #{dependent_s}"
   end
@@ -58,9 +62,28 @@ class TapFormulaUnavailableError < FormulaUnavailableError
     @user, @repo, @shortname = name.split("/", 3)
   end
 
+  def expected_path
+    HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}/#{shortname}.rb"
+  end
+
   def to_s; <<-EOS.undent
       No available formula for #{shortname} #{dependent_s}
       Please tap it and then try again: brew tap #{user}/#{repo}
+    EOS
+  end
+end
+
+class TapFormulaAmbiguityError < RuntimeError
+  attr_reader :name, :paths
+
+  def initialize name, paths
+    @name = name
+    @paths = paths
+
+    super <<-EOS.undent
+      Multiple formulae found: #{paths.map { |f| "\n       * #{f}" }.join}
+
+      Please use the fully-qualified name to refer the formula.
     EOS
   end
 end

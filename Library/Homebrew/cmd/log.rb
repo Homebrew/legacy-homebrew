@@ -1,3 +1,6 @@
+require "formulary"
+require "formula"
+
 module Homebrew
   def log
     if ARGV.named.empty?
@@ -5,10 +8,10 @@ module Homebrew
       exec "git", "log", *ARGV.options_only
     else
       begin
-        path = ARGV.formulae.first.path
-      rescue FormulaUnavailableError
+        path = Formulary.canonical_path(ARGV.named.first)
+      rescue FormulaUnavailableError => e
         # Maybe the formula was deleted
-        path = Formula.path(ARGV.named.first)
+        path = e.expected_path
       end
       cd path.dirname # supports taps
       exec "git", "log", *ARGV.options_only + ["--", path]
