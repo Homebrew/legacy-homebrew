@@ -275,7 +275,7 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Pip and setuptools have been installed. To update them:
+      Pip and setuptools have been installed. To update them
         pip3 install --upgrade pip setuptools
 
       You can install Python packages with
