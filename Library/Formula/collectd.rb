@@ -1,25 +1,9 @@
-require "formula"
-
 class Collectd < Formula
   homepage "https://collectd.org/"
-
-  stable do
-    url "https://collectd.org/files/collectd-5.4.1.tar.gz"
-    mirror "https://mirrors.kernel.org/debian/pool/main/c/collectd/collectd_5.4.1.orig.tar.gz"
-    sha256 "853680936893df00bfc2be58f61ab9181fecb1cf45fc5cddcb7d25da98855f65"
-
-    # Fix detection of htonll()
-    # https://github.com/collectd/collectd/commit/1a822486f40
-    patch do
-      url "https://gist.githubusercontent.com/jacknagel/85ba734488b6fbd25957/raw/7f16be18f96f1202ec7e5b193afa46061dfd944e/collectd.diff"
-      sha1 "34afbe6b9193f72ac6f2dd9a6978ff75ef9f41b0"
-    end
-  end
+  url "https://collectd.org/files/collectd-5.4.2.tar.gz"
+  sha256 "9778080ee9ee676c7130b1ce86c2843c7359e29b9bd1c1c0e48fcd9cccf089eb"
 
   bottle do
-    sha1 "a5476eb04711bb016a4ef65412a70ba3722098e2" => :mavericks
-    sha1 "4829ba6a324a3057ce56a56d378a7e6790530feb" => :mountain_lion
-    sha1 "c0c82da5f79fb4c19cf7d2f16a9c008810b835c7" => :lion
   end
 
   # Will fail against Java 1.7
@@ -35,6 +19,7 @@ class Collectd < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   fails_with :clang do
     build 318
