@@ -3,6 +3,12 @@ class Colorsvn < Formula
   url "http://colorsvn.tigris.org/files/documents/4414/49311/colorsvn-0.3.3.tar.gz"
   sha256 "db58d5b8f60f6d4def14f8f102ff137b87401257680c1acf2bce5680b801394e"
 
+  bottle do
+    sha256 "30d9da7a1ce1c1cdb42dd6e83cd51e8dfd7b1706ee1ce5752207a28b97306e1f" => :yosemite
+    sha256 "94330b9473fc8f615bb3244a767ed44409e8e80b58500b7c85b4cca8f0cdaafe" => :mavericks
+    sha256 "9e81200ceb3a34f741eb7faadf1616cb0d9878599fdfb2d6b01b2e09d9b33c9f" => :mountain_lion
+  end
+
   patch :DATA
 
   def install
