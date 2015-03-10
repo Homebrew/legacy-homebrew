@@ -1,9 +1,7 @@
-require 'formula'
-
 class YamlCpp < Formula
-  homepage 'http://code.google.com/p/yaml-cpp/'
-  url 'https://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.1.tar.gz'
-  sha1 '9c5414b4090491e96d1b808fe8628b31e625fdaa'
+  homepage "https://code.google.com/p/yaml-cpp/"
+  url "https://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.1.tar.gz"
+  sha256 "3e7c9052b43d987d41819a203d97fc45de4eed3ec67e0fdb14265c3d11046f06"
 
   bottle do
     cellar :any
@@ -16,12 +14,12 @@ class YamlCpp < Formula
   option :universal
   option "with-static-lib", "Build a static library"
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   if build.cxx11?
-    depends_on 'boost' => 'c++11'
+    depends_on "boost" => "c++11"
   else
-    depends_on 'boost'
+    depends_on "boost"
   end
 
   def install
@@ -35,6 +33,6 @@ class YamlCpp < Formula
     end
 
     system "cmake", ".", *args
-    system "make install"
+    system "make", "install"
   end
 end
