@@ -17,10 +17,10 @@ class AndroidNdk < Formula
     bin.mkpath
 
     if MacOS.prefer_64_bit?
-      system "chmod", "a+x", "./android-ndk-#{version}-darwin-x86_64.bin"
+      chmod 0755, "./android-ndk-#{version}-darwin-x86_64.bin"
       system "./android-ndk-#{version}-darwin-x86_64.bin"
     else
-      system "chmod", "a+x", "./android-ndk-#{version}-darwin-x86.bin"
+      chmod 0755, "./android-ndk-#{version}-darwin-x86.bin"
       system "./android-ndk-#{version}-darwin-x86.bin"
     end
 
