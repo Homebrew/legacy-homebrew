@@ -5,11 +5,8 @@ class Blackbox < Formula
   sha256 "62093e2dad03344f677f0bb1243d95da11e5518280a176787b76a86196fbad8b"
 
   def install
-    chmod 0755, Dir["bin/*"]
-    libexec.install Dir["*"]
-
-    bins = Dir["#{libexec}/bin/*"].select { |f| File.executable? f }
-    bin.write_exec_script bins
+    rm "bin/Makefile"
+    bin.install Dir["bin/*"]
   end
   
   test do
