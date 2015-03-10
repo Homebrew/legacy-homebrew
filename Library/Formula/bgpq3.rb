@@ -2,8 +2,8 @@ require 'formula'
 
 class Bgpq3 < Formula
   homepage 'http://snar.spb.ru/prog/bgpq3/'
-  url 'http://snar.spb.ru/prog/bgpq3/bgpq3-0.1.21.tgz'
-  sha1 '42b2ea29c15e3e57c83c9d5f21c793944e1f2b61'
+  url 'https://github.com/snar/bgpq3/archive/v0.1.27.tar.gz'
+  sha1 'fae5f735033202ab288aef3ad7a83a0b323ae8d7'
   head "https://github.com/snar/bgpq3.git"
 
   # Makefile: upstream has been informed of the patch through email (multiple
