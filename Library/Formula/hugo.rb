@@ -23,9 +23,9 @@ class Hugo < Formula
 
   bottle do
     cellar :any
-    sha1 "efbab55fee9d1c74bd5dcf057cea1fc7932ea25d" => :yosemite
-    sha1 "ac192894c709536377c9e7494278793ece613498" => :mavericks
-    sha1 "ce38925c9dd8e24e052fcefe1de8fa17c1e3212a" => :mountain_lion
+    sha256 "318cd60e3fd01d0876952ca5eac6870da04f40d1f0513751fce8fc85fef9f200" => :yosemite
+    sha256 "28a230b589cb78a4868449409633871c7983d2f385d1a6e64538236b35a19f1c" => :mavericks
+    sha256 "ec9257d512d512ca607360f59902a07e0eec1b2e07d7cbb0ac7639407f715c37" => :mountain_lion
   end
 
   depends_on "go" => :build
