@@ -3,8 +3,9 @@ require "language/go"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.9.3.tar.gz"
-  sha1 "0d18bf1c084e31187910202ee1e2e6bdcf26d97a"
+  version "0.9.4-1"
+  url "https://github.com/junegunn/fzf/archive/0.9.4-1.tar.gz"
+  sha1 "cab72a79d9b7776d0a441d0ae1ba679893df8a55"
 
   bottle do
     sha1 "8df0dad7e5da5ea4211aa0069c9e04e107f26314" => :yosemite
@@ -36,6 +37,7 @@ class Fzf < Formula
     end
 
     prefix.install %w[install uninstall fzf-completion.bash fzf-completion.zsh LICENSE]
+    bin.install "bin/fzf-tmux"
     (prefix/"plugin").install "plugin/fzf.vim"
   end
 
