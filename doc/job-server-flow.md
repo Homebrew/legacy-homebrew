@@ -52,7 +52,7 @@ Context routes
 
 - delete a context with given contextName
 
-        user->WebApi: DELECT /contexts/<contextName>
+        user->WebApi: DELETE /contexts/<contextName>
         WebApi->LocalContextSupervisor: StopContext(contextName)
         opt If no such context
           LocalContextSupervisor->WebApi: NoSuchContext
@@ -164,3 +164,22 @@ Job routes
         note over JobResultActor: subscribers.remove(jobId)
         JobFuture->JobStatusActor: Unsubscribe(jobId, WebApi)
         JobFuture->JobResultActor: Unsubscribe(jobId, WebApi)
+
+- kill a job with jobId
+
+        user->WebApi: DELETE /jobs/<jobId>
+        WebApi->JobInfoActor: GetJobResult(jobId)
+        note over JobInfoActor: JobDao.getJobInfos.get(jobId)
+        opt if jobId not found:
+          JobInfoActor->WebApi: NoSuchJobId
+          WebApi->user: 404
+        end
+        opt if job is running:
+          WebApi->JobManager: KillJob(jobId)
+          JobManager->WebApi: future{}
+          WebApi->user: 200 + "KILLED"
+        end
+        opt if job has error out:
+           JobInfoActor->WebApi: JobInfo
+           WebApi->user: 200 + "ERROR"
+        end

@@ -1,6 +1,7 @@
 package spark.jobserver
 
 import com.typesafe.config.ConfigFactory
+import spark.jobserver.JobManagerActor.KillJob
 import scala.collection.mutable
 import spark.jobserver.io.JobDAO
 
@@ -195,5 +196,20 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
         case JobResult(_, result: Int) => result should equal (1 + 2 + 3)
       }
     }
+
+    it("should be able to cancel running job") {
+      manager ! JobManagerActor.Initialize
+      expectMsgClass(classOf[JobManagerActor.Initialized])
+
+      uploadTestJar()
+      manager ! JobManagerActor.StartJob("demo", classPrefix + "LongPiJob", stringConfig, allEvents)
+      expectMsgPF(1 seconds, "Did not get JobResult") {
+        case JobStarted(id, _, _) => {
+          manager ! KillJob(id)
+          expectNoMsg() //TODO: get somehow an event that job failed or job finished
+        }
+      }
+    }
+
   }
 }

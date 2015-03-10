@@ -258,6 +258,7 @@ the REST API.
     GET /jobs                - Lists the last N jobs
     POST /jobs               - Starts a new job, use ?sync=true to wait for results
     GET /jobs/<jobId>        - Gets the result or status of a specific job
+    DELETE /jobs/<jobId>     - Kills the specified job
     GET /jobs/<jobId>/config - Gets the job configuration
 
 ### Context configuration
@@ -362,8 +363,6 @@ Copyright(c) 2014, Ooyala, Inc.
 - Add Swagger support.  See the spray-swagger project.
 - Implement an interactive SQL window.  See: [spark-admin](https://github.com/adatao/spark-admin)
 
-- Use `SparkContext.setJobGroup` with the job ID
-- Support job cancellation via `cancelJobGroup`
 - Stream the current job progress via a Listener
 - Add routes to return stage info for a job.  Persist it via DAO so that we can always retrieve stage / performance info
   even for historical jobs.  This would be pretty kickass.

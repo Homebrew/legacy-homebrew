@@ -217,6 +217,26 @@ class WebApi(system: ActorSystem,
           }
         }
       } ~
+        //  DELETE /jobs/<jobId>
+        //  Stop the current job. All other jobs submited with this spark context
+        //  will continue to run
+      (delete & path(Segment)) { jobId =>
+          val future = jobInfo ? GetJobResult(jobId)
+          respondWithMediaType(MediaTypes.`application/json`) { ctx =>
+            future.map {
+              case NoSuchJobId =>
+                notFound(ctx, "No such job ID " + jobId.toString)
+              case JobInfo(_, contextName, _, classPath, _, None, _) =>
+                val jobManager = getJobManagerForContext(Some(contextName), config, classPath)
+                jobManager.get ! KillJob(jobId)
+                ctx.complete(Map(StatusKey -> "KILLED"))
+              case JobInfo(_, _, _, _, _, _, Some(ex)) =>
+                ctx.complete(Map(StatusKey -> "ERROR", "ERROR" -> formatException(ex)))
+              case JobResult(_, result) =>
+                ctx.complete(resultToTable(result))
+            }
+          }
+        } ~
       /**
        * GET /jobs   -- returns a JSON list of hashes containing job status, ex:
        * [
