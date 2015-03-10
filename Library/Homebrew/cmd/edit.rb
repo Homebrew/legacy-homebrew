@@ -10,7 +10,7 @@ module Homebrew
         EOS
     end
 
-    # If no brews are listed, open the project root in an editor.
+    # If no formulae are listed, open the project root in an editor.
     if ARGV.named.empty?
       editor = File.basename which_editor
       if editor == "mate" or editor == "subl"

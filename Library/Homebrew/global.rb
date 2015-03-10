@@ -41,7 +41,7 @@ end
 HOMEBREW_CACHE = cache
 undef cache
 
-# Where brews installed via URL are cached
+# Where formulae installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
 
 if not defined? HOMEBREW_BREW_FILE

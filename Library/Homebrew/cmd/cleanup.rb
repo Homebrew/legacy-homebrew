@@ -122,7 +122,7 @@ end
 class Formula
   def can_cleanup?
     # It used to be the case that keg-only kegs could not be cleaned up, because
-    # older brews were built against the full path to the keg-only keg. Then we
+    # older formulae were built against the full path to the keg-only keg. Then we
     # introduced the opt symlink, and built against that instead. So provided
     # no brew exists that was built against an old-style keg-only keg, we can
     # remove it.

@@ -503,7 +503,7 @@ def check_homebrew_prefix
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     <<-EOS.undent
       Your Homebrew is not installed to /usr/local
-      You can install Homebrew anywhere you want, but some brews may only build
+      You can install Homebrew anywhere you want, but some formulae may only build
       correctly if you install in /usr/local. Sorry!
     EOS
   end
@@ -651,7 +651,7 @@ def check_for_gettext
 
   return if @found.empty?
 
-  # Our gettext formula will be caught by check_linked_keg_only_brews
+  # Our gettext formula will be caught by check_for_linked_keg_only_brews
   f = Formulary.factory("gettext") rescue nil
   return if f and f.linked_keg.directory? and @found.all? do |path|
     Pathname.new(path).realpath.to_s.start_with? "#{HOMEBREW_CELLAR}/gettext"
@@ -788,7 +788,7 @@ def check_for_multiple_volumes
   unless where_cellar == where_temp then <<-EOS.undent
     Your Cellar and TEMP directories are on different volumes.
     OS X won't move relative symlinks across volumes unless the target file already
-    exists. Brews known to be affected by this are Git and Narwhal.
+    exists. Formulae known to be affected by this are Git and Narwhal.
 
     You should set the "HOMEBREW_TEMP" environmental variable to a suitable
     directory on the same volume as your Cellar.
@@ -945,7 +945,7 @@ def check_for_linked_keg_only_brews
     Binaries provided by keg-only formulae may override system binaries
     with other strange results.
 
-    You may wish to `brew unlink` these brews:
+    You may wish to `brew unlink` these formulae:
 
     EOS
     warnings.each_key { |f| s << "    #{f}\n" }
@@ -1144,7 +1144,7 @@ def check_for_unlinked_but_not_keg_only
 
   if not unlinked.empty? then <<-EOS.undent
     You have unlinked kegs in your Cellar
-    Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
+    Leaving kegs unlinked can lead to build-trouble and cause formulae that depend on
     those kegs to fail to run properly once built. Run `brew link` on these:
 
         #{unlinked * "\n        "}
