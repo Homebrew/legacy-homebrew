@@ -13,5 +13,7 @@ class Tasksh < Formula
 
   test do
     system "#{bin}/tasksh", "--version"
+    system "echo", "add", "Test Task", "|", "#{bin}/tasksh"
+    system "echo", "1", "del\nyes", "|", "#{bin}/tasksh"
   end
 end
