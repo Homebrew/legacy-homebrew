@@ -1,6 +1,7 @@
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
-  url "https://github.com/Carthage/Carthage.git", :tag => "0.6.2",
+  url "https://github.com/Carthage/Carthage.git", :tag => "0.6.3",
+                                                  :revision => "cd6d4237d77c22559a8f6dc92c09ef297be91ea5",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
@@ -8,8 +9,8 @@ class Carthage < Formula
 
   bottle do
     cellar :any
-    sha1 "dde8190c8b66184fd85111b739039aefb5d050a9" => :yosemite
-    sha1 "b663dcf2608c97c7542121eb1a011ca7d0df70cd" => :mavericks
+    sha256 "318dbf4bbbb8d93fa99676f0e3e6708e515ebb97c345a317a79869307dd94eae" => :yosemite
+    sha256 "51db791570ab0afd405f30ea2980e1af4e75403d3616cf37e54e40dc2fb68b14" => :mavericks
   end
 
   def install
