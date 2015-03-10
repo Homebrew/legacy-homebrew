@@ -8,9 +8,9 @@ class Blackbox < Formula
     rm "bin/Makefile"
     bin.install Dir["bin/*"]
   end
-  
+
   test do
     system "#{bin}/blackbox_cat"
   end
-  
+
 end
