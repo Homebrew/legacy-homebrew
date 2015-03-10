@@ -1,7 +1,9 @@
 package spark.jobserver
 
 trait TestJarFinder {
-  val testJarDir = "../job-server-tests/target/"
+  val versionRegex = """(\d\.\d+).*""".r
+  val version = scala.util.Properties.versionNumberString match { case versionRegex(d) => d }
+  val testJarDir = "../job-server-tests/target/scala-" + version + "/"
   val testJar = {
     val allJars = new java.io.File(testJarDir).listFiles.toSeq.filter { file =>
       val path = file.toString
