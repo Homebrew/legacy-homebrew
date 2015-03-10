@@ -1,17 +1,15 @@
-require 'formula'
-
 class AndroidSdk < Formula
-  homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r24.1.2-macosx.zip'
-  version '24.1.2'
-  sha1 '00e43ff1557e8cba7da53e4f64f3a34498048256'
+  homepage "https://developer.android.com/index.html"
+  url "https://dl.google.com/android/android-sdk_r24.1.2-macosx.zip"
+  version "24.1.2"
+  sha256 "a4441a4770130aa841f350918a16db43aaee18f2d8e0c681a216e0381a763362"
 
-  conflicts_with 'android-platform-tools',
+  conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
-  resource 'completion' do
-    url 'https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
-    sha1 '6dfead9b1350dbe1c16a1c80ed70beedebfa39eb'
+  resource "completion" do
+    url "https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash"
+    sha256 "6ae8fae2a07c7a286d440d5f5bdafdd0c208284d7c8be21a0f59d96bb7426091"
   end
 
   # Version of the android-build-tools the wrapper scripts reference.
@@ -20,11 +18,11 @@ class AndroidSdk < Formula
   end
 
   def install
-    prefix.install 'tools', 'SDK Readme.txt' => 'README'
+    prefix.install "tools", "SDK Readme.txt" => "README"
 
     %w[android ddms draw9patch emulator
-    emulator-arm emulator-x86 hierarchyviewer lint mksdcard
-    monitor monkeyrunner traceview].each do |tool|
+       emulator-arm emulator-x86 hierarchyviewer lint mksdcard
+       monitor monkeyrunner traceview].each do |tool|
       (bin/tool).write <<-EOS.undent
         #!/bin/bash
         TOOL="#{prefix}/tools/#{tool}"
@@ -79,7 +77,7 @@ class AndroidSdk < Formula
       EOS
     end
 
-    bash_completion.install resource('completion').files('adb.bash' => 'adb-completion.bash')
+    bash_completion.install resource("completion").files("adb.bash" => "adb-completion.bash")
   end
 
   def caveats; <<-EOS.undent
