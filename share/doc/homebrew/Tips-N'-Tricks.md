@@ -54,7 +54,7 @@ ln -s "$(brew --prefix)/Library/Contributions/brew_zsh_completion.zsh" /usr/loca
 ### Fish
 Run in terminal:
 ```fish
-ln -s "(brew --prefix)/Library/Contributions/brew_fish_completion.fish" ~/.config/fish/completions
+ln -s (brew --prefix)/Library/Contributions/brew_fish_completion.fish ~/.config/fish/completions
 ```
 
 ## Pre-downloading a file for a formula
