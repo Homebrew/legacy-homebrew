@@ -162,7 +162,12 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  curl = Pathname.new '/usr/bin/curl'
+  if ENV["HOMEBREW_CURL"]
+    curl = Pathname.new(ENV["HOMEBREW_CURL"])
+  else
+    curl = Pathname.new "/usr/bin/curl"
+  end
+
   raise "#{curl} is not executable" unless curl.exist? and curl.executable?
 
   flags = HOMEBREW_CURL_ARGS
