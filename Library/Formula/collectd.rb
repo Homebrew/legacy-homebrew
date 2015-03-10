@@ -4,6 +4,9 @@ class Collectd < Formula
   sha256 "9778080ee9ee676c7130b1ce86c2843c7359e29b9bd1c1c0e48fcd9cccf089eb"
 
   bottle do
+    sha256 "dedd8a693c756ab947c56cbebe570c0b45692762c2b193e15214b8005a771efc" => :yosemite
+    sha256 "fb2c605c2095b592fee5a413317b399b43310eae1857ea5afa81b3b3ccd0ef39" => :mavericks
+    sha256 "918e199332c503a0b6dbd81e46233897c807051f8238698e29c5c2b7fdea8698" => :mountain_lion
   end
 
   # Will fail against Java 1.7
