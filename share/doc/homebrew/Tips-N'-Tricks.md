@@ -50,6 +50,13 @@ Run in terminal (may require `sudo`):
 ln -s "$(brew --prefix)/Library/Contributions/brew_zsh_completion.zsh" /usr/local/share/zsh/site-functions
 ```
 
+
+### Fish
+Run in terminal:
+```fish
+ln -s "(brew --prefix)/Library/Contributions/brew_fish_completion.fish" ~/.config/fish/completions
+```
+
 ## Pre-downloading a file for a formula
 
 Sometimes it's faster to download a file via means other than those strategies that are available as part of Homebrew.  For example, Erlang provides a Torrent that'll let you download at 4–5× the normal HTTP method.  Download the file and drop it in `~/Library/Caches/Homebrew`, but watch the file name.  Homebrew downloads files as <code>{{ formula name }}-{{ version }}</code>.  In the case of Erlang, this requires renaming the file from <code>otp_src_R13B03</code> to <code>erlang-R13B03</code>.
