@@ -6,6 +6,13 @@ class Zint < Formula
 
   head "git://zint.git.sourceforge.net/gitroot/zint/zint"
 
+  bottle do
+    cellar :any
+    sha256 "d3053fb59b35d60a284afbe672a5c70749b6d98181762a443934224aa87997f8" => :yosemite
+    sha256 "293bd454680c7533521d2d766bdbc8c271793cd2340635c5d1dfadace12a3f1c" => :mavericks
+    sha256 "1b3d656bea3766cbc955be1e348af63709b37e12acef35dac4943a712885546d" => :mountain_lion
+  end
+
   option "with-qt", "Build the zint-qt GUI"
   deprecated_option "qt" => "with-qt"
 
