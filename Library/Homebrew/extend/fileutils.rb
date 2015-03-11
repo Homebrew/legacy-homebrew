@@ -14,14 +14,17 @@ module FileUtils
     # /tmp volume to the other volume. So we let the user override the tmp
     # prefix if they need to.
 
-    tempd = with_system_path { `mktemp -d #{HOMEBREW_TEMP}/#{prefix}-XXXXXX` }.chuzzle
-    raise "Failed to create sandbox" if tempd.nil?
+    tempd = with_system_path { `mktemp -d #{HOMEBREW_TEMP}/#{prefix}-XXXXXX` }.strip
+    raise "Failed to create sandbox" if tempd.empty?
     prevd = pwd
-    cd tempd
-    yield
-  ensure
-    cd prevd if prevd
-    ignore_interrupts{ rm_r tempd } if tempd
+    cd(tempd)
+
+    begin
+      yield
+    ensure
+      cd(prevd)
+      ignore_interrupts { rm_r(tempd) }
+    end
   end
   module_function :mktemp
 
