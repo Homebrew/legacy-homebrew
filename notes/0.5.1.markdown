@@ -1,0 +1,1 @@
+* dependent-jar-uris accepts comma-separated string list for query param inclusion (@KaiXinXiaoLei)
