@@ -4,9 +4,10 @@ class Moc < Formula
   sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
 
   bottle do
-    sha1 "1a08c15f965d74614f142ee8ec2bea75b5d999cd" => :yosemite
-    sha1 "7168fc76526f705ecc4ee766e2f6d7a37e271b46" => :mavericks
-    sha1 "876c8a6cbf642db773e6c65794e7632422e9cafa" => :mountain_lion
+    revision 1
+    sha256 "3188a4355200b250e6a63c909c6ef8a7a458e25377a6a17d6f62455072b38e40" => :yosemite
+    sha256 "ccfd6919a5d64861ecc66f6ad01e8b4f259295dbe3772b459bb139ab0908b2e0" => :mavericks
+    sha256 "94cca91c117a1575aa61a10f288e95672e61bfe0c1d473b2fac70c480c0d92ab" => :mountain_lion
   end
 
   head do
