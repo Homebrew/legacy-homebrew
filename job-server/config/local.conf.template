@@ -39,7 +39,7 @@ spark {
     # in case spark distribution should be accessed from HDFS (as opposed to being installed on every mesos slave)
     # spark.executor.uri = "hdfs://namenode:8020/apps/spark/spark.tgz"
 
-    # uris of jars to be loaded into the classpath for this context
+    # uris of jars to be loaded into the classpath for this context. Uris is a string list, or a string separated by commas ','
     # dependent-jar-uris = ["file:///some/path/present/in/each/mesos/slave/somepackage.jar"]
     
     # If you wish to pass any settings directly to the sparkConf as-is, add them here in passthrough,
