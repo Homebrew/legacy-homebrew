@@ -2,9 +2,9 @@ require "formula"
 
 class Cairo < Formula
   homepage "http://cairographics.org/"
-  url "http://cairographics.org/releases/cairo-1.14.0.tar.xz"
-  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.0.tar.xz"
-  sha256 "2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7"
+  url "http://cairographics.org/releases/cairo-1.14.2.tar.xz"
+  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.2.tar.xz"
+  sha256 "c919d999ddb1bbbecd4bbe65299ca2abd2079c7e13d224577895afa7005ecceb"
 
   bottle do
     revision 2
