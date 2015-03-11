@@ -4,7 +4,6 @@ class Tachyon < Formula
   sha1 "74c17c9fb186740246cc23953c8811c47bdf699e"
 
   def install
-    mkdir_p "#{etc}/tachyon"
     libexec.install %w[bin client conf core libexec]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
     doc.install Dir["docs/*"]
