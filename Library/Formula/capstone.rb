@@ -1,7 +1,7 @@
 class Capstone < Formula
   homepage "http://capstone-engine.org"
-  url "http://capstone-engine.org/download/3.0.1/capstone-3.0.1.tgz"
-  sha1 "7f206c853c6b8d05de22e919c2455ab661654093"
+  url "http://capstone-engine.org/download/3.0.2/capstone-3.0.2.tgz"
+  sha1 "7e2cb9a94f4cda478bc011bcf409d55fcdab6aec"
 
   bottle do
     cellar :any
