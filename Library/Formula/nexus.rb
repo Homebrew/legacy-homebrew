@@ -1,8 +1,8 @@
 class Nexus < Formula
   homepage "http://www.sonatype.org/"
-  version "2.11.2-03"
-  url "https://download.sonatype.com/nexus/oss/nexus-2.11.2-03-bundle.tar.gz"
-  sha1 "d64fe117b1eb344ac0020819d31bdcc6d4ede123"
+  version "2.11.2-04"
+  url "https://download.sonatype.com/nexus/oss/nexus-2.11.2-04-bundle.tar.gz"
+  sha256 "8c62164a80728dc279a642c1ee07412b4e994889a1beb2c14cb43ca7418747f6"
 
   def install
     rm_f Dir["bin/*.bat"]
