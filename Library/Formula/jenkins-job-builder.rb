@@ -56,7 +56,8 @@ class JenkinsJobBuilder < Formula
   end
 
   test do
-    system "#{bin}/jenkins-jobs", "-h"
-    system "printf -- \"- job:\\n    name: test-job\\n\\n\" | #{bin}/jenkins-jobs --flush-cache --conf test test /dev/stdin | grep -q \"\\bManaged by Jenkins Job Builder\\b\""
+      assert_match /Managed by Jenkins Job Builder/,
+          pipe_output("#{bin}/jenkins-jobs test /dev/stdin",
+                      "- job:\n    name: test-job\n\n", 0)
   end
 end
