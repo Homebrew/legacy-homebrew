@@ -23,7 +23,7 @@ fi
 echo Deploying job server to $DEPLOY_HOSTS...
 
 cd $(dirname $0)/..
-sbt job-server/assembly
+sbt ++$SCALA_VERSION job-server/assembly
 if [ "$?" != "0" ]; then
   echo "Assembly failed"
   exit 1
