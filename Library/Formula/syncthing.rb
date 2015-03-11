@@ -1,7 +1,7 @@
 class Syncthing < Formula
   homepage "http://syncthing.net"
   url "https://github.com/syncthing/syncthing.git",
-    :tag => "v0.10.25", :revision => "e22c873ec4a65cabf1df5b09c343cbf4ea2325aa"
+    :tag => "v0.10.26", :revision => "9c3cee9ae4ff8ea7d8e3edc9eb7ff590a8255bdb"
 
   head "https://github.com/syncthing/syncthing.git"
 
@@ -20,7 +20,7 @@ class Syncthing < Formula
 
     # FIXTHIS: do this without mutating the cache!
     hack_dir = cached_download/".gopath/src/github.com/syncthing"
-    rm_rf  hack_dir
+    rm_rf hack_dir
     mkdir_p hack_dir
     ln_s cached_download, "#{hack_dir}/syncthing"
 
