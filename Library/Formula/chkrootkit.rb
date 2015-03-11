@@ -1,20 +1,14 @@
-require 'formula'
-
 class Chkrootkit < Formula
-  homepage 'http://www.chkrootkit.org/'
-  url 'http://ftp.de.debian.org/debian/pool/main/c/chkrootkit/chkrootkit_0.49.orig.tar.gz'
-  sha1 'cec1a3c482b95b20d3a946b07fffb23290abc4a6'
+  homepage "http://www.chkrootkit.org/"
+  url "https://mirrors.kernel.org/debian/pool/main/c/chkrootkit/chkrootkit_0.50.orig.tar.gz"
+  sha256 "9548fc922b0cb8ddf055faff4a4887f140a31c45f2f5e3aa64aad91ecfa56cc7"
 
   def install
-    system "make", "CC=#{ENV.cc}",
-                   "CFLAGS=#{ENV.cflags}",
-                   "STATIC=",
-                   "sense", "all"
+    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}",
+                   "STATIC=", "sense", "all"
 
-    bin.install %w{check_wtmpx chkdirs chklastlog chkproc
-                    chkrootkit chkutmp chkwtmp ifpromisc
-                    strings-static}
-    doc.install %w{README README.chklastlog README.chkwtmp}
+    bin.install Dir[buildpath/"*"].select { |f| File.executable? f }
+    doc.install %w[README README.chklastlog README.chkwtmp]
   end
 
   test do
