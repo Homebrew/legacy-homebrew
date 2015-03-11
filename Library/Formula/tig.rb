@@ -2,8 +2,8 @@ require "formula"
 
 class Tig < Formula
   homepage "http://jonas.nitro.dk/tig/"
-  url "http://jonas.nitro.dk/tig/releases/tig-2.0.3.tar.gz"
-  sha1 "762dff87ea8691b7c1b5cfdaf077e367c60ef375"
+  url "http://jonas.nitro.dk/tig/releases/tig-2.1.tar.gz"
+  sha1 "2527cfee62a890f25c7c2ae8c1a16e5fa201ce29"
 
   head do
     url "https://github.com/jonas/tig.git"
