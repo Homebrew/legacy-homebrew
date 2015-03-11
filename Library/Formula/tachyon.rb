@@ -1,7 +1,7 @@
 class Tachyon < Formula
   homepage "http://tachyon-project.org/"
   url "https://github.com/amplab/tachyon/releases/download/v0.6.0/tachyon-0.6.0-bin.tar.gz"
-  sha1 "74c17c9fb186740246cc23953c8811c47bdf699e"
+  sha256 "53a9a893a7381d32fcea71f943b999453ee697c6604859a2d9dc07d9420947b2"
 
   def install
     libexec.install %w[bin client conf core libexec]
