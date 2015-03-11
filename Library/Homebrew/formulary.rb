@@ -107,7 +107,7 @@ class Formulary
         name = name_without_version
       end
 
-      super name, Formula.path(name)
+      super name, Formula.search_path(name)
     end
 
     def get_formula(spec)
@@ -158,19 +158,19 @@ class Formulary
 
     def initialize tapped_name
       @tapped_name = tapped_name
-      user, repo, name = tapped_name.split("/", 3).map(&:downcase)
+      user, repo, name = tapped_name.split("/", 3)
       tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}")
-      path = tap.join("#{name}.rb")
 
       if tap.directory?
         tap.find_formula do |file|
           if file.basename(".rb").to_s == name
-            path = file
+            super name, file
+            return
           end
         end
       end
 
-      super name, path
+      raise TapFormulaUnavailableError, tapped_name
     end
 
     def get_formula(spec)
@@ -186,6 +186,10 @@ class Formulary
     end
 
     def get_formula(spec)
+      raise FormulaUnavailableError.new(name)
+    end
+
+    def path
       raise FormulaUnavailableError.new(name)
     end
   end
@@ -204,6 +208,15 @@ class Formulary
     loader_for(ref).name
   end
 
+  def self.canonical_name_and_path(ref)
+    formula = loader_for(ref)
+    [formula.name, formula.path]
+  end
+
+  def self.canonical_path(ref)
+    loader_for(ref).path
+  end
+
   def self.loader_for(ref)
     case ref
     when %r[(https?|ftp)://]
@@ -211,16 +224,17 @@ class Formulary
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
     when HOMEBREW_TAP_FORMULA_REGEX
-      return TapLoader.new(ref)
+      return TapLoader.new(ref.downcase)
     end
 
     if File.extname(ref) == ".rb"
       return FromPathLoader.new(ref)
     end
 
-    formula_with_that_name = Formula.path(ref)
-    if formula_with_that_name.file?
-      return FormulaLoader.new(ref, formula_with_that_name)
+    begin
+      formula_with_that_name = Formula.search_path(ref.downcase)
+      return FormulaLoader.new(ref.downcase, formula_with_that_name)
+    rescue FormulaUnavailableError
     end
 
     possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{ref}")

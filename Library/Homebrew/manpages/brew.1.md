@@ -337,8 +337,7 @@ Note that these flags should only appear after a command.
     <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
 
   * `tap --repair`:
-    Ensure all tapped formulae are symlinked into Library/Formula and prune dead
-    formulae from Library/Formula.
+    Migrate tapped formulae from symlink based to directories based structure.
 
   * `test` [--devel|--HEAD] [--debug] <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
