@@ -14,11 +14,6 @@ module Homebrew
     end
 
     ARGV.named.each do |name|
-      # if a formula has been tapped ignore the blacklisting
-      unless Formula.path(name).file?
-        msg = blacklisted? name
-        raise "No available formula for #{name}\n#{msg}" if msg
-      end
       if !File.exist?(name) && (name =~ HOMEBREW_TAP_FORMULA_REGEX \
                                 || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
         install_tap $1, $2
@@ -87,12 +82,16 @@ module Homebrew
 
       formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
-      ofail e.message
-      query = query_regexp(e.name)
-      puts 'Searching formulae...'
-      puts_columns(search_formulae(query))
-      puts 'Searching taps...'
-      puts_columns(search_taps(query))
+      if (blacklist = blacklisted?(e.name))
+        ofail "#{e.message}\n#{blacklist}"
+      else
+        ofail e.message
+        query = query_regexp(e.name)
+        puts "Searching formulae..."
+        puts_columns(search_formulae(query))
+        puts "Searching taps..."
+        puts_columns(search_taps(query))
+      end
     end
   end
 
