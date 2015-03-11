@@ -4,7 +4,6 @@ class Sox < Formula
   homepage 'http://sox.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/sox/sox/14.4.2/sox-14.4.2.tar.gz'
   sha1 'f69f38f8a7ad6a88ecab3862d74db4edcd796695'
-  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'libpng'
