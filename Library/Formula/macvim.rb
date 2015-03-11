@@ -69,8 +69,8 @@ class Macvim < Formula
         import distutils.sysconfig
         print distutils.sysconfig.get_config_var("PYTHONFRAMEWORKPREFIX")
       EOS
-      framework_prefix = `python -c '#{framework_script}'`.chuzzle
-      if framework_prefix && framework_prefix != "/System/Library/Frameworks"
+      framework_prefix = `python -c '#{framework_script}'`.strip
+      unless framework_prefix.empty? || framework_prefix == "/System/Library/Frameworks"
         ENV.prepend "LDFLAGS", "-F#{framework_prefix}"
         ENV.prepend "CFLAGS", "-F#{framework_prefix}"
       end
