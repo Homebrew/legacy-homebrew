@@ -1,18 +1,16 @@
-require "formula"
-
 class Ld64 < Formula
-  homepage "http://opensource.apple.com/"
+  homepage "https://opensource.apple.com/"
   # Latest is 134.9, but it no longer supports building for PPC.
   # 127.2 won't build on Tiger, at least without some patching.
   # Leopard users: if you like, add a 127.2 option or fix the build
   # on Tiger.
   #
-  url "http://opensource.apple.com/tarballs/ld64/ld64-97.17.tar.gz"
-  sha1 "7c1d816c2fec02e558f4a528d16d8161f0e379b5"
+  url "https://opensource.apple.com/tarballs/ld64/ld64-97.17.tar.gz"
+  sha256 "02bd46af0809eaa415d096d7d41c3e8e7d80f7d8d181840866fb87f036b4e089"
 
   resource "makefile" do
     url "https://trac.macports.org/export/123511/trunk/dports/devel/ld64/files/Makefile-97", :using => :nounzip
-    sha1 "581688eb31a44b406dfb7476a770d2cff190f2bd"
+    sha256 "48e3475bd73f9501d17b7d334d3bf319f5664f2d5ab9d13378e37c2519ae2a3a"
   end
 
   depends_on MaximumMacOSRequirement => :snow_leopard
@@ -33,19 +31,19 @@ class Ld64 < Formula
   # Fixes logic on PPC branch islands
   patch :p0 do
     url "https://trac.macports.org/export/103948/trunk/dports/devel/ld64/files/ld64-97-ppc-branch-island.patch"
-    sha1 "e3f42a52e201a40272ca29119bced50a270659b8"
+    sha256 "a6bbf25c6e4fa348eee3d4756ad65f42ba42b78922dc0f75669023cdf9c25d72"
   end
 
   # Remove LTO support
   patch :p0 do
     url "https://trac.macports.org/export/103949/trunk/dports/devel/ld64/files/ld64-97-no-LTO.patch"
-    sha1 "3a6f482f87c08ac6135b7a36fdb131d82daf9ea1"
+    sha256 "2596cc25118981cbc31e82ddcb70508057f1946c46c3d6d6845ab7bd01ff1433"
   end
 
   # Fix version number
   patch :p0 do
     url "https://trac.macports.org/export/103951/trunk/dports/devel/ld64/files/ld64-version.patch"
-    sha1 "42a15f2bd7de9b01d24dba8744cd4a36a2dec87b"
+    sha256 "3753b6877641648017eab2bb391361840fe887a2b3eb2e5ef689272a28c374fc"
   end
 
   def install

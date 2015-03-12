@@ -155,6 +155,10 @@ class Tab < OpenStruct
     built_as_bottle && !poured_from_bottle
   end
 
+  def bottle?
+    built_as_bottle
+  end
+
   def to_json
     attributes = {
       "used_options" => used_options.as_flags,

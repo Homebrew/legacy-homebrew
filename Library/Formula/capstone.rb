@@ -1,14 +1,13 @@
 class Capstone < Formula
   homepage "http://capstone-engine.org"
-  url "http://capstone-engine.org/download/3.0.1/capstone-3.0.1.tgz"
-  sha1 "7f206c853c6b8d05de22e919c2455ab661654093"
+  url "http://capstone-engine.org/download/3.0.2/capstone-3.0.2.tgz"
+  sha1 "7e2cb9a94f4cda478bc011bcf409d55fcdab6aec"
 
   bottle do
     cellar :any
-    revision 3
-    sha1 "63e887ea699a71bbd3f08d5dfa8cbbb8f061f768" => :yosemite
-    sha1 "210d46b2de72092f42df324e29297397405acbb0" => :mavericks
-    sha1 "eb835f4d9bdcd7d465224f7bd6ab47b21287da94" => :mountain_lion
+    sha256 "8fb84e2b01d5fbc24bb055c24ddcfd860193e439ee82704d321cc5ed9bb0332a" => :yosemite
+    sha256 "0c04d84516082b92728baae61971b85a3e5221010d6e2189a719327a3ee88c25" => :mavericks
+    sha256 "40241a0b359a0ee16a9593ec159f2499c4f15afdb0cd3799cced55014e8ec0c6" => :mountain_lion
   end
 
   def install
