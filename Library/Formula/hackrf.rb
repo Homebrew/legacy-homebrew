@@ -1,5 +1,3 @@
-require "formula"
-
 class Hackrf < Formula
   homepage "https://github.com/mossmann/hackrf"
   url "https://github.com/mossmann/hackrf/archive/v2014.08.1.tar.gz"
