@@ -23,18 +23,24 @@ class Ttfautohint < Formula
   depends_on "freetype"
   depends_on "libpng"
   depends_on "harfbuzz"
+  depends_on "qt" => :optional
+
+  args = %W[
+    --disable-dependency-tracking
+    --disable-silent-rules
+    --prefix=#{prefix}
+    --without-doc
+  ]
+
+  args << "--without-qt" if build.without? "qt"
 
   def install
     system "./bootstrap" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-qt=no",
-                          "--without-doc"
+    system "./configure", *args
     system "make install"
   end
 
   test do
-    system "#{bin}/ttfautohint", "-V"
+    system "#{bin}/ttfautohintGUI", "-V"
   end
 end
