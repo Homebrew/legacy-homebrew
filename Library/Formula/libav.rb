@@ -1,7 +1,7 @@
 class Libav < Formula
   homepage "https://libav.org/"
-  url "https://libav.org/releases/libav-11.2.tar.xz"
-  sha1 "52ba52cabe5d86b45ce62f56e11fa7912c6e5083"
+  url "https://libav.org/releases/libav-11.3.tar.xz"
+  sha256 "12ae6c051967765ae5faeddf94c4584129ac0b18edb884afffc5fcedcdb5e030"
 
   head "git://git.libav.org/libav.git"
 
