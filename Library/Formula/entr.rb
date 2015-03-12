@@ -1,7 +1,8 @@
 class Entr < Formula
   homepage "http://entrproject.org/"
-  url "http://entrproject.org/code/entr-3.0.tar.gz"
-  sha1 "e7c5f589b2bce839464052b116a051b4d8f43f23"
+  url "http://entrproject.org/code/entr-3.1.tar.gz"
+  mirror "https://bitbucket.org/eradman/entr/get/entr-3.1.tar.gz"
+  sha256 "f0f27e8fc610936f5ec72891687fc77e0df0b21172f14e85ff381d2fe5e3aadd"
 
   bottle do
     cellar :any
