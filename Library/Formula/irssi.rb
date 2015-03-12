@@ -3,6 +3,7 @@ require "formula"
 class Irssi < Formula
   homepage "http://irssi.org/"
   url "http://irssi.org/files/irssi-0.8.17.tar.bz2"
+  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/irssi-0.8.17.tar.bz2"
   sha1 "3bdee9a1c1f3e99673143c275d2c40275136664a"
   revision 2
 
