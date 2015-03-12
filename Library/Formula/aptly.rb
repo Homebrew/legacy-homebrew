@@ -2,9 +2,9 @@ require "formula"
 require "language/go"
 
 class Aptly < Formula
-  homepage "http://www.aptly.info/"
-  url "https://github.com/smira/aptly/archive/v0.8.tar.gz"
-  sha1 "cf6ec39d2a450d5a7bc4a7ee13cacfba782a324f"
+  homepage "https://www.aptly.info/"
+  url "https://github.com/smira/aptly/archive/v0.9.1.tar.gz"
+  sha1 "d38a20f04ba70c67a86a3e04b2cd2641674371d2"
 
   head "https://github.com/smira/aptly.git"
 
@@ -42,12 +42,16 @@ class Aptly < Formula
     url "https://code.google.com/p/snappy-go/", :revision => "12e4b4183793", :using => :hg
   end
 
+  go_resource "github.com/AlekSi/pointer" do
+    url "https://github.com/AlekSi/pointer.git", :revision => "5f6d527dae3d678b46fbb20331ddf44e2b841943"
+  end
+
   go_resource "github.com/cheggaaa/pb" do
-    url "https://github.com/cheggaaa/pb.git", :revision => "74be7a1388046f374ac36e93d46f5d56e856f827"
+    url "https://github.com/cheggaaa/pb.git", :revision => "2c1b74620cc58a81ac152ee2d322e28c806d81ed"
   end
 
   go_resource "github.com/gin-gonic/gin" do
-    url "https://github.com/gin-gonic/gin.git", :revision => "0808f8a824cfb9aef6ea4fd664af238544b66fc1"
+    url "https://github.com/gin-gonic/gin.git", :revision => "b1758d3bfa09e61ddbc1c9a627e936eec6a170de"
   end
 
   go_resource "github.com/jlaffaye/ftp" do
@@ -70,6 +74,10 @@ class Aptly < Formula
     url "https://github.com/mkrautz/goar.git", :revision => "36eb5f3452b1283a211fa35bc00c646fd0db5c4b"
   end
 
+  go_resource "github.com/ncw/swift" do
+    url "https://github.com/ncw/swift.git", :revision => "384ef27c70645e285f8bb9d02276bf654d06027e"
+  end
+
   go_resource "github.com/smira/commander" do
     url "https://github.com/smira/commander.git", :revision => "f408b00e68d5d6e21b9f18bd310978dafc604e47"
   end
@@ -83,7 +91,11 @@ class Aptly < Formula
   end
 
   go_resource "github.com/syndtr/goleveldb" do
-    url "https://github.com/syndtr/goleveldb.git", :revision => "e2fa4e6ac1cc41a73bc9fd467878ecbf65df5cc3"
+    url "https://github.com/syndtr/goleveldb.git", :revision => "97e257099d2ab9578151ba85e2641e2cd14d3ca8"
+  end
+
+  go_resource "github.com/syndtr/gosnappy" do
+    url "https://github.com/syndtr/gosnappy.git", :revision => "ce8acff4829e0c2458a67ead32390ac0a381c862"
   end
 
   go_resource "github.com/ugorji/go" do
@@ -100,6 +112,10 @@ class Aptly < Formula
 
   go_resource "github.com/daviddengcn/go-colortext" do
     url "https://github.com/daviddengcn/go-colortext.git", :revision => "b5c0891944c2f150ccc9d02aecf51b76c14c2948"
+  end
+
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git", :revision => "a7ead6ddf06233883deca151dffaef2effbf498f"
   end
 
   def install
