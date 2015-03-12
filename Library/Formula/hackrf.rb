@@ -6,7 +6,6 @@ class Hackrf < Formula
 
   depends_on "cmake" => :build
   depends_on "libusb"
-  depends_on "pkgconfig"
 
   def install
     cd "host" do
@@ -16,6 +15,6 @@ class Hackrf < Formula
   end
 
   test do
-    system "pkg-config libhackrf --cflags"
+    shell_output("hackrf_transfer", 1)
   end
 end
