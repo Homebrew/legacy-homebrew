@@ -18,7 +18,21 @@ class Xvid < Formula
       system "./configure", "--disable-assembly", "--prefix=#{prefix}"
       ENV.j1 # Or make fails
       system "make"
-      system "make install"
+      system "make", "install"
     end
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <xvid.h>
+      #define NULL 0
+      int main() {
+        xvid_gbl_init_t xvid_gbl_init;
+        xvid_global(NULL, XVID_GBL_INIT, &xvid_gbl_init, NULL);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.cpp", "-L#{lib}", "-lxvidcore", "-o", "test"
+    system "./test"
   end
 end
