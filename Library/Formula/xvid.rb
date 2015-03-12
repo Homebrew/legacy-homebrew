@@ -1,5 +1,5 @@
 class Xvid < Formula
-  homepage "http://www.xvid.org"
+  homepage "https://www.xvid.org"
   url "https://fossies.org/unix/privat/xvidcore-1.3.3.tar.gz"
   # Official download takes a long time to fail, so set it as the mirror for now
   mirror "http://downloads.xvid.org/downloads/xvidcore-1.3.3.tar.gz"
