@@ -17,7 +17,7 @@ class JavaDependency < Requirement
     else # Apple JVM
       ENV.append_to_cflags "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
     end
-  end
+  end if OS.mac?
 
   def initialize(tags)
     @version = tags.shift if /(\d\.)+\d/ === tags.first
