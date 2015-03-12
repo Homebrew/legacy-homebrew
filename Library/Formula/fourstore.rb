@@ -1,21 +1,19 @@
-require 'formula'
-
 class Fourstore < Formula
-  homepage 'http://4store.org/'
-  url 'http://4store.org/download/4store-v1.1.5.tar.gz'
-  sha1 '32ef328f846b5585e040ae587c6429d44b070d9a'
+  homepage "http://4store.org/"
+  url "http://4store.org/download/4store-v1.1.5.tar.gz"
+  sha256 "2bdd6fb804288802187c5779e365eea2b3ddebce419b3da0609be38edc9e8c5b"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'raptor'
-  depends_on 'rasqal'
-  depends_on 'pcre'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "raptor"
+  depends_on "rasqal"
+  depends_on "pcre"
 
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--with-storage-path=#{var}/fourstore",
                           "--sysconfdir=#{etc}/fourstore"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
@@ -35,4 +33,7 @@ class Fourstore < Formula
     EOS
   end
 
+  test do
+    system "#{bin}/4s-backend-setup", "demo"
+  end
 end
