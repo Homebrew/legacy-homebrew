@@ -15,6 +15,6 @@ class Hackrf < Formula
   end
 
   test do
-    system "hackrf_info"
+    system "pkg-config libhackrf --cflags"
   end
 end
