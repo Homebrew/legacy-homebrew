@@ -2,8 +2,13 @@
 class Avidemux < Formula
   homepage "http://fixounet.free.fr/avidemux/"
   url "https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz"
-  sha1 "50f3dfe270e6272fce46d725b198b9d0dd95664b"
-  head "git://gitorious.org/avidemux2-6/avidemux2-6.git"
+  sha256 "02998c235a89894d184d745c94cac37b78bc20e9eb44b318ee2bb83f2507e682"
+  revision 1
+
+  head do
+    url "https://github.com/mean00/avidemux2.git"
+    depends_on "x265"
+  end
 
   bottle do
     sha1 "5a168ebcb9661ba351bc09d734437fc93ef57cd0" => :mavericks
