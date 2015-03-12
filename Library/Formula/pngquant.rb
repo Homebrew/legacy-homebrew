@@ -1,9 +1,7 @@
-require "formula"
-
 class Pngquant < Formula
   homepage "http://pngquant.org/"
-  url "https://github.com/pornel/pngquant/archive/2.3.1.tar.gz"
-  sha1 "964987f24012b247be666903ab4e31f53d84d80c"
+  url "https://github.com/pornel/pngquant/archive/2.3.5.tar.gz"
+  sha256 "8907787afca9b83aefe7e29dbf29f4d107255160d0f32c43e7c159ebc2b8d1a7"
 
   head "https://github.com/pornel/pngquant.git"
 
@@ -25,6 +23,6 @@ class Pngquant < Formula
   end
 
   test do
-    system "#{bin}/pngquant", "--help"
+    system "#{bin}/pngquant", test_fixtures("test.png"), "-o" "out.png"
   end
 end
