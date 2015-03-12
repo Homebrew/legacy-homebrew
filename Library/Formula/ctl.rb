@@ -12,6 +12,7 @@ class Ctl < Formula
   depends_on "aces_container"
 
   def install
+    ENV.delete "CTL_MODULE_PATH"
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make"
