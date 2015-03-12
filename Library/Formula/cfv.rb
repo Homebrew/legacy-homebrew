@@ -5,9 +5,10 @@ class Cfv < Formula
 
   bottle do
     cellar :any
-    sha256 "b378887eb353865af5aea33d214c4efbdb5fa5ef9d02d823be9be96075d460c6" => :yosemite
-    sha256 "8a52341837954b6f13b92dbe0a6ae2b50a1eaebfe29e059b9db23caff7081adf" => :mavericks
-    sha256 "eb8b778c4033e22aa8d5a5b765086b94570f298f30c1f2480aa3947cce5a6db2" => :mountain_lion
+    revision 1
+    sha256 "df85f8ee2901bb0b3033a3158d04848bb2fbc455f8af12d7d6eb6869c1471ed9" => :yosemite
+    sha256 "f251efc545293925f29093f8574495ebbbfe1cbad2a285a7a531e357310e3d1f" => :mavericks
+    sha256 "7d34208fb03b4f45e61bac26348e928b6cceb3aee1bf113a4d285e0935641520" => :mountain_lion
   end
 
   def install
