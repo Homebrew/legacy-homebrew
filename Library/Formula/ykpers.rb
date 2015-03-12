@@ -1,7 +1,7 @@
 class Ykpers < Formula
-  homepage "http://yubico.github.io/yubikey-personalization/"
-  url "https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.16.2.tar.gz"
-  sha1 "cb8ae32eb2c2eca6c2c156e8f26a3576cb839c52"
+  homepage "https://yubico.github.io/yubikey-personalization/"
+  url "https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.16.3.tar.gz"
+  sha256 "38a9558053f68c488fa5737200fa5d6c7503944374ad298c8fa33d596f7fa055"
 
   bottle do
     cellar :any
@@ -26,5 +26,9 @@ class Ykpers < Formula
                           "--with-backend=osx"
     system "make", "check"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/ykinfo", "-V"
   end
 end
