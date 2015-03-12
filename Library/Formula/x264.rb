@@ -1,13 +1,13 @@
 class X264 < Formula
   homepage "https://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "https://git.videolan.org/git/x264.git", :revision => "6a301b6ee0ae8c78fb704e1cd86f4e861070f641"
-  version "r2495"
+  url "https://git.videolan.org/git/x264.git", :revision => "c8a773ebfca148ef04f5a60d42cbd7336af0baf6"
+  version "r2533"
 
   devel do
     # the latest commit on the master branch
-    url "https://git.videolan.org/git/x264.git", :revision => "40bb56814e56ed342040bdbf30258aab39ee9e89"
-    version "r2525"
+    url "https://git.videolan.org/git/x264.git", :revision => "121396c71b4907ca82301d1a529795d98daab5f8"
+    version "r2538"
   end
 
   head "https://git.videolan.org/git/x264.git"
@@ -21,8 +21,10 @@ class X264 < Formula
 
   depends_on "yasm" => :build
 
-  option "10-bit", "Build a 10-bit x264 (default: 8-bit)"
+  option "with-10-bit", "Build a 10-bit x264 (default: 8-bit)"
   option "with-mp4=", "Select mp4 output: none (default), l-smash or gpac"
+
+  deprecated_option "10-bit" => "with-10-bit"
 
   case ARGV.value "with-mp4"
   when "l-smash" then depends_on "l-smash"
