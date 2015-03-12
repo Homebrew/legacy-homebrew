@@ -1,15 +1,19 @@
-require 'formula'
-
 class Oggz < Formula
-  homepage 'http://www.xiph.org/oggz/'
-  url 'http://downloads.xiph.org/releases/liboggz/liboggz-1.1.1.tar.gz'
-  sha1 '3540190c8c9a31d834aa7794ef991bbab699f4de'
+  homepage "https://www.xiph.org/oggz/"
+  url "http://downloads.xiph.org/releases/liboggz/liboggz-1.1.1.tar.gz"
+  sha256 "6bafadb1e0a9ae4ac83304f38621a5621b8e8e32927889e65a98706d213d415a"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libogg'
+  depends_on "pkg-config" => :build
+  depends_on "libogg"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--disable-dependency-tracking"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/oggz", "known-codecs"
   end
 end
