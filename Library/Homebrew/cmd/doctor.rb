@@ -624,6 +624,7 @@ def check_user_curlrc
 end
 
 def check_which_pkg_config
+  return unless OS.mac?
   binary = which 'pkg-config'
   return if binary.nil?
 
