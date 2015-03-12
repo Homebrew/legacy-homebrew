@@ -23,18 +23,18 @@ class Ttfautohint < Formula
   depends_on "freetype"
   depends_on "libpng"
   depends_on "harfbuzz"
+  depends_on "qt"
 
   def install
     system "./bootstrap" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--with-qt=no",
                           "--without-doc"
     system "make install"
   end
 
   test do
-    system "#{bin}/ttfautohint", "-V"
+    system "#{bin}/ttfautohintGUI", "-V"
   end
 end
