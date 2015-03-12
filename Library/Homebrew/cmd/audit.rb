@@ -311,7 +311,7 @@ class FormulaAuditor
 
     # Check GNU urls; doesn't apply to mirrors
     urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]) do |u|
-      problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
+      problem "\"http://ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
     # the rest of the checks apply to mirrors as well.
