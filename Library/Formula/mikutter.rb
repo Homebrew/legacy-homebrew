@@ -1,7 +1,6 @@
 class Mikutter < Formula
   homepage "http://mikutter.hachune.net/"
   url "http://mikutter.hachune.net/bin/mikutter.3.2.2.tar.gz"
-  version "3.2.2"
   sha256 "4a8b24a357ccd3132688f7ee97efb909a03a9b78976b19f92e3f50f56dd887ad"
 
   depends_on "gtk+"
