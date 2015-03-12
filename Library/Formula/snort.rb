@@ -5,9 +5,10 @@ class Snort < Formula
 
   bottle do
     cellar :any
-    sha1 "f5a8dbb0d53f814778b275f81e5837e2b8112329" => :yosemite
-    sha1 "c990b24ed535f1999f2330b008829b5ce30ec257" => :mavericks
-    sha1 "3e3d16beb12cbeda1d6d9191c342c50b09bf5450" => :mountain_lion
+    revision 1
+    sha256 "336919a67861f4273ff6b85b725e5dae8e2f9f107f9a3220753df7fbdc370c07" => :yosemite
+    sha256 "df0fc95331633b5b7cdac54081ac722ddca7ddf19b51994d7c10549e631bf978" => :mavericks
+    sha256 "8cee5d29d41e5d54491871ade0dfdc59caf05151814d58bebaf73e0d32ed4597" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
