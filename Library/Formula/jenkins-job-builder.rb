@@ -1,43 +1,43 @@
 class JenkinsJobBuilder < Formula
   homepage "http://ci.openstack.org/jjb.html"
   url "https://pypi.python.org/packages/source/j/jenkins-job-builder/jenkins-job-builder-1.1.0.tar.gz"
-  sha1 "e5d0665aaabefdd4b1bc24297bcedc8603c55853"
+  sha256 "4176a06efec3985823245a460e93fd678d78250defcc9f3109beb58aff34e609"
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "argparse" do
     url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
-    sha1 "8a8d6c9624669055c2c4f70adcb129139dc50ee6"
+    sha256 "b3a79a23d37b5a02faa550b92cbbbebeb4aa1d77e649c3eb39c19abf5262da04"
   end
 
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
-    sha1 "1a2d5df8b31124573efb9598ec6d54767f3c4cd4"
+    sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
   resource "ordereddict" do
     url "https://pypi.python.org/packages/source/o/ordereddict/ordereddict-1.1.tar.gz"
-    sha1 "ab90b67dceab55a11b609d253846fa486eb980c4"
+    sha256 "1c35b4ac206cef2d24816c89f89cf289dd3d38cf7c449bb3fab7bf6d43f01b1f"
   end
 
   resource "python-jenkins" do
     url "https://pypi.python.org/packages/source/p/python-jenkins/python-jenkins-0.4.5.tar.gz"
-    sha1 "68a15cda9913e3df0305ad30ded18e1cb66c1a99"
+    sha256 "e69949ff81064b17bf9f82f89ce511b4c19a8ddd0a69c180494278905e86e85b"
   end
 
   resource "pbr" do
     url "https://pypi.python.org/packages/source/p/pbr/pbr-0.10.8.tar.gz"
-    sha1 "8f90442f669e3a725d5682623aa94f9e38c4601d"
+    sha256 "a741650c697abe9dd3da00039a57a45a15a6eed017a16f6b7e4c0161fae2b4b2"
   end
 
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "pip" do
     url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
-    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
+    sha256 "0d58487a1b7f5be2e5e965c11afbea1dc44ecec8069de03491a4d0d6c85f4551"
   end
 
   def install
