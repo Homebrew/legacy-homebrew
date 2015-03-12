@@ -7,9 +7,9 @@ class GitFtp < Formula
 
   bottle do
     cellar :any
-    sha1 "a50d3779a05f20c022634e521dbac54db3cb8bba" => :yosemite
-    sha1 "9ecb3e11463fb1ec6d961747e24be242fc8213ea" => :mavericks
-    sha1 "90bd8f913a3c01f8cdc55d77dd8ed455354bfa52" => :mountain_lion
+    sha256 "28f1121cf94519c15eca06c48851c5385c8093bbd501162157a7adc0ed9eae57" => :yosemite
+    sha256 "777c74d53098f88ca5a4b4202a7645e11361b567cace63b365b159660d5513de" => :mavericks
+    sha256 "5a0ae43f9f07ce414c01a84862bc0b3eb9c508062c40b12a268d4fab2823d07a" => :mountain_lion
   end
 
   option "with-manpage", "build and install the manpage (depends on pandoc)"
