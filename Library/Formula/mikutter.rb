@@ -1,8 +1,29 @@
+class Ruby193 < Requirement
+  fatal true
+  default_formula "ruby"
+
+  satisfy :build_env => false do
+    next unless which "ruby"
+    version = /\d\.\d(\.\d)?/.match `ruby --version 2>&1`
+    next unless version
+    Version.new(version.to_s) >= Version.new("1.9.3")
+  end
+
+  env do
+    ENV.prepend_path "PATH", which("ruby").dirname
+  end
+
+  def message
+    "Mikutter requires Ruby 1.9.3 or higher."
+  end
+end
+
 class Mikutter < Formula
   homepage "http://mikutter.hachune.net/"
   url "http://mikutter.hachune.net/bin/mikutter.3.2.2.tar.gz"
   sha256 "4a8b24a357ccd3132688f7ee97efb909a03a9b78976b19f92e3f50f56dd887ad"
 
+  depends_on Ruby193
   depends_on "gtk+"
   depends_on :x11
 
