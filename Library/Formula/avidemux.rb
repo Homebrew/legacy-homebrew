@@ -11,9 +11,9 @@ class Avidemux < Formula
   end
 
   bottle do
-    sha1 "5a168ebcb9661ba351bc09d734437fc93ef57cd0" => :mavericks
-    sha1 "1af759be4340d3acdc1fd4158eab85a2df41cfa1" => :mountain_lion
-    sha1 "07734309d8789563146619defe6c2384a3927fd2" => :lion
+    sha256 "35f7e570a81d8b1fbeb406e04de695952eccb353ee2fad49ff1cf523b7fc86ac" => :yosemite
+    sha256 "ad6d67da1aaddd09b8dec534fa75d25ebc2d16f1ae6cba0653590274f0e3ff5c" => :mavericks
+    sha256 "1f0c944c716a06856e61ad52ef6dfe8031826ddcd551685596a8adaf4b7a057d" => :mountain_lion
   end
 
   option "with-debug", "Enable debug build."
