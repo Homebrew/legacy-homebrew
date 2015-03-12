@@ -6,9 +6,9 @@ class Homebank < Formula
   sha1 'b56659fa0b8c44c6f75b77e87ef22c6239b12b28'
 
   bottle do
-    sha1 "03314830a1707ca0c6843258c36b68833d3184ae" => :mavericks
-    sha1 "9a6cf54761025d1cd9d27b422eb7e7f0b0ccf746" => :mountain_lion
-    sha1 "baf50c3378b4b703b53d1d52b92f4f7537994164" => :lion
+    sha256 "a686d413e57162925b9600e03adb8f02f395b177ae84849d18a454a3e3d7ec19" => :yosemite
+    sha256 "262149448eb43781445fa392379d5b85ff4451dfe7bccaaba9e1cfafbe86fb63" => :mavericks
+    sha256 "898eaa8859226245bc8f3e3712bf4aad7e062fddee1a9548e119f9317f1792b4" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
