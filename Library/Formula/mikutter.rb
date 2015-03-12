@@ -25,8 +25,8 @@ class Mikutter < Formula
 
   test do
     pid = Process::spawn "ruby #{prefix}/mikutter.rb"
-	sleep 20 # waiting for mikutter to launch
-	system "kill", pid.to_s
-	assert_equal 0, $?.to_i
+    sleep 20 # waiting for mikutter to launch
+    system "kill", pid.to_s
+    assert_equal 0, $?.to_i
   end
 end
