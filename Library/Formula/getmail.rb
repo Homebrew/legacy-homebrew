@@ -1,10 +1,8 @@
-require "formula"
-
 class Getmail < Formula
   homepage "http://pyropus.ca/software/getmail/"
-  url "http://pyropus.ca/software/getmail/old-versions/getmail-4.46.0.tar.gz"
-  mirror "http://fossies.org/linux/misc/getmail-4.46.0.tar.gz"
-  sha1 "0e20fcfed6c422e5135304c3728c11c7cee7081a"
+  url "http://pyropus.ca/software/getmail/old-versions/getmail-4.47.0.tar.gz"
+  mirror "https://fossies.org/linux/misc/getmail-4.47.0.tar.gz"
+  sha256 "4b5accd3d0d79e1a84c0aed850ac8717b7f6e9ad72cfab7ba22abf58638e4540"
 
   # See: https://github.com/Homebrew/homebrew/pull/28739
   patch do
@@ -13,9 +11,13 @@ class Getmail < Formula
   end
 
   def install
-    libexec.install %w( getmail getmail_fetch getmail_maildir getmail_mbox )
+    libexec.install %w[getmail getmail_fetch getmail_maildir getmail_mbox]
     bin.install_symlink Dir["#{libexec}/*"]
     libexec.install "getmailcore"
     man1.install Dir["docs/*.1"]
+  end
+
+  test do
+    system bin/"getmail", "--help"
   end
 end
