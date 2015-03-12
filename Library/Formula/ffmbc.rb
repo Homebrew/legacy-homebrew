@@ -1,10 +1,8 @@
-require 'formula'
-
 class Ffmbc < Formula
-  homepage 'http://code.google.com/p/ffmbc/'
-  url 'https://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
-  sha1 '85a9673ac82a698bb96057fe027222efe6ebae28'
-  revision 1
+  homepage "https://code.google.com/p/ffmbc/"
+  url "https://drive.google.com/uc?export=download&id=0B0jxxycBojSwTEgtbjRZMXBJREU"
+  version "0.7.2"
+  sha256 "caaae2570c747077142db34ce33262af0b6d0a505ffbed5c4bdebce685d72e42"
 
   bottle do
     sha1 "2ec4e61817f6dca744a74f366b9c9d8912fb3d89" => :mavericks
@@ -17,19 +15,19 @@ class Ffmbc < Formula
   option "without-xvid", "Disable Xvid MPEG-4 video encoder"
 
   # manpages won't be built without texi2html
-  depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
-  depends_on 'yasm' => :build
+  depends_on "texi2html" => :build if MacOS.version >= :mountain_lion
+  depends_on "yasm" => :build
 
-  depends_on 'x264' => :recommended
-  depends_on 'faac' => :recommended
-  depends_on 'lame' => :recommended
-  depends_on 'xvid' => :recommended
+  depends_on "x264" => :recommended
+  depends_on "faac" => :recommended
+  depends_on "lame" => :recommended
+  depends_on "xvid" => :recommended
 
-  depends_on 'freetype' => :optional
-  depends_on 'theora'  => :optional
-  depends_on 'libvorbis' => :optional
-  depends_on 'libogg' => :optional
-  depends_on 'libvpx' => :optional
+  depends_on "freetype" => :optional
+  depends_on "theora"  => :optional
+  depends_on "libvorbis" => :optional
+  depends_on "libogg" => :optional
+  depends_on "libvpx" => :optional
 
   patch :DATA # fix man page generation, fixed in upstream ffmpeg
 
@@ -41,16 +39,16 @@ class Ffmbc < Formula
             "--enable-nonfree",
             "--cc=#{ENV.cc}"]
 
-    args << "--enable-libx264" if build.with? 'x264'
-    args << "--enable-libfaac" if build.with? 'faac'
-    args << "--enable-libmp3lame" if build.with? 'lame'
-    args << "--enable-libxvid" if build.with? 'xvid'
+    args << "--enable-libx264" if build.with? "x264"
+    args << "--enable-libfaac" if build.with? "faac"
+    args << "--enable-libmp3lame" if build.with? "lame"
+    args << "--enable-libxvid" if build.with? "xvid"
 
-    args << "--enable-libfreetype" if build.with? 'freetype'
-    args << "--enable-libtheora" if build.with? 'theora'
-    args << "--enable-libvorbis" if build.with? 'libvorbis'
-    args << "--enable-libogg" if build.with? 'libogg'
-    args << "--enable-libvpx" if build.with? 'libvpx'
+    args << "--enable-libfreetype" if build.with? "freetype"
+    args << "--enable-libtheora" if build.with? "theora"
+    args << "--enable-libvorbis" if build.with? "libvorbis"
+    args << "--enable-libogg" if build.with? "libogg"
+    args << "--enable-libvpx" if build.with? "libvpx"
 
     system "./configure", *args
     system "make"
