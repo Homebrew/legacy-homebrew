@@ -1,11 +1,9 @@
-require 'formula'
-
 class Xvid < Formula
-  homepage 'http://www.xvid.org'
-  url 'http://fossies.org/unix/privat/xvidcore-1.3.3.tar.gz'
+  homepage "http://www.xvid.org"
+  url "https://fossies.org/unix/privat/xvidcore-1.3.3.tar.gz"
   # Official download takes a long time to fail, so set it as the mirror for now
-  mirror 'http://downloads.xvid.org/downloads/xvidcore-1.3.3.tar.gz'
-  sha1 '465763c92679ca230526d4890d17dbf6d6974b08'
+  mirror "http://downloads.xvid.org/downloads/xvidcore-1.3.3.tar.gz"
+  sha256 "9e6bb7f7251bca4615c2221534d4699709765ff019ab0366609f219b0158499d"
 
   bottle do
     cellar :any
@@ -16,7 +14,7 @@ class Xvid < Formula
   end
 
   def install
-    cd 'build/generic' do
+    cd "build/generic" do
       system "./configure", "--disable-assembly", "--prefix=#{prefix}"
       ENV.j1 # Or make fails
       system "make"
