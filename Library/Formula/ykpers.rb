@@ -27,4 +27,8 @@ class Ykpers < Formula
     system "make", "check"
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/ykinfo", "-V"
+  end
 end
