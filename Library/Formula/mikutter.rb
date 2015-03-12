@@ -11,14 +11,14 @@ class Mikutter < Formula
     Homebrew.install_gem_setup_path! "bundler"
     prefix.install Dir["./*"]
     prefix.cd do
-        system "bundle", "config", "--local", "build.nokogiri", "--",
-            "--use-system-libraries",
-            "--with-xml2-include=\"$(xcrun --show-sdk-path)/usr/include/libxml2\""
-        system "bundle", "install", "--path", "vendor/bundle"
+      system "bundle", "config", "--local", "build.nokogiri", "--",
+          "--use-system-libraries",
+          "--with-xml2-include=\"$(xcrun --show-sdk-path)/usr/include/libxml2\""
+      system "bundle", "install", "--path", "vendor/bundle"
     end
     open("mikutter.sh", "w+") do |script|
-        script.puts "#!/bin/sh"
-        script.puts "ruby \"#{prefix}/mikutter.rb\" $@"
+      script.puts "#!/bin/sh"
+      script.puts "ruby \"#{prefix}/mikutter.rb\" $@"
     end
     bin.install "mikutter.sh" => "mikutter"
   end
