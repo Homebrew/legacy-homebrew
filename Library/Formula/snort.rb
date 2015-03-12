@@ -1,9 +1,7 @@
-require "formula"
-
 class Snort < Formula
   homepage "https://www.snort.org"
   url "https://www.snort.org/downloads/snort/snort-2.9.7.0.tar.gz"
-  sha1 "29eddcfaf8a4d02a4d68d88fa97c0275e4f0cc75"
+  sha256 "9738afea45d20b7f77997cc00055e7dd70f6aea0101209d87efec4bc4eace49b"
 
   bottle do
     cellar :any
@@ -19,13 +17,16 @@ class Snort < Formula
   depends_on "pcre"
   depends_on "openssl"
 
-  option "enable-debug", "Compile Snort with --enable-debug and --enable-debug-msgs"
+  option "with-debug", "Compile Snort with debug options enabled"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   def install
     openssl = Formula["openssl"]
 
     args = %W[
       --prefix=#{prefix}
+      --sysconfdir=#{etc}/snort
       --disable-dependency-tracking
       --disable-silent-rules
       --enable-gre
@@ -41,7 +42,7 @@ class Snort < Formula
       --enable-flexresp3
     ]
 
-    if build.include? "enable-debug"
+    if build.with? "debug"
       args << "--enable-debug"
       args << "--enable-debug-msgs"
     else
@@ -50,6 +51,9 @@ class Snort < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    rm Dir[buildpath/"etc/Makefile*"]
+    (etc+"snort").install Dir[buildpath/"etc/*"]
   end
 
   def caveats; <<-EOS.undent
@@ -58,5 +62,9 @@ class Snort < Formula
         sudo chmod 644 /dev/bpf*
     or you could create a startup item to do this for you.
     EOS
+  end
+
+  test do
+    system bin/"snort", "-V"
   end
 end
