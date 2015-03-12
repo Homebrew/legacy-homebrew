@@ -63,8 +63,8 @@ class JenkinsJobBuilder < Formula
   end
 
   test do
-      assert_match /Managed by Jenkins Job Builder/,
-          pipe_output("#{bin}/jenkins-jobs test /dev/stdin",
-                      "- job:\n    name: test-job\n\n", 0)
+    assert_match(/Managed by Jenkins Job Builder/,
+      pipe_output("#{bin}/jenkins-jobs test /dev/stdin",
+                  "- job:\n    name: test-job\n\n", 0))
   end
 end
