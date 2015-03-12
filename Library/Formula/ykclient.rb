@@ -12,6 +12,10 @@ class Ykclient < Formula
     ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/ykclient", "--version"
   end
 end
