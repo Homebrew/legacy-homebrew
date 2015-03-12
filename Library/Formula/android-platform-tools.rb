@@ -2,9 +2,9 @@ class AndroidPlatformTools < Formula
   homepage "https://developer.android.com/sdk"
   # the url is from:
   # https://dl.google.com/android/repository/repository-8.xml
-  url "https://dl.google.com/android/repository/platform-tools_r21-macosx.zip"
-  version "21.0.0"
-  sha256 "30ae8724da3db772a776d616b4746516f24ae81330e84315a7ce0c49e0b0b3cb"
+  url "https://dl.google.com/android/repository/platform-tools_r22-macosx.zip"
+  version "22.0.0"
+  sha256 "c06721ff66a1a3f70e489325f06474e28cd0efd5352f097ee2ff58167b4f6564"
 
   conflicts_with "android-sdk",
     :because => "the Android Platform-tools are part of the Android SDK"
