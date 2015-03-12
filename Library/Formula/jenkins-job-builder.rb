@@ -3,6 +3,13 @@ class JenkinsJobBuilder < Formula
   url "https://pypi.python.org/packages/source/j/jenkins-job-builder/jenkins-job-builder-1.1.0.tar.gz"
   sha256 "4176a06efec3985823245a460e93fd678d78250defcc9f3109beb58aff34e609"
 
+  bottle do
+    cellar :any
+    sha256 "2d2202bfb2b3d211531ebc9c953b56a41c4a79848f80f5368e5c293d5a86de3a" => :yosemite
+    sha256 "4bfee71dff0c10d2847babf2567ef529a0db2b28d18cee34713ac7b40429b166" => :mavericks
+    sha256 "d83cbc28b1fe07b0d2f02d1a391dea5b279e86cc5353b3054d6621bb1457956d" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "argparse" do
