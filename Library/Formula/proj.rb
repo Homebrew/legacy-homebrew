@@ -1,10 +1,10 @@
 require 'formula'
 
 class Proj < Formula
-  homepage 'https://trac.osgeo.org/proj/'
+  homepage 'http://trac.osgeo.org/proj/'
   url 'http://download.osgeo.org/proj/proj-4.9.1.tar.gz'
   sha1 '0bc63a41f1bdcff600d076c056f796007abf3f2f'
-  head "https://svn.osgeo.org/metacrs/proj/trunk/proj/"
+  head "http://svn.osgeo.org/metacrs/proj/trunk/proj/"
 
   option "with-vdatum", "Install vertical datum files (~380 MB)"
 
