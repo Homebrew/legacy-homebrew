@@ -48,10 +48,6 @@ class Mikutter < Formula
   end
 
   test do
-    pid = fork do
-      exec "ruby", "#{prefix}/mikutter.rb"
-    end
-    sleep 20 # waiting for mikutter to launch
-    assert `kill #{pid}`
+    system "ruby", "#{prefix}/mikutter.rb", "--help"
   end
 end
