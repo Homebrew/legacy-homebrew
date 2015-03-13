@@ -36,4 +36,17 @@ class YamlCpp < Formula
     system "cmake", ".", *args
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <yaml-cpp/yaml.h>
+      int main() {
+        YAML::Node node  = YAML::Load("[0, 0, 0]");
+        node[0] = 1;
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-lyaml-cpp", "-o", "test"
+    system "./test"
+  end
 end

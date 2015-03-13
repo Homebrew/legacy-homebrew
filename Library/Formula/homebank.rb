@@ -2,20 +2,20 @@ require 'formula'
 
 class Homebank < Formula
   homepage 'http://homebank.free.fr'
-  url 'http://homebank.free.fr/public/homebank-4.6.3.tar.gz'
-  sha1 '9393f947fca17cbdb31a2bc7fa03f99ced1c6e68'
+  url 'http://homebank.free.fr/public/homebank-5.0.0.tar.gz'
+  sha1 'b56659fa0b8c44c6f75b77e87ef22c6239b12b28'
 
   bottle do
-    sha1 "03314830a1707ca0c6843258c36b68833d3184ae" => :mavericks
-    sha1 "9a6cf54761025d1cd9d27b422eb7e7f0b0ccf746" => :mountain_lion
-    sha1 "baf50c3378b4b703b53d1d52b92f4f7537994164" => :lion
+    sha256 "a686d413e57162925b9600e03adb8f02f395b177ae84849d18a454a3e3d7ec19" => :yosemite
+    sha256 "262149448eb43781445fa392379d5b85ff4451dfe7bccaaba9e1cfafbe86fb63" => :mavericks
+    sha256 "898eaa8859226245bc8f3e3712bf4aad7e062fddee1a9548e119f9317f1792b4" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'gtk+'
-  depends_on 'hicolor-icon-theme'
+  depends_on 'gtk+3'
+  depends_on 'gnome-icon-theme'
   depends_on 'freetype'
   depends_on 'fontconfig'
   depends_on 'libofx' => :optional
@@ -26,7 +26,7 @@ class Homebank < Formula
     args << "--with-ofx" if build.with? 'libofx'
 
     system "./configure", *args
-    system "chmod +x ./install-sh"
+    chmod 0755, "./install-sh"
     system "make install"
   end
 end
