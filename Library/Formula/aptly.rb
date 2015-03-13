@@ -10,9 +10,9 @@ class Aptly < Formula
 
   bottle do
     cellar :any
-    sha1 "0c8c7a948f123d1a40bc2259d8445021094887b0" => :yosemite
-    sha1 "e9fbdfb93bd116385478176835ca5b848b8c24d2" => :mavericks
-    sha1 "73ee380d7e60ce73dfd37c91fcbdafea446f8910" => :mountain_lion
+    sha256 "ae41cab3740f582c5be6486c220f92387371f94b6bf014c4915f6cb5f554893d" => :yosemite
+    sha256 "b6032c35e8793255acd7c38a16601e7757670d5ed1ba150829f1aeb59a3dc562" => :mavericks
+    sha256 "c4fa5584fd59586544f7741e8fd1a37a8eea4e3af347fdd77a7959655f2cc569" => :mountain_lion
   end
 
   depends_on :hg => :build
