@@ -35,16 +35,8 @@ class Dmd < Formula
     prefix.install "samples"
     man.install Dir["docs/man/*"]
 
-    conf = etc/"dmd.conf"
-
-    if conf.exist?
-      inreplace conf, /^DFLAGS=.+$/, "DFLAGS=-I#{include}/d2 -L-L#{lib}"
-    else
-      conf.write <<-EOS.undent
-        [Environment]
-        DFLAGS=-I#{include}/d2 -L-L#{lib}
-        EOS
-    end
+    # A proper dmd.conf is required for later build steps:
+    fix_dmd_conf
 
     make_args.unshift "DMD=#{bin}/dmd"
 
@@ -63,6 +55,27 @@ class Dmd < Formula
       inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS)"
       system "make", "install", *make_args
     end
+  end
+
+  # Fix up dmd.conf to point to the correct include paths.
+  def fix_dmd_conf
+    # Homebrew's etc.install method doesn't let you overwrite etc files,
+    # so edit it in place if it's there:
+    conf = etc/"dmd.conf"
+    if conf.exist?
+      inreplace conf, /^DFLAGS=.+$/, "DFLAGS=-I#{include}/d2 -L-L#{lib}"
+    else
+      conf.write <<-EOS.undent
+        [Environment]
+        DFLAGS=-I#{include}/d2 -L-L#{lib}
+        EOS
+    end
+
+  end
+
+  def post_install
+    # We need to fix up dmd.conf even if users install/upgrade via bottle:
+    fix_dmd_conf
   end
 
   test do
