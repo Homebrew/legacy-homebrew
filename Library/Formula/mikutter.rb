@@ -48,9 +48,10 @@ class Mikutter < Formula
   end
 
   test do
-    pid = Process.spawn "ruby #{prefix}/mikutter.rb"
+    pid = fork do
+      exec "ruby", "#{prefix}/mikutter.rb"
+    end
     sleep 20 # waiting for mikutter to launch
-    system "kill", pid.to_s
-    assert_equal 0, $?.to_i
+    assert `kill #{pid}`
   end
 end
