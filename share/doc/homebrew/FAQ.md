@@ -46,8 +46,8 @@ to see what would be cleaned up:
 ### How do I uninstall Homebrew?
 If you installed to `/usr/local` then you can use the script in [this
 gist](https://gist.github.com/1173223) to uninstall — it will only
-remove Homebrew and the stuff Homebrew installed leaving anything else
-in `/usr/local` alone.
+remove Homebrew and most of the stuff Homebrew installed leaving
+anything else in `/usr/local` alone.  See gist comments.
 
 Provided you haven’t put anything else in Homebrew’s prefix
 (`brew --prefix`), you can generally just `rm -rf` that directory. This
