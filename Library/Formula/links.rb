@@ -6,9 +6,9 @@ class Links < Formula
 
   bottle do
     cellar :any
-    sha1 "e59741a8ae32d09d3b621169095eb871d62af2c3" => :mavericks
-    sha1 "5040c93b09ec5b2ba02e80ff4283d974b5f12d64" => :mountain_lion
-    sha1 "c1a7f7f4b11ed3907eadcd1d66b633f94e89ac9d" => :lion
+    sha256 "ba2a8db08bc5a1bb6d500fce6d92b1ecdeff40eeef7688eda91960d9ef938b00" => :yosemite
+    sha256 "b4a2fb839045ad5692b01a62fb32241e23cc7d714f296b2284909aa595467487" => :mavericks
+    sha256 "9dc7d6d8f998d47cf172b1c6bf5bfe41133884ee553173b7c0b0d16bddd7a6a9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
