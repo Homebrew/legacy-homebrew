@@ -539,8 +539,6 @@ class Formula
       "#$1/#$2"
     elsif core_formula?
       "Homebrew/homebrew"
-    else
-      HOMEBREW_PATH_URL_TAP
     end
   end
 
