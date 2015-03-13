@@ -28,7 +28,11 @@ class Mikutter < Formula
   depends_on :x11
 
   def install
-    Homebrew.install_gem_setup_path! "bundler"
+    if RUBY_VERSION >= "1.9.3"
+      Homebrew.install_gem_setup_path! "bundler" # use gem of system ruby
+    else
+      system "gem", "install", "bundler" # use gem in $PATH
+    end
     prefix.install Dir["./*"]
     prefix.cd do
       system "bundle", "config", "--local", "build.nokogiri", "--",
