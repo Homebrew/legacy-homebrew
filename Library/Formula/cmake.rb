@@ -20,8 +20,8 @@ end
 
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.1/cmake-3.1.3.tar.gz"
-  sha1 "5b9bb6e6f8c93335a0ef7b6c2d00a5273c2ea6cc"
+  url "http://www.cmake.org/files/v3.2/cmake-3.2.1.tar.gz"
+  sha1 "53c1fe2aaae3b2042c0fe5de177f73ef6f7b267f"
   head "http://cmake.org/cmake.git"
 
   bottle do
@@ -86,6 +86,7 @@ class Cmake < Formula
       --system-libs
       --parallel=#{ENV.make_jobs}
       --no-system-libarchive
+      --no-system-jsoncpp
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
       --mandir=/share/man
