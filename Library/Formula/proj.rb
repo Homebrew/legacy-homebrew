@@ -87,8 +87,6 @@ class Proj < Formula
     system "make", "install"
   end
   test do
-    system "proj -l"
-    system "echo -120 36 | proj +proj=tmerc +ellps=WGS84 +units=km +lon_0=-121.15 +lat_0=34.15"
-    system "echo 100 206 | proj -I +proj=tmerc +ellps=WGS84 +units=km +lon_0=-121.15 +lat_0=34.15"
+    assert_match "103.69\t" "205.85\n", pipe_output("proj +proj=tmerc +ellps=WGS84 +units=km +lon_0=-121.15 +lat_0=34.15", "-120 36", 0)
   end
 end
