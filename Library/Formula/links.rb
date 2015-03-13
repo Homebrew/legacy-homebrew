@@ -1,11 +1,8 @@
-require "formula"
-
 class Links < Formula
   homepage "http://links.twibright.com/"
-  url "http://links.twibright.com/download/links-2.8.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/l/links2/links2_2.8.orig.tar.bz2"
-  sha1 "a808d80d910b7d3ad86f4c5089e64f35113b69f2"
-  revision 1
+  url "http://links.twibright.com/download/links-2.9.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/l/links2/links2_2.9.orig.tar.bz2"
+  sha256 "4360ead54d5f41da16b2f4c0033317ca775f40c1e658a29e9e7f8ce4bc23878f"
 
   bottle do
     cellar :any
@@ -16,9 +13,9 @@ class Links < Formula
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
-  depends_on :x11 => :optional
   depends_on "libtiff" => :optional
   depends_on "jpeg" => :optional
+  depends_on :x11 => :optional
 
   def install
     args = %W[
@@ -38,6 +35,6 @@ class Links < Formula
   end
 
   test do
-    system "#{bin}/links", "https://duckduckgo.com"
+    system bin/"links", "https://duckduckgo.com"
   end
 end
