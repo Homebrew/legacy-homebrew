@@ -1,7 +1,7 @@
 class Pngcrush < Formula
   homepage "http://pmt.sourceforge.net/pngcrush/"
-  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.83/pngcrush-1.7.83.tar.gz"
-  sha1 "70ae10e40ee86a79b855697389516e36d3ac7fda"
+  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.85/pngcrush-1.7.85.tar.gz"
+  sha1 "df48feff10720403dbc52883c5b6228951743c21"
 
   bottle do
     cellar :any
