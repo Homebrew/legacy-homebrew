@@ -3,17 +3,17 @@ require "language/go"
 
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
-
   url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.0.tar.gz"
-  sha1 "f68219cc1226f164676f9c74909e82383e9215b8"
+  sha256 "c1fdbb6bbc33eafedc4aa363be2b3cdf1eea8b8eb618d25131c5a30def24aad9"
 
   # Mongo HEAD now requires mongo-tools, and Golang
   # https://jira.mongodb.org/browse/SERVER-15806
   depends_on "go" => :build
   go_resource "github.com/mongodb/mongo-tools" do
-    url "https://github.com/mongodb/mongo-tools.git", :tag => "r3.0.0"
+    url "https://github.com/mongodb/mongo-tools.git",
+      :tag => "r3.0.0",
+      :revision => "e35a2e87876251835fcb60f5eb0c29baca04bc5e"
   end
-
 
   bottle do
     sha1 "1dbdf906491863fbd4b264c1d8c39c1dd795fc5f" => :yosemite
