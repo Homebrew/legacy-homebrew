@@ -1,14 +1,16 @@
-require 'formula'
-
 class Mrtg < Formula
-  homepage 'http://oss.oetiker.ch/mrtg/'
-  url 'http://oss.oetiker.ch/mrtg/pub/mrtg-2.17.4.tar.gz'
-  sha1 '5ae0e659001c613b847237a6b223b26cb7a8ab0f'
+  homepage "https://oss.oetiker.ch/mrtg/"
+  url "https://oss.oetiker.ch/mrtg/pub/mrtg-2.17.4.tar.gz"
+  sha256 "5efa7fae8040159208472e5f889be5b41d8c8a2ea6b31616f0f75cc7f48d2365"
 
-  depends_on 'gd'
+  depends_on "gd"
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/cfgmaker", "--nointerfaces", "localhost"
   end
 end
