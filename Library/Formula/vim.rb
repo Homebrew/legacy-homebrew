@@ -15,6 +15,7 @@ class Vim < Formula
   option "override-system-vi", "Override system vi"
   option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
+  option "with-termtruecolor", "Build vim with support for 24-bit colors in compatible terminals"
 
   LANGUAGES_OPTIONAL = %w(lua mzscheme python3 tcl)
   LANGUAGES_DEFAULT  = %w(perl python ruby)
@@ -35,6 +36,13 @@ class Vim < Formula
 
   conflicts_with "ex-vi",
     :because => "vim and ex-vi both install bin/ex and bin/view"
+
+  # Patch to add 24-bit color support to vim in compatible terminals
+  # https://groups.google.com/forum/#!topic/vim_dev/ed0GTyYrSYg
+  patch do
+    url "https://gist.githubusercontent.com/sebroeder/e91f155917c9cae697b6/raw/2aa83d91fa227a6e56ed6ccdbd0a8068a3dbfc6f/vim-termtruecolor.diff"
+    sha256 "6f52d599745389f0d8ed400a7410be3ffa0a1f16d26722795b81c339b51a33f7"
+  end if build.with? "termtruecolor"
 
   def install
     ENV["LUA_PREFIX"] = HOMEBREW_PREFIX if build.with?("lua") || build.with?("luajit")
@@ -68,6 +76,10 @@ class Vim < Formula
     if build.with? "luajit"
       opts << "--with-luajit"
       opts << "--enable-luainterp"
+    end
+
+    if build.with? "termtruecolor"
+      opts << "--enable-termtruecolor"
     end
 
     # XXX: Please do not submit a pull request that hardcodes the path
