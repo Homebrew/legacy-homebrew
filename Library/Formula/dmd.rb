@@ -68,9 +68,9 @@ class Dmd < Formula
   # Previous versions of this formula may have left in place an incorrect
   # dmd.conf.  If it differs from the newly generated one, move it out of place
   # and warn the user.
-  # This must be idempotent because it may run from both install() and 
+  # This must be idempotent because it may run from both install() and
   # post_install() if the user is running `brew install --build-from-source`.
-  def install_new_dmd_conf    
+  def install_new_dmd_conf
     conf = etc/"dmd.conf"
     # Iff the new file differs from conf, etc.install drops it here:
     new_conf = etc/"dmd.conf.default"
@@ -82,8 +82,8 @@ class Dmd < Formula
 
     backup = etc/"dmd.conf.old"
     opoo "An old dmd.conf was found and will be moved to #{backup}."
-    FileUtils.mv conf, backup
-    FileUtils.mv new_conf, conf    
+    mv conf, backup
+    mv new_conf, conf
   end
 
   def post_install
