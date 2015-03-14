@@ -3,6 +3,7 @@ class Euca2ools < Formula
   url "https://github.com/eucalyptus/euca2ools/archive/v3.1.1.tar.gz"
   sha1 "a29646fe312ae90c625304a9b969f5ab8bec44d8"
   head "https://github.com/eucalyptus/euca2ools.git"
+  revision 1
 
   bottle do
     cellar :any
@@ -19,8 +20,8 @@ class Euca2ools < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz"
-    sha1 "f57bc125d35ec01a81afe89f97dc75913a927e65"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "setuptools" do

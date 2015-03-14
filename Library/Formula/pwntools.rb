@@ -2,6 +2,7 @@ class Pwntools < Formula
   homepage "http://pwntools.com/"
   url "https://github.com/Gallopsled/pwntools/archive/2.2.0.tar.gz"
   sha256 "67bfaf6e1e24812fdde5093422c6c76bcd581f4b85760779b823b75950817a2d"
+  revision 1
 
   bottle do
     cellar :any
@@ -50,8 +51,8 @@ class Pwntools < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "psutil" do
