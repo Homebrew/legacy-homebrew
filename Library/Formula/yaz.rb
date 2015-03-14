@@ -1,8 +1,8 @@
 # encoding: UTF-8
 class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.7.2.tar.gz"
-  sha1 "aef4f6be51ed5888b31afd01633d50eec04d3187"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.10.2.tar.gz"
+  sha1 "d2022e85e288c295c086b876be53e79d0f137b1d"
 
   bottle do
     cellar :any
