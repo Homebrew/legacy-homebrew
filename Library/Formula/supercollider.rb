@@ -18,12 +18,12 @@ class Supercollider < Formula
     # std_cmake_args +
     args = [
       "-G", "Xcode",
-      "-DCMAKE_PREFIX_PATH=#{Formula['qt5'].opt_prefix}",
+      "-DCMAKE_PREFIX_PATH=#{Formula["qt5"].opt_prefix}",
       "-DSC_QT=1",
       # defaults to the user's OS
       # "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.7",
-      "-DREADLINE_INCLUDE_DIR=#{Formula['readline'].opt_include}",
-      "-DREADLINE_LIBRARY=#{Formula['readline'].opt_lib}/libreadline.dylib",
+      "-DREADLINE_INCLUDE_DIR=#{Formula["readline"].opt_include}",
+      "-DREADLINE_LIBRARY=#{Formula["readline"].opt_lib}/libreadline.dylib",
       ".."
     ]
 
@@ -31,8 +31,8 @@ class Supercollider < Formula
       system "cmake", *args
       xcodebuild "-target", "install",
                 "-configuration", "Release"
-                # "SYMROOT=#{bp}" -- fails
     end
+    # "SYMROOT=#{bp}" -- fails
 
     # Copy the app into the cellar
     # User should then run `brew linkapps supercollider`
@@ -55,5 +55,4 @@ class Supercollider < Formula
     # when -V is implemented in sclang then we can run the process
     # system "#{bin}/sclang", "-V"
   end
-
 end
