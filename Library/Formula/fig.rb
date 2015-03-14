@@ -2,6 +2,7 @@ class Fig < Formula
   homepage "https://docs.docker.com/compose/"
   url "https://github.com/docker/compose/archive/1.1.0.tar.gz"
   sha1 "175066934c19f455606b16f1b4e4b9f26fc3f599"
+  revision 1
 
   bottle do
     revision 1
@@ -49,8 +50,8 @@ class Fig < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.4.3.tar.gz"
-    sha1 "411f1bfa44556f7dd0f34cd822047c31baa7d741"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "websocket-client" do
@@ -65,6 +66,11 @@ class Fig < Formula
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
+
+    # unpin requests
+    inreplace Dir[libexec/"vendor/lib/python2.7/site-packages/docker_py-*.egg-info/requires.txt"],
+              /requests.*$/, "requests"
+    inreplace "setup.py", /'requests.*?'/, "'requests'"
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
