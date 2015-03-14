@@ -161,7 +161,7 @@ class Version
     end
   end
 
-  def self.detect(url, specs={})
+  def self.detect(url, specs)
     if specs.has_key?(:tag)
       FromURL.new(specs[:tag][/((?:\d+\.)*\d+)/, 1])
     else
