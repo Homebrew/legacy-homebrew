@@ -8,9 +8,9 @@ class GitReview < Formula
 
   bottle do
     cellar :any
-    sha1 "98167df95c295b0f194f7d775d8c231173557067" => :yosemite
-    sha1 "b66b3239d9079b451fbb665e718f201f6304ba8e" => :mavericks
-    sha1 "877276d594a72aced623689b31c1d4ef6dabdd0a" => :mountain_lion
+    sha256 "a84e6f24cbcddb1f7516ce45cff341f2f70f17ebb7f3a4770ffea4dfd70823ab" => :yosemite
+    sha256 "6820a4fff886ccde7796f1550699fc7507b5b27bbfd222e2f11cc3f6d16a9539" => :mavericks
+    sha256 "08eebfba51435d1ab6ef64a5323d129d7bd0a94c0f8d98d75f205b9ccb291e3a" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
