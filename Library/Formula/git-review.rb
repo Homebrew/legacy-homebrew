@@ -4,6 +4,7 @@ class GitReview < Formula
   homepage "https://git.openstack.org/cgit/openstack-infra/git-review"
   url "https://pypi.python.org/packages/source/g/git-review/git-review-1.24.tar.gz"
   sha1 "9183b505366b842cff32132ee88d8eff44bb7c89"
+  revision 1
 
   bottle do
     cellar :any
@@ -15,8 +16,8 @@ class GitReview < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.0.tar.gz"
-    sha1 "d60dfaaa0b4b62a6646fcb6c3954ea369317ca9f"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   def install

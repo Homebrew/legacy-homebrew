@@ -4,6 +4,7 @@ class Tutum < Formula
   homepage "https://www.tutum.co/"
   url "https://github.com/tutumcloud/tutum-cli/archive/v0.12.6.1.tar.gz"
   sha1 "75d44ba0fb7f360dfa1931ce5cf0134cc69985e0"
+  revision 1
 
   bottle do
     cellar :any
@@ -51,8 +52,8 @@ class Tutum < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "tabulate" do
