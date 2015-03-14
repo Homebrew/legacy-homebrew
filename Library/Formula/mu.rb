@@ -19,9 +19,10 @@ class Mu < Formula
   head "https://github.com/djcb/mu.git"
 
   bottle do
-    sha1 "b9e3a478300b3391f6a38639e32694f5444bea2d" => :yosemite
-    sha1 "61b8eadfbfa482de3d1194c5cb8bc5a3cb0933d6" => :mavericks
-    sha1 "ef81baa0a3210ba9c4a7eeb9224574e1cc89e5d8" => :mountain_lion
+    revision 1
+    sha1 "fa5412706e677fcc042e3e461e97cdc7e960185e" => :yosemite
+    sha1 "42cc5427d5de000729c51f627bb00927606c2be9" => :mavericks
+    sha1 "b7dda439293d64bdba9173318eeb381524cbdddb" => :mountain_lion
   end
 
   option "with-emacs", "Build with emacs support"
@@ -43,17 +44,15 @@ class Mu < Formula
     # shipped by default with Mac OS X is too old.
     ENV["EMACS"] = "no" if build.without? "emacs"
 
-    # I dunno.
+    # https://github.com/djcb/mu/issues/380
     # https://github.com/djcb/mu/issues/332
-    # https://github.com/Homebrew/homebrew/issues/25524
-    ENV.delete "MACOSX_DEPLOYMENT_TARGET"
+    ENV.O0 if MacOS.version >= :mavericks && ENV.compiler == :clang
 
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-gui=none"
     system "make"
-    system "make test"
     system "make install"
   end
 
@@ -62,5 +61,41 @@ class Mu < Formula
 
       mu index --rebuild
     EOS
+  end
+
+  test do
+    mkdir (testpath/"cur")
+
+    (testpath/"cur/1234567890.11111_1.host1!2,S").write <<-EOS.undent
+      From: "Road Runner" <fasterthanyou@example.com>
+      To: "Wile E. Coyote" <wile@example.com>
+      Date: Mon, 4 Aug 2008 11:40:49 +0200
+      Message-id: <1111111111@example.com>
+
+      Beep beep!
+    EOS
+
+    (testpath/"cur/0987654321.22222_2.host2!2,S").write <<-EOS.undent
+      From: "Wile E. Coyote" <wile@example.com>
+      To: "Road Runner" <fasterthanyou@example.com>
+      Date: Mon, 4 Aug 2008 12:40:49 +0200
+      Message-id: <2222222222@example.com>
+      References: <1111111111@example.com>
+
+      This used to happen outdoors. It was more fun then.
+    EOS
+
+    system "#{bin}/mu", "index",
+                        "--muhome",
+                        testpath,
+                        "--maildir=#{testpath}"
+
+    mu_find = "#{bin}/mu find --muhome #{testpath} "
+    find_message = "#{mu_find} msgid:2222222222@example.com"
+    find_message_and_related = "#{mu_find} --include-related msgid:2222222222@example.com"
+
+    assert_equal 1, shell_output(find_message).lines.count
+    assert_equal 2, shell_output(find_message_and_related).lines.count,
+                 "You tripped over https://github.com/djcb/mu/issues/380\n\t--related doesn't work. Everything else should"
   end
 end

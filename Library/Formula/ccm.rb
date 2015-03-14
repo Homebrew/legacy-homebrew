@@ -1,18 +1,27 @@
-require "formula"
-
 class Ccm < Formula
   homepage "https://github.com/pcmanus/ccm"
-  url "https://github.com/pcmanus/ccm/archive/ccm-1.1.tar.gz"
-  sha1 "cb216c633f04cf1821bfafa7d1c1a2e73444f20e"
+  url "https://github.com/pcmanus/ccm/archive/ccm-2.0.2.tar.gz"
+  sha1 "d6fc0d5b5640f16c08919308c0ab4298bfb90823"
+  head "https://github.com/pcmanus/ccm.git"
 
   bottle do
     cellar :any
-    sha1 "ac55457ea11b2c831affdaf892133ce4edea8f8f" => :mavericks
-    sha1 "de6894cdeb6067294f7dc184cd67acbda1727e44" => :mountain_lion
-    sha1 "7f7178f0b6901a756fbcddaa4450902bc5390dae" => :lion
+    sha1 "aed0f400e1e3b861da04a3c6ed9e5d54e7e0ec75" => :yosemite
+    sha1 "f0a9e43263c47f5c783627f97269a811b2b47e7b" => :mavericks
+    sha1 "29cd95cc6d45b506a4df1abd52a7a4fe738f4117" => :mountain_lion
   end
 
-  head "https://github.com/pcmanus/ccm.git"
+  depends_on :python if MacOS.version <= :snow_leopard
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+  end
+
+  resource "psutil" do
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.1.tar.gz"
+    sha1 "ddf58b3a0e699e142586b67097e3ae062766f11d"
+  end
 
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
@@ -20,20 +29,21 @@ class Ccm < Formula
   end
 
   def install
-    resource("pyyaml").stage do
-      system "python", "setup.py", "install", "--prefix=#{libexec}"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    %w[six psutil pyyaml].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
 
-    ENV["PYTHONPATH"] = "#{lib}/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", "#{libexec}/lib/python2.7/site-packages"
-    bin.env_script_all_files(libexec + "bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
-    # We can't test CCM core functionality without a Cassandra node to talk to.
-    # Instead, just make sure it runs.
-    system "#{bin}/ccm -h 2>&1 | grep 'Usage:'"
+    assert_match /Usage/, shell_output("#{bin}/ccm; 2>&1")
   end
 end

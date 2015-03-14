@@ -594,7 +594,7 @@ class FormulaInstaller
   end
 
   def post_install
-    formula.post_install
+    formula.run_post_install
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
     puts "You can try again using `brew postinstall #{formula.name}`"

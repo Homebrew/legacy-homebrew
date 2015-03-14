@@ -1,5 +1,3 @@
-require "formula"
-
 class GitExtras < Formula
   homepage "https://github.com/tj/git-extras"
   url "https://github.com/tj/git-extras/archive/2.2.0.tar.gz"
@@ -15,7 +13,13 @@ class GitExtras < Formula
   end
 
   def install
-    inreplace "Makefile", %r|\$\(DESTDIR\)(?=/etc/bash_completion\.d)|, "$(DESTDIR)$(PREFIX)"
+    inreplace "Makefile", %r{\$\(DESTDIR\)(?=/etc/bash_completion\.d)}, "$(DESTDIR)$(PREFIX)"
     system "make", "PREFIX=#{prefix}", "install"
+  end
+
+  test do
+    cd HOMEBREW_PREFIX do
+      system "#{bin}/git-root"
+    end
   end
 end

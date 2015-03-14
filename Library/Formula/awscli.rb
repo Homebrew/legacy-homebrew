@@ -1,13 +1,13 @@
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.0.tar.gz"
-  sha1 "c8bf5bb7f812376f6a6b6f116f237e2f5575ac61"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.8.tar.gz"
+  sha1 "294a7230402bb1dc11981bc4e6136bfaa04a602b"
 
   bottle do
     cellar :any
-    sha1 "b0d609083cfca66c99a1b77f58dc29268459b17f" => :yosemite
-    sha1 "0cb1c10905ec0b1e31f5a00fac66beb177883755" => :mavericks
-    sha1 "9d07f4e75883ad8f1370b1278e7197bbbda9ebe7" => :mountain_lion
+    sha1 "d85e8a692ae44d4c193b1615d4aa001e2455978b" => :yosemite
+    sha1 "ff411e5099d71f4bbb8220d7de8416584d80815c" => :mavericks
+    sha1 "76a335afe68821b74df710376ace5341b9d5e037" => :mountain_lion
   end
 
   head do
@@ -44,13 +44,13 @@ class Awscli < Formula
   end
 
   resource "jmespath" do
-    url "https://pypi.python.org/packages/source/j/jmespath/jmespath-0.5.0.tar.gz"
-    sha1 "c9ce28e08fd24cdaa23e1183008b67ded302ef27"
+    url "https://pypi.python.org/packages/source/j/jmespath/jmespath-0.6.1.tar.gz"
+    sha1 "f3fc294e5225f2529968f58eb75c9da91fbeb9c1"
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.81.0.tar.gz"
-    sha1 "6d85690eca45733d1c04b52f44f40a77a6c7614c"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.89.0.tar.gz"
+    sha1 "15a4b154b49bc967d921253875cf41ff8f2b6816"
   end
 
   resource "docutils" do

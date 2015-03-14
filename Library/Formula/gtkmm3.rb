@@ -18,7 +18,6 @@ class Gtkmm3 < Formula
   depends_on "pangomm"
   depends_on "atkmm"
   depends_on "cairomm"
-  depends_on :x11
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

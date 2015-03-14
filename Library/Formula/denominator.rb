@@ -1,13 +1,13 @@
-require 'formula'
+class Denominator < Formula
+  homepage "https://github.com/Netflix/denominator/tree/v4.4.2/cli"
+  url "https://bintray.com/artifact/download/netflixoss/maven/com/netflix/denominator/denominator-cli/4.4.2/denominator-cli-4.4.2-fat.jar"
+  sha1 "b60b4dbcff98cc9d08f3eec1273c1ce3ff146860"
 
-class Denominator < ScriptFileFormula
-  # This is a shell script wrapping a java jar; download as single file using nounzip
-  homepage 'https://github.com/Netflix/denominator/tree/master/cli'
-  url 'http://dl.bintray.com/content/netflixoss/denominator/denominator-cli/release/4.3.3/denominator?direct',
-    :using  => :nounzip
-  sha1 'df078fe7e1c3739ea17dfeced936515026890c1e'
+  def install
+    bin.install "denominator-cli-4.4.2-fat.jar" => "denominator"
+  end
 
   test do
-    system "#{bin}/denominator", "help"
+    system "#{bin}/denominator", "providers"
   end
 end

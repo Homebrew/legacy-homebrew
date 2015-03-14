@@ -12,6 +12,14 @@ module Homebrew
     Homebrew.dump_verbose_config(s)
     files["config.out"] = { :content => s.string }
     files["doctor.out"] = { :content => `brew doctor 2>&1` }
+    unless f.core_formula?
+      tap = <<-EOS.undent
+        Formula: #{f.name}
+        Tap: #{f.tap}
+        Path: #{f.path}
+      EOS
+      files["tap.out"] = { :content => tap }
+    end
 
     url = create_gist(files)
 

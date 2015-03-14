@@ -4,9 +4,10 @@ class Sip < Formula
   sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
 
   bottle do
-    sha1 "92f54a37300cd0d1881a6d8d2e218ecd0532a70a" => :yosemite
-    sha1 "6b0a127bbb486c17c045788d85e92b3008469395" => :mavericks
-    sha1 "0c103fbd3a6dac723336f968d6e1faae23e34a32" => :mountain_lion
+    revision 1
+    sha1 "ac110e13e8b0f3f3c908fe4e9b4f6a010d483b64" => :yosemite
+    sha1 "d7cbfc32de5096fd1aa20a9123fba628ce546bf0" => :mavericks
+    sha1 "c67e51ac70a5258c16d6694010f2b9fd2363f346" => :mountain_lion
   end
 
   head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
@@ -78,23 +79,24 @@ class Sip < Formula
         void test();
       };
     EOS
+    (testpath/"generate.py").write <<-EOS.undent
+      from sipconfig import SIPModuleMakefile, Configuration
+      m = SIPModuleMakefile(Configuration(), "test.build")
+      m.extra_libs = ["test"]
+      m.extra_lib_dirs = ["."]
+      m.generate()
+    EOS
     (testpath/"run.py").write <<-EOS.undent
       from test import Test
       t = Test()
       t.test()
     EOS
-    system "#{bin}/sip", "-c", ".", "test.sip"
-    Language::Python.each_python(build) do |python, _version|
-      cppflags = `#{python}-config --cflags`.strip.split
-      ldflags = `#{python}-config --ldflags`.strip.split
-      cppflags << "-I#{include}"
-      ldflags += %w[-L#{lib} -shared -undefined dynamic_lookup]
-      Dir[testpath/"*.cpp"].each do |source|
-        object = File.basename(source, ".cpp") + ".o"
-        system ENV.cxx, "-c", source, "-o", object, *cppflags
-      end
-      link_args= Dir[testpath/"*.o"] + %w[-o test.so] + ldflags
-      system ENV.cxx, *link_args
+    system ENV.cxx, "-shared", "-o", "libtest.dylib", "test.cpp"
+    system "#{bin}/sip", "-b", "test.build", "-c", ".", "test.sip"
+    Language::Python.each_python(build) do |python, version|
+      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
+      system python, "generate.py"
+      system "make", "-j1", "clean", "all"
       system python, "run.py"
     end
   end

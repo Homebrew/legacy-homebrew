@@ -1,13 +1,13 @@
 class SpoofMac < Formula
-  homepage "http://feross.org/spoofmac/"
-  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.0.tar.gz"
-  sha1 "6a1d44ee300f30c1e2406fa612950adedc7367d2"
+  homepage "https://github.com/feross/SpoofMAC"
+  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.3.tar.gz"
+  sha1 "fdd80539fc9fdd058cd167a07cbab9f41186d51b"
   head "https://github.com/feross/SpoofMAC.git"
 
   bottle do
-    sha1 "13efa686db9f20bc7cfb69f2ebc18583c2bb990e" => :yosemite
-    sha1 "2d68dfc7103ce1c3f99d1a6a48460bc7370310a2" => :mavericks
-    sha1 "bdecbe4eb2ccd5ddb2f340922c37f652e1b3b1f2" => :mountain_lion
+    sha1 "39c3d357cf21945a30d3866874c81c7423737056" => :yosemite
+    sha1 "0dcd2f368e9f5c08c33e982bfc8fe746193bb6ab" => :mavericks
+    sha1 "06cae93bd22951b3d119737f5827759bf2f4f904" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

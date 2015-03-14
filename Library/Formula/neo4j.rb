@@ -14,9 +14,9 @@ class Neo4j < Formula
   end
 
   devel do
-    url "http://dist.neo4j.org/neo4j-community-2.2.0-M03-unix.tar.gz"
-    sha1 "9e8867753e0e4a1d82d90b7455e7383f352a6521"
-    version "2.2.0-M03"
+    url "http://dist.neo4j.org/neo4j-community-2.2.0-RC01-unix.tar.gz"
+    sha1 "65165b83ee2ba91e9ba99cb2acce9ebcf7ad5434"
+    version "2.2.0-RC01"
   end
 
   def install

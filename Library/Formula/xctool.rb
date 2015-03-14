@@ -2,15 +2,15 @@ require 'formula'
 
 class Xctool < Formula
   homepage 'https://github.com/facebook/xctool'
-  url 'https://github.com/facebook/xctool/archive/v0.2.2.tar.gz'
-  sha1 '7c1f5610d0543a2a93b87aeebd7dfb642d91d50d'
+  url 'https://github.com/facebook/xctool/archive/v0.2.3.tar.gz'
+  sha1 'e22b947a4de7bc96feffb6cb24940f61574afbbc'
   head 'https://github.com/facebook/xctool.git'
 
   bottle do
     cellar :any
-    sha1 "71034d5372fa3cee7bde82febf2be7dd3d56ec45" => :yosemite
-    sha1 "5a842c2aac6d6e04ab8d51061fd7052011b6a6b8" => :mavericks
-    sha1 "384f13a1e0750e1c16cf112eb97c1f44bb724cd2" => :mountain_lion
+    sha1 "5bd00d5d7fa89112bd2de0b49ba36b574d44654b" => :yosemite
+    sha1 "f9a420650620b21baf56a6cdc4c0a773049b2e0b" => :mavericks
+    sha1 "816fe6d860e1acf6b6fa53057b700a8dcad0de8f" => :mountain_lion
   end
 
   depends_on :xcode => "5.0"

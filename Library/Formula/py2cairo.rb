@@ -1,21 +1,19 @@
-require 'formula'
-
 class Py2cairo < Formula
-  homepage 'http://cairographics.org/pycairo/'
-  url 'http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2'
-  sha1 '2efa8dfafbd6b8e492adaab07231556fec52d6eb'
+  homepage "http://cairographics.org/pycairo/"
+  url "http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2"
+  sha1 "2efa8dfafbd6b8e492adaab07231556fec52d6eb"
 
   bottle do
     cellar :any
-    sha1 "8be3b9ec52cb7eca0048b8d1cd935c007cf36a4c" => :yosemite
-    sha1 "c4691142f4d4ac59e55d413e43f01393327d7f00" => :mavericks
-    sha1 "bc34e6cf22e942d57a9618821e024c65c6a07fa3" => :mountain_lion
+    revision 1
+    sha1 "95e2aed8d8732484a5b98ffedeedb063cf997b59" => :yosemite
+    sha1 "752633a2f7eed1aefaa1cc7391b636d00fffb9eb" => :mavericks
+    sha1 "644f231336215c9f127b8191a32f4b28131ba4eb" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cairo'
-  depends_on :x11
-  depends_on :python
+  depends_on "pkg-config" => :build
+  depends_on "cairo"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   option :universal
 
@@ -27,16 +25,19 @@ class Py2cairo < Formula
   def install
     ENV.refurbish_args
 
+    # disable waf's python extension mode because it explicitly links libpython
+    # https://code.google.com/p/waf/issues/detail?id=1531
+    inreplace "src/wscript", "pyext", ""
+    ENV["LINKFLAGS"] = "-undefined dynamic_lookup"
+    ENV.append_to_cflags `python-config --includes`
+
     # Python extensions default to universal but cairo may not be universal
     ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}" unless build.universal?
 
-    # waf miscompiles py2cairo on >= lion with HB python, linking the wrong
-    # Python Library.  So add a LINKFLAG that sets the path.
-    # https://github.com/Homebrew/homebrew/issues/12893
-    # https://github.com/Homebrew/homebrew/issues/14781
-    # https://bugs.freedesktop.org/show_bug.cgi?id=51544
-    ENV['LINKFLAGS'] = "-L#{%x(python-config --prefix).chomp}/lib/python2.7/config"
     system "./waf", "configure", "--prefix=#{prefix}", "--nopyc", "--nopyo"
     system "./waf", "install"
+
+    module_dir = lib/"python2.7/site-packages/cairo"
+    mv module_dir/"lib_cairo.dylib", module_dir/"_cairo.so"
   end
 end

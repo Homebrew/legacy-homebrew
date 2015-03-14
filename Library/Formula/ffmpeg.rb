@@ -1,14 +1,15 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.3.tar.bz2"
-  sha1 "160d53a0d6b8df18336fac7f068c390ac2d34cef"
+  url "https://www.ffmpeg.org/releases/ffmpeg-2.6.tar.bz2"
+  sha256 "23c38ecc0dd6cae5e9a3c5c2c967b10480dc4f7159d094ade13b0775d1fd4791"
+  revision 1
 
   head "git://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha1 "08d5a4b48139242805c77ed1e09edba5bc27f5e9" => :yosemite
-    sha1 "87286d9e8da3310e75b016db543777cc8ec084d9" => :mavericks
-    sha1 "017384ba81d06e8825fa22532100db8c587058cf" => :mountain_lion
+    sha256 "9447e3ff05a11e4eccf31a94f370eb90917f22dc89bc779f6cc8168dd19d8f16" => :yosemite
+    sha256 "7c30d6cb016cba4288c05b7ddb2f647e6c71d66ef07e4f602b847b29b92009ef" => :mavericks
+    sha256 "e7982ca40054a3a4017bcdb728407643427b535690c1314a277479a1f858401e" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -35,7 +36,7 @@ class Ffmpeg < Formula
   depends_on "pkg-config" => :build
 
   # manpages won't be built without texi2html
-  depends_on "texi2html" => :build if MacOS.version >= :mountain_lion
+  depends_on "texi2html" => :build
   depends_on "yasm" => :build
 
   depends_on "x264" => :recommended
@@ -138,8 +139,6 @@ class Ffmpeg < Formula
     # http://trac.macports.org/ticket/20938#comment:22
     ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
 
-    ENV["GIT_DIR"] = cached_download/".git" if build.head?
-
     system "./configure", *args
 
     if MacOS.prefer_64_bit?
@@ -161,15 +160,17 @@ class Ffmpeg < Formula
 
   def caveats
     if build.without? "faac" then <<-EOS.undent
-      FFmpeg has been built without libfaac for licensing reasons.
+      FFmpeg has been built without libfaac for licensing reasons;
+      libvo-aacenc is used by default.
       To install with libfaac, you can:
         brew reinstall ffmpeg --with-faac
 
-      You can also use the libvo-aacenc or experimental FFmpeg encoder to
-      encode AAC audio:
-        -c:a libvo_aacenc
+      You can also use the experimental FFmpeg encoder, libfdk-aac, or
+      libvo_aacenc to encode AAC audio:
+        ffmpeg -i input.wav -c:a aac -strict experimental output.m4a
       Or:
-        -c:a aac -strict -2
+        brew reinstall ffmpeg --with-fdk-aac
+        ffmpeg -i input.wav -c:a libfdk_aac output.m4a
       EOS
     end
   end

@@ -1,16 +1,16 @@
 class Mysql < Formula
-  homepage "http://dev.mysql.com/doc/refman/5.6/en/"
-  url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.22.tar.gz"
-  sha1 "31ac6f799dd76950b4de9979320129ac04fb38e1"
+  homepage "https://dev.mysql.com/doc/refman/5.6/en/"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.23.tar.gz"
+  sha1 "2d610ba01ab97df042d5946ba0da411da5547c5d"
 
   bottle do
-    sha1 "4cc6f18e16e07736466d71fd0a02ab6f01882948" => :yosemite
-    sha1 "0499e0bf48a4669e066ac921cdfae125b587d244" => :mavericks
-    sha1 "8987fcf7576f6985b741b19f6b12f6a636be52d3" => :mountain_lion
+    sha1 "9edc48cf27c50b6f51bfd90af86716a4a36b39e8" => :yosemite
+    sha1 "e4aee77fd9a4882bd85a718b622fbd817d87e4ae" => :mavericks
+    sha1 "38ef7c81c209fd7ca55f3769c32c9ae593f4384d" => :mountain_lion
   end
 
   # Fixes compilation with OpenSSL 1.0.2
-  # http://bugs.mysql.com/bug.php?id=75623
+  # https://bugs.mysql.com/bug.php?id=75623
   patch do
     url "https://github.com/mysql/mysql-server/pull/3.diff"
     sha1 "6b17a31ee32e373dca0f257f7c7884ac6dcf8e1f"

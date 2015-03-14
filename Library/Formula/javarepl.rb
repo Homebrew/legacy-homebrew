@@ -1,9 +1,7 @@
-require 'formula'
-
 class Javarepl < Formula
   homepage "https://github.com/albertlatacz/java-repl"
-  url "http://albertlatacz.published.s3.amazonaws.com/repo/javarepl/javarepl/272/javarepl-272.jar"
-  sha1 "d9528b0def103694c83bdded0a8d103edb175b4e"
+  url "https://s3.amazonaws.com/albertlatacz.published/repo/javarepl/javarepl/272/javarepl-272.jar"
+  sha256 "f23a2635adee8dee17099a857d4544105ac1bb21d2bb05480162f1c1e0c525fd"
 
   def install
     libexec.install "javarepl-#{version}.jar"

@@ -4,8 +4,16 @@ class Asciinema < Formula
   homepage "https://asciinema.org/"
   url "https://github.com/asciinema/asciinema-cli/archive/v0.9.9.tar.gz"
   sha1 "155c19366ffb3347e97026e9ab8006c16d2a52c6"
+  head "https://github.com/asciinema/asciinema-cli"
+
+  devel do
+    url "https://github.com/asciinema/asciinema-cli/archive/v1.0.0.rc1.tar.gz"
+    sha1 "14bea5ed7fc3bda9a40c8a8173d7e9f107f6a78c"
+    version "1.0.0.rc1"
+  end
 
   bottle do
+    cellar :any
     sha1 "18071c7dc6d7fb738db64b864e7d5b48e935e0eb" => :yosemite
     sha1 "975785a19567a9a7aca8ea7a53b1cfea3f822734" => :mavericks
     sha1 "cba30872e33a44b4042ef768fd871175e76fc502" => :mountain_lion
@@ -40,6 +48,7 @@ class Asciinema < Formula
   end
 
   test do
+    ENV["LC_ALL"] = "en_US.UTF-8"
     system "#{bin}/asciinema", "-v"
     system "#{bin}/asciinema", "-h"
   end

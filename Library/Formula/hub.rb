@@ -1,32 +1,24 @@
 class Hub < Formula
   homepage "http://hub.github.com/"
-  url "https://github.com/github/hub/archive/v1.12.4.tar.gz"
-  sha1 "25135167108cd777ba6ec2dd5a9a25e248d98d4b"
+  url "https://github.com/github/hub/archive/v2.2.0.tar.gz"
+  sha1 "29744a370b71e5b054fd91e59472de6dbe573a91"
+  head "https://github.com/github/hub.git"
 
-  head do
-    url "https://github.com/github/hub.git"
-    depends_on "go" => :build
-  end
-
-  devel do
-    url "https://github.com/github/hub/archive/v2.2.0-rc1.tar.gz"
-    sha1 "029d154ce0f9c4999e4dd6ef23eab5e411370c4f"
-    version "2.2.0-rc1"
-
-    depends_on "go" => :build
+  bottle do
+    cellar :any
+    sha1 "e1473bd03a9a3d3a91ad823415d4e468d63e491b" => :yosemite
+    sha1 "cbe513090da3faef854e43b0d0393708e7551500" => :mavericks
+    sha1 "4ab401c95fadce34df9175188df237bf074f8f75" => :mountain_lion
   end
 
   option "without-completions", "Disable bash/zsh completions"
 
+  depends_on "go" => :build
+
   def install
-    if build.head? || build.devel?
-      ENV["GIT_DIR"] = cached_download/".git"
-      system "script/build"
-      bin.install "hub"
-      man1.install Dir["man/*"]
-    else
-      rake "install", "prefix=#{prefix}"
-    end
+    system "script/build"
+    bin.install "hub"
+    man1.install Dir["man/*"]
 
     if build.with? "completions"
       bash_completion.install "etc/hub.bash_completion.sh"

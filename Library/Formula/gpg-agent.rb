@@ -1,14 +1,13 @@
 class GpgAgent < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
 
   bottle do
-    revision 1
-    sha1 "d35632224c39ebf9b1bba4cebcbea4a97f9bfc43" => :yosemite
-    sha1 "c9048d0f7dd157b0a6a24d725aac433f7a692b1f" => :mavericks
-    sha1 "7f39030a3d21587c6844209caa7286026de2e28e" => :mountain_lion
+    sha256 "1e516200de1786beeb5de9dbc14e18db0794914a8d931ecc7af0e6c37a4545ed" => :yosemite
+    sha256 "5e2619d61dbe587c0a457937887a8555ed87b6e52abe17ef55af454a5ce5ca72" => :mavericks
+    sha256 "3897518fdb9d4b9a159a9e29d64fef1a515ebac83c3b5fce1a45ab3bb5e534dc" => :mountain_lion
   end
 
   depends_on "libgpg-error"
@@ -34,8 +33,40 @@ class GpgAgent < Formula
     system "make", "install"
   end
 
+  def caveats; <<-EOS.undent
+      Remember to set a graphical pinentry program (such as pinentry-mac) in your
+      ~/.gnupg/gpg-agent.conf if you configure launchd to start gpg-agent at login.
+    EOS
+  end
+
   test do
     system "#{bin}/gpg-agent", "--help"
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/bin/sh</string>
+            <string>-c</string>
+            <string>#{opt_prefix}/bin/gpg-agent -c --daemon | /bin/launchctl</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
+        <key>ServiceDescription</key>
+        <string>Run gpg-agent at login</string>
+    </dict>
+    </plist>
+    EOS
   end
 end
 
@@ -52,6 +83,6 @@ index c022805..96ea7ed 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.26'
- PACKAGE_STRING='gnupg 2.0.26'
+ PACKAGE_VERSION='2.0.27'
+ PACKAGE_STRING='gnupg 2.0.27'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

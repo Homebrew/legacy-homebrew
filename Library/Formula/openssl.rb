@@ -2,7 +2,8 @@ class Openssl < Formula
   homepage "https://openssl.org"
   url "https://www.openssl.org/source/openssl-1.0.2.tar.gz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2.tar.gz"
-  sha256 "8c48baf3babe0d505d16cfc0cf272589c66d3624264098213db0fb00034728e9"
+  # Use sha1 for Tiger (which needs OpenSSL to compute sha256 hashes)
+  sha1 "2f264f7f6bb973af444cd9fc6ee65c8588f610cc"
 
   bottle do
     sha1 "0e5844609ea57a7f5361dca42d05578c6cf45643" => :yosemite

@@ -1,5 +1,3 @@
-require "formula"
-
 class N < Formula
   homepage "https://github.com/visionmedia/n"
   head "https://github.com/visionmedia/n.git"
@@ -9,5 +7,9 @@ class N < Formula
   def install
     bin.mkdir
     system "make", "PREFIX=#{prefix}", "install"
+  end
+
+  test do
+    system bin/"n", "ls"
   end
 end

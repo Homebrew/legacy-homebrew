@@ -1,14 +1,14 @@
 class Curl < Formula
   homepage "http://curl.haxx.se/"
-  url "http://curl.haxx.se/download/curl-7.40.0.tar.bz2"
-  mirror "http://ftp.sunet.se/pub/www/utilities/curl/curl-7.40.0.tar.bz2"
-  sha256 "899109eb3900fa6b8a2f995df7f449964292776a04763e94fae640700f883fba"
+  url "http://curl.haxx.se/download/curl-7.41.0.tar.bz2"
+  mirror "http://ftp.sunet.se/pub/www/utilities/curl/curl-7.41.0.tar.bz2"
+  sha256 "9f8b546bdc5c57d959151acae7ce6610fe929d82b8d0fc5b25a3a2296e5f8bea"
 
   bottle do
     cellar :any
-    sha1 "a5ba00d51a113752e962ba8ee0911c1c496d6cbc" => :yosemite
-    sha1 "c36652236b7b624913370adf309c9e838c571018" => :mavericks
-    sha1 "624a82135884081cef194e5313e0652a16b240b0" => :mountain_lion
+    sha1 "5492b542748165ab1d69d119b24eaf71e014794d" => :yosemite
+    sha1 "a38cda228da1fe998c8ed32c296789bdf38ea766" => :mavericks
+    sha1 "7b4b4aab07d6c8fcf254666c83df39ba710bc913" => :mountain_lion
   end
 
   keg_only :provided_by_osx

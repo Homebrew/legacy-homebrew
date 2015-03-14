@@ -2,14 +2,14 @@ require 'formula'
 
 class Hive < Formula
   homepage 'http://hive.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-0.14.0/apache-hive-0.14.0-bin.tar.gz'
-  sha1 '8268ca84870f10f1ab163b87c2c7e6b0bbd39744'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-1.0.0/apache-hive-1.0.0-bin.tar.gz'
+  sha1 '8e24c451ebab1333352a2f0407d5fe847759fbd2'
 
   depends_on 'hadoop'
   conflicts_with 'apache-spark', :because => 'both install `beeline` binaries'
 
   def install
-    rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/ext/*.cmd", "bin/ext/util/*.cmd"]
     libexec.install %w[bin conf examples hcatalog lib scripts]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end

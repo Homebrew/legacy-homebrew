@@ -2,13 +2,13 @@ require 'formula'
 
 class Gwyddion < Formula
   homepage 'http://gwyddion.net/'
-  url 'http://gwyddion.net/download/2.39/gwyddion-2.39.tar.gz'
-  sha1 '05ae35544b2f68939f6474fc8edb1f0395d10427'
+  url 'http://gwyddion.net/download/2.40/gwyddion-2.40.tar.gz'
+  sha1 '3e914985e5cde6303e2c842605014a9c66a1c030'
 
   bottle do
-    sha1 "6248a7dc780ba3cbea3aad2ae8682183445a112d" => :yosemite
-    sha1 "998824b3b4b87fae0a638a1c68ff8570ba51c4a5" => :mavericks
-    sha1 "5b92dafd899ac4550b066680fb1457d1205cb4de" => :mountain_lion
+    sha1 "9e6ba00a543047c776d88ad1e3561247cdfacf05" => :yosemite
+    sha1 "1eee93b2d89cffac4c224252ff5932b6697143c0" => :mavericks
+    sha1 "3c621ed8e56d52a4502bc9b7fc1641a86988a94f" => :mountain_lion
   end
 
   depends_on :x11 => :optional
