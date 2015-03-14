@@ -9,9 +9,9 @@ class Asciinema < Formula
 
   bottle do
     cellar :any
-    sha1 "18071c7dc6d7fb738db64b864e7d5b48e935e0eb" => :yosemite
-    sha1 "975785a19567a9a7aca8ea7a53b1cfea3f822734" => :mavericks
-    sha1 "cba30872e33a44b4042ef768fd871175e76fc502" => :mountain_lion
+    sha256 "5d87618afe5b7b3decee25d5571f26ef836588250254dfab39d5d77f9100410b" => :yosemite
+    sha256 "9fe846d26e9dd6b2b021a1c326d684015091351ba8b4c6a0918a229f62542383" => :mavericks
+    sha256 "27bde1b4865ced34f9e96b8b9aea5fb6cc4a30dee53e6f5ed1a02a3245de0fa9" => :mountain_lion
   end
 
   depends_on "go" => :build
