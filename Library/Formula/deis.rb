@@ -1,7 +1,7 @@
 class Deis < Formula
   homepage "http://deis.io"
-  url "https://github.com/deis/deis/archive/v1.4.0.tar.gz"
-  sha1 "96bb7bb71bfe32cfb5e148ccb9deabd621ddbcd4"
+  url "https://github.com/deis/deis/archive/v1.4.1.tar.gz"
+  sha256 "d24333b6b7674916b416871ca909c8e24bbbbae3d894056728e176ec2b6769bd"
 
   bottle do
     cellar :any
@@ -29,8 +29,8 @@ class Deis < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "termcolor" do
@@ -53,6 +53,9 @@ class Deis < Formula
     end
 
     cd "client" do
+      # unpin requests
+      inreplace "setup.py", /'requests==.*?'/, "'requests'"
+
       ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
       system "python", *Language::Python.setup_install_args(libexec)
     end
