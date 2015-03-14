@@ -1,15 +1,18 @@
 
 class Supercollider < Formula
   homepage "https://supercollider.github.io"
-  url "https://github.com/supercollider/supercollider.git"
+  url "https://github.com/supercollider/supercollider.git",
+    :tag => "after-qt5",
+    :revision => "085cab288947fe06f468117f5c294db516b2afc0"
+  sha256 "80956465c2637cf0cc67c3550900e2f392d10d33f2518c25bbb9332901ae226c"
+
+  version "3.7-devel"
 
   depends_on :xcode => :build
   depends_on :macos => :lion
   depends_on "cmake" => :build
   depends_on "qt5" => :build
   depends_on "readline" => :build
-
-  version "3.7-devel"
 
   def install
     ENV.deparallelize
