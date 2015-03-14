@@ -36,7 +36,15 @@ class Dmd < Formula
     man.install Dir["docs/man/*"]
 
     # A proper dmd.conf is required for later build steps:
-    fix_dmd_conf
+    conf = buildpath/"dmd.conf"
+    # Can't use opt_include or opt_lib here because dmd won't have been
+    # linked into opt by the time this build runs:
+    conf.write <<-EOS.undent
+        [Environment]
+        DFLAGS=-I#{include}/d2 -L-L#{lib}
+        EOS
+    etc.install conf
+    install_new_dmd_conf
 
     make_args.unshift "DMD=#{bin}/dmd"
 
@@ -57,25 +65,29 @@ class Dmd < Formula
     end
   end
 
-  # Fix up dmd.conf to point to the correct include paths.
-  def fix_dmd_conf
-    # Homebrew's etc.install method doesn't let you overwrite etc files,
-    # so edit it in place if it's there:
+  # Previous versions of this formula may have left in place an incorrect
+  # dmd.conf.  If it differs from the newly generated one, move it out of place
+  # and warn the user.
+  # This must be idempotent because it may run from both install() and 
+  # post_install() if the user is running `brew install --build-from-source`.
+  def install_new_dmd_conf    
     conf = etc/"dmd.conf"
-    if conf.exist?
-      inreplace conf, /^DFLAGS=.+$/, "DFLAGS=-I#{include}/d2 -L-L#{lib}"
-    else
-      conf.write <<-EOS.undent
-        [Environment]
-        DFLAGS=-I#{include}/d2 -L-L#{lib}
-        EOS
+    # Iff the new file differs from conf, etc.install drops it here:
+    new_conf = etc/"dmd.conf.default"
+
+    if !new_conf.exist?
+      # Nothing to do. Our conf is already the newest version
+      return
     end
 
+    backup = etc/"dmd.conf.old"
+    opoo "An old dmd.conf was found and will be moved to #{backup}."
+    FileUtils.mv conf, backup
+    FileUtils.mv new_conf, conf    
   end
 
   def post_install
-    # We need to fix up dmd.conf even if users install/upgrade via bottle:
-    fix_dmd_conf
+    install_new_dmd_conf
   end
 
   test do
