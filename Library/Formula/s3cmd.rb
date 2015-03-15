@@ -1,6 +1,6 @@
 class S3cmd < Formula
-  url "https://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.2/s3cmd-1.5.2.tar.gz"
   homepage "http://s3tools.org/s3cmd"
+  url "https://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.2/s3cmd-1.5.2.tar.gz"
   sha256 "ff8a6764e8bdd7ed48a93e51b08222bea33469d248a90b8d25315b023717b42d"
   head "https://github.com/s3tools/s3cmd.git"
 
