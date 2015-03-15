@@ -39,6 +39,17 @@ class Protobuf < Formula
   url 'https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.bz2'
   sha1 '6421ee86d8fb4e39f21f56991daa892a3e8d314b'
 
+  devel do
+    url "https://github.com/google/protobuf/archive/v3.0.0-alpha-2.tar.gz"
+    sha256 "46df8649e2a0ce736e37f8f347f92b32a9b8b54d672bf60bd8f6f4d24d283390"
+
+    version "3.0.0-alpha-2"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   bottle do
     cellar :any
     revision 1
@@ -68,6 +79,7 @@ class Protobuf < Formula
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
 
+    system "./autogen.sh" if build.devel?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"
@@ -90,15 +102,27 @@ class Protobuf < Formula
   end
 
   test do
-    def testdata; <<-EOS.undent
-      package test;
-      message TestCase {
-        required string name = 4;
-      }
-      message Test {
-        repeated TestCase case = 1;
-      }
-      EOS
+    testdata = if devel?
+      <<-EOS.undent
+        syntax = "proto3";
+        package test;
+        message TestCase {
+          optional string name = 4;
+        }
+        message Test {
+          repeated TestCase case = 1;
+        }
+        EOS
+    else
+      <<-EOS.undent
+        package test;
+        message TestCase {
+          required string name = 4;
+        }
+        message Test {
+          repeated TestCase case = 1;
+        }
+        EOS
     end
     (testpath/"test.proto").write(testdata)
     system "protoc", "test.proto", "--cpp_out=."
