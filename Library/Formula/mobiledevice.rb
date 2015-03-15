@@ -8,7 +8,9 @@ class Mobiledevice < Formula
   end
 
   test do
-    has_version = shell_output("#{bin}/mobiledevice version").strip
-    assert_match "#{version}", has_version
+    cur_version = shell_output("#{bin}/mobiledevice version").strip
+    assert_match "#{version}", cur_version
+    `#{bin}/mobiledevice list_devices`
+    assert_equal 0, $?.exitstatus
   end
 end
