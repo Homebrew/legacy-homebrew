@@ -22,8 +22,7 @@ object SingleContextJobStress extends App with TestJarFinder {
   import JobManagerActor._
   import scala.collection.JavaConverters._
   import scala.concurrent.duration._
-
-  val jobDaoPrefix = "target/jobserver/"
+  val jobDaoPrefix = "target/scala-" + version + "/jobserver/"
   val config = ConfigFactory.parseString("""
     num-cpu-cores = 4           # Number of cores to allocate.  Required.
     memory-per-node = 512m      # Executor memory per node, -Xmx style eg 512m, 1G, etc.

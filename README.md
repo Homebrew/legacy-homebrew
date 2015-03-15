@@ -26,6 +26,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md).
 - Works with Standalone Spark as well as Mesos and yarn-client
 - Job and jar info is persisted via a pluggable DAO interface
 - Named RDDs to cache and retrieve RDDs by name, improving RDD sharing and reuse among jobs. 
+- Supports Scala 2.10 and 2.11
 
 ## Version Information
 
@@ -319,6 +320,8 @@ If we encounter a data type that is not supported, then the entire result will b
 ## Contribution and Development
 Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 
+- If you need to build with a specific scala version use ++x.xx.x followed by the regular command,
+for instance: `sbt ++2.11.6 job-server/compile` 
 - From the "master" project, please run "test" to ensure nothing is broken.
    - You may need to set `SPARK_LOCAL_IP` to `localhost` to ensure Akka port can bind successfully
 - Logging for tests goes to "job-server-test.log"
@@ -330,8 +333,8 @@ Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 ### Publishing packages
 
 - Be sure you are in the master project
-- Run `test` to ensure all tests pass
-- Now just run `publish` and package will be published to bintray
+- Run `+test` to ensure all tests pass for all scala versions
+- Now just run `+publish` and package will be published to bintray
 
 To announce the release on [ls.implicit.ly](http://ls.implicit.ly/), use
 [Herald](https://github.com/n8han/herald#install) after adding release notes in

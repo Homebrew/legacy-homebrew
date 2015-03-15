@@ -91,7 +91,7 @@ class JobSqlDAO(config: Config) extends JobDAO {
 
   // Check if a single exist
   private def isTableExist(tableName: String)(implicit session: Session): Boolean =
-    !MTable.getTables(tableName).list().isEmpty
+    !MTable.getTables(tableName).list.isEmpty
 
   // Check if "all tables don't exist" is true
   private def isAllTablesNotExist()(implicit session: Session): Boolean =

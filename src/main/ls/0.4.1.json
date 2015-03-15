@@ -24,7 +24,7 @@
     "name" : "scalac-scoverage-plugin",
     "version" : "0.98.0"
   } ],
-  "scalas" : [ "2.10.4" ],
+  "scalas" : [ "2.11.6" ],
   "licenses" : [ ],
   "sbt" : false
 }
