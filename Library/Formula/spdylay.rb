@@ -2,8 +2,8 @@ require "formula"
 
 class Spdylay < Formula
   homepage "https://github.com/tatsuhiro-t/spdylay"
-  url "https://github.com/tatsuhiro-t/spdylay/archive/v1.3.1.tar.gz"
-  sha1 "2cb544364a1797d2abf46a08da95044c1c51aa74"
+  url "https://github.com/tatsuhiro-t/spdylay/archive/v1.3.2.tar.gz"
+  sha1 "0ad6989f93781012efab3602ba1ffffe9002abf3"
 
   bottle do
     cellar :any
