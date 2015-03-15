@@ -15,8 +15,6 @@ class Mobiledevice < Formula
   end
 
   test do
-    cur_version = shell_output("#{bin}/mobiledevice version").strip
-    assert_match "#{version}", cur_version
-    system("#{bin}/mobiledevice list_devices")
+    system "#{bin}/mobiledevice", "list_devices"
   end
 end
