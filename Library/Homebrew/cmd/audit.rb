@@ -187,7 +187,7 @@ class FormulaAuditor
               depends_on "#{dep}" => :run
           EOS
         when "git"
-          problem "Use `depends_on :git` instead of `depends_on 'git'`"
+          problem "Don't use git as a dependency"
         when "mercurial"
           problem "Use `depends_on :hg` instead of `depends_on 'mercurial'`"
         when "ruby"
