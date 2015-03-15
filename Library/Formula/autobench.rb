@@ -1,11 +1,9 @@
-require 'formula'
-
 class Autobench < Formula
-  homepage 'http://www.xenoclast.org/autobench/'
-  url 'http://www.xenoclast.org/autobench/downloads/autobench-2.1.2.tar.gz'
-  sha1 '8c342b50ce36c13d46dc995bc5f08acdead21553'
+  homepage "http://www.xenoclast.org/autobench/"
+  url "http://www.xenoclast.org/autobench/downloads/autobench-2.1.2.tar.gz"
+  sha256 "d8b4d30aaaf652df37dff18ee819d8f42751bc40272d288ee2a5d847eaf0423b"
 
-  depends_on 'httperf'
+  depends_on "httperf"
 
   def install
     system "make", "PREFIX=#{prefix}",
@@ -13,5 +11,11 @@ class Autobench < Formula
                    "CC=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
                    "install"
+  end
+
+  test do
+    system "#{bin}/crfile", "-f", "#{testpath}/test", "-s", "42"
+    assert File.exist? "test"
+    assert_equal 42, File.size("test")
   end
 end
