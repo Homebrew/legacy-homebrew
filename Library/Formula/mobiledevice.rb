@@ -10,7 +10,6 @@ class Mobiledevice < Formula
   test do
     cur_version = shell_output("#{bin}/mobiledevice version").strip
     assert_match "#{version}", cur_version
-    `#{bin}/mobiledevice list_devices`
-    assert_equal 0, $?.exitstatus
+    system("#{bin}/mobiledevice list_devices")
   end
 end
