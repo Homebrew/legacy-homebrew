@@ -21,4 +21,22 @@ class Upx < Formula
     bin.install  "src/upx.out" => "upx"
     man1.install "doc/upx.1"
   end
+  test do
+    (testpath/"hello-c.c").write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+        puts("Hello, world!");
+        return 0;
+      }
+    EOS
+    system "cc", "-o", "hello-c", "hello-c.c"
+    assert_equal "Hello, world!\n", `./hello-c`
+
+    system "#{bin}/upx", "-1", "hello-c"
+    assert_equal "Hello, world!\n", `./hello-c`
+
+    system "#{bin}/upx", "-d", "hello-c"
+    assert_equal "Hello, world!\n", `./hello-c`
+  end
 end
