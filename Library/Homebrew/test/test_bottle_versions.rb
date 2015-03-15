@@ -56,6 +56,11 @@ class BottleVersionParsingTests < Homebrew::TestCase
       'erlang-R16B03-1.mavericks.bottle.2.tar.gz'
   end
 
+  def test_erlang_style_versions
+  	assert_version_detected 'R14BO4',
+  	  'erlang-r14-R14BO4.yosemite.bottle.tar.gz'
+  end
+
   def test_libpano_style
     assert_version_detected '13-2.9.19',
       'libpano-13-2.9.19_1.yosemite.bottle.tar.gz'
