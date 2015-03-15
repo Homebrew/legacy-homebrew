@@ -1,8 +1,8 @@
 class Trafficserver < Formula
   homepage "http://trafficserver.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.1.2.tar.bz2"
-  mirror "http://archive.apache.org/dist/trafficserver/trafficserver-5.1.2.tar.bz2"
-  sha1 "907edeebd3a10d4787ad550e735ea196f03deb04"
+  url "http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.2.0.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.2.0.tar.bz2"
+  sha1 "a32ae5a0ea6d734a955fa56f3e446a66c08be21f"
 
   bottle do
     sha1 "325ab9eb8e222bbe5ef940506ff9b08b70290f49" => :yosemite
