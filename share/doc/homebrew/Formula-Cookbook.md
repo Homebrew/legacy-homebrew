@@ -247,7 +247,7 @@ You can double-check which libraries a binary links to with the `otool` command 
 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1213.0.0)
 
 
-## Specifying gems, Python modules etc. as dependencies
+## Specifying gems, Python modules, Go projects, etc. as dependencies
 
 Homebrew doesn’t package already packaged language-specific libraries. These should be installed directly from `gem`/`cpan`/`pip` etc.
 
@@ -266,9 +266,11 @@ class Foo < Formula
 end
 ```
 
-See [jrnl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/jrnl.rb) for an example of a formula that does this well. The end-result means the user doesn't have to faff with `pip` or Python and can just run `jrnl`.
+[jrnl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/jrnl.rb) is an example of a formula that does this well. The end-result means the user doesn't have to faff with `pip` or Python and can just run `jrnl`.
 
-[This script](https://raw.githubusercontent.com/tdsmith/labmisc/master/mkpydeps) can help you generate resource stanzas for the dependencies of your Python application.
+[homebrew-pypi-poet](https://github.com/tdsmith/homebrew-pypi-poet) can help you generate resource stanzas for the dependencies of your Python application.
+
+Similarly, [homebrew-go-resources](https://github.com/samertm/homebrew-go-resources) can help you generate go\_resource stanzas for the dependencies of your go application.
 
 If your formula needs a gem or python module and it can't be made into a resource you’ll need to check for these external dependencies:
 
