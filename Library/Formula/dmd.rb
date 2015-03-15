@@ -72,13 +72,11 @@ class Dmd < Formula
   # post_install() if the user is running `brew install --build-from-source`.
   def install_new_dmd_conf
     conf = etc/"dmd.conf"
-    # Iff the new file differs from conf, etc.install drops it here:
-    new_conf = etc/"dmd.conf.default"
 
-    if !new_conf.exist?
-      # Nothing to do. Our conf is already the newest version
-      return
-    end
+    # If the new file differs from conf, etc.install drops it here:
+    new_conf = etc/"dmd.conf.default"
+    # Else, we're already using the latest version:
+    return unless new_conf.exist?
 
     backup = etc/"dmd.conf.old"
     opoo "An old dmd.conf was found and will be moved to #{backup}."
