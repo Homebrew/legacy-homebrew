@@ -1,7 +1,13 @@
 class Duplicity < Formula
   homepage "http://www.nongnu.org/duplicity/"
-  url "https://code.launchpad.net/duplicity/0.7-series/0.7.02/+download/duplicity-0.7.02.tar.gz"
-  sha256 "609462ba43275340ae4fc008ee6620265cdc2c68988caae289971dd609ed033a"
+  url "https://code.launchpad.net/duplicity/0.6-series/0.6.25/+download/duplicity-0.6.25.tar.gz"
+  sha256 "ac44f44abc1c5fe775a49b77e722d238c0b3bbb105e083fd505e2dca8e2c1725"
+  revision 1
+
+  devel do
+    url 'https://code.launchpad.net/duplicity/0.7-series/0.7.02/+download/duplicity-0.7.02.tar.gz'
+    sha256 '609462ba43275340ae4fc008ee6620265cdc2c68988caae289971dd609ed033a'
+  end
 
   bottle do
     sha256 "8b3e2f2ed2cc68ac4c991e9fe3fb3d0d10c3deade91f5709f174ee278fa81cbe" => :yosemite
