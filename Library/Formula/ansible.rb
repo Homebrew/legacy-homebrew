@@ -2,13 +2,15 @@ class Ansible < Formula
   homepage "http://www.ansible.com/home"
   url "http://releases.ansible.com/ansible/ansible-1.8.4.tar.gz"
   sha1 "74be0c102506d14940bc76f5c5659618368c41ec"
+  revision 1
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha1 "ded64af2f1dd1ea01884ca4d45af6d2d3f797328" => :yosemite
-    sha1 "e0b1936ec56959804e55d5fcfd3f412d2c016c59" => :mavericks
-    sha1 "608835ce4a22a70da5442d4b021a86537dc5ba0c" => :mountain_lion
+    revision 1
+    sha256 "a2145b4dc522b42647908088ef7cf7a9f582cec2f16f2fbad4554b60aaccf51e" => :yosemite
+    sha256 "5e0fab60360ca91db9c6975bba1810b9a883a474a82f0188fe8f718016f6d391" => :mavericks
+    sha256 "a0c2da4d196e9c4c994511705f40f42583c96683cf0bfe02cd76a810b54e0e72" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -20,8 +22,8 @@ class Ansible < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "websocket-client" do
@@ -75,8 +77,8 @@ class Ansible < Formula
   end
 
   resource "pywinrm" do
-    url "https://github.com/diyan/pywinrm/archive/df049454a9309280866e0156805ccda12d71c93a.zip"
-    sha1 "f2f94b9a1038425323afaa191a25798c1c0b8426"
+    url "https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.0.3.tar.gz"
+    sha1 "9b4f50e838b9222a101094328b0f6e8669ac17b7"
   end
 
   resource "isodate" do

@@ -25,9 +25,8 @@ module Homebrew
         all_versions << version
         older_version = f.version <= version
 
-        tap = Tab.for_keg(keg).tapped_from
-        same_or_path_url_tap = f.tap == tap || tap == HOMEBREW_PATH_URL_TAP
-        if same_or_path_url_tap || older_version
+        tap = Tab.for_keg(keg).tap
+        if tap.nil? || f.tap == tap || older_version
           older_or_same_tap_versions << version
         end
       end

@@ -3,13 +3,15 @@ require "language/go"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.9.3.tar.gz"
-  sha1 "0d18bf1c084e31187910202ee1e2e6bdcf26d97a"
+  version "0.9.4-1"
+  url "https://github.com/junegunn/fzf/archive/0.9.4-1.tar.gz"
+  sha1 "cab72a79d9b7776d0a441d0ae1ba679893df8a55"
 
   bottle do
-    sha1 "8df0dad7e5da5ea4211aa0069c9e04e107f26314" => :yosemite
-    sha1 "9f760d6dd1a00d348675c08e1a643ab5433d95d6" => :mavericks
-    sha1 "ca152e6e4f893f5581b93f809b47b9e80fc2b507" => :mountain_lion
+    cellar :any
+    sha256 "c4cb36347952a935c7adffbc12afb9328394a3cde5608e39f03ff70fb9d7ade5" => :yosemite
+    sha256 "3bd0df6eef42d1b3f72f4eec30b5504e97a4b0083e46ac90c92a2990c4293226" => :mavericks
+    sha256 "1adcfa2199c2a6438bd185522e2015b1e64dfc5bc9059ef5e64ff35e7e202c2a" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -36,6 +38,7 @@ class Fzf < Formula
     end
 
     prefix.install %w[install uninstall fzf-completion.bash fzf-completion.zsh LICENSE]
+    bin.install "bin/fzf-tmux"
     (prefix/"plugin").install "plugin/fzf.vim"
   end
 

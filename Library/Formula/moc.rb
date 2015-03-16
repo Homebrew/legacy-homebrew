@@ -1,28 +1,27 @@
-require 'formula'
-
 class Moc < Formula
   homepage 'http://moc.daper.net'
-
-  stable do
-    url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.0.tar.bz2"
-    sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
-  end
+  url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.0.tar.bz2"
+  sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
 
   bottle do
-    sha1 "1a08c15f965d74614f142ee8ec2bea75b5d999cd" => :yosemite
-    sha1 "7168fc76526f705ecc4ee766e2f6d7a37e271b46" => :mavericks
-    sha1 "876c8a6cbf642db773e6c65794e7632422e9cafa" => :mountain_lion
+    revision 1
+    sha256 "3188a4355200b250e6a63c909c6ef8a7a458e25377a6a17d6f62455072b38e40" => :yosemite
+    sha256 "ccfd6919a5d64861ecc66f6ad01e8b4f259295dbe3772b459bb139ab0908b2e0" => :mavericks
+    sha256 "94cca91c117a1575aa61a10f288e95672e61bfe0c1d473b2fac70c480c0d92ab" => :mountain_lion
   end
 
-  head 'svn://daper.net/moc/trunk'
+  head do
+    url "svn://daper.net/moc/trunk"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "gettext" => :build
+  end
 
   option 'with-ncurses', 'Build with wide character support.'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gettext' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
+  depends_on "libtool" => :run
   depends_on 'berkeley-db'
   depends_on 'jack'
   depends_on 'ffmpeg' => :recommended
@@ -38,7 +37,7 @@ class Moc < Formula
   depends_on 'homebrew/dupes/ncurses' => :optional
 
   def install
-    system "autoreconf", "-i" # required to fix ffmpeg issues (updated ffmpeg.m4)
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make", "install"
   end

@@ -187,7 +187,7 @@ class FormulaAuditor
               depends_on "#{dep}" => :run
           EOS
         when "git"
-          problem "Use `depends_on :git` instead of `depends_on 'git'`"
+          problem "Don't use git as a dependency"
         when "mercurial"
           problem "Use `depends_on :hg` instead of `depends_on 'mercurial'`"
         when "ruby"
@@ -311,7 +311,7 @@ class FormulaAuditor
 
     # Check GNU urls; doesn't apply to mirrors
     urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]) do |u|
-      problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
+      problem "\"http://ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
     # the rest of the checks apply to mirrors as well.

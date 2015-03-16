@@ -213,6 +213,7 @@ module OS
       "6.0.1" => { :clang => "6.0", :clang_build => 600 },
       "6.1"   => { :clang => "6.0", :clang_build => 600 },
       "6.1.1" => { :clang => "6.0", :clang_build => 600 },
+      "6.2"   => { :clang => "6.0", :clang_build => 600 },
     }
 
     def compilers_standard?

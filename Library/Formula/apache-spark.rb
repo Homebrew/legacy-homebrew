@@ -1,11 +1,11 @@
 require "formula"
 
 class ApacheSpark < Formula
-  homepage "http://spark.apache.org/"
+  homepage "https://spark.apache.org/"
   head "https://github.com/apache/spark.git"
-  url "http://d3kbcqa49mib13.cloudfront.net/spark-1.2.1-bin-hadoop2.4.tgz"
-  version "1.2.1"
-  sha1 "2c8023f339ee9a0a05ecf6cb854f1de70b324f41"
+  url "https://d3kbcqa49mib13.cloudfront.net/spark-1.3.0-bin-hadoop2.4.tgz"
+  version "1.3.0"
+  sha1 "d94f2847bf92dd6e5a388c8126207cfe57e2c85e"
 
   conflicts_with 'hive', :because => 'both install `beeline` binaries'
 

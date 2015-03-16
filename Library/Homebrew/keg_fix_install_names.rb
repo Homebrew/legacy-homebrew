@@ -99,8 +99,7 @@ class Keg
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
   # for instance between Apple libstdc++ and GNU libstdc++
   def detect_cxx_stdlibs(options={})
-    options = { :skip_executables => false }.merge(options)
-    skip_executables = options[:skip_executables]
+    skip_executables = options.fetch(:skip_executables, false)
     results = Set.new
 
     mach_o_files.each do |file|

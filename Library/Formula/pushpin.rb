@@ -1,13 +1,12 @@
 class Pushpin < Formula
   homepage "http://pushpin.org"
-  url "http://packages.fanout.io/source/pushpin-1.0.0.tar.bz2"
-  sha1 "6862c69eda7eef2e7fc8dd15d9800a3b21792acd"
+  url "http://packages.fanout.io/source/pushpin-1.1.0.tar.bz2"
+  sha1 "4cf4d061062a37f3ff8fa53706523e8f61c79c08"
 
   bottle do
-    revision 1
-    sha1 "854f51c538d43ca60f920df23f7bcd49be45c1e4" => :yosemite
-    sha1 "76eb20ed5366d0287a57d859f6f1cf1ffd6c2bd6" => :mavericks
-    sha1 "7bbfbad5fbb80d82337e5c3cd9c90e9f1c3257a0" => :mountain_lion
+    sha256 "da47c1945de1c2568f137e90a2bdb037fc63b9c85e8c2111ea61e675df716647" => :yosemite
+    sha256 "43381c8079e5ea1ecfaebcf142f05415d95908ac90ebe3c0f4313b814ddb64ff" => :mavericks
+    sha256 "02159fc0a5a38c7d1e93223e1246c5a778707eb9a504c381a88b2909530049bf" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

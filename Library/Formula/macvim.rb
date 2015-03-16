@@ -1,8 +1,6 @@
-require 'formula'
-
 # Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
-  homepage 'http://code.google.com/p/macvim/'
+  homepage 'https://code.google.com/p/macvim/'
   url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
   version '7.4-73'
   sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
@@ -67,6 +65,15 @@ class Macvim < Formula
     elsif build.with? "python"
       ENV.prepend "LDFLAGS", `python-config --ldflags`.chomp
       ENV.prepend "CFLAGS", `python-config --cflags`.chomp
+      framework_script = <<-EOS.undent
+        import distutils.sysconfig
+        print distutils.sysconfig.get_config_var("PYTHONFRAMEWORKPREFIX")
+      EOS
+      framework_prefix = `python -c '#{framework_script}'`.strip
+      unless framework_prefix.empty? || framework_prefix == "/System/Library/Frameworks"
+        ENV.prepend "LDFLAGS", "-F#{framework_prefix}"
+        ENV.prepend "CFLAGS", "-F#{framework_prefix}"
+      end
       args << "--enable-pythoninterp"
     end
 

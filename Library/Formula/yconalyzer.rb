@@ -1,9 +1,7 @@
-require 'formula'
-
 class Yconalyzer < Formula
-  homepage 'http://sourceforge.net/projects/yconalyzer/'
-  url 'https://downloads.sourceforge.net/project/yconalyzer/yconalyzer-1.0.4.tar.bz2'
-  sha1 'a8fcbf1ce2a0e8612448cc997e904cc572473bcc'
+  homepage "https://sourceforge.net/projects/yconalyzer/"
+  url "https://downloads.sourceforge.net/project/yconalyzer/yconalyzer-1.0.4.tar.bz2"
+  sha256 "3b2bd33ffa9f6de707c91deeb32d9e9a56c51e232be5002fbed7e7a6373b4d5b"
 
   bottle do
     cellar :any
@@ -17,7 +15,7 @@ class Yconalyzer < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make"
-    system "chmod +x ./install-sh"
+    chmod 0755, "./install-sh"
     system "make install"
   end
 

@@ -2,14 +2,14 @@ require "formula"
 
 class Re2c < Formula
   homepage "http://re2c.org"
-  url "https://downloads.sourceforge.net/project/re2c/re2c/0.13.7.5/re2c-0.13.7.5.tar.gz"
-  sha1 "4786a13be61f8249f4f388e60d94bb81db340d5c"
+  url "https://downloads.sourceforge.net/project/re2c/re2c/0.14.1/re2c-0.14.1.tar.gz"
+  sha1 "b6af07ed6b57ef20936555c95ffb9f177aae3c28"
 
   bottle do
     cellar :any
-    sha1 "a3246b77461757a1d03fce798dc0e96946dd8d4b" => :yosemite
-    sha1 "295edf3bf8132c990a2d524132ce1cf0f4e22c38" => :mavericks
-    sha1 "b289675f0bc4e76b1f131e82a7fe41f4d11804ed" => :mountain_lion
+    sha256 "22b82ae03ac1c69932ca72260b479469a30ed24bdee7536d797dd95e2b369da4" => :yosemite
+    sha256 "8c6ea2d5466a87211b33d8be156ffeb97aa9cfa1c9a5fa9c9fa21b8a7e436629" => :mavericks
+    sha256 "1a167fbc6d08ef5a9ddf483d0661036529865c7dc594395d321428e3c1185a06" => :mountain_lion
   end
 
   def install

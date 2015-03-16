@@ -22,7 +22,7 @@ class Maven < Formula
       next if file.directory?
       basename = file.basename
       next if basename.to_s == "m2.conf"
-      (bin/basename).write_env_script file, Language::Java.java_home_env
+      (bin/basename).write_env_script file, Language::Java.overridable_java_home_env
     end
   end
 

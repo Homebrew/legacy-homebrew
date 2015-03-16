@@ -1,13 +1,14 @@
 class Entr < Formula
   homepage "http://entrproject.org/"
-  url "http://entrproject.org/code/entr-3.0.tar.gz"
-  sha1 "e7c5f589b2bce839464052b116a051b4d8f43f23"
+  url "http://entrproject.org/code/entr-3.1.tar.gz"
+  mirror "https://bitbucket.org/eradman/entr/get/entr-3.1.tar.gz"
+  sha256 "f0f27e8fc610936f5ec72891687fc77e0df0b21172f14e85ff381d2fe5e3aadd"
 
   bottle do
     cellar :any
-    sha1 "da32289bea210e36f6dffe7ef419d5ea8654afb2" => :yosemite
-    sha1 "b6a84ff6bddd4d59b3abf4a706b1a70d19e302f4" => :mavericks
-    sha1 "10422a889ccdc6bcb411d505407c43f6412e8443" => :mountain_lion
+    sha256 "542fb9bb0afac1abf0cf0ab2453f2306dae13c16f49acfd4f0b9d0bfbb3d4fdd" => :yosemite
+    sha256 "63067a6f69ff0f08e11051122d90c3aa6e6725546541149015d905b14296812f" => :mavericks
+    sha256 "1e5079627fddee8edb06f74153ad6de06d507032467b8ecfc241c28a943b740e" => :mountain_lion
   end
 
   def install

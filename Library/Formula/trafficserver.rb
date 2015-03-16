@@ -1,13 +1,13 @@
 class Trafficserver < Formula
   homepage "http://trafficserver.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.1.2.tar.bz2"
-  mirror "http://archive.apache.org/dist/trafficserver/trafficserver-5.1.2.tar.bz2"
-  sha1 "907edeebd3a10d4787ad550e735ea196f03deb04"
+  url "http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.2.0.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.2.0.tar.bz2"
+  sha1 "a32ae5a0ea6d734a955fa56f3e446a66c08be21f"
 
   bottle do
-    sha1 "325ab9eb8e222bbe5ef940506ff9b08b70290f49" => :yosemite
-    sha1 "290456e3c321683b93552c4cc718a85456fed663" => :mavericks
-    sha1 "4c46bba84d3dc150b1cfd841d6c2d4e6f7c39950" => :mountain_lion
+    sha256 "60ca4def066dd106a5f71706b3b07d7ee8d093f95926d341f4d98bd88c3b4d2d" => :yosemite
+    sha256 "25134b656b86365d4c7d43de3038f71e864dfb50c6895f94b3c3b035c3f85986" => :mavericks
+    sha256 "4920a708ef78452027f9a258f50b7802b3f0bdc68aca92337d2468d9abe88415" => :mountain_lion
   end
 
   depends_on "openssl"

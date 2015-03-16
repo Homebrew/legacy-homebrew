@@ -1,28 +1,30 @@
 class X264 < Formula
   homepage "https://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "https://git.videolan.org/git/x264.git", :revision => "6a301b6ee0ae8c78fb704e1cd86f4e861070f641"
-  version "r2495"
+  url "https://git.videolan.org/git/x264.git", :revision => "c8a773ebfca148ef04f5a60d42cbd7336af0baf6"
+  version "r2533"
 
   devel do
     # the latest commit on the master branch
-    url "https://git.videolan.org/git/x264.git", :revision => "40bb56814e56ed342040bdbf30258aab39ee9e89"
-    version "r2525"
+    url "https://git.videolan.org/git/x264.git", :revision => "121396c71b4907ca82301d1a529795d98daab5f8"
+    version "r2538"
   end
 
   head "https://git.videolan.org/git/x264.git"
 
   bottle do
     cellar :any
-    sha1 "48aea1324df78e942257d63bcb9b1a0bbc32dfff" => :yosemite
-    sha1 "1cb4086a82a0f41925bfddfd69d868b882ffe197" => :mavericks
-    sha1 "f232c6e5ddad33c0b13e507c65cf760608957600" => :mountain_lion
+    sha256 "ee6c447f5471c47b64abb846789104714fe22c09cad9a8790f49ecf614f47da1" => :yosemite
+    sha256 "d37257f92e918904c8f1af05df1c34e3d975b1affdb1efa2b9d3aa65c2497d1f" => :mavericks
+    sha256 "f26ae8e9db2d25c99ad77ebfaceef02d3038a08066b3ea65a2f703c6c3289d4f" => :mountain_lion
   end
 
   depends_on "yasm" => :build
 
-  option "10-bit", "Build a 10-bit x264 (default: 8-bit)"
+  option "with-10-bit", "Build a 10-bit x264 (default: 8-bit)"
   option "with-mp4=", "Select mp4 output: none (default), l-smash or gpac"
+
+  deprecated_option "10-bit" => "with-10-bit"
 
   case ARGV.value "with-mp4"
   when "l-smash" then depends_on "l-smash"

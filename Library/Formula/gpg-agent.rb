@@ -33,8 +33,40 @@ class GpgAgent < Formula
     system "make", "install"
   end
 
+  def caveats; <<-EOS.undent
+      Remember to set a graphical pinentry program (such as pinentry-mac) in your
+      ~/.gnupg/gpg-agent.conf if you configure launchd to start gpg-agent at login.
+    EOS
+  end
+
   test do
     system "#{bin}/gpg-agent", "--help"
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/bin/sh</string>
+            <string>-c</string>
+            <string>#{opt_prefix}/bin/gpg-agent -c --daemon | /bin/launchctl</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
+        <key>ServiceDescription</key>
+        <string>Run gpg-agent at login</string>
+    </dict>
+    </plist>
+    EOS
   end
 end
 

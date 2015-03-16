@@ -326,23 +326,21 @@ module GitHub extend self
     end
   end
 
-  def open url, headers={}, &block
+  def open(url, &block)
     # This is a no-op if the user is opting out of using the GitHub API.
     return if ENV['HOMEBREW_NO_GITHUB_API']
 
     require "net/https"
 
-    default_headers = {
+    headers = {
       "User-Agent" => HOMEBREW_USER_AGENT,
       "Accept"     => "application/vnd.github.v3+json",
     }
 
-    default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
+    headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
 
     begin
-      Kernel.open(url, default_headers.merge(headers)) do |f|
-        yield Utils::JSON.load(f.read)
-      end
+      Kernel.open(url, headers) { |f| yield Utils::JSON.load(f.read) }
     rescue OpenURI::HTTPError => e
       handle_api_error(e)
     rescue EOFError, SocketError, OpenSSL::SSL::SSLError => e

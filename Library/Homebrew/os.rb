@@ -9,7 +9,7 @@ module OS
 
   if OS.mac?
     GITHUB_REPOSITORY = "homebrew"
-    ISSUES_URL = "http://git.io/brew-troubleshooting"
+    ISSUES_URL = "https://git.io/brew-troubleshooting"
     PATH_OPEN = "/usr/bin/open"
     PATH_PATCH = "/usr/bin/patch"
   elsif OS.linux?

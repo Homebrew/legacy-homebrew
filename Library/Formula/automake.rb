@@ -1,8 +1,8 @@
 class Automake < Formula
-  homepage "http://www.gnu.org/software/automake/"
+  homepage "https://www.gnu.org/software/automake/"
   url "http://ftpmirror.gnu.org/automake/automake-1.15.tar.xz"
   mirror "https://ftp.gnu.org/gnu/automake/automake-1.15.tar.xz"
-  sha1 "c279b35ca6c410809dac8ade143b805fb48b7655"
+  sha256 "9908c75aabd49d13661d6dcb1bc382252d22cc77bf733a2d55e87f2aa2db8636"
 
   bottle do
     sha1 "493f0b3b591fd72412d0b048539df4d94127ec9c" => :yosemite
