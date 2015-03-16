@@ -13,12 +13,12 @@ class Nss < Formula
     sha1 "83a0cf6db62ff865b07347c4a94361869715e6b0" => :mountain_lion
   end
 
-  keg_only <<-EOF
-Having this library symlinked makes Firefox pick it up instead of built-in,
-so it then randomly crashes without meaningful explanation.
+  keg_only <<-EOS.undent
+    Having this library symlinked makes Firefox pick it up instead of built-in,
+    so it then randomly crashes without meaningful explanation.
 
-Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
-  EOF
+    Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOS
   depends_on "nspr"
 
   def install
@@ -28,8 +28,8 @@ Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
     args = [
       "BUILD_OPT=1",
       "NSS_USE_SYSTEM_SQLITE=1",
-      "NSPR_INCLUDE_DIR=#{Formula["nspr"].include}/nspr",
-      "NSPR_LIB_DIR=#{Formula["nspr"].lib}"
+      "NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr",
+      "NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}"
     ]
     args << "USE_64=1" if MacOS.prefer_64_bit?
 
