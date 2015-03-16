@@ -12,6 +12,13 @@ class Nspr < Formula
     sha1 "ceb1c3a8693af7726f5e9dceb3697dfcb9f616be" => :mountain_lion
   end
 
+  keg_only <<-EOF
+Having this library symlinked makes Firefox pick it up instead of built-in,
+so it then randomly crashes without meaningful explanation.
+
+Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOF
+
   def install
     ENV.deparallelize
     cd "nspr" do
