@@ -1,6 +1,6 @@
 class Duplicity < Formula
   homepage "http://www.nongnu.org/duplicity/"
-  url "http://code.launchpad.net/duplicity/0.7-series/0.7.02/+download/duplicity-0.7.02.tar.gz"
+  url "https://code.launchpad.net/duplicity/0.7-series/0.7.02/+download/duplicity-0.7.02.tar.gz"
   sha1 "13bc640f30da0d287d5a6b9522540ff1bd4e6aaf"
 
   bottle do
