@@ -75,6 +75,15 @@ class Ruby < Formula
     # Customize rubygems to look/install in the global gem directory
     # instead of in the Cellar, making gems last across reinstalls
     (lib/"ruby/#{abi_version}/rubygems/defaults/operating_system.rb").write rubygems_config
+
+    # If this is a fresh install and there's no old gem
+    # We remove gems_dir symlink and create it manually
+    gems_dir.parent.unlink if gems_dir.parent.symlink?
+    gems_dir.mkpath
+  end
+
+  def gems_dir
+    HOMEBREW_PREFIX/"lib/ruby/gems/#{abi_version}"
   end
 
   def abi_version
@@ -91,15 +100,7 @@ class Ruby < Formula
       end
 
       def self.default_dir
-        path = [
-          "#{HOMEBREW_PREFIX}",
-          "lib",
-          "ruby",
-          "gems",
-          "#{abi_version}"
-        ]
-
-        @default_dir ||= File.join(*path)
+        @default_dir ||= "#{gems_dir}"
       end
 
       def self.private_dir
