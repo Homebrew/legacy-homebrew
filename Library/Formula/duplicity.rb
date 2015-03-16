@@ -5,8 +5,8 @@ class Duplicity < Formula
   revision 1
 
   devel do
-    url 'https://code.launchpad.net/duplicity/0.7-series/0.7.02/+download/duplicity-0.7.02.tar.gz'
-    sha256 '609462ba43275340ae4fc008ee6620265cdc2c68988caae289971dd609ed033a'
+    url "https://code.launchpad.net/duplicity/0.7-series/0.7.02/+download/duplicity-0.7.02.tar.gz"
+    sha256 "609462ba43275340ae4fc008ee6620265cdc2c68988caae289971dd609ed033a"
   end
 
   bottle do
