@@ -301,6 +301,10 @@ class FormulaAuditor
       problem "Github Pages links should be https:// (URL is #{homepage})."
     end
 
+    if homepage =~ %r[^http://[^/]*\.apache\.org/]
+      problem "Apache homepages should be https:// links (URL is #{homepage})."
+    end
+
     # There's an auto-redirect here, but this mistake is incredibly common too.
     # Only applies to the homepage and subdomains for now, not the FTP links.
     if homepage =~ %r[^http://((?:build|cloud|developer|download|extensions|git|glade|help|library|live|nagios|news|people|projects|rt|static|wiki|www)\.)?gnome\.org]
@@ -326,8 +330,8 @@ class FormulaAuditor
       case p
       when %r[^http://ftp\.gnu\.org/]
         problem "ftp.gnu.org urls should be https://, not http:// (url is #{p})."
-      when %r[^http://archive\.apache\.org/]
-        problem "archive.apache.org urls should be https://, not http (url is #{p})."
+      when %r[^http://[^/]*\.apache\.org/]
+        problem "Apache urls should be https://, not http (url is #{p})."
       when %r[^http://code\.google\.com/]
         problem "code.google.com urls should be https://, not http (url is #{p})."
       when %r[^http://fossies\.org/]
