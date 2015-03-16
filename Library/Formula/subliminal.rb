@@ -117,7 +117,7 @@ class Subliminal < Formula
   end
 
   test do
-    mkdir ".config"
+    mkdir_p "#{ENV["HOME"]}/.config"
     system "#{bin}/subliminal", "-l", "en", "--", "The.Big.Bang.Theory.S05E18.HDTV.x264-LOL.mp4"
   end
 end
