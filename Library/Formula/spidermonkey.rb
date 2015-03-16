@@ -1,31 +1,41 @@
-require 'formula'
+require "formula"
 
 class Spidermonkey < Formula
-  homepage 'https://developer.mozilla.org/en/SpiderMonkey'
-  url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
-  version '1.8.5'
-  sha1 '52a01449c48d7a117b35f213d3e4263578d846d6'
+  homepage "https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
+  url "https://ftp.mozilla.org/pub/mozilla.org/js/mozjs-24.2.0.tar.bz2"
+  sha1 "ce779081cc11bd0c871c6f303fc4a0091cf4fe66"
 
-  head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz'
+  depends_on "yasm" => :build
+  depends_on "gawk" => :build
+  depends_on "libidl" => :build
+  depends_on "ccache" => :build
 
-  bottle do
-    revision 1
-    sha1 "6c6fd6d40d41764a086a6fb134176253deb1a51b" => :yosemite
-    sha1 "5d19010b10a5f1827511ca791debf9f2d9076e47" => :mavericks
-    sha1 "37d04b64aba47dbf65f197aec94da9acf5f1fd4c" => :mountain_lion
+  head do
+    depends_on "homebrew/versions/autoconf213"
+    url "https://hg.mozilla.org/mozilla-central/archive/tip.tar.bz2"
   end
 
-  conflicts_with 'narwhal', :because => 'both install a js binary'
+  conflicts_with "narwhal", :because => "both install a js binary"
 
-  depends_on 'readline'
-  depends_on 'nspr'
+  depends_on "readline"
+  depends_on "nspr"
 
   def install
-    cd "js/src" do
-      # Remove the broken *(for anyone but FF) install_name
-      inreplace "config/rules.mk",
-        "-install_name @executable_path/$(SHARED_LIBRARY) ",
-        "-install_name #{lib}/$(SHARED_LIBRARY) "
+    if build.head?
+      jsconfig = "js/src/js-config"
+      jsbin = "js/src/shell/js"
+      cd "js/src" do
+        system "autoconf213"
+      end
+    else
+      jsconfig = "js24-config"
+      jsbin = "shell/js24"
+      cd "js/src" do
+        # Remove the broken *(for anyone but FF) install_name
+        inreplace "config/rules.mk",
+          "-install_name @executable_path/$(SHARED_LIBRARY) ",
+          "-install_name #{lib}/$(SHARED_LIBRARY) "
+      end
     end
 
     mkdir "brew-build" do
@@ -35,13 +45,14 @@ class Spidermonkey < Formula
                                     "--with-system-nspr",
                                     "--enable-macos-target=#{MacOS.version}"
 
-      inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
+      inreplace jsconfig, /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
       # These need to be in separate steps.
       system "make"
       system "make install"
 
       # Also install js REPL.
-      bin.install "shell/js"
+      bin.install jsbin => "js"
+      bin.install jsconfig => "js-config"
     end
   end
 
