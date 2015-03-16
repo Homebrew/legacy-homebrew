@@ -4,7 +4,7 @@ class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
   url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_4_RTM/src/nss-3.17.4.tar.gz"
   sha256 "1d98ad1881a4237ec98cbe472fc851480f0b0e954dfe224d047811fb96ff9d79"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any

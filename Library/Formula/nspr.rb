@@ -4,6 +4,7 @@ class Nspr < Formula
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
   url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.8/src/nspr-4.10.8.tar.gz"
   sha256 "507ea57c525c0c524dae4857a642b4ef5c9d795518754c7f83422d22fe544a15"
+  revision 1
 
   bottle do
     cellar :any
