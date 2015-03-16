@@ -36,7 +36,9 @@ class JohnJumbo < Formula
   def install
     cd "src" do
       args = []
-      args << "--disable-native-macro" if build.bottle?
+      if build.bottle?
+        args << "--disable-native-tests" << "--disable-native-macro"
+      end
       system "./configure", *args
       system "make", "clean"
       system "make", "-s", "CC=#{ENV.cc}"
