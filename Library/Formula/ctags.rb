@@ -6,9 +6,9 @@ class Ctags < Formula
 
   bottle do
     cellar :any
-    sha1 "7da87475dee54acc46b0a38afc52122d9cbe6188" => :yosemite
-    sha1 "afc599e7097afd5eb185925dc81f8e9e437b5be8" => :mavericks
-    sha1 "cee93b102782dde467bb091589dd4315c19dfd0c" => :mountain_lion
+    sha256 "1ba38746fe55be78781dcf313977b60f242ed42d412bbaf96627daf24d9fd168" => :yosemite
+    sha256 "9904dcc6f32a8f52d900339ff11ba4c9cb3e67374e558bb2abcc777fe56d49b5" => :mavericks
+    sha256 "b3619b0231eb952ee7c768dbb82e2301ece1060f8c713e781767cc700f02b2f2" => :mountain_lion
   end
 
   head do
