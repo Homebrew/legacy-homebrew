@@ -33,6 +33,7 @@ class Spidermonkey < Formula
                                     "--enable-readline",
                                     "--enable-threadsafe",
                                     "--with-system-nspr",
+                                    "--with-nspr-prefix=#{Formula["nspr"].opt_prefix}",
                                     "--enable-macos-target=#{MacOS.version}"
 
       inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
