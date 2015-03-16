@@ -15,10 +15,10 @@ class Nspr < Formula
   keg_only <<-EOF
 Having this library symlinked makes Firefox pick it up instead of built-in,
 so it then randomly crashes without meaningful explanation.
-    
+
 Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
   EOF
-  
+
   def install
     ENV.deparallelize
     cd "nspr" do
