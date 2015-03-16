@@ -3,6 +3,7 @@ require 'formula'
 class Batik < Formula
   homepage 'https://xmlgraphics.apache.org/batik/'
   url 'http://www.apache.org/dist/xmlgraphics/batik/binaries/batik-1.7.zip'
+  mirror 'https://archive.apache.org/dist/xmlgraphics/batik/batik-1.7.zip'
   sha1 '69d974ab0a4e13cbdd649fa96785776563b73fcf'
 
   def install
