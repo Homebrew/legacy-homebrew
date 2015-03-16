@@ -36,6 +36,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md).
 | 0.4.0       | 1.0.2         |
 | 0.4.1       | 1.1.0         |
 | 0.5.0       | 1.2.0         |
+| 0.5.1       | 1.3.0         |
 
 For release notes, look in the `notes/` directory.  They should also be up on [ls.implicit.ly](http://ls.implicit.ly/spark-jobserver/spark-jobserver).
 
