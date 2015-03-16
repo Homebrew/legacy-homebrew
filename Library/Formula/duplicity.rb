@@ -2,12 +2,12 @@ class Duplicity < Formula
   homepage "http://www.nongnu.org/duplicity/"
   url "http://code.launchpad.net/duplicity/0.6-series/0.6.25/+download/duplicity-0.6.25.tar.gz"
   sha1 "fe0b6b0b0dc7dbc02598d96567954b48c4308420"
+  revision 1
 
   bottle do
-    revision 2
-    sha1 "bbc592bbe05ef6db7a780bb9ceb086a3e54833d6" => :yosemite
-    sha1 "ce78b8e6118f01a1448ce5816186ba398bf535c7" => :mavericks
-    sha1 "ec6a376afd0119b0d0abe0a661c35df2e4152450" => :mountain_lion
+    sha256 "8b3e2f2ed2cc68ac4c991e9fe3fb3d0d10c3deade91f5709f174ee278fa81cbe" => :yosemite
+    sha256 "937593295eb3f24892582d2f8b5724b3579ef5ad4ce659514879ec821bd031c3" => :mavericks
+    sha256 "f5650df238e0350eab37b7147adb59fe18e4bf8c11e1175ec5b962d2294579e5" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -37,8 +37,8 @@ class Duplicity < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "iso8601" do

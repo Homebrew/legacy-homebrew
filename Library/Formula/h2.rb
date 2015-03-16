@@ -2,9 +2,9 @@ require 'formula'
 
 class H2 < Formula
   homepage 'http://www.h2database.com/'
-  url 'http://www.h2database.com/h2-2014-08-06.zip'
-  version '1.4.181'
-  sha1 '94d01f41361e1edb9cf07bf06d2c721e1870ff9e'
+  url 'http://www.h2database.com/h2-2015-03-02.zip'
+  version '1.4.186'
+  sha1 '39906db100cbef8c36973689906c9fa0c1440721'
 
   def script; <<-EOS.undent
     #!/bin/sh

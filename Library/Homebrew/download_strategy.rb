@@ -821,7 +821,7 @@ class DownloadStrategyDetector
     case url
     when %r[^https?://.+\.git$], %r[^git://]
       GitDownloadStrategy
-    when %r[^http://www\.apache\.org/dyn/closer\.cgi]
+    when %r[^https?://www\.apache\.org/dyn/closer\.cgi]
       CurlApacheMirrorDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn], %r[^https?://svn\.], %r[^svn://], %r[^https?://(.+?\.)?sourceforge\.net/svnroot/]
       SubversionDownloadStrategy

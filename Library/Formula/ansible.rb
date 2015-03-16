@@ -2,13 +2,14 @@ class Ansible < Formula
   homepage "http://www.ansible.com/home"
   url "http://releases.ansible.com/ansible/ansible-1.8.4.tar.gz"
   sha1 "74be0c102506d14940bc76f5c5659618368c41ec"
+  revision 1
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha1 "ded64af2f1dd1ea01884ca4d45af6d2d3f797328" => :yosemite
-    sha1 "e0b1936ec56959804e55d5fcfd3f412d2c016c59" => :mavericks
-    sha1 "608835ce4a22a70da5442d4b021a86537dc5ba0c" => :mountain_lion
+    sha256 "9648b22d63035e67dfa370a7193816b72ba0188510711fbd5a1aea96174761d5" => :yosemite
+    sha256 "3e7bcb688870ed8612fe36f13b16cafa3c72b7f2d1fd51d324198f6dfef8fb9e" => :mavericks
+    sha256 "079cd05f4dca46bed885faaaf5d641d48d00ea9322356b08e6571c1784f6cbf9" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -20,8 +21,8 @@ class Ansible < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "websocket-client" do
