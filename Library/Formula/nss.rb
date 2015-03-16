@@ -13,6 +13,12 @@ class Nss < Formula
     sha1 "83a0cf6db62ff865b07347c4a94361869715e6b0" => :mountain_lion
   end
 
+  keg_only <<-EOF
+Having this library symlinked makes Firefox pick it up instead of built-in,
+so it then randomly crashes without meaningful explanation.
+    
+Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOF
   depends_on "nspr"
 
   def install
