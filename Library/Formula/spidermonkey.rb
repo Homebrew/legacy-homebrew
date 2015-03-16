@@ -5,6 +5,7 @@ class Spidermonkey < Formula
   url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
   version '1.8.5'
   sha1 '52a01449c48d7a117b35f213d3e4263578d846d6'
+  revision 1
 
   head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz'
 
@@ -33,6 +34,7 @@ class Spidermonkey < Formula
                                     "--enable-readline",
                                     "--enable-threadsafe",
                                     "--with-system-nspr",
+                                    "--with-nspr-prefix=#{Formula["nspr"].opt_prefix}",
                                     "--enable-macos-target=#{MacOS.version}"
 
       inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
