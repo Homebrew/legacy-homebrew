@@ -1,11 +1,9 @@
-require "formula"
-
 class Putty < Formula
   homepage "http://www.chiark.greenend.org.uk/~sgtatham/putty/"
-  url "http://the.earth.li/~sgtatham/putty/0.63/putty-0.63.tar.gz"
-  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.63.tar.gz"
-  mirror "https://fossies.org/linux/misc/putty-0.63.tar.gz"
-  sha1 "195c0603ef61082b91276faa8d4246ea472bba3b"
+  url "https://the.earth.li/~sgtatham/putty/0.64/putty-0.64.tar.gz"
+  mirror "https://fossies.org/linux/misc/putty-0.64.tar.gz"
+  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.64.tar.gz"
+  sha256 "2a46c97a184144e3ec2392aca9acc64d062317a3a38b9a5f623a147eda5f3821"
 
   bottle do
     cellar :any
@@ -31,10 +29,12 @@ class Putty < Formula
       system "make", "-C", "doc"
     end
 
-    args = %W{
-       --prefix=#{prefix}
-       --disable-gtktest
-    }
+    args = %W[
+      --prefix=#{prefix}
+      --disable-silent-rules
+      --disable-dependency-tracking
+      --disable-gtktest
+    ]
     args << ((build.with? "gtk+") ? "--with-gtk" : "--without-gtk")
 
     system "./configure", *args
@@ -42,12 +42,12 @@ class Putty < Formula
     build_version = build.head? ? "svn-#{version}" : version
     system "make", "VER=-DRELEASE=#{build_version}"
 
-    bin.install %w{ putty puttytel pterm } if build.with? "gtk+"
-    bin.install %w{ plink pscp psftp puttygen }
+    bin.install %w[putty puttytel pterm] if build.with? "gtk+"
+    bin.install %w[plink pscp psftp puttygen]
 
     cd "doc" do
-      man1.install %w{ putty.1 puttytel.1 pterm.1 } if build.with? "gtk+"
-      man1.install %w{ plink.1 pscp.1 psftp.1 puttygen.1 }
+      man1.install %w[putty.1 puttytel.1 pterm.1] if build.with? "gtk+"
+      man1.install %w[plink.1 pscp.1 psftp.1 puttygen.1]
     end
   end
 end
