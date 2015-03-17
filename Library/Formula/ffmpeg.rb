@@ -4,7 +4,7 @@ class Ffmpeg < Formula
   sha256 "23c38ecc0dd6cae5e9a3c5c2c967b10480dc4f7159d094ade13b0775d1fd4791"
   revision 1
 
-  head "git://git.videolan.org/ffmpeg.git"
+  head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
     sha256 "9447e3ff05a11e4eccf31a94f370eb90917f22dc89bc779f6cc8168dd19d8f16" => :yosemite
@@ -126,7 +126,7 @@ class Ffmpeg < Formula
     end
 
     # A bug in a dispatch header on 10.10, included via CoreFoundation,
-    # prevents GCC from building VDA support. GCC has no probles on
+    # prevents GCC from building VDA support. GCC has no problems on
     # 10.9 and earlier.
     # See: https://github.com/Homebrew/homebrew/issues/33741
     if MacOS.version < :yosemite || ENV.compiler == :clang
