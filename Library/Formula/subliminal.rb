@@ -97,6 +97,12 @@ class Subliminal < Formula
     sha256 "88689713946faad4ae12467dff40a8f3daa629200328fbc5256093e96b1b0d19"
   end
 
+  # not required by install_requires but provides additional UI when available
+  resource "colorlog" do
+    url "https://pypi.python.org/packages/source/c/colorlog/colorlog-2.6.0.tar.gz"
+    sha256 "0f03ae0128a1ac2e22ec6a6617efbd36ab00d4b2e1c49c497e11854cf24f1fe9"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
