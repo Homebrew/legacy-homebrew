@@ -4,7 +4,7 @@ class Hackrf < Formula
   sha256 "5ab1641a9af766c476e04bfe2f7cbe3d7edd22c324453c22e58e3f0ef51082eb"
 
   depends_on "cmake" => :build
-  depends_on "pkgconfig"
+  depends_on "pkg-config" => :build
   depends_on "libusb"
 
   def install
