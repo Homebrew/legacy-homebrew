@@ -1,10 +1,7 @@
-require "formula"
-
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.12.0.tar.bz2"
-  sha1 "cec83efd13ffc1e212c632395a5aac75772a09e7"
-  head "https://github.com/mono/mono.git"
+  url "http://download.mono-project.com/sources/mono/mono-3.12.1.tar.bz2"
+  sha256 "5d8cf153af2948c06bc9fbf5088f6834868e4db8e5f41c7cff76da173732b60d"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
@@ -18,7 +15,7 @@ class Mono < Formula
 
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/cb/cb33b94c853049a43222288ead1e0cb059b22783/monolite-111-latest.tar.gz"
-    sha1 "a674c47cd60786c49185fb3512410c43689be43e"
+    sha256 "a957383beb5a7b6fbe39f7cc9a67a7eb2908b7aadc3f4bacee7853dfeed84dfb"
   end
 
   def install
@@ -28,8 +25,11 @@ class Mono < Formula
 
     args = %W[
       --prefix=#{prefix}
+      --disable-dependency-tracking
+      --disable-silent-rules
       --enable-nls=no
     ]
+
     args << "--build=" + (MacOS.prefer_64_bit? ? "x86_64": "i686") + "-apple-darwin"
 
     system "./configure", *args
