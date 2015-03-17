@@ -1,9 +1,7 @@
-require 'formula'
-
 class Webp < Formula
   homepage "https://developers.google.com/speed/webp/"
-  url 'http://downloads.webmproject.org/releases/webp/libwebp-0.4.2.tar.gz'
-  sha256 '14d825d7c2ef7d49621bcb6b83466be455585e671ae0a2ebc1f2e07775a1722d'
+  url "http://downloads.webmproject.org/releases/webp/libwebp-0.4.3.tar.gz"
+  sha256 "efbe0d58fda936f2ed99d0b837ed7087d064d6838931f282c4618d2a3f7390c4"
 
   bottle do
     cellar :any
@@ -12,14 +10,12 @@ class Webp < Formula
     sha1 "3a1b012465710145c7daf74251bfe99bfd477ec4" => :mountain_lion
   end
 
-  revision 1
-
   option :universal
 
-  depends_on 'libpng'
-  depends_on 'jpeg' => :recommended
-  depends_on 'libtiff' => :optional
-  depends_on 'giflib' => :optional
+  depends_on "libpng"
+  depends_on "jpeg" => :recommended
+  depends_on "libtiff" => :optional
+  depends_on "giflib" => :optional
 
   def install
     ENV.universal_binary if build.universal?
@@ -28,11 +24,12 @@ class Webp < Formula
                           "--enable-libwebpdemux",
                           "--enable-libwebpdecoder",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
     system "#{bin}/cwebp", test_fixtures("test.png"), "-o", "webp_test.png"
     system "#{bin}/dwebp", "webp_test.png", "-o", "webp_test.webp"
+    assert File.exist?("webp_test.webp")
   end
 end
