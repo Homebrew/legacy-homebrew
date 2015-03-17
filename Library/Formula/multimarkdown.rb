@@ -19,6 +19,7 @@ class Multimarkdown < Formula
   def install
     ENV.append 'CFLAGS', '-g -O3 -include GLibFacade.h'
     system "make"
+    rm_f Dir["scripts/*.bat"]
     bin.install 'multimarkdown', Dir['scripts/*']
     prefix.install 'Support'
   end
