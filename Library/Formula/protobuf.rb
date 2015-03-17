@@ -71,7 +71,7 @@ class Protobuf < Formula
                           "--prefix=#{prefix}",
                           "--with-zlib"
     system "make"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "check" || build.bottle?
     system "make", "install"
 
     # Install editor support and examples
