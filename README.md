@@ -17,7 +17,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md).
 ## Features
 
 - *"Spark as a Service"*: Simple REST interface for all aspects of job, context management
-- Support for Spark SQL Contexts/jobs and custom job contexts!  See [Contexts](doc/contexts.md).
+- Support for Spark SQL and Hive Contexts/jobs and custom job contexts!  See [Contexts](doc/contexts.md).
 - Supports sub-second low-latency jobs via long-running job contexts
 - Start and stop job contexts for RDD sharing and low-latency jobs; change resources on restart
 - Kill running jobs via stop context

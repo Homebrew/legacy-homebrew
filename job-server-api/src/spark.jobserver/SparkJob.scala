@@ -3,6 +3,7 @@ package spark.jobserver
 import com.typesafe.config.Config
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.hive.HiveContext
 
 sealed trait SparkJobValidation {
   // NOTE(harish): We tried using lazy eval here by passing in a function
@@ -50,4 +51,8 @@ trait SparkJob extends SparkJobBase {
 
 trait SparkSqlJob extends SparkJobBase {
   type C = SQLContext
+}
+
+trait SparkHiveJob extends SparkJobBase {
+  type C = HiveContext
 }
