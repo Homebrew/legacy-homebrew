@@ -1,8 +1,8 @@
 class Libressl < Formula
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.4.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.4.tar.gz"
-  sha256 "e8e08535928774119a979412ee8e307444b7a1a42c8c47ac06ee09423ca9a04e"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.5.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.5.tar.gz"
+  sha256 "a82379913fd7f4e26e045fcf021aa92a1f683954816bf817b3b696de62e9c3bb"
 
   option "without-libtls", "Build without libtls"
 
