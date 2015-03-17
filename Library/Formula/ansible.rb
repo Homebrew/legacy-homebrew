@@ -7,9 +7,10 @@ class Ansible < Formula
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha256 "9648b22d63035e67dfa370a7193816b72ba0188510711fbd5a1aea96174761d5" => :yosemite
-    sha256 "3e7bcb688870ed8612fe36f13b16cafa3c72b7f2d1fd51d324198f6dfef8fb9e" => :mavericks
-    sha256 "079cd05f4dca46bed885faaaf5d641d48d00ea9322356b08e6571c1784f6cbf9" => :mountain_lion
+    revision 1
+    sha256 "a2145b4dc522b42647908088ef7cf7a9f582cec2f16f2fbad4554b60aaccf51e" => :yosemite
+    sha256 "5e0fab60360ca91db9c6975bba1810b9a883a474a82f0188fe8f718016f6d391" => :mavericks
+    sha256 "a0c2da4d196e9c4c994511705f40f42583c96683cf0bfe02cd76a810b54e0e72" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -76,8 +77,8 @@ class Ansible < Formula
   end
 
   resource "pywinrm" do
-    url "https://github.com/diyan/pywinrm/archive/df049454a9309280866e0156805ccda12d71c93a.zip"
-    sha1 "f2f94b9a1038425323afaa191a25798c1c0b8426"
+    url "https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.0.3.tar.gz"
+    sha1 "9b4f50e838b9222a101094328b0f6e8669ac17b7"
   end
 
   resource "isodate" do

@@ -37,6 +37,11 @@ class Grc < Formula
         alias traceroute='colourify /usr/sbin/traceroute'
         alias head='colourify head'
         alias tail='colourify tail'
+        alias dig='colourify dig'
+        alias mount='colourify mount'
+        alias ps='colourify ps'
+        alias mtr='colourify mtr'
+        alias df='colourify df'
     fi
     EOS
   end
