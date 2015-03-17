@@ -4,7 +4,14 @@ class Mono < Formula
   homepage "http://www.mono-project.com/"
   url "http://download.mono-project.com/sources/mono/mono-3.12.0.tar.bz2"
   sha1 "cec83efd13ffc1e212c632395a5aac75772a09e7"
-  head "https://github.com/mono/mono.git"
+
+  head do
+    url "https://github.com/mono/mono.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
@@ -32,7 +39,12 @@ class Mono < Formula
     ]
     args << "--build=" + (MacOS.prefer_64_bit? ? "x86_64": "i686") + "-apple-darwin"
 
-    system "./configure", *args
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
+
     system "make"
     system "make", "install"
     # mono-gdb.py and mono-sgen-gdb.py are meant to be loaded by gdb, not to be
