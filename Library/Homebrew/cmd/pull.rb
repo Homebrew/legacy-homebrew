@@ -187,6 +187,8 @@ module Homebrew
       ohai 'Patch changed:'
       safe_system "git", "diff-tree", "-r", "--stat", revision, "HEAD"
 
+      safe_system "brew", "tap", "--repair" if tap_name
+
       if ARGV.include? '--install'
         changed_formulae.each do |f|
           ohai "Installing #{f.name}"
