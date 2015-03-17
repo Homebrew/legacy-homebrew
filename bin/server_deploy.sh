@@ -44,8 +44,6 @@ FILES="job-server/target/scala-$majorVersion/spark-job-server.jar
        $CONFIG_DIR/$ENV.conf
        config/log4j-server.properties"
 
-echo $FILES
-
 ssh_key_to_use=""
 if [ -n "$SSH_KEY" ]  ; then
   ssh_key_to_use="-i $SSH_KEY"
