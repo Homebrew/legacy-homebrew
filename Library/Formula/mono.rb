@@ -1,24 +1,21 @@
-require "formula"
-
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.12.0.tar.bz2"
-  sha1 "cec83efd13ffc1e212c632395a5aac75772a09e7"
-  head "https://github.com/mono/mono.git"
+  url "http://download.mono-project.com/sources/mono/mono-3.12.1.tar.bz2"
+  sha256 "5d8cf153af2948c06bc9fbf5088f6834868e4db8e5f41c7cff76da173732b60d"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha1 "5c6fe51dac9396ec10e8d45efdae24cf9e88bc3e" => :yosemite
-    sha1 "7d47061cb4f731398d2114a86010ab60e6dc88b4" => :mavericks
-    sha1 "48ccd72d404ef3a20255ed87c5fbc8a14ac10fb5" => :mountain_lion
+    sha256 "3053da22a05699ec289f4b42594117f2c51c036a5143ea846f338c541f9e1b93" => :yosemite
+    sha256 "5d427e684b2555ad2410946210f50b32defc2dc5f9bb61ba5016020ec4510e8e" => :mavericks
+    sha256 "c68bf98d500f09d06669d6e3ec3d622c625ae337268d2e478711b0b1b470d505" => :mountain_lion
   end
 
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/cb/cb33b94c853049a43222288ead1e0cb059b22783/monolite-111-latest.tar.gz"
-    sha1 "a674c47cd60786c49185fb3512410c43689be43e"
+    sha256 "a957383beb5a7b6fbe39f7cc9a67a7eb2908b7aadc3f4bacee7853dfeed84dfb"
   end
 
   def install
@@ -28,8 +25,11 @@ class Mono < Formula
 
     args = %W[
       --prefix=#{prefix}
+      --disable-dependency-tracking
+      --disable-silent-rules
       --enable-nls=no
     ]
+
     args << "--build=" + (MacOS.prefer_64_bit? ? "x86_64": "i686") + "-apple-darwin"
 
     system "./configure", *args

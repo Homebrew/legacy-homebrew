@@ -4,15 +4,21 @@ class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
   url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_4_RTM/src/nss-3.17.4.tar.gz"
   sha256 "1d98ad1881a4237ec98cbe472fc851480f0b0e954dfe224d047811fb96ff9d79"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha1 "2b8a680e6639215188542cc54c4f08dcee62ae36" => :yosemite
-    sha1 "2fdb9e02eddf3c692d2de478ab7fbb630cd0dcb0" => :mavericks
-    sha1 "83a0cf6db62ff865b07347c4a94361869715e6b0" => :mountain_lion
+    sha256 "2020e38aab4ec4665b20bb0028809d6215b575c0d2ed898f3b8d6941c8e5f282" => :yosemite
+    sha256 "f3add95ee059ee4c51169f4ee5b721e0dcb34e27f9f6dde2070ca9a90de82058" => :mavericks
+    sha256 "66ee17dd736cfd49283436d47170fdc74bc7a5d9631c4456a8a3252abe7ee184" => :mountain_lion
   end
 
+  keg_only <<-EOS.undent
+    Having this library symlinked makes Firefox pick it up instead of built-in,
+    so it then randomly crashes without meaningful explanation.
+
+    Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOS
   depends_on "nspr"
 
   def install
@@ -22,8 +28,8 @@ class Nss < Formula
     args = [
       "BUILD_OPT=1",
       "NSS_USE_SYSTEM_SQLITE=1",
-      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
-      "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
+      "NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr",
+      "NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}"
     ]
     args << "USE_64=1" if MacOS.prefer_64_bit?
 
