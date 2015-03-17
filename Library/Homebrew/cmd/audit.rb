@@ -300,6 +300,7 @@ class FormulaAuditor
     if homepage =~ %r[^http://[^/]*github\.io/]
       problem "Github Pages links should be https:// (URL is #{homepage})."
     end
+
     if homepage =~ %r[^http://[^/]*\.apache\.org/]
       problem "Apache homepages should be https:// links (URL is #{homepage})."
     end
