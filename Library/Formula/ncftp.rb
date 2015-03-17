@@ -1,9 +1,7 @@
-require 'formula'
-
 class Ncftp < Formula
-  homepage 'http://www.ncftp.com'
-  url 'ftp://ftp.ncftp.com/ncftp/ncftp-3.2.5-src.tar.gz'
-  sha1 'b1aafd9291e29c336fcad07ae212fe1b5b2a1c58'
+  homepage "http://www.ncftp.com"
+  url "ftp://ftp.ncftp.com/ncftp/ncftp-3.2.5-src.tar.gz"
+  sha256 "ac111b71112382853b2835c42ebe7bd59acb7f85dd00d44b2c19fbd074a436c4"
 
   def install
     # "disable universal" doesn't seem to work.
@@ -16,6 +14,10 @@ class Ncftp < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/ncftp", "-F"
   end
 end
