@@ -5,9 +5,9 @@ class Chromaprint < Formula
 
   bottle do
     cellar :any
-    sha256 "ef34e1c1bb3016fa27ea0bba10a01d65c0f6c60737a7fbb7b8ffc08156c54815" => :yosemite
-    sha256 "3f78eb0feb44cd6375fae0de9f51bd3a3354b69a7d3e066231198ac4d39c38fe" => :mavericks
-    sha256 "46f4596410d895c122bb306154ac6eec6d03008c40206183679888a62b7cb1a7" => :mountain_lion
+    sha256 "fa9422d4e83a696110f9880e8b70330e92c36d964f67fc3e50c21a94a473b549" => :yosemite
+    sha256 "f909650189b87ed9f26ec1428fa2787688a0e36d677a5e4f0a605b209e128ca5" => :mavericks
+    sha256 "a15989c1b685ce333aeec347c20d1f903533bc478f4ac1f34bc6da9c0cd1bd29" => :mountain_lion
   end
 
   option "without-examples", "Don't build examples (including fpcalc)"
