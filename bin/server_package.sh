@@ -17,16 +17,31 @@ if [ -z "$CONFIG_DIR" ]; then
 fi
 configFile="$CONFIG_DIR/$ENV.sh"
 
+if [ ! -f "$configFile" ]; then
+  echo "Could not find $configFile"
+  exit 1
+fi
+. $configFile
+
+majorRegex='([0-9]+\.[0-9]+)\.[0-9]+'
+if [[ $SCALA_VERSION =~ $majorRegex ]]
+then
+  majorVerion="${BASH_REMATCH[1]}"
+else
+  echo "Please specify SCALA_VERSION in ${configFile}"
+  exit 1
+fi
+
 echo Packaging job-server for environment $ENV...
 
 cd $(dirname $0)/..
-sbt job-server/assembly
+sbt ++$SCALA_VERSION job-server/assembly
 if [ "$?" != "0" ]; then
   echo "Assembly failed"
   exit 1
 fi
 
-FILES="job-server/target/scala-2.10/spark-job-server.jar
+FILES="job-server/target/scala-${majorRegex}/spark-job-server.jar
        bin/server_start.sh
        bin/server_stop.sh
        $CONFIG_DIR/$ENV.conf

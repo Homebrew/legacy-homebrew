@@ -20,6 +20,15 @@ if [ ! -f "$configFile" ]; then
 fi
 . $configFile
 
+majorRegex='([0-9]+\.[0-9]+)\.[0-9]+'
+if [[ $SCALA_VERSION =~ $majorRegex ]]
+then
+  majorVersion="${BASH_REMATCH[1]}"
+else
+  echo "Please specify SCALA_VERSION in ${configFile}"
+  exit 1
+fi
+
 echo Deploying job server to $DEPLOY_HOSTS...
 
 cd $(dirname $0)/..
@@ -29,11 +38,13 @@ if [ "$?" != "0" ]; then
   exit 1
 fi
 
-FILES="job-server/target/scala-2.10/spark-job-server.jar
+FILES="job-server/target/scala-$majorVersion/spark-job-server.jar
        bin/server_start.sh
        bin/server_stop.sh
        $CONFIG_DIR/$ENV.conf
        config/log4j-server.properties"
+
+echo $FILES
 
 ssh_key_to_use=""
 if [ -n "$SSH_KEY" ]  ; then
