@@ -1,7 +1,7 @@
 class Chromaprint < Formula
   homepage "https://acoustid.org/chromaprint"
-  url "https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.1.tar.gz"
-  sha256 "6b14d7ea4964581b73bd3f8038c8857c01e446421c1ae99cbbf64de26b47cd12"
+  url "https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.2.tar.gz"
+  sha256 "822b8949a322ac04c6f8a3ed78f5e689bcc493c6ca0972bf627c913c8430031a"
 
   bottle do
     cellar :any
@@ -20,5 +20,9 @@ class Chromaprint < Formula
     args << "-DBUILD_EXAMPLES=ON" if build.with? "examples"
     system "cmake", ".", *args
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/fpcalc", test_fixtures("test.mp3") if build.with? "examples"
   end
 end
