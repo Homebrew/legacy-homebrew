@@ -5,34 +5,17 @@ class Sslsplit < Formula
 
   depends_on "check" => :build
   depends_on "pkg-config" => :build
-
   depends_on "libevent"
   depends_on "openssl"
 
-  # Patch to remove UID 0,GID 0 setting for install
-  patch :DATA
-
   def install
     ENV.deparallelize
-    system "make", "PREFIX=#{prefix}", "test", "install"
+    inreplace "GNUmakefile", "-o 0 -g 0", "" # Remove UID 0,GID 0 setting for install
+    system "make", "PREFIX=#{prefix}", "test"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
   test do
     system "#{bin}/sslsplit", "-V"
   end
 end
-
-__END__
---- a/GNUmakefile	2015-03-16 15:09:42.000000000 -0700
-+++ b/GNUmakefile	2015-03-16 15:10:09.000000000 -0700
-@@ -351,8 +351,8 @@
- 	test -d $(DESTDIR)$(PREFIX)/bin || $(MKDIR) -p $(DESTDIR)$(PREFIX)/bin
- 	test -d $(DESTDIR)$(PREFIX)/$(MANDIR)/man1 || \
- 		$(MKDIR) -p $(DESTDIR)$(PREFIX)/$(MANDIR)/man1
--	$(INSTALL) -o 0 -g 0 -m 0755 $(TARGET) $(DESTDIR)$(PREFIX)/bin/
--	$(INSTALL) -o 0 -g 0 -m 0644 $(TARGET).1 $(DESTDIR)$(PREFIX)/$(MANDIR)/man1/
-+	$(INSTALL) -m 0755 $(TARGET) $(DESTDIR)$(PREFIX)/bin/
-+	$(INSTALL) -m 0644 $(TARGET).1 $(DESTDIR)$(PREFIX)/$(MANDIR)/man1/
- 
- deinstall:
- 	$(RM) -f $(DESTDIR)$(PREFIX)/bin/$(TARGET) $(DESTDIR)$(PREFIX)/$(MANDIR)/man1/$(TARGET).1
