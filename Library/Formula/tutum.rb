@@ -2,9 +2,8 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/v0.12.6.1.tar.gz"
-  sha1 "75d44ba0fb7f360dfa1931ce5cf0134cc69985e0"
-  revision 1
+  url "https://github.com/tutumcloud/tutum-cli/archive/v0.13.0.tar.gz"
+  sha1 "e03f15d73286e113c1d376fa7860e4c0ba6d8911"
 
   bottle do
     cellar :any
@@ -22,8 +21,8 @@ class Tutum < Formula
   end
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.5.3.tar.gz"
-    sha1 "11708a7021e3d0d522e145c057256d7d2acaec07"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.1.0.tar.gz"
+    sha1 "989eaf213f38c694798a326f21a66d982edee16c"
   end
 
   resource "pyyaml" do
@@ -62,8 +61,8 @@ class Tutum < Formula
   end
 
   resource "websocket-client" do
-    url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.23.0.tar.gz"
-    sha1 "3348c226eb44324417db777e962fec6bda8134b9"
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.26.0.tar.gz"
+    sha1 "14f7668f579ab94e1fc7a26ef182add964192b34"
   end
 
   resource "future" do
