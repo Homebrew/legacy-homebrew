@@ -23,7 +23,6 @@ class Chromaprint < Formula
   end
 
   test do
-    # will not work if built without examples
-    system "#{bin}/fpcalc", test_fixtures("test.mp3")
+    system "#{bin}/fpcalc", test_fixtures("test.mp3") if build.with? "examples"
   end
 end
