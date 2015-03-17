@@ -15,6 +15,7 @@ class UcspiTcp < Formula
     (buildpath/"conf-home").write prefix
 
     system "make"
+    bin.mkpath
     system "make setup check"
     share.install prefix/'man'
   end
