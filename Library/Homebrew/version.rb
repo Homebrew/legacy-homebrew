@@ -197,7 +197,7 @@ class Version
 
   def <=>(other)
     return unless Version === other
-    return 0 if head? && other.head?
+    return 0 if version == other.version
     return 1 if head? && !other.head?
     return -1 if !head? && other.head?
 
