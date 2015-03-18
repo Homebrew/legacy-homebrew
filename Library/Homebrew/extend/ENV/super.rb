@@ -145,17 +145,17 @@ module Superenv
 
   def determine_aclocal_path
     paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
-    paths << "#{HOMEBREW_PREFIX}/share/aclocal"
     paths << "#{MacOS::X11.share}/aclocal" if x11?
+    paths << "#{HOMEBREW_PREFIX}/share/aclocal"
     paths.to_path_s
   end
 
   def determine_isystem_paths
     paths = []
+    paths << MacOS::X11.include.to_s << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{HOMEBREW_PREFIX}/include"
     paths << "#{effective_sysroot}/usr/include/libxml2" unless deps.include? "libxml2"
     paths << "#{effective_sysroot}/usr/include/apache2" if MacOS::Xcode.without_clt?
-    paths << MacOS::X11.include.to_s << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{effective_sysroot}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers"
     paths.to_path_s
   end
@@ -166,8 +166,8 @@ module Superenv
 
   def determine_library_paths
     paths = keg_only_deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib" }
-    paths << "#{HOMEBREW_PREFIX}/lib"
     paths << MacOS::X11.lib.to_s if x11?
+    paths << "#{HOMEBREW_PREFIX}/lib"
     paths << "#{effective_sysroot}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
     paths.to_path_s
   end
@@ -180,9 +180,9 @@ module Superenv
 
   def determine_cmake_include_path
     paths = []
+    paths << MacOS::X11.include.to_s << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{effective_sysroot}/usr/include/libxml2" unless deps.include? "libxml2"
     paths << "#{effective_sysroot}/usr/include/apache2" if MacOS::Xcode.without_clt?
-    paths << MacOS::X11.include.to_s << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{effective_sysroot}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers"
     paths.to_path_s
   end
