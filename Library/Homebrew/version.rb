@@ -192,7 +192,7 @@ class Version
   end
 
   def head?
-    @version == 'HEAD'
+    version == "HEAD"
   end
 
   def <=>(other)
@@ -207,15 +207,17 @@ class Version
   alias_method :eql?, :==
 
   def hash
-    @version.hash
+    version.hash
   end
 
   def to_s
-    @version.dup
+    version.dup
   end
   alias_method :to_str, :to_s
 
   protected
+
+  attr_reader :version
 
   def begins_with_numeric?
     tokens.first.numeric?
@@ -236,7 +238,7 @@ class Version
   end
 
   def tokenize
-    @version.scan(SCAN_PATTERN).map! do |token|
+    version.scan(SCAN_PATTERN).map! do |token|
       case token
       when /\A#{AlphaToken::PATTERN}\z/o   then AlphaToken
       when /\A#{BetaToken::PATTERN}\z/o    then BetaToken
