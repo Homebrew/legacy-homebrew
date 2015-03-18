@@ -164,8 +164,6 @@ module Homebrew
         if bintray_user && bintray_key
           repo = Bintray.repository(tap_name)
           changed_formulae.each do |f|
-            # This means the formula has an existing bottle.
-            next if f.bottle
             ohai "Publishing on Bintray:"
             package = Bintray.package f.name
             bottle = Bottle.new(f, f.bottle_specification)
