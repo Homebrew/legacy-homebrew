@@ -1,10 +1,7 @@
-require "formula"
-
 class Gptfdisk < Formula
   homepage "http://www.rodsbooks.com/gdisk/"
-  url "https://downloads.sourceforge.net/project/gptfdisk/gptfdisk/0.8.10/gptfdisk-0.8.10.tar.gz"
-  sha1 "1708e232220236b6bdf299b315e9bc2205c01ba5"
-  revision 2
+  url "https://downloads.sourceforge.net/project/gptfdisk/gptfdisk/1.0.0/gptfdisk-1.0.0.tar.gz"
+  sha256 "5b66956743a799fc0471cdb032665c1391e82f9c5b3f1d7d726d29fe2ba01d6c"
 
   bottle do
     cellar :any
@@ -17,7 +14,7 @@ class Gptfdisk < Formula
   depends_on "icu4c"
 
   def install
-    system "make -f Makefile.mac"
+    system "make", "-f", "Makefile.mac"
     sbin.install "gdisk", "cgdisk", "sgdisk", "fixparts"
     man8.install Dir["*.8"]
   end
