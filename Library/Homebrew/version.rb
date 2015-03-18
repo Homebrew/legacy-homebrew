@@ -30,6 +30,8 @@ class Version
 
     def <=>(other)
       case other
+      when NullToken
+        0
       when NumericToken
         other.value == 0 ? 0 : -1
       when AlphaToken, BetaToken, RCToken
