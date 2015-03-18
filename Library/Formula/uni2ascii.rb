@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Uni2ascii < Formula
   homepage "http://billposer.org/Software/uni2ascii.html"
   url "http://billposer.org/Software/Downloads/uni2ascii-4.18.tar.gz"
@@ -5,8 +6,8 @@ class Uni2ascii < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make"
-    system "MKDIRPROG='mkdir -p' make install"
+    ENV["MKDIRPROG"]="mkdir -p"
+    system "make", "install"
   end
 
   test do
