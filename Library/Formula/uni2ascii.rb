@@ -15,6 +15,6 @@ class Uni2ascii < Formula
     assert_equal "0x00E9", shell_output("printf é | #{bin}/uni2ascii -q")
 
     # ascii2uni
-    assert_equal "é\n", shell_output("printf 0x00E9 | #{bin}/ascii2uni -q")
+    assert_equal "e\n", shell_output("printf 0x65 | #{bin}/ascii2uni -q")
   end
 end
