@@ -1,7 +1,7 @@
 class Hbase < Formula
   homepage "http://hbase.apache.org"
-  url "http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.98.10.1/hbase-0.98.10.1-hadoop2-bin.tar.gz"
-  sha1 "ffe3b17a0c44417f2f8dabf9f263699f471d403f"
+  url "http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-1.0.0/hbase-1.0.0-bin.tar.gz"
+  sha1 "d6886d6c7975ecf312eab745c3642c61f1e753db"
 
   depends_on "hadoop"
 
