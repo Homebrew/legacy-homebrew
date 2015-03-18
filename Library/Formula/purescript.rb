@@ -4,8 +4,8 @@ class Purescript < Formula
   include Language::Haskell::Cabal
 
   homepage "http://www.purescript.org"
-  url "https://hackage.haskell.org/package/purescript-0.6.8/purescript-0.6.8.tar.gz"
-  sha1 "70fd4d3109d61c34c8898a30d222c4b1ad8fd7a5"
+  url "https://hackage.haskell.org/package/purescript-0.6.9/purescript-0.6.9.tar.gz"
+  sha1 "b4e6eed9761130072ec32ddbee91efe7f0abfc4e"
 
   bottle do
     sha1 "b5628dbaabd07215c54979156b2d2f66fb6034c0" => :yosemite
