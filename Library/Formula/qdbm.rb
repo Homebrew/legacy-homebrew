@@ -3,6 +3,13 @@ class Qdbm < Formula
   url "http://fallabs.com/qdbm/qdbm-1.8.78.tar.gz"
   sha256 "b466fe730d751e4bfc5900d1f37b0fb955f2826ac456e70012785e012cdcb73e"
 
+  bottle do
+    cellar :any
+    sha256 "f972348b30472d08534cbe0fdf5044ec229849e8cc9236ecb246a59a986c7501" => :yosemite
+    sha256 "deb25f34920331d4d02bc49463cff93c7741acb144988905ea05731f28c37a78" => :mavericks
+    sha256 "bb386d7715c6d46281f05a6678e9fbe2b75fd514f00553584940ea5a2059ed3f" => :mountain_lion
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
