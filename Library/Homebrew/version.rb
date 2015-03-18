@@ -17,6 +17,10 @@ class Version
     def to_s
       value.to_s
     end
+
+    def numeric?
+      false
+    end
   end
 
   class NullToken < Token
@@ -75,6 +79,10 @@ class Version
       when NullToken
         -Integer(other <=> self)
       end
+    end
+
+    def numeric?
+      true
     end
   end
 
@@ -208,12 +216,12 @@ class Version
   protected
 
   def begins_with_numeric?
-    NumericToken === tokens.first
+    tokens.first.numeric?
   end
 
   def pad_to(length)
     if begins_with_numeric?
-      nums, rest = tokens.partition { |t| NumericToken === t }
+      nums, rest = tokens.partition(&:numeric?)
       nums.fill(NULL_TOKEN, nums.length, length - tokens.length)
       nums.concat(rest)
     else
