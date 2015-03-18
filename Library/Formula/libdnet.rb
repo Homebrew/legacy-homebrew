@@ -1,7 +1,5 @@
-require 'formula'
-
 class Libdnet < Formula
-  homepage 'http://code.google.com/p/libdnet/'
+  homepage 'https://code.google.com/p/libdnet/'
   url 'https://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
@@ -13,10 +11,11 @@ class Libdnet < Formula
     sha1 "e1570018c6ace49b52f2d77a660c7720e6250660" => :mountain_lion
   end
 
+  option "without-python", "Build without python support"
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on :python => :optional
 
   def install
     # autoreconf to get '.dylib' extension on shared lib
@@ -30,6 +29,6 @@ class Libdnet < Formula
     ]
     args << "--with-python" if build.with? "python"
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
