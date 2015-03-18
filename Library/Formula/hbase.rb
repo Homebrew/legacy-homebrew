@@ -1,8 +1,8 @@
 class Hbase < Formula
   homepage "https://hbase.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.98.11/hbase-0.98.11-hadoop2-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/hbase/hbase-0.98.11/hbase-0.98.11-hadoop2-bin.tar.gz"
-  sha1 "f44551ed7f1e078e6d1fc17385ffb762c815f14a"
+  url "https://www.apache.org/dyn/closer.cgi?path=hbase/stable/hbase-1.0.0-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/hbase/stable/hbase-1.0.0-bin.tar.gz"
+  sha1 "d6886d6c7975ecf312eab745c3642c61f1e753db"
 
   depends_on :java
   depends_on "hadoop"
@@ -25,7 +25,7 @@ class Hbase < Formula
     to reflect your environment.
 
     For more details:
-      http://wiki.apache.org/hadoop/Hbase
+      https://wiki.apache.org/hadoop/Hbase
     EOS
   end
 end
