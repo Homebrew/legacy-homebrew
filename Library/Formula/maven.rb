@@ -1,8 +1,8 @@
 class Maven < Formula
   homepage "https://maven.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.tar.gz"
-  sha256 "8c190264bdf591ff9f1268dc0ad940a2726f9e958e367716a09b8aaa7e74a755"
+  url "https://archive.apache.org/dist/maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz"
+  mirror "http://apache.mirrors.ovh.net/ftp.apache.org/dist/maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz"
+  sha1 "a98e56056d17b415a3b13d113199bf5f8121489b"
 
   depends_on :java
 
