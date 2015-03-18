@@ -3,7 +3,7 @@ require 'formula'
 class Siege < Formula
   homepage 'http://www.joedog.org/index/siege-home'
   url 'http://download.joedog.org/siege/siege-3.0.9.tar.gz'
-  sha256 '82376eb466414ef4872a979a372972658df9813778ee8572341d4736ed30cb8f'
+  sha256 'b015153841700e262e17c43e94bbb051748081462c2ba5cc5e3cee8dfb421353'
 
   depends_on 'openssl'
 
