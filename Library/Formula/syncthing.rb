@@ -6,9 +6,9 @@ class Syncthing < Formula
   head "https://github.com/syncthing/syncthing.git"
 
   bottle do
-    sha256 "ccde3860572a6c41902b37692ff9472d6c902e3ccf48191d9b0877f3f1b3f4da" => :yosemite
-    sha256 "786522724164b5a1137397f195b571802f4bbbd06a01aff13cc4cbc47bc955b8" => :mavericks
-    sha256 "7ede3d8431a012f3057d3e3d829acb88e009b78540e3e12a48b07f56af9d79af" => :mountain_lion
+    sha256 "10f502d51e4c475cb33807fd70301906c0b3589acb8dbfe2cc1e00b48793499f" => :yosemite
+    sha256 "473bfddaaa4ff8f79de9ff0ee874cc749e793257f2a865021f912bb5e0363544" => :mavericks
+    sha256 "f1ab377ff0cf3aa347a3ac70827906460000dc878da40e354ea59a1a1aa6c3eb" => :mountain_lion
   end
 
   depends_on "go" => :build
