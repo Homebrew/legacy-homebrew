@@ -4,7 +4,7 @@ class TokyoTyrant < Formula
   homepage 'http://fallabs.com/tokyotyrant/'
   url 'http://fallabs.com/tokyotyrant/tokyotyrant-1.1.41.tar.gz'
   sha1 '060ac946a9ac902c1d244ffafd444f0e5840c0ce'
-  revision 2
+  revision 1
 
   option "no-lua", "Disable Lua support"
 
@@ -15,9 +15,11 @@ class TokyoTyrant < Formula
     patch :DATA
   end
 
-  patch :p0 do
-    url 'https://gist.githubusercontent.com/actsasflinn/348633/raw/32561ebf6487650ce86d0184f0ca35bb8110d04c/macosx_snow_leopard_socket_fix.patch'
-    sha1 '2b73fe52c37cd41b8e13112c0bc083bce8ae3c9e'
+  patch do
+    # Patch to fix UNIX socket issue
+    # https://gist.github.com/bow-fujita/a338e35b95605ad63147
+    url 'https://gist.githubusercontent.com/bow-fujita/a338e35b95605ad63147/raw/3bd1bb84ea58f7a71a485fe032299def3a288576/tokyotyrant-fix-unix-socket.patch'
+    sha1 'dd76282b0ea99104372c8da09e564f308d83ffdf'
   end
 
   def install
