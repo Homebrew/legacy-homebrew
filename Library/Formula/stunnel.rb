@@ -5,9 +5,9 @@ class Stunnel < Formula
   sha256 "80c3d350c9b3e4438143fcc77c915026ae338f8174bb730ff117ca438ba84847"
 
   bottle do
-    sha256 "6f79a54f5a266032c9a839a888af04b8fad0ce824f33441567803049516ab7ae" => :yosemite
-    sha256 "fd6a114aeea79b3c6f8fabdb159063524fba0ed253c7ea48811553d859ab5d6b" => :mavericks
-    sha256 "1118cae2502abf53052db6bc4f7fe27970d824f34bf90ee131b748822561638f" => :mountain_lion
+    sha256 "ad8866b0532d2618e85b61165d9ac060ea4489d0430a13a3c7fdbe1bfdaa484c" => :yosemite
+    sha256 "5de783b7bed05933fa3074e45291b3762205a517e8e10caf260ed9bc495a5a4d" => :mavericks
+    sha256 "94a52da6f578a04b90d3d6fd5e62f77d01038db4eb2e086141279d130d123750" => :mountain_lion
   end
 
   # Please revision me whenever OpenSSL is updated
