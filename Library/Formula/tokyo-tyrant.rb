@@ -4,7 +4,7 @@ class TokyoTyrant < Formula
   homepage 'http://fallabs.com/tokyotyrant/'
   url 'http://fallabs.com/tokyotyrant/tokyotyrant-1.1.41.tar.gz'
   sha1 '060ac946a9ac902c1d244ffafd444f0e5840c0ce'
-  revision 1
+  revision 2
 
   option "no-lua", "Disable Lua support"
 
