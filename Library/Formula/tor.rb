@@ -12,10 +12,10 @@ class Tor < Formula
   end
 
   devel do
-    url "https://dist.torproject.org/tor-0.2.6.4-rc.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.6.4-rc.tar.gz"
-    sha256 "d557cc508f369529f2e53963d0c8351f0839de6f2d44eb0d11e88c85c8932ede"
-    version "0.2.6.4-rc"
+    url "https://dist.torproject.org/tor-0.2.6.5-rc.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.6.5-rc.tar.gz"
+    sha256 "1a78bc971078c8aee1d0927bf6629610efef2cce31219580b2a73cc268d4103e"
+    version "0.2.6.5-rc"
 
     # Move this to the main block when current devel = stable release.
     depends_on "libscrypt" => :optional
