@@ -5,11 +5,25 @@ class Tcc < Formula
   url 'http://download.savannah.gnu.org/releases/tinycc/tcc-0.9.26.tar.bz2'
   sha1 '7110354d3637d0e05f43a006364c897248aed5d0'
 
+  bottle do
+    sha256 "6361d686961e63328e2e084e346df9a0f3bea8f4c1aa7a48b627b528b76b5622" => :yosemite
+    sha256 "d933047b24c74dc83fad767b8838ded95c1b512846960144c6442480410038eb" => :mavericks
+    sha256 "a08aa7da0eccb7c93414fd4944ce5676248869da5f62810bbe687704ba37807d" => :mountain_lion
+  end
+
+  option "with-cross", "Build all cross compilers"
+
   def install
+    args = %W[
+      --prefix=#{prefix}
+      --source-path=#{buildpath}
+      --sysincludepaths=/usr/local/include:#{MacOS.sdk_path}/usr/include:{B}/include
+    ]
+
+    args << "--enable-cross" if build.with? "cross"
+
     ENV.j1
-    system "./configure", "--prefix=#{prefix}",
-                          "--source-path=#{buildpath}",
-                          "--sysincludepaths=/usr/local/include:#{MacOS.sdk_path}/usr/include:{B}/include"
+    system "./configure", *args
     system "make"
     system "make", "install"
     system "make", "test"
