@@ -3,6 +3,9 @@ class Openssl < Formula
   url "https://www.openssl.org/source/openssl-1.0.2a.tar.gz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2a.tar.gz"
   sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
+  # Work around this being parsed as an alpha version by our
+  # version detection code.
+  version "1.0.2a-1"
 
   bottle do
     sha256 "b4487d23fff251dc6ffcbe7f45ed42644d156db0042466cb6a3a3b3db0bd5183" => :yosemite
