@@ -16,10 +16,10 @@ class Emacs < Formula
   end
 
   bottle do
-    revision 3
-    sha1 "d4610ae4e9c9c6e6eba16728c5f3c7af9ec065be" => :yosemite
-    sha1 "80d0aba03d603c94f255c01716d65a4ddcb50b8a" => :mavericks
-    sha1 "e3c6ab764c4b39b983e57d94c9f43acb7dad31f7" => :mountain_lion
+    revision 4
+    sha256 "8ad572c583820fca6d09027ecad92160c3bfd56ae52244f09677ff86744d3148" => :yosemite
+    sha256 "b3b02b8fbb257a498ca4a163e36e40bcd0c77cd3a04001f0d1c85e661e11743c" => :mavericks
+    sha256 "d8fbe58416741960502f22e908c4e56356e8b09937ac47596bbf65379ef27b0d" => :mountain_lion
   end
 
   devel do
