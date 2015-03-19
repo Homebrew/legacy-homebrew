@@ -2,8 +2,27 @@ require "language/go"
 
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
-  url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.2.tar.gz"
-  sha256 "010522203cdb9bbff52fbd9fe299b67686bb1256e2e55eb78abf35444f668399"
+
+  depends_on "go" => :build
+  stable do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.2.tar.gz"
+    sha256 "010522203cdb9bbff52fbd9fe299b67686bb1256e2e55eb78abf35444f668399"
+    go_resource "github.com/mongodb/mongo-tools" do
+      url "https://github.com/mongodb/mongo-tools.git",
+        :tag => "r3.0.1",
+        :revision => "bc08e57abb71b2edd1cc3ab8f9f013409718f197"
+    end
+  end
+
+  devel do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.1.tar.gz"
+    sha256 "4f983680ff1cc61d021daed2e2d24c54c069d965ec47276678296240d59efb6f"
+    go_resource "github.com/mongodb/mongo-tools" do
+      url "https://github.com/mongodb/mongo-tools.git",
+        :tag => "r3.1.1",
+        :revision => "6c959d3a8bd9704b5ee9e17e60a4236db6887dc3"
+    end
+  end
 
   bottle do
     sha256 "1f770eefcd53060a807d85a8007d426e685f191cc9ea4afa1f7d465d2bf3d643" => :yosemite
@@ -19,13 +38,11 @@ class Mongodb < Formula
   depends_on "scons" => :build
   depends_on "openssl" => :optional
 
-  go_resource "github.com/mongodb/mongo-tools" do
-    url "https://github.com/mongodb/mongo-tools.git",
-      :tag => "r3.0.2",
-      :revision => "a914adfcea7d76f07512415eec5cd8308e67318e"
-  end
-
   def install
+    ENV.libcxx if build.devel?
+
+    # New Go tools have their own build script but the server scons "install" target is still
+    # responsible for installing them.
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd "src/github.com/mongodb/mongo-tools" do
