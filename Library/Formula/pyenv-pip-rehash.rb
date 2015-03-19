@@ -12,6 +12,12 @@ class PyenvPipRehash < Formula
     system "./install.sh"
   end
 
+  def caveats; <<-EOS.undent
+    Since v20141211, pyenv comes with the pip-rehash feature bundled in,
+    so this plugin is only useful for older versions of pyenv.
+    EOS
+  end
+
   test do
     assert shell_output("pyenv hooks exec").include?("pip.bash")
   end
