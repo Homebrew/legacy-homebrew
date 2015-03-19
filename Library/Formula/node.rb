@@ -7,10 +7,9 @@ class Node < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "cf47b47fca78022a299f5353b968fb703fb90bc9" => :yosemite
-    sha1 "a0fc2c129428a0fcd50169857b240039d328463b" => :mavericks
-    sha1 "8312e7ea6ffec58e39ec7cc1f8671847a9d7b4bf" => :mountain_lion
+    sha256 "145227f47243194323891218b32e6acca98a994770156c631978d29a5a5d3cc8" => :yosemite
+    sha256 "6796aa8bde6bc7919d075a99977a156e1bdad3b51a0de3eeccd6483a48b3e16a" => :mavericks
+    sha256 "0d75a70bc7e39df1f7bf24424245db1b3f7b816d107cd154e4d6becb0069fed2" => :mountain_lion
   end
 
   option "with-debug", "Build with debugger hooks"
