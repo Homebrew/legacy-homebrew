@@ -5,9 +5,9 @@ class Openssl < Formula
   sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
 
   bottle do
-    sha1 "0e5844609ea57a7f5361dca42d05578c6cf45643" => :yosemite
-    sha1 "56a6407b6a9179084a760d6f463cd0e6ea083c0e" => :mavericks
-    sha1 "8e36006185156281d487a2b1f04322701d0bef7b" => :mountain_lion
+    sha256 "b4487d23fff251dc6ffcbe7f45ed42644d156db0042466cb6a3a3b3db0bd5183" => :yosemite
+    sha256 "2b7c81d3551cb063305d32f50d1c335535058b485a099b803c7f4b7d532e992e" => :mavericks
+    sha256 "f2bc60593c99ab05fd3163135205e027bc7f6a27091c114b1586810ab526f461" => :mountain_lion
   end
 
   option :universal
