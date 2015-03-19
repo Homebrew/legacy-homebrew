@@ -1,6 +1,6 @@
 class Maven < Formula
   homepage "https://maven.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz"
+  url "https://www.apache.org/dyn/closer.cgi?path=maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz"
   mirror "https://archive.apache.org/dist/maven/maven-3/3.3.1/binaries/apache-maven-3.3.1-bin.tar.gz"
   sha256 "153564900617218a126f78d2603d060d0a15f19f3ec1689fc2b7692a3c15b9aa"
 
