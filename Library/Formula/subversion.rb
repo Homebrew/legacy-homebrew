@@ -10,6 +10,12 @@ class Subversion < Formula
     sha1 "f27aeb2bc0aac84caea6ed9c9adb6401fd62143e" => :mountain_lion
   end
 
+  devel do
+    url "http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-beta1.tar.bz2"
+    mirror "http://archive.apache.org/dist/subversion/subversion-1.9.0-beta1.tar.bz2"
+    sha1 "cbc62b682e69254f57e40da316ebb7fcf998f56e"
+  end
+
   deprecated_option "java" => "with-java"
   deprecated_option "perl" => "with-perl"
   deprecated_option "ruby" => "with-ruby"
