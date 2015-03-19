@@ -2,10 +2,9 @@ require "formula"
 
 class Wrk < Formula
   homepage "https://github.com/wg/wrk"
-  url "https://github.com/wg/wrk/archive/3.1.1.tar.gz"
-  sha1 "7cea5d12dc5076fed1a1c730bd3e6eba832a8f61"
+  url "https://github.com/wg/wrk/archive/4.0.0.tar.gz"
+  sha1 "a64f0279f4d5c04c0acece5af80981436aaa2dc0"
   head "https://github.com/wg/wrk.git"
-  revision 1
 
   bottle do
     cellar :any
