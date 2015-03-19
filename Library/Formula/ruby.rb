@@ -25,8 +25,10 @@ class Ruby < Formula
   depends_on "gmp" => :optional
   depends_on "libffi" => :optional
   depends_on "libyaml"
-  depends_on "openssl"
   depends_on :x11 if build.with? "tcltk"
+
+  depends_on "libressl" => :optional
+  depends_on "openssl" unless build.with? "libressl" 
 
   fails_with :llvm do
     build 2326
@@ -57,8 +59,13 @@ class Ruby < Formula
 
     paths = [
       Formula["libyaml"].opt_prefix,
-      Formula["openssl"].opt_prefix
     ]
+
+    if build.with? "libressl"
+      paths << Formula["libressl"].opt_prefix
+    else
+      paths << Formula["openssl"].opt_prefix
+    end
 
     %w[readline gdbm gmp libffi].each { |dep|
       paths << Formula[dep].opt_prefix if build.with? dep
