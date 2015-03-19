@@ -1,8 +1,8 @@
 class Avian < Formula
   homepage "http://oss.readytalk.com/avian/"
   head "https://github.com/ReadyTalk/avian.git"
-  url "https://github.com/ReadyTalk/avian/archive/v1.1.tar.gz"
-  sha1 "de51fb048b0b81a131ddbb3387adb229d3eddf2f"
+  url "https://github.com/ReadyTalk/avian/archive/v1.2.0.tar.gz"
+  sha256 "e3639282962239ce09e4f79f327c679506d165810f08c92ce23e53e86e1d621c"
 
   bottle do
     cellar :any
@@ -12,7 +12,7 @@ class Avian < Formula
   end
 
   depends_on :macos => :lion
-  depends_on :java
+  depends_on :java => "1.7+"
 
   def install
     system "make", "use-clang=true"
