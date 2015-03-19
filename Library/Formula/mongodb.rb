@@ -3,22 +3,43 @@ require "language/go"
 
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
-  url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.1.tar.gz"
-  sha256 "68980641996a3a4b5440e12d343c2de98bb7f350fbc0c8327a674094d6e11213"
 
-  # Mongo HEAD now requires mongo-tools, and Golang
-  # https://jira.mongodb.org/browse/SERVER-15806
   depends_on "go" => :build
-  go_resource "github.com/mongodb/mongo-tools" do
-    url "https://github.com/mongodb/mongo-tools.git",
-      :tag => "r3.0.1",
-      :revision => "bc08e57abb71b2edd1cc3ab8f9f013409718f197"
+  stable do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.1.tar.gz"
+    sha256 "68980641996a3a4b5440e12d343c2de98bb7f350fbc0c8327a674094d6e11213"
+    go_resource "github.com/mongodb/mongo-tools" do
+      url "https://github.com/mongodb/mongo-tools.git",
+        :tag => "r3.0.1",
+        :revision => "bc08e57abb71b2edd1cc3ab8f9f013409718f197"
+    end
+  end
+
+  devel do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.1.tar.gz"
+    sha256 "e6c6f32a37fbf9714fa776a6f79a316bd336f5a7e4c96af9ebef8eaf91758744"
+    go_resource "github.com/mongodb/mongo-tools" do
+      url "https://github.com/mongodb/mongo-tools.git",
+        :tag => "r3.1.0",
+        :revision => "d65620415419fda1bd8dcb29e8e636b07b701b83"
+    end
   end
 
   bottle do
     sha256 "3761153651660207c145da9eac659c7b8ddaed879b44f6127c534d5f79e32f46" => :yosemite
     sha256 "f761d0e8d97fcc924c466165a6193c7c8169153b9afd33ca77b35bbb3a16b5e7" => :mavericks
     sha256 "7b212a87996b0e3cc9a9eddb180ec41bfbe9e056528c5f060029d94c18a8828a" => :mountain_lion
+  end
+
+  devel do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.0.tar.gz"
+    sha256 "e6c6f32a37fbf9714fa776a6f79a316bd336f5a7e4c96af9ebef8eaf91758744"
+  end
+
+  go_resource "github.com/mongodb/mongo-tools" do
+    url "https://github.com/mongodb/mongo-tools.git",
+      :tag => tools_tag
+      # :revision => "e35a2e87876251835fcb60f5eb0c29baca04bc5e"
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
