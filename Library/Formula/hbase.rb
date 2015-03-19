@@ -16,4 +16,13 @@ class Hbase < Formula
       "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 
+  def caveats; <<-EOS.undent
+    You must edit the configs in:
+      #{libexec}/conf
+    to reflect your environment.
+
+    For more details:
+      http://wiki.apache.org/hadoop/Hbase
+    EOS
+  end
 end
