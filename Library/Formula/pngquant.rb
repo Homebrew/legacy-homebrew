@@ -14,6 +14,7 @@ class Pngquant < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libpng"
+  depends_on "little-cms2" => :optional
 
   option "with-openmp", "Enable OpenMP"
   needs :openmp if build.with? "openmp"
@@ -22,6 +23,7 @@ class Pngquant < Formula
     ENV.append_to_cflags "-DNDEBUG" # Turn off debug
 
     args = ["--prefix=#{prefix}"]
+    args << "--with-lcms2" if build.with? "little-cms2"
 
     if build.with? "openmp"
       args << "--with-openmp"
