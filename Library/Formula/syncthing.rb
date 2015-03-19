@@ -1,7 +1,7 @@
 class Syncthing < Formula
   homepage "http://syncthing.net"
   url "https://github.com/syncthing/syncthing.git",
-    :tag => "v0.10.26", :revision => "9c3cee9ae4ff8ea7d8e3edc9eb7ff590a8255bdb"
+    :tag => "v0.10.27", :revision => "19e82e93b15ff0d9b95d2e8d2144d7c1d7be3c55"
 
   head "https://github.com/syncthing/syncthing.git"
 
@@ -47,6 +47,10 @@ class Syncthing < Formula
         <true/>
         <key>ProcessType</key>
         <string>Background</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/syncthing.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/syncthing.log</string>
       </dict>
     </plist>
     EOS
