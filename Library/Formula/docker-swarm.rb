@@ -5,6 +5,13 @@ class DockerSwarm < Formula
   url "https://github.com/docker/swarm/archive/v0.1.0.tar.gz"
   sha256 "a9e1f68138b2e93030e4e283345b5c850c9c41eab95b6ad645ac2cc735270c32"
 
+  bottle do
+    cellar :any
+    sha256 "3f67608ae690346300ca8fd91fb6d669915e3d83019e26911eef6932eb915dee" => :yosemite
+    sha256 "aebf5eb365027a12691fba02f53cae0e13f43102813e5b371b7ba17ae4ab8ed9" => :mavericks
+    sha256 "4b7ae391c7a88fc6e20c93ce10648015d24e5ef1a0e7e25d34fc44642427afe3" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/tools/godep" do
