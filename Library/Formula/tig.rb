@@ -1,9 +1,7 @@
-require "formula"
-
 class Tig < Formula
   homepage "http://jonas.nitro.dk/tig/"
   url "http://jonas.nitro.dk/tig/releases/tig-2.1.tar.gz"
-  sha1 "2527cfee62a890f25c7c2ae8c1a16e5fa201ce29"
+  sha256 "306287f684f57563a53abf1cf46149e0d30c6b500fbc0c39e9bc059506373cb0"
 
   bottle do
     cellar :any
@@ -28,8 +26,8 @@ class Tig < Formula
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
-    system "make install"
-    system "make install-doc-man" if build.with? "docs"
+    system "make", "install"
+    system "make", "install-doc-man" if build.with? "docs"
     bash_completion.install "contrib/tig-completion.bash"
   end
 end
