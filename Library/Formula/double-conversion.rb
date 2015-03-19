@@ -15,7 +15,7 @@ class DoubleConversion < Formula
   end
 
   test do
-    (testpath/'test.cc').write <<-EOS.undent
+    (testpath/"test.cc").write <<-EOS.undent
       #include <double-conversion/bignum.h>
       #include <stdio.h>
       int main() {
