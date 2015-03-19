@@ -3,7 +3,7 @@ require "formula"
 class Osquery < Formula
   homepage "http://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.4.2"
+  url "https://github.com/facebook/osquery.git", :tag => "1.4.4", :revision => "800dc7745e2ee81c645ca3cda7c8ca2f4c535ca4"
 
   bottle do
     sha1 "ce6f4994b20a231c0f882dfd00697972a3fbf476" => :yosemite
@@ -52,9 +52,9 @@ class Osquery < Formula
   test do
     require 'open3'
     Open3.popen3("#{bin}/osqueryi") do |stdin, stdout, _|
-      stdin.write(".mode line\nSELECT major FROM osx_version;")
+      stdin.write(".mode line\nSELECT count(version) as lines FROM osquery_info;")
       stdin.close
-      assert_equal "major = 10\n", stdout.read
+      assert_equal "lines = 1\n", stdout.read
     end
   end
 end
