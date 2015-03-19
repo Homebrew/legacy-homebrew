@@ -1,15 +1,13 @@
-require 'formula'
-
 class Pyqwt < Formula
-  homepage 'http://pyqwt.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/pyqwt/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
-  sha1 '797f37c63dec660272f6a8ccfd16a017df0ad640'
+  homepage "http://pyqwt.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/pyqwt/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz"
+  sha256 "98a8c7e0c76d07701c11dffb77793b05f071b664a8b520d6e97054a98179e70b"
 
   depends_on :python
-  depends_on 'qt'
-  depends_on 'qwt'
-  depends_on 'sip'
-  depends_on 'pyqt'
+  depends_on "qt"
+  depends_on "qwt"
+  depends_on "sip"
+  depends_on "pyqt"
 
   # Patch to build system to allow for specific installation directories.
   patch :p0, :DATA
@@ -22,8 +20,8 @@ class Pyqwt < Formula
              "--sip-install-path=#{share}/sip/Qwt5",
              "--uic-install-path=#{lib}/python2.7/site-packages/PyQt4",
              "-Q", "../qwt-5.2"
-      system "make install"
-      system 'make clean'
+      system "make", "install"
+      system "make", "clean"
     end
   end
 
