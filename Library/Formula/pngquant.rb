@@ -20,6 +20,8 @@ class Pngquant < Formula
     system "make", "install",
            "PREFIX=#{prefix}", "CC=#{ENV.cc}"
     man1.install "pngquant.1"
+    lib.install "lib/libimagequant.a"
+    include.install "lib/libimagequant.h"
   end
 
   test do
