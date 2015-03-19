@@ -2,16 +2,16 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'https://static.rust-lang.org/dist/rustc-1.0.0-alpha-src.tar.gz'
-  version "1.0.0-alpha"
-  sha256 '3a2285726e839fc57ad49ed8907a50bab2d29d8f898e2d5a02f620a0477fc25c'
+  url 'https://static.rust-lang.org/dist/rustc-1.0.0-alpha.2-src.tar.gz'
+  version "1.0.0-alpha.2"
+  sha256 'a931b945e98f409df68fdff23e98b688024461c28901106896e73708381956c8'
 
   head 'https://github.com/rust-lang/rust.git'
 
   bottle do
-    sha1 "5277e1c21e09bebde2c721be9b21680ba85d78bf" => :yosemite
-    sha1 "b46ed4b2cc08432f45cb9f28b2e5ee66280787ff" => :mavericks
-    sha1 "7d8e4945fffaf1844f166c7450d068e0860962b2" => :mountain_lion
+    sha1 "c1a024f85c9af99d140762de3c87738b00ead44e" => :yosemite
+    sha1 "325c8021a0c911e39eb536879698aa5e21e2ab05" => :mavericks
+    sha1 "e0bbe731065a341f65722ed2e6f9e3861d8bb702" => :mountain_lion
   end
 
   def install
@@ -24,7 +24,13 @@ class Rust < Formula
   end
 
   test do
-    system "#{bin}/rustc"
     system "#{bin}/rustdoc", "-h"
+    (testpath/"hello.rs").write <<-EOS.undent
+    fn main() {
+      println!("Hello World!");
+    }
+    EOS
+    system "#{bin}/rustc", "hello.rs"
+    assert_equal "Hello World!\n", `./hello`
   end
 end

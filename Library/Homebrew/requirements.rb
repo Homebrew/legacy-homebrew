@@ -7,6 +7,7 @@ require 'requirements/maximum_macos_requirement'
 require 'requirements/mpi_dependency'
 require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
+require 'requirements/java_dependency'
 require 'requirements/tuntap_dependency'
 require 'requirements/unsigned_kext_requirement'
 require 'requirements/x11_dependency'
@@ -42,6 +43,10 @@ class XcodeDependency < Requirement
         Xcode can be installed from https://developer.apple.com/downloads/
       EOS
     end
+  end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} version=#{@version.inspect}>"
   end
 end
 
@@ -118,30 +123,3 @@ class GitDependency < Requirement
   satisfy { !!which('git') }
 end
 
-class JavaDependency < Requirement
-  fatal true
-  cask "java"
-  download "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
-
-  satisfy { java_version }
-
-  def initialize(tags)
-    # ignore trailing +
-    @version = tags.shift.sub(/\+$/, "") if /(\d\.)+\d/ === tags.first
-    super
-  end
-
-  def java_version
-    args = %w[/usr/libexec/java_home --failfast]
-    args << "--version" << "#{@version}+" if @version
-    quiet_system(*args)
-  end
-
-  def message
-    version_string = " #{@version}" if @version
-
-    s = "Java#{version_string} is required to install this formula."
-    s += super
-    s
-  end
-end

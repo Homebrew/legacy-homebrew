@@ -1,11 +1,7 @@
-require 'formula'
-
 class Nimrod < Formula
   homepage "http://nim-lang.org/"
-
   url "http://nim-lang.org/download/nim-0.10.2.zip"
-  sha1 "0a54d6d7f257cdade5bf950d318066959c48a6dc"
-
+  sha1 "2fdd486704931807d03d25d6846c5faee880d69e"
   head "https://github.com/Araq/Nim.git", :branch => "devel"
 
   bottle do

@@ -1,5 +1,3 @@
-require "formula"
-
 class Emacs < Formula
   homepage "https://www.gnu.org/software/emacs/"
 
@@ -10,19 +8,18 @@ class Emacs < Formula
 
     # Fix ns-antialias-text, broken in 24.4, from upstream:
     # https://github.com/emacs-mirror/emacs/commit/604a4d21ead40691afe3efe13f0ba1000b2cd61a
-    # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=18876
-
+    # https://debbugs.gnu.org/cgi/bugreport.cgi?bug=18876
     patch do
-      url 'https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/4c5229a8a719f81fa6bd2e1e0c85d10b6f635765/emacs-fix-ns-antialias-text-mac-os.patch'
-      sha1 'b63eab599a7ce69de03629494a727f45b310c166'
+      url "https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/4c5229a8a719f81fa6bd2e1e0c85d10b6f635765/emacs-fix-ns-antialias-text-mac-os.patch"
+      sha256 "fab5cf538ade6afa949640b0f81bdea26cb23b6d64ca714b687dee6f33ff270e"
     end
   end
 
   bottle do
-    revision 3
-    sha1 "d4610ae4e9c9c6e6eba16728c5f3c7af9ec065be" => :yosemite
-    sha1 "80d0aba03d603c94f255c01716d65a4ddcb50b8a" => :mavericks
-    sha1 "e3c6ab764c4b39b983e57d94c9f43acb7dad31f7" => :mountain_lion
+    revision 4
+    sha256 "8ad572c583820fca6d09027ecad92160c3bfd56ae52244f09677ff86744d3148" => :yosemite
+    sha256 "b3b02b8fbb257a498ca4a163e36e40bcd0c77cd3a04001f0d1c85e661e11743c" => :mavericks
+    sha256 "d8fbe58416741960502f22e908c4e56356e8b09937ac47596bbf65379ef27b0d" => :mountain_lion
   end
 
   devel do
@@ -38,9 +35,11 @@ class Emacs < Formula
     depends_on "automake" => :build
   end
 
-  option "cocoa", "Build a Cocoa version of emacs"
-  option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+  option "with-cocoa", "Build a Cocoa version of emacs"
+  option "with-ctags", "Don't remove the ctags executable that emacs provides"
 
+  deprecated_option "cocoa" => "with-cocoa"
+  deprecated_option "keep-ctags" => "with-ctags"
   deprecated_option "with-x" => "with-x11"
 
   depends_on "pkg-config" => :build
@@ -52,6 +51,12 @@ class Emacs < Formula
   depends_on "mailutils" => :optional
   depends_on "glib" => :optional
 
+  # https://github.com/Homebrew/homebrew/issues/37803
+  if build.with? "x11"
+    depends_on "freetype" => :recommended
+    depends_on "fontconfig" => :recommended
+  end
+
   fails_with :llvm do
     build 2334
     cause "Duplicate symbol errors while linking."
@@ -61,24 +66,28 @@ class Emacs < Formula
     args = ["--prefix=#{prefix}",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
+
     args << "--with-file-notification=gfile" if build.with? "glib"
+
     if build.with? "d-bus"
       args << "--with-dbus"
     else
       args << "--without-dbus"
     end
+
     if build.with? "gnutls"
       args << "--with-gnutls"
     else
       args << "--without-gnutls"
     end
+
     args << "--with-rsvg" if build.with? "librsvg"
     args << "--with-imagemagick" if build.with? "imagemagick"
     args << "--without-popmail" if build.with? "mailutils"
 
-    system "./autogen.sh" unless build.stable?
+    system "./autogen.sh" if build.head? || build.devel?
 
-    if build.include? "cocoa"
+    if build.with? "cocoa"
       args << "--with-ns" << "--disable-ns-self-contained"
       system "./configure", *args
       system "make"
@@ -110,14 +119,14 @@ class Emacs < Formula
 
     # Follow MacPorts and don't install ctags from Emacs. This allows Vim
     # and Emacs and ctags to play together without violence.
-    unless build.include? "keep-ctags"
+    if build.without? "ctags"
       (bin/"ctags").unlink
       (man1/"ctags.1.gz").unlink
     end
   end
 
   def caveats
-    if build.include? "cocoa" then <<-EOS.undent
+    if build.with? "cocoa" then <<-EOS.undent
       A command line wrapper for the cocoa app was installed to:
         #{bin}/emacs
       EOS

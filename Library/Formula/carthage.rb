@@ -1,8 +1,7 @@
-require "formula"
-
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
-  url "https://github.com/Carthage/Carthage.git", :tag => "0.5.3",
+  url "https://github.com/Carthage/Carthage.git", :tag => "0.6.3",
+                                                  :revision => "cd6d4237d77c22559a8f6dc92c09ef297be91ea5",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
@@ -10,15 +9,11 @@ class Carthage < Formula
 
   bottle do
     cellar :any
-    sha1 "7c6ec5815bea395b07da3561401763777d43c865" => :yosemite
-    sha1 "a4835184d68bc59f3a30654f5c25ed88b6667c40" => :mavericks
+    sha256 "318dbf4bbbb8d93fa99676f0e3e6708e515ebb97c345a317a79869307dd94eae" => :yosemite
+    sha256 "51db791570ab0afd405f30ea2980e1af4e75403d3616cf37e54e40dc2fb68b14" => :mavericks
   end
 
   def install
-    # Carthage likes to do stuff with submodules itself so we need a "real"
-    # git clone rather than letting it play with our cache.
-    cp_r cached_download/".git", "."
-
     system "make", "prefix_install", "PREFIX=#{prefix}"
   end
 

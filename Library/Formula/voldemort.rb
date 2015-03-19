@@ -1,5 +1,5 @@
 class Voldemort < Formula
-  homepage "http://project-voldemort.com/"
+  homepage "http://www.project-voldemort.com/"
   url "https://github.com/voldemort/voldemort/archive/release-1.9.5-cutoff.tar.gz"
   sha1 "ac4db71aa4670054dadc80bbe09544192ddd0a6a"
 

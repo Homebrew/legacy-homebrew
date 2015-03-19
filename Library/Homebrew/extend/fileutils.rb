@@ -1,4 +1,5 @@
-require 'fileutils'
+require "fileutils"
+require "tmpdir"
 
 # We enhance FileUtils to make our Formula code more readable.
 module FileUtils
@@ -6,22 +7,20 @@ module FileUtils
   # Create a temporary directory then yield. When the block returns,
   # recursively delete the temporary directory.
   def mktemp(prefix=name)
-    # I used /tmp rather than `mktemp -td` because that generates a directory
-    # name with exotic characters like + in it, and these break badly written
-    # scripts that don't escape strings before trying to regexp them :(
+    prev = pwd
+    tmp  = Dir.mktmpdir(prefix, HOMEBREW_TEMP)
 
-    # If the user has FileVault enabled, then we can't mv symlinks from the
-    # /tmp volume to the other volume. So we let the user override the tmp
-    # prefix if they need to.
+    begin
+      cd(tmp)
 
-    tempd = with_system_path { `mktemp -d #{HOMEBREW_TEMP}/#{prefix}-XXXXXX` }.chuzzle
-    raise "Failed to create sandbox" if tempd.nil?
-    prevd = pwd
-    cd tempd
-    yield
-  ensure
-    cd prevd if prevd
-    ignore_interrupts{ rm_r tempd } if tempd
+      begin
+        yield
+      ensure
+        cd(prev)
+      end
+    ensure
+      ignore_interrupts { rm_r(tmp) }
+    end
   end
   module_function :mktemp
 

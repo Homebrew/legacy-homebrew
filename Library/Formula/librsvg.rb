@@ -1,5 +1,3 @@
-require 'formula'
-
 class Librsvg < Formula
   homepage 'https://live.gnome.org/LibRsvg'
   url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.3.tar.xz'
@@ -13,11 +11,16 @@ class Librsvg < Formula
     sha1 "ab5c9bcad344e53fc5f6c53af902971ec1a9505e" => :mountain_lion
   end
 
-  depends_on :x11
-  depends_on 'pkg-config' => :build
-  depends_on 'gtk+'
-  depends_on 'libcroco'
-  depends_on 'libgsf' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "cairo"
+  depends_on "gdk-pixbuf"
+  depends_on "glib"
+  depends_on "gtk+" => :recommended
+  depends_on "gtk+3" => :optional
+  depends_on "libcroco"
+  depends_on "libgsf" => :optional
+  depends_on "pango"
+  depends_on :x11 => :recommended
 
   def install
     args = ["--disable-dependency-tracking",

@@ -1,7 +1,7 @@
 class Unarj < Formula
   homepage "http://www.arjsoftware.com/files.htm"
   url "http://pkgs.fedoraproject.org/repo/pkgs/unarj/unarj-2.65.tar.gz/c6fe45db1741f97155c7def322aa74aa/unarj-2.65.tar.gz"
-  sha1 "e30242ab0cb521bae89472a552219a06fdddb389"
+  sha256 "d7dcc325160af6eb2956f5cb53a002edb2d833e4bb17846669f92ba0ce3f0264"
 
   bottle do
     cellar :any
@@ -11,8 +11,8 @@ class Unarj < Formula
   end
 
   resource "testfile" do
-    url "http://s3.amazonaws.com/ARJ/ARJ286.EXE"
-    sha1 "dfa0b273c6e480fb6566816796e67d19e4b62f1b"
+    url "https://s3.amazonaws.com/ARJ/ARJ286.EXE"
+    sha256 "e7823fe46fd971fe57e34eef3105fa365ded1cc4cc8295ca3240500f95841c1f"
   end
 
   def install

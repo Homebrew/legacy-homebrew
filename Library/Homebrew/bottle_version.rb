@@ -7,6 +7,10 @@ class BottleVersion < Version
     m = /-([\d\.]+-x86(_64)?)/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. R14B04 from erlang-r14-R14B04.yosemite.bottle.tar.gz
+    m = /erlang-r\d+-(R\d+B\d+(-\d)?)/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. x264-r2197.4.mavericks.bottle.tar.gz
     # e.g. lz4-r114.mavericks.bottle.tar.gz
     m = /-(r\d+\.?\d*)/.match(stem)

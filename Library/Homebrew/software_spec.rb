@@ -62,7 +62,8 @@ class SoftwareSpec
   end
 
   def bottled?
-    bottle_specification.tag?(bottle_tag)
+    bottle_specification.tag?(bottle_tag) && \
+      bottle_specification.compatible_cellar?
   end
 
   def bottle &block
@@ -220,6 +221,7 @@ class Bottle
     @name = formula.name
     @resource = Resource.new
     @resource.owner = formula
+    @spec = spec
 
     checksum, tag = spec.checksum_for(bottle_tag)
 
@@ -234,7 +236,7 @@ class Bottle
   end
 
   def compatible_cellar?
-    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+    @spec.compatible_cellar?
   end
 
   def stage
@@ -251,7 +253,8 @@ end
 class BottleSpecification
   DEFAULT_PREFIX = "/usr/local".freeze
   DEFAULT_CELLAR = "/usr/local/Cellar".freeze
-  DEFAULT_ROOT_URL = "https://downloads.sf.net/project/machomebrew/Bottles".freeze
+  DEFAULT_DOMAIN = "https://homebrew.bintray.com".freeze
+  DEFAULT_ROOT_URL = "#{DEFAULT_DOMAIN}/bottles".freeze
 
   attr_rw :root_url, :prefix, :cellar, :revision
   attr_reader :checksum, :collector
@@ -262,6 +265,10 @@ class BottleSpecification
     @cellar = DEFAULT_CELLAR
     @root_url = DEFAULT_ROOT_URL
     @collector = BottleCollector.new
+  end
+
+  def compatible_cellar?
+    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
   end
 
   def tag?(tag)

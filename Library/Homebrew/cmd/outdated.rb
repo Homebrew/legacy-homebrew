@@ -17,9 +17,22 @@ module Homebrew
 
   def outdated_brews(formulae)
     formulae.map do |f|
-      versions = f.rack.subdirs.map { |d| Keg.new(d).version }.sort!
-        if versions.all? { |version| f.pkg_version > version }
-        yield f, versions if block_given?
+      all_versions = []
+      older_or_same_tap_versions = []
+      f.rack.subdirs.each do |dir|
+        keg = Keg.new dir
+        version = keg.version
+        all_versions << version
+        older_version = f.version <= version
+
+        tap = Tab.for_keg(keg).tap
+        if tap.nil? || f.tap == tap || older_version
+          older_or_same_tap_versions << version
+        end
+      end
+
+      if older_or_same_tap_versions.all? { |version| f.pkg_version > version }
+        yield f, all_versions if block_given?
         f
       end
     end.compact

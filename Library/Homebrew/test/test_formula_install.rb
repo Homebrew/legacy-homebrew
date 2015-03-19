@@ -1,5 +1,6 @@
 require 'testing_env'
 require 'formula'
+require 'compat/formula_specialties'
 require 'testball'
 require 'keg'
 

@@ -6,9 +6,10 @@ class Dmd < Formula
   sha1 "7be9737f97a494870446c881e185bec41f337792"
 
   bottle do
-    sha1 "6cb24133ba8e8973442d13b358dc14ea7f9d8c43" => :yosemite
-    sha1 "19e104830f0e6dbb4a422fd141254af784268a4d" => :mavericks
-    sha1 "c7c4f4b32f5e88c73f0efb8eb90d92a7956694e6" => :mountain_lion
+    revision 1
+    sha256 "c19e75d44f1e184aa8b65e276de498be33a80e088ab93145bfcff07a08d1a78e" => :yosemite
+    sha256 "f41633629f7767e61f7d968c762c58f11bbdb5308bfe59d6d05c7249aa00797b" => :mavericks
+    sha256 "b8c380eae74b0092134095ad48628392cc7715a3c75feb942bfac027549d3123" => :mountain_lion
   end
 
   resource "druntime" do
@@ -35,16 +36,16 @@ class Dmd < Formula
     prefix.install "samples"
     man.install Dir["docs/man/*"]
 
-    conf = etc/"dmd.conf"
-
-    if conf.exist?
-      inreplace conf, /^DFLAGS=.+$/, "DFLAGS=-I#{include}/d2 -L-L#{lib}"
-    else
-      conf.write <<-EOS.undent
+    # A proper dmd.conf is required for later build steps:
+    conf = buildpath/"dmd.conf"
+    # Can't use opt_include or opt_lib here because dmd won't have been
+    # linked into opt by the time this build runs:
+    conf.write <<-EOS.undent
         [Environment]
         DFLAGS=-I#{include}/d2 -L-L#{lib}
         EOS
-    end
+    etc.install conf
+    install_new_dmd_conf
 
     make_args.unshift "DMD=#{bin}/dmd"
 
@@ -63,6 +64,29 @@ class Dmd < Formula
       inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS)"
       system "make", "install", *make_args
     end
+  end
+
+  # Previous versions of this formula may have left in place an incorrect
+  # dmd.conf.  If it differs from the newly generated one, move it out of place
+  # and warn the user.
+  # This must be idempotent because it may run from both install() and
+  # post_install() if the user is running `brew install --build-from-source`.
+  def install_new_dmd_conf
+    conf = etc/"dmd.conf"
+
+    # If the new file differs from conf, etc.install drops it here:
+    new_conf = etc/"dmd.conf.default"
+    # Else, we're already using the latest version:
+    return unless new_conf.exist?
+
+    backup = etc/"dmd.conf.old"
+    opoo "An old dmd.conf was found and will be moved to #{backup}."
+    mv conf, backup
+    mv new_conf, conf
+  end
+
+  def post_install
+    install_new_dmd_conf
   end
 
   test do

@@ -3,6 +3,7 @@
 
 require 'utils'
 require 'formula'
+require 'cmd/tap'
 
 module Homebrew
   def tap arg
@@ -108,7 +109,7 @@ module Homebrew
         begin
           changed_formulae << Formula[name]
         # Make sure we catch syntax errors.
-        rescue Exception => e
+        rescue Exception
           next
         end
       end
@@ -126,9 +127,10 @@ module Homebrew
 
         if ARGV.include? '--bump'
           odie 'Can only bump one changed formula' unless changed_formulae.length == 1
-          f = changed_formulae.first
-          subject = "#{f.name} #{f.version}"
+          formula = changed_formulae.first
+          subject = "#{formula.name} #{formula.version}"
           ohai "New bump commit subject: #{subject}"
+          system "/bin/echo -n #{subject} | pbcopy"
           message = "#{subject}\n\n#{message}"
         end
 
@@ -140,17 +142,40 @@ module Homebrew
       end
 
       if ARGV.include? "--bottle"
+        bottle_commit_url = if tap_name
+          "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
+        else
+          "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+        end
+        curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
+
         bottle_branch = "pull-bottle-#{issue}"
         safe_system "git", "checkout", "-B", bottle_branch, revision
-        if tap_name
-          pull_url "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
-        else
-          pull_url "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
-        end
+        pull_url bottle_commit_url
         safe_system "git", "rebase", branch
         safe_system "git", "checkout", branch
         safe_system "git", "merge", "--ff-only", "--no-edit", bottle_branch
         safe_system "git", "branch", "-D", bottle_branch
+
+        # Publish bottles on Bintray
+        bintray_user = ENV["BINTRAY_USER"]
+        bintray_key = ENV["BINTRAY_KEY"]
+
+        if bintray_user && bintray_key
+          repo = Bintray.repository(tap_name)
+          changed_formulae.each do |f|
+            ohai "Publishing on Bintray:"
+            package = Bintray.package f.name
+            bottle = Bottle.new(f, f.bottle_specification)
+            version = Bintray.version(bottle.url)
+            curl "--silent", "--fail",
+              "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
+              "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
+            puts
+          end
+        else
+          opoo "Set BINTRAY_USER and BINTRAY_KEY to add new formula bottles on Bintray!"
+        end
       end
 
       ohai 'Patch changed:'

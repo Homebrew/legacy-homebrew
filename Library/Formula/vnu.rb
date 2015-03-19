@@ -1,8 +1,8 @@
 class Vnu < Formula
   homepage "https://validator.github.io/validator/"
-  url "https://github.com/validator/validator/releases/download/20150207/vnu-20150207.jar.zip"
-  sha1 "30f840cb36185b27e4941eeff43929b6bbe05d0c"
-  version "20150207"
+  url "https://github.com/validator/validator/releases/download/20150216/vnu-20150216.jar.zip"
+  sha1 "76806240e7f07d210e23e0dd96a06f6f2c5f0162"
+  version "20150216"
 
   def install
     libexec.install "vnu.jar"

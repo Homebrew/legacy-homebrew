@@ -1,14 +1,14 @@
 require "formula"
 
 class PerconaToolkit < Formula
-  homepage "http://www.percona.com/software/percona-toolkit/"
-  url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.12/tarball/percona-toolkit-2.2.12.tar.gz"
-  sha1 "83757aca2e04b0c55e682316d9e09f405d4a0180"
+  homepage "https://www.percona.com/software/percona-toolkit/"
+  url "https://www.percona.com/redir/downloads/percona-toolkit/2.2.13/tarball/percona-toolkit-2.2.13.tar.gz"
+  sha1 "f3e0e59e6036bfabbd5db881848022e1e4881ab9"
 
   bottle do
-    sha1 "cf2163192bcf6f6c12e8de0fdee7e707d7dd0860" => :yosemite
-    sha1 "8f951f08023adf4dd8b70b912c2d2c8bad7d661d" => :mavericks
-    sha1 "839a79ceacf3df20af36f1610bed661a58024181" => :mountain_lion
+    sha1 "93a5ad98d2b802f54a63d25af0b47756dcdd182b" => :yosemite
+    sha1 "6db69533613496f4f42a1384e4e58275b9ef5df5" => :mavericks
+    sha1 "fdd28988814bb4151bc2308147a881cb00e589c9" => :mountain_lion
   end
 
   depends_on :mysql

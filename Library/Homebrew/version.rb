@@ -17,6 +17,10 @@ class Version
     def to_s
       value.to_s
     end
+
+    def numeric?
+      false
+    end
   end
 
   class NullToken < Token
@@ -26,6 +30,8 @@ class Version
 
     def <=>(other)
       case other
+      when NullToken
+        0
       when NumericToken
         other.value == 0 ? 0 : -1
       when AlphaToken, BetaToken, RCToken
@@ -75,6 +81,10 @@ class Version
       when NullToken
         -Integer(other <=> self)
       end
+    end
+
+    def numeric?
+      true
     end
   end
 
@@ -161,7 +171,7 @@ class Version
     end
   end
 
-  def self.detect(url, specs={})
+  def self.detect(url, specs)
     if specs.has_key?(:tag)
       FromURL.new(specs[:tag][/((?:\d+\.)*\d+)/, 1])
     else
@@ -182,12 +192,12 @@ class Version
   end
 
   def head?
-    @version == 'HEAD'
+    version == "HEAD"
   end
 
   def <=>(other)
     return unless Version === other
-    return 0 if head? && other.head?
+    return 0 if version == other.version
     return 1 if head? && !other.head?
     return -1 if !head? && other.head?
 
@@ -197,23 +207,25 @@ class Version
   alias_method :eql?, :==
 
   def hash
-    @version.hash
+    version.hash
   end
 
   def to_s
-    @version.dup
+    version.dup
   end
   alias_method :to_str, :to_s
 
   protected
 
+  attr_reader :version
+
   def begins_with_numeric?
-    NumericToken === tokens.first
+    tokens.first.numeric?
   end
 
   def pad_to(length)
     if begins_with_numeric?
-      nums, rest = tokens.partition { |t| NumericToken === t }
+      nums, rest = tokens.partition(&:numeric?)
       nums.fill(NULL_TOKEN, nums.length, length - tokens.length)
       nums.concat(rest)
     else
@@ -226,7 +238,7 @@ class Version
   end
 
   def tokenize
-    @version.scan(SCAN_PATTERN).map! do |token|
+    version.scan(SCAN_PATTERN).map! do |token|
       case token
       when /\A#{AlphaToken::PATTERN}\z/o   then AlphaToken
       when /\A#{BetaToken::PATTERN}\z/o    then BetaToken

@@ -14,6 +14,8 @@ class Notmuch < Formula
 
   depends_on "pkg-config" => :build
   depends_on "emacs" => :optional
+  depends_on :python => :optional
+  depends_on :python3 => :optional
   depends_on "xapian"
   depends_on "talloc"
   depends_on "gmime"
@@ -38,8 +40,15 @@ class Notmuch < Formula
     else
       args << "--without-emacs"
     end
-    system "./configure", *args
 
+    system "./configure", *args
     system "make", "V=1", "install"
+
+    Language::Python.each_python(build) do |python, version|
+      cd "bindings/python" do
+        system python, *Language::Python.setup_install_args(prefix)
+      end
+    end
+
   end
 end

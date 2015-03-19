@@ -98,11 +98,12 @@ class AbstractDownloadStrategy
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
-  REF_TYPES = [:branch, :revision, :revisions, :tag].freeze
+  REF_TYPES = [:tag, :branch, :revisions, :revision].freeze
 
   def initialize name, resource
     super
     @ref_type, @ref = extract_ref(meta)
+    @revision = meta[:revision]
     @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
@@ -118,6 +119,15 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
       clone_repo
     else
       clone_repo
+    end
+
+    if @ref_type == :tag && @revision && current_revision
+      unless current_revision == @revision
+        raise <<-EOS.undent
+          #{@ref} tag should be #{@revision}
+          but is actually #{current_revision}!
+        EOS
+      end
     end
   end
 
@@ -151,6 +161,9 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   end
 
   def update
+  end
+
+  def current_revision
   end
 
   def extract_ref(specs)
@@ -372,12 +385,6 @@ end
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
-  def curl(*args)
-    mirror = ENV["HOMEBREW_SOURCEFORGE_MIRROR"]
-    args << "-G" << "-d" << "use_mirror=#{mirror}" if mirror
-    super
-  end
-
   def stage
     ohai "Pouring #{cached_location.basename}"
     super
@@ -411,7 +418,7 @@ class S3DownloadStrategy < CurlDownloadStrategy
     # a dependency of S3 users, not all Homebrew users
     require 'rubygems'
     begin
-      require 'aws-sdk'
+      require 'aws-sdk-v1'
     rescue LoadError
       onoe "Install the aws-sdk gem into the gem repo used by brew."
       raise
@@ -537,13 +544,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def stage
     super
-
-    dst = Dir.getwd
-    cached_location.cd do
-      # https://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
-      checkout_submodules(dst) if submodules?
-    end
+    cp_r File.join(cached_location, "."), Dir.pwd
   end
 
   private
@@ -580,6 +581,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def has_ref?
     quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', "#{@ref}^{commit}"
+  end
+
+  def current_revision
+    Utils.popen_read('git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', "HEAD").strip
   end
 
   def repo_valid?
@@ -646,14 +651,8 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def update_submodules
-    quiet_safe_system "git", "submodule", "sync", "--recursive"
+    quiet_safe_system "git", "submodule", "foreach", "--recursive", "git submodule sync"
     quiet_safe_system "git", "submodule", "update", "--init", "--recursive"
-  end
-
-  def checkout_submodules(dst)
-    escaped_clone_path = cached_location.to_s.gsub(/\//, '\/')
-    sub_cmd = %[git checkout-index -a -f --prefix="#{dst}/${toplevel/#{escaped_clone_path}/}/$path/"]
-    quiet_safe_system "git", "submodule", "foreach", "--recursive", sub_cmd
   end
 end
 
@@ -672,7 +671,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
   end
 
   def stage
-    cp_r Dir[cached_location+"{.}"], Dir.pwd
+    cp_r File.join(cached_location, "."), Dir.pwd
   end
 
   private
@@ -751,7 +750,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
   def stage
     # The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
-    cp_r Dir[cached_location+"{.}"], Dir.pwd
+    cp_r File.join(cached_location, "."), Dir.pwd
     rm_r ".bzr"
   end
 
@@ -822,7 +821,7 @@ class DownloadStrategyDetector
     case url
     when %r[^https?://.+\.git$], %r[^git://]
       GitDownloadStrategy
-    when %r[^http://www\.apache\.org/dyn/closer\.cgi]
+    when %r[^https?://www\.apache\.org/dyn/closer\.cgi]
       CurlApacheMirrorDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn], %r[^https?://svn\.], %r[^svn://], %r[^https?://(.+?\.)?sourceforge\.net/svnroot/]
       SubversionDownloadStrategy

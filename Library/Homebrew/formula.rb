@@ -539,8 +539,6 @@ class Formula
       "#$1/#$2"
     elsif core_formula?
       "Homebrew/homebrew"
-    else
-      "path or URL"
     end
   end
 
@@ -615,7 +613,7 @@ class Formula
         }
       end
 
-      hsh["installed"].sort_by! { |i| Version.new(i["version"]) }
+      hsh["installed"] = hsh["installed"].sort_by { |i| Version.new(i["version"]) }
     end
 
     hsh
@@ -1009,4 +1007,3 @@ class Formula
   end
 end
 
-require 'formula_specialties'

@@ -1,14 +1,14 @@
 # encoding: UTF-8
 class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.7.2.tar.gz"
-  sha1 "aef4f6be51ed5888b31afd01633d50eec04d3187"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.10.2.tar.gz"
+  sha1 "d2022e85e288c295c086b876be53e79d0f137b1d"
 
   bottle do
     cellar :any
-    sha1 "ec02d7374552d343d66f3fab04d124654f23bfe1" => :yosemite
-    sha1 "3b7fb19191ae22506bdfb360ec566e77b9399cf7" => :mavericks
-    sha1 "1456ab1ecc67ac6c092c9ca304ee948274444772" => :mountain_lion
+    sha256 "1500c0d04bdad9e3b17a43ba1bd84e4f99dda84dbaf6d19ece31a2ec11d799aa" => :yosemite
+    sha256 "7c1864b2c484c41a0f6ecbe2de95f307d5f7c219444fcee61aa440e7bba91cbc" => :mavericks
+    sha256 "37a246ee01fc6aff02fa4d0f67c8ddefc840e1c375ce867b865462e719ef81ac" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

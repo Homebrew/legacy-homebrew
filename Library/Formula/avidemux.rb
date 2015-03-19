@@ -2,13 +2,18 @@
 class Avidemux < Formula
   homepage "http://fixounet.free.fr/avidemux/"
   url "https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz"
-  sha1 "50f3dfe270e6272fce46d725b198b9d0dd95664b"
-  head "git://gitorious.org/avidemux2-6/avidemux2-6.git"
+  sha256 "02998c235a89894d184d745c94cac37b78bc20e9eb44b318ee2bb83f2507e682"
+  revision 1
+
+  head do
+    url "https://github.com/mean00/avidemux2.git"
+    depends_on "x265"
+  end
 
   bottle do
-    sha1 "5a168ebcb9661ba351bc09d734437fc93ef57cd0" => :mavericks
-    sha1 "1af759be4340d3acdc1fd4158eab85a2df41cfa1" => :mountain_lion
-    sha1 "07734309d8789563146619defe6c2384a3927fd2" => :lion
+    sha256 "35f7e570a81d8b1fbeb406e04de695952eccb353ee2fad49ff1cf523b7fc86ac" => :yosemite
+    sha256 "ad6d67da1aaddd09b8dec534fa75d25ebc2d16f1ae6cba0653590274f0e3ff5c" => :mavericks
+    sha256 "1f0c944c716a06856e61ad52ef6dfe8031826ddcd551685596a8adaf4b7a057d" => :mountain_lion
   end
 
   option "with-debug", "Enable debug build."

@@ -43,7 +43,7 @@ source `brew --repository`/Library/Contributions/brew_bash_completion.sh
 ```
 
 
-### ZSH
+### Zsh
 Run in terminal (may require `sudo`):
 
 ```zsh

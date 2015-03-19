@@ -1,27 +1,26 @@
 class S3cmd < Formula
-  homepage 'http://s3tools.org/s3cmd'
-  url 'https://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.0/s3cmd-1.5.0.tar.gz'
-  sha1 '53ebc485329cb15cad8f61ca0c8c2d06563ee2f3'
-  head 'https://github.com/s3tools/s3cmd.git'
+  homepage "http://s3tools.org/s3cmd"
+  url "https://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.2/s3cmd-1.5.2.tar.gz"
+  sha256 "ff8a6764e8bdd7ed48a93e51b08222bea33469d248a90b8d25315b023717b42d"
+  head "https://github.com/s3tools/s3cmd.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "5923f4a71ccc26ac8e4d603f667ea32cdddfe1ae" => :yosemite
-    sha1 "0a6f4d5b585d618189ea7dd2f417583c818c75e9" => :mavericks
-    sha1 "473b664c50c6673c4b14b92084780d350da36c51" => :mountain_lion
+    sha256 "df3c1380d6bd0171bb002f897f360acced8157fc235cb34252f6ecadd72d0668" => :yosemite
+    sha256 "f76281f2955f9dfd9b13bec7d785c6339e9e23f975d9b54f5c8454fa902dc0be" => :mavericks
+    sha256 "892bc105c9018d47837669afd9a8ff460741631112d6c0e57fc2451558ca7996" => :mountain_lion
   end
 
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
-    sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
+    sha256 "439df33ce47ef1478a4f4765f3390eab0ed3ec4ae10be32f2930000c8d19f417"
   end
 
   def install

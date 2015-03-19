@@ -1,23 +1,26 @@
 class Python3 < Formula
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tar.xz"
-  sha1 "0727d8a8498733baabe6f51632b9bab0cbaa9ada"
-  revision 1
+  url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
+  sha1 "7ca5cd664598bea96eec105aa6453223bb6b4456"
 
   bottle do
-    revision 4
-    sha1 "bafbd760dc7cdc3e0d782714e866006200f2f128" => :yosemite
-    sha1 "aeff86cffe18f6aea643e90e56032fb272c9612f" => :mavericks
-    sha1 "a27901327dad9d61f50be6e2dbde59116da682e2" => :mountain_lion
+    sha1 "b8a3b54597788f38fe056c51b1de207c3e5287fb" => :yosemite
+    sha1 "b8a7e7370052734df0fe4286a4f86993745ddd12" => :mavericks
+    sha1 "c367a9fd8fb3480a3515df39a31dea70c16174d5" => :mountain_lion
   end
 
-  VER="3.4"  # The <major>.<minor> is used so often.
+  head "https://hg.python.org/cpython", :using => :hg
 
-  head "https://hg.python.org/cpython", :using => :hg, :branch => VER
+  devel do
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0a2.tgz"
+    sha256 "b15ba6931f5c7231577f3608958ae6616872da536eca3ba8aced820cdda15a18"
+  end
 
   option :universal
-  option "quicktest", "Run `make quicktest` after the build"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
+  option "with-quicktest", "Run `make quicktest` after the build"
+
+  deprecated_option "quicktest" => "with-quicktest"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -28,28 +31,31 @@ class Python3 < Formula
   depends_on "homebrew/dupes/tcl-tk" if build.with? "brewed-tk"
   depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
 
-  skip_clean "bin/pip3", "bin/pip-#{VER}"
-  skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
+  skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5"
+  skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
-    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.2.tar.gz"
+    sha1 "b36aaa86fe762eb66d2abc860405410158fadfe8"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.7.tar.gz"
-    sha1 "d2539dcd3d938863c7f6d7197d2f53066c92cf23"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
+    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
   end
 
+  # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
+  # so we have to stop python from searching for frameworks and linking against
+  # X11.
   patch :DATA if build.with? "brewed-tk"
 
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/site-packages"
+    prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
-    HOMEBREW_PREFIX/"lib/python#{VER}/site-packages"
+    HOMEBREW_PREFIX/"lib/python#{xy}/site-packages"
   end
 
   fails_with :llvm do
@@ -95,14 +101,14 @@ class Python3 < Formula
     end
 
     # Allow sqlite3 module to load extensions: http://docs.python.org/library/sqlite3.html#f1
-    inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', 'pass') if build.with? "sqlite"
+    inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', "pass") if build.with? "sqlite"
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
     # even if homebrew is not a /usr/local/lib. Try this with:
     # `brew install enchant && pip install pyenchant`
     inreplace "./Lib/ctypes/macholib/dyld.py" do |f|
-      f.gsub! 'DEFAULT_LIBRARY_FALLBACK = [', "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
-      f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
+      f.gsub! "DEFAULT_LIBRARY_FALLBACK = [", "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
+      f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
     if build.with? "brewed-tk"
@@ -128,7 +134,7 @@ class Python3 < Formula
     # A fix, because python and python3 both want to install Python.framework
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
     # https://github.com/Homebrew/homebrew/issues/15943
-    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
+    ["Headers", "Python", "Resources"].each { |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
     rm prefix/"Frameworks/Python.framework/Versions/Current"
 
     # Remove 2to3 because python2 also installs it
@@ -146,7 +152,7 @@ class Python3 < Formula
     # Fix up the site-packages so that user-installed Python software survives
     # minor updates, such as going from 3.3.2 to 3.3.3:
 
-    # Create a site-packages in HOMEBREW_PREFIX/lib/python#{VER}/site-packages
+    # Create a site-packages in HOMEBREW_PREFIX/lib/python#{xy}/site-packages
     site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
@@ -175,18 +181,22 @@ class Python3 < Formula
     rm_rf [bin/"pip", bin/"easy_install"]
 
     # post_install happens after link
-    %W[pip3 pip#{VER} easy_install-#{VER}].each do |e|
+    %W[pip3 pip#{xy} easy_install-#{xy}].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
     # And now we write the distutils.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
+    cfg = prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
       [install]
       prefix=#{HOMEBREW_PREFIX}
     EOF
+  end
+
+  def xy
+    version.to_s.slice(/(3.\d)/) || "3.5"
   end
 
   def distutils_fix_superenv(args)
@@ -220,6 +230,7 @@ class Python3 < Formula
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
       # <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md>
+      import re
       import os
       import sys
 
@@ -232,43 +243,40 @@ class Python3 < Formula
           exit('Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python ' +
                str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
                '     You should `unset PYTHONPATH` to fix this.')
-      else:
-          # Only do this for a brewed python:
-          opt_executable = '#{opt_bin}/python#{VER}'
-          if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
-              # Remove /System site-packages, and the Cellar site-packages
-              # which we moved to lib/pythonX.Y/site-packages. Further, remove
-              # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
-              sys.path = [ p for p in sys.path
-                           if (not p.startswith('/System') and
-                               not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
-                               not (p.startswith('#{rack}') and p.endswith('site-packages'))) ]
 
-              # LINKFORSHARED (and python-config --ldflags) return the
-              # full path to the lib (yes, "Python" is actually the lib, not a
-              # dir) so that third-party software does not need to add the
-              # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
-              # Assume Framework style build (default since months in brew)
-              try:
-                  from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{VER}/Python'
-              except:
-                  pass  # remember: don't print here. Better to fail silently.
+      # Only do this for a brewed python:
+      if os.path.realpath(sys.executable).startswith('#{rack}'):
+          # Shuffle /Library site-packages to the end of sys.path
+          library_site = '/Library/Python/#{xy}/site-packages'
+          library_packages = [p for p in sys.path if p.startswith(library_site)]
+          sys.path = [p for p in sys.path if not p.startswith(library_site)]
+          # .pth files have already been processed so don't use addsitedir
+          sys.path.extend(library_packages)
 
-              # Set the sys.executable to use the opt_prefix
-              sys.executable = opt_executable
+          # the Cellar site-packages is a symlink to the HOMEBREW_PREFIX
+          # site_packages; prefer the shorter paths
+          long_prefix = re.compile(r'#{rack}/[0-9\._abrc]+/Frameworks/Python\.framework/Versions/#{xy}/lib/python#{xy}/site-packages')
+          sys.path = [long_prefix.sub('#{site_packages}', p) for p in sys.path]
 
-          # Tell about homebrew's site-packages location.
-          # This is needed for Python to parse *.pth.
-          import site
-          site.addsitedir('#{site_packages}')
+          # LINKFORSHARED (and python-config --ldflags) return the
+          # full path to the lib (yes, "Python" is actually the lib, not a
+          # dir) so that third-party software does not need to add the
+          # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
+          try:
+              from _sysconfigdata import build_time_vars
+              build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python'
+          except:
+              pass  # remember: don't print here. Better to fail silently.
+
+          # Set the sys.executable to use the opt_prefix
+          sys.executable = '#{opt_bin}/python#{xy}'
     EOF
   end
 
   def caveats
     text = <<-EOS.undent
-      Pip has been installed. To update it
-        pip3 install --upgrade pip
+      Pip and setuptools have been installed. To update them
+        pip3 install --upgrade pip setuptools
 
       You can install Python packages with
         pip3 install <package>
@@ -293,23 +301,19 @@ class Python3 < Formula
   test do
     # Check if sqlite is ok, because we build with --enable-loadable-sqlite-extensions
     # and it can occur that building sqlite silently fails if OSX's sqlite is used.
-    system "#{bin}/python#{VER}", "-c", "import sqlite3"
+    system "#{bin}/python#{xy}", "-c", "import sqlite3"
     # Check if some other modules import. Then the linked libs are working.
-    system "#{bin}/python#{VER}", "-c", "import tkinter; root = tkinter.Tk()"
+    system "#{bin}/python#{xy}", "-c", "import tkinter; root = tkinter.Tk()"
     system bin/"pip3", "list"
   end
 end
 
 __END__
-# Homebrew's tcl-tk is build in a standard unix fashion (due to link errors)
-# and we have to stop python from searching for frameworks and link against
-# X11.
-
 diff --git a/setup.py b/setup.py
-index d4183d4..9f69520 100644
+index 2779658..902d0eb 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1623,9 +1623,6 @@ class PyBuildExt(build_ext):
+@@ -1699,9 +1699,6 @@ class PyBuildExt(build_ext):
          # Rather than complicate the code below, detecting and building
          # AquaTk is a separate method. Only one Tkinter will be built on
          # Darwin - either AquaTk, if it is found, or X11 based Tk.
@@ -319,7 +323,7 @@ index d4183d4..9f69520 100644
 
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
-@@ -1671,21 +1668,6 @@ class PyBuildExt(build_ext):
+@@ -1747,22 +1744,6 @@ class PyBuildExt(build_ext):
              if dir not in include_dirs:
                  include_dirs.append(dir)
 
@@ -338,10 +342,11 @@ index d4183d4..9f69520 100644
 -            # Assume default location for X11
 -            include_dirs.append('/usr/X11/include')
 -            added_lib_dirs.append('/usr/X11/lib')
-
+-
          # If Cygwin, then verify that X is installed before proceeding
          if host_platform == 'cygwin':
-@@ -1710,10 +1692,6 @@ class PyBuildExt(build_ext):
+             x11_inc = find_file('X11/Xlib.h', [], include_dirs)
+@@ -1786,10 +1767,6 @@ class PyBuildExt(build_ext):
          if host_platform in ['aix3', 'aix4']:
              libs.append('ld')
 

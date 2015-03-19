@@ -1,5 +1,3 @@
-require "formula"
-
 class Ruby19 < Requirement
   fatal true
   default_formula "ruby"
@@ -11,10 +9,8 @@ class Ruby19 < Requirement
     Version.new(version.to_s) >= Version.new("1.9")
   end
 
-  def modify_build_environment
-    ruby = which "ruby"
-    return unless ruby
-    ENV.prepend_path "PATH", ruby.dirname
+  env do
+    ENV.prepend_path "PATH", which("ruby").dirname
   end
 
   def message; <<-EOS.undent
@@ -25,13 +21,13 @@ end
 
 class Mkvtoolnix < Formula
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.3.0.tar.xz"
-  sha1 "c5379fa684a0a5e6cf0db7404b72e7075989a1a3"
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.7.0.tar.xz"
+  sha1 "9f24c02f8f0e4e40162dd5e5a305f2226186a046"
 
   bottle do
-    sha1 "56cde38aad413ef85cdea858e4609abc4fc70491" => :yosemite
-    sha1 "06dc3b91062deb677a95b9eb416232ff6c5e319c" => :mavericks
-    sha1 "db880af7a75c5979aed0c1f19e02c63e0d17e7c7" => :mountain_lion
+    sha1 "c0aa6d1f587159dfcf89f0f193c1fc97ae8554da" => :yosemite
+    sha1 "022ff93c8ee34b6958ccbcba2aa96e82e8b5410e" => :mavericks
+    sha1 "1ded8d87b52b495e9a94e0cfab5e4623532ff98a" => :mountain_lion
   end
 
   head do
@@ -48,8 +44,6 @@ class Mkvtoolnix < Formula
   depends_on Ruby19
   depends_on "libogg"
   depends_on "libvorbis"
-  depends_on "expat"
-  depends_on "pcre"
   depends_on "flac" => :recommended
   depends_on "libmagic" => :recommended
   depends_on "lzo" => :optional

@@ -7,6 +7,7 @@ class Wellington < Formula
   head "https://github.com/wellington/wellington.git"
 
   bottle do
+    cellar :any
     sha1 "4c2de0af6f0d18032e3d3722a328cbab4ca555d2" => :yosemite
     sha1 "93fe2f24e449f8892d1401cf3fb8f9642d11d1ff" => :mavericks
     sha1 "84d4941117e47a9c865aa5b9ac1c1f97295a04f9" => :mountain_lion

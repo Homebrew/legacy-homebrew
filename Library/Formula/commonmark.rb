@@ -1,13 +1,13 @@
 class Commonmark < Formula
   homepage "http://commonmark.org"
-  url "https://github.com/jgm/cmark/archive/0.17.tar.gz"
-  sha1 "a0bce3d321822ca96f312e9210fc8cd149a8f527"
+  url "https://github.com/jgm/cmark/archive/0.18.1.tar.gz"
+  sha1 "e8885824134ef77ba8be428f1d2cac47c716045b"
 
   bottle do
     cellar :any
-    sha1 "c02997d6624c6a9ef4e627ff789cb83127a17b97" => :yosemite
-    sha1 "9777bbeb2d36fd1fc901261167af0452ecd21622" => :mavericks
-    sha1 "af4136806400ffcf35f984fbd52f16b5bf08f2e6" => :mountain_lion
+    sha256 "7568ed89b39e9254c16058e035becf3a1fc6b21ef10627e3bca6e640de4dd78d" => :yosemite
+    sha256 "41f843594c8663e39408d9e2c088036cf41d9e76a8441463ee527a52998e9deb" => :mavericks
+    sha256 "a9fe72757190f012a7c500c867504f8e3fabad051d88d4964b0c08a56bdf757b" => :mountain_lion
   end
 
   depends_on "cmake" => :build

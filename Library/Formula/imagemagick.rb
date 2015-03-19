@@ -2,15 +2,15 @@ require "formula"
 
 class Imagemagick < Formula
   homepage "http://www.imagemagick.org"
-  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.0-3.tar.xz"
-  sha256 "f00452ba2c05c2df9624c62d7adb49ecf17140edd6e5f355cceca051dab1fb38"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.0-10.tar.xz"
+  sha256 "d1f5dcd32a93130feb9e980a8a97517d3a2c814a8b608d139d4756516548748c"
 
   head "http://www.imagemagick.org/subversion/ImageMagick/trunk"
 
   bottle do
-    sha1 "9e788e5e325c50da3accb53228fdcda87bd43929" => :yosemite
-    sha1 "f260b2e5c574fe7159a093769a9cabad7970ef9b" => :mavericks
-    sha1 "e277ef9ac3df4771851a8e061025ba8005fd292c" => :mountain_lion
+    sha256 "67ff2e6d301cd2fc88735a8fa59d01d0ded3211f4b3f2af5bce4e79be76c04e6" => :yosemite
+    sha256 "c80ba612bf50cfc11e4baadc0a057fa728a0e2656208ee9d7a3d285509526983" => :mavericks
+    sha256 "c858c154c99b8ff013bc2b6668d6c20879a246beea6eeebb9f500feee865cd20" => :mountain_lion
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"

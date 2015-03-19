@@ -12,12 +12,12 @@ class Tor < Formula
   end
 
   devel do
-    url "https://dist.torproject.org/tor-0.2.6.2-alpha.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.6.2-alpha.tar.gz"
-    sha256 "b0e765736b17b91088a2016e7f09e4fafee81282f8bc8647987f975b6a583379"
-    version "0.2.6.2-alpha"
+    url "https://dist.torproject.org/tor-0.2.6.4-rc.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.6.4-rc.tar.gz"
+    sha256 "d557cc508f369529f2e53963d0c8351f0839de6f2d44eb0d11e88c85c8932ede"
+    version "0.2.6.4-rc"
 
-    # Move this to the main block when devel = stable release.
+    # Move this to the main block when current devel = stable release.
     depends_on "libscrypt" => :optional
   end
 
@@ -37,6 +37,7 @@ class Tor < Formula
 
     args << "--with-libnatpmp-dir=#{Formula["libnatpmp"].opt_prefix}" if build.with? "libnatpmp"
     args << "--with-libminiupnpc-dir=#{Formula["miniupnpc"].opt_prefix}" if build.with? "miniupnpc"
+    args << "--disable-libscrypt" if build.devel? && build.without?("libscrypt")
 
     system "./configure", *args
     system "make", "install"

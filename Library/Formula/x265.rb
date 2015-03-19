@@ -2,14 +2,14 @@ require 'formula'
 
 class X265 < Formula
   homepage "http://x265.org"
-  url "https://bitbucket.org/multicoreware/x265/get/1.4.tar.bz2"
-  sha1 "95b4481d61d1766fce4b7120d4b49d08e39d922b"
+  url "https://bitbucket.org/multicoreware/x265/get/1.5.tar.bz2"
+  sha1 "a348aca6aca873728607f28fa69428ae28b19bd0"
 
   bottle do
     cellar :any
-    sha1 "e01e498d5bcd69391d2ac68ce0f507c1aec71b4f" => :yosemite
-    sha1 "b25757d40934c1d49d183f71dde41ade71563ea0" => :mavericks
-    sha1 "41905d7b570e7e2be6d4fd99f641b5549a8e7719" => :mountain_lion
+    sha1 "f69792c6c8480493a77adb1350cfe7af4f3521d0" => :yosemite
+    sha1 "3de7b579f0c0ee874b1ce9d060ff270a46aab930" => :mavericks
+    sha1 "4c46671953cdbd0d72b977028162d796521bbf15" => :mountain_lion
   end
 
   head 'https://bitbucket.org/multicoreware/x265', :using => :hg

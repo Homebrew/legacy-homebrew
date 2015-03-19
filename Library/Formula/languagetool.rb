@@ -2,8 +2,8 @@ require 'formula'
 
 class Languagetool < Formula
   homepage 'http://www.languagetool.org/'
-  url 'https://www.languagetool.org/download/LanguageTool-2.7.zip'
-  sha1 "dfc1f99da854cfd91c39c43eb19c058e0eaff500"
+  url 'https://www.languagetool.org/download/LanguageTool-2.8.zip'
+  sha1 "38b0787d9b4305aa7c71942011b7668a312ffbc1"
 
   def server_script server_jar; <<-EOS.undent
     #!/bin/bash

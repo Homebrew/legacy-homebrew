@@ -5,9 +5,31 @@
 
 require 'formula'
 require 'cmd/tap'
+require 'thread'
 
 module Homebrew
   def readall
+    if ARGV.delete("--syntax")
+      ruby_files = Queue.new
+      Dir.glob("#{HOMEBREW_LIBRARY}/Homebrew/**/*.rb").each do |rb|
+        ruby_files << rb
+      end
+
+      failed = false
+      workers = (0...Hardware::CPU.cores).map do
+        Thread.new do
+          begin
+            while rb = ruby_files.pop(true)
+              nostdout { failed = true unless system "ruby", "-c", "-w", rb }
+            end
+          rescue ThreadError, IOError # ignore empty queue error
+          end
+        end
+      end
+      workers.map(&:join)
+      Homebrew.failed = failed
+    end
+
     formulae = []
     if ARGV.empty?
       formulae = Formula.names

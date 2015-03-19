@@ -3,13 +3,6 @@ class UnittestCpp < Formula
 
   stable do
     url "https://github.com/unittest-cpp/unittest-cpp/archive/v1.4.tar.gz"
-  bottle do
-    cellar :any
-    sha1 "6d9dbaebbfce4e6da037f55d70766b305ae361de" => :yosemite
-    sha1 "6042952c71d97f611f7dc6662125e02fb1a3f56a" => :mavericks
-    sha1 "e0289f35b526795fad1d204374928996f7f208a2" => :mountain_lion
-  end
-
     sha1 "ec7bdbebeb6f4d7a069f1125f7b4f473198e491d"
 
     # Clang failure fixed in the HEAD already
@@ -17,6 +10,13 @@ class UnittestCpp < Formula
       build 600
       cause "Failure in test: Expected 2 but was 0"
     end
+  end
+
+  bottle do
+    cellar :any
+    sha1 "6d9dbaebbfce4e6da037f55d70766b305ae361de" => :yosemite
+    sha1 "6042952c71d97f611f7dc6662125e02fb1a3f56a" => :mavericks
+    sha1 "e0289f35b526795fad1d204374928996f7f208a2" => :mountain_lion
   end
 
   head do
