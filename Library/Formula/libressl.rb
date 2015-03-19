@@ -1,10 +1,8 @@
 class Libressl < Formula
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.5.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.5.tar.gz"
-  sha256 "a82379913fd7f4e26e045fcf021aa92a1f683954816bf817b3b696de62e9c3bb"
-
-  option "without-libtls", "Build without libtls"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.6.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.6.tar.gz"
+  sha256 "4f826dd97b3b8001707073bde8401493f9cd4668465b481c042d28e3973653a8"
 
   bottle do
     sha256 "b1f42ad3d599729c6f942893ef59e1860cc848557e6ea1ab7ff4b70ff626d3fe" => :yosemite
@@ -30,8 +28,6 @@ class Libressl < Formula
       --sysconfdir=#{etc}/libressl
       --with-enginesdir=#{lib}/engines
     ]
-
-    args << "--enable-libtls" if build.with? "libtls"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
