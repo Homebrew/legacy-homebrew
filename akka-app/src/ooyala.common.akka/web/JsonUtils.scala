@@ -20,6 +20,7 @@ object JsonUtils {
       case f: Float => JsNumber(f.toDouble)
       case s: String => JsString(s)
       case x: Seq[_] => seqFormat[Any].write(x)
+      case m: Map[_, _] if m.isEmpty => JsObject(Map[String, JsValue]())
       // Get the type of map keys from the first key, translate the rest the same way
       case m: Map[_, _] => m.keys.head match {
         case sym: Symbol =>
