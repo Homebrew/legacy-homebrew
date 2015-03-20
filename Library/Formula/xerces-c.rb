@@ -5,9 +5,9 @@ class XercesC < Formula
 
   bottle do
     cellar :any
-    sha1 "c967a33a63188465037bad103417e30ae4bcbed8" => :yosemite
-    sha1 "d6312f24c9eebe9dadf87785c162c3750ec7c88d" => :mavericks
-    sha1 "233d55c81c9d9f97b5f083426cc1c9dbda2bd032" => :mountain_lion
+    sha256 "84c60a3ca8979fb96e1bb83382b66cb7d2f8c229ad10cf0db7115d3eecf145ea" => :yosemite
+    sha256 "5f61ad9aa1aa9e9a544b5d6fab9661c2e03f208f5d4d61e97e8794028a2341c0" => :mavericks
+    sha256 "78151ef964ad93024e36e53e48fb23fa338fdb1b1a347699ec56d8d18c30118c" => :mountain_lion
   end
 
   option :universal
