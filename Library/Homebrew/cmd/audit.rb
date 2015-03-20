@@ -326,6 +326,7 @@ class FormulaAuditor
     urls.each do |p|
       # Skip the main url link, as it can't be made SSL/TLS yet.
       next if p =~ %r[/ftpmirror\.gnu\.org]
+      next if p =~ %r[/apache\.org/dyn]
 
       case p
       when %r[^http://ftp\.gnu\.org/]
