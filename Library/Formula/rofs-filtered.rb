@@ -1,7 +1,7 @@
 class RofsFiltered < Formula
   homepage "https://github.com/gburca/rofs-filtered"
   url "https://github.com/gburca/rofs-filtered/archive/rel-1.4.tar.gz"
-  sha1 "3650f55510f800aa22e64aedf1841c020ce44c08"
+  sha256 "ec091c8441e83b930caddbc2fed115377c468c91da0afe292e66899c0c2c91f4"
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
