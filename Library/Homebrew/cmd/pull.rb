@@ -6,6 +6,8 @@ require 'formula'
 require 'cmd/tap'
 
 module Homebrew
+  HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/homebrew(-[\w-]+)?/pulls/(\d+)}
+
   def tap arg
     match = arg.match(%r[homebrew-([\w-]+)/])
     match[1].downcase if match
@@ -60,6 +62,11 @@ module Homebrew
         url = 'https://github.com/Homebrew/homebrew/pull/' + arg
         issue = arg
       else
+        if (api_match = arg.match HOMEBREW_PULL_API_REGEX)
+          _, user, tap, pull = *api_match
+          arg = "https://github.com/#{user}/homebrew#{tap}/pull/#{pull}"
+        end
+
         url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
         unless url_match
           ohai 'Ignoring URL:', "Not a GitHub pull request or commit: #{arg}"
