@@ -50,11 +50,11 @@ module Homebrew
 
   def pull
     if ARGV.empty?
-      onoe 'This command requires at least one argument containing a URL or pull request number'
+      odie 'This command requires at least one argument containing a URL or pull request number'
     end
 
     if ARGV[0] == '--rebase'
-      onoe 'You meant `git pull --rebase`.'
+      odie 'You meant `git pull --rebase`.'
     end
 
     ARGV.named.each do |arg|
@@ -68,10 +68,7 @@ module Homebrew
         end
 
         url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-        unless url_match
-          ohai 'Ignoring URL:', "Not a GitHub pull request or commit: #{arg}"
-          next
-        end
+        odie "Not a GitHub pull request or commit: #{arg}" unless url_match
 
         url = url_match[0]
         issue = url_match[3]
