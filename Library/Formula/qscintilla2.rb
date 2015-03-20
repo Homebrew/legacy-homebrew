@@ -4,9 +4,9 @@ class Qscintilla2 < Formula
   sha256 "9b7b2d7440cc39736bbe937b853506b3bd218af3b79095d4f710cccb0fabe80f"
 
   bottle do
-    sha1 "fa508a94662ed80738179efb88c8d9a80ce1e349" => :yosemite
-    sha1 "76f43d61489d59c0df78c2b206f132842b1e893c" => :mavericks
-    sha1 "1f5d86d06e559fa543611121701eb88098e6d2d4" => :mountain_lion
+    sha256 "57dffa7ac659217580352a4da1d323457bad735a7761237b923c0fda5363c33c" => :yosemite
+    sha256 "1c5482dc22059dfecf734268c6f1626f51055c242e8be9759854bc88c323dd13" => :mavericks
+    sha256 "d487010da4ab0eee416ae7dcd1f22e2be2ed60984dda8da1b579094351e173f4" => :mountain_lion
   end
 
   depends_on :python => :recommended
