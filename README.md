@@ -74,7 +74,7 @@ Let's upload the jar:
     curl --data-binary @job-server-tests/target/job-server-tests-$VER.jar localhost:8090/jars/test
     OK⏎
 
-#### Ad-hoc Mode - Single, Unrelated Queries (Transient Context)
+#### Ad-hoc Mode - Single, Unrelated Jobs (Transient Context)
 The above jar is uploaded as app `test`.  Next, let's start an ad-hoc word count job, meaning that the job
 server will create its own SparkContext, and return a job ID for subsequent querying:
 
@@ -108,7 +108,7 @@ From this point, you could asynchronously query the status and results:
 Note that you could append `&sync=true` when you POST to /jobs to get the results back in one request, but for
 real clusters and most jobs this may be too slow.
 
-#### Persistent Context Mode - Faster & Required for Related Queries
+#### Persistent Context Mode - Faster & Required for Related Jobs
 Another way of running this job is in a pre-created context.  Start a new context:
 
     curl -d "" 'localhost:8090/contexts/test-context?num-cpu-cores=4&memory-per-node=512m'
