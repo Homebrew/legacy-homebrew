@@ -366,10 +366,18 @@ module Homebrew
       end
 
       test "brew", "uses", canonical_formula_name
-      dependencies = Utils.popen_read("brew", "deps", canonical_formula_name).split("\n")
-      dependencies -= Utils.popen_read("brew", "list").split("\n")
+      installed = Utils.popen_read("brew", "list").split("\n")
+      dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
+                                      canonical_formula_name).split("\n")
+      dependencies -= installed
       unchanged_dependencies = dependencies - @formulae
       changed_dependences = dependencies - unchanged_dependencies
+
+      runtime_dependencies = Utils.popen_read("brew", "deps",
+                                              "--skip-build", "--skip-optional",
+                                              canonical_formula_name).split("\n")
+      build_dependencies = dependencies - runtime_dependencies
+      unchanged_build_dependencies = build_dependencies - @formulae
 
       dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
       dependents -= @formulae
@@ -467,6 +475,10 @@ module Homebrew
             bottle_filename =
               bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
             test "brew", "uninstall", "--force", canonical_formula_name
+            if unchanged_build_dependencies.any?
+              test "brew", "uninstall", "--force", *unchanged_build_dependencies
+              unchanged_dependencies -= unchanged_build_dependencies
+            end
             test "brew", "install", bottle_filename
           end
         end
@@ -500,7 +512,7 @@ module Homebrew
           test "brew", "uninstall", "--devel", "--force", canonical_formula_name
         end
       end
-      test "brew", "uninstall", "--force", *unchanged_dependencies unless unchanged_dependencies.empty?
+      test "brew", "uninstall", "--force", *unchanged_dependencies if unchanged_dependencies.any?
     end
 
     def homebrew
