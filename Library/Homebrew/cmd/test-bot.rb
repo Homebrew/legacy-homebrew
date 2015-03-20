@@ -7,6 +7,7 @@
 # --cleanup:       Clean the Homebrew directory. Very dangerous. Use with care.
 # --clean-cache:   Remove all cached downloads. Use with care.
 # --skip-setup:    Don't check the local system is setup correctly.
+# --skip-homebrew: Don't check Homebrew's files and tests are all valid.
 # --junit:         Generate a JUnit XML test results file.
 # --email:         Generate an email subject file.
 # --no-bottle:     Run brew install without --build-bottle
@@ -504,6 +505,7 @@ module Homebrew
 
     def homebrew
       @category = __method__
+      return if ARGV.include? "--skip-homebrew"
       test "brew", "tests"
       readall_args = []
       readall_args << "--syntax" if MacOS.version >= :mavericks
