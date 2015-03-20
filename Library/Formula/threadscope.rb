@@ -8,6 +8,7 @@ class Threadscope < Formula
   sha256 "ca3b3a8f57315f47f7f6787e5d92ca26c216fb67562192ae37a8cb37dceecc5f"
 
   depends_on "cabal-install" => :build
+  depends_on "pkg-config" => :build
   depends_on "ghc"
   depends_on "gmp"
   depends_on :x11
