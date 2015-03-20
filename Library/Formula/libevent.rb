@@ -20,7 +20,9 @@ class Libevent < Formula
 
   depends_on "doxygen" => [:optional, :build]
   depends_on "pkg-config" => :build
-  depends_on "openssl"
+
+  depends_on "libressl" => :optional
+  depends_on "openssl" unless build.with? "libressl"
 
   option :universal
   option "with-doxygen", "Build and install the manpages (using Doxygen)"

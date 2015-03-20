@@ -39,10 +39,12 @@ class Erlang < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "openssl"
   depends_on "unixodbc" if MacOS.version >= :mavericks
   depends_on "fop" => :optional # enables building PDF docs
   depends_on "wxmac" => :recommended # for GUI apps like observer
+
+  depends_on "libressl" => :optional
+  depends_on "openssl" unless build.with? "libressl"
 
   fails_with :llvm
 
@@ -64,10 +66,15 @@ class Erlang < Formula
       --enable-threads
       --enable-sctp
       --enable-dynamic-ssl-lib
-      --with-ssl=#{Formula["openssl"].opt_prefix}
       --enable-shared-zlib
       --enable-smp-support
     ]
+
+    if build.with? "libressl"
+      args << "--with-ssl=#{Formula["libressl"].opt_prefix}"
+    else
+      paths << "--with-ssl=#{Formula["openssl"].opt_prefix}"
+    end
 
     args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
     args << "--enable-native-libs" if build.with? "native-libs"
