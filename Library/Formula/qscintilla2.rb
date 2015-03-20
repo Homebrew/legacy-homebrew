@@ -1,9 +1,7 @@
-require 'formula'
-
 class Qscintilla2 < Formula
-  homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
-  url "https://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8.3/QScintilla-gpl-2.8.3.tar.gz"
-  sha1 "d3b4f0dc7358591c122518d932f797ae3e3dd9d4"
+  homepage "http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
+  url "https://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8.4/QScintilla-gpl-2.8.4.tar.gz"
+  sha256 "9b7b2d7440cc39736bbe937b853506b3bd218af3b79095d4f710cccb0fabe80f"
 
   bottle do
     sha1 "fa508a94662ed80738179efb88c8d9a80ce1e349" => :yosemite
@@ -24,23 +22,23 @@ class Qscintilla2 < Formula
 
   def install
     # On Mavericks we want to target libc++, this requires a unsupported/macx-clang-libc++ flag
-    if ENV.compiler == :clang and MacOS.version >= :mavericks
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
       spec = "unsupported/macx-clang-libc++"
     else
       spec = "macx-g++"
     end
     args = %W[-config release -spec #{spec}]
 
-    cd 'Qt4Qt5' do
-      inreplace 'qscintilla.pro' do |s|
-        s.gsub! '$$[QT_INSTALL_LIBS]', lib
+    cd "Qt4Qt5" do
+      inreplace "qscintilla.pro" do |s|
+        s.gsub! "$$[QT_INSTALL_LIBS]", lib
         s.gsub! "$$[QT_INSTALL_HEADERS]", include
         s.gsub! "$$[QT_INSTALL_TRANSLATIONS]", "#{prefix}/trans"
         s.gsub! "$$[QT_INSTALL_DATA]", "#{prefix}/data"
       end
 
       inreplace "features/qscintilla2.prf" do |s|
-        s.gsub! '$$[QT_INSTALL_LIBS]', lib
+        s.gsub! "$$[QT_INSTALL_LIBS]", lib
         s.gsub! "$$[QT_INSTALL_HEADERS]", include
       end
 
@@ -52,7 +50,7 @@ class Qscintilla2 < Formula
     # Add qscintilla2 features search path, since it is not installed in Qt keg's mkspecs/features/
     ENV["QMAKEFEATURES"] = "#{prefix}/data/mkspecs/features"
 
-    cd 'Python' do
+    cd "Python" do
       Language::Python.each_python(build) do |python, version|
         (share/"sip").mkpath
         system python, "configure.py", "-o", lib, "-n", include,
@@ -61,8 +59,8 @@ class Qscintilla2 < Formula
                          "--qsci-sipdir=#{share}/sip",
                          "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip",
                          "--spec=#{spec}"
-        system 'make'
-        system 'make', 'install'
+        system "make"
+        system "make", "install"
         system "make", "clean"
       end
     end
@@ -89,7 +87,7 @@ class Qscintilla2 < Formula
       import PyQt4.Qsci
       assert("QsciLexer" in dir(PyQt4.Qsci))
     EOS
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       system python, "test.py"
     end
   end
