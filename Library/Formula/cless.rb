@@ -8,10 +8,9 @@ class Cless < Formula
   sha256 "0f06437973de1c36c1ac2472091a69c2684db40ba12f881592f1f08e8584629b"
 
   bottle do
-    cellar :any
-    sha256 "bddfbbaaafa58c953f4724829c64f84d8f0b3afb1c0e31dae14f6fa45d9a07c3" => :yosemite
-    sha256 "1611af00bd755a49e9109a17d847491b455af9333e9d140ddfbf1b4a1bd25ea3" => :mavericks
-    sha256 "dee0b7d120b98b0107c8f480bb775e036a3411bb2cc9394a706c0f4ce193c112" => :mountain_lion
+    sha256 "76b8d84196408e6e9a8600cb1a35240e75206db8d006ef8bfe38e7a171bb1b2c" => :yosemite
+    sha256 "4027a2a344f157df664b878d74a5912cc75b55ecb8c9f76395ce4c178aa57839" => :mavericks
+    sha256 "b370de61dbd0e438f5910ba5d98755b561a08cf151ecdc03c96bc2c2053fd1a5" => :mountain_lion
   end
 
   depends_on "cabal-install" => :build
