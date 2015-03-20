@@ -25,8 +25,7 @@ class RofsFiltered < Formula
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "CFLAGS=-I/usr/local/include/osxfuse/fuse",
-                          "LDFLAGS=-L/usr/local/lib"
+                          "CFLAGS=-I#{HOMEBREW_PREFIX}/include/osxfuse/fuse"
 
     system "make", "install"
   end
