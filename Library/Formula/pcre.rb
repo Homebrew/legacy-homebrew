@@ -19,6 +19,8 @@ class Pcre < Formula
     cause "Bus error in ld on SL 10.6.4"
   end
 
+  depends_on "bzip2" unless OS.mac?
+
   def install
     ENV.universal_binary if build.universal?
 
