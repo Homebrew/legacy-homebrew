@@ -3,6 +3,13 @@ class Qi < Formula
   url "http://www.lambdassociates.org/Download/QiII1.07.zip"
   sha256 "515bb99efa1da3f8d416c370c9d98776d273c593efa241dc243da543118fc521"
 
+  bottle do
+    cellar :any
+    sha256 "b52934ecc91ecffcd08c73180db59084ede6ad301d856681ed4d795e60a4079f" => :yosemite
+    sha256 "26d53a5485f8fe56eced34ea9fd86db26d90853fa180a982bb2e59a216ee2e97" => :mavericks
+    sha256 "facde8f9c5e8ae39761259769c28733c338d2e97c92a672c7266ac01e2d5b83c" => :mountain_lion
+  end
+
   depends_on "sbcl" => :optional
 
   deprecated_option "SBCL" => "with-sbcl"
