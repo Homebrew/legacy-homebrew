@@ -5,6 +5,7 @@ class Tasksh < Formula
   sha256 "9accc81f5ae3a985e33be728d56aba0401889d21f856cd94734d73c221bf8652"
 
   depends_on "cmake" => :build
+  depends_on "task" => :recommended
 
   def install
     system "cmake", ".", *std_cmake_args
@@ -13,5 +14,9 @@ class Tasksh < Formula
 
   test do
     system "#{bin}/tasksh", "--version"
+    rcfile = open(".taskrc", "w")
+    rcfile.write("data.location=~/.task\n")
+    rcfile.close
+    pipe_output("#{bin}/tasksh", "add Test Task")
   end
 end
