@@ -179,8 +179,6 @@ class JobManagerActor(dao: JobDAO,
                            jobContext: ContextLike,
                            sparkEnv: SparkEnv,
                            rddManagerActor: ActorRef): Future[Any] = {
-    // Use the SparkContext's ActorSystem threadpool for the futures, so we don't corrupt our own
-    implicit val executionContext = sparkEnv.actorSystem
 
     val jobId = jobInfo.jobId
     val constructor = jobJarInfo.constructor
