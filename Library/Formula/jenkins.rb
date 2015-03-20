@@ -1,13 +1,7 @@
 class Jenkins < Formula
   homepage "https://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.604/jenkins.war"
-  sha1 "cce45f3b9a38c9d02c59bceeeb05a70d52d65f75"
-
-  bottle do
-    sha256 "35f80586cead8dc95ef1610e808661e8c5be763ac428d6f3fc0ede00affafbd6" => :yosemite
-    sha256 "34c5a47e6b702a3d686b1ab12b959dd868415f6e58b7ea91ce99fc4d04b55af2" => :mavericks
-    sha256 "fc930cbe26e1ab1e2111c6e6ffd5c6d25aef1b469336cbdb6d927d54f4e999bb" => :mountain_lion
-  end
+  url "http://mirrors.jenkins-ci.org/war/1.605/jenkins.war"
+  sha1 "e9adc4dc3b957d7ea8610ae4c973534457606e6d"
 
   head do
     url "https://github.com/jenkinsci/jenkins.git"

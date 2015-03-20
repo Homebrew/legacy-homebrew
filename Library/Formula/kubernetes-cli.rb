@@ -1,13 +1,13 @@
 class KubernetesCli < Formula
   homepage "http://kubernetes.io/"
-  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.12.1.tar.gz"
-  sha256 "a119cfafe512fa6847dcd3ef728e5c7cd1a09cd83f2af8720d81d9e76c05d8c2"
+  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.13.2.tar.gz"
+  sha256 "6886eed838153bef01136516871395d9b44b263f7e3c69b1c746002967fc9ae8"
 
   bottle do
     cellar :any
-    sha256 "e0b40e4598e485401426946827281a9075f01dbe8c4e93c5255c4b5924065010" => :yosemite
-    sha256 "cde29df3cdade3a465eaf83a35517962d8d396312354fe7c0b1ae69fc5dacaf8" => :mavericks
-    sha256 "941e8af8848cda083e58056b71319a11727577a20bd887740e19fa3c9984abba" => :mountain_lion
+    sha256 "22c5bdbab35eac651b318e1b2782cf187cbd9c3a3ec48cc335d24a06df68a102" => :yosemite
+    sha256 "f3230e4eb5ad6cc257a0092a9d0a9d0babb7fea2bb0b564ccabeefd2b7e57b63" => :mavericks
+    sha256 "aaed6fb92a011deeff7c1bf413dd4bb376e9c482f964fa0450653440c93ba8c1" => :mountain_lion
   end
 
   depends_on "go" => :build

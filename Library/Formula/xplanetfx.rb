@@ -2,15 +2,15 @@ require "formula"
 
 class Xplanetfx < Formula
   homepage "http://mein-neues-blog.de/xplanetFX/"
-  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.4_all.tar.gz"
-  sha256 "0c7ea5783103f00867eecc1603e598b89fd52bd19954fd2976e3aa89390813ca"
-  version "2.6.4"
+  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.5_all.tar.gz"
+  sha256 "12a36f07ab41fcf2b860904f6958c2efc925e3d6eaf20f713cddcce39fb0f250"
+  version "2.6.5"
 
   bottle do
     cellar :any
-    sha256 "9d369a95ea8b1ea8421f9e63041ede5f452fb04418bd684ef58f6db49794a86e" => :yosemite
-    sha256 "85fffdc38d701f4d4739aa9bc0043f0c2cfcaa2998483e4b0e8321ebbfec7853" => :mavericks
-    sha256 "9c803d55555e7d4bceb6f5296fd53d83c44ea40014030f1f4e2922f5f96fc583" => :mountain_lion
+    sha256 "67af906a0435ae77661c6aa1d61ec7db8d18cc312c0b687f943d1ab545911b81" => :yosemite
+    sha256 "59702f286c81cbc1a6303f3e39a96989b845c066a1702034ade37fcb345b97cc" => :mavericks
+    sha256 "6a448172bf334bd3bb86e448cd52bb7c41b0057328ccd411de31eda0ecaa4053" => :mountain_lion
   end
 
   option "without-gui", "Build to run xplanetFX from the command-line only"

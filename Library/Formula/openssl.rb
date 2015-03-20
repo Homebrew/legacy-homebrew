@@ -1,14 +1,16 @@
 class Openssl < Formula
   homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.2.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2.tar.gz"
-  # Use sha1 for Tiger (which needs OpenSSL to compute sha256 hashes)
-  sha1 "2f264f7f6bb973af444cd9fc6ee65c8588f610cc"
+  url "https://www.openssl.org/source/openssl-1.0.2a.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2a.tar.gz"
+  sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
+  # Work around this being parsed as an alpha version by our
+  # version detection code.
+  version "1.0.2a-1"
 
   bottle do
-    sha1 "0e5844609ea57a7f5361dca42d05578c6cf45643" => :yosemite
-    sha1 "56a6407b6a9179084a760d6f463cd0e6ea083c0e" => :mavericks
-    sha1 "8e36006185156281d487a2b1f04322701d0bef7b" => :mountain_lion
+    sha256 "61547bc1716db058c4e5a99e91067783031e8d47acfea9a8742e9899b363b463" => :yosemite
+    sha256 "bff2a6db8e56255c85a49ccbad6cc8611bc47d1482ba630c632c6f9ca7cd7f35" => :mavericks
+    sha256 "1e985e8bfb5f3c3041c6e022561aa137643895b7bd920654c85197268aed3637" => :mountain_lion
   end
 
   resource "cacert" do

@@ -1,15 +1,14 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://www.ffmpeg.org/releases/ffmpeg-2.6.tar.bz2"
-  sha256 "23c38ecc0dd6cae5e9a3c5c2c967b10480dc4f7159d094ade13b0775d1fd4791"
-  revision 1
+  url "https://ffmpeg.org/releases/ffmpeg-2.6.1.tar.bz2"
+  sha256 "a4f6388706ee2daba9d35d2aa018ae5feeb450efa716555e011a6543d43ec7c1"
 
-  head "git://git.videolan.org/ffmpeg.git"
+  head "https://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha256 "9447e3ff05a11e4eccf31a94f370eb90917f22dc89bc779f6cc8168dd19d8f16" => :yosemite
-    sha256 "7c30d6cb016cba4288c05b7ddb2f647e6c71d66ef07e4f602b847b29b92009ef" => :mavericks
-    sha256 "e7982ca40054a3a4017bcdb728407643427b535690c1314a277479a1f858401e" => :mountain_lion
+    sha256 "8bc0cb43f99a7004aada9969875e551a24ebe2e57b8c620aa77b70372ba7fa0f" => :yosemite
+    sha256 "2ab2f322d8a1ce26af77b7f86e45e8af1c1cf6f01a51d05e460a1282ab84cbec" => :mavericks
+    sha256 "dd2629269914f801e5c16b5c8ba3abebbc48ab7417a54852f1cb74aee8c04875" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -126,7 +125,7 @@ class Ffmpeg < Formula
     end
 
     # A bug in a dispatch header on 10.10, included via CoreFoundation,
-    # prevents GCC from building VDA support. GCC has no probles on
+    # prevents GCC from building VDA support. GCC has no problems on
     # 10.9 and earlier.
     # See: https://github.com/Homebrew/homebrew/issues/33741
     if MacOS.version < :yosemite || ENV.compiler == :clang
@@ -136,7 +135,7 @@ class Ffmpeg < Formula
     end
 
     # For 32-bit compilation under gcc 4.2, see:
-    # http://trac.macports.org/ticket/20938#comment:22
+    # https://trac.macports.org/ticket/20938#comment:22
     ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
 
     system "./configure", *args

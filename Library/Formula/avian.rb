@@ -1,18 +1,18 @@
 class Avian < Formula
   homepage "http://oss.readytalk.com/avian/"
   head "https://github.com/ReadyTalk/avian.git"
-  url "https://github.com/ReadyTalk/avian/archive/v1.1.tar.gz"
-  sha1 "de51fb048b0b81a131ddbb3387adb229d3eddf2f"
+  url "https://github.com/ReadyTalk/avian/archive/v1.2.0.tar.gz"
+  sha256 "e3639282962239ce09e4f79f327c679506d165810f08c92ce23e53e86e1d621c"
 
   bottle do
     cellar :any
-    sha1 "ec4bf9872744d3afd83131dd585b525fce19f898" => :yosemite
-    sha1 "3c8e3d20400aad2f5c5dc60f6b6b4ae3094eef6b" => :mavericks
-    sha1 "dfb49aaec4a22570127f72f503712aa4475e1742" => :mountain_lion
+    sha256 "cb1db13d2ff4de8fad414bf80da2e3ccae05823f88c45322f3cdcd64da29807c" => :yosemite
+    sha256 "9aadb173228eb335bd55f91bb10b1f1eed8c2722ce16fab2030c911c8fd5949f" => :mavericks
+    sha256 "9810eacfe200cf6e4a85cd06d915b70363514666c7b1e24f047288be56f5c362" => :mountain_lion
   end
 
   depends_on :macos => :lion
-  depends_on :java
+  depends_on :java => "1.7+"
 
   def install
     system "make", "use-clang=true"

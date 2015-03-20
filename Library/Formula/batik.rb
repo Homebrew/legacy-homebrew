@@ -1,16 +1,14 @@
-require 'formula'
-
 class Batik < Formula
-  homepage 'https://xmlgraphics.apache.org/batik/'
-  url 'http://www.us.apache.org/dist/xmlgraphics/batik/batik-1.7.zip'
-  sha1 '69d974ab0a4e13cbdd649fa96785776563b73fcf'
+  homepage "https://xmlgraphics.apache.org/batik/"
+  url "https://www.apache.org/dist/xmlgraphics/batik/binaries/batik-bin-1.8.zip"
+  sha256 "d1e5d6c08ef769bb53289250f17ba2d8b18a803d2a82aa082c8bbfae07c648f0"
 
   def install
-    doc.install Dir['docs/*']
-    libexec.install 'lib', Dir['*.jar']
+    libexec.install "lib", Dir["*.jar"]
+    prefix.install_metafiles
 
-    bin.write_jar_script libexec/'batik-rasterizer.jar', 'batik-rasterizer'
-    bin.write_jar_script libexec/'batik.jar', 'batik'
-    bin.write_jar_script libexec/'batik-ttf2svg.jar', 'batik-ttf2svg'
+    bin.write_jar_script libexec/"batik-rasterizer-#{version}.jar", "batik-rasterizer"
+    bin.write_jar_script libexec/"batik-#{version}.jar", "batik"
+    bin.write_jar_script libexec/"batik-ttf2svg-#{version}.jar", "batik-ttf2svg"
   end
 end
