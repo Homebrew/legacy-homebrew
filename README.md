@@ -191,7 +191,7 @@ To use this feature, the SparkJob needs to mixin `NamedRddSupport`:
 ```scala
 object SampleNamedRDDJob  extends SparkJob with NamedRddSupport {
     override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
-    override def validate(sc:SparkContext, config: Contig): SparkJobValidation = ???
+    override def validate(sc:SparkContext, config: Config): SparkJobValidation = ???
 }
 ```
 
