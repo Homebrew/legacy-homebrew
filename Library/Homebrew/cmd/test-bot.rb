@@ -505,7 +505,9 @@ module Homebrew
     def homebrew
       @category = __method__
       test "brew", "tests"
-      test "brew", "readall", "--syntax"
+      readall_args = []
+      readall_args << "--syntax" if MacOS.version >= :mavericks
+      test "brew", "readall", *readall_args
     end
 
     def cleanup_before
