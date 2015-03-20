@@ -4,8 +4,8 @@ class Cless < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/tanakh/cless"
-  url "https://hackage.haskell.org/package/cless-0.2.0.0/cless-0.2.0.0.tar.gz"
-  sha256 "d6cbeef102f908109c1434dadf7adfda8adbec0d6de6d2f04db3ff8274460683"
+  url "https://hackage.haskell.org/package/cless-0.3.0.0/cless-0.3.0.0.tar.gz"
+  sha256 "0f06437973de1c36c1ac2472091a69c2684db40ba12f881592f1f08e8584629b"
 
   bottle do
     cellar :any
