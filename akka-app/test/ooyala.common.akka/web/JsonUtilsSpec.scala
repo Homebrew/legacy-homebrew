@@ -28,6 +28,12 @@ class JsonUtilsSpec extends FunSpec with Matchers {
       JsonUtils.listFromJson(json) should equal (batch)
     }
 
+    it("should serialize an empty map to JSON") {
+      val expected = """{}"""
+      import JsonUtils._
+      Map[String, Any]().toJson.compactPrint should equal (expected)
+    }
+
     it("should serialize first-level empty maps to JSON") {
       val expected = """{"a":1,"b":{}}"""
       import JsonUtils._
