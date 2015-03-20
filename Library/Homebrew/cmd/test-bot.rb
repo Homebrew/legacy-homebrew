@@ -3,18 +3,18 @@
 # Usage: brew test-bot [options...] <pull-request|formula>
 #
 # Options:
-# --keep-logs:    Write and keep log files under ./brewbot/
-# --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
-# --clean-cache:  Remove all cached downloads. Use with care.
-# --skip-setup:   Don't check the local system is setup correctly.
-# --junit:        Generate a JUnit XML test results file.
-# --email:        Generate an email subject file.
-# --no-bottle:    Run brew install without --build-bottle
-# --HEAD:         Run brew install with --HEAD
-# --local:        Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
-# --tap=<tap>:    Use the git repository of the given tap
-# --dry-run:      Just print commands, don't run them.
-# --fail-fast:    Immediately exit on a failing step.
+# --keep-logs:     Write and keep log files under ./brewbot/
+# --cleanup:       Clean the Homebrew directory. Very dangerous. Use with care.
+# --clean-cache:   Remove all cached downloads. Use with care.
+# --skip-setup:    Don't check the local system is setup correctly.
+# --junit:         Generate a JUnit XML test results file.
+# --email:         Generate an email subject file.
+# --no-bottle:     Run brew install without --build-bottle
+# --HEAD:          Run brew install with --HEAD
+# --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
+# --tap=<tap>:     Use the git repository of the given tap
+# --dry-run:       Just print commands, don't run them.
+# --fail-fast:     Immediately exit on a failing step.
 #
 # --ci-master:           Shortcut for Homebrew master branch CI options.
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
