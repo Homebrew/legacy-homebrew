@@ -4,8 +4,8 @@ class Idris < Formula
   include Language::Haskell::Cabal
 
   homepage "http://www.idris-lang.org"
-  url "https://github.com/idris-lang/Idris-dev/archive/v0.9.16.tar.gz"
-  sha1 "01f794c4e516454b8352266c26c92549e90c708f"
+  url "https://github.com/idris-lang/Idris-dev/archive/v0.9.17.tar.gz"
+  sha1 "d51d68227b3e3d3967769749314d3a75755a68ef"
   head "https://github.com/idris-lang/Idris-dev.git"
 
   bottle do
@@ -39,7 +39,7 @@ class Idris < Formula
     assert_match /Hello, Homebrew!/, result
 
     if build.with? "libffi"
-      cmd = "#{bin}/idris --exec 'putStrLn \"Hello, interpreter!\"'"
+      cmd = "#{bin}/idris --exec 'putStrLn {ffi=FFI_C} \"Hello, interpreter!\"'"
       result = shell_output cmd
       assert_match /Hello, interpreter!/, result
     end
