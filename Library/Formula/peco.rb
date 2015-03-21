@@ -17,6 +17,11 @@ class Peco < Formula
       :revision => "0c05920fc3d98100a5e3f7fd339865a6e2aaa671"
   end
 
+  go_resource "github.com/google/btree" do
+    url "https://github.com/google/btree.git",
+      :revision => "0c05920fc3d98100a5e3f7fd339865a6e2aaa671"
+  end
+
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
       :revision => "5e118789801496c93ba210d34ef1f2ce5a9173bd"
