@@ -11,8 +11,8 @@ class Mongodb < Formula
   depends_on "go" => :build
   go_resource "github.com/mongodb/mongo-tools" do
     url "https://github.com/mongodb/mongo-tools.git",
-      :tag => "r3.0.0",
-      :revision => "e35a2e87876251835fcb60f5eb0c29baca04bc5e"
+      :tag => "r3.0.1",
+      :revision => "bc08e57abb71b2edd1cc3ab8f9f013409718f197"
   end
 
   bottle do
