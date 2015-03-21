@@ -31,7 +31,7 @@ class Gexiv2 < Formula
       "-lgexiv2",
     ]
 
-    system ENV.cc, "test.c", *flags, "-o", "test"
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end
