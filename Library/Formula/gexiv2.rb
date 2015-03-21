@@ -16,7 +16,7 @@ class Gexiv2 < Formula
   end
 
   test do
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <gexiv2/gexiv2.h>
       int main() {
         GExiv2Metadata *metadata = gexiv2_metadata_new();
@@ -28,7 +28,7 @@ class Gexiv2 < Formula
       "-I#{HOMEBREW_PREFIX}/include/glib-2.0",
       "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include",
       "-L#{lib}",
-      "-lgexiv2"
+      "-lgexiv2",
     ]
 
     system ENV.cc, "test.c", *flags, "-o", "test"
