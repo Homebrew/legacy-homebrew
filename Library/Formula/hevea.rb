@@ -1,7 +1,7 @@
 class Hevea < Formula
   homepage "http://hevea.inria.fr/"
-  url "http://hevea.inria.fr/distri/hevea-2.22.tar.gz"
-  sha1 "16ddc99402940fe06b89723f7c4e5cb0c646d55f"
+  url "http://hevea.inria.fr/old/hevea-2.23.tar.gz"
+  sha256 "db8ec1459cace8f008387dbcf745ba56917d44ff62c7bdba843da250109137b9"
 
   bottle do
     sha1 "bfac35ec39ad56dc6ff8d4c5d64ce9491dfc7baa" => :yosemite
