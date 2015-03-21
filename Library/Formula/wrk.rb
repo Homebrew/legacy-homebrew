@@ -2,17 +2,15 @@ require "formula"
 
 class Wrk < Formula
   homepage "https://github.com/wg/wrk"
-  url "https://github.com/wg/wrk/archive/3.1.1.tar.gz"
-  sha1 "7cea5d12dc5076fed1a1c730bd3e6eba832a8f61"
+  url "https://github.com/wg/wrk/archive/4.0.0.tar.gz"
+  sha1 "a64f0279f4d5c04c0acece5af80981436aaa2dc0"
   head "https://github.com/wg/wrk.git"
-  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "034ed6c6991064d72aabadec117cedc8826a5018" => :mavericks
-    sha1 "beec443377916519ef99e99ac443adf92aa15f59" => :mountain_lion
-    sha1 "9528426378a5d4d75e1ec5f7cd0d3dcbdeb775ac" => :lion
+    sha256 "585308cd09472906c2167739795b9d1192a9980bc24016d9752e5d4c6b3db694" => :yosemite
+    sha256 "4e8783cd1410197b4245ceb9e7c4ca01691e8c9ebc6e77d91c918426290f73f2" => :mavericks
+    sha256 "e0d7e6087fd7b8afaf3ed40480c66bafad18d43685cb6237258e9a5e397b1c8d" => :mountain_lion
   end
 
   depends_on "openssl"

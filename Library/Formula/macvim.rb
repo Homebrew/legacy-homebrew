@@ -1,12 +1,11 @@
-# Reference: https://github.com/b4winckler/macvim/wiki/building
+# Reference: https://github.com/macvim-dev/macvim/wiki/building
 class Macvim < Formula
   homepage 'https://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
-  version '7.4-73'
-  sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
-  revision 1
+  url 'https://github.com/macvim-dev/macvim/archive/snapshot-74.tar.gz'
+  version '7.4-74'
+  sha1 '20563266d58ac96619b235e2cf82bc8e416c6932'
 
-  head 'https://github.com/b4winckler/macvim.git'
+  head 'https://github.com/macvim-dev/macvim.git'
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"

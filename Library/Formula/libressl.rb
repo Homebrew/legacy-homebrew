@@ -1,15 +1,13 @@
 class Libressl < Formula
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.5.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.5.tar.gz"
-  sha256 "a82379913fd7f4e26e045fcf021aa92a1f683954816bf817b3b696de62e9c3bb"
-
-  option "without-libtls", "Build without libtls"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.6.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.6.tar.gz"
+  sha256 "4f826dd97b3b8001707073bde8401493f9cd4668465b481c042d28e3973653a8"
 
   bottle do
-    sha256 "b1f42ad3d599729c6f942893ef59e1860cc848557e6ea1ab7ff4b70ff626d3fe" => :yosemite
-    sha256 "422accbd789a18434e01b4df5815de97316d43739e36dafd4cef41559eb85e4d" => :mavericks
-    sha256 "3f530e5898c6eb1657a24a7025f3b6df9725e0e4f1ce3f28d2151d1f6d7efe23" => :mountain_lion
+    sha256 "8de261eb5255a695567e641bab92bc4c6f09ed36806de0b49a98b6d9b6a3caf7" => :yosemite
+    sha256 "0d094c6477b38b47a96fd4100c08fe70c502bd910943ef091990cbee110f98e4" => :mavericks
+    sha256 "2acfff0e515dbcfea2b299ce136efcf7c9f4fec7484ccdad1c8cedd3672a69ef" => :mountain_lion
   end
 
   head do
@@ -30,8 +28,6 @@ class Libressl < Formula
       --sysconfdir=#{etc}/libressl
       --with-enginesdir=#{lib}/engines
     ]
-
-    args << "--enable-libtls" if build.with? "libtls"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args

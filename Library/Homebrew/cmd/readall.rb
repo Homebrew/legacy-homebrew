@@ -22,7 +22,7 @@ module Homebrew
             while rb = ruby_files.pop(true)
               nostdout { failed = true unless system "ruby", "-c", "-w", rb }
             end
-          rescue ThreadError, IOError # ignore empty queue error
+          rescue ThreadError # ignore empty queue error
           end
         end
       end

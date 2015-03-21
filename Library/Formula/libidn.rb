@@ -1,17 +1,15 @@
-require "formula"
-
+# encoding: UTF-8
 class Libidn < Formula
-  homepage "http://www.gnu.org/software/libidn/"
-  url "http://ftpmirror.gnu.org/libidn/libidn-1.29.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/libidn/libidn-1.29.tar.gz"
-  sha256 "fb82747dbbf9b36f703ed27293317d818d7e851d4f5773dedf3efa4db32a7c7c"
+  homepage "https://www.gnu.org/software/libidn/"
+  url "http://ftpmirror.gnu.org/libidn/libidn-1.30.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libidn/libidn-1.30.tar.gz"
+  sha256 "39b9fc94d74081c185757b12e0891ce5a22db55268e7d1bb24533ff4432eb053"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ee3fa3bc8ab104553777ed22dc080178bf264bd0" => :yosemite
-    sha1 "9343d41b0a0ea4f1dd895eafa2f893e133f8cf76" => :mavericks
-    sha1 "35fd90e1199a09fb4d5f85ad0088858279ea002f" => :mountain_lion
+    sha256 "986476acf5da5d76e837a99acc35bcf2db332f70442ca9594c1756ca1eb4d5c9" => :yosemite
+    sha256 "85c4054e9504102482379386739d21bb55c5630c68c6f3f37c669c9dffadeb71" => :mavericks
+    sha256 "2785cd21c1e32a7cd6d8e414b18584a41c2eb4f0e26694ea8cbe61e0ef083b38" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -23,10 +21,11 @@ class Libidn < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-csharp"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    system "#{bin}/idn", "--version"
+    ENV["CHARSET"] = "UTF-8"
+    system "#{bin}/idn", "räksmörgås.se", "blåbærgrød.no"
   end
 end

@@ -1,21 +1,14 @@
 class Abduco < Formula
   homepage "http://www.brain-dump.org/projects/abduco"
-  url "http://www.brain-dump.org/projects/abduco/abduco-0.3.tar.gz"
-  sha1 "175b2c0eaf2a8b7fb044f1454d018dac4ec31293"
+  url "http://www.brain-dump.org/projects/abduco/abduco-0.4.tar.gz"
+  sha1 "ccd576eb57d9481d5f372e31ce84b3020f661b68"
   head "git://repo.or.cz/abduco.git"
 
   bottle do
     cellar :any
-    sha1 "2ac0afd13b4465b28e0688809131a5ff0055f2de" => :yosemite
-    sha1 "8653786cb86fbfb36fb03af3451e19bb55792cbf" => :mavericks
-    sha1 "bd2982595586f67eb747bc287be03fcd5418f4e6" => :mountain_lion
-  end
-
-  # upstream fix for create-session: Invalid argument
-  # safe to remove in versions > 0.3
-  patch do
-    url "http://repo.or.cz/w/abduco.git/patch/91b733"
-    sha1 "4370ceb4c304ecd916e69c6c7c876666807f6fb8"
+    sha256 "d7dde9fc66e7681927e1d871ab13bc78f2fc1561509ce8037c5b96ef020cb086" => :yosemite
+    sha256 "1d04d33ff81e970c2f709d33cd3ec24dc91aa2a892635d0e1d85f46bec1e7cba" => :mavericks
+    sha256 "ba4005c688b6e9a1d67c0de127ee67e6ffe011c98436f2f2c1480fe551caa94d" => :mountain_lion
   end
 
   def install
