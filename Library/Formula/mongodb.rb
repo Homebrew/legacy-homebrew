@@ -3,8 +3,8 @@ require "language/go"
 
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
-  url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.0.tar.gz"
-  sha256 "c1fdbb6bbc33eafedc4aa363be2b3cdf1eea8b8eb618d25131c5a30def24aad9"
+  url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.1.tar.gz"
+  sha256 "68980641996a3a4b5440e12d343c2de98bb7f350fbc0c8327a674094d6e11213"
 
   # Mongo HEAD now requires mongo-tools, and Golang
   # https://jira.mongodb.org/browse/SERVER-15806
@@ -16,10 +16,6 @@ class Mongodb < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "e9bb9dce2bc6e728d93e3c8891dba77b665c4928918fc5de6e8ee853431d79d5" => :yosemite
-    sha256 "d292c96a2ea24b3be324b89412cd0a38403afddb00c6b9d17b550f58070d1207" => :mavericks
-    sha256 "80ccc1c2e3b3e334bafdbd0efdb55f783fd8a4f5f4f440dd08daa1db9332601e" => :mountain_lion
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
