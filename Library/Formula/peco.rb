@@ -7,9 +7,9 @@ class Peco < Formula
 
   bottle do
     cellar :any
-    sha1 "c266e3919d01293aedfc7f4ce459be76ccacd954" => :yosemite
-    sha1 "9374ae50643d4b8b0e1d09c4b2076e5d3ee09355" => :mavericks
-    sha1 "a8e68353239ec1b48866f820b8e3c7915b6b5ec9" => :mountain_lion
+    sha256 "16be6e9c7eb32408c68148aa9271025714424d3af6c09f34444f54f12fd95817" => :yosemite
+    sha256 "673f42e05938dbfc366498276002342b3fe6de0ccffba8cdb4cbb4a65b4e7a3f" => :mavericks
+    sha256 "f71b17c651c0c6c960a88be59e33cc8f11499e4c6d378b020b691e08f3a691a6" => :mountain_lion
   end
 
   go_resource "github.com/google/btree" do
