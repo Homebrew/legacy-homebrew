@@ -14,4 +14,24 @@ class Gexiv2 < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/'test.c').write <<-EOS.undent
+      #include <gexiv2/gexiv2.h>
+      int main() {
+        GExiv2Metadata *metadata = gexiv2_metadata_new();
+        return 0;
+      }
+    EOS
+
+    flags = [
+      "-I#{HOMEBREW_PREFIX}/include/glib-2.0",
+      "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include",
+      "-L#{lib}",
+      "-lgexiv2"
+    ]
+
+    system ENV.cc, "test.c", *flags, "-o", "test"
+    system "./test"
+  end
 end
