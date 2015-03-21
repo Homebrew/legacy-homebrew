@@ -1,7 +1,7 @@
 class Nghttp2 < Formula
   homepage "https://nghttp2.org"
-  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.5/nghttp2-0.7.5.tar.xz"
-  sha1 "7256ba19c031281cf2b5640cff5986c069ffcff5"
+  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.7/nghttp2-0.7.7.tar.xz"
+  sha1 "df96ac092ea209723ee0bd840ecbebe9be247b97"
 
   bottle do
     revision 1
@@ -79,7 +79,6 @@ class Nghttp2 < Formula
     args = %W[
       --prefix=#{prefix}
       --disable-silent-rules
-      --disable-threads
       --enable-app
       --with-boost=#{Formula["boost"].opt_prefix}
       --enable-asio-lib
