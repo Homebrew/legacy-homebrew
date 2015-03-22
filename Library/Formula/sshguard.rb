@@ -1,24 +1,23 @@
-require 'formula'
-
 class Sshguard < Formula
-  homepage 'http://www.sshguard.net/'
-  url 'https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
-  sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
+  homepage "http://www.sshguard.net/"
+  url "https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2"
+  sha256 "b537f8765455fdf8424f87d4bd695e5b675b88e5d164865452137947093e7e19"
 
   # Fix blacklist flag (-b) so that it doesn't abort on first usage.
   # Upstream bug report:
   # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
   patch do
     url "http://sourceforge.net/p/sshguard/bugs/_discuss/thread/3d94b7ef/c062/attachment/sshguard.c.diff"
-    sha1 "68cd0910d310e4d23e7752dee1b077ccfe715c0b"
+    sha256 "1bdf1db9e0bd730cfc6926dde683fcf5cd7b420ae003f9ec44dce083fe8eb54b"
   end
 
   def install
+    mkdir_p var/"log"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-firewall=#{firewall}"
-    system "make install"
+    system "make", "install"
   end
 
   def firewall
