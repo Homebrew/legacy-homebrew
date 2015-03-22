@@ -1,9 +1,7 @@
-require "formula"
-
 class Cayley < Formula
   homepage "https://github.com/google/cayley"
   url "https://github.com/google/cayley/archive/v0.4.0.tar.gz"
-  sha1 "100c1e057fb140b35e1ecdd4824541436e6cb741"
+  sha256 "b4eaed9006a1b615b8d5f4a7fe6075eb9cf3555e04fb7d02eaa07bf1f5d67e51"
   head "https://github.com/google/cayley.git"
 
   bottle do
@@ -72,6 +70,7 @@ class Cayley < Formula
   end
 
   def post_install
+    (var/"log").mkpath
     unless File.exist? "#{var}/cayley"
       # Create data directory
       (var/"cayley").mkpath

@@ -1,12 +1,10 @@
-require "formula"
-
 class Uwsgi < Formula
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
   head "https://github.com/unbit/uwsgi.git"
 
   stable do
     url "http://projects.unbit.it/downloads/uwsgi-2.0.9.tar.gz"
-    sha1 "318d1d6d4bb57eb48b58361201cdc1cc7feedcbb"
+    sha256 "fe0489bca0a8b95653908be2297e35699fb9e992f728e382224587ee6b918295"
   end
 
   bottle do
@@ -120,6 +118,7 @@ class Uwsgi < Formula
     end
 
     bin.install "uwsgi"
+    mkdir_p var/"log"
   end
 
   plist_options :manual => "uwsgi"

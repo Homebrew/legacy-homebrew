@@ -1,9 +1,7 @@
-require 'formula'
-
 class PureFtpd < Formula
-  homepage 'http://www.pureftpd.org/'
-  url 'http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.35.tar.gz'
-  sha1 'fed26bb1f36d71819a08873d94bbda52522ff96a'
+  homepage "http://www.pureftpd.org/"
+  url "http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.37.tar.gz"
+  sha256 "a9c10b0b8b5772fbf2212bc46fece86f9d4bcc07e58dfd83b58e42a1b2acb76c"
 
   def install
     args = ["--disable-dependency-tracking",
@@ -24,14 +22,15 @@ class PureFtpd < Formula
             "--with-tls",
             "--with-bonjour"]
 
-    args << "--with-pgsql" if which 'pg_config'
-    args << "--with-mysql" if which 'mysql'
+    args << "--with-pgsql" if which "pg_config"
+    args << "--with-mysql" if which "mysql"
 
+    mkdir_p var/"log"
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
-  plist_options :manual => 'pure-ftpd'
+  plist_options :manual => "pure-ftpd"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

@@ -1,17 +1,15 @@
-require 'formula'
-
 class DynamodbLocal < Formula
-  homepage 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html'
-  url 'http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_2015-01-27.tar.gz'
-  version '2015-01-27'
-  sha1 '3e2fdead8763e35bc449665837834b949e26230f'
+  homepage "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html"
+  url "http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_2015-01-27.tar.gz"
+  version "2015-01-27"
+  sha256 "d53b43cfe06da99b37a2e246b311096b032e92fad62786fec08c446a258939d6"
 
   def data_path
-    var/'data/dynamodb-local'
+    var/"data/dynamodb-local"
   end
 
   def log_path
-    var/'log/dynamodb-local.log'
+    var/"log/dynamodb-local.log"
   end
 
   def bin_wrapper; <<-EOS.undent
@@ -21,9 +19,11 @@ class DynamodbLocal < Formula
   end
 
   def install
+    mkdir_p var/"log"
+
     prefix.install %w[LICENSE.txt README.txt third_party_licenses]
     libexec.install %w[DynamoDBLocal_lib DynamoDBLocal.jar]
-    (bin/'dynamodb-local').write(bin_wrapper)
+    (bin/"dynamodb-local").write(bin_wrapper)
   end
 
   def post_install

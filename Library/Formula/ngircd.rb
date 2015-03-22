@@ -37,13 +37,14 @@ class Ngircd < Formula
 
     system "./configure", *args
     system "make", "install"
+    mkdir_p var/"log"
 
     prefix.install "contrib/MacOSX/de.barton.ngircd.plist.tmpl" => "de.barton.ngircd.plist"
     (prefix+"de.barton.ngircd.plist").chmod 0644
 
     inreplace prefix+"de.barton.ngircd.plist" do |s|
       s.gsub! ":SBINDIR:", sbin
-      s.gsub! "/Library/Logs/ngIRCd.log", var/"Logs/ngIRCd.log"
+      s.gsub! "/Library/Logs/ngIRCd.log", var/"log/ngIRCd.log"
     end
   end
 
