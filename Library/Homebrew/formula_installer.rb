@@ -560,6 +560,8 @@ class FormulaInstaller
     return unless formula.plist
     formula.plist_path.atomic_write(formula.plist)
     formula.plist_path.chmod 0644
+    log = formula.var/"log"
+    log.mkpath if formula.plist.include? log.to_s
   rescue Exception => e
     onoe "Failed to install plist file"
     ohai e, e.backtrace if debug?
