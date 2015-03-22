@@ -49,6 +49,10 @@ class BottleVersion < Version
     m = /-(\d{2})/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. p17 from psutils-p17.yosemite.bottle.tar.gz
+    m = /-(p\d{2})/.match(stem)
+    return m.captures.first unless m.nil?
+
     super
   end
 end
