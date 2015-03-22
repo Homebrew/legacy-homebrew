@@ -1,9 +1,7 @@
-require "formula"
-
 class Tinyxml2 < Formula
   homepage "http://grinninglizard.com/tinyxml2"
-  url "https://github.com/leethomason/tinyxml2/archive/2.2.0.tar.gz"
-  sha1 "7869aa08241ce16f93ba3732c1cde155b1f2b6a0"
+  url "https://github.com/leethomason/tinyxml2/archive/3.0.0.tar.gz"
+  sha256 "128aa1553e88403833e0cccf1b651f45ce87bc207871f53fdcc8e7f9ec795747"
   head "https://github.com/leethomason/tinyxml2.git"
 
   bottle do
@@ -21,7 +19,7 @@ class Tinyxml2 < Formula
   end
 
   test do
-    (testpath/'test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <tinyxml2.h>
       int main() {
         tinyxml2::XMLDocument doc (false);
