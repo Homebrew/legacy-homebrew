@@ -26,6 +26,7 @@ class Syncthing < Formula
 
     system "./build.sh", "noupgrade"
     bin.install "syncthing"
+    mkdir_p var/"log"
   end
 
   def plist; <<-EOS.undent
