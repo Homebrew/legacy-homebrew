@@ -2,8 +2,9 @@ require 'formula'
 
 class Fits < Formula
   homepage 'http://fitstool.org/'
-  url 'http://projects.iq.harvard.edu/files/fits/files/fits-0.8.2.zip'
-  sha1 'ea4a6020f9d64a4c9b85f37b488aa254c10e2703'
+  url 'http://projects.iq.harvard.edu/files/fits/files/fits-0.8.4_0.zip'
+  version '0.8.4'
+  sha1 'f9b6b13cf1e818c6cdcfec71eb3dcd6804dd8819'
 
   # provided jars may not be compatible with installed java,
   # but works when built from source
