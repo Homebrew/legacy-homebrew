@@ -2,8 +2,8 @@ require "formula"
 
 class Sbt < Formula
   homepage "http://www.scala-sbt.org"
-  url "https://dl.bintray.com/sbt/native-packages/sbt/0.13.7/sbt-0.13.7.tgz"
-  sha1 "0ee4df9a5bd6dc478f9007ebdb24bacd1cf2731c"
+  url "https://dl.bintray.com/sbt/native-packages/sbt/0.13.8/sbt-0.13.8.tgz"
+  sha1 "155d6ff3bc178745ad4f951b74792b257ed14105"
 
   bottle do
     cellar :any
