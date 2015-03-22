@@ -140,6 +140,7 @@ class Build
 
         # Find and link metafiles
         formula.prefix.install_metafiles Pathname.pwd
+        formula.prefix.install_metafiles formula.libexec if formula.libexec.exist?
       end
     end
   end
