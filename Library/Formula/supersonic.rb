@@ -3,6 +3,12 @@ class Supersonic < Formula
   url "https://supersonic.googlecode.com/files/supersonic-0.9.4.tar.gz"
   sha256 "1592dfd2dc73f0b97298e0d25e51528dc9a94e9e7f4ab525569f63db0442d769"
 
+  bottle do
+    sha256 "bce00a06edf6ace2603372f7abe643acdfd620028864a63475d4897e7d5c272a" => :yosemite
+    sha256 "2e436da2c2b5dd0272558e0acd187f22549fddb0a4f7c7fe9209bc174674ae9f" => :mavericks
+    sha256 "6f2d68e3bba1872a5af673be5f4612c879b0ebe5cb47f9df22539f8cca6be4bd" => :mountain_lion
+  end
+
   if MacOS.version < :mavericks
     depends_on "protobuf" => "c++11"
     depends_on "boost" => "c++11"
