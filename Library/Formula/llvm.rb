@@ -2,32 +2,32 @@ class Llvm < Formula
   homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.5.1/llvm-3.5.1.src.tar.xz"
-    sha1 "79638cf00584b08fd6eeb1e73ea69b331561e7f6"
+    url "http://llvm.org/releases/3.6.0/llvm-3.6.0.src.tar.xz"
+    sha1 "6eb2b7381d924bb3f267281c9058c817d825d824"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.5.1/cfe-3.5.1.src.tar.xz"
-      sha1 "39d79c0b40cec548a602dcac3adfc594b18149fe"
+      url "http://llvm.org/releases/3.6.0/cfe-3.6.0.src.tar.xz"
+      sha1 "06b252867a3d118c95ca279fd3c4ac05f6730551"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.5.1/libcxx-3.5.1.src.tar.xz"
-      sha1 "aa8d221f4db99f5a8faef6b594cbf7742cc55ad2"
+      url "http://llvm.org/releases/3.6.0/libcxx-3.6.0.src.tar.xz"
+      sha1 "5445194366ae2291092fd2204030cb3d01ad6272"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.5.1/lld-3.5.1.src.tar.xz"
-      sha1 "9af270a79ae0aeb0628112073167495c43ab836a"
+      url "http://llvm.org/releases/3.6.0/lld-3.6.0.src.tar.xz"
+      sha1 "3d6e47c13e93530126eebc45f008d3dcaa6dd7d2"
     end
 
     resource "lldb" do
-      url "http://llvm.org/releases/3.5.1/lldb-3.5.1.src.tar.xz"
-      sha1 "32728e25e6e513528c8c793ae65981150bec7c0d"
+      url "http://llvm.org/releases/3.6.0/lldb-3.6.0.src.tar.xz"
+      sha1 "f92c4bb7d9f0431285d068668b10d62512f36f03"
     end
 
     resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.5.1/clang-tools-extra-3.5.1.src.tar.xz"
-      sha1 "7a0dd880d7d8fe48bdf0f841eca318337d27a345"
+      url "http://llvm.org/releases/3.6.0/clang-tools-extra-3.6.0.src.tar.xz"
+      sha1 "30c6acd7404b9abf0338110818fba255d5744978"
     end
   end
 
