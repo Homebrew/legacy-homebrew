@@ -32,7 +32,7 @@ module Homebrew
         resource "#{r.name}" do
           url "#{r.url}"
           mirror "#{r.mirrors.first}"
-          sha1 "#{r.cached_download.sha1}"
+          sha256 "#{r.cached_download.sha256}"
         end
 
       EOS
