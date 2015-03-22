@@ -7,6 +7,7 @@ class Pgloader < Formula
   depends_on "sbcl"
   depends_on "freetds"
   depends_on "buildapp" => :build
+  depends_on :postgresql => :build
 
   # Resource stanzas are generated automatically by quicklisp-roundup.
   # See: https://github.com/benesch/quicklisp-homebrew-roundup
@@ -304,7 +305,65 @@ class Pgloader < Formula
     man1.install "pgloader.1"
   end
 
+  def launch_postgres(socket_dir)
+    require "timeout"
+
+    socket_dir = Pathname.new(socket_dir)
+    mkdir_p socket_dir
+
+    postgres_command = [
+      "postgres",
+      "--listen_addresses=",
+      "--unix_socket_directories=#{socket_dir}",
+    ]
+
+    IO.popen(postgres_command * " ") do |postgres|
+      begin
+        ohai postgres_command * " "
+        # Postgres won't create the socket until it's ready for connections, but
+        # if it fails to start, we'll be waiting for the socket forever. So we
+        # time out quickly; this is simpler than mucking with child process
+        # signals.
+        Timeout.timeout(5) { sleep 0.2 while socket_dir.children.empty? }
+        yield
+      ensure
+        Process.kill(:TERM, postgres.pid)
+      end
+    end
+  end
+
   test do
-    system "pgloader --version | grep 'pgloader version'"
+    # Remove any Postgres environment variables that might prevent us from
+    # isolating this disposable copy of Postgres.
+    ENV.reject! { |key, _| key.start_with?("PG") }
+
+    ENV["PGDATA"] = testpath/"data"
+    ENV["PGHOST"] = testpath/"socket"
+    ENV["PGDATABASE"] = "brew"
+
+    (testpath/"test.load").write <<-EOS.undent
+      LOAD CSV
+        FROM inline (code, country)
+        INTO postgresql:///#{ENV["PGDATABASE"]}?tablename=csv
+        WITH fields terminated by ','
+
+      BEFORE LOAD DO
+        $$ CREATE TABLE csv (code char(2), country text); $$;
+
+      GB,United Kingdom
+      US,United States
+      CA,Canada
+      US,United States
+      GB,United Kingdom
+      CA,Canada
+    EOS
+
+    system "initdb"
+
+    launch_postgres(ENV["PGHOST"]) do
+      system "createdb"
+      system "pgloader", testpath/"test.load"
+      assert_equal "6", shell_output("psql -Atc 'SELECT COUNT(*) FROM csv'").strip
+    end
   end
 end
