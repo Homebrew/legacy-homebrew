@@ -10,8 +10,11 @@ class Collectd < Formula
   end
 
   # Will fail against Java 1.7
-  option "java", "Enable Java 1.6 support"
-  option "debug", "Enable debug support"
+  option "with-java", "Enable Java 1.6 support"
+  option "with-debug", "Enable debug support"
+
+  deprecated_option "java" => "with-java"
+  deprecated_option "debug" => "with-debug"
 
   head do
     url "git://git.verplant.org/collectd.git"
@@ -41,12 +44,13 @@ class Collectd < Formula
     ]
 
     args << "--disable-embedded-perl" if MacOS.version <= :leopard
-    args << "--disable-java" unless build.include? "java"
-    args << "--enable-debug" if build.include? "debug"
+    args << "--disable-java" if build.without? "java"
+    args << "--enable-debug" if build.with? "debug"
 
     system "./build.sh" if build.head?
     system "./configure", *args
     system "make", "install"
+    mkdir_p var/"log"
   end
 
   def plist; <<-EOS.undent
@@ -68,9 +72,9 @@ class Collectd < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>StandardErrorPath</key>
-        <string>/usr/local/var/log/collectd.log</string>
+        <string>#{var}/log/collectd.log</string>
         <key>StandardOutPath</key>
-        <string>/usr/local/var/log/collectd.log</string>
+        <string>#{var}/log/collectd.log</string>
       </dict>
     </plist>
     EOS
