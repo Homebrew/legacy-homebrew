@@ -14,9 +14,9 @@ class Trafficserver < Formula
   end
 
   bottle do
-    sha256 "60ca4def066dd106a5f71706b3b07d7ee8d093f95926d341f4d98bd88c3b4d2d" => :yosemite
-    sha256 "25134b656b86365d4c7d43de3038f71e864dfb50c6895f94b3c3b035c3f85986" => :mavericks
-    sha256 "4920a708ef78452027f9a258f50b7802b3f0bdc68aca92337d2468d9abe88415" => :mountain_lion
+    sha256 "26c2989bc8abffcb704dfec98738bfe64788bd857f4e33f1559d843d585d19fb" => :yosemite
+    sha256 "720cf540ae6d4088a463cd57ed2d683b3641ac96615d5b97fcd89102595ceb48" => :mavericks
+    sha256 "cef715a09849d0ce15a0cb446e3ed2a471f822361c82c4d7b04e3420d75e7373" => :mountain_lion
   end
 
   option "with-spdy", "Build with SPDY protocol support"
