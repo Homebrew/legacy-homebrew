@@ -49,7 +49,9 @@ fi
 # Pull in other env vars in spark config, such as MESOS_NATIVE_LIBRARY
 . $SPARK_CONF_DIR/spark-env.sh
 
-if [ -f "$PIDFILE" ] && kill -0 $(cat "$PIDFILE"); then
+pidFilePath=$appdir/$PIDFILE
+
+if [ -f "$pidFilePath" ] && kill -0 $(cat "$pidFilePath"); then
    echo 'Job server is already running'
    exit 1
 fi
@@ -78,4 +80,4 @@ export SPARK_HOME
 CLASSPATH="$appdir:$appdir/spark-job-server.jar:$($SPARK_HOME/bin/compute-classpath.sh)"
 
 exec java -cp $CLASSPATH $GC_OPTS $JAVA_OPTS $LOGGING_OPTS $CONFIG_OVERRIDES $MAIN $conffile 2>&1 &
-echo $! > $PIDFILE
+echo $! > $pidFilePath
