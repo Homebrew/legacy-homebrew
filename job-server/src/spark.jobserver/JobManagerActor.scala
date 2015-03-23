@@ -118,7 +118,10 @@ class JobManagerActor(dao: JobDAO,
     case StartJob(appName, classPath, jobConfig, events) =>
       startJobInternal(appName, classPath, jobConfig, events, jobContext, sparkEnv, rddManagerActor)
 
-    case KillJob(jobId: String) => jobContext.sparkContext.cancelJobGroup(jobId)
+    case KillJob(jobId: String) => {
+      jobContext.sparkContext.cancelJobGroup(jobId)
+      statusActor ! JobKilled(jobId, DateTime.now())
+    }
   }
 
   def startJobInternal(appName: String,
