@@ -31,6 +31,7 @@ class Encfs < Formula
   needs :cxx11
 
   def install
+    ENV.cxx11
     system "make", "-f", "Makefile.dist"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
