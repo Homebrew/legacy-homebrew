@@ -1,8 +1,8 @@
-require "formula"
-
 class Scriptcs < Formula
   homepage "https://github.com/scriptcs/scriptcs"
-  url "https://github.com/scriptcs/scriptcs.git", :tag => "v0.13.3"
+  url "https://github.com/scriptcs/scriptcs/archive/v0.13.3.tar.gz"
+  sha256 "08cf6f2fc14b334ec8d18367a47e5210e99928c3c1cd3d16f2e94d596c8ab44a"
+
   depends_on "mono" => :recommended
 
   def install
@@ -11,7 +11,7 @@ class Scriptcs < Formula
     libexec.install Dir["src/ScriptCs/bin/Release/*"]
     (libexec/script_file).write <<-EOS.undent
     #!/usr/bin/env bash
-    mono /usr/local/opt/scriptcs/libexec/scriptcs.exe $@
+    mono #{libexec}/scriptcs.exe $@
     EOS
     (libexec/script_file).chmod 0755
     bin.install_symlink libexec/script_file => "scriptcs"
