@@ -1,6 +1,6 @@
 class Subversion < Formula
   homepage "https://subversion.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.11.tar.bz2"
+  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.11.tar.bz2"
   mirror "https://archive.apache.org/dist/subversion/subversion-1.8.11.tar.bz2"
   sha1 "161edaee328f4fdcfd2a7c10ecd3fbcd51c61275"
 
@@ -8,6 +8,12 @@ class Subversion < Formula
     sha1 "fdc774e0ca4c603e7d6167b0780fe6fb38ddd3f7" => :yosemite
     sha1 "0ed6964b8bde9170b25e54c9e3cd56067325b00b" => :mavericks
     sha1 "f27aeb2bc0aac84caea6ed9c9adb6401fd62143e" => :mountain_lion
+  end
+
+  devel do
+    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-beta1.tar.bz2"
+    mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-beta1.tar.bz2"
+    sha1 "cbc62b682e69254f57e40da316ebb7fcf998f56e"
   end
 
   deprecated_option "java" => "with-java"

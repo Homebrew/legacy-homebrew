@@ -1,12 +1,12 @@
 class Hevea < Formula
   homepage "http://hevea.inria.fr/"
-  url "http://hevea.inria.fr/distri/hevea-2.22.tar.gz"
-  sha1 "16ddc99402940fe06b89723f7c4e5cb0c646d55f"
+  url "http://hevea.inria.fr/old/hevea-2.23.tar.gz"
+  sha256 "db8ec1459cace8f008387dbcf745ba56917d44ff62c7bdba843da250109137b9"
 
   bottle do
-    sha1 "bfac35ec39ad56dc6ff8d4c5d64ce9491dfc7baa" => :yosemite
-    sha1 "534bc9f95fc528965a7477f753764b4fa3f06c91" => :mavericks
-    sha1 "2d3bddd0021cd337d427105da4cb486cdbcad0c0" => :mountain_lion
+    sha256 "d6f5a5ce7cd70c14fe1f9355ac8e7af264b093304c4f8488e5df190f5b6e434d" => :yosemite
+    sha256 "53300a1adc2db5cc8b80fbc3395564e8c65d35fdce8c7e20dcac42563962efdf" => :mavericks
+    sha256 "1777a109ad7bf3693bd3cb0c09ec99846fbb73611e705eba4a7a48cf195c7ce4" => :mountain_lion
   end
 
   depends_on "objective-caml"

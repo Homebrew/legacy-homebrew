@@ -17,7 +17,8 @@ class BottleVersion < Version
     return m.captures.first unless m.nil?
 
     # e.g. 00-5.0.5 from zpython-00-5.0.5.mavericks.bottle.tar.gz
-    m = /(00-\d+\.\d+(\.\d+)+)/.match(stem)
+    # but not 00-2.0.0 from avce00-2.0.0.yosemite.bottle.tar.gz
+    m = /-(00-\d+\.\d+(\.\d+)+)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. 13-2.9.19 from libpano-13-2.9.19_1.yosemite.bottle.tar.gz
@@ -47,6 +48,10 @@ class BottleVersion < Version
 
     # e.g. 22 from ngircd-22.mavericks.bottle.tar.gz
     m = /-(\d{2})/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. p17 from psutils-p17.yosemite.bottle.tar.gz
+    m = /-(p\d{2})/.match(stem)
     return m.captures.first unless m.nil?
 
     super

@@ -5,10 +5,10 @@ class JohnJumbo < Formula
   version "1.8.0"
 
   bottle do
-    revision 2
-    sha1 "5ab9f75db6b8303b793fca20948c0d9645a912fe" => :yosemite
-    sha1 "ac84043c8d73c2db6e11b7741685cb46275d37f8" => :mavericks
-    sha1 "7764fe2e72d3f695936e4a05bd7a1f063fd8dda9" => :mountain_lion
+    revision 3
+    sha256 "b5d13ea393e16a474bcd69d0d7fd14038effac04d423b6041d9dbb76dd6325ae" => :yosemite
+    sha256 "d8303c4412f7354e2778ef58ed8eb366d9d474491b255ad5f32d27946df174e6" => :mavericks
+    sha256 "c3a9c980f5725ec08854cdce75b91af58bb4f61c8a30e2d700de45e0a5b9ff3c" => :mountain_lion
   end
 
   conflicts_with "john", :because => "both install the same binaries"
@@ -36,7 +36,9 @@ class JohnJumbo < Formula
   def install
     cd "src" do
       args = []
-      args << "--disable-native-macro" if build.bottle?
+      if build.bottle?
+        args << "--disable-native-tests" << "--disable-native-macro"
+      end
       system "./configure", *args
       system "make", "clean"
       system "make", "-s", "CC=#{ENV.cc}"
