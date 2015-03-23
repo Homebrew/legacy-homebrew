@@ -1,13 +1,12 @@
 class Nghttp2 < Formula
   homepage "https://nghttp2.org"
-  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.5/nghttp2-0.7.5.tar.xz"
-  sha1 "7256ba19c031281cf2b5640cff5986c069ffcff5"
+  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.7/nghttp2-0.7.7.tar.xz"
+  sha1 "df96ac092ea209723ee0bd840ecbebe9be247b97"
 
   bottle do
-    revision 1
-    sha1 "eda9d8ce56e07fb2040b61de1a61e13947572c9e" => :yosemite
-    sha1 "a690a5201979431cf3c17f13dd6e14fb508aa0b7" => :mavericks
-    sha1 "3f439e6f4183150cc9c439e7222309f5bac62f0e" => :mountain_lion
+    sha256 "ea188a850b088445ad685719eccb9a2d996215f079af102ce477dc99deefd325" => :yosemite
+    sha256 "6dfe3eb5a62986374131db7ff915a25dc54d57262b17afe408512000492381dd" => :mavericks
+    sha256 "a522c73bcd3f7734a3b9f35c99fd3b39998e7c662ec9b199add8317a3337a722" => :mountain_lion
   end
 
   head do
@@ -79,7 +78,6 @@ class Nghttp2 < Formula
     args = %W[
       --prefix=#{prefix}
       --disable-silent-rules
-      --disable-threads
       --enable-app
       --with-boost=#{Formula["boost"].opt_prefix}
       --enable-asio-lib

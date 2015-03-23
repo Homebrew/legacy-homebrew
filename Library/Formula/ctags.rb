@@ -2,12 +2,13 @@ class Ctags < Formula
   homepage "http://ctags.sourceforge.net/"
   url "https://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz"
   sha1 "482da1ecd182ab39bbdc09f2f02c9fba8cd20030"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "7da87475dee54acc46b0a38afc52122d9cbe6188" => :yosemite
-    sha1 "afc599e7097afd5eb185925dc81f8e9e437b5be8" => :mavericks
-    sha1 "cee93b102782dde467bb091589dd4315c19dfd0c" => :mountain_lion
+    sha256 "1ba38746fe55be78781dcf313977b60f242ed42d412bbaf96627daf24d9fd168" => :yosemite
+    sha256 "9904dcc6f32a8f52d900339ff11ba4c9cb3e67374e558bb2abcc777fe56d49b5" => :mavericks
+    sha256 "b3619b0231eb952ee7c768dbb82e2301ece1060f8c713e781767cc700f02b2f2" => :mountain_lion
   end
 
   head do
@@ -102,3 +103,26 @@ diff -ur a/ctags-5.8/read.h b/ctags-5.8/read.h
  
  /*
  *   FUNCTION PROTOTYPES
+
+
+Bugfix: Don't use strcpy on overlapping buffers
+Upstream commit (not in release yet): http://sourceforge.net/p/ctags/code/782/
+diff -ur a/ctags-5.8/routines.c b/ctags-5.8/routines.c
+--- a/ctags-5.8/routines.c	2007-06-07 00:35:21.000000000 -0400
++++ b/ctags-5.8/routines.c	2015-03-07 20:38:58.000000000 -0500
+@@ -757,13 +757,13 @@
+ 				else if (cp [0] != PATH_SEPARATOR)
+ 					cp = slashp;
+ #endif
+-				strcpy (cp, slashp + 3);
++				memmove (cp, slashp + 3, strlen (slashp + 3) + 1);
+ 				slashp = cp;
+ 				continue;
+ 			}
+ 			else if (slashp [2] == PATH_SEPARATOR  ||  slashp [2] == '\0')
+ 			{
+-				strcpy (slashp, slashp + 2);
++				memmove (slashp, slashp + 2, strlen (slashp + 2) + 1);
+ 				continue;
+ 			}
+ 		}

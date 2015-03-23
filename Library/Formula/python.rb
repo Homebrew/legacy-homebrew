@@ -2,7 +2,7 @@ class Python < Formula
   homepage "https://www.python.org"
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz"
-  sha1 "7a191bcccb598ccbf2fa6a0edce24a97df3fc0ad"
+  sha256 "c8bba33e66ac3201dabdc556f0ea7cfe6ac11946ec32d357c4c6f9b018c12c5b"
 
   bottle do
     revision 10
@@ -14,9 +14,11 @@ class Python < Formula
   # Please don't add a wide/ucs4 option as it won't be accepted.
   # More details in: https://github.com/Homebrew/homebrew/pull/32368
   option :universal
-  option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
+  option "with-quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
+
+  deprecated_option "quicktest" => "with-quicktest"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -24,19 +26,19 @@ class Python < Formula
   depends_on "gdbm" => :recommended
   depends_on "openssl"
   depends_on "homebrew/dupes/tcl-tk" if build.with? "brewed-tk"
-  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
+  depends_on :x11 if build.with?("brewed-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
 
   skip_clean "bin/pip", "bin/pip-2.7"
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
     url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
-    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
+    sha256 "bda326cad34921060a45004b0dd81f828d471695346e303f4ca53b8ba6f4547f"
   end
 
   resource "pip" do
     url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
-    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
+    sha256 "0d58487a1b7f5be2e5e965c11afbea1dc44ecec8069de03491a4d0d6c85f4551"
   end
 
   # Patch for pyport.h macro issue
@@ -44,7 +46,7 @@ class Python < Formula
   # https://trac.macports.org/ticket/44288
   patch do
     url "http://bugs.python.org/file30805/issue10910-workaround.txt"
-    sha1 "9926640cb7c8e273e4b451469a2b13d4b9df5ba3"
+    sha256 "c075353337f9ff3ccf8091693d278782fcdff62c113245d8de43c5c7acc57daf"
   end
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
@@ -81,12 +83,12 @@ class Python < Formula
     ENV["PYTHONPATH"] = nil
 
     args = %W[
-             --prefix=#{prefix}
-             --enable-ipv6
-             --datarootdir=#{share}
-             --datadir=#{share}
-             --enable-framework=#{frameworks}
-           ]
+      --prefix=#{prefix}
+      --enable-ipv6
+      --datarootdir=#{share}
+      --datadir=#{share}
+      --enable-framework=#{frameworks}
+    ]
 
     args << "--without-gcc" if ENV.compiler == :clang
 
@@ -100,19 +102,19 @@ class Python < Formula
     # Allow sqlite3 module to load extensions:
     # http://docs.python.org/library/sqlite3.html#f1
     if build.with? "sqlite"
-      inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', '')
+      inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', "")
     end
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
     # even if homebrew is not a /usr/local/lib. Try this with:
     # `brew install enchant && pip install pyenchant`
     inreplace "./Lib/ctypes/macholib/dyld.py" do |f|
-      f.gsub! 'DEFAULT_LIBRARY_FALLBACK = [', "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
-      f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
+      f.gsub! "DEFAULT_LIBRARY_FALLBACK = [", "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
+      f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
     if build.with? "brewed-tk"
-      tcl_tk = Formula["tcl-tk"].opt_prefix
+      tcl_tk = Formula["homebrew/dupes/tcl-tk"].opt_prefix
       ENV.append "CPPFLAGS", "-I#{tcl_tk}/include"
       ENV.append "LDFLAGS", "-L#{tcl_tk}/lib"
     end
@@ -133,7 +135,7 @@ class Python < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
-    system "make", "quicktest" if build.include? 'quicktest'
+    system "make", "quicktest" if build.include? "quicktest"
 
     # Fixes setting Python build flags for certain software
     # See: https://github.com/Homebrew/homebrew/pull/20182
@@ -146,8 +148,8 @@ class Python < Formula
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
 
-    (libexec/'setuptools').install resource('setuptools')
-    (libexec/'pip').install resource('pip')
+    (libexec/"setuptools").install resource("setuptools")
+    (libexec/"pip").install resource("pip")
   end
 
   def post_install
@@ -204,7 +206,7 @@ class Python < Formula
     cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{sqlite}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{sqlite}/lib"
     if build.with? "brewed-tk"
-      tcl_tk = Formula["tcl-tk"].opt_prefix
+      tcl_tk = Formula["homebrew/dupes/tcl-tk"].opt_prefix
       cflags += " -I#{tcl_tk}/include"
       ldflags += " -L#{tcl_tk}/lib"
     end
