@@ -1,9 +1,9 @@
 class Kafka < Formula
   homepage "https://kafka.apache.org"
   head "https://git-wip-us.apache.org/repos/asf/kafka.git"
-  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.0/kafka-0.8.2.0-src.tgz"
-  mirror "https://archive.apache.org/dist/kafka/0.8.2.0/kafka-0.8.2.0-src.tgz"
-  sha1 "d2c35b60a2f534fb552030dcc7855d13292b2414"
+  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
+  mirror "https://archive.apache.org/dist/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
+  sha1 "99d61c6e23cb2694112f844afedb6f13d711c356"
 
   bottle do
     cellar :any
@@ -15,6 +15,13 @@ class Kafka < Formula
   depends_on "gradle"
   depends_on "zookeeper"
   depends_on :java => "1.7+"
+
+  # Related to https://issues.apache.org/jira/browse/KAFKA-2034
+  # Since Kafka does not currently set the source or target compability version inside build.gradle
+  # if you do not have Java 1.8 installed you cannot used the bottled version of Kafka
+  def pour_bottle?
+    quiet_system("/usr/libexec/java_home --version 1.8 --failfast")
+  end
 
   def install
     system "gradle"
