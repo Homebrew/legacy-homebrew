@@ -59,6 +59,7 @@ class Nginx < Formula
             "--http-log-path=#{var}/log/nginx/access.log",
             "--error-log-path=#{var}/log/nginx/error.log",
             "--with-http_gzip_static_module",
+            "--with-http_stub_status_module"
            ]
 
     if build.with? "passenger"
