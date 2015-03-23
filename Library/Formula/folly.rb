@@ -14,6 +14,7 @@ class Folly < Formula
   depends_on "libevent"
 
   def install
+    cd "folly"
     system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}"
     system "make"
