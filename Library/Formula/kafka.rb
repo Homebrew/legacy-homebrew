@@ -14,7 +14,7 @@ class Kafka < Formula
 
   depends_on "gradle"
   depends_on "zookeeper"
-  depends_on :java => "1.7+"
+  depends_on :java => "1.7"
 
   # Related to https://issues.apache.org/jira/browse/KAFKA-2034
   # Since Kafka does not currently set the source or target compability version inside build.gradle 
