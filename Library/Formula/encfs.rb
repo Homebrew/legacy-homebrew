@@ -28,6 +28,7 @@ class Encfs < Formula
   depends_on 'openssl'
   depends_on :osxfuse
   depends_on 'xz'
+  needs :cxx11
 
   def install
     system "make", "-f", "Makefile.dist"
