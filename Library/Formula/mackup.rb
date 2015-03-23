@@ -2,8 +2,8 @@ require "formula"
 
 class Mackup < Formula
   homepage "https://github.com/lra/mackup"
-  url "https://github.com/lra/mackup/archive/0.8.3.tar.gz"
-  sha1 "09e455ab0e8efec8500ba07fef3e8b3633c13d28"
+  url "https://github.com/lra/mackup/archive/0.8.5.tar.gz"
+  sha1 "90494facbedbad00ddfa76d7c725b75c97ecc477"
 
   head "https://github.com/lra/mackup.git"
 
