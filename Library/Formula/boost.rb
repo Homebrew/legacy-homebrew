@@ -31,6 +31,8 @@ class Boost < Formula
     depends_on :mpi => [:cc, :cxx, :optional]
   end
 
+  depends_on "bzip2" unless OS.mac?
+
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
@@ -118,6 +120,12 @@ class Boost < Formula
         args << "cxxflags=-stdlib=libc++" << "linkflags=-stdlib=libc++"
       end
     end
+
+    # Fix error: bzlib.h: No such file or directory
+    args += [
+      "include=#{HOMEBREW_PREFIX}/include",
+      "cflags=-L#{HOMEBREW_PREFIX}/lib",
+      "cxxflags=-L#{HOMEBREW_PREFIX}/lib"] unless OS.mac?
 
     system "./bootstrap.sh", *bootstrap_args
     system "./b2", *args
