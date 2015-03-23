@@ -28,8 +28,7 @@ trait JobSpecConfig {
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
       "akka.log-dead-letters" -> 0,
       "spark.master" -> "local[4]",
-      "context-factory" -> contextFactory,
-      "akka.test.single-expect-default" -> 6000
+      "context-factory" -> contextFactory
     )
     ConfigFactory.parseMap(ConfigMap.asJava)
   }
