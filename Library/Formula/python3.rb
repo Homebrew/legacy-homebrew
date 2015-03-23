@@ -143,6 +143,13 @@ class Python3 < Formula
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
 
+    # These makevars are available through distutils.sysconfig at runtime and
+    # some third-party software packages depend on them
+    inreplace frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}m/Makefile" do |s|
+      s.change_make_var! "LINKFORSHARED",
+                         "-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python"
+    end
+
     %w[setuptools pip].each do |r|
       (libexec/r).install resource(r)
     end
@@ -257,16 +264,6 @@ class Python3 < Formula
           # site_packages; prefer the shorter paths
           long_prefix = re.compile(r'#{rack}/[0-9\._abrc]+/Frameworks/Python\.framework/Versions/#{xy}/lib/python#{xy}/site-packages')
           sys.path = [long_prefix.sub('#{site_packages}', p) for p in sys.path]
-
-          # LINKFORSHARED (and python-config --ldflags) return the
-          # full path to the lib (yes, "Python" is actually the lib, not a
-          # dir) so that third-party software does not need to add the
-          # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
-          try:
-              from _sysconfigdata import build_time_vars
-              build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python'
-          except:
-              pass  # remember: don't print here. Better to fail silently.
 
           # Set the sys.executable to use the opt_prefix
           sys.executable = '#{opt_bin}/python#{xy}'
