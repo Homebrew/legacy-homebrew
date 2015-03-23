@@ -130,7 +130,6 @@ TAP_MIGRATIONS = {
   "pocl" => "homebrew/science",
   "prooftree" => "homebrew/x11",
   "pulse" => "homebrew/boneyard",
-  "py3cairo" => "homebrew/x11",
   "pyenv-pip-rehash" => "homebrew/boneyard",
   "pyxplot" => "homebrew/x11",
   "qfits" => "homebrew/boneyard",
