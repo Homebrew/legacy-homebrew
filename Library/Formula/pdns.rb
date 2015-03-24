@@ -15,9 +15,9 @@ class Pdns < Formula
   end
 
   bottle do
-    sha1 "e39b0c25f869f94fa5b8d86af210baa980fce2ce" => :yosemite
-    sha1 "62bcb4ddeb59d8ef5b8dad7cfa9fdbebf698a9f0" => :mavericks
-    sha1 "e297580e0699c5d3c4aba341a7ad95c4945993bb" => :mountain_lion
+    sha256 "3a7f094cb9b8b1a418862f8b81b178e9f61d6ba93f223c658100aa1b99f87995" => :yosemite
+    sha256 "deb9493b529254d3124233220f6185c31e7e14d94568ad5d0596541d415958be" => :mavericks
+    sha256 "c11417e1e0751444d15e8f4b11eb8b4218a707cdfdfdd3cab8adc5e38a01e6da" => :mountain_lion
   end
 
   option "pgsql", "Enable the PostgreSQL backend"
