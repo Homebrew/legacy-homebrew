@@ -18,7 +18,8 @@ class Lnav < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-readline=#{Formula["readline"].opt_prefix}"
     system "make", "install"
   end
 end
