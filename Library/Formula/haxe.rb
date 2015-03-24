@@ -4,7 +4,7 @@ class Haxe < Formula
   homepage "http://haxe.org"
 
   stable do
-    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.1.3"
+    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.1.3", :revision => "7be30670b2f1f9b6082499c8fb9e23c0a6df6c28"
     # Remove the below with the next stable release
     depends_on MaximumMacOSRequirement => :mavericks
   end
