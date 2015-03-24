@@ -1,23 +1,3 @@
-class NoExpatFramework < Requirement
-  def expat_framework
-    "/Library/Frameworks/expat.framework"
-  end
-
-  satisfy :build_env => false do
-    !File.exist? expat_framework
-  end
-
-  def message; <<-EOS.undent
-    Detected #{expat_framework}
-
-    This will be picked up by CMake's build system and likely cause the
-    build to fail, trying to link to a 32-bit version of expat.
-
-    You may need to move this file out of the way to compile CMake.
-    EOS
-  end
-end
-
 class Cmake < Formula
   homepage "http://www.cmake.org/"
   url "http://www.cmake.org/files/v3.2/cmake-3.2.1.tar.gz"
@@ -26,15 +6,15 @@ class Cmake < Formula
 
   bottle do
     cellar :any
-    sha256 "b5eee80616e1e957249c69c00fa374672ef669996f27c71410655e1c2656a856" => :yosemite
-    sha256 "8e3318bda82a7158002ffd37b9ef1eb7424a59db47d9e7a1bd808c9b130c341f" => :mavericks
-    sha256 "cc70078e6c6cfbca7b8939b65c5133e7fcf90c21ba19e5c6a7a84fe174026440" => :mountain_lion
+    revision 1
+    sha256 "4357df1b230086cd7e27db5e52c3235b667f701acc55c08e30f7af4ce1c10e6c" => :yosemite
+    sha256 "15d3eb635ba99cd3171f116e0d48984c4e9379c1b4bbbede0a11469e975cb5cb" => :mavericks
+    sha256 "1b5c1e10304e5dca9f50436ccfc3b459e7a038b79d3e2418ba161bdd05d1c266" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
-  depends_on "xz" # For LZMA
 
   # The `with-qt` GUI option was removed due to circular dependencies if
   # CMake is built with Qt support and Qt is built with MySQL support as MySQL uses CMake.
@@ -65,8 +45,6 @@ class Cmake < Formula
     sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
   end
 
-  depends_on NoExpatFramework
-
   def install
     if build.with? "docs"
       ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
@@ -83,10 +61,8 @@ class Cmake < Formula
 
     args = %W[
       --prefix=#{prefix}
-      --system-libs
+      --no-system-libs
       --parallel=#{ENV.make_jobs}
-      --no-system-libarchive
-      --no-system-jsoncpp
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
       --mandir=/share/man

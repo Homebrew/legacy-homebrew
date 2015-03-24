@@ -2,35 +2,17 @@ require 'formula'
 
 class Encfs < Formula
   homepage 'https://vgough.github.io/encfs/'
-  revision 1
 
   stable do
-    url 'https://github.com/vgough/encfs/archive/v1.7.5.tar.gz'
-    sha1 'f8bb2332b7a88f510cd9a18adb0f4fb903283edd'
-
-    # Fix link times and xattr on links for OSX
-    # Proper fix is already in upstream/dev
-    patch :DATA
-
-    # Fix pod2man errors
-    # https://github.com/vgough/encfs/issues/28
-    patch do
-      url "https://github.com/vgough/encfs/commit/61dc26fd8b3630e31e7ae8202ef9f31f1a4f9644.diff"
-      sha1 "beaa7214b9cbd2e5c1680bca1bd72d5a6398420e"
-    end
-
-    patch do
-      url "https://github.com/vgough/encfs/commit/5fa5f02109855446c9d96b11ae8a2ee56f921595.diff"
-      sha1 "4b229f3172a2d68f2f61cef57569d918b7b95bc5"
-    end
+    url 'https://github.com/vgough/encfs/archive/v1.8.tar.gz'
+    sha1 'f3723aa7ba64ad3fc6087dba6c26bf6d54762085'
   end
 
   head 'https://github.com/vgough/encfs.git'
 
   bottle do
-    sha1 "4e09e41ac19b52a14ea58644d6a3fcb61fdaea64" => :mavericks
-    sha1 "ef7ea8cb89515be5e19b45a0af8704e65acbb150" => :mountain_lion
-    sha1 "559bbec86eb4176fad7cb28368cc462f6470157f" => :lion
+    sha256 "a9014044ed57522f70e9b90d52212ce08775ebd6c00411481947984197aefa1e" => :mavericks
+    sha256 "b577b5a48c9bb5af3a2a02aff3575048c02049c91fb6fc63dd5f5182a0ad4a2e" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
@@ -44,38 +26,11 @@ class Encfs < Formula
   depends_on 'openssl'
   depends_on :osxfuse
   depends_on 'xz'
+  needs :cxx11
 
   def install
-    # Fix linkage with gettext libs
-    # Proper fix is already in upstream/master
-    # Adapt to changes in recent Xcode by making local copy of endian-ness definitions
-    mkdir "encfs/sys"
-    cp "#{MacOS.sdk_path}/usr/include/sys/_endian.h", "encfs/sys/endian.h"
-
-    if build.stable?
-      inreplace "configure.ac", "LIBINTL=-lgettextlib", "LIBINTL=-lgettextlib -lintl"
-
-      # Fix runtime "dyld: Symbol not found" errors
-      # Following 3 ugly inreplaces are temporary solution
-      # Proper fix is already in upstream
-      inreplace ["encfs/Cipher.cpp", "encfs/CipherFileIO.cpp", "encfs/NullCipher.cpp",
-                 "encfs/NullNameIO.cpp", "encfs/SSL_Cipher.cpp"], "using boost::shared_ptr;", ""
-
-      inreplace ["encfs/BlockNameIO.cpp", "encfs/Cipher.cpp", "encfs/CipherFileIO.cpp",
-                 "encfs/Context.cpp", "encfs/DirNode.cpp", "encfs/encfs.cpp",
-                 "encfs/encfsctl.cpp", "encfs/FileNode.cpp", "encfs/FileUtils.cpp",
-                 "encfs/MACFileIO.cpp", "encfs/main.cpp", "encfs/makeKey.cpp",
-                 "encfs/NameIO.cpp", "encfs/NullCipher.cpp", "encfs/NullNameIO.cpp",
-                 "encfs/SSL_Cipher.cpp", "encfs/StreamNameIO.cpp", "encfs/test.cpp"], "shared_ptr<", "boost::shared_ptr<"
-
-      inreplace ["encfs/Context.cpp", "encfs/encfsctl.cpp", "encfs/FileUtils.cpp"], "boost::boost::shared_ptr<", "boost::shared_ptr<"
-    end
-
+    ENV.cxx11
     system "make", "-f", "Makefile.dist"
-    # This provides a workaround for https://github.com/vgough/encfs/issues/18
-    # osxfuse's installation directory cannot be given as a parameter to configure script
-    inreplace "configure", "/usr/include/osxfuse /usr/local/include/osxfuse",
-      "/usr/include/osxfuse /usr/local/include/osxfuse #{HOMEBREW_PREFIX}/include/osxfuse"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"
@@ -93,31 +48,4 @@ class Encfs < Formula
   end
 end
 
-__END__
 
---- a/encfs/encfs.cpp
-+++ b/encfs/encfs.cpp
-@@ -489,7 +489,11 @@
- 
- int _do_chmod(EncFS_Context *, const string &cipherPath, mode_t mode)
- {
-+#ifdef __APPLE__
-+    return lchmod( cipherPath.c_str(), mode );
-+#else
-     return chmod( cipherPath.c_str(), mode );
-+#endif
- }
- 
- int encfs_chmod(const char *path, mode_t mode)
-@@ -706,7 +710,11 @@
- int _do_setxattr(EncFS_Context *, const string &cyName, 
- 	tuple<const char *, const char *, size_t, uint32_t> data)
- {
-+#ifdef __APPLE__
-+    int options = XATTR_NOFOLLOW;
-+#else
-     int options = 0;
-+#endif
-     return ::setxattr( cyName.c_str(), data.get<0>(), data.get<1>(), 
- 	    data.get<2>(), data.get<3>(), options );
- }

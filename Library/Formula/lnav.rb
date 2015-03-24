@@ -8,9 +8,10 @@ class Lnav < Formula
   head 'https://github.com/tstack/lnav.git'
 
   bottle do
-    sha1 "34a53eb6606660c29fa1cdadb6a45af811ff7ae1" => :yosemite
-    sha1 "57e96d8f6d40a01d1e6aa31b4b7ae0d738fb30fb" => :mavericks
-    sha1 "884bd4be97c7d778e2c619d6e71d95d1cc1d7663" => :mountain_lion
+    revision 1
+    sha256 "2cd3c6c2a599c490ad66ce2800bb649cf9b41ba1c7d41ef173cdedaac179b303" => :yosemite
+    sha256 "7aeefa9382d88272bf9ede19a03301db5853416f07f34e7a76b3285b0d29c4a6" => :mavericks
+    sha256 "74c793c46875ff5b5349f88d322e6004dd522aded06e8a2482e973201dbc26dd" => :mountain_lion
   end
 
   depends_on 'readline'
@@ -18,7 +19,8 @@ class Lnav < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-readline=#{Formula["readline"].opt_prefix}"
     system "make", "install"
   end
 end

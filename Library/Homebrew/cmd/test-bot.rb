@@ -3,18 +3,19 @@
 # Usage: brew test-bot [options...] <pull-request|formula>
 #
 # Options:
-# --keep-logs:    Write and keep log files under ./brewbot/
-# --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
-# --clean-cache:  Remove all cached downloads. Use with care.
-# --skip-setup:   Don't check the local system is setup correctly.
-# --junit:        Generate a JUnit XML test results file.
-# --email:        Generate an email subject file.
-# --no-bottle:    Run brew install without --build-bottle
-# --HEAD:         Run brew install with --HEAD
-# --local:        Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
-# --tap=<tap>:    Use the git repository of the given tap
-# --dry-run:      Just print commands, don't run them.
-# --fail-fast:    Immediately exit on a failing step.
+# --keep-logs:     Write and keep log files under ./brewbot/
+# --cleanup:       Clean the Homebrew directory. Very dangerous. Use with care.
+# --clean-cache:   Remove all cached downloads. Use with care.
+# --skip-setup:    Don't check the local system is setup correctly.
+# --skip-homebrew: Don't check Homebrew's files and tests are all valid.
+# --junit:         Generate a JUnit XML test results file.
+# --email:         Generate an email subject file.
+# --no-bottle:     Run brew install without --build-bottle
+# --HEAD:          Run brew install with --HEAD
+# --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
+# --tap=<tap>:     Use the git repository of the given tap
+# --dry-run:       Just print commands, don't run them.
+# --fail-fast:     Immediately exit on a failing step.
 #
 # --ci-master:           Shortcut for Homebrew master branch CI options.
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
@@ -365,10 +366,18 @@ module Homebrew
       end
 
       test "brew", "uses", canonical_formula_name
-      dependencies = Utils.popen_read("brew", "deps", canonical_formula_name).split("\n")
-      dependencies -= Utils.popen_read("brew", "list").split("\n")
+      installed = Utils.popen_read("brew", "list").split("\n")
+      dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
+                                      canonical_formula_name).split("\n")
+      dependencies -= installed
       unchanged_dependencies = dependencies - @formulae
       changed_dependences = dependencies - unchanged_dependencies
+
+      runtime_dependencies = Utils.popen_read("brew", "deps",
+                                              "--skip-build", "--skip-optional",
+                                              canonical_formula_name).split("\n")
+      build_dependencies = dependencies - runtime_dependencies
+      unchanged_build_dependencies = build_dependencies - @formulae
 
       dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
       dependents -= @formulae
@@ -466,6 +475,10 @@ module Homebrew
             bottle_filename =
               bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
             test "brew", "uninstall", "--force", canonical_formula_name
+            if unchanged_build_dependencies.any?
+              test "brew", "uninstall", "--force", *unchanged_build_dependencies
+              unchanged_dependencies -= unchanged_build_dependencies
+            end
             test "brew", "install", bottle_filename
           end
         end
@@ -499,11 +512,12 @@ module Homebrew
           test "brew", "uninstall", "--devel", "--force", canonical_formula_name
         end
       end
-      test "brew", "uninstall", "--force", *unchanged_dependencies unless unchanged_dependencies.empty?
+      test "brew", "uninstall", "--force", *unchanged_dependencies if unchanged_dependencies.any?
     end
 
     def homebrew
       @category = __method__
+      return if ARGV.include? "--skip-homebrew"
       test "brew", "tests"
       readall_args = []
       readall_args << "--syntax" if MacOS.version >= :mavericks
@@ -529,8 +543,8 @@ module Homebrew
 
       checkout_args = []
       if ARGV.include? '--cleanup'
-        test "git", "clean", "-fdx"
-        test "git", "clean", "-ffdx" if steps.last.failed?
+        git "clean", "-fdx"
+        test "git", "clean", "-ffdx" unless $?.success?
         checkout_args << "-f"
       end
 

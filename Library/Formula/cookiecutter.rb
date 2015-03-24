@@ -1,41 +1,46 @@
 class Cookiecutter < Formula
   homepage "https://github.com/audreyr/cookiecutter"
-  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-0.9.1.tar.gz"
-  sha1 "570fd2b17cb49c6d6966ed08ed1e89b8559581ba"
+  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-1.0.0.tar.gz"
+  sha256 "ebe8bc662dce0a26effc2a0fb344e5006832aef4cedb9c6a950a1e0e3f3f41fb"
   head "https://github.com/audreyr/cookiecutter.git"
 
   bottle do
     cellar :any
-    sha1 "c01d592a6fd8873145753ddba5378b4df95c5861" => :yosemite
-    sha1 "b5cde887f1c4fdb9e61bffb7383060eac76d3706" => :mavericks
-    sha1 "25d1f4a6b95dbd294734fb37f873a00fbeeecefb" => :mountain_lion
+    sha256 "501bfc26db09d2997cc175aad4b87c1113f9648d036d52d442b130d323f373ec" => :yosemite
+    sha256 "1636f003e6ca16a387fbe16b1c73aaaed1f7d817bb3302170a77652f0d895c06" => :mavericks
+    sha256 "8463ae544df9c9dd5eb1b1daba476fbeaffe678c961b1149b42426e654d82002" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "binaryornot" do
     url "https://pypi.python.org/packages/source/b/binaryornot/binaryornot-0.3.0.tar.gz"
-    sha1 "97142e0d9f1fe77e86e6183510d5a4ca796349ad"
+    sha256 "83bc656b147983da8755c7b1e1323825d29a318ee437f91d210b16b1ec8bacf4"
   end
 
-  resource "markupsafe" do
+  resource "MarkupSafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
-  resource "pyyaml" do
+  resource "PyYAML" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
-    sha1 "1a2d5df8b31124573efb9598ec6d54767f3c4cd4"
+    sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
-  resource "jinja2" do
+  resource "Jinja2" do
     url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
+    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
   end
 
   resource "mock" do
     url "https://pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz"
-    sha1 "ba2b1d5f84448497e14e25922c5e3293f0a91c7e"
+    sha256 "b839dd2d9c117c701430c149956918a423a9863b48b09c90e30a6013e7d2f44f"
+  end
+
+  resource "click" do
+    url "https://pypi.python.org/packages/source/c/click/click-3.3.tar.gz"
+    sha256 "f79c8c04d7eb50071bcad67fd23f3c10fab6c72d56857adf848367806845d6e5"
   end
 
   def install

@@ -3,12 +3,13 @@ class Curl < Formula
   url "http://curl.haxx.se/download/curl-7.41.0.tar.bz2"
   mirror "http://ftp.sunet.se/pub/www/utilities/curl/curl-7.41.0.tar.bz2"
   sha256 "9f8b546bdc5c57d959151acae7ce6610fe929d82b8d0fc5b25a3a2296e5f8bea"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "5492b542748165ab1d69d119b24eaf71e014794d" => :yosemite
-    sha1 "a38cda228da1fe998c8ed32c296789bdf38ea766" => :mavericks
-    sha1 "7b4b4aab07d6c8fcf254666c83df39ba710bc913" => :mountain_lion
+    sha256 "2308d33dd3a762ac7bb8eb670e9719b15ebb7ba7c879f00cc1dfae0cd4a2c428" => :yosemite
+    sha256 "e1c637ef0e1d3154b683c729aff2164d187b9755c09085c0b9f075abff2542fd" => :mavericks
+    sha256 "bfc255014495f2195258ca1f2161161d6ea81a5d749c57226028cbe5341c7af5" => :mountain_lion
   end
 
   keg_only :provided_by_osx
@@ -20,17 +21,20 @@ class Curl < Formula
   option "with-gssapi", "Build with GSSAPI/Kerberos authentication support."
   option "with-libmetalink", "Build with libmetalink support."
   option "with-libressl", "Build with LibreSSL instead of Secure Transport or OpenSSL"
+  option "with-nghttp2", "Build with HTTP/2 support (requires OpenSSL or LibreSSL)"
 
   deprecated_option "with-idn" => "with-libidn"
   deprecated_option "with-rtmp" => "with-rtmpdump"
   deprecated_option "with-ssh" => "with-libssh2"
   deprecated_option "with-ares" => "with-c-ares"
 
-  if MacOS.version >= :mountain_lion
+  # HTTP/2 support requires OpenSSL 1.0.2+ or LibreSSL 2.1.3+ for ALPN Support
+  # which is currently not supported by Secure Transport (DarwinSSL).
+  if MacOS.version < :mountain_lion || (build.with?("nghttp2") && build.without?("libressl"))
+    depends_on "openssl"
+  else
     option "with-openssl", "Build with OpenSSL instead of Secure Transport"
     depends_on "openssl" => :optional
-  else
-    depends_on "openssl"
   end
 
   depends_on "pkg-config" => :build
@@ -40,6 +44,7 @@ class Curl < Formula
   depends_on "c-ares" => :optional
   depends_on "libmetalink" => :optional
   depends_on "libressl" => :optional
+  depends_on "nghttp2" => :optional
 
   def install
     # Throw an error if someone actually tries to rock both SSL choices.
@@ -47,7 +52,7 @@ class Curl < Formula
     if build.with?("libressl") && build.with?("openssl")
       ohai <<-EOS.undent
       --with-openssl and --with-libressl are both specified and
-      curl can only use one at a time; proceeding with openssl.
+      curl can only use one at a time; proceeding with libressl.
       EOS
     end
 
@@ -61,14 +66,14 @@ class Curl < Formula
     # cURL has a new firm desire to find ssl with PKG_CONFIG_PATH instead of using
     # "--with-ssl" any more. "when possible, set the PKG_CONFIG_PATH environment
     # variable instead of using this option". Multi-SSL choice breaks w/o using it.
-    if MacOS.version < :mountain_lion || build.with?("openssl")
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_prefix}/lib/pkgconfig"
-      args << "--with-ssl=#{Formula["openssl"].opt_prefix}"
-      args << "--with-ca-bundle=#{etc}/openssl/cert.pem"
-    elsif build.with? "libressl"
+    if build.with? "libressl"
       ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["libressl"].opt_prefix}/lib/pkgconfig"
       args << "--with-ssl=#{Formula["libressl"].opt_prefix}"
       args << "--with-ca-bundle=#{etc}/libressl/cert.pem"
+    elsif MacOS.version < :mountain_lion || build.with?("openssl") || build.with?("nghttp2")
+      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_prefix}/lib/pkgconfig"
+      args << "--with-ssl=#{Formula["openssl"].opt_prefix}"
+      args << "--with-ca-bundle=#{etc}/openssl/cert.pem"
     else
       args << "--with-darwinssl"
     end

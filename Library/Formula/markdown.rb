@@ -7,6 +7,7 @@ class Markdown < Formula
 
   conflicts_with 'discount',
     :because => 'both markdown and discount ship a `markdown` executable.'
+  conflicts_with 'multimarkdown', :because => 'both install `markdown` binaries'
 
   def install
     bin.install 'Markdown.pl' => 'markdown'
