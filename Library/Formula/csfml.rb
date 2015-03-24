@@ -2,8 +2,8 @@ require "formula"
 
 class Csfml < Formula
   homepage "http://www.sfml-dev.org/"
-  url "http://www.sfml-dev.org/download/csfml/CSFML-2.0-sources.zip"
-  sha1 "6d831634a558593580296209af278322523f1e43"
+  url "http://www.sfml-dev.org/download/csfml/CSFML-2.2-sources.zip"
+  sha1 "1dc3d2dadef6e6daa05b0dd868367ad5f02419e4"
 
   bottle do
     cellar :any
@@ -16,8 +16,7 @@ class Csfml < Formula
   depends_on "sfml"
 
   def install
-    cp_r "#{Formula["sfml"].share}/SFML/cmake/Modules/", "cmake"
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", "-DCMAKE_MODULE_PATH=#{Formula["sfml"].share}/SFML/cmake/Modules/", *std_cmake_args
     system "make", "install"
   end
 
