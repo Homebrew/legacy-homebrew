@@ -2,8 +2,8 @@ require "formula"
 
 class RakudoStar < Formula
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2015.02.tar.gz"
-  sha256 "e54309b0d79afc1491767110ec39a1aa7d9314d93e29dbaab082014cfb055611"
+  url "http://rakudo.org/downloads/star/rakudo-star-2015.03.tar.gz"
+  sha256 "bb969c99b39cf69d0f04ae5e9d574de1da8835a1be17710f9e63afc0bcac9bbb"
 
   bottle do
     sha1 "317094904815718655392b889726bea877c1be4b" => :yosemite
@@ -12,7 +12,6 @@ class RakudoStar < Formula
   end
 
   option "with-jvm", "Build also for jvm as an alternate backend."
-  option "with-parrot", "Build also for parrot as an alternate backend."
 
   conflicts_with "parrot"
 
@@ -33,10 +32,6 @@ class RakudoStar < Formula
 
     if build.with? "jvm"
       backends << "jvm"
-    end
-    if build.with? "parrot"
-      backends << "parrot"
-      generate << "--gen-parrot"
     end
     system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=" + backends.join(","), *generate
     system "make"
