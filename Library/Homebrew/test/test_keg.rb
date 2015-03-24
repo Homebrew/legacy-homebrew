@@ -207,6 +207,13 @@ class LinkTests < Homebrew::TestCase
     assert_predicate link.lstat, :directory?
   end
 
+  def test_cmake_is_mkpathed
+    link = HOMEBREW_PREFIX.join("lib", "cmake")
+    @keg.join("lib", "cmake").mkpath
+    @keg.link
+    assert_predicate link.lstat, :directory?
+  end
+
   def test_symlinks_are_linked_directly
     link = HOMEBREW_PREFIX.join("lib", "pkgconfig")
 
