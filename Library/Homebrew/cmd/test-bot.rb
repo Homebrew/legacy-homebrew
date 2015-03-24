@@ -543,8 +543,8 @@ module Homebrew
 
       checkout_args = []
       if ARGV.include? '--cleanup'
-        test "git", "clean", "-fdx"
-        test "git", "clean", "-ffdx" if steps.last.failed?
+        git "clean", "-fdx"
+        test "git", "clean", "-ffdx" unless $?.success?
         checkout_args << "-f"
       end
 
