@@ -3,7 +3,7 @@ require "formula"
 class LibtorrentRasterbar < Formula
   homepage "http://sourceforge.net/projects/libtorrent/"
   url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.4.tar.gz"
-  sha1 "a2029f10e7ae9f8f1885c6cd308b737482c1d737"
+  sha256 "1f567823133b1493b9717afc8334eed691bf0ab452d4a2e0f644989f13ce9db0"
 
   head do
     url "https://libtorrent.googlecode.com/svn/trunk"
