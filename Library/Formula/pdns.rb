@@ -2,8 +2,8 @@ require "formula"
 
 class Pdns < Formula
   homepage "http://www.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-3.4.1.tar.bz2"
-  sha1 "e4d807b4dc27ef130a49e0efaf82a74cb66f5b11"
+  url "http://downloads.powerdns.com/releases/pdns-3.4.3.tar.bz2"
+  sha256 "5cd9a087757066427cd0c348f546cb84b4be4bd5e06c7ce969ec2bc21dbb8ce6"
 
   head do
     url "https://github.com/powerdns/pdns.git"
