@@ -2,8 +2,8 @@ require "formula"
 
 class Wrk < Formula
   homepage "https://github.com/wg/wrk"
-  url "https://github.com/wg/wrk/archive/4.0.0.tar.gz"
-  sha1 "a64f0279f4d5c04c0acece5af80981436aaa2dc0"
+  url "https://github.com/wg/wrk/archive/4.0.1.tar.gz"
+  sha256 "c03bbc283836cb4b706eb6bfd18e724a8ce475e2c16154c13c6323a845b4327d"
   head "https://github.com/wg/wrk.git"
 
   bottle do
