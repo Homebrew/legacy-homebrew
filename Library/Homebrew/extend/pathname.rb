@@ -383,7 +383,7 @@ class Pathname
     dst.mkpath
     Pathname.glob("#{self}/*") do |file|
       next if file.directory?
-      dst.install_p file
+      dst.install(file)
       new_file = dst+file.basename
       file.write_env_script(new_file, env)
     end
