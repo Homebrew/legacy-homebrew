@@ -21,28 +21,23 @@ class Pathname
           opoo "tried to install empty array to #{self}"
           return
         end
-        src.each {|s| install_p(s) }
+        src.each { |s| install_p(s, File.basename(s)) }
       when Hash
         if src.empty?
           opoo "tried to install empty hash to #{self}"
           return
         end
-        src.each {|s, new_basename| install_p(s, new_basename) }
+        src.each { |s, new_basename| install_p(s, new_basename) }
       else
-        install_p(src)
+        install_p(src, File.basename(src))
       end
     end
   end
 
-  def install_p src, new_basename = nil
+  def install_p(src, new_basename)
     raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
 
-    if new_basename
-      new_basename = File.basename(new_basename) # rationale: see Pathname.+
-      dst = self+new_basename
-    else
-      dst = self
-    end
+    dst = join(new_basename)
 
     src = src.to_s
     dst = dst.to_s
