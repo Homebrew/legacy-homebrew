@@ -1,5 +1,5 @@
 class Elasticsearch < Formula
-  homepage "http://www.elasticsearch.org"
+  homepage "https://www.elastic.co/products/elasticsearch"
   url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz"
   sha1 "07987acd48c754b8e7db6829314b56e1928b5e1b"
 
