@@ -1,8 +1,8 @@
 require "formula"
 
 class Pdns < Formula
-  homepage "http://www.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-3.4.3.tar.bz2"
+  homepage "https://www.powerdns.com"
+  url "https://downloads.powerdns.com/releases/pdns-3.4.3.tar.bz2"
   sha256 "5cd9a087757066427cd0c348f546cb84b4be4bd5e06c7ce969ec2bc21dbb8ce6"
 
   head do
