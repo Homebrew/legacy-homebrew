@@ -2,8 +2,8 @@ require "formula"
 
 class Dmd < Formula
   homepage "http://dlang.org"
-  url "https://github.com/D-Programming-Language/dmd/archive/v2.066.1.tar.gz"
-  sha1 "7be9737f97a494870446c881e185bec41f337792"
+  url "https://github.com/D-Programming-Language/dmd/archive/v2.067.0.tar.gz"
+  sha1 "663d27bc6a25028d54b139344a35476cf5b4dc23"
 
   bottle do
     revision 2
@@ -13,18 +13,18 @@ class Dmd < Formula
   end
 
   resource "druntime" do
-    url "https://github.com/D-Programming-Language/druntime/archive/v2.066.1.tar.gz"
-    sha1 "614e2944c470944125ba6bc94a78c1cf0a41ad5a"
+    url "https://github.com/D-Programming-Language/druntime/archive/v2.067.0.tar.gz"
+    sha1 "dd803d01d82c2bf9ef680d9b318955f674309747"
   end
 
   resource "phobos" do
-    url "https://github.com/D-Programming-Language/phobos/archive/v2.066.1.tar.gz"
-    sha1 "58e48b33cffbab4acb5e6d6f376ea209ce8e2114"
+    url "https://github.com/D-Programming-Language/phobos/archive/v2.067.0.tar.gz"
+    sha1 "268447464389bd09a695ce4c0663f1bab283f041"
   end
 
   resource "tools" do
-    url "https://github.com/D-Programming-Language/tools/archive/v2.066.1.tar.gz"
-    sha1 "fc64b35364cf76d7270e4a8fe41203e0b4dde11c"
+    url "https://github.com/D-Programming-Language/tools/archive/v2.067.0.tar.gz"
+    sha1 "3d94855e46e39136ccd9b6765e8ffc1de37c95fa"
   end
 
   def install
