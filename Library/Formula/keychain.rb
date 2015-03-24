@@ -1,10 +1,10 @@
 require 'formula'
 
 class Keychain < Formula
-  homepage 'http://www.funtoo.org/wiki/Keychain'
-  url 'http://ftp.heanet.ie/mirrors/funtoo/distfiles/keychain/keychain-2.7.1.tar.bz2'
-  mirror 'http://www.funtoo.org/archive/keychain/keychain-2.7.1.tar.bz2'
-  sha1 'e7ad7da374ba81e57792bb2695eb6c352f769de7'
+  homepage 'http://www.funtoo.org/Keychain'
+  url 'http://build.funtoo.org/distfiles/keychain/keychain-2.8.0.tar.bz2'
+  mirror 'http://ftp.osuosl.org/pub/funtoo/distfiles/keychain/keychain-2.8.0.tar.bz2'
+  sha256 '411bfe6a3ac9daca1c35f9a56828f03cc8474e8a668e122773397deb8f7a0799'
 
   def install
     bin.install "keychain"
