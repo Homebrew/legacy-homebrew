@@ -1,8 +1,8 @@
 class Subversion < Formula
   homepage "https://subversion.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.11.tar.bz2"
-  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.11.tar.bz2"
-  sha1 "161edaee328f4fdcfd2a7c10ecd3fbcd51c61275"
+  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.13.tar.bz2"
+  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.13.tar.bz2"
+  sha256 "1099cc68840753b48aedb3a27ebd1e2afbcc84ddb871412e5d500e843d607579"
 
   bottle do
     sha1 "fdc774e0ca4c603e7d6167b0780fe6fb38ddd3f7" => :yosemite
@@ -13,7 +13,7 @@ class Subversion < Formula
   devel do
     url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-beta1.tar.bz2"
     mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-beta1.tar.bz2"
-    sha1 "cbc62b682e69254f57e40da316ebb7fcf998f56e"
+    sha256 "39f0fa6f25fde04639496a5cacd60d8adac7f1e40c6c237a4356ad357449c775"
   end
 
   deprecated_option "java" => "with-java"
@@ -28,7 +28,7 @@ class Subversion < Formula
 
   resource "serf" do
     url "https://serf.googlecode.com/svn/src_releases/serf-1.3.8.tar.bz2", :using => :curl
-    sha1 "1d45425ca324336ce2f4ae7d7b4cfbc5567c5446"
+    sha256 "e0500be065dbbce490449837bb2ab624e46d64fc0b090474d9acaa87c82b2590"
   end
 
   depends_on "pkg-config" => :build
