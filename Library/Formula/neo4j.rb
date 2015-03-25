@@ -13,13 +13,6 @@ class Neo4j < Formula
     sha1 "83011a6dcf1cb49ee609e973fdb61f32f765b224"
   end
 
-  #keep this for the next commit, when we'll have --devel option again
-  #devel do
-  #  url "http://dist.neo4j.org/neo4j-community-2.2.0-RC01-unix.tar.gz"
-  #  sha1 "65165b83ee2ba91e9ba99cb2acce9ebcf7ad5434"
-  #  version "2.2.0-RC01"
-  #end
-
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
