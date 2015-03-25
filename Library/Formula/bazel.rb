@@ -20,6 +20,6 @@ class Bazel < Formula
   end
 
   test do
-    #TODO: tests
+    #TODO: tests; see https://github.com/Homebrew/homebrew/pull/38061#discussion-diff-27137134
   end
 end
