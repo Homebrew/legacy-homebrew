@@ -1,5 +1,3 @@
-require "formula"
-
 class Groovysdk < Formula
   homepage "http://groovy.codehaus.org/"
   url "http://dl.bintray.com/groovy/maven/groovy-sdk-2.4.0.zip"
@@ -11,9 +9,8 @@ class Groovysdk < Formula
     # We don't need Windows' files.
     rm_f Dir["bin/*.bat"]
 
-    prefix.install_metafiles
     bin.install Dir["bin/*"]
-    libexec.install %w(conf lib embeddable src doc)
+    libexec.install %w[conf lib embeddable src doc]
     bin.env_script_all_files(libexec+"bin", :GROOVY_HOME => ENV["GROOVY_HOME"])
   end
 

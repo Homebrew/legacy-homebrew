@@ -14,7 +14,6 @@ class Couchpotatoserver < Formula
   end
 
   def install
-    prefix.install_metafiles
     libexec.install Dir["*"]
     (bin+"couchpotatoserver").write(startup_script)
   end

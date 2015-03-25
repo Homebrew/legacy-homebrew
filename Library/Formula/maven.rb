@@ -12,8 +12,6 @@ class Maven < Formula
 
     # Fix the permissions on the global settings file.
     chmod 0644, "conf/settings.xml"
-
-    prefix.install_metafiles
     libexec.install Dir["*"]
 
     # Leave conf file in libexec. The mvn symlink will be resolved and the conf

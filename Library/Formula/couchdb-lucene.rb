@@ -17,7 +17,6 @@ class CouchdbLucene < Formula
     system "mvn"
     system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz", "--strip", "1"
 
-    prefix.install_metafiles
     rm_rf Dir["bin/*.bat"]
     libexec.install Dir["*"]
 
