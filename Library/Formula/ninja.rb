@@ -1,9 +1,7 @@
-require "formula"
-
 class Ninja < Formula
   homepage "https://martine.github.io/ninja/"
   url "https://github.com/martine/ninja/archive/v1.5.3.tar.gz"
-  sha1 "b3ff794461ff5e4e1e73fe6bd11e653bbe509e63"
+  sha256 "7c953b5a7c26cfcd082882e3f3e2cd08fee8848ad228bb47223b18ea18777ec0"
   head "https://github.com/martine/ninja.git"
 
   bottle do
@@ -17,7 +15,7 @@ class Ninja < Formula
 
   resource "gtest" do
     url "https://googletest.googlecode.com/files/gtest-1.7.0.zip"
-    sha1 "f85f6d2481e2c6c4a18539e391aa4ea8ab0394af"
+    sha256 "247ca18dd83f53deb1328be17e4b1be31514cedfc1e3424f672bf11fd7e0d60d"
   end
 
   def install
@@ -33,5 +31,17 @@ class Ninja < Formula
     bin.install "ninja"
     bash_completion.install "misc/bash-completion" => "ninja-completion.sh"
     zsh_completion.install "misc/zsh-completion" => "_ninja"
+  end
+
+  test do
+    (testpath/"build.ninja").write <<-EOS.undent
+      cflags = -Wall
+
+      rule cc
+        command = gcc $cflags -c $in -o $out
+
+      build foo.o: cc foo.c
+    EOS
+    system bin/"ninja", "-t", "targets"
   end
 end
