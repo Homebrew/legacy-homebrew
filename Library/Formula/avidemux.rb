@@ -30,29 +30,24 @@ class Avidemux < Formula
   depends_on "pkg-config" => :build
   depends_on "cmake" => :build
   depends_on "yasm" => :build
+  depends_on "xvid" => [:build, :recommended]
+  depends_on "libvpx" => [:build, :recommended]
+  depends_on "libass" => [:build, :recommended]
   depends_on "fontconfig"
   depends_on "gettext"
   depends_on "x264" => :recommended
   depends_on "faac" => :recommended
   depends_on "faad2" => :recommended
   depends_on "lame" => :recommended
-  depends_on "xvid" => :recommended
   depends_on "freetype" => :recommended
-  depends_on "theora" => :recommended
   depends_on "libvorbis" => :recommended
-  depends_on "libvpx" => :recommended
-  depends_on "rtmpdump" => :recommended
   depends_on "opencore-amr" => :recommended
-  depends_on "libvo-aacenc" => :recommended
-  depends_on "libass" => :recommended
-  depends_on "openjpeg" => :recommended
-  depends_on "speex" => :recommended
-  depends_on "schroedinger" => :recommended
-  depends_on "fdk-aac" => :recommended
-  depends_on "opus" => :recommended
-  depends_on "frei0r" => :recommended
-  depends_on "libcaca" => :recommended
+  depends_on "aften" => :recommended
+  depends_on "libdca" => :recommended
   depends_on "qt" => :recommended
+  depends_on "jack" => :optional
+  depends_on "two-lame" => :optional
+  depends_on "fribidi" => :optional
 
   def install
     ENV["REV"] = version.to_s
