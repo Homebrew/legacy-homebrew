@@ -44,7 +44,7 @@ class Harbour < Formula
          return
     EOS
 
-    assert shell_output("#{bin}/hbmk2 hello.prg -run").include?("Hello, world!")
+    assert_match /Hello, world!/, shell_output("#{bin}/hbmk2 hello.prg -run")
   end
 end
 
