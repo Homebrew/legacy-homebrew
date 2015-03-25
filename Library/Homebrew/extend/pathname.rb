@@ -57,7 +57,7 @@ class Pathname
       FileUtils.mv src, dst
     end
   end
-  protected :install_p
+  private :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
@@ -79,7 +79,7 @@ class Pathname
     mkpath
     FileUtils.ln_sf(src.relative_path_from(dst.parent), dst)
   end
-  protected :install_symlink_p
+  private :install_symlink_p
 
   # we assume this pathname object is a file obviously
   alias_method :old_write, :write if method_defined?(:write)
