@@ -1,5 +1,3 @@
-require "formula"
-
 class AescryptPacketizer < Formula
   homepage "https://www.aescrypt.com"
   url "https://www.aescrypt.com/download/v3/linux/aescrypt-3.0.9.tgz"
@@ -62,10 +60,17 @@ class AescryptPacketizer < Formula
     original_contents = "What grows when it eats, but dies when it drinks?"
     path.write original_contents
 
-    system bin/"paescrypt", "-e", "-p", "fire", path
+    # make sure that the right binary name is used
+    if build.with? "default-names"
+      name = "aescrypt"
+    else
+      name = "paescrypt"
+    end
+
+    system bin/name, "-e", "-p", "fire", path
     assert File.exist?("#{path}.aes")
 
-    system bin/"paescrypt", "-d", "-p", "fire", "#{path}.aes"
+    system bin/name, "-d", "-p", "fire", "#{path}.aes"
     assert_equal original_contents, path.read
   end
 end
