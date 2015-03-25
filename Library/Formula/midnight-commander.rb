@@ -2,9 +2,9 @@ require 'formula'
 
 class MidnightCommander < Formula
   homepage 'http://www.midnight-commander.org/'
-  url 'http://ftp.midnight-commander.org/mc-4.8.13.tar.xz'
-  mirror 'ftp://ftp.osuosl.org/pub/midnightcommander/mc-4.8.13.tar.xz'
-  sha256 '36d6191a47ec5d89d3788e48846fb620c481816441ff25264add8898d277b657'
+  url 'http://ftp.midnight-commander.org/mc-4.8.14.tar.xz'
+  mirror 'ftp://ftp.osuosl.org/pub/midnightcommander/mc-4.8.14.tar.xz'
+  sha256 '6b1f74efbdf394bfab084f4d2ea2e72173de5f12cd42be2533ca2c3b72edb8e6'
 
   bottle do
     sha1 "b9b1e2281c7eac14d6cecdc82835915062b7e761" => :mavericks
@@ -27,5 +27,9 @@ class MidnightCommander < Formula
                           "--with-screen=slang",
                           "--enable-vfs-sftp"
     system "make install"
+  end
+
+  test do
+    assert_match "GNU Midnight Commander", shell_output("#{bin}/mc --version")
   end
 end
