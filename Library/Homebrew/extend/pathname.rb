@@ -64,20 +64,20 @@ class Pathname
     sources.each do |src|
       case src
       when Array
-        src.each {|s| install_symlink_p(s) }
+        src.each { |s| install_symlink_p(s, File.basename(s)) }
       when Hash
-        src.each {|s, new_basename| install_symlink_p(s, new_basename) }
+        src.each { |s, new_basename| install_symlink_p(s, new_basename) }
       else
-        install_symlink_p(src)
+        install_symlink_p(src, File.basename(src))
       end
     end
   end
 
-  def install_symlink_p src, new_basename=src
+  def install_symlink_p(src, new_basename)
     src = Pathname(src).expand_path(self)
-    dst = join File.basename(new_basename)
+    dst = join(new_basename)
     mkpath
-    FileUtils.ln_sf src.relative_path_from(dst.parent), dst
+    FileUtils.ln_sf(src.relative_path_from(dst.parent), dst)
   end
   protected :install_symlink_p
 
