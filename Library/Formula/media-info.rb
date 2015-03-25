@@ -1,10 +1,8 @@
-require "formula"
-
 class MediaInfo < Formula
   homepage "https://mediaarea.net/"
   url "https://mediaarea.net/download/binary/mediainfo/0.7.72/MediaInfo_CLI_0.7.72_GNU_FromSource.tar.bz2"
   version "0.7.72"
-  sha1 "e0f495f8c589ec2dc1c84011ddbf8946f28ab186"
+  sha256 "9964ca21e6a57fc12aff7ed5fc7f867e2582a76d8e6da7d8db4a9f1f518854e8"
 
   bottle do
     cellar :any
@@ -30,13 +28,13 @@ class MediaInfo < Formula
               "--with-libcurl",
               "--prefix=#{prefix}"]
       system "./configure", *args
-      system "make install"
+      system "make", "install"
     end
 
     cd "MediaInfo/Project/GNU/CLI" do
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{prefix}"
-      system "make install"
+      system "make", "install"
     end
   end
 end
