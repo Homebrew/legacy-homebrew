@@ -1,9 +1,8 @@
 class Fossil < Formula
   homepage "https://www.fossil-scm.org/"
   head "https://www.fossil-scm.org/", :using => :fossil
-  url "https://www.fossil-scm.org/download/fossil-src-20150223162734.tar.gz"
-  sha256 "c00f9e1487530adb921df730baf57e1aa23767a0afb60b865e5842bb50782942"
-  version "1.31"
+  url "https://www.fossil-scm.org/download/fossil-src-1.32.tar.gz"
+  sha256 "cd79c333eb9e86fbb8c17bf5cdf31c387e4ab768eede623aed21adfdbcad686e"
 
   bottle do
     cellar :any
