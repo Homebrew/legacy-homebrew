@@ -21,28 +21,23 @@ class Pathname
           opoo "tried to install empty array to #{self}"
           return
         end
-        src.each {|s| install_p(s) }
+        src.each { |s| install_p(s, File.basename(s)) }
       when Hash
         if src.empty?
           opoo "tried to install empty hash to #{self}"
           return
         end
-        src.each {|s, new_basename| install_p(s, new_basename) }
+        src.each { |s, new_basename| install_p(s, new_basename) }
       else
-        install_p(src)
+        install_p(src, File.basename(src))
       end
     end
   end
 
-  def install_p src, new_basename = nil
+  def install_p(src, new_basename)
     raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
 
-    if new_basename
-      new_basename = File.basename(new_basename) # rationale: see Pathname.+
-      dst = self+new_basename
-    else
-      dst = self
-    end
+    dst = join(new_basename)
 
     src = src.to_s
     dst = dst.to_s
@@ -62,29 +57,29 @@ class Pathname
       FileUtils.mv src, dst
     end
   end
-  protected :install_p
+  private :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
     sources.each do |src|
       case src
       when Array
-        src.each {|s| install_symlink_p(s) }
+        src.each { |s| install_symlink_p(s, File.basename(s)) }
       when Hash
-        src.each {|s, new_basename| install_symlink_p(s, new_basename) }
+        src.each { |s, new_basename| install_symlink_p(s, new_basename) }
       else
-        install_symlink_p(src)
+        install_symlink_p(src, File.basename(src))
       end
     end
   end
 
-  def install_symlink_p src, new_basename=src
+  def install_symlink_p(src, new_basename)
     src = Pathname(src).expand_path(self)
-    dst = join File.basename(new_basename)
+    dst = join(new_basename)
     mkpath
-    FileUtils.ln_sf src.relative_path_from(dst.parent), dst
+    FileUtils.ln_sf(src.relative_path_from(dst.parent), dst)
   end
-  protected :install_symlink_p
+  private :install_symlink_p
 
   # we assume this pathname object is a file obviously
   alias_method :old_write, :write if method_defined?(:write)

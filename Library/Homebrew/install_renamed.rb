@@ -1,8 +1,6 @@
 module InstallRenamed
-  def install_p _, new_basename = nil
+  def install_p(_, new_basename)
     super do |src, dst|
-      dst += "/#{File.basename(src)}" if File.directory? dst
-
       if File.directory? src
         Pathname.new(dst).install Dir["#{src}/*"]
         next
