@@ -1,10 +1,8 @@
-require "formula"
-
 class Dos2unix < Formula
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
   url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.2.tar.gz"
   mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.2/dos2unix-7.2.tar.gz"
-  sha1 "a8f3d048859acb5483c8e15a1dfd0a01a2bcabe0"
+  sha256 "8a63576767b26af46401dfdeaf09c1e4de03735fe80c362244514e1eaf13d9b5"
 
   bottle do
     sha1 "cf86c34ea9d8f2fefae59967deed0fd7364a04ae" => :yosemite
