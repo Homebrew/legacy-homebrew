@@ -1,7 +1,7 @@
 class Scriptcs < Formula
   homepage "https://github.com/scriptcs/scriptcs"
-  url "https://github.com/scriptcs/scriptcs/archive/v0.13.3.tar.gz"
-  sha256 "08cf6f2fc14b334ec8d18367a47e5210e99928c3c1cd3d16f2e94d596c8ab44a"
+  url "https://github.com/scriptcs/scriptcs/archive/v0.14.0.tar.gz"
+  sha256 "44060c7ae6eb156a0088e0f8c1a3e6523b5cd7d8c6961e628ba8d5a9df3998eb"
 
   bottle do
     cellar :any
