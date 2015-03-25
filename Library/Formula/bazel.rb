@@ -5,8 +5,9 @@ class Bazel < Formula
 
   head "https://github.com/google/bazel.git"
 
-  depends_on "protobuf" => :build
   depends_on "libarchive"
+  depends_on "protobuf" => :build
+  depends_on :java => "1.8+"
 
   def install
     if build.stable?
@@ -20,6 +21,7 @@ class Bazel < Formula
   end
 
   test do
-    #TODO: tests; see https://github.com/Homebrew/homebrew/pull/38061#discussion-diff-27137134
+    system "git", "clone", "https://github.com/google/bazel.git"
+    system "./bootstrap_test.sh", "test"
   end
 end
