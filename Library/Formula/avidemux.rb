@@ -6,9 +6,11 @@ class Avidemux < Formula
     sha256 "02998c235a89894d184d745c94cac37b78bc20e9eb44b318ee2bb83f2507e682"
 
     # remove ffmpeg binary from targets (fixed upstream)
-    # https://github.com/mean00/avidemux2/commit/bf018562bc6cff300edb1e59ee060a10df902bdc
     # http://avidemux.org/smuf/index.php/topic,16379.15.html
-    patch :DATA
+    patch do
+      url "https://github.com/mean00/avidemux2/commit/bf0185.diff"
+      sha256 "3ca5b4f1b5b3ec407a3daa5c811862ea6ed7ef6cdaaf187045e6e1c77c193800"
+    end
   end
 
   head do
@@ -49,11 +51,14 @@ class Avidemux < Formula
   depends_on "fribidi" => :optional
   depends_on "sdl2" => :optional
 
-  # fix compilation against SDL
-  patch do
-    url "https://gist.githubusercontent.com/Noctem/2c03f24daf6705964347/raw/dd6d27374e5ed44678f25b84da159ea57a9d8857/avidemux-sdl.patch"
-    sha256 "17cb0181fbe503e84ad9b2762eb182ad4ec3ef8df8a90741e4f3c0e4d0a8f1ff"
-  end if build.with? "sdl2"
+  if build.with? "sdl2"
+    # fix compilation against SDL, change deprecated NSQuickDrawView to NSView
+    # (submitted patch to developer via email)
+    patch do
+      url "https://gist.githubusercontent.com/Noctem/2c03f24daf6705964347/raw/dd6d27374e5ed44678f25b84da159ea57a9d8857/avidemux-sdl.patch"
+      sha256 "17cb0181fbe503e84ad9b2762eb182ad4ec3ef8df8a90741e4f3c0e4d0a8f1ff"
+    end
+  end
 
   def install
     ENV["REV"] = version.to_s
@@ -162,16 +167,3 @@ class Avidemux < Formula
     system "#{bin}/avidemux_cli", "--help"
   end
 end
-
-__END__
-diff -u a/cmake/admFFmpegBuild.cmake b/cmake/admFFmpegBuild.cmake
---- a/cmake/admFFmpegBuild.cmake	2014-03-12 00:15:23 -0600
-+++ b/cmake/admFFmpegBuild.cmake	2015-03-25 01:39:33 -0600
-@@ -282,7 +282,6 @@
- 						"${FFMPEG_BINARY_DIR}/libavutil/${LIBAVUTIL_LIB}"
- 						"${FFMPEG_BINARY_DIR}/libpostproc/${LIBPOSTPROC_LIB}"
- 						"${FFMPEG_BINARY_DIR}/libswscale/${LIBSWSCALE_LIB}"
--						"${FFMPEG_BINARY_DIR}/ffmpeg${CMAKE_EXECUTABLE_SUFFIX}"
- 				   COMMAND ${BASH_EXECUTABLE} ffmpeg_make.sh WORKING_DIRECTORY "${FFMPEG_BINARY_DIR}")
- 
- # Add and install libraries
