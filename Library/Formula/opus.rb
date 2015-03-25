@@ -1,9 +1,7 @@
-require 'formula'
-
 class Opus < Formula
   homepage 'http://www.opus-codec.org'
   url 'http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz'
-  sha1 '35005f5549e2583f5770590135984dcfce6f3d58'
+  sha256 'b9727015a58affcf3db527322bf8c4d2fcf39f5f6b8f15dbceca20206cbe1d95'
 
   bottle do
     cellar :any
@@ -28,6 +26,6 @@ class Opus < Formula
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
