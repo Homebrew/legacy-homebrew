@@ -1,5 +1,3 @@
-require "formula"
-
 # Please only update to versions that are published on PyPi as there are too
 # many releases for us to update to every single one:
 # https://pypi.python.org/pypi/youtube_dl
