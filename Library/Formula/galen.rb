@@ -1,7 +1,7 @@
 class Galen < Formula
   homepage "http://galenframework.com/"
-  url "https://github.com/galenframework/galen/releases/download/galen-1.5.4/galen-bin-1.5.4.zip"
-  sha256 "0bfc74726068feb8c95926087adf43690fad9ce43e3c3aaa5f36850eb43df53b"
+  url "https://github.com/galenframework/galen/releases/download/galen-1.6.0/galen-bin-1.6.0.zip"
+  sha256 "b205734f6f460c2e1663b5bc9f7a009f9c0ab1ec9075e9a2cbd32e60ea2f2562"
 
   depends_on :java => "1.6+"
 
