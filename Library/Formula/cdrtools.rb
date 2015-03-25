@@ -20,9 +20,8 @@ class Cdrtools < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a27.tar.bz2"
-    version "3.01~a27"
-    sha1 "cd923377bd7ef15a08aa3bb1aff4e6604c7be7cd"
+    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a28.tar.bz2"
+    sha1 "081b1daa9c86f33483213a8d8d0fd75caec51ead"
 
     patch :p0, :DATA
   end
