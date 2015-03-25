@@ -1,4 +1,3 @@
-# Help! Wanted: someone who can get Avidemux working with SDL.
 class Avidemux < Formula
   homepage "http://fixounet.free.fr/avidemux/"
 
@@ -48,6 +47,13 @@ class Avidemux < Formula
   depends_on "jack" => :optional
   depends_on "two-lame" => :optional
   depends_on "fribidi" => :optional
+  depends_on "sdl2" => :optional
+
+  # fix compilation against SDL
+  patch do
+    url "https://gist.githubusercontent.com/Noctem/2c03f24daf6705964347/raw/dd6d27374e5ed44678f25b84da159ea57a9d8857/avidemux-sdl.patch"
+    sha256 "17cb0181fbe503e84ad9b2762eb182ad4ec3ef8df8a90741e4f3c0e4d0a8f1ff"
+  end if build.with? "sdl2"
 
   def install
     ENV["REV"] = version.to_s
@@ -65,9 +71,7 @@ class Avidemux < Formula
       args = std_cmake_args
       args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
       args << "-DGETTEXT_INCLUDE_DIR=#{Formula["gettext"].opt_include}"
-      # TODO: We could depend on SDL and then remove the `-DSDL=OFF` arguments
-      # but I got build errors about NSview.
-      args << "-DSDL=OFF"
+      args << "-DSDL=OFF" if build.without? "sdl2"
 
       if build.with? "debug"
         ENV.O2
@@ -98,7 +102,7 @@ class Avidemux < Formula
         args = std_cmake_args
         args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
         args << "-DAVIDEMUX_LIB_DIR=#{lib}"
-        args << "-DSDL=OFF"
+        args << "-DSDL=OFF" if build.without? "sdl2"
         args << "../avidemux/#{interface}"
         system "cmake", *args
         system "make"
