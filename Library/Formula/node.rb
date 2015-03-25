@@ -1,10 +1,9 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz"
-  sha256 "9700e23af4e9b3643af48cef5f2ad20a1331ff531a12154eef2bfb0bb1682e32"
+  url "https://nodejs.org/dist/v0.12.1/node-v0.12.1.tar.gz"
+  sha256 "30693376519c9736bcb22d44513252aee1d9463d78ac6c744ecb6d13fd91d680"
   head "https://github.com/joyent/node.git", :branch => "v0.12"
-  revision 1
 
   bottle do
     sha256 "145227f47243194323891218b32e6acca98a994770156c631978d29a5a5d3cc8" => :yosemite
@@ -31,8 +30,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.7.1.tgz"
-    sha256 "dda316a9abe1881c220e7db3b04e240e6f44179825d3c143b72e4734d2ac1046"
+    url "https://registry.npmjs.org/npm/-/npm-2.7.3.tgz"
+    sha256 "8cc5c6e8304b0b934027a8211173147911dac623f2f84bb6477ea3121f1a839d"
   end
 
   def install
