@@ -8,10 +8,9 @@ class Lnav < Formula
   head 'https://github.com/tstack/lnav.git'
 
   bottle do
-    revision 1
-    sha256 "2cd3c6c2a599c490ad66ce2800bb649cf9b41ba1c7d41ef173cdedaac179b303" => :yosemite
-    sha256 "7aeefa9382d88272bf9ede19a03301db5853416f07f34e7a76b3285b0d29c4a6" => :mavericks
-    sha256 "74c793c46875ff5b5349f88d322e6004dd522aded06e8a2482e973201dbc26dd" => :mountain_lion
+    sha256 "8c178133d92e3fe244d60aef590f17943ae494a12a5b0be40bad789dc6646de2" => :yosemite
+    sha256 "ab85080c57d96be9a391ce8e1eff67fda43653c1f0328290d4ba2b8253ca3af0" => :mavericks
+    sha256 "26892fd713417b2b84a6615a63d9492a683f53a7fb497dd2b4a681d7267cc2a5" => :mountain_lion
   end
 
   depends_on 'readline'
