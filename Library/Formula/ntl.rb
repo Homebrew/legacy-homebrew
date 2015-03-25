@@ -4,6 +4,7 @@ class Ntl < Formula
   homepage "http://www.shoup.net/ntl"
   url "http://www.shoup.net/ntl/ntl-6.2.1.tar.gz"
   sha1 "3b9ab3bedb0b2e9b5ee322d60745be5caf1c743f"
+
   depends_on "gmp" => :optional
 
   bottle do
@@ -15,9 +16,7 @@ class Ntl < Formula
 
   def install
     args = ["PREFIX=#{prefix}"]
-    if build.with? "gmp"
-      args << "NTL_GMP_LIP=on"
-    end
+    args << "NTL_GMP_LIP=on" if build.with? "gmp"
     cd "src" do
       system "./configure", *args
       system "make"
