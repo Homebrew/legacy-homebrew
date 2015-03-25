@@ -1,14 +1,23 @@
 # Help! Wanted: someone who can get Avidemux working with SDL.
 class Avidemux < Formula
   homepage "http://fixounet.free.fr/avidemux/"
-  url "https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz"
-  sha256 "02998c235a89894d184d745c94cac37b78bc20e9eb44b318ee2bb83f2507e682"
-  revision 1
+
+  stable do
+    url "https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz"
+    sha256 "02998c235a89894d184d745c94cac37b78bc20e9eb44b318ee2bb83f2507e682"
+
+    # remove ffmpeg binary from targets (fixed upstream)
+    # https://github.com/mean00/avidemux2/commit/bf018562bc6cff300edb1e59ee060a10df902bdc
+    # http://avidemux.org/smuf/index.php/topic,16379.15.html
+    patch :DATA
+  end
 
   head do
     url "https://github.com/mean00/avidemux2.git"
     depends_on "x265"
   end
+
+  revision 1
 
   bottle do
     sha256 "35f7e570a81d8b1fbeb406e04de695952eccb353ee2fad49ff1cf523b7fc86ac" => :yosemite
@@ -154,3 +163,16 @@ class Avidemux < Formula
     system "#{bin}/avidemux_cli", "--help"
   end
 end
+
+__END__
+diff -u a/cmake/admFFmpegBuild.cmake b/cmake/admFFmpegBuild.cmake
+--- a/cmake/admFFmpegBuild.cmake	2014-03-12 00:15:23 -0600
++++ b/cmake/admFFmpegBuild.cmake	2015-03-25 01:39:33 -0600
+@@ -282,7 +282,6 @@
+ 						"${FFMPEG_BINARY_DIR}/libavutil/${LIBAVUTIL_LIB}"
+ 						"${FFMPEG_BINARY_DIR}/libpostproc/${LIBPOSTPROC_LIB}"
+ 						"${FFMPEG_BINARY_DIR}/libswscale/${LIBSWSCALE_LIB}"
+-						"${FFMPEG_BINARY_DIR}/ffmpeg${CMAKE_EXECUTABLE_SUFFIX}"
+ 				   COMMAND ${BASH_EXECUTABLE} ffmpeg_make.sh WORKING_DIRECTORY "${FFMPEG_BINARY_DIR}")
+ 
+ # Add and install libraries
