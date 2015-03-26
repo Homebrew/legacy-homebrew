@@ -4,8 +4,8 @@ class Encfs < Formula
   homepage 'https://vgough.github.io/encfs/'
 
   stable do
-    url 'https://github.com/vgough/encfs/archive/v1.8.tar.gz'
-    sha1 'f3723aa7ba64ad3fc6087dba6c26bf6d54762085'
+    url 'https://github.com/vgough/encfs/archive/v1.8.1.tar.gz'
+    sha1 '107e1bcc4b8fd60821a7c8dd99f0c7c37cf5619c'
   end
 
   head 'https://github.com/vgough/encfs.git'
