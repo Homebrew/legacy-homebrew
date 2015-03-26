@@ -15,11 +15,10 @@ class Transmission < Formula
     depends_on "intltool" => :build
     depends_on "gettext"
   end
-  depends_on "homebrew/homebrew-dupes/libiconv" unless OS.mac?
 
   def install
     ENV.append "LDFLAGS", "-framework Foundation -prebind" if OS.mac?
-    ENV.append "LDFLAGS", "-liconv"
+    ENV.append "LDFLAGS", "-liconv" if OS.mac?
 
     args = %W[--disable-dependency-tracking
               --prefix=#{prefix}
