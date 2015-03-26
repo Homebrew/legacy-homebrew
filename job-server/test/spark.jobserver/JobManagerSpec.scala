@@ -206,7 +206,7 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
       expectMsgPF(1 seconds, "Did not get JobResult") {
         case JobStarted(id, _, _) => {
           manager ! KillJob(id)
-          expectNoMsg() //TODO: get somehow an event that job failed or job finished
+          expectMsgClass(classOf[JobKilled])
         }
       }
     }

@@ -59,7 +59,7 @@ with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with T
   import CommonMessages._
 
   val errorEvents: Set[Class[_]] = Set(classOf[JobErroredOut], classOf[JobValidationFailed],
-    classOf[NoJobSlotsAvailable])
+    classOf[NoJobSlotsAvailable], classOf[JobKilled])
   val asyncEvents = Set(classOf[JobStarted])
   val syncEvents = Set(classOf[JobResult])
   val allEvents = errorEvents ++ asyncEvents ++ syncEvents ++ Set(classOf[JobFinished])
