@@ -13,6 +13,14 @@ class Sshguard < Formula
     sha1 "68cd0910d310e4d23e7752dee1b077ccfe715c0b"
   end
 
+  # Fix parsing problem (chokes on "via")
+  # See:
+  # http://sourceforge.net/p/sshguard/mailman/message/33330543/
+  patch do
+    url "https://bitbucket.org/sshguard/sshguard/commits/fc01ad308c10ceb4164e23967b4713b9e7e533d7/raw/"
+    sha256 "b582206fd286a89b15f41c44460de3c33386563a5c01876f85b88018feea786c"
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
