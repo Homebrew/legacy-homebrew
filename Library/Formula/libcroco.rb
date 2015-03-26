@@ -5,10 +5,9 @@ class Libcroco < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "055cf72538ad7dc86cec135bf207347cfb6c4111" => :yosemite
-    sha1 "33f4e055880495f080be7253315c5adb064e7dd7" => :mavericks
-    sha1 "52cd96351c6cbdce21f396823813b79dd60c4f09" => :mountain_lion
+    sha256 "a7068d12230f2efc87159f09c369b18ea80c6a21273f5fc79677236301aeaef9" => :yosemite
+    sha256 "0941b2151777aec8e20df74979185a5fb2aa0794d009a24aa83011e12946e490" => :mavericks
+    sha256 "13ee66e3ce36c2728c3120984db89cae4268d9bcfa48446a75bb026ebedde513" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
