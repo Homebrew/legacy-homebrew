@@ -1,8 +1,8 @@
 class Pyenv < Formula
   homepage "https://github.com/yyuu/pyenv"
   head "https://github.com/yyuu/pyenv.git"
-  url "https://github.com/yyuu/pyenv/archive/v20150226.tar.gz"
-  sha1 "31d681c33e1350c438c4bdce62a53ed58f8d1237"
+  url "https://github.com/yyuu/pyenv/archive/v20150326.tar.gz"
+  sha256 "faee42d2a409ca8af2d65987eca88584bfef0dfc686150377af5850358db6b37"
 
   bottle do
     sha1 "4d256de5936dbb689726862db3521690eb27bf58" => :yosemite
