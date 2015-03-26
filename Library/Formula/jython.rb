@@ -6,9 +6,8 @@ class Jython < Formula
   sha1 '6b6ac4354733b6d68d51acf2f3d5c823a10a4ce4'
 
   devel do
-    url 'http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7-b3/jython-installer-2.7-b3.jar'
-    version '2.7-b3'
-    sha1 '02fb63769e2620eae3e49f2800e85b3243beca14'
+    url 'http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7-rc1/jython-installer-2.7-rc1.jar'
+    sha1 '772b88e129612cc30636b36d3d9ea47bd18666ec'
   end
 
   def install
