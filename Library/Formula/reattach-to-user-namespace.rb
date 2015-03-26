@@ -5,6 +5,13 @@ class ReattachToUserNamespace < Formula
 
   head "https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git"
 
+  bottle do
+    cellar :any
+    sha256 "30aa385bfb31849afac326e1e8c429b39eee2aee7db4e26af22426faef08f6f5" => :yosemite
+    sha256 "50b7105b92e65585234193864bc2d813c4c5b647e709f23aa34a01808badd85b" => :mavericks
+    sha256 "ae205ae3b48cf22831c790fb3a2d24f5910bccebb413a14b94d20d55ed1c32ef" => :mountain_lion
+  end
+
   option "with-wrap-pbcopy-and-pbpaste", "Include wrappers for pbcopy/pbpaste that shim in this fix"
   option "with-wrap-launchctl", "Include wrapper for launchctl with this fix"
   deprecated_option "wrap-pbcopy-and-pbpaste" => "with-wrap-pbcopy-and-pbpaste"
