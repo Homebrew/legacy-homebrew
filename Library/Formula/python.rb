@@ -88,10 +88,8 @@ class Python < Formula
       --enable-ipv6
       --datarootdir=#{share}
       --datadir=#{share}
-      --enable-framework=#{frameworks}
     ]
-
-    args << "--enable-shared" if OS.linux?
+    args << (OS.mac? ? "--enable-framework=#{frameworks}" : "--enable-shared")
     args << "--without-gcc" if ENV.compiler == :clang
 
     distutils_fix_superenv(args)
