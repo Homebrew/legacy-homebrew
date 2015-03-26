@@ -37,10 +37,8 @@ class Pathname
   def install_p(src, new_basename)
     raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
 
-    dst = join(new_basename)
-
     src = src.to_s
-    dst = dst.to_s
+    dst = join(new_basename).to_s
 
     dst = yield(src, dst) if block_given?
     return unless dst

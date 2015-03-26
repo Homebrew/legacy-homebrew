@@ -95,103 +95,6 @@ class PathnameExtensionTests < Homebrew::TestCase
     refute_predicate @file, :exist?
   end
 
-  def setup_install_test
-    cd @src do
-      (@src+'a.txt').write 'This is sample file a.'
-      (@src+'b.txt').write 'This is sample file b.'
-      yield
-    end
-  end
-
-  def test_install
-    setup_install_test do
-      @dst.install 'a.txt'
-
-      assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
-      refute_predicate @dst+"b.txt", :exist?, "b.txt was installed."
-    end
-  end
-
-  def test_install_list
-    setup_install_test do
-      @dst.install %w[a.txt b.txt]
-
-      assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
-      assert_predicate @dst+"b.txt", :exist?, "b.txt was not installed"
-    end
-  end
-
-  def test_install_glob
-    setup_install_test do
-      @dst.install Dir['*.txt']
-
-      assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
-      assert_predicate @dst+"b.txt", :exist?, "b.txt was not installed"
-    end
-  end
-
-  def test_install_directory
-    setup_install_test do
-      mkdir_p 'bin'
-      mv Dir['*.txt'], 'bin'
-
-      @dst.install 'bin'
-
-      assert_predicate @dst+"bin/a.txt", :exist?, "a.txt was not installed"
-      assert_predicate @dst+"bin/b.txt", :exist?, "b.txt was not installed"
-    end
-  end
-
-  def test_install_rename
-    setup_install_test do
-      @dst.install 'a.txt' => 'c.txt'
-
-      assert_predicate @dst+"c.txt", :exist?, "c.txt was not installed"
-      refute_predicate @dst+"a.txt", :exist?, "a.txt was installed but not renamed"
-      refute_predicate @dst+"b.txt", :exist?, "b.txt was installed"
-    end
-  end
-
-  def test_install_rename_more
-    setup_install_test do
-      @dst.install({'a.txt' => 'c.txt', 'b.txt' => 'd.txt'})
-
-      assert_predicate @dst+"c.txt", :exist?, "c.txt was not installed"
-      assert_predicate @dst+"d.txt", :exist?, "d.txt was not installed"
-      refute_predicate @dst+"a.txt", :exist?, "a.txt was installed but not renamed"
-      refute_predicate @dst+"b.txt", :exist?, "b.txt was installed but not renamed"
-    end
-  end
-
-  def test_install_rename_directory
-    setup_install_test do
-      mkdir_p 'bin'
-      mv Dir['*.txt'], 'bin'
-
-      @dst.install 'bin' => 'libexec'
-
-      refute_predicate @dst+"bin", :exist?, "bin was installed but not renamed"
-      assert_predicate @dst+"libexec/a.txt", :exist?, "a.txt was not installed"
-      assert_predicate @dst+"libexec/b.txt", :exist?, "b.txt was not installed"
-    end
-  end
-
-  def test_install_symlink
-    setup_install_test do
-      mkdir_p 'bin'
-      mv Dir['*.txt'], 'bin'
-
-      @dst.install_symlink @src+'bin'
-
-      assert_predicate @dst+"bin", :symlink?
-      assert_predicate @dst+"bin", :directory?
-      assert_predicate @dst+"bin/a.txt", :exist?
-      assert_predicate @dst+"bin/b.txt", :exist?
-
-      assert_predicate (@dst+"bin").readlink, :relative?
-    end
-  end
-
   def test_install_creates_intermediate_directories
     touch @file
     refute_predicate @dir, :directory?
@@ -209,5 +112,85 @@ class PathnameExtensionTests < Homebrew::TestCase
 
     assert_equal "a", File.read(@dir+@file.basename)
     assert_equal "b", File.read(@dir+"#{@file.basename}.default")
+  end
+end
+
+class PathnameInstallTests < PathnameExtensionTests
+  def setup
+    super
+    (@src+"a.txt").write "This is sample file a."
+    (@src+"b.txt").write "This is sample file b."
+  end
+
+  def test_install
+    @dst.install @src+"a.txt"
+
+    assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
+    refute_predicate @dst+"b.txt", :exist?, "b.txt was installed."
+  end
+
+  def test_install_list
+    @dst.install [@src+"a.txt", @src+"b.txt"]
+
+    assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
+    assert_predicate @dst+"b.txt", :exist?, "b.txt was not installed"
+  end
+
+  def test_install_glob
+    @dst.install Dir[@src+"*.txt"]
+
+    assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
+    assert_predicate @dst+"b.txt", :exist?, "b.txt was not installed"
+  end
+
+  def test_install_directory
+    bin = @src+"bin"
+    bin.mkpath
+    mv Dir[@src+"*.txt"], bin
+    @dst.install bin
+
+    assert_predicate @dst+"bin/a.txt", :exist?, "a.txt was not installed"
+    assert_predicate @dst+"bin/b.txt", :exist?, "b.txt was not installed"
+  end
+
+  def test_install_rename
+    @dst.install @src+"a.txt" => "c.txt"
+
+    assert_predicate @dst+"c.txt", :exist?, "c.txt was not installed"
+    refute_predicate @dst+"a.txt", :exist?, "a.txt was installed but not renamed"
+    refute_predicate @dst+"b.txt", :exist?, "b.txt was installed"
+  end
+
+  def test_install_rename_more
+    @dst.install(@src+"a.txt" => "c.txt", @src+"b.txt" => "d.txt")
+
+    assert_predicate @dst+"c.txt", :exist?, "c.txt was not installed"
+    assert_predicate @dst+"d.txt", :exist?, "d.txt was not installed"
+    refute_predicate @dst+"a.txt", :exist?, "a.txt was installed but not renamed"
+    refute_predicate @dst+"b.txt", :exist?, "b.txt was installed but not renamed"
+  end
+
+  def test_install_rename_directory
+    bin = @src+"bin"
+    bin.mkpath
+    mv Dir[@src+"*.txt"], bin
+    @dst.install bin => "libexec"
+
+    refute_predicate @dst+"bin", :exist?, "bin was installed but not renamed"
+    assert_predicate @dst+"libexec/a.txt", :exist?, "a.txt was not installed"
+    assert_predicate @dst+"libexec/b.txt", :exist?, "b.txt was not installed"
+  end
+
+  def test_install_symlink
+    bin = @src+"bin"
+    bin.mkpath
+    mv Dir[@src+"*.txt"], bin
+    @dst.install_symlink bin
+
+    assert_predicate @dst+"bin", :symlink?
+    assert_predicate @dst+"bin", :directory?
+    assert_predicate @dst+"bin/a.txt", :exist?
+    assert_predicate @dst+"bin/b.txt", :exist?
+    assert_predicate (@dst+"bin").readlink, :relative?
   end
 end
