@@ -95,6 +95,27 @@ class PathnameExtensionTests < Homebrew::TestCase
     refute_predicate @file, :exist?
   end
 
+  def test_install_creates_intermediate_directories
+    touch @file
+    refute_predicate @dir, :directory?
+    @dir.install(@file)
+    assert_predicate @dir, :directory?
+  end
+
+  def test_install_renamed
+    @dir.extend(InstallRenamed)
+
+    @file.write "a"
+    @dir.install @file
+    @file.write "b"
+    @dir.install @file
+
+    assert_equal "a", File.read(@dir+@file.basename)
+    assert_equal "b", File.read(@dir+"#{@file.basename}.default")
+  end
+end
+
+class PathnameInstallTests < PathnameExtensionTests
   def setup_install_test
     (@src+'a.txt').write 'This is sample file a.'
     (@src+'b.txt').write 'This is sample file b.'
@@ -185,24 +206,5 @@ class PathnameExtensionTests < Homebrew::TestCase
     assert_predicate @dst+"bin/a.txt", :exist?
     assert_predicate @dst+"bin/b.txt", :exist?
     assert_predicate (@dst+"bin").readlink, :relative?
-  end
-
-  def test_install_creates_intermediate_directories
-    touch @file
-    refute_predicate @dir, :directory?
-    @dir.install(@file)
-    assert_predicate @dir, :directory?
-  end
-
-  def test_install_renamed
-    @dir.extend(InstallRenamed)
-
-    @file.write "a"
-    @dir.install @file
-    @file.write "b"
-    @dir.install @file
-
-    assert_equal "a", File.read(@dir+@file.basename)
-    assert_equal "b", File.read(@dir+"#{@file.basename}.default")
   end
 end
