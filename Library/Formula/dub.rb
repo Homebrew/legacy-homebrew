@@ -6,13 +6,13 @@ class Dub < Formula
   head "https://github.com/D-Programming-Language/dub.git", :shallow => false
 
   devel do
-    url "https://github.com/D-Programming-Language/dub/archive/v0.9.22-rc.1.tar.gz"
-    sha1 "8ca2ac66675ce869cbf4930e989bb6fa41dc61b8"
-    version "0.9.22-rc.1"
+    url "https://github.com/D-Programming-Language/dub/archive/v0.9.23-rc.1.tar.gz"
+    sha1 "3fe35139a58d9ceaee1e920940dc5e67f2b1f178"
+    version "0.9.23-rc.1"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "dmd"  => :build
+  depends_on "dmd" => :build
 
   def install
     system "./build.sh"
