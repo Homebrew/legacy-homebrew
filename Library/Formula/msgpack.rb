@@ -7,10 +7,9 @@ class Msgpack < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "2db320f8fbaacf5498ed272bbd4b3aefc0549441" => :yosemite
-    sha1 "ad96cca40edebefeb5594147c4476840ad9b3d3c" => :mavericks
-    sha1 "463ffe2e1df919f83adb3050ab2623b1c34b6ce6" => :mountain_lion
+    sha256 "b8a0d13a117208b675e398be1d2160d40c31aac1f9bf8a54134818ab13c13e0f" => :yosemite
+    sha256 "0e510b434f4e7aae0bc296deb0a6b116a8a89efcbfe6c6727925f44069dda6d6" => :mavericks
+    sha256 "60b1eaa967cd9f8be59f9f2f27e0fa936fc224d77a6f794db6e62dc2f4071935" => :mountain_lion
   end
 
   fails_with :llvm do
