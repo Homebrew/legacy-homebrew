@@ -116,13 +116,13 @@ class PathnameExtensionTests < Homebrew::TestCase
 end
 
 class PathnameInstallTests < PathnameExtensionTests
-  def setup_install_test
-    (@src+'a.txt').write 'This is sample file a.'
-    (@src+'b.txt').write 'This is sample file b.'
+  def setup
+    super
+    (@src+"a.txt").write "This is sample file a."
+    (@src+"b.txt").write "This is sample file b."
   end
 
   def test_install
-    setup_install_test
     @dst.install @src+"a.txt"
 
     assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
@@ -130,7 +130,6 @@ class PathnameInstallTests < PathnameExtensionTests
   end
 
   def test_install_list
-    setup_install_test
     @dst.install [@src+"a.txt", @src+"b.txt"]
 
     assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
@@ -138,7 +137,6 @@ class PathnameInstallTests < PathnameExtensionTests
   end
 
   def test_install_glob
-    setup_install_test
     @dst.install Dir[@src+"*.txt"]
 
     assert_predicate @dst+"a.txt", :exist?, "a.txt was not installed"
@@ -146,7 +144,6 @@ class PathnameInstallTests < PathnameExtensionTests
   end
 
   def test_install_directory
-    setup_install_test
     bin = @src+"bin"
     bin.mkpath
     mv Dir[@src+"*.txt"], bin
@@ -157,7 +154,6 @@ class PathnameInstallTests < PathnameExtensionTests
   end
 
   def test_install_rename
-    setup_install_test
     @dst.install @src+"a.txt" => "c.txt"
 
     assert_predicate @dst+"c.txt", :exist?, "c.txt was not installed"
@@ -166,7 +162,6 @@ class PathnameInstallTests < PathnameExtensionTests
   end
 
   def test_install_rename_more
-    setup_install_test
     @dst.install(@src+"a.txt" => "c.txt", @src+"b.txt" => "d.txt")
 
     assert_predicate @dst+"c.txt", :exist?, "c.txt was not installed"
@@ -176,7 +171,6 @@ class PathnameInstallTests < PathnameExtensionTests
   end
 
   def test_install_rename_directory
-    setup_install_test
     bin = @src+"bin"
     bin.mkpath
     mv Dir[@src+"*.txt"], bin
@@ -188,7 +182,6 @@ class PathnameInstallTests < PathnameExtensionTests
   end
 
   def test_install_symlink
-    setup_install_test
     bin = @src+"bin"
     bin.mkpath
     mv Dir[@src+"*.txt"], bin
