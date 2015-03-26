@@ -1,7 +1,7 @@
 class Pypy < Formula
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-src.tar.bz2"
-  sha1 "1d215a22ea16581de338700d556b21a8c02b4eff"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.1-src.tar.bz2"
+  sha256 "ddb3a580b1ee99c5a699172d74be91c36dda9a38946d4731d8c6a63120a3ba2a"
 
   bottle do
     cellar :any
