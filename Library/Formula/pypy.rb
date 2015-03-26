@@ -1,7 +1,7 @@
 class Pypy < Formula
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-src.tar.bz2"
-  sha1 "1d215a22ea16581de338700d556b21a8c02b4eff"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.1-src.tar.bz2"
+  sha256 "ddb3a580b1ee99c5a699172d74be91c36dda9a38946d4731d8c6a63120a3ba2a"
 
   bottle do
     cellar :any
@@ -25,8 +25,8 @@ class Pypy < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
-    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-14.3.1.tar.gz"
+    sha256 "8d5712b7debddddf75ba98e069036b138c89430497037a406b36e57f9bcfee20"
   end
 
   resource "pip" do
