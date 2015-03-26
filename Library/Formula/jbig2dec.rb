@@ -1,9 +1,7 @@
-require 'formula'
-
 class Jbig2dec < Formula
-  homepage 'http://jbig2dec.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/jbig2dec/jbig2dec/0.11/jbig2dec-0.11.tar.gz'
-  sha1 '349cd765616db7aac1f4dd1d45957d1da65ea925'
+  homepage "http://ghostscript.com/jbig2dec.html"
+  url "http://downloads.ghostscript.com/public/jbig2dec/jbig2dec-0.12.tar.gz"
+  sha256 "bcc5f2cc75ee46e9a2c3c68d4a1b740280c772062579a5d0ceda24bee2e5ebf0"
 
   bottle do
     cellar :any
@@ -12,9 +10,15 @@ class Jbig2dec < Formula
     sha1 "cbb4dfe055be243427210d03304c20760fb00bd7" => :lion
   end
 
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "libtool" => :build
+
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "autoreconf", "-fvi" # error: cannot find install-sh
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--disable-silent-rules", "--without-libpng"
+    system "make", "install"
   end
 
   test do
