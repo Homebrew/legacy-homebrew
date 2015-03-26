@@ -1,8 +1,7 @@
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.8.4.tar.gz"
-  sha1 "74be0c102506d14940bc76f5c5659618368c41ec"
-  revision 1
+  url "http://releases.ansible.com/ansible/ansible-1.9.0.1.tar.gz"
+  sha1 "a61c0dfdb3f395546310999d2b75c2ce422fc1ed"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
@@ -91,12 +90,17 @@ class Ansible < Formula
     sha1 "06e4396e886133fdc0b10147c388ed82b0586c83"
   end
 
+  resource "kerberos" do
+    url "https://pypi.python.org/packages/source/k/kerberos/kerberos-1.1.1.tar.gz"
+    sha1 "305cc1ea1e7a209402bca30fbb74a2ca8f2f539d"
+  end
+
   def install
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
     res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
-    res += %w[isodate xmltodict pywinrm] # windows support
+    res += %w[isodate xmltodict kerberos pywinrm] # windows support
     res += %w[six requests websocket-client docker-py] # docker support
     res += %w[pyasn1 python-keyczar] # accelerate support
     res.each do |r|
