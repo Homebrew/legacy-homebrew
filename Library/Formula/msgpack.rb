@@ -2,8 +2,8 @@ require 'formula'
 
 class Msgpack < Formula
   homepage 'http://msgpack.org/'
-  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz"
-  sha256 "6139614b4142df3773d74e9d9a4dbb6dd0430103cfa7b083e723cde0ec1e7fdd"
+  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.0.1/msgpack-1.0.1.tar.gz"
+  sha256 "a070d27d16133fe508fca72af434cd9e114709fffc1973de3dd3d3e6a987e250"
 
   bottle do
     cellar :any
