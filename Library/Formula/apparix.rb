@@ -1,6 +1,7 @@
 class Apparix < Formula
   homepage "http://micans.org/apparix/"
   url "http://micans.org/apparix/src/apparix-11-062.tar.gz"
+  version "11-062"
   sha256 "211bb5f67b32ba7c3e044a13e4e79eb998ca017538e9f4b06bc92d5953615235"
 
   def install
