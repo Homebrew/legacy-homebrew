@@ -7,9 +7,9 @@ class MidnightCommander < Formula
   sha256 '6b1f74efbdf394bfab084f4d2ea2e72173de5f12cd42be2533ca2c3b72edb8e6'
 
   bottle do
-    sha1 "b9b1e2281c7eac14d6cecdc82835915062b7e761" => :mavericks
-    sha1 "2eb8feba7033341e66122caa13dc83f3c83dcbe2" => :mountain_lion
-    sha1 "b7bc3c51eb90f5d97b79c3139b086683523f9f7b" => :lion
+    sha256 "f970c724cc382ae72b6f96b52d7b1150103f92ff7264468f92089adb72f7399f" => :yosemite
+    sha256 "ecfe69da36ed93971799b4f521fbf2cc5e88f4590820c8cc6950210493b510ce" => :mavericks
+    sha256 "e666054bd7bd889492f0298df8b2a5816cb4474b7834634c481753c65a6860db" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
