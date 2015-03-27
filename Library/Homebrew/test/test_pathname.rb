@@ -3,7 +3,7 @@ require 'tmpdir'
 require 'extend/pathname'
 require 'install_renamed'
 
-class PathnameExtensionTests < Homebrew::TestCase
+module PathnameTestExtension
   include FileUtils
 
   def setup
@@ -17,6 +17,10 @@ class PathnameExtensionTests < Homebrew::TestCase
     rmtree(@src)
     rmtree(@dst)
   end
+end
+
+class PathnameTests < Homebrew::TestCase
+  include PathnameTestExtension
 
   def test_rmdir_if_possible
     mkdir_p @dir
@@ -103,19 +107,40 @@ class PathnameExtensionTests < Homebrew::TestCase
   end
 
   def test_install_renamed
-    @dir.extend(InstallRenamed)
+    @dst.extend(InstallRenamed)
 
     @file.write "a"
-    @dir.install @file
+    @dst.install @file
     @file.write "b"
-    @dir.install @file
+    @dst.install @file
 
-    assert_equal "a", File.read(@dir+@file.basename)
-    assert_equal "b", File.read(@dir+"#{@file.basename}.default")
+    assert_equal "a", File.read(@dst+@file.basename)
+    assert_equal "b", File.read(@dst+"#{@file.basename}.default")
+  end
+
+  def test_install_renamed_directory
+    @dst.extend(InstallRenamed)
+    @file.write "a"
+    @dst.install @src
+    assert_equal "a", File.read(@dst+@src.basename+@file.basename)
+  end
+
+  def test_cp_path_sub_file
+    @file.write "a"
+    @file.cp_path_sub @src, @dst
+    assert_equal "a", File.read(@dst+"foo")
+  end
+
+  def test_cp_path_sub_directory
+    @dir.mkpath
+    @dir.cp_path_sub @src, @dst
+    assert_predicate @dst+@dir.basename, :directory?
   end
 end
 
-class PathnameInstallTests < PathnameExtensionTests
+class PathnameInstallTests < Homebrew::TestCase
+  include PathnameTestExtension
+
   def setup
     super
     (@src+"a.txt").write "This is sample file a."

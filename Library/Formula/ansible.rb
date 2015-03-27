@@ -1,16 +1,14 @@
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.8.4.tar.gz"
-  sha1 "74be0c102506d14940bc76f5c5659618368c41ec"
-  revision 1
+  url "http://releases.ansible.com/ansible/ansible-1.9.0.1.tar.gz"
+  sha1 "a61c0dfdb3f395546310999d2b75c2ce422fc1ed"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 1
-    sha256 "a2145b4dc522b42647908088ef7cf7a9f582cec2f16f2fbad4554b60aaccf51e" => :yosemite
-    sha256 "5e0fab60360ca91db9c6975bba1810b9a883a474a82f0188fe8f718016f6d391" => :mavericks
-    sha256 "a0c2da4d196e9c4c994511705f40f42583c96683cf0bfe02cd76a810b54e0e72" => :mountain_lion
+    sha256 "1a2744a357106cfea1fe35b652773f3861a332e25cb7729085e57d7db87397af" => :yosemite
+    sha256 "4f25bb0868752ee1ab7205b77f7c1f7cef06ea63405f60c4a88f87d8fab242b5" => :mavericks
+    sha256 "0b2b6b6796b4fe68ea883d4a3f7bdf6aaec6aaf5d092a7924ab3911196926530" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -91,12 +89,17 @@ class Ansible < Formula
     sha1 "06e4396e886133fdc0b10147c388ed82b0586c83"
   end
 
+  resource "kerberos" do
+    url "https://pypi.python.org/packages/source/k/kerberos/kerberos-1.1.1.tar.gz"
+    sha1 "305cc1ea1e7a209402bca30fbb74a2ca8f2f539d"
+  end
+
   def install
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
     res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
-    res += %w[isodate xmltodict pywinrm] # windows support
+    res += %w[isodate xmltodict kerberos pywinrm] # windows support
     res += %w[six requests websocket-client docker-py] # docker support
     res += %w[pyasn1 python-keyczar] # accelerate support
     res.each do |r|
