@@ -1,9 +1,7 @@
-require 'formula'
-
 class Jmeter < Formula
-  homepage 'https://jmeter.apache.org/'
-  url 'https://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.13.tgz'
-  sha1 'a7699b1d61b8e6095d6d1b5388a9714a47d568e9'
+  homepage "https://jmeter.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.13.tgz"
+  sha1 "a7699b1d61b8e6095d6d1b5388a9714a47d568e9"
 
   resource "jmeterplugins-standard" do
     url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.2.1.zip"
@@ -40,7 +38,6 @@ class Jmeter < Formula
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
-    prefix.install_metafiles
     libexec.install Dir["*"]
     bin.write_exec_script libexec/"bin/jmeter"
 

@@ -6,7 +6,6 @@ class Liquibase < Formula
   def install
     rm_f Dir["*.bat"]
     chmod 0755, "liquibase"
-    prefix.install_metafiles
     libexec.install Dir["*"]
     bin.install_symlink libexec+"liquibase"
   end

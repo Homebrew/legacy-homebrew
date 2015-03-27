@@ -11,7 +11,6 @@ class Findbugs < Formula
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
-    prefix.install_metafiles
     libexec.install Dir["*"]
 
     bin.write_exec_script libexec/"bin/fb"

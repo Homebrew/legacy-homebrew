@@ -8,7 +8,6 @@ class Activemq < Formula
   def install
     rm_rf Dir["bin/linux-x86-*"]
 
-    prefix.install_metafiles
     libexec.install Dir["*"]
 
     (bin/"activemq").write_env_script libexec/"bin/activemq", Language::Java.java_home_env("1.6+")

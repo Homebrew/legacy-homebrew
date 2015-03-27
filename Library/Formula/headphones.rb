@@ -22,13 +22,12 @@ class Headphones < Formula
   end
 
   def install
-    # TODO - strip down to the minimal install
-    prefix.install_metafiles
+    # TODO: strip down to the minimal install
     libexec.install Dir["*"]
 
     ENV["CHEETAH_INSTALL_WITHOUT_SETUPTOOLS"] = "1"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+    install_args = ["setup.py", "install", "--prefix=#{libexec}"]
 
     resource("Markdown").stage { system "python", *install_args }
     resource("Cheetah").stage { system "python", *install_args }
