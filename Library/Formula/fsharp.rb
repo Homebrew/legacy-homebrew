@@ -2,7 +2,8 @@ require "formula"
 
 class Fsharp < Formula
   homepage "http://fsharp.org/"
-  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.25"
+  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.31",
+    :revision => "1f79c0455fb8b5ec816985f922413894ce19359a"
 
   bottle do
     sha1 "099b7e8179570aca78ab427a8d8ce25e0b3f0cd6" => :mavericks
