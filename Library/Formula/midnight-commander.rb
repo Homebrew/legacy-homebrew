@@ -30,8 +30,6 @@ class MidnightCommander < Formula
   end
 
   test do
-    output = `#{bin}/mc -V`
-    assert_match "GNU Midnight Commander", output
-    assert_equal 0, $?.exitstatus
+    assert_match "GNU Midnight Commander", shell_output("#{bin}/mc --version")
   end
 end
