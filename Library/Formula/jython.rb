@@ -7,7 +7,6 @@ class Jython < Formula
 
   devel do
     url 'http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7-rc1/jython-installer-2.7-rc1.jar'
-    version '2.7-rc1'
     sha1 '772b88e129612cc30636b36d3d9ea47bd18666ec'
   end
 
