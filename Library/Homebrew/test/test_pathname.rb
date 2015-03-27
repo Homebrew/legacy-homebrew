@@ -124,6 +124,18 @@ class PathnameTests < Homebrew::TestCase
     @dst.install @src
     assert_equal "a", File.read(@dst+@src.basename+@file.basename)
   end
+
+  def test_cp_path_sub_file
+    @file.write "a"
+    @file.cp_path_sub @src, @dst
+    assert_equal "a", File.read(@dst+"foo")
+  end
+
+  def test_cp_path_sub_directory
+    @dir.mkpath
+    @dir.cp_path_sub @src, @dst
+    assert_predicate @dst+@dir.basename, :directory?
+  end
 end
 
 class PathnameInstallTests < Homebrew::TestCase
