@@ -3,7 +3,7 @@ require 'tmpdir'
 require 'extend/pathname'
 require 'install_renamed'
 
-class PathnameExtensionTests < Homebrew::TestCase
+module PathnameTestExtension
   include FileUtils
 
   def setup
@@ -17,6 +17,10 @@ class PathnameExtensionTests < Homebrew::TestCase
     rmtree(@src)
     rmtree(@dst)
   end
+end
+
+class PathnameTests < Homebrew::TestCase
+  include PathnameTestExtension
 
   def test_rmdir_if_possible
     mkdir_p @dir
@@ -115,7 +119,9 @@ class PathnameExtensionTests < Homebrew::TestCase
   end
 end
 
-class PathnameInstallTests < PathnameExtensionTests
+class PathnameInstallTests < Homebrew::TestCase
+  include PathnameTestExtension
+
   def setup
     super
     (@src+"a.txt").write "This is sample file a."
