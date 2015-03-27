@@ -10,9 +10,9 @@ class Ghc < Formula
   end
 
   devel do
-    url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-src.tar.xz"
-    version "7.10.1-rc2"
-    sha256 "766596f9b09b2cdd8bd477754f0e02ea8f7e40e4f5b0522cf585942fb2fec546"
+    url "https://downloads.haskell.org/~ghc/7.10.1-rc3/ghc-7.10.0.20150316-src.tar.xz"
+    version "7.10.1-rc3"
+    sha256 "0f14fe0882132742319166a183ed0a77450be15e19e905e5b2913c694f83a428"
   end
 
   option "32-bit"
@@ -38,9 +38,8 @@ class Ghc < Formula
     end
   else
     resource "binary" do
-      # there is currently no 7.8.4 binary download for darwin
-      url "https://downloads.haskell.org/~ghc/7.8.3/ghc-7.8.3-x86_64-apple-darwin.tar.xz"
-      sha256 "dba74c4cfb3a07d243ef17c4aebe7fafe5b43804468f469fb9b3e5e80ae39e38"
+      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-x86_64-apple-darwin.tar.xz"
+      sha256 "ebb6b0294534abda05af91798b43e2ea02481edacbf3d845a1e5925a211c67e3"
     end
   end
 
@@ -53,8 +52,8 @@ class Ghc < Formula
 
   devel do
     resource "testsuite" do
-      url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-testsuite.tar.xz"
-      sha256 "051d4659421dec257827d7de7df8a99806f4bf575102013dda4006fccee11f76"
+      url "https://downloads.haskell.org/~ghc/7.10.1-rc3/ghc-7.10.0.20150316-testsuite.tar.xz"
+      sha256 "84bd31d24e917249920c3230737e6930450241d0aafb3f8c7cdd0a93183aec0c"
     end
   end
 
