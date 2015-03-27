@@ -1,7 +1,7 @@
 module InstallRenamed
   def install_p(_, new_basename)
     super do |src, dst|
-      if File.directory?(src)
+      if src.directory?
         dst
       else
         append_default_if_different(src, dst)
@@ -25,10 +25,11 @@ module InstallRenamed
 
   private
 
-  def append_default_if_different src, dst
-    if File.file? dst and !FileUtils.identical?(src, dst)
-      dst += ".default"
+  def append_default_if_different(src, dst)
+    if dst.file? && !FileUtils.identical?(src, dst)
+      Pathname.new("#{dst}.default")
+    else
+      dst
     end
-    dst
   end
 end

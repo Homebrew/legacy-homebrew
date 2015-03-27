@@ -37,9 +37,8 @@ class Pathname
   def install_p(src, new_basename)
     raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
 
-    src = src.to_s
-    dst = join(new_basename).to_s
-
+    src = Pathname(src)
+    dst = join(new_basename)
     dst = yield(src, dst) if block_given?
 
     mkpath
@@ -48,7 +47,7 @@ class Pathname
     # is a symlink, and its target is moved first, FileUtils.mv will fail:
     #   https://bugs.ruby-lang.org/issues/7707
     # In that case, use the system "mv" command.
-    if File.symlink? src
+    if src.symlink?
       raise unless Kernel.system 'mv', src, dst
     else
       FileUtils.mv src, dst
