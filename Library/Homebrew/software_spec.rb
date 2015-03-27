@@ -63,7 +63,7 @@ class SoftwareSpec
 
   def bottled?
     bottle_specification.tag?(bottle_tag) && \
-      bottle_specification.compatible_cellar?
+      (bottle_specification.compatible_cellar? || ARGV.force_bottle?)
   end
 
   def bottle &block
