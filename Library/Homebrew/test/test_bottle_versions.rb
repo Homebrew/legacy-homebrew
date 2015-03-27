@@ -75,4 +75,9 @@ class BottleVersionParsingTests < Homebrew::TestCase
     assert_version_detected '22',
       'ngircd-22.mavericks.bottle.tar.gz'
   end
+
+  def test_apparix_style
+    assert_version_detected '11-062',
+      'apparix-11-062.yosemite.bottle.tar.gz'
+  end
 end
