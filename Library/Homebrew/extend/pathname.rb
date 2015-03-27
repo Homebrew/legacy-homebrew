@@ -41,7 +41,6 @@ class Pathname
     dst = join(new_basename).to_s
 
     dst = yield(src, dst) if block_given?
-    return unless dst
 
     mkpath
 
@@ -146,22 +145,17 @@ class Pathname
   def cp_path_sub pattern, replacement
     raise "#{self} does not exist" unless self.exist?
 
-    src = self.to_s
-    dst = src.sub(pattern, replacement)
-    raise "#{src} is the same file as #{dst}" if src == dst
+    dst = sub(pattern, replacement)
 
-    dst_path = Pathname.new dst
+    raise "#{self} is the same file as #{dst}" if self == dst
 
-    if self.directory?
-      dst_path.mkpath
-      return
+    if directory?
+      dst.mkpath
+    else
+      dst.dirname.mkpath
+      dst = yield(self, dst) if block_given?
+      FileUtils.cp(self, dst)
     end
-
-    dst_path.dirname.mkpath
-
-    dst = yield(src, dst) if block_given?
-
-    FileUtils.cp(src, dst)
   end
 
   # extended to support common double extensions
