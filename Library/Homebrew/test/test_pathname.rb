@@ -107,15 +107,15 @@ class PathnameTests < Homebrew::TestCase
   end
 
   def test_install_renamed
-    @dir.extend(InstallRenamed)
+    @dst.extend(InstallRenamed)
 
     @file.write "a"
-    @dir.install @file
+    @dst.install @file
     @file.write "b"
-    @dir.install @file
+    @dst.install @file
 
-    assert_equal "a", File.read(@dir+@file.basename)
-    assert_equal "b", File.read(@dir+"#{@file.basename}.default")
+    assert_equal "a", File.read(@dst+@file.basename)
+    assert_equal "b", File.read(@dst+"#{@file.basename}.default")
   end
 end
 
