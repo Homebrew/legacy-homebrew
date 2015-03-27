@@ -25,8 +25,8 @@ class Pypy < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
-    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-14.3.1.tar.gz"
+    sha256 "8d5712b7debddddf75ba98e069036b138c89430497037a406b36e57f9bcfee20"
   end
 
   resource "pip" do
