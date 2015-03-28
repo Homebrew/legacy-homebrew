@@ -5,14 +5,11 @@ class Uwsgi < Formula
   head "https://github.com/unbit/uwsgi.git"
 
   stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.9.tar.gz"
-    sha1 "318d1d6d4bb57eb48b58361201cdc1cc7feedcbb"
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.10.tar.gz"
+    sha1 "31bae2dac113af8d95dbc9b982df139ff61ce209"
   end
 
   bottle do
-    sha1 "952881effe96067637a123d7f552b58f793fcca3" => :yosemite
-    sha1 "4f0c25cf3b2f5859563803e16607c50c2350cce1" => :mavericks
-    sha1 "0bf33a67f2f6329f9d0aa9819129cd30ec35d36c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
