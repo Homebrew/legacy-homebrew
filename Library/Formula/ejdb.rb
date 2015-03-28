@@ -1,5 +1,3 @@
-require "formula"
-
 class Ejdb < Formula
   homepage "http://ejdb.org"
   url "https://github.com/Softmotions/ejdb/archive/v1.2.5.tar.gz"
