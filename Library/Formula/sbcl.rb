@@ -1,7 +1,7 @@
 class Sbcl < Formula
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.9/sbcl-1.2.9-source.tar.bz2"
-  sha1 "788e38d4c64fa1f99a5297dce72e87f3958e98a1"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.10/sbcl-1.2.10-source.tar.bz2"
+  sha256 "55243d5085278b7d0f80e5b91889f44ff66c195d801b3da26f1f4c696711f685"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
@@ -54,10 +54,6 @@ class Sbcl < Formula
     sha1 "4d08e56e7e261db47ffdfef044149b001e6cd7c1"
   end
 
-  # Restore parallel build support.
-  # See: https://bugs.launchpad.net/sbcl/+bug/1434768
-  patch :DATA
-
   def write_features
     features = []
     features << ":sb-thread" if build.with? "threads"
@@ -109,15 +105,3 @@ class Sbcl < Formula
     assert_equal "4", output.strip
   end
 end
-__END__
---- a/contrib/asdf/Makefile
-+++ b/contrib/asdf/Makefile
-@@ -8,7 +8,7 @@ $(UIOP_FASL):: uiop.lisp ../../output/sbcl.core
-	mkdir -p $(DEST)
-	$(SBCL) --eval '(compile-file #p"SYS:CONTRIB;ASDF;UIOP.LISP" :output-file (parse-native-namestring "$@"))' </dev/null
-
--$(ASDF_FASL):: asdf.lisp ../../output/sbcl.core
-+$(ASDF_FASL):: asdf.lisp ../../output/sbcl.core $(UIOP_FASL)
-	if [ -d asdf-upstream ] ; then rm -rf asdf-upstream ; fi
-	mkdir -p $(DEST)
-	$(SBCL) --eval '(compile-file #p"SYS:CONTRIB;ASDF;ASDF.LISP" :output-file (parse-native-namestring "$@"))' </dev/null
