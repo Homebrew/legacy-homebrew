@@ -1,8 +1,8 @@
 class GnuBarcode < Formula
   homepage "http://www.gnu.org/software/barcode/"
-  url "http://ftpmirror.gnu.org/barcode/barcode-0.98.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz"
-  sha1 "15b9598bcaa67bcff1f63309d1a18840b9a12899"
+  url "http://ftpmirror.gnu.org/barcode/barcode-0.99.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/barcode/barcode-0.99.tar.gz"
+  sha1 "6909341696e83b5cf398251d6f466aa3fa91dda9"
 
   def install
     system "./configure", "--disable-debug",
