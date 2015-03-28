@@ -1,8 +1,7 @@
 class ClosureCompiler < Formula
   homepage "https://github.com/google/closure-compiler"
-  url "https://github.com/google/closure-compiler/archive/maven-release-v20150126.tar.gz"
-  sha256 "cedd1746f2e47bad781aaba9c80e5409906d09af309f05c03832dea05497e375"
-
+  url "https://github.com/google/closure-compiler/archive/maven-release-v20150315.tar.gz"
+  sha256 "9e4ad6367913f1b2f3b3a3a9d68dc4779144336b06aa9732dd0a6caca2d83ba1"
   head "https://github.com/google/closure-compiler.git"
 
   bottle do
@@ -18,7 +17,6 @@ class ClosureCompiler < Formula
   def install
     system "ant", "clean"
     system "ant"
-
     libexec.install Dir["*"]
     bin.write_jar_script libexec/"build/compiler.jar", "closure-compiler"
   end
