@@ -5,6 +5,7 @@ class Libxslt < Formula
   url 'ftp://xmlsoft.org/libxml2/libxslt-1.1.28.tar.gz'
   mirror 'http://xmlsoft.org/sources/libxslt-1.1.28.tar.gz'
   sha1 '4df177de629b2653db322bfb891afa3c0d1fa221'
+  revision 1
 
   bottle do
     revision 1
@@ -36,7 +37,7 @@ class Libxslt < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libxml-prefix=#{Formula["libxml2"].prefix}"
+                          "--with-libxml-prefix=#{Formula["libxml2"].opt_prefix}"
     system "make"
     system "make install"
   end
