@@ -14,9 +14,9 @@ class Influxdb < Formula
   end
 
   devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc14.tar.gz"
-    sha1 "054b81cacf9335006e07556f657212784e495f6d"
-    version "0.9.0-rc14"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc16.tar.gz"
+    sha256 "1cb54e59cd72dee403a4e8b855084d6da36f19a33d40b81830450a81d5bd8b29"
+    version "0.9.0-rc16"
   end
 
   depends_on "go" => :build
@@ -36,7 +36,7 @@ class Influxdb < Formula
     end
 
     go_resource "github.com/boltdb/bolt" do
-      url "https://github.com/boltdb/bolt.git", :revision => "a7d19d8cd50cb700babad58d0643a4bb6ac8f36c"
+      url "https://github.com/boltdb/bolt.git", :revision => "8b138fd106636b40b4b6d43786e668ce658aa3d7"
     end
 
     go_resource "github.com/BurntSushi/toml" do
@@ -48,7 +48,7 @@ class Influxdb < Formula
     end
 
     go_resource "github.com/peterh/liner" do
-      url "https://github.com/peterh/liner.git", :revision => "d9335eee40a45a4f5d74524c90040d6fe6013d50"
+      url "https://github.com/peterh/liner.git", :revision => "fc147570057cd703778924569c41923b28611ca2"
     end
 
     go_resource "github.com/rakyll/statik" do
@@ -100,7 +100,7 @@ class Influxdb < Formula
       Language::Go.stage_deps resources, buildpath/"src"
 
       cd influxdb_path do
-        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc14 -X main.commit 09fd15f8711f0d74dc27de33625e3882adb55d26", "./..."
+        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc16 -X main.commit 035500fb9ff1d8a8fb4f20762e14ed672a0c1d6e", "./..."
         system "go", "install", "./..."
       end
 
