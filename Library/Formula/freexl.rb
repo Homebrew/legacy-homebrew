@@ -1,9 +1,11 @@
-require 'formula'
-
 class Freexl < Formula
-  homepage 'https://www.gaia-gis.it/fossil/freexl/index'
-  url 'http://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-1.0.0g.tar.gz'
-  sha1 '2a5b1d3ebbaf217c7bda15b5b3f1e0222c6c1502'
+  homepage "https://www.gaia-gis.it/fossil/freexl/index"
+  url "https://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-1.0.1.tar.gz"
+  sha256 "df0127e1e23e9ac9a189c27880fb71207837e8cba93d21084356491c9934b89b"
+
+  option "without-check", "Skip compile-time make checks."
+
+  depends_on "doxygen" => [:optional, :build]
 
   bottle do
     cellar :any
@@ -14,7 +16,15 @@ class Freexl < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--disable-silent-rules"
+
+    system "make", "check" if build.with? "check"
+    system "make", "install"
+
+    if build.with? "doxygen"
+      system "doxygen"
+      doc.install "html"
+    end
   end
 end
