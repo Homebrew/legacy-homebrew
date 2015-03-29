@@ -3,6 +3,13 @@ class Ucl < Formula
   url "http://www.oberhumer.com/opensource/ucl/download/ucl-1.03.tar.gz"
   sha256 "b865299ffd45d73412293369c9754b07637680e5c826915f097577cd27350348"
 
+  bottle do
+    cellar :any
+    sha256 "32a54309c092854fc5a4a443a1e9d33fb677ff257d983ea7d5b0eb7bb90d3b2e" => :yosemite
+    sha256 "3c334012766dce80dac49d279be1be1ae4a1fc5df188cc19a25ba1bec84305a9" => :mavericks
+    sha256 "4190f1602c52b934a93581741fcccba8dad4e8dc4f478342d71b1b564cd62834" => :mountain_lion
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
