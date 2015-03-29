@@ -5,6 +5,13 @@ class DockerMachine < Formula
   url "https://github.com/docker/machine/archive/v0.1.0.tar.gz"
   sha256 "832f1e60b4171f9590368fa5c51c1ed1adec32367d13250a0554552d0954ff36"
 
+  bottle do
+    cellar :any
+    sha256 "95bd096f70decc33ee58aaa78b13454e00ad841d6ffcf3aa37a4c42118f8abd7" => :yosemite
+    sha256 "f2116f790e20a5c29395af2c2dd1799cb21475661e2289b618a401b3c246aa86" => :mavericks
+    sha256 "d4555a7f47bfe42b847c00001dd11d124b71ad5cae69f9bcd14e1db1b8e0fe61" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/tools/godep" do
