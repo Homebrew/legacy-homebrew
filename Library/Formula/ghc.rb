@@ -31,6 +31,8 @@ class Ghc < Formula
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
     end
   else
+    # there is currently no 7.10.1 binary download for darwin,
+    # so we use the one for 7.8.4 instead
     resource "binary" do
       url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-x86_64-apple-darwin.tar.xz"
       sha256 "ebb6b0294534abda05af91798b43e2ea02481edacbf3d845a1e5925a211c67e3"
