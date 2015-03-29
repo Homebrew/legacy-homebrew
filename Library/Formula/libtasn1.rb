@@ -1,8 +1,8 @@
 class Libtasn1 < Formula
   homepage "https://www.gnu.org/software/libtasn1/"
-  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.2.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.2.tar.gz"
-  sha1 "d2fe4bf12dbdc4d6765a04abbf8ddaf7e9163afa"
+  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.4.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.4.tar.gz"
+  sha256 "f8349db1b4fe634105c77e11d26b2173e587827e86e1a489b5e38ffa822e0c5d"
 
   bottle do
     cellar :any
