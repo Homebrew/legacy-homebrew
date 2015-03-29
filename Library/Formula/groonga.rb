@@ -2,8 +2,8 @@ require "formula"
 
 class Groonga < Formula
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-5.0.0.tar.gz"
-  sha1 "f9786f540c65afcc1da13cc48317e51c81b38eb1"
+  url "http://packages.groonga.org/source/groonga/groonga-5.0.1.tar.gz"
+  sha1 "3275dd03a09ccaf11c86a70477191a9f5bec0efb"
 
   bottle do
     sha1 "2fdf891db87a18d16a6957ce4578456e86e6c8ec" => :yosemite
