@@ -2,7 +2,6 @@ require 'formula'
 
 class Encfs < Formula
   homepage 'https://vgough.github.io/encfs/'
-  version "1.8.1"
 
   stable do
     url 'https://github.com/vgough/encfs/archive/v1.8.1.tar.gz'
