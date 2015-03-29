@@ -347,6 +347,7 @@ class FormulaInstaller
     fi.options           |= tab.used_options
     fi.options           |= dep.options
     fi.options           |= inherited_options
+    fi.build_bottle       = build_bottle? && ENV["HOMEBREW_BUILD_BOTTLE"] == "dependencies"
     fi.build_from_source  = build_from_source?
     fi.verbose            = verbose? && !quieter?
     fi.debug              = debug?
