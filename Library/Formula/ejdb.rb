@@ -1,7 +1,6 @@
 class Ejdb < Formula
   homepage "http://ejdb.org"
   url "https://github.com/Softmotions/ejdb/archive/v1.2.5.tar.gz"
-  version "1.2.5"
   sha256 "31bbfefed5f892be84aa7748e84ffa0f5645654d4919d2be0f0e25f3fe62638b"
 
   depends_on "cmake" => :build
