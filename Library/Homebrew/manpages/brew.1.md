@@ -139,7 +139,7 @@ Note that these flags should only appear after a command.
     stable version.
 
     If `-v` is passed, do a verbose VCS checkout, if the url represents a CVS.
-    This useful for seeing if an existing VCS cache has been updated.
+    This is useful for seeing if an existing VCS cache has been updated.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
 
