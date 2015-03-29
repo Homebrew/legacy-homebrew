@@ -12,6 +12,12 @@ class Quassel < Formula
       sha256 "324ce0edfe5744544846a4796187ceda77921434498089c49c2e50a7f8654fa1"
     end
   end
+  bottle do
+    sha256 "4402382ffaf05fb19a596f6e7fc1eeb07580ac28fbe1a864ed03b57ca3cbc7ce" => :yosemite
+    sha256 "02b90ddfb94c0be796a5941174b8887c3ebbbaf3d01c1dca22c1abfe07ec4c11" => :mavericks
+    sha256 "fc50ef842a23cfcf35ac45a4050030b93ab2cb1652b584750ced1014d9d48c9f" => :mountain_lion
+  end
+
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
