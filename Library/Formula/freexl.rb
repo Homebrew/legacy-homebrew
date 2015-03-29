@@ -9,10 +9,9 @@ class Freexl < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "0158f6a76dcf1fd8ab569f2689a745fefc61fc90" => :yosemite
-    sha1 "7a90c3a51e61ebbc1a5f46eae6483bbb3dc4517f" => :mavericks
-    sha1 "effe1c8fda7ae09b761e3388962cb59e676459b5" => :mountain_lion
+    sha256 "5684d45dcd517ae87312fff00b4ac0eb16f3343ddd8df25d39206839b022cadd" => :yosemite
+    sha256 "5d007d42d495824c89f50b8eeabd35deaf32abf343573f30d68502bf8979d157" => :mavericks
+    sha256 "53345a758e705765c6473327cb91c591ab50858144490973549f89750b31656d" => :mountain_lion
   end
 
   def install
