@@ -62,8 +62,8 @@ class Cdrtools < Formula
     system "#{bin}/cdrecord", "-version"
     system "#{bin}/cdda2wav", "-version"
     (testpath/"testfile.txt").write("testing mkisofs and isoinfo")
-		system "#{bin}/mkisofs", "-r", "-o", "test.iso", "testfile.txt"
-		assert (testpath/"test.iso").exist?
+    system "#{bin}/mkisofs", "-r", "-o", "test.iso", "testfile.txt"
+    assert (testpath/"test.iso").exist?
     if build.devel? # "isoinfo -X" was introduced after release 3.00
       mkdir "extracted" do
         system "#{bin}/isoinfo", "-R", "-i", "../test.iso", "-X"
