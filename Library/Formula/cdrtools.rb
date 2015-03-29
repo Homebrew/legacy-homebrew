@@ -5,13 +5,13 @@ class Cdrtools < Formula
 
   stable do
     url "https://downloads.sourceforge.net/project/cdrtools/cdrtools-3.00.tar.bz2"
+    sha1 "6464844d6b936d4f43ee98a04d637cd91131de4e"
+
     bottle do
       sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
       sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
       sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
     end
-
-    sha1 "6464844d6b936d4f43ee98a04d637cd91131de4e"
 
     patch :p0 do
       url "https://trac.macports.org/export/104091/trunk/dports/sysutils/cdrtools/files/patch-include_schily_sha2.h"
@@ -36,7 +36,22 @@ class Cdrtools < Formula
     # cdrtools tries to install some generic smake headers, libraries and
     # manpages, which conflict with the copies installed by smake itself
     (include/"schily").rmtree
-    %w[libschily.a libdeflt.a libfind.a].each do |file|
+    %w[
+      libcdrdeflt.a
+      libdeflt.a
+      libedc_ecc.a
+      libedc_ecc_dec.a
+      libfile.a
+      libfind.a
+      libhfs.a
+      libmdigest.a
+      libparanoia.a
+      librscg.a
+      libscg.a
+      libscgcmd.a
+      libschily.a
+      libsiconv.a
+    ].each do |file|
       (lib/file).unlink
     end
     (lib/"profiled").rmtree
@@ -45,6 +60,17 @@ class Cdrtools < Formula
 
   test do
     system "#{bin}/cdrecord", "-version"
+    system "#{bin}/cdda2wav", "-version"
+    (testpath/"testfile.txt").write("testing mkisofs and isoinfo")
+		system "#{bin}/mkisofs", "-r", "-o", "test.iso", "testfile.txt"
+		assert (testpath/"test.iso").exist?
+    if build.devel? # "isoinfo -X" was introduced after release 3.00
+      mkdir "extracted" do
+        system "#{bin}/isoinfo", "-R", "-i", "../test.iso", "-X"
+      end
+      assert (testpath/"extracted/testfile.txt").exist?
+      system "/usr/bin/cmp", "testfile.txt", "extracted/testfile.txt"
+    end
   end
 end
 
