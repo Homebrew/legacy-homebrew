@@ -8,10 +8,9 @@ class Libxslt < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "b2fbd32e69e1787d4ea792ee2c51f81466b26f20" => :yosemite
-    sha1 "3f2dee00534b0646cfdcd8064a16c970c4a01cd0" => :mavericks
-    sha1 "791b272f8c0aca80af72c263f9e0f7066ce00628" => :mountain_lion
+    sha256 "6d183c0aec7ca84802c54256289d401d05b2ae153956e118df357f70f388fed9" => :yosemite
+    sha256 "3f674b2296134366637b6ab6f8880c124926b768d4ce5230564d4a1265a8797d" => :mavericks
+    sha256 "2530cd13170900d9f6e5cc4c9d57312cffcb0f16a20d12cc4e82ac8e5f4455d9" => :mountain_lion
   end
 
   keg_only :provided_by_osx
