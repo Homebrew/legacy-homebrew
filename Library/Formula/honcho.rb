@@ -1,7 +1,7 @@
 class Honcho < Formula
   homepage "https://github.com/nickstenning/honcho"
-  url "https://pypi.python.org/packages/source/h/honcho/honcho-0.5.0.tar.gz"
-  sha1 "c9f9bdaa59293f8c9ac515d55c9ee4a09240821d"
+  url "https://github.com/nickstenning/honcho/archive/v0.6.6.tar.gz"
+  sha256 "02703190e9775c899045e25e7f5b5b1a3b3ec1a4720d6b85a50da680f7f750c7"
 
   bottle do
     cellar :any
