@@ -43,6 +43,10 @@ class Mysql < Formula
     cause "https://github.com/Homebrew/homebrew/issues/issue/144"
   end
 
+  def datadir
+    var+"mysql"
+  end
+
   def install
     # Don't hard-code the libtool path. See:
     # https://github.com/Homebrew/homebrew/issues/20185
@@ -60,7 +64,7 @@ class Mysql < Formula
       -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DCMAKE_FIND_FRAMEWORK=LAST
       -DCMAKE_VERBOSE_MAKEFILE=ON
-      -DMYSQL_DATADIR=#{var}/mysql
+      -DMYSQL_DATADIR=#{datadir}
       -DINSTALL_INCLUDEDIR=include/mysql
       -DINSTALL_MANDIR=share/man
       -DINSTALL_DOCDIR=share/doc/#{name}
@@ -133,12 +137,12 @@ class Mysql < Formula
   end
 
   def post_install
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-    unless File.exist? "#{var}/mysql/mysql/user.frm"
+    # Make sure the datadir exists
+    datadir.mkpath
+    unless File.exist? "#{datadir}/mysql/user.frm"
       ENV["TMPDIR"] = nil
       system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
-        "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
+        "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
     end
   end
 
@@ -166,12 +170,12 @@ class Mysql < Formula
       <array>
         <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
-        <string>--datadir=#{var}/mysql</string>
+        <string>--datadir=#{datadir}</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>
-      <string>#{var}</string>
+      <string>#{datadir}</string>
     </dict>
     </plist>
     EOS
@@ -183,4 +187,3 @@ class Mysql < Formula
     end
   end
 end
-
