@@ -31,9 +31,9 @@ class Groonga < Formula
   end
 
   bottle do
-    sha1 "2fdf891db87a18d16a6957ce4578456e86e6c8ec" => :yosemite
-    sha1 "15b4d1ee1571f4837d78fb6a5ac17febb9f31a0f" => :mavericks
-    sha1 "5383235d638b0ede0970c2343e8cae44e7858949" => :mountain_lion
+    sha256 "25685326a3bb8bb08f24622bec9aa3b892026b4690e28128c3ea1ef804f188d3" => :yosemite
+    sha256 "d751e9c1e0afd58a66b9f0e7dc3e488ced59611f00674e9551a899783015ce2b" => :mavericks
+    sha256 "ddf57c338f38c5ff227a6709d3ca151250d1600a64cf41e248d0b139c4b03899" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
