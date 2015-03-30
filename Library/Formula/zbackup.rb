@@ -2,20 +2,25 @@ require "formula"
 
 class Zbackup < Formula
   homepage "http://zbackup.org"
-  url "https://github.com/zbackup/zbackup/archive/1.3.tar.gz"
-  sha1 "e656944cc7bec5267f4b01055ea17b90e63c2d8c"
-
-  bottle do
-    cellar :any
-    sha1 "cc138208a5b1670b745b78ff118fa1decb9f0e81" => :yosemite
-    sha1 "81156fb3b1fbc40287afa03176c46f740cb01646" => :mavericks
-    sha1 "b5384a251577f2b9d6465ac72db9fe35503f2aea" => :mountain_lion
-  end
+  url "https://github.com/zbackup/zbackup/archive/1.4.1.tar.gz"
+  sha1 "6fc5c7f4bb23ce52bd4e14cb9b07c77662e1703c"
 
   depends_on "cmake" => :build
   depends_on "openssl"
   depends_on "protobuf"
   depends_on "xz" # get liblzma compression algorithm library from XZutils
+  depends_on "lzo"
+
+  # These fixes are upstream and can be removed in the next released version.
+  patch do
+    url "https://github.com/zbackup/zbackup/commit/7e6adda6b1df9c7b955fc06be28fe6ed7d8125a2.diff"
+    sha1 "eb03aad6e9c543914a7332b02f277bb76103e1f2"
+  end
+
+  patch do
+    url "https://github.com/zbackup/zbackup/commit/f4ff7bd8ec63b924a49acbf3a4f9cf194148ce18.diff"
+    sha1 "4d8c584e7f35ca2994dc751b8398b0b091119316"
+  end
 
   def install
     system "cmake", ".", *std_cmake_args
@@ -24,6 +29,6 @@ class Zbackup < Formula
 
   test do
     system "#{bin}/zbackup", "--non-encrypted", "init", "."
-    system "echo test | #{bin}/zbackup backup backups/test.bak"
+    system "echo test | #{bin}/zbackup --non-encrypted backup backups/test.bak"
   end
 end

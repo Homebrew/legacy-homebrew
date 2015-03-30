@@ -1,14 +1,15 @@
-require 'formula'
-
 class Ejdb < Formula
-  homepage 'http://ejdb.org/'
-  url 'https://github.com/Softmotions/ejdb/archive/v1.1.25.tar.gz'
-  sha1 'be8a864286f2b28922a04c9ba3f9eac830d8ebdd'
+  homepage "http://ejdb.org"
+  url "https://github.com/Softmotions/ejdb/archive/v1.2.5.tar.gz"
+  sha256 "31bbfefed5f892be84aa7748e84ffa0f5645654d4919d2be0f0e25f3fe62638b"
+
+  depends_on "cmake" => :build
 
   def install
-    cd 'tcejdb' do
-      system "./configure", "--prefix=#{prefix}", "--disable-debug"
-      system "make"
+    cmake_args = std_cmake_args - %w{-DCMAKE_BUILD_TYPE=None}
+    cmake_args << "-DCMAKE_BUILD_TYPE=Release"
+    mkdir "build" do
+      system "cmake", "..", *cmake_args
       system "make install"
     end
   end
