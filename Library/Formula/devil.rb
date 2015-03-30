@@ -36,12 +36,11 @@ end
 __END__
 --- a/src-ILU/ilur/ilur.c   2009-03-08 08:10:12.000000000 +0100
 +++ b/src-ILU/ilur/ilur.c  2010-09-26 20:01:45.000000000 +0200
-@@ -1,6 +1,7 @@
+@@ -1,6 +1,6 @@
  #include <string.h>
  #include <stdio.h>
 -#include <malloc.h>
 +#include <stdlib.h>
-+#include "sys/malloc.h"
 
  #include <IL/il.h>
  #include <IL/ilu.h>
