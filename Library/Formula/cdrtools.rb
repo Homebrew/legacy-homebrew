@@ -61,16 +61,9 @@ class Cdrtools < Formula
   test do
     system "#{bin}/cdrecord", "-version"
     system "#{bin}/cdda2wav", "-version"
-    (testpath/"testfile.txt").write("testing mkisofs and isoinfo")
+    (testpath/"testfile.txt").write("testing mkisofs")
     system "#{bin}/mkisofs", "-r", "-o", "test.iso", "testfile.txt"
     assert (testpath/"test.iso").exist?
-    system "#{bin}/isoinfo", "-l", "-R", "-i", "test.iso"
-    if devel?
-      system "/bin/mv", "testfile.txt", "renamed.txt"
-      system "#{bin}/isoinfo", "-X" "-R", "-i", "test.iso"
-      assert (testpath/"testfile.txt").exist?
-      system "/usr/bin/cmp", "testfile.txt", "renamed.txt"
-    end
   end
 end
 
