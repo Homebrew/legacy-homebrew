@@ -1,9 +1,9 @@
 require 'formula'
 
 class TomcatNative < Formula
-  homepage 'http://tomcat.apache.org/native-doc/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.32/source/tomcat-native-1.1.32-src.tar.gz'
-  sha1 'a4bfb7f79316c49cfed3a0c5c71ba11b51fe0922'
+  homepage 'https://tomcat.apache.org/native-doc/'
+  url 'https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz'
+  sha1 'c7626c8e5144ee8e958175c4cd034cef90eab1ed'
 
   bottle do
     cellar :any
