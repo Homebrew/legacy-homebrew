@@ -5,9 +5,9 @@ class Honcho < Formula
 
   bottle do
     cellar :any
-    sha1 "5ff1265f064a36e0691c50bedee9d42f06fc20fc" => :yosemite
-    sha1 "e607aad59510da7514eb81a545892858306a0c94" => :mavericks
-    sha1 "24a5d7ca08b2984e765a12377ef284ad0e46befd" => :mountain_lion
+    sha256 "7b404c291672f7fab907c3aa5ad3ed1e53563b7e6d54512f5a8e7342ac393fdb" => :yosemite
+    sha256 "b1e3e387daaf6eb4afa04c89f7563751635d02745e37e64ea7bf0afb3d7ea2b6" => :mavericks
+    sha256 "b61af36df3f0228ffb78380bab1823e9a0d67d2c05ad14c37b43a1b5e41d0d0d" => :mountain_lion
   end
 
   def install
