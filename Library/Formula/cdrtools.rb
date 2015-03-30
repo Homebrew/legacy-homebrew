@@ -7,16 +7,16 @@ class Cdrtools < Formula
     url "https://downloads.sourceforge.net/project/cdrtools/cdrtools-3.00.tar.bz2"
     sha1 "6464844d6b936d4f43ee98a04d637cd91131de4e"
 
-    bottle do
-      sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
-      sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
-      sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
-    end
-
     patch :p0 do
       url "https://trac.macports.org/export/104091/trunk/dports/sysutils/cdrtools/files/patch-include_schily_sha2.h"
       sha1 "6c2c06b7546face6dd58c3fb39484b9120e3e1ca"
     end
+  end
+
+  bottle do
+    sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
+    sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
+    sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
   end
 
   devel do
