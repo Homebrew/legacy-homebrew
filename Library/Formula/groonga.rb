@@ -1,5 +1,3 @@
-require "formula"
-
 class Groonga < Formula
   homepage "http://groonga.org/"
   url "http://packages.groonga.org/source/groonga/groonga-5.0.1.tar.gz"
