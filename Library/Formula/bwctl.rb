@@ -2,7 +2,7 @@ require "formula"
 
 class Bwctl < Formula
   homepage "http://software.internet2.edu/bwctl/"
-  url "http://software.internet2.edu/sources/bwctl/bwctl-1.5.2-10.tar.gz"
+  url "http://software.internet2.edu/sources/bwctl/bwctl-1.5.4.tar.gz"
   sha1 "5dcc7a1d671ac8e061f859a430d56ae2551f507e"
 
   bottle do
