@@ -10,11 +10,15 @@ class Pkcrack < Formula
     system "make", "-C", "src/"
 
     # ln -s src/[BINARY] to ${prefix}/bin
-    bin.install Dir["src/pkcrack"]
-    bin.install Dir["src/findkey"]
-    bin.install Dir["src/zipdecrypt"]
-    bin.install Dir["src/extract"]
-    bin.install Dir["src/makekey"]
+    bin.install "src/pkcrack"
+    bin.install "src/findkey"
+    bin.install "src/zipdecrypt"
+    bin.install "src/extract"
+    bin.install "src/makekey"
+  end
+
+  test do
+    system "false"
   end
 end
 
