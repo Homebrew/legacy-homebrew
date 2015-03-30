@@ -36,6 +36,10 @@ class Boost < Formula
     cause "Dropped arguments to functions when linking with boost"
   end
 
+  # Patch for odeint. Can (hopefully) be removed with the next release of Boost (1.58).
+  # See https://github.com/headmyshoulder/odeint-v2/issues/138
+  patch :DATA
+
   def install
     # https://svn.boost.org/trac/boost/ticket/8841
     if build.with? "mpi" and build.with? "single"
@@ -165,3 +169,25 @@ class Boost < Formula
     system "./test"
   end
 end
+
+__END__
+diff --git a/boost/numeric/odeint/util/bind.hpp b/boost/numeric/odeint/util/bind.hpp
+index 966fd03..1bad30a 100644
+--- a/boost/numeric/odeint/util/bind.hpp
++++ b/boost/numeric/odeint/util/bind.hpp
+@@ -41,12 +41,14 @@ using namespace ::std::placeholders;
+ 
+ #else
+ 
++namespace {
+ using ::boost::bind;
+ boost::arg<1> _1;
+ boost::arg<2> _2;
+ // using ::boost::bind;
+ // using ::_1;
+ // using ::_2;
++}
+ 
+ #endif
+ 
+
