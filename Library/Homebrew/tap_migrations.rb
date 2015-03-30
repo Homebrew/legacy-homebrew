@@ -154,7 +154,6 @@ TAP_MIGRATIONS = {
   "terminator" => "homebrew/x11",
   "tetgen" => "homebrew/science",
   "texmacs" => "homebrew/boneyard",
-  "tiger-vnc" => "homebrew/x11",
   "tmap" => "homebrew/boneyard",
   "transmission-remote-gtk" => "homebrew/x11",
   "ume" => "homebrew/games",
