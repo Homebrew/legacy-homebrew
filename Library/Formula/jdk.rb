@@ -1,5 +1,3 @@
-require "formula"
-
 class JdkDownloadStrategy < CurlDownloadStrategy
   def _fetch
     raise "On Mac OS try instead `brew cask install java`" if OS.mac?
@@ -11,11 +9,11 @@ end
 class Jdk < Formula
   homepage "http://www.java.com/"
 
-  version "1.8.0-25"
+  version "1.8.0-40"
   if OS.linux?
-    url "http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.tar.gz",
+    url "http://download.oracle.com/otn-pub/java/jdk/8u40-b26/jdk-8u40-linux-x64.tar.gz",
       :using => JdkDownloadStrategy
-    sha1 "0eb0448641c21c435cddc4705d23668d45f29fff"
+    sha256 "da1ad819ce7b7ec528264f831d88afaa5db34b7955e45422a7e380b1ead6b04d"
   elsif OS.mac?
     url "jdk", :using => JdkDownloadStrategy
   else
