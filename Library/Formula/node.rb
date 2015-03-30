@@ -1,15 +1,14 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz"
-  sha256 "9700e23af4e9b3643af48cef5f2ad20a1331ff531a12154eef2bfb0bb1682e32"
+  url "https://nodejs.org/dist/v0.12.1/node-v0.12.1.tar.gz"
+  sha256 "30693376519c9736bcb22d44513252aee1d9463d78ac6c744ecb6d13fd91d680"
   head "https://github.com/joyent/node.git", :branch => "v0.12"
-  revision 1
 
   bottle do
-    sha256 "145227f47243194323891218b32e6acca98a994770156c631978d29a5a5d3cc8" => :yosemite
-    sha256 "6796aa8bde6bc7919d075a99977a156e1bdad3b51a0de3eeccd6483a48b3e16a" => :mavericks
-    sha256 "0d75a70bc7e39df1f7bf24424245db1b3f7b816d107cd154e4d6becb0069fed2" => :mountain_lion
+    sha256 "72b57fd6f990485ac016d7dbabb2515a0006fd14334aa95ac2ac36a3d0b035bf" => :yosemite
+    sha256 "28a56d62225eb653c4b581efaa8be1f9bcf7052060e4d906020d4d700de38cce" => :mavericks
+    sha256 "85a333f82e2dc0ac44994567e87afdec8e899d296b1fb809fc2803e2df9f1076" => :mountain_lion
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -31,8 +30,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.7.1.tgz"
-    sha256 "dda316a9abe1881c220e7db3b04e240e6f44179825d3c143b72e4734d2ac1046"
+    url "https://registry.npmjs.org/npm/-/npm-2.7.3.tgz"
+    sha256 "8cc5c6e8304b0b934027a8211173147911dac623f2f84bb6477ea3121f1a839d"
   end
 
   def install

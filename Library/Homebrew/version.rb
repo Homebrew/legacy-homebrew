@@ -201,8 +201,33 @@ class Version
     return 1 if head? && !other.head?
     return -1 if !head? && other.head?
 
-    max = [tokens.length, other.tokens.length].max
-    pad_to(max) <=> other.pad_to(max)
+    ltokens = tokens
+    rtokens = other.tokens
+    max = max(ltokens.length, rtokens.length)
+    l = r = 0
+
+    while l < max
+      a = ltokens[l] || NULL_TOKEN
+      b = rtokens[r] || NULL_TOKEN
+
+      if a == b
+        l += 1
+        r += 1
+        next
+      elsif a.numeric? && b.numeric?
+        return a <=> b
+      elsif a.numeric?
+        return 1 if a > NULL_TOKEN
+        l += 1
+      elsif b.numeric?
+        return -1 if b > NULL_TOKEN
+        r += 1
+      else
+        return a <=> b
+      end
+    end
+
+    return 0
   end
   alias_method :eql?, :==
 
@@ -219,22 +244,14 @@ class Version
 
   attr_reader :version
 
-  def begins_with_numeric?
-    tokens.first.numeric?
-  end
-
-  def pad_to(length)
-    if begins_with_numeric?
-      nums, rest = tokens.partition(&:numeric?)
-      nums.fill(NULL_TOKEN, nums.length, length - tokens.length)
-      nums.concat(rest)
-    else
-      tokens.dup.fill(NULL_TOKEN, tokens.length, length - tokens.length)
-    end
-  end
-
   def tokens
     @tokens ||= tokenize
+  end
+
+  private
+
+  def max(a, b)
+    a > b ? a : b
   end
 
   def tokenize

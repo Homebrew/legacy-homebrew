@@ -13,7 +13,7 @@ module Homebrew
     raise FormulaUnspecifiedError if formulae.empty?
 
     if dir = ARGV.value("destdir")
-      unpack_dir = Pathname.new(dir)
+      unpack_dir = Pathname.new(dir).expand_path
       unpack_dir.mkpath
     else
       unpack_dir = Pathname.pwd

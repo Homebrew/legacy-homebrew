@@ -1,9 +1,7 @@
-require "formula"
-
 class Harbour < Formula
   homepage "https://harbour.github.io"
   url "https://downloads.sourceforge.net/harbour-project/source/3.0.0/harbour-3.0.0.tar.bz2"
-  sha1 "66c21d666ac24c45485179eeaa9f90458b552e92"
+  sha256 "4e99c0c96c681b40c7e586be18523e33db24baea68eb4e394989a3b7a6b5eaad"
 
   bottle do
     cellar :any
@@ -37,8 +35,16 @@ class Harbour < Formula
   end
 
   test do
-    (testpath/"hello_world.prg").write("procedure Main();?'Hello, world!';?;?OS();?Version();return")
-    system "#{bin}/hbmk2", "-run", "hello_world.prg"
+    (testpath/"hello.prg").write <<-EOS.undent
+      procedure Main()
+         OutStd( ;
+            "Hello, world!" + hb_eol() + ;
+            OS() + hb_eol() + ;
+            Version() + hb_eol() )
+         return
+    EOS
+
+    assert_match /Hello, world!/, shell_output("#{bin}/hbmk2 hello.prg -run")
   end
 end
 

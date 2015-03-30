@@ -2,12 +2,13 @@ require "formula"
 
 class Fsharp < Formula
   homepage "http://fsharp.org/"
-  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.25"
+  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.31",
+    :revision => "1f79c0455fb8b5ec816985f922413894ce19359a"
 
   bottle do
-    sha1 "099b7e8179570aca78ab427a8d8ce25e0b3f0cd6" => :mavericks
-    sha1 "604de51dfc12d77aa958f6de6a755956393a435b" => :mountain_lion
-    sha1 "d6e907d4d37e85bdcad3fa50e53dde07839f0e6e" => :lion
+    sha256 "2369c57d4accee52b300d4f729941c4371e2632e3d9c52581c98176640ef9a03" => :yosemite
+    sha256 "9e9f48a821e5dde7c1de040def858a6a22138441bbfd6c08cbb4e83caf6a5232" => :mavericks
+    sha256 "7bc128eb9d5a4634d5d453d7935bf391f59faa94a0e07b4ee6ad287471c07591" => :mountain_lion
   end
 
   depends_on "automake" => :build

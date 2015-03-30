@@ -1,13 +1,13 @@
 class Passenger < Formula
   homepage "https://www.phusionpassenger.com/"
-  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.4.tar.gz"
-  sha256 '5c29f2c1407db515ddccd540443cb34bff7ca180b3e269c2e28a34ad795f99f6'
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.5.tar.gz"
+  sha256 '4a0d696cf6a702a97dd74aa9a377a637f547887b4afc6ee574329d87326bfcdc'
   head "https://github.com/phusion/passenger.git"
 
   bottle do
-    sha256 "0acfd8f0c9c3270f4892914d4f4101b1bdcc4b68819e3ef3f3680d8ae97bae9d" => :yosemite
-    sha256 "06072b3d08d2c9b6664b89bea07a741a6b2d9e02379e2b80547960718de3fb78" => :mavericks
-    sha256 "425d5e77d38fe1d55597cc12d0aab822f2c35ad285a5499633d5934fe5099e47" => :mountain_lion
+    sha256 "d99765112723d03551c047763a65aec30a513c6db0b6727e3bf68882b2dbf183" => :yosemite
+    sha256 "fcd5ab6f4afb63df0187ebb2875e75909d9159745f793614e222a4d9c0ae2d1e" => :mavericks
+    sha256 "1adfa4fbdad3ce5eb6b4959e6bf2d2ff280f7f44c2da479db2497b5c0b59d656" => :mountain_lion
   end
 
   depends_on "pcre"
@@ -31,7 +31,7 @@ class Passenger < Formula
     necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
       "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
-      "helper-scripts", "ext", "resources", "buildout"]
+      "dev", "helper-scripts", "ext", "resources", "buildout"]
     libexec.mkpath
     cp_r necessary_files, libexec, :preserve => true
 

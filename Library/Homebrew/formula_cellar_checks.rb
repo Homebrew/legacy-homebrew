@@ -12,7 +12,7 @@ module FormulaCellarChecks
 
     <<-EOS.undent
       #{prefix_bin} is not in your PATH
-      You can amend this by altering your ~/.bashrc file
+      You can amend this by altering your #{shell_profile} file
     EOS
   end
 
