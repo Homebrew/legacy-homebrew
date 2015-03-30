@@ -2,8 +2,10 @@ require 'formula'
 
 class Bitlbee < Formula
   homepage 'http://www.bitlbee.org/'
-  url 'http://get.bitlbee.org/src/bitlbee-3.2.2.tar.gz'
-  sha1 '7e3cfe2b6bf4e8e603c74e7587307a6f5d267e9c'
+  url "http://get.bitlbee.org/src/bitlbee-3.4.tar.gz"
+  sha256 "cebad646bbfd17c80923743244039fd970e3ca27e8c1b7cf872622e773239d5e"
+
+  head "https://github.com/bitlbee/bitlbee.git"
 
   bottle do
     sha1 "4a639d88aa819d23d6020a36602097474f66357d" => :mavericks
