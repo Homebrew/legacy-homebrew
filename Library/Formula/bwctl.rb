@@ -2,8 +2,8 @@ require "formula"
 
 class Bwctl < Formula
   homepage "http://software.internet2.edu/bwctl/"
-  url "http://software.internet2.edu/sources/bwctl/bwctl-1.5.2-10.tar.gz"
-  sha1 "5dcc7a1d671ac8e061f859a430d56ae2551f507e"
+  url "http://software.internet2.edu/sources/bwctl/bwctl-1.5.4.tar.gz"
+  sha256 "e6dca6ca30c8ef4d68e6b34b011a9ff7eff3aba4a84efc19d96e3675182e40ef"
 
   bottle do
     cellar :any
@@ -12,7 +12,7 @@ class Bwctl < Formula
     sha1 "d18b048baeb365d22717b2b831c164eb1c8ba125" => :mountain_lion
   end
 
-  depends_on "i2util"
+  depends_on "i2util" => :build
   depends_on "iperf3" => :optional
   depends_on "thrulay" => :optional
 
