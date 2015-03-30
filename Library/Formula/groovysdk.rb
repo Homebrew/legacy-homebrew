@@ -2,8 +2,8 @@ require "formula"
 
 class Groovysdk < Formula
   homepage "http://groovy.codehaus.org/"
-  url "http://dl.bintray.com/groovy/maven/groovy-sdk-2.4.0.zip"
-  sha1 "b6f4bdb48c306e8d47a552f835fd56fb6010e941"
+  url "http://dl.bintray.com/groovy/maven/groovy-sdk-2.4.3.zip"
+  sha1 "a3aa1161422132dc116f8b8171914b36668b3839"
 
   def install
     ENV["GROOVY_HOME"] = libexec
