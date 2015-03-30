@@ -36,22 +36,7 @@ class Cdrtools < Formula
     # cdrtools tries to install some generic smake headers, libraries and
     # manpages, which conflict with the copies installed by smake itself
     (include/"schily").rmtree
-    %w[
-      libcdrdeflt.a
-      libdeflt.a
-      libedc_ecc.a
-      libedc_ecc_dec.a
-      libfile.a
-      libfind.a
-      libhfs.a
-      libmdigest.a
-      libparanoia.a
-      librscg.a
-      libscg.a
-      libscgcmd.a
-      libschily.a
-      libsiconv.a
-    ].each do |file|
+    %w[libschily.a libdeflt.a libfind.a].each do |file|
       (lib/file).unlink
     end
     (lib/"profiled").rmtree
