@@ -183,6 +183,7 @@ index 966fd03..1bad30a 100644
  
  #else
  
++// unnamed namespace to avoid multiple declarations (#138)
 +namespace {
  using ::boost::bind;
  boost::arg<1> _1;
