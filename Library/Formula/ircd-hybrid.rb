@@ -2,8 +2,8 @@ require "formula"
 
 class IrcdHybrid < Formula
   homepage "http://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.1/ircd-hybrid-8.2.1.tgz"
-  sha1 "43e96d1d3e57f8d867348921a5b225011ab988b2"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.6/ircd-hybrid-8.2.6.tgz"
+  sha256 "c712988ef43081e6d2218e4fe2523fdadf22df2959cf4c878f0625d16da5b79d"
 
   bottle do
     sha1 "1ac5860e94fac63377994eebada838b4975e5cb2" => :yosemite
