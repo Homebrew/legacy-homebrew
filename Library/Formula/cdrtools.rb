@@ -64,12 +64,13 @@ class Cdrtools < Formula
     (testpath/"testfile.txt").write("testing mkisofs and isoinfo")
     system "#{bin}/mkisofs", "-r", "-o", "test.iso", "testfile.txt"
     assert (testpath/"test.iso").exist?
-    if test.devel? # "isoinfo -X" was introduced after release 3.00
-      mkdir "extracted" do
-        system "#{bin}/isoinfo", "-R", "-i", "../test.iso", "-X"
-      end
-      assert (testpath/"extracted/testfile.txt").exist?
-      system "/usr/bin/cmp", "testfile.txt", "extracted/testfile.txt"
+    if stable?
+      system "#{bin}/isoinfo", "-l", "-R", "-i", "test.iso"
+    else
+      system "/usr/bin/mv", "testfile.txt", "renamed.txt"
+      system "#{bin}/isoinfo", "-X" "-R", "-i", "test.iso"
+      assert (testpath/"testfile.txt").exist?
+      system "/usr/bin/cmp", "testfile.txt", "renamed.txt"
     end
   end
 end
