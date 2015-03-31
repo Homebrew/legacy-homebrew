@@ -12,8 +12,8 @@ class FreeradiusServer < Formula
   end
 
   devel do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.6.tar.bz2"
-    sha1 "37c5a38f74a8b228abe9682db9f3184a9c7d9639"
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.7.tar.bz2"
+    sha1 "d3fda2c4baa79fa72942fc77a33aa30e308d31a9"
     depends_on "talloc" => :build
   end
 
