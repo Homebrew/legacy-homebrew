@@ -2,8 +2,8 @@ require 'formula'
 
 class Strongswan < Formula
   homepage 'http://www.strongswan.org'
-  url 'http://download.strongswan.org/strongswan-5.2.2.tar.bz2'
-  sha1 '5dcf6e8e50e11e4009375fda5ce2b49049123e18'
+  url 'http://download.strongswan.org/strongswan-5.3.0.tar.bz2'
+  sha1 '6d83222143ff4dabbc667e9b1725cac55c546826'
 
   bottle do
     sha1 "bcceab4dccbbaef7815b0e4b0c5fd800c9323edd" => :yosemite
