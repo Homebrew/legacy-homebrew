@@ -1,4 +1,8 @@
 language: scala
+env:
+  global:
+    JAVA_OPTS=-Xmx1500m
+    _JAVA_OPTIONS=-Xmx1500m
 scala:
    - 2.10.4
    - 2.11.6
