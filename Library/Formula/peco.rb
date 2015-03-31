@@ -2,8 +2,8 @@ require "language/go"
 
 class Peco < Formula
   homepage "https://github.com/peco/peco"
-  url "https://github.com/peco/peco/archive/v0.3.0.tar.gz"
-  sha1 "dcecc51e5f62adeb09f2dcb0680b7fb6d1e0c50f"
+  url "https://github.com/peco/peco/archive/v0.3.2.tar.gz"
+  sha256 "ce2d617a49a29a010546b6331f7d3288eeab23226fada591b5c65be035b9c693"
 
   bottle do
     cellar :any
@@ -34,7 +34,7 @@ class Peco < Formula
 
   go_resource "github.com/peco/peco" do
     url "https://github.com/peco/peco.git",
-      :revision => "700b77b5ba57ce0cc57339d063a24bb06a485eca"
+      :revision => "d36c492e5032da478fae3a05744cfc5cf9c75759"
   end
 
   depends_on "go" => :build
