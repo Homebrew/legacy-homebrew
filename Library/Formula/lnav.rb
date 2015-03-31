@@ -13,10 +13,10 @@ class Lnav < Formula
   end
 
   head do
-      url 'https://github.com/tstack/lnav.git'
+    url "https://github.com/tstack/lnav.git"
 
-      depends_on "autoconf" => :build
-      depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   depends_on 'readline'
