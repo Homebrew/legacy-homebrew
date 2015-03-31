@@ -2,8 +2,8 @@ require "formula"
 
 class Snap7 < Formula
   homepage "http://snap7.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/snap7/1.2.1/snap7-full-1.2.1.tar.gz"
-  sha1 "1e661fea17c26586599c11a1a840f4ac013060b6"
+  url "https://downloads.sourceforge.net/project/snap7/1.3.0/snap7-full-1.3.0.tar.gz"
+  sha1 "341e8678d2e3e818296ec054c78b740cce182c0e"
 
   bottle do
     cellar :any
