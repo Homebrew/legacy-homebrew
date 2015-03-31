@@ -1,7 +1,7 @@
 require 'formula'
 
 class Grails < Formula
-  homepage 'http://grails.org'
+  homepage 'https://grails.org'
   url 'https://github.com/grails/grails-core/releases/download/v2.5.0/grails-2.5.0.zip'
   sha1 '3415b14440eb3fb0de7fb39964fc3d5a4d3ee0f9'
 
