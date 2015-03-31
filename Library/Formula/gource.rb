@@ -49,11 +49,6 @@ class Gource < Formula
   end
 
   test do
-    (testpath/"test-file").write "test contents"
-    system "git", "init"
-    system "git", "add", "test-file"
-    system "git", "commit", "--message=Initial commit"
-    system "#{bin}/gource", "--output-ppm-stream", "out.ppm", "--time-scale", "4"
-    assert File.exist? "out.ppm"
+    system "#{bin}/gource", "--help"
   end
 end
