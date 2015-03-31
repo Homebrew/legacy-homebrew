@@ -39,13 +39,11 @@ class Gource < Formula
     # despite -std=gnu++0x
     ENV.libcxx
 
-    # For non-/usr/local installs
-    ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
-
     system "autoreconf", "-f", "-i" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--with-boost=#{Formula["boost"].opt_prefix}",
                           "--without-x"
     system "make", "install"
   end
