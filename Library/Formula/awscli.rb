@@ -85,14 +85,16 @@ class Awscli < Formula
 
     system "python", *Language::Python.setup_install_args(libexec)
 
+    # Install bash completion
+    bash_completion.install "bin/aws_completer"
+
     # Install zsh completion
     zsh_completion.install "bin/aws_zsh_completer.sh" => "_aws"
 
     # Install the examples
     (share+"awscli").install "awscli/examples"
 
-    bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    (bin/"aws").write_env_script libexec/"bin/aws", :PYTHONPATH => ENV["PYTHONPATH"]
   end
 
   def caveats; <<-EOS.undent
@@ -100,10 +102,7 @@ class Awscli < Formula
       #{HOMEBREW_PREFIX}/share/awscli/examples
 
     Add the following to ~/.bashrc to enable bash completion:
-      complete -C aws_completer aws
-
-    Add the following to ~/.zshrc to enable zsh completion:
-      source #{HOMEBREW_PREFIX}/share/zsh/site-functions/_aws
+      complete -C #{HOMEBREW_PREFIX}/etc/bash_completion.d/aws_completer aws
 
     Before using awscli, you need to tell it about your AWS credentials.
     The easiest way to do this is to run:
