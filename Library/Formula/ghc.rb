@@ -16,7 +16,7 @@ class Ghc < Formula
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
-  depends_on "gmp" => :build
+  depends_on "gmp"
   depends_on "gcc" if MacOS.version == :mountain_lion
 
   if build.build_32_bit? || !MacOS.prefer_64_bit?
