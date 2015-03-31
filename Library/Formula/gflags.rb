@@ -1,12 +1,14 @@
-require 'formula'
-
 class Gflags < Formula
-  homepage 'http://code.google.com/p/google-gflags/'
-  url 'https://gflags.googlecode.com/files/gflags-2.0.tar.gz'
-  sha1 'dfb0add1b59433308749875ac42796c41e824908'
+  homepage "https://gflags.github.io/gflags/"
+  url "https://github.com/gflags/gflags/archive/v2.1.2.tar.gz"
+  sha256 "d8331bd0f7367c8afd5fcb5f5e85e96868a00fd24b7276fa5fcee1e5575c2662"
+
+  depends_on "cmake" => :build
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    mkdir "buildroot" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "install"
+    end
   end
 end
