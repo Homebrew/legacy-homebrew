@@ -9,9 +9,9 @@ class Pup < Formula
 
   bottle do
     cellar :any
-    sha1 "2738ba14aef491fc87d760edf1fbf23374cdf751" => :yosemite
-    sha1 "db1dd87b6484c1f446882cd06636a6a6a6c8e89a" => :mavericks
-    sha1 "f33ec888512347b9a12bdc19b365a4a81c04508a" => :mountain_lion
+    sha256 "df4845eacaf13a885015266fa87b282b99cec7d59d216a0d5f0ded35dcfb8ea6" => :yosemite
+    sha256 "a7013f00f515a8e2f5c290d5b540ed7356504ba1843149782e1cf2d89aabcf13" => :mavericks
+    sha256 "0ecbecac78ddb4b50b4b6d1caf24524d3751d8e0348411e767253fc694546e0c" => :mountain_lion
   end
 
   depends_on "go" => :build
