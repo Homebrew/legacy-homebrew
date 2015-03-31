@@ -139,8 +139,4 @@ class Lighttpd < Formula
     </plist>
     EOS
   end
-
-  test do
-    system bin/"lighttpd", "-v"
-  end
 end
