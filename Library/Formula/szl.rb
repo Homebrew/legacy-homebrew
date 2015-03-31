@@ -2,7 +2,7 @@ class Szl < Formula
   homepage "https://code.google.com/p/szl/"
   url "https://szl.googlecode.com/files/szl-1.0.tar.gz"
   sha1 "e4c6d4aec1afc025257d41dd77b8f5c25ea120d4"
-  revision 4
+  revision 5
 
   bottle do
     cellar :any
