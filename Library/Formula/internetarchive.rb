@@ -4,6 +4,7 @@ class Internetarchive < Formula
   homepage "https://github.com/jjjake/ia-wrapper"
   url "https://pypi.python.org/packages/source/i/internetarchive/internetarchive-0.7.9.tar.gz"
   sha1 "f52fd6cdece11da62bb8b32664da9271be3eaa91"
+  revision 1
 
   bottle do
     cellar :any
@@ -38,8 +39,8 @@ class Internetarchive < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz"
-    sha1 "f57bc125d35ec01a81afe89f97dc75913a927e65"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "py" do
@@ -64,6 +65,9 @@ class Internetarchive < Formula
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
+
+    # unpin requests
+    inreplace "setup.py", /'requests.*?'/, "'requests'"
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
