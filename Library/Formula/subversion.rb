@@ -5,9 +5,9 @@ class Subversion < Formula
   sha256 "1099cc68840753b48aedb3a27ebd1e2afbcc84ddb871412e5d500e843d607579"
 
   bottle do
-    sha1 "fdc774e0ca4c603e7d6167b0780fe6fb38ddd3f7" => :yosemite
-    sha1 "0ed6964b8bde9170b25e54c9e3cd56067325b00b" => :mavericks
-    sha1 "f27aeb2bc0aac84caea6ed9c9adb6401fd62143e" => :mountain_lion
+    sha256 "9632818ed972becd8702af08042218bd3faa723ef4812b6d85ec974a8647782f" => :yosemite
+    sha256 "1c9f5997edda6bd034ed9ad85f060b0e1c298ee9c208f881ff89c1d772baa776" => :mavericks
+    sha256 "f79ca1f3377fa0a0c2550085a48dd03dbabe493c8af08531ebe61710f54f9d1e" => :mountain_lion
   end
 
   devel do
