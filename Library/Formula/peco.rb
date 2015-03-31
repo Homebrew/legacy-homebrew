@@ -5,12 +5,16 @@ class Peco < Formula
   url "https://github.com/peco/peco/archive/v0.3.2.tar.gz"
   sha256 "ce2d617a49a29a010546b6331f7d3288eeab23226fada591b5c65be035b9c693"
 
+  head "https://github.com/peco/peco.git"
+
   bottle do
     cellar :any
     sha256 "16be6e9c7eb32408c68148aa9271025714424d3af6c09f34444f54f12fd95817" => :yosemite
     sha256 "673f42e05938dbfc366498276002342b3fe6de0ccffba8cdb4cbb4a65b4e7a3f" => :mavericks
     sha256 "f71b17c651c0c6c960a88be59e33cc8f11499e4c6d378b020b691e08f3a691a6" => :mountain_lion
   end
+
+  depends_on "go" => :build
 
   go_resource "github.com/google/btree" do
     url "https://github.com/google/btree.git",
@@ -32,15 +36,10 @@ class Peco < Formula
       :revision => "10f14d7408b64a659b7c694a771f5006952d336c"
   end
 
-  go_resource "github.com/peco/peco" do
-    url "https://github.com/peco/peco.git",
-      :revision => "d36c492e5032da478fae3a05744cfc5cf9c75759"
-  end
-
-  depends_on "go" => :build
-
   def install
     ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/peco"
+    ln_s buildpath, buildpath/"src/github.com/peco/peco"
     Language::Go.stage_deps resources, buildpath/"src"
 
     system "go", "build", "cmd/peco/peco.go"
