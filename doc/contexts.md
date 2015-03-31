@@ -2,12 +2,12 @@
 
 With Spark Jobserver 0.5.0, jobs no longer have to share just a plain
 `SparkContext`, but can share other types of contexts as well, such as a
-`SQLContext`.  This allows Spark jobs to share the state of other contexts, such
-as SQL temporary tables.  An example can be found in the `SQLLoaderJob` class,
-which creates a temporary table, and the `SQLTestJob` job, which runs a SQL
-query against the loaded table.  This feature can also be used with other
-contexts than the ones supplied by Spark itself, such as the CassandraContext
-from Datastax's Cassandra Spark Connector.
+`SQLContext` or `HiveContext`.  This allows Spark jobs to share the state of 
+other contexts, such as SQL temporary tables.  An example can be found in the 
+`SQLLoaderJob` class, which creates a temporary table, and the `SQLTestJob` job, 
+which runs a SQL query against the loaded table.  This feature can also be 
+used with other contexts than the ones supplied by Spark itself, such as the 
+CassandraContext from Datastax's Cassandra Spark Connector.
 
 ## Example
 
@@ -15,6 +15,8 @@ To run jobs for a specific type of context, first you need to start a context wi
 
     curl -d "" '127.0.0.1:8090/contexts/sql-context?context-factory=spark.jobserver.context.SQLContextFactory'
     OK⏎
+
+Similarly, to use a HiveContext for jobs pass `context-factory=spark.jobserver.context.HiveContextFactory`
 
 Now you should be able to run jobs in that context:
 

@@ -21,7 +21,7 @@ class HiveContextFactory extends SparkContextFactory {
   }
 }
 
-protected[jobserver] trait HiveContextLike extends ContextLike {
+private[jobserver] trait HiveContextLike extends ContextLike {
   def isValidJob(job: SparkJobBase): Boolean = job.isInstanceOf[SparkHiveJob]
   def stop() { this.sparkContext.stop() }
 }
