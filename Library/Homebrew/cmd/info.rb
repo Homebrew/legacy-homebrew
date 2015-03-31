@@ -118,7 +118,17 @@ module Homebrew
     end
 
     history = github_info(f)
-    puts "From: #{history}" if history
+    if history
+      if f.core_formula?
+        git_dir = "#{HOMEBREW_REPOSITORY}/.git"
+        formula_path = f.path
+      else
+        git_dir = "#{f.path.dirname}/.git"
+        formula_path = f.path.basename
+      end
+      local_commit_time = `git --git-dir=#{git_dir} log -n 1 --pretty=format:%cd --date=local -- #{formula_path}`
+      puts "From: #{history} (Last modified #{local_commit_time})"
+    end
 
     unless f.deps.empty?
       ohai "Dependencies"
