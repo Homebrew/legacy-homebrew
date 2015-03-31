@@ -1,7 +1,7 @@
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.8.tar.gz"
-  sha1 "294a7230402bb1dc11981bc4e6136bfaa04a602b"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.18.tar.gz"
+  sha256 "0174276c5e0c830cc77052580d9aadf52e944ade009625fb9be0ee04251a96f2"
 
   bottle do
     cellar :any
@@ -26,7 +26,9 @@ class Awscli < Formula
     end
   end
 
-  depends_on :python if MacOS.version <= :snow_leopard
+  # Use :python on Lion to avoid urllib3 warning
+  # https://github.com/Homebrew/homebrew/pull/37240
+  depends_on :python if MacOS.version <= :lion
 
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
@@ -34,13 +36,13 @@ class Awscli < Formula
   end
 
   resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
-    sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.post1.tar.gz"
+    sha256 "aa9bdbd60c395db90204609f1fb5aeb3797870f65c09f04f243476d22f8f4615"
   end
 
   resource "colorama" do
-    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.2.5.tar.gz"
-    sha1 "87507210c5a7d400b27d23e8dd42734198663d66"
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.3.tar.gz"
+    sha256 "eb21f2ba718fbf357afdfdf6f641ab393901c7ca8d9f37edd0bee4806ffa269c"
   end
 
   resource "jmespath" do
@@ -49,8 +51,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.89.0.tar.gz"
-    sha1 "15a4b154b49bc967d921253875cf41ff8f2b6816"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.99.0.tar.gz"
+    sha256 "20cd9e82a358e2aad9e0b188cdee9ffa5c42219d5382d91a9ca1c85ff28f7df0"
   end
 
   resource "docutils" do
@@ -59,8 +61,8 @@ class Awscli < Formula
   end
 
   resource "bcdoc" do
-    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.12.2.tar.gz"
-    sha1 "31b2a714c2803658d9d028c8edf4623fd0daaf18"
+    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.13.0.tar.gz"
+    sha256 "ffe7bfc278f83bab826e9f52e2860a858579fffab2febf60ce2ec6c3f9247763"
   end
 
   resource "pyasn1" do
@@ -69,8 +71,8 @@ class Awscli < Formula
   end
 
   resource "rsa" do
-    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.2.tar.gz"
-    sha1 "ebf54ad3fff8bc1df09f5d777d5a913e5aef8df5"
+    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.4.tar.gz"
+    sha256 "e2b0b05936c276b1edd2e1525553233b666df9e29b5c3ba223eed738277c82a0"
   end
 
   def install
