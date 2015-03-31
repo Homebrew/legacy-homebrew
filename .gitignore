@@ -11,3 +11,4 @@ test-reports/
 # ignore deployment configs
 config/*.conf
 config/*.sh
+metastore_db/
