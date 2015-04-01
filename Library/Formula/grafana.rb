@@ -2,13 +2,10 @@ require "language/go"
 
 class Grafana < Formula
   homepage "http://www.grafana.org/"
+  url "https://github.com/grafana/grafana/archive/v2.0.0-beta1.tar.gz"
+  sha256 "096f46078f8350726d8a0ce083f49623d28685615825fdf0e203ee99b7dc3302"
   head "https://github.com/grafana/grafana.git"
   version "2.0.0-beta1"
-
-  stable do
-    url "https://github.com/grafana/grafana/archive/v2.0.0-beta1.tar.gz"
-    sha256 "096f46078f8350726d8a0ce083f49623d28685615825fdf0e203ee99b7dc3302"
-  end
 
   depends_on "go" => :build
 
