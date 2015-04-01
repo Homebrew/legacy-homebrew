@@ -369,11 +369,14 @@ Instantiate a Homebrew build environment\. Uses our years\-battle\-hardened Home
 Symlink all of the specific \fIversion\fR of \fIname\fR\'s install to Homebrew prefix\.
 .
 .TP
-\fBtap\fR [\fItap\fR]
+\fBtap\fR [\-\-full] [\fItap\fR]
 Tap a new formula repository from GitHub, or list existing taps\.
 .
 .IP
 \fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew tap homebrew/dupes\fR\.
+.
+.IP
+If \fB\-\-full\fR is passed, a full clone will be used\.
 .
 .TP
 \fBtap \-\-repair\fR
