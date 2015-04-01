@@ -5,7 +5,6 @@ class Lnav < Formula
   url 'https://github.com/tstack/lnav/releases/download/v0.7.2/lnav-0.7.2.tar.gz'
   sha1 'f679a5a3b52a05edf6ab2446182e085d1953c1fc'
 
-
   bottle do
     sha256 "8c178133d92e3fe244d60aef590f17943ae494a12a5b0be40bad789dc6646de2" => :yosemite
     sha256 "ab85080c57d96be9a391ce8e1eff67fda43653c1f0328290d4ba2b8253ca3af0" => :mavericks
