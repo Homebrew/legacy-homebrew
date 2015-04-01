@@ -1,7 +1,7 @@
 class CabalInstall < Formula
   homepage "https://www.haskell.org/cabal/"
-  url "https://hackage.haskell.org/package/cabal-install-1.22.0.1/cabal-install-1.22.0.1.tar.gz"
-  sha256 "87afa8f5d2bffafeffa9ff71062bf09469aade3ae52975c09c35ce61520d10c8"
+  url "https://hackage.haskell.org/package/cabal-install-1.22.2.0/cabal-install-1.22.2.0.tar.gz"
+  sha256 "25bc2ea88f60bd0f19bf40984ea85491461973895480b8633d87f54aa7ae6adb"
 
   bottle do
     cellar :any
