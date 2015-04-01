@@ -1,18 +1,17 @@
-require "formula"
 require "language/go"
 
 class Pup < Formula
   homepage "https://github.com/EricChiang/pup"
-  url "https://github.com/EricChiang/pup/archive/v0.3.2.tar.gz"
-  sha1 "a3d4a624368678845e9d081abd1f5906656781dd"
+  url "https://github.com/ericchiang/pup/archive/v0.3.8.tar.gz"
+  sha256 "8cf911f9ff5ddc5138ab86ce58f93f468e233e78782ca0dc985d5e3485c4c8d6"
 
   head "https://github.com/EricChiang/pup.git"
 
   bottle do
     cellar :any
-    sha1 "2738ba14aef491fc87d760edf1fbf23374cdf751" => :yosemite
-    sha1 "db1dd87b6484c1f446882cd06636a6a6a6c8e89a" => :mavericks
-    sha1 "f33ec888512347b9a12bdc19b365a4a81c04508a" => :mountain_lion
+    sha256 "df4845eacaf13a885015266fa87b282b99cec7d59d216a0d5f0ded35dcfb8ea6" => :yosemite
+    sha256 "a7013f00f515a8e2f5c290d5b540ed7356504ba1843149782e1cf2d89aabcf13" => :mavericks
+    sha256 "0ecbecac78ddb4b50b4b6d1caf24524d3751d8e0348411e767253fc694546e0c" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -24,32 +23,36 @@ class Pup < Formula
   end
 
   go_resource "github.com/mitchellh/gox" do
-    url "https://github.com/mitchellh/gox.git", :tag => "v0.3.0"
+    url "https://github.com/mitchellh/gox.git",
+    :tag => "v0.3.0", :revision => "54b619477e8932bbb6314644c867e7e6db7a9c71"
   end
 
   # discovered via
   # find . -name "*.go" -exec head -20 "{}" ";" | grep ".*\..*/" | sort | uniq
   go_resource "github.com/fatih/color" do
-    url "git://github.com/fatih/color.git",
+    url "https://github.com/fatih/color.git",
         # this was just the `master` at the time of this Formula
-        :revision => "3161cccfa22c6243e02aa984cf2886d022024cec"
+        :revision => "1b4171c5cdb770e90ab04e960b52f43b583d398c"
+  end
+  go_resource "github.com/shiena/ansicolor" do
+    url "https://github.com/shiena/ansicolor.git",
+        # this was just the `master` at the time of this Formula
+        :revision => "8368d3b31cf6f2c2464c7a91675342c9a0ac6658"
   end
   go_resource "github.com/mattn/go-colorable" do
-    url "git://github.com/mattn/go-colorable.git",
+    url "https://github.com/mattn/go-colorable.git",
         # this was just the `master` at the time of this Formula
-        :revision => "043ae16291351db8465272edf465c9f388161627"
+        :revision => "d67e0b7d1797975196499f79bcc322c08b9f218b"
   end
-  go_resource "code.google.com/p/go.net" do
-    url "https://code.google.com/p/go.net/",
-        # this was just the `tip` at the time of this Formula
-        :revision => "b39f3d42a398493ea477d6aa63ae43d818d1f78a",
-        :using => :hg
+  go_resource "golang.org/x/net" do
+    url "https://go.googlesource.com/net.git",
+        # this was just the `master` at the time of this Formula
+        :revision => "7dbad50ab5b31073856416cdcfeb2796d682f844"
   end
-  go_resource "code.google.com/p/go.text" do
-    url "https://code.google.com/p/go.text/",
-        # this was just the `tip` at the time of this Formula
-      :revision => "1ac75970ff9e986010d3d7d8549f1863951a9839",
-      :using => :hg
+  go_resource "golang.org/x/text" do
+    url "https://go.googlesource.com/text.git",
+      # this was just the `tip` at the time of this Formula
+      :revision => "a9f4d1a427d033e4320e1c1639b87e41bd310cce"
   end
 
   def install
@@ -83,8 +86,8 @@ class Pup < Formula
   end
 
   test do
-    expected = %{Hello}
-    actual = %x{echo "<body><p>Hello</p></body>" | pup p "text{}"}.strip
+    expected = %(Hello)
+    actual = %x(echo "<body><p>Hello</p></body>" | pup p "text{}").strip
     assert_equal expected, actual
   end
 end

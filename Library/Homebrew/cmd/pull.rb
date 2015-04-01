@@ -178,7 +178,7 @@ module Homebrew
             puts
           end
         else
-          opoo "Set BINTRAY_USER and BINTRAY_KEY to add new formula bottles on Bintray!"
+          opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
         end
       end
 

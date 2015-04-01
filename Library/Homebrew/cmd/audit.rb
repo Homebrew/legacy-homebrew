@@ -338,6 +338,8 @@ class FormulaAuditor
         problem "Fossies urls should be https://, not http (url is #{p})."
       when %r[^http://mirrors\.kernel\.org/]
         problem "mirrors.kernel urls should be https://, not http (url is #{p})."
+      when %r[^http://[^/]*\.bintray\.com/]
+        problem "Bintray urls should be https://, not http (url is #{p})."
       when %r[^http://tools\.ietf\.org/]
         problem "ietf urls should be https://, not http (url is #{p})."
       end
