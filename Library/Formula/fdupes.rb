@@ -1,13 +1,11 @@
-require 'formula'
-
 class Fdupes < Formula
-  homepage 'http://code.google.com/p/fdupes/'
-  url 'https://fdupes.googlecode.com/files/fdupes-1.51.tar.gz'
-  sha1 '8276b39026f57a2f9503d7af18efca0a7d42b8ec'
+  homepage "https://github.com/adrianlopezroche/fdupes"
+  url "https://github.com/adrianlopezroche/fdupes/archive/fdupes-1.51.tar.gz"
+  sha256 "761e16d4ecfef7302c62fe7ef1e181cd34f5c6ce5377dcad96e3ed44fb364986"
 
   def install
     inreplace "Makefile", "gcc", "#{ENV.cc} #{ENV.cflags}"
-    system "make fdupes"
+    system "make", "fdupes"
     bin.install "fdupes"
     man1.install "fdupes.1"
   end

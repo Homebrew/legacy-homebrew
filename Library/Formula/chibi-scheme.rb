@@ -1,14 +1,9 @@
-require "formula"
-
 class ChibiScheme < Formula
-  homepage "http://code.google.com/p/chibi-scheme/"
+  homepage "https://github.com/ashinn/chibi-scheme"
+  url "http://abrek.synthcode.com/chibi-scheme-0.7.2.tgz"
+  sha256 "bae56b5a6ce2d90dc334a5a81de027d9cdc1c563ceddd8e0bf6276b2da13d340"
 
-  stable do
-    url "http://abrek.synthcode.com/chibi-scheme-0.7.2.tgz"
-    sha1 "337908635020bf354ec9bcb62f91e1bbe534ff23"
-  end
-
-  head "https://code.google.com/p/chibi-scheme/", :using => :hg
+  head "https://github.com/ashinn/chibi-scheme.git"
 
   bottle do
     cellar :any
@@ -31,4 +26,3 @@ class ChibiScheme < Formula
     assert_equal 0, $?.exitstatus
   end
 end
-
