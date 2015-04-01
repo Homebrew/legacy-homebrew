@@ -1,7 +1,7 @@
 class Groonga < Formula
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-5.0.1.tar.gz"
-  sha1 "3275dd03a09ccaf11c86a70477191a9f5bec0efb"
+  url "http://packages.groonga.org/source/groonga/groonga-5.0.2.tar.gz"
+  sha1 "737e2196ea144a7c39ed778c5b748c121128bccf"
 
   # These patches fixes Groonga build failure issue:
   # https://github.com/groonga/groonga/issues/328
