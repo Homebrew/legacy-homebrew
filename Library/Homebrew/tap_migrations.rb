@@ -81,6 +81,7 @@ TAP_MIGRATIONS = {
   "hwloc" => "homebrew/science",
   "imake" => "homebrew/x11",
   "inkscape" => "homebrew/x11",
+  "iphotoexport" => "homebrew/boneyard",
   "ipopt" => "homebrew/science",
   "iptux" => "homebrew/x11",
   "itsol" => "homebrew/science",
