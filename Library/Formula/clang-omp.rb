@@ -1,19 +1,19 @@
 class ClangOmp < Formula
   homepage "https://clang-omp.github.io/"
-  url "https://github.com/clang-omp/llvm/archive/1013141148.tar.gz"
-  sha256 "744e83339eca7494fe731c945fc12ab15a5e496de4b859f0d77301310c847a14"
+  url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
+  sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
 
   depends_on "libiomp"
   depends_on "cmake" => :build
 
   resource "compiler-rt" do
-    url "https://github.com/clang-omp/compiler-rt/archive/1013141148.tar.gz"
-    sha256 "ef289ca49c0282cb32053d56d319732ea1cce6b8fdd10814bcfbe4f8abd9bfea"
+    url "https://github.com/clang-omp/compiler-rt/archive/2015-04-01.tar.gz"
+    sha256 "5a8d39ff6ce524e23fae32870f85b18d43f2795da2011d3cbb6b29d471bb27b7"
   end
 
   resource "clang" do
-    url "https://github.com/clang-omp/clang/archive/1013141148.tar.gz"
-    sha256 "a18fe403933f31471f11e6365c742a4f932dec42a55589c36b570c53cc21d358"
+    url "https://github.com/clang-omp/clang/archive/2015-04-01.tar.gz"
+    sha256 "2717115e5ba491e3b8119311f0d792420ba41be34a89733b9880eb3d3c09fbe5"
   end
 
   needs :cxx11
