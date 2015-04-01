@@ -21,7 +21,7 @@ Thank you!
 * Read through the [Common Issues](Common-Issues.md) page.
 * If you’re installing something Java-related, maybe you need the [Java Developer Update][] or [JDK 7][]?
 * Check that **Command Line Tools for Xcode (CLT)** and/or **Xcode** are up to date.
-* If things fail with permissions errors, check the permissions in `/usr/local`. If you’re unsure what to do, you can `sudo chown -R $(whoami) /usr/local`.
+* If things fail with permissions errors, check the permissions in `/usr/local`. If you’re unsure what to do, you can `sudo chown -R $(whoami):admin $(brew --prefix)`.
 
 #### Listen to Dr. Brew
 
