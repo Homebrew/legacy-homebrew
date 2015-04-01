@@ -23,8 +23,9 @@ class Dcd < Formula
       # query the server from a client
       system "dcd-client", "-q", "-p9167"
     rescue
-      # clean up the server process
-      Process.kill "TERM", server
+      if server
+        # clean up the server process
+        Process.kill "TERM", server
       raise
     end
     # Ditto
