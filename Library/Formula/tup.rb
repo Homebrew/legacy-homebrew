@@ -16,12 +16,16 @@ class Tup < Formula
   depends_on "pkg-config" => :build
   depends_on :osxfuse
 
-  # Fixes the renaming of functions on OS X 10.10
-  # https://github.com/gittup/tup/issues/204
-  if MacOS.version >= :yosemite
-    patch do
-      url "https://github.com/gittup/tup/pull/205.diff"
-      sha1 "eebe8293b18096361130d0a97e0f10c524a716b3"
+  # HEAD already contains alternate fix
+  # https://github.com/gittup/tup/commit/9812548b4d3833644f0cf8f70f62628a75ffbb56
+  stable do
+    # Fixes the renaming of functions on OS X 10.10
+    # https://github.com/gittup/tup/issues/204
+    if MacOS.version >= :yosemite
+      patch do
+        url "https://github.com/gittup/tup/pull/205.diff"
+        sha1 "eebe8293b18096361130d0a97e0f10c524a716b3"
+      end
     end
   end
 
