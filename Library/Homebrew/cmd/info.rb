@@ -1,6 +1,7 @@
 require "blacklist"
 require "caveats"
 require "cmd/options"
+require "date"
 require "formula"
 require "keg"
 require "tab"
@@ -118,7 +119,24 @@ module Homebrew
     end
 
     history = github_info(f)
-    puts "From: #{history}" if history
+    if history
+      history_blurb = "From: #{history}"
+      if f.core_formula?
+        git_dir = "#{HOMEBREW_REPOSITORY}/.git"
+        formula_path = f.path
+      else
+        git_dir = "#{f.path.dirname}/.git"
+        formula_path = f.path.basename
+      end
+      date_limit = Date.today - 30
+      local_commit_time = `git --git-dir=#{git_dir} log -n 1 --since=#{date_limit} --pretty=format:%cd --date=local -- #{formula_path}`
+      if local_commit_time.empty?
+        history_blurb << " (Not updated in the last 30 days)"
+      else
+        history_blurb << " (Last updated #{local_commit_time})"
+      end
+      puts history_blurb
+    end
 
     unless f.deps.empty?
       ohai "Dependencies"
