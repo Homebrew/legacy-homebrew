@@ -12,21 +12,21 @@ class Dcd < Formula
   
   test do
     begin
-      #spawn a server, using a non-default port to avoid
-      #clashes with pre-existing dcd-server instances
+      # spawn a server, using a non-default port to avoid
+      # clashes with pre-existing dcd-server instances
       puts "==> dcd-server -p9167"
       server = spawn "dcd-server -p9167" 
       Process.detach server
-      #Give it generous time to load
+      # Give it generous time to load
       sleep 0.5
-      #query the server from a client
-      client = system "dcd-client", "-q", "-p9167"
+      # query the server from a client
+      system "dcd-client", "-q", "-p9167"
     rescue
-      #clean up the server process
+      # clean up the server process
       Process.kill "TERM", server
       raise
     end
-    #Ditto
+    # Ditto
     Process.kill "TERM", server
   end
 end
