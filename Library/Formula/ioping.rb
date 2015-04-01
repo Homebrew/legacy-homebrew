@@ -1,11 +1,9 @@
-require 'formula'
-
 class Ioping < Formula
-  homepage 'http://code.google.com/p/ioping/'
-  url 'https://ioping.googlecode.com/files/ioping-0.8.tar.gz'
-  sha1 '7d4fe1414cdd5887c332426a8844e17eca5e5646'
+  homepage "https://github.com/koct9i/ioping"
+  url "https://github.com/koct9i/ioping/releases/download/v0.9/ioping-0.9.tar.gz"
+  sha256 "951e430875987c8cfe0ed85a0bcfe1081788121a34102eb6f7c91330c63a775d"
 
-  head 'http://ioping.googlecode.com/svn/trunk/'
+  head "https://github.com/koct9i/ioping.git"
 
   def install
     system "make"
