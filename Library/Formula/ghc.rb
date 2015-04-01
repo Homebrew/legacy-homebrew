@@ -16,8 +16,14 @@ class Ghc < Formula
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
-  depends_on "gmp"
   depends_on "gcc" if MacOS.version == :mountain_lion
+
+  resource "gmp" do
+    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
+    mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
+    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
+    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+  end
 
   if build.build_32_bit? || !MacOS.prefer_64_bit?
     resource "binary" do
@@ -63,9 +69,23 @@ class Ghc < Formula
   end
 
   def install
-    # Copy gmp static libraries to build path (to avoid dynamic linking)
-    (buildpath/"gmp-lib-static").mkpath
-    cp Dir.glob("#{Formula["gmp"].lib}/*.a"), buildpath/"gmp-lib-static/"
+    ENV.m32 if build.build_32_bit?
+
+    # Build a static gmp (to avoid dynamic linking to ghc)
+    gmp_prefix = buildpath/"gmp-static"
+    resource("gmp").stage do
+      gmp_args = ["--prefix=#{gmp_prefix}", "--enable-cxx", "--enable-shared=no"]
+      gmp_args << "ABI=32" if build.build_32_bit?
+
+      # https://github.com/Homebrew/homebrew/issues/20693
+      gmp_args << "--disable-assembly" if build.build_32_bit? || build.bottle?
+
+      system "./configure", *gmp_args
+      system "make"
+      system "make", "check"
+      ENV.deparallelize
+      system "make", "install"
+    end
 
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
@@ -95,7 +115,6 @@ class Ghc < Formula
       ENV["LD"] = "ld"
 
       if build.build_32_bit? || !MacOS.prefer_64_bit?
-        ENV.m32 # Need to force this to fix build error on internal libgmp_ar.
         arch = "i386"
       else
         arch = "x86_64"
@@ -114,7 +133,8 @@ class Ghc < Formula
       system "./configure", "--prefix=#{prefix}",
                             "--build=#{arch}-apple-darwin",
                             "--with-gcc=#{ENV.cc}",
-                            "--with-gmp-includes=#{buildpath}/gmp-lib-static"
+                            "--with-gmp-includes=#{gmp_prefix}",
+                            "--with-gmp-libraries=#{gmp_prefix}"
       system "make"
 
       if build.with? "tests"
