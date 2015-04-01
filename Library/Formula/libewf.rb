@@ -1,10 +1,13 @@
-require "formula"
-
 class Libewf < Formula
-  homepage "http://code.google.com/p/libewf/"
+  homepage "https://github.com/libyal/libewf"
   url "https://googledrive.com/host/0B3fBvzttpiiSMTdoaVExWWNsRjg/libewf-20140608.tar.gz"
-  sha1 "c17384a3d2c1d63bd5b1aaa2aead6ee3c82a2368"
+  sha256 "d14030ce6122727935fbd676d0876808da1e112721f3cb108564a4d9bf73da71"
   revision 1
+
+  devel do
+    url "https://github.com/libyal/libewf/releases/download/20150126/libewf-experimental-20150126.tar.gz"
+    sha256 "adba8c45c32c41fccdcfc32ac4b20b9531a04a710f355165c23eaf6f2ec6700e"
+  end
 
   bottle do
     cellar :any
@@ -18,6 +21,6 @@ class Libewf < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
