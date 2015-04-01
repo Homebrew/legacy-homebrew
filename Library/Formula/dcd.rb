@@ -16,8 +16,10 @@ class Dcd < Formula
       # spawn a server, using a non-default port to avoid
       # clashes with pre-existing dcd-server instances
       puts "==> dcd-server -p9167"
-      server = spawn "dcd-server -p9167"
-      Process.detach server
+      # would use spawn, can't on M-L as ruby 1.8
+      server = fork do
+        exec "dcd-server", "-p9167"
+      end
       # Give it generous time to load
       sleep 0.5
       # query the server from a client
