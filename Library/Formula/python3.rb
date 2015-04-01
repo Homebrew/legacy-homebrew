@@ -50,8 +50,12 @@ class Python3 < Formula
   # X11.
   patch :DATA if build.with? "brewed-tk"
 
+  def lib_cellar
+    prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}"
+  end
+
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/site-packages"
+    lib_cellar/"site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -194,7 +198,7 @@ class Python3 < Formula
     end
 
     # And now we write the distutils.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/distutils/distutils.cfg"
+    cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
