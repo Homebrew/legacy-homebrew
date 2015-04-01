@@ -179,7 +179,7 @@ diff --git a/boost/numeric/odeint/util/bind.hpp b/boost/numeric/odeint/util/bind
 index 966fd03..1bad30a 100644
 --- a/boost/numeric/odeint/util/bind.hpp
 +++ b/boost/numeric/odeint/util/bind.hpp
-@@ -41,12 +41,14 @@ using namespace ::std::placeholders;
+@@ -41,12 +41,15 @@ using namespace ::std::placeholders;
  
  #else
  
