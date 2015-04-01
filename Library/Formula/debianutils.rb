@@ -1,7 +1,7 @@
 class Debianutils < Formula
-  homepage "http://anonscm.debian.org/gitweb/?p=users/clint/debianutils.git"
+  homepage "https://packages.debian.org/sid/debianutils"
   url "http://ftp.de.debian.org/debian/pool/main/d/debianutils/debianutils_4.4.tar.gz"
-  sha1 "019b969ab698c83117254b50fc8f469f10a5d8d6"
+  sha256 "190850cdd6b5302e0a1ba1aaed1bc7074d67d3bd8d04c613f242f7145afa53a6"
 
   bottle do
     cellar :any

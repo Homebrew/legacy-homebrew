@@ -1,10 +1,7 @@
-require "formula"
-
 class DfuUtil < Formula
-  homepage "https://gitorious.org/dfu-util/community"
-  # upstream moved, no releases yet, using debian mirror until then.  see #34047
-  url "http://ftp.de.debian.org/debian/pool/main/d/dfu-util/dfu-util_0.8.orig.tar.gz"
-  sha1 "164551ca40f0c569eb7ae3263a9945a1ef3fed4d"
+  homepage "http://dfu-util.sourceforge.net/releases/"
+  url "http://dfu-util.sourceforge.net/releases/dfu-util-0.8.tar.gz"
+  sha256 "55cbde9be12a212bd84bce9d1e63941d9a16139ed0d4912401367eba1502f058"
 
   bottle do
     cellar :any
@@ -14,7 +11,7 @@ class DfuUtil < Formula
   end
 
   head do
-    url "git://gitorious.org/dfu-util/dfu-util.git"
+    url "git://git.code.sf.net/p/dfu-util/dfu-util"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -27,6 +24,6 @@ class DfuUtil < Formula
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
