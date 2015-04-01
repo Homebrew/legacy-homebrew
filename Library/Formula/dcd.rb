@@ -26,6 +26,7 @@ class Dcd < Formula
       if server
         # clean up the server process
         Process.kill "TERM", server
+      end
       raise
     end
     # Ditto
