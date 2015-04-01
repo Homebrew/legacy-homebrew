@@ -50,10 +50,13 @@ class Python3 < Formula
   # X11.
   patch :DATA if build.with? "brewed-tk"
 
+  def lib_cellar
+    prefix / (OS.mac? ? "Frameworks/Python.framework/Versions/#{xy}" : "") /
+      "lib/python#{xy}"
+  end
+
   def site_packages_cellar
-    prefix/
-      (if OS.mac? then "Frameworks/Python.framework/Versions/#{xy}" end)/
-      "lib/python#{xy}/site-packages"
+    lib_cellar/"site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -92,8 +95,7 @@ class Python3 < Formula
       --datarootdir=#{share}
       --datadir=#{share}
     ]
-
-    args << "--enable-framework=#{frameworks}" if OS.mac?
+    args << (OS.mac? ? "--enable-framework=#{frameworks}" : "--enable-shared")
     args << '--without-gcc' if ENV.compiler == :clang
 
     distutils_fix_superenv(args)
@@ -153,7 +155,7 @@ class Python3 < Formula
     inreplace frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}m/Makefile" do |s|
       s.change_make_var! "LINKFORSHARED",
                          "-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python"
-    end
+    end if OS.mac?
 
     %w[setuptools pip].each do |r|
       (libexec/r).install resource(r)
@@ -198,7 +200,7 @@ class Python3 < Formula
     end
 
     # And now we write the distutils.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/distutils/distutils.cfg"
+    cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
