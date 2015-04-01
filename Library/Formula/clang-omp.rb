@@ -1,6 +1,7 @@
 class ClangOmp < Formula
   homepage "https://clang-omp.github.io/"
   url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
+  version "2015-04-01"
   sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
 
   depends_on "libiomp"
@@ -22,10 +23,10 @@ class ClangOmp < Formula
     resource("compiler-rt").stage { (buildpath/"projects/compiler-rt").install Dir["*"] }
     resource("clang").stage { (buildpath/"tools/clang").install Dir["*"] }
 
-    system "./configure", "--prefix=#{prefix}", "--enable-cxx11", "--enable-libcpp"
+    system "./configure", "--prefix=#{libexec}", "--enable-cxx11", "--enable-libcpp"
     system "make", "install"
 
-    mv bin/"clang", bin/"clang-omp"
+    bin.install_symlink libexec/"bin/clang" => "clang-omp"
   end
 
   test do
