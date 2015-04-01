@@ -331,10 +331,12 @@ Note that these flags should only appear after a command.
     in a Xcode-only configuration since it adds tools like make to your PATH
     which otherwise build-systems would not find.
 
-  * `tap` [<tap>]:
+  * `tap` [--full] [<tap>]:
     Tap a new formula repository from GitHub, or list existing taps.
 
     <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+
+    If `--full` is passed, a full clone will be used.
 
   * `tap --repair`:
     Ensure all tapped formulae are symlinked into Library/Formula and prune dead
