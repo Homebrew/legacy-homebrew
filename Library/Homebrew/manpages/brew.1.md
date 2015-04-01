@@ -345,10 +345,12 @@ Note that these flags should only appear after a command.
   * `switch` <name> <version>:
     Symlink all of the specific <version> of <name>'s install to Homebrew prefix.
 
-  * `tap` [<tap>]:
+  * `tap` [--full] [<tap>]:
     Tap a new formula repository from GitHub, or list existing taps.
 
     <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+
+    If `--full` is passed, a full clone will be used.
 
   * `tap --repair`:
     Ensure all tapped formulae are symlinked into Library/Formula and prune dead
