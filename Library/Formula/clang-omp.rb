@@ -4,6 +4,12 @@ class ClangOmp < Formula
   version "2015-04-01"
   sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
 
+  bottle do
+    sha256 "ed23f2f98cd280c73f53c31a281a3baee6a7e89cdd2f6f1388502fae6ea043fe" => :yosemite
+    sha256 "de14d6887271d0926d0ef4b3eb5f74366955d92d7de231a9ba8c71ce6f8443d1" => :mavericks
+    sha256 "7d58ef5113604b044c916dcb1920157d77247eb60e0c508a67d285e139b576e0" => :mountain_lion
+  end
+
   depends_on "libiomp"
   depends_on "cmake" => :build
 
