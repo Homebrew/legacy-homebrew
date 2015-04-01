@@ -20,7 +20,9 @@ module Homebrew
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}"
     return false if tapd.directory?
     ohai "Tapping #{repouser}/#{repo}"
-    abort unless system "git", "clone", "https://github.com/#{repouser}/homebrew-#{repo}", tapd.to_s
+    args = %W[clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}]
+    args << "--depth=1" unless ARGV.include?("--full")
+    safe_system "git", *args
 
     files = []
     tapd.find_formula { |file| files << file }
@@ -109,7 +111,7 @@ module Homebrew
     end
   end
 
-  def tap_args(tap_name=ARGV.first)
+  def tap_args(tap_name=ARGV.named.first)
     tap_name =~ HOMEBREW_TAP_ARGS_REGEX
     raise "Invalid tap name" unless $1 && $3
     [$1, $3]
