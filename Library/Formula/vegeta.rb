@@ -2,8 +2,8 @@ require "language/go"
 
 class Vegeta < Formula
   homepage "https://github.com/tsenart/vegeta"
-  url "https://github.com/tsenart/vegeta/archive/v5.6.1.tar.gz"
-  sha1 "9b1455423c0b87fcf6e3ea65b3e6ba89c687700d"
+  url "https://github.com/tsenart/vegeta/archive/v5.6.2.tar.gz"
+  sha1 "76c4b44ebf860343a638a71b2e574a8358b08fd8"
 
   bottle do
     cellar :any
