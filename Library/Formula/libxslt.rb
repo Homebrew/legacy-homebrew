@@ -2,8 +2,8 @@ require 'formula'
 
 class Libxslt < Formula
   homepage 'http://xmlsoft.org/XSLT/'
-  url 'ftp://xmlsoft.org/libxml2/libxslt-1.1.28.tar.gz'
-  mirror 'http://xmlsoft.org/sources/libxslt-1.1.28.tar.gz'
+  url 'http://xmlsoft.org/sources/libxslt-1.1.28.tar.gz'
+  mirror 'ftp://xmlsoft.org/libxml2/libxslt-1.1.28.tar.gz'
   sha1 '4df177de629b2653db322bfb891afa3c0d1fa221'
   revision 1
 
@@ -18,7 +18,7 @@ class Libxslt < Formula
   depends_on 'libxml2'
 
   head do
-    url "git://git.gnome.org/libxslt"
+    url "https://git.gnome.org/browse/libxslt"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
