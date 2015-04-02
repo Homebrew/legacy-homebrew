@@ -6,9 +6,9 @@ class Yaz < Formula
 
   bottle do
     cellar :any
-    sha256 "1500c0d04bdad9e3b17a43ba1bd84e4f99dda84dbaf6d19ece31a2ec11d799aa" => :yosemite
-    sha256 "7c1864b2c484c41a0f6ecbe2de95f307d5f7c219444fcee61aa440e7bba91cbc" => :mavericks
-    sha256 "37a246ee01fc6aff02fa4d0f67c8ddefc840e1c375ce867b865462e719ef81ac" => :mountain_lion
+    sha256 "914dc1356d5d91b877f1a710a948576dab069e67ace0aaabf5e89029bfa281f8" => :yosemite
+    sha256 "ffb187f592c74cf4946256ae642ffb7e237e85c7afc7d881b5c3a65db29f2ecb" => :mavericks
+    sha256 "00dc5fc0d5b2f95edf163912eef64b04cb0bafb4847e1d7ea213a12615806c1c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
