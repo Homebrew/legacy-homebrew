@@ -3,6 +3,7 @@ class Ooniprobe < Formula
   url "https://pypi.python.org/packages/source/o/ooniprobe/ooniprobe-1.3.0.tar.gz"
   sha256 "ff9c7974937d3d3d5f03fe04d561c5ef31cd4757c4112641fc88308f80cc16a7"
 
+  depends_on "geoip"
   depends_on "libdnet"
   depends_on "libyaml"
   depends_on "openssl"
