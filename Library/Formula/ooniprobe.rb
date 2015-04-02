@@ -121,6 +121,8 @@ class Ooniprobe < Formula
       end
     end
 
+    # namespace package hint
+    touch libexec/"vendor/lib/python2.7/site-packages/zope/__init__.py"
 
     inreplace "requirements.txt" do |s|
       # provided by libdnet
