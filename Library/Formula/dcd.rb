@@ -4,6 +4,9 @@ class Dcd < Formula
       :tag => "v0.5.1",
       :revision => "351bf2ee2d5f1c4986c2c5957f542dda17b1d085"
 
+  bottle do
+  end
+
   depends_on "dmd" => :build
 
   def install
