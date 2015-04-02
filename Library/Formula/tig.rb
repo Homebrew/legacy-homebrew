@@ -25,6 +25,8 @@ class Tig < Formula
     depends_on "xmlto"
   end
 
+  depends_on "readline"
+
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
