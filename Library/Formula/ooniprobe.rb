@@ -142,10 +142,12 @@ class Ooniprobe < Formula
     (var/"lib/ooni").mkpath
   end
 
+  def post_install
+    system bin/"ooniresources", "--update-inputs", "--update-geoip"
+  end
+
   def caveats; <<-EOS.undent
-    Run `ooniresources --update-inputs --update-geoip` to fetch fresh data
-    before running an ooniprobe deck.
-    Decks are installed to #{share}/ooni.
+    Decks are installed to #{HOMEBREW_PREFIX}/share/ooni.
     EOS
   end
 
