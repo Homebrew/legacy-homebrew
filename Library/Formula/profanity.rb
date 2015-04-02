@@ -1,9 +1,7 @@
-require "formula"
-
 class Profanity < Formula
   homepage "http://www.profanity.im/"
-  url "http://www.profanity.im/profanity-0.4.5.tar.gz"
-  sha1 "d9eb1b9d6a674d5f49e03882f80d1c5cf98c3ce1"
+  url "http://www.profanity.im/profanity-0.4.6.tar.gz"
+  sha256 "9672667e419958dd75d40cc0f253087ba1ae7df0c3c855eaa780831ad8282a9f"
   head "https://github.com/boothj5/profanity.git"
 
   bottle do
