@@ -1,9 +1,7 @@
-require "formula"
-
 class Gearman < Formula
   homepage "http://gearman.org/"
   url "https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz"
-  sha1 "85b5271ea3ac919d96fff9500993b73c9dc80c6c"
+  sha256 "973d7a3523141a84c7b757c6f243febbc89a3631e919b532c056c814d8738acb"
 
   bottle do
     sha1 "99393fa57c7c2ff6c4b52d3639e80c77b099edc3" => :yosemite
@@ -40,6 +38,7 @@ class Gearman < Formula
 
     args = [
       "--prefix=#{prefix}",
+      "--localstatedir=#{var}",
       "--disable-silent-rules",
       "--disable-dependency-tracking",
       "--disable-libdrizzle",
@@ -67,14 +66,15 @@ class Gearman < Formula
       args << "--disable-libmemcached" << "--without-memcached"
     end
 
-    if build.without? "tokyo-cabinet"
-      args << "--disable-libtokyocabinet"
-    end
+
+    args << "--disable-libtokyocabinet" if build.without? "tokyo-cabinet"
 
     args << (build.with?("mysql") ? "--with-mysql=#{Formula["mysql"].opt_bin}/mysql_config" : "--without-mysql")
     args << (build.with?("hiredis") ? "--enable-hiredis" : "--disable-hiredis")
 
     ENV.append_to_cflags "-DHAVE_HTONLL"
+
+    (var/"log").mkpath
     system "./configure", *args
     system "make", "install"
   end
