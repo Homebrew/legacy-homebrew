@@ -43,6 +43,7 @@ class Imagemagick < Formula
   depends_on "webp" => :optional
   depends_on "homebrew/versions/openjpeg21" if build.with? "jp2"
   depends_on "fftw" => :optional
+  depends_on "pango" => :optional
 
   depends_on "xz"
 
@@ -54,7 +55,6 @@ class Imagemagick < Formula
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
-             "--without-pango",
              "--with-modules",
              "--disable-openmp"]
 
@@ -65,6 +65,7 @@ class Imagemagick < Formula
     args << "--without-magick-plus-plus" if build.without? "magick-plus-plus"
     args << "--enable-hdri=yes" if build.include? "enable-hdri"
     args << "--enable-fftw=yes" if build.with? "fftw"
+    args << "--without-pango" if build.without? "pango"
 
     if build.with? "quantum-depth-32"
       quantum_depth = 32
