@@ -5,6 +5,9 @@ class Dcd < Formula
       :revision => "351bf2ee2d5f1c4986c2c5957f542dda17b1d085"
 
   bottle do
+    sha256 "7d1de0bae7b64fd4f53058e9213cd59a1d270f25284c5f2e4dad15767a57ce24" => :yosemite
+    sha256 "c0fc2ee139512990048318d9e7677ae836f85a98ff56c9d3005434bf8c289159" => :mavericks
+    sha256 "f8a494c721a1d3f4a45b802c3c90a2ea61a04de6345cb5d6c3fca44afb50f783" => :mountain_lion
   end
 
   depends_on "dmd" => :build
