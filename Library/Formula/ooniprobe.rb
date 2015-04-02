@@ -78,9 +78,9 @@ class Ooniprobe < Formula
     sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
-  resource "scapy-real" do
-    url "https://pypi.python.org/packages/source/s/scapy-real/scapy-real-2.2.0-dev.tar.gz"
-    sha256 "106a2774e135cd058a78b52d55efdf6ef648a6161ecce3919cc7dbda50babdd4"
+  resource "scapy" do
+    url "https://bitbucket.org/secdev/scapy/downloads/scapy-2.3.1.zip"
+    sha256 "8972c02e39a826a10c02c2bdd5025f7251dce9589c57befd9bb55c65f02e4934"
   end
 
   resource "service_identity" do
@@ -121,8 +121,13 @@ class Ooniprobe < Formula
       end
     end
 
-    # provided by libdnet
-    inreplace "requirements.txt", "pydumbnet", ""
+
+    inreplace "requirements.txt" do |s|
+      # provided by libdnet
+      s.gsub! "pydumbnet", ""
+      # don't expect the pypi version of scapy
+      s.gsub! /scapy-real.*/, "scapy>=2.3.1"
+    end
 
     # force a distutils install
     inreplace "setup.py", "def run(", "def norun("
