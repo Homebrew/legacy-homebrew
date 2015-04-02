@@ -2,8 +2,8 @@ require "formula"
 
 class Monit < Formula
   homepage "http://mmonit.com/monit/"
-  url "http://mmonit.com/monit/dist/monit-5.10.tar.gz"
-  sha1 "4933898c6e6191e8d8ee4730c64ef6f16c8130c1"
+  url "http://mmonit.com/monit/dist/monit-5.12.tar.gz"
+  sha256 "43075396203569f87b67f7bffd1de739aa2fba302956237a2b0dc7aaf62da343"
 
   bottle do
     cellar :any
