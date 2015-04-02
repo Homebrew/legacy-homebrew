@@ -25,19 +25,6 @@ class FormulaVersions
     @entry_name ||= f.path.relative_path_from(repository).to_s
   end
 
-  def each
-    versions = Set.new
-    rev_list do |rev|
-      version = version_at_revision(rev)
-      next if version.nil?
-      yield version, rev if versions.add?(version)
-    end
-  end
-
-  def repository_path
-    Pathname.pwd == repository ? entry_name : f.path
-  end
-
   def rev_list(branch="HEAD")
     repository.cd do
       Utils.popen_read("git", "rev-list", "--abbrev-commit", "--remove-empty", branch, "--", entry_name) do |io|
@@ -48,10 +35,6 @@ class FormulaVersions
 
   def file_contents_at_revision(rev)
     repository.cd { Utils.popen_read("git", "cat-file", "blob", "#{rev}:#{entry_name}") }
-  end
-
-  def version_at_revision(rev)
-    formula_at_revision(rev) { |f| f.version }
   end
 
   def formula_at_revision(rev)
