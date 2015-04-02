@@ -3,8 +3,8 @@ require "language/go"
 
 class Terraform < Formula
   homepage "http://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.3.7.tar.gz"
-  sha1 "46fb3979465b8bd8a3bbee753c558965b7c1d043"
+  url "https://github.com/hashicorp/terraform/archive/v0.4.0.tar.gz"
+  sha256 "f933bbc91b834c8806529b46050f477719c053d77f0a68b4e3136ae7633d9c02"
 
   bottle do
     cellar :any
