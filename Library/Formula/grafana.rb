@@ -7,6 +7,7 @@ class Grafana < Formula
   head "https://github.com/grafana/grafana.git"
   version "2.0.0-beta1"
 
+  depends_on "node"
   depends_on "go" => :build
 
   go_resource "github.com/Unknwon/com" do
@@ -83,7 +84,14 @@ class Grafana < Formula
     ln_sf buildpath, buildpath/"src/github.com/grafana/grafana"
     Language::Go.stage_deps resources, buildpath/"src"
 
+    system "npm", "install", buildpath
+    system "node_modules/.bin/grunt"
     system "go", "build", "main.go"
+
     bin.install "main" => "grafana"
+  end
+
+  test do
+    # pipe_output("#{bin}/vegeta attack -duration=1s -rate=1", "GET http://localhost/")
   end
 end
