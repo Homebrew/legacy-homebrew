@@ -1,7 +1,9 @@
 #Scala #akka @ApacheSpark
 
+* Cancel individual jobs using Spark job groups (@petro-rudenko)
 * Cross-build for 2.11 and 2.10 (@zeitos)
 * dependent-jar-uris accepts comma-separated string list for query param inclusion (@KaiXinXiaoLei)
 * Updated for Spark 1.3.0 (@aasamy)
 * Documentation fixes (@ajmerlob)
 * Serialize empty maps (@jonbuffington)
+* Separate thread pools for job Futures in each JobManager/context (@mehmeteking)
