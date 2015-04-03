@@ -1,10 +1,9 @@
-require "formula"
 
 class Ksh < Formula
   homepage "http://www.kornshell.com"
-  url  "http://www2.research.att.com/~astopen/download/tgz/ast-ksh.2012-08-01.tgz",
+  url "http://www2.research.att.com/~astopen/download/tgz/ast-ksh.2012-08-01.tgz",
     :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."
-  sha1 "316428e9937806183a134aa1669dea40c3a73695"
+  sha256 "e6192cfa52a6a9fd20618cbaf3fa81f0cc9fd83525500757e83017275e962851"
   version "93u+" # Versioning scheme: + means "+ patches", - means "beta/alpha".
 
   bottle do
@@ -18,7 +17,7 @@ class Ksh < Formula
   resource "init" do
     url "http://www2.research.att.com/~astopen/download/tgz/INIT.2012-08-01.tgz",
       :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."
-    sha1 "0b472a615db384fe707042baaa3347dc1aa1c81e"
+    sha256 "c40cf57e9b2186271a9c362a560aa4a6e25ba911a8258ab931d2bbdbce44cfe5"
   end
 
   def install
@@ -42,8 +41,12 @@ class Ksh < Formula
   end
 
   def caveats; <<-EOS.undent
-    We agreed to the Eclipse Public License 1.0 for you.
-    If this is unacceptable you should uninstall.
+      We agreed to the Eclipse Public License 1.0 for you.
+      If this is unacceptable you should uninstall.
     EOS
+  end
+
+  test do
+    assert_equal "Hello World!", pipe_output("#{bin}/ksh -e 'echo Hello World!'").chomp
   end
 end
