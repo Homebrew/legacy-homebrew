@@ -104,7 +104,6 @@ class Influxdb < Formula
         s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
         s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
         s.gsub! "/tmp/influxdb/development/state", "#{var}/influxdb/state"
-        s.gsub! "/var/log/influxdb/influxd.log", "#{var}/influxdb/logs/influxd.log"
       end
 
       bin.install buildpath/"bin/influxd" => "influxd"
