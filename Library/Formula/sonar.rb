@@ -1,7 +1,7 @@
 class Sonar < Formula
   homepage "http://www.sonarqube.org/"
-  url "http://dist.sonar.codehaus.org/sonarqube-5.0.1.zip"
-  sha1 "c8893e1223592bff34986d142062e06f501f1a13"
+  url "http://dist.sonar.codehaus.org/sonarqube-5.1.zip"
+  sha1 "543c7d6ccff2b62ba8195bc1df5ffd4082b61ebf"
 
   def install
     # Delete native bin directories for other systems
