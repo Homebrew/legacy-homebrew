@@ -18,6 +18,7 @@ object JobManagerActor {
   case object Initialize
   case class StartJob(appName: String, classPath: String, config: Config,
                       subscribedEvents: Set[Class[_]])
+  case class KillJob(jobId: String)
 
   // Results/Data
   case class Initialized(resultActor: ActorRef)
@@ -116,6 +117,11 @@ class JobManagerActor(dao: JobDAO,
 
     case StartJob(appName, classPath, jobConfig, events) =>
       startJobInternal(appName, classPath, jobConfig, events, jobContext, sparkEnv, rddManagerActor)
+
+    case KillJob(jobId: String) => {
+      jobContext.sparkContext.cancelJobGroup(jobId)
+      statusActor ! JobKilled(jobId, DateTime.now())
+    }
   }
 
   def startJobInternal(appName: String,
@@ -223,6 +229,8 @@ class JobManagerActor(dao: JobDAO,
           }
           case SparkJobValid => {
             statusActor ! JobStarted(jobId: String, contextName, jobInfo.startTime)
+            val sc = jobContext.sparkContext
+            sc.setJobGroup(jobId, s"Job group for $jobId and spark context ${sc.applicationId}", true)
             job.runJob(jobC, jobConfig)
           }
         }
