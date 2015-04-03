@@ -14,6 +14,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md).
 - Netflix
 - Avenida.com
 - GumGum
+- Fuse Elements
 
 ## Features
 
