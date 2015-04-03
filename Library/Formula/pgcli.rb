@@ -1,7 +1,7 @@
 class Pgcli < Formula
   homepage "http://pgcli.com/"
-  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.10.2.tar.gz"
-  sha1 "c34330335e08418aba1c406ac846b37daaf21262"
+  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.16.3.tar.gz"
+  sha1 "747e8505514255833738a0ded3809728d942dda7"
 
   bottle do
     cellar :any
@@ -20,8 +20,8 @@ class Pgcli < Formula
   end
 
   resource "prompt_toolkit" do
-    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.25.tar.gz"
-    sha1 "c0f009bd13128c7e385ff485afd88a82bab2d986"
+    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.26.tar.gz"
+    sha1 "4ca53785d38c396fa4e86453dd625fdd450110b9"
   end
 
   resource "psycopg2" do
