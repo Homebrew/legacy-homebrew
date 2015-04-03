@@ -11,6 +11,8 @@ class Src < Formula
     sha1 "cd51d4f5714a360549d9548a25c27a508aa9ae1b" => :mountain_lion
   end
 
+  conflicts_with "srclib", :because => "both install a 'src' binary"
+
   depends_on "rcs"
 
   def install
