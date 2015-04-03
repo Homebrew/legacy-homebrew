@@ -64,4 +64,8 @@ class V8 < Formula
       bin.install "d8", "mksnapshot", "process", "shell" => "v8"
     end
   end
+
+  test do
+    assert_equal "Hello World!", pipe_output("#{bin}/v8 -e 'print(\"Hello World!\")'").chomp
+  end
 end
