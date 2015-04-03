@@ -43,7 +43,10 @@ class Boost < Formula
   # The fix has been merged into the Boost project here:
   # https://github.com/boostorg/odeint/commit/0ca187cd6e83ddbaa5eedaa5d0d570986f351263
   # It is needed to compile OMPL (http://ompl.kavrakilab.org/).
-  patch :DATA
+  patch :p2 do
+	url "https://github.com/boostorg/odeint/commit/0ca187.diff"
+	sha256 "4d78d7d56a8292de71c702ac286114d6e33f260d4ad8471d98ae4f2bf5de1d65"
+  end
 
   def install
     # https://svn.boost.org/trac/boost/ticket/8841
@@ -174,26 +177,4 @@ class Boost < Formula
     system "./test"
   end
 end
-
-__END__
-diff --git a/boost/numeric/odeint/util/bind.hpp b/boost/numeric/odeint/util/bind.hpp
-index 966fd03..1bad30a 100644
---- a/boost/numeric/odeint/util/bind.hpp
-+++ b/boost/numeric/odeint/util/bind.hpp
-@@ -41,12 +41,15 @@ using namespace ::std::placeholders;
- 
- #else
- 
-+// unnamed namespace to avoid multiple declarations (#138)
-+namespace {
- using ::boost::bind;
- boost::arg<1> _1;
- boost::arg<2> _2;
- // using ::boost::bind;
- // using ::_1;
- // using ::_2;
-+}
- 
- #endif
- 
 
