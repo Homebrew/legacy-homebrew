@@ -80,4 +80,9 @@ class BottleVersionParsingTests < Homebrew::TestCase
     assert_version_detected '11-062',
       'apparix-11-062.yosemite.bottle.tar.gz'
   end
+
+  def test_gcc_versions_style
+    assert_version_detected '5-20150215',
+      'gcc5-5-20150215.yosemite.bottle.tar.gz'
+  end
 end
