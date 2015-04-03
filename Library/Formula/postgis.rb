@@ -1,7 +1,7 @@
 class Postgis < Formula
   homepage "http://postgis.net"
-  url "http://download.osgeo.org/postgis/source/postgis-2.1.5.tar.gz"
-  sha256 "0d0e27f72f12b8dba456fbde25ed0f6913f42baf57332a7f1b9bbc6f29fddbf4"
+  url "http://download.osgeo.org/postgis/source/postgis-2.1.7.tar.gz"
+  sha256 "00ab79a3f609d7ea458f6fc358032ad059cb720baf88285243d6436a597a7ec2"
 
   def pour_bottle?
     # Postgres extensions must live in the Postgres prefix, which precludes
