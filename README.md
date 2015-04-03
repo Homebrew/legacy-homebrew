@@ -13,6 +13,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md).
 - Ooyala
 - Netflix
 - Avenida.com
+- GumGum
 
 ## Features
 
