@@ -2,8 +2,8 @@ require "formula"
 
 class Flow < Formula
   homepage "http://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.7.0.tar.gz"
-  sha1 "654b6bce4f9c8af438bb0f99b7dcdc71e82dba7a"
+  url "https://github.com/facebook/flow/archive/v0.8.0.tar.gz"
+  sha1 "eb3ee22845441a323fe80b8e0e7d7b78ee653904"
   head "https://github.com/facebook/flow.git"
 
   bottle do
