@@ -18,6 +18,6 @@ class Ioping < Formula
   end
 
   test do
-    system "#{bin}/ioping", "-v"
+    system "#{bin}/ioping", "-c", "1", testpath
   end
 end
