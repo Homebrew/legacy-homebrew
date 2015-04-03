@@ -4,8 +4,8 @@ class Mighttpd2 < Formula
   include Language::Haskell::Cabal
 
   homepage "http://www.mew.org/~kazu/proj/mighttpd/en/"
-  url "http://hackage.haskell.org/package/mighttpd2-3.2.4/mighttpd2-3.2.4.tar.gz"
-  sha256 "3b99ac25a07b8329f6111611a8fa0278d021323d28a4489d0f3ef4fd79042568"
+  url "http://hackage.haskell.org/package/mighttpd2-3.2.7/mighttpd2-3.2.7.tar.gz"
+  sha256 "57974d96b4dc5d8414ae61bcc45df4a0f07a855764a3baa57bdd39d0173c2dd0"
 
   bottle do
     sha256 "221b886d90788df97537c4786a55380c220ddb8ec2bce045fad00276db7f5217" => :yosemite
@@ -15,7 +15,6 @@ class Mighttpd2 < Formula
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "gmp"
 
   def install
     install_cabal_package
