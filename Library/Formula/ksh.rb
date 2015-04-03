@@ -8,10 +8,10 @@ class Ksh < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "e9cb13e19571b48d13c1b51c37d74c8a3206d397" => :mavericks
-    sha1 "568d10076fcb5b145611fd60fa01b0b0fb9d5f39" => :mountain_lion
-    sha1 "ad1c9d854e90b29baee3b1ade2c185ac48119657" => :lion
+    revision 2
+    sha256 "d644c2bebf9e735a0b1086409fc273f4e28df09ae9a1540490f60f87bac94ddc" => :yosemite
+    sha256 "5693e654a561ba55c873574a6853a04f0fd2716219d45e3df5568e211bc3f730" => :mavericks
+    sha256 "e5994a299c82f27d5ee78649b2ad5dc5d6202d305fd50ca57809b711ccf0ddc7" => :mountain_lion
   end
 
   resource "init" do
