@@ -12,7 +12,9 @@ class Coreutils < Formula
     sha256 "22685bb77955bafd107abf0301af20b6bfa4704d8d510f8f2b57d811628361e2" => :mountain_lion
   end
 
-  option "default-names", "Do not prepend 'g' to the binary" if OS.linux?
+  # --default-names interferes with Mac builds.
+  option "with-default-names", "Do not prepend 'g' to the binary" if OS.linux?
+  deprecated_option "default-names" => "with-default-names"
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
@@ -60,7 +62,7 @@ class Coreutils < Formula
       (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}" => cmd
     end
 
-    if build.include? "default-names"
+    if build.with? "default-names"
       # Symlink all commands without the 'g' prefix
       coreutils_filenames(bin).each do |cmd|
         bin.install_symlink "g#{cmd}" => cmd
@@ -90,7 +92,7 @@ class Coreutils < Formula
         MANPATH="#{opt_libexec}/gnuman:$MANPATH"
 
     EOS
-  end
+  end if build.without? "default-names"
 
   def coreutils_filenames(dir)
     filenames = []
