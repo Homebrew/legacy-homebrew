@@ -20,6 +20,7 @@ class Tig < Formula
   end
 
   option "with-docs", "Build man pages using asciidoc and xmlto"
+  option 'with-ncurses', 'Build with wide character support.'
 
   if build.with? "docs"
     depends_on "asciidoc"
@@ -27,7 +28,7 @@ class Tig < Formula
   end
 
   depends_on "readline" => :recommended
-  depends_on "ncurses" => :recommended
+  depends_on 'homebrew/dupes/ncurses' => :optional
 
   def install
     system "./autogen.sh" if build.head?
