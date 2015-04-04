@@ -16,8 +16,8 @@ class Platypus < Formula
   depends_on :xcode => :build
 
   def install
-    # 4.8 tarball has extra __MACOSX folder, so go to the right one
-    # The head tarball only has a single folder in it
+    # 4.9 stable tarball has unexpected unpacked name, so go to the right
+    # place.
     cd "platypus" if build.stable?
 
     xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
