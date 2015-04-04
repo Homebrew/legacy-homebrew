@@ -1,6 +1,6 @@
 class Polynice < Formula
   homepage "https://github.com/garabik/polynice"
-  url "https://github.com/garabik/polynice/archive/master.tar.gz"
+  url "https://github.com/jooray/polynice/archive/master.tar.gz"
   version "0.7"
 
   depends_on "python3"
