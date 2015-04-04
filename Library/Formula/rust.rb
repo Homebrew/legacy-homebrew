@@ -18,6 +18,7 @@ class Rust < Formula
     args = ["--prefix=#{prefix}"]
     args << "--disable-rpath" if build.head?
     args << "--enable-clang" if ENV.compiler == :clang
+    args << "--release-channel=beta" unless build.head?
     system "./configure", *args
     system "make"
     system "make install"
