@@ -13,8 +13,8 @@ class Python3 < Formula
   head "https://hg.python.org/cpython", :using => :hg
 
   devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0a2.tgz"
-    sha256 "b15ba6931f5c7231577f3608958ae6616872da536eca3ba8aced820cdda15a18"
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0a3.tgz"
+    sha256 "c711dcc0b0273dde65d642983784168f082771a88dd7c1d899b66a172af9bf8d"
   end
 
   option :universal
@@ -36,8 +36,8 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.2.tar.gz"
-    sha1 "b36aaa86fe762eb66d2abc860405410158fadfe8"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.0.tar.gz"
+    sha256 "718d13adf87f99a45835bb20e0a1c4c036de644cd32b3f112639403aa04ebeb5"
   end
 
   resource "pip" do
