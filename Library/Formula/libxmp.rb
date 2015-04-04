@@ -5,9 +5,9 @@ class Libxmp < Formula
 
   bottle do
     cellar :any
-    sha256 "03e06b3182491c292cee3efc6b1b5718d1874c5233f4ccf9c4ebc4cdb2fdf9a6" => :yosemite
-    sha256 "208465d33f34a909397aabbe88139e952bebfeda428f1c79819dfb50f5832dde" => :mavericks
-    sha256 "615b556b2c0cb26f624c483db529a29add9cfe44ec168a562d90705a09af9d7d" => :mountain_lion
+    sha256 "6667ec2fe01c9907bb496aedca3fb28a3b9e4640ab6d35a08a39e41820d84a5c" => :yosemite
+    sha256 "94d3c9fd92050aa08d3b56631d68e3ca0f9ad537fbc2dc5ac096f339f57bb9b6" => :mavericks
+    sha256 "570deab3ca3accf745115d103e88dcb185d1b1ca3523d8ca643cdf623a92d361" => :mountain_lion
   end
 
   # CC BY-NC-ND licensed set of five mods by Keith Baylis/Vim! for testing purposes
