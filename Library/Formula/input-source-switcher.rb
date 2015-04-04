@@ -12,9 +12,6 @@ class InputSourceSwitcher < Formula
   end
 
   test do
-    # This will set change the current keyboard layout to a standard US layout.
-    # Ideally this should lookup the current layout first? And set it back to
-    # that.
-    system "${bin}/issw" "en"
+    system "#{bin}/issw -l"
   end
 end
