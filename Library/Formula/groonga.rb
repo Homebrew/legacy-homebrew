@@ -1,14 +1,12 @@
-require "formula"
-
 class Groonga < Formula
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-5.0.0.tar.gz"
-  sha1 "f9786f540c65afcc1da13cc48317e51c81b38eb1"
+  url "http://packages.groonga.org/source/groonga/groonga-5.0.2.tar.gz"
+  sha1 "737e2196ea144a7c39ed778c5b748c121128bccf"
 
   bottle do
-    sha1 "2fdf891db87a18d16a6957ce4578456e86e6c8ec" => :yosemite
-    sha1 "15b4d1ee1571f4837d78fb6a5ac17febb9f31a0f" => :mavericks
-    sha1 "5383235d638b0ede0970c2343e8cae44e7858949" => :mountain_lion
+    sha256 "0eaaac19af8871810041243880cb55158cdd461a4bd43cf6820b060d1ebf1ded" => :yosemite
+    sha256 "8729a2289f99cbc5cb3d28065c2385987305e631d212536087e0703da5cfaa0b" => :mavericks
+    sha256 "7e67102cf8e877695ab62fdd8af1975345a4761b860a3ab991b3aa3b1087fec1" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -1,15 +1,13 @@
 require 'formula'
 
 class TomcatNative < Formula
-  homepage 'http://tomcat.apache.org/native-doc/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.32/source/tomcat-native-1.1.32-src.tar.gz'
-  sha1 'a4bfb7f79316c49cfed3a0c5c71ba11b51fe0922'
+  homepage 'https://tomcat.apache.org/native-doc/'
+  url 'https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz'
+  sha1 'c7626c8e5144ee8e958175c4cd034cef90eab1ed'
 
   bottle do
     cellar :any
-    sha1 "2294b2ecde5a96eb38e28223d622d5c443c9a04b" => :yosemite
-    sha1 "04e8e6d8de9064eeacbf06101a029a2463de4649" => :mavericks
-    sha1 "03d417ff8af69aba03c872e3bf7b3de9ca43d44b" => :mountain_lion
+    sha256 "1649e2b91dab7a9d2f3399fa713478f5a68f8b55a5a59a5007257797c4611386" => :yosemite
   end
 
   option "with-apr", "Include APR support via Homebrew"

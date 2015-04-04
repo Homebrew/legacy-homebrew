@@ -1,18 +1,13 @@
 class Ghc < Formula
-  homepage "http://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-src.tar.xz"
-  sha256 "c319cd94adb284177ed0e6d21546ed0b900ad84b86b87c06a99eac35152982c4"
+  homepage "https://haskell.org/ghc/"
+  url "https://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-src.tar.xz"
+  sha256 "92f3e3d67a637c587c49b61c704a670953509eb4b17a93c0c2ac153da4cd3aa0"
 
   bottle do
-    sha1 "34077e696ada63791ff32e044c51c8e538834b83" => :yosemite
-    sha1 "3780f6768dc740fb51fa3906cccb28ab06ce5acc" => :mavericks
-    sha1 "296802648e2b2bc26fcb01025fb1fa8ab583e64a" => :mountain_lion
-  end
-
-  devel do
-    url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-src.tar.xz"
-    version "7.10.1-rc2"
-    sha256 "766596f9b09b2cdd8bd477754f0e02ea8f7e40e4f5b0522cf585942fb2fec546"
+    revision 1
+    sha256 "c2ec277a5445ece878b940838a93feed7a0c7733273ddcb26c07ec434f6ad800" => :yosemite
+    sha256 "1107ca8344e4bf2229d78cee7b3ee7a86f06d950f4a3b6c5c58d66675922935b" => :mavericks
+    sha256 "ad654abb4c2459b6cc764f275d5b6b141669e366f5051c58d871e54cb71a250c" => :mountain_lion
   end
 
   option "32-bit"
@@ -22,13 +17,19 @@ class Ghc < Formula
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
-  depends_on "gmp"
   depends_on "gcc" if MacOS.version == :mountain_lion
+
+  resource "gmp" do
+    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
+    mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
+    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
+    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+  end
 
   if OS.linux?
     resource "binary" do
-      url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-unknown-linux.tar.bz2"
-      sha256 "da962575e2503dec250252d72a94b6bf69baef7a567b88e90fd6400ada527210"
+      url "http://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-x86_64-unknown-linux-deb7.tar.xz"
+      sha256 "421f65745edb225d8697bc19ec7a10171de0eab2b88dc069f420d4f57c7bb6e2"
     end
   elsif build.build_32_bit? || !MacOS.prefer_64_bit?
     resource "binary" do
@@ -42,25 +43,26 @@ class Ghc < Formula
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
     end
   else
+    # there is currently no 7.10.1 binary download for darwin,
+    # so we use the one for 7.8.4 instead
     resource "binary" do
-      # there is currently no 7.8.4 binary download for darwin
-      url "https://downloads.haskell.org/~ghc/7.8.3/ghc-7.8.3-x86_64-apple-darwin.tar.xz"
-      sha256 "dba74c4cfb3a07d243ef17c4aebe7fafe5b43804468f469fb9b3e5e80ae39e38"
+      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-x86_64-apple-darwin.tar.xz"
+      sha256 "ebb6b0294534abda05af91798b43e2ea02481edacbf3d845a1e5925a211c67e3"
     end
   end
 
   stable do
     resource "testsuite" do
-      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-testsuite.tar.xz"
-      sha256 "d0332f30868dcd0e7d64d1444df05737d1f3cf4b09f9cfbfec95f8831ce42561"
+      url "https://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-testsuite.tar.xz"
+      sha256 "33bbdfcfa50363526ea9671c8c1f01b7c5dec01372604d45cbb53bb2515298cb"
     end
   end
 
-  devel do
-    resource "testsuite" do
-      url "https://downloads.haskell.org/~ghc/7.10.1-rc2/ghc-7.10.0.20150123-testsuite.tar.xz"
-      sha256 "051d4659421dec257827d7de7df8a99806f4bf575102013dda4006fccee11f76"
-    end
+  fails_with :llvm do
+    cause <<-EOS.undent
+      cc1: error: unrecognized command line option "-Wno-invalid-pp-token"
+      cc1: error: unrecognized command line option "-Wno-unicode"
+    EOS
   end
 
   if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
@@ -73,6 +75,24 @@ class Ghc < Formula
   end
 
   def install
+    ENV.m32 if build.build_32_bit?
+
+    # Build a static gmp (to avoid dynamic linking to ghc)
+    gmp_prefix = buildpath/"gmp-static"
+    resource("gmp").stage do
+      gmp_args = ["--prefix=#{gmp_prefix}", "--enable-cxx", "--enable-shared=no"]
+      gmp_args << "ABI=32" if build.build_32_bit?
+
+      # https://github.com/Homebrew/homebrew/issues/20693
+      gmp_args << "--disable-assembly" if build.build_32_bit? || build.bottle?
+
+      system "./configure", *gmp_args
+      system "make"
+      system "make", "check"
+      ENV.deparallelize
+      system "make", "install"
+    end
+
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
 
@@ -80,8 +100,9 @@ class Ghc < Formula
       # Change the dynamic linker and RPATH of the binary executables.
       if OS.linux? && Formula["glibc"].installed?
         keg = Keg.new(prefix)
-        Dir["ghc/stage2/build/tmp/ghc-stage2", "utils/*/dist*/build/tmp/*"].each { |file|
-          keg.change_rpath(Pathname.new(file), HOMEBREW_PREFIX.to_s)
+        Dir["ghc/stage2/build/tmp/ghc-stage2", "libraries/*/dist-install/build/*.so", "rts/dist/build/*.so*", "utils/*/dist*/build/tmp/*"].each { |s|
+          file = Pathname.new(s)
+          keg.change_rpath(file, HOMEBREW_PREFIX.to_s) if file.mach_o_executable? || file.dylib?
         }
       end
 
@@ -109,7 +130,6 @@ class Ghc < Formula
       ENV["LD"] = "ld"
 
       if build.build_32_bit? || !MacOS.prefer_64_bit?
-        ENV.m32 # Need to force this to fix build error on internal libgmp_ar.
         arch = "i386"
       else
         arch = "x86_64"
@@ -127,7 +147,9 @@ class Ghc < Formula
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       system "./configure", "--prefix=#{prefix}",
                             ("--build=#{arch}-apple-darwin" if OS.mac?),
-                            "--with-gcc=#{ENV.cc}"
+                            "--with-gcc=#{ENV.cc}",
+                            "--with-gmp-includes=#{gmp_prefix}",
+                            "--with-gmp-libraries=#{gmp_prefix}"
       system "make"
 
       if build.with? "tests"

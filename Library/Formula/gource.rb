@@ -1,9 +1,7 @@
-require "formula"
-
 class Gource < Formula
-  homepage "http://code.google.com/p/gource/"
+  homepage "https://github.com/acaudwell/Gource"
   url "https://github.com/acaudwell/Gource/releases/download/gource-0.43/gource-0.43.tar.gz"
-  sha1 "dda56952f9cc19821ae7c146736b00556ef51edf"
+  sha256 "85a40ac8e4f5c277764216465c248d6b76589ceac012541c4cc03883a24abde4"
 
   head do
     url "https://github.com/acaudwell/Gource.git"
@@ -41,14 +39,16 @@ class Gource < Formula
     # despite -std=gnu++0x
     ENV.libcxx
 
-    # For non-/usr/local installs
-    ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
-
-    system "autoreconf -f -i" if build.head?
+    system "autoreconf", "-f", "-i" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--with-boost=#{Formula["boost"].opt_prefix}",
                           "--without-x"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gource", "--help"
   end
 end

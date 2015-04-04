@@ -6,10 +6,10 @@ class Dmd < Formula
   sha1 "7be9737f97a494870446c881e185bec41f337792"
 
   bottle do
-    revision 1
-    sha256 "c19e75d44f1e184aa8b65e276de498be33a80e088ab93145bfcff07a08d1a78e" => :yosemite
-    sha256 "f41633629f7767e61f7d968c762c58f11bbdb5308bfe59d6d05c7249aa00797b" => :mavericks
-    sha256 "b8c380eae74b0092134095ad48628392cc7715a3c75feb942bfac027549d3123" => :mountain_lion
+    revision 2
+    sha256 "e4cd4b28ad1ee063cfce3b3adb359c42975b1d20f45ea63c2816be79376919d8" => :yosemite
+    sha256 "19ca341da306c2be97f86a596784badc4109fd013044ec52984e39faef6df8d0" => :mavericks
+    sha256 "a122c205dd046804d47919027d17ca044f32568e8c9de37199da764dca23934d" => :mountain_lion
   end
 
   resource "druntime" do
@@ -61,7 +61,7 @@ class Dmd < Formula
 
 
     resource("tools").stage do
-      inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS)"
+      inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS) $(ROOT)/dustmite"
       system "make", "install", *make_args
     end
   end
