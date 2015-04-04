@@ -1,9 +1,8 @@
-require "formula"
-
 class Platypus < Formula
   homepage "http://sveinbjorn.org/platypus"
-  url "https://raw.githubusercontent.com/sveinbjornt/Platypus/4.8/Releases/platypus4.8.src.zip"
-  sha1 "39d165b9579600cef637b45c70c82307697bb7be"
+  url "https://github.com/sveinbjornt/Platypus/raw/master/Releases/platypus4.9.src.zip"
+  version "4.9"
+  sha256 "11b32fc5c68b4e73abeeabd22e1547c2c9b53bafe86cf04474c1f78863d2c1ae"
   head "https://github.com/sveinbjornt/Platypus.git"
 
   bottle do
@@ -17,17 +16,9 @@ class Platypus < Formula
   depends_on :xcode => :build
 
   def install
-    # 4.8 tarball has extra __MACOSX folder, so go to the right one
-    # The head tarball only has a single folder in it
-    cd "Platypus 4.8 Source" if build.stable?
-
-    if build.stable? and MacOS.version >= :mountain_lion
-      # Platypus wants to use a compiler that isn't shipped with recent versions of XCode.
-      # See https://github.com/Homebrew/homebrew/pull/22618#issuecomment-24898050
-      # and https://github.com/sveinbjornt/Platypus/issues/22
-
-      inreplace "Platypus.xcodeproj/project.pbxproj", "GCC_VERSION", "//GCC_VERSION"
-    end
+    # 4.9 stable tarball has unexpected unpacked name, so go to the right
+    # place.
+    cd "platypus" if build.stable?
 
     xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
                "-project", "Platypus.xcodeproj",
