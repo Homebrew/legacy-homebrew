@@ -1,11 +1,11 @@
 require 'formula'
 
 class Sshuttle < Formula
-  homepage 'https://github.com/apenwarr/sshuttle'
-  url 'https://github.com/apenwarr/sshuttle/archive/sshuttle-0.61.tar.gz'
+  homepage 'https://github.com/sshuttle/sshuttle'
+  url 'https://github.com/sshuttle/sshuttle/archive/sshuttle-0.53-macos-bin.tar.gz'
   sha1 '05551cdc78e866d983470ba4084beb206bacebd8'
 
-  head 'https://github.com/apenwarr/sshuttle.git'
+  head 'https://github.com/sshuttle/sshuttle.git'
 
   def install
     # Building the docs requires installing
