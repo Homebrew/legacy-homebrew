@@ -1,8 +1,8 @@
 class Global < Formula
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.3.4.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.3.4.tar.gz"
-  sha1 "6b73c0b3c7eea025c8004f8d82d836f2021d0c9e"
+  url "http://ftpmirror.gnu.org/global/global-6.4.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.4.tar.gz"
+  sha256 "315bf69bf2b4dbe661ff2800967e5f1171edfb83a0f17424612baa673aff248e"
 
   bottle do
     revision 1
@@ -21,6 +21,7 @@ class Global < Formula
 
   option "with-exuberant-ctags", "Enable Exuberant Ctags as a plug-in parser"
   option "with-pygments", "Enable Pygments as a plug-in parser (should enable exuberent-ctags too)"
+  option "with-sqlite3", "Use SQLite3 API instead of BSD/DB API for making tag files"
 
   depends_on "ctags" if build.with? "exuberant-ctags"
 
@@ -28,7 +29,7 @@ class Global < Formula
 
   resource "pygments" do
     url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
-    sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
+    sha256 "799ed4caf77516e54440806d8d9cd82a7607dfdf4e4fb643815171a4b5c921c0"
   end
 
   def install
@@ -39,6 +40,8 @@ class Global < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
     ]
+
+    args << "--with-sqlite3" if build.with? "sqlite3"
 
     if build.with? "exuberant-ctags"
       args << "--with-exuberant-ctags=#{Formula["ctags"].opt_bin}/ctags"
@@ -109,6 +112,13 @@ class Global < Formula
       assert shell_output("#{bin}/global -d py2func # passes").include?("test.py")
       assert !shell_output("#{bin}/global -r py2func # correctly fails").include?("test.py")
       assert !shell_output("#{bin}/global -s pyvar   # correctly fails").include?("test.py")
+    end
+    if build.with? "sqlite3"
+      assert shell_output("#{bin}/gtags --sqlite3 --gtagsconf=#{share}/gtags/gtags.conf --gtagslabel=default .")
+      assert shell_output("#{bin}/global -d cfunc").include?("test.c")
+      assert shell_output("#{bin}/global -d c2func").include?("test.c")
+      assert shell_output("#{bin}/global -r c2func").include?("test.c")
+      assert shell_output("#{bin}/global -s cvar").include?("test.c")
     end
     # C should work with default parser for any build
     assert shell_output("#{bin}/gtags --gtagsconf=#{share}/gtags/gtags.conf --gtagslabel=default .")
