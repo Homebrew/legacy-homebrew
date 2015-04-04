@@ -4,8 +4,9 @@ class Binutils < Formula
   mirror "http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.gz"
   sha1 "f10c64e92d9c72ee428df3feaf349c4ecb2493bd"
 
-  # No --default-names option as it interferes with Homebrew builds.
-  option "default-names", "Do not prepend 'g' to the binary" if OS.linux?
+  # --default-names interferes with Mac builds.
+  option "with-default-names", "Do not prepend 'g' to the binary" if OS.linux?
+  deprecated_option "default-names" => "with-default-names"
 
   bottle do
     sha1 "a8ae149dd4489d03d742e0ec2e8fc845e6501661" => :yosemite
@@ -16,7 +17,7 @@ class Binutils < Formula
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          ("--program-prefix=g" unless build.include? 'default-names'),
+                          ("--program-prefix=g" if build.without? "default-names"),
                           ("--with-sysroot=/" if OS.linux?),
                           "--prefix=#{prefix}",
                           "--infodir=#{info}",
