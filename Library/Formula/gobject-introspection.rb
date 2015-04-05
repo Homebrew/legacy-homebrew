@@ -1,9 +1,7 @@
-require "formula"
-
 class GobjectIntrospection < Formula
-  homepage "http://live.gnome.org/GObjectIntrospection"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.42/gobject-introspection-1.42.0.tar.xz"
-  sha256 "3ba2edfad4f71d4f0de16960b5d5f2511335fa646b2c49bbb93ce5942b3f95f7"
+  homepage "https://live.gnome.org/GObjectIntrospection"
+  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.44/gobject-introspection-1.44.0.tar.xz"
+  sha256 "6f0c2c28aeaa37b5037acbf21558098c4f95029b666db755d3a12c2f1e1627ad"
 
   bottle do
     revision 1
@@ -43,5 +41,9 @@ class GobjectIntrospection < Formula
     system "make"
     system "make", "check" if build.with? "tests"
     system "make", "install"
+  end
+
+  test do
+    system bin/"g-ir-annotation-tool", "--help"
   end
 end
