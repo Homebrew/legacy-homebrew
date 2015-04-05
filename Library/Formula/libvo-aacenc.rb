@@ -5,9 +5,9 @@ class LibvoAacenc < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ac00d35656c43e6ffa1286e433374fc9e2320c1a" => :yosemite
-    sha1 "3c8fb5c15a89647e021c80ac2294c89437b4b195" => :mavericks
+    sha256 "cf63ddcb79e40b79264507393ed4fa1b223feecf4638f0e58fef464db722b554" => :yosemite
+    sha256 "645f4294e8512add5c5f263cd8273c93e22eab565307ada5f8804ef7b9d41d8d" => :mavericks
+    sha256 "1a2fc17d25d424a4385d2c792b4e09ff0409b5c264cc03aec2182e40dc21295a" => :mountain_lion
   end
 
   def install
