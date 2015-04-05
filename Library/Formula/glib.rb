@@ -1,7 +1,7 @@
 class Glib < Formula
   homepage "https://developer.gnome.org/glib/"
-  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.42/glib-2.42.2.tar.xz"
-  sha256 "a3cc1ebd2bd310a9fdf42ae4293ee713cdf1764bd29f552febf3bf44cadae7db"
+  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.44/glib-2.44.0.tar.xz"
+  sha256 "f2d362b106a08fa801770d41829a06fcfe287a00421018869eebf5efc796f5b9"
 
   bottle do
     sha256 "c443bcd8171108729f8d65f331868ea7cdc07a076e2c6d7441883451d9252149" => :yosemite
