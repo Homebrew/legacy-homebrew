@@ -5,9 +5,9 @@ class Re2c < Formula
 
   bottle do
     cellar :any
-    sha256 "22b82ae03ac1c69932ca72260b479469a30ed24bdee7536d797dd95e2b369da4" => :yosemite
-    sha256 "8c6ea2d5466a87211b33d8be156ffeb97aa9cfa1c9a5fa9c9fa21b8a7e436629" => :mavericks
-    sha256 "1a167fbc6d08ef5a9ddf483d0661036529865c7dc594395d321428e3c1185a06" => :mountain_lion
+    sha256 "968ea6c2d830f93ea6e28012e32329e05a848c5cbf77c4012b861275efeaf4b7" => :yosemite
+    sha256 "50e2a4b23a056cc242403b446f231268c8836c7bc2586d543c2a5af0faac4d02" => :mavericks
+    sha256 "1aae924b080f3d72da21a445681f125c03ae526617bec1e3ebb59c2eacbc1ebe" => :mountain_lion
   end
 
   def install
