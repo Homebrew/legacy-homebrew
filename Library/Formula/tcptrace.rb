@@ -1,16 +1,22 @@
-require 'formula'
-
 class Tcptrace < Formula
-  homepage 'http://www.tcptrace.org/'
-  url 'http://www.tcptrace.org/download/tcptrace-6.6.7.tar.gz'
-  sha1 'ae4d10a0829c57f2eda17e63f593e558f52b7f24'
+  homepage "http://www.tcptrace.org/"
+  url "http://www.tcptrace.org/download/tcptrace-6.6.7.tar.gz"
+  sha256 "63380a4051933ca08979476a9dfc6f959308bc9f60d45255202e388eb56910bd"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make tcptrace"
+    system "make", "tcptrace"
 
-    bin.install 'tcptrace'
-    man1.install 'tcptrace.man' => 'tcptrace.1'
+    # don't install with owner/group
+    inreplace "Makefile", "-o bin -g bin", ""
+    system "make", "install", "BINDIR=#{bin}", "MANDIR=#{man}"
+  end
+
+  test do
+    touch "dump"
+    assert_match(/0 packets seen, 0 TCP packets/,
+      shell_output("#{bin}/tcptrace dump"))
   end
 end
