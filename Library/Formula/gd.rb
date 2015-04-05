@@ -1,10 +1,15 @@
-require 'formula'
-
 class Gd < Formula
-  homepage 'http://libgd.bitbucket.org/'
-  url 'https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.0.tar.gz'
-  sha1 'a0f3053724403aef9e126f4aa5c662573e5836cd'
-  revision 2
+  homepage "https://libgd.bitbucket.org/"
+  url "https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.1.tar.xz"
+  sha256 "9ada1ed45594abc998ebc942cef12b032fbad672e73efc22bc9ff54f5df2b285"
+
+  head do
+    url "https://bitbucket.org/libgd/gd-libgd.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -14,16 +19,14 @@ class Gd < Formula
     sha1 "8fee5a15e1ed1331c52d9a286431fdd1b56c126e" => :mountain_lion
   end
 
-  head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
-
   option :universal
 
-  depends_on 'libpng' => :recommended
-  depends_on 'jpeg' => :recommended
-  depends_on 'fontconfig' => :recommended
-  depends_on 'freetype' => :recommended
-  depends_on 'libtiff' => :recommended
-  depends_on 'libvpx' => :optional
+  depends_on "fontconfig" => :recommended
+  depends_on "freetype" => :recommended
+  depends_on "jpeg" => :recommended
+  depends_on "libpng" => :recommended
+  depends_on "libtiff" => :recommended
+  depends_on "libvpx" => :optional
 
   fails_with :llvm do
     build 2326
@@ -32,7 +35,8 @@ class Gd < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    args = %W{--disable-dependency-tracking --prefix=#{prefix}}
+
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
 
     if build.with? "libpng"
       args << "--with-png=#{Formula["libpng"].opt_prefix}"
@@ -70,8 +74,9 @@ class Gd < Formula
       args << "--without-vpx"
     end
 
+    system "./bootstrap.sh" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do
