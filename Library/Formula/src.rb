@@ -1,7 +1,9 @@
 class Src < Formula
   homepage "http://www.catb.org/~esr/src/"
-  url "http://www.catb.org/~esr/src/src-0.18.tar.gz"
-  sha1 "d4234bb6c56073204836ab23d18f36c1a732dd2c"
+  url "http://www.catb.org/~esr/src/src-0.19.tar.gz"
+  sha256 "3d9c5c2fe816b3f273aab17520b917a774e90776c766f165efb6ae661378a65c"
+
+  head "git://thyrsus.com/repositories/src.git"
 
   bottle do
     cellar :any
@@ -12,12 +14,18 @@ class Src < Formula
   end
 
   depends_on "rcs"
+  depends_on "asciidoc" if build.head?
 
   def install
     # OSX doesn't provide a /usr/bin/python2. Upstream has been notified but
     # cannot fix the issue. See:
     #   https://github.com/Homebrew/homebrew/pull/34165#discussion_r22342214
     inreplace "src", "#!/usr/bin/env python2", "#!/usr/bin/env python"
+
+    if build.head?
+      ENV["XML_CATALOG_FILES"] = HOMEBREW_PREFIX/"etc/xml/catalog"
+    end
+
     system "make", "install", "prefix=#{prefix}"
   end
 
