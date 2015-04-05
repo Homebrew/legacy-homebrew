@@ -1,7 +1,7 @@
 class LittleCms2 < Formula
   homepage "http://www.littlecms.com/"
-  url "https://downloads.sourceforge.net/project/lcms/lcms/2.6/lcms2-2.6.tar.gz"
-  sha1 "b0ecee5cb8391338e6c281d1c11dcae2bc22a5d2"
+  url "https://downloads.sourceforge.net/project/lcms/lcms/2.7/lcms2-2.7.tar.gz"
+  sha256 "4524234ae7de185e6b6da5d31d6875085b2198bc63b1211f7dde6e2d197d6a53"
 
   bottle do
     cellar :any
@@ -19,7 +19,7 @@ class LittleCms2 < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    args = %W{--disable-dependency-tracking --prefix=#{prefix}}
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     args << "--without-tiff" if build.without? "libtiff"
     args << "--without-jpeg" if build.without? "jpeg"
 
