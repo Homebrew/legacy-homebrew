@@ -2,8 +2,8 @@ require "formula"
 
 class Ola < Formula
   homepage "http://www.openlighting.org/ola/"
-  url "https://github.com/OpenLightingProject/ola/releases/download/0.9.3/ola-0.9.3.tar.gz"
-  sha1 "f6a81087761218063a4bb8006b73ffa407cd0170"
+  url "https://github.com/OpenLightingProject/ola/releases/download/0.9.5/ola-0.9.5.tar.gz"
+  sha1 "e9b0d8e4e3e4acd696cd7a0877d72d593727a7bc"
 
   bottle do
     sha1 "084b25099b2eaf5d90a69ebc20b43c0cf338b614" => :yosemite
