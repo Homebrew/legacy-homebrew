@@ -36,7 +36,7 @@ class Bash < Formula
     ENV.append_to_cflags "-DSSH_SOURCE_BASHRC"
 
     system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

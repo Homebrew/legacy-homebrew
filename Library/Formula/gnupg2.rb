@@ -3,7 +3,7 @@ class Gnupg2 < Formula
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
   mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
   mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
-  sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
+  sha256 "57646d3e4b919fa1e5c8f1c0cf5fe1215333041c493a5ebc4b8f2978dbe930f2"
 
   bottle do
     sha1 "68caf3377045b2ca989fbfb0dbea822f1c05886a" => :yosemite

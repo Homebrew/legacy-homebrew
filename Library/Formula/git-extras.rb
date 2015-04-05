@@ -1,7 +1,7 @@
 class GitExtras < Formula
   homepage "https://github.com/tj/git-extras"
   url "https://github.com/tj/git-extras/archive/2.2.0.tar.gz"
-  sha1 "cb3df2bc8953fdae7b73c3d309e79ee5316bb90d"
+  sha256 "6a933114d276761a078e653a961566d9517a6a4eaadacb62e655d39481548f63"
 
   head "https://github.com/tj/git-extras.git"
 
