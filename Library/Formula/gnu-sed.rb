@@ -8,10 +8,10 @@ class GnuSed < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "2f92a57761e272e41b00915d3a348927447b249d" => :yosemite
-    sha1 "aec8b9fc4ad1c58dc5279ee62133c2a67a24e651" => :mavericks
-    sha1 "4dff2a21df4148c95abc04e87544bef1c452951f" => :mountain_lion
+    revision 2
+    sha256 "a45ed585278029792f71d8882763ee0e1605e3df7bdb06dd02c8f815e2f58c68" => :yosemite
+    sha256 "b074edd2ec60b244284cd1545d83fdf48151ee5b9f8e5f0dc6a509b822d0bb37" => :mavericks
+    sha256 "bc210361d787b929011afbe96bd5a78c77e35a14d953942cd278d04c640183ae" => :mountain_lion
   end
 
   deprecated_option "default-names" => "with-default-names"
