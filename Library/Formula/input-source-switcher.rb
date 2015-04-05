@@ -1,8 +1,8 @@
 class InputSourceSwitcher < Formula
   homepage "https://github.com/vovkasm/input-source-switcher"
-  url "https://github.com/vovkasm/input-source-switcher/archive/cfca8149c6805b333910858a22aeeb124cbca903.zip"
-  version "source"
-  sha256 "9bc786aa2395c56e4d4f25e1b2c20c89e3b9b51ce4b56417df5dbd215569801c"
+  url "https://github.com/vovkasm/input-source-switcher/archive/v0.2.zip"
+  version "0.2"
+  sha256 "c98440f1d7d11762529377c47b979fc649859137403ec4cf5da0e70710544fec"
 
   depends_on "cmake" => :build
 
