@@ -27,6 +27,6 @@ class TerminalNotifier < Formula
   end
 
   test do
-    system "#{bin}/terminal-notifier", "-message", "Hello World!"
+    system "#{bin}/terminal-notifier", "-help"
   end
 end
