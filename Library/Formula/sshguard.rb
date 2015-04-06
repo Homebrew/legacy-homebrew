@@ -21,12 +21,6 @@ class Sshguard < Formula
     sha256 "b582206fd286a89b15f41c44460de3c33386563a5c01876f85b88018feea786c"
   end
 
-  # Alternative source: Discussion thread on this error
-  # patch do
-  #   url "http://sourceforge.net/p/sshguard/mailman/attachment/54D022D6.7080100%40gmail.com/1/"
-  #   sha1 "ccfc2ed0e3db3bf2fb92440082c126975925b2fa"
-  # end
-
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
