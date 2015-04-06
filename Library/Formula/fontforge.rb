@@ -85,21 +85,8 @@ class Fontforge < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
-  end
-
-  def post_install
-    # Link this to enable symlinking into /Applications with brew linkapps.
-    # The name is case-sensitive. It breaks without both F's capitalised.
-    # If you build with x11 now, it automatically creates an dynamic link from bin/fontforge
-    # to @executable_path/../Frameworks/Breakpad.framework/Versions/A/Breakpad which
-    # obviously doesn't exist given fontforge and FontForge.app are in different places.
-    # If this isn't fixed within a couple releases, consider dumping everything in libexec.
-    # https://github.com/fontforge/fontforge/issues/2022
-    if build.with? "x11"
-      ln_s "#{share}/fontforge/osx/FontForge.app", prefix
-      system "install_name_tool", "-change", "@executable_path/../Frameworks/Breakpad.framework/Versions/A/Breakpad",
-             "#{bin}/fontforge", "#{share}/fontforge/osx/FontForge.app/Contents/Frameworks/Breakpad.framework/Versions/A/Breakpad"
-    end
+    # The name is case-sensitive. Don't downcase it when linking.
+    ln_s "#{share}/fontforge/osx/FontForge.app", prefix if build.with? "x11"
   end
 
   test do
