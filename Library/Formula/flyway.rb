@@ -1,8 +1,9 @@
 class Flyway < Formula
   homepage "http://flywaydb.org/"
-  url "https://bintray.com/artifact/download/business/maven/flyway-commandline-3.2.1-macosx-x64.tar.gz"
-  sha256 "f65a3a7c16fb29839fb68abaead5cdc08d8d6e77ae0d9ae741a820841c78fa41"
-  version "3.2.1"
+  url "http://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/3.2.1/flyway-commandline-3.2.1.tar.gz"
+  sha256 "da942c3b96d89ca221617a720c1945d16dadf142313380a71a825e62821d0a2b"
+
+  depends_on :java
 
   def install
     rm Dir["*.cmd"]
