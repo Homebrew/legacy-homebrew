@@ -12,10 +12,10 @@ class Mutt < Formula
   revision 2
 
   bottle do
-    revision 2
-    sha1 "1306f6eb8d79e64ab369831b0023b1e3d639e5ee" => :mavericks
-    sha1 "96f9ac81c213f4dfc6316423538dfd449bd65fbf" => :mountain_lion
-    sha1 "32d9a238d78473af52188dcfa07e33a0da018911" => :lion
+    revision 3
+    sha256 "7dcb549c1a9efc7f4c1a0602709478cae6f071215a762c77b4d9fba1ab561287" => :yosemite
+    sha256 "4b9b8c3a3b069d6103f650f1136161d41de1bc6014a682b6c15fd8d562cc773b" => :mavericks
+    sha256 "79b84411d1f0916e7df520b9fbac9f9d4479a4631f5da6b616f363fd6f68d0c2" => :mountain_lion
   end
 
   head do
