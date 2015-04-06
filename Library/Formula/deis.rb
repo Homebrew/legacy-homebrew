@@ -1,13 +1,13 @@
 class Deis < Formula
   homepage "http://deis.io"
-  url "https://github.com/deis/deis/archive/v1.4.0.tar.gz"
-  sha1 "96bb7bb71bfe32cfb5e148ccb9deabd621ddbcd4"
+  url "https://github.com/deis/deis/archive/v1.4.1.tar.gz"
+  sha1 "4f28c042ae634d92c728b81ea3fed03111b83eb6"
 
   bottle do
     cellar :any
-    sha1 "d4df10cf961cdbeb15e4b013f96d19866facb02f" => :yosemite
-    sha1 "80740e7eb8512986b857b89e7587956a3bf7c92c" => :mavericks
-    sha1 "0d8f23c2f2107a6b2fbd2acb36c3981829164ed7" => :mountain_lion
+    sha256 "b969023be679d70a61afc7e488eb561a46252d9e062f81e2a44d84885878594f" => :yosemite
+    sha256 "ec437a6a0be6b00486c3293ee863eebd61a02dafcd9469626a47ef5ba7c54712" => :mavericks
+    sha256 "bf448a2340499442641b2df4f5217a0a52fe0ee4e07c29c221828c2d11c3c223" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

@@ -4,17 +4,17 @@ class Python3 < Formula
   sha1 "7ca5cd664598bea96eec105aa6453223bb6b4456"
 
   bottle do
-    revision 6
-    sha256 "cf103f02fc439dff483d775fa4a5d5de884c3e83ab7cda9135057bf69a67aca8" => :yosemite
-    sha256 "b1d41d85fd4cfe0ff731ee4af7b0704294eed69b2624500f23711dcf6c023596" => :mavericks
-    sha256 "3c25e33665e4bb702ed359ddb2daa730721fa5ddd9cdb6c225e6c009205a3cdb" => :mountain_lion
+    revision 7
+    sha256 "2bca3c927bb9d8fa781445d77a9db3ed24f4c15308f1fce2aace362c6a6470f1" => :yosemite
+    sha256 "3e079e51f02c6c32dff5304c2b130c83a1eb94d33d6d9d03f0b2f5c42be8d0b5" => :mavericks
+    sha256 "34b520f444c8777b8216ff842bececa762e213cde7076d4dd9b44e2d8e07e0a3" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
 
   devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0a2.tgz"
-    sha256 "b15ba6931f5c7231577f3608958ae6616872da536eca3ba8aced820cdda15a18"
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0a3.tgz"
+    sha256 "c711dcc0b0273dde65d642983784168f082771a88dd7c1d899b66a172af9bf8d"
   end
 
   option :universal
@@ -36,8 +36,8 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.2.tar.gz"
-    sha1 "b36aaa86fe762eb66d2abc860405410158fadfe8"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.0.tar.gz"
+    sha256 "718d13adf87f99a45835bb20e0a1c4c036de644cd32b3f112639403aa04ebeb5"
   end
 
   resource "pip" do
@@ -50,8 +50,12 @@ class Python3 < Formula
   # X11.
   patch :DATA if build.with? "brewed-tk"
 
+  def lib_cellar
+    prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}"
+  end
+
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/site-packages"
+    lib_cellar/"site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -194,7 +198,7 @@ class Python3 < Formula
     end
 
     # And now we write the distutils.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/distutils/distutils.cfg"
+    cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1

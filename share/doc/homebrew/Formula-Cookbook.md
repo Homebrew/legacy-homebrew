@@ -566,13 +566,14 @@ end
 
 Homebrew understands `git`, `svn`, and `hg` URLs, and has a way to specify `cvs` repositories as a URL as well. You can test whether the `HEAD` is being built with `build.head?`.
 
-To use a specific commit, tag, or branch from a repository, specify head with the `:revision`, `:tag`, or `:branch` option, like so:
+To use a specific commit, tag, or branch from a repository, specify head with the `:tag` and `:revision`, `:revision`, or `:branch` option, like so:
 
 ```ruby
 class Foo < Formula
   head "https://github.com/some/package.git", :revision => "090930930295adslfknsdfsdaffnasd13"
                                          # or :branch => "develop"
-                                         # or :tag => "1_0_release"
+                                         # or :tag => "1_0_release",
+                                         #    :revision => "090930930295adslfknsdfsdaffnasd13"
 end
 ```
 

@@ -6,10 +6,10 @@ class Cmake < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "4357df1b230086cd7e27db5e52c3235b667f701acc55c08e30f7af4ce1c10e6c" => :yosemite
-    sha256 "15d3eb635ba99cd3171f116e0d48984c4e9379c1b4bbbede0a11469e975cb5cb" => :mavericks
-    sha256 "1b5c1e10304e5dca9f50436ccfc3b459e7a038b79d3e2418ba161bdd05d1c266" => :mountain_lion
+    revision 2
+    sha256 "99411c03795b8ef85e52b5296d54540af18724215f67a66686737e91abec35a8" => :yosemite
+    sha256 "ce230e1dff6108a48083ab36dfc5ae8011b03244c950557b8acfcf3189a4f146" => :mavericks
+    sha256 "e8b6dd510da6ce5523dba550ac36d9d82b86952f9ed3d924e5d10e892f0fc94c" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"
@@ -66,6 +66,9 @@ class Cmake < Formula
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
       --mandir=/share/man
+      --system-curl
+      --system-zlib
+      --system-bzip2
     ]
 
     if build.with? "docs"

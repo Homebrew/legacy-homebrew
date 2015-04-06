@@ -7,7 +7,7 @@ require 'metafiles'
 class Pathname
   include MachO
 
-  BOTTLE_EXTNAME_RX = /(\.[a-z_]+(32)?\.bottle\.(\d+\.)?tar\.gz)$/
+  BOTTLE_EXTNAME_RX = /(\.[a-z0-9_]+\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
     sources.each do |src|
@@ -37,11 +37,9 @@ class Pathname
   def install_p(src, new_basename)
     raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
 
-    src = src.to_s
-    dst = join(new_basename).to_s
-
+    src = Pathname(src)
+    dst = join(new_basename)
     dst = yield(src, dst) if block_given?
-    return unless dst
 
     mkpath
 
@@ -49,7 +47,7 @@ class Pathname
     # is a symlink, and its target is moved first, FileUtils.mv will fail:
     #   https://bugs.ruby-lang.org/issues/7707
     # In that case, use the system "mv" command.
-    if File.symlink? src
+    if src.symlink?
       raise unless Kernel.system 'mv', src, dst
     else
       FileUtils.mv src, dst
@@ -146,22 +144,17 @@ class Pathname
   def cp_path_sub pattern, replacement
     raise "#{self} does not exist" unless self.exist?
 
-    src = self.to_s
-    dst = src.sub(pattern, replacement)
-    raise "#{src} is the same file as #{dst}" if src == dst
+    dst = sub(pattern, replacement)
 
-    dst_path = Pathname.new dst
+    raise "#{self} is the same file as #{dst}" if self == dst
 
-    if self.directory?
-      dst_path.mkpath
-      return
+    if directory?
+      dst.mkpath
+    else
+      dst.dirname.mkpath
+      dst = yield(self, dst) if block_given?
+      FileUtils.cp(self, dst)
     end
-
-    dst_path.dirname.mkpath
-
-    dst = yield(src, dst) if block_given?
-
-    FileUtils.cp(src, dst)
   end
 
   # extended to support common double extensions

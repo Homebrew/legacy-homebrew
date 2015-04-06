@@ -23,7 +23,7 @@ module Homebrew
         keg = Keg.new dir
         version = keg.version
         all_versions << version
-        older_version = f.version <= version
+        older_version = f.pkg_version <= version
 
         tap = Tab.for_keg(keg).tap
         if tap.nil? || f.tap == tap || older_version

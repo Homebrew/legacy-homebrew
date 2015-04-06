@@ -59,7 +59,7 @@ module Homebrew
     elsif f.rack.subdirs.length > 1
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep.
-      opoo "Skipping #{f.name}: most recent version #{f.version} not installed"
+      opoo "Skipping #{f.name}: most recent version #{f.pkg_version} not installed"
     end
   end
 

@@ -3,7 +3,7 @@ class Ffmpeg < Formula
   url "https://ffmpeg.org/releases/ffmpeg-2.6.1.tar.bz2"
   sha256 "a4f6388706ee2daba9d35d2aa018ae5feeb450efa716555e011a6543d43ec7c1"
 
-  head "https://git.videolan.org/ffmpeg.git"
+  head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
     sha256 "8bc0cb43f99a7004aada9969875e551a24ebe2e57b8c620aa77b70372ba7fa0f" => :yosemite

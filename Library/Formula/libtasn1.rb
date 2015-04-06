@@ -1,15 +1,14 @@
 class Libtasn1 < Formula
   homepage "https://www.gnu.org/software/libtasn1/"
-  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.2.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.2.tar.gz"
-  sha1 "d2fe4bf12dbdc4d6765a04abbf8ddaf7e9163afa"
+  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.4.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.4.tar.gz"
+  sha256 "f8349db1b4fe634105c77e11d26b2173e587827e86e1a489b5e38ffa822e0c5d"
 
   bottle do
     cellar :any
-    sha1 "8f3781a5320a3673805acf106204f3aa332a7892" => :yosemite
-    sha1 "d39d835568aa45f2db736b4db2758c910babffe8" => :mavericks
-    sha1 "dc5377805975c8be571a5635e8f795065e619004" => :mountain_lion
-    sha1 "5cd9d101456486012c53e6aadc11ef1e987d582d" => :lion
+    sha256 "c7efdc3faad00fba26b931ab3cc6d4ebdbd620c9cb484507e7932ffd55deb627" => :yosemite
+    sha256 "316bd584f30c4eaae05958baf923c1998f5e94917520d8eb457492949cb01c02" => :mavericks
+    sha256 "bc79f9ad98cec135b633d854bbfa01c9069733fd2c55d9d14f851ab2b7d7466c" => :mountain_lion
   end
 
   option :universal

@@ -1,13 +1,13 @@
 class Passenger < Formula
   homepage "https://www.phusionpassenger.com/"
-  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.5.tar.gz"
-  sha256 '4a0d696cf6a702a97dd74aa9a377a637f547887b4afc6ee574329d87326bfcdc'
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.6.tar.gz"
+  sha256 'c82e9fbd7dcdac592b791a6f6de4cf2decd038f76509704c600c113e4f8b2fca'
   head "https://github.com/phusion/passenger.git"
 
   bottle do
-    sha256 "d99765112723d03551c047763a65aec30a513c6db0b6727e3bf68882b2dbf183" => :yosemite
-    sha256 "fcd5ab6f4afb63df0187ebb2875e75909d9159745f793614e222a4d9c0ae2d1e" => :mavericks
-    sha256 "1adfa4fbdad3ce5eb6b4959e6bf2d2ff280f7f44c2da479db2497b5c0b59d656" => :mountain_lion
+    sha256 "18abaef8c26e38393723f1ebf3bbc5bbbbcf3e44b30ae8e708499975e053ee6b" => :yosemite
+    sha256 "03a7014a374903a8482a221734c34b1cef1b044d1404a234758f2fdcdd9a002f" => :mavericks
+    sha256 "048b793caa9f9a3365f8612323306f862918b82c7d7fb45b08c056ab62faf60c" => :mountain_lion
   end
 
   depends_on "pcre"

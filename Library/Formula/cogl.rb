@@ -1,7 +1,7 @@
 require "formula"
 
 class Cogl < Formula
-  homepage "http://developer.gnome.org/cogl/"
+  homepage "https://developer.gnome.org/cogl/"
   url "http://ftp.gnome.org/pub/gnome/sources/cogl/1.18/cogl-1.18.2.tar.xz"
   sha256 "9278e519d5480eb0379efd48db024e8fdbf93f01dff48a7e756b85b508a863aa"
 
@@ -13,7 +13,7 @@ class Cogl < Formula
   end
 
   head do
-    url "git://git.gnome.org/cogl"
+    url "https://git.gnome.org/browse/cogl"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build

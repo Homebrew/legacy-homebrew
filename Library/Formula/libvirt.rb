@@ -2,13 +2,13 @@ require "formula"
 
 class Libvirt < Formula
   homepage "https://www.libvirt.org"
-  url "https://libvirt.org/sources/libvirt-1.2.13.tar.gz"
-  sha1 "b4e76eb52a40a1c81e07d17f9b57b4b1aa86b059"
+  url "https://libvirt.org/sources/libvirt-1.2.14.tar.gz"
+  sha256 "b8e8e6f1fc91eb8694fa21f9c57a736fa4a5af10562e14e4aa2c7e23510c4c07"
 
   bottle do
-    sha1 "7695deb9a434c6b87542440f4c36ebfc6d21dc85" => :yosemite
-    sha1 "3ad9ae5a1e0acc48e4a4c6ebf21262fe33a48ba0" => :mavericks
-    sha1 "3c6a0bbfc0de2690a48372ddba5ff0a499fb92c7" => :mountain_lion
+    sha256 "7bca5ddc327279ab529df9e2ec133cea56d59794121761d463e2820e0d91eb73" => :yosemite
+    sha256 "47c3317f8f8e3cf7ceaea72db98523d5850f080edd143a635d02f2fff37ca4d4" => :mavericks
+    sha256 "0dbd8987cc4b04b8f286e9488f68fd64cd3a887c3e5d3b69c7725b1a66623468" => :mountain_lion
   end
 
   option "without-libvirtd", "Build only the virsh client and development libraries"

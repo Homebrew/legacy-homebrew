@@ -1,14 +1,13 @@
 class Mesos < Formula
   homepage "https://mesos.apache.org"
-  url "http://www.apache.org/dyn/closer.cgi?path=mesos/0.21.1/mesos-0.21.1.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.21.1/mesos-0.21.1.tar.gz"
-  sha256 "a953c76a7fb4a45662a6cd084d867372933902d2507cc3f753970dbbc5cce7e3"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.22.0/mesos-0.22.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.22.0/mesos-0.22.0.tar.gz"
+  sha256 "689f66f63bec043eb1bbf16be1cbe15ea5f359f308f7f5b01dd48075f20e0c7d"
 
   bottle do
-    revision 2
-    sha256 "4e8f04afbaada418723e510cacc03137e5ccd9168deabdea3b5e8d287cd1d2ef" => :yosemite
-    sha256 "7d350a2696b5d770e5e5de82819b0b2105ef210950000125ca6dbbe2a86f5623" => :mavericks
-    sha256 "ae0233e820085af19202dc98a85c8585e69245d4362d29cdbc328abb60b08017" => :mountain_lion
+    sha256 "84beeabe62b02983b3f31c65cda9065a44325aecbd717700589e309253c9d64f" => :yosemite
+    sha256 "c5e465bf5324dd820173c67cf6764bee66647fdb8aca97c6c17dfadfab1c1ad4" => :mavericks
+    sha256 "826b53520eaf9c162904f59bb7fc80a6f5ee0af4c8209d706546de00bcc29c59" => :mountain_lion
   end
 
   depends_on :java => "1.7+"

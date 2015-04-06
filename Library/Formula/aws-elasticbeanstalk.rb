@@ -1,13 +1,14 @@
 class AwsElasticbeanstalk < Formula
   homepage "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.1.2.tar.gz"
-  sha1 "d64147b381574880b2f65e676b6e1b74a378d9cf"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.2.tar.gz"
+  sha1 "599f3ad277134e8fe061e23aa5e1cbe0b6844311"
 
   bottle do
     cellar :any
-    sha1 "ed37af9d592efc5fd4b1922f106757d9a72b8915" => :yosemite
-    sha1 "64c3503c04a9c0b0cce204175e44ebd691f3d485" => :mavericks
-    sha1 "20eb4a35613dca9ef22b1a4caefde1690eeab483" => :mountain_lion
+    revision 1
+    sha256 "3f7cdd03a9fb9760224f1ffc74d037632843e24a73ba5e14b672f5945c38434a" => :yosemite
+    sha256 "caa631e158241080dfee852e34e2e88621c0a995f2913250a85608af0d4c316c" => :mavericks
+    sha256 "489c6cfdd9bf63554077c485931c07f41654b22f4d584f78e007b940210b08fa" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -49,14 +50,6 @@ class AwsElasticbeanstalk < Formula
     bash_completion.install libexec/"bin/eb_completion.bash"
     bin.install Dir[libexec/"bin/{eb,jp}"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-  end
-
-  def caveats; <<-EOS.undent
-      Before you can use these tools you must export some variables to your $SHELL.
-        export AWS_ACCESS_KEY="<Your AWS Access ID>"
-        export AWS_SECRET_KEY="<Your AWS Secret Key>"
-        export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
-    EOS
   end
 
   test do

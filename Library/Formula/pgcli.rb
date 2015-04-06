@@ -1,13 +1,13 @@
 class Pgcli < Formula
   homepage "http://pgcli.com/"
-  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.10.2.tar.gz"
-  sha1 "c34330335e08418aba1c406ac846b37daaf21262"
+  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.16.3.tar.gz"
+  sha1 "747e8505514255833738a0ded3809728d942dda7"
 
   bottle do
     cellar :any
-    sha1 "3b215a030f7a46840d0a3f0e43a3888c0e4a54b7" => :yosemite
-    sha1 "fe811167e529ca7b87da5608d831207ea2b98000" => :mavericks
-    sha1 "5877b78ca0243107a4c1baebf635d1e5fa6ee1fb" => :mountain_lion
+    sha256 "0119d16d4bddd2c18a8780d6423d4f730cb2b0782c753565c3626aa58aa3a78a" => :yosemite
+    sha256 "408ac44b598737ad2d240b7a858c9668ab62ed61267ece56577986d09077834b" => :mavericks
+    sha256 "0ee3f0a9fe8214615586ba630234511d1c71623fd77bf7d102c258a4adb9efe5" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -20,8 +20,8 @@ class Pgcli < Formula
   end
 
   resource "prompt_toolkit" do
-    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.25.tar.gz"
-    sha1 "c0f009bd13128c7e385ff485afd88a82bab2d986"
+    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.26.tar.gz"
+    sha1 "4ca53785d38c396fa4e86453dd625fdd450110b9"
   end
 
   resource "psycopg2" do

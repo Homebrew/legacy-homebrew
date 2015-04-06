@@ -25,6 +25,6 @@ class MupdfTools < Formula
 
   test do
     pdf = test_fixtures("test.pdf")
-    assert_match /Homebrew test/, shell_output("#{bin}/mudraw -t #{pdf} 2>/dev/null")
+    assert_match /Homebrew test/, shell_output("#{bin}/mudraw -t #{pdf}")
   end
 end

@@ -339,8 +339,6 @@ class ExampleFormula < Formula
     lib.install "example.dylib"
     man1.install "example.1"
     man3.install "example.3"
-    # All that README/LICENSE/NOTES/CHANGELOG stuff? Use "metafiles"
-    prefix.install_metafiles
     # Maybe you'd like to remove a broken or unnecessary element?
     # Empty directories will be removed by Homebrew automatically post-install!
     rm "bin/example"
