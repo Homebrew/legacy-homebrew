@@ -27,6 +27,6 @@ class TerminalNotifier < Formula
   end
 
   test do
-    system "#{bin}/terminal-notifier", "-help"
+    system "#{bin}/terminal-notifier", "-help" if MacOS.version < :yosemite
   end
 end
