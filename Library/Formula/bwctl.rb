@@ -12,7 +12,7 @@ class Bwctl < Formula
     sha1 "d18b048baeb365d22717b2b831c164eb1c8ba125" => :mountain_lion
   end
 
-  depends_on "i2util"
+  depends_on "i2util" => :build
   depends_on "iperf3" => :optional
   depends_on "thrulay" => :optional
 
