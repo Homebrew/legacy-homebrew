@@ -5,11 +5,6 @@ class Dub < Formula
 
   head "https://github.com/D-Programming-Language/dub.git", :shallow => false
 
-  devel do
-    url "https://github.com/D-Programming-Language/dub/archive/v0.9.23.tar.gz"
-    sha1 "88c908cab5d396435091cb9cc31dcd886fdb26c9"
-  end
-
   depends_on "pkg-config" => :build
   depends_on "dmd" => :build
 
