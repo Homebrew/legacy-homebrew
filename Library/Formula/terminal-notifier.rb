@@ -1,7 +1,7 @@
 class TerminalNotifier < Formula
   homepage "https://github.com/alloy/terminal-notifier"
-  url "https://github.com/alloy/terminal-notifier/archive/1.6.2.tar.gz"
-  sha1 "ffd01b5a832e0167b9382c7ebec3e34349103b89"
+  url "https://github.com/alloy/terminal-notifier/archive/1.6.3.tar.gz"
+  sha256 "d71243e194d290e873eb5c5f30904e1d9406246d089e7d4d48ca275a8abfe275"
 
   head "https://github.com/alloy/terminal-notifier.git"
 
@@ -27,6 +27,6 @@ class TerminalNotifier < Formula
   end
 
   test do
-    system "#{bin}/terminal-notifier", "-message", "Hello World!"
+    system "#{bin}/terminal-notifier", "-help" if MacOS.version < :yosemite
   end
 end
