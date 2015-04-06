@@ -126,7 +126,7 @@ class PerconaServer < Formula
     bin.install_symlink prefix/"support-files/mysql.server"
 
     # Move mysqlaccess to libexec
-    mkdir_p libexec
+    libexec.mkpath
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
   end
