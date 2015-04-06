@@ -6,10 +6,9 @@ class Dmd < Formula
   sha1 "663d27bc6a25028d54b139344a35476cf5b4dc23"
 
   bottle do
-    revision 2
-    sha256 "e4cd4b28ad1ee063cfce3b3adb359c42975b1d20f45ea63c2816be79376919d8" => :yosemite
-    sha256 "19ca341da306c2be97f86a596784badc4109fd013044ec52984e39faef6df8d0" => :mavericks
-    sha256 "a122c205dd046804d47919027d17ca044f32568e8c9de37199da764dca23934d" => :mountain_lion
+    sha256 "c73291ee736109820ddf6bcd7dec619e3b1090c6c0849a5a7b717e1a67a8603b" => :yosemite
+    sha256 "2f04b67d50261ea74f4d580b5a180657020bb91d70d267dc47bf45e1d1bea6d1" => :mavericks
+    sha256 "13c440997c04a64627c5d697844c7a7e42c379e2507334a32d6a632881516d68" => :mountain_lion
   end
 
   resource "druntime" do
