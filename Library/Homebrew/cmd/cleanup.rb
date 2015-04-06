@@ -67,9 +67,9 @@ module Homebrew
     if keg.linked?
       opoo "Skipping (old) #{keg} due to it being linked"
     elsif ARGV.dry_run?
-      puts "Would remove: #{keg}"
+      puts "Would remove: #{keg} (#{keg.abv})"
     else
-      puts "Removing: #{keg}..."
+      puts "Removing: #{keg}... (#{keg.abv})"
       keg.uninstall
     end
   end
@@ -94,9 +94,9 @@ module Homebrew
 
   def cleanup_cached_file file
     if ARGV.dry_run?
-      puts "Would remove: #{file}"
+      puts "Would remove: #{file} (#{file.abv})"
     else
-      puts "Removing: #{file}..."
+      puts "Removing: #{file}... (#{file.abv})"
       file.unlink
     end
   end
