@@ -2,6 +2,7 @@ class Subliminal < Formula
   homepage "https://subliminal.readthedocs.org"
   url "https://github.com/Diaoul/subliminal/archive/0.7.5.tar.gz"
   sha256 "ade34adc8085feba51cf056410e38bea0042e5956732e430baa5295e6522daa1"
+  head "https://github.com/Diaoul/subliminal.git"
 
   bottle do
     cellar :any
@@ -12,6 +13,11 @@ class Subliminal < Formula
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
+
+  resource "pyxdg" do
+    url "https://pypi.python.org/packages/source/p/pyxdg/pyxdg-0.25.tar.gz"
+    sha256 "81e883e0b9517d624e8b0499eb267b82a815c0b7146d5269f364988ae031279d"
+  end
 
   resource "requests" do
     url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
@@ -89,8 +95,8 @@ class Subliminal < Formula
   end
 
   resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.tar.gz"
-    sha256 "23fd0a7c228d9c298c562245290a3f82999586c87aae71250f95f9894cb22c7c"
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.2.tar.gz"
+    sha256 "3e95445c1db500a344079a47b171c45ef18f57d188dffdb0e4165c71bea8eb3d"
   end
 
   resource "guessit" do
