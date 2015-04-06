@@ -2,10 +2,10 @@ require 'formula'
 
 class SourceHighlight < Formula
   homepage 'https://www.gnu.org/software/src-highlite/'
-  url 'http://ftpmirror.gnu.org/src-highlite/source-highlight-3.1.7.tar.gz'
-  mirror 'https://ftp.gnu.org/gnu/src-highlite/source-highlight-3.1.7.tar.gz'
-  mirror 'http://mirror.anl.gov/pub/gnu/src-highlite/source-highlight-3.1.7.tar.gz'
-  sha1 '71c637548be71afc3f895b0d8ada1a72a8dab4a0'
+  url 'http://ftpmirror.gnu.org/src-highlite/source-highlight-3.1.8.tar.gz'
+  mirror 'https://ftp.gnu.org/gnu/src-highlite/source-highlight-3.1.8.tar.gz'
+  mirror 'http://mirror.anl.gov/pub/gnu/src-highlite/source-highlight-3.1.8.tar.gz'
+  sha256 '01336a7ea1d1ccc374201f7b81ffa94d0aecb33afc7d6903ebf9fbf33a55ada3'
 
   bottle do
     sha1 "6bf1308730ead770b3ed8d47c2e93ec54d4058d8" => :yosemite
