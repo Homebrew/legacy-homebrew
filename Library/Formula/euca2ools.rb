@@ -1,7 +1,7 @@
 class Euca2ools < Formula
   homepage "https://github.com/eucalyptus/euca2ools"
-  url "https://github.com/eucalyptus/euca2ools/archive/v3.1.1.tar.gz"
-  sha1 "a29646fe312ae90c625304a9b969f5ab8bec44d8"
+  url "https://github.com/eucalyptus/euca2ools/archive/v3.2.0.tar.gz"
+  sha1 "f091b97d23dfb4c382899e32d4be71d531b36d21"
   head "https://github.com/eucalyptus/euca2ools.git"
   revision 1
 
@@ -15,8 +15,8 @@ class Euca2ools < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "requestbuilder" do
-    url "https://github.com/boto/requestbuilder/archive/v0.2.1.tar.gz"
-    sha1 "7c9b67293550959c5cd20513ae276727fa224e17"
+    url "https://github.com/boto/requestbuilder/archive/v0.2.3.tar.gz"
+    sha1 "35c62097ae5b2a632fd387d239033e40c347a9ad"
   end
 
   resource "requests" do
@@ -25,18 +25,18 @@ class Euca2ools < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.2.tar.gz"
-    sha1 "749f1ea153426866d6117d00256cf37c90b1b4f5"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.0.tar.gz"
+    sha1 "3c74c30dc08af9c759fc9622b01661ed61b55713"
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.7.2.tar.gz"
-    sha1 "6ed970106d18e48b361b09c227dac83b4cc72f26"
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
   end
 
   resource "lxml" do
-    url "https://pypi.python.org/packages/source/l/lxml/lxml-3.3.5.tar.gz"
-    sha1 "7a6e92f8ca482aab79835e1c9cd8410400792cd9"
+    url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.2.tar.gz"
+    sha1 "7285670314e3f3327bfb06b3c11d794b823fad07"
   end
 
   def install
