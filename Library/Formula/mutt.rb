@@ -1,16 +1,14 @@
-require "formula"
-
-# Note: Mutt has a large number of non-upstream patches available for it,
-# some of which conflict with each other. These patches are also not kept
-# up-to-date when new versions of mutt (occasionally) come out.
-# To reduce Homebrew's maintainence burden, new patches are not being
-# accepted for this formula. Mutt power-users are encouraged to copy the
-# formula and modify it locally, adding needed patches.
+# Note: Mutt has a large number of non-upstream patches available for
+# it, some of which conflict with each other. These patches are also
+# not kept up-to-date when new versions of mutt (occasionally) come
+# out.  To reduce Homebrew's maintenance burden, new patches are not
+# being accepted for this formula. Mutt power-users are encouraged to
+# copy the formula and modify it locally, adding needed patches.
 class Mutt < Formula
   homepage "http://www.mutt.org/"
-  url "ftp://ftp.mutt.org/mutt/mutt-1.5.23.tar.gz"
-  mirror "http://fossies.org/linux/misc/mutt-1.5.23.tar.gz"
-  sha1 "8ac821d8b1e25504a31bf5fda9c08d93a4acc862"
+  url "https://mirrors.kernel.org/debian/pool/main/m/mutt/mutt_1.5.23.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mutt/mutt_1.5.23.orig.tar.gz"
+  sha256 "3af0701e57b9e1880ed3a0dee34498a228939e854a16cdccd24e5e502626fd37"
   revision 2
 
   bottle do
@@ -77,7 +75,7 @@ class Mutt < Formula
     args = ["--disable-dependency-tracking",
             "--disable-warnings",
             "--prefix=#{prefix}",
-            "--with-ssl=#{Formula['openssl'].opt_prefix}",
+            "--with-ssl=#{Formula["openssl"].opt_prefix}",
             "--with-sasl",
             "--with-gss",
             "--enable-imap",
@@ -85,9 +83,9 @@ class Mutt < Formula
             "--enable-pop",
             "--enable-hcache",
             "--with-tokyocabinet",
-            # This is just a trick to keep 'make install' from trying to chgrp
-            # the mutt_dotlock file (which we can't do if we're running as an
-            # unpriviledged user)
+            # This is just a trick to keep 'make install' from trying
+            # to chgrp the mutt_dotlock file (which we can't do if
+            # we're running as an unprivileged user)
             "--with-homespool=.mbox"]
     args << "--with-slang" if build.with? "s-lang"
     args << "--enable-gpgme" if build.with? "gpgme"
@@ -103,5 +101,9 @@ class Mutt < Formula
     system "make", "install"
 
     doc.install resource("html") if build.head?
+  end
+
+  test do
+    system bin/"mutt", "-D"
   end
 end
