@@ -3,7 +3,7 @@ require "formula"
 class Bwctl < Formula
   homepage "http://software.internet2.edu/bwctl/"
   url "http://software.internet2.edu/sources/bwctl/bwctl-1.5.4.tar.gz"
-  sha1 "5dcc7a1d671ac8e061f859a430d56ae2551f507e"
+  sha256 "e6dca6ca30c8ef4d68e6b34b011a9ff7eff3aba4a84efc19d96e3675182e40ef"
 
   bottle do
     cellar :any
