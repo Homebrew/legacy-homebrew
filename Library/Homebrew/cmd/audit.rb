@@ -711,6 +711,10 @@ class FormulaAuditor
       problem "#{$1} is unnecessary; just use #{$2}"
     end
 
+    if line =~ /(require ["']formula["'])/
+      problem "`#{$1}` is now unnecessary"
+    end
+
     if line =~ /system (["'](#{FILEUTILS_METHODS})["' ])/o
       system = $1
       method = $2
@@ -724,10 +728,6 @@ class FormulaAuditor
           good_system = bad_system.gsub(" ", "\", \"")
           problem "Use `system #{good_system}` instead of `system #{bad_system}` "
         end
-      end
-
-      if line =~ /(require ["']formula["'])/
-        problem "`#{$1}` is now unnecessary"
       end
     end
   end
