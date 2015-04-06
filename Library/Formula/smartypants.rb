@@ -1,6 +1,6 @@
 class Smartypants < Formula
-  homepage "http://daringfireball.net/projects/smartypants/"
-  url "http://daringfireball.net/projects/downloads/SmartyPants_1.5.1.zip"
+  homepage "https://daringfireball.net/projects/smartypants/"
+  url "https://daringfireball.net/projects/downloads/SmartyPants_1.5.1.zip"
   sha256 "2813a12d8dd23f091399195edd7965e130103e439e2a14f298b75b253616d531"
 
   def install
