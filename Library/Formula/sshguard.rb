@@ -1,9 +1,7 @@
-require 'formula'
-
 class Sshguard < Formula
-  homepage 'http://www.sshguard.net/'
-  url 'https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
-  sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
+  homepage "http://www.sshguard.net/"
+  url "https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2"
+  sha1 "f8f713bfb3f5c9877b34f6821426a22a7eec8df3"
 
   # Fix blacklist flag (-b) so that it doesn't abort on first usage.
   # Upstream bug report:
@@ -18,7 +16,7 @@ class Sshguard < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-firewall=#{firewall}"
-    system "make install"
+    system "make", "install"
   end
 
   def firewall
@@ -38,6 +36,11 @@ class Sshguard < Formula
         block in quick on $ext_if proto tcp from <sshguard> to any port 22 label "ssh bruteforce"
 
       Then run sudo pfctl -f /etc/pf.conf to reload the rules.
+
+      WARNING:
+      The latest commit to the sshguard svn is from 2012.  Without this patch in
+      Yosemite, sshguard is vulnerable to brute force attacks:
+        http://sourceforge.net/p/sshguard/mailman/sshguard-users/thread/CAKf3Jj6XyccWNMDMUKinxV_x2SCddXe%2B6HzG4DjiQaOuYUu28Q%40mail.gmail.com/#msg33330543
       EOS
     end
   end
