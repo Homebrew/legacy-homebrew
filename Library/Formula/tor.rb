@@ -1,8 +1,8 @@
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.5.11.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.5.11.tar.gz"
-  sha256 "aee0faee9c3f1bb265ee8e94b4bb93967413f3c56e65f954db16b09451546769"
+  url "https://dist.torproject.org/tor-0.2.5.12.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.5.12.tar.gz"
+  sha256 "550fdafffeb4c1e3035bb8cc42e6e49d5af17ad79563bd118af22c1107f72b49"
 
   bottle do
     sha256 "bc5670c7be67d074c927fe55fa41d1acf3fa7d64b6d9da5c9b8c74361fd48d60" => :yosemite
@@ -11,10 +11,9 @@ class Tor < Formula
   end
 
   devel do
-    url "https://dist.torproject.org/tor-0.2.6.5-rc.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.6.5-rc.tar.gz"
-    sha256 "1a78bc971078c8aee1d0927bf6629610efef2cce31219580b2a73cc268d4103e"
-    version "0.2.6.5-rc"
+    url "https://dist.torproject.org/tor-0.2.6.7.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.6.7.tar.gz"
+    sha256 "8c2be88a542ed1b22a8d3d595ec0acd0e28191de273dbcaefc64fdce92b89e6c"
 
     # Move this to the main block when current devel = stable release.
     depends_on "libscrypt" => :optional
