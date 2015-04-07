@@ -17,7 +17,7 @@ class Riemann < Formula
   end
 
   def install
-    (prefix/"etc").install "etc/riemann.config" => "riemann.config.guide"
+    etc.install "etc/riemann.config" => "riemann.config.guide"
 
     # Install jars in libexec to avoid conflicts
     libexec.install Dir["*"]
