@@ -5,6 +5,12 @@ class Sshguard < Formula
   url 'https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
   sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
 
+  bottle do
+    sha256 "f7a9e63682d2aeec6857103923c3b8d3337505137e7d7f465b01b28c6b59cf11" => :yosemite
+    sha256 "34ebca7be518eef199e2fd17e1211ffe107568a5c0cabb77db3ee8635ffc3104" => :mavericks
+    sha256 "9d3bb789cad856e82c61d034a2ab2fe31b7dffea072066fedc176f6ed7a66ad7" => :mountain_lion
+  end
+
   # Fix blacklist flag (-b) so that it doesn't abort on first usage.
   # Upstream bug report:
   # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
