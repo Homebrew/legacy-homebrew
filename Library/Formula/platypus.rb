@@ -7,10 +7,9 @@ class Platypus < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "5a139598aec4a7e83d3c3ce662b3ab16f9503e0c" => :yosemite
-    sha1 "dcd15ab5fb3068899164c7be0fb2c7690383b788" => :mavericks
-    sha1 "502dd32f63eff7c2028a5197636335a43665c226" => :mountain_lion
+    sha256 "398efe2d6afe358e13dc881be58ae8e27c73bd1538ca954e7067c055d25adf75" => :yosemite
+    sha256 "99a07275ad62b9d26bf2e31ce5f4e0d9e35525a18c1414ef7d655c11a92510f9" => :mavericks
+    sha256 "d33acad77bacbbec3c602541b3e0410576efda95679760314b7e5ba737154871" => :mountain_lion
   end
 
   depends_on :xcode => :build
