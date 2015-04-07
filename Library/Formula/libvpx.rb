@@ -2,9 +2,8 @@ require 'formula'
 
 class Libvpx < Formula
   homepage 'http://www.webmproject.org/code/'
-  url 'https://webm.googlecode.com/files/libvpx-v1.3.0.tar.bz2'
-  sha1 '191b95817aede8c136cc3f3745fb1b8c50e6d5dc'
-  revision 1
+  url "https://github.com/webmproject/libvpx/archive/v1.4.0.tar.gz"
+  sha256 "eca30ea7fae954286c9fe9de9d377128f36b56ea6b8691427783b20c67bcfc13"
 
   head "https://chromium.googlesource.com/webm/libvpx", :using => :git
 
