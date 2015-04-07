@@ -6,6 +6,13 @@ class Srclib < Formula
   sha256 "de9af74ec0805b0ef4f1c7ddf26c5aef43f84668b12c001f2f413ff20a19ebee"
   head "https://github.com/sourcegraph/srclib.git"
 
+  bottle do
+    cellar :any
+    sha256 "75be0b0fad9f56cd33f7736dc8a5b663a7bf7ace7833ef2c5c00b40ec97b4e84" => :yosemite
+    sha256 "017a2522e99e6e8f56c39bc9b3fee10ec6622a7d73c2b973a6f7c0b56e6d40ad" => :mavericks
+    sha256 "00c130e9b76a25e872bcf79b4dc1b83e9679c2dd1f2396f138e2fc24538c57b0" => :mountain_lion
+  end
+
   conflicts_with "src", :because => "both install a 'src' binary"
 
   depends_on :hg => :build
