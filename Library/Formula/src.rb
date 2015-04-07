@@ -12,6 +12,8 @@ class Src < Formula
     sha256 "22e3c9dd3842b0d308c56832a04116f7ce8b0a6055a95c4b42c2d3548f02fe5d" => :mountain_lion
   end
 
+  conflicts_with "srclib", :because => "both install a 'src' binary"
+
   depends_on "rcs"
   depends_on "asciidoc" if build.head?
 
