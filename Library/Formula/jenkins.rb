@@ -1,7 +1,7 @@
 class Jenkins < Formula
   homepage "https://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.607/jenkins.war"
-  sha1 "805baa7d4f5047b78fe3e8987c5c6d352e60b77e"
+  url "http://mirrors.jenkins-ci.org/war/1.608/jenkins.war"
+  sha1 "aeb04ef2fc91e176d04e9e7eca53c6b4082e77f7"
 
   head do
     url "https://github.com/jenkinsci/jenkins.git"
