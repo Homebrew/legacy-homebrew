@@ -7,9 +7,10 @@ class Tig < Formula
 
   bottle do
     cellar :any
-    sha256 "8efbb377b3edc371349e9eb7c014e1c6cf982ad7f6de8f51f2ff1bfacb514eaa" => :yosemite
-    sha256 "d304edaf4eb06511f89a85a8821180caf5d6677a84ab87240a13ad132aabf09a" => :mavericks
-    sha256 "4f16770794c63c073e9f517e173284f4015879a0b06660ba5fc66682c9f70fcf" => :mountain_lion
+    revision 1
+    sha256 "09d7a29550166599f142033aa558157f9da760753fafc2217aa0f32c5efe43d2" => :yosemite
+    sha256 "d52d53d7c3340ef28da693a21c8d11940b5d05a88741d9e548712bd2be95b1b6" => :mavericks
+    sha256 "2997c4eb4d022a39640cf3b971fe2d34f302da05f245f359884909168a0afbb2" => :mountain_lion
   end
 
   head do
@@ -24,6 +25,8 @@ class Tig < Formula
     depends_on "asciidoc"
     depends_on "xmlto"
   end
+
+  depends_on "readline" => :recommended
 
   def install
     system "./autogen.sh" if build.head?
