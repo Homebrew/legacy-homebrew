@@ -2,8 +2,8 @@ require "language/go"
 
 class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/0.6.0.tar.gz"
-  sha1 "c7d1c391f9e929796f92c4496f011c62546a12cd"
+  url "https://github.com/wellington/wellington/archive/v0.7.0.tar.gz"
+  sha1 "0fadaacaef7ff7ccbdf0c8e3994e3cf5d2de420e"
   head "https://github.com/wellington/wellington.git"
 
   bottle do
