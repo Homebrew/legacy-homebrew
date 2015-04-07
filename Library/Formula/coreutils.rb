@@ -57,6 +57,10 @@ class Coreutils < Formula
     coreutils_filenames(man1).each do |cmd|
       (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}" => cmd
     end
+
+    # Symlink non-conflicting binaries
+    bin.install_symlink "grealpath" => "realpath"
+    man1.install_symlink "grealpath.1" => "realpath.1"
   end
 
   def caveats; <<-EOS.undent
