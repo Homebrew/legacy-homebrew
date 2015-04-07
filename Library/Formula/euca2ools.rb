@@ -1,9 +1,8 @@
 class Euca2ools < Formula
   homepage "https://github.com/eucalyptus/euca2ools"
   url "https://github.com/eucalyptus/euca2ools/archive/v3.2.0.tar.gz"
-  sha1 "f091b97d23dfb4c382899e32d4be71d531b36d21"
+  sha256 "4cfbae3b978312fa23e6a0329ec346568823afbbae0bc01075c8cff6707e7cb8"
   head "https://github.com/eucalyptus/euca2ools.git"
-  revision 1
 
   bottle do
     cellar :any
@@ -16,7 +15,7 @@ class Euca2ools < Formula
 
   resource "requestbuilder" do
     url "https://github.com/boto/requestbuilder/archive/v0.2.3.tar.gz"
-    sha1 "35c62097ae5b2a632fd387d239033e40c347a9ad"
+    sha256 "37991003f838847b9bfe041d08383964f8da5f5027656f631fafc3099c6ef4c9"
   end
 
   resource "requests" do
@@ -26,17 +25,17 @@ class Euca2ools < Formula
 
   resource "setuptools" do
     url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.0.tar.gz"
-    sha1 "3c74c30dc08af9c759fc9622b01661ed61b55713"
+    sha256 "718d13adf87f99a45835bb20e0a1c4c036de644cd32b3f112639403aa04ebeb5"
   end
 
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "lxml" do
     url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.2.tar.gz"
-    sha1 "7285670314e3f3327bfb06b3c11d794b823fad07"
+    sha256 "c7d5990298af6ffb00312973a25f0cc917a6368126dd40eaab41d78d3e1ea25d"
   end
 
   def install
