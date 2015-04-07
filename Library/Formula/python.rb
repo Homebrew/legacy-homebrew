@@ -5,10 +5,10 @@ class Python < Formula
   sha256 "c8bba33e66ac3201dabdc556f0ea7cfe6ac11946ec32d357c4c6f9b018c12c5b"
 
   bottle do
-    revision 10
-    sha1 "bcce4130bceeadd2d23e4f06441c8dd5d23b14df" => :yosemite
-    sha1 "d2a142d25910f4b30979f799c2920f4bc6a9db31" => :mavericks
-    sha1 "e8f947a2380376d465c5eff71e012d69243e87e6" => :mountain_lion
+    revision 11
+    sha256 "c79fb412babf09e15f5d6173dcea0f348c99451841635c4bfbcaef0a93b5c016" => :yosemite
+    sha256 "431899ee2f68a53b39a59fb1c060906b994505ec06e9ef4cfa7db3ad028d1283" => :mavericks
+    sha256 "0cb8d0e543abe9b1442bc0db31c5cfb3cd79e8e10bc8a15a994c51e73bb7d8d0" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
