@@ -1,15 +1,12 @@
-require "formula"
-
 class GobjectIntrospection < Formula
-  homepage "http://live.gnome.org/GObjectIntrospection"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.42/gobject-introspection-1.42.0.tar.xz"
-  sha256 "3ba2edfad4f71d4f0de16960b5d5f2511335fa646b2c49bbb93ce5942b3f95f7"
+  homepage "https://live.gnome.org/GObjectIntrospection"
+  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.44/gobject-introspection-1.44.0.tar.xz"
+  sha256 "6f0c2c28aeaa37b5037acbf21558098c4f95029b666db755d3a12c2f1e1627ad"
 
   bottle do
-    revision 1
-    sha1 "9d87f1faa5296c6d49a6dfc14945b05278a0a6fb" => :yosemite
-    sha1 "e1ed56b4ff510fa7316309f61fcfa8229aeb2e3b" => :mavericks
-    sha1 "00d3c7bf606caf63b901ceae35b446318dd7b35e" => :mountain_lion
+    sha256 "c5a08e5ac31a4524d1322158f404a4b42a08e43e3716621b9e0bf905aacf46d1" => :yosemite
+    sha256 "095dafa25ce514912c9ecd6211e809976a67473ea8d9c1c862d707c7e80cc903" => :mavericks
+    sha256 "1c9c9a5caab3d1453a4cfb12a1e167e673eb953eb20c2a15953bd50f9f7793be" => :mountain_lion
   end
 
   option :universal
@@ -43,5 +40,9 @@ class GobjectIntrospection < Formula
     system "make"
     system "make", "check" if build.with? "tests"
     system "make", "install"
+  end
+
+  test do
+    system bin/"g-ir-annotation-tool", "--help"
   end
 end

@@ -3,6 +3,10 @@ class BottleVersion < Version
     spec = Pathname.new(spec) unless spec.is_a? Pathname
     stem = spec.stem
 
+    # e.g. 5-20150215 from gcc5-5-20150215.yosemite.bottle.tar.gz
+    m = /[a-z]{3}\d-(\d{1}-\d{8})/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. perforce-2013.1.610569-x86_64.mountain_lion.bottle.tar.gz
     m = /-([\d\.]+-x86(_64)?)/.match(stem)
     return m.captures.first unless m.nil?
