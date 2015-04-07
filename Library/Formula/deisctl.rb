@@ -2,8 +2,8 @@ require "language/go"
 
 class Deisctl < Formula
   homepage "http://deis.io/"
-  url "https://github.com/deis/deis/archive/v1.1.0.tar.gz"
-  sha1 "c57fb6073b374b95262c36959c6d2b6c508cda59"
+  url "https://github.com/deis/deis/archive/v1.4.1.tar.gz"
+  sha1 "4f28c042ae634d92c728b81ea3fed03111b83eb6"
 
   bottle do
     cellar :any
@@ -14,9 +14,13 @@ class Deisctl < Formula
 
   depends_on :hg => :build
   depends_on "go" => :build
+  
+  go_resource "github.com/deis/deis" do
+    url "https://github.com/deis/deis.git", :revision => "696064661a70846ccc1780299a714aeff8c4999e"
+  end
 
-  go_resource "github.com/kr/godep" do
-    url "https://github.com/kr/godep.git", :revision => "07a96a1131ddff383e0f502d24c0f989ed0a8bb1"
+  go_resource "github.com/tools/godep" do
+    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
   end
 
   go_resource "github.com/kr/fs" do
@@ -32,17 +36,14 @@ class Deisctl < Formula
     ENV["CGO_ENABLED"] = "0"
     ENV.prepend_create_path "PATH", buildpath/"bin"
 
-    mkdir_p "#{buildpath}/deisctl/Godeps/_workspace/src/github.com/deis"
-    ln_s buildpath, "#{buildpath}/deisctl/Godeps/_workspace/src/github.com/deis/deis"
-
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/kr/godep" do
+    cd "src/github.com/tools/godep" do
       system "go", "install"
     end
 
     cd "deisctl" do
-      system "godep", "go", "build", "-a", "-ldflags", "-s", "-o", "dist/deisctl"
+      system "godep", "go", "build", "-a", "-installsuffix", "cgo", "-ldflags", "-s", "-o", "dist/deisctl"
       bin.install "dist/deisctl"
     end
   end
