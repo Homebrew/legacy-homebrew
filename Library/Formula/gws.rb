@@ -11,8 +11,10 @@ class Gws < Formula
   end
 
   test do
-    output = `#{bin}/gws`.strip
-    assert_equal "Not in a workspace", output
+    system "git", "init", testpath/"project"
+    system "gws", "init", testpath
+    output = `#{bin}/gws status testpath`.strip
+    assert_equal "project:\n                              Clean [Local only repository]", output
   end
 end
 
