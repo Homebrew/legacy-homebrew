@@ -1,7 +1,8 @@
 class Pinentry < Formula
-  homepage "http://www.gnupg.org/related_software/pinentry/index.en.html"
-  url "ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.0.tar.bz2"
-  sha1 "f8e5c774c35fbb91d84e82559baf76f6b4513236"
+  homepage "https://www.gnupg.org/related_software/pinentry/index.en.html"
+  url "ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.1.tar.bz2"
+  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.1.tar.bz2"
+  sha256 "9cd08e856b395df3adc7124170b53f77c6d5c8bf88e899e818648ec70d3e9695"
 
   bottle do
     cellar :any
