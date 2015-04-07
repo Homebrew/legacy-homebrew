@@ -8,6 +8,6 @@ class FortranDependency < Requirement
   env { ENV.fortran }
 
   satisfy :build_env => false do
-    (ENV['FC'] || which('gfortran')) ? true : false
+    which(ENV["FC"] || "gfortran")
   end
 end
