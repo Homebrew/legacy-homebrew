@@ -4,7 +4,7 @@ class Mighttpd2 < Formula
   include Language::Haskell::Cabal
 
   homepage "http://www.mew.org/~kazu/proj/mighttpd/en/"
-  url "http://hackage.haskell.org/package/mighttpd2-3.2.7/mighttpd2-3.2.7.tar.gz"
+  url "https://hackage.haskell.org/package/mighttpd2-3.2.7/mighttpd2-3.2.7.tar.gz"
   sha256 "57974d96b4dc5d8414ae61bcc45df4a0f07a855764a3baa57bdd39d0173c2dd0"
 
   bottle do
