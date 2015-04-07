@@ -40,7 +40,7 @@ class Platypus < Formula
   end
 
   test do
-    system bin/"platypus", "-v"
+    system "#{bin}/platypus", "-v"
   end
 
   def caveats
