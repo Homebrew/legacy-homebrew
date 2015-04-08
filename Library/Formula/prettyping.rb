@@ -1,11 +1,13 @@
-require 'formula'
+class Prettyping < FileFormula
+  homepage "http://denilsonsa.github.io/prettyping/"
+  url "https://github.com/denilsonsa/prettyping/archive/v1.0.0.tar.gz"
+  sha256 "02a4144ff2ab7d3e2c7915041225270e96b04ee97777be905d1146e76084805d"
 
-class Prettyping < ScriptFileFormula
-  homepage 'http://denilsonsa.github.io/prettyping/'
-  url 'https://raw.githubusercontent.com/denilsonsa/prettyping/v1.0.0/prettyping'
-  sha1 '5e0296f9f28834d0985bb9f3452e777b35291350'
-  version '1.0.0'
   def install
-    bin.install 'prettyping'
+    bin.install "prettyping"
+  end
+
+  test do
+    system "#{bin}/prettyping", "-c", "3", "127.0.0.1"
   end
 end
