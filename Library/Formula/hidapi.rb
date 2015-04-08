@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hidapi < Formula
-  homepage 'https://github.com/signal11/hidapi'
-  url 'https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.tar.gz'
-  sha1 '5e72a4c7add8b85c8abcdd360ab8b1e1421da468'
+  homepage "https://github.com/signal11/hidapi"
+  url "https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.tar.gz"
+  sha1 "5e72a4c7add8b85c8abcdd360ab8b1e1421da468"
   
   # This patch addresses a bug discovered in the HidApi IOHidManager back-end 
   # that is being used with Macs.
@@ -13,8 +13,8 @@ class Hidapi < Formula
   # 
   # pull request on Hidapi's repo: https://github.com/signal11/hidapi/pull/219
   patch do
-    url 'https://patch-diff.githubusercontent.com/raw/signal11/hidapi/pull/219.patch'
-    sha1 '087560554b232b7051c229eb14aa79adc189be22'
+    url "https://patch-diff.githubusercontent.com/raw/signal11/hidapi/pull/219.diff"
+    sha1 "087560554b232b7051c229eb14aa79adc189be22"
   end
 
   bottle do
