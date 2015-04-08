@@ -8,9 +8,10 @@ class GnuUnits < Formula
   sha1 "e460371dc97034d17ce452e6b64991f7fd2d1409"
 
   bottle do
-    sha1 "255fd50fc880467483ae2654d1c34cd452247847" => :yosemite
-    sha1 "43beaf9b66127bd29a393e2386c2c9a53522762f" => :mavericks
-    sha1 "7d9b3438fbfeaa0d8a428a1ed6496df9d1c92cc6" => :mountain_lion
+    revision 1
+    sha256 "0f5e5b0454bdd6deb29457017d5fbd5b61b84f51a9aba3be9d55f835f1792cbc" => :yosemite
+    sha256 "c5f37a10a445c5c71a501d2680f2b00c49610a78e79619765b82400acd841afa" => :mavericks
+    sha256 "f2c7e44bcf0dfe0be3da8b09cbfaf979793e3a4245ce7c0969bb45b7e0d881e2" => :mountain_lion
   end
 
   deprecated_option "default-names" => "with-default-names"
