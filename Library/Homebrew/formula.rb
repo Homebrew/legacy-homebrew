@@ -634,6 +634,7 @@ class Formula
     mktemp do
       @testpath = Pathname.pwd
       ENV["HOME"] = @testpath
+      setup_test_home @testpath
       test
     end
   ensure
@@ -657,6 +658,16 @@ class Formula
   end
 
   protected
+
+  def setup_test_home home
+    # keep Homebrew's site-packages in sys.path when testing with system Python
+    user_site_packages = home/"Library/Python/2.7/lib/python/site-packages"
+    user_site_packages.mkpath
+    (user_site_packages/"homebrew.pth").write <<-EOS.undent
+      import site; site.addsitedir("#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+      import sys; sys.path.insert(0, "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+    EOS
+  end
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
