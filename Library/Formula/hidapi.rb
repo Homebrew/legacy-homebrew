@@ -2,8 +2,8 @@ require 'formula'
 
 class Hidapi < Formula
   homepage 'https://github.com/signal11/hidapi'
-  url 'https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.tar.gz'
-  sha1 '5e72a4c7add8b85c8abcdd360ab8b1e1421da468'
+  url 'https://github.com/rbarazzutti/hidapi/archive/hidapi-0.8.0-rc1-with-macfix.tar.gz'
+  sha1 '8fa3f991839713be48279e6047b74df7f4e2c4df'
 
   bottle do
     cellar :any
