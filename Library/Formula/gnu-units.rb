@@ -1,3 +1,4 @@
+# coding: utf-8
 require "formula"
 
 class GnuUnits < Formula
@@ -16,6 +17,17 @@ class GnuUnits < Formula
 
   option "with-default-names", "Do not prepend 'g' to the binary"
 
+  # Temporary fix for "invalid/nonprinting UTF-8" warnings on startup,
+  # see https://github.com/Homebrew/homebrew/issues/20297.
+  #
+  # The current maintainer of GNU units, Adrian Mariano, is aware of
+  # the issue (reported by mail on 2015-04-08) and has fixed it in the
+  # currently unreleased development version which will be released
+  # later this year.
+  #
+  # See https://github.com/Homebrew/homebrew/issues/38454 for details.
+  patch :DATA
+
   def install
     args = ["--prefix=#{prefix}"]
     args << "--program-prefix=g" if build.without? "default-names"
@@ -28,3 +40,29 @@ class GnuUnits < Formula
     assert_equal "* 18288", shell_output("#{bin}/gunits '600 feet' 'cm' -1").strip
   end
 end
+
+__END__
+diff --git a/definitions.units b/definitions.units
+index a0c61f2..06269ce 100644
+--- a/definitions.units
++++ b/definitions.units
+@@ -5248,9 +5248,6 @@ röntgen                 roentgen
+ ㍴                      bar
+ # ㍵                          oV???
+ ㍶                      pc
+-#㍷                      dm      invalid on Mac
+-#㍸                      dm^2    invalid on Mac
+-#㍹                      dm^3    invalid on Mac
+ ㎀                      pA
+ ㎁                      nA
+ ㎂                      µA
+@@ -5342,9 +5339,6 @@ röntgen                 roentgen
+ ㏛                      sr
+ ㏜                      Sv
+ ㏝                      Wb
+-#㏞                      V/m     Invalid on Mac
+-#㏟                      A/m     Invalid on Mac
+-#㏿                      gal     Invalid on Mac
+ 
+ !endutf8
+ 
