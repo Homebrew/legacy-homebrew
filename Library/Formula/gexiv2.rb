@@ -14,11 +14,14 @@ class Gexiv2 < Formula
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "exiv2"
+  depends_on "gobject-introspection"
+  depends_on "libtool" => :build
 
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
+                          "--enable-introspection",
                           "--prefix=#{prefix}"
     system "make", "install"
   end
