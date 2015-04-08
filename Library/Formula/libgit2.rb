@@ -7,9 +7,9 @@ class Libgit2 < Formula
 
   bottle do
     cellar :any
-    sha1 "f38b591523f02a8d3310ec203f1ab7d2c6d825e4" => :yosemite
-    sha1 "ecfdcf794a06e2e501c2c95ca72cdc0f0a97c3ba" => :mavericks
-    sha1 "0daa906f4cf15f9e9de9637c41c0e600aae36c4b" => :mountain_lion
+    sha256 "722c0d7fee0826e2534f43d71bd7f3df20b09802db53bbcdf1f3b72c073b888d" => :yosemite
+    sha256 "4ebcae368e74ebe396032744b5790e2af3ce37ec3035a852ba1ed08d9559fff5" => :mavericks
+    sha256 "d0a6034bc1dcabd209ca79727320cc64fe13f9b336ae51cc3cb8f9d62fd39d99" => :mountain_lion
   end
 
   option :universal
