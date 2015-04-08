@@ -4,10 +4,10 @@ class Python3 < Formula
   sha1 "7ca5cd664598bea96eec105aa6453223bb6b4456"
 
   bottle do
-    revision 7
-    sha256 "2bca3c927bb9d8fa781445d77a9db3ed24f4c15308f1fce2aace362c6a6470f1" => :yosemite
-    sha256 "3e079e51f02c6c32dff5304c2b130c83a1eb94d33d6d9d03f0b2f5c42be8d0b5" => :mavericks
-    sha256 "34b520f444c8777b8216ff842bececa762e213cde7076d4dd9b44e2d8e07e0a3" => :mountain_lion
+    revision 8
+    sha256 "17b51ee7ae14df6def7c1acb4ab0736c75dbaa4aa114017f3aaf5a8cf175ecd9" => :yosemite
+    sha256 "201741e84461918bd7f5116dc203b4927bef84307e33a0cdf1453c969352dcad" => :mavericks
+    sha256 "4a0b1897fd29f7aa2600b7810c8723ac3e10bdda82a10892744d36a945577c8d" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
@@ -41,8 +41,8 @@ class Python3 < Formula
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
-    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.1.0.tar.gz"
+    sha256 "89f120e2ab3d25ab70c36eb28ad4f280fc9ba71736e74d3055f609c1f9173768"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
