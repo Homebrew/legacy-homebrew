@@ -1,9 +1,10 @@
-require "formula"
-
 class Libiomp < Formula
   homepage "https://www.openmprtl.org/download"
-  url "https://www.openmprtl.org/sites/default/files/libomp_20140926_oss.tgz"
-  sha1 "488ff3874eb5c971523534cb3c987bfb5ce3addb"
+  url "https://www.openmprtl.org/sites/default/files/libomp_20150227_oss.tgz"
+  sha256 "a1d30fad0160400db325d270b632961d086026d2944520d67c6afc0e69ac93bf"
+
+  depends_on :arch => :intel
+  depends_on "cmake" => :build
 
   bottle do
     cellar :any
@@ -11,8 +12,6 @@ class Libiomp < Formula
     sha1 "070a6edb8c872e2b88f953222b72cd587f288149" => :mavericks
     sha1 "26a2f4d2d6427c1d114fdc774a71bdd06926cc13" => :mountain_lion
   end
-
-  depends_on :arch => :intel
 
   fails_with :gcc  do
     cause "libiomp can only be built with clang."
@@ -29,14 +28,12 @@ class Libiomp < Formula
   end
 
   def install
-    # fix makefile for yosemite:
-    inreplace "src/makefile.mk" do |s|
-      s.gsub! "`sw_vers -productVersion` > 10.6", "`sw_vers -productVersion` == '10.10' || `sw_vers -productVersion`> 10.6"
-    end
-
     intel_arch = MacOS.prefer_64_bit? ? "mac_32e" : "mac_32"
-
-    system "make", "compiler=clang"
+    args = std_cmake_args
+    args << (MacOS.prefer_64_bit? ? "-Darch=32e" : "-Darch=32")
+    args << "-DCMAKE_BUILD_TYPE=Release"
+    system "cmake", ".", *args
+    system "make", "all", "common"
 
     (include/"libiomp").install Dir["exports/common/include/*"]
     lib.install "exports/#{intel_arch}/lib.thin/libiomp5.dylib"
