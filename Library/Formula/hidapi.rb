@@ -5,8 +5,6 @@ class Hidapi < Formula
   url 'https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.tar.gz'
   sha1 '5e72a4c7add8b85c8abcdd360ab8b1e1421da468'
   
-  ## Patch - April 8th, 2015 - Raphaël P. Barazzutti
-
   # This patch addresses a bug discovered in the HidApi IOHidManager back-end 
   # that is being used with Macs.
   # The bug was dramatically changing the behaviour of the function 
