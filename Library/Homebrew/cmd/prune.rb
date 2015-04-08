@@ -29,6 +29,7 @@ module Homebrew
     end
 
     dirs.reverse_each do |d|
+      next if d.basename.to_s.end_with? ".d"
       if ARGV.dry_run? && d.children.empty?
         puts "Would remove (empty directory): #{d}"
       else
