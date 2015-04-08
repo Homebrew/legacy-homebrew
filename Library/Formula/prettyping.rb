@@ -1,5 +1,5 @@
-class Prettyping < FileFormula
-  homepage "http://denilsonsa.github.io/prettyping/"
+class Prettyping < Formula
+  homepage "https://denilsonsa.github.io/prettyping/"
   url "https://github.com/denilsonsa/prettyping/archive/v1.0.0.tar.gz"
   sha256 "02a4144ff2ab7d3e2c7915041225270e96b04ee97777be905d1146e76084805d"
 
