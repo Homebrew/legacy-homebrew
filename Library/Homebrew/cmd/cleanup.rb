@@ -25,14 +25,7 @@ module Homebrew
     return unless HOMEBREW_LOGS.directory?
     time = Time.now - 2 * 7 * 24 * 60 * 60 # two weeks
     HOMEBREW_LOGS.subdirs.each do |dir|
-      if dir.mtime < time
-        if ARGV.dry_run?
-          puts "Would remove: #{dir}"
-        else
-          puts "Removing: #{dir}..."
-          dir.rmtree
-        end
-      end
+      cleanup_path(dir) { dir.rmtree } if dir.mtime < time
     end
   end
 
@@ -66,11 +59,8 @@ module Homebrew
   def cleanup_keg keg
     if keg.linked?
       opoo "Skipping (old) #{keg} due to it being linked"
-    elsif ARGV.dry_run?
-      puts "Would remove: #{keg} (#{keg.abv})"
     else
-      puts "Removing: #{keg}... (#{keg.abv})"
-      keg.uninstall
+      cleanup_path(keg) { keg.uninstall }
     end
   end
 
@@ -87,17 +77,17 @@ module Homebrew
       end
 
       if f.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
-        cleanup_cached_file(file)
+        cleanup_path(file) { file.unlink }
       end
     end
   end
 
-  def cleanup_cached_file file
+  def cleanup_path(path)
     if ARGV.dry_run?
-      puts "Would remove: #{file} (#{file.abv})"
+      puts "Would remove: #{path} (#{path.abv})"
     else
-      puts "Removing: #{file}... (#{file.abv})"
-      file.unlink
+      puts "Removing: #{path}... (#{path.abv})"
+      yield
     end
   end
 
