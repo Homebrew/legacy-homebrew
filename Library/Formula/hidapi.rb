@@ -10,7 +10,6 @@ class Hidapi < Formula
   # The bug was dramatically changing the behaviour of the function
   # "hid_get_feature_report". As a consequence, many applications working
   # with HidApi were not behaving correctly on OSX.
-  #
   # pull request on Hidapi's repo: https://github.com/signal11/hidapi/pull/219
   patch do
     url "https://patch-diff.githubusercontent.com/raw/signal11/hidapi/pull/219.diff"
