@@ -4,6 +4,20 @@ class Hidapi < Formula
   homepage 'https://github.com/signal11/hidapi'
   url 'https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.tar.gz'
   sha1 '5e72a4c7add8b85c8abcdd360ab8b1e1421da468'
+  
+  ## Patch - April 8th, 2015 - Raphaël P. Barazzutti
+
+  # This patch addresses a bug discovered in the HidApi IOHidManager back-end 
+  # that is being used with Macs.
+  # The bug was dramatically changing the behaviour of the function 
+  # "hid_get_feature_report". As a consequence, many applications working
+  # with HidApi were not behaving correctly on OSX.
+  # 
+  # pull request on Hidapi's repo: https://github.com/signal11/hidapi/pull/219
+  patch do
+    url 'https://patch-diff.githubusercontent.com/raw/signal11/hidapi/pull/219.patch'
+    sha1 '087560554b232b7051c229eb14aa79adc189be22'
+  end
 
   bottle do
     cellar :any
