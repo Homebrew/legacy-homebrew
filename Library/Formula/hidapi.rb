@@ -14,7 +14,7 @@ class Hidapi < Formula
   # pull request on Hidapi's repo: https://github.com/signal11/hidapi/pull/219
   patch do
     url "https://patch-diff.githubusercontent.com/raw/signal11/hidapi/pull/219.diff"
-    sha1 "087560554b232b7051c229eb14aa79adc189be22"
+    sha256 "82631c8a6ec307482c09c133f9da89672c781665704304aa0ef286467b7fe5c2"
   end
 
   bottle do
