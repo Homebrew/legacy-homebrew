@@ -14,9 +14,9 @@ class Influxdb < Formula
   end
 
   devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc19.tar.gz"
-    sha1 "63002564c9ed27b5fe88491e58716dc01e57c25e"
-    version "0.9.0-rc19"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc20.tar.gz"
+    sha1 "714aab2a30a322425883577ed33c0e42ee461725"
+    version "0.9.0-rc20"
   end
 
   depends_on "go" => :build
@@ -96,14 +96,13 @@ class Influxdb < Formula
       Language::Go.stage_deps resources, buildpath/"src"
 
       cd influxdb_path do
-        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc16 -X main.commit 035500fb9ff1d8a8fb4f20762e14ed672a0c1d6e", "./..."
+        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc20 -X main.commit 475cdef884d7172def6d2a4198d105d562a8574e", "./..."
         system "go", "install", "./..."
       end
 
       inreplace influxdb_path/"etc/config.sample.toml" do |s|
-        s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
-        s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-        s.gsub! "/tmp/influxdb/development/state", "#{var}/influxdb/state"
+        s.gsub! "/var/opt/influxdb/db", "#{var}/influxdb/data"
+        s.gsub! "/var/opt/influxdb/raft", "#{var}/influxdb/raft"
       end
 
       bin.install buildpath/"bin/influxd" => "influxd"
