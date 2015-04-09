@@ -19,12 +19,13 @@ module Homebrew
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}"
     return false if tapd.directory?
+    ohai "Tapping #{repouser}/#{repo}"
     abort unless system "git", "clone", "https://github.com/#{repouser}/homebrew-#{repo}", tapd.to_s
 
     files = []
     tapd.find_formula { |file| files << file }
     link_tap_formula(files)
-    puts "Tapped #{files.length} formula#{plural(files.length, 'e')}"
+    puts "Tapped #{files.length} formula#{plural(files.length, 'e')} (#{tapd.abv})"
 
     if private_tap?(repouser, repo) then puts <<-EOS.undent
       It looks like you tapped a private repository. To avoid entering your
