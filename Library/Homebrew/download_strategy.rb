@@ -343,7 +343,9 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     @tried_apache_mirror = true
 
     mirrors = Utils::JSON.load(apache_mirrors)
-    @url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
+    path_info = mirrors.fetch("path_info")
+    @url = mirrors.fetch('preferred') + path_info
+    @mirrors |= %W[https://archive.apache.org/dist/#{path_info}]
 
     ohai "Best Mirror #{@url}"
     super
