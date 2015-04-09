@@ -98,6 +98,10 @@ module HomebrewArgvExtension
     include? '--homebrew-developer' or !ENV['HOMEBREW_DEVELOPER'].nil?
   end
 
+  def sandbox?
+    include?("--sandbox") || !ENV["HOMEBREW_SANDBOX"].nil?
+  end
+
   def ignore_deps?
     include? '--ignore-dependencies'
   end
