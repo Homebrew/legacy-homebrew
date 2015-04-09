@@ -13,10 +13,10 @@ class Gws < Formula
   end
 
   test do
-    system "git", "init", testpath/"project"
-    system "gws", "init", testpath
-    output = `#{bin}/gws status testpath`.strip
-    assert_equal "project:\n                              Clean [Local only repository]", output
+    system "git", "init", "#{testpath}/project"
+    system "#{bin}/gws", "init", "#{testpath}"
+    output = shell_output("#{bin}/gws status #{testpath}")
+    assert_equal "project:\n                              Clean [Local only repository]\n", output
   end
 end
 
