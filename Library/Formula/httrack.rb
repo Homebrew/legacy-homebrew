@@ -1,8 +1,8 @@
 class Httrack < Formula
-  homepage "http://www.httrack.com/"
+  homepage "https://www.httrack.com/"
   # Always use mirror.httrack.com when you link to a new version of HTTrack, as
   # link to download.httrack.com will break on next HTTrack update.
-  url "http://mirror.httrack.com/historical/httrack-3.48.21.tar.gz"
+  url "https://mirror.httrack.com/historical/httrack-3.48.21.tar.gz"
   sha1 "a19564393ced4b2e22ab685201cbd5a1d6983930"
 
   bottle do
