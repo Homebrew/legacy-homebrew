@@ -4,9 +4,9 @@ class Ettercap < Formula
   sha256 "f38514f35bea58bfe6ef1902bfd4761de0379942a9aa3e175fc9348f4eef2c81"
 
   bottle do
-    sha1 "b7d7bfc3d98015cea228473b239a0fe9ae41127d" => :yosemite
-    sha1 "15b7682fbba8687cfaa8effd00b7f6dd0ced8e91" => :mavericks
-    sha1 "d221416cc95911a965ea1821b1a218531b4ea349" => :mountain_lion
+    sha256 "1c6bc00b1f7dc226fb6378669c4704de9a190439ba1edef083fb9178d09faac0" => :yosemite
+    sha256 "b51137d64a04f49737a639f097dc725e2ffc36ec7dd52295bdafd7db9ea4dff7" => :mavericks
+    sha256 "4a2f65a3d3606b465f0bab5cb1c27a5599815a23bb59a4ba126f8ed9fdf60a9f" => :mountain_lion
   end
 
   head "https://github.com/Ettercap/ettercap.git"
