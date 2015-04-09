@@ -23,6 +23,7 @@ class PkgConfig < Formula
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
+                          "--libdir=#{HOMEBREW_PREFIX}/lib",
                           "--disable-host-tool",
                           "--with-internal-glib",
                           "--with-pc-path=#{pc_path}"
