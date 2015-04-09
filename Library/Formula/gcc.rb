@@ -101,6 +101,9 @@ class Gcc < Formula
       "--enable-stage1-checking",
       "--enable-checking=release",
       "--enable-lto",
+      # Use 'bootstrap-debug' build configuration to force stripping of object
+      # files prior to comparison during bootstrap (broken by Xcode 6.3).
+      "--with-build-config=bootstrap-debug",
       # A no-op unless --HEAD is built because in head warnings will
       # raise errors. But still a good idea to include.
       "--disable-werror",
