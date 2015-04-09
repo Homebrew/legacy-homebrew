@@ -17,6 +17,7 @@ module Homebrew
       tapd = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
 
       raise "No such tap!" unless tapd.directory?
+      puts "Untapping #{tapname}... (#{tapd.abv})"
 
       files = []
       tapd.find_formula { |file| files << file }
