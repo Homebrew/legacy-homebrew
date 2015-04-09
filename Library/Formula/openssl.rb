@@ -21,6 +21,14 @@ class Openssl < Formula
   keg_only :provided_by_osx,
     "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
+  # This is a workaround for Apple removing the Equifax Secure CA root from the System in 10.10.3
+  # Their doing so has broken certificate verification and consquently secure connection for dependants.
+  # Scope this to Yosemite and remove immediately once Apple have fixed the issue.
+  resource "Equifax_CA" do
+    url "https://www.geotrust.com/resources/root_certificates/certificates/Equifax_Secure_Certificate_Authority.pem"
+    sha256 "f24e19fb93983b4fd0a377335613305f330c699892c789356eb216449804d0e9"
+  end
+
   def arch_args
     {
       :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp_64_gcc_128],
@@ -111,6 +119,11 @@ class Openssl < Formula
 
     openssldir.mkpath
     (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+
+    if MacOS.version == :yosemite
+      (openssldir/"certs").install resource("Equifax_CA")
+      system bin/"c_rehash"
+    end
   end
 
   def caveats; <<-EOS.undent
