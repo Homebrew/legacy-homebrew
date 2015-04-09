@@ -13,6 +13,7 @@ require 'hooks/bottles'
 require 'debrew'
 require 'fcntl'
 require 'socket'
+require 'sandbox'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -484,7 +485,12 @@ class FormulaInstaller
         server.close
         read.close
         write.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
-        exec(*args)
+        if Sandbox.available? && ARGV.sandbox?
+          sandbox = Sandbox.new(formula)
+          sandbox.exec(*args)
+        else
+          exec(*args)
+        end
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
