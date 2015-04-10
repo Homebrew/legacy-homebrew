@@ -2,8 +2,8 @@ require "formula"
 
 class Kore < Formula
   homepage "https://kore.io/"
-  url "https://kore.io/release/kore-1.2.1-release.tgz"
-  sha1 "7af8d3d651657e54cee4d90c9be33e9bde8a0727"
+  url "https://kore.io/release/kore-1.2.2-release.tgz"
+  sha256 "f58a00abcc8b02533eae63cc1d90701dcae92688e69534d13bde502ddcb2a06a"
 
   head "https://github.com/jorisvink/kore.git"
 
