@@ -1,19 +1,9 @@
-require "formula"
 require "language/go"
 
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
-  url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.1.tar.gz"
-  sha256 "68980641996a3a4b5440e12d343c2de98bb7f350fbc0c8327a674094d6e11213"
-
-  # Mongo HEAD now requires mongo-tools, and Golang
-  # https://jira.mongodb.org/browse/SERVER-15806
-  depends_on "go" => :build
-  go_resource "github.com/mongodb/mongo-tools" do
-    url "https://github.com/mongodb/mongo-tools.git",
-      :tag => "r3.0.1",
-      :revision => "bc08e57abb71b2edd1cc3ab8f9f013409718f197"
-  end
+  url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.2.tar.gz"
+  sha256 "010522203cdb9bbff52fbd9fe299b67686bb1256e2e55eb78abf35444f668399"
 
   bottle do
     sha256 "3761153651660207c145da9eac659c7b8ddaed879b44f6127c534d5f79e32f46" => :yosemite
@@ -24,14 +14,18 @@ class Mongodb < Formula
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
 
   depends_on "boost" => :optional
+  depends_on "go" => :build
   depends_on :macos => :snow_leopard
   depends_on "scons" => :build
   depends_on "openssl" => :optional
 
-  def install
+  go_resource "github.com/mongodb/mongo-tools" do
+    url "https://github.com/mongodb/mongo-tools.git",
+      :tag => "r3.0.2",
+      :revision => "a914adfcea7d76f07512415eec5cd8308e67318e"
+  end
 
-    # New Go tools have their own build script but the server scons "install" target is still
-    # responsible for installing them.
+  def install
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd "src/github.com/mongodb/mongo-tools" do
