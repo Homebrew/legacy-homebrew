@@ -35,6 +35,10 @@ class Node < Formula
     sha256 "44f236437777bcb27d8be887674754899437685303cc7d666427053e74c51f6f"
   end
 
+  def node_modules
+    HOMEBREW_PREFIX/"lib/node_modules"
+  end
+
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
@@ -64,6 +68,14 @@ class Node < Formula
         system "make", "install"
       end
 
+      (bin/"npm").write <<-EOS.undent
+        #!/bin/sh
+        exec "#{node_modules}/npm/bin/npm-cli.js" "$@"
+      EOS
+      [man1, man3, man5, man7].each do |man|
+        man.install_symlink Dir[libexec/"npm/share/man/#{man.basename}/*"]
+      end
+
       if build.with? "completion"
         bash_completion.install \
           buildpath/"npm_install/lib/utils/completion.sh" => "npm"
@@ -73,30 +85,10 @@ class Node < Formula
 
   def post_install
     return if build.without? "npm"
-
-    node_modules = HOMEBREW_PREFIX/"lib/node_modules"
     node_modules.mkpath
-    npm_exec = node_modules/"npm/bin/npm-cli.js"
     # Kill npm but preserve all other modules across node updates/upgrades.
     rm_rf node_modules/"npm"
-
     cp_r libexec/"npm/lib/node_modules/npm", node_modules
-    # This symlink doesn't hop into homebrew_prefix/bin automatically so
-    # remove it and make our own. This is a small consequence of our bottle
-    # npm make install workaround. All other installs **do** symlink to
-    # homebrew_prefix/bin correctly. We ln rather than cp this because doing
-    # so mimics npm's normal install.
-    ln_sf npm_exec, "#{HOMEBREW_PREFIX}/bin/npm"
-
-    # Let's do the manpage dance. It's just a jump to the left.
-    # And then a step to the right, with your hand on rm_f.
-    ["man1", "man3", "man5", "man7"].each do |man|
-      # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
-      mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
-      rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      ln_sf Dir[libexec/"npm/share/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
-    end
-
     npm_root = node_modules/"npm"
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
