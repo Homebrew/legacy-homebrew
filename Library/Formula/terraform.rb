@@ -18,6 +18,11 @@ class Terraform < Formula
     sha1 "abee09afb0396d8e23bba094689a0a88bfe55d90"
   end
 
+  patch do
+    url "https://github.com/hashicorp/terraform/pull/1473.patch"
+    sha1 "abee09afb0396d8e23bba094689a0a88bfe55d90"
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/mitchellh/iochan" do
