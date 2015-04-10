@@ -9,6 +9,9 @@ class Akka < Formula
     # Remove Windows files
     rm "bin/akka.bat"
 
+    chmod 0755, "bin/akka"
+    chmod 0755, "bin/akka-cluster"
+
     # Translate akka script
     inreplace "bin/akka" do |s|
       s.gsub! /^declare AKKA_HOME=.*$/, "declare AKKA_HOME=#{libexec}"
