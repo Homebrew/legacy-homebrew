@@ -1,9 +1,8 @@
 class Trafficserver < Formula
   homepage "https://trafficserver.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.2.0.tar.bz2"
-  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.2.0.tar.bz2"
-  sha256 "e3a265dd3188edaa7b8ad2bb54b0030c23588b48abb02890363db1374aac68d3"
-  revision 1
+  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.2.1.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.2.1.tar.bz2"
+  sha256 "7980be2c1b95d9b1c6b91d6a8ab88e24a8c31b36acd2d02c4df8c47dc18e6b1d"
 
   head do
     url "https://github.com/apache/trafficserver.git"
@@ -20,6 +19,7 @@ class Trafficserver < Formula
   end
 
   option "with-spdy", "Build with SPDY protocol support"
+  option "with-experimental-plugins", "Enable experimental plugins"
 
   depends_on "openssl"
   depends_on "pcre"
@@ -28,7 +28,8 @@ class Trafficserver < Formula
     depends_on "pkg-config" => :build
   end
 
-  # patch openssl 1.0.2 tls1.h detection, remove on 5.3.0 (upstream bug TS-3443)
+  # Patch 1: OpenSSL 1.0.2+ tls1.h detection, remove on 5.3.0 (upstream bug TS-3443)
+  # Patch 2: Xcode 6.3 compile fix, remove on 5.3.0 (upstream bug TS-3302)
   patch :DATA if build.stable?
 
   def install
@@ -45,9 +46,14 @@ class Trafficserver < Formula
       "--with-group=admin"
     ]
     args << "--enable-spdy" if build.with? "spdy"
+    args << "--enable-experimental-plugins" if build.with? "experimental-plugins"
     system "./configure", *args
     # Fix wrong username in the generated startup script for bottles.
     inreplace "rc/trafficserver.in", "@pkgsysuser@", '$USER'
+    if build.with? "experimental-plugins"
+      # Disable mysql_remap plugin due to missing symbol compile error (upstream bug TS-3490)
+      inreplace "plugins/experimental/Makefile", " mysql_remap", ""
+    end
     system "make" if build.head?
     system "make", "install"
   end
@@ -92,3 +98,22 @@ __END__
    # We are looking for SSL_CTX_set_tlsext_servername_callback, but it's a
    # macro, so AC_CHECK_FUNCS is not going to do the business.
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for SSL_CTX_set_tlsext_servername_callback" >&5
+diff --git a/lib/ts/IntrusiveDList.h b/lib/ts/IntrusiveDList.h
+index 81a5192..b79ab10 100644
+--- a/lib/ts/IntrusiveDList.h
++++ b/lib/ts/IntrusiveDList.h
+@@ -42,13 +42,8 @@
+
+  */
+
+-# if USE_STL
+-#   include <iterator>
+-# else
+-namespace std {
+-  struct bidirectional_iterator_tag;
+-}
+-# endif
++/// FreeBSD doesn't like just declaring the tag struct we need so we have to include the file.
++# include <iterator>
+
+ /** Intrusive doubly linked list container.
