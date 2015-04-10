@@ -1,7 +1,7 @@
 class Udunits < Formula
   homepage "http://www.unidata.ucar.edu/software/udunits/"
-  url "ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.2.18.tar.gz"
-  sha256 "f542ed81140db2dae862a0018c8cddaf3b9ded1886e3755489b9329c7ecf8de0"
+  url "ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.2.19.tar.gz"
+  sha256 "9449d50a5d408e8e8dce0953b5462071bab96d92d921808c6bce7e33a3524e90"
 
   bottle do
     sha256 "ba540f03f0fb0b4de7d8c9e415a75c0365c5d86387eea9b48582bd6951f1649e" => :yosemite
