@@ -12,11 +12,11 @@ class Gpac < Formula
   homepage 'http://gpac.wp.mines-telecom.fr/'
 
   stable do
-    url 'https://downloads.sourceforge.net/gpac/gpac-0.5.0.tar.gz'
-    sha1 '48ba16272bfa153abb281ff8ed31b5dddf60cf20'
+    url 'https://github.com/gpac/gpac/archive/v0.5.2.tar.gz'
+    sha1 '467128110636dc793be89f33765b42543dd97f7c'
 
     # Fixes build against ffmpeg 2.x; backported from upstream SVN
-    patch :DATA
+    #patch :DATA
   end
 
   head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac'
