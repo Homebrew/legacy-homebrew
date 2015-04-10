@@ -1,7 +1,7 @@
 class LibjsonRpcCpp < Formula
   homepage "https://github.com/cinemast/libjson-rpc-cpp"
-  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.4.2.tar.gz"
-  sha1 "a9e00bfdb1b6843897fb644caa114577c349e18c"
+  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.5.0.tar.gz"
+  sha1 "a8c9862bfff278494b43973052020eb1556abdfa"
 
   bottle do
     cellar :any
