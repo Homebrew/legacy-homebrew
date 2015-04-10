@@ -4,6 +4,11 @@ class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
   url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk2/PebbleSDK-2.8.1.tar.gz'
   sha1 'b96d158fda8b9846d8a1e994a5dc0760412fe8d7'
+  
+  devel do
+    url "http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk2/PebbleSDK-3.0-dp6.tar.gz"
+    sha256 "4db2a24a90121b58f48a12a0aea6d04b900dd07ab1666f82cc9928935f2d7911"
+  end
 
   bottle do
     revision 1
