@@ -1,7 +1,7 @@
 class Pngcheck < Formula
   homepage "http://www.libpng.org/pub/png/apps/pngcheck.html"
   url "https://downloads.sourceforge.net/project/png-mng/pngcheck/2.3.0/pngcheck-2.3.0.tar.gz"
-  sha1 "e7f1535abbf2f809e036a9a43c759eeac5e39350"
+  sha256 "2f8901f0259f2ec24478268e5fa4cd8fe904a160592f118efdddf4ba20221dd6"
   revision 1
 
   bottle do
