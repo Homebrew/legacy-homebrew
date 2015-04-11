@@ -1,6 +1,6 @@
 require 'formula'
 
-class ErlangInstalled < Requirement
+class ErlangRequirement < Requirement
   fatal true
   env :userpaths
   default_formula "erlang"
@@ -38,7 +38,7 @@ class Elixir < Formula
     sha256 "3021ac2b3fe0aae5dfb7bb03d057ccd7df5bb9b733de35399ff7a431cae622ee" => :mountain_lion
   end
 
-  depends_on ErlangInstalled
+  depends_on ErlangRequirement
 
   def install
     system "make"
