@@ -1,6 +1,6 @@
 require 'formula'
 
-class EucjpMecabIpadic < Requirement
+class EucjpMecabIpadicRequirement < Requirement
   fatal true
 
   def initialize tags=[]
@@ -68,7 +68,7 @@ class Hyperestraier < Formula
   if build.include? 'enable-mecab'
     depends_on 'mecab'
     depends_on 'mecab-ipadic'
-    depends_on EucjpMecabIpadic
+    depends_on EucjpMecabIpadicRequirement
   end
 
   def install
