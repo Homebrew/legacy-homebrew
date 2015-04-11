@@ -4,6 +4,13 @@ class Rmtrash < Formula
   sha256 "9b30561454529e5923ffb62327d3fe009d23495263efc958534ac6b637e361d6"
   version "0.3.3"
 
+  bottle do
+    cellar :any
+    sha256 "69021cde0c9835adda114798d90f1aaffb4ce1fff0204146ca1fc8afe7cb2960" => :yosemite
+    sha256 "319c82f0b70f6444962afeede525f57e028f3594500b55434b1903648b828b7d" => :mavericks
+    sha256 "45792bb368e03a9dbeea93e899b9d6b4aaeaba3d6b43face2cc00c3fba2babf6" => :mountain_lion
+  end
+
   def install
     # don't install as root
     inreplace "Makefile", "-o root -g wheel", ""
