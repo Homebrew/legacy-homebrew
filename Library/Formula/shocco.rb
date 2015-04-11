@@ -1,6 +1,6 @@
 require "formula"
 
-class MarkdownProvider < Requirement
+class MarkdownRequirement < Requirement
   fatal true
   default_formula "markdown"
   satisfy { which "markdown" }
@@ -12,7 +12,7 @@ class Shocco < Formula
   url "https://github.com/rtomayko/shocco/archive/1.0.tar.gz"
   sha1 "e29d58fb8109040b4fb4a816f330bb1c67064f6d"
 
-  depends_on MarkdownProvider
+  depends_on MarkdownRequirement
 
   resource "pygments" do
     url "http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
