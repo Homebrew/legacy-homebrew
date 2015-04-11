@@ -33,6 +33,7 @@ class Supervisor < Formula
 
     bin.install Dir[libexec/"bin/supervisor*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+
     (prefix/"supervisord.conf").write supervisord_conf
   end
 
@@ -43,7 +44,7 @@ class Supervisor < Formula
 
   def caveats; <<-EOS.undent
     The supervisorctl command will need to be run with the full path to the conf file:
-        supervisorctl -c /usr/local/etc/supervisord.conf
+        supervisorctl -c #{etc}/supervisord.conf
     You can alias the command in your shell to make it easier:
         alias supervisorctl='supervisorctl -c #{etc}/supervisord.conf'
     or with root access link the config to /etc:
@@ -55,8 +56,8 @@ class Supervisor < Formula
   end
 
   test do
-    system("#{bin}/supervisord --version") # =~ /3\.1\.3/
-    system("#{bin}/supervisorctl --help") # =~ /help/
+    assert_match(/#{version}/, shell_output("#{bin}/supervisord --version"))
+    assert_match(/\nOptions:/, shell_output("#{bin}/supervisorctl --help"))
   end
 
   def supervisord_conf; <<-EOS.undent
@@ -84,7 +85,7 @@ class Supervisor < Formula
     identifier   = supervisor
     ;directory   = #{var}/run
     ;nocleanup   = true
-    ;childlogdir = /usr/local/var/log
+    ;childlogdir = #{var}/log
 
     [supervisorctl]
     serverurl   = unix://#{var}/run/supervisor.sock
@@ -101,7 +102,7 @@ class Supervisor < Formula
   end
 
   # vars don't seem to be available here
-  plist_options :manual => "supervisord -c /usr/local/etc/supervisord.conf"
+  plist_options :manual => "supervisord -c #{HOMEBREW_PREFIX}/etc/supervisord.conf"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
