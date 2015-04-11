@@ -66,7 +66,11 @@ module Homebrew
 
   def cleanup_cache
     return unless HOMEBREW_CACHE.directory?
+    prune = ARGV.value "prune"
+    time = Time.now - 60 * 60 * 24 * prune.to_i
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
+      next cleanup_path(file) { file.unlink } if prune && file.mtime < time
+
       next unless (version = file.version)
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
 
