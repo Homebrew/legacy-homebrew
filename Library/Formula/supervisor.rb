@@ -1,12 +1,9 @@
-
 class Supervisor < Formula
-
   homepage "http://supervisord.org/"
   url "https://pypi.python.org/packages/source/s/supervisor/supervisor-3.1.3.tar.gz"
   sha256 "e32c546fe8d2a6e079ec4819c49fd24534d4075a58af39118d04367918b3c282"
 
   depends_on :python if MacOS.version <= :snow_leopard
-
 
   resource "setuptools" do
     url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.0.tar.gz"
@@ -15,14 +12,13 @@ class Supervisor < Formula
 
   resource "meld3" do
     url "https://pypi.python.org/packages/source/m/meld3/meld3-1.0.2.tar.gz"
-    sha256  "f7b754a0fde7a4429b2ebe49409db240b5699385a572501bb0d5627d299f9558"
+    sha256 "f7b754a0fde7a4429b2ebe49409db240b5699385a572501bb0d5627d299f9558"
   end
 
   resource "elementree" do
     url "http://effbot.org/media/downloads/elementtree-1.2.6-20050316.tar.gz"
     sha256 "b29d5f2417cb331562c8c5f8ebef2a895ba540261c4245f526143c6a31bccb04"
   end
-
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
@@ -37,13 +33,12 @@ class Supervisor < Formula
 
     bin.install Dir[libexec/"bin/supervisor*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-    (prefix/'supervisord.conf').write supervisord_conf
-
+    (prefix/"supervisord.conf").write supervisord_conf
   end
 
   def post_install
-    (etc/'supervisord/conf.d').mkpath unless File.directory? etc/'supervisord/conf.d'
-    cp prefix+'supervisord.conf', etc unless File.exists? etc/'supervisord.conf'
+    (etc/"supervisord/conf.d").mkpath unless File.directory? etc/"supervisord/conf.d"
+    cp prefix+"supervisord.conf", etc unless File.exist? etc/"supervisord.conf"
   end
 
   def caveats; <<-EOS.undent
@@ -60,10 +55,9 @@ class Supervisor < Formula
   end
 
   test do
-    system("#{bin}/supervisord --version")# =~ /3\.1\.3/
-    system("#{bin}/supervisorctl --help")# =~ /help/
+    system("#{bin}/supervisord --version") # =~ /3\.1\.3/
+    system("#{bin}/supervisorctl --help") # =~ /help/
   end
-
 
   def supervisord_conf; <<-EOS.undent
     [unix_http_server]
@@ -106,7 +100,7 @@ class Supervisor < Formula
     EOS
   end
 
-
+  # vars don't seem to be available here
   plist_options :manual => "supervisord -c /usr/local/etc/supervisord.conf"
 
   def plist; <<-EOS.undent
@@ -131,7 +125,7 @@ class Supervisor < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>WorkingDirectory</key>
-        <string>/usr/local</string>
+        <string>#{prefix}</string>
     </dict>
     </plist>
     EOS
