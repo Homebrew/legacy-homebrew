@@ -1,11 +1,3 @@
-require "formula"
-
-class GnupgInstalled < Requirement
-  fatal true
-  default_formula "gnupg"
-  satisfy { which("gpg") || which("gpg2") }
-end
-
 class SigningParty < Formula
   homepage "http://pgp-tools.alioth.debian.org/"
   url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.10.orig.tar.gz"
@@ -28,7 +20,7 @@ class SigningParty < Formula
   depends_on "automake" => :build
   depends_on "dialog"
   depends_on "qprint"
-  depends_on GnupgInstalled
+  depends_on :gpg
 
   resource "GnuPG::Interface" do
     url "http://search.cpan.org/CPAN/authors/id/A/AL/ALEXMV/GnuPG-Interface-0.50.tar.gz"
