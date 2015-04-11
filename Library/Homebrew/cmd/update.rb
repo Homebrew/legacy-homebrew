@@ -142,6 +142,14 @@ class Updater
   end
 
   def pull!
+    unless system "git", "diff", "--quiet"
+      safe_system "git", "stash", "save", "--include-untracked"
+      opoo <<-EOS.undent
+        Warning: we stashed your uncommitted changes to #{@repository}
+        To reapply them run `git stash pop`.
+      EOS
+    end
+
     safe_system "git", "checkout", "-q", "master"
 
     @initial_revision = read_current_revision
