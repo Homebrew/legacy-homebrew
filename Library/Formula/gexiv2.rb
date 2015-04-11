@@ -4,11 +4,9 @@ class Gexiv2 < Formula
   sha256 "390cfb966197fa9f3f32200bc578d7c7f3560358c235e6419657206a362d3988"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "72c027a1e3b4b423092b1105c2eed70411e33e91571e204e69a5e0f7af3a600a" => :yosemite
-    sha256 "567a7706ae08b6eb191c7eeb16be8f599e2fce179dc32a5144b717357b60a221" => :mavericks
-    sha256 "aaa95aba6a40f5207c7140f56f6dfb43e9a54eb81292f8a1be16d329fc475693" => :mountain_lion
+    sha256 "c1d0a2a875a4a56d4b55c394be9a36edee091122c0ecb6008242c804e09c9002" => :yosemite
+    sha256 "7d847194493085350fd821fbe50f1bec5e59a0c492175ed5681f89352d05c534" => :mavericks
+    sha256 "70806647b07ca7c06a87fd44b1baaf7c89faedc4eddd8bf0abc8c742b98e665e" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
