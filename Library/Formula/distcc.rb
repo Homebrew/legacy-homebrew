@@ -1,6 +1,6 @@
 require 'formula'
 
-class PythonWithoutPPC < Requirement
+class PythonWithoutPPCRequirement < Requirement
   fatal true
   satisfy(:build_env => false) { not archs_for_command("python").ppc? }
 
@@ -15,7 +15,7 @@ class Distcc < Formula
   url 'https://distcc.googlecode.com/files/distcc-3.2rc1.tar.gz'
   sha1 '7cd46fe0926a3a859a516274e6ae59fa8ba0262d'
 
-  depends_on PythonWithoutPPC
+  depends_on PythonWithoutPPCRequirement
 
   def install
     # Make sure python stuff is put into the Cellar.
