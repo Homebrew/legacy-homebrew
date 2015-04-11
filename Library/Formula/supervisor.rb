@@ -130,6 +130,8 @@ class Supervisor < Formula
         </array>
         <key>RunAtLoad</key>
         <true/>
+        <key>WorkingDirectory</key>
+        <string>/usr/local</string>
     </dict>
     </plist>
     EOS
