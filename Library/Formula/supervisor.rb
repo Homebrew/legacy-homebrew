@@ -54,7 +54,7 @@ class Supervisor < Formula
     or with root access link the config to /etc:
         ln -s #{etc}/supervisord.conf /etc/supervisord.conf
 
-    Add you supervisor program config to: (http://supervisord.org/subprocess.html)
+    Add your supervisor program config to: (http://supervisord.org/subprocess.html)
         #{etc}/supervisord/conf.d/
     EOS
   end
