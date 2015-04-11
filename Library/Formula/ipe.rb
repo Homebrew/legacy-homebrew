@@ -1,8 +1,8 @@
 class Ipe < Formula
   homepage "http://ipe7.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.6-src.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.6-src.tar.gz"
-  sha1 "72fc2532cfa0a8591447dde3f60e5e4b2ecbf0d6"
+  url "https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.7-src.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.7-src.tar.gz"
+  sha256 "ec670cd7f0fa521271fc54bf9b663570d82280bdbe405be6de59535fec7c00d2"
 
   bottle do
     sha1 "53408fdfff0f17a6e60a6cc539ccf56b50c52168" => :yosemite
