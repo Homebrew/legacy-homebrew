@@ -2,29 +2,17 @@ class Emacs < Formula
   homepage "https://www.gnu.org/software/emacs/"
 
   stable do
-    url "http://ftpmirror.gnu.org/emacs/emacs-24.4.tar.xz"
-    mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
-    sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
-
-    # Fix ns-antialias-text, broken in 24.4, from upstream:
-    # https://github.com/emacs-mirror/emacs/commit/604a4d21ead40691afe3efe13f0ba1000b2cd61a
-    # https://debbugs.gnu.org/cgi/bugreport.cgi?bug=18876
-    patch do
-      url "https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/4c5229a8a719f81fa6bd2e1e0c85d10b6f635765/emacs-fix-ns-antialias-text-mac-os.patch"
-      sha256 "fab5cf538ade6afa949640b0f81bdea26cb23b6d64ca714b687dee6f33ff270e"
-    end
+    url "http://ftpmirror.gnu.org/emacs/emacs-24.5.tar.xz"
+    mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.5.tar.xz"
+    sha256 "dd47d71dd2a526cf6b47cb49af793ec2e26af69a0951cc40e43ae290eacfc34e"
   end
 
   bottle do
-    revision 4
-    sha256 "8ad572c583820fca6d09027ecad92160c3bfd56ae52244f09677ff86744d3148" => :yosemite
-    sha256 "b3b02b8fbb257a498ca4a163e36e40bcd0c77cd3a04001f0d1c85e661e11743c" => :mavericks
-    sha256 "d8fbe58416741960502f22e908c4e56356e8b09937ac47596bbf65379ef27b0d" => :mountain_lion
   end
 
   devel do
     url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-24"
-    version "24.4-dev"
+    version "24.5-dev"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
