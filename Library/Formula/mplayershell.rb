@@ -1,6 +1,6 @@
 require 'formula'
 
-class MPlayerPresented < Requirement
+class MPlayerRequirement < Requirement
   fatal true
   default_formula 'mplayer'
 
@@ -22,7 +22,7 @@ class Mplayershell < Formula
     sha1 "4993ca2b08d334843db0c31a35003424a4342a66" => :mountain_lion
   end
 
-  depends_on MPlayerPresented
+  depends_on MPlayerRequirement
   depends_on :macos => :lion
   depends_on :xcode => :build
 
