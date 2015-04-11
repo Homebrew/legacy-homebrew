@@ -1,24 +1,3 @@
-class Ruby19 < Requirement
-  fatal true
-  default_formula "ruby"
-
-  satisfy :build_env => false do
-    next unless which "ruby"
-    version = /\d\.\d/.match `ruby --version 2>&1`
-    next unless version
-    Version.new(version.to_s) >= Version.new("1.9")
-  end
-
-  env do
-    ENV.prepend_path "PATH", which("ruby").dirname
-  end
-
-  def message; <<-EOS.undent
-    The mkvtoolnix buildsystem needs Ruby >=1.9
-    EOS
-  end
-end
-
 class Mkvtoolnix < Formula
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
   url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.7.0.tar.xz"
@@ -41,7 +20,7 @@ class Mkvtoolnix < Formula
   option "with-qt5", "Build with experimental QT GUI"
 
   depends_on "pkg-config" => :build
-  depends_on Ruby19
+  depends_on :ruby => "1.9"
   depends_on "libogg"
   depends_on "libvorbis"
   depends_on "flac" => :recommended
