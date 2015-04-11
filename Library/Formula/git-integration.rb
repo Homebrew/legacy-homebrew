@@ -1,4 +1,4 @@
-class SufficientlyRecentGit < Requirement
+class Git182Requirement < Requirement
   fatal true
   default_formula "git"
 
@@ -27,7 +27,7 @@ class GitIntegration < Formula
   end
 
   depends_on "asciidoc" => [:build, :optional]
-  depends_on SufficientlyRecentGit
+  depends_on Git182Requirement
 
   def install
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
