@@ -1,9 +1,6 @@
-require 'formula'
-
 class GstValidate < Formula
   homepage "http://gstreamer.freedesktop.org/data/doc/gstreamer/head/gst-validate/html/"
   url "http://gstreamer.freedesktop.org/src/gst-validate/gst-validate-1.4.0.tar.xz"
-  version "1.4.0"
   sha256 "ac30d1041a8cfe5d268439f5cedee7e9753ba49080fc67bff1266581198438d0"
 
   head do
