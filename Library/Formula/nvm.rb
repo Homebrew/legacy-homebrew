@@ -10,6 +10,8 @@ class Nvm < Formula
   end
 
   def caveats; <<-EOS.undent
+      This installation method is not officially supported by nvm maintainers.
+      
       Add NVM's working directory to your $HOME path (if it doesn't exist):
 
         mkdir ~/.nvm
