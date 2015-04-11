@@ -558,7 +558,7 @@ module Homebrew
       if ARGV.include? '--cleanup'
         test "git", "reset", "--hard"
         git "stash", "pop"
-        test "brew", "cleanup"
+        test "brew", "cleanup", "--prune=30"
       end
 
       FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
