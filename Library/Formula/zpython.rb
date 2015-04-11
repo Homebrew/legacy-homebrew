@@ -1,6 +1,6 @@
 require 'formula'
 
-class Zsh5Installed < Requirement
+class Zsh5Requirement < Requirement
   default_formula 'zsh'
   fatal true
 
@@ -40,7 +40,7 @@ class Zpython < Formula
 
   head 'https://bitbucket.org/ZyX_I/zsh.git', :branch => 'zpython'
 
-  depends_on Zsh5Installed
+  depends_on Zsh5Requirement
   depends_on "autoconf" => :build
 
   def install
