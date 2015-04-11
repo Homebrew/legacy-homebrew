@@ -1,4 +1,4 @@
-class FrameworkPython < Requirement
+class FrameworkPythonRequirement < Requirement
   fatal true
 
   satisfy do
@@ -25,7 +25,7 @@ class Wxpython < Formula
 
   if MacOS.version <= :snow_leopard
     depends_on :python
-    depends_on FrameworkPython
+    depends_on FrameworkPythonRequirement
   end
   depends_on "wxmac"
 
