@@ -1,4 +1,4 @@
-class OracleHomeVar < Requirement
+class OracleHomeVarRequirement < Requirement
   fatal true
   satisfy ENV["ORACLE_HOME"]
 
@@ -49,7 +49,7 @@ class Qt5 < Formula
   # https://bugreports.qt.io/browse/QTBUG-42161
   # https://bugreports.qt.io/browse/QTBUG-43456
 
-  depends_on OracleHomeVar if build.with? "oci"
+  depends_on OracleHomeVarRequirement if build.with? "oci"
 
   def install
     ENV.universal_binary if build.universal?
