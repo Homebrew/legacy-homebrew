@@ -5,7 +5,7 @@ class X11vnc < Formula
   url 'https://downloads.sourceforge.net/project/libvncserver/x11vnc/0.9.13/x11vnc-0.9.13.tar.gz'
   sha1 'f011d81488ac94dc8dce2d88739c23bd85a976fa'
 
-  depends_on :x11 => :recommended
+  depends_on :x11 => :optional
   depends_on 'jpeg'
 
   # Patch solid.c so a non-void function returns a NULL instead of a void.
