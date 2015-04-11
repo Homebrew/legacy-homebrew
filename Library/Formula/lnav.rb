@@ -2,8 +2,8 @@ require 'formula'
 
 class Lnav < Formula
   homepage 'http://lnav.org'
-  url 'https://github.com/tstack/lnav/releases/download/v0.7.2/lnav-0.7.2.tar.gz'
-  sha1 'f679a5a3b52a05edf6ab2446182e085d1953c1fc'
+  url 'https://github.com/tstack/lnav/releases/download/v0.7.3/lnav-0.7.3.tar.gz'
+  sha1 '3f9242cc176194e14d50b8b0cbac08a9656cc5b4'
 
   bottle do
     sha256 "8c178133d92e3fe244d60aef590f17943ae494a12a5b0be40bad789dc6646de2" => :yosemite
