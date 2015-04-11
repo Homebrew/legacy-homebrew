@@ -1,6 +1,6 @@
 require "formula"
 
-class GoInstalled < Requirement
+class GoRequirement < Requirement
   fatal true
   default_formula "go"
   satisfy { which "go" }
@@ -23,7 +23,7 @@ class Gpm < Formula
     sha1 "1fc18dc8ade7f9307648d603deb8a79ccf587fe7" => :mountain_lion
   end
 
-  depends_on GoInstalled
+  depends_on GoRequirement
 
   def install
     system "./configure", "--prefix=#{prefix}"
