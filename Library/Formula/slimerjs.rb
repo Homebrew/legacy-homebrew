@@ -1,4 +1,4 @@
-class FirefoxDependency < Requirement
+class FirefoxRequirement < Requirement
   fatal true
   default_formula "xulrunner" if MacOS.version < :yosemite
 
@@ -32,7 +32,7 @@ class Slimerjs < Formula
 
   # Min supported OS X version by Firefox & xulrunner is 10.6
   depends_on :macos => :leopard
-  depends_on FirefoxDependency
+  depends_on FirefoxRequirement
 
   def install
     if build.head?
