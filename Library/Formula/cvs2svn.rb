@@ -1,6 +1,6 @@
 require 'formula'
 
-class PythonWithGdbm < Requirement
+class PythonWithGdbmRequirement < Requirement
   fatal true
 
   satisfy(:build_env => false) { quiet_system "python", "-c", "import gdbm" }
@@ -22,7 +22,7 @@ class Cvs2svn < Formula
   url 'http://cvs2svn.tigris.org/files/documents/1462/49237/cvs2svn-2.4.0.tar.gz'
   sha1 '1194ac6ec70004409eea1fb2f0fce745318f1767'
 
-  depends_on PythonWithGdbm
+  depends_on PythonWithGdbmRequirement
 
   def install
     system "python", "setup.py", "install", "--prefix=#{prefix}"
