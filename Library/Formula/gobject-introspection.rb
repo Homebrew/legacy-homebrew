@@ -12,11 +12,9 @@ class GobjectIntrospection < Formula
   option :universal
   option "with-tests", "Run tests in addition to the build (requires cairo)"
 
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
   depends_on "glib"
   depends_on "libffi"
-  # To avoid: ImportError: dlopen(./.libs/_giscanner.so, 2): Symbol not found: _PyList_Check
-  depends_on :python
   depends_on "cairo" => :build if build.with? "tests"
 
   # Allow tests to execute on OS X (.so => .dylib)
@@ -24,6 +22,11 @@ class GobjectIntrospection < Formula
     url "https://gist.githubusercontent.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
     sha1 "1f57849db76cd2ca26ddb35dc36c373606414dfc"
   end if build.with? "tests"
+
+  resource "tutorial" do
+    url "https://gist.github.com/7a0023656ccfe309337a.git",
+        :revision => "499ac89f8a9ad17d250e907f74912159ea216416"
+  end
 
   def install
     ENV["GI_SCANNER_DISABLE_CACHE"] = "true"
@@ -43,6 +46,9 @@ class GobjectIntrospection < Formula
   end
 
   test do
-    system bin/"g-ir-annotation-tool", "--help"
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["libffi"].opt_lib/"pkgconfig"
+    resource("tutorial").stage testpath
+    system "make"
+    assert (testpath/"Tut-0.1.typelib").exist?
   end
 end
