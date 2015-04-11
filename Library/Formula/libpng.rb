@@ -1,7 +1,8 @@
 class Libpng < Formula
   homepage "http://www.libpng.org/pub/png/libpng.html"
-  url "https://downloads.sf.net/project/libpng/libpng16/1.6.16/libpng-1.6.16.tar.xz"
-  sha1 "31855a8438ae795d249574b0da15b34eb0922e13"
+  url "https://downloads.sourceforge.net/project/libpng/libpng16/1.6.17/libpng-1.6.17.tar.xz"
+  mirror "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.17.tar.xz"
+  sha256 "98507b55fbe5cd43c51981f2924e4671fd81fe35d52dc53357e20f2c77fa5dfd"
 
   bottle do
     cellar :any
