@@ -18,13 +18,14 @@ class Libcdr < Formula
   end
 
   test do
-    ('test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <libcdr/libcdr.h>
       int main() {
         libcdr::CDRDocument::isSupported(0);
       }
     EOS
-    system ENV.cxx, "test.cpp", "-I#{Formula["librevenge"].include}/librevenge-0.0", "-o", "test"
+    system ENV.cxx, "test.cpp", "-I#{Formula["librevenge"].include}/librevenge-0.0", "-I#{include}", "-lcdr-0.1", 
+"-o", "test"
     system "./test"
   end
 end
