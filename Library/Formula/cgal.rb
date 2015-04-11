@@ -2,8 +2,8 @@ require 'formula'
 
 class Cgal < Formula
   homepage 'http://www.cgal.org/'
-  url 'https://gforge.inria.fr/frs/download.php/file/34512/CGAL-4.5.2.tar.gz'
-  sha1 'd913b01b215d9aa30b07cec672ad31e55b5cc171'
+  url 'https://gforge.inria.fr/frs/download.php/file/34704/CGAL-4.6.tar.gz'
+  sha1 'fed9a1d95bbf1620c9d7c7fbecd3c651702dd529'
 
   bottle do
     sha1 "90343cefc02bfa700f7d50bfa0a728bf940e783d" => :yosemite
