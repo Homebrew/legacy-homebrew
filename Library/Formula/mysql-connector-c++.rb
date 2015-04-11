@@ -6,7 +6,7 @@ class MysqlConnectorCxx < Formula
   url 'http://mysql.he.net/Downloads/Connector-C++/mysql-connector-c++-1.1.5.tar.gz'
   sha1 '0b33f74049227d330da0a37ce919b8cd695a9584'
 
-  class MysqlClient < Requirement
+  class MysqlClientRequirement < Requirement
     fatal true
     default_formula "mysql"
 
@@ -16,7 +16,7 @@ class MysqlConnectorCxx < Formula
   depends_on 'cmake' => :build
   depends_on 'boost' => :build
   depends_on "openssl"
-  depends_on MysqlClient
+  depends_on MysqlClientRequirement
 
   def install
     system "cmake", ".", *std_cmake_args
