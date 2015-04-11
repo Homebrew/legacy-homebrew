@@ -22,15 +22,14 @@ class Supervisor < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-
     resources.each do |r|
       r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
     end
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
-    # Can't use `setup_install_args` - http://github.com/Supervisor/supervisor/issues/608
-    system "python", "setup.py", "install", "--prefix=#{libexec}", "--record=installed.txt"
+    system "python", *Language::Python.setup_install_args(libexec)
 
+    touch libexec/"lib/python2.7/site-packages/supervisor/__init__.py"
     bin.install Dir[libexec/"bin/supervisor*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
