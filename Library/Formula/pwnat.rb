@@ -5,6 +5,13 @@ class Pwnat < Formula
 
   head "https://github.com/samyk/pwnat.git"
 
+  bottle do
+    cellar :any
+    sha256 "cf17568c4053240ffe61594bcc618577c0d0c569abda8b3b956a4e4b441a755e" => :yosemite
+    sha256 "0baed31dc05b28a330501a0d4119e8997c1038d14311c64f2d7b367ebdf9f01e" => :mavericks
+    sha256 "ed78a0577b4e2f4555b4c7724cf829032b0af99713c58a5ffd943d21b551b199" => :mountain_lion
+  end
+
   def install
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LDFLAGS=-lz"
     bin.install "pwnat"
