@@ -1,11 +1,9 @@
-require "formula"
-
 class GnuWhich < Formula
   # Previous homepage is dead. Have linked to the GNU Projects page for now.
   homepage "https://savannah.gnu.org/projects/which/"
-  url "http://ftpmirror.gnu.org/which/which-2.20.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/which/which-2.20.tar.gz"
-  sha1 "3bcd6d87aa5231917ba7123319eedcae90cfa0fd"
+  url "http://ftpmirror.gnu.org/which/which-2.21.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/which/which-2.21.tar.gz"
+  sha256 "f4a245b94124b377d8b49646bf421f9155d36aa7614b6ebf83705d3ffc76eaad"
 
   bottle do
     cellar :any
