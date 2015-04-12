@@ -1,8 +1,8 @@
 class Dpkg < Formula
   homepage "https://wiki.debian.org/Teams/Dpkg"
-  url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.21.tar.xz"
-  mirror "http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.21.tar.xz"
-  sha256 "3ed776627181cb9c1c9ba33f94a6319084be2e9ec9c23dd61ce784c4f602cf05"
+  url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.23.tar.xz"
+  mirror "http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.23.tar.xz"
+  sha256 "90c4af92fc248a7542cf6db1141d69b042130abd82781943b3c2608e78f860b5"
 
   bottle do
     sha1 "15101b6619ae657e7d59e72d30155dd6fd7498fd" => :yosemite
@@ -23,28 +23,22 @@ class Dpkg < Formula
   end
 
   def install
-    # There was a commit merged prior to this release that forgot to add ; to the end of function lines
-    # Consequently = Build failure. Put the ; in here to fix the issue.
-    # Also removes a function left over from previous refactoring which causes issues now.
-    # This will all be in the 1.17.22 release.
-    # https://lists.debian.org/debian-dpkg/2014/11/msg00029.html
-    inreplace "lib/dpkg/fdio.c" do |s|
-      s.gsub! "fs_preallocate_setup(&fs, F_ALLOCATECONTIG, offset, len);", "fd_preallocate_setup(&fs, F_ALLOCATECONTIG, offset, len);"
-      s.gsub! "fs_preallocate_setup(&fs, F_ALLOCATEALL, offset, len);", "fd_preallocate_setup(&fs, F_ALLOCATEALL, offset, len);"
-      s.gsub! "rc = fcntl(fd, F_PREALLOCATE, &fs)", "rc = fcntl(fd, F_PREALLOCATE, &fs);"
-    end
-
     # We need to specify a recent gnutar, otherwise various dpkg C programs will
     # use the system "tar", which will fail because it lacks certain switches.
     ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}",
                           "--disable-dselect",
                           "--disable-linker-optimisations",
-                          "--disable-start-stop-daemon",
-                          "--disable-update-alternatives"
+                          "--disable-start-stop-daemon"
     system "make"
     system "make", "install"
+
+    (buildpath/"dummy").write "Vendor: dummy\n"
+    (etc/"dpkg/origins").install "dummy"
+    (etc/"dpkg/origins").install_symlink "dummy" => "default"
   end
 
   def caveats; <<-EOS.undent
