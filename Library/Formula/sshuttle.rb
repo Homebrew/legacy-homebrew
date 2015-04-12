@@ -8,10 +8,7 @@ class Sshuttle < Formula
   head 'https://github.com/sshuttle/sshuttle.git'
 
   #Pre-Yosemite support dropped in sshuttle 0.7.1
-  if MacOS.version < :yosemite
-    url 'https://github.com/sshuttle/sshuttle/archive/sshuttle-0.70.tar.gz'
-    sha256 'b6fd3468f80db18fb33276881facc59e113745da049d3346b5e604dc55675588'
-  end
+  depends_on :macos => :yosemite
 
   def install
     # Building the docs requires installing
