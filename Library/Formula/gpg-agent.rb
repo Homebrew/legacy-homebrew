@@ -54,7 +54,7 @@ class GpgAgent < Formula
         <array>
             <string>/bin/sh</string>
             <string>-c</string>
-            <string>#{opt_prefix}/bin/gpg-agent -c --daemon | /bin/launchctl</string>
+            <string>#{opt_prefix}/bin/gpg-agent -c --daemon --use-standard-socket | /bin/launchctl</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
