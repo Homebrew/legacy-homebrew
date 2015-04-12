@@ -1,7 +1,7 @@
 class Memo < Formula
   homepage "http://www.getmemo.org"
-  url "http://www.getmemo.org/memo-1.5.tar.gz"
-  sha1 "3e047b09e91d695f1767d1dd6d179732c07a5759"
+  url "http://www.getmemo.org/memo-1.6.tar.gz"
+  sha256 "08e32f7eee35c24a790eb886fdde9e86c4ef58d2a3059df95fd3a55718f79e96"
   head "https://github.com/nrosvall/memo.git"
 
   bottle do
