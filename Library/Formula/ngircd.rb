@@ -1,9 +1,8 @@
 class Ngircd < Formula
   homepage "http://ngircd.barton.de"
-  url "http://ngircd.barton.de/pub/ngircd/ngircd-22.tar.gz"
-  mirror "http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-22.tar.gz"
-  sha256 "a08e18de52bcf09d35ce75a802204ecf000f32663c1c57ad930ebcd139bf4cc8"
-  revision 1
+  url "http://ngircd.barton.de/pub/ngircd/ngircd-22.1.tar.gz"
+  mirror "http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-22.1.tar.gz"
+  sha256 "17ad08d0420c00a180b71e7284d1b6a8d2f6f39dbac756fe104f6ca59a9c66f5"
 
   bottle do
     sha1 "cb000923d5f10a21957cb05751d07ec82014c515" => :yosemite
