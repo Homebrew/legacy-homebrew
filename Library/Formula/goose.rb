@@ -9,6 +9,8 @@ class Goose < Formula
     ENV["GOPATH"] = buildpath
     system "./build"
     bin.install "bin/goose"
+
+    bash_completion.install "goose_completion.sh"
   end
 
   test do
