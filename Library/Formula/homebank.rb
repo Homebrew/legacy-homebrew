@@ -2,8 +2,8 @@ require 'formula'
 
 class Homebank < Formula
   homepage 'http://homebank.free.fr'
-  url 'http://homebank.free.fr/public/homebank-5.0.0.tar.gz'
-  sha1 'b56659fa0b8c44c6f75b77e87ef22c6239b12b28'
+  url 'http://homebank.free.fr/public/homebank-5.0.1.tar.gz'
+  sha1 '225961be412133b5556986c72de9756f30458efe'
 
   bottle do
     sha256 "a686d413e57162925b9600e03adb8f02f395b177ae84849d18a454a3e3d7ec19" => :yosemite
@@ -16,6 +16,7 @@ class Homebank < Formula
   depends_on 'gettext'
   depends_on 'gtk+3'
   depends_on 'gnome-icon-theme'
+  depends_on 'hicolor-icon-theme'
   depends_on 'freetype'
   depends_on 'fontconfig'
   depends_on 'libofx' => :optional
