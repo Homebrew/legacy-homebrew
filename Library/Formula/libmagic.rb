@@ -2,7 +2,8 @@ class Libmagic < Formula
   homepage "http://www.darwinsys.com/file/"
   url "ftp://ftp.astron.com/pub/file/file-5.22.tar.gz"
   mirror "https://fossies.org/unix/misc/file-5.22.tar.gz"
-  sha1 "20fa06592291555f2b478ea2fb70b53e9e8d1f7c"
+  sha256 "c4e3a8e44cb888c5e4b476e738503e37fb9de3b25a38c143e214bfc12109fc0b"
+  revision 1
 
   bottle do
     revision 3
@@ -22,10 +23,12 @@ class Libmagic < Formula
     rm "src/magic.h"
 
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--enable-fsect-man5",
                           "--enable-static"
     system "make", "install"
+    (share+"misc/magic").install Dir["magic/Magdir/*"]
 
     if build.with? "python"
       cd "python" do
