@@ -96,7 +96,7 @@ class Supervisor < Formula
     supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
     [include]
-    files = #{etc}/supervisor.d/*.conf
+    files = #{etc}/supervisord/conf.d/*.conf
     EOS
   end
 
