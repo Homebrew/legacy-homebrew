@@ -5,6 +5,12 @@ class Bullet < Formula
   sha256 "67e4c9eb76f7adf99501d726d8ad5e9b525dfd0843fbce9ca73aaca4ba9eced2"
   head "https://github.com/bulletphysics/bullet3.git"
 
+  bottle do
+    sha256 "ea68461df51601ae10349cf50423cab3beae2a3d932dcb4fb5e0447c953b4102" => :yosemite
+    sha256 "dc31c9602d2bbea68a0b899e20396bb4d500d1439407407c64175a6d76e57abf" => :mavericks
+    sha256 "66980c300d484edad267776475277592681ed782e9514bafcdd32ec74f04ced3" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
 
   deprecated_option "framework" => "with-framework"
