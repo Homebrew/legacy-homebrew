@@ -8,9 +8,9 @@ class Kore < Formula
   head "https://github.com/jorisvink/kore.git"
 
   bottle do
-    sha1 "595c33a520e0c7436cd5c4c411ea869566a351a0" => :yosemite
-    sha1 "eec143a7a9ff07e8eb461d62d636a0fabdff3771" => :mavericks
-    sha1 "fa26ba1e86bafdeb304280fcbec4e3faa1f9702b" => :mountain_lion
+    sha256 "766f095f01beefc6de2b4a439b8ce7fab705076f5172b753c33c9168627940e1" => :yosemite
+    sha256 "933d799a245c352069a1a17812818d5f238ab62e017d1962ea75fc89bce24bd7" => :mavericks
+    sha256 "1a7cb118b4f562e3f3fedf2a4360de55978f0ed42c09afdf967156fc09fc2245" => :mountain_lion
   end
 
   depends_on "openssl"
