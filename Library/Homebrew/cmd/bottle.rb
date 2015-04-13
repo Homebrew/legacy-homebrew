@@ -130,8 +130,9 @@ module Homebrew
     else
       ohai "Determining #{f.name} bottle revision..."
       versions = FormulaVersions.new(f)
-      max = versions.bottle_version_map("origin/master")[f.pkg_version].max
-      bottle_revision = max ? max + 1 : 0
+      bottle_revisions = versions.bottle_version_map("origin/master")[f.pkg_version]
+      bottle_revisions.pop if bottle_revisions.last > 0
+      bottle_revision = bottle_revisions.any? ? bottle_revisions.max + 1 : 0
     end
 
     filename = Bottle::Filename.create(f, bottle_tag, bottle_revision)
