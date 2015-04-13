@@ -4,7 +4,7 @@ class GstValidate < Formula
   sha256 "ac30d1041a8cfe5d268439f5cedee7e9753ba49080fc67bff1266581198438d0"
 
   head do
-    url 'git://anongit.freedesktop.org/gstreamer/gst-devtools'
+    url "git://anongit.freedesktop.org/gstreamer/gst-devtools"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -38,5 +38,9 @@ class GstValidate < Formula
       system "make"
       system "make", "install"
     end
+  end
+  
+  test do
+    system "#{bin}/gst-validate-launcher", "--usage"
   end
 end
