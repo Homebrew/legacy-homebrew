@@ -2,7 +2,7 @@ require "formula"
 
 class Akka < Formula
   homepage "http://akka.io/"
-  url "http://downloads.typesafe.com/akka/akka_2.10-2.3.9.zip"
+  url "https://downloads.typesafe.com/akka/akka_2.10-2.3.9.zip"
   sha256 "b790207f2bd6b8b615c08c2615f26a972580cb0391339f3c4211242adcc93d2c"
 
   def install
