@@ -1,6 +1,6 @@
 class Suricata < Formula
   homepage "http://suricata-ids.org"
-  url "http://www.openinfosecfoundation.org/download/suricata-2.0.7.tar.gz"
+  url "https://www.openinfosecfoundation.org/download/suricata-2.0.7.tar.gz"
   sha256 "c5c3ccebeecbace39df0ff2d50ec4515b541103ffaa5e33cd1dc79d4955c0dfd"
 
   bottle do
