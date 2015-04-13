@@ -31,6 +31,7 @@ module Homebrew
       link_tap_formula(tapped_formulae)
     end
     report.update(master_updater.report)
+    quiet_system "brew", "tap", "--repair"
 
     # rename Taps directories
     # this procedure will be removed in the future if it seems unnecessasry
@@ -44,10 +45,12 @@ module Homebrew
           updater.pull!
         rescue
           onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
+          quiet_system "brew", "tap", "--repair"
         else
           report.update(updater.report) do |key, oldval, newval|
             oldval.concat(newval)
           end
+          quiet_system "brew", "tap", "--repair"
         end
       end
     end
