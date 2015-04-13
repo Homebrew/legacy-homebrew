@@ -474,7 +474,10 @@ class FormulaInstaller
 
     Utils.safe_fork do
       if Sandbox.available? && ARGV.sandbox?
-        sandbox = Sandbox.new(formula)
+        sandbox = Sandbox.new
+        sandbox.allow_write_temp_and_cache
+        sandbox.allow_write_log(formula)
+        sandbox.allow_write_cellar(formula)
         sandbox.exec(*args)
       else
         exec(*args)

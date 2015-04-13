@@ -8,29 +8,45 @@ class Sandbox
     OS.mac? && File.executable?(SANDBOX_EXEC)
   end
 
-  def initialize(formula=nil)
+  def initialize
     @profile = SandboxProfile.new
-    unless formula.nil?
-      allow_write "/private/tmp", :type => :subpath
-      allow_write "/private/var/folders", :type => :subpath
-      allow_write HOMEBREW_TEMP, :type => :subpath
-      allow_write HOMEBREW_LOGS/formula.name, :type => :subpath
-      allow_write HOMEBREW_CACHE, :type => :subpath
-      allow_write formula.rack, :type => :subpath
-      allow_write formula.etc, :type => :subpath
-      allow_write formula.var, :type => :subpath
-    end
+  end
+
+  def add_rule(rule)
+    @profile.add_rule(rule)
   end
 
   def allow_write(path, options={})
-    case options[:type]
-    when :regex        then filter = "regex \#\"#{path}\""
-    when :subpath      then filter = "subpath \"#{expand_realpath(Pathname.new(path))}\""
-    when :literal, nil then filter = "literal \"#{expand_realpath(Pathname.new(path))}\""
-    end
-    @profile.add_rule :allow => true,
-                      :operation => "file-write*",
-                      :filter => filter
+    add_rule :allow => true, :operation => "file-write*", :filter => path_filter(path, options[:type])
+  end
+
+  def deny_write(path, options={})
+    add_rule :allow => false, :operation => "file-write*", :filter => path_filter(path, options[:type])
+  end
+
+  def allow_write_path(path)
+    allow_write path, :type => :subpath
+  end
+
+  def deny_write_path(path)
+    deny_write path, :type => :subpath
+  end
+
+  def allow_write_temp_and_cache
+    allow_write_path "/private/tmp"
+    allow_write "^/private/var/folders/[^/]+/[^/]+/[C,T]/", :type => :regex
+    allow_write_path HOMEBREW_TEMP
+    allow_write_path HOMEBREW_CACHE
+  end
+
+  def allow_write_cellar(formula)
+    allow_write_path formula.rack
+    allow_write_path formula.etc
+    allow_write_path formula.var
+  end
+
+  def allow_write_log(formula)
+    allow_write_path HOMEBREW_LOGS/formula.name
   end
 
   def exec(*args)
@@ -55,6 +71,14 @@ class Sandbox
   def expand_realpath(path)
     raise unless path.absolute?
     path.exist? ? path.realpath : expand_realpath(path.parent)/path.basename
+  end
+
+  def path_filter(path, type)
+    case type
+    when :regex        then "regex \#\"#{path}\""
+    when :subpath      then "subpath \"#{expand_realpath(Pathname.new(path))}\""
+    when :literal, nil then "literal \"#{expand_realpath(Pathname.new(path))}\""
+    end
   end
 
   class SandboxProfile
