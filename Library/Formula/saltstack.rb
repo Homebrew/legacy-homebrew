@@ -1,7 +1,10 @@
 class Saltstack < Formula
+
   homepage "http://www.saltstack.org"
-  url "https://github.com/saltstack/salt/archive/v2014.7.1.tar.gz"
-  sha256 "5fcf2cff700d0719b419c9cb489552645ce1287a15c7b3a8745959773d9b0dd1"
+
+  url "https://github.com/saltstack/salt/archive/v2015.2.0rc2.tar.gz"
+
+  sha256 'be71c1f2f9f878d5f958396620983c5981f55eaf32913e7f28c129c35f37657a'
 
   bottle do
     sha1 "4ef3922ffd2b36d775f22fce055ebf692d1e14b7" => :yosemite
@@ -15,6 +18,7 @@ class Saltstack < Formula
   depends_on "swig" => :build
   depends_on "zeromq"
   depends_on "libyaml"
+  depends_on "openssl"
 
   # Don't depend on Homebrew's openssl due to upstream build issues with non-system OpenSSL in M2Crypto
   # See: https://github.com/martinpaljak/M2Crypto/issues/11
