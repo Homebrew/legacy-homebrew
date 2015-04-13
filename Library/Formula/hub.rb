@@ -6,9 +6,9 @@ class Hub < Formula
 
   bottle do
     cellar :any
-    sha1 "e1473bd03a9a3d3a91ad823415d4e468d63e491b" => :yosemite
-    sha1 "cbe513090da3faef854e43b0d0393708e7551500" => :mavericks
-    sha1 "4ab401c95fadce34df9175188df237bf074f8f75" => :mountain_lion
+    sha256 "ce82b60ae28c9d788e816276b12086b91e68c1c15b90b638fa380326e3846b66" => :yosemite
+    sha256 "b995e7d96af5d5ac27236fd3317b24eccb89cbb50b3c02a77c49d023d8d27334" => :mavericks
+    sha256 "00bfe4481c997341e41a564fa5f32abc87ca1ce735c7afede826c6d491863e81" => :mountain_lion
   end
 
   option "without-completions", "Disable bash/zsh completions"
