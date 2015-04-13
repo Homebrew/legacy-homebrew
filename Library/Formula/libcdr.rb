@@ -24,7 +24,9 @@ class Libcdr < Formula
         libcdr::CDRDocument::isSupported(0);
       }
     EOS
-    system ENV.cxx, "test.cpp", "-I#{Formula["librevenge"].include}/librevenge-0.0", "-I#{include}/libcdr-0.1", "-o", "test"
+    system ENV.cxx, "test.cpp", "-o", "test",
+                                "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                                "-I#{include}/libcdr-0.1"
     system "./test"
   end
 end
