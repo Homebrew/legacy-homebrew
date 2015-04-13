@@ -15,9 +15,10 @@ class Djview4 < Formula
   # Patch build files for correct flag and dependency handling (known problems at upstream)
   patch :DATA
 
-  ENV['NOCONFIGURE'] = '1'
-
   def install
+    # prevent autogen to call configure without flags
+    ENV['NOCONFIGURE'] = '1'
+
     system "./autogen.sh"
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
