@@ -1,7 +1,7 @@
 class Hub < Formula
   homepage "http://hub.github.com/"
-  url "https://github.com/github/hub/archive/v2.2.0.tar.gz"
-  sha1 "29744a370b71e5b054fd91e59472de6dbe573a91"
+  url "https://github.com/github/hub/archive/v2.2.1.tar.gz"
+  sha1 "c64e473a36aabf71ecc39395b88c6993d4e12873"
   head "https://github.com/github/hub.git"
 
   bottle do
