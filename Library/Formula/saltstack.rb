@@ -18,7 +18,6 @@ class Saltstack < Formula
   depends_on "swig" => :build
   depends_on "zeromq"
   depends_on "libyaml"
-  depends_on "openssl"
 
   # Don't depend on Homebrew's openssl due to upstream build issues with non-system OpenSSL in M2Crypto
   # See: https://github.com/martinpaljak/M2Crypto/issues/11
