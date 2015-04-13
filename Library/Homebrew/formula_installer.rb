@@ -11,8 +11,6 @@ require 'install_renamed'
 require 'cmd/tap'
 require 'hooks/bottles'
 require 'debrew'
-require 'fcntl'
-require 'socket'
 require 'sandbox'
 
 class FormulaInstaller
@@ -458,9 +456,6 @@ class FormulaInstaller
   end
 
   def build
-    socket_path = "#{Dir.mktmpdir("homebrew", HOMEBREW_TEMP)}/socket"
-    server = UNIXServer.new(socket_path)
-
     FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]
 
     @start_time = Time.now
@@ -468,9 +463,6 @@ class FormulaInstaller
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    read, write = IO.pipe
-    ENV["HOMEBREW_ERROR_PIPE"] = socket_path
-
     args = %W[
       nice #{RUBY_PATH}
       -W0
@@ -480,39 +472,13 @@ class FormulaInstaller
       #{formula.path}
     ].concat(build_argv)
 
-    pid = fork do
-      begin
-        server.close
-        read.close
-        write.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
-        if Sandbox.available? && ARGV.sandbox?
-          sandbox = Sandbox.new(formula)
-          sandbox.exec(*args)
-        else
-          exec(*args)
-        end
-      rescue Exception => e
-        Marshal.dump(e, write)
-        write.close
-        exit! 1
-      end
-    end
-
-    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
-      begin
-        socket = server.accept_nonblock
-      rescue Errno::EAGAIN, Errno::EWOULDBLOCK, Errno::ECONNABORTED, Errno::EPROTO, Errno::EINTR
-        retry unless Process.waitpid(pid, Process::WNOHANG)
+    Utils.safe_fork do
+      if Sandbox.available? && ARGV.sandbox?
+        sandbox = Sandbox.new(formula)
+        sandbox.exec(*args)
       else
-        socket.send_io(write)
+        exec(*args)
       end
-      write.close
-      data = read.read
-      read.close
-      Process.wait(pid) unless socket.nil?
-      raise Marshal.load(data) unless data.nil? or data.empty?
-      raise Interrupt if $?.exitstatus == 130
-      raise "Suspicious installation failure" unless $?.success?
     end
 
     raise "Empty installation" if Dir["#{formula.prefix}/*"].empty?
@@ -524,9 +490,6 @@ class FormulaInstaller
       formula.rack.rmdir_if_possible
     end
     raise
-  ensure
-    server.close
-    FileUtils.rm_r File.dirname(socket_path)
   end
 
   def link(keg)
