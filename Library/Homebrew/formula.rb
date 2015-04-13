@@ -301,7 +301,7 @@ class Formula
   def etc; (HOMEBREW_PREFIX+'etc').extend(InstallRenamed) end
 
   # generally we don't want var stuff inside the keg
-  def var; HOMEBREW_PREFIX+'var' end
+  def var; (HOMEBREW_PREFIX+'var').extend(InstallRenamed) end
 
   def bash_completion; prefix+'etc/bash_completion.d' end
   def zsh_completion;  share+'zsh/site-functions'     end
