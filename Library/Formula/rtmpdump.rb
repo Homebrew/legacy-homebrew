@@ -10,10 +10,9 @@ class Rtmpdump < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "3b5e1371a7d7723f8e57357b065e8fb2bfe4dbd8" => :yosemite
-    sha1 "0ad29a01ac270a96df4d2e17a2ac1d3a4fb66e17" => :mavericks
-    sha1 "f6c770535685b2f8a7ded4e07919a1f788e5661c" => :mountain_lion
+    sha256 "5333be3b341a79c84d1bc9c2bb74ef71e2e6c49e5e2a94dd02e2ef5721acd5f5" => :yosemite
+    sha256 "f906ce07d4ab1e365f22afabfa594fffba1caf0d3e7fa749a76b07a944891aba" => :mavericks
+    sha256 "90f87f1c3e8c68385576812bdfadc39152d3bd9166cafb982761d1a6cc915710" => :mountain_lion
   end
 
   head "git://git.ffmpeg.org/rtmpdump"
