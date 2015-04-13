@@ -1,10 +1,7 @@
-require "formula"
-
 class Luarocks < Formula
   homepage "http://luarocks.org"
-  url "http://luarocks.org/releases/luarocks-2.2.0.tar.gz"
-  sha1 "e2de00f070d66880f3766173019c53a23229193d"
-  revision 1
+  url "http://luarocks.org/releases/luarocks-2.2.1.tar.gz"
+  sha256 "713f8a7e33f1e6dc77ba2eec849a80a95f24f82382e0abc4523c2b8d435f7c55"
 
   bottle do
     sha1 "0cebc71f659d0c4ad071ca92d58af25e2282440d" => :mavericks
@@ -15,6 +12,8 @@ class Luarocks < Formula
   head "https://github.com/keplerproject/luarocks.git"
 
   depends_on "lua"
+
+  keg_only "Luarocks is being merged into Lua formulae imminently & this eases transition."
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
