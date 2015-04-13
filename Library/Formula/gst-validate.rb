@@ -39,7 +39,7 @@ class GstValidate < Formula
       system "make", "install"
     end
   end
-  
+
   test do
     system "#{bin}/gst-validate-launcher", "--usage"
   end
