@@ -1,8 +1,8 @@
 class LibgpgError < Formula
-  homepage "http://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.18.tar.bz2"
-  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.18.tar.bz2"
-  sha1 "7ba54f939da023af8f5b3e7a421a32eb742909c4"
+  homepage "https://www.gnupg.org/"
+  url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.19.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.19.tar.bz2"
+  sha256 "53120e1333d5c5d28d87ff2854e9e98719c8e214152f17ad5291704d25c4978b"
 
   bottle do
     cellar :any
@@ -15,7 +15,8 @@ class LibgpgError < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--disable-silent-rules"
     system "make", "install"
   end
 
