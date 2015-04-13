@@ -15,7 +15,7 @@ class Saltstack < Formula
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on "swig" => :build
+  depends_on "swig304" => :build
   depends_on "zeromq"
   depends_on "libyaml"
 
