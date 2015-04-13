@@ -10,7 +10,7 @@ class SandboxTest < Homebrew::TestCase
     s = Sandbox.new
     testpath = Pathname.new(TEST_TMPDIR)
     foo = testpath/"foo"
-    s.allow_write "#{testpath}", :type => :subpath
+    s.allow_write foo
     s.exec "touch", foo
     assert_predicate foo, :exist?
     foo.unlink
