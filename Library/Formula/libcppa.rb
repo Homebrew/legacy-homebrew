@@ -2,8 +2,11 @@ class Libcppa < Formula
   # TODO: since libcppa has been renamed to CAF, this formula should eventually
   # be renamed to 'caf.rb'.
   homepage "http://actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/0.13.tar.gz"
-  sha1 "80de2666cad9795f280994f6dd12aae8368e65fe"
+  # For this release (0.13.1) we do not use a github tag because we've added
+  # mountain-lion compatibility fix discovered by brew-bot.
+  version "0.13.1"
+  url "https://github.com/actor-framework/actor-framework/archive/1c6f23eba0af2cbb545472c59ae3a6e6d14f7a2d.tar.gz"
+  sha256 "6db0d93ccbb349d0cc93ce38ab312e4164959b95c325e4b02af074c0e5ccb024"
   head "https://github.com/actor-framework/actor-framework.git",
     :branch => "develop"
 
