@@ -52,7 +52,14 @@ class Gnutls < Formula
   end
 
   def post_install
-    Formula["openssl"].post_install
+    keychains = %w[
+      /Library/Keychains/System.keychain
+      /System/Library/Keychains/SystemRootCertificates.keychain
+    ]
+
+    openssldir = etc/"openssl"
+    openssldir.mkpath
+    (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 
   test do
