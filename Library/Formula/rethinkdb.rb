@@ -1,7 +1,7 @@
 class Rethinkdb < Formula
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.16.3.tgz"
-  sha1 "87c58fd94393713ecf898b9e9d0db1ebd570f119"
+  url "http://download.rethinkdb.com/dist/rethinkdb-2.0.0-1.tgz"
+  sha1 "8eb3d5d1d5b4de62cb7dff8d53ed403ae7b9984e"
 
   bottle do
     sha256 "412fe590323b38e77e59cc4c0c1712ab917f0710653eeb4f86f7c6b144e02f1d" => :yosemite
@@ -14,6 +14,7 @@ class Rethinkdb < Formula
   # Reported upstream: https://github.com/rethinkdb/rethinkdb/issues/2581
   depends_on :xcode => :build
   depends_on "boost" => :build
+  depends_on "icu4c" => :build
   depends_on "openssl"
 
   fails_with :gcc do
