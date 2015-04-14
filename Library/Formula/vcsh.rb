@@ -6,8 +6,6 @@ class Vcsh < Formula
   version '1.20141026'
   sha1 '9e4fac6d354fca4bda32cab8fa7f0fffe4ddd110'
 
-  depends_on 'mr'
-
   def install
     bin.install 'vcsh'
     man1.install 'vcsh.1'
