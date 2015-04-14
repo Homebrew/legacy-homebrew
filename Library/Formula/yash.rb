@@ -2,8 +2,8 @@ require "formula"
 
 class Yash < Formula
   homepage "http://yash.sourceforge.jp/"
-  url "http://dl.sourceforge.jp/yash/60930/yash-2.36.tar.xz"
-  sha1 "da034f893bf34e3851a93e8512f3fb027e59f0f5"
+  url "http://dl.sourceforge.jp/yash/62651/yash-2.37.tar.gz"
+  sha1 "a6ac6fe9434a25a8fd39137a05768aa65076bed6"
 
   bottle do
     cellar :any
