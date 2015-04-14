@@ -38,4 +38,6 @@ class LibmongoclientLegacy < Formula
 
     scons *args
   end
+  test do
+  end
 end
