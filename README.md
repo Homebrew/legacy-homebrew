@@ -28,6 +28,7 @@ Dependencies
 
 * **Ruby** 1.8.6 or newer
 + **GCC** 4.2 or newer
++ 64-bit x86 platform
 
 Paste at a Terminal prompt:
 
@@ -42,6 +43,10 @@ sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl
 ```sh
 sudo yum groupinstall 'Development Tools' && sudo yum install curl git irb m4 ruby texinfo bzip2-devel curl-devel expat-devel ncurses-devel zlib-devel
 ```
+
+### 32-bit x86 platforms
+
+Linuxbrew does not currently support 32-bit x86 platforms nor platforms other than x86. It would be possible for Linuxbrew to work on 32-bit x86 platforms with some effort. Pull requests would be welcome if someone were to volunteer to maintain the 32-bit x86 support.
 
 Installation
 ------------
