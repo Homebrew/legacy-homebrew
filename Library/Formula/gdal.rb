@@ -4,7 +4,6 @@ class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
   sha1 "6f3ccbe5643805784812072a33c25be0bbff00db"
-  revision 3
 
   bottle do
     sha1 "672ef7894b473fbe7650bd442c06e8e61a2415f0" => :yosemite
