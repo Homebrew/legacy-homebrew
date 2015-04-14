@@ -16,6 +16,7 @@ class Ffmpeg < Formula
   option "without-libvo-aacenc", "Disable VisualOn AAC encoder"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder"
   option "without-qtkit", "Disable deprecated QuickTime framework"
+  option "without-jack", "Disable Jack"
 
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-libass", "Enable ASS/SSA subtitle format"
@@ -111,6 +112,7 @@ class Ffmpeg < Formula
     args << "--enable-libx265" if build.with? "x265"
     args << "--enable-libwebp" if build.with? "webp"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
+    args << "--disable-indev=jack" if build.without? "jack"
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
