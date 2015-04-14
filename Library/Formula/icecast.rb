@@ -2,8 +2,8 @@ require 'formula'
 
 class Icecast < Formula
   homepage 'http://www.icecast.org/'
-  url 'http://downloads.xiph.org/releases/icecast/icecast-2.4.1.tar.gz'
-  sha1 '0ec1a6470554cccd9ca48488776a26887e9b9a5e'
+  url 'http://downloads.xiph.org/releases/icecast/icecast-2.4.2.tar.gz'
+  sha256 'aa1ae2fa364454ccec61a9247949d19959cb0ce1b044a79151bf8657fd673f4f'
 
   bottle do
     sha1 "4d8aa258bc5b436e07344442b24a710edc0cf091" => :yosemite
