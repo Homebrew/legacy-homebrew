@@ -1,9 +1,7 @@
-require "formula"
-
 class LibmongoclientLegacy < Formula
   homepage "http://www.mongodb.org"
   url "https://github.com/mongodb/mongo-cxx-driver/archive/legacy-1.0.1.tar.gz"
-  sha1 "356dafe8e8ca7fcd58e7da1e812470305c1fc0db"
+  sha256 "29ffbf3674192e1cb47af7ad620b9b0c1e60716033c6c342a3f935f3ce79c59e"
 
   head "https://github.com/mongodb/mongo-cxx-driver.git", :branch => "legacy"
 
@@ -33,7 +31,7 @@ class LibmongoclientLegacy < Formula
       # by SConstruct which causes "invalid deployment target for -stdlib=libc++"
       # when using libc++
       "--osx-version-min=#{MacOS.version}",
-      "install"
+      "install",
     ]
 
     args << "--libc++" if MacOS.version >= :mavericks
@@ -41,5 +39,3 @@ class LibmongoclientLegacy < Formula
     scons *args
   end
 end
-
-__END__
