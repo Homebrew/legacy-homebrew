@@ -4,9 +4,9 @@ class Iojs < Formula
   sha256 "3c63010701b1968baf08d99327821c79746d0602ba71060c07d2bd9f1ff485f4"
 
   bottle do
-    sha256 "7ba0151933b0e2a91296f5b0c9ae865a65d4b7ee729523427505c9095ef95449" => :yosemite
-    sha256 "d1e66bb417275d8a2b96c184508017b62fda6b726275d466efc70870b992ca21" => :mavericks
-    sha256 "b9fd2b1f888dfab437dfbd44dcc2ad8dc73b9d47e28ae79ba2f9c244949d3eab" => :mountain_lion
+    sha256 "9f771122f8b27072e7fc54afe33a7b67f5ad6571737da5f65702b08f2d9c8044" => :yosemite
+    sha256 "8851413ea8b5090620f1e369796325293e6651b29e3f6f9a7e65e71c28033ead" => :mavericks
+    sha256 "dbc81eb8f8519b5f41c45afc02c0b012c690a43065fd8205ee100a5e80813d73" => :mountain_lion
   end
 
   keg_only "iojs conflicts with node (which is currently more established)"
