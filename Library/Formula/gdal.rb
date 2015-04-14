@@ -2,9 +2,8 @@ require 'formula'
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url "http://download.osgeo.org/gdal/1.11.1/gdal-1.11.1.tar.gz"
-  sha1 "e2c67481932ec9fb6ec3c0faadc004f715c4eef4"
-  revision 3
+  url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
+  sha1 "6f3ccbe5643805784812072a33c25be0bbff00db"
 
   bottle do
     sha1 "672ef7894b473fbe7650bd442c06e8e61a2415f0" => :yosemite
@@ -70,17 +69,6 @@ class Gdal < Formula
     depends_on "xz" # get liblzma compression algorithm library from XZutils
     depends_on "poppler"
     depends_on "json-c"
-  end
-
-  stable do
-    # REMOVE when 1.11.2 is released
-    # Fix segfault when executing OGR2SQLITE_Register() when compiled against sqlite 3.8.7
-    # See: http://trac.osgeo.org/gdal/ticket/5725, https://github.com/OSGeo/gdal/commit/12d3b98
-    # Fixes issue with QGIS's Save as... for vector layers: http://hub.qgis.org/issues/11526
-    patch :p2 do
-      url "https://github.com/OSGeo/gdal/commit/12d3b984a052c59ee336f952902b82ace01ba31c.diff"
-      sha1 "844bb827327f9c64918499f3cce3ded9414952c4"
-    end
   end
 
   # Extra linking libraries in configure test of armadillo may throw warning
