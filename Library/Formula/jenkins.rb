@@ -4,9 +4,9 @@ class Jenkins < Formula
   sha1 "11bb016f6e2123908a15cf5235ccadfdacdb87e3"
 
   bottle do
-    sha256 "106ee16ec814edb28450b0e184b8dfad8c567be1209aeda6905ca87b7560043c" => :yosemite
-    sha256 "68f21ead2567fc7ff997bd930ceddaa2520a46704968c6489ae9a4ad90718cb0" => :mavericks
-    sha256 "30d395d88b191c1a416c424bfd6982aca8b16414f3df29ca12fbe695b587f62e" => :mountain_lion
+    sha256 "8920371c71050c511285ed2a804b088989755d47bf8ca03dca3b0dfb2d2f1446" => :yosemite
+    sha256 "3375936cfb88c98071f7ae98a7e25f0ad50de1e310904c06b6b4819f663de127" => :mavericks
+    sha256 "646b4773605d9c180e692434f305b9843f331e5871534f6f3e7c47641f46d07b" => :mountain_lion
   end
 
   head do
