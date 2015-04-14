@@ -1,7 +1,7 @@
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.2/cmake-3.2.1.tar.gz"
-  sha1 "53c1fe2aaae3b2042c0fe5de177f73ef6f7b267f"
+  url "http://www.cmake.org/files/v3.2/cmake-3.2.2.tar.gz"
+  sha256 "ade94e6e36038774565f2aed8866415443444fb7a362eb0ea5096e40d5407c78"
   head "http://cmake.org/cmake.git"
 
   bottle do
