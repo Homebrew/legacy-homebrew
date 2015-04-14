@@ -1,7 +1,7 @@
 class H2o < Formula
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.1.0.tar.gz"
-  sha256 "01f86bd81c5428c033bbe342c0f8ec43ff111a6aaae7d5c91fb7e619c0c65c07"
+  url "https://github.com/h2o/h2o/archive/v1.2.0.tar.gz"
+  sha256 "09aacd84ea0a53eaffdc8e0c2a2cf1108bea5db81d5859a136221fd67f07833f"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
@@ -13,13 +13,17 @@ class H2o < Formula
   option "with-libuv", "Build the H2O library in addition to the executable."
 
   depends_on "cmake" => :build
-  depends_on "libyaml"
-  depends_on "openssl"
+  depends_on "openssl" => :recommended
+  depends_on "libressl" => :optional
   depends_on "libuv" => :optional
   depends_on "wslay" => :optional
 
   def install
-    system "cmake", ".", *std_cmake_args
+    args = std_cmake_args
+    args << "."
+    args << "-DWITH_BUNDLED_SSL=OFF"
+
+    system "cmake", *args
 
     if build.with? "libuv"
       system "make", "libh2o"
