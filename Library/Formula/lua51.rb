@@ -24,9 +24,11 @@ class Lua51 < Formula
   option "with-completion", "Enables advanced readline support"
   option "without-sigaction", "Revert to ANSI signal instead of improved POSIX sigaction"
 
+  depends_on "readline" unless OS.mac?
+
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/Homebrew/homebrew/pull/5043
-  patch :DATA
+  patch :DATA if OS.mac?
 
   # sigaction provided by posix signalling power patch from
   # http://lua-users.org/wiki/LuaPowerPatches
@@ -50,7 +52,7 @@ class Lua51 < Formula
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS", "#{ENV.cflags} $(MYCFLAGS)"
       s.change_make_var! "MYLDFLAGS", ENV.ldflags
-      s.sub! "MYCFLAGS_VAL", "-fno-common -DLUA_USE_LINUX"
+      s.sub! "MYCFLAGS_VAL", "-fno-common -DLUA_USE_LINUX" if OS.mac?
     end
 
     # Fix path in the config header
@@ -65,7 +67,8 @@ class Lua51 < Formula
       s.gsub! "Libs: -L${libdir} -llua -lm", "Libs: -L${libdir} -llua5.1 -lm"
     end
 
-    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
+    arch = if OS.mac? then "macosx" elsif OS.linux? then "linux" else "posix" end
+    system "make", arch, "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
 
     (lib+"pkgconfig").install "etc/lua.pc"
