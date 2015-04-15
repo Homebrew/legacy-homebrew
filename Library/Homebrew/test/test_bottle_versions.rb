@@ -80,4 +80,9 @@ class BottleVersionParsingTests < Homebrew::TestCase
     assert_version_detected '5-20150215',
       'gcc5-5-20150215.yosemite.bottle.tar.gz'
   end
+
+  def test_openssl_style
+    assert_version_detected '1.0.2a-1',
+      'openssl-1.0.2a-1.yosemite.bottle.1.tar.gz'
+  end
 end
