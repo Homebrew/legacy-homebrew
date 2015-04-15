@@ -105,8 +105,9 @@ class Hugo < Formula
     url "https://github.com/yosssi/ace.git",
         :revision => "1f82044938a7180f6fb6bbb3a29688d1e6dbe74b"
   end
+
+  # Install correct version of fsnotify needed by stable/head
   stable do
-    # remove in next release
     go_resource "gopkg.in/fsnotify.v0" do
       url "https://github.com/go-fsnotify/fsnotify.git",
         :branch => "v0",
@@ -119,6 +120,7 @@ class Hugo < Formula
         :revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
     end
   end
+
   go_resource "gopkg.in/yaml.v2" do
     url "https://github.com/go-yaml/yaml.git",
         :branch => "v2",
