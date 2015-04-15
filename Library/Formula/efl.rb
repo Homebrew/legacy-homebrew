@@ -1,7 +1,7 @@
 class Efl < Formula
   homepage "https://www.enlightenment.org"
   url "http://download.enlightenment.org/rel/libs/efl/efl-1.14.0-beta1.tar.gz"
-  sha1 "ff4cb8b238bbfd0fef392009b9889f72288ef5da"
+  sha256 "567d96849cc13be2eaf899d21c9902492a2c3aca111bcd0e91adabe65c4af6bd"
 
   conflicts_with "eina", :because => "efl aggregates formerly distinct libs, one of which is eina"
   conflicts_with "evas", :because => "efl aggregates formerly distinct libs, one of which is evas"
