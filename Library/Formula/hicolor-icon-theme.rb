@@ -11,10 +11,9 @@ class HicolorIconTheme < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "9f3bd40e44a26a00b741f29fe86618a3cb8b570a" => :yosemite
-    sha1 "930f46d4d40d82e17af141cbecaf5e51f5ccad09" => :mavericks
-    sha1 "aa796a38b6672816314527f318d17f6bc6ad136b" => :mountain_lion
+    sha256 "e1e09d7dee2b5560d45d99a310d8e2903d30413eb53408a4079261e8ef5f3b55" => :yosemite
+    sha256 "e3e7a63d5af66fe6721839c12e00288e061ef092a046ff6db2dcc6f62f75b9c2" => :mavericks
+    sha256 "5647ecc1f44a15ee6cef8d37ae62d606251a0ae94f2659c9fac497270876367e" => :mountain_lion
   end
 
   def install
