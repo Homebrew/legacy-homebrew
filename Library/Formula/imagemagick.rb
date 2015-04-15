@@ -8,9 +8,9 @@ class Imagemagick < Formula
        :using => :svn
 
   bottle do
-    sha256 "6fd5c101e3c95eb0b87105d95ac2c3f0739a5b12920cbb57d5decf7671a68b1b" => :yosemite
-    sha256 "92c97d4984714b616dbd07e4bed47ef190bddaf13f5013618def56a303894db5" => :mavericks
-    sha256 "837c6f6bc869c6bf35c776a2b0e9bc76e725b69f3cf927f1e78a02e15d36e2cd" => :mountain_lion
+    sha256 "eacabf24a4e3d99feca1a3c9786f18328a5e9dee866e710ee8c505e35cfded62" => :yosemite
+    sha256 "b346a7e2fe4f0886c0b2453f05fc66bc83463e30b2039ac04876b54d3031f4cd" => :mavericks
+    sha256 "2373116c43b825f34d84fc6302c52b4a48375487ff460a844cadb64d2f0b1768" => :mountain_lion
   end
 
   deprecated_option "enable-hdri" => "with-hdri"
