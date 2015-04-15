@@ -1,8 +1,8 @@
 class Imagemagick < Formula
   homepage "http://www.imagemagick.org"
-  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-0.tar.xz"
-  mirror "https://downloads.sourceforge.net/project/imagemagick/6.9.1-sources/ImageMagick-6.9.1-0.tar.xz"
-  sha256 "32747565fc30da0ff0bc0bf3e41c9fefad829fa8fb2f7d1b98dd84ddb3919b0e"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-1.tar.xz"
+  mirror "https://downloads.sourceforge.net/project/imagemagick/6.9.1-sources/ImageMagick-6.9.1-1.tar.xz"
+  sha256 "8f6ebeb1a1321fd7b7d3161a66461743ea5bbc352e4339c792b3bab52c379378"
 
   head "https://subversion.imagemagick.org/subversion/ImageMagick/trunk",
        :using => :svn
@@ -55,6 +55,7 @@ class Imagemagick < Formula
       --disable-osx-universal-binary
       --prefix=#{prefix}
       --disable-dependency-tracking
+      --disable-silent-rules
       --enable-shared
       --disable-static
       --with-modules
