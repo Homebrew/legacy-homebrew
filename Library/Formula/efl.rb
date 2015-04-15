@@ -33,7 +33,7 @@ class Efl < Formula
             "--disable-silent-rules",
             "--enable-cocoa",
             "--prefix=#{prefix}"]
-    args << "--with-x11=none" if build.without? "x11" 
+    args << "--with-x11=none" if build.without? "x11"
 
     system "./configure", *args
     system "make", "install"
