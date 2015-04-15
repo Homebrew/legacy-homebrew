@@ -1,7 +1,7 @@
 class Ipv6toolkit < Formula
   homepage "http://www.si6networks.com/tools/ipv6toolkit/"
-  url "http://www.si6networks.com/tools/ipv6toolkit/ipv6toolkit-v1.5.3.tar.gz"
-  sha1 "259449d974beeb24650eade16245659ddeaba633"
+  url "http://www.si6networks.com/tools/ipv6toolkit/ipv6toolkit-v2.0.tar.gz"
+  sha1 "78e2a5ed3264cd5f5cedd26595c070442fa4379a"
 
   def install
     system "make"
