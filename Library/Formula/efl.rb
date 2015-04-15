@@ -12,6 +12,7 @@ class Efl < Formula
 
   depends_on "pkg-config" => :build
   depends_on :x11 => :optional
+  depends_on "openssl"
   depends_on "freetype"
   depends_on "fontconfig"
   depends_on "jpeg"
