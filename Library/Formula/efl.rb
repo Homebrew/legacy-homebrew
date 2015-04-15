@@ -18,6 +18,7 @@ class Efl < Formula
   depends_on 'luajit'
   depends_on 'fribidi'
   depends_on 'giflib'
+  depends_on 'libtiff'
   depends_on 'gstreamer'
   depends_on 'gst-plugins-good'
   depends_on 'd-bus'
