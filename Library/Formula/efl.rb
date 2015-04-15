@@ -32,7 +32,7 @@ class Efl < Formula
   needs :cxx11
 
   def install
-    ENV.cxx11 # Workaround for Mountain Lion
+    ENV.cxx11
     args = ["--disable-dependency-tracking",
             "--disable-silent-rules",
             "--enable-cocoa",
