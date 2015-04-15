@@ -3,13 +3,6 @@ class Postgis < Formula
   url "http://download.osgeo.org/postgis/source/postgis-2.1.7.tar.gz"
   sha256 "00ab79a3f609d7ea458f6fc358032ad059cb720baf88285243d6436a597a7ec2"
 
-  bottle do
-    cellar :any
-    sha256 "0e420999eceb1c5f2e95c1202d6e3739c995a11f8cca73c9a5cdcb855d8fea42" => :yosemite
-    sha256 "bf95187203b49a0017c1bdc56eef93795495cf50a115982821d9cca244ae3472" => :mavericks
-    sha256 "f428965078087ebe120f4542d6f4e2067f8949ecc51eea0ca85c18b9ceb0ef3f" => :mountain_lion
-  end
-
   def pour_bottle?
     # Postgres extensions must live in the Postgres prefix, which precludes
     # bottling: https://github.com/Homebrew/homebrew/issues/10247
