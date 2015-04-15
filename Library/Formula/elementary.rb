@@ -15,6 +15,6 @@ class Elementary < Formula
   end
 
   test do
-        system "#{bin}/elementary_codegen", "-V"
+    system "#{bin}/elementary_codegen", "-V"
   end
 end
