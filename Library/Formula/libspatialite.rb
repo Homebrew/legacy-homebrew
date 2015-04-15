@@ -2,13 +2,9 @@ class Libspatialite < Formula
   homepage "https://www.gaia-gis.it/fossil/libspatialite/index"
   url "http://www.gaia-gis.it/gaia-sins/libspatialite-4.2.0.tar.gz"
   sha1 "698bf70bec669ddcbf1b0cc48f40c2e03776bffc"
-  revision 1
+  revision 2
 
   bottle do
-    cellar :any
-    sha1 "ef9892e273b4cbc4acf626d3659a13d1fc7699a7" => :yosemite
-    sha1 "c9ecbcc0188f44fd8dad30a3e7fde31e09407a13" => :mavericks
-    sha1 "2eba5d49512f854f8bb4216072ce8aa83c0a961d" => :mountain_lion
   end
 
   head do
