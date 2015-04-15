@@ -79,7 +79,7 @@ class Hugo < Formula
   end
   go_resource "github.com/spf13/cobra" do
     url "https://github.com/spf13/cobra.git",
-	:revision => "9cb5e8502924a8ff1cce18a9348b61995d7b4fde"
+      :revision => "9cb5e8502924a8ff1cce18a9348b61995d7b4fde"
   end
   go_resource "github.com/spf13/fsync" do
     url "https://github.com/spf13/fsync.git",
@@ -105,9 +105,19 @@ class Hugo < Formula
     url "https://github.com/yosssi/ace.git",
         :revision => "1f82044938a7180f6fb6bbb3a29688d1e6dbe74b"
   end
-  go_resource "gopkg.in/fsnotify.v1" do
-    url "https://github.com/go-fsnotify/fsnotify.git",
-	:revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
+  stable do
+    # remove in next release
+    go_resource "gopkg.in/fsnotify.v0" do
+      url "https://github.com/go-fsnotify/fsnotify.git",
+        :branch => "v0",
+        :revision => "ea925a0a47d225b2ca7f9932b01d2ed4f3ec74f6"
+    end
+  end
+  head do
+    go_resource "gopkg.in/fsnotify.v1" do
+      url "https://github.com/go-fsnotify/fsnotify.git",
+        :revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
+    end
   end
   go_resource "gopkg.in/yaml.v2" do
     url "https://github.com/go-yaml/yaml.git",
@@ -128,9 +138,8 @@ class Hugo < Formula
   end
   go_resource "github.com/inconshreveable/mousetrap" do
     url "https://github.com/inconshreveable/mousetrap.git",
-	:revision => "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+      :revision => "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
   end
-
 
   # dependency for purell
   go_resource "github.com/opennota/urlesc" do
