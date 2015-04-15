@@ -85,7 +85,7 @@ class Gnuplot < Formula
       args << "--without-cairo" if build.without? "cairo"
     end
 
-    args << "--enable-qt"          if build.with? "qt"
+    args << "--with-qt" if build.with? "qt"
     args << "--without-lua"        if build.without? "lua"
     args << "--without-lisp-files" if build.without? "emacs"
     args << ((build.with? "aquaterm") ? "--with-aquaterm" : "--without-aquaterm")
