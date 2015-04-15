@@ -12,7 +12,8 @@ class Djview4 < Formula
   depends_on 'djvulibre'
   depends_on 'qt'
 
-  # Patch build files for correct flag and dependency handling (known problems at upstream)
+  # Patch build files for correct flag and dependency handling
+  # Fixed in upstream commits f1c0fad and a66dc11
   patch :DATA
 
   def install
