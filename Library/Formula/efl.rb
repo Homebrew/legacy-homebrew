@@ -10,20 +10,20 @@ class Efl < Formula
 
   option "with-docs", "Install development libraries/headers and HTML docs"
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on :x11
-  depends_on 'jpeg'
-  depends_on 'libpng'
-  depends_on 'webp' => :optional
-  depends_on 'luajit'
-  depends_on 'fribidi'
-  depends_on 'giflib'
-  depends_on 'libtiff'
-  depends_on 'gstreamer'
-  depends_on 'gst-plugins-good'
-  depends_on 'd-bus'
-  depends_on 'pulseaudio'
-  depends_on 'bullet'
+  depends_on "jpeg"
+  depends_on "libpng"
+  depends_on "webp" => :optional
+  depends_on "luajit"
+  depends_on "fribidi"
+  depends_on "giflib"
+  depends_on "libtiff"
+  depends_on "gstreamer"
+  depends_on "gst-plugins-good"
+  depends_on "d-bus"
+  depends_on "pulseaudio"
+  depends_on "bullet"
   depends_on "doxygen" => :build if build.with? "docs"
 
   def install
