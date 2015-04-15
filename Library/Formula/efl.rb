@@ -29,7 +29,7 @@ class Efl < Formula
   depends_on "bullet"
   depends_on "doxygen" => :build if build.with? "docs"
 
-  needs :cxx11 # Workaround for Mountain Lion
+  needs :cxx11
 
   def install
     ENV.cxx11 # Workaround for Mountain Lion
