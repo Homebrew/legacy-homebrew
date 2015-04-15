@@ -1,10 +1,7 @@
-require 'formula'
-
 class Cairomm < Formula
-  homepage 'http://cairographics.org/cairomm/'
-  url 'http://cairographics.org/releases/cairomm-1.10.0.tar.gz'
-  sha256 '068d96c43eae7b0a3d98648cbfc6fbd16acc385858e9ba6d37b5a47e4dba398f'
-  revision 1
+  homepage "http://cairographics.org/cairomm/"
+  url "http://cairographics.org/releases/cairomm-1.11.2.tar.gz"
+  sha256 "ccf677098c1e08e189add0bd146f78498109f202575491a82f1815b6bc28008d"
 
   bottle do
     revision 1
@@ -17,21 +14,60 @@ class Cairomm < Formula
 
   deprecated_option "without-x" => "without-x11"
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   if build.cxx11?
-    depends_on 'libsigc++' => 'c++11'
+    depends_on "libsigc++" => "c++11"
   else
-    depends_on 'libsigc++'
+    depends_on "libsigc++"
   end
 
-  depends_on 'cairo'
-  depends_on 'libpng'
+  depends_on "cairo"
+  depends_on "libpng"
   depends_on :x11 => :recommended
 
   def install
     ENV.cxx11 if build.cxx11?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cc").write <<-EOS.undent
+      #include <string>
+      #include <cairommconfig.h>
+      #include <cairomm/context.h>
+      #include <cairomm/surface.h>
+
+      int main() {
+        Cairo::RefPtr<Cairo::ImageSurface> surface =
+          Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, 600, 400);
+
+        Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(surface);
+
+        cr->save();
+        cr->set_source_rgb(0.86, 0.85, 0.47);
+        cr->paint();
+
+        std::string filename = "image.png";
+        surface->write_to_png(filename);
+      }
+    EOS
+    args = %W[
+      -I#{lib}/cairomm-1.0/include
+      -I#{include}/cairomm-1.0
+      -I#{Formula["cairo"].opt_include}/cairo
+      -I#{Formula["freetype"].opt_include}/freetype2
+      -I#{Formula["libsigc++"].opt_include}/sigc++-2.0
+      -I#{Formula["libsigc++"].opt_lib}/sigc++-2.0/include
+      -L#{lib}
+      -lcairomm-1.0
+      test.cc
+      -o
+      test
+    ]
+    system ENV.cxx, *args
+    system "./test"
+    File.exist? "image.png"
   end
 end
