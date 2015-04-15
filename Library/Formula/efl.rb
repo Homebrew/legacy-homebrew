@@ -10,6 +10,7 @@ class Efl < Formula
 
   option "with-docs", "Install development libraries/headers and HTML docs"
 
+  depends_on "doxygen" => :build if build.with? "docs"
   depends_on "pkg-config" => :build
   depends_on :x11 => :optional
   depends_on "openssl"
@@ -27,7 +28,6 @@ class Efl < Formula
   depends_on "d-bus"
   depends_on "pulseaudio"
   depends_on "bullet"
-  depends_on "doxygen" => :build if build.with? "docs"
 
   needs :cxx11
 
