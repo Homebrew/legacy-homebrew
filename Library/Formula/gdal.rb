@@ -1,14 +1,10 @@
-require 'formula'
-
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
   sha1 "6f3ccbe5643805784812072a33c25be0bbff00db"
+  revision 1
 
   bottle do
-    sha256 "123965a1d3072569339dd0a7e3ed4d4581c09cb88389fb9425d504c480e39fad" => :yosemite
-    sha256 "fd0676432a01f4d0d25ea24355edf4f76a1a467e94ee4790c193d8745b248d7e" => :mavericks
-    sha256 "fdec0fcb9f87b8be96ee2625a680afdb0cbcc05610d669290ed5bf9047dda537" => :mountain_lion
   end
 
   head do
