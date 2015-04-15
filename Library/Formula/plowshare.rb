@@ -1,18 +1,18 @@
 require 'formula'
 
 class Plowshare < Formula
-  homepage 'http://code.google.com/p/plowshare/'
-  url 'https://code.google.com/p/plowshare/', :tag => 'v1.0.5', :using => :git
-  head 'https://code.google.com/p/plowshare/', :using => :git
+  homepage "https://github.com/mcrapet/plowshare"
+  url "https://github.com/mcrapet/plowshare/archive/v2.1.0.tar.gz"
+  sha256 "762482dd11c1e1af08b940c613856a2f51e998b25c11ba14f6a7a734eb94de16"
 
-  depends_on 'recode'
-  depends_on 'imagemagick' => 'with-x11'
-  depends_on 'tesseract'
-  depends_on 'spidermonkey'
-  depends_on 'aview'
-  depends_on 'coreutils'
-  depends_on 'gnu-sed'
-  depends_on 'gnu-getopt'
+  depends_on "recode"
+  depends_on "imagemagick" => "with-x11"
+  depends_on "tesseract"
+  depends_on "spidermonkey"
+  depends_on "aview"
+  depends_on "coreutils"
+  depends_on "gnu-sed"
+  depends_on "gnu-getopt"
 
   patch :DATA
 
