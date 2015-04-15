@@ -3,10 +3,10 @@ class Efl < Formula
   url "http://download.enlightenment.org/rel/libs/efl/efl-1.14.0-beta1.tar.gz"
   sha1 "ff4cb8b238bbfd0fef392009b9889f72288ef5da"
 
-  conflicts_with "eina"
-  conflicts_with "evas"
-  conflicts_with "eet"
-  conflicts_with "embryo"
+  conflicts_with "eina", :because => "efl aggregates formerly distinct libs, one of which is eina"
+  conflicts_with "evas", :because => "efl aggregates formerly distinct libs, one of which is evas"
+  conflicts_with "eet", :because => "efl aggregates formerly distinct libs, one of which is eet"
+  conflicts_with "embryo", :because => "efl aggregates formerly distinct libs, one of which is embryo"
 
   option "with-docs", "Install development libraries/headers and HTML docs"
 
