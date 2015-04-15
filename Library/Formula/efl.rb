@@ -11,7 +11,7 @@ class Efl < Formula
   option "with-docs", "Install development libraries/headers and HTML docs"
 
   depends_on "pkg-config" => :build
-  depends_on :x11
+  depends_on :x11 => :optional
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "webp" => :optional
@@ -27,10 +27,13 @@ class Efl < Formula
   depends_on "doxygen" => :build if build.with? "docs"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--enable-cocoa",
-                          "--prefix=#{prefix}"
+    args = ["--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--enable-cocoa",
+            "--prefix=#{prefix}"]
+    args << "--with-x11=none" if build.without? "x11" 
+
+    system "./configure", *args
     system "make", "install"
     system "make", "install-doc" if build.with? "docs"
   end
