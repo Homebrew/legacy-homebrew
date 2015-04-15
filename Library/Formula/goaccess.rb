@@ -2,8 +2,8 @@ require "formula"
 
 class Goaccess < Formula
   homepage "http://goaccess.prosoftcorp.com/"
-  url "http://tar.goaccess.io/goaccess-0.8.5.tar.gz"
-  sha1 "a69e629682b11b5413af9112f386ef8bf9182346"
+  url "http://tar.goaccess.io/goaccess-0.9.tar.gz"
+  sha1 "fd18df44e09d4fac4ea90f1552e8ff9da0d6633c"
 
   bottle do
     sha1 "97e5b8257e79910a253ec972cb9535f02caec511" => :mavericks
