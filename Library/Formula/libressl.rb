@@ -5,9 +5,10 @@ class Libressl < Formula
   sha256 "4f826dd97b3b8001707073bde8401493f9cd4668465b481c042d28e3973653a8"
 
   bottle do
-    sha256 "8de261eb5255a695567e641bab92bc4c6f09ed36806de0b49a98b6d9b6a3caf7" => :yosemite
-    sha256 "0d094c6477b38b47a96fd4100c08fe70c502bd910943ef091990cbee110f98e4" => :mavericks
-    sha256 "2acfff0e515dbcfea2b299ce136efcf7c9f4fec7484ccdad1c8cedd3672a69ef" => :mountain_lion
+    revision 1
+    sha256 "c8d66d6eef6ec0433642b47a66933ccdeab5f640858bfa6640770956fa357260" => :yosemite
+    sha256 "0dc449d949dbfa99ca15fea5a2a4720c913dac8f0f5dad12a8bca94d47efda87" => :mavericks
+    sha256 "eabe8b82c30101212d56cba70427765834b9bf911fca58a8efb7ecda23bf6029" => :mountain_lion
   end
 
   head do
@@ -36,7 +37,7 @@ class Libressl < Formula
     system "make", "install"
 
     # Install the dummy openssl.cnf file to stop runtime warnings.
-    mkdir_p "#{etc}/libressl"
+    mkdir_p "#{etc}/libressl/certs"
     cp "apps/openssl.cnf", "#{etc}/libressl"
   end
 
@@ -53,7 +54,10 @@ class Libressl < Formula
   def caveats; <<-EOS.undent
     A CA file has been bootstrapped using certificates from the system
     keychain. To add additional certificates, place .pem files in
-      #{etc}/libressl
+      #{etc}/libressl/certs
+
+    and run
+      #{opt_bin}/openssl certhash #{etc}/libressl/certs
     EOS
   end
 

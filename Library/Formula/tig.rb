@@ -2,15 +2,14 @@ require "formula"
 
 class Tig < Formula
   homepage "http://jonas.nitro.dk/tig/"
-  url "http://jonas.nitro.dk/tig/releases/tig-2.1.tar.gz"
-  sha1 "2527cfee62a890f25c7c2ae8c1a16e5fa201ce29"
+  url "http://jonas.nitro.dk/tig/releases/tig-2.1.1.tar.gz"
+  sha1 "253ab0075adb1479f4bb68ffd702b5f6b47b98ec"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "09d7a29550166599f142033aa558157f9da760753fafc2217aa0f32c5efe43d2" => :yosemite
-    sha256 "d52d53d7c3340ef28da693a21c8d11940b5d05a88741d9e548712bd2be95b1b6" => :mavericks
-    sha256 "2997c4eb4d022a39640cf3b971fe2d34f302da05f245f359884909168a0afbb2" => :mountain_lion
+    sha256 "fcb12bec3a384607e4f61a05fca637eb6c48d9821a26715abe83100210f480f9" => :yosemite
+    sha256 "0995b3eb60f7f312653189d4aec8d40f1376c2970ab58d5cc5f9b2a17fefaa2b" => :mavericks
+    sha256 "f54b52c2c174a6e29afc9c519dc3c3c92d9c05b6805dd29650e0711a20bab007" => :mountain_lion
   end
 
   head do

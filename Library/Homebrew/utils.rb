@@ -4,6 +4,7 @@ require 'os/mac'
 require 'utils/json'
 require 'utils/inreplace'
 require 'utils/popen'
+require 'utils/fork'
 require 'open-uri'
 
 class Tty

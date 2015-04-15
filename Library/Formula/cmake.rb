@@ -1,15 +1,14 @@
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.2/cmake-3.2.1.tar.gz"
-  sha1 "53c1fe2aaae3b2042c0fe5de177f73ef6f7b267f"
+  url "http://www.cmake.org/files/v3.2/cmake-3.2.2.tar.gz"
+  sha256 "ade94e6e36038774565f2aed8866415443444fb7a362eb0ea5096e40d5407c78"
   head "http://cmake.org/cmake.git"
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "99411c03795b8ef85e52b5296d54540af18724215f67a66686737e91abec35a8" => :yosemite
-    sha256 "ce230e1dff6108a48083ab36dfc5ae8011b03244c950557b8acfcf3189a4f146" => :mavericks
-    sha256 "e8b6dd510da6ce5523dba550ac36d9d82b86952f9ed3d924e5d10e892f0fc94c" => :mountain_lion
+    sha256 "839ec4e40ec92ae80915edfcef9bd4feb6f788ce95958697f5274fbc4332a4a7" => :yosemite
+    sha256 "835b5731c9febd40ec3c321609bad8bb67390c55b4bcc3a0fd827c8e54315358" => :mavericks
+    sha256 "2f7b63e4c123eb5a87c64ad75f823ab74c3221ec58022980e476d38c9874fc8c" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"

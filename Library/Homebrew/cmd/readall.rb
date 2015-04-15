@@ -31,7 +31,7 @@ module Homebrew
     end
 
     formulae = []
-    if ARGV.empty?
+    if ARGV.named.empty?
       formulae = Formula.names
     else
       user, repo = tap_args

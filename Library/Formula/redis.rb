@@ -1,12 +1,12 @@
 class Redis < Formula
   homepage "http://redis.io/"
-  url "http://download.redis.io/releases/redis-2.8.19.tar.gz"
-  sha1 "3e362f4770ac2fdbdce58a5aa951c1967e0facc8"
+  url "http://download.redis.io/releases/redis-3.0.0.tar.gz"
+  sha1 "c75fd32900187a7c9f9d07c412ea3b3315691c65"
 
   bottle do
-    sha1 "ba238ce5e71f5c0c3cb997ebda0cf594f75e8069" => :yosemite
-    sha1 "0902233ed41683e22a1ecd8010f2875c9b0b9dba" => :mavericks
-    sha1 "4b8100b40edd0e6ef695e28bf4fd30360939c3f3" => :mountain_lion
+    sha256 "9222eb768c9f165d35fa923b6ddaf57830928d5bf281b4d794aa14dd63fe5a04" => :yosemite
+    sha256 "283dd74ac65cc8a793144d732b51ec3d125e39172990f12dc7569dd107d25bf2" => :mavericks
+    sha256 "20c407d4ff095a40f3eb3980652adae13e75316c33526c34bd73be19a5df2dab" => :mountain_lion
   end
 
   head "https://github.com/antirez/redis.git", :branch => "unstable"

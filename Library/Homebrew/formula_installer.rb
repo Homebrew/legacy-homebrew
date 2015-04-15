@@ -9,8 +9,10 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
+require 'cmd/postinstall'
 require 'hooks/bottles'
 require 'debrew'
+require 'sandbox'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -469,10 +471,6 @@ class FormulaInstaller
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    read, write = IO.pipe
-    # I'm guessing this is not a good way to do this, but I'm no UNIX guru
-    ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
-
     args = %W[
       nice #{RUBY_PATH}
       -W0
@@ -482,30 +480,16 @@ class FormulaInstaller
       #{formula.path}
     ].concat(build_argv)
 
-    # Ruby 2.0+ sets close-on-exec on all file descriptors except for
-    # 0, 1, and 2 by default, so we have to specify that we want the pipe
-    # to remain open in the child process.
-    args << { write => write } if RUBY_VERSION >= "2.0"
-
-    pid = fork do
-      begin
-        read.close
+    Utils.safe_fork do
+      if Sandbox.available? && ARGV.sandbox?
+        sandbox = Sandbox.new
+        sandbox.allow_write_temp_and_cache
+        sandbox.allow_write_log(formula)
+        sandbox.allow_write_cellar(formula)
+        sandbox.exec(*args)
+      else
         exec(*args)
-      rescue Exception => e
-        Marshal.dump(e, write)
-        write.close
-        exit! 1
       end
-    end
-
-    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
-      write.close
-      data = read.read
-      read.close
-      Process.wait(pid)
-      raise Marshal.load(data) unless data.nil? or data.empty?
-      raise Interrupt if $?.exitstatus == 130
-      raise "Suspicious installation failure" unless $?.success?
     end
 
     raise "Empty installation" if Dir["#{formula.prefix}/*"].empty?
@@ -610,7 +594,7 @@ class FormulaInstaller
   end
 
   def post_install
-    formula.run_post_install
+    Homebrew.run_post_install(formula)
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
     puts "You can try again using `brew postinstall #{formula.name}`"

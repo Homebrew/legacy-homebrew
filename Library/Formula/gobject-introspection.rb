@@ -4,19 +4,18 @@ class GobjectIntrospection < Formula
   sha256 "6f0c2c28aeaa37b5037acbf21558098c4f95029b666db755d3a12c2f1e1627ad"
 
   bottle do
-    sha256 "c5a08e5ac31a4524d1322158f404a4b42a08e43e3716621b9e0bf905aacf46d1" => :yosemite
-    sha256 "095dafa25ce514912c9ecd6211e809976a67473ea8d9c1c862d707c7e80cc903" => :mavericks
-    sha256 "1c9c9a5caab3d1453a4cfb12a1e167e673eb953eb20c2a15953bd50f9f7793be" => :mountain_lion
+    revision 2
+    sha256 "e29497a4aa084f25f7d53988beab1999c4b3145896f0ef6a993b0d7736269cbd" => :yosemite
+    sha256 "1e0e84d4d114f39d89549bc5a6bfae59a84655a1aefce926d8dd6e53495390ae" => :mavericks
+    sha256 "3dcfedfe989ec4d9c6558def0190ef3bd3214bafa4d2f53fd28aa1abbc1403f2" => :mountain_lion
   end
 
   option :universal
   option "with-tests", "Run tests in addition to the build (requires cairo)"
 
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
   depends_on "glib"
   depends_on "libffi"
-  # To avoid: ImportError: dlopen(./.libs/_giscanner.so, 2): Symbol not found: _PyList_Check
-  depends_on :python
   depends_on "cairo" => :build if build.with? "tests"
 
   # Allow tests to execute on OS X (.so => .dylib)
@@ -24,6 +23,11 @@ class GobjectIntrospection < Formula
     url "https://gist.githubusercontent.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
     sha1 "1f57849db76cd2ca26ddb35dc36c373606414dfc"
   end if build.with? "tests"
+
+  resource "tutorial" do
+    url "https://gist.github.com/7a0023656ccfe309337a.git",
+        :revision => "499ac89f8a9ad17d250e907f74912159ea216416"
+  end
 
   def install
     ENV["GI_SCANNER_DISABLE_CACHE"] = "true"
@@ -43,6 +47,9 @@ class GobjectIntrospection < Formula
   end
 
   test do
-    system bin/"g-ir-annotation-tool", "--help"
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["libffi"].opt_lib/"pkgconfig"
+    resource("tutorial").stage testpath
+    system "make"
+    assert (testpath/"Tut-0.1.typelib").exist?
   end
 end

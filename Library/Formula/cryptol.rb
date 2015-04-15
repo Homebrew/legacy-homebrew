@@ -5,15 +5,14 @@ class Cryptol < Formula
 
   homepage "http://www.cryptol.net/"
   url "https://github.com/GaloisInc/cryptol.git",
-      :tag => "v2.2.1",
-      :revision => "300ed3cba993e49d0dbe34205d4f404524a3ffdd"
-  sha256 "90d2cbe35db8b2a9fcd78eaa2c08ab0cd81641a30949ab855dde71d17429d3ee"
+      :tag => "v2.2.2",
+      :revision => "6ecd07da73c5ceadd211c5ef7c371a1b2facc29b"
   head "https://github.com/GaloisInc/cryptol.git"
 
   bottle do
-    sha256 "6579d3c4aaad5c7c5a45b7185454572c32fdc03feede6a18376f5cca142b0adc" => :yosemite
-    sha256 "fc2210e5169622d485648e1e187cdd51d1d8dae1a393b2a4ce765ae23c0fd7ba" => :mavericks
-    sha256 "393b778484108ce0081612851bf7b7d7ad03f4f751a051be7997b4281dd6059e" => :mountain_lion
+    sha256 "9484b0bd7ee276b87e5c6f097079346495896eb972be09643b3de9f52981664f" => :yosemite
+    sha256 "8ac78ea69c34dc0f8677288d085a4efe5558bd4c94095b81afd8578cdc007621" => :mavericks
+    sha256 "280b21bd7084c3714f157988a799303d2aaeb51419123af7a08c631d4bec4e0a" => :mountain_lion
   end
 
   depends_on "ghc" => :build

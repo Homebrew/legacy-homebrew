@@ -44,14 +44,13 @@ to see what would be cleaned up:
 <a name="uninstall"></a>
 
 ### How do I uninstall Homebrew?
-If you installed to `/usr/local` then you can use the script in [this
-gist](https://gist.github.com/1173223) to uninstall — it will only
-remove Homebrew and the stuff Homebrew installed leaving anything else
-in `/usr/local` alone.
+To uninstall Homebrew, paste the command below in a terminal prompt.
 
-Provided you haven’t put anything else in Homebrew’s prefix
-(`brew --prefix`), you can generally just `rm -rf` that directory. This
-is because Homebrew won’t touch files outside its prefix.
+```bash
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+```
+Download the [uninstall script](https://raw.githubusercontent.com/Homebrew/install/master/uninstall)
+and run `./uninstall --help` to view more uninstall options.
 
 <a name="uninstall-package"></a>
 

@@ -2,15 +2,15 @@ require "language/go"
 
 class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/0.6.0.tar.gz"
-  sha1 "c7d1c391f9e929796f92c4496f011c62546a12cd"
+  url "https://github.com/wellington/wellington/archive/v0.7.0.tar.gz"
+  sha1 "0fadaacaef7ff7ccbdf0c8e3994e3cf5d2de420e"
   head "https://github.com/wellington/wellington.git"
 
   bottle do
     cellar :any
-    sha1 "4c2de0af6f0d18032e3d3722a328cbab4ca555d2" => :yosemite
-    sha1 "93fe2f24e449f8892d1401cf3fb8f9642d11d1ff" => :mavericks
-    sha1 "84d4941117e47a9c865aa5b9ac1c1f97295a04f9" => :mountain_lion
+    sha256 "47a6b8112532da003dedb42e67b6f0f5233e832813487d7eec310d9ed1a68208" => :yosemite
+    sha256 "6d7b6a9ed8e30b28994db5f0f0cf87bf7e95e08ed78238f789538cceb0cb8fd3" => :mavericks
+    sha256 "e1dbb489f6bc3e184798d30c0d760db0235260ee55fb1af35f2deed3835a5cc3" => :mountain_lion
   end
 
   needs :cxx11
