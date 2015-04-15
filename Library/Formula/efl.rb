@@ -11,6 +11,7 @@ class Efl < Formula
   option "with-docs", "Install development libraries/headers and HTML docs"
 
   depends_on "pkg-config" => :build
+  needs :cxx11 # Workaround for Mountain Lion
   depends_on :x11 => :optional
   depends_on "openssl"
   depends_on "freetype"
@@ -30,6 +31,7 @@ class Efl < Formula
   depends_on "doxygen" => :build if build.with? "docs"
 
   def install
+    ENV.cxx11 # Workaround for Mountain Lion
     args = ["--disable-dependency-tracking",
             "--disable-silent-rules",
             "--enable-cocoa",
