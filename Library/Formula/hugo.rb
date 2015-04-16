@@ -19,6 +19,21 @@ class Hugo < Formula
       url "https://github.com/spf13/hugo/commit/967d001ebe40cfe90992d953880356a495216202.diff"
       sha256 "5a991372a54ac049783926c1993d920f46ab52563ff1877e7aaddc40b5a79e22"
     end
+
+    # Install version of fsnotify needed by stable
+    go_resource "gopkg.in/fsnotify.v0" do
+      url "https://github.com/go-fsnotify/fsnotify.git",
+        :branch => "v0",
+        :revision => "ea925a0a47d225b2ca7f9932b01d2ed4f3ec74f6"
+    end
+  end
+
+  # Install version of fsnotify needed by head
+  head do
+    go_resource "gopkg.in/fsnotify.v1" do
+      url "https://github.com/go-fsnotify/fsnotify.git",
+        :revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
+    end
   end
 
   bottle do
@@ -104,21 +119,6 @@ class Hugo < Formula
   go_resource "github.com/yosssi/ace" do
     url "https://github.com/yosssi/ace.git",
         :revision => "1f82044938a7180f6fb6bbb3a29688d1e6dbe74b"
-  end
-
-  # Install correct version of fsnotify needed by stable/head
-  stable do
-    go_resource "gopkg.in/fsnotify.v0" do
-      url "https://github.com/go-fsnotify/fsnotify.git",
-        :branch => "v0",
-        :revision => "ea925a0a47d225b2ca7f9932b01d2ed4f3ec74f6"
-    end
-  end
-  head do
-    go_resource "gopkg.in/fsnotify.v1" do
-      url "https://github.com/go-fsnotify/fsnotify.git",
-        :revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
-    end
   end
 
   go_resource "gopkg.in/yaml.v2" do
