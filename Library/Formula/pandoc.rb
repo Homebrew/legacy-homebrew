@@ -3,9 +3,11 @@ require "language/haskell"
 class Pandoc < Formula
   include Language::Haskell::Cabal
 
-  homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://hackage.haskell.org/package/pandoc-1.13.2/pandoc-1.13.2.tar.gz"
-  sha1 "20f6e4c8d17748979efd011ef870dbfd1fb6dbb3"
+  homepage "http://pandoc.org"
+  url "https://hackage.haskell.org/package/pandoc-1.13.2.1/pandoc-1.13.2.1.tar.gz"
+  sha256 "66da6eb690b8de41eccf05620e165630854d74c08cf69dbfb68d0ea84589785f"
+
+  head "https://github.com/jgm/pandoc.git"
 
   bottle do
     sha1 "b4d98399c366b63faed06a6184bb2a9d3c7bacf2" => :yosemite
@@ -17,7 +19,10 @@ class Pandoc < Formula
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
-  fails_with(:clang) { build 425 } # clang segfaults on Lion
+  fails_with :clang do
+    build 425
+    cause "clang segfaults on Lion"
+  end
 
   def install
     cabal_sandbox do
@@ -28,7 +33,7 @@ class Pandoc < Formula
   end
 
   test do
-    system "pandoc", "-o", "output.html", prefix/"README"
-    assert (Pathname.pwd/"output.html").read.include? '<h1 id="synopsis">Synopsis</h1>'
+    system "pandoc", "-o", testpath/"output.html", prefix/"README"
+    assert (testpath/"output.html").read.include? '<h1 id="synopsis">Synopsis</h1>'
   end
 end
