@@ -6,6 +6,9 @@ class Tasksh < Formula
   depends_on "task"
   depends_on "cmake" => :build
 
+test do
+    system "make", "test"
+  end
 
   def install
     system "cmake", ".", *std_cmake_args
