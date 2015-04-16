@@ -14,9 +14,9 @@ class Influxdb < Formula
   end
 
   devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc14.tar.gz"
-    sha1 "054b81cacf9335006e07556f657212784e495f6d"
-    version "0.9.0-rc14"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc25.tar.gz"
+    sha1 "58be836daaaf11d8d810d04490ffb4a01d07419d"
+    version "0.9.0-rc25"
   end
 
   depends_on "go" => :build
@@ -36,7 +36,7 @@ class Influxdb < Formula
     end
 
     go_resource "github.com/boltdb/bolt" do
-      url "https://github.com/boltdb/bolt.git", :revision => "a7d19d8cd50cb700babad58d0643a4bb6ac8f36c"
+      url "https://github.com/boltdb/bolt.git", :revision => "8b138fd106636b40b4b6d43786e668ce658aa3d7"
     end
 
     go_resource "github.com/BurntSushi/toml" do
@@ -48,7 +48,7 @@ class Influxdb < Formula
     end
 
     go_resource "github.com/peterh/liner" do
-      url "https://github.com/peterh/liner.git", :revision => "d9335eee40a45a4f5d74524c90040d6fe6013d50"
+      url "https://github.com/peterh/liner.git", :revision => "fc147570057cd703778924569c41923b28611ca2"
     end
 
     go_resource "github.com/rakyll/statik" do
@@ -57,10 +57,6 @@ class Influxdb < Formula
 
     go_resource "golang.org/x/crypto" do
       url "https://go.googlesource.com/crypto.git", :revision => "1351f936d976c60a0a48d728281922cf63eafb8d"
-    end
-
-    go_resource "code.google.com/p/go-uuid" do
-      url "https://code.google.com/p/go-uuid/", :revision => "35bc42037350", :using => :hg
     end
   end
 
@@ -100,15 +96,13 @@ class Influxdb < Formula
       Language::Go.stage_deps resources, buildpath/"src"
 
       cd influxdb_path do
-        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc14 -X main.commit 09fd15f8711f0d74dc27de33625e3882adb55d26", "./..."
+        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc25 -X main.commit eb2eee21af0cde83157be37516193a3c86e10157", "./..."
         system "go", "install", "./..."
       end
 
       inreplace influxdb_path/"etc/config.sample.toml" do |s|
-        s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
-        s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-        s.gsub! "/tmp/influxdb/development/state", "#{var}/influxdb/state"
-        s.gsub! "/var/log/influxdb/influxd.log", "#{var}/influxdb/logs/influxd.log"
+        s.gsub! "/var/opt/influxdb/db", "#{var}/influxdb/data"
+        s.gsub! "/var/opt/influxdb/raft", "#{var}/influxdb/raft"
       end
 
       bin.install buildpath/"bin/influxd" => "influxd"

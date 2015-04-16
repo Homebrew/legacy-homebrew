@@ -1,20 +1,19 @@
 class Rethinkdb < Formula
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.16.3.tgz"
-  sha1 "87c58fd94393713ecf898b9e9d0db1ebd570f119"
+  url "http://download.rethinkdb.com/dist/rethinkdb-2.0.0-1.tgz"
+  sha1 "8eb3d5d1d5b4de62cb7dff8d53ed403ae7b9984e"
 
   bottle do
-    sha256 "412fe590323b38e77e59cc4c0c1712ab917f0710653eeb4f86f7c6b144e02f1d" => :yosemite
-    sha256 "c567a96faf2608b0bbdc3d2035758f4b83e4a46cef8ef5eb3c0fc58247af5009" => :mavericks
-    sha256 "859f4f780e4d3938d6ef3ad2fd53a1976cd8f643da5f66559e901e52ae7b45d1" => :mountain_lion
+    revision 1
+    sha256 "9f79ccf7a5996ab29bc6e4255113134c180cd053220d705a307e2ba8f623071d" => :yosemite
+    sha256 "40ec50be78182f269491d8f54b15f16e87601e5e19f5abf6528f392bd0962059" => :mavericks
+    sha256 "0f02561c97c5c6e4df680f9d693dad4ad6e5c768874ecbc856b5d55444277843" => :mountain_lion
   end
 
   depends_on :macos => :lion
-  # Embeds an older V8, whose gyp still requires the full Xcode
-  # Reported upstream: https://github.com/rethinkdb/rethinkdb/issues/2581
-  depends_on :xcode => :build
   depends_on "boost" => :build
   depends_on "openssl"
+  depends_on "icu4c"
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
@@ -24,16 +23,9 @@ class Rethinkdb < Formula
   def install
     args = ["--prefix=#{prefix}"]
 
-    # brew's v8 is too recent. rethinkdb uses an older v8 API
-    args += ["--fetch", "v8"]
-
     # rethinkdb requires that protobuf be linked against libc++
     # but brew's protobuf is sometimes linked against libstdc++
     args += ["--fetch", "protobuf"]
-
-    # support gcc with boost 1.56
-    # https://github.com/rethinkdb/rethinkdb/issues/3044#issuecomment-55471981
-    args << "CXXFLAGS=-DBOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES"
 
     system "./configure", *args
     system "make"

@@ -53,7 +53,7 @@ class Wine < Formula
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
   def require_universal_deps?
-    true
+    MacOS.prefer_64_bit?
   end
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch

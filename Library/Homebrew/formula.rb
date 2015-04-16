@@ -262,6 +262,8 @@ class Formula
     end
   end
 
+  # The currently installed version for this formula. Will raise an exception
+  # if the formula is not installed.
   def installed_version
     require 'keg'
     Keg.new(installed_prefix).version
@@ -272,41 +274,140 @@ class Formula
   def prefix(v=pkg_version)
     Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
+
   # The parent of the prefix; the named directory in the cellar containing all
   # installed versions of this software
   def rack; prefix.parent end
 
+  # The directory where the formula's binaries should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def bin;     prefix+'bin'     end
+
+  # The directory where the formula's documentation should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def doc;     share+'doc'+name end
+
+  # The directory where the formula's headers should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def include; prefix+'include' end
+
+  # The directory where the formula's info files should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def info;    share+'info'     end
+
+  # The directory where the formula's libraries should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def lib;     prefix+'lib'     end
+
+  # The directory where the formula's binaries should be installed.
+  # This is not symlinked into `HOMEBREW_PREFIX`.
+  # It is also commonly used to install files that we do not wish to be
+  # symlinked into HOMEBREW_PREFIX from one of the other directories and
+  # instead manually create symlinks or wrapper scripts into e.g. {#bin}.
   def libexec; prefix+'libexec' end
+
+  # The root directory where the formula's manual pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  # Often one of the more specific `man` functions should be used instead
+  # e.g. {#man1}
   def man;     share+'man'      end
+
+  # The directory where the formula's man1 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man1;    man+'man1'       end
+
+  # The directory where the formula's man2 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man2;    man+'man2'       end
+
+  # The directory where the formula's man3 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man3;    man+'man3'       end
+
+  # The directory where the formula's man4 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man4;    man+'man4'       end
+
+  # The directory where the formula's man5 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man5;    man+'man5'       end
+
+  # The directory where the formula's man6 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man6;    man+'man6'       end
+
+  # The directory where the formula's man7 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man7;    man+'man7'       end
+
+  # The directory where the formula's man8 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man8;    man+'man8'       end
+
+  # The directory where the formula's `sbin` binaries should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  # Generally we try to migrate these to {#bin} instead.
   def sbin;    prefix+'sbin'    end
+
+  # The directory where the formula's shared files should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def share;   prefix+'share'   end
 
+  # The directory where the formula's Frameworks should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  # This is not symlinked into `HOMEBREW_PREFIX`.
   def frameworks; prefix+'Frameworks' end
+
+  # The directory where the formula's kernel extensions should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  # This is not symlinked into `HOMEBREW_PREFIX`.
   def kext_prefix; prefix+'Library/Extensions' end
 
-  # configuration needs to be preserved past upgrades
+  # The directory where the formula's configuration files should be installed.
+  # Anything using `etc.install` will not overwrite other files on e.g. upgrades
+  # but will write a new file named `*.default`.
+  # This directory is not inside the `HOMEBREW_CELLAR` so it is persisted
+  # across upgrades.
   def etc; (HOMEBREW_PREFIX+'etc').extend(InstallRenamed) end
 
-  # generally we don't want var stuff inside the keg
+  # The directory where the formula's variable files should be installed.
+  # This directory is not inside the `HOMEBREW_CELLAR` so it is persisted
+  # across upgrades.
   def var; HOMEBREW_PREFIX+'var' end
 
+  # The directory where the formula's Bash completion files should be
+  # installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def bash_completion; prefix+'etc/bash_completion.d' end
+
+  # The directory where the formula's ZSH completion files should be
+  # installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def zsh_completion;  share+'zsh/site-functions'     end
 
-  # for storing etc, var files for later copying from bottles
+  # The directory used for as the prefix for {#etc} and {#var} files on
+  # installation so, despite not being in `HOMEBREW_CELLAR`, they are installed
+  # there after pouring a bottle.
   def bottle_prefix; prefix+'.bottle' end
 
   # override this to provide a plist
@@ -466,8 +567,6 @@ class Formula
   end
 
   # Standard parameters for CMake builds.
-  # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
-  # Setting it to Release would ignore our flags.
   # Setting CMAKE_FIND_FRAMEWORK to "LAST" tells CMake to search for our
   # libraries before trying to utilize Frameworks, many of which will be from
   # 3rd party installs.
@@ -475,8 +574,10 @@ class Formula
   # less consistent and the standard parameters are more memorable.
   def std_cmake_args
     %W[
+      -DCMAKE_C_FLAGS_RELEASE=
+      -DCMAKE_CXX_FLAGS_RELEASE=
       -DCMAKE_INSTALL_PREFIX=#{prefix}
-      -DCMAKE_BUILD_TYPE=None
+      -DCMAKE_BUILD_TYPE=Release
       -DCMAKE_FIND_FRAMEWORK=LAST
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
@@ -634,6 +735,7 @@ class Formula
     mktemp do
       @testpath = Pathname.pwd
       ENV["HOME"] = @testpath
+      setup_test_home @testpath
       test
     end
   ensure
@@ -657,6 +759,16 @@ class Formula
   end
 
   protected
+
+  def setup_test_home home
+    # keep Homebrew's site-packages in sys.path when testing with system Python
+    user_site_packages = home/"Library/Python/2.7/lib/python/site-packages"
+    user_site_packages.mkpath
+    (user_site_packages/"homebrew.pth").write <<-EOS.undent
+      import site; site.addsitedir("#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+      import sys; sys.path.insert(0, "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+    EOS
+  end
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -914,7 +1026,7 @@ class Formula
     end
 
     def go_resource name, &block
-      resource name, Resource::Go, &block
+      specs.each { |spec| spec.go_resource(name, &block) }
     end
 
     def depends_on dep

@@ -338,7 +338,7 @@ class FormulaAuditor
         problem "Fossies urls should be https://, not http (url is #{p})."
       when %r[^http://mirrors\.kernel\.org/]
         problem "mirrors.kernel urls should be https://, not http (url is #{p})."
-      when %r[^http://[^/]*\.bintray\.com/]
+      when %r[^http://([^/]*\.|)bintray\.com/]
         problem "Bintray urls should be https://, not http (url is #{p})."
       when %r[^http://tools\.ietf\.org/]
         problem "ietf urls should be https://, not http (url is #{p})."
@@ -720,7 +720,7 @@ class FormulaAuditor
     if @strict
       if line =~ /system (["'][^"' ]*(?:\s[^"' ]*)+["'])/
         bad_system = $1
-        unless %w[| < > & ;].any? { |c| bad_system.include? c }
+        unless %w[| < > & ; *].any? { |c| bad_system.include? c }
           good_system = bad_system.gsub(" ", "\", \"")
           problem "Use `system #{good_system}` instead of `system #{bad_system}` "
         end

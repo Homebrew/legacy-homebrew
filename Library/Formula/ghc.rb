@@ -4,9 +4,10 @@ class Ghc < Formula
   sha256 "92f3e3d67a637c587c49b61c704a670953509eb4b17a93c0c2ac153da4cd3aa0"
 
   bottle do
-    sha256 "823759e556e408caf5624be4372905bb28b11cbdf8d539b40e81a40d6980b709" => :yosemite
-    sha256 "c696456ac242241931a5164874c3995bed14a4115abe79dc72a8432320b34f92" => :mavericks
-    sha256 "9cd86dd822512f3b82e6c7fb6b83300cd686721cdbf468cdb8f1a2a14f9f46e3" => :mountain_lion
+    revision 1
+    sha256 "c2ec277a5445ece878b940838a93feed7a0c7733273ddcb26c07ec434f6ad800" => :yosemite
+    sha256 "1107ca8344e4bf2229d78cee7b3ee7a86f06d950f4a3b6c5c58d66675922935b" => :mavericks
+    sha256 "ad654abb4c2459b6cc764f275d5b6b141669e366f5051c58d871e54cb71a250c" => :mountain_lion
   end
 
   option "32-bit"
@@ -16,8 +17,14 @@ class Ghc < Formula
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
-  depends_on "gmp"
   depends_on "gcc" if MacOS.version == :mountain_lion
+
+  resource "gmp" do
+    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
+    mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
+    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
+    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+  end
 
   if build.build_32_bit? || !MacOS.prefer_64_bit?
     resource "binary" do
@@ -63,9 +70,23 @@ class Ghc < Formula
   end
 
   def install
-    # Copy gmp static libraries to build path (to avoid dynamic linking)
-    (buildpath/"gmp-lib-static").mkpath
-    cp Dir.glob("#{Formula["gmp"].lib}/*.a"), buildpath/"gmp-lib-static/"
+    ENV.m32 if build.build_32_bit?
+
+    # Build a static gmp (to avoid dynamic linking to ghc)
+    gmp_prefix = buildpath/"gmp-static"
+    resource("gmp").stage do
+      gmp_args = ["--prefix=#{gmp_prefix}", "--enable-cxx", "--enable-shared=no"]
+      gmp_args << "ABI=32" if build.build_32_bit?
+
+      # https://github.com/Homebrew/homebrew/issues/20693
+      gmp_args << "--disable-assembly" if build.build_32_bit? || build.bottle?
+
+      system "./configure", *gmp_args
+      system "make"
+      system "make", "check"
+      ENV.deparallelize
+      system "make", "install"
+    end
 
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
@@ -95,7 +116,6 @@ class Ghc < Formula
       ENV["LD"] = "ld"
 
       if build.build_32_bit? || !MacOS.prefer_64_bit?
-        ENV.m32 # Need to force this to fix build error on internal libgmp_ar.
         arch = "i386"
       else
         arch = "x86_64"
@@ -114,7 +134,8 @@ class Ghc < Formula
       system "./configure", "--prefix=#{prefix}",
                             "--build=#{arch}-apple-darwin",
                             "--with-gcc=#{ENV.cc}",
-                            "--with-gmp-includes=#{buildpath}/gmp-lib-static"
+                            "--with-gmp-includes=#{gmp_prefix}",
+                            "--with-gmp-libraries=#{gmp_prefix}"
       system "make"
 
       if build.with? "tests"

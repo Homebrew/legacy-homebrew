@@ -366,24 +366,6 @@ module Homebrew
       end
 
       test "brew", "uses", canonical_formula_name
-      installed = Utils.popen_read("brew", "list").split("\n")
-      dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
-                                      canonical_formula_name).split("\n")
-      dependencies -= installed
-      unchanged_dependencies = dependencies - @formulae
-      changed_dependences = dependencies - unchanged_dependencies
-
-      runtime_dependencies = Utils.popen_read("brew", "deps",
-                                              "--skip-build", "--skip-optional",
-                                              canonical_formula_name).split("\n")
-      build_dependencies = dependencies - runtime_dependencies
-      unchanged_build_dependencies = build_dependencies - @formulae
-
-      dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
-      dependents -= @formulae
-      dependents = dependents.map {|d| Formulary.factory(d)}
-
-      testable_dependents = dependents.select { |d| d.test_defined? && d.bottled? }
 
       formula = Formulary.factory(canonical_formula_name)
       installed_gcc = false
@@ -425,6 +407,25 @@ module Homebrew
         puts e.message
         return
       end
+
+      installed = Utils.popen_read("brew", "list").split("\n")
+      dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
+                                      canonical_formula_name).split("\n")
+      dependencies -= installed
+      unchanged_dependencies = dependencies - @formulae
+      changed_dependences = dependencies - unchanged_dependencies
+
+      runtime_dependencies = Utils.popen_read("brew", "deps",
+                                              "--skip-build", "--skip-optional",
+                                              canonical_formula_name).split("\n")
+      build_dependencies = dependencies - runtime_dependencies
+      unchanged_build_dependencies = build_dependencies - @formulae
+
+      dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
+      dependents -= @formulae
+      dependents = dependents.map {|d| Formulary.factory(d)}
+
+      testable_dependents = dependents.select { |d| d.test_defined? && d.bottled? }
 
       if (deps | reqs).any? { |d| d.name == "mercurial" && d.build? }
         test "brew", "install", "mercurial"
@@ -786,8 +787,10 @@ module Homebrew
           formula_packaged[formula_name] = true
         end
 
-        content_url = "https://api.bintray.com/content/homebrew/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
-        content_url += "?publish=1&override=1" if existing_bottle
+        content_url = "https://api.bintray.com/content/homebrew"
+        content_url += "/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
+        content_url += "?override=1"
+        content_url += "&publish=1" if existing_bottle
         curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
              "-T", filename, content_url
         puts

@@ -176,6 +176,8 @@ module Homebrew
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
+            sleep 2
+            safe_system "brew", "fetch", "--force-bottle", f.name
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"

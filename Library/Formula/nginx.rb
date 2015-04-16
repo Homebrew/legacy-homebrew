@@ -1,20 +1,19 @@
 class Nginx < Formula
   homepage "http://nginx.org/"
-  url "http://nginx.org/download/nginx-1.6.2.tar.gz"
-  sha1 "1a5458bc15acf90eea16353a1dd17285cf97ec35"
+  url "http://nginx.org/download/nginx-1.6.3.tar.gz"
+  sha1 "7ee99f16e91e655eb555d5f684155fc2a1f23b4f"
 
   devel do
-    url "http://nginx.org/download/nginx-1.7.10.tar.gz"
-    sha1 "df9d4feab4386b0c10a7817a1d765b5a1fdbd780"
+    url "http://nginx.org/download/nginx-1.7.12.tar.gz"
+    sha1 "346af3e6dd087a2189d6344c182208263eaa079b"
   end
 
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    revision 1
-    sha1 "67f757d71e7372b8ccd390c63c2d604792fde33e" => :yosemite
-    sha1 "25cc325ec468f84edd9300369a1845a87109c1d0" => :mavericks
-    sha1 "a75d729e45f85ccaf5ad53095d52b4ce1ae455f2" => :mountain_lion
+    sha256 "94bc77ec15fb747f6a47ae5a7f201c5a041163ef9fde511e9cfc3974fb8f77bc" => :yosemite
+    sha256 "8bd3d16fbadb67837d7f617a586b766d57847d2b0aa799c029444e0251fd88be" => :mavericks
+    sha256 "fcdb1db462bf7ab4d654d674bfc874702038b164653763aef7ef0f5cd0912c6e" => :mountain_lion
   end
 
   env :userpaths

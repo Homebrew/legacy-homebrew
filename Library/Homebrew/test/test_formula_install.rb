@@ -27,7 +27,7 @@ class InstallTests < Homebrew::TestCase
   end
 
   def test_a_basic_install
-    f = TestBall.new
+    f = Testball.new
 
     refute_predicate f, :installed?
 

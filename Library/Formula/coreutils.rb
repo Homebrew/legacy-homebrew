@@ -6,10 +6,10 @@ class Coreutils < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "380f3f5fbd0da33e69d19edba4ae30b7e7cf899c" => :yosemite
-    sha1 "edf8d1fc1ac7104b570bd72003e10ca3599302f5" => :mavericks
-    sha1 "fe7525c7ef751f07f1f7dd7b37d4f584d2891210" => :mountain_lion
+    revision 2
+    sha256 "e0db37da043274394646c8cfd50aa0aee7c57904f4517d772e4af07fd5d7712f" => :yosemite
+    sha256 "2c1748f05bdcd8ea55754e31094a0b6952363dc3a0d1cca7dbc0126b0270e2ee" => :mavericks
+    sha256 "22685bb77955bafd107abf0301af20b6bfa4704d8d510f8f2b57d811628361e2" => :mountain_lion
   end
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
@@ -57,6 +57,10 @@ class Coreutils < Formula
     coreutils_filenames(man1).each do |cmd|
       (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}" => cmd
     end
+
+    # Symlink non-conflicting binaries
+    bin.install_symlink "grealpath" => "realpath"
+    man1.install_symlink "grealpath.1" => "realpath.1"
   end
 
   def caveats; <<-EOS.undent

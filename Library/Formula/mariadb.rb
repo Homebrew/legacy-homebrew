@@ -4,9 +4,10 @@ class Mariadb < Formula
   sha1 "240253b3ee21dea5e2f501778e8ee72b32a5d052"
 
   bottle do
-    sha1 "30bb3e16ab50ced951a582b30b3609b799a3c236" => :yosemite
-    sha1 "7f7a3cc62d684820b12970239bbcf0566816e770" => :mavericks
-    sha1 "68e5b41c2c33d8ac237470f6b55318c7fe31815f" => :mountain_lion
+    revision 1
+    sha256 "5d592bf32afc34b950da714130cc9bc9790b8f30eae201ad2dbc22de249aa4f7" => :yosemite
+    sha256 "973a4e379af98525431e4adce16c85ed73634d59f26008b9524db2ef07b0cc1f" => :mavericks
+    sha256 "ee7ffc04be67f0f1100119a75b4b357e5e823164dab9266b611a36b74312d2a5" => :mountain_lion
   end
 
   devel do
@@ -123,6 +124,7 @@ class Mariadb < Formula
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
+    touch etc/"my.cnf.d/.homebrew_dont_prune_me"
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975

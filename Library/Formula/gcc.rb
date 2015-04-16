@@ -26,9 +26,10 @@ class Gcc < Formula
   revision 1
 
   bottle do
-    sha1 "8cc5eefa405e7d818a13fa1ad5a144b4442bed40" => :yosemite
-    sha1 "cc9726a7866c6ff09115f30812de81e5b810a72b" => :mavericks
-    sha1 "02ae2cff32c5a317552f4d0df993bc874b35d70c" => :mountain_lion
+    revision 1
+    sha256 "4e8d95ce716ec056ee6e29271aa9121f23e535678365e5e075aeda49249d76f0" => :yosemite
+    sha256 "710d0d5462900da808596940d81aee9ac14c4c25f38f6008051577497d70df44" => :mavericks
+    sha256 "c4d9704632d46fc1ec8e505185f95ce42b69fb12d9644dd894c420f72fb55c29" => :mountain_lion
   end
 
   option "with-java", "Build the gcj compiler"
@@ -101,6 +102,9 @@ class Gcc < Formula
       "--enable-stage1-checking",
       "--enable-checking=release",
       "--enable-lto",
+      # Use 'bootstrap-debug' build configuration to force stripping of object
+      # files prior to comparison during bootstrap (broken by Xcode 6.3).
+      "--with-build-config=bootstrap-debug",
       # A no-op unless --HEAD is built because in head warnings will
       # raise errors. But still a good idea to include.
       "--disable-werror",
