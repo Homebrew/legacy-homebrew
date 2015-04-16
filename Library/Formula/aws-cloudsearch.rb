@@ -8,20 +8,13 @@ class AwsCloudsearch < Formula
 
   def install
     inreplace "bin/cs-cmd", 'LIBDIR="${CS_HOME}/lib"', 'LIBDIR="${CS_HOME}/jars/lib"'
-    (prefix/"jars").install "lib"
-    prefix.install %w[bin conf help third-party]
-  end
-
-  def caveats; <<-EOS.undent
-    Add these to your shell profile:
-      export JAVA_HOME="$(/usr/libexec/java_home)"
-      export CS_HOME="#{prefix}"
-    EOS
+    (libexec/"jars").install "lib"
+    libexec.install %w[conf help third-party]
+    bin.install Dir["bin/*"]
+    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.7+").merge(:CS_HOME => libexec))
   end
 
   test do
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
-    ENV["CS_HOME"] = prefix
     system "#{bin}/cs-configure-from-batches", "-h"
   end
 end
