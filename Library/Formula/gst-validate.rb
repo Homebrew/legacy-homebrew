@@ -19,6 +19,7 @@ class GstValidate < Formula
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
+  depends_on "python"
   depends_on "gobject-introspection"
   depends_on "gstreamer"
   depends_on "gst-plugins-base"
