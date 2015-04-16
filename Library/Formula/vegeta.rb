@@ -2,8 +2,8 @@ require "language/go"
 
 class Vegeta < Formula
   homepage "https://github.com/tsenart/vegeta"
-  url "https://github.com/tsenart/vegeta/archive/v5.6.2.tar.gz"
-  sha1 "76c4b44ebf860343a638a71b2e574a8358b08fd8"
+  url "https://github.com/tsenart/vegeta/archive/v5.6.3.tar.gz"
+  sha1 "f20a34040319724e9bb9a1ad630f9eb1f4231073"
 
   bottle do
     cellar :any
@@ -23,13 +23,14 @@ class Vegeta < Formula
     mkdir_p buildpath/"src/github.com/tsenart/"
     ln_s buildpath, buildpath/"src/github.com/tsenart/vegeta"
     ENV["GOPATH"] = buildpath
+    ENV["CGO_ENABLED"] = "0"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "vegeta"
+    system "go", "build", "-ldflags", "-X main.Version v5.6.3", "-o", "vegeta"
     bin.install "vegeta"
   end
 
   test do
-    pipe_output("#{bin}/vegeta attack -duration=1s -rate=1", "GET http://localhost/")
+    pipe_output("#{bin}/vegeta attack -duration=1s -rate=1 | #{bin}/vegeta report", "GET http://localhost/")
   end
 end
