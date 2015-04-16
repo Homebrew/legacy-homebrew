@@ -18,6 +18,9 @@ module Homebrew
     Utils.safe_fork do
       if Sandbox.available? && ARGV.sandbox?
         sandbox = Sandbox.new
+        logd = HOMEBREW_LOGS/formula.name
+        logd.mkpath
+        sandbox.record_log(logd/"sandbox.postinstall.log")
         sandbox.allow_write_temp_and_cache
         sandbox.allow_write_log(formula)
         sandbox.allow_write_cellar(formula)
