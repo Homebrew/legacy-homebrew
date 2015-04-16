@@ -2,7 +2,6 @@ require "language/go"
 
 class Hugo < Formula
   homepage "http://gohugo.io/"
-  head "https://github.com/spf13/hugo.git"
   revision 1
 
   stable do
@@ -30,6 +29,7 @@ class Hugo < Formula
 
   # Install version of fsnotify needed by head
   head do
+    url "https://github.com/spf13/hugo.git"
     go_resource "gopkg.in/fsnotify.v1" do
       url "https://github.com/go-fsnotify/fsnotify.git",
         :revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
