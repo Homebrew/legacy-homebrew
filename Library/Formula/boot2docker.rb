@@ -7,9 +7,9 @@ class Boot2docker < Formula
   head "https://github.com/boot2docker/boot2docker-cli.git"
 
   bottle do
-    sha1 "9edfe7c2b3e6af2ab1fae03db849620a5eede333" => :yosemite
-    sha1 "6fb28f39d6885f3fdcf71fde8637ec0e37c97084" => :mavericks
-    sha1 "135046284eeae147622da8961508e18dd3578ae5" => :mountain_lion
+    sha256 "c2601ede439f44981e76a1e4b015f02741567f13a236f9cca297e51636a201ed" => :yosemite
+    sha256 "b030eecdf642ba8a0f39179eb6da4bc705f3f0f64ee6d4da675844a4216e4466" => :mavericks
+    sha256 "4b60130534c13092d8b603a7171bb42269cdea621023664762544b583658c6be" => :mountain_lion
   end
 
   depends_on "docker" => :recommended
