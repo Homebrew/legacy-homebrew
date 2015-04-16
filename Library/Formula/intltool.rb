@@ -4,10 +4,10 @@ class Intltool < Formula
   sha256 "67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd"
 
   bottle do
-    sha1 "88c0a273f4bb8c9df2e9250f7272117d55868b06" => :yosemite
-    sha1 "36c951e99ec642add05e84acef83cf8c2bdb4b91" => :mavericks
-    sha1 "edcf10d843211ca24dec1888281f3dfec76fa33b" => :mountain_lion
-    sha1 "b2736b5eb60c9d346ef6f041f3fd66b220daca29" => :lion
+    cellar :any
+    sha256 "da6c24f1cc40fdf6ae286ec003ecd779d0f866fe850e36f5e5953786fa45a561" => :yosemite
+    sha256 "5deeef3625d52f71d633e7510396d0028ec7b7ccf40c78b5d254bdf4214e6363" => :mavericks
+    sha256 "739e17a9f4e75913118a8ef0fd2a7ad7d645769cc61aeb1d6bcf760fe4bd48a7" => :mountain_lion
   end
 
   def install
