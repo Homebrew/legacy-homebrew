@@ -31,8 +31,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.7.5.tgz"
-    sha256 "44f236437777bcb27d8be887674754899437685303cc7d666427053e74c51f6f"
+    url "https://registry.npmjs.org/npm/-/npm-2.7.6.tgz"
+    sha256 "a9445167f68a42ffcdaa36f9f5c14a954237fce6898555c362e8785261fd72a1"
   end
 
   def install
@@ -105,13 +105,7 @@ class Node < Formula
   def caveats
     s = ""
 
-    if build.with? "npm"
-      s += <<-EOS.undent
-        If you update npm itself, do NOT use the npm update command.
-        The upstream-recommended way to update npm is:
-          npm install -g npm@latest
-      EOS
-    else
+    if build.without? "npm"
       s += <<-EOS.undent
         Homebrew has NOT installed npm. If you later install it, you should supplement
         your NODE_PATH with the npm module folder:
