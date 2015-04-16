@@ -23,16 +23,27 @@ class ClangOmp < Formula
     sha256 "2717115e5ba491e3b8119311f0d792420ba41be34a89733b9880eb3d3c09fbe5"
   end
 
+  resource "libcxx" do
+    url "https://github.com/llvm-mirror/libcxx/archive/release_35.tar.gz"
+    sha256 "df23b356ae1953de671d1dc9093568330e074bbe48cd6d93d16173a793550c71"
+  end
+
   needs :cxx11
 
   def install
-    resource("compiler-rt").stage { (buildpath/"projects/compiler-rt").install Dir["*"] }
-    resource("clang").stage { (buildpath/"tools/clang").install Dir["*"] }
+    (buildpath/"projects/compiler-rt").install resource("compiler-rt")
+    (buildpath/"tools/clang").install resource("clang")
+    (buildpath/"projects/libcxx").install resource "libcxx"
 
     system "./configure", "--prefix=#{libexec}", "--enable-cxx11", "--enable-libcpp"
+    system "make"
     system "make", "install"
 
+    system "make", "-C", "projects/libcxx", "install",
+      "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
+
     bin.install_symlink libexec/"bin/clang" => "clang-omp"
+    bin.install_symlink libexec/"bin/clang" => "clang-omp++"
   end
 
   test do
