@@ -2,8 +2,8 @@ class Boot2docker < Formula
   homepage "https://github.com/boot2docker/boot2docker-cli"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of docker too
-  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.5.0",
-    :revision => "ccd9032caf251ca63edaf3a0808456fa5d5f9057"
+  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.6.0",
+    :revision => "9894ae9dbe350c5b96602ed8b9bddb827d9b322b"
   head "https://github.com/boot2docker/boot2docker-cli.git"
 
   bottle do
