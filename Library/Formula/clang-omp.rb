@@ -27,7 +27,7 @@ class ClangOmp < Formula
   def install
     (buildpath/"projects/compiler-rt").install resource("compiler-rt")
     (buildpath/"tools/clang").install resource("clang")
-	(buildpath/"projects/libcxx").install resource "libcxx"
+    (buildpath/"projects/libcxx").install resource "libcxx"
 
     system "./configure", "--prefix=#{libexec}", "--enable-cxx11", "--enable-libcpp"
     system "make"
