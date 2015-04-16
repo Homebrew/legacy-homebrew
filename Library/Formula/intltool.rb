@@ -1,9 +1,7 @@
-require "formula"
-
 class Intltool < Formula
-  homepage "http://www.freedesktop.org/wiki/Software/intltool"
-  url "http://launchpad.net/intltool/trunk/0.50.2/+download/intltool-0.50.2.tar.gz"
-  sha1 "7fddbd8e1bf94adbf1bc947cbf3b8ddc2453f8ad"
+  homepage "https://wiki.freedesktop.org/www/Software/intltool"
+  url "https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz"
+  sha256 "67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd"
 
   bottle do
     sha1 "88c0a273f4bb8c9df2e9250f7272117d55868b06" => :yosemite
@@ -13,7 +11,12 @@ class Intltool < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-silent-rules"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"intltool-extract", "--help"
   end
 end
