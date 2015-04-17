@@ -1,9 +1,8 @@
-require 'formula'
-
 class Buildapp < Formula
-  homepage 'http://www.xach.com/lisp/buildapp/'
-  url 'https://github.com/xach/buildapp/archive/release-1.5.3.tar.gz'
-  sha1 'a0601d144ee72719bd92298ca90e155234de26d0'
+  homepage "http://www.xach.com/lisp/buildapp/"
+  url "https://github.com/xach/buildapp/archive/release-1.5.4.tar.gz"
+  sha256 "8a3918d740f21fd46c18b08e066fec7525dad790b1355a1e3e5950f2d3ca4291"
+  head "https://github.com/xach/buildapp.git"
 
   bottle do
     sha1 "b5c93a13dea8b09844376e285fbc531ae24ab608" => :yosemite
@@ -11,7 +10,7 @@ class Buildapp < Formula
     sha1 "eeb8f81c772672fbffdeca7e659cd8f57039dc1c" => :mountain_lion
   end
 
-  depends_on 'sbcl'
+  depends_on "sbcl"
 
   def install
     bin.mkpath
