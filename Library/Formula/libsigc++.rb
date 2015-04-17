@@ -4,10 +4,9 @@ class Libsigcxx < Formula
   sha256 "540443492a68e77e30db8d425f3c0b1299c825bf974d9bfc31ae7efafedc19ec"
 
   bottle do
-    revision 1
-    sha1 "92cf0ff33a45ef65d21897c35b27596af3839d7d" => :yosemite
-    sha1 "6d1f631fc0c08e0d1f424012c7fbc78010decf99" => :mavericks
-    sha1 "9495301790cc50a4719afeb26658a9d43e3b58dd" => :mountain_lion
+    sha256 "20c65462fad1a772c4dd0d001d94641577c1be2760ad6fa08ba6945b1a303761" => :yosemite
+    sha256 "1df44b807cd8607f84917d53439718c94237139702b1fe533f3fc4fd3d1de014" => :mavericks
+    sha256 "37ccdaab3df9890cd9796dae58e16d8e49defca6d889be0d763cadfdd2f9bc0b" => :mountain_lion
   end
 
   option :cxx11
