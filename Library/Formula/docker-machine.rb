@@ -4,6 +4,7 @@ class DockerMachine < Formula
   homepage "https://docs.docker.com/machine"
   url "https://github.com/docker/machine/archive/v0.1.0.tar.gz"
   sha256 "832f1e60b4171f9590368fa5c51c1ed1adec32367d13250a0554552d0954ff36"
+  head "https://github.com/docker/machine.git"
 
   bottle do
     cellar :any
