@@ -1,7 +1,7 @@
 class AppscaleTools < Formula
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.2.0.tar.gz"
-  sha1 "74420507e21e14c780b020d487552964ecd1748f"
+  url "https://github.com/AppScale/appscale-tools/archive/2.3.0.zip"
+  sha1 "415b02e94c4beb059b7c9043000054d15a72d918"
   head "https://github.com/AppScale/appscale-tools.git"
 
   bottle do
