@@ -4,9 +4,9 @@ class Emscripten < Formula
   sha256 "d566f743923008ad11768941f51b2079ba4019b0b41c5b3e53c1a655d4f4e5a7"
 
   bottle do
-    sha256 "fd40a8cafea9b5bd9313f210bb6467a0af056d2e7813ec914b1429ab3d09e7f9" => :yosemite
-    sha256 "28d539e95c6073184efdef768a3258a03c5d4797b7458818a7840a1bcbe40f84" => :mavericks
-    sha256 "db0679e1b4e5f90878fbfa85787273fccce284cd0b15e3ee87da5dba57f82641" => :mountain_lion
+    sha256 "e152e4c9ae71b8578c094b80cbd030949445a273352ad3d5edd7242d08bf9182" => :yosemite
+    sha256 "e0185625c159aa12703b1f23fc5e151772f94386f1360267fcdf657cd2e01c8f" => :mavericks
+    sha256 "d68d9eea86d1888354990babf90d0fd5bc44e5f97288c26730056bfe98444ebb" => :mountain_lion
   end
 
   head do
