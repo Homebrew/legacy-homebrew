@@ -1,7 +1,7 @@
 require "language/go"
 
 class Gauge < Formula
-  homepage "http://getgauge.io"
+  homepage "https://getgauge.io"
   url "https://github.com/getgauge/gauge/archive/v0.1.0.tar.gz"
   sha1 "2abd107530d4a4295fe6ccf5699f3188ce1f7a99"
 
