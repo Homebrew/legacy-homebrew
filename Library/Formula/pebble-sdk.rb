@@ -108,6 +108,11 @@ class PebbleSdk < Formula
   end
 
   def caveats; <<-EOS.undent
+    To use the Pebble SDK, you must read and agree to the Pebble Terms of Use
+    and the Pebble Developer License at:
+      http://developer.getpebble.com/legal/terms-of-use/
+      http://developer.getpebble.com/legal/sdk-license/
+
     Documentation and examples can be found in
       #{doc}
     EOS
