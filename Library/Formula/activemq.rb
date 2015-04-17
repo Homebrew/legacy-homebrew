@@ -11,9 +11,9 @@ class Activemq < Formula
     (bin/"activemq").write_env_script libexec/"bin/activemq", Language::Java.java_home_env("1.6+")
     (bin/"activemq-admin").write_env_script libexec/"bin/activemq-admin", Language::Java.java_home_env("1.6+")
   end
-  
+
   plist_options :manual => "activemq start"
-  
+
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
@@ -37,7 +37,7 @@ class Activemq < Formula
     </plist>
     EOS
   end
-  
+
   test do
     system "#{bin}/activemq-admin", "browse", "-h"
   end
