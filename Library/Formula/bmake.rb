@@ -1,9 +1,7 @@
-require "formula"
-
 class Bmake < Formula
   homepage "http://www.crufty.net/help/sjg/bmake.html"
-  url "http://www.crufty.net/ftp/pub/sjg/bmake-20141111.tar.gz"
-  sha1 "a6f670210f9ccde09a0e93a29a766f4726ddfeed"
+  url "http://www.crufty.net/ftp/pub/sjg/bmake-20150410.tar.gz"
+  sha256 "72727f5ddce4448a0136a1e2c536f7627440e3e482700b43c666f96737b2bfce"
 
   bottle do
     sha1 "bfb80b95386a6e9c439167573d58a9623650708e" => :yosemite
@@ -25,16 +23,15 @@ class Bmake < Formula
   end
 
   test do
-    (testpath/"Makefile").write <<-EOS
-all: hello
+    (testpath/"Makefile").write <<-EOS.undent
+      all: hello
 
-hello:
-\t@echo 'Test successful.'
+      hello:
+      \t@echo 'Test successful.'
 
-clean:
-\trm -rf Makefile
-EOS
-
+      clean:
+      \trm -rf Makefile
+    EOS
     system bin/"bmake"
     system bin/"bmake", "clean"
   end
