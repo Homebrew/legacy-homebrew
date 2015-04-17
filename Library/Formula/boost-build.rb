@@ -1,5 +1,3 @@
-require "formula"
-
 class BoostBuild < Formula
   homepage "http://boost.org/boost-build2/"
   url "https://github.com/boostorg/build/archive/2014.10.tar.gz"
