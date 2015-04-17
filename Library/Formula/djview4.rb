@@ -5,6 +5,12 @@ class Djview4 < Formula
   url 'https://downloads.sourceforge.net/project/djvu/DjView/4.10/djview-4.10.3.tar.gz'
   sha1 '5e31fec525d05744454bd0b74f0375acde1ad66c'
 
+  bottle do
+    sha256 "5290a8aef17bd16879e382315d0aa34585ddcbf0512315a2829f299ecb26a08a" => :yosemite
+    sha256 "b0f55aae6abd6d7a16ea2b16ad6ee34d695558a4093847693f02a5f26a52e28a" => :mavericks
+    sha256 "62b602b5145f8f69f63c9b16e7b7c740d261bd6a17e3b03799b06aceb5701c0d" => :mountain_lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'djvulibre'
   depends_on 'qt'
