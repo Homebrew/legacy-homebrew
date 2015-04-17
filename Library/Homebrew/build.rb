@@ -36,13 +36,6 @@ class Build
     end
   end
 
-  def pre_superenv_hacks
-    # Allow a formula to opt-in to the std environment.
-    if (formula.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
-      ARGV.unshift "--env=std"
-    end
-  end
-
   def effective_build_options_for(dependent)
     args  = dependent.build.used_options
     args |= Tab.for_formula(dependent).used_options
@@ -83,7 +76,6 @@ class Build
       fixopt(dep) unless dep.opt_prefix.directory?
     end
 
-    pre_superenv_hacks
     ENV.activate_extensions!
 
     if superenv?
