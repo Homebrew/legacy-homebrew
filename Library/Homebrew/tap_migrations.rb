@@ -126,6 +126,7 @@ TAP_MIGRATIONS = {
   "pcb" => "homebrew/x11",
   "pdf2image" => "homebrew/x11",
   "pdf2svg" => "homebrew/x11",
+  "pebble-sdk" => "pebble/pebble-sdk",
   "pgplot" => "homebrew/x11",
   "pixie" => "homebrew/x11",
   "pjsip" => "homebrew/boneyard",
