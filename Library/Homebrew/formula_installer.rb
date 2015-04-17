@@ -435,7 +435,12 @@ class FormulaInstaller
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
-    args << "--env=#{ARGV.env}" if ARGV.env
+
+    if ARGV.env
+      args << "--env=#{ARGV.env}"
+    elsif formula.env.std? || formula.recursive_dependencies.any? { |d| d.name == "scons" }
+      args << "--env=std"
+    end
 
     if formula.head?
       args << "--HEAD"
