@@ -49,8 +49,8 @@ class Fig < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
-    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.3.tar.gz"
+    sha256 "55d7f5619daae94ec49ee81ed8c865e5a2a47f0bbf8e06cf94636bee103eaf65"
   end
 
   resource "websocket-client" do
