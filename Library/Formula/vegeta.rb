@@ -7,9 +7,9 @@ class Vegeta < Formula
 
   bottle do
     cellar :any
-    sha256 "b7b3d8bdee9cf09db7ed21d4efd6af7551ab8814417eb73af47a1f28eccee8ec" => :yosemite
-    sha256 "7728471232648de34d8ca376515268602a227c42f358e3317716d945734cdaaa" => :mavericks
-    sha256 "ff254ccd57e84760fd2474d186cddf16f32074321469486eca4d8dfea5afe618" => :mountain_lion
+    sha256 "d4a3eabe14e2bd901f6e11429343cc759db9e527adf22f03ce20e7ca6cbd9148" => :yosemite
+    sha256 "2005307d4b6a4c98ff564225692cae26c70f0f68d72ad6321ae6bb646b4bdb94" => :mavericks
+    sha256 "8b54aff2e4b930ea3253ed5022a028e0a4af64d34a75a5a26b4b9128cbe0ba39" => :mountain_lion
   end
 
   depends_on "go" => :build
