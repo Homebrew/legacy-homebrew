@@ -5,6 +5,13 @@ class Pgpdump < Formula
 
   head "https://github.com/kazu-yamamoto/pgpdump.git"
 
+  bottle do
+    cellar :any
+    sha256 "6498e4961fca95045a658fd53f8259e5ef4f1fa29cbf6e98c400ba7936fe423b" => :yosemite
+    sha256 "776f42e2b4f27dfdfb1ef2700428bd32b4ad12cb2408537a32b3b488aea6f273" => :mavericks
+    sha256 "8a4a87acaa4bd684365fdf9cef4cf58fcef591ba5230c5ff7f02db4ca3738d53" => :mountain_lion
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
