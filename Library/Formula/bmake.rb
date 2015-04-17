@@ -1,8 +1,9 @@
 class Bmake < Formula
   desc "Portable version of NetBSD make(1)"
   homepage "http://www.crufty.net/help/sjg/bmake.html"
-  url "http://www.crufty.net/ftp/pub/sjg/bmake-20150411.tar.gz"
-  sha256 "67fe93e078ea64719fb4123a638cc798241fe70d1fa5d5e08e64751f69a06b82"
+  url "http://www.crufty.net/ftp/pub/sjg/bmake-20150606.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/b/bmake/bmake_20150606.orig.tar.gz"
+  sha256 "c3147540fd5f64d5f2c1c7cd5d65d64d69bc5573e02707774d8eee349f043946"
 
   bottle do
     sha256 "d04c6d1053a37523def6b64436b892740234ccb2478d35ddb389cf9fcba78cbb" => :yosemite
