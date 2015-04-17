@@ -1,7 +1,7 @@
 require "language/go"
 
 class Hugo < Formula
-  homepage "http://gohugo.io/"
+  homepage "https://gohugo.io/"
   revision 1
 
   stable do
