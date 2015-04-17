@@ -1,9 +1,7 @@
-require "formula"
-
 class Libsigcxx < Formula
   homepage "http://libsigc.sourceforge.net"
-  url "http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.4/libsigc++-2.4.0.tar.xz"
-  sha256 "7593d5fa9187bbad7c6868dce375ce3079a805f3f1e74236143bceb15a37cd30"
+  url "http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.4/libsigc++-2.4.1.tar.xz"
+  sha256 "540443492a68e77e30db8d425f3c0b1299c825bf974d9bfc31ae7efafedc19ec"
 
   bottle do
     revision 1
@@ -20,5 +18,21 @@ class Libsigcxx < Formula
     system "make"
     system "make", "check"
     system "make", "install"
+  end
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <sigc++/sigc++.h>
+
+      void somefunction(int arg) {}
+
+      int main(int argc, char *argv[])
+      {
+         sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
+         return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp",
+                   "-L#{lib}", "-lsigc-2.0", "-I#{include}/sigc++-2.0", "-I#{lib}/sigc++-2.0/include", "-o", "test"
+    system "./test"
   end
 end
