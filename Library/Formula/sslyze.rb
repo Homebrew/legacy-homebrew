@@ -4,6 +4,13 @@ class Sslyze < Formula
   sha256 "d0adf9be09d5b27803a923dfabd459c84a2eddb457dac2418f1bf074153f8f93"
   version "0.11.0"
 
+  bottle do
+    cellar :any
+    sha256 "af01a93c9a4b8d8e38c4b03255fd522234fdb24165cdde6b5a910187fa9fa16b" => :yosemite
+    sha256 "63f3129057130bc335464e64ac4a408947c39f58d04b051a55360644b05bc803" => :mavericks
+    sha256 "6ef8e398d5ecd7b71e80d8fe113c23acd5be75055bf8253dbb42e2e4a0e825d8" => :mountain_lion
+  end
+
   depends_on :arch => :x86_64
   depends_on :python if MacOS.version <= :snow_leopard
 
