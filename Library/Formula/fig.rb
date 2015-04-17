@@ -1,7 +1,7 @@
 class Fig < Formula
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/1.1.0.tar.gz"
-  sha1 "175066934c19f455606b16f1b4e4b9f26fc3f599"
+  url "https://github.com/docker/compose/archive/1.2.0.tar.gz"
+  sha1 "89c2626f6d03ca18440a67470272f1383c2ca867320abf710abdab96d467868d"
 
   bottle do
     revision 1
@@ -19,8 +19,8 @@ class Fig < Formula
   depends_on "boot2docker" => :recommended
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.7.2.tar.gz"
-    sha1 "c526e95ea974b2a40392dbe00d0ecbfffa6c5d4b"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.1.0.tar.gz"
+    sha256 "6a07eb56b234719e89d3038c24f9c870b6f1ee0b58080120e865e2752673cd94"
   end
 
   resource "pyyaml" do
