@@ -43,7 +43,7 @@ class X264 < Formula
     elsif Formula["gpac"].installed?
       args << "--disable-lsmash"
     end
-    args << "--bit-depth=10" if build.include? "10-bit"
+    args << "--bit-depth=10" if build.with? "10-bit"
 
     system "./configure", *args
     system "make", "install"
