@@ -34,6 +34,7 @@ class Nginx < Formula
   def install
     # Changes default port to 8080
     inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
+    open("conf/nginx.conf", "a") {|f| f.puts "include servers/*;" }
 
     pcre = Formula["pcre"]
     openssl = Formula["openssl"]
@@ -78,6 +79,8 @@ class Nginx < Formula
     system "make"
     system "make", "install"
     man8.install "objs/nginx.8"
+
+    (etc/"nginx/servers").mkpath
     (var/"run/nginx").mkpath
   end
 
@@ -125,6 +128,8 @@ class Nginx < Formula
 
     The default port has been set in #{etc}/nginx/nginx.conf to 8080 so that
     nginx can run without sudo.
+
+    nginx will load all files in #{etc}/nginx/servers/.
     EOS
     s << passenger_caveats if build.with? "passenger"
     s
