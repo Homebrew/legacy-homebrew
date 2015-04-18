@@ -1,9 +1,7 @@
-require "formula"
-
 class Npth < Formula
   homepage "https://gnupg.org/index.html"
-  url "ftp://ftp.gnupg.org/gcrypt/npth/npth-1.1.tar.bz2"
-  sha1 "597ce74402e5790553a6273130b214d7ddd0b05d"
+  url "ftp://ftp.gnupg.org/gcrypt/npth/npth-1.2.tar.bz2"
+  sha256 "6ddbdddb2cf49a4723f9d1ad6563c480d6760dcb63cb7726b8fc3bc2e1b6c08a"
 
   bottle do
     cellar :any
