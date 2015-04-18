@@ -1,18 +1,16 @@
-require "formula"
-
 class Pow < Formula
   homepage "http://pow.cx/"
   url "http://get.pow.cx/versions/0.5.0.tar.gz"
-  sha1 "ef44f886a444340b91fb28e2fab3ce5471837a08"
+  sha256 "2e5f74d7c2f44004eb722eddf37356cd09b5563fde987b4c222fa6947ce388b7"
 
-  depends_on "node"
+  depends_on :node
 
   def install
     libexec.install Dir["*"]
     (bin/"pow").write <<-EOS.undent
       #!/bin/sh
       export POW_BIN="#{bin}/pow"
-      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/lib/command.js" "$@"
+      exec node "#{libexec}/lib/command.js" "$@"
     EOS
   end
 
@@ -30,5 +28,9 @@ class Pow < Formula
         sudo launchctl load -w /Library/LaunchDaemons/cx.pow.firewall.plist
         launchctl load -w ~/Library/LaunchAgents/cx.pow.powd.plist
     EOS
+  end
+
+  test do
+    system bin/"pow", "--print-config"
   end
 end
