@@ -42,12 +42,10 @@ module Homebrew
   def cleanup_formula f
     if f.installed?
       eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.pkg_version > k.version }
-      eligible_kegs.each do |keg|
-        if f.can_cleanup?
-          cleanup_keg(keg)
-        else
-          opoo "Skipping (old) keg-only: #{keg}"
-        end
+      if eligible_kegs.any? && f.can_cleanup?
+        eligible_kegs.each { |keg| cleanup_keg(keg) }
+      else
+        eligible_kegs.each { |keg| opoo "Skipping (old) keg-only: #{keg}" }
       end
     elsif f.rack.subdirs.length > 1
       # If the cellar only has one version installed, don't complain
