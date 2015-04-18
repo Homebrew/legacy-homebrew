@@ -6,8 +6,8 @@ class Isl < Formula
   # and update isl_version() function accordingly.  All other names will
   # result in isl_version() function returning "UNKNOWN" and hence break
   # package detection.
-  url "http://isl.gforge.inria.fr/isl-0.14.tar.xz"
-  sha1 "259678a0b1d12f8bc45b9aaeaa14feded9d5b3e1"
+  url "http://isl.gforge.inria.fr/isl-0.14.1.tar.xz"
+  sha256 "8882c9e36549fc757efa267706a9af733bb8d7fe3905cbfde43e17a89eea4675"
 
   bottle do
     cellar :any
