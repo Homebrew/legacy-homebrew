@@ -1,5 +1,6 @@
 require 'cmd/tap'
 require 'cmd/untap'
+require 'formula'
 
 module Homebrew
   def update
@@ -251,7 +252,7 @@ class Report
     # Key Legend: Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
 
     dump_formula_report :A, "New Formulae"
-    dump_formula_report :M, "Updated Formulae"
+    dump_formula_report :M, "Upgraded Formulae"
     dump_formula_report :D, "Deleted Formulae"
   end
 
@@ -275,12 +276,15 @@ class Report
       else
         path.basename(".rb").to_s
       end
-    end.sort
+    end.sort.uniq
   end
 
   def dump_formula_report key, title
     formula = select_formula(key)
+    formula.map! {|f| Formula.factory(f) rescue nil }
+    formula.select! {|f| f && f.installed? }
     unless formula.empty?
+      formula.map! {|f| "#{f} #{f.version}" } if key == :M
       ohai title
       puts_columns formula
     end
