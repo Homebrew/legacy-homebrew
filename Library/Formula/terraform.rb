@@ -2,7 +2,7 @@ require "formula"
 require "language/go"
 
 class Terraform < Formula
-  homepage "http://www.terraform.io/"
+  homepage "https://www.terraform.io/"
   url "https://github.com/hashicorp/terraform/archive/v0.4.2.tar.gz"
   sha1 "4d83a6db2879d277ffd662d1c0dcaad1da0e75e9"
 
