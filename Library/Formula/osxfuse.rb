@@ -1,6 +1,7 @@
 class Osxfuse < Formula
   homepage "https://osxfuse.github.io/"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.5"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.6",
+                                                :revision => "6ba1962e153e7a76f43bc2f80b0ba0ef2da2cef9"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
