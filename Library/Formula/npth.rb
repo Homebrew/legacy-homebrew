@@ -1,5 +1,3 @@
-require "formula"
-
 class Npth < Formula
   homepage "https://gnupg.org/index.html"
   url "ftp://ftp.gnupg.org/gcrypt/npth/npth-1.2.tar.bz2"
