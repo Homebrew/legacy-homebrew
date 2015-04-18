@@ -1,7 +1,7 @@
 class Stunnel < Formula
   homepage "https://www.stunnel.org/"
   url "https://www.stunnel.org/downloads/stunnel-5.15.tar.gz"
-  mirror "http://www.usenix.org.uk/mirrors/stunnel/stunnel-5.15.tar.gz"
+  mirror "https://www.usenix.org.uk/mirrors/stunnel/stunnel-5.15.tar.gz"
   sha256 "58ff4645eb5d6bd64e6ddedaa683534302f75625c531e8a6364badcac0541cba"
 
   bottle do
@@ -43,7 +43,7 @@ class Stunnel < Formula
       # 1.commonName                  = DNS alias of your server
       # 2.commonName                  = DNS alias of your server
       # ...
-      # See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
+      # See https://web.archive.org/web/20020207210031/http://home.netscape.com/eng/security/ssl_2.0_certificate.html
       # to see how Netscape understands commonName.
 
       [ cert_type ]
