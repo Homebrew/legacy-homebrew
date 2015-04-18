@@ -124,12 +124,9 @@ class Formula
       true
     elsif opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
-      !Formula.installed.
-        select{ |ff| ff.deps.map{ |d| d.to_s }.include? name }.
-        map{ |ff| ff.rack.subdirs rescue [] }.
-        flatten.
-        map{ |keg_path| Tab.for_keg(keg_path).HEAD }.
-        include? nil
+      Formula.installed.
+        select { |f| f.deps.any? { |d| d.name == name } }.
+        all? { |f| f.rack.subdirs.all? { |keg| Tab.for_keg(keg).HEAD } }
     end
   end
 end
