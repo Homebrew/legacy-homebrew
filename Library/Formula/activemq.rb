@@ -22,8 +22,6 @@ class Activemq < Formula
       <dict>
         <key>Label</key>
         <string>#{plist_name}</string>
-        <key>Program</key>
-        <string>#{opt_bin}/activemq</string>
         <key>RunAtLoad</key>
         <true/>
         <key>WorkingDirectory</key>
