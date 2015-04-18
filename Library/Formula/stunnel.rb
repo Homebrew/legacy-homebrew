@@ -59,6 +59,7 @@ class Stunnel < Formula
                           "--disable-libwrap",
                           "--disable-systemd",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
+
     system "make", "install", "cert"
   end
 
