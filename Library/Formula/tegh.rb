@@ -1,17 +1,15 @@
-require 'formula'
-
 class Tegh < Formula
-  homepage 'https://github.com/D1plo1d/tegh'
-  head 'https://github.com/D1plo1d/tegh.git', :branch => 'develop'
-  url 'https://s3.amazonaws.com/tegh_binaries/0.3.1/tegh-0.3.1-brew.tar.gz'
-  sha1 '7061165db148a27d229563e340d6c691b4fd92a8'
+  homepage "https://github.com/D1plo1d/tegh"
+  url "https://s3.amazonaws.com/tegh_binaries/0.3.1/tegh-0.3.1-brew.tar.gz"
+  sha256 "1aa9bdcc9579e8d56ab6a7b50704a1f32a6e5b8950ee2042f463b0a3b31daf4e"
+  head "https://github.com/D1plo1d/tegh.git", :branch => "develop"
 
-  depends_on 'node'
+  depends_on :node
 
   def install
     rm "bin/tegh.bat"
     system "npm", "install" if build.head?
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 end
