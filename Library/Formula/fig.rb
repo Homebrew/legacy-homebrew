@@ -4,10 +4,9 @@ class Fig < Formula
   sha256 "89c2626f6d03ca18440a67470272f1383c2ca867320abf710abdab96d467868d"
 
   bottle do
-    revision 1
-    sha1 "c1fbe70891a82e92aeaa417622e05bf2dd6c6bb5" => :yosemite
-    sha1 "a8faccbb07062db68e3b4ef94983d6bdc0c0c673" => :mavericks
-    sha1 "824ac264234c2769f80cba86f05ba7649b588e1d" => :mountain_lion
+    sha256 "bf8a80a39a59185add39a12e6da2b53e19e08bb09d823b1cbaf2ffdcf797c3d7" => :yosemite
+    sha256 "e85b4185703cea5312d6828c394fca4153802851ed202f4a0cfc246a4b7ae898" => :mavericks
+    sha256 "95f304cda3721315ac6ec23fb7f5d1760955150f1ec5b13e5e7c031f5283d176" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
