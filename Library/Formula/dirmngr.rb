@@ -18,6 +18,11 @@ class Dirmngr < Formula
   depends_on "libksba"
   depends_on "pth"
 
+  patch :p0 do
+    url "http://bugs.g10code.com/gnupg/file419/dirmngr-pth-fix.patch"
+    sha256 "0efbcf1e44177b3546fe318761c3386a11310a01c58a170ef60df366e5160beb"
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -28,5 +33,6 @@ class Dirmngr < Formula
 
   test do
     system "dirmngr-client", "--help"
+    system "dirmngr", "--help"
   end
 end
