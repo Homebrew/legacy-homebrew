@@ -30,7 +30,9 @@ class Trafficserver < Formula
 
   # Patch 1: OpenSSL 1.0.2+ tls1.h detection, remove on 5.3.0 (upstream bug TS-3443)
   # Patch 2: Xcode 6.3 compile fix, remove on 5.3.0 (upstream bug TS-3302)
-  patch :DATA if build.stable?
+  stable do
+    patch :DATA
+  end
 
   def install
     # Needed for correct ./configure detections.
