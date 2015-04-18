@@ -1,7 +1,7 @@
 class Zshdb < Formula
   homepage "https://github.com/rocky/zshdb"
-  url "https://downloads.sourceforge.net/project/bashdb/zshdb/0.08/zshdb-0.08.tar.bz2"
-  sha1 "29f860d0130debe6a966ee1e12f2f3046c78897b"
+  url "https://downloads.sourceforge.net/project/bashdb/zshdb/0.9/zshdb-0.09.tar.bz2"
+  sha256 "3ad756485a5bfd014649f4ede15187d0cf070919d2ddb15b4ded61e8990e8d4f"
 
   head do
     url "https://github.com/rocky/zshdb.git"
@@ -12,10 +12,7 @@ class Zshdb < Formula
   depends_on "zsh"
 
   def install
-    if build.head?
-      system "autoreconf", "-fvi"
-      system "autoconf"
-    end
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -27,7 +24,7 @@ class Zshdb < Formula
     require "open3"
     Open3.popen3("#{bin}/zshdb -c 'echo test'") do |stdin, stdout, _|
       stdin.write "exit\n"
-      !!(stdout.read =~ /That's all, folks/)
+      assert_match(/That's all, folks/, stdout.read)
     end
   end
 end
