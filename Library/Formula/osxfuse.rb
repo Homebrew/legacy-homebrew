@@ -1,6 +1,7 @@
 class Osxfuse < Formula
   homepage "https://osxfuse.github.io/"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.5"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.6",
+                                                :revision => "6ba1962e153e7a76f43bc2f80b0ba0ef2da2cef9"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
@@ -24,9 +25,6 @@ class Osxfuse < Formula
   depends_on "gettext" => :build
 
   conflicts_with "fuse4x", :because => "both install `fuse.pc`"
-
-  # allow building with Xcode 6.3
-  patch :DATA
 
   def install
     # Do not override Xcode build settings
@@ -53,56 +51,3 @@ class Osxfuse < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/build.sh b/build.sh
-index bf4b006..393e2eb 100755
---- a/build.sh
-+++ b/build.sh
-@@ -105,6 +105,9 @@ readonly M_XCODE61_COMPILER="com.apple.compilers.llvm.clang.1_0"
- declare M_XCODE62=""
- declare M_XCODE62_VERSION=6.2
- readonly M_XCODE62_COMPILER="com.apple.compilers.llvm.clang.1_0"
-+declare M_XCODE63=""
-+declare M_XCODE63_VERSION=6.3
-+readonly M_XCODE63_COMPILER="com.apple.compilers.llvm.clang.1_0"
- 
- declare M_ACTUAL_PLATFORM=""
- declare M_PLATFORMS=""
-@@ -2569,6 +2572,14 @@ function m_handler()
-                     M_XCODE62_VERSION=$m_xcode_version
-                 fi
-                 ;;
-+            6.3*)
-+                m_version_compare $M_XCODE63_VERSION $m_xcode_version
-+                if [[ $? != 2 ]]
-+                then
-+                    M_XCODE63="$m_xcode_root"
-+                    M_XCODE63_VERSION=$m_xcode_version
-+                fi
-+                ;;
-             *)
-                 m_log "skip unsupported Xcode version in '$m_xcode_root'."
-                 ;;
-@@ -2786,6 +2797,21 @@ function m_handler()
-         M_SDK_1010_COMPILER="$M_XCODE62_COMPILER"
-         m_platform_realistic_add "10.10"
-     fi
-+    if [[ -n "$M_XCODE63" ]]
-+    then
-+        m_xcode_latest="$M_XCODE63"
-+
-+        M_SDK_109="$M_XCODE63/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk"
-+        M_SDK_109_XCODE="$M_XCODE63"
-+        M_SDK_109_COMPILER="$M_XCODE63_COMPILER"
-+        m_platform_realistic_add "10.9"
-+        m_platform_add "10.10"
-+
-+        M_SDK_1010="$M_XCODE63/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk"
-+        M_SDK_1010_XCODE="$M_XCODE63"
-+        M_SDK_1010_COMPILER="$M_XCODE63_COMPILER"
-+        m_platform_realistic_add "10.10"
-+    fi
- 
-     m_read_input "$@"
- 
