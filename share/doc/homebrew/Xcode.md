@@ -50,8 +50,8 @@ Tools available for your platform:
  6.0       | —           | —           | —                | —           | 6.0 (600.0.51)  | 3.5
  6.0.1     | —           | —           | —                | —           | 6.0 (600.0.51)  | 3.5
  6.1       | —           | —           | —                | —           | 6.0 (600.0.54)  | 3.5
- 6.2       | -           | -           | -                | -           | 6.0 (600.0.57)  | 3.5
- 6.3       | -           | -           | -                | -           | 6.1 (602.0.49)  | 3.6
+ 6.2       | —           | —           | —                | —           | 6.0 (600.0.57)  | 3.5
+ 6.3       | —           | —           | —                | —           | 6.1 (602.0.49)  | 3.6
 
 ## References to Xcode and compiler versions in code
 When a new Xcode release is made, the following things need to be
