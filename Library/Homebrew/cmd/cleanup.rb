@@ -42,7 +42,7 @@ module Homebrew
   def cleanup_formula f
     if f.installed?
       eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.pkg_version > k.version }
-      if eligible_kegs.any? && f.can_cleanup?
+      if eligible_kegs.any? && eligible_for_cleanup?(f)
         eligible_kegs.each { |keg| cleanup_keg(keg) }
       else
         eligible_kegs.each { |keg| opoo "Skipping (old) keg-only: #{keg}" }
@@ -109,21 +109,18 @@ module Homebrew
     quiet_system "find", *args
   end
 
-end
-
-class Formula
-  def can_cleanup?
+  def eligible_for_cleanup?(formula)
     # It used to be the case that keg-only kegs could not be cleaned up, because
     # older brews were built against the full path to the keg-only keg. Then we
     # introduced the opt symlink, and built against that instead. So provided
     # no brew exists that was built against an old-style keg-only keg, we can
     # remove it.
-    if not keg_only? or ARGV.force?
+    if not formula.keg_only? or ARGV.force?
       true
-    elsif opt_prefix.directory?
+    elsif formula.opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
       Formula.installed.
-        select { |f| f.deps.any? { |d| d.name == name } }.
+        select { |f| f.deps.any? { |d| d.name == formula.name } }.
         all? { |f| f.rack.subdirs.all? { |keg| Tab.for_keg(keg).HEAD } }
     end
   end
