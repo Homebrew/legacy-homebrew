@@ -1,9 +1,8 @@
-require "formula"
-
 class Curaengine < Formula
   homepage "https://github.com/Ultimaker/CuraEngine"
-  url "https://github.com/Ultimaker/CuraEngine/archive/14.12.1.tar.gz"
-  sha1 "4d50fcd32e402f37b658691a4338e73fb4aaf3ec"
+  url "https://github.com/Ultimaker/CuraEngine/archive/15.04.tar.gz"
+  sha256 "d577e409b3e9554e7d2b886227dbbac6c9525efe34df4fc7d62e9474a2d7f965"
+
   head "https://github.com/Ultimaker/CuraEngine.git"
 
   bottle do
@@ -14,8 +13,7 @@ class Curaengine < Formula
   end
 
   def install
-    ENV.deparallelize
-    system "make"
+    system "make", "VERSION=#{version}"
     bin.install "build/CuraEngine"
   end
 
