@@ -1,7 +1,7 @@
 class Libhdhomerun < Formula
   homepage "https://www.silicondust.com/support/downloads/linux/"
-  url "http://download.silicondust.com/hdhomerun/libhdhomerun_20141210.tgz"
-  sha1 "4f6827e17f8f79401f272f62089352fe01eae740"
+  url "https://download.silicondust.com/hdhomerun/libhdhomerun_20150406.tgz"
+  sha256 "fa6da8ab4461bca6cd852c41ba98bad3b58235477ed64cd96fb27aa3cea67d5a"
 
   bottle do
     cellar :any
