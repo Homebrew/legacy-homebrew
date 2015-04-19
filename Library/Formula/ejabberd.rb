@@ -62,7 +62,7 @@ class Ejabberd < Formula
       <key>EnvironmentVariables</key>
       <dict>
         <key>HOME</key>
-        <string>#{var}/lib/#{name}</string>
+        <string>#{var}/lib/ejabberd</string>
       </dict>
       <key>Label</key>
       <string>#{plist_name}</string>
@@ -74,7 +74,7 @@ class Ejabberd < Formula
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>
-      <string>#{var}/lib/#{name}</string>
+      <string>#{var}/lib/ejabberd</string>
     </dict>
     </plist>
     EOS
