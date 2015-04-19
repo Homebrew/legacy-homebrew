@@ -1,13 +1,19 @@
-require 'formula'
-
 class Testdisk < Formula
-  homepage 'http://www.cgsecurity.org/wiki/TestDisk'
-  url 'http://www.cgsecurity.org/testdisk-6.14.tar.bz2'
-  sha1 'a2359406db5e3e3f9db81d8e8fce2a125dcc3677'
+  homepage "http://www.cgsecurity.org/wiki/TestDisk"
+  url "http://www.cgsecurity.org/testdisk-7.0.tar.bz2"
+  sha256 "00bb3b6b22e6aba88580eeb887037aef026968c21a87b5f906c6652cbee3442d"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    path = "test.dmg"
+    system "hdiutil", "create", "-megabytes", "10", path
+    system "#{bin}/testdisk", "/list", path
   end
 end
