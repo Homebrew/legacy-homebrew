@@ -6,9 +6,9 @@ class Saltstack < Formula
   revision 1
 
   bottle do
-    sha1 "4ef3922ffd2b36d775f22fce055ebf692d1e14b7" => :yosemite
-    sha1 "fbb96fe311befd1f68c063c398bfb4a011fc2dc4" => :mavericks
-    sha1 "738d8efecb7b916f10acf8707822945623226524" => :mountain_lion
+    sha256 "ba2dad536526cb11eea8b250a1197e68c1eec80b512ea90bcd7ea973e3111624" => :yosemite
+    sha256 "0bb6b9bb0ea00c8e430213d11be6ef9ef404daef176f401c2d0c89431608f69c" => :mavericks
+    sha256 "287ecda2663c99934af942ae0d034bcbb96972afdae6087e47c7abbca198f77d" => :mountain_lion
   end
 
   devel do
