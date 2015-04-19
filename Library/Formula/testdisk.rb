@@ -15,7 +15,7 @@ class Testdisk < Formula
     path = testpath/"test.dmg"
     args = %W[
       create
-      -megabytes 10 
+      -megabytes 10
     ]
     system "hdiutil", *args, path
     args = %W[
