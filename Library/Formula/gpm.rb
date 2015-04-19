@@ -1,5 +1,3 @@
-require "formula"
-
 class GoRequirement < Requirement
   fatal true
   default_formula "go"
@@ -14,7 +12,7 @@ class Gpm < Formula
   desc "Barebones dependency manager for Go"
   homepage "https://github.com/pote/gpm"
   url "https://github.com/pote/gpm/archive/v1.3.2.tar.gz"
-  sha1 "2ad332aa2d711cb901ce4c2be72a254ecc5f20eb"
+  sha256 "c79b10c9f13d9cc79f2dcf08323daac86b9bb50cf7b84924ebeb28e98334c0ae"
 
   bottle do
     cellar :any
