@@ -342,7 +342,7 @@ class FormulaAuditor
         problem "Bintray urls should be https://, not http (url is #{p})."
       when %r[^http://tools\.ietf\.org/]
         problem "ietf urls should be https://, not http (url is #{p})."
-      when %r[^(http|ftp)://ftp\.gnome\.org/pub/gnome/(.*)]
+      when %r[^(http|ftp)://ftp\.gnome\.org/pub/gnome/(.*)]i
         problem "Gnome url should be `https://download.gnome.org/#{$2}` (url is #{p})."
       end
     end
