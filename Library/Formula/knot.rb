@@ -1,35 +1,36 @@
-require "formula"
+require 'formula'
 
 class Knot < Formula
-  homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.5.3.tar.gz"
-  sha1 "4692c5001472443d07ac088592b349793a968706"
+  homepage 'https://www.knot-dns.cz/'
+  url 'https://secure.nic.cz/files/knot-dns/knot-1.6.3.tar.xz'
+  sha1 'a3befc4f9ad538d31a7b2f23b28c76312302d9e6'
 
-  head "https://gitlab.labs.nic.cz/labs/knot.git"
+  head 'https://gitlab.labs.nic.cz/labs/knot.git'
 
   bottle do
-    sha1 "d28c63873e0ee6b98a01c4da1537d81f45dd468a" => :mavericks
-    sha1 "f81216eda0543ae546215b8739631db65594e7af" => :mountain_lion
-    sha1 "c6647467cfe8a3f84a3bedcfd93e6d2cb71f7436" => :lion
+    sha1 'd28c63873e0ee6b98a01c4da1537d81f45dd468a' => :mavericks
+    sha1 'f81216eda0543ae546215b8739631db65594e7af' => :mountain_lion
+    sha1 'c6647467cfe8a3f84a3bedcfd93e6d2cb71f7436' => :lion
   end
 
-  depends_on "userspace-rcu"
-  depends_on "openssl"
-  depends_on "libidn"
+  depends_on 'userspace-rcu'
+  depends_on 'openssl'
+  depends_on 'libidn'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--with-configdir=#{etc}",
-                          "--with-storage=#{var}/knot",
-                          "--with-rundir=#{var}/knot",
-                          "--prefix=#{prefix}"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --with-configdir=#{etc}
+      --with-storage=#{var}/knot
+      --with-rundir=#{var}/knot
+      --prefix=#{prefix}
+    ]
 
+    system './configure', *args
     inreplace 'samples/Makefile', 'install-data-local:', 'disable-install-data-local:'
-
-    system "make"
-    system "make", "install"
+    system 'make', 'install'
 
     (buildpath + 'knot.conf').write(knot_conf)
     etc.install 'knot.conf'
@@ -65,11 +66,11 @@ class Knot < Formula
     log {
       syslog {
         any error;
-        zone warning, notice;
+        zone notice;
         server info;
       }
       stderr {
-        any error, warning;
+        any warning;
       }
     }
     EOS
@@ -94,16 +95,14 @@ class Knot < Formula
         <string>-c</string>
         <string>#{etc}/knot.conf</string>
       </array>
-      <key>ServiceIPC</key>
-      <false/>
     </dict>
     </plist>
     EOS
   end
 
   test do
-    system "#{bin}/kdig", "www.knot-dns.cz"
-    system "#{bin}/khost", "brew.sh"
-    system "#{sbin}/knotc", "-c", "#{etc}/knot.conf", "checkconf"
+    system '#{bin}/kdig', 'www.knot-dns.cz'
+    system '#{bin}/khost', 'brew.sh'
+    system '#{sbin}/knotc', '-c', '#{etc}/knot.conf', 'checkconf'
   end
 end
