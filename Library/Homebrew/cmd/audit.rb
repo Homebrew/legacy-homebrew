@@ -279,9 +279,9 @@ class FormulaAuditor
     # "Software" is redirected to https://wiki.freedesktop.org/www/Software/project_name
     if homepage =~ %r[^http://((?:www|nice|libopenraw|liboil|telepathy|xorg)\.)?freedesktop\.org/(?:wiki/)?]
       if homepage =~ /Software/
-        problem "The url should be styled `https://wiki.freedesktop.org/www/Software/project_name`, not #{homepage}."
+        problem "The url should be styled `https://wiki.freedesktop.org/www/Software/project_name`, not #{homepage})."
       else
-        problem "The url should be styled `https://wiki.freedesktop.org/project_name`, not #{homepage}."
+        problem "The url should be styled `https://wiki.freedesktop.org/project_name`, not #{homepage})."
       end
     end
 
@@ -342,8 +342,6 @@ class FormulaAuditor
         problem "Bintray urls should be https://, not http (url is #{p})."
       when %r[^http://tools\.ietf\.org/]
         problem "ietf urls should be https://, not http (url is #{p})."
-      when %r[^(http|ftp)://ftp\.gnome\.org/pub/gnome/(.*)]i
-        problem "Gnome url should be `https://download.gnome.org/#{$2}` (url is #{p})."
       end
     end
 
