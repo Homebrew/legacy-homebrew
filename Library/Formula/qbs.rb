@@ -2,8 +2,8 @@ require "formula"
 
 class Qbs < Formula
   homepage "http://qt-project.org/wiki/qbs"
-  url "http://download.qt-project.org/official_releases/qbs/1.3.2/qbs-1.3.2.src.tar.gz"
-  sha1 "ce2d807c145e239d39e360521d62486eb1e3d108"
+  url "http://download.qt-project.org/official_releases/qbs/1.3.4/qbs-1.3.4.src.tar.gz"
+  sha1 "32d720230d4afe39adef57375c9002726b64d544"
 
   bottle do
     cellar :any
@@ -36,6 +36,7 @@ class Qbs < Formula
       }
     EOS
 
-    system "#{bin}/qbs", "run", "-f", "test.qbp", "profile:clang"
+    system "#{bin}/qbs", "setup-toolchains", "--detect", "--settings-dir", testpath
+    system "#{bin}/qbs", "run", "--settings-dir", testpath, "-f", "test.qbp", "profile:clang"
   end
 end
