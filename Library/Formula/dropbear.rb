@@ -1,10 +1,7 @@
-require "formula"
-
 class Dropbear < Formula
   homepage "https://matt.ucc.asn.au/dropbear/dropbear.html"
-  url "https://matt.ucc.asn.au/dropbear/releases/dropbear-2014.66.tar.bz2"
-  mirror "https://dropbear.nl/mirror/releases/dropbear-2014.66.tar.bz2"
-  sha1 "793f5f1bb465b3c55e795d607932e8b21c130e95"
+  url "https://matt.ucc.asn.au/dropbear/releases/dropbear-2015.67.tar.bz2"
+  sha256 "7e690594645dfde5787065c78a5d2e4d15e288babfa06e140197ce05f698c8e5"
 
   bottle do
     cellar :any
@@ -21,20 +18,25 @@ class Dropbear < Formula
   end
 
   def install
+    ENV.deparallelize
+
     if build.head?
       system "autoconf"
       system "autoheader"
     end
-    system "./configure","--prefix=#{prefix}", "--enable-pam", "--enable-zlib",
-                         "--enable-bundled-libtom", "--sysconfdir=#{etc}/dropbear"
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-pam",
+                          "--enable-zlib",
+                          "--enable-bundled-libtom",
+                          "--sysconfdir=#{etc}/dropbear"
     system "make"
-    ENV.deparallelize
     system "make", "install"
   end
 
   test do
-      system "dbclient", "-h"
-      system "dropbearkey", "-t", "ecdsa", "-f", "testec521", "-s", "521"
-      assert File.exist?("testec521")
+    system "dbclient", "-h"
+    system "dropbearkey", "-t", "ecdsa",
+           "-f", testpath/"testec521", "-s", "521"
+    File.exist? testpath/"testec521"
   end
 end
