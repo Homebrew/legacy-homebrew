@@ -15,8 +15,7 @@ class Ffmpeg < Formula
   option "without-lame", "Disable MP3 encoder"
   option "without-libvo-aacenc", "Disable VisualOn AAC encoder"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder"
-  option "with-qtkit", "Enable deprecated QuickTime framework"
-  option "with-jack", "Enable Jack"
+  option "without-qtkit", "Disable deprecated QuickTime framework"
 
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-libass", "Enable ASS/SSA subtitle format"
@@ -32,6 +31,7 @@ class Ffmpeg < Formula
   option "with-x265", "Enable x265 encoder"
   option "with-libsoxr", "Enable the soxr resample library"
   option "with-webp", "Enable using libwebp to encode WEBP images"
+  option "with-jack", "Enable Jack"
 
   depends_on "pkg-config" => :build
 
@@ -111,7 +111,7 @@ class Ffmpeg < Formula
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
     args << "--enable-libwebp" if build.with? "webp"
-    args << "--enable-indev=qtkit" if build.with? "qtkit"
+    args << "--disable-indev=qtkit" if build.without? "qtkit"
     args << "--enable-indev=jack" if build.with? "jack"
 
     if build.with? "openjpeg"
