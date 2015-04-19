@@ -12,7 +12,6 @@ class PkgVersionTests < Homebrew::TestCase
     assert_equal PkgVersion.new(Version.new("1.0"), 0), PkgVersion.parse("1.0")
     assert_equal PkgVersion.new(Version.new("1.0"), 0), PkgVersion.parse("1.0_0")
     assert_equal PkgVersion.new(Version.new("2.1.4"), 0), PkgVersion.parse("2.1.4_0")
-    assert_equal PkgVersion.new(Version.new("2.1.4_1"), 0), PkgVersion.parse("2.1.4_1_0")
     assert_equal PkgVersion.new(Version.new("1.0.1e"), 1), PkgVersion.parse("1.0.1e_1")
   end
 
