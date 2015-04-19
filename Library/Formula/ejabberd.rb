@@ -1,7 +1,7 @@
 class Ejabberd < Formula
   homepage "https://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/15.02/ejabberd-15.02.tgz"
-  sha256 "58cc6b9b512f2f495993be735a8313a8a0591157e0f35a9a3702b59ff9eb6beb"
+  url "https://www.process-one.net/downloads/ejabberd/15.03/ejabberd-15.03.tgz"
+  sha256 "b685cd615ecd9a4f42701541e84c2a28ae534bc608d292b78145d9c59ea17233"
 
   head "https://github.com/processone/ejabberd.git"
 
@@ -59,6 +59,11 @@ class Ejabberd < Formula
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
     <dict>
+      <key>EnvironmentVariables</key>
+      <dict>
+        <key>HOME</key>
+        <string>#{var}/lib/ejabberd</string>
+      </dict>
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
@@ -68,6 +73,8 @@ class Ejabberd < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
+      <key>WorkingDirectory</key>
+      <string>#{var}/lib/ejabberd</string>
     </dict>
     </plist>
     EOS
