@@ -2,8 +2,8 @@ require "formula"
 
 class Openlitespeed < Formula
   homepage "http://open.litespeedtech.com/mediawiki/"
-  url "http://open.litespeedtech.com/packages/openlitespeed-1.2.9.tgz"
-  sha1 "dbdfa1337caeabaca6814e2c12266f5570f14dd7"
+  url "http://open.litespeedtech.com/packages/openlitespeed-1.3.10.tgz"
+  sha1 "4a409b65cacc3ee5e2855ab213a5f3e9858a8003"
   head "https://github.com/litespeedtech/openlitespeed.git"
 
   option "with-debug", 'Compile with support for debug log'
