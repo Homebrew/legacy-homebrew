@@ -10,7 +10,7 @@ class FirefoxRequirement < Requirement
     paths.find { |p| File.exist? File.expand_path(p) }
   end
 
-  satisfy { Formula["xulrunner"].installed? || FirefoxDependency.firefox_installation }
+  satisfy { Formula["xulrunner"].installed? || FirefoxRequirement.firefox_installation }
 
   def message
     "Firefox or xulrunner must be available."
@@ -50,7 +50,7 @@ class Slimerjs < Formula
   def caveats
     s = ""
 
-    if (firefox_installation = FirefoxDependency.firefox_installation)
+    if (firefox_installation = FirefoxRequirement.firefox_installation)
       s += <<-EOS.undent
         You MUST provide an installation of Mozilla Firefox and set
         the environment variable SLIMERJSLAUNCHER pointing to it, e.g.:
