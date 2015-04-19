@@ -6,6 +6,7 @@ class X11vnc < Formula
   sha1 'f011d81488ac94dc8dce2d88739c23bd85a976fa'
 
   depends_on :x11 => :optional
+  depends_on 'openssl'
   depends_on 'jpeg'
 
   # Patch solid.c so a non-void function returns a NULL instead of a void.
