@@ -15,7 +15,7 @@ class Ncdc < Formula
   depends_on 'geoip' => :optional
 
   head do
-    url "git://g.blicky.net/ncdc.git"
+    url "git://g.blicky.net/ncdc.git", :shallow => false
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
