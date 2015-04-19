@@ -1,7 +1,7 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.6.1.tar.bz2"
-  sha256 "a4f6388706ee2daba9d35d2aa018ae5feeb450efa716555e011a6543d43ec7c1"
+  url "https://ffmpeg.org/releases/ffmpeg-2.6.2.tar.bz2"
+  sha256 "889e3aa069b724dc95cbfc79ef83322a8a39d9f6225f39fad1b47294fc1f29ba"
 
   head "https://github.com/FFmpeg/FFmpeg.git"
 
