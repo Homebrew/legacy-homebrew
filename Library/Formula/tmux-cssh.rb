@@ -1,9 +1,10 @@
 require 'formula'
 
 class TmuxCssh < Formula
+  version "1.0.6-0"
   homepage 'https://github.com/dennishafemann/tmux-cssh'
-  url 'https://github.com/dennishafemann/tmux-cssh/archive/0.1.tar.gz'
-  sha1 '477a9079775ce48afe0c90699fa69f368e69cdfd'
+  url 'https://github.com/dennishafemann/tmux-cssh/archive/1.0.6-0.tar.gz'
+  sha1 '1c5dd181b9525766cc21b317c68c34cd69324b95'
 
   depends_on 'tmux'
 
