@@ -1,4 +1,4 @@
-class BottleVersion < Version
+class BottleFormulaVersion < Version
   def self._parse spec
     spec = Pathname.new(spec) unless spec.is_a? Pathname
     stem = spec.stem
@@ -61,5 +61,27 @@ class BottleVersion < Version
     return m.captures.first unless m.nil?
 
     super
+  end
+end
+
+class BottleVersion
+  def self.parse(path)
+    require "pkg_version"
+    path = Pathname.new(path) unless path.is_a? Pathname
+    formula_version = BottleFormulaVersion.parse(path)
+    basename = path.basename.to_s
+    formula_name, _, suffix = basename.rpartition("-#{formula_version}")
+    formula_revision = suffix.match(/_(\d+)/).to_a[1].to_i
+    revision = suffix.match(/bottle\.(\d+)\.tar\.gz/).to_a[1].to_i
+    version = formula_version.nil? ? nil : PkgVersion.new(formula_version, formula_revision)
+    new(formula_name, version, revision)
+  end
+
+  attr_reader :name, :version, :revision
+
+  def initialize(name, version, revision)
+    @name = name
+    @version = version
+    @revision = revision
   end
 end
