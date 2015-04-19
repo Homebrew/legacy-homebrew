@@ -7,9 +7,9 @@ class Onepass < Formula
 
   bottle do
     cellar :any
-    sha1 "0e176102fe921829153966c94fbc04330edd0c99" => :mavericks
-    sha1 "77a3b651bba41e935f90be247f49fb5e86d6e74c" => :mountain_lion
-    sha1 "6157ab9f7546726710df517044e5cabce7c6ad8b" => :lion
+    sha256 "164750979c6f70440988c6ae79fa2ca6ff1733e280ba77ef98814c1f3fd32413" => :yosemite
+    sha256 "131288eb9f84f72e215e3c420f5daaa04692e57b2f686a1b91225d4e3737b90b" => :mavericks
+    sha256 "3b05aa6c3f5511a46374b46cb93708254ad5edaf87a92b8f9a01c83cc48bfb20" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
