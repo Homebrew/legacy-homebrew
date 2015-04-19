@@ -13,7 +13,7 @@ class Casperjs < Formula
 
   head 'https://github.com/n1k0/casperjs.git'
 
-  depends_on 'phantomjs'
+  depends_on 'homebrew/versions/phantomjs198'
 
   def install
     libexec.install Dir['*']
