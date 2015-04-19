@@ -16,7 +16,6 @@ class GitIntegration < Formula
   homepage "https://johnkeeping.github.io/git-integration/"
   url "https://github.com/johnkeeping/git-integration/archive/v0.3.tar.gz"
   sha256 "7fb0a4ed4e4c23b7fa9334abfd1894ed5821b73be144d56d67d926e3cd7a1eb5"
-
   head "https://github.com/johnkeeping/git-integration.git"
 
   bottle do
