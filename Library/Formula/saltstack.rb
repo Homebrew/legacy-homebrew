@@ -3,6 +3,7 @@ class Saltstack < Formula
   url "https://github.com/saltstack/salt/archive/v2014.7.1.tar.gz"
   sha256 "5fcf2cff700d0719b419c9cb489552645ce1287a15c7b3a8745959773d9b0dd1"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
+  revision 1
 
   bottle do
     sha1 "4ef3922ffd2b36d775f22fce055ebf692d1e14b7" => :yosemite
@@ -19,6 +20,7 @@ class Saltstack < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "zeromq"
   depends_on "libyaml"
+  depends_on "openssl" # For M2Crypto
 
   # For vendored Swig
   depends_on "pcre" => :build
@@ -88,10 +90,16 @@ class Saltstack < Formula
     ENV.prepend_path "PATH", buildpath/"swig/bin"
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[requests m2crypto pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python apache-libcloud].each do |r|
+    %w[requests pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python apache-libcloud].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
+    end
+
+    # M2Crypto always has to be done individually as we have to inreplace OpenSSL path
+    resource("m2crypto").stage do
+      inreplace "setup.py", "self.openssl = '/usr'", "self.openssl = '#{Formula["openssl"].opt_prefix}'"
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
