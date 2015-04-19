@@ -847,6 +847,10 @@ class ResourceAuditor
     if version.to_s =~ /^v/
       problem "version #{version} should not have a leading 'v'"
     end
+
+    if version.to_s =~ /_\d+$/
+      problem "version #{version} should not end with a underline and a number"
+    end
   end
 
   def audit_checksum
