@@ -6,6 +6,13 @@ class Fits < Formula
   version '0.8.4'
   sha1 'f9b6b13cf1e818c6cdcfec71eb3dcd6804dd8819'
 
+  bottle do
+    cellar :any
+    sha256 "e606253277eb78b26d24ff3dfd582d7bc1fae03d13e393ff0512885fdc278066" => :yosemite
+    sha256 "0e97437daf0e227b2ec937cf9034db585a92a17e34cd22ed2f8fe2b80be15003" => :mavericks
+    sha256 "050cb99d9da1f008a4721c5e3cf962a19fc591f075e6126b9d2bea7482495dfd" => :mountain_lion
+  end
+
   # provided jars may not be compatible with installed java,
   # but works when built from source
   depends_on "ant" => :build
