@@ -2,8 +2,8 @@ require 'formula'
 
 class Lilv < Formula
   homepage 'http://drobilla.net/software/lilv/'
-  url 'http://download.drobilla.net/lilv-0.16.0.tar.bz2'
-  sha1 '072477ae0e4e6ae4a9534ea8a35e25f00601c838'
+  url 'http://download.drobilla.net/lilv-0.20.0.tar.bz2'
+  sha1 'b3a7d0089b16b04114895d47a898b8d494774927'
 
   depends_on 'pkg-config' => :build
   depends_on 'lv2'
