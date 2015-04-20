@@ -2,8 +2,8 @@ require "language/go"
 
 class DockerMachine < Formula
   homepage "https://docs.docker.com/machine"
-  url "https://github.com/docker/machine/archive/v0.1.0.tar.gz"
-  sha256 "832f1e60b4171f9590368fa5c51c1ed1adec32367d13250a0554552d0954ff36"
+  url "https://github.com/docker/machine/archive/v0.2.0.tar.gz"
+  sha256 "ba4df6728280732e70dcabc2aeb903babac0bbefb3f1c11e7f131e3aad0f2131"
   head "https://github.com/docker/machine.git"
 
   bottle do
@@ -27,8 +27,12 @@ class DockerMachine < Formula
     url "https://github.com/golang/tools.git", :revision => "473fd854f8276c0b22f17fb458aa8f1a0e2cf5f5"
   end
 
+  go_resource "golang.org/x/crypto" do
+    url "https://github.com/golang/crypto.git", :revision => "8b27f58b78dbd60e9a26b60b0d908ea642974b6d"
+  end
+
   go_resource "github.com/docker/machine" do
-    url "https://github.com/docker/machine.git", :revision => "eaff7635fc821d783eb6e996dbdad22dacdd058c"
+    url "https://github.com/docker/machine.git", :revision => "8b9eaf2b6fda23550e09bde1054eeab78e5493bd"
   end
 
   def install
