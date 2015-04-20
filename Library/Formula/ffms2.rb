@@ -3,6 +3,13 @@ class Ffms2 < Formula
   url "https://github.com/FFMS/ffms2/archive/2.20.tar.gz"
   sha256 "c7d880172756c253f2c5673044dabf03c19890dcfe64da5104ee9f42a1a573a0"
 
+  bottle do
+    cellar :any
+    sha256 "04726b5c91736f834e59fab880bc5dbe674e1fd2a12eaeb58f5ad7f3abfe3b85" => :yosemite
+    sha256 "5e0606d2c83e377963dde83af58114e6c08d50e6240824671263939b41d1e664" => :mavericks
+    sha256 "a487b80dd08906279aa6b80ffa33162f7ec1520ec4a862f7e9eae25b56d5488e" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "ffmpeg"
 
