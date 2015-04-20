@@ -1,5 +1,5 @@
 class Creduce < Formula
-  homepage "http://embed.cs.utah.edu/creduce/"
+  homepage "https://embed.cs.utah.edu/creduce/"
   url "https://github.com/csmith-project/creduce/archive/creduce-2.2.1.tar.gz"
   sha256 "9662f4467995604d01f68250ee85a33c22ab4cd6e3cb4d7d06229aca042fce96"
 
