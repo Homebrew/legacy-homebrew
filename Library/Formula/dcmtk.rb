@@ -5,9 +5,9 @@ class Dcmtk < Formula
   version "3.6.1-20150217"
 
   bottle do
-    sha1 "7a5dae3786225a07fc1b615c186a348d762c1a67" => :mavericks
-    sha1 "f2b20d273322b799b4bd79da8dbe21bc293f37ff" => :mountain_lion
-    sha1 "044eeba49ae368d5f8cce753d54dcaa9b8d18fbb" => :lion
+    sha256 "0bd582c2f37ce4b9366b0a7ba2e7c6e90cddd3a6af954ebc5475938048415d5d" => :yosemite
+    sha256 "ff49c45d86930592662caf947cd87f011b55f533396b75957e55cd748bc4c7b2" => :mavericks
+    sha256 "2e06bdf73ce156ba65c95374ac5a9e6b048c02186403b66b78ea48b2b415da01" => :mountain_lion
   end
 
   option "with-docs", "Install development libraries/headers and HTML docs"
