@@ -4,13 +4,6 @@ class Postgis < Formula
   sha256 "00ab79a3f609d7ea458f6fc358032ad059cb720baf88285243d6436a597a7ec2"
   revision 1
 
-  bottle do
-    cellar :any
-    sha256 "21daf5c5679ba42fd522e6bc5b152a821b372ccae9daa5264df71bb4402c9b65" => :yosemite
-    sha256 "a8ea04ccefc430351b827506e303520b95070f6906f74166ec97f5a5fc97accd" => :mavericks
-    sha256 "0314b38e542e86b486a38a0ae8018de92035d86c4b257349b89058c500254cc1" => :mountain_lion
-  end
-
   def pour_bottle?
     # Postgres extensions must live in the Postgres prefix, which precludes
     # bottling: https://github.com/Homebrew/homebrew/issues/10247
