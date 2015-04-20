@@ -12,9 +12,9 @@ class Djvulibre < Formula
   end
 
   bottle do
-    revision 1
-    sha1 "306baf176acba6f71f3381a010fa78ff80e62ba6" => :yosemite
-    sha1 "61a53093e18457fb4235cc0afe3717eef851b85e" => :mavericks
+    sha256 "6bcc53ce6acccef4ab6bdf3150887a054165fe7d6984917bf1a65af5ba9ab228" => :yosemite
+    sha256 "ed02ea82754109ea5d3e6767d80d49133a6552696aa5405b30a93569886f6ce4" => :mavericks
+    sha256 "a1fc4dd16370cb5949ce1df38105dbc94b7934f876b7e35c6e904927563d7f93" => :mountain_lion
   end
 
   depends_on "jpeg"
