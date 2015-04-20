@@ -12,16 +12,8 @@ class Testdisk < Formula
   end
 
   test do
-    args = %W[
-      create
-      -megabytes 10
-      testpath/"testdisk.dmg"
-    ]
-    system "hdiutil", *args
-    args = %W[
-      /list
-      testpath/"testdisk.dmg"
-    ]
-    system "#{bin}/testdisk", *args
+    path = "test.dmg"
+    system "hdiutil", "create", "-megabytes", "10", path
+    system "#{bin}/testdisk", "/list", path
   end
 end
