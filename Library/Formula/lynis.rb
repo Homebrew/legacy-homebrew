@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lynis < Formula
-  homepage "http://cisofy.com/lynis/"
-  url "http://cisofy.com/files/lynis-1.6.3.tar.gz"
-  sha1 "587d8bd8b7653a485ad1f472e8490065b136a8cf"
+  homepage "https://cisofy.com/lynis/"
+  url "https://cisofy.com/files/lynis-2.1.0.tar.gz"
+  sha256 "16ed596c8c283b8e4c635ada25ceb042371384ae09b3238a658ca60801a73c24"
 
   def install
     inreplace "lynis" do |s|
