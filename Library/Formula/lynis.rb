@@ -13,7 +13,7 @@ class Lynis < Formula
         %{tPLUGIN_TARGETS="#{prefix}/plugins"}
       s.gsub! 'tDB_TARGETS="/usr/local/share/lynis/db /usr/local/lynis/db /usr/share/lynis/db ./db"',
         %{tDB_TARGETS="#{prefix}/db"}
-      s.gsub! 'tPROFILE_TARGETS="/usr/local/etc/lynis/default.prf /etc/lynis/default.prf ./default.prf"',
+      s.gsub! 'tPROFILE_TARGETS="/usr/local/etc/lynis/default.prf /etc/lynis/default.prf /usr/local/lynis/default.prf ./default.prf"',
         %{tPROFILE_TARGETS="#{prefix}/default.prf"}
     end
 
