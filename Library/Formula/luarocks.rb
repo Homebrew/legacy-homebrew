@@ -2,8 +2,8 @@ require "formula"
 
 class Luarocks < Formula
   homepage "http://luarocks.org"
-  url "http://luarocks.org/releases/luarocks-2.2.0.tar.gz"
-  sha1 "e2de00f070d66880f3766173019c53a23229193d"
+  url "http://luarocks.org/releases/luarocks-2.2.1.tar.gz"
+  sha1 "82b858889e31ec0eb4d05ce7ea3a72fdf5403aad"
   revision 1
 
   bottle do
