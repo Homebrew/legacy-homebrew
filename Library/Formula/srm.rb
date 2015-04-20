@@ -1,9 +1,7 @@
-require "formula"
-
 class Srm < Formula
   homepage "http://www.thc.org/"
   url "https://www.thc.org/releases/secure_delete-3.1.tar.gz"
-  sha1 "ce6391003587b37bd3713a967de04de1f0759107"
+  sha256 "a9d846d1dce3f1bdf13bbb306e8596bc1f263198a086f6beecd90ccf7bddf8d5"
 
   keg_only :provided_by_osx if MacOS.version >= :mavericks
 
