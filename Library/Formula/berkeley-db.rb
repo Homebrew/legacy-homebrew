@@ -1,32 +1,43 @@
 require 'formula'
 
 class BerkeleyDb < Formula
-  url 'http://download.oracle.com/berkeley-db/db-5.1.19.tar.gz'
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
-  md5 '76fcbfeebfcd09ba0b4d96bfdf8d884d'
+  url 'http://download.oracle.com/berkeley-db/db-6.1.19.tar.gz'
+  sha1 'e266f8ab73f4f1ea276d203ce85426e5a6831501'
 
-  def options
-    [['--without-java', 'Compile without Java support.']]
+  bottle do
+    cellar :any
+    sha1 "1e80c66e55a970b39829cc98e41f3252557d3736" => :yosemite
+    sha1 "296738e8b7d2d23fafc19f3eaad6693e18bab05d" => :mavericks
+    sha1 "9573e87c5c4a5bf39f89b712c59b5329cb7c0b41" => :mountain_lion
   end
+
+  option 'with-java', 'Compile with Java support.'
+  option 'enable-sql', 'Compile with SQL support.'
 
   def install
     # BerkeleyDB dislikes parallel builds
     ENV.deparallelize
-    ENV.O3 # takes an hour or more with link time optimisation
-
-    args = ["--disable-debug",
-            "--prefix=#{prefix}", "--mandir=#{man}",
-            "--enable-cxx"]
-    args << "--enable-java" unless ARGV.include? "--without-java"
+    # --enable-compat185 is necessary because our build shadows
+    # the system berkeley db 1.x
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --enable-cxx
+      --enable-compat185
+    ]
+    args << "--enable-java" if build.with? "java"
+    args << "--enable-sql" if build.include? "enable-sql"
 
     # BerkeleyDB requires you to build everything from the build_unix subdirectory
-    Dir.chdir 'build_unix' do
+    cd 'build_unix' do
       system "../dist/configure", *args
       system "make install"
 
       # use the standard docs location
       doc.parent.mkpath
-      mv prefix+'docs', doc
+      mv prefix/'docs', doc
     end
   end
 end

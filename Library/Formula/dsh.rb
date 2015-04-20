@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dsh < Formula
-  url 'http://www.netfort.gr.jp/~dancer/software/downloads/dsh-0.25.9.tar.gz'
   homepage 'http://www.netfort.gr.jp/~dancer/software/dsh.html.en'
-  md5 '60734780242172fca9e68d223654292d'
+  url 'http://www.netfort.gr.jp/~dancer/software/downloads/dsh-0.25.9.tar.gz'
+  sha1 'd5d7828a06d079182315492d6f7a5a3dce47a5de'
 
   depends_on 'libdshconfig'
 

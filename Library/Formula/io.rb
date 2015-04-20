@@ -1,47 +1,86 @@
-require 'formula'
+require "formula"
 
 class Io < Formula
-  head 'https://github.com/stevedekorte/io.git'
-  homepage 'http://iolanguage.com/'
+  homepage "http://iolanguage.com/"
+  url "https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz"
+  sha1 "47d9a3e7a8e14c9fbe3b376e4967bb55f6c68aed"
 
-  depends_on 'cmake' => :build
-  depends_on 'libsgml'
-  depends_on 'ossp-uuid'
+  head "https://github.com/stevedekorte/io.git"
 
-  # Either CMake doesn't detect OS X's png include path correctly,
-  # or there's an issue with io's build system; force the path in
-  # so we can build.
-  def patches
-    DATA
+  option "without-addons", "Build without addons"
+
+  depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+
+  if build.with? "addons"
+    depends_on "glib"
+    depends_on "cairo"
+    depends_on "gmp"
+    depends_on "jpeg"
+    depends_on "libevent"
+    depends_on "libffi"
+    depends_on "libogg"
+    depends_on "libpng"
+    depends_on "libsndfile"
+    depends_on "libtiff"
+    depends_on "libvorbis"
+    depends_on "ossp-uuid"
+    depends_on "pcre"
+    depends_on "yajl"
+    depends_on "xz"
+    depends_on :python => :optional
+  end
+
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      make never completes. see:
+      https://github.com/stevedekorte/io/issues/223
+    EOS
+  end
+
+  # Fixes build on GCC with recursive inline functions;
+  # committed upstream, will be in the next release.
+  patch do
+    url "https://github.com/stevedekorte/io/commit/f21a10ca0e8959e2a0774962c36392cf166be6a6.diff"
+    sha1 "f8756e85268211e93dfd06a0eeade63bfb9bcc9c"
   end
 
   def install
     ENV.j1
-    mkdir 'io-build'
 
-    Dir.chdir 'io-build' do
-      system "cmake .. #{std_cmake_parameters}"
-      system "make install"
+    # FSF GCC needs this to build the ObjC bridge
+    ENV.append_to_cflags '-fobjc-exceptions'
+
+    if build.without? "addons"
+      # Turn off all add-ons in main cmake file
+      inreplace "CMakeLists.txt", "add_subdirectory(addons)",
+                                  '#add_subdirectory(addons)'
+    else
+      inreplace "addons/CMakeLists.txt" do |s|
+        if build.without? "python"
+          s.gsub! "add_subdirectory(Python)", '#add_subdirectory(Python)'
+        end
+
+        # Turn off specific add-ons that are not currently working
+
+        # Looks for deprecated Freetype header
+        s.gsub! /(add_subdirectory\(Font\))/, '#\1'
+        # Builds against older version of memcached library
+        s.gsub! /(add_subdirectory\(Memcached\))/, '#\1'
+      end
     end
 
-    rm_f Dir['docs/*.pdf']
-    doc.install Dir['docs/*']
-
-    prefix.install 'license/bsd_license.txt' => 'LICENSE'
+    mkdir "buildroot" do
+      system "cmake", "..", *std_cmake_args
+      system "make"
+      output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
+      if $?.exitstatus != 0
+        opoo "Test suite not 100% successful:\n#{output}"
+      else
+        ohai "Test suite ran successfully:\n#{output}"
+      end
+      system "make install"
+    end
   end
 end
-
-__END__
-diff --git a/addons/Image/CMakeLists.txt b/addons/Image/CMakeLists.txt
-index a65693d..2166f1b 100644
---- a/addons/Image/CMakeLists.txt
-+++ b/addons/Image/CMakeLists.txt
-@@ -22,7 +22,7 @@ if(PNG_FOUND AND TIFF_FOUND AND JPEG_FOUND)
- 	add_definitions(-DBUILDING_IMAGE_ADDON)
- 
- 	# Additional include directories
--	include_directories(${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
-+	include_directories("/usr/X11/include" ${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
- 
- 	# Generate the IoImageInit.c file.
- 	# Argument SHOULD ALWAYS be the exact name of the addon, case is

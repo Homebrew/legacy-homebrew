@@ -1,13 +1,18 @@
-require 'formula'
+require "formula"
 
 class Cvsps < Formula
-  url 'http://www.cobite.com/cvsps/cvsps-2.2b1.tar.gz'
-  homepage 'http://www.cobite.com/cvsps/'
-  md5 '997580e8e283034995b9209076858c68'
+  homepage "http://www.catb.org/~esr/cvsps/"
+  url "http://www.catb.org/~esr/cvsps/cvsps-3.13.tar.gz"
+  sha1 "29d814f9083e3c51bba1b1fadf6c94ed9c2caa1e"
+
+  depends_on "asciidoc"
+  depends_on "docbook"
 
   def install
-    system "make cvsps"
-    bin.install "cvsps"
-    man1.install gzip("cvsps.1")
+    # otherwise asciidoc will fail to find docbook
+    ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
+
+    system "make", "all", "cvsps.1"
+    system "make", "install", "prefix=#{prefix}"
   end
 end

@@ -1,14 +1,27 @@
 require 'formula'
 
 class CmuPocketsphinx < Formula
-  url 'http://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/0.6.1/pocketsphinx-0.6.1.tar.gz'
   homepage 'http://cmusphinx.sourceforge.net/'
-  md5 'f5c737819b61a135dd0cc3cab573ae7a'
+  url 'https://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/0.8/pocketsphinx-0.8.tar.gz'
+  sha1 'd9efdd0baddd2e47c2ba559caaca62ffa0c0eede'
+
+  head do
+    url "https://github.com/cmusphinx/pocketsphinx.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "swig" => :build
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'cmu-sphinxbase'
 
   def install
+    if build.head?
+      ENV["NOCONFIGURE"] = "yes"
+      system "./autogen.sh"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

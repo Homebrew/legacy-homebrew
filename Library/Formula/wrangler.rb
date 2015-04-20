@@ -1,15 +1,15 @@
 require 'formula'
 
 class Wrangler < Formula
-  url 'http://www.cs.kent.ac.uk/projects/forse/wrangler/wrangler-0.9/wrangler-0.9.2.3.tar.gz'
   homepage 'http://www.cs.kent.ac.uk/projects/forse/'
-  md5 'c300841ca787ab95eb69292f8e12ab67'
+  url 'https://github.com/RefactoringTools/wrangler/archive/wrangler1.1.01.tar.gz'
+  sha1 'fe938912ba3d50796da70572aef3e234c5d8f435'
 
   depends_on 'erlang'
 
   def install
     ENV.deparallelize
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

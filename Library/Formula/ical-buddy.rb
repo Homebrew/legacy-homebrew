@@ -1,25 +1,22 @@
 require 'formula'
 
 class IcalBuddy < Formula
-  url "http://hasseg.org/git-public/icalBuddy.git",
-    :tag => '36058c4f05bebbc377f5dfa68b9be476f3d0a361',
-    :using => :git
   homepage 'http://hasseg.org/icalBuddy/'
-  version '1.7.18'
+  head 'https://github.com/ali-rantakari/icalBuddy.git'
+  url 'https://github.com/ali-rantakari/icalBuddy/archive/v1.8.10.tar.gz'
+  sha1 'e6d64289f063cc636dd9a517c7fa50a4abe70a14'
 
-  head "http://hasseg.org/git-public/icalBuddy.git", :using => :git
+  bottle do
+    cellar :any
+    sha1 "23aa4a5dc5375edfa78f0d61c6748dd71e388330" => :mavericks
+    sha1 "0c95d85ea39d4c9d288e1a938e1b5f5e791c29cd" => :mountain_lion
+    sha1 "a856530a9a30a218b2570b3aafb9610ab4297fb8" => :lion
+  end
 
   def install
-    arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
-    sdk = MacOS.leopard? ? "10.5" : "10.6"
-
-    inreplace "Makefile" do |s|
-      s.gsub! "-arch i386 -arch ppc $(ARCH_64BIT)", "-arch #{arch}"
-      s.gsub! "-mmacosx-version-min=10.5", "-mmacosx-version-min=#{sdk}"
-    end
-
-    system "make icalBuddy icalBuddy.1 icalBuddyLocalization.1 icalBuddyConfig.1"
-
+    args = %W[icalBuddy icalBuddy.1 icalBuddyLocalization.1
+      icalBuddyConfig.1 COMPILER=#{ENV.cc}]
+    system "make", *args
     bin.install "icalBuddy"
     man1.install Dir["*.1"]
   end

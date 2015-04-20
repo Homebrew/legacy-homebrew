@@ -1,20 +1,36 @@
-require 'formula'
-
 class Haproxy < Formula
-  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.15.tar.gz'
-  md5 'c1b4fc6028c6d8e23dde8c91ff47eabe'
-  homepage 'http://haproxy.1wt.eu'
+  homepage "http://haproxy.1wt.eu"
+  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.10.tar.gz"
+  sha1 "2af3b740e84f10cbd0c90a78c30a222a24fb2945"
+
+  bottle do
+    cellar :any
+    sha1 "6c80304f8eace5073797f04646ef197099ce39d4" => :yosemite
+    sha1 "3fdaeaae9c33cc73e7314cd4844b46b82572706b" => :mavericks
+    sha1 "c42557822dcf88fdc74d0090e50358d254db7509" => :mountain_lion
+  end
+
+  depends_on "openssl"
+  depends_on "pcre"
 
   def install
-    inreplace 'Makefile' do |s|
-      s.change_make_var! 'PREFIX', prefix
-      s.change_make_var! 'DOCDIR', doc
-      # use our CC, CFLAGS and LDFLAGS
-      s.remove_make_var! %w[LDFLAGS CFLAGS CC]
-    end
+    args = %w[
+      TARGET=generic
+      USE_KQUEUE=1
+      USE_POLL=1
+      USE_PCRE=1
+      USE_OPENSSL=1
+      USE_ZLIB=1
+      ADDLIB=-lcrypto
+    ]
 
     # We build generic since the Makefile.osx doesn't appear to work
-    system "make", "TARGET=generic USE_KQUEUE=1 USE_POLL=1 USE_PCRE=1"
-    system "make install"
+    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", *args
+    man1.install "doc/haproxy.1"
+    bin.install "haproxy"
+  end
+
+  test do
+    system bin/"haproxy", "-v"
   end
 end

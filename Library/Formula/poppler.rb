@@ -1,49 +1,64 @@
 require 'formula'
 
-def glib?; ARGV.include? "--with-glib"; end
-
-class PopplerData < Formula
-  url 'http://poppler.freedesktop.org/poppler-data-0.4.4.tar.gz'
-  md5 'f3a1afa9218386b50ffd262c00b35b31'
-end
-
 class Poppler < Formula
-  url 'http://poppler.freedesktop.org/poppler-0.16.7.tar.gz'
-  homepage 'http://poppler.freedesktop.org/'
-  md5 '3afa28e3c8c4f06b0fbca3c91e06394e'
+  homepage 'http://poppler.freedesktop.org'
+  url 'http://poppler.freedesktop.org/poppler-0.29.0.tar.xz'
+  sha1 'ba3330ab884e6a139ca63dd84d0c1c676f545b5e'
+
+  bottle do
+    sha1 "b83e3b7fe032d69343367ceb481a0387e447e565" => :yosemite
+    sha1 "c1693c4f5dddc088b6ea53640610918416d7e08c" => :mavericks
+    sha1 "36ca1676e824fe8532ad6c6e826685c0e39ac808" => :mountain_lion
+  end
+
+  option "with-qt", "Build Qt backend"
+  option "with-little-cms2", "Use color management system"
+
+  deprecated_option "with-qt4" => "with-qt"
+  deprecated_option "with-lcms2" => "with-little-cms2"
 
   depends_on 'pkg-config' => :build
-  depends_on 'qt' if ARGV.include? "--with-qt4"
-  depends_on 'glib' if glib?
-  depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
+  depends_on 'cairo'
+  depends_on 'fontconfig'
+  depends_on 'freetype'
+  depends_on 'gettext'
+  depends_on 'glib'
+  depends_on 'gobject-introspection'
+  depends_on 'jpeg'
+  depends_on 'libpng'
+  depends_on 'libtiff'
+  depends_on 'openjpeg'
 
-  def options
-    [
-      ["--with-qt4", "Build Qt backend"],
-      ["--with-glib", "Build Glib backend"],
-      ["--enable-xpdf-headers", "Also install XPDF headers"]
-    ]
+  depends_on "qt" => :optional
+  depends_on "little-cms2" => :optional
+
+  conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
+
+  resource 'font-data' do
+    url 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'
+    sha1 '556a5bebd0eb743e0d91819ba11fd79947d8c674'
   end
 
   def install
-    ENV.x11 # For Fontconfig headers
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-xpdf-headers
+      --enable-poppler-glib
+      --disable-gtk-test
+      --enable-introspection=yes
+    ]
 
-    if ARGV.include? "--with-qt4"
-      ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp.strip
-      ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
+    if build.with? "qt"
+      args << "--enable-poppler-qt4"
+    else
+      args << "--disable-poppler-qt4"
     end
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--enable-poppler-qt4" if ARGV.include? "--with-qt4"
-    args << "--enable-poppler-glib" if glib?
-    args << "--enable-xpdf-headers" if ARGV.include? "--enable-xpdf-headers"
+    args << "--enable-cms=lcms2" if build.with? "little-cms2"
 
     system "./configure", *args
     system "make install"
-
-    # Install poppler font data.
-    PopplerData.new.brew do
-      system "make install prefix=#{prefix}"
-    end
+    resource('font-data').stage { system "make", "install", "prefix=#{prefix}" }
   end
 end

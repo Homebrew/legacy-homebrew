@@ -1,96 +1,90 @@
-require 'formula'
+require "formula"
 
 class Openvpn < Formula
-  homepage 'http://openvpn.net/'
-  url 'http://build.openvpn.net/downloads/releases/openvpn-2.2.0.tar.gz'
-  sha256 '71ebeaaba1641e6d1454ae0f10f986002e5c6afdcd09da659122e3e5c74a2567'
+  homepage "https://openvpn.net/index.php/download/community-downloads.html"
+  url "http://build.openvpn.net/downloads/releases/openvpn-2.3.6.tar.gz"
+  mirror "http://swupdate.openvpn.org/community/releases/openvpn-2.3.6.tar.gz"
+  sha256 "7baed2ff39c12e1a1a289ec0b46fcc49ff094ca58b8d8d5f29b36ac649ee5b26"
 
-  depends_on 'lzo' => :recommended
+  bottle do
+    sha1 "34b304622113b4cb822efa9711e6c1500b6edca8" => :mavericks
+    sha1 "bddff060d3d3e70db96abcf6ccc95952cdb7a99c" => :mountain_lion
+  end
 
-  skip_clean 'etc'
-  skip_clean 'var'
+  depends_on "lzo"
+  depends_on :tuntap
+  depends_on "openssl"
 
   def install
-    # Build and install binary
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
-
-    # Adjust sample file paths
-    inreplace ["sample-config-files/openvpn-startup.sh", "sample-scripts/openvpn.init"] do |s|
-      s.gsub! "/etc/openvpn", (etc + 'openvpn')
-      s.gsub! "/var/run/openvpn", (var + 'run/openvpn')
+    # pam_appl header is installed in a different location on Leopard
+    # and older; reported upstream https://community.openvpn.net/openvpn/ticket/326
+    if MacOS.version < :snow_leopard
+      inreplace Dir["src/plugins/auth-pam/{auth-pam,pamdl}.c"],
+        "security/pam_appl.h", "pam/pam_appl.h"
     end
 
-    # Install sample files
-    Dir['sample-*'].each do |d|
-      (share + 'doc/openvpn' + d).install Dir[d+'/*']
-    end
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--with-crypto-library=openssl",
+                          "--prefix=#{prefix}",
+                          "--enable-password-save"
+    system "make", "install"
 
-    # Create etc & var paths
-    (etc + 'openvpn').mkpath
-    (var + 'run/openvpn').mkpath
+    inreplace "sample/sample-config-files/openvpn-startup.sh",
+      "/etc/openvpn", "#{etc}/openvpn"
 
-    # Write the launchd script
-    (prefix + 'org.openvpn.plist').write startup_plist
+    (doc/"sample").install Dir["sample/sample-*"]
+
+    (etc+"openvpn").mkpath
+    (var+"run/openvpn").mkpath
+    # We don't use PolarSSL, so this file is unnecessary and somewhat confusing.
+    rm "#{share}/doc/openvpn/README.polarssl"
   end
 
-  def caveats; <<-EOS
-You may also wish to install tuntap:
+  def caveats; <<-EOS.undent
+    If you have installed the Tuntap dependency as a source package you will
+    need to follow the instructions found in `brew info tuntap`. If you have
+    installed the binary Tuntap package, no further action is necessary.
 
-  The TunTap project provides kernel extensions for Mac OS X that allow
-  creation of virtual network interfaces.
-
-  http://tuntaposx.sourceforge.net/
-
-Because these are kernel extensions, there is no Homebrew formula for tuntap.
-
-
-For OpenVPN to work as a server, you will need to do the following:
-
-1) Create configuration file in #{etc}/openvpn, samples can be
-   found in #{share}/doc/openvpn
-
-2) Install the launchd item in /Library/LaunchDaemons, like so:
-
-   sudo cp -vf #{prefix}/org.openvpn.plist /Library/LaunchDaemons/.
-   sudo chown -v root:wheel /Library/LaunchDaemons/org.openvpn.plist
-
-3) Start the daemon using:
-
-   sudo launchctl load /Library/LaunchDaemons/org.openvpn.plist
-
-Next boot of system will automatically start OpenVPN.
-EOS
+    For OpenVPN to work as a server, you will need to create configuration file
+    in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
+    EOS
   end
 
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd";>
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>org.openvpn</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{sbin}/openvpn</string>
-    <string>--config</string>
-    <string>#{etc}/openvpn/openvpn.conf</string>
-  </array>
-  <key>OnDemand</key>
-  <false/>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>TimeOut</key>
-  <integer>90</integer>
-  <key>WatchPaths</key>
-  <array>
-    <string>#{etc}/openvpn</string>
-  </array>
-  <key>WorkingDirectory</key>
-  <string>#{etc}/openvpn</string>
-</dict>
-</plist>
-EOS
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd";>
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_sbin}/openvpn</string>
+        <string>--config</string>
+        <string>#{etc}/openvpn/openvpn.conf</string>
+      </array>
+      <key>OnDemand</key>
+      <false/>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>TimeOut</key>
+      <integer>90</integer>
+      <key>WatchPaths</key>
+      <array>
+        <string>#{etc}/openvpn</string>
+      </array>
+      <key>WorkingDirectory</key>
+      <string>#{etc}/openvpn</string>
+    </dict>
+    </plist>
+    EOS
+  end
+
+  test do
+    system "#{sbin}/openvpn", "--show-ciphers"
   end
 end

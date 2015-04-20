@@ -1,16 +1,52 @@
-require 'formula'
+require "formula"
 
 class Libhid < Formula
-  url 'http://alioth.debian.org/frs/download.php/1958/libhid-0.2.16.tar.gz'
-  homepage 'http://libhid.alioth.debian.org/'
-  md5 'f2a427a6d6b98a5db8d17e2777173af7'
+  homepage "http://libhid.alioth.debian.org/"
+  url "http://distcache.freebsd.org/ports-distfiles/libhid-0.2.16.tar.gz"
+  sha1 "9a25fef674e8f20f97fea6700eb91c21ebbbcc02"
 
-  depends_on 'libusb'
-  depends_on 'libusb-compat'
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "906bbdb53b10becc5fa7662513ac7ee98bef5b24" => :yosemite
+    sha1 "fcd7fdf048247a5ecb01abbd56f7c03e330c62ca" => :mavericks
+  end
+
+  depends_on "libusb"
+  depends_on "libusb-compat"
+
+  # Fix compilation error on 10.9
+  patch :DATA
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--disable-swig"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-swig"
 
     system "make install"
   end
 end
+
+__END__
+--- libhid-0.2.16/src/Makefile.am.org	2014-01-02 19:20:33.000000000 +0200
++++ libhid-0.2.16/src/Makefile.am	2014-01-02 19:21:15.000000000 +0200
+@@ -17,7 +17,7 @@ else
+ if OS_DARWIN
+ OS_SUPPORT_SOURCE = darwin.c
+ AM_CFLAGS += -no-cpp-precomp
+-AM_LDFLAGS += -lIOKit -framework "CoreFoundation"
++AM_LDFLAGS += -framework IOKit -framework "CoreFoundation"
+ else
+ OS_SUPPORT =
+ endif
+--- libhid-0.2.16/src/Makefile.in.org	2014-01-02 19:20:35.000000000 +0200
++++ libhid-0.2.16/src/Makefile.in	2014-01-02 19:21:24.000000000 +0200
+@@ -39,7 +39,7 @@ POST_UNINSTALL = :
+ build_triplet = @build@
+ host_triplet = @host@
+ @OS_BSD_FALSE@@OS_DARWIN_TRUE@@OS_LINUX_FALSE@@OS_SOLARIS_FALSE@am__append_1 = -no-cpp-precomp
+-@OS_BSD_FALSE@@OS_DARWIN_TRUE@@OS_LINUX_FALSE@@OS_SOLARIS_FALSE@am__append_2 = -lIOKit -framework "CoreFoundation"
++@OS_BSD_FALSE@@OS_DARWIN_TRUE@@OS_LINUX_FALSE@@OS_SOLARIS_FALSE@am__append_2 = -framework IOKit -framework "CoreFoundation"
+ bin_PROGRAMS = libhid-detach-device$(EXEEXT)
+ subdir = src
+ DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \

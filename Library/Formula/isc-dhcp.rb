@@ -1,10 +1,9 @@
 require 'formula'
 
 class IscDhcp < Formula
-  version '4.2.1-P1'
-  url 'http://ftp.isc.org/isc/dhcp/dhcp-4.2.1-P1.tar.gz'
   homepage 'http://www.isc.org/software/dhcp'
-  md5 '22e6f1eff6d5cfe2621a06cc62ba5b70'
+  url 'http://ftp.isc.org/isc/dhcp/4.3.0/dhcp-4.3.0.tar.gz'
+  sha1 'deed72a4636461042b74de68c2825dc52623e1d1'
 
   def install
     # use one dir under var for all runtime state.
@@ -32,6 +31,11 @@ class IscDhcp < Formula
       ENV.append 'CFLAGS', "-D#{symbol}='\"#{path}\"'"
     end
 
+    # See discussion at: https://gist.github.com/1157223
+    if MacOS.version >= :lion
+      ENV.append 'CFLAGS', "-D__APPLE_USE_RFC_3542"
+    end
+
     system './configure', "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{dhcpd_dir}"
@@ -51,10 +55,10 @@ class IscDhcp < Formula
 
     # rename all the installed sample etc/* files so they don't clobber
     # any existing config files at symlink time.
-    Dir.open(prefix+'etc') do |dir|
+    Dir.open("#{prefix}/etc") do |dir|
       dir.each do |f|
         file = "#{dir.path}/#{f}"
-        File.rename(file, "#{file}.sample") if File.stat(file).file?
+        File.rename(file, "#{file}.sample") if File.file?(file)
       end
     end
 
@@ -65,53 +69,42 @@ class IscDhcp < Formula
       File.new(file, File::CREAT|File::RDONLY).close
     end
 
-    # sample launchd plists
-    (prefix+'org.isc.dhcpd.plist').write dhcpd_plist
-    (prefix+'org.isc.dhcpd6.plist').write dhcpd6_plist
+    # dhcpv6 plists
+    (prefix+'homebrew.mxcl.dhcpd6.plist').write plist_dhcpd6
+    (prefix+'homebrew.mxcl.dhcpd6.plist').chmod 0644
   end
 
-  def caveats
-    <<-EOCAVEATS.undent
-    This install of dhcpd expects config files to be in /usr/local/etc.
-    All state files (leases and pids) are stored in /usr/local/var/dhcpd.
+  def caveats; <<-EOS.undent
+    This install of dhcpd expects config files to be in #{etc}.
+    All state files (leases and pids) are stored in #{var}/dhcpd.
 
     Dhcpd needs to run as root since it listens on privileged ports.
-    Sample launchd plists to achieve this have been provided at:
-      #{prefix}/org.isc.dhcpd.plist
-    and:
-      #{prefix}/org.isc.dhcpd6.plist
 
     There are two plists because a single dhcpd process may do either
     DHCPv4 or DHCPv6 but not both. Use one or both as needed.
 
-    Copy the plists to /Library/LaunchDaemons and start the services with
-      cd /Library/LaunchDaemons
-      launchctl load -w org.isc.dhcpd.plist
-      launchctl load -w org.isc.dhcpd6.plist
-
     Note that you must create the appropriate config files before starting
     the services or dhcpd will refuse to run.
-      DHCPv4: /usr/local/etc/dhcpd.conf
-      DHCPv6: /usr/local/etc/dhcpd6.conf
+      DHCPv4: #{etc}/dhcpd.conf
+      DHCPv6: #{etc}/dhcpd6.conf
 
     Sample config files may be found in #{etc}.
-    If you change the config, restart dhcpd with one or both of
-      launchctl stop org.isc.dhcpd
-      launchctl stop org.isc.dhcpd6
-    EOCAVEATS
+    EOS
   end
 
-  def dhcpd_plist
-    <<-EOPLIST.undent
+  plist_options :startup => true
+
+  def plist
+    <<-EOS.undent
     <?xml version='1.0' encoding='UTF-8'?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
                     "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version='1.0'>
     <dict>
-    <key>Label</key><string>org.isc.dhcpd</string>
+    <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>/usr/local/sbin/dhcpd</string>
+        <string>#{opt_sbin}/dhcpd</string>
         <string>-f</string>
       </array>
     <key>Disabled</key><false/>
@@ -120,24 +113,24 @@ class IscDhcp < Formula
     <key>LowPriorityIO</key><true/>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 
-  def dhcpd6_plist
-    <<-EOPLIST.undent
+  def plist_dhcpd6
+    <<-EOS.undent
     <?xml version='1.0' encoding='UTF-8'?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
                     "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version='1.0'>
     <dict>
-    <key>Label</key><string>org.isc.dhcpd</string>
+    <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>/usr/local/sbin/dhcpd</string>
+        <string>#{opt_sbin}/dhcpd</string>
         <string>-f</string>
         <string>-6</string>
         <string>-cf</string>
-        <string>/usr/local/etc/dhcpd6.conf</string>
+        <string>#{etc}/dhcpd6.conf</string>
       </array>
     <key>Disabled</key><false/>
     <key>KeepAlive</key><true/>
@@ -145,6 +138,6 @@ class IscDhcp < Formula
     <key>LowPriorityIO</key><true/>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end

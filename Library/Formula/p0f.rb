@@ -1,17 +1,25 @@
-require 'formula'
+require "formula"
 
-# Official site is no longer responding; use
-# this GitHub mirror for now.
 class P0f < Formula
-  url 'https://github.com/downloads/skord/p0f/p0f-2.0.8.tgz'
-  homepage 'https://github.com/skord/p0f'
-  md5 '1ccbcd8d4c95ef6dae841120d23c56a5'
+  homepage "http://lcamtuf.coredump.cx/p0f3/"
+  url "http://lcamtuf.coredump.cx/p0f3/releases/p0f-3.07b.tgz"
+  sha1 "ae2c4fbcddf2a5ced33abd81992405b93207e7c8"
+
+  bottle do
+    cellar :any
+    sha1 "eceeb864d78eb22bd5808690f1ce818f196b0c9b" => :mavericks
+    sha1 "261610220600d44a55fd31c2ca68849cc9e4db4f" => :mountain_lion
+    sha1 "47e0e995504b87ea470c5ebb6583bd67cd447f95" => :lion
+  end
 
   def install
-    inreplace "config.h", "/etc/p0f", "#{etc}/p0f"
-    system "make"
-    sbin.install ["p0frep", "p0f"]
-    (etc+"p0f").install Dir['*.fp']
-    man1.install gzip("p0f.1")
+    inreplace "config.h", "p0f.fp", "#{etc}/p0f/p0f.fp"
+    system "./build.sh"
+    sbin.install "p0f"
+    (etc+"p0f").install "p0f.fp"
+  end
+
+  test do
+    system "#{sbin}/p0f", "-r", test_fixtures("test.pcap")
   end
 end

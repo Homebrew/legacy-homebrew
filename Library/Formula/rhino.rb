@@ -1,16 +1,16 @@
 require 'formula'
 
 class Rhino < Formula
-  url 'ftp://ftp.mozilla.org/pub/mozilla.org/js/rhino1_7R3.zip'
-  homepage 'http://www.mozilla.org/rhino/'
-  md5 '99d94103662a8d0b571e247a77432ac5'
-  version '1.7R3'
+  homepage 'https://www.mozilla.org/rhino/'
+  url 'https://github.com/mozilla/rhino/releases/download/Rhino1_7_6_RELEASE/rhino1.7.6.zip'
+  sha1 '7d86ccb422bc82569b334bad68cee385c3a4540c'
 
   def install
     libexec.install 'js.jar'
-    (bin+'rhino').write <<-EOS.undent
-      #!/bin/sh
-      java -jar "#{libexec}/js.jar" $@
-    EOS
+    bin.write_jar_script libexec/'js.jar', 'rhino'
+  end
+
+  test do
+    system "#{bin}/rhino", '-e', 'print(42);'
   end
 end

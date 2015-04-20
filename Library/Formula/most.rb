@@ -1,54 +1,28 @@
-require 'formula'
-
 class Most < Formula
-  url 'ftp://space.mit.edu/pub/davis/most/most-5.0.0a.tar.bz2'
-  homepage 'http://www.jedsoft.org/most/'
-  md5 '4c42abfc8d3ace1b0e0062ea021a5917'
+  homepage "http://www.jedsoft.org/most/"
+  url "ftp://space.mit.edu/pub/davis/most/most-5.0.0a.tar.bz2"
+  sha256 "94cb5a2e71b6b9063116f4398a002a757e59cd1499f1019dde8874f408485aa9"
 
-  depends_on 's-lang'
+  head "git://git.jedsoft.org/git/most.git"
 
-  def patches; DATA end
+  bottle do
+    sha256 "7b2828c656ba7ef31fc03d5570f8d6701f365fd4a96252bcdfae66b266713bc3" => :yosemite
+    sha256 "f7d99563678653a673eddee924ca90f76819eed8a25a47780762571f35187241" => :mavericks
+    sha256 "a5e6342f6f4046aa9f47b588734a4f0ad614aa3c461a83fe61a4d4f2666e792b" => :mountain_lion
+  end
+
+  depends_on "s-lang"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-slang=#{HOMEBREW_PREFIX}"
+    system "make", "install"
+  end
+
+  test do
+    text = "This is Homebrew"
+    assert_equal text, pipe_output("#{bin}/most -C", text)
   end
 end
-
-
-# most looks in a few set directories for slang, so at least add our prefix
-__END__
-diff --git a/configure b/configure
-index f24b2f1..9ac109c 100755
---- a/configure
-+++ b/configure
-@@ -9936,13 +9936,8 @@ echo "$as_me: error: --with-slanginc requres a value" >&2;}
-             $jd_prefix_incdir \
-             /usr/local/slang/include \
-             /usr/local/include/slang \
--  	  /usr/local/include \
--  	  /usr/include/slang \
--  	  /usr/slang/include \
--  	  /usr/include \
--  	  /opt/include/slang \
--  	  /opt/slang/include \
--  	  /opt/include"
-+	  /usr/local/include \
-+	  `brew --prefix`/include"
- 
-        for X in $lib_include_dirs
-        do
-@@ -9965,12 +9960,7 @@ echo "$as_me: error: --with-slanginc requres a value" >&2;}
-             /usr/local/lib \
-             /usr/local/lib/slang \
-             /usr/local/slang/lib \
--  	  /usr/lib \
--  	  /usr/lib/slang \
--  	  /usr/slang/lib \
--  	  /opt/lib \
--  	  /opt/lib/slang \
--  	  /opt/slang/lib"
-+	  `brew --prefix`/lib"
- 
-        case "$host_os" in
-          *darwin* )

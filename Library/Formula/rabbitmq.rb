@@ -1,84 +1,92 @@
 require 'formula'
 
 class Rabbitmq < Formula
-  homepage 'http://rabbitmq.com'
+  homepage 'https://www.rabbitmq.com'
+  url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.1/rabbitmq-server-mac-standalone-3.5.1.tar.gz'
+  sha256 '6c5986d86d4ff93c945f5e70c995d033558dca94e5eabd4fb4833ea813489177'
 
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.5.1/rabbitmq-server-2.5.1.tar.gz'
-  md5 '51295dfd10661ea0db99d9a22ae4445d'
+  bottle do
+    sha256 "91c6f8814eced0b996580390325f55efdf83b40b8d5ac6898f31ccc7f26e9ef8" => :yosemite
+    sha256 "dcbe969881c390e288388a8a121878fb384a8cbf8d89f420862d6e9ef4f3a2c8" => :mavericks
+    sha256 "eb07306c5f3fb1932e90bcb98a8aad149a73a2a766b179ebfd5907f3cdd1225b" => :mountain_lion
+  end
 
-  depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.leopard?
+  depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   def install
-    # Building the manual requires additional software, so skip it.
-    inreplace "Makefile", "install: install_bin install_docs", "install: install_bin"
+    # Install the base files
+    prefix.install Dir['*']
 
-    target_dir = "#{lib}/rabbitmq/erlang/lib/rabbitmq-#{version}"
-    system "make"
-    ENV['TARGET_DIR'] = target_dir
-    ENV['MAN_DIR'] = man
-    ENV['SBIN_DIR'] = sbin
-    system "make install"
-
-    (etc+'rabbitmq').mkpath
+    # Setup the lib files
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
-    %w{rabbitmq-server rabbitmqctl rabbitmq-env}.each do |script|
-      inreplace sbin+script do |s|
-        s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
-        s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
-        s.gsub! '/var/log/rabbitmq', "#{var}/log/rabbitmq"
-      end
+    # Correct SYS_PREFIX for things like rabbitmq-plugins
+    inreplace sbin/'rabbitmq-defaults' do |s|
+      s.gsub! 'SYS_PREFIX=${RABBITMQ_HOME}', "SYS_PREFIX=#{HOMEBREW_PREFIX}"
+      s.gsub! 'CLEAN_BOOT_FILE="${SYS_PREFIX}', "CLEAN_BOOT_FILE=\"#{prefix}"
+      s.gsub! 'SASL_BOOT_FILE="${SYS_PREFIX}', "SASL_BOOT_FILE=\"#{prefix}"
     end
 
-    # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
-    # therefore need to add this path for erl -pa
-    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
+    # Set RABBITMQ_HOME in rabbitmq-env
+    inreplace (sbin + 'rabbitmq-env'), 'RABBITMQ_HOME="${SCRIPT_DIR}/.."', "RABBITMQ_HOME=#{prefix}"
 
-    (prefix+'com.rabbitmq.rabbitmq-server.plist').write startup_plist
+    # Create the rabbitmq-env.conf file
+    rabbitmq_env_conf = etc+'rabbitmq/rabbitmq-env.conf'
+    rabbitmq_env_conf.write rabbitmq_env unless rabbitmq_env_conf.exist?
+
+    # Enable plugins - management web UI and visualiser; STOMP, MQTT, AMQP 1.0 protocols
+    enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
+    enabled_plugins_path.write '[rabbitmq_management,rabbitmq_management_visualiser,rabbitmq_stomp,rabbitmq_amqp1_0,rabbitmq_mqtt].' unless enabled_plugins_path.exist?
+
+    # Extract rabbitmqadmin and install to sbin
+    # use it to generate, then install the bash completion file
+    system "/usr/bin/unzip", "-qq", "-j",
+           "#{prefix}/plugins/rabbitmq_management-#{version}.ez",
+           "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
+
+    sbin.install 'rabbitmqadmin'
+    (sbin/'rabbitmqadmin').chmod 0755
+    (bash_completion/'rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
   end
 
-  def caveats
-    <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
-
-    If this is an upgrade and you already have the com.rabbitmq.rabbitmq-server.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
-        cp #{prefix}/com.rabbitmq.rabbitmq-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.rabbitmq.rabbitmq-server.plist
-
-      To start rabbitmq-server manually:
-        rabbitmq-server
+  def caveats; <<-EOS.undent
+    Management Plugin enabled by default at http://localhost:15672
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>com.rabbitmq.rabbitmq-server</string>
-    <key>Program</key>
-    <string>/usr/local/sbin/rabbitmq-server</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <!-- need erl in the path -->
-    <key>EnvironmentVariables</key>
-    <dict>
-      <key>PATH</key>
-      <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
-    </dict>
-  </dict>
-</plist>
-    EOPLIST
+  def rabbitmq_env; <<-EOS.undent
+    CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
+    NODE_IP_ADDRESS=127.0.0.1
+    NODENAME=rabbit@localhost
+    EOS
+  end
+
+  plist_options :manual => 'rabbitmq-server'
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>Program</key>
+        <string>#{opt_sbin}/rabbitmq-server</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>EnvironmentVariables</key>
+        <dict>
+          <!-- need erl in the path -->
+          <key>PATH</key>
+          <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
+          <!-- specify the path to the rabbitmq-env.conf file -->
+          <key>CONF_ENV_FILE</key>
+          <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
+        </dict>
+      </dict>
+    </plist>
+    EOS
   end
 end

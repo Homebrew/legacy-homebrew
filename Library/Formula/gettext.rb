@@ -1,50 +1,44 @@
-require 'formula'
-
 class Gettext < Formula
-  url 'http://ftp.gnu.org/pub/gnu/gettext/gettext-0.18.1.1.tar.gz'
-  md5 '3dd55b952826d2b32f51308f2f91aa89'
-  homepage 'http://www.gnu.org/software/gettext/'
+  homepage "https://www.gnu.org/software/gettext/"
+  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.4.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.4.tar.xz"
+  sha256 "719adadb8bf3e36bac52c243a01c0add18d23506a3a40437e6f5899ceab18d20"
 
-  keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
-
-  def options
-  [
-    ['--with-examples', 'Keep example files.'],
-    ['--universal', 'Build universal binaries.']
-  ]
+  bottle do
+    sha1 "b1536310f96a0dfff5442b370dda06169cef92ab" => :yosemite
+    sha1 "1720f95c4392d4f26d60f39c5722f99e91b09330" => :mavericks
+    sha1 "0a94590e0d9a6546644b4b00015a5d8444cdf384" => :mountain_lion
   end
 
-  def patches
-    # Patch to allow building with Xcode 4; safe for any compiler.
-    p = {:p0 => ['https://trac.macports.org/export/79617/trunk/dports/devel/gettext/files/stpncpy.patch']}
+  keg_only :shadowed_by_osx, "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
-    unless ARGV.include? '--with-examples'
-      # Use a MacPorts patch to disable building examples at all,
-      # rather than build them and remove them afterwards.
-      p[:p0] << 'https://trac.macports.org/export/79183/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in'
-    end
-
-    return p
-  end
+  option :universal
 
   def install
     ENV.libxml2
-    ENV.O3 # Issues with LLVM & O4 on Mac Pro 10.6
+    ENV.universal_binary if build.universal?
 
-    ENV.universal_binary if ARGV.build_universal?
-
-    system "./configure", "--disable-dependency-tracking", "--disable-debug",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--without-included-gettext",
-                          "--without-included-glib",
-                          "--without-included-libcroco",
-                          "--without-included-libxml",
-                          "--without-emacs",
+                          "--with-included-gettext",
+                          "--with-included-glib",
+                          "--with-included-libcroco",
+                          "--with-included-libunistring",
+                          "--with-emacs",
+                          "--disable-java",
+                          "--disable-csharp",
                           # Don't use VCS systems to create these archives
                           "--without-git",
-                          "--without-cvs"
+                          "--without-cvs",
+                          "--without-xz"
     system "make"
     ENV.deparallelize # install doesn't support multiple make jobs
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gettext", "test"
   end
 end

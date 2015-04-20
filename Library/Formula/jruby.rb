@@ -1,43 +1,29 @@
-require 'formula'
+require "formula"
 
 class Jruby < Formula
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.3/jruby-bin-1.6.3.tar.gz'
-  homepage 'http://www.jruby.org'
-  md5 '694b80e4eea784cdc1eb39fb1e3132c9'
+  homepage "http://www.jruby.org"
+  url "https://s3.amazonaws.com/jruby.org/downloads/1.7.19/jruby-bin-1.7.19.tar.gz"
+  sha1 "a3296d1ae9b9aa78825b8d65a0d2498b449eaa3d"
 
   def install
     # Remove Windows files
-    rm Dir['bin/*.{bat,dll,exe}']
+    rm Dir["bin/*.{bat,dll,exe}"]
 
-    # Prefix a 'j' on some commands
-    Dir.chdir 'bin' do
-      Dir['*'].each do |file|
-        mv file, "j#{file}" unless file.match /^[j_]/
-      end
+    cd "bin" do
+      # Prefix a 'j' on some commands to avoid clashing with other rubies
+      %w{ast rake rdoc ri testrb}.each { |f| mv f, "j#{f}" }
+      # Delete some unnecessary commands
+      rm "gem" # gem is a wrapper script for jgem
+      rm "irb" # irb is an identical copy of jirb
     end
 
     # Only keep the OS X native libraries
-    Dir.chdir 'lib/native' do
-      Dir['*'].each do |file|
-        rm_rf file unless file.downcase == 'darwin'
-      end
-    end
-
-    (prefix+'jruby').install Dir['*']
-
-    bin.mkpath
-    Dir["#{prefix}/jruby/bin/*"].each do |f|
-      ln_s f, bin+File.basename(f)
-    end
+    rm_rf Dir["lib/jni/*"] - ["lib/jni/Darwin"]
+    libexec.install Dir['*']
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
-  def caveats; <<-EOS.undent
-    Consider using RVM to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-    EOS
-  end
-
-  def test
-    system "jruby -e 'puts \"hello\"'"
+  test do
+    system "#{bin}/jruby", "-e", "puts 'hello'"
   end
 end

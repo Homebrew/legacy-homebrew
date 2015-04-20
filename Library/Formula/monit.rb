@@ -1,14 +1,25 @@
-require 'formula'
-
 class Monit < Formula
-  url 'http://mmonit.com/monit/dist/monit-5.2.5.tar.gz'
-  homepage 'http://mmonit.com/monit/'
-  sha256 '3c2496e9f653ff8a46b75b61126a86cb3861ad35e4eeb7379d64a0fc55c1fd8d'
+  homepage "https://mmonit.com/monit/"
+  url "https://mmonit.com/monit/dist/monit-5.12.tar.gz"
+  sha256 "43075396203569f87b67f7bffd1de739aa2fba302956237a2b0dc7aaf62da343"
+
+  bottle do
+    cellar :any
+    sha256 "b6ade6465692c0faed5f1068e42429a50f94f2a7b2a275d43233261f2924bbb7" => :yosemite
+    sha256 "cffb9f23a45afe401f5965bc9611cf64a15444eb142e216aae243bb8d82021de" => :mavericks
+    sha256 "70e825e0e6215aa7bf6a4897b03a0552259f8b739b68332815f18508b7188bf0" => :mountain_lion
+  end
+
+  depends_on "openssl"
 
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}/monit",
                           "--sysconfdir=#{etc}/monit"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/monit", "-h"
   end
 end

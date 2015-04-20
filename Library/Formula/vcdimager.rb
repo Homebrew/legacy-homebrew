@@ -1,9 +1,10 @@
 require 'formula'
 
 class Vcdimager < Formula
-  url 'http://ftp.gnu.org/pub/gnu/vcdimager/vcdimager-0.7.23.tar.gz'
   homepage 'http://www.gnu.org/software/vcdimager/'
-  md5 '5e7d80fdbf0037ad20e438f2a9573253'
+  url 'http://ftpmirror.gnu.org/vcdimager/vcdimager-0.7.24.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/vcdimager/vcdimager-0.7.24.tar.gz'
+  sha1 '8c245555c3e21dcbc3d4dbb2ecca74f609545424'
 
   depends_on 'pkg-config' => :build
   depends_on 'libcdio'

@@ -1,14 +1,15 @@
 require 'formula'
 
 class PbcSig < Formula
-  url 'http://crypto.stanford.edu/pbc/sig/files/pbc_sig-0.0.7.tar.gz'
   homepage 'http://crypto.stanford.edu/pbc/sig/'
-  md5 'a89b347c9a240b6f789848a12e0b6229'
+  url 'http://crypto.stanford.edu/pbc/sig/files/pbc_sig-0.0.8.tar.gz'
+  sha256 '7a343bf342e709ea41beb7090c78078a9e57b833454c695f7bcad2475de9c4bb'
 
   depends_on 'pbc'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

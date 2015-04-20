@@ -1,15 +1,22 @@
-require 'formula'
-
 class Yuicompressor < Formula
-  url 'http://yui.zenfs.com/releases/yuicompressor/yuicompressor-2.4.6.zip'
-  homepage 'http://yuilibrary.com/projects/yuicompressor'
-  md5 '85670711b55124240a087e0b552304fa'
+  homepage "https://yui.github.io/yuicompressor/"
+  url "https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.zip"
+  sha256 "3243fd79cb68cc61a5278a8ff67a0ad6a2d825c36464594b66900ad8426a6a6e"
 
   def install
-    libexec.install "build/yuicompressor-2.4.6.jar"
-    (bin+'yuicompressor').write <<-EOS.undent
-      #!/bin/sh
-      java -jar "#{libexec}/yuicompressor-2.4.6.jar" $@
+    libexec.install "yuicompressor-#{version}.jar"
+    bin.write_jar_script libexec/"yuicompressor-#{version}.jar", "yuicompressor"
+  end
+
+  test do
+    path = testpath/"test.js"
+    path.write <<-EOS
+      var i = 1;      // foo
+      console.log(i); // bar
     EOS
+
+    output = `#{bin}/yuicompressor --nomunge --preserve-semi #{path}`.strip
+    assert_equal "var i=1;console.log(i);", output
+    assert_equal 0, $?.exitstatus
   end
 end

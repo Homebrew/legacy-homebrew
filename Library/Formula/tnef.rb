@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Tnef < Formula
-  url 'http://downloads.sourceforge.net/project/tnef/tnef/v1.4.7/tnef-1.4.7.tar.gz'
-  md5 '00978a8ad8cc79a1ee605172f882ebe9'
-  homepage 'http://sourceforge.net/projects/tnef/'
+  homepage "http://sourceforge.net/projects/tnef/"
+  url "https://downloads.sourceforge.net/project/tnef/tnef/tnef-1.4.12.tar.gz"
+  sha1 "efa9aa2bb416e5c81317910a1b615931d79a8c7b"
 
   def install
     system "./configure", "--prefix=#{prefix}"

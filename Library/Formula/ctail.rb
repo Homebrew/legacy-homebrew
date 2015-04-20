@@ -1,15 +1,24 @@
 require 'formula'
 
 class Ctail < Formula
-  url 'http://ctail.i-want-a-pony.com/downloads/ctail-0.1.0.tar.bz2'
-  homepage 'http://ctail.i-want-a-pony.com/'
-  md5 'fc39139aeaf3400aa13b338e2266b976'
+  homepage 'https://github.com/pquerna/ctail'
+  url 'https://github.com/pquerna/ctail/archive/ctail-0.1.0.tar.gz'
+  sha1 'be669c11118c29aac4b76540dfcdf245d29a4a92'
+
+  bottle do
+    cellar :any
+    sha1 "bab0a267f8cf937a80d7d13582d298ecca925e53" => :yosemite
+    sha1 "ed024b77815bf8676f3d0842541b077a9950b79a" => :mavericks
+    sha1 "58dbf4d30c8fb951a6c86c892098082627b9e3ee" => :mountain_lion
+  end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug"
-    system "/usr/share/apr-1/build-1/libtool --silent --mode=compile gcc -g -Wall -Werror -DDARWIN -DSIGPROCMASK_SETS_THREAD_MASK -I. -I/usr/include/apr-1 -I/usr/include/apr-1  -c -o ctail.lo ctail.c && touch ctail.lo"
-    system "/usr/share/apr-1/build-1/libtool --silent --mode=link gcc -o ctail ctail.lo -L/usr/lib -R/usr/lib -laprutil-1 -lexpat -liconv -lsqlite3 -L/usr/lib -R/usr/lib -lapr-1 -lpthread"
-    bin.mkpath
-    system "/usr/share/apr-1/build-1/libtool --silent --mode=install /usr/bin/install -c -m 755 ctail #{bin}"
+    system 'make', 'LIBTOOL=glibtool --tag=CC'
+    system 'make install'
   end
 end

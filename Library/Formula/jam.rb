@@ -1,19 +1,14 @@
 require 'formula'
 
 class Jam < Formula
-  url 'ftp://ftp.perforce.com/jam/jam-2.5.zip'
-  homepage 'http://www.perforce.com/jam/jam.html'
-  md5 'f92caadb62fe4cb0b152eff508c9d450'
+  homepage 'http://www.perforce.com/resources/documentation/jam'
+  url 'https://swarm.workshop.perforce.com/projects/perforce_software-jam/download/main/jam-2.6.zip'
+  sha1 'e6d2f909798fad32f3bd7c08699265f82b05b526'
+
+  conflicts_with 'ftjam', :because => 'both install a `jam` binary'
 
   def install
-    # Why zip up as read-only?
-    system "chmod a+w *"
-
-    inreplace "Makefile" do |s|
-      s.remove_make_var! ['CC', 'CFLAGS']
-    end
-
-    system "make"
-    bin.install ["bin.macosx/jam", "bin.macosx/mkjambase"]
+    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LOCATE_TARGET=bin"
+    bin.install "bin/jam", "bin/mkjambase"
   end
 end

@@ -1,19 +1,19 @@
-require 'formula'
+require "formula"
 
 class Mpdas < Formula
-  url 'http://www.50hz.ws/mpdas/mpdas-0.2.5.tar.bz2'
-  homepage 'http://www.50hz.ws/mpdas/'
-  md5 'ea852645079be1aeedfe3e88f421917e'
+  homepage "http://www.50hz.ws/mpdas/"
+  url "http://www.50hz.ws/mpdas/mpdas-0.3.1.tar.bz2"
+  sha1 "c9aaf18243b3ae59264ba862f6fb94dfed55dbda"
 
-  head 'https://github.com/hrkfdn/mpdas.git'
+  head "https://github.com/hrkfdn/mpdas.git"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libmpd'
+  depends_on "pkg-config" => :build
+  depends_on "libmpd"
 
   def install
-    ENV['PREFIX'] = prefix
-    ENV['MANPREFIX'] = man
-    ENV['CONFIG'] = etc
+    ENV["PREFIX"] = prefix
+    ENV["MANPREFIX"] = man
+    ENV["CONFIG"] = etc
 
     ENV.j1
     system "make"

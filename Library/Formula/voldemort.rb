@@ -1,24 +1,22 @@
-require 'formula'
-
 class Voldemort < Formula
-  url 'https://github.com/downloads/voldemort/voldemort/voldemort-0.81.tar.gz'
-  homepage 'http://project-voldemort.com/'
-  md5 '38da11626c6704f2bda17d6461cd2928'
+  homepage "http://www.project-voldemort.com/"
+  url "https://github.com/voldemort/voldemort/archive/release-1.9.5-cutoff.tar.gz"
+  sha1 "ac4db71aa4670054dadc80bbe09544192ddd0a6a"
+
+  depends_on :ant => :build
+  depends_on :java => "1.7+"
 
   def install
-    system "ant"
-    libexec.install %w(bin lib dist contrib)
+    args = []
+    # ant on ML and below is too old to support 1.8
+    args << "-Dbuild.compiler=javac1.7" if MacOS.version < :mavericks
+    system "ant", *args
+    libexec.install %w[bin lib dist contrib]
     libexec.install "config" => "config-examples"
-    (libexec+"config").mkpath
+    (libexec/"config").mkpath
 
     # Write shim scripts for all utilities
-    Dir["#{libexec}/bin/*.sh"].each do |p|
-      script = File.basename(p)
-      (bin+script).write <<-EOS
-#!/bin/bash
-#{p} $@
-EOS
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*.sh"]
   end
 
   def caveats; <<-EOS.undent
@@ -29,5 +27,10 @@ EOS
       #{libexec}/config
     or you can set VOL_CONF_DIR to a more reasonable path.
     EOS
+  end
+
+  test do
+    ENV["VOLDEMORT_HOME"] = libexec
+    system "#{bin}/vadmin.sh"
   end
 end

@@ -1,21 +1,24 @@
-require 'formula'
-
 class Pbzip2 < Formula
-  url 'http://compression.ca/pbzip2/pbzip2-1.1.4.tar.gz'
-  homepage 'http://compression.ca/pbzip2/'
-  md5 '797e3ae5c6293a55e3e97fefb11cf494'
+  homepage "http://compression.ca/pbzip2/"
+  url "https://launchpad.net/pbzip2/1.1/1.1.12/+download/pbzip2-1.1.12.tar.gz"
+  sha256 "573bb358a5a7d3bf5f42f881af324cedf960c786e8d66dd03d448ddd8a0166ee"
 
-  fails_with_llvm
+  bottle do
+    cellar :any
+    sha256 "0fb0998fb35b62add5348bbf1c50372220052d52347be7b11e949e27b3997e1c" => :yosemite
+    sha256 "ac0e6128b16cb551a926fb713d8a4154e29ada2b71f231ecee2ebdab4d4bea96" => :mavericks
+    sha256 "7604662202fbb60acdb016da163b552b1c2cee6a4bdd21ca2be85afb1ce4c987" => :mountain_lion
+  end
+
+  fails_with :llvm do
+    build 2334
+  end
 
   def install
-    inreplace "Makefile" do |s|
-      s.change_make_var! 'PREFIX', prefix
-      s.gsub! "/man/", "/share/man/"
-
-      # Per fink and macport:
-      s.gsub! "-pthread -lpthread", ""
-    end
-
-    system "make install"
+    system "make", "PREFIX=#{prefix}",
+                   "CC=#{ENV.cxx}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "PREFIX=#{prefix}",
+                   "install"
   end
 end

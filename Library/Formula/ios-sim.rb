@@ -1,11 +1,19 @@
-require 'formula'
-
 class IosSim < Formula
-  url "https://github.com/Fingertips/ios-sim/tarball/1.1"
-  homepage "https://github.com/Fingertips/ios-sim"
-  md5 "ea70e2889390844ce2a72f1345df0e69"
+  homepage "https://github.com/phonegap/ios-sim"
+  url "https://github.com/phonegap/ios-sim/archive/3.1.1.tar.gz"
+  sha1 "fbed1bf01253d99ab643e6cdf9fa4e999111324c"
+  head "https://github.com/phonegap/ios-sim.git"
+
+  bottle do
+    cellar :any
+    sha1 "4b4c830f96af400e593fe1457f8162774589f67d" => :yosemite
+    sha1 "84de583b7e287ddab20e8ef10e03a97ad2a4d5af" => :mavericks
+    sha1 "f559ce57478e9aaebb8eabb6366fa12629e8cf3a" => :mountain_lion
+  end
+
+  depends_on :macos => :mountain_lion
 
   def install
-    system "rake install prefix='#{prefix}'"
+    rake "install", "prefix=#{prefix}"
   end
 end

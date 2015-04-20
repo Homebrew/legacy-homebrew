@@ -1,0 +1,105 @@
+require "formula"
+
+class Nss < Formula
+  homepage "https://developer.mozilla.org/docs/NSS"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_18_RTM/src/nss-3.18.tar.gz"
+  sha256 "618db0fb2af9f6fc165934d509036b65efc78ab0ae118c06c9488bb667f21d40"
+
+  bottle do
+    cellar :any
+    sha256 "8a8a16cc041f0ac6ca32694e87a4b6afdb438fa5d2582a742113206afbc715a5" => :yosemite
+    sha256 "7995fd4c349960e6a79a5ffb5753a8fe8a3b67376ad28c912939ca11217e7f33" => :mavericks
+    sha256 "a98cf147b9f0ed5af35bd28a9995bc0138b54a6f8d027b6d682319a73b7e2d85" => :mountain_lion
+  end
+
+  keg_only <<-EOS.undent
+    Having this library symlinked makes Firefox pick it up instead of built-in,
+    so it then randomly crashes without meaningful explanation.
+
+    Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOS
+  depends_on "nspr"
+
+  def install
+    ENV.deparallelize
+    cd "nss"
+
+    args = [
+      "BUILD_OPT=1",
+      "NSS_USE_SYSTEM_SQLITE=1",
+      "NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr",
+      "NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}"
+    ]
+    args << "USE_64=1" if MacOS.prefer_64_bit?
+
+    # Remove the broken (for anyone but Firefox) install_name
+    inreplace "coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
+    inreplace "lib/freebl/config.mk", "@executable_path", lib
+
+    system "make", "all", *args
+
+    # We need to use cp here because all files get cross-linked into the dist
+    # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
+    # rather than copying the referenced file.
+    cd "../dist"
+    bin.mkpath
+    Dir.glob("Darwin*/bin/*") do |file|
+      cp file, bin unless file.include? ".dylib"
+    end
+
+    include_target = include + "nss"
+    include_target.mkpath
+    Dir.glob("public/{dbm,nss}/*") { |file| cp file, include_target }
+
+    lib.mkpath
+    libexec.mkpath
+    Dir.glob("Darwin*/lib/*") do |file|
+      if file.include? ".chk"
+        cp file, libexec
+      else
+        cp file, lib
+      end
+    end
+    # resolves conflict with openssl, see #28258
+    rm lib/"libssl.a"
+
+    (bin+"nss-config").write config_file
+    (lib+"pkgconfig/nss.pc").write pc_file
+  end
+
+  test do
+    # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
+    (testpath/"passwd").write("It's a secret to everyone.")
+    system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
+    system "#{bin}/certutil", "-L", "-d", pwd
+  end
+
+  # A very minimal nss-config for configuring firefox etc. with this nss,
+  # see https://bugzil.la/530672 for the progress of upstream inclusion.
+  def config_file; <<-EOS.undent
+    #!/bin/sh
+    for opt; do :; done
+    case "$opt" in
+      --version) opt="--modversion";;
+      --cflags|--libs) ;;
+      *) exit 1;;
+    esac
+    pkg-config "$opt" nss
+    EOS
+  end
+
+  def pc_file; <<-EOS.undent
+    prefix=#{prefix}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include/nss
+
+    Name: NSS
+    Description: Mozilla Network Security Services
+    Version: #{version}
+    Requires: nspr >= 4.10.8
+    Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
+    Cflags: -I${includedir}
+    EOS
+  end
+end

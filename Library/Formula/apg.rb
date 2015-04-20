@@ -1,19 +1,26 @@
-require 'formula'
-
 class Apg < Formula
-  url 'http://www.adel.nursat.kz/apg/download/apg-2.2.3.tar.gz'
-  homepage 'http://www.adel.nursat.kz/apg/'
-  md5 '3b3fc4f11e90635519fe627c1137c9ac'
+  homepage "http://www.adel.nursat.kz/apg/"
+  url "http://www.adel.nursat.kz/apg/download/apg-2.2.3.tar.gz"
+  sha256 "69c9facde63958ad0a7630055f34d753901733d55ee759d08845a4eda2ba7dba"
+
+  bottle do
+    cellar :any
+    sha256 "834bb84d2209ae2ff3b663567ef2142d7ed513826b648e7c7246a4e8cf243f33" => :yosemite
+    sha256 "3005aebd42cef1af15dad861bea49202928f9d2bd672a2ebfae0afffc8ddf291" => :mavericks
+    sha256 "bbe17982d5a6d9d91519b8d0e9d134c25f2098bb3225627a3806df09c00761f2" => :mountain_lion
+  end
 
   def install
-    inreplace "Makefile" do |s|
-      s.remove_make_var! ["CC", "FLAGS", "LIBS", "LIBM"]
-    end
+    system "make", "standalone",
+                   "CC=#{ENV.cc}",
+                   "FLAGS=#{ENV.cflags}",
+                   "LIBS=", "LIBM="
 
-    system "make standalone"
+    bin.install "apg", "apgbfm"
+    man1.install "doc/man/apg.1", "doc/man/apgbfm.1"
+  end
 
-    # Install manually
-    bin.install ["apg", "apgbfm"]
-    man1.install ["doc/man/apg.1", "doc/man/apgbfm.1"]
+  test do
+    system bin/"apg", "-a", "1", "-M", "n", "-n", "3", "-m", "8", "-E", "23456789"
   end
 end

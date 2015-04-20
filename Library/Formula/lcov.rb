@@ -1,19 +1,25 @@
 require 'formula'
 
 class Lcov < Formula
-  url 'http://downloads.sourceforge.net/ltp/lcov-1.9.tar.gz'
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
-  md5 '8b88cfc0200a8c176b879ac115a31379'
+  url 'https://downloads.sourceforge.net/ltp/lcov-1.11.tar.gz'
+  sha1 'bf8ed68c06805a71528a2a67dd714830afd3ccb5'
 
-  def install
-    %w(bin/gendesc bin/genhtml bin/geninfo bin/genpng bin/lcov).each do |file|
-      inreplace file, '/etc/lcovrc', "#{prefix}/etc/lcovrc"
-    end
-    system "make PREFIX=#{prefix} install"
+  head 'https://github.com/linux-test-project/lcov.git'
+
+  bottle do
+    cellar :any
+    sha1 "edad7ab819deb6032734442ea88c343e6779f60c" => :mavericks
+    sha1 "61cb990e2928ad0a1b29e131790790994b5a95d6" => :mountain_lion
+    sha1 "b417a6801535d439dc26200213e63a4536989d11" => :lion
   end
 
-  def patches
-    DATA
+  patch :DATA
+
+  def install
+    inreplace %w[bin/genhtml bin/geninfo bin/lcov],
+      "/etc/lcovrc", "#{prefix}/etc/lcovrc"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end
 

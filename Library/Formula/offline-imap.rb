@@ -1,17 +1,17 @@
-require 'formula'
+require "formula"
 
 class OfflineImap < Formula
-  url "https://github.com/nicolas33/offlineimap.git", :tag => 'v6.3.2.1'
-  version '6.3.2.1'
   homepage "http://offlineimap.org/"
+  url "https://github.com/OfflineIMAP/offlineimap/archive/v6.5.6.tar.gz"
+  sha1 "cced67060be2922ca3ce056839b2aa1fe6b776a1"
+
+  head "https://github.com/OfflineIMAP/offlineimap.git"
 
   def install
-    libexec.install 'bin/offlineimap' => 'offlineimap.py'
-    libexec.install 'offlineimap'
-    prefix.install [ 'offlineimap.conf', 'offlineimap.conf.minimal' ]
-    bin.mkpath
-    ln_s libexec+'offlineimap.py', bin+'offlineimap'
-    (prefix+'org.offlineimap.plist').write startup_plist
+    prefix.install "offlineimap.conf", "offlineimap.conf.minimal"
+    libexec.install "bin/offlineimap" => "offlineimap.py"
+    libexec.install "offlineimap"
+    bin.install_symlink libexec+"offlineimap.py" => "offlineimap"
   end
 
   def caveats; <<-EOS.undent
@@ -21,23 +21,10 @@ class OfflineImap < Formula
 
     * advanced configuration:
         cp -n #{prefix}/offlineimap.conf ~/.offlineimaprc
-
-
-    To launch on startup and run every 5 minutes:
-    * if this is your first install:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/org.offlineimap.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.offlineimap.plist
-
-    * if this is an upgrade and you already have the org.offlineimap.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.offlineimap.plist
-        cp #{prefix}/org.offlineimap.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.offlineimap.plist
-
     EOS
   end
 
-  def startup_plist; <<-EOPLIST.undent
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -45,10 +32,10 @@ class OfflineImap < Formula
         <key>KeepAlive</key>
         <false/>
         <key>Label</key>
-        <string>org.offlineimap</string>
+        <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>/usr/local/bin/offlineimap</string>
+          <string>#{opt_bin}/offlineimap</string>
         </array>
         <key>StartInterval</key>
         <integer>300</integer>
@@ -60,6 +47,6 @@ class OfflineImap < Formula
         <string>/dev/null</string>
       </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end

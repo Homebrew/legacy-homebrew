@@ -1,137 +1,164 @@
-require 'formula'
-
 class Nginx < Formula
-  homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.0.4.tar.gz'
-  md5 'd23f6e6b07b57ac061e790b1ed64bb98'
+  homepage "http://nginx.org/"
+  url "http://nginx.org/download/nginx-1.6.3.tar.gz"
+  sha1 "7ee99f16e91e655eb555d5f684155fc2a1f23b4f"
 
-  depends_on 'pcre'
-
-  skip_clean 'logs'
-
-  # Changes default port to 8080
-  # Tell configure to look for pcre in HOMEBREW_PREFIX
-  def patches
-    DATA
+  devel do
+    url "http://nginx.org/download/nginx-1.7.12.tar.gz"
+    sha1 "346af3e6dd087a2189d6344c182208263eaa079b"
   end
 
-  def options
-    [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
-    ]
+  head "http://hg.nginx.org/nginx/", :using => :hg
+
+  bottle do
+    revision 2
+    sha256 "b8465e0f291d819ae0e4287f4640a81cf531af092caef11a34ec19d14c873f69" => :yosemite
+    sha256 "7c56b079f0a5c07b32fbfd8d681de2d349ab3eb5f3ea032c73475931cbad6223" => :mavericks
+    sha256 "042df630570fda3cfc304b718eeff204099cbdb9c97adcaa86f25c6ef9fd9aa5" => :mountain_lion
   end
 
-  def passenger_config_args
-      passenger_root = `passenger-config --root`.chomp
+  env :userpaths
 
-      if File.directory?(passenger_root)
-        return "--add-module=#{passenger_root}/ext/nginx"
-      end
+  # Before submitting more options to this formula please check they aren't
+  # already in Homebrew/homebrew-nginx/nginx-full:
+  # https://github.com/Homebrew/homebrew-nginx/blob/master/nginx-full.rb
+  option "with-passenger", "Compile with support for Phusion Passenger module"
+  option "with-webdav", "Compile with support for WebDAV module"
+  option "with-debug", "Compile with support for debug log"
+  option "with-spdy", "Compile with support for SPDY module"
+  option "with-gunzip", "Compile with support for gunzip module"
 
-      puts "Unable to install nginx with passenger support. The passenger"
-      puts "gem must be installed and passenger-config must be in your path"
-      puts "in order to continue."
-      exit
-  end
+  depends_on "pcre"
+  depends_on "passenger" => :optional
+  depends_on "openssl"
 
   def install
+    # Changes default port to 8080
+    inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
+    open("conf/nginx.conf", "a") {|f| f.puts "include servers/*;" }
+
+    pcre = Formula["pcre"]
+    openssl = Formula["openssl"]
+    cc_opt = "-I#{pcre.include} -I#{openssl.include}"
+    ld_opt = "-L#{pcre.lib} -L#{openssl.lib}"
+
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
+            "--with-ipv6",
+            "--sbin-path=#{bin}/nginx",
+            "--with-cc-opt=#{cc_opt}",
+            "--with-ld-opt=#{ld_opt}",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/nginx/nginx.lock"]
+            "--lock-path=#{var}/run/nginx.lock",
+            "--http-client-body-temp-path=#{var}/run/nginx/client_body_temp",
+            "--http-proxy-temp-path=#{var}/run/nginx/proxy_temp",
+            "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
+            "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
+            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
+            "--http-log-path=#{var}/log/nginx/access.log",
+            "--error-log-path=#{var}/log/nginx/error.log",
+            "--with-http_gzip_static_module",
+           ]
 
-    args << passenger_config_args if ARGV.include? '--with-passenger'
-    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    if build.with? "passenger"
+      nginx_ext = `#{Formula["passenger"].opt_bin}/passenger-config --nginx-addon-dir`.chomp
+      args << "--add-module=#{nginx_ext}"
+    end
 
-    system "./configure", *args
-    system "make install"
+    args << "--with-http_dav_module" if build.with? "webdav"
+    args << "--with-debug" if build.with? "debug"
+    args << "--with-http_spdy_module" if build.with? "spdy"
+    args << "--with-http_gunzip_module" if build.with? "gunzip"
 
-    (prefix+'org.nginx.nginx.plist').write startup_plist
+    if build.head?
+      system "./auto/configure", *args
+    else
+      system "./configure", *args
+    end
+    system "make"
+    system "make", "install"
+    man8.install "objs/nginx.8"
+
+    (etc/"nginx/servers").mkpath
+    (var/"run/nginx").mkpath
   end
 
-  def caveats; <<-EOS.undent
-    In the interest of allowing you to run `nginx` without `sudo`, the default
-    port is set to localhost:8080.
+  def post_install
+    # nginx's docroot is #{prefix}/html, this isn't useful, so we symlink it
+    # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
+    # is so the user can redirect it easily to something else if they choose.
+    html = prefix/"html"
+    dst  = var/"www"
 
-    If you want to host pages on your local machine to the public, you should
-    change that to localhost:80, and run `sudo nginx`. You'll need to turn off
-    any other web servers running port 80, of course.
+    if dst.exist?
+      html.rmtree
+      dst.mkpath
+    else
+      dst.dirname.mkpath
+      html.rename(dst)
+    end
 
-    You can start nginx automatically on login running as your user with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.nginx.nginx.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.nginx.nginx.plist
+    prefix.install_symlink dst => "html"
 
-    Though note that if running as your user, the launch agent will fail if you
-    try to use a port below 1024 (such as http's default of 80.)
+    # for most of this formula's life the binary has been placed in sbin
+    # and Homebrew used to suggest the user copy the plist for nginx to their
+    # ~/Library/LaunchAgents directory. So we need to have a symlink there
+    # for such cases
+    if rack.subdirs.any? { |d| d.join("sbin").directory? }
+      sbin.install_symlink bin/"nginx"
+    end
+  end
+
+  test do
+    system "#{bin}/nginx", "-t"
+  end
+
+  def passenger_caveats; <<-EOS.undent
+
+    To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
+      passenger_root #{Formula["passenger"].opt_libexec}/lib/phusion_passenger/locations.ini;
+      passenger_ruby /usr/bin/ruby;
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>org.nginx.nginx</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>#{sbin}/nginx</string>
-        <string>-g</string>
-        <string>daemon off;</string>
-    </array>
-    <key>WorkingDirectory</key>
-    <string>#{HOMEBREW_PREFIX}</string>
-  </dict>
-</plist>
-    EOPLIST
+  def caveats
+    s = <<-EOS.undent
+    Docroot is: #{var}/www
+
+    The default port has been set in #{etc}/nginx/nginx.conf to 8080 so that
+    nginx can run without sudo.
+
+    nginx will load all files in #{etc}/nginx/servers/.
+    EOS
+    s << passenger_caveats if build.with? "passenger"
+    s
+  end
+
+  plist_options :manual => "nginx"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <false/>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_bin}/nginx</string>
+            <string>-g</string>
+            <string>daemon off;</string>
+        </array>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+      </dict>
+    </plist>
+    EOS
   end
 end
-
-__END__
---- a/auto/lib/pcre/conf
-+++ b/auto/lib/pcre/conf
-@@ -155,6 +155,22 @@ else
-             . auto/feature
-         fi
-
-+        if [ $ngx_found = no ]; then
-+
-+            # Homebrew
-+            HOMEBREW_PREFIX=${NGX_PREFIX%Cellar*}
-+            ngx_feature="PCRE library in ${HOMEBREW_PREFIX}"
-+            ngx_feature_path="${HOMEBREW_PREFIX}/include"
-+
-+            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-R${HOMEBREW_PREFIX}/lib -L${HOMEBREW_PREFIX}/lib -lpcre"
-+            else
-+                ngx_feature_libs="-L${HOMEBREW_PREFIX}/lib -lpcre"
-+            fi
-+
-+            . auto/feature
-+        fi
-+
-         if [ $ngx_found = yes ]; then
-             CORE_DEPS="$CORE_DEPS $REGEX_DEPS"
-             CORE_SRCS="$CORE_SRCS $REGEX_SRCS"
---- a/conf/nginx.conf
-+++ b/conf/nginx.conf
-@@ -33,7 +33,7 @@
-     #gzip  on;
-
-     server {
--        listen       80;
-+        listen       8080;
-         server_name  localhost;
-
-         #charset koi8-r;

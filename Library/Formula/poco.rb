@@ -1,19 +1,30 @@
-require 'formula'
+require "formula"
 
 class Poco < Formula
-  url 'http://downloads.sourceforge.net/project/poco/sources/poco-1.4.1/poco-1.4.1p1-all.tar.bz2'
-  homepage 'http://pocoproject.org/'
-  md5 '5b35baa1bf7ee4b20437b8950a1c5012'
-  version '1.4.1p1'
+  homepage "http://pocoproject.org/"
+  url "http://pocoproject.org/releases/poco-1.6.0/poco-1.6.0-all.tar.gz"
+  sha1 "b45486757bfc132631d31724342a62cf41dc2795"
+
+  bottle do
+    cellar :any
+    sha1 "32c3d4f754f5fd1b01fa2455a070f5057582a1a4" => :yosemite
+    sha1 "1d844a6baf5ffa6c19697623aceb0d0035e4be38" => :mavericks
+    sha1 "4f039170113a69a61657d35a2a0206743bd7f416" => :mountain_lion
+  end
+
+  option :cxx11
+
+  depends_on "openssl"
 
   def install
-    arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin'
+    ENV.cxx11 if build.cxx11?
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'
+    system "./configure", "--prefix=#{prefix}",
                           "--config=#{arch}",
                           "--omit=Data/MySQL,Data/ODBC",
-                          "--prefix=#{prefix}"
-    system "make"
-    system "make install"
+                          "--no-samples",
+                          "--no-tests"
+    system "make", "install", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}"
   end
 end

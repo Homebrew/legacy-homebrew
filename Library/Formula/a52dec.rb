@@ -1,9 +1,9 @@
 require 'formula'
 
 class A52dec < Formula
-  url 'http://liba52.sourceforge.net/files/a52dec-0.7.4.tar.gz'
   homepage 'http://liba52.sourceforge.net/'
-  md5 'caa9f5bc44232dc8aeea773fea56be80'
+  url 'http://liba52.sourceforge.net/files/a52dec-0.7.4.tar.gz'
+  sha1 '79b33bd8d89dad7436f85b9154ad35667aa37321'
 
   def install
     system "./configure", "--disable-debug",

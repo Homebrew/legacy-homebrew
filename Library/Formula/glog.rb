@@ -1,17 +1,13 @@
-require 'formula'
-
 class Glog < Formula
-  # Stable tarball doesn't build on OS X, but trunk does
-  #url 'http://google-glog.googlecode.com/files/glog-0.3.0.tar.gz'
-  head 'http://google-glog.googlecode.com/svn/trunk/'
-  homepage 'http://code.google.com/p/google-glog/'
-  md5 '968fe4bfbaddba315bf52de310dcadc5'
+  homepage "https://github.com/google/glog"
+  url "https://github.com/google/glog/archive/v0.3.4.tar.gz"
+  sha256 "ce99d58dce74458f7656a68935d7a0c048fa7b4626566a71b7f4e545920ceb10"
 
-  depends_on 'gflags'
+  depends_on "gflags"
 
   def install
-    system "autoreconf -f -i"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

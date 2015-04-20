@@ -1,19 +1,28 @@
-require 'formula'
+require "formula"
 
 class Lftp < Formula
-  url 'http://ftp.yars.free.net/pub/source/lftp/lftp-4.3.1.tar.bz2'
-  homepage 'http://lftp.yar.ru/'
-  md5 'ea45acfb47b5590d4675c50dc0c6e13c'
+  homepage "http://lftp.yar.ru/"
+  url "http://lftp.yar.ru/ftp/lftp-4.6.1.tar.gz"
+  sha1 "57b62d7365de1698433a3b1b5daf7192adc2517a"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'readline'
-  depends_on 'gnutls'
+  bottle do
+    sha1 "4eb97a364cce3e0af57a0fb08e7b8094bf3fa5f5" => :yosemite
+    sha1 "331af6459f1cd2c65c4845cdaf0c2bd0e475e2e1" => :mavericks
+    sha1 "0ebecf5a39e1a5a6cdd4da9405b0914470c72e87" => :mountain_lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "readline"
+  depends_on "openssl"
 
   def install
-    # Bus error
-    ENV.no_optimization if MacOS.leopard?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
+    system "make", "install"
+  end
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+  test do
+    system "#{bin}/lftp", "-c", "open ftp://mirrors.kernel.org; ls"
   end
 end

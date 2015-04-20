@@ -1,114 +1,119 @@
-require 'formula'
-
-class Libiconv < Formula
-  homepage 'http://www.gnu.org/software/libiconv/'
-  url 'http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz'
-  md5 '7ab33ebd26687c744a37264a330bbe9a'
-end
-
-def build_tests?; ARGV.include? '--test'; end
-
 class Glib < Formula
-  homepage 'http://developer.gnome.org/glib/2.28/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.28/glib-2.28.7.tar.bz2'
-  sha256 '0e1b3816a8934371d4ea2313dfbe25d10d16c950f8d02e0a7879ae10d91b1631'
+  homepage "https://developer.gnome.org/glib/"
+  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.44/glib-2.44.0.tar.xz"
+  sha256 "f2d362b106a08fa801770d41829a06fcfe287a00421018869eebf5efc796f5b9"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-
-  fails_with_llvm "Undefined symbol errors while linking"
-
-  def patches
-    mp = "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/"
-    {
-      :p0 => [
-        mp+"patch-configure.ac.diff",
-        mp+"patch-glib-2.0.pc.in.diff",
-        mp+"patch-glib_gunicollate.c.diff",
-        mp+"patch-gi18n.h.diff",
-        mp+"patch-gio_xdgmime_xdgmime.c.diff",
-        mp+"patch-gio_gdbusprivate.c.diff"
-      ]
-    }
+  bottle do
+    sha256 "d520b2a66d30980984e941da1c527d161188e347eb684eff5c93f465925818ee" => :yosemite
+    sha256 "5fe51191fbdedebdbb37738cd8e10ee4069fff832359b2ce446656759a56a4e3" => :mavericks
+    sha256 "0e44ed5114c08b165081e0338d6ccbda8023f0839b57e978bebfd408776b1ae6" => :mountain_lion
   end
 
-  def options
-  [
-    ['--universal', 'Build universal binaries.'],
-    ['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']
-  ]
+  option :universal
+  option "with-test", "Build a debug build and run tests. NOTE: Not all tests succeed yet"
+  option "with-static", "Build glib with a static archive."
+
+  deprecated_option "test" => "with-test"
+
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "libffi"
+
+  fails_with :llvm do
+    build 2334
+    cause "Undefined symbol errors while linking"
   end
+
+  resource "config.h.ed" do
+    url "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed"
+    version "111532"
+    sha256 "9f1e23a084bc879880e589893c17f01a2f561e20835d6a6f08fcc1dad62388f1"
+  end
+
+  # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
+  # but needed to fix an assumption about the location of the d-bus machine
+  # id file.
+  patch do
+    url "https://gist.githubusercontent.com/jacknagel/af332f42fae80c570a77/raw/7b5fd0d2e6554e9b770729fddacaa2d648327644/glib-hardcoded-paths.diff"
+    sha256 "a4cb96b5861672ec0750cb30ecebe1d417d38052cac12fbb8a77dbf04a886fcb"
+  end
+
+  # Fixes compilation with FSF GCC. Doesn't fix it on every platform, due
+  # to unrelated issues in GCC, but improves the situation.
+  # Patch submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=672777
+  patch do
+    url "https://gist.githubusercontent.com/jacknagel/9835034/raw/282d36efc126272f3e73206c9865013f52d67cd8/gio.patch"
+    sha256 "d285c70cfd3434394a1c77c92a8d2bad540c954aad21e8bb83777482c26aab9a"
+  end
+
+  patch do
+    url "https://gist.githubusercontent.com/jacknagel/9726139/raw/a351ea240dea33b15e616d384be0550f5051e959/universal.patch"
+    sha256 "7e1ad7667c7d89fcd08950c9c32cd66eb9c8e2ee843f023d1fadf09a9ba39fee"
+  end if build.universal?
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
-    # Snow Leopard libiconv doesn't have a 64bit version of the libiconv_open
-    # function, which breaks things for us, so we build our own
-    # http://www.mail-archive.com/gtk-list@gnome.org/msg28747.html
+    inreplace %w[gio/gdbusprivate.c gio/xdgmime/xdgmime.c glib/gutils.c],
+      "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
 
-    iconvd = Pathname.getwd+'iconv'
-    iconvd.mkpath
+    # Disable dtrace; see https://trac.macports.org/ticket/30413
+    args = %W[
+      --disable-maintainer-mode
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --disable-dtrace
+      --disable-libelf
+      --prefix=#{prefix}
+      --localstatedir=#{var}
+      --with-gio-module-dir=#{HOMEBREW_PREFIX}/lib/gio/modules
+    ]
 
-    Libiconv.new.brew do
-      # Help out universal builds
-      # TODO - do these lines need to be here?
-      # ENV["ac_cv_func_malloc_0_nonnull"]='yes'
-      # ENV["gl_cv_func_malloc_0_nonnull"]='1'
-
-      system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                            "--prefix=#{iconvd}",
-                            "--enable-static", "--disable-shared"
-      system "make install"
-    end
-
-    # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
-    ENV.enable_warnings
-
-    # Statically link to libiconv so glib doesn't use the bugged version in 10.6
-    ENV['LDFLAGS'] += " #{iconvd}/lib/libiconv.a"
-
-    args = ["--disable-dependency-tracking", "--disable-rebuilds",
-            "--prefix=#{prefix}",
-            "--with-libiconv=gnu"]
-
-    args << "--disable-debug" unless build_tests?
-
-    if ARGV.build_universal?
-      # autoconf 2.61 is fine don't worry about it
-      inreplace ["aclocal.m4", "configure.ac"] do |s|
-        s.gsub! "AC_PREREQ([2.62])", "AC_PREREQ([2.61])"
-      end
-
-      # Run autoconf so universal builds will work
-      system "autoconf"
-    end
+    args << "--enable-static" if build.with? "static"
 
     system "./configure", *args
 
-    # Fix for 64-bit support, from MacPorts
-    curl "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/config.h.ed", "-O"
-    system "ed - config.h < config.h.ed"
-
-    system "make"
-    # Supress a folder already exists warning during install
-    # Also needed for running tests
-    ENV.j1
-    system "make test" if build_tests?
-    system "make install"
-
-    # This sucks; gettext is Keg only to prevent conflicts with the wider
-    # system, but pkg-config or glib is not smart enough to have determined
-    # that libintl.dylib isn't in the DYLIB_PATH so we have to add it
-    # manually.
-    gettext = Formula.factory('gettext')
-    inreplace lib+'pkgconfig/glib-2.0.pc' do |s|
-      s.gsub! 'Libs: -L${libdir} -lglib-2.0 -lintl',
-              "Libs: -L${libdir} -lglib-2.0 -L#{gettext.lib} -lintl"
-
-      s.gsub! 'Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include',
-              "Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include -I#{gettext.include}"
+    if build.universal?
+      buildpath.install resource("config.h.ed")
+      system "ed -s - config.h <config.h.ed"
     end
 
-    (share+'gtk-doc').rmtree
+    system "make"
+    # the spawn-multithreaded tests require more open files
+    system "ulimit -n 1024; make check" if build.with? "test"
+    system "make", "install"
+
+    # `pkg-config --libs glib-2.0` includes -lintl, and gettext itself does not
+    # have a pkgconfig file, so we add gettext lib and include paths here.
+    gettext = Formula["gettext"].opt_prefix
+    inreplace lib+"pkgconfig/glib-2.0.pc" do |s|
+      s.gsub! "Libs: -L${libdir} -lglib-2.0 -lintl",
+              "Libs: -L${libdir} -lglib-2.0 -L#{gettext}/lib -lintl"
+      s.gsub! "Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include",
+              "Cflags: -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include -I#{gettext}/include"
+    end
+
+    (share+"gtk-doc").rmtree
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <string.h>
+      #include <glib.h>
+
+      int main(void)
+      {
+          gchar *result_1, *result_2;
+          char *str = "string";
+
+          result_1 = g_convert(str, strlen(str), "ASCII", "UTF-8", NULL, NULL, NULL);
+          result_2 = g_convert(result_1, strlen(result_1), "UTF-8", "ASCII", NULL, NULL, NULL);
+
+          return (strcmp(str, result_2) == 0) ? 0 : 1;
+      }
+      EOS
+    flags = ["-I#{include}/glib-2.0", "-I#{lib}/glib-2.0/include", "-lglib-2.0"]
+    system ENV.cc, "-o", "test", "test.c", *(flags + ENV.cflags.to_s.split)
+    system "./test"
   end
 end

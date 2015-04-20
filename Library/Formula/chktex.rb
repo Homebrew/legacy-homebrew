@@ -1,18 +1,21 @@
-require 'formula'
-
 class Chktex < Formula
-  url 'http://baruch.ev-en.org/proj/chktex/chktex-1.6.4.tar.gz'
-  homepage 'http://baruch.ev-en.org/proj/chktex/'
-  md5 'e1d1f70d37e97734a69c94682a2038a0'
+  homepage "http://www.nongnu.org/chktex/"
+  url "http://download.savannah.gnu.org/releases/chktex/chktex-1.7.2.tar.gz"
+  sha256 "d7f37985e3a122990f2a29fe7cac5d1f31acb1e50035457ef7ceb07c30550158"
+
+  depends_on :tex
 
   def install
-    # Seriously, don't pause and show ASCII art
-    inreplace "configure", "sleep 1", ""
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
-  def caveats
-    "chktex requires a version of TeX, such as TeX Live or MacTeX."
+  test do
+    (testpath/"test.tex").write <<-EOS.undent
+      \begin{document}
+        Hello world
+      \end{document}
+    EOS
+    system bin/"chktex", "test.tex"
   end
 end

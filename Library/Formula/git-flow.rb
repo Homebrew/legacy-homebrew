@@ -1,44 +1,43 @@
-# -*- coding: utf-8 -*-
-require 'formula'
+class GitFlow < Formula
+  homepage "https://github.com/nvie/gitflow"
 
-class GitFlowCompletion < Formula
-  url 'https://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.1.0'
-  version '0.4.1.0'
-  head 'https://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
+  # Use the tag instead of the tarball to get submodules
+  url "https://github.com/nvie/gitflow.git", :tag => "0.4.1"
 
-  def initialize
-    # We need to hard-code the formula name since Homebrew can't
-    # deduce it from the formula's filename, and the git download
-    # strategy really needs a valid name.
-
-    super "git-flow-completion"
+  bottle do
+    cellar :any
+    sha1 "ab05739e882e5a930863ce03d2dcbe62ac329dc1" => :yosemite
+    sha1 "a3e07853d8152891aecf98eed7943edc07e2e1ec" => :mavericks
+    sha1 "0b02d71a300810649c677dd8f9b26ebc6351087f" => :mountain_lion
   end
 
-  homepage 'https://github.com/bobthecow/git-flow-completion'
-end
+  head do
+    url "https://github.com/nvie/gitflow.git", :branch => "develop"
 
-class GitFlow < Formula
-  url 'https://github.com/nvie/gitflow.git', :tag => '0.4.1'
-  version '0.4.1'
-  head 'https://github.com/nvie/gitflow.git', :branch => 'develop'
+    resource "completion" do
+      url "https://github.com/bobthecow/git-flow-completion.git", :branch => "develop"
+    end
+  end
 
-  homepage 'https://github.com/nvie/gitflow'
+  resource "completion" do
+    url "https://github.com/bobthecow/git-flow-completion/archive/0.4.2.2.tar.gz"
+    sha1 "d6a041b22ebdfad40efd3dedafd84c020d3f4cb4"
+  end
+
+  conflicts_with "git-flow-avh"
 
   def install
-    system "make", "prefix=#{prefix}", "install"
+    system "make", "prefix=#{libexec}", "install"
+    bin.write_exec_script libexec/"bin/git-flow"
 
-    # Normally, etc files are installed directly into HOMEBREW_PREFIX,
-    # rather than being linked from the Cellar — this is so that
-    # configuration files don't get clobbered when you update.  The
-    # bash-completion file isn't really configuration, though; it
-    # should be updated when we upgrade the package.
-
-    cellar_etc = prefix + 'etc'
-    bash_completion_d = cellar_etc + "bash_completion.d"
-
-    completion = GitFlowCompletion.new
-    completion.brew do
-      bash_completion_d.install "git-flow-completion.bash"
+    resource("completion").stage do
+      bash_completion.install "git-flow-completion.bash"
+      zsh_completion.install "git-flow-completion.zsh"
     end
+  end
+
+  test do
+    system "git", "flow", "init", "-d"
+    assert_equal "develop", shell_output("git rev-parse --abbrev-ref HEAD").strip
   end
 end

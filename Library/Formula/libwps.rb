@@ -1,17 +1,44 @@
-require 'formula'
+require "formula"
 
 class Libwps < Formula
   homepage 'http://libwps.sourceforge.net'
-  url 'http://sourceforge.net/projects/libwps/files/libwps/libwps-0.2.2/libwps-0.2.2.tar.bz2'
-  md5 '29721a16f25967d59969d5f0ae485b4a'
+  url 'http://dev-www.libreoffice.org/src/libwps-0.3.0.tar.bz2'
+  sha1 '526323bd59b5f59f8533882fb455e5886bf1f6dc'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "6da56fae08558950c9134a762f6e7491fabbb7b8" => :yosemite
+    sha1 "a1785cc9c07420d3e88a7000e7b42bb96091baea" => :mavericks
+  end
 
   depends_on 'pkg-config' => :build
+  depends_on 'boost' => :build
   depends_on 'libwpd'
+  depends_on 'librevenge'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           # Installing Doxygen docs trips up make install
                           "--prefix=#{prefix}", "--without-docs"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <libwps/libwps.h>
+      int main() {
+        return libwps::WPS_OK;
+      }
+    EOS
+    system ENV.cc, "test.cpp", "-o", "test",
+                  "-lrevenge-0.0",
+                  "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                  "-L#{Formula["librevenge"].lib}",
+                  "-lwpd-0.10",
+                  "-I#{Formula["libwpd"].include}/libwpd-0.10",
+                  "-L#{Formula["libwpd"].lib}",
+                  "-lwps-0.3", "-I#{include}/libwps-0.3", "-L#{lib}"
+    system "./test"
   end
 end

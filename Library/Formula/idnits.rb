@@ -1,14 +1,11 @@
-require 'formula'
-
 class Idnits < Formula
-  url 'http://tools.ietf.org/tools/idnits/idnits-2.12.11.tgz'
-  homepage 'http://tools.ietf.org/tools/idnits/'
-  md5 '8ec3c5bac662407df42495e5d8e93512'
+  homepage "https://tools.ietf.org/tools/idnits/"
+  url "https://tools.ietf.org/tools/idnits/idnits-2.13.02.tgz"
+  sha256 "6e42b044c79dc4e616d10ee9e283c20acc741601811a6acfc0c0d310afdf0823"
 
-  depends_on 'aspell'
+  depends_on "aspell"
 
   def install
     bin.install "idnits"
-    prefix.install %w(about todo)
   end
 end

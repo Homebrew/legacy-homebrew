@@ -1,21 +1,18 @@
-require 'formula'
+require "formula"
 
 class Dcled < Formula
-  url 'http://www.jeffrika.com/~malakai/dcled/dcled-1.9.tgz'
-  homepage 'http://www.jeffrika.com/~malakai/dcled/index.html'
-  md5 '7cffd6585a5d355626d60e2127599dd0'
+  homepage "http://www.jeffrika.com/~malakai/dcled/index.html"
+  url "http://www.jeffrika.com/~malakai/dcled/dcled-2.2.tgz"
+  sha1 "7cc984d894a5d6a27a4a1e5b86444d85d2e1b565"
 
-  depends_on 'libhid'
+  depends_on "libhid"
+  depends_on "libusb"
 
   def install
-    inreplace 'makefile' do |s|
-      s.change_make_var! 'INSTALLDIR', bin
-      s.change_make_var! 'CC', ENV.cc
-      s.change_make_var! 'CFLAGS', "#{ENV.cflags} -I#{HOMEBREW_PREFIX}/include"
-      s.change_make_var! 'LDFLAGS', ENV.ldflags + ' -lm -lhid' unless ENV.ldflags.nil?
-    end
-
-    system "make"
-    system "make install"
+    system "make", "CC=#{ENV.cc}",
+                   "LIBUSB_CFLAGS=-I#{Formula["libusb"].opt_include}/libusb-1.0"
+    system "make", "install",
+                   "FONTDIR=#{share}/#{name}",
+                   "INSTALLDIR=#{bin}"
   end
 end

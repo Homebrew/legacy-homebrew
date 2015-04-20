@@ -1,17 +1,16 @@
 require 'formula'
 
 class Libquicktime < Formula
-  url 'http://downloads.sourceforge.net/project/libquicktime/libquicktime/1.1.5/libquicktime-1.1.5.tar.gz'
   homepage 'http://libquicktime.sourceforge.net/'
-  md5 '0fd45b3deff0317c2f85a34b1b106acf'
+  url 'https://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
+  sha1 '7008b2dc27b9b40965bd2df42d39ff4cb8b6305e'
+  revision 1
 
-  def patches
-      # http://bugs.gentoo.org/show_bug.cgi?id=294488
-      #
-      # Previous version jpeg automatically set dinfo.do_fancy_downsampling to FALSE.
-      # Newer versions (since 7) of media-libs/jpeg do not do that anymore and the
-      # program must do it explicitly
-      DATA
+  bottle do
+    revision 1
+    sha1 "15ba1227bfc6f81475ea8d57d59019d211117a82" => :yosemite
+    sha1 "95a530bd3c46303f6df49fc0c0bb3d18b43706f2" => :mavericks
+    sha1 "97260df51e133923c94c88aeee5d84a216617490" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
@@ -22,24 +21,47 @@ class Libquicktime < Formula
   depends_on 'ffmpeg' => :optional
   depends_on 'libvorbis' => :optional
 
+  # Fixes compilation with ffmpeg 2.x; applied upstream
+  # http://sourceforge.net/p/libquicktime/mailman/message/30792767/
+  patch :p0 do
+    url "http://sourceforge.net/p/libquicktime/mailman/attachment/51812B9E.3090802%40mirriad.com/1/"
+    sha1 "58c19548a7ae71fb20ee94ef41fd0c3a967c96c0"
+  end
+  patch :DATA
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-gpl",
-                          "--without-doxygen"
+                          "--without-doxygen",
+                          "--without-x",
+                          "--without-gtk"
     system "make"
     system "make install"
   end
 end
 
 __END__
---- libquicktime-1.1.5/plugins/mjpeg/libmjpeg.c	2010-01-15 05:41:17.000000000 +1100
-+++ libquicktime-1.1.5/plugins/mjpeg/libmjpeg.c-2	2010-04-07 23:33:46.000000000 +1000
-@@ -785,6 +785,7 @@
-   result->jpeg_compress.input_components = 3;
-   result->jpeg_compress.in_color_space = JCS_RGB;
-   jpeg_set_quality(&(result->jpeg_compress), mjpeg->quality, 0);
-+  result->jpeg_compress.do_fancy_downsampling = FALSE;
+diff --git a/plugins/ffmpeg/audio.c b/plugins/ffmpeg/audio.c
+index bc8d750..b185587 100644
+--- a/plugins/ffmpeg/audio.c
++++ b/plugins/ffmpeg/audio.c
+@@ -515,7 +515,7 @@ static int decode_chunk_vbr(quicktime_t * file, int track)
+   if(!chunk_packets)
+     return 0;
  
-   if(mjpeg->use_float) 
-     result->jpeg_compress.dct_method = JDCT_FLOAT;
+-  new_samples = num_samples + AVCODEC_MAX_AUDIO_FRAME_SIZE / (2 * track_map->channels);
++  new_samples = num_samples + 192000 / (2 * track_map->channels);
+   
+   if(codec->sample_buffer_alloc <
+      codec->sample_buffer_end - codec->sample_buffer_start + new_samples)
+@@ -671,7 +671,7 @@ static int decode_chunk(quicktime_t * file, int track)
+    */
+ 
+   num_samples += 8192;
+-  new_samples = num_samples + AVCODEC_MAX_AUDIO_FRAME_SIZE / (2 * track_map->channels);
++  new_samples = num_samples + 192000 / (2 * track_map->channels);
+   
+   /* Reallocate sample buffer */
+   

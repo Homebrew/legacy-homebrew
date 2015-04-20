@@ -1,37 +1,32 @@
-require 'formula'
+require "formula"
 
 class Riak < Formula
-  url 'http://downloads.basho.com/riak/riak-0.14/riak-0.14.2.tar.gz'
-  homepage 'http://riak.basho.com'
-  md5 '09b956315e0e2fe5b7d914138959da9d'
+  homepage "http://basho.com/riak/"
+  url "https://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.4/osx/10.8/riak-2.0.4-OSX-x86_64.tar.gz"
+  version "2.0.4"
+  sha256 "023627c038833765141f6af0006622dd76e3b9f42495ea796f24e40fc76edba0"
 
-  head 'https://github.com/basho/riak.git'
-
-  skip_clean 'libexec/log'
-  skip_clean 'libexec/log/sasl'
-  skip_clean 'libexec/data'
-  skip_clean 'libexec/data/dets'
-  skip_clean 'libexec/data/ring'
-
-  depends_on 'erlang'
+  depends_on :macos => :mountain_lion
+  depends_on :arch => :x86_64
 
   def install
-    ENV.deparallelize
-    system "make all rel"
-    %w(riak riak-admin).each do |file|
-      inreplace "rel/riak/bin/#{file}", /^RUNNER_BASE_DIR=.+$/, "RUNNER_BASE_DIR=#{libexec}"
+    logdir = var + "log/riak"
+    datadir = var + "lib/riak"
+    libexec.install Dir["*"]
+    logdir.mkpath
+    datadir.mkpath
+    (datadir + "ring").mkpath
+    inreplace "#{libexec}/lib/env.sh" do |s|
+      s.change_make_var! "RUNNER_BASE_DIR", libexec
+      s.change_make_var! "RUNNER_LOG_DIR", logdir
     end
-
-    # Install most files to private libexec, and link in the binaries.
-    libexec.install Dir["rel/riak/*"]
-    bin.mkpath
-    ln_s libexec+'bin/riak', bin
-    ln_s libexec+'bin/riak-admin', bin
-
-    (prefix + 'data/ring').mkpath
-    (prefix + 'data/dets').mkpath
-
-    # Install man pages
-    man1.install Dir["doc/man/man1/*"]
+    inreplace "#{libexec}/etc/riak.conf" do |c|
+      c.gsub! /(platform_data_dir *=).*$/, "\\1 #{datadir}"
+      c.gsub! /(platform_log_dir *=).*$/, "\\1 #{logdir}"
+    end
+    bin.write_exec_script libexec/"bin/riak"
+    bin.write_exec_script libexec/"bin/riak-admin"
+    bin.write_exec_script libexec/"bin/riak-debug"
+    bin.write_exec_script libexec/"bin/search-cmd"
   end
 end

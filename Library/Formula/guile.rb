@@ -1,34 +1,74 @@
-require 'formula'
+require "formula"
 
 class Guile < Formula
-  homepage 'http://www.gnu.org/software/guile/'
-  url 'ftp://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
-  head 'ftp://ftp.gnu.org/pub/gnu/guile/guile-2.0.2.tar.gz'
+  homepage "http://www.gnu.org/software/guile/"
+  url "http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz"
+  sha1 "3cdd1c4956414bffadea13e5a1ca08949016a802"
+  revision 1
 
-  if ARGV.build_head?
-    sha1 '1943fd22417ce1e51babbdcd7681e66a794a8da3'
-  else
-    sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
+  bottle do
+    revision 1
+    sha1 "67bd9b8050bded7916db3622d7abd896e1376eac" => :yosemite
+    sha1 "818e7ac90634b60bcbf44509a512b542b0a87bd8" => :mavericks
+    sha1 "55790b96275804b2e5952b60e1071a318f3b1518" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libffi'
-  depends_on 'libunistring'
-  depends_on 'bdw-gc'
-  depends_on 'gmp'
+  head do
+    url "http://git.sv.gnu.org/r/guile.git"
 
-  # GNU Readline is required; libedit won't work.
-  depends_on 'readline'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "gettext" => :build
+  end
 
-  fails_with_llvm "Segfaults during compilation."
+  depends_on "pkg-config" => :build
+  depends_on "libtool" => :run
+  depends_on "libffi"
+  depends_on "libunistring"
+  depends_on "bdw-gc"
+  depends_on "gmp"
+  depends_on "readline"
+
+  fails_with :llvm do
+    build 2336
+    cause "Segfaults during compilation"
+  end
+
+  fails_with :clang do
+    build 211
+    cause "Segfaults during compilation"
+  end
 
   def install
+    if build.head?
+      inreplace "autogen.sh", "libtoolize", "glibtoolize"
+      system "./autogen.sh"
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
+                          "--with-libreadline-prefix=#{Formula["readline"].prefix}",
+                          "--with-libgmp-prefix=#{Formula["gmp"].prefix}"
     system "make install"
 
     # A really messed up workaround required on OS X --mkhl
-    lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
+    Pathname.glob("#{lib}/*.dylib") do |dylib|
+      lib.install_symlink dylib.basename => "#{dylib.basename(".dylib")}.so"
+    end
+
+    (share/"gdb/auto-load").install Dir["#{lib}/*-gdb.scm"]
+  end
+
+  test do
+    hello = testpath/"hello.scm"
+    hello.write <<-EOS.undent
+    (display "Hello World")
+    (newline)
+    EOS
+
+    ENV["GUILE_AUTO_COMPILE"] = "0"
+
+    system bin/"guile", hello
   end
 end

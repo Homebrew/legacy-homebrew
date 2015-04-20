@@ -1,13 +1,18 @@
 require 'formula'
 
 class Rats < Formula
-  url 'https://www.fortify.com/downloads2/public/rats-2.3.tar.gz'
-  homepage 'http://www.fortify.com/security-resources/rats.jsp'
-  md5 '339ebe60fc61789808a457f6f967d226'
+  homepage 'https://security.web.cern.ch/security/recommendations/en/codetools/rats.shtml'
+  url 'https://rough-auditing-tool-for-security.googlecode.com/files/rats-2.4.tgz'
+  sha1 '1063210dbad5bd9f287b7b80bd7e412a63ae1792'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--infodir=#{info}"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/rats"
   end
 end

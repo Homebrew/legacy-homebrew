@@ -1,14 +1,13 @@
 require 'formula'
 
 class Mr < Formula
-  version '1.02'
-  url 'git://git.kitenet.net/mr', :tag => '1.02'
-  homepage 'http://kitenet.net/~joey/code/mr/'
+  homepage 'http://myrepos.branchable.com/'
+  url 'git://myrepos.branchable.com/', :tag => '1.20141024'
 
   def install
     system "make"
-    bin.install ['mr', 'webcheckout']
+    bin.install 'mr', 'webcheckout'
     man1.install gzip('mr.1', 'webcheckout.1')
-    (share+'mr').install Dir['lib/*']
+    (share/'mr').install Dir['lib/*']
   end
 end

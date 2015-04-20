@@ -1,65 +1,111 @@
-require 'formula'
+class Coreutils < Formula
+  homepage "https://www.gnu.org/software/coreutils"
+  url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
+  sha256 "ec43ca5bcfc62242accb46b7f121f6b684ee21ecd7d075059bf650ff9e37b82d"
+  revision 1
 
-def use_default_names?
-  ARGV.include? '--default-names'
-end
-
-def coreutils_aliases
-  s = "brew_prefix=`brew --prefix`\n"
-
-  %w{
-    base64 basename cat chcon chgrp chmod chown chroot cksum comm cp csplit
-    cut date dd df dir dircolors dirname du echo env expand expr factor false
-    fmt fold groups head hostid id install join kill link ln logname ls md5sum
-    mkdir mkfifo mknod mktemp mv nice nl nohup od paste pathchk pinky pr
-    printenv printf ptx pwd readlink rm rmdir runcon seq sha1sum sha225sum
-    sha256sum sha384sum sha512sum shred shuf sleep sort split stat stty sum
-    sync tac tail tee test touch tr true tsort tty uname unexpand uniq unlink
-    uptime users vdir wc who whoami yes
-    }.each do |g|
-    s += "alias #{g}=\"$brew_prefix/bin/g#{g}\"\n"
+  bottle do
+    revision 2
+    sha256 "e0db37da043274394646c8cfd50aa0aee7c57904f4517d772e4af07fd5d7712f" => :yosemite
+    sha256 "2c1748f05bdcd8ea55754e31094a0b6952363dc3a0d1cca7dbc0126b0270e2ee" => :mavericks
+    sha256 "22685bb77955bafd107abf0301af20b6bfa4704d8d510f8f2b57d811628361e2" => :mountain_lion
   end
 
-  s += "alias '['=\"$brew_prefix/bin/g\\[\"\n"
+  conflicts_with "ganglia", :because => "both install `gstat` binaries"
+  conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
 
-  return s
-end
+  # Patch adapted from upstream commits:
+  # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
+  # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
+  stable do
+    patch :DATA
+  end
 
-class Coreutils < Formula
-  homepage 'http://www.gnu.org/software/coreutils'
-  url 'ftp://ftp.gnu.org/gnu/coreutils/coreutils-8.12.tar.gz'
-  sha256 '9e233a62c98a3378a7b0483d2ae3d662dbaf6cd3917d3830d3514665e12a85c8'
+  head do
+    url "git://git.sv.gnu.org/coreutils"
 
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "bison" => :build
+    depends_on "gettext" => :build
+    depends_on "texinfo" => :build
+    depends_on "xz" => :build
+
+    resource "gnulib" do
+      url "http://git.savannah.gnu.org/cgit/gnulib.git/snapshot/gnulib-0.1.tar.gz"
+      sha1 "b29e165bf276ce0a0c12ec8ec1128189bd786155"
+    end
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--program-prefix=g" unless use_default_names?
+    if build.head?
+      resource("gnulib").stage "gnulib"
+      ENV["GNULIB_SRCDIR"] = "gnulib"
+      system "./bootstrap"
+    end
+    system "./configure", "--prefix=#{prefix}",
+                          "--program-prefix=g",
+                          "--without-gmp"
+    system "make", "install"
 
-    system "./configure", *args
-    system "make install"
+    # Symlink all commands into libexec/gnubin without the 'g' prefix
+    coreutils_filenames(bin).each do |cmd|
+      (libexec/"gnubin").install_symlink bin/"g#{cmd}" => cmd
+    end
+    # Symlink all man(1) pages into libexec/gnuman without the 'g' prefix
+    coreutils_filenames(man1).each do |cmd|
+      (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}" => cmd
+    end
 
-    (prefix+'aliases').write(coreutils_aliases)
+    # Symlink non-conflicting binaries
+    bin.install_symlink "grealpath" => "realpath"
+    man1.install_symlink "grealpath.1" => "realpath.1"
   end
 
-  def caveats
-    unless use_default_names?; <<-EOS
-All commands have been installed with the prefix 'g'.
+  def caveats; <<-EOS.undent
+    All commands have been installed with the prefix 'g'.
 
-A file that aliases these commands to their normal names is available
-and may be used in your bashrc like:
+    If you really need to use these commands with their normal names, you
+    can add a "gnubin" directory to your PATH from your bashrc like:
 
-    source #{prefix}/aliases
+        PATH="#{opt_libexec}/gnubin:$PATH"
 
-But note that sourcing these aliases will cause them to be used instead
-of Bash built-in commands, which may cause problems in shell scripts.
-The Bash "printf" built-in behaves differently than gprintf, for instance,
-which is known to cause problems with "bash-completion".
+    Additionally, you can access their man pages with normal names if you add
+    the "gnuman" directory to your MANPATH from your bashrc as well:
 
-The man pages are still referenced with the g-prefix.
+        MANPATH="#{opt_libexec}/gnuman:$MANPATH"
+
     EOS
+  end
+
+  def coreutils_filenames(dir)
+    filenames = []
+    dir.find do |path|
+      next if path.directory? || path.basename.to_s == ".DS_Store"
+      filenames << path.basename.to_s.sub(/^g/, "")
     end
+    filenames.sort
+  end
+
+  test do
+    (testpath/"test").write("test")
+    (testpath/"test.sha1").write("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 test")
+    system "#{bin}/gsha1sum", "-c", "test.sha1"
   end
 end
+
+__END__
+diff --git a/Makefile.in b/Makefile.in
+index 140a428..bae3163 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -2566,7 +2566,7 @@ pkglibexecdir = @pkglibexecdir@
+ # Use 'ginstall' in the definition of PROGRAMS and in dependencies to avoid
+ # confusion with the 'install' target.  The install rule transforms 'ginstall'
+ # to install before applying any user-specified name transformations.
+-transform = s/ginstall/install/; $(program_transform_name)
++transform = s/ginstall/install/;/libstdbuf/!$(program_transform_name)
+ ACLOCAL = @ACLOCAL@
+ ALLOCA = @ALLOCA@
+ ALLOCA_H = @ALLOCA_H@

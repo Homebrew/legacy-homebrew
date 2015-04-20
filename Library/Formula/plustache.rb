@@ -1,13 +1,18 @@
 require 'formula'
 
 class Plustache < Formula
-  url 'https://github.com/mrtazz/plustache/tarball/v0.2.0'
   homepage 'https://github.com/mrtazz/plustache'
-  md5 '85b7a895ee2a023a1c8f4c09fb41b179'
+  url 'https://github.com/mrtazz/plustache/archive/v0.3.0.tar.gz'
+  sha1 '6ade96f679be0eee049f283ca2d7885f923f2f8d'
 
-  depends_on 'boost'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "boost"
 
   def install
-    system "rake", "install", "prefix=#{prefix}"
+    system "autoreconf", "--force", "--install"
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

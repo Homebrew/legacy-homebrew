@@ -1,29 +1,17 @@
 require 'formula'
 
 class Hive < Formula
-  url 'http://www.bizdirusa.com/mirrors/apache/hadoop/hive/hive-0.5.0/hive-0.5.0-bin.tar.gz'
   homepage 'http://hive.apache.org'
-  md5 '2d3b47ceaea6d5cdeaabc544aa9c2c28'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-1.0.0/apache-hive-1.0.0-bin.tar.gz'
+  sha1 '8e24c451ebab1333352a2f0407d5fe847759fbd2'
 
   depends_on 'hadoop'
-
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      exec #{libexec}/bin/#{target} $*
-    EOS
-  end
+  conflicts_with 'apache-spark', :because => 'both install `beeline` binaries'
 
   def install
-    rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf examples lib ]
-    libexec.install Dir['*.jar']
-    bin.mkpath
-
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    rm_f Dir["bin/ext/*.cmd", "bin/ext/util/*.cmd"]
+    libexec.install %w[bin conf examples hcatalog lib scripts]
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   def caveats; <<-EOS.undent
@@ -31,7 +19,11 @@ class Hive < Formula
     After installation, set $HIVE_HOME in your profile:
       export HIVE_HOME=#{libexec}
 
-    You may also need to set JAVA_HOME.
+    If you want to use HCatalog with Pig, set $HCAT_HOME in your profile:
+      export HCAT_HOME=#{libexec}/hcatalog
+
+    You may need to set JAVA_HOME:
+      export JAVA_HOME="$(/usr/libexec/java_home)"
     EOS
   end
 end

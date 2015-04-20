@@ -1,40 +1,56 @@
 require 'formula'
 
 class Mcabber < Formula
-  url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
   homepage 'http://mcabber.com/'
-  md5 'fe96beab30f535d5d6270fd1719659b4'
-  head 'http://mcabber.com/hg/'
+  url 'http://mcabber.com/files/mcabber-0.10.3.tar.bz2'
+  sha1 '9254f520cb37e691fb55d4fc46df4440e4a17f14'
+
+  head do
+    url 'http://mcabber.com/hg/', :using => :hg
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  deprecated_option "enable-aspell" => "with-aspell"
+  deprecated_option "enable-enchant" => "with-enchant"
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'loudmouth'
   depends_on 'gpgme'
   depends_on 'libgcrypt'
-  depends_on 'aspell'  => :optional if ARGV.include? '--enable-aspell'
-  depends_on 'enchant' => :optional if ARGV.include? '--enable-enchant'
-  depends_on 'libotr'  => :optional if ARGV.include? '--enable-otr'
-  depends_on 'libidn'  => :optional
-
-  def options
-    [
-      ["--enable-enchant", "Enable spell checking support via enchant"],
-      ["--enable-aspell", "Enable spell checking support via aspell"],
-      ["--enable-otr", "Enable support for off-the-record messages"]
-    ]
-  end
+  depends_on 'libotr'
+  depends_on 'libidn'
+  depends_on "aspell" => :optional
+  depends_on "enchant" => :optional
 
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
+    if build.head?
+      cd "mcabber"
+      inreplace "autogen.sh", "libtoolize", "glibtoolize"
+      system "./autogen.sh"
+    end
 
-    args << "--enable-aspell" if ARGV.include? "--enable-aspell"
-    args << "--enable-enchant" if ARGV.include? "--enable-enchant"
-    args << "--enable-otr" if ARGV.include? "--enable-otr"
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--enable-otr"]
+
+    args << "--enable-aspell" if build.with? "aspell"
+    args << "--enable-enchant" if build.with? "enchant"
 
     system "./configure", *args
     system "make install"
 
     (share+'mcabber').install %w[mcabberrc.example contrib]
+  end
+
+  def caveats; <<-EOS.undent
+    A configuration file is necessary to start mcabber.  The template is here:
+      #{share}/mcabber/mcabberrc.example
+    And there is a Getting Started Guide you will need to setup Mcabber:
+      http://wiki.mcabber.com/index.php/Getting_started
+    EOS
   end
 end

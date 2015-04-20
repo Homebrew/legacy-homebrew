@@ -1,28 +1,32 @@
-require 'formula'
+require "formula"
 
 class Libvirt < Formula
-  homepage 'http://www.libvirt.org'
-  url 'ftp://libvirt.org/libvirt/libvirt-0.9.3.tar.gz'
-  sha256 '4d673be9aa7b5618c0fef3cfdbbbeff02df1c83e26680fe40defad2b32a56ae3'
+  homepage "https://www.libvirt.org"
+  url "https://libvirt.org/sources/libvirt-1.2.14.tar.gz"
+  sha256 "b8e8e6f1fc91eb8694fa21f9c57a736fa4a5af10562e14e4aa2c7e23510c4c07"
 
+  bottle do
+    sha256 "7bca5ddc327279ab529df9e2ec133cea56d59794121761d463e2820e0d91eb73" => :yosemite
+    sha256 "47c3317f8f8e3cf7ceaea72db98523d5850f080edd143a635d02f2fff37ca4d4" => :mavericks
+    sha256 "0dbd8987cc4b04b8f286e9488f68fd64cd3a887c3e5d3b69c7725b1a66623468" => :mountain_lion
+  end
+
+  option "without-libvirtd", "Build only the virsh client and development libraries"
+
+  depends_on "pkg-config" => :build
   depends_on "gnutls"
+  depends_on "libgcrypt"
   depends_on "yajl"
 
-  if MacOS.leopard?
+  if MacOS.version <= :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
   end
 
-  def patches
-    # Patch to work around a compilation bug; fixed in libvirt 0.9.4
-    DATA
-  end
-
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
-
-  def options
-    [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
   end
 
   def install
@@ -34,11 +38,12 @@ class Libvirt < Formula
             "--with-init-script=none",
             "--with-remote",
             "--with-test",
-            "--with-vbox=check",
+            "--with-vbox",
             "--with-vmware",
-            "--with-yajl"]
+            "--with-yajl",
+            "--without-qemu"]
 
-    args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
+    args << "--without-libvirtd" if build.without? "libvirtd"
 
     system "./configure", *args
 
@@ -49,12 +54,11 @@ class Libvirt < Formula
     # Update the SASL config file with the Homebrew prefix
     inreplace "#{etc}/sasl2/libvirt.conf" do |s|
       s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
-      s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"
     end
 
     # If the libvirt daemon is built, update its config file to reflect
     # the Homebrew prefix
-    unless ARGV.include? '--without-libvirtd'
+    if build.with? "libvirtd"
       inreplace "#{etc}/libvirt/libvirtd.conf" do |s|
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"
@@ -62,41 +66,3 @@ class Libvirt < Formula
     end
   end
 end
-
-__END__
-diff --git a/src/conf/network_conf.h b/src/conf/network_conf.h
-index d7d2951..5edcf27 100644
---- a/src/conf/network_conf.h
-+++ b/src/conf/network_conf.h
-@@ -64,22 +64,22 @@ struct _virNetworkDNSTxtRecordsDef {
-     char *value;
- };
-
--struct virNetworkDNSHostsDef {
-+struct _virNetworkDNSHostsDef {
-     virSocketAddr ip;
-     int nnames;
-     char **names;
--} virNetworkDNSHostsDef;
-+};
-
--typedef struct virNetworkDNSHostsDef *virNetworkDNSHostsDefPtr;
-+typedef struct _virNetworkDNSHostsDef *virNetworkDNSHostsDefPtr;
-
--struct virNetworkDNSDef {
-+struct _virNetworkDNSDef {
-     unsigned int ntxtrecords;
-     virNetworkDNSTxtRecordsDefPtr txtrecords;
-     unsigned int nhosts;
-     virNetworkDNSHostsDefPtr hosts;
--} virNetworkDNSDef;
-+};
-
--typedef struct virNetworkDNSDef *virNetworkDNSDefPtr;
-+typedef struct _virNetworkDNSDef *virNetworkDNSDefPtr;
-
- typedef struct _virNetworkIpDef virNetworkIpDef;
- typedef virNetworkIpDef *virNetworkIpDefPtr;
---
-1.7.4.1
-

@@ -1,15 +1,18 @@
-require 'formula'
+require "formula"
 
 class Fping < Formula
-  url 'http://fping.sourceforge.net/download/fping.tar.gz'
-  homepage 'http://fping.sourceforge.net/'
-  md5 'd5e8be59e307cef76bc479e1684df705'
-  version '2.4b2_to-ipv6'
+  homepage "http://fping.org/"
+  url "http://fping.org/dist/fping-3.10.tar.gz"
+  sha1 "d8a1fa3ec13289d67d70102c1ef16c461a7eb505"
+
+  head "https://github.com/schweikert/fping.git"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+                          "--sbindir=#{bin}",
+                          "--enable-ipv6"
     system "make install"
   end
+
 end

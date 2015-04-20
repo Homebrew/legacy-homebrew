@@ -1,12 +1,13 @@
 require 'formula'
 
 class Mdf2iso < Formula
-  url 'http://download.berlios.de/mdf2iso/mdf2iso-0.3.0-src.tar.bz2'
   homepage 'http://mdf2iso.berlios.de/'
-  md5 'a190625318476a196930ac66acd8fd07'
+  url 'http://ftp.de.debian.org/debian/pool/main/m/mdf2iso/mdf2iso_0.3.0.orig.tar.gz'
+  sha1 '949d4fa0bb1e40ca17842a265d8ed813bac4917a'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

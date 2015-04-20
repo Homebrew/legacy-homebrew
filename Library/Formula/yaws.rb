@@ -1,34 +1,55 @@
-require 'formula'
-
 class Yaws < Formula
-  homepage 'http://yaws.hyber.org'
-  url 'http://yaws.hyber.org/download/yaws-1.88.tar.gz'
-  md5 '950f8199592c6490556632e20e59a353'
+  homepage "http://yaws.hyber.org"
+  url "https://github.com/klacke/yaws/archive/yaws-1.99.tar.gz"
+  sha1 "ea407afe7b080ed065182d73503899a75360dfaf"
+  head "https://github.com/klacke/yaws.git"
 
-  depends_on 'erlang'
-
-  def options
-    [["--with-yapp", "Build and install yaws applications"]]
+  bottle do
+    sha1 "22a14414e75ac551799dfae222c65b13732e8e2a" => :yosemite
+    sha1 "b8485c79ccb25b36a3591e5962389b5cd97c9eaa" => :mavericks
+    sha1 "75802258262ab4a400136cb702a92f9b74904e81" => :mountain_lion
   end
+
+  option "without-yapp", "Omit yaws applications"
+  option "32-bit"
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "erlang"
+
+  # the default config expects these folders to exist
+  skip_clean "var/log/yaws"
+  skip_clean "lib/yaws/examples/ebin"
+  skip_clean "lib/yaws/examples/include"
 
   def install
-    Dir.chdir 'yaws' do
-      system "./configure", "--prefix=#{prefix}"
-      system "make install"
+    if build.build_32_bit?
+      ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
+    end
 
-      if ARGV.include? '--with-yapp'
-        Dir.chdir 'applications/yapp' do
-          system "make"
-          system "make install"
-        end
+    system "autoreconf", "-fvi"
+    system "./configure", "--prefix=#{prefix}",
+                          # Ensure pam headers are found on Xcode-only installs
+                          "--with-extrainclude=#{MacOS.sdk_path}/usr/include/security"
+    system "make", "install"
+
+    if build.with? "yapp"
+      cd "applications/yapp" do
+        system "make"
+        system "make", "install"
       end
     end
+
+    # the default config expects these folders to exist
+    (lib/"yaws/examples/ebin").mkpath
+    (lib/"yaws/examples/include").mkpath
+
+    (var/"log/yaws").mkpath
+    (var/"yaws/www").mkpath
   end
 
-  def caveats; <<-EOS.undent
-    Usually you want to build yapp (yaws applications) as well.
-    To do so, use:
-      brew install yaws --with-yapp
-    EOS
+  test do
+    system bin/"yaws", "--version"
   end
 end

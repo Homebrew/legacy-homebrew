@@ -1,34 +1,35 @@
 require 'formula'
 
 class Dvdrtools < Formula
-  homepage 'http://www.nongnu.org/dvdrtools/'
+  homepage 'http://savannah.nongnu.org/projects/dvdrtools/'
   url 'http://savannah.nongnu.org/download/dvdrtools/dvdrtools-0.2.1.tar.gz'
-  md5 'e82d359137e716e8c0b04d5c73bd3e79'
+  sha1 'b8b889f73953c121acd85ce1b4ba988ef7ef6bfc'
 
-  def patches
-    macports_patches %w(
-      patch-scsi-mac-iokit.c
-      patch-cdda2wav-cdda2wav.c
-      patch-cdrecord-cdrecord.c
-    )
+  conflicts_with 'cdrtools',
+    :because => 'both cdrtools and dvdrtools install binaries by the same name'
+
+  patch :p0 do
+    url "https://trac.macports.org/export/89262/trunk/dports/sysutils/dvdrtools/files/patch-cdda2wav-cdda2wav.c"
+    sha1 "5af074ccbe4d6bdaae9ebeee37e5453eb365aa5a"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/89262/trunk/dports/sysutils/dvdrtools/files/patch-cdrecord-cdrecord.c"
+    sha1 "9c588a5cc0bc397d2b64715e5ec8874674c4e9cf"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/89262/trunk/dports/sysutils/dvdrtools/files/patch-scsi-mac-iokit.c"
+    sha1 "5a60d186e102fa827698d8b99e6aeb8c15846183"
   end
 
   def install
-    ENV['LIBS'] = '-lIOKit -framework CoreFoundation'
+    ENV['LIBS'] = '-framework IOKit -framework CoreFoundation'
 
-    system "./configure", '--disable-debug', '--disable-dependency-tracking',
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system 'make install'
-  end
-
-  # while homebrew assumes p1, macports patches at p0
-  def macports_patches(files)
-    { :p0 => files.map { |file| macports_patch_url('sysutils', file) } }
-  end
-
-  def macports_patch_url(group, file)
-    template = 'http://svn.macports.org/repository/macports/trunk/dports/%s/%s/files/%s'
-    template % [group, name, file]
   end
 end

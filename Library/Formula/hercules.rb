@@ -1,19 +1,26 @@
-require 'formula'
+require "formula"
 
 class Hercules < Formula
-  url 'http://www.hercules-390.org/hercules-3.07.tar.gz'
-  homepage 'http://www.hercules-390.org/'
-  md5 'a12aa1645b0695b25b7fc0c9a3ccab3a'
+  homepage "http://www.hercules-390.eu/"
+  url "http://downloads.hercules-390.eu/hercules-3.10.tar.gz"
+  sha1 "10599041c7e5607cf2e7ecc76802f785043e2830"
 
-  depends_on 'gawk'
+  skip_clean :la
+
+  head do
+    url "https://github.com/hercules-390/hyperion.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def install
-    # Since Homebrew optimizes for us, tell Hercules not to.
-    # (It gets it wrong anyway.)
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./autogen.sh" if build.head?
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-optimization=no"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

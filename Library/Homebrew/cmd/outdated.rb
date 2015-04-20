@@ -1,28 +1,40 @@
 require 'formula'
+require 'keg'
 
-module Homebrew extend self
+module Homebrew
   def outdated
-    outdated_brews.each do |keg, name, version|
-      if $stdout.tty? and not ARGV.flag? '--quiet'
-        versions = keg.cd{ Dir['*'] }.join(', ')
-        puts "#{name} (#{versions} < #{version})"
+    formulae = ARGV.formulae.any? ? ARGV.formulae : Formula.installed
+
+    outdated = outdated_brews(formulae) do |f, versions|
+      if ($stdout.tty? || ARGV.verbose?) && !ARGV.flag?("--quiet")
+        puts "#{f.name} (#{versions*', '} < #{f.pkg_version})"
       else
-        puts name
+        puts f.name
       end
     end
+    Homebrew.failed = ARGV.formulae.any? && outdated.any?
   end
 
-  def outdated_brews
-    HOMEBREW_CELLAR.subdirs.map do |rack|
-      # Skip kegs with no versions installed
-      next unless rack.subdirs
+  def outdated_brews(formulae)
+    formulae.map do |f|
+      all_versions = []
+      older_or_same_tap_versions = []
+      f.rack.subdirs.each do |dir|
+        keg = Keg.new dir
+        version = keg.version
+        all_versions << version
+        older_version = f.pkg_version <= version
 
-      # Skip HEAD formulae, consider them "evergreen"
-      next if rack.subdirs.map{ |keg| keg.basename.to_s }.include? "HEAD"
+        tap = Tab.for_keg(keg).tap
+        if tap.nil? || f.tap == tap || older_version
+          older_or_same_tap_versions << version
+        end
+      end
 
-      name = rack.basename.to_s
-      f = Formula.factory name rescue nil
-      [rack, name, f.version] if f and not f.installed?
+      if older_or_same_tap_versions.all? { |version| f.pkg_version > version }
+        yield f, all_versions if block_given?
+        f
+      end
     end.compact
   end
 end

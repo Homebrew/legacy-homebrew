@@ -1,54 +1,42 @@
-Homebrew
-========
-Features and usage are [summarized on the homepage][homepage].
+# Homebrew
+Features, usage and installation instructions are [summarised on the homepage](http://brew.sh).
 
+## What Packages Are Available?
+1. Type `brew search` for a list.
+2. Or visit [braumeister.org](http://braumeister.org) to browse packages online.
+3. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
 
-Quick Install to /usr/local
----------------------------
-[This script][gist] will prompt for confirmation before it does anything:
+## More Documentation
+`brew help`, `man brew` or check [our documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
 
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/gist/323731)"
+## Troubleshooting
+First, please run `brew update` and `brew doctor`.
 
-Afterwards, [install Xcode][xcode].
+Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Troubleshooting.md#troubleshooting).
 
+**If you don't read these it will take us far longer to help you with your problem.**
 
-Umm… I thought I could install it anywhere?
--------------------------------------------
-Indeed, you can. Refer to our [complete installation instructions][install].
+## Security
+Please report security issues to security@brew.sh.
 
+## Who Are You?
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
 
-Dude! Just give me a one-liner!
--------------------------------
-Okay then, but please note this installs Homebrew as root and
-[we recommend against that][sudo].
+Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 
-    curl -LsSf https://github.com/mxcl/homebrew/tarball/master | sudo /usr/bin/tar xvz -C/usr/local --strip 1
+## License
+Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt).
 
+## Donations
+We accept tips through [Gratipay](https://gratipay.com/Homebrew/).
 
-But what packages are available?
---------------------------------
-Before installing you can
-[browse the Formula folder on GitHub][browse-formulae].
+[![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://gratipay.com/Homebrew/)
 
-After installing, you can use `brew search` to find packages or `brew server`
-to browse packages off of a local web server.
+## Sponsors
+Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).
 
+Our CI infrastructure is hosted by [The Positive Internet Company](http://www.positive-internet.com).
 
-More Documentation
-==================
-The [wiki][] is your friend.
+Our bottles (binary packages) are hosted by Bintray.
 
-
-Who Are You?
-============
-I'm [Max Howell][mxcl] and I'm a splendid chap.
-
-
-[homepage]:http://mxcl.github.com/homebrew
-[gist]:http://gist.github.com/323731
-[xcode]:http://developer.apple.com/technologies/xcode.html
-[install]:http://wiki.github.com/mxcl/homebrew/installation
-[sudo]:http://wiki.github.com/mxcl/homebrew/installation#sudo
-[wiki]:http://wiki.github.com/mxcl/homebrew
-[mxcl]:http://twitter.com/mxcl
-[browse-formulae]:http://github.com/mxcl/homebrew/tree/master/Library/Formula/
+[![Downloads by Bintray](https://bintray.com/docs/images/downloads_by_bintray_96.png)](https://bintray.com/homebrew)

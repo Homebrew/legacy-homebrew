@@ -1,15 +1,28 @@
-require 'formula'
-
 class Jpegoptim < Formula
-  url 'http://www.kokkonen.net/tjko/src/jpegoptim-1.2.4.tar.gz'
-  homepage 'http://www.kokkonen.net/tjko/projects.html'
-  md5 '40e8e627181f524ad29717c5b07cd442'
+  homepage "https://github.com/tjko/jpegoptim"
+  url "https://github.com/tjko/jpegoptim/archive/RELEASE.1.4.2.tar.gz"
+  sha1 "7eb558f2fa240d6ef2f8476aa8ea51f7903666ad"
+  head "https://github.com/tjko/jpegoptim.git"
 
-  depends_on 'jpeg'
+  bottle do
+    cellar :any
+    sha1 "8c4bdc923d599e73c00e515354cac08e345a640a" => :yosemite
+    sha1 "0594a4efa134faa6e731349ad0a4eb26d1e07910" => :mavericks
+    sha1 "9bac06c05cc397f80f576db119b7dc89337b46ab" => :mountain_lion
+  end
+
+  depends_on "jpeg"
 
   def install
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     ENV.j1 # Install is not parallel-safe
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    source = test_fixtures("test.jpg")
+    assert_match(/OK/, shell_output("#{bin}/jpegoptim --noaction #{source}"))
   end
 end

@@ -1,10 +1,14 @@
-require 'formula'
+require "formula"
 
 class Cpansearch < Formula
-  head 'https://github.com/c9s/cpansearch.git', :using => :git
-  homepage 'https://github.com/c9s/cpansearch'
+  homepage "https://github.com/c9s/cpansearch"
+  url "https://github.com/c9s/cpansearch/archive/0.2.tar.gz"
+  sha1 "302638f78f2b09630cabd3975c38d5fc591c43e7"
 
-  depends_on 'glib'
+  head "https://github.com/c9s/cpansearch.git"
+
+  depends_on "pkg-config" => :build
+  depends_on "glib"
 
   def install
     system "make"
@@ -13,7 +17,7 @@ class Cpansearch < Formula
 
   def caveats; <<-EOS.undent
     For usage instructions:
-        more #{prefix}/README.md
+        more #{opt_prefix}/README.md
     EOS
   end
 end

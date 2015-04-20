@@ -1,10 +1,10 @@
 require 'formula'
 
 class Lpc21isp < Formula
-  url 'http://sourceforge.net/projects/lpc21isp/files/lpc21isp/1.79/lpc21isp_179.zip'
-  version '1.79'
   homepage 'http://lpc21isp.sourceforge.net/'
-  md5 '67c1e2a4cebccadd6fb8ea39faf8c89e'
+  url 'https://downloads.sourceforge.net/project/lpc21isp/lpc21isp/1.97/lpc21isp_197.tar.gz'
+  sha1 '7e83c13889d56c20ab1a807975f212eac3bfdfd1'
+  version '1.97'
 
   def install
     system "make"

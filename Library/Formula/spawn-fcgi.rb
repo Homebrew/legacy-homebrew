@@ -1,12 +1,13 @@
 require 'formula'
 
 class SpawnFcgi < Formula
-  url 'http://www.lighttpd.net/download/spawn-fcgi-1.6.3.tar.gz'
   homepage 'http://redmine.lighttpd.net/projects/spawn-fcgi'
-  md5 '6d75f9e9435056fa1e574d836d823cd0'
+  url 'http://www.lighttpd.net/download/spawn-fcgi-1.6.4.tar.gz'
+  sha1 '0b10126be40431b00591a28f155efdb77a460161'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

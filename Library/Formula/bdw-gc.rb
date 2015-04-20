@@ -1,19 +1,30 @@
-require 'formula'
+require "formula"
 
 class BdwGc < Formula
-  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.1.tar.gz'
-  homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
-  md5 '2ff9924c7249ef7f736ecfe6f08f3f9b'
+  homepage "http://www.hboehm.info/gc/"
+  url "http://www.hboehm.info/gc/gc_source/gc-7.4.2.tar.gz"
+  sha1 "cd4a54620c38a2c361b3ee99dd134dbffb57c313"
 
-  fails_with_llvm "LLVM gives an unsupported inline asm error"
+  depends_on "pkg-config" => :build
+  depends_on "libatomic_ops" => :build
+
+  bottle do
+    revision 1
+    sha1 "3c5fdf16d5ddb72427e300a79b8aa829df51480d" => :yosemite
+    sha1 "9c03aaf69cbda261bc263a65e922607a4cda3bd1" => :mavericks
+    sha1 "365f19fe49db14430a858c812210ebc5e8bb0f5e" => :mountain_lion
+  end
+
+  option :universal
 
   def install
-    # ucontext has been deprecated in 10.6
-    # use this flag to force the header to compile
-    ENV.append 'CPPFLAGS', "-D_XOPEN_SOURCE" if MacOS.snow_leopard?
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    ENV.universal_binary if build.universal?
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-cplusplus"
+    system "make"
+    system "make check"
     system "make install"
   end
 end

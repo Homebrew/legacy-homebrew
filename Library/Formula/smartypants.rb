@@ -1,11 +1,15 @@
-require 'formula'
-
 class Smartypants < Formula
-  url 'http://daringfireball.net/projects/downloads/SmartyPants_1.5.1.zip'
-  md5 '30114747ef913ddd4b6931b6583a42e3'
-  homepage 'http://daringfireball.net/projects/smartypants/'
+  homepage "https://daringfireball.net/projects/smartypants/"
+  url "https://daringfireball.net/projects/downloads/SmartyPants_1.5.1.zip"
+  sha256 "2813a12d8dd23f091399195edd7965e130103e439e2a14f298b75b253616d531"
 
   def install
-    bin.install 'SmartyPants.pl' => 'smartypants'
+    bin.install "SmartyPants.pl" => "smartypants"
+  end
+
+  test do
+    assert_equal "&#8220;Give me a beer&#8221;, said Mike O&#8217;Connor",
+      pipe_output("#{bin}/smartypants",
+                  %("Give me a beer", said Mike O'Connor), 0)
   end
 end

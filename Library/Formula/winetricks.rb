@@ -1,17 +1,21 @@
-require 'formula'
+class Winetricks < Formula
+  homepage "https://github.com/Winetricks/winetricks"
+  url "https://github.com/Winetricks/winetricks/archive/20150316.tar.gz"
+  sha256 "c49d33b444bf8327930d94e3b20ca9c939f7ec886999e7e9c37f5bdf3f5cac67"
+  head "https://github.com/Winetricks/winetricks.git"
 
-class Winetricks < ScriptFileFormula
-  homepage 'http://code.google.com/p/winetricks/'
-  url 'http://winetricks.googlecode.com/svn-history/r610/trunk/src/winetricks', :using => :curl
-  version '20110429'
+  depends_on "cabextract"
+  depends_on "p7zip"
+  depends_on "unrar"
+  depends_on "wine"
 
-  head 'http://winetricks.googlecode.com/svn/trunk/src/winetricks', :using => :curl
+  def install
+    bin.install "src/winetricks"
+    man1.install "src/winetricks.1"
+  end
 
-  depends_on 'cabextract'
-
-  # Don't provide an md5 for the HEAD build
-  unless ARGV.build_head?
-    sha256 '5f7d627dad0a5e43f1dd3ea7b3bd2d5c786490976c47a5d14efe2af4d449a041'
+  test do
+    system "#{bin}/winetricks", "dlls", "list"
   end
 
   def caveats; <<-EOS.undent

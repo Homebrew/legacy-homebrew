@@ -1,4 +1,4 @@
-module Homebrew extend self
+module Homebrew
   def __repository
     puts HOMEBREW_REPOSITORY
   end

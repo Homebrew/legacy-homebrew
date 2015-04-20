@@ -1,28 +1,42 @@
-require 'formula'
-
 class Mtr < Formula
-  url 'ftp://ftp.bitwizard.nl/mtr/mtr-0.80.tar.gz'
-  homepage 'http://www.bitwizard.nl/mtr/'
-  md5 'fa68528eaec1757f52bacf9fea8c68a9'
+  homepage "http://www.bitwizard.nl/mtr/"
+  url "ftp://ftp.bitwizard.nl/mtr/mtr-0.86.tar.gz"
+  sha1 "2c81d0f4c9296861a1159f07eec6acfb4bebecf7"
 
-  depends_on 'gtk+' unless ARGV.include? "--no-gtk"
-
-  def options
-    [
-      ['--no-gtk', "Don't build with Gtk+ support"]
-    ]
+  bottle do
+    cellar :any
+    sha1 "8c08e6d32997d6a82ee755de600ba5d63cc50a4e" => :yosemite
+    sha1 "8cc2160f36567c5a0e913c0e0a9f60b9e835ba28" => :mavericks
+    sha1 "be91d5c1ad604d190ef1e1d56842592b816197bf" => :mountain_lion
   end
+
+  head do
+    url "https://github.com/traviscross/mtr.git"
+    depends_on "automake" => :build
+  end
+
+  depends_on "autoconf" => :build
+  depends_on "pkg-config" => :build
+  depends_on "gtk+" => :optional
+  depends_on "glib" => :optional
 
   def install
     # We need to add this because nameserver8_compat.h has been removed in Snow Leopard
-    ENV['LIBS'] = "-lresolv"
-    args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
-    args << "--without-gtk" if ARGV.include? "--no-gtk"
+    ENV["LIBS"] = "-lresolv"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+    args << "--without-gtk" if build.without? "gtk+"
+    args << "--without-glib" if build.without? "glib"
+    system "./bootstrap.sh" if build.head?
     system "./configure", *args
     system "make install"
   end
 
-  def caveats
-    "Run mtr sudo'd in order to avoid the error: `unable to get raw sockets'"
+  def caveats; <<-EOS.undent
+    mtr requires root privileges so you will need to run `sudo mtr`.
+    You should be certain that you trust any software you grant root privileges.
+    EOS
   end
 end

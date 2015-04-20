@@ -1,79 +1,107 @@
+# Cleans a newly installed keg.
+# By default:
+# * removes .la files
+# * removes empty directories
+# * sets permissions on executables
+# * removes unresolved symlinks
 class Cleaner
+
+  # Create a cleaner for the given formula
   def initialize f
-    @f = Formula.factory f
-    [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
+    @f = f
+  end
 
-    unless ENV['HOMEBREW_KEEP_INFO'].nil?
-      f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
+  # Clean the keg of formula @f
+  def clean
+    ObserverPathnameExtension.reset_counts!
+
+    # Many formulae include 'lib/charset.alias', but it is not strictly needed
+    # and will conflict if more than one formula provides it
+    observe_file_removal @f.lib/'charset.alias'
+
+    [@f.bin, @f.sbin, @f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
+
+    # Get rid of any info 'dir' files, so they don't conflict at the link stage
+    info_dir_file = @f.info + 'dir'
+    if info_dir_file.file? and not @f.skip_clean? info_dir_file
+      observe_file_removal info_dir_file
     end
 
-    # Hunt for empty folders and nuke them unless they are protected by
-    # f.skip_clean? We want post-order traversal, so put the dirs in a stack
-    # and then pop them off later.
-    paths = []
-    f.prefix.find do |path|
-      paths << path if path.directory?
-    end
-
-    paths.each do |d|
-      if d.children.empty? and not f.skip_clean? d
-        puts "rmdir: #{d} (empty)" if ARGV.verbose?
-        d.rmdir
-      end
-    end
+    prune
   end
 
   private
 
-  def strip path, args=''
-    return if @f.skip_clean? path
-    puts "strip #{path}" if ARGV.verbose?
-    path.chmod 0644 # so we can strip
-    unless path.stat.nlink > 1
-      system "strip", *(args+path)
-    else
-      path = path.to_s.gsub ' ', '\\ '
+  def observe_file_removal path
+    path.extend(ObserverPathnameExtension).unlink if path.exist?
+  end
 
-      # strip unlinks the file and recreates it, thus breaking hard links!
-      # is this expected behaviour? patch does it too… still, this fixes it
-      tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
-      begin
-        `/usr/bin/strip #{args} -o #{tmp} #{path}`
-        `/bin/cat #{tmp} > #{path}`
-      ensure
-        FileUtils.rm tmp
+  # Removes any empty directories in the formula's prefix subtree
+  # Keeps any empty directions projected by skip_clean
+  # Removes any unresolved symlinks
+  def prune
+    dirs = []
+    symlinks = []
+    @f.prefix.find do |path|
+      if path == @f.libexec or @f.skip_clean?(path)
+        Find.prune
+      elsif path.symlink?
+        symlinks << path
+      elsif path.directory?
+        dirs << path
       end
     end
-  end
 
-  def clean_file path
-    perms = 0444
-    case `file -h '#{path}'`
-    when /Mach-O dynamically linked shared library/
-      # Stripping libraries is causing no end of trouble. Lets just give up,
-      # and try to do it manually in instances where it makes sense.
-      #strip path, '-SxX'
-    when /Mach-O [^ ]* ?executable/
-      strip path
-      perms = 0555
-    when /script text executable/
-      perms = 0555
+    # Remove directories opposite from traversal, so that a subtree with no
+    # actual files gets removed correctly.
+    dirs.reverse_each do |d|
+      if d.children.empty?
+        puts "rmdir: #{d} (empty)" if ARGV.verbose?
+        d.rmdir
+      end
     end
-    path.chmod perms
+
+    # Remove unresolved symlinks
+    symlinks.reverse_each do |s|
+      s.unlink unless s.resolved_path_exists?
+    end
   end
 
+  # Clean a top-level (bin, sbin, lib) directory, recursively, by fixing file
+  # permissions and removing .la files, unless the files (or parent
+  # directories) are protected by skip_clean.
+  #
+  # bin and sbin should not have any subdirectories; if either do that is
+  # caught as an audit warning
+  #
+  # lib may have a large directory tree (see Erlang for instance), and
+  # clean_dir applies cleaning rules to the entire tree
   def clean_dir d
     d.find do |path|
-      if path.directory?
-        Find.prune if @f.skip_clean? path
-      elsif not path.file?
+      path.extend(ObserverPathnameExtension)
+
+      Find.prune if @f.skip_clean? path
+
+      if path.symlink? or path.directory?
         next
       elsif path.extname == '.la'
-        # *.la files are stupid
-        path.unlink unless @f.skip_clean? path
-      elsif not path.symlink?
-        clean_file path
+        path.unlink
+      else
+        # Set permissions for executables and non-executables
+        perms = if path.mach_o_executable? || path.text_executable?
+                  0555
+                else
+                  0444
+                end
+        if ARGV.debug?
+          old_perms = path.stat.mode & 0777
+          if perms != old_perms
+            puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
+          end
+        end
+        path.chmod perms
       end
     end
   end
+
 end

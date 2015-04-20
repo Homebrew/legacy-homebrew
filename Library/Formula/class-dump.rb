@@ -1,15 +1,21 @@
 require 'formula'
 
-# Source now available on BitBucket:
-# http://bitbucket.org/nygard/class-dump
 class ClassDump < Formula
-  url 'http://www.codethecode.com/download/class-dump-3.3.3.tar.bz2'
-  homepage 'http://www.codethecode.com/projects/class-dump/'
-  md5 'c07bf04dba96550fd8b995ef7080cfb2'
+  homepage 'http://stevenygard.com/projects/class-dump/'
+  head 'https://github.com/nygard/class-dump.git'
+  url 'https://github.com/nygard/class-dump/archive/3.5.tar.gz'
+  sha1 'c343bec63878161b02c956f49c9c1c8d989b4b5a'
 
-  skip_clean "bin/class-dump"
+  bottle do
+    cellar :any
+    sha1 "f87501bf78ff05444c12347d874a81d9b87445dc" => :mavericks
+  end
+
+  depends_on :macos => :mavericks
+  depends_on :xcode => :build
 
   def install
-    bin.install 'class-dump'
+    xcodebuild "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+    bin.install "build/Release/class-dump"
   end
 end

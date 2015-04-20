@@ -1,12 +1,16 @@
-require 'formula'
+require "formula"
 
 class Gist < Formula
-  homepage 'https://github.com/defunkt/gist'
-  url 'https://github.com/defunkt/gist/tarball/v2.0.3'
-  md5 '0b99159635df2083651d2ff9db8abb25'
-  head 'https://github.com/defunkt/gist.git'
+  homepage "https://github.com/defunkt/gist"
+  url "https://github.com/defunkt/gist/archive/v4.3.0.tar.gz"
+  sha1 "7eceb93d4d5f43da32201607409ee3aa196dcf7f"
+  head "https://github.com/defunkt/gist.git"
 
   def install
-    system "rake", "install", "prefix=#{prefix}"
+    rake "install", "prefix=#{prefix}"
+  end
+
+  test do
+    system "#{bin}/gist", "--version"
   end
 end

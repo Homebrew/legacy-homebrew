@@ -2,11 +2,12 @@ require 'formula'
 
 class Grc < Formula
   homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
-  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.4.tar.gz'
-  md5 'a59267f88b6d2b7e6a4779bc904c3f75'
+  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.9.orig.tar.gz'
+  sha1 '445d3d076bda34c6398c926ca27c5a3a6c64a833'
+
+  conflicts_with 'cc65', :because => 'both install `grc` binaries'
 
   def install
-    #TODO we should deprefixify since it's python and thus possible
     inreplace ['grc', 'grc.1'], '/etc', etc
     inreplace ['grcat', 'grcat.1'], '/usr/local', prefix
 
@@ -20,7 +21,7 @@ class Grc < Formula
 
   def rc_script; <<-EOS.undent
     GRC=`which grc`
-    if [ "$TERM" != dumb ] && [ -n GRC ]
+    if [ "$TERM" != dumb ] && [ -n "$GRC" ]
     then
         alias colourify="$GRC -es --colour=auto"
         alias configure='colourify ./configure'
@@ -34,13 +35,20 @@ class Grc < Formula
         alias netstat='colourify netstat'
         alias ping='colourify ping'
         alias traceroute='colourify /usr/sbin/traceroute'
+        alias head='colourify head'
+        alias tail='colourify tail'
+        alias dig='colourify dig'
+        alias mount='colourify mount'
+        alias ps='colourify ps'
+        alias mtr='colourify mtr'
+        alias df='colourify df'
     fi
     EOS
   end
 
   def caveats; <<-EOS.undent
-    New shell sessions will start using GRC after you run the following command:
-      echo 'source "`brew --prefix grc`/etc/grc.bashrc"' >> ~/.bashrc
+    New shell sessions will start using GRC after you add this to your profile:
+      source "`brew --prefix`/etc/grc.bashrc"
     EOS
   end
 end

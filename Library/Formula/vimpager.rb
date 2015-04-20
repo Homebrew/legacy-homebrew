@@ -1,16 +1,17 @@
-require 'formula'
+require "formula"
 
 class Vimpager < Formula
-  homepage 'https://github.com/rkitover/vimpager'
-  url 'https://github.com/rkitover/vimpager/tarball/1.5.4'
-  sha256 '738c22ad5067fc872a913ade8c6def92f6b6d7128f20edc939f51882bac40862'
-  head 'https://github.com/rkitover/vimpager', :using => :git
+  homepage "https://github.com/rkitover/vimpager"
+  url "https://github.com/rkitover/vimpager/archive/1.8.9.tar.gz"
+  sha1 "332a84fec5bd2a4c2dae518d52b310dcaa49f417"
+  head "https://github.com/rkitover/vimpager.git"
 
   def install
     inreplace "vimpager.1", "~/bin/", ""
 
-    bin.install 'vimpager'
-    man1.install 'vimpager.1'
+    bin.install "vimcat"
+    bin.install "vimpager"
+    man1.install gzip("vimpager.1")
   end
 
   def caveats; <<-EOS.undent

@@ -1,6 +1,3 @@
-require 'formula'
-
-#
 # Installs a relatively minimalist version of the GPAC tools. The
 # most commonly used tool in this package is the MP4Box metadata
 # interleaver, which has relatively few dependencies.
@@ -8,25 +5,49 @@ require 'formula'
 # The challenge with building everything is that Gpac depends on
 # a much older version of FFMpeg and WxWidgets than the version
 # that Brew installs
-#
 
 class Gpac < Formula
-  url 'http://downloads.sourceforge.net/gpac/gpac-0.4.5.tar.gz'
-  homepage 'http://gpac.sourceforge.net/index.php'
-  md5 '755e8c438a48ebdb13525dd491f5b0d1'
-  head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac', :using => :svn
+  homepage "http://gpac.wp.mines-telecom.fr/"
 
-  depends_on 'sdl' => :optional
+  stable do
+    url "https://github.com/gpac/gpac/archive/v0.5.2.tar.gz"
+    sha256 "14de020482fc0452240f368564baa95a71b729980e4f36d94dd75c43ac4d9d5c"
+  end
+
+  head "https://github.com/gpac/gpac"
+
+  depends_on "openssl"
+  depends_on :x11 => :recommended
+  depends_on "pkg-config" => :build
+  depends_on "a52dec" => :optional
+  depends_on "jpeg" => :optional
+  depends_on "faad2" => :optional
+  depends_on "libogg" => :optional
+  depends_on "libvorbis" => :optional
+  depends_on "mad" => :optional
+  depends_on "sdl" => :optional
+  depends_on "theora" => :optional
+  depends_on "ffmpeg" => :optional
+  depends_on "openjpeg" => :optional
 
   def install
-    ENV.deparallelize
-    system "chmod +x configure"
-    system "./configure", "--disable-wx", "--use-ffmpeg=no",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          # Force detection of X libs on 64-bit kernel
-                          "--extra-ldflags=-L/usr/X11/lib"
+    args = ["--disable-wx",
+            "--prefix=#{prefix}",
+            "--mandir=#{man}"]
+
+    if build.with? "x11"
+      # gpac build system is barely functional
+      args << "--extra-cflags=-I#{MacOS::X11.include}"
+      # Force detection of X libs on 64-bit kernel
+      args << "--extra-ldflags=-L#{MacOS::X11.lib}"
+    end
+
+    system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "MP4Box", "-h"
   end
 end

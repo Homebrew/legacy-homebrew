@@ -1,12 +1,15 @@
 require 'formula'
 
 class Bazaar < Formula
-  url 'http://launchpad.net/bzr/2.3/2.3.1/+download/bzr-2.3.1.tar.gz'
-  md5 '1a4367ce59a2880f321ecb882e195856'
-  homepage 'http://bazaar-vcs.org/'
+  homepage 'http://bazaar.canonical.com/'
+  url 'https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz'
+  sha1 '5eb4d0367c6d83396250165da5bb2c8a9f378293'
 
-  def options
-    [["--system", "Install using the OS X system Python."]]
+  bottle do
+    cellar :any
+    sha1 "13eb87ddde4c81d02a54ba014712fa5d152b3f3c" => :yosemite
+    sha1 "79a3661c5a85e6041cbabb12fb237263dee1eaa9" => :mavericks
+    sha1 "d13db375fa4c2edf0119ffefbb995e4da59c7681" => :mountain_lion
   end
 
   def install
@@ -16,36 +19,13 @@ class Bazaar < Formula
     system "make man1/bzr.1"
     man1.install "man1/bzr.1"
 
-    if ARGV.include? "--system"
-      ENV.prepend "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin", ":"
-    end
-
-    # Find the arch for the Python we are building against.
-    # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
-    if ARGV.include? "--system"
-      python_cmd = "/usr/bin/python"
-    else
-      python_cmd = "python"
-    end
-
-    archs = archs_for_command("python_cmd")
-    archs.remove_ppc!
-    ENV['ARCHFLAGS'] = archs.as_arch_flags
+    # Put system Python first in path
+    ENV.prepend_path "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin"
 
     system "make"
-    inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python" if ARGV.include? "--system"
-    libexec.install ['bzr', 'bzrlib']
+    inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python"
+    libexec.install 'bzr', 'bzrlib'
 
-    bin.mkpath
-    ln_s libexec+'bzr', bin+'bzr'
-  end
-
-  def caveats
-    <<-EOS.undent
-    We've built a "standalone" version of bazaar and installed its libraries to:
-      #{libexec}
-
-    We've specifically kept it out of your Python's "site-packages" folder.
-    EOS
+    bin.install_symlink libexec+'bzr'
   end
 end

@@ -1,21 +1,29 @@
-require 'formula'
-
 class Yaf < Formula
-  url 'http://tools.netsa.cert.org/releases/yaf-1.3.1.tar.gz'
-  homepage 'http://tools.netsa.cert.org/yaf/'
-  md5 'cf7602056d8eaa157f5a53f77d193761'
+  homepage "https://tools.netsa.cert.org/yaf/"
+  url "https://tools.netsa.cert.org/releases/yaf-2.6.0.tar.gz"
+  sha1 "ac1ac70a8d1ed8b8dbbfd5ec803880a74fa2894b"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'libfixbuf'
+  bottle do
+    sha1 "08cbd663f3673eef87f3c086ad149a289c24959b" => :yosemite
+    sha1 "3f44f3792eb169334cbc8bfacabf6883fdc79b83" => :mavericks
+    sha1 "75c573eef68f5e27bffcf04919974759ba73a471" => :mountain_lion
+  end
 
-  fails_with_llvm "Undefined symbols during compile"
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "libfixbuf"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    input = test_fixtures("test.pcap")
+    output = `#{bin}/yaf --in #{input} | #{bin}/yafscii`
+    expected = "2014-10-02 10:29:06.168 - 10:29:06.169 (0.001 sec) tcp 192.168.1.115:51613 => 192.168.1.118:80 71487608:98fc8ced S/APF:AS/APF (7/453 <-> 5/578) rtt 0 ms"
+    assert_equal expected, output.strip
   end
 end

@@ -1,9 +1,10 @@
 require 'formula'
 
 class Doubledown < Formula
-  url 'https://github.com/devstructure/doubledown/tarball/v0.0.2'
   homepage 'https://github.com/devstructure/doubledown'
-  md5 '0f540c6da691769ca1efa305ad18acb6'
+  url 'https://github.com/devstructure/doubledown/archive/v0.0.2.tar.gz'
+  sha1 '533587be081d6222a389d30434c3229e8c46436b'
+
   head 'https://github.com/devstructure/doubledown.git'
 
   def install

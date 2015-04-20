@@ -1,13 +1,19 @@
 require 'formula'
 
 class Litmus < Formula
-  url 'http://www.webdav.org/neon/litmus/litmus-0.12.1.tar.gz'
   homepage 'http://www.webdav.org/neon/litmus/'
-  md5 'd0bbb717196e835a5759f67f097321fb'
+  url 'http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz'
+  sha1 '42ad603035d15798facb3be79b1c51376820cb19'
 
   def install
-    # Just basic options for now. We could use --with-ssl or alternative neon using dependency tracking?
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # Note that initially this formula also had the --disable-debug option
+    # passed to ./configure.
+    #
+    # This disabled a critical feature. Litmus is a debugging tool, and this
+    # caused all logs to be empty by default.
+    #
+    # See: https://github.com/Homebrew/homebrew/pull/29608
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end

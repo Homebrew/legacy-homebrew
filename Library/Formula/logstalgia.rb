@@ -1,29 +1,45 @@
-require 'formula'
+require "formula"
 
 class Logstalgia < Formula
-  url 'http://logstalgia.googlecode.com/files/logstalgia-1.0.3.tar.gz'
-  head 'https://github.com/acaudwell/Logstalgia.git'
-  homepage 'http://code.google.com/p/logstalgia/'
-  md5 '5160380adb1fb1ed9272cf57fbdf3341'
+  homepage "http://code.google.com/p/logstalgia/"
+  url "https://github.com/acaudwell/Logstalgia/releases/download/logstalgia-1.0.6/logstalgia-1.0.6.tar.gz"
+  sha1 "92b2b037d289840517d6648bf72f09afbf3f09d5"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'sdl'
-  depends_on 'sdl_image'
-  depends_on 'ftgl'
-  depends_on 'jpeg'
-  depends_on 'pcre'
+  head do
+    url "https://github.com/acaudwell/Logstalgia.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "sdl2"
+  depends_on "sdl2_image"
+  depends_on "freetype"
+  depends_on "pkg-config" => :build
+  depends_on "boost" => :build
+  depends_on "glm" => :build
+  depends_on "glew"
+  depends_on "libpng"
+  depends_on "jpeg"
+  depends_on "pcre"
+
+  needs :cxx11
 
   def install
-    ENV.x11 # Put freetype-config in path
+    # clang on Mt. Lion will try to build against libstdc++,
+    # despite -std=gnu++0x
+    ENV.libcxx
 
     # For non-/usr/local installs
     ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 
     # Handle building head.
-    system "autoreconf -f -i" unless File.exist? "configure"
+    system "autoreconf -f -i" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--without-x"
     system "make"
     system "make install"
   end

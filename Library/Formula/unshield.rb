@@ -1,12 +1,19 @@
-require 'formula'
+require "formula"
 
 class Unshield < Formula
-  url 'http://downloads.sourceforge.net/project/synce/Unshield/0.6/unshield-0.6.tar.gz'
-  homepage 'http://www.synce.org/oldwiki/index.php/Unshield'
-  md5 '31a829192a255160d1f71cda4c865c9c'
+  homepage "https://github.com/twogood/unshield"
+  url "https://github.com/twogood/unshield/archive/1.0.tar.gz"
+  sha1 "b9e09a23d7172dc43c914b764470aec182e4f468"
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "./bootstrap"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

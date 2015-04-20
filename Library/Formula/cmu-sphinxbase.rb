@@ -1,12 +1,32 @@
-require 'formula'
+require "formula"
 
 class CmuSphinxbase < Formula
-  url 'http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/0.6.1/sphinxbase-0.6.1.tar.gz'
-  homepage 'http://cmusphinx.sourceforge.net/'
-  md5 '779647b5fb9e9942994f02fdf2282351'
+  homepage "http://cmusphinx.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/cmusphinx/sphinxbase/0.8/sphinxbase-0.8.tar.gz"
+  sha1 "c0c4d52e143d07cd593bd6bcaeb92b9a8a5a8c8e"
+
+  head do
+    url "https://github.com/cmusphinx/sphinxbase.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "swig" => :build
+  end
+
+  depends_on "pkg-config" => :build
+  # If these are found, they will be linked against and there is no configure
+  # switch to turn them off.
+  depends_on "libsndfile"
+  depends_on "libsamplerate" => "with-libsndfile"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    if build.head?
+      ENV["NOCONFIGURE"] = "yes"
+      system "./autogen.sh"
+    end
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

@@ -3,23 +3,42 @@ require 'formula'
 class Liboil < Formula
   homepage 'http://liboil.freedesktop.org/'
   url 'http://liboil.freedesktop.org/download/liboil-0.3.17.tar.gz'
-  md5 '47dc734f82faeb2964d97771cfd2e701'
+  sha1 'f9d7103a3a4a4089f56197f81871ae9129d229ed'
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-
-  def install
-    arch = Hardware.is_64_bit? ? 'x64_64' : 'i386'
-    inreplace "configure", "__HOST_CPU__", arch
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make"
-    system "make install"
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "1d7f799090d7ccfe52341971822d3af1269ea68f" => :yosemite
+    sha1 "14d746548dc6e18f900e4fe67d1f1958fda68016" => :mavericks
+    sha1 "41590a673b637d2307b1ce287ec692e4d47b3191" => :mountain_lion
   end
 
-  def patches
-    {:p0 => [
-      "http://svn.macports.org/repository/macports/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff",
-      "http://svn.macports.org/repository/macports/trunk/dports/devel/liboil/files/host_cpu.diff"
-    ]}
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+
+  def install
+    ENV.append "CFLAGS", "-fheinous-gnu-extensions" if ENV.compiler == :clang
+    system "autoreconf", "-fvi"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <liboil/liboil.h>
+      int main(int argc, char** argv) {
+        oil_init();
+        return 0;
+      }
+    EOS
+
+    flags = ["-I#{include}/liboil-0.3", "-L#{lib}", "-loil-0.3"] + ENV.cflags.to_s.split
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end

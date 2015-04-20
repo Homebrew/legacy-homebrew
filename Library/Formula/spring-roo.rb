@@ -1,13 +1,15 @@
-require 'formula'
+require "formula"
 
 class SpringRoo < Formula
-  url 'http://s3.amazonaws.com/dist.springframework.org/release/ROO/spring-roo-1.1.4.RELEASE.zip'
-  version '1.1.4'
-  homepage 'http://www.springsource.org/roo'
-  md5 'c4f572fa6ab2c1162b4761054df9f67a'
+  homepage "http://www.springsource.org/spring-roo"
+  url "https://s3.amazonaws.com/spring-roo-repository.springsource.org/release/ROO/spring-roo-1.3.1.RELEASE.zip"
+  sha1 "31c9d57c4a8ed38dc059bffcde192886e96e25ea"
+  version "1.3.1"
 
   def install
-    rm_f Dir["bin/*.bat"]
-    prefix.install %w[annotations bin bundle conf docs legal samples]
+    rm Dir["bin/*.bat"]
+    libexec.install Dir["*"]
+    File.rename "#{libexec}/bin/roo.sh", "#{libexec}/bin/roo"
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 end

@@ -1,54 +1,144 @@
-require 'formula'
-
-class GhostscriptFonts < Formula
-  url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
-  homepage 'http://sourceforge.net/projects/gs-fonts/'
-  md5 '6865682b095f8c4500c54b285ff05ef6'
-end
-
 class Ghostscript < Formula
-  url 'http://downloads.ghostscript.com/public/ghostscript-9.02.tar.bz2'
-  homepage 'http://www.ghostscript.com/'
-  md5 'f67151444bd56a7904579fc75a083dd6'
+  homepage "http://www.ghostscript.com/"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'jpeg'
-  depends_on 'libtiff'
+  stable do
+    url "http://downloads.ghostscript.com/public/ghostscript-9.15.tar.gz"
+    sha1 "f53bcc47e912c7bffc2ced62ed9311376fb18bab"
+
+    patch :DATA # Uncomment OS X-specific make vars
+  end
+
+  bottle do
+    revision 3
+    sha1 "64527567402bb0e06bd3cd2bd1999d3bd3ea09ad" => :yosemite
+    sha1 "bd885778fee5126a4f2b7bc27ea70e312668c430" => :mavericks
+    sha1 "41d1130888b464aa27cf46ae4266a517d17d64cb" => :mountain_lion
+  end
+
+  head do
+    url "git://git.ghostscript.com/ghostpdl.git"
+
+    resource "djvu" do
+      url "git://git.code.sf.net/p/djvu/gsdjvu-git"
+    end
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+
+    # Uncomment OS X-specific make vars
+    patch do
+      url "https://gist.githubusercontent.com/jacknagel/9559501/raw/9709b3234cc888d29f717838650d29e7062da917/gs.patch"
+      sha1 "65c99df4f0d57368a086154d34722f5c4b9c84cc"
+    end
+  end
+
+  option "with-djvu", "Build drivers for DjVU file format"
+
+  depends_on "pkg-config" => :build
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "jbig2dec"
+  depends_on "little-cms2"
+  depends_on "libpng"
+  depends_on :x11 => ["2.7.2", :optional]
+  depends_on "djvulibre" if build.with? "djvu"
+  depends_on "freetype"
+
+  conflicts_with "gambit-scheme", :because => "both install `gsc` binaries"
+
+  # http://sourceforge.net/projects/gs-fonts/
+  resource "fonts" do
+    url "https://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz"
+    sha1 "2a7198e8178b2e7dba87cb5794da515200b568f5"
+  end
+
+  # http://djvu.sourceforge.net/gsdjvu.html
+  resource "djvu" do
+    url "https://downloads.sourceforge.net/project/djvu/GSDjVu/1.6/gsdjvu-1.6.tar.gz"
+    sha1 "a8c5520d698d8be558a1957b4e5108cba68822ef"
+  end
 
   def move_included_source_copies
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    %w{ jpeg libpng zlib }.each do |lib|
-      mv lib, "#{lib}_local"
-    end
+    renames = %w[freetype jbig2dec jpeg libpng tiff]
+    renames.each { |lib| mv lib, "#{lib}_local" }
   end
 
   def install
-    ENV.libpng
-    ENV.deparallelize
-    # O4 takes an ungodly amount of time
-    ENV.O3
-    # ghostscript configure ignores LDFLAGs apparently
-    ENV['LIBS']="-L/usr/X11/lib"
+    src_dir = build.head? ? "gs" : "."
 
-    move_included_source_copies
+    resource("djvu").stage do
+      inreplace "gsdjvu.mak", "$(GL", "$(DEV"
+      (buildpath+"devices").install "gdevdjvu.c"
+      (buildpath+"lib").install "ps2utf8.ps"
+      ENV["EXTRA_INIT_FILES"] = "ps2utf8.ps"
+      (buildpath/"devices/contrib.mak").open("a") { |f| f.write(File.read("gsdjvu.mak")) }
+    end if build.with? "djvu"
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          # the cups component adamantly installs to /usr so fuck it
-                          "--disable-cups",
-                          "--disable-compile-inits",
-                          "--disable-gtk"
+    cd src_dir do
+      move_included_source_copies
+      args = %W[
+        --prefix=#{prefix}
+        --disable-cups
+        --disable-compile-inits
+        --disable-gtk
+        --with-system-libtiff
+      ]
+      args << "--without-x" if build.without? "x11"
 
-    # versioned stuff in main tree is pointless for us
-    inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
-    system "make install"
+      if build.head?
+        system "./autogen.sh", *args
+      else
+        system "./configure", *args
+      end
 
-    GhostscriptFonts.new.brew do
-      Dir.chdir '..'
-      (share+'ghostscript').install 'fonts'
+      # versioned stuff in main tree is pointless for us
+      inreplace "Makefile", "/$(GS_DOT_VERSION)", ""
+
+      inreplace "Makefile" do |s|
+        s.change_make_var!("DEVICE_DEVS17", "$(DD)djvumask.dev $(DD)djvusep.dev")
+      end if build.with? "djvu"
+
+      # Install binaries and libraries
+      system "make", "install"
+      system "make", "install-so"
     end
 
-    (man+'de').rmtree
+    (share+"ghostscript/fonts").install resource("fonts")
+
+    (man+"de").rmtree
+  end
+
+  test do
+    ps = test_fixtures("test.ps")
+    assert_match /Hello World!/, shell_output("#{bin}/ps2ascii #{ps}")
   end
 end
+
+__END__
+diff --git a/base/unix-dll.mak b/base/unix-dll.mak
+index ae2d7d8..4f4daed 100644
+--- a/base/unix-dll.mak
++++ b/base/unix-dll.mak
+@@ -64,12 +64,12 @@ GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE)$(GS_SOEXT)$(SO_LIB_VERSION_SEPARATOR)$(G
+ 
+ 
+ # MacOS X
+-#GS_SOEXT=dylib
+-#GS_SONAME=$(GS_SONAME_BASE).$(GS_SOEXT)
+-#GS_SONAME_MAJOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_SOEXT)
+-#GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_VERSION_MINOR).$(GS_SOEXT)
++GS_SOEXT=dylib
++GS_SONAME=$(GS_SONAME_BASE).$(GS_SOEXT)
++GS_SONAME_MAJOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_SOEXT)
++GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_VERSION_MINOR).$(GS_SOEXT)
+ #LDFLAGS_SO=-dynamiclib -flat_namespace
+-#LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
++LDFLAGS_SO_MAC=-dynamiclib -install_name __PREFIX__/lib/$(GS_SONAME_MAJOR_MINOR)
+ #LDFLAGS_SO=-dynamiclib -install_name $(FRAMEWORK_NAME)
+ 
+ GS_SO=$(BINDIR)/$(GS_SONAME)
+

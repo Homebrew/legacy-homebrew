@@ -1,27 +1,52 @@
-require 'formula'
-
 class Neon < Formula
-  url 'http://www.webdav.org/neon/neon-0.29.3.tar.gz'
-  md5 'ba1015b59c112d44d7797b62fe7bee51'
-  homepage 'http://www.webdav.org/neon/'
+  homepage "http://www.webdav.org/neon/"
+  url "http://www.webdav.org/neon/neon-0.30.1.tar.gz"
+  sha1 "efec2a6f17d9bd2323345320e3067349ddc9cf79"
 
-  depends_on 'pkg-config' => :build
-
-  keg_only :provided_by_osx,
-            "Compiling newer versions of Subversion on 10.6 require this newer neon."
-
-  def options
-    [['--universal', 'Builds a universal binary.']]
+  bottle do
+    cellar :any
+    sha1 "6702382e84b8c67cb0c335c4763cd5e66074a68a" => :yosemite
+    sha1 "44a748dd2ceb8db8aa5926c961ac7ffd9b67de8b" => :mavericks
+    sha1 "687674d4e72151add69eac61f420de2f9ef8f276" => :mountain_lion
   end
+
+  keg_only :provided_pre_mountain_lion
+
+  option :universal
+
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
+
+  # Configure switch unconditionally adds the -no-cpp-precomp switch
+  # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
+  # builds under non-Apple compilers and which may or may not do anything
+  # anymore.
+  patch :DATA
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
-
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
+    ENV.universal_binary if build.universal?
+    ENV.enable_warnings
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
                           "--enable-shared",
                           "--disable-static",
-                          "--with-ssl"
-    system "make install"
+                          "--disable-nls",
+                          "--with-ssl=openssl",
+                          "--with-libs=#{Formula["openssl"].opt_prefix}"
+    system "make", "install"
   end
 end
+
+__END__
+diff --git a/configure b/configure
+index d7702d2..5c3b5a3 100755
+--- a/configure
++++ b/configure
+@@ -4224,7 +4224,6 @@ fi
+ $as_echo "$ne_cv_os_uname" >&6; }
+ 
+ if test "$ne_cv_os_uname" = "Darwin"; then
+-  CPPFLAGS="$CPPFLAGS -no-cpp-precomp"
+   LDFLAGS="$LDFLAGS -flat_namespace"
+   # poll has various issues in various Darwin releases
+   if test x${ac_cv_func_poll+set} != xset; then

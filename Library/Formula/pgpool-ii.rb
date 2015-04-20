@@ -1,22 +1,20 @@
-require 'formula'
+require "formula"
 
 class PgpoolIi < Formula
-  url 'http://pgfoundry.org/frs/download.php/2841/pgpool-II-3.0.1.tar.gz'
-  homepage 'http://pgpool.projects.postgresql.org/'
-  md5 '86d8beff0396d11b6753dd2be31bcad7'
+  homepage "http://www.pgpool.net/mediawiki/index.php/Main_Page"
+  url "http://www.pgpool.net/download.php?f=pgpool-II-3.4.0.tar.gz"
+  sha1 "5502268055b6ba48013c1b7c9ac5a8ce3a0d30ed"
+
+  bottle do
+    sha1 "b05f96a3f5d0ff02afea65aa50fa33ca1f75defb" => :yosemite
+    sha1 "621632adc180b378e427e21587c0c005e8b125db" => :mavericks
+    sha1 "26d1434b15ce5f716012bc204b8b01e05b0574c7" => :mountain_lion
+  end
+
+  depends_on :postgresql
 
   def install
-     if `/usr/bin/which pg_config`.chomp.empty?
-      opoo "No PostgreSQL was detected."
-      puts <<-EOS.undent
-        This formula uses `pg_config` to detect an installed PostgreSQL instead
-        of "depends_on 'postgresql'" so you can use a non-Homebrew version.
-        You may want to `brew install postgresql` if you don't have another
-        version already installed.
-      EOS
-    end
-
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

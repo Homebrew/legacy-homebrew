@@ -1,20 +1,16 @@
-require 'formula'
+require "formula"
 
 class Xmlstarlet < Formula
-  url 'http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.1.0/xmlstarlet-1.1.0.tar.gz'
-  md5 '1b864b16c1dc78ce87ffc8528f021ab0'
-  homepage 'http://xmlstar.sourceforge.net/'
+  homepage "http://xmlstar.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.6.1/xmlstarlet-1.6.1.tar.gz"
+  sha1 "87bb104f546caca71b9540807c5b2738944cb219"
 
   def install
-    # thanks, xmlstarlet but OS X doesn't have the static versions
-    inreplace 'configure' do |s|
-      s.gsub! '$LIBXML_LIBDIR/libxml2.a', '-lxml2'
-      s.gsub! '$LIBXSLT_LIBDIR/libxslt.a', '-lxslt'
-      s.gsub! '$LIBXSLT_LIBDIR/libexslt.a', '-lexslt'
-    end
-
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
+    bin.install_symlink "xml" => "xmlstarlet"
   end
 end

@@ -1,122 +1,135 @@
-require 'formula'
-
-def build_python?; ARGV.include? "--python"; end
-
-def which_python
-  if ARGV.include? '--system-python'
-    '/usr/bin/python'
-  else
-    'python'
-  end
-end
-
-class Wxpython < Formula
-  url 'http://downloads.sourceforge.net/wxpython/wxPython-src-2.8.11.0.tar.bz2'
-  md5 '63f73aae49e530852db56a31b57529fa'
-end
+require "formula"
 
 class Wxmac < Formula
-  url 'http://downloads.sourceforge.net/project/wxwindows/2.8.11/wxMac-2.8.11.tar.bz2'
-  homepage 'http://www.wxwidgets.org'
-  md5 '8d84bfdc43838e2d2f75031f62d1864f'
+  homepage "http://www.wxwidgets.org"
+  url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
+  sha1 "6461eab4428c0a8b9e41781b8787510484dea800"
 
-  def options
-    [
-      ['--python', 'Build Python bindings'],
-      ['--system-python', 'Build against the OS X Python instead of whatever is in the path.']
-    ]
+  bottle do
+    revision 9
+    sha1 "7a63c6715dea44ef7eee683355458e9203fb723a" => :yosemite
+    sha1 "5e6e114cff5901ec6f7586a844df713dc376fcf7" => :mavericks
+    sha1 "2f7ab6db7de665c76abe4546672e58cd48973c13" => :mountain_lion
   end
 
-  def test_python_arch
-    system "arch -i386 #{which_python} --version"
-  rescue
-    onoe "No python on path or default python does not support 32-bit."
-    puts <<-EOS.undent
-      Your default python (if any) does not support 32-bit execution, which is
-      required for the wxmac python bindings. You can install the Homebrew
-      python with 32-bit support by running:
+  depends_on "jpeg"
+  depends_on "libpng"
+  depends_on "libtiff"
 
-      brew install python --universal --framework
-
-    EOS
-    exit 99
-  end
-
-  def install_wx_python
-    opts = [
-      # Reference our wx-config
-      "WX_CONFIG=#{bin}/wx-config",
-      # At this time Wxmac is installed ANSI only
-      "UNICODE=0",
-      # And thus we have no need for multiversion support
-      "INSTALL_MULTIVERSION=0",
-      # TODO: see if --with-opengl can work on the wxmac build
-      "BUILD_GLCANVAS=0",
-      # Contribs that I'm not sure anyone cares about, but
-      # wxPython tries to build them by default
-      "BUILD_STC=0",
-      "BUILD_GIZMOS=0"
-    ]
-    Dir.chdir "wxPython" do
-      system "arch", "-i386",
-                     which_python,
-                     "setup.py",
-                     "build_ext",
-                     *opts
-
-      system "arch", "-i386",
-                     which_python,
-                     "setup.py",
-                     "install",
-                     "--prefix=#{prefix}",
-                     *opts
-    end
-  end
+  # Various fixes related to Yosemite. Revisit in next stable release.
+  # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
+  # Theoretically the above linked patch should still be needed, but it isn't. Try to find out why.
+  patch :DATA
 
   def install
-    test_python_arch if build_python?
+    # need to set with-macosx-version-min to avoid configure defaulting to 10.5
+    # need to enable universal binary build in order to build all x86_64
+    # Jack - I don't believe this is the whole story, surely this can be fixed
+    # without building universal for users who don't need it.
+    # headers need to specify x86_64 and i386 or will try to build for ppc arch
+    # and fail on newer OSes
+    # DomT4 - MacPorts seems to have stopped building universal by default? Can we do the same?
+    # https://trac.macports.org/browser/trunk/dports/graphics/wxWidgets-3.0/Portfile#L210
+    ENV.universal_binary
+    args = [
+      "--disable-debug",
+      "--prefix=#{prefix}",
+      "--enable-shared",
+      "--enable-unicode",
+      "--enable-std_string",
+      "--enable-display",
+      "--with-opengl",
+      "--with-osx_cocoa",
+      "--with-libjpeg",
+      "--with-libtiff",
+      # Otherwise, even in superenv, the internal libtiff can pick
+      # up on a nonuniversal xz and fail
+      # https://github.com/Homebrew/homebrew/issues/22732
+      "--without-liblzma",
+      "--with-libpng",
+      "--with-zlib",
+      "--enable-dnd",
+      "--enable-clipboard",
+      "--enable-webkit",
+      "--enable-svg",
+      # On 64-bit, enabling mediactrl leads to wxconfig trying to pull
+      # in a non-existent 64 bit QuickTime framework. This is submitted
+      # upstream and will eventually be fixed, but for now...
+      MacOS.prefer_64_bit? ? "--disable-mediactrl" : "--enable-mediactrl",
+      "--enable-graphics_ctx",
+      "--enable-controls",
+      "--enable-dataviewctrl",
+      "--with-expat",
+      "--with-macosx-version-min=#{MacOS.version}",
+      "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(',')}",
+      "--disable-precomp-headers",
+      # This is the default option, but be explicit
+      "--disable-monolithic"
+    ]
 
-    # Force i386
-    %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
-      ENV.remove compiler_flag, "-arch x86_64"
-      ENV.append compiler_flag, "-arch i386"
-    end
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-unicode"
-    system "make install"
-
-    if build_python?
-      ENV['WXWIN'] = Dir.getwd
-      Wxpython.new.brew { install_wx_python }
-    end
-  end
-
-  def caveats
-    s = <<-EOS.undent
-      wxWidgets 2.8.x builds 32-bit only, so you probably won''t be able to use it
-      for other Homebrew-installed softare on Snow Leopard (like Erlang).
-
-    EOS
-
-    if build_python?
-      s += <<-EOS.undent
-        Python bindings require that Python be built as a Framework; this is the
-        default for Mac OS provided Python but not for Homebrew python (compile
-        using the --framework option).
-
-        You will also need 32-bit support for Python. If you are on a 64-bit
-        platform, you will need to run Python in 32-bit mode:
-
-          arch -i386 python [args]
-
-        Homebrew Python does not support this by default (compile using the
-        --universal option)
-
-      EOS
-    end
-
-    return s
+    system "./configure", *args
+    system "make", "install"
   end
 end
+
+__END__
+
+diff --git a/include/wx/defs.h b/include/wx/defs.h
+index 397ddd7..d128083 100644
+--- a/include/wx/defs.h
++++ b/include/wx/defs.h
+@@ -3169,12 +3169,20 @@ DECLARE_WXCOCOA_OBJC_CLASS(UIImage);
+ DECLARE_WXCOCOA_OBJC_CLASS(UIEvent);
+ DECLARE_WXCOCOA_OBJC_CLASS(NSSet);
+ DECLARE_WXCOCOA_OBJC_CLASS(EAGLContext);
++DECLARE_WXCOCOA_OBJC_CLASS(UIWebView);
+ 
+ typedef WX_UIWindow WXWindow;
+ typedef WX_UIView WXWidget;
+ typedef WX_EAGLContext WXGLContext;
+ typedef WX_NSString* WXGLPixelFormat;
+ 
++typedef WX_UIWebView OSXWebViewPtr;
++
++#endif
++
++#if wxOSX_USE_COCOA_OR_CARBON
++DECLARE_WXCOCOA_OBJC_CLASS(WebView);
++typedef WX_WebView OSXWebViewPtr;
+ #endif
+ 
+ #endif /* __WXMAC__ */
+diff --git a/include/wx/html/webkit.h b/include/wx/html/webkit.h
+index 8700367..f805099 100644
+--- a/include/wx/html/webkit.h
++++ b/include/wx/html/webkit.h
+@@ -18,7 +18,6 @@
+ #endif
+ 
+ #include "wx/control.h"
+-DECLARE_WXCOCOA_OBJC_CLASS(WebView); 
+ 
+ // ----------------------------------------------------------------------------
+ // Web Kit Control
+@@ -107,7 +106,7 @@ private:
+     wxString m_currentURL;
+     wxString m_pageTitle;
+ 
+-    WX_WebView m_webView;
++    OSXWebViewPtr m_webView;
+ 
+     // we may use this later to setup our own mouse events,
+     // so leave it in for now.
+diff --git a/include/wx/osx/webview_webkit.h b/include/wx/osx/webview_webkit.h
+index 803f8b0..438e532 100644
+--- a/include/wx/osx/webview_webkit.h
++++ b/include/wx/osx/webview_webkit.h
+@@ -158,7 +158,7 @@ private:
+     wxWindowID m_windowID;
+     wxString m_pageTitle;
+ 
+-    wxObjCID m_webView;
++    OSXWebViewPtr m_webView;
+ 
+     // we may use this later to setup our own mouse events,
+     // so leave it in for now.

@@ -1,58 +1,40 @@
 require 'formula'
 
-# Private older version of autoconf required to compile Spidermonkey
-class Autoconf213 < Formula
-  url 'http://ftp.gnu.org/pub/gnu/autoconf/autoconf-2.13.tar.gz'
-  md5 '9de56d4a161a723228220b0f425dc711'
-  homepage 'http://www.gnu.org/software/autoconf/'
-end
-
 class Spidermonkey < Formula
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
-  # Pick a version that's known to work with CouchDB), revision r35345.
-  url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
-  md5 '0f2490f78d880ec184d9233df97ab83d'
-  version '1.8.0'
+  url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
+  version '1.8.5'
+  sha1 '52a01449c48d7a117b35f213d3e4263578d846d6'
+  revision 1
+
+  head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz'
+
+  bottle do
+    sha256 "7ab660cad3aac11fbf4befa3fbbf65a7ee64d858539ad81298271389b2957375" => :yosemite
+    sha256 "cda0b81bd974640690fe067691efca6bc7d1583117cd5db28cca43ab8e2f884c" => :mavericks
+    sha256 "769035a4fa0ed09b71aa9747c2834a51285903e51d9bc478f865c037a8666370" => :mountain_lion
+  end
+
+  conflicts_with 'narwhal', :because => 'both install a js binary'
 
   depends_on 'readline'
   depends_on 'nspr'
 
   def install
-    # aparently this flag causes the build to fail for ivanvc on 10.5 with a
-    # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
-    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.leopard?
-
-    # For some reason SpiderMonkey requires Autoconf-2.13
-    ac213_prefix = Pathname.pwd.join('ac213')
-    Autoconf213.new.brew do |f|
-      # Force use of plain "awk"
-      inreplace 'configure', 'for ac_prog in mawk gawk nawk awk', 'for ac_prog in awk'
-
-      system "./configure", "--disable-debug",
-                            "--program-suffix=213",
-                            "--prefix=#{ac213_prefix}"
-      system "make install"
-    end
-
-    Dir.chdir "js/src" do
-      # Fixes a bug with linking against CoreFoundation. Tests all pass after
-      # building like this. See: http://openradar.appspot.com/7209349
-      inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
-      system "#{ac213_prefix}/bin/autoconf213"
-
+    cd "js/src" do
       # Remove the broken *(for anyone but FF) install_name
       inreplace "config/rules.mk",
         "-install_name @executable_path/$(SHARED_LIBRARY) ",
         "-install_name #{lib}/$(SHARED_LIBRARY) "
     end
 
-    mkdir "brew-build"
-
-    Dir.chdir "brew-build" do
+    mkdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",
                                     "--enable-readline",
                                     "--enable-threadsafe",
-                                    "--with-system-nspr"
+                                    "--with-system-nspr",
+                                    "--with-nspr-prefix=#{Formula["nspr"].opt_prefix}",
+                                    "--enable-macos-target=#{MacOS.version}"
 
       inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
       # These need to be in separate steps.
@@ -64,10 +46,9 @@ class Spidermonkey < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    This formula installs Spidermonkey 1.8.x.
-
-    If you are trying to compile MongoDB from scratch, you will need 1.7.x instead.
-    EOS
+  test do
+    path = testpath/"test.js"
+    path.write "print('hello');"
+    assert_equal "hello", shell_output("#{bin}/js #{path}").strip
   end
 end

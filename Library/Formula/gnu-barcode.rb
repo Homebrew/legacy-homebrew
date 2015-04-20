@@ -1,20 +1,23 @@
-require 'formula'
-
 class GnuBarcode < Formula
-  url 'ftp://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz'
-  homepage 'http://www.gnu.org/software/barcode/barcode.html'
-  md5 '7f10c3307b84a19a4ab2fa4b3f2974da'
+  homepage "https://www.gnu.org/software/barcode/"
+  url "http://ftpmirror.gnu.org/barcode/barcode-0.98.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz"
+  sha256 "4229e19279b9787ac7e98852fa0bfd93986dce93b9cb07d93a017d68d409b635"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-
-    inreplace "Makefile" do |s|
-      s.change_make_var! "MAN1DIR", man1
-      s.change_make_var! "MAN3DIR", man3
-    end
-
     system "make"
-    system "make install"
+    system "make", "MAN1DIR=#{man1}",
+                   "MAN3DIR=#{man3}",
+                   "INFODIR=#{info}",
+                   "install"
+  end
+
+  test do
+    (testpath/"test.txt").write("12345")
+    system "#{bin}/barcode", "-e", "CODE39", "-i", "test.txt", "-o", "test.ps"
+    assert File.read("test.ps").start_with?("")
   end
 end

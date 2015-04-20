@@ -1,21 +1,28 @@
-require 'formula'
+require "formula"
 
 class Cmus < Formula
-  url 'http://downloads.sourceforge.net/cmus/cmus-v2.4.1.tar.bz2'
-  homepage 'http://cmus.sourceforge.net/'
-  md5 '7932bbada04bc9a273c332a323fc5704'
+  homepage "https://cmus.github.io/"
+  head "https://github.com/cmus/cmus.git"
+  url "https://github.com/cmus/cmus/archive/v2.6.0.tar.gz"
+  sha1 "aba00eb75335532c0413f7c819c2e2d12fcd4314"
+  revision 1
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libao'
-  depends_on 'mad'
-  depends_on 'libogg'
-  depends_on 'libvorbis'
-  depends_on 'faad2'
-  depends_on 'flac'
-  depends_on 'mp4v2'
+  bottle do
+    sha1 "da0f9ffb5fc18e25f5f3d9dafebdc24c5121a89e" => :mavericks
+    sha1 "c59670990bc5055fae97c62732e6c4162b78e64c" => :mountain_lion
+    sha1 "4bba9a8ce200e9ab6348bcc87f459ad328d5862c" => :lion
+  end
 
-  skip_clean 'bin/cmus'
-  skip_clean 'bin/cmus-remote'
+  depends_on "pkg-config" => :build
+  depends_on "libao"
+  depends_on "mad"
+  depends_on "libogg"
+  depends_on "libvorbis"
+  depends_on "faad2"
+  depends_on "flac"
+  depends_on "mp4v2"
+  depends_on "libcue"
+  depends_on "ffmpeg" => :optional
 
   def install
     system "./configure", "prefix=#{prefix}", "mandir=#{man}"

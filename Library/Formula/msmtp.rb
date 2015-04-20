@@ -1,19 +1,27 @@
-require 'formula'
-
 class Msmtp < Formula
-  url 'http://downloads.sourceforge.net/project/msmtp/msmtp/1.4.22/msmtp-1.4.22.tar.bz2'
-  homepage 'http://msmtp.sourceforge.net'
-  md5 'de0a4e6f3133519b301fc114daf81f49'
+  homepage "http://msmtp.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.6.1/msmtp-1.6.1.tar.xz"
+  sha1 "ac70151bcb53af5e192cbb147fd2b8139c637089"
 
-  def options
-    [['--with-macosx-keyring', "Support Mac OS X Keyring"]]
+  bottle do
+    sha1 "fdc446edaff06269af325e4b95c10788d187b79e" => :yosemite
+    sha1 "cdb0533ee36dbcb9fe249adbc74f0394a605fa78" => :mavericks
+    sha1 "dc7336d5b49a22dc7b014529d08c6c98b7ad0c9f" => :mountain_lion
   end
 
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
+
   def install
-    args = [ "--disable-dependency-tracking", "--prefix=#{prefix}" ]
-    args << "--with-macosx-keyring" if ARGV.include? '--with-macosx-keyring'
+    args = %W[
+      --disable-dependency-tracking
+      --with-macosx-keyring
+      --prefix=#{prefix}
+      --with-tls=openssl
+    ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+    (share/"msmtp/scripts").install "scripts/msmtpq"
   end
 end

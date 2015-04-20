@@ -1,15 +1,14 @@
 require 'formula'
 
 class Gosu < Formula
-  url 'http://gosu-lang.org/downloads/gosu-0.7.0.1-C.zip'
-  version '0.7.0.1-C'
   homepage 'http://gosu-lang.org/'
-  md5 '3ea42cdc403ee57397a9559f6a95be67'
+  url 'http://gosu-lang.org/nexus/content/repositories/gosu/org/gosu-lang/gosu/gosu/0.10.3/gosu-0.10.3-full.tar.gz'
+  sha1 '98b94d29c2052f9def5155592eb64d7da00c7d41'
 
   def install
-    mv "bin/gosu.sh", "bin/gosu"
     rm "bin/gosu.cmd"
     touch "ext/.anchor"
-    prefix.install Dir['*']
+    libexec.install Dir['*']
+    bin.install_symlink libexec/'bin/gosu'
   end
 end

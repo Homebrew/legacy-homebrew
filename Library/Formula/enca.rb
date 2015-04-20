@@ -1,15 +1,26 @@
-require 'formula'
+require "formula"
 
 class Enca < Formula
-  url 'http://dl.cihar.com/enca/enca-1.13.tar.gz'
-  homepage 'http://freshmeat.net/projects/enca'
-  md5 '58fcf1fea7eeab70b64a2d61e14a967d'
+  homepage "http://cihar.com/software/enca/"
+  url "http://dl.cihar.com/enca/enca-1.16.tar.gz"
+  sha1 "8cc606a5c0efa49a42374c060faa4fb7a9501d23"
+  head "https://github.com/nijel/enca.git"
 
-  depends_on 'libiconv'
+  bottle do
+    sha1 "d5714f14f7075feb1a74f5975709cab64981d8ea" => :yosemite
+    sha1 "7e1c1698456b4aecc16f2f1c6f4dbdf48d0e44b0" => :mavericks
+    sha1 "a71d75fa0a058b3eb57cf2885cfe57cabc842d6e" => :mountain_lion
+  end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    enca = "#{bin}/enca --language=none"
+    assert_match /ASCII/, `#{enca} <<< 'Testing...'`
+    assert_match /UCS-2/, `#{enca} --convert-to=UTF-16 <<< 'Testing...' | #{enca}`
   end
 end

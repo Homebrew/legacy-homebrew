@@ -1,53 +1,42 @@
 require 'formula'
 
+# Use a newer version instead of the upstream tarball:
+# http://livestreamer.tanuki.se/en/latest/issues.html#installed-rtmpdump-does-not-support-jtv-argument
 class Rtmpdump < Formula
-  url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
   homepage 'http://rtmpdump.mplayerhq.hu'
-  md5 'eb961f31cd55f0acf5aad1a7b900ef59'
+  url 'http://ftp.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_2.4+20150115.gita107cef.orig.tar.gz'
+  version '2.4+20150115'
+  sha256 'd47ef3a07815079bf73eb5d053001c4341407fcbebf39f34e6213c4b772cb29a'
 
-  depends_on 'openssl' if MacOS.leopard?
+  bottle do
+    cellar :any
+    sha256 "5333be3b341a79c84d1bc9c2bb74ef71e2e6c49e5e2a94dd02e2ef5721acd5f5" => :yosemite
+    sha256 "f906ce07d4ab1e365f22afabfa594fffba1caf0d3e7fa749a76b07a944891aba" => :mavericks
+    sha256 "90f87f1c3e8c68385576812bdfadc39152d3bd9166cafb982761d1a6cc915710" => :mountain_lion
+  end
 
-  # Use dylib instead of so
-  def patches; DATA; end
+  head "git://git.ffmpeg.org/rtmpdump"
+
+  depends_on 'openssl'
+
+  fails_with :llvm do
+    build 2336
+    cause "Crashes at runtime"
+  end
 
   def install
-    ENV.j1
-    inreplace ["Makefile", "librtmp/Makefile"] do |s|
-      s.change_make_var! "CC", ENV['CC']
-      s.change_make_var! "LD", ENV['LD']
-    end
-    system "make", "prefix=#{prefix}", "MANDIR=#{man}", "SYS=posix", "install"
+    ENV.deparallelize
+    system "make", "CC=#{ENV.cc}",
+                   "XCFLAGS=#{ENV.cflags}",
+                   "XLDFLAGS=#{ENV.ldflags}",
+                   "MANDIR=#{man}",
+                   "SYS=darwin",
+                   "prefix=#{prefix}",
+                   "sbindir=#{bin}",
+                   "install"
+  end
+
+  test do
+    system "#{bin}/rtmpdump", "-h"
   end
 end
-
-__END__
---- rtmpdump-2.3/librtmp/Makefile.orig	2010-07-30 23:05:25.000000000 +0200
-+++ rtmpdump-2.3/librtmp/Makefile	2010-07-30 23:08:23.000000000 +0200
-@@ -25,7 +25,7 @@
- CRYPTO_REQ=$(REQ_$(CRYPTO))
- CRYPTO_DEF=$(DEF_$(CRYPTO))
- 
--SO_posix=so.0
-+SO_posix=dylib
- SO_mingw=dll
- SO_EXT=$(SO_$(SYS))
- 
-@@ -61,7 +61,7 @@
- 	$(AR) rs $@ $?
- 
- librtmp.$(SO_EXT): $(OBJS)
--	$(CC) -shared -Wl,-soname,$@ $(LDFLAGS) -o $@ $^ $> $(CRYPTO_LIB)
-+	$(CC) -shared $(LDFLAGS) -o $@ $^ $> $(CRYPTO_LIB)
- 	ln -sf $@ librtmp.so
- 
- log.o: log.c log.h Makefile
-@@ -87,5 +87,8 @@
- 	cp librtmp.so.0 $(LIBDIR)
- 	cd $(LIBDIR); ln -sf librtmp.so.0 librtmp.so
- 
-+install_dylib:	librtmp.dylib
-+	cp librtmp.dylib $(LIBDIR)
-+
- install_dll:	librtmp.dll
- 	cp librtmp.dll $(BINDIR)
-

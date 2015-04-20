@@ -1,70 +1,104 @@
-require 'formula'
-
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.16.2.tar.gz'
-  homepage 'http://www.elasticsearch.org'
-  md5 '78402a00b959e63f8dc5456caaa9a5f1'
+  homepage "https://www.elastic.co/products/elasticsearch"
+  url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.1.tar.gz"
+  sha1 "b3863a63d265486332042246bf1c002b3a70b46f"
 
-  def install
-    # Remove Windows files
-    rm_f Dir["bin/*.bat"]
-
-    # Install everything directly into folder
-    prefix.install Dir['*']
-
-    # Make sure we have support folders in /usr/var
-    %w( run data/elasticsearch log ).each { |path| (var+path).mkpath }
-
-    # Put basic configuration into config file
-    inreplace "#{prefix}/config/elasticsearch.yml" do |s|
-      s << <<-EOS.undent
-        cluster:
-          name: elasticsearch
-
-        path:
-          logs: #{var}/log
-          data: #{var}/data
-      EOS
-    end
-
-    # Write PLIST file for `launchd`
-    (prefix+'org.elasticsearch.plist').write startup_plist
+  bottle do
+    sha256 "0e59f10c8ff8f8d3d8e18cf3083846d5a537cacf0eefe40035121927352661f4" => :yosemite
+    sha256 "e6c9f7c41b7406d4e8c30a903ced64e91b76ec6c701a81d0d0e458b951dfdbef" => :mavericks
+    sha256 "a54b9c2a0f0dcc7b37e1fe2c7847f5864cc55324462e9c6edf4d800eba010f0b" => :mountain_lion
   end
 
-  def caveats
-    <<-EOS.undent
-    If this is your first install, automatically load ElasticSearch on login with:
-        mkdir -p ~/Library/LaunchAgents
-        ln -nfs #{prefix}/org.elasticsearch.plist ~/Library/LaunchAgents/
-        launchctl load -wF ~/Library/LaunchAgents/org.elasticsearch.plist
+  depends_on :java => "1.7+"
 
-    If this is an upgrade and you already have the org.elasticsearch.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.elasticsearch.plist
-        ln -nfs #{prefix}/org.elasticsearch.plist ~/Library/LaunchAgents/
-        launchctl load -wF ~/Library/LaunchAgents/org.elasticsearch.plist
+  head do
+    url "https://github.com/elasticsearch/elasticsearch.git"
+    depends_on "maven" => :build
+  end
 
-    To stop the ElasticSearch daemon:
-        launchctl unload -wF ~/Library/LaunchAgents/org.elasticsearch.plist
+  def cluster_name
+    "elasticsearch_#{ENV["USER"]}"
+  end
 
-    To start ElasticSearch manually:
-        elasticsearch -f -D es.config=#{prefix}/config/elasticsearch.yml
+  def install
+    if build.head?
+      # Build the package from source
+      system "mvn", "clean", "package", "-DskipTests"
+      # Extract the package to the current directory
+      system "tar", "--strip", "1", "-xzf", "target/releases/elasticsearch-*.tar.gz"
+    end
 
-    See the #{prefix}/config/elasticsearch.yml file for configuration.
+    # Remove Windows files
+    rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/*.exe"]
 
-    You'll find the ElasticSearch log here:
-        #{var}/log/elasticsearch.log
+    # Move libraries to `libexec` directory
+    libexec.install Dir["lib/*.jar"]
+    (libexec/"sigar").install Dir["lib/sigar/*.{jar,dylib}"]
 
-    The folder with all the data is here:
-        #{var}/data/elasticsearch
+    # Install everything else into package directory
+    prefix.install Dir["*"]
 
-    You should see ElasticSearch running:
-        open http://localhost:9200/
+    # Remove unnecessary files
+    rm_f Dir["#{lib}/sigar/*"]
+    if build.head?
+      rm_rf "#{prefix}/pom.xml"
+      rm_rf "#{prefix}/src/"
+      rm_rf "#{prefix}/target/"
+    end
 
+    # Set up Elasticsearch for local development:
+    inreplace "#{prefix}/config/elasticsearch.yml" do |s|
+      # 1. Give the cluster a unique name
+      s.gsub!(/#\s*cluster\.name\: elasticsearch/, "cluster.name: #{cluster_name}")
+
+      # 2. Configure paths
+      s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/elasticsearch/")
+      s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/elasticsearch/")
+      s.sub!(%r{#\s*path\.plugins: /path/to.+$}, "path.plugins: #{var}/lib/elasticsearch/plugins")
+
+      # 3. Bind to loopback IP for laptops roaming different networks
+      s.gsub!(/#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1")
+    end
+
+    inreplace "#{bin}/elasticsearch.in.sh" do |s|
+      # Configure ES_HOME
+      s.sub!(%r{#\!/bin/sh\n}, "#!/bin/sh\n\nES_HOME=#{prefix}")
+      # Configure ES_CLASSPATH paths to use libexec instead of lib
+      s.gsub!(%r{ES_HOME/lib/}, "ES_HOME/libexec/")
+    end
+
+    inreplace "#{bin}/plugin" do |s|
+      # Add the proper ES_CLASSPATH configuration
+      s.sub!(/SCRIPT="\$0"/, %(SCRIPT="$0"\nES_CLASSPATH=#{libexec}))
+      # Replace paths to use libexec instead of lib
+      s.gsub!(%r{\$ES_HOME/lib/}, "$ES_CLASSPATH/")
+    end
+
+    # Move config files into etc
+    (etc/"elasticsearch").install Dir[prefix/"config/*"]
+    (prefix/"config").rmtree
+  end
+
+  def post_install
+    # Make sure runtime directories exist
+    (var/"elasticsearch/#{cluster_name}").mkpath
+    (var/"log/elasticsearch").mkpath
+    (var/"lib/elasticsearch/plugins").mkpath
+    ln_s etc/"elasticsearch", prefix/"config"
+  end
+
+  def caveats; <<-EOS.undent
+    Data:    #{var}/elasticsearch/#{cluster_name}/
+    Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
+    Plugins: #{var}/lib/elasticsearch/plugins/
+    Config:  #{etc}/elasticsearch/
     EOS
   end
 
-  def startup_plist
-    <<-PLIST.undent
+  plist_options :manual => "elasticsearch --config=#{HOMEBREW_PREFIX}/opt/elasticsearch/config/elasticsearch.yml"
+
+  def plist; <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -72,26 +106,31 @@ class Elasticsearch < Formula
           <key>KeepAlive</key>
           <true/>
           <key>Label</key>
-          <string>org.elasticsearch</string>
+          <string>#{plist_name}</string>
           <key>ProgramArguments</key>
           <array>
-            <string>#{bin}/elasticsearch</string>
-            <string>-f</string>
-            <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
-            <string>-p #{var}/run/elasticsearch.pid</string>
+            <string>#{HOMEBREW_PREFIX}/bin/elasticsearch</string>
+            <string>--config=#{prefix}/config/elasticsearch.yml</string>
           </array>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>ES_JAVA_OPTS</key>
+            <string>-Xss200000</string>
+          </dict>
           <key>RunAtLoad</key>
           <true/>
-          <key>UserName</key>
-          <string>#{`whoami`.chomp}</string>
           <key>WorkingDirectory</key>
           <string>#{var}</string>
           <key>StandardErrorPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
+          <string>/dev/null</string>
           <key>StandardOutPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
+          <string>/dev/null</string>
         </dict>
       </plist>
-    PLIST
+    EOS
+  end
+
+  test do
+    system "#{bin}/plugin", "--list"
   end
 end

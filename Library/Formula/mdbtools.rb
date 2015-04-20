@@ -1,19 +1,33 @@
 require 'formula'
 
 class Mdbtools < Formula
-  homepage 'http://sourceforge.net/projects/mdbtools/'
-  # Last stable release won't build on OS X, but HEAD from CVS does.
-  head "cvs://:pserver:anonymous@mdbtools.cvs.sourceforge.net:/cvsroot/mdbtools:mdbtools"
+  homepage 'https://github.com/brianb/mdbtools/'
+  url "https://github.com/brianb/mdbtools/archive/0.7.1.tar.gz"
+  sha1 '33b746f29c1308909a1e82546ec24e8f835d461a'
+
+  option 'with-man-pages', 'Build manual pages'
 
   depends_on 'pkg-config' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on 'txt2man' => :build if build.with? "man-pages"
   depends_on 'glib'
-  depends_on 'gawk' => :optional # To generate docs
+  depends_on 'readline'
 
   def install
-    inreplace 'autogen.sh', 'libtool', 'glibtool'
+    ENV.deparallelize
 
-    system "NOCONFIGURE='yes' ACLOCAL_FLAGS='-I#{HOMEBREW_PREFIX}/share/aclocal' ./autogen.sh"
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    args = ["--prefix=#{prefix}"]
+    args << "--disable-man" if build.without? "man-pages"
+
+    if MacOS.version == :snow_leopard
+      mkdir "build-aux"
+      touch "build-aux/config.rpath"
+    end
+
+    system "autoreconf", "-i", "-f"
+    system "./configure", *args
     system "make install"
   end
 end

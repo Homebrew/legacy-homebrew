@@ -1,12 +1,17 @@
 require 'formula'
 
 class T1utils < Formula
-  url 'http://www.lcdf.org/~eddietwo/type/t1utils-1.35.tar.gz'
-  homepage 'http://www.lcdf.org/~eddietwo/type/'
-  md5 '20e4cd3ffe81f01eff02a5e2320d95b7'
+  homepage 'http://www.lcdf.org/type/'
+  url 'http://www.lcdf.org/type/t1utils-1.38.tar.gz'
+  sha1 'a97ba119a2e376db49d9d4911472c0033e2fece8'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/t1mac", "--version"
   end
 end

@@ -1,83 +1,100 @@
-require 'formula'
-
 class CouchdbLucene < Formula
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.6.0'
-  homepage 'https://github.com/rnewson/couchdb-lucene'
-  md5 'b55610d4c054987a5c69183585a31d8b'
+  homepage "https://github.com/rnewson/couchdb-lucene"
+  url "https://github.com/rnewson/couchdb-lucene/archive/v1.0.2.tar.gz"
+  sha1 "75e0c55a87f47903c6cd122286ea3e4568809f7e"
 
-  depends_on 'couchdb'
-  depends_on 'maven'
+  bottle do
+    sha1 "6df93e1cf958760cd4d822822728693092d2289f" => :yosemite
+    sha1 "ae4d677f930935654b3cc727650c4c21dffbc501" => :mavericks
+    sha1 "2248e7029a5a565e151c52f67cc2bfeae12e2bdd" => :mountain_lion
+  end
+
+  depends_on "couchdb"
+  depends_on "maven" => :build
+  depends_on :java
 
   def install
-    # Skipping tests because the integration test assumes that couchdb-lucene
-    # has been integrated with a local couchdb instance. Not sure if there's a
-    # way to only disable the integration test.
-    system "mvn", "-DskipTests=true"
+    system "mvn"
+    system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz", "--strip", "1"
 
-    system "tar -xzf target/couchdb-lucene-#{version}-dist.tar.gz"
-    system "mv couchdb-lucene-#{version}/* #{prefix}"
+    prefix.install_metafiles
+    rm_rf Dir["bin/*.bat"]
+    libexec.install Dir["*"]
 
-    (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
-    (prefix + "couchdb-lucene.plist").write plist_file
+    Dir.glob("#{libexec}/bin/*") do |path|
+      bin_name = File.basename(path)
+      cmd = "cl_#{bin_name}"
+      (bin/cmd).write shim_script(bin_name)
+      (libexec/"clbin").install_symlink bin/cmd => bin_name
+    end
+
+    ini_path.write(ini_file) unless ini_path.exist?
   end
 
-  def caveats; <<-EOS
-You can enable couchdb-lucene to automatically load on login with:
-
-  mkdir -p ~/Library/LaunchAgents
-  cp "#{prefix}/couchdb-lucene.plist" ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/couchdb-lucene.plist
-
-Or start it manually with:
-  #{bin}/run
-EOS
+  def shim_script(target); <<-EOS.undent
+    #!/bin/bash
+    export CL_BASEDIR=#{libexec}/bin
+    exec "$CL_BASEDIR/#{target}" "$@"
+    EOS
   end
 
-  def ini_file
-    return <<-EOS
-[couchdb]
-os_process_timeout=60000 ; increase the timeout from 5 seconds.
-
-[external]
-fti=#{`which python`.chomp} #{prefix}/tools/couchdb-external-hook.py
-
-[httpd_db_handlers]
-_fti = {couch_httpd_external, handle_external_req, <<"fti">>}
-EOS
+  def ini_path
+    etc/"couchdb/local.d/couchdb-lucene.ini"
   end
 
-  def plist_file
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>couchdb-lucene</string>
-    <key>EnvironmentVariables</key>
-    <dict>
-      <key>HOME</key>
-      <string>~</string>
-      <key>DYLD_LIBRARY_PATH</key>
-      <string>/opt/local/lib:$DYLD_LIBRARY_PATH</string>
-    </dict>
-    <key>ProgramArguments</key>
-    <array>
-      <string>#{bin}/run</string>
-    </array>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>StandardOutPath</key>
-    <string>/dev/null</string>
-    <key>StandardErrorPath</key>
-    <string>/dev/null</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <true/>
-  </dict>
-</plist>
-EOS
+  def ini_file; <<-EOS.undent
+    [httpd_global_handlers]
+    _fti = {couch_httpd_proxy, handle_proxy_req, <<"http://127.0.0.1:5985">>}
+    EOS
+  end
+
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/couchdb-lucene/bin/cl_run"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+      "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>EnvironmentVariables</key>
+        <dict>
+          <key>HOME</key>
+          <string>~</string>
+        </dict>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/cl_run</string>
+        </array>
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+      </dict>
+    </plist>
+    EOS
+  end
+
+  def caveats; <<-EOS.undent
+    All commands have been installed with the prefix 'cl_'.
+
+    If you really need to use these commands with their normal names, you
+    can add a "clbin" directory to your PATH from your bashrc like:
+
+        PATH="#{opt_libexec}/clbin:$PATH"
+    EOS
+  end
+
+  test do
+    io = IO.popen("#{bin}/cl_run")
+    sleep 2
+    Process.kill("SIGINT", io.pid)
+    Process.wait(io.pid)
+    io.read !~ /Exception/
   end
 end

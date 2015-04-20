@@ -1,25 +1,16 @@
 require 'formula'
 
 class PgTop < Formula
-  url 'http://pgfoundry.org/frs/download.php/1781/pg_top-3.6.2.tar.gz'
   homepage 'http://ptop.projects.postgresql.org/'
-  md5 '12ddb50cf83e3027d182a1381d388f1d'
+  url 'http://pgfoundry.org/frs/download.php/3504/pg_top-3.7.0.tar.bz2'
+  sha1 '377518d95d65011b984d23fd87fb3cc91aaa1afd'
+
+  depends_on :postgresql
 
   def install
-    unless `/usr/bin/which pg_config`.size > 0
-      opoo "No pg_config was detected."
-      puts <<-EOS.undent
-        pg_top requires postgresql in order to compile, but pg_config was not
-        found. This install will likely fail.
-
-        You can install this with:
-          brew install postgresql
-        or by using a package installer from the PostgreSQL project itself.
-      EOS
-    end
-
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "echo '#define HAVE_DECL_STRLCPY 1' >> config.h" if MacOS.version >= :mavericks
     system "make install"
   end
 end

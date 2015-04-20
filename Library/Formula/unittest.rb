@@ -1,14 +1,15 @@
-require 'formula'
-
 class Unittest < Formula
-  url 'http://unittest.red-bean.com/tar/unittest-0.50-62.tar.gz'
-  homepage 'http://unittest.red-bean.com/'
-  md5 'e77615162141b23a78adcda929d58d61'
+  homepage "http://unittest.red-bean.com/"
+  url "http://unittest.red-bean.com/tar/unittest-0.50-62.tar.gz"
+  sha1 "c9012061963ac1330c6c6efc8cdbbb79360757fe"
 
-  fails_with_llvm
+  fails_with :llvm do
+    build 2334
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

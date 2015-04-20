@@ -1,22 +1,34 @@
-require 'formula'
+require "formula"
 
 class SoundTouch < Formula
-  url 'http://www.surina.net/soundtouch/soundtouch-1.5.0.tar.gz'
-  homepage 'http://www.surina.net/soundtouch/'
-  md5 '5456481d8707d2a2c27466ea64a099cb'
+  homepage "http://www.surina.net/soundtouch/"
+  url "http://www.surina.net/soundtouch/soundtouch-1.8.0.tar.gz"
+  sha256 "3d4161d74ca25c5a98c69dbb8ea10fd2be409ba1a3a0bf81db407c4c261f166b"
+
+  bottle do
+    cellar :any
+    sha1 "ba626eb84b2e8e82b4e2b608534f13800da00994" => :mavericks
+    sha1 "9dbb7296e5b8ea20790d97ee43967614dba9b584" => :mountain_lion
+    sha1 "728d89303b4cd85cd95f1ad625007d164c1f64bb" => :lion
+  end
+
+  option "with-integer-samples", "Build using integer samples? (default is float)"
+  option :universal
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
-    # SoundTouch has a small amount of inline assembly. The assembly has two labeled
-    # jumps. When compiling with gcc optimizations the inline assembly is duplicated
-    # and the symbol label occurs twice causing the build to fail.
-    ENV.no_optimization
-    # 64bit causes soundstretch to segfault when ever it is run.
-    ENV.m32
+    system "/bin/sh", "bootstrap"
+    args = ["--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--prefix=#{prefix}"]
+    args << "--enable-integer-samples" if build.with? "integer-samples"
 
-    # The build fails complaining about out of date libtools. Rerunning the autoconf prevents the error.
-    system "autoconf"
+    ENV.universal_binary if build.universal?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "./configure",*args
+    system "make", "install"
   end
 end

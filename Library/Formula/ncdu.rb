@@ -1,15 +1,21 @@
 require 'formula'
 
 class Ncdu < Formula
-  url 'http://dev.yorhel.nl/download/ncdu-1.6.tar.gz'
   homepage 'http://dev.yorhel.nl/ncdu'
-  md5 '95d29cf64af2d8cf4b5005e6e3d60384'
+  url 'http://dev.yorhel.nl/download/ncdu-1.10.tar.gz'
+  sha1 'cf3b5fbb5b69cbae5425bfff2660ac3d8224a605'
+
+  head do
+    url 'git://g.blicky.net/ncdu.git'
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
 
   def install
-    # ncdu segfaults when built for 64-bit
-    ENV.m32
-
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "autoreconf", "-i" if build.head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

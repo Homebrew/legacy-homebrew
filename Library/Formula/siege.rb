@@ -1,18 +1,26 @@
 require 'formula'
 
 class Siege < Formula
-  url "http://www.joedog.org/pub/siege/siege-2.70.tar.gz"
   homepage 'http://www.joedog.org/index/siege-home'
-  sha1 'ee0a0c3a9e6559cf8cbaf717649f6684b0d9643a'
+  url 'http://download.joedog.org/siege/siege-3.0.9.tar.gz'
+  sha256 '82376eb466414ef4872a979a372972658df9813778ee8572341d4736ed30cb8f'
+
+  depends_on 'openssl'
+
+  bottle do
+    sha1 "8fc40ce186470abb7b79dcae5bf0f79de19aa95a" => :yosemite
+    sha1 "b4db408f279d8b22f6c0aa74577a8204d5f60678" => :mavericks
+    sha1 "9d6ec76bee4bf1b145b62b5b166ffbfed5112182" => :mountain_lion
+  end
 
   def install
     # To avoid unnecessary warning due to hardcoded path, create the folder first
     (prefix+'etc').mkdir
-    system  "./configure",
-            "--prefix=#{prefix}",
-            "--mandir=#{man}",
-            "--localstatedir=#{var}",
-            "--with-ssl"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--localstatedir=#{var}",
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}"
     system "make install"
   end
 
@@ -32,5 +40,8 @@ class Siege < Formula
     Run siege.config to create the ~/.siegerc config file.
     EOS
   end
-end
 
+  test do
+    system "#{bin}/siege", "--concurrent=1", "--reps=1", "https://www.google.com/"
+  end
+end

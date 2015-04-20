@@ -1,38 +1,23 @@
-require 'formula'
-
 class Hbase < Formula
-  url 'http://www.takeyellow.com/apachemirror//hbase/hbase-0.90.3/hbase-0.90.3.tar.gz'
-  homepage 'http://hbase.apache.org'
-  md5 '834aa50df08886515939ad6af0a55885'
+  homepage "https://hbase.apache.org"
+  url "https://www.apache.org/dyn/closer.cgi?path=hbase/hbase-1.0.0/hbase-1.0.0-bin.tar.gz"
+  sha1 "d6886d6c7975ecf312eab745c3642c61f1e753db"
 
-  depends_on 'hadoop'
-
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      exec #{libexec}/bin/#{target} $@
-    EOS
-  end
+  depends_on :java => "1.6+"
+  depends_on "hadoop"
 
   def install
-    rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/*.cmd", "conf/*.cmd"]
     libexec.install %w[bin conf docs lib hbase-webapps]
-    libexec.install Dir['*.jar']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
 
     inreplace "#{libexec}/conf/hbase-env.sh",
       "# export JAVA_HOME=/usr/java/jdk1.6.0/",
-      "export JAVA_HOME=$(/usr/libexec/java_home)"
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 
   def caveats; <<-EOS.undent
-    Requires Java 1.6.0 or greater.
-
-    You must also edit the configs in:
+    You must edit the configs in:
       #{libexec}/conf
     to reflect your environment.
 

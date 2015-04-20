@@ -1,27 +1,29 @@
-require 'formula'
+require "formula"
 
 class Omega < Formula
-  url 'http://www.alcyone.com/binaries/omega/omega-0.80.2-src.tar.gz'
-  homepage 'http://www.alcyone.com/max/projects/omega/'
-  md5 '6d65ec9e0cc87ccf89ab491533ec4b77'
+  homepage "http://xapian.org"
+  url "http://oligarchy.co.uk/xapian/1.2.18/xapian-omega-1.2.18.tar.xz"
+  sha1 "9b0060c639ebb53e9b2dd6928019e06d0fd24ced"
+
+  bottle do
+    sha1 "afdc13cb8c4a768df40606f12943ef56a314e3d3" => :mavericks
+    sha1 "7ea1a55103d2367a4d033508336274e0181a64bd" => :mountain_lion
+    sha1 "55217805d501af8d6bfac7db3a65e3b403d4c0b6" => :lion
+  end
+
+  depends_on "pcre"
+  depends_on "xapian"
 
   def install
-    # Set up our target folders
-    inreplace "defs.h", "#define OMEGALIB \"./omegalib/\"", "#define OMEGALIB \"#{libexec}/\""
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
+  end
 
-    # Don't alias CC; also, don't need that ncurses include path
-    # Set the system type in CFLAGS, not in makefile
-    # Remove an obsolete flag
-    inreplace "Makefile" do |s|
-      s.remove_make_var! ['CC', 'CFLAGS', 'LDFLAGS']
-    end
-
-    ENV.append_to_cflags "-DUNIX -DSYSV"
-
-    system "make"
-
-    # 'make install' is weird, so we do it ourselves
-    bin.install "omega"
-    libexec.install Dir['omegalib/*']
+  test do
+    system "#{bin}/omindex", "--db", "./test", "--url", "/", "#{share}/doc/xapian-omega"
+    assert File.exist?("./test/flintlock")
   end
 end

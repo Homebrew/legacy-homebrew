@@ -1,20 +1,29 @@
-require 'formula'
+require "formula"
 
 class Odt2txt < Formula
-  # Retrieve the HEAD because no releases have been made since the commit that
-  # includes Makefile rules for Mac OS X.
-  head 'git://repo.or.cz/odt2txt.git'
-  homepage 'http://stosberg.net/odt2txt/'
+  homepage "https://github.com/dstosberg/odt2txt/"
+  url "https://github.com/dstosberg/odt2txt/archive/v0.5.tar.gz"
+  sha1 "deac1995f02d3b907843dd99a975b201a5f55177"
+
+  bottle do
+    cellar :any
+    sha1 "21e4d5f82d941a5ba13f191b6c4011aa456b5c7e" => :yosemite
+    sha1 "0bc3eb54110df5ba74f18f0b89dfe6819e7e3b75" => :mavericks
+    sha1 "064b2423089db500bf5d850f97b95e32bc947cab" => :mountain_lion
+  end
 
   def install
-    inreplace "Makefile" do |s|
-      # Don't add /opt on OS X
-      s.gsub! "CFLAGS += -I/opt/local/include", ""
-      s.gsub! "LDFLAGS += -L/opt/local/lib", ""
-    end
+    system "make", "install"
+  end
 
-    # Uses a custom makefile instead of autoconf; we set DESTDIR to the prefix value
-    # Use the -B flag to force make the install target to circumvent bugs in the Makefile
-    system "make", "-B", "DESTDIR=#{prefix}", "install"
+  resource "sample" do
+    url "https://github.com/Turbo87/odt2txt/raw/samples/samples/sample-1.odt"
+    sha1 "0f29df4fd772c407d7d7b105281cd926f0204b17"
+  end
+
+  test do
+    resource("sample").stage do |r|
+      system "odt2txt", r.cached_download
+    end
   end
 end

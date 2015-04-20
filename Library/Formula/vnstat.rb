@@ -1,49 +1,85 @@
 require 'formula'
 
 class Vnstat < Formula
-  url 'http://humdi.net/vnstat/vnstat-1.10.tar.gz'
   homepage 'http://humdi.net/vnstat/'
-  md5 '95421d968689130590348ceb80ff74a8'
+  url 'http://humdi.net/vnstat/vnstat-1.13.tar.gz'
+  sha256 '6f4e2599ebb195b25f499d3e2e865aa14da336dfc9cc03a79181aa71f7ed99cd'
+
+  depends_on 'gd'
 
   def install
-    inreplace ["src/cfg.c", "man/vnstat.1", "man/vnstatd.1", "man/vnstat.conf.5"] do |s|
-      s.gsub!('/etc/vnstat.conf',    "#{etc}/vnstat.conf")
-      s.gsub!('/var/lib/vnstat',     "#{var}/db/vnstat")
-      s.gsub!('/var/log/vnstat.log', "#{var}/log/vnstat.log")
-      s.gsub!('/var/run/vnstat.pid', "#{var}/run/vnstat.pid")
+    inreplace "src/cfg.c", '/etc/vnstat.conf', "#{etc}/vnstat.conf"
+
+    inreplace "man/vnstat.1" do |s|
+      s.gsub! '/etc/vnstat.conf', "#{etc}/vnstat.conf"
+      s.gsub! '/var/lib/vnstat', "#{var}/db/vnstat"
     end
 
-    inreplace "src/Makefile" do |s|
-      s.change_make_var! "CFLAGS", ENV.cflags
-      s.change_make_var! "CC", ENV.cc
+    inreplace "man/vnstatd.1" do |s|
+      s.gsub! '/etc/vnstat.conf', "#{etc}/vnstat.conf"
+      s.gsub! '/var/lib/vnstat', "#{var}/db/vnstat"
+      s.gsub! '/var/log/vnstat.log', "#{var}/log/vnstat/vnstat.log"
+      s.gsub! '/var/run/vnstat.pid', "#{var}/run/vnstat/vnstat.pid"
     end
+
+    inreplace "man/vnstati.1" do |s|
+      s.gsub! '/etc/vnstat.conf', "#{etc}/vnstat.conf"
+      s.gsub! '/var/lib/vnstat', "#{var}/db/vnstat"
+    end
+
+    inreplace "man/vnstat.conf.5", '/etc/vnstat.conf', "#{etc}/vnstat.conf"
 
     inreplace "cfg/vnstat.conf" do |c|
-      c.gsub!('DatabaseDir "/var/lib/vnstat"', %Q{DatabaseDir "#{var}/db/vnstat"})
-      c.gsub!('LogFile "/var/log/vnstat.log"', %Q{LogFile "#{var}/log/vnstat.log"})
-      c.gsub!('PidFile "/var/run/vnstat.pid"', %Q{PidFile "#{var}/run/vnstat.pid"})
+      c.gsub! 'Interface "eth0"', %Q{Interface "en0"}
+      c.gsub! 'DatabaseDir "/var/lib/vnstat"', %Q{DatabaseDir "#{var}/db/vnstat"}
+      c.gsub! 'LogFile "/var/log/vnstat/vnstat.log"', %Q{LogFile "#{var}/log/vnstat/vnstat.log"}
+      c.gsub! 'PidFile "/var/run/vnstat/vnstat.pid"', %Q{PidFile "#{var}/run/vnstat/vnstat.pid"}
     end
 
-    (var + 'db/vnstat').mkpath
-    (var + 'spool/vnstat').mkpath
+    (var+'db/vnstat').mkpath
 
-    system "make -C src"
-    (prefix + 'etc').install "cfg/vnstat.conf"
-    bin.install "src/vnstat"
-    bin.install "src/vnstatd"
-    man1.install "man/vnstat.1"
-    man1.install "man/vnstatd.1"
+    system "make", "all", "-C", "src", "CFLAGS=#{ENV.cflags}", "CC=#{ENV.cc}"
+    (prefix+'etc').install "cfg/vnstat.conf"
+    bin.install "src/vnstat", "src/vnstatd", "src/vnstati"
+    man1.install "man/vnstat.1", "man/vnstatd.1", "man/vnstati.1"
     man5.install "man/vnstat.conf.5"
   end
 
-  def caveats; <<-MSG
-    To setup vnstat, run `vnstat -u -i en0' (replace en0 with the network
-    interface you wish to monitor).
+  plist_options :startup => true
 
-    You must then create a cron job to update the vnstat database.
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/vnstatd</string>
+          <string>--nodaemon</string>
+          <string>--config</string>
+          <string>#{etc}/vnstat.conf</string>
+        </array>
+        <key>KeepAlive</key>
+        <true/>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>GroupName</key>
+        <string>staff</string>
+        <key>WorkingDirectory</key>
+        <string>#{var}</string>
+        <key>ProcessType</key>
+        <string>Background</string>
+      </dict>
+    </plist>
+    EOS
+  end
 
-    Run `crontab -e', and add the following:
-    0-55/5 * * * * if [ -x #{bin}/vnstat ] && [ `ls #{var}/db/vnstat/ | wc -l` -ge 1 ]; then #{bin}/vnstat -u; fi
-    MSG
+  def caveats; <<-EOS.undent
+    To monitor interfaces other than "en0" edit #{etc}/vnstat.conf
+    EOS
   end
 end

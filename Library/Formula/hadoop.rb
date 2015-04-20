@@ -1,37 +1,41 @@
-require 'formula'
-
 class Hadoop < Formula
-  url 'http://www.gtlib.gatech.edu/pub/apache/hadoop/core/hadoop-0.21.0/hadoop-0.21.0.tar.gz'
-  homepage 'http://hadoop.apache.org/common/'
-  md5 'ec0f791f866f82a7f2c1319a54f4db97'
+  homepage "https://hadoop.apache.org/"
+  url "http://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz"
+  mirror "https://archive.apache.org/dist/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz"
+  sha1 "5b5fb72445d2e964acaa62c60307168c009d57c5"
 
-  def shim_script target
-    <<-EOS.undent
-    #!/bin/bash
-    exec #{libexec}/bin/#{target} $@
-    EOS
-  end
+  depends_on :java
 
   def install
-    rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf lib webapps mapred]
-    libexec.install Dir['*.jar']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    rm_f Dir["bin/*.cmd", "sbin/*.cmd", "libexec/*.cmd", "etc/hadoop/*.cmd"]
+    libexec.install %w[bin sbin libexec share etc]
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
+    sbin.write_exec_script Dir["#{libexec}/sbin/*"]
+    # But don't make rcc visible, it conflicts with Qt
+    (bin/"rcc").unlink
 
-    inreplace "#{libexec}/conf/hadoop-env.sh",
-      "# export JAVA_HOME=/usr/lib/j2sdk1.6-sun",
-      "export JAVA_HOME=$(/usr/libexec/java_home)"
+    inreplace "#{libexec}/etc/hadoop/hadoop-env.sh",
+      "export JAVA_HOME=${JAVA_HOME}",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+    inreplace "#{libexec}/etc/hadoop/yarn-env.sh",
+      "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+    inreplace "#{libexec}/etc/hadoop/mapred-env.sh",
+      "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 
   def caveats; <<-EOS.undent
     In Hadoop's config file:
-      #{libexec}/conf/hadoop-env.sh
+      #{libexec}/etc/hadoop/hadoop-env.sh,
+      #{libexec}/etc/hadoop/mapred-env.sh and
+      #{libexec}/etc/hadoop/yarn-env.sh
     $JAVA_HOME has been set to be the output of:
       /usr/libexec/java_home
     EOS
+  end
+
+  test do
+    system bin/"hadoop", "fs", "-ls"
   end
 end

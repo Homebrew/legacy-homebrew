@@ -2,38 +2,37 @@ require 'formula'
 
 class Mad < Formula
   homepage 'http://www.underbit.com/products/mad/'
-  url 'http://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz'
-  md5 '1be543bc30c56fb6bea1d7bf6a64e66c'
+  url 'https://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz'
+  sha1 'cac19cd00e1a907f3150cc040ccc077783496d76'
 
-  def mad_pc
-    return <<-EOS
-prefix=#{HOMEBREW_PREFIX}
-exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
-includedir=${prefix}/include
-
-Name: mad
-Description: MPEG Audio Decoder
-Version: #{@version}
-Requires:
-Conflicts:
-Libs: -L${libdir} -lmad -lm
-Cflags: -I${includedir}
-    EOS
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "ec696978cd2bbd43ed11b6b1d3b78156d2b97c71" => :yosemite
+    sha1 "b8ea86acc3a5aab051e7df3d6e1b00ac1acac346" => :mavericks
+    sha1 "7164d878d4467cda6bbed49fd46129a4ae3169ec" => :mountain_lion
   end
 
   def install
     fpm = MacOS.prefer_64_bit? ? '64bit': 'intel'
     system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
+    system "make", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", "install"
+    (lib+'pkgconfig/mad.pc').write pc_file
+  end
 
-    # See: https://github.com/mxcl/homebrew/issues/issue/1263
-    inreplace "Makefile" do |s|
-      s.change_make_var! "CFLAGS", ENV.cflags
-      s.change_make_var! "LDFLAGS", ENV.ldflags
-    end
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include
 
-    system "make install"
-
-    (lib+'pkgconfig/mad.pc').write mad_pc
+    Name: mad
+    Description: MPEG Audio Decoder
+    Version: #{version}
+    Requires:
+    Conflicts:
+    Libs: -L${libdir} -lmad -lm
+    Cflags: -I${includedir}
+    EOS
   end
 end

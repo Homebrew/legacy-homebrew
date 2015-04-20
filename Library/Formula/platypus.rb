@@ -1,38 +1,51 @@
-require 'formula'
-
 class Platypus < Formula
-  url 'http://www.sveinbjorn.org/files/software/platypus.src.zip'
-  version '4.4'
-  homepage 'http://www.sveinbjorn.org/platypus'
-  md5 'e6fe23f7037a873394b70bcc62843940'
+  homepage "http://sveinbjorn.org/platypus"
+  url "https://github.com/sveinbjornt/Platypus/raw/master/Releases/platypus4.9.src.zip"
+  version "4.9"
+  sha256 "11b32fc5c68b4e73abeeabd22e1547c2c9b53bafe86cf04474c1f78863d2c1ae"
+  head "https://github.com/sveinbjornt/Platypus.git"
+
+  bottle do
+    cellar :any
+    sha256 "398efe2d6afe358e13dc881be58ae8e27c73bd1538ca954e7067c055d25adf75" => :yosemite
+    sha256 "99a07275ad62b9d26bf2e31ce5f4e0d9e35525a18c1414ef7d655c11a92510f9" => :mavericks
+    sha256 "d33acad77bacbbec3c602541b3e0410576efda95679760314b7e5ba737154871" => :mountain_lion
+  end
+
+  depends_on :xcode => :build
 
   def install
-    # Fix paths
-    inreplace ["CommonDefs.h", "CommandLineTool/platypus.1"] do |s|
-      s.gsub! "/usr/local", prefix
+    # 4.9 stable tarball has unexpected unpacked name, so go to the right
+    # place.
+    cd "platypus" if build.stable?
+
+    xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
+               "-project", "Platypus.xcodeproj",
+               "-target", "platypus",
+               "-target", "ScriptExec",
+               "clean",
+               "install"
+
+    man1.install "CommandLineTool/platypus.1"
+
+    cd buildpath
+
+    bin.install "platypus_clt" => "platypus"
+
+    cd "ScriptExec.app/Contents" do
+      (share/"platypus").install "Resources/MainMenu.nib", "MacOS/ScriptExec"
     end
 
-    # Build main command-line binary, we don't care about the App
-    system "xcodebuild", "-target", "platypus", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
+  end
 
-    # Build application sub-binary needed by command-line utility
-    system "xcodebuild", "-target", "ScriptExec", "-configuration", "Deployment", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET="
+  test do
+    system "#{bin}/platypus", "-v"
+  end
 
-    # Install binary and man page
-    bin.install "build/Deployment/platypus"
-    Dir.chdir('CommandLineTool') do
-      man1.install "platypus.1"
-    end
-    # Install sub-binary parts to share
-    Dir.chdir('build/Deployment/ScriptExec.app/Contents') do
-      (share + 'platypus').install "MacOS/ScriptExec"
-      (share + 'platypus/MainMenu.nib').install "Resources/English.lproj/MainMenu.nib/keyedobjects.nib"
-    end
-
-    # Install icons to share
-    (share + 'platypus').install 'Icons/PlatypusDefault.icns'
-
-    # Write version info to share
-    (share + 'platypus/Version').write version
+  def caveats
+    <<-EOS.undent
+      This formula only installs the command-line Platypus tool, not the GUI.
+      If you want the GUI, download the app from the project's Web page directly.
+    EOS
   end
 end

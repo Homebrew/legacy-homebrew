@@ -1,25 +1,37 @@
-require 'formula'
-
 class Slrn < Formula
-  url 'ftp://space.mit.edu/pub/davis/slrn/slrn-0.9.9p1.tar.gz'
-  homepage 'http://www.slrn.org/'
-  md5 '6cc8ac6baaff7cc2a8b78f7fbbe3187f'
-  version '0.9.9p1'
+  homepage "http://slrn.sourceforge.net/"
+  url "http://jedsoft.org/releases/slrn/slrn-1.0.2.tar.bz2"
+  sha1 "2a3a305fd887183625b65d3a1316351b5ac3c259"
 
-  depends_on 's-lang'
+  head "git://git.jedsoft.org/git/slrn.git"
+
+  bottle do
+    sha1 "e340d7c49f46ddb2ce83a1fdaf3bf51e6c6e4cc0" => :yosemite
+    sha1 "15707ce07fb09b9220ec56955f16aa9ef8e14760" => :mavericks
+    sha1 "8f308966cc962b23a0f340ad524febbbc94cfd34" => :mountain_lion
+  end
+
+  depends_on "s-lang"
+  depends_on "openssl"
 
   def install
-    slrnpullcache = HOMEBREW_PREFIX+'var'+'spool'+'news'+'slrnpull'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-ssl",
-                          "--with-slrnpull=#{slrnpullcache}",
-                          "--with-slang=#{HOMEBREW_PREFIX}"
-    system "make all slrnpull"
     bin.mkpath
     man1.mkpath
-    slrnpullcache.mkpath
-    ENV.j1 # yep, install is broken
-    system "make install"
+    mkdir_p "#{var}/spool/news/slrnpull"
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}",
+                          "--with-slrnpull=#{var}/spool/news/slrnpull",
+                          "--with-slang=#{HOMEBREW_PREFIX}"
+    system "make", "all", "slrnpull"
+
+    ENV.deparallelize
+    system "make", "install"
+  end
+
+  test do
+    ENV["TERM"] = "xterm"
+    system bin/"slrn", "--show-config"
   end
 end

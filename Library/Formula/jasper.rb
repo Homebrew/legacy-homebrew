@@ -1,24 +1,36 @@
 require 'formula'
 
 class Jasper < Formula
-  url 'http://slackware.sukkology.net/packages/jasper/jasper-1.900.1.zip'
-  homepage 'http://slackware.sukkology.net/packages/jasper/'
-  md5 'a342b2b4495b3e1394e161eb5d85d754'
+  homepage 'http://www.ece.uvic.ca/~frodo/jasper/'
+  url 'http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz'
+  sha1 'bbf30168ceae74d78e28039972657a90799e68d3'
+  version '1.900.1'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "7fd9acebd672cdb1bda21c709d3e59a7ff350a4f" => :yosemite
+    sha1 "4ea4b6abe67ccd2727b33b545de6537d196f8253" => :mavericks
+    sha1 "34fb2f4888da21b43ecb7fd8e190e4b66e42a3a1" => :mountain_lion
+  end
+
+  option :universal
 
   depends_on 'jpeg'
 
-  def options
-    [["--universal", "Build a universal binary."]]
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
   end
 
-  def patches
-    DATA
-  end
-
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  # The following patch fixes a bug (still in upstream as of jasper 1.900.1)
+  # where an assertion fails when Jasper is fed certain JPEG-2000 files with
+  # an alpha channel. See:
+  # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
+  patch :DATA
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--enable-shared",
@@ -28,9 +40,6 @@ class Jasper < Formula
   end
 end
 
-# The following patch fixes a bug (still in upstream as of jasper 1.900.1) where an assertion fails
-# when Jasper is fed certain JPEG-2000 files with an alpha channel.
-# see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
 __END__
 diff --git a/src/libjasper/jpc/jpc_dec.c b/src/libjasper/jpc/jpc_dec.c
 index fa72a0e..1f4845f 100644
