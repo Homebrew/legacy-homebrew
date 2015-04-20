@@ -108,7 +108,12 @@ module FormulaCellarChecks
       return if formula.name == formula_name
     end
 
-    return if MacOS.version < :mavericks && formula.name.start_with?("postgresql")
+    if MacOS.version < :mavericks &&
+      (formula.name.start_with?("postgresql") ||
+       formula.name.start_with?("memcached"))
+      return
+    end
+
     return if formula.keg_only? || !formula.include.directory?
 
     files  = relative_glob(formula.include, "**/*.h")
