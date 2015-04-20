@@ -12,7 +12,7 @@ class Testdisk < Formula
   end
 
   test do
-    path = testpath/"test.dmg"
+    path = testpath/"testdisk.dmg"
     args = %W[
       create
       -megabytes 10
