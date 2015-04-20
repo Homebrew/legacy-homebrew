@@ -177,7 +177,7 @@ module Homebrew
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
             sleep 2
-            safe_system "brew", "fetch", "--force-bottle", f.name
+            safe_system "brew", "fetch", "--retry", "--force-bottle", f.name
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
