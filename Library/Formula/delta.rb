@@ -5,9 +5,10 @@ class Delta < Formula
 
   bottle do
     cellar :any
-    sha256 "1a2d27b054e1f63ec5770a12e0ed86236a16e9920f4c1765e44cf73967a64fa9" => :yosemite
-    sha256 "5c0280a5fc93da0867237ca066e8fa14f8162af9aaf75a8dbd5a1cfc5df48f9c" => :mavericks
-    sha256 "f3a5161d75202d42fe446ea7f1bdde25d5a55a6ca48e0ff1500c07f55b67e978" => :mountain_lion
+    revision 1
+    sha256 "4c0625348a44ebe374ee26db8f5b24a5d9c9b4c70eee6cd8d45652d23f04fb75" => :yosemite
+    sha256 "e931923ffc0b5ca84658eab38b9f9cc6103b174990e64f18eb7e0a3a197b1520" => :mavericks
+    sha256 "90feeda114fe780cded88ba04ad3c16a5e09d5d94b07f1531c4a1768c3000f37" => :mountain_lion
   end
 
   def install
