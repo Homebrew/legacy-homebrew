@@ -2,8 +2,8 @@ require 'formula'
 
 class Serd < Formula
   homepage 'http://drobilla.net/software/serd/'
-  url 'http://download.drobilla.net/serd-0.18.2.tar.bz2'
-  sha1 '9472be8d6f407affca5c8fa3125a5fbe49af967e'
+  url 'http://download.drobilla.net/serd-0.20.0.tar.bz2'
+  sha1 '38c0c8600270e38d99bc87b0ceb14b25c4c0cea3'
 
   bottle do
     cellar :any
