@@ -5,6 +5,10 @@ class Libgaiagraphics < Formula
   revision 1
 
   bottle do
+    cellar :any
+    sha256 "bf888c8840d68b96d7c1b50222d0bf042768373aeecfacbe210bcf84dd7afa63" => :yosemite
+    sha256 "bdd0a108eafc3642846f8e787129f8fea587000fd586c5caa4da61318e55d7aa" => :mavericks
+    sha256 "04b0752f86b0f96503e266bdc64f66fc5aaabcd7d79400f1f88a9c71b811d78e" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
