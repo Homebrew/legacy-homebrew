@@ -15,7 +15,7 @@ module Homebrew
     elsif ARGV.include? '--debian'
       exec_browser "https://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.include? '--opensuse'
-      exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
+      exec_browser "https://software.opensuse.org/search?q=#{ARGV.next}"
     elsif ARGV.include? '--fedora'
       exec_browser "https://admin.fedoraproject.org/pkgdb/packages/%2A#{ARGV.next}%2A/"
     elsif ARGV.include? '--ubuntu'
@@ -85,6 +85,7 @@ module Homebrew
     %w{Homebrew binary},
     %w{Homebrew python},
     %w{Homebrew php},
+    %w{Homebrew tex},
     %w{Homebrew x11},
     %w{Caskroom cask},
   ]
