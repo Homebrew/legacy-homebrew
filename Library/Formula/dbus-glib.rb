@@ -4,9 +4,9 @@ class DbusGlib < Formula
   sha256 "bfc1f1a82bfc3ec3ecafe04d0e87bab7e999f50dce4f4a34d0b89caf6bd821f6"
 
   bottle do
-    revision 1
-    sha1 "51b2423a45fd72b5476a2b3c7f8c7d3716c38976" => :yosemite
-    sha1 "a3ed176614007538b3fd7e788e0a72e4710b3762" => :mavericks
+    sha256 "b32228702ab3d7e4b518dbe0481c631f0ad89377804ce46bdb96f952fc2489f8" => :yosemite
+    sha256 "fe8132af05fb6bcc70679c4b82406fc727fd2e6272e9b57d1d91592c4415f1c8" => :mavericks
+    sha256 "75eade40f2f89acf2b93a17e7492dad4a2a63f5375ec28446628bdd9ac4647f8" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
