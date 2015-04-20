@@ -1,16 +1,10 @@
-require 'formula'
-
 class SpatialiteTools < Formula
   homepage 'https://www.gaia-gis.it/fossil/spatialite-tools/index'
   url "http://www.gaia-gis.it/gaia-sins/spatialite-tools-4.2.0.tar.gz"
   sha1 "de07042afa734b17c840318fa8772466f53f1831"
+  revision 1
 
   bottle do
-    cellar :any
-    revision 3
-    sha1 "4598206e95a93f76ec379b928e539ab037db3927" => :yosemite
-    sha1 "67d0c0113b0723b3cab1e893ac57668f75d7ad7c" => :mavericks
-    sha1 "ad61069c865b7c11fa04b0fcbcf105a3f95edacd" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build
