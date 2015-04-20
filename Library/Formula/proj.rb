@@ -2,8 +2,8 @@ require 'formula'
 
 class Proj < Formula
   homepage 'http://trac.osgeo.org/proj/'
-  url 'http://download.osgeo.org/proj/proj-4.8.0.tar.gz'
-  sha1 '5c8d6769a791c390c873fef92134bf20bb20e82a'
+  url 'http://download.osgeo.org/proj/proj-4.9.1.tar.gz'
+  sha1 '0bc63a41f1bdcff600d076c056f796007abf3f2f'
   head "http://svn.osgeo.org/metacrs/proj/trunk/proj/"
 
   option "with-vdatum", "Install vertical datum files (~380 MB)"
@@ -85,5 +85,8 @@ class Proj < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+  test do
+    assert_match "103.69\t" "205.85\n", pipe_output("proj +proj=tmerc +ellps=WGS84 +units=km +lon_0=-121.15 +lat_0=34.15", "-120 36", 0)
   end
 end
