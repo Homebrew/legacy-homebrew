@@ -71,6 +71,13 @@ class GPGDependency < Requirement
   satisfy { which("gpg") || which("gpg2") }
 end
 
+class NodeDependency < Requirement
+  fatal true
+  default_formula "node"
+
+  satisfy { which "node" }
+end
+
 class TeXDependency < Requirement
   fatal true
   cask "mactex"

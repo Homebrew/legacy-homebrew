@@ -117,6 +117,7 @@ class DependencyCollector
     when :python3    then Python3Dependency.new(tags)
     when :java       then JavaDependency.new(tags)
     when :osxfuse    then OsxfuseDependency.new(tags)
+    when :node       then NodeDependency.new(tags)
     when :tuntap     then TuntapDependency.new(tags)
     when :ant        then ant_dep(spec, tags)
     when :apr        then AprDependency.new(tags)

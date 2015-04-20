@@ -1,7 +1,20 @@
 class Emscripten < Formula
   homepage "https://kripken.github.io/emscripten-site/"
-  url "https://github.com/kripken/emscripten/archive/1.31.0.tar.gz"
-  sha256 "d566f743923008ad11768941f51b2079ba4019b0b41c5b3e53c1a655d4f4e5a7"
+
+  stable do
+    url "https://github.com/kripken/emscripten/archive/1.31.0.tar.gz"
+    sha256 "d566f743923008ad11768941f51b2079ba4019b0b41c5b3e53c1a655d4f4e5a7"
+
+    resource "fastcomp" do
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.31.0.tar.gz"
+      sha256 "750de063df3badb04e81bd56a2166ebcf6dfdd4380f59ff9409b4ca37de4b0ab"
+    end
+
+    resource "fastcomp-clang" do
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.31.0.tar.gz"
+      sha256 "cc2fbaf53e1fe2a00bb5b06f0f75bd8b9a14a86774f76e8a3c69544f732fcacf"
+    end
+  end
 
   bottle do
     sha256 "e152e4c9ae71b8578c094b80cbd030949445a273352ad3d5edd7242d08bf9182" => :yosemite
@@ -21,22 +34,10 @@ class Emscripten < Formula
     end
   end
 
-  stable do
-    resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.31.0.tar.gz"
-      sha256 "750de063df3badb04e81bd56a2166ebcf6dfdd4380f59ff9409b4ca37de4b0ab"
-    end
-
-    resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.31.0.tar.gz"
-      sha256 "cc2fbaf53e1fe2a00bb5b06f0f75bd8b9a14a86774f76e8a3c69544f732fcacf"
-    end
-  end
-
   needs :cxx11
 
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on "node"
+  depends_on :node
   depends_on "closure-compiler" => :optional
   depends_on "yuicompressor"
 

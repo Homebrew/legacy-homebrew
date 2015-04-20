@@ -4,7 +4,7 @@ class Keybase < Formula
   sha256 "ae08423181867d071b23acb3f359b7341532290014eb42775eb7384a7ea757dc"
   head "https://github.com/keybase/node-client.git"
 
-  depends_on "node"
+  depends_on :node
   depends_on :gpg
 
   def install
@@ -18,7 +18,7 @@ class Keybase < Formula
     (bin/"keybase").write <<-EOS.undent
       #!/bin/sh
       export KEYBASE_BIN="#{bin}/keybase"
-      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/bin/main.js" "$@"
+      exec node "#{libexec}/bin/main.js" "$@"
     EOS
   end
 

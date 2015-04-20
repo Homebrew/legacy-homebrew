@@ -1,5 +1,3 @@
-require "formula"
-
 class UniversalNpm < Requirement
   fatal true
   satisfy { which("npm") }
@@ -11,9 +9,9 @@ end
 class Skinny < Formula
   homepage "http://skinny-framework.org/"
   url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.16/skinny-1.3.16.tar.gz"
-  sha1 "b3fbf0e101a2a67c687bfe68b70495a2df386100"
+  sha256 "bc970edfe8c4be3bb7da6a7984698e44011c9ec5a55d41de42efa182f82b526b"
 
-  depends_on "node"
+  depends_on :node
   depends_on UniversalNpm
 
   option "without-npm-generator", "Yeoman generator will not be installed"
