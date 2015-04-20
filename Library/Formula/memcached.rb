@@ -1,7 +1,7 @@
 class Memcached < Formula
   homepage "http://memcached.org/"
-  url "http://www.memcached.org/files/memcached-1.4.20.tar.gz"
-  sha1 "282a1e701eeb3f07159d95318f09da5ea3fcb39d"
+  url "http://www.memcached.org/files/memcached-1.4.22.tar.gz"
+  sha1 "5968d357d504a1f52622f9f8a3e85c29558acaa5"
 
   bottle do
     revision 1
