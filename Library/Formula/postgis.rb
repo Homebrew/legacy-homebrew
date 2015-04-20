@@ -21,6 +21,8 @@ class Postgis < Formula
 
   option "with-gui", "Build shp2pgsql-gui in addition to command line tools"
   option "without-gdal", "Disable postgis raster support"
+  option "with-html-docs", "Generate multi-file HTML documentation"
+  option "with-api-docs", "Generate developer API documentation (long process)"
 
   depends_on "pkg-config" => :build
   depends_on "gpp" => :build
@@ -36,6 +38,16 @@ class Postgis < Formula
 
   # For advanced 2D/3D functions
   depends_on "sfcgal" => :recommended
+
+  if build.with? "html-docs"
+    depends_on "imagemagick"
+    depends_on "docbook-xsl"
+  end
+
+  if build.with? "api-docs"
+    depends_on "graphviz"
+    depends_on "doxygen"
+  end
 
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
@@ -63,9 +75,26 @@ class Postgis < Formula
     args << "--with-gui" if build.with? "gui"
     args << "--without-raster" if build.without? "gdal"
 
+    args << "--with-xsldir=#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl" if build.with? "html-docs"
+
     system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make"
+
+    if build.with? "html-docs"
+      cd "doc" do
+        ENV["XML_CATALOG_FILES"] ="#{HOMEBREW_PREFIX}/etc/xml/catalog"
+        system "make", "chunked-html"
+        doc.install "html"
+      end
+    end
+
+    if build.with? "api-docs"
+      cd "doc" do
+        system "make", "doxygen"
+        doc.install "doxygen/html" => "api"
+      end
+    end
 
     # PostGIS includes the PGXS makefiles and so will install __everything__
     # into the Postgres keg instead of the PostGIS keg. Unfortunately, some
