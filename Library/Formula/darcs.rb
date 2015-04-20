@@ -1,12 +1,11 @@
-require "formula"
 require "language/haskell"
 
 class Darcs < Formula
   include Language::Haskell::Cabal
 
   homepage "http://darcs.net/"
-  url "http://darcs.net/releases/darcs-2.8.5.tar.gz"
-  sha1 "74dd74896d3334696d24fdd783c69459b91d5c7f"
+  url "http://darcs.net/releases/darcs-2.10.0.tar.gz"
+  sha256 "52b3db3f7b64a4306585b96af7b5887f62ba54f6e9c3bdbed9b6a18d97f16b36"
 
   bottle do
     cellar :any
@@ -32,7 +31,7 @@ class Darcs < Formula
     end
     system "darcs", "get", "my_repo", "my_repo_clone"
     Dir.chdir "my_repo_clone" do
-      assert (Pathname.pwd/"foo").read.include?  "hello homebrew!"
+      assert (Pathname.pwd/"foo").read.include? "hello homebrew!"
     end
   end
 end
