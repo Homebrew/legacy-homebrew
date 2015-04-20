@@ -2,8 +2,8 @@ require "formula"
 
 class Lv2 < Formula
   homepage "http://lv2plug.in"
-  url "http://lv2plug.in/spec/lv2-1.10.0.tar.bz2"
-  sha1 "182f8358808719edfcad535ff9c53d3e1dbce3f4"
+  url "http://lv2plug.in/spec/lv2-1.12.0.tar.bz2"
+  sha1 "fc914f00d3230354145748a2a4e55df0a03bcbe2"
 
   bottle do
     cellar :any
