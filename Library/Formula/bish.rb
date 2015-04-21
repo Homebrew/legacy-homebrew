@@ -13,15 +13,15 @@ class Bish < Formula
 
   test do
     (testpath/"test.bish").write <<-EOS.undent
-        def test() {
-            print("OK");
-        }
-        test();
+      def test() {
+        print("OK");
+      }
+      test();
     EOS
     require "open3"
     Open3.popen3("#{bin}/bish", "-r", testpath/"test.bish") do |stdin, stdout, _|
-        stdin.close
-        assert_equal "OK", stdout.read
+      stdin.close
+      assert_equal "OK", stdout.read
     end
   end
 end
