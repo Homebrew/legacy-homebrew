@@ -1,7 +1,7 @@
 class KubernetesCli < Formula
   homepage "http://kubernetes.io/"
-  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.14.1.tar.gz"
-  sha256 "6262c5b56658bee3b025f2ddf3dbbd83b2cec7c126efc119d4a093e9c7428a2d"
+  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.15.0.tar.gz"
+  sha256 "839906d302e7b5ea0fa5e4524f0773326b0e395452e0ff3801fe61e278cb7e42"
 
   bottle do
     cellar :any
