@@ -11,9 +11,9 @@ class Entr < Formula
 
   bottle do
     cellar :any
-    sha256 "542fb9bb0afac1abf0cf0ab2453f2306dae13c16f49acfd4f0b9d0bfbb3d4fdd" => :yosemite
-    sha256 "63067a6f69ff0f08e11051122d90c3aa6e6725546541149015d905b14296812f" => :mavericks
-    sha256 "1e5079627fddee8edb06f74153ad6de06d507032467b8ecfc241c28a943b740e" => :mountain_lion
+    sha256 "abf6264e4dd04966320b6e2ed371e5c101a3c73e71102f988f5f30ab3aa26b9f" => :yosemite
+    sha256 "f2b9660db9526f88691d093b62fcd6c7361c582319fd8609dbd2786f3e1624c0" => :mavericks
+    sha256 "896090571a723c7f513e342967a7623bcf3cc0d70af5eabc473f8425c4037ef3" => :mountain_lion
   end
 
   def install
