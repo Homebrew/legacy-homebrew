@@ -178,7 +178,19 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_factory
-    assert_kind_of Formula, Formulary.factory("tree")
+    name = 'foo-bar'
+    path = HOMEBREW_PREFIX+"Library/Formula/#{name}.rb"
+    path.dirname.mkpath
+    File.open(path, 'w') do |f|
+      f << %{
+        class #{Formulary.class_s(name)} < Formula
+          url 'foo-1.0'
+        end
+      }
+    end
+    assert_kind_of Formula, Formulary.factory(name)
+  ensure
+    path.unlink
   end
 
   def test_class_specs_are_always_initialized
