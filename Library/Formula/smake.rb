@@ -3,7 +3,7 @@ require 'formula'
 class Smake < Formula
   homepage 'http://s-make.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/s-make/smake-1.2.5.tar.bz2'
-  sha256 'b753f4dcaede02f0d85e457b4b91906525586294'
+  sha256 '27566aa731a400c791cd95361cc755288b44ff659fa879933d4ea35d052259d4'
 
   bottle do
     sha1 "30e72ed47a18ce5c90107cc45ac8b603b508169f" => :yosemite
