@@ -3,7 +3,7 @@ require 'formula'
 class Smake < Formula
   homepage 'http://s-make.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/s-make/smake-1.2.5.tar.bz2'
-  sha1 'b753f4dcaede02f0d85e457b4b91906525586294'
+  sha256 'b753f4dcaede02f0d85e457b4b91906525586294'
 
   bottle do
     sha1 "30e72ed47a18ce5c90107cc45ac8b603b508169f" => :yosemite
@@ -26,10 +26,10 @@ class Smake < Formula
   end
 
   test do
-    (testpath/"Makefile").write <<-EOS.undent
-    testfile:
-      touch $@
-    EOS
+    (testpath/"Makefile").write <<-EOS
+testfile:
+  touch $@
+EOS
     system "#{bin}/smake"
     assert (testpath/"testfile").exist?
   end
