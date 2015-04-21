@@ -13,7 +13,7 @@ class Harbour < Formula
   head "https://github.com/harbour/core.git"
 
   depends_on "pcre"
-  depends_on :x11 => :recommended
+  depends_on :x11 => :optional
 
   # Missing a header that was deprecated by libcurl @ version 7.12.0 and
   # deleted sometime after Harbour 3.0.0 release.
