@@ -1,6 +1,7 @@
 # Require this file to build a testing environment.
 
-$:.push(File.expand_path(__FILE__+'/../..'))
+repo_root = Pathname.new File.expand_path("../../../..", __FILE__)
+$: << repo_root.join("Library", "Homebrew").to_s
 
 require 'extend/module'
 require 'extend/fileutils'
@@ -19,8 +20,10 @@ at_exit { FileUtils.remove_entry(TEST_TMPDIR) }
 
 # Constants normally defined in global.rb
 HOMEBREW_PREFIX        = Pathname.new(TEST_TMPDIR).join("prefix")
-HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
+HOMEBREW_REPOSITORY    = repo_root
+HOMEBREW_BREW_FILE     = HOMEBREW_REPOSITORY+"bin"+"brew"
 HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
+HOMEBREW_LIBRARY_PATH  = HOMEBREW_LIBRARY+"Homebrew"
 HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
 HOMEBREW_CACHE_FORMULA = HOMEBREW_PREFIX.parent+'formula_cache'
 HOMEBREW_CELLAR        = HOMEBREW_PREFIX.parent+'cellar'
@@ -48,8 +51,7 @@ MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
 ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 # Test environment setup
-%w{ENV Formula}.each { |d| HOMEBREW_LIBRARY.join(d).mkpath }
-%w{cache formula_cache cellar logs}.each { |d| HOMEBREW_PREFIX.parent.join(d).mkpath }
+%w{prefix cache formula_cache cellar logs}.each { |d| HOMEBREW_PREFIX.parent.join(d).mkpath }
 
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
