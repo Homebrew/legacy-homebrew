@@ -1,12 +1,7 @@
 class Nginx < Formula
   homepage "http://nginx.org/"
-  url "http://nginx.org/download/nginx-1.6.3.tar.gz"
-  sha1 "7ee99f16e91e655eb555d5f684155fc2a1f23b4f"
-
-  devel do
-    url "http://nginx.org/download/nginx-1.7.12.tar.gz"
-    sha1 "346af3e6dd087a2189d6344c182208263eaa079b"
-  end
+  url "http://nginx.org/download/nginx-1.8.0.tar.gz"
+  sha256 "23cca1239990c818d8f6da118320c4979aadf5386deda691b1b7c2c96b9df3d5"
 
   head "http://hg.nginx.org/nginx/", :using => :hg
 
@@ -30,37 +25,46 @@ class Nginx < Formula
 
   depends_on "pcre"
   depends_on "passenger" => :optional
-  depends_on "openssl"
+  depends_on "openssl" => :recommended
+  depends_on "libressl" => :optional
 
   def install
     # Changes default port to 8080
     inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
-    open("conf/nginx.conf", "a") {|f| f.puts "include servers/*;" }
+    open("conf/nginx.conf", "a") { |f| f.puts "include servers/*;" }
 
     pcre = Formula["pcre"]
     openssl = Formula["openssl"]
-    cc_opt = "-I#{pcre.include} -I#{openssl.include}"
-    ld_opt = "-L#{pcre.lib} -L#{openssl.lib}"
+    libressl = Formula["libressl"]
 
-    args = ["--prefix=#{prefix}",
-            "--with-http_ssl_module",
-            "--with-pcre",
-            "--with-ipv6",
-            "--sbin-path=#{bin}/nginx",
-            "--with-cc-opt=#{cc_opt}",
-            "--with-ld-opt=#{ld_opt}",
-            "--conf-path=#{etc}/nginx/nginx.conf",
-            "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/run/nginx.lock",
-            "--http-client-body-temp-path=#{var}/run/nginx/client_body_temp",
-            "--http-proxy-temp-path=#{var}/run/nginx/proxy_temp",
-            "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
-            "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
-            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
-            "--http-log-path=#{var}/log/nginx/access.log",
-            "--error-log-path=#{var}/log/nginx/error.log",
-            "--with-http_gzip_static_module",
-           ]
+    if build.with? "libressl"
+      cc_opt = "-I#{pcre.include} -I#{libressl.include}"
+      ld_opt = "-L#{pcre.lib} -L#{libressl.lib}"
+    else
+      cc_opt = "-I#{pcre.include} -I#{openssl.include}"
+      ld_opt = "-L#{pcre.lib} -L#{openssl.lib}"
+    end
+
+    args = %W[
+      --prefix=#{prefix}
+      --with-http_ssl_module
+      --with-pcre
+      --with-ipv6
+      --sbin-path=#{bin}/nginx
+      --with-cc-opt=#{cc_opt}
+      --with-ld-opt=#{ld_opt}
+      --conf-path=#{etc}/nginx/nginx.conf
+      --pid-path=#{var}/run/nginx.pid
+      --lock-path=#{var}/run/nginx.lock
+      --http-client-body-temp-path=#{var}/run/nginx/client_body_temp
+      --http-proxy-temp-path=#{var}/run/nginx/proxy_temp
+      --http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp
+      --http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp
+      --http-scgi-temp-path=#{var}/run/nginx/scgi_temp
+      --http-log-path=#{var}/log/nginx/access.log
+      --error-log-path=#{var}/log/nginx/error.log
+      --with-http_gzip_static_module
+    ]
 
     if build.with? "passenger"
       nginx_ext = `#{Formula["passenger"].opt_bin}/passenger-config --nginx-addon-dir`.chomp
@@ -77,6 +81,7 @@ class Nginx < Formula
     else
       system "./configure", *args
     end
+
     system "make"
     system "make", "install"
     man8.install "objs/nginx.8"
