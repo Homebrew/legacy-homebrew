@@ -1,10 +1,7 @@
-require 'formula'
-
 class GribApi < Formula
-  homepage 'https://software.ecmwf.int/wiki/display/GRIB/Home'
-  url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.12.3.tar.gz'
-  sha1 '2764b262c8f081fefb81112f7f7463a3a34b6e66'
-  revision 1
+  homepage "https://software.ecmwf.int/wiki/display/GRIB/Home"
+  url "https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.13.0.tar.gz"
+  sha256 "9e665640155f4e7bbbc0de6efaf1600c245b9c4d1251cf73601db4cb94138525"
 
   bottle do
     sha1 "08dc51f4cdba79970fe8637fec16cfe47a9bb471" => :yosemite
@@ -13,20 +10,25 @@ class GribApi < Formula
   end
 
   depends_on :fortran
-  depends_on 'jasper' => :recommended
-  depends_on 'openjpeg' => :optional
+  depends_on "cmake" => :build
+  depends_on "jasper" => :recommended
+  depends_on "openjpeg" => :optional
 
   # Fixes build errors in Lion
   # https://software.ecmwf.int/wiki/plugins/viewsource/viewpagesrc.action?pageId=12648475
   patch :DATA
 
   def install
-    ENV.deparallelize
-    ENV.no_optimization
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "install"
+    end
+  end
 
-    system "./configure", "--prefix=#{prefix}"
-    system "make"
-    system "make install"
+  test do
+    grib_samples_path = shell_output("#{bin}/grib_info -t").strip
+    system "#{bin}/grib_ls", "#{grib_samples_path}/GRIB1.tmpl"
+    system "#{bin}/grib_ls", "#{grib_samples_path}/GRIB2.tmpl"
   end
 end
 
