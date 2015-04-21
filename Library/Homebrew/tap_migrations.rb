@@ -76,6 +76,7 @@ TAP_MIGRATIONS = {
   "gtksourceviewmm3" => "homebrew/x11",
   "gtkwave" => "homebrew/x11",
   "gupnp-tools" => "homebrew/x11",
+  "gv" => "homebrew/x11",
   "hatari" => "homebrew/x11",
   "helios" => "spotify/public",
   "hexchat" => "homebrew/x11",
