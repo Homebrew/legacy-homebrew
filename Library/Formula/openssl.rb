@@ -21,12 +21,20 @@ class Openssl < Formula
   keg_only :provided_by_osx,
     "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
-  # This is a workaround for Apple removing the Equifax Secure CA root from the System in 10.10.3
-  # Their doing so has broken certificate verification and consquently secure connection for dependants.
-  # Scope this to Yosemite and remove immediately once Apple have fixed the issue.
-  resource "Equifax_CA" do
-    url "https://www.geotrust.com/resources/root_certificates/certificates/Equifax_Secure_Certificate_Authority.pem"
-    sha256 "f24e19fb93983b4fd0a377335613305f330c699892c789356eb216449804d0e9"
+  # Remove both patches with the 1.0.2b release.
+  # They fix:
+  # https://github.com/Homebrew/homebrew/pull/38495
+  # https://github.com/Homebrew/homebrew/issues/38491
+  # Upstream discussions:
+  # https://www.mail-archive.com/openssl-dev@openssl.org/msg38674.html
+  patch do
+    url "https://github.com/openssl/openssl/commit/6281abc796234.diff"
+    sha256 "f8b94201ac2cd7dcdee3b07fb3cd77a2de6b81ea67da9ae075cf06fb0ba73cea"
+  end
+
+  patch do
+    url "https://github.com/openssl/openssl/commit/dfd3322d72a2.diff"
+    sha256 "0602eef6e38368c7b34994deb9b49be1a54037de5e8b814748d55882bfba4eac"
   end
 
   def arch_args
@@ -37,13 +45,13 @@ class Openssl < Formula
   end
 
   def configure_args; %W[
-      --prefix=#{prefix}
-      --openssldir=#{openssldir}
-      no-ssl2
-      zlib-dynamic
-      shared
-      enable-cms
-    ]
+    --prefix=#{prefix}
+    --openssldir=#{openssldir}
+    no-ssl2
+    zlib-dynamic
+    shared
+    enable-cms
+  ]
   end
 
   def install
@@ -120,10 +128,8 @@ class Openssl < Formula
     openssldir.mkpath
     (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
 
-    if MacOS.version == :yosemite
-      (openssldir/"certs").install resource("Equifax_CA")
-      system bin/"c_rehash"
-    end
+    # Remove this once 1.0.2b lands.
+    rm_f openssldir/"certs/Equifax_CA" if MacOS.version == :yosemite
   end
 
   def caveats; <<-EOS.undent
