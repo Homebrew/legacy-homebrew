@@ -1,6 +1,3 @@
-# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-#                /usr/local/Library/Contributions/example-formula.rb
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
 class Rubberband < Formula
   homepage "http://breakfastquay.com/rubberband/"
@@ -12,21 +9,10 @@ class Rubberband < Formula
 
   patch :p1, :DATA
 
-  # def patches
-  #   {:p1 => [
-  #       # "https://gist.githubusercontent.com/ryandesign/7896071/raw/cba635cf36e88d24b52b50001af968e6f2c849ba/Makefile.osx.diff"
-  #       # "https://gist.githubusercontent.com/pfultz2/f2f40302dcf97bb42984/raw/5ca33b404d284f86c73d59dfaca01dd369bdac58/Makefile.osx.diff"
-  #       # "https://gist.githubusercontent.com/pfultz2/257467014d560e8308f0/raw/338786bb12e9755e7a2658ea856f394d4cf97b3f/Makefile.osx.diff"
-  #       # "https://gist.githubusercontent.com/pfultz2/257467014d560e8308f0/raw/dae75492127216f2b4789c75199c2e60d963676e/Makefile.osx.diff"
-  #       "https://gist.githubusercontent.com/pfultz2/257467014d560e8308f0/raw/81ee995ffb67d1dd32f52fcd0eb9d97f96288c45/Makefile.osx.diff"
-  #   ]}
-  # end
-
   def install
     args = %W[
       CC=#{ENV.cc}
       CXX=#{ENV.cxx}
-      MACOS_SDK_PATH=#{MacOS.sdk_path}
       PREFIX=#{prefix}
     ]
     system "make", "--file=Makefile.osx", "install", *args
@@ -35,13 +21,12 @@ end
 
 __END__
 diff --git a/Makefile.osx b/Makefile.osx
-index 2318559..95199f9 100644
+index 2318559..1451356 100644
 --- a/Makefile.osx
 +++ b/Makefile.osx
-@@ -1,35 +1,46 @@
+@@ -1,35 +1,45 @@
  
 +PREFIX		:= /usr/local
-+MACOS_SDK_PATH		:=
  CXX		:= g++
  CC		:= gcc
  ARCHFLAGS	:= 
@@ -51,7 +36,7 @@ index 2318559..95199f9 100644
 -
 -LIBRARY_LIBS		:= -framework Accelerate
 -
-+CXXFLAGS	:= $(ARCHFLAGS) $(OPTFLAGS) -F$(MACOS_SDK_PATH)/System/Library/Frameworks -I$(MACOS_SDK_PATH)/usr/include -I/usr/local/include -Irubberband -I. -Isrc -I$(PREFIX)/include -DUSE_PTHREADS -DMALLOC_IS_ALIGNED -DHAVE_VDSP -DUSE_SPEEX -DNO_THREAD_CHECKS -DNO_TIMING
++CXXFLAGS	:= $(ARCHFLAGS) $(OPTFLAGS) -I/usr/local/include -Irubberband -I. -Isrc -I$(PREFIX)/include -DUSE_PTHREADS -DMALLOC_IS_ALIGNED -DHAVE_VDSP -DUSE_SPEEX -DNO_THREAD_CHECKS -DNO_TIMING
  CFLAGS		:= $(ARCHFLAGS) $(OPTFLAGS)
  LDFLAGS		:= $(ARCHFLAGS) -lpthread $(LDFLAGS)
  
@@ -97,7 +82,7 @@ index 2318559..95199f9 100644
  
  static:		$(STATIC_TARGET)
  dynamic:	$(DYNAMIC_TARGET)
-@@ -121,10 +132,10 @@ VAMP_OBJECTS    := $(VAMP_SOURCES:.cpp=.o)
+@@ -121,10 +131,10 @@ VAMP_OBJECTS    := $(VAMP_SOURCES:.cpp=.o)
  LADSPA_OBJECTS  := $(LADSPA_SOURCES:.cpp=.o)
  
  $(PROGRAM_TARGET):	$(LIBRARY_OBJECTS) $(PROGRAM_OBJECTS)
@@ -110,7 +95,7 @@ index 2318559..95199f9 100644
  
  $(DYNAMIC_TARGET):	$(LIBRARY_OBJECTS)
  	$(CXX) $(DYNAMIC_LDFLAGS) $^ -o $@ $(LIBRARY_LIBS) $(LDFLAGS)
-@@ -140,6 +151,30 @@ bin:
+@@ -140,6 +150,30 @@ bin:
  lib:
  	$(MKDIR) $@
  
@@ -140,4 +125,45 @@ index 2318559..95199f9 100644
 +
  clean:
  	rm -f $(LIBRARY_OBJECTS) $(PROGRAM_OBJECTS) $(LADSPA_OBJECTS) $(VAMP_OBJECTS)
+ 
+diff --git a/src/dsp/FFT.cpp b/src/dsp/FFT.cpp
+index e49e1fe..68d3c5b 100644
+--- a/src/dsp/FFT.cpp
++++ b/src/dsp/FFT.cpp
+@@ -43,8 +43,7 @@
+ #endif
+ 
+ #ifdef HAVE_VDSP
+-#include <vecLib/vDSP.h>
+-#include <vecLib/vForce.h>
++#include <Accelerate/Accelerate.h>
+ #endif
+ 
+ #ifdef HAVE_MEDIALIB
+diff --git a/src/system/VectorOps.h b/src/system/VectorOps.h
+index ba35c97..6354127 100644
+--- a/src/system/VectorOps.h
++++ b/src/system/VectorOps.h
+@@ -33,8 +33,7 @@
+ #endif
+ 
+ #ifdef HAVE_VDSP
+-#include <vecLib/vDSP.h>
+-#include <vecLib/vForce.h>
++#include <Accelerate/Accelerate.h>
+ #endif
+ 
+ #include <cstring>
+diff --git a/src/system/sysutils.cpp b/src/system/sysutils.cpp
+index be12074..985074d 100644
+--- a/src/system/sysutils.cpp
++++ b/src/system/sysutils.cpp
+@@ -52,7 +52,7 @@
+ #endif
+ 
+ #ifdef HAVE_VDSP
+-#include <vecLib/vDSP.h>
++#include <Accelerate/Accelerate.h>
+ #include <fenv.h>
+ #endif
  
