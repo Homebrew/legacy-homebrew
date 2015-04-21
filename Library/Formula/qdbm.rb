@@ -16,9 +16,15 @@ class Qdbm < Formula
                           "--enable-bzip",
                           "--enable-zlib",
                           "--enable-iconv"
-    system "make", "mac"
-    system "make", "check-mac"
-    system "make", "install-mac"
+    if OS.mac?
+      system "make", "mac"
+      system "make", "check-mac"
+      system "make", "install-mac"
+    else
+      system "make"
+      system "make", "check"
+      system "make", "install"
+    end
   end
 
   test do
