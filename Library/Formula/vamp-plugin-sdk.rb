@@ -7,17 +7,31 @@ class VampPluginSdk < Formula
   depends_on "pkg-config" => :build
   depends_on "libsndfile"
 
-  def patches
-    {:p1 => [
-        # uncomment osx specific items in Makefile.in
-        "http://gist.github.com/raw/462794/2f99c9305a77893974d97045860d8e61fb4d0c40/osx_settings",
-        # add -dylib_install_name call to fix library path
-        "http://gist.github.com/raw/462794/86ae51b2e94b075aa2652869749e6b660badf0c1/fix_library_paths"
-    ]}
-  end
+  patch :p1, :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
 end
+
+__END__
+diff --git a/Makefile.in b/Makefile.in
+index e7e35f8..644a239 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -102,10 +102,10 @@ PLUGIN_LDFLAGS		= $(DYNAMIC_LDFLAGS) -Wl,--version-script=build/vamp-plugin.map
+ 
+ 
+ ## For OS/X with g++:
+-#DYNAMIC_LDFLAGS		= -dynamiclib
+-#PLUGIN_LDFLAGS			= $(DYNAMIC_LDFLAGS)
+-#SDK_DYNAMIC_LDFLAGS		= $(DYNAMIC_LDFLAGS)
+-#HOSTSDK_DYNAMIC_LDFLAGS	= $(DYNAMIC_LDFLAGS)
++DYNAMIC_LDFLAGS		= -dynamiclib
++PLUGIN_LDFLAGS			= $(DYNAMIC_LDFLAGS)
++SDK_DYNAMIC_LDFLAGS		= $(DYNAMIC_LDFLAGS) -Wl,-dylib_install_name,$(INSTALL_SDK_LIBS)/$(INSTALL_SDK_LINK_ABI)
++HOSTSDK_DYNAMIC_LDFLAGS	= $(DYNAMIC_LDFLAGS) -Wl,-dylib_install_name,$(INSTALL_SDK_LIBS)/$(INSTALL_HOSTSDK_LINK_ABI)
+ 
+ 
+ ### End of user-serviceable parts
