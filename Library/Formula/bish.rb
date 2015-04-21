@@ -5,8 +5,7 @@ class Bish < Formula
 
   def install
     stdlib_path = share/"stdlib.bish"
-    mkdir share
-    mv "lib/stdlib.bish", stdlib_path
+    share.install "lib/stdlib.bish"
     system "make", "-e", "CONFIG_CONSTANTS=-DSTDLIB_PATH=\"\\\"#{stdlib_path}\\\"\""
     bin.install "bish"
   end
