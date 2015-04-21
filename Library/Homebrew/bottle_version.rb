@@ -7,6 +7,10 @@ class BottleVersion < Version
     m = /[a-z]{3}\d-(\d{1}-\d{8})/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. 1.0.2a-1 from openssl-1.0.2a-1.yosemite.bottle.1.tar.gz
+    m = /-(\d+\.\d+(\.\d+)+[a-z]-\d+)/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. perforce-2013.1.610569-x86_64.mountain_lion.bottle.tar.gz
     m = /-([\d\.]+-x86(_64)?)/.match(stem)
     return m.captures.first unless m.nil?
@@ -38,10 +42,6 @@ class BottleVersion < Version
     # e.g. ssh-copy-id-6.2p2.mountain_lion.bottle.tar.gz
     # e.g. icu4c-52.1.mountain_lion.bottle.tar.gz
     m = /-(\d+\.(\d)+(p(\d)+)?)/.match(stem)
-    return m.captures.first unless m.nil?
-
-    # e.g. 0_5_0 from disco-0_5_0.mavericks.bottle.tar.gz
-    m = /-(\d+_\d+(_\d+)+)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. 20120731 from fontforge-20120731.mavericks.bottle.tar.gz

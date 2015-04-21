@@ -1,13 +1,12 @@
 class Memcached < Formula
   homepage "http://memcached.org/"
-  url "http://www.memcached.org/files/memcached-1.4.20.tar.gz"
-  sha1 "282a1e701eeb3f07159d95318f09da5ea3fcb39d"
+  url "http://www.memcached.org/files/memcached-1.4.22.tar.gz"
+  sha1 "5968d357d504a1f52622f9f8a3e85c29558acaa5"
 
   bottle do
-    revision 1
-    sha1 "2ca88974fa882f7390c1a65e6d263af0270086e0" => :yosemite
-    sha1 "16d1e5a2dba018a66fc91da77ae86f6dd7e1ad7d" => :mavericks
-    sha1 "c881c40cc40361c05fa8195f7b84f7a516524a75" => :mountain_lion
+    sha256 "f14fcd969117745bc45e8d99a93363b20bec101b9a4a7de36b02e9ce330b0ad5" => :yosemite
+    sha256 "119d2c653bbe6b8c4381d2b05c9a5b7dba093a212d02c5ba212116e251c7220c" => :mavericks
+    sha256 "3faa59c31a3048e8be7f85142983e0cf2125726aae7382b255f7f754a08dbf7d" => :mountain_lion
   end
 
   depends_on "libevent"

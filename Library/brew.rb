@@ -10,7 +10,7 @@ if ARGV == %w{--prefix}
 end
 
 require 'pathname'
-HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library", "Homebrew")
+HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require 'global'
 

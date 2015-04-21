@@ -2,20 +2,15 @@ require "formula"
 require "language/go"
 
 class Terraform < Formula
-  homepage "http://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.4.1.tar.gz"
-  sha1 "fc27bde31b6daf5ebe371fadb4b2c57a7ca9aed4"
+  homepage "https://www.terraform.io/"
+  url "https://github.com/hashicorp/terraform/archive/v0.4.2.tar.gz"
+  sha1 "4d83a6db2879d277ffd662d1c0dcaad1da0e75e9"
 
   bottle do
     cellar :any
-    sha256 "b808e3c1c0e19d6caf036259a6c7a5ed17c4306952cd1f49d9cb81e8f85a015f" => :yosemite
-    sha256 "9ef90c8d800c3fdc4a06df946dc7f6495461a982f31cd6c4c133bb8dc27d5c55" => :mavericks
-    sha256 "b5254ab70fdec1bf07317f3afe514e1dfe385b49a74fc2e1c74712c285d78806" => :mountain_lion
-  end
-
-  patch do
-    url "https://github.com/hashicorp/terraform/pull/1473.patch"
-    sha1 "abee09afb0396d8e23bba094689a0a88bfe55d90"
+    sha256 "ca67d033cf2900ffaa3deb25623dd73cbd6e126d7b78c0388c32703db84aa8b8" => :yosemite
+    sha256 "03e5765e051992610134cc4bf289c03ef6eb1a8355b25bda9544360aabd59f9e" => :mavericks
+    sha256 "893f7bcadd569adfc58e47acb72091daa4bd028cea770b0d638a8aee1488c7f5" => :mountain_lion
   end
 
   depends_on "go" => :build

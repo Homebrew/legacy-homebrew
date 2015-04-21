@@ -13,6 +13,12 @@ class Neo4j < Formula
     sha1 "5c1d4d46660149291ca4f484591c25c25be82c5b"
   end
 
+  devel do
+    url "http://dist.neo4j.org/neo4j-community-2.3.0-M01-unix.tar.gz"
+    sha1 "288f917f5f3822ca70c8eef5bcf1639392a41036"
+    version "2.3.0-M01"
+  end
+
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]

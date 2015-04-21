@@ -1,17 +1,14 @@
-require "formula"
-
 class Mapnik < Formula
   homepage "http://www.mapnik.org/"
   head "https://github.com/mapnik/mapnik.git"
   url "https://s3.amazonaws.com/mapnik/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
   sha256 "9b30de4e58adc6d5aa8478779d0a47fdabe6bf8b166b67a383b35f5aa5d6c1b0"
-  revision 4
+  revision 5
 
   bottle do
-    revision 1
-    sha256 "87fa6cda55325d6d25c6a784f126168db31b17f2d8a393fcf32437da5a09762d" => :yosemite
-    sha256 "d1244a83b9c97afde10dd6a94855d8c4a9a130e611ad5ea8ce6692f0e8982a91" => :mavericks
-    sha256 "ff836a670b6991041ca99b776afda125f4b434c6c8d160bd413b7f25125f8fde" => :mountain_lion
+    sha256 "8926b2f74348eae482fa4681f2dcd233970fe4e114af48609327821e8dada739" => :yosemite
+    sha256 "017b29ff0ee18af99b0d6404b68ffa4fc5600816fd4de72e40a5f06f22b8cc72" => :mavericks
+    sha256 "63e520499c8b7d6ae90011a7960fb3586cccdfbe5716a54d8c3e8bd1e6e47298" => :mountain_lion
   end
 
   stable do

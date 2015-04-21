@@ -6,10 +6,16 @@ class Pike < Formula
   sha1 'f3d6cc21e302576c3ac4bb5a525705dbeee2d060'
   revision 1
 
+  bottle do
+    sha256 "e1c276b7fdf4ce90cb6f512d6c93f494a56432e878567d05a63f63657cbba7d6" => :yosemite
+    sha256 "baad545207c59dbd86f57ed20155f4c0ef0aaa1f3b3291adc1eb304c4d66e987" => :mavericks
+    sha256 "3240c7771fad0948975677e1553bf5cc4b48ec7541efe42ca838576f90a66113" => :mountain_lion
+  end
+
   depends_on "nettle"
   depends_on "gmp"
   depends_on "pcre"
-  depends_on :x11 => :recommended
+  depends_on :x11 => :optional
   depends_on 'libtiff' => :recommended
 
   # optional dependencies

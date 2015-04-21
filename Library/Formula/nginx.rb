@@ -11,9 +11,10 @@ class Nginx < Formula
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    sha256 "94bc77ec15fb747f6a47ae5a7f201c5a041163ef9fde511e9cfc3974fb8f77bc" => :yosemite
-    sha256 "8bd3d16fbadb67837d7f617a586b766d57847d2b0aa799c029444e0251fd88be" => :mavericks
-    sha256 "fcdb1db462bf7ab4d654d674bfc874702038b164653763aef7ef0f5cd0912c6e" => :mountain_lion
+    revision 2
+    sha256 "b8465e0f291d819ae0e4287f4640a81cf531af092caef11a34ec19d14c873f69" => :yosemite
+    sha256 "7c56b079f0a5c07b32fbfd8d681de2d349ab3eb5f3ea032c73475931cbad6223" => :mavericks
+    sha256 "042df630570fda3cfc304b718eeff204099cbdb9c97adcaa86f25c6ef9fd9aa5" => :mountain_lion
   end
 
   env :userpaths
@@ -34,6 +35,7 @@ class Nginx < Formula
   def install
     # Changes default port to 8080
     inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
+    open("conf/nginx.conf", "a") {|f| f.puts "include servers/*;" }
 
     pcre = Formula["pcre"]
     openssl = Formula["openssl"]
@@ -78,6 +80,8 @@ class Nginx < Formula
     system "make"
     system "make", "install"
     man8.install "objs/nginx.8"
+
+    (etc/"nginx/servers").mkpath
     (var/"run/nginx").mkpath
   end
 
@@ -125,6 +129,8 @@ class Nginx < Formula
 
     The default port has been set in #{etc}/nginx/nginx.conf to 8080 so that
     nginx can run without sudo.
+
+    nginx will load all files in #{etc}/nginx/servers/.
     EOS
     s << passenger_caveats if build.with? "passenger"
     s
