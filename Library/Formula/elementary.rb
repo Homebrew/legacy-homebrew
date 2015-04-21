@@ -1,7 +1,7 @@
 class Elementary < Formula
   homepage "https://www.enlightenment.org"
-  url "http://download.enlightenment.org/rel/libs/elementary/elementary-1.14.0-beta1.tar.gz"
-  sha256 "fe45a8a9e2093c9b7d40aff7692a604099dd21d6eace28e17aa3e8c2c28d0cf5"
+  url "http://download.enlightenment.org/rel/libs/elementary/elementary-1.14.0-beta2.tar.gz"
+  sha256 "d577b1a2ec3d90d351eec002ba74bedbe65e5990fa2da4fde2e458e788290c6a"
 
   depends_on "pkg-config" => :build
   depends_on "efl"
