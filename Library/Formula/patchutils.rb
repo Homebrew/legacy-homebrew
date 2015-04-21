@@ -23,7 +23,6 @@ class Patchutils < Formula
   end
 
   test do
-    assert_match /a\/libexec\/NOOP/,
-          shell_output("#{bin}/lsdiff #{HOMEBREW_LIBRARY.join("Homebrew", "test", "patches", "noop-a.diff")}")
+    assert_match /a\/libexec\/NOOP/, shell_output("#{bin}/lsdiff #{test_fixtures("test.diff")}")
   end
 end
