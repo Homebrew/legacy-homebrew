@@ -11,9 +11,7 @@ class Betty < Formula
   end
 
   test do
-    system bin/"betty", "speech on"
     system bin/"betty", "what is your name"
     system bin/"betty", "version"
-    system bin/"betty", "speech off"
   end
 end
