@@ -1,20 +1,21 @@
-require "formula"
-
 class JpegArchive < Formula
   homepage "https://github.com/danielgtaylor/jpeg-archive"
   url "https://github.com/danielgtaylor/jpeg-archive/archive/2.1.1.tar.gz"
-  sha1 "874846fdc3a44811cccec6415ddf4d46c0fcd568"
+  sha256 "494534f5308f99743f11f3a7c151a8d5ca8a5f1f8b61ea119098511d401bc618"
 
   depends_on "mozjpeg"
 
   def install
-    system "make"
-    bin.install "jpeg-archive", "jpeg-recompress", 'jpeg-hash', 'jpeg-compare'
+    args = %W[
+      PREFIX=#{prefix}
+    ]
+
+    system "make", "install", *args
   end
 
   test do
     system "#{bin}/jpeg-recompress",
-           "/System/Library/CoreServices/DefaultDesktop.jpg",
+           test_fixtures("test.jpg"),
            "output.jpg"
   end
 end
