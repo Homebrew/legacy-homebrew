@@ -1,6 +1,7 @@
 require "extend/ENV"
 require "formula_assertions"
 require "sandbox"
+require "timeout"
 
 module Homebrew
 
