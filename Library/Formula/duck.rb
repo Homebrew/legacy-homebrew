@@ -11,7 +11,7 @@ class Duck < Formula
     sha1 "be719af049e6b39490554f8e1ba916c2b7de77ea" => :mountain_lion
   end
 
-  depends_on :java => [:build, "1.7"]
+  depends_on :java => ["1.7", :build]
   depends_on :xcode => :build
   depends_on "ant" => :build
 
