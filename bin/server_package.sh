@@ -26,7 +26,7 @@ fi
 majorRegex='([0-9]+\.[0-9]+)\.[0-9]+'
 if [[ $SCALA_VERSION =~ $majorRegex ]]
 then
-  majorVerion="${BASH_REMATCH[1]}"
+  majorVersion="${BASH_REMATCH[1]}"
 else
   echo "Please specify SCALA_VERSION in ${configFile}"
   exit 1
@@ -41,7 +41,7 @@ if [ "$?" != "0" ]; then
   exit 1
 fi
 
-FILES="job-server/target/scala-${majorRegex}/spark-job-server.jar
+FILES="job-server/target/scala-$majorVersion/spark-job-server.jar
        bin/server_start.sh
        bin/server_stop.sh
        $CONFIG_DIR/$ENV.conf
