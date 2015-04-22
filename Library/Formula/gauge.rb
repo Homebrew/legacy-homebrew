@@ -1,9 +1,9 @@
 require "language/go"
 
 class Gauge < Formula
-  homepage "https://getgauge.io"
-  url "https://github.com/getgauge/gauge/archive/v0.1.0.tar.gz"
-  sha1 "2abd107530d4a4295fe6ccf5699f3188ce1f7a99"
+homepage "http://getgauge.io"
+  url "https://github.com/getgauge/gauge/archive/v0.1.1.tar.gz"
+  sha1 "51834140b6376a9c7094840e1cf4d8445d6c559f"
 
   bottle do
     cellar :any
