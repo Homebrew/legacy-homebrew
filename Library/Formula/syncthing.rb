@@ -1,7 +1,7 @@
 class Syncthing < Formula
   homepage "https://syncthing.net/"
   url "https://github.com/syncthing/syncthing.git",
-    :tag => "v0.10.30", :revision => "3cc4cb0a0b71908ae2d6392f14457e7ca6712278"
+    :tag => "v0.11.0", :revision => "b35958d024175609a9e07934cdb1bedd3243939c"
 
   head "https://github.com/syncthing/syncthing.git"
 
@@ -26,6 +26,18 @@ class Syncthing < Formula
 
     system "./build.sh", "noupgrade"
     bin.install "syncthing"
+  end
+
+  def caveats; <<-EOS.undent
+    Syncthing v0.11.0 does not support synchronizing with older
+    versions (v0.10 or older)
+
+    You will need to manually upgrade all the nodes connecting 
+    to this one.
+
+    Please read the release notes for Syncthing 0.11.0:
+      https://forum.syncthing.net/t/syncthing-v0-11-0-release-notes/2426
+    EOS
   end
 
   def plist; <<-EOS.undent
