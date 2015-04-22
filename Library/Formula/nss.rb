@@ -2,8 +2,8 @@ require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_18_RTM/src/nss-3.18.tar.gz"
-  sha256 "618db0fb2af9f6fc165934d509036b65efc78ab0ae118c06c9488bb667f21d40"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_18_1_RTM/src/nss-3.18.1.tar.gz"
+  sha256 "10d005ca1b143a8b77032a169c595d06cf42d16d54809558ea30f1ffe73fef70"
 
   bottle do
     cellar :any
