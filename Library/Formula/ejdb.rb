@@ -5,6 +5,13 @@ class Ejdb < Formula
 
   head "https://github.com/Softmotions/ejdb.git"
 
+  bottle do
+    cellar :any
+    sha256 "e6eed78d9a3c3b87f78f7f27599e66642d6403c79a7880649eb1da62dfd2f27c" => :yosemite
+    sha256 "c262565e0fb217c13147c3112d9450686af22de2516740ba70e3acf199a72ae5" => :mavericks
+    sha256 "284b9c2230b10a825d282febd68dcc2a2604a8759b2f0266033422ef071497b9" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
 
   def install
