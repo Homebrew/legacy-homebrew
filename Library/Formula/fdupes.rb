@@ -1,9 +1,9 @@
 require 'formula'
 
 class Fdupes < Formula
-  homepage 'http://code.google.com/p/fdupes/'
-  url 'https://fdupes.googlecode.com/files/fdupes-1.51.tar.gz'
-  sha1 '8276b39026f57a2f9503d7af18efca0a7d42b8ec'
+  homepage 'https://github.com/adrianlopezroche/fdupes'
+  url 'https://github.com/adrianlopezroche/fdupes/archive/fdupes-1.51.tar.gz'
+  sha1 'ac713d3f84dc9d7929f8a4dc1f7d700ddef58d60'
 
   def install
     inreplace "Makefile", "gcc", "#{ENV.cc} #{ENV.cflags}"
