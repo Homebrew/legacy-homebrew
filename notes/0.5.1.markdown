@@ -1,5 +1,6 @@
 #Scala #akka @ApacheSpark
 
+* HIVE Context support (@ajmerlob @nemccarthy)
 * Cancel individual jobs using Spark job groups (@petro-rudenko)
 * Cross-build for 2.11 and 2.10 (@zeitos)
 * dependent-jar-uris accepts comma-separated string list for query param inclusion (@KaiXinXiaoLei)
