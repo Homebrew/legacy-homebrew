@@ -44,6 +44,12 @@ class Cmake < Formula
     sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
   end
 
+  patch do
+    # fix for older bash-completion versions
+    url "http://www.cmake.org/gitweb?p=cmake.git;a=commitdiff_plain;h=2ecf168f"
+    sha256 "147854010874cd68289e3ca203399d5c149287167bca0b67f9c5677f0ee22eb8"
+  end
+
   def install
     if build.with? "docs"
       ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
@@ -77,6 +83,10 @@ class Cmake < Formula
     system "./bootstrap", *args
     system "make"
     system "make", "install"
+
+    cd "Auxiliary/bash-completion/" do
+      bash_completion.install "ctest", "cmake", "cpack"
+    end
   end
 
   test do
