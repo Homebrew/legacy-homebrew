@@ -8,9 +8,10 @@ class Forego < Formula
   head "https://github.com/ddollar/forego.git"
 
   bottle do
-    sha1 "9eac8ca38f6a4557b30737529f8be85b7afb11bb" => :mavericks
-    sha1 "4a08f819f67056758915c4624868e3dc1b012431" => :mountain_lion
-    sha1 "1fdb5c2c67b2990a3e71f4d4bde9a872662718c3" => :lion
+    cellar :any
+    sha256 "d868a7568c0c80b6af1cb8582b5c7341c1aa42b7aa1f7dc384f20ccca6bb1497" => :yosemite
+    sha256 "f0a098da6534c7a2f13e05ef129ab33a6a738251ffaaffe9792d28f300a992f2" => :mavericks
+    sha256 "8b544fd274c115758cf3ecec09e5c2f66e9f54663bc28b86d55bb310c94e57a2" => :mountain_lion
   end
 
   depends_on "go" => :build
