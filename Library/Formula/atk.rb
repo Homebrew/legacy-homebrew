@@ -1,9 +1,7 @@
-require "formula"
-
 class Atk < Formula
-  homepage "http://library.gnome.org/devel/atk/"
-  url "http://ftp.gnome.org/pub/gnome/sources/atk/2.14/atk-2.14.0.tar.xz"
-  sha256 "2875cc0b32bfb173c066c22a337f79793e0c99d2cc5e81c4dac0d5a523b8fbad"
+  homepage "https://library.gnome.org/devel/atk/"
+  url "http://ftp.gnome.org/pub/gnome/sources/atk/2.16/atk-2.16.0.tar.xz"
+  sha256 "095f986060a6a0b22eb15eef84ae9f14a1cf8082488faa6886d94c37438ae562"
 
   bottle do
     revision 1
@@ -24,6 +22,18 @@ class Atk < Formula
                           "--prefix=#{prefix}",
                           "--enable-introspection=yes"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <atk/atk.h>
+
+      int main(int argc, char *argv[]) {
+        const gchar *version = atk_get_version();
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{HOMEBREW_PREFIX}/include/atk-1.0", "-I#{HOMEBREW_PREFIX}/include/glib-2.0", "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include", "-I#{HOMEBREW_PREFIX}/opt/gettext/include", "test.c", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/gettext/lib", "-latk-1.0", "-lgobject-2.0", "-lglib-2.0", "-lintl", "-o", "test"
+    system "./test"
   end
 end
