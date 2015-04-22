@@ -41,7 +41,7 @@ index 953c126..8078767 100644
  
  #  if defined(__APPLE__)
 -const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", NULL };
-+const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", "tty.usbmodem", "tty.usbserial", NULL };
++const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial", "tty.usbmodem", NULL };
  #  elif defined (__FreeBSD__) || defined (__OpenBSD__) || defined(__FreeBSD_kernel__)
  const char *serial_ports_device_radix[] = { "cuaU", "cuau", NULL };
  #  elif defined (__linux__)
