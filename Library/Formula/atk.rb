@@ -4,10 +4,9 @@ class Atk < Formula
   sha256 "095f986060a6a0b22eb15eef84ae9f14a1cf8082488faa6886d94c37438ae562"
 
   bottle do
-    revision 1
-    sha1 "5a014bce43ff14675bec23b61909d3d85cff20f1" => :yosemite
-    sha1 "f75b7b55547cb58c87fd35e38e8cdba0877516f8" => :mavericks
-    sha1 "8aa05a84f58854ba26258d0d206c4e2fb663eb16" => :mountain_lion
+    sha256 "128b040fbcf11591d3fef7bff779b958fb1fd4ce49715a14427fd5f8aba81010" => :yosemite
+    sha256 "50a58e13caac37709dd4cb9d7414393ded99aa17ca8037316d0dd0cb9018286d" => :mavericks
+    sha256 "7a7f9f7a5532e454434eeb4d33abd52cf7a568c259b407b61af1705233f0ea6c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
