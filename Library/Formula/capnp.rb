@@ -1,7 +1,7 @@
 class Capnp < Formula
   homepage "https://capnproto.org/"
-  url "https://capnproto.org/capnproto-c++-0.5.1.2.tar.gz"
-  sha256 "a23f462bb863ee867783ff33e4c2c9e3ece684c6b33410e34ed2eb17b5d90929"
+  url "https://capnproto.org/capnproto-c++-0.5.2.tar.gz"
+  sha256 "23145a0127c2b1629c4b72e6000e04991640e551947fa39fd06710d64bd942a8"
 
   bottle do
     sha256 "94295e6275fab85b54d334a9994538fe92be8422e2230982a568fe707a4bd17f" => :yosemite
