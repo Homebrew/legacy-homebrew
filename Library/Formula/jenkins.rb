@@ -55,6 +55,7 @@ class Jenkins < Formula
 
   def caveats; <<-EOS.undent
     Note: When using launchctl the port will be 8080.
+          There is also a jenkins-lts bottle, this long term support release tends to be much stable.
     EOS
   end
 end
