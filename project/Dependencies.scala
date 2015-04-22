@@ -33,6 +33,8 @@ object Dependencies {
                                             "io.netty", "netty-all") excludeAll(excludeQQ),
     "org.apache.spark" %% "spark-sql" % sparkVersion % "provided" exclude(
                                             "io.netty", "netty-all") excludeAll(excludeQQ),
+    "org.apache.spark" %% "spark-hive" % sparkVersion % "provided" exclude(
+                                            "io.netty", "netty-all") excludeAll(excludeQQ),
     // Force netty version.  This avoids some Spark netty dependency problem.
     "io.netty" % "netty-all" % "4.0.23.Final"
   )

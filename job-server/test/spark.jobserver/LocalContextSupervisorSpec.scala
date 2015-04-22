@@ -6,6 +6,8 @@ import com.typesafe.config.ConfigFactory
 import spark.jobserver.io.JobDAO
 import org.scalatest.{Matchers, FunSpecLike, BeforeAndAfterAll, BeforeAndAfter}
 
+import scala.concurrent.duration._
+
 
 object LocalContextSupervisorSpec {
   val config = ConfigFactory.parseString("""
@@ -75,9 +77,9 @@ class LocalContextSupervisorSpec extends TestKit(LocalContextSupervisorSpec.syst
 
     it("can add contexts from jobConfig") {
       supervisor ! AddContextsFromConfig
-      Thread sleep 2000
+      Thread sleep 4000
       supervisor ! ListContexts
-      expectMsg(Seq("olap-demo"))
+      expectMsg(40 seconds, Seq("olap-demo"))
     }
 
     it("should be able to add multiple new contexts") {
