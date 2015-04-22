@@ -14,9 +14,9 @@ class Influxdb < Formula
   end
 
   devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc20.tar.gz"
-    sha1 "714aab2a30a322425883577ed33c0e42ee461725"
-    version "0.9.0-rc20"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc25.tar.gz"
+    sha1 "58be836daaaf11d8d810d04490ffb4a01d07419d"
+    version "0.9.0-rc25"
   end
 
   depends_on "go" => :build
@@ -96,7 +96,7 @@ class Influxdb < Formula
       Language::Go.stage_deps resources, buildpath/"src"
 
       cd influxdb_path do
-        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc20 -X main.commit 475cdef884d7172def6d2a4198d105d562a8574e", "./..."
+        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc25 -X main.commit eb2eee21af0cde83157be37516193a3c86e10157", "./..."
         system "go", "install", "./..."
       end
 

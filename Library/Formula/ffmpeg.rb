@@ -1,14 +1,14 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.6.1.tar.bz2"
-  sha256 "a4f6388706ee2daba9d35d2aa018ae5feeb450efa716555e011a6543d43ec7c1"
+  url "https://ffmpeg.org/releases/ffmpeg-2.6.2.tar.bz2"
+  sha256 "889e3aa069b724dc95cbfc79ef83322a8a39d9f6225f39fad1b47294fc1f29ba"
 
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "8bc0cb43f99a7004aada9969875e551a24ebe2e57b8c620aa77b70372ba7fa0f" => :yosemite
-    sha256 "2ab2f322d8a1ce26af77b7f86e45e8af1c1cf6f01a51d05e460a1282ab84cbec" => :mavericks
-    sha256 "dd2629269914f801e5c16b5c8ba3abebbc48ab7417a54852f1cb74aee8c04875" => :mountain_lion
+    sha256 "86a7a9e11279a93870255bdb2a3e18d874a7ff6ddaa5062d199172a6cbbe64e2" => :yosemite
+    sha256 "31e0e71be605a8fbdd17c9bacbc8abec81e0ff54803a11e65d24b99664d1c8d3" => :mavericks
+    sha256 "a051897c6cc9b1f4a161a64f77746c280e65795f74d5ac986ab87020d582a8b1" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"

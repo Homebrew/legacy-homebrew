@@ -27,7 +27,7 @@ class InstallTests < Homebrew::TestCase
   end
 
   def test_a_basic_install
-    f = TestBall.new
+    f = Testball.new
 
     refute_predicate f, :installed?
 
@@ -45,9 +45,10 @@ class InstallTests < Homebrew::TestCase
       # Test that things make it into the Cellar
       keg = Keg.new f.prefix
       keg.link
-      assert_equal 3, HOMEBREW_PREFIX.children.length
-      assert_predicate HOMEBREW_PREFIX+'bin', :directory?
-      assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
+
+      bin = HOMEBREW_PREFIX+"bin"
+      assert_predicate bin, :directory?
+      assert_equal 3, bin.children.length
     end
   end
 

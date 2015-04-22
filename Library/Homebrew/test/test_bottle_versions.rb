@@ -36,11 +36,6 @@ class BottleVersionParsingTests < Homebrew::TestCase
       '/usr/local/pazpar2-1.6.39.mavericks.bottle.tar.gz'
   end
 
-  def test_disco_style
-    assert_version_detected '0_5_0',
-      '/usr/local/disco-0_5_0.mavericks.bottle.tar.gz'
-  end
-
   def test_zpython_style
     assert_version_detected '00-5.0.5',
       '/usr/local/zpython-00-5.0.5.mavericks.bottle.tar.gz'
@@ -84,5 +79,10 @@ class BottleVersionParsingTests < Homebrew::TestCase
   def test_gcc_versions_style
     assert_version_detected '5-20150215',
       'gcc5-5-20150215.yosemite.bottle.tar.gz'
+  end
+
+  def test_openssl_style
+    assert_version_detected '1.0.2a-1',
+      'openssl-1.0.2a-1.yosemite.bottle.1.tar.gz'
   end
 end

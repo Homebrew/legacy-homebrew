@@ -1,12 +1,12 @@
 class Capnp < Formula
   homepage "https://capnproto.org/"
-  url "https://capnproto.org/capnproto-c++-0.5.1.2.tar.gz"
-  sha256 "a23f462bb863ee867783ff33e4c2c9e3ece684c6b33410e34ed2eb17b5d90929"
+  url "https://capnproto.org/capnproto-c++-0.5.2.tar.gz"
+  sha256 "23145a0127c2b1629c4b72e6000e04991640e551947fa39fd06710d64bd942a8"
 
   bottle do
-    sha256 "94295e6275fab85b54d334a9994538fe92be8422e2230982a568fe707a4bd17f" => :yosemite
-    sha256 "fca129dbeefeea03b0deaa149bc8f1cae8f0b657a13f6ca838398db3a54fc800" => :mavericks
-    sha256 "3771b3a8a7be9a1b3e9c872ff632a37f23eea8aab1d4b4725a0e82fb58453141" => :mountain_lion
+    sha256 "df70e870b12a65442ced879e21418554e1594de20e86691f68c6a1ec17e60bf4" => :yosemite
+    sha256 "26b92dca28761c408adfdfcc44d39baa7b0adfcccdc6d03a57377e14750ab3d0" => :mavericks
+    sha256 "d6ffe25d6652a0dd63bd035889f08202ceb40e39413e2e64adea1af5cc2cb2bd" => :mountain_lion
   end
 
   needs :cxx11

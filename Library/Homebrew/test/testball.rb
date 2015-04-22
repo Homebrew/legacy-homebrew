@@ -1,6 +1,4 @@
-require 'formula'
-
-class TestBall < Formula
+class Testball < Formula
   def initialize(name="test_ball", path=Pathname.new(__FILE__).expand_path, spec=:stable)
     self.class.instance_eval do
       stable.url "file://#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"

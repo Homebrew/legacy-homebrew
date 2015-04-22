@@ -1,12 +1,12 @@
 class Iojs < Formula
   homepage "https://iojs.org/"
-  url "https://iojs.org/dist/v1.7.1/iojs-v1.7.1.tar.xz"
-  sha256 "3c63010701b1968baf08d99327821c79746d0602ba71060c07d2bd9f1ff485f4"
+  url "https://iojs.org/dist/v1.8.1/iojs-v1.8.1.tar.xz"
+  sha256 "8b9b4a141daca22e6bf28e8af86ce5f9ca5918d08923fb5619b7e614a674d966"
 
   bottle do
-    sha256 "9f771122f8b27072e7fc54afe33a7b67f5ad6571737da5f65702b08f2d9c8044" => :yosemite
-    sha256 "8851413ea8b5090620f1e369796325293e6651b29e3f6f9a7e65e71c28033ead" => :mavericks
-    sha256 "dbc81eb8f8519b5f41c45afc02c0b012c690a43065fd8205ee100a5e80813d73" => :mountain_lion
+    sha256 "e535a806b9090b4ba229b4a724fd00a44f9df26f9614eb5cac6739376a9fd0b9" => :yosemite
+    sha256 "e8a671371dfc9adaeea54b4410929ca4bafe9f62bc6b036f0f08f3c278409036" => :mavericks
+    sha256 "023b19b7fa74a044a358157abdcab628c272860ecd9f12be5ac6aa3cce41da01" => :mountain_lion
   end
 
   keg_only "iojs conflicts with node (which is currently more established)"

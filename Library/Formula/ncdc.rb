@@ -14,7 +14,16 @@ class Ncdc < Formula
   depends_on 'pkg-config' => :build
   depends_on 'geoip' => :optional
 
+  head do
+    url "git://g.blicky.net/ncdc.git", :shallow => false
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
+
   def install
+    system "autoreconf", "-ivf" if build.head?
+
     args = [
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",

@@ -3,11 +3,11 @@ require "formula"
 class GoAppEngine64 < Formula
   homepage "https://cloud.google.com/appengine/docs/go/"
   if OS.mac?
-    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_amd64-1.9.18.zip"
-    sha1 "21721945d0fee2f523d3997205164e7e9888297c"
+    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_amd64-1.9.19.zip"
+    sha1 "538cb6a92e6fd59c6340aea433d78df670086026"
   elsif OS.linux?
-    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.18.zip"
-    sha1 "4a7af45b4eb00a0fe842eaccfcd1db10bc31c5a5"
+    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.19.zip"
+    sha1 "28b33272e916fe18f5b61ef0392bd542ab641fa0"
   end
 
   def install

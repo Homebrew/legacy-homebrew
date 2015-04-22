@@ -29,8 +29,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.39.tar.bz2"
-    sha256 "6affb007fe772eb5588c584e3bdb62db96d8291c7fc8e75a5fd0bb098391335c"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.41.tar.bz2"
+    sha256 "6fa622b1dacb257fab671ddd689439daf6bb1cfb9e632c324db16a5db6372f97"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -70,13 +70,13 @@ class Wine < Formula
   depends_on 'libgsm' => :optional
 
   resource 'gecko' do
-    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.34-x86.msi', :using => :nounzip
-    sha256 '956c26bf302b1864f4d7cb6caee4fc83d4c1281157731761af6395b876e29ca7'
+    url "https://downloads.sourceforge.net/wine/wine_gecko-2.36-x86.msi", :using => :nounzip
+    sha256 "afa457ce8f9885225b6e549dd6f154713ce15bf063c23e38c1327d2f869e128a"
   end
 
   resource 'mono' do
-    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.4.msi', :using => :nounzip
-    sha256 '20bced7fee01f25279edf07670c5033d25c2c9834a839e7a20410ce1c611d6f2'
+    url "https://downloads.sourceforge.net/wine/wine-mono-4.5.6.msi", :using => :nounzip
+    sha256 "ac681f737f83742d786706529eb85f4bc8d6bdddd8dcdfa9e2e336b71973bc25"
   end
 
   fails_with :llvm do

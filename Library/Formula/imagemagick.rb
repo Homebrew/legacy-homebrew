@@ -1,16 +1,16 @@
 class Imagemagick < Formula
   homepage "http://www.imagemagick.org"
-  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-0.tar.xz"
-  mirror "https://downloads.sourceforge.net/project/imagemagick/6.9.1-sources/ImageMagick-6.9.1-0.tar.xz"
-  sha256 "32747565fc30da0ff0bc0bf3e41c9fefad829fa8fb2f7d1b98dd84ddb3919b0e"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-1.tar.xz"
+  mirror "https://downloads.sourceforge.net/project/imagemagick/6.9.1-sources/ImageMagick-6.9.1-1.tar.xz"
+  sha256 "8f6ebeb1a1321fd7b7d3161a66461743ea5bbc352e4339c792b3bab52c379378"
 
   head "https://subversion.imagemagick.org/subversion/ImageMagick/trunk",
        :using => :svn
 
   bottle do
-    sha256 "6fd5c101e3c95eb0b87105d95ac2c3f0739a5b12920cbb57d5decf7671a68b1b" => :yosemite
-    sha256 "92c97d4984714b616dbd07e4bed47ef190bddaf13f5013618def56a303894db5" => :mavericks
-    sha256 "837c6f6bc869c6bf35c776a2b0e9bc76e725b69f3cf927f1e78a02e15d36e2cd" => :mountain_lion
+    sha256 "eacabf24a4e3d99feca1a3c9786f18328a5e9dee866e710ee8c505e35cfded62" => :yosemite
+    sha256 "b346a7e2fe4f0886c0b2453f05fc66bc83463e30b2039ac04876b54d3031f4cd" => :mavericks
+    sha256 "2373116c43b825f34d84fc6302c52b4a48375487ff460a844cadb64d2f0b1768" => :mountain_lion
   end
 
   deprecated_option "enable-hdri" => "with-hdri"
@@ -55,6 +55,7 @@ class Imagemagick < Formula
       --disable-osx-universal-binary
       --prefix=#{prefix}
       --disable-dependency-tracking
+      --disable-silent-rules
       --enable-shared
       --disable-static
       --with-modules

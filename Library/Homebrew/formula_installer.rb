@@ -442,7 +442,12 @@ class FormulaInstaller
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
-    args << "--env=#{ARGV.env}" if ARGV.env
+
+    if ARGV.env
+      args << "--env=#{ARGV.env}"
+    elsif formula.env.std? || formula.recursive_dependencies.any? { |d| d.name == "scons" }
+      args << "--env=std"
+    end
 
     if formula.head?
       args << "--HEAD"
@@ -483,6 +488,9 @@ class FormulaInstaller
     Utils.safe_fork do
       if Sandbox.available? && ARGV.sandbox?
         sandbox = Sandbox.new
+        logd = HOMEBREW_LOGS/formula.name
+        logd.mkpath
+        sandbox.record_log(logd/"sandbox.build.log")
         sandbox.allow_write_temp_and_cache
         sandbox.allow_write_log(formula)
         sandbox.allow_write_cellar(formula)

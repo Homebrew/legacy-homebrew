@@ -50,8 +50,7 @@ class Mu < Formula
 
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-gui=none"
+                          "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
