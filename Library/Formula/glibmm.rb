@@ -4,10 +4,9 @@ class Glibmm < Formula
   sha256 "1b0ac0425d24895507c0e0e8088a464c7ae2d289c47afa1c11f63278fc672ea8"
 
   bottle do
-    revision 1
-    sha1 "c4bb776154321f4a6f55533b656bbfd01fb5d0d0" => :yosemite
-    sha1 "91bcad6b5c2d5f5c7feb45297888ffd05c618e1b" => :mavericks
-    sha1 "2470f84fef26c7fccea181b549ddb9725dde0aba" => :mountain_lion
+    sha256 "441a1090b234db948a47ca1996dfab13c9d28d7ddbee74611ffd443c6088dca6" => :yosemite
+    sha256 "dc82204feb11ee31c04500c5a2327a42db838fb7e9c8ceeb0b9f0eb605dbaa76" => :mavericks
+    sha256 "53810b3d4d76b685fc9195be3162d73f973dea0596f3630724f3af049830458a" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
