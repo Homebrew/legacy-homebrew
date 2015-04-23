@@ -4,9 +4,9 @@ class Gtkx < Formula
   sha256 "20cb10cae43999732a9af2e9aac4d1adebf2a9c2e1ba147050976abca5cd24f4"
 
   bottle do
-    sha1 "0316a3ac6d961ab3fb69bbce61ff2eff93a17181" => :yosemite
-    sha1 "24b4dc55e528bf0d970f9e1a097a8b647a6c91bd" => :mavericks
-    sha1 "e6ff2911ff5d77feb0f4e9b8f39b0c51d6717429" => :mountain_lion
+    sha256 "ab144b55ebb1829ac4e01b9774c0293eb219e1564581e1f139d3eb48db7cd00e" => :yosemite
+    sha256 "e94e9a89a0f7c7026700cfd17e4468b08215056cf24e867e8f14198110fed2e5" => :mavericks
+    sha256 "98d5cd5c5635f5ee0aaf1376958e57a62f2ef72ff7ff6078e2dad25d0dcc6780" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
