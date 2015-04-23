@@ -1,7 +1,7 @@
 class Etcd < Formula
   homepage "https://github.com/coreos/etcd"
-  url "https://github.com/coreos/etcd/archive/v2.0.9.tar.gz"
-  sha256 "a03c44fa125a3058c4cec0704136485b6031163108399969ba4a0e19f98dcf23"
+  url "https://github.com/coreos/etcd/archive/v2.0.10.tar.gz"
+  sha256 "6029113d9870e5c6f0d10adbd2b6670958a46575114a094b86b607771a0e5ff3"
   head "https://github.com/coreos/etcd.git"
 
   bottle do
