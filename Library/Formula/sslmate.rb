@@ -7,9 +7,9 @@ class Sslmate < Formula
 
   bottle do
     cellar :any
-    sha1 "7085c96229238b3426573e2d1b717ea44eaa2ed9" => :yosemite
-    sha1 "a481fae6553a4f56cf2d6ec3b5ef0d541f3e12fa" => :mavericks
-    sha1 "4936239b3a8ba67ca19b403229ed646bfac8e895" => :mountain_lion
+    sha256 "180aa500c33b5d7ecc951b1dc7a319f8679630d2d3b5f99aeb15645568075bff" => :yosemite
+    sha256 "3bdad9e0e103af6a3a0177a9407abec6eec7bba234425b493d1c2ddd6bcd972b" => :mavericks
+    sha256 "5bdf1a73b66e6456aa8aaaf3f8cc88213f795122d0e12ad02228029261417803" => :mountain_lion
   end
 
   option "without-route53", "Disable support for Route 53 DNS approval"
