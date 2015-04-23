@@ -4,10 +4,10 @@ class Gtkmm < Formula
   sha256 "443a2ff3fcb42a915609f1779000390c640a6d7fd19ad8816e6161053696f5ee"
 
   bottle do
-    revision 1
-    sha1 "583ee4f8edf8226f60bf3434c16ad8f7e82d4736" => :yosemite
-    sha1 "dcb4b15cf0fad1f14fc1dd82279dfd9d4d92fb56" => :mavericks
-    sha1 "3b7a030bf1c5e0dbe86b6ad847d5ed141fb7b4ef" => :mountain_lion
+    revision 2
+    sha256 "25747117e0d2b6ff8b012f80c0846ff50fbd3e6175d49d275838df12278d7a69" => :yosemite
+    sha256 "b577998a68e274e8badbd22f45f2741865332fe3cec53f7fa201092f11dd32c7" => :mavericks
+    sha256 "af35b5d473fce6db31d08e6d2e4939873ce8ef51675885a24e58c489a678be66" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
