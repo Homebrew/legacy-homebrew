@@ -25,9 +25,7 @@ module Homebrew
         sandbox.allow_write_log(formula)
         sandbox.allow_write_cellar(formula)
         sandbox.allow_write_path HOMEBREW_PREFIX
-        sandbox.deny_write_path HOMEBREW_LIBRARY
-        sandbox.deny_write_path HOMEBREW_REPOSITORY/".git"
-        sandbox.deny_write HOMEBREW_BREW_FILE
+        sandbox.deny_write_homebrew_library
         sandbox.exec(*args)
       else
         exec(*args)
