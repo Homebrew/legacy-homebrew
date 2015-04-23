@@ -6,16 +6,10 @@ class JpegArchive < Formula
   depends_on "mozjpeg"
 
   def install
-    args = %W[
-      PREFIX=#{prefix}
-    ]
-
-    system "make", "install", *args
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
-    system "#{bin}/jpeg-recompress",
-           test_fixtures("test.jpg"),
-           "output.jpg"
+    system "#{bin}/jpeg-recompress", test_fixtures("test.jpg"), "output.jpg"
   end
 end
