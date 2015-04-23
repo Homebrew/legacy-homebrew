@@ -85,6 +85,8 @@ class Llvm < Formula
     depends_on :python => :optional
   end
   depends_on "swig" if build.with? "lldb"
+  # llvm requires <histedit.h>
+  depends_on "homebrew/dupes/libedit" unless OS.mac?
 
   keg_only :provided_by_osx
 
@@ -139,6 +141,11 @@ class Llvm < Formula
     system "make", "install"
 
     if build.with? "clang"
+      if OS.linux?
+        # Let's use clang to build libcxx. It fails with gcc.
+        ENV["CC"] = bin/"clang"
+        ENV["CXX"] = bin/"clang++"
+      end
       system "make", "-C", "projects/libcxx", "install",
         "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
 
