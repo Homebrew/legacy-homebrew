@@ -1,33 +1,23 @@
-require 'formula'
-
 class Mahout < Formula
-  homepage 'http://mahout.apache.org/'
-  url 'http://apache.cs.utah.edu/mahout/0.9/mahout-distribution-0.9.tar.gz'
-  sha1 'b0d192a33dcc3f00439bf2ffbc313c6ef47510c3'
+  homepage "https://mahout.apache.org/"
+  url "http://apache.fayea.com/mahout/0.10.0/mahout-distribution-0.10.0-src.tar.gz"
+  sha256 "69e3793866695911a5109c8d38af2b3d68dd421687dc8f666306cb3221315103"
 
-  head do
-    url 'http://svn.apache.org/repos/asf/mahout/trunk'
-    depends_on 'maven' => :build
-  end
+  head "https://github.com/apache/mahout.git"
 
-  depends_on 'hadoop'
+  depends_on :java
+  depends_on "maven" => :build
+  depends_on "hadoop"
 
   def install
-    if build.head?
-      system 'chmod 755 ./bin'
-      system 'mvn -DskipTests clean install'
-    end
+    system "mvn", "-DskipTests", "clean", "install"
 
     libexec.install "bin"
 
-    if build.head?
-      libexec.install Dir['buildtools/target/*.jar']
-      libexec.install Dir['core/target/*.jar']
-      libexec.install Dir['examples/target/*.jar']
-      libexec.install Dir['math/target/*.jar']
-    else
-      libexec.install Dir['*.jar']
-    end
+    libexec.install Dir["buildtools/target/*.jar"]
+    libexec.install Dir["core/target/*.jar"]
+    libexec.install Dir["examples/target/*.jar"]
+    libexec.install Dir["math/target/*.jar"]
 
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
