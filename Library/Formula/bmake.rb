@@ -1,7 +1,7 @@
 class Bmake < Formula
   homepage "http://www.crufty.net/help/sjg/bmake.html"
-  url "http://www.crufty.net/ftp/pub/sjg/bmake-20150410.tar.gz"
-  sha256 "72727f5ddce4448a0136a1e2c536f7627440e3e482700b43c666f96737b2bfce"
+  url "http://www.crufty.net/ftp/pub/sjg/bmake-20150411.tar.gz"
+  sha256 "67fe93e078ea64719fb4123a638cc798241fe70d1fa5d5e08e64751f69a06b82"
 
   bottle do
     sha256 "7d683b7293b8b9ebbda8979a715f167eb30df5c6d4162a9fd3821dbff44faf0b" => :yosemite
