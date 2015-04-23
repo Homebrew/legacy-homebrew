@@ -4,6 +4,12 @@ class GnuTypist < Formula
   mirror "https://ftp.gnu.org/gnu/gtypist/gtypist-2.9.5.tar.xz"
   sha256 "c13af40b12479f8219ffa6c66020618c0ce305ad305590fde02d2c20eb9cf977"
 
+  bottle do
+    sha256 "d06b5cfc30573a454876ce0fe0b33d1eb4ca12070875b4aae907b9c001d10645" => :yosemite
+    sha256 "0c3bc3250a2b1af0e537f0879f55d94cd803835b8621d9b59623c46b5267a472" => :mavericks
+    sha256 "81645c32689c4da3e0baf0372426f2893c355814e9a33eb8070a294990b9722d" => :mountain_lion
+  end
+
   depends_on "gettext"
 
   # Use Apple's ncurses instead of ncursesw.
