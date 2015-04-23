@@ -1,6 +1,6 @@
 class Solr < Formula
   homepage "https://lucene.apache.org/solr/"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.1.0/solr-5.1.0.tgz"
+  url "https://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.1.0/solr-5.1.0.tgz"
   mirror "https://archive.apache.org/dist/lucene/solr/5.1.0/solr-5.1.0.tgz"
   sha256 "8718cbfb789a170d210b0b4adbe4fd8187ecdc67c5348ed9d551578087d8a628"
 
