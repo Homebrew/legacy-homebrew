@@ -1,7 +1,7 @@
 class Duck < Formula
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-4.6.5.17000.tar.gz"
-  sha1 "bd26842b09bf41f86791a7172b93ac88f029b354"
+  url "https://dist.duck.sh/duck-src-4.7.17420.tar.gz"
+  sha1 "e65f1544bf697ed6aeaa55ee41d0a2600b9f63f7"
   head "https://svn.cyberduck.io/trunk/"
 
   bottle do
