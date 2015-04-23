@@ -2,8 +2,8 @@ require "formula"
 
 class Pdnsrec < Formula
   homepage "http://wiki.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-recursor-3.7.1.tar.bz2"
-  sha1 "1651bb2ba4414c4276d18b281c0156576c37f741"
+  url "http://downloads.powerdns.com/releases/pdns-recursor-3.7.2.tar.bz2"
+  sha256 "1366bc1bed7c96fbd3926cf7a9e6d365c53b8a99182642debe1b2863dd015a7e"
 
   bottle do
     cellar :any
@@ -15,13 +15,6 @@ class Pdnsrec < Formula
   depends_on :macos => :lion
   depends_on "boost"
   depends_on "lua" => :optional
-
-  # Upstream patch for bug in 3.7.1 release (will be in next release)
-  # http://bert-hubert.blogspot.nl/2015/02/some-notes-on-sendmsg.html
-  patch :p1 do
-    url "https://gist.github.com/Habbie/107a297695dcac9efe9b/raw/78be11c907cf88ed41a725e97c8f5f1e2290309d/gistfile1.diff"
-    sha1 "63140c8a38dc9593f72ad80af9d87ca80764aebd"
-  end
 
   def install
     # Set overrides using environment variables
