@@ -16,7 +16,7 @@ class Openssl < Formula
   resource "cacert" do
     # homepage "http://curl.haxx.se/docs/caextract.html"
     url "http://curl.haxx.se/ca/cacert.pem"
-    sha1 "1d6fef5a6a5ad01f52e31e274e2d811b2b794e80"
+    sha256 "ccde89388cac12c5d3c8e68b9458add7e22b849371818dfdd240c994d6193641"
   end
 
   option :universal
