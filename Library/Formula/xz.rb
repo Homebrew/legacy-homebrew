@@ -17,6 +17,12 @@ class Xz < Formula
 
   def install
     ENV.universal_binary if build.universal?
+    if OS.linux? && Version.new(`uname -r`.chomp) < Version.new("2.6.27")
+      # Fix Error creating a pipe: Function not implemented
+      inreplace "configure",
+        "for ac_func in posix_fadvise pipe2",
+        "for ac_func in posix_fadvise"
+    end
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
