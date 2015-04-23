@@ -53,6 +53,12 @@ class Sandbox
     allow_write_path HOMEBREW_LOGS/formula.name
   end
 
+  def deny_write_homebrew_library
+    deny_write_path HOMEBREW_LIBRARY
+    deny_write_path HOMEBREW_REPOSITORY/".git"
+    deny_write HOMEBREW_BREW_FILE
+  end
+
   def exec(*args)
     begin
       seatbelt = Tempfile.new(["homebrew", ".sb"], HOMEBREW_TEMP)
