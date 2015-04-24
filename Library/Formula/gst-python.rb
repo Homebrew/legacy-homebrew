@@ -17,6 +17,6 @@ class GstPython < Formula
     system "make", "install"
   end
   test do
-    system "gst-inspect-1.0 python"
+    system "gst-inspect-1.0", "python"
   end
 end
