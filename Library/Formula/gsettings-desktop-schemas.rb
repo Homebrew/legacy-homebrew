@@ -1,5 +1,3 @@
-require "formula"
-
 class GsettingsDesktopSchemas < Formula
   homepage "http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/"
   url "http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.14/gsettings-desktop-schemas-3.14.0.tar.xz"
@@ -14,7 +12,7 @@ class GsettingsDesktopSchemas < Formula
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
-  depends_on "glib" => :build # for glib-mkenums
+  depends_on "glib"
   depends_on "gobject-introspection" => :build
   depends_on "gettext"
   depends_on "libffi"
@@ -25,11 +23,23 @@ class GsettingsDesktopSchemas < Formula
                           "--prefix=#{prefix}",
                           "--disable-schemas-compile",
                           "--enable-introspection=yes"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gdesktop-enums.h>
+
+      int main(int argc, char *argv[]) {
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{HOMEBREW_PREFIX}/include/gsettings-desktop-schemas", "test.c", "-o", "test"
+    system "./test"
   end
 
   def post_install
     # manual schema compile step
-    system Formula["glib"].opt_bin/"glib-compile-schemas", share/"glib-2.0/schemas"
+    system "#{Formula["glib"].opt_bin}/glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
   end
 end
