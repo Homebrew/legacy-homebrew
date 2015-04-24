@@ -2,17 +2,16 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'https://static.rust-lang.org/dist/rustc-1.0.0-beta-src.tar.gz'
-  version "1.0.0-beta"
-  sha256 '94248e30487723ac6f6c34a0db5a21085c0b1338e6a32bd12b159e1d2cd80451'
+  url 'https://static.rust-lang.org/dist/rustc-1.0.0-beta.2-src.tar.gz'
+  version "1.0.0-beta.2"
+  sha256 '969f20bfec588456af8ab81c9b00ef46df075bf9ac9955e42a87b1f39cb99771'
 
   head 'https://github.com/rust-lang/rust.git'
 
   bottle do
-    revision 1
-    sha256 "30c575c4b5f6580b9fa623b4cd49b7560290da7e0271650767e3d7f87099e6d4" => :yosemite
-    sha256 "b86ff5452e4cce0cb93b601aec283cd47e06bd8336dbc3eece1e94f634c7e7ac" => :mavericks
-    sha256 "5194f3ae7512d842ac8085628c31b1c36ceae0fb15382f3a1982bc9e80609ae3" => :mountain_lion
+    sha256 "b2daf887ed5bd0d52dd5b96d3ddab38901d63c1408534660138bbf05bac922c8" => :yosemite
+    sha256 "7c49753fb3e7f80eedea6122652d307f71fe9426a124abbd0936ae91871006e9" => :mavericks
+    sha256 "96800a3840fd0e929216d22ff768c839ed7fb3046c62ca67b8793af6e72e9fc3" => :mountain_lion
   end
 
   def install

@@ -1,12 +1,12 @@
 class Bmake < Formula
   homepage "http://www.crufty.net/help/sjg/bmake.html"
-  url "http://www.crufty.net/ftp/pub/sjg/bmake-20150410.tar.gz"
-  sha256 "72727f5ddce4448a0136a1e2c536f7627440e3e482700b43c666f96737b2bfce"
+  url "http://www.crufty.net/ftp/pub/sjg/bmake-20150411.tar.gz"
+  sha256 "67fe93e078ea64719fb4123a638cc798241fe70d1fa5d5e08e64751f69a06b82"
 
   bottle do
-    sha256 "7d683b7293b8b9ebbda8979a715f167eb30df5c6d4162a9fd3821dbff44faf0b" => :yosemite
-    sha256 "b124914d286d2c815145563702e8e0ae97ac366bf1ca4cfca05bc1e02154c203" => :mavericks
-    sha256 "2588d1208a3b9e3686b2819df31229c4fa1d65202c36f83eb1e097daaf4afccd" => :mountain_lion
+    sha256 "d04c6d1053a37523def6b64436b892740234ccb2478d35ddb389cf9fcba78cbb" => :yosemite
+    sha256 "f953d4ff22e6ecbad0a33ea3b37becf5be6b5a8bbbb69a6c4d0f0ad69f61f534" => :mavericks
+    sha256 "c5dc94d4a158a3b3517663ac77e670b5154a69b81c3ebb9d425cee4b81171c45" => :mountain_lion
   end
 
   def install

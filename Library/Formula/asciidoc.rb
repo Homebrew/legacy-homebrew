@@ -18,6 +18,9 @@ class Asciidoc < Formula
 
   depends_on "docbook"
 
+  option "with-docbook-xsl", "Install DTDs to generate manpages"
+  depends_on "docbook-xsl" => :optional
+
   def install
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
