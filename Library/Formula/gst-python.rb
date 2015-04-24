@@ -16,7 +16,7 @@ class GstPython < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
-  
+
   test do
     system "gst-inspect-1.0", "python"
   end
