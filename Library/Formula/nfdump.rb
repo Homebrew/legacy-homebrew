@@ -9,6 +9,6 @@ class Nfdump < Formula
   end
 
   test do
-      system "nfdump -Z \'host 8.8.8.8\'"
+    system "#{bin}/nfdump", "-Z 'host 8.8.8.8'"
   end
 end
