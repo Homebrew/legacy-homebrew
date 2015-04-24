@@ -1,15 +1,24 @@
 class Gosu < Formula
   desc "Pragmatic language for the JVM"
   homepage "http://gosu-lang.org/"
-  url "http://gosu-lang.org/nexus/content/repositories/gosu/org/gosu-lang/gosu/gosu/0.10.3/gosu-0.10.3-full.tar.gz"
-  sha256 "81ee61e8ca342040f428a5993710db35dd07596a6c5e71953299a9843f74146b"
+  url "https://github.com/gosu-lang/gosu-lang/archive/v1.9.1.tar.gz"
+  sha256 "6a49719305a5da1605397dec05f2c9ce3213a57e4b7e19f509c824b20c6a93a9"
+  head "https://github.com/gosu-lang/gosu-lang.git"
 
-  bottle :unneeded
+  depends_on :java => "1.8+"
+  depends_on "maven" => :build
+
+  skip_clean "libexec/ext"
 
   def install
-    rm "bin/gosu.cmd"
-    touch "ext/.anchor"
-    libexec.install Dir["*"]
+    system "mvn", "package", "-Duser.home=#{buildpath}"
+    libexec.install Dir["gosu/target/gosu-#{version}-full/gosu-#{version}/*"]
+    (libexec/"ext").mkpath
     bin.install_symlink libexec/"bin/gosu"
+  end
+
+  test do
+    (testpath/"test.gsp").write 'print ("burp")'
+    assert_equal "burp", shell_output("#{bin}/gosu test.gsp").chomp
   end
 end
