@@ -6,6 +6,12 @@ class Gammu < Formula
 
   head "https://github.com/gammu/gammu.git"
 
+  bottle do
+    sha256 "c5e3744176b3609902070f07ced499d02570a8dc0d5aa72e02383b8e9bcce5a4" => :yosemite
+    sha256 "106312958bcfb95929178a716ca5cd458ee37ba9e6ad6ca80ba3dbb0ac8c8b40" => :mavericks
+    sha256 "d1f54aae239138586fbc5693120a28b58eb709811461478b8dc976345b3de3df" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
   depends_on "glib" => :recommended
   depends_on "gettext" => :optional
