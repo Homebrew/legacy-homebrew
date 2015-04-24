@@ -1,5 +1,3 @@
-require "formula"
-
 class GstPython < Formula
   homepage "http://gstreamer.freedesktop.org/modules/gst-python.html"
   url "http://gstreamer.freedesktop.org/src/gst-python/gst-python-1.4.0.tar.xz"
