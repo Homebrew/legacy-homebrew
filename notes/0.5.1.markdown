@@ -8,3 +8,4 @@
 * Documentation fixes (@ajmerlob)
 * Serialize empty maps (@jonbuffington)
 * Separate thread pools for job Futures in each JobManager/context (@mehmeteking)
+* Remove external dependency on jQuery (@johnbateman)
