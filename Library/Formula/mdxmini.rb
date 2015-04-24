@@ -4,6 +4,13 @@ class Mdxmini < Formula
   version "20140608"
   sha256 "a3c4f1b60a3771826de9d3615a7485126818811a3b119ee1354e7b1cb84b66b3"
 
+  bottle do
+    cellar :any
+    sha256 "c40c860c49f6dacda1d7a0e240349fb917555e8b80b75451569a423ac7bec6a3" => :yosemite
+    sha256 "e2ccb5b94304f95607769d614ff8ab89f773848adc394ac648ad69bcca0443cb" => :mavericks
+    sha256 "d4cddad73364a53e86f102ae3da0b4f9276b4be834dbd7fe87c08bdc8da84284" => :mountain_lion
+  end
+
   option "with-lib-only", "Do not build commandline player"
   deprecated_option "lib-only" => "with-lib-only"
 
