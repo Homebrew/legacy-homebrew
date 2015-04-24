@@ -21,13 +21,8 @@ class Cairomm < Formula
   end
 
   depends_on "libpng"
+  depends_on "cairo"
   depends_on :x11 => :recommended
-
-  if build.without? "x11"
-    depends_on "cairo" => "without-x11"
-  else
-    depends_on "cairo"
-  end
 
   def install
     ENV.cxx11 if build.cxx11?
