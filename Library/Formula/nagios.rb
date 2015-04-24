@@ -83,6 +83,9 @@ class Nagios < Formula
 
         -#LoadModule php5_module        libexec/apache2/libphp5.so
         +LoadModule php5_module        libexec/apache2/libphp5.so
+        
+        -#LoadModule cgi_module libexec/apache2/mod_cgi.so
+        +LoadModule cgi_module libexec/apache2/mod_cgi.so
 
         -#LoadModule cgi_module libexec/apache2/mod_cgi.so
         +LoadModule cgi_module libexec/apache2/mod_cgi.so
