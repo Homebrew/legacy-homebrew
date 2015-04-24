@@ -3,6 +3,12 @@ class Goffice < Formula
   url "http://ftp.gnome.org/pub/GNOME/sources/goffice/0.10/goffice-0.10.22.tar.xz"
   sha256 "0206a87a323b52a874dc54491374245f9e1c5f62e93a2ce4a02fb444a26b0e28"
 
+  bottle do
+    sha256 "51f1067664b72d91c61bdeb7a3f2218afcba8c37d5aa958f390986bd1db5c7c1" => :yosemite
+    sha256 "c3f9c729a1db2dd973c9894ec645db354dc8e883d27ad82d5af4fc0a1ebc6dfe" => :mavericks
+    sha256 "9d69ebfd454ebcecaf56cf7e7eca1484ac3c200e974ffbd2308b11da810090d8" => :mountain_lion
+  end
+
   head do
     url "https://github.com/GNOME/goffice.git"
     depends_on "automake" => :build
