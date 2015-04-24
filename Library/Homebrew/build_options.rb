@@ -5,7 +5,7 @@ class BuildOptions
   end
 
   def include? name
-    # Enable --default-names by default on Linux.
+    # Enable --with-default-names by default on Linux.
     # It would be good to add a --without-default-names option.
     return true if OS.linux? && ["default-names", "with-default-names"].include?(name)
     @args.include?("--#{name}")
