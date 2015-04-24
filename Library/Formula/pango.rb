@@ -1,17 +1,15 @@
-require 'formula'
-
 class Pango < Formula
   homepage "http://www.pango.org/"
   url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.8.tar.xz"
   sha256 "18dbb51b8ae12bae0ab7a958e7cf3317c9acfc8a1e1103ec2f147164a0fc2d07"
 
   head do
-    url 'https://git.gnome.org/browse/pango'
+    url "https://git.gnome.org/browse/pango"
 
-    depends_on 'automake' => :build
-    depends_on 'autoconf' => :build
-    depends_on 'libtool' => :build
-    depends_on 'gtk-doc' => :build
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+    depends_on "gtk-doc" => :build
   end
 
   bottle do
@@ -23,13 +21,13 @@ class Pango < Formula
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'cairo'
-  depends_on 'harfbuzz'
-  depends_on 'fontconfig'
-  depends_on :x11 => :recommended
-  depends_on 'gobject-introspection'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "harfbuzz"
+  depends_on "fontconfig"
+  depends_on :x11
+  depends_on "cairo"
+  depends_on "gobject-introspection"
 
   fails_with :llvm do
     build 2326
@@ -46,18 +44,14 @@ class Pango < Formula
       --enable-man
       --with-html-dir=#{share}/doc
       --enable-introspection=yes
+      --with-xft
+      --with-included-modules
     ]
-
-    if build.without? "x11"
-      args << '--without-xft'
-    else
-      args << '--with-xft'
-    end
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

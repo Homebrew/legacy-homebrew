@@ -11,8 +11,6 @@ class Cairomm < Formula
 
   option :cxx11
 
-  deprecated_option "without-x" => "without-x11"
-
   depends_on "pkg-config" => :build
   if build.cxx11?
     depends_on "libsigc++" => "c++11"
@@ -21,13 +19,7 @@ class Cairomm < Formula
   end
 
   depends_on "libpng"
-  depends_on :x11 => :recommended
-
-  if build.without? "x11"
-    depends_on "cairo" => "without-x11"
-  else
-    depends_on "cairo"
-  end
+  depends_on "cairo"
 
   def install
     ENV.cxx11 if build.cxx11?

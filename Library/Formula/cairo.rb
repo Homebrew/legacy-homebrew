@@ -1,5 +1,3 @@
-require "formula"
-
 class Cairo < Formula
   homepage "http://cairographics.org/"
   url "http://cairographics.org/releases/cairo-1.14.2.tar.xz"
@@ -22,7 +20,7 @@ class Cairo < Formula
   depends_on "libpng"
   depends_on "pixman"
   depends_on "glib"
-  depends_on :x11 => :recommended
+  depends_on :x11
 
   def install
     ENV.universal_binary if build.universal?
@@ -34,17 +32,25 @@ class Cairo < Formula
       --enable-svg=yes
       --enable-tee=yes
       --with-x
+      --enable-quartz-image
     ]
-
-    if build.without? "x11"
-      args.delete "--with-x"
-      args << "--enable-xlib=no" << "--enable-xlib-xrender=no"
-      args << "--enable-quartz-image"
-    end
 
     args << "--enable-xcb=no" if MacOS.version <= :leopard
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+  end
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <cairo.h>
+
+      int main(int argc, char *argv[]) {
+        cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 600, 400);
+        cairo_t *context = cairo_create(surface);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{HOMEBREW_PREFIX}/include/cairo", "-I#{HOMEBREW_PREFIX}/include/glib-2.0", "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include", "-I#{HOMEBREW_PREFIX}/opt/gettext/include", "-I#{HOMEBREW_PREFIX}/include/pixman-1", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/freetype2", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I/opt/X11/include", "test.c", "-L#{HOMEBREW_PREFIX}/lib", "-lcairo", "-o", "test"
+    system "./test"
   end
 end
