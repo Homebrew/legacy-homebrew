@@ -1,7 +1,7 @@
 class Cabextract < Formula
   homepage "http://www.cabextract.org.uk/"
-  url "http://www.cabextract.org.uk/cabextract-1.5.tar.gz"
-  sha1 "7ddb31072590a807bef09234f46f940e1ba51067"
+  url "http://www.cabextract.org.uk/cabextract-1.6.tar.gz"
+  sha256 "cee661b56555350d26943c5e127fc75dd290b7f75689d5ebc1f04957c4af55fb"
 
   bottle do
     cellar :any
