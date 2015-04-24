@@ -19,16 +19,23 @@ class Dpkg < Formula
     inreplace "scripts/Dpkg/Checksums.pm" do |s|
       s.gsub! "md5sum", "md5"
       s.gsub! "sha1sum", "shasum"
-      s.gsub! "sha256sum", "'shasum', '-a', '256'"
+      s.gsub! "sha256sum", "shasum', '-a', '256"
     end
 
     # We need to specify a recent gnutar, otherwise various dpkg C programs will
     # use the system "tar", which will fail because it lacks certain switches.
     ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
-    ENV["PERL_LIBDIR"] = lib/"perl5/site_perl"
+
+    # Theoretically, we could reinsert a patch here submitted upstream previously
+    # but the check for PERL_LIB remains in place and incompatible with Homebrew.
+    # Using an env and scripting is a solution less likely to break over time.
+    # Both variables need to be set. One is compile-time, the other run-time.
+    ENV["PERL_LIBDIR"] = libexec/"lib/perl5"
+    ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
+
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
-                          "--prefix=#{prefix}",
+                          "--prefix=#{libexec}",
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}",
                           "--disable-dselect",
@@ -37,6 +44,10 @@ class Dpkg < Formula
                           "--disable-update-alternatives"
     system "make"
     system "make", "install"
+
+    bin.install Dir["#{libexec}/bin/*"]
+    man.install Dir["#{libexec}/share/man/*"]
+    bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 
   def caveats; <<-EOS.undent
