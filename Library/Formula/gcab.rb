@@ -1,25 +1,32 @@
-require 'formula'
-
 class Gcab < Formula
-  homepage 'https://wiki.gnome.org/msitools'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gcab/0.4/gcab-0.4.tar.xz'
-  sha1 'd81dfe35125e611e3a94c0d4def37ebf62b9187c'
+  homepage "https://wiki.gnome.org/msitools"
+  url "http://ftp.acc.umu.se/pub/GNOME/sources/gcab/0.6/gcab-0.6.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/gcab/gcab_0.6.orig.tar.xz"
+  sha256 "a0443b904bfa7227b5155bfcdf9ea9256b6e26930b8febe1c41f972f6f1334bb"
 
-  depends_on 'intltool' => :build
-  depends_on 'pkg-config' => :build
-  depends_on 'vala' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'gobject-introspection'
+  depends_on "intltool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "vala" => :build
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "gobject-introspection"
 
   # work around ld not understanding --version-script argument
   # upstream bug: https://bugzilla.gnome.org/show_bug.cgi?id=708257
   patch :DATA
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-dependency-tracking"
     system "make", "install"
+  end
+
+  test do
+    touch "file1"
+    touch "file2"
+    system bin/"gcab", "--zip", "-c", testpath/"out.zip",
+           testpath/"file1", testpath/"file2"
+    File.exist? testpath/"out.zip"
   end
 end
 
@@ -36,4 +43,3 @@ index 2264c17..7782d62 100644
 +	-Wl                                     	\
  	-no-undefined					\
  	$(NULL)
-
