@@ -3,7 +3,7 @@ class GstPython < Formula
   url "http://gstreamer.freedesktop.org/src/gst-python/gst-python-1.4.0.tar.xz"
   sha256 "b1e40c29ceb41b03f08d38aca6056054f0341d0706276326dceeec6ac8d53d3e"
 
-  head "http:/"
+  head "http://gstreamer.freedesktop.org/src/gst-python/gst-python-1.4.0.tar.xz"
 
   depends_on "gst-plugins-base"
   depends_on "pygtk"
@@ -16,6 +16,7 @@ class GstPython < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
   test do
     system "gst-inspect-1.0", "python"
   end
