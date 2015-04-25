@@ -1,6 +1,6 @@
 class Glibmm < Formula
   homepage "http://www.gtkmm.org/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.44/glibmm-2.44.0.tar.xz"
+  url "https://download.gnome.org/sources/glibmm/2.44/glibmm-2.44.0.tar.xz"
   sha256 "1b0ac0425d24895507c0e0e8088a464c7ae2d289c47afa1c11f63278fc672ea8"
 
   bottle do
