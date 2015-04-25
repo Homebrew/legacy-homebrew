@@ -1,7 +1,7 @@
 require "formula"
 
 class Datamash < Formula
-  homepage "http://www.gnu.org/software/datamash"
+  homepage "https://www.gnu.org/software/datamash"
   url "http://ftpmirror.gnu.org/datamash/datamash-1.0.6.tar.gz"
   sha1 "2423314727dfe1750a8f0c6dbc131458a6a67ca6"
 

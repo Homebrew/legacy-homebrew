@@ -1,7 +1,7 @@
 require 'formula'
 
 class Logrotate < Formula
-  homepage 'http://packages.debian.org/testing/admin/logrotate'
+  homepage 'https://packages.debian.org/testing/admin/logrotate'
   url 'https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.8.3.tar.gz'
   sha1 '19d70e2cfb97c1cee32e0d709da990856311022a'
 

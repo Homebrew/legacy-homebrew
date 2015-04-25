@@ -1,7 +1,7 @@
 class Dpkg < Formula
   homepage "https://wiki.debian.org/Teams/Dpkg"
   url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
-  mirror "http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
+  mirror "https://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
   sha256 "07019d38ae98fb107c79dbb3690cfadff877f153b8c4970e3a30d2e59aa66baa"
 
   bottle do

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Sqoop < Formula
-  homepage 'http://sqoop.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=sqoop/1.4.5/sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz'
+  homepage 'https://sqoop.apache.org/'
+  url 'https://www.apache.org/dyn/closer.cgi?path=sqoop/1.4.5/sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz'
   version '1.4.5'
   sha1 'cb1831d0da2b6f508f62b144d405d859e371e111'
 

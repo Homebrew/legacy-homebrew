@@ -2,7 +2,7 @@ require "formula"
 
 class Libsecret < Formula
   homepage "https://wiki.gnome.org/Projects/Libsecret"
-  url "http://ftp.gnome.org/pub/gnome/sources/libsecret/0.18/libsecret-0.18.tar.xz"
+  url "https://ftp.gnome.org/pub/gnome/sources/libsecret/0.18/libsecret-0.18.tar.xz"
   sha1 "af62de3958bbe0ccf59a02101a6704e036378a6f"
 
   bottle do

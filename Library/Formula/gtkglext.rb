@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gtkglext < Formula
-  homepage 'http://projects.gnome.org/gtkglext/'
+  homepage 'https://projects.gnome.org/gtkglext/'
   url 'https://downloads.sourceforge.net/gtkglext/gtkglext-1.2.0.tar.gz'
   sha1 'db9ce38ee555fd14f55083ec7f4ae30e5338d5cc'
 
@@ -20,7 +20,7 @@ class Gtkglext < Formula
   depends_on :x11
 
   # fixes an incompatibility with recent GTK versions
-  # patch from: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=585155
+  # patch from: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=585155
   patch :DATA
 
   def install

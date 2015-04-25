@@ -32,7 +32,7 @@ class S3fs < Formula
     that have been created by other tools. See the following issue for
     details:
 
-      http://code.google.com/p/s3fs/issues/detail?id=73
+      https://code.google.com/p/s3fs/issues/detail?id=73
     EOS
   end
 end

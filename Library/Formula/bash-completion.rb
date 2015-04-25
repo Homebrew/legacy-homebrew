@@ -9,7 +9,7 @@ class BashCompletion < Formula
   sha1 '6a46b93f44c56cc336632ab28d90c0595fbcc98f'
 
   # Backports the following upstream patch from 2.x:
-  # http://anonscm.debian.org/gitweb/?p=bash-completion/bash-completion.git;a=patch;h=50ae57927365a16c830899cc1714be73237bdcb2
+  # https://anonscm.debian.org/gitweb/?p=bash-completion/bash-completion.git;a=patch;h=50ae57927365a16c830899cc1714be73237bdcb2
   patch :DATA
 
   def compdir

@@ -26,7 +26,7 @@ class Jasper < Formula
   # The following patch fixes a bug (still in upstream as of jasper 1.900.1)
   # where an assertion fails when Jasper is fed certain JPEG-2000 files with
   # an alpha channel. See:
-  # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
+  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
   patch :DATA
 
   def install

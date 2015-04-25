@@ -1,7 +1,7 @@
 require 'formula'
 
 class Htmlcompressor < Formula
-  homepage 'http://code.google.com/p/htmlcompressor/'
+  homepage 'https://code.google.com/p/htmlcompressor/'
   url 'https://htmlcompressor.googlecode.com/files/htmlcompressor-1.5.3.jar'
   sha1 '57db73b92499e018b2f2978f1c7aa7b1238c7a39'
 

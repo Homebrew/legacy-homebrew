@@ -2,13 +2,13 @@ require 'formula'
 
 class Aldo < Formula
   homepage 'http://www.nongnu.org/aldo/'
-  url 'http://savannah.nongnu.org/download/aldo/aldo-0.7.7.tar.bz2'
+  url 'https://savannah.nongnu.org/download/aldo/aldo-0.7.7.tar.bz2'
   sha1 'c37589f8cb0855d33814b7462b3e5ded21caa8ea'
 
   depends_on 'libao'
 
   # Reported upstream:
-  # http://savannah.nongnu.org/bugs/index.php?42127
+  # https://savannah.nongnu.org/bugs/index.php?42127
   patch :DATA
 
   def install

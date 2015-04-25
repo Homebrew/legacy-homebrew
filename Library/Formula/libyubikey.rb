@@ -1,5 +1,5 @@
 class Libyubikey < Formula
-  homepage "http://yubico.github.io/yubico-c/"
+  homepage "https://yubico.github.io/yubico-c/"
   url "https://developers.yubico.com/yubico-c/Releases/libyubikey-1.12.tar.gz"
   sha1 "6a73d548e61f0b622a9447917f03c78686ab386d"
 

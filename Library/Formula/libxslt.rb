@@ -69,7 +69,7 @@ index 0eeadd3..5e85821 100755
 -	echo
 -	echo "You must have libtool installed to compile libxslt."
 -	echo "Download the appropriate package for your distribution,"
--	echo "or see http://www.gnu.org/software/libtool"
+-	echo "or see https://www.gnu.org/software/libtool"
 -	DIE=1
 -}
 -
@@ -78,7 +78,7 @@ index 0eeadd3..5e85821 100755
 -	DIE=1
 -	echo "You must have automake installed to compile libxslt."
 -	echo "Download the appropriate package for your distribution,"
--	echo "or see http://www.gnu.org/software/automake"
+-	echo "or see https://www.gnu.org/software/automake"
 -}
 -
  if test "$DIE" -eq 1; then

@@ -1,7 +1,7 @@
 require "formula"
 
 class Pgbadger < Formula
-  homepage "http://dalibo.github.io/pgbadger/"
+  homepage "https://dalibo.github.io/pgbadger/"
   url "https://downloads.sourceforge.net/project/pgbadger/6.2/pgbadger-6.2.tar.gz"
   sha1 "46f6935ff746f8b2002009ebbcae60d23aaff8b3"
 

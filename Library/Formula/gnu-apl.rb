@@ -1,9 +1,9 @@
 require "formula"
 
 class GnuApl < Formula
-  homepage "http://www.gnu.org/software/apl/"
+  homepage "https://www.gnu.org/software/apl/"
   url "http://ftpmirror.gnu.org/apl/apl-1.4.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/apl/apl-1.4.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/apl/apl-1.4.tar.gz"
   sha1 "ee5dab7f7c0f5d79c435a20f3ddcafbda85ac22e"
 
   bottle do

@@ -1,8 +1,8 @@
 require "formula"
 
 class Vte3 < Formula
-  homepage "http://developer.gnome.org/vte/"
-  url "http://ftp.gnome.org/pub/gnome/sources/vte/0.36/vte-0.36.3.tar.xz"
+  homepage "https://developer.gnome.org/vte/"
+  url "https://ftp.gnome.org/pub/gnome/sources/vte/0.36/vte-0.36.3.tar.xz"
   sha1 "a7acc1594eb6fa249edccb059c21132b3aa2657b"
 
   depends_on "pkg-config" => :build

@@ -122,7 +122,7 @@ class Python < Formula
     system "./configure", *args
 
     # HAVE_POLL is "broken" on OS X. See:
-    # http://trac.macports.org/ticket/18376
+    # https://trac.macports.org/ticket/18376
     # http://bugs.python.org/issue5154
     if build.without? "poll"
       inreplace "pyconfig.h", /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'

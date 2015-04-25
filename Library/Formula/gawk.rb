@@ -1,9 +1,9 @@
 require "formula"
 
 class Gawk < Formula
-  homepage "http://www.gnu.org/software/gawk/"
+  homepage "https://www.gnu.org/software/gawk/"
   url "http://ftpmirror.gnu.org/gawk/gawk-4.1.1.tar.xz"
-  mirror "http://ftp.gnu.org/gnu/gawk/gawk-4.1.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gawk/gawk-4.1.1.tar.xz"
   sha1 "547feb48d20e923aff58daccee97c94e047fdc18"
 
   bottle do

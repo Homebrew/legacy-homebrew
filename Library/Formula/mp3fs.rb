@@ -1,7 +1,7 @@
 require "formula"
 
 class Mp3fs < Formula
-  homepage "http://khenriks.github.io/mp3fs/"
+  homepage "https://khenriks.github.io/mp3fs/"
   url "https://github.com/khenriks/mp3fs/releases/download/v0.91/mp3fs-0.91.tar.gz"
   sha1 "a9e65b8453f4444ec6faba045120e7efb18da20e"
 
