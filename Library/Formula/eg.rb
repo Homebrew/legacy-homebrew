@@ -6,7 +6,7 @@ class Eg < Formula
   def install
     if Dir.exist? "#{var}/examples"
       Dir["eg/examples/*"].each do |example|
-        next if example.to_s == '.' || example.to_s == '..'
+        next if example.to_s == "." || example.to_s == ".."
         mv example, "#{var}/examples/"
       end
       rmdir "eg/examples"
