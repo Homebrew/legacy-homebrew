@@ -3,6 +3,8 @@ class Ghc < Formula
   url "https://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-src.tar.xz"
   sha256 "92f3e3d67a637c587c49b61c704a670953509eb4b17a93c0c2ac153da4cd3aa0"
 
+  revision 2
+
   bottle do
     revision 1
     sha256 "c2ec277a5445ece878b940838a93feed7a0c7733273ddcb26c07ec434f6ad800" => :yosemite
@@ -20,10 +22,12 @@ class Ghc < Formula
   depends_on "gcc" if MacOS.version == :mountain_lion
 
   resource "gmp" do
-    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
-    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+    # Track the main gmp formula so it doesn't have to be updated here.
+    @gmp = Formulary.factory("gmp").stable
+
+    url @gmp.url
+    mirror @gmp.mirrors[0]
+    @checksum = @gmp.checksum
   end
 
   if build.build_32_bit? || !MacOS.prefer_64_bit?
@@ -38,11 +42,9 @@ class Ghc < Formula
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
     end
   else
-    # there is currently no 7.10.1 binary download for darwin,
-    # so we use the one for 7.8.4 instead
     resource "binary" do
-      url "https://downloads.haskell.org/~ghc/7.8.4/ghc-7.8.4-x86_64-apple-darwin.tar.xz"
-      sha256 "ebb6b0294534abda05af91798b43e2ea02481edacbf3d845a1e5925a211c67e3"
+      url "https://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-x86_64-apple-darwin.tar.xz"
+      sha256 "bc45de19efc831f7d5a3fe608ba4ebcd24cc0f414cac4bc40ef88a04640583f6"
     end
   end
 
@@ -72,10 +74,12 @@ class Ghc < Formula
   def install
     ENV.m32 if build.build_32_bit?
 
-    # Build a static gmp (to avoid dynamic linking to ghc)
-    gmp_prefix = buildpath/"gmp-static"
+    # Build a static gmp (to avoid dynamic linking to ghc). "--with-pic" is
+    # *required* when building gmp statically, else you'll get
+    # "illegal text reloc" errors.
+    gmp_prefix = libexec/"gmp-static"
     resource("gmp").stage do
-      gmp_args = ["--prefix=#{gmp_prefix}", "--enable-cxx", "--enable-shared=no"]
+      gmp_args = ["--prefix=#{gmp_prefix}", "--disable-shared", "--with-pic"]
       gmp_args << "ABI=32" if build.build_32_bit?
 
       # https://github.com/Homebrew/homebrew/issues/20693
@@ -84,8 +88,7 @@ class Ghc < Formula
       system "./configure", *gmp_args
       system "make"
       system "make", "check"
-      ENV.deparallelize
-      system "make", "install"
+      ENV.deparallelize { system "make", "install" }
     end
 
     # Move the main tarball contents into a subdirectory
@@ -105,8 +108,7 @@ class Ghc < Formula
         end
       end
 
-      # -j1 fixes an intermittent race condition
-      system "make", "-j1", "install"
+      ENV.deparallelize { system "make", "install" }
       ENV.prepend_path "PATH", subprefix/"bin"
     end
 
@@ -121,21 +123,12 @@ class Ghc < Formula
         arch = "x86_64"
       end
 
-      # These will find their way into ghc's settings file, ensuring
-      # that ghc will look in the Homebrew lib dir for native libs
-      # (e.g., libgmp) even if the prefix is not /usr/local. Both are
-      # necessary to avoid problems on systems with custom prefixes:
-      # ghci fails without the first, compiling packages that depend
-      # on native libs fails without the second.
-      ENV["CONF_CC_OPTS_STAGE2"] = "-B#{HOMEBREW_PREFIX}/lib"
-      ENV["CONF_GCC_LINKER_OPTS_STAGE2"] = "-L#{HOMEBREW_PREFIX}/lib"
-
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       system "./configure", "--prefix=#{prefix}",
                             "--build=#{arch}-apple-darwin",
                             "--with-gcc=#{ENV.cc}",
-                            "--with-gmp-includes=#{gmp_prefix}",
-                            "--with-gmp-libraries=#{gmp_prefix}"
+                            "--with-gmp-includes=#{gmp_prefix}/include",
+                            "--with-gmp-libraries=#{gmp_prefix}/lib"
       system "make"
 
       if build.with? "tests"
@@ -151,11 +144,10 @@ class Ghc < Formula
             system "make", "CLEANUP=1", "THREADS=#{ENV.make_jobs}", "fast"
           end
         end
+        system "make"
       end
 
-      system "make"
-      # -j1 fixes an intermittent race condition
-      system "make", "-j1", "install"
+      ENV.deparallelize { system "make", "install" }
       # use clang, even when gcc was used to build ghc
       settings = Dir[lib/"ghc-*/settings"][0]
       inreplace settings, "\"#{ENV.cc}\"", "\"clang\""
