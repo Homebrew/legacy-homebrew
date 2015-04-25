@@ -1,7 +1,7 @@
 require 'formula'
 
 class Rp < Formula
-  homepage 'http://0vercl0k.github.io/rp/'
+  homepage 'https://0vercl0k.github.io/rp/'
   head 'https://github.com/0vercl0k/rp.git'
   url 'https://github.com/0vercl0k/rp/archive/v1.tar.gz'
   version '1.0'

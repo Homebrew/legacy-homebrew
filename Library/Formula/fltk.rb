@@ -2,7 +2,7 @@ require "formula"
 
 class Fltk < Formula
   homepage "http://www.fltk.org/"
-  url "http://fossies.org/linux/misc/fltk-1.3.3-source.tar.gz"
+  url "https://fossies.org/linux/misc/fltk-1.3.3-source.tar.gz"
   sha1 "873aac49b277149e054b9740378e2ca87b0bd435"
 
   bottle do

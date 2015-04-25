@@ -17,7 +17,7 @@ class Jigdo < Formula
 
   # Use MacPorts patch for compilation on 10.9; this software is no longer developed.
   patch :p0 do
-    url "http://trac.macports.org/export/113020/trunk/dports/net/jigdo/files/patch-src-compat.hh.diff"
+    url "https://trac.macports.org/export/113020/trunk/dports/net/jigdo/files/patch-src-compat.hh.diff"
     sha1 "3318ecbe8b2bb20e8e36c70dc10ff366df2009f3"
   end
 

@@ -1,5 +1,5 @@
 class LSmash < Formula
-  homepage "http://l-smash.github.io/l-smash/"
+  homepage "https://l-smash.github.io/l-smash/"
   url "https://github.com/l-smash/l-smash.git", :tag => "v1.13.2", :shallow => false
   head "https://github.com/l-smash/l-smash.git"
 

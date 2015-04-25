@@ -2,7 +2,7 @@ require 'formula'
 
 class Libcaca < Formula
   homepage 'http://caca.zoy.org/wiki/libcaca'
-  url 'http://fossies.org/linux/privat/libcaca-0.99.beta19.tar.gz'
+  url 'https://fossies.org/linux/privat/libcaca-0.99.beta19.tar.gz'
   version '0.99b19'
   sha1 'ed138f3717648692113145b99a80511178548010'
 

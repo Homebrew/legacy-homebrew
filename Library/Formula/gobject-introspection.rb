@@ -1,6 +1,6 @@
 class GobjectIntrospection < Formula
   homepage "https://live.gnome.org/GObjectIntrospection"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.44/gobject-introspection-1.44.0.tar.xz"
+  url "https://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.44/gobject-introspection-1.44.0.tar.xz"
   sha256 "6f0c2c28aeaa37b5037acbf21558098c4f95029b666db755d3a12c2f1e1627ad"
 
   bottle do

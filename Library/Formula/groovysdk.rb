@@ -2,7 +2,7 @@ require "formula"
 
 class Groovysdk < Formula
   homepage "http://groovy.codehaus.org/"
-  url "http://dl.bintray.com/groovy/maven/groovy-sdk-2.4.3.zip"
+  url "https://dl.bintray.com/groovy/maven/groovy-sdk-2.4.3.zip"
   sha1 "a3aa1161422132dc116f8b8171914b36668b3839"
 
   def install

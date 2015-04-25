@@ -1,7 +1,7 @@
 require 'formula'
 
 class Mimms < Formula
-  homepage 'http://savannah.nongnu.org/projects/mimms'
+  homepage 'https://savannah.nongnu.org/projects/mimms'
   url 'https://launchpad.net/mimms/trunk/3.2.1/+download/mimms-3.2.1.tar.bz2'
   sha1 '279eee76dd4032cd2c1dddf1d49292a952c57b80'
 
@@ -9,7 +9,7 @@ class Mimms < Formula
   depends_on 'libmms'
 
   # Switch shared library loading to Mach-O naming convention (.dylib)
-  # Matching upstream bug report: http://savannah.nongnu.org/bugs/?29684
+  # Matching upstream bug report: https://savannah.nongnu.org/bugs/?29684
   patch :DATA
 
   def install

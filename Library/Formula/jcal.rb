@@ -1,7 +1,7 @@
 require 'formula'
 
 class Jcal < Formula
-  homepage 'http://savannah.nongnu.org/projects/jcal/'
+  homepage 'https://savannah.nongnu.org/projects/jcal/'
   url 'http://download.savannah.gnu.org/releases/jcal/jcal-0.4.1.tar.gz'
   sha1 '23710a685515e1e824494890d6befac9edf04143'
 

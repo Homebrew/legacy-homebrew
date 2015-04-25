@@ -1,6 +1,6 @@
 class Libgit2Glib < Formula
   homepage "https://github.com/GNOME/libgit2-glib"
-  url "http://ftp.gnome.org/pub/GNOME/sources/libgit2-glib/0.22/libgit2-glib-0.22.0.tar.xz"
+  url "https://ftp.gnome.org/pub/GNOME/sources/libgit2-glib/0.22/libgit2-glib-0.22.0.tar.xz"
   sha256 "8ae19e1dd2a6b37dd81843182d96dc5f8d439013c26658670a08287abfedaee2"
 
   bottle do

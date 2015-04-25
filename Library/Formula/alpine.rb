@@ -14,7 +14,7 @@ class Alpine < Formula
   depends_on "openssl"
 
   # Upstream builds are broken on Snow Leopard due to a hack put in for prior
-  # versions of OS X. See: http://trac.macports.org/ticket/20971
+  # versions of OS X. See: https://trac.macports.org/ticket/20971
   if MacOS.version >= :snow_leopard
     patch do
       url "https://trac.macports.org/export/89747/trunk/dports/mail/alpine/files/alpine-osx-10.6.patch"

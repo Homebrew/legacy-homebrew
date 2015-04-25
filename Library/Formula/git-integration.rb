@@ -12,7 +12,7 @@ class SufficientlyRecentGit < Requirement
 end
 
 class GitIntegration < Formula
-  homepage "http://johnkeeping.github.io/git-integration/"
+  homepage "https://johnkeeping.github.io/git-integration/"
   url "https://github.com/johnkeeping/git-integration/archive/v0.3.tar.gz"
   sha1 "fc64f987a2a6b73c61c8a5278d06bcaa46ee9312"
 

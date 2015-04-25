@@ -1,8 +1,8 @@
 class Vim < Formula
   homepage "http://www.vim.org/"
   head "https://vim.googlecode.com/hg/"
-  # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url "http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.488.orig.tar.gz"
+  # This package tracks debian-unstable: https://packages.debian.org/unstable/vim
+  url "https://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.488.orig.tar.gz"
   sha256 "5b58ef7d4ce2c2eb84af2f3dbb3b5d6919adc97f12de1509a13681fa58936faf"
 
   # We only have special support for finding depends_on :python, but not yet for
@@ -95,7 +95,7 @@ class Vim < Formula
     system "make"
     # If stripping the binaries is not enabled, vim will segfault with
     # statically-linked interpreters like ruby
-    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    # https://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end

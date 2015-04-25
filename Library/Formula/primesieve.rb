@@ -2,7 +2,7 @@ require "formula"
 
 class Primesieve < Formula
   homepage "http://primesieve.org/"
-  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.tar.gz"
+  url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.tar.gz"
   sha1 "1309e444bde3822cdc3e953757b46750d384cc00"
 
   bottle do

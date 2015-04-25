@@ -1,5 +1,5 @@
 class Openwsman < Formula
-  homepage "http://openwsman.github.io"
+  homepage "https://openwsman.github.io"
   url "https://github.com/Openwsman/openwsman/archive/v2.4.12.tar.gz"
   sha1 "15fbe4454c3d48ab229036b09400afd5037f4ef2"
 

@@ -1,8 +1,8 @@
 require "formula"
 
 class JsonGlib < Formula
-  homepage "http://live.gnome.org/JsonGlib"
-  url "http://ftp.gnome.org/pub/gnome/sources/json-glib/1.0/json-glib-1.0.2.tar.xz"
+  homepage "https://live.gnome.org/JsonGlib"
+  url "https://ftp.gnome.org/pub/gnome/sources/json-glib/1.0/json-glib-1.0.2.tar.xz"
   sha256 "887bd192da8f5edc53b490ec51bf3ffebd958a671f5963e4f3af32c22e35660a"
 
   bottle do

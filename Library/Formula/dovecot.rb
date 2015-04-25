@@ -3,7 +3,7 @@ require "formula"
 class Dovecot < Formula
   homepage "http://dovecot.org/"
   url "http://dovecot.org/releases/2.2/dovecot-2.2.15.tar.gz"
-  mirror "http://fossies.org/linux/misc/dovecot-2.2.15.tar.gz"
+  mirror "https://fossies.org/linux/misc/dovecot-2.2.15.tar.gz"
   sha1 "10c90f1f08797b5931703d52a871437e6561d76f"
 
   bottle do

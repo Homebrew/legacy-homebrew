@@ -1,8 +1,8 @@
 require "formula"
 
 class TomeePlume < Formula
-  homepage "http://tomee.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plume.tar.gz"
+  homepage "https://tomee.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plume.tar.gz"
   version "1.7.1"
   sha1 "b27386dd16df4cc936283dd3739012a5eed3224a"
 

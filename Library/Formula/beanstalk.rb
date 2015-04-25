@@ -1,7 +1,7 @@
 require "formula"
 
 class Beanstalk < Formula
-  homepage "http://kr.github.io/beanstalkd/"
+  homepage "https://kr.github.io/beanstalkd/"
   url "https://github.com/kr/beanstalkd/archive/v1.10.tar.gz"
   sha1 "bfc0ccf99e15b15eac03ec1d8a57a3aaff143237"
 

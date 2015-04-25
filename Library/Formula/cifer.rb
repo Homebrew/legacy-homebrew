@@ -1,7 +1,7 @@
 require 'formula'
 
 class Cifer < Formula
-  homepage 'http://code.google.com/p/cifer/'
+  homepage 'https://code.google.com/p/cifer/'
   url 'https://cifer.googlecode.com/files/cifer-1.2.0.tar.gz'
   sha1 'dba2abbd672cd072c01f91a923e0830c009b66f2'
 

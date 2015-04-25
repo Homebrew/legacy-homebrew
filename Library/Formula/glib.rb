@@ -1,6 +1,6 @@
 class Glib < Formula
   homepage "https://developer.gnome.org/glib/"
-  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.44/glib-2.44.0.tar.xz"
+  url "https://ftp.gnome.org/pub/gnome/sources/glib/2.44/glib-2.44.0.tar.xz"
   sha256 "f2d362b106a08fa801770d41829a06fcfe287a00421018869eebf5efc796f5b9"
 
   bottle do

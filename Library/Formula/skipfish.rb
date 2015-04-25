@@ -1,7 +1,7 @@
 require 'formula'
 
 class Skipfish < Formula
-  homepage 'http://code.google.com/p/skipfish/'
+  homepage 'https://code.google.com/p/skipfish/'
   url 'https://skipfish.googlecode.com/files/skipfish-2.10b.tgz'
   sha1 '2564162a13d02f8310eef5edcbaf74ed6043be99'
 

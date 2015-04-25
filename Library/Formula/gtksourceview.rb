@@ -1,8 +1,8 @@
 require 'formula'
 
 class Gtksourceview < Formula
-  homepage 'http://projects.gnome.org/gtksourceview/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.10/gtksourceview-2.10.5.tar.gz'
+  homepage 'https://projects.gnome.org/gtksourceview/'
+  url 'https://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.10/gtksourceview-2.10.5.tar.gz'
   sha1 '1bb784d1e9d9966232928cf91b1ded20e8339670'
 
   bottle do

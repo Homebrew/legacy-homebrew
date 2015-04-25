@@ -1,5 +1,5 @@
 class Debianutils < Formula
-  homepage "http://anonscm.debian.org/gitweb/?p=users/clint/debianutils.git"
+  homepage "https://anonscm.debian.org/gitweb/?p=users/clint/debianutils.git"
   url "http://ftp.de.debian.org/debian/pool/main/d/debianutils/debianutils_4.4.tar.gz"
   sha1 "019b969ab698c83117254b50fc8f469f10a5d8d6"
 

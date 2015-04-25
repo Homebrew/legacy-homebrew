@@ -24,7 +24,7 @@ class Cdrdao < Formula
   end
 
   # second patch fixes device autodetection on OS X
-  # see http://trac.macports.org/ticket/27819
+  # see https://trac.macports.org/ticket/27819
   # upstream bug report:
   # http://sourceforge.net/tracker/?func=detail&aid=3381672&group_id=2171&atid=102171
   patch :p0, :DATA

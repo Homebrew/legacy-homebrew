@@ -1,7 +1,7 @@
 require "formula"
 
 class Exempi < Formula
-  homepage "http://libopenraw.freedesktop.org/wiki/Exempi"
+  homepage "https://wiki.freedesktop.org/libopenraw/Exempi"
   url "http://libopenraw.freedesktop.org/download/exempi-2.2.2.tar.bz2"
   sha1 "c0a0014e18f05aa7fac210c84788ef073718a9d8"
 

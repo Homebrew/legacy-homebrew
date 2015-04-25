@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gsasl < Formula
-  homepage 'http://www.gnu.org/software/gsasl/'
+  homepage 'https://www.gnu.org/software/gsasl/'
   url 'http://ftpmirror.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
   bottle do
     cellar :any
@@ -11,7 +11,7 @@ class Gsasl < Formula
     sha1 "bf3355e1963568a4282ec50bb3d2dfebb5f6b190" => :mountain_lion
   end
 
-  mirror 'http://ftp.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
+  mirror 'https://ftp.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
   sha1 '343fd97ae924dc406986c02fb9b889f4114239ae'
 
   def install
