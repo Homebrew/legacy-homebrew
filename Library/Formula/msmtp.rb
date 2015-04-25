@@ -1,7 +1,7 @@
 class Msmtp < Formula
   homepage "http://msmtp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.6.1/msmtp-1.6.1.tar.xz"
-  sha1 "ac70151bcb53af5e192cbb147fd2b8139c637089"
+  url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.6.2/msmtp-1.6.2.tar.xz"
+  sha256 "2f6ecd7cbfadf548fd55205bd24cb63b84bcbb1185efed917dd7800595a48789"
 
   bottle do
     sha1 "fdc446edaff06269af325e4b95c10788d187b79e" => :yosemite
