@@ -1,6 +1,6 @@
 class Gtkx < Formula
   homepage "http://gtk.org/"
-  url "http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.27.tar.xz"
+  url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.27.tar.xz"
   sha256 "20cb10cae43999732a9af2e9aac4d1adebf2a9c2e1ba147050976abca5cd24f4"
 
   bottle do
