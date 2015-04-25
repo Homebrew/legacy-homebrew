@@ -2,7 +2,7 @@ require "formula"
 
 class Pdnsrec < Formula
   homepage "http://wiki.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-recursor-3.7.2.tar.bz2"
+  url "https://downloads.powerdns.com/releases/pdns-recursor-3.7.2.tar.bz2"
   sha256 "1366bc1bed7c96fbd3926cf7a9e6d365c53b8a99182642debe1b2863dd015a7e"
 
   bottle do
