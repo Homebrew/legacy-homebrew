@@ -1,7 +1,7 @@
 require "formula"
 
 class TelepathyGlib < Formula
-  homepage "http://telepathy.freedesktop.org/wiki/"
+  homepage "https://wiki.freedesktop.org/telepathy/"
   url "http://telepathy.freedesktop.org/releases/telepathy-glib/telepathy-glib-0.24.0.tar.gz"
   sha1 "43a3e9f3e08725b689aba3baa487c9711d436888"
 
