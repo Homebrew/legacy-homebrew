@@ -2,8 +2,8 @@ require "formula"
 
 class Stlink < Formula
   homepage "https://github.com/texane/stlink"
-  url "https://github.com/texane/stlink/archive/1.0.0.tar.gz"
-  sha1 "d55bbdd8c4c907be15b28d089fddc86e7a167766"
+  url "https://github.com/texane/stlink/archive/1.1.0.tar.gz"
+  sha256 "3ac4dfcf1da0da40a1b71a8789ff0f1e7d978ea0222158bebd2de916c550682c"
 
   bottle do
     cellar :any
