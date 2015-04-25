@@ -1,6 +1,6 @@
 class Pv < Formula
-  homepage "http://www.ivarch.com/programs/pv.shtml"
-  url "http://www.ivarch.com/programs/sources/pv-1.6.0.tar.bz2"
+  homepage "https://www.ivarch.com/programs/pv.shtml"
+  url "https://www.ivarch.com/programs/sources/pv-1.6.0.tar.bz2"
   sha1 "748280662bdc318c876cc9e759b52050c76f81ee"
 
   bottle do
