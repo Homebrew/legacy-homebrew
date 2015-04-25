@@ -13,10 +13,10 @@ class Eg < Formula
     else
       var.install "eg/examples"
     end
-
     inreplace "eg/eg_config.py",
               /DEFAULT_EXAMPLES_DIR = .+$/,
               "DEFAULT_EXAMPLES_DIR = os.path.join('#{var}', 'examples')"
+
     mv "eg", "commands"
     prefix.install "commands"
     inreplace "bin/eg",
