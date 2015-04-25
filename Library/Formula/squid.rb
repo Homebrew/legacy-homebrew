@@ -2,8 +2,8 @@ require "formula"
 
 class Squid < Formula
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.9.tar.bz2"
-  sha1 "a356cadc324d91c41119f96a7d1a20330866c1ac"
+  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.12.tar.bz2"
+  sha1 "e5291d1a556313712410cf6297f08e895a2d679a"
 
   bottle do
     sha1 "26d026bc8523fed17870fcdd7ef935687208232d" => :yosemite
