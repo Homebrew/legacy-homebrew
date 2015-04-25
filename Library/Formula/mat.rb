@@ -100,7 +100,7 @@ class Mat < Formula
 
   test do
     system "#{bin}/mat", "-l"
-    system "touch", "foo"
+    touch "foo"
     system "tar", "cf", "foo.tar", "foo"
     system "#{bin}/mat", "-c", "foo.tar"
   end
