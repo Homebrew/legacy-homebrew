@@ -1,9 +1,9 @@
 require "formula"
 
 class Qbs < Formula
-  homepage "http://qt-project.org/wiki/qbs"
-  url "http://download.qt-project.org/official_releases/qbs/1.3.4/qbs-1.3.4.src.tar.gz"
-  sha1 "32d720230d4afe39adef57375c9002726b64d544"
+  homepage "https://wiki.qt.io/Qt_Build_Suite"
+  url "http://download.qt-project.org/official_releases/qbs/1.4.0/qbs-1.4.0.src.tar.gz"
+  sha1 "4c70247155281b9536a6fab6672cd5f53610cfa1"
 
   bottle do
     sha256 "404755918b51067502789cc25e106b08f30d0e7c01b6b34099453ca54dc60f2f" => :yosemite
