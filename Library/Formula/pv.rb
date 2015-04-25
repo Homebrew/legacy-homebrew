@@ -4,10 +4,9 @@ class Pv < Formula
   sha1 "748280662bdc318c876cc9e759b52050c76f81ee"
 
   bottle do
-    revision 1
-    sha1 "0c77b97448d2705d9e9f5a63ceafa42e483a21d9" => :yosemite
-    sha1 "a49bcc1abe924b622d06fb15eb01141d0c252f40" => :mavericks
-    sha1 "1441d97ae226d2cb3e3519ae714cf47940d6595a" => :mountain_lion
+    sha256 "3c5bde779bd29a478548bab1fffc869516ed6cb854a09063c80ca8013f4dc400" => :yosemite
+    sha256 "2268e40d7fc4ed41aad651167057d6a3e38d167678063b62b70dae226449ff7a" => :mavericks
+    sha256 "f343368e557cb1c86173bd0c62143b34834e2b825b1a188ac2a37c23d0c685dd" => :mountain_lion
   end
 
   depends_on "gettext"
