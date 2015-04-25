@@ -1,6 +1,6 @@
 class Libgsf < Formula
   homepage "https://developer.gnome.org/gsf/"
-  url "http://ftp.acc.umu.se/pub/GNOME/sources/libgsf/1.14/libgsf-1.14.33.tar.xz"
+  url "https://download.gnome.org/sources/libgsf/1.14/libgsf-1.14.33.tar.xz"
   sha256 "82dd38e0c1f497704bf3b43682fca2768886058f004b14e9b5d103596f8c6e6b"
 
   head do
