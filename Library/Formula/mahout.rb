@@ -2,7 +2,7 @@ require 'formula'
 
 class Mahout < Formula
   homepage 'https://mahout.apache.org/'
-  url 'http://apache.cs.utah.edu/mahout/0.10.0/mahout-distribution-0.10.0.tar.gz'
+  url 'https://www.apache.org/dyn/closer.cgi?path=mahout/0.10.0/mahout-distribution-0.10.0.tar.gz'
   sha1 'c8dcb51a04eb026eb9fd0fe6cb496cb101cf632d'
 
   head do
