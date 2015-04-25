@@ -16,7 +16,7 @@ class Cmigemo < Formula
   depends_on 'nkf' => :build
 
   def install
-    system "chmod +x ./configure"
+    chmod "+x", "./configure"
     system "./configure", "--prefix=#{prefix}"
     system "make osx"
     system "make osx-dict"
