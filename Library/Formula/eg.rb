@@ -21,20 +21,16 @@ class Eg < Formula
     prefix.install "commands"
     inreplace "bin/eg",
               "from eg import eg_exec",
-              import_eg_exec
+              <<-EOS.undent
+              import os.path
+              import sys
+              sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'commands')))
+              import eg_exec
+              EOS
     bin.install "bin/eg"
   end
 
   test do
     system "#{bin}/eg"
-  end
-
-  private
-
-  def import_eg_exec
-    "import os.path\n" +
-    "import sys\n" +
-    "sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'commands')))\n" +
-    "import eg_exec"
   end
 end
