@@ -19,7 +19,11 @@ class Boost < Formula
   option "without-single", "Disable building single-threading variant"
   option "without-static", "Disable building static library variant"
   option "with-mpi", "Build with MPI support"
+  option "with-brewed-bzip2", "Use homebrew's bzip2"
+
   option :cxx11
+
+  depends_on "homebrew/dupes/bzip2" => :optional
 
   deprecated_option "with-icu" => "with-icu4c"
 
@@ -44,6 +48,12 @@ class Boost < Formula
         is not supported.  Please use "--with-mpi" together with
         "--without-single".
       EOS
+    end
+
+    if build.with? "brewed-bzip2"
+      bzip2 = Formula["bzip2"].opt_prefix
+      ENV["BZIP2_INCLUDE"] = "#{bzip2}/include"
+      ENV["BZIP2_LIBPATH"] = "#{bzip2}/lib"
     end
 
     ENV.universal_binary if build.universal?
