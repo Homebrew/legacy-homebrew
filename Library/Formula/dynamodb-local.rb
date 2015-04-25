@@ -2,7 +2,7 @@ require 'formula'
 
 class DynamodbLocal < Formula
   homepage 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html'
-  url 'http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_2015-01-27_1.2.tar.gz'
+  url 'https://dynamodb-local.s3.amazonaws.com/dynamodb_local_2015-01-27_1.2.tar.gz'
   version '2015-01-27_1.2'
   sha256 '66d3fb9ad03e491891c23c96e5f86a0ede64976e980c62aa5babafab12daab7f'
 
