@@ -8,9 +8,8 @@ module Utils
         read, write = IO.pipe
 
         pid = fork do
-          ENV["HOMEBREW_ERROR_PIPE"] = server.path
-
           begin
+            ENV["HOMEBREW_ERROR_PIPE"] = server.path
             server.close
             read.close
             write.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
