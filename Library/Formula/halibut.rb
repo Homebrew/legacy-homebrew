@@ -1,9 +1,9 @@
-require 'formula'
-
 class Halibut < Formula
-  homepage 'http://www.chiark.greenend.org.uk/~sgtatham/halibut/'
-  url 'http://www.chiark.greenend.org.uk/~sgtatham/halibut/halibut-1.0.tar.gz'
-  sha1 '1e4643faf2bb4e1843740b8c70635d3d33bb7989'
+  homepage "http://www.chiark.greenend.org.uk/~sgtatham/halibut/"
+  url "http://www.chiark.greenend.org.uk/~sgtatham/halibut/halibut-1.1.tar.gz"
+  sha256 "b964950d11ed09d3af28ac095da539613f6e50d650f01fe72b4ae752724c80a0"
+
+  head "git://git.tartarus.org/simon/halibut.git"
 
   bottle do
     cellar :any
@@ -23,13 +23,10 @@ class Halibut < Formula
   end
 
   test do
-    # Initial sanity test
-    system "#{bin}/halibut", "--version"
-
-    # Test converting to HTML.
-    (testpath/'sample.but').write('Hello, world!')
+    (testpath/"sample.but").write("Hello, world!")
     system "#{bin}/halibut", "--html=sample.html", "sample.but"
 
-    assert_match /<p>\nHello, world!\n<\/p>/, (testpath/'sample.html').read()
+    assert_match("<p>\nHello, world!\n<\/p>",
+                 (testpath/"sample.html").read)
   end
 end
