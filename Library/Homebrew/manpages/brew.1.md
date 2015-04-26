@@ -585,6 +585,17 @@ can take several different forms:
 
     *Note:* Homebrew will only try to print emoji on Lion or newer.
 
+  * HOMEBREW\_NO\_INSECURE\_REDIRECT:
+    If set, Homebrew will not permit redirects from secure HTTPS
+    to insecure HTTP.
+
+    While ensuring your downloads are fully secure, this is likely
+    to cause from-source Sourceforge & GNOME based formulae
+    to fail to download.
+
+    Apache formulae are currently unaffected by this variable and
+    can redirect to plaintext.
+
   * HOMEBREW\_NO\_GITHUB\_API:
     If set, Homebrew will not use the GitHub API for e.g searches or
     fetching relevant issues on a failed install.

@@ -614,6 +614,16 @@ If set, Homebrew will not print the \fBHOMEBREW_INSTALL_BADGE\fR on a successful
 \fINote:\fR Homebrew will only try to print emoji on Lion or newer\.
 .
 .TP
+HOMEBREW_NO_INSECURE_REDIRECT
+If set, Homebrew will not permit redirects from secure HTTPS to insecure HTTP\.
+.
+.IP
+While ensuring your downloads are fully secure, this is likely to cause from\-source Sourceforge & GNOME based formulae to fail to download\.
+.
+.IP
+Apache formulae are currently unaffected by this variable and can redirect to plaintext\.
+.
+.TP
 HOMEBREW_NO_GITHUB_API
 If set, Homebrew will not use the GitHub API for e\.g searches or fetching relevant issues on a failed install\.
 .
