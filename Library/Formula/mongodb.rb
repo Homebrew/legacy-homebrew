@@ -9,8 +9,8 @@ class Mongodb < Formula
     sha256 "010522203cdb9bbff52fbd9fe299b67686bb1256e2e55eb78abf35444f668399"
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.0.1",
-        :revision => "bc08e57abb71b2edd1cc3ab8f9f013409718f197"
+        :tag => "r3.0.2",
+        :revision => "a914adfcea7d76f07512415eec5cd8308e67318e"
     end
   end
 
