@@ -1,7 +1,7 @@
 class Mdp < Formula
   homepage "https://github.com/visit1985/mdp"
-  url "https://github.com/visit1985/mdp/archive/0.93.0.tar.gz"
-  sha1 "5e267c8d9d3c2b30bd1951e854f1d4ad7c8679cf"
+  url "https://github.com/visit1985/mdp/archive/1.0.0.tar.gz"
+  sha1 "24821e0602f3c7f141ce610de2beda8108050584"
   head "https://github.com/visit1985/mdp.git"
 
   bottle do
