@@ -6,7 +6,7 @@ require 'stringio'
 
 module Homebrew
   def gistify_logs f
-    files = load_logs(f.name)
+    files = load_logs(f.logs)
 
     s = StringIO.new
     Homebrew.dump_verbose_config(s)
@@ -58,9 +58,8 @@ module Homebrew
     request.basic_auth(user, password)
   end
 
-  def load_logs name
+  def load_logs(dir)
     logs = {}
-    dir = HOMEBREW_LOGS/name
     dir.children.sort.each do |file|
       contents = file.size? ? file.read : "empty log"
       logs[file.basename.to_s] = { :content => contents }

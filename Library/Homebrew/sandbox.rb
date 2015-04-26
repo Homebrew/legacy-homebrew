@@ -50,7 +50,7 @@ class Sandbox
   end
 
   def allow_write_log(formula)
-    allow_write_path HOMEBREW_LOGS/formula.name
+    allow_write_path formula.logs
   end
 
   def deny_write_homebrew_library

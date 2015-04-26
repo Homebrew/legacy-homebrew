@@ -410,6 +410,10 @@ class Formula
   # there after pouring a bottle.
   def bottle_prefix; prefix+'.bottle' end
 
+  def logs
+    HOMEBREW_LOGS+name
+  end
+
   # override this to provide a plist
   def plist; nil; end
   alias :startup_plist :plist
@@ -510,7 +514,7 @@ class Formula
       begin
         yield self
       ensure
-        cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
+        cp Dir["config.log", "CMakeCache.txt"], logs
       end
     end
   end
@@ -790,9 +794,8 @@ class Formula
 
     @exec_count ||= 0
     @exec_count += 1
-    logd = HOMEBREW_LOGS/name
-    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
-    mkdir_p(logd)
+    logfn = "#{logs}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
+    logs.mkpath
 
     File.open(logfn, "w") do |log|
       log.puts Time.now, "", cmd, args, ""
