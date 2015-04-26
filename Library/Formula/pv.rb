@@ -1,7 +1,7 @@
 class Pv < Formula
   homepage "https://www.ivarch.com/programs/pv.shtml"
   url "https://www.ivarch.com/programs/sources/pv-1.6.0.tar.bz2"
-  sha1 "748280662bdc318c876cc9e759b52050c76f81ee"
+  sha256 "0ece824e0da27b384d11d1de371f20cafac465e038041adab57fcf4b5036ef8d"
 
   bottle do
     sha256 "3c5bde779bd29a478548bab1fffc869516ed6cb854a09063c80ca8013f4dc400" => :yosemite
