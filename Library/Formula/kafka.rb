@@ -52,6 +52,9 @@ class Kafka < Formula
     mv "config", "kafka"
     etc.install "kafka"
     libexec.install_symlink etc/"kafka" => "config"
+
+    # create directory for kafka stdout+stderr output logs when run by launchd
+    (var+"log/kafka").mkpath
   end
 
   def caveats; <<-EOS.undent
@@ -76,5 +79,32 @@ class Kafka < Formula
       end
       system "./run_sanity.sh"
     end
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_bin}/kafka-server-start.sh</string>
+            <string>#{etc}/kafka/server.properties</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/kafka/kafka_output.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/kafka/kafka_output.log</string>
+    </dict>
+    </plist>
+    EOS
   end
 end
