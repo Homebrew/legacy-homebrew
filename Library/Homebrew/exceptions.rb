@@ -175,7 +175,7 @@ class BuildError < RuntimeError
       Homebrew.dump_build_env(env)
       puts
       onoe "#{formula.name} #{formula.version} did not build"
-      unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]).empty?
+      unless (logs = Dir["#{formula.logs}/*"]).empty?
         puts "Logs:"
         puts logs.map{|fn| "     #{fn}"}.join("\n")
       end

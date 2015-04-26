@@ -462,7 +462,7 @@ class FormulaInstaller
   end
 
   def build
-    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]
+    FileUtils.rm_rf(formula.logs)
 
     @start_time = Time.now
 
@@ -481,9 +481,8 @@ class FormulaInstaller
     Utils.safe_fork do
       if Sandbox.available? && ARGV.sandbox?
         sandbox = Sandbox.new
-        logd = HOMEBREW_LOGS/formula.name
-        logd.mkpath
-        sandbox.record_log(logd/"sandbox.build.log")
+        formula.logs.mkpath
+        sandbox.record_log(formula.logs/"sandbox.build.log")
         sandbox.allow_write_temp_and_cache
         sandbox.allow_write_log(formula)
         sandbox.allow_write_cellar(formula)
