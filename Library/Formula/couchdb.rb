@@ -1,8 +1,8 @@
 require "formula"
 
 class Couchdb < Formula
-  homepage "http://couchdb.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
+  homepage "https://couchdb.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
   sha1 "6275f3818579d7b307052e9735c42a8a64313229"
   revision 1
 
@@ -13,7 +13,7 @@ class Couchdb < Formula
   end
 
   head do
-    url "http://git-wip-us.apache.org/repos/asf/couchdb.git"
+    url "https://git-wip-us.apache.org/repos/asf/couchdb.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

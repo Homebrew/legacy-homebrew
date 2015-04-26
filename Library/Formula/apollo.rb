@@ -1,7 +1,7 @@
 require 'formula'
 
 class Apollo < Formula
-  homepage 'http://activemq.apache.org/apollo'
+  homepage 'https://activemq.apache.org/apollo'
   url 'https://archive.apache.org/dist/activemq/activemq-apollo/1.7.1/apache-apollo-1.7.1-unix-distro.tar.gz'
   version '1.7.1'
   sha1 '5f9921042cc3167e48f54588f30da59f557f5a5a'

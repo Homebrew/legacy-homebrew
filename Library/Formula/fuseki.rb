@@ -1,8 +1,8 @@
 require 'formula'
 
 class Fuseki < Formula
-  homepage 'http://jena.apache.org/documentation/serving_data/'
-  url 'http://www.apache.org/dist/jena/binaries/jena-fuseki-1.1.1-distribution.tar.gz'
+  homepage 'https://jena.apache.org/documentation/serving_data/'
+  url 'https://www.apache.org/dist/jena/binaries/jena-fuseki-1.1.1-distribution.tar.gz'
   version '1.1.1'
   sha1 '12453d3e3de1a01d3413e94712c9219d065c55ad'
 
@@ -49,7 +49,7 @@ class Fuseki < Formula
     Quick-start guide:
 
     * See the Fuseki documentation for instructions on using an in-memory database:
-      http://jena.apache.org/documentation/serving_data/#fuseki-server-starting-with-an-empty-dataset
+      https://jena.apache.org/documentation/serving_data/#fuseki-server-starting-with-an-empty-dataset
 
     * Running from the LaunchAgent is different the standard configuration and
       uses traditional Unix paths: please inspect the settings here first:
