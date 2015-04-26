@@ -63,6 +63,10 @@ class AbstractDownloadStrategy
     "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
+  def lhapath
+    "#{HOMEBREW_PREFIX}/opt/lha/bin/lha"
+  end
+
   def cvspath
     @cvspath ||= %W[
       /usr/bin/cvs
@@ -192,6 +196,8 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
     when :lzip
       with_system_path { pipe_to_tar(lzippath) }
       chdir
+    when :lha
+      safe_system lhapath, "x", cached_location
     when :xar
       safe_system "/usr/bin/xar", "-xf", cached_location
     when :rar
