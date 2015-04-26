@@ -4,6 +4,12 @@ class Rapidjson < Formula
   sha256 "a9003ad5c6384896ed4fd1f4a42af108e88e1b582261766df32d717ba744ee73"
   head "https://github.com/miloyip/rapidjson.git"
 
+  bottle do
+    sha256 "2b92e5e53744612527ecf715da9bf5de106a099c67fb1ec2d8265e411011357c" => :yosemite
+    sha256 "c2b36ff73da8dc865805693a4ac023e31a244bd643676ff2bd8b0866d3d01b51" => :mavericks
+    sha256 "2eec4643f5e673622623e7b0fa8d8409667ec794c6e9ae5b2aa9c773758fa201" => :mountain_lion
+  end
+
   option "without-docs", "Don't build documentation"
 
   depends_on "cmake" => :build
