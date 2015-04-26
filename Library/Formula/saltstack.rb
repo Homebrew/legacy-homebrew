@@ -80,6 +80,23 @@ class Saltstack < Formula
     sha256 "f12f80c2f66e46c406c53b90c41eb572c29751c407bdbe7204ec6d9264ce16bc"
   end
 
+  # Required by tornado
+  resource "certifi" do
+    url "https://pypi.python.org/packages/source/c/certifi/certifi-14.05.14.tar.gz"
+    sha256 "1e1bcbacd6357c151ae37cf0290dcc809721d32ce21fd6b7339568f3ddef1b69"
+  end
+
+  # Required by tornado
+  resource "backports.ssl_match_hostname" do
+    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.4.0.2.tar.gz"
+    sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
+  end
+
+  resource "tornado" do
+    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.1.tar.gz"
+    sha256 "99abd3aede45c93739346ee7384e710120121c3744da155d5cff1c0101702228"
+  end
+
   def install
     resource("swig304").stage do
       system "./configure", "--disable-dependency-tracking", "--prefix=#{buildpath}/swig"
@@ -90,7 +107,11 @@ class Saltstack < Formula
     ENV.prepend_path "PATH", buildpath/"swig/bin"
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[requests pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python apache-libcloud].each do |r|
+
+    rs = %w[requests pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python apache-libcloud]
+    rs += %w[certifi backports.ssl_match_hostname tornado] if build.head?
+
+    rs.each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
