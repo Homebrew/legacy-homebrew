@@ -4,18 +4,10 @@ class Eg < Formula
   sha256 "c257e334f2a2e494f9b9791b92c1d3f7b00da3e2e7ec47f02d720342b466f968"
 
   def install
-    if Dir.exist? "#{var}/examples"
-      Dir["eg/examples/*"].each do |example|
-        next if example.to_s == "." || example.to_s == ".."
-        mv example, "#{var}/examples/"
-      end
-      rmdir "eg/examples"
-    else
-      var.install "eg/examples"
-    end
+    share.install "eg/examples"
     inreplace "eg/eg_config.py",
               /DEFAULT_EXAMPLES_DIR = .+$/,
-              "DEFAULT_EXAMPLES_DIR = os.path.join('#{var}', 'examples')"
+              "DEFAULT_EXAMPLES_DIR = os.path.join('#{share}', 'examples')"
 
     mv "eg", "commands"
     prefix.install "commands"
