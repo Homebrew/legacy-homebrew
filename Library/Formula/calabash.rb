@@ -7,7 +7,7 @@ class Calabash < Formula
 
   def install
     libexec.install Dir["*"]
-    bin.write_jar_script libexec/"calabash.jar", "calabash", "-Xmx1024m"
+    bin.write_jar_script libexec/"xmlcalabash-#{version}.jar", "calabash", "-Xmx1024m"
   end
 
   test do
