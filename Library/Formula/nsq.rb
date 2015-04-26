@@ -8,9 +8,9 @@ class Nsq < Formula
 
   bottle do
     cellar :any
-    sha1 "4eca017db1de9f3992da92a3eed95f6343393c74" => :yosemite
-    sha1 "0fcd44d0fc5bc26ad364b2e5c943160f06bffcbe" => :mavericks
-    sha1 "e3ce46fcb14aa4557a68ef7197b8a5889e556823" => :mountain_lion
+    sha256 "eb9dd459eec6603dd720b58b8fcee5ccfc122999aed51845ff2c98e0bb3fabfe" => :yosemite
+    sha256 "b17656e4e8b93abf9d6b0b65b614ffa7fecc2b0920a8d0329aa6abda2e5a2f7e" => :mavericks
+    sha256 "dd00b16b6708fd69764ec0276568f88b4d3c8729c6be45859b3450b313a0f3b6" => :mountain_lion
   end
 
   depends_on "go" => :build
