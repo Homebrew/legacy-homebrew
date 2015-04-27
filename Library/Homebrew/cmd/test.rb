@@ -38,7 +38,7 @@ module Homebrew
         Utils.safe_fork do
           if Sandbox.available? && ARGV.sandbox?
             sandbox = Sandbox.new
-            formula.logs.mkpath
+            f.logs.mkpath
             sandbox.record_log(f.logs/"sandbox.test.log")
             sandbox.allow_write_temp_and_cache
             sandbox.allow_write_log(f)
