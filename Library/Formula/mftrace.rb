@@ -2,6 +2,7 @@ class Mftrace < Formula
   homepage "http://lilypond.org/mftrace/"
   url "http://lilypond.org/download/sources/mftrace/mftrace-1.2.18.tar.gz"
   sha256 "0d31065f1d35919e311d9170bbfcdacc58736e3f783311411ed1277aa09d3261"
+  revision 1
 
   bottle do
     cellar :any
