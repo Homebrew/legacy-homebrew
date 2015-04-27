@@ -18,16 +18,13 @@ module Homebrew
     Utils.safe_fork do
       if Sandbox.available? && ARGV.sandbox?
         sandbox = Sandbox.new
-        logd = HOMEBREW_LOGS/formula.name
-        logd.mkpath
-        sandbox.record_log(logd/"sandbox.postinstall.log")
+        formula.logs.mkpath
+        sandbox.record_log(formula.logs/"sandbox.postinstall.log")
         sandbox.allow_write_temp_and_cache
         sandbox.allow_write_log(formula)
         sandbox.allow_write_cellar(formula)
         sandbox.allow_write_path HOMEBREW_PREFIX
-        sandbox.deny_write_path HOMEBREW_LIBRARY
-        sandbox.deny_write_path HOMEBREW_REPOSITORY/".git"
-        sandbox.deny_write HOMEBREW_BREW_FILE
+        sandbox.deny_write_homebrew_library
         sandbox.exec(*args)
       else
         exec(*args)

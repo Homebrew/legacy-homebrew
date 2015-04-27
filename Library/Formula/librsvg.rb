@@ -1,14 +1,12 @@
 class Librsvg < Formula
-  homepage 'https://live.gnome.org/LibRsvg'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.3.tar.xz'
-  sha256 '3d7d583271030e21acacc60cb6b81ee305713c9da5e98429cbd609312aea3632'
-  revision 1
+  homepage "https://live.gnome.org/LibRsvg"
+  url "https://download.gnome.org/sources/librsvg/2.40/librsvg-2.40.5.tar.xz"
+  sha256 "d14d7b3e25023ce34302022fd7c9b3a468629c94dff6c177874629686bfc71a7"
 
   bottle do
-    cellar :any
-    sha1 "16b3c1e1e2f2662e837a223b5534d8d2c2f77a17" => :yosemite
-    sha1 "6d3306b10ca89f4c7ba0a68f240a8bbba197e90d" => :mavericks
-    sha1 "ab5c9bcad344e53fc5f6c53af902971ec1a9505e" => :mountain_lion
+    sha256 "f7ca7f815635467444ffeb8b2ec27411ed565ecbd7e6761bee033b2b26b531d8" => :yosemite
+    sha256 "e2f61ce1337fc727fdc7e895efe18f8f70ab7a698e8e0f51bddacfbf4be01dfd" => :mavericks
+    sha256 "239c9ab0823ab139828e0140c1cdfd6f2e1c536d0478a225d1db489d6b80981a" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -28,9 +26,9 @@ class Librsvg < Formula
             "--disable-Bsymbolic",
             "--enable-tools=yes",
             "--enable-pixbuf-loader=yes",
-            "--enable-introspection=no"]
+            "--enable-introspection=yes"]
 
-    args << "--enable-svgz" if build.with? 'libgsf'
+    args << "--enable-svgz" if build.with? "libgsf"
 
     system "./configure", *args
     system "make", "install",

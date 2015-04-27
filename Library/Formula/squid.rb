@@ -2,13 +2,13 @@ require "formula"
 
 class Squid < Formula
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.9.tar.bz2"
-  sha1 "a356cadc324d91c41119f96a7d1a20330866c1ac"
+  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.12.tar.bz2"
+  sha1 "e5291d1a556313712410cf6297f08e895a2d679a"
 
   bottle do
-    sha1 "26d026bc8523fed17870fcdd7ef935687208232d" => :yosemite
-    sha1 "7fa50fc50e2525175d733068b3fc8c00d72eedf1" => :mavericks
-    sha1 "bdae1232126a1aa7a9eec3380d1d95184a2923ed" => :mountain_lion
+    sha256 "9db04b2b64b0e14f1f0698d6fc35734bb4f52706e4dcd54dc6a897810eb15813" => :yosemite
+    sha256 "8f7dcd0316187261706152b2b770eb9a647501b59b48fe85e07d624d32a26cb9" => :mavericks
+    sha256 "dc06c4c6d3d387eaf6d4901870b1ca7f07c816e2ba6fcf69b10dcb9610fdd922" => :mountain_lion
   end
 
   depends_on "openssl"

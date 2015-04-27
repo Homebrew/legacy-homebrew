@@ -1,14 +1,14 @@
 require "formula"
 
 class Qbs < Formula
-  homepage "http://qt-project.org/wiki/qbs"
-  url "http://download.qt-project.org/official_releases/qbs/1.3.4/qbs-1.3.4.src.tar.gz"
-  sha1 "32d720230d4afe39adef57375c9002726b64d544"
+  homepage "https://wiki.qt.io/Qt_Build_Suite"
+  url "https://download.qt.io/official_releases/qbs/1.4.0/qbs-1.4.0.src.tar.gz"
+  sha1 "4c70247155281b9536a6fab6672cd5f53610cfa1"
 
   bottle do
-    sha256 "404755918b51067502789cc25e106b08f30d0e7c01b6b34099453ca54dc60f2f" => :yosemite
-    sha256 "388a1436352700ce1dd1a58fe719b947958b2004bba8bc2b05c95d5f3a10a6a5" => :mavericks
-    sha256 "67912c684898180768a415fcee0d576af669898ee676ed5048730e9526427674" => :mountain_lion
+    sha256 "fa881458fc8700b9160bde642842e0baf75a4e221909a890c7ed6c1f191c4e32" => :yosemite
+    sha256 "e211c32a20804c5d8386d825bb3846a6bb2b5bc360f2abdab577d5dc7288402f" => :mavericks
+    sha256 "fbf2045061fdb7c148ec4c32843e29078810282ae28eb13c1289904953a3209d" => :mountain_lion
   end
 
   depends_on "qt5"

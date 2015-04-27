@@ -59,7 +59,10 @@ class CompilerFailure
       create(:gcc => "4.5"),
       create(:gcc => "4.6"),
     ],
-    :openmp => [create(:clang)],
+    :openmp => [
+      create(:clang),
+      create(:llvm),
+    ],
   }
 end
 

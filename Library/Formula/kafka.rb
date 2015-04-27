@@ -3,13 +3,14 @@ class Kafka < Formula
   head "https://git-wip-us.apache.org/repos/asf/kafka.git"
   url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
   mirror "https://archive.apache.org/dist/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
-  sha1 "99d61c6e23cb2694112f844afedb6f13d711c356"
+  sha256 "a043655be6f3b6ec3f7eea25cc6525fd582da825972d3589b24912af71493a21"
 
   bottle do
     cellar :any
-    sha256 "60bfdd340ab233ebff0a3237fe40233c8a3be01592e2ba55af3706df2b4384f5" => :yosemite
-    sha256 "1f8445794584363b89829b4d416e97f3489ddac6e276f920a624ec4c2245582f" => :mavericks
-    sha256 "9034bdbbb31fdfe62b8fa9f898ad827cfdd18d72a2b9830b67867b419a210914" => :mountain_lion
+    revision 1
+    sha256 "6421db989eae488bbd6491f22ced46753500cb3534f0dec47b2f2132afa4425d" => :yosemite
+    sha256 "4adacd36a38bbef07e4326224d56c74cdc34b906ec60594035f4c354aa25381e" => :mavericks
+    sha256 "63fca4b6a35aaa7c50771d93ffca044c1cbe6ae66f6b76617408533b40ff8687" => :mountain_lion
   end
 
   depends_on "gradle"
@@ -52,6 +53,9 @@ class Kafka < Formula
     mv "config", "kafka"
     etc.install "kafka"
     libexec.install_symlink etc/"kafka" => "config"
+
+    # create directory for kafka stdout+stderr output logs when run by launchd
+    (var+"log/kafka").mkpath
   end
 
   def caveats; <<-EOS.undent
@@ -76,5 +80,32 @@ class Kafka < Formula
       end
       system "./run_sanity.sh"
     end
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_bin}/kafka-server-start.sh</string>
+            <string>#{etc}/kafka/server.properties</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/kafka/kafka_output.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/kafka/kafka_output.log</string>
+    </dict>
+    </plist>
+    EOS
   end
 end

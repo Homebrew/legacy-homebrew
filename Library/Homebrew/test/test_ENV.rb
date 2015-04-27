@@ -114,6 +114,14 @@ module SharedEnvTests
       assert_equal compiler, @env.compiler
     end
   end
+
+  def test_deparallelize_block_form_restores_makeflags
+    @env['MAKEFLAGS'] = '-j4'
+    @env.deparallelize do
+      assert_nil @env['MAKEFLAGS']
+    end
+    assert_equal '-j4', @env['MAKEFLAGS']
+  end
 end
 
 class StdenvTests < Homebrew::TestCase

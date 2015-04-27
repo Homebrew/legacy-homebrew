@@ -63,6 +63,10 @@ class AbstractDownloadStrategy
     "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
+  def lhapath
+    "#{HOMEBREW_PREFIX}/opt/lha/bin/lha"
+  end
+
   def cvspath
     @cvspath ||= %W[
       /usr/bin/cvs
@@ -192,6 +196,8 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
     when :lzip
       with_system_path { pipe_to_tar(lzippath) }
       chdir
+    when :lha
+      safe_system lhapath, "x", cached_location
     when :xar
       safe_system "/usr/bin/xar", "-xf", cached_location
     when :rar
@@ -688,7 +694,8 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     HOMEBREW_CACHE.cd do
-      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login"
+      # Login is only needed (and allowed) with pserver; skip for anoncvs.
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login" if @url.include? "pserver"
       quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "checkout", "-d", cache_filename, @module
     end
   end
