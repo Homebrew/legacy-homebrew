@@ -2,7 +2,7 @@ require "formula"
 
 class Qbs < Formula
   homepage "https://wiki.qt.io/Qt_Build_Suite"
-  url "https://download.qt-project.org/official_releases/qbs/1.4.0/qbs-1.4.0.src.tar.gz"
+  url "https://download.qt.io/official_releases/qbs/1.4.0/qbs-1.4.0.src.tar.gz"
   sha1 "4c70247155281b9536a6fab6672cd5f53610cfa1"
 
   bottle do
