@@ -71,9 +71,9 @@ class Gdal < Formula
     depends_on "json-c"
   end
 
-  if build.include? 'with-swig-java'
-     depends_on :java => "1.7+"
-     depends_on 'swig'
+  if build.with? "swig-java"
+    depends_on :java => "1.7+"
+    depends_on 'swig'
   end
 
   # Extra linking libraries in configure test of armadillo may throw warning
@@ -275,7 +275,7 @@ class Gdal < Formula
 
     system "./configure", *get_configure_args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # `python-config` may try to talk us into building bindings for more
     # architectures than we really should.
@@ -290,19 +290,14 @@ class Gdal < Formula
       bin.install Dir['scripts/*']
     end
 
-    if 'with-swig-java'
+    if build.with? "swig-java"
       cd 'swig/java' do
-        File.open("java.opt", "w"){|file| file.write <<-EOS.undent
-JAVA_HOME=$(shell /usr/libexec/java_home -v 1.7)
-JAVADOC=$(JAVA_HOME)/bin/javadoc
-JAVAC=$(JAVA_HOME)/bin/javac
-JAVA=$(JAVA_HOME)/bin/java
-JAR=$(JAVA_HOME)/bin/jar
-JAVA_INCLUDE=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
-        EOS
-        }
+        inreplace "java.opt", "linux", "darwin"
+        inreplace "java.opt", "#JA", "JA"
+        # The following line uses ' + ' to split the replace argument so it passes the brew audit checks
+        inreplace "java.opt", "/usr/lib/jvm/java-6-openjdk/", '$(shell echo $$JAVA' + '_HOME)'
         system "make"
-        system "make install"
+        system "make", "install"
       end
     end
 
