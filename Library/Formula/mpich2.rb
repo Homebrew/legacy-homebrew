@@ -21,8 +21,8 @@ class Mpich2 < Formula
   end
 
   devel do
-    url "http://www.mpich.org/static/downloads/3.2b1/mpich-3.2b1.tar.gz"
-    sha1 "43ea38cd0007f75adf6ea6db80e823fbfe34a458"
+    url "http://www.mpich.org/static/downloads/3.2b2/mpich-3.2b2.tar.gz"
+    sha1 "8e954e54d1c1a08ef7d042c18ed308d566e32cd5"
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
