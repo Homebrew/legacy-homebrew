@@ -2,7 +2,7 @@ class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
   sha1 "6f3ccbe5643805784812072a33c25be0bbff00db"
-  revision 2
+  revision 1
 
   bottle do
     sha256 "a0fd2413588bac1b4705349796cf1a93a20770ee16ae0044e56bc93ceaa18a72" => :yosemite
@@ -71,7 +71,10 @@ class Gdal < Formula
     depends_on "json-c"
   end
 
-  depends_on 'swig'
+  if build.include? 'with-swig-java'
+     depends_on :java => "1.7+"
+     depends_on 'swig'
+  end
 
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
@@ -289,12 +292,15 @@ class Gdal < Formula
 
     if 'with-swig-java'
       cd 'swig/java' do
-        system "echo 'JAVA_HOME='`/usr/libexec/java_home -v 1.7` > java.opt"
-        system "echo 'JAVADOC=$(JAVA_HOME)/bin/javadoc' >> java.opt"
-        system "echo 'JAVAC=$(JAVA_HOME)/bin/javac' >> java.opt"
-        system "echo 'JAVA=$(JAVA_HOME)/bin/java' >> java.opt"
-        system "echo 'JAR=$(JAVA_HOME)/bin/jar' >> java.opt"
-        system "echo 'JAVA_INCLUDE=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin' >> java.opt"
+        File.open("java.opt", "w"){|file| file.write <<-EOS.undent
+JAVA_HOME=$(shell /usr/libexec/java_home -v 1.7)
+JAVADOC=$(JAVA_HOME)/bin/javadoc
+JAVAC=$(JAVA_HOME)/bin/javac
+JAVA=$(JAVA_HOME)/bin/java
+JAR=$(JAVA_HOME)/bin/jar
+JAVA_INCLUDE=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
+        EOS
+        }
         system "make"
         system "make install"
       end
@@ -324,3 +330,4 @@ class Gdal < Formula
     system "#{bin}/ogrinfo", "--formats"
   end
 end
+
