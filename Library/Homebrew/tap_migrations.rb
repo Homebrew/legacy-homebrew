@@ -103,6 +103,7 @@ TAP_MIGRATIONS = {
   "libdlna" => "homebrew/boneyard",
   "libgtextutils" => "homebrew/science",
   "librets" => "homebrew/boneyard",
+  "libqxt" => "homebrew/boneyard",
   "libspotify" => "homebrew/binary",
   "lmutil" => "homebrew/binary",
   "meld" => "homebrew/x11",
