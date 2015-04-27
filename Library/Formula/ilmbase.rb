@@ -1,10 +1,8 @@
-require 'formula'
-
 class Ilmbase < Formula
-  homepage 'http://www.openexr.com/'
-  url 'http://download.savannah.gnu.org/releases/openexr/ilmbase-2.1.0.tar.gz'
-  mirror 'http://download-mirror.savannah.gnu.org/releases/openexr/ilmbase-2.1.0.tar.gz'
-  sha1 '306d76e7a2ac619c2f641f54b59dd95576525192'
+  homepage "http://www.openexr.com/"
+  url "http://download.savannah.nongnu.org/releases/openexr/ilmbase-2.2.0.tar.gz"
+  mirror "http://download-mirror.savannah.gnu.org/releases/openexr/ilmbase-2.2.0.tar.gz"
+  sha256 "ecf815b60695555c1fbc73679e84c7c9902f4e8faa6e8000d2f905b8b86cedc7"
 
   bottle do
     cellar :any
@@ -15,9 +13,16 @@ class Ilmbase < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+    (share/"ilmbase").install %W[Half HalfTest Iex IexMath IexTest IlmThread Imath ImathTest]
+  end
+
+  test do
+    cd share/"ilmbase/IexTest" do
+      system ENV.cxx, "-I#{include}/OpenEXR", "-I./", "-c",
+             "testBaseExc.cpp", "-o", testpath/"test"
+    end
   end
 end
-
