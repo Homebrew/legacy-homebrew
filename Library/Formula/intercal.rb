@@ -11,9 +11,9 @@ class Intercal < Formula
   end
 
   bottle do
-    sha1 "6a3fe7a08a8e51baf99acefe92db529a8d709504" => :mavericks
-    sha1 "73c12c6f3befaa5f40e475d21c089ae94a6a05a7" => :mountain_lion
-    sha1 "11f6c85f85c879c95369e4b7b6c548c8a6489e1f" => :lion
+    sha256 "a3d94e36e6d2c3f5d8e8ba26ba5c9469801dd25ddd451f672904ffdc0a84d0ce" => :yosemite
+    sha256 "26117079d6c5f42fc59e9f0c590ef5e8c94ab32abb606fd21b48dd307c5a1ca9" => :mavericks
+    sha256 "11bef1430a773dcf00a205badaadbf60166bc31a241fdc826b9fd4002638c0ae" => :mountain_lion
   end
 
   def install
