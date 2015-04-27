@@ -1,6 +1,6 @@
 class RubyRequirement < Requirement
   fatal true
-  #default_formula "ruby"
+  default_formula "ruby"
 
   def initialize(tags)
     @version = tags.shift if /(\d\.)+\d/ === tags.first
