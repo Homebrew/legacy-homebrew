@@ -101,7 +101,7 @@ If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the ca
 The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are creating\.
 .
 .TP
-\fBdeps [\-\-1] [\-n] [\-\-union] [\-\-tree] [\-\-all] [\-\-installed]\fR \fIformulae\fR
+\fBdeps [\-\-1] [\-n] [\-\-union] [\-\-tree] [\-\-all] [\-\-installed] [\-\-skip\-build] [\-\-skip\-optional]\fR \fIformulae\fR
 Show dependencies for \fIformulae\fR\. When given multiple formula arguments, show the intersection of dependencies for \fIformulae\fR, except when passed \fB\-\-tree\fR, \fB\-\-all\fR, or \fB\-\-installed\fR\.
 .
 .IP
@@ -121,6 +121,9 @@ If \fB\-\-all\fR is passed, show dependencies for all formulae\.
 .
 .IP
 If \fB\-\-installed\fR is passed, show dependencies for all installed formulae\.
+.
+.IP
+By default, \fBdeps\fR shows dependencies for \fIformulae\fR\. To skip the \fB:build\fR type dependencies, pass \fB\-\-skip\-build\fR\. Similarly, pass \fB\-\-skip\-optional\fR to skip \fB:optional\fR dependencies\.
 .
 .TP
 \fBdiy [\-\-name=<name>] [\-\-version=<version>]\fR
@@ -240,6 +243,13 @@ Download and patch \fIformula\fR, then open a shell\. This allows the user to ru
 If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.
 .
 .TP
+\fBirb [\-\-example]\fR
+Enter the interactive Homebrew Ruby shell\.
+.
+.IP
+If \fB\-\-example\fR is passed, several examples will be shown\.
+.
+.TP
 \fBleaves\fR
 Show installed formulae that are not dependencies of another installed formula\.
 .
@@ -353,6 +363,10 @@ Search for \fItext\fR in the given package manager\'s list\.
 .TP
 \fBsh [\-\-env=std]\fR
 Instantiate a Homebrew build environment\. Uses our years\-battle\-hardened Homebrew build logic to help your \fB\./configure && make && make install\fR or even your \fBgem install\fR succeed\. Especially handy if you run Homebrew in a Xcode\-only configuration since it adds tools like make to your PATH which otherwise build\-systems would not find\.
+.
+.TP
+\fBswitch\fR \fIname\fR \fIversion\fR
+Symlink all of the specific \fIversion\fR of \fIname\fR\'s install to Homebrew prefix\.
 .
 .TP
 \fBtap\fR [\fItap\fR]
