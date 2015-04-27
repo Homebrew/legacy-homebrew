@@ -112,31 +112,38 @@ module Homebrew
         return
       end
 
+      verbose = ARGV.verbose?
+      puts if verbose
+      @output = ""
+      working_dir = Pathname.new(@command.first == "git" ? @repository : Dir.pwd)
       start_time = Time.now
+      read, write = IO.pipe
 
-      log = log_file_path
-
-      pid = fork do
-        File.open(log, "wb") do |f|
-          STDOUT.reopen(f)
-          STDERR.reopen(f)
+      begin
+        pid = fork do
+          read.close
+          $stdout.reopen(write)
+          $stderr.reopen(write)
+          write.close
+          working_dir.cd { exec(*@command) }
         end
-        Dir.chdir(@repository) if @command.first == "git"
-        exec(*@command)
+        write.close
+        while line = read.gets
+         puts line if verbose
+         @output += line
+        end
+      ensure
+        read.close
       end
+
       Process.wait(pid)
-
       @time = Time.now - start_time
-
       @status = $?.success? ? :passed : :failed
       puts_result
 
-      if File.exist?(log)
-        @output = fix_encoding File.read(log)
-        if has_output? and (failed? or @puts_output_on_success)
-          puts @output
-        end
-        FileUtils.rm(log) unless ARGV.include? "--keep-logs"
+      if has_output?
+        puts @output if (failed? or @puts_output_on_success) && !verbose
+        File.write(log_file_path, @output) if ARGV.include? "--keep-logs"
       end
 
       exit 1 if ARGV.include?("--fail-fast") && @status == :failed
