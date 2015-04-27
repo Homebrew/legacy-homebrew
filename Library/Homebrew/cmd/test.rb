@@ -39,7 +39,7 @@ module Homebrew
           if Sandbox.available? && ARGV.sandbox?
             sandbox = Sandbox.new
             formula.logs.mkpath
-            sandbox.record_log(formula.logs/"sandbox.test.log")
+            sandbox.record_log(f.logs/"sandbox.test.log")
             sandbox.allow_write_temp_and_cache
             sandbox.allow_write_log(f)
             sandbox.exec(*args)
