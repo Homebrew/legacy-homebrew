@@ -8,9 +8,9 @@ class Wellington < Formula
 
   bottle do
     cellar :any
-    sha256 "47a6b8112532da003dedb42e67b6f0f5233e832813487d7eec310d9ed1a68208" => :yosemite
-    sha256 "6d7b6a9ed8e30b28994db5f0f0cf87bf7e95e08ed78238f789538cceb0cb8fd3" => :mavericks
-    sha256 "e1dbb489f6bc3e184798d30c0d760db0235260ee55fb1af35f2deed3835a5cc3" => :mountain_lion
+    sha256 "9054893acde51c1fc992dc4172e0eb5177e08755fa7397624803bc3dc678fea7" => :yosemite
+    sha256 "495c1410412a58dac9c8643dee36130a2becc75d853b03c24a694824005664e8" => :mavericks
+    sha256 "8e132ad0a7183d9ce11f64c342b6db7f1ba2e33d096a1f5f1bd85b56354c2751" => :mountain_lion
   end
 
   needs :cxx11
