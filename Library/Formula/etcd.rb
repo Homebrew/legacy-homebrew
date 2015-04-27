@@ -20,6 +20,26 @@ class Etcd < Formula
     bin.install "bin/etcdctl"
   end
 
+  test do
+    begin
+      require "utils/json"
+      test_string = "Hello from brew test!"
+      etcd_pid = fork do
+        exec "etcd", "--force-new-cluster", "--data-dir=#{testpath}"
+      end
+      # sleep to let etcd get its wits about it
+      sleep 10
+      etcd_uri = "http://127.0.0.1:4001/v2/keys/brew_test"
+      system "curl", "--silent", "-L", etcd_uri, "-XPUT", "-d", "value=#{test_string}"
+      curl_output = shell_output "curl --silent -L #{etcd_uri}"
+      response_hash = Utils::JSON.load(curl_output)
+      assert_match(test_string, response_hash.fetch("node").fetch("value"))
+    ensure
+      # clean up the etcd process before we leave
+      Process.kill("HUP", etcd_pid)
+    end
+  end
+
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
