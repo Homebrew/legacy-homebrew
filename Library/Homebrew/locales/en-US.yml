@@ -1,0 +1,7 @@
+en-US:
+  test:
+    basic: This is a placeholder for Homebrew tests.
+    interpolation: Homebrew tests are in %{path}
+    pluralisation:
+      one: There is %{count} bottle of beer on the wall.
+      other: There are %{count} bottles of beer on the wall.
