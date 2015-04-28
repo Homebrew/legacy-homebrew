@@ -1,8 +1,8 @@
 class TheSilverSearcher < Formula
   homepage "https://github.com/ggreer/the_silver_searcher"
   head "https://github.com/ggreer/the_silver_searcher.git"
-  url "https://github.com/ggreer/the_silver_searcher/archive/0.29.1.tar.gz"
-  sha1 "128c27749b7166800c00879b427a117dd4a17804"
+  url "https://github.com/ggreer/the_silver_searcher/archive/0.30.0.tar.gz"
+  sha256 "a3b61b80f96647dbe89c7e89a8fa7612545db6fa4a313c0ef8a574d01e7da5db"
 
   bottle do
     cellar :any
