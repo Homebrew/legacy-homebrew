@@ -71,8 +71,8 @@ class Gdal < Formula
     depends_on "json-c"
   end
 
+  depends_on :java => ["1.7+", :optional, :build]
   if build.with? "swig-java"
-    depends_on :java => "1.7+"
     depends_on 'swig'
   end
 
@@ -293,9 +293,7 @@ class Gdal < Formula
     if build.with? "swig-java"
       cd 'swig/java' do
         inreplace "java.opt", "linux", "darwin"
-        inreplace "java.opt", "#JA", "JA"
-        # The following line uses ' + ' to split the replace argument so it passes the brew audit checks
-        inreplace "java.opt", "/usr/lib/jvm/java-6-openjdk/", '$(shell echo $$JAVA' + '_HOME)'
+        inreplace "java.opt", "#JAVA_HOME = /usr/lib/jvm/java-6-openjdk/", 'JAVA_HOME=$(shell echo $$JAVA_HOME)'
         system "make"
         system "make", "install"
       end
