@@ -26,7 +26,8 @@ class Libcdr < Formula
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
                                 "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                                "-I#{include}/libcdr-0.1"
+                                "-I#{include}/libcdr-0.1",
+                                "-lcdr-0.1"
     system "./test"
   end
 end
