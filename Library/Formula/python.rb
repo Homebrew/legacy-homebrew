@@ -93,7 +93,28 @@ class Python < Formula
 
     args << "--without-gcc" if ENV.compiler == :clang
 
-    distutils_fix_superenv(args)
+    unless MacOS::CLT.installed?
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
+      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
+      cflags = "CFLAGS=-isysroot #{MacOS.sdk_path}"
+      ldflags = "LDFLAGS=-isysroot #{MacOS.sdk_path}"
+      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
+      # For the Xlib.h, Python needs this header dir with the system Tk
+      if build.without? "tcl-tk"
+        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
+      end
+      args << cflags
+      args << ldflags
+    end
+
+    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
+    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+
+    # We want our readline! This is just to outsmart the detection code,
+    # superenv handles that cc finds includes/libs!
+    inreplace "setup.py",
+              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
 
     if build.universal?
       ENV.universal_binary
@@ -219,29 +240,6 @@ class Python < Formula
       include_dirs=#{include_dirs.join ":"}
       library_dirs=#{library_dirs.join ":"}
     EOF
-  end
-
-  def distutils_fix_superenv(args)
-    unless MacOS::CLT.installed?
-      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
-      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-      cflags = "CFLAGS=-isysroot #{MacOS.sdk_path}"
-      ldflags = "LDFLAGS=-isysroot #{MacOS.sdk_path}"
-      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
-      # For the Xlib.h, Python needs this header dir with the system Tk
-      if build.without? "tcl-tk"
-        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
-      end
-      args << cflags
-      args << ldflags
-    end
-    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
-    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
-    # We want our readline! This is just to outsmart the detection code,
-    # superenv handles that cc finds includes/libs!
-    inreplace "setup.py",
-              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
   end
 
   def sitecustomize
