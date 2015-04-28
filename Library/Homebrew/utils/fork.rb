@@ -17,7 +17,9 @@ module Utils
           rescue Exception => e
             Marshal.dump(e, write)
             write.close
-            exit! 1
+            exit!
+          else
+            exit!(true)
           end
         end
 
