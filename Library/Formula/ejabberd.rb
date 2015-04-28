@@ -6,9 +6,9 @@ class Ejabberd < Formula
   head "https://github.com/processone/ejabberd.git"
 
   bottle do
-    sha256 "9063f60e34c2fc8bbeb4eb6024b25dee054d4d281137bbd307fdec9610fa4ccd" => :yosemite
-    sha256 "672cd019c4e79dccf422e0d7919bbdf7b5ea559b3457009ed8f87c5e9e4b4185" => :mavericks
-    sha256 "12d8203a77c7f7775cf9f6fa703a4b756555cd06f111380bd47c23eafe0d564c" => :mountain_lion
+    sha256 "b0591b932687ecfc54acedd1cc3b312b90654954a775a516fdd9f1194808cbdb" => :yosemite
+    sha256 "22e2ac10889e5036583ee32914515d30f10c4a3a5b19c70cf3ae90079cd4783d" => :mavericks
+    sha256 "b9fe7179d1cafb381b69ecc3dfcc329038a0aba61db0a53389552f42b6322b3d" => :mountain_lion
   end
 
   option "32-bit"
