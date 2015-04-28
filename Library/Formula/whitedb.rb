@@ -1,9 +1,7 @@
-require "formula"
-
 class Whitedb < Formula
   homepage "http://whitedb.org/"
-  url "http://whitedb.org/whitedb-0.7.2.tar.gz"
-  sha1 "055b6162e4c0eb225ab95347643fda583c0bbddd"
+  url "http://whitedb.org/whitedb-0.7.3.tar.gz"
+  sha256 "10c4ccd754ed2d53dbdef9ec16c88c732aa73d923fc0ee114e7e3a78a812849d"
 
   depends_on "python" => :optional
 
