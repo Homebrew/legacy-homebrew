@@ -19,7 +19,7 @@ module FileUtils
         cd(prev)
       end
     ensure
-      ignore_interrupts { rm_r(tmp) }
+      ignore_interrupts { rm_rf(tmp) }
     end
   end
   module_function :mktemp
