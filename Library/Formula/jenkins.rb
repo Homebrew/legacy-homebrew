@@ -1,7 +1,7 @@
 class Jenkins < Formula
   homepage "https://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.610/jenkins.war"
-  sha256 "bb5a7b29e359a3743ddf385975bca65221cee89b0a13c5309169601d23952e0e"
+  url "http://mirrors.jenkins-ci.org/war/1.611/jenkins.war"
+  sha256 "12157975cd8c5bf54bbafdc16d826fd384d7eea5e3816c2c28f82002ad866e42"
 
   bottle do
     cellar :any
