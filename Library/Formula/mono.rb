@@ -1,21 +1,21 @@
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.12.1.tar.bz2"
-  sha256 "5d8cf153af2948c06bc9fbf5088f6834868e4db8e5f41c7cff76da173732b60d"
+  url "http://download.mono-project.com/sources/mono/mono-4.0.1.tar.bz2"
+  sha256 "ff1f15f3b8d43c6a2818c00fabe377b2d8408ad14acd9d507658b4cae00f5bce"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha256 "3053da22a05699ec289f4b42594117f2c51c036a5143ea846f338c541f9e1b93" => :yosemite
-    sha256 "5d427e684b2555ad2410946210f50b32defc2dc5f9bb61ba5016020ec4510e8e" => :mavericks
-    sha256 "c68bf98d500f09d06669d6e3ec3d622c625ae337268d2e478711b0b1b470d505" => :mountain_lion
+    sha256 "7a43ae0a117cbc6568f42e164e9b6381fa8be868211f03fff4269b72955d6d4e" => :yosemite
+    sha256 "f17c96a484176dd3e3715c5c0a3421c7027b739585482543b8d483139ef1186c" => :mavericks
+    sha256 "93690424e73a62c5641b9a9bed86117813f6d8172656726c7c33e377885db37d" => :mountain_lion
   end
 
   resource "monolite" do
-    url "http://storage.bos.xamarin.com/mono-dist-master/cb/cb33b94c853049a43222288ead1e0cb059b22783/monolite-111-latest.tar.gz"
-    sha256 "a957383beb5a7b6fbe39f7cc9a67a7eb2908b7aadc3f4bacee7853dfeed84dfb"
+    url "http://storage.bos.xamarin.com/mono-dist-4.0.0-release/79/7975f5090d8b0d266dc0ba824295d92edd8873da/monolite-117-latest.tar.gz"
+    sha256 "7c48200e4c8bdfe890a0b5301975feac0b2fc6797e6accd00e7a366edbba92e7"
   end
 
   def install
@@ -62,6 +62,7 @@ class Mono < Formula
       <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
         <PropertyGroup>
           <AssemblyName>HomebrewMonoTest</AssemblyName>
+          <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
         </PropertyGroup>
         <ItemGroup>
           <Compile Include="#{test_name}" />
