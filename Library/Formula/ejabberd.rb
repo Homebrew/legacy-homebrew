@@ -1,7 +1,7 @@
 class Ejabberd < Formula
   homepage "https://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/15.03/ejabberd-15.03.tgz"
-  sha256 "b685cd615ecd9a4f42701541e84c2a28ae534bc608d292b78145d9c59ea17233"
+  url "https://www.process-one.net/downloads/ejabberd/15.04/ejabberd-15.04.tgz"
+  sha256 "6750199b75d6b658dabffdf34e20994803b2fc0832e54fea7ab388e5122d63ec"
 
   head "https://github.com/processone/ejabberd.git"
 
