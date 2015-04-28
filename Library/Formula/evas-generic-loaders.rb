@@ -1,7 +1,7 @@
 class EvasGenericLoaders < Formula
   homepage "https://enlightenment.org"
-  url "http://download.enlightenment.org/rel/libs/evas_generic_loaders/evas_generic_loaders-1.14.0-beta2.tar.gz"
-  sha256 "7434f7230b8a46369b84489a8bb0e97c64f35fffabdda8ab0a788870408b9b35"
+  url "http://download.enlightenment.org/rel/libs/evas_generic_loaders/evas_generic_loaders-1.14.0-beta3.tar.gz"
+  sha256 "fcbbafe0275e0e72786482dd25400c19f0c017c8bada51a7fca054c609342b11"
 
   depends_on "pkg-config" => :build
   depends_on "efl"
