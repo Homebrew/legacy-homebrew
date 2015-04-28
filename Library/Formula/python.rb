@@ -15,18 +15,19 @@ class Python < Formula
   # More details in: https://github.com/Homebrew/homebrew/pull/32368
   option :universal
   option "with-quicktest", "Run `make quicktest` after the build (for devs; may fail)"
-  option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
+  option "with-tcl-tk", "Use Homebrew's Tk instead of OS X Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
 
   deprecated_option "quicktest" => "with-quicktest"
+  deprecated_option "with-brewed-tk" => "with-tcl-tk"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
   depends_on "sqlite" => :recommended
   depends_on "gdbm" => :recommended
   depends_on "openssl"
-  depends_on "homebrew/dupes/tcl-tk" if build.with? "brewed-tk"
-  depends_on :x11 if build.with?("brewed-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
+  depends_on "homebrew/dupes/tcl-tk" => :optional
+  depends_on :x11 if build.with?("tcl-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
 
   skip_clean "bin/pip", "bin/pip-2.7"
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
@@ -51,7 +52,7 @@ class Python < Formula
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
   # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-  patch :DATA if build.with? "brewed-tk"
+  patch :DATA if build.with? "tcl-tk"
 
   def lib_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7"
@@ -113,7 +114,7 @@ class Python < Formula
       f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
-    if build.with? "brewed-tk"
+    if build.with? "tcl-tk"
       tcl_tk = Formula["homebrew/dupes/tcl-tk"].opt_prefix
       ENV.append "CPPFLAGS", "-I#{tcl_tk}/include"
       ENV.append "LDFLAGS", "-L#{tcl_tk}/lib"
@@ -200,7 +201,7 @@ class Python < Formula
       library_dirs << Formula["sqlite"].opt_lib
     end
 
-    if build.with? "brewed-tk"
+    if build.with? "tcl-tk"
       include_dirs << Formula["homebrew/dupes/tcl-tk"].opt_include
       library_dirs << Formula["homebrew/dupes/tcl-tk"].opt_lib
     end
@@ -228,7 +229,7 @@ class Python < Formula
       ldflags = "LDFLAGS=-isysroot #{MacOS.sdk_path}"
       args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
       # For the Xlib.h, Python needs this header dir with the system Tk
-      if build.without? "brewed-tk"
+      if build.without? "tcl-tk"
         cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end
       args << cflags
