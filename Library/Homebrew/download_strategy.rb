@@ -452,7 +452,7 @@ end
 class SubversionDownloadStrategy < VCSDownloadStrategy
   def initialize(name, resource)
     super
-    @url = @url.sub(/^svn\+/, "") if @url.start_with?("svn+http://")
+    @url = @url.sub("svn+http://", "")
   end
 
   def fetch
