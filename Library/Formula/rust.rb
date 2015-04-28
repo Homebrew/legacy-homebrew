@@ -2,9 +2,9 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'https://static.rust-lang.org/dist/rustc-1.0.0-beta.2-src.tar.gz'
-  version "1.0.0-beta.2"
-  sha256 '969f20bfec588456af8ab81c9b00ef46df075bf9ac9955e42a87b1f39cb99771'
+  url 'https://static.rust-lang.org/dist/rustc-1.0.0-beta.3-src.tar.gz'
+  version "1.0.0-beta.3"
+  sha256 'e751bc8a8ad236c8865697f866b2863e224af56b0194ddf9f3edd71f9ff6545f'
 
   head 'https://github.com/rust-lang/rust.git'
 
