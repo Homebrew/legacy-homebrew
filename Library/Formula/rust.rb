@@ -9,9 +9,9 @@ class Rust < Formula
   head 'https://github.com/rust-lang/rust.git'
 
   bottle do
-    sha256 "b2daf887ed5bd0d52dd5b96d3ddab38901d63c1408534660138bbf05bac922c8" => :yosemite
-    sha256 "7c49753fb3e7f80eedea6122652d307f71fe9426a124abbd0936ae91871006e9" => :mavericks
-    sha256 "96800a3840fd0e929216d22ff768c839ed7fb3046c62ca67b8793af6e72e9fc3" => :mountain_lion
+    sha256 "60450a633c8c5f42e208b647699fd872e594fd5475f460b0367bbbf02063a466" => :yosemite
+    sha256 "1c265ffd3c678acd05b6525c2de6730881b540d1b8419f2b496cf244b46d88c2" => :mavericks
+    sha256 "2385a4baa211953a94bb93f5ce6f5ca5d5826f3e1d7c0d12310e78c5571f3c89" => :mountain_lion
   end
 
   def install
