@@ -1,51 +1,12 @@
-# Require this file to build a testing environment.
+$:.unshift File.expand_path("../..", __FILE__)
+$:.unshift File.expand_path("../lib", __FILE__)
 
-$:.push(File.expand_path(__FILE__+'/../..'))
-
-require 'extend/module'
-require 'extend/fileutils'
-require 'extend/pathname'
-require 'extend/ARGV'
-require 'extend/string'
-require 'extend/symbol'
-require 'extend/enumerable'
-require 'exceptions'
-require 'utils'
-require 'rbconfig'
-require 'tmpdir'
+require "tmpdir"
 
 TEST_TMPDIR = Dir.mktmpdir("homebrew_tests")
 at_exit { FileUtils.remove_entry(TEST_TMPDIR) }
 
-# Constants normally defined in global.rb
-HOMEBREW_PREFIX        = Pathname.new(TEST_TMPDIR).join("prefix")
-HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
-HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
-HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
-HOMEBREW_CACHE_FORMULA = HOMEBREW_PREFIX.parent+'formula_cache'
-HOMEBREW_CELLAR        = HOMEBREW_PREFIX.parent+'cellar'
-HOMEBREW_LOGS          = HOMEBREW_PREFIX.parent+'logs'
-HOMEBREW_TEMP          = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
-HOMEBREW_USER_AGENT    = 'Homebrew'
-HOMEBREW_WWW           = 'http://example.com'
-HOMEBREW_CURL_ARGS     = '-fsLA'
-HOMEBREW_VERSION       = '0.9-test'
-
-require 'tap_constants'
-
-if RbConfig.respond_to?(:ruby)
-  RUBY_PATH = Pathname.new(RbConfig.ruby)
-else
-  RUBY_PATH = Pathname.new(RbConfig::CONFIG["bindir"]).join(
-    RbConfig::CONFIG["ruby_install_name"] + RbConfig::CONFIG["EXEEXT"]
-  )
-end
-RUBY_BIN = RUBY_PATH.dirname
-
-MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
-
-ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
+require "global"
 
 # Test environment setup
 %w{ENV Formula}.each { |d| HOMEBREW_LIBRARY.join(d).mkpath }
@@ -53,8 +14,6 @@ ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p
 
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
-
-ARGV.extend(HomebrewArgvExtension)
 
 begin
   require "rubygems"
@@ -65,9 +24,6 @@ rescue LoadError
 end
 
 module Homebrew
-  include FileUtils
-  extend self
-
   module VersionAssertions
     def version v
       Version.new(v)
