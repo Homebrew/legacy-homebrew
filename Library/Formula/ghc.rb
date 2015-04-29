@@ -14,20 +14,12 @@ class Ghc < Formula
 
   option "32-bit"
   option "with-tests", "Verify the build using the testsuite."
-
   deprecated_option "tests" => "with-tests"
 
-  # http://hackage.haskell.org/trac/ghc/ticket/6009
-  depends_on :macos => :snow_leopard
-  depends_on "gcc" if MacOS.version == :mountain_lion
-
   resource "gmp" do
-    # Track the main gmp formula so it doesn't have to be updated here.
-    @gmp = Formulary.factory("gmp").stable
-
-    url @gmp.url
-    mirror @gmp.mirrors[0]
-    @checksum = @gmp.checksum
+    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
+    mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
+    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
   end
 
   if build.build_32_bit? || !MacOS.prefer_64_bit?
@@ -55,103 +47,63 @@ class Ghc < Formula
     end
   end
 
-  fails_with :llvm do
-    cause <<-EOS.undent
-      cc1: error: unrecognized command line option "-Wno-invalid-pp-token"
-      cc1: error: unrecognized command line option "-Wno-unicode"
-    EOS
-  end
-
-  if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
-    fails_with :clang do
-      cause <<-EOS.undent
-        Building with Clang configures GHC to use Clang as its preprocessor,
-        which causes subsequent GHC-based builds to fail.
-      EOS
-    end
-  end
-
   def install
-    ENV.m32 if build.build_32_bit?
+    if build.build_32_bit? || !MacOS.prefer_64_bit?
+      ENV.m32
+      # MPN_PATH: The lowest common denomenator asm paths that work on Darwin,
+      # corresponding to Yonah and Merom. Obviates --disable-assembly.
+      ENV["MPN_PATH"] = "x86/p6/sse2 x86/p6/p3mmx x86/p6/mmx x86/p6 x86/mmx x86 generic"
+      ENV["ABI"] = "32"
+      arch = "i386"
+    else
+      ENV["MPN_PATH"] = "x86_64/fastsse x86_64/core2 x86_64 generic"
+      ENV["ABI"] = "64"
+      arch = "x86_64"
+    end
 
-    # Build a static gmp (to avoid dynamic linking to ghc). "--with-pic" is
-    # *required* when building gmp statically, else you'll get
-    # "illegal text reloc" errors.
-    gmp_prefix = libexec/"gmp-static"
+    # Build a static gmp rather than in-tree gmp, otherwise it links to brew's.
+    # GMP *does not* build PIC by default without shared libraries so --with-pic
+    # is mandatory or else you'll get "illegal text relocs" errors.
+    gmp = libexec/"integer-gmp"
     resource("gmp").stage do
-      gmp_args = ["--prefix=#{gmp_prefix}", "--disable-shared", "--with-pic"]
-      gmp_args << "ABI=32" if build.build_32_bit?
-
-      # https://github.com/Homebrew/homebrew/issues/20693
-      gmp_args << "--disable-assembly" if build.build_32_bit? || build.bottle?
-
-      system "./configure", *gmp_args
+      system "./configure", "--prefix=#{gmp}", "--with-pic", "--disable-shared"
       system "make"
       system "make", "check"
       ENV.deparallelize { system "make", "install" }
     end
 
-    # Move the main tarball contents into a subdirectory
-    (buildpath+"Ghcsource").install Dir["*"]
+    args = ["--with-gmp-includes=#{gmp}/include",
+            "--with-gmp-libraries=#{gmp}/lib",
+            "--with-ld=ld", # Avoid hardcoding superenv's ld on older machines.
+            "--with-hs-cpp-flags=-E -undef -traditional", # Fix for :llvm.
+            "--with-gcc=#{ENV.cc}"] # Always
+    args << "--with-clang=#{ENV.cc}" if ENV.compiler == :clang
+    args << "--with-gcc-4.2=#{ENV.cc}" if ENV.compiler == :llvm
 
     resource("binary").stage do
-      # Define where the subformula will temporarily install itself
-      subprefix = buildpath+"subfo"
+      binary = buildpath/"binary"
 
-      # ensure configure does not use Xcode 5 "gcc" which is actually clang
-      system "./configure", "--prefix=#{subprefix}", "--with-gcc=#{ENV.cc}"
-
-      if MacOS.version <= :lion
-        # __thread is not supported on Lion but configure enables it anyway.
-        File.open("mk/config.h", "a") do |file|
-          file.write("#undef CC_SUPPORTS_TLS")
-        end
-      end
-
+      system "./configure", "--prefix=#{binary}", *args
       ENV.deparallelize { system "make", "install" }
-      ENV.prepend_path "PATH", subprefix/"bin"
+
+      ENV.prepend_path "PATH", binary/"bin"
     end
 
-    cd "Ghcsource" do
-      # Fix an assertion when linking ghc with llvm-gcc
-      # https://github.com/Homebrew/homebrew/issues/13650
-      ENV["LD"] = "ld"
+    system "./configure", "--build=#{arch}-apple-darwin", "--prefix=#{prefix}", *args
+    system "make"
 
-      if build.build_32_bit? || !MacOS.prefer_64_bit?
-        arch = "i386"
-      else
-        arch = "x86_64"
+    if build.with? "tests"
+      resource("testsuite").stage do
+        testdirs = ["config", "driver", "mk", "tests", "timeout"]
+        testdirs.each { |dir| (buildpath/dir).install Dir["#{dir}/*"] }
       end
-
-      # ensure configure does not use Xcode 5 "gcc" which is actually clang
-      system "./configure", "--prefix=#{prefix}",
-                            "--build=#{arch}-apple-darwin",
-                            "--with-gcc=#{ENV.cc}",
-                            "--with-gmp-includes=#{gmp_prefix}/include",
-                            "--with-gmp-libraries=#{gmp_prefix}/lib"
+      cd (buildpath/"tests") do
+        system "make", "CLEANUP=1", "THREADS=#{ENV.make_jobs}", "fast"
+      end
       system "make"
-
-      if build.with? "tests"
-        resource("testsuite").stage do
-          cd "testsuite" do
-            (buildpath+"Ghcsource/config").install Dir["config/*"]
-            (buildpath+"Ghcsource/driver").install Dir["driver/*"]
-            (buildpath+"Ghcsource/mk").install Dir["mk/*"]
-            (buildpath+"Ghcsource/tests").install Dir["tests/*"]
-            (buildpath+"Ghcsource/timeout").install Dir["timeout/*"]
-          end
-          cd (buildpath+"Ghcsource/tests") do
-            system "make", "CLEANUP=1", "THREADS=#{ENV.make_jobs}", "fast"
-          end
-        end
-        system "make"
-      end
-
-      ENV.deparallelize { system "make", "install" }
-      # use clang, even when gcc was used to build ghc
-      settings = Dir[lib/"ghc-*/settings"][0]
-      inreplace settings, "\"#{ENV.cc}\"", "\"clang\""
     end
+
+    ENV.deparallelize { system "make", "install" }
   end
 
   test do
