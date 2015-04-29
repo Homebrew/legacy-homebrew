@@ -5,7 +5,6 @@ class Vault < Formula
   sha256 "e0a1a1ace4c9577408800825b374c0239c04ebc9ab6ed18c924dc8f0393b9fd5"
 
   def install
-    bin.mkpath
     bin.install "vault"
   end
 
