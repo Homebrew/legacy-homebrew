@@ -13,9 +13,10 @@ class Knot < Formula
   end
 
   bottle do
-    sha1 "d28c63873e0ee6b98a01c4da1537d81f45dd468a" => :mavericks
-    sha1 "f81216eda0543ae546215b8739631db65594e7af" => :mountain_lion
-    sha1 "c6647467cfe8a3f84a3bedcfd93e6d2cb71f7436" => :lion
+    cellar :any
+    sha256 "cb802cbc1c228a0acaffd49483c7a144eb223bd69955b610a18c5f77b567e988" => :yosemite
+    sha256 "e537709607541d660b68546fd28e06ec5b226b247f2b3e36ca8bb3645d3d1925" => :mavericks
+    sha256 "90dc89d5fb73b6675dfa808ad6d1a96a6bc26e9516009b4841d77ecc88ab5ea2" => :mountain_lion
   end
 
   depends_on "gnutls"
