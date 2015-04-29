@@ -4,6 +4,7 @@ class Pazpar2 < Formula
   homepage "http://www.indexdata.com/pazpar2"
   url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.8.7.tar.gz"
   sha1 "e4e5c1c7cdeea7f06c0242c1b85c32b35c52ee69"
+  revision 1
 
   bottle do
     cellar :any
