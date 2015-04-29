@@ -1,8 +1,8 @@
 class Curl < Formula
   homepage "http://curl.haxx.se/"
-  url "http://curl.haxx.se/download/curl-7.42.0.tar.bz2"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/cURL/curl-7.42.0.tar.bz2"
-  sha256 "32557d68542f5c6cc8437b5b8a945857b4c5c6b6276da909e35b783d1d66d08f"
+  url "http://curl.haxx.se/download/curl-7.42.1.tar.bz2"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/cURL/curl-7.42.1.tar.bz2"
+  sha256 "e2905973391ec2dfd7743a8034ad10eeb58dab8b3a297e7892a41a7999cac887"
 
   bottle do
     cellar :any
