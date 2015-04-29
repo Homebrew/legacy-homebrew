@@ -1,20 +1,18 @@
-require "formula"
-
 class Emacs23Installed < Requirement
   fatal true
   env :userpaths
   default_formula "emacs"
 
   satisfy do
-    `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
-    $1.to_i >= 23
+    major_version = `$(which emacs) --batch --eval "(princ emacs-major-version)"`.to_i
+    major_version >= 23
   end
 end
 
 class Mu < Formula
   homepage "http://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/archive/v0.9.11.tar.gz"
-  sha1 "080b69bfb4876cb683acb961e8b71d6ebba90fa0"
+  url "https://github.com/djcb/mu/archive/v0.9.12.tar.gz"
+  sha256 "b871124fc7774a2593815f89286671a8f31d7243bb898a8ca454685599f2b9af"
 
   head "https://github.com/djcb/mu.git"
 
@@ -25,7 +23,7 @@ class Mu < Formula
     sha1 "b7dda439293d64bdba9173318eeb381524cbdddb" => :mountain_lion
   end
 
-  option "with-emacs", "Build with emacs support"
+  option "with-emacs", "Build with Emacs support (requires Emacs 23 or higher)"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -52,7 +50,7 @@ class Mu < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
