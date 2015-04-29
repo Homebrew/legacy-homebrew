@@ -9,9 +9,9 @@ class Freeling < Formula
 
   bottle do
     cellar :any
-    sha1 "9972b1420a2a0cd2ed4f033ee907dad45ca4e63e" => :mavericks
-    sha1 "b8450df079deb28b27db17f5da97f7c53d39bbd0" => :mountain_lion
-    sha1 "5e853bc28cf164fb78350f69af5ee15da2acc4e9" => :lion
+    sha256 "34695c6d00f296ef479f096a589601e39b8b39c653fbb1474811fa578754e690" => :yosemite
+    sha256 "a4c19c2be7c5e5f6aed48cf352dbcf3e2e298113d714d466f6721d346996fca5" => :mavericks
+    sha256 "a25436b7796ce8bcda57f17ec66e5e3eb7563edf2caa2241edc230b4db58e8e4" => :mountain_lion
   end
 
   depends_on "icu4c"
