@@ -9,7 +9,7 @@ module Homebrew
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{HOMEBREW_LIBRARY_PATH}
+      -I #{HOMEBREW_LOAD_PATH}
       --
       #{HOMEBREW_LIBRARY_PATH}/postinstall.rb
       #{formula.path}
