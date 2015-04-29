@@ -250,14 +250,18 @@ class Bottle
   private
 
   def build_url(root_url, filename)
-    "#{root_url}/#{filename}"
+    "#{root_url}/#{filename}".sub \
+      BottleSpecification::DEFAULT_DOMAIN_MAC,
+      BottleSpecification::DEFAULT_DOMAIN
   end
 end
 
 class BottleSpecification
   DEFAULT_PREFIX = "/usr/local".freeze
   DEFAULT_CELLAR = "/usr/local/Cellar".freeze
-  DEFAULT_DOMAIN = (OS.mac? ? "https://homebrew.bintray.com" : "https://linuxbrew.bintray.com").freeze
+  DEFAULT_DOMAIN_MAC = "https://homebrew.bintray.com"
+  DEFAULT_DOMAIN_LINUX = "https://linuxbrew.bintray.com"
+  DEFAULT_DOMAIN = (OS.linux? ? DEFAULT_DOMAIN_LINUX : DEFAULT_DOMAIN_MAC).freeze
   DEFAULT_ROOT_URL = "#{DEFAULT_DOMAIN}/bottles".freeze
 
   attr_rw :root_url, :prefix, :cellar, :revision
