@@ -5,8 +5,8 @@ class Zorba < Formula
   revision 1
 
   bottle do
-    sha1 "3eb71a93bb29f023eb53b17e4e3a5723fae80277" => :yosemite
-    sha1 "d6a151267820b1fbdcec678b38a2f85feda9e475" => :mavericks
+    sha256 "de910581ab17813af055afa2aa25617141c35a01844075703b0f56c3a2266a31" => :yosemite
+    sha256 "817415ea7f4d9e3011aa7c2492a2e8c5c7e064c938d5fb7a7b0e322d93eb99b1" => :mavericks
   end
 
   option "with-big-integer", "Use 64 bit precision instead of arbitrary precision for performance"
