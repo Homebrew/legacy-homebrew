@@ -2,8 +2,7 @@ require "formula"
 
 class Sassc < Formula
   homepage "https://github.com/sass/sassc"
-  url "https://github.com/sass/sassc/archive/3.1.0.tar.gz"
-  sha1 "573224ad922b46ea1a568807ddcbc7de41a4254d"
+  url "https://github.com/sass/sassc.git", :tag => "3.2.1", :revision => "a88dd098143a1297d68a509f6dd99be25487197a"
   head "https://github.com/sass/sassc.git"
 
   bottle do
@@ -20,7 +19,6 @@ class Sassc < Formula
   depends_on "libsass"
 
   def install
-    ENV["SASSC_VERSION"] = "3.1.0"
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}", "--disable-silent-rules",
                           "--disable-dependency-tracking"
