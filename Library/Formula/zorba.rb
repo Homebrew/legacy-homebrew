@@ -2,6 +2,7 @@ class Zorba < Formula
   homepage "http://www.zorba.io/"
   url "https://github.com/28msec/zorba/archive/3.0.tar.gz"
   sha1 "c444cde689600aab1172b4974348dd6626e92261"
+  revision 1
 
   bottle do
     sha1 "3eb71a93bb29f023eb53b17e4e3a5723fae80277" => :yosemite
