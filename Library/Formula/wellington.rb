@@ -2,8 +2,8 @@ require "language/go"
 
 class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/v0.7.1.tar.gz"
-  sha256 "3f23fffee02ce03f177fb1489f3dee92879c59edda6230e5a2c16aaa149fb1a8"
+  url "https://github.com/wellington/wellington/archive/v0.8.1.tar.gz"
+  sha256 "77b41ee1b3e0095dd54a8575c6b05fdef7bf7bc059b46e534b3d06f84ab2422c"
   head "https://github.com/wellington/wellington.git"
 
   bottle do
@@ -17,35 +17,64 @@ class Wellington < Formula
 
   depends_on "go" => :build
   depends_on "pkg-config" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
 
-  go_resource "github.com/wellington/spritewell" do
-    url "https://github.com/wellington/spritewell.git",
-        :revision => "748bfe956f31c257605c304b41a0525a4487d17d"
+  stable do
+    depends_on "libsass"
   end
 
-  go_resource "github.com/go-fsnotify/fsnotify" do
-    url "https://github.com/go-fsnotify/fsnotify.git",
-        :revision => "f582d920d11386e8ae15227bb5933a8f9b4c3dec"
+  devel do
+    url "https://github.com/wellington/wellington/archive/c574754c39806e8c52682f15f49c8ff819d0f962.tar.gz"
+    sha256 "92c5d4bdd6260f96aed0e20fa06c6200b1c57281dbd32dbd00b1c06636ef6e10"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  head do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  go_resource "github.com/tools/godep" do
+    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
+  end
+
+  go_resource "github.com/kr/fs" do
+    url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
+  end
+
+  go_resource "golang.org/x/tools" do
+    url "https://github.com/golang/tools.git", :revision => "473fd854f8276c0b22f17fb458aa8f1a0e2cf5f5"
   end
 
   def install
-    ENV.cxx11
-    # go_resource doesn't support gopkg, do it manually then symlink
-    mkdir_p buildpath/"src/gopkg.in"
-    ln_s buildpath/"src/github.com/go-fsnotify/fsnotify",
-         buildpath/"src/gopkg.in/fsnotify.v1"
-    ENV["PKG_CONFIG_PATH"] = buildpath/"libsass/lib/pkgconfig"
+    version = File.read("version.txt").chomp
+    ENV["GOPATH"] = buildpath
+    Language::Go.stage_deps resources, buildpath/"src"
+
+    cd "src/github.com/tools/godep" do
+      system "go", "install"
+    end
+    system "bin/godep", "restore"
+
+    # Build libsass from source for devel build
+    unless stable?
+      ENV.cxx11
+      ENV["PKG_CONFIG_PATH"] = buildpath/"src/github.com/wellington/go-libsass/lib/pkgconfig"
+
+      ENV.append "CGO_LDFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
+      cd "src/github.com/wellington/go-libsass/" do
+        system "make", "deps"
+      end
+    end
+
+    # symlink into $GOPATH so builds work
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
-    Language::Go.stage_deps resources, buildpath/"src"
-    ENV["GOPATH"] = buildpath
-    ENV.append "CGO_LDFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
-    system "make", "deps"
-    system "go", "build", "-x", "-v", "-o", "dist/wt", "wt/main.go"
 
+    system "go", "build", "-ldflags", "-X main.version #{version}", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
   end
 
@@ -53,7 +82,7 @@ class Wellington < Formula
     s = "div { p { color: red; } }"
     expected = <<-EOS.undent
       Reading from stdin, -h for help
-      /* line 6, stdin */
+      /* line 1, stdin */
       div p {
         color: red; }
     EOS
