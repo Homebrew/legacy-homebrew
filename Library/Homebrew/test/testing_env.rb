@@ -91,6 +91,10 @@ module Homebrew
       end
     end
 
+    def mktmpdir(prefix_suffix=nil, &block)
+      Dir.mktmpdir(prefix_suffix, HOMEBREW_TEMP, &block)
+    end
+
     def assert_nothing_raised
       yield
     end
