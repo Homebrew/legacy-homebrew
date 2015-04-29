@@ -1,6 +1,6 @@
 require "tmpdir"
 
-HOMEBREW_TEMP = Pathname.new(ENV["HOMEBREW_TEMP"] || "/tmp")
+HOMEBREW_TEMP = Pathname.new(ENV["HOMEBREW_TEMP"] || Dir.tmpdir)
 
 TEST_TMPDIR = ENV.fetch("HOMEBREW_TEST_TMPDIR") { |k|
   dir = Dir.mktmpdir("homebrew_tests", HOMEBREW_TEMP)
