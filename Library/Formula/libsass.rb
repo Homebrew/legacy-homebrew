@@ -1,7 +1,7 @@
 class Libsass < Formula
   homepage "https://github.com/sass/libsass"
-  url "https://github.com/sass/libsass/archive/3.1.0.tar.gz"
-  sha1 "858c41405f5ff8b4186c7111e08f29893f4e51a1"
+  url "https://github.com/sass/libsass/archive/3.2.0.tar.gz"
+  sha256 "7a57dd96aefa2bfa6975781211cf1fca161ebe8469d0a31cacd57a5e76e7eb5e"
   head "https://github.com/sass/libsass.git"
 
   bottle do
@@ -18,7 +18,7 @@ class Libsass < Formula
 
   def install
     ENV.cxx11
-    ENV["LIBSASS_VERSION"] = "HEAD" if build.head?
+    ENV["LIBSASS_VERSION"] = "3.2.0"
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}", "--disable-silent-rules",
                           "--disable-dependency-tracking"
@@ -38,12 +38,13 @@ class Libsass < Formula
       int main()
       {
         char* source_string = "a { color:blue; &:hover { color:red; } }";
-        struct Sass_Data_Context* data_ctx = sass_make_data_context(source_string);
-        struct Sass_Options* options = sass_data_context_get_options(data_ctx);
-        sass_option_set_precision(options, SASS_STYLE_NESTED);
-        sass_option_set_source_comments(options, 0);
-        sass_compile_data_context(data_ctx);
-        struct Sass_Context* ctx = sass_data_context_get_context(data_ctx);
+        struct Sass_Data_Context* compiler = sass_make_data_context(source_string);
+        struct Sass_Options* options = sass_data_context_get_options(compiler);
+        sass_option_set_precision(options, 1);
+        sass_option_set_source_comments(options, false);
+        sass_data_context_set_options(compiler, options);
+        sass_compile_data_context(compiler);
+        struct Sass_Context* ctx = sass_data_context_get_context(compiler);
         int err = sass_context_get_error_status(ctx);
         if(err != 0) {
           return 1;
