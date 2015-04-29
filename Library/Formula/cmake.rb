@@ -15,6 +15,7 @@ class Cmake < Formula
   option "without-docs", "Don't build man pages"
 
   depends_on :python => :build if OS.mac? && MacOS.version <= :snow_leopard && build.with?("docs")
+  depends_on "curl" unless OS.mac?
 
   # The `with-qt` GUI option was removed due to circular dependencies if
   # CMake is built with Qt support and Qt is built with MySQL support as MySQL uses CMake.
