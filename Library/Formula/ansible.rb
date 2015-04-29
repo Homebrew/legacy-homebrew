@@ -1,7 +1,7 @@
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.9.0.1.tar.gz"
-  sha1 "a61c0dfdb3f395546310999d2b75c2ce422fc1ed"
+  url "http://releases.ansible.com/ansible/ansible-1.9.1.tar.gz"
+  sha256 "a6f975d565723765a4d490ff40cede96833a745f38908def4950a0075f1973f5"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
