@@ -1,9 +1,10 @@
-require 'formula'
-
 class Muparser < Formula
-  homepage 'http://muparser.beltoforion.de/'
-  url 'https://downloads.sourceforge.net/project/muparser/muparser/Version%202.2.3/muparser_v2_2_3.zip'
-  sha1 '3974898052dd9ef350df1860f8292755f78f59df'
+  homepage "http://muparser.beltoforion.de/"
+  url "https://docs.google.com/uc?export=download&id=0BzuB-ydOOoduejdwdTQwcF9JLTA"
+  version "2.2.4"
+  sha256 "fe4e207b9b5ee0e8ba155c3a7cc22ea6085313e0a17b7568a8a86eaa0d441431"
+
+  head "http://muparser.googlecode.com/svn/trunk/"
 
   bottle do
     cellar :any
@@ -14,13 +15,49 @@ class Muparser < Formula
   end
 
   def install
-    # patch to correct thousands separator behavior when built against libc++.
-    # https://groups.google.com/d/topic/muparser-dev/l8pbPFnR46s/discussion
-    # https://code.google.com/p/muparser/source/detail?r=18
-    inreplace 'include/muParserBase.h', 'std::string(1, m_nGroup)', 'std::string(1, (char)(m_cThousandsSep > 0 ? m_nGroup : CHAR_MAX))'
-    inreplace 'include/muParserInt.h', 'std::string(1, m_nGroup)', 'std::string(1, (char)(m_cThousandsSep > 0 ? m_nGroup : CHAR_MAX))'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    chmod 0755, "./configure"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <iostream>
+      #include "muParser.h"
+
+      double MySqr(double a_fVal)
+      {
+        return a_fVal*a_fVal;
+      }
+
+      int main(int argc, char* argv[])
+      {
+        using namespace mu;
+        try
+        {
+          double fVal = 1;
+          Parser p;
+          p.DefineVar("a", &fVal);
+          p.DefineFun("MySqr", MySqr);
+          p.SetExpr("MySqr(a)*_pi+min(10,a)");
+
+          for (std::size_t a=0; a<100; ++a)
+          {
+            fVal = a;  // Change value of variable a
+            std::cout << p.Eval() << std::endl;
+          }
+        }
+        catch (Parser::exception_type &e)
+        {
+          std::cout << e.GetMsg() << std::endl;
+        }
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "-I#{include}", "-L#{lib}", "-lmuparser",
+           testpath/"test.cpp", "-o", testpath/"test"
+    system "./test"
   end
 end
