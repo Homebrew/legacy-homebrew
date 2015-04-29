@@ -5,7 +5,7 @@ class SandboxTest < Homebrew::TestCase
   def setup
     skip "sandbox not implemented" unless Sandbox.available?
     @sandbox = Sandbox.new
-    @dir = Pathname.new(Dir.mktmpdir)
+    @dir = Pathname.new(mktmpdir)
     @file = @dir/"foo"
   end
 

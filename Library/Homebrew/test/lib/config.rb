@@ -1,7 +1,9 @@
 require "tmpdir"
 
+HOMEBREW_TEMP = Pathname.new(ENV["HOMEBREW_TEMP"] || "/tmp")
+
 TEST_TMPDIR = ENV.fetch("HOMEBREW_TEST_TMPDIR") { |k|
-  dir = Dir.mktmpdir("homebrew_tests")
+  dir = Dir.mktmpdir("homebrew_tests", HOMEBREW_TEMP)
   at_exit { FileUtils.remove_entry(dir) }
   ENV[k] = dir
 }
@@ -13,4 +15,3 @@ HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+"cache"
 HOMEBREW_CACHE_FORMULA = HOMEBREW_PREFIX.parent+"formula_cache"
 HOMEBREW_CELLAR        = HOMEBREW_PREFIX.parent+"cellar"
 HOMEBREW_LOGS          = HOMEBREW_PREFIX.parent+"logs"
-HOMEBREW_TEMP          = Pathname.new(ENV["HOMEBREW_TEMP"] || "/tmp")
