@@ -10,7 +10,7 @@ module Homebrew
         opoo <<-EOS.undent
           brew upgrade with no arguments will change behaviour soon!
           It currently upgrades all formula but this will soon change to require '--all'.
-          Please update any workflows, documentation and scripts!
+          Please update any workflows, documentation, and scripts!
         EOS
       end
       outdated = Homebrew.outdated_brews(Formula.installed)
