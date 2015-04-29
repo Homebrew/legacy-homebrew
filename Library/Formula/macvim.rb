@@ -1,9 +1,9 @@
 # Reference: https://github.com/macvim-dev/macvim/wiki/building
 class Macvim < Formula
   homepage 'https://code.google.com/p/macvim/'
-  url 'https://github.com/macvim-dev/macvim/archive/snapshot-75.tar.gz'
-  version '7.4-75'
-  sha1 'cdc1fc67876dded460d4e7916874dcdf3f1cd4bb'
+  url 'https://github.com/macvim-dev/macvim/archive/Snapshot-76.tar.gz'
+  version '7.4-76'
+  sha1 'bced599503faa65c146394eb951d7a43b49510a4'
 
   head 'https://github.com/macvim-dev/macvim.git'
 
