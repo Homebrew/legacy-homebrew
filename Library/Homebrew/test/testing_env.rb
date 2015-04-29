@@ -1,11 +1,6 @@
 $:.unshift File.expand_path("../..", __FILE__)
 $:.unshift File.expand_path("../lib", __FILE__)
 
-require "tmpdir"
-
-TEST_TMPDIR = Dir.mktmpdir("homebrew_tests")
-at_exit { FileUtils.remove_entry(TEST_TMPDIR) }
-
 require "global"
 
 # Test environment setup
