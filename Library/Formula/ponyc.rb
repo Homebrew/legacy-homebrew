@@ -1,7 +1,7 @@
 class Ponyc < Formula
   homepage "http://www.ponylang.org"
-  url "http://www.ponylang.org/releases/source/ponyc-0.1.1.tar.bz2"
-  sha256 "8ed8e5139635cf7f60cf87d51fd36210ab11a8a7fcefbdfa9b5c25a2666bee1e"
+  url "http://www.ponylang.org/releases/source/ponyc-0.1.2.tar.bz2"
+  sha256 "224aa6d6c80574dd6074041eb7c6a83171862aea81d69ad1bf91f04d4f567d0a"
 
   depends_on "llvm"
 
