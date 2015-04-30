@@ -321,4 +321,3 @@ class Gdal < Formula
     system "#{bin}/ogrinfo", "--formats"
   end
 end
-
