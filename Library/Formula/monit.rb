@@ -6,9 +6,9 @@ class Monit < Formula
 
   bottle do
     cellar :any
-    sha256 "b6ade6465692c0faed5f1068e42429a50f94f2a7b2a275d43233261f2924bbb7" => :yosemite
-    sha256 "cffb9f23a45afe401f5965bc9611cf64a15444eb142e216aae243bb8d82021de" => :mavericks
-    sha256 "70e825e0e6215aa7bf6a4897b03a0552259f8b739b68332815f18508b7188bf0" => :mountain_lion
+    sha256 "cf3f0b83a4f97f975cef004a11d21baccd7c82052e037d1899561b0b0537aa4f" => :yosemite
+    sha256 "efebb8f670cf73690aedf2003bd539d28d7a9e3fe63982b197552e622dd709f9" => :mavericks
+    sha256 "4c04f9b2a533499fd965f76fd7ca28854c7508f79749ba78d3eaa39d744e913f" => :mountain_lion
   end
 
   depends_on "openssl"
