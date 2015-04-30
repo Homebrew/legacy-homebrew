@@ -1,7 +1,7 @@
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.18.tar.gz"
-  sha256 "0174276c5e0c830cc77052580d9aadf52e944ade009625fb9be0ee04251a96f2"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.25.tar.gz"
+  sha256 "48b46892c1b95b6467335145fd8db2fdab6a6cba14c481dfde4fe5af7114b3b4"
 
   bottle do
     cellar :any
@@ -61,8 +61,8 @@ class Awscli < Formula
   end
 
   resource "bcdoc" do
-    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.13.0.tar.gz"
-    sha256 "ffe7bfc278f83bab826e9f52e2860a858579fffab2febf60ce2ec6c3f9247763"
+    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.14.0.tar.gz"
+    sha256 "68aecc8e14151266316562c6a50605b8efa33f18f8023e303fb20a1b346e53e8"
   end
 
   resource "pyasn1" do
