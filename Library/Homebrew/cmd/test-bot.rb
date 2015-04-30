@@ -142,6 +142,7 @@ module Homebrew
       puts_result
 
       if has_output?
+        @output = fix_encoding(@output)
         puts @output if (failed? or @puts_output_on_success) && !verbose
         File.write(log_file_path, @output) if ARGV.include? "--keep-logs"
       end
