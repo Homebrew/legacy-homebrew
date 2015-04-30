@@ -11,8 +11,8 @@ class WlaDx < Formula
   def install
     %w{CFLAGS CXXFLAGS CPPFLAGS}.each { |e| ENV.delete(e) }
     ENV.append_to_cflags '-c -O3 -ansi -pedantic -Wall'
-    system "chmod +x unix.sh"
-    system "chmod +x opcode_table_generator/create_tables.sh"
+    chmod 0755, "unix.sh"
+    chmod 0755, "opcode_table_generator/create_tables.sh"
     system "./unix.sh", ENV.make_jobs
     bin.install Dir['./binaries/*']
   end

@@ -1,7 +1,7 @@
 require 'formula'
 
 class SharedMimeInfo < Formula
-  homepage 'http://www.freedesktop.org/wiki/Software/shared-mime-info'
+  homepage 'https://wiki.freedesktop.org/www/Software/shared-mime-info'
   url 'http://freedesktop.org/~hadess/shared-mime-info-1.3.tar.xz'
   sha1 'dfc8f2724df2172be2f2782be0c40c23e1d8f54f'
 
