@@ -1,8 +1,8 @@
 require "formula"
 
 class TomeeJaxRs < Formula
-  homepage "http://tomee.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-jaxrs.tar.gz"
+  homepage "https://tomee.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-jaxrs.tar.gz"
   version "1.7.1"
   sha1 "5abce8176d034fefc19eb6c81fd5d64bc888d0a9"
 

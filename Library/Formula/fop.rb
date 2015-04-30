@@ -1,8 +1,8 @@
 require 'formula'
 
 class Fop < Formula
-  homepage "http://xmlgraphics.apache.org/fop/index.html"
-  url "http://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-1.1-bin.tar.gz"
+  homepage "https://xmlgraphics.apache.org/fop/index.html"
+  url "https://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-1.1-bin.tar.gz"
   sha1 '6b96c3f3fd5efe9f2b6b54bfa96161ec3f6a1dbc'
 
   # http://offo.sourceforge.net/hyphenation/
@@ -12,7 +12,7 @@ class Fop < Formula
   end
 
   # fixes broken default java path as in
-  # http://svn.apache.org/viewvc/ant/core/trunk/src/script/ant?r1=1238725&r2=1434680&pathrev=1434680&view=patch
+  # https://svn.apache.org/viewvc/ant/core/trunk/src/script/ant?r1=1238725&r2=1434680&pathrev=1434680&view=patch
   patch :DATA
 
   def install

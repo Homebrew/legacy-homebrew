@@ -1,8 +1,8 @@
 require 'formula'
 
 class Tika < Formula
-  homepage 'http://tika.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.7.jar'
+  homepage 'https://tika.apache.org/'
+  url 'https://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.7.jar'
   sha1 'd9516b1964be8775edbe0d6d167234c2967fea7a'
 
   resource 'server' do

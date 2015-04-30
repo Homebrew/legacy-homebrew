@@ -1,12 +1,12 @@
 require 'formula'
 
 class ApacheForrest < Formula
-  homepage 'http://forrest.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-sources.tar.gz'
+  homepage 'https://forrest.apache.org/'
+  url 'https://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-sources.tar.gz'
   sha1 '8c7b49a7dff4b3f60a52c7696684168b6d454a47'
 
   resource 'deps' do
-    url 'http://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-dependencies.tar.gz'
+    url 'https://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-dependencies.tar.gz'
     sha1 '10a4442d46baeadd3ba3377ed29ed694c86ece25'
   end
 

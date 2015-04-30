@@ -1,8 +1,8 @@
 require "formula"
 
 class Pylucene < Formula
-  homepage "http://lucene.apache.org/pylucene/index.html"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/pylucene/pylucene-4.10.1-1-src.tar.gz"
+  homepage "https://lucene.apache.org/pylucene/index.html"
+  url "https://www.apache.org/dyn/closer.cgi?path=lucene/pylucene/pylucene-4.10.1-1-src.tar.gz"
   sha1 "650709590f4443ed711f100cc6e4f6850245899b"
 
   option "with-shared", "build jcc as a shared library"

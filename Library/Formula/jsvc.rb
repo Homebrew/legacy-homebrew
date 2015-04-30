@@ -1,8 +1,8 @@
 require 'formula'
 
 class Jsvc < Formula
-  homepage 'http://commons.apache.org/daemon/jsvc.html'
-  url 'http://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.15-native-src.tar.gz'
+  homepage 'https://commons.apache.org/daemon/jsvc.html'
+  url 'https://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.15-native-src.tar.gz'
   version '1.0.15'
   sha1 'f99fa9bcbc3faf6660e760af099eb003e2553b39'
 

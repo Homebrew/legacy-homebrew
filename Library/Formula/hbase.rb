@@ -22,7 +22,7 @@ class Hbase < Formula
     to reflect your environment.
 
     For more details:
-      http://wiki.apache.org/hadoop/Hbase
+      https://wiki.apache.org/hadoop/Hbase
     EOS
   end
 end

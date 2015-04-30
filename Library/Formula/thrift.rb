@@ -1,10 +1,10 @@
 require "formula"
 
 class Thrift < Formula
-  homepage "http://thrift.apache.org"
+  homepage "https://thrift.apache.org"
 
   stable do
-    url "http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz"
+    url "https://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz"
     sha1 "02f78b158da795ea89a26ce41964fbe562cc4235"
 
     # Apply any necessary patches (none currently required)

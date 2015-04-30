@@ -1,6 +1,6 @@
 class Ant < Formula
-  homepage "http://ant.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.4-bin.tar.gz"
+  homepage "https://ant.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.4-bin.tar.gz"
   sha1 "6c41481e8201f6b3f7e216146b95bb6de70208bb"
   head "https://git-wip-us.apache.org/repos/asf/ant.git"
 
@@ -17,7 +17,7 @@ class Ant < Formula
   option "with-bcel", "Install Byte Code Engineering Library"
 
   resource "ivy" do
-    url "http://www.apache.org/dyn/closer.cgi?path=ant/ivy/2.4.0/apache-ivy-2.4.0-bin.tar.gz"
+    url "https://www.apache.org/dyn/closer.cgi?path=ant/ivy/2.4.0/apache-ivy-2.4.0-bin.tar.gz"
     sha1 "97a206e3b6ec2ce9793d2ee151fa997a12647c7f"
   end
 
