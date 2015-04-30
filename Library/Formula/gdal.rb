@@ -72,9 +72,7 @@ class Gdal < Formula
   end
 
   depends_on :java => ["1.7+", :optional, :build]
-  if build.with? "swig-java"
-    depends_on 'swig'
-  end
+  depends_on "swig" if build.with? "swig-java"
 
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
