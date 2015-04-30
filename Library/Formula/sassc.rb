@@ -7,9 +7,9 @@ class Sassc < Formula
 
   bottle do
     cellar :any
-    sha1 "744cd165da007750644e6eb3cfb1a7b76d94c7a2" => :yosemite
-    sha1 "d6d38f5d139073162943d1a5828c1b8b38e998be" => :mavericks
-    sha1 "26c429c4b643c8cf8602e2534f44473e18859ab5" => :mountain_lion
+    sha256 "79e88871dbd34e52b0514c389c70d3f357825b0e7f8189ed2e908b3a67884c52" => :yosemite
+    sha256 "959cf7e91788324518aebd82e0eee20742b58fd13a87a5d0ffef38c244b5cc96" => :mavericks
+    sha256 "0ce34ee21cb1c93321a785a30254880e812c3f3c65ce2a0f0ce2aded0d7ec283" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
