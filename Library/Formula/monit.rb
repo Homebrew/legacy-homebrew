@@ -1,7 +1,8 @@
 class Monit < Formula
   homepage "https://mmonit.com/monit/"
-  url "https://mmonit.com/monit/dist/monit-5.12.tar.gz"
-  sha256 "43075396203569f87b67f7bffd1de739aa2fba302956237a2b0dc7aaf62da343"
+  url "https://mmonit.com/monit/dist/monit-5.12.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/m/monit/monit_5.12.2.orig.tar.gz"
+  sha256 "8ab0296d1aa2351b1573481592d7b5e06de1edd49dff1b5552839605a450914c"
 
   bottle do
     cellar :any
@@ -16,10 +17,11 @@ class Monit < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}/monit",
                           "--sysconfdir=#{etc}/monit"
-    system "make install"
+    system "make", "install"
+    (share/"monit").install "monitrc"
   end
 
   test do
-    system "#{bin}/monit", "-h"
+    system bin/"monit", "-c", share/"monit/monitrc", "-t"
   end
 end
