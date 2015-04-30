@@ -13,7 +13,7 @@ class Qt5 < Formula
   homepage "https://www.qt.io/"
   url "https://download.qt.io/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
   mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
-  sha1 "daa3373af8d6656a1066ff23bc9100b5ca004ecf"
+  sha256 "1b7eb91e153176ac917f72b6bf443f987abf47c4208cdd43e2307684a7fad860"
 
   bottle do
     sha1 "0c62b742770ae83a97063e688912a719f464dbff" => :yosemite
@@ -21,7 +21,7 @@ class Qt5 < Formula
     sha1 "94634131524185beccae4dd5f749cbca6750c91d" => :mountain_lion
   end
 
-  head "https://gitorious.org/qt/qt5.git", :branch => "5.4", :shallow => false
+  head "https://code.qt.io/qt/qt5.git", :branch => "5.4", :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -72,17 +72,17 @@ class Qt5 < Formula
       args << "-dbus-linked"
     end
 
-    if MacOS.prefer_64_bit? or build.universal?
+    if MacOS.prefer_64_bit? || build.universal?
       args << "-arch" << "x86_64"
     end
 
-    if !MacOS.prefer_64_bit? or build.universal?
+    if !MacOS.prefer_64_bit? || build.universal?
       args << "-arch" << "x86"
     end
 
     if build.with? "oci"
-      args << "-I#{ENV['ORACLE_HOME']}/sdk/include"
-      args << "-L{ENV['ORACLE_HOME']}"
+      args << "-I#{ENV["ORACLE_HOME"]}/sdk/include"
+      args << "-L#{ENV["ORACLE_HOME"]}"
       args << "-plugin-sql-oci"
     end
 
