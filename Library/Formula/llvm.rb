@@ -2,39 +2,33 @@ class Llvm < Formula
   homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.5.1/llvm-3.5.1.src.tar.xz"
-    sha1 "79638cf00584b08fd6eeb1e73ea69b331561e7f6"
+    url "http://llvm.org/releases/3.6.0/llvm-3.6.0.src.tar.xz"
+    sha256 "b39a69e501b49e8f73ff75c9ad72313681ee58d6f430bfad4d81846fe92eb9ce"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.5.1/cfe-3.5.1.src.tar.xz"
-      sha1 "39d79c0b40cec548a602dcac3adfc594b18149fe"
+      url "http://llvm.org/releases/3.6.0/cfe-3.6.0.src.tar.xz"
+      sha256 "be0e69378119fe26f0f2f74cffe82b7c26da840c9733fe522ed3c1b66b11082d"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.5.1/libcxx-3.5.1.src.tar.xz"
-      sha1 "aa8d221f4db99f5a8faef6b594cbf7742cc55ad2"
+      url "http://llvm.org/releases/3.6.0/libcxx-3.6.0.src.tar.xz"
+      sha256 "299c1e82b0086a79c5c1aa1885ea3be3bbce6979aaa9b886409b14f9b387fbb7"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.5.1/lld-3.5.1.src.tar.xz"
-      sha1 "9af270a79ae0aeb0628112073167495c43ab836a"
+      url "http://llvm.org/releases/3.6.0/lld-3.6.0.src.tar.xz"
+      sha256 "fb6f787188485b1fac17b73eed9db1dbc0481d6d1fbc273ea1fcd51fdb49a230"
     end
 
     resource "lldb" do
-      url "http://llvm.org/releases/3.5.1/lldb-3.5.1.src.tar.xz"
-      sha1 "32728e25e6e513528c8c793ae65981150bec7c0d"
+      url "http://llvm.org/releases/3.6.0/lldb-3.6.0.src.tar.xz"
+      sha256 "2b1ad1d42c4ea3fa2f9dd6db7c522d86e80891659b24dbb3d0d80386d8eaf0b2"
     end
 
     resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.5.1/clang-tools-extra-3.5.1.src.tar.xz"
-      sha1 "7a0dd880d7d8fe48bdf0f841eca318337d27a345"
+      url "http://llvm.org/releases/3.6.0/clang-tools-extra-3.6.0.src.tar.xz"
+      sha256 "3aa949ba82913490a75697287d9ee8598c619fae0aa6bb8fddf0095ff51bc812"
     end
-  end
-
-  bottle do
-    sha1 "3e2dd43db3c45a3bcf96174e0b195267f66f0307" => :yosemite
-    sha1 "e0314fabbc5791fb665225ca91602b3fdd745072" => :mavericks
-    sha1 "59857e2f5670c9edb4adfd3cc3f03af2411e9c30" => :mountain_lion
   end
 
   head do
@@ -60,9 +54,6 @@ class Llvm < Formula
       url "http://llvm.org/git/clang-tools-extra.git"
     end
   end
-
-  # Use absolute paths for shared library IDs
-  patch :DATA
 
   option :universal
   option "with-clang", "Build Clang support library"
@@ -164,23 +155,3 @@ class Llvm < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/Makefile.rules b/Makefile.rules
-index ebebc0a..b0bb378 100644
---- a/Makefile.rules
-+++ b/Makefile.rules
-@@ -599,7 +599,12 @@ ifneq ($(HOST_OS), $(filter $(HOST_OS), Cygwin MingW))
- ifneq ($(HOST_OS),Darwin)
-   LD.Flags += $(RPATH) -Wl,'$$ORIGIN'
- else
--  LD.Flags += -Wl,-install_name  -Wl,"@rpath/lib$(LIBRARYNAME)$(SHLIBEXT)"
-+  LD.Flags += -Wl,-install_name
-+  ifdef LOADABLE_MODULE
-+    LD.Flags += -Wl,"$(PROJ_libdir)/$(LIBRARYNAME)$(SHLIBEXT)"
-+  else
-+    LD.Flags += -Wl,"$(PROJ_libdir)/$(SharedPrefix)$(LIBRARYNAME)$(SHLIBEXT)"
-+  endif
- endif
- endif
- endif
