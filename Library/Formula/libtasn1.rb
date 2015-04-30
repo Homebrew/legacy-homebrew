@@ -1,8 +1,8 @@
 class Libtasn1 < Formula
   homepage "https://www.gnu.org/software/libtasn1/"
-  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.4.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.4.tar.gz"
-  sha256 "f8349db1b4fe634105c77e11d26b2173e587827e86e1a489b5e38ffa822e0c5d"
+  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.5.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.5.tar.gz"
+  sha256 "89b3b5dce119273431544ecb305081f3530911001bb12e5d76588907edb71bda"
 
   bottle do
     cellar :any
@@ -15,7 +15,8 @@ class Libtasn1 < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking",
+                          "--disable-silent-rules"
     system "make", "install"
   end
 
