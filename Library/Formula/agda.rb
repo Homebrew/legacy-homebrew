@@ -26,8 +26,9 @@ class Agda < Formula
   option "with-malonzo-ffi",
     "Include the MAlonzo backend's FFI (depends on the standard library)"
 
+  depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "ghc"
+
   depends_on "gmp"
   depends_on "bdw-gc" if build.with? "epic-backend"
   depends_on "emacs" => :optional
