@@ -406,7 +406,7 @@ class FormulaInstaller
   end
 
   def emoji
-    ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"
+    ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xbb"
   end
 
   def summary
