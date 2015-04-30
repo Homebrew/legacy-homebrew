@@ -838,11 +838,6 @@ module Homebrew
     end
 
     if ARGV.include? "--junit"
-      unless RUBY_VERSION < "1.9"
-        Encoding.default_external = Encoding::UTF_8
-        Encoding.default_internal = Encoding::UTF_8
-      end
-
       xml_document = REXML::Document.new
       xml_document << REXML::XMLDecl.new
       testsuites = xml_document.add_element "testsuites"
