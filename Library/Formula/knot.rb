@@ -30,6 +30,7 @@ class Knot < Formula
     system "autoreconf", "-i", "-f" if build.head?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--disable-fastparser",
                           "--disable-silent-rules",
                           "--with-configdir=#{etc}",
                           "--with-storage=#{var}/knot",
@@ -39,6 +40,7 @@ class Knot < Formula
     inreplace "samples/Makefile", "install-data-local:", "disable-install-data-local:"
 
     system "make"
+    system "make", "check"
     system "make", "install"
 
     (buildpath/"knot.conf").write(knot_conf)
