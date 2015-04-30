@@ -1,15 +1,15 @@
 class Qt < Formula
-  homepage "http://qt-project.org/"
+  homepage "https://www.qt.io/"
 
   stable do
     url "https://download.qt.io/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
     mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-    sha1 "ddf9c20ca8309a116e0466c42984238009525da6"
+    sha256 "8b14dd91b52862e09b8e6a963507b74bc2580787d171feda197badfa7034032c"
 
     # This patch should be able to be removed with the next stable Qt4 release.
     patch do
       url "https://raw.githubusercontent.com/DomT4/scripts/440e3cafde5bf6ec6f50cd28fa5bf89c280f1b53/Homebrew_Resources/Qt/qt4patch.diff"
-      sha1 "57246a33460246118a1fab7460c79f2077d3a929"
+      sha256 "b0e597a95b40efe36b093230d0fe3c0461aaa24eb6ff01e084e37e1f61f88114"
     end
   end
 
@@ -20,7 +20,7 @@ class Qt < Formula
     sha1 "668ac1a65811e0ff23230a698725b383c61c1d13" => :mountain_lion
   end
 
-  head "https://gitorious.org/qt/qt.git", :branch => "4.8"
+  head "https://code.qt.io/qt/qt.git", :branch => "4.8"
 
   option :universal
   option "with-qt3support", "Build with deprecated Qt3Support module support"
@@ -74,11 +74,11 @@ class Qt < Formula
 
     args << "-nomake" << "docs" if build.without? "docs"
 
-    if MacOS.prefer_64_bit? or build.universal?
+    if MacOS.prefer_64_bit? || build.universal?
       args << "-arch" << "x86_64"
     end
 
-    if !MacOS.prefer_64_bit? or build.universal?
+    if !MacOS.prefer_64_bit? || build.universal?
       args << "-arch" << "x86"
     end
 
