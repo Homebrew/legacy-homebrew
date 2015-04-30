@@ -4,7 +4,7 @@ class KotlinCompiler < Formula
   sha256 "5a68aa0f42d1e14f28fdcbf317d873fdbac1ef736934f7877fa26dac64377f64"
 
   def install
-    rm Dir['*.bat']
+    rm Dir["*.bat"]
     libexec.install %w[bin lib]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
