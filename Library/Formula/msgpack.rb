@@ -1,9 +1,14 @@
-require 'formula'
-
 class Msgpack < Formula
-  homepage 'http://msgpack.org/'
-  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.0.1/msgpack-1.0.1.tar.gz"
-  sha256 "a070d27d16133fe508fca72af434cd9e114709fffc1973de3dd3d3e6a987e250"
+  homepage "http://msgpack.org/"
+  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.1.0/msgpack-1.1.0.tar.gz"
+  sha256 "a8d400e2f0cae811a150f564d95c7ad6f30a77ad4584303de06467234b73f345"
+
+  head do
+    url "https://github.com/msgpack/msgpack-c.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -17,13 +22,14 @@ class Msgpack < Formula
   end
 
   def install
+    system "./bootstrap" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
     # Reference: http://wiki.msgpack.org/display/MSGPACK/QuickStart+for+C+Language
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <msgpack.h>
       #include <stdio.h>
 
