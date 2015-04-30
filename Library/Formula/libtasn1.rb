@@ -6,9 +6,9 @@ class Libtasn1 < Formula
 
   bottle do
     cellar :any
-    sha256 "c7efdc3faad00fba26b931ab3cc6d4ebdbd620c9cb484507e7932ffd55deb627" => :yosemite
-    sha256 "316bd584f30c4eaae05958baf923c1998f5e94917520d8eb457492949cb01c02" => :mavericks
-    sha256 "bc79f9ad98cec135b633d854bbfa01c9069733fd2c55d9d14f851ab2b7d7466c" => :mountain_lion
+    sha256 "71e0467545847cc6b5703125dd5ac6aa6c87146db3eb4f20b08cab8f406f68f6" => :yosemite
+    sha256 "566331c00d7d067582142cc884b47f8a65ac3de2a7d1d6e7303a812d36119411" => :mavericks
+    sha256 "982a2ea23e32996706eaf28b01106839a846233502ccf3053da3ded026f5d1ec" => :mountain_lion
   end
 
   option :universal
