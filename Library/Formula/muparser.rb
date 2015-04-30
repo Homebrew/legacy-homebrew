@@ -8,10 +8,9 @@ class Muparser < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "138dd0da70ef47470e5f19b0261dc357d1734afd" => :mavericks
-    sha1 "dcec9427dff9d1021281ebf0eb8ca22c3877e355" => :mountain_lion
-    sha1 "95b0c1e1b228216c712f78892488db996d11ed30" => :lion
+    sha256 "3d580042b67b5f23bb7c255baaf6c079e030516afc7f0bb25d3978259628f098" => :yosemite
+    sha256 "6e4a1373a02ff289d474514fdffc77a80cebf30e37fb5fe51f2dd9c659163bf4" => :mavericks
+    sha256 "b3ca223c600162789f56a26d73db8b086234a16923d0db6c346f2accef30d829" => :mountain_lion
   end
 
   def install
