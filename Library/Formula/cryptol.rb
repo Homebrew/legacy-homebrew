@@ -5,8 +5,8 @@ class Cryptol < Formula
 
   homepage "http://www.cryptol.net/"
   url "https://github.com/GaloisInc/cryptol.git",
-      :tag => "v2.2.2",
-      :revision => "6ecd07da73c5ceadd211c5ef7c371a1b2facc29b"
+      :tag => "v2.2.3",
+      :revision => "b35dbbd403137b6ed2605572c2727724573fbfd9"
   head "https://github.com/GaloisInc/cryptol.git"
 
   bottle do
