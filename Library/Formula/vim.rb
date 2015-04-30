@@ -2,8 +2,8 @@ class Vim < Formula
   homepage "http://www.vim.org/"
   head "https://vim.googlecode.com/hg/"
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url "http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.488.orig.tar.gz"
-  sha256 "5b58ef7d4ce2c2eb84af2f3dbb3b5d6919adc97f12de1509a13681fa58936faf"
+  url "https://mirrors.kernel.org/debian/pool/main/v/vim/vim_7.4.712.orig.tar.gz"
+  sha256 "b334ba9f6682c605d29fcf45e7fe246b88061736b86c3e7cdfa309404a66b55c"
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
