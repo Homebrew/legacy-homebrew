@@ -42,12 +42,6 @@ class Qt5 < Formula
   depends_on :mysql => :optional
   depends_on :xcode => :build
 
-  # There needs to be an OpenSSL dep here ideally, but qt keeps ignoring it.
-  # Keep nagging upstream for a fix to this problem, and revision when possible.
-  # https://github.com/Homebrew/homebrew/pull/34929
-  # https://bugreports.qt.io/browse/QTBUG-42161
-  # https://bugreports.qt.io/browse/QTBUG-43456
-
   depends_on OracleHomeVar if build.with? "oci"
 
   def install
