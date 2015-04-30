@@ -1,7 +1,7 @@
 class Hh < Formula
   homepage "https://github.com/dvorka/hstr"
-  url "https://github.com/dvorka/hstr/releases/download/1.15/hh-1.15-src.tgz"
-  sha1 "c97d27687512d1e26828062df300d56159dfa05b"
+  url "https://github.com/dvorka/hstr/releases/download/1.16/hh-1.16-src.tgz"
+  sha1 "43c353662a0b31aa56d683fa6ff519bded289c51"
 
   bottle do
     cellar :any
