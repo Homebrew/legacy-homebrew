@@ -4,6 +4,12 @@ class Mytop < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/m/mytop/mytop_1.9.1.orig.tar.gz"
   sha256 "179d79459d0013ab9cea2040a41c49a79822162d6e64a7a85f84cdc44828145e"
 
+  bottle do
+    sha256 "4793de7b30f9e23febec3d1e4c324667ee456a9951b9e4e48b6fa2224e1abc3e" => :yosemite
+    sha256 "ad477677188f97f67000057d3b8de142175659c38e72bcad59ce0dd8e984ba15" => :mavericks
+    sha256 "a2ea7a6dbc5526a2227e21aa3ca7a28b79272762c4d77d5245445ca5629c27c9" => :mountain_lion
+  end
+
   depends_on :mysql
   depends_on "openssl"
 
