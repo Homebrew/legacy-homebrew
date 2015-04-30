@@ -24,6 +24,7 @@ class Re2 < Formula
     end
     system "make", "install", "prefix=#{prefix}"
     mv lib/"libre2.so.0.0.0", lib/"libre2.0.0.0.dylib"
+    system "install_name_tool", "-id", "#{lib}/libre2.0.dylib", "#{lib}/libre2.0.0.0.dylib"
     lib.install_symlink "libre2.0.0.0.dylib" => "libre2.0.dylib"
     lib.install_symlink "libre2.0.0.0.dylib" => "libre2.dylib"
   end
