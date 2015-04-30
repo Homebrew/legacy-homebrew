@@ -3,12 +3,13 @@ class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
   url "http://ftp.indexdata.dk/pub/yaz/yaz-5.11.0.tar.gz"
   sha1 "29dff79332979d1fa5e4e6c2cebb099200b10413"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "914dc1356d5d91b877f1a710a948576dab069e67ace0aaabf5e89029bfa281f8" => :yosemite
-    sha256 "ffb187f592c74cf4946256ae642ffb7e237e85c7afc7d881b5c3a65db29f2ecb" => :mavericks
-    sha256 "00dc5fc0d5b2f95edf163912eef64b04cb0bafb4847e1d7ea213a12615806c1c" => :mountain_lion
+    sha256 "0390addce108b35a87873f12f6e719d50b3bd9fc6691ca97e7804994eacff0f1" => :yosemite
+    sha256 "fff6d21688f1851216a043a5aa2c6120c11b18b0074c27a2fd4973ddedc46547" => :mavericks
+    sha256 "0b2244a11ee8f1b0815d4097ab5b3c243c6e45ef26110484eeaa46fcc733e731" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
