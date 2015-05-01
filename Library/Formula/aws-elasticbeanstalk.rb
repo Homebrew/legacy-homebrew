@@ -1,7 +1,7 @@
 class AwsElasticbeanstalk < Formula
   homepage "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.2.tar.gz"
-  sha1 "599f3ad277134e8fe061e23aa5e1cbe0b6844311"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.3.2.tar.gz"
+  sha1 "0d616b7f7af2847490cf836153f9cf38eebfbfbd"
 
   bottle do
     cellar :any
@@ -12,6 +12,7 @@ class AwsElasticbeanstalk < Formula
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
+  depends_on :fig
 
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
@@ -36,6 +37,11 @@ class AwsElasticbeanstalk < Formula
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
     sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+  end
+  
+  resource "pathspec" do
+    url "https://pypi.python.org/packages/source/p/pathspec/pathspec-0.3.3.tar.gz"
+    sha1 "ef68c404025cd7da038510318b3d016e2916c194"
   end
 
   def install
