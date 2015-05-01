@@ -1,8 +1,7 @@
 class Bullet < Formula
   homepage "http://bulletphysics.org/wordpress/"
-  url "https://bullet.googlecode.com/files/bullet-2.82-r2704.tgz"
-  version "2.82"
-  sha256 "67e4c9eb76f7adf99501d726d8ad5e9b525dfd0843fbce9ca73aaca4ba9eced2"
+  url "https://github.com/bulletphysics/bullet3/archive/2.82.tar.gz"
+  sha256 "93ffcdfdd7aa67159fc18d336456945538a6602e3cd318eed9963280620b55bd"
   head "https://github.com/bulletphysics/bullet3.git"
 
   bottle do
