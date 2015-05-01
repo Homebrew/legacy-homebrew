@@ -5,9 +5,9 @@ class Metaproxy < Formula
 
   bottle do
     cellar :any
-    sha256 "8bf6762565e37205d14af4ccc615eee82839644ed0bd2794b84865925559d166" => :yosemite
-    sha256 "22ec18cc52b938666b9753660c2b07c1957a9f50d9de7af9848c8c8186cfb869" => :mavericks
-    sha256 "974ddc7819b818a4444690cfaa4c824803a2620b7f073021212f7ba908299517" => :mountain_lion
+    sha256 "005d81f94f30753602aa37135fbc519c4a0cc6cdbfe6e86aeb7db5dcba28ff57" => :yosemite
+    sha256 "150b5f3db0e6d4e280dd4b4d959b265e37a3603c09ecac8be59bd25f160c71c0" => :mavericks
+    sha256 "d5453ad8eee78fcb604e8791021949b61411a692ee68f57347f69296a168caa6" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
