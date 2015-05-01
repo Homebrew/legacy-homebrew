@@ -110,10 +110,10 @@ class Lua51 < Formula
 
         # This block ensures luarock exec scripts don't break across updates.
         inreplace libexec/"share/lua/5.1/luarocks/site_config.lua" do |s|
-          s.gsub! "#{HOMEBREW_CELLAR}/lua51/#{pkg_version}/libexec", "#{Formula["lua51"].opt_libexec}"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua51/#{pkg_version}/include", "#{HOMEBREW_PREFIX}/include"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua51/#{pkg_version}/lib", "#{HOMEBREW_PREFIX}/lib"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua51/#{pkg_version}/bin", "#{HOMEBREW_PREFIX}/bin"
+          s.gsub! libexec.to_s, opt_libexec.to_s
+          s.gsub! include.to_s, "#{HOMEBREW_PREFIX}/include"
+          s.gsub! lib.to_s, "#{HOMEBREW_PREFIX}/lib"
+          s.gsub! bin.to_s, "#{HOMEBREW_PREFIX}/bin"
         end
       end
     end
