@@ -10,7 +10,7 @@ You can now find out what is outdated with:
 
 Upgrade everything with:
 
-    brew upgrade
+    brew upgrade --all
 
 Or upgrade a specific formula with:
 
