@@ -27,7 +27,8 @@ class Protobuf < Formula
   option :universal
   option :cxx11
 
-  depends_on :python => :optional
+  option "without-python", "Build without python support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
 
   fails_with :llvm do
     build 2334
@@ -91,10 +92,13 @@ class Protobuf < Formula
       chdir "python" do
         ENV.append_to_cflags "-I#{include}"
         ENV.append_to_cflags "-L#{lib}"
-        args = Language::Python.setup_install_args prefix
+        args = Language::Python.setup_install_args libexec
         args << "--cpp_implementation"
         system "python", *args
       end
+      site_packages = "lib/python2.7/site-packages"
+      pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
+      (prefix/site_packages/"homebrew-protobuf.pth").write pth_contents
     end
   end
 
@@ -123,6 +127,7 @@ class Protobuf < Formula
     end
     (testpath/"test.proto").write(testdata)
     system bin/"protoc", "test.proto", "--cpp_out=."
+    system "python", "-c", "import google.protobuf" if build.with? "python"
   end
 
   def caveats; <<-EOS.undent
