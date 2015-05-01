@@ -126,8 +126,8 @@ module Homebrew
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
 
     unless quiet_system "gem", "list", "--installed", gem
-      safe_system "gem", "install", "--no-ri", "--no-rdoc",
-                                    "--user-install", gem
+      safe_system "/usr/bin/gem", "install", "--no-ri", "--no-rdoc",
+                                  "--user-install", gem
     end
 
     unless which executable
