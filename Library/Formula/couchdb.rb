@@ -5,9 +5,9 @@ class Couchdb < Formula
   revision 2
 
   bottle do
-    sha1 "5de6d96453578bcb65a89dd68128efb856f8e99d" => :mavericks
-    sha1 "f1aeadfbc607c179a54d9c68f45dbb8eb85a57cd" => :mountain_lion
-    sha1 "8170817f314f8136ae2504ec58b7a936f1d316c7" => :lion
+    sha256 "47b7f1ef640ec8d9f2ead064f5ab912fb9782168077451e1acb25b75e9bb3341" => :yosemite
+    sha256 "36ba0563f8ca7494eee01a7f1db432fe6b808e74edb03552478d64244de08ab3" => :mavericks
+    sha256 "7e3980cb7449267c8407187a95d3447440e9ed3a36158bcae1d0eee39de50c1e" => :mountain_lion
   end
 
   head do
