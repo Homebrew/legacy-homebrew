@@ -15,12 +15,12 @@ class Mongodb < Formula
   end
 
   devel do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.1.tar.gz"
-    sha256 "4f983680ff1cc61d021daed2e2d24c54c069d965ec47276678296240d59efb6f"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.2.tar.gz"
+    sha256 "ed49023f81242ae0daadaffcf366da6d748dc638826604e2a7150764618fad85"
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.1.1",
-        :revision => "6c959d3a8bd9704b5ee9e17e60a4236db6887dc3"
+        :tag => "r3.1.2",
+        :revision => "546c61eee0904fb60d4afef276b9476218053015"
     end
   end
 
@@ -66,10 +66,18 @@ class Mongodb < Formula
     args = %W[
       --prefix=#{prefix}
       -j#{ENV.make_jobs}
-      --cc=#{ENV.cc}
-      --cxx=#{ENV.cxx}
       --osx-version-min=#{MacOS.version}
     ]
+
+    if build.stable?
+      args << "--cc=#{ENV.cc}"
+      args << "--cxx=#{ENV.cxx}"
+    end
+
+    if build.devel?
+      args << "CC=#{ENV.cc}"
+      args << "CXX=#{ENV.cxx}"
+    end
 
     args << "--use-system-boost" if build.with? "boost"
     args << "--use-new-tools"
