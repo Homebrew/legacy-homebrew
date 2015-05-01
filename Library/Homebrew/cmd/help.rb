@@ -1,13 +1,17 @@
 HOMEBREW_HELP = <<-EOS
 Example usage:
-  brew [info | home | options ] [FORMULA...]
-  brew install FORMULA...
-  brew uninstall FORMULA...
-  brew search [foo]
-  brew list [FORMULA...]
-  brew update
-  brew upgrade [FORMULA...]
-  brew pin/unpin [FORMULA...]
+  brew info [FORMULA...]            Show info about FORMULA
+  brew home [FORMULA...]            Open FORMULA home page
+  brew options [FORMULA...]         Show FORMULA options
+  brew install FORMULA...           Install FORMULA
+  brew uninstall FORMULA...         Uninstall FORMULA
+  brew search [foo]                 Search "foo"
+  brew list [FORMULA...]            List FORMULA files
+  brew update                       Update formula's database
+  brew upgrade [FORMULA... | --all] Donwload new version of FORMULA
+  brew pin/unpin [FORMULA...]       [un]Freeze formula from upgrade
+  brew cleanup [FORMULA... | --all] Remove old versions of FORMULA
+  Check man brew for more info                   
 
 Troubleshooting:
   brew doctor
