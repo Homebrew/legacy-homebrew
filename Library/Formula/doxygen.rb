@@ -21,6 +21,8 @@ class Doxygen < Formula
   depends_on "graphviz" => :optional
   depends_on "qt" if build.with? "doxywizard"
   depends_on "llvm" => "with-clang" if build.with? "libclang"
+  depends_on "flex" unless OS.mac?
+  depends_on "bison" unless OS.mac?
 
   # Fixes for --with-doxywizard and --with-libclang
   patch :DATA
