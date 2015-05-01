@@ -13,7 +13,7 @@ class Wine < Formula
 
     resource 'gecko' do
       url 'https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-      sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+      sha256 'f01fafa6d7aab995c38add77315c4cbc2f32f52d5d6a9350056f42b62d631fd8'
     end
 
     resource 'mono' do
@@ -29,8 +29,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.41.tar.bz2"
-    sha256 "6fa622b1dacb257fab671ddd689439daf6bb1cfb9e632c324db16a5db6372f97"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.42.tar.bz2"
+    sha256 "5a7f5c82b120bfe1eca572bd8d7a4ede7e6baf330ce3087199eb5cd175233ba2"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -39,7 +39,7 @@ class Wine < Formula
     # https://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
       url "https://bugs.winehq.org/attachment.cgi?id=47639"
-      sha1 "c195f4b9c0af450c7dc3f396e8661ea5248f2b01"
+      sha256 "3054467e0b1ef9efce3e1b24497bd26e00c4727e8bd7b1e990d1352bb1819de0"
     end
   end
 
