@@ -1,9 +1,8 @@
 class Gpgme < Formula
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.3.tar.bz2"
-  mirror "ftp://mirror.switch.ch/mirror/gnupg/gpgme/gpgme-1.5.3.tar.bz2"
-  mirror "http://sources.buildroot.net/gpgme-1.5.3.tar.bz2"
-  sha1 "8dd7711a4de117994fe2d45879ef8a9900d50f6a"
+  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.4.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.4.tar.bz2"
+  sha256 "bb38c0ec8815c9e94e6047b484984808a8dad9d6bec8df33dc5339fd55ffea6c"
 
   bottle do
     cellar :any
