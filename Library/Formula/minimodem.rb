@@ -1,9 +1,8 @@
-require "formula"
-
 class Minimodem < Formula
   homepage "http://www.whence.com/minimodem/"
-  url "http://www.whence.com/minimodem/minimodem-0.19.tar.gz"
-  sha1 "4548677df8c1e16cb4c31d26502017f3204ad128"
+  url "http://www.whence.com/minimodem/minimodem-0.21.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/m/minimodem/minimodem_0.21.orig.tar.gz"
+  sha256 "a3ae6861b65360d520e1ce047d7d4d6cf1a833a2ff42d627a1846cf24b3931cf"
 
   depends_on "pkg-config" => :build
   depends_on "libsndfile"
@@ -18,6 +17,6 @@ class Minimodem < Formula
   end
 
   test do
-    system "#{bin}/minimodem", "--version"
+    system "#{bin}/minimodem", "--benchmarks"
   end
 end
