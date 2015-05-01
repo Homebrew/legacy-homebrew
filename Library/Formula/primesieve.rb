@@ -1,9 +1,7 @@
-require "formula"
-
 class Primesieve < Formula
   homepage "http://primesieve.org/"
-  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.tar.gz"
-  sha1 "1309e444bde3822cdc3e953757b46750d384cc00"
+  url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.2.tar.gz"
+  sha256 "73abf4ff118e8d41ffaf687cf902b0b53a8bbc357bf4efa1798477d346f85cc8"
 
   bottle do
     cellar :any
@@ -13,9 +11,9 @@ class Primesieve < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "CXX=#{ENV.cxx}",
-                          "CXXFLAGS=#{ENV.cflags}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--disable-silent-rules",
+           "--prefix=#{prefix}"
+    system "make", "install"
   end
 
   test do
