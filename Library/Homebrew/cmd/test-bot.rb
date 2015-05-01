@@ -147,7 +147,7 @@ module Homebrew
         File.write(log_file_path, @output) if ARGV.include? "--keep-logs"
       end
 
-      exit 1 if ARGV.include?("--fail-fast") && @status == :failed
+      exit 1 if ARGV.include?("--fail-fast") && failed?
     end
 
     private
