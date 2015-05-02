@@ -1,7 +1,7 @@
 class Nimrod < Formula
   homepage "http://nim-lang.org/"
-  url "http://nim-lang.org/download/nim-0.10.2.zip"
-  sha1 "2fdd486704931807d03d25d6846c5faee880d69e"
+  url "http://nim-lang.org/download/nim-0.11.0.tar.xz"
+  sha1 "5cbad487c94d0dd4b8cbd52486dd43b1ccf671fb"
   head "https://github.com/Araq/Nim.git", :branch => "devel"
 
   bottle do
@@ -15,6 +15,7 @@ class Nimrod < Formula
     system "/bin/sh", "build.sh"
     system "/bin/sh", "install.sh", prefix
 
+    (prefix/"nim/bin").install "bin/nim"
     (prefix/"nim").install "compiler"
     bin.install_symlink prefix/"nim/bin/nim"
     bin.install_symlink prefix/"nim/bin/nim" => "nimrod"
@@ -22,9 +23,9 @@ class Nimrod < Formula
 
   test do
     (testpath/"hello.nim").write <<-EOS.undent
-      echo("Hi!")
+      echo("hello")
     EOS
-    system "#{bin}/nim", "compile", "--run", "hello.nim"
+    assert_equal "hello\n", `#{bin}/nim compile --verbosity:0 --run #{testpath}/hello.nim`
+    assert_equal 0, $?.exitstatus
   end
 end
-
