@@ -86,10 +86,10 @@ class Lua51 < Formula
     mv "#{man1}/lua.1", "#{man1}/lua-5.1.1"
     mv "#{man1}/luac.1", "#{man1}/luac-5.1.1"
     mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
-    ln_s "#{lib}/pkgconfig/lua5.1.pc", "#{lib}/pkgconfig/lua-5.1.pc"
-    ln_s "#{include}/lua-5.1", "#{include}/lua5.1"
-    ln_s "#{bin}/lua-5.1", "#{bin}/lua5.1"
-    ln_s "#{bin}/luac-5.1", "#{bin}/luac5.1"
+    (lib/"pkgconfig").install_symlink "lua5.1.pc" => "lua-5.1.pc"
+    include.install_symlink "lua-5.1" => "lua5.1"
+    bin.install_symlink "lua-5.1" => "lua5.1"
+    bin.install_symlink "luac-5.1" => "luac5.1"
 
     # This resource must be handled after the main install, since there's a lua dep.
     # Keeping it in install rather than postinstall means we can bottle.
