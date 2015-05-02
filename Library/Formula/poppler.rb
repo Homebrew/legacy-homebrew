@@ -2,8 +2,8 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.29.0.tar.xz'
-  sha1 'ba3330ab884e6a139ca63dd84d0c1c676f545b5e'
+  url 'http://poppler.freedesktop.org/poppler-0.32.0.tar.xz'
+  sha1 '1b8d45b88d3ea4e86505a03e576736757142b5f5'
 
   bottle do
     sha1 "b83e3b7fe032d69343367ceb481a0387e447e565" => :yosemite
@@ -12,6 +12,7 @@ class Poppler < Formula
   end
 
   option "with-qt", "Build Qt backend"
+  option "with-qt5", "Build Qt5 backend"
   option "with-little-cms2", "Use color management system"
 
   deprecated_option "with-qt4" => "with-qt"
@@ -30,6 +31,7 @@ class Poppler < Formula
   depends_on 'openjpeg'
 
   depends_on "qt" => :optional
+  depends_on "qt5" => :optional
   depends_on "little-cms2" => :optional
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
@@ -51,8 +53,12 @@ class Poppler < Formula
 
     if build.with? "qt"
       args << "--enable-poppler-qt4"
+    elsif build.with? "qt5"
+      ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["qt5"].opt_prefix}/lib/pkgconfig"
+      args << "--enable-poppler-qt5"
     else
       args << "--disable-poppler-qt4"
+      args << "--disable-poppler-qt5"
     end
 
     args << "--enable-cms=lcms2" if build.with? "little-cms2"
