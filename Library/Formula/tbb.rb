@@ -1,8 +1,8 @@
 class Tbb < Formula
   homepage "http://www.threadingbuildingblocks.org/"
-  url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20141023oss_src.tgz"
-  sha1 "aaecdc97049fbe3c623be46c4e1261b74a1a41a3"
-  version "4.3-20141023"
+  url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20150424oss_src.tgz"
+  sha1 "21a3176bf09677b795df2c529065c265a2ad72ae"
+  version "4.3-20150424"
 
   bottle do
     cellar :any
