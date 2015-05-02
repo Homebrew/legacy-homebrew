@@ -1,10 +1,11 @@
-require "formula"
 require "language/go"
 
 class Nsq < Formula
-  homepage "https://bitly.github.io/nsq"
+  homepage "http://nsq.io"
   url "https://github.com/bitly/nsq/archive/v0.3.5.tar.gz"
-  sha1 "a876334ad959685fa109f67b4d07231ae84bcf43"
+  sha256 "4120ad24e3700be1e65549b9a55eab5d4e744cd114d9b39779a47b6dedda0b35"
+
+  head "https://github.com/bitly/nsq.git"
 
   bottle do
     cellar :any
@@ -72,6 +73,38 @@ class Nsq < Formula
   end
 
   test do
-    system "#{bin}/nsqd", "--version"
+    begin
+      lookupd = fork do
+        system bin/"nsqlookupd"
+      end
+      sleep 2
+      d = fork do
+        system bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
+      end
+      sleep 2
+      admin = fork do
+        system bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
+      end
+      sleep 2
+      to_file = fork do
+        system bin/"nsq_to_file", "--topic=test", "--output-dir=#{testpath}",
+               "--lookupd-http-address=127.0.0.1:4161"
+      end
+      sleep 2
+      system "curl", "-d", "hello", "http://127.0.0.1:4151/put?topic=test"
+
+      dat = File.read(Dir["*.dat"].first)
+      assert_match "test", dat
+      assert_match version.to_s, dat
+    ensure
+      Process.kill(9, lookupd)
+      Process.kill(9, d)
+      Process.kill(9, admin)
+      Process.kill(9, to_file)
+      Process.wait lookupd
+      Process.wait d
+      Process.wait admin
+      Process.wait to_file
+    end
   end
 end
