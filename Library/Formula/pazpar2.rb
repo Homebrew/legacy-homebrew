@@ -14,6 +14,7 @@ class Pazpar2 < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "icu4c" => :recommended
   depends_on "yaz"
 
   def install
