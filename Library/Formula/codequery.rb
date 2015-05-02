@@ -2,10 +2,8 @@ require "formula"
 
 class Codequery < Formula
   homepage "https://github.com/ruben2020/codequery"
-  url "https://github.com/ruben2020/codequery/archive/v0.15a.tar.gz"
-  sha1 "89907121bd562b27e748c38129f40f122c538533"
-  head "https://github.com/ruben2020/codequery.git"
-  version "0.15a"
+  url "https://github.com/ruben2020/codequery/archive/v0.16.0.tar.gz"
+  sha256 "4896435a8aa35dbdca43cba769aece9731f647ac9422a92c3209c2955d2e7101"
 
   bottle do
     cellar :any
