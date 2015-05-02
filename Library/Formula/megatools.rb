@@ -5,9 +5,9 @@ class Megatools < Formula
 
   bottle do
     cellar :any
-    sha1 "164906449d8130713bd1fe8852871cada91cd280" => :yosemite
-    sha1 "cf1c682531f8e0fa59d4d3490fded31eed08df61" => :mavericks
-    sha1 "e025e14f30ad6f2a7dd13e116f1d3c55fffcef9b" => :mountain_lion
+    sha256 "0311e2291fada711351ae78aed4e1a07650f662546672e13d7e9c804dd331e29" => :yosemite
+    sha256 "cfe36bb96c87610af7cf48d554d79639523976ceb9ca7dbd1c5676472b6075cb" => :mavericks
+    sha256 "b9c56994907575b087c495495ff131d578809a2d1e1cb2199f8a135fe1dfb39c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
