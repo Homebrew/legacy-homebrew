@@ -24,6 +24,13 @@ class Pit < Formula
       sha256 "be059f88fe0759e451817b74919670be9fb5b193738c8574a6faa34baefada67"
     end
   end
+  bottle do
+    cellar :any
+    sha256 "b019c645e6e75a2d62c5aa59deb1232f195da25ae620409c3eade912739f981b" => :yosemite
+    sha256 "c6f76895ea5cb711a29223c034eb028af81321d33c6c184550134fd166143a79" => :mavericks
+    sha256 "549ecc5ef0be59559d121fd558b02c0d42e149a205fed55b31e9d92b133a1dd2" => :mountain_lion
+  end
+
 
   def install
     bin.mkpath
