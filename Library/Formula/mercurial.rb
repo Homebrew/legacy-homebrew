@@ -2,8 +2,8 @@
 # of Homebrew.
 class Mercurial < Formula
   homepage "http://mercurial.selenic.com/"
-  url "http://mercurial.selenic.com/release/mercurial-3.3.3.tar.gz"
-  sha1 "999d5db4961e2c745f17df44d7ae64dce2d8425b"
+  url "http://mercurial.selenic.com/release/mercurial-3.4.tar.gz"
+  sha256 "ff1da0545cdd46ebcf473176d55937a22bb55fff51cdff9d4c2f900fc80baf10"
 
   bottle do
     cellar :any
