@@ -3,7 +3,7 @@ class Pdfgrep < Formula
   url "https://downloads.sourceforge.net/project/pdfgrep/1.3.1/pdfgrep-1.3.1.tar.gz"
   sha1 "8d15760af0803ccea32760d5f68abe4224169639"
 
-  head "https://git.gitorious.org/pdfgrep/pdfgrep.git"
+  head "https://gitlab.com/pdfgrep/pdfgrep.git"
 
   bottle do
     cellar :any
