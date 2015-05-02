@@ -4,9 +4,10 @@ class Memcached < Formula
   sha256 "08a426c504ecf64633151eec1058584754d2f54e62e5ed2d6808559401617e55"
 
   bottle do
-    sha256 "f14fcd969117745bc45e8d99a93363b20bec101b9a4a7de36b02e9ce330b0ad5" => :yosemite
-    sha256 "119d2c653bbe6b8c4381d2b05c9a5b7dba093a212d02c5ba212116e251c7220c" => :mavericks
-    sha256 "3faa59c31a3048e8be7f85142983e0cf2125726aae7382b255f7f754a08dbf7d" => :mountain_lion
+    cellar :any
+    sha256 "5524972e73c753e43289f06eb615a3100831eb7c33ce15489ea65d2904344acf" => :yosemite
+    sha256 "0ff0b4273be5860850878f391e4cc6f1492fe13ffe7f80388634511210ff473f" => :mavericks
+    sha256 "ad37c20bd1dfc1275c055ec33cb3fae594ed22463a264b80f08b01db3f7d0578" => :mountain_lion
   end
 
   depends_on "libevent"
