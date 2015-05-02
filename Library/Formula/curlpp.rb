@@ -1,7 +1,6 @@
 class Curlpp < Formula
   homepage "http://www.curlpp.org"
   url "https://github.com/jpbarrette/curlpp/archive/v0.7.3.tar.gz"
-  version "0.7.3"
   sha256 "b72093f221a9e2d0f7ce0bd0f846587835e01607a7bb0f106ff4317a8c30a81c"
 
   depends_on "boost" => :build
@@ -41,7 +40,7 @@ class Curlpp < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-I#{include}" ,"-L#{lib}", "-lcurl", "-lcurlpp", "-o", "test"
+    system ENV.cxx, "test.cpp", "-I#{include}", "-L#{lib}", "-lcurl", "-lcurlpp", "-o", "test"
     system "./test"
   end
 end
