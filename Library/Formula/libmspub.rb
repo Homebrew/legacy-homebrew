@@ -5,9 +5,10 @@ class Libmspub < Formula
 
   bottle do
     cellar :any
-    sha256 "375b2233acf0017868d2584aeff98ddbbf6b785bf97d58e28c78850e85ace75a" => :yosemite
-    sha256 "2273c47dc989b4368e06a4df2d2d7be822147eadcdcd852c11a3a8819d93be73" => :mavericks
-    sha256 "218315480cec6c31d2a07a659a808b5b8c6da24a8b47f5b9d8af284c0e9481a5" => :mountain_lion
+    revision 1
+    sha256 "36884363243b833417a5e67d7736ec9248c0f51690147cb1281ad43131c951ec" => :yosemite
+    sha256 "9edf701810bf5a7759a0d904b850499f8844a9832c2e8e1586a06609863d743d" => :mavericks
+    sha256 "8c1dd1e2707a7f0846c16ff631be7158043b8e24485bcc5f9a1a8d249831c074" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
