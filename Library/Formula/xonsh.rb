@@ -12,11 +12,19 @@ class Xonsh < Formula
 
   def install
     version = Language::Python.major_minor_version "python3"
+<<<<<<< HEAD
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{version}/site-packages"
 
     resource("ply").stage do
       system "python3", *Language::Python.setup_install_args(libexec/"vendor")
+=======
+    ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{version}/site-packages"
+
+    resource("ply").stage do
+      system "python3", *Language::Python.setup_install_args(libexec)
+>>>>>>> refs/remotes/internaught/xonsh
     end
 
     system "python3", *Language::Python.setup_install_args(libexec)
