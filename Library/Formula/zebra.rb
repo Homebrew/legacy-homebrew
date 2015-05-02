@@ -10,6 +10,7 @@ class Zebra < Formula
     sha256 "43223a086858dfa6283481fdd954e7cb9e6f20de9b174c5ab3e7a6a49167a838" => :mountain_lion
   end
 
+  depends_on "icu4c" => :recommended
   depends_on "yaz"
 
   def install
