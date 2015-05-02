@@ -4,10 +4,9 @@ class Nut < Formula
   sha256 "ff44d95d06a51559a0a018eef7f8d17911c1002b6352a7d7580ff75acb12126b"
 
   bottle do
-    revision 1
-    sha1 "aae356d329546c4e76cf0c42883d70288d153e97" => :yosemite
-    sha1 "39fdd028174ff33a3a9aa6b6f6abfbe9eee0be52" => :mavericks
-    sha1 "cce87089bbd087388d07fd9128b13f9cd0e39c8b" => :mountain_lion
+    sha256 "92af5c4593bfb1231c770ace968f80d42867883e66544a06c46cf26400bdec27" => :yosemite
+    sha256 "9c7100a6f831b7e21615ab4e2551056abda2e7b0b72c4e697e499e1c7908198a" => :mavericks
+    sha256 "e1a76ac63b98a306cb6dfd524a475d5127ba811c0cd96bf32da10d059b12a35a" => :mountain_lion
   end
 
   head do
