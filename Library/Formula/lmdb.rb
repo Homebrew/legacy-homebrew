@@ -1,8 +1,7 @@
-require "formula"
-
 class Lmdb < Formula
   homepage "http://symas.com/mdb/"
-  url "https://gitorious.org/mdb/mdb.git", :tag => "LMDB_0.9.14"
+  url "https://github.com/LMDB/lmdb/archive/LMDB_0.9.14.tar.gz"
+  sha256 "6447d7677a991e922e3e811141869421a2b67952586aa68a26e018ea8ee3989c"
 
   head "git://git.openldap.org/openldap.git", :branch => "mdb.master"
 
