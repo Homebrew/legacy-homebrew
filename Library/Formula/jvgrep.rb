@@ -7,6 +7,13 @@ class Jvgrep < Formula
 
   head "https://github.com/mattn/jvgrep.git"
 
+  bottle do
+    cellar :any
+    sha256 "0ce0efcb123164691a779f1391945d805ec872167a06b372e8869ec7b1a2c968" => :yosemite
+    sha256 "348664ed74071625b3e609a55c2927616578fd50f0e0183981cf788c3d90031b" => :mavericks
+    sha256 "935438a0fc656f1435c79114fcafe4c47283821ceee5e25532b987bb3ba464d6" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/daviddengcn/go-colortext" do
