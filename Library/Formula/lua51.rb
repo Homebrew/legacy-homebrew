@@ -96,10 +96,9 @@ class Lua51 < Formula
     if build.with? "luarocks"
       resource("luarocks").stage do
         ENV.prepend_path "PATH", bin
-        lua_prefix = prefix
 
         system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
-                              "--sysconfdir=#{etc}/luarocks51", "--with-lua=#{lua_prefix}",
+                              "--sysconfdir=#{etc}/luarocks51", "--with-lua=#{prefix}",
                               "--lua-version=5.1", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks51"
         system "make", "build"
         system "make", "install"
