@@ -150,6 +150,7 @@ TAP_MIGRATIONS = {
   "salt" => "homebrew/science",
   "scantailor" => "homebrew/x11",
   "shark" => "homebrew/boneyard",
+  "shell.fm" => "homebrew/boneyard",
   "sitecopy" => "homebrew/boneyard",
   "slicot" => "homebrew/science",
   "smartsim" => "homebrew/x11",
