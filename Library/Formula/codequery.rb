@@ -2,7 +2,7 @@ require "formula"
 
 class Codequery < Formula
   homepage "https://github.com/ruben2020/codequery"
-  url "https://github.com/ruben2020/codequery/archive/v0.16.0.tar.gz"
+  url "https://github.com/ruben2020/codequery/archive/v0.16.0.tar.gz"x
   sha256 "4896435a8aa35dbdca43cba769aece9731f647ac9422a92c3209c2955d2e7101"
 
   bottle do
