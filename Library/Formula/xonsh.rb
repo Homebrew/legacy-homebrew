@@ -19,6 +19,7 @@ class Xonsh < Formula
       system "python3", *Language::Python.setup_install_args(libexec/"vendor")
     ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{version}/site-packages"
+    end
 
     resource("ply").stage do
       system "python3", *Language::Python.setup_install_args(libexec)
