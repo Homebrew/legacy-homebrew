@@ -3,7 +3,12 @@ class Pdfgrep < Formula
   url "https://downloads.sourceforge.net/project/pdfgrep/1.3.1/pdfgrep-1.3.1.tar.gz"
   sha1 "8d15760af0803ccea32760d5f68abe4224169639"
 
-  head "https://git.gitorious.org/pdfgrep/pdfgrep.git"
+  head do
+    url "https://gitlab.com/pdfgrep/pdfgrep.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "asciidoc" => :build
+  end
 
   bottle do
     cellar :any
@@ -16,7 +21,9 @@ class Pdfgrep < Formula
   depends_on "poppler"
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
     system "make", "install"
   end
 
