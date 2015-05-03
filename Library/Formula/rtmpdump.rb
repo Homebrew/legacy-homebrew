@@ -30,7 +30,7 @@ class Rtmpdump < Formula
                    "XCFLAGS=#{ENV.cflags}",
                    "XLDFLAGS=#{ENV.ldflags}",
                    "MANDIR=#{man}",
-                   "SYS=darwin",
+                   "SYS=#{OS.mac? ? "darwin" : "posix"}",
                    "prefix=#{prefix}",
                    "sbindir=#{bin}",
                    "install"
