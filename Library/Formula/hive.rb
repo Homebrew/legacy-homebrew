@@ -1,7 +1,7 @@
 require 'formula'
 
 class Hive < Formula
-  homepage 'http://hive.apache.org'
+  homepage 'https://hive.apache.org'
   url 'https://www.apache.org/dyn/closer.cgi?path=hive/hive-1.1.0/apache-hive-1.1.0-bin.tar.gz'
   sha1 'bf7e4752fa7208c3eda09f7a8aeba0f341239952'
 
