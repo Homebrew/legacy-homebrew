@@ -4,7 +4,8 @@ class Mpich2 < Formula
   homepage "https://www.mpich.org/"
   url "https://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz"
   mirror "https://fossies.org/linux/misc/mpich-3.1.4.tar.gz"
-  sha1 "af4f563e2772d610e57e17420c9dcc5c3c9fec4e"
+  sha256 "f68b5330e94306c00ca5a1c0e8e275c7f53517d01d6c524d51ce9359d240466b"
+  revision 1
 
   bottle do
     sha1 "96a6ef7dff3f1902790317124ff608c481a2a885" => :yosemite
@@ -22,7 +23,7 @@ class Mpich2 < Formula
 
   devel do
     url "https://www.mpich.org/static/downloads/3.2b2/mpich-3.2b2.tar.gz"
-    sha1 "8e954e54d1c1a08ef7d042c18ed308d566e32cd5"
+    sha256 "8ef37f88bbcfab0e9e173c36745b79f4dbbc3409476773c4489670d82d923155"
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
