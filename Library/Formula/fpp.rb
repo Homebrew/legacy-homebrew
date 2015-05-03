@@ -16,7 +16,6 @@ class Fpp < Formula
   end
 
   test do
-    system "fpp --help"
+    system bin/"fpp", "--help"
   end
-
 end
