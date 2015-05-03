@@ -1,18 +1,7 @@
-require 'formula'
-
 class Ncdc < Formula
-  homepage 'http://dev.yorhel.nl/ncdc'
-  url 'http://dev.yorhel.nl/download/ncdc-1.19.tar.gz'
-  sha1 '7f478b7daf09202586b40899cc6beabeb0d23178'
-  revision 1
-
-  option 'with-geoip', "Build with geoip support"
-
-  depends_on 'glib'
-  depends_on 'sqlite'
-  depends_on 'gnutls' => 'with-p11-kit'
-  depends_on 'pkg-config' => :build
-  depends_on 'geoip' => :optional
+  homepage "http://dev.yorhel.nl/ncdc"
+  url "http://dev.yorhel.nl/download/ncdc-1.19.1.tar.gz"
+  sha256 "a6b23381434a47f7134d9ebdf5658fd06768f9b5de498c43e0fa00d1c7229d47"
 
   head do
     url "git://g.blicky.net/ncdc.git", :shallow => false
@@ -21,6 +10,14 @@ class Ncdc < Formula
     depends_on "automake" => :build
   end
 
+  option "with-geoip", "Build with geoip support"
+
+  depends_on "glib"
+  depends_on "sqlite"
+  depends_on "gnutls" => "with-p11-kit"
+  depends_on "pkg-config" => :build
+  depends_on "geoip" => :optional
+
   def install
     system "autoreconf", "-ivf" if build.head?
 
@@ -28,7 +25,7 @@ class Ncdc < Formula
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
     ]
-    args << '--with-geoip' if build.with? 'geoip'
+    args << "--with-geoip" if build.with? "geoip"
 
     system "./configure", *args
     system "make install"
