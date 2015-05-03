@@ -588,6 +588,10 @@ class FormulaAuditor
       problem "\"#{$1}\" should be \"\#{#{$2}}\""
     end
 
+    if line =~ %r[depends_on :(automake|autoconf|libtool)]
+      problem ":#{$1} is deprecated. Usage should be \"#{$1}\""
+    end
+
     # Commented-out depends_on
     if line =~ /#\s*depends_on\s+(.+)\s*$/
       problem "Commented-out dep #{$1}"
