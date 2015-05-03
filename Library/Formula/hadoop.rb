@@ -1,6 +1,6 @@
 class Hadoop < Formula
   homepage "https://hadoop.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz"
+  url "https://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz"
   mirror "https://archive.apache.org/dist/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz"
   sha1 "ed5a19a54f878dde96a8655290d624b15e280d96"
 
