@@ -1,7 +1,7 @@
 class Poppler < Formula
   homepage "http://poppler.freedesktop.org"
-  url "http://poppler.freedesktop.org/poppler-0.29.0.tar.xz"
-  sha256 "3c1e16dc8d5d846d085baf65844ed3e05cbde5d44f6682f9f1e2b120d66c62c4"
+  url "http://poppler.freedesktop.org/poppler-0.32.0.tar.xz"
+  sha256 "4963e31ba5e17530a87b16588e22928bc044e8d28d02303dded981bff6725b98"
 
   bottle do
     sha1 "b83e3b7fe032d69343367ceb481a0387e447e565" => :yosemite
