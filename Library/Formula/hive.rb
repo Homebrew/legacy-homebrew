@@ -1,12 +1,12 @@
 require 'formula'
 
 class Hive < Formula
-  homepage 'http://hive.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-1.0.0/apache-hive-1.0.0-bin.tar.gz'
-  sha1 '8e24c451ebab1333352a2f0407d5fe847759fbd2'
+  homepage 'https://hive.apache.org'
+  url 'https://www.apache.org/dyn/closer.cgi?path=hive/hive-1.1.0/apache-hive-1.1.0-bin.tar.gz'
+  sha1 'bf7e4752fa7208c3eda09f7a8aeba0f341239952'
 
   depends_on 'hadoop'
-  conflicts_with 'apache-spark', :because => 'both install `beeline` binaries'
+  depends_on :java
 
   def install
     rm_f Dir["bin/ext/*.cmd", "bin/ext/util/*.cmd"]
