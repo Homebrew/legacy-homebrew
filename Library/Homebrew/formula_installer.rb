@@ -197,11 +197,11 @@ class FormulaInstaller
       begin
         f = Formulary.factory(c.name)
         f.linked_keg.exist? && f.opt_prefix.exist?
-      rescue FormulaUnavailableError
-        raise unless c.name =~ HOMEBREW_TAP_FORMULA_REGEX
+      rescue TapFormulaUnavailableError
         # If the formula name is in full-qualified name. Let's silently
         # ignore it as we don't care about things used in taps that aren't
         # currently tapped.
+        next
       end
     end
 
