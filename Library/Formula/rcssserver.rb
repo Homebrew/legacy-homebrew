@@ -1,9 +1,8 @@
-require "formula"
-
 class Rcssserver < Formula
   homepage "http://sserver.sourceforge.net/"
   url "https://downloads.sourceforge.net/sserver/rcssserver/15.2.2/rcssserver-15.2.2.tar.gz"
-  sha1 "43012eb5301716e457e93ec42c0c00727e600c84"
+  sha256 "329b3008689dac16d1f39ad8f5c8341aef283ef3750d137dcf299d1fbc30355a"
+  revision 1
 
   bottle do
     revision 1
@@ -15,12 +14,12 @@ class Rcssserver < Formula
   stable do
     resource "rcssmonitor" do
       url "https://downloads.sourceforge.net/sserver/rcssmonitor/15.1.1/rcssmonitor-15.1.1.tar.gz"
-      sha1 "60483838a81acd8ada6d228a86e54faeb019ab10"
+      sha256 "51f85f65cd147f5a9018a6a2af117fc45358eb2989399343eaadd09f2184ee41"
     end
 
     resource "rcsslogplayer" do
       url "https://downloads.sourceforge.net/sserver/rcsslogplayer/15.1.1/rcsslogplayer-15.1.1.tar.gz"
-      sha1 "d0b8f8e8a4328398655140e7c019149ab8d9c1c3"
+      sha256 "216473a9300e0733f66054345b8ea0afc50ce922341ac48eb5ef03d09bb740e6"
     end
   end
 
@@ -75,8 +74,6 @@ class Rcssserver < Formula
   end
 
   test do
-    system "#{bin}/rcssserver help | head -1 | grep 'rcssserver-#{version}'"
-    system "#{bin}/rcsslogplayer --version | tail -1 | grep 'rcsslogplayer Version'"
-    system "#{bin}/rcssmonitor --version | tail -1 | grep 'rcssmonitor Version'"
+    assert_match version.to_s, shell_output("#{bin}/rcssserver help", 1)
   end
 end
