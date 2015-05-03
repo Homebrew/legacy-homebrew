@@ -1,11 +1,9 @@
-require "formula"
-
 class GnuCobol < Formula
   homepage "http://www.opencobol.org/"
 
   stable do
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/1.1/gnu-cobol-1.1.tar.gz"
-    sha1 "86e928c43cb3372f1f4564f3fd5e1dde668e8c1f"
+    sha256 "5cd6c99b2b1c82fd0c8fffbb350aaf255d484cde43cf5d9b92de1379343b3d7e"
 
     fails_with :clang do
       cause <<-EOS.undent
@@ -14,11 +12,12 @@ class GnuCobol < Formula
       EOS
     end
   end
+  revision 1
 
   devel do
     version "2.0_nightly_r411"
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/2.0/gnu-cobol-2.0_nightly_r411.tar.gz"
-    sha1 "009215c090b9a90fbf02bbc913095ce2a9b31910"
+    sha256 "5d6d767bf0255fa63bc5c26493d53f4749eb0e369b81c626d156f346b3664fe7"
   end
 
   bottle do
