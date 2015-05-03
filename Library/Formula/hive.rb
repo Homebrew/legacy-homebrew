@@ -6,7 +6,6 @@ class Hive < Formula
   sha1 '8e24c451ebab1333352a2f0407d5fe847759fbd2'
 
   depends_on 'hadoop'
-  conflicts_with 'apache-spark', :because => 'both install `beeline` binaries'
 
   def install
     rm_f Dir["bin/ext/*.cmd", "bin/ext/util/*.cmd"]
