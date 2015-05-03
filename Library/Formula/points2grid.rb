@@ -1,9 +1,8 @@
-require 'formula'
-
 class Points2grid < Formula
-  homepage 'https://github.com/CRREL/points2grid'
-  url 'https://github.com/CRREL/points2grid/archive/1.3.0.tar.gz'
-  sha1 'a12a54a70559d9920753256966bd2ce7eade752c'
+  homepage "https://github.com/CRREL/points2grid"
+  url "https://github.com/CRREL/points2grid/archive/1.3.0.tar.gz"
+  sha256 "87acdfd336fac20d2c2a22926b045c7f3f0fc925769a87393aff28b8c351c62b"
+  revision 1
 
   bottle do
     cellar :any
@@ -13,15 +12,15 @@ class Points2grid < Formula
     sha1 "e89c8c18c41162ce30078bd93cd80509d471047f" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'boost'
-  depends_on 'gdal'
+  depends_on "cmake" => :build
+  depends_on "boost"
+  depends_on "gdal"
 
   def install
     args = std_cmake_args + ["-DWITH_GDAL=ON"]
     libexec.install "example.las"
     system "cmake", ".", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do
@@ -30,7 +29,7 @@ class Points2grid < Formula
              "-i", libexec/"example.las",
              "-o", "example",
              "--max", "--output_format", "grid"
-      assert_equal 5, %x(grep -c '423.820000' < example.max.grid).strip.to_i
+      assert_equal 5, `grep -c '423.820000' < example.max.grid`.strip.to_i
     end
   end
 end

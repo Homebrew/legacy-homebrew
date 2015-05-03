@@ -1,7 +1,7 @@
 class CppNetlib < Formula
   homepage "http://cpp-netlib.org"
   url "https://storage.googleapis.com/cpp-netlib-downloads/0.11.1/cpp-netlib-0.11.1-final.tar.bz2"
-  sha1 "213ba700e534596b44409cd6d5738b959fe41746"
+  sha256 "8f5a0bb7e5940490b4e409f9c805b752ee4b598e06d740d04adfc76eb5c8e23e"
 
   bottle do
     sha1 "799f0fc4ecf5b9c266f429d700095c4439e1ff87" => :yosemite
@@ -10,7 +10,13 @@ class CppNetlib < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "boost" => "c++11"
+
+  if MacOS.version < :mavericks
+    depends_on "boost" => "c++11"
+  else
+    depends_on "boost"
+  end
+
   needs :cxx11
 
   def install
