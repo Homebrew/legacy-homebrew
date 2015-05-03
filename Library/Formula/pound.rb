@@ -14,9 +14,6 @@ class Pound < Formula
   depends_on "google-perftools" => :recommended
 
   def install
-    # find Homebrew's libpcre
-    ENV.append "LDFLAGS", "-L#{Formula["pcre"].lib}"
-
     system "./configure", "--prefix=#{prefix}", "--disable-tcmalloc"
     system "make"
     # Manual install to get around group issues
