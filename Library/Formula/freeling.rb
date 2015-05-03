@@ -1,11 +1,9 @@
-require "formula"
-
 class Freeling < Formula
   homepage "http://nlp.lsi.upc.edu/freeling/"
   url "http://devel.cpl.upc.edu/freeling/downloads/32"
   version "3.1"
-  sha1 "42dbf7eec6e5c609e10ccc60768652f220d24771"
-  revision 3
+  sha256 "e98471ceb3f58afbe70369584d8d316323d13fcc51d09b2fd7f431a3220982ba"
+  revision 4
 
   bottle do
     cellar :any
@@ -14,8 +12,8 @@ class Freeling < Formula
     sha256 "a25436b7796ce8bcda57f17ec66e5e3eb7563edf2caa2241edc230b4db58e8e4" => :mountain_lion
   end
 
-  depends_on "icu4c"
   depends_on "boost" => "with-icu4c"
+  depends_on "icu4c"
   depends_on "libtool" => :build
 
   def install
@@ -37,6 +35,10 @@ class Freeling < Formula
   end
 
   test do
-    system "echo 'Hello world' | #{bin}/analyze -f #{share}/freeling/config/en.cfg | grep -c 'world world NN 1'"
+    expected = <<-EOS.undent
+      Hello hello NN 1
+      world world NN 1
+    EOS
+    assert_equal expected, pipe_output("#{bin}/analyze -f #{share}/freeling/config/en.cfg", "Hello world").chomp
   end
 end
