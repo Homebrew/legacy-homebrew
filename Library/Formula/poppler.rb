@@ -1,9 +1,9 @@
-require 'formula'
-
 class Poppler < Formula
-  homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.29.0.tar.xz'
-  sha1 'ba3330ab884e6a139ca63dd84d0c1c676f545b5e'
+  homepage "http://poppler.freedesktop.org"
+  url "http://poppler.freedesktop.org/poppler-0.32.0.tar.xz"
+  sha256 "4963e31ba5e17530a87b16588e22928bc044e8d28d02303dded981bff6725b98"
+
+  head "git://git.freedesktop.org/git/poppler/poppler"
 
   bottle do
     sha1 "b83e3b7fe032d69343367ceb481a0387e447e565" => :yosemite
@@ -17,26 +17,31 @@ class Poppler < Formula
   deprecated_option "with-qt4" => "with-qt"
   deprecated_option "with-lcms2" => "with-little-cms2"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cairo'
-  depends_on 'fontconfig'
-  depends_on 'freetype'
-  depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'gobject-introspection'
-  depends_on 'jpeg'
-  depends_on 'libpng'
-  depends_on 'libtiff'
-  depends_on 'openjpeg'
+  if build.head?
+    depends_on :automake => :build
+    depends_on :autoconf => :build
+    depends_on "libtool"
+  end
+  depends_on "pkg-config" => :build
+  depends_on "cairo"
+  depends_on "fontconfig"
+  depends_on "freetype"
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "gobject-introspection"
+  depends_on "jpeg"
+  depends_on "libpng"
+  depends_on "libtiff"
+  depends_on "openjpeg"
 
   depends_on "qt" => :optional
   depends_on "little-cms2" => :optional
 
-  conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
+  conflicts_with "pdftohtml", :because => "both install `pdftohtml` binaries"
 
-  resource 'font-data' do
-    url 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'
-    sha1 '556a5bebd0eb743e0d91819ba11fd79947d8c674'
+  resource "font-data" do
+    url "http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz"
+    sha256 "e752b0d88a7aba54574152143e7bf76436a7ef51977c55d6bd9a48dccde3a7de"
   end
 
   def install
@@ -57,8 +62,17 @@ class Poppler < Formula
 
     args << "--enable-cms=lcms2" if build.with? "little-cms2"
 
-    system "./configure", *args
-    system "make install"
-    resource('font-data').stage { system "make", "install", "prefix=#{prefix}" }
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
+
+    system "make", "install"
+    resource("font-data").stage { system "make", "install", "prefix=#{prefix}" }
+  end
+
+  test do
+    system bin/"pdfinfo", HOMEBREW_PREFIX/"Library/Homebrew/test/fixtures/test.pdf"
   end
 end
