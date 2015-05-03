@@ -4,6 +4,12 @@ class NordugridArc < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/n/nordugrid-arc/nordugrid-arc_5.0.0.orig.tar.gz"
   sha256 "59132ce88f0d88d9a08a56eb879fe9bd07b2eedfce1506508e71457b7f4add1b"
 
+  bottle do
+    sha256 "db44e56921dda90426b9bb78ac996bcc261e6e169584636bae3ed7acd31aa229" => :yosemite
+    sha256 "bb1cd1b9729a5520e550a99c23d0d511e85daa5ead36f490940fff9e7ab073df" => :mavericks
+    sha256 "2436284cbe98cb7fb0598ebed79a0ce4e82902316513d3e0bfce6fe749311174" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "glib"
