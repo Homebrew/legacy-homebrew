@@ -217,7 +217,9 @@ class FormulaAuditor
       begin
         Formulary.factory(c.name)
       rescue FormulaUnavailableError
-        problem "Can't find conflicting formula #{c.name.inspect}."
+        unless c.name =~ HOMEBREW_TAP_FORMULA_REGEX
+          problem "Can't find conflicting formula #{c.name.inspect}."
+        end
       end
     end
   end
