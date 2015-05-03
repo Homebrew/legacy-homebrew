@@ -15,4 +15,8 @@ class Fpp < Formula
     bin.install_symlink libexec/"example"
   end
 
+  def test
+    system "example --help"
+  end
+
 end
