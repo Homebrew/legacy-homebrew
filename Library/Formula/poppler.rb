@@ -3,6 +3,8 @@ class Poppler < Formula
   url "http://poppler.freedesktop.org/poppler-0.32.0.tar.xz"
   sha256 "4963e31ba5e17530a87b16588e22928bc044e8d28d02303dded981bff6725b98"
 
+  head "git://git.freedesktop.org/git/poppler/poppler"
+
   bottle do
     sha1 "b83e3b7fe032d69343367ceb481a0387e447e565" => :yosemite
     sha1 "c1693c4f5dddc088b6ea53640610918416d7e08c" => :mavericks
@@ -15,6 +17,11 @@ class Poppler < Formula
   deprecated_option "with-qt4" => "with-qt"
   deprecated_option "with-lcms2" => "with-little-cms2"
 
+  if build.head?
+    depends_on :automake => :build
+    depends_on :autoconf => :build
+    depends_on "libtool"
+  end
   depends_on "pkg-config" => :build
   depends_on "cairo"
   depends_on "fontconfig"
@@ -55,7 +62,12 @@ class Poppler < Formula
 
     args << "--enable-cms=lcms2" if build.with? "little-cms2"
 
-    system "./configure", *args
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
+
     system "make", "install"
     resource("font-data").stage { system "make", "install", "prefix=#{prefix}" }
   end
