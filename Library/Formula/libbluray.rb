@@ -22,6 +22,7 @@ class Libbluray < Formula
   depends_on "pkg-config" => :build
   depends_on "freetype" => :recommended
   depends_on "fontconfig"
+  depends_on "libxml2" unless OS.mac?
 
   def install
     # https://mailman.videolan.org/pipermail/libbluray-devel/2014-April/001401.html
