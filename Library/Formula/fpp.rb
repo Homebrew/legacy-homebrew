@@ -4,6 +4,13 @@ class Fpp < Formula
   sha256 "94b77ef10a128a694f6302ce578a2d07a3fd2892299d341b22be9496abd7277d"
   head "https://github.com/facebook/pathpicker.git"
 
+  bottle do
+    cellar :any
+    sha256 "2deb167b4dd052e599b7585a12bc43313e1a255da930022378f1cf53aee3c78e" => :yosemite
+    sha256 "29e5e0a547a363f544d39f12b712000e18e555c7b16f1d548af47e138cd4185f" => :mavericks
+    sha256 "21bf8171dce1011c411674f00869b067290247ffced0fa1e6170d827503ca46f" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
