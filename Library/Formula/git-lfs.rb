@@ -1,7 +1,7 @@
 class GitLfs < Formula
   homepage "https://github.com/github/git-lfs"
-  url "https://github.com/github/git-lfs/archive/v0.5.0.tar.gz"
-  sha256 "70f17a594d51d1b92d2354a729f00546e9c1b2c93ff3b752e185c650c5442d06"
+  url "https://github.com/github/git-lfs/archive/v0.5.1.tar.gz"
+  sha256 "8cefb145e47b2e582fc284d1fde5486f30e9c754f9d85d12db61c7397c797931"
 
   bottle do
     cellar :any
