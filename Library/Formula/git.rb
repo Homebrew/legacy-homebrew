@@ -1,24 +1,24 @@
 class Git < Formula
-  homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.3.6.tar.xz"
-  sha256 "3ce01c54e92b47366756f57742280e052412efde65344e31f51ad8a48a7c60fc"
+  homepage "https://git-scm.com"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.4.0.tar.xz"
+  sha256 "b33438dd94659958a74850aacae4a2b3a626baec36d7f29c266130b08045bb24"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha256 "e837eeccaa551c2c2a48ab063994bebddb23eb1cb074cb568989f48cc63be89f" => :yosemite
-    sha256 "9df0eac6331615be8134b1451c735571fae9b7df8e94d2ddaefae344390bdc38" => :mavericks
-    sha256 "a5773af4f0cc3ac9475e679b371aced0705975c49dc0f3c688ab78a3efb9b89f" => :mountain_lion
+    sha256 "0ff4ff57cbc021c0c72de88da84f35b16199babd944f343c14cb0e0f29fbb005" => :yosemite
+    sha256 "dcfc32734cc673ea4727f57f987f12dd74d5f8af40b460df2f24b36ec426d292" => :mavericks
+    sha256 "2bb3f70838196670f51e875c3ef2cbbfed779a3f2a62f1aeb9f33d9e233fb082" => :mountain_lion
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.3.6.tar.xz"
-    sha256 "b1356f5cb3e7bf53445b08f24ea6950ef1f80031aedd6cd90e3ec60ff1f06b02"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.4.0.tar.xz"
+    sha256 "b616dc6aa02dcac312e6aeae7af148913f76e1f851ba03ba340b4d2db316ecc7"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.3.6.tar.xz"
-    sha256 "b37439087ae465534588a65380e3acb66d3e6949904ede720febeed1dc5d8b49"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.4.0.tar.xz"
+    sha256 "70ee1fdb70507c74832ac021e8940c8249d9b69f2b86aeaf0888ae41772e93a7"
   end
 
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"

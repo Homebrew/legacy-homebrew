@@ -11,8 +11,15 @@ class Mariadb < Formula
   end
 
   devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.3/source/mariadb-10.1.3.tar.gz"
-    sha1 "95a4e2640b40e79c58f22662ff76eb3f76f892e9"
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.4/source/mariadb-10.1.4.tar.gz"
+    sha256 "14cc92414b2c3822923977a6fb544593498dbb5005044db33c193511757d411c"
+
+    patch do
+      # https://mariadb.atlassian.net/browse/MDEV-8073
+      # upstream patch, fixed in 10.1.5
+      url "https://github.com/MariaDB/server/commit/ff1e0821d1174428dd70331bd864de1334ab0567.diff"
+      sha256 "552fe747e05de7c0ffa8af7d0476e74f3bb4b54bb8fa0609b94a1c2147728ebb"
+    end
   end
 
   depends_on "cmake" => :build

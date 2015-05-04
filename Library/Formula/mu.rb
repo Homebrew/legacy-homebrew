@@ -1,31 +1,28 @@
-require "formula"
-
 class Emacs23Installed < Requirement
   fatal true
   env :userpaths
   default_formula "emacs"
 
   satisfy do
-    `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
-    $1.to_i >= 23
+    major_version = `$(which emacs) --batch --eval "(princ emacs-major-version)"`.to_i
+    major_version >= 23
   end
 end
 
 class Mu < Formula
   homepage "http://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/archive/v0.9.11.tar.gz"
-  sha1 "080b69bfb4876cb683acb961e8b71d6ebba90fa0"
+  url "https://github.com/djcb/mu/archive/v0.9.12.tar.gz"
+  sha256 "b871124fc7774a2593815f89286671a8f31d7243bb898a8ca454685599f2b9af"
 
   head "https://github.com/djcb/mu.git"
 
   bottle do
-    revision 1
-    sha1 "fa5412706e677fcc042e3e461e97cdc7e960185e" => :yosemite
-    sha1 "42cc5427d5de000729c51f627bb00927606c2be9" => :mavericks
-    sha1 "b7dda439293d64bdba9173318eeb381524cbdddb" => :mountain_lion
+    sha256 "8166a3b3788068a97ceb81cb64cca24bd8b92ff3a1ece722e3a27a304979ea6f" => :yosemite
+    sha256 "8c99800aa123e167c835d05024ac6a3efe435e7e4b05e8ddcc249c5a50805f74" => :mavericks
+    sha256 "d59cf5dce157f19561f3a2575fb7f4498cd16668e1cee8ea28b80aecdc086428" => :mountain_lion
   end
 
-  option "with-emacs", "Build with emacs support"
+  option "with-emacs", "Build with Emacs support (requires Emacs 23 or higher)"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -52,7 +49,7 @@ class Mu < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

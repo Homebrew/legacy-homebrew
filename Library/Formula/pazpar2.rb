@@ -4,15 +4,17 @@ class Pazpar2 < Formula
   homepage "http://www.indexdata.com/pazpar2"
   url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.8.7.tar.gz"
   sha1 "e4e5c1c7cdeea7f06c0242c1b85c32b35c52ee69"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "521ff5bfe870f39f40f041bd8ac3f9360cfd6fe4e951437c9c6376e8c8953937" => :yosemite
-    sha256 "bb2fd6a3a4418a5fe71cf8bcf3ee71790ab85a3e52f3a02a03ccb2cdd718a44f" => :mavericks
-    sha256 "2ad236a1358534e963dcc1538354b741d3644ac24231148fcf79b8f4e63645cc" => :mountain_lion
+    sha256 "1ba5b525a809477edb5cbafd2fbcefd9fba29d224ccad06064abbdbcb3d9d1e3" => :yosemite
+    sha256 "e7b386c553cd3e1d8b123b88abf9df7288371d4423982bfa333456ba3ef40646" => :mavericks
+    sha256 "53d1ad3c4eccfd37b51788d10ad7609541aad20537faec0de168c2272857fe2f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "icu4c" => :recommended
   depends_on "yaz"
 
   def install

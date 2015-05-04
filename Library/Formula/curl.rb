@@ -1,14 +1,14 @@
 class Curl < Formula
   homepage "http://curl.haxx.se/"
-  url "http://curl.haxx.se/download/curl-7.42.0.tar.bz2"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/cURL/curl-7.42.0.tar.bz2"
-  sha256 "32557d68542f5c6cc8437b5b8a945857b4c5c6b6276da909e35b783d1d66d08f"
+  url "http://curl.haxx.se/download/curl-7.42.1.tar.bz2"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/cURL/curl-7.42.1.tar.bz2"
+  sha256 "e2905973391ec2dfd7743a8034ad10eeb58dab8b3a297e7892a41a7999cac887"
 
   bottle do
     cellar :any
-    sha256 "43a054056f8c77f6c5586c7206f169018ca7e0855bf193d9a44e2352cc6781b1" => :yosemite
-    sha256 "06f71bad05207b3775d537dec3606bfbf3e724ce950138ec06906e3b386381a3" => :mavericks
-    sha256 "f75b4c1a50007ed7994b8aa2e5f165bb090981409338e3af6fb7499faec18c01" => :mountain_lion
+    sha256 "2ae4dd4a016986c38c2ab6df62b2d3e56847f509f386bf3d5932c4ce55af96a8" => :yosemite
+    sha256 "1b1d6762191e6e87d0950093c97bc39a9194f69136951192b38808d093327450" => :mavericks
+    sha256 "6e61b3d21208cc91f37af99d760fd689315076cda17f347600eb88ea86170ca3" => :mountain_lion
   end
 
   keg_only :provided_by_osx

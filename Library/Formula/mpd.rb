@@ -1,7 +1,6 @@
-require 'formula'
-
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
+  revision 1
 
   stable do
     url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.9.tar.xz"
@@ -9,9 +8,9 @@ class Mpd < Formula
   end
 
   bottle do
-    sha1 "dded981259ff9d3529b311f8fd48f3713a4e5811" => :yosemite
-    sha1 "8b2252c6fb581ed97ea95d16b953b1a64d0c6f02" => :mavericks
-    sha1 "2a3c681188f7db786f61b053aa0813549838718a" => :mountain_lion
+    sha256 "50703036c5506ae9ec6f48947b10022b7bc4ac5a5a3a8e7fbda86b506382b7f8" => :yosemite
+    sha256 "1a852ad205facfad052308cc532f8d3bc4bc612677f48499e7477e0f63bd66d2" => :mavericks
+    sha256 "b9cf5fad3cb783f40962367d298894603ef22e4f6108bf9ea9c4f4b4fabfd099" => :mountain_lion
   end
 
   head do
