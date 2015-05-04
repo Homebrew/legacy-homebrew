@@ -1,7 +1,7 @@
 class Elasticsearch < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.1.tar.gz"
-  sha1 "b3863a63d265486332042246bf1c002b3a70b46f"
+  url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.tar.gz"
+  sha256 "efae7897367ac3fa8057d02fad31c72e215b6edef599b63e373d3ce0c1049a14"
 
   bottle do
     sha256 "0e59f10c8ff8f8d3d8e18cf3083846d5a537cacf0eefe40035121927352661f4" => :yosemite
