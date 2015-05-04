@@ -6,9 +6,9 @@ class Mapnik < Formula
   revision 6
 
   bottle do
-    sha256 "8926b2f74348eae482fa4681f2dcd233970fe4e114af48609327821e8dada739" => :yosemite
-    sha256 "017b29ff0ee18af99b0d6404b68ffa4fc5600816fd4de72e40a5f06f22b8cc72" => :mavericks
-    sha256 "63e520499c8b7d6ae90011a7960fb3586cccdfbe5716a54d8c3e8bd1e6e47298" => :mountain_lion
+    sha256 "1c362e8436c60b47664dfba2bfd18eab7ef281db3e0f376274676bcb1c66685d" => :yosemite
+    sha256 "7f2f612d1a1cd98cd9cb726ea9f06e8b532765e07e6a9f5f1451321f865bbf15" => :mavericks
+    sha256 "6ee18c569252ef0d25f5756a57e7be64ea7dea38f04a7e0fc8c544558f07a64a" => :mountain_lion
   end
 
   stable do
