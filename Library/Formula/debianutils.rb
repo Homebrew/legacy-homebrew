@@ -1,7 +1,8 @@
 class Debianutils < Formula
-  homepage "http://anonscm.debian.org/gitweb/?p=users/clint/debianutils.git"
-  url "http://ftp.de.debian.org/debian/pool/main/d/debianutils/debianutils_4.4.tar.gz"
-  sha1 "019b969ab698c83117254b50fc8f469f10a5d8d6"
+  homepage "https://packages.debian.org/unstable/utils/debianutils"
+  url "https://mirrors.kernel.org/debian/pool/main/d/debianutils/debianutils_4.5.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/debianutils/debianutils_4.5.tar.gz"
+  sha256 "7cfaa53caaaaf36dad16fa69b30dd2b78b8dafebd766aacd53a3c7c78a9d441f"
 
   bottle do
     cellar :any
