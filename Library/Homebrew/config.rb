@@ -39,9 +39,13 @@ HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent
 HOMEBREW_LIBRARY = HOMEBREW_REPOSITORY/"Library"
 HOMEBREW_CONTRIB = HOMEBREW_REPOSITORY/"Library/Contributions"
 
-# Where we store built products; /usr/local/Cellar if it exists,
-# otherwise a Cellar relative to the Repository.
-HOMEBREW_CELLAR = if (HOMEBREW_PREFIX+"Cellar").exist?
+# Where we store built products; in decreasing order of precedence:
+#   * value of ENV["HOMEBREW_CELLAR"], if set
+#   * the Cellar subdirectory relative to Homebrew, if it exists
+#   * the Cellar subdirectory relative to the current repository
+HOMEBREW_CELLAR = if ENV["HOMEBREW_CELLAR"]
+  Pathname.new(ENV["HOMEBREW_CELLAR"])
+elsif (HOMEBREW_PREFIX+"Cellar").exist?
   HOMEBREW_PREFIX+"Cellar"
 else
   HOMEBREW_REPOSITORY+"Cellar"

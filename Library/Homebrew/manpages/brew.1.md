@@ -438,7 +438,7 @@ Note that these flags should only appear after a command.
     Display the file or directory used to cache <formula>.
 
   * `--cellar`:
-    Display Homebrew's Cellar path. *Default:* `/usr/local/Cellar`
+    Display Homebrew's Cellar path. *Default:* See `HOMEBREW_CELLAR`.
 
   * `--cellar` <formula>:
     Display the location in the cellar where <formula> would be installed,
@@ -524,6 +524,13 @@ can take several different forms:
 
     *Default:* `~/Library/Caches/Homebrew` if it exists; otherwise,
     `/Library/Caches/Homebrew`.
+
+  * HOMEBREW\_CELLAR:
+    If set, Homebrew will use this as the path to the cellar.
+
+    *Default:*
+    `$(brew --prefix)/Cellar` if it exists; otherwise the `Cellar` subdirectory
+    of the current repo.
 
   * HOMEBREW\_CURL\_VERBOSE:
     If set, Homebrew will pass `--verbose` when invoking `curl`(1).
