@@ -1,7 +1,6 @@
-require 'formula'
-
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
+  revision 1
 
   stable do
     url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.9.tar.xz"
