@@ -413,6 +413,7 @@ _brew_upgrade ()
     case "$cur" in
     --*)
         __brewcomp "
+            --all
             --build-from-source --build-bottle --force-bottle
             --debug
             --verbose
