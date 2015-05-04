@@ -7,7 +7,6 @@ class Fpp < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
-    puts buildpath
     # we need to copy the bash file and source python files
     libexec.install Dir["*"]
     # and then symlink the bash file
