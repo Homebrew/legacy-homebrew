@@ -127,7 +127,7 @@ module FormulaCellarChecks
   end
 
   def check_easy_install_pth lib
-    pth_found = Dir["#{lib}/python{2.7,3.4}/site-packages/easy-install.pth"].map { |f| File.dirname(f) }
+    pth_found = Dir["#{lib}/python{2.7,3}*/site-packages/easy-install.pth"].map { |f| File.dirname(f) }
     return if pth_found.empty?
 
     <<-EOS.undent
