@@ -16,13 +16,6 @@ class Apr < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    # Configure switch unconditionally adds the -no-cpp-precomp switch
-    # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
-    # builds under non-Apple compilers and which may or may not do anything anymore.
-    # Reported upstream: https://issues.apache.org/bugzilla/show_bug.cgi?id=48483
-    # Upstream bug report still open and unresolved as of end of 2014
-    inreplace "configure", " -no-cpp-precomp", ""
-
     # https://issues.apache.org/bugzilla/show_bug.cgi?id=57359
     # The internal libtool throws an enormous strop if we don't do...
     ENV.deparallelize
