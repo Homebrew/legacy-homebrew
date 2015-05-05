@@ -1,5 +1,3 @@
-require "formula"
-
 class Beecrypt < Formula
   homepage "http://beecrypt.sourceforge.net"
   url "https://downloads.sourceforge.net/project/beecrypt/beecrypt/4.2.1/beecrypt-4.2.1.tar.gz"
@@ -26,8 +24,34 @@ class Beecrypt < Formula
                           "--without-java",
                           "--without-python"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include "beecrypt/base64.h"
+      #include "beecrypt/sha256.h"
+      #include <stdio.h>
+
+      int main(void)
+      {
+        sha256Param hash;
+        const byte *string = (byte *) "abc";
+        byte digest[32];
+
+        sha256Reset(&hash);
+        sha256Update(&hash, string, sizeof(string) / sizeof(*string));
+        sha256Process(&hash);
+        sha256Digest(&hash, digest);
+
+        printf("%s\\n", b64crc(digest, 32));
+
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lbeecrypt", "-o", "test"
+    assert_match /ZF8D/, shell_output("./test")
   end
 end
 
