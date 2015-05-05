@@ -3,6 +3,12 @@ class Omniorb < Formula
   url "https://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.2.0/omniORB-4.2.0.tar.bz2"
   sha256 "74c273fc997c2881b128feb52182dbe067acfecc4cf37475f43c104338eba8bc"
 
+  bottle do
+    sha256 "8575f53c6de3426c4f640c97fbc966b220869dada8e636494f4a1fe5c1769990" => :yosemite
+    sha256 "2245722bc7b21cecee0bfc4b145d3bab51d79979bfbf9e6cb1a0211b4c166e85" => :mavericks
+    sha256 "0a5e41a4e19fbe4d685822b2da354d8dd9f5bd32e02376d74d7dfed9e9b9f767" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
 
   resource "bindings" do
