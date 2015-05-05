@@ -1,8 +1,8 @@
 # This should really be named Mpich now, but homebrew cannot currently handle
 # formula renames, see homebrew issue #14374.
 class Mpich2 < Formula
-  homepage "http://www.mpich.org/"
-  url "http://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz"
+  homepage "https://www.mpich.org/"
+  url "https://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz"
   mirror "https://fossies.org/linux/misc/mpich-3.1.4.tar.gz"
   sha1 "af4f563e2772d610e57e17420c9dcc5c3c9fec4e"
 
@@ -21,8 +21,8 @@ class Mpich2 < Formula
   end
 
   devel do
-    url "http://www.mpich.org/static/downloads/3.2b1/mpich-3.2b1.tar.gz"
-    sha1 "43ea38cd0007f75adf6ea6db80e823fbfe34a458"
+    url "https://www.mpich.org/static/downloads/3.2b2/mpich-3.2b2.tar.gz"
+    sha1 "8e954e54d1c1a08ef7d042c18ed308d566e32cd5"
   end
 
   deprecated_option "disable-fortran" => "without-fortran"

@@ -9,25 +9,27 @@ class Mongodb < Formula
     sha256 "010522203cdb9bbff52fbd9fe299b67686bb1256e2e55eb78abf35444f668399"
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.0.1",
-        :revision => "bc08e57abb71b2edd1cc3ab8f9f013409718f197"
+        :tag => "r3.0.2",
+        :revision => "a914adfcea7d76f07512415eec5cd8308e67318e"
     end
   end
 
   devel do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.1.tar.gz"
-    sha256 "4f983680ff1cc61d021daed2e2d24c54c069d965ec47276678296240d59efb6f"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.2.tar.gz"
+    sha256 "ed49023f81242ae0daadaffcf366da6d748dc638826604e2a7150764618fad85"
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.1.1",
-        :revision => "6c959d3a8bd9704b5ee9e17e60a4236db6887dc3"
+        :tag => "r3.1.2",
+        :revision => "546c61eee0904fb60d4afef276b9476218053015"
     end
   end
 
   bottle do
-    sha256 "1f770eefcd53060a807d85a8007d426e685f191cc9ea4afa1f7d465d2bf3d643" => :yosemite
-    sha256 "2638bfa5fd373a67650d7476678757ea0575153b149342e288dece1782bd79cf" => :mavericks
-    sha256 "1e93d503ad004245845bea11e0d4a831860af9d0ae35d674f95b8609fcae40bd" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "25a97aa9a4b9d535120216b3960e0d34b75f86134c8f71127484140139f40fe7" => :yosemite
+    sha256 "de5f3e5be894da1c8884ab0ebb827890d3bb4c228066cb6ec2f22d993869bf21" => :mavericks
+    sha256 "6b565e5ba85d7deb8461dfcc34c4e5c07532a72f55d7c76af5b74fec84a153f1" => :mountain_lion
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
@@ -64,10 +66,18 @@ class Mongodb < Formula
     args = %W[
       --prefix=#{prefix}
       -j#{ENV.make_jobs}
-      --cc=#{ENV.cc}
-      --cxx=#{ENV.cxx}
       --osx-version-min=#{MacOS.version}
     ]
+
+    if build.stable?
+      args << "--cc=#{ENV.cc}"
+      args << "--cxx=#{ENV.cxx}"
+    end
+
+    if build.devel?
+      args << "CC=#{ENV.cc}"
+      args << "CXX=#{ENV.cxx}"
+    end
 
     args << "--use-system-boost" if build.with? "boost"
     args << "--use-new-tools"
@@ -125,12 +135,12 @@ class Mongodb < Formula
       <key>HardResourceLimits</key>
       <dict>
         <key>NumberOfFiles</key>
-        <integer>65536</integer>
+        <integer>4096</integer>
       </dict>
       <key>SoftResourceLimits</key>
       <dict>
         <key>NumberOfFiles</key>
-        <integer>65536</integer>
+        <integer>4096</integer>
       </dict>
     </dict>
     </plist>

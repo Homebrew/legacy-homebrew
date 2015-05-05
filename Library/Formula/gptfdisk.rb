@@ -2,12 +2,13 @@ class Gptfdisk < Formula
   homepage "http://www.rodsbooks.com/gdisk/"
   url "https://downloads.sourceforge.net/project/gptfdisk/gptfdisk/1.0.0/gptfdisk-1.0.0.tar.gz"
   sha256 "5b66956743a799fc0471cdb032665c1391e82f9c5b3f1d7d726d29fe2ba01d6c"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "13ca80c78f1af57f910e52c1a1e67b4136de5265641d9f6f7b0eed8cf823ef6b" => :yosemite
-    sha256 "feae65211e8ae2ec11c53a457c544514fada5e860554bd9442a50607cedf6492" => :mavericks
-    sha256 "a1745d4d039a04b10e281777e8bfbdbea7a50ee1c7244aa8e069f46bf71191c3" => :mountain_lion
+    sha256 "5c8f8f714cd50ece24a4a126e2c28ca9d69874c04dd4dfc436f2d62a610c7dbc" => :yosemite
+    sha256 "7925fc5b193566014430e59c2a109b557e46750f80555cd4b045b1447be1a282" => :mavericks
+    sha256 "95593d9ce977a9529b11c9de8ee1089e56c67d76a642e13bdac31097aa5c7f69" => :mountain_lion
   end
 
   depends_on "popt"

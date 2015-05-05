@@ -1,19 +1,19 @@
 class ClangFormat < Formula
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2015-04-02"
+  version "2015-04-21"
 
   bottle do
     cellar :any
-    sha256 "79a12aaabc9806d374c21ca8b53a21e3bc1e13b039fd41ad2325a8bd269bb329" => :yosemite
-    sha256 "f08ca4d9150aa7dcec0c2facfddea992c642d8014e41445000172d7737a61f29" => :mavericks
-    sha256 "a9c87c981a293db81d04f520ac6602bcf77a43d69312533311c9dd1da3dc98c0" => :mountain_lion
+    sha256 "5abc150562cdde9a2a430da7c6fbdda5fa7d891adf4c9ef0a297b991972053ee" => :yosemite
+    sha256 "5e6a52851120f411ef20b3c7888399dbe54ce62966b665e9c018b4272ff16238" => :mavericks
+    sha256 "1c57ea1bd29c1702bf574ab4121b0f6e7a3c8851dc32cf8da53a2d90b9446c18" => :mountain_lion
   end
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-04-02/", :using => :svn
+    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-04-21/", :using => :svn
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-04-02/", :using => :svn
+      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-04-21/", :using => :svn
     end
 
     resource "libcxx" do

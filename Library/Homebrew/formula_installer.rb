@@ -197,11 +197,11 @@ class FormulaInstaller
       begin
         f = Formulary.factory(c.name)
         f.linked_keg.exist? && f.opt_prefix.exist?
-      rescue FormulaUnavailableError
-        raise unless c.name =~ HOMEBREW_TAP_FORMULA_REGEX
+      rescue TapFormulaUnavailableError
         # If the formula name is in full-qualified name. Let's silently
         # ignore it as we don't care about things used in taps that aren't
         # currently tapped.
+        next
       end
     end
 
@@ -472,7 +472,7 @@ class FormulaInstaller
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{HOMEBREW_LIBRARY_PATH}
+      -I #{HOMEBREW_LOAD_PATH}
       --
       #{HOMEBREW_LIBRARY_PATH}/build.rb
       #{formula.path}

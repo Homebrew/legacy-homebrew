@@ -1,13 +1,13 @@
 class Fontforge < Formula
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/archive/20150330.tar.gz"
-  sha256 "b2cfdf254697d630f8f16913bafeb6eccb305fcddf7232e6a104318139e64f40"
+  url "https://github.com/fontforge/fontforge/archive/20150430.tar.gz"
+  sha256 "430c6d02611c7ca948df743e9241994efe37eda25f81a94aeadd9b6dd286ff37"
   head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    sha256 "ad165dca3091584eaa3d0652b4cc4d12d6abc8651fcd4bd5deca5cc1478124d3" => :yosemite
-    sha256 "fa366f6c71e9f8a72b7bedaa8c6c30be6b667375fe4819ece68dcf4ab32353de" => :mavericks
-    sha256 "fbc1eab3bec9f446adb9efb00124b5f6a6c7867b1154524c4f732d38d57a9b06" => :mountain_lion
+    sha256 "db55b0a73b4851077da8dfd48c39675f05eaf437323acccf56602779b21cf414" => :yosemite
+    sha256 "dd876ff9dc19e6a1dba1a83cc1d9c106813a08f98675543359d99b14b2691510" => :mavericks
+    sha256 "bf152c19b04f3ad0ba87e179dfe0bba44c9c770def473698603d9a831f9b3ef0" => :mountain_lion
   end
 
   option "with-giflib", "Build with GIF support"

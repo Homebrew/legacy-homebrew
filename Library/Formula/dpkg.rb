@@ -41,14 +41,17 @@ class Dpkg < Formula
                           "--localstatedir=#{var}",
                           "--disable-dselect",
                           "--disable-linker-optimisations",
-                          "--disable-start-stop-daemon",
-                          "--disable-update-alternatives"
+                          "--disable-start-stop-daemon"
     system "make"
     system "make", "install"
 
     bin.install Dir["#{libexec}/bin/*"]
     man.install Dir["#{libexec}/share/man/*"]
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
+
+    (buildpath/"dummy").write "Vendor: dummy\n"
+    (etc/"dpkg/origins").install "dummy"
+    (etc/"dpkg/origins").install_symlink "dummy" => "default"
   end
 
   def caveats; <<-EOS.undent

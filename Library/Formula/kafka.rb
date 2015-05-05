@@ -3,7 +3,7 @@ class Kafka < Formula
   head "https://git-wip-us.apache.org/repos/asf/kafka.git"
   url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
   mirror "https://archive.apache.org/dist/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
-  sha1 "99d61c6e23cb2694112f844afedb6f13d711c356"
+  sha256 "a043655be6f3b6ec3f7eea25cc6525fd582da825972d3589b24912af71493a21"
 
   bottle do
     cellar :any

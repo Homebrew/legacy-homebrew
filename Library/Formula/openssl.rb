@@ -8,9 +8,10 @@ class Openssl < Formula
   version "1.0.2a-1"
 
   bottle do
-    sha256 "61547bc1716db058c4e5a99e91067783031e8d47acfea9a8742e9899b363b463" => :yosemite
-    sha256 "bff2a6db8e56255c85a49ccbad6cc8611bc47d1482ba630c632c6f9ca7cd7f35" => :mavericks
-    sha256 "1e985e8bfb5f3c3041c6e022561aa137643895b7bd920654c85197268aed3637" => :mountain_lion
+    revision 1
+    sha256 "847e8085763f2950819a6fcbaebeff46cdafc4fb6cf0508c69719736e5b6bfba" => :yosemite
+    sha256 "55b21566026ae075817f28a8292a9a0e326e56d266e918b4bddb9372bc9937c7" => :mavericks
+    sha256 "47e087fa8bbc68a757eb0021f32ac942e5d0edf1abbda3398523aaab2fa58ab5" => :mountain_lion
   end
 
   option :universal
@@ -21,12 +22,20 @@ class Openssl < Formula
   keg_only :provided_by_osx,
     "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
-  # This is a workaround for Apple removing the Equifax Secure CA root from the System in 10.10.3
-  # Their doing so has broken certificate verification and consquently secure connection for dependants.
-  # Scope this to Yosemite and remove immediately once Apple have fixed the issue.
-  resource "Equifax_CA" do
-    url "https://www.geotrust.com/resources/root_certificates/certificates/Equifax_Secure_Certificate_Authority.pem"
-    sha256 "f24e19fb93983b4fd0a377335613305f330c699892c789356eb216449804d0e9"
+  # Remove both patches with the 1.0.2b release.
+  # They fix:
+  # https://github.com/Homebrew/homebrew/pull/38495
+  # https://github.com/Homebrew/homebrew/issues/38491
+  # Upstream discussions:
+  # https://www.mail-archive.com/openssl-dev@openssl.org/msg38674.html
+  patch do
+    url "https://github.com/openssl/openssl/commit/6281abc796234.diff"
+    sha256 "f8b94201ac2cd7dcdee3b07fb3cd77a2de6b81ea67da9ae075cf06fb0ba73cea"
+  end
+
+  patch do
+    url "https://github.com/openssl/openssl/commit/dfd3322d72a2.diff"
+    sha256 "0602eef6e38368c7b34994deb9b49be1a54037de5e8b814748d55882bfba4eac"
   end
 
   def arch_args
@@ -37,13 +46,13 @@ class Openssl < Formula
   end
 
   def configure_args; %W[
-      --prefix=#{prefix}
-      --openssldir=#{openssldir}
-      no-ssl2
-      zlib-dynamic
-      shared
-      enable-cms
-    ]
+    --prefix=#{prefix}
+    --openssldir=#{openssldir}
+    no-ssl2
+    zlib-dynamic
+    shared
+    enable-cms
+  ]
   end
 
   def install
@@ -120,10 +129,8 @@ class Openssl < Formula
     openssldir.mkpath
     (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
 
-    if MacOS.version == :yosemite
-      (openssldir/"certs").install resource("Equifax_CA")
-      system bin/"c_rehash"
-    end
+    # Remove this once 1.0.2b lands.
+    rm_f openssldir/"certs/Equifax_CA" if MacOS.version == :yosemite
   end
 
   def caveats; <<-EOS.undent
