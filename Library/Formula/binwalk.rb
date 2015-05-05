@@ -14,10 +14,15 @@ class Binwalk < Formula
 
   head do
     url "https://github.com/devttys0/binwalk.git"
+
+    option "with-capstone", "Enable disasm options via capstone"
+    resource "capstone" do
+      url "https://pypi.python.org/packages/source/c/capstone/capstone-3.0.2.tar.gz"
+      sha256 "b32022fe956e940f8e67c17841dd3f6f1c50a60e451f9b5ce1f4dd2e5c5b3339"
+    end
   end
 
   option "with-matplotlib", "Check for presence of matplotlib, which is required for entropy graphing support"
-  option "with-capstone", "Enable disasm options via capstone" if build.head?
 
   depends_on "swig" => :build
   depends_on :fortran
@@ -42,11 +47,6 @@ class Binwalk < Formula
   resource "scipy" do
     url "http://downloads.sourceforge.net/project/scipy/scipy/0.15.1/scipy-0.15.1.tar.gz"
     sha256 "a212cbc3b79e9a563aa45fc5c517b3499198bd7eb7e7be1e047568a5f48c259a"
-  end
-
-  resource "capstone" do
-    url "https://pypi.python.org/packages/source/c/capstone/capstone-3.0.2.tar.gz"
-    sha256 "b32022fe956e940f8e67c17841dd3f6f1c50a60e451f9b5ce1f4dd2e5c5b3339"
   end
 
   def install
