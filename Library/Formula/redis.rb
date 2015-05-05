@@ -1,7 +1,7 @@
 class Redis < Formula
   homepage "http://redis.io/"
-  url "http://download.redis.io/releases/redis-3.0.0.tar.gz"
-  sha1 "c75fd32900187a7c9f9d07c412ea3b3315691c65"
+  url "http://download.redis.io/releases/redis-3.0.1.tar.gz"
+  sha1 "fe1d06599042bfe6a0e738542f302ce9533dde88"
 
   bottle do
     sha256 "9222eb768c9f165d35fa923b6ddaf57830928d5bf281b4d794aa14dd63fe5a04" => :yosemite
