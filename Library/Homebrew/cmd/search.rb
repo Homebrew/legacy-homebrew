@@ -3,6 +3,7 @@ require "blacklist"
 require "utils"
 require "thread"
 require "official_taps"
+require 'descriptions'
 
 module Homebrew
   SEARCH_ERROR_QUEUE = Queue.new
@@ -23,11 +24,7 @@ module Homebrew
     elsif ARGV.include? "--desc"
       query = ARGV.next
       rx = query_regexp(query)
-      Formula.each do |formula|
-        if formula.desc =~ rx
-          puts "#{Tty.white}#{formula.full_name}:#{Tty.reset} #{formula.desc}"
-        end
-      end
+      Descriptions.search(rx, :desc).print
     elsif ARGV.empty?
       puts_columns Formula.full_names
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
