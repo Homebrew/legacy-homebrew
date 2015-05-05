@@ -2,11 +2,7 @@ class Ledger < Formula
   homepage "http://ledger-cli.org"
   url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
   sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
-
-  resource "utfcpp" do
-    url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
-    sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
-  end
+  head "https://github.com/ledger/ledger.git"
 
   bottle do
     revision 2
@@ -15,7 +11,10 @@ class Ledger < Formula
     sha1 "087576750c2d1df2367a7bac2617e54dbedc2866" => :mountain_lion
   end
 
-  head "https://github.com/ledger/ledger.git"
+  resource "utfcpp" do
+    url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+    sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
+  end
 
   deprecated_option "debug" => "with-debug"
 
@@ -23,10 +22,10 @@ class Ledger < Formula
   option "with-docs", "Build HTML documentation"
   option "without-python", "Build without python support"
 
-  depends_on "mpfr"
-  depends_on "gmp"
-  depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on "cmake" => :build
+  depends_on "gmp"
+  depends_on "mpfr"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
 
   boost_opts = []
   boost_opts << "c++11" if MacOS.version < "10.9"
