@@ -2,6 +2,7 @@ require "cmd/tap"
 require "formula_versions"
 require "migrator"
 require "formulary"
+require "descriptions"
 
 module Homebrew
   def update
@@ -100,6 +101,7 @@ module Homebrew
       puts "Updated Homebrew from #{master_updater.initial_revision[0, 8]} to #{master_updater.current_revision[0, 8]}."
       report.dump
     end
+    Descriptions.update_cache(report)
   end
 
   private

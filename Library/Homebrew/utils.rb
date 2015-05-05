@@ -255,8 +255,8 @@ def puts_columns(items, star_items = [])
     # determine the best width to display for different console sizes
     console_width = `/bin/stty size`.chomp.split(" ").last.to_i
     console_width = 80 if console_width <= 0
-    longest = items.sort_by(&:length).last
-    optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
+    max_len = items.reduce(0) { |max, item| l = item.length ; l > max ? l : max }
+    optimal_col_width = (console_width.to_f / (max_len + 2).to_f).floor
     cols = optimal_col_width > 1 ? optimal_col_width : 1
 
     IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w") { |io| io.puts(items) }
