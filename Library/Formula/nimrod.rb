@@ -1,7 +1,7 @@
 class Nimrod < Formula
   homepage "http://nim-lang.org/"
-  url "http://nim-lang.org/download/nim-0.11.0.tar.xz"
-  sha1 "5cbad487c94d0dd4b8cbd52486dd43b1ccf671fb"
+  url "http://nim-lang.org/download/nim-0.11.2.tar.xz"
+  sha1 "2693022e35e31196d14ec2d1fbf11a90abac34cf"
   head "https://github.com/Araq/Nim.git", :branch => "devel"
 
   bottle do
@@ -15,7 +15,6 @@ class Nimrod < Formula
     system "/bin/sh", "build.sh"
     system "/bin/sh", "install.sh", prefix
 
-    (prefix/"nim/bin").install "bin/nim"
     (prefix/"nim").install "compiler"
     bin.install_symlink prefix/"nim/bin/nim"
     bin.install_symlink prefix/"nim/bin/nim" => "nimrod"
