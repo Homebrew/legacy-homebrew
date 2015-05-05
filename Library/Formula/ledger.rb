@@ -51,7 +51,6 @@ class Ledger < Formula
 
     flavor = (build.with? "debug") ? "debug" : "opt"
 
-    opts = %w[-- -DBUILD_DOCS=1]
     args = %W[
       --jobs=#{ENV.make_jobs}
       --output=build
@@ -59,13 +58,10 @@ class Ledger < Formula
       --boost=#{Formula["boost"].opt_prefix}
     ]
 
-    if build.with? "docs"
-      opts << "-DBUILD_WEB_DOCS=1"
-    end
-
     args << "--python" if build.with? "python"
 
-    args += opts
+    args += %w[-- -DBUILD_DOCS=1]
+    args << "-DBUILD_WEB_DOCS=1" if build.with? "docs"
 
     system "./acprep", flavor, "make", *args
     system "./acprep", flavor, "make", "doc", *args
