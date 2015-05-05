@@ -47,6 +47,8 @@ class Rethinkdb < Formula
           <string>#{opt_bin}/rethinkdb</string>
           <string>-d</string>
           <string>#{var}/rethinkdb</string>
+          <string>--cache-size</string>
+          <string>auto</string>
       </array>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
