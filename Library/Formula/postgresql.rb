@@ -1,8 +1,8 @@
 class Postgresql < Formula
-  homepage "http://www.postgresql.org/"
+  homepage "https://www.postgresql.org/"
 
   stable do
-    url "http://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
+    url "https://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
     sha256 "29ddb77c820095b8f52e5455e9c6c6c20cf979b0834ed1986a8857b84888c3a6"
   end
 
@@ -89,7 +89,7 @@ class Postgresql < Formula
       https://github.com/Homebrew/homebrew/issues/2510
 
     To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
-      http://www.postgresql.org/docs/9.4/static/upgrading.html
+      https://www.postgresql.org/docs/9.4/static/upgrading.html
     EOS
   end
 
