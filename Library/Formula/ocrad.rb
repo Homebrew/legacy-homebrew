@@ -6,9 +6,9 @@ class Ocrad < Formula
 
   bottle do
     cellar :any
-    sha1 "bc2fb9a7569c50213477ba10f9e40f776f87d318" => :mavericks
-    sha1 "e77d6f2d4056e2c47bfef3149afeada4fb7fb047" => :mountain_lion
-    sha1 "96f3a02a4eea496f7318eeb97c40a0a7f3505cc3" => :lion
+    sha256 "99dba4fcc35dcea80dcf70e783832a57578f36406aa9a465398cf511ff2bae6e" => :yosemite
+    sha256 "ee28a84a3c13a281f601f92920201a00af54509201f62ffb9d84d0e554001c7d" => :mavericks
+    sha256 "2e338636210625c15a91389b2d53b7464c05c38017d0fba37076e100794668e1" => :mountain_lion
   end
 
   def install
