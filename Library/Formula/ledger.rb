@@ -21,16 +21,26 @@ class Ledger < Formula
 
   option "with-debug", "Build with debugging symbols enabled"
   option "with-docs", "Build HTML documentation"
+  option "without-python", "Build without python support"
 
   depends_on "mpfr"
   depends_on "gmp"
-  depends_on :python => :optional
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on "cmake" => :build
 
   boost_opts = []
   boost_opts << "c++11" if MacOS.version < "10.9"
   depends_on "boost" => boost_opts
   depends_on "boost-python" => boost_opts if build.with? "python"
+
+  stable do
+    # don't explicitly link a python framework
+    # https://github.com/ledger/ledger/pull/415
+    patch do
+      url "https://github.com/ledger/ledger/commit/5f08e27.diff"
+      sha256 "064b0e64d211224455511cd7b82736bb26e444c3af3b64936bec1501ed14c547"
+    end
+  end
 
   needs :cxx11
 
@@ -54,16 +64,7 @@ class Ledger < Formula
       opts << "-DBUILD_WEB_DOCS=1"
     end
 
-    if build.with? "python"
-      # Per #25118, CMake does a poor job of detecting a brewed Python.
-      # We need to tell CMake explicitly where our default python lives.
-      # Inspired by
-      # https://github.com/Homebrew/homebrew/blob/51d054c/Library/Formula/opencv.rb
-      args << "--python"
-      python_prefix = `python-config --prefix`.strip
-      opts << "-DPYTHON_LIBRARY=#{python_prefix}/Python"
-      opts << "-DPYTHON_INCLUDE_DIR=#{python_prefix}/Headers"
-    end
+    args << "--python" if build.with? "python"
 
     args += opts
 
