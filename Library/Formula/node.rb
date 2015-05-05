@@ -37,8 +37,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.7.6.tgz"
-    sha256 "a9445167f68a42ffcdaa36f9f5c14a954237fce6898555c362e8785261fd72a1"
+    url Language::JS::NPM_URL
+    sha256 Language::JS::NPM_SHA256
   end
 
   def install

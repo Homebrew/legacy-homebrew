@@ -4,8 +4,8 @@ class Iojs < Formula
   include Language::JS
 
   homepage "https://iojs.org/"
-  url "https://iojs.org/dist/v1.8.1/iojs-v1.8.1.tar.xz"
-  sha256 "8b9b4a141daca22e6bf28e8af86ce5f9ca5918d08923fb5619b7e614a674d966"
+  url "https://iojs.org/dist/v2.0.0/iojs-v2.0.0.tar.xz"
+  sha256 "4f61318361b752382f13cad631548677f7ec2ba21b3dc4c3cca2369a7e253baa"
 
   bottle do
     sha256 "e535a806b9090b4ba229b4a724fd00a44f9df26f9614eb5cac6739376a9fd0b9" => :yosemite
@@ -25,8 +25,8 @@ class Iojs < Formula
   depends_on :python => :build
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.5.1.tgz"
-    sha1 "23e4b0fdd1ffced7d835780e692a9e5a0125bb02"
+    url Language::JS::NPM_URL
+    sha256 Language::JS::NPM_SHA256
   end
 
   def install

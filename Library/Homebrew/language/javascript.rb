@@ -1,5 +1,9 @@
 module Language
   module JS
+
+    NPM_URL = "https://registry.npmjs.org/npm/-/npm-2.9.0.tgz"
+    NPM_SHA256 = "a4d1434e934eaf08d985dbe3b70e0d456fb6866828afc91e99b3aac286fca055"
+
     def install_npm(path)
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
