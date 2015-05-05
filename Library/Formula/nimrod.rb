@@ -15,7 +15,6 @@ class Nimrod < Formula
     system "/bin/sh", "build.sh"
     system "/bin/sh", "install.sh", prefix
 
-    (prefix/"nim").install "compiler"
     bin.install_symlink prefix/"nim/bin/nim"
     bin.install_symlink prefix/"nim/bin/nim" => "nimrod"
   end
