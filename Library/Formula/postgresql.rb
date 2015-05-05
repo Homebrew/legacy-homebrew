@@ -1,8 +1,9 @@
 class Postgresql < Formula
-  homepage "http://www.postgresql.org/"
+  homepage "https://www.postgresql.org/"
+  revision 1
 
   stable do
-    url "http://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
+    url "https://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
     sha256 "29ddb77c820095b8f52e5455e9c6c6c20cf979b0834ed1986a8857b84888c3a6"
   end
 
@@ -56,7 +57,7 @@ class Postgresql < Formula
     args << "--with-python" if build.with? "python"
     args << "--with-perl" if build.with? "perl"
 
-    # The CLT is required to build tcl support on 10.7 and 10.8 because
+    # The CLT is required to build Tcl support on 10.7 and 10.8 because
     # tclConfig.sh is not part of the SDK
     if build.with?("tcl") && (MacOS.version >= :mavericks || MacOS::CLT.installed?)
       args << "--with-tcl"
@@ -89,7 +90,7 @@ class Postgresql < Formula
       https://github.com/Homebrew/homebrew/issues/2510
 
     To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
-      http://www.postgresql.org/docs/9.4/static/upgrading.html
+      https://www.postgresql.org/docs/9.4/static/upgrading.html
     EOS
   end
 
