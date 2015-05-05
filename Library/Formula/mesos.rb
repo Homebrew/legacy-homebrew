@@ -68,7 +68,7 @@ class Mesos < Formula
     # https://github.com/Homebrew/homebrew/pull/37087
     native_patch = <<-EOS.undent
       import os
-      os.environ["CC"] = "#{ENV.cxx}"
+      os.environ["CC"] = os.environ["CXX"]
       os.environ["LDFLAGS"] = "@LIBS@"
       \\0
     EOS
