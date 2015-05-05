@@ -1,7 +1,7 @@
 class Galen < Formula
   homepage "http://galenframework.com/"
-  url "https://github.com/galenframework/galen/releases/download/galen-1.6.2/galen-bin-1.6.2.zip"
-  sha256 "e4978a79e8acc854a94999b83398490b5600ed67450d0adc9b0bb319be3a70d6"
+  url "https://github.com/galenframework/galen/releases/download/galen-1.6.3/galen-bin-1.6.3.zip"
+  sha256 "efd7cac3c6aed1f8630dbfa2ee51069c1d7551df457036c600d93fbc3f9c6ebf"
 
   bottle do
     cellar :any
