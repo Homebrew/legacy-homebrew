@@ -1,7 +1,7 @@
 class Apr < Formula
   homepage "https://apr.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=apr/apr-1.5.1.tar.bz2"
-  sha1 "f94e4e0b678282e0704e573b5b2fe6d48bd1c309"
+  url "http://www.apache.org/dyn/closer.cgi?path=apr/apr-1.5.2.tar.bz2"
+  sha1 "6d757fcf7c687fc300c1066076f2e8380ff8cbc0"
 
   bottle do
     sha1 "dd876e8523f31e935a605c3cb710d681aa762ae7" => :yosemite
@@ -15,13 +15,6 @@ class Apr < Formula
 
   def install
     ENV.universal_binary if build.universal?
-
-    # Configure switch unconditionally adds the -no-cpp-precomp switch
-    # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
-    # builds under non-Apple compilers and which may or may not do anything anymore.
-    # Reported upstream: https://issues.apache.org/bugzilla/show_bug.cgi?id=48483
-    # Upstream bug report still open and unresolved as of end of 2014
-    inreplace "configure", " -no-cpp-precomp", ""
 
     # https://issues.apache.org/bugzilla/show_bug.cgi?id=57359
     # The internal libtool throws an enormous strop if we don't do...
