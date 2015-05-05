@@ -12,8 +12,8 @@ class Ledger < Formula
   end
 
   resource "utfcpp" do
-    url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
-    sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
+    url "https://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+    sha256 "3373cebb25d88c662a2b960c4d585daf9ae7b396031ecd786e7bb31b15d010ef"
   end
 
   deprecated_option "debug" => "with-debug"
