@@ -69,13 +69,11 @@ class Llvm < Formula
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
-  option "with-all-targets", "Build all target backends"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "without-shared", "Don't build LLVM as a shared library"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
-  deprecated_option "all-targets" => "with-all-targets"
   deprecated_option "disable-shared" => "without-shared"
   deprecated_option "disable-assertions" => "without-assertions"
 
@@ -84,6 +82,7 @@ class Llvm < Formula
   else
     depends_on :python => :optional
   end
+  depends_on "cmake" => :build
   depends_on "swig" if build.with? "lldb"
 
   keg_only :provided_by_osx
@@ -117,26 +116,19 @@ class Llvm < Formula
 
     ENV["REQUIRES_RTTI"] = "1" if build.with?("rtti") || build.with?("clang")
 
-    args = [
-      "--prefix=#{prefix}",
-      "--enable-optimized",
-      # As of LLVM 3.1, attempting to build ocaml bindings with Homebrew's
-      # OCaml 3.12.1 results in errors.
-      "--disable-bindings",
+    args = %w[
+      -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
 
-    if build.with? "all-targets"
-      args << "--enable-targets=all"
-    else
-      args << "--enable-targets=host"
+    args << "-DBUILD_SHARED_LIBS=Off" if build.without? "shared"
+
+    args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
+
+    mktemp do
+      system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
+      system "make"
+      system "make", "install"
     end
-    args << "--enable-shared" if build.with? "shared"
-
-    args << "--disable-assertions" if build.without? "assertions"
-
-    system "./configure", *args
-    system "make"
-    system "make", "install"
 
     if build.with? "clang"
       system "make", "-C", "projects/libcxx", "install",
