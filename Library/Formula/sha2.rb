@@ -1,6 +1,6 @@
 class Sha2 < Formula
-  homepage "http://www.aarongifford.com/computers/sha.html"
-  url "http://www.aarongifford.com/computers/sha2-1.0.1.tgz"
+  homepage "https://www.aarongifford.com/computers/sha.html"
+  url "https://www.aarongifford.com/computers/sha2-1.0.1.tgz"
   sha1 "ffbc69e0b0ab47f70e61aeb14fa16ba2b74dc728"
 
   bottle do
