@@ -1,10 +1,8 @@
-require "formula"
-
 class Ocrad < Formula
   homepage "https://www.gnu.org/software/ocrad/"
-  url "http://ftpmirror.gnu.org/ocrad/ocrad-0.24.tar.lz"
-  mirror "https://ftp.gnu.org/gnu/ocrad/ocrad-0.24.tar.lz"
-  sha1 "b46bbb4b57a3bf2d544cedca47b40f24d8aa811a"
+  url "http://ftpmirror.gnu.org/ocrad/ocrad-0.25.tar.lz"
+  mirror "https://ftp.gnu.org/gnu/ocrad/ocrad-0.25.tar.lz"
+  sha256 "e710be9c030fbcbce2315077326c8268feb422c0bc39fa744644cbbd1f5d4dd4"
 
   bottle do
     cellar :any
@@ -19,6 +17,21 @@ class Ocrad < Formula
   end
 
   test do
-    system "#{bin}/ocrad", "-h"
+    (testpath/"test.pbm").write <<-EOS.undent
+      P1
+      # This is an example bitmap of the letter "J"
+      6 10
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      1 0 0 0 1 0
+      0 1 1 1 0 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+    EOS
+    assert_equal "J", `#{bin}/ocrad #{testpath}/test.pbm`.strip
   end
 end
