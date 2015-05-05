@@ -7,9 +7,10 @@ class Iprint < Formula
 
   bottle do
     cellar :any
-    sha1 "05ed7e4f7ab1ecaa578b0660140ca6b802f29beb" => :mavericks
-    sha1 "93a78f64b8b51b89d9a37d94850a4347c37e343a" => :mountain_lion
-    sha1 "d8b7d305d24c836ae7ffb59033bf15edc812acb3" => :lion
+    revision 1
+    sha256 "0a0a7718cacd77588b21935d4e0fa9049ea8d893aa9938710cbe37050fed8516" => :yosemite
+    sha256 "ec79a0435262729459e0241957c365107d29b4420ddfd930bbc1d28e28da4a0a" => :mavericks
+    sha256 "2568a346cd14a68e86533522e358b106f620d29d1730b5c8b38d3a920cd33eed" => :mountain_lion
   end
 
   patch do
