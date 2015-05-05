@@ -5,10 +5,10 @@ class Ledger < Formula
   head "https://github.com/ledger/ledger.git"
 
   bottle do
-    revision 2
-    sha1 "661106efe731cb8934269f0e9141b6c846b65710" => :yosemite
-    sha1 "80b7a33291be43598d5084da49d8783ee7780679" => :mavericks
-    sha1 "087576750c2d1df2367a7bac2617e54dbedc2866" => :mountain_lion
+    revision 3
+    sha256 "0fb1aefa3cf1e52cce8f7153818bab704a7bf29197e5691def5398e272a1a972" => :yosemite
+    sha256 "a9d67f14335ff833b389d3b5b57110af7ab268e51e960caf4cd21d2a745ea441" => :mavericks
+    sha256 "2ad8d5e6e038d5a7761b389e33455c5113b4e6387754e48aaaa55e69e7b2a7f9" => :mountain_lion
   end
 
   resource "utfcpp" do
