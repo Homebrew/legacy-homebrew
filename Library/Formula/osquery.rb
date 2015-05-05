@@ -1,7 +1,7 @@
 require "formula"
 
 class Osquery < Formula
-  homepage "http://osquery.io"
+  homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git", :tag => "1.4.5", :revision => "3131a97d9511ed92d65afadf1a049a6425ec6eca"
 
