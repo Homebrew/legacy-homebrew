@@ -21,14 +21,14 @@ class TomcatNative < Formula
   def install
     cd "jni/native" do
       if build.with? 'apr'
-        apr_path = "#{Formula['apr'].prefix}"
+        apr_path = Formula['apr'].opt_prefix
       else
         apr_path = "#{MacOS.sdk_path}/usr"
       end
       system "./configure", "--prefix=#{prefix}",
                             "--with-apr=#{apr_path}",
                             "--with-java-home=#{`/usr/libexec/java_home`.chomp}",
-                            "--with-ssl=#{Formula["openssl"].prefix}"
+                            "--with-ssl=#{Formula["openssl"].opt_prefix}"
 
       # fixes occasional compiling issue: glibtool: compile: specify a tag with `--tag'
       args = ["LIBTOOL=glibtool --tag=CC"]

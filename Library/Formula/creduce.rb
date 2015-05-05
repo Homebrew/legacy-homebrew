@@ -66,7 +66,7 @@ class Creduce < Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
-                          "--with-llvm=#{Formula["llvm"].prefix}",
+                          "--with-llvm=#{Formula["llvm"].opt_prefix}",
                           "--bindir=#{libexec}"
     system "make"
     system "make", "install"

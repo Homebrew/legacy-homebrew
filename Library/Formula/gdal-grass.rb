@@ -16,7 +16,7 @@ class GdalGrass < Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-gdal=#{gdal.bin}/gdal-config",
-                          "--with-grass=#{grass.prefix}/grass-#{grass.version}",
+                          "--with-grass=#{grass.opt_prefix}/grass-#{grass.version}",
                           "--with-autoload=#{lib}/gdalplugins"
 
     inreplace "Makefile", 'mkdir', 'mkdir -p'

@@ -47,7 +47,7 @@ class Freetds < Formula
     end
 
     if build.with? "unixodbc"
-      args << "--with-unixodbc=#{Formula["unixodbc"].prefix}"
+      args << "--with-unixodbc=#{Formula["unixodbc"].opt_prefix}"
     end
 
     # Translate formula's "--with" options to configuration script's "--enable"

@@ -43,14 +43,14 @@ class Gearman < Formula
       "--disable-silent-rules",
       "--disable-dependency-tracking",
       "--disable-libdrizzle",
-      "--with-boost=#{Formula["boost"].prefix}",
+      "--with-boost=#{Formula["boost"].opt_prefix}",
       "--with-sqlite3"
     ]
 
     if build.with? "cyassl"
       args << "--enable-ssl" << "--enable-cyassl"
     elsif build.with? "openssl"
-      args << "--enable-ssl" << "--with-openssl=#{Formula["openssl"].prefix}" << "--disable-cyassl"
+      args << "--enable-ssl" << "--with-openssl=#{Formula["openssl"].opt_prefix}" << "--disable-cyassl"
     else
       args << "--disable-ssl" << "--disable-cyassl"
     end

@@ -18,7 +18,7 @@ class Psqlodbc < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--with-unixodbc=#{Formula["unixodbc"].prefix}"
+                          "--with-unixodbc=#{Formula["unixodbc"].opt_prefix}"
     system "make"
     system "make", "install"
   end
