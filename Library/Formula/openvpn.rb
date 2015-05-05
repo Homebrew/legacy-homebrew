@@ -1,9 +1,7 @@
-require "formula"
-
 class Openvpn < Formula
   homepage "https://openvpn.net/index.php/download/community-downloads.html"
-  url "http://build.openvpn.net/downloads/releases/openvpn-2.3.6.tar.gz"
-  mirror "http://swupdate.openvpn.org/community/releases/openvpn-2.3.6.tar.gz"
+  url "https://swupdate.openvpn.org/community/releases/openvpn-2.3.6.tar.gz"
+  mirror "http://build.openvpn.net/downloads/releases/openvpn-2.3.6.tar.gz"
   sha256 "7baed2ff39c12e1a1a289ec0b46fcc49ff094ca58b8d8d5f29b36ac649ee5b26"
 
   bottle do
