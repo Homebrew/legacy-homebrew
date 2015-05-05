@@ -1,7 +1,7 @@
 class Bullet < Formula
   homepage "http://bulletphysics.org/wordpress/"
-  url "https://github.com/bulletphysics/bullet3/archive/2.82.tar.gz"
-  sha256 "93ffcdfdd7aa67159fc18d336456945538a6602e3cd318eed9963280620b55bd"
+  url "https://github.com/bulletphysics/bullet3/archive/2.83.tar.gz"
+  sha256 "14a425225f96f4e16ccef8e4029622d6ceb363f98dc5463bb8126c21bf6fb17b"
   head "https://github.com/bulletphysics/bullet3.git"
 
   bottle do
@@ -44,11 +44,9 @@ class Bullet < Formula
 
     args << "-DUSE_DOUBLE_PRECISION=ON" if build.with? "double-precision"
 
-    args << "-DBUILD_DEMOS=OFF" if build.without? "demo"
+    args << "-DBUILD_BULLET2_DEMOS=OFF" if build.without? "demo"
 
-    # Demos require extras, see:
-    # https://code.google.com/p/bullet/issues/detail?id=767&thanks=767&ts=1384333052
-    if build.with?("extra") || build.with?("demo")
+    if build.with?("extra")
       args << "-DINSTALL_EXTRA_LIBS=ON"
     else
       args << "-DBUILD_EXTRAS=OFF"
@@ -58,7 +56,7 @@ class Bullet < Formula
     system "make"
     system "make", "install"
 
-    prefix.install "Demos" if build.with? "demo"
+    prefix.install "examples" if build.with? "demo"
     prefix.install "Extras" if build.with? "extra"
   end
 
