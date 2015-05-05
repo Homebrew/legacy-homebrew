@@ -27,7 +27,7 @@ module Homebrew
       auth = :AUTH_TOKEN
 
       unless HOMEBREW_GITHUB_API_TOKEN
-        puts 'You can create an API token: https://github.com/settings/applications'
+        puts 'You can create a personal access token: https://github.com/settings/tokens'
         puts 'and then set HOMEBREW_GITHUB_API_TOKEN as authentication method.'
         puts
 
