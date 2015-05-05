@@ -5,9 +5,9 @@ class Openslide < Formula
 
   bottle do
     cellar :any
-    sha1 "f03b2209cd35a2b548b012210ea2e439c80b44d7" => :yosemite
-    sha1 "5327cde1c873328b6b90f48a8400b569436323de" => :mavericks
-    sha1 "ef49c02614e0ec8c2a0e5f71a6de309023a77a0c" => :mountain_lion
+    sha256 "1441f58796407e0b778b44aaaa13e20681703c0ad523d82b73c4318a6f32ad3b" => :yosemite
+    sha256 "5f03cede5654c996a15818d6b15a4e567183481741db01d84a8697e114e1bd34" => :mavericks
+    sha256 "f0e4ca9856f91a6b7a98195a50d1f3d32dc98d47125f54eef179f9f3c2ba3a14" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
