@@ -2,8 +2,8 @@ require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_18_1_RTM/src/nss-3.18.1.tar.gz"
-  sha256 "10d005ca1b143a8b77032a169c595d06cf42d16d54809558ea30f1ffe73fef70"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_19_RTM/src/nss-3.19.tar.gz"
+  sha256 "989ebdf79374f24181f060d332445b1a4baf3df39d08514c4349ba8573cefa9b"
 
   bottle do
     cellar :any
@@ -68,7 +68,7 @@ class Nss < Formula
   end
 
   test do
-    # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
+    # See: https://developer.mozilla.org/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
     (testpath/"passwd").write("It's a secret to everyone.")
     system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
     system "#{bin}/certutil", "-L", "-d", pwd
