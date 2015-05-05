@@ -1,15 +1,13 @@
-require 'formula'
-
 class Omniorb < Formula
-  homepage 'http://omniorb.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.1.7/omniORB-4.1.7.tar.bz2'
-  sha1 'e039eba5f63458651cfdc8a67c664c1ce4134540'
+  homepage "http://omniorb.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.2.0/omniORB-4.2.0.tar.bz2"
+  sha256 "74c273fc997c2881b128feb52182dbe067acfecc4cf37475f43c104338eba8bc"
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
-  resource 'bindings' do
-    url 'https://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-3.7/omniORBpy-3.7.tar.bz2'
-    sha1 '71ad9835c2273fe884fd9bd1bc282d40177f4d74'
+  resource "bindings" do
+    url "https://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-4.2.0/omniORBpy-4.2.0.tar.bz2"
+    sha256 "c82b3bafacbb93cfaace41765219155f2b24eb3781369bba0581feb1dc50fe5e"
   end
 
   # http://www.omniorb-support.com/pipermail/omniorb-list/2012-February/031202.html
@@ -18,11 +16,11 @@ class Omniorb < Formula
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
 
-    resource('bindings').stage do
+    resource("bindings").stage do
       system "./configure", "--prefix=#{prefix}"
-      system "make install"
+      system "make", "install"
     end
   end
 
