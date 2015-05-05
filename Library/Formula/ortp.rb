@@ -1,5 +1,5 @@
 class Ortp < Formula
-  homepage "http://www.linphone.org/eng/documentation/dev/ortp.html"
+  homepage "https://www.linphone.org/technical-corner/ortp/overview"
   url "http://nongnu.askapache.com/linphone/ortp/sources/ortp-0.24.1.tar.gz"
   sha256 "d1ecce20bed145186f727914f10f500d0594e30c2a234a276e7e12dcd8814cd5"
 
