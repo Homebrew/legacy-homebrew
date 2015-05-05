@@ -38,7 +38,6 @@ class Wxmac < Formula
     args = [
       "--disable-debug",
       "--prefix=#{prefix}",
-      "--enable-shared",
       "--enable-unicode",
       "--enable-std_string",
       "--enable-display",
@@ -73,14 +72,11 @@ class Wxmac < Formula
 
     args << "--enable-stl" if build.with? "stl"
 
-    system "./configure", *args
+    system "./configure", "--enable-shared", *args
     system "make", "install"
 
     if build.with? "static"
-      args.delete("--enable-shared")
-      args << "--disable-shared"
-
-      system "./configure", *args
+      system "./configure", "--disable-shared", *args
       system "make", "install"
     end
   end
