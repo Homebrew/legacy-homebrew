@@ -41,13 +41,16 @@ class Beecrypt < Formula
         sha256Param hash;
         const byte *string = (byte *) "abc";
         byte digest[32];
+        byte *crc;
 
         sha256Reset(&hash);
         sha256Update(&hash, string, sizeof(string) / sizeof(*string));
         sha256Process(&hash);
         sha256Digest(&hash, digest);
 
-        printf("%s\\n", b64crc(digest, 32));
+        printf("%s\\n", crc = b64crc(digest, 32));
+
+        free(crc);
 
         return 0;
       }
