@@ -554,8 +554,8 @@ can take several different forms:
     editors will do strange things in this case.
 
   * HOMEBREW\_GITHUB\_API\_TOKEN:
-    A personal GitHub API Access token, which you can create at
-    <https://github.com/settings/applications>. If set, GitHub will allow you a
+    A personal access token for the GitHub API, which you can create at
+    <https://github.com/settings/tokens>. If set, GitHub will allow you a
     greater number of API requests. See
     <https://developer.github.com/v3/#rate-limiting> for more information.
     Homebrew uses the GitHub API for features such as `brew search`.

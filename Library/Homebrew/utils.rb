@@ -332,7 +332,7 @@ module GitHub extend self
       super <<-EOS.undent
         GitHub #{error}
         HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          https://github.com/settings/applications
+          https://github.com/settings/tokens
         EOS
     end
   end
