@@ -30,9 +30,9 @@ class ThePlatinumSearcher < Formula
 
   bottle do
     cellar :any
-    sha1 "a7a984c9716c0cae11b37cc99724cdb7004058ca" => :yosemite
-    sha1 "8ad4be8eb22d125ce6b448e4999dc4bdc1b89cdb" => :mavericks
-    sha1 "c0ace5f1aeab2d6eb1f283f676fdc820f5aaa00a" => :mountain_lion
+    sha256 "52562cbb714273a6f4904f710219cfbaa9931f3c4bf730243385d7b13f246772" => :yosemite
+    sha256 "3a7769aa7ca77e802413af794399de7233d4aef9468ab3caaaf223fd531e76ad" => :mavericks
+    sha256 "1a77aac2822772732f24c3e57b67e351110ad580aa07de74b1475168724f2873" => :mountain_lion
   end
 
   def install
