@@ -1,9 +1,9 @@
-require "formula"
-
 class Dtc < Formula
   homepage "http://www.devicetree.org/"
-  url "http://ftp.debian.org/debian/pool/main/d/device-tree-compiler/device-tree-compiler_1.4.0+dfsg.orig.tar.gz"
-  sha1 "2f9697aa7dbc3036f43524a454bdf28bf7e0f701"
+  url "https://mirrors.kernel.org/debian/pool/main/d/device-tree-compiler/device-tree-compiler_1.4.0+dfsg.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/device-tree-compiler/device-tree-compiler_1.4.0+dfsg.orig.tar.gz"
+  sha256 "f5f9a1aea478ee6dbcece8907fd4551058fe72fc2c2a7be972e3d0b7eec4fa43"
+  version "1.4.0"
 
   def install
     system "make"
@@ -12,7 +12,7 @@ class Dtc < Formula
   end
 
   test do
-    (testpath/'test.dts').write <<-EOS.undent
+    (testpath/"test.dts").write <<-EOS.undent
       /dts-v1/;
       / {
       };
