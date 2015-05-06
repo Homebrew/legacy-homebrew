@@ -181,6 +181,9 @@ module Homebrew
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
         end
+      else
+        formula = changed_formulae.first
+        safe_system "brew", "fetch", "--retry", "-fs", formula.name if ARGV.include? "--check-sha"
       end
 
       ohai 'Patch changed:'
