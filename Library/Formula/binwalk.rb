@@ -7,9 +7,10 @@ class Binwalk < Formula
   end
 
   bottle do
-    sha1 "1e362f93da17ea847a8c530ad974997924b56e21" => :yosemite
-    sha1 "b3609a7247efb277db829f8c1e0957a438d3ac56" => :mavericks
-    sha1 "bf116d4f9ffe7ef055e1e04691e63167ecfbaf71" => :mountain_lion
+    revision 1
+    sha256 "93ee55895ace7e0dc5f0acacd763b7233993205250a40484d2a369abc1a8b09a" => :yosemite
+    sha256 "f7c486829bdec2d762fccc6a40e737fa224db3a33160a47ba634c202a9905f0a" => :mavericks
+    sha256 "224b9a15eb5381132b65196f3748ddd19ab5f4b3375a0a7e846d212dddbf1a41" => :mountain_lion
   end
 
   head do
