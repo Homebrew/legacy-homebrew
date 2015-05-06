@@ -48,6 +48,11 @@ class Glibc < Formula
         system bin/"localedef", "-i", lang, locale
       end
     }
+
+    # Set the local time zone
+    sys_localtime = Pathname.new "/etc/localtime"
+    brew_localtime = Pathname.new prefix/"etc/localtime"
+    (prefix/"etc").install_symlink sys_localtime if sys_localtime.exist? && !brew_localtime.exist?
   end
 
   test do
