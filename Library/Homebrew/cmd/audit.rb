@@ -332,7 +332,7 @@ class FormulaAuditor
 
       case p
       when %r[^http://ftp\.gnu\.org/]
-        problem "ftp.gnu.org urls should be https://, not http:// (url is #{p})."
+        problem "ftp.gnu.org mirrors should be https://, not http:// (mirror is #{p})."
       when %r[^http://[^/]*\.apache\.org/]
         problem "Apache urls should be https://, not http (url is #{p})."
       when %r[^http://code\.google\.com/]
