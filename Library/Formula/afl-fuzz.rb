@@ -2,8 +2,8 @@ require "formula"
 
 class AflFuzz < Formula
   homepage "http://lcamtuf.coredump.cx/afl/"
-  url "http://lcamtuf.coredump.cx/afl/releases/afl-1.75b.tgz"
-  sha256 "ca9b691cb92631881d5491ce54afe2a7e447a140d0497555cefb739be72dc188"
+  url "http://lcamtuf.coredump.cx/afl/releases/afl-1.77b.tgz"
+  sha256 "542f5ce26e1e6c7487bd0af9d0b776cded52014a9adcc1be9ca5bd4357a0c431"
 
   head "http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz"
 
