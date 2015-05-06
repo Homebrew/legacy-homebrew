@@ -1,7 +1,7 @@
 class ShadowsocksLibev < Formula
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
-  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.1.4.tar.gz"
-  sha256 "d4e665e375224ba1d4844b97e7263491ce07a60f08c9cb55c3128a6d3aad13e7"
+  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.2.0.tar.gz"
+  sha256 "49688f39649f0f61e323ddba8b02daa5dfe88bf2e051ed91181d266fe824df69"
 
   bottle do
     sha256 "cb013262c8ed70fc267095522ab64882b28084bba47ff712f22fec04c02c569f" => :yosemite
