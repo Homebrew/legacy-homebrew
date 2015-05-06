@@ -2,6 +2,7 @@ class Boost < Formula
   homepage "http://www.boost.org"
   url "https://downloads.sourceforge.net/project/boost/boost/1.57.0/boost_1_57_0.tar.bz2"
   sha1 "e151557ae47afd1b43dc3fac46f8b04a8fe51c12"
+  revision 1
 
   head "https://github.com/boostorg/boost.git"
 
@@ -34,6 +35,17 @@ class Boost < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  # Patch for odeint. Can be removed with the next release of Boost (1.58).
+  # See the issue here:
+  # https://github.com/headmyshoulder/odeint-v2/issues/138
+  # The fix has been merged into the Boost project here:
+  # https://github.com/boostorg/odeint/commit/0ca187cd6e83ddbaa5eedaa5d0d570986f351263
+  # It is needed to compile OMPL (http://ompl.kavrakilab.org/).
+  patch :p2 do
+	url "https://github.com/boostorg/odeint/commit/0ca187.diff"
+	sha256 "4d78d7d56a8292de71c702ac286114d6e33f260d4ad8471d98ae4f2bf5de1d65"
   end
 
   def install
@@ -165,3 +177,4 @@ class Boost < Formula
     system "./test"
   end
 end
+
