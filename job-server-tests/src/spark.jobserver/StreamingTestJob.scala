@@ -10,17 +10,13 @@ object StreamingTestJob extends SparkStramingJob {
   def validate(ssc: StreamingContext, config: Config): SparkJobValidation = SparkJobValid
 
   def runJob(ssc: StreamingContext, config: Config): Any = {
-    println("1")
     val lines = ssc.textFileStream(config.getString("test.file"))
     val words = lines.flatMap(_.split(" "))
+    words.foreachRDD(rdd => rdd.collect().foreach("test " + print(_)))
     val pairs = words.map(word => (word, 1))
     val wordCounts = pairs.reduceByKey(_ + _)
-    println("2")
-    //wordCounts.compute(Time(3000))
-    println("3")
+    wordCounts.foreachRDD(rdd => println(rdd.count()))
     ssc.start()
-    println("4")
     ssc.awaitTermination()
-    println("6")
   }
 }

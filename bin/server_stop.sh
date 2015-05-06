@@ -17,10 +17,12 @@ else
   exit 1
 fi
 
-if [ ! -f "$PIDFILE" ] || ! kill -0 $(cat "$PIDFILE"); then
+pidFilePath=$appdir/$PIDFILE
+
+if [ ! -f "$pidFilePath" ] || ! kill -0 $(cat "$pidFilePath"); then
    echo 'Job server not running'
 else
   echo 'Stopping job server...'
-  kill -15 $(cat "$PIDFILE") && rm -f "$PIDFILE"
+  kill -15 $(cat "$pidFilePath") && rm -f "$pidFilePath"
   echo '...job server stopped'
 fi

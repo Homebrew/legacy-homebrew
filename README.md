@@ -4,7 +4,7 @@ spark-jobserver provides a RESTful interface for submitting and managing [Apache
 This repo contains the complete Spark job server project, including unit tests and deploy scripts.
 It was originally started at [Ooyala](http://www.ooyala.com), but this is now the main development repo.
 
-See [Troubleshooting Tips](doc/troubleshooting.md).
+See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/yarn.md).
 
 ## Users
 
@@ -13,11 +13,13 @@ See [Troubleshooting Tips](doc/troubleshooting.md).
 - Ooyala
 - Netflix
 - Avenida.com
+- GumGum
+- Fuse Elements
 
 ## Features
 
 - *"Spark as a Service"*: Simple REST interface for all aspects of job, context management
-- Support for Spark SQL Contexts/jobs and custom job contexts!  See [Contexts](doc/contexts.md).
+- Support for Spark SQL and Hive Contexts/jobs and custom job contexts!  See [Contexts](doc/contexts.md).
 - Supports sub-second low-latency jobs via long-running job contexts
 - Start and stop job contexts for RDD sharing and low-latency jobs; change resources on restart
 - Kill running jobs via stop context
@@ -65,6 +67,7 @@ EXTRA_JAR for adding a jar to the classpath.
 
 ### WordCountExample walk-through
 
+#### Package Jar - Send to Server
 First, to package the test jar containing the WordCountExample: `sbt job-server-tests/package`.
 Then go ahead and start the job server using the instructions above.
 
@@ -73,6 +76,7 @@ Let's upload the jar:
     curl --data-binary @job-server-tests/target/job-server-tests-$VER.jar localhost:8090/jars/test
     OK⏎
 
+#### Ad-hoc Mode - Single, Unrelated Jobs (Transient Context)
 The above jar is uploaded as app `test`.  Next, let's start an ad-hoc word count job, meaning that the job
 server will create its own SparkContext, and return a job ID for subsequent querying:
 
@@ -106,6 +110,7 @@ From this point, you could asynchronously query the status and results:
 Note that you could append `&sync=true` when you POST to /jobs to get the results back in one request, but for
 real clusters and most jobs this may be too slow.
 
+#### Persistent Context Mode - Faster & Required for Related Jobs
 Another way of running this job is in a pre-created context.  Start a new context:
 
     curl -d "" 'localhost:8090/contexts/test-context?num-cpu-cores=4&memory-per-node=512m'
@@ -188,7 +193,7 @@ To use this feature, the SparkJob needs to mixin `NamedRddSupport`:
 ```scala
 object SampleNamedRDDJob  extends SparkJob with NamedRddSupport {
     override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
-    override def validate(sc:SparkContext, config: Contig): SparkJobValidation = ???
+    override def validate(sc:SparkContext, config: Config): SparkJobValidation = ???
 }
 ```
 
@@ -258,6 +263,7 @@ the REST API.
     GET /jobs                - Lists the last N jobs
     POST /jobs               - Starts a new job, use ?sync=true to wait for results
     GET /jobs/<jobId>        - Gets the result or status of a specific job
+    DELETE /jobs/<jobId>     - Kills the specified job
     GET /jobs/<jobId>/config - Gets the job configuration
 
 ### Context configuration
@@ -302,6 +308,8 @@ To pass settings directly to the sparkConf that do not use the "spark." prefix "
     }
 
 For the exact context configuration parameters, see JobManagerActor docs as well as application.conf.
+
+Also see the [yarn doc](doc/yarn.md) for more tips.
 
 ### Job Result Serialization
 
@@ -362,8 +370,6 @@ Copyright(c) 2014, Ooyala, Inc.
 - Add Swagger support.  See the spray-swagger project.
 - Implement an interactive SQL window.  See: [spark-admin](https://github.com/adatao/spark-admin)
 
-- Use `SparkContext.setJobGroup` with the job ID
-- Support job cancellation via `cancelJobGroup`
 - Stream the current job progress via a Listener
 - Add routes to return stage info for a job.  Persist it via DAO so that we can always retrieve stage / performance info
   even for historical jobs.  This would be pretty kickass.

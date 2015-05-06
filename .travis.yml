@@ -1,4 +1,7 @@
 language: scala
+env:
+  global:
+    _JAVA_OPTIONS="-Xmx1500m -XX:MaxPermSize=512m"
 scala:
    - 2.10.4
    - 2.11.6

@@ -1,5 +1,6 @@
 package spark.jobserver
 
+import java.util.concurrent.Executors._
 import akka.actor.{ActorRef, Props, PoisonPill}
 import com.typesafe.config.Config
 import java.net.{URI, URL}
@@ -7,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import ooyala.common.akka.InstrumentedActor
 import org.apache.spark.{ SparkEnv, SparkContext }
 import org.joda.time.DateTime
-import scala.concurrent.Future
+import scala.concurrent.{ Future, ExecutionContext }
 import scala.util.{Failure, Success, Try}
 import spark.jobserver.ContextSupervisor.StopContext
 import spark.jobserver.io.{ JobDAO, JobInfo, JarInfo }
@@ -18,6 +19,7 @@ object JobManagerActor {
   case object Initialize
   case class StartJob(appName: String, classPath: String, config: Config,
                       subscribedEvents: Set[Class[_]])
+  case class KillJob(jobId: String)
 
   // Results/Data
   case class Initialized(resultActor: ActorRef)
@@ -66,15 +68,15 @@ class JobManagerActor(dao: JobDAO,
   import JobManagerActor._
   import scala.util.control.Breaks._
   import collection.JavaConverters._
-  import context.dispatcher       // for futures to work
 
   val config = context.system.settings.config
+  private val maxRunningJobs = SparkJobUtils.getMaxRunningJobs(config)
+  val executionContext = ExecutionContext.fromExecutorService(newFixedThreadPool(maxRunningJobs))
 
   var jobContext: ContextLike = _
   var sparkEnv: SparkEnv = _
   protected var rddManagerActor: ActorRef = _
 
-  private val maxRunningJobs = SparkJobUtils.getMaxRunningJobs(config)
   private val currentRunningJobs = new AtomicInteger(0)
 
   // When the job cache retrieves a jar from the DAO, it also adds it to the SparkContext for distribution
@@ -116,6 +118,11 @@ class JobManagerActor(dao: JobDAO,
 
     case StartJob(appName, classPath, jobConfig, events) =>
       startJobInternal(appName, classPath, jobConfig, events, jobContext, sparkEnv, rddManagerActor)
+
+    case KillJob(jobId: String) => {
+      jobContext.sparkContext.cancelJobGroup(jobId)
+      statusActor ! JobKilled(jobId, DateTime.now())
+    }
   }
 
   def startJobInternal(appName: String,
@@ -179,8 +186,6 @@ class JobManagerActor(dao: JobDAO,
                            jobContext: ContextLike,
                            sparkEnv: SparkEnv,
                            rddManagerActor: ActorRef): Future[Any] = {
-    // Use the SparkContext's ActorSystem threadpool for the futures, so we don't corrupt our own
-    implicit val executionContext = sparkEnv.actorSystem
 
     val jobId = jobInfo.jobId
     val constructor = jobJarInfo.constructor
@@ -192,7 +197,7 @@ class JobManagerActor(dao: JobDAO,
     if (currentRunningJobs.getAndIncrement() >= maxRunningJobs) {
       currentRunningJobs.decrementAndGet()
       sender ! NoJobSlotsAvailable(maxRunningJobs)
-      return Future[Any](None)
+      return Future[Any](None)(context.dispatcher)
     }
 
     Future {
@@ -225,13 +230,15 @@ class JobManagerActor(dao: JobDAO,
           }
           case SparkJobValid => {
             statusActor ! JobStarted(jobId: String, contextName, jobInfo.startTime)
+            val sc = jobContext.sparkContext
+            sc.setJobGroup(jobId, s"Job group for $jobId and spark context ${sc.applicationId}", true)
             job.runJob(jobC, jobConfig)
           }
         }
       } finally {
         org.slf4j.MDC.remove("jobId")
       }
-    }.andThen {
+    }(executionContext).andThen {
       case Success(result: Any) =>
         statusActor ! JobFinished(jobId, DateTime.now())
         resultActor ! JobResult(jobId, result)
@@ -239,7 +246,7 @@ class JobManagerActor(dao: JobDAO,
         // If and only if job validation fails, JobErroredOut message is dropped silently in JobStatusActor.
         statusActor ! JobErroredOut(jobId, DateTime.now(), error)
         logger.warn("Exception from job " + jobId + ": ", error)
-    }.andThen {
+    }(executionContext).andThen {
       case _ =>
         // Make sure to decrement the count of running jobs when a job finishes, in both success and failure
         // cases.
@@ -247,7 +254,7 @@ class JobManagerActor(dao: JobDAO,
         statusActor ! Unsubscribe(jobId, subscriber)
         currentRunningJobs.getAndDecrement()
         postEachJob()
-    }
+    }(executionContext)
   }
 
   // Use our classloader and a factory to create the SparkContext.  This ensures the SparkContext will use
