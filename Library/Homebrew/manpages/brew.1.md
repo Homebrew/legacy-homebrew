@@ -308,7 +308,7 @@ Note that these flags should only appear after a command.
 
   * `pin` <formulae>:
     Pin the specified <formulae>, preventing them from being upgraded when
-    issuing the `brew upgrade` command without arguments. See also `unpin`.
+    issuing the `brew upgrade --all` command without arguments. See also `unpin`.
 
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
@@ -390,7 +390,7 @@ Note that these flags should only appear after a command.
     source. This is useful for creating patches for the software.
 
   * `unpin` <formulae>:
-    Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
+    Unpin <formulae>, allowing them to be upgraded by `brew upgrade --all`. See also
     `pin`.
 
   * `untap` <tap>:
