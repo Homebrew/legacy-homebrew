@@ -1,9 +1,7 @@
-require "formula"
-
 class ProxychainsNg < Formula
-  homepage "https://sourceforge.net/projects/proxychains-ng"
-  url "https://downloads.sourceforge.net/project/proxychains-ng/proxychains-4.7.tar.bz2"
-  sha1 "5e5b10009f785434ebdbd7ede5a79efee4e59c5a"
+  homepage "https://sourceforge.net/projects/proxychains-ng/"
+  url "https://downloads.sourceforge.net/project/proxychains-ng/proxychains-4.8.1.tar.bz2"
+  sha256 "7d87643174b66b3dc5085068cd5ec9445d813295d0e430254c8a01acf72e7d1d"
 
   head "https://github.com/rofl0r/proxychains-ng.git"
 
@@ -19,11 +17,15 @@ class ProxychainsNg < Formula
     args = ["--prefix=#{prefix}", "--sysconfdir=#{prefix}/etc"]
     if build.universal?
       ENV.universal_binary
-      args.unshift "--fat-binary"
+      args << "--fat-binary"
     end
     system "./configure", *args
     system "make"
     system "make", "install"
     system "make", "install-config"
+  end
+
+  test do
+    assert_match "config file found", shell_output("#{bin}/proxychains4 test 2>&1", 1)
   end
 end
