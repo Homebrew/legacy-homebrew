@@ -167,6 +167,7 @@ TAP_MIGRATIONS = {
   "terminator" => "homebrew/x11",
   "tetgen" => "homebrew/science",
   "texmacs" => "homebrew/boneyard",
+  "texwrapper" => "homebrew/tex",
   "tiger-vnc" => "homebrew/x11",
   "ticcutils" => "homebrew/science",
   "timbl" => "homebrew/science",
