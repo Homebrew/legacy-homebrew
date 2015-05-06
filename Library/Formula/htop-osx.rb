@@ -1,7 +1,7 @@
 class HtopOsx < Formula
   homepage "https://github.com/max-horvath/htop-osx"
-  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.4.tar.gz"
-  sha1 "d6a2556295fdc129d1781fe1ae9ff0d517da4b2e"
+  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.5.tar.gz"
+  sha1 "53b05ba70658ee1372588797438896b5fd5aa570"
 
   bottle do
     sha1 "4f393cee022d94fa1a4382efd639aabd6a493845" => :yosemite
