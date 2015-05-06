@@ -23,7 +23,6 @@ class Zorba < Formula
 
   def install
     ENV.cxx11
-    ENV["CMAKE_PREFIX_PATH"] = "#{Formula["icu4c"].opt_prefix}:#{Formula["flex"].opt_prefix}"
 
     cmake_args = std_cmake_args
     cmake_args << "-DZORBA_VERIFY_PEER_SSL_CERTIFICATE=ON" if build.with? "ssl-verification"
