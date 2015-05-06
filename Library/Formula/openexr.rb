@@ -5,10 +5,9 @@ class Openexr < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "be055103cf96edbd87f01d200ae97365a13dfd33" => :yosemite
-    sha1 "5263df7bfe3a4a6c5e8c21aaa9d1a49cad666e3d" => :mavericks
-    sha1 "f32df24d8a0c74d0b8e53b9e0e15d60dceaf0b6a" => :mountain_lion
+    sha256 "5bdf90ede738749524f2ed6504fe833cb99771dc2517f3546558efa0512525c1" => :yosemite
+    sha256 "cafdc8251501bd6a0dc3bbf919469872498c1a378f7f21809614498c968e3e49" => :mavericks
+    sha256 "9fad65fc10a89ee39bda6e89c6f0f84828c867105a50c16f7bd03dc2c5476c86" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
