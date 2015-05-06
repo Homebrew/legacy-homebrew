@@ -1,6 +1,6 @@
 class Binwalk < Formula
   homepage "http://binwalk.org/"
-  revision 2
+  revision 1
   stable do
     url "https://github.com/devttys0/binwalk/archive/v2.0.1.tar.gz"
     sha256 "90ee8426d71e91b62dfe4a1446c457bc7835b475b28717859e275a0494403959"
