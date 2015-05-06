@@ -3,6 +3,13 @@ class Pdksh < Formula
   url "http://www.cs.mun.ca/~michael/pdksh/files/pdksh-5.2.14.tar.gz"
   sha256 "ab15bcdd50f291edc632bca351b2edce5405d4f2ce3854d3d548d721ab9bbfa6"
 
+  bottle do
+    cellar :any
+    sha256 "f1f4aab0c6110d5b30050fc0ed5e4660a4adf5e2364d0622b1872795b39b1417" => :yosemite
+    sha256 "fa0b42b6f6aea018b537301b38151d6a3e20f8b8d694c5f768bab1d0d64a5b35" => :mavericks
+    sha256 "29bcb04237c4a30870c028220d6284303d85e55eaab91fd5a5b3ea47915e9785" => :mountain_lion
+  end
+
   patch :p2 do # Upstream patches
     url "http://www.cs.mun.ca/~michael/pdksh/files/pdksh-5.2.14-patches.1"
     sha256 "b4adfc47e4d78eb8718ee10f7ffafc218b0e9d453413456fab263985ae02d356"
