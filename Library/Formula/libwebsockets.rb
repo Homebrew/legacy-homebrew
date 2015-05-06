@@ -2,9 +2,9 @@ require 'formula'
 
 class Libwebsockets < Formula
   homepage 'http://libwebsockets.org'
-  url 'http://git.libwebsockets.org/cgi-bin/cgit/libwebsockets/snapshot/libwebsockets-1.3-chrome37-firefox30.tar.gz'
-  version '1.3'
-  sha1 'ee1005165346d2217db4a9c40c4711f741213557'
+  url 'http://git.libwebsockets.org/cgi-bin/cgit/libwebsockets/snapshot/libwebsockets-1.4-chrome43-firefox-36.tar.gz'
+  version '1.4'
+  sha1 'f2c4cb05abb3ddac09a61f63cbd018665da2d450'
   head 'git://git.libwebsockets.org/libwebsockets'
 
   depends_on "openssl"
