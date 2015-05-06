@@ -1,5 +1,5 @@
 class Boost < Formula
-  homepage "http://www.boost.org"
+  homepage "https://www.boost.org"
   url "https://downloads.sourceforge.net/project/boost/boost/1.57.0/boost_1_57_0.tar.bz2"
   sha1 "e151557ae47afd1b43dc3fac46f8b04a8fe51c12"
 
@@ -34,6 +34,12 @@ class Boost < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  # Backport fix for boost variant ambiguous call problem. For details: https://svn.boost.org/trac/boost/ticket/10882
+  patch :p0 do
+    url "https://svn.boost.org/trac/boost/raw-attachment/ticket/10882/boost-1.57.0-fix-boost-variant-ambiguous-call-to-swap-boost-trac-10882.patch", :using => CurlDownloadStrategy
+    sha1 "fe5e263aa9ca0e4106cde9682fdf0901f32c91fe"
   end
 
   def install
