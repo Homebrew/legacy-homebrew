@@ -577,7 +577,7 @@ class Formula
   # Note: there isn't a std_autotools variant because autotools is a lot
   # less consistent and the standard parameters are more memorable.
   def std_cmake_args
-    %W[
+    args = %W[
       -DCMAKE_C_FLAGS_RELEASE=
       -DCMAKE_CXX_FLAGS_RELEASE=
       -DCMAKE_INSTALL_PREFIX=#{prefix}
@@ -586,6 +586,9 @@ class Formula
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
     ]
+    # Set RPATH for Linux to fix error while loading shared libraries
+    args << "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=1" if OS.linux?
+    args
   end
 
   # @deprecated
