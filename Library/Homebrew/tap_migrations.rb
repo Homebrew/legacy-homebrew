@@ -42,6 +42,7 @@ TAP_MIGRATIONS = {
   "dromeaudio" => "homebrew/head-only",
   "drush" => "homebrew/php",
   "dsniff" => "homebrew/boneyard",
+  "dupx" => "homebrew/boneyard",
   "dwm" => "homebrew/x11",
   "dzen2" => "homebrew/x11",
   "easy-tag" => "homebrew/x11",
