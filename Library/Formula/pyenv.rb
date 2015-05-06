@@ -37,7 +37,7 @@ class Pyenv < Formula
       if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
     To use Homebrew's directories rather than ~/.pyenv add to your profile:
-      export PYENV_ROOT=#{opt_prefix}
+      export PYENV_ROOT=#{var}/pyenv
     EOS
   end
 
