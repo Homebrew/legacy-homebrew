@@ -1,7 +1,14 @@
 class Elasticsearch < Formula
-  homepage "http://www.elasticsearch.org"
-  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.3.tar.gz"
-  sha1 "d26828bef335a164175f5af14a2a7fc44cb063f2"
+  homepage "https://www.elastic.co/products/elasticsearch"
+  url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.tar.gz"
+  sha256 "efae7897367ac3fa8057d02fad31c72e215b6edef599b63e373d3ce0c1049a14"
+
+  bottle do
+    cellar :any
+    sha256 "45d1eb8e7ca180102cbfcb3188c6f2c0acb3322bbf47e6ebe67238a623d32c12" => :yosemite
+    sha256 "0bb1d68827a188e8f4c2f11919dfe029934a9862fbc4939a050e77a54a171cc5" => :mavericks
+    sha256 "2aaa66c6d0a6ac432d96d83aed18c8c6211c18ad635584293d99803890d3136e" => :mountain_lion
+  end
 
   depends_on :java => "1.7+"
 
@@ -68,6 +75,10 @@ class Elasticsearch < Formula
       # Replace paths to use libexec instead of lib
       s.gsub!(%r{\$ES_HOME/lib/}, "$ES_CLASSPATH/")
     end
+
+    # Move config files into etc
+    (etc/"elasticsearch").install Dir[prefix/"config/*"]
+    (prefix/"config").rmtree
   end
 
   def post_install
@@ -75,12 +86,14 @@ class Elasticsearch < Formula
     (var/"elasticsearch/#{cluster_name}").mkpath
     (var/"log/elasticsearch").mkpath
     (var/"lib/elasticsearch/plugins").mkpath
+    ln_s etc/"elasticsearch", prefix/"config"
   end
 
   def caveats; <<-EOS.undent
     Data:    #{var}/elasticsearch/#{cluster_name}/
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{var}/lib/elasticsearch/plugins/
+    Config:  #{etc}/elasticsearch/
     EOS
   end
 

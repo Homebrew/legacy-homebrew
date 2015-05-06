@@ -1,7 +1,7 @@
 class Redpen < Formula
   homepage "http://redpen.cc/"
-  url "https://github.com/recruit-tech/redpen/releases/download/v1.1.1/redpen-1.1.1.tar.gz"
-  sha1 "7288b81d81339b6609c491216ecfeaec84a8181b"
+  url "https://github.com/recruit-tech/redpen/releases/download/v1.1.2/redpen-1.1.2.tar.gz"
+  sha1 "d9ba46a7c5813b444cbbc1dca5c24aa2d75cb126"
 
   depends_on :java => "1.8"
 
@@ -11,8 +11,7 @@ class Redpen < Formula
     libexec.install %w[conf lib sample-doc]
 
     prefix.install "bin"
-    java_home = `/usr/libexec/java_home`.chomp
-    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => java_home)
+    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
   end
 
   test do

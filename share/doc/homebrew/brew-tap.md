@@ -1,7 +1,7 @@
 # brew tap
 The `brew tap` command is powerful, but has a few subtleties worth describing.
 
-**tl;dr** `brew tap` allows you to add more Github repos to the list of formulae that `brew` tracks, updates and installs from. When naming tap repos and formulas, however, there are a few gotchas to beware of.
+**tl;dr** `brew tap` allows you to add more GitHub repos to the list of formulae that `brew` tracks, updates and installs from. When naming tap repos and formulas, however, there are a few gotchas to beware of.
 
 ## The command
 
@@ -27,7 +27,7 @@ telemachus/vim
 
 `brew tap username/repo` employs some shortcuts and has some limitations.
 
-*   On Github, your repository must be named `homebrew-something`.
+*   On GitHub, your repository must be named `homebrew-something`.
     The prefix 'homebrew-' is not optional.
 
 *   When you use `brew tap` on the command line, you can leave out the

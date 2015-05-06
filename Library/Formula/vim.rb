@@ -1,11 +1,9 @@
-require "formula"
-
 class Vim < Formula
   homepage "http://www.vim.org/"
   head "https://vim.googlecode.com/hg/"
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url "http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.488.orig.tar.gz"
-  sha1 "6edad8cf9a08acb6a6e415b89bb13ccbd887d7c3"
+  url "https://mirrors.kernel.org/debian/pool/main/v/vim/vim_7.4.712.orig.tar.gz"
+  sha256 "b334ba9f6682c605d29fcf45e7fe246b88061736b86c3e7cdfa309404a66b55c"
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -41,6 +39,12 @@ class Vim < Formula
 
     # vim doesn't require any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
+
+    if build.with?("python") && which("python").to_s == "/usr/bin/python" && !MacOS.clt_installed?
+      # break -syslibpath jail
+      ln_s "/System/Library/Frameworks", buildpath
+      ENV.append "LDFLAGS", "-F#{buildpath}/Frameworks"
+    end
 
     opts = []
     opts += LANGUAGES_OPTIONAL.map do |language|

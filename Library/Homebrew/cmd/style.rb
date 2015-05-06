@@ -8,8 +8,16 @@ module Homebrew
 
     Homebrew.install_gem_setup_path! "rubocop"
 
-    system "rubocop", "--format", "simple", "--config",
-                      "#{HOMEBREW_LIBRARY}/.rubocop.yml", *target
+    args = [
+      "--format", "simple", "--config",
+      "#{HOMEBREW_LIBRARY}/.rubocop.yml"
+    ]
+
+    args << "--auto-correct" if ARGV.homebrew_developer? && ARGV.flag?("--fix")
+
+    args += target
+
+    system "rubocop", *args
     Homebrew.failed = !$?.success?
   end
 end

@@ -38,7 +38,7 @@ class Keg
       end
     end
 
-    files = pkgconfig_files | libtool_files | script_files
+    files = pkgconfig_files | libtool_files | script_files | plist_files
 
     files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
       s = first.open("rb", &:read)
@@ -73,8 +73,7 @@ class Keg
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
   # for instance between Apple libstdc++ and GNU libstdc++
   def detect_cxx_stdlibs(options={})
-    options = { :skip_executables => false }.merge(options)
-    skip_executables = options[:skip_executables]
+    skip_executables = options.fetch(:skip_executables, false)
     results = Set.new
 
     mach_o_files.each do |file|
@@ -198,5 +197,15 @@ class Keg
       libtool_files << pn
     end if lib.directory?
     libtool_files
+  end
+
+  def plist_files
+    plist_files = []
+
+    self.find do |pn|
+      next if pn.symlink? or pn.directory? or pn.extname != '.plist'
+      plist_files << pn
+    end
+    plist_files
   end
 end

@@ -1,12 +1,12 @@
 class Samba < Formula
   homepage "https://samba.org/"
-  url "https://download.samba.org/pub/samba/stable/samba-3.6.24.tar.gz"
-  sha1 "6d48b55ab1e172b0c75035040f5aea65fbf0561e"
+  url "https://download.samba.org/pub/samba/stable/samba-3.6.25.tar.gz"
+  sha1 "86fbfcfe80454cc7dbe510e7d58c02922cac3efa"
 
   bottle do
-    sha1 "839c682640aa3fce69b7b2ba02a017130143bbca" => :yosemite
-    sha1 "aeb31b142a8ac1504b0a9657e9aad6098516fc27" => :mavericks
-    sha1 "6d0320a3b8d0ef29bf4909cfb9eee234be4f5353" => :mountain_lion
+    sha1 "d573b77cb2f4187d366e6a5314982661089c91bf" => :yosemite
+    sha1 "2b74fcea8edca1c15e597fd469d682ccee558a9c" => :mavericks
+    sha1 "32546ed646eec7798f25d18c3bce9d5fef23da06" => :mountain_lion
   end
 
   conflicts_with "talloc", :because => "both install `include/talloc.h`"
@@ -21,11 +21,22 @@ class Samba < Formula
 
   def install
     cd "source3" do
+      # This stops samba dumping .msg and .dat files directly into lib
+      # It can't be set with a configure switch - There isn't one that fine-grained.
+      # https://bugzilla.samba.org/show_bug.cgi?id=11120
+      inreplace "configure", "${MODULESDIR}", "#{share}/codepages"
+
       system "./configure", "--disable-debug",
                             "--prefix=#{prefix}",
                             "--with-configdir=#{prefix}/etc",
                             "--without-ldap",
                             "--without-krb5"
+
+      # https://bugzilla.samba.org/show_bug.cgi?id=11113
+      inreplace "Makefile" do |s|
+        s.gsub! /(lib\w+).dylib(.[\.\d]+)/, "\\1\\2.dylib"
+      end
+
       system "make", "install"
       (prefix/"etc").mkpath
       touch prefix/"etc/smb.conf"
@@ -54,6 +65,10 @@ class Samba < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system bin/"eventlogadm", "-h"
   end
 end
 

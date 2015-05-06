@@ -1,10 +1,8 @@
 class Winetricks < Formula
-  homepage "https://code.google.com/p/winetricks/"
-  url "https://code.google.com/p/winetricks.git", :revision => "fa9e42955dbdf780240dedf9057295264fddd98f"
-  version "20150114"
-  sha1 "fa9e42955dbdf780240dedf9057295264fddd98f"
-
-  head "https://code.google.com/p/winetricks.git"
+  homepage "https://github.com/Winetricks/winetricks"
+  url "https://github.com/Winetricks/winetricks/archive/20150316.tar.gz"
+  sha256 "c49d33b444bf8327930d94e3b20ca9c939f7ec886999e7e9c37f5bdf3f5cac67"
+  head "https://github.com/Winetricks/winetricks.git"
 
   depends_on "cabextract"
   depends_on "p7zip"
@@ -17,7 +15,7 @@ class Winetricks < Formula
   end
 
   test do
-    system  "#{bin}/winetricks", "dlls", "list"
+    system "#{bin}/winetricks", "dlls", "list"
   end
 
   def caveats; <<-EOS.undent

@@ -11,7 +11,7 @@ class Libmp3splt < Formula
     sha1 "1be429bb92ffc593284b8f33456795f78c711a1e" => :mountain_lion
   end
 
-  depends_on "libtool" => :build
+  depends_on "libtool" => :run
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "pcre"

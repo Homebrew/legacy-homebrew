@@ -7,7 +7,7 @@ require 'metafiles'
 class Pathname
   include MachO
 
-  BOTTLE_EXTNAME_RX = /(\.[a-z_]+(32)?\.bottle\.(\d+\.)?tar\.gz)$/
+  BOTTLE_EXTNAME_RX = /(\.[a-z0-9_]+\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
     sources.each do |src|
@@ -21,34 +21,25 @@ class Pathname
           opoo "tried to install empty array to #{self}"
           return
         end
-        src.each {|s| install_p(s) }
+        src.each { |s| install_p(s, File.basename(s)) }
       when Hash
         if src.empty?
           opoo "tried to install empty hash to #{self}"
           return
         end
-        src.each {|s, new_basename| install_p(s, new_basename) }
+        src.each { |s, new_basename| install_p(s, new_basename) }
       else
-        install_p(src)
+        install_p(src, File.basename(src))
       end
     end
   end
 
-  def install_p src, new_basename = nil
+  def install_p(src, new_basename)
     raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
 
-    if new_basename
-      new_basename = File.basename(new_basename) # rationale: see Pathname.+
-      dst = self+new_basename
-    else
-      dst = self
-    end
-
-    src = src.to_s
-    dst = dst.to_s
-
+    src = Pathname(src)
+    dst = join(new_basename)
     dst = yield(src, dst) if block_given?
-    return unless dst
 
     mkpath
 
@@ -56,35 +47,35 @@ class Pathname
     # is a symlink, and its target is moved first, FileUtils.mv will fail:
     #   https://bugs.ruby-lang.org/issues/7707
     # In that case, use the system "mv" command.
-    if File.symlink? src
+    if src.symlink?
       raise unless Kernel.system 'mv', src, dst
     else
       FileUtils.mv src, dst
     end
   end
-  protected :install_p
+  private :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
     sources.each do |src|
       case src
       when Array
-        src.each {|s| install_symlink_p(s) }
+        src.each { |s| install_symlink_p(s, File.basename(s)) }
       when Hash
-        src.each {|s, new_basename| install_symlink_p(s, new_basename) }
+        src.each { |s, new_basename| install_symlink_p(s, new_basename) }
       else
-        install_symlink_p(src)
+        install_symlink_p(src, File.basename(src))
       end
     end
   end
 
-  def install_symlink_p src, new_basename=src
+  def install_symlink_p(src, new_basename)
     src = Pathname(src).expand_path(self)
-    dst = join File.basename(new_basename)
+    dst = join(new_basename)
     mkpath
-    FileUtils.ln_sf src.relative_path_from(dst.parent), dst
+    FileUtils.ln_sf(src.relative_path_from(dst.parent), dst)
   end
-  protected :install_symlink_p
+  private :install_symlink_p
 
   # we assume this pathname object is a file obviously
   alias_method :old_write, :write if method_defined?(:write)
@@ -153,22 +144,17 @@ class Pathname
   def cp_path_sub pattern, replacement
     raise "#{self} does not exist" unless self.exist?
 
-    src = self.to_s
-    dst = src.sub(pattern, replacement)
-    raise "#{src} is the same file as #{dst}" if src == dst
+    dst = sub(pattern, replacement)
 
-    dst_path = Pathname.new dst
+    raise "#{self} is the same file as #{dst}" if self == dst
 
-    if self.directory?
-      dst_path.mkpath
-      return
+    if directory?
+      dst.mkpath
+    else
+      dst.dirname.mkpath
+      dst = yield(self, dst) if block_given?
+      FileUtils.cp(self, dst)
     end
-
-    dst_path.dirname.mkpath
-
-    dst = yield(src, dst) if block_given?
-
-    FileUtils.cp(src, dst)
   end
 
   # extended to support common double extensions
@@ -225,6 +211,8 @@ class Pathname
       return :gzip_only
     when ".bz2"
       return :bzip2_only
+    when ".lha", ".lzh"
+      return :lha
     end
 
     # Get enough of the file to detect common file types
@@ -382,7 +370,8 @@ class Pathname
   def env_script_all_files dst, env
     dst.mkpath
     Pathname.glob("#{self}/*") do |file|
-      dst.install_p file
+      next if file.directory?
+      dst.install(file)
       new_file = dst+file.basename
       file.write_env_script(new_file, env)
     end
@@ -412,10 +401,11 @@ class Pathname
   end
 
   def abv
-    out=''
-    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
+    out = ""
+    n = Utils.popen_read("find", expand_path.to_s, "-type", "f", "!", "-name", ".DS_Store").split("\n").size
     out << "#{n} files, " if n > 1
-    out << `/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
+    out << Utils.popen_read("/usr/bin/du", "-hs", expand_path.to_s).split("\t")[0].strip
+    out
   end
 
   # We redefine these private methods in order to add the /o modifier to

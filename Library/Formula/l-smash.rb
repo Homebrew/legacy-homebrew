@@ -1,5 +1,3 @@
-require "formula"
-
 class LSmash < Formula
   homepage "http://l-smash.github.io/l-smash/"
   url "https://github.com/l-smash/l-smash.git", :tag => "v1.13.2", :shallow => false
@@ -13,7 +11,6 @@ class LSmash < Formula
   end
 
   def install
-    ENV["GIT_DIR"] = cached_download/".git"
     system "./configure", "--prefix=#{prefix}", "--enable-shared"
     system "make", "install"
   end

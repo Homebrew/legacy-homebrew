@@ -4,7 +4,7 @@ class Haxe < Formula
   homepage "http://haxe.org"
 
   stable do
-    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.1.3"
+    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.1.3", :revision => "7be30670b2f1f9b6082499c8fb9e23c0a6df6c28"
     # Remove the below with the next stable release
     depends_on MaximumMacOSRequirement => :mavericks
   end
@@ -27,7 +27,7 @@ class Haxe < Formula
   def install
     # Build requires targets to be built in specific order
     ENV.deparallelize
-    system "make"
+    system "make", "OCAMLOPT=ocamlopt.opt"
     bin.mkpath
     system "make", "install", "INSTALL_BIN_DIR=#{bin}", "INSTALL_LIB_DIR=#{lib}/haxe"
 

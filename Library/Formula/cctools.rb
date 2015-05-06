@@ -1,12 +1,12 @@
 class Cctools < Formula
-  homepage "http://opensource.apple.com/"
+  homepage "https://opensource.apple.com/"
 
   if MacOS.version >= :snow_leopard
-    url "http://opensource.apple.com/tarballs/cctools/cctools-855.tar.gz"
+    url "https://opensource.apple.com/tarballs/cctools/cctools-855.tar.gz"
     sha1 "b6997939aa9f4f3c4ac70ec819e719330dcd7bcb"
   else
     # 806 (from Xcode 4.1) is the latest version that supports Tiger or PowerPC
-    url "http://opensource.apple.com/tarballs/cctools/cctools-806.tar.gz"
+    url "https://opensource.apple.com/tarballs/cctools/cctools-806.tar.gz"
     sha1 "e4f9a7ee0eef930e81d50b6b7300b8ddc1c7b341"
   end
 

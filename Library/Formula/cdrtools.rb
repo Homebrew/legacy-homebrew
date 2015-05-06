@@ -5,12 +5,6 @@ class Cdrtools < Formula
 
   stable do
     url "https://downloads.sourceforge.net/project/cdrtools/cdrtools-3.00.tar.bz2"
-    bottle do
-      sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
-      sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
-      sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
-    end
-
     sha1 "6464844d6b936d4f43ee98a04d637cd91131de4e"
 
     patch :p0 do
@@ -19,10 +13,15 @@ class Cdrtools < Formula
     end
   end
 
+  bottle do
+    sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
+    sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
+    sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
+  end
+
   devel do
-    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a27.tar.bz2"
-    version "3.01~a27"
-    sha1 "cd923377bd7ef15a08aa3bb1aff4e6604c7be7cd"
+    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a28.tar.bz2"
+    sha1 "081b1daa9c86f33483213a8d8d0fd75caec51ead"
 
     patch :p0, :DATA
   end
@@ -46,6 +45,10 @@ class Cdrtools < Formula
 
   test do
     system "#{bin}/cdrecord", "-version"
+    system "#{bin}/cdda2wav", "-version"
+    (testpath/"testfile.txt").write("testing mkisofs")
+    system "#{bin}/mkisofs", "-r", "-o", "test.iso", "testfile.txt"
+    assert (testpath/"test.iso").exist?
   end
 end
 

@@ -1,14 +1,12 @@
-require "formula"
-
 class Ruby < Formula
   homepage "https://www.ruby-lang.org/"
-  url "http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.bz2"
-  sha256 "1c031137999f832f86be366a71155113675b72420830ce432b777a0ff4942955"
+  url "http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.bz2"
+  sha256 "f3b8ffa6089820ee5bdc289567d365e5748d4170e8aa246d2ea6576f24796535"
 
   bottle do
-    sha1 "8591ec9c138a4850a030f78d5ae3e4facc2ad6ba" => :yosemite
-    sha1 "6ac700f32dab5b284bc765c61177fc17e72c425a" => :mavericks
-    sha1 "c1d79e729e6e899b2237f384c9cb1a38e749d2b2" => :mountain_lion
+    sha256 "a3899bcda507cb92ec8b56c85ce87f243d36ad515b349a5cde0817d6eadd8761" => :yosemite
+    sha256 "adeaf776e7f24bdefd0c2f012432650e85e05ccb55735a68edb225c13cb96105" => :mavericks
+    sha256 "d7d2f35a774a39f565f27bfbcbf7e5813c4b8535c8c70eaee0cd9a9f834d5b0d" => :mountain_lion
   end
 
   head do

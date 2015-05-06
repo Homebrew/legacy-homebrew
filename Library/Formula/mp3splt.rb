@@ -1,5 +1,3 @@
-require "formula"
-
 class Mp3splt < Formula
   homepage "http://mp3splt.sourceforge.net"
   url "https://downloads.sourceforge.net/project/mp3splt/mp3splt/2.6.2/mp3splt-2.6.2.tar.gz"
@@ -18,5 +16,9 @@ class Mp3splt < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/mp3splt", "-t", "0.1", test_fixtures("test.mp3")
   end
 end

@@ -1,8 +1,8 @@
 class Vnu < Formula
   homepage "https://validator.github.io/validator/"
-  url "https://github.com/validator/validator/releases/download/20150207/vnu-20150207.jar.zip"
-  sha1 "30f840cb36185b27e4941eeff43929b6bbe05d0c"
-  version "20150207"
+  url "https://github.com/validator/validator/releases/download/15.4.12/vnu.jar_15.4.12.zip"
+  sha256 "2ae32a816aea9a7f60f359bdace9324d1a5532da61b8fb494eefdddc85148ba9"
+  version "20150412"
 
   def install
     libexec.install "vnu.jar"
@@ -10,8 +10,7 @@ class Vnu < Formula
   end
 
   test do
-    path = testpath/"index.html"
-    path.write <<-EOS.undent
+    (testpath/"index.html").write <<-EOS.undent
       <!DOCTYPE html>
       <html>
       <head>
@@ -21,7 +20,6 @@ class Vnu < Formula
       </body>
       </html>
     EOS
-
-    system bin/"vnu", path
+    system bin/"vnu", testpath/"index.html"
   end
 end

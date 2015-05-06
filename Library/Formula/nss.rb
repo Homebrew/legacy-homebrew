@@ -2,17 +2,22 @@ require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_4_RTM/src/nss-3.17.4.tar.gz"
-  sha256 "1d98ad1881a4237ec98cbe472fc851480f0b0e954dfe224d047811fb96ff9d79"
-  revision 1
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_18_1_RTM/src/nss-3.18.1.tar.gz"
+  sha256 "10d005ca1b143a8b77032a169c595d06cf42d16d54809558ea30f1ffe73fef70"
 
   bottle do
     cellar :any
-    sha1 "2b8a680e6639215188542cc54c4f08dcee62ae36" => :yosemite
-    sha1 "2fdb9e02eddf3c692d2de478ab7fbb630cd0dcb0" => :mavericks
-    sha1 "83a0cf6db62ff865b07347c4a94361869715e6b0" => :mountain_lion
+    sha256 "b695188f43a14e11312286afd84d8647facdebd6542cf8e643810adf837d2cb7" => :yosemite
+    sha256 "ff313a36ae22abfba86517dcd5ff07886843a48a31baf310c42b5ae3a5d5374c" => :mavericks
+    sha256 "d4257e78909753e789468c0d047c8c51c98330d3d58ed9c6a059b750964ddfef" => :mountain_lion
   end
 
+  keg_only <<-EOS.undent
+    Having this library symlinked makes Firefox pick it up instead of built-in,
+    so it then randomly crashes without meaningful explanation.
+
+    Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOS
   depends_on "nspr"
 
   def install
@@ -22,8 +27,8 @@ class Nss < Formula
     args = [
       "BUILD_OPT=1",
       "NSS_USE_SYSTEM_SQLITE=1",
-      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
-      "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
+      "NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr",
+      "NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}"
     ]
     args << "USE_64=1" if MacOS.prefer_64_bit?
 
@@ -92,7 +97,7 @@ class Nss < Formula
     Name: NSS
     Description: Mozilla Network Security Services
     Version: #{version}
-    Requires: nspr >= 4.10.7
+    Requires: nspr >= 4.10.8
     Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
     Cflags: -I${includedir}
     EOS

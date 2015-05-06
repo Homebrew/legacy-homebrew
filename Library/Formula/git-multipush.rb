@@ -1,5 +1,3 @@
-require 'formula'
-
 class GitMultipush < Formula
   homepage 'http://code.google.com/p/git-multipush/'
   url 'https://git-multipush.googlecode.com/files/git-multipush-2.3.tar.bz2'
@@ -16,11 +14,7 @@ class GitMultipush < Formula
   depends_on 'asciidoc' => :build
 
   def install
-    if build.head?
-      ENV['GIT_DIR'] = cached_download/'.git'
-      inreplace 'make/gen-version.mk', '.git', '$(GIT_DIR)'
-      system "make"
-    end
+    system "make" if build.head?
     system "make", "prefix=#{prefix}", "install"
   end
 end

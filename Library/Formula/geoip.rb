@@ -1,15 +1,15 @@
 class Geoip < Formula
   homepage "https://github.com/maxmind/geoip-api-c"
-  url "https://github.com/maxmind/geoip-api-c/archive/v1.6.4.tar.gz"
-  sha1 "f478c60e810be1ba3e4df1e4a3b839b8c604122f"
+  url "https://github.com/maxmind/geoip-api-c/archive/v1.6.5.tar.gz"
+  sha1 "55950b436718a32ff9f8c9cfb36cec0aa3674253"
 
   head "https://github.com/maxmind/geoip-api-c.git"
 
   bottle do
     cellar :any
-    sha1 "2e76cca3bd3d3e5d059a68c3bbbb418be4ec19ce" => :yosemite
-    sha1 "658aa954c6abe8b7864abb21eaa081edc4e5c408" => :mavericks
-    sha1 "c856d5a8237eb98627b0803ade799523e3d9be22" => :mountain_lion
+    sha256 "eedb986a2e5daf59d9f7982455773de7f3bc5be6948911a8e5667b6598e37e38" => :yosemite
+    sha256 "619929de31b302b9423465399c1954f9071aacd0c0f02d1c86760a7918e868b5" => :mavericks
+    sha256 "a8c5a78c7bb3587e9f84c7474aa85e1f2a4b6b2bcdb9b5de103ef2e7472acfa2" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

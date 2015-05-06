@@ -1,9 +1,7 @@
-require 'formula'
-
 class Rhash < Formula
   homepage 'http://rhash.anz.ru/'
   url 'https://downloads.sourceforge.net/project/rhash/rhash/1.3.2/rhash-1.3.2-src.tar.gz'
-  sha1 '15a997c98da1bc3628e065686866b6167951a44d'
+  sha256 '074224f59fe69969108e1ebc23ee406a7f2eff95d9dc1c7aa8eaebb85c8142dd'
 
   bottle do
     cellar :any
@@ -24,6 +22,12 @@ class Rhash < Formula
 
     system "make", "install-lib-static", "install-lib-shared", "install", "PREFIX=",
                               "DESTDIR=#{prefix}", "CC=#{ENV.cc}"
+  end
+
+  test do
+    (testpath/"test").write("test")
+    (testpath/"test.sha1").write("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 test")
+    system "#{bin}/rhash", "-c", "test.sha1"
   end
 end
 

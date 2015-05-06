@@ -1,5 +1,3 @@
-require "formula"
-
 class Graphviz < Formula
   homepage "http://graphviz.org/"
   url "http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz"
@@ -36,6 +34,7 @@ class Graphviz < Formula
   if build.with? "bindings"
     depends_on "swig" => :build
     depends_on :python
+    depends_on :java
   end
 
   fails_with :clang do

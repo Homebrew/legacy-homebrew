@@ -2,28 +2,28 @@ require "formula"
 
 class Dmd < Formula
   homepage "http://dlang.org"
-  url "https://github.com/D-Programming-Language/dmd/archive/v2.066.1.tar.gz"
-  sha1 "7be9737f97a494870446c881e185bec41f337792"
+  url "https://github.com/D-Programming-Language/dmd/archive/v2.067.0.tar.gz"
+  sha1 "663d27bc6a25028d54b139344a35476cf5b4dc23"
 
   bottle do
-    sha1 "6cb24133ba8e8973442d13b358dc14ea7f9d8c43" => :yosemite
-    sha1 "19e104830f0e6dbb4a422fd141254af784268a4d" => :mavericks
-    sha1 "c7c4f4b32f5e88c73f0efb8eb90d92a7956694e6" => :mountain_lion
+    sha256 "c73291ee736109820ddf6bcd7dec619e3b1090c6c0849a5a7b717e1a67a8603b" => :yosemite
+    sha256 "2f04b67d50261ea74f4d580b5a180657020bb91d70d267dc47bf45e1d1bea6d1" => :mavericks
+    sha256 "13c440997c04a64627c5d697844c7a7e42c379e2507334a32d6a632881516d68" => :mountain_lion
   end
 
   resource "druntime" do
-    url "https://github.com/D-Programming-Language/druntime/archive/v2.066.1.tar.gz"
-    sha1 "614e2944c470944125ba6bc94a78c1cf0a41ad5a"
+    url "https://github.com/D-Programming-Language/druntime/archive/v2.067.0.tar.gz"
+    sha1 "dd803d01d82c2bf9ef680d9b318955f674309747"
   end
 
   resource "phobos" do
-    url "https://github.com/D-Programming-Language/phobos/archive/v2.066.1.tar.gz"
-    sha1 "58e48b33cffbab4acb5e6d6f376ea209ce8e2114"
+    url "https://github.com/D-Programming-Language/phobos/archive/v2.067.0.tar.gz"
+    sha1 "268447464389bd09a695ce4c0663f1bab283f041"
   end
 
   resource "tools" do
-    url "https://github.com/D-Programming-Language/tools/archive/v2.066.1.tar.gz"
-    sha1 "fc64b35364cf76d7270e4a8fe41203e0b4dde11c"
+    url "https://github.com/D-Programming-Language/tools/archive/v2.067.0.tar.gz"
+    sha1 "3d94855e46e39136ccd9b6765e8ffc1de37c95fa"
   end
 
   def install
@@ -35,16 +35,16 @@ class Dmd < Formula
     prefix.install "samples"
     man.install Dir["docs/man/*"]
 
-    conf = etc/"dmd.conf"
-
-    if conf.exist?
-      inreplace conf, /^DFLAGS=.+$/, "DFLAGS=-I#{include}/d2 -L-L#{lib}"
-    else
-      conf.write <<-EOS.undent
+    # A proper dmd.conf is required for later build steps:
+    conf = buildpath/"dmd.conf"
+    # Can't use opt_include or opt_lib here because dmd won't have been
+    # linked into opt by the time this build runs:
+    conf.write <<-EOS.undent
         [Environment]
         DFLAGS=-I#{include}/d2 -L-L#{lib}
         EOS
-    end
+    etc.install conf
+    install_new_dmd_conf
 
     make_args.unshift "DMD=#{bin}/dmd"
 
@@ -60,9 +60,32 @@ class Dmd < Formula
 
 
     resource("tools").stage do
-      inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS)"
+      inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS) $(ROOT)/dustmite"
       system "make", "install", *make_args
     end
+  end
+
+  # Previous versions of this formula may have left in place an incorrect
+  # dmd.conf.  If it differs from the newly generated one, move it out of place
+  # and warn the user.
+  # This must be idempotent because it may run from both install() and
+  # post_install() if the user is running `brew install --build-from-source`.
+  def install_new_dmd_conf
+    conf = etc/"dmd.conf"
+
+    # If the new file differs from conf, etc.install drops it here:
+    new_conf = etc/"dmd.conf.default"
+    # Else, we're already using the latest version:
+    return unless new_conf.exist?
+
+    backup = etc/"dmd.conf.old"
+    opoo "An old dmd.conf was found and will be moved to #{backup}."
+    mv conf, backup
+    mv new_conf, conf
+  end
+
+  def post_install
+    install_new_dmd_conf
   end
 
   test do

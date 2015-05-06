@@ -19,26 +19,34 @@ class Ttfautohint < Formula
     sha1 "af5485546cb4fc3b6a663920ba9599f727e5fb11" => :mountain_lion
   end
 
+  option "with-qt", "Build ttfautohintGUI also"
+
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "libpng"
   depends_on "harfbuzz"
+  depends_on "qt" => :optional
 
   def install
-    if build.head?
-      ln_s cached_download/".git", ".git"
-      system "./bootstrap"
-    end
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --without-doc
+    ]
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-qt=no",
-                          "--without-doc"
+    args << "--without-qt" if build.without? "qt"
+
+    system "./bootstrap" if build.head?
+    system "./configure", *args
     system "make install"
   end
 
   test do
-    system "#{bin}/ttfautohint", "-V"
+    if build.with? "qt"
+      system "#{bin}/ttfautohintGUI", "-V"
+    else
+      system "#{bin}/ttfautohint", "-V"
+    end
   end
 end

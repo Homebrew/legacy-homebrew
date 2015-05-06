@@ -19,10 +19,9 @@ class Sntop < Formula
   end
 
   def caveats; <<-EOS.undent
-    sntop uses fping by default. fping can only be run by root by default so
-    either use sudo to run sntop or setuid root fping.
-
-    Alternatively, run sntop using standard ping (sntop -p).
+    sntop uses fping by default and fping can only be run by root by default.
+    You can run `sudo sntop` (or `sntop -p` which uses standard ping).
+    You should be certain that you trust any software you grant root privileges.
     EOS
   end
 end

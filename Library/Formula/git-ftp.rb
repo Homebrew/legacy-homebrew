@@ -1,22 +1,20 @@
-require 'formula'
-
 class GitFtp < Formula
-  homepage 'http://git-ftp.github.io/git-ftp'
-  url 'https://github.com/git-ftp/git-ftp/archive/1.0.1.tar.gz'
-  sha1 'ee0ff7525a88aafffe7e09b6cb95d6dde6bacf93'
+  homepage "https://git-ftp.github.io/git-ftp"
+  url "https://github.com/git-ftp/git-ftp/archive/1.0.2.tar.gz"
+  sha256 "f488c39bf7784923201c61ece41f40f8e18682e18b13918b0730ad196a11f1f7"
 
-  head 'https://github.com/git-ftp/git-ftp.git', :branch => 'develop'
+  head "https://github.com/git-ftp/git-ftp.git", :branch => "develop"
 
   bottle do
     cellar :any
-    sha1 "a50d3779a05f20c022634e521dbac54db3cb8bba" => :yosemite
-    sha1 "9ecb3e11463fb1ec6d961747e24be242fc8213ea" => :mavericks
-    sha1 "90bd8f913a3c01f8cdc55d77dd8ed455354bfa52" => :mountain_lion
+    sha256 "28f1121cf94519c15eca06c48851c5385c8093bbd501162157a7adc0ed9eae57" => :yosemite
+    sha256 "777c74d53098f88ca5a4b4202a7645e11361b567cace63b365b159660d5513de" => :mavericks
+    sha256 "5a0ae43f9f07ce414c01a84862bc0b3eb9c508062c40b12a268d4fab2823d07a" => :mountain_lion
   end
 
   option "with-manpage", "build and install the manpage (depends on pandoc)"
 
-  depends_on "curl" => [:optional, "with-libssh2"]
+  depends_on "curl" => "with-libssh2"
   depends_on "pandoc" => :build if build.with? "manpage"
 
   def install
@@ -25,5 +23,15 @@ class GitFtp < Formula
       system "make", "-C", "man", "man"
       man1.install "man/man1/git-ftp.1"
     end
+    libexec.install bin/"git-ftp"
+    (bin/"git-ftp").write <<-EOS.undent
+      #!/bin/sh
+      PATH=#{Formula["curl"].opt_bin}:$PATH
+      #{libexec}/git-ftp "$@"
+    EOS
+  end
+
+  test do
+    system bin/"git-ftp", "--help"
   end
 end

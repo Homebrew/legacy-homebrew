@@ -1,14 +1,11 @@
-require 'formula'
-
-# Reference: https://github.com/b4winckler/macvim/wiki/building
+# Reference: https://github.com/macvim-dev/macvim/wiki/building
 class Macvim < Formula
-  homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
-  version '7.4-73'
-  sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
-  revision 1
+  homepage 'https://code.google.com/p/macvim/'
+  url 'https://github.com/macvim-dev/macvim/archive/Snapshot-76.tar.gz'
+  version '7.4-76'
+  sha1 'bced599503faa65c146394eb951d7a43b49510a4'
 
-  head 'https://github.com/b4winckler/macvim.git'
+  head 'https://github.com/macvim-dev/macvim.git'
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
@@ -67,6 +64,15 @@ class Macvim < Formula
     elsif build.with? "python"
       ENV.prepend "LDFLAGS", `python-config --ldflags`.chomp
       ENV.prepend "CFLAGS", `python-config --cflags`.chomp
+      framework_script = <<-EOS.undent
+        import distutils.sysconfig
+        print distutils.sysconfig.get_config_var("PYTHONFRAMEWORKPREFIX")
+      EOS
+      framework_prefix = `python -c '#{framework_script}'`.strip
+      unless framework_prefix.empty? || framework_prefix == "/System/Library/Frameworks"
+        ENV.prepend "LDFLAGS", "-F#{framework_prefix}"
+        ENV.prepend "CFLAGS", "-F#{framework_prefix}"
+      end
       args << "--enable-pythoninterp"
     end
 

@@ -2,17 +2,16 @@ require "formula"
 
 class RakudoStar < Formula
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2015.01.tar.gz"
-  sha256 "30c22e729bb6290e120bf7eb9b28a691090183b010a7f91aefd4d25a2c2d12bf"
+  url "http://rakudo.org/downloads/star/rakudo-star-2015.03.tar.gz"
+  sha256 "bb969c99b39cf69d0f04ae5e9d574de1da8835a1be17710f9e63afc0bcac9bbb"
 
   bottle do
-    sha1 "3475077e3a06cd6602228bfddd86617f9a565d80" => :yosemite
-    sha1 "3a58076b45388fbbcf5598eb46c6acd516eabec3" => :mavericks
-    sha1 "c6135cdccafeefc44ae73406bf9909c071c5b12d" => :mountain_lion
+    sha256 "d310af143caab23d561c00414a2b32f951236c43a00c788278e5f4abeaca8562" => :yosemite
+    sha256 "d89c2ed4931ae97ee232a7dccf3a85e4517215ad4119e5c6bad0fb0334360d37" => :mavericks
+    sha256 "7e26281eb2ad58e9be333151a2dde0bca7905d8193fe8c3061c2bcd92037caa5" => :mountain_lion
   end
 
   option "with-jvm", "Build also for jvm as an alternate backend."
-  option "with-parrot", "Build also for parrot as an alternate backend."
 
   conflicts_with "parrot"
 
@@ -33,10 +32,6 @@ class RakudoStar < Formula
 
     if build.with? "jvm"
       backends << "jvm"
-    end
-    if build.with? "parrot"
-      backends << "parrot"
-      generate << "--gen-parrot"
     end
     system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=" + backends.join(","), *generate
     system "make"

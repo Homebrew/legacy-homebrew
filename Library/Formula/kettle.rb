@@ -37,6 +37,8 @@ class Kettle < Formula
           <key>KETTLE_HOME</key>
           <string>#{etc}/kettle</string>
         </dict>
+        <key>WorkingDirectory</key>
+        <string>#{etc}/kettle</string>
         <key>StandardOutPath</key>
         <string>#{var}/log/kettle/carte.log</string>
         <key>StandardErrorPath</key>

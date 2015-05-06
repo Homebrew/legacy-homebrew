@@ -6,6 +6,14 @@ class Phantomjs < Formula
   stable do
     url "https://github.com/ariya/phantomjs/archive/2.0.0.tar.gz"
     sha256 "0a1338464ca37314037d139b3e0f7368325f5d8810628d9d9f2df9f9f535d407"
+
+    # Qt Yosemite build fix. Upstream commit/PR:
+    # https://qt.gitorious.org/qt/qtbase/commit/70e442
+    # https://github.com/ariya/phantomjs/pull/12934
+    patch do
+      url "https://gist.githubusercontent.com/mikemcquaid/db645f7cbeec4f3b1b2e/raw/e664ecc5c259344d5a73a84b52e472bf8ad3733e/phantomjs-yosemite.patch"
+      sha1 "1e723f055ef5df9a2945cbce3e70322105313f47"
+    end
   end
 
   bottle do
@@ -13,14 +21,6 @@ class Phantomjs < Formula
     sha1 "f9dd71edb662479e0f832379368d4cd4878f940e" => :yosemite
     sha1 "817ab92d4bfcd5496cf1c59173d48976610e5f70" => :mavericks
     sha1 "887a96e55f67a3d350bc40f910926286c6cea240" => :mountain_lion
-  end
-
-  # Qt Yosemite build fix. Upstream commit/PR:
-  # https://qt.gitorious.org/qt/qtbase/commit/70e442
-  # https://github.com/ariya/phantomjs/pull/12934
-  patch do
-    url "https://gist.githubusercontent.com/mikemcquaid/db645f7cbeec4f3b1b2e/raw/e664ecc5c259344d5a73a84b52e472bf8ad3733e/phantomjs-yosemite.patch"
-    sha1 "1e723f055ef5df9a2945cbce3e70322105313f47"
   end
 
   head "https://github.com/ariya/phantomjs.git"

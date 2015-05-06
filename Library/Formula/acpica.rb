@@ -1,5 +1,3 @@
-require "formula"
-
 class Acpica < Formula
   homepage "https://www.acpica.org/"
   head "https://github.com/acpica/acpica.git"
@@ -17,5 +15,9 @@ class Acpica < Formula
     ENV.deparallelize
     system "make", "HOST=_APPLE", "PREFIX=#{prefix}"
     system "make", "install", "HOST=_APPLE", "PREFIX=#{prefix}"
+  end
+
+  test do
+    system "#{bin}/acpihelp", "-u"
   end
 end

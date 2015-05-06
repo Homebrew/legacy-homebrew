@@ -13,7 +13,7 @@ class Wine < Formula
 
     resource 'gecko' do
       url 'https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-      sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+      sha256 'f01fafa6d7aab995c38add77315c4cbc2f32f52d5d6a9350056f42b62d631fd8'
     end
 
     resource 'mono' do
@@ -29,8 +29,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.36.tar.bz2"
-    sha256 "21aabf3ab2c6055ae66c77647b123c978094f0c135817ceeaeaeebc5d8efe3bd"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.42.tar.bz2"
+    sha256 "5a7f5c82b120bfe1eca572bd8d7a4ede7e6baf330ce3087199eb5cd175233ba2"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -39,7 +39,7 @@ class Wine < Formula
     # https://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
       url "https://bugs.winehq.org/attachment.cgi?id=47639"
-      sha1 "c195f4b9c0af450c7dc3f396e8661ea5248f2b01"
+      sha256 "3054467e0b1ef9efce3e1b24497bd26e00c4727e8bd7b1e990d1352bb1819de0"
     end
   end
 
@@ -53,7 +53,7 @@ class Wine < Formula
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
   def require_universal_deps?
-    true
+    MacOS.prefer_64_bit?
   end
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
@@ -70,13 +70,13 @@ class Wine < Formula
   depends_on 'libgsm' => :optional
 
   resource 'gecko' do
-    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.34-x86.msi', :using => :nounzip
-    sha256 '956c26bf302b1864f4d7cb6caee4fc83d4c1281157731761af6395b876e29ca7'
+    url "https://downloads.sourceforge.net/wine/wine_gecko-2.36-x86.msi", :using => :nounzip
+    sha256 "afa457ce8f9885225b6e549dd6f154713ce15bf063c23e38c1327d2f869e128a"
   end
 
   resource 'mono' do
-    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.4.msi', :using => :nounzip
-    sha256 '20bced7fee01f25279edf07670c5033d25c2c9834a839e7a20410ce1c611d6f2'
+    url "https://downloads.sourceforge.net/wine/wine-mono-4.5.6.msi", :using => :nounzip
+    sha256 "ac681f737f83742d786706529eb85f4bc8d6bdddd8dcdfa9e2e336b71973bc25"
   end
 
   fails_with :llvm do

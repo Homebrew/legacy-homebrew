@@ -1,14 +1,12 @@
-require "formula"
-
 class AndroidNdk < Formula
-  homepage "http://developer.android.com/sdk/ndk/index.html"
+  homepage "https://developer.android.com/sdk/ndk/index.html"
 
   if MacOS.prefer_64_bit?
-    url "http://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86_64.bin"
-    sha1 "6b89cb0c84e2d2bd802a5b78540327c1b3c2d7b8"
+    url "https://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86_64.bin"
+    sha256 "46e6d0249012d926996616709f9fdd2d4506309309c19e3ab7468f7ab04b0ddc"
   else
-    url "http://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86.bin"
-    sha1 "fc1f9593eb9669076c25381322a1386869ac02f0"
+    url "https://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86.bin"
+    sha256 "f1eb62d3a256f1339978b96b05bd3d7195debbf07b2d1e8a887d2f2b468d6cc7"
   end
 
   version "r10d"
@@ -19,10 +17,10 @@ class AndroidNdk < Formula
     bin.mkpath
 
     if MacOS.prefer_64_bit?
-      system "chmod", "a+x", "./android-ndk-#{version}-darwin-x86_64.bin"
+      chmod 0755, "./android-ndk-#{version}-darwin-x86_64.bin"
       system "./android-ndk-#{version}-darwin-x86_64.bin"
     else
-      system "chmod", "a+x", "./android-ndk-#{version}-darwin-x86.bin"
+      chmod 0755, "./android-ndk-#{version}-darwin-x86.bin"
       system "./android-ndk-#{version}-darwin-x86.bin"
     end
 
@@ -46,10 +44,10 @@ class AndroidNdk < Formula
     If this is unacceptable you should uninstall.
 
     License information at:
-    http://developer.android.com/sdk/terms.html
+    https://developer.android.com/sdk/terms.html
 
     Software and System requirements at:
-    http://developer.android.com/sdk/ndk/index.html#requirements
+    https://developer.android.com/sdk/ndk/index.html#requirements
 
     For more documentation on Android NDK, please check:
       #{prefix}/docs

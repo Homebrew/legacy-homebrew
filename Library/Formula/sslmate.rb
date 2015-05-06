@@ -2,15 +2,17 @@ require "formula"
 
 class Sslmate < Formula
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-0.6.2.tar.gz"
-  sha256 "b8a7752864d52ebb92e225268774811b6eccce746ac2098b7bc3119173bffb93"
+  url "https://packages.sslmate.com/other/sslmate-1.0.0.tar.gz"
+  sha256 "87fbbaeb38d07d5732533b9391846e7e55e0f1f3766d0ef7919f0d22840df71e"
 
   bottle do
     cellar :any
-    sha1 "7085c96229238b3426573e2d1b717ea44eaa2ed9" => :yosemite
-    sha1 "a481fae6553a4f56cf2d6ec3b5ef0d541f3e12fa" => :mavericks
-    sha1 "4936239b3a8ba67ca19b403229ed646bfac8e895" => :mountain_lion
+    sha256 "180aa500c33b5d7ecc951b1dc7a319f8679630d2d3b5f99aeb15645568075bff" => :yosemite
+    sha256 "3bdad9e0e103af6a3a0177a9407abec6eec7bba234425b493d1c2ddd6bcd972b" => :mavericks
+    sha256 "5bdf1a73b66e6456aa8aaaf3f8cc88213f795122d0e12ad02228029261417803" => :mountain_lion
   end
+
+  option "without-route53", "Disable support for Route 53 DNS approval"
 
   if MacOS.version <= :snow_leopard
     depends_on "perl"
@@ -37,28 +39,49 @@ class Sslmate < Formula
     end
   end
 
+  if build.with? "route53"
+    depends_on :python if MacOS.version <= :snow_leopard
+
+    resource "boto" do
+      url "https://pypi.python.org/packages/source/b/boto/boto-2.34.0.tar.gz"
+      sha1 "e19d252b58054a7711fae910324e26b2b551a44d"
+    end
+  end
+
   def install
     if MacOS.version <= :snow_leopard
       ENV.prepend_path "PATH", Formula["perl"].bin
     end
-    ENV.prepend_create_path "PERL5LIB", libexec + "lib/perl5"
+    ENV.prepend_create_path "PERL5LIB", libexec + "vendor/lib/perl5"
+    ENV.prepend_create_path "PYTHONPATH", libexec + "vendor/lib/python2.7/site-packages" if build.with? "route53"
 
-    resources.each do |r|
-      r.stage do
-        system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
+    perl_resources = []
+    perl_resources << "URI" << "Term::ReadKey" if MacOS.version <= :snow_leopard
+    perl_resources << "JSON::PP" if MacOS.version <= :mountain_lion
+    perl_resources.each do |r|
+      resource(r).stage do
+        system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}/vendor"
         system "make"
         system "make", "install"
       end
     end
 
-    bin.install "bin/sslmate"
-    doc.install "README", "NEWS"
-    man1.install "man/man1/sslmate.1"
+    python_resources = []
+    python_resources << "boto" if build.with? "route53"
+    python_resources.each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec + "vendor")
+      end
+    end
+
+    system "make", "PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
 
     env = { :PERL5LIB => ENV["PERL5LIB"] }
     if MacOS.version <= :snow_leopard
       env[:PATH] = "#{Formula["perl"].bin}:#{Formula["curl"].bin}:$PATH"
     end
+    env[:PYTHONPATH] = ENV["PYTHONPATH"] if build.with? "route53"
     bin.env_script_all_files(libexec + "bin", env)
   end
 

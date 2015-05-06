@@ -161,7 +161,15 @@ module Superenv
   end
 
   def determine_include_paths
-    keg_only_deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/include" }.to_path_s
+    paths = keg_only_deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/include" }
+
+    # https://github.com/Homebrew/homebrew/issues/38514
+    if MacOS::CLT.installed? && MacOS.active_developer_dir.include?("CommandLineTools") &&
+       MacOS::CLT.version == "6.3.0.0.1.1428348375"
+      paths << "#{HOMEBREW_LIBRARY}/ENV/include/6.3"
+    end
+
+    paths.to_path_s
   end
 
   def determine_library_paths
@@ -233,8 +241,21 @@ module Superenv
 
   public
 
+  # Removes the MAKEFLAGS environment variable, causing make to use a single job.
+  # This is useful for makefiles with race conditions.
+  # When passed a block, MAKEFLAGS is removed only for the duration of the block and is restored after its completion.
+  # Returns the value of MAKEFLAGS.
   def deparallelize
-    delete('MAKEFLAGS')
+    old = delete('MAKEFLAGS')
+    if block_given?
+      begin
+        yield
+      ensure
+        self['MAKEFLAGS'] = old
+      end
+    end
+
+    old
   end
   alias_method :j1, :deparallelize
 

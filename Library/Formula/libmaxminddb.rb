@@ -1,14 +1,13 @@
 class Libmaxminddb < Formula
   homepage "https://github.com/maxmind/libmaxminddb"
-  url "https://github.com/maxmind/libmaxminddb/releases/download/0.5.3/libmaxminddb-0.5.3.tar.gz"
-  sha1 "ce6dd4fecb1a4c97cfede70e6fc6af863ffeddab"
+  url "https://github.com/maxmind/libmaxminddb/releases/download/1.0.4/libmaxminddb-1.0.4.tar.gz"
+  sha1 "57548d426d43b9b43c77786b08594d48d0c88c62"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "9ef726ff11d9933e9aa1df2ce8adc21493714259" => :yosemite
-    sha1 "0e3a37a3ad55d27220ec49ee653016ecc649d952" => :mavericks
-    sha1 "3888352b39e903d2f30d6947db0c041ecaa3540a" => :mountain_lion
+    sha256 "f923147f3aacda41439e72737c22899356b11d61f2c9628839bac361d365a57e" => :yosemite
+    sha256 "ffc9884a7818e4b31b0a4d7e7a2d9edb10de783039b3ee4a20084a91373447ea" => :mavericks
+    sha256 "1c3da6449a58c7f2840b51dd0de405b1d27a6d3c8ae211d0a6f38a21a17f780a" => :mountain_lion
   end
 
   head do
@@ -20,6 +19,13 @@ class Libmaxminddb < Formula
   end
 
   depends_on "geoipupdate" => :optional
+
+  # This patch is from an upstream post-1.0.4 commit and fixes a test failure
+  # on OS X. See https://github.com/maxmind/libmaxminddb/commit/424953
+  patch do
+    url "https://github.com/maxmind/libmaxminddb/commit/424953.diff"
+    sha1 "362cf3254145188dc9959651ba7ee876007998c9"
+  end
 
   option :universal
 

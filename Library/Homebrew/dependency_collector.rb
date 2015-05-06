@@ -18,7 +18,7 @@ require 'set'
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = Set[
-    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
+    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :python3, :rbx, :ruby
   ].freeze
 
   CACHE = {}
@@ -89,12 +89,12 @@ class DependencyCollector
   end
 
   def parse_string_spec(spec, tags)
-    if tags.empty?
+    if HOMEBREW_TAP_FORMULA_REGEX === spec
+      TapDependency.new(spec, tags)
+    elsif tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
       LanguageModuleDependency.new(tag, spec, tags[1])
-    elsif HOMEBREW_TAP_FORMULA_REGEX === spec
-      TapDependency.new(spec, tags)
     else
       Dependency.new(spec, tags)
     end
@@ -116,6 +116,7 @@ class DependencyCollector
     when :python     then PythonDependency.new(tags)
     when :python3    then Python3Dependency.new(tags)
     when :java       then JavaDependency.new(tags)
+    when :ruby       then RubyRequirement.new(tags)
     when :osxfuse    then OsxfuseDependency.new(tags)
     when :tuntap     then TuntapDependency.new(tags)
     when :ant        then ant_dep(spec, tags)

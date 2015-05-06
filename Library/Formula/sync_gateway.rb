@@ -7,6 +7,7 @@ class SyncGateway < Formula
   version "1.0.4"
 
   bottle do
+    cellar :any
     sha1 "cd5eef55308a0cbbfbd92e774b86d47344abea7e" => :yosemite
     sha1 "6b9a112f3ff48989aea5380e8b7bcbccf7a6b385" => :mavericks
     sha1 "daff7035dd82ab3c9f44a521ab1ea99f93a10343" => :mountain_lion

@@ -278,6 +278,8 @@ class Keg
       when 'charset.alias' then :skip_file
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
+      # cmake database gets explicitly created
+      when 'cmake' then :mkpath
       # lib/language folders also get explicitly created
       when 'dtrace' then :mkpath
       when /^gdk-pixbuf/ then :mkpath
@@ -288,7 +290,7 @@ class Keg
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
       when /^python[23]\.\d/ then :mkpath
-      when 'ruby' then :mkpath
+      when /^ruby/ then :mkpath
       # Everything else is symlinked to the cellar
       else :link
       end

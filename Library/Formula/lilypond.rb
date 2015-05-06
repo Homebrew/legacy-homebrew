@@ -1,5 +1,3 @@
-require "formula"
-
 class Lilypond < Formula
   homepage "http://lilypond.org/"
   url "http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.2.tar.gz"
@@ -16,8 +14,6 @@ class Lilypond < Formula
     url "http://ftpmirror.gnu.org/guile/guile-1.8.8.tar.gz"
     sha1 "548d6927aeda332b117f8fc5e4e82c39a05704f9"
   end
-
-  env :std
 
   option "with-doc", "Build documentation in addition to binaries (may require several hours)."
 
@@ -56,21 +52,17 @@ class Lilypond < Formula
     depends_on "texi2html"
   end
 
-  fails_with :clang do
-    cause "Strict C99 compliance error in a pointer conversion."
-  end
-
   def install
     # The contents of the following block are taken from the guile18 formula
     # in homebrew/versions.
     resource("guile18").stage do
-       system "./configure", "--disable-dependency-tracking",
-                             "--prefix=#{prefix}",
-                             "--with-libreadline-prefix=#{Formula["readline"].opt_prefix}"
-       system "make", "install"
-       # A really messed up workaround required on OS X --mkhl
-       lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
-       ENV.prepend_path "PATH", "#{bin}"
+      system "./configure", "--disable-dependency-tracking",
+             "--prefix=#{prefix}",
+             "--with-libreadline-prefix=#{Formula["readline"].opt_prefix}"
+      system "make", "install"
+      # A really messed up workaround required on OS X --mkhl
+      lib.cd { Dir["*.dylib"].each { |p| ln_sf p, File.basename(p, ".dylib")+".so" } }
+      ENV.prepend_path "PATH", "#{bin}"
     end
 
     gs = Formula["ghostscript"]
@@ -83,13 +75,13 @@ class Lilypond < Formula
     system "./configure", *args
 
     # Separate steps to ensure that lilypond's custom fonts are created.
-    system "make all"
+    system "make", "all"
     system "make", "install"
 
     # Build documentation if requested.
     if build.with? "doc"
-      system "make doc"
-      system "make install-doc"
+      system "make", "doc"
+      system "make", "install-doc"
     end
   end
 

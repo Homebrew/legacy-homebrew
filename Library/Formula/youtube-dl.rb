@@ -4,15 +4,15 @@ require "formula"
 # many releases for us to update to every single one:
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
-  homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2015.02.11/youtube-dl-2015.02.11.tar.gz"
-  sha256 "1ad5e8ec6b59dbcb9fafcf312b8e3f2a985a3f8ef7109172caaf287118bb3c59"
+  homepage "https://rg3.github.io/youtube-dl/"
+  url "https://yt-dl.org/downloads/2015.05.04/youtube-dl-2015.05.04.tar.gz"
+  sha256 "3ebafe6257bfd8a9feb1e16f44c92258b038de07e8754560f05bd9909f9e113b"
 
   bottle do
     cellar :any
-    sha1 "ecb3a1c6d607c7925a7c815409ef2a9e088f74e4" => :yosemite
-    sha1 "faa48768c8a26d5019888fd6e54c58dd5467e747" => :mavericks
-    sha1 "e934bac686037fe83f5f0d400ca9364d708acb9f" => :mountain_lion
+    sha256 "b8cddbf6b365815ef49059af92c9a838c2258c9ec82b8fefad6dbb2c09477c1b" => :yosemite
+    sha256 "bbeaa365da84f7071fc85f9238091a0d4dcc3281e8525f2ffbd7bef919b8ffd0" => :mavericks
+    sha256 "a9bdc5fa7beaa1bb9e79857641b9d202ce2fec6b2716e79d5a2b9b55bb381e44" => :mountain_lion
   end
 
   head do
@@ -35,6 +35,6 @@ class YoutubeDl < Formula
   end
 
   test do
-    system "#{bin}/youtube-dl", "--simulate", "http://www.youtube.com/watch?v=he2a4xK8ctk"
+    system "#{bin}/youtube-dl", "--simulate", "https://www.youtube.com/watch?v=he2a4xK8ctk"
   end
 end

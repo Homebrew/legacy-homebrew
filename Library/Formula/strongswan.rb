@@ -1,14 +1,14 @@
 require 'formula'
 
 class Strongswan < Formula
-  homepage 'http://www.strongswan.org'
-  url 'http://download.strongswan.org/strongswan-5.2.2.tar.bz2'
-  sha1 '5dcf6e8e50e11e4009375fda5ce2b49049123e18'
+  homepage 'https://www.strongswan.org'
+  url 'https://download.strongswan.org/strongswan-5.3.0.tar.bz2'
+  sha1 '6d83222143ff4dabbc667e9b1725cac55c546826'
 
   bottle do
-    sha1 "bcceab4dccbbaef7815b0e4b0c5fd800c9323edd" => :yosemite
-    sha1 "7ecdc03048bdb90143588c229a3d5422af2feae2" => :mavericks
-    sha1 "8c1bb11c6d21f5d4c80a43fbffdf5ac432eaaa3f" => :mountain_lion
+    sha256 "ec1068ac5a7d24f1ed98869e43a2d1c25cbd64d4696e680c91250d89bad89832" => :yosemite
+    sha256 "2109c92e70fa30f788961f7821ddacce96f2dc0f94b2d85fb975bdc82e0ed542" => :mavericks
+    sha256 "599a83b29ab463c09b247c96492432c353403b1aeb95f636bd68de542fa9cd5d" => :mountain_lion
   end
 
   option 'with-curl', 'Build with libcurl based fetcher'

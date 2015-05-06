@@ -2,12 +2,13 @@ class Libmagic < Formula
   homepage "http://www.darwinsys.com/file/"
   url "ftp://ftp.astron.com/pub/file/file-5.22.tar.gz"
   mirror "https://fossies.org/unix/misc/file-5.22.tar.gz"
-  sha1 "20fa06592291555f2b478ea2fb70b53e9e8d1f7c"
+  sha256 "c4e3a8e44cb888c5e4b476e738503e37fb9de3b25a38c143e214bfc12109fc0b"
+  revision 1
 
   bottle do
-    sha1 "2a725b5f45d5c534ac59cfee87fde8b09e7f764f" => :yosemite
-    sha1 "2e493cfb219635780b4cf01a05c23dc60a6806cb" => :mavericks
-    sha1 "f626fc50838bc8d3be6e57a79e6f977b2d7c64c2" => :mountain_lion
+    sha256 "de4b3746d2a43085e5fde903f79f587d203e3bb6b7880554da3fc1c8d48fac18" => :yosemite
+    sha256 "70f2cd35ef919c70ca03daecd11ae89b22f05749aeee23d868f0a6a0a97ae4cc" => :mavericks
+    sha256 "de694310a07551fc96f7e285085c708b14e4d8e210878541eadd19e892fa5fd6" => :mountain_lion
   end
 
   option :universal
@@ -21,9 +22,12 @@ class Libmagic < Formula
     rm "src/magic.h"
 
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--enable-fsect-man5"
+                          "--enable-fsect-man5",
+                          "--enable-static"
     system "make", "install"
+    (share+"misc/magic").install Dir["magic/Magdir/*"]
 
     if build.with? "python"
       cd "python" do

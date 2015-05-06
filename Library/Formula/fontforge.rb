@@ -1,22 +1,21 @@
 class Fontforge < Formula
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/archive/20141230.tar.gz"
-  sha1 "62268018d4b0080f8b976943f36ecbeed5aa6c9a"
+  url "https://github.com/fontforge/fontforge/archive/20150430.tar.gz"
+  sha256 "430c6d02611c7ca948df743e9241994efe37eda25f81a94aeadd9b6dd286ff37"
+  head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    sha1 "96155e138d5c9f0eff459f85a8ee1198fa6ffbae" => :yosemite
-    sha1 "780a877b74381ee256812406c4d68f5523631ee1" => :mavericks
-    sha1 "84b0969c5370be9a949e2c174c9a1e8735a63797" => :mountain_lion
+    sha256 "db55b0a73b4851077da8dfd48c39675f05eaf437323acccf56602779b21cf414" => :yosemite
+    sha256 "dd876ff9dc19e6a1dba1a83cc1d9c106813a08f98675543359d99b14b2691510" => :mavericks
+    sha256 "bf152c19b04f3ad0ba87e179dfe0bba44c9c770def473698603d9a831f9b3ef0" => :mountain_lion
   end
+
+  option "with-giflib", "Build with GIF support"
 
   deprecated_option "with-x" => "with-x11"
   deprecated_option "with-gif" => "with-giflib"
 
-  option "with-giflib", "Build with GIF support"
-
   # Autotools are required to build from source in all releases.
-  # The upstream tarball is now 235MB in size and still requires us to autotool
-  # so seriously consider using the much smaller Github tag if we don't lose anything.
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
@@ -25,7 +24,6 @@ class Fontforge < Formula
   depends_on "pango"
   depends_on "zeromq"
   depends_on "czmq"
-  depends_on "fontconfig"
   depends_on "cairo"
   depends_on "libpng" => :recommended
   depends_on "jpeg" => :recommended
@@ -35,16 +33,28 @@ class Fontforge < Formula
   depends_on :x11 => :optional
   depends_on :python if MacOS.version <= :snow_leopard
 
+  # This may be causing font-display glitches and needs further isolation & fixing.
+  # https://github.com/fontforge/fontforge/issues/2083
+  # https://github.com/Homebrew/homebrew/issues/37803
+  depends_on "fontconfig"
+
   fails_with :llvm do
     build 2336
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
   end
 
   def install
+    if MacOS.version <= :snow_leopard || !build.bottle?
+      pydir = "#{%x(python-config --prefix).chomp}"
+    else
+      pydir = "#{%x(/usr/bin/python-config --prefix).chomp}"
+    end
+
     args = %W[
       --prefix=#{prefix}
       --disable-silent-rules
       --disable-dependency-tracking
+      --with-pythonbinary=#{pydir}/bin/python2.7
     ]
 
     if build.with? "x11"
@@ -59,39 +69,27 @@ class Fontforge < Formula
     args << "--without-giflib" if build.without? "giflib"
     args << "--without-libspiro" if build.without? "libspiro"
 
-    # Fix linker error; see: http://trac.macports.org/ticket/25012
+    # Fix linker error; see: https://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
-
-    # And finding Homebrew's Python
-    ENV.append_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/"
-    ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
 
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
+
+    # And for finding the correct Python, not always Homebrew's.
+    ENV.prepend "CFLAGS", "-I#{pydir}/include"
+    ENV.prepend "LDFLAGS", "-L#{pydir}/lib"
+    ENV.prepend_path "PKG_CONFIG_PATH", "#{pydir}/lib/pkgconfig"
 
     # Bootstrap in every build: https://github.com/fontforge/fontforge/issues/1806
     system "./bootstrap"
     system "./configure", *args
     system "make"
     system "make", "install"
-  end
-
-  def post_install
-    # Link this to enable symlinking into /Applications with brew linkapps.
-    # The name is case-sensitive. It breaks without both F's capitalised.
-    # If you build with x11 now, it automatically creates an dynamic link from bin/fontforge
-    # to @executable_path/../Frameworks/Breakpad.framework/Versions/A/Breakpad which
-    # obviously doesn't exist given fontforge and FontForge.app are in different places.
-    # If this isn't fixed within a couple releases, consider dumping everything in libexec.
-    # https://github.com/fontforge/fontforge/issues/2022
-    if build.with? "x11"
-      ln_s "#{share}/fontforge/osx/FontForge.app", prefix
-      system "install_name_tool", "-change", "@executable_path/../Frameworks/Breakpad.framework/Versions/A/Breakpad",
-             "#{bin}/fontforge", "#{share}/fontforge/osx/FontForge.app/Contents/Frameworks/Breakpad.framework/Versions/A/Breakpad"
-    end
+    # The name is case-sensitive. Don't downcase it when linking.
+    ln_s "#{share}/fontforge/osx/FontForge.app", prefix if build.with? "x11"
   end
 
   test do
-    system "#{bin}/fontforge", "-version"
+    system bin/"fontforge", "-version"
   end
 end

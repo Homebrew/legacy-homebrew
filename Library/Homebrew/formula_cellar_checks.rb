@@ -12,7 +12,7 @@ module FormulaCellarChecks
 
     <<-EOS.undent
       #{prefix_bin} is not in your PATH
-      You can amend this by altering your ~/.bashrc file
+      You can amend this by altering your #{shell_profile} file
     EOS
   end
 
@@ -104,8 +104,13 @@ module FormulaCellarChecks
   end
 
   def check_shadowed_headers
-    return if formula.name == "libtool" || formula.name == "subversion"
+    ["libtool", "subversion", "berkeley-db"].each do |formula_name|
+      return if formula.name == formula_name
+    end
+
     return if MacOS.version < :mavericks && formula.name.start_with?("postgresql")
+    return if MacOS.version < :yosemite  && formula.name.start_with?("memcached")
+
     return if formula.keg_only? || !formula.include.directory?
 
     files  = relative_glob(formula.include, "**/*.h")
