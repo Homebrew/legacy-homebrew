@@ -1,11 +1,11 @@
 class Carthage < Formula
   homepage "https://github.com/Carthage/Carthage"
-  url "https://github.com/Carthage/Carthage.git", :tag => "0.6.4",
-                                                  :revision => "fb67bc83840ca886c5b4a7fac069f08fba147431",
+  url "https://github.com/Carthage/Carthage.git", :tag => "0.7",
+                                                  :revision => "d35be75cb69762630d120412e51201f23b3c14df",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
-  depends_on :xcode => ["6.1.1", :build]
+  depends_on :xcode => ["6.3", :build]
 
   bottle do
     cellar :any
