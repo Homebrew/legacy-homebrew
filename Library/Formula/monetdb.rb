@@ -17,8 +17,8 @@ end
 
 class Monetdb < Formula
   homepage "https://www.monetdb.org/"
-  url "https://dev.monetdb.org/downloads/sources/Oct2014-SP2/MonetDB-11.19.9.zip"
-  sha1 "dde2cad29d2f5bbdd2e2845ee0663969eb0aeb3f"
+  url "https://dev.monetdb.org/downloads/sources/Oct2014-SP3/MonetDB-11.19.11.zip"
+  sha1 "eace3b154e43e5ab1b5c6e381b7688296cbd257e"
 
   bottle do
     sha1 "a277df350c7758eee0dd9082f5b369da4aeb67b3" => :yosemite
