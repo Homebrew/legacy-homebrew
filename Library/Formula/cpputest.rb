@@ -2,7 +2,7 @@ require "formula"
 
 class Cpputest < Formula
   homepage "http://www.cpputest.org/"
-  url "https://github.com/cpputest/cpputest.github.io/blob/master/releases/cpputest-3.7.1.tar.gz?raw=true"
+  url "https://github.com/cpputest/cpputest.github.io/blob/master/releases/cpputest-3.7.1.tar.gz"
   sha1 "ecde7a517afc1ec29efa01b869f355b6da974458"
 
   head do
