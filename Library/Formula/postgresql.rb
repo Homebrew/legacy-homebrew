@@ -1,5 +1,6 @@
 class Postgresql < Formula
   homepage "http://www.postgresql.org/"
+  revision 1
 
   stable do
     url "http://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
@@ -33,6 +34,10 @@ class Postgresql < Formula
   fails_with :clang do
     build 211
     cause "Miscompilation resulting in segfault on queries"
+  end
+
+  def pg_version
+    version.to_s[/^\d\.\d/]
   end
 
   def install
@@ -78,8 +83,41 @@ class Postgresql < Formula
   end
 
   def post_install
-    unless File.exist? "#{var}/postgres"
-      system "#{bin}/initdb", "#{var}/postgres"
+    if File.exist? "#{var}/postgres"
+      return
+    end
+
+    if File.exist? "#{var}/postgres/PG_VERSION"
+      existing_pg_version = (var/"postgres/PG_VERSION").read.chomp
+    end
+
+    # With the 9.5 release, we'll need to adapt logic to make sure we preserve the
+    # 9.4 var directories, without breaking postgres. This should be able to be done
+    # by modifying some lines below to var/"postgres-9.4" instead of var/"postgres"
+    current_data = var/"postgres"
+    backup_path = var/"postgres-#{pg_version}"
+    # This should always be the last full version shipped by Brew, i.e. 9.4.0.
+    prior_ver = File.basename Dir[HOMEBREW_CELLAR/"postgresql/#{existing_pg_version}*/"].first
+
+    if (var/"postgres").exist?
+      if Dir["#{backup_path}/*"].empty?
+        mkdir_p backup_path
+        cp_r Dir["#{current_data}/*"], backup_path
+        puts "Data copied up from #{current_data} to #{backup_path}"
+      else
+        opoo "#{backup_path} is not empty; Not automatically copying data across."
+      end
+    else
+      system "#{bin}/initdb", current_data
+    end
+
+    unless Dir["#{HOMEBREW_CELLAR}/postgresql/#{current_data}"].empty?
+      ENV["PGDATANEW"] = "#{backup_path}"
+      ENV["PGDATAOLD"] = "#{current_data}"
+      ENV["PGBINOLD"] = "#{HOMEBREW_CELLAR}/postgresql/#{prior_ver}/bin"
+      ENV["PGBINNEW"] = "#{Formula["postgresql"].opt_bin}"
+      system "#{bin}/pg_upgrade"
+      puts "Database upgraded to the latest format."
     end
   end
 
@@ -87,9 +125,6 @@ class Postgresql < Formula
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
       https://github.com/Homebrew/homebrew/issues/2510
-
-    To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
-      http://www.postgresql.org/docs/9.4/static/upgrading.html
     EOS
   end
 
