@@ -9,9 +9,9 @@ class Pianod < Formula
   end
 
   bottle do
-    sha1 "f2630bf3374fff4bd2f9361dc6b6a9dbdb8e91b2" => :mavericks
-    sha1 "8edad71c88e41febb6a948389359e9b3f8f8d043" => :mountain_lion
-    sha1 "9675d746fb9ee4d1e66cd0b62a1563d683850a4d" => :lion
+    sha256 "c445526d673caadf44783aa2992817f1a172a4ad83376b8c5ee0c62e94c3ef01" => :yosemite
+    sha256 "77975c68192f2fc203decc2122e05e720f6fb248b3aec061540536ea4371a871" => :mavericks
+    sha256 "dc09efd35ee5e55e5196c2a72ca8b3ca61b4a437fb66ff481e80be1782e9931a" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
