@@ -19,8 +19,4 @@ class EvasGenericLoaders < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
-
-  test do
-    system "true"
-  end
 end
