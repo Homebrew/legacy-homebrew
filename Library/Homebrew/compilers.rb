@@ -1,6 +1,6 @@
 module CompilerConstants
-  GNU_GCC_VERSIONS = 3..9
-  GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
+  GNU_GCC_VERSIONS = %w[4.3 4.4 4.5 4.6 4.7 4.8 4.9 5]
+  GNU_GCC_REGEXP = /^gcc-(4\.[3-9]|5)$/
 end
 
 class CompilerFailure
@@ -107,7 +107,7 @@ class CompilerSelector
       case compiler
       when :gnu
         GNU_GCC_VERSIONS.reverse_each do |v|
-          name = "gcc-4.#{v}"
+          name = "gcc-#{v}"
           version = compiler_version(name)
           yield Compiler.new(name, version) if version
         end

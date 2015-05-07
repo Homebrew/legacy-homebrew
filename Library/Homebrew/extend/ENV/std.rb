@@ -130,7 +130,7 @@ module Stdenv
   alias_method :gcc_4_2, :gcc
 
   GNU_GCC_VERSIONS.each do |n|
-    define_method(:"gcc-4.#{n}") do
+    define_method(:"gcc-#{n}") do
       super()
       set_cpu_cflags
     end
