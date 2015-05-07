@@ -4,8 +4,8 @@ class Shellcheck < Formula
   include Language::Haskell::Cabal
 
   homepage "http://www.shellcheck.net"
-  url "https://github.com/koalaman/shellcheck/archive/v0.3.6.tar.gz"
-  sha256 "e63314f3d40042897a9ac92f9ca2b0bd263b9d524f8491daf73a25a9e75ebc98"
+  url "https://github.com/koalaman/shellcheck/archive/v0.3.7.tar.gz"
+  sha256 "9f421052bc07047b65854544bfe32c5503cdad09f00d7a63a2f28b09b03a08f6"
 
   bottle do
     sha256 "f1bdb1d529d7c4ebf5a2bbeef321d0a2abb0ff2261974b7f5f16fec1b7791d72" => :yosemite
