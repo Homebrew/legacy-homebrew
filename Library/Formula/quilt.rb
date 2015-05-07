@@ -1,7 +1,9 @@
 class Quilt < Formula
-  homepage "http://savannah.nongnu.org/projects/quilt"
-  url "http://download.savannah.gnu.org/releases/quilt/quilt-0.63.tar.gz"
-  sha1 "19f2ba0384521eb3d8269b8a1097b16b07339be5"
+  homepage "https://savannah.nongnu.org/projects/quilt"
+  url "http://download.savannah.gnu.org/releases/quilt/quilt-0.64.tar.gz"
+  sha256 "c4bfd3282214a288e8d3e921ae4d52e73e24c4fead72b5446752adee99a7affd"
+
+  head "http://git.savannah.gnu.org/r/quilt.git"
 
   bottle do
     revision 1
@@ -19,6 +21,7 @@ class Quilt < Formula
                           "--without-getopt"
     system "make"
     system "make", "install"
+    (share/"emacs/site-lisp").install "lib/quilt.el"
   end
 
   test do
