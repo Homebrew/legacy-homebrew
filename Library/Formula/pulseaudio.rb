@@ -4,6 +4,12 @@ class Pulseaudio < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/p/pulseaudio/pulseaudio_6.0.orig.tar.xz"
   sha256 "b50640e0b80b1607600accfad2e45aabb79d379bf6354c9671efa2065477f6f6"
 
+  bottle do
+    sha256 "d57bc83ad5fc738faeb8fe64b03139e1164cecff7cc969b17f4b551e31ff25fa" => :yosemite
+    sha256 "5e7826508922b199bf1027e4961c3a747a97b2f73496993bae3c3453f53fa442" => :mavericks
+    sha256 "1f2204be6e1ecd20380a6593dd4e49608e1d7be42caf60d29c43ec1587dae97e" => :mountain_lion
+  end
+
   head do
     url "http://anongit.freedesktop.org/git/pulseaudio/pulseaudio.git"
     depends_on "automake" => :build
