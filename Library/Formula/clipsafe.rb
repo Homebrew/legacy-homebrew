@@ -1,5 +1,3 @@
-require "formula"
-
 class Clipsafe < Formula
   homepage "http://waxandwane.org/clipsafe.html"
   url "http://waxandwane.org/download/clipsafe-1.1.tar.gz"
