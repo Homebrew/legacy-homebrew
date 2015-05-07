@@ -1,7 +1,7 @@
 class Efl < Formula
   homepage "https://www.enlightenment.org"
-  url "http://download.enlightenment.org/rel/libs/efl/efl-1.14.0-beta3.tar.gz"
-  sha256 "2fb7eee67916dae569ae5f579972fa5dad6a5c3f7a694599f34e421d4fe958f3"
+  url "http://download.enlightenment.org/rel/libs/efl/efl-1.14.0.tar.gz"
+  sha256 "30a8a239449e0d068a39787b5a4769dd26ddf0476f58f094c85e65b108086269"
 
   conflicts_with "eina", :because => "efl aggregates formerly distinct libs, one of which is eina"
   conflicts_with "evas", :because => "efl aggregates formerly distinct libs, one of which is evas"
@@ -36,6 +36,7 @@ class Efl < Formula
     args = ["--disable-dependency-tracking",
             "--disable-silent-rules",
             "--enable-cocoa",
+            "--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aba", # There's currently (1.14) no clean profile for Mac OS, so we need to force passing configure
             "--prefix=#{prefix}"]
     args << "--with-x11=none" if build.without? "x11"
 
