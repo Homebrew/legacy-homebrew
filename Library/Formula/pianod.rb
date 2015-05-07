@@ -1,9 +1,12 @@
-require "formula"
-
 class Pianod < Formula
   homepage "http://deviousfish.com/pianod/"
-  url "http://deviousfish.com/Downloads/pianod/pianod-165.tar.gz"
-  sha1 "765efcf31f0e868538c81d03ae789df617d4c621"
+  url "http://deviousfish.com/Downloads/pianod/pianod-173.tar.gz"
+  sha256 "d91a890561037ee3faf5d4d1d4de546c8ff8c828eced91eea6be026c4fcf16fd"
+
+  devel do
+    url "http://deviousfish.com/Downloads/pianod/pianod-174.tar.gz"
+    sha256 "8b46cf57a785256bb9d5543022c1b630a5d45580800b6eb6c170712c6c78d879"
+  end
 
   bottle do
     sha1 "f2630bf3374fff4bd2f9361dc6b6a9dbdb8e91b2" => :mavericks
@@ -29,6 +32,6 @@ class Pianod < Formula
   end
 
   test do
-    system "#{bin}/pianod", '-v'
+    system "#{bin}/pianod", "-v"
   end
 end
