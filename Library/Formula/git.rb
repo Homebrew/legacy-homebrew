@@ -136,10 +136,11 @@ class Git < Formula
     # If you need it, install git --with-brewed-openssl.
     rm "#{libexec}/git-core/git-imap-send" if build.without? "brewed-openssl"
 
-    pod = Pathname.new Dir[lib/"*/*/perllocal.pod"][0]
+    pod = Dir[lib/"*/*/perllocal.pod"][0]
     if pod != nil
       # Remove perllocal.pod, which conflicts with the perl formula.
       # I don't know why this issue doesn't affect Mac.
+      pod = Pathname.new pod
       rm pod
       rmdir [pod.dirname, pod.dirname.dirname]
     end
