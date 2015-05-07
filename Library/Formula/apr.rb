@@ -16,7 +16,7 @@ class Apr < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    # https://issues.apache.org/bugzilla/show_bug.cgi?id=57359
+    # https://bz.apache.org/bugzilla/show_bug.cgi?id=57359
     # The internal libtool throws an enormous strop if we don't do...
     ENV.deparallelize
 
