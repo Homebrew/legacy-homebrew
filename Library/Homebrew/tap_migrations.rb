@@ -60,6 +60,7 @@ TAP_MIGRATIONS = {
   "ggobi" => "homebrew/x11",
   "giblib" => "homebrew/x11",
   "git-flow-clone" => "homebrew/boneyard",
+  "git-latexdiff" => "homebrew/tex",
   "gkrellm" => "homebrew/x11",
   "glade" => "homebrew/x11",
   "gle" => "homebrew/x11",
