@@ -12,9 +12,9 @@ class Patchutils < Formula
 
   bottle do
     cellar :any
-    sha1 "e339d44549d5adaf0907752d87a15c74fdc14892" => :yosemite
-    sha1 "1d2ef386ca2d3f17574ecdb8ca2cf3dbde142296" => :mavericks
-    sha1 "56c838384a5712786d2a424a57ce69b168e1f66e" => :mountain_lion
+    sha256 "24f30129312fa91a40c2e4ccede817ea0ccaf51ecad8cf656089332dba78a84c" => :yosemite
+    sha256 "947e0db6b163b638d885a97b336c08d48bef820ee69b3668810f63d24623e300" => :mavericks
+    sha256 "58d815641c3a74f955f94cc5fa127bbc4da63547cd210bdd9385bd76ed825f64" => :mountain_lion
   end
 
   def install
