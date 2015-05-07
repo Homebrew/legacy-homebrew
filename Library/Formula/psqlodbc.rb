@@ -22,9 +22,9 @@ class Psqlodbc < Formula
 
   bottle do
     cellar :any
-    sha1 "f24bdc4d51cd85e391be2e483e9c48858ee71d83" => :mavericks
-    sha1 "9b3f60310f063bb416ecaf32343b31b7f09b1445" => :mountain_lion
-    sha1 "6f463b33df349d2fe20bcb71ec340dc6f425dc36" => :lion
+    sha256 "cb3f7f8239315732ba9e380b149edc0d14e74a3e7b8c87563dad5f23a463e8ec" => :yosemite
+    sha256 "4a1d5a33b5910e87caebf9414bfe1f699b1b15b8da6401ccb683babe6b652206" => :mavericks
+    sha256 "03cfeabccdb83370de666f11525b12f4775c7c79977740c1725334f90f4e1b91" => :mountain_lion
   end
 
   depends_on "openssl"
