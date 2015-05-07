@@ -4,7 +4,7 @@
 class Gnutls < Formula
   homepage "http://gnutls.org"
   url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"
-  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"
   sha256 "8961227852911a1974e15bc017ddbcd4779876c867226d199f06648d8b27ba4b"
 
   bottle do
