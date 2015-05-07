@@ -6,9 +6,9 @@ class Libuv < Formula
 
   bottle do
     cellar :any
-    sha1 "b2698a14753dfe1adc790472ad88a271b9aaf435" => :yosemite
-    sha1 "2aeb30d3fadf2ab172feeb4151a096104fb6267c" => :mavericks
-    sha1 "6027a89608cdf0c5e99b088ef360b654e8f1ce20" => :mountain_lion
+    sha256 "36280ae768a4bad91583ae76488d46c31a1e68f6f01b684a5e01f8a88cb1ec7a" => :yosemite
+    sha256 "2468bc83ef571b9631f1a26c5d017bdf8bf3daf23c965cb80b22cbe692713a48" => :mavericks
+    sha256 "c7ceebd9e3f941e2e9962580e2b18879952f1cd9aa111f70d26109e879a1e43c" => :mountain_lion
   end
 
   option "without-docs", "Don't build and install documentation"
