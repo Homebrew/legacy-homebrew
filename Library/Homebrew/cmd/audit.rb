@@ -321,6 +321,11 @@ class FormulaAuditor
       problem "\"http://ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
+    # Check if main url is used again as a mirror
+    if (urls & :mirrors).length
+      problem "Url should not be reused as a mirror: #{(urls & :mirrors)[0]}"
+    end
+
     # the rest of the checks apply to mirrors as well.
     urls.concat(@specs.map(&:mirrors).flatten)
 
