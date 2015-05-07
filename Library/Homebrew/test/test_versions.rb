@@ -41,6 +41,25 @@ class VersionComparisonTests < Homebrew::TestCase
     assert_operator version('1.1beta2'), :<, version('1.1rc1')
     assert_operator version('1.0.0beta7'), :<, version('1.0.0')
     assert_operator version('3.2.1'), :>, version('3.2beta4')
+    assert_operator version('1.1rc1'), :<, version('1.1')
+  end
+
+  def test_fake_alpha_beta
+    assert_operator version('1.9'), :<, version('1.9a')
+    assert_operator version('2.6'), :<, version('2.6b')
+    assert_operator version('3.5beta'), :<, version('3.5b')
+    assert_operator version('2.1.2alpha'), :<, version('2.1.2a')
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".each_char do |letter|
+      assert_operator version("1.2#{letter}"), :>, version('1.2')
+      assert_operator version("1.3#{letter}"), :>, version('1.3alpha')
+      assert_operator version("1.6#{letter}"), :>, version('1.6beta')
+      assert_operator version("1.7#{letter}"), :>, version('1.7rc')
+    end
+    assert_operator version('1.0rc'), :<, version('1.0a')
+    versions = %w{0.9 1.0alpha 1.0alpha1 1.0beta 1.0beta1 1.0beta2 1.0rc 1.0rc1
+                  1.0rc2 1.0 1.0a 1.0ab 1.0b 1.0c 1.0r}
+    assert_equal versions, versions.sort_by { |v| version(v) }
+
   end
 
   def test_comparing_unevenly_padded_versions

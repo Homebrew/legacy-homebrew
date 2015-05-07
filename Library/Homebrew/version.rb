@@ -57,6 +57,8 @@ class Version
 
     def <=>(other)
       case other
+      when AlphaToken, BetaToken, RCToken
+        1
       when StringToken
         value <=> other.value
       when NumericToken, NullToken
@@ -95,12 +97,17 @@ class Version
   end
 
   class AlphaToken < CompositeToken
-    PATTERN = /a(?:lpha)?[0-9]*/i
+    PATTERN = Regexp.union(
+      /alpha[0-9]*/i,
+      /a[0-9]+/
+    )
 
     def <=>(other)
       case other
       when AlphaToken
         rev <=> other.rev
+      when BetaToken, RCToken, PatchToken, StringToken
+        -1
       else
         super
       end
@@ -108,7 +115,10 @@ class Version
   end
 
   class BetaToken < CompositeToken
-    PATTERN = /b(?:eta)?[0-9]*/i
+    PATTERN = Regexp.union(
+      /beta[0-9]*/i,
+      /b[0-9]+/
+    )
 
     def <=>(other)
       case other
@@ -116,7 +126,7 @@ class Version
         rev <=> other.rev
       when AlphaToken
         1
-      when RCToken, PatchToken
+      when RCToken, PatchToken, StringToken
         -1
       else
         super
@@ -133,7 +143,7 @@ class Version
         rev <=> other.rev
       when AlphaToken, BetaToken
         1
-      when PatchToken
+      when PatchToken, StringToken
         -1
       else
         super
