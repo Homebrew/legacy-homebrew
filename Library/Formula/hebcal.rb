@@ -1,7 +1,7 @@
 class Hebcal < Formula
   homepage "https://github.com/hebcal/hebcal"
   url "https://github.com/hebcal/hebcal/archive/v3.17.tar.gz"
-  sha1 "03549601660bb20cc8e0a1e03664ef4f1b2549d0"
+  sha256 "57ea943749030ac5f0c29c421645b4816ebe3063feca334a62bbf9d5067f38bd"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -12,6 +12,6 @@ class Hebcal < Formula
   end
 
   test do
-    system "hebcal"
+    system "#{bin}/hebcal"
   end
 end
