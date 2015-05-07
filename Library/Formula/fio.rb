@@ -6,9 +6,9 @@ class Fio < Formula
 
   bottle do
     cellar :any
-    sha1 "3509a6a952469c90d80aac04af18c6611db8c66a" => :yosemite
-    sha1 "2069309ce6c0a96311dcdd67b95c88e34cfcde84" => :mavericks
-    sha1 "8f12a0d2f33c0a33102a5901b4e9a6c8cf7d73e8" => :mountain_lion
+    sha256 "9627e56c1f5b74afc9af0e2c636f7001f678fb3f891c65a7460380445f62e8d0" => :yosemite
+    sha256 "366b0622ac63192a2482e77a04840d2e795223a5bf0d0d2e6fbab46ac6d6fb39" => :mavericks
+    sha256 "12c9075cadd1fb68ce4ff23560da9d1a1aa0f357602df9a0973d5edfd3a041a0" => :mountain_lion
   end
 
   def install
