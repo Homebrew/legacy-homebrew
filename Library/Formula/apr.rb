@@ -4,9 +4,9 @@ class Apr < Formula
   sha256 "7d03ed29c22a7152be45b8e50431063736df9e1daa1ddf93f6a547ba7a28f67a"
 
   bottle do
-    sha1 "dd876e8523f31e935a605c3cb710d681aa762ae7" => :yosemite
-    sha1 "881def6c18b664e2d3cc88f1e8c975fb314bb105" => :mavericks
-    sha1 "48905e0fc63b2ae63cd3fd0912cec8ea09441420" => :mountain_lion
+    sha256 "5ae775d6f6a3fb46b1b262e1c0ecb2aca4e5a29ea1f841672ac430b4d49606af" => :yosemite
+    sha256 "691b67fdf7077bca9db5cb0fcc40856dd82914bb00868c4e1a6a692abca87913" => :mavericks
+    sha256 "4d5e7c20d507c48712d8ba549f500e7e58a4782dd1e88aee6d2eb1a169aeeaf9" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "Apple's CLT package contains apr."
