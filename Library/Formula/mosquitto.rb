@@ -2,8 +2,8 @@ require "formula"
 
 class Mosquitto < Formula
   homepage "http://mosquitto.org/"
-  url "http://mosquitto.org/files/source/mosquitto-1.3.5.tar.gz"
-  sha1 "2d30ffbf1c1b310581735e7ea10465e7c310e580"
+  url "http://mosquitto.org/files/source/mosquitto-1.4.2.tar.gz"
+  sha1 "208ce5f01fcf25fff6b241b22add055ba2884822"
 
   bottle do
     sha1 "85ed6685fb8efcf1aa909aaf50da8a843da819e0" => :yosemite
@@ -14,13 +14,17 @@ class Mosquitto < Formula
   depends_on "pkg-config" => :build
   depends_on "cmake" => :build
   depends_on "c-ares"
+  depends_on "libwebsockets" => :recommended
 
   # mosquitto requires OpenSSL >=1.0 for TLS support
   depends_on "openssl"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make install"
+    args = std_cmake_args
+    args << "-DWITH_WEBSOCKETS=ON" if build.with? "libwebsockets"
+
+    system "cmake", ".", *args
+    system "make", "install"
 
     # Create the working directory
     (var/"mosquitto").mkpath
@@ -35,11 +39,6 @@ class Mosquitto < Formula
     mosquitto has been installed with a default configuration file.
     You can make changes to the configuration by editing:
         #{etc}/mosquitto/mosquitto.conf
-
-    Python client bindings can be installed from the Python Package Index:
-        pip install mosquitto
-
-    Javascript client has been removed, see Eclipse Paho for an alternative.
     EOD
   end
 
