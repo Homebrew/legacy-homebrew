@@ -2,8 +2,8 @@ require 'formula'
 
 class Tmux < Formula
   homepage 'http://tmux.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/tmux/tmux/tmux-1.9/tmux-1.9a.tar.gz'
-  sha1 '815264268e63c6c85fe8784e06a840883fcfc6a2'
+  url 'https://downloads.sourceforge.net/project/tmux/tmux/tmux-2.0/tmux-2.0.tar.gz'
+  sha1 '977871e7433fe054928d86477382bd5f6794dc3d'
 
   bottle do
     cellar :any
