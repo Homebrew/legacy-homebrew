@@ -3,6 +3,12 @@ class Efl < Formula
   url "http://download.enlightenment.org/rel/libs/efl/efl-1.14.0.tar.gz"
   sha256 "30a8a239449e0d068a39787b5a4769dd26ddf0476f58f094c85e65b108086269"
 
+  bottle do
+    sha256 "6fc05ee275321d4d2c883a4f7b19b6144d4e02e545d35a88ec8ebbae3ba8f5d2" => :yosemite
+    sha256 "b8dbeab7156541c3f5538d8af78bff8d4fa96e372985e9ecc9e081f469fa2d48" => :mavericks
+    sha256 "c1f2f8cdfe2414f9248d1992edc7d9cfa3c78b51ffdaaaec44c109cd2ba0a982" => :mountain_lion
+  end
+
   conflicts_with "eina", :because => "efl aggregates formerly distinct libs, one of which is eina"
   conflicts_with "evas", :because => "efl aggregates formerly distinct libs, one of which is evas"
   conflicts_with "eet", :because => "efl aggregates formerly distinct libs, one of which is eet"
