@@ -66,23 +66,22 @@ class Lua < Formula
     (lib+"pkgconfig/lua.pc").write pc_file
 
     # Fix some software potentially hunting for different pc names.
-    ln_s "#{bin}/lua", "#{bin}/lua5.2"
-    ln_s "#{bin}/lua", "#{bin}/lua-5.2"
-    ln_s "#{bin}/luac", "#{bin}/luac5.2"
-    ln_s "#{bin}/luac", "#{bin}/luac-5.2"
-    ln_s "#{include}", "#{include}/lua5.2"
-    ln_s "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.2.pc"
-    ln_s "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua-5.2.pc"
+    bin.install_symlink "lua" => "lua5.2"
+    bin.install_symlink "lua" => "lua-5.2"
+    bin.install_symlink "luac" => "luac5.2"
+    bin.install_symlink "luac" => "luac-5.2"
+    include.install_symlink include => "#{include}/lua5.2"
+    (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.2.pc"
+    (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.2.pc"
 
     # This resource must be handled after the main install, since there's a lua dep.
     # Keeping it in install rather than postinstall means we can bottle.
     if build.with? "luarocks"
       resource("luarocks").stage do
         ENV.prepend_path "PATH", bin
-        lua_prefix = prefix
 
         system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
-                              "--sysconfdir=#{etc}/luarocks52", "--with-lua=#{lua_prefix}",
+                              "--sysconfdir=#{etc}/luarocks52", "--with-lua=#{prefix}",
                               "--lua-version=5.2", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks52"
         system "make", "build"
         system "make", "install"
@@ -93,10 +92,10 @@ class Lua < Formula
 
         # This block ensures luarock exec scripts don't break across updates.
         inreplace libexec/"share/lua/5.2/luarocks/site_config.lua" do |s|
-          s.gsub! "#{HOMEBREW_CELLAR}/lua/#{pkg_version}/libexec", "#{Formula["lua"].opt_libexec}"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua/#{pkg_version}/include", "#{HOMEBREW_PREFIX}/include"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua/#{pkg_version}/lib", "#{HOMEBREW_PREFIX}/lib"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua/#{pkg_version}/bin", "#{HOMEBREW_PREFIX}/bin"
+          s.gsub! libexec.to_s, opt_libexec
+          s.gsub! include.to_s, "#{HOMEBREW_PREFIX}/include"
+          s.gsub! lib.to_s, "#{HOMEBREW_PREFIX}/lib"
+          s.gsub! bin.to_s, "#{HOMEBREW_PREFIX}/bin"
         end
       end
     end

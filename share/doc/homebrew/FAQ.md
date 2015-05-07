@@ -10,7 +10,7 @@ You can now find out what is outdated with:
 
 Upgrade everything with:
 
-    brew upgrade
+    brew upgrade --all
 
 Or upgrade a specific formula with:
 
@@ -57,7 +57,7 @@ and run `./uninstall --help` to view more uninstall options.
 ### How do I uninstall a formula?
 If you do not uninstall all of the versions that Homebrew has installed,
 Homebrew will continue to attempt to install the newest version it knows
-about when you do (`brew upgrade`). This can be surprising.
+about when you do (`brew upgrade --all`). This can be surprising.
 
 To remove a formula entirely, you may do
 (`brew uninstall formula_name --force`).

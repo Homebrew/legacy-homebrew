@@ -46,6 +46,14 @@ class Glib < Formula
     sha256 "d285c70cfd3434394a1c77c92a8d2bad540c954aad21e8bb83777482c26aab9a"
   end
 
+  # Fixes compilation with GCC 4.2.1 on OSX and BSD.
+  # Reported upstream: https://bugzilla.gnome.org/show_bug.cgi?id=744473
+  # Fixed upstream in commit 4a292721bcf2943bfc05c6a1c859992f28e3efec
+  patch do
+    url "https://git.gnome.org/browse/glib/patch/?id=4a292721bcf2943bfc05c6a1c859992f28e3efec"
+    sha256 "6a5b330c58e42c31fb025fb312740a7dc510c7d7d1205e88c9b13918da6da9f8"
+  end
+
   patch do
     url "https://gist.githubusercontent.com/jacknagel/9726139/raw/a351ea240dea33b15e616d384be0550f5051e959/universal.patch"
     sha256 "7e1ad7667c7d89fcd08950c9c32cd66eb9c8e2ee843f023d1fadf09a9ba39fee"

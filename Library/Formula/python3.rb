@@ -4,10 +4,10 @@ class Python3 < Formula
   sha256 "b5b3963533768d5fc325a4d7a6bd6f666726002d696f1d399ec06b043ea996b8"
 
   bottle do
-    revision 9
-    sha256 "27a35164b7fc00072e06e720659b81d4cd2d966871c0bb07edaf6f7bb79c887f" => :yosemite
-    sha256 "ddb288f138b379e99b29aa55300f801a625e3c65b6c6efb8bbc908777f57fda0" => :mavericks
-    sha256 "76d3e930c5166dba4ac5b3a941f558223921b70e4543fbe9447f8672b0013562" => :mountain_lion
+    revision 10
+    sha256 "06b2766a61cd2f1f97ca8f9db0ca1d0eb16f51b36703a7df959db15bc268031a" => :yosemite
+    sha256 "e6be6bed7233938bc22c1173f38c921c9f820e5c46dc969d85d5a479b3240c95" => :mavericks
+    sha256 "c92526adb9a3f07da1ab665a23e80f9e62ca38166b6eb9a0c18680f9feb4c6fc" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
@@ -18,10 +18,11 @@ class Python3 < Formula
   end
 
   option :universal
-  option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
+  option "with-tcl-tk", "Use Homebrew's Tk instead of OS X Tk (has optional Cocoa and threads support)"
   option "with-quicktest", "Run `make quicktest` after the build"
 
   deprecated_option "quicktest" => "with-quicktest"
+  deprecated_option "with-brewed-tk" => "with-tcl-tk"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -29,8 +30,8 @@ class Python3 < Formula
   depends_on "gdbm" => :recommended
   depends_on "openssl"
   depends_on "xz" => :recommended  # for the lzma module added in 3.3
-  depends_on "homebrew/dupes/tcl-tk" if build.with? "brewed-tk"
-  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
+  depends_on "homebrew/dupes/tcl-tk" => :optional
+  depends_on :x11 if build.with? "tcl-tk" and Tab.for_name("homebrew/dupes/tcl-tk").with? "x11"
 
   skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5"
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
@@ -48,7 +49,7 @@ class Python3 < Formula
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
   # so we have to stop python from searching for frameworks and linking against
   # X11.
-  patch :DATA if build.with? "brewed-tk"
+  patch :DATA if build.with? "tcl-tk"
 
   def lib_cellar
     prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}"
@@ -98,7 +99,25 @@ class Python3 < Formula
 
     args << "--without-gcc" if ENV.compiler == :clang
 
-    distutils_fix_superenv(args)
+    unless MacOS::CLT.installed?
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
+      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
+      cflags = "CFLAGS=-isysroot #{MacOS.sdk_path}"
+      ldflags = "LDFLAGS=-isysroot #{MacOS.sdk_path}"
+      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
+      if build.without? "tcl-tk"
+        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
+      end
+      args << cflags
+      args << ldflags
+    end
+    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
+    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+    # We want our readline! This is just to outsmart the detection code,
+    # superenv makes cc always find includes/libs!
+    inreplace "setup.py",
+              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
 
     if build.universal?
       ENV.universal_binary
@@ -116,7 +135,7 @@ class Python3 < Formula
       f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
-    if build.with? "brewed-tk"
+    if build.with? "tcl-tk"
       tcl_tk = Formula["tcl-tk"].opt_prefix
       ENV.append "CPPFLAGS", "-I#{tcl_tk}/include"
       ENV.append "LDFLAGS", "-L#{tcl_tk}/lib"
@@ -200,44 +219,36 @@ class Python3 < Formula
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
-    # And now we write the distutils.cfg
+    # Help distutils find brewed stuff when building extensions
+    include_dirs = [HOMEBREW_PREFIX/"include"]
+    library_dirs = [HOMEBREW_PREFIX/"lib"]
+
+    if build.with? "sqlite"
+      include_dirs << Formula["sqlite"].opt_include
+      library_dirs << Formula["sqlite"].opt_lib
+    end
+
+    if build.with? "tcl-tk"
+      include_dirs << Formula["homebrew/dupes/tcl-tk"].opt_include
+      library_dirs << Formula["homebrew/dupes/tcl-tk"].opt_lib
+    end
+
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
+
       [install]
       prefix=#{HOMEBREW_PREFIX}
+
+      [build_ext]
+      include_dirs=#{include_dirs.join ":"}
+      library_dirs=#{library_dirs.join ":"}
     EOF
   end
 
   def xy
     version.to_s.slice(/(3.\d)/) || "3.5"
-  end
-
-  def distutils_fix_superenv(args)
-    # To allow certain Python bindings to find brewed software (and sqlite):
-    sqlite = Formula["sqlite"].opt_prefix
-    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{sqlite}/include"
-    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{sqlite}/lib"
-    unless MacOS::CLT.installed?
-      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
-      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-      cflags += " -isysroot #{MacOS.sdk_path}"
-      ldflags += " -isysroot #{MacOS.sdk_path}"
-      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
-      if build.without? "brewed-tk"
-        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
-      end
-    end
-    args << cflags
-    args << ldflags
-    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
-    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
-    # We want our readline! This is just to outsmart the detection code,
-    # superenv makes cc always find includes/libs!
-    inreplace "setup.py",
-              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
   end
 
   def sitecustomize

@@ -86,20 +86,19 @@ class Lua51 < Formula
     mv "#{man1}/lua.1", "#{man1}/lua-5.1.1"
     mv "#{man1}/luac.1", "#{man1}/luac-5.1.1"
     mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
-    ln_s "#{lib}/pkgconfig/lua5.1.pc", "#{lib}/pkgconfig/lua-5.1.pc"
-    ln_s "#{include}/lua-5.1", "#{include}/lua5.1"
-    ln_s "#{bin}/lua-5.1", "#{bin}/lua5.1"
-    ln_s "#{bin}/luac-5.1", "#{bin}/luac5.1"
+    (lib/"pkgconfig").install_symlink "lua5.1.pc" => "lua-5.1.pc"
+    include.install_symlink "lua-5.1" => "lua5.1"
+    bin.install_symlink "lua-5.1" => "lua5.1"
+    bin.install_symlink "luac-5.1" => "luac5.1"
 
     # This resource must be handled after the main install, since there's a lua dep.
     # Keeping it in install rather than postinstall means we can bottle.
     if build.with? "luarocks"
       resource("luarocks").stage do
         ENV.prepend_path "PATH", bin
-        lua_prefix = prefix
 
         system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
-                              "--sysconfdir=#{etc}/luarocks51", "--with-lua=#{lua_prefix}",
+                              "--sysconfdir=#{etc}/luarocks51", "--with-lua=#{prefix}",
                               "--lua-version=5.1", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks51"
         system "make", "build"
         system "make", "install"
@@ -110,10 +109,10 @@ class Lua51 < Formula
 
         # This block ensures luarock exec scripts don't break across updates.
         inreplace libexec/"share/lua/5.1/luarocks/site_config.lua" do |s|
-          s.gsub! "#{HOMEBREW_CELLAR}/lua51/#{pkg_version}/libexec", "#{Formula["lua51"].opt_libexec}"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua51/#{pkg_version}/include", "#{HOMEBREW_PREFIX}/include"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua51/#{pkg_version}/lib", "#{HOMEBREW_PREFIX}/lib"
-          s.gsub! "#{HOMEBREW_CELLAR}/lua51/#{pkg_version}/bin", "#{HOMEBREW_PREFIX}/bin"
+          s.gsub! libexec.to_s, opt_libexec.to_s
+          s.gsub! include.to_s, "#{HOMEBREW_PREFIX}/include"
+          s.gsub! lib.to_s, "#{HOMEBREW_PREFIX}/lib"
+          s.gsub! bin.to_s, "#{HOMEBREW_PREFIX}/bin"
         end
       end
     end

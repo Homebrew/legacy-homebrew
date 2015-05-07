@@ -142,11 +142,12 @@ module Homebrew
       puts_result
 
       if has_output?
+        @output = fix_encoding(@output)
         puts @output if (failed? or @puts_output_on_success) && !verbose
         File.write(log_file_path, @output) if ARGV.include? "--keep-logs"
       end
 
-      exit 1 if ARGV.include?("--fail-fast") && @status == :failed
+      exit 1 if ARGV.include?("--fail-fast") && failed?
     end
 
     private
@@ -838,11 +839,6 @@ module Homebrew
     end
 
     if ARGV.include? "--junit"
-      unless RUBY_VERSION < "1.9"
-        Encoding.default_external = Encoding::UTF_8
-        Encoding.default_internal = Encoding::UTF_8
-      end
-
       xml_document = REXML::Document.new
       xml_document << REXML::XMLDecl.new
       testsuites = xml_document.add_element "testsuites"
