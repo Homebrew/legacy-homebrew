@@ -1,9 +1,9 @@
-require "formula"
-
 class Pgbadger < Formula
-  homepage "http://dalibo.github.io/pgbadger/"
-  url "https://downloads.sourceforge.net/project/pgbadger/6.2/pgbadger-6.2.tar.gz"
-  sha1 "46f6935ff746f8b2002009ebbcae60d23aaff8b3"
+  homepage "https://dalibo.github.io/pgbadger/"
+  url "https://downloads.sourceforge.net/project/pgbadger/6.4/pgbadger-6.4.tar.gz"
+  sha256 "a2a3b38e64c20b95d3ae395f93f41cda30492f844885a7ec5d5b2fbb090ec2f3"
+
+  head "https://github.com/dalibo/pgbadger.git"
 
   bottle do
     cellar :any
@@ -13,9 +13,9 @@ class Pgbadger < Formula
   end
 
   def install
-    system "perl", "Makefile.PL", "DESTDIR=."
+    system "perl", "Makefile.PL", "DESTDIR=#{buildpath}"
     system "make"
-    system "make install"
+    system "make", "install"
     bin.install "usr/local/bin/pgbadger"
     man1.install "usr/local/share/man/man1/pgbadger.1"
     chmod 0755, bin+"pgbadger" # has 555 by default
@@ -39,5 +39,14 @@ class Pgbadger < Formula
       log_temp_files = 0
       lc_messages = 'C'
     EOS
+  end
+
+  test do
+    (testpath/"server.log").write <<-EOS.undent
+      LOG:  autovacuum launcher started
+      LOG:  database system is ready to accept connections
+    EOS
+    system bin/"pgbadger", "-f", "syslog", "server.log"
+    File.exist? "out.html"
   end
 end
