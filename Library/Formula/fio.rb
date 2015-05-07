@@ -1,7 +1,8 @@
 class Fio < Formula
   homepage "http://freecode.com/projects/fio"
-  url "http://brick.kernel.dk/snaps/fio-2.2.5.tar.bz2"
-  sha1 "36b1bcbeee1d1d6c08a14a2f7cad289162e20e21"
+  url "http://brick.kernel.dk/snaps/fio-2.2.7.tar.bz2"
+  sha256 "6e3cd5bda0747e61cbfd42c7b3cfe044ea8981d8d3a486f0a2f2fafdb954296f"
+  head "git://git.kernel.dk/fio.git"
 
   bottle do
     cellar :any
