@@ -1,5 +1,3 @@
-require "formula"
-
 class Sslmate < Formula
   homepage "https://sslmate.com"
   url "https://packages.sslmate.com/other/sslmate-1.0.1.tar.gz"
@@ -20,22 +18,22 @@ class Sslmate < Formula
 
     resource "URI" do
       url "http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
-      mirror "http://search.mcpan.org/CPAN/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
-      sha1 "80b43be09119f65f87ac3ab947c1e1cf0e0d0a8a"
+      mirror "https://cpan.metacpan.org/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
+      sha1 "ab7f5fbc80da4ed9c46d63ed956c68a09e83dae30f20c2778c3e056d41883f9d"
     end
 
     resource "Term::ReadKey" do
       url "http://search.cpan.org/CPAN/authors/id/J/JS/JSTOWE/TermReadKey-2.32.tar.gz"
-      mirror "http://search.mcpan.org/CPAN/authors/id/J/JS/JSTOWE/TermReadKey-2.32.tar.gz"
-      sha1 "0aef1009fca526d3a2ee4336584ff4cd69c2396e"
+      mirror "https://cpan.metacpan.org/authors/id/J/JS/JSTOWE/TermReadKey-2.32.tar.gz"
+      sha256 "58b90e8908e686d03a161590c1dd870e8a1b005715ca8e6d5080a32459e1e9f8"
     end
   end
 
   if MacOS.version <= :mountain_lion
     resource "JSON::PP" do
       url "http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-PP-2.27300.tar.gz"
-      mirror "http://search.mcpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-PP-2.27300.tar.gz"
-      sha1 "21aea2dbed9507b9f62c5748893fc5431c715754"
+      mirror "https://cpan.metacpan.org/authors/id/M/MA/MAKAMAKA/JSON-PP-2.27300.tar.gz"
+      sha256 "5feef3067be4acd99ca0ebb29cf1ac1cdb338fe46977585bd1e473ea4bab71a3"
     end
   end
 
