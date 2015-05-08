@@ -1,9 +1,7 @@
-require "formula"
-
 class Quazip < Formula
   homepage "http://quazip.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/quazip/quazip/0.7/quazip-0.7.tar.gz"
-  sha1 "861ab4efc048fdb272161848bb8829848857ec97"
+  url "https://downloads.sourceforge.net/project/quazip/quazip/0.7.1/quazip-0.7.1.tar.gz"
+  sha256 "78c984103555c51e6f7ef52e3a2128e2beb9896871b2cc4d4dbd4d64bff132de"
 
   bottle do
     cellar :any
@@ -16,7 +14,7 @@ class Quazip < Formula
 
   def install
     # On Mavericks we want to target libc++, this requires a unsupported/macx-clang-libc++ flag
-    if ENV.compiler == :clang and MacOS.version >= :mavericks
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
       spec = "unsupported/macx-clang-libc++"
     else
       spec = "macx-g++"
