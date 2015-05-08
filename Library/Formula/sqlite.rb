@@ -21,7 +21,7 @@ class Sqlite < Formula
   option "with-unlock-notify", "Enable the unlock notification feature"
   option "with-icu4c", "Enable the ICU module"
   option "with-functions", "Enable more math and string functions for SQL queries"
-  option "with-dbstat", "Enable the \"dbstat\" virtual table"
+  option "with-dbstat", "Enable the 'dbstat' virtual table"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
