@@ -27,6 +27,6 @@ class Cppformat < Formula
                   "-I#{include}",
                   "-L#{lib}",
                   "-lformat"
-    assert_equal "The answer is 42", `./test`.strip
+    assert_equal "The answer is 42", shell_output("./test")
   end
 end
