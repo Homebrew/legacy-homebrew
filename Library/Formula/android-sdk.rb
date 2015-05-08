@@ -1,8 +1,8 @@
 class AndroidSdk < Formula
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.1.2-macosx.zip"
-  version "24.1.2"
-  sha256 "a4441a4770130aa841f350918a16db43aaee18f2d8e0c681a216e0381a763362"
+  url "https://dl.google.com/android/android-sdk_r24.2-macosx.zip"
+  version "24.2"
+  sha256 "9e0cd4844a696c555563a2daad5ff6731a4175b7a56f00c8f8dd831dbca9511b"
 
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
@@ -14,7 +14,7 @@ class AndroidSdk < Formula
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "21.1.2"
+    "22.0.1"
   end
 
   def install
