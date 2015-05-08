@@ -12,6 +12,7 @@ require 'requirements/ruby_requirement'
 require 'requirements/tuntap_dependency'
 require 'requirements/unsigned_kext_requirement'
 require 'requirements/x11_dependency'
+require 'requirements/emacs_requirement'
 
 class XcodeDependency < Requirement
   fatal true
