@@ -28,12 +28,18 @@ class Fontconfig < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",
-                          "--prefix=#{prefix}",
-                          "--localstatedir=#{var}",
-                          "--sysconfdir=#{etc}"
+
+    args = [
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
+      "--prefix=#{prefix}",
+      "--localstatedir=#{var}",
+      "--sysconfdir=#{etc}"
+    ]
+
+    args << "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts" if OS.mac?
+
+    system "./configure", *args
     system "make", "install", "RUN_FC_CACHE_TEST=false"
   end
 
