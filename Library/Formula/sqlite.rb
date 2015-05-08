@@ -1,7 +1,7 @@
 class Sqlite < Formula
   homepage "https://sqlite.org/"
   url "https://sqlite.org/2015/sqlite-autoconf-3081000.tar.gz"
-  sha256 "b864bf802584e54a881db4ab9c8fb54b51339b2dc2c66f97fbf88ae4ee052ff8"
+  sha256 "c4b8f9eefbdf0b9bef2044bdc3510c8a3f3b0ddb0489661fb433034187f5a428"
   version "3.8.10"
 
   bottle do
