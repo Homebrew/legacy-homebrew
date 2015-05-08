@@ -69,7 +69,7 @@ class Suricata < Formula
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
     # Leave the magic-file: prefix in otherwise it overrides a commented out line rather than intended line.
-    inreplace etc/"suricata/suricata.yaml", "magic-file: /usr/share/file/magic", "magic-file: #{libmagic.opt_share}/misc/magic"
+    inreplace etc/"suricata/suricata.yaml", %r{magic-file: /.+/magic}, "magic-file: #{libmagic.opt_share}/misc/magic"
   end
 
   test do
