@@ -5,7 +5,7 @@ class FormulaTests < Homebrew::TestCase
   def test_formula_instantiation
     klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
     name = "formula_name"
-    path = Formula.path(name)
+    path = Formulary.core_path(name)
     spec = :stable
 
     f = klass.new(name, path, spec)
@@ -174,7 +174,7 @@ class FormulaTests < Homebrew::TestCase
 
   def test_path
     name = 'foo-bar'
-    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formula.path(name)
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formulary.core_path(name)
   end
 
   def test_factory
