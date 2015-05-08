@@ -6,9 +6,9 @@ class Mosquitto < Formula
   sha1 "208ce5f01fcf25fff6b241b22add055ba2884822"
 
   bottle do
-    sha1 "85ed6685fb8efcf1aa909aaf50da8a843da819e0" => :yosemite
-    sha1 "a505a2071a526c7eb18ce82ca9cd64022f1b0294" => :mavericks
-    sha1 "a533fe55655eb71e3f104d36e52fecaaa1eb8ab0" => :mountain_lion
+    sha256 "5ddaaa8d6a3b1243e56a401352a30c98baac64912d727db4f1d863c91cde49d5" => :yosemite
+    sha256 "ebf06abb4e01eb008cc77ae09ae3ab2d593d4150398ebe5d25e0a08b0c80f4e5" => :mavericks
+    sha256 "120219f9750c23bc66635222c9f79a4434188fbdb046a5a43b8d1d350eb62bde" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
