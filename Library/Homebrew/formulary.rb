@@ -232,6 +232,13 @@ class Formulary
       return AliasLoader.new(possible_alias)
     end
 
+    possible_tap_formulae = tap_paths(ref)
+    if possible_tap_formulae.size > 1
+      raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
+    elsif possible_tap_formulae.size == 1
+      return FormulaLoader.new(ref, possible_tap_formulae.first)
+    end
+
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
     if possible_cached_formula.file?
       return FormulaLoader.new(ref, possible_cached_formula)
@@ -242,5 +249,13 @@ class Formulary
 
   def self.core_path(name)
     Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
+  end
+
+  def self.tap_paths(name)
+    name = name.downcase
+    Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
+      Pathname.glob(["#{tap}#{name}.rb", "#{tap}Formula/#{name}.rb",
+                     "#{tap}HomebrewFormula/#{name}.rb"])
+    end.flatten.select(&:file?)
   end
 end

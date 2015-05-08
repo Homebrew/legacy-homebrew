@@ -65,6 +65,25 @@ class TapFormulaUnavailableError < FormulaUnavailableError
   end
 end
 
+class TapFormulaAmbiguityError < RuntimeError
+  attr_reader :name, :paths, :formulae
+
+  def initialize name, paths
+    @name = name
+    @paths = paths
+    @formulae = paths.map do |path|
+      path.to_s =~ HOMEBREW_TAP_PATH_REGEX
+      "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+    end
+
+    super <<-EOS.undent
+      Formulae found in multiple taps: #{formulae.map { |f| "\n       * #{f}" }.join}
+
+      Please use the fully-qualified name e.g. #{formulae.first} to refer the formula.
+    EOS
+  end
+end
+
 class OperationInProgressError < RuntimeError
   def initialize name
     message = <<-EOS.undent
