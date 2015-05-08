@@ -14,6 +14,11 @@ class Geos < Formula
 
   option :universal
   option :cxx11
+  option "with-php", "Build the PHP extension"
+  option "with-python", "Build the Python extension"
+  option "with-ruby", "Build the ruby extension"
+
+  depends_on "swig" => :build if build.with?("python") || build.with?("ruby")
 
   fails_with :llvm
 
@@ -21,7 +26,16 @@ class Geos < Formula
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+    ]
+
+    args << "--enable-php" if build.with?("php")
+    args << "--enable-python" if build.with?("python")
+    args << "--enable-ruby" if build.with?("ruby")
+
+    system "./configure", *args
     system "make", "install"
   end
 
