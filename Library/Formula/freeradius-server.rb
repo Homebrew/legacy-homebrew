@@ -1,10 +1,10 @@
 class FreeradiusServer < Formula
   homepage "http://freeradius.org/"
-  revision 2
 
   stable do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.6.tar.gz"
-    sha1 "25b0a057b1fffad5a030946e8af0c6170e5cdf46"
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.7.tar.bz2"
+    mirror "http://ftp.cc.uoc.gr/mirrors/ftp.freeradius.org/freeradius-server-2.2.7.tar.bz2"
+    sha256 "6b0af62ded0fda9bb24aee568c3bc9e5f0c0b736530df3c1260e2b6085f2e5f9"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -12,8 +12,9 @@ class FreeradiusServer < Formula
   end
 
   devel do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.7.tar.bz2"
-    sha1 "d3fda2c4baa79fa72942fc77a33aa30e308d31a9"
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.8.tar.bz2"
+    mirror "http://ftp.cc.uoc.gr/mirrors/ftp.freeradius.org/freeradius-server-3.0.8.tar.bz2"
+    sha256 "b89721c609e5a106936112fe8122e470f02a5197bb614e202d2c386f4821d902"
     depends_on "talloc" => :build
   end
 
