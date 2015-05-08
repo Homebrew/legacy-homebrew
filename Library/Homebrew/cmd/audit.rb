@@ -234,7 +234,7 @@ class FormulaAuditor
     end
   end
 
-  def audit_urls
+  def audit_homepage
     homepage = formula.homepage
 
     unless homepage =~ %r[^https?://]
@@ -685,7 +685,7 @@ class FormulaAuditor
     audit_file
     audit_class
     audit_specs
-    audit_urls
+    audit_homepage
     audit_deps
     audit_java_home
     audit_conflicts
