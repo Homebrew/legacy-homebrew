@@ -662,11 +662,12 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path == Formula.path(name)
+    path == Formulary.core_path(name)
   end
 
+  # @deprecated
   def self.path name
-    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
+    Formulary.core_path(name)
   end
 
   def env
