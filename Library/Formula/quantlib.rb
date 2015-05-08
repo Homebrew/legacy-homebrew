@@ -1,9 +1,15 @@
-require 'formula'
-
 class Quantlib < Formula
-  homepage 'http://quantlib.org/'
-  url 'https://downloads.sourceforge.net/project/quantlib/QuantLib/1.4/QuantLib-1.4.tar.gz'
-  sha1 'f31f4651011a8e38e8b2cc6c457760fe61863391'
+  homepage "http://quantlib.org/"
+  url "https://downloads.sourceforge.net/project/quantlib/QuantLib/1.5/QuantLib-1.5.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/q/quantlib/quantlib_1.5.orig.tar.gz"
+  sha256 "bc4edcc3ace5b0668f8f75af9834fb0c04b0a0a1b79ec9338a9e5e2f1ccebd33"
+
+  head do
+    url "https://github.com/lballabio/quantlib.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -16,22 +22,23 @@ class Quantlib < Formula
   option :cxx11
 
   if build.cxx11?
-    depends_on 'boost' => 'c++11'
+    depends_on "boost" => "c++11"
   else
-    depends_on 'boost'
-  end
-
-  # boost 1.57 compatibility; backported from master
-  # https://github.com/lballabio/quantlib/issues/163
-  patch do
-    url "https://gist.githubusercontent.com/tdsmith/b2d5909db67b3173db02/raw/364ae3a09eb1dbb8bd14a2b71d42fda0b4e0d8cc/quantlib-boost-157.diff"
-    sha1 "2ddc873bfb1baf33c7fc587211c281600ddfa182"
+    depends_on "boost"
   end
 
   def install
     ENV.cxx11 if build.cxx11?
+    if build.head?
+      Dir.chdir "QuantLib"
+      system "./autogen.sh"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    system bin/"quantlib-config", "--prefix=#{prefix}", "--libs", "--cflags"
   end
 end
