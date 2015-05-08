@@ -1,9 +1,7 @@
-require "formula"
-
 class Fuse4xKext < Formula
-  homepage "http://fuse4x.github.io"
+  homepage "https://fuse4x.github.io"
   url "https://github.com/fuse4x/kext/archive/fuse4x_0_9_2.tar.gz"
-  sha1 "4222c14b38325d9e41fb0925d2681dda3e73e861"
+  sha256 "d4072d9110c7990c9b4ced4d4a37cbca278d8569ea566732c0533fad3b69116d"
 
   bottle do
     cellar :any
@@ -33,8 +31,8 @@ class Fuse4xKext < Formula
     ]
 
     xcodebuild *args
-    system "/bin/mkdir -p build/Release/fuse4x.kext/Support"
-    system "/bin/cp build/Release/load_fuse4x build/Release/fuse4x.kext/Support"
+    system "/bin/mkdir", "-p", "build/Release/fuse4x.kext/Support"
+    system "/bin/cp", "build/Release/load_fuse4x", "build/Release/fuse4x.kext/Support"
 
     kext_prefix.install "build/Release/fuse4x.kext"
   end
