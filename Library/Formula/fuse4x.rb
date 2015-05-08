@@ -1,9 +1,7 @@
-require "formula"
-
 class Fuse4x < Formula
-  homepage "http://fuse4x.github.io"
+  homepage "https://fuse4x.github.io"
   url "https://github.com/fuse4x/fuse/archive/fuse4x_0_9_2.tar.gz"
-  sha1 "3a9700f716eff930dcd2426772c642a09adcc73a"
+  sha256 "f51b2be4223fb811b30eab215d6bd7f5db50f8eba60e091d446fec4a3de382f7"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
