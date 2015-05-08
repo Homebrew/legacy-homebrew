@@ -13,7 +13,6 @@ class Sgrep < Formula
 
   test do
     input = test_fixtures("test.eps")
-    output = `#{bin}/sgrep -c '"mark"' #{input}`
-    assert_equal "2", output.strip
+    assert_equal "2", shell_output("#{bin}/sgrep -c '\"mark\"' #{input}").strip
   end
 end
