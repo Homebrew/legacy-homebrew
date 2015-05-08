@@ -321,8 +321,15 @@ class FormulaAuditor
       problem "\"http://ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
+    mirrors = @specs.map(&:mirrors).flatten
+    dupes = urls & mirrors
+
+    dupes.each do |dupe|
+      problem "URL should not be duplicated as a mirror: #{dupe}"
+    end
+
     # the rest of the checks apply to mirrors as well.
-    urls.concat(@specs.map(&:mirrors).flatten)
+    urls += mirrors
 
     # Check a variety of SSL/TLS links that don't consistently auto-redirect
     # or are overly common errors that need to be reduced & fixed over time.
