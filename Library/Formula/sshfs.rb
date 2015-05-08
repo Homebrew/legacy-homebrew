@@ -33,7 +33,7 @@ class Sshfs < Formula
     system "./configure", *args
     system "make", "install"
   end
-  
+
   test do
     system "${bin}/sshfs", "--version"
   end
