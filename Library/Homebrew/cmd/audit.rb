@@ -863,6 +863,8 @@ class ResourceAuditor
         problem "Bintray urls should be https://, not http (url is #{p})."
       when %r[^http://tools\.ietf\.org/]
         problem "ietf urls should be https://, not http (url is #{p})."
+      when %r[^http://search\.mcpan\.org/CPAN/(.*)]i
+        problem "MetaCPAN url should be `https://cpan.metacpan.org/#{$1}` (url is #{p})."
       end
     end
 
