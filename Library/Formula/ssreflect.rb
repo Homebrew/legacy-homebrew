@@ -5,7 +5,7 @@ class Ssreflect < Formula
   url "http://ssr.msr-inria.inria.fr/FTP/ssreflect-1.5.tar.gz"
   sha1 "131f4e2746b4a97627ae91a9f980f61ec42a00c9"
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "coq"
 
   option "with-doc", "Install HTML documents"

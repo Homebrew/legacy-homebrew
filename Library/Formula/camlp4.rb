@@ -12,7 +12,7 @@ class Camlp4 < Formula
     sha1 "68c208492b208b060b66418e77dedc059796c2b2" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
 
   def install
     # this build fails if jobs are parallelized

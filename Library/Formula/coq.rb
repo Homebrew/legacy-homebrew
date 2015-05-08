@@ -21,7 +21,7 @@ class Coq < Formula
   head "git://scm.gforge.inria.fr/coq/coq.git"
 
   depends_on TransitionalMode
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "camlp5"
 
   def install

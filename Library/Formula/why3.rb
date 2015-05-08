@@ -9,7 +9,7 @@ class Why3 < Formula
     sha1 "a6b08c8f3b78fd3c0bba978ef59a03dd701f85f3" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "coq" => :optional
   depends_on "lablgtk" => :optional
   depends_on "hevea" => [:build, :optional]

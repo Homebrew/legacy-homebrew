@@ -12,7 +12,7 @@ class Camlp5 < Formula
     sha1 "73d8bd3f7848902360e171b425a8e807a512d449" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
 
   option "strict", "Compile in strict mode"
 

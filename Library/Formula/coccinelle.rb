@@ -11,7 +11,7 @@ class Coccinelle < Formula
     sha1 "ef567b84ce5bd101e3993e162855e4e88d1f3600" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "camlp4"
 
   def install

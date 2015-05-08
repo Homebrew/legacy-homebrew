@@ -5,7 +5,7 @@ class Compcert < Formula
   url "http://compcert.inria.fr/release/compcert-2.4.tgz"
   sha1 "065eef31d1a59547fb3275ba7566867757b176f6"
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
   depends_on "coq" => :build
   depends_on "menhir" => :build
 
