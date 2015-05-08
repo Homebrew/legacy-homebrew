@@ -21,7 +21,7 @@ class Librdkafka < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-lrdkafka", "-lz", "-lpthread", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-lrdkafka", "-lz", "-lpthread", "-o", "test"
     system "./test"
   end
 end
