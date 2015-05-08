@@ -46,7 +46,7 @@ module Homebrew
       begin
         Formulary.factory(n)
       rescue Exception => e
-        onoe "problem in #{Formula.path(n)}"
+        onoe "problem in #{Formulary.path(n)}"
         puts e
         Homebrew.failed = true
       end
