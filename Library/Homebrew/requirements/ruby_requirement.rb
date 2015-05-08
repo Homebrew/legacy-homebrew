@@ -10,7 +10,7 @@ class RubyRequirement < Requirement
 
   satisfy :build_env => false do
     next unless which "ruby"
-    version = /\d\.\d/.match `ruby --version 2>&1`
+    version = /\d\.\d/.match Utils.popen_read("ruby", "--version")
     next unless version
     Version.new(version.to_s) >= Version.new(@version)
   end
@@ -20,9 +20,7 @@ class RubyRequirement < Requirement
   end
 
   def message
-    version_string = " #{@version}" if @version
-
-    s = "Ruby#{version_string} is required to install this formula."
+    s = "Ruby #{@version} is required to install this formula."
     s += super
     s
   end
