@@ -1,6 +1,5 @@
 class FreeradiusServer < Formula
   homepage "http://freeradius.org/"
-  revision 2
 
   stable do
     url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.7.tar.bz2"
