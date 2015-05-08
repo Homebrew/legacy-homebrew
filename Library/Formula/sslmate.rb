@@ -19,7 +19,7 @@ class Sslmate < Formula
     resource "URI" do
       url "http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
       mirror "https://cpan.metacpan.org/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
-      sha1 "ab7f5fbc80da4ed9c46d63ed956c68a09e83dae30f20c2778c3e056d41883f9d"
+      sha256 "ab7f5fbc80da4ed9c46d63ed956c68a09e83dae30f20c2778c3e056d41883f9d"
     end
 
     resource "Term::ReadKey" do
@@ -42,7 +42,7 @@ class Sslmate < Formula
 
     resource "boto" do
       url "https://pypi.python.org/packages/source/b/boto/boto-2.34.0.tar.gz"
-      sha1 "e19d252b58054a7711fae910324e26b2b551a44d"
+      sha256 "33baab022ecb803414ad0d6cf4041d010cfc2755ff8acc3bea7b32e77ba98be0"
     end
   end
 
