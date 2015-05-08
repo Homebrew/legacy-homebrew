@@ -32,7 +32,7 @@ module Homebrew
 
     formulae = []
     if ARGV.named.empty?
-      formulae = Formula.names
+      formulae = Formula.full_names
     else
       user, repo = tap_args
       user.downcase!
