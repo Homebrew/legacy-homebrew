@@ -182,7 +182,7 @@ class Formulary
 
   class NullLoader < FormulaLoader
     def initialize(name)
-      super name, Formula.path(name)
+      super name, Formulary.core_path(name)
     end
 
     def get_formula(spec)
@@ -222,7 +222,7 @@ class Formulary
       return FromPathLoader.new(ref)
     end
 
-    formula_with_that_name = Formula.path(ref)
+    formula_with_that_name = core_path(ref)
     if formula_with_that_name.file?
       return FormulaLoader.new(ref, formula_with_that_name)
     end
@@ -238,5 +238,9 @@ class Formulary
     end
 
     return NullLoader.new(ref)
+  end
+
+  def self.core_path(name)
+    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
   end
 end
