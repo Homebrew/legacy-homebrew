@@ -107,7 +107,7 @@ class Formulary
         name = name_without_version
       end
 
-      super name, Formula.path(name)
+      super name, Formulary.path(name)
     end
 
     def get_formula(spec)
