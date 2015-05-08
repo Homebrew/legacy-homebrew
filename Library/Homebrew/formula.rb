@@ -603,13 +603,35 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
+  # an array of all core {Formula} names
+  def self.core_names
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
+  end
+
+  # an array of all tap {Formula} names
+  def self.tap_names
+    names = []
+    Pathname.glob("#{HOMEBREW_LIBRARY}/Taps/*/*/") do |tap|
+      tap.find_formula do |formula|
+        formula.to_s =~ HOMEBREW_TAP_PATH_REGEX
+        names << "#{$1}/#{$2.gsub(/^homebrew-/, "")}/#{formula.basename(".rb")}"
+      end
+    end
+    names.sort
+  end
+
   # an array of all {Formula} names
   def self.names
-    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+    (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+  end
+
+  # an array of all {Formula} names, which the tap formulae have the fully-qualified name
+  def self.full_names
+    core_names + tap_names
   end
 
   def self.each
-    names.each do |name|
+    full_names.each do |name|
       begin
         yield Formulary.factory(name)
       rescue StandardError => e
