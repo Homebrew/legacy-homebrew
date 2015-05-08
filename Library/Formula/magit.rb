@@ -5,9 +5,9 @@ class Magit < Formula
 
   bottle do
     cellar :any
-    sha1 "0c988c206dc40f76695c0b94bc930d6b2e4aefe0" => :yosemite
-    sha1 "8d43e307fcbda7378087875f1b3296c0fc9aad20" => :mavericks
-    sha1 "f13c6aab177ce0c9e9d90d4197f7719d92925b93" => :mountain_lion
+    sha256 "7cc9075b7384022feafc41cc993788491771e4d24c6a3b7e92618feffb95c281" => :yosemite
+    sha256 "f4d97a2e79c5ea3b56ebb895fa8c6330d2256ad2d1f5d2b0de8255ed622751c1" => :mavericks
+    sha256 "e4db292d7cc955b343cbacec8e0d1ed02195b4e0992945cff0bac38ce6c7ea32" => :mountain_lion
   end
 
   # see https://github.com/magit/magit/tree/master#its-magit--a-git-porcelain-inside-emacs
