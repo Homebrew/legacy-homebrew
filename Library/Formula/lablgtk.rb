@@ -14,7 +14,7 @@ class Lablgtk < Formula
   depends_on 'pkg-config' => :build
   depends_on 'camlp4' => :build
   depends_on :x11
-  depends_on 'objective-caml'
+  depends_on 'ocaml'
   depends_on 'gtk+'
   depends_on 'librsvg'
 

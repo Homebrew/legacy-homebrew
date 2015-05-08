@@ -8,7 +8,7 @@ class Mldonkey < Formula
   deprecated_option "with-x" => "with-x11"
 
   depends_on 'pkg-config' => :build
-  depends_on 'objective-caml'
+  depends_on 'ocaml'
   depends_on 'gd'
   depends_on 'libpng'
   depends_on :x11 => :optional

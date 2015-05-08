@@ -2,7 +2,7 @@ require 'formula'
 
 class Unison < Formula
   homepage 'http://www.cis.upenn.edu/~bcpierce/unison/'
-  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz'
+  url 'http://www.seas.upenn.edu/~bcpierce/unison/download/releases/stable/unison-2.48.3.tar.gz'
   sha1 '74f1c087ee49dc1db4680ad779280f7333d5c968'
 
   bottle do
@@ -12,7 +12,7 @@ class Unison < Formula
     sha1 "0d83d72a11c558eec59ae9aa20476165dc56cb85" => :mountain_lion
   end
 
-  depends_on 'objective-caml' => :build
+  depends_on 'ocaml' => :build
 
   def install
     ENV.j1
