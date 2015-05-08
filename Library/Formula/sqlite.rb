@@ -1,8 +1,8 @@
 class Sqlite < Formula
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2015/sqlite-autoconf-3080900.tar.gz"
-  sha256 "76ebb6392cd2289fbff903af7ff67f3e49bd01ff30544b8028ecededd60269a2"
-  version "3.8.9"
+  url "https://sqlite.org/2015/sqlite-autoconf-3081000.tar.gz"
+  sha256 "c4b8f9eefbdf0b9bef2044bdc3510c8a3f3b0ddb0489661fb433034187f5a428"
+  version "3.8.10"
 
   bottle do
     cellar :any
@@ -21,6 +21,7 @@ class Sqlite < Formula
   option "with-unlock-notify", "Enable the unlock notification feature"
   option "with-icu4c", "Enable the ICU module"
   option "with-functions", "Enable more math and string functions for SQL queries"
+  option "with-dbstat", "Enable the 'dbstat' virtual table"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
@@ -32,9 +33,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://sqlite.org/2015/sqlite-doc-3080900.zip"
-    version "3.8.9"
-    sha256 "aeeb5b9a410c3efabaccb13860dd04e3dbdfcd75e9f05fcb5c2a41d3a1f8f296"
+    url "https://sqlite.org/2015/sqlite-doc-3081000.zip"
+    version "3.8.10"
+    sha256 "ef94f17493c93be9f7f4884e0599eb2182ef45e075ab0048cd3c98246d872edd"
   end
 
   def install
@@ -43,6 +44,7 @@ class Sqlite < Formula
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA"
     ENV.append "CPPFLAGS", "-DSQLITE_SECURE_DELETE" if build.with? "secure-delete"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_UNLOCK_NOTIFY" if build.with? "unlock-notify"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_DBSTAT_VTAB" if build.with? "dbstat"
 
     if build.with? "icu4c"
       icu4c = Formula["icu4c"]
