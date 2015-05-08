@@ -1,5 +1,5 @@
 class DnscryptWrapper < Formula
-  homepage "http://cofyc.github.io/dnscrypt-wrapper/"
+  homepage "https://cofyc.github.io/dnscrypt-wrapper/"
   url "https://github.com/Cofyc/dnscrypt-wrapper/releases/download/v0.1.15/dnscrypt-wrapper-v0.1.15.tar.bz2"
   sha256 "d486f3f923c6809c830e9db39290b0f44b1683f63f8bd3aeaa6225c64af232c1"
   head "https://github.com/Cofyc/dnscrypt-wrapper.git"
