@@ -6,10 +6,8 @@ class Points2grid < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "6e0f817d0a1c5fa15d88115df5ab2ffd65f86eb3" => :yosemite
-    sha1 "d02a43cb757016963afcca41c7fd610ad420f846" => :mavericks
-    sha1 "e89c8c18c41162ce30078bd93cd80509d471047f" => :mountain_lion
+    sha256 "6e840a87ecf89f094ba9a5d6b6ba04be42c82a0b2a8946d199f4d75ea1e8fecd" => :yosemite
+    sha256 "65a1c03a002aef1c5ec7a921494b519bad37dfbadfebf42a6e4a1bc6a902fa27" => :mavericks
   end
 
   depends_on "cmake" => :build
