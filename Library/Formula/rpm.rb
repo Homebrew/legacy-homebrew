@@ -68,7 +68,7 @@ class Rpm < Formula
     system "make install"
   end
 
-  def spec
+  def test_spec
     <<-EOS.undent
       Summary:   Test package
       Name:      test
@@ -104,7 +104,7 @@ class Rpm < Formula
     rpmdir('%_builddir').mkpath
     specfile = rpmdir('%_specdir')+'test.spec'
     specfile.unlink if specfile.exist?
-    (specfile).write(spec)
+    (specfile).write(test_spec)
     system "#{bin}/rpmbuild", "-ba", specfile
   end
 end
