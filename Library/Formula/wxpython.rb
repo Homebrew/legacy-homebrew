@@ -1,5 +1,3 @@
-require "formula"
-
 class FrameworkPython < Requirement
   fatal true
 
@@ -30,8 +28,16 @@ class Wxpython < Formula
   end
   depends_on "wxmac"
 
+  option :universal
+
   def install
     ENV["WXWIN"] = buildpath
+
+    if build.universal?
+      ENV.universal_binary
+    else
+      ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
+    end
 
     args = [
       "WXPORT=osx_cocoa",
@@ -45,20 +51,11 @@ class Wxpython < Formula
       # OpenGL and stuff
       "BUILD_GLCANVAS=1",
       "BUILD_GIZMOS=1",
-      "BUILD_STC=1"
+      "BUILD_STC=1",
     ]
 
     cd "wxPython" do
-      ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
-
-      system "python", "setup.py",
-                     "build_ext",
-                     *args
-
-      system "python", "setup.py",
-                     "install",
-                     "--prefix=#{prefix}",
-                     *args
+      system "python", "setup.py", "install", "--prefix=#{prefix}", *args
     end
   end
 end
