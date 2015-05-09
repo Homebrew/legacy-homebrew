@@ -59,13 +59,19 @@ class Passpie < Formula
   end
 
   test do
+    system "passpie", "--help"
     system "passpie", "--version"
     system "passpie", "-D", "temp_db", "init", "--passphrase", "s3cr3t"
     system "passpie", "-D", "temp_db", "add", "foo@bar", "--random"
+    system "passpie", "-D", "temp_db", "add", "spam@egg", "--random"
     system "passpie", "-D", "temp_db", "update", "foo@bar", "--comment", "dummy comment"
     system "passpie", "-D", "temp_db", "export", "passwords.db", "--passphrase", "s3cr3t"
     system "passpie", "-D", "temp_db", "remove", "-y", "foo@bar"
+    system "passpie", "-D", "temp_db", "remove", "-y", "spam@egg"
     system "passpie", "-D", "temp_db", "import", "passwords.db"
     system "passpie", "-D", "temp_db", "copy", "foo@bar", "--passphrase", "s3cr3t"
+    system "passpie", "-D", "temp_db", "init", "--force", "--passphrase", "s3cr3t"
+    system "passpie", "-D", "temp_db", "add", "foo@bar", "--password", "sup3r p4ssw0rd"
+    system "passpie", "-D", "temp_db", "status", "--passphrase", "s3cr3t"
   end
 end
