@@ -22,6 +22,6 @@ class Glew < Formula
   end
 
   test do
-    assert_equal "GLEW version 1.12.0", shell_output("#{bin}/glewinfo | grep \"GLEW version\"").strip
+    assert_match /#{version}/, shell_output("#{bin}/glewinfo")
   end
 end
