@@ -4,8 +4,8 @@ class PandocCiteproc < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/jgm/pandoc-citeproc"
-  url "https://hackage.haskell.org/package/pandoc-citeproc-0.6/pandoc-citeproc-0.6.tar.gz"
-  sha1 "5236b4b4e201f94ab9f1bcd0d7e81c4271b46e8f"
+  url "https://hackage.haskell.org/package/pandoc-citeproc-0.7/pandoc-citeproc-0.7.tar.gz"
+  sha1 "797a604e1626f61973876f10277e9935f39822fd"
 
   bottle do
     revision 1
