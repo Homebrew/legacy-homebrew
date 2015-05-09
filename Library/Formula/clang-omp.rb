@@ -36,12 +36,23 @@ class ClangOmp < Formula
     (buildpath/"tools/clang").install resource("clang")
     (buildpath/"projects/libcxx").install resource "libcxx"
 
-    system "./configure", "--prefix=#{libexec}", "--enable-cxx11", "--enable-libcpp"
-    system "make"
-    system "make", "install"
+    args = %W[
+      -DCMAKE_INSTALL_PREFIX=#{libexec}
+      -DC_INCLUDE_DIRS=#{Formula["libiomp"].opt_include}/libiomp:#{libexec}/include/c++/v1:#{libexec}/usr/include:/usr/include
+      -DLLVM_ENABLE_LIBCXX=ON
+      -DCMAKE_BUILD_TYPE=Release
+      -DCMAKE_CXX_FLAGS=-mmacosx-version-min=#{MacOS.version}
+    ]
 
-    system "make", "-C", "projects/libcxx", "install",
-      "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
+    mktemp do
+      system "cmake", buildpath, *(std_cmake_args + args)
+      system "make"
+      system "make", "install"
+    end
+
+    system "make", "-C", "#{buildpath}/projects/libcxx", "install",
+      "DSTROOT=#{libexec}", "SYMROOT=#{buildpath}/projects/libcxx",
+      "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
 
     bin.install_symlink libexec/"bin/clang" => "clang-omp"
     bin.install_symlink libexec/"bin/clang" => "clang-omp++"
@@ -51,7 +62,7 @@ class ClangOmp < Formula
     testfile = <<-EOS.undent
       #include <stdlib.h>
       #include <stdio.h>
-      #include <libiomp/omp.h>
+      #include <omp.h>
 
       int main() {
           #pragma omp parallel num_threads(4)
