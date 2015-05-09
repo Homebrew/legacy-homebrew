@@ -1,7 +1,7 @@
 class Mariadb < Formula
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.18/source/mariadb-10.0.18.tar.gz"
-  sha256 "686fee90aaa04a112256d1581336fee734f2d1068784be57a27683ca421a9af5"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.19/source/mariadb-10.0.19.tar.gz"
+  sha256 "2fbf5e5d7d8094691601ece8ae60b941478d73c98a58a960aeebfa021091a132"
 
   bottle do
     sha256 "859db2bd59232b05c04d14a28e8d2aee4a3d5d3ed434514adddd37e898b033e7" => :yosemite
