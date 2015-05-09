@@ -1,9 +1,7 @@
-require "formula"
-
 class OpenalSoft < Formula
   homepage "http://kcat.strangesoft.net/openal.html"
   url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.16.0.tar.bz2"
-  sha1 "f70892fc075ae726320478c0179f7011fea0d157"
+  sha256 "2f3dcd313fe26391284fbf8596863723f99c65d6c6846dccb48e79cadaf40d5f"
 
   bottle do
     cellar :any
@@ -14,7 +12,12 @@ class OpenalSoft < Formula
 
   option :universal
 
+  depends_on "pkg-config" => :build
   depends_on "cmake" => :build
+  depends_on "portaudio" => :optional
+  depends_on "pulseaudio" => :optional
+  depends_on "fluid-synth" => :optional
+  depends_on "qt" => :optional
 
   # llvm-gcc does not support the alignas macro
   # clang 4.2's support for alignas is incomplete
@@ -23,7 +26,17 @@ class OpenalSoft < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "cmake", ".", *std_cmake_args
+
+    # Please don't reenable example building. See:
+    # https://github.com/Homebrew/homebrew/issues/38274
+    args = std_cmake_args
+    args << "-DALSOFT_EXAMPLES=OFF"
+
+    args << "-DALSOFT_BACKEND_PORTAUDIO=OFF" if build.without? "portaudio"
+    args << "-DALSOFT_BACKEND_PULSEAUDIO=OFF" if build.without? "pulseaudio"
+    args << "-DALSOFT_MIDI_FLUIDSYNTH=OFF" if build.without? "fluid-synth"
+
+    system "cmake", ".", *args
     system "make", "install"
   end
 
