@@ -1,7 +1,8 @@
 class AprUtil < Formula
   homepage "https://apr.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=apr/apr-util-1.5.4.tar.bz2"
-  sha1 "b00038b5081472ed094ced28bcbf2b5bb56c589d"
+  url "https://www.apache.org/dyn/closer.cgi?path=apr/apr-util-1.5.4.tar.bz2"
+  sha256 "a6cf327189ca0df2fb9d5633d7326c460fe2b61684745fd7963e79a6dd0dc82e"
+  revision 1
 
   bottle do
     sha1 "c0807fd64a46a6c0d1dfd3e3a5cfff3812356251" => :yosemite
