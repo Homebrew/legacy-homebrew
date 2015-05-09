@@ -1,23 +1,14 @@
-require "formula"
-
 class Neko < Formula
   homepage "http://nekovm.org"
+  # revision includes recent parameterized build targets for mac.  Use a :tag
+  # on the next release
+  url "https://github.com/HaxeFoundation/neko.git", :revision => "22c49a89b56b9f106d7162710102e9475227e882"
+  version "2.0.0-22c49a8"
+  revision 2
+
   head "https://github.com/HaxeFoundation/neko.git"
-  revision 1
-
-  stable do
-    # revision includes recent parameterized build targets for mac.  Use a :tag
-    # on the next release
-    url "https://github.com/HaxeFoundation/neko.git", :revision => "6ab8f48a8dc62e4d917b599b3d8c8e10f764f839"
-    version "2.0.0-6ab8f48"
-
-    # Revisit with each stable release. Could be a while though.
-    depends_on MaximumMacOSRequirement => :mavericks
-  end
 
   bottle do
-    sha1 "3ef70ebed2f81e523da90926ec1900e23a7cfa40" => :mavericks
-    sha1 "5b42966d7ff146962b8722b41e6ed11ddcbee77c" => :mountain_lion
   end
 
   depends_on "bdw-gc"
