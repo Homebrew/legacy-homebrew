@@ -15,7 +15,8 @@ class Gpsim < Formula
   patch :DATA
 
   def install
-    system "./configure", "--disable-gui",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-gui",
                           "--disable-shared",
                           "--prefix=#{prefix}"
     system "make all"
