@@ -4,7 +4,7 @@ class Passpie < Formula
   sha256 "be25cffe99ecf19e7a239139ab5e2b8b1f3bb50e22431dd19a0e19ac31c59c49"
   head "https://github.com/marcwebbie/passpie.git"
 
-  depends_on :python3
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on :gpg
 
   resource "PyYAML" do
