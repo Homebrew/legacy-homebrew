@@ -36,7 +36,7 @@ class ClangOmp < Formula
     (buildpath/"tools/clang").install resource("clang")
     (buildpath/"projects/libcxx").install resource "libcxx"
 
-    system "./configure", "--prefix=#{libexec}", "--enable-cxx11", "--enable-libcpp", "--with-c-include-dirs=#{Formula["libiomp"].opt_prefix}/include/libiomp"
+    system "./configure", "--prefix=#{libexec}", "--enable-cxx11", "--enable-libcpp", "--with-c-include-dirs=#{Formula["libiomp"].opt_include}/libiomp"
     system "make"
     system "make", "install"
 
@@ -51,7 +51,7 @@ class ClangOmp < Formula
     testfile = <<-EOS.undent
       #include <stdlib.h>
       #include <stdio.h>
-      #include <libiomp/omp.h>
+      #include <omp.h>
 
       int main() {
           #pragma omp parallel num_threads(4)
