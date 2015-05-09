@@ -37,7 +37,7 @@ class Rpm < Formula
         --localstatedir=#{var}
         --with-path-cfg=#{etc}/rpm
         --with-path-magic=#{HOMEBREW_PREFIX}/share/misc/magic
-        --with-path-sources=#{HOMEBREW_PREFIX}/var/lib/rpmbuild
+        --with-path-sources=#{var}/lib/rpmbuild
         --with-libiconv-prefix=/usr
         --disable-openmp
         --disable-nls
