@@ -7,9 +7,9 @@ class BoostBcp < Formula
 
   bottle do
     cellar :any
-    sha1 "a43b921395070e10dd093ea1dcdced6013479a0c" => :yosemite
-    sha1 "9ce5c7870fdf63caa0677e7cfd666755707bb9bf" => :mavericks
-    sha1 "eb29007192552cd6149a8e1fecaf28d49edf6d5f" => :mountain_lion
+    sha256 "ac4b08d1bd2ccc2d4adaf877f325eccd85d8c588e12d407374c08007c7ce2605" => :yosemite
+    sha256 "0150fea4a1d5c67d916754502088ac8f12c5386ced91712d614cdaaaeaadef0d" => :mavericks
+    sha256 "00d5d63073f6a5fe6f42822f617835e84164ff875537504b275ca072b42f67bf" => :mountain_lion
   end
 
   depends_on "boost-build" => :build
