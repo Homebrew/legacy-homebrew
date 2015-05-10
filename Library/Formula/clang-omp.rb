@@ -5,10 +5,10 @@ class ClangOmp < Formula
   sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
 
   bottle do
-    revision 1
-    sha256 "dfc5f4c5ca5f91b71f6e6c71934371f823f3d9f922184954289c0fa58c610738" => :yosemite
-    sha256 "0cf85df1cade74005852efe44292babf82582e46f105fd752699e3b6d7258ce5" => :mavericks
-    sha256 "9bc657cd6162cfe4755733e22c2292748ec4073cc1372737c2e07094f10958b6" => :mountain_lion
+    revision 2
+    sha256 "2d29cc7bcde757610a325e57c0ea0162cee97c2cf04ea424f8e4010c57ae2295" => :yosemite
+    sha256 "3989eb56c26ca2903ea1bde7aaf0b02c05a5dbfc1eae59056860abca9c6d5fec" => :mavericks
+    sha256 "2a848d5efa46b5cc6e906f2c71608c8098238a397e6979912dcef2b5b1d2807c" => :mountain_lion
   end
 
   depends_on "libiomp"
