@@ -39,6 +39,13 @@ class Ledger < Formula
       url "https://github.com/ledger/ledger/commit/5f08e27.diff"
       sha256 "064b0e64d211224455511cd7b82736bb26e444c3af3b64936bec1501ed14c547"
     end
+
+    # boost 1.58 compatibility
+    # https://github.com/ledger/ledger/pull/417
+    patch do
+      url "https://github.com/ledger/ledger/commit/2e02e0.diff"
+      sha256 "c1438cbf989995dd0b4bfa426578a8763544f28788ae76f9ff5d23f1b8b17add"
+    end
   end
 
   needs :cxx11
