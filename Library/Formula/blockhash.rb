@@ -4,6 +4,13 @@ class Blockhash < Formula
   url "https://github.com/commonsmachinery/blockhash/archive/0.1.tar.gz"
   sha256 "aef300f39be2cbc1b508af15d7ddb5b851b671b27680d8b7ab1d043cc0369893"
 
+  bottle do
+    cellar :any
+    sha256 "73521bf91681f57dc01b0b5727f14e2ff36f0b1f0b3220661beaf18c62987e06" => :yosemite
+    sha256 "2760541166d22bacba3ebb6692523cdec601e6a257584a8bb56be83a19d73d2f" => :mavericks
+    sha256 "d975cead300bea505d86ac0478baa012f18b103d9250826feeab287e1c3a2b0a" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "imagemagick"
 
