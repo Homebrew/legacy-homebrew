@@ -1,41 +1,14 @@
-class UniversalPython < Requirement
-  satisfy(:build_env => false) { archs_for_command("python").universal? }
-
-  def message; <<-EOS.undent
-    A universal build was requested, but Python is not a universal build
-
-    Boost compiles against the Python it finds in the path; if this Python
-    is not a universal build then linking will likely fail.
-    EOS
-  end
-end
-
-class UniversalPython3 < Requirement
-  satisfy(:build_env => false) { archs_for_command("python3").universal? }
-
-  def message; <<-EOS.undent
-    A universal build was requested, but Python 3 is not a universal build
-
-    Boost compiles against the Python 3 it finds in the path; if this Python
-    is not a universal build then linking will likely fail.
-    EOS
-  end
-end
-
 class BoostPython < Formula
   homepage "http://www.boost.org"
   url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
   sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
-
   head "https://github.com/boostorg/boost.git"
 
   option :universal
   option :cxx11
 
-  depends_on :python => :recommended
+  option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
-  depends_on UniversalPython if build.universal? && build.with?("python")
-  depends_on UniversalPython3 if build.universal? && build.with?("python3")
 
   if build.cxx11?
     depends_on "boost" => "c++11"
@@ -46,6 +19,15 @@ class BoostPython < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  stable do
+    # don't explicitly link a Python framework
+    # https://github.com/boostorg/build/pull/78
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/9026da299ac1bfd3f419/raw/b73a919c38af08941487ca37d46e711864104c4d/boost-python.diff"
+      sha256 "9f374761ada11eecd082e7f9d5b80efeb387039d3a290f45b61f0730bce3801a"
+    end
   end
 
   def install
