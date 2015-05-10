@@ -5,9 +5,8 @@ class Creduce < Formula
   head "https://github.com/csmith-project/creduce.git"
 
   bottle do
-    revision 1
-    sha256 "3ac84a649bed07ef67515fbe88395a803524c0120779d10b71410ca1869aa847" => :yosemite
-    sha256 "383bd9059854d1a143282bce412941aa459f3aa28c84d99a29921787b7c45b67" => :mavericks
+    sha256 "cb27ed455261c1839800d26ad5c66a3afa1ac76717857cc6797fea9a21162d44" => :yosemite
+    sha256 "5afedc24dbb4be00f7e89ee377e6f5500a0804fd914c4eaa75e3c7d7f27fbddb" => :mavericks
   end
 
   depends_on "astyle"
