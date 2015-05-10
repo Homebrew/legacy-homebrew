@@ -1,8 +1,8 @@
 class Dcd < Formula
   homepage "https://github.com/Hackerpilot/DCD"
   url "https://github.com/Hackerpilot/DCD.git",
-      :tag => "v0.5.1",
-      :revision => "351bf2ee2d5f1c4986c2c5957f542dda17b1d085"
+      :tag => "v0.6.0",
+      :revision => "633b1667ef223e6eda7bcfd2d2d746f59036571f"
 
   bottle do
     sha256 "7d1de0bae7b64fd4f53058e9213cd59a1d270f25284c5f2e4dad15767a57ce24" => :yosemite
