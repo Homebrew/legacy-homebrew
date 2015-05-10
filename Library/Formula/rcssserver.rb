@@ -5,8 +5,10 @@ class Rcssserver < Formula
   revision 1
 
   bottle do
-    sha256 "e42f717bf06a14c1a5b67c16a08cb77ed9e8fa4a9b281a95ee4dae65ffb9a885" => :yosemite
-    sha256 "845b6a126f71d324558dc1665223ba8f691ca20b1c6bac020cc266a98e303c52" => :mavericks
+    revision 2
+    sha256 "979098bc6a12cfd6259e7d04dc46d56e066c1886d96e4d10900a151e8b635dd5" => :yosemite
+    sha256 "1658febeae0a35d422acc63cd8fef1282fd81811a3f2742d8b34000c5fc8ab07" => :mavericks
+    sha256 "a2560cd1527389c7312d71bede3ccd09eb6e037f42ceb79c41e9a030ed3b6b7e" => :mountain_lion
   end
 
   stable do
