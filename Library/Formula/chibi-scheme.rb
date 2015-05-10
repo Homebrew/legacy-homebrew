@@ -1,14 +1,14 @@
 require "formula"
 
 class ChibiScheme < Formula
-  homepage "http://code.google.com/p/chibi-scheme/"
+  homepage "http://synthcode.com/wiki/chibi-scheme"
 
   stable do
-    url "http://abrek.synthcode.com/chibi-scheme-0.7.2.tgz"
-    sha1 "337908635020bf354ec9bcb62f91e1bbe534ff23"
+    url "http://synthcode.com/scheme/chibi/chibi-scheme-0.7.3.tgz"
+    sha1 "752cf11a507f3deeedc49cb51f40dfe0c9bda18a"
   end
 
-  head "https://code.google.com/p/chibi-scheme/", :using => :hg
+  head "https://github.com/ashinn/chibi-scheme.git"
 
   bottle do
     cellar :any
