@@ -83,8 +83,7 @@ class AndroidSdk < Formula
   def caveats; <<-EOS.undent
     Now run the 'android' tool to install the actual SDK stuff.
 
-    The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
-      #{prefix}
+    The Android-SDK is available at #{opt_prefix}
 
     You will have to install the platform-tools and docs EVERY time this formula
     updates. If you want to try and fix this then see the comment in this formula.
