@@ -9,6 +9,9 @@ class Neko < Formula
   head "https://github.com/HaxeFoundation/neko.git"
 
   bottle do
+    sha256 "08e27a02801d60a36971ef04892c8737402d94611c8cce5e6abdfc0066f2d8ce" => :yosemite
+    sha256 "fd20435ab471a197439ef8b15bc22e20ed63e5bee586b0a64d811a8a178a4c3b" => :mavericks
+    sha256 "a45ce3f4eab713bea15f8b34045333462d3e6a971c10257b9789ffc8000951e2" => :mountain_lion
   end
 
   depends_on "bdw-gc"
