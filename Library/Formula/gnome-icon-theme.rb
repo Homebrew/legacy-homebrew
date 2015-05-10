@@ -5,9 +5,9 @@ class GnomeIconTheme < Formula
 
   bottle do
     cellar :any
-    sha1 "0b889afbf4faea1a534c35f390a947226933af3e" => :yosemite
-    sha1 "1a4f7b0358e7de6b864b9d0ba940ab2e6e971080" => :mavericks
-    sha1 "18381ed6ab061f806c5bbc7b4932cbcb1409a692" => :mountain_lion
+    sha256 "b1ec7cce3cfe5d32d9a89db1dbb1a5dd44e38658985d5e8c06c4f068b30c5e8d" => :yosemite
+    sha256 "4e13f93459296b61c9bd9fd676043b36fa1647d5b499f6b5fb16b2df9f3412e3" => :mavericks
+    sha256 "d028a6e7c2bff311e4f6f60fa46ee20bc741e548fbc7569b92aba2b7b9f8e64d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
