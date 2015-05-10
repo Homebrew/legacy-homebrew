@@ -5,6 +5,12 @@ class Pushpin < Formula
 
   head "https://github.com/fanout/pushpin.git"
 
+  bottle do
+    sha256 "8e71804d2734c4b16d02aca9ebed5fff3d46e92f79d029558381260c1a26998f" => :yosemite
+    sha256 "72e5c82ff7bc36c8526210d8e11d68c14e057cc0096e3d693c4d088308b3d62e" => :mavericks
+    sha256 "a7ebf771f8c2588830e743afbb95fe42fa48401130b2d09640fff25e13d16652" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "qt"
   depends_on "zeromq"
