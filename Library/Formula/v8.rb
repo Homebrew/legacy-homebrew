@@ -31,12 +31,12 @@ class V8 < Formula
   end
 
   resource "gmock" do
-    url "http://googlemock.googlecode.com/svn/trunk", :revision => 501
+    url "https://googlemock.googlecode.com/svn/trunk", :revision => 501
     version "501"
   end
 
   resource "gtest" do
-    url "http://googletest.googlecode.com/svn/trunk", :revision => 700
+    url "https://googletest.googlecode.com/svn/trunk", :revision => 700
     version "700"
   end
 
