@@ -5,15 +5,16 @@ class Harbour < Formula
 
   bottle do
     cellar :any
-    sha1 "ff777eb55a1f944d7dd1bcc4e07506996e60af0e" => :mavericks
-    sha1 "bfc3a646867b5176dad976c4e0f6c40c7a4a7417" => :mountain_lion
-    sha1 "0127b7daaaae6393fd69fff8e7e21a9ebae7c18d" => :lion
+    revision 1
+    sha256 "5677878ce808eb51cf130212724d1959def64d45c6812cb99ec0ceef100ea4f8" => :yosemite
+    sha256 "ed55f20628aa2c34adccb0530a9b8f477572bc8acc0d9ff3d5374fe68384c753" => :mavericks
+    sha256 "8b6384af586eeec66714a8c55e5e6efb26909053958897b64c7cdad2459965e0" => :mountain_lion
   end
 
   head "https://github.com/harbour/core.git"
 
   depends_on "pcre"
-  depends_on :x11 => :recommended
+  depends_on :x11 => :optional
 
   # Missing a header that was deprecated by libcurl @ version 7.12.0 and
   # deleted sometime after Harbour 3.0.0 release.

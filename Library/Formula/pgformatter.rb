@@ -2,8 +2,8 @@ require "formula"
 
 class Pgformatter < Formula
   homepage "http://sqlformat.darold.net/"
-  url "https://downloads.sourceforge.net/project/pgformatter/1.2/pgFormatter-1.2.tar.gz"
-  sha1 "598c39fa7f3f511aa376e7a18457139a9393fe74"
+  url "https://github.com/darold/pgFormatter/archive/v1.4.tar.gz"
+  sha1 "bdbeefd9b3d8088a69816d3f578453c4a886feae"
 
   def install
     system "perl", "Makefile.PL", "DESTDIR=."

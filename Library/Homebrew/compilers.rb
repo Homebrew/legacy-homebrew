@@ -1,6 +1,6 @@
 module CompilerConstants
-  GNU_GCC_VERSIONS = 3..9
-  GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
+  GNU_GCC_VERSIONS = %w[4.3 4.4 4.5 4.6 4.7 4.8 4.9 5]
+  GNU_GCC_REGEXP = /^gcc-(4\.[3-9]|5)$/
 end
 
 class CompilerFailure
@@ -59,7 +59,10 @@ class CompilerFailure
       create(:gcc => "4.5"),
       create(:gcc => "4.6"),
     ],
-    :openmp => [create(:clang)],
+    :openmp => [
+      create(:clang),
+      create(:llvm),
+    ],
   }
 end
 
@@ -104,12 +107,12 @@ class CompilerSelector
       case compiler
       when :gnu
         GNU_GCC_VERSIONS.reverse_each do |v|
-          name = "gcc-4.#{v}"
-          version = compiler_version(name)
+          name = "gcc-#{v}"
+          version = versions.non_apple_gcc_version(name)
           yield Compiler.new(name, version) if version
         end
       else
-        version = compiler_version(compiler)
+        version = versions.send("#{compiler}_build_version")
         yield Compiler.new(compiler, version) if version
       end
     end
@@ -117,14 +120,5 @@ class CompilerSelector
 
   def fails_with?(compiler)
     failures.any? { |failure| failure === compiler }
-  end
-
-  def compiler_version(name)
-    case name
-    when GNU_GCC_REGEXP
-      versions.non_apple_gcc_version(name)
-    else
-      versions.send("#{name}_build_version")
-    end
   end
 end

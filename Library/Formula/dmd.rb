@@ -2,29 +2,28 @@ require "formula"
 
 class Dmd < Formula
   homepage "http://dlang.org"
-  url "https://github.com/D-Programming-Language/dmd/archive/v2.066.1.tar.gz"
-  sha1 "7be9737f97a494870446c881e185bec41f337792"
+  url "https://github.com/D-Programming-Language/dmd/archive/v2.067.0.tar.gz"
+  sha1 "663d27bc6a25028d54b139344a35476cf5b4dc23"
 
   bottle do
-    revision 1
-    sha256 "c19e75d44f1e184aa8b65e276de498be33a80e088ab93145bfcff07a08d1a78e" => :yosemite
-    sha256 "f41633629f7767e61f7d968c762c58f11bbdb5308bfe59d6d05c7249aa00797b" => :mavericks
-    sha256 "b8c380eae74b0092134095ad48628392cc7715a3c75feb942bfac027549d3123" => :mountain_lion
+    sha256 "c73291ee736109820ddf6bcd7dec619e3b1090c6c0849a5a7b717e1a67a8603b" => :yosemite
+    sha256 "2f04b67d50261ea74f4d580b5a180657020bb91d70d267dc47bf45e1d1bea6d1" => :mavericks
+    sha256 "13c440997c04a64627c5d697844c7a7e42c379e2507334a32d6a632881516d68" => :mountain_lion
   end
 
   resource "druntime" do
-    url "https://github.com/D-Programming-Language/druntime/archive/v2.066.1.tar.gz"
-    sha1 "614e2944c470944125ba6bc94a78c1cf0a41ad5a"
+    url "https://github.com/D-Programming-Language/druntime/archive/v2.067.0.tar.gz"
+    sha1 "dd803d01d82c2bf9ef680d9b318955f674309747"
   end
 
   resource "phobos" do
-    url "https://github.com/D-Programming-Language/phobos/archive/v2.066.1.tar.gz"
-    sha1 "58e48b33cffbab4acb5e6d6f376ea209ce8e2114"
+    url "https://github.com/D-Programming-Language/phobos/archive/v2.067.0.tar.gz"
+    sha1 "268447464389bd09a695ce4c0663f1bab283f041"
   end
 
   resource "tools" do
-    url "https://github.com/D-Programming-Language/tools/archive/v2.066.1.tar.gz"
-    sha1 "fc64b35364cf76d7270e4a8fe41203e0b4dde11c"
+    url "https://github.com/D-Programming-Language/tools/archive/v2.067.0.tar.gz"
+    sha1 "3d94855e46e39136ccd9b6765e8ffc1de37c95fa"
   end
 
   def install
@@ -61,7 +60,7 @@ class Dmd < Formula
 
 
     resource("tools").stage do
-      inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS)"
+      inreplace "posix.mak", "install: $(TOOLS) $(CURL_TOOLS)", "install: $(TOOLS) $(ROOT)/dustmite"
       system "make", "install", *make_args
     end
   end

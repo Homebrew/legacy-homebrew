@@ -2,13 +2,13 @@ class Szl < Formula
   homepage "https://code.google.com/p/szl/"
   url "https://szl.googlecode.com/files/szl-1.0.tar.gz"
   sha1 "e4c6d4aec1afc025257d41dd77b8f5c25ea120d4"
-  revision 4
+  revision 5
 
   bottle do
     cellar :any
-    sha1 "484db0b2bf6ff14f41a412181cbc1070c774e765" => :yosemite
-    sha1 "a097587106354bade616f560bba0cce10bab9bde" => :mavericks
-    sha1 "8c9a06759321f2060b324c8747d8987517d1c1a3" => :mountain_lion
+    sha256 "669604692ce1fcc7d3daaa607742ea9f40fc776717f8102ff734da9d703636bf" => :yosemite
+    sha256 "d37d8e41d91a4931744d55ea0ff891b3b19f85f459ba4a5a2a21fb12ec3d71f8" => :mavericks
+    sha256 "38f0ce52268749130b6adf82071d5594f0ff4999c4ed71ce9ed6ef2de8af773d" => :mountain_lion
   end
 
   depends_on "binutils" # For objdump

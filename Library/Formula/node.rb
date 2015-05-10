@@ -1,14 +1,15 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.1/node-v0.12.1.tar.gz"
-  sha256 "30693376519c9736bcb22d44513252aee1d9463d78ac6c744ecb6d13fd91d680"
+  url "https://nodejs.org/dist/v0.12.2/node-v0.12.2.tar.gz"
+  sha256 "ac7e78ade93e633e7ed628532bb8e650caba0c9c33af33581957f3382e2a772d"
   head "https://github.com/joyent/node.git", :branch => "v0.12"
+  revision 1
 
   bottle do
-    sha256 "72b57fd6f990485ac016d7dbabb2515a0006fd14334aa95ac2ac36a3d0b035bf" => :yosemite
-    sha256 "28a56d62225eb653c4b581efaa8be1f9bcf7052060e4d906020d4d700de38cce" => :mavericks
-    sha256 "85a333f82e2dc0ac44994567e87afdec8e899d296b1fb809fc2803e2df9f1076" => :mountain_lion
+    sha256 "6fa67abcaf006fd9fd749267f08d5e8c33cb7eadd6e94267a49e96659256b06a" => :yosemite
+    sha256 "a995d265c9db0b021de140cdcc78432b96bcbf3fdb6989cc401d9cd7c2164cdd" => :mavericks
+    sha256 "cde73f7ca5b2c080bb8e7d5b99fa02ac43908ec8ad24ef52d9a3a44141ffbe75" => :mountain_lion
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -30,8 +31,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.7.3.tgz"
-    sha256 "8cc5c6e8304b0b934027a8211173147911dac623f2f84bb6477ea3121f1a839d"
+    url "https://registry.npmjs.org/npm/-/npm-2.7.6.tgz"
+    sha256 "a9445167f68a42ffcdaa36f9f5c14a954237fce6898555c362e8785261fd72a1"
   end
 
   def install
@@ -104,13 +105,7 @@ class Node < Formula
   def caveats
     s = ""
 
-    if build.with? "npm"
-      s += <<-EOS.undent
-        If you update npm itself, do NOT use the npm update command.
-        The upstream-recommended way to update npm is:
-          npm install -g npm@latest
-      EOS
-    else
+    if build.without? "npm"
       s += <<-EOS.undent
         Homebrew has NOT installed npm. If you later install it, you should supplement
         your NODE_PATH with the npm module folder:

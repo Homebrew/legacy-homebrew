@@ -1,13 +1,14 @@
 class Debianutils < Formula
   homepage "https://packages.debian.org/sid/debianutils"
-  url "http://ftp.de.debian.org/debian/pool/main/d/debianutils/debianutils_4.4.tar.gz"
-  sha256 "190850cdd6b5302e0a1ba1aaed1bc7074d67d3bd8d04c613f242f7145afa53a6"
+  url "https://mirrors.kernel.org/debian/pool/main/d/debianutils/debianutils_4.5.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/debianutils/debianutils_4.5.tar.gz"
+  sha256 "7cfaa53caaaaf36dad16fa69b30dd2b78b8dafebd766aacd53a3c7c78a9d441f"
 
   bottle do
     cellar :any
-    sha1 "398ac6655a7d27ddcd1d7fd03591982496608d1b" => :yosemite
-    sha1 "794a83a5c92785c3b867fece70cf6b1c3646ba04" => :mavericks
-    sha1 "b2ea1e5f9f1a0bfa57e0179799da1cf427762c1c" => :mountain_lion
+    sha256 "4bb3da90b4acb91ea04834e435d3ce9de9862e98cb0f24460ad0ebbe0422f982" => :yosemite
+    sha256 "bc3c45c875cbe12ab481bfe4e9d8c32b8e9d6931cc75f9e9a0d6ab5dae6ebf3c" => :mavericks
+    sha256 "32dc195d03d434f94447342ca72655f7c0272c582278015309c7627c97a57b97" => :mountain_lion
   end
 
   def install

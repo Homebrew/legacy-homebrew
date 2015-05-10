@@ -43,9 +43,27 @@ class X264 < Formula
     elsif Formula["gpac"].installed?
       args << "--disable-lsmash"
     end
-    args << "--bit-depth=10" if build.include? "10-bit"
+    args << "--bit-depth=10" if build.with? "10-bit"
 
     system "./configure", *args
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdint.h>
+      #include <x264.h>
+
+      int main()
+      {
+          x264_picture_t pic;
+          x264_picture_init(&pic);
+          x264_picture_alloc(&pic, 1, 1, 1);
+          x264_picture_clean(&pic);
+          return 0;
+      }
+    EOS
+    system ENV.cc, "-lx264", "test.c", "-o", "test"
+    system "./test"
   end
 end

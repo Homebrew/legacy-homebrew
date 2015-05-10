@@ -1,12 +1,14 @@
 class Pushpin < Formula
   homepage "http://pushpin.org"
-  url "http://packages.fanout.io/source/pushpin-1.1.0.tar.bz2"
-  sha1 "4cf4d061062a37f3ff8fa53706523e8f61c79c08"
+  url "http://packages.fanout.io/source/pushpin-1.2.0.tar.bz2"
+  sha256 "10156a5c3a5e956569fe25d5e467e3e452fc2b6b0b63c7894fc7f6aee6c7c414"
+
+  head "https://github.com/fanout/pushpin.git"
 
   bottle do
-    sha256 "da47c1945de1c2568f137e90a2bdb037fc63b9c85e8c2111ea61e675df716647" => :yosemite
-    sha256 "43381c8079e5ea1ecfaebcf142f05415d95908ac90ebe3c0f4313b814ddb64ff" => :mavericks
-    sha256 "02159fc0a5a38c7d1e93223e1246c5a778707eb9a504c381a88b2909530049bf" => :mountain_lion
+    sha256 "a90c8d52613518a72afc8aae4e52131fe71c835cd01720fca732d3a956ff0bcc" => :yosemite
+    sha256 "2528a22c7f714187391d036ec982bcd3fa0328d6e86ad5b9d6a18a2b921737ba" => :mavericks
+    sha256 "7cf2530e048da5c1d06396487edee8bda9e592a53fa1f837eb6e7225e1b6847b" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -19,33 +21,33 @@ class Pushpin < Formula
 
   resource "MarkupSafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
-  resource "jinja2" do
+  resource "Jinja2" do
     url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
+    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
   end
 
   resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.5.0.tar.gz"
-    sha1 "1dced02ea8527b5870ffdbe835d096aca5c01d2a"
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.6.0.tar.gz"
+    sha256 "7746806ff94f1e8c1e843644c6bbd3b9aaeb1203c2eaf38879adc23dbd5c35bb"
   end
 
   resource "setproctitle" do
     url "https://pypi.python.org/packages/source/s/setproctitle/setproctitle-1.1.8.tar.gz"
-    sha1 "a23463feac8d99b5504efc22f0ca2cfe2c145930"
+    sha256 "b564cf6488217c7a4632a9fe646fc3a3bea2f9712b4e667e9632b870d1a58211"
   end
 
   resource "tnetstring" do
     url "https://pypi.python.org/packages/source/t/tnetstring/tnetstring-0.2.1.tar.gz"
-    sha1 "ffc35722f4ae978151acdc4801f20efa597c8b54"
+    sha256 "55715a5d758214034db179005def47ed842da36c4c48e9e7ae59bcaffed7ca9b"
   end
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    %w[MarkupSafe jinja2 pyzmq setproctitle tnetstring].each do |r|
+    %w[MarkupSafe Jinja2 pyzmq setproctitle tnetstring].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -72,7 +74,7 @@ class Pushpin < Formula
 
     inreplace routesfile, "localhost:80", "localhost:10080"
 
-    runfile.write(<<-EOS.undent
+    runfile.write <<-EOS.undent
       import urllib2
       import threading
       from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
@@ -102,8 +104,7 @@ class Pushpin < Formula
       f = urllib2.urlopen('http://localhost:7999/test')
       body = f.read()
       assert(body == 'test response\\n')
-      EOS
-      )
+    EOS
 
     pid = fork do
       exec "#{bin}/pushpin", "--config=#{conffile}"

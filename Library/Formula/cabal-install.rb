@@ -1,13 +1,12 @@
 class CabalInstall < Formula
   homepage "https://www.haskell.org/cabal/"
-  url "https://hackage.haskell.org/package/cabal-install-1.22.0.1/cabal-install-1.22.0.1.tar.gz"
-  sha256 "87afa8f5d2bffafeffa9ff71062bf09469aade3ae52975c09c35ce61520d10c8"
+  url "https://hackage.haskell.org/package/cabal-install-1.22.2.0/cabal-install-1.22.2.0.tar.gz"
+  sha256 "25bc2ea88f60bd0f19bf40984ea85491461973895480b8633d87f54aa7ae6adb"
 
   bottle do
-    cellar :any
-    sha256 "f79146e9d429b7f2c3ad990873eb67de99ec55383cc83d82229f73f44195d90c" => :yosemite
-    sha256 "669bc4766916ecf99ceb3c2ab173a6034362654b4869105bbae7ad98f9ff8ff0" => :mavericks
-    sha256 "cffdc3a8bec2a51c2a834bb73e0c56412a8cc0d4ecca036a678f497e91a62958" => :mountain_lion
+    sha256 "28be6f29bde3ae58c67acbb6cf8d9f09f035bf2f1f14225242eb050cd4cec405" => :yosemite
+    sha256 "c92e20e918f01bc88aace10a6250bf49e36f724354b69b50eb0e7e4c8b826417" => :mavericks
+    sha256 "6fe44ef6d3f82bf2010fa2779bea5164962e68626f30f4e6d608f793911bf7ce" => :mountain_lion
   end
 
   depends_on "ghc"

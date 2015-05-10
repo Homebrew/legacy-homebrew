@@ -2,14 +2,14 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/v0.13.0.tar.gz"
-  sha1 "e03f15d73286e113c1d376fa7860e4c0ba6d8911"
+  url "https://github.com/tutumcloud/tutum-cli/archive/v0.14.0.tar.gz"
+  sha256 "f0bf4d2be3ae22d989a55ec69b38a91f492ce0014be177855022dfae6af7b9e9"
 
   bottle do
     cellar :any
-    sha256 "c7e95ba2487cd1ad0170d8f5e62a209218c6d316933728a2863e44acbbdcaf7a" => :yosemite
-    sha256 "6848097e5b784ccd885c9a003e485971c056b3e66ccf9b1b06b3eafb69787d00" => :mavericks
-    sha256 "d525cdef3c942ec50fb0d0bb26569e0bc163c1b8e2c23c591c2cff5b7a75a62d" => :mountain_lion
+    sha256 "5317c14e571c0f5503137930cbb6fad8dfef1879715406638064c9125fd1ece4" => :yosemite
+    sha256 "118619cd695144629f20f0b61e5d3027b68350f145ed39ee6d9fd0fea6e0a7f2" => :mavericks
+    sha256 "4f27b91fd2f87d55eddec1d1e46b6c93b546ba1512c6aca85dcd517e8c062278" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -17,37 +17,37 @@ class Tutum < Formula
 
   resource "ago" do
     url "https://pypi.python.org/packages/source/a/ago/ago-0.0.6.tar.gz"
-    sha1 "b48b99151370de0c1642748a3f3b206649645d8d"
+    sha256 "a64811a5a44cd3ba687d800986edf0f7a97859b8da75d3347c915b58b0869b44"
   end
 
   resource "docker-py" do
     url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.1.0.tar.gz"
-    sha1 "989eaf213f38c694798a326f21a66d982edee16c"
+    sha256 "6a07eb56b234719e89d3038c24f9c870b6f1ee0b58080120e865e2752673cd94"
   end
 
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
-    sha1 "476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73"
+    sha256 "e713da45c96ca53a3a8b48140d4120374db622df16ab71759c9ceb5b8d46fe7c"
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.12.6.tar.gz"
-    sha1 "21374ce80c82a7e99f1f7a5fd63d1772df541651"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.14.1.tar.gz"
+    sha256 "4a2603dbec77d8b1a5e3c78d96e68d9310d11e7fbda749b860b6dcb1646db2e3"
   end
 
   resource "backports.ssl-match-hostname" do
     url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.4.0.2.tar.gz"
-    sha1 "da4e41f3b110279d2382df47ac1e4f10c63cf954"
+    sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
   end
 
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
-    sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
+    sha256 "eec865307ebe7f329a6a9945c15453265a449cdaaf3710340828a1934d53e468"
   end
 
   resource "requests" do
@@ -57,17 +57,17 @@ class Tutum < Formula
 
   resource "tabulate" do
     url "https://pypi.python.org/packages/source/t/tabulate/tabulate-0.7.2.tar.gz"
-    sha1 "da057c6d4faab9847436c3221c98f34911e623df"
+    sha256 "532ccab8d9e4659a5f016d84814df86cc04763785e9de2739e890d956dc82d8f"
   end
 
   resource "websocket-client" do
-    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.26.0.tar.gz"
-    sha1 "14f7668f579ab94e1fc7a26ef182add964192b34"
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.29.0.tar.gz"
+    sha256 "abfcb1a8dff4df1b12db4c227d3f4f38a68b42c35a8bca9d2bee10f8eae2b434"
   end
 
   resource "future" do
     url "https://pypi.python.org/packages/source/f/future/future-0.14.3.tar.gz"
-    sha1 "44fdd9323913d21068b29ecda795a98c07dc8a40"
+    sha256 "62857d51881d97dd5492b9295b9f51d92108a52a4c88e2c40054c1d3e5995be9"
   end
 
   def install

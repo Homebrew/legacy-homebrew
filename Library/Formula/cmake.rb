@@ -1,15 +1,15 @@
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.2/cmake-3.2.1.tar.gz"
-  sha1 "53c1fe2aaae3b2042c0fe5de177f73ef6f7b267f"
+  url "http://www.cmake.org/files/v3.2/cmake-3.2.2.tar.gz"
+  sha256 "ade94e6e36038774565f2aed8866415443444fb7a362eb0ea5096e40d5407c78"
   head "http://cmake.org/cmake.git"
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "99411c03795b8ef85e52b5296d54540af18724215f67a66686737e91abec35a8" => :yosemite
-    sha256 "ce230e1dff6108a48083ab36dfc5ae8011b03244c950557b8acfcf3189a4f146" => :mavericks
-    sha256 "e8b6dd510da6ce5523dba550ac36d9d82b86952f9ed3d924e5d10e892f0fc94c" => :mountain_lion
+    revision 3
+    sha256 "da3c5fae000164e94cf2a58ca9ec7cc970b009f9413443af903e5069eb564dc3" => :yosemite
+    sha256 "147aa92c60d006b544aaef8a4fe549d3ce35de6265d9476d66853939fa33e4ca" => :mavericks
+    sha256 "d9ccd1a85b5376a4b0dce0563f7c705ad21df0f379b31fe98fffdcda2c4fe21a" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"
@@ -45,6 +45,12 @@ class Cmake < Formula
     sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
   end
 
+  patch do
+    # fix for older bash-completion versions
+    url "http://www.cmake.org/gitweb?p=cmake.git;a=commitdiff_plain;h=2ecf168f"
+    sha256 "147854010874cd68289e3ca203399d5c149287167bca0b67f9c5677f0ee22eb8"
+  end
+
   def install
     if build.with? "docs"
       ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
@@ -78,6 +84,10 @@ class Cmake < Formula
     system "./bootstrap", *args
     system "make"
     system "make", "install"
+
+    cd "Auxiliary/bash-completion/" do
+      bash_completion.install "ctest", "cmake", "cpack"
+    end
   end
 
   test do

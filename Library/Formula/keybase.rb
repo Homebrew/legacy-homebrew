@@ -1,7 +1,7 @@
 class Keybase < Formula
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/node-client/archive/v0.7.7.tar.gz"
-  sha256 "ae08423181867d071b23acb3f359b7341532290014eb42775eb7384a7ea757dc"
+  url "https://github.com/keybase/node-client/archive/v0.7.8.tar.gz"
+  sha256 "87fda71a1559e418ba67d64eeca29b7e0caa4a7696de130bd2da7379da3a62aa"
   head "https://github.com/keybase/node-client.git"
 
   depends_on "node"

@@ -2,14 +2,14 @@ require "formula"
 
 class Yash < Formula
   homepage "http://yash.sourceforge.jp/"
-  url "http://dl.sourceforge.jp/yash/60930/yash-2.36.tar.xz"
-  sha1 "da034f893bf34e3851a93e8512f3fb027e59f0f5"
+  url "http://dl.sourceforge.jp/yash/62651/yash-2.37.tar.gz"
+  sha1 "a6ac6fe9434a25a8fd39137a05768aa65076bed6"
 
   bottle do
     cellar :any
-    sha1 "efa6ac2ec264e4efc16394f55839a89753631903" => :yosemite
-    sha1 "803be32d90a8ab8fd2812b342be94316c9727dd8" => :mavericks
-    sha1 "bffcef7392e6ddeccda732aea313ae3ea7f1e36d" => :mountain_lion
+    sha256 "e155165566942ee1bde9cd71ef246ef0454befb2e5b23e43ac1eaca007fc8b46" => :yosemite
+    sha256 "469eacccbb09edd965b099476fb616e8e3ecd10071f24c654ac525bde2e65721" => :mavericks
+    sha256 "93538457f7f06a70634be8d1242bae4adb99ff3aac2518ae14b903fd987755ca" => :mountain_lion
   end
 
   def install

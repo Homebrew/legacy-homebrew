@@ -211,6 +211,8 @@ class Pathname
       return :gzip_only
     when ".bz2"
       return :bzip2_only
+    when ".lha", ".lzh"
+      return :lha
     end
 
     # Get enough of the file to detect common file types
@@ -402,7 +404,7 @@ class Pathname
     out = ""
     n = Utils.popen_read("find", expand_path.to_s, "-type", "f", "!", "-name", ".DS_Store").split("\n").size
     out << "#{n} files, " if n > 1
-    out << Utils.popen_read("/usr/bin/du", "-hs", expand_path.to_s).split("\t")[0]
+    out << Utils.popen_read("/usr/bin/du", "-hs", expand_path.to_s).split("\t")[0].strip
     out
   end
 

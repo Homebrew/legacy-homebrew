@@ -170,12 +170,13 @@ module Homebrew
           changed_formulae.each do |f|
             ohai "Publishing on Bintray:"
             package = Bintray.package f.name
-            bottle = Bottle.new(f, f.bottle_specification)
-            version = Bintray.version(bottle.url)
+            version = f.pkg_version
             curl "--silent", "--fail",
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
+            sleep 2
+            safe_system "brew", "fetch", "--retry", "--force-bottle", f.name
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"

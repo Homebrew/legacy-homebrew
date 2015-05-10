@@ -48,7 +48,7 @@ class Alpine < Formula
   def install
     ENV.j1
     system "./configure", "--disable-debug",
-                          "--with-ssl-dir=#{Formula["openssl"].prefix}",
+                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}",
                           "--with-ssl-certs-dir=#{etc}/openssl",
                           "--prefix=#{prefix}"
     system "make", "install"

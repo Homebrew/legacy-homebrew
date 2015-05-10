@@ -112,34 +112,42 @@ module Homebrew
         return
       end
 
+      verbose = ARGV.verbose?
+      puts if verbose
+      @output = ""
+      working_dir = Pathname.new(@command.first == "git" ? @repository : Dir.pwd)
       start_time = Time.now
+      read, write = IO.pipe
 
-      log = log_file_path
-
-      pid = fork do
-        File.open(log, "wb") do |f|
-          STDOUT.reopen(f)
-          STDERR.reopen(f)
+      begin
+        pid = fork do
+          read.close
+          $stdout.reopen(write)
+          $stderr.reopen(write)
+          write.close
+          working_dir.cd { exec(*@command) }
         end
-        Dir.chdir(@repository) if @command.first == "git"
-        exec(*@command)
+        write.close
+        while line = read.gets
+         puts line if verbose
+         @output += line
+        end
+      ensure
+        read.close
       end
+
       Process.wait(pid)
-
       @time = Time.now - start_time
-
       @status = $?.success? ? :passed : :failed
       puts_result
 
-      if File.exist?(log)
-        @output = fix_encoding File.read(log)
-        if has_output? and (failed? or @puts_output_on_success)
-          puts @output
-        end
-        FileUtils.rm(log) unless ARGV.include? "--keep-logs"
+      if has_output?
+        @output = fix_encoding(@output)
+        puts @output if (failed? or @puts_output_on_success) && !verbose
+        File.write(log_file_path, @output) if ARGV.include? "--keep-logs"
       end
 
-      exit 1 if ARGV.include?("--fail-fast") && @status == :failed
+      exit 1 if ARGV.include?("--fail-fast") && failed?
     end
 
     private
@@ -366,24 +374,6 @@ module Homebrew
       end
 
       test "brew", "uses", canonical_formula_name
-      installed = Utils.popen_read("brew", "list").split("\n")
-      dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
-                                      canonical_formula_name).split("\n")
-      dependencies -= installed
-      unchanged_dependencies = dependencies - @formulae
-      changed_dependences = dependencies - unchanged_dependencies
-
-      runtime_dependencies = Utils.popen_read("brew", "deps",
-                                              "--skip-build", "--skip-optional",
-                                              canonical_formula_name).split("\n")
-      build_dependencies = dependencies - runtime_dependencies
-      unchanged_build_dependencies = build_dependencies - @formulae
-
-      dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
-      dependents -= @formulae
-      dependents = dependents.map {|d| Formulary.factory(d)}
-
-      testable_dependents = dependents.select { |d| d.test_defined? && d.bottled? }
 
       formula = Formulary.factory(canonical_formula_name)
       installed_gcc = false
@@ -425,6 +415,25 @@ module Homebrew
         puts e.message
         return
       end
+
+      installed = Utils.popen_read("brew", "list").split("\n")
+      dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
+                                      canonical_formula_name).split("\n")
+      dependencies -= installed
+      unchanged_dependencies = dependencies - @formulae
+      changed_dependences = dependencies - unchanged_dependencies
+
+      runtime_dependencies = Utils.popen_read("brew", "deps",
+                                              "--skip-build", "--skip-optional",
+                                              canonical_formula_name).split("\n")
+      build_dependencies = dependencies - runtime_dependencies
+      unchanged_build_dependencies = build_dependencies - @formulae
+
+      dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
+      dependents -= @formulae
+      dependents = dependents.map {|d| Formulary.factory(d)}
+
+      testable_dependents = dependents.select { |d| d.test_defined? && d.bottled? }
 
       if (deps | reqs).any? { |d| d.name == "mercurial" && d.build? }
         test "brew", "install", "mercurial"
@@ -557,7 +566,7 @@ module Homebrew
       if ARGV.include? '--cleanup'
         test "git", "reset", "--hard"
         git "stash", "pop"
-        test "brew", "cleanup"
+        test "brew", "cleanup", "--prune=30"
       end
 
       FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
@@ -770,8 +779,14 @@ module Homebrew
       formula_packaged = {}
 
       Dir.glob("*.bottle*.tar.gz") do |filename|
-        version = Bintray.version filename
         formula_name = bottle_filename_formula_name filename
+        canonical_formula_name = if tap
+          "#{tap}/#{formula_name}"
+        else
+          formula_name
+        end
+        formula = Formulary.factory canonical_formula_name
+        version = formula.pkg_version
         bintray_package = Bintray.package formula_name
         existing_bottle = existing_bottles[formula_name]
 
@@ -786,8 +801,10 @@ module Homebrew
           formula_packaged[formula_name] = true
         end
 
-        content_url = "https://api.bintray.com/content/homebrew/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
-        content_url += "?publish=1&override=1" if existing_bottle
+        content_url = "https://api.bintray.com/content/homebrew"
+        content_url += "/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
+        content_url += "?override=1"
+        content_url += "&publish=1" if existing_bottle
         curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
              "-T", filename, content_url
         puts

@@ -5,10 +5,17 @@ module Homebrew
   def upgrade
     Homebrew.perform_preinstall_checks
 
-    if ARGV.named.empty?
+    if ARGV.include?("--all") || ARGV.named.empty?
+      unless ARGV.include? "--all"
+        opoo <<-EOS.undent
+          brew upgrade with no arguments will change behaviour soon!
+          It currently upgrades all formula but this will soon change to require '--all'.
+          Please update any workflows, documentation and scripts!
+        EOS
+      end
       outdated = Homebrew.outdated_brews(Formula.installed)
       exit 0 if outdated.empty?
-    else
+    elsif ARGV.named.any?
       outdated = Homebrew.outdated_brews(ARGV.formulae)
 
       (ARGV.formulae - outdated).each do |f|
@@ -20,6 +27,11 @@ module Homebrew
         end
       end
       exit 1 if outdated.empty?
+    else
+      # This will currently never be reached but is implemented to make the
+      # migration to --all easier in the future (as just the ARGV.named.empty?
+      # will need removed above).
+      odie "Either --all or one or more formulae must be specified!"
     end
 
     unless upgrade_pinned?

@@ -1,14 +1,14 @@
 class Inspircd < Formula
   homepage "http://www.inspircd.org"
-  url "https://github.com/inspircd/inspircd/archive/v2.0.18.tar.gz"
-  sha1 "40039d9be51ad28493be16b27c9f20bc7fe617a4"
+  url "https://github.com/inspircd/inspircd/archive/v2.0.19.tar.gz"
+  sha256 "3182fe346257af397fa43952bc7678eb8dafda49da1d286baed5063ffa3f3387"
 
   head "https://github.com/inspircd/inspircd.git"
 
   bottle do
-    sha1 "b1def0c5b281422dbe37e89b2104321b33f685d0" => :yosemite
-    sha1 "18db9b5143d5f63677f3dc2fb2eeda09b24334dd" => :mavericks
-    sha1 "5cce454e59cf0a0e67e5d4c2bb1d5d94fe8e831d" => :mountain_lion
+    sha256 "9e2be19b91738eea23108c2cd520dca51c3faaa1e0f7d05b32bbf655fade839c" => :yosemite
+    sha256 "a532bb1c714631d2da459be1345c4850ef1274daf749a2790604f6e02daf50b3" => :mavericks
+    sha256 "7511580f52a56a8c0aef65e8d161817e54befd2762f598c43b67d9fa274138c6" => :mountain_lion
   end
 
   skip_clean "data"

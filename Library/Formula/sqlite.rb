@@ -1,14 +1,14 @@
 class Sqlite < Formula
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2015/sqlite-autoconf-3080803.tar.gz"
-  sha1 "2fe3f6226a2a08a2e814b97cd53e36bb3c597112"
-  version "3.8.8.3"
+  url "https://sqlite.org/2015/sqlite-autoconf-3081001.tar.gz"
+  sha256 "5f8f2ae6461e637ff63e50fef10b6962764dfc3b81a8c0f80a19794b9d59f7ca"
+  version "3.8.10.1"
 
   bottle do
     cellar :any
-    sha1 "c45e71983696f5b343d3204fefb95a85dd3eb472" => :yosemite
-    sha1 "705a5f243fc7b973af132defe93ec9354e8ce2c1" => :mavericks
-    sha1 "aac4adc32246444714f0deeb1262682b7fdd4a19" => :mountain_lion
+    sha256 "e98c8d4d3dd95443231cfcf73367d5c03687dfa0d1d08e44c53303827f529cec" => :yosemite
+    sha256 "3a916dfa13841f4c32d7d6bce37b2e6e9f95781186dfc428aad1db3138289124" => :mavericks
+    sha256 "666280f4e87e474bf0acc4b4502e2d4b980fd737624addd971460c38f2fbc5d6" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -21,6 +21,7 @@ class Sqlite < Formula
   option "with-unlock-notify", "Enable the unlock notification feature"
   option "with-icu4c", "Enable the ICU module"
   option "with-functions", "Enable more math and string functions for SQL queries"
+  option "with-dbstat", "Enable the 'dbstat' virtual table"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
@@ -28,13 +29,13 @@ class Sqlite < Formula
   resource "functions" do
     url "https://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
     version "2010-01-06"
-    sha1 "c68fa706d6d9ff98608044c00212473f9c14892f"
+    sha256 "991b40fe8b2799edc215f7260b890f14a833512c9d9896aa080891330ffe4052"
   end
 
   resource "docs" do
-    url "https://sqlite.org/2015/sqlite-doc-3080803.zip"
-    version "3.8.8.3"
-    sha1 "27c2cada8e663f694c0469bcae09eb0d8c55dd7c"
+    url "https://sqlite.org/2015/sqlite-doc-3081001.zip"
+    version "3.8.10.1"
+    sha256 "0b6c186a2da8b7d7397eb3942e97fd85b88734beb300702ace0dca4a3db729a6"
   end
 
   def install
@@ -43,6 +44,7 @@ class Sqlite < Formula
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA"
     ENV.append "CPPFLAGS", "-DSQLITE_SECURE_DELETE" if build.with? "secure-delete"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_UNLOCK_NOTIFY" if build.with? "unlock-notify"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_DBSTAT_VTAB" if build.with? "dbstat"
 
     if build.with? "icu4c"
       icu4c = Formula["icu4c"]

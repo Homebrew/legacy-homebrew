@@ -10,7 +10,7 @@ if ARGV == %w{--prefix}
 end
 
 require 'pathname'
-HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library", "Homebrew")
+HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require 'global'
 
@@ -102,7 +102,12 @@ begin
 
   if sudo_check.include? cmd
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      raise "Cowardly refusing to `sudo brew #{cmd}`\n#{SUDO_BAD_ERRMSG}"
+      raise <<-EOS.undent
+        Cowardly refusing to `sudo brew #{cmd}`
+        You can use brew with sudo, but only if the brew executable is owned by root.
+        However, this is both not recommended and completely unsupported so do so at
+        your own risk.
+        EOS
     end
   end
 

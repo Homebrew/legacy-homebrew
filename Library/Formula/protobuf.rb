@@ -14,11 +14,10 @@ class Protobuf < Formula
   end
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "fa7019a4ee16a4bdf0c653dc3fd932dc5a7e1e3b" => :yosemite
-    sha1 "f3ba19bdabe4994c7c69d05897a52be8b13117bf" => :mavericks
-    sha1 "9239ad264a7327cc90d1d3ddb26a27a4de10527f" => :mountain_lion
+    revision 2
+    sha256 "f9eb5495d7f1e4fc3c5b45e7df8260b6e6b072766587d65d2ed037abc841e686" => :yosemite
+    sha256 "6c990feefd2c7a9351018125a4017c3a60c0c6bdd6536dc05d51cadb85c0df1b" => :mavericks
+    sha256 "751ce459d196ae2f7e04a766dbb5f322c26fcb18f01c01f8550ad242b24ede29" => :mountain_lion
   end
 
   # this will double the build time approximately if enabled
@@ -27,7 +26,8 @@ class Protobuf < Formula
   option :universal
   option :cxx11
 
-  depends_on :python => :optional
+  option "without-python", "Build without python support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
 
   fails_with :llvm do
     build 2334
@@ -91,10 +91,13 @@ class Protobuf < Formula
       chdir "python" do
         ENV.append_to_cflags "-I#{include}"
         ENV.append_to_cflags "-L#{lib}"
-        args = Language::Python.setup_install_args prefix
+        args = Language::Python.setup_install_args libexec
         args << "--cpp_implementation"
         system "python", *args
       end
+      site_packages = "lib/python2.7/site-packages"
+      pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
+      (prefix/site_packages/"homebrew-protobuf.pth").write pth_contents
     end
   end
 
@@ -123,6 +126,7 @@ class Protobuf < Formula
     end
     (testpath/"test.proto").write(testdata)
     system bin/"protoc", "test.proto", "--cpp_out=."
+    system "python", "-c", "import google.protobuf" if build.with? "python"
   end
 
   def caveats; <<-EOS.undent

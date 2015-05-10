@@ -3,15 +3,14 @@ require "language/go"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  version "0.9.4-1"
-  url "https://github.com/junegunn/fzf/archive/0.9.4-1.tar.gz"
-  sha1 "cab72a79d9b7776d0a441d0ae1ba679893df8a55"
+  url "https://github.com/junegunn/fzf/archive/0.9.11.tar.gz"
+  sha256 "2030773f344478426b70aebd9eeaa068840bed6ab0acea190b552bfab61301ce"
+  head 'https://github.com/junegunn/fzf.git'
 
   bottle do
-    cellar :any
-    sha256 "c4cb36347952a935c7adffbc12afb9328394a3cde5608e39f03ff70fb9d7ade5" => :yosemite
-    sha256 "3bd0df6eef42d1b3f72f4eec30b5504e97a4b0083e46ac90c92a2990c4293226" => :mavericks
-    sha256 "1adcfa2199c2a6438bd185522e2015b1e64dfc5bc9059ef5e64ff35e7e202c2a" => :mountain_lion
+    sha256 "db725c585814b8200e1de16610f955ad37c69d00cb647398ee3b1a38dde14fdb" => :yosemite
+    sha256 "8788d79f10266ba246cdc9de832dece2bd9c8b86cf52349fae9975f9313dce55" => :mavericks
+    sha256 "2416477ec926d08f358594dbd87232d3a499f50313d81fb630d8fd3836de8dfc" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -37,9 +36,12 @@ class Fzf < Formula
       bin.install "fzf"
     end
 
-    prefix.install %w[install uninstall fzf-completion.bash fzf-completion.zsh LICENSE]
-    bin.install "bin/fzf-tmux"
+    prefix.install %w[install uninstall LICENSE]
+    (prefix/"shell").install %w[bash zsh fish].map { |s| "shell/key-bindings.#{s}" }
+    (prefix/"shell").install "shell/completion.bash"
     (prefix/"plugin").install "plugin/fzf.vim"
+    man1.install "man/man1/fzf.1"
+    bin.install "bin/fzf-tmux"
   end
 
   def caveats; <<-EOS.undent

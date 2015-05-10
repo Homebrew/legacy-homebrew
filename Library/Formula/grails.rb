@@ -1,9 +1,9 @@
 require 'formula'
 
 class Grails < Formula
-  homepage 'http://grails.org'
-  url 'https://github.com/grails/grails-core/releases/download/v2.5.0/grails-2.5.0.zip'
-  sha1 '3415b14440eb3fb0de7fb39964fc3d5a4d3ee0f9'
+  homepage 'https://grails.org'
+  url 'https://github.com/grails/grails-core/releases/download/v3.0.1/grails-3.0.1.zip'
+  sha256 'c58da97ad7fb9635c6fb5631755501b97d6ce9ee6668dc12f0722928ffa5abee'
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]

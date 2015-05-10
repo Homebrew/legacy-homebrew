@@ -28,7 +28,7 @@ class Nmap < Formula
       --prefix=#{prefix}
       --with-libpcre=included
       --with-liblua=included
-      --with-openssl=#{Formula["openssl"].prefix}
+      --with-openssl=#{Formula["openssl"].opt_prefix}
       --without-nmap-update
       --without-zenmap
       --disable-universal

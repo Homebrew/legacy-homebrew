@@ -2,8 +2,8 @@ require 'formula'
 
 class Ranger < Formula
   homepage 'http://ranger.nongnu.org/'
-  url 'http://nongnu.org/ranger/ranger-1.6.1.tar.gz'
-  sha1 'ac66644b362c6ed5b6f2127af799e12d8993f3b8'
+  url 'http://ranger.nongnu.org/ranger-1.7.0.tar.gz'
+  sha1 '2bc30b305fab527f0f1e8c9b6ba03fac18d5c6a7'
 
   head 'git://git.savannah.nongnu.org/ranger.git'
 

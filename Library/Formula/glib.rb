@@ -1,12 +1,12 @@
 class Glib < Formula
   homepage "https://developer.gnome.org/glib/"
-  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.42/glib-2.42.2.tar.xz"
-  sha256 "a3cc1ebd2bd310a9fdf42ae4293ee713cdf1764bd29f552febf3bf44cadae7db"
+  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.44/glib-2.44.0.tar.xz"
+  sha256 "f2d362b106a08fa801770d41829a06fcfe287a00421018869eebf5efc796f5b9"
 
   bottle do
-    sha256 "c443bcd8171108729f8d65f331868ea7cdc07a076e2c6d7441883451d9252149" => :yosemite
-    sha256 "801be3fb27da98e8eed617614e4ce385062160f29dd06564aae06a290fbe03be" => :mavericks
-    sha256 "beeadb1aec3ca6f5b8534bb6e381c1209f14a573bff8ebe378282f4b400ab4de" => :mountain_lion
+    sha256 "d520b2a66d30980984e941da1c527d161188e347eb684eff5c93f465925818ee" => :yosemite
+    sha256 "5fe51191fbdedebdbb37738cd8e10ee4069fff832359b2ce446656759a56a4e3" => :mavericks
+    sha256 "0e44ed5114c08b165081e0338d6ccbda8023f0839b57e978bebfd408776b1ae6" => :mountain_lion
   end
 
   option :universal
@@ -44,6 +44,14 @@ class Glib < Formula
   patch do
     url "https://gist.githubusercontent.com/jacknagel/9835034/raw/282d36efc126272f3e73206c9865013f52d67cd8/gio.patch"
     sha256 "d285c70cfd3434394a1c77c92a8d2bad540c954aad21e8bb83777482c26aab9a"
+  end
+
+  # Fixes compilation with GCC 4.2.1 on OSX and BSD.
+  # Reported upstream: https://bugzilla.gnome.org/show_bug.cgi?id=744473
+  # Fixed upstream in commit 4a292721bcf2943bfc05c6a1c859992f28e3efec
+  patch do
+    url "https://git.gnome.org/browse/glib/patch/?id=4a292721bcf2943bfc05c6a1c859992f28e3efec"
+    sha256 "6a5b330c58e42c31fb025fb312740a7dc510c7d7d1205e88c9b13918da6da9f8"
   end
 
   patch do

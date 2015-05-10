@@ -1,25 +1,29 @@
 class H2o < Formula
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.1.0.tar.gz"
-  sha256 "01f86bd81c5428c033bbe342c0f8ec43ff111a6aaae7d5c91fb7e619c0c65c07"
+  url "https://github.com/h2o/h2o/archive/v1.2.0.tar.gz"
+  sha256 "09aacd84ea0a53eaffdc8e0c2a2cf1108bea5db81d5859a136221fd67f07833f"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
-    sha256 "f696a00cd5b37e0e636c7eaebdf302ce36e96ad85a750abea0e95edebfaec03b" => :yosemite
-    sha256 "9472f7c2b13ccd9f8a4a33855692cbddc410a84dee3ee72790ad9801f29b34b6" => :mavericks
-    sha256 "c52f71d13c56d0cf77e130e400359fb1214157ce76920516ccd04deab1083779" => :mountain_lion
+    sha256 "03997ef2477b57c9f5ef23426f1ca4275e4de751b89a7f17d4afe06ebcb2f5bd" => :yosemite
+    sha256 "ec562d0b3b892aced88949f1dfc945c4bd3969da8f13b532be425b5d6f4af257" => :mavericks
+    sha256 "07fb006ca4d87c01e85d2eb3fb5f293770e8c016ebab4593b720389884d552e8" => :mountain_lion
   end
 
   option "with-libuv", "Build the H2O library in addition to the executable."
 
   depends_on "cmake" => :build
-  depends_on "libyaml"
-  depends_on "openssl"
+  depends_on "openssl" => :recommended
+  depends_on "libressl" => :optional
   depends_on "libuv" => :optional
   depends_on "wslay" => :optional
 
   def install
-    system "cmake", ".", *std_cmake_args
+    args = std_cmake_args
+    args << "."
+    args << "-DWITH_BUNDLED_SSL=OFF"
+
+    system "cmake", *args
 
     if build.with? "libuv"
       system "make", "libh2o"

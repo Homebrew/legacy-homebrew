@@ -10,7 +10,7 @@ You can now find out what is outdated with:
 
 Upgrade everything with:
 
-    brew upgrade
+    brew upgrade --all
 
 Or upgrade a specific formula with:
 
@@ -44,21 +44,20 @@ to see what would be cleaned up:
 <a name="uninstall"></a>
 
 ### How do I uninstall Homebrew?
-If you installed to `/usr/local` then you can use the script in [this
-gist](https://gist.github.com/1173223) to uninstall — it will only
-remove Homebrew and the stuff Homebrew installed leaving anything else
-in `/usr/local` alone.
+To uninstall Homebrew, paste the command below in a terminal prompt.
 
-Provided you haven’t put anything else in Homebrew’s prefix
-(`brew --prefix`), you can generally just `rm -rf` that directory. This
-is because Homebrew won’t touch files outside its prefix.
+```bash
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+```
+Download the [uninstall script](https://raw.githubusercontent.com/Homebrew/install/master/uninstall)
+and run `./uninstall --help` to view more uninstall options.
 
 <a name="uninstall-package"></a>
 
 ### How do I uninstall a formula?
 If you do not uninstall all of the versions that Homebrew has installed,
 Homebrew will continue to attempt to install the newest version it knows
-about when you do (`brew upgrade`). This can be surprising.
+about when you do (`brew upgrade --all`). This can be surprising.
 
 To remove a formula entirely, you may do
 (`brew uninstall formula_name --force`).
