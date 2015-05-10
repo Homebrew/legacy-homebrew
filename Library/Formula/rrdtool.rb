@@ -1,10 +1,7 @@
-require 'formula'
-
 class Rrdtool < Formula
-  homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
-  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.8.tar.gz'
-  sha1 '56d68857f39e70bfa32360947614d8220702ed02'
-  revision 1
+  homepage "http://oss.oetiker.ch/rrdtool/index.en.html"
+  url "http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.5.3.tar.gz"
+  sha256 "79e7b2f5cf74843e89fe4d08925f955268fd21736cbea03e54ae83320fc6129f"
 
   bottle do
     sha1 "66e4c7cb71218b8071a0e08e6fc76e3d54bd5509" => :yosemite
@@ -12,10 +9,17 @@ class Rrdtool < Formula
     sha1 "17793a75d33fb5173fbe97dc01f687a47a56a54e" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'pango'
-  depends_on 'lua' => :optional
+  head do
+    url "https://github.com/oetiker/rrdtool-1.x.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "pango"
+  depends_on "lua" => :optional
 
   env :userpaths # For perl, ruby
 
@@ -34,6 +38,7 @@ class Rrdtool < Formula
       --disable-ruby-site-install
     ]
 
+    system "./bootstrap" if build.head?
     system "./configure", *args
 
     # Needed to build proper Ruby bundle
