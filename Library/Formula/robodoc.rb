@@ -1,12 +1,10 @@
-require 'formula'
-
 class Robodoc < Formula
-  homepage 'http://rfsber.home.xs4all.nl/Robo/robodoc.html'
-  url 'http://rfsber.home.xs4all.nl/Robo/robodoc-4.99.41.tar.gz'
-  sha1 'f2dfb53c667681bf0c5424be9b14f3a1e7edab9b'
+  homepage "http://www.xs4all.nl/~rfsber/Robo/index.html"
+  url "http://rfsber.home.xs4all.nl/Robo/archives/robodoc-4.99.43.tar.bz2"
+  sha256 "3d826424a3957502caacf39951f7805f1d72bb374c0533de7ca1036f306afdc7"
 
   head do
-    url 'https://github.com/gumpu/ROBODoc.git'
+    url "https://github.com/gumpu/ROBODoc.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -15,7 +13,14 @@ class Robodoc < Formula
 
   def install
     system "autoreconf", "-f", "-i" if build.head?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules"
+    system "make", "install"
+  end
+
+  test do
+    cp_r Dir["#{doc}/Examples/PerlExample/*"], testpath
+    system bin/"robodoc"
   end
 end
