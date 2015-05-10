@@ -13,11 +13,26 @@ class Jbig2dec < Formula
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
+  depends_on "libpng" => :optional
+
+  # http://bugs.ghostscript.com/show_bug.cgi?id=695890
+  # Remove on next release.
+  patch do
+    url "http://git.ghostscript.com/?p=jbig2dec.git;a=patch;h=70c7f1967f43a94f9f0d6808d6ab5700a120d2fc"
+    sha256 "81ae6367ab74a18d88473a81dd2f36d8c892370a63fcf518d6f2a5af346ab867"
+  end
 
   def install
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-silent-rules
+    ]
+
+    args << "--without-libpng" if build.without? "libpng"
+
     system "autoreconf", "-fvi" # error: cannot find install-sh
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
-                          "--disable-silent-rules", "--without-libpng"
+    system "./configure", *args
     system "make", "install"
   end
 
