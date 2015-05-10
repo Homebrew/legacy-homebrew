@@ -1,5 +1,6 @@
 class Llvm < Formula
   homepage "http://llvm.org/"
+  revision 1
 
   stable do
     url "http://llvm.org/releases/3.6.0/llvm-3.6.0.src.tar.xz"
@@ -113,8 +114,7 @@ class Llvm < Formula
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
 
-    args << "-DBUILD_SHARED_LIBS=Off" if build.without? "shared"
-
+    args << "-DBUILD_SHARED_LIBS=On" if build.with? "shared"
     args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
 
     mktemp do
