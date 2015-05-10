@@ -4,6 +4,12 @@ class CppNetlib < Formula
   sha256 "8f5a0bb7e5940490b4e409f9c805b752ee4b598e06d740d04adfc76eb5c8e23e"
   version "0.11.1"
 
+  bottle do
+    sha256 "c6d9909b1d7a4402782ed86d80c97c612f24e8893e266a7064362dc0a6323324" => :yosemite
+    sha256 "8cd73fdc6597e1223f1cf12a0908c1d4c469f1a0dddf7f88d6f5d522f59129c3" => :mavericks
+    sha256 "1409987a309cdf2a03d8161c6357770626d265d622101bf246011290126de2f9" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
 
   if MacOS.version < :mavericks
