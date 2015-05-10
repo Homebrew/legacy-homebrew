@@ -31,6 +31,12 @@ class Llvm < Formula
     end
   end
 
+  bottle do
+    sha256 "a1788dcad685a25e4851885c0081347d146783ec2e5ef23c55bdbfd5b29e2869" => :yosemite
+    sha256 "bdeecd4844420bedbdf80947c25a125aa275fb69657388c15a316d00e4774133" => :mavericks
+    sha256 "a9c45cff37c72cb17dc00eb5ce34ca9f91a0812f3194492e6e6a90c4160f2849" => :mountain_lion
+  end
+
   head do
     url "http://llvm.org/git/llvm.git"
 

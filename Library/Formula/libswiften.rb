@@ -1,11 +1,10 @@
-require 'formula'
-
 class Libswiften < Formula
-  homepage 'http://swift.im/swiften'
+  homepage "http://swift.im/swiften"
+  revision 1
 
   stable do
     url "http://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz"
-    sha1 "b04ba098fffb1edc2ef0215957371c249458f0be"
+    sha256 "cbcdbe527dc4d112a38f3cdec5f1051d3beba0b97f8082f90debd04a5b45a41f"
 
     # Patch to include lock from boost. Taken from
     # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
@@ -22,20 +21,21 @@ class Libswiften < Formula
   end
 
   bottle do
-    revision 2
-    sha1 "4304665d17ab82a8b27afa59b3ead18658b504b1" => :yosemite
-    sha1 "5534c031b81bb3a031e74d87a7bcf74af721323f" => :mavericks
-    sha1 "984038e792a28ef8834ce2d582972c148d0a6533" => :mountain_lion
+    revision 3
+    sha256 "b9c79e101fa96c7e53b505ee7afaa511ab3f81735d2440b6b810a85ec4b36614" => :yosemite
+    sha256 "1d69b8e63b9e41280d24c23d3f611e03c5798bb165abeed4bc0bf06acbf027a5" => :mavericks
+    sha256 "6981efb6cbb1db7fc011ea12f05d4bb1593f04b49128cd406f2cd69ae869d273" => :mountain_lion
   end
 
   head do
-    url 'git://swift.im/swift'
-    depends_on 'lua' => :recommended
+    url "git://swift.im/swift"
+    depends_on "lua" => :recommended
   end
 
-  depends_on 'scons' => :build
-  depends_on 'libidn'
-  depends_on 'boost'
+  depends_on "scons" => :build
+  depends_on "boost"
+  depends_on "libidn"
+  depends_on "openssl"
 
   def install
     boost = Formula["boost"]
@@ -52,6 +52,7 @@ class Libswiften < Formula
       libidn_includedir=#{libidn.include}
       libidn_libdir=#{libidn.lib}
       SWIFTEN_INSTALLDIR=#{prefix}
+      openssl=#{Formula["openssl"].opt_prefix}
     ]
 
     if build.with? "lua"
@@ -64,7 +65,7 @@ class Libswiften < Formula
     args << prefix
 
     scons *args
-    man1.install 'Swift/Packaging/Debian/debian/swiften-config.1' unless build.stable?
+    man1.install "Swift/Packaging/Debian/debian/swiften-config.1" unless build.stable?
   end
 
   test do

@@ -2,14 +2,14 @@ class Docker < Formula
   homepage "https://www.docker.com/"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of boot2docker too
-  url "https://github.com/docker/docker.git", :tag => "v1.6.0",
-    :revision => "47496519da9664202d900d3635bb840509fa9647"
+  url "https://github.com/docker/docker.git", :tag => "v1.6.1",
+    :revision => "97cd073598275fa468fb3051952bd11002830c8e"
 
   bottle do
     cellar :any
-    sha256 "ef7f16ba999be4b9850507d67499e61520acb9924b5d24d98aeba30c7bc5bf24" => :yosemite
-    sha256 "1996e13b08d24be9148e13ac75a3efad1afb616c02c397a064be833465bc1484" => :mavericks
-    sha256 "d1b458d5266ba2d5ea5b2a2631490de53bce3343a406da1f05232855e36ef804" => :mountain_lion
+    sha256 "01a307c67712357520c5bdc16bc244ac3c57bc293d90752e8bf555db3d38ed0c" => :yosemite
+    sha256 "1b9a5376bcc0b55a5eb48a468e60d7bb463011b5bd5edbd5b52a8fa9854f9580" => :mavericks
+    sha256 "0003bc36e3b8b7e5995f1cd5793661341d5f841d9cad63ab50881938df388904" => :mountain_lion
   end
 
   option "without-completions", "Disable bash/zsh completions"

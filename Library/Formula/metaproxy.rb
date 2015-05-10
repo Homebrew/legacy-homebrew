@@ -2,12 +2,13 @@ class Metaproxy < Formula
   homepage "http://www.indexdata.com/metaproxy"
   url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.8.8.tar.gz"
   sha256 "c82849e2901607d585967c1708eabcdac9b4a5a780aeb6f2ec044047455f9811"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "005d81f94f30753602aa37135fbc519c4a0cc6cdbfe6e86aeb7db5dcba28ff57" => :yosemite
-    sha256 "150b5f3db0e6d4e280dd4b4d959b265e37a3603c09ecac8be59bd25f160c71c0" => :mavericks
-    sha256 "d5453ad8eee78fcb604e8791021949b61411a692ee68f57347f69296a168caa6" => :mountain_lion
+    sha256 "bb618ee8c7f6629f32afcf54fbc87a3fb80882ab42159aefc047592e48a7f6b1" => :yosemite
+    sha256 "3ceeb3f4a5fadda4f4df82262f260732ff3c088ff8fbfdf3a0171451e9373004" => :mavericks
+    sha256 "1d46ab6054f7e0dbadf5e9f3038c4ff713c0790d4711ec31b4d9545adfcf9cc5" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

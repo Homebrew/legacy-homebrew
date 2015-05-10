@@ -2,14 +2,14 @@ require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_18_1_RTM/src/nss-3.18.1.tar.gz"
-  sha256 "10d005ca1b143a8b77032a169c595d06cf42d16d54809558ea30f1ffe73fef70"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_19_RTM/src/nss-3.19.tar.gz"
+  sha256 "989ebdf79374f24181f060d332445b1a4baf3df39d08514c4349ba8573cefa9b"
 
   bottle do
     cellar :any
-    sha256 "b695188f43a14e11312286afd84d8647facdebd6542cf8e643810adf837d2cb7" => :yosemite
-    sha256 "ff313a36ae22abfba86517dcd5ff07886843a48a31baf310c42b5ae3a5d5374c" => :mavericks
-    sha256 "d4257e78909753e789468c0d047c8c51c98330d3d58ed9c6a059b750964ddfef" => :mountain_lion
+    sha256 "73f2d526a20013c16a4d9a881ba5ced9fad579fd9fbbf171c62c6778b9302d78" => :yosemite
+    sha256 "928d9f476ef9919c88c573b3a137faf87e5a5aa2a5ae413b741521e02bc229ba" => :mavericks
+    sha256 "2322c1d6f9c34bc27636db92a74cce2aa166c6085c31bfb9896ece31f97ddb7f" => :mountain_lion
   end
 
   keg_only <<-EOS.undent
@@ -68,7 +68,7 @@ class Nss < Formula
   end
 
   test do
-    # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
+    # See: https://developer.mozilla.org/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
     (testpath/"passwd").write("It's a secret to everyone.")
     system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
     system "#{bin}/certutil", "-L", "-d", pwd

@@ -1,12 +1,12 @@
 class Mkvtoolnix < Formula
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.7.0.tar.xz"
-  sha256 "191d8892b8fb36ac492c710134d419d7578ba802e812a32eb90ae02d4b13c028"
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.9.0.tar.xz"
+  sha256 "39788fa57d9cebd6ea3be9db58dbf8a10fd7c96ad8fa4f79bdf4dadca77bba4a"
 
   bottle do
-    sha1 "c0aa6d1f587159dfcf89f0f193c1fc97ae8554da" => :yosemite
-    sha1 "022ff93c8ee34b6958ccbcba2aa96e82e8b5410e" => :mavericks
-    sha1 "1ded8d87b52b495e9a94e0cfab5e4623532ff98a" => :mountain_lion
+    sha256 "0d2d3e8b470314dac1b2e109147e50e3b26080e5960fbd6a528723f096424b34" => :yosemite
+    sha256 "9388d3316b8a2c09cb79d1e5cd8c52053ee3748c7db97b7e33ecd94da260c78c" => :mavericks
+    sha256 "8ea97bdf68399e4aa92c923e3c9149a80438f133c6be948ba15d7a97fea4b80c" => :mountain_lion
   end
 
   head do
@@ -17,7 +17,7 @@ class Mkvtoolnix < Formula
   end
 
   option "with-wxmac", "Build with wxWidgets GUI"
-  option "with-qt5", "Build with experimental QT GUI"
+  option "with-qt5", "Build with QT GUI"
 
   depends_on "pkg-config" => :build
   depends_on :ruby => "1.9"
@@ -61,7 +61,7 @@ class Mkvtoolnix < Formula
       wxmac = Formula["wxmac"]
       args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{wxmac.opt_include}"
       args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{wxmac.opt_lib}"
-      args << "--enable-gui" << "--enable-wxwidgets"
+      args << "--enable-wxwidgets"
     else
       args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include}"
       args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib}"
@@ -76,6 +76,8 @@ class Mkvtoolnix < Formula
       args << "--with-rcc=#{qt5.opt_bin}/rcc"
       args << "--with-mkvtoolnix-gui"
       args << "--enable-qt"
+    else
+      args << "--disable-qt"
     end
 
     system "./autogen.sh" if build.head?
