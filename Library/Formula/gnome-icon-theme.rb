@@ -1,7 +1,7 @@
 class GnomeIconTheme < Formula
   homepage "https://developer.gnome.org"
-  url "http://ftp.gnome.org/pub/GNOME/sources/adwaita-icon-theme/3.14/adwaita-icon-theme-3.14.1.tar.xz"
-  sha1 "e1d603d9cc4e4b7f83f749ba20934832d4321dd2"
+  url "http://ftp.gnome.org/pub/GNOME/sources/adwaita-icon-theme/3.16/adwaita-icon-theme-3.16.0.tar.xz"
+  sha256 "a3c8ad3b099ca571b423811a20ee9a7a43498cfa04d299719ee43cd7af6f6eb1"
 
   bottle do
     cellar :any
