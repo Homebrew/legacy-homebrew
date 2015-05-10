@@ -114,11 +114,11 @@ class Llvm < Formula
       ENV["UNIVERSAL_ARCH"] = Hardware::CPU.universal_archs.join(" ")
     end
 
-    ENV["REQUIRES_RTTI"] = "1" if build.with?("rtti") || build.with?("clang")
-
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
+
+    args << "-DLLVM_ENABLE_RTTI=True" if build.with? "rtti" || build.with? "clang"
 
     args << "-DBUILD_SHARED_LIBS=Off" if build.without? "shared"
 
