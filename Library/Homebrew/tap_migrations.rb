@@ -147,6 +147,7 @@ TAP_MIGRATIONS = {
   "qfits" => "homebrew/boneyard",
   "qrupdate" => "homebrew/science",
   "rdesktop" => "homebrew/x11",
+  "riak" => "homebrew/binary",
   "rxvt-unicode" => "homebrew/x11",
   "salt" => "homebrew/science",
   "scantailor" => "homebrew/x11",
