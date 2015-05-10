@@ -5,9 +5,10 @@ class OpenalSoft < Formula
 
   bottle do
     cellar :any
-    sha1 "f447363850f71bb2332914cc9915e757cca0556f" => :mavericks
-    sha1 "732aba3be7edf074d9dd619cca10d4108db0b099" => :mountain_lion
-    sha1 "03d64490aaab809fa4095401dbb8508b98c2b99f" => :lion
+    revision 1
+    sha256 "4f31acb42ba76c79984e7ef0c5be5cbc63a6bff524516b3f67d2fb363363ec64" => :yosemite
+    sha256 "e0378ccb0dee6eca4d505ba313512ed12b44f6a58525418a544bce681fa3ad1b" => :mavericks
+    sha256 "b190c7c847f976b7d4938ea84356baa7225b63748c890af151150089f145ec6a" => :mountain_lion
   end
 
   option :universal
