@@ -64,7 +64,6 @@ class Llvm < Formula
   # Use absolute paths for shared library IDs
   patch :DATA
 
-  option :universal
   option "with-clang", "Build Clang support library"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
@@ -107,12 +106,6 @@ class Llvm < Formula
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
     (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
-
-    if build.universal?
-      ENV.permit_arch_flags
-      ENV["UNIVERSAL"] = "1"
-      ENV["UNIVERSAL_ARCH"] = Hardware::CPU.universal_archs.join(" ")
-    end
 
     ENV["REQUIRES_RTTI"] = "1" if build.with?("rtti") || build.with?("clang")
 
