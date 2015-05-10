@@ -1,9 +1,7 @@
-require "formula"
-
 class Squid < Formula
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.12.tar.bz2"
-  sha1 "e5291d1a556313712410cf6297f08e895a2d679a"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.4.tar.xz"
+  sha256 "dce615d08e349caf3975fc5d51ce4c3c69b9995fb83f51dc5d55ae873d8bf6a4"
 
   bottle do
     sha256 "9db04b2b64b0e14f1f0698d6fc35734bb4f52706e4dcd54dc6a897810eb15813" => :yosemite
@@ -29,10 +27,11 @@ class Squid < Formula
       --disable-eui
       --enable-pf-transparent
       --with-included-ltdl
+      --with-openssl
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   def plist; <<-EOS.undent
