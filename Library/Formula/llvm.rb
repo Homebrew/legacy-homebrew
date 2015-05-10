@@ -118,7 +118,7 @@ class Llvm < Formula
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
 
-    args << "-DLLVM_ENABLE_RTTI=True" if build.with? "rtti" || build.with? "clang"
+    args << "-DLLVM_ENABLE_RTTI=True" if build.with?("rtti") || build.with?("clang")
 
     args << "-DBUILD_SHARED_LIBS=Off" if build.without? "shared"
 
