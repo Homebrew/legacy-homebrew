@@ -5,6 +5,13 @@ class Gpsim < Formula
 
   head "svn://svn.code.sf.net/p/gpsim/code/trunk"
 
+  bottle do
+    cellar :any
+    sha256 "78a225eb11338a6699ccdb4c23ad4c1682cfdc34f06cf2c4fbeb571b238b45c9" => :yosemite
+    sha256 "dfdf91a9f332b9880ec59934fe661bbc0d50b45d8f7c2cdde888f31bcaac9c40" => :mavericks
+    sha256 "2d0cc0cf61b5df08cce8f9795666228487876cfda9045be3e371b6cd15c70bee" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gputils" => :build
   depends_on "glib"
