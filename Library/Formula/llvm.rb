@@ -1,5 +1,6 @@
 class Llvm < Formula
   homepage "http://llvm.org/"
+  revision 1
 
   stable do
     url "http://llvm.org/releases/3.6.0/llvm-3.6.0.src.tar.xz"
@@ -64,7 +65,6 @@ class Llvm < Formula
   # Use absolute paths for shared library IDs
   patch :DATA
 
-  option :universal
   option "with-clang", "Build Clang support library"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
@@ -108,20 +108,13 @@ class Llvm < Formula
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
     (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
 
-    if build.universal?
-      ENV.permit_arch_flags
-      ENV["UNIVERSAL"] = "1"
-      ENV["UNIVERSAL_ARCH"] = Hardware::CPU.universal_archs.join(" ")
-    end
-
     ENV["REQUIRES_RTTI"] = "1" if build.with?("rtti") || build.with?("clang")
 
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
 
-    args << "-DBUILD_SHARED_LIBS=Off" if build.without? "shared"
-
+    args << "-DBUILD_SHARED_LIBS=On" if build.with? "shared"
     args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
 
     mktemp do
