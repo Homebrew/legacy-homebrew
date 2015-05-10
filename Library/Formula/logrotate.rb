@@ -3,6 +3,13 @@ class Logrotate < Formula
   url "https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.9.1.tar.gz"
   sha256 "022769e3288c80981559a8421703c88e8438b447235e36dd3c8e97cd94c52545"
 
+  bottle do
+    cellar :any
+    sha256 "54e30ff0979a6840433942dca543ae3369f7850db3ebf309aa4e1ef47d7fe744" => :yosemite
+    sha256 "bd8a9901a24bb1a72e05a6e5dd5359d0ab609cc7fd6b48654ba5dfca0d7ada42" => :mavericks
+    sha256 "ab15e12cf49a7bb508227685c404c586705497bf3fbf2a7d37f18e3476121d2b" => :mountain_lion
+  end
+
   depends_on "popt"
 
   # Per MacPorts, let these variables be overridden by ENV vars.
