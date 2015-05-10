@@ -32,9 +32,9 @@ class Llvm < Formula
   end
 
   bottle do
-    sha1 "3e2dd43db3c45a3bcf96174e0b195267f66f0307" => :yosemite
-    sha1 "e0314fabbc5791fb665225ca91602b3fdd745072" => :mavericks
-    sha1 "59857e2f5670c9edb4adfd3cc3f03af2411e9c30" => :mountain_lion
+    sha256 "a1788dcad685a25e4851885c0081347d146783ec2e5ef23c55bdbfd5b29e2869" => :yosemite
+    sha256 "bdeecd4844420bedbdf80947c25a125aa275fb69657388c15a316d00e4774133" => :mavericks
+    sha256 "a9c45cff37c72cb17dc00eb5ce34ca9f91a0812f3194492e6e6a90c4160f2849" => :mountain_lion
   end
 
   head do
