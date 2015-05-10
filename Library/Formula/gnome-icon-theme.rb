@@ -1,6 +1,6 @@
 class GnomeIconTheme < Formula
   homepage "https://developer.gnome.org"
-  url "http://ftp.gnome.org/pub/GNOME/sources/adwaita-icon-theme/3.16/adwaita-icon-theme-3.16.0.tar.xz"
+  url "https://download.gnome.org/sources/adwaita-icon-theme/3.16/adwaita-icon-theme-3.16.0.tar.xz"
   sha256 "a3c8ad3b099ca571b423811a20ee9a7a43498cfa04d299719ee43cd7af6f6eb1"
 
   bottle do
