@@ -7,8 +7,10 @@ class Freeling < Formula
 
   bottle do
     cellar :any
-    sha256 "79c26e7b2e5de6baf7fd420e62cae2eefbf4da35550f234df780a8207973e062" => :yosemite
-    sha256 "26f897ffd076f020d0a6e79fe24db04ff3afa65d0027a92e7f99340f19ff45d8" => :mavericks
+    revision 1
+    sha256 "b921001f29e09759d08fa04ef080117234e6c7a5f0dfd62064eb18b82ae61a42" => :yosemite
+    sha256 "1b5ec2f41b3e8f760ecbdc20260d10464f242c7376eed10d7e9c2b07870d19c5" => :mavericks
+    sha256 "f32136a520a0991dfb0e8dc4f98685c389bc886360995d40babad96a744f8c79" => :mountain_lion
   end
 
   depends_on "boost" => "with-icu4c"
