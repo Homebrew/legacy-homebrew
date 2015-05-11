@@ -58,7 +58,56 @@ class Gtkx3 < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "-I#{HOMEBREW_PREFIX}/include/gtk-3.0", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/gio-unix-2.0/", "-I#{HOMEBREW_PREFIX}/include/cairo", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/pango-1.0", "-I#{HOMEBREW_PREFIX}/include/atk-1.0", "-I#{HOMEBREW_PREFIX}/include/cairo", "-I#{HOMEBREW_PREFIX}/include/pixman-1", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/freetype2", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I#{HOMEBREW_PREFIX}/include/gdk-pixbuf-2.0", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I#{HOMEBREW_PREFIX}/include/glib-2.0", "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include", "-I#{HOMEBREW_PREFIX}/opt/gettext/include", "-I/opt/X11/include", "test.c", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/gettext/lib", "-lgtk-3", "-lgdk-3", "-lpangocairo-1.0", "-lpango-1.0", "-latk-1.0", "-lcairo-gobject", "-lcairo", "-lgdk_pixbuf-2.0", "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl", "-o", "test"
+    atk = Formula["atk"]
+    cairo = Formula["cairo"]
+    fontconfig = Formula["fontconfig"]
+    freetype = Formula["freetype"]
+    gdk_pixbuf = Formula["gdk-pixbuf"]
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    libepoxy = Formula["libepoxy"]
+    libpng = Formula["libpng"]
+    pango = Formula["pango"]
+    pixman = Formula["pixman"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{atk.opt_include}/atk-1.0
+      -I#{cairo.opt_include}/cairo
+      -I#{fontconfig.opt_include}
+      -I#{freetype.opt_include}/freetype2
+      -I#{gdk_pixbuf.opt_include}/gdk-pixbuf-2.0
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/gio-unix-2.0/
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{include}
+      -I#{include}/gtk-3.0
+      -I#{libepoxy.opt_include}
+      -I#{libpng.opt_include}/libpng16
+      -I#{pango.opt_include}/pango-1.0
+      -I#{pixman.opt_include}/pixman-1
+      -D_REENTRANT
+      -L#{atk.opt_lib}
+      -L#{cairo.opt_lib}
+      -L#{gdk_pixbuf.opt_lib}
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{lib}
+      -L#{pango.opt_lib}
+      -latk-1.0
+      -lcairo
+      -lcairo-gobject
+      -lgdk-3
+      -lgdk_pixbuf-2.0
+      -lgio-2.0
+      -lglib-2.0
+      -lgobject-2.0
+      -lgtk-3
+      -lintl
+      -lpango-1.0
+      -lpangocairo-1.0
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end
