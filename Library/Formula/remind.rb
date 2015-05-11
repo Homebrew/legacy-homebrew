@@ -5,9 +5,9 @@ class Remind < Formula
 
   bottle do
     cellar :any
-    sha1 "ee048bc3c2eb39262f1fe94d8dbd3304a4f97bbf" => :yosemite
-    sha1 "6a4e041a257941eeb118b08a6455fd0438673845" => :mavericks
-    sha1 "c25f747a6cc96e133325746e1fa8ac4ae05855bc" => :mountain_lion
+    sha256 "439072984afe4ffdc59fdde49ab72bd5ae22f502594ca6ca1eff005c5978eb35" => :yosemite
+    sha256 "7f91415d27d3bce89c6ecae727d310b0f951c494c1aabad7e2f0e99d8c9bcb15" => :mavericks
+    sha256 "aade269584726a4050a48d1ad1483e1b9de1e485a4216ef2817b1c7ca381745d" => :mountain_lion
   end
 
   def install
