@@ -5,6 +5,13 @@ class Ezlupdate < Formula
 
   head "https://github.com/ezsystems/ezpublish-legacy.git"
 
+  bottle do
+    cellar :any
+    sha256 "e806bb39c4d4753e82bd03d9cbcfe08b3299b0c07a7f89a58b8287c4bb82f753" => :yosemite
+    sha256 "15da172b1bd18f7dc2db82ffec7866cfa7fdc8b8cb11113d025bb5af4a335835" => :mavericks
+    sha256 "4d5a6ce1f59247f3f7e2973653f70477f8abd8d95e496644aa90d888477f8b44" => :mountain_lion
+  end
+
   depends_on "qt"
 
   def install
