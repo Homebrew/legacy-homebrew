@@ -2,9 +2,10 @@ require "requirement"
 
 class NumpyDependency < Requirement
   fatal true
+  default_formula "homebrew/python/numpy"
 
   def initialize(tags)
-    @python = tags.include?("python3") ? "python3" : "python2.7"
+    @python = tags.include?("with-python3") ? "python3" : "python2.7"
     super(tags)
   end
 
@@ -14,13 +15,5 @@ class NumpyDependency < Requirement
   # since numpy comes with 10.7 and newer.
   satisfy(:build_env => false) do
     quiet_system @python, "-c", "import numpy"
-  end
-
-  def message; <<-EOS.undent
-    This formula requires numpy. The easiest way to install numpy on OS X
-    is with pip, which installs numpy as a precompiled wheel.
-    To install numpy, try:
-      pip#{3 if @python == "python3"} install numpy
-  EOS
   end
 end
