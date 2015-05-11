@@ -20,7 +20,7 @@ class Mockserver < Formula
     libexec.install_symlink mockserver_log => "log"
   end
 
-  def test
+  test do
     require "socket"
 
     # dynamically find free port
@@ -34,12 +34,13 @@ class Mockserver < Formula
     end
 
     # check its started up correctly
-    begin 
+    loop do
       `#{"curl -s \"http://localhost:" + port.to_s + "/status\" -X PUT"}`
-    end while $?.exitstatus != 0
+      break if $?.exitstatus == 0
+    end
 
     # shut it down
-    system "curl -s \"http://localhost:" + port.to_s + "/stop\" -X PUT"
+    system "curl", "-s", "http://localhost:" + port.to_s + "/stop", "-X", "PUT"
 
     # wait for MockServer to stop
     Process.wait(mockserver)
