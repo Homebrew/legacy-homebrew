@@ -13,13 +13,6 @@ class Sfml < Formula
     end
   end
 
-  bottle do
-    cellar :any
-    sha1 "20b25af5d31dc15054fc4694ea6f767facb64b50" => :yosemite
-    sha1 "403433f1d5502f44c02cdb83b90d38db684030dc" => :mavericks
-    sha1 "fd9bc00ef82c0e63ac067f1ffd2bf8bd9f51bc56" => :mountain_lion
-  end
-
   head "https://github.com/LaurentGomila/SFML.git"
 
   depends_on "cmake" => :build
