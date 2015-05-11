@@ -4,9 +4,9 @@ class Librsvg < Formula
   sha256 "13964c5d35357552b47d365c34215eee0a63bf0e6059b689f048648c6bf5f43a"
 
   bottle do
-    sha256 "f7ca7f815635467444ffeb8b2ec27411ed565ecbd7e6761bee033b2b26b531d8" => :yosemite
-    sha256 "e2f61ce1337fc727fdc7e895efe18f8f70ab7a698e8e0f51bddacfbf4be01dfd" => :mavericks
-    sha256 "239c9ab0823ab139828e0140c1cdfd6f2e1c536d0478a225d1db489d6b80981a" => :mountain_lion
+    sha256 "d5c5069f182b750a3060cca13a5c50f1546713115705af0bb9bc831b12b2f096" => :yosemite
+    sha256 "d491bd2d1cd1a543fb00acca95d8fbcc24676bf0a90edb254ff59bc393262cb8" => :mavericks
+    sha256 "2ae07ec80edb461808b53e529f1fbb4983762500f1f25f15cc702139cc59e385" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
