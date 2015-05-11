@@ -1,6 +1,6 @@
 class Libxmlxx < Formula
   homepage "http://libxmlplusplus.sourceforge.net"
-  url "http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.38/libxml++-2.38.0.tar.xz"
+  url "https://download.gnome.org/sources/libxml++/2.38/libxml++-2.38.0.tar.xz"
   sha256 "5698b03f5d320fb8310e30780e328f03debca12c557434ee031aea9baf3b1346"
 
   bottle do
