@@ -1,7 +1,7 @@
 class Remind < Formula
-  homepage "http://www.roaringpenguin.com/products/remind"
-  url "http://www.roaringpenguin.com/files/download/remind-03.01.13.tar.gz"
-  sha1 "dce46b2334b3849255feffe6cba4973f3c883647"
+  homepage "https://www.roaringpenguin.com/products/remind"
+  url "https://www.roaringpenguin.com/files/download/remind-03.01.14.tar.gz"
+  sha256 "0ad14ae796dfd844e2901c691d03ebdd173fd8a71141df0c26c1d192f29031ad"
 
   bottle do
     cellar :any
