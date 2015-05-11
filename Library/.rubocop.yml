@@ -113,3 +113,7 @@ Style/Tab:
     Enabled: false
 Style/TrailingBlankLines:
     Enabled: false
+
+# we use raise, not fail
+Style/SignalException:
+  EnforcedStyle: only_raise

@@ -96,7 +96,7 @@ class Llvm < Formula
     ENV.libcxx if ENV.compiler == :clang
 
     if build.with?("lldb") && build.without?("clang")
-      fail "Building LLDB needs Clang support library."
+      raise "Building LLDB needs Clang support library."
     end
 
     if build.with? "clang"
