@@ -7,7 +7,7 @@ class Mockserver < Formula
   depends_on :java => "1.6+"
 
   def install
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink "#{libexec}/bin/run_mockserver.sh" => "mockserver"
 
     # add lib directory soft link
@@ -21,20 +21,27 @@ class Mockserver < Formula
   end
 
   def test
-    require 'socket'
+    require "socket"
 
+    # dynamically find free port
     server = TCPServer.new(0)
     port = server.addr[1]
     server.close
+
+    # start MockServer
     mockserver = fork do
       exec "#{bin}/mockserver", "-serverPort", port.to_s
     end
-    cmd = "curl -s \"http://localhost:" + port.to_s + "/status\" -X PUT"
-    %x[ #{cmd} ]
-    while $?.exitstatus != 0
-      %x[ #{cmd} ]
-    end
-    system "curl", "http://localhost:" + port.to_s + "/stop", "-X", "PUT"
+
+    # check its started up correctly
+    begin 
+      `#{"curl -s \"http://localhost:" + port.to_s + "/status\" -X PUT"}`
+    end while $?.exitstatus != 0
+
+    # shut it down
+    system "curl -s \"http://localhost:" + port.to_s + "/stop\" -X PUT"
+
+    # wait for MockServer to stop
     Process.wait(mockserver)
   end
 end
