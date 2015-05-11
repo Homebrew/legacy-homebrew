@@ -16,8 +16,7 @@ class PamYubico < Formula
 
   def install
     ENV.universal_binary if build.universal?
-
-    ENV["XML_CATALOG_FILES"] = HOMEBREW_PREFIX/"etc/xml/catalog"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
 
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}",
