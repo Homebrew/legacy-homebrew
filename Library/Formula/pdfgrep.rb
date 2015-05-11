@@ -24,7 +24,7 @@ class Pdfgrep < Formula
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     system "make", "install"
   end
 

@@ -16,7 +16,7 @@ class Flactag < Formula
   depends_on 'jpeg'
 
   def install
-    ENV["XML_CATALOG_FILES"] = HOMEBREW_PREFIX/"etc/xml/catalog"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     ENV.append "LDFLAGS", "-liconv"
     ENV.append "LDFLAGS", "-lFLAC"
     system "./configure", "--disable-dependency-tracking",

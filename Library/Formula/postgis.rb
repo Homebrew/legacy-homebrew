@@ -83,7 +83,7 @@ class Postgis < Formula
 
     if build.with? "html-docs"
       cd "doc" do
-        ENV["XML_CATALOG_FILES"] ="#{HOMEBREW_PREFIX}/etc/xml/catalog"
+        ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
         system "make", "chunked-html"
         doc.install "html"
       end
