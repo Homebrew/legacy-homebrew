@@ -4,9 +4,9 @@ class Libxmlxx < Formula
   sha256 "5698b03f5d320fb8310e30780e328f03debca12c557434ee031aea9baf3b1346"
 
   bottle do
-    revision 1
-    sha1 "bb673ee532003e956f2e36a28e511ada53bfedfe" => :yosemite
-    sha1 "014015ca42d6cc9fdaac471d0dcfbae417e4f3a8" => :mavericks
+    sha256 "a54f1940bdcf03e3198a1907ffcad9ce66d0dd1fc79babf502c5100ede9e0703" => :yosemite
+    sha256 "3837069e7c317cab4df180451a7f74c7dd730fad068309ae394f684e2ed38988" => :mavericks
+    sha256 "0627acae7aa558085839566d36da0cedef39087c08e32bf7d39d8bb4c7260a53" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
