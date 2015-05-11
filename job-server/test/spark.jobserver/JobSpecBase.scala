@@ -28,7 +28,15 @@ trait JobSpecConfig {
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
       "akka.log-dead-letters" -> Integer.valueOf(0),
       "spark.master" -> "local[4]",
-      "context-factory" -> contextFactory
+      "spark.context-settings.context-factory" -> contextFactory
+    )
+    ConfigFactory.parseMap(ConfigMap.asJava)
+  }
+
+  lazy val contextConfig = {
+    val ConfigMap = Map(
+      "context-factory" -> contextFactory,
+      "streaming.batch_interval" -> new Integer(10)
     )
     ConfigFactory.parseMap(ConfigMap.asJava)
   }

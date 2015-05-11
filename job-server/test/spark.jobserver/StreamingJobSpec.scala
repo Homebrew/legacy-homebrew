@@ -1,8 +1,11 @@
 package spark.jobserver
 
+import java.io.File
+
 import com.typesafe.config.ConfigFactory
 import spark.jobserver.context.StreamingContextFactory
 import spark.jobserver.io.JobInfo
+
 
 
 object StreamingJobSpec extends JobSpecConfig {
@@ -17,20 +20,17 @@ class StreamingJobSpec extends JobSpecBase(StreamingJobSpec.getNewSystem) {
 
   import collection.JavaConverters._
 
-
-
   val classPrefix = "spark.jobserver."
   private val streamingJob = classPrefix + "StreamingTestJob"
 
-  val configMap = Map("streaming.batch_interval" -> Integer.valueOf(3),
-    "test.file" -> "/usr/share/dict/words")
+  val configMap = Map("streaming.batch_interval" -> Integer.valueOf(3))
 
   val emptyConfig = ConfigFactory.parseMap(configMap.asJava)
 
   before {
     dao = new InMemoryDAO
     manager =
-      system.actorOf(JobManagerActor.props(dao, "test", StreamingJobSpec.config, false))
+      system.actorOf(JobManagerActor.props(dao, "test", StreamingJobSpec.contextConfig, false))
 
   }
 
