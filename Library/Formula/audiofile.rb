@@ -26,7 +26,7 @@ class Audiofile < Formula
   def install
     if build.head?
       inreplace "autogen.sh", "libtool", "glibtool"
-      ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
+      ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     end
 
     configure = build.head? ? "./autogen.sh" : "./configure"

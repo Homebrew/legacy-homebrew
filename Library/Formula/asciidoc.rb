@@ -35,7 +35,7 @@ class Asciidoc < Formula
       (such as a2x for manpage generation) you need to add something
       like:
 
-        export XML_CATALOG_FILES=#{HOMEBREW_PREFIX}/etc/xml/catalog
+        export XML_CATALOG_FILES=#{etc}/xml/catalog
 
       to your shell rc file so that xmllint can find AsciiDoc's
       catalog files.
