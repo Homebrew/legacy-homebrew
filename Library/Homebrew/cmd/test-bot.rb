@@ -382,6 +382,12 @@ module Homebrew
       test "brew", "uses", canonical_formula_name
 
       formula = Formulary.factory(canonical_formula_name)
+
+      formula.conflicts.map { |c| Formulary.factory(c.name) }.
+        select { |f| f.installed? }.each do |conflict|
+          test "brew", "unlink", conflict.name
+      end
+
       installed_gcc = false
 
       deps = []
