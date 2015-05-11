@@ -1,9 +1,7 @@
-require 'formula'
-
 class Remake < Formula
-  homepage 'http://bashdb.sourceforge.net/remake/'
-  url 'https://downloads.sourceforge.net/bashdb/remake/3.82%2Bdbg-0.9/remake-3.82%2Bdbg0.9.tar.gz'
-  sha1 'bac6b2d2327ef4bcafe529901daa28c6645e83c7'
+  homepage "http://bashdb.sourceforge.net/remake/"
+  url "https://downloads.sourceforge.net/project/bashdb/remake/4.1%2Bdbg-0.91/remake-4.1%2Bdbg0.91.tar.bz2"
+  sha256 "02a1c62b47e99376701f8d99b45fffdf44e8512ecf92794fc6bf5d6779900dfb"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -12,6 +10,10 @@ class Remake < Formula
   end
 
   test do
-    system bin/"remake", "-v"
+    (testpath/"Makefile").write <<-EOS.undent
+      all:
+      \techo "Nothing here, move along"
+    EOS
+    system bin/"remake", "-x"
   end
 end
