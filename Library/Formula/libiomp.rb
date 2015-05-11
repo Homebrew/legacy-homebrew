@@ -1,7 +1,7 @@
 class Libiomp < Formula
   homepage "https://www.openmprtl.org/download"
-  url "https://www.openmprtl.org/sites/default/files/libomp_20150227_oss.tgz"
-  sha256 "a1d30fad0160400db325d270b632961d086026d2944520d67c6afc0e69ac93bf"
+  url "https://www.openmprtl.org/sites/default/files/libomp_20150401_oss.tgz"
+  sha256 "476dcf62d29134a3549d49542a74345bb5389f93670f2313d7c610a690f9048e"
 
   depends_on :arch => :intel
   depends_on "cmake" => :build
