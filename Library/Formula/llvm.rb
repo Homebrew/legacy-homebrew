@@ -108,11 +108,11 @@ class Llvm < Formula
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
     (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
 
-    ENV["REQUIRES_RTTI"] = "1" if build.with?("rtti") || build.with?("clang")
-
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
+
+    args << "-DLLVM_ENABLE_RTTI=On" if build.with?("rtti") || build.with?("clang")
 
     args << "-DBUILD_SHARED_LIBS=Off" if build.without? "shared"
 
