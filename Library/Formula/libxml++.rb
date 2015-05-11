@@ -18,6 +18,7 @@ class Libxmlxx < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
+
   test do
     (testpath/"test.cpp").write <<-EOS.undent
       #include <libxml++/libxml++.h>
@@ -35,7 +36,7 @@ class Libxmlxx < Formula
     glib = Formula["glib"]
     glibmm = Formula["glibmm"]
     libsigcxx = Formula["libsigc++"]
-    flags = ENV["CPPFLAGS"].split + ENV["LDFLAGS"].split
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
     flags += %W[
       -I#{gettext.opt_include}
       -I#{glib.opt_include}/glib-2.0
