@@ -1,9 +1,7 @@
-require "formula"
-
 class Rgbds < Formula
-  homepage "https://github.com/bentley/rgbds"
-  url "https://github.com/bentley/rgbds/releases/download/v0.1.2/rgbds-0.1.2.tar.gz"
-  sha1 "5d83defd7ee101db409e638ff32e362b6ca25a32"
+  homepage "https://www.anjbe.name/rgbds/"
+  url "https://github.com/bentley/rgbds/releases/download/v0.2.3/rgbds-0.2.3.tar.gz"
+  sha256 "7918cd7642d9b72a990c8e98e6b29268a267cbfa023cf5b20a0acf33e879c6f0"
 
   head "https://github.com/bentley/rgbds.git"
 
@@ -15,7 +13,6 @@ class Rgbds < Formula
   end
 
   def install
-    system "make"
     system "make", "install", "PREFIX=#{prefix}", "MANPREFIX=#{man}"
   end
 
