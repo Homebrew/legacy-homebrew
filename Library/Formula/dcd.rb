@@ -1,13 +1,13 @@
 class Dcd < Formula
   homepage "https://github.com/Hackerpilot/DCD"
   url "https://github.com/Hackerpilot/DCD.git",
-      :tag => "v0.5.1",
-      :revision => "351bf2ee2d5f1c4986c2c5957f542dda17b1d085"
+      :tag => "v0.6.0",
+      :revision => "633b1667ef223e6eda7bcfd2d2d746f59036571f"
 
   bottle do
-    sha256 "7d1de0bae7b64fd4f53058e9213cd59a1d270f25284c5f2e4dad15767a57ce24" => :yosemite
-    sha256 "c0fc2ee139512990048318d9e7677ae836f85a98ff56c9d3005434bf8c289159" => :mavericks
-    sha256 "f8a494c721a1d3f4a45b802c3c90a2ea61a04de6345cb5d6c3fca44afb50f783" => :mountain_lion
+    sha256 "b2bfea971d1cce8f221a524d3ddd10f5b2e6775acfe29754d765785d875a6bb6" => :yosemite
+    sha256 "f159386dfbfb7d225010f3fa24e9b0dc911a718bd81a059be243edb6af4f880c" => :mavericks
+    sha256 "84a24c63e3b05ce812ffb7453f1fd5edfb47dfe053bd6c02401f264dd9febc60" => :mountain_lion
   end
 
   depends_on "dmd" => :build

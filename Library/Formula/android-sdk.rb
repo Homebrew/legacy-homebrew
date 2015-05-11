@@ -1,12 +1,12 @@
 class AndroidSdk < Formula
   homepage "https://developer.android.com/index.html"
-  version "24.1.2"
+  version "24.2"
   if OS.mac?
-    url "https://dl.google.com/android/android-sdk_r24.1.2-macosx.zip"
-    sha256 "a4441a4770130aa841f350918a16db43aaee18f2d8e0c681a216e0381a763362"
+    url "https://dl.google.com/android/android-sdk_r24.2-macosx.zip"
+    sha256 "9e0cd4844a696c555563a2daad5ff6731a4175b7a56f00c8f8dd831dbca9511b"
   elsif OS.linux?
-    url "https://dl.google.com/android/android-sdk_r24.1.2-linux.tgz"
-    sha256 "77dc2e98cf64a04d13d9554ec6ac8ad26a8b32d49119ae8af15348e715674f8e"
+    url "https://dl.google.com/android/android-sdk_r24.2-linux.tgz"
+    sha256 "c07ade2f984e108fc24d96598b45b87f4e77ff2af5e4243fa52184c3073efcf3"
   end
 
   conflicts_with "android-platform-tools",
@@ -19,7 +19,7 @@ class AndroidSdk < Formula
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "21.1.2"
+    "22.0.1"
   end
 
   def install
@@ -88,8 +88,7 @@ class AndroidSdk < Formula
   def caveats; <<-EOS.undent
     Now run the 'android' tool to install the actual SDK stuff.
 
-    The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
-      #{prefix}
+    The Android-SDK is available at #{opt_prefix}
 
     You will have to install the platform-tools and docs EVERY time this formula
     updates. If you want to try and fix this then see the comment in this formula.

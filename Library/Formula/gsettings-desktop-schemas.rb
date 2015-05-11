@@ -1,13 +1,12 @@
 class GsettingsDesktopSchemas < Formula
   homepage "https://download.gnome.org/sources/gsettings-desktop-schemas/"
-  url "https://download.gnome.org/sources/gsettings-desktop-schemas/3.14/gsettings-desktop-schemas-3.14.0.tar.xz"
-  sha256 "cf3ba58f6257155080b1872b4a6ce4a2424bb7af3f08e607b428cb47b065f2d7"
+  url "https://download.gnome.org/sources/gsettings-desktop-schemas/3.16/gsettings-desktop-schemas-3.16.1.tar.xz"
+  sha256 "74fe9fdad510c8a6666febeceb7ebafc581ef990b3afcc8c1e8b5d90b24b3461"
 
   bottle do
-    revision 2
-    sha256 "ed713e36bb658c3ac715a43ac505389a427f06540e47a2521f7291875ac1d4fa" => :yosemite
-    sha256 "45e1e8d292bd2356cfcbc7090fb189536c974f73881cef20f2fdb40c6c6c013c" => :mavericks
-    sha256 "b1820bdd931682580c900920d0cf1edb4c1a0d86755dbb6dd310f5552f72879a" => :mountain_lion
+    sha256 "02a5ea7cdd9874437e86a908e21dd7edb7cd8972dbca153bfce94789bd805a47" => :yosemite
+    sha256 "b4cb92f15b7efe4054c4cebfca02010d74f71707ff1e099a495924b664124664" => :mavericks
+    sha256 "acfda30db7e04df28bc38f12e368810c9592a06e29911d2e84fc60ee51a40ca3" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

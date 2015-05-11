@@ -1,14 +1,12 @@
 class Creduce < Formula
   homepage "https://embed.cs.utah.edu/creduce/"
-  url "https://github.com/csmith-project/creduce/archive/creduce-2.2.1.tar.gz"
-  sha256 "9662f4467995604d01f68250ee85a33c22ab4cd6e3cb4d7d06229aca042fce96"
-
+  url "https://github.com/csmith-project/creduce/archive/creduce-2.3.0.tar.gz"
+  sha256 "47a42751aab8b51bc10d8df62f359bdc1b4a644f16feb85b9f7325f0c5bce4a3"
   head "https://github.com/csmith-project/creduce.git"
 
   bottle do
-    revision 1
-    sha256 "3ac84a649bed07ef67515fbe88395a803524c0120779d10b71410ca1869aa847" => :yosemite
-    sha256 "383bd9059854d1a143282bce412941aa459f3aa28c84d99a29921787b7c45b67" => :mavericks
+    sha256 "cb27ed455261c1839800d26ad5c66a3afa1ac76717857cc6797fea9a21162d44" => :yosemite
+    sha256 "5afedc24dbb4be00f7e89ee377e6f5500a0804fd914c4eaa75e3c7d7f27fbddb" => :mavericks
   end
 
   depends_on "astyle"
@@ -18,38 +16,38 @@ class Creduce < Formula
   depends_on :macos => :mavericks
 
   resource "Benchmark::Timer" do
-    url "http://search.cpan.org/CPAN/authors/id/D/DC/DCOPPIT/Benchmark-Timer-0.7102.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/D/DC/DCOPPIT/Benchmark-Timer-0.7102.tar.gz"
-    sha256 "01446699cc7fd56cbc631d16ad73e9158a2bf63a2b045d1a1d2a3e98eaf289be"
+    url "http://www.cpan.org/authors/id/D/DC/DCOPPIT/Benchmark-Timer-0.7107.tar.gz"
+    mirror "https://cpan.metacpan.org/authors/id/D/DC/DCOPPIT/Benchmark-Timer-0.7107.tar.gz"
+    sha256 "64f70fabc896236520bfbf43c2683fdcb0f2c637d77333aed0fd926b92226b60"
   end
 
   resource "Exporter::Lite" do
-    url "http://search.cpan.org/CPAN/authors/id/N/NE/NEILB/Exporter-Lite-0.06.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/N/NE/NEILB/Exporter-Lite-0.06.tar.gz"
+    url "http://www.cpan.org/authors/id/N/NE/NEILB/Exporter-Lite-0.06.tar.gz"
+    mirror "https://cpan.metacpan.org/authors/id/N/NE/NEILB/Exporter-Lite-0.06.tar.gz"
     sha256 "f252562176c48cdc29c543d31ba3e0eed71042e9ad2b20f9f6283bd2e29e8f4c"
   end
 
   resource "File::Which" do
-    url "http://search.cpan.org/CPAN/authors/id/A/AD/ADAMK/File-Which-1.09.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/A/AD/ADAMK/File-Which-1.09.tar.gz"
+    url "http://www.cpan.org/authors/id/A/AD/ADAMK/File-Which-1.09.tar.gz"
+    mirror "https://cpan.metacpan.org/authors/id/A/AD/ADAMK/File-Which-1.09.tar.gz"
     sha256 "b72fec6590160737cba97293c094962adf4f7d44d9e68dde7062ecec13f4b2c3"
   end
 
   resource "Getopt::Tabular" do
-    url "http://search.cpan.org/CPAN/authors/id/G/GW/GWARD/Getopt-Tabular-0.3.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/G/GW/GWARD/Getopt-Tabular-0.3.tar.gz"
+    url "http://www.cpan.org/authors/id/G/GW/GWARD/Getopt-Tabular-0.3.tar.gz"
+    mirror "https://cpan.metacpan.org/authors/id/G/GW/GWARD/Getopt-Tabular-0.3.tar.gz"
     sha256 "9bdf067633b5913127820f4e8035edc53d08372faace56ba6bfa00c968a25377"
   end
 
   resource "Regexp::Common" do
-    url "http://search.cpan.org/CPAN/authors/id/A/AB/ABIGAIL/Regexp-Common-2013031301.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/A/AB/ABIGAIL/Regexp-Common-2013031301.tar.gz"
+    url "http://www.cpan.org/authors/id/A/AB/ABIGAIL/Regexp-Common-2013031301.tar.gz"
+    mirror "https://cpan.metacpan.org/authors/id/A/AB/ABIGAIL/Regexp-Common-2013031301.tar.gz"
     sha256 "729a8198d264aa64ecbb233ff990507f97fbb66bda746b95f3286f50f5f25c84"
   end
 
   resource "Sys::CPU" do
-    url "http://search.cpan.org/CPAN/authors/id/M/MZ/MZSANFORD/Sys-CPU-0.61.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/M/MZ/MZSANFORD/Sys-CPU-0.61.tar.gz"
+    url "http://www.cpan.org/authors/id/M/MZ/MZSANFORD/Sys-CPU-0.61.tar.gz"
+    mirror "https://cpan.metacpan.org/authors/id/M/MZ/MZSANFORD/Sys-CPU-0.61.tar.gz"
     sha256 "250a86b79c231001c4ae71d2f66428092a4fbb2070971acafd471aa49739c9e4"
   end
 
@@ -66,7 +64,7 @@ class Creduce < Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
-                          "--with-llvm=#{Formula["llvm"].prefix}",
+                          "--with-llvm=#{Formula["llvm"].opt_prefix}",
                           "--bindir=#{libexec}"
     system "make"
     system "make", "install"

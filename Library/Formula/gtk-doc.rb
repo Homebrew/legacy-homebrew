@@ -1,12 +1,12 @@
 class GtkDoc < Formula
   homepage "http://www.gtk.org/gtk-doc/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/1.21/gtk-doc-1.21.tar.xz"
-  sha256 "5d934d012ee08edd1585544792efa80da271652587ba5b843d2cea8e8b80ee3e"
+  url "https://download.gnome.org/sources/gtk-doc/1.22/gtk-doc-1.22.tar.xz"
+  sha256 "932865c912ce0d81c9480bf957d3908bae6e18c0cf2ee33014d63b920047fca8"
 
   bottle do
-    sha1 "3499509d4916f5ec0eea321a5dc9f81d5dadb702" => :yosemite
-    sha1 "1de0d6fc4ffdb851c8b61a4a32fee965b8f23293" => :mavericks
-    sha1 "9a49cfeeeb239bab0be244871657fa3aba9a2f0a" => :mountain_lion
+    sha256 "654ae76d5e15f8461dbfd0be4ed8c52d67e7cc2dd4e8f4fc893fc9e5feedcd2f" => :yosemite
+    sha256 "2b617b6fe81f7cb8fdc7252208552879ba1af12a892e0abfdd70863e455d4a48" => :mavericks
+    sha256 "ec163f5b3edbfab4b35c5e213d66fe4f7b4f63130a64cc3ec635e3369ca12e79" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

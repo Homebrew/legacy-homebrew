@@ -182,7 +182,7 @@ class Formulary
 
   class NullLoader < FormulaLoader
     def initialize(name)
-      @name = name
+      super name, Formula.path(name)
     end
 
     def get_formula(spec)
@@ -202,6 +202,10 @@ class Formulary
 
   def self.canonical_name(ref)
     loader_for(ref).name
+  end
+
+  def self.path(ref)
+    loader_for(ref).path
   end
 
   def self.loader_for(ref)

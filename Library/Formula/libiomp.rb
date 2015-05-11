@@ -1,16 +1,16 @@
 class Libiomp < Formula
   homepage "https://www.openmprtl.org/download"
-  url "https://www.openmprtl.org/sites/default/files/libomp_20150227_oss.tgz"
-  sha256 "a1d30fad0160400db325d270b632961d086026d2944520d67c6afc0e69ac93bf"
+  url "https://www.openmprtl.org/sites/default/files/libomp_20150401_oss.tgz"
+  sha256 "476dcf62d29134a3549d49542a74345bb5389f93670f2313d7c610a690f9048e"
 
   depends_on :arch => :intel
   depends_on "cmake" => :build
 
   bottle do
     cellar :any
-    sha256 "0b1100fbe25cdf739f60d85988c0f7f73d33a4a1e97de2b21e7f53258fd43a93" => :yosemite
-    sha256 "311132571f71ac5d06665cab765a683bba53c53438d07a59f1a143d8db211787" => :mavericks
-    sha256 "b26fa4413afcd9ae18743efd462d1d7e8541fe41fa52e4a864dbd845db5cbe42" => :mountain_lion
+    sha256 "b330ef085dbff40bdf5b3bf67beb8efd0573c67d5abe9c193f34f8cba1ba7e2c" => :yosemite
+    sha256 "bc754820685040c0567edf3d7aeef1d5c1a25f532409b43673371854e16caca7" => :mavericks
+    sha256 "231ec294a8d99a93a2336d06e2ebf5a1550f76f08ef168fa26c54dc15e0482bf" => :mountain_lion
   end
 
   fails_with :gcc  do

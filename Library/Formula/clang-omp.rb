@@ -5,10 +5,10 @@ class ClangOmp < Formula
   sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
 
   bottle do
-    revision 1
-    sha256 "dfc5f4c5ca5f91b71f6e6c71934371f823f3d9f922184954289c0fa58c610738" => :yosemite
-    sha256 "0cf85df1cade74005852efe44292babf82582e46f105fd752699e3b6d7258ce5" => :mavericks
-    sha256 "9bc657cd6162cfe4755733e22c2292748ec4073cc1372737c2e07094f10958b6" => :mountain_lion
+    revision 2
+    sha256 "2d29cc7bcde757610a325e57c0ea0162cee97c2cf04ea424f8e4010c57ae2295" => :yosemite
+    sha256 "3989eb56c26ca2903ea1bde7aaf0b02c05a5dbfc1eae59056860abca9c6d5fec" => :mavericks
+    sha256 "2a848d5efa46b5cc6e906f2c71608c8098238a397e6979912dcef2b5b1d2807c" => :mountain_lion
   end
 
   depends_on "libiomp"
@@ -36,22 +36,33 @@ class ClangOmp < Formula
     (buildpath/"tools/clang").install resource("clang")
     (buildpath/"projects/libcxx").install resource "libcxx"
 
-    system "./configure", "--prefix=#{libexec}", "--enable-cxx11", "--enable-libcpp"
-    system "make"
-    system "make", "install"
+    args = %W[
+      -DCMAKE_INSTALL_PREFIX=#{libexec}
+      -DC_INCLUDE_DIRS=#{Formula["libiomp"].opt_include}/libiomp:#{libexec}/include/c++/v1:#{libexec}/usr/include:/usr/include
+      -DLLVM_ENABLE_LIBCXX=ON
+      -DCMAKE_BUILD_TYPE=Release
+      -DCMAKE_CXX_FLAGS=-mmacosx-version-min=#{MacOS.version}
+    ]
 
-    system "make", "-C", "projects/libcxx", "install",
-      "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
+    mktemp do
+      system "cmake", buildpath, *(std_cmake_args + args)
+      system "make"
+      system "make", "install"
+    end
+
+    system "make", "-C", "#{buildpath}/projects/libcxx", "install",
+      "DSTROOT=#{libexec}", "SYMROOT=#{buildpath}/projects/libcxx",
+      "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
 
     bin.install_symlink libexec/"bin/clang" => "clang-omp"
     bin.install_symlink libexec/"bin/clang" => "clang-omp++"
   end
 
   test do
-    testfile = <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <stdlib.h>
       #include <stdio.h>
-      #include <libiomp/omp.h>
+      #include <omp.h>
 
       int main() {
           #pragma omp parallel num_threads(4)
@@ -61,14 +72,11 @@ class ClangOmp < Formula
           return EXIT_SUCCESS;
       }
     EOS
-    (testpath/"test.c").write(testfile)
-    system "#{bin}/clang-omp", "-L/usr/local/lib", "-liomp5", "-fopenmp", "-Werror", "-Wall", "test.c", "-o", "test"
-    system "./test>#{testpath}/testresult"
 
-    testresult = (testpath/"testresult").read
-    testresult_lines = testresult.split "\n"
-    sorted_testresult_lines = testresult_lines.sort
-    sorted_testresult = sorted_testresult_lines.join "\n"
+    system "#{bin}/clang-omp", "-liomp5", "-fopenmp", "test.c", "-o", "test"
+    testresult = shell_output("./test")
+
+    sorted_testresult = testresult.split("\n").sort.join("\n")
     expected_result = <<-EOS.undent
       Hello from thread 0, nthreads 4
       Hello from thread 1, nthreads 4

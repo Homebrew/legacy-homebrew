@@ -121,6 +121,7 @@ class DependencyCollector
     when :tuntap     then TuntapDependency.new(tags)
     when :ant        then ant_dep(spec, tags)
     when :apr        then AprDependency.new(tags)
+    when :emacs      then EmacsRequirement.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :clt # deprecated

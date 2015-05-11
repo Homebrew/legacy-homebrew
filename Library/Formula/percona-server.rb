@@ -2,15 +2,14 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'https://www.percona.com'
-  url 'https://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.23-72.1.tar.gz'
-  version '5.6.23-72.1'
-  sha256 '5382630b98dd05f72e372ede5535ddcad2e389b594311a69f03a3d95f68d4907'
+  url 'https://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.24-72.2.tar.gz'
+  version '5.6.24-72.2'
+  sha256 '5aa6469f3a55fe0fd1cfe315f2f9cacb0ce318620086c93821c9000d6e25c0de'
 
   bottle do
-    revision 1
-    sha256 "09850cc13beeef10af3603e65280249a9747073efc41cc3183d39b3f9aabc675" => :yosemite
-    sha256 "d4b72e8e184b43eb42869469ae51039209bc76b5fec279202b9f05ef6b46ed9f" => :mavericks
-    sha256 "572c89abfeadc41b9871c1aed04f7fd81b6d2844868db53e99ebc606a8e126a1" => :mountain_lion
+    sha256 "0a36e472d62764906f6fcdec28b74aaf8a5cda4fec7db66d3701a370423ecba9" => :yosemite
+    sha256 "488b6b4ca2a5a53e145a418408817e55237365624d1efac3484c3bab576717c6" => :mavericks
+    sha256 "64e2be65267b4e6592fdbab73826d132fb424bbe51c6e19d5ec13f6abe91eed1" => :mountain_lion
   end
 
   depends_on 'cmake' => :build

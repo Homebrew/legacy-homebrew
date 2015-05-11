@@ -1,10 +1,10 @@
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  version "1.0.0-beta.3"
+  version "1.0.0-beta.4"
 
   stable do
-    url 'https://static.rust-lang.org/dist/rustc-1.0.0-beta.3-src.tar.gz'
-    sha256 'e751bc8a8ad236c8865697f866b2863e224af56b0194ddf9f3edd71f9ff6545f'
+    url 'https://static.rust-lang.org/dist/rustc-1.0.0-beta.4-src.tar.gz'
+    sha256 '54e5868dd55a5c171327c72d662b5931a962b0cf160022d11c189ea232e0bd91'
 
     resource "cargo" do
       url "https://github.com/rust-lang/cargo.git", :revision => "83a6d0ed8208d31a1f6dab5e5183ad9eb2d65eaf", :tag => "0.2.0"
@@ -31,10 +31,9 @@ class Rust < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "ffa02664fa9b91120490e38dc50649139e0d467daffb0a3e91cf9536fbef3b61" => :yosemite
-    sha256 "b6debba43db24f54a722c8cca4c2bb515d31564c5f78ec12dedcf3543dbe19cb" => :mavericks
-    sha256 "5313948a4e21b5dabeb58b4c7ee5998a41878335bd98abfdea84615c2a427646" => :mountain_lion
+    sha256 "73085de73a7dbd23651b329795227418de50709f156ddaeef9bbc9dd4c45a1d5" => :yosemite
+    sha256 "9742c4c83f10d6d4e800a3d62916acdf3470f95293ca7a213f929a7884c9698a" => :mavericks
+    sha256 "fe27cbe874f1f2334c51483c084b367e14aee913dd351dabdf9a2c07a257cf7a" => :mountain_lion
   end
 
   depends_on "openssl"

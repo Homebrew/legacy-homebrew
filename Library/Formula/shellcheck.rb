@@ -4,13 +4,13 @@ class Shellcheck < Formula
   include Language::Haskell::Cabal
 
   homepage "http://www.shellcheck.net"
-  url "https://github.com/koalaman/shellcheck/archive/v0.3.6.tar.gz"
-  sha256 "e63314f3d40042897a9ac92f9ca2b0bd263b9d524f8491daf73a25a9e75ebc98"
+  url "https://github.com/koalaman/shellcheck/archive/v0.3.7.tar.gz"
+  sha256 "9f421052bc07047b65854544bfe32c5503cdad09f00d7a63a2f28b09b03a08f6"
 
   bottle do
-    sha256 "f1bdb1d529d7c4ebf5a2bbeef321d0a2abb0ff2261974b7f5f16fec1b7791d72" => :yosemite
-    sha256 "7e691db07b6f8fc35e9524c1416673f52341ae71d2635898ad9cfafaa3425e3f" => :mavericks
-    sha256 "e71a5e5d2df172cabb1d7ae5f5fe5ee44a8ad7eceab44df96c239dcee1f9e099" => :mountain_lion
+    sha256 "10b7f52f1bd4224ef1bb45faa45e59b3f0b022746a20d90be1e231bfcc5ee4c0" => :yosemite
+    sha256 "04b58769d3ec3048f97d3fff1d211e0bb7fe6c461c262c328c8dfeb20a38cb60" => :mavericks
+    sha256 "3f741ed31ccbee9bceb405d0e6369971477118a80d60f8f856302676804f30b3" => :mountain_lion
   end
 
   depends_on "ghc" => :build

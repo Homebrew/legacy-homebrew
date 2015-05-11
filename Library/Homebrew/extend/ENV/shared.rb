@@ -15,7 +15,7 @@ module SharedEnvExtension
   }
 
   COMPILERS = COMPILER_SYMBOL_MAP.values +
-    GNU_GCC_VERSIONS.map { |n| "gcc-4.#{n}" }
+    GNU_GCC_VERSIONS.map { |n| "gcc-#{n}" }
 
   SANITIZED_VARS = %w[
     CDPATH GREP_OPTIONS CLICOLOR_FORCE

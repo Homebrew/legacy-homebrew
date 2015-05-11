@@ -1,14 +1,12 @@
-require 'formula'
-
 class OpenMpi < Formula
-  homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2'
-  sha1 '88ae39850fcf0db05ac20e35dd9e4cacc75bde4d'
+  homepage "http://www.open-mpi.org/"
+  url "http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.5.tar.bz2"
+  sha256 "4cea06a9eddfa718b09b8240d934b14ca71670c2dc6e6251a585ce948a93fbc4"
 
   bottle do
-    sha1 "a6ec98d40ab34bf2eb4dbe9223d5aa430ba749ed" => :yosemite
-    sha1 "9d7366e69787c6b331fe5473c8025d86d8b79691" => :mavericks
-    sha1 "8c8627010c9390cb72054fba3f8eea419a67bb2b" => :mountain_lion
+    sha256 "cb257e6d49ebd40af7b9cfefb08547df5278e4db70463d3adac341811620ae4a" => :yosemite
+    sha256 "e0918c53d587f92c7ad43f2841992b06bade41f5b4adfe3f46367b7f244e04ab" => :mavericks
+    sha256 "df0ac28d6a1149cf21172f7ee2d32e36113e2ec257b3efb003831f333d42f43c" => :mountain_lion
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
@@ -17,11 +15,11 @@ class OpenMpi < Formula
   option "with-mpi-thread-multiple", "Enable MPI_THREAD_MULTIPLE"
   option :cxx11
 
-  conflicts_with 'mpich2', :because => 'both install mpi__ compiler wrappers'
-  conflicts_with 'lcdf-typetools', :because => 'both install same set of binaries.'
+  conflicts_with "mpich2", :because => "both install mpi__ compiler wrappers"
+  conflicts_with "lcdf-typetools", :because => "both install same set of binaries."
 
   depends_on :fortran => :recommended
-  depends_on 'libevent'
+  depends_on "libevent"
 
   def install
     ENV.cxx11 if build.cxx11?
@@ -36,18 +34,24 @@ class OpenMpi < Formula
     args << "--disable-mpi-fortran" if build.without? "fortran"
     args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
 
-    system './configure', *args
-    system 'make', 'all'
-    system 'make', 'check'
-    system 'make', 'install'
+    system "./configure", *args
+    system "make", "all"
+    system "make", "check"
+    system "make", "install"
 
     # If Fortran bindings were built, there will be stray `.mod` files
     # (Fortran header) in `lib` that need to be moved to `include`.
     include.install Dir["#{lib}/*.mod"]
 
     # Move vtsetup.jar from bin to libexec.
-    libexec.install bin/'vtsetup.jar'
-    inreplace bin/'vtsetup', '$bindir/vtsetup.jar', '$prefix/libexec/vtsetup.jar'
+    libexec.install bin/"vtsetup.jar"
+    inreplace bin/"vtsetup", "$bindir/vtsetup.jar", "$prefix/libexec/vtsetup.jar"
+  end
+
+  def caveats; <<-EOS.undent
+    WARNING: Open MPI now ignores the F77 and FFLAGS environment variables.
+    Only the FC and FCFLAGS environment variables are used.
+    EOS
   end
 
   test do

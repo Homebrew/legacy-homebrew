@@ -3,12 +3,12 @@ class Mapnik < Formula
   head "https://github.com/mapnik/mapnik.git"
   url "https://s3.amazonaws.com/mapnik/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
   sha256 "9b30de4e58adc6d5aa8478779d0a47fdabe6bf8b166b67a383b35f5aa5d6c1b0"
-  revision 5
+  revision 6
 
   bottle do
-    sha256 "8926b2f74348eae482fa4681f2dcd233970fe4e114af48609327821e8dada739" => :yosemite
-    sha256 "017b29ff0ee18af99b0d6404b68ffa4fc5600816fd4de72e40a5f06f22b8cc72" => :mavericks
-    sha256 "63e520499c8b7d6ae90011a7960fb3586cccdfbe5716a54d8c3e8bd1e6e47298" => :mountain_lion
+    sha256 "1c362e8436c60b47664dfba2bfd18eab7ef281db3e0f376274676bcb1c66685d" => :yosemite
+    sha256 "7f2f612d1a1cd98cd9cb726ea9f06e8b532765e07e6a9f5f1451321f865bbf15" => :mavericks
+    sha256 "6ee18c569252ef0d25f5756a57e7be64ea7dea38f04a7e0fc8c544558f07a64a" => :mountain_lion
   end
 
   stable do
@@ -53,24 +53,24 @@ class Mapnik < Formula
     jobs = ENV.make_jobs.to_i
     jobs /= 2 if jobs > 2
 
-    args = [ "CC=\"#{ENV.cc}\"",
-             "CXX=\"#{ENV.cxx}\"",
-             "JOBS=#{jobs}",
-             "PREFIX=#{prefix}",
-             "ICU_INCLUDES=#{icu}/include",
-             "ICU_LIBS=#{icu}/lib",
-             "PYTHON_PREFIX=#{prefix}",  # Install to Homebrew's site-packages
-             "JPEG_INCLUDES=#{jpeg}/include",
-             "JPEG_LIBS=#{jpeg}/lib",
-             "PNG_INCLUDES=#{libpng}/include",
-             "PNG_LIBS=#{libpng}/lib",
-             "TIFF_INCLUDES=#{libtiff}/include",
-             "TIFF_LIBS=#{libtiff}/lib",
-             "BOOST_INCLUDES=#{boost}/include",
-             "BOOST_LIBS=#{boost}/lib",
-             "PROJ_INCLUDES=#{proj}/include",
-             "PROJ_LIBS=#{proj}/lib",
-             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config"
+    args = ["CC=\"#{ENV.cc}\"",
+            "CXX=\"#{ENV.cxx}\"",
+            "JOBS=#{jobs}",
+            "PREFIX=#{prefix}",
+            "ICU_INCLUDES=#{icu}/include",
+            "ICU_LIBS=#{icu}/lib",
+            "PYTHON_PREFIX=#{prefix}",  # Install to Homebrew's site-packages
+            "JPEG_INCLUDES=#{jpeg}/include",
+            "JPEG_LIBS=#{jpeg}/lib",
+            "PNG_INCLUDES=#{libpng}/include",
+            "PNG_LIBS=#{libpng}/lib",
+            "TIFF_INCLUDES=#{libtiff}/include",
+            "TIFF_LIBS=#{libtiff}/lib",
+            "BOOST_INCLUDES=#{boost}/include",
+            "BOOST_LIBS=#{boost}/lib",
+            "PROJ_INCLUDES=#{proj}/include",
+            "PROJ_LIBS=#{proj}/lib",
+            "FREETYPE_CONFIG=#{freetype}/bin/freetype-config",
            ]
 
     if build.with? "cairo"
