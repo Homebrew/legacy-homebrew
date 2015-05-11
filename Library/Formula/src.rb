@@ -25,9 +25,7 @@ class Src < Formula
     #   https://github.com/Homebrew/homebrew/pull/34165#discussion_r22342214
     inreplace "src", "#!/usr/bin/env python2", "#!/usr/bin/env python"
 
-    if build.head?
-      ENV["XML_CATALOG_FILES"] = HOMEBREW_PREFIX/"etc/xml/catalog"
-    end
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog" if build.head?
 
     system "make", "install", "prefix=#{prefix}"
   end

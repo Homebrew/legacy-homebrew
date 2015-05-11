@@ -16,9 +16,7 @@ class Ascii < Formula
   end
 
   def install
-    if build.head?
-      ENV["XML_CATALOG_FILES"] = HOMEBREW_PREFIX/"etc/xml/catalog"
-    end
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog" if build.head?
     bin.mkpath
     man1.mkpath
     system "make"
