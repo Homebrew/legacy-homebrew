@@ -108,12 +108,6 @@ class Llvm < Formula
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
     (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
 
-    if build.universal?
-      ENV.permit_arch_flags
-      ENV["UNIVERSAL"] = "1"
-      ENV["UNIVERSAL_ARCH"] = Hardware::CPU.universal_archs.join(" ")
-    end
-
     ENV["REQUIRES_RTTI"] = "1" if build.with?("rtti") || build.with?("clang")
 
     args = %w[
@@ -123,6 +117,11 @@ class Llvm < Formula
     args << "-DBUILD_SHARED_LIBS=Off" if build.without? "shared"
 
     args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
+
+    if build.universal?
+      ENV.permit_arch_flags
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     mktemp do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
