@@ -8,9 +8,9 @@ class Rhash < Formula
 
   bottle do
     cellar :any
-    sha1 "cb5c136e11633ffb2bb28248e61ef468a724a6a5" => :mavericks
-    sha1 "25acb04254d9b202a7a016e89b28898fed48d65a" => :mountain_lion
-    sha1 "0ea791f790338589aea739b56948b126e5e75f1d" => :lion
+    sha256 "e957f797d99c99ad3ccba26cf960a1b2bfbf6915694b44496b8c899c322856ce" => :yosemite
+    sha256 "f3a728fdbc481c60c42544e2360601e8bc8ed032b82c86a0e4f1e29949a2b653" => :mavericks
+    sha256 "4d88312b2da6202c1929e5b586ed63780009d1467bdfef2cc6ec3c615e73ab42" => :mountain_lion
   end
 
   # Upstream issue: https://github.com/rhash/RHash/pull/7
