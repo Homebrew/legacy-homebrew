@@ -59,7 +59,7 @@ class ClangOmp < Formula
   end
 
   test do
-    testfile = <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <stdlib.h>
       #include <stdio.h>
       #include <omp.h>
@@ -72,14 +72,11 @@ class ClangOmp < Formula
           return EXIT_SUCCESS;
       }
     EOS
-    (testpath/"test.c").write(testfile)
-    system "#{bin}/clang-omp", "-L/usr/local/lib", "-liomp5", "-fopenmp", "-Werror", "-Wall", "test.c", "-o", "test"
-    system "./test>#{testpath}/testresult"
 
-    testresult = (testpath/"testresult").read
-    testresult_lines = testresult.split "\n"
-    sorted_testresult_lines = testresult_lines.sort
-    sorted_testresult = sorted_testresult_lines.join "\n"
+    system "#{bin}/clang-omp", "-liomp5", "-fopenmp", "test.c", "-o", "test"
+    testresult = shell_output("./test")
+
+    sorted_testresult = testresult.split("\n").sort.join("\n")
     expected_result = <<-EOS.undent
       Hello from thread 0, nthreads 4
       Hello from thread 1, nthreads 4
