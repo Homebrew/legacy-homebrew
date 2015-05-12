@@ -1,11 +1,6 @@
-# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-#                /usr/local/Library/Contributions/example-formula.rb
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class ApacheDrill < Formula
-  homepage ""
-  url "http://getdrill.org/drill/download/apache-drill-0.9.0.tar.gz"
-  version "0.9.0"
+  homepage "https://drill.apache.org/download/"
+  url "https://www.apache.org/dyn/closer.cgi?path=drill/drill-0.9.0/apache-drill-0.9.0.tar.gz"
   sha256 "1680b4b937d26623f0f01d7719b0809decf3341f445f5caea3feed1ecbc16c4d"
 
 
