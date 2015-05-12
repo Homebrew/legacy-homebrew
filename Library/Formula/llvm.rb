@@ -70,7 +70,7 @@ class Llvm < Formula
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
   option "with-python", "Build Python bindings against Homebrew Python"
-  option "without-shared", "Don't build LLVM as a shared library"
+  option "without-shared", "Don't build LLVM shared libraries"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
@@ -114,7 +114,7 @@ class Llvm < Formula
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
 
-    args << "-DBUILD_SHARED_LIBS=Off" if build.without? "shared"
+    args << "-DBUILD_SHARED_LIBS=On" if build.with? "shared"
 
     args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
 
@@ -157,6 +157,9 @@ class Llvm < Formula
 end
 
 __END__
+# There are two separate patches here:
+# Makefile.rules: https://github.com/homebrew/homebrew/issues/32566
+# lib/Target/NVPTX/CMakeLists.txt: http://lists.cs.uiuc.edu/pipermail/llvm-commits/Week-of-Mon-20150511/276121.html
 diff --git a/Makefile.rules b/Makefile.rules
 index ebebc0a..b0bb378 100644
 --- a/Makefile.rules
@@ -175,3 +178,14 @@ index ebebc0a..b0bb378 100644
  endif
  endif
  endif
+diff --git a/lib/Target/NVPTX/CMakeLists.txt b/lib/Target/NVPTX/CMakeLists.txt
+index cdd2f1f..46d8043 100644
+--- a/lib/Target/NVPTX/CMakeLists.txt
++++ b/lib/Target/NVPTX/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ set(LLVM_TARGET_DEFINITIONS NVPTX.td)
+-
++set(LLVM_LINK_COMPONENTS TransformUtils)
+
+ tablegen(LLVM NVPTXGenRegisterInfo.inc -gen-register-info)
+ tablegen(LLVM NVPTXGenInstrInfo.inc -gen-instr-info)
