@@ -17,6 +17,7 @@ class Glibmm < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
+
   test do
     (testpath/"test.cpp").write <<-EOS.undent
       #include <glibmm.h>
@@ -27,7 +28,29 @@ class Glibmm < Formula
          return 0;
       }
     EOS
-    system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include/glibmm-2.4", "-I#{HOMEBREW_PREFIX}/lib/glibmm-2.4/include", "-I#{HOMEBREW_PREFIX}/include/glib-2.0", "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include", "-I#{HOMEBREW_PREFIX}/opt/gettext/include", "-I#{HOMEBREW_PREFIX}/include/sigc++-2.0", "-I#{HOMEBREW_PREFIX}/lib/sigc++-2.0/include", "test.cpp", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/gettext/lib", "-L#{HOMEBREW_PREFIX}/lib", "-lglibmm-2.4", "-lgobject-2.0", "-lglib-2.0", "-lintl", "-lsigc-2.0", "-o", "test"
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    libsigcxx = Formula["libsigc++"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{include}/glibmm-2.4
+      -I#{libsigcxx.opt_include}/sigc++-2.0
+      -I#{libsigcxx.opt_lib}/sigc++-2.0/include
+      -I#{lib}/glibmm-2.4/include
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{libsigcxx.opt_lib}
+      -L#{lib}
+      -lglib-2.0
+      -lglibmm-2.4
+      -lgobject-2.0
+      -lintl
+      -lsigc-2.0
+    ]
+    system ENV.cxx, "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end
