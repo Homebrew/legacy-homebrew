@@ -1,8 +1,8 @@
 class Cassandra < Formula
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.1.4/apache-cassandra-2.1.4-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/2.1.4/apache-cassandra-2.1.4-bin.tar.gz"
-  sha256 "fb5debada72905f169866ca43c21ade4782f9c036b160894e42b9072190cb7f1"
+  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.1.5/apache-cassandra-2.1.5-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/2.1.5/apache-cassandra-2.1.5-bin.tar.gz"
+  sha256 "2d768e2fba9c576289e26247e2ed0b36fb802e06fa0a141783b765d63daf36ff"
 
   depends_on :python if MacOS.version <= :snow_leopard
 
@@ -33,8 +33,8 @@ class Cassandra < Formula
   end
 
   resource "cassandra-driver" do
-    url "https://pypi.python.org/packages/source/c/cassandra-driver/cassandra-driver-2.5.0.tar.gz"
-    sha256 "b9751efab561dbddc4da97f4d05db7ea6c1c4cdefb2d767f55ca3dd151eaa090"
+    url "https://pypi.python.org/packages/source/c/cassandra-driver/cassandra-driver-2.5.1.tar.gz"
+    sha256 "98511b51f3565bf5836079ed31b7be681d5a17b5a98d1214aa64eb06e07bc18d"
   end
 
   def install
