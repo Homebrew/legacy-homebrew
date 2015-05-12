@@ -13,7 +13,7 @@ class Terraform < Formula
   depends_on "go" => :build
 
   terraform_deps = %w[
-github.com/Sirupsen/logrus aaf92c95712104318fc35409745f1533aa5ff327 
+github.com/Sirupsen/logrus aaf92c95712104318fc35409745f1533aa5ff327
 github.com/armon/circbuf f092b4f207b6e5cce0569056fba9e1a2735cb6cf
 github.com/awslabs/aws-sdk-go bba8ba311b61785d4a866fe5c110737d9bf8b764
 github.com/cyberdelia/heroku-go bba8ba311b61785d4a866fe5c110737d9bf8b764
@@ -60,27 +60,28 @@ github.com/vaughan0/go-ini a98ad7ee00ec53921f08832bc06ecf7fd600e6a1
 github.com/xanzy/go-cloudstack f73f6ff1b843dbdac0a01da7b7f39883adfe2bdb
   ]
 
-  terraform_deps.slice(2) do |x, y|
+  terraform_deps.each_slice(2) do |x, y|
     go_resource x do
       url "https://#{x}.git", :revision => y
     end
   end
 
   go_resource "code.google.com/p/go-uuid" do
-    url "https://code.google.com/p/go-uuid", :using => :hg, :revision => "35bc42037350"
+    url "https://code.google.com/p/go-uuid", :using => :hg,
+      :revision => "35bc42037350"
   end
 
   %w[crypto 24ffb5feb3312a39054178a4b0a4554fc2201248 
      net a8c61998a557a37435f719980da368469c10bfed
      oauth2 ec6d5d770f531108a6464462b2201b74fcd09314
-     tools 96f6cfbb921ad6d191c67d09a6d4c4fd056403ae].slice(2) do |x, y|
+     tools 96f6cfbb921ad6d191c67d09a6d4c4fd056403ae].each_slice(2) do |x, y|
     go_resource "golang.org/x/#{x}" do
       url "https://go.googlesource.com/#{x}.git", :revision => y
     end
   end
 
   go_resource "google.golang.org/api" do
-    url "https://code.googlesource.com/google-api-go-client.git", 
+    url "https://code.googlesource.com/google-api-go-client.git",
       :revision => "0297be7525f49a3c3f4b5e0a9c92f46fe2319b36"
   end
 
