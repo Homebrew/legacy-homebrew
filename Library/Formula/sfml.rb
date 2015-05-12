@@ -1,5 +1,6 @@
 class Sfml < Formula
   homepage "http://www.sfml-dev.org/"
+  revision 1
 
   stable do
     url "http://www.sfml-dev.org/download/sfml/2.2/SFML-2.2-sources.zip"
@@ -11,6 +12,13 @@ class Sfml < Formula
       url "https://github.com/LaurentGomila/SFML/commit/9f2aecf9cff75307.diff"
       sha1 "87646d34cf0315c814ca6313cf75bb0439113eef"
     end
+  end
+
+  bottle do
+    cellar :any
+    sha1 "20b25af5d31dc15054fc4694ea6f767facb64b50" => :yosemite
+    sha1 "403433f1d5502f44c02cdb83b90d38db684030dc" => :mavericks
+    sha1 "fd9bc00ef82c0e63ac067f1ffd2bf8bd9f51bc56" => :mountain_lion
   end
 
   head "https://github.com/LaurentGomila/SFML.git"
