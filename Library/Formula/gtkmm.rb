@@ -22,6 +22,7 @@ class Gtkmm < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
+
   test do
     (testpath/"test.cpp").write <<-EOS.undent
       #include <gtkmm.h>
@@ -31,7 +32,95 @@ class Gtkmm < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "-I#{HOMEBREW_PREFIX}/include/gtkmm-2.4", "-I#{HOMEBREW_PREFIX}/lib/gtkmm-2.4/include", "-I#{HOMEBREW_PREFIX}/include/atkmm-1.6", "-I#{HOMEBREW_PREFIX}/include/gtk-unix-print-2.0", "-I#{HOMEBREW_PREFIX}/include/gtk-2.0", "-I#{HOMEBREW_PREFIX}/include/gdkmm-2.4", "-I#{HOMEBREW_PREFIX}/lib/gdkmm-2.4/include", "-I#{HOMEBREW_PREFIX}/include/giomm-2.4", "-I#{HOMEBREW_PREFIX}/lib/giomm-2.4/include", "-I#{HOMEBREW_PREFIX}/include/pangomm-1.4", "-I#{HOMEBREW_PREFIX}/lib/pangomm-1.4/include", "-I#{HOMEBREW_PREFIX}/include/glibmm-2.4", "-I#{HOMEBREW_PREFIX}/lib/glibmm-2.4/include", "-I#{HOMEBREW_PREFIX}/include/cairomm-1.0", "-I#{HOMEBREW_PREFIX}/lib/cairomm-1.0/include", "-I#{HOMEBREW_PREFIX}/include/sigc++-2.0", "-I#{HOMEBREW_PREFIX}/lib/sigc++-2.0/include", "-I#{HOMEBREW_PREFIX}/include/gtk-2.0", "-I#{HOMEBREW_PREFIX}/lib/gtk-2.0/include", "-I#{HOMEBREW_PREFIX}/include/pango-1.0", "-I#{HOMEBREW_PREFIX}/include/atk-1.0", "-I#{HOMEBREW_PREFIX}/include/cairo", "-I#{HOMEBREW_PREFIX}/include/pixman-1", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I#{HOMEBREW_PREFIX}/include/gdk-pixbuf-2.0", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I#{HOMEBREW_PREFIX}/include/pango-1.0", "-I#{HOMEBREW_PREFIX}/include/harfbuzz", "-I#{HOMEBREW_PREFIX}/include/pango-1.0", "-I#{HOMEBREW_PREFIX}/include/glib-2.0", "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include", "-I#{HOMEBREW_PREFIX}/opt/gettext/include", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/freetype2", "-I/opt/X11/include", "test.cpp", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/gettext/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-lgtkmm-2.4", "-latkmm-1.6", "-lgtk-x11-2.0", "-lgdkmm-2.4", "-lgiomm-2.4", "-lpangomm-1.4", "-lglibmm-2.4", "-lcairomm-1.0", "-lsigc-2.0", "-lgtk-x11-2.0", "-lgdk-x11-2.0", "-lpangocairo-1.0", "-latk-1.0", "-lcairo", "-lgdk_pixbuf-2.0", "-lgio-2.0", "-lpangoft2-1.0", "-lpango-1.0", "-lgobject-2.0", "-lglib-2.0", "-lintl", "-lfontconfig", "-lfreetype", "-o", "test"
+    atk = Formula["atk"]
+    atkmm = Formula["atkmm"]
+    cairo = Formula["cairo"]
+    cairomm = Formula["cairomm"]
+    fontconfig = Formula["fontconfig"]
+    freetype = Formula["freetype"]
+    gdk_pixbuf = Formula["gdk-pixbuf"]
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    glibmm = Formula["glibmm"]
+    gtkx = Formula["gtk+"]
+    harfbuzz = Formula["harfbuzz"]
+    libpng = Formula["libpng"]
+    libsigcxx = Formula["libsigc++"]
+    pango = Formula["pango"]
+    pangomm = Formula["pangomm"]
+    pixman = Formula["pixman"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{atk.opt_include}/atk-1.0
+      -I#{atkmm.opt_include}/atkmm-1.6
+      -I#{cairo.opt_include}/cairo
+      -I#{cairomm.opt_include}/cairomm-1.0
+      -I#{cairomm.opt_lib}/cairomm-1.0/include
+      -I#{fontconfig.opt_include}
+      -I#{freetype.opt_include}/freetype2
+      -I#{gdk_pixbuf.opt_include}/gdk-pixbuf-2.0
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{glibmm.opt_include}/giomm-2.4
+      -I#{glibmm.opt_include}/glibmm-2.4
+      -I#{glibmm.opt_lib}/giomm-2.4/include
+      -I#{glibmm.opt_lib}/glibmm-2.4/include
+      -I#{gtkx.opt_include}/gtk-2.0
+      -I#{gtkx.opt_include}/gtk-unix-print-2.0
+      -I#{gtkx.opt_lib}/gtk-2.0/include
+      -I#{harfbuzz.opt_include}/harfbuzz
+      -I#{include}/gdkmm-2.4
+      -I#{include}/gtkmm-2.4
+      -I#{libpng.opt_include}/libpng16
+      -I#{libsigcxx.opt_include}/sigc++-2.0
+      -I#{libsigcxx.opt_lib}/sigc++-2.0/include
+      -I#{lib}/gdkmm-2.4/include
+      -I#{lib}/gtkmm-2.4/include
+      -I#{pango.opt_include}/pango-1.0
+      -I#{pangomm.opt_include}/pangomm-1.4
+      -I#{pangomm.opt_lib}/pangomm-1.4/include
+      -I#{pixman.opt_include}/pixman-1
+      -D_REENTRANT
+      -L#{atk.opt_lib}
+      -L#{atkmm.opt_lib}
+      -L#{cairo.opt_lib}
+      -L#{cairomm.opt_lib}
+      -L#{fontconfig.opt_lib}
+      -L#{freetype.opt_lib}
+      -L#{gdk_pixbuf.opt_lib}
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{glibmm.opt_lib}
+      -L#{gtkx.opt_lib}
+      -L#{libsigcxx.opt_lib}
+      -L#{lib}
+      -L#{pango.opt_lib}
+      -L#{pangomm.opt_lib}
+      -latk-1.0
+      -latkmm-1.6
+      -lcairo
+      -lcairomm-1.0
+      -lfontconfig
+      -lfreetype
+      -lgdk-x11-2.0
+      -lgdk_pixbuf-2.0
+      -lgdkmm-2.4
+      -lgio-2.0
+      -lgiomm-2.4
+      -lglib-2.0
+      -lglibmm-2.4
+      -lgobject-2.0
+      -lgtk-x11-2.0
+      -lgtkmm-2.4
+      -lintl
+      -lpango-1.0
+      -lpangocairo-1.0
+      -lpangoft2-1.0
+      -lpangomm-1.4
+      -lsigc-2.0
+    ]
+    system ENV.cxx, "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end
