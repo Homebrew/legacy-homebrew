@@ -1,6 +1,6 @@
 class Sourcekitten < Formula
   homepage "https://github.com/jpsim/SourceKitten"
-  url "https://github.com/jpsim/SourceKitten.git", :tag => "0.3.1"
+  url "https://github.com/jpsim/SourceKitten.git", :tag => "0.4.1"
   head "https://github.com/jpsim/SourceKitten.git"
 
   bottle do
@@ -9,7 +9,7 @@ class Sourcekitten < Formula
     sha1 "f55c779524fb1dc74554e8e2592d402198bbc55d" => :mavericks
   end
 
-  depends_on :xcode => ["6.1.1", :build]
+  depends_on :xcode => ["6.3", :build]
 
   def install
     system "make", "prefix_install", "PREFIX=#{prefix}", "TEMPORARY_FOLDER=#{buildpath}/SourceKitten.dst"
