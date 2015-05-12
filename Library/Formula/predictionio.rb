@@ -2,14 +2,14 @@ require 'formula'
 
 class Predictionio < Formula
   homepage 'http://prediction.io/'
-  url 'http://download.prediction.io/PredictionIO-0.9.0.tar.gz'
-  sha1 'e5724b637382a06c098bbb3617b35f5bcff1b469'
+  url 'http://download.prediction.io/PredictionIO-0.9.2.tar.gz'
+  sha1 '199d1c9a4b69c3bb009ed7819294183e99ced4e9'
 
   depends_on 'elasticsearch'
   depends_on 'hadoop'
   depends_on 'hbase'
   depends_on 'apache-spark'
-  depends_on :java => "1.7"
+  depends_on :java => "1.8"
 
   def install
     rm_f Dir["bin/*.bat"]
