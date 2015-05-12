@@ -1,7 +1,7 @@
 class JenkinsJobBuilder < Formula
   homepage "http://ci.openstack.org/jjb.html"
-  url "https://pypi.python.org/packages/source/j/jenkins-job-builder/jenkins-job-builder-1.1.0.tar.gz"
-  sha256 "4176a06efec3985823245a460e93fd678d78250defcc9f3109beb58aff34e609"
+  url "https://pypi.python.org/packages/source/j/jenkins-job-builder/jenkins-job-builder-1.2.0.tar.gz"
+  sha256 "77ac34ff3679c4cd6e1b205955240a479a95e43433eef5caacb7d308166cdd26"
 
   bottle do
     cellar :any
