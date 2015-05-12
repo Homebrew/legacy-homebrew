@@ -1,6 +1,6 @@
 class Gtkmm3 < Formula
   homepage "http://www.gtkmm.org/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.16/gtkmm-3.16.0.tar.xz"
+  url "https://download.gnome.org/sources/gtkmm/3.16/gtkmm-3.16.0.tar.xz"
   sha256 "9b8d4af5e1bb64e52b53bc8ef471ef43e1b9d11a829f16ef54c3a92985b0dd0c"
 
   bottle do
