@@ -4,6 +4,7 @@ class Csfml < Formula
   homepage "http://www.sfml-dev.org/"
   url "http://www.sfml-dev.org/download/csfml/CSFML-2.2-sources.zip"
   sha1 "1dc3d2dadef6e6daa05b0dd868367ad5f02419e4"
+  revision 1
 
   bottle do
     cellar :any

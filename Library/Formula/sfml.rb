@@ -1,5 +1,6 @@
 class Sfml < Formula
   homepage "http://www.sfml-dev.org/"
+  revision 1
 
   stable do
     url "http://www.sfml-dev.org/download/sfml/2.2/SFML-2.2-sources.zip"
