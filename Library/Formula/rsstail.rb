@@ -1,15 +1,28 @@
-require 'formula'
-
 class Rsstail < Formula
-  homepage 'http://www.vanheusden.com/rsstail/'
-  url 'http://www.vanheusden.com/rsstail/rsstail-1.8.tgz'
-  sha1 '96301a32946ed6ff81bc35d4b875ad1da476121c'
+  homepage "http://www.vanheusden.com/rsstail/"
+  url "http://www.vanheusden.com/rsstail/rsstail-1.8.tgz"
+  sha256 "19284f3eca4bfa649f53848e19e6ee134bce17ccf2a22919cc8c600684877801"
 
-  depends_on 'libmrss'
+  depends_on "libmrss"
+
+  head "https://github.com/flok99/rsstail.git"
 
   def install
-    system "make"
-    man1.install 'rsstail.1'
-    bin.install 'rsstail'
+    if build.head?
+      # Upstream bug: https://github.com/flok99/rsstail/pull/10
+      ENV.append "LDFLAGS", "-liconv -lmrss"
+      system "make", "-e"
+    else
+      system "make"
+    end
+    man1.install "rsstail.1"
+    bin.install "rsstail"
+  end
+
+  test do
+    actual = shell_output(
+      "#{bin}/rsstail -1u http://feed.nashownotes.com/rss.xml"
+    )
+    assert_match /^Title: NA-\d\d\d-\d\d\d\d-\d\d-\d\d$/, actual
   end
 end
