@@ -4,9 +4,9 @@ class Sword < Formula
   sha256 "995da8cf5a207c1f09809bf4b9db0bd7d267da5fcdb9d6666c9b313edd9d213d"
 
   bottle do
-    sha1 "8fc45d81b7fcc7d1feffdc130f6c139ffc382db4" => :yosemite
-    sha1 "148fd1c7b4358bb3f97979022f65b113afabb856" => :mavericks
-    sha1 "36eedc14308de364ebfb1e2fecfc86852b65e3cf" => :mountain_lion
+    sha256 "32082db01516b786bf2477f452b3b2ed1ee927a5042d7ca7ac41209256b7897e" => :yosemite
+    sha256 "cf3fe45d1bc967773d39abfe60e19b8df8d9797d1d033a2b5f7993e87aa6834e" => :mavericks
+    sha256 "07751178c42bcfe1c668bfd3f5f6c10bea4040f92d75f09fd42947d49f61c5ed" => :mountain_lion
   end
 
   depends_on "clucene" => :optional
