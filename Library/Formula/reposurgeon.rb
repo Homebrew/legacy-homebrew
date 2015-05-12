@@ -5,6 +5,13 @@ class Reposurgeon < Formula
 
   head "git://thyrsus.com/repositories/reposurgeon.git"
 
+  bottle do
+    cellar :any
+    sha256 "918d50c5d83de06cf5a88f6e0e0f5de47afe2109aae53e0f4bb2f6ee041a3d92" => :yosemite
+    sha256 "99d6ea1e89a911274bdae59c11b174924856edd9f2e8ee45b42c869cc6e41402" => :mavericks
+    sha256 "6c0b2aa9fc9bf407d83a1f91eecef45cfe6d169f3e4ea91e99ff014b47d2874f" => :mountain_lion
+  end
+
   depends_on "asciidoc" => :build
   depends_on "xmlto" => :build
 
