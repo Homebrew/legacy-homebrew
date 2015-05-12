@@ -1,6 +1,6 @@
 class Sourcekitten < Formula
   homepage "https://github.com/jpsim/SourceKitten"
-  url "https://github.com/jpsim/SourceKitten.git", :tag => "0.4.1"
+  url "https://github.com/jpsim/SourceKitten.git", :tag => "0.4.1", :revision => "a9b100ab0803d79ef42c775895a40726d3128f07"
   head "https://github.com/jpsim/SourceKitten.git"
 
   bottle do
