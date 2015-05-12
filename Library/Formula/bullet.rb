@@ -45,13 +45,13 @@ class Bullet < Formula
     args << "-DUSE_DOUBLE_PRECISION=ON" if build.with? "double-precision"
 
     with_demo = build.with? "demo"
-    if with_demo && build.with?("shared")
+    if with_demo && (build.with?("shared") || build.with?("framework"))
       # Related to the following warnings when building --with-shared --with-demo
       # https://gist.github.com/scpeters/6afc44f0cf916b11a226
       opoo "Installed demos don't work with shared libraries"
       puts <<-EOS.undent
-      Demos will be disabled due to the use of shared libraries.
-      Static libraries are required for demos installed by homebrew.
+        Demos will be disabled due to the use of shared libraries.
+        Static libraries are required for demos installed by homebrew.
       EOS
       with_demo = false
     end
