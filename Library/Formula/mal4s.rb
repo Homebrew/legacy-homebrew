@@ -8,6 +8,12 @@ class Mal4s < Formula
 
   head 'https://github.com/secure411dotorg/mal4s.git'
 
+  bottle do
+    sha256 "7860372e817d304308db192b87533b0e8eb390bef57137b9ba2f6a96c5a53802" => :yosemite
+    sha256 "e9b2e3bb2770db34cba13f0fcdbe4a141e6e2fb581fcd5394ece2188e276d1e0" => :mavericks
+    sha256 "85fad50f95402df580d98b546d39fcaab97989c0ac4ff3f3b2499e7cc2575e22" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
