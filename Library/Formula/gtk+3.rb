@@ -1,6 +1,6 @@
 class Gtkx3 < Formula
   homepage "http://gtk.org/"
-  url "http://ftp.gnome.org/pub/gnome/sources/gtk+/3.16/gtk+-3.16.2.tar.xz"
+  url "https://download.gnome.org/sources/gtk+/3.16/gtk+-3.16.2.tar.xz"
   sha256 "a03963a61c9f5253a8d4003187190be165d92f95acf97ca783735071a8781cfa"
 
   bottle do
