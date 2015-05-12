@@ -1,7 +1,7 @@
 class Thefuck < Formula
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.29.tar.gz"
-  sha256 "3e51de66ea29a1bbd9f1aadbd3a2398601e7a5e7ab69fef0f75677ca95f00cb1"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.40.tar.gz"
+  sha256 "f20262e3b1e59d66ad9cfa5b4fba45737a959789f9a094ea226b455f6c8b1f9e"
 
   bottle do
     cellar :any
@@ -54,11 +54,10 @@ class Thefuck < Formula
 
   def caveats; <<-EOS.undent
     Add the following to your .bash_profile or .zshrc:
-      alias fuck='$(thefuck $(fc -ln -1))'
-    Or in config.fish:
-      function fuck
-        eval (thefuck $history[1])
-      end
+      bash: alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
+      zsh: alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+
+      Other shells: https://github.com/nvbn/thefuck/wiki/Shell-aliases
     EOS
   end
 end
