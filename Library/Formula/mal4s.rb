@@ -4,6 +4,7 @@ class Mal4s < Formula
   homepage 'https://github.com/secure411dotorg/mal4s/'
   url 'https://service.dissectcyber.com/mal4s/mal4s-1.2.8.tar.gz'
   sha1 'd1f38c0e09b1f5963e70c93c88ea41a3d7890887'
+  revision 1
 
   head 'https://github.com/secure411dotorg/mal4s.git'
 
