@@ -56,9 +56,12 @@ class Caddy < Formula
   end
 
   test do
-    if build.head?
-      system "#{bin}/caddy", "-version"
-    else
+    HOMEBREW_REPOSITORY.cd do
+      io = IO.popen("bin/caddy")
+      sleep 2
+      Process.kill("SIGINT", io.pid)
+      Process.wait(io.pid)
+      io.read =~ /0\.0\.0\.0:2015/
     end
   end
 end
