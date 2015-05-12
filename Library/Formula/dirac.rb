@@ -15,11 +15,12 @@ class Dirac < Formula
     cause "build uses compiler flags not known to clang"
   end
 
-  patch :DATA
-
   def install
     # BSD cp doesn't have "-d"
     inreplace "doc/Makefile.in", "cp -dR", "cp -R"
+
+    # Homebrew's libtool package installs names with "g" prefixes
+    inreplace "bootstrap", /\blibtool/, "glibtool"
 
     system "./bootstrap"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -27,17 +28,3 @@ class Dirac < Formula
     system "make", "install"
   end
 end
-__END__
-diff --git a/bootstrap b/bootstrap
-index 61f7c11..812148d 100755
---- a/bootstrap
-+++ b/bootstrap
-@@ -11,7 +11,7 @@ rm -rf autom4te.cache
- 
- set -x
- aclocal -I m4
--libtoolize --force --copy
-+glibtoolize --force --copy
- automake --foreign --copy --add-missing
- if [ $? -ne 0 ]; 
- then
