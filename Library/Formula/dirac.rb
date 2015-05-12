@@ -11,6 +11,10 @@ class Dirac < Formula
     build 2334
   end
 
+  fails_with :clang do
+    cause "build uses compiler flags not known to clang"
+  end
+
   patch :DATA
 
   def install
