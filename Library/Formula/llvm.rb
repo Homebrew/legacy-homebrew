@@ -140,8 +140,10 @@ class Llvm < Formula
     end
 
     # install llvm python bindings
-    (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
-    (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
+    if build.with? "python"
+      (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
+      (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
+    end
   end
 
   test do
