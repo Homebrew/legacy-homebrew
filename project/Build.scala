@@ -56,15 +56,33 @@ object JobServerBuild extends Build {
   ) dependsOn(akkaApp, jobServerApi)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
-    settings = commonSettings210 ++ Seq(libraryDependencies ++= sparkDeps ++ apiDeps,
-                                        publishArtifact := false,
-                                        description := "Test jar for Spark Job Server",
-                                        exportJars := true)   // use the jar instead of target/classes
-  ) dependsOn(jobServerApi)
+                                      settings = commonSettings210 ++ jobServerTestJarSettings
+                                     ) dependsOn(jobServerApi)
 
-  lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"),
-    settings = commonSettings210 ++ publishSettings
-                                    )
+  lazy val jobServerApi = Project(id = "job-server-api",
+                                  base = file("job-server-api"),
+                                  settings = commonSettings210 ++ publishSettings)
+
+  lazy val jobServerExtras = Project(id = "job-server-extras",
+                                     base = file("job-server-extras"),
+                                     settings = commonSettings210 ++ jobServerExtrasSettings ++ publishSettings
+                                    ) dependsOn(jobServerApi,
+                                                jobServer % "compile->compile; test->test")
+
+  lazy val jobServerExtrasSettings = Seq(
+    libraryDependencies ++= sparkExtraDeps,
+    // Extras packages up its own jar for testing itself
+    test in Test <<= (test in Test).dependsOn(packageBin in Compile)
+                                   .dependsOn(clean in Compile),
+    exportJars := true
+  )
+
+  lazy val jobServerTestJarSettings = Seq(
+    libraryDependencies ++= sparkDeps ++ apiDeps,
+    publishArtifact := false,
+    description := "Test jar for Spark Job Server",
+    exportJars := true        // use the jar instead of target/classes
+  )
 
   // This meta-project aggregates all of the sub-projects and can be used to compile/test/style check
   // all of them with a single command.
@@ -83,7 +101,7 @@ object JobServerBuild extends Build {
         // Note: some components of tests seem to have the "Untagged" tag rather than "Test" tag.
         // So, we limit the sum of "Test", "Untagged" tags to 1 concurrent
         Tags.limitSum(1, Tags.Test, Tags.Untagged))
-  )) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp)
+  )) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp, jobServerExtras)
 
   // To add an extra jar to the classpath when doing "re-start" for quick development, set the
   // env var EXTRA_JAR to the absolute full path to the jar

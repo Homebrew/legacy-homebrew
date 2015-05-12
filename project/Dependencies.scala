@@ -26,17 +26,20 @@ object Dependencies {
     "io.spray" %% "spray-client" % "1.3.2",
     yammerDeps
   ) ++ yodaDeps
-  
+
   val sparkVersion = sys.env.getOrElse("SPARK_VERSION", "1.3.0")
   lazy val sparkDeps = Seq(
     "org.apache.spark" %% "spark-core" % sparkVersion % "provided" exclude(
                                             "io.netty", "netty-all") excludeAll(excludeQQ),
+    // Force netty version.  This avoids some Spark netty dependency problem.
+    "io.netty" % "netty-all" % "4.0.23.Final"
+  )
+
+  lazy val sparkExtraDeps = Seq(
     "org.apache.spark" %% "spark-sql" % sparkVersion % "provided" exclude(
                                             "io.netty", "netty-all") excludeAll(excludeQQ),
     "org.apache.spark" %% "spark-hive" % sparkVersion % "provided" exclude(
-                                            "io.netty", "netty-all") excludeAll(excludeQQ),
-    // Force netty version.  This avoids some Spark netty dependency problem.
-    "io.netty" % "netty-all" % "4.0.23.Final"
+                                            "io.netty", "netty-all") excludeAll(excludeQQ)
   )
 
   lazy val slickDeps = Seq(

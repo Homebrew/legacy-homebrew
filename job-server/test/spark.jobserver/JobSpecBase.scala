@@ -36,10 +36,11 @@ trait JobSpecConfig {
   def getNewSystem = ActorSystem("test", config)
 }
 
-abstract class JobSpecBase(system: ActorSystem) extends TestKit(system) with ImplicitSender
-with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with TestJarFinder {
+abstract class JobSpecBaseBase(system: ActorSystem) extends TestKit(system) with ImplicitSender
+with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll {
   var dao: JobDAO = _
   var manager: ActorRef = _
+  def testJar: java.io.File
 
   after {
     ooyala.common.akka.AkkaTestUtils.shutdownAndWait(manager)
@@ -64,3 +65,5 @@ with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with T
   val syncEvents = Set(classOf[JobResult])
   val allEvents = errorEvents ++ asyncEvents ++ syncEvents ++ Set(classOf[JobFinished])
 }
+
+abstract class JobSpecBase(system: ActorSystem) extends JobSpecBaseBase(system) with TestJarFinder
