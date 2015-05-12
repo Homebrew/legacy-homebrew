@@ -1,8 +1,9 @@
 class Dpkg < Formula
   homepage "https://wiki.debian.org/Teams/Dpkg"
   url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
-  mirror "http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
   sha256 "07019d38ae98fb107c79dbb3690cfadff877f153b8c4970e3a30d2e59aa66baa"
+  revision 1
 
   bottle do
     revision 1
@@ -17,8 +18,9 @@ class Dpkg < Formula
 
   def install
     # Fix for OS X checksum utility names.
+    # The quotation marks look weird, but don't "fix" them, it's intentional.
     inreplace "scripts/Dpkg/Checksums.pm" do |s|
-      s.gsub! "md5sum", "md5"
+      s.gsub! "md5sum", "md5', '-q"
       s.gsub! "sha1sum", "shasum"
       s.gsub! "sha256sum", "shasum', '-a', '256"
     end
