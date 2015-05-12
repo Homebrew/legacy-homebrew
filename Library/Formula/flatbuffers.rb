@@ -9,6 +9,10 @@ class Flatbuffers < Formula
     sha1 "a7222fe66033ca2749241e4d253534b3540b1e7c" => :mavericks
     sha1 "d0de7bdea3b5fd43fddcfe20b857e4ec803a73f2" => :mountain_lion
   end
+  
+  head do
+    url "https://github.com/google/flatbuffers.git"
+  end
 
   depends_on "cmake" => :build
 
