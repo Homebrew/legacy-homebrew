@@ -114,7 +114,7 @@ module Stdenv
 
   def determine_cxx
     dir, base = determine_cc.split
-    dir / base.to_s.sub("gcc", "g++").sub("clang", "clang++")
+    dir / base.to_s.sub("gcc", "g++").sub(/(clang(-omp)?)/, '\0++')
   end
 
   def gcc_4_0

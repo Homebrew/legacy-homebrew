@@ -24,7 +24,7 @@ class Cmd
     if @arg0 == 'cpp' or @arg0 == 'ld'
       @arg0.to_sym
     elsif @args.include? '-c'
-      if @arg0 =~ /(?:c|g|clang)\+\+/
+      if @arg0 =~ /(?:c|g|clang(?:-omp)?)\+\+/
         :cxx
       else
         :cc
@@ -32,7 +32,7 @@ class Cmd
     elsif @args.include? '-E'
       :ccE
     else
-      if @arg0 =~ /(?:c|g|clang)\+\+/
+      if @arg0 =~ /(?:c|g|clang(?:-omp)?)\+\+/
         :cxxld
       else
         :ccld
@@ -46,8 +46,8 @@ class Cmd
     when 'cpp' then 'cpp'
     when /\w\+\+(-\d\.\d)?$/
       case ENV['HOMEBREW_CC']
-      when /clang/
-        'clang++'
+      when /clang(-omp)?/
+        "clang#{$1}++"
       when /llvm-gcc/
         'llvm-g++-4.2'
       when /gcc(-\d\.\d)?$/

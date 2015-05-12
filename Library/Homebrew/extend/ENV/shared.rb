@@ -8,10 +8,11 @@ module SharedEnvExtension
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
   COMPILER_SYMBOL_MAP = {
-    "gcc-4.0"  => :gcc_4_0,
-    "gcc-4.2"  => :gcc,
-    "llvm-gcc" => :llvm,
-    "clang"    => :clang,
+    "gcc-4.0"   => :gcc_4_0,
+    "gcc-4.2"   => :gcc,
+    "llvm-gcc"  => :llvm,
+    "clang"     => :clang,
+    "clang-omp" => :clang_omp,
   }
 
   COMPILERS = COMPILER_SYMBOL_MAP.values +
