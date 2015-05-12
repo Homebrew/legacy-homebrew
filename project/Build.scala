@@ -51,6 +51,8 @@ object JobServerBuild extends Build {
       fullClasspath in Revolver.reStart := (fullClasspath in Compile).value,
       // Must run the examples and tests in separate JVMs to avoid mysterious
       // scala.reflect.internal.MissingRequirementError errors. (TODO)
+      // TODO: Remove this once we upgrade to Spark 1.4 ... see resolution of SPARK-5281.
+      // Also: note that fork won't work when VPN is on or other funny networking
       fork in Test := true
       ) ++ publishSettings
   ) dependsOn(akkaApp, jobServerApi)
@@ -74,6 +76,7 @@ object JobServerBuild extends Build {
     // Extras packages up its own jar for testing itself
     test in Test <<= (test in Test).dependsOn(packageBin in Compile)
                                    .dependsOn(clean in Compile),
+    fork in Test := true,
     exportJars := true
   )
 
