@@ -36,6 +36,7 @@ class Gtkx < Formula
     system "./configure", *args
     system "make", "install"
   end
+
   test do
     (testpath/"test.c").write <<-EOS.undent
       #include <gtk/gtk.h>
@@ -45,7 +46,59 @@ class Gtkx < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "-I#{HOMEBREW_PREFIX}/include/gtk-2.0", "-I#{HOMEBREW_PREFIX}/lib/gtk-2.0/include", "-I#{HOMEBREW_PREFIX}/include/pango-1.0", "-I#{HOMEBREW_PREFIX}/include/atk-1.0", "-I#{HOMEBREW_PREFIX}/include/cairo", "-I#{HOMEBREW_PREFIX}/include/pixman-1", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I#{HOMEBREW_PREFIX}/include/gdk-pixbuf-2.0", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I#{HOMEBREW_PREFIX}/include/pango-1.0", "-I#{HOMEBREW_PREFIX}/include/harfbuzz", "-I#{HOMEBREW_PREFIX}/include/pango-1.0", "-I#{HOMEBREW_PREFIX}/include/glib-2.0", "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include", "-I#{HOMEBREW_PREFIX}/opt/gettext/include", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/freetype2", "-I/opt/X11/include", "test.c", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/gettext/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-lgtk-x11-2.0", "-lgdk-x11-2.0", "-lpangocairo-1.0", "-latk-1.0", "-lcairo", "-lgdk_pixbuf-2.0", "-lgio-2.0", "-lpangoft2-1.0", "-lpango-1.0", "-lgobject-2.0", "-lglib-2.0", "-lintl", "-lfontconfig", "-lfreetype", "-o", "test"
+    atk = Formula["atk"]
+    cairo = Formula["cairo"]
+    fontconfig = Formula["fontconfig"]
+    freetype = Formula["freetype"]
+    gdk_pixbuf = Formula["gdk-pixbuf"]
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    harfbuzz = Formula["harfbuzz"]
+    libpng = Formula["libpng"]
+    pango = Formula["pango"]
+    pixman = Formula["pixman"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{atk.opt_include}/atk-1.0
+      -I#{cairo.opt_include}/cairo
+      -I#{fontconfig.opt_include}
+      -I#{freetype.opt_include}/freetype2
+      -I#{gdk_pixbuf.opt_include}/gdk-pixbuf-2.0
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{harfbuzz.opt_include}/harfbuzz
+      -I#{include}/gtk-2.0
+      -I#{libpng.opt_include}/libpng16
+      -I#{lib}/gtk-2.0/include
+      -I#{pango.opt_include}/pango-1.0
+      -I#{pixman.opt_include}/pixman-1
+      -D_REENTRANT
+      -L#{atk.opt_lib}
+      -L#{cairo.opt_lib}
+      -L#{fontconfig.opt_lib}
+      -L#{freetype.opt_lib}
+      -L#{gdk_pixbuf.opt_lib}
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{lib}
+      -L#{pango.opt_lib}
+      -latk-1.0
+      -lcairo
+      -lfontconfig
+      -lfreetype
+      -lgdk-x11-2.0
+      -lgdk_pixbuf-2.0
+      -lgio-2.0
+      -lglib-2.0
+      -lgobject-2.0
+      -lgtk-x11-2.0
+      -lintl
+      -lpango-1.0
+      -lpangocairo-1.0
+      -lpangoft2-1.0
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end
