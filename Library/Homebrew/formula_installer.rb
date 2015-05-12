@@ -348,7 +348,7 @@ class FormulaInstaller
 
     fi = DependencyInstaller.new(df)
     fi.options           |= tab.used_options
-    fi.options           |= dep.options
+    fi.options           |= Tab.remap_deprecated_options(df.deprecated_options, dep.options)
     fi.options           |= inherited_options
     fi.build_from_source  = build_from_source?
     fi.verbose            = verbose? && !quieter?
