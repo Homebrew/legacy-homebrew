@@ -1,7 +1,7 @@
 class Suricata < Formula
   homepage "http://suricata-ids.org"
-  url "https://www.openinfosecfoundation.org/download/suricata-2.0.7.tar.gz"
-  sha256 "c5c3ccebeecbace39df0ff2d50ec4515b541103ffaa5e33cd1dc79d4955c0dfd"
+  url "https://www.openinfosecfoundation.org/download/suricata-2.0.8.tar.gz"
+  sha256 "7af6394cb81e464f5c1ac88a1444030e30940caab6e53688a6d9eb652226d1be"
 
   bottle do
     sha256 "f67922f17fd54ad460fac601c489324a3fc9649332c235b19188db673ac1dd37" => :yosemite
@@ -30,6 +30,9 @@ class Suricata < Formula
   end
 
   def install
+    # bug raised https://redmine.openinfosecfoundation.org/issues/1470
+    ENV.deparallelize
+
     libnet = Formula["libnet"]
     libmagic = Formula["libmagic"]
 
