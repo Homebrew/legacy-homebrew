@@ -15,6 +15,12 @@ class Dirac < Formula
     cause "build uses compiler flags not known to clang"
   end
 
+  ("4.5".."4.9").each do |gcc_version|
+    fails_with :gcc => gcc_version do
+      cause "multiple compilation errors in quant_chooser.cpp"
+    end
+  end
+
   def install
     # BSD cp doesn't have "-d"
     inreplace "doc/Makefile.in", "cp -dR", "cp -R"
