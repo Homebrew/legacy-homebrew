@@ -33,6 +33,16 @@ class Caddy < Formula
     url 'https://github.com/shurcooL/sanitized_anchor_name.git', :revision => '8e87604bec3c645a4eeaee97dfec9f25811ff20d'
   end
 
+  if build.head?
+    go_resource 'github.com/BurntSushi/toml' do
+      url 'https://github.com/BurntSushi/toml.git', :revision => '056c9bc7be7190eaa7715723883caffa5f8fa3e4'
+    end
+
+    go_resource 'gopkg.in/yaml.v2' do
+      url 'https://gopkg.in/yaml.v2.git'
+    end
+  end
+
   def install
     mkdir_p buildpath/"src/github.com/mholt/"
     ln_s buildpath, buildpath/"src/github.com/mholt/caddy"
