@@ -71,7 +71,7 @@ github.com/xanzy/go-cloudstack f73f6ff1b843dbdac0a01da7b7f39883adfe2bdb
       :revision => "35bc42037350"
   end
 
-  %w[crypto 24ffb5feb3312a39054178a4b0a4554fc2201248 
+  %w[crypto 24ffb5feb3312a39054178a4b0a4554fc2201248
      net a8c61998a557a37435f719980da368469c10bfed
      oauth2 ec6d5d770f531108a6464462b2201b74fcd09314
      tools 96f6cfbb921ad6d191c67d09a6d4c4fd056403ae].each_slice(2) do |x, y|
