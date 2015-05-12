@@ -9,7 +9,7 @@ class Carthage < Formula
 
   bottle do
     cellar :any
-    sha256 "3569536f409798e97fc0321e30e0d1ccd7a9bd503d939fc1ebab03e8cfd0e39a" => :yosemite
+    sha256 "159591c3d4a8727478205a5391d655b52b2c7051aafd3abce179d8fa0ce8a328" => :yosemite
   end
 
   def install
