@@ -1,7 +1,7 @@
 class Gtkx3 < Formula
   homepage "http://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/3.16/gtk+-3.16.2.tar.xz"
-  sha256 "a03963a61c9f5253a8d4003187190be165d92f95acf97ca783735071a8781cfa"
+  url "https://download.gnome.org/sources/gtk+/3.16/gtk+-3.16.3.tar.xz"
+  sha256 "2943fd4a6b02c2a9b2edd231c1d8f7a1d2f8d36996f14310d34f503dca9ebea4"
 
   bottle do
     sha256 "3b301ff711350f37f99556603e4d1b74e720ef2ff3f037c3164645c17973599a" => :yosemite
