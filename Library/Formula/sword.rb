@@ -1,9 +1,7 @@
-require "formula"
-
 class Sword < Formula
   homepage "http://www.crosswire.org/sword/index.jsp"
-  url "ftp://ftp.crosswire.org/pub/sword/source/v1.7/sword-1.7.3.tar.gz"
-  sha1 "6ecac6364aa098e150cf8851fd8f97d48df21a34"
+  url "http://www.crosswire.org/ftpmirror/pub/sword/source/v1.7/sword-1.7.4.tar.gz"
+  sha256 "995da8cf5a207c1f09809bf4b9db0bd7d267da5fcdb9d6666c9b313edd9d213d"
 
   bottle do
     sha1 "8fc45d81b7fcc7d1feffdc130f6c139ffc382db4" => :yosemite
@@ -11,10 +9,10 @@ class Sword < Formula
     sha1 "36eedc14308de364ebfb1e2fecfc86852b65e3cf" => :mountain_lion
   end
 
-  option "with-icu4c", "Uses icu4c for unicode support"
-  depends_on "icu4c" => :optional
-  option "with-clucene", "Uses clucene for text searching capabilities"
   depends_on "clucene" => :optional
+  depends_on "icu4c" => :optional
+  option "with-clucene", "Use clucene for text searching capabilities"
+  option "with-icu4c", "Use icu4c for unicode support"
 
   def install
     args = [
