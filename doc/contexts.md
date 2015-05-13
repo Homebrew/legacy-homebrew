@@ -11,6 +11,14 @@ CassandraContext from Datastax's Cassandra Spark Connector.
 
 ## Example
 
+NOTE: To run these examples, we recommend you run `bin/server_package.sh`, edit
+`/tmp/job-server/settings.sh` to point at your local Spark repo (with binaries
+built), then run `/tmp/job-server/server_start.sh`.  The other option is to do
+`project job-server-extras` then `reStart`, but due to
+[SPARK-5281](https://issues.apache.org/jira/browse/SPARK-5281), you will hit an
+error `scala.reflect.internal.MissingRequirementError` with running SQLContext
+jobs.  This issue should be resolved in Spark 1.4.
+
 To run jobs for a specific type of context, first you need to start a context with the `context-factory` param:
 
     curl -d "" '127.0.0.1:8090/contexts/sql-context?context-factory=spark.jobserver.context.SQLContextFactory'
@@ -23,8 +31,6 @@ Now you should be able to run jobs in that context:
     curl -d "" '127.0.0.1:8090/jobs?appName=test&classPath=spark.jobserver.SqlLoaderJob&context=sql-context&sync=true'
 
 NOTE: you will get an error if you run the wrong type of job, such as a regular SparkJob in a `SQLContext`.
-
-NOTE2: For some odd reason, you might get an error `scala.reflect.internal.MissingRequirementError` if you use `sbt reStart`.  A workaround is to produce the assembly and run job-server using the java -cp command line.  See [SPARK-5281](https://issues.apache.org/jira/browse/SPARK-5281).  Spark 1.4 will resolve this issue.
 
 ## Extending Job Server for Custom Contexts
 
