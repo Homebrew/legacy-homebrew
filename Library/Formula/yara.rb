@@ -14,8 +14,10 @@ class Yara < Formula
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "pcre"
   depends_on "openssl"
+
 
   # fixes a variable redefinition error with clang
   patch do
@@ -35,6 +37,10 @@ class Yara < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+
+    cd "yara-python" do
+      system "python", *Language::Python.setup_install_args(prefix)
+    end
   end
 
   test do
