@@ -5,8 +5,8 @@ import java.nio.file.Paths
 trait TestJarFinder {
   val versionRegex = """(\d\.\d+).*""".r
   val version = scala.util.Properties.versionNumberString match { case versionRegex(d) => d }
-
-  def testJarDir: String = "job-server-tests/target/scala-" + version + "/"
+  val testJarBaseDir = "job-server-tests"
+  lazy val testJarDir = testJarBaseDir + "/target/scala-" + version + "/"
 
   def baseDir: String = {
     // Current directory.  Find out if we are in project root, and need to go up a level.
