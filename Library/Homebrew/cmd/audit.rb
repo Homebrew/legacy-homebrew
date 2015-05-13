@@ -379,8 +379,6 @@ class FormulaAuditor
       problem "Patches from MacPorts Trac should be https://, not http:\n#{patch.url}"
     when %r[^http://bugs\.debian\.org]
       problem "Patches from Debian should be https://, not http:\n#{patch.url}"
-    when %r[^https?://github\.com/.*commit.*\.patch$]
-      problem "GitHub appends a git version to patches; use .diff instead."
     end
   end
 
