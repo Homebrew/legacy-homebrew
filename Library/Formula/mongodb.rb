@@ -5,12 +5,12 @@ class Mongodb < Formula
 
   depends_on "go" => :build
   stable do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.2.tar.gz"
-    sha256 "010522203cdb9bbff52fbd9fe299b67686bb1256e2e55eb78abf35444f668399"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.3.tar.gz"
+    sha256 "57765a81c18a0bb674fbe63bc507111d8795596eb9c9492028903985b4720807"
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.0.2",
-        :revision => "a914adfcea7d76f07512415eec5cd8308e67318e"
+        :tag => "r3.0.3",
+        :revision => "13a7eac12d16edd41fa875df759b16e4b027db7f"
     end
   end
 
