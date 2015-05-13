@@ -2,7 +2,7 @@ require "formula"
 
 class Sassc < Formula
   homepage "https://github.com/sass/sassc"
-  url "https://github.com/sass/sassc.git", :tag => "3.2.1", :revision => "a88dd098143a1297d68a509f6dd99be25487197a"
+  url "https://github.com/sass/sassc.git", :tag => "3.2.4", :revision => "a88dd098143a1297d68a509f6dd99be25487197a"
   head "https://github.com/sass/sassc.git"
 
   bottle do
