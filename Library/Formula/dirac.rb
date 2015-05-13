@@ -5,6 +5,13 @@ class Dirac < Formula
   url 'http://diracvideo.org/download/dirac-research/dirac-1.0.2.tar.gz'
   sha1 '895aaad832a54b754e58f77c87d38c0c37752b0b'
 
+  bottle do
+    cellar :any
+    sha256 "34decd141a76d46080d411c7d593e00d1201e13d1dc774407a745a71a1f5763d" => :yosemite
+    sha256 "853260e2bca9ab2bb87d68ecbdfc31d356d215d811d88a0de36a14ef2da018b4" => :mavericks
+    sha256 "ebb63a9da46bd0f3a019b213d0f7a5ebf6ddf2ba8530da7b852dc4ff107578ca" => :mountain_lion
+  end
+
   fails_with :llvm do
     build 2334
   end
