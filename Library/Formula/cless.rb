@@ -10,9 +10,9 @@ class Cless < Formula
   revision 1
 
   bottle do
-    sha256 "76b8d84196408e6e9a8600cb1a35240e75206db8d006ef8bfe38e7a171bb1b2c" => :yosemite
-    sha256 "4027a2a344f157df664b878d74a5912cc75b55ecb8c9f76395ce4c178aa57839" => :mavericks
-    sha256 "b370de61dbd0e438f5910ba5d98755b561a08cf151ecdc03c96bc2c2053fd1a5" => :mountain_lion
+    sha256 "49b15946ec65f85e5b94333485ba8a8eee1b7ec6d2f53c4619d894c9aaf3e6a8" => :yosemite
+    sha256 "aaa095676d987a4cdfb613ddf4be28fd8ae1eaf4788f85b045fa5711cfecdffb" => :mavericks
+    sha256 "8dcb4a2e9c72d22ab96eee8f18ce4f63bd5f28dea6ef586de82865c94cb2fd8a" => :mountain_lion
   end
 
   depends_on "ghc" => :build
