@@ -7,6 +7,13 @@ class Packer < Formula
   url "https://github.com/mitchellh/packer.git",
     :tag => "v0.7.5", :revision => "9cd66feeacbd9cb318b72eb5ed59428c5b8c37ac"
 
+  bottle do
+    cellar :any
+    sha256 "4c62e5691329f9c274001400df487c090f5a0debbf3067cf977ac96e356f883e" => :yosemite
+    sha256 "6c6894eb419f8677c13c34027e8897716f40a5f14bf0561869d99c8c6b4d8740" => :mavericks
+    sha256 "1e6676f09ec0c145223f025254d7cf636cf13a240fc274d3711319970cafebf0" => :mountain_lion
+  end
+
   # All of these patches come from the upstream repo and will be in the next release.
   #
   # Fixes reference to "BuildID" field in an atlas struct
