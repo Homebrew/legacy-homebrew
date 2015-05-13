@@ -38,7 +38,7 @@ class Yara < Formula
     # build yara-python
     system "cd", "yara-python"
     system "python", "setup.py", "build"
-    system "sudo", "python", "setup.py", "install"
+    system "python", "setup.py", "install"
     system "cd", ".."
   end
 
