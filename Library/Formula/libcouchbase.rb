@@ -1,7 +1,7 @@
 class Libcouchbase < Formula
   homepage 'http://docs.couchbase.com/developer/c-2.4/c-intro.html'
-  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.9.tar.gz'
-  sha1 '9f7f684214a94e1d7ed21493624a2e9140ef0458'
+  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.5.0.tar.gz'
+  sha1 'eb1223e2d3f025006e6fd6717cd63657217e982e'
   head "https://github.com/couchbase/libcouchbase", :using => :git
 
   bottle do
