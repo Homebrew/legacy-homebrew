@@ -24,8 +24,12 @@ Now you should be able to run jobs in that context:
 
 NOTE: you will get an error if you run the wrong type of job, such as a regular SparkJob in a `SQLContext`.
 
-NOTE2: For some odd reason, you might get an error `scala.reflect.internal.MissingRequirementError` if you use `sbt reStart`.  A workaround is to produce the assembly and run job-server using the java -cp command line.  See [SPARK-5281](https://issues.apache.org/jira/browse/SPARK-5281).
+NOTE2: For some odd reason, you might get an error `scala.reflect.internal.MissingRequirementError` if you use `sbt reStart`.  A workaround is to produce the assembly and run job-server using the java -cp command line.  See [SPARK-5281](https://issues.apache.org/jira/browse/SPARK-5281).  Spark 1.4 will resolve this issue.
 
 ## Extending Job Server for Custom Contexts
 
 This can be done easily by extending the `SparkContextFactory` trait, like `SQLContextFactory` does.  Then, extend the `SparkJobBase` trait in a job with a type matching your factory.
+
+## Jars
+
+If you wish to use the `SQLContext` or `HiveContext`, be sure to pull down the job-server-extras package.
