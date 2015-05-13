@@ -35,6 +35,11 @@ class Yara < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+    # build yara-python
+    system "cd", "yara-python"
+    system "python", "setup.py", "build"
+    system "python", "setup.py", "install"
+    system "cd", ".."
   end
 
   test do
