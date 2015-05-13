@@ -4,6 +4,8 @@
 
 If you used `reStart` to start a local job server, be sure it's stopped using `reStop` first.
 
+Also, try adding `-Dakka.test.timefactor=X` to `SBT_OPTS` before launching sbt, where X is a number greater than 1.  This scales out the Akka TestKit timeouts by a factor X.
+
 ## Job server won't start / cannot bind to 0.0.0.0:8090
 
 Check that another process isn't already using that port.  If it is, you may want to start it on another port:
