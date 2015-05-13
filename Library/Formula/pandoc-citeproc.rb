@@ -4,8 +4,10 @@ class PandocCiteproc < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/jgm/pandoc-citeproc"
-  url "https://hackage.haskell.org/package/pandoc-citeproc-0.6/pandoc-citeproc-0.6.tar.gz"
-  sha1 "5236b4b4e201f94ab9f1bcd0d7e81c4271b46e8f"
+  url "https://github.com/jgm/pandoc-citeproc/archive/0.7.0.1.tar.gz"
+  sha256 "f672af320b808706657dcf578f4beef1b410cab744eab0707213e76687bd7a07"
+
+  revision 1
 
   bottle do
     revision 1
@@ -16,10 +18,7 @@ class PandocCiteproc < Formula
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "gmp"
-  depends_on "pandoc" => :recommended
-
-  fails_with(:clang) { build 425 } # clang segfaults on Lion
+  depends_on "pandoc"
 
   def install
     cabal_sandbox do
