@@ -9,6 +9,8 @@ class HighlightingKate < Formula
 
   head "https://github.com/jgm/highlighting-kate.git"
 
+  revision 1
+
   bottle do
     sha256 "86322e2910c87ac610e02179640b08788131de9387b1e6135cdb770239471955" => :yosemite
     sha256 "1ccfc82bcd8438ea1a4bce5f6c4b78ca5964a08fc0afcdf85e8b70eb5812f17b" => :mavericks
@@ -17,7 +19,6 @@ class HighlightingKate < Formula
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "gmp"
 
   def install
     cabal_sandbox do
