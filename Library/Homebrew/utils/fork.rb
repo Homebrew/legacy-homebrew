@@ -30,6 +30,7 @@ module Utils
             retry unless Process.waitpid(pid, Process::WNOHANG)
           else
             socket.send_io(write)
+            socket.close
           end
           write.close
           data = read.read
