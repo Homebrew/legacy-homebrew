@@ -11,6 +11,7 @@ import spark.jobserver.io.JobDAO
 
 /**
  * Provides a base Config for tests.  Override the vals to configure.  Mix into an object.
+ * Also, defaults for values not specified here could be provided as java system properties.
  */
 trait JobSpecConfig {
   import collection.JavaConverters._
@@ -30,7 +31,7 @@ trait JobSpecConfig {
       "spark.master" -> "local[4]",
       "context-factory" -> contextFactory
     )
-    ConfigFactory.parseMap(ConfigMap.asJava)
+    ConfigFactory.parseMap(ConfigMap.asJava).withFallback(ConfigFactory.defaultOverrides())
   }
 
   def getNewSystem = ActorSystem("test", config)
