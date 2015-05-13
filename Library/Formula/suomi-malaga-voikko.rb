@@ -7,9 +7,9 @@ class SuomiMalagaVoikko < Formula
 
   bottle do
     cellar :any
-    sha1 "335762aa767e4ae16fbc907e8b74e3275ce8b750" => :mavericks
-    sha1 "1c0b38b5ed014bdbdf8dbf2f5cb4316eef065424" => :mountain_lion
-    sha1 "3336b5cc97746af63b96112d7f83f76f68eeb714" => :lion
+    sha256 "58e0c9c5f3577c7dc3b529a5547bd5c396164de856c9f14f91dd899d9e28e6d3" => :yosemite
+    sha256 "f6517988b130926540d936cbf3b415b1ff2f5803d72d88c0672225e4aa410c46" => :mavericks
+    sha256 "d4a98cf1328fc05aad4aa111b718df03c0b66a1f28da980f87a9a3c5231fa037" => :mountain_lion
   end
 
   depends_on "malaga"
