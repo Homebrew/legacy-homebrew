@@ -31,6 +31,7 @@ TAP_MIGRATIONS = {
   "curlftpfs" => "homebrew/x11",
   "cwm" => "homebrew/x11",
   "dart" => "dart-lang/dart",
+  "datamash" => "homebrew/science",
   "dbslayer" => "homebrew/boneyard",
   "ddd" => "homebrew/x11",
   "denyhosts" => "homebrew/boneyard",
