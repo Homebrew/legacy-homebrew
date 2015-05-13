@@ -4,9 +4,20 @@ class Caddy < Formula
   homepage "https://caddyserver.com/"
   url "https://github.com/mholt/caddy/archive/v0.6.0.tar.gz"
   sha256 "919023cd91b6ab94fcde08fc30620b10f90eaaa95ab8b9f3ff7e06c0e9b7f301"
-  head "https://github.com/mholt/caddy.git"
 
   depends_on "go" => :build
+
+  head do
+    url "https://github.com/mholt/caddy.git"
+
+    go_resource "gopkg.in/yaml.v2" do
+      url "https://gopkg.in/yaml.v2.git"
+    end
+
+    go_resource "github.com/BurntSushi/toml" do
+      url "https://github.com/BurntSushi/toml.git", :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
+    end
+  end
 
   go_resource "golang.org/x/net" do
     url "https://go.googlesource.com/net.git", :revision => "e0403b4e005737430c05a57aac078479844f919c"
@@ -32,16 +43,6 @@ class Caddy < Formula
     url "https://github.com/shurcooL/sanitized_anchor_name.git", :revision => "8e87604bec3c645a4eeaee97dfec9f25811ff20d"
   end
 
-  if build.head?
-    go_resource "github.com/BurntSushi/toml" do
-      url "https://github.com/BurntSushi/toml.git", :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
-    end
-
-    go_resource "gopkg.in/yaml.v2" do
-      url "https://gopkg.in/yaml.v2.git"
-    end
-  end
-
   def install
     mkdir_p buildpath/"src/github.com/mholt/"
     ln_s buildpath, buildpath/"src/github.com/mholt/caddy"
@@ -56,12 +57,14 @@ class Caddy < Formula
   end
 
   test do
-    HOMEBREW_REPOSITORY.cd do
-      io = IO.popen("bin/caddy")
+    begin
+      io = IO.popen("#{bin}/caddy")
       sleep 2
+    ensure
       Process.kill("SIGINT", io.pid)
       Process.wait(io.pid)
-      io.read =~ /0\.0\.0\.0:2015/
     end
+
+    io.read =~ /0\.0\.0\.0:2015/
   end
 end
