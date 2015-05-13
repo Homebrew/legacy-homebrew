@@ -29,7 +29,7 @@ class ContextJobSpec extends JobSpecBase(ContextJobSpec.getNewSystem) {
     it("should get WrongJobType if loading SQL job in a plain SparkContext context") {
       uploadTestJar()
       manager ! JobManagerActor.Initialize
-      expectMsgClass(classOf[JobManagerActor.Initialized])
+      expectMsgClass(6 seconds, classOf[JobManagerActor.Initialized])
       manager ! JobManagerActor.StartJob("demo", sqlTestClass, emptyConfig, errorEvents)
       expectMsg(CommonMessages.WrongJobType)
     }
