@@ -1,8 +1,8 @@
 class Mesos < Formula
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.22.0/mesos-0.22.0.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.22.0/mesos-0.22.0.tar.gz"
-  sha256 "689f66f63bec043eb1bbf16be1cbe15ea5f359f308f7f5b01dd48075f20e0c7d"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.22.1/mesos-0.22.1.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.22.1/mesos-0.22.1.tar.gz"
+  sha256 "a51f6bb1be4c90160b233df471beece82d998bcfa7fd55be4366a9fbfebdc067"
 
   bottle do
     sha256 "84beeabe62b02983b3f31c65cda9065a44325aecbd717700589e309253c9d64f" => :yosemite
