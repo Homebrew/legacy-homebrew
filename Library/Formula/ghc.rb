@@ -6,10 +6,9 @@ class Ghc < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha256 "c2ec277a5445ece878b940838a93feed7a0c7733273ddcb26c07ec434f6ad800" => :yosemite
-    sha256 "1107ca8344e4bf2229d78cee7b3ee7a86f06d950f4a3b6c5c58d66675922935b" => :mavericks
-    sha256 "ad654abb4c2459b6cc764f275d5b6b141669e366f5051c58d871e54cb71a250c" => :mountain_lion
+    sha256 "969cc9bfd6574070982d1bd6678f1eeee430940d00d10b70204528cc9ce84c07" => :yosemite
+    sha256 "bb82b24644330273d5e8b02b5c3ced76cbde1b388a45047327db3cfd5f07fe1f" => :mavericks
+    sha256 "8b7900d0f6a72312969494b70ace58ed03ef8624b52d5db63ecccc00cf056e98" => :mountain_lion
   end
 
   option "with-tests", "Verify the build using the testsuite."
