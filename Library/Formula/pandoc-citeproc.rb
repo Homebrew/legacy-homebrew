@@ -39,6 +39,6 @@ class PandocCiteproc < Formula
       publisher="Cambridge University Press"
       }
     EOS
-    assert `pandoc-citeproc --bib2yaml #{bib}`.include? "- publisher-place: Cambridge"
+    system "pandoc-citeproc", "--bib2yaml", bib
   end
 end
