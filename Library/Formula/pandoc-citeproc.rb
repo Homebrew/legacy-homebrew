@@ -10,10 +10,9 @@ class PandocCiteproc < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "7cb2d23e4bfa3a7f30156101db645e9fcc27a5a8" => :yosemite
-    sha1 "94d27055eca1df4d2a928583f5e428f6bf5d6621" => :mavericks
-    sha1 "b0093fe0c141c1c17a232909c595faee5285c564" => :mountain_lion
+    sha256 "304c122d67adbcff13fd7fb43852234c9138983d931c45b53bf6ab0160b16a98" => :yosemite
+    sha256 "72e0a53626551fd9f889879b86903c8b2775e3f688f57889bb09a1d7f62abdc6" => :mavericks
+    sha256 "441ca80c3bf92cc1b6416e796fc64b57eabe122619c96a944dd6029dade3541c" => :mountain_lion
   end
 
   depends_on "ghc" => :build
