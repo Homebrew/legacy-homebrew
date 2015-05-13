@@ -1,9 +1,7 @@
-require "formula"
-
 class LibtorrentRasterbar < Formula
   homepage "http://sourceforge.net/projects/libtorrent/"
-  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.4.tar.gz"
-  sha256 "1f567823133b1493b9717afc8334eed691bf0ab452d4a2e0f644989f13ce9db0"
+  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.5.tar.gz"
+  sha256 "474a43da2147bec7e333c10f70b07221f4732dd67e071d5e90acc7edb8f657b0"
 
   head do
     url "https://libtorrent.googlecode.com/svn/trunk"
@@ -27,12 +25,12 @@ class LibtorrentRasterbar < Formula
   depends_on "boost-python" if build.with? "python"
 
   def install
-    args = [ "--disable-debug",
-             "--disable-dependency-tracking",
-             "--disable-silent-rules",
-             "--enable-encryption",
-             "--prefix=#{prefix}",
-             "--with-boost=#{Formula["boost"].opt_prefix}" ]
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--enable-encryption",
+            "--prefix=#{prefix}",
+            "--with-boost=#{Formula["boost"].opt_prefix}"]
 
     # Build python bindings requires forcing usage of the mt version of boost_python.
     if build.with? "python"
