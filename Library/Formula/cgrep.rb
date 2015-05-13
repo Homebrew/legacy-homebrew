@@ -5,8 +5,10 @@ class Cgrep < Formula
 
   homepage "https://github.com/awgn/cgrep"
   url "https://github.com/awgn/cgrep/archive/v6.4.12.tar.gz"
-  sha1 "4933c1ae055d5c04f567c9405339ce4f972ef62b"
+  sha256 "a38d7957854b9b6f55ed8610d88b0ba3d5061d7194e3ec13e608d7a4515371f5"
   head "https://github.com/awgn/cgrep.git"
+
+  revision 1
 
   bottle do
     cellar :any
@@ -17,10 +19,10 @@ class Cgrep < Formula
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "gmp"
 
   def install
-    install_cabal_package
+    # The "--allow-newer" is a hack for GHC 7.10.1, remove when possible.
+    install_cabal_package "--allow-newer"
   end
 
   test do
