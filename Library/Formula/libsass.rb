@@ -1,6 +1,6 @@
 class Libsass < Formula
   homepage "https://github.com/sass/libsass"
-  url "https://github.com/sass/libsass.git", :tag => "3.2.1", :revision => "e716caa918d86b3b8598e8ad639943fe6ec8e0ec"
+  url "https://github.com/sass/libsass.git", :tag => "3.2.4", :revision => "a6482aac915f46e3e9033afd88659889b215a288"
   head "https://github.com/sass/libsass.git"
 
   bottle do
