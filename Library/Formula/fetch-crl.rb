@@ -1,9 +1,7 @@
-require 'formula'
-
 class FetchCrl < Formula
-  homepage 'http://wiki.nikhef.nl/grid/FetchCRL3'
-  url 'https://dist.eugridpma.info/distribution/util/fetch-crl3/fetch-crl-3.0.16.tar.gz'
-  sha1 '3c89e751bc055492a5975fcf11d7ce5ca3309489'
+  homepage "https://wiki.nikhef.nl/grid/FetchCRL3"
+  url "https://dist.eugridpma.info/distribution/util/fetch-crl3/fetch-crl-3.0.16.tar.gz"
+  sha256 "3e7c3364db3bd7403f54dfb6b970327e75fde8e5a6f722dcb24b4dcfe5a0b641"
 
   bottle do
     cellar :any
