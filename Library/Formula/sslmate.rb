@@ -1,13 +1,13 @@
 class Sslmate < Formula
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-1.0.1.tar.gz"
-  sha256 "33178a73142a7be4bdd6d916901c596525f1a4aa25f2821758cd558808d1dd3d"
+  url "https://packages.sslmate.com/other/sslmate-1.1.0.tar.gz"
+  sha256 "3aa3b88b8c15577868dce7969f8ab99e9fabf6f5f738c1f04a2007a6abee973e"
 
   bottle do
     cellar :any
-    sha256 "d0765b1db21b52b69f13c31330a6023a8017184b64486dcb3d606fb37e943b7a" => :yosemite
-    sha256 "a0fd044d43399e24282b1266c9fc8f0ff835cb733ad5ca5fb4777261a44c8cad" => :mavericks
-    sha256 "ede8379abb216166470f013682c1b9ce5efed9876f91e48800d40c584cd8978d" => :mountain_lion
+    sha256 "5aed765e27b941b10c11dac80d039e1e3acf9fede32f2d69a1b2fc90033e5a8c" => :yosemite
+    sha256 "0cb9895193ff118a72c3bcca3c4a2ba4382c4b5155daadea36466f931c52a022" => :mavericks
+    sha256 "4a6ad4cee3a4ee460c2f2c87b31b1193553755ba65a2c6bac525fed386b5a42a" => :mountain_lion
   end
 
   option "without-route53", "Disable support for Route 53 DNS approval"

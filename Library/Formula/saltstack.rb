@@ -1,20 +1,13 @@
 class Saltstack < Formula
   homepage "http://www.saltstack.org"
-  url "https://github.com/saltstack/salt/archive/v2014.7.1.tar.gz"
-  sha256 "5fcf2cff700d0719b419c9cb489552645ce1287a15c7b3a8745959773d9b0dd1"
+  url "https://github.com/saltstack/salt/archive/v2015.5.0.tar.gz"
+  sha256 "278142ffd4d6ec693a7d160c27d360e9fdce6ae9c7de40e3cb18805078488b71"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
-  revision 1
 
   bottle do
-    sha256 "ba2dad536526cb11eea8b250a1197e68c1eec80b512ea90bcd7ea973e3111624" => :yosemite
-    sha256 "0bb6b9bb0ea00c8e430213d11be6ef9ef404daef176f401c2d0c89431608f69c" => :mavericks
-    sha256 "287ecda2663c99934af942ae0d034bcbb96972afdae6087e47c7abbca198f77d" => :mountain_lion
-  end
-
-  devel do
-    url "https://github.com/saltstack/salt/archive/v2015.2.0rc2.tar.gz"
-    sha256 "be71c1f2f9f878d5f958396620983c5981f55eaf32913e7f28c129c35f37657a"
-    version "2015.2.0rc2"
+    sha256 "cf9d2aee286f69efcd838021b9e21fcb87189e4c4f1b32a01213ed63dd1154e4" => :yosemite
+    sha256 "84096f34d6f8940236594f8c08ac7fe344e5878026c829b96edc772d87b82e95" => :mavericks
+    sha256 "03493a5a2cb2e9e203691e1ff15473f7ddb718c9a6c12e386782b055ef68262d" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
