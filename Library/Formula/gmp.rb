@@ -1,7 +1,7 @@
 class Gmp < Formula
-  homepage "http://gmplib.org/"
+  homepage "https://gmplib.org/"
   url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-  mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
+  mirror "https://gmplib.org/download/gmp/gmp-6.0.0a.tar.bz2"
   mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
   sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
 
