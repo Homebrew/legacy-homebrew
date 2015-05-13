@@ -1,7 +1,7 @@
 class Inspircd < Formula
   homepage "http://www.inspircd.org"
-  url "https://github.com/inspircd/inspircd/archive/v2.0.19.tar.gz"
-  sha256 "3182fe346257af397fa43952bc7678eb8dafda49da1d286baed5063ffa3f3387"
+  url "https://github.com/inspircd/inspircd/archive/v2.0.20.tar.gz"
+  sha256 "5156e2da5da4cfa377705ecd633aee41cdcd785d12627497d55cab5f70dd686f"
 
   head "https://github.com/inspircd/inspircd.git"
 
