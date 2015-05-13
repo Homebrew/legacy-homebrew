@@ -196,12 +196,13 @@ class FormulaInstaller
     conflicts = formula.conflicts.select do |c|
       begin
         f = Formulary.factory(c.name)
-        f.linked_keg.exist? && f.opt_prefix.exist?
       rescue TapFormulaUnavailableError
         # If the formula name is in full-qualified name. Let's silently
         # ignore it as we don't care about things used in taps that aren't
         # currently tapped.
-        next
+        false
+      else
+        f.linked_keg.exist? && f.opt_prefix.exist?
       end
     end
 
