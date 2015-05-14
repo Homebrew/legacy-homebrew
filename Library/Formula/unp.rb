@@ -23,4 +23,12 @@ class Unp < Formula
     mv "debian/copyright", "COPYING"
     mv "debian/changelog", "ChangeLog"
   end
+
+  test do
+    path = testpath/"test"
+    path.write "Homebrew"
+    system "gzip", "test"
+    system "#{bin}/unp", "test.gz"
+    assert_equal "Homebrew", path.read
+  end
 end
