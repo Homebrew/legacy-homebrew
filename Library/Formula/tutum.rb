@@ -2,14 +2,14 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/v0.14.0.tar.gz"
-  sha256 "f0bf4d2be3ae22d989a55ec69b38a91f492ce0014be177855022dfae6af7b9e9"
+  url "https://github.com/tutumcloud/tutum-cli/archive/v0.14.1.tar.gz"
+  sha256 "d908123cc9f761171155f6ccfc66227393fd0dba485963bd40753b5579e0cf71"
 
   bottle do
     cellar :any
-    sha256 "5317c14e571c0f5503137930cbb6fad8dfef1879715406638064c9125fd1ece4" => :yosemite
-    sha256 "118619cd695144629f20f0b61e5d3027b68350f145ed39ee6d9fd0fea6e0a7f2" => :mavericks
-    sha256 "4f27b91fd2f87d55eddec1d1e46b6c93b546ba1512c6aca85dcd517e8c062278" => :mountain_lion
+    sha256 "6d704a7cb443a61fb4d9f090c477303c445fa07966e1c6173c96897661ebdf17" => :yosemite
+    sha256 "1c27aa0ae16c1ffdcb87f501697dc8e6e819e805f0346c994305a6d89e711bce" => :mavericks
+    sha256 "f8e46e0a24b4309af63230f8a95b8eb76e5380d831d9f07e86c9e7f278a2f98f" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -31,8 +31,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.14.1.tar.gz"
-    sha256 "4a2603dbec77d8b1a5e3c78d96e68d9310d11e7fbda749b860b6dcb1646db2e3"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.14.2.tar.gz"
+    sha256 "cd7743600b8e9c367f0c4907752f09b4aad86c0adb1fd46a44c4871ee8fc2d97"
   end
 
   resource "backports.ssl-match-hostname" do

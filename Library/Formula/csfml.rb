@@ -4,12 +4,13 @@ class Csfml < Formula
   homepage "http://www.sfml-dev.org/"
   url "http://www.sfml-dev.org/download/csfml/CSFML-2.2-sources.zip"
   sha1 "1dc3d2dadef6e6daa05b0dd868367ad5f02419e4"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "4cc1bc694356a8206e1164cc266ef68b5c45e7a1ee60d0e210c4a8e49c6abb97" => :yosemite
-    sha256 "d1d8e0343fe42fd91029a770cdf912587fbf7388ea997d68ec4f96f33548cb77" => :mavericks
-    sha256 "3ecb8338214a6c0485fe294af23c4ec8440e35878ef0521a4fe6d6da792e6c77" => :mountain_lion
+    sha256 "81a7f3da157b8941df5ba58152846b62aefcfcb434bd3e2a259db63964d5765e" => :yosemite
+    sha256 "48ffc9d13eec898937ad7cde0562f85694d6b7bf25a02f67efc50565788f179d" => :mavericks
+    sha256 "65457acf802959c36830d5d812d1f3e63739e366249196d4bafe526e2bc254ea" => :mountain_lion
   end
 
   depends_on "cmake" => :build

@@ -94,6 +94,10 @@ module Homebrew
       revision = `git rev-parse --short HEAD`.strip
       branch = `git symbolic-ref --short HEAD`.strip
 
+      unless branch == "master"
+        opoo "Current branch is #{branch}: do you need to pull inside master?"
+      end
+
       pull_url url
 
       changed_formulae = []

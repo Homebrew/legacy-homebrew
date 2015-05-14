@@ -1,13 +1,16 @@
 class Rhash < Formula
-  homepage 'http://rhash.anz.ru/'
-  url 'https://downloads.sourceforge.net/project/rhash/rhash/1.3.2/rhash-1.3.2-src.tar.gz'
-  sha256 '074224f59fe69969108e1ebc23ee406a7f2eff95d9dc1c7aa8eaebb85c8142dd'
+  homepage "http://rhash.anz.ru/"
+  url "https://downloads.sourceforge.net/project/rhash/rhash/1.3.3/rhash-1.3.3-src.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/r/rhash/rhash_1.3.3.orig.tar.gz"
+  sha256 "5b520b597bd83f933d316fce1382bb90e0b0b87b559b8c9c9a197551c935315a"
+
+  head "https://github.com/rhash/RHash.git"
 
   bottle do
     cellar :any
-    sha1 "cb5c136e11633ffb2bb28248e61ef468a724a6a5" => :mavericks
-    sha1 "25acb04254d9b202a7a016e89b28898fed48d65a" => :mountain_lion
-    sha1 "0ea791f790338589aea739b56948b126e5e75f1d" => :lion
+    sha256 "e957f797d99c99ad3ccba26cf960a1b2bfbf6915694b44496b8c899c322856ce" => :yosemite
+    sha256 "f3a728fdbc481c60c42544e2360601e8bc8ed032b82c86a0e4f1e29949a2b653" => :mavericks
+    sha256 "4d88312b2da6202c1929e5b586ed63780009d1467bdfef2cc6ec3c615e73ab42" => :mountain_lion
   end
 
   # Upstream issue: https://github.com/rhash/RHash/pull/7
@@ -19,9 +22,8 @@ class Rhash < Formula
     ENV.j1
 
     system "make", "lib-static", "lib-shared", "all", "CC=#{ENV.cc}"
-
-    system "make", "install-lib-static", "install-lib-shared", "install", "PREFIX=",
-                              "DESTDIR=#{prefix}", "CC=#{ENV.cc}"
+    system "make", "install-lib-static", "install-lib-shared", "install",
+                   "PREFIX=", "DESTDIR=#{prefix}", "CC=#{ENV.cc}"
   end
 
   test do
@@ -49,7 +51,7 @@ __END__
 
  # shared and static libraries
  $(SONAME): $(SOURCES)
--	sed -n '1s/.*/{ global:/p; s/^RHASH_API.* \([a-z0-9_]\+\)(.*/  \1;/p; $$s/.*/local: *; };/p' $(LIB_HEADERS) > exports.sym
+-	sed -n '1s/.*/{ global:/p; s/^RHASH_API.* \([a-z0-9_]\+\)(.*/  \1;/p; $$s/.*/local: *; };/p' $(SO_HEADERS) > exports.sym
 -	$(CC) -fpic $(ALLCFLAGS) -shared $(SOURCES) -Wl,--version-script,exports.sym,-soname,$(SONAME) $(LIBLDFLAGS) -o $@
 +	$(CC) -fpic $(ALLCFLAGS) -dynamiclib $(SOURCES) $(LIBLDFLAGS) -Wl,-install_name,$(PREFIX)/lib/$@ -o $@
  	ln -s $(SONAME) $(SOLINK)

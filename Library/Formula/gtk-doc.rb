@@ -1,6 +1,6 @@
 class GtkDoc < Formula
   homepage "http://www.gtk.org/gtk-doc/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/1.22/gtk-doc-1.22.tar.xz"
+  url "https://download.gnome.org/sources/gtk-doc/1.22/gtk-doc-1.22.tar.xz"
   sha256 "932865c912ce0d81c9480bf957d3908bae6e18c0cf2ee33014d63b920047fca8"
 
   bottle do

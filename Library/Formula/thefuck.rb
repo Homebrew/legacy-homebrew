@@ -1,13 +1,13 @@
 class Thefuck < Formula
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.29.tar.gz"
-  sha256 "3e51de66ea29a1bbd9f1aadbd3a2398601e7a5e7ab69fef0f75677ca95f00cb1"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.40.tar.gz"
+  sha256 "f20262e3b1e59d66ad9cfa5b4fba45737a959789f9a094ea226b455f6c8b1f9e"
 
   bottle do
     cellar :any
-    sha256 "257c5674dd683812bda279eb9709809440d7cba032862d234523a0e2dfd38d1d" => :yosemite
-    sha256 "b2cfa406696a624e311bed92ef08c314f0fe6c893308d8e67fecc08102da9b32" => :mavericks
-    sha256 "68a2b3f99d193ab817f31e8c7941d0f4574eccb36f9f29884e9d03e608999afe" => :mountain_lion
+    sha256 "890762ad1d9324ab346cab435dd0d89f8820ee43c68046847fb1218aed9fe246" => :yosemite
+    sha256 "8eb332807213eedc8f34e3c60f5305e24d1deb0d1c09907994ca0a05bbb47f66" => :mavericks
+    sha256 "ed2b83dd297c9a8ff578f48157cf7740a17e261d167c0f1243580bd6f8767829" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -54,11 +54,10 @@ class Thefuck < Formula
 
   def caveats; <<-EOS.undent
     Add the following to your .bash_profile or .zshrc:
-      alias fuck='$(thefuck $(fc -ln -1))'
-    Or in config.fish:
-      function fuck
-        eval (thefuck $history[1])
-      end
+      bash: alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
+      zsh: alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+
+      Other shells: https://github.com/nvbn/thefuck/wiki/Shell-aliases
     EOS
   end
 end

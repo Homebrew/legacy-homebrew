@@ -2,14 +2,14 @@ require "formula"
 
 class Sassc < Formula
   homepage "https://github.com/sass/sassc"
-  url "https://github.com/sass/sassc.git", :tag => "3.2.1", :revision => "a88dd098143a1297d68a509f6dd99be25487197a"
+  url "https://github.com/sass/sassc.git", :tag => "3.2.4", :revision => "a88dd098143a1297d68a509f6dd99be25487197a"
   head "https://github.com/sass/sassc.git"
 
   bottle do
     cellar :any
-    sha256 "79e88871dbd34e52b0514c389c70d3f357825b0e7f8189ed2e908b3a67884c52" => :yosemite
-    sha256 "959cf7e91788324518aebd82e0eee20742b58fd13a87a5d0ffef38c244b5cc96" => :mavericks
-    sha256 "0ce34ee21cb1c93321a785a30254880e812c3f3c65ce2a0f0ce2aded0d7ec283" => :mountain_lion
+    sha256 "1ad01ed7c28efd12f067f2cc6a743ec291218231462f17419b32be0d09538901" => :yosemite
+    sha256 "ce98149a0cf434fda2ce3e9803f92a77c4581df9ca7b9f8f13478b56670c956c" => :mavericks
+    sha256 "16150a5116dd01b150f1b48696e0dfc256cb38d5b4f5aff9f4edb18bd5d9c54c" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

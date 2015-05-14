@@ -10,10 +10,8 @@ class Gtkextra < Formula
     sha1 "a8d200588c69a98b063b16426cc49f29c549cf4a" => :mountain_lion
   end
 
-  # uses whatever backend gtk+ is built with: x11 or quartz
   depends_on "gtk+"
-  # needed at runtime only for the test block
-  depends_on "pkg-config"
+  depends_on "pkg-config" => :run
 
   def install
     system "./configure", "--disable-debug",

@@ -2,14 +2,14 @@ require "formula"
 
 class JujuQuickstart < Formula
   homepage "https://launchpad.net/juju-quickstart"
-  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.0.1.tar.gz"
-  sha1 "603cf03a47e91d83f3d6032b99e0e7fdf07ecfcd"
+  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.1.1.tar.gz"
+  sha1 "7743605cba0c41bab940ac9c03485ef087627327"
 
   bottle do
     cellar :any
-    sha256 "419bab189ed2bb0fdeb9af6968a7cb16372b7380c221f80c3f1419f2c6cbb090" => :yosemite
-    sha256 "77192413d3fd484e0c53b294e5051b813e9654d6eca1ea6443dde8c0600b577a" => :mavericks
-    sha256 "5b1cf409c5d3491d12f8c9ef2c4f0c40db93604e29048c0a29a803e36bcc8ac2" => :mountain_lion
+    sha256 "64d5635334ba57d779cbb05c22d4d36a4f370c2646f99026965c9f76fcb76578" => :yosemite
+    sha256 "2da3ac38839984c23513a110626fc9c6dc683097c99d1a538385e9d18d8683ca" => :mavericks
+    sha256 "a89ce08340e0522a8f8a26b024c7797a245405867861c23d63c2f16968cb00d7" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
