@@ -4,7 +4,7 @@ class HerokuToolbelt < Formula
   sha256 "008393132b6422982221245f50cf28792f9f7a298d0ae13e34273d80976e0e77"
   head "https://github.com/heroku/heroku.git"
 
-  depends_on :ruby => "1.9"
+  depends_on :ruby => "1.9" if MacOS.version < :mavericks
 
   def install
     libexec.install Dir["*"]
