@@ -121,13 +121,16 @@ module Homebrew
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
   end
 
-  def self.install_gem_setup_path! gem, executable=gem
+  def self.install_gem_setup_path! gem, version=nil, executable=gem
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
 
-    unless quiet_system "gem", "list", "--installed", gem
+    args = [gem]
+    args << "-v" << version if version
+
+    unless quiet_system "gem", "list", "--installed", *args
       safe_system "gem", "install", "--no-ri", "--no-rdoc",
-                                    "--user-install", gem
+                                    "--user-install", *args
     end
 
     unless which executable
