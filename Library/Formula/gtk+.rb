@@ -1,7 +1,7 @@
 class Gtkx < Formula
   homepage "http://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.27.tar.xz"
-  sha256 "20cb10cae43999732a9af2e9aac4d1adebf2a9c2e1ba147050976abca5cd24f4"
+  url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
+  sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
 
   bottle do
     sha256 "ab144b55ebb1829ac4e01b9774c0293eb219e1564581e1f139d3eb48db7cd00e" => :yosemite
