@@ -9,6 +9,18 @@ class Libdbi < Formula
   end
 
   test do
-    system "true"
+    (testpath/'test.c').write <<-EOS.undent
+      #include <stdio.h>
+      #include <dbi/dbi.h>
+      int main(void) {
+        dbi_inst instance;
+        dbi_initialize_r(NULL, &instance);
+        printf("dbi version = %s\\n", dbi_version());
+        dbi_shutdown_r(instance);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-ldbi", "-o", "test"
+    system "./test"
   end
 end
