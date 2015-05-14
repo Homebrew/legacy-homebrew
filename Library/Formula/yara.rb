@@ -36,10 +36,9 @@ class Yara < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
     # build yara-python
-    system "cd", "yara-python"
-    system "python", "setup.py", "build"
-    system "python", "setup.py", "install"
-    system "cd", ".."
+    cd "yara-python" do
+      system "python", *Language::Python.setup_install_args(prefix)
+    end
   end
 
   test do
