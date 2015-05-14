@@ -1,10 +1,10 @@
 require 'formula'
 
 class OpenMpi < Formula
-  homepage 'http://www.open-mpi.org/'
+  homepage 'https://www.open-mpi.org/'
   # Wait for 1.8.6 and skip 1.8.5 due to a severe memory leak on OS X:
   # https://github.com/open-mpi/ompi/issues/579
-  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2'
+  url 'https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2'
   sha1 '88ae39850fcf0db05ac20e35dd9e4cacc75bde4d'
 
   bottle do
