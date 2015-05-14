@@ -256,7 +256,7 @@ Note that these flags should only appear after a command.
     If no <formulae> are provided, all of them will have their .apps symlinked.
 
     If provided, `--local` will move them into the user's `~/Applications`
-    folder instead of the system folder. It may need to be created, first.
+    directory instead of the system directory. It may need to be created, first.
 
   * `ls, list [--unbrewed] [--versions [--multiple]] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
