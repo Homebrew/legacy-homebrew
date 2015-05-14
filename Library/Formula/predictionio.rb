@@ -1,7 +1,7 @@
 class Predictionio < Formula
   homepage "https://prediction.io/"
   url "http://download.prediction.io/PredictionIO-0.9.2.tar.gz"
-  sha1 "199d1c9a4b69c3bb009ed7819294183e99ced4e9"
+  sha256 "e4da196a1d67f545d6667f8368a7c6a64ff5c6de5135b085a12e9251b6076991"
 
   depends_on "elasticsearch"
   depends_on "hadoop"
@@ -16,8 +16,8 @@ class Predictionio < Formula
     bin.write_exec_script libexec/"bin/pio"
 
     inreplace libexec/"conf/pio-env.sh" do |s|
-       s.gsub! /#\s*ES_CONF_DIR=.+$/, "ES_CONF_DIR=#{Formula['elasticsearch'].opt_prefix}/config"
-       s.gsub! /SPARK_HOME=.+$/, "SPARK_HOME=#{Formula['apache-spark'].opt_prefix}"
+      s.gsub! /#\s*ES_CONF_DIR=.+$/, "ES_CONF_DIR=#{Formula["elasticsearch"].opt_prefix}/config"
+      s.gsub! /SPARK_HOME=.+$/, "SPARK_HOME=#{Formula["apache-spark"].opt_prefix}"
     end
   end
 end
