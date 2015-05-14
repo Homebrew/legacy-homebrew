@@ -445,7 +445,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [Slobodan Miskovic](https://miskovic.ca)
 * [Kurt Ostergaard](http://KurtOstergaard.com)
 * [Simply Business](http://www.simplybusiness.co.uk/)
-* Tate Johnson
+* [Tate Johnson](http://tatey.com)
 * [Gerry Cardinal III](http://gerrycardinal.com/)
 * [Andrew Kalek](http://anlek.com)
 * [Bryan Coe](http://www.BryanACoe.com)
