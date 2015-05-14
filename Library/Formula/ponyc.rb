@@ -11,17 +11,5 @@ class Ponyc < Formula
 
   test do
     system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/builtin"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/collections"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/encode/base64"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/files"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/math"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/net/http"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/net/ssl"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/options"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/ponytest"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/random"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/regex"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/readline"
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/time"
   end
 end
