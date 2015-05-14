@@ -23,7 +23,6 @@ class Nimrod < Formula
     (testpath/"hello.nim").write <<-EOS.undent
       echo("hello")
     EOS
-    assert_equal "hello\n", `#{bin}/nim compile --verbosity:0 --run #{testpath}/hello.nim`
-    assert_equal 0, $?.exitstatus
+    assert_equal "hello", shell_output("#{bin}/nim compile --verbosity:0 --run #{testpath}/hello.nim").chomp
   end
 end
