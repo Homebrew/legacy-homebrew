@@ -1,5 +1,5 @@
 class Predictionio < Formula
-  homepage "http://prediction.io/"
+  homepage "https://prediction.io/"
   url "http://download.prediction.io/PredictionIO-0.9.2.tar.gz"
   sha1 "199d1c9a4b69c3bb009ed7819294183e99ced4e9"
 
