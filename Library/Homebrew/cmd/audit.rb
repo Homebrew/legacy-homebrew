@@ -349,8 +349,9 @@ class FormulaAuditor
     end
 
     stable = formula.stable
-    if stable && stable.url =~ /#{Regexp.escape("ftp.gnome.org/pub/GNOME/sources")}/i
-      minor_version = stable.version.to_s[/\d\.(\d+)/, 1].to_i
+    case stable && stable.url
+    when %r{download\.gnome\.org/sources}, %r{ftp\.gnome\.org/pub/GNOME/sources}i
+      minor_version = Version.parse(stable.url).to_s.split(".", 3)[1].to_i
 
       if minor_version.odd?
         problem "#{stable.version} is a development release"
