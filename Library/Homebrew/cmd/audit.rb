@@ -254,26 +254,26 @@ class FormulaAuditor
 
     # Automatic redirect exists, but this is another hugely common error.
     if homepage =~ %r[^http://code\.google\.com/]
-      problem "Google Code homepages should be https:// links (URL is #{homepage})."
+      problem "Google Code homepages should be https:// URLs (URL is #{homepage})."
     end
 
     # GNU has full SSL/TLS support but no auto-redirect.
     if homepage =~ %r[^http://www\.gnu\.org/]
-      problem "GNU homepages should be https:// links (URL is #{homepage})."
+      problem "GNU homepages should be https:// URLs (URL is #{homepage})."
     end
 
     # Savannah has full SSL/TLS support but no auto-redirect.
-    # Doesn't apply to the download links (boo), only the homepage.
+    # Doesn't apply to the download URLs, only the homepage.
     if homepage =~ %r[^http://savannah\.nongnu\.org/]
-      problem "Savannah homepages should be https:// links (URL is #{homepage})."
+      problem "Savannah homepages should be https:// URLs (URL is #{homepage})."
     end
 
     if homepage =~ %r[^http://((?:trac|tools|www)\.)?ietf\.org]
-      problem "ietf homepages should be https:// links (URL is #{homepage})."
+      problem "ietf homepages should be https:// URLs (URL is #{homepage})."
     end
 
     if homepage =~ %r[^http://((?:www)\.)?gnupg.org/]
-      problem "GnuPG homepages should be https:// links (URL is #{homepage})."
+      problem "GnuPG homepages should be https:// URLs (URL is #{homepage})."
     end
 
     # Freedesktop is complicated to handle - It has SSL/TLS, but only on certain subdomains.
@@ -294,24 +294,24 @@ class FormulaAuditor
 
     # There's an auto-redirect here, but this mistake is incredibly common too.
     if homepage =~ %r[^http://packages\.debian\.org]
-      problem "Debian homepage should be https:// links (URL is #{homepage})."
+      problem "Debian homepage should be https:// URLs (URL is #{homepage})."
     end
 
     # People will run into mixed content sometimes, but we should enforce and then add
     # exemptions as they are discovered. Treat mixed content on homepages as a bug.
     # Justify each exemptions with a code comment so we can keep track here.
     if homepage =~ %r[^http://[^/]*github\.io/]
-      problem "Github Pages links should be https:// (URL is #{homepage})."
+      problem "Github Pages URLs should be https:// (URL is #{homepage})."
     end
 
     if homepage =~ %r[^http://[^/]*\.apache\.org]
-      problem "Apache homepages should be https:// links (URL is #{homepage})."
+      problem "Apache homepages should be https:// URLs (URL is #{homepage})."
     end
 
     # There's an auto-redirect here, but this mistake is incredibly common too.
-    # Only applies to the homepage and subdomains for now, not the FTP links.
+    # Only applies to the homepage and subdomains for now, not the FTP URLs.
     if homepage =~ %r[^http://((?:build|cloud|developer|download|extensions|git|glade|help|library|live|nagios|news|people|projects|rt|static|wiki|www)\.)?gnome\.org]
-      problem "Gnome homepages should be https:// links (URL is #{homepage})."
+      problem "Gnome homepages should be https:// URLs (URL is #{homepage})."
     end
   end
 
@@ -841,7 +841,7 @@ class ResourceAuditor
 
     urls = [url] + mirrors
 
-    # Check a variety of SSL/TLS links that don't consistently auto-redirect
+    # Check a variety of SSL/TLS URLs that don't consistently auto-redirect
     # or are overly common errors that need to be reduced & fixed over time.
     urls.each do |p|
       # Skip the main url link, as it can't be made SSL/TLS yet.
