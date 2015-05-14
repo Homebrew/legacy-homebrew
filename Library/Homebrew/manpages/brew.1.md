@@ -562,6 +562,9 @@ can take several different forms:
     <https://developer.github.com/v3/#rate-limiting> for more information.
     Homebrew uses the GitHub API for features such as `brew search`.
 
+  * HOMEBREW\_LOGS:
+    If set, Homebrew will use the given directory to store log files.
+
   * HOMEBREW\_MAKE\_JOBS:
     If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as
     the number of parallel jobs to run when building with `make`(1).
