@@ -1,11 +1,16 @@
-require "formula"
-
 class Subnetcalc < Formula
-  homepage "http://www.iem.uni-due.de/~dreibh/subnetcalc/"
-  url "http://www.iem.uni-due.de/~dreibh/subnetcalc/download/subnetcalc-2.2.0.tar.gz"
-  sha1 "fbe6411443f4140937a85f051e733efd803ec7b3"
+  homepage "https://www.uni-due.de/~be0001/subnetcalc/"
+  url "https://www.uni-due.de/~be0001/subnetcalc/download/subnetcalc-2.4.2.tar.gz"
+  sha256 "910ec4f47d8d3348be9ec8d66404259c0a48d2f40db86f7a71a469dd3ecf4339"
 
-  depends_on 'geoip' => :recommended
+  head do
+    url "https://github.com/dreibh/subnetcalc.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "geoip" => :recommended
 
   def install
     args = ["--disable-dependency-tracking",
@@ -13,7 +18,11 @@ class Subnetcalc < Formula
             "--prefix=#{prefix}"]
     args << "--with-geoip=no" if build.without? "geoip"
 
-    system "./configure", *args
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
     system "make", "install"
   end
 
