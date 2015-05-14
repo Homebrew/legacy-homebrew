@@ -543,7 +543,7 @@ module Homebrew
       git "checkout", "-f", "master"
       git "clean", "-fdx"
       git "clean", "-ffdx" unless $?.success?
-      pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/head.lock"
+      pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) {|lock| FileUtils.rm_rf lock }
     end
 
