@@ -226,6 +226,26 @@ class Packer < Formula
   end
 
   test do
-    assert_match "Packer v#{version}", shell_output("#{bin}/packer version")
+    minimal = testpath/"minimal.json"
+    minimal.write <<-EOS.undent
+      {
+        "builders": [{
+          "type": "amazon-ebs",
+          "region": "us-east-1",
+          "source_ami": "ami-59a4a230",
+          "instance_type": "m3.medium",
+          "ssh_username": "ubuntu",
+          "ami_name": "homebrew packer test  {{timestamp}}"
+        }],
+        "provisioners": [{
+          "type": "shell",
+          "inline": [
+            "sleep 30",
+            "sudo apt-get update"
+          ]
+        }]
+      }
+    EOS
+    system "#{bin}/packer", "validate", minimal
   end
 end
