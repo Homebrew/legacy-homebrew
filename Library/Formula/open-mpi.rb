@@ -1,7 +1,7 @@
 class OpenMpi < Formula
   homepage "http://www.open-mpi.org/"
-  url "http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.5.tar.bz2"
-  sha256 "4cea06a9eddfa718b09b8240d934b14ca71670c2dc6e6251a585ce948a93fbc4"
+  url "http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2"
+  sha256 "23158d916e92c80e2924016b746a93913ba7fae9fff51bf68d5c2a0ae39a2f8a"
 
   bottle do
     sha256 "cb257e6d49ebd40af7b9cfefb08547df5278e4db70463d3adac341811620ae4a" => :yosemite
