@@ -256,6 +256,12 @@ module Homebrew
         end
       end
 
+      def brew_update
+        return unless current_branch == "master"
+        success = quiet_system "brew", "update"
+        success ||= quiet_system "brew", "update"
+      end
+
       @category = __method__
       @start_branch = current_branch
 
@@ -264,13 +270,13 @@ module Homebrew
          and not ENV['ghprbPullLink']
         diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
         diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
-        test "brew", "update" if current_branch == "master"
+        brew_update
       elsif @hash
         diff_start_sha1 = current_sha1
-        test "brew", "update" if current_branch == "master"
+        brew_update
         diff_end_sha1 = current_sha1
       elsif @url
-        test "brew", "update" if current_branch == "master"
+        brew_update
       end
 
       # Handle Jenkins pull request builder plugin.
