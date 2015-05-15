@@ -34,8 +34,11 @@ class Ghc < Formula
 
   resource "binary" do
     if OS.linux?
-      url "http://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-x86_64-unknown-linux-deb7.tar.xz"
-      sha256 "421f65745edb225d8697bc19ec7a10171de0eab2b88dc069f420d4f57c7bb6e2"
+      # Using 7.10.1 gives the error message:
+      # BFD: dist-install/build/stj2R30K: Not enough room for program headers, try linking with -N
+      # strip:dist-install/build/stj2R30K[.note.gnu.build-id]: Bad value
+      url "http://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-x86_64-unknown-linux.tar.bz2"
+      sha256 "398dd5fa6ed479c075ef9f638ef4fc2cc0fbf994e1b59b54d77c26a8e1e73ca0"
     elsif MacOS.version <= :lion
       url "https://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
