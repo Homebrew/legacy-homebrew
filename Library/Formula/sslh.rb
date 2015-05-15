@@ -1,17 +1,27 @@
-require 'formula'
-
 class Sslh < Formula
-  homepage 'http://www.rutschle.net/tech/sslh.shtml'
-  url 'https://github.com/yrutschle/sslh/archive/v1.16.tar.gz'
-  sha1 '7139672fa8e2fd1befde2e1f9a73ce2ade04920c'
+  homepage "http://www.rutschle.net/tech/sslh.shtml"
 
-  depends_on 'libconfig'
+  stable do
+    url "http://www.rutschle.net/tech/sslh-v1.17.tar.gz"
+    sha256 "4f3589ed36d8a21581268d53055240eee5e5adf02894a2ca7a6c9022f24b582a"
+
+    # fixes `make install`, fixed in HEAD
+    patch do
+      url "https://github.com/yrutschle/sslh/commit/7c35ef8528d47b97894a6495275b57dc1ae3f8c7.diff"
+      sha256 "a6f8e1c3f9776d7344ea839de1d8a40e9925101528bd3beee50a0c60c62872cf"
+    end
+  end
+
+  head "https://github.com/yrutschle/sslh.git"
+
+  depends_on "libconfig"
 
   def install
     ENV.j1
-    system 'make'
-    bin.install 'sslh-fork', 'sslh-select'
-    bin.install_symlink 'sslh-fork' => 'sslh'
-    man8.install 'sslh.8.gz'
+    system "make", "install", "PREFIX=#{prefix}"
+  end
+
+  test do
+    system sbin/"sslh", "-V"
   end
 end
