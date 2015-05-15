@@ -45,6 +45,10 @@ class Subversion < Formula
   # For Serf
   depends_on "scons" => :build
   depends_on "openssl"
+  unless OS.mac?
+    depends_on "apr"
+    depends_on "apr-util"
+  end
 
   # Other optional dependencies
   depends_on "gpg-agent" => :optional
@@ -70,7 +74,13 @@ class Subversion < Formula
   end
 
   def install
-    serf_prefix = libexec+"serf"
+    # Fixes: "libtool: error: error: relink 'libsvn_ra_serf-1.la'
+    # with the above command before installing it"
+    # Please see https://github.com/Homebrew/linuxbrew/issues/408 for details
+    ENV.deparallelize
+
+    # Fixes: "cannot find libserf-1.so.1" when running svn built with serf
+    serf_prefix = OS.mac? ? libexec+"serf" : prefix
 
     resource("serf").stage do
       # SConstruct merges in gssapi linkflags using scons's MergeFlags,
