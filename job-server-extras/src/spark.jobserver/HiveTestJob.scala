@@ -25,7 +25,7 @@ object HiveLoaderJob extends SparkHiveJob {
   val tableAs = "AS TextFile"
 
   //Will fail with a 'SemanticException : Invalid path' if this file is not there
-  val loadPath:String = "'test/spark.jobserver/hive_test_job_addresses.txt'"
+  val loadPath = "'test/spark.jobserver/hive_test_job_addresses.txt'"
 
   def validate(hive: HiveContext, config: Config): SparkJobValidation = SparkJobValid
 
