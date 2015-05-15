@@ -222,7 +222,7 @@ module Superenv
       Hardware::CPU.optimization_flags.fetch(arch)
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
       Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
-    elsif compiler == :clang
+    elsif compiler == :clang || compiler == :clang_omp
       "-march=native"
     # This is mutated elsewhere, so return an empty string in this case
     else
@@ -268,7 +268,7 @@ module Superenv
     self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
 
     # GCC doesn't accept "-march" for a 32-bit CPU with "-arch x86_64"
-    if compiler != :clang && Hardware.is_32_bit?
+    if compiler != :clang && compiler != :clang_omp && Hardware.is_32_bit?
       self['HOMEBREW_OPTFLAGS'] = self['HOMEBREW_OPTFLAGS'].sub(
         /-march=\S*/,
         "-Xarch_#{Hardware::CPU.arch_32_bit} \\0"
@@ -301,11 +301,11 @@ module Superenv
   end
 
   def libcxx
-    append "HOMEBREW_CCCFG", "g", "" if compiler == :clang
+    append "HOMEBREW_CCCFG", "g", "" if compiler == :clang || compiler == :clang_omp
   end
 
   def libstdcxx
-    append "HOMEBREW_CCCFG", "h", "" if compiler == :clang
+    append "HOMEBREW_CCCFG", "h", "" if compiler == :clang || compiler == :clang_omp
   end
 
   def refurbish_args

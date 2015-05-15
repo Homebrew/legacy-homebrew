@@ -150,6 +150,15 @@ module Stdenv
     set_cpu_cflags "-march=native", map
   end
 
+  def clang_omp
+    super
+    replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
+    # Clang mistakenly enables AES-NI on plain Nehalem
+    map = Hardware::CPU.optimization_flags
+    map = map.merge(:nehalem => "-march=native -Xclang -target-feature -Xclang -aes")
+    set_cpu_cflags "-march=native", map
+  end
+
   def remove_macosxsdk version=MacOS.version
     # Clear all lib and include dirs from CFLAGS, CPPFLAGS, LDFLAGS that were
     # previously added by macosxsdk
@@ -265,14 +274,14 @@ module Stdenv
     append_to_cflags Hardware::CPU.universal_archs.as_arch_flags
     append 'LDFLAGS', Hardware::CPU.universal_archs.as_arch_flags
 
-    if compiler != :clang && Hardware.is_32_bit?
+    if compiler != :clang && compiler != :clang_omp && Hardware.is_32_bit?
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
       replace_in_cflags(/-march=\S*/, "-Xarch_#{Hardware::CPU.arch_32_bit} \\0")
     end
   end
 
   def cxx11
-    if compiler == :clang
+    if compiler == :clang || compact == :clang_omp
       append 'CXX', '-std=c++11'
       append 'CXX', '-stdlib=libc++'
     elsif compiler =~ /gcc-(4\.(8|9)|5)/
@@ -283,13 +292,13 @@ module Stdenv
   end
 
   def libcxx
-    if compiler == :clang
+    if compiler == :clang || compact == :clang_omp
       append 'CXX', '-stdlib=libc++'
     end
   end
 
   def libstdcxx
-    if compiler == :clang
+    if compiler == :clang || compact == :clang_omp
       append 'CXX', '-stdlib=libstdc++'
     end
   end
