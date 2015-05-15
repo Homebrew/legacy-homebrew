@@ -202,6 +202,10 @@ class Formulary
 
   def self.canonical_name(ref)
     loader_for(ref).name
+  rescue TapFormulaAmbiguityError
+    # If there are multiple tap formulae with the name of ref,
+    # then ref is the canonical name
+    ref.downcase
   end
 
   def self.path(ref)
