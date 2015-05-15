@@ -1,10 +1,10 @@
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  version "1.0.0-beta.4"
+  version "1.0.0"
 
   stable do
-    url 'https://static.rust-lang.org/dist/rustc-1.0.0-beta.4-src.tar.gz'
-    sha256 '54e5868dd55a5c171327c72d662b5931a962b0cf160022d11c189ea232e0bd91'
+    url 'https://static.rust-lang.org/dist/rustc-1.0.0-src.tar.gz'
+    sha256 'c304cbd4f7b25d116b73c249f66bdb5c9da8645855ce195a41bda5077b995eba'
 
     resource "cargo" do
       url "https://github.com/rust-lang/cargo.git", :revision => "83a6d0ed8208d31a1f6dab5e5183ad9eb2d65eaf", :tag => "0.2.0"
