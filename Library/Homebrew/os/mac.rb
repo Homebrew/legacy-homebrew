@@ -120,6 +120,24 @@ module OS
         end
     end
 
+    def clang_omp_version
+      @clang_omp_version ||=
+        if (path = locate("clang-omp"))
+          %x{#{path} --version}[/clang version (\d\.\d)/, 1]
+        end
+    end
+
+    # Create a pseudo build version number based on Apple Clang build version and
+    # its LLVM version. This is a hack to make clang-omp's version comparable with
+    # Apple Clang build version. Please update this map with a proper build number
+    # when clang-omp gets update.
+    def clang_omp_build_version
+      @clang_omp_build_version ||=
+        case clang_omp_version
+        when "3.5" then 600
+        end
+    end
+
     def non_apple_gcc_version(cc)
       (@non_apple_gcc_version ||= {}).fetch(cc) do
         path = HOMEBREW_PREFIX.join("opt", "gcc", "bin", cc)
@@ -132,6 +150,7 @@ module OS
     def clear_version_cache
       @gcc_40_build_version = @gcc_42_build_version = @llvm_build_version = nil
       @clang_version = @clang_build_version = nil
+      @clang_omp_version = @clang_omp_build_version = nil
       @non_apple_gcc_version = {}
     end
 

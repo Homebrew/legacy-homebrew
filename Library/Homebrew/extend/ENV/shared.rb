@@ -128,7 +128,13 @@ module SharedEnvExtension
   end
 
   def determine_cc
-    COMPILER_SYMBOL_MAP.invert.fetch(compiler, compiler)
+    c = COMPILER_SYMBOL_MAP.invert.fetch(compiler, compiler)
+    # silently substitute clang to clang-omp when openmp is required.
+    if @formula && @formula.needs_compiler_feature?(:openmp)
+      c.sub "clang", "clang-omp"
+    else
+      c
+    end
   end
 
   COMPILERS.each do |compiler|

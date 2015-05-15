@@ -60,7 +60,6 @@ class CompilerFailure
       create(:gcc => "4.6"),
     ],
     :openmp => [
-      create(:clang),
       create(:llvm),
     ],
   }
@@ -111,6 +110,14 @@ class CompilerSelector
           version = compiler_version(name)
           yield Compiler.new(name, version) if version
         end
+      when :clang
+        # silently substitute clang to clang-omp when openmp is required.
+        version = if @formula.needs_compiler_feature?(:openmp)
+          versions.clang_omp_build_version
+        else
+          versions.clang_build_version
+        end
+        yield Compiler.new(compiler, version) if version
       else
         version = compiler_version(compiler)
         yield Compiler.new(compiler, version) if version
