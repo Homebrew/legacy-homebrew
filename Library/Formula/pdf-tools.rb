@@ -1,9 +1,7 @@
-require "formula"
-
 class PdfTools < Formula
-  homepage "https://github.com/axot/pdf-tools"
-  url "https://github.com/axot/pdf-tools/releases/download/v0.20/pdf-tools_v0.20.tgz"
-  sha1 "0592f58d8f6dcdc597525ce887abda564eced285"
+  homepage "https://github.com/politza/pdf-tools"
+  url "https://github.com/politza/pdf-tools/archive/v0.50.tar.gz"
+  sha1 "200562d7ff9ffc79583ca370f0b8a42391e11a5d"
 
   bottle do
     sha1 "424085396d9c3669957be227e3347595fa620b64" => :mavericks
@@ -19,21 +17,16 @@ class PdfTools < Formula
   depends_on "poppler"
 
   def install
-    ENV["zlib_CFLAGS"] = "-I/usr/include"
-    ENV["zlib_LIBS"] = "-L/usr/lib -lz"
-
-    system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}"
     system "make"
 
-    prefix.install "pdf-tools-0.20.tar"
+    prefix.install "pdf-tools-0.50.tar"
     (prefix/"elpa").mkpath
-    system "tar", "--strip-components=1", "-xf", "#{prefix}/pdf-tools-0.20.tar", "-C", "#{prefix}/elpa"
+    system "tar", "--strip-components=1", "-xf", "#{prefix}/pdf-tools-0.50.tar", "-C", "#{prefix}/elpa"
   end
 
   def caveats; <<-EOS.undent
     To install to your Emacs run:
-      emacs -Q --batch --eval "(package-install-file \\"#{prefix}/pdf-tools-0.20.tar\\")"
+      emacs -Q --batch --eval "(package-install-file \\"#{prefix}/pdf-tools-0.50.tar\\")"
     EOS
   end
 end
