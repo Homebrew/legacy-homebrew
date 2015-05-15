@@ -30,6 +30,7 @@ class Suricata < Formula
   end
 
   def install
+    # bug raised https://redmine.openinfosecfoundation.org/issues/1470
     ENV.deparallelize
 
     libnet = Formula["libnet"]
