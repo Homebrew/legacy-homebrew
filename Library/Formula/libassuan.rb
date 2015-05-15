@@ -1,8 +1,8 @@
 class Libassuan < Formula
   homepage "https://www.gnupg.org/related_software/libassuan/index.en.html"
-  url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.2.0.tar.bz2"
-  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libassuan/libassuan-2.2.0.tar.bz2"
-  sha1 "7cf0545955ce414044bb99b871d324753dd7b2e5"
+  url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.2.1.tar.bz2"
+  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libassuan/libassuan-2.2.1.tar.bz2"
+  sha256 "949285bb79345362cb72a40c798defefc007031c60f2f10251720bf60a9de2de"
 
   bottle do
     cellar :any
