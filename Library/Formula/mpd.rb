@@ -8,9 +8,11 @@ class Mpd < Formula
   end
 
   bottle do
-    sha256 "50703036c5506ae9ec6f48947b10022b7bc4ac5a5a3a8e7fbda86b506382b7f8" => :yosemite
-    sha256 "1a852ad205facfad052308cc532f8d3bc4bc612677f48499e7477e0f63bd66d2" => :mavericks
-    sha256 "b9cf5fad3cb783f40962367d298894603ef22e4f6108bf9ea9c4f4b4fabfd099" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "17b549191c5093717380ec7401199b387dd1d89d1ac7f807f20c25d87ce16586" => :yosemite
+    sha256 "aba64fcb2dd7d5ad2f756d0f3a6c8edeb8e6c85883a25a66e635e92f73076d91" => :mavericks
+    sha256 "f84f912abb45f3f99c2c1233c4117667aaa6248e94115c7d3f5e9611028f8bae" => :mountain_lion
   end
 
   head do
