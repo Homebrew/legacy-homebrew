@@ -4,9 +4,10 @@ class Tinyproxy < Formula
   sha256 "be559b54eb4772a703ad35239d1cb59d32f7cf8a739966742622d57df88b896e"
 
   bottle do
-    sha1 "edf8eed5ce1ae02bdd09cefba5d3700b6d34c9c9" => :mavericks
-    sha1 "17996d138ad31ef834ad23e556afba83ed45c3ef" => :mountain_lion
-    sha1 "566f27174a811803b447822407dc33f26d306219" => :lion
+    revision 1
+    sha256 "c38d434bfc1c9b1f659a1c2275872c288b13dbf4f9300adc07a39e836e0f15f7" => :yosemite
+    sha256 "97fc5062add3375191da067af89b6e9ddd3c5a306c3feffad4c821e532a9ef2f" => :mavericks
+    sha256 "ced9b61ab07ac9dbc0e89a8763c6506e7ebb1309bf709400be9643025d64e63b" => :mountain_lion
   end
 
   depends_on "asciidoc" => :build
