@@ -5,9 +5,9 @@ class Task < Formula
   head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.4.5", :shallow => false
 
   bottle do
-    sha256 "8fe979d6645f9695daa55fda3ac068d2aa624c871def1c4423d91bf19f39c619" => :yosemite
-    sha256 "b7c0fd1dad5721a38189d5ed29866579312316a51a1d423b6fad091c38478739" => :mavericks
-    sha256 "498277be998aa4042c47fe3c1f4c9ab3291e946389aae52daa60bbde25d9cb1f" => :mountain_lion
+    sha256 "d88850d6183ecb96ce63d1a0601591262eb5675dfa786eba2d244f857dffa55e" => :yosemite
+    sha256 "f160b9ff4cd55935c35a636257f8745acde5e8a45d9ece951173330ad98b4def" => :mavericks
+    sha256 "aeae5194ecd2e3324d9bc925e5b9b8968063978a03a78d5c977da0fdba77d81c" => :mountain_lion
   end
 
   depends_on "cmake" => :build
