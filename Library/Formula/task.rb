@@ -1,8 +1,8 @@
 class Task < Formula
   homepage "http://www.taskwarrior.org/"
-  url "http://taskwarrior.org/download/task-2.4.3.tar.gz"
-  sha1 "2a0c1519b1b572c91f8d6ee489b1250a993a3e86"
-  head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.4.4", :shallow => false
+  url "http://taskwarrior.org/download/task-2.4.4.tar.gz"
+  sha1 "e7e1336ed099f672b3d5971d6a221b72ed804ac6"
+  head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.4.5", :shallow => false
 
   bottle do
     sha256 "8fe979d6645f9695daa55fda3ac068d2aa624c871def1c4423d91bf19f39c619" => :yosemite
