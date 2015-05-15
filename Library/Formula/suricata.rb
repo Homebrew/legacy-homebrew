@@ -30,6 +30,8 @@ class Suricata < Formula
   end
 
   def install
+    ENV.deparallelize
+
     libnet = Formula["libnet"]
     libmagic = Formula["libmagic"]
 
