@@ -1,9 +1,7 @@
-require "formula"
-
 class MongoC < Formula
-  homepage "http://docs.mongodb.org/ecosystem/drivers/c/"
+  homepage "https://docs.mongodb.org/ecosystem/drivers/c/"
   url "https://github.com/mongodb/mongo-c-driver/releases/download/1.1.5/mongo-c-driver-1.1.5.tar.gz"
-  sha1 "cb9313f645b0c41883a8e5123e05c19151711626"
+  sha256 "ebad1af02c50b6db20bb9ca988d1050b97c13bed65e9de8b5ac93eee71115c29"
 
   bottle do
     cellar :any
@@ -31,7 +29,7 @@ class MongoC < Formula
       system "./autogen.sh"
     end
 
-    if build.with?('openssl')
+    if build.with?("openssl")
       args << "--enable-ssl=yes"
     else
       args << "--enable-ssl=no"
