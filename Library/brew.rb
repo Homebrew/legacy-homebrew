@@ -111,6 +111,16 @@ begin
     end
   end
 
+  # Before doing anything else, complain if there are no local commits
+  # from the last 48 hours
+  seconds_since = Time.now.strftime("%s").to_i - Homebrew.git_last_commit("%ct").to_i
+  if seconds_since > 172800
+    opoo <<-EOS.undent
+      You haven't updated Homebrew in a while.  Run `brew update` to make sure everything's up-to-date!
+
+    EOS
+  end
+
   # Add contributed commands to PATH before checking.
   Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/cmd"].each do |tap_cmd_dir|
     ENV["PATH"] += "#{File::PATH_SEPARATOR}#{tap_cmd_dir}"

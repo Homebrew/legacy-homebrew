@@ -117,8 +117,8 @@ module Homebrew
     HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
   end
 
-  def self.git_last_commit
-    HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
+  def self.git_last_commit(format="%cr")
+    HOMEBREW_REPOSITORY.cd { `git show -s --format="#{format}" HEAD 2>/dev/null`.chuzzle }
   end
 
   def self.install_gem_setup_path! gem, version=nil, executable=gem
