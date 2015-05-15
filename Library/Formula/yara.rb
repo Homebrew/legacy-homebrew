@@ -35,7 +35,7 @@ class Yara < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
-    # build yara-python
+
     cd "yara-python" do
       system "python", *Language::Python.setup_install_args(prefix)
     end
