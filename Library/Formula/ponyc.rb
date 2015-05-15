@@ -7,6 +7,7 @@ class Ponyc < Formula
   needs :cxx11
 
   def install
+    ENV.cxx11
     system "make", "install", "destdir=#{prefix}"
   end
 
