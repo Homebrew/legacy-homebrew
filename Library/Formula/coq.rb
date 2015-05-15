@@ -18,7 +18,7 @@ class Coq < Formula
   version "8.4pl5"
   sha1 "107717cbaef3a469e8ff775ae54dbbc457935816"
 
-  head "git://scm.gforge.inria.fr/coq/coq.git"
+  head "git://scm.gforge.inria.fr/coq/coq.git", :branch => "trunk"
 
   depends_on TransitionalMode
   depends_on "objective-caml"
