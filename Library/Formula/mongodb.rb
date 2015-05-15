@@ -5,12 +5,12 @@ class Mongodb < Formula
 
   depends_on "go" => :build
   stable do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.2.tar.gz"
-    sha256 "010522203cdb9bbff52fbd9fe299b67686bb1256e2e55eb78abf35444f668399"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.3.tar.gz"
+    sha256 "57765a81c18a0bb674fbe63bc507111d8795596eb9c9492028903985b4720807"
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.0.2",
-        :revision => "a914adfcea7d76f07512415eec5cd8308e67318e"
+        :tag => "r3.0.3",
+        :revision => "13a7eac12d16edd41fa875df759b16e4b027db7f"
     end
   end
 
@@ -26,10 +26,9 @@ class Mongodb < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "25a97aa9a4b9d535120216b3960e0d34b75f86134c8f71127484140139f40fe7" => :yosemite
-    sha256 "de5f3e5be894da1c8884ab0ebb827890d3bb4c228066cb6ec2f22d993869bf21" => :mavericks
-    sha256 "6b565e5ba85d7deb8461dfcc34c4e5c07532a72f55d7c76af5b74fec84a153f1" => :mountain_lion
+    sha256 "11b56632d04d55ca9b84c2b3c5d84b71aaa4cd915871e3530f4a62f5e72666c1" => :yosemite
+    sha256 "3b0c1f8d8b5d5f86e61cdc62cc20dd58316c56c110267d5d7fe439c821263d56" => :mavericks
+    sha256 "3aa0133679f5ef2325403c6e4cd96bc3b48aad0ea529c33c497ae77823f7994f" => :mountain_lion
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"

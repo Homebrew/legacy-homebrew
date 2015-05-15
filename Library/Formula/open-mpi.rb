@@ -1,12 +1,14 @@
 class OpenMpi < Formula
-  homepage "http://www.open-mpi.org/"
-  url "http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.5.tar.bz2"
-  sha256 "4cea06a9eddfa718b09b8240d934b14ca71670c2dc6e6251a585ce948a93fbc4"
+  homepage "https://www.open-mpi.org/"
+  # Wait for 1.8.6 and skip 1.8.5 due to a severe memory leak on OS X:
+  # https://github.com/open-mpi/ompi/issues/579
+  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2"
+  sha256 "23158d916e92c80e2924016b746a93913ba7fae9fff51bf68d5c2a0ae39a2f8a"
 
   bottle do
-    sha256 "cb257e6d49ebd40af7b9cfefb08547df5278e4db70463d3adac341811620ae4a" => :yosemite
-    sha256 "e0918c53d587f92c7ad43f2841992b06bade41f5b4adfe3f46367b7f244e04ab" => :mavericks
-    sha256 "df0ac28d6a1149cf21172f7ee2d32e36113e2ec257b3efb003831f333d42f43c" => :mountain_lion
+    sha1 "a6ec98d40ab34bf2eb4dbe9223d5aa430ba749ed" => :yosemite
+    sha1 "9d7366e69787c6b331fe5473c8025d86d8b79691" => :mavericks
+    sha1 "8c8627010c9390cb72054fba3f8eea419a67bb2b" => :mountain_lion
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
@@ -46,12 +48,6 @@ class OpenMpi < Formula
     # Move vtsetup.jar from bin to libexec.
     libexec.install bin/"vtsetup.jar"
     inreplace bin/"vtsetup", "$bindir/vtsetup.jar", "$prefix/libexec/vtsetup.jar"
-  end
-
-  def caveats; <<-EOS.undent
-    WARNING: Open MPI now ignores the F77 and FFLAGS environment variables.
-    Only the FC and FCFLAGS environment variables are used.
-    EOS
   end
 
   test do

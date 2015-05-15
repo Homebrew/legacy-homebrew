@@ -29,7 +29,7 @@ To make changes based on feedback:
 
 1. Checkout your branch again with `git checkout YOUR_BRANCH_NAME`
 2. Make any requested changes and commit them with `git add` and `git commit`
-3. Squash new commits into one change per formula with `git rebase --interactive origin/master`
+3. Squash new commits into one commit per formula with `git rebase --interactive origin/master`
 4. Push to the fork's remote branch and the pull request with `git push --force`
 
 Once all feedback has been addressed and if it's a change we want to include (we include most changes) then we'll add your commit to Homebrew. Note it will not show up as "Merged" because of the way we include contributions.

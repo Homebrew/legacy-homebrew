@@ -1,15 +1,18 @@
-require 'formula'
-
 class Sshguard < Formula
-  homepage 'http://www.sshguard.net/'
-  url 'https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
-  sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
+  homepage "http://www.sshguard.net/"
+  url "https://downloads.sourceforge.net/project/sshguard/sshguard/1.6.0/sshguard-1.6.0.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/s/sshguard/sshguard_1.6.0.orig.tar.xz"
+  sha256 "dce32b1fc3fb0f8d15b6c56b9822c300434faaa87240e5373c095dc22bfa07e4"
 
   bottle do
-    sha256 "f7a9e63682d2aeec6857103923c3b8d3337505137e7d7f465b01b28c6b59cf11" => :yosemite
-    sha256 "34ebca7be518eef199e2fd17e1211ffe107568a5c0cabb77db3ee8635ffc3104" => :mavericks
-    sha256 "9d3bb789cad856e82c61d034a2ab2fe31b7dffea072066fedc176f6ed7a66ad7" => :mountain_lion
+    cellar :any
+    sha256 "5fd4d11c40756356476a882a5ef8317ade15d163eb7b5b402e9b3e4474dbb1d7" => :yosemite
+    sha256 "e272de3bb7284d8dfb930295d0dc310666bcf807356d9af80b31e2e6e4bd5a7e" => :mavericks
+    sha256 "16d633776b9b44032a3c3067851217193fdd7e2984ae881d7aece14cca772b13" => :mountain_lion
   end
+
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
 
   # Fix blacklist flag (-b) so that it doesn't abort on first usage.
   # Upstream bug report:
@@ -19,20 +22,12 @@ class Sshguard < Formula
     sha1 "68cd0910d310e4d23e7752dee1b077ccfe715c0b"
   end
 
-  # Fix parsing problem (chokes on "via")
-  # See:
-  # http://sourceforge.net/p/sshguard/mailman/message/33330543/
-  patch do
-    url "https://bitbucket.org/sshguard/sshguard/commits/fc01ad308c10ceb4164e23967b4713b9e7e533d7/raw/"
-    sha256 "b582206fd286a89b15f41c44460de3c33386563a5c01876f85b88018feea786c"
-  end
-
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-firewall=#{firewall}"
-    system "make install"
+    system "make", "install"
   end
 
   def firewall
@@ -78,5 +73,9 @@ class Sshguard < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{sbin}/sshguard -v 2>&1", 1)
   end
 end
