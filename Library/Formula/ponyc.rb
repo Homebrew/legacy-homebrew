@@ -4,8 +4,10 @@ class Ponyc < Formula
   sha256 "5347b47106e50a451f962fae0063abb3fdd06d0c3235430d9543d48dc718e6cb"
 
   depends_on "llvm" => ["with-rtti", "without-shared"]
+  needs :cxx11
 
   def install
+    ENV.cxx11
     system "make", "install", "destdir=#{prefix}"
   end
 
