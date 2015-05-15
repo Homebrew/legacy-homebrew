@@ -1,7 +1,7 @@
 class PdfTools < Formula
   homepage "https://github.com/politza/pdf-tools"
   url "https://github.com/politza/pdf-tools/archive/v0.50.tar.gz"
-  sha1 "200562d7ff9ffc79583ca370f0b8a42391e11a5d"
+  sha256 "3a9a17eb51d78d1366381aa3e2224051d5e1668ea91b59a76bb6711428093cc6"
 
   bottle do
     sha256 "66cdc0c25a73a20e34fe3da69a0b3215cb01c6d8e3a8b54be84fc611a21eb1ea" => :yosemite
