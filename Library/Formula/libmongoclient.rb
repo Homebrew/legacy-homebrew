@@ -1,7 +1,7 @@
 class Libmongoclient < Formula
   homepage "https://www.mongodb.org"
-  url "https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.5.tar.gz"
-  sha256 "51f5016209f38726ef29bb82552f97ee4ef369d1206a9e591a36f9d9b5d5e6bc"
+  url "https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.9.tar.gz"
+  sha256 "fcbc8032afe7e3a45464aacf6ef34cfb7a3cf2afdd2a09d7cdaf23f6c7a24376"
 
   head "https://github.com/mongodb/mongo-cxx-driver.git", :branch => "26compat"
 
