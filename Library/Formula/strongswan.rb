@@ -27,9 +27,9 @@ class Strongswan < Formula
       --enable-charon
       --enable-cmd
       --enable-constraints
+      --enable-eap-gtc
       --enable-eap-identity
       --enable-eap-md5
-      --enable-eap-gtc
       --enable-eap-mschapv2
       --enable-ikev1
       --enable-ikev2
@@ -49,8 +49,9 @@ class Strongswan < Formula
       --enable-sshkey
       --enable-stroke
       --enable-swanctl
-      --enable-updown
       --enable-unity
+      --enable-updown
+      --enable-x509
       --enable-xauth-generic
     ]
     args << "--enable-curl" if build.with? 'curl'
