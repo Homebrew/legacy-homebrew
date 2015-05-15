@@ -14,9 +14,9 @@ end
 
 class Coq < Formula
   homepage "https://coq.inria.fr/"
-  url "https://coq.inria.fr/distrib/V8.4pl5/files/coq-8.4pl5.tar.gz"
-  version "8.4pl5"
-  sha1 "107717cbaef3a469e8ff775ae54dbbc457935816"
+  url "https://coq.inria.fr/distrib/V8.4pl6/files/coq-8.4pl6.tar.gz"
+  version "8.4pl6"
+  sha1 "c89525295659a805661ef91da24ecfb94e226953"
 
   head "git://scm.gforge.inria.fr/coq/coq.git", :branch => "trunk"
 
