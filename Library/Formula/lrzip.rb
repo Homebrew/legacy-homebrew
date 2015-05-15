@@ -2,8 +2,8 @@ require "formula"
 
 class Lrzip < Formula
   homepage "http://lrzip.kolivas.org"
-  url "http://ck.kolivas.org/apps/lrzip/lrzip-0.616.tar.bz2"
-  sha1 "374a021ff087ee93b2d5894fd16aa3aef26dfa8f"
+  url "http://ck.kolivas.org/apps/lrzip/lrzip-0.621.tar.bz2"
+  sha1 "9c33f6458d39443dbf71b5c66820d4d653daf3c0"
 
   bottle do
     cellar :any
