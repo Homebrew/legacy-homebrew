@@ -649,8 +649,8 @@ class Formula
 
     HOMEBREW_CELLAR.subdirs.map do |rack|
       begin
-        Formulary.factory(rack.basename.to_s)
-      rescue FormulaUnavailableError
+        Formulary.from_rack(rack)
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
       end
     end.compact
   end
