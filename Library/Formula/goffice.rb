@@ -9,6 +9,13 @@ class Goffice < Formula
     sha256 "9d69ebfd454ebcecaf56cf7e7eca1484ac3c200e974ffbd2308b11da810090d8" => :mountain_lion
   end
 
+  # Fixes a crash with quad precision math when building using clang
+  # https://bugzilla.gnome.org/show_bug.cgi?id=749463
+  patch :p0 do
+    url "https://trac.macports.org/export/136404/trunk/dports/gnome/goffice/files/patch-goffice-math-go-quad.diff"
+    sha256 "46989fd9a6088afdc5c4dcdfbef09cfaa956ed06ea98f13eca9bd1fe644a80b6"
+  end
+
   head do
     url "https://github.com/GNOME/goffice.git"
     depends_on "automake" => :build
