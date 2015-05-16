@@ -1,8 +1,6 @@
-require "formula"
-
 class Radare2 < Formula
   homepage "http://radare.org"
-  revision 2
+  revision 3
 
   stable do
     url "http://radare.org/get/radare2-0.9.7.tar.xz"
@@ -46,7 +44,6 @@ class Radare2 < Formula
   depends_on "openssl"
 
   def install
-    # Build Radare2 before bindings, otherwise compile = nope.
     system "./configure", "--prefix=#{prefix}", "--with-openssl"
     system "make"
     system "make", "install"
@@ -59,7 +56,9 @@ class Radare2 < Formula
 
       system "./configure", "--prefix=#{prefix}"
       system "make"
-      system "make", "install", "DESTDIR=#{prefix}"
+      system "make", "install", "DESTDIR=#{prefix}",
+             "PYTHON_PKGDIR=lib/python2.7/site-packages",
+             "JAVA_INSTALL_DIR=#{share}/radare2/java"
     end
   end
 end

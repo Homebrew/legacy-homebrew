@@ -1,5 +1,3 @@
-require "formula"
-
 class Bokken < Formula
   homepage "https://inguma.eu/projects/bokken"
   url "https://inguma.eu/attachments/download/197/bokken-1.6.tar.gz"
@@ -12,7 +10,7 @@ class Bokken < Formula
     sha1 "dd8e4cb621b3cb3c07d2aad5e242391076fcf844" => :lion
   end
 
-  depends_on :python
+  depends_on :python # needs to use the same python as py2cairo
   depends_on "graphviz"
   depends_on "pygtk"
   depends_on "pygtksourceview"
@@ -31,6 +29,7 @@ class Bokken < Formula
 
   def install
     resource("distorm64").stage do
+      inreplace "src/pydistorm.h", "<python2.5/Python.h>", "<python2.7/Python.h>"
       cd "build/mac" do
         system "make"
         mkdir_p libexec/"distorm64"
@@ -49,12 +48,10 @@ class Bokken < Formula
     python_path = "#{libexec}/lib/python2.7/site-packages:#{libexec}/pyew"
     ld_library_path = "#{libexec}/distorm64"
     (libexec/"bokken").install Dir["*"]
-    (bin/"bokken").write <<-EOS.undent
-      #!/usr/bin/env bash
-      env \
-        PYTHONPATH=#{python_path}:${PYTHONPATH} \
-        LD_LIBRARY_PATH=#{ld_library_path}:${LD_LIBRARY_PATH} \
-        python #{libexec}/bokken/bokken.py "${@}"
-    EOS
+    inreplace libexec/"bokken/bokken.py", "#!/usr/bin/python",
+                                          "#!#{which "python"}"
+    (bin/"bokken").write_env_script libexec/"bokken/bokken.py",
+                                    :PYTHONPATH => python_path,
+                                    :LD_LIBRARY_PATH => ld_library_path
   end
 end
