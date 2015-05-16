@@ -1,9 +1,7 @@
-require "formula"
-
 class Ssdeep < Formula
   homepage "http://ssdeep.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/ssdeep/ssdeep-2.12/ssdeep-2.12.tar.gz"
-  sha256 "89049e87adfd16b51bd8601d01cf02251df7513c4e0eb12576541bcb2e1e4bde"
+  url "https://downloads.sourceforge.net/project/ssdeep/ssdeep-2.13/ssdeep-2.13.tar.gz"
+  sha256 "6e4ca94457cb50ff3343d4dd585473817a461a55a666da1c5a74667924f0f8c5"
 
   bottle do
     cellar :any
@@ -14,6 +12,14 @@ class Ssdeep < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    expected = <<-EOS.undent
+      ssdeep,1.1--blocksize:hash:hash,filename
+      192:15Jsxlk/azhE79EEfpm0sfQ+CfQoDfpw3RtU:15JsPz+7OEBCYLYYB7,"/usr/local/Cellar/ssdeep/2.13/include/fuzzy.h"
+    EOS
+    assert_equal expected, shell_output("#{bin}/ssdeep #{include}/fuzzy.h")
   end
 end
