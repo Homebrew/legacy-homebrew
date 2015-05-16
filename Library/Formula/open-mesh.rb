@@ -2,8 +2,8 @@ require "formula"
 
 class OpenMesh < Formula
   homepage "http://openmesh.org"
-  url "http://www.openmesh.org/media/Releases/3.1/OpenMesh-3.1.tar.gz"
-  sha1 "f73fc5a072b11028b882ce1c221602040fb23be2"
+  url "http://www.openmesh.org/media/Releases/3.3/OpenMesh-3.3.tar.gz"
+  sha1 "673677702a27a929c9124f8d4ea2b188a0500c50"
 
   head "http://openmesh.org/svnrepo/OpenMesh/trunk/", :using => :svn
 
