@@ -30,9 +30,9 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "73085de73a7dbd23651b329795227418de50709f156ddaeef9bbc9dd4c45a1d5" => :yosemite
-    sha256 "9742c4c83f10d6d4e800a3d62916acdf3470f95293ca7a213f929a7884c9698a" => :mavericks
-    sha256 "fe27cbe874f1f2334c51483c084b367e14aee913dd351dabdf9a2c07a257cf7a" => :mountain_lion
+    sha256 "a4768e9bf0fb5ddc3860854c9be392e270627208b18fc3f0d5440b0d07338e7e" => :yosemite
+    sha256 "e6a43e8d0870793a12f6981facf6614d51965f48b52b90061f660c31b99bb826" => :mavericks
+    sha256 "dc1c3864cfb62b884857d3c9b20c81bd7e2289098aaa6adc3f87034add9b721b" => :mountain_lion
   end
 
   depends_on "openssl"
