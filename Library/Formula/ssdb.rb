@@ -1,9 +1,8 @@
 class Ssdb < Formula
   homepage "http://ssdb.io/"
-  url "https://github.com/ideawu/ssdb/archive/1.8.0.tar.gz"
-  sha1 "88f4930ae6f3d0234c783546e1fb00638801c4e7"
+  url "https://github.com/ideawu/ssdb/archive/1.8.2.tar.gz"
+  sha256 "2fe10689a0e1e9e9ca67acbe9e0fa3607810dca90dcc9f0813b2661cc6d4e826"
   head "https://github.com/ideawu/ssdb.git"
-  revision 1
 
   bottle do
     sha1 "61b35f6fc12408e55863344feab5af1a8fbd3d88" => :yosemite
