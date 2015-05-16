@@ -53,28 +53,6 @@ class Tinyproxy < Formula
     (var/"run/tinyproxy").mkpath
   end
 
-  test do
-    pid = fork do
-      exec "#{sbin}/tinyproxy"
-    end
-    sleep 2
-
-    begin
-      assert_match /tinyproxy/, shell_output("curl localhost:8888")
-    ensure
-      Process.kill("SIGINT", pid)
-      Process.wait(pid)
-    end
-  end
-
-  def post_install
-    log = prefix/"var/log/tinyproxy"
-    log.mkpath
-
-    run = prefix/"var/run/tinyproxy"
-    run.mkpath
-  end
-
   plist_options :manual => "tinyproxy"
 
   def plist; <<-EOS.undent
@@ -97,5 +75,19 @@ class Tinyproxy < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    pid = fork do
+      exec "#{sbin}/tinyproxy"
+    end
+    sleep 2
+
+    begin
+      assert_match /tinyproxy/, shell_output("curl localhost:8888")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
