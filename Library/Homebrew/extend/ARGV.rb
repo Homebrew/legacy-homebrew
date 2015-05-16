@@ -16,6 +16,17 @@ module HomebrewArgvExtension
     @formulae ||= (downcased_unique_named - casks).map { |name| Formulary.factory(name, spec) }
   end
 
+  def resolved_formulae
+    require "formula"
+    @resolved_formulae ||= (downcased_unique_named - casks).map do |name|
+      if name.include?("/")
+        Formulary.factory(name, spec)
+      else
+        Formulary.from_rack(HOMEBREW_CELLAR/name, spec)
+      end
+    end
+  end
+
   def casks
     @casks ||= downcased_unique_named.grep HOMEBREW_CASK_TAP_FORMULA_REGEX
   end
