@@ -67,14 +67,6 @@ class Tinyproxy < Formula
     end
   end
 
-  def post_install
-    log = prefix/"var/log/tinyproxy"
-    log.mkpath
-
-    run = prefix/"var/run/tinyproxy"
-    run.mkpath
-  end
-
   plist_options :manual => "tinyproxy"
 
   def plist; <<-EOS.undent
