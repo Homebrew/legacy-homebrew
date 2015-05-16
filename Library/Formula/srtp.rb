@@ -7,9 +7,9 @@ class Srtp < Formula
 
   bottle do
     cellar :any
-    sha1 "d2cc4fa21913d1055557ac4546b7be1bf70059bf" => :yosemite
-    sha1 "7e8b5b4fcd340a57e181179e25aef3554e663993" => :mavericks
-    sha1 "079bb268a4ccd761d073d3b4f0eed0d2411bdcaa" => :mountain_lion
+    sha256 "d9309ae800135653a7825673ca9f524aad5159e57f7c54d29ba1fbbb75d139f8" => :yosemite
+    sha256 "3c7eff0e7a306b87513d9ced345b940ca12bb22a8b95045d932b21576d526cea" => :mavericks
+    sha256 "47880688a74a1e15056b831f46addf25a80bc4ce278f5c473a2764590a040e2a" => :mountain_lion
   end
 
   def install
