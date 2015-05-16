@@ -2,8 +2,16 @@ require 'formula'
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.2.9-release.tar.gz'
-  sha1 '7ddde51bb1d428406acb278c615a2c2fda819daf'
+
+  stable do
+    url 'http://sphinxsearch.com/files/sphinx-2.2.9-release.tar.gz'
+    sha1 '7ddde51bb1d428406acb278c615a2c2fda819daf'
+  end
+
+  devel do
+    url 'http://sphinxsearch.com/files/sphinx-2.3.1-beta.tar.gz'
+    sha1 '4717be87a38c9635aaebf062fa1fcf7d33593709'
+  end
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
