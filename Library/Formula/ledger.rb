@@ -3,6 +3,7 @@ class Ledger < Formula
   url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
   sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
   head "https://github.com/ledger/ledger.git"
+  revision 1
 
   bottle do
     revision 3
@@ -33,12 +34,16 @@ class Ledger < Formula
   depends_on "boost-python" => boost_opts if build.with? "python"
 
   stable do
-    # don't explicitly link a python framework
+    # library shouldn't explicitly link a python framework
     # https://github.com/ledger/ledger/pull/415
     patch do
       url "https://github.com/ledger/ledger/commit/5f08e27.diff"
       sha256 "064b0e64d211224455511cd7b82736bb26e444c3af3b64936bec1501ed14c547"
     end
+
+    # but the executable should
+    # https://github.com/ledger/ledger/pull/416
+    patch :DATA
 
     # boost 1.58 compatibility
     # https://github.com/ledger/ledger/pull/417
@@ -94,3 +99,18 @@ class Ledger < Formula
     end
   end
 end
+__END__
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index a368d37..570a659 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -273,6 +273,9 @@ if (BUILD_LIBRARY)
+
+   add_executable(ledger main.cc global.cc)
+   target_link_libraries(ledger libledger)
++  if (APPLE AND HAVE_BOOST_PYTHON)
++    target_link_libraries(ledger ${PYTHON_LIBRARIES})
++  endif()
+
+   install(TARGETS libledger DESTINATION ${CMAKE_INSTALL_LIBDIR})
+   install(FILES ${LEDGER_INCLUDES}
