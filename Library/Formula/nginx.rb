@@ -5,6 +5,11 @@ class Nginx < Formula
 
   head "http://hg.nginx.org/nginx/", :using => :hg
 
+  devel do
+    url "http://nginx.org/download/nginx-1.9.0.tar.gz"
+    sha256 "e12aa1d5b701edde880ebcc7be47ca171c3fbeed8fa7c8c62054a6f19d27f248"
+  end
+
   bottle do
     sha256 "9fe0f648fe67dd7c55e46754d72561b2d7a31a09126167088fbe278a65f9c45d" => :yosemite
     sha256 "63f5785c7f7dca36a1b7180a82f1433fde9a3fbccf36af541770541b4d8f4093" => :mavericks
