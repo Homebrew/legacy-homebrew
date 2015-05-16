@@ -1,8 +1,8 @@
 class Abcmidi < Formula
   homepage "http://www.ifdo.ca/~seymour/runabc/top.html"
-  url "http://www.ifdo.ca/~seymour/runabc/abcMIDI-2014-12-25.zip"
-  version "2014-12-25"
-  sha1 "a8d9509b32131015f38e0a31432b6c8990607888"
+  url "http://www.ifdo.ca/~seymour/runabc/abcMIDI-2015-05-13.zip"
+  version "2015-05-13"
+  sha256 "0129ec9b6986a422f5725ddeb65398668542b0fd331de44cd1dcf6e5f916f2ef"
 
   bottle do
     cellar :any
