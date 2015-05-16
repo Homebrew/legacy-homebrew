@@ -1,22 +1,21 @@
-require 'formula'
+require "formula"
 
 class BoostBuild < Formula
-  homepage 'http://boost.org/boost-build2/'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
-  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
-  version '2011.12-svn'
+  homepage "http://boost.org/boost-build2/"
+  url "https://github.com/boostorg/build/archive/2014.10.tar.gz"
+  sha1 "64f59424b829e9b5741bda58c78d830c993a0042"
 
-  head 'http://svn.boost.org/svn/boost/trunk/tools/build/v2/'
+  head "https://github.com/boostorg/build.git"
+
+  bottle do
+    cellar :any
+    sha1 "e1ab34b88ac324bfa985d91a857ecdcd86e06541" => :yosemite
+    sha1 "0d8f9f91809f3b3b7b5eeb5e70cb92ed2a7ec42b" => :mavericks
+    sha1 "19db795fdbbcbc4f5916e8c9d249fe0c05bad1b5" => :mountain_lion
+  end
 
   def install
-    if build.head?
-      system "./bootstrap.sh"
-      system "./b2", "--prefix=#{prefix}", "install"
-    else
-      cd 'tools/build/v2' do
-        system "./bootstrap.sh"
-        system "./b2", "--prefix=#{prefix}", "install"
-      end
-    end
+    system "./bootstrap.sh"
+    system "./b2", "--prefix=#{prefix}", "install"
   end
 end

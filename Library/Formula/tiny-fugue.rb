@@ -2,18 +2,18 @@ require 'formula'
 
 class TinyFugue < Formula
   homepage 'http://tinyfugue.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/tinyfugue/tinyfugue/5.0%20beta%208/tf-50b8.tar.gz'
+  url 'https://downloads.sourceforge.net/project/tinyfugue/tinyfugue/5.0%20beta%208/tf-50b8.tar.gz'
   sha1 '37bb70bfb7b44d36c28606c6bd45e435502fb4b4'
   version '5.0b8'
+
+  conflicts_with 'tee-clc', :because => 'both install a `tf` binary'
 
   depends_on 'libnet'
   depends_on 'pcre'
 
   # pcre deprecated pcre_info. Switch to HB pcre-8.31 and pcre_fullinfo.
   # Not reported upstream; project is in stasis since 2007.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -38,12 +38,13 @@ __END__
  #include "signals.h"
 --- a/src/macro.c	2007-01-13 15:12:39.000000000 -0800
 +++ b/src/macro.c	2012-10-26 08:15:31.000000000 -0700
-@@ -893,7 +893,7 @@
+@@ -893,7 +893,8 @@
      }
      spec->attr &= ~F_NONE;
      if (spec->nsubattr) {
 -	int n = pcre_info(spec->trig.ri->re, NULL, NULL);
-+	int n = pcre_fullinfo(spec->trig.ri->re, NULL, 0, NULL);
++	int n;
++	pcre_fullinfo(spec->trig.ri->re, NULL, PCRE_INFO_CAPTURECOUNT, &n);
  	for (i = 0; i < spec->nsubattr; i++) {
  	    spec->subattr[i].attr &= ~F_NONE;
  	    if (spec->subattr[i].subexp > n) {
@@ -54,7 +55,7 @@ __END__
  	goto tf_reg_compile_error;
      }
 -    n = pcre_info(ri->re, NULL, NULL);
-+    n = pcre_fullinfo(ri->re, NULL, 0, NULL);
++    pcre_fullinfo(ri->re, NULL, PCRE_INFO_CAPTURECOUNT, &n);
      if (n < 0) goto tf_reg_compile_error;
      ri->ovecsize = 3 * (n + 1);
      ri->ovector = dmalloc(NULL, sizeof(int) * ri->ovecsize, file, line);

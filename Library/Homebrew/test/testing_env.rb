@@ -1,116 +1,110 @@
-# This software is in the public domain, furnished "as is", without technical
-# support, and with no warranty, express or implied, as to its usefulness for
-# any purpose.
+$:.unshift File.expand_path("../..", __FILE__)
+$:.unshift File.expand_path("../lib", __FILE__)
 
-# Require this file to build a testing environment.
-
-ABS__FILE__ = File.expand_path(__FILE__)
-$:.push(File.expand_path(__FILE__+'/../..'))
-
-require 'extend/module'
-require 'extend/fileutils'
-require 'extend/pathname'
-require 'extend/string'
-require 'extend/symbol'
-require 'exceptions'
-require 'utils'
-require 'rbconfig'
-
-# Constants normally defined in global.rb
-HOMEBREW_PREFIX        = Pathname.new('/private/tmp/testbrew/prefix')
-HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
-HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
-HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
-HOMEBREW_CACHE_FORMULA = HOMEBREW_PREFIX.parent+'formula_cache'
-HOMEBREW_CELLAR        = HOMEBREW_PREFIX.parent+'cellar'
-HOMEBREW_LOGS          = HOMEBREW_PREFIX.parent+'logs'
-HOMEBREW_USER_AGENT    = 'Homebrew'
-HOMEBREW_WWW           = 'http://example.com'
-HOMEBREW_CURL_ARGS     = '-fsLA'
-HOMEBREW_VERSION       = '0.9-test'
-
-RUBY_BIN = Pathname.new("#{RbConfig::CONFIG['bindir']}")
-RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
-
-MACOS = true
-MACOS_VERSION = ENV.fetch('MACOS_VERSION', 10.6)
-MACOS_FULL_VERSION = '10.6.8'
-
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
-
-module Homebrew extend self
-  include FileUtils
-end
+require "global"
 
 # Test environment setup
-%w{Library/Formula Library/ENV}.each do |d|
-  HOMEBREW_REPOSITORY.join(d).mkpath
-end
-
-at_exit { HOMEBREW_PREFIX.parent.rmtree }
+%w{ENV Formula}.each { |d| HOMEBREW_LIBRARY.join(d).mkpath }
+%w{cache formula_cache cellar logs}.each { |d| HOMEBREW_PREFIX.parent.join(d).mkpath }
 
 # Test fixtures and files can be found relative to this path
-TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
-
-def shutup
-  if ARGV.verbose?
-    yield
-  else
-    begin
-      tmperr = $stderr.clone
-      tmpout = $stdout.clone
-      $stderr.reopen '/dev/null', 'w'
-      $stdout.reopen '/dev/null', 'w'
-      yield
-    ensure
-      $stderr.reopen tmperr
-      $stdout.reopen tmpout
-    end
-  end
-end
-
-require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
-
-require 'test/unit' # must be after at_exit
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-require 'extend/ENV'
-ARGV.extend(HomebrewArgvExtension)
-ENV.extend(HomebrewEnvExtension)
+TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 
 begin
-  require 'rubygems'
-  require 'mocha/setup'
+  require "rubygems"
+  require "minitest/autorun"
+  require "mocha/setup"
 rescue LoadError
-  warn 'The mocha gem is required to run some tests, expect failures'
+  abort "Run `rake deps` or install the mocha and minitest gems before running the tests"
 end
 
-module VersionAssertions
-  def version v
-    Version.new(v)
+module Homebrew
+  module VersionAssertions
+    def version v
+      Version.new(v)
+    end
+
+    def assert_version_equal expected, actual
+      assert_equal Version.new(expected), actual
+    end
+
+    def assert_version_detected expected, url
+      assert_equal expected, Version.parse(url).to_s
+    end
+
+    def assert_version_nil url
+      assert_nil Version.parse(url)
+    end
   end
 
-  def assert_version_equal expected, actual
-    assert_equal Version.new(expected), actual
+  module FSLeakLogger
+    def self.included(klass)
+      require "find"
+      @@log = File.open("fs_leak_log", "w")
+      klass.make_my_diffs_pretty!
+    end
+
+    def before_setup
+      @__files_before_test = []
+      Find.find(TEST_TMPDIR) { |f| @__files_before_test << f.sub(TEST_TMPDIR, "") }
+      super
+    end
+
+    def after_teardown
+      super
+      files_after_test = []
+      Find.find(TEST_TMPDIR) { |f| files_after_test << f.sub(TEST_TMPDIR, "") }
+      if @__files_before_test != files_after_test
+        @@log.puts location, diff(@__files_before_test, files_after_test)
+      end
+    end
   end
 
-  def assert_version_detected expected, url
-    assert_equal expected, Version.parse(url).to_s
-  end
+  class TestCase < ::Minitest::Test
+    include VersionAssertions
+    include FSLeakLogger if ENV["LOG_FS_LEAKS"]
 
-  def assert_version_nil url
-    assert_nil Version.parse(url)
-  end
-end
+    TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+    TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-module Test::Unit::Assertions
-  def assert_empty(obj, msg=nil)
-    assert_respond_to(obj, :empty?, msg)
-    assert(obj.empty?, msg)
-  end if RUBY_VERSION.to_f <= 1.8
-end
+    def formula(name="formula_name", path=Formula.path(name), spec=:stable, &block)
+      @_f = Class.new(Formula, &block).new(name, path, spec)
+    end
 
-class Test::Unit::TestCase
-  def formula(*args, &block)
-    @_f = Class.new(Formula, &block).new(*args)
+    def shutup
+      err = $stderr.dup
+      out = $stdout.dup
+
+      begin
+        $stderr.reopen("/dev/null")
+        $stdout.reopen("/dev/null")
+        yield
+      ensure
+        $stderr.reopen(err)
+        $stdout.reopen(out)
+        err.close
+        out.close
+      end
+    end
+
+    def mktmpdir(prefix_suffix=nil, &block)
+      Dir.mktmpdir(prefix_suffix, HOMEBREW_TEMP, &block)
+    end
+
+    def assert_nothing_raised
+      yield
+    end
+
+    def assert_eql(exp, act, msg=nil)
+      msg = message(msg, "") { diff exp, act }
+      assert exp.eql?(act), msg
+    end
+
+    def refute_eql(exp, act, msg=nil)
+      msg = message(msg) {
+        "Expected #{mu_pp(act)} to not be eql to #{mu_pp(exp)}"
+      }
+      refute exp.eql?(act), msg
+    end
   end
 end

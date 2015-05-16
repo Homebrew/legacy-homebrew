@@ -1,30 +1,33 @@
-require 'formula'
-
 class Iozone < Formula
-  homepage 'http://www.iozone.org/'
-  url 'http://www.iozone.org/src/current/iozone3_413.tar'
-  sha1 '397c2aae67f74dc9d189912b2e72ca594b790101'
+  homepage "http://www.iozone.org/"
+  url "http://www.iozone.org/src/current/iozone3_430.tar"
+  sha1 "de02b10fcde6bd60e0c805e3abfc0aed15e85ac1"
 
-  # Patch by @nijotz, adds O_DIRECT support when using -I flag.
-  # See: https://github.com/mxcl/homebrew/pull/10585
-  def patches
-    DATA
+  bottle do
+    cellar :any
+    sha1 "3e22c42f233911335ebff3183e118e2257ad9d52" => :yosemite
+    sha1 "23e9d8e14fa04c276f1c58af900d14a1254163ed" => :mavericks
+    sha1 "e43bdf632913d693aec55f89426cf38b67d792cc" => :mountain_lion
   end
 
+  # Patch by @nijotz, adds O_DIRECT support when using -I flag.
+  # See: https://github.com/Homebrew/homebrew/pull/10585
+  patch :DATA
+
   def install
-    cd 'src/current' do
+    cd "src/current" do
       system "make", "macosx", "CC=#{ENV.cc}"
-      bin.install 'iozone'
-      (share/'iozone').install 'Generate_Graphs', 'client_list', 'gengnuplot.sh', 'gnu3d.dem', 'gnuplot.dem', 'gnuplotps.dem', 'iozone_visualizer.pl', 'report.pl'
+      bin.install "iozone"
+      shared = %w[Generate_Graphs client_list gengnuplot.sh gnu3d.dem
+                  gnuplot.dem gnuplotps.dem iozone_visualizer.pl report.pl]
+      (share/"iozone").install(*shared)
     end
-    man1.install 'docs/iozone.1'
+    man1.install "docs/iozone.1"
   end
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/iozone", "-I", "-s", "16M") do |_, stdout, _|
-      /File size set to 16384 KB/ === stdout.read
-    end
+    assert_match "File size set to 16384 kB",
+      shell_output("#{bin}/iozone -I -s 16M")
   end
 end
 

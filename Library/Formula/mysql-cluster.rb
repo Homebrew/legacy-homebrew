@@ -1,35 +1,35 @@
-require 'formula'
-
 class MysqlCluster < Formula
-  homepage 'http://www.mysql.com/cluster/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.1.tar.gz'
-  sha1 '593588df751ba154fbe2d36d96dd57257c9846b3'
+  homepage "https://www.mysql.com/products/cluster/"
+  url "https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.8.tar.gz"
+  sha1 "f70ac7955343765146c556576c8b13dbedf9c593"
 
-  depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  bottle do
+    sha1 "0f03e0282102b1635d3c1567f2046c0b67bd4b1a" => :mavericks
+    sha1 "694d4b6cf56ae7ac7e35315bfe6d20d3d0d1f9fd" => :mountain_lion
+  end
+
+  # Fix me: if you can get this to build on Yosemite, send a pull request!
+  depends_on MaximumMacOSRequirement => :mavericks
+
+  depends_on :java => "1.7+"
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
 
   option :universal
-  option 'with-tests', 'Build with unit tests'
-  option 'with-embedded', 'Build the embedded server'
-  option 'with-libedit', 'Compile with editline wrapper instead of readline'
-  option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
-  option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
-  option 'enable-local-infile', 'Build with local infile loading support'
-  option 'enable-debug', 'Build with debug support'
+  option "with-tests", "Build with unit tests"
+  option "with-embedded", "Build the embedded server"
+  option "with-libedit", "Compile with editline wrapper instead of readline"
+  option "with-archive-storage-engine", "Compile with the ARCHIVE storage engine enabled"
+  option "with-blackhole-storage-engine", "Compile with the BLACKHOLE storage engine enabled"
+  option "enable-local-infile", "Build with local infile loading support"
+  option "enable-debug", "Build with debug support"
 
-  conflicts_with 'mysql',
-    :because => "mysql-cluster and mysql install the same binaries."
-
-  conflicts_with 'mariadb',
-    :because => "mysql-cluster and mariadb install the same binaries."
-
-  conflicts_with 'percona-server',
-    :because => "mysql-cluster and percona-server install the same binaries."
-
-  env :std if build.universal?
+  conflicts_with "memcached", :because => "both install `bin/memcached`"
+  conflicts_with "mysql", "mariadb", "percona-server",
+    :because => "mysql, mariadb, and percona install the same binaries."
 
   fails_with :clang do
-    build 421
+    build 500
     cause "http://article.gmane.org/gmane.comp.db.mysql.cluster/2085"
   end
 
@@ -55,64 +55,72 @@ class MysqlCluster < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.include? 'with-tests'
+    if build.with? "tests"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? "embedded"
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
+    args << "-DWITH_READLINE=yes" if build.without? "libedit"
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? "archive-storage-engine"
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? "blackhole-storage-engine"
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.include? "enable-local-infile"
 
     # Build with debug support
-    args << "-DWITH_DEBUG=1" if build.include? 'enable-debug'
+    args << "-DWITH_DEBUG=1" if build.include? "enable-debug"
 
     system "cmake", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Create default directories and configuration files
     (var+"mysql-cluster/ndb_data").mkpath
     (var+"mysql-cluster/mysqld_data").mkpath
     (var+"mysql-cluster/conf").mkpath
-    (var+"mysql-cluster/conf/my.cnf").write my_cnf unless File.exists? var+"mysql-cluster/conf/my.cnf"
-    (var+"mysql-cluster/conf/config.ini").write config_ini unless File.exists? var+"mysql-cluster/conf/config.ini"
+    (var+"mysql-cluster/conf/my.cnf").write my_cnf unless File.exist? var+"mysql-cluster/conf/my.cnf"
+    (var+"mysql-cluster/conf/config.ini").write config_ini unless File.exist? var+"mysql-cluster/conf/config.ini"
 
-    plist_path('ndb_mgmd').write ndb_mgmd_startup_plist('ndb_mgmd')
-    plist_path('ndb_mgmd').chmod 0644
-    plist_path('ndbd').write ndbd_startup_plist('ndbd')
-    plist_path('ndbd').chmod 0644
-    plist_path('mysqld').write mysqld_startup_plist('mysqld')
-    plist_path('mysqld').chmod 0644
+    plist_path("ndb_mgmd").write ndb_mgmd_startup_plist("ndb_mgmd")
+    plist_path("ndb_mgmd").chmod 0644
+    plist_path("ndbd").write ndbd_startup_plist("ndbd")
+    plist_path("ndbd").chmod 0644
+    plist_path("mysqld").write mysqld_startup_plist("mysqld")
+    plist_path("mysqld").chmod 0644
 
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/mxcl/homebrew/issues/4975
-    rm_rf prefix+'data'
+    # Don"t create databases inside of the prefix!
+    # See: https://github.com/Homebrew/homebrew/issues/4975
+    rm_rf prefix+"data"
 
     # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    bin.install_symlink prefix/"scripts/mysql_install_db"
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      s.gsub!(/pidof/, "pgrep") if MacOS.version >= :mountain_lion
     end
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    bin.install_symlink prefix/"support-files/mysql.server"
+
+    # Move mysqlaccess to libexec
+    libexec.mkpath
+    libexec.install "#{bin}/mysqlaccess", "#{bin}/mysqlaccess.conf",
+                    "#{bin}/mcc_config.py"
   end
 
   def caveats; <<-EOS.undent
@@ -126,7 +134,7 @@ class MysqlCluster < Formula
 
     Set up databases to run AS YOUR USER ACCOUNT with:
       unset TMPDIR
-      mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql-cluster)" --datadir=#{var}/mysql-cluster/mysqld_data --tmpdir=/tmp
+      mysql_install_db --verbose --user=`whoami` --basedir="#{opt_prefix}" --datadir=#{var}/mysql-cluster/mysqld_data --tmpdir=/tmp
 
     For a first cluster, you may start with a single MySQL Server (mysqld),
     a pair of Data Nodes (ndbd) and a single management node (ndb_mgmd):
@@ -184,12 +192,12 @@ class MysqlCluster < Formula
 
   # Override Formula#plist_name
   def plist_name(extra = nil)
-    (extra) ? super()+'-'+extra : super()+'-ndb_mgmd'
+    (extra) ? super()+"-"+extra : super()+"-ndb_mgmd"
   end
 
   # Override Formula#plist_path
   def plist_path(extra = nil)
-    (extra) ? super().dirname+(plist_name(extra)+'.plist') : super()
+    (extra) ? super().dirname+(plist_name(extra)+".plist") : super()
   end
 
   def mysqld_startup_plist(name); <<-EOS.undent

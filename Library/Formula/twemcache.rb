@@ -3,13 +3,14 @@ require 'formula'
 class Twemcache < Formula
   homepage 'https://github.com/twitter/twemcache'
   head 'https://github.com/twitter/twemcache.git'
-  url "https://github.com/twitter/twemcache/archive/v2.5.3.tar.gz"
-  sha256 '05371d9ed123e01286ea74d9bd1af892be548b84bb24da98118a67a1ec876845'
+  url "https://github.com/twitter/twemcache/archive/v2.6.0.tar.gz"
+  sha256 '6e0e9361bda46bdaa577c7eed6cd829aeca442b2c3b4f84b250039c86027ce05'
 
   option "enable-debug", "Debug mode with assertion panics enabled"
 
-  depends_on :automake
-  depends_on 'libevent'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libevent"
 
   def install
     # After the deprecation of GitHub Downloads, we don't have distribution
@@ -19,7 +20,8 @@ class Twemcache < Formula
 
     args = ["--prefix=#{prefix}"]
     if build.include? "enable-debug"
-      ENV['CFLAGS'] += "-ggdb3 -O0"
+      ENV.O0
+      ENV.append "CFLAGS", "-ggdb3"
       args << "--enable-debug=full"
     end
 

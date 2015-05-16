@@ -1,29 +1,22 @@
-require 'formula'
-
 class Ipe < Formula
-  homepage 'http://ipe7.sourceforge.net'
-  url 'http://sourceforge.net/projects/ipe7/files/ipe/7.1/ipe-7.1.3-src.tar.gz'
-  sha1 '7999a85d902fbe3952664dea86c2c0a1aaed40d6'
+  homepage "http://ipe7.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.7-src.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.7-src.tar.gz"
+  sha256 "ec670cd7f0fa521271fc54bf9b663570d82280bdbe405be6de59535fec7c00d2"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'makeicns' => :build
-  depends_on 'lua'
-  depends_on 'qt'
-  depends_on :x11
+  bottle do
+    sha256 "f694eff81d650fb2777380b6a4038edca3db023dce2682a5a4f7a332aa5023ef" => :yosemite
+    sha256 "321e713cf94d63297574e0bf9c20a331e11a35573e1e5c489d3516395a70e694" => :mavericks
+    sha256 "7c9b0165eedc50fa04c7ab017ddeabbf43177c1b0098a212857b29412724a271" => :mountain_lion
+  end
 
-  # configure library paths using pkg-config
-  # because ipe assumes that Qt and other libs are installed in
-  # some fixed default paths (and homebrew does not agree)
-  # reported upstream:
-  # https://sourceforge.net/apps/mantisbt/ipe7/view.php?id=105
-
-  # TODO: clean up this patch; upstream doesn't want to carry it.
-  # Also, we will always have pkg-config installed, so we don't need
-  # the patch to handle the case where it isn't.
-  # Recommend we take upstream's recommendation and set ENV vars for
-  # the paths to override those in configure.
-  # @adamv
-  def patches; DATA; end
+  depends_on "pkg-config" => :build
+  depends_on "makeicns" => :build
+  depends_on "lua"
+  depends_on "qt"
+  depends_on "cairo"
+  depends_on "jpeg-turbo"
+  depends_on "freetype"
 
   fails_with :clang do
     build 318
@@ -34,95 +27,25 @@ class Ipe < Formula
   end
 
   def install
-    cd 'src' do
-      system "make", "IPEPREFIX=#{prefix}"
-      ENV.j1 # Parallel install fails
+    # There's a weird race condition around setting flags for Freetype
+    # If we ever go back to using flags instead of pkg-config be wary of that.
+    ENV.deparallelize
+
+    cd "src" do
+      # Ipe also build shared objects instead of dylibs. Boo.
+      # https://sourceforge.net/p/ipe7/tickets/20
+      # Will be fixed in next release, allegedly.
+      inreplace "common.mak" do |s|
+        s.gsub! ".so.$(IPEVERS)", ".$(IPEVERS).dylib"
+        s.gsub! "lib$1.so", "lib$1.dylib"
+        s.gsub! "ipelets/$1.so", "ipelets/$1.dylib"
+      end
+
+      # Comment this out so we can make use of pkg-config.
+      # Upstream have said they will *never* support OS X, so we have free reign.
+      inreplace "config.mak", "ifndef MACOS", "ifdef MACOS"
+      system "make", "IPEPREFIX=#{HOMEBREW_PREFIX}"
       system "make", "IPEPREFIX=#{prefix}", "install"
     end
   end
 end
-
-__END__
---- a/src/config.mak	2012-01-15 13:19:25.000000000 +0100
-+++ b/src/config.mak	2012-04-01 15:15:07.000000000 +0200
-@@ -39,6 +39,7 @@
- # directly.  You don't have to worry about the UI libraries you
- # haven't selected above.
- #
-+
- ZLIB_CFLAGS   ?=
- ZLIB_LIBS     ?= -lz
- FREETYPE_CFLAGS ?= $(shell pkg-config --cflags freetype2)
-@@ -58,6 +59,7 @@
- GTK_LIBS      ?= $(shell pkg-config --libs gtk+-2.0)
- QT_CFLAGS     ?= $(shell pkg-config --cflags QtGui QtCore)
- QT_LIBS	      ?= $(shell pkg-config --libs QtGui QtCore)
-+
- #
- # MOC is the Qt meta-object compiler.  On Debian/Ubuntu, it is
- # installed as "moc-qt4" to resolve the name conflict with Qt3's
-@@ -69,25 +71,49 @@
- #
- else
- #
--# Settings for Mac OS 10.6
-+# Settings for Mac OS 10.6 and 10.7
-+#
-+# Use pkg-config if available (typically installed by homebrew or macports)
-+#
-+HAVE_PKG_CONFIG=$(shell which pkg-config > /dev/null && echo 1)
- #
- CONFIG     += x86_64
- ZLIB_CFLAGS   ?=
- ZLIB_LIBS     ?= -lz
--FREETYPE_CFLAGS ?= -I/usr/X11/include/freetype2 -I/usr/X11/include
--FREETYPE_LIBS ?= -L/usr/X11/lib -lfreetype
--CAIRO_CFLAGS  ?= -I/usr/X11/include/cairo -I/usr/X11/include/pixman-1 \
--	 -I/usr/X11/include/freetype2 -I/usr/X11/include \
--	 -I/usr/X11/include/libpng12
--CAIRO_LIBS ?= -L/usr/X11/lib -lcairo
--LUA_CFLAGS ?= -I/usr/local/include
--LUA_LIBS   ?= -L/usr/local/lib -llua5.1 -lm
--QT_CFLAGS  ?= -I/Library/Frameworks/QtCore.framework/Versions/4/Headers \
--	      -I/Library/Frameworks/QtGui.framework/Versions/4/Headers
--QT_LIBS    ?= -F/Library/Frameworks -L/Library/Frameworks \
--	      -framework QtCore -framework ApplicationServices \
--	      -framework QtGui -framework AppKit -framework Cocoa -lz -lm
--MOC	   ?= moc
-+ifeq "$(HAVE_PKG_CONFIG)" "1"
-+  FREETYPE_CFLAGS ?= $(shell pkg-config --cflags freetype2)
-+  FREETYPE_LIBS ?= $(shell pkg-config --libs freetype2)
-+  CAIRO_CFLAGS  ?= $(shell pkg-config --cflags cairo)
-+  CAIRO_LIBS    ?= $(shell pkg-config --libs cairo)
-+  # The lua package might be called "lua" or "lua5.1"
-+  luatest = $(shell pkg-config --modversion --silence-errors lua)
-+  ifneq "$(luatest)" ""
-+    LUA_CFLAGS  ?= $(shell pkg-config --cflags lua)
-+    LUA_LIBS    ?= $(shell pkg-config --libs lua)
-+  else
-+    LUA_CFLAGS  ?= $(shell pkg-config --cflags lua5.1)
-+    LUA_LIBS    ?= $(shell pkg-config --libs lua5.1)
-+  endif
-+  GTK_CFLAGS    ?= $(shell pkg-config --cflags gtk+-2.0)
-+  GTK_LIBS      ?= $(shell pkg-config --libs gtk+-2.0)
-+  QT_CFLAGS     ?= $(shell pkg-config --cflags QtGui QtCore)
-+  QT_LIBS	      ?= $(shell pkg-config --libs QtGui QtCore)
-+else
-+  FREETYPE_CFLAGS ?= -I/usr/X11/include/freetype2 -I/usr/X11/include
-+  FREETYPE_LIBS ?= -L/usr/X11/lib -lfreetype
-+  CAIRO_CFLAGS  ?= -I/usr/X11/include/cairo -I/usr/X11/include/pixman-1 \
-+	   -I/usr/X11/include/freetype2 -I/usr/X11/include \
-+	   -I/usr/X11/include/libpng12
-+  CAIRO_LIBS ?= -L/usr/X11/lib -lcairo
-+  LUA_CFLAGS ?= -I/usr/local/include
-+  LUA_LIBS   ?= -L/usr/local/lib -llua5.1 -lm
-+  QT_CFLAGS  ?= -I/Library/Frameworks/QtCore.framework/Versions/4/Headers \
-+		-I/Library/Frameworks/QtGui.framework/Versions/4/Headers
-+  QT_LIBS    ?= -F/Library/Frameworks -L/Library/Frameworks \
-+		-framework QtCore -framework ApplicationServices \
-+		-framework QtGui -framework AppKit -framework Cocoa -lz -lm
-+endif
-+MOC           ?= moc
- endif
- #
- # --------------------------------------------------------------------

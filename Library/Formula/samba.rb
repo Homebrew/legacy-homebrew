@@ -1,35 +1,74 @@
-require 'formula'
-
 class Samba < Formula
-  homepage 'http://samba.org/'
-  url 'http://www.samba.org/samba/ftp/stable/samba-3.6.8.tar.gz'
-  sha1 'a3cd91fa8835c7c47e4cb3ab419f92b4895052b5'
+  homepage "https://samba.org/"
+  url "https://download.samba.org/pub/samba/stable/samba-3.6.25.tar.gz"
+  sha1 "86fbfcfe80454cc7dbe510e7d58c02922cac3efa"
 
-  # Needed for autogen.sh
-  depends_on :automake
-  depends_on :libtool
+  bottle do
+    sha1 "d573b77cb2f4187d366e6a5314982661089c91bf" => :yosemite
+    sha1 "2b74fcea8edca1c15e597fd469d682ccee558a9c" => :mavericks
+    sha1 "32546ed646eec7798f25d18c3bce9d5fef23da06" => :mountain_lion
+  end
+
+  conflicts_with "talloc", :because => "both install `include/talloc.h`"
+
+  skip_clean "private"
+  skip_clean "var/locks"
 
   # Fixes the Grouplimit of 16 users os OS X.
   # Bug has been raised upstream:
   # https://bugzilla.samba.org/show_bug.cgi?id=8773
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
-    # Enable deprecated CUPS structs on Mountain Lion
-    # https://github.com/mxcl/homebrew/issues/13790
-    ENV['CFLAGS'] += " -D_IPP_PRIVATE_STRUCTURES"
-    cd 'source3' do
-      system "./autogen.sh"
+    cd "source3" do
+      # This stops samba dumping .msg and .dat files directly into lib
+      # It can't be set with a configure switch - There isn't one that fine-grained.
+      # https://bugzilla.samba.org/show_bug.cgi?id=11120
+      inreplace "configure", "${MODULESDIR}", "#{share}/codepages"
+
       system "./configure", "--disable-debug",
-                            "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
-                            "--with-configdir=#{prefix}/etc"
-      system "make install"
-      (prefix/'etc').mkpath
-      touch prefix/'etc/smb.conf'
+                            "--with-configdir=#{prefix}/etc",
+                            "--without-ldap",
+                            "--without-krb5"
+
+      # https://bugzilla.samba.org/show_bug.cgi?id=11113
+      inreplace "Makefile" do |s|
+        s.gsub! /(lib\w+).dylib(.[\.\d]+)/, "\\1\\2.dylib"
+      end
+
+      system "make", "install"
+      (prefix/"etc").mkpath
+      touch prefix/"etc/smb.conf"
+      (prefix/"private").mkpath
+      (var/"locks").mkpath
     end
+  end
+
+  plist_options :manual => "smbd"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{sbin}/smbd</string>
+          <string>-s</string>
+          <string>#{etc}/smb.conf</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+      </dict>
+    </plist>
+    EOS
+  end
+
+  test do
+    system bin/"eventlogadm", "-h"
   end
 end
 

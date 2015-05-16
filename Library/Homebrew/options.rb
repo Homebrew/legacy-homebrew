@@ -1,58 +1,65 @@
 require 'set'
 
 class Option
-  include Comparable
-
   attr_reader :name, :description, :flag
 
-  def initialize(name, description=nil)
-    @name, @flag = split_name(name)
-    @description = description.to_s
+  def initialize(name, description="")
+    @name = name
+    @flag = "--#{name}"
+    @description = description
   end
 
   def to_s
     flag
   end
-  alias_method :to_str, :to_s
-
-  def to_json
-    flag.inspect
-  end
 
   def <=>(other)
+    return unless Option === other
     name <=> other.name
   end
 
-  def eql?(other)
-    other.is_a?(self.class) && hash == other.hash
+  def ==(other)
+    instance_of?(other.class) && name == other.name
   end
+  alias_method :eql?, :==
 
   def hash
     name.hash
   end
 
   def inspect
-    "#<#{self.class}: #{flag.inspect}>"
+    "#<#{self.class.name}: #{flag.inspect}>"
+  end
+end
+
+class DeprecatedOption
+  attr_reader :old, :current
+
+  def initialize(old, current)
+    @old = old
+    @current = current
   end
 
-  private
-
-  def split_name(name)
-    case name
-    when /^[a-zA-Z]$/
-      [name, "-#{name}"]
-    when /^-[a-zA-Z]$/
-      [name[1..1], name]
-    when /^--(.+)$/
-      [$1, name]
-    else
-      [name, "--#{name}"]
-    end
+  def old_flag
+    "--#{old}"
   end
+
+  def current_flag
+    "--#{current}"
+  end
+
+  def ==(other)
+    instance_of?(other.class) && old == other.old && current == other.current
+  end
+  alias_method :eql?, :==
 end
 
 class Options
   include Enumerable
+
+  def self.create(array)
+    new array.map { |e| Option.new(e[/^--([^=]+=?)(.+)?$/, 1] || e) }
+  end
 
   def initialize(*args)
     @options = Set.new(*args)
@@ -68,15 +75,19 @@ class Options
   end
 
   def +(o)
-    Options.new(@options + o)
+    self.class.new(@options + o)
   end
 
   def -(o)
-    Options.new(@options - o)
+    self.class.new(@options - o)
   end
 
   def &(o)
-    Options.new(@options & o)
+    self.class.new(@options & o)
+  end
+
+  def |(o)
+    self.class.new(@options | o)
   end
 
   def *(arg)
@@ -95,37 +106,9 @@ class Options
     any? { |opt| opt == o || opt.name == o || opt.flag == o }
   end
 
-  def concat(o)
-    o.each { |opt| @options << opt }
-    self
-  end
-
-  def to_a
-    @options.to_a
-  end
   alias_method :to_ary, :to_a
 
   def inspect
-    "#<#{self.class}: #{@options.map(&:inspect).join(", ")}>"
-  end
-
-  def self.coerce(arg)
-    case arg
-    when self then arg
-    when Option then new << arg
-    when Array
-      opts = new
-      arg.each do |a|
-        case a
-        when /^-[^-]+$/
-          a[1..-1].split(//).each { |o| opts << Option.new(o) }
-        else
-          opts << Option.new(a)
-        end
-      end
-      opts
-    else
-      raise TypeError, "Cannot convert #{arg.inspect} to Options"
-    end
+    "#<#{self.class.name}: #{to_a.inspect}>"
   end
 end

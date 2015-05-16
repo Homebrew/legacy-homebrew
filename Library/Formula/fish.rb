@@ -1,26 +1,39 @@
-require 'formula'
-
 class Fish < Formula
-  homepage 'http://fishshell.com'
-  url 'http://fishshell.com/files/2.0.0/fish-2.0.0.tar.gz'
-  sha1 '2d28553e2ff975f8e5fed6b266f7a940493b6636'
+  homepage "http://fishshell.com"
+  url "http://fishshell.com/files/2.1.2/fish-2.1.2.tar.gz"
+  sha1 "f7f8d8d26721833be3458b8113c74b747296ec0b"
 
-  head 'https://github.com/fish-shell/fish-shell.git'
+  bottle do
+    revision 1
+    sha1 "7560818f385831e3d18be1458b1c5e52216f121c" => :yosemite
+    sha1 "a158ae57a437e5f8b2fdff88177be13fa6f35502" => :mavericks
+    sha1 "8d0aa59ebb4cf446e0f0fdf0f91738ffee7edbae" => :mountain_lion
+  end
 
-  # Indeed, the head build always builds documentation
-  depends_on 'doxygen' => :build if build.head?
-  depends_on :autoconf
+  head do
+    url "https://github.com/fish-shell/fish-shell.git", :shallow => false
 
-  skip_clean 'share/doc'
+    depends_on "autoconf" => :build
+    # Indeed, the head build always builds documentation
+    depends_on "doxygen" => :build
+  end
+
+  skip_clean "share/doc"
 
   def install
-    system "autoconf"
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "autoconf" if build.head?
+    # In Homebrew's 'superenv' sed's path will be incompatible, so
+    # the correct path is passed into configure here.
+    system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"
+    system "make", "install"
+  end
+
+  def post_install
+    system "pkill fishd || true"
   end
 
   test do
-    system "fish", "-c", "echo"
+    system "#{bin}/fish", "-c", "echo"
   end
 
   def caveats; <<-EOS.undent

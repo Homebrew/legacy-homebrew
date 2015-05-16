@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffind < Formula
   homepage 'https://github.com/sjl/friendly-find'
-  url 'https://github.com/sjl/friendly-find/archive/v0.3.1.tar.gz'
-  sha1 'c729a7ab2ae215d37a3e7cc0f16de24be1c965f6'
+  url 'https://github.com/sjl/friendly-find/archive/v0.3.2.tar.gz'
+  sha1 'fe4d943642e5bf344e2095122bb49216bcc2e2bd'
 
   conflicts_with 'sleuthkit',
     :because => "both install a 'ffind' executable."

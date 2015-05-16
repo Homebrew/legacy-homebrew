@@ -1,21 +1,20 @@
-require 'formula'
-
 class Checkstyle < Formula
-  homepage 'http://checkstyle.sourceforge.net/'
-  url 'http://sourceforge.net/projects/checkstyle/files/checkstyle/5.6/checkstyle-5.6-bin.tar.gz'
-  sha1 'cf08ac75aedddcd3a8d1f27fcbbb6095b0d1d5e3'
+  homepage "http://checkstyle.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.4.1/checkstyle-6.4.1-bin.tar.gz"
+  sha256 "ff37bd1b81914dc67f71646cae991e2763d2c7d1d2bf8b73e3dad5506a818170"
 
   def install
-    libexec.install 'checkstyle-5.6-all.jar', 'sun_checks.xml'
-    bin.write_jar_script libexec/'checkstyle-5.6-all.jar', 'checkstyle'
+    libexec.install "checkstyle-#{version}-all.jar"
+    bin.write_jar_script libexec/"checkstyle-#{version}-all.jar", "checkstyle"
   end
 
   test do
-    # Note this test "fails" because the audit has issues
-    # TODO - pipe through cat to ingore error code
-    (testpath/"Test.java").write <<-EOS.undent
-        public class Test{ }
-    EOS
-    system "#{bin}/checkstyle", "-c", "#{libexec}/sun_checks.xml", "-r", "Test.java"
+    path = testpath/"foo.java"
+    path.write "public class Foo{ }\n"
+
+    output = `#{bin}/checkstyle -c /sun_checks.xml #{path}`
+    errors = output.split("\n").select { |line| line.start_with?(path) }
+    assert errors.include?("#{path}:1:17: '{' is not preceded with whitespace.")
+    assert_equal errors.size, $?.exitstatus
   end
 end

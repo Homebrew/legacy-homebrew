@@ -1,7 +1,6 @@
 require 'testing_env'
-require 'test/testball'
 
-class ChecksumTests < Test::Unit::TestCase
+class ChecksumVerificationTests < Homebrew::TestCase
   def assert_checksum_good
     assert_nothing_raised { shutup { @_f.brew {} } }
   end
@@ -11,8 +10,14 @@ class ChecksumTests < Test::Unit::TestCase
   end
 
   def formula(&block)
-    @_f = TestBall.new
-    @_f.stable.instance_eval(&block)
+    super do
+      url "file://#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
+      instance_eval(&block)
+    end
+  end
+
+  def teardown
+    @_f.clear_cache
   end
 
   def test_good_sha1

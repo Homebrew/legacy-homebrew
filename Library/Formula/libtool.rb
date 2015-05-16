@@ -1,17 +1,20 @@
-require 'formula'
-
 # Xcode 4.3 provides the Apple libtool.
 # This is not the same so as a result we must install this as glibtool.
 
 class Libtool < Formula
-  homepage 'http://www.gnu.org/software/libtool/'
-  url 'http://ftpmirror.gnu.org/libtool/libtool-2.4.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libtool/libtool-2.4.2.tar.gz'
-  sha1 '22b71a8b5ce3ad86e1094e7285981cae10e6ff88'
+  homepage "https://www.gnu.org/software/libtool/"
+  url "http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz"
+  sha1 "3e7504b832eb2dd23170c91b6af72e15b56eb94e"
 
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/glibtoolize"
-    keg_only "Xcode 4.2 and below provide glibtool."
+  bottle do
+    cellar :any
+    sha1 "2d08e8a6d58d789194efcb3d6e4b822e6ad409cc" => :yosemite
+    sha1 "f545d684854815e7a5a5c1d4e6372ac26a7516ff" => :mavericks
+    sha1 "dd1e72102dda61ab33da205e9cfb507a269fd0b9" => :mountain_lion
   end
+
+  keg_only :provided_until_xcode43
 
   option :universal
 
@@ -21,7 +24,7 @@ class Libtool < Formula
                           "--prefix=#{prefix}",
                           "--program-prefix=g",
                           "--enable-ltdl-install"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
@@ -31,6 +34,6 @@ class Libtool < Formula
   end
 
   test do
-    system "#{bin}/glibtool", 'execute', '/usr/bin/true'
+    system "#{bin}/glibtool", "execute", "/usr/bin/true"
   end
 end

@@ -1,43 +1,31 @@
-require 'formula'
-
 class E2fsprogs < Formula
-  homepage 'http://e2fsprogs.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.7.tar.gz'
-  sha1 '897ed5bab4f021834d00ec047ed83766d56ce0a8'
+  homepage "http://e2fsprogs.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.42.12/e2fsprogs-1.42.12.tar.gz"
+  mirror "https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.42.12/e2fsprogs-1.42.12.tar.gz"
+  sha256 "e17846d91a0edd89fa59b064bde8f8e5cec5851e35f587bcccb4014dbd63186c"
 
-  head 'https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git'
+  head "https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git"
+
+  bottle do
+    sha256 "d2e1bcb92be39ebf971032b385fe5ffc6b0d69ec5df23fd0f4c5fb739f7f031e" => :yosemite
+    sha256 "e77469345bab82888029836b5b221cfd07ac9a3e3dea79bb0893762312d31094" => :mavericks
+    sha256 "fe5542c41eb4a541ef533d07a086fb3e6c9cdc51157ae9c32f62ac049842a74f" => :mountain_lion
+  end
 
   keg_only "This brew installs several commands which override OS X-provided file system commands."
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-
-  # MacPorts patch to compile libs correctly.
-  # Fix a bare return for clang.
-  def patches
-    {:p0 => [
-      "https://trac.macports.org/export/92117/trunk/dports/sysutils/e2fsprogs/files/patch-lib__Makefile.darwin-lib"
-    ], :p1 => DATA}
-  end
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--disable-e2initrd-helper"
     system "make"
-    system "make install"
-    system "make install-libs"
+    system "make", "install"
+    system "make", "install-libs"
+  end
+
+  test do
+    assert_equal 36, shell_output("#{bin}/uuidgen").strip.length
+    system bin/"lsattr", "-al"
   end
 end
-
-__END__
-diff -urN e2fsprogs-1.42.7.orig/lib/ext2fs/gen_bitmap64.c e2fsprogs-1.42.7/lib/ext2fs/gen_bitmap64.c
---- e2fsprogs-1.42.7.orig/lib/ext2fs/gen_bitmap64.c	2013-01-21 19:33:35.000000000 -0800
-+++ e2fsprogs-1.42.7/lib/ext2fs/gen_bitmap64.c	2013-04-29 23:48:23.000000000 -0700
-@@ -657,7 +657,7 @@
- 	if ((block < bmap->start) || (block+num-1 > bmap->end)) {
- 		ext2fs_warn_bitmap(EXT2_ET_BAD_BLOCK_TEST, block,
- 				   bmap->description);
--		return;
-+		return EINVAL;
- 	}
- 
- 	return bmap->bitmap_ops->test_clear_bmap_extent(bmap, block, num);

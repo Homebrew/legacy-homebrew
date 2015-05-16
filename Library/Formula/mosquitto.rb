@@ -1,44 +1,45 @@
-require 'formula'
+require "formula"
 
 class Mosquitto < Formula
-  homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.1.3.tar.gz'
-  sha1 '38faf05f696b6a8183c6f5e06fdba78ffb632316'
+  homepage "http://mosquitto.org/"
+  url "http://mosquitto.org/files/source/mosquitto-1.4.2.tar.gz"
+  sha1 "208ce5f01fcf25fff6b241b22add055ba2884822"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cmake' => :build
+  bottle do
+    sha256 "5ddaaa8d6a3b1243e56a401352a30c98baac64912d727db4f1d863c91cde49d5" => :yosemite
+    sha256 "ebf06abb4e01eb008cc77ae09ae3ab2d593d4150398ebe5d25e0a08b0c80f4e5" => :mavericks
+    sha256 "120219f9750c23bc66635222c9f79a4434188fbdb046a5a43b8d1d350eb62bde" => :mountain_lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "c-ares"
+  depends_on "libwebsockets" => :recommended
+
   # mosquitto requires OpenSSL >=1.0 for TLS support
-  depends_on 'openssl'
+  depends_on "openssl"
 
   def install
-    openssl = Formula.factory('openssl')
+    args = std_cmake_args
+    args << "-DWITH_WEBSOCKETS=ON" if build.with? "libwebsockets"
 
-    # specify brew-supplied OpenSSL libraries and includes
-    inreplace "CMakeLists.txt", "set (OPENSSL_INCLUDE_DIR \"\")", "set (OPENSSL_INCLUDE_DIR \"#{openssl.include}\")\nset (OPENSSL_LIBRARIES \"#{openssl.lib}\")"
+    system "cmake", ".", *args
+    system "make", "install"
 
-    system "cmake", ".", *std_cmake_args
-    system "make install"
-
-    # Create the working directory under var
-    (var+'mosquitto').mkpath
+    # Create the working directory
+    (var/"mosquitto").mkpath
   end
 
   test do
     quiet_system "#{sbin}/mosquitto", "-h"
-    $?.exitstatus == 3
+    assert_equal 3, $?.exitstatus
   end
 
   def caveats; <<-EOD.undent
     mosquitto has been installed with a default configuration file.
-        You can make changes to the configuration by editing
+    You can make changes to the configuration by editing:
         #{etc}/mosquitto/mosquitto.conf
-
-    Python client bindings can be installed from the Python Package Index
-        pip install mosquitto
-
-    Javascript client is available at
-        http://mosquitto.org/js/
-      EOD
+    EOD
   end
 
   plist_options :manual => "mosquitto -c #{HOMEBREW_PREFIX}/etc/mosquitto/mosquitto.conf"
@@ -52,7 +53,7 @@ class Mosquitto < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/mosquitto</string>
+        <string>#{opt_sbin}/mosquitto</string>
         <string>-c</string>
         <string>#{etc}/mosquitto/mosquitto.conf</string>
       </array>

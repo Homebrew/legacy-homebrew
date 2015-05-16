@@ -1,11 +1,14 @@
-require 'formula'
-
 class Surfraw < Formula
-  homepage 'http://surfraw.alioth.debian.org/'
-  url 'http://surfraw.alioth.debian.org/dist/surfraw-2.2.8.tar.gz'
-  sha1 '3114cd6e8d64f87b84ed0eff4369bfb0b10f2eb6'
+  homepage "http://surfraw.alioth.debian.org/"
+  head "git://git.debian.org/surfraw/surfraw.git"
+  url "http://surfraw.alioth.debian.org/dist/surfraw-2.2.9.tar.gz"
+  sha1 "70bbba44ffc3b1bf7c7c4e0e9f0bdd656698a1c0"
 
-  head 'git://git.debian.org/surfraw/surfraw.git'
+  bottle do
+    sha1 "6c592c99adf6c1a0bb4993a36e4392bce6e24eaa" => :yosemite
+    sha1 "8ca477ffd5f157aa40b258d66e2536691d769921" => :mavericks
+    sha1 "b17ead2b3f8030e659d0af4b44332f76397607f5" => :mountain_lion
+  end
 
   def install
     system "./prebuild" if build.head?
@@ -13,7 +16,12 @@ class Surfraw < Formula
                           "--sysconfdir=#{etc}",
                           "--with-graphical-browser=open"
     system "make"
-    ENV.j1 # Install using 1 job, or fails on Mac Pro
-    system "make install"
+    ENV.j1
+    system "make", "install"
+  end
+
+  test do
+    output = shell_output("#{bin}/surfraw -p google -results=1 homebrew")
+    assert_equal "http://www.google.com/search?q=homebrew&num=1\n", output
   end
 end

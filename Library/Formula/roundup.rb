@@ -17,7 +17,7 @@ class Roundup < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/roundup", "-v"
   end
 end

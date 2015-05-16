@@ -2,8 +2,8 @@ require 'formula'
 
 class Opencolorio < Formula
   homepage 'http://opencolorio.org/'
-  url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.8.tar.gz'
-  sha1 '83b28202bdb1f692f74a80affea95d832354ec23'
+  url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.9.tar.gz'
+  sha1 '45efcc24db8f8830b6892830839da085e19eeb6d'
 
   head 'https://github.com/imageworks/OpenColorIO.git'
 
@@ -16,6 +16,16 @@ class Opencolorio < Formula
   option 'with-java', 'Build ocio with java bindings'
   option 'with-docs', 'Build the documentation'
 
+  # Fix build with libc++
+  patch do
+    url "https://github.com/imageworks/OpenColorIO/commit/ebd6efc036b6d0b17c869e3342f17f9c5ef8bbfc.diff"
+    sha1 "f4acc4028090ea8d438c6e0093e931afd836314c"
+  end
+
+  # Fix includes on recent Clang; reported upstream:
+  # https://github.com/imageworks/OpenColorIO/issues/338#issuecomment-36589039
+  patch :DATA
+
   def install
     args = std_cmake_args
     args << "-DOCIO_BUILD_JNIGLUE=ON" if build.with? 'java'
@@ -23,33 +33,10 @@ class Opencolorio < Formula
     args << "-DOCIO_BUILD_DOCS=ON" if build.with? 'docs'
     args << "-DCMAKE_VERBOSE_MAKEFILE=OFF"
 
-    # CMake-2.8.7 + CLT + llvm + Lion => CMAKE_CXX_HAS_ISYSROOT "1"
-    # CMake-2.8.7 + CLT + clang + Lion => CMAKE_CXX_HAS_ISYSROOT ""
-    # CMake puts a malformed sysroot into CXX_FLAGS in flags.make with llvm.
-    # Syntax like this gets added:
-    #     -isysroot /Some/Wrong/SDKs/path
-    # which causes c++ includes not found when compiling with llvm.
-    #     https://github.com/imageworks/OpenColorIO/issues/224
-    # The current workaround is that the SDK directory structure is mirrored
-    # in the root directory, e.g.
-    #   Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/include
-    #   /usr/include
-    # So we just set the sysroot to /
-
-    # args << "-DCMAKE_OSX_SYSROOT=/" if ENV.compiler == :llvm and MacOS.version >= :lion
-
     # Python note:
     # OCIO's PyOpenColorIO.so doubles as a shared library. So it lives in lib, rather
     # than the usual HOMEBREW_PREFIX/lib/python2.7/site-packages per developer choice.
-
-    if python do
-      # For Xcode-only systems, the headers of system's python are inside of Xcode:
-      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
-      # Cmake picks up the system's python dylib, even if we have a brewed one:
-      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
-    end; else
-      args << "-DOCIO_BUILD_PYGLUE=OFF"
-    end
+    args << "-DOCIO_BUILD_PYGLUE=OFF" if build.without? 'python'
 
     args << '..'
 
@@ -65,13 +52,31 @@ class Opencolorio < Formula
     <<-EOS.undent
       OpenColorIO requires several environment variables to be set.
       You can source the following script in your shell-startup to do that:
+
           #{HOMEBREW_PREFIX}/share/ocio/setup_ocio.sh
+
       Alternatively the documentation describes what env-variables need set:
+
           http://opencolorio.org/installation.html#environment-variables
+
       You will require a config for OCIO to be useful. Sample configuration files
       and reference images can be found at:
-          http://opencolorio.org/downloads.html
 
+          http://opencolorio.org/downloads.html
     EOS
   end
 end
+
+__END__
+diff --git a/export/OpenColorIO/OpenColorIO.h b/export/OpenColorIO/OpenColorIO.h
+index 561ce50..796ca84 100644
+--- a/export/OpenColorIO/OpenColorIO.h
++++ b/export/OpenColorIO/OpenColorIO.h
+@@ -34,6 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include <iosfwd>
+ #include <string>
+ #include <cstddef>
++#include <unistd.h>
+ 
+ #include "OpenColorABI.h"
+ #include "OpenColorTypes.h"

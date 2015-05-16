@@ -2,24 +2,31 @@ require 'formula'
 
 class Pike < Formula
   homepage 'http://pike.lysator.liu.se'
-  url 'http://pike.lysator.liu.se/pub/pike/latest-stable/Pike-v7.8.700.tar.gz'
-  sha1 '877bd50d2bb202aa485d1f7c62398922d60696c7'
+  url 'http://pike.lysator.liu.se/pub/pike/all/7.8.866/Pike-v7.8.866.tar.gz'
+  sha1 'f3d6cc21e302576c3ac4bb5a525705dbeee2d060'
+  revision 1
+
+  bottle do
+    sha256 "e1c276b7fdf4ce90cb6f512d6c93f494a56432e878567d05a63f63657cbba7d6" => :yosemite
+    sha256 "baad545207c59dbd86f57ed20155f4c0ef0aaa1f3b3291adc1eb304c4d66e987" => :mavericks
+    sha256 "3240c7771fad0948975677e1553bf5cc4b48ec7541efe42ca838576f90a66113" => :mountain_lion
+  end
 
   depends_on "nettle"
   depends_on "gmp"
   depends_on "pcre"
-  depends_on :x11 => :recommended
+  depends_on :x11 => :optional
   depends_on 'libtiff' => :recommended
 
   # optional dependencies
-  depends_on 'gettext'       if build.include? 'with-gettext' or build.include? 'with-all'
-  depends_on 'gdbm'          if build.include? 'with-gdbm'    or build.include? 'with-all'
-  depends_on 'gtk+'          if build.include? 'with-gtk2'    or build.include? 'with-all'
-  depends_on 'mysql'         if build.include? 'with-mysql'   or build.include? 'with-all'
-  depends_on 'sdl'           if build.include? 'with-sdl'     or build.include? 'with-all'
-  depends_on 'sane-backends' if build.include? 'with-sane'    or build.include? 'with-all'
-  depends_on 'pdflib-lite'   if build.include? 'with-pdf'     or build.include? 'with-all'
-  depends_on 'mesalib-glw'   if build.include? 'with-gl'      or build.include? 'with-all'
+  depends_on 'gettext'       if build.with? "gettext" or build.with? "all"
+  depends_on 'gdbm'          if build.with? "gdbm"    or build.with? "all"
+  depends_on 'gtk+'          if build.with? "gtk2"    or build.with? "all"
+  depends_on 'mysql'         if build.with? "mysql"   or build.with? "all"
+  depends_on 'sdl'           if build.with? "sdl"     or build.with? "all"
+  depends_on 'sane-backends' if build.with? "sane"    or build.with? "all"
+  depends_on 'pdflib-lite'   if build.with? "pdf"     or build.with? "all"
+  depends_on 'mesalib-glw'   if build.with? "gl"      or build.with? "all"
 
   option 'with-gettext', 'Include Gettext support'
   option 'with-gdbm', 'Include Gdbm support'
@@ -49,7 +56,7 @@ class Pike < Formula
       args << "--with-abi=32"
     end
 
-    unless build.include? 'with-machine-code'
+    if build.without? "machine-code"
       args << "--without-machine-code"
     end
 
@@ -94,7 +101,19 @@ class Pike < Formula
                     "include_path=#{libexec}/include",
                     "INSTALLARGS=--traditional"
 
-   bin.install_symlink "#{libexec}/bin/pike"
-   share.install_symlink "#{libexec}/share/man"
+    bin.install_symlink "#{libexec}/bin/pike"
+    share.install_symlink "#{libexec}/share/man"
+  end
+
+  test do
+    path = testpath/"test.pike"
+    path.write <<-EOS.undent
+      int main() {
+        for (int i=0; i<10; i++) { write("%d", i); }
+        return 0;
+      }
+    EOS
+
+    assert_equal "0123456789", shell_output("#{bin}/pike #{path}").strip
   end
 end

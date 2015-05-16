@@ -11,7 +11,7 @@ class Tal < Formula
     man1.install 'tal.1'
   end
 
-  def test
+  test do
     system "#{bin}/tal", "/etc/passwd"
   end
 end

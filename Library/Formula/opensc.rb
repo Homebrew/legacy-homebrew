@@ -1,37 +1,35 @@
-require 'formula'
+require "formula"
 
 class Opensc < Formula
-  homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'http://sourceforge.net/projects/opensc/files/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
-  sha1 '9285ccbed7b49f63e488c8fb1b3e102994a28218'
-  head 'https://github.com/OpenSC/OpenSC.git'
+  homepage "https://github.com/OpenSC/OpenSC/wiki"
+  url "https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz"
+  sha1 "4a898e351b0a6d2a5d81576daa7ebed45baf9138"
+  revision 1
 
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
+  bottle do
+    sha1 "82b08c2bd2b58b7080797a441f8c641cbb101064" => :mavericks
+    sha1 "b5107cad1a7b5c7808d8b93f497bfe64127fcbce" => :mountain_lion
+    sha1 "26bc12047a4ca119fd37ff76ea4055226d88dc34" => :lion
   end
 
-  option 'with-man-pages', 'Build manual pages'
+  head do
+    url "https://github.com/OpenSC/OpenSC.git"
 
-  depends_on 'docbook' if build.include? 'with-man-pages'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  option "with-man-pages", "Build manual pages"
+
+  depends_on "docbook-xsl" if build.with? "man-pages"
+  depends_on "openssl"
 
   def install
-    extra_args = []
+    args = []
 
-    # If OpenSC's configure script detects docbook it will build manual
-    # pages. This extends the spirit of that logic to support homebrew
-    # installed docbook.
-    docbook = Formula.factory 'docbook'
-    if docbook.installed?
-      # OpenSC looks in a set of common paths for docbook's xsl files,
-      # but not in /usr/local, and certainly not in homebrew's
-      # cellar. This specifies the correct homebrew path.
-
-      # Avoid using information from the docbook formula here, as it
-      # will always refer to the latest version which is not
-      # necessarily the installed version.
-      extra_args << "--with-xsl-stylesheetsdir=" +
-        Dir[docbook.opt_prefix/'docbook/xsl/*'].first
+    if build.with? "man-pages"
+      args << "--with-xsl-stylesheetsdir=#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl"
     end
 
     system "./bootstrap" if build.head?
@@ -40,13 +38,12 @@ class Opensc < Formula
                           "--enable-sm",
                           "--enable-openssl",
                           "--enable-pcsc",
-                          *extra_args
+                          *args
 
-    system "make install"
+    system "make", "install"
   end
 
-  def caveats; <<-EOS.undent
-    Manual pages will be installed if docbook is installed.
-    EOS
+  test do
+    system "#{bin}/opensc-tool", "-i"
   end
 end

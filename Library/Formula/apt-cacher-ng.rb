@@ -2,12 +2,18 @@ require 'formula'
 
 class AptCacherNg < Formula
   homepage 'http://www.unix-ag.uni-kl.de/~bloch/acng/'
-  url 'http://ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.7.13.orig.tar.xz'
-  sha1 'bb6c3cf8e116ed9800543b7864a3a7b406aa4d5a'
+  url "http://ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.7.27.orig.tar.xz"
+  sha1 "ae1324bf3c42909546f2b9d2a25cd9d837977a42"
 
-  depends_on 'xz' => :build
+  bottle do
+    sha1 "10658beb0ba8bb53e2c99a40a79833d04c8215df" => :mavericks
+    sha1 "88b90f06af2229837cf3086f035e02316719e679" => :mountain_lion
+    sha1 "351cd708e659a1ec9959044568e71c2278a9debd" => :lion
+  end
+
   depends_on 'cmake' => :build
-  depends_on 'fuse4x' => :build
+  depends_on :osxfuse => :build
+  depends_on 'boost' => :build
 
   def install
     system 'make apt-cacher-ng'
@@ -22,6 +28,7 @@ class AptCacherNg < Formula
 
     # create the cache directory
     (var/'spool/apt-cacher-ng').mkpath
+    (var/'log').mkpath
 
     sbin.install 'build/apt-cacher-ng'
     man8.install 'doc/man/apt-cacher-ng.8'
@@ -42,7 +49,7 @@ class AptCacherNg < Formula
       <true/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/apt-cacher-ng</string>
+        <string>#{opt_sbin}/apt-cacher-ng</string>
         <string>-c</string>
         <string>#{etc}/apt-cacher-ng</string>
         <string>foreground=1</string>
@@ -53,4 +60,5 @@ class AptCacherNg < Formula
     </plist>
     EOS
   end
+
 end

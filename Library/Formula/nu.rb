@@ -1,21 +1,16 @@
-require 'formula'
-
-class NeedsLion < Requirement
-  fatal true
-
-  satisfy MacOS.version >= :lion
-
-  def message
-    "Nu requires Mac OS X 10.7 or newer"
-  end
-end
-
 class Nu < Formula
   homepage 'http://programming.nu'
-  url 'http://programming.nu/releases/Nu-2.0.1.tgz'
-  sha1 'c0735f8f3daec9471b849f8e96827b5eef0ec44e'
+  url 'https://github.com/timburks/nu/archive/v2.1.1.tar.gz'
+  sha1 'ca0f9bbd5bbdb8528be516325f274d07d4be54bf'
 
-  depends_on NeedsLion
+  bottle do
+    cellar :any
+    sha1 "b5abfa521c0983c057820e51e6edad1d2e26c79e" => :yosemite
+    sha1 "6f3cc8067845537ef5da9c7b702bba21c61dd86d" => :mavericks
+    sha1 "4d21aa4cbc078e3d6d052f65ec9eef3b43f34e64" => :mountain_lion
+  end
+
+  depends_on :macos => :lion
   depends_on 'pcre'
 
   fails_with :llvm do
@@ -28,30 +23,20 @@ class Nu < Formula
     cause 'nu only builds with clang'
   end
 
-  def install
+  # remove deprecated -fobjc-gc
+  # https://github.com/timburks/nu/pull/74
+  # https://github.com/Homebrew/homebrew/issues/37341
+  patch do
+    url "https://github.com/timburks/nu/commit/c0b05f1.diff"
+    sha256 "f6c1a66e470e7132ba11937c971f9b90824bb03eaa030b3e70004f9d2725c636"
+  end
 
+  def install
     ENV['PREFIX'] = prefix
 
-    inreplace "Makefile" do |s|
-      cflags = s.get_make_var "CFLAGS"
-      s.change_make_var! "CFLAGS", "#{cflags} #{ENV["CPPFLAGS"]}"
-      # nu hardcodes its compiler paths to a location which no longer works
-      # This should work for both Xcode-only and CLT-only systems
-      s.gsub! "$(DEVROOT)/usr/bin/clang", ENV.cc
-    end
-
     inreplace "Nukefile" do |s|
-      s.gsub!'"#{DEVROOT}/usr/bin/clang"', "\"#{ENV.cc}\""
-      case Hardware.cpu_type
-      when :intel
-        arch = :i386
-      when :ppc
-        arch = :ppc
-      end
-      arch = :x86_64 if arch == :i386 && Hardware.is_64_bit?
-      s.sub!(/^;;\(set @arch '\("i386"\)\)$/, "(set @arch '(\"#{arch}\"))") unless arch.nil?
       s.gsub!('(SH "sudo ', '(SH "') # don't use sudo to install
-      s.gsub!('#{@destdir}/Library/Frameworks', '#{@prefix}/Library/Frameworks')
+      s.gsub!('#{@destdir}/Library/Frameworks', '#{@prefix}/Frameworks')
       s.sub! /^;; source files$/, <<-EOS
 ;; source files
 (set @framework_install_path "#{frameworks}")
@@ -66,7 +51,7 @@ EOS
   end
 
   def caveats
-    if self.installed? and File.exists? frameworks+"Nu.framework"
+    if self.installed? and File.exist? frameworks+"Nu.framework"
       return <<-EOS.undent
         Nu.framework was installed to:
           #{frameworks}/Nu.framework
@@ -77,5 +62,9 @@ EOS
       EOS
     end
     return nil
+  end
+
+  test do
+    system bin/"nush", "-e", '(puts "Everything old is Nu again.")'
   end
 end

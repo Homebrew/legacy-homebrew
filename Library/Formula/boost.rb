@@ -1,125 +1,167 @@
-require 'formula'
-
-class UniversalPython < Requirement
-  satisfy(:build_env => false) { archs_for_command("python").universal? }
-
-  def message; <<-EOS.undent
-    A universal build was requested, but Python is not a universal build
-
-    Boost compiles against the Python it finds in the path; if this Python
-    is not a universal build then linking will likely fail.
-    EOS
-  end
-end
-
 class Boost < Formula
-  homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
-  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
+  homepage "http://www.boost.org"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
+  sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
 
-  head 'http://svn.boost.org/svn/boost/trunk'
+  head "https://github.com/boostorg/boost.git"
 
   bottle do
-    sha1 'fda423e53ed998d54c33cc91582c0d5e3e4ff91e' => :mountain_lion
-    sha1 '99fec23d1b79a510d8cd1f1f0cbd77cc73b4f4b5' => :lion
-    sha1 '15f74640979b95bd327be3b6ca2a5d18878a29ad' => :snow_leopard
+    cellar :any
+    sha256 "9a3929bec0e9e9db36e005f57193433ac6b5ff9ff86b2ed3262b975d58488c19" => :yosemite
+    sha256 "c5ad1f8591ed91c551658fd198ce31cf9f6a8026fcbfd5970a39cb479e64faa2" => :mavericks
+    sha256 "7b154bf42d72bbb90c3017bb94b24fdd2e0605ceab8717283f5c9f456ac5c03d" => :mountain_lion
   end
 
   env :userpaths
 
   option :universal
-  option 'with-mpi', 'Enable MPI support'
-  option 'with-icu', 'Build regexp engine with icu support'
-  option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
-  option 'use-system-layout', 'Use system layout instead of tagged'
+  option "with-icu4c", "Build regexp engine with icu support"
+  option "without-single", "Disable building single-threading variant"
+  option "without-static", "Disable building static library variant"
+  option "with-mpi", "Build with MPI support"
+  option :cxx11
 
-  depends_on :python => :recommended
-  depends_on UniversalPython if build.universal? and build.with? "python"
-  depends_on "icu4c" if build.with? 'icu'
-  depends_on MPIDependency.new(:cc, :cxx) if build.with? "mpi"
+  deprecated_option "with-icu" => "with-icu4c"
+
+  if build.cxx11?
+    depends_on "icu4c" => [:optional, "c++11"]
+    depends_on "open-mpi" => "c++11" if build.with? "mpi"
+  else
+    depends_on "icu4c" => :optional
+    depends_on :mpi => [:cc, :cxx, :optional]
+  end
 
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
   end
 
-  def pour_bottle?
-    # Don't use the bottle if there is a Homebrew python installed as users
-    # will probably want to link against that instead.
-    not Formula.factory('python').installed?
-  end
-
   def install
-    # Adjust the name the libs are installed under to include the path to the
-    # Homebrew lib directory so executables will work when installed to a
-    # non-/usr/local location.
-    #
-    # otool -L `which mkvmerge`
-    # /usr/local/bin/mkvmerge:
-    #   libboost_regex-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   libboost_filesystem-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #
-    # becomes:
-    #
-    # /usr/local/bin/mkvmerge:
-    #   /usr/local/lib/libboost_regex-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   /usr/local/lib/libboost_filesystem-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   /usr/local/lib/libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    inreplace 'tools/build/v2/tools/darwin.jam', '-install_name "', "-install_name \"#{HOMEBREW_PREFIX}/lib/"
+    # https://svn.boost.org/trac/boost/ticket/8841
+    if build.with?("mpi") && build.with?("single")
+      raise <<-EOS.undent
+        Building MPI support for both single and multi-threaded flavors
+        is not supported.  Please use "--with-mpi" together with
+        "--without-single".
+      EOS
+    end
 
-    # boost will try to use cc, even if we'd rather it use, say, gcc-4.2
-    inreplace 'tools/build/v2/engine/build.sh', 'BOOST_JAM_CC=cc', "BOOST_JAM_CC=#{ENV.cc}"
-    inreplace 'tools/build/v2/engine/build.jam', 'toolset darwin cc', "toolset darwin #{ENV.cc}"
+    ENV.universal_binary if build.universal?
 
-    # Force boost to compile using the appropriate GCC version
+    # Force boost to compile with the desired compiler
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
-      file.write "using mpi ;\n" if build.with? 'mpi'
+      file.write "using mpi ;\n" if build.with? "mpi"
     end
 
-    # we specify libdir too because the script is apparently broken
-    bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
+    # libdir should be set by --prefix but isn't
+    bootstrap_args = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    bargs << "--with-toolset=clang" if build.with? "c++11"
-
-    if build.with? 'icu'
-      icu4c_prefix = Formula.factory('icu4c').opt_prefix
-      bargs << "--with-icu=#{icu4c_prefix}"
+    if build.with? "icu4c"
+      icu4c_prefix = Formula["icu4c"].opt_prefix
+      bootstrap_args << "--with-icu=#{icu4c_prefix}"
     else
-      bargs << '--without-icu'
+      bootstrap_args << "--without-icu"
     end
+
+    # Handle libraries that will not be built.
+    without_libraries = ["python"]
 
     # The context library is implemented as x86_64 ASM, so it
     # won't build on PPC or 32-bit builds
-    # see https://github.com/mxcl/homebrew/issues/17646
-    bargs << "--without-libraries=context" if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
+    # see https://github.com/Homebrew/homebrew/issues/17646
+    if Hardware::CPU.ppc? || Hardware::CPU.is_32_bit? || build.universal?
+      without_libraries << "context"
+      # The coroutine library depends on the context library.
+      without_libraries << "coroutine"
+    end
 
-    boost_layout = (build.include? "use-system-layout") ? "system" : "tagged"
+    # Boost.Log cannot be built using Apple GCC at the moment. Disabled
+    # on such systems.
+    without_libraries << "log" if ENV.compiler == :gcc || ENV.compiler == :llvm
+    without_libraries << "mpi" if build.without? "mpi"
+
+    bootstrap_args << "--without-libraries=#{without_libraries.join(",")}"
+
+    # layout should be synchronized with boost-python
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-d2",
             "-j#{ENV.make_jobs}",
-            "--layout=#{boost_layout}",
+            "--layout=tagged",
             "--user-config=user-config.jam",
-            "threading=multi",
             "install"]
 
-    if MacOS.version >= :lion and build.with? 'c++11'
-      args << "toolset=clang" << "cxxflags=-std=c++11"
-      args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
-      args << "cxxflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
-      args << "cxxflags=-arch i386" if !MacOS.prefer_64_bit? or build.universal?
-      args << "linkflags=-stdlib=libc++"
-      args << "linkflags=-headerpad_max_install_names"
-      args << "linkflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
-      args << "linkflags=-arch i386" if !MacOS.prefer_64_bit? or build.universal?
+    if build.with? "single"
+      args << "threading=multi,single"
+    else
+      args << "threading=multi"
+    end
+
+    if build.with? "static"
+      args << "link=shared,static"
+    else
+      args << "link=shared"
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
-    args << "--without-python" if build.without? 'python'
 
-    system "./bootstrap.sh", *bargs
+    # Trunk starts using "clang++ -x c" to select C compiler which breaks C++11
+    # handling using ENV.cxx11. Using "cxxflags" and "linkflags" still works.
+    if build.cxx11?
+      args << "cxxflags=-std=c++11"
+      if ENV.compiler == :clang
+        args << "cxxflags=-stdlib=libc++" << "linkflags=-stdlib=libc++"
+      end
+    end
+
+    system "./bootstrap.sh", *bootstrap_args
     system "./b2", *args
+  end
+
+  def caveats
+    s = ""
+    # ENV.compiler doesn't exist in caveats. Check library availability
+    # instead.
+    if Dir["#{lib}/libboost_log*"].empty?
+      s += <<-EOS.undent
+
+      Building of Boost.Log is disabled because it requires newer GCC or Clang.
+      EOS
+    end
+
+    if Hardware::CPU.ppc? || Hardware::CPU.is_32_bit? || build.universal?
+      s += <<-EOS.undent
+
+      Building of Boost.Context and Boost.Coroutine is disabled as they are
+      only supported on x86_64.
+      EOS
+    end
+
+    s
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <boost/algorithm/string.hpp>
+      #include <string>
+      #include <vector>
+      #include <assert.h>
+      using namespace boost::algorithm;
+      using namespace std;
+
+      int main()
+      {
+        string str("a,b");
+        vector<string> strVec;
+        split(strVec, str, is_any_of(","));
+        assert(strVec.size()==2);
+        assert(strVec[0]=="a");
+        assert(strVec[1]=="b");
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-std=c++1y", "-lboost_system", "-o", "test"
+    system "./test"
   end
 end

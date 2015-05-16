@@ -1,17 +1,25 @@
-require 'formula'
-
 class GitExtras < Formula
-  homepage 'https://github.com/visionmedia/git-extras'
-  url 'https://github.com/visionmedia/git-extras/archive/1.8.0.tar.gz'
-  sha1 '5a52d3e247a5134c8e2bf89b339a204a7f4ad8e0'
+  homepage "https://github.com/tj/git-extras"
+  url "https://github.com/tj/git-extras/archive/3.0.0.tar.gz"
+  sha1 "dac8477c1ea8dd9e591623ced2b4de4e52f541c1"
 
-  head 'https://github.com/visionmedia/git-extras.git', :branch => 'master'
+  head "https://github.com/tj/git-extras.git"
 
-  # Don't take +x off these files
-  skip_clean 'bin'
+  bottle do
+    cellar :any
+    sha256 "3eabd97b6e574274665ed178b72076648ed03da53c7dd29425835331592c3378" => :yosemite
+    sha256 "14471fe41a1162813ed803fe9edc91aca493d7529340e8f15e2cea9aa269d586" => :mavericks
+    sha256 "7655c7e7f926d58b28a8ef503b406ff2c0f6fb2102a2915cb7d05b36b26f9d9b" => :mountain_lion
+  end
 
   def install
-    inreplace 'Makefile', %r|\$\(DESTDIR\)(?=/etc/bash_completion\.d)|, '$(DESTDIR)$(PREFIX)'
+    inreplace "Makefile", %r{\$\(DESTDIR\)(?=/etc/bash_completion\.d)}, "$(DESTDIR)$(PREFIX)"
     system "make", "PREFIX=#{prefix}", "install"
+  end
+
+  test do
+    cd HOMEBREW_PREFIX do
+      system "#{bin}/git-root"
+    end
   end
 end

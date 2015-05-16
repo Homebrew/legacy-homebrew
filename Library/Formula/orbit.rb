@@ -10,11 +10,14 @@ class Orbit < Formula
   depends_on 'libidl'
 
   # per MacPorts, re-enable use of deprecated glib functions
-  def patches
-    {:p0 => [
-      "https://trac.macports.org/export/105275/trunk/dports/devel/orbit2/files/patch-linc2-src-Makefile.in.diff",
-      "https://trac.macports.org/export/105275/trunk/dports/devel/orbit2/files/patch-configure.diff"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/105275/trunk/dports/devel/orbit2/files/patch-linc2-src-Makefile.in.diff"
+    sha1 "8941a2bec91403e49de600a74af307a95c0ce2b1"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/105275/trunk/dports/devel/orbit2/files/patch-configure.diff"
+    sha1 "2ef976d53af55d88237e6c72ade1154c7a655556"
   end
 
   def install

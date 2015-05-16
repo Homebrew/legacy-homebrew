@@ -1,48 +1,37 @@
-require 'formula'
-
-class OmniorbBindings < Formula
-  homepage 'http://omniorb.sourceforge.net/'
-  url 'http://sourceforge.net/projects/omniorb/files/omniORBpy/omniORBpy-3.6/omniORBpy-3.6.tar.bz2'
-  sha1 '2def5ded7cd30e8d298113ed450b7bd09eaaf26f'
-end
-
 class Omniorb < Formula
-  homepage 'http://omniorb.sourceforge.net/'
-  url 'http://sourceforge.net/projects/omniorb/files/omniORB/omniORB-4.1.6/omniORB-4.1.6.tar.bz2'
-  sha1 '383e3b3b605188fe6358316917576e0297c4e1a6'
+  homepage "http://omniorb.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.2.0/omniORB-4.2.0.tar.bz2"
+  sha256 "74c273fc997c2881b128feb52182dbe067acfecc4cf37475f43c104338eba8bc"
 
-  depends_on 'pkg-config' => :build
-  depends_on :python => :recommended
+  bottle do
+    sha256 "8575f53c6de3426c4f640c97fbc966b220869dada8e636494f4a1fe5c1769990" => :yosemite
+    sha256 "2245722bc7b21cecee0bfc4b145d3bab51d79979bfbf9e6cb1a0211b4c166e85" => :mavericks
+    sha256 "0a5e41a4e19fbe4d685822b2da354d8dd9f5bd32e02376d74d7dfed9e9b9f767" => :mountain_lion
+  end
+
+  depends_on "pkg-config" => :build
+
+  resource "bindings" do
+    url "https://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-4.2.0/omniORBpy-4.2.0.tar.bz2"
+    sha256 "c82b3bafacbb93cfaace41765219155f2b24eb3781369bba0581feb1dc50fe5e"
+  end
 
   # http://www.omniorb-support.com/pipermail/omniorb-list/2012-February/031202.html
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
-    args = ["--prefix=#{prefix}"]
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
 
-    python do
-      OmniorbBindings.new.brew do
-        system "./configure", *args
-        system "make install"
-      end
+    resource("bindings").stage do
+      system "./configure", "--prefix=#{prefix}"
+      system "make", "install"
     end
-  end
-
-  def caveats
-    python.standard_caveats if python
   end
 
   test do
     system "#{bin}/omniidl", "-h"
-
-    if build.with? 'python'
-      system python, "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
-    end
   end
 end
 

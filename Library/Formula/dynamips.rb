@@ -1,25 +1,31 @@
-require 'formula'
-
 class Dynamips < Formula
-  homepage 'http://www.gns3.net/dynamips/'
-  url 'http://sourceforge.net/projects/gns-3/files/Dynamips/0.2.8-RC3-community/dynamips-0.2.8-RC3-community.tar.gz'
-  sha1 'ed7138859e6bc381ae0cf0d2620b32099845847c'
-  version '0.2.8-RC3'
+  homepage "http://www.gns3.net/dynamips/"
+  url "https://github.com/GNS3/dynamips/archive/v0.2.14.tar.gz"
+  sha1 "1f0b62d19586365246a957b4eb4dab0cdbd657ad"
 
-  depends_on 'libelf'
+  bottle do
+    cellar :any
+    sha1 "d0d6ed53cac613224298052a4403f215d41cdeaa" => :yosemite
+    sha1 "bdcd75d6bfd8800340620f934193ac952e9ee455" => :mavericks
+    sha1 "14bf80d8127981a9fab5e8cb94fd1c771a0cbe4c" => :mountain_lion
+  end
+
+  depends_on "libelf"
+  depends_on "cmake" => :build
 
   def install
-    # Install man pages to the standard Homebrew location
-    inreplace 'Makefile' do |s|
-      s.gsub! %r|\$\(DESTDIR\)/man|, man
-    end
+    ENV.append "CFLAGS", "-I#{Formula["libelf"].include}/libelf"
 
-    arch = Hardware.is_64_bit? ? 'amd64' : 'x86'
+    arch = Hardware.is_64_bit? ? "amd64" : "x86"
 
     ENV.j1
+    system "cmake", ".", "-DANY_COMPILER=1", *std_cmake_args
     system "make", "DYNAMIPS_CODE=stable",
                    "DYNAMIPS_ARCH=#{arch}",
-                   "DESTDIR=#{prefix}",
                    "install"
+  end
+
+  test do
+    system "#{bin}/dynamips", "-e"
   end
 end

@@ -14,23 +14,19 @@ class Yap < Formula
   depends_on 'readline'
 
   fails_with :clang do
-    cause "Undefined symbols linking for architecture x86_64"
+    cause "uses variable-length arrays in structs, which will never be supported by clang"
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--enable-tabling",
+    system "./configure", "--enable-tabling",
                           "--enable-depth-limit",
                           "--enable-coroutining",
                           "--enable-threads",
                           "--enable-pthread-locking",
-                          "--enable-clpbn-bp=no",
-                          "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
-                          "--with-readline=#{Formula.factory('readline').opt_prefix}",
+                          "--with-gmp=#{Formula['gmp'].opt_prefix}",
+                          "--with-readline=#{Formula['readline'].opt_prefix}",
                           "--with-java=/Library/Java/Home",
                           "--prefix=#{prefix}"
-
-    inreplace 'Makefile', '-DMYDDAS_ODBC', ''
 
     system "make"
     system "make install"

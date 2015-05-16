@@ -1,41 +1,69 @@
-require 'formula'
-
 class X264 < Formula
-  homepage 'http://www.videolan.org/developers/x264.html'
-  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120812-2245-stable.tar.bz2'
-  sha1 '4be913fb12cd5b3628edc68dedb4b6e664eeda0a'
-  version 'r2197.4' # brew install -v --HEAD x264 will display the version.
+  homepage "https://www.videolan.org/developers/x264.html"
+  # the latest commit on the stable branch
+  url "https://git.videolan.org/git/x264.git", :revision => "c8a773ebfca148ef04f5a60d42cbd7336af0baf6"
+  version "r2533"
 
-  head 'http://git.videolan.org/git/x264.git', :branch => 'stable'
-
-  depends_on 'yasm' => :build
-
-  option '10-bit', 'Build a 10-bit x264 (default: 8-bit)'
-
-  def install
-    if build.head?
-      ENV['GIT_DIR'] = cached_download/'.git'
-      system './version.sh'
-    end
-    args = ["--prefix=#{prefix}", "--enable-shared"]
-    args << "--bit-depth=10" if build.include? '10-bit'
-
-    system "./configure", *args
-
-    if MacOS.prefer_64_bit?
-      inreplace 'config.mak' do |s|
-        soflags = s.get_make_var 'SOFLAGS'
-        s.change_make_var! 'SOFLAGS', soflags.gsub(' -Wl,-read_only_relocs,suppress', '')
-      end
-    end
-
-    system "make install"
+  devel do
+    # the latest commit on the master branch
+    url "https://git.videolan.org/git/x264.git", :revision => "121396c71b4907ca82301d1a529795d98daab5f8"
+    version "r2538"
   end
 
-  def caveats; <<-EOS.undent
-    Because libx264 has a rapidly-changing API, formulae that link against
-    it should be reinstalled each time you upgrade x264. Examples include:
-       avidemux, ffmbc, ffmpeg, gst-plugins-ugly
+  head "https://git.videolan.org/git/x264.git"
+
+  bottle do
+    cellar :any
+    sha256 "ee6c447f5471c47b64abb846789104714fe22c09cad9a8790f49ecf614f47da1" => :yosemite
+    sha256 "d37257f92e918904c8f1af05df1c34e3d975b1affdb1efa2b9d3aa65c2497d1f" => :mavericks
+    sha256 "f26ae8e9db2d25c99ad77ebfaceef02d3038a08066b3ea65a2f703c6c3289d4f" => :mountain_lion
+  end
+
+  depends_on "yasm" => :build
+
+  option "with-10-bit", "Build a 10-bit x264 (default: 8-bit)"
+  option "with-mp4=", "Select mp4 output: none (default), l-smash or gpac"
+
+  deprecated_option "10-bit" => "with-10-bit"
+
+  case ARGV.value "with-mp4"
+  when "l-smash" then depends_on "l-smash"
+  when "gpac" then depends_on "gpac"
+  end
+
+  def install
+    args = %W[
+      --prefix=#{prefix}
+      --enable-shared
+      --enable-static
+      --enable-strip
+    ]
+    if Formula["l-smash"].installed?
+      args << "--disable-gpac"
+    elsif Formula["gpac"].installed?
+      args << "--disable-lsmash"
+    end
+    args << "--bit-depth=10" if build.with? "10-bit"
+
+    system "./configure", *args
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdint.h>
+      #include <x264.h>
+
+      int main()
+      {
+          x264_picture_t pic;
+          x264_picture_init(&pic);
+          x264_picture_alloc(&pic, 1, 1, 1);
+          x264_picture_clean(&pic);
+          return 0;
+      }
     EOS
+    system ENV.cc, "-lx264", "test.c", "-o", "test"
+    system "./test"
   end
 end

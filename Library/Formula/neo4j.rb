@@ -1,63 +1,48 @@
-require 'formula'
+require "formula"
 
 class Neo4j < Formula
-  homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.9-unix.tar.gz'
-  sha1 '8093ccc2bebda21cec8bd3fb44fc38633b2efcd4'
-  version 'community-1.9-unix'
+  homepage "http://neo4j.org"
+  url "http://dist.neo4j.org/neo4j-community-2.2.1-unix.tar.gz"
+  sha1 "49290968ad53030bd4826335ea104f10ecc3ec42"
+  version "2.2.1"
+
+  option "with-neo4j-shell-tools", "Add neo4j-shell-tools to the standard neo4j-shell"
+
+  resource "neo4j-shell-tools" do
+    url "http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.2.zip"
+    sha1 "5c1d4d46660149291ca4f484591c25c25be82c5b"
+  end
 
   devel do
-    url 'http://dist.neo4j.org/neo4j-community-2.0.0-M02-unix.tar.gz'
-    sha1 'ce27ad68cb84380ca9ce64c27367302ea6ca4038'
-    version 'community-2.0.0-M02-unix'
+    url "http://dist.neo4j.org/neo4j-community-2.3.0-M01-unix.tar.gz"
+    sha1 "288f917f5f3822ca70c8eef5bcf1639392a41036"
+    version "2.3.0-M01"
   end
 
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
-    # Fix the permissions on the global settings file.
-    chmod 0644, Dir["config"]
-
     # Install jars in libexec to avoid conflicts
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
     # Symlink binaries
-    bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
+    bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell,-import}"]
+
+    # Eventually, install neo4j-shell-tools
+    # omiting "opencsv-2.3.jar" because it already comes with neo4j (see libexec/lib)
+    if build.with? "neo4j-shell-tools"
+      resource("neo4j-shell-tools").stage {
+        (libexec/"lib").install "geoff-0.5.0.jar", "import-tools-2.2.jar", "mapdb-0.9.3.jar"
+      }
+    end
 
     # Adjust UDC props
-    open("#{libexec}/conf/neo4j-wrapper.conf", 'a') { |f|
+    open("#{libexec}/conf/neo4j-wrapper.conf", "a") { |f|
       f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
+
+      # suppress the empty, focus-stealing java gui
+      f.puts "wrapper.java.additional=-Djava.awt.headless=true"
     }
-  end
-
-  def caveats; <<-EOS.undent
-    Quick-start guide:
-
-        1. Start the server manually:
-            neo4j start
-
-        2. Open webadmin:
-            open http://localhost:7474/webadmin/
-
-        3. Start exploring the REST API:
-            curl -v http://localhost:7474/db/data/
-
-        4. Stop:
-            neo4j stop
-
-    To launch on startup, install launchd-agent to ~/Library/LaunchAgents/ with:
-        neo4j install
-
-    If this is an upgrade, see:
-        #{libexec}/UPGRADE.txt
-
-    The manual can be found in:
-        #{libexec}/doc/
-
-    You may need to add JAVA_HOME to your shell profile:
-        export JAVA_HOME="$(/usr/libexec/java_home)"
-
-    EOS
   end
 end

@@ -1,22 +1,17 @@
-require 'formula'
-
 class Calcurse < Formula
-  homepage 'http://calcurse.org/'
-  url 'http://calcurse.org/files/calcurse-2.9.2.tar.gz'
-  sha1 'ab59b3275a9b7eb9184797f9e998e64783b03ceb'
+  homepage "http://calcurse.org/"
+  url "http://calcurse.org/files/calcurse-4.0.0.tar.gz"
+  sha256 "621b0019907618bd468f9c4dc1ce2186ee86254d3c9ade47dd2d7ab8e6656334"
 
-  depends_on 'gettext'
-
-  fails_with :clang do
-    build 425
-    cause "Issue with macro expansion in htable.h"
-  end
+  depends_on "gettext"
 
   def install
-    # need this flag otherwise there is a build error.
-    ENV.append 'CFLAGS', "-fnested-functions"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"calcurse", "-v"
   end
 end

@@ -1,22 +1,33 @@
-require 'formula'
+require "formula"
 
 class SaneBackends < Formula
-  homepage 'http://www.sane-project.org/'
-  url 'ftp://ftp2.sane-project.org/pub/sane/sane-backends-1.0.22.tar.gz'
-  sha1 'dc04d6e6fd18791d8002c3fdb23e89fef3327135'
+  homepage "http://www.sane-project.org/"
+  url "http://fossies.org/linux/misc/sane-backends-1.0.24.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/s/sane-backends/sane-backends_1.0.24.orig.tar.gz"
+  sha1 "c10bcb30a1b092b2c2fe5a86d6a5efc29123ccf9"
+  bottle do
+    revision 1
+    sha1 "36cbd09583ba8282b149467de09e963d8c2c2a6f" => :yosemite
+    sha1 "d12ff8d69dae245177c554c82dbe0acc9c31fd3d" => :mavericks
+    sha1 "343224849f6824dba073499bcb0521abd76e9e23" => :mountain_lion
+  end
 
-  depends_on 'jpeg'
-  depends_on 'libtiff'
-  depends_on 'libusb-compat'
+  revision 1
+
+  option :universal
+
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "libusb-compat"
+  depends_on "openssl"
 
   # Fixes u_long missing error. Reported upstream:
   # https://github.com/fab1an/homebrew/commit/2a716f1a2b07705aa891e2c7fbb5148506aa5a01
   # When updating this formula, check on the usptream status of this patch.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
+    ENV.universal_binary if build.universal?
     ENV.j1 # Makefile does not seem to be parallel-safe
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -26,7 +37,7 @@ class SaneBackends < Formula
                           "--enable-libusb",
                           "--disable-latex"
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Some drivers require a lockfile
     (var+"lock/sane").mkpath

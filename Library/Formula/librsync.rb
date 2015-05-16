@@ -2,22 +2,28 @@ require 'formula'
 
 class Librsync < Formula
   homepage 'http://librsync.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/librsync/librsync/0.9.7/librsync-0.9.7.tar.gz'
+  url 'https://downloads.sourceforge.net/project/librsync/librsync/0.9.7/librsync-0.9.7.tar.gz'
   sha1 'd575eb5cae7a815798220c3afeff5649d3e8b4ab'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "754e34fcd1236debb7152e61204364deaa108855" => :yosemite
+    sha1 "3e79aad6623c2332eaa5c650bc9b28e4caf56b9e" => :mavericks
+    sha1 "a0a54b67a85e2e626a4eb9e11b9222afe44351a0" => :mountain_lion
+  end
 
   option :universal
 
-  def patches
-    # fixes librsync doesn't correctly export inlined functions:
-    # http://trac.macports.org/ticket/31742
-    # link to upstream bug report:
-    # http://sourceforge.net/tracker/?func=detail&aid=3464437&group_id=56125&atid=479439
-    { :p0 => 'https://trac.macports.org/export/90437/trunk/dports/net/librsync/files/patch-delta.c.diff' }
-  end
+  depends_on 'popt'
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+
+    ENV.append 'CFLAGS', '-std=gnu89'
+
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--enable-shared"

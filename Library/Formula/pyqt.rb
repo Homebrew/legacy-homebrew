@@ -1,69 +1,91 @@
-require 'formula'
-
 class Pyqt < Formula
-  homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.1/PyQt-mac-gpl-4.10.1.tar.gz'
-  sha1 'cf20699c4db8d3031c19dd51df8857bba1a4956b'
+  homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
+  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.3/PyQt-mac-gpl-4.11.3.tar.gz"
+  sha1 "8c53254b38686e5366d74eba81f02f9611f39166"
 
-  depends_on :python => :recommended
+  bottle do
+    sha1 "7d0b71a8c80401f6026172f22605e5a4e9eff8a3" => :yosemite
+    sha1 "455a2cc8c46f64b2d27d2248b3bd6387e345377f" => :mavericks
+    sha1 "30c74d1bfad2bc16c0052fd767fdb21b461e41e6" => :mountain_lion
+  end
+
+  option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
 
-  depends_on 'sip' => ['with-python3'] if build.with? 'python3'
-  depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
+  if build.without?("python3") && build.without?("python")
+    odie "pyqt: --with-python3 must be specified when using --without-python"
+  end
+
+  depends_on "qt"
+
+  if build.with? "python3"
+    depends_on "sip" => "with-python3"
+  else
+    depends_on "sip"
+  end
 
   def install
-    python do
-      system python, "./configure.py", "--confirm-license",
-                                       "--bindir=#{bin}#{python.if3then3}",
-                                       "--destdir=#{lib}/#{python.xy}/site-packages",
-                                       "--sipdir=#{share}/sip#{python.if3then3}"
-      system "make"
-      system "make install"
-      system "make clean"  # because this python block may be run twice
+    # On Mavericks we want to target libc++, this requires a non default qt makespec
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
     end
 
-    if python3
-      # These tools need a unique suffix for python3.
-      ['pyuic4', 'pyrcc4', 'pylupdate4'].each { |f| mv(prefix/"bin3/#{f}", bin/"#{f}-py3")}
-      rm_rf prefix/'bin3'
+    Language::Python.each_python(build) do |python, version|
+      ENV.append_path "PYTHONPATH", "#{Formula["sip"].opt_lib}/python#{version}/site-packages"
+
+      args = ["--confirm-license",
+              "--bindir=#{bin}",
+              "--destdir=#{lib}/python#{version}/site-packages",
+              "--sipdir=#{share}/sip"]
+
+      # We need to run "configure.py" so that pyqtconfig.py is generated, which
+      # is needed by QGIS, PyQWT (and many other PyQt interoperable
+      # implementations such as the ROS GUI libs). This file is currently needed
+      # for generating build files appropriate for the qmake spec that was used
+      # to build Qt.  The alternatives provided by configure-ng.py is not
+      # sufficient to replace pyqtconfig.py yet (see
+      # https://github.com/qgis/QGIS/pull/1508). Using configure.py is
+      # deprecated and will be removed with SIP v5, so we do the actual compile
+      # using the newer configure-ng.py as recommended. In order not to
+      # interfere with the build using configure-ng.py, we run configure.py in a
+      # temporary directory and only retain the pyqtconfig.py from that.
+
+      require "tmpdir"
+      dir = Dir.mktmpdir
+      begin
+        cp_r(Dir.glob('*'), dir)
+        cd dir do
+          system python, "configure.py", *args
+          (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
+        end
+      ensure
+        remove_entry_secure dir
+      end
+
+      # On Mavericks we want to target libc++, this requires a non default qt makespec
+      if ENV.compiler == :clang and MacOS.version >= :mavericks
+        args << "--spec" << "unsupported/macx-clang-libc++"
+      end
+
+      system python, "configure-ng.py", *args
+      system "make"
+      system "make", "install"
+      system "make", "clean"  # for when building against multiple Pythons
     end
   end
 
   def caveats
-    python.standard_caveats if python
+    "Phonon support is broken."
   end
 
   test do
-    python do
-      # Todo: For brew-test-bot we need to add a timer that quits after 1 s or so.
+    Pathname("test.py").write <<-EOS.undent
+      from PyQt4 import QtNetwork
+      QtNetwork.QNetworkAccessManager().networkAccessible()
+    EOS
 
-      # Reference: http://zetcode.com/tutorials/pyqt4/firstprograms/
-      (testpath/'test.py').write <<-EOS.undent
-        import sys
-        from PyQt4 import QtGui, QtCore
-
-        class QuitButton(QtGui.QWidget):
-            def __init__(self, parent=None):
-                QtGui.QWidget.__init__(self, parent)
-
-                self.setGeometry(300, 300, 250, 150)
-                self.setWindowTitle('Quit button')
-
-                quit = QtGui.QPushButton('Close', self)
-                quit.setGeometry(10, 10, 60, 35)
-
-                self.connect(quit, QtCore.SIGNAL('clicked()'),
-                    QtGui.qApp, QtCore.SLOT('quit()'))
-
-        app = QtGui.QApplication(sys.argv)
-        qb = QuitButton()
-        qb.show()
-        app.exec_()
-        sys.exit(0)
-        EOS
-
+    Language::Python.each_python(build) do |python, version|
       system python, "test.py"
-      rm testpath/'test.py'
     end
   end
 end

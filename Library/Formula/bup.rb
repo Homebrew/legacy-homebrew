@@ -1,61 +1,33 @@
-require 'formula'
-
 class Bup < Formula
-  homepage 'https://github.com/bup/bup'
-  url 'https://github.com/bup/bup/archive/bup-0.25-rc1.tar.gz'
-  sha1 'b88bd38d6f00a646faf0bd1f561595ebc0e55b30'
+  homepage "https://github.com/bup/bup"
+  head "https://github.com/bup/bup.git"
 
-  head 'https://github.com/bup/bup.git', :branch => 'master'
+  stable do
+    url "https://github.com/bup/bup/archive/0.26.tar.gz"
+    sha256 "8c25551fa723cfe5dcaaa671c5f0964d8caff22b068923df007a13169d8f015c"
 
-  option "run-tests", "Run unit tests after compilation"
-
-  depends_on :python
-
-  # patch to make the `--prefix` parameter work
-  # found at https://github.com/apenwarr/bup/pull/5
-  def patches
-    DATA
+    # Fix compilation on 10.10
+    patch do
+      url "https://github.com/bup/bup/commit/75d089e7cdb7a7eb4d69c352f56dad5ad3aa1f97.diff"
+      sha256 "9a4615e91b7b2f43e5447e30aa4096f1b0bf65dc2081e7c08d852830ee217716"
+    end
   end
+
+  option "with-tests", "Run unit tests after compilation"
+  option "with-pandoc", "Build and install the manpages"
+
+  deprecated_option "run-tests" => "with-tests"
+
+  depends_on "pandoc" => [:optional, :build]
 
   def install
-    python do
-      ohai ENV['PATH']
-      system "./configure", "--prefix=#{prefix}"
-      system "make"
-    end
-    system "make test" if build.include? "run-tests"
-    system "make install"
+    system "make"
+    system "make", "test" if build.with? "tests"
+    system "make", "install", "DESTDIR=#{prefix}", "PREFIX="
+  end
+
+  test do
+    system bin/"bup", "init"
+    assert File.exist?("#{testpath}/.bup")
   end
 end
-
-
-__END__
-diff --git a/Makefile b/Makefile
-index ce91ff0..ecb0604 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,3 +1,4 @@
-+-include config/config.vars
- OS:=$(shell uname | sed 's/[-_].*//')
- CFLAGS:=-Wall -O2 -Werror $(PYINCLUDE)
- SOEXT:=.so
-@@ -14,9 +15,6 @@ bup: lib/bup/_version.py lib/bup/_helpers$(SOEXT) cmds
-
- Documentation/all: bup
-
--INSTALL=install
--PYTHON=python
--PREFIX=/usr
- MANDIR=$(DESTDIR)$(PREFIX)/share/man
- DOCDIR=$(DESTDIR)$(PREFIX)/share/doc/bup
- BINDIR=$(DESTDIR)$(PREFIX)/bin
-diff --git a/config/config.vars.in b/config/config.vars.in
-index 7bc32ee..a45827c 100644
---- a/config/config.vars.in
-+++ b/config/config.vars.in
-@@ -1,2 +1,5 @@
- CONFIGURE_FILES=@CONFIGURE_FILES@
- GENERATED_FILES=@GENERATED_FILES@
-+PREFIX=@prefix@
-+INSTALL=@INSTALL@
-+PYTHON=@PYTHON@

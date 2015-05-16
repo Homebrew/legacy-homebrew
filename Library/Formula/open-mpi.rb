@@ -1,56 +1,75 @@
-require 'formula'
-
 class OpenMpi < Formula
-  homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.4.tar.bz2'
-  sha1 '38095d3453519177272f488d5058a98f7ebdbf10'
+  homepage "https://www.open-mpi.org/"
+  # Wait for 1.8.6 and skip 1.8.5 due to a severe memory leak on OS X:
+  # https://github.com/open-mpi/ompi/issues/579
+  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2"
+  sha256 "23158d916e92c80e2924016b746a93913ba7fae9fff51bf68d5c2a0ae39a2f8a"
 
-  devel do
-    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.1.tar.bz2'
-    sha1 '35d166e2a1d8b88c44d61eaabb5086e2425c8eb8'
+  bottle do
+    sha1 "a6ec98d40ab34bf2eb4dbe9223d5aa430ba749ed" => :yosemite
+    sha1 "9d7366e69787c6b331fe5473c8025d86d8b79691" => :mavericks
+    sha1 "8c8627010c9390cb72054fba3f8eea419a67bb2b" => :mountain_lion
   end
 
-  option 'disable-fortran', 'Do not build the Fortran bindings'
-  option 'test', 'Verify the build with make check'
-  option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
+  deprecated_option "disable-fortran" => "without-fortran"
+  deprecated_option "enable-mpi-thread-multiple" => "with-mpi-thread-multiple"
 
-  conflicts_with 'mpich2', :because => 'both install mpi__ compiler wrappers'
+  option "with-mpi-thread-multiple", "Enable MPI_THREAD_MULTIPLE"
+  option :cxx11
 
-  # Reported upstream at version 1.6, both issues
-  # http://www.open-mpi.org/community/lists/devel/2012/05/11003.php
-  # http://www.open-mpi.org/community/lists/devel/2012/08/11362.php
-  fails_with :clang do
-    build 421
-    cause 'fails make check on Lion and ML'
-  end if not build.devel?
+  conflicts_with "mpich2", :because => "both install mpi__ compiler wrappers"
+  conflicts_with "lcdf-typetools", :because => "both install same set of binaries."
+
+  depends_on :fortran => :recommended
+  depends_on "libevent"
 
   def install
+    ENV.cxx11 if build.cxx11?
+
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
+      --disable-silent-rules
       --enable-ipv6
+      --with-libevent=#{Formula["libevent"].opt_prefix}
     ]
-    if build.include? 'disable-fortran'
-      args << '--disable-mpi-f77' << '--disable-mpi-f90'
-    else
-      ENV.fortran
-    end
+    args << "--disable-mpi-fortran" if build.without? "fortran"
+    args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
 
-    if build.include? 'enable-mpi-thread-multiple'
-      args << '--enable-mpi-thread-multiple'
-    end
+    system "./configure", *args
+    system "make", "all"
+    system "make", "check"
+    system "make", "install"
 
-    system './configure', *args
-    system 'make V=1 all'
-    system 'make V=1 check' if build.include? 'test'
-    system 'make install'
+    # If Fortran bindings were built, there will be stray `.mod` files
+    # (Fortran header) in `lib` that need to be moved to `include`.
+    include.install Dir["#{lib}/*.mod"]
 
-    # If Fortran bindings were built, there will be a stray `.mod` file
-    # (Fortran header) in `lib` that needs to be moved to `include`.
-    include.install lib/'mpi.mod' if File.exists? "#{lib}/mpi.mod"
+    # Move vtsetup.jar from bin to libexec.
+    libexec.install bin/"vtsetup.jar"
+    inreplace bin/"vtsetup", "$bindir/vtsetup.jar", "$prefix/libexec/vtsetup.jar"
+  end
 
-    # Not sure why the wrapped script has a jar extension - adamv
-    libexec.install bin/'vtsetup.jar'
-    bin.write_jar_script libexec/'vtsetup.jar', 'vtsetup.jar'
+  test do
+    (testpath/"hello.c").write <<-EOS.undent
+      #include <mpi.h>
+      #include <stdio.h>
+
+      int main()
+      {
+        int size, rank, nameLen;
+        char name[MPI_MAX_PROCESSOR_NAME];
+        MPI_Init(NULL, NULL);
+        MPI_Comm_size(MPI_COMM_WORLD, &size);
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        MPI_Get_processor_name(name, &nameLen);
+        printf("[%d/%d] Hello, world! My name is %s.\\n", rank, size, name);
+        MPI_Finalize();
+        return 0;
+      }
+    EOS
+    system "#{bin}/mpicc", "hello.c", "-o", "hello"
+    system "./hello"
+    system "#{bin}/mpirun", "-np", "4", "./hello"
   end
 end

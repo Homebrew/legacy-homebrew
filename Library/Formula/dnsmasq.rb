@@ -1,13 +1,23 @@
-require 'formula'
-
 class Dnsmasq < Formula
-  homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.66.tar.gz'
-  sha256 '36232fa23d1a8efc6f84a29da5ff829c2aa40df857b9116a9320ea37b651a982'
+  homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
+  url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.72.tar.gz"
+  sha1 "c2dc54b142ec5676d6e22951bc5b61863b0503fe"
 
-  option 'with-idn', 'Compile with IDN support'
+  bottle do
+    revision 1
+    sha1 "68baa9fab86c8f30738984f2d734d537a0e815e5" => :yosemite
+    sha1 "926b6cf81ecd09011a64ded5922231cb13aae7d8" => :mavericks
+    sha1 "86e05946e01f650595ea72332fcce61e5e489ed4" => :mountain_lion
+  end
 
-  depends_on "libidn" if build.include? 'with-idn'
+  option "with-libidn", "Compile with IDN support"
+  option "with-dnssec", "Compile with DNSSEC support"
+
+  deprecated_option "with-idn" => "with-libidn"
+
+  depends_on "pkg-config" => :build
+  depends_on "libidn" => :optional
+  depends_on "nettle" if build.with? "dnssec"
 
   def install
     ENV.deparallelize
@@ -16,8 +26,13 @@ class Dnsmasq < Formula
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
     # Optional IDN support
-    if build.include? 'with-idn'
+    if build.with? "libidn"
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
+    end
+
+    # Optional DNSSEC support
+    if build.with? "dnssec"
+      inreplace "src/config.h", "/* #define HAVE_DNSSEC */", "#define HAVE_DNSSEC"
     end
 
     # Fix compilation on Lion
@@ -50,16 +65,19 @@ class Dnsmasq < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/dnsmasq</string>
+          <string>#{opt_sbin}/dnsmasq</string>
           <string>--keep-in-foreground</string>
         </array>
+        <key>RunAtLoad</key>
+        <true/>
         <key>KeepAlive</key>
-        <dict>
-          <key>NetworkState</key>
-          <true/>
-        </dict>
+        <true/>
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/dnsmasq", "--test"
   end
 end

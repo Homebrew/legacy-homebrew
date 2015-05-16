@@ -1,16 +1,14 @@
-require 'formula'
+require "formula"
 
 class Miredo < Formula
-  homepage 'http://www.remlab.net/miredo/'
-  url 'http://www.remlab.net/files/miredo/miredo-1.2.5.tar.xz'
-  sha1 '3aa4f35e78ffaca2c8652f428401be6e384888c9'
+  homepage "http://www.remlab.net/miredo/"
+  url "http://www.remlab.net/files/miredo/miredo-1.2.6.tar.xz"
+  sha1 "630c84e9919952f6f4792ceda54a12e0aef43bbf"
 
-  depends_on 'xz' => :build
-  depends_on 'judy'
+  depends_on :tuntap
+  depends_on "judy"
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = %W[
@@ -20,19 +18,7 @@ class Miredo < Formula
     ]
 
     system "./configure", *args
-    system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    You must also install tuntap.
-
-    The TunTap project provides kernel extensions for Mac OS X that allow
-    creation of virtual network interfaces.
-
-    http://tuntaposx.sourceforge.net/
-
-    Because these are kernel extensions, there is no Homebrew formula for tuntap.
-    EOS
+    system "make", "install"
   end
 end
 

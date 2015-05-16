@@ -1,17 +1,39 @@
 require 'testing_env'
 require 'version'
 
-class VersionComparisonTests < Test::Unit::TestCase
-  include VersionAssertions
+class VersionTests < Homebrew::TestCase
+  def test_accepts_objects_responding_to_to_str
+    value = stub(:to_str => '0.1')
+    assert_equal '0.1', Version.new(value).to_s
+  end
 
+  def test_raises_for_non_string_objects
+    assert_raises(TypeError) { Version.new(1.1) }
+    assert_raises(TypeError) { Version.new(1) }
+    assert_raises(TypeError) { Version.new(:symbol) }
+  end
+end
+
+class VersionComparisonTests < Homebrew::TestCase
   def test_version_comparisons
     assert_operator version('0.1'), :==, version('0.1.0')
     assert_operator version('0.1'), :<, version('0.2')
     assert_operator version('1.2.3'), :>, version('1.2.2')
-    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
     assert_operator version('1.2.4'), :<, version('1.2.4.1')
+  end
+
+  def test_patchlevel
+    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
+    assert_operator version('1.2.3-p33'), :<, version('1.2.3-p34')
+    assert_operator version('1.2.3-p10'), :>, version('1.2.3-p9')
+  end
+
+  def test_HEAD
     assert_operator version('HEAD'), :>, version('1.2.3')
     assert_operator version('1.2.3'), :<, version('HEAD')
+  end
+
+  def test_alpha_beta_rc
     assert_operator version('3.2.0b4'), :<, version('3.2.0')
     assert_operator version('1.0beta6'), :<, version('1.0b7')
     assert_operator version('1.0b6'), :<, version('1.0beta7')
@@ -19,23 +41,53 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_operator version('1.1beta2'), :<, version('1.1rc1')
     assert_operator version('1.0.0beta7'), :<, version('1.0.0')
     assert_operator version('3.2.1'), :>, version('3.2beta4')
-    assert_nil version('1.0') <=> 'foo'
   end
 
-  def test_version_queries
-    assert Version.new("1.1alpha1").alpha?
-    assert Version.new("1.0beta2").beta?
-    assert Version.new("1.0rc-1").rc?
+  def test_comparing_unevenly_padded_versions
+    assert_operator version('2.1.0-p194'), :<, version('2.1-p195')
+    assert_operator version('2.1-p195'), :>, version('2.1.0-p194')
+    assert_operator version('2.1-p194'), :<, version('2.1.0-p195')
+    assert_operator version('2.1.0-p195'), :>, version('2.1-p194')
+    assert_operator version('2-p194'), :<, version('2.1-p195')
+  end
+
+  def test_comparison_returns_nil_for_non_version
+    v = version("1.0")
+    assert_nil v <=> Object.new
+    assert_raises(ArgumentError) { v > Object.new }
+  end
+
+  def test_compare_patchlevel_to_non_patchlevel
+    assert_operator version('9.9.3-P1'), :>, version('9.9.3')
+  end
+
+  def test_erlang_version
+    versions = %w{R16B R15B03-1 R15B03 R15B02 R15B01 R14B04 R14B03
+                  R14B02 R14B01 R14B R13B04 R13B03 R13B02-1}.reverse
+    assert_equal versions, versions.sort_by { |v| version(v) }
+  end
+
+  def test_hash_equality
+    v1 = version('0.1.0')
+    v2 = version('0.1.0')
+    v3 = version('0.1.1')
+
+    assert_eql v1, v2
+    refute_eql v1, v3
+    assert_equal v1.hash, v2.hash
+
+    h = { v1 => :foo }
+    assert_equal :foo, h[v2]
   end
 end
 
-class VersionParsingTests < Test::Unit::TestCase
-  include VersionAssertions
-
+class VersionParsingTests < Homebrew::TestCase
   def test_pathname_version
     d = HOMEBREW_CELLAR/'foo-0.1.9'
     d.mkpath
     assert_equal version('0.1.9'), d.version
+  ensure
+    d.unlink
   end
 
   def test_no_version
@@ -166,23 +218,23 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_bottle_style
-    assert_version_detected '4.8.0', 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0.lion.bottle.tar.gz'
+    assert_version_detected '4.8.0', 'https://homebrew.bintray.com/bottles/qt-4.8.0.lion.bottle.tar.gz'
   end
 
   def test_versioned_bottle_style
-    assert_version_detected '4.8.1', 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.1.lion.bottle.1.tar.gz'
+    assert_version_detected '4.8.1', 'https://homebrew.bintray.com/bottles/qt-4.8.1.lion.bottle.1.tar.gz'
   end
 
   def test_erlang_bottle_style
-    assert_version_detected 'R15B', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B.lion.bottle.tar.gz'
+    assert_version_detected 'R15B', 'https://homebrew.bintray.com/bottles/erlang-R15B.lion.bottle.tar.gz'
   end
 
   def test_another_erlang_bottle_style
-    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountain_lion.bottle.tar.gz'
+    assert_version_detected 'R15B01', 'https://homebrew.bintray.com/bottles/erlang-R15B01.mountain_lion.bottle.tar.gz'
   end
 
   def test_yet_another_erlang_bottle_style
-    assert_version_detected 'R15B03-1', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B03-1.mountainlion.bottle.tar.gz'
+    assert_version_detected 'R15B03-1', 'https://homebrew.bintray.com/bottles/erlang-R15B03-1.mountainlion.bottle.tar.gz'
   end
 
   def test_imagemagick_style
@@ -190,11 +242,11 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_imagemagick_bottle_style
-    assert_version_detected '6.7.5-7', 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7.lion.bottle.tar.gz'
+    assert_version_detected '6.7.5-7', 'https://homebrew.bintray.com/bottles/imagemagick-6.7.5-7.lion.bottle.tar.gz'
   end
 
   def test_imagemagick_versioned_bottle_style
-    assert_version_detected '6.7.5-7', 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7.lion.bottle.1.tar.gz'
+    assert_version_detected '6.7.5-7', 'https://homebrew.bintray.com/bottles/imagemagick-6.7.5-7.lion.bottle.1.tar.gz'
   end
 
   def test_dash_version_dash_style
@@ -213,10 +265,10 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_detected '8d', 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
   end
 
-  # def test_version_ghc_style
-  #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
-  #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
-  # end
+  def test_version_ghc_style
+    assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
+    assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
+  end
 
   def test_pypy_version
     assert_version_detected '1.4.1', 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
@@ -255,7 +307,7 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_suite3270_version
-    assert_version_detected '3.3.12ga7', 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
+    assert_version_detected '3.3.12ga7', 'http://downloads.sourceforge.net/project/x3270/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
   end
 
   def test_wwwoffle_version
@@ -272,5 +324,30 @@ class VersionParsingTests < Test::Unit::TestCase
 
   def test_ezlupdate_version
     assert_version_detected '2011.10', 'https://github.com/downloads/ezsystems/ezpublish-legacy/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
+  end
+
+  def test_aespipe_version_style
+    assert_version_detected '2.4c',
+      'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
+  end
+
+  def test_win_style
+    assert_version_detected '0.9.17',
+      'http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.17-w32.zip'
+    assert_version_detected '1.29',
+      'http://ftpmirror.gnu.org/libidn/libidn-1.29-win64.zip'
+  end
+
+  def test_with_arch
+    assert_version_detected '4.0.18-1',
+      'http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm'
+    assert_version_detected '5.5.7-5',
+      'http://ftpmirror.gnu.org/autogen/autogen-5.5.7-5.i386.rpm'
+    assert_version_detected '2.8',
+      'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x86.zip'
+    assert_version_detected '2.8',
+      'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x64.zip'
+    assert_version_detected '4.0.18',
+      'http://ftpmirror.gnu.org/mtools/mtools_4.0.18_i386.deb'
   end
 end

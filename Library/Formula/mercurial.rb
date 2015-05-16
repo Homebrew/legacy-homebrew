@@ -1,62 +1,31 @@
-require 'formula'
-
+# No head build supported; if you need head builds of Mercurial, do so outside
+# of Homebrew.
 class Mercurial < Formula
-  homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.6.1.tar.gz'
-  sha1 'ee9b2ae1cf2518c90b55f9429bf4ed9f2d4fced6'
+  homepage "http://mercurial.selenic.com/"
+  url "http://mercurial.selenic.com/release/mercurial-3.4.tar.gz"
+  sha256 "ff1da0545cdd46ebcf473176d55937a22bb55fff51cdff9d4c2f900fc80baf10"
 
-  head 'http://selenic.com/repo/hg', :using => :hg
-
-  depends_on :python # its written in Python, so this is a hard dep
-  depends_on 'docutils' => :python
+  bottle do
+    cellar :any
+    sha256 "073cf23fa2ff34cc66ce99c8535fcce979453e402802d483ebccf2d60d323d58" => :yosemite
+    sha256 "76fce90c4a1759495935a23fa8c515e844b08648f08ffd1d35adeb303bb47de6" => :mavericks
+    sha256 "fcac735e0d359616c6bd89f8b6966b8bf7a005af788716c5561a8b434ebb099b" => :mountain_lion
+  end
 
   def install
-    python do
-      # Inside this python do block, the PYTHONPATH (and more) is alreay set up
-      if python.from_osx? && !MacOS::CLT.installed?
-        # Help castrated system python on Xcode find the Python.h:
-        # Setting CFLAGS does not work :-(
-        inreplace 'setup.py', 'get_python_inc()', "'#{python.incdir}'"
-      end
+    ENV.minimal_optimization if MacOS.version <= :snow_leopard
 
-      # Man pages come pre-built in source releases
-      system "make doc"
-      system "make", "PREFIX=#{prefix}", "install"
-
-      # Install some contribs
-      bin.install "contrib/hgk"
-      # Install man pages
-      man1.install 'doc/hg.1'
-      man5.install 'doc/hgignore.5', 'doc/hgrc.5'
-    end
+    system "make", "PREFIX=#{prefix}", "install-bin"
+    # Install man pages, which come pre-built in source releases
+    man1.install "doc/hg.1"
+    man5.install "doc/hgignore.5", "doc/hgrc.5"
 
     # install the completion scripts
-    bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
-    zsh_completion.install 'contrib/zsh_completion' => '_hg'
+    bash_completion.install "contrib/bash_completion" => "hg-completion.bash"
+    zsh_completion.install "contrib/zsh_completion" => "_hg"
   end
 
-  def caveats
-    s = <<-EOS.undent
-      In order to use the graphical `hgk`, you may have to set:
-        export HG=hg
-      and add to your ~/.hgrc file:
-        [extensions]
-        hgk=
-    EOS
-
-    if build.head? then s += <<-EOS.undent
-        To install the --HEAD version of mercurial, you have to:
-          1. `brew install mercurial`  # so brew can use this to fetch sources!
-          2. `brew unlink mercurial`
-          3. `brew install mercurial --HEAD`
-          4. `brew cleanup mercurial`  # to remove the older non-HEAD version
-      EOS
-    end
-    s += python.standard_caveats if python
-    s
-  end
-
-  def test
-    system "#{bin}/hg", "debuginstall"
+  test do
+    system "#{bin}/hg", "init"
   end
 end

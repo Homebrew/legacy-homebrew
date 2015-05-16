@@ -12,6 +12,6 @@ class Prips < Formula
   end
 
   test do
-    `'#{bin}/prips' 127.0.0.0/31`.strip == "127.0.0.0\n127.0.0.1"
+    assert_equal "127.0.0.0\n127.0.0.1", `'#{bin}/prips' 127.0.0.0/31`.strip
   end
 end

@@ -1,14 +1,12 @@
-require 'formula'
-
 class ZshCompletions < Formula
-  homepage 'https://github.com/zsh-users/zsh-completions'
-  url 'https://github.com/zsh-users/zsh-completions/archive/0.8.0.tar.gz'
-  sha1 'd1884c307775a1e0621be0fb7c443f1cf5f260b9'
+  homepage "https://github.com/zsh-users/zsh-completions"
+  url "https://github.com/zsh-users/zsh-completions/archive/0.12.0.tar.gz"
+  sha256 "770d92749b11b22192595b207208508f8bfa319d5d03210a71bc44c8b9cfa0d5"
 
-  head 'https://github.com/zsh-users/zsh-completions.git'
+  head "https://github.com/zsh-users/zsh-completions.git"
 
   def install
-    (share/'zsh-completions').install Dir['src/_*']
+    (share/"zsh-completions").install Dir["src/_*"]
   end
 
   def caveats
@@ -26,5 +24,14 @@ class ZshCompletions < Formula
 
       chmod go-w /usr/local/share
     EOS
+  end
+
+  test do
+    (testpath/".zshrc").write <<-EOS.undent
+      fpath=(#{HOMEBREW_PREFIX}/share/zsh-completions $fpath)
+      autoload -U compinit
+      compinit
+    EOS
+    system "/bin/zsh", "--login", "-i", "-c", "which _ack"
   end
 end

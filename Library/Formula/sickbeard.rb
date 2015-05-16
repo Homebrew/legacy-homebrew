@@ -1,20 +1,43 @@
-require 'formula'
+require "formula"
 
 class Sickbeard < Formula
-  homepage 'http://www.sickbeard.com/'
-  url 'https://github.com/midgetspy/Sick-Beard/archive/build-498.tar.gz'
-  sha1 'd4374c2377d4731aea3b142c4bd14fa82c832951'
+  homepage "http://www.sickbeard.com/"
+  head "https://github.com/midgetspy/Sick-Beard.git"
+  url "https://github.com/midgetspy/Sick-Beard/archive/build-507.tar.gz"
+  sha1 "c7939a58f38d55e1db6a732047c37eb31588cc7d"
 
-  head 'https://github.com/midgetspy/Sick-Beard.git'
+  bottle do
+    sha1 "d144a55f9a667036255b373f7fcf294455d447e2" => :yosemite
+    sha1 "2c47e5cec2a12f46f57cff89f29cb34f14b72183" => :mavericks
+    sha1 "1a2abb4fcbae529e5c378d5ca75f506c726a8a0b" => :mountain_lion
+  end
 
-  depends_on 'Cheetah' => :python
+  resource "Markdown" do
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.1.tar.gz"
+    sha1 "2c9cedad000e9ecdf0b220bd1ad46bc4592d067e"
+  end
+
+  resource "Cheetah" do
+    url "https://pypi.python.org/packages/source/C/Cheetah/Cheetah-2.4.4.tar.gz"
+    sha1 "c218f5d8bc97b39497680f6be9b7bd093f696e89"
+  end
 
   def install
-    libexec.install Dir['*']
+    # TODO - strip down to the minimal install
+    prefix.install_metafiles
+    libexec.install Dir["*"]
+
+    ENV["CHEETAH_INSTALL_WITHOUT_SETUPTOOLS"] = "1"
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
+    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+
+    resource("Markdown").stage { system "python", *install_args }
+    resource("Cheetah").stage { system "python", *install_args }
+
     (bin+"sickbeard").write(startup_script)
   end
 
-  plist_options :manual => 'sickbeard'
+  plist_options :manual => "sickbeard"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -25,7 +48,7 @@ class Sickbeard < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/sickbeard</string>
+        <string>#{opt_bin}/sickbeard</string>
         <string>-q</string>
         <string>--nolaunch</string>
         <string>-p</string>
@@ -40,9 +63,10 @@ class Sickbeard < Formula
 
   def startup_script; <<-EOS.undent
     #!/bin/bash
+    export PYTHONPATH="#{libexec}/lib/python2.7/site-packages:$PYTHONPATH"
     python "#{libexec}/SickBeard.py"\
-           "--pid_file=#{var}/run/sickbeard.pid"\
-           "--data_dir=#{etc}/sickbeard"\
+           "--pidfile=#{var}/run/sickbeard.pid"\
+           "--datadir=#{etc}/sickbeard"\
            "$@"
     EOS
   end

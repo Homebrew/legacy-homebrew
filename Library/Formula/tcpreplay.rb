@@ -1,41 +1,29 @@
-require 'formula'
+require "formula"
 
 class Tcpreplay < Formula
-  homepage 'http://tcpreplay.synfin.net'
-  url 'http://downloads.sourceforge.net/project/tcpreplay/tcpreplay/3.4.4/tcpreplay-3.4.4.tar.gz'
-  sha1 '9e4cca81cfbfb919f8759e1a27ce1b3b963ff3b8'
+  homepage "http://tcpreplay.appneta.com"
+  url "https://github.com/appneta/tcpreplay/releases/download/v4.1.0/tcpreplay-4.1.0.tar.gz"
+  sha1 "9723d82a0136d963bcc2665d562cb562d216a1c1"
 
-  # Hard-code use of dylib instead of so
-  def patches; DATA; end
+  bottle do
+    cellar :any
+    sha1 "4ad7a57a4ad4730cd48096fe547f81345726d186" => :yosemite
+    sha1 "6530b5c80d93381072019dfdc0caf96775b028f3" => :mavericks
+    sha1 "91ad4549dea2d5e715611fb82bd967da9896561d" => :mountain_lion
+  end
+
+  depends_on "libdnet" => :recommended
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--disable-debug",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--enable-dynamic-link"
-    system "make install"
+                          "--enable-dynamic-link",
+                          "--with-libpcap=#{MacOS.sdk_path}/usr"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/tcpreplay", "--version"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index d41d433..9514748 100755
---- a/configure
-+++ b/configure
-@@ -9872,7 +9872,7 @@ darwin* | rhapsody*)
-   soname_spec='${libname}${release}${major}$shared_ext'
-   shlibpath_overrides_runpath=yes
-   shlibpath_var=DYLD_LIBRARY_PATH
--  shrext_cmds='`test .$module = .yes && echo .so || echo .dylib`'
-+  shrext_cmds=".dylib"
- 
-   sys_lib_search_path_spec="$sys_lib_search_path_spec /usr/local/lib"
-   sys_lib_dlsearch_path_spec='/usr/local/lib /lib /usr/lib'
-@@ -14675,7 +14675,7 @@ darwin* | rhapsody*)
-   soname_spec='${libname}${release}${major}$shared_ext'
-   shlibpath_overrides_runpath=yes
-   shlibpath_var=DYLD_LIBRARY_PATH
--  shrext_cmds='`test .$module = .yes && echo .so || echo .dylib`'
-+  shrext_cmds=".dylib"
- 
-   sys_lib_dlsearch_path_spec='/usr/local/lib /lib /usr/lib'
-   ;;

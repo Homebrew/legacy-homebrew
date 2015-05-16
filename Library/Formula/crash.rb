@@ -1,13 +1,18 @@
-require 'formula'
+require "formula"
 
 class Crash < Formula
-  homepage 'http://www.crashub.org/'
-  url 'https://crsh.googlecode.com/files/crash-1.2.5.tar.gz'
-  sha1 '8567aa4f16e47aca7041f0e48ebcbc88a038c308'
+  homepage "http://www.crashub.org/"
+  url "http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.1/crash.distrib-1.3.1.tar.gz"
+  sha1 "0f6c157dda63f9d828d558c8b329344a6d17c7e9"
+
+  resource "docs" do
+    url "http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.1/crash.distrib-1.3.1-docs.tar.gz"
+    sha1 "56957cb06b5600ca739c87070477cf066757f3ec"
+  end
 
   def install
-    libexec.install Dir['crash/*']
-    doc.install Dir['doc/*']
+    doc.install resource("docs")
+    libexec.install Dir["crash/*"]
     bin.install_symlink "#{libexec}/bin/crash.sh"
   end
 end

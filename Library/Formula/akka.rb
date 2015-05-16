@@ -1,13 +1,16 @@
-require 'formula'
+require "formula"
 
 class Akka < Formula
-  homepage 'http://akka.io/'
-  url 'http://download.akka.io/downloads/akka-2.1.4.tgz'
-  sha1 '8ab4b3a49988882ed77beec72603579f0f6b49ee'
+  homepage "http://akka.io/"
+  url "https://downloads.typesafe.com/akka/akka_2.10-2.3.9.zip"
+  sha256 "b790207f2bd6b8b615c08c2615f26a972580cb0391339f3c4211242adcc93d2c"
 
   def install
     # Remove Windows files
     rm "bin/akka.bat"
+
+    chmod 0755, "bin/akka"
+    chmod 0755, "bin/akka-cluster"
 
     # Translate akka script
     inreplace "bin/akka" do |s|

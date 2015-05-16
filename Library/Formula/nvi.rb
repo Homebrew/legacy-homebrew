@@ -1,14 +1,27 @@
 require 'formula'
 
 class Nvi < Formula
-  homepage 'https://sites.google.com/a/bostic.com/keithbostic/nvi'
-  url 'http://www.kotnet.org/~skimo/nvi/devel/nvi-1.81.6.tar.bz2'
-  sha1 'd3445ed69166102735335a2ff60d092d9a9143c6'
+  homepage 'https://sites.google.com/a/bostic.com/keithbostic/vi/'
+  url 'http://ftp.de.debian.org/debian/pool/main/n/nvi/nvi_1.81.6.orig.tar.gz'
+  sha1 'ce3e0d7d476fb3bdcce9d547e170152290db0347'
 
-  depends_on 'berkeley-db'
+  depends_on 'berkeley-db4'
 
-  def patches
-    DATA
+  # Patches per MacPorts
+  # The first corrects usage of BDB flags.
+  patch :p0 do
+    url "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-common__db.h"
+    sha1 "8c350d51a970b31890ed2b756f7594dc54af3636"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-dist__port.h.in"
+    sha1 "c710836415f999255e3617256380a4881c2281a8"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-ex_script.c.diff"
+    sha1 "c70eec15f8e0dbd66777953506ab78dc77150505"
   end
 
   def install
@@ -22,31 +35,3 @@ class Nvi < Formula
     end
   end
 end
-
-__END__
-diff --git a/ex/ex_script.c b/ex/ex_script.c
-index 31f42c1..8f0104a 100644
---- a/ex/ex_script.c
-+++ b/ex/ex_script.c
-@@ -12,6 +12,10 @@
-
- #include "config.h"
-
-+#ifdef __APPLE__
-+#undef HAVE_SYS5_PTY
-+#endif
-+
- #ifndef lint
- static const char sccsid[] = "$Id: ex_script.c,v 10.38 2001/06/25 15:19:19 skimo Exp $ (Berkeley) $Date: 2001/06/25 15:19:19 $";
- #endif /* not lint */
-@@ -45,6 +49,10 @@ static const char sccsid[] = "$Id: ex_script.c,v 10.38 2001/06/25 15:19:19 skimo
- #include "script.h"
- #include "pathnames.h"
-
-+#ifdef __APPLE__
-+#undef HAVE_SYS5_PTY
-+#endif
-+
- static void	sscr_check __P((SCR *));
- static int	sscr_getprompt __P((SCR *));
- static int	sscr_init __P((SCR *));

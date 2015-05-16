@@ -4,14 +4,8 @@ class Formula
     puts "Use the fails_with DSL instead"
   end
 
-  def fails_with_llvm?
-    fails_with? :llvm
-  end
-
   def self.fails_with_llvm msg=nil, data={}
-    case msg when Hash then data = msg end
-    failure = CompilerFailure.new(:llvm) { build(data.delete(:build).to_i) }
-    @cc_failures ||= Set.new
-    @cc_failures << failure
+    data = msg if Hash === msg
+    fails_with(:llvm) { build(data.delete(:build).to_i) }
   end
 end

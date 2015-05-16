@@ -1,20 +1,33 @@
-require 'formula'
-
 class FdkAac < Formula
-  homepage 'http://sourceforge.net/projects/opencore-amr/'
-  url 'http://sourceforge.net/projects/opencore-amr/files/fdk-aac/fdk-aac-0.1.1.tar.gz'
-  sha1 '84badb9ada86a4488c03d8485f8365b60934ea36'
+  homepage "http://sourceforge.net/projects/opencore-amr/"
+  url "https://downloads.sourceforge.net/project/opencore-amr/fdk-aac/fdk-aac-0.1.4.tar.gz"
+  sha256 "5910fe788677ca13532e3f47b7afaa01d72334d46a2d5e1d1f080f1173ff15ab"
 
-  head 'git://opencore-amr.git.sourceforge.net/gitroot/opencore-amr/fdk-aac'
+  bottle do
+    cellar :any
+    sha256 "69c1659f65a9ca7644bf81ac4a8833ad23f63239c9f4cc14ab39bc203dbe2c68" => :yosemite
+    sha256 "6b4ea8d82e310acb425325ad19d79ad039c3a3c88db0534e59d0fd973c16d058" => :mavericks
+    sha256 "6288e9b2d40ea937f7964aa0ea86e99884d8f7729a8f57429ec51cdb53b3ca4f" => :mountain_lion
+  end
 
-  depends_on :automake
-  depends_on :libtool
+  head do
+    url "git://opencore-amr.git.sourceforge.net/gitroot/opencore-amr/fdk-aac"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def install
-    system "autoreconf -fvi"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./autogen.sh" if build.head?
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-shared"
-    system "make install"
+                          "--enable-example"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/aac-enc", test_fixtures("test.wav"), "test.aac"
+    assert File.exist?("test.aac")
   end
 end

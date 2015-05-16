@@ -19,6 +19,8 @@ class Ioke < Formula
       s.change_make_var! 'IOKE_HOME', libexec
     end
 
-    bin.install_symlink libexec/'bin/ioke'
+    bin.install_symlink libexec/'bin/ioke',
+                        libexec/'bin/ispec',
+                        libexec/'bin/dokgen'
   end
 end

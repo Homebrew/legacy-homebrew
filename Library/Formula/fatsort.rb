@@ -2,8 +2,10 @@ require 'formula'
 
 class Fatsort < Formula
   homepage 'http://fatsort.sourceforge.net/'
-  url 'http://sourceforge.net/projects/fatsort/files/fatsort-1.0.1.314.tar.gz'
-  sha1 'e05cef5ae6c1a795513a79e6960ead00d37038c2'
+  url 'https://downloads.sourceforge.net/project/fatsort/fatsort-1.3.365.tar.gz'
+  sha1 '9ae5d1ab5e4c91e6725237fab1271f881c3edb59'
+
+  depends_on 'help2man'
 
   def install
     system "make", "CC=#{ENV.cc}"

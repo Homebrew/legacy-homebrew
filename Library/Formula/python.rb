@@ -1,47 +1,65 @@
-require 'formula'
-
-class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
-  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
-end
-
-class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz'
-  sha1 '9c70d314e5dea6f41415af814056b0f63c3ffd14'
-end
-
 class Python < Formula
-  homepage 'http://www.python.org'
-  url 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
-  sha1 '6cfada1a739544a6fa7f2601b500fba02229656b'
+  homepage "https://www.python.org"
+  head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
+  url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz"
+  sha256 "c8bba33e66ac3201dabdc556f0ea7cfe6ac11946ec32d357c4c6f9b018c12c5b"
 
+  bottle do
+    revision 13
+    sha256 "1fa1d7452fdea531afdcc49a364166a0e48e345e0d9eda5dcebc7e7e7c399d86" => :yosemite
+    sha256 "9737f1e6e2a0aad834740488ab2e5eed25f33ea9de42c6b2101b4ecb18d0c890" => :mavericks
+    sha256 "8cfbbc8c66515f90908901d4e9e648c65446d33e52bd51b73062359c1d469133" => :mountain_lion
+  end
+
+  # Please don't add a wide/ucs4 option as it won't be accepted.
+  # More details in: https://github.com/Homebrew/homebrew/pull/32368
   option :universal
-  option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
-  option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
-  option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
-  option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
+  option "with-quicktest", "Run `make quicktest` after the build (for devs; may fail)"
+  option "with-tcl-tk", "Use Homebrew's Tk instead of OS X Tk (has optional Cocoa and threads support)"
+  option "with-poll", "Enable select.poll, which is not fully implemented on OS X (https://bugs.python.org/issue5154)"
 
-  # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
-  option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
+  deprecated_option "quicktest" => "with-quicktest"
+  deprecated_option "with-brewed-tk" => "with-tcl-tk"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'readline' => :recommended
-  depends_on 'sqlite' => :recommended
-  depends_on 'gdbm' => :recommended
-  depends_on 'openssl' if build.include? 'with-brewed-openssl'
-  depends_on 'homebrew/dupes/tcl-tk' if build.include? 'with-brewed-tk'
+  depends_on "pkg-config" => :build
+  depends_on "readline" => :recommended
+  depends_on "sqlite" => :recommended
+  depends_on "gdbm" => :recommended
+  depends_on "openssl"
+  depends_on "homebrew/dupes/tcl-tk" => :optional
+  depends_on :x11 if build.with?("tcl-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
 
-  def patches
-    p = []
-    p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.include? 'with-dtrace'
-    # Patch to disable the search for Tk.frameworked, since homebrew's Tk is
-    # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    p << DATA if build.include? 'with-brewed-tk'
-    p
+  skip_clean "bin/pip", "bin/pip-2.7"
+  skip_clean "bin/easy_install", "bin/easy_install-2.7"
+
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.2.tar.gz"
+    sha256 "381e78471fb0eff89c4b1a219e8739f48dd87c76ad2d3a790010ca3a62ee29a4"
+  end
+
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.1.1.tar.gz"
+    sha256 "89f3b626d225e08e7f20d85044afa40f612eb3284484169813dc2d0631f2a556"
+  end
+
+  # Patch for pyport.h macro issue
+  # https://bugs.python.org/issue10910
+  # https://trac.macports.org/ticket/44288
+  patch do
+    url "https://bugs.python.org/file30805/issue10910-workaround.txt"
+    sha256 "c075353337f9ff3ccf8091693d278782fcdff62c113245d8de43c5c7acc57daf"
+  end
+
+  # Patch to disable the search for Tk.framework, since Homebrew's Tk is
+  # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
+  patch :DATA if build.with? "tcl-tk"
+
+  def lib_cellar
+    prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7"
   end
 
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
+    lib_cellar/"site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -49,228 +67,278 @@ class Python < Formula
     HOMEBREW_PREFIX/"lib/python2.7/site-packages"
   end
 
-  def install
-    opoo 'The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154).' if build.include? 'with-poll'
+  # setuptools remembers the build flags python is built with and uses them to
+  # build packages later. Xcode-only systems need different flags.
+  def pour_bottle?
+    MacOS::CLT.installed?
+  end
 
-    # Unset these so that installing pip and distribute puts them where we want
+  def install
+    if build.with? "poll"
+      opoo "The given option --with-poll enables a somewhat broken poll() on OS X (https://bugs.python.org/issue5154)."
+    end
+
+    # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
-    ENV['PYTHONHOME'] = nil
+    ENV["PYTHONHOME"] = nil
+    ENV["PYTHONPATH"] = nil
 
     args = %W[
-             --prefix=#{prefix}
-             --enable-ipv6
-             --datarootdir=#{share}
-             --datadir=#{share}
-             --enable-framework=#{prefix}/Frameworks
-           ]
+      --prefix=#{prefix}
+      --enable-ipv6
+      --datarootdir=#{share}
+      --datadir=#{share}
+      --enable-framework=#{frameworks}
+    ]
 
-    args << '--without-gcc' if ENV.compiler == :clang
-    args << '--with-dtrace' if build.include? 'with-dtrace'
+    args << "--without-gcc" if ENV.compiler == :clang
 
-    if superenv?
-      distutils_fix_superenv(args)
-    else
-      distutils_fix_stdenv
+    unless MacOS::CLT.installed?
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
+      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
+      cflags = "CFLAGS=-isysroot #{MacOS.sdk_path}"
+      ldflags = "LDFLAGS=-isysroot #{MacOS.sdk_path}"
+      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
+      # For the Xlib.h, Python needs this header dir with the system Tk
+      if build.without? "tcl-tk"
+        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
+      end
+      args << cflags
+      args << ldflags
     end
+
+    # Avoid linking to libgcc https://code.activestate.com/lists/python-dev/112195/
+    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+
+    # We want our readline! This is just to outsmart the detection code,
+    # superenv handles that cc finds includes/libs!
+    inreplace "setup.py",
+              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
 
     if build.universal?
       ENV.universal_binary
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
-    # Allow sqlite3 module to load extensions: http://docs.python.org/library/sqlite3.html#f1
-    inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', '') if build.with? 'sqlite'
+    # Allow sqlite3 module to load extensions:
+    # https://docs.python.org/library/sqlite3.html#f1
+    if build.with? "sqlite"
+      inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', "")
+    end
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
     # even if homebrew is not a /usr/local/lib. Try this with:
     # `brew install enchant && pip install pyenchant`
     inreplace "./Lib/ctypes/macholib/dyld.py" do |f|
-      f.gsub! 'DEFAULT_LIBRARY_FALLBACK = [', "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
-      f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
+      f.gsub! "DEFAULT_LIBRARY_FALLBACK = [", "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
+      f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
-    # Fix http://bugs.python.org/issue18071
-    inreplace "./Lib/_osx_support.py", "compiler_so = list(compiler_so)",
-              "if isinstance(compiler_so, (str,unicode)): compiler_so = compiler_so.split()"
+    if build.with? "tcl-tk"
+      tcl_tk = Formula["homebrew/dupes/tcl-tk"].opt_prefix
+      ENV.append "CPPFLAGS", "-I#{tcl_tk}/include"
+      ENV.append "LDFLAGS", "-L#{tcl_tk}/lib"
+    end
 
     system "./configure", *args
 
-    # HAVE_POLL is "broken" on OS X
-    # See: http://trac.macports.org/ticket/18376 and http://bugs.python.org/issue5154
-    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1' unless build.include? "with-poll"
+    # HAVE_POLL is "broken" on OS X. See:
+    # https://trac.macports.org/ticket/18376
+    # https://bugs.python.org/issue5154
+    if build.without? "poll"
+      inreplace "pyconfig.h", /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'
+    end
 
     system "make"
 
-    ENV.deparallelize # Installs must be serialized
-    # Tell Python not to install into /Applications (default for framework builds)
+    ENV.deparallelize # installs must be serialized
+    # Tell Python not to install into /Applications
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
-    (HOMEBREW_PREFIX/'share/python').mkpath
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
-    system "make", "quicktest" if build.include? 'quicktest'
+    system "make", "quicktest" if build.include? "quicktest"
 
-    # Post-install, fix up the site-packages so that user-installed Python
-    # software survives minor updates, such as going from 2.7.0 to 2.7.1:
+    # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
+    (lib/"pkgconfig").install_symlink Dir["#{frameworks}/Python.framework/Versions/Current/lib/pkgconfig/*"]
+
+    # Fixes setting Python build flags for certain software
+    # See: https://github.com/Homebrew/homebrew/pull/20182
+    # https://bugs.python.org/issue3588
+    inreplace lib_cellar/"config/Makefile" do |s|
+      s.change_make_var! "LINKFORSHARED",
+        "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
+    end
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+
+    (libexec/"setuptools").install resource("setuptools")
+    (libexec/"pip").install resource("pip")
+  end
+
+  def post_install
+    # Fix up the site-packages so that user-installed Python software survives
+    # minor updates, such as going from 2.7.0 to 2.7.1:
+
     # Create a site-packages in HOMEBREW_PREFIX/lib/python2.7/site-packages
     site_packages.mkpath
+
     # Symlink the prefix site-packages into the cellar.
-    ln_s site_packages, site_packages_cellar
+    site_packages_cellar.unlink if site_packages_cellar.exist?
+    site_packages_cellar.parent.install_symlink site_packages
 
-    # Write our sitecustomize.py to tell python about the correct site-package
-    # dir because we moved it.
-    # We reuse the PythonInstalled requirement here for the sitecustomize.py
-    PythonInstalled.new("2.7").modify_build_environment
-    # We ship distribute and pip.
-    # Our modify_build_environment need the opt/python/bin/python2 already now,
-    # so we create it temporarily
-    (HOMEBREW_PREFIX/'opt/python/bin').mkpath
-    ln_s bin/'python2', HOMEBREW_PREFIX/'opt/python/bin/python2'
-    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
-                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Distribute.new.brew { system "#{bin}/python2", *setup_args }
-    Pip.new.brew { system "#{bin}/python2", *setup_args }
-    (HOMEBREW_PREFIX/'opt/python').rmtree
+    # Write our sitecustomize.py
+    rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
+    (site_packages/"sitecustomize.py").atomic_write(sitecustomize)
 
-    # And now we write the distuitsl.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
-    cfg.delete if cfg.exist?
-    cfg.write <<-EOF.undent
+    # Remove old setuptools installations that may still fly around and be
+    # listed in the easy_install.pth. This can break setuptools build with
+    # zipimport.ZipImportError: bad local file header
+    # setuptools-0.9.5-py3.3.egg
+    rm_rf Dir["#{site_packages}/setuptools*"]
+    rm_rf Dir["#{site_packages}/distribute*"]
+
+    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force",
+                  "--verbose",
+                  "--install-scripts=#{bin}",
+                  "--install-lib=#{site_packages}"]
+
+    (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
+    (libexec/"pip").cd { system "#{bin}/python", *setup_args }
+
+    # When building from source, these symlinks will not exist, since
+    # post_install happens after linking.
+    %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
+      (HOMEBREW_PREFIX/"bin").install_symlink bin/e
+    end
+
+    # Help distutils find brewed stuff when building extensions
+    include_dirs = [HOMEBREW_PREFIX/"include"]
+    library_dirs = [HOMEBREW_PREFIX/"lib"]
+
+    if build.with? "sqlite"
+      include_dirs << Formula["sqlite"].opt_include
+      library_dirs << Formula["sqlite"].opt_lib
+    end
+
+    if build.with? "tcl-tk"
+      include_dirs << Formula["homebrew/dupes/tcl-tk"].opt_include
+      library_dirs << Formula["homebrew/dupes/tcl-tk"].opt_lib
+    end
+
+    cfg = lib_cellar/"distutils/distutils.cfg"
+    cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
+
       [install]
       force=1
       prefix=#{HOMEBREW_PREFIX}
+
+      [build_ext]
+      include_dirs=#{include_dirs.join ":"}
+      library_dirs=#{library_dirs.join ":"}
     EOF
+  end
 
-    # Work-around this bug: http://bugs.python.org/issue18050
-    inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py", 'import sys', <<-EOS.undent
+  def sitecustomize
+    <<-EOF.undent
+      # This file is created by Homebrew and is executed on each python startup.
+      # Don't print from here, or else python command line scripts may fail!
+      # <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md>
+      import re
+      import os
       import sys
-      try:
-          from _sre import MAXREPEAT
-      except ImportError:
-          import _sre
-          _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
-      EOS
 
-    # Write our sitecustomize.py to tell python about the correct site-package
-    # dir because we moved it. (Note, we had to install distribute and pip
-    # without the help of sitecustomize.py because HOMEBREW_PREFIX/opt/python
-    # is not yet linked)
-    # We reuse the PythonInstalled requirement here for the sitecustomize.py
-    ENV.prepend_path 'PATH', bin
-    PythonInstalled.new("2.7").modify_build_environment
+      if sys.version_info[0] != 2:
+          # This can only happen if the user has set the PYTHONPATH for 3.x and run Python 2.x or vice versa.
+          # Every Python looks at the PYTHONPATH variable and we can't fix it here in sitecustomize.py,
+          # because the PYTHONPATH is evaluated after the sitecustomize.py. Many modules (e.g. PyQt4) are
+          # built only for a specific version of Python and will fail with cryptic error messages.
+          # In the end this means: Don't set the PYTHONPATH permanently if you use different Python versions.
+          exit('Your PYTHONPATH points to a site-packages dir for Python 2.x but you are running Python ' +
+               str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
+               '     You should `unset PYTHONPATH` to fix this.')
+
+      # Only do this for a brewed python:
+      if os.path.realpath(sys.executable).startswith('#{rack}'):
+          # Shuffle /Library site-packages to the end of sys.path and reject
+          # paths in /System pre-emptively (#14712)
+          library_site = '/Library/Python/2.7/site-packages'
+          library_packages = [p for p in sys.path if p.startswith(library_site)]
+          sys.path = [p for p in sys.path if not p.startswith(library_site) and
+                                             not p.startswith('/System')]
+          # .pth files have already been processed so don't use addsitedir
+          sys.path.extend(library_packages)
+
+          # the Cellar site-packages is a symlink to the HOMEBREW_PREFIX
+          # site_packages; prefer the shorter paths
+          long_prefix = re.compile(r'#{rack}/[0-9\._abrc]+/Frameworks/Python\.framework/Versions/2\.7/lib/python2\.7/site-packages')
+          sys.path = [long_prefix.sub('#{site_packages}', p) for p in sys.path]
+
+          # LINKFORSHARED (and python-config --ldflags) return the
+          # full path to the lib (yes, "Python" is actually the lib, not a
+          # dir) so that third-party software does not need to add the
+          # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
+          try:
+              from _sysconfigdata import build_time_vars
+              build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/2.7/Python'
+          except:
+              pass  # remember: don't print here. Better to fail silently.
+
+          # Set the sys.executable to use the opt_prefix
+          sys.executable = '#{opt_bin}/python2.7'
+    EOF
   end
 
-  def distutils_fix_superenv(args)
-    # This is not for building python itself but to allow Python's build tools
-    # (pip) to find brewed stuff when installing python packages.
-    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
-    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
-    if build.include? 'with-brewed-tk'
-      cflags += " -I#{Formula.factory('tcl-tk').opt_prefix}/include"
-      ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
-    end
-    unless MacOS::CLT.installed?
-      # Help Python's build system (distribute/pip) to build things on Xcode-only systems
-      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-      cflags += " -isysroot #{MacOS.sdk_path}"
-      ldflags += " -isysroot #{MacOS.sdk_path}"
-      # Same zlib.h-not-found-bug as in env :std (see below)
-      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
-      # For the Xlib.h, Python needs this header dir with the system Tk
-      unless build.include? 'with-brewed-tk'
-        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
-      end
-    end
-    args << cflags
-    args << ldflags
-    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
-    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
-    # We want our readline! This is just to outsmart the detection code,
-    # superenv handles that cc finds includes/libs!
-    inreplace "setup.py",
-              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-              "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
-  end
+  def caveats; <<-EOS.undent
+    Pip and setuptools have been installed. To update them
+      pip install --upgrade pip setuptools
 
-  def distutils_fix_stdenv()
-    # Python scans all "-I" dirs but not "-isysroot", so we add
-    # the needed includes with "-I" here to avoid this err:
-    #     building dbm using ndbm
-    #     error: /usr/include/zlib.h: No such file or directory
-    ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
+    You can install Python packages with
+      pip install <package>
 
-    # Don't use optimizations other than "-Os" here, because Python's distutils
-    # remembers (hint: `python3-config --cflags`) and reuses them for C
-    # extensions which can break software (such as scipy 0.11 fails when
-    # "-msse4" is present.)
-    ENV.minimal_optimization
+    They will install into the site-package directory
+      #{site_packages}
 
-    # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
-    ENV.enable_warnings
-    if ENV.compiler == :clang
-      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-      ENV.append_to_cflags '-Wno-unused-value'
-      ENV.append_to_cflags '-Wno-empty-body'
-      ENV.append_to_cflags '-Qunused-arguments'
-    end
-  end
-
-  def caveats
-    <<-EOS.undent
-      Python demo
-        #{HOMEBREW_PREFIX}/share/python/Extras
-
-      Distribute and Pip have been installed. To update them
-        pip install --upgrade distribute
-        pip install --upgrade pip
-
-      To symlink "Idle" and the "Python Launcher" to ~/Applications
-        `brew linkapps`
-
-      You can install Python packages with (the outdated easy_install or)
-        `pip install <your_favorite_package>`
-
-      They will install into the site-package directory
-        #{site_packages}
-
-      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md
     EOS
   end
 
-  def test
+  test do
     # Check if sqlite is ok, because we build with --enable-loadable-sqlite-extensions
     # and it can occur that building sqlite silently fails if OSX's sqlite is used.
     system "#{bin}/python", "-c", "import sqlite3"
     # Check if some other modules import. Then the linked libs are working.
     system "#{bin}/python", "-c", "import Tkinter; root = Tkinter.Tk()"
+    system bin/"pip", "list"
   end
 end
 
 __END__
 diff --git a/setup.py b/setup.py
-index ea8a5f5..0a001f9 100644
+index 716f08e..66114ef 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1809,9 +1809,7 @@ class PyBuildExt(build_ext):
+@@ -1810,9 +1810,6 @@ class PyBuildExt(build_ext):
          # Rather than complicate the code below, detecting and building
          # AquaTk is a separate method. Only one Tkinter will be built on
          # Darwin - either AquaTk, if it is found, or X11 based Tk.
 -        if (host_platform == 'darwin' and
 -            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
 -            return
-+
- 
+
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
-@@ -1861,17 +1859,7 @@ class PyBuildExt(build_ext):
-         if host_platform == 'sunos5':
-             include_dirs.append('/usr/openwin/include')
-             added_lib_dirs.append('/usr/openwin/lib')
+@@ -1858,21 +1855,6 @@ class PyBuildExt(build_ext):
+             if dir not in include_dirs:
+                 include_dirs.append(dir)
+
+-        # Check for various platform-specific directories
+-        if host_platform == 'sunos5':
+-            include_dirs.append('/usr/openwin/include')
+-            added_lib_dirs.append('/usr/openwin/lib')
 -        elif os.path.exists('/usr/X11R6/include'):
 -            include_dirs.append('/usr/X11R6/include')
 -            added_lib_dirs.append('/usr/X11R6/lib64')
@@ -282,18 +350,16 @@ index ea8a5f5..0a001f9 100644
 -            # Assume default location for X11
 -            include_dirs.append('/usr/X11/include')
 -            added_lib_dirs.append('/usr/X11/lib')
-+
- 
+
          # If Cygwin, then verify that X is installed before proceeding
          if host_platform == 'cygwin':
-@@ -1897,8 +1885,8 @@ class PyBuildExt(build_ext):
+@@ -1897,9 +1879,6 @@ class PyBuildExt(build_ext):
+         if host_platform in ['aix3', 'aix4']:
              libs.append('ld')
- 
-         # Finally, link with the X11 libraries (not appropriate on cygwin)
+
+-        # Finally, link with the X11 libraries (not appropriate on cygwin)
 -        if host_platform != "cygwin":
 -            libs.append('X11')
-+        # if host_platform != "cygwin":
-+        #     libs.append('X11')
- 
+
          ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
                          define_macros=[('WITH_APPINIT', 1)] + defs,

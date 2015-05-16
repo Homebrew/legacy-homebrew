@@ -1,27 +1,40 @@
-require 'formula'
+require "formula"
 
 class Irssi < Formula
-  homepage 'http://irssi.org/'
-  url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
-  sha1 'b79ce8c2c98a76b004f63706e7868cd363000d89'
+  homepage "http://irssi.org/"
+  url "http://irssi.org/files/irssi-0.8.17.tar.bz2"
+  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/irssi-0.8.17.tar.bz2"
+  sha1 "3bdee9a1c1f3e99673143c275d2c40275136664a"
+  revision 2
 
-  option "without-perl", "Build without perl support."
+  bottle do
+    revision 1
+    sha256 "55bdbcb5958fdfd443229dbf67163a2bd5723bcac2b9f624a1e220479a3efab8" => :yosemite
+    sha256 "099ed90249fa060d6227163b01f64621b130c55e110e86a521b258d445e98ecb" => :mavericks
+    sha256 "a4393b3c87ce4683c92909eb090fb85e972a5dcaded6603c2ab6e1b5e05751b4" => :mountain_lion
+  end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
+  option "without-perl", "Build without perl support"
+
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "openssl" => :recommended
+  depends_on "dante" => :optional
 
   # Fix Perl build flags and paths in man page
-  def patches; DATA; end
+  patch :DATA
 
   def install
-    args =%W[
+    args = %W[
+      --disable-dependency-tracking
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --with-bot
       --with-proxy
-      --enable-ssl
       --enable-ipv6
+      --enable-true-color
       --with-socks
+      --with-ncurses=#{MacOS.sdk_path}/usr
     ]
 
     if build.with? "perl"
@@ -31,11 +44,16 @@ class Irssi < Formula
       args << "--with-perl=no"
     end
 
-    system "./configure", *args
+    # confuses Perl library path configuration
+    # https://github.com/Homebrew/homebrew/issues/34685
+    ENV.delete "PERL_MM_OPT"
 
-    # 'make' and 'make install' must be done separately on some systems
+    args << "--disable-ssl" if build.without? "openssl"
+
+    system "./configure", *args
+    # "make" and "make install" must be done separately on some systems
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
 
@@ -49,7 +67,7 @@ __END__
 -		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
 +		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
  	fi
- 
+
  	if test "x$ac_cv_c_compiler_gnu" = "xyes" -a -z "`echo $host_os|grep 'bsd\|linux'`"; then
 @@ -27437,7 +27437,7 @@
  $as_echo "not found, building without Perl" >&6; }
@@ -57,7 +75,7 @@ __END__
  	else
 -		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null`
 +		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
- 
+
  		if test "x$DYNLIB_MODULES" = "xno" -a "$want_perl" != "static"; then
  						want_perl=static
 

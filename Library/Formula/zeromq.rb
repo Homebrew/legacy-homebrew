@@ -1,95 +1,79 @@
-require 'formula'
-
 class Zeromq < Formula
-  homepage 'http://www.zeromq.org/'
-  url 'http://download.zeromq.org/zeromq-3.2.3.tar.gz'
-  sha1 '6857a3a0e908eca58f7c0f90e2ba4695f6700957'
+  homepage "http://www.zeromq.org/"
+  revision 2
 
-  head 'https://github.com/zeromq/libzmq.git'
+  bottle do
+    cellar :any
+    sha1 "8598e6f79d5cfbe72f281c3f835c0894078108ad" => :yosemite
+    sha1 "895c3427fb619cf3dcbe1d51cbf2c97d55177821" => :mavericks
+    sha1 "ba066d695b43cba56747649b18f146696ba2ada0" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/zeromq/libzmq.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  stable do
+    url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
+    sha1 "a664ec63661a848ef46114029156a0a6006feecd"
+
+    patch do
+      # enable --without-libsodium on libzmq < 4.1
+      # zeromq/zeromq4-x#105
+      url "https://gist.githubusercontent.com/minrk/478aab66adf7016158ff/raw/b5ea2d61c3f66db6ff3e266b76d1bec4ad4a238b/without-libsodium.patch"
+      sha1 "68543ff1b0f64b22994cb13b4d24bce8f76cf431"
+    end
+  end
 
   option :universal
-  option 'with-pgm', 'Build with PGM extension'
+  option "with-libpgm", "Build with PGM extension"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libpgm' if build.include? 'with-pgm'
+  deprecated_option "with-pgm" => "with-libpgm"
 
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
-
-  fails_with :llvm do
-    build 2326
-    cause "Segfault while linking"
-  end
-
-  # Address lack of strndup on 10.6, fixed upstream
-  # https://github.com/zeromq/zeromq3-x/commit/400cbc208a768c4df5039f401dd2688eede6e1ca
-  def patches; DATA; end
+  depends_on "pkg-config" => :build
+  depends_on "libpgm" => :optional
+  depends_on "libsodium" => :optional
 
   def install
     ENV.universal_binary if build.universal?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    if build.include? 'with-pgm'
+    if build.with? "libpgm"
       # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
       ENV['OpenPGM_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
       ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
       args << "--with-system-pgm"
     end
 
+    if build.with? "libsodium"
+      args << "--with-libsodium"
+    else
+      args << "--without-libsodium"
+    end
+
     system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
-  def caveats; <<-EOS.undent
-    To install the zmq gem on 10.6 with the system Ruby on a 64-bit machine,
-    you may need to do:
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <assert.h>
+      #include <zmq.h>
 
-        ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{opt_prefix}
-
-    If you want to build the Java bindings from https://github.com/zeromq/jzmq
-    you will need the Java Developer Package from http://connect.apple.com/
+      int main()
+      {
+        zmq_msg_t query;
+        assert(0 == zmq_msg_init_size(&query, 1));
+        return 0;
+      }
     EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-lzmq", "-o", "test"
+    system "./test"
   end
 end
-
-__END__
-diff --git a/tests/test_disconnect_inproc.cpp b/tests/test_disconnect_inproc.cpp
-index 7875083..d6b68c6 100644
---- a/tests/test_disconnect_inproc.cpp
-+++ b/tests/test_disconnect_inproc.cpp
-@@ -40,16 +40,14 @@ int main(int argc, char** argv) {
-                 zmq_msg_t msg;
-                 zmq_msg_init (&msg);
-                 zmq_msg_recv (&msg, pubSocket, 0);
--                int msgSize = zmq_msg_size(&msg);
-                 char* buffer = (char*)zmq_msg_data(&msg);
- 
-                 if (buffer[0] == 0) {
-                     assert(isSubscribed);
--                    printf("unsubscribing from '%s'\n", strndup(buffer + 1, msgSize - 1));
-                     isSubscribed = false;
--                } else {
-+                } 
-+                else {
-                     assert(!isSubscribed);
--                    printf("subscribing on '%s'\n", strndup(buffer + 1, msgSize - 1));
-                     isSubscribed = true;
-                 }
- 
-@@ -66,11 +64,6 @@ int main(int argc, char** argv) {
-                 zmq_msg_t msg;
-                 zmq_msg_init (&msg);
-                 zmq_msg_recv (&msg, subSocket, 0);
--                int msgSize = zmq_msg_size(&msg);
--                char* buffer = (char*)zmq_msg_data(&msg);
--        
--                printf("received on subscriber '%s'\n", strndup(buffer, msgSize));
--        
-                 zmq_getsockopt (subSocket, ZMQ_RCVMORE, &more, &more_size);
-                 zmq_msg_close (&msg);
-         
-

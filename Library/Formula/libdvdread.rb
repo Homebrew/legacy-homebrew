@@ -1,23 +1,31 @@
-require 'formula'
-
 class Libdvdread < Formula
-  homepage 'http://dvdnav.mplayerhq.hu/'
-  url 'http://dvdnav.mplayerhq.hu/releases/libdvdread-4.2.0.tar.bz2'
-  sha1 '431bc92195f27673bfdd2be67ce0f58338da8d3b'
+  homepage "https://dvdnav.mplayerhq.hu/"
+  url "https://download.videolan.org/pub/videolan/libdvdread/5.0.2/libdvdread-5.0.2.tar.bz2"
+  sha256 "82cbe693f2a3971671e7428790b5498392db32185b8dc8622f7b9cd307d3cfbf"
 
-  head 'svn://svn.mplayerhq.hu/dvdnav/trunk/libdvdread'
+  head do
+    url "git://git.videolan.org/libdvdread.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
-  depends_on 'libdvdcss'
+  bottle do
+    cellar :any
+    sha1 "df466eb8a5baca8d26615d93d9eb3e88bf5ec6a8" => :yosemite
+    sha1 "427e4c4a5553abbfba325837be969811496641bd" => :mavericks
+    sha1 "3ad46154279902cb54890942f2d2ade6eeb32f7a" => :mountain_lion
+  end
 
-  depends_on :automake
-  depends_on :libtool
+  depends_on "libdvdcss"
 
   def install
     ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
     ENV.append "LDFLAGS", "-ldvdcss"
 
-    system "./autogen.sh", "--disable-dependency-tracking",
-                           "--prefix=#{prefix}"
-    system "make install"
+    system "autoreconf", "-if" if build.head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

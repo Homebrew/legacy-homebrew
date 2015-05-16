@@ -1,19 +1,18 @@
 require 'formula'
 
 class Groovy < Formula
-  homepage 'http://groovy.codehaus.org/'
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.1.3.zip'
-  sha1 'fa41789263ca6c7af145a3e5f568f264b4fd7a12'
+  homepage 'http://www.groovy-lang.org'
+  url 'https://dl.bintray.com/groovy/maven/groovy-binary-2.4.3.zip'
+  sha1 '47837096d0307e5e8c4f74c87a3096ddd0706eff'
 
   option 'invokedynamic', "Install the InvokeDynamic version of Groovy (only works with Java 1.7+)"
 
   def install
     # Don't need Windows files.
-    # Why are icons in bin?
-    rm_f Dir["bin/*.bat","bin/groovy.{icns,ico}"]
+    rm_f Dir["bin/*.bat"]
 
     if build.include? 'invokedynamic'
-      Dir['indy/*.jar'].each do |src_path|
+      Dir.glob("indy/*.jar") do |src_path|
         dst_file = File.basename(src_path, '-indy.jar') + '.jar'
         dst_path = File.join('lib', dst_file)
         mv src_path, dst_path
@@ -27,8 +26,8 @@ class Groovy < Formula
 
   def caveats
     <<-EOS.undent
-      You should set the environment variable GROOVY_HOME to
-        #{opt_prefix}/libexec
+      You should set GROOVY_HOME:
+        export GROOVY_HOME=#{opt_libexec}
     EOS
   end
 end

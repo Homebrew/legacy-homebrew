@@ -2,10 +2,15 @@ require 'formula'
 
 class Opusfile < Formula
   homepage 'http://www.opus-codec.org/'
-  url 'http://downloads.xiph.org/releases/opus/opusfile-0.2.tar.gz'
-  sha1 'db020e25178b501929a11b0e0f469890f4f4e6fa'
+  url 'http://downloads.xiph.org/releases/opus/opusfile-0.6.tar.gz'
+  sha1 '2422e3c7bf6105a832226850b19053ec5ac41293'
 
-  head 'https://git.xiph.org/opusfile.git'
+  head do
+    url "https://git.xiph.org/opusfile.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'opus'

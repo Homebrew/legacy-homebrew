@@ -1,31 +1,46 @@
-require 'formula'
-
 class Libmpc < Formula
-  homepage 'http://multiprecision.org'
-  url 'http://multiprecision.org/mpc/download/mpc-1.0.1.tar.gz'
-  sha1 '8c7e19ad0dd9b3b5cc652273403423d6cf0c5edf'
+  homepage "http://multiprecision.org"
+  url "http://ftpmirror.gnu.org/mpc/mpc-1.0.3.tar.gz"
+  mirror "http://multiprecision.org/mpc/download/mpc-1.0.3.tar.gz"
+  sha1 "b8be66396c726fdc36ebb0f692ed8a8cca3bcc66"
 
   bottle do
     cellar :any
-    sha1 'c8bbad14fa8314418e07aa7a5cd824452fa6ea1e' => :mountain_lion
-    sha1 '21363b47cdc6085b1c09aead7f63918c69a57bed' => :lion
-    sha1 '2b2fb525a4e87e7a954e70be13dfde1110329859' => :snow_leopard
+    sha1 "c96c76d63b166fb13e6818a0ae7094455002b420" => :yosemite
+    sha1 "b1a74b2c579600f12002a842bc8ddd82785277ce" => :mavericks
+    sha1 "5fe25b2992da6773db6fec8a72260272a6058782" => :mountain_lion
   end
 
-  depends_on 'gmp'
-  depends_on 'mpfr'
+  depends_on "gmp"
+  depends_on "mpfr"
 
   def install
     args = [
       "--prefix=#{prefix}",
       "--disable-dependency-tracking",
-      "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
-      "--with-mpfr=#{Formula.factory('mpfr').opt_prefix}"
+      "--with-gmp=#{Formula["gmp"].opt_prefix}",
+      "--with-mpfr=#{Formula["mpfr"].opt_prefix}"
     ]
 
     system "./configure", *args
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <mpc.h>
+
+      int main()
+      {
+        mpc_t x;
+        mpc_init2 (x, 256);
+        mpc_clear (x);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lgmp", "-lmpfr", "-lmpc", "-o", "test"
+    system "./test"
   end
 end

@@ -7,6 +7,7 @@ class Grok < Formula
   head 'https://github.com/jordansissel/grok.git'
 
   depends_on 'libevent'
+  depends_on 'pcre'
   depends_on 'tokyo-cabinet'
 
   def install

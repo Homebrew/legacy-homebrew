@@ -1,43 +1,41 @@
-require 'formula'
-
 # This should really be named Mpich now, but homebrew cannot currently handle
 # formula renames, see homebrew issue #14374.
 class Mpich2 < Formula
-  homepage 'http://www.mpich.org/'
-  url 'http://www.mpich.org/static/downloads/3.0.4/mpich-3.0.4.tar.gz'
-  sha1 'e89cc8de89d18d5718f7b881f3835b5a0943f897'
+  homepage "https://www.mpich.org/"
+  url "https://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz"
+  mirror "https://fossies.org/linux/misc/mpich-3.1.4.tar.gz"
+  sha1 "af4f563e2772d610e57e17420c9dcc5c3c9fec4e"
 
-  head 'git://git.mpich.org/mpich.git'
-
-  # the HEAD version requires the autotools to be installed
-  # (autoconf>=2.67, automake>=1.12.3, libtool>=2.4)
-  if build.head?
-    depends_on 'automake' => :build
-    depends_on 'libtool'  => :build
+  bottle do
+    sha1 "96a6ef7dff3f1902790317124ff608c481a2a885" => :yosemite
+    sha1 "041e7aabd743689d14dd460d1cc290763f820a44" => :mavericks
+    sha1 "322ea98717bd9cccc060d12f7e4d655c87b601b4" => :mountain_lion
   end
 
-  option 'disable-fortran', "Do not attempt to build Fortran bindings"
-  option 'enable-shared', "Build shared libraries"
+  head do
+    url "git://git.mpich.org/mpich.git"
 
-  conflicts_with 'open-mpi', :because => 'both install mpi__ compiler wrappers'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool"  => :build
+  end
 
-  # fails with clang from Xcode 4.5.1 on 10.7 and 10.8 (see #15533)
-  # linker bug appears to have been fixed by Xcode 4.6
-  fails_with :clang do
-    build 421
-    cause <<-EOS.undent
-      Clang generates code that causes the linker to segfault when building
-      MPICH with shared libraries.  Specific message:
+  devel do
+    url "https://www.mpich.org/static/downloads/3.2b2/mpich-3.2b2.tar.gz"
+    sha1 "8e954e54d1c1a08ef7d042c18ed308d566e32cd5"
+  end
 
-          collect2: ld terminated with signal 11 [Segmentation fault: 11]
-      EOS
-  end if build.include? 'enable-shared'
+  deprecated_option "disable-fortran" => "without-fortran"
+
+  depends_on :fortran => :recommended
+
+  conflicts_with "open-mpi", :because => "both install mpi__ compiler wrappers"
 
   def install
     if build.head?
       # ensure that the consistent set of autotools built by homebrew is used to
       # build MPICH, otherwise very bizarre build errors can occur
-      ENV['MPICH_AUTOTOOLS_DIR'] = (HOMEBREW_PREFIX+'bin')
+      ENV["MPICH_AUTOTOOLS_DIR"] = HOMEBREW_PREFIX + "bin"
       system "./autogen.sh"
     end
 
@@ -45,26 +43,37 @@ class Mpich2 < Formula
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--prefix=#{prefix}",
-      "--mandir=#{man}"
+      "--mandir=#{man}",
     ]
-    if build.include? 'disable-fortran'
-      args << "--disable-f77" << "--disable-fc"
-    else
-      ENV.fortran
-    end
 
-    # MPICH configure defaults to "--disable-shared"
-    if build.include? 'enable-shared'
-      args << "--enable-shared"
-    end
+    args << "--disable-fortran" if build.without? "fortran"
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 
-  def test
-    # a better test would be to build and run a small MPI program
-    system "#{bin}/mpicc", "-show"
+  test do
+    (testpath/"hello.c").write <<-EOS.undent
+      #include <mpi.h>
+      #include <stdio.h>
+
+      int main()
+      {
+        int size, rank, nameLen;
+        char name[MPI_MAX_PROCESSOR_NAME];
+        MPI_Init(NULL, NULL);
+        MPI_Comm_size(MPI_COMM_WORLD, &size);
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+        MPI_Get_processor_name(name, &nameLen);
+        printf("[%d/%d] Hello, world! My name is %s.\\n", rank, size, name);
+        MPI_Finalize();
+        return 0;
+      }
+    EOS
+    system "#{bin}/mpicc", "hello.c", "-o", "hello"
+    system "./hello"
+    system "#{bin}/mpirun", "-np", "4", "./hello"
   end
 end

@@ -1,12 +1,32 @@
-require 'formula'
-
 class HicolorIconTheme < Formula
-  homepage 'http://icon-theme.freedesktop.org/wiki/HicolorTheme'
-  url 'http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.12.tar.gz'
-  sha1 '87368844d1fcef899c3dc4e59f07264340606538'
+  homepage "https://wiki.freedesktop.org/www/Software/icon-theme/"
+  url "http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.15.tar.xz"
+  sha256 "9cc45ac3318c31212ea2d8cb99e64020732393ee7630fa6c1810af5f987033cc"
+
+  head do
+    url "http://anongit.freedesktop.org/git/xdg/default-icon-theme.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
+
+  bottle do
+    cellar :any
+    sha256 "e1e09d7dee2b5560d45d99a310d8e2903d30413eb53408a4079261e8ef5f3b55" => :yosemite
+    sha256 "e3e7a63d5af66fe6721839c12e00288e061ef092a046ff6db2dcc6f62f75b9c2" => :mavericks
+    sha256 "5647ecc1f44a15ee6cef8d37ae62d606251a0ae94f2659c9fac497270876367e" => :mountain_lion
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    args = %W[--prefix=#{prefix} --disable-silent-rules]
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
+    system "make", "install"
+  end
+
+  test do
+    File.exist? share/"icons/hicolor/index.theme"
   end
 end

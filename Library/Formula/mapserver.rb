@@ -1,9 +1,15 @@
-require 'formula'
-
 class Mapserver < Formula
   homepage 'http://mapserver.org/'
   url 'http://download.osgeo.org/mapserver/mapserver-6.2.1.tar.gz'
   sha1 'bbe4234a4dcc179812c6598f68fe59a3dae63e44'
+  revision 2
+
+  bottle do
+    cellar :any
+    sha256 "9dbab28f8434c3468255fd19d1e2677624febecea1fc28f79f04c14df4a6fb5b" => :yosemite
+    sha256 "0fa13f927801f0ccc89c6266257705ece9eaea09ea101e544d6a4040fee6e04b" => :mavericks
+    sha256 "98198c61c8db8dc7b980e53a76542a821cca7c5a0b0facf127e03df1ae49ed01" => :mountain_lion
+  end
 
   option "with-fastcgi", "Build with fastcgi support"
   option "with-geos", "Build support for GEOS spatial operations"
@@ -12,17 +18,16 @@ class Mapserver < Formula
 
   env :userpaths
 
-  depends_on :freetype
-  depends_on :libpng
-  depends_on :python => :recommended
+  depends_on 'freetype'
+  depends_on 'libpng'
   depends_on 'swig' => :build
   depends_on 'giflib'
-  depends_on 'gd' => %w{with-freetype}
+  depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
   depends_on 'geos' => :optional
-  depends_on 'postgresql' if build.include? 'with-postgresql' and not MacOS.version >= :lion
-  depends_on 'fcgi' if build.include? 'with-fastcgi'
+  depends_on 'postgresql' => :optional unless MacOS.version >= :lion
+  depends_on 'fcgi' if build.with? "fastcgi"
   depends_on 'cairo' => :optional
 
   def install
@@ -35,9 +40,10 @@ class Mapserver < Formula
     ]
 
     args << "--with-geos" if build.with? 'geos'
-    args << "--with-php=/usr/bin/php-config" if build.include? 'with-php'
+    args << "--with-php=/usr/bin/php-config" if build.with? "php"
+    args << "--with-cairo" if build.with? 'cairo'
 
-    if build.include? 'with-postgresql'
+    if build.with? 'postgresql'
       if MacOS.version >= :lion # Lion ships with PostgreSQL libs
         args << "--with-postgis"
       else
@@ -45,7 +51,7 @@ class Mapserver < Formula
       end
     end
 
-    args << "--with-fastcgi=#{HOMEBREW_PREFIX}" if build.include? 'with-fastcgi'
+    args << "--with-fastcgi=#{HOMEBREW_PREFIX}" if build.with? "fastcgi"
 
     unless MacOS::CLT.installed?
       inreplace 'configure', "_JTOPDIR=`echo \"$_ACJNI_FOLLOWED\" | sed -e 's://*:/:g' -e 's:/[^/]*$::'`",
@@ -56,15 +62,13 @@ class Mapserver < Formula
     system "make"
 
     install_args = []
-    install_args << "PHP_EXT_DIR=#{prefix}" if build.include? 'with-php'
+    install_args << "PHP_EXT_DIR=#{prefix}" if build.with? "php"
     system "make", "install", *install_args
 
-    python do
-      cd 'mapscript/python' do
-        system python, "setup.py", "install", "--prefix=#{prefix}",
+    cd 'mapscript/python' do
+      system "python", "setup.py", "install", "--prefix=#{prefix}",
                                    "--single-version-externally-managed",
                                    "--record=installed-files.txt"
-      end
     end
   end
 
@@ -79,7 +83,7 @@ class Mapserver < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/mapserver-config", "--version"
   end
 end

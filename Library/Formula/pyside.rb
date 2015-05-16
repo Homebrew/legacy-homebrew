@@ -1,51 +1,81 @@
-require 'formula'
-
 class Pyside < Formula
-  homepage 'http://www.pyside.org'
-  url 'http://qt-project.org/uploads/pyside/pyside-qt4.8+1.1.2.tar.bz2'
-  mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.1.2.tar.bz2'
-  sha1 'c0119775f2500e48efebdd50b7be7543e71b2c24'
+  homepage "http://qt-project.org/wiki/PySide"
+  url "https://download.qt.io/official_releases/pyside/pyside-qt4.8+1.2.2.tar.bz2"
+  mirror "https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.2.tar.bz2"
+  sha1 "955e32d193d173faa64edc51111289cdcbe3b96e"
 
-  depends_on 'cmake' => :build
-  depends_on :python => :recommended
-  depends_on :python3 => :optional
+  head "https://gitorious.org/pyside/pyside.git"
 
-  if build.with? 'python3'
-    depends_on 'shiboken' => 'with-python3'
-  else
-    depends_on 'shiboken'
+  bottle do
+    sha1 "8137d4ab768f0b621c76f3e8f51aff9594527b7a" => :yosemite
+    sha1 "23cceb7a03918cb1aa1e897c9ed1b3224610c2d2" => :mavericks
+    sha1 "370b1d0fc1099689977ba04eb3602c41b5def89c" => :mountain_lion
   end
 
-  depends_on 'qt'
+  # don't use depends_on :python because then bottles install Homebrew's python
+  option "without-python", "Build without python 2 support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
+  depends_on :python3 => :optional
+
+  option "without-docs", "Skip building documentation"
+
+  depends_on "cmake" => :build
+  depends_on "qt"
+
+  if build.with? "python3"
+    depends_on "shiboken" => "with-python3"
+  else
+    depends_on "shiboken"
+  end
+
+  resource "sphinx" do
+    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
+    sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
+  end
 
   def install
-    python do
-      # Add out of tree build because one of its deps, shiboken, itself needs an
-      # out of tree build in shiboken.rb.
-      mkdir "macbuild#{python.if3then3}" do
+    if build.with? "docs"
+      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      resources.each do |r|
+        r.stage do
+          system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
+        end
+      end
+
+      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
+    else
+      rm buildpath/"doc/CMakeLists.txt"
+    end
+
+    # Add out of tree build because one of its deps, shiboken, itself needs an
+    # out of tree build in shiboken.rb.
+    Language::Python.each_python(build) do |python, version|
+      mkdir "macbuild#{version}" do
+        qt = Formula["qt"].opt_prefix
         args = std_cmake_args + %W[
-          -DSITE_PACKAGE=#{lib}/#{python.xy}/site-packages
-          -DALTERNATIVE_QT_INCLUDE_DIR=#{Formula.factory('qt').frameworks}
-          -DBUILD_TESTS=NO
-          ..
+          -DSITE_PACKAGE=#{lib}/python#{version}/site-packages
+          -DALTERNATIVE_QT_INCLUDE_DIR=#{qt}/include
+          -DQT_SRC_DIR=#{qt}/src
         ]
-        # The next two lines are because shiboken needs them
-        args << "-DPYTHON_SUFFIX='-python2.7'" if python2
-        args << "-DPYTHON_SUFFIX='.cpython-33m'" if python3
-        system 'cmake', *args
-        system 'make'
-        system 'make install'
-        # Todo: How to deal with pyside.pc file? It doesn't support 2.x and 3.x!
+        if version.to_s[0,1] == "2"
+          args << "-DPYTHON_SUFFIX=-python#{version}"
+        else
+          major_version = version.to_s[0,1]
+          minor_version = version.to_s[2,3]
+          args << "-DPYTHON_SUFFIX=.cpython-#{major_version}#{minor_version}m"
+          args << "-DUSE_PYTHON3=1"
+        end
+        args << ".."
+        system "cmake", *args
+        system "make"
+        system "make", "install"
       end
     end
   end
 
-  def test
-    system 'python', '-c', "from PySide import QtCore" if Tab.for_formula('Pyside').with? 'python'
-    system 'python3', '-c', "from PySide import QtCore" if Tab.for_formula('Pyside').with? 'python3'
-  end
-
-  def caveats
-    python.standard_caveats if python
+  test do
+    Language::Python.each_python(build) do |python, version|
+      system python, "-c", "from PySide import QtCore"
+    end
   end
 end

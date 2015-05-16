@@ -1,45 +1,80 @@
 require 'formula'
+require 'ostruct'
 
-def recursive_deps_tree f, level
-  f.deps.default.each do |dep|
-    puts "|  "*(level-1)+"|- "+dep.to_s
-    recursive_deps_tree(Formula.factory(dep), level+1)
-  end
-end
-
-module Homebrew extend self
+module Homebrew
   def deps
-    if ARGV.include? '--installed'
-        Formula.installed.each do |f|
-          puts "#{f.name}: #{f.deps*' '}"
-        end
-    elsif ARGV.include? '--all'
-      Formula.each do |f|
-        puts "#{f.name}: #{f.deps*' '}"
-      end
-    elsif ARGV.include? '--tree'
+    mode = OpenStruct.new(
+      :installed?  => ARGV.include?('--installed'),
+      :tree?       => ARGV.include?('--tree'),
+      :all?        => ARGV.include?('--all'),
+      :topo_order? => ARGV.include?('-n'),
+      :union?      => ARGV.include?('--union')
+    )
+
+    if mode.installed? && mode.tree?
+      puts_deps_tree Formula.installed
+    elsif mode.installed?
+      puts_deps Formula.installed
+    elsif mode.all?
+      puts_deps Formula
+    elsif mode.tree?
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      ARGV.formulae.each do |f|
-        puts f
-        recursive_deps_tree(f, 1)
-        puts
-      end
+      puts_deps_tree ARGV.formulae
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      all_deps = ARGV.formulae.map do |f|
-        ARGV.one? ? f.deps.default : f.recursive_dependencies
-      end.intersection.map(&:name)
-      all_deps.sort! unless ARGV.include? "-n"
+      all_deps = deps_for_formulae(ARGV.formulae, !ARGV.one?, &(mode.union? ? :| : :&))
+      all_deps = all_deps.sort_by(&:name) unless mode.topo_order?
       puts all_deps
     end
   end
-end
 
-class Array
-  def intersection
-    a = []
-    each{ |b| a |= b }
-    each{ |c| a &= c }
-    a
+  def deps_for_formula(f, recursive=false)
+    ignores = []
+    ignores << "build?" if ARGV.include? "--skip-build"
+    ignores << "optional?" if ARGV.include? "--skip-optional"
+
+    if recursive
+      deps = f.recursive_dependencies.reject do |dep|
+        ignores.any? { |ignore| dep.send(ignore) }
+      end
+      reqs = f.recursive_requirements.reject do |req|
+        ignores.any? { |ignore| req.send(ignore) }
+      end
+    else
+      deps = f.deps.reject do |dep|
+        ignores.any? { |ignore| dep.send(ignore) }
+      end
+      reqs = f.requirements.reject do |req|
+        ignores.any? { |ignore| req.send(ignore) }
+      end
+    end
+
+    deps + reqs.select(&:default_formula?).map(&:to_dependency)
+  end
+
+  def deps_for_formulae(formulae, recursive=false, &block)
+    formulae.map {|f| deps_for_formula(f, recursive) }.inject(&block)
+  end
+
+  def puts_deps(formulae)
+    formulae.each { |f| puts "#{f.name}: #{deps_for_formula(f).sort_by(&:name) * " "}" }
+  end
+
+  def puts_deps_tree(formulae)
+    formulae.each do |f|
+      puts f.name
+      recursive_deps_tree(f, 1)
+      puts
+    end
+  end
+
+  def recursive_deps_tree f, level
+    f.requirements.select(&:default_formula?).each do |req|
+      puts "|  "*(level-1) + "|- :#{req.to_dependency.name}"
+    end
+    f.deps.default.each do |dep|
+      puts "|  "*(level-1) + "|- #{dep.name}"
+      recursive_deps_tree(Formulary.factory(dep.name), level+1)
+    end
   end
 end

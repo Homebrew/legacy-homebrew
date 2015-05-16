@@ -1,40 +1,33 @@
-require 'formula'
-
 class SpatialiteGui < Formula
-  homepage 'https://www.gaia-gis.it/fossil/spatialite_gui/index'
-  url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.5.0-stable.tar.gz'
-  sha1 'b8cfe3def8c77928f7c9fcc86bae3c99179fa486'
+  homepage "https://www.gaia-gis.it/fossil/spatialite_gui/index"
+  url "http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
+  sha1 "3b9d88e84ffa5a4f913cf74b098532c2cd15398f"
+  revision 1
 
-  devel do
-    url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.6.0.tar.gz'
-    sha1 'd06944273b1e19cdd5c17a463582e074f8548ccd'
+  bottle do
+    cellar :any
+    sha256 "d65494655bb8470c01e1ecdce00ea8802ef3b1eaebcf87ad8daf2494cbe6aa20" => :yosemite
+    sha256 "dece5c5d459997cc7a8d789c38336dd4eb05e8f048f3e6eb84f581120d4ac023" => :mavericks
+    sha256 "750a8216d218709d6aafd9c0fecce6342fa5ce51f3870ba844ffdd3e381c91d0" => :mountain_lion
   end
 
-  depends_on 'libspatialite'
-  depends_on 'libgaiagraphics'
+  depends_on "pkg-config" => :build
+  depends_on "freexl"
+  depends_on "geos"
+  depends_on "libgaiagraphics"
+  depends_on "libspatialite"
+  depends_on "proj"
+  depends_on "sqlite"
+  depends_on "wxmac"
 
-  depends_on 'wxmac'
-
-  def patches
-    patch_set = {
-      :p1 => DATA
-    }
-    # Compatibility fix for wxWidgets 2.9.x. Remove on next release.
-    patch_set[:p0] = 'https://www.gaia-gis.it/fossil/spatialite_gui/vpatch?from=d8416d26358a24dc&to=b5b920d8d654dd0e' unless build.devel?
-
-    patch_set
-  end
+  patch :DATA
 
   def install
-    # This lib doesn't get picked up by configure.
-    ENV.append 'LDFLAGS', '-lwx_osx_cocoau_aui-2.9'
-    # 1.6.0 doesn't pick up GEOS libraries. See:
-    #   https://www.gaia-gis.it/fossil/spatialite_gui/tktview?name=d27778d7e4
-    ENV.append 'LDFLAGS', '-lgeos_c' if build.devel?
-
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}"
-    system "make install"
+    # Add aui library; reported upstream multiple times:
+    # https://groups.google.com/forum/#!searchin/spatialite-users/aui/spatialite-users/wnkjK9pde2E/hVCpcndUP_wJ
+    inreplace "configure", "WX_LIBS=\"$(wx-config --libs)\"", "WX_LIBS=\"$(wx-config --libs std,aui)\""
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install"
   end
 end
 
@@ -60,7 +53,7 @@ index a857e8a..9c90afb 100644
 @@ -71,6 +71,12 @@
  #define unlink	_unlink
  #endif
- 
+
 +#ifdef __WXMAC__
 +// Allow the program to run and recieve focus without creating an app bundle.
 +#include <Carbon/Carbon.h>
@@ -91,6 +84,6 @@ index a857e8a..9c90afb 100644
 +
    return true;
  }
- 
--- 
+
+--
 1.7.9

@@ -1,28 +1,41 @@
-require 'formula'
-
 class Hadoop < Formula
-  homepage 'http://hadoop.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.1.2/hadoop-1.1.2.tar.gz'
-  sha1 '0142847f35485894bd833d87945d4bc59483ce5a'
+  homepage "https://hadoop.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz"
+  mirror "https://archive.apache.org/dist/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz"
+  sha1 "ed5a19a54f878dde96a8655290d624b15e280d96"
+
+  depends_on :java
 
   def install
-    rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf lib webapps contrib]
-    libexec.install Dir['*.jar']
+    rm_f Dir["bin/*.cmd", "sbin/*.cmd", "libexec/*.cmd", "etc/hadoop/*.cmd"]
+    libexec.install %w[bin sbin libexec share etc]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
+    sbin.write_exec_script Dir["#{libexec}/sbin/*"]
     # But don't make rcc visible, it conflicts with Qt
-    (bin/'rcc').unlink
+    (bin/"rcc").unlink
 
-    inreplace "#{libexec}/conf/hadoop-env.sh",
-      "# export JAVA_HOME=/usr/lib/j2sdk1.5-sun",
+    inreplace "#{libexec}/etc/hadoop/hadoop-env.sh",
+      "export JAVA_HOME=${JAVA_HOME}",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+    inreplace "#{libexec}/etc/hadoop/yarn-env.sh",
+      "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+    inreplace "#{libexec}/etc/hadoop/mapred-env.sh",
+      "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
       "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 
   def caveats; <<-EOS.undent
     In Hadoop's config file:
-      #{libexec}/conf/hadoop-env.sh
+      #{libexec}/etc/hadoop/hadoop-env.sh,
+      #{libexec}/etc/hadoop/mapred-env.sh and
+      #{libexec}/etc/hadoop/yarn-env.sh
     $JAVA_HOME has been set to be the output of:
       /usr/libexec/java_home
     EOS
+  end
+
+  test do
+    system bin/"hadoop", "fs", "-ls"
   end
 end

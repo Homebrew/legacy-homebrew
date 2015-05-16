@@ -1,38 +1,39 @@
-require 'formula'
-
-class ScmManagerCliClient < Formula
-  homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.31/scm-cli-client-1.31-jar-with-dependencies.jar'
-  version '1.31'
-  sha1 '97b0c2e2e552912cacf228c6e70163e15f4280ed'
-end
-
 class ScmManager < Formula
-  homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.31/scm-server-1.31-app.tar.gz'
-  version '1.31'
-  sha1 '9b26431a6fcd4d5f8e922535914ef0df396a3c19'
+  homepage "http://www.scm-manager.org"
+  url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.45/scm-server-1.45-app.tar.gz"
+  version "1.45"
+  sha1 "c8a2e9c694525a570460639bbb5cb01b23595ec4"
 
-  skip_clean 'libexec/var/log'
+  bottle do
+    sha1 "4ed2b53994cf1f31bde45a4e819906c39b218ca3" => :yosemite
+    sha1 "38d785287fc539b1b807acfa41c24a58c1cdb2d5" => :mavericks
+    sha1 "0b1169a36a9da089dc2d2257dfc473b16b5ad1f5" => :mountain_lion
+  end
+
+  resource "client" do
+    url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.45/scm-cli-client-1.45-jar-with-dependencies.jar"
+    version "1.45"
+    sha1 "debfe596c1d959f7c1c282c747f728818e62b321"
+  end
 
   def install
-    rm_rf Dir['bin/*.bat']
+    rm_rf Dir["bin/*.bat"]
 
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
-    (bin/'scm-server').write <<-EOS.undent
+    (bin/"scm-server").write <<-EOS.undent
       #!/bin/bash
       BASEDIR="#{libexec}"
       REPO="#{libexec}/lib"
       export JAVA_HOME=$(/usr/libexec/java_home -v 1.6)
       "#{libexec}/bin/scm-server" "$@"
     EOS
-    chmod 0755, bin/'scm-server'
+    chmod 0755, bin/"scm-server"
 
-    tools = libexec/'tools'
-    ScmManagerCliClient.new.brew { tools.install Dir['*'] }
+    tools = libexec/"tools"
+    tools.install resource("client")
 
-    scmCliClient = bin+'scm-cli-client'
+    scmCliClient = bin+"scm-cli-client"
     scmCliClient.write <<-EOS.undent
       #!/bin/bash
       java -jar "#{tools}/scm-cli-client-#{version}-jar-with-dependencies.jar" "$@"
@@ -40,7 +41,7 @@ class ScmManager < Formula
     chmod 0755, scmCliClient
   end
 
-  plist_options :manual => 'scm-server start'
+  plist_options :manual => "scm-server start"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -51,7 +52,7 @@ class ScmManager < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/scm-server</string>
+          <string>#{opt_bin}/scm-server</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>

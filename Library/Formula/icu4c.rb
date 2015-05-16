@@ -1,31 +1,35 @@
-require 'formula'
-
 class Icu4c < Formula
-  homepage 'http://site.icu-project.org/'
-  url 'http://download.icu-project.org/files/icu4c/51.1/icu4c-51_1-src.tgz'
-  version '51.1'
-  sha1 '7905632335e3dcd6667224da0fa087b49f9095e9'
+  homepage "http://site.icu-project.org/"
+  head "https://ssl.icu-project.org/repos/icu/icu/trunk/", :using => :svn
+  url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"
+  version "55.1"
+  sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
 
   bottle do
-    sha1 '6b5b4ab5704cc2a8b17070a087c7f9594466cf1d' => :mountain_lion
-    sha1 'a555b051a65717e1ca731eec5743969d8190a9f8' => :lion
-    sha1 'bcb1ab988f67c3d48fb7c5829153c136c16c059b' => :snow_leopard
+    sha256 "a27e2b3645992acec22c95cb6ff4c4893139d3710c1a0be6d54c9f22593fc148" => :yosemite
+    sha256 "c68728ae3a0401fb32ddb3a85eb5ddf8c367268090421d66db2631d49f7b1ce1" => :mavericks
+    sha256 "be4ecad0c4f0542df384dd48c8c57380f6d843958c5d1eddb068e52f910e2dd9" => :mountain_lion
   end
 
-  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
+  keg_only :provided_by_osx, "OS X provides libicucore.dylib (but nothing else)."
 
   option :universal
+  option :cxx11
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
 
-    ENV.append "LDFLAGS", "-headerpad_max_install_names"
     args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
     cd "source" do
       system "./configure", *args
       system "make"
-      system "make install"
+      system "make", "install"
     end
+  end
+
+  test do
+    system "#{bin}/gendict", "--uchars", "/usr/share/dict/words", "dict"
   end
 end

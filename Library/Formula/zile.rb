@@ -1,13 +1,33 @@
-require 'formula'
+require "formula"
 
 class Zile < Formula
-  homepage 'http://www.gnu.org/software/zile/'
-  url 'http://ftpmirror.gnu.org/zile/zile-2.4.9.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/zile/zile-2.4.9.tar.gz'
-  sha1 'f233487e2d0ce99d7670832d106d1a2503d4c925'
+  homepage "https://www.gnu.org/software/zile/"
+  url "http://ftpmirror.gnu.org/zile/zile-2.4.11.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/zile/zile-2.4.11.tar.gz"
+  sha1 "ad2efb80031c3a406f8f83ac5d400a38bc297434"
 
-  depends_on 'bdw-gc'
-  depends_on 'gettext'
+  bottle do
+    sha1 "6112330f840500f201c9903a67003f22c484e458" => :mavericks
+    sha1 "0daeecd50c14a9338527fcfc367f96487d538cd4" => :mountain_lion
+    sha1 "1a32cf3d3c235bba1fd570e7bff81190851ec411" => :lion
+  end
+
+  # https://github.com/mistydemeo/tigerbrew/issues/215
+  fails_with :gcc_4_0 do
+    cause "src/funcs.c:1128: error: #pragma GCC diagnostic not allowed inside functions"
+  end
+
+  fails_with :gcc do
+    cause "src/funcs.c:1128: error: #pragma GCC diagnostic not allowed inside functions"
+  end
+
+  fails_with :llvm do
+    cause "src/funcs.c:1128: error: #pragma GCC diagnostic not allowed inside functions"
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "help2man" => :build
+  depends_on "bdw-gc"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

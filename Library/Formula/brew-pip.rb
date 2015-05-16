@@ -1,9 +1,9 @@
 require 'formula'
 
 class BrewPip < Formula
-  homepage 'https://github.com/josh/brew-pip'
-  url 'https://github.com/josh/brew-pip/archive/v0.1.2.tar.gz'
-  sha1 '49fbd82ceb601e98999cbd28c106a7c26ff16a2b'
+  homepage 'https://github.com/hanxue/brew-pip'
+  url 'https://github.com/hanxue/brew-pip/archive/0.4.1.tar.gz'
+  sha1 'be2bb7ade3394116f1be35771669e60321cdb2a7'
 
   def install
     bin.install 'bin/brew-pip'

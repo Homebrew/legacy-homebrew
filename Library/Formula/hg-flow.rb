@@ -1,14 +1,19 @@
-require 'formula'
-
 class HgFlow < Formula
-  homepage 'https://bitbucket.org/yinwm/hgflow/wiki/Home'
-  url 'https://bitbucket.org/yinwm/hgflow/get/v0.3.tar.gz'
-  sha1 '56250d4ce9f2e24a71e6a3c4b1f3e1d37bb64766'
+  homepage "https://bitbucket.org/yujiewu/hgflow"
+  url "https://bitbucket.org/yujiewu/hgflow/downloads/hgflow-v0.9.8.tar.bz2"
+  sha1 "c0fad82a4849533c2832fbbdead299f22ae2d681"
 
-  head "http://bitbucket.org/yinwm/hgflow", :using => :hg
+  head "http://bitbucket.org/yujiewu/hgflow", :using => :hg, :branch => "develop"
+
+  depends_on :python if MacOS.version <= :snow_leopard
+  depends_on :hg
 
   def install
-    prefix.install 'src/hgflow/hgflow.py'
+    if build.head?
+      libexec.install "src/hgflow.py" => "hgflow.py"
+    else
+      libexec.install "hgflow.py"
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -16,9 +21,22 @@ class HgFlow < Formula
     2. Restart your shell and try "hg flow".
     3. For more information go to http://bitbucket.org/yinwm/hgflow
 
-    [extensions]
-    hgflow = #{prefix}/hgflow.py
+        [extensions]
+        flow = #{opt_prefix}/libexec/hgflow.py
+        [flow]
+        autoshelve = true
 
     EOS
+  end
+
+  test do
+    (testpath/".hgrc").write <<-EOS.undent
+      [extensions]
+      flow = #{opt_prefix}/libexec/hgflow.py
+      [flow]
+      autoshelve = true
+    EOS
+    system "hg", "init"
+    system "hg", "flow", "init", "-d"
   end
 end

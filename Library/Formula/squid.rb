@@ -1,29 +1,23 @@
-require 'formula'
-
-class NoBdb5 < Requirement
-  satisfy(:build_env => false) { !Formula.factory("berkeley-db").installed? }
-
-  def message; <<-EOS.undent
-    This software can fail to compile when Berkeley-DB 5.x is installed.
-    You may need to try:
-      brew unlink berkeley-db
-      brew install squid
-      brew link berkeley-db
-    EOS
-  end
-end
-
 class Squid < Formula
-  homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.2/squid-3.2.9.tar.gz'
-  sha1 'c1f5f8de4e622a1fe98e9f854507237fbae06be2'
+  homepage "http://www.squid-cache.org/"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.4.tar.xz"
+  sha256 "dce615d08e349caf3975fc5d51ce4c3c69b9995fb83f51dc5d55ae873d8bf6a4"
 
-  depends_on NoBdb5
+  bottle do
+    sha256 "db246b52297badab3b482ff6525300e81633d5ff547f25a1c02a0dc3330648eb" => :yosemite
+    sha256 "6e271226f1f30ac69e2dd05e95730dcdd62768c4511b6c6dd88d14e1fd4abdf7" => :mavericks
+    sha256 "ec37c74bc79b7847cdf1f78a07fbcebcb371577fb962c4dfad862549145f1182" => :mountain_lion
+  end
+
+  depends_on "openssl"
 
   def install
+    # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
+    ENV.append "LDFLAGS",  "-lresolv"
+
     # For --disable-eui, see:
     # http://squid-web-proxy-cache.1019090.n4.nabble.com/ERROR-ARP-MAC-EUI-operations-not-supported-on-this-operating-system-td4659335.html
-    args =%W[
+    args = %W[
       --disable-debug
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -31,10 +25,13 @@ class Squid < Formula
       --enable-ssl
       --enable-ssl-crtd
       --disable-eui
+      --enable-pf-transparent
+      --with-included-ltdl
+      --with-openssl
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   def plist; <<-EOS.undent
@@ -48,10 +45,9 @@ class Squid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/squid</string>
+        <string>#{opt_sbin}/squid</string>
         <string>-N</string>
         <string>-d 1</string>
-        <string>-D</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

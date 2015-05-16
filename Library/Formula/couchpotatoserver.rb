@@ -1,19 +1,25 @@
-require 'formula'
+require "formula"
 
 class Couchpotatoserver < Formula
-  homepage 'https://couchpota.to'
-  url 'https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.0.6.1.tar.gz'
-  sha1 '974669e0c5da2e003ba02703505796e4614ef510'
+  homepage "https://couchpota.to"
+  url "https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.6.1.tar.gz"
+  sha1 "a0fa3b7b187e416bd78357a2738b09e0539972b9"
 
-  head 'https://github.com/RuudBurger/CouchPotatoServer.git'
+  head "https://github.com/RuudBurger/CouchPotatoServer.git"
+
+  bottle do
+    sha1 "51646a81a472465367ad2fdf3fd352a5010603fd" => :yosemite
+    sha1 "2d9fa437d8be3478eb98aeaf5e1d9ea43ec74939" => :mavericks
+    sha1 "fde0bf248a2ee10e56d7865d3d0bcb21cc12d868" => :mountain_lion
+  end
 
   def install
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     (bin+"couchpotatoserver").write(startup_script)
   end
 
-  plist_options :manual => 'couchpotatoserver'
+  plist_options :manual => "couchpotatoserver"
 
   def plist; <<-EOS.undent
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -22,7 +28,7 @@ class Couchpotatoserver < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>Program</key>
-        <string>#{opt_prefix}/bin/couchpotatoserver</string>
+        <string>#{opt_bin}/couchpotatoserver</string>
         <key>ProgramArguments</key>
         <array>
           <string>--quiet</string>

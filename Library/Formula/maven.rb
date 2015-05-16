@@ -1,92 +1,52 @@
-require 'formula'
-
 class Maven < Formula
-  homepage 'http://maven.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz'
-  sha1 'aecc0d3d67732939c0056d4a0d8510483ee1167e'
+  homepage "https://maven.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz"
+  sha256 "3a8dc4a12ab9f3607a1a2097bbab0150c947ad6719d8f1bb6d5b47d0fb0c4779"
 
-  # Detect Java using java_home.
-  # This patch should be removed once Maven closes MNG-4226.
-  # http://jira.codehaus.org/browse/MNG-4226
-  def patches
-    DATA
-  end
+  depends_on :java
 
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
     # Fix the permissions on the global settings file.
-    chmod 0644, Dir["conf/settings.xml"]
+    chmod 0644, "conf/settings.xml"
 
     prefix.install_metafiles
-    libexec.install Dir['*']
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    libexec.install Dir["*"]
+
+    # Leave conf file in libexec. The mvn symlink will be resolved and the conf
+    # file will be found relative to it
+    Pathname.glob("#{libexec}/bin/*") do |file|
+      next if file.directory?
+      basename = file.basename
+      next if basename.to_s == "m2.conf"
+      (bin/basename).write_env_script file, Language::Java.overridable_java_home_env
+    end
+  end
+
+  conflicts_with "mvnvm", :because => "also installs a 'mvn' executable"
+
+  test do
+    (testpath/"pom.xml").write <<-EOS.undent
+      <?xml version="1.0" encoding="UTF-8"?>
+      <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+        <groupId>org.homebrew</groupId>
+        <artifactId>maven-test</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+      </project>
+    EOS
+    (testpath/"src/main/java/org/homebrew/MavenTest.java").write <<-EOS.undent
+      package org.homebrew;
+      public class MavenTest {
+        public static void main(String[] args) {
+          System.out.println("Testing Maven with Homebrew!");
+        }
+      }
+    EOS
+    system "#{bin}/mvn", "compile"
   end
 end
-
-__END__
-diff --git a/bin/mvn b/bin/mvn
-index ba46c8e..d214611 100755
---- a/bin/mvn
-+++ b/bin/mvn
-@@ -54,11 +54,12 @@ case "`uname`" in
-   CYGWIN*) cygwin=true ;;
-   MINGW*) mingw=true;;
-   Darwin*) darwin=true 
--           if [ -z "$JAVA_VERSION" ] ; then
--             JAVA_VERSION="CurrentJDK"
--           fi
-            if [ -z "$JAVA_HOME" ] ; then
--             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/${JAVA_VERSION}/Home
-+             if [ -z "$JAVA_VERSION" ] ; then
-+               JAVA_HOME=`/usr/libexec/java_home`
-+             else
-+               JAVA_HOME=`/usr/libexec/java_home -v ${JAVA_VERSION}`
-+             fi
-            fi
-            ;;
- esac
-diff --git a/bin/mvnDebug b/bin/mvnDebug
-index 291e1e2..11f6f3e 100755
---- a/bin/mvnDebug
-+++ b/bin/mvnDebug
-@@ -58,11 +58,12 @@ case "`uname`" in
-   CYGWIN*) cygwin=true ;;
-   MINGW*) mingw=true;;
-   Darwin*) darwin=true 
--           if [ -z "$JAVA_VERSION" ] ; then
--             JAVA_VERSION="CurrentJDK"
--           fi
-            if [ -z "$JAVA_HOME" ] ; then
--             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/${JAVA_VERSION}/Home
-+             if [ -z "$JAVA_VERSION" ] ; then
-+               JAVA_HOME=`/usr/libexec/java_home`
-+             else
-+               JAVA_HOME=`/usr/libexec/java_home -v ${JAVA_VERSION}`
-+             fi
-            fi
-            ;;
- esac
-diff --git a/bin/mvnyjp b/bin/mvnyjp
-index b3e5e7e..de3631c 100755
---- a/bin/mvnyjp
-+++ b/bin/mvnyjp
-@@ -62,11 +62,12 @@ case "`uname`" in
-   CYGWIN*) cygwin=true ;;
-   MINGW*) mingw=true;;
-   Darwin*) darwin=true 
--           if [ -z "$JAVA_VERSION" ] ; then
--             JAVA_VERSION="CurrentJDK"
--           fi
-            if [ -z "$JAVA_HOME" ] ; then
--             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/${JAVA_VERSION}/Home
-+             if [ -z "$JAVA_VERSION" ] ; then
-+               JAVA_HOME=`/usr/libexec/java_home`
-+             else
-+               JAVA_HOME=`/usr/libexec/java_home -v ${JAVA_VERSION}`
-+             fi
-            fi
-            if [ -z "$YJP_HOME" ]; then
-              YJP_HOME=/Applications/YourKit.app
-

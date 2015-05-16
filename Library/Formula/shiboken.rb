@@ -1,53 +1,50 @@
-require 'formula'
-
 class Shiboken < Formula
-  homepage 'http://www.pyside.org/docs/shiboken'
-  url 'http://qt-project.org/uploads/pyside/shiboken-1.1.2.tar.bz2'
-  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.1.2.tar.bz2'
-  sha1 '2ffe9d47a3f536840ed9d7eff766a53040bb2a2e'
+  homepage "http://qt-project.org/wiki/PySide"
+  url "https://download.qt.io/official_releases/pyside/shiboken-1.2.2.tar.bz2"
+  mirror "https://distfiles.macports.org/py-shiboken/shiboken-1.2.2.tar.bz2"
+  sha1 "55731616791500750ef373f382057a43e133fa08"
 
-  depends_on 'cmake' => :build
-  depends_on :python => :recommended
+  head "https://gitorious.org/pyside/shiboken.git"
+
+  bottle do
+    revision 2
+    sha1 "779be49a555b110c4156232528afe6e9cdd5d670" => :yosemite
+    sha1 "e67d83ea94b343541df1b21cd793057fee325780" => :mavericks
+    sha1 "81ea5e997e9910a54cf35e4b5827ab7b502836b3" => :mountain_lion
+  end
+
+  depends_on "cmake" => :build
+  depends_on "qt"
+
+  # don't use depends_on :python because then bottles install Homebrew's python
+  option "without-python", "Build without python 2 support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
-  depends_on 'qt'
 
   def install
-    # Building the tests also runs them. Not building and running tests cuts
-    # install time in half. As of 1.1.1 the install fails unless you do an
-    # out of tree build and put the source dir last in the args.
-    python do
-      # This block will be run for each python (2.x and 3.x if requested)!
-      mkdir "macbuild#{python.if3then3}" do
+    # As of 1.1.1 the install fails unless you do an out of tree build and put
+    # the source dir last in the args.
+    Language::Python.each_python(build) do |python, version|
+      mkdir "macbuild#{version}" do
         args = std_cmake_args
-        args << "-DBUILD_TESTS=OFF"
-        # For Xcode-only systems, the headers of system's python are inside of Xcode:
-        args << "-DPYTHON#{python.if3then3}_INCLUDE_DIR='#{python.incdir}'"
-        # Cmake picks up the system's python dylib, even if we have a brewed one:
-        args << "-DPYTHON#{python.if3then3}_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
-        args << "-DUSE_PYTHON3=ON" if python3
-        args << '..'
-        system 'cmake', *args
-        system "make install"
-        # To support 2.x and 3.x in parallel, we have to rename shiboken.pc at first
-        mv lib/'pkgconfig/shiboken.pc', lib/"pkgconfig/shiboken-py#{python.version.major}.pc"
+        # Building the tests also runs them.
+        args << "-DBUILD_TESTS=ON"
+        if python == "python3" && Formula["python3"].installed?
+          python_framework = (Formula["python3"].opt_prefix)/"Frameworks/Python.framework/Versions/#{version}"
+          args << "-DPYTHON3_INCLUDE_DIR:PATH=#{python_framework}/Headers"
+          args << "-DPYTHON3_LIBRARY:FILEPATH=#{python_framework}/lib/libpython#{version}.dylib"
+        end
+        args << "-DUSE_PYTHON3:BOOL=ON" if python == "python3"
+        args << ".."
+        system "cmake", *args
+        system "make", "install"
       end
     end
-    # Rename shiboken-py2.pc back to the default shiboken.pc
-    mv lib/'pkgconfig/shiboken-py2.pc', lib/'pkgconfig/shiboken.pc' if python2
   end
 
-  def caveats
-    if python3
-      <<-EOS.undent
-        If you build software that uses the pkgconfig file, and you want
-        shiboken with Python 3.x support: Please, instead of 'shiboken.pc', use:
-          #{HOMEBREW_PREFIX}/lib/pkgconfig/shiboken-py3.pc
-      EOS
+  test do
+    Language::Python.each_python(build) do |python, version|
+      system python, "-c", "import shiboken"
     end
-  end
-
-  def test
-    system 'python', "-c", "import shiboken" if Tab.for_formula('Shiboken').with? 'python'
-    system 'python3', "-c", "import shiboken" if Tab.for_formula('Shiboken').with? 'python3'
   end
 end

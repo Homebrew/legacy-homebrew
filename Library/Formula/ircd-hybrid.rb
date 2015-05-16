@@ -1,15 +1,20 @@
-require 'formula'
+require "formula"
 
 class IrcdHybrid < Formula
-  homepage 'http://www.ircd-hybrid.org/'
-  url 'http://sourceforge.net/projects/ircd-hybrid/files/ircd-hybrid/ircd-hybrid-8.0.9/ircd-hybrid-8.0.9.tgz'
-  sha1 'ff37d2e4fb14d9a50b19cae1d9419d7355ae632e'
+  homepage "http://www.ircd-hybrid.org/"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.6/ircd-hybrid-8.2.6.tgz"
+  sha256 "c712988ef43081e6d2218e4fe2523fdadf22df2959cf4c878f0625d16da5b79d"
+
+  bottle do
+    sha256 "b0c505ad232ad94432d513595558dd5e92cb73c0f7fdda3a1ead22ea0ca1f84a" => :yosemite
+    sha256 "41f6f18ae7b788d87bf0bc65e286547c082ce6189c145c39b08bfb478c8b8249" => :mavericks
+    sha256 "681aa8d8494ed80b13f147d2134acb1d7d3b5daca02d9ebe8fee1e051c09ca6e" => :mountain_lion
+  end
 
   # ircd-hybrid needs the .la files
   skip_clean :la
 
-  # system openssl fails with undefined symbols: "_SSL_CTX_clear_options"
-  depends_on 'openssl' if MacOS.version < :lion
+  depends_on "openssl"
 
   def install
     ENV.j1 # build system trips over itself
@@ -18,13 +23,13 @@ class IrcdHybrid < Formula
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
-                          # there's no config setting for this so set it to something generous
-                          "--with-nicklen=30"
-    system "make install"
+                          "--enable-openssl=#{Formula["openssl"].opt_prefix}"
+    system "make", "install"
+    etc.install "doc/reference.conf" => "ircd.conf"
   end
 
-  def test
-    system "#{sbin}/ircd", "-version"
+  test do
+    system "#{bin}/ircd", "-version"
   end
 
   def caveats; <<-EOS.undent
@@ -46,7 +51,7 @@ class IrcdHybrid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/ircd</string>
+        <string>#{opt_sbin}/ircd</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

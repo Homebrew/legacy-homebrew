@@ -1,18 +1,39 @@
-require 'formula'
-
 class S3cmd < Formula
-  homepage 'http://s3tools.org/s3cmd'
-  url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.0.1/s3cmd-1.0.1.tar.gz'
-  sha1 '89eb9974cb523e0410db735d9d9991b355d053c1'
+  homepage "http://s3tools.org/s3cmd"
+  url "https://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.2/s3cmd-1.5.2.tar.gz"
+  sha256 "ff8a6764e8bdd7ed48a93e51b08222bea33469d248a90b8d25315b023717b42d"
+  head "https://github.com/s3tools/s3cmd.git"
 
-  devel do
-    url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.0-alpha3/s3cmd-1.5.0-alpha3.tar.gz'
-    sha1 '18e980c66bdf5fa1c606c95727d43978a4d90635'
+  depends_on :python if MacOS.version <= :snow_leopard
+
+  bottle do
+    cellar :any
+    sha256 "df3c1380d6bd0171bb002f897f360acced8157fc235cb34252f6ecadd72d0668" => :yosemite
+    sha256 "f76281f2955f9dfd9b13bec7d785c6339e9e23f975d9b54f5c8454fa902dc0be" => :mavericks
+    sha256 "892bc105c9018d47837669afd9a8ff460741631112d6c0e57fc2451558ca7996" => :mountain_lion
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+  end
+
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
+    sha256 "439df33ce47ef1478a4f4765f3390eab0ed3ec4ae10be32f2930000c8d19f417"
   end
 
   def install
-    libexec.install 's3cmd', 'S3'
-    man1.install 's3cmd.1'
-    bin.install_symlink libexec+'s3cmd'
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    resources.each do |r|
+      r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
+    end
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
+
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    man1.install Dir[libexec/"share/man/man1/*"]
   end
 end

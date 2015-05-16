@@ -1,71 +1,100 @@
-require 'formula'
-
 class Lilypond < Formula
-  homepage 'http://lilypond.org/'
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.2.tar.gz'
-  sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
+  homepage "http://lilypond.org/"
+  url "http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.2.tar.gz"
+  sha1 "09d3a1e0e9fadeb8ef6e279227a2b30812c7ee9b"
+  revision 3
 
   devel do
-    url  'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.19.tar.gz'
-    sha1 'b96b5f692785c2ee3e204cf15520327792efacb6'
+    url "http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.15.tar.gz"
+    sha1 "d4be61e4074edc2d0447304db52941c147be06b6"
   end
 
-  env :std
+  # LilyPond currently only builds with an older version of Guile (<1.9)
+  resource "guile18" do
+    url "http://ftpmirror.gnu.org/guile/guile-1.8.8.tar.gz"
+    sha1 "548d6927aeda332b117f8fc5e4e82c39a05704f9"
+  end
 
-  option 'with-doc', "Build documentation in addition to binaries (may require several hours)."
+  option "with-doc", "Build documentation in addition to binaries (may require several hours)."
 
+  # Dependencies for LilyPond
   depends_on :tex
   depends_on :x11
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'pango'
-  depends_on 'guile'
-  depends_on 'ghostscript'
-  depends_on 'mftrace'
-  depends_on 'fontforge' => ["with-x", "with-cairo"]
-  depends_on 'texinfo'
-  depends_on 'fondu'
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "pango"
+  depends_on "ghostscript"
+  depends_on "mftrace"
+  depends_on "fontforge" => "with-x11"
+  depends_on "fondu"
+  depends_on "texinfo"
+
+  # Additional dependencies for guile1.8.
+  depends_on "libtool" => :build
+  depends_on "libffi"
+  depends_on "libunistring"
+  depends_on "bdw-gc"
+  depends_on "gmp"
+  depends_on "readline"
+
   # Add dependency on keg-only Homebrew 'flex' because Apple bundles an older and incompatible
   # version of the library with 10.7 at least, seems slow keeping up with updates,
   # and the extra brew is tiny anyway.
-  depends_on 'flex' => :build
+  depends_on "flex" => :build
 
   # Assert documentation dependencies if requested.
-  if build.include? 'with-doc'
-    depends_on 'netpbm'
-    depends_on 'imagemagick'
-    depends_on 'docbook'
-    depends_on LanguageModuleDependency.new(:python, 'dblatex', 'dbtexmf.dblatex')
-    depends_on 'texi2html'
-  end
-
-  fails_with :clang do
-    cause 'Strict C99 compliance error in a pointer conversion.'
+  if build.with? "doc"
+    depends_on "netpbm"
+    depends_on "imagemagick"
+    depends_on "docbook"
+    depends_on "dblatex" => [:python, "dbtexmf.dblatex"]
+    depends_on :python if MacOS.version <= :snow_leopard
+    depends_on "texi2html"
   end
 
   def install
-    gs = Formula.factory('ghostscript')
+    # The contents of the following block are taken from the guile18 formula
+    # in homebrew/versions.
+    resource("guile18").stage do
+      system "./configure", "--disable-dependency-tracking",
+             "--prefix=#{prefix}",
+             "--with-libreadline-prefix=#{Formula["readline"].opt_prefix}"
+      system "make", "install"
+      # A really messed up workaround required on OS X --mkhl
+      lib.cd { Dir["*.dylib"].each { |p| ln_sf p, File.basename(p, ".dylib")+".so" } }
+      ENV.prepend_path "PATH", "#{bin}"
+    end
+
+    gs = Formula["ghostscript"]
 
     args = ["--prefix=#{prefix}",
             "--enable-rpath",
             "--with-ncsb-dir=#{gs.share}/ghostscript/fonts/"]
 
-    args << "--disable-documentation" unless build.include? 'with-doc'
+    args << "--disable-documentation" if build.without? "doc"
     system "./configure", *args
 
     # Separate steps to ensure that lilypond's custom fonts are created.
-    system 'make all'
-    system "make install"
+    system "make", "all"
+    system "make", "install"
 
     # Build documentation if requested.
-    if build.include? 'with-doc'
-      system "make doc"
-      system "make install-doc"
+    if build.with? "doc"
+      system "make", "doc"
+      system "make", "install-doc"
     end
   end
 
+  def caveats; <<-EOS.undent
+    Lilypond requires a newer version of mpost. Assuming a standard install of
+    MacTeX, you will need to use `tlmgr` update its installed packages:
+
+      sudo tlmgr update --self && sudo tlmgr update --all
+    EOS
+  end
+
   test do
-    (testpath/'test.ly').write <<-EOS.undent
+    (testpath/"test.ly").write <<-EOS.undent
       \\header { title = "Do-Re-Mi" }
       { c' d' e' }
     EOS

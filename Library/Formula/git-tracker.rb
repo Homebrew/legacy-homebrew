@@ -2,8 +2,8 @@ require 'formula'
 
 class GitTracker < Formula
   homepage 'https://github.com/stevenharman/git_tracker'
-  url 'https://github.com/stevenharman/git_tracker/archive/v1.5.1.tar.gz'
-  sha1 '2b492583b51fc84186ddb3f72ad363f84d7baf53'
+  url 'https://github.com/stevenharman/git_tracker/archive/v1.6.3.tar.gz'
+  sha1 'c748e564f176165dba2498637e0b99f27647b88a'
 
   head 'https://github.com/stevenharman/git_tracker.git'
 
@@ -12,9 +12,7 @@ class GitTracker < Formula
   end
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/git-tracker", "test-command") do |_, stdout, _|
-      "git-tracker is here. How are you?" == stdout.read.strip
-    end
+    output = shell_output("#{bin}/git-tracker help")
+    assert_match /git-tracker \d+(\.\d+)* is installed\./, output
   end
 end

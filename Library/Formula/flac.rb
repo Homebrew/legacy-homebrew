@@ -1,44 +1,76 @@
-require 'formula'
-
-class Flac2Mp3 < Formula
-  url 'https://github.com/rmndk/flac2mp3/archive/v1.0.tar.gz'
-  sha1 '1fe176c715a6cd780179126d6aa95cf1f15e7ad8'
-end
+require "formula"
 
 class Flac < Formula
-  homepage 'http://flac.sourceforge.net'
-  url 'http://downloads.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
-  sha1 'bd54354900181b59db3089347cc84ad81e410b38'
+  homepage "https://xiph.org/flac/"
+  url "http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz"
+  sha1 "38e17439d11be26207e4af0ff50973815694b26f"
+
+  head do
+    url "https://git.xiph.org/flac.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  bottle do
+    cellar :any
+    sha1 "fcb2c97ae1a204372210e89b49a12cd8f18a14c8" => :yosemite
+    sha1 "ba8cd91c32faddb537929fad6dee7ef363c30f3d" => :mavericks
+    sha1 "0e117a98f7a267b019d7dba31d5b65f5d57c530c" => :mountain_lion
+  end
 
   option :universal
 
-  depends_on 'lame'
-  depends_on 'libogg' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "libogg" => :optional
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
 
+  fails_with :clang do
+    build 500
+    cause "Undefined symbols ___cpuid and ___cpuid_count"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
-    # sadly the asm optimisations won't compile since Leopard
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-debug",
-                          "--disable-asm-optimizations",
-                          "--enable-sse",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
-    ENV['OBJ_FORMAT']='macho'
+    ENV.append "CFLAGS", "-std=gnu89"
+
+    args = %W[
+      --disable-dependency-tracking
+      --disable-debug
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --enable-sse
+      --enable-static
+    ]
+
+    args << "--disable-asm-optimizations" if build.universal? || Hardware.is_32_bit?
+    args << "--without-ogg" if build.without? "libogg"
+
+    system "./autogen.sh" if build.head?
+    system "./configure", *args
+
+    ENV["OBJ_FORMAT"] = "macho"
 
     # adds universal flags to the generated libtool script
     inreplace "libtool" do |s|
-      s.gsub! ":$verstring\"", ":$verstring -arch i386 -arch x86_64\""
+      s.gsub! ":$verstring\"", ":$verstring -arch #{Hardware::CPU.arch_32_bit} -arch #{Hardware::CPU.arch_64_bit}\""
     end
 
-    system "make install"
+    system "make", "install"
+  end
 
-    Flac2Mp3.new.brew {|f| bin.install 'flac2mp3'}
+  test do
+    raw_data = "pseudo audio data that stays the same \x00\xff\xda"
+    (testpath/"in.raw").write raw_data
+    # encode and decode
+    system "#{bin}/flac", "--endian=little", "--sign=signed", "--channels=1", "--bps=8", "--sample-rate=8000", "--output-name=in.flac", "in.raw"
+    system "#{bin}/flac", "--decode", "--force-raw", "--endian=little", "--sign=signed", "--output-name=out.raw", "in.flac"
+    # diff input and output
+    system "diff", "in.raw", "out.raw"
   end
 end

@@ -7,8 +7,13 @@ class Markdown < Formula
 
   conflicts_with 'discount',
     :because => 'both markdown and discount ship a `markdown` executable.'
+  conflicts_with 'multimarkdown', :because => 'both install `markdown` binaries'
 
   def install
     bin.install 'Markdown.pl' => 'markdown'
+  end
+
+  test do
+    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output("#{bin}/markdown", "foo *bar*\n")
   end
 end

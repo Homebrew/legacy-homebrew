@@ -1,33 +1,23 @@
-require 'formula'
-
 class Depqbf < Formula
-  homepage 'http://lonsing.github.io/depqbf/'
-  url 'https://github.com/lonsing/depqbf/archive/version-1.0.tar.gz'
-  sha1 '117c3572f14eca154893449b23e09d9c556d3d2a'
-  head 'https://github.com/lonsig/depqbf.git'
+  homepage "https://lonsing.github.io/depqbf/"
+  url "https://github.com/lonsing/depqbf/archive/version-4.0.tar.gz"
+  sha1 "dd7dd35aded11bb348ff9ef16626d481b7da3fe4"
+  head "https://github.com/lonsig/depqbf.git"
 
-  # disable static linking against C runtime
-  def patches
-    DATA
+  bottle do
+    cellar :any
+    sha256 "c42d2f72e7d98cb11eb2ece8767813586782fe50f8ea9b388dbec0babffce086" => :yosemite
+    sha256 "8e1ce436adc6bfa7d44b41c551be876ce9ab86b89b24dd02e0bfc69b3dc24a9e" => :mavericks
+    sha256 "c0731be8df5bb103dcabcd65aa8dc512a261935ce13c4db1bfe0ae8b7e1cbc56" => :mountain_lion
   end
 
   def install
     system "make"
     bin.install "depqbf"
+    lib.install "libqdpll.1.0.dylib"
+  end
+
+  test do
+    system "#{bin}/depqbf", "-h"
   end
 end
-
-# Warning: `brew pull` seems to smash line endings in this patch
-__END__
-diff --git a/makefile b/makefile
-index 8614075..8e5466f 100644
---- a/makefile
-+++ b/makefile
-@@ -1,5 +1,5 @@
--#CFLAGS=-Wextra -Wall -Wno-unused -pedantic -std=c99 -DNDEBUG -O3 
--CFLAGS=-Wextra -Wall -Wno-unused -pedantic -std=c99 -DNDEBUG -O3 -static
-+CFLAGS=-Wextra -Wall -Wno-unused -pedantic -std=c99 -DNDEBUG -O3
-+#CFLAGS=-Wextra -Wall -Wno-unused -pedantic -std=c99 -DNDEBUG -O3 -static
- #CFLAGS=-Wextra -Wall -Wno-unused -pedantic -std=c99 -g3 -static
- #CFLAGS=-Wextra -Wall -Wno-unused -pedantic -std=c99 -DNDEBUG -g3 -pg -fprofile-arcs -ftest-coverage -static
- OBJECTS=qdpll_main.o qdpll_app.o qdpll.o qdpll_mem.o qdpll_dep_man_qdag.o

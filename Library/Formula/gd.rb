@@ -1,19 +1,31 @@
-require 'formula'
-
 class Gd < Formula
-  homepage 'https://bitbucket.org/libgd/gd-libgd'
-  # libgd doesn't have their latest (non-alpha) version.
-  # When they do release a stable version, use that url.
-  # Watch this space: http://libgd.bitbucket.org/pages/downloads.html
-  url 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
-  sha1 '21cf2ec93fd80836fc0cb4741201f7cc5440819a'
+  homepage "https://libgd.bitbucket.org/"
+  url "https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.1.tar.xz"
+  sha256 "9ada1ed45594abc998ebc942cef12b032fbad672e73efc22bc9ff54f5df2b285"
 
-  head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
+  head do
+    url "https://bitbucket.org/libgd/gd-libgd.git"
 
-  depends_on :libpng => :recommended
-  depends_on 'jpeg' => :recommended
-  depends_on 'giflib' => :optional
-  depends_on :freetype => :optional
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  bottle do
+    cellar :any
+    sha256 "e6e53b5dd2ca074873a026facb27c7f9a32d47f4a6b2e713ab06361396b55aa1" => :yosemite
+    sha256 "be7bfc63bb53cc7a23c898dd0f11f721566f139ef21eedffa29e488d5a34c697" => :mavericks
+    sha256 "c37e8f0cbf6bbbcdc715b4f11a846f42a502d3bd92b395dfae396c483c6032bd" => :mountain_lion
+  end
+
+  option :universal
+
+  depends_on "fontconfig" => :recommended
+  depends_on "freetype" => :recommended
+  depends_on "jpeg" => :recommended
+  depends_on "libpng" => :recommended
+  depends_on "libtiff" => :recommended
+  depends_on "libvpx" => :optional
 
   fails_with :llvm do
     build 2326
@@ -21,35 +33,53 @@ class Gd < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--without-freetype" unless build.with? 'freetype'
+    ENV.universal_binary if build.universal?
+
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+
+    if build.with? "libpng"
+      args << "--with-png=#{Formula["libpng"].opt_prefix}"
+    else
+      args << "--without-png"
+    end
+
+    if build.with? "fontconfig"
+      args << "--with-fontconfig=#{Formula["fontconfig"].opt_prefix}"
+    else
+      args << "--without-fontconfig"
+    end
+
+    if build.with? "freetype"
+      args << "--with-freetype=#{Formula["freetype"].opt_prefix}"
+    else
+      args << "--without-freetype"
+    end
+
+    if build.with? "jpeg"
+      args << "--with-jpeg=#{Formula["jpeg"].opt_prefix}"
+    else
+      args << "--without-jpeg"
+    end
+
+    if build.with? "libtiff"
+      args << "--with-tiff=#{Formula["libtiff"].opt_prefix}"
+    else
+      args << "--without-tiff"
+    end
+
+    if build.with? "libvpx"
+      args << "--with-vpx=#{Formula["libvpx"].opt_prefix}"
+    else
+      args << "--without-vpx"
+    end
+
+    system "./bootstrap.sh" if build.head?
     system "./configure", *args
-    system "make install"
-    (lib+'pkgconfig/gdlib.pc').write pc_file
-  end
-
-  def pc_file; <<-EOS.undent
-    prefix=#{opt_prefix}
-    exec_prefix=${prefix}
-    libdir=/${exec_prefix}/lib
-    includedir=/${prefix}/include
-    bindir=/${prefix}/bin
-    ldflags=  -L/${prefix}/lib
-
-    Name: gd
-    Description: A graphics library for quick creation of PNG or JPEG images
-    Version: #{version}
-    Requires:
-    Libs: -L${libdir} -lgd
-    Libs.private: -ljpeg -lpng12 -lz -lm
-    Cflags: -I${includedir}
-    EOS
+    system "make", "install"
   end
 
   test do
-    system "#{bin}/pngtogd", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
-      "gd_test.gd"
+    system "#{bin}/pngtogd", test_fixtures("test.png"), "gd_test.gd"
     system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
   end
 end

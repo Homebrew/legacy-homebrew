@@ -1,20 +1,54 @@
 require 'requirement'
-require 'requirements/conflict_requirement'
+require 'requirements/apr_dependency'
+require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
-require 'requirements/x11_dependency'
+require 'requirements/minimum_macos_requirement'
+require 'requirements/maximum_macos_requirement'
 require 'requirements/mpi_dependency'
+require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
+require 'requirements/java_dependency'
+require 'requirements/ruby_requirement'
+require 'requirements/tuntap_dependency'
+require 'requirements/unsigned_kext_requirement'
+require 'requirements/x11_dependency'
+require 'requirements/emacs_requirement'
 
 class XcodeDependency < Requirement
   fatal true
-  build true
 
-  satisfy(:build_env => false) { MacOS::Xcode.installed? }
+  satisfy(:build_env => false) { xcode_installed_version }
 
-  def message; <<-EOS.undent
-    A full installation of Xcode.app is required to compile this software.
-    Installing just the Command Line Tools is not sufficent.
+  def initialize(tags)
+    @version = tags.find { |t| tags.delete(t) if /(\d\.)+\d/ === t }
+    super
+  end
+
+  def xcode_installed_version
+    return false unless MacOS::Xcode.installed?
+    return true unless @version
+    MacOS::Xcode.version >= @version
+  end
+
+  def message
+    version = " #{@version}" if @version
+    message = <<-EOS.undent
+      A full installation of Xcode.app#{version} is required to compile this software.
+      Installing just the Command Line Tools is not sufficient.
     EOS
+    if MacOS.version >= :lion
+      message += <<-EOS.undent
+        Xcode can be installed from the App Store.
+      EOS
+    else
+      message += <<-EOS.undent
+        Xcode can be installed from https://developer.apple.com/downloads/
+      EOS
+    end
+  end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} version=#{@version.inspect}>"
   end
 end
 
@@ -23,21 +57,6 @@ class MysqlDependency < Requirement
   default_formula 'mysql'
 
   satisfy { which 'mysql_config' }
-
-  def message; <<-EOS.undent
-    MySQL is required to install.
-
-    You can install this with Homebrew using:
-      brew install mysql-connector-c
-        For MySQL client libraries only.
-
-      brew install mysql
-        For MySQL server.
-
-    Or you can use an official installer from:
-      http://dev.mysql.com/downloads/mysql/
-    EOS
-  end
 end
 
 class PostgresqlDependency < Requirement
@@ -45,50 +64,31 @@ class PostgresqlDependency < Requirement
   default_formula 'postgresql'
 
   satisfy { which 'pg_config' }
+end
 
-  def message
-    <<-EOS.undent
-      Postgres is required to install.
+class GPGDependency < Requirement
+  fatal true
+  default_formula "gpg"
 
-      You can install this with Homebrew using:
-        brew install postgres
-
-      Or you can use an official installer from:
-        http://www.postgresql.org/download/macosx/
-    EOS
-  end
+  satisfy { which("gpg") || which("gpg2") }
 end
 
 class TeXDependency < Requirement
   fatal true
+  cask "mactex"
+  download "https://www.tug.org/mactex/"
 
   satisfy { which('tex') || which('latex') }
 
-  def message; <<-EOS.undent
-    A LaTeX distribution is required to install.
+  def message
+    s = <<-EOS.undent
+      A LaTeX distribution is required for Homebrew to install this formula.
 
-    You can install MacTeX distribution from:
-      http://www.tug.org/mactex/
-
-    Make sure that its bin directory is in your PATH before proceeding.
-
-    You may also need to restore the ownership of Homebrew install:
-      sudo chown -R $USER `brew --prefix`
+      Make sure that "/usr/texbin", or the location you installed it to, is in
+      your PATH before proceeding.
     EOS
-  end
-end
-
-class CLTDependency < Requirement
-  fatal true
-  build true
-
-  satisfy(:build_env => false) { MacOS::CLT.installed? }
-
-  def message; <<-EOS.undent
-    The Command Line Tools for Xcode are required to compile this software.
-    The standalone package can be obtained from http://connect.apple.com,
-    or it can be installed via Xcode's preferences.
-    EOS
+    s += super
+    s
   end
 end
 
@@ -103,6 +103,7 @@ class ArchRequirement < Requirement
   satisfy do
     case @arch
     when :x86_64 then MacOS.prefer_64_bit?
+    when :intel, :ppc then Hardware::CPU.type == @arch
     end
   end
 
@@ -116,12 +117,11 @@ class MercurialDependency < Requirement
   default_formula 'mercurial'
 
   satisfy { which('hg') }
-
-  def message; <<-EOS.undent
-    Mercurial is needed to install this software.
-
-    You can install this with Homebrew using:
-      brew install mercurial
-    EOS
-  end
 end
+
+class GitDependency < Requirement
+  fatal true
+  default_formula 'git'
+  satisfy { !!which('git') }
+end
+

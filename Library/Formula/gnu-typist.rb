@@ -1,34 +1,58 @@
-require 'formula'
-
 class GnuTypist < Formula
-  homepage 'http://www.gnu.org/software/gtypist/'
-  url 'http://ftpmirror.gnu.org/gtypist/gtypist-2.9.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gtypist/gtypist-2.9.2.tar.gz'
-  sha256 'f5e33744d78b3d6f6e793d0bac6d344a828949ef6dbc1fc4846891af6abd96d3'
+  homepage "https://www.gnu.org/software/gtypist/"
+  url "http://ftpmirror.gnu.org/gtypist/gtypist-2.9.5.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gtypist/gtypist-2.9.5.tar.xz"
+  sha256 "c13af40b12479f8219ffa6c66020618c0ce305ad305590fde02d2c20eb9cf977"
 
-  depends_on 'gettext'
+  bottle do
+    sha256 "d06b5cfc30573a454876ce0fe0b33d1eb4ca12070875b4aae907b9c001d10645" => :yosemite
+    sha256 "0c3bc3250a2b1af0e537f0879f55d94cd803835b8621d9b59623c46b5267a472" => :mavericks
+    sha256 "81645c32689c4da3e0baf0372426f2893c355814e9a33eb8070a294990b9722d" => :mountain_lion
+  end
+
+  depends_on "gettext"
 
   # Use Apple's ncurses instead of ncursesw.
   # TODO: use an IFDEF for apple and submit upstream
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # libiconv is not linked properly without this
-    ENV.append 'LDFLAGS', '-liconv'
+    ENV.append "LDFLAGS", "-liconv"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    session = fork do
+      system bin/"gtypist", "-t", "-q", "-l", "DEMO_0", share/"gtypist/demo.typ"
+    end
+    sleep 2
+    Process.kill("TERM", session)
   end
 end
 
 __END__
 diff --git a/configure b/configure
-index b236c98..909733b 100755
+index 2207b09..915a664 100755
 --- a/configure
 +++ b/configure
-@@ -4017,7 +4017,7 @@ if ${ac_cv_lib_ncursesw_add_wch+:} false; then :
+@@ -6301,9 +6301,9 @@ fi
+ done
+
+
+-# check for libncursesw
++# check for libncurses
+
+-ac_fn_c_check_header_mongrel "$LINENO" "ncursesw/ncurses.h" "ac_cv_header_ncursesw_ncurses_h" "$ac_includes_default"
++ac_fn_c_check_header_mongrel "$LINENO" "ncurses.h" "ac_cv_header_ncursesw_ncurses_h" "$ac_includes_default"
+ if test "x$ac_cv_header_ncursesw_ncurses_h" = xyes; then :
+   HAVE_NCURSESW_H=1
+ fi
+@@ -6315,7 +6315,7 @@ if ${ac_cv_lib_ncursesw_add_wch+:} false; then :
    $as_echo_n "(cached) " >&6
  else
    ac_check_lib_save_LIBS=$LIBS
@@ -36,25 +60,21 @@ index b236c98..909733b 100755
 +LIBS="-lncurses  $LIBS"
  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
- 
-@@ -4464,7 +4464,7 @@ fi
- done
- 
- 
--ac_fn_c_check_header_mongrel "$LINENO" "ncursesw/ncurses.h" "ac_cv_header_ncursesw_ncurses_h" "$ac_includes_default"
-+ac_fn_c_check_header_mongrel "$LINENO" "ncurses.h" "ac_cv_header_ncursesw_ncurses_h" "$ac_includes_default"
- if test "x$ac_cv_header_ncursesw_ncurses_h" = xyes; then :
-   HAVE_NCURSESW_H=1
+
+@@ -6350,7 +6350,7 @@ if test "x$ac_cv_lib_ncursesw_add_wch" = xyes; then :
  fi
-@@ -4473,7 +4473,7 @@ fi
- 
- # sanity check for libncursesw:
+
  if test -n "$HAVE_NCURSESW_H" -a -n "$HAVE_LIBNCURSESW";  then
 -   LIBS="-lncursesw $LIBS"
 +   LIBS="-lncurses $LIBS"
  else
     echo -e "Error:  both library and header files for the ncursesw library\n"\
-    	"are required to build this package.  See INSTALL file for"\
+        "are required to build this package.  See INSTALL file for"\
+@@ -10553,4 +10553,3 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: unrecognized options: $ac_unrecognized_opts" >&5
+ $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
+ fi
+-
 diff --git a/src/cursmenu.c b/src/cursmenu.c
 index 1c3990e..f0fc21a 100644
 --- a/src/cursmenu.c
@@ -66,33 +86,7 @@ index 1c3990e..f0fc21a 100644
 -#include <ncursesw/ncurses.h>
 +#include <ncurses.h>
  #endif
- 
- #include "error.h"
-diff --git a/src/gtypist.c b/src/gtypist.c
-index 747b5b8..7420a12 100644
---- a/src/gtypist.c
-+++ b/src/gtypist.c
-@@ -31,7 +31,7 @@
- #ifdef HAVE_PDCURSES
- #include <curses.h>
- #else
--#include <ncursesw/ncurses.h>
-+#include <ncurses.h>
- #endif
- 
- #include <time.h>
-diff --git a/src/script.c b/src/script.c
-index 34a52b0..06d5686 100644
---- a/src/script.c
-+++ b/src/script.c
-@@ -24,7 +24,7 @@
- #ifdef HAVE_PDCURSES
- #include <curses.h>
- #else
--#include <ncursesw/ncurses.h>
-+#include <ncurses.h>
- #endif
- 
+
  #include "error.h"
 diff --git a/src/error.c b/src/error.c
 index 2022f2b..4ab6741 100644
@@ -105,10 +99,36 @@ index 2022f2b..4ab6741 100644
 -#include <ncursesw/ncurses.h>
 +#include <ncurses.h>
  #endif
- 
+
  #include <stdlib.h>
+diff --git a/src/gtypist.c b/src/gtypist.c
+index bd5af8d..b634325 100644
+--- a/src/gtypist.c
++++ b/src/gtypist.c
+@@ -31,7 +31,7 @@
+ #ifdef HAVE_PDCURSES
+ #include <curses.h>
+ #else
+-#include <ncursesw/ncurses.h>
++#include <ncurses.h>
+ #endif
+
+ #include <time.h>
+diff --git a/src/script.c b/src/script.c
+index ce04d68..f4032e2 100644
+--- a/src/script.c
++++ b/src/script.c
+@@ -24,7 +24,7 @@
+ #ifdef HAVE_PDCURSES
+ #include <curses.h>
+ #else
+-#include <ncursesw/ncurses.h>
++#include <ncurses.h>
+ #endif
+
+ #include "error.h"
 diff --git a/src/utf8.c b/src/utf8.c
-index 22476ba..0a44106 100644
+index 8eab3d3..e3194df 100644
 --- a/src/utf8.c
 +++ b/src/utf8.c
 @@ -23,7 +23,7 @@
@@ -118,5 +138,5 @@ index 22476ba..0a44106 100644
 -#include <ncursesw/ncurses.h>
 +#include <ncurses.h>
  #endif
- 
+
  #include <stdlib.h>

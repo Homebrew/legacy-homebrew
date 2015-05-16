@@ -1,21 +1,34 @@
-require 'formula'
+class AwsElasticache < Formula
+  homepage "https://aws.amazon.com/developertools/2310261897259567"
+  url "https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2014-09-30-1.12.000.zip"
+  version "1.12.000"
+  sha1 "aeed292beada4aabe7d88562af0f1353556c0767"
 
-class AwsElasticache < AmazonWebServicesFormula
-  homepage 'http://aws.amazon.com/developertools/2310261897259567'
-  url 'https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2012-08-01-1.7.000.zip'
-  version '1.7.000'
-  sha1 '5a46ab1e769b32f5de16f7b8d080865dd81750f9'
-
-  depends_on 'ec2-api-tools'
+  depends_on "ec2-api-tools"
+  depends_on :java
 
   def install
-    rm Dir['bin/*.cmd'] # Remove Windows command files
-    libexec.install "bin", "lib"
-    bin.install_symlink Dir["#{libexec}/bin/*"]
-    (bin/'service').unlink # Don't keep this symlink
+    env = Language::Java.java_home_env.merge(:AWS_ELASTICACHE_HOME => libexec)
+    rm Dir["bin/*.cmd"] # Remove Windows versions
+    libexec.install Dir["*"]
+    Pathname.glob("#{libexec}/bin/*") do |file|
+      next if file.directory?
+      basename = file.basename
+      next if basename.to_s == "service"
+      (bin/basename).write_env_script file, env
+    end
   end
 
   def caveats
-    standard_instructions "AWS_ELASTICACHE_HOME", libexec
+    <<-EOS.undent
+      Before you can use these tools you must export some variables to your $SHELL.
+        export AWS_ACCESS_KEY="<Your AWS Access ID>"
+        export AWS_SECRET_KEY="<Your AWS Secret Key>"
+        export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
+    EOS
+  end
+
+  test do
+    system "#{bin}/elasticache-version"
   end
 end
