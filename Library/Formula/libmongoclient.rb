@@ -6,9 +6,9 @@ class Libmongoclient < Formula
   head "https://github.com/mongodb/mongo-cxx-driver.git", :branch => "26compat"
 
   bottle do
-    sha1 "eb587e75d00fb4fd1c54c685862513b10586bc5f" => :yosemite
-    sha1 "4e2c8814b0da3941e1006536aace5328ded68892" => :mavericks
-    sha1 "f784fb305307b81b93ecb19f33daea475e4d3762" => :mountain_lion
+    sha256 "8a627a9d8146d29946db5c1835a38266af2e2080d947917c45d165759d5f6eb7" => :yosemite
+    sha256 "e526f5f2cc21c7a8c7051e4cbbff0e90a3d5ae4830035d9a66b6805c40f5958a" => :mavericks
+    sha256 "d34debf8911f3ff31c950babb837ca49fedecf05cbe3dd679c25a93df460f01c" => :mountain_lion
   end
 
   option :cxx11
