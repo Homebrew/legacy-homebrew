@@ -200,6 +200,22 @@ class Formulary
     loader_for(ref).get_formula(spec)
   end
 
+  # Return a Formula instance for the given rack.
+  def self.from_rack(rack, spec=:stable)
+    kegs = rack.directory? ? rack.subdirs.map { |d| Keg.new(d) } : []
+
+    keg = kegs.detect(&:linked?) || kegs.detect(&:optlinked?) || kegs.max_by(&:version)
+    return factory(rack.basename.to_s, spec) unless keg
+
+    tap = Tab.for_keg(keg).tap
+
+    if tap.nil? || tap == "Homebrew/homebrew"
+      factory(rack.basename.to_s, spec)
+    else
+      factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
+    end
+  end
+
   def self.canonical_name(ref)
     loader_for(ref).name
   rescue TapFormulaAmbiguityError
