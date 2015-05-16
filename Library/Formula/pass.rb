@@ -22,6 +22,7 @@ class Pass < Formula
     share.install "contrib"
     zsh_completion.install "src/completion/pass.zsh-completion" => "_pass"
     bash_completion.install "src/completion/pass.bash-completion" => "password-store"
+    fish_completion.install "src/completion/pass.fish-completion" => "pass.fish"
   end
 
   test do
