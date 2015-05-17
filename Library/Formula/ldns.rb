@@ -5,10 +5,10 @@ class Ldns < Formula
   revision 1
 
   bottle do
-    revision 3
-    sha1 "29548cdff439f712695fc5ca9f662b958ce98765" => :mavericks
-    sha1 "e55a981bf3a3ce87f914043c36c6c1eb0a0d9b38" => :mountain_lion
-    sha1 "ba53827d4834ae71cb66c437f16e631cde014cff" => :lion
+    revision 4
+    sha256 "d1fd252d9d21104d1f8558f78c5c988a9355b6211088ddc4688ad2d15e726dc7" => :yosemite
+    sha256 "a6473267b96ba209161b292d6e4f76048519480c43cd7eb5db41a4c51d311205" => :mavericks
+    sha256 "17d5d97bafecaad3fdd635b1e765d4d9470a195aceb27ed2214fad8332f69aff" => :mountain_lion
   end
 
   depends_on :python => :optional
