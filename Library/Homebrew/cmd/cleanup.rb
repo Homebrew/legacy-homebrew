@@ -17,7 +17,7 @@ module Homebrew
         rm_DS_Store
       end
     else
-      ARGV.formulae.each { |f| cleanup_formula(f) }
+      ARGV.resolved_formulae.each { |f| cleanup_formula(f) }
     end
   end
 
@@ -32,8 +32,8 @@ module Homebrew
   def cleanup_cellar
     HOMEBREW_CELLAR.subdirs.each do |rack|
       begin
-        cleanup_formula Formulary.factory(rack.basename.to_s)
-      rescue FormulaUnavailableError
+        cleanup_formula Formulary.from_rack(rack)
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
         # Don't complain about directories from DIY installs
       end
     end
@@ -73,8 +73,8 @@ module Homebrew
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
 
       begin
-        f = Formulary.factory(name)
-      rescue FormulaUnavailableError
+        f = Formulary.from_rack(HOMEBREW_CELLAR/name)
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
         next
       end
 
