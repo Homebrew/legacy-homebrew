@@ -131,12 +131,12 @@ module Homebrew
   end
 
   def gist_logs
-    if ARGV.formulae.length != 1
+    if ARGV.resolved_formulae.length != 1
       puts "usage: brew gist-logs [--new-issue|-n] <formula>"
       Homebrew.failed = true
       return
     end
 
-    gistify_logs(ARGV.formulae[0])
+    gistify_logs(ARGV.resolved_formulae[0])
   end
 end
