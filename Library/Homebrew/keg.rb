@@ -112,6 +112,10 @@ class Keg
     path.to_s
   end
 
+  def rack
+    path.parent
+  end
+
   if Pathname.method_defined?(:to_path)
     alias_method :to_path, :to_s
   else
