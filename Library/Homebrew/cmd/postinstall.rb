@@ -2,7 +2,7 @@ require "sandbox"
 
 module Homebrew
   def postinstall
-    ARGV.formulae.each { |f| run_post_install(f) }
+    ARGV.resolved_formulae.each { |f| run_post_install(f) }
   end
 
   def run_post_install(formula)
