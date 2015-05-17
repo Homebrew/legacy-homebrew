@@ -16,9 +16,9 @@ module Homebrew
       outdated = Homebrew.outdated_brews(Formula.installed)
       exit 0 if outdated.empty?
     elsif ARGV.named.any?
-      outdated = Homebrew.outdated_brews(ARGV.formulae)
+      outdated = Homebrew.outdated_brews(ARGV.resolved_formulae)
 
-      (ARGV.formulae - outdated).each do |f|
+      (ARGV.resolved_formulae - outdated).each do |f|
         if f.rack.directory?
           version = f.rack.subdirs.map { |d| Keg.new(d).version }.max
           onoe "#{f.name} #{version} already installed"
