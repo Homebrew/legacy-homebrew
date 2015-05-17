@@ -2,8 +2,8 @@ require "formula"
 
 class Cpputest < Formula
   homepage "http://www.cpputest.org/"
-  url "https://github.com/cpputest/cpputest.github.io/blob/master/releases/cpputest-3.7.1.tar.gz"
-  sha1 "ecde7a517afc1ec29efa01b869f355b6da974458"
+  url "https://github.com/cpputest/cpputest/archive/3.7.2.tar.gz"
+  sha1 "4b9bd6d821dd04a87744c91592411df2ea77502e"
 
   head do
     url "https://github.com/cpputest/cpputest.git"
