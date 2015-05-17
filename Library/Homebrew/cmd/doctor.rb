@@ -1143,8 +1143,8 @@ def check_for_unlinked_but_not_keg_only
       true
     elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
       begin
-        Formulary.factory(rack.basename.to_s).keg_only?
-      rescue FormulaUnavailableError
+        Formulary.from_rack(rack).keg_only?
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
         false
       end
     else
