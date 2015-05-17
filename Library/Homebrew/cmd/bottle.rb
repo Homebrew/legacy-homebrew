@@ -291,7 +291,7 @@ module Homebrew
   def bottle
     merge if ARGV.include? '--merge'
 
-    ARGV.formulae.each do |f|
+    ARGV.resolved_formulae.each do |f|
       bottle_formula f
     end
   end
