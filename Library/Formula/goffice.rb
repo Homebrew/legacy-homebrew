@@ -4,10 +4,10 @@ class Goffice < Formula
   sha256 "0206a87a323b52a874dc54491374245f9e1c5f62e93a2ce4a02fb444a26b0e28"
 
   bottle do
-    revision 1
-    sha256 "943fbbb899e70e32713865fced621546cc91f071cf330ef77e9bb741c5eedb12" => :yosemite
-    sha256 "8ba8d7c84c41f1bffde773a53eea635288a510de16cc58f8ec8bb45ec872e9b9" => :mavericks
-    sha256 "47d932c8a2bb287cacdb28308b6d58dfc3cb00f5607e54c5538cd3c9aab8cbc3" => :mountain_lion
+    revision 2
+    sha256 "8c94537b1917665098cc5b9ed4947fb54e8bec93d053bcc424c59c6b4b118c4a" => :yosemite
+    sha256 "9b4c25cda4b2b61038ab9b7c0fbab9ed7931e77be6e46148ca73479ae66b2fec" => :mavericks
+    sha256 "13958f27c96a72a9cf9e366cf29cdc070d65b6c2a2955f99db6dadfede7646c9" => :mountain_lion
   end
 
   # Fixes a crash with quad precision math when building using clang
