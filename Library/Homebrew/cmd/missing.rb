@@ -31,7 +31,7 @@ module Homebrew
     ff = if ARGV.named.empty?
       Formula.installed
     else
-      ARGV.formulae
+      ARGV.resolved_formulae
     end
 
     missing_deps(ff) do |name, missing|
