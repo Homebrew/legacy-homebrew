@@ -17,9 +17,9 @@ class Sphinx < Formula
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   bottle do
-    sha256 "306dce352302755160f39c9826deb5e2e6273cfb6e5ab95e4a98c0ff2157a44b" => :yosemite
-    sha256 "9556e1329b095ff1621a5ea73872de3706a8c6fc0c75fa9d14a9884b60fa60fd" => :mavericks
-    sha256 "a71c292f774b8e449cf8775d21e7a6f41a85497e178ea6ba678b80a2f33b4ebd" => :mountain_lion
+    sha256 "c9cdc77ed228f264c3f93293215cdb621129f52b90c49e157ac69ecf85027b16" => :yosemite
+    sha256 "b46915db19659083d4a6428a704dac03a4c4d4a2b0d88ad32902c5c739715714" => :mavericks
+    sha256 "419d876d846d9ad280be6f8ffdde5962cc6cb5accb32688e8af44f8c4e50989d" => :mountain_lion
   end
 
   option 'with-mysql',      'Force compiling against MySQL'
