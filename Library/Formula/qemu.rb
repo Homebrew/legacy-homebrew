@@ -17,6 +17,13 @@ class Qemu < Formula
     sha256 "a182ee0e5d6aa040dea51796a410827e8c0b3b928c864846c6e5a1754dde9c88"
   end
 
+  patch do
+    # Fix for VENOM <http://venom.fail>
+    # Patch from QEMU Git
+    url "http://git.qemu.org/?p=qemu.git;a=commitdiff_plain;h=e907746266721f305d67bc0718795fedee2e824c"
+    sha256 "a182ee0e5d6aa040dea51796a410827e8c0b3b928c864846c6e5a1754dde9c88"
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libtool" => :build
   depends_on "jpeg"
