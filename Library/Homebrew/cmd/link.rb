@@ -14,7 +14,7 @@ module Homebrew
         opoo "Already linked: #{keg}"
         puts "To relink: brew unlink #{keg.name} && brew link #{keg.name}"
         next
-      elsif keg_only?(keg.name) && !ARGV.force?
+      elsif keg_only?(keg.rack) && !ARGV.force?
         opoo "#{keg.name} is keg-only and must be linked with --force"
         puts "Note that doing so can interfere with building software."
         next
@@ -48,9 +48,9 @@ module Homebrew
 
   private
 
-  def keg_only?(name)
-    Formulary.factory(name).keg_only?
-  rescue FormulaUnavailableError
+  def keg_only?(rack)
+    Formulary.from_rack(rack).keg_only?
+  rescue FormulaUnavailableError, TapFormulaAmbiguityError
     false
   end
 end
