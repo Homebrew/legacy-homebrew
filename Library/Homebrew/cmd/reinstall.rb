@@ -2,7 +2,7 @@ require "formula_installer"
 
 module Homebrew
   def reinstall
-    ARGV.formulae.each { |f| reinstall_formula(f) }
+    ARGV.resolved_formulae.each { |f| reinstall_formula(f) }
   end
 
   def reinstall_formula f
