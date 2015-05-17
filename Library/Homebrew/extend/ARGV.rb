@@ -51,7 +51,7 @@ module HomebrewArgvExtension
           Keg.new(linked_keg_ref.resolved_path)
         elsif dirs.length == 1
           Keg.new(dirs.first)
-        elsif (prefix = Formulary.factory(canonical_name).prefix).directory?
+        elsif (prefix = (name.include?("/") ? Formulary.factory(name) : Formulary.from_rack(rack)).prefix).directory?
           Keg.new(prefix)
         else
           raise MultipleVersionsInstalledError.new(canonical_name)
