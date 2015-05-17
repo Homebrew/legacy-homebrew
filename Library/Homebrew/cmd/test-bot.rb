@@ -188,7 +188,7 @@ module Homebrew
 
       begin
         formula = Formulary.factory(argument)
-      rescue FormulaUnavailableError
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
       end
 
       git "rev-parse", "--verify", "-q", argument
