@@ -174,6 +174,9 @@ class FormulaAuditor
         rescue FormulaUnavailableError
           problem "Can't find dependency #{dep.name.inspect}."
           next
+        rescue TapFormulaAmbiguityError
+          problem "Ambiguous dependency #{dep.name.inspect}."
+          next
         end
 
         if @@aliases.include?(dep.name)
@@ -231,6 +234,8 @@ class FormulaAuditor
         next
       rescue FormulaUnavailableError
         problem "Can't find conflicting formula #{c.name.inspect}."
+      rescue TapFormulaAmbiguityError
+        problem "Ambiguous conflicting formula #{c.name.inspect}."
       end
     end
   end
