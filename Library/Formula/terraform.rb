@@ -8,6 +8,9 @@ class Terraform < Formula
 
   bottle do
     cellar :any
+    sha256 "3d4a949306abae7f8058e0e3f78fce9af9986dce2e151b51e002888d943b0f4e" => :yosemite
+    sha256 "f8a161f3781fc89c04bf74d2ca88032c1df4d078e508e4b35895ef99607faa2e" => :mavericks
+    sha256 "f2be116dee2e01a75f192c5088c25f40ce3a7d6f23ea83539f485701e3b907fa" => :mountain_lion
   end
 
   # patch from upstream, will be included in next release
