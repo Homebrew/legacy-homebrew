@@ -17,11 +17,11 @@ class Snappystream < Formula
   depends_on "boost" => :optional
 
   def install
-    args = [ ".", "-DBUILD_TESTS=ON" ]
-    if build.with? "boost"
-      args << "-DWITH_BOOST_IOSTREAMS=1"
-    end
-    system "cmake", *args, *std_cmake_args
+    args = std_cmake_args
+    args << "."
+    args << "-DBUILD_TESTS=ON"
+    args << "-DWITH_BOOST_IOSTREAMS=1" if build.with? "boost"
+    system "cmake", *args
     system "make", "all", "test", "install"
   end
 
