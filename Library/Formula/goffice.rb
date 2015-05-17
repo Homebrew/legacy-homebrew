@@ -11,10 +11,11 @@ class Goffice < Formula
   end
 
   # Fixes a crash with quad precision math when building using clang
+  # Will be included in the next release; patch from upstream commit.
   # https://bugzilla.gnome.org/show_bug.cgi?id=749463
-  patch :p0 do
-    url "https://trac.macports.org/export/136404/trunk/dports/gnome/goffice/files/patch-goffice-math-go-quad.diff"
-    sha256 "46989fd9a6088afdc5c4dcdfbef09cfaa956ed06ea98f13eca9bd1fe644a80b6"
+  patch do
+    url "https://gist.githubusercontent.com/mistydemeo/71c77c48e36116b824b4/raw/2f70e9f1d847bfaea2f328e43b6c8cd0a609902b/goffice.patch"
+    sha256 "f51f9a149189c6ab9716716ee0170416c4847739f7bf866fbf388c246008f7e1"
   end
 
   head do
