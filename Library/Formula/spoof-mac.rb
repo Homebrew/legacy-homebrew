@@ -1,7 +1,8 @@
 class SpoofMac < Formula
   homepage "https://github.com/feross/SpoofMAC"
-  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.3.tar.gz"
-  sha1 "fdd80539fc9fdd058cd167a07cbab9f41186d51b"
+  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.4.tar.gz"
+  sha256 "eb623ead027c804d9e01e4418462c6da3319b05b09ce9b641080179ea2c9971d"
+
   head "https://github.com/feross/SpoofMAC.git"
 
   bottle do
@@ -14,7 +15,7 @@ class SpoofMac < Formula
 
   resource "docopt" do
     url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
-    sha1 "224a3ec08b56445a1bd1583aad06b00692671e04"
+    sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
   end
 
   def install
