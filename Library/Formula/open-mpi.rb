@@ -1,9 +1,8 @@
 class OpenMpi < Formula
   homepage "https://www.open-mpi.org/"
-  # Wait for 1.8.6 and skip 1.8.5 due to a severe memory leak on OS X:
-  # https://github.com/open-mpi/ompi/issues/579
-  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2"
-  sha256 "23158d916e92c80e2924016b746a93913ba7fae9fff51bf68d5c2a0ae39a2f8a"
+  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.5.tar.bz2"
+  sha256 "4cea06a9eddfa718b09b8240d934b14ca71670c2dc6e6251a585ce948a93fbc4"
+  revision 1
 
   bottle do
     sha1 "a6ec98d40ab34bf2eb4dbe9223d5aa430ba749ed" => :yosemite
@@ -24,6 +23,10 @@ class OpenMpi < Formula
   depends_on "libevent"
 
   def install
+    # Work around memory leak
+    # https://github.com/open-mpi/ompi/issues/579#issuecomment-102535292
+    open("opal/etc/openmpi-mca-params.conf", "a") { |f| f.puts "oob_tcp_keepalive_time = 0" }
+
     ENV.cxx11 if build.cxx11?
 
     args = %W[
