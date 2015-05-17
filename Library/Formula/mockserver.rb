@@ -10,11 +10,9 @@ class Mockserver < Formula
     libexec.install Dir["*"]
     bin.install_symlink "#{libexec}/bin/run_mockserver.sh" => "mockserver"
 
-    # add lib directory soft link
     lib.install_symlink "#{libexec}/lib" => "mockserver"
 
-    # add log directory soft link
-    mockserver_log = var/"log"/"mockserver"
+    mockserver_log = var/"log/mockserver"
     mockserver_log.mkpath
 
     libexec.install_symlink mockserver_log => "log"
@@ -23,26 +21,21 @@ class Mockserver < Formula
   test do
     require "socket"
 
-    # dynamically find free port
     server = TCPServer.new(0)
     port = server.addr[1]
     server.close
 
-    # start MockServer
     mockserver = fork do
       exec "#{bin}/mockserver", "-serverPort", port.to_s
     end
 
-    # check its started up correctly
     loop do
-      `#{"curl -s \"http://localhost:" + port.to_s + "/status\" -X PUT"}`
+      Utils.popen_read("curl", "-s", "http://localhost:" + port.to_s + "/status", "-X", "PUT")
       break if $?.exitstatus == 0
     end
 
-    # shut it down
     system "curl", "-s", "http://localhost:" + port.to_s + "/stop", "-X", "PUT"
 
-    # wait for MockServer to stop
     Process.wait(mockserver)
   end
 end
