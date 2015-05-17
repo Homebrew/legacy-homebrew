@@ -13,8 +13,8 @@ class Terraform < Formula
   # patch from upstream, will be included in next release
   # fix regression in networkacl with conflicts with
   patch do
-    url "https://github.com/hashicorp/terraform/commit/af09f257c8d5522ce78f9a9088d04f653fb73ec9.patch"
-    sha256 "739dab993ac474a05db89cc8e43cbf043727db71333f0cc7e433e9d0d63f6780"
+    url "https://github.com/hashicorp/terraform/commit/af09f2.diff"
+    sha256 "35a5857f51b36fce4a700e440b5ccf56e319e309b707bd5766ce2649fe6fc994"
   end
 
   depends_on "go" => :build
