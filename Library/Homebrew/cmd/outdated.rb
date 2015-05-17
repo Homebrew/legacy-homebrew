@@ -3,7 +3,7 @@ require 'keg'
 
 module Homebrew
   def outdated
-    formulae = ARGV.formulae.any? ? ARGV.formulae : Formula.installed
+    formulae = ARGV.resolved_formulae.any? ? ARGV.resolved_formulae : Formula.installed
 
     outdated = outdated_brews(formulae) do |f, versions|
       if ($stdout.tty? || ARGV.verbose?) && !ARGV.flag?("--quiet")
@@ -12,7 +12,7 @@ module Homebrew
         puts f.name
       end
     end
-    Homebrew.failed = ARGV.formulae.any? && outdated.any?
+    Homebrew.failed = ARGV.resolved_formulae.any? && outdated.any?
   end
 
   def outdated_brews(formulae)
