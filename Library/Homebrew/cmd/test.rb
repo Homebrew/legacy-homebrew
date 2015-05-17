@@ -8,7 +8,7 @@ module Homebrew
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    ARGV.formulae.each do |f|
+    ARGV.resolved_formulae.each do |f|
       # Cannot test uninstalled formulae
       unless f.installed?
         ofail "Testing requires the latest version of #{f.name}"
