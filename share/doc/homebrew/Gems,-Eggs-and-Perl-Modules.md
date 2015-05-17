@@ -101,7 +101,7 @@ been created chown root. Fix with:
 
 `sudo chown -R $USER /Library/Ruby /Library/Perl /Library/Python`
 
-Perl CPAN Modules without sudo
+Perl 5 CPAN Modules without sudo
 ------------------------------
 
 The Perl module local::lib works similarly to rbenv/RVM (although for
@@ -125,12 +125,26 @@ subdirectories will be in your `PATH` and `PERL5LIB` etc.
 ### Avoiding sudo altogether for Perl
 
 If you don’t even want (or can’t) use sudo for bootstrapping
-`local::lib` just manually install `local::lib` in
-~/perl5 and add the relevant path to `PERL5LIB` before the .bashrc eval incantation.
+`local::lib` you have multiple alternatives:
 
-Another alternative is to use `perlbrew` to install a separate copy of Perl in your home directory, or wherever you like :
+* bootstrapping `local::lib`
+* `perlbrew`
+* `plenv`
+
+#### Bootstrapping `local::lib`
+
+You can manually install `local::lib` in
+~/perl5 and add the relevant path to `PERL5LIB` before the .bashrc eval incantation. Read the
+[complete manual](https://metacpan.org/pod/local::lib#The-bootstrapping-technique).
+
+#### `perlbrew`
+
+Another alternative is to use [`perlbrew`](http://perlbrew.pl/) to install one (or multiple) separate versions of perl 5 in your home directory, or wherever you like :
 ```bash
 curl -kL http://install.perlbrew.pl | bash
-perlbrew install perl-5.16.2
-echo ".~/perl5/perlbrew/etc/bashrc" >> ~/.bashrc
+perlbrew install perl-5.20.2
+echo ". ~/perl5/perlbrew/etc/bashrc" >> ~/.bashrc
 ```
+#### `plenv`
+
+[`plenv`](https://github.com/tokuhirom/plenv/) is an alternative to perlbrew.
