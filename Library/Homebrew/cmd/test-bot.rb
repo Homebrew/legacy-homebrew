@@ -386,7 +386,7 @@ module Homebrew
       formula.conflicts.map { |c| Formulary.factory(c.name) }.
         select { |f| f.installed? }.each do |conflict|
           test "brew", "unlink", conflict.name
-      end
+        end
 
       installed_gcc = false
 
@@ -418,7 +418,11 @@ module Homebrew
         CompilerSelector.select_for(formula)
       rescue CompilerSelectionError => e
         unless installed_gcc
-          test "brew", "install", "gcc"
+          if @formulae.include? "gcc"
+            run_as_not_developer { test "brew", "install", "gcc" }
+          else
+            test "brew", "install", "gcc"
+          end
           installed_gcc = true
           OS::Mac.clear_version_cache
           retry
@@ -448,7 +452,11 @@ module Homebrew
       testable_dependents = dependents.select { |d| d.test_defined? && d.bottled? }
 
       if (deps | reqs).any? { |d| d.name == "mercurial" && d.build? }
-        test "brew", "install", "mercurial"
+        if @formulae.include? "mercurial"
+          run_as_not_developer { test "brew", "install", "mercurial" }
+        else
+          test "brew", "install", "mercurial"
+        end
       end
 
       test "brew", "fetch", "--retry", *unchanged_dependencies unless unchanged_dependencies.empty?
@@ -475,9 +483,9 @@ module Homebrew
 
       install_args << canonical_formula_name
       # Don't care about e.g. bottle failures for dependencies.
-      ENV["HOMEBREW_DEVELOPER"] = nil
-      test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
-      ENV["HOMEBREW_DEVELOPER"] = "1"
+      run_as_not_developer do
+        test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
+      end
       test "brew", "install", *install_args
       install_passed = steps.last.passed?
       audit_args = [canonical_formula_name]

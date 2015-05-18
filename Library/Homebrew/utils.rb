@@ -150,6 +150,15 @@ ensure
   ENV['PATH'] = old_path
 end
 
+def run_as_not_developer(&block)
+  begin
+    old = ENV.delete "HOMEBREW_DEVELOPER"
+    yield
+  ensure
+    ENV["HOMEBREW_DEVELOPER"] = old
+  end
+end
+
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   Homebrew.system(cmd, *args) or raise ErrorDuringExecution.new(cmd, args)
