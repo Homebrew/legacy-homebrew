@@ -3,6 +3,7 @@ class Pidgin < Formula
   homepage "https://pidgin.im/"
   url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.11/pidgin-2.10.11.tar.bz2"
   sha256 "f2ae211341fc77efb9945d40e9932aa535cdf3a6c8993fe7919fca8cc1c04007"
+  revision 1
 
   bottle do
     revision 3
@@ -25,7 +26,6 @@ class Pidgin < Formula
   depends_on "libgcrypt"
 
   if build.with? "gui"
-    depends_on :x11 => :optional
     depends_on "gtk+"
     depends_on "cairo"
     depends_on "pango"
@@ -68,7 +68,7 @@ class Pidgin < Formula
       args << "--without-x"
       args << "--disable-gtkui"
     else
-      args << "--with-x"
+      args << "--without-x"
       args << "--disable-idn"
     end
 
