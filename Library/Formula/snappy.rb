@@ -36,4 +36,27 @@ class Snappy < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <assert.h>
+      #include <snappy.h>
+      #include <string>
+      using namespace std;
+      using namespace snappy;
+
+      int main()
+      {
+        string source = "Hello World!";
+        string compressed, decompressed;
+        Compress(source.data(), source.size(), &compressed);
+        Uncompress(compressed.data(), compressed.size(), &decompressed);
+        assert(source == decompressed);
+        return 0;
+      }
+    EOS
+
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-lsnappy", "-o", "test"
+    system "./test"
+  end
 end
