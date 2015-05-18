@@ -3,6 +3,7 @@ class Cogl < Formula
   homepage "https://developer.gnome.org/cogl/"
   url "https://download.gnome.org/sources/cogl/1.20/cogl-1.20.0.tar.xz"
   sha256 "729e35495829e7d31fafa3358e47b743ba21a2b08ff9b6cd28fb74c0de91192b"
+  revision 1
 
   bottle do
     sha256 "16b476d5d5d34c5dadd575e7ae9e6b526043083d574eadb92ae11f1642dc6fab" => :yosemite
@@ -23,9 +24,6 @@ class Cogl < Formula
   depends_on "gobject-introspection"
   depends_on "gtk-doc"
   depends_on "pango"
-
-  depends_on :x11 => ["2.5.1", :recommended]
-  deprecated_option "without-x" => "without-x11"
 
   # Lion's grep fails, which later results in compilation failures:
   # libtool: link: /usr/bin/grep -E -e [really long regexp] ".libs/libcogl.exp" > ".libs/libcogl.expT"
@@ -59,8 +57,8 @@ class Cogl < Formula
       --enable-cogl-pango=yes
       --enable-introspection=yes
       --disable-glx
+      --without-x
     ]
-    args << "--without-x" if build.without? "x11"
 
     if build.head?
       system "./autogen.sh", *args
