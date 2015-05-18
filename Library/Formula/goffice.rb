@@ -3,6 +3,7 @@ class Goffice < Formula
   homepage "https://developer.gnome.org/goffice/"
   url "https://download.gnome.org/sources/goffice/0.10/goffice-0.10.22.tar.xz"
   sha256 "0206a87a323b52a874dc54491374245f9e1c5f62e93a2ce4a02fb444a26b0e28"
+  revision 1
 
   bottle do
     revision 2
@@ -39,7 +40,6 @@ class Goffice < Formula
   depends_on "librsvg"
   depends_on "pango"
   depends_on "pcre"
-  depends_on :x11
 
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
