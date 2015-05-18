@@ -10,9 +10,10 @@ class Odt2txt < Formula
 
   bottle do
     cellar :any
-    sha1 "21e4d5f82d941a5ba13f191b6c4011aa456b5c7e" => :yosemite
-    sha1 "0bc3eb54110df5ba74f18f0b89dfe6819e7e3b75" => :mavericks
-    sha1 "064b2423089db500bf5d850f97b95e32bc947cab" => :mountain_lion
+    revision 1
+    sha256 "dd54432a555e848fdb86e99cc4ad26b41e50ba52f045cd56056e630e6d83ac9b" => :yosemite
+    sha256 "a24f4fdd461b5d25014b52abcfa4dcaba0504d60fba396582aa677af381349c3" => :mavericks
+    sha256 "534b840b69bee074b4192d1d3c89a805f5647df4d9b12bddd0923bbdeedd8f9f" => :mountain_lion
   end
 
   def install
