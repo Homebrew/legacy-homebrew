@@ -3,6 +3,7 @@ class Gtkextra < Formula
   homepage "http://gtkextra.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/gtkextra/3.1/gtkextra-3.1.3.tar.gz"
   sha256 "eb8bbfd31ec5d73face8939d19f9951293dd99183050aab4f781549964c2692f"
+  revision 1
 
   bottle do
     cellar :any
@@ -41,7 +42,6 @@ class Gtkextra < Formula
     gettext = Formula["gettext"]
     glib = Formula["glib"]
     gtkx = Formula["gtk+"]
-    harfbuzz = Formula["harfbuzz"]
     libpng = Formula["libpng"]
     pango = Formula["pango"]
     pixman = Formula["pixman"]
@@ -57,7 +57,6 @@ class Gtkextra < Formula
       -I#{glib.opt_lib}/glib-2.0/include
       -I#{gtkx.opt_include}/gtk-2.0
       -I#{gtkx.opt_lib}/gtk-2.0/include
-      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/gtkextra-3.0
       -I#{libpng.opt_include}/libpng16
       -I#{pango.opt_include}/pango-1.0
@@ -65,8 +64,6 @@ class Gtkextra < Formula
       -D_REENTRANT
       -L#{atk.opt_lib}
       -L#{cairo.opt_lib}
-      -L#{fontconfig.opt_lib}
-      -L#{freetype.opt_lib}
       -L#{gdk_pixbuf.opt_lib}
       -L#{gettext.opt_lib}
       -L#{glib.opt_lib}
@@ -75,19 +72,16 @@ class Gtkextra < Formula
       -L#{pango.opt_lib}
       -latk-1.0
       -lcairo
-      -lfontconfig
-      -lfreetype
-      -lgdk-x11-2.0
+      -lgdk-quartz-2.0
       -lgdk_pixbuf-2.0
       -lgio-2.0
       -lglib-2.0
       -lgobject-2.0
-      -lgtk-x11-2.0
-      -lgtkextra-x11-3.0
+      -lgtk-quartz-2.0
+      -lgtkextra-quartz-3.0
       -lintl
       -lpango-1.0
       -lpangocairo-1.0
-      -lpangoft2-1.0
     ]
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
