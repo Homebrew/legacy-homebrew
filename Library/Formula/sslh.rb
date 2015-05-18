@@ -11,6 +11,13 @@ class Sslh < Formula
       sha256 "a6f8e1c3f9776d7344ea839de1d8a40e9925101528bd3beee50a0c60c62872cf"
     end
   end
+  bottle do
+    cellar :any
+    sha256 "45ba9e8ef45233919decee90e7f764ee1272b010c6ab0ae54fa509531cd60e0e" => :yosemite
+    sha256 "7896dfcd03335687ddd1232f1226bc5149ddd5cf8062423f398a6328ade6519b" => :mavericks
+    sha256 "2a712be56b116244717fb4e414846b6b9373bf2b0482b764b2142096cffbac18" => :mountain_lion
+  end
+
 
   head "https://github.com/yrutschle/sslh.git"
 
