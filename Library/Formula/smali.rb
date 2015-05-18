@@ -5,9 +5,9 @@ class Smali < Formula
 
   bottle do
     cellar :any
-    sha1 "042f4692b35ab5d483aa291e3a4924565fe1510f" => :yosemite
-    sha1 "a9e5893ba2cc5bdd4b0b1e9ab489cf8863a48dfb" => :mavericks
-    sha1 "f6829e47d12e951c4ea37784496bed1b79cebf0d" => :mountain_lion
+    sha256 "84ab85c8c285d21f0086a4929829014a92a1b8e61213bb1d3c563812af7d253b" => :yosemite
+    sha256 "55be916588480e0d8cb8536f3db81662ac318b20effd628369bed2186443e439" => :mavericks
+    sha256 "de4a407f7e3dd02af1a00416cd8d9da813d0c268e128daf397e8854fcd4dbeec" => :mountain_lion
   end
 
   resource "baksmali-jar" do
