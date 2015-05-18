@@ -1,9 +1,16 @@
-require 'formula'
-
 class Snappy < Formula
-  homepage 'http://snappy.googlecode.com'
-  url 'https://snappy.googlecode.com/files/snappy-1.1.1.tar.gz'
-  sha1 '2988f1227622d79c1e520d4317e299b61d042852'
+  homepage "http://snappy.googlecode.com"
+  url "https://drive.google.com/uc?id=0B0xs9kK-b5nMOWIxWGJhMXd6aGs&export=download"
+  mirror "https://mirrors.kernel.org/debian/pool/main/s/snappy/snappy_1.1.2.orig.tar.gz"
+  sha256 "f9d8fe1c85494f62dbfa3efe8e73bc23d8dec7a254ff7fe09ec4b0ebfc586af4"
+  version "1.1.2"
+
+  head do
+    url "https://github.com/google/snappy.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -15,12 +22,19 @@ class Snappy < Formula
 
   option :universal
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.j1 if build.stable?
+
+    if build.head?
+      # https://github.com/google/snappy/pull/4
+      inreplace "autogen.sh", "libtoolize", "glibtoolize"
+      system "./autogen.sh"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
