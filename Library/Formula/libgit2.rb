@@ -1,9 +1,8 @@
 class Libgit2 < Formula
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.22.0.tar.gz"
-  sha1 "a37dc29511422eec9828e129ad057e77ca962c5e"
+  url "https://github.com/libgit2/libgit2/archive/v0.22.1.tar.gz"
+  sha256 "c7f1bf99ed8aeba65a485489869e2a50f022f3cd847df85e192fc99fdd6c8b5e"
   head "https://github.com/libgit2/libgit2.git"
-  revision 1
 
   bottle do
     cellar :any
