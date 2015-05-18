@@ -1,7 +1,7 @@
 class Writerperfect < Formula
   homepage "http://sourceforge.net/p/libwpd/wiki/writerperfect/"
-  url "https://downloads.sourceforge.net/project/libwpd/writerperfect/writerperfect-0.9.2/writerperfect-0.9.2.tar.xz"
-  sha1 "a13b8b41d58574fb5b2d3e7ef886887914c34ed7"
+  url "https://downloads.sourceforge.net/project/libwpd/writerperfect/writerperfect-0.9.4/writerperfect-0.9.4.tar.xz"
+  sha256 "6714bf945a657550eb84bd2f1f0b78b894f59536d8302942810134426f7a23ea"
 
   bottle do
     cellar :any
