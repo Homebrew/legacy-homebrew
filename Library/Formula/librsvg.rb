@@ -3,6 +3,7 @@ class Librsvg < Formula
   homepage "https://live.gnome.org/LibRsvg"
   url "https://download.gnome.org/sources/librsvg/2.40/librsvg-2.40.9.tar.xz"
   sha256 "13964c5d35357552b47d365c34215eee0a63bf0e6059b689f048648c6bf5f43a"
+  revision 1
 
   bottle do
     sha256 "d5c5069f182b750a3060cca13a5c50f1546713115705af0bb9bc831b12b2f096" => :yosemite
