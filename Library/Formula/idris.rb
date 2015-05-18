@@ -4,8 +4,8 @@ class Idris < Formula
   include Language::Haskell::Cabal
 
   homepage "http://www.idris-lang.org"
-  url "https://github.com/idris-lang/Idris-dev/archive/v0.9.17.tar.gz"
-  sha1 "d51d68227b3e3d3967769749314d3a75755a68ef"
+  url "https://github.com/idris-lang/Idris-dev/archive/v0.9.18.tar.gz"
+  sha1 "08b863ab13c306b2643e63a2bb76a01b0305c20d"
   head "https://github.com/idris-lang/Idris-dev.git"
 
   bottle do
