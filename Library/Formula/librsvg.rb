@@ -14,12 +14,10 @@ class Librsvg < Formula
   depends_on "cairo"
   depends_on "gdk-pixbuf"
   depends_on "glib"
-  depends_on "gtk+" => :recommended
   depends_on "gtk+3" => :optional
   depends_on "libcroco"
   depends_on "libgsf" => :optional
   depends_on "pango"
-  depends_on :x11 => :recommended
 
   def install
     args = ["--disable-dependency-tracking",
