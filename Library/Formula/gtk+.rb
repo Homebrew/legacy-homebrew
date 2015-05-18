@@ -11,13 +11,14 @@ class Gtkx < Formula
     sha256 "67af28491ac9622e5c19b0d37802c9569e95ab21342b83672de0b6aac98c5c72" => :mountain_lion
   end
 
+  option "with-quartz-relocation", "Build with quartz relocation support"
+
   depends_on "pkg-config" => :build
   depends_on "gdk-pixbuf"
   depends_on "jasper" => :optional
   depends_on "atk"
   depends_on "pango"
   depends_on "gobject-introspection"
-  option "with-quartz-relocation"
 
   fails_with :llvm do
     build 2326
