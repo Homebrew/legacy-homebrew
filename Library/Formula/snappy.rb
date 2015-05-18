@@ -1,5 +1,5 @@
 class Snappy < Formula
-  homepage "http://snappy.googlecode.com"
+  homepage "https://code.google.com/p/snappy/"
   url "https://drive.google.com/uc?id=0B0xs9kK-b5nMOWIxWGJhMXd6aGs&export=download"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/snappy/snappy_1.1.2.orig.tar.gz"
   sha256 "f9d8fe1c85494f62dbfa3efe8e73bc23d8dec7a254ff7fe09ec4b0ebfc586af4"
