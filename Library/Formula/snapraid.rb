@@ -11,9 +11,9 @@ class Snapraid < Formula
 
   bottle do
     cellar :any
-    sha256 "5725dceb381a57c2e216cf13f51c0eb68793d772bedaa211ac4de163c23d6a1d" => :yosemite
-    sha256 "0fe2f7a73f36103c67b7308f7267be8a37277ed03f8b1573906102c0cf6ed510" => :mavericks
-    sha256 "ad68ec9b63b3bc6cc46c2905a57d3b23a5154a94fdf86cfa12a58742c7ec12e3" => :mountain_lion
+    sha256 "10123687aa79706617cf0d62ee0a2d5e27d43ab633d9dc914089d325b3e22464" => :yosemite
+    sha256 "d5a7af73bdf89fd946d96139ae94dcb8e5b4e437a8836ba6c9c9a21d618af763" => :mavericks
+    sha256 "b5f0e760a5448d744cc279df69686d65d4aaa3d8523ca8d9a8731615ef55d059" => :mountain_lion
   end
 
   def install
