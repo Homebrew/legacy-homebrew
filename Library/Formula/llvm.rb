@@ -61,20 +61,15 @@ class Llvm < Formula
     end
   end
 
-  # Use absolute paths for shared library IDs
-  patch :DATA
-
   option :universal
   option "with-clang", "Build Clang support library"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
   option "with-python", "Build Python bindings against Homebrew Python"
-  option "without-shared", "Don't build LLVM shared libraries"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
-  deprecated_option "disable-shared" => "without-shared"
   deprecated_option "disable-assertions" => "without-assertions"
 
   if MacOS.version <= :snow_leopard
@@ -113,8 +108,6 @@ class Llvm < Formula
     ]
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
-
-    args << "-DBUILD_SHARED_LIBS=On" if build.with? "shared"
 
     args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
 
@@ -155,37 +148,3 @@ class Llvm < Formula
     EOS
   end
 end
-
-__END__
-# There are two separate patches here:
-# Makefile.rules: https://github.com/homebrew/homebrew/issues/32566
-# lib/Target/NVPTX/CMakeLists.txt: http://lists.cs.uiuc.edu/pipermail/llvm-commits/Week-of-Mon-20150511/276121.html
-diff --git a/Makefile.rules b/Makefile.rules
-index ebebc0a..b0bb378 100644
---- a/Makefile.rules
-+++ b/Makefile.rules
-@@ -599,7 +599,12 @@ ifneq ($(HOST_OS), $(filter $(HOST_OS), Cygwin MingW))
- ifneq ($(HOST_OS),Darwin)
-   LD.Flags += $(RPATH) -Wl,'$$ORIGIN'
- else
--  LD.Flags += -Wl,-install_name  -Wl,"@rpath/lib$(LIBRARYNAME)$(SHLIBEXT)"
-+  LD.Flags += -Wl,-install_name
-+  ifdef LOADABLE_MODULE
-+    LD.Flags += -Wl,"$(PROJ_libdir)/$(LIBRARYNAME)$(SHLIBEXT)"
-+  else
-+    LD.Flags += -Wl,"$(PROJ_libdir)/$(SharedPrefix)$(LIBRARYNAME)$(SHLIBEXT)"
-+  endif
- endif
- endif
- endif
-diff --git a/lib/Target/NVPTX/CMakeLists.txt b/lib/Target/NVPTX/CMakeLists.txt
-index cdd2f1f..46d8043 100644
---- a/lib/Target/NVPTX/CMakeLists.txt
-+++ b/lib/Target/NVPTX/CMakeLists.txt
-@@ -1,5 +1,5 @@
- set(LLVM_TARGET_DEFINITIONS NVPTX.td)
--
-+set(LLVM_LINK_COMPONENTS TransformUtils)
-
- tablegen(LLVM NVPTXGenRegisterInfo.inc -gen-register-info)
- tablegen(LLVM NVPTXGenInstrInfo.inc -gen-instr-info)
