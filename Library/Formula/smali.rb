@@ -1,9 +1,7 @@
-require "formula"
-
 class Smali < Formula
   homepage "http://smali.googlecode.com/"
-  url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.0.3.jar", :using => :nounzip
-  sha1 "42774f5d949add1739299785feb83f3dec32f240"
+  url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.0.6.jar"
+  sha256 "fcadc564a35b121361930223a4e6431e000b24b3cc992ca63dd2e35f7b28746d"
 
   bottle do
     cellar :any
@@ -13,25 +11,25 @@ class Smali < Formula
   end
 
   resource "baksmali-jar" do
-    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.0.3.jar", :using => :nounzip
-    sha1 "39d860bc2539753c8575f39879cf8d515e1c1cb9"
+    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.0.6.jar"
+    sha256 "73c62f32ff53f43a0e551959d5ef1ce4adcc900e44035063b7a360c199912652"
   end
 
   resource "baksmali" do
-    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali", :using => :nounzip
-    sha1 "9f7a87ee158b89f9d376ba7de09e0bea39e0cad0"
+    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali"
+    sha256 "c2dead21e9ed0a18494077872a4190b9928bd40983136256ab33dd96e947e409"
   end
 
   resource "smali" do
-    url "https://bitbucket.org/JesusFreke/smali/downloads/smali", :using => :nounzip
-    sha1 "26423d6a1d882d3feac0fd0b93ddae0ab134551f"
+    url "https://bitbucket.org/JesusFreke/smali/downloads/smali"
+    sha256 "7d4d9095ef54f97f49c132d33035fc1331480273e886e6e3c6fe3ffe33ce9901"
   end
 
   def install
-    resource("baksmali-jar").stage {
-      libexec.install "baksmali-2.0.3.jar" => "baksmali.jar"
-    }
-    libexec.install resource("smali"), resource("baksmali"), "smali-2.0.3.jar" => "smali.jar"
+    resource("baksmali-jar").stage do
+      libexec.install "baksmali-#{version}.jar" => "baksmali.jar"
+    end
+    libexec.install resource("smali"), resource("baksmali"), "smali-#{version}.jar" => "smali.jar"
 
     inreplace "#{libexec}/smali" do |s|
       s.gsub! /^libdir=.*$/, "libdir=\"#{libexec}\""
