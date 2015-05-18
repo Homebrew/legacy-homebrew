@@ -5,8 +5,9 @@ class Writerperfect < Formula
 
   bottle do
     cellar :any
-    sha1 "2c0b127d6a3488421ba9179f0f1642fb360a141c" => :yosemite
-    sha1 "7967b8d4de65dc7bc0add679975b7b546b4b838b" => :mavericks
+    sha256 "379df0c8b6577efa235b9e6aecf6ba66bdd5f0ca5d9ad62339569de6b33f2981" => :yosemite
+    sha256 "434321af20c73e09c1aa0158b19e699050219d4b99e32b881b608540c77b74a1" => :mavericks
+    sha256 "91b2eaa53277a6dd05330caa3e4342f11e65877b45c4bca3344c4dcc7abd7a9a" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
