@@ -3,6 +3,7 @@ class Gtkmm < Formula
   homepage "http://www.gtkmm.org/"
   url "https://download.gnome.org/sources/gtkmm/2.24/gtkmm-2.24.4.tar.xz"
   sha256 "443a2ff3fcb42a915609f1779000390c640a6d7fd19ad8816e6161053696f5ee"
+  revision 1
 
   bottle do
     revision 2
@@ -44,7 +45,6 @@ class Gtkmm < Formula
     glib = Formula["glib"]
     glibmm = Formula["glibmm"]
     gtkx = Formula["gtk+"]
-    harfbuzz = Formula["harfbuzz"]
     libpng = Formula["libpng"]
     libsigcxx = Formula["libsigc++"]
     pango = Formula["pango"]
@@ -70,7 +70,6 @@ class Gtkmm < Formula
       -I#{gtkx.opt_include}/gtk-2.0
       -I#{gtkx.opt_include}/gtk-unix-print-2.0
       -I#{gtkx.opt_lib}/gtk-2.0/include
-      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/gdkmm-2.4
       -I#{include}/gtkmm-2.4
       -I#{libpng.opt_include}/libpng16
@@ -87,8 +86,6 @@ class Gtkmm < Formula
       -L#{atkmm.opt_lib}
       -L#{cairo.opt_lib}
       -L#{cairomm.opt_lib}
-      -L#{fontconfig.opt_lib}
-      -L#{freetype.opt_lib}
       -L#{gdk_pixbuf.opt_lib}
       -L#{gettext.opt_lib}
       -L#{glib.opt_lib}
@@ -102,9 +99,7 @@ class Gtkmm < Formula
       -latkmm-1.6
       -lcairo
       -lcairomm-1.0
-      -lfontconfig
-      -lfreetype
-      -lgdk-x11-2.0
+      -lgdk-quartz-2.0
       -lgdk_pixbuf-2.0
       -lgdkmm-2.4
       -lgio-2.0
@@ -112,12 +107,11 @@ class Gtkmm < Formula
       -lglib-2.0
       -lglibmm-2.4
       -lgobject-2.0
-      -lgtk-x11-2.0
+      -lgtk-quartz-2.0
       -lgtkmm-2.4
       -lintl
       -lpango-1.0
       -lpangocairo-1.0
-      -lpangoft2-1.0
       -lpangomm-1.4
       -lsigc-2.0
     ]
