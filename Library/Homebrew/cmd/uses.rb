@@ -19,11 +19,11 @@ module Homebrew
       used_formulae.all? do |ff|
         begin
           if recursive
-            deps = f.recursive_dependencies.reject do |dep|
-              ignores.any? { |ignore| dep.send(ignore) }
+            deps = f.recursive_dependencies do |dependent, dep|
+              Dependency.prune if ignores.any? { |ignore| dep.send(ignore) } && !dependent.build.with?(dep)
             end
-            reqs = f.recursive_requirements.reject do |req|
-              ignores.any? { |ignore| req.send(ignore) }
+            reqs = f.recursive_requirements do |dependent, req|
+              Requirement.prune if ignores.any? { |ignore| req.send(ignore) } && !dependent.build.with?(req)
             end
             deps.any? { |dep| dep.to_formula.name == ff.name } ||
               reqs.any? { |req| req.name == ff.name || req.class.default_formula == ff.name }
