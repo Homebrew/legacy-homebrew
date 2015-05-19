@@ -244,6 +244,32 @@ class FormulaAuditor
     end
   end
 
+  def audit_desc
+    # For now, only check the description when using `--strict`
+    return unless @strict
+
+    desc = formula.desc
+
+    unless desc and desc.length > 0
+      problem "Formula should have a desc (Description)."
+      return
+    end
+
+    # Make sure the formula name plus description is no longer than 80 characters
+    linelength = formula.name.length + ": ".length + desc.length
+    if linelength > 80
+      problem "Description is too long. \"name: desc\" should be less than 80 characters (currently #{linelength})."
+    end
+
+    if desc =~ %r[[Cc]ommandline]
+      problem "It should be \"command-line\", not \"commandline\"."
+    end
+
+    if desc =~ %r[[Cc]ommand line]
+      problem "It should be \"command-line\", not \"command line\"."
+    end
+  end
+
   def audit_homepage
     homepage = formula.homepage
 
@@ -706,6 +732,7 @@ class FormulaAuditor
     audit_file
     audit_class
     audit_specs
+    audit_desc
     audit_homepage
     audit_deps
     audit_conflicts
