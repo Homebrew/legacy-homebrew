@@ -2,29 +2,10 @@ class Dcmtk < Formula
   homepage "http://dicom.offis.de/dcmtk.php.en"
   revision 2
 
-  stable do
-    url "ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz"
-    sha1 "469e017cffc56f36e834aa19c8612111f964f757"
-
-    # This roughly corresponds to thefollowing upstream patch:
-    #
-    #   http://git.dcmtk.org/web?p=dcmtk.git;a=commitdiff;h=dbadc0d8f3760f65504406c8b2cb8633f868a258
-    #
-    # However, this patch can"t be applied as-is, since it refers to
-    # some files that don"t exist in the 3.6.0 release.
-    #
-    # This patch can be dropped once DCMTK makes a new release, but
-    # since this is a very rare occurrence (the last development preview
-    # release is from mid 2012), it seems justifiable to keep the patch
-    # ourselves for a while.
-    patch :DATA
-  end
-
-  devel do
-    version "3.6.1_20150217"
-    url "http://dicom.offis.de/download/dcmtk/snapshot/dcmtk-3.6.1_20150217.tar.gz"
-    sha256 "3cf8f3e52ed8a5240a7facc3a118de411aa54bc9beccba0cf7a975735da35304"
-  end
+  # Current snapshot used for stable now.
+  version "3.6.1_20150217"
+  url "http://dicom.offis.de/download/dcmtk/snapshot/dcmtk-3.6.1_20150217.tar.gz"
+  sha256 "3cf8f3e52ed8a5240a7facc3a118de411aa54bc9beccba0cf7a975735da35304"
 
   bottle do
     sha256 "0bd582c2f37ce4b9366b0a7ba2e7c6e90cddd3a6af954ebc5475938048415d5d" => :yosemite
@@ -34,7 +15,7 @@ class Dcmtk < Formula
 
   option "with-docs", "Install development libraries/headers and HTML docs"
   option "with-openssl", "Configure DCMTK with support for OpenSSL"
-  option "with-libiconv", "Build with libiconv"
+  option "with-libiconv", "Build with brewed libiconv. Dcmtk and system libiconv can have problems with utf8."
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build if build.with? "docs"
