@@ -1,25 +1,29 @@
+require 'formula'
+
 class Cloog < Formula
-  homepage "http://www.cloog.org/"
-  url "http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.3.tar.gz"
-  sha256 "460c6c740acb8cdfbfbb387156b627cf731b3837605f2ec0001d079d89c69734"
+  homepage 'http://www.cloog.org/'
+  url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.1.tar.gz'
+  mirror 'http://gcc.cybermirror.org/infrastructure/cloog-0.18.1.tar.gz'
+  sha1 '2dc70313e8e2c6610b856d627bce9c9c3f848077'
 
   bottle do
     cellar :any
-    sha256 "c33a4433346520ba6256398f722bbf3ca73c17ef10a06508ae1272d267c53148" => :yosemite
-    sha256 "2296401e08d678c6b22065249fb1ad0d26475f94fe4c0ce9bb29436c7b9f6976" => :mavericks
-    sha256 "f93f587d47c3062d3f3dd2705320af996ffe9ef565fd485d7eda493b225aed8c" => :mountain_lion
+    revision 2
+    sha1 "65900e9655ab8f444ecf7edf4118caa01ca56ddb" => :yosemite
+    sha1 "851f64756bb082a5a354e0992976acd70cfdacbf" => :mavericks
+    sha1 "06252f0a9c453818c319b21647ebaa9a26c3f4ac" => :mountain_lion
   end
 
   head do
-    url "http://repo.or.cz/r/cloog.git"
+    url 'http://repo.or.cz/r/cloog.git'
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
-  depends_on "gmp"
-  depends_on "isl"
+  depends_on 'pkg-config' => :build
+  depends_on 'gmp'
+  depends_on 'isl'
 
   def install
     system "./autogen.sh" if build.head?
@@ -37,7 +41,7 @@ class Cloog < Formula
     args << "--with-osl=bundled" if build.head?
 
     system "./configure", *args
-    system "make", "install"
+    system "make install"
   end
 
   test do
@@ -58,6 +62,6 @@ class Cloog < Formula
     EOS
 
     output = pipe_output("#{bin}/cloog /dev/stdin", cloog_source)
-    assert_match %r{Generated from /dev/stdin by CLooG}, output
+    assert_match /Generated from \/dev\/stdin by CLooG/, output
   end
 end
