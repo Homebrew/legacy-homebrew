@@ -7,8 +7,9 @@ class SfPwgen < Formula
 
   bottle do
     cellar :any
-    sha1 "94cd1487d44fc74a8f8581889cfc91d4ebe16106" => :mavericks
-    sha1 "6ae2fe533a617fca26f5bf665467f5bb1885f96b" => :mountain_lion
+    sha256 "2a5f0b9d8c9a951820583b7e4ec115b545252cc2e247f8b35f4ecfdfa3fc4114" => :yosemite
+    sha256 "71043a6853a292150f236ac1c83694c492d930ba8f504a487d636027e5ce8302" => :mavericks
+    sha256 "5b91f63b28d364f5a09b7d11db9a1b3de1958e858d51f99ed9ce7e235aa74936" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion
