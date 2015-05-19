@@ -9,7 +9,7 @@ Tools available for your platform:
  10.7  | 4.6.3 | April 2013
  10.8  | 5.1.1 | April 2014
  10.9  | 6.2   | 6.2
- 10.10 | 6.3.1 | 6.3.1
+ 10.10 | 6.3.2 | 6.3.2
 
 
 ## Compiler Version Database
@@ -53,6 +53,7 @@ Tools available for your platform:
  6.2       | —           | —           | —                | —           | 6.0 (600.0.57)  | 3.5
  6.3       | —           | —           | —                | —           | 6.1 (602.0.49)  | 3.6
  6.3.1     | —           | —           | —                | —           | 6.1 (602.0.49)  | 3.6
+ 6.3.2     | —           | —           | —                | —           | 6.1 (602.0.53)  | 3.6
 
 ## References to Xcode and compiler versions in code
 When a new Xcode release is made, the following things need to be
