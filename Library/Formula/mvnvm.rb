@@ -1,7 +1,7 @@
 class Mvnvm < Formula
   homepage "http://mvnvm.org"
-  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.4.zip"
-  sha256 "4f254e6f1df0de6f66f126251f38ac545b280bf0bbc7f05b703171b874184b19"
+  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.5.zip"
+  sha256 "dd065cfbf40bfc2e4623569cd2f0d435cec2b61953d47b8e4d7213b23e3178e5"
 
   head "https://bitbucket.org/mjensen/mvnvm.git"
 
