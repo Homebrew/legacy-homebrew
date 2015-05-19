@@ -1,6 +1,7 @@
 require 'formula'
 
 class Acme < Formula
+  desc "Crossassembler for multiple environments"
   homepage 'http://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/'
   url 'http://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/current/acme091src.tar.gz'
   version '0.91'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Podiff < Formula
+  desc "Compare textual information in two PO files"
   homepage 'http://puszcza.gnu.org.ua/software/podiff/'
   url 'http://download.gnu.org.ua/pub/release/podiff/podiff-1.1.tar.gz'
   sha1 'c354a42c215d0b7768b30c1db13729177cec4c7a'

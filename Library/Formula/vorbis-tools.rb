@@ -1,6 +1,7 @@
 require 'formula'
 
 class VorbisTools < Formula
+  desc "Ogg Vorbis CODEC tools"
   homepage 'http://vorbis.com'
   url 'http://downloads.xiph.org/releases/vorbis/vorbis-tools-1.4.0.tar.gz'
   sha1 'fc6a820bdb5ad6fcac074721fab5c3f96eaf6562'

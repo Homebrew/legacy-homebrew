@@ -1,6 +1,7 @@
 require "formula"
 
 class Cmus < Formula
+  desc "Music player with an ncurses based interface"
   homepage "https://cmus.github.io/"
   head "https://github.com/cmus/cmus.git"
   url "https://github.com/cmus/cmus/archive/v2.6.0.tar.gz"

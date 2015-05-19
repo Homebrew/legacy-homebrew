@@ -1,4 +1,5 @@
 class Eina < Formula
+  desc "Eina is a core data structure and common utility library"
   homepage "https://docs.enlightenment.org/auto/eina/eina_main.html"
   url "https://download.enlightenment.org/releases/eina-1.7.10.tar.gz"
   sha256 "3f33ae45c927faedf8d342106136ef1269cf8dde6648c8165ce55e72341146e9"

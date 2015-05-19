@@ -1,6 +1,7 @@
 require "formula"
 
 class Ctemplate < Formula
+  desc "Template language for C++"
   homepage "https://ctemplate.googlecode.com/"
   head "http://ctemplate.googlecode.com/svn/trunk/"
   url "http://ctemplate.googlecode.com/svn/tags/ctemplate-2.3/"

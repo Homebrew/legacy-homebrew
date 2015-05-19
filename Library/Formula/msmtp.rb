@@ -1,4 +1,5 @@
 class Msmtp < Formula
+  desc "SMTP client that can be used as an SMTP plugin for Mutt"
   homepage "http://msmtp.sourceforge.net"
   url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.6.2/msmtp-1.6.2.tar.xz"
   sha256 "2f6ecd7cbfadf548fd55205bd24cb63b84bcbb1185efed917dd7800595a48789"

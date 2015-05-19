@@ -1,4 +1,5 @@
 class Patchutils < Formula
+  desc "Small collection of programs that operate on patch files"
   homepage "http://cyberelk.net/tim/software/patchutils/"
   url "http://cyberelk.net/tim/data/patchutils/stable/patchutils-0.3.4.tar.xz"
   mirror "https://mirrors.kernel.org/debian/pool/main/p/patchutils/patchutils_0.3.4.orig.tar.xz"

@@ -1,4 +1,5 @@
 class Flawfinder < Formula
+  desc "Examines code and reports possible security weaknesses"
   homepage "http://www.dwheeler.com/flawfinder/"
   url "http://www.dwheeler.com/flawfinder/flawfinder-1.31.tar.gz"
   mirror "https://downloads.sourceforge.net/project/flawfinder/flawfinder-1.31.tar.gz"

@@ -1,4 +1,5 @@
 class Zeromq < Formula
+  desc "High-performance, asynchronous messaging library"
   homepage "http://www.zeromq.org/"
   revision 2
 

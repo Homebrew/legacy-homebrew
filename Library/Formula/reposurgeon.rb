@@ -1,4 +1,5 @@
 class Reposurgeon < Formula
+  desc "Edit version-control repository history"
   homepage "http://www.catb.org/esr/reposurgeon/"
   url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.22.tar.gz"
   sha256 "66f366fc92d908fd68717cfb86eade989b7f550481b2e055803fd400805d1b14"

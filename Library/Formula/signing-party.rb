@@ -1,4 +1,5 @@
 class SigningParty < Formula
+  desc "Various OpenPGP related tools"
   homepage "http://pgp-tools.alioth.debian.org/"
   url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.10.orig.tar.gz"
   sha256 "b8d6fca8b7a64938436b3d825052513d9b22317241d134707ec5d1d48c0642fd"

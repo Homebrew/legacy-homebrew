@@ -3,6 +3,7 @@ require "language/haskell"
 class GitAnnex < Formula
   include Language::Haskell::Cabal
 
+  desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
   url "https://hackage.haskell.org/package/git-annex-5.20150522/git-annex-5.20150522.tar.gz"
   sha256 "77208899616ed973dca26137534533f03636af6314cbdbfdc3e4e51c5efeec6a"

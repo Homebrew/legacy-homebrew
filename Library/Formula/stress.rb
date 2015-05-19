@@ -1,4 +1,5 @@
 class Stress < Formula
+  desc "Tool to impose load on and stress test a computer system"
   homepage "http://people.seas.harvard.edu/~apw/stress/"
   url "http://people.seas.harvard.edu/~apw/stress/stress-1.0.4.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/stress/stress_1.0.4.orig.tar.gz"

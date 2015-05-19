@@ -12,6 +12,7 @@ class FrameworkPython < Requirement
 end
 
 class Wxpython < Formula
+  desc "Python bindings for wxWidgets"
   homepage "http://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxpython/wxPython/3.0.2.0/wxPython-src-3.0.2.0.tar.bz2"
   sha1 "5053f3fa04f4eb3a9d4bfd762d963deb7fa46866"

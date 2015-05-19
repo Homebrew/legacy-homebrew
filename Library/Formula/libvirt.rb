@@ -1,4 +1,5 @@
 class Libvirt < Formula
+  desc "C virtualization API"
   homepage "https://www.libvirt.org"
   url "https://libvirt.org/sources/libvirt-1.2.16.tar.gz"
   sha256 "419bee553442024b9ee8a1fa94023b1189bb52b7c3021fa37d8e4c108490060d"

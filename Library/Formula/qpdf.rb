@@ -1,6 +1,7 @@
 require "formula"
 
 class Qpdf < Formula
+  desc "Tools for and transforming and inspecting PDF files"
   homepage "http://qpdf.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/qpdf/qpdf/5.1.2/qpdf-5.1.2.tar.gz"
   sha1 "ede3938fdf2e3bf603fce6eb2bd93b3a2e1d13b9"

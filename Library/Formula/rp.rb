@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rp < Formula
+  desc "Tool to find ROP sequences in PE/Elf/Mach-O x86/x64 binaries"
   homepage 'http://0vercl0k.github.io/rp/'
   head 'https://github.com/0vercl0k/rp.git'
   url 'https://github.com/0vercl0k/rp/archive/v1.tar.gz'

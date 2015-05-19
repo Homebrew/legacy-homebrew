@@ -1,4 +1,5 @@
 class Pv < Formula
+  desc "Monitor data's progress through a pipe"
   homepage "https://www.ivarch.com/programs/pv.shtml"
   url "https://www.ivarch.com/programs/sources/pv-1.6.0.tar.bz2"
   sha256 "0ece824e0da27b384d11d1de371f20cafac465e038041adab57fcf4b5036ef8d"

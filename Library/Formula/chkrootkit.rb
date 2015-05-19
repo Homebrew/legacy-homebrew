@@ -1,4 +1,5 @@
 class Chkrootkit < Formula
+  desc "Rootkit detector"
   homepage "http://www.chkrootkit.org/"
   url "https://mirrors.kernel.org/debian/pool/main/c/chkrootkit/chkrootkit_0.50.orig.tar.gz"
   sha256 "9548fc922b0cb8ddf055faff4a4887f140a31c45f2f5e3aa64aad91ecfa56cc7"

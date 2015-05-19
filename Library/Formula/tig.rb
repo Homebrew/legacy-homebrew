@@ -1,6 +1,7 @@
 require "formula"
 
 class Tig < Formula
+  desc "Text interface for Git repositories"
   homepage "http://jonas.nitro.dk/tig/"
   url "http://jonas.nitro.dk/tig/releases/tig-2.1.1.tar.gz"
   sha1 "253ab0075adb1479f4bb68ffd702b5f6b47b98ec"

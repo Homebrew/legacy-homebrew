@@ -1,6 +1,7 @@
 require "formula"
 
 class Bro < Formula
+  desc "Network security monitor"
   homepage "https://www.bro.org"
   head "https://github.com/bro/bro.git"
 

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sphinx < Formula
+  desc "Sphinx is a full-text search engine"
   homepage 'http://www.sphinxsearch.com'
   revision 1
 

@@ -1,6 +1,7 @@
 require "formula"
 
 class Babl < Formula
+  desc "Dynamic, any-to-any, pixel format translation library"
   homepage "http://www.gegl.org/babl/"
 
   stable do

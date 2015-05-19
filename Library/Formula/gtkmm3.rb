@@ -1,4 +1,5 @@
 class Gtkmm3 < Formula
+  desc "C++ interfaces for GTK+ and GNOME"
   homepage "http://www.gtkmm.org/"
   url "https://download.gnome.org/sources/gtkmm/3.16/gtkmm-3.16.0.tar.xz"
   sha256 "9b8d4af5e1bb64e52b53bc8ef471ef43e1b9d11a829f16ef54c3a92985b0dd0c"

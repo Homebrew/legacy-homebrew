@@ -1,4 +1,5 @@
 class Ptunnel < Formula
+  desc "Tunnel over ICMP"
   homepage "http://www.cs.uit.no/~daniels/PingTunnel/"
   url "http://www.cs.uit.no/~daniels/PingTunnel/PingTunnel-0.72.tar.gz"
   sha256 "b318f7aa7d88918b6269d054a7e26f04f97d8870f47bd49a76cb2c99c73407a4"

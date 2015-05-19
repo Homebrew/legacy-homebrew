@@ -1,4 +1,5 @@
 class Libiomp < Formula
+  desc "Manage multiple threads in an OpenMP program as it executes"
   homepage "https://www.openmprtl.org/download"
   url "https://www.openmprtl.org/sites/default/files/libomp_20150401_oss.tgz"
   sha256 "476dcf62d29134a3549d49542a74345bb5389f93670f2313d7c610a690f9048e"

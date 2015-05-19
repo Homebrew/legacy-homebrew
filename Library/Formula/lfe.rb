@@ -1,4 +1,5 @@
 class Lfe < Formula
+  desc "LISP syntax front-end to the Erlang compiler"
   homepage "http://lfe.io/"
   url "https://github.com/rvirding/lfe/archive/v0.9.1.tar.gz"
   sha1 "015c23e7c761c2ccfefb7a9f97f85fe09f1cd648"

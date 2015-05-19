@@ -1,6 +1,7 @@
 require 'formula'
 
 class H2 < Formula
+  desc "Java SQL database"
   homepage 'http://www.h2database.com/'
   url 'http://www.h2database.com/h2-2015-03-02.zip'
   version '1.4.186'

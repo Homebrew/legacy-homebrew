@@ -1,6 +1,7 @@
 require "formula"
 
 class Liblacewing < Formula
+  desc "Cross-platform, high-level C/C++ networking library"
   homepage "http://lacewing-project.org/"
   head "https://github.com/udp/lacewing.git"
   url "https://github.com/udp/lacewing/archive/0.5.4.tar.gz"

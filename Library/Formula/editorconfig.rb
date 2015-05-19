@@ -1,6 +1,7 @@
 require 'formula'
 
 class Editorconfig < Formula
+  desc "Maintain consistent coding style between multiple editors"
   homepage 'http://editorconfig.org'
   url 'https://downloads.sourceforge.net/project/editorconfig/EditorConfig-C-Core/0.12.0/source/editorconfig-core-c-0.12.0.tar.gz'
   sha1 'dfa96da823133fd925e7384f19d7f2acf44f50ba'

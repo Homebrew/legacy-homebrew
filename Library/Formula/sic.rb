@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sic < Formula
+  desc "Minimal multiplexing IRC client"
   homepage 'http://tools.suckless.org/sic'
   url 'http://dl.suckless.org/tools/sic-1.2.tar.gz'
   sha1 'a91a603d536ae9cff9a806d6b2737053d262e722'

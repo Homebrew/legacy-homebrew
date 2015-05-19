@@ -1,6 +1,7 @@
 require "formula"
 
 class Sshrc < Formula
+  desc "Bring your .bashrc, .vimrc, etc. with you when you SSH"
   homepage "https://github.com/Russell91/sshrc"
   url "https://github.com/Russell91/sshrc/archive/0.5.tar.gz"
   sha1 "4fe9509437d01da74be76215d920734484ca0b7b"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Ttf2pt1 < Formula
+  desc "True Type Font to Postscript Type 1 converter"
   homepage "http://ttf2pt1.sourceforge.net/"
   url "https://downloads.sourceforge.net/ttf2pt1/ttf2pt1-3.4.4.tgz"
   sha1 "936771b11a740c16a8e0adb737b54b22cca18cb2"

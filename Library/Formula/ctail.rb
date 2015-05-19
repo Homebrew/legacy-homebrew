@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ctail < Formula
+  desc "Tool for operating tail across large clusters of machines"
   homepage 'https://github.com/pquerna/ctail'
   url 'https://github.com/pquerna/ctail/archive/ctail-0.1.0.tar.gz'
   sha1 'be669c11118c29aac4b76540dfcdf245d29a4a92'

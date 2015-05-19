@@ -1,6 +1,7 @@
 require 'formula'
 
 class Voltdb < Formula
+  desc "Horizontally-scalable, in-memory SQL RDBMS"
   homepage 'https://github.com/VoltDB/voltdb'
   head 'https://github.com/VoltDB/voltdb.git'
   url 'https://github.com/VoltDB/voltdb/archive/voltdb-3.7.tar.gz'

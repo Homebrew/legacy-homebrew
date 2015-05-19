@@ -1,4 +1,5 @@
 class Libarchive < Formula
+  desc "Multi-format archive and compression library"
   homepage "http://www.libarchive.org"
   url "http://www.libarchive.org/downloads/libarchive-3.1.2.tar.gz"
   mirror "https://github.com/libarchive/libarchive/archive/v3.1.2.tar.gz"

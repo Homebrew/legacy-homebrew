@@ -9,6 +9,7 @@ class UniversalNpm < Requirement
 end
 
 class Skinny < Formula
+  desc "Full-stack web app framework built on Scalatra"
   homepage "http://skinny-framework.org/"
   url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.18/skinny-1.3.18.tar.gz"
   sha1 "150fe1a5f010d0bba07491ed008d0797f8bd1f19"

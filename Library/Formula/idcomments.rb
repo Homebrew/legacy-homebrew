@@ -1,4 +1,5 @@
 class Idcomments < Formula
+  desc "Extract comments from an internet-draft"
   homepage "https://tools.ietf.org/tools/idcomments/"
   url "https://tools.ietf.org/tools/idcomments/idcomments-0.18.tgz"
   sha256 "a75774495e1b9b799326f3c6875db927835546b82762d565efe17e3cbfa6c7b8"

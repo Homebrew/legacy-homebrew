@@ -1,4 +1,5 @@
 class Gpgme < Formula
+  desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
   url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.4.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.4.tar.bz2"

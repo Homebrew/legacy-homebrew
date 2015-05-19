@@ -1,4 +1,5 @@
 class Postmark < Formula
+  desc "File system benchmark from NetApp"
   homepage "https://packages.debian.org/stable/utils/postmark"
   url "https://mirrors.kernel.org/debian/pool/main/p/postmark/postmark_1.51.orig.tar.gz"
   mirror "http://ftp.us.debian.org/debian/pool/main/p/postmark/postmark_1.51.orig.tar.gz"

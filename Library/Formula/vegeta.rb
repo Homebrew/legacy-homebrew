@@ -1,6 +1,7 @@
 require "language/go"
 
 class Vegeta < Formula
+  desc "HTTP load testing tool and library"
   homepage "https://github.com/tsenart/vegeta"
   url "https://github.com/tsenart/vegeta/archive/v5.7.1.tar.gz"
   sha1 "2d10d66460fdd7bd6a4e0cabc50d519dd72244bd"

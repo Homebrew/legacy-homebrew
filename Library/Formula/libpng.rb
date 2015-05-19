@@ -1,4 +1,5 @@
 class Libpng < Formula
+  desc "Library for manipulating PNG images"
   homepage "http://www.libpng.org/pub/png/libpng.html"
   url "https://downloads.sourceforge.net/project/libpng/libpng16/1.6.17/libpng-1.6.17.tar.xz"
   mirror "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.17.tar.xz"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Crash < Formula
+  desc "Kernel debugging shell for Java that allows gdb-like syntax"
   homepage "http://www.crashub.org/"
   url "http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.1/crash.distrib-1.3.1.tar.gz"
   sha1 "0f6c157dda63f9d828d558c8b329344a6d17c7e9"

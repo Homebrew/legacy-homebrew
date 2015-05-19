@@ -1,6 +1,7 @@
 require 'formula'
 
 class GstPluginsGood < Formula
+  desc "GStreamer plugins (well-supported, under the LGPL)"
   homepage 'http://gstreamer.freedesktop.org/'
 
   stable do

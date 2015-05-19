@@ -1,4 +1,5 @@
 class LastpassCli < Formula
+  desc "LastPass command-line interface tool"
   homepage "https://github.com/lastpass/lastpass-cli"
   url "https://github.com/lastpass/lastpass-cli/archive/v0.5.0.tar.gz"
   sha256 "09e7b1e5c1520db2a34a49e7ae07e5b3a7555a4ed2490ed7b56f047065bca812"

@@ -1,5 +1,6 @@
 require "formula"
 class Geographiclib < Formula
+  desc "C++ geography library"
   homepage "http://geographiclib.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.43.tar.gz"
   sha1 "444650196e1e7fd18c7d3e184599d05be5221e57"

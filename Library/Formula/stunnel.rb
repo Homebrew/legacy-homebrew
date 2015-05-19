@@ -1,4 +1,5 @@
 class Stunnel < Formula
+  desc "SSL tunneling program"
   homepage "https://www.stunnel.org/"
   url "https://www.stunnel.org/downloads/stunnel-5.17.tar.gz"
   mirror "https://www.usenix.org.uk/mirrors/stunnel/stunnel-5.17.tar.gz"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class PerconaServer < Formula
+  desc "Drop-in MySQL replacement"
   homepage 'https://www.percona.com'
   url 'https://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.24-72.2.tar.gz'
   version '5.6.24-72.2'

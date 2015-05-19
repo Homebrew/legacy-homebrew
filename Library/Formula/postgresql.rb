@@ -1,4 +1,5 @@
 class Postgresql < Formula
+  desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
 
   stable do

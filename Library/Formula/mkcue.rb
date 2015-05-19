@@ -1,4 +1,5 @@
 class Mkcue < Formula
+  desc "Generate a CUE sheet from a CD"
   homepage "https://packages.debian.org/source/stable/mkcue"
   url "https://mirrors.kernel.org/debian/pool/main/m/mkcue/mkcue_1.orig.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mkcue/mkcue_1.orig.tar.gz"

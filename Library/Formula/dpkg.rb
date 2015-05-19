@@ -1,4 +1,5 @@
 class Dpkg < Formula
+  desc "Debian package management system"
   homepage "https://wiki.debian.org/Teams/Dpkg"
   url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"

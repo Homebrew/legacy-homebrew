@@ -1,6 +1,7 @@
 require 'formula'
 
 class Redland < Formula
+  desc "RDF Library"
   homepage 'http://librdf.org/'
   url 'http://download.librdf.org/source/redland-1.0.17.tar.gz'
   sha1 'a47a7e98f934d17d60a241db90be407a0abe3c5d'

@@ -1,6 +1,7 @@
 require "formula"
 
 class Libstxxl < Formula
+  desc "C++ implementation of STL for extra large data sets"
   homepage "http://stxxl.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/stxxl/stxxl/1.4.1/stxxl-1.4.1.tar.gz"
   sha1 "cb29de8d33c7603734fa86215723da676a51dbf1"

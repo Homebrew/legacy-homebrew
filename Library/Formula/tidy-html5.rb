@@ -1,4 +1,5 @@
 class TidyHtml5 < Formula
+  desc "Granddaddy of HTML tools, with support for modern standards"
   homepage "http://www.html-tidy.org/"
   url "https://github.com/htacg/tidy-html5/archive/4.9.26.tar.gz"
   sha256 "28674745db53b6ef1aa4b8466e6e231915dcd596672ec40515d0ab53ee0c33f6"

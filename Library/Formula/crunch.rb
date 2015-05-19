@@ -1,6 +1,7 @@
 require "formula"
 
 class Crunch < Formula
+  desc "Wordlist generator"
   homepage "http://sourceforge.net/projects/crunch-wordlist"
   url "https://downloads.sourceforge.net/project/crunch-wordlist/crunch-wordlist/crunch-3.6.tgz"
   sha1 "51bdf8b9dfb9e4486fa6a85e0224522569de4557"

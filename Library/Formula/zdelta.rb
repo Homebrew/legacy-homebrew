@@ -1,4 +1,5 @@
 class Zdelta < Formula
+  desc "Lossless delta compression library"
   homepage "http://cis.poly.edu/zdelta/"
   url "http://cis.poly.edu/zdelta/downloads/zdelta-2.1.tar.gz"
   sha256 "03e6beb2e1235f2091f0146d7f41dd535aefb6078a48912d7d11973d5306de4c"

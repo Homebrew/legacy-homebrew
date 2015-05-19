@@ -1,4 +1,5 @@
 class Cheat < Formula
+  desc "Create and view interactive cheat sheets for *nix commands"
   homepage "https://github.com/chrisallenlane/cheat"
   url "https://github.com/chrisallenlane/cheat/archive/2.1.8.tar.gz"
   sha1 "75176e3f8c75f4a476a7ecb53497e72eceace2e2"

@@ -1,4 +1,5 @@
 class UBootTools < Formula
+  desc "Universal boot loader"
   homepage "http://www.denx.de/wiki/U-Boot/"
   url "ftp://ftp.denx.de/pub/u-boot/u-boot-2015.01.tar.bz2"
   sha1 "8d22ab0d9f3902122f160280facacc468bad0da9"

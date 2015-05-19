@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mpack < Formula
+  desc "MIME mail packing and unpacking"
   homepage 'http://ftp.andrew.cmu.edu/pub/mpack/'
   url 'http://ftp.andrew.cmu.edu/pub/mpack/mpack-1.6.tar.gz'
   sha1 '7fd3a73e0f131412920b6ff34872e7e7fa03e03b'

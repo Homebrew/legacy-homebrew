@@ -1,4 +1,5 @@
 class GitNow < Formula
+  desc "Light, temporary commits for git"
   homepage "https://github.com/iwata/git-now"
   url "https://github.com/iwata/git-now.git",
       :tag => "v0.1.1.0",

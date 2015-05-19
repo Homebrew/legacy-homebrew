@@ -1,6 +1,7 @@
 require 'formula'
 
 class Fbida < Formula
+  desc "View and edit photo images"
   homepage 'http://linux.bytesex.org/fbida/'
   url 'http://dl.bytesex.org/releases/fbida/fbida-2.09.tar.gz'
   sha1 '5838b2cb7188481fece6159fccb3b121acd906e7'

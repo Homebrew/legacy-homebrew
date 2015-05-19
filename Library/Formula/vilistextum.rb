@@ -1,4 +1,5 @@
 class Vilistextum < Formula
+  desc "HTML to text converter"
   homepage "http://bhaak.net/vilistextum/"
   url "http://bhaak.net/vilistextum/vilistextum-2.6.9.tar.gz"
   sha1 "d62fe5213b61c0d0356bb2e60757dd535ac0a82b"

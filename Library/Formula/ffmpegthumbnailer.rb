@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ffmpegthumbnailer < Formula
+  desc "Create thumbnails for your video files"
   homepage 'http://code.google.com/p/ffmpegthumbnailer/'
   url 'https://ffmpegthumbnailer.googlecode.com/files/ffmpegthumbnailer-2.0.8.tar.gz'
   sha1 '2c54ca16efd953f46547e22799cfc40bd9c24533'

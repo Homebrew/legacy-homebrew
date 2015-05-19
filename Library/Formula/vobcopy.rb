@@ -1,6 +1,7 @@
 require 'formula'
 
 class Vobcopy < Formula
+  desc "Copy DVD .vob files to hard disk"
   homepage 'http://vobcopy.org'
   url 'http://vobcopy.org/download/vobcopy-1.2.0.tar.bz2'
   sha1 'a848a777f0e477d42a20a52718599d5da00c36db'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class X265 < Formula
+  desc "H.265/HEVC encoder"
   homepage "http://x265.org"
   url "https://bitbucket.org/multicoreware/x265/downloads/x265_1.6.tar.gz"
   sha1 "a3d568e39e3f9cd23081a1a2c5277f87de25a22a"

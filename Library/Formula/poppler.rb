@@ -1,6 +1,7 @@
 require 'formula'
 
 class Poppler < Formula
+  desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage 'http://poppler.freedesktop.org'
   url 'http://poppler.freedesktop.org/poppler-0.29.0.tar.xz'
   sha1 'ba3330ab884e6a139ca63dd84d0c1c676f545b5e'

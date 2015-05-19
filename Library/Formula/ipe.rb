@@ -1,4 +1,5 @@
 class Ipe < Formula
+  desc "Drawing editor for creating figures in PDF or PS formats"
   homepage "http://ipe7.sourceforge.net"
   url "https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.7-src.tar.gz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.7-src.tar.gz"

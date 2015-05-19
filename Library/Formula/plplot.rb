@@ -1,6 +1,7 @@
 require 'formula'
 
 class Plplot < Formula
+  desc "Cross-platform software package for creating scientific plots"
   homepage 'http://plplot.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/plplot/plplot/5.10.0%20Source/plplot-5.10.0.tar.gz'
   sha1 'ea962cb0138c9b4cbf97ecab1fac1919ea0f939f'

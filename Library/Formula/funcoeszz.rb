@@ -1,6 +1,7 @@
 require 'formula'
 
 class Funcoeszz < Formula
+  desc "Dozens of command-line mini-applications (Portuguese)"
   homepage 'http://funcoeszz.net/'
   url 'http://funcoeszz.net/download/funcoeszz-13.2.sh'
   sha1 '33d6950dc83fd2118bc45a752c4a77be3b112573'

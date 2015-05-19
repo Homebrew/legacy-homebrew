@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dasm < Formula
+  desc "Macro assembler with support for several 8-bit microprocessors"
   homepage 'http://dasm-dillon.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/dasm-dillon/dasm-dillon/2.20.11/dasm-2.20.11-2014.03.04-source.tar.gz'
   sha1 '2ce78b29505b31778b8f796ba4b161b9f890e77e'

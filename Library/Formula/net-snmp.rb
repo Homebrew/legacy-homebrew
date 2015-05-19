@@ -1,6 +1,7 @@
 require "formula"
 
 class NetSnmp < Formula
+  desc "Implements SNMP v1, v2c, and v3, using IPv4 and IPv6"
   homepage "http://www.net-snmp.org/"
   url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3/net-snmp-5.7.3.tar.gz"
   sha1 "97dc25077257680815de44e34128d365c76bd839"

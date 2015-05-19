@@ -1,4 +1,5 @@
 class Re2c < Formula
+  desc "Generate C-based recognizers from regular expressions"
   homepage "http://re2c.org"
   url "https://downloads.sourceforge.net/project/re2c/re2c/0.14.3/re2c-0.14.3.tar.gz"
   sha256 "1c6806df599f3aef0804b576cfdf64bdba5ad590626dfca2d44e473460917e84"

@@ -1,4 +1,5 @@
 class Tinyproxy < Formula
+  desc "HTTP/HTTPS proxy for POSIX systems"
   homepage "https://www.banu.com/tinyproxy/"
   url "https://www.banu.com/pub/tinyproxy/1.8/tinyproxy-1.8.3.tar.bz2"
   sha256 "be559b54eb4772a703ad35239d1cb59d32f7cf8a739966742622d57df88b896e"

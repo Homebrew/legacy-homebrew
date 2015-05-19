@@ -1,4 +1,5 @@
 class Iperf3 < Formula
+  desc "Update of iperf: measures TCP, UDP, and SCTP bandwidth"
   homepage "https://github.com/esnet/iperf"
 
   stable do

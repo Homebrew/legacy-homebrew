@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libev < Formula
+  desc "Asynchronous event library"
   homepage 'http://software.schmorp.de/pkg/libev.html'
   url 'http://dist.schmorp.de/libev/Attic/libev-4.15.tar.gz'
   sha1 '88655b1e2c0b328c9f90a6df7e72361a97fa8dc3'

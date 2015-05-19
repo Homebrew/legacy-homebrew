@@ -1,4 +1,5 @@
 class Ddrescue < Formula
+  desc "GNU data recovery tool"
   homepage "https://www.gnu.org/software/ddrescue/ddrescue.html"
   url "http://ftpmirror.gnu.org/ddrescue/ddrescue-1.19.tar.lz"
   mirror "https://ftp.gnu.org/gnu/ddrescue/ddrescue-1.19.tar.lz"

@@ -1,4 +1,5 @@
 class Dcmtk < Formula
+  desc "OFFIS DICOM toolkit command-line utilities"
   homepage "http://dicom.offis.de/dcmtk.php.en"
 
   # Current snapshot used for stable now.

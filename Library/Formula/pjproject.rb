@@ -1,4 +1,5 @@
 class Pjproject < Formula
+  desc "C library for multimedia protocols such as SIP, SDP, RTP and more"
   homepage "http://www.pjsip.org/"
   url "http://www.pjsip.org/release/2.3/pjproject-2.3.tar.bz2"
   sha256 "e7fa60a3b59424430145af90372282ca778449f7b68b77bb24a9cf75d94d5765"

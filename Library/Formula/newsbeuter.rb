@@ -1,4 +1,5 @@
 class Newsbeuter < Formula
+  desc "RSS/Atom feed reader for text terminals"
   homepage "http://newsbeuter.org/"
   url "http://www.newsbeuter.org/downloads/newsbeuter-2.9.tar.gz"
   sha1 "e0d61cda874ea9b77ed27f2edfea50a6ea471894"

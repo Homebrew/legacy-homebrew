@@ -1,6 +1,7 @@
 require 'formula'
 
 class Launch < Formula
+  desc "Command-line launcher for OS X, in the spirit of `open`"
   homepage 'http://web.sabi.net/nriley/software/'
   head 'https://github.com/nriley/launch.git'
   url 'http://sabi.net/nriley/software/launch-1.2.2.tar.gz'

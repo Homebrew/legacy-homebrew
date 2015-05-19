@@ -1,4 +1,5 @@
 class Sgrep < Formula
+  desc "Search SGML, XML, and HTML"
   homepage "https://www.cs.helsinki.fi/u/jjaakkol/sgrep.html"
   url "ftp://ftp.cs.helsinki.fi/pub/Software/Local/Sgrep/sgrep-1.94a.tar.gz"
   mirror "https://fossies.org/linux/misc/sgrep-1.94a.tar.gz"

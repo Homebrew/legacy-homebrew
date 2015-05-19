@@ -3,6 +3,7 @@ require 'formula'
 # NOTE: version 2.0 is out, but it requires Bash 4, and OS X ships
 # with 3.2.48. See homebrew-versions for a 2.0 formula.
 class BashCompletion < Formula
+  desc "Programmable bash completion"
   homepage 'http://bash-completion.alioth.debian.org/'
   url 'http://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
   mirror 'http://pkgs.fedoraproject.org/repo/pkgs/bash-completion/bash-completion-1.3.tar.bz2/a1262659b4bbf44dc9e59d034de505ec/bash-completion-1.3.tar.bz2'

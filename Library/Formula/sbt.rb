@@ -1,6 +1,7 @@
 require "formula"
 
 class Sbt < Formula
+  desc "Build tool for Scala projects"
   homepage "http://www.scala-sbt.org"
   url "https://dl.bintray.com/sbt/native-packages/sbt/0.13.8/sbt-0.13.8.tgz"
   sha1 "155d6ff3bc178745ad4f951b74792b257ed14105"

@@ -1,4 +1,5 @@
 class F3 < Formula
+  desc "Test various flash cards"
   homepage "http://oss.digirati.com.br/f3/"
   url "https://github.com/AltraMayor/f3/archive/v5.0.tar.gz"
   sha1 "be28f55ea8450a388a0ea63dc1f810080d822d22"

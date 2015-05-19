@@ -1,4 +1,5 @@
 class Lcrack < Formula
+  desc "Generic password cracker"
   homepage "https://packages.debian.org/sid/lcrack"
   url "https://mirrors.kernel.org/debian/pool/main/l/lcrack/lcrack_20040914.orig.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/l/lcrack/lcrack_20040914.orig.tar.gz"

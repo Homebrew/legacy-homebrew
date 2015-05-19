@@ -1,6 +1,7 @@
 require "formula"
 
 class ShrewsoftVpnClient < Formula
+  desc "Linux/BSD version of Shrew Soft VPN client"
   homepage "https://www.shrew.net"
   url "https://www.shrew.net/download/ike/ike-2.2.1-release.tbz2"
   sha1 "a52a49248fa663dfbd9e208eaa3e706a17bb9c8c"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Monotone < Formula
+  desc "Distributed version control system (DVCS)"
   homepage "http://monotone.ca/"
   url "http://www.monotone.ca/downloads/1.1/monotone-1.1.tar.bz2"
   sha1 "2b97559b252decaee3a374b81bf714cf33441ba3"

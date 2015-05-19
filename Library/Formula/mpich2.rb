@@ -1,6 +1,7 @@
 # This should really be named Mpich now, but homebrew cannot currently handle
 # formula renames, see homebrew issue #14374.
 class Mpich2 < Formula
+  desc "Implementation of the MPI Message Passing Interface standard"
   homepage "https://www.mpich.org/"
   url "https://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz"
   mirror "https://fossies.org/linux/misc/mpich-3.1.4.tar.gz"

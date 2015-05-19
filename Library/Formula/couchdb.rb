@@ -1,4 +1,5 @@
 class Couchdb < Formula
+  desc "CouchDB is a document database server"
   homepage "https://couchdb.apache.org/"
   url "https://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
   sha256 "5a601b173733ce3ed31b654805c793aa907131cd70b06d03825f169aa48c8627"
