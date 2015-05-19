@@ -9,6 +9,6 @@ class Miruo < Formula
   end
 
   test do
-    system "#{bin}/miruo", "--version"
+    system "#{sbin}/miruo", "--version"
   end
 end
