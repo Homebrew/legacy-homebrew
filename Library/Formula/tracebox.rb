@@ -1,10 +1,7 @@
-require 'formula'
-
 class Tracebox < Formula
-  homepage 'http://www.tracebox.org/'
-  head 'https://github.com/tracebox/tracebox.git'
-  url 'https://github.com/tracebox/tracebox.git', :tag => 'v0.2'
-  revision 1
+  homepage "http://www.tracebox.org/"
+  url "https://github.com/tracebox/tracebox.git", :tag => "v0.3",
+      :revision => "63e89e92164d5f527a8e2bbec08797179b2dacb1"
 
   bottle do
     cellar :any
@@ -13,23 +10,26 @@ class Tracebox < Formula
     sha1 "efd205cf4ccee2bff4ed6ef619d308e349663f1b" => :lion
   end
 
+  head "https://github.com/tracebox/tracebox.git"
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "lua"
+  depends_on "json-c"
 
   def install
-    ENV.append "AUTOHEADER", "true"
     system "autoreconf", "--install"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
+    system "make"
     system "make", "install"
   end
 
   def caveats; <<-EOS.undent
-    tracebox requires superuser privileges e.g. run with sudo.
+    Tracebox requires superuser privileges e.g. run with sudo.
 
     You should be certain that you trust any software you are executing with
     elevated privileges.
