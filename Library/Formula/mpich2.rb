@@ -4,13 +4,12 @@ class Mpich2 < Formula
   homepage "https://www.mpich.org/"
   url "https://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz"
   mirror "https://fossies.org/linux/misc/mpich-3.1.4.tar.gz"
-  sha256 "f68b5330e94306c00ca5a1c0e8e275c7f53517d01d6c524d51ce9359d240466b"
-  revision 1
+  sha1 "af4f563e2772d610e57e17420c9dcc5c3c9fec4e"
 
   bottle do
-    sha256 "fd3cfd66a31d7e3232e1903c038d7029251b9160d2a283726f3bcd0450fb8bdc" => :yosemite
-    sha256 "54b5883a605e937e3353b07d9e4f5b0d647f9cbc066c71ff3770a183fa958b9a" => :mavericks
-    sha256 "a3eae4088fa4a05c09b7e9d295d4f8f4b785e5942bc493fec58afb0344a42713" => :mountain_lion
+    sha1 "96a6ef7dff3f1902790317124ff608c481a2a885" => :yosemite
+    sha1 "041e7aabd743689d14dd460d1cc290763f820a44" => :mavericks
+    sha1 "322ea98717bd9cccc060d12f7e4d655c87b601b4" => :mountain_lion
   end
 
   head do
@@ -23,7 +22,7 @@ class Mpich2 < Formula
 
   devel do
     url "https://www.mpich.org/static/downloads/3.2b2/mpich-3.2b2.tar.gz"
-    sha256 "8ef37f88bbcfab0e9e173c36745b79f4dbbc3409476773c4489670d82d923155"
+    sha1 "8e954e54d1c1a08ef7d042c18ed308d566e32cd5"
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
