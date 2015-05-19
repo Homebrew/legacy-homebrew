@@ -1,6 +1,6 @@
 class Savana < Formula
   homepage "http://savana.codehaus.org"
-  url "https://web.archive.org/web/20150505235416/http://repository.codehaus.org/org/codehaus/savana/1.2/savana-1.2-install.tar.gz"
+  url "https://bintray.com/artifact/download/bintray/jcenter/org/codehaus/savana/1.2/savana-1.2-install.tar.gz"
   sha256 "608242a0399be44f41ff324d40e82104b3c62908bc35177f433dcfc5b0c9bf55"
 
   def install
