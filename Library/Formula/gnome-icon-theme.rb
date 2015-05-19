@@ -20,6 +20,7 @@ class GnomeIconTheme < Formula
   depends_on "librsvg"
 
   def install
+    ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "GTK_UPDATE_ICON_CACHE=#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache"
