@@ -64,7 +64,7 @@ class Gcc < Formula
   end
 
   def version_suffix
-    version.to_s.slice(/\d\.\d/)
+    version.to_s.slice(/\d/)
   end
 
   # Fix for libgccjit.so linkage on Darwin
