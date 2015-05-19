@@ -94,6 +94,8 @@ module Homebrew
 
     puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
 
+    puts f.desc if f.desc
+
     puts f.homepage
 
     if f.keg_only?
