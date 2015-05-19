@@ -5,10 +5,9 @@ class Cloog < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "65900e9655ab8f444ecf7edf4118caa01ca56ddb" => :yosemite
-    sha1 "851f64756bb082a5a354e0992976acd70cfdacbf" => :mavericks
-    sha1 "06252f0a9c453818c319b21647ebaa9a26c3f4ac" => :mountain_lion
+    sha256 "c33a4433346520ba6256398f722bbf3ca73c17ef10a06508ae1272d267c53148" => :yosemite
+    sha256 "2296401e08d678c6b22065249fb1ad0d26475f94fe4c0ce9bb29436c7b9f6976" => :mavericks
+    sha256 "f93f587d47c3062d3f3dd2705320af996ffe9ef565fd485d7eda493b225aed8c" => :mountain_lion
   end
 
   head do
