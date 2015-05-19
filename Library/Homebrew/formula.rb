@@ -163,6 +163,12 @@ class Formula
     Bottle.new(self, bottle_specification) if bottled?
   end
 
+  # The description of the software.
+  # @see .desc
+  def desc
+    self.class.desc
+  end
+
   # The homepage for the software.
   # @see .homepage
   def homepage
@@ -685,6 +691,7 @@ class Formula
   def to_hash
     hsh = {
       "name" => name,
+      "desc" => desc,
       "homepage" => homepage,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
@@ -920,6 +927,12 @@ class Formula
     # {::HOMEBREW_PREFIX}.
     # @private
     attr_reader :keg_only_reason
+
+    # @!attribute [w]
+    # A one-line description of the software. Used by users to get an overview
+    # of the software and Homebrew maintainers.
+    # Shows when running `brew info`.
+    attr_rw :desc
 
     # @!attribute [w]
     # The homepage for the software. Used by users to get more information
