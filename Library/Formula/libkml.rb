@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libkml < Formula
+  desc "Library to parse, generate and operate on KML"
   homepage 'http://code.google.com/p/libkml/'
 
   stable do

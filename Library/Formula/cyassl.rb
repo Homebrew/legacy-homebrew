@@ -1,4 +1,5 @@
 class Cyassl < Formula
+  desc "Embedded SSL Library written in C"
   homepage "http://www.wolfssl.com/yaSSL/Home.html"
   url "https://github.com/wolfSSL/wolfssl/archive/v3.4.0.tar.gz"
   sha256 "e23b7939c04bf18efa353ff9abfeaba3bcf454e47c9ced45e2aadab6660245f0"

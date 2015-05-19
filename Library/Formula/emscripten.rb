@@ -1,4 +1,5 @@
 class Emscripten < Formula
+  desc "LLVM bytecode to JavaScript compiler"
   homepage "https://kripken.github.io/emscripten-site/"
   url "https://github.com/kripken/emscripten/archive/1.33.0.tar.gz"
   sha256 "ff88d80d61c94f289c5020d714dfa872c018ea9ba0e8577e0d5708335375f5f4"

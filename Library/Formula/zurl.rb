@@ -1,4 +1,5 @@
 class Zurl < Formula
+  desc "HTTP and WebSocket client worker with ZeroMQ interface"
   homepage "https://github.com/fanout/zurl"
   url "http://packages.fanout.io/source/zurl-1.3.1.tar.bz2"
   sha1 "8a04ad092a4fd9b174a352b910c190466fc39eb9"

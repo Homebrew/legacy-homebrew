@@ -1,4 +1,5 @@
 class Freeswitch < Formula
+  desc "Telephony platform to route various communication protocols"
   homepage "https://freeswitch.org"
   url "https://freeswitch.org/stash/scm/fs/freeswitch.git",
       :tag => "v1.4.19",

@@ -1,6 +1,7 @@
 require "formula"
 
 class Cpputest < Formula
+  desc "C /C++ based unit xUnit test framework"
   homepage "http://www.cpputest.org/"
   url "https://github.com/cpputest/cpputest/releases/download/3.7.2/cpputest-3.7.2.tar.gz"
   sha1 "6a20695ba0094bf5db089da5baf08aca7101c1c6"

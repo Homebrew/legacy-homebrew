@@ -1,6 +1,7 @@
 require "formula"
 
 class CheckPostgres < Formula
+  desc "Monitor Postgres databases"
   homepage "http://bucardo.org/wiki/Check_postgres"
   url "http://bucardo.org/downloads/check_postgres-2.21.0.tar.gz"
   sha1 "88ddb1c35a8da0feeaad90036dd27d778551a36d"

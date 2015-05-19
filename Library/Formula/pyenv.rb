@@ -1,4 +1,5 @@
 class Pyenv < Formula
+  desc "Python version management"
   homepage "https://github.com/yyuu/pyenv"
   head "https://github.com/yyuu/pyenv.git"
   url "https://github.com/yyuu/pyenv/archive/v20150601.tar.gz"

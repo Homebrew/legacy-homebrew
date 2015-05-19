@@ -1,4 +1,5 @@
 class Dwdiff < Formula
+  desc "Diff that operates at the word level"
   homepage "http://os.ghalkes.nl/dwdiff.html"
   url "http://os.ghalkes.nl/dist/dwdiff-2.0.9.tgz"
   sha1 "01cb2230b9147347bcfd1770898e435e4a57fa25"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rpm2cpio < Formula
+  desc "Tool to convert RPM package to CPIO archive"
   homepage 'http://svnweb.freebsd.org/ports/head/archivers/rpm2cpio/'
   url 'http://svnweb.freebsd.org/ports/head/archivers/rpm2cpio/files/rpm2cpio?revision=259745&view=co'
   version '1.3'

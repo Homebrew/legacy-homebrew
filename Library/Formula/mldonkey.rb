@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mldonkey < Formula
+  desc "OCaml/GTK client for the eDonkey P2P network"
   homepage 'http://mldonkey.sourceforge.net/Main_Page'
   url 'https://downloads.sourceforge.net/project/mldonkey/mldonkey/3.1.5/mldonkey-3.1.5.tar.bz2'
   sha1 '7bc4f9272ecfe6403eef7062766b26bf321e3015'

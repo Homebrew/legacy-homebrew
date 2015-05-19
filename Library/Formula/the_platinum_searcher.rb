@@ -1,6 +1,7 @@
 require "language/go"
 
 class ThePlatinumSearcher < Formula
+  desc "Multi-platform code-search similar to ack and ag"
   homepage "https://github.com/monochromegane/the_platinum_searcher"
   url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.6.tar.gz"
   sha256 "7c7249f88eab09b8f1b89aad2987dc5e23b8ae0df73390150ae9a8a77df346e2"

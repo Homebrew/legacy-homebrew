@@ -4,6 +4,7 @@ require "formula"
 # many releases for us to update to every single one:
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
+  desc "Download YouTube videos from the command-line"
   homepage "https://rg3.github.io/youtube-dl/"
   url "https://yt-dl.org/downloads/2015.05.29/youtube-dl-2015.05.29.tar.gz"
   sha256 "32ba46eaca000e7752ee2b2c6ff1d767e6a6d7b20f4d7ecaa3f7c612458efd51"

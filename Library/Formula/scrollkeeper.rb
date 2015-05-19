@@ -1,6 +1,7 @@
 require 'formula'
 
 class Scrollkeeper < Formula
+  desc "Transitional package for scrollkeeper"
   homepage 'http://scrollkeeper.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/scrollkeeper/scrollkeeper/0.3.14/scrollkeeper-0.3.14.tar.gz'
   sha1 '0462799a2d96f46dec76f2fd057e2dfe8d7cb94d'

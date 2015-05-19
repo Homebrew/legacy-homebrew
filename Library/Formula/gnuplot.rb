@@ -5,6 +5,7 @@ class LuaRequirement < Requirement
 end
 
 class Gnuplot < Formula
+  desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info"
   url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
   mirror "http://ftp.cstug.cz/pub/CTAN/graphics/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"

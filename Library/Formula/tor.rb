@@ -1,4 +1,5 @@
 class Tor < Formula
+  desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
   url "https://dist.torproject.org/tor-0.2.6.8.tar.gz"
   mirror "https://tor.eff.org/dist/tor-0.2.6.8.tar.gz"

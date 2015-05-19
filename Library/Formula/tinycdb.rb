@@ -1,4 +1,5 @@
 class Tinycdb < Formula
+  desc "Create and read constant databases"
   homepage "http://www.corpit.ru/mjt/tinycdb.html"
   url "http://www.corpit.ru/mjt/tinycdb/tinycdb-0.78.tar.gz"
   sha256 "50678f432d8ada8d69f728ec11c3140e151813a7847cf30a62d86f3a720ed63c"

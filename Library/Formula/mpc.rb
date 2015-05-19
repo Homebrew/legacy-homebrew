@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mpc < Formula
+  desc "Command-line music player client for mpd"
   homepage 'http://www.musicpd.org/clients/mpc/'
   url 'http://www.musicpd.org/download/mpc/0/mpc-0.27.tar.gz'
   sha1 '256926aa3ff8e9665a757d575bb962c094e4c352'

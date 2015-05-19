@@ -1,6 +1,7 @@
 require "formula"
 
 class DuoUnix < Formula
+  desc "Two-factor authentication for SSH"
   homepage "https://www.duosecurity.com/docs/duounix"
   url "https://dl.duosecurity.com/duo_unix-1.9.13.tar.gz"
   sha1 "96120910cbaa75c3a59e4c12006738b267c3e9f0"

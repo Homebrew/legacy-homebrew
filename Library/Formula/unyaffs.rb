@@ -1,4 +1,5 @@
 class Unyaffs < Formula
+  desc "Extract files from a YAFFS2 filesystem image"
   homepage "https://github.com/ehlers/unyaffs"
   url "https://github.com/ehlers/unyaffs/archive/0.9.6.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/u/unyaffs/unyaffs_0.9.6.orig.tar.gz"

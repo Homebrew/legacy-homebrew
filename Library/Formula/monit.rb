@@ -1,4 +1,5 @@
 class Monit < Formula
+  desc "Manage and monitor processes, files, directories, and devices"
   homepage "https://mmonit.com/monit/"
   url "https://mmonit.com/monit/dist/monit-5.13.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/m/monit/monit_5.13.orig.tar.gz"

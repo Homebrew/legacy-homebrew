@@ -1,6 +1,7 @@
 require "formula"
 
 class Libnice < Formula
+  desc "GLib ICE implementation"
   homepage "http://nice.freedesktop.org/wiki/"
   url "http://nice.freedesktop.org/releases/libnice-0.1.7.tar.gz"
   sha1 "94d459fc409da9cf5e4ac30d680ee6c0ded2cb64"

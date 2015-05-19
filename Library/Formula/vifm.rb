@@ -1,4 +1,5 @@
 class Vifm < Formula
+  desc "Ncurses based file manager with vi like keybindings"
   homepage "http://vifm.info/"
   url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.7.8.tar.bz2"
   mirror "https://github.com/vifm/vifm/releases/download/v0.7.8/vifm-0.7.8.tar.bz2"

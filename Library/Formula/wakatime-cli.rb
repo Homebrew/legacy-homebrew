@@ -1,6 +1,7 @@
 require "formula"
 
 class WakatimeCli < Formula
+  desc "Command-line interface to the WakaTime api"
   homepage "https://wakatime.com/"
   url "https://pypi.python.org/packages/source/w/wakatime/wakatime-4.0.14.tar.gz"
   sha1 "8bf0ca4b9c3309558ca8941bd547fcc8931b725c"

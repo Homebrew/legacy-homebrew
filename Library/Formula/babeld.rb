@@ -1,4 +1,5 @@
 class Babeld < Formula
+  desc "Loop-avoiding distance-vector routing protocol"
   homepage "http://www.pps.univ-paris-diderot.fr/~jch/software/babel/"
   head "https://github.com/jech/babeld.git"
 

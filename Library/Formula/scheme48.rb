@@ -1,6 +1,7 @@
 require 'formula'
 
 class Scheme48 < Formula
+  desc "Scheme byte-code interpreter"
   homepage 'http://www.s48.org/'
   url 'http://s48.org/1.9.2/scheme48-1.9.2.tgz'
   sha1 'b2d02b6ddac56e566d170b9c916f11dbd182390a'

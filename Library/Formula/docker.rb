@@ -1,4 +1,5 @@
 class Docker < Formula
+  desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of boot2docker too

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libicns < Formula
+  desc "Library for manipulation of the OS X .icns resource format"
   homepage 'http://icns.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/icns/libicns-0.8.1.tar.gz'
   sha256 '335f10782fc79855cf02beac4926c4bf9f800a742445afbbf7729dab384555c2'

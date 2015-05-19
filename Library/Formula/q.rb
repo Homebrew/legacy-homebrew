@@ -1,6 +1,7 @@
 require "formula"
 
 class Q < Formula
+  desc "Treat text as a database"
   homepage "https://github.com/harelba/q"
   url "https://github.com/harelba/q/archive/1.5.0.tar.gz"
   sha1 "772c1bc7a49d725042ffc130e3c9328fc9da67dc"

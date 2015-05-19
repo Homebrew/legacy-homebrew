@@ -1,6 +1,7 @@
 require 'formula'
 
 class Kumofs < Formula
+  desc "Scalable, highly available distributed key-value store"
   homepage 'http://kumofs.sourceforge.net/'
   url 'https://github.com/downloads/etolabo/kumofs/kumofs-0.4.12.tar.gz'
   sha1 'a1e895e42c8d5d75233f2234cf55069e76b4d39b'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ekg2 < Formula
+  desc "Multiplatform, multiprotocol, plugin-based instant messenger"
   homepage 'http://ekg2.org'
   url 'http://pl.ekg2.org/ekg2-0.3.1.tar.gz'
   sha1 '8b6f53086e8e1d2890fdc1ec274a7b1615da0fa1'

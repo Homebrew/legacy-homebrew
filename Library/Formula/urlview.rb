@@ -1,4 +1,5 @@
 class Urlview < Formula
+  desc "URL extractor/launcher"
   homepage "https://packages.debian.org/sid/misc/urlview"
   url "https://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz"

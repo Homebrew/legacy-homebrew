@@ -1,6 +1,7 @@
 require 'formula'
 
 class Docbook < Formula
+  desc "Standard SGML representation system for technical documents"
   homepage 'http://docbook.sourceforge.net/'
   url 'http://www.docbook.org/xml/5.0/docbook-5.0.zip'
   sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'

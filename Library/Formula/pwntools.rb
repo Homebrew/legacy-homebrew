@@ -1,4 +1,5 @@
 class Pwntools < Formula
+  desc "CTF framework used by Gallopsled in every CTF"
   homepage "http://pwntools.com/"
   url "https://github.com/Gallopsled/pwntools/archive/2.2.0.tar.gz"
   sha256 "67bfaf6e1e24812fdde5093422c6c76bcd581f4b85760779b823b75950817a2d"

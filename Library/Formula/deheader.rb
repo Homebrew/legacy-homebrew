@@ -1,4 +1,5 @@
 class Deheader < Formula
+  desc "Analyze C/C++ files for unnecessary headers"
   homepage "http://www.catb.org/~esr/deheader"
   url "http://www.catb.org/~esr/deheader/deheader-1.1.tar.gz"
   sha256 "69f69e9c7d9398221cb49f7de91df0d122e4b0ec942bede2d7c592401e4b913c"

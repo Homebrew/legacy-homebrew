@@ -25,6 +25,7 @@ class ErlangInstalled < Requirement
 end
 
 class Elixir < Formula
+  desc "Functional metaprogramming aware language built on Erlang VM"
   homepage 'http://elixir-lang.org/'
   url  'https://github.com/elixir-lang/elixir/archive/v1.0.4.tar.gz'
   sha1 '6a2513aeb45f3e79782ec2900cfdc3a1d48fdb3d'

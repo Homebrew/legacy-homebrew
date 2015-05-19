@@ -1,4 +1,5 @@
 class Timelimit < Formula
+  desc "Limit a process's absolute execution time"
   homepage "http://devel.ringlet.net/sysutils/timelimit/"
   url "http://devel.ringlet.net/sysutils/timelimit/timelimit-1.8.tar.gz"
   sha256 "026e72b345f8407ebaa002036fd785b2136b2dfc4f8854f14536196ee3079996"

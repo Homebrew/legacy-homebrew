@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rdup < Formula
+  desc "Utility to create a file list suitable for making backups"
   homepage 'http://archive.miek.nl/projects/rdup/index.html'
   url 'http://archive.miek.nl/projects/rdup/rdup-1.1.14.tar.bz2'
   sha1 '49dc7570122bfa362f36a26a2ffa8bfe8ad55182'

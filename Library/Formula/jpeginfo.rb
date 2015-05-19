@@ -1,6 +1,7 @@
 require 'formula'
 
 class Jpeginfo < Formula
+  desc "Prints information and tests integrity of JPEG/JFIF files"
   homepage 'http://www.kokkonen.net/tjko/projects.html'
   url 'http://www.kokkonen.net/tjko/src/jpeginfo-1.6.1.tar.gz'
   sha1 '8fd998c3090908d1b100ed38d5d7fc2600e5742b'

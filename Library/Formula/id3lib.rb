@@ -1,4 +1,5 @@
 class Id3lib < Formula
+  desc "ID3 tag manipulation"
   homepage 'http://id3lib.sourceforge.net/'
 
   stable do

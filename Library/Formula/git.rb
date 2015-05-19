@@ -1,4 +1,5 @@
 class Git < Formula
+  desc "Distributed revision control system"
   homepage "https://git-scm.com"
   url "https://www.kernel.org/pub/software/scm/git/git-2.4.2.tar.xz"
   sha256 "4801ec1cd8c2175b58cfdbc721d0bf50d74ae226f36905fceb894c2fb620c9e5"

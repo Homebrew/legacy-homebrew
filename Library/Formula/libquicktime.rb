@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libquicktime < Formula
+  desc "Library for reading and writing quicktime files"
   homepage 'http://libquicktime.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
   sha1 '7008b2dc27b9b40965bd2df42d39ff4cb8b6305e'

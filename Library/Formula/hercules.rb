@@ -1,6 +1,7 @@
 require "formula"
 
 class Hercules < Formula
+  desc "System/370, ESA/390 and z/Architecture Emulator"
   homepage "http://www.hercules-390.eu/"
   url "http://downloads.hercules-390.eu/hercules-3.10.tar.gz"
   sha1 "10599041c7e5607cf2e7ecc76802f785043e2830"

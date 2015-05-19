@@ -1,4 +1,5 @@
 class Btparse < Formula
+  desc "BibTeX utility libraries"
   homepage "http://www.gerg.ca/software/btOOL/"
   url "http://www.gerg.ca/software/btOOL/btparse-0.34.tar.gz"
   sha256 "e8e2b6ae5de85d1c6f0dc52e8210aec51faebeee6a6ddc9bd975b110cec62698"

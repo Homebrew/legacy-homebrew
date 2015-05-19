@@ -1,6 +1,7 @@
 require "formula"
 
 class Nasm < Formula
+  desc "Netwide Assembler (NASM) is an 80x86 assembler"
   homepage "http://www.nasm.us/"
   url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.08/nasm-2.11.08.tar.xz"
   sha256 "c99467c7072211c550d147640d8a1a0aa4d636d4d8cf849f3bf4317d900a1f7f"

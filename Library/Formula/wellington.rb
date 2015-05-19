@@ -1,6 +1,7 @@
 require "language/go"
 
 class Wellington < Formula
+  desc "Adds file awareness to SASS"
   homepage "https://github.com/wellington/wellington"
   url "https://github.com/wellington/wellington/archive/v0.8.1.tar.gz"
   sha256 "77b41ee1b3e0095dd54a8575c6b05fdef7bf7bc059b46e534b3d06f84ab2422c"

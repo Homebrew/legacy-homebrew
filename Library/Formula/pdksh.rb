@@ -1,4 +1,5 @@
 class Pdksh < Formula
+  desc "Public domain version of the Korn shell"
   homepage "http://www.cs.mun.ca/~michael/pdksh/"
   url "http://www.cs.mun.ca/~michael/pdksh/files/pdksh-5.2.14.tar.gz"
   sha256 "ab15bcdd50f291edc632bca351b2edce5405d4f2ce3854d3d548d721ab9bbfa6"

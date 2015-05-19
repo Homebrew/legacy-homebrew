@@ -1,6 +1,7 @@
 require "formula"
 
 class Goaccess < Formula
+  desc "Log analyzer and interactive viewer for the Apache Webserver"
   homepage "http://goaccess.prosoftcorp.com/"
   url "http://tar.goaccess.io/goaccess-0.9.1.tar.gz"
   sha1 "3b1c17d5f808c8c81de0a9d3581c3ef7846812b7"

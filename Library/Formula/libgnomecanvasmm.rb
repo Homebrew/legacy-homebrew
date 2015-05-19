@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libgnomecanvasmm < Formula
+  desc "C++ wrapper for libgnomecanvas"
   homepage 'https://launchpad.net/libgnomecanvasmm'
   url 'http://ftp.gnome.org/pub/gnome/sources/libgnomecanvasmm/2.26/libgnomecanvasmm-2.26.0.tar.bz2'
   sha1 'c2f20c75f6eedbaf4a3299e0e3fda2ef775092e8'

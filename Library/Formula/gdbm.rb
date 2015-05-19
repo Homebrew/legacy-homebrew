@@ -1,4 +1,5 @@
 class Gdbm < Formula
+  desc "GNU database manager"
   homepage "https://www.gnu.org/software/gdbm/"
   url "https://ftpmirror.gnu.org/gdbm/gdbm-1.11.tar.gz"
   mirror "https://ftp.gnu.org/gnu/gdbm/gdbm-1.11.tar.gz"

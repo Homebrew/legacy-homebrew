@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gpsbabel < Formula
+  desc "GPSBabel converts/uploads GPS waypoints, tracks, and routes"
   homepage 'http://www.gpsbabel.org'
   url "http://gpsbabel.googlecode.com/svn/trunk/gpsbabel", :revision => "4843"
   version "1.5.1"

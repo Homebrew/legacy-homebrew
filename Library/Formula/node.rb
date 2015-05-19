@@ -1,5 +1,6 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
+  desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.12.4/node-v0.12.4.tar.gz"
   sha256 "3298d0997613a04ac64343e8316da134d04588132554ae402eb344e3369ec912"

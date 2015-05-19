@@ -1,4 +1,5 @@
 class Libetonyek < Formula
+  desc "Interpret and import Apple Keynote presentations"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
   url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.2.tar.xz"
   sha256 "58d078a76c3fd839c282244a1a7dabca81cef64be086a5c7d8470bb64208da39"

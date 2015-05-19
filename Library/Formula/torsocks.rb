@@ -1,4 +1,5 @@
 class Torsocks < Formula
+  desc "Use SOCKS-friendly applications with Tor"
   homepage "https://gitweb.torproject.org/torsocks.git/"
   url "https://git.torproject.org/torsocks.git",
     :tag => "v2.0.0",

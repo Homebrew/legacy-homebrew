@@ -1,4 +1,5 @@
 class Abduco < Formula
+  desc "Provides session management: i.e. separate programs from terminals"
   homepage "http://www.brain-dump.org/projects/abduco"
   url "http://www.brain-dump.org/projects/abduco/abduco-0.4.tar.gz"
   sha1 "ccd576eb57d9481d5f372e31ce84b3020f661b68"

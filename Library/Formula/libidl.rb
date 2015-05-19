@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libidl < Formula
+  desc "libIDL is a library for creating CORBA IDL files"
   homepage 'http://ftp.acc.umu.se/pub/gnome/sources/libIDL/0.8/'
   url 'http://ftp.gnome.org/pub/gnome/sources/libIDL/0.8/libIDL-0.8.14.tar.bz2'
   sha1 'abedf091bef0c7e65162111baf068dcb739ffcd3'

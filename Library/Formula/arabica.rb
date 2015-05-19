@@ -1,6 +1,7 @@
 require 'formula'
 
 class Arabica < Formula
+  desc "XML toolkit written in C++"
   homepage 'http://www.jezuk.co.uk/cgi-bin/view/arabica'
   url 'https://downloads.sourceforge.net/project/arabica/arabica/November-12/arabica-2012-November.tar.gz'
   version '20121126'

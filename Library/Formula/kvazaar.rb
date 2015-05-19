@@ -1,4 +1,5 @@
 class Kvazaar < Formula
+  desc "HEVC encoder"
   homepage "https://github.com/ultravideo/kvazaar"
   url "https://github.com/ultravideo/kvazaar/archive/v0.4.0.tar.gz"
   sha1 "28fce493e8fcd7274993ab46eb1a1c5d07569853"

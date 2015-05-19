@@ -1,4 +1,5 @@
 class Pinentry < Formula
+  desc "Passphrase entry dialog utilizing the Assuan protocol"
   homepage "https://www.gnupg.org/related_software/pinentry/index.en.html"
   url "ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.3.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.3.tar.bz2"

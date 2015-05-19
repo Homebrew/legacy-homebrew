@@ -1,4 +1,5 @@
 class Mockserver < Formula
+  desc "Mock HTTP server and proxy"
   homepage "http://www.mock-server.com/"
   url "https://oss.sonatype.org/content/repositories/releases/org/mock-server/mockserver-netty/3.9.15/mockserver-netty-3.9.15-brew-tar.tar"
   version "3.9.15"

@@ -1,4 +1,5 @@
 class Goolabs < Formula
+  desc "Command-line tool for morphologically analyzing Japanese language"
   homepage "https://pypi.python.org/pypi/goolabs"
   url "https://pypi.python.org/packages/source/g/goolabs/goolabs-0.1.1.tar.gz"
   sha1 "3201102ab0fad77d57a09dd7c879f6f163e05799"

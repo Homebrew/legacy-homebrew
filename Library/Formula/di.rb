@@ -1,6 +1,7 @@
 require 'formula'
 
 class Di < Formula
+  desc "Advanced df-like disk information utility"
   homepage 'http://www.gentoo.com/di/'
   url 'http://gentoo.com/di/di-4.35.tar.gz'
   sha1 '989b03afb0bc40d4dbdcc8e2b6889cf2cf8e2852'

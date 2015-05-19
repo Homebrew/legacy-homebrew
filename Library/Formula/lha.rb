@@ -1,4 +1,5 @@
 class Lha < Formula
+  desc "Utility for creating and opening lzh archives"
   homepage "http://lha.osdn.jp"
   url "http://dl.osdn.jp/lha/22231/lha-1.14i-ac20050924p1.tar.gz"
   version "1.14i-ac20050924p1"

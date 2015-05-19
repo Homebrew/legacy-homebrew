@@ -1,6 +1,7 @@
 require "formula"
 
 class Cmockery2 < Formula
+  desc "Reviving cmockery unit test framework from Google"
   homepage "https://github.com/lpabon/cmockery2"
   head "https://github.com/lpabon/cmockery2.git"
   url "https://github.com/lpabon/cmockery2/archive/v1.3.8.tar.gz"

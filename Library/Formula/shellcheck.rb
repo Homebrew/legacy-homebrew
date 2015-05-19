@@ -3,6 +3,7 @@ require "language/haskell"
 class Shellcheck < Formula
   include Language::Haskell::Cabal
 
+  desc "Static analysis and lint tool, for (ba)sh scripts"
   homepage "http://www.shellcheck.net"
   url "https://github.com/koalaman/shellcheck/archive/v0.3.7.tar.gz"
   sha256 "9f421052bc07047b65854544bfe32c5503cdad09f00d7a63a2f28b09b03a08f6"

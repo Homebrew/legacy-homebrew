@@ -1,4 +1,5 @@
 class Antlr < Formula
+  desc "ANTLR: ANother Tool for Language Recognition"
   homepage "http://www.antlr.org/"
   url "http://www.antlr.org/download/antlr-4.5-complete.jar"
   sha1 "d73369e018ca99c6d9ec609473395b8257d783d3"

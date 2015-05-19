@@ -1,4 +1,5 @@
 class Mysql < Formula
+  desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.6/en/"
   url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.25.tar.gz"
   mirror "https://downloads.sourceforge.net/project/mysql.mirror/MySQL%205.6.25/mysql-5.6.25.tar.gz"

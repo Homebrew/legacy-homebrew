@@ -1,4 +1,5 @@
 class Byacc < Formula
+  desc "(Arguably) the best yacc variant"
   homepage "http://invisible-island.net/byacc/byacc.html"
   url "ftp://invisible-island.net/byacc/byacc-20141128.tgz"
   sha1 "59ea0a166b10eaec99edacc4c38fcb006c6e84d3"

@@ -1,4 +1,5 @@
 class Knock < Formula
+  desc "Port-knock server"
   homepage "http://www.zeroflux.org/projects/knock"
   url "http://www.zeroflux.org/proj/knock/files/knock-0.7.tar.gz"
   sha1 "186a687c9db11733cf23a7423884a863873ebb27"

@@ -1,4 +1,5 @@
 class Openslide < Formula
+  desc "C library to read whole-slide images (a.k.a. virtual slides)"
   homepage "http://openslide.org/"
   url "https://github.com/openslide/openslide/releases/download/v3.4.1/openslide-3.4.1.tar.xz"
   sha256 "9938034dba7f48fadc90a2cdf8cfe94c5613b04098d1348a5ff19da95b990564"

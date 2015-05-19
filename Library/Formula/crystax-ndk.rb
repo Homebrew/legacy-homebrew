@@ -1,4 +1,5 @@
 class CrystaxNdk < Formula
+  desc "Drop-in replacement for Google's Android NDK"
   homepage "https://www.crystax.net/android/ndk"
 
   version "10.1.0"

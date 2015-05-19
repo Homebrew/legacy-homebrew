@@ -1,4 +1,5 @@
 class Asciidoc < Formula
+  desc "Formatter/translator for text files to numerous formats"
   homepage "http://asciidoc.org/"
   url "https://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz"
   sha1 "82e574dd061640561fa0560644bc74df71fb7305"

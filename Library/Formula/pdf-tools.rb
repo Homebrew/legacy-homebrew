@@ -1,4 +1,5 @@
 class PdfTools < Formula
+  desc "Emacs support library for PDF files"
   homepage "https://github.com/politza/pdf-tools"
   url "https://github.com/politza/pdf-tools/archive/v0.50.tar.gz"
   sha256 "3a9a17eb51d78d1366381aa3e2224051d5e1668ea91b59a76bb6711428093cc6"

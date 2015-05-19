@@ -1,4 +1,5 @@
 class Libepoxy < Formula
+  desc "Library for handling OpenGL function pointer management"
   homepage "https://github.com/anholt/libepoxy"
   url "https://github.com/anholt/libepoxy/archive/v1.2.tar.gz"
   sha256 "42c328440f60a5795835c5ec4bdfc1329e75bba16b6e22b3a87ed17e9679e8f6"

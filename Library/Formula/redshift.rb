@@ -1,4 +1,5 @@
 class Redshift < Formula
+  desc "Adjusts color temperature of your screen according to your surroundings"
   homepage "http://jonls.dk/redshift/"
   url "https://github.com/jonls/redshift/releases/download/v1.10/redshift-1.10.tar.xz"
   sha1 "7b06376ad96305252b93fa2ef14af47b521c82ab"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Henplus < Formula
+  desc "SQL shell that can handle multiple sessions in parallel"
   homepage 'https://github.com/neurolabs/henplus'
   url 'https://github.com/downloads/neurolabs/henplus/henplus-0.9.8.tar.gz'
   sha1 'ab1fc3a2ec5a6c8f434d2965d9bbe2121030ffd1'

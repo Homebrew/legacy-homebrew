@@ -1,6 +1,7 @@
 require 'formula'
 
 class Basex < Formula
+  desc "Light-weight XML database and XPath/XQuery processor"
   homepage 'http://basex.org'
   url 'http://files.basex.org/releases/8.2/BaseX82.zip'
   version '8.2'

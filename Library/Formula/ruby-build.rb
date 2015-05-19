@@ -1,6 +1,7 @@
 require "formula"
 
 class RubyBuild < Formula
+  desc "Install various Ruby versions and implementations"
   homepage "https://github.com/sstephenson/ruby-build"
   url "https://github.com/sstephenson/ruby-build/archive/v20150519.tar.gz"
   sha256 "2c1403c8577987b1b161d8fce3e30fd88cfc6f9d553a34cf45a23dd1e33c3c72"

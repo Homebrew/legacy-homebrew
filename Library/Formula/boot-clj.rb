@@ -1,4 +1,5 @@
 class BootClj < Formula
+  desc "Build tooling for Clojure"
   homepage "http://boot-clj.com"
   url "https://github.com/boot-clj/boot/releases/download/2.0.0/boot.sh",
       :using => :nounzip

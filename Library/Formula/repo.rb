@@ -1,6 +1,7 @@
 require 'formula'
 
 class Repo < Formula
+  desc "Repository tool for Android development"
   homepage 'http://source.android.com/source/git-repo.html'
   url 'https://raw.githubusercontent.com/android/tools_repo/v1.12.13/repo'
   version '1.21'

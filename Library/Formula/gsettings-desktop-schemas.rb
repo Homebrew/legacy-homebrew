@@ -1,4 +1,5 @@
 class GsettingsDesktopSchemas < Formula
+  desc "GSettings schemas for desktop components"
   homepage "https://download.gnome.org/sources/gsettings-desktop-schemas/"
   url "https://download.gnome.org/sources/gsettings-desktop-schemas/3.16/gsettings-desktop-schemas-3.16.1.tar.xz"
   sha256 "74fe9fdad510c8a6666febeceb7ebafc581ef990b3afcc8c1e8b5d90b24b3461"

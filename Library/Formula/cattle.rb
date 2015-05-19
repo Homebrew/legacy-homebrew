@@ -1,4 +1,5 @@
 class Cattle < Formula
+  desc "Brainfuck language toolkit"
   homepage "https://github.com/andreabolognani/cattle"
   url "https://github.com/andreabolognani/cattle/archive/cattle-1.2.0.tar.gz"
   sha256 "ff0b424011c56f61cb463f1d3fb32e58e40da41260298c407bd0748eb506468d"

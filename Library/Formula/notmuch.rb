@@ -1,6 +1,7 @@
 require "formula"
 
 class Notmuch < Formula
+  desc "Thread-based email index, search, and tagging"
   homepage "http://notmuchmail.org"
   url "http://notmuchmail.org/releases/notmuch-0.19.tar.gz"
   sha1 "df023988f67e329357a5e8d00c4f6fc71249b89f"

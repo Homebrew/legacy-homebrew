@@ -1,4 +1,5 @@
 class Optipng < Formula
+  desc "PNG file optimizer"
   homepage "http://optipng.sourceforge.net/"
   head "http://hg.code.sf.net/p/optipng/mercurial", :using => :hg
   url "https://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.5/optipng-0.7.5.tar.gz"

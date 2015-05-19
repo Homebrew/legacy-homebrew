@@ -1,4 +1,5 @@
 class Subnetcalc < Formula
+  desc "IPv4/IPv6 subnet calculator"
   homepage "https://www.uni-due.de/~be0001/subnetcalc/"
   url "https://www.uni-due.de/~be0001/subnetcalc/download/subnetcalc-2.4.2.tar.gz"
   sha256 "910ec4f47d8d3348be9ec8d66404259c0a48d2f40db86f7a71a469dd3ecf4339"

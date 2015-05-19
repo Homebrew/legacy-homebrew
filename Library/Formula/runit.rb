@@ -1,6 +1,7 @@
 require 'formula'
 
 class Runit < Formula
+  desc "Collection of tools for managing UNIX services"
   homepage 'http://smarden.org/runit'
   url 'http://smarden.org/runit/runit-2.1.1.tar.gz'
   sha1 '8eee39639dcb79ba251ca4ab2c7cde38059f09c2'

@@ -1,4 +1,5 @@
 class Leiningen < Formula
+  desc "Build tool for Clojure"
   homepage "https://github.com/technomancy/leiningen"
   head "https://github.com/technomancy/leiningen.git"
   url "https://github.com/technomancy/leiningen/archive/2.5.1.tar.gz"

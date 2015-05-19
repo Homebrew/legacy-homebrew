@@ -1,6 +1,7 @@
 require "formula"
 
 class MobileShell < Formula
+  desc "Remote terminal application"
   homepage "http://mosh.mit.edu/"
   url "https://mosh.mit.edu/mosh-1.2.4.tar.gz"
   sha256 "e74d0d323226046e402dd469a176075fc2013b69b0e67cea49762c957175df46"

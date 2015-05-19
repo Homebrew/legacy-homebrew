@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 class Cabocha < Formula
+  desc "Yet Another Japanese Dependency Structure Analyzer"
   homepage "https://taku910.github.io/cabocha/"
   url "https://googledrive.com/host/0B4y35FiV1wh7cGRCUUJHVTNJRnM/cabocha-0.69.tar.bz2"
   sha1 "9196098628c5d1f0b83b371a03352b6652c04001"

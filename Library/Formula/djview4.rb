@@ -1,6 +1,7 @@
 require 'formula'
 
 class Djview4 < Formula
+  desc "Viewer for the DjVu image format"
   homepage 'http://djvu.sourceforge.net/djview4.html'
   url 'https://downloads.sourceforge.net/project/djvu/DjView/4.10/djview-4.10.3.tar.gz'
   sha1 '5e31fec525d05744454bd0b74f0375acde1ad66c'

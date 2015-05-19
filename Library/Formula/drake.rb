@@ -1,6 +1,7 @@
 require 'formula'
 
 class Drake < Formula
+  desc "Data workflow tool meant to be 'make for data'"
   homepage 'https://github.com/Factual/drake'
   url 'https://github.com/Factual/drake/releases/download/v0.1.7/drake.jar'
   version '0.1.7'

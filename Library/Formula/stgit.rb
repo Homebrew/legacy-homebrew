@@ -1,6 +1,7 @@
 require 'formula'
 
 class Stgit < Formula
+  desc "Push/pop utility built on top of Git"
   homepage 'http://gna.org/projects/stgit/'
   url 'http://download.gna.org/stgit/stgit-0.17.1.tar.gz'
   sha1 '5918fd983919ab70ab191868b84e917a06556cc2'

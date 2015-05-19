@@ -1,4 +1,5 @@
 class Libgxps < Formula
+  desc "GObject based library for handling and rendering XPS documents"
   homepage "https://live.gnome.org/libgxps"
   url "http://ftp.gnome.org/pub/gnome/sources/libgxps/0.2/libgxps-0.2.2.tar.xz"
   sha256 "39d104739bf0db43905c315de1d8002460f1a098576f4418f69294013a5820be"

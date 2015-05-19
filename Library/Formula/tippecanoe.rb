@@ -1,6 +1,7 @@
 require "formula"
 
 class Tippecanoe < Formula
+  desc "Build vector tilesets from collections of GeoJSON features"
   homepage "https://github.com/mapbox/tippecanoe"
   url "https://github.com/mapbox/tippecanoe/archive/v1.2.0.tar.gz"
   sha1 "348563c57629260d17e1761f9aedd85b1a0453ba"

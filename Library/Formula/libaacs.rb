@@ -1,4 +1,5 @@
 class Libaacs < Formula
+  desc "Implements the Advanced Access Content System specification"
   homepage "https://www.videolan.org/developers/libaacs.html"
   url "https://download.videolan.org/pub/videolan/libaacs/0.8.1/libaacs-0.8.1.tar.bz2"
   mirror "http://videolan-nyc.defaultroute.com/libaacs/0.8.1/libaacs-0.8.1.tar.bz2"

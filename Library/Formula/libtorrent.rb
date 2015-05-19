@@ -1,6 +1,7 @@
 require "formula"
 
 class Libtorrent < Formula
+  desc "BitTorrent library"
   homepage "http://libtorrent.rakshasa.no/"
   url "http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.4.tar.gz"
   sha1 "3a3ca87054d020bc376abe2c1ea15bbbaef31131"

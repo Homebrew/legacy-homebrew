@@ -1,4 +1,5 @@
 class Cdk < Formula
+  desc "Curses development kit provides predefined curses widget for apps"
   homepage "http://invisible-island.net/cdk/"
   url "ftp://invisible-island.net/cdk/cdk-5.0-20141106.tgz"
   version "5.0.20141106"

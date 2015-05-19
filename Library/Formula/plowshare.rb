@@ -1,4 +1,5 @@
 class Plowshare < Formula
+  desc "Download/upload tool for popular file sharing websites"
   homepage "https://github.com/mcrapet/plowshare"
   url "https://github.com/mcrapet/plowshare/archive/v2.1.1.tar.gz"
   sha256 "96b3acd1dba1b14f3009334520969af4c00c8f4b7f5d924a26decc4b4a817e53"

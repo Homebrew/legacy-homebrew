@@ -1,5 +1,6 @@
 # Reference: https://github.com/macvim-dev/macvim/wiki/building
 class Macvim < Formula
+  desc "A GUI for vim, made for OS X"
   homepage 'https://code.google.com/p/macvim/'
   url 'https://github.com/macvim-dev/macvim/archive/Snapshot-76.tar.gz'
   version '7.4-76'

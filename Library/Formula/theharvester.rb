@@ -1,6 +1,7 @@
 require 'formula'
 
 class Theharvester < Formula
+  desc "Gather materials from public sources (for pen testers)"
   homepage 'https://code.google.com/p/theharvester/'
   url 'https://theharvester.googlecode.com/files/theHarvester-2.2a.tar.gz'
   sha1 'e02661ed6dd8d9d48d476ccee99878e15f67842a'

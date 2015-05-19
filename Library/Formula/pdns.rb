@@ -1,6 +1,7 @@
 require "formula"
 
 class Pdns < Formula
+  desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
   url "https://downloads.powerdns.com/releases/pdns-3.4.4.tar.bz2"
   sha256 "ec49f5a0b55b69ba057bf9ce28ab81e5258fc60c8d4954d9100fe3bb3efd09c8"

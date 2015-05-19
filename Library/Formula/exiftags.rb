@@ -1,4 +1,5 @@
 class Exiftags < Formula
+  desc "Utility to read EXIF tags from a digital camera JPEG file"
   homepage "http://johnst.org/sw/exiftags"
   url "http://johnst.org/sw/exiftags/exiftags-1.01.tar.gz"
   sha1 "06636feb7d5c5835da01d5da8cd0f4a291d23fd8"

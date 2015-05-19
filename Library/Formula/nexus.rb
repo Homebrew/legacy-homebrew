@@ -1,4 +1,5 @@
 class Nexus < Formula
+  desc "Repository manager for binary software components"
   homepage "http://www.sonatype.org/"
   version "2.11.2-06"
   url "https://download.sonatype.com/nexus/oss/nexus-2.11.2-06-bundle.tar.gz"

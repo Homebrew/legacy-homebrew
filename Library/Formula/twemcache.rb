@@ -1,6 +1,7 @@
 require 'formula'
 
 class Twemcache < Formula
+  desc "Twitter fork of memcached"
   homepage 'https://github.com/twitter/twemcache'
   head 'https://github.com/twitter/twemcache.git'
   url "https://github.com/twitter/twemcache/archive/v2.6.0.tar.gz"
