@@ -3,7 +3,6 @@ class GnomeIconTheme < Formula
   homepage "https://developer.gnome.org"
   url "https://download.gnome.org/sources/adwaita-icon-theme/3.16/adwaita-icon-theme-3.16.2.1.tar.xz"
   sha256 "b4556dfbf555d4fac12d4d5c12f7519de0d43ec42a1b649611439a50bf7acb96"
-  revision 1
 
   bottle do
     cellar :any
@@ -20,7 +19,6 @@ class GnomeIconTheme < Formula
   depends_on "librsvg"
 
   def install
-    ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "GTK_UPDATE_ICON_CACHE=#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache"
