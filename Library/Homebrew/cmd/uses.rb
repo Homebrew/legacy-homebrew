@@ -22,14 +22,20 @@ module Homebrew
             deps = f.recursive_dependencies.reject do |dep|
               ignores.any? { |ignore| dep.send(ignore) }
             end
+            reqs = f.recursive_requirements.reject do |req|
+              ignores.any? { |ignore| req.send(ignore) }
+            end
             deps.any? { |dep| dep.to_formula.name == ff.name } ||
-              f.recursive_requirements.any? { |req| req.name == ff.name || req.class.default_formula == ff.name }
+              reqs.any? { |req| req.name == ff.name || req.class.default_formula == ff.name }
           else
             deps = f.deps.reject do |dep|
               ignores.any? { |ignore| dep.send(ignore) }
             end
+            reqs = f.requirements.reject do |req|
+              ignores.any? { |ignore| req.send(ignore) }
+            end
             deps.any? { |dep| dep.to_formula.name == ff.name } ||
-              f.requirements.any? { |req| req.name == ff.name || req.class.default_formula == ff.name }
+              reqs.any? { |req| req.name == ff.name || req.class.default_formula == ff.name }
           end
         rescue FormulaUnavailableError
           # Silently ignore this case as we don't care about things used in
