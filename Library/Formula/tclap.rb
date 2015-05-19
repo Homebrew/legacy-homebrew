@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tclap < Formula
+  desc "Templatized C++ command-line parser library"
   homepage 'http://tclap.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/tclap/tclap-1.2.1.tar.gz'
   sha1 '4f124216dd6e6936f5af6372d921a6c51563f8fd'

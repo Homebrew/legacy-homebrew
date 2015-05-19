@@ -1,4 +1,5 @@
 class Libyaml < Formula
+  desc "YAML Parser"
   homepage "http://pyyaml.org/wiki/LibYAML"
   url "http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/liby/libyaml/libyaml_0.1.6.orig.tar.gz"

@@ -1,4 +1,5 @@
 class Clojurescript < Formula
+  desc "Clojure to JS compiler"
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
   url "https://github.com/clojure/clojurescript/archive/r2913.tar.gz"

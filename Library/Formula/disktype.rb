@@ -1,4 +1,5 @@
 class Disktype < Formula
+  desc "Detect content format of a disk or disk image"
   homepage 'http://disktype.sourceforge.net/'
   head ":pserver:anonymous:@disktype.cvs.sourceforge.net:/cvsroot/disktype", :using => :cvs
   url 'https://downloads.sourceforge.net/project/disktype/disktype/9/disktype-9.tar.gz'

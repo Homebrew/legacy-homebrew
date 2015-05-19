@@ -1,4 +1,5 @@
 class Ykclient < Formula
+  desc "Library to validate YubiKey OTPs against YubiCloud"
   homepage "https://yubico.github.io/yubico-c-client/"
   url "https://yubico.github.io/yubico-c-client/releases/ykclient-2.14.tar.gz"
   sha256 "bd7ddaa1d88ec7be323738cabdf58ff99cb6d6cd3fe937c69b52fa9b3764d362"

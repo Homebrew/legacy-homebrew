@@ -1,6 +1,7 @@
 require "formula"
 
 class MysqlSearchReplace < Formula
+  desc "Database search and replace script in PHP"
   homepage "https://interconnectit.com/products/search-and-replace-for-wordpress-databases/"
   url "https://github.com/interconnectit/Search-Replace-DB/archive/3.0.0.tar.gz"
   sha1 "9778ffcc26fabf85c49bd6ef98b5a80d0d0365f1"

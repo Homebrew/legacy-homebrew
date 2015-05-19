@@ -1,4 +1,5 @@
 class Gmp < Formula
+  desc "GNU multiple precision arithmetic library"
   homepage "https://gmplib.org/"
   url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
   mirror "https://gmplib.org/download/gmp/gmp-6.0.0a.tar.bz2"

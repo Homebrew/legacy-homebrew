@@ -1,6 +1,7 @@
 require "formula"
 
 class Gputils < Formula
+  desc "GNU PIC Utilities"
   homepage "http://gputils.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/gputils/gputils/1.4.0/gputils-1.4.0-1.tar.gz"
   sha1 "26593b7237b0c436b4482d1038216b467ec660b7"

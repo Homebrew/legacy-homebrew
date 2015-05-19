@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rzip < Formula
+  desc "File compression tool (like gzip or bzip2)"
   homepage 'http://rzip.samba.org/'
   url 'http://rzip.samba.org/ftp/rzip/rzip-2.1.tar.gz'
   sha1 'efeafc7a5bdd7daa0cea8d797ff21aa28bdfc8d9'

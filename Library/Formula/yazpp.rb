@@ -1,4 +1,5 @@
 class Yazpp < Formula
+  desc "C++ API for the Yaz toolkit"
   homepage "http://www.indexdata.com/yazpp"
   url "http://ftp.indexdata.dk/pub/yazpp/yazpp-1.6.2.tar.gz"
   sha1 "faafbc5f1f78c6951533188eb400a7d56c2e6cf1"

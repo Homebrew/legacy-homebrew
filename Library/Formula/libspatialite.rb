@@ -1,4 +1,5 @@
 class Libspatialite < Formula
+  desc "Adds spatial SQL capabilities to SQLite"
   homepage "https://www.gaia-gis.it/fossil/libspatialite/index"
   url "http://www.gaia-gis.it/gaia-sins/libspatialite-4.2.0.tar.gz"
   sha1 "698bf70bec669ddcbf1b0cc48f40c2e03776bffc"

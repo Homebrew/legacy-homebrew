@@ -16,6 +16,7 @@ class RRequirement < Requirement
 end
 
 class Monetdb < Formula
+  desc "Column-store database"
   homepage "https://www.monetdb.org/"
   url "https://dev.monetdb.org/downloads/sources/Oct2014-SP3/MonetDB-11.19.11.zip"
   sha1 "eace3b154e43e5ab1b5c6e381b7688296cbd257e"

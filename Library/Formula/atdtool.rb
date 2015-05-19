@@ -1,6 +1,7 @@
 require 'formula'
 
 class Atdtool < Formula
+  desc "Command-line interface for After the Deadline language checker"
   homepage 'https://github.com/lpenz/atdtool'
   url 'https://github.com/lpenz/atdtool/archive/upstream/1.3.tar.gz'
   sha1 '0e6ac49a106912f010f3cb71dec59ef5c29ad108'

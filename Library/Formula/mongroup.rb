@@ -1,6 +1,7 @@
 require "formula"
 
 class Mongroup < Formula
+  desc "Monitor a group of processes with mon"
   homepage "https://github.com/jgallen23/mongroup"
   url "https://github.com/jgallen23/mongroup/archive/0.4.1.tar.gz"
   sha1 "fa0f7b1e43ff3963f4851f378478a86a362dd345"

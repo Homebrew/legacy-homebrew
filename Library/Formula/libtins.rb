@@ -1,6 +1,7 @@
 require "formula"
 
 class Libtins < Formula
+  desc "C++ network packet sniffing and crafting library"
   homepage "https://libtins.github.io/"
   url "https://github.com/mfontanini/libtins/archive/v3.1.tar.gz"
   sha1 "8047e87ba90f784d7022980c7351b616d43d4fba"

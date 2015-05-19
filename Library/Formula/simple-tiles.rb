@@ -1,4 +1,5 @@
 class SimpleTiles < Formula
+  desc "Image generation library for spatial data"
   homepage "https://propublica.github.io/simple-tiles/"
   url "https://github.com/propublica/simple-tiles/archive/v0.6.0.tar.gz"
   sha256 "336fdc04c34b85270c377d880a0d4cc2ac1a9c9e5e4c3d53e0322d43c9495ac9"

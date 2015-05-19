@@ -1,6 +1,7 @@
 require "formula"
 
 class Gnatsd < Formula
+  desc "Lightweight cloud messaging system"
   homepage "http://nats.io"
   url "https://github.com/apcera/gnatsd/archive/v0.5.6.tar.gz"
   head "https://github.com/apcera/gnatsd.git"

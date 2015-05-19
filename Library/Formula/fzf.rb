@@ -2,6 +2,7 @@ require "formula"
 require "language/go"
 
 class Fzf < Formula
+  desc "Fuzzy finder for your shell"
   homepage "https://github.com/junegunn/fzf"
   url "https://github.com/junegunn/fzf/archive/0.9.12.tar.gz"
   sha256 "644f741530120856c4bd8e63b95174af172c85a2c378eaf87db9e8e4717aabb3"

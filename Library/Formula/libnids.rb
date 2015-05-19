@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libnids < Formula
+  desc "Implements E-component of network intrusion detection system"
   homepage 'http://libnids.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz'
   sha1 '9a421df05cefdc4f5f7db95efc001b3c2b5249ce'

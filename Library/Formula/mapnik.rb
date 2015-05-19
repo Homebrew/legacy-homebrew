@@ -1,4 +1,5 @@
 class Mapnik < Formula
+  desc "Toolkit for developing mapping applications"
   homepage "http://www.mapnik.org/"
   head "https://github.com/mapnik/mapnik.git"
   url "https://s3.amazonaws.com/mapnik/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"

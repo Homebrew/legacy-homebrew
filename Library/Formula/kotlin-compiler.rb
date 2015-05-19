@@ -1,4 +1,5 @@
 class KotlinCompiler < Formula
+  desc "Statically typed programming language for the JVM"
   homepage "http://kotlinlang.org/"
   url "https://github.com/JetBrains/kotlin/releases/download/build-0.12.200/kotlin-compiler-0.12.200.zip"
   sha256 "d14a74859698c2a88f004dfb7dd35d35234bc5b99f452694159f2db1ed5a1060"

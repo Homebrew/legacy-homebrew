@@ -1,6 +1,7 @@
 require 'formula'
 
 class Id3v2 < Formula
+  desc "ID3v2 editing tool"
   homepage 'http://id3v2.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/id3v2/id3v2/0.1.12/id3v2-0.1.12.tar.gz'
   sha1 '8f42153b2f53098c221da2e8fe42170e727cd9ad'

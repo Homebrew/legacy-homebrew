@@ -1,6 +1,7 @@
 require 'formula'
 
 class Fatsort < Formula
+  desc "Sorts FAT16 and FAT32 partitions"
   homepage 'http://fatsort.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/fatsort/fatsort-1.3.365.tar.gz'
   sha1 '9ae5d1ab5e4c91e6725237fab1271f881c3edb59'

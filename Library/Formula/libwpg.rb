@@ -1,6 +1,7 @@
 require "formula"
 
 class Libwpg < Formula
+  desc "Library for reading and parsing Word Perfect Graphics format"
   homepage 'http://libwpg.sourceforge.net/'
   url 'http://dev-www.libreoffice.org/src/libwpg-0.3.0.tar.bz2'
   sha1 'c8422f9a01e98ff3cb5d64d518e61f6a0bb77551'

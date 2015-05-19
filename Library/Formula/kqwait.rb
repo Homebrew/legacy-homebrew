@@ -1,6 +1,7 @@
 require 'formula'
 
 class Kqwait < Formula
+  desc "Wait for events on files or directories on OS X"
   homepage 'https://github.com/sschober/kqwait'
   url 'https://github.com/sschober/kqwait/archive/kqwait-v1.0.3.tar.gz'
   sha1 '47d12184dc67b7d16ca2895c0ce0de5937fa20cb'

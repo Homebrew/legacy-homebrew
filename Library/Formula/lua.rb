@@ -1,4 +1,5 @@
 class Lua < Formula
+  desc "Powerful, lightweight programming language"
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.3.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.2/lua5.2_5.2.3.orig.tar.gz"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Perlmagick < Formula
+  desc "Objected-oriented Perl interface to ImageMagick"
   homepage "http://www.imagemagick.org/script/perl-magick.php"
   url "http://www.imagemagick.org/download/perl/PerlMagick-6.89.tar.gz"
   sha256 "c8f81869a4f007be63e67fddf724b23256f6209f16aa95e14d0eaef283772a59"

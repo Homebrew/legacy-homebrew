@@ -1,6 +1,7 @@
 require "formula"
 
 class Kore < Formula
+  desc "Web application framework for writing web APIs in C"
   homepage "https://kore.io/"
   url "https://kore.io/release/kore-1.2.3-release.tgz"
   sha256 "24f1a88f4ef3199d6585f821e1ef134bb448a1c9409a76d18fcccd4af940d32f"

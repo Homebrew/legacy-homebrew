@@ -1,4 +1,5 @@
 class Libdvdnav < Formula
+  desc "DVD navigation library"
   homepage "https://dvdnav.mplayerhq.hu/"
   url "https://download.videolan.org/pub/videolan/libdvdnav/5.0.3/libdvdnav-5.0.3.tar.bz2"
   sha256 "5097023e3d2b36944c763f1df707ee06b19dc639b2b68fb30113a5f2cbf60b6d"

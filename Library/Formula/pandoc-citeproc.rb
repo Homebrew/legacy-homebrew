@@ -3,6 +3,7 @@ require "language/haskell"
 class PandocCiteproc < Formula
   include Language::Haskell::Cabal
 
+  desc "Library and executable for using citeproc with pandoc"
   homepage "https://github.com/jgm/pandoc-citeproc"
   url "https://github.com/jgm/pandoc-citeproc/archive/0.7.0.1.tar.gz"
   sha256 "f672af320b808706657dcf578f4beef1b410cab744eab0707213e76687bd7a07"

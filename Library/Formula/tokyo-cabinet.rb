@@ -1,6 +1,7 @@
 require 'formula'
 
 class TokyoCabinet < Formula
+  desc "Lightweight database library"
   homepage "http://fallabs.com/tokyocabinet/"
   url "http://fallabs.com/tokyocabinet/tokyocabinet-1.4.48.tar.gz"
   mirror "http://ftp.de.debian.org/debian/pool/main/t/tokyocabinet/tokyocabinet_1.4.48.orig.tar.gz"

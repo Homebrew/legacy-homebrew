@@ -1,4 +1,5 @@
 class Aspell < Formula
+  desc "Spell checker with better logic than ispell"
   homepage "http://aspell.net/"
   url "http://ftpmirror.gnu.org/aspell/aspell-0.60.6.1.tar.gz"
   mirror "https://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz"

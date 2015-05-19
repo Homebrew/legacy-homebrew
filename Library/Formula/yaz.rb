@@ -1,5 +1,6 @@
 # encoding: UTF-8
 class Yaz < Formula
+  desc "Toolkit for Z39.50/SRW/SRU clients/servers"
   homepage "http://www.indexdata.com/yaz"
   url "http://ftp.indexdata.dk/pub/yaz/yaz-5.11.0.tar.gz"
   sha1 "29dff79332979d1fa5e4e6c2cebb099200b10413"

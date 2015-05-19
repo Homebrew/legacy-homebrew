@@ -1,4 +1,5 @@
 class Chuck < Formula
+  desc "Concurrent, on-the-fly audio programming language"
   homepage "http://chuck.cs.princeton.edu/"
   url "http://chuck.cs.princeton.edu/release/files/chuck-1.3.5.0.tgz"
   sha1 "a97ad56f9fd1b0793ead099cc9723e888b3782c3"

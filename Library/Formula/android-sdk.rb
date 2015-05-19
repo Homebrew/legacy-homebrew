@@ -1,4 +1,5 @@
 class AndroidSdk < Formula
+  desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
   url "https://dl.google.com/android/android-sdk_r24.2-macosx.zip"
   version "24.2"

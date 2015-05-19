@@ -1,4 +1,5 @@
 class YubicoPivTool < Formula
+  desc "Command-line tool for the YubiKey NEO PIV applet"
   homepage "https://developers.yubico.com/yubico-piv-tool/"
   url "https://developers.yubico.com/yubico-piv-tool/releases/yubico-piv-tool-0.1.6.tar.gz"
   sha256 "eff765169153fdf75ba4ff48eb2e4748f62623760bb5c15e4cce89b7263f59bb"

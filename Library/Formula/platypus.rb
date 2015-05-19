@@ -1,4 +1,5 @@
 class Platypus < Formula
+  desc "Create OS X applications from {Perl,Ruby,sh,Python} scripts"
   homepage "http://sveinbjorn.org/platypus"
   url "https://github.com/sveinbjornt/Platypus/raw/master/Releases/platypus4.9.src.zip"
   version "4.9"

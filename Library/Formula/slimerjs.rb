@@ -18,6 +18,7 @@ class FirefoxDependency < Requirement
 end
 
 class Slimerjs < Formula
+  desc "Scriptable browser for Web developers"
   homepage "https://slimerjs.org/"
   url "https://download.slimerjs.org/releases/0.9.5/slimerjs-0.9.5-mac.tar.bz2"
   sha256 "4333ae1c7898789c71b65ba5767cd1781290cdad36cb64d58ef289933482c81b"

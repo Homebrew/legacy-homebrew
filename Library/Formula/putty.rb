@@ -1,4 +1,5 @@
 class Putty < Formula
+  desc "Implementation of Telnet and SSH"
   homepage "http://www.chiark.greenend.org.uk/~sgtatham/putty/"
   url "https://the.earth.li/~sgtatham/putty/0.64/putty-0.64.tar.gz"
   mirror "https://fossies.org/linux/misc/putty-0.64.tar.gz"

@@ -1,6 +1,7 @@
 require "formula"
 
 class ChibiScheme < Formula
+  desc "Small footprint Scheme for use as a C Extension Language"
   homepage "http://synthcode.com/wiki/chibi-scheme"
 
   stable do

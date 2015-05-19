@@ -1,6 +1,7 @@
 require 'formula'
 
 class CupsPdf < Formula
+  desc "Print-to-PDF feature through CUPS"
   homepage 'http://www.cups-pdf.de/'
   url 'http://www.cups-pdf.de/src/cups-pdf_2.6.1.tar.gz'
   sha1 '6806f0004dfed5216625ab60cfe307ded23c2f6a'

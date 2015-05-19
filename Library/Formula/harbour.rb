@@ -1,4 +1,5 @@
 class Harbour < Formula
+  desc "Portable, xBase-compatible programming language and environment"
   homepage "https://harbour.github.io"
   url "https://downloads.sourceforge.net/harbour-project/source/3.0.0/harbour-3.0.0.tar.bz2"
   sha256 "4e99c0c96c681b40c7e586be18523e33db24baea68eb4e394989a3b7a6b5eaad"

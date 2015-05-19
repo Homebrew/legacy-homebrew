@@ -1,4 +1,5 @@
 class Lcab < Formula
+  desc "Cabinet file creation tool"
   homepage "http://ohnopub.net/~ohnobinki/lcab/"
   url "ftp://mirror.ohnopub.net/mirror/lcab-1.0b12.tar.gz"
   mirror "https://launchpad.net/ubuntu/intrepid/+source/lcab/1.0b12-3/+files/lcab_1.0b12.orig.tar.gz"

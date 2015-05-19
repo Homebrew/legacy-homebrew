@@ -1,6 +1,7 @@
 require "formula"
 
 class Kyua < Formula
+  desc "Testing framework for infrastructure software"
   homepage "https://github.com/jmmv/kyua"
   url "https://github.com/jmmv/kyua/releases/download/kyua-0.11/kyua-0.11.tar.gz"
   sha1 "ba4b822c7157bf9b3478717fc3ff9bb9883d7a8f"

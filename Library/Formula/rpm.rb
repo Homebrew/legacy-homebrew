@@ -14,6 +14,7 @@ class RpmDownloadStrategy < CurlDownloadStrategy
 end
 
 class Rpm < Formula
+  desc "RPM package manager"
   homepage 'http://www.rpm5.org/'
   url 'http://rpm5.org/files/rpm/rpm-5.4/rpm-5.4.15-0.20140824.src.rpm',
       :using => RpmDownloadStrategy

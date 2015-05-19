@@ -1,6 +1,7 @@
 require "formula"
 
 class Imapsync < Formula
+  desc "Migrate or backup IMAP mail accounts"
   homepage "http://ks.lamiral.info/imapsync/"
   url "https://fedorahosted.org/released/imapsync/imapsync-1.607.tgz"
   sha1 "c9d6dd43cf10ba7f90a363900484085d9ce682a4"

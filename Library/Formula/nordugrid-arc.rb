@@ -1,4 +1,5 @@
 class NordugridArc < Formula
+  desc "Grid computing middleware"
   homepage "http://www.nordugrid.org"
   url "http://download.nordugrid.org/packages/nordugrid-arc/releases/5.0.0/src/nordugrid-arc_5.0.0.orig.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/n/nordugrid-arc/nordugrid-arc_5.0.0.orig.tar.gz"

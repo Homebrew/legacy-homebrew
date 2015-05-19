@@ -1,4 +1,5 @@
 class Task < Formula
+  desc "Feature-rich console based todo list manager"
   homepage "http://www.taskwarrior.org/"
   url "http://taskwarrior.org/download/task-2.4.4.tar.gz"
   sha1 "e7e1336ed099f672b3d5971d6a221b72ed804ac6"

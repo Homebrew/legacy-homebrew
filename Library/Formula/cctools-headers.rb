@@ -2,6 +2,7 @@ require "formula"
 
 # The system versions are too old to build ld64
 class CctoolsHeaders < Formula
+  desc "cctools-headers via Apple"
   homepage "https://opensource.apple.com/"
   url "https://opensource.apple.com/tarballs/cctools/cctools-855.tar.gz"
   sha1 "b6997939aa9f4f3c4ac70ec819e719330dcd7bcb"

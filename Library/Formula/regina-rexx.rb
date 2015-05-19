@@ -1,4 +1,5 @@
 class ReginaRexx < Formula
+  desc "Regina REXX interpreter"
   homepage "http://regina-rexx.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/regina-rexx/regina-rexx/3.9.1/Regina-REXX-3.9.1.tar.gz"
   sha256 "5d13df26987e27f25e7779a2efa87a5775213beeda449a9efac59b57a5d5f3ee"

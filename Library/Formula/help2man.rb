@@ -1,4 +1,5 @@
 class Help2man < Formula
+  desc "Automatically generate simple man pages"
   homepage "https://www.gnu.org/software/help2man/"
   url "http://ftpmirror.gnu.org/help2man/help2man-1.46.5.tar.xz"
   mirror "https://ftp.gnu.org/gnu/help2man/help2man-1.46.5.tar.xz"

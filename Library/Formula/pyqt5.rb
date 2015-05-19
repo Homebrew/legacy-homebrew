@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pyqt5 < Formula
+  desc "Python bindings for v5 of Qt"
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt/download5"
   url "https://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.4/PyQt-gpl-5.4.tar.gz"
   sha1 "057e6b32c43e673e79f876fb9b6f33d3072edfc2"

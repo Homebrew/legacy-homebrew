@@ -14,6 +14,7 @@ class Zsh5Installed < Requirement
 end
 
 class Zpython < Formula
+  desc "Embeds a Python interpreter into zsh"
   homepage 'https://bitbucket.org/ZyX_I/zsh'
 
   stable do

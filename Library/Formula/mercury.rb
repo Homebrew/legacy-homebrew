@@ -1,4 +1,5 @@
 class Mercury < Formula
+  desc "Logic/functional programming language"
   homepage "http://mercurylang.org/"
   url "http://dl.mercurylang.org/release/mercury-srcdist-14.01.1.tar.gz"
   sha1 "8d8295aed6cadb6cd2e932490042de6075d18acf"

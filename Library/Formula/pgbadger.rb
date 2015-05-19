@@ -1,4 +1,5 @@
 class Pgbadger < Formula
+  desc "Log analyzer for PostgreSQL"
   homepage "https://dalibo.github.io/pgbadger/"
   url "https://downloads.sourceforge.net/project/pgbadger/6.4/pgbadger-6.4.tar.gz"
   sha256 "a2a3b38e64c20b95d3ae395f93f41cda30492f844885a7ec5d5b2fbb090ec2f3"

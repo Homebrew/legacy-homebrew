@@ -1,6 +1,7 @@
 require "formula"
 
 class Gabedit < Formula
+  desc "GUI to computational chemistry packages like Gamess-US, Gaussian, etc."
   homepage "http://gabedit.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/gabedit/gabedit/Gabedit248/GabeditSrc248.tar.gz"
   version "2.4.8"

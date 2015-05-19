@@ -1,4 +1,5 @@
 class Aqbanking < Formula
+  desc "Generic online banking interface"
   homepage "http://www.aqbanking.de/"
   head "http://devel.aqbanking.de/svn/aqbanking/trunk"
   url "http://www2.aquamaniac.de/sites/download/download.php?package=03&release=118&file=01&dummy=aqbanking-5.5.1.tar.gz"

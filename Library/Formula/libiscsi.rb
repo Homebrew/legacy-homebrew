@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libiscsi < Formula
+  desc "Client library and utilities for iscsi"
   homepage 'https://github.com/sahlberg/libiscsi'
   url 'https://sites.google.com/site/libiscsitarballs/libiscsitarballs/libiscsi-1.10.0.tar.gz'
   sha1 'b65de46e9a688078211c1ef8f8a5af2a828d71a6'

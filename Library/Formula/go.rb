@@ -1,4 +1,5 @@
 class Go < Formula
+  desc "Go programming environment"
   homepage "https://golang.org"
   # Version 1.5 is going to require version 1.4 present to bootstrap 1.4
   # Perhaps we can use our previous bottles, ala the discussion around PyPy?

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Hostdb < Formula
+  desc "Generate DNS zones and DHCP configuration from hostlist.txt"
   homepage 'http://code.google.com/p/hostdb/'
   url 'https://hostdb.googlecode.com/files/hostdb-1.004.tgz'
   sha1 '65ec59c2c88b763813fa611d8fd28a45cd9d5278'

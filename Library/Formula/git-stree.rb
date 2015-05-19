@@ -1,4 +1,5 @@
 class GitStree < Formula
+  desc "Git subtree helper command"
   homepage "https://github.com/tdd/git-stree"
   head "https://github.com/tdd/git-stree.git"
   url "https://github.com/tdd/git-stree/archive/0.4.5.tar.gz"

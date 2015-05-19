@@ -1,4 +1,5 @@
 class Quantlib < Formula
+  desc "Library for quantitative finance"
   homepage "http://quantlib.org/"
   url "https://downloads.sourceforge.net/project/quantlib/QuantLib/1.5/QuantLib-1.5.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/q/quantlib/quantlib_1.5.orig.tar.gz"

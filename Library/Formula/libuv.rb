@@ -1,4 +1,5 @@
 class Libuv < Formula
+  desc "Platform layer for Node.js"
   homepage "https://github.com/libuv/libuv"
   url "https://github.com/libuv/libuv/archive/v1.6.0.tar.gz"
   sha256 "1d60d79b942f5a4e53b7eddd96faccf77257ee5d3ae9865cbe9e719f6e164fea"

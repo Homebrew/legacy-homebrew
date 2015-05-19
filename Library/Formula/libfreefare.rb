@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libfreefare < Formula
+  desc "API for MIFARE card manipulations"
   homepage 'https://code.google.com/p/libfreefare/'
   url 'https://libfreefare.googlecode.com/files/libfreefare-0.4.0.tar.bz2'
   sha1 '74214069d6443a6a40d717e496320428a114198c'

@@ -1,6 +1,7 @@
 require "formula"
 
 class Somagic < Formula
+  desc "Linux capture program for the Somagic variants of EasyCAP"
   homepage "https://code.google.com/p/easycap-somagic-linux/"
   url "https://easycap-somagic-linux.googlecode.com/files/somagic-easycap_1.1.tar.gz"
   sha1 "97cda956ea319fdd9aa9be9aff222a3e804deb91"

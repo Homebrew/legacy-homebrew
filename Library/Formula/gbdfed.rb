@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gbdfed < Formula
+  desc "Bitmap Font Editor"
   homepage 'http://sofia.nmsu.edu/~mleisher/Software/gbdfed/'
   url 'http://sofia.nmsu.edu/~mleisher/Software/gbdfed/gbdfed-1.6.tar.gz'
   sha1 '733afccc43273d3385f8b9bc9d6334bcaa4403ae'

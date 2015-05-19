@@ -1,4 +1,5 @@
 class Bats < Formula
+  desc "A TAP-compliant test framework for Bash scripts"
   homepage "https://github.com/sstephenson/bats"
   url "https://github.com/sstephenson/bats/archive/v0.4.0.tar.gz"
   sha1 "cb8a5f4c844a5f052f915036130def31140fce94"

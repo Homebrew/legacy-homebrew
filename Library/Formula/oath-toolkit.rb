@@ -1,6 +1,7 @@
 require 'formula'
 
 class OathToolkit < Formula
+  desc "Tools for one-time password authentication systems"
   homepage 'http://www.nongnu.org/oath-toolkit/'
   url 'http://download.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-2.4.1.tar.gz'
   mirror 'http://download-mirror.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-2.4.1.tar.gz'

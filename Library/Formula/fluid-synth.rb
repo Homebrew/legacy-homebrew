@@ -1,6 +1,7 @@
 require 'formula'
 
 class FluidSynth < Formula
+  desc "Real-time software synthesizer based on the SoundFont 2 specs"
   homepage 'http://www.fluidsynth.org'
   url 'https://downloads.sourceforge.net/project/fluidsynth/fluidsynth-1.1.6/fluidsynth-1.1.6.tar.gz'
   sha1 '155de731e72e91e1d4b7f52c33d8171596fbf244'

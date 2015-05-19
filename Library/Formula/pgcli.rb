@@ -1,4 +1,5 @@
 class Pgcli < Formula
+  desc "CLI for Postgres with auto-completion and syntax highlighting"
   homepage "http://pgcli.com/"
   url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.17.0.tar.gz"
   sha256 "b7a47405da61bc05dbceb28443e13965f322f58d942e119499976be19e2e2d44"

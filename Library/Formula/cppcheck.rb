@@ -1,4 +1,5 @@
 class Cppcheck < Formula
+  desc "Static analysis of C and C++ code"
   homepage "http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page"
 
   stable do

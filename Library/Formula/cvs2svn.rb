@@ -17,6 +17,7 @@ class PythonWithGdbm < Requirement
 end
 
 class Cvs2svn < Formula
+  desc "Tool for converting from CVS to Subversion"
   homepage 'http://cvs2svn.tigris.org/'
   url 'http://cvs2svn.tigris.org/files/documents/1462/49237/cvs2svn-2.4.0.tar.gz'
   sha1 '1194ac6ec70004409eea1fb2f0fce745318f1767'

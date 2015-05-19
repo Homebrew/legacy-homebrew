@@ -1,6 +1,7 @@
 require "formula"
 
 class Logtalk < Formula
+  desc "Object-oriented logic programming language"
   homepage "http://logtalk.org"
   url "http://logtalk.org/files/lgt2441.tar.bz2"
   sha256 "ca49d8e26a08dcf2a39358efa827789ecc5c47791035e5bb5830a6aec59b94e9"

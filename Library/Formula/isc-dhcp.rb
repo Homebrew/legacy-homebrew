@@ -1,6 +1,7 @@
 require 'formula'
 
 class IscDhcp < Formula
+  desc "Production-grade DHCP solution"
   homepage 'http://www.isc.org/software/dhcp'
   url 'http://ftp.isc.org/isc/dhcp/4.3.0/dhcp-4.3.0.tar.gz'
   sha1 'deed72a4636461042b74de68c2825dc52623e1d1'

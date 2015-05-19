@@ -1,4 +1,5 @@
 class Libssh < Formula
+  desc "C library SSHv1/SSHv2 client and server protocols"
   homepage "https://www.libssh.org/"
   url "https://red.libssh.org/attachments/download/107/libssh-0.6.4.tar.gz"
   sha1 "073bf53d9e02f7cfbcc5d8738ca1c9ffb2edd247"

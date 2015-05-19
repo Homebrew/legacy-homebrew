@@ -1,4 +1,5 @@
 class Vbindiff < Formula
+  desc "Visual Binary Diff"
   homepage "http://www.cjmweb.net/vbindiff/"
   url "http://www.cjmweb.net/vbindiff/vbindiff-3.0_beta4.tar.gz"
   version "3.0_beta4"

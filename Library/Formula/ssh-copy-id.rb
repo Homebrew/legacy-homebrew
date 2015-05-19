@@ -1,4 +1,5 @@
 class SshCopyId < Formula
+  desc "Add a public key to a remote machine's authorized_keys file"
   homepage "http://www.openssh.com/"
   url "http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
   mirror "http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"

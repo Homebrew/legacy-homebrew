@@ -1,6 +1,7 @@
  require 'formula'
 
 class Sispmctl < Formula
+  desc "Control Gembird SIS-PM programmable power outlet strips"
   homepage 'http://sispmctl.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/sispmctl/sispmctl/sispmctl-3.1/sispmctl-3.1.tar.gz'
   sha1 'f89d2820ca48794b80df81309910299dbc1278e1'

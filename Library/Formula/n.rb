@@ -1,4 +1,5 @@
 class N < Formula
+  desc "Node version management"
   homepage "https://github.com/tj/n"
   head "https://github.com/tj/n.git"
   url "https://github.com/tj/n/archive/v1.3.0.tar.gz"

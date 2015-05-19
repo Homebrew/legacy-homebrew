@@ -1,4 +1,5 @@
 class Xaric < Formula
+  desc "IRC client"
   homepage "http://xaric.org/"
   url "http://xaric.org/software/xaric/releases/xaric-0.13.6.tar.gz"
   sha256 "dbed41ed43efcea05baac0af0fe87cca36eebd96e5b7d4838b38cca3da4518bb"

@@ -1,4 +1,5 @@
 class Libharu < Formula
+  desc "Library for generating PDF files"
   homepage "http://www.libharu.org/"
   url "https://github.com/libharu/libharu/archive/RELEASE_2_3_0.tar.gz"
   sha1 "434177d4baaf2a37b2d2d16467dd786961919e0d"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class DocbookXsl < Formula
+  desc "XML vocabulary to create presentation-neutral documents"
   homepage 'http://docbook.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/docbook/docbook-xsl/1.78.1/docbook-xsl-1.78.1.tar.bz2'
   sha1 '1d668c845bb43c65115d1a1d9542f623801cfb6f'

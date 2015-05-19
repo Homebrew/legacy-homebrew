@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sleuthkit < Formula
+  desc "Forensic toolkit"
   homepage 'http://www.sleuthkit.org/'
 
   stable do

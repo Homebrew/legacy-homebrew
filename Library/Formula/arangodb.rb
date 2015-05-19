@@ -1,6 +1,7 @@
 require 'formula'
 
 class Arangodb < Formula
+  desc "Universal open-source database with a flexible data model"
   homepage 'https://www.arangodb.com/'
   url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.5.5.tar.gz'
   sha1 'e8ca48870222f68189881eb09b431cce02bfb7d8'

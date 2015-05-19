@@ -1,4 +1,5 @@
 class Cassandra < Formula
+  desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
   url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.1.5/apache-cassandra-2.1.5-bin.tar.gz"
   mirror "https://archive.apache.org/dist/cassandra/2.1.5/apache-cassandra-2.1.5-bin.tar.gz"

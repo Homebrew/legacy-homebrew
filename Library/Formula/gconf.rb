@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gconf < Formula
+  desc "GConf is a system for storing user application preferences"
   homepage 'http://projects.gnome.org/gconf/'
   url 'http://ftp.gnome.org/pub/GNOME/sources/GConf/3.2/GConf-3.2.6.tar.xz'
   sha256 '1912b91803ab09a5eed34d364bf09fe3a2a9c96751fde03a4e0cfa51a04d784c'

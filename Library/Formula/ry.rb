@@ -1,6 +1,7 @@
 require "formula"
 
 class Ry < Formula
+  desc "Ruby virtual env tool"
   homepage "https://github.com/jayferd/ry"
   url "https://github.com/jayferd/ry/archive/v0.5.2.tar.gz"
   sha1 "1c44fa222911b5b3fdb806fa97752b16404aae0f"

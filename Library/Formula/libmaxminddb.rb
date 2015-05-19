@@ -1,4 +1,5 @@
 class Libmaxminddb < Formula
+  desc "C library for the MaxMind DB file format"
   homepage "https://github.com/maxmind/libmaxminddb"
   url "https://github.com/maxmind/libmaxminddb/releases/download/1.0.4/libmaxminddb-1.0.4.tar.gz"
   sha1 "57548d426d43b9b43c77786b08594d48d0c88c62"

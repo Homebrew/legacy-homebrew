@@ -1,6 +1,7 @@
 require "formula"
 
 class Check < Formula
+  desc "C unit testing framework"
   homepage "http://check.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/check/check/0.9.14/check-0.9.14.tar.gz"
   sha1 "4b79e2d485d014ddb438e322b64235347d57b0ff"

@@ -1,4 +1,5 @@
 class Csmith < Formula
+  desc "Generates random C programs conforming to the C99 standard"
   homepage "http://embed.cs.utah.edu/csmith/"
   url "http://embed.cs.utah.edu/csmith/csmith-2.2.0.tar.gz"
   sha1 "3435ce22e645977e03cf6418da076ff3f7a1d4f0"

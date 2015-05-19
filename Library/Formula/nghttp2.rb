@@ -1,4 +1,5 @@
 class Nghttp2 < Formula
+  desc "HTTP/2 C Library"
   homepage "https://nghttp2.org"
   url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.13/nghttp2-0.7.13.tar.xz"
   sha256 "91f2bfcad1e27472d8c96de71d9bcb37d93b131ee60c775c95b46be82a24e1db"

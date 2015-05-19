@@ -1,4 +1,5 @@
 class Whatmask < Formula
+  desc "Network settings helper"
   homepage "http://www.laffeycomputer.com/whatmask.html"
   url "http://downloads.laffeycomputer.com/current_builds/whatmask/whatmask-1.2.tar.gz"
   sha256 "7dca0389e22e90ec1b1c199a29838803a1ae9ab34c086a926379b79edb069d89"

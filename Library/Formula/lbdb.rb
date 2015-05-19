@@ -4,6 +4,7 @@ require 'formula'
 #   homepage 'http://www.spinnaker.de/lbdb/'
 
 class Lbdb < Formula
+  desc "Little brother's database for the mutt mail reader"
   homepage 'https://github.com/tgray/lbdb/'
   url 'https://github.com/tgray/lbdb/archive/v0.38.2.tar.gz'
   sha1 '2a278fe7bffad6e7572c1c76f9568e4737c68e07'

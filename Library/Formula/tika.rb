@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tika < Formula
+  desc "Content analysis toolkit"
   homepage 'https://tika.apache.org/'
   url 'https://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.8.jar'
   sha256 '9346cf68c00a46b2e6189794d5fb2e127bf9b60ef6d216edf06e01917f7deaef'

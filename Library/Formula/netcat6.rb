@@ -1,6 +1,7 @@
 require "formula"
 
 class Netcat6 < Formula
+  desc "Rewrite of netcat that supports IPv6, plus other improvements"
   homepage "http://www.deepspace6.net/projects/netcat6.html"
   url "http://ftp.debian.org/debian/pool/main/n/nc6/nc6_1.0.orig.tar.gz"
   sha1 "50b1a3f7bfa610a2016727e5741791ad3a88bd07"

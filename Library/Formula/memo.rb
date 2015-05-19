@@ -1,4 +1,5 @@
 class Memo < Formula
+  desc "Note-taking and to-do software"
   homepage "http://www.getmemo.org"
   url "http://www.getmemo.org/memo-1.6.tar.gz"
   sha256 "08e32f7eee35c24a790eb886fdde9e86c4ef58d2a3059df95fd3a55718f79e96"

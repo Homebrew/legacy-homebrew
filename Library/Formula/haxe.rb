@@ -1,6 +1,7 @@
 require "formula"
 
 class Haxe < Formula
+  desc "Multi-platform programming language"
   homepage "http://haxe.org"
 
   stable do

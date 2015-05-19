@@ -1,4 +1,5 @@
 class Hh < Formula
+  desc "Bash history suggest box"
   homepage "https://github.com/dvorka/hstr"
   url "https://github.com/dvorka/hstr/releases/download/1.16/hh-1.16-src.tgz"
   sha1 "43c353662a0b31aa56d683fa6ff519bded289c51"

@@ -1,4 +1,5 @@
 class Anttweakbar < Formula
+  desc "C/C++ library for adding GUIs to OpenGL apps"
   homepage "http://www.antisphere.com/Wiki/tools:anttweakbar"
   url "https://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip"
   version "1.16"

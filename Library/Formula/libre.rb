@@ -1,6 +1,7 @@
 require "formula"
 
 class Libre < Formula
+  desc "Toolkit library for asynchronous network I/O with protocol stacks"
   homepage "http://www.creytiv.com"
   url "http://www.creytiv.com/pub/re-0.4.11.tar.gz"
   sha1 "6e04f8e30eaa273134c47433b41bcffadfca194c"

@@ -5,6 +5,7 @@ require 'formula'
 #  - http://wiki.winehq.org/Gecko
 #  - http://wiki.winehq.org/Mono
 class Wine < Formula
+  desc "Wine Is Not an Emulator"
   homepage 'https://www.winehq.org/'
 
   stable do

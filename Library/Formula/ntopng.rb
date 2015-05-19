@@ -1,6 +1,7 @@
 require "formula"
 
 class Ntopng < Formula
+  desc "Next generation version of the original ntop"
   homepage "http://www.ntop.org/products/ntop/"
   url "https://downloads.sourceforge.net/project/ntop/ntopng/ntopng-2.0.tar.gz"
   sha1 "ef8ec9a31637445ab3797930d27b448071239348"

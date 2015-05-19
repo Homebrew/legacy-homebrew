@@ -1,6 +1,7 @@
 require "formula"
 
 class Lftp < Formula
+  desc "Sophisticated file transfer program"
   homepage "http://lftp.yar.ru/"
   url "http://lftp.yar.ru/ftp/lftp-4.6.2.tar.gz"
   sha1 "8c50f1b4c721143ac3e3428a72c9864edfde61f6"

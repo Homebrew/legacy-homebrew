@@ -1,4 +1,5 @@
 class Bitlbee < Formula
+  desc "IRC to other chat networks gateway"
   homepage "http://www.bitlbee.org/"
   url "http://get.bitlbee.org/src/bitlbee-3.4.tar.gz"
   sha256 "cebad646bbfd17c80923743244039fd970e3ca27e8c1b7cf872622e773239d5e"

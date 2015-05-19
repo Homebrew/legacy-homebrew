@@ -1,4 +1,5 @@
 class Py2cairo < Formula
+  desc "Python 2 bindings for the Cairo graphics library"
   homepage "http://cairographics.org/pycairo/"
   url "http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2"
   sha1 "2efa8dfafbd6b8e492adaab07231556fec52d6eb"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Sdf < Formula
+  desc "Syntax Definition Formalism: high-level description of grammars"
   homepage "http://strategoxt.org/Sdf/WebHome"
   url "http://www.meta-environment.org/releases/sdf-2.6.3.tar.gz"
   sha1 "98cb63cf9ed9e1b51727f55963dad31615f75b0d"

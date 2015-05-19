@@ -1,4 +1,5 @@
 class Scala < Formula
+  desc "Scala programming language"
   homepage "http://www.scala-lang.org/"
 
   bottle do

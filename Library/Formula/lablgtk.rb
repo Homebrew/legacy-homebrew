@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lablgtk < Formula
+  desc "Objective Caml interface to gtk+"
   homepage 'http://wwwfun.kurims.kyoto-u.ac.jp/soft/lsl/lablgtk.html'
   url 'http://wwwfun.kurims.kyoto-u.ac.jp/soft/lsl/dist/lablgtk-2.14.2.tar.gz'
   sha1 'fd184418ccbc542825748ca63fba75138d2ea561'

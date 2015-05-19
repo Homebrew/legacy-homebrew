@@ -1,6 +1,7 @@
 require 'formula'
 
 class Vcodex < Formula
+  desc "Standalone vczip command and vcodex library"
   homepage 'http://www2.research.att.com/~astopen/download/ref/vcodex/vcodex.html'
   url 'http://www2.research.att.com/~astopen/download/tgz/vcodex.2013-05-31.tgz',
     :user => "I accept www.opensource.org/licenses/eclipse:."

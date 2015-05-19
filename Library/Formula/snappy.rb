@@ -1,4 +1,5 @@
 class Snappy < Formula
+  desc "Compression/decompression library aiming for high speed"
   homepage "https://code.google.com/p/snappy/"
   url "https://drive.google.com/uc?id=0B0xs9kK-b5nMOWIxWGJhMXd6aGs&export=download"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/snappy/snappy_1.1.2.orig.tar.gz"

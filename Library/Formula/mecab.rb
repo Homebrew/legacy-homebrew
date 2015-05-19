@@ -1,5 +1,6 @@
 # encoding: UTF-8
 class Mecab < Formula
+  desc "Yet another part-of-speech and morphological analyzer"
   homepage "https://taku910.github.io/mecab/"
   url "https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE"
   version "0.996"

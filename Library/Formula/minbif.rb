@@ -3,6 +3,7 @@ require 'formula'
 # Official download has untrusted SSL cert, so use Debian
 
 class Minbif < Formula
+  desc "IRC-to-other-IM-networks gateway using Pidgin library"
   homepage 'http://minbif.im/'
   url 'http://ftp.de.debian.org/debian/pool/main/m/minbif/minbif_1.0.5+git20120508.orig.tar.gz'
   version '1.0.5'

@@ -1,4 +1,5 @@
 class Pth < Formula
+  desc "GNU Portable THreads"
   homepage "http://www.gnu.org/software/pth/"
   url "http://ftpmirror.gnu.org/pth/pth-2.0.7.tar.gz"
   mirror "http://ftp.gnu.org/gnu/pth/pth-2.0.7.tar.gz"

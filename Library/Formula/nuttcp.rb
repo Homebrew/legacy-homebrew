@@ -1,4 +1,5 @@
 class Nuttcp < Formula
+  desc "Network performance measurement tool"
   homepage "http://www.nuttcp.net/nuttcp"
   url "http://www.nuttcp.net/nuttcp/nuttcp-6.1.2.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/n/nuttcp/nuttcp_6.1.2.orig.tar.gz"

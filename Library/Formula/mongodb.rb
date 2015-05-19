@@ -1,6 +1,7 @@
 require "language/go"
 
 class Mongodb < Formula
+  desc "High-performance, schema-free, document-oriented database"
   homepage "https://www.mongodb.org/"
 
   stable do

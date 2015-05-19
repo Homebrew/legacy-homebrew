@@ -1,6 +1,7 @@
 require 'formula'
 
 class ApacheForrest < Formula
+  desc "Publishing framework providing multiple output formats"
   homepage 'http://forrest.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-sources.tar.gz'
   sha1 '8c7b49a7dff4b3f60a52c7696684168b6d454a47'

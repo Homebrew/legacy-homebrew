@@ -1,6 +1,7 @@
 require 'formula'
 
 class Vcsh < Formula
+  desc "Config manager based on git"
   homepage 'https://github.com/RichiH/vcsh'
   url 'https://github.com/RichiH/vcsh/archive/v1.20141026-manpage-static.tar.gz'
   version '1.20141026'

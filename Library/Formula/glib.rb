@@ -1,4 +1,5 @@
 class Glib < Formula
+  desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
   url "https://download.gnome.org/sources/glib/2.44/glib-2.44.1.tar.xz"
   sha256 "8811deacaf8a503d0a9b701777ea079ca6a4277be10e3d730d2112735d5eca07"

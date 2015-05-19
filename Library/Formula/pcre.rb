@@ -1,4 +1,5 @@
 class Pcre < Formula
+  desc "Perl compatible regular expressions library"
   homepage "http://www.pcre.org/"
   url "https://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.bz2"
   mirror "https://downloads.sourceforge.net/project/pcre/pcre/8.37/pcre-8.37.tar.bz2"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Lynx < Formula
+  desc "Text-based web browser"
   homepage "http://lynx.isc.org/release/"
   url "http://lynx.isc.org/current/lynx2.8.8rel.2.tar.bz2"
   version "2.8.8rel.2"

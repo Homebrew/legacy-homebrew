@@ -1,4 +1,5 @@
 class Fsw < Formula
+  desc "File change monitor with multiple backends"
   homepage "http://emcrisostomo.github.io/fsw/"
   url "https://github.com/emcrisostomo/fsw/releases/download/1.3.9/fsw-1.3.9.tar.gz"
   sha1 "bd2b230dc800946941d89512ce9ae8669365d21a"

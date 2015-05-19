@@ -1,4 +1,5 @@
 class Gl2ps < Formula
+  desc "OpenGL to PostScript printing library"
   homepage "http://www.geuz.org/gl2ps/"
   url "http://geuz.org/gl2ps/src/gl2ps-1.3.8.tgz"
   sha1 "792e11db0fe7a30a4dc4491af5098b047ec378b1"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cdrtools < Formula
+  desc "ISO 9660 file system and CD creation tools"
   homepage 'http://cdrecord.org/'
 
   stable do

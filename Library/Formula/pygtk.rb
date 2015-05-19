@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pygtk < Formula
+  desc "GTK+ bindings for Python"
   homepage 'http://www.pygtk.org/'
   url 'http://ftp.gnome.org/pub/GNOME/sources/pygtk/2.24/pygtk-2.24.0.tar.bz2'
   sha1 '344e6a32a5e8c7e0aaeb807e0636a163095231c2'

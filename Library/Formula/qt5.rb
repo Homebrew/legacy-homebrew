@@ -10,6 +10,7 @@ class OracleHomeVar < Requirement
 end
 
 class Qt5 < Formula
+  desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   url "https://download.qt.io/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
   mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"

@@ -1,4 +1,5 @@
 class Rust < Formula
+  desc "Safe, concurrent, practical language"
   homepage 'http://www.rust-lang.org/'
 
   stable do

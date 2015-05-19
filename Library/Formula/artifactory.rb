@@ -1,4 +1,5 @@
 class Artifactory < Formula
+  desc "Manages binaries"
   homepage "http://www.jfrog.com/artifactory/"
   url "https://dl.bintray.com/jfrog/artifactory/artifactory-3.8.0.zip"
   sha1 "ade88a068f58a3847f9591ee0b9bfd0bcbd20049"

@@ -1,4 +1,5 @@
 class Ykpers < Formula
+  desc "YubiKey personalization library and tool"
   homepage "https://yubico.github.io/yubikey-personalization/"
   url "https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.16.3.tar.gz"
   sha256 "38a9558053f68c488fa5737200fa5d6c7503944374ad298c8fa33d596f7fa055"

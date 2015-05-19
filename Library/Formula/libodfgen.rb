@@ -1,4 +1,5 @@
 class Libodfgen < Formula
+  desc "ODF export library for projects using librevenge"
   homepage "http://sourceforge.net/p/libwpd/wiki/libodfgen/"
   url "http://dev-www.libreoffice.org/src/libodfgen-0.1.4.tar.bz2"
   mirror "https://downloads.sourceforge.net/project/libwpd/libodfgen/libodfgen-0.1.4/libodfgen-0.1.4.tar.bz2"

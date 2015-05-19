@@ -1,4 +1,5 @@
 class Awscli < Formula
+  desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
   url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.32.tar.gz"
   sha256 "50f914d752700c47e6567d1f17ee64c8d5efbe1974da46c03cf7d85e080f71b5"

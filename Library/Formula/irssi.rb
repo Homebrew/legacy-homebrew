@@ -1,4 +1,5 @@
 class Irssi < Formula
+  desc "Modular IRC client"
   homepage "http://irssi.org/"
   url "http://irssi.org/files/irssi-0.8.17.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/i/irssi/irssi_0.8.17.orig.tar.gz"

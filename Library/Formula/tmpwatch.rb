@@ -1,4 +1,5 @@
 class Tmpwatch < Formula
+  desc "Find and remove files not accessed in a specified time"
   homepage "https://fedorahosted.org/tmpwatch/"
   url "https://fedorahosted.org/releases/t/m/tmpwatch/tmpwatch-2.11.tar.bz2"
   sha1 "c578dd98e5ea64ad987a95ae55926685a0df0659"

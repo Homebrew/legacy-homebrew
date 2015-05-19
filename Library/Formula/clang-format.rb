@@ -1,4 +1,5 @@
 class ClangFormat < Formula
+  desc "C/C++/Obj-C formatting tools: standalone and editor plugins"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
   version "2015-04-21"
 

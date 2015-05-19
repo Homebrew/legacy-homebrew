@@ -1,4 +1,5 @@
 class SqliteAnalyzer < Formula
+  desc "Analyze how space is allocated inside an SQLite file"
   homepage "https://www.sqlite.org/"
   url "https://www.sqlite.org/2015/sqlite-src-3080803.zip"
   version "3.8.8.3"

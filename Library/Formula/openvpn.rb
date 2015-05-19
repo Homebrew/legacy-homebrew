@@ -1,4 +1,5 @@
 class Openvpn < Formula
+  desc "SSL VPN implementing OSI layer 2 or 3 secure network extension"
   homepage "https://openvpn.net/index.php/download/community-downloads.html"
   url "https://swupdate.openvpn.org/community/releases/openvpn-2.3.6.tar.gz"
   mirror "http://build.openvpn.net/downloads/releases/openvpn-2.3.6.tar.gz"

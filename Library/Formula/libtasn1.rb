@@ -1,4 +1,5 @@
 class Libtasn1 < Formula
+  desc "ASN.1 structure parser library"
   homepage "https://www.gnu.org/software/libtasn1/"
   url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.5.tar.gz"
   mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.5.tar.gz"

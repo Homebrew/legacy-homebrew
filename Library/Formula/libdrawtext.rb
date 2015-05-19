@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libdrawtext < Formula
+  desc "Library for anti-aliased text rendering in OpenGL"
   homepage 'http://nuclear.mutantstargoat.com/sw/libdrawtext/'
   url 'http://nuclear.mutantstargoat.com/sw/libdrawtext/libdrawtext-0.2.1.tar.gz'
   sha1 'dd12c67e7c7898a5941a92d616e9dbbbab4b9a38'

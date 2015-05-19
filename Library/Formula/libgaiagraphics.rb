@@ -1,4 +1,5 @@
 class Libgaiagraphics < Formula
+  desc "Library supporting common-utility raster handling"
   homepage "https://www.gaia-gis.it/fossil/libgaiagraphics/index"
   url "http://www.gaia-gis.it/gaia-sins/gaiagraphics-sources/libgaiagraphics-0.5.tar.gz"
   sha1 "db9eaef329fc650da737c71aac6136088fcb6549"

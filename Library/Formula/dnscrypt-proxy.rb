@@ -1,4 +1,5 @@
 class DnscryptProxy < Formula
+  desc "Secure communications between a client and a DNS resolver"
   homepage "http://dnscrypt.org"
   url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.4.3/dnscrypt-proxy-1.4.3.tar.gz"
   mirror "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.3.tar.gz"

@@ -1,4 +1,5 @@
 class Grap < Formula
+  desc "Language for typesetting graphs"
   homepage "http://www.lunabase.org/~faber/Vault/software/grap/"
   url "http://www.lunabase.org/~faber/Vault/software/grap/grap-1.45.tar.gz"
   sha256 "906743cdccd029eee88a4a81718f9d0777149a3dc548672b3ef0ceaaf36a4ae0"

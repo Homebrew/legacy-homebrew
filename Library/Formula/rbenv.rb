@@ -1,4 +1,5 @@
 class Rbenv < Formula
+  desc "Ruby environment tool"
   homepage "https://github.com/sstephenson/rbenv"
   url "https://github.com/sstephenson/rbenv/archive/v0.4.0.tar.gz"
   sha1 "825ceec55805b8bb80a6d6003fd3cef824d7ff14"

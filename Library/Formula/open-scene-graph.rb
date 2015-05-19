@@ -1,4 +1,5 @@
 class OpenSceneGraph < Formula
+  desc "3D graphics toolkit"
   homepage "http://www.openscenegraph.org/projects/osg"
   url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.3.3.zip"
   sha1 "98697c3e3b3c6e7e2ec7a6a75ece8f790b709cd7"

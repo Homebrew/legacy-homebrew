@@ -1,6 +1,7 @@
 require "formula"
 
 class Unshield < Formula
+  desc "Extract files from InstallShield cabinet files"
   homepage "https://github.com/twogood/unshield"
   url "https://github.com/twogood/unshield/archive/1.0.tar.gz"
   sha1 "b9e09a23d7172dc43c914b764470aec182e4f468"

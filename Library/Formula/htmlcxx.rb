@@ -1,6 +1,7 @@
 require 'formula'
 
 class Htmlcxx < Formula
+  desc "Non-validating CSS1 and HTML parser for C++"
   homepage 'http://htmlcxx.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/htmlcxx/htmlcxx/0.85/htmlcxx-0.85.tar.gz'
   sha1 'e56fef830db51041fd297d269d24379b2dccb928'

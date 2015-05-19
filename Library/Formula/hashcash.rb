@@ -1,6 +1,7 @@
 require "formula"
 
 class Hashcash < Formula
+  desc "Proof-of-work algorithm to counter denial-of-service (DoS) attacks"
   homepage "http://hashcash.org"
   url "http://hashcash.org/source/hashcash-1.22.tgz"
   sha1 "0fa03c9f266026e505c0ab7b671ad93aef9310de"

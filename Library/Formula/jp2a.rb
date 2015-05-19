@@ -1,4 +1,5 @@
 class Jp2a < Formula
+  desc "Convert JPG images to ASCII"
   homepage "http://csl.sublevel3.org/jp2a/"
   url "https://downloads.sourceforge.net/project/jp2a/jp2a/1.0.6/jp2a-1.0.6.tar.gz"
   sha1 "8d08a7f9428632c02351452067828af215afe2cf"

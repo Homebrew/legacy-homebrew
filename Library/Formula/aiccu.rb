@@ -1,6 +1,7 @@
 require 'formula'
 
 class Aiccu < Formula
+  desc "AICCU (Automatic IPv6 Connectivity Client Utility)"
   homepage 'https://www.sixxs.net/tools/aiccu/'
   url 'http://www.sixxs.net/archive/sixxs/aiccu/unix/aiccu_20070115.tar.gz'
   sha1 '7b3c51bfe291c777e74b2688e9339b4fb72e6a39'

@@ -1,6 +1,7 @@
 require "language/go"
 
 class Remarshal < Formula
+  desc "Convert between TOML, YAML and JSON"
   homepage "https://github.com/dbohdan/remarshal"
   url "https://github.com/dbohdan/remarshal.git", :tag => "v0.3.0", :revision => "bb9ac467ca297c55587a798531886e6159acbcbd"
 

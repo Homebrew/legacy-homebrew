@@ -1,4 +1,5 @@
 class LibtorrentRasterbar < Formula
+  desc "C++ bittorrent library by Rasterbar Software"
   homepage "http://sourceforge.net/projects/libtorrent/"
   url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.5.tar.gz"
   sha256 "474a43da2147bec7e333c10f70b07221f4732dd67e071d5e90acc7edb8f657b0"

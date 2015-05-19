@@ -1,4 +1,5 @@
 class Ncmpcpp < Formula
+  desc "Ncurses-based client for the Music Player Daemon"
   homepage "http://ncmpcpp.rybczak.net/"
   url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6.2.tar.bz2"
   sha1 "0e7e60d61af42f9fa543e16f06bac8d6c42d5fe9"

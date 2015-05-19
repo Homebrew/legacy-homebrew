@@ -1,4 +1,5 @@
 class Dcd < Formula
+  desc "Auto-complete program for the D programming language"
   homepage "https://github.com/Hackerpilot/DCD"
   url "https://github.com/Hackerpilot/DCD.git",
       :tag => "v0.6.0",

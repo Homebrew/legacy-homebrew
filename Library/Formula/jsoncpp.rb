@@ -1,6 +1,7 @@
 require "formula"
 
 class Jsoncpp < Formula
+  desc "Library for interacting with JSON"
   homepage "https://github.com/open-source-parsers/jsoncpp"
   url "https://github.com/open-source-parsers/jsoncpp/archive/svn-release-0.6.0-rc2.tar.gz"
   sha1 "6cc51ed1f31e742637a512201b585e0bc4e06980"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Flowgrind < Formula
+  desc "TCP measurement tool, similar to iperf or netperf"
   homepage 'https://launchpad.net/flowgrind'
   url 'https://launchpad.net/flowgrind/trunk/flowgrind-0.7.5/+download/flowgrind-0.7.5.tar.bz2'
   sha1 '77cccd3a5111a03153de8278d33430f36ef0a92c'

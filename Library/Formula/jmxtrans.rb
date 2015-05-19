@@ -1,4 +1,5 @@
 class Jmxtrans < Formula
+  desc "Tool to connect to JVMs and query their attributes"
   homepage "https://github.com/jmxtrans/jmxtrans"
   url "https://github.com/jmxtrans/jmxtrans/archive/jmxtrans-249.tar.gz"
   version "20150330-249"

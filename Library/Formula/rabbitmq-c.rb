@@ -1,6 +1,7 @@
 require "formula"
 
 class RabbitmqC < Formula
+  desc "RabbitMQ C client"
   homepage "https://github.com/alanxz/rabbitmq-c"
   url "https://github.com/alanxz/rabbitmq-c/archive/v0.5.2.tar.gz"
   sha1 "6c442aefbc4477ac0598c05361c767a75d6e1541"

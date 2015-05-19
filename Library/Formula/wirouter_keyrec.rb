@@ -1,4 +1,5 @@
 class WirouterKeyrec < Formula
+  desc "Recover the default WPA passphrases from supported routers"
   homepage "http://www.salvatorefresta.net/tools/"
   url "http://tools.salvatorefresta.net/WiRouter_KeyRec_1.1.2.zip"
   sha1 "3c17f2d0bf3d6201409862fd903ebfd60c1e8a2e"

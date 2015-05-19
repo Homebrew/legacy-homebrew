@@ -1,4 +1,5 @@
 class Httping < Formula
+  desc "Ping-like tool for HTTP requests"
   homepage "http://www.vanheusden.com/httping/"
   url "http://www.vanheusden.com/httping/httping-2.4.tgz"
   sha256 "dab59f02b08bfbbc978c005bb16d2db6fe21e1fc841fde96af3d497ddfc82084"

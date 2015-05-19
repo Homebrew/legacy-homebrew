@@ -1,4 +1,5 @@
 class Ecl < Formula
+  desc "Embeddable Common Lisp"
   homepage "http://ecls.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ecls/ecls/15.3/ecl-15.3.7.tgz"
   sha256 "2dc6ffbbf1e0a7b1323d49a991ba1f005127ca3e153651d91ba9e65bdaec948f"

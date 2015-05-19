@@ -1,4 +1,5 @@
 class MupdfTools < Formula
+  desc "Lightweight PDF and XPS viewer"
   homepage "http://mupdf.com"
   url "http://mupdf.com/downloads/mupdf-1.7a-source.tar.gz"
   sha1 "6114cb8d318c71f877cea4660df2eb513fcf82b9"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lldpd < Formula
+  desc "Implementation library for LLDP"
   homepage 'http://vincentbernat.github.io/lldpd/'
   url 'http://media.luffy.cx/files/lldpd/lldpd-0.7.12.tar.gz'
   sha1 '2d602aaaad01d1f76f8e1c87e48dca1c6725ba78'

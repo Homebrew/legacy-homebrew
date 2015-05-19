@@ -1,4 +1,5 @@
 class Xastir < Formula
+  desc "X amateur station tracking and information reporting"
   homepage "http://www.xastir.org/"
   url "https://downloads.sourceforge.net/xastir/xastir-2.0.6.tar.gz"
   sha1 "08268961357f69baa0eb833fe76ec1e0ac878151"

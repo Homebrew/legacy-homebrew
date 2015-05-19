@@ -1,6 +1,7 @@
 require 'formula'
 
 class Liblo < Formula
+  desc "Lightweight Open Sound Control implementation"
   homepage 'http://liblo.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/liblo/liblo/0.28/liblo-0.28.tar.gz'
   sha1 '949d5f0c9919741c67602514786b9c7366fa001b'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Autopsy < Formula
+  desc "Graphical interface to Sleuth Kit investigation tools"
   homepage 'http://www.sleuthkit.org/autopsy/index.php'
   url 'https://downloads.sourceforge.net/project/autopsy/autopsy/2.24/autopsy-2.24.tar.gz'
   sha1 '084a6554a1494f5f34df4a5a3635c8d3dc3b8822'

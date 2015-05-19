@@ -1,4 +1,5 @@
 class TypesafeActivator < Formula
+  desc "Tools for working with Typesafe Reactive Platform"
   homepage "https://typesafe.com/activator"
   version "1.3.4"
   url "https://downloads.typesafe.com/typesafe-activator/1.3.4/typesafe-activator-1.3.4-minimal.zip"

@@ -1,4 +1,5 @@
 class Protobuf < Formula
+  desc "Protocol buffers (Google's data interchange format)"
   homepage "https://github.com/google/protobuf/"
   url 'https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.bz2'
   sha1 '6421ee86d8fb4e39f21f56991daa892a3e8d314b'

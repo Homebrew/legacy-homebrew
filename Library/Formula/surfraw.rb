@@ -1,4 +1,5 @@
 class Surfraw < Formula
+  desc "Shell Users' Revolutionary Front Rage Against the Web"
   homepage "http://surfraw.alioth.debian.org/"
   head "git://git.debian.org/surfraw/surfraw.git"
   url "http://surfraw.alioth.debian.org/dist/surfraw-2.2.9.tar.gz"

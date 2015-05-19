@@ -1,4 +1,5 @@
 class XmlSecurityC < Formula
+  desc "Implementation of primary security standards for XML"
   homepage "https://santuario.apache.org/"
   url "https://www.apache.org/dyn/closer.cgi?path=/santuario/c-library/xml-security-c-1.7.2.tar.gz"
   sha256 "d576b07bb843eaebfde3be01301db40504ea8e8e477c0ad5f739b07022445452"

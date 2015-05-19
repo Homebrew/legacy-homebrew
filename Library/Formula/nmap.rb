@@ -1,4 +1,5 @@
 class Nmap < Formula
+  desc "Port scanning utility for large networks"
   homepage "https://nmap.org/"
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
   url "https://nmap.org/dist/nmap-6.47.tar.bz2"

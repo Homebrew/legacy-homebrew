@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tcpflow < Formula
+  desc "TCP flow recorder"
   homepage 'https://github.com/simsong/tcpflow'
   url 'http://digitalcorpora.org/downloads/tcpflow/tcpflow-1.4.4.tar.gz'
   sha1 'e4bc5ad08a81a39943bd1c799edefcdee09de784'

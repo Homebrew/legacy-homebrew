@@ -1,4 +1,5 @@
 class Yafc < Formula
+  desc "Command-line FTP client"
   homepage "http://www.yafc-ftp.com/"
   url "http://www.yafc-ftp.com/upload/yafc-1.3.6.tar.xz"
   sha256 "63a32556ed16a589634a5aca3f03134b8d488e06ecb36f9df6ef450aa3a47973"

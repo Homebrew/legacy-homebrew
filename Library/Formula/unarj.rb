@@ -1,4 +1,5 @@
 class Unarj < Formula
+  desc "ARJ file archiver"
   homepage "http://www.arjsoftware.com/files.htm"
   url "http://pkgs.fedoraproject.org/repo/pkgs/unarj/unarj-2.65.tar.gz/c6fe45db1741f97155c7def322aa74aa/unarj-2.65.tar.gz"
   sha256 "d7dcc325160af6eb2956f5cb53a002edb2d833e4bb17846669f92ba0ce3f0264"

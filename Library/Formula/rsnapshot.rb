@@ -1,6 +1,7 @@
 require "formula"
 
 class Rsnapshot < Formula
+  desc "File system snapshot utility (based on rsync)"
   homepage "http://rsnapshot.org"
 
   stable do

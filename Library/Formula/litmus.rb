@@ -1,6 +1,7 @@
 require 'formula'
 
 class Litmus < Formula
+  desc "WebDAV server protocol compliance test suite"
   homepage 'http://www.webdav.org/neon/litmus/'
   url 'http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz'
   sha1 '42ad603035d15798facb3be79b1c51376820cb19'

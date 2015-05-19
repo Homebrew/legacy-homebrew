@@ -1,6 +1,7 @@
 require 'formula'
 
 class Vice < Formula
+  desc "Versatile Commodore Emulator"
   homepage 'http://vice-emu.sourceforge.net/'
   url 'http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.4.tar.gz'
   sha1 '719aa96cc72e7578983fadea1a31c21898362bc7'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lockrun < Formula
+  desc "Run cron jobs with overrun protection"
   homepage 'http://unixwiz.net/tools/lockrun.html'
   url 'http://unixwiz.net/tools/lockrun.c'
   version '1.1.3'

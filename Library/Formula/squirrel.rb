@@ -1,6 +1,7 @@
 require 'formula'
 
 class Squirrel < Formula
+  desc "High level, imperative, object-oriented programming language"
   homepage 'http://www.squirrel-lang.org'
   url 'https://downloads.sourceforge.net/project/squirrel/squirrel3/squirrel%203.0.7%20stable/squirrel_3_0_7_stable.tar.gz'
   version '3.0.7'

@@ -1,6 +1,7 @@
 require "formula"
 
 class VisionmediaWatch < Formula
+  desc "Periodically executes the given command"
   homepage "https://github.com/visionmedia/watch"
   url "https://github.com/visionmedia/watch/archive/0.3.1.tar.gz"
   sha1 "f5dc414eea6c5b079535c843e54ba638bcf0172b"

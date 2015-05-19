@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dirt < Formula
+  desc "Experimental sample playback"
   homepage 'https://github.com/yaxu/Dirt'
   head 'https://github.com/yaxu/Dirt.git'
   url 'https://github.com/yaxu/Dirt/archive/1.0.tar.gz'

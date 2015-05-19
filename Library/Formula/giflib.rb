@@ -1,6 +1,7 @@
 require 'formula'
 
 class Giflib < Formula
+  desc "GIF library using patented LZW algorithm"
   homepage 'http://giflib.sourceforge.net/'
   # 4.2.0 has breaking API changes; don't update until
   # things in $(brew uses giflib) are compatible

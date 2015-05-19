@@ -1,4 +1,5 @@
 class Rrdtool < Formula
+  desc "Round Robin Database"
   homepage "https://oss.oetiker.ch/rrdtool/index.en.html"
   url "https://oss.oetiker.ch/rrdtool/pub/rrdtool-1.5.3.tar.gz"
   sha256 "79e7b2f5cf74843e89fe4d08925f955268fd21736cbea03e54ae83320fc6129f"

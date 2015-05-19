@@ -1,6 +1,7 @@
 require "formula"
 
 class Jenv < Formula
+  desc "Manage your Java environment"
   homepage "http://www.jenv.be"
   url "https://github.com/gcuisinier/jenv/archive/0.4.2.tar.gz"
   sha1 "4cb3c705cd11ff5c0281119d984e7b270b4b4129"

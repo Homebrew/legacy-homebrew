@@ -1,6 +1,7 @@
 require 'formula'
 
 class NinjaIde < Formula
+  desc "Cross-platform Python IDE"
   homepage 'http://ninja-ide.org/'
   url 'https://github.com/ninja-ide/ninja-ide/archive/v2.3.tar.gz'
   sha1 '64ccbbf8521a8fbef43c3d57cf616b7f8b466460'

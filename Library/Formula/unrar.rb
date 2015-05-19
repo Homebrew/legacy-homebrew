@@ -1,4 +1,5 @@
 class Unrar < Formula
+  desc "Extract, view, and test RAR archives"
   homepage "http://www.rarlab.com"
   url "http://www.rarlab.com/rar/unrarsrc-5.2.7.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/non-free/u/unrar-nonfree/unrar-nonfree_5.2.7.orig.tar.gz"

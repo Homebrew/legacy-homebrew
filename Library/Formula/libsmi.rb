@@ -1,4 +1,5 @@
 class Libsmi < Formula
+  desc "Library to Access SMI MIB Information"
   homepage "https://www.ibr.cs.tu-bs.de/projects/libsmi/"
   url "https://www.ibr.cs.tu-bs.de/projects/libsmi/download/libsmi-0.4.8.tar.gz"
   mirror "https://distfiles.macports.org/libsmi/libsmi-0.4.8.tar.gz"

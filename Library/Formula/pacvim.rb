@@ -1,4 +1,5 @@
 class Pacvim < Formula
+  desc "Learn vim commands via a game"
   homepage "https://github.com/jmoon018/PacVim"
   url "https://github.com/jmoon018/PacVim/archive/v1.1.1.tar.gz"
   sha1 "496ed02edba8dad15ade95352a7c6441f97fdf7a"

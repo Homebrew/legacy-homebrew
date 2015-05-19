@@ -1,4 +1,5 @@
 class Cctools < Formula
+  desc "Binary and cross-compilation tools for Apple"
   homepage "https://opensource.apple.com/"
 
   if MacOS.version >= :snow_leopard

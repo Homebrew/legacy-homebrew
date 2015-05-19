@@ -1,6 +1,7 @@
 require 'formula'
 
 class DvdxrwTools < Formula
+  desc "DVD+-RW/R tools"
   homepage 'http://fy.chalmers.se/~appro/linux/DVD+RW/'
   url 'http://fy.chalmers.se/~appro/linux/DVD+RW/tools/dvd+rw-tools-7.1.tar.gz'
   sha1 '6400e013934ff589b4b224eced03fd9f42ed719b'

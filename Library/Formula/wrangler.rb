@@ -1,6 +1,7 @@
 require 'formula'
 
 class Wrangler < Formula
+  desc "Refactoring tool for Erlang with emacs and Eclipse integration"
   homepage 'http://www.cs.kent.ac.uk/projects/forse/'
   url 'https://github.com/RefactoringTools/wrangler/archive/wrangler1.1.01.tar.gz'
   sha1 'fe938912ba3d50796da70572aef3e234c5d8f435'

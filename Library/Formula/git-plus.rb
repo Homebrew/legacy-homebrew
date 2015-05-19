@@ -1,4 +1,5 @@
 class GitPlus < Formula
+  desc "Three git utilities: git multi, git relation, git old-branches"
   homepage "https://github.com/tkrajina/git-plus"
   head "https://github.com/tkrajina/git-plus.git"
   url "https://github.com/tkrajina/git-plus/archive/v0.1.0.tar.gz"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Aspcud < Formula
+  desc "Package dependency solver"
   homepage 'http://potassco.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/potassco/aspcud/1.9.0/aspcud-1.9.0-source.tar.gz'
   sha1 'ae77772c2424620b3064d0dfe795c26b1c8aa778'

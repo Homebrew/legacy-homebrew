@@ -1,6 +1,7 @@
 require 'formula'
 
 class Fcgiwrap < Formula
+  desc "CGI support for Nginx"
   homepage 'http://nginx.localdomain.pl/wiki/FcgiWrap'
   url 'https://github.com/gnosek/fcgiwrap/archive/1.1.0.tar.gz'
   sha1 '8e7b9140b3d96f4635352bb967715477b35caf84'

@@ -1,4 +1,5 @@
 class Sysbench < Formula
+  desc "System performance benchmark tool"
   homepage "https://launchpad.net/sysbench"
   url "http://ftp.de.debian.org/debian/pool/main/s/sysbench/sysbench_0.4.12.orig.tar.gz"
   sha1 "3f346e8b29b738711546970b027bbb7359d4672a"

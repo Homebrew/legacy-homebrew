@@ -1,4 +1,5 @@
 class Slowhttptest < Formula
+  desc "Simulates application layer denial of service attacks"
   homepage "https://code.google.com/p/slowhttptest/"
   url "https://slowhttptest.googlecode.com/files/slowhttptest-1.6.tar.gz"
   sha1 "f5a64365b987083015ac98f6c20746021176292e"

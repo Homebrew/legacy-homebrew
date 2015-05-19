@@ -1,4 +1,5 @@
 class Zabbix < Formula
+  desc "Availability and monitoring solution"
   homepage "http://www.zabbix.com/"
   url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.4/zabbix-2.4.4.tar.gz"
   sha256 "e9f31b96104681b050fd27b4a669736dea9c5d4efc8444effb2bff1eab6cc34c"

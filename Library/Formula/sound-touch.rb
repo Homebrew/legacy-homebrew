@@ -1,6 +1,7 @@
 require "formula"
 
 class SoundTouch < Formula
+  desc "Audio processing library"
   homepage "http://www.surina.net/soundtouch/"
   url "http://www.surina.net/soundtouch/soundtouch-1.8.0.tar.gz"
   sha256 "3d4161d74ca25c5a98c69dbb8ea10fd2be409ba1a3a0bf81db407c4c261f166b"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gtmess < Formula
+  desc "Console MSN messenger client"
   homepage 'http://gtmess.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/gtmess/gtmess/0.97/gtmess-0.97.tar.gz'
   sha1 '9fbbb85554e7e8834e399e5b1d6869af6e2975bc'

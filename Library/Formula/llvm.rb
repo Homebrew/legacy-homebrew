@@ -1,4 +1,5 @@
 class Llvm < Formula
+  desc "llvm (Low Level Virtual Machine): a next-gen compiler infrastructure"
   homepage "http://llvm.org/"
 
   stable do

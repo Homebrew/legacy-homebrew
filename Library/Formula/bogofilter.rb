@@ -1,6 +1,7 @@
 require 'formula'
 
 class Bogofilter < Formula
+  desc "Mail filter via statistical analysis"
   homepage 'http://bogofilter.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/bogofilter/bogofilter-1.2.4/bogofilter-1.2.4.tar.bz2'
   sha1 'f51c02162fc31116e583197840a87d76ddcb9536'

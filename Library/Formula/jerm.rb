@@ -1,6 +1,7 @@
 require 'formula'
 
 class Jerm < Formula
+  desc "Communication terminal through serial and TCP/IP interfaces"
   homepage 'http://www.bsddiary.net/jerm/'
   url 'http://www.bsddiary.net/jerm/jerm-8096.tar.gz'
   version '0.8096'

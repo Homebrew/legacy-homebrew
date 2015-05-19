@@ -1,6 +1,7 @@
 require "formula"
 
 class Mcrypt < Formula
+  desc "Replacement for the old crypt package and crypt(1) command"
   homepage "http://mcrypt.sourceforge.net"
   url "https://downloads.sourceforge.net/project/mcrypt/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz"
   sha1 "8ae0e866714fbbb96a0a6fa9f099089dc93f1d86"

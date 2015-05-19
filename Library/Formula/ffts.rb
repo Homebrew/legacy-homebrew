@@ -1,6 +1,7 @@
 require "formula"
 
 class Ffts < Formula
+  desc "C library that computes the discrete Fourier transform"
   homepage "http://anthonix.com/ffts/"
   head "https://github.com/anthonix/ffts.git"
   url "http://anthonix.com/ffts/releases/ffts-0.7.tar.gz"

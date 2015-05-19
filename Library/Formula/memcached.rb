@@ -1,4 +1,5 @@
 class Memcached < Formula
+  desc "High performance, distributed memory object caching system"
   homepage "http://memcached.org/"
   url "http://www.memcached.org/files/memcached-1.4.24.tar.gz"
   sha256 "08a426c504ecf64633151eec1058584754d2f54e62e5ed2d6808559401617e55"

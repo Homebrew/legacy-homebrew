@@ -1,6 +1,7 @@
 require "formula"
 
 class Pypy3 < Formula
+  desc "Implementation of Python 3 in Python"
   homepage "http://pypy.org/"
   url "https://bitbucket.org/pypy/pypy/downloads/pypy3-2.4.0-src.tar.bz2"
   sha1 "438572443ae6f54eb6122d807f104787c5247e01"

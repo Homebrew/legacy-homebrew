@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lxsplit < Formula
+  desc "Tool for splitting or joining files"
   homepage 'http://lxsplit.sourceforge.net/'
   url 'https://downloads.sourceforge.net/lxsplit/lxsplit-0.2.4.tar.gz'
   sha1 '4e906cb95fcc756ff8c5d58c103e2659493052e0'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class CharmTools < Formula
+  desc "Tools for authoring and maintaining juju"
   homepage 'https://launchpad.net/charm-tools'
   url 'https://launchpad.net/charm-tools/1.5/1.5.1/+download/charm-tools-1.5.1.tar.gz'
   sha1 'f0e8f5f0746b54feb2281aad6b270e08f77b8aa5'

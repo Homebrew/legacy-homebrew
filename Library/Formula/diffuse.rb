@@ -1,6 +1,7 @@
 require "formula"
 
 class Diffuse < Formula
+  desc "Graphical tool for merging and comparing text files"
   homepage "http://diffuse.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/diffuse/diffuse/0.4.8/diffuse-0.4.8.tar.bz2"
   sha1 "473f7e82f57cc3a5ce0378eea8aede19a3f2a9df"

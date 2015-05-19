@@ -1,6 +1,7 @@
 require 'formula'
 
 class Z < Formula
+  desc "Tracks most-used directories to make cd smarter"
   homepage 'https://github.com/rupa/z'
   url 'https://github.com/rupa/z/archive/v1.8.tar.gz'
   sha1 '7906929c23743ae954df758f3828cb225a517c51'

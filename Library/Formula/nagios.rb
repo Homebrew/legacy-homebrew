@@ -1,6 +1,7 @@
 require 'formula'
 
 class Nagios < Formula
+  desc "Network monitoring and management system"
   homepage 'http://www.nagios.org/'
   url 'https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.0.6/nagios-4.0.6.tar.gz'
   sha1 'aacd0ebc1a0a91692702667bd98f8a016b59780f'

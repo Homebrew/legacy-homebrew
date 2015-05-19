@@ -1,4 +1,5 @@
 class Freetype < Formula
+  desc "Software library to render fonts"
   homepage "http://www.freetype.org"
   url "https://downloads.sf.net/project/freetype/freetype2/2.5.5/freetype-2.5.5.tar.bz2"
   mirror "http://download.savannah.gnu.org/releases/freetype/freetype-2.5.5.tar.bz2"

@@ -1,4 +1,5 @@
 class Vavrdiasm < Formula
+  desc "8-bit Atmel AVR disassembler"
   homepage "https://github.com/vsergeev/vAVRdisasm"
   url "https://github.com/vsergeev/vavrdisasm/archive/v3.1.tar.gz"
   sha1 "8ac78c7ec26760ac76e25a1ff399cfc255b2bc52"

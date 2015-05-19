@@ -1,6 +1,7 @@
 require "formula"
 
 class Cppdom < Formula
+  desc "C++ XML loader and writer with an internal DOM representation"
   homepage "http://sourceforge.net/projects/xml-cppdom/"
   url "https://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.2.0/cppdom-1.2.0.tar.bz2"
   sha1 "cf3a20689e82b8907825ac9d0602f469f879d934"

@@ -1,4 +1,5 @@
 class Libyubikey < Formula
+  desc "C library for manipulating Yubico one-time passwords"
   homepage "https://yubico.github.io/yubico-c/"
   url "https://developers.yubico.com/yubico-c/Releases/libyubikey-1.12.tar.gz"
   sha256 "b95387f791dad4d2544282299800f016736c363838e1e732f199bf90eba717b8"

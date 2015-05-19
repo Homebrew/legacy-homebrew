@@ -1,6 +1,7 @@
 require "formula"
 
 class ClutterGtk < Formula
+  desc "GTK+ integration library for Clutter"
   homepage "https://wiki.gnome.org/Projects/Clutter"
   url "http://ftp.gnome.org/pub/gnome/sources/clutter-gtk/1.6/clutter-gtk-1.6.0.tar.xz"
   sha256 "883550b574a036363239442edceb61cf3f6bedc8adc97d3404278556dc82234d"

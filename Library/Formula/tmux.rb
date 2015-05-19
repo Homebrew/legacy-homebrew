@@ -1,7 +1,8 @@
 class Tmux < Formula
-  homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/releases/download/2.0/tmux-2.0.tar.gz"
-  sha256 "795f4b4446b0ea968b9201c25e8c1ef8a6ade710ebca4657dd879c35916ad362"
+  desc "Terminal multiplexer"
+  homepage 'http://tmux.sourceforge.net'
+  url 'https://downloads.sourceforge.net/project/tmux/tmux/tmux-2.0/tmux-2.0.tar.gz'
+  sha1 '977871e7433fe054928d86477382bd5f6794dc3d'
 
   bottle do
     cellar :any

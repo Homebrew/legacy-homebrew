@@ -1,6 +1,7 @@
 require "formula"
 
 class Xmlsh < Formula
+  desc "XML shell"
   homepage "http://www.xmlsh.org"
   url "https://downloads.sourceforge.net/project/xmlsh/xmlsh/1.2.5/xmlsh_1_2_5.zip"
   sha1 "3bce1c66eab4795f24abec56c025fd184a5321c4"

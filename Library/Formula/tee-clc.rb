@@ -1,6 +1,7 @@
 require 'formula'
 
 class TeeClc < Formula
+  desc "Eclipse client for Visual Studio 2010 Team Foundation Server"
   homepage 'http://www.microsoft.com/en-us/download/details.aspx?id=4240'
   url 'http://download.microsoft.com/download/4/2/7/427AC2CF-8A5B-4DE9-8221-22F54B1903E2/TEE-CLC-11.0.0.1212.zip'
   sha1 '1f16ac62ab64cfbd88ad471ea3d21a62d5eb78e6'

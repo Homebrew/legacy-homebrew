@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sleepwatcher < Formula
+  desc "Monitors sleep, wakeup, and idleness of a Mac"
   homepage 'http://www.bernhard-baehr.de/'
   url 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
   sha1 'd4e4abb0bf0e1b3db9166d1eae38b8701fc28bf8'

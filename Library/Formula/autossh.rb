@@ -1,6 +1,7 @@
 require "formula"
 
 class Autossh < Formula
+  desc "Automatically restart SSH sessions and tunnels"
   homepage "http://www.harding.motd.ca/autossh/"
   url "http://www.harding.motd.ca/autossh/autossh-1.4e.tgz"
   mirror "http://ftp.de.debian.org/debian/pool/main/a/autossh/autossh_1.4e.orig.tar.gz"

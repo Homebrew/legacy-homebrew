@@ -1,4 +1,5 @@
 class Gdal < Formula
+  desc "GDAL: Geospatial Data Abstraction Library"
   homepage 'http://www.gdal.org/'
   url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
   sha1 "6f3ccbe5643805784812072a33c25be0bbff00db"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Xsane < Formula
+  desc "Graphical scanning frontend"
   homepage 'http://www.xsane.org'
   url 'http://www.xsane.org/download/xsane-0.999.tar.gz'
   sha1 '633150e4e690c1e8c18d6b82886c2fb4daba4bc9'

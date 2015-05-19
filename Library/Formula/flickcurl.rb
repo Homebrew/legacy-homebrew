@@ -1,6 +1,7 @@
 require 'formula'
 
 class Flickcurl < Formula
+  desc "Library for the Flickr API"
   homepage 'http://librdf.org/flickcurl/'
   url 'http://download.dajobe.org/flickcurl/flickcurl-1.26.tar.gz'
   sha1 '547480030ce4f777bb35d98b43fe15ee3eeae0e0'

@@ -1,4 +1,5 @@
 class Ghc < Formula
+  desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
   url "https://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-src.tar.xz"
   sha256 "92f3e3d67a637c587c49b61c704a670953509eb4b17a93c0c2ac153da4cd3aa0"

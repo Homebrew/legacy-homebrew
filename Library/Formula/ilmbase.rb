@@ -1,4 +1,5 @@
 class Ilmbase < Formula
+  desc "OpenEXR ILM Base libraries (high dynamic-range image file format)"
   homepage "http://www.openexr.com/"
   url "http://download.savannah.nongnu.org/releases/openexr/ilmbase-2.2.0.tar.gz"
   mirror "http://download-mirror.savannah.gnu.org/releases/openexr/ilmbase-2.2.0.tar.gz"

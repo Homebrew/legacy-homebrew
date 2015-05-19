@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tcptrack < Formula
+  desc "Monitor status of TCP connections on a network interface"
   homepage 'http://www.rhythm.cx/~steve/devel/tcptrack/'
   url 'http://ftp.de.debian.org/debian/pool/main/t/tcptrack/tcptrack_1.4.2.orig.tar.gz'
   sha1 '921e33279e0032ba3639cdfc674ed74505691d6b'

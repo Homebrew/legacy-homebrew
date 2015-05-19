@@ -1,4 +1,5 @@
 class Pyside < Formula
+  desc "Python bindings for Qt"
   homepage "http://qt-project.org/wiki/PySide"
   url "https://download.qt.io/official_releases/pyside/pyside-qt4.8+1.2.2.tar.bz2"
   mirror "https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.2.tar.bz2"

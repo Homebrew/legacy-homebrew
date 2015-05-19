@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tcptraceroute < Formula
+  desc "Traceroute implementation using TCP packets"
   homepage 'https://github.com/mct/tcptraceroute'
   url 'https://github.com/mct/tcptraceroute/archive/tcptraceroute-1.5beta7.tar.gz'
   version '1.5beta7'

@@ -1,6 +1,7 @@
 require "formula"
 
 class Nant < Formula
+  desc ".NET build tool"
   homepage "http://nant.sourceforge.net/"
   url "https://downloads.sourceforge.net/nant/nant/nant-0.92-src.tar.gz"
   sha1 "5f95dea73f82e26aaf4df46da460604e856479aa"

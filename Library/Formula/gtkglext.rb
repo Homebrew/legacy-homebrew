@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gtkglext < Formula
+  desc "OpenGL extension to GTK+"
   homepage 'http://projects.gnome.org/gtkglext/'
   url 'https://downloads.sourceforge.net/gtkglext/gtkglext-1.2.0.tar.gz'
   sha1 'db9ce38ee555fd14f55083ec7f4ae30e5338d5cc'

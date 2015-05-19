@@ -1,6 +1,7 @@
 require "formula"
 
 class Beansdb < Formula
+  desc "Yet another distributed key-value storage system"
   homepage "https://github.com/douban/beansdb"
   url "https://github.com/douban/beansdb/archive/v0.6.tar.gz"
   sha1 "9099ce607ff3c3eba251ee34ae65a08c4e3715b9"

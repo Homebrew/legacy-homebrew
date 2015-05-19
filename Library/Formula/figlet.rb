@@ -1,6 +1,7 @@
 require 'formula'
 
 class Figlet < Formula
+  desc "Banner-like program prints strings as ASCII art"
   homepage 'http://www.figlet.org'
   url 'ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-2.2.5.tar.gz'
   sha1 'dda696958c161bd71d6590152c94c4f705415727'

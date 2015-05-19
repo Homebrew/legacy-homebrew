@@ -1,4 +1,5 @@
 class Shiboken < Formula
+  desc "GeneratorRunner plugin that outputs C++ code for CPython extensions"
   homepage "http://qt-project.org/wiki/PySide"
   url "https://download.qt.io/official_releases/pyside/shiboken-1.2.2.tar.bz2"
   mirror "https://distfiles.macports.org/py-shiboken/shiboken-1.2.2.tar.bz2"

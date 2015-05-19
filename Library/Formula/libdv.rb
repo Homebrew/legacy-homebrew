@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libdv < Formula
+  desc "Codec for DV video encoding format"
   homepage 'http://libdv.sourceforge.net'
   url 'https://downloads.sourceforge.net/libdv/libdv-1.0.0.tar.gz'
   sha1 '2e5ba0e95f665d60e72cbebcf1c4989e0d6c92c8'

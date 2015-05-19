@@ -1,6 +1,7 @@
 require 'formula'
 
 class Irrlicht < Formula
+  desc "Realtime 3D engine"
   homepage 'http://irrlicht.sourceforge.net/'
   head 'https://irrlicht.svn.sourceforge.net/svnroot/irrlicht/trunk'
   url 'https://downloads.sourceforge.net/irrlicht/irrlicht-1.8.1.zip'

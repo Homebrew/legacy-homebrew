@@ -1,4 +1,5 @@
 class Libgeotiff < Formula
+  desc "Library and tools for dealing with GeoTIFF"
   homepage 'http://geotiff.osgeo.org/'
   url 'http://download.osgeo.org/geotiff/libgeotiff/libgeotiff-1.4.1.tar.gz'
   sha1 'bc9e2bb43f3877b795b4b191e7aec6267f4a1c7e'

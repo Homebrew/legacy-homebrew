@@ -1,6 +1,7 @@
 require 'formula'
 
 class Fits < Formula
+  desc "File Information Tool Set"
   homepage 'http://fitstool.org/'
   url 'http://projects.iq.harvard.edu/files/fits/files/fits-0.8.4_0.zip'
   version '0.8.4'

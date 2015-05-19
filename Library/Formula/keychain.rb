@@ -1,6 +1,7 @@
 require 'formula'
 
 class Keychain < Formula
+  desc "User-friendly front-end to ssh-agent(1)"
   homepage 'http://www.funtoo.org/Keychain'
   url 'http://build.funtoo.org/distfiles/keychain/keychain-2.8.0.tar.bz2'
   mirror 'http://ftp.osuosl.org/pub/funtoo/distfiles/keychain/keychain-2.8.0.tar.bz2'

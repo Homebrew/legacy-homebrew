@@ -1,6 +1,7 @@
 require 'formula'
 
 class Xqilla < Formula
+  desc "XQuery and XPath 2 command-line interpreter"
   homepage 'http://xqilla.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/xqilla/xqilla/2.3.0/XQilla-2.3.0.tar.gz'
   sha1 'facfd0134652cef7ebbc3c54d61fc248c1610c95'

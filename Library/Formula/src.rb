@@ -1,4 +1,5 @@
 class Src < Formula
+  desc "Simple revision control: RCS reloaded with a modern UI"
   homepage "http://www.catb.org/~esr/src/"
   url "http://www.catb.org/~esr/src/src-0.19.tar.gz"
   sha256 "3d9c5c2fe816b3f273aab17520b917a774e90776c766f165efb6ae661378a65c"

@@ -1,4 +1,5 @@
 class Perl < Formula
+  desc "Highly capable, feature-rich programming language"
   homepage "https://www.perl.org/"
   url "http://www.cpan.org/src/5.0/perl-5.20.2.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.20.2.orig.tar.bz2"

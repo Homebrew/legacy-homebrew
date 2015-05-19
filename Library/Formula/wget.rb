@@ -2,6 +2,7 @@
 # Upstream issue: https://savannah.gnu.org/bugs/index.php?37063
 
 class Wget < Formula
+  desc "Internet file retriever"
   homepage "https://www.gnu.org/software/wget/"
   url "http://ftpmirror.gnu.org/wget/wget-1.16.3.tar.xz"
   mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.3.tar.xz"

@@ -1,4 +1,5 @@
 class Ipv6toolkit < Formula
+  desc "Security assessment and troubleshooting tool for IPv6"
   homepage "http://www.si6networks.com/tools/ipv6toolkit/"
   url "http://www.si6networks.com/tools/ipv6toolkit/ipv6toolkit-v2.0.tar.gz"
   sha1 "78e2a5ed3264cd5f5cedd26595c070442fa4379a"

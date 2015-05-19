@@ -1,4 +1,5 @@
 class Why3 < Formula
+  desc "Platform for deductive program verification"
   homepage "http://why3.lri.fr/"
   url "https://gforge.inria.fr/frs/download.php/file/34797/why3-0.86.1.tar.gz"
   sha256 "a7ada8bec9b6717257f2932d8b42e5e3f2dd63800f5e9a3f4004229b0efe3389"

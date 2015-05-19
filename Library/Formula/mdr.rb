@@ -1,4 +1,5 @@
 class Mdr < Formula
+  desc "Make diffs readable"
   homepage "https://github.com/halffullheart/mdr"
   url "https://github.com/halffullheart/mdr/archive/v1.0.1.tar.gz"
   sha1 "dbadda07e8ee7baaa1a3d6c82cbae8434b8327d5"

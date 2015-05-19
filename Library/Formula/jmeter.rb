@@ -1,6 +1,7 @@
 require 'formula'
 
 class Jmeter < Formula
+  desc "Load testing and performance measurement application"
   homepage 'https://jmeter.apache.org/'
   url 'https://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.13.tgz'
   sha1 'a7699b1d61b8e6095d6d1b5388a9714a47d568e9'

@@ -1,4 +1,5 @@
 class Icu4c < Formula
+  desc "C/C++ and Java libraries for Unicode and globalization"
   homepage "http://site.icu-project.org/"
   head "https://ssl.icu-project.org/repos/icu/icu/trunk/", :using => :svn
   url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"

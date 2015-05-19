@@ -1,6 +1,7 @@
 require "formula"
 
 class Md5deep < Formula
+  desc "Recursively compute digests on files/directories"
   homepage "https://github.com/jessek/hashdeep"
   url "https://github.com/jessek/hashdeep/archive/release-4.4.tar.gz"
   sha1 "cb4e313352974299c32bc55fe56396adb74517ef"

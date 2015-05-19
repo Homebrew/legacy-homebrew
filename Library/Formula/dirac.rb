@@ -1,4 +1,5 @@
 class Dirac < Formula
+  desc "General-purpose video codec aimed at a range of resolutions"
   homepage "http://diracvideo.org/"
   url "http://diracvideo.org/download/dirac-research/dirac-1.0.2.tar.gz"
   sha1 "895aaad832a54b754e58f77c87d38c0c37752b0b"

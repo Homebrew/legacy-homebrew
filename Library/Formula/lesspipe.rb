@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lesspipe < Formula
+  desc "Input filter for the pager less"
   homepage 'http://www-zeuthen.desy.de/~friebel/unix/lesspipe.html'
   url 'https://downloads.sourceforge.net/project/lesspipe/lesspipe/1.82/lesspipe-1.82.tar.gz'
   sha1 '61a7657b20b910ed8219c6b77467e601f9a89894'

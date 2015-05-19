@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ecasound < Formula
+  desc "Multitrack-capable audio recorder and effect processor"
   homepage 'http://www.eca.cx/ecasound/'
   url 'http://ecasound.seul.org/download/ecasound-2.9.1.tar.gz'
   sha1 '048fc2487deb3c94d92814b54255435b2acee1d8'

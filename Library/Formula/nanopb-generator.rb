@@ -1,6 +1,7 @@
 require "formula"
 
 class NanopbGenerator < Formula
+  desc "ANSI C library for encoding and decoding Protocol Buffer messages"
   homepage "http://koti.kapsi.fi/jpa/nanopb/docs/index.html"
   url "http://koti.kapsi.fi/~jpa/nanopb/download/nanopb-0.2.7.tar.gz"
   sha1 "7dce0b9e1f9e5d0614697a8ea1678cee76f14858"

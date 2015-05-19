@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mcpp < Formula
+  desc "An alternative C/C++ preprocessor"
   homepage 'http://mcpp.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/mcpp/mcpp/V.2.7.2/mcpp-2.7.2.tar.gz'
   sha1 '703356b7c2cd30d7fb6000625bf3ccc2eb977ecb'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class GitFlowAvh < Formula
+  desc "AVH edition of git-flow"
   homepage 'https://github.com/petervanderdoes/gitflow'
   url "https://github.com/petervanderdoes/gitflow/archive/1.8.0.tar.gz"
   sha1 "4bfdd7e83509f9464a867642bb5b3185d4cfcfdc"

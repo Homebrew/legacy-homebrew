@@ -1,6 +1,7 @@
 require 'formula'
 
 class SdlSound < Formula
+  desc "Library to decode several popular sound file formats"
   homepage 'http://icculus.org/SDL_sound/'
   url 'http://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz'
   sha1 '1984bc20b2c756dc71107a5a0a8cebfe07e58cb1'

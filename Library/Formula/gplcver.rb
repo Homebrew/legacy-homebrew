@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gplcver < Formula
+  desc "Pragmatic C Software GPL Cver 2001"
   homepage 'http://gplcver.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/gplcver/gplcver/2.12a/gplcver-2.12a.src.tar.bz2'
   sha1 '946bb35b6279646c6e10c309922ed17deb2aca8a'

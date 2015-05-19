@@ -1,6 +1,7 @@
 require 'formula'
 
 class Clay < Formula
+  desc "Language designed for generic programming"
   homepage 'http://claylabs.com/clay/'
   url 'https://github.com/jckarter/clay/archive/v0.1.2.tar.gz'
   sha1 'cd557a5ccaca17fd8ec83651f8df3e5405c4f855'

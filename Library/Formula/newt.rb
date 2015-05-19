@@ -1,4 +1,5 @@
 class Newt < Formula
+  desc "Library for color text mode, widget based user interfaces"
   homepage 'https://fedorahosted.org/newt/'
   url 'https://fedorahosted.org/releases/n/e/newt/newt-0.52.18.tar.gz'
   sha1 '2992c926bd3699ff0d6fd7549d4a8a018e3ac8fd'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Linklint < Formula
+  desc "Link checker and web site maintenance tool"
   homepage 'http://linklint.org'
   url 'http://linklint.org/download/linklint-2.3.5.tar.gz'
   sha1 'd2dd384054b39a09c17b69e617f7393e44e98376'

@@ -1,6 +1,7 @@
 require "formula"
 
 class Guile < Formula
+  desc "GUILE: GNU Ubiquitous Intelligent Language for Extensions"
   homepage "https://www.gnu.org/software/guile/"
   url "http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz"
   mirror "https://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz"

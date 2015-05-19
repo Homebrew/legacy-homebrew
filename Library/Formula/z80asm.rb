@@ -1,6 +1,7 @@
 require 'formula'
 
 class Z80asm < Formula
+  desc "Assembler for the Zilog Z80 microprcessor and compatibles"
   homepage 'http://www.nongnu.org/z80asm/'
   url 'http://download.savannah.gnu.org/releases/z80asm/z80asm-1.8.tar.gz'
   sha1 '9d169ac728a9a3b162c0a7ea34da55cf37ada0e1'

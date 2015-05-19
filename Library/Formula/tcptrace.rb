@@ -1,4 +1,5 @@
 class Tcptrace < Formula
+  desc "Analyze tcpdump output"
   homepage "http://www.tcptrace.org/"
   url "http://www.tcptrace.org/download/tcptrace-6.6.7.tar.gz"
   sha256 "63380a4051933ca08979476a9dfc6f959308bc9f60d45255202e388eb56910bd"

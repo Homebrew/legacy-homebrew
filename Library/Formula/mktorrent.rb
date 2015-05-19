@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mktorrent < Formula
+  desc "Create BitTorrent metainfo files"
   homepage 'http://mktorrent.sourceforge.net/'
   url 'https://downloads.sourceforge.net/mktorrent/mktorrent-1.0.tar.gz'
   sha1 'f9b1bbf9d19911b6c8994dbec6208530c7d929ad'

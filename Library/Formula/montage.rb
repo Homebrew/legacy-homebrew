@@ -1,6 +1,7 @@
 require 'formula'
 
 class Montage < Formula
+  desc "Toolkit for assembling FITS images into custom mosaics"
   homepage 'http://montage.ipac.caltech.edu'
   url 'http://montage.ipac.caltech.edu/download/Montage_v3.3.tar.gz'
   sha1 'c8db5b9018c96e19b584d45758819e892b453d6d'

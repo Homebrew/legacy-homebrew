@@ -1,6 +1,7 @@
 require "formula"
 
 class Megacmd < Formula
+  desc "Command-line client for mega.co.nz storage service"
   homepage "https://github.com/t3rm1n4l/megacmd"
   url "https://github.com/t3rm1n4l/megacmd/archive/0.012.tar.gz"
   sha1 "30690366ef00b64296cd4acca6f842d83dcc9d69"

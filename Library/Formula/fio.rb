@@ -1,4 +1,5 @@
 class Fio < Formula
+  desc "I/O benchmark and stress test"
   homepage "http://freecode.com/projects/fio"
   url "http://brick.kernel.dk/snaps/fio-2.2.7.tar.bz2"
   sha256 "6e3cd5bda0747e61cbfd42c7b3cfe044ea8981d8d3a486f0a2f2fafdb954296f"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Shmcat < Formula
+  desc "Tool that dumps shared memory segments (System V and POSIX)"
   homepage "http://shmcat.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/shmcat/shmcat-1.7.tar.bz2"
   sha1 "30f6bc931859e1544e783edc84f137e9c4a0b5f6"

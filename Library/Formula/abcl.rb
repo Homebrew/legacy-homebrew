@@ -1,4 +1,5 @@
 class Abcl < Formula
+  desc "Armed Bear Common Lisp: a full implementation of Common Lisp"
   homepage "http://abcl.org"
   url "http://abcl.org/releases/1.3.2/abcl-bin-1.3.2.tar.gz"
   sha256 "01105fe25c51873b71ffd6f0ba2d9b2688741ed96ff60c1950c0e62f9d84a785"

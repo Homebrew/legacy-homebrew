@@ -1,6 +1,7 @@
 require 'formula'
 
 class GtkEngines < Formula
+  desc "Themes for GTK+"
   homepage 'http://git.gnome.org/browse/gtk-engines/'
   url 'http://ftp.gnome.org/pub/gnome/sources/gtk-engines/2.20/gtk-engines-2.20.2.tar.bz2'
   sha1 '574c7577d70eaacecd2ffa14e288ef88fdcb6c2a'

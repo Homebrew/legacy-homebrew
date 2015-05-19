@@ -1,6 +1,7 @@
 require 'formula'
 
 class DyldHeaders < Formula
+  desc "Header files for the dynamic linker"
   homepage 'http://opensource.apple.com/'
   url 'https://opensource.apple.com/tarballs/dyld/dyld-239.4.tar.gz'
   sha1 '9a366d4d31423c959b249c45245d93ea9acc14b9'

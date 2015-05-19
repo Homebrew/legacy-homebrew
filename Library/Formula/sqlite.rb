@@ -1,4 +1,5 @@
 class Sqlite < Formula
+  desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
   url "https://sqlite.org/2015/sqlite-autoconf-3081002.tar.gz"
   sha256 "8382e55a4e7d853c93038562ca3dd00307937fccf1c6b65ddd813e503a56d626"

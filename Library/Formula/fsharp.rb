@@ -1,6 +1,7 @@
 require "formula"
 
 class Fsharp < Formula
+  desc "F#, a functional-first programming language"
   homepage "http://fsharp.org/"
   url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.32",
     :revision => "a4e1f7111a6d1410df3f33e7205ee34617006b94"

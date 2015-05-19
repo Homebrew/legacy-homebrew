@@ -1,4 +1,5 @@
 class Pkcrack < Formula
+  desc "Implementation of an algorithm for breaking the PkZip cipher"
   homepage "https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack.html"
   url "https://www.unix-ag.uni-kl.de/~conrad/krypto/pkcrack/pkcrack-1.2.2.tar.gz"
   sha256 "4d2dc193ffa4342ac2ed3a6311fdf770ae6a0771226b3ef453dca8d03e43895a"

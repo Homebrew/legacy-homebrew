@@ -1,4 +1,5 @@
 class Supersonic < Formula
+  desc "C++ library providing a column oriented query engine"
   homepage "https://code.google.com/p/supersonic/"
   url "https://supersonic.googlecode.com/files/supersonic-0.9.4.tar.gz"
   sha256 "1592dfd2dc73f0b97298e0d25e51528dc9a94e9e7f4ab525569f63db0442d769"

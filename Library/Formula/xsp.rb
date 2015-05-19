@@ -1,4 +1,5 @@
 class Xsp < Formula
+  desc "Mono's ASP.NET hosting server"
   homepage "https://github.com/mono/xsp"
   url "https://github.com/mono/xsp/archive/3.0.11.tar.gz"
   sha256 "290e302a03396c5cff7eb53dae008e9f79dd00aca15ad1e62865907220483baa"

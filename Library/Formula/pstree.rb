@@ -2,6 +2,7 @@
 # the /proc file system, which is not available on OS X.
 
 class Pstree < Formula
+  desc "Show ps output as a tree"
   homepage "http://www.thp.uni-duisburg.de/pstree/"
   url "ftp://ftp.thp.uni-duisburg.de/pub/source/pstree-2.36.tar.gz"
   sha1 "1ca2e08c62d33afd37d78a215095258e77654b3f"

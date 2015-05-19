@@ -1,4 +1,5 @@
 class Netcat < Formula
+  desc "Utility for managing network connections"
   homepage "http://netcat.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/netcat/netcat/0.7.1/netcat-0.7.1.tar.bz2"
   sha1 "b761d70fe9e3e8b3fe33a329b9bc31300dc04d11"

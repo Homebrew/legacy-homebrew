@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ogmtools < Formula
+  desc "OGG media streams manipulation tools"
   homepage 'http://www.bunkus.org/videotools/ogmtools/'
   url 'http://www.bunkus.org/videotools/ogmtools/ogmtools-1.5.tar.bz2'
   sha1 'a23ba7e6ac490ffb60e8fb739e790b7a020a444c'

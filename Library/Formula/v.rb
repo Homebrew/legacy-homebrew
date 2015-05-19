@@ -1,4 +1,5 @@
 class V < Formula
+  desc "Node version management"
   homepage "https://github.com/rupa/v"
   head "https://github.com/rupa/v.git"
   url "https://github.com/rupa/v/archive/v1.0.tar.gz"

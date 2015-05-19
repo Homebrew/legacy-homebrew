@@ -1,4 +1,5 @@
 class Privoxy < Formula
+  desc "Advanced filtering web proxy"
   homepage "http://www.privoxy.org"
   url "https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.23%20%28stable%29/privoxy-3.0.23-stable-src.tar.gz"
   sha1 "72b6756cf532fdb85520640f0a1d4cb06bba1b7f"

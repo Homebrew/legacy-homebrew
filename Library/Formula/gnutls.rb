@@ -2,6 +2,7 @@
 # From 3.4.0 GnuTLS will be permanently disabling SSLv3. Every brew uses will need a revision with that.
 # http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
+  desc "GNU Transport Layer Security (TLS) Library"
   homepage "http://gnutls.org"
   url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"

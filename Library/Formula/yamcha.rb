@@ -1,4 +1,5 @@
 class Yamcha < Formula
+  desc "NLP text chunker using Support Vector Machines"
   homepage "http://chasen.org/~taku/software/yamcha/"
   url "http://chasen.org/~taku/software/yamcha/src/yamcha-0.33.tar.gz"
   sha1 "4ee6d8150557761f86fcb8af118636b7c23920c0"

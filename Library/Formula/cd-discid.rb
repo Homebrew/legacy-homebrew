@@ -1,6 +1,7 @@
 require 'formula'
 
 class CdDiscid < Formula
+  desc "Read CD and get CDDB discid information"
   homepage 'http://linukz.org/cd-discid.shtml'
   url 'http://linukz.org/download/cd-discid-1.1.tar.gz'
   sha1 '74cedeb2c5bf4f3248af249c0ff344ea9d713d1a'

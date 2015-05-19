@@ -1,6 +1,7 @@
 require 'formula'
 
 class Html2text < Formula
+  desc "Advanced HTML-to-text converter"
   homepage 'http://www.mbayer.de/html2text/'
   url 'http://www.mbayer.de/html2text/downloads/html2text-1.3.2a.tar.gz'
   sha1 '91d46e3218d05b0783bebee96a14f0df0eb9773e'

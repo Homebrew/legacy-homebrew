@@ -1,4 +1,5 @@
 class Prips < Formula
+  desc "Print the IP addresses in a given range"
   homepage "http://devel.ringlet.net/sysutils/prips/"
   url "http://devel.ringlet.net/sysutils/prips/prips-0.9.9.tar.gz"
   sha256 "ad9d8e63cd69ed682ea87c154a19e5c58a3eb4bb3a118d5f458fd86eadb3bef8"

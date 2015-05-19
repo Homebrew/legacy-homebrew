@@ -1,6 +1,7 @@
 require 'formula'
 
 class Webfs < Formula
+  desc "HTTP server for purely static content"
   homepage 'http://linux.bytesex.org/misc/webfs.html'
   url 'http://dl.bytesex.org/releases/webfs/webfs-1.21.tar.gz'
   sha1 'a38880d8cb21e415244d220115ede7b573ac890c'

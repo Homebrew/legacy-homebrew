@@ -1,4 +1,5 @@
 class OpenMpi < Formula
+  desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
   # Wait for 1.8.6 and skip 1.8.5 due to a severe memory leak on OS X:
   # https://github.com/open-mpi/ompi/issues/579

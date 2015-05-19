@@ -1,6 +1,7 @@
 require 'formula'
 
 class Unison < Formula
+  desc "Unison file synchronizer"
   homepage 'http://www.cis.upenn.edu/~bcpierce/unison/'
   url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz'
   sha1 '74f1c087ee49dc1db4680ad779280f7333d5c968'

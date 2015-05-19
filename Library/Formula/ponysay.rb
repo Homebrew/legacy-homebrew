@@ -1,4 +1,5 @@
 class Ponysay < Formula
+  desc "Cowsay but with ponies"
   homepage "http://erkin.co/ponysay/"
   url "https://github.com/erkin/ponysay/archive/3.0.2.tar.gz"
   sha1 "e152b4ffea3dff8d2ca18ab597344e9b50ab78e6"

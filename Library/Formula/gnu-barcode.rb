@@ -1,4 +1,5 @@
 class GnuBarcode < Formula
+  desc "Convert text strings to printed bars"
   homepage "https://www.gnu.org/software/barcode/"
   url "http://ftpmirror.gnu.org/barcode/barcode-0.98.tar.gz"
   mirror "https://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz"

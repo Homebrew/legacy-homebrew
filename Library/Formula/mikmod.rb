@@ -1,6 +1,7 @@
 require "formula"
 
 class Mikmod < Formula
+  desc "Portable tracked music player"
   homepage "http://mikmod.raphnet.net/"
   url "https://downloads.sourceforge.net/project/mikmod/mikmod/3.2.6/mikmod-3.2.6.tar.gz"
   sha1 "55677382ab3e6d5ed35c520669e2cedd395a8ebb"

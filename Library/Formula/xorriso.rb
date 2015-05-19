@@ -1,6 +1,7 @@
 require "formula"
 
 class Xorriso < Formula
+  desc "ISO9660+RR manipulation tool"
   homepage "https://www.gnu.org/software/xorriso/"
   url "http://ftpmirror.gnu.org/xorriso/xorriso-1.3.8.tar.gz"
   mirror "https://ftp.gnu.org/gnu/xorriso/xorriso-1.3.8.tar.gz"

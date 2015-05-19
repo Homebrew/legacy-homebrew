@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sshuttle < Formula
+  desc "Proxy server that works as a poor man's VPN"
   homepage 'https://github.com/apenwarr/sshuttle'
   url 'https://github.com/apenwarr/sshuttle/archive/sshuttle-0.61.tar.gz'
   sha1 '05551cdc78e866d983470ba4084beb206bacebd8'

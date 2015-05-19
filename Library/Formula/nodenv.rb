@@ -1,6 +1,7 @@
 require "formula"
 
 class Nodenv < Formula
+  desc "NodeJS version management"
   homepage "https://github.com/wfarr/nodenv"
   head "https://github.com/wfarr/nodenv.git"
   url "https://github.com/wfarr/nodenv/archive/v0.3.3.tar.gz"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Discount < Formula
+  desc "C implementation of Markdown"
   homepage 'http://www.pell.portland.or.us/~orc/Code/discount/'
   url 'http://www.pell.portland.or.us/~orc/Code/discount/discount-2.1.7.tar.bz2'
   sha1 '517bcf7409d8c02b3e57f51264b2e110f8a03120'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gqview < Formula
+  desc "GQview image browser"
   homepage 'http://gqview.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/gqview/gqview/2.0.4/gqview-2.0.4.tar.gz'
   sha1 'aae8f1cdae60441472a52d594cb42572d0d79eeb'

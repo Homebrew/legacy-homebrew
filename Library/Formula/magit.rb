@@ -1,4 +1,5 @@
 class Magit < Formula
+  desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
   url "https://github.com/magit/magit/releases/download/1.4.1/magit-1.4.1.tar.gz"
   sha256 "e7b18d2acb7b79a622017726d7b2e48fcb893f3055ecd43b3672175599f97b2d"

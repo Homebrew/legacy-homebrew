@@ -1,6 +1,7 @@
 require 'formula'
 
 class John < Formula
+  desc "Featureful UNIX password cracker"
   homepage 'http://www.openwall.com/john/'
   url 'http://www.openwall.com/john/j/john-1.8.0.tar.xz'
   sha1 '423901b9b281c26656234ee31b362f1c0c2b680c'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Smlnj < Formula
+  desc "Standard ML of New Jersey"
   homepage 'http://www.smlnj.org/'
   url 'http://smlnj.cs.uchicago.edu/dist/working/110.78/config.tgz'
   sha1 '92c108bbfe839c5a285fd222f571db9bda84d762'

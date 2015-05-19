@@ -1,6 +1,7 @@
 require "formula"
 
 class Synfigstudio < Formula
+  desc "Vector-based 2D animation package"
   homepage "http://synfig.org"
   url "https://downloads.sourceforge.net/project/synfig/releases/0.64.3/source/synfigstudio-0.64.3.tar.gz"
   sha1 "63655509a6a5920eb067021730abbb52164436f5"

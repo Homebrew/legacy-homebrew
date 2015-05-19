@@ -1,6 +1,7 @@
 require "utils/json"
 
 class Internetarchive < Formula
+  desc "A Python wrapper for the various Internet Archive APIs"
   homepage "https://github.com/jjjake/ia-wrapper"
   url "https://pypi.python.org/packages/source/i/internetarchive/internetarchive-0.7.9.tar.gz"
   sha1 "f52fd6cdece11da62bb8b32664da9271be3eaa91"

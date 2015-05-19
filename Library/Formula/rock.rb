@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rock < Formula
+  desc "ooc compiler written in ooc"
   homepage 'http://ooc-lang.org'
   url 'https://github.com/nddrylliog/rock/archive/v0.9.9.tar.gz'
   sha1 '11d4a46320e2b538989354505e0a6ac4311b049f'

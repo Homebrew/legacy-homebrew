@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tidyp < Formula
+  desc "Validate and modify HTML"
   homepage 'http://tidyp.com/'
   url 'https://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'
   sha1 '5d9050512259c3a67a2f48469555932e3a7b8bd0'

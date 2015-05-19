@@ -1,6 +1,7 @@
 require "formula"
 
 class Libbson < Formula
+  desc "BSON utility library"
   homepage "https://github.com/mongodb/libbson"
   url "https://github.com/mongodb/libbson/releases/download/1.1.6/libbson-1.1.6.tar.gz"
   sha1 "0e4b74ad9e8848c3a5fa231de60e8bdaaf4fc3c7"

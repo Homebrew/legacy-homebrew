@@ -1,6 +1,7 @@
 require "formula"
 
 class Libcanberra < Formula
+  desc "Implementation of XDG Sound Theme and Name Specifications"
   homepage "http://0pointer.de/lennart/projects/libcanberra/"
   head "git://git.0pointer.de/libcanberra"
   url "http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz"

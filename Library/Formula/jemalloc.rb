@@ -1,4 +1,5 @@
 class Jemalloc < Formula
+  desc "malloc implementation emphasizing fragmentation avoidance"
   homepage "http://www.canonware.com/jemalloc/download.html"
   url "http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2"
   sha1 "40c0892b172e5dc14a6cea6fe4edda7dea4f3a68"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Modules < Formula
+  desc "Dynamic modification of a user's environment via modulefiles"
   homepage "http://modules.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/modules/Modules/modules-3.2.10/modules-3.2.10.tar.bz2"
   sha1 "beb67a228ad890206ac776981269a7287cfb7596"

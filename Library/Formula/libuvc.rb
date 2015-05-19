@@ -1,6 +1,7 @@
 require "formula"
 
 class Libuvc < Formula
+  desc "Cross-platform library for USB video devices"
   homepage "https://github.com/ktossell/libuvc"
   url "https://github.com/ktossell/libuvc/archive/v0.0.5.tar.gz"
   sha1 "ab2e06d014af6aa72238113666f57405f45d1d18"

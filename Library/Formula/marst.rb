@@ -1,6 +1,7 @@
 require "formula"
 
 class Marst < Formula
+  desc "Algol-to-C translator"
   homepage "http://www.gnu.org/software/marst"
   url "http://ftpmirror.gnu.org/marst/marst-2.7.tar.gz"
   sha1 "a55ef653887c09045f04e00a179309463546f548"

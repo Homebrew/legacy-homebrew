@@ -1,4 +1,5 @@
 class Headphones < Formula
+  desc "Automatic music downloader for SABnzbd"
   homepage "https://github.com/rembo10/headphones"
   head "https://github.com/rembo10/headphones.git"
   url "https://github.com/rembo10/headphones/archive/v0.5.2.tar.gz"

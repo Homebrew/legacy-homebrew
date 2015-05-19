@@ -1,4 +1,5 @@
 class YleDl < Formula
+  desc "Download Yle videos from the command-line"
   homepage "https://aajanki.github.io/yle-dl/index-en.html"
   url "https://github.com/aajanki/yle-dl/archive/2.7.1.tar.gz"
   sha1 "041f212d56a981e1c53f6bdf042a281db965d6ed"

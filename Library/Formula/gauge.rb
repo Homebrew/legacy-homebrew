@@ -1,7 +1,8 @@
 require "language/go"
 
 class Gauge < Formula
-homepage "http://getgauge.io"
+  desc "Test automation tool that supports executable documentation"
+  homepage "http://getgauge.io"
   url "https://github.com/getgauge/gauge/archive/v0.1.4.tar.gz"
   sha1 "6d1aed1cdbd2dfe5e3c32d85ea2ffa0f305478f7"
 

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sdl2 < Formula
+  desc "Low-level access to audio, keyboard, mouse, joystick, and graphics"
   homepage 'http://www.libsdl.org/'
   url 'http://libsdl.org/release/SDL2-2.0.3.tar.gz'
   sha1 '21c45586a4e94d7622e371340edec5da40d06ecc'

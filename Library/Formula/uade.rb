@@ -1,6 +1,7 @@
 require 'formula'
 
 class Uade < Formula
+  desc "Play Amiga tunes through UAE emulation"
   homepage 'http://zakalwe.fi/uade/'
 
   stable do

@@ -1,4 +1,5 @@
 class Flashrom < Formula
+  desc "Identify, read, write, verify, and erase flash chips"
   homepage "http://flashrom.org/"
   url "http://download.flashrom.org/releases/flashrom-0.9.8.tar.bz2"
   sha256 "13dc7c895e583111ecca370363a3527d237d178a134a94b20db7df177c05f934"

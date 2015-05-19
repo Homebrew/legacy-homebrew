@@ -1,4 +1,5 @@
 class Herrie < Formula
+  desc "Minimalistic audio player built upon Ncurses"
   homepage "http://herrie.info/"
   url "http://herrie.info/distfiles/herrie-2.2.tar.bz2"
   sha256 "142341072920f86b6eb570b8f13bf5fd87c06cf801543dc7d1a819e39eb9fb2b"

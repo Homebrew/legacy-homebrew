@@ -1,4 +1,5 @@
 class Aha < Formula
+  desc "ANSI HTML adapter"
   homepage "https://github.com/theZiz/aha"
   url "https://github.com/theZiz/aha/archive/0.4.8.tar.gz"
   sha1 "45d91e1cda8663e8bf0c5fa8b94e4d2290aa9895"

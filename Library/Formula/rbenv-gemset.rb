@@ -1,4 +1,5 @@
 class RbenvGemset < Formula
+  desc "Adds basic gemset support to rbenv"
   homepage "https://github.com/jf/rbenv-gemset"
   url "https://github.com/jf/rbenv-gemset/archive/v0.5.8.tar.gz"
   sha1 "bd06efff2fcfaeb47bd32dc1658e4aae5d8a0619"

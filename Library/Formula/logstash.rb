@@ -1,6 +1,7 @@
 require 'formula'
 
 class Logstash < Formula
+  desc "Tool for managing events and logs"
   homepage 'https://www.elastic.co/products/logstash'
   url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.5.0.tar.gz'
   sha256 '8e073ee4c0dd346c62d538d3f28c95e536b9d3f269d0f993cff8662d799163d3'

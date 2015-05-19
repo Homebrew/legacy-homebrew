@@ -1,4 +1,5 @@
 class Libgphoto2 < Formula
+  desc "Gphoto2 digital camera library"
   homepage "http://www.gphoto.org/proj/libgphoto2/"
   url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.7/libgphoto2-2.5.7.tar.bz2"
   sha1 "0f0ebe1c953eab598c6a53477b81be762ab9047f"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libpqxx < Formula
+  desc "C++ connector for PostgreSQL"
   homepage 'http://pqxx.org/development/libpqxx/'
   url 'http://pqxx.org/download/software/libpqxx/libpqxx-4.0.1.tar.gz'
   sha1 '4748835bd1a90fb34e6e577788006a416c2acb60'

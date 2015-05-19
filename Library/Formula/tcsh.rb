@@ -1,6 +1,7 @@
 require "formula"
 
 class Tcsh < Formula
+  desc "Enhanced, fully compatible version of the Berkeley C shell"
   homepage 'http://www.tcsh.org/'
   url 'ftp://ftp.astron.com/pub/tcsh/tcsh-6.18.01.tar.gz'
   sha1 'eee2035645737197ff8059c84933a75d23cd76f9'

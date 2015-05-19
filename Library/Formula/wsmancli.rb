@@ -1,4 +1,5 @@
 class Wsmancli < Formula
+  desc "Openwsman command-line client"
   homepage "https://github.com/Openwsman/wsmancli"
   url "https://github.com/Openwsman/wsmancli/archive/v2.3.1.tar.gz"
   sha1 "a9b3dbe14d257687da4ace7c142e829c05c80994"

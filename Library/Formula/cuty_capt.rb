@@ -1,4 +1,5 @@
 class CutyCapt < Formula
+  desc "Converts web pages to vector/bitmap images using WebKit"
   homepage "http://cutycapt.sourceforge.net/"
   url "http://ftp.de.debian.org/debian/pool/main/c/cutycapt/cutycapt_0.0~svn6.orig.tar.gz"
   version "0.0.6"

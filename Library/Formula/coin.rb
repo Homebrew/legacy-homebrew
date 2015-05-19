@@ -1,6 +1,7 @@
 require 'formula'
 
 class Coin < Formula
+  desc "Retained-mode toolkit for 3D graphics development"
   homepage 'https://bitbucket.org/Coin3D/coin/wiki/Home'
   url 'https://bitbucket.org/Coin3D/coin/downloads/Coin-3.1.3.tar.gz'
   sha1 '8e9f05628461963623686d3ec53102214e233dd1'

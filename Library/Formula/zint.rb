@@ -1,4 +1,5 @@
 class Zint < Formula
+  desc "Barcode encoding library supporting over 50 symbologies"
   homepage "https://zint.github.io/"
   url "https://github.com/downloads/zint/zint/zint-2.4.3.tar.gz"
   sha256 "de2f4fd0d008530511f5dea2cff7f96f45df4c029b57431b2411b7e1f3a523e8"

@@ -1,4 +1,5 @@
 class Legit < Formula
+  desc "Command-line interface for Git, optimized for workflow simplicity"
   homepage "http://www.git-legit.org/"
   url "https://github.com/downloads/kennethreitz/legit/legit-v0.1.0-darwin-x86.tar.bz2"
   version "0.1.0"

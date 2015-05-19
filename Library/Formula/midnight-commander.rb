@@ -1,4 +1,5 @@
 class MidnightCommander < Formula
+  desc "Terminal-based visual file manager"
   homepage "https://www.midnight-commander.org/"
   url "http://ftp.midnight-commander.org/mc-4.8.14.tar.xz"
   mirror "http://ftp.osuosl.org/pub/midnightcommander/mc-4.8.14.tar.xz"

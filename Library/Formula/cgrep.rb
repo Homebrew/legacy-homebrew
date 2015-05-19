@@ -3,6 +3,7 @@ require "language/haskell"
 class Cgrep < Formula
   include Language::Haskell::Cabal
 
+  desc "Context-aware grep for source code"
   homepage "https://github.com/awgn/cgrep"
   url "https://github.com/awgn/cgrep/archive/v6.4.12.tar.gz"
   sha256 "a38d7957854b9b6f55ed8610d88b0ba3d5061d7194e3ec13e608d7a4515371f5"

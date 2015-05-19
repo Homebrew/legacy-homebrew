@@ -1,4 +1,5 @@
 class Duplicity < Formula
+  desc "Bandwidth-efficient encrypted backup"
   homepage "http://www.nongnu.org/duplicity/"
   url "https://code.launchpad.net/duplicity/0.6-series/0.6.25/+download/duplicity-0.6.25.tar.gz"
   sha256 "ac44f44abc1c5fe775a49b77e722d238c0b3bbb105e083fd505e2dca8e2c1725"

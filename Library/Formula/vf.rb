@@ -1,4 +1,5 @@
 class Vf < Formula
+  desc "Enhanced version of `cd` command"
   homepage "https://github.com/glejeune/vf"
   url "https://github.com/glejeune/vf/archive/0.0.1.tar.gz"
   sha256 "6418d188b88d5f3885b7a8d24520ac47accadb5144ae24e836aafbea4bd41859"

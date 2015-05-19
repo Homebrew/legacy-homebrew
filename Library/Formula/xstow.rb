@@ -1,6 +1,7 @@
 require 'formula'
 
 class Xstow < Formula
+  desc "Extended replacement for GNU Stow"
   homepage 'http://xstow.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/xstow/xstow-1.0.2.tar.bz2'
   sha1 '3b11025d4ec7b673ab149de6537059800816b4ed'

@@ -1,4 +1,5 @@
 class Multitail < Formula
+  desc "Tail multiple files in one terminal simultaneously"
   homepage "http://vanheusden.com/multitail/"
   url "http://www.vanheusden.com/multitail/multitail-6.4.1.tgz"
   sha1 "9191b807f8d727810b2824a9bc8aafa17cb0d10e"

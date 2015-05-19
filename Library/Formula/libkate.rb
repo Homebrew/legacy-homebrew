@@ -1,6 +1,7 @@
 require "formula"
 
 class Libkate < Formula
+  desc "Overlay codec for multiplexed audio/video in Ogg"
   homepage "https://code.google.com/p/libkate/"
   url "https://libkate.googlecode.com/files/libkate-0.4.1.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/libk/libkate/libkate_0.4.1.orig.tar.gz"

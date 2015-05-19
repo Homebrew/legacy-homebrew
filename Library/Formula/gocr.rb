@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gocr < Formula
+  desc "Optical Character Recognition (OCR), converts images back to text"
   homepage 'http://jocr.sourceforge.net/'
   url 'http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-0.50.tar.gz'
   sha1 '2018ddf7be1c95dcc12f63f7ac40ad98da06f8a4'

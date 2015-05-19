@@ -1,6 +1,7 @@
 require 'formula'
 
 class Autoenv < Formula
+  desc "Per-project, per-directory shell environments"
   homepage 'https://github.com/kennethreitz/autoenv'
   url 'https://github.com/kennethreitz/autoenv/archive/v0.1.0.tar.gz'
   sha1 '4d773ba8162b8f49abdfc07d0f8c956aa3353e0c'

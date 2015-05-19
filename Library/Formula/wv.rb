@@ -1,6 +1,7 @@
 require "formula"
 
 class Wv < Formula
+  desc "Programs for accessing Microsoft Word documents"
   homepage "http://wvware.sourceforge.net/"
   url "http://abisource.com/downloads/wv/1.2.9/wv-1.2.9.tar.gz"
   sha1 "db4717a151742dbdb492318f104504a92075543a"

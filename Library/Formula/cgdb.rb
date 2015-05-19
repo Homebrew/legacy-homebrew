@@ -1,6 +1,7 @@
 require "formula"
 
 class Cgdb < Formula
+  desc "Curses-based interface to the GNU Debugger"
   homepage "https://cgdb.github.io/"
   url "http://cgdb.me/files/cgdb-0.6.8.tar.gz"
   sha1 "0892ae59358fa98264269cf6fe57928314ef7942"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Peervpn < Formula
+  desc "Peer-to-peer VPN"
   homepage "http://www.peervpn.net"
   url "http://www.peervpn.net/files/peervpn-0-041.tar.gz"
   version "0.041"

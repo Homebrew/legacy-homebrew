@@ -1,6 +1,7 @@
 require "formula"
 
 class Scons < Formula
+  desc "Substitute for classic 'make' tool with autoconf/automake functionality"
   homepage "http://www.scons.org"
   url "https://downloads.sourceforge.net/scons/scons-2.3.4.tar.gz"
   sha1 "8c55f8c15221c1b3536a041d46056ddd7fa2d23a"

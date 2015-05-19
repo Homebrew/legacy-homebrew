@@ -1,4 +1,5 @@
 class Daemonlogger < Formula
+  desc "Network packet logger and soft tap daemon"
   homepage "http://sourceforge.net/projects/daemonlogger/"
   url "https://downloads.sourceforge.net/project/daemonlogger/daemonlogger-1.2.1.tar.gz"
   sha1 "ce0aa20b38f18eca94a6d00fe9126d441fe2818a"

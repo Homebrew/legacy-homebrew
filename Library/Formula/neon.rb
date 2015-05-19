@@ -1,4 +1,5 @@
 class Neon < Formula
+  desc "HTTP and WebDAV client library with a C interface"
   homepage "http://www.webdav.org/neon/"
   url "http://www.webdav.org/neon/neon-0.30.1.tar.gz"
   sha1 "efec2a6f17d9bd2323345320e3067349ddc9cf79"

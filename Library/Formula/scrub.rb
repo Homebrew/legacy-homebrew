@@ -1,4 +1,5 @@
 class Scrub < Formula
+  desc "Writes patterns on magnetic media to thwart data recovery"
   homepage "https://code.google.com/p/diskscrub/"
   url "https://github.com/chaos/scrub/releases/download/2.6.1/scrub-2.6.1.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/scrub/scrub_2.6.1.orig.tar.gz"

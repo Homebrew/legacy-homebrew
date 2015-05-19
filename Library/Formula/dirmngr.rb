@@ -1,4 +1,5 @@
 class Dirmngr < Formula
+  desc "Server for managing certificate revocation lists"
   homepage "http://www.gnupg.org"
   url "ftp://ftp.gnupg.org/gcrypt/dirmngr/dirmngr-1.1.1.tar.bz2"
   mirror "http://ftp.debian.org/debian/pool/main/d/dirmngr/dirmngr_1.1.1.orig.tar.bz2"

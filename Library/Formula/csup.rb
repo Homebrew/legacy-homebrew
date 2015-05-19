@@ -1,6 +1,7 @@
 require 'formula'
 
 class Csup < Formula
+  desc "Rewrite of CVSup in C"
   homepage 'https://bitbucket.org/mux/csup'
   url 'https://bitbucket.org/mux/csup/get/REL_20120305.tar.gz'
   sha1 'caef119168723f1c1d6d32c0f2a1ac392df87afe'

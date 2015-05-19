@@ -1,4 +1,5 @@
 class Cmocka < Formula
+  desc "Unit testing framework for C"
   homepage "https://cmocka.org/"
   url "https://cmocka.org/files/1.0/cmocka-1.0.0.tar.xz"
   sha1 "c1b6bdab164b2d54c26edacef9b9308e4de154f9"

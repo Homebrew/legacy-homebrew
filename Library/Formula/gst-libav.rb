@@ -1,6 +1,7 @@
 require 'formula'
 
 class GstLibav < Formula
+  desc "GStreamer plugins for Libav (a fork of FFmpeg)"
   homepage 'http://gstreamer.freedesktop.org'
   url 'http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.4.5.tar.xz'
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-libav-1.4.5.tar.xz'

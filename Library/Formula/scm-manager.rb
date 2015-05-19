@@ -1,4 +1,5 @@
 class ScmManager < Formula
+  desc "Manage Git, Mercurial, and Subversion repos over HTTP"
   homepage "http://www.scm-manager.org"
   url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.45/scm-server-1.45-app.tar.gz"
   version "1.45"

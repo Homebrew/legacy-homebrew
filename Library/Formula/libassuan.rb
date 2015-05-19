@@ -1,4 +1,5 @@
 class Libassuan < Formula
+  desc "Assuan IPC Library"
   homepage "https://www.gnupg.org/related_software/libassuan/index.en.html"
   url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.2.1.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libassuan/libassuan-2.2.1.tar.bz2"

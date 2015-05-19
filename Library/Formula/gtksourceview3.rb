@@ -1,6 +1,7 @@
 require "formula"
 
 class Gtksourceview3 < Formula
+  desc "Text view with syntax, undo/redo, and text marks"
   homepage "http://projects.gnome.org/gtksourceview/"
   url "http://ftp.gnome.org/pub/gnome/sources/gtksourceview/3.14/gtksourceview-3.14.2.tar.xz"
   sha256 "b3c4a4f464fdb23ecc708a61c398aa3003e05adcd7d7223d48d9c04fe87524ad"

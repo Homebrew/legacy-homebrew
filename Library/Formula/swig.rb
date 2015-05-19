@@ -1,4 +1,5 @@
 class Swig < Formula
+  desc "Generate scripting interfaces to C/C++ code"
   homepage "http://www.swig.org/"
   url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.5/swig-3.0.5.tar.gz"
   sha1 "271813b317e4836853d2249fc8ce2df34c2a062a"

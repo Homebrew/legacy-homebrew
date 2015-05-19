@@ -3,6 +3,7 @@ require 'formula'
 class ImapUw < Formula
   # imap-uw is unmaintained software; the author has passed away and there is
   # no active successor project.
+  desc "University of Washington IMAP toolkit"
   homepage 'http://www.washington.edu/imap/'
   url 'ftp://ftp.cac.washington.edu/imap/imap-2007f.tar.gz'
   mirror 'http://ftp.ntua.gr/pub/net/mail/imap/imap-2007f.tar.gz'

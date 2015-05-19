@@ -1,6 +1,7 @@
 require 'formula'
 
 class Watch < Formula
+  desc "Executes a program periodically, showing output fullscreen"
   homepage 'http://sourceforge.net/projects/procps-ng/'
   url 'http://download.sourceforge.net/project/procps-ng/Production/procps-ng-3.3.10.tar.xz'
   sha1 '484db198d6a18a42b4011d5ecb2cb784a81b0e4f'

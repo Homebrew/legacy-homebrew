@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ice < Formula
+  desc "Distributed computing platform"
   homepage 'http://www.zeroc.com'
   url 'http://www.zeroc.com/download/Ice/3.5/Ice-3.5.1.tar.gz'
   sha1 '63599ea22a1e9638a49356682c9e516b7c2c454f'

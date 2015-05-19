@@ -1,6 +1,7 @@
 require "formula"
 
 class Mkvdts2ac3 < Formula
+  desc "Convert DTS audio to AC3 within a matroska file"
   homepage "https://github.com/JakeWharton/mkvdts2ac3"
   revision 2
 

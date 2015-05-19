@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dash < Formula
+  desc "POSIX-compliant descendant of NetBSD's ash (the Almquist SHell)"
   homepage 'http://gondor.apana.org.au/~herbert/dash/'
   url "http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.8.tar.gz"
   sha1 "cd058935bba545427caa375337afe8a6309477d2"

@@ -1,4 +1,5 @@
 class Autogen < Formula
+  desc "Automated text file generator"
   homepage "http://autogen.sourceforge.net"
   url "http://ftpmirror.gnu.org/autogen/rel5.18.4/autogen-5.18.4.tar.xz"
   mirror "https://ftp.gnu.org/gnu/autogen/rel5.18.4/autogen-5.18.4.tar.xz"

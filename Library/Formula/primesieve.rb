@@ -1,4 +1,5 @@
 class Primesieve < Formula
+  desc "Optimized sieve of Eratosthenes implementation"
   homepage "http://primesieve.org/"
   url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.2.tar.gz"
   sha256 "73abf4ff118e8d41ffaf687cf902b0b53a8bbc357bf4efa1798477d346f85cc8"

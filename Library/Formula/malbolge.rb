@@ -1,6 +1,7 @@
 require 'formula'
 
 class Malbolge < Formula
+  desc "Deliberately difficult to program esoteric programming language"
   homepage 'http://esoteric.sange.fi/orphaned/malbolge/README.txt'
   url 'http://esoteric.sange.fi/orphaned/malbolge/malbolge.c'
   version '0.1.0'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Phash < Formula
+  desc "Perceptual hash library"
   homepage 'http://www.phash.org/'
   url 'http://phash.org/releases/pHash-0.9.6.tar.gz'
   sha1 '26f4c1e7ca6b77e6de2bdfce490b2736d4b63753'

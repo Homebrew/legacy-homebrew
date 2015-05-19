@@ -1,4 +1,5 @@
 class Epic5 < Formula
+  desc "Enhanced, programmable IRC client"
   homepage "http://www.epicsol.org/"
   url "http://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/epic5-1.1.10.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/e/epic5/epic5_1.1.10.orig.tar.bz2"

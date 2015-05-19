@@ -1,4 +1,5 @@
 class Mpg123 < Formula
+  desc "MP3 player for Linux and UNIX"
   homepage "http://www.mpg123.de/"
   url "http://www.mpg123.de/download/mpg123-1.22.2.tar.bz2"
   mirror "http://mpg123.orgis.org/download/mpg123-1.22.2.tar.bz2"

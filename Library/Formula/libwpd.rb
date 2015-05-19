@@ -1,6 +1,7 @@
 require "formula"
 
 class Libwpd < Formula
+  desc "General purpose library for reading WordPerfect files"
   homepage "http://libwpd.sourceforge.net/"
   url "http://dev-www.libreoffice.org/src/libwpd-0.10.0.tar.bz2"
   sha1 "bbcc6e528a69492fb2b4bbb9a56d385a29efc4c4"

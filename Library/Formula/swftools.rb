@@ -1,6 +1,7 @@
 require 'formula'
 
 class Swftools < Formula
+  desc "SWF manipulation and generation tools"
   homepage 'http://www.swftools.org'
   url 'http://www.swftools.org/swftools-0.9.2.tar.gz'
   sha1 'd7cf8874c4187d2edd3e40d20ba325ca17b91973'

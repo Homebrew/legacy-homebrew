@@ -1,4 +1,5 @@
 class StashCli < Formula
+  desc "Access Atlassian Stash on the command-line using REST APIs"
   homepage "https://bobswift.atlassian.net/wiki/display/SCLI/Stash+Command+Line+Interface"
   url "https://bobswift.atlassian.net/wiki/download/attachments/16285777/stash-cli-3.9.0-distribution.zip?api=v2"
   version "3.9.0"

@@ -1,4 +1,5 @@
 class GnuSed < Formula
+  desc "GNU implementation of the famous stream editor"
   homepage "https://www.gnu.org/software/sed/"
   url "http://ftpmirror.gnu.org/sed/sed-4.2.2.tar.bz2"
   mirror "https://ftp.gnu.org/gnu/sed/sed-4.2.2.tar.bz2"

@@ -1,4 +1,5 @@
 class Axel < Formula
+  desc "Light UNIX download accelerator"
   homepage "https://packages.debian.org/sid/axel"
   url "https://mirrors.kernel.org/debian/pool/main/a/axel/axel_2.4.orig.tar.gz"
   mirror "http://ftp.de.debian.org/debian/pool/main/a/axel/axel_2.4.orig.tar.gz"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Jove < Formula
+  desc "Emacs-style editor with vi-like memory, CPU, and size requirements"
   homepage "http://directory.fsf.org/wiki/Jove"
   url "ftp://ftp.cs.toronto.edu/cs/ftp/pub/hugh/jove-dev/jove4.16.0.73.tgz"
   sha1 "fca6f33465b08eed5b90e24cfb67e61bc5249dcf"

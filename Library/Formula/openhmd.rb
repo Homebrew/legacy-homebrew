@@ -1,4 +1,5 @@
 class Openhmd < Formula
+  desc "Free and open source API and drivers for immersive technology"
   homepage "http://openhmd.net"
   url "http://openhmd.net/releases/openhmd-0.1.0.tar.gz"
   sha1 "186c747399bd9a509ac8300acbae8823fc4fcc79"

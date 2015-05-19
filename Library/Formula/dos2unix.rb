@@ -1,6 +1,7 @@
 require "formula"
 
 class Dos2unix < Formula
+  desc "Convert text between DOS, UNIX, and Mac formats"
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
   url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.2.1.tar.gz"
   mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.2.1/dos2unix-7.2.1.tar.gz"

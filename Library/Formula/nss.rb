@@ -1,6 +1,7 @@
 require "formula"
 
 class Nss < Formula
+  desc "Libraries for security-enabled client and server applications"
   homepage "https://developer.mozilla.org/docs/NSS"
   url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_19_1_RTM/src/nss-3.19.1.tar.gz"
   sha256 "b7be709551ec13206d8e3e8c065b894fa981c11573115e9478fa051029c52fff"

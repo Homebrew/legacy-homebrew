@@ -2,6 +2,7 @@
 # Homebrew-versions, and only be merged to master when things like couchdb and
 # elixir are compatible.
 class Erlang < Formula
+  desc "Erlang Programming Language"
   homepage "http://www.erlang.org"
 
   stable do

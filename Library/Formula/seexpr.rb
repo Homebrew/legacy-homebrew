@@ -1,6 +1,7 @@
 require "formula"
 
 class Seexpr < Formula
+  desc "Embeddable expression evaluation engine"
   homepage "http://www.disneyanimation.com/technology/seexpr.html"
   url "https://github.com/wdas/SeExpr/archive/rel-1.0.1.tar.gz"
   sha1 "80890cedd684a93b012b0964dc3b59910aaf5a10"

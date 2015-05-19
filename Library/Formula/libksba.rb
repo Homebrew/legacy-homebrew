@@ -1,4 +1,5 @@
 class Libksba < Formula
+  desc "X.509 and CMS library"
   homepage "https://www.gnupg.org/related_software/libksba/index.en.html"
   url "ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.3.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.3.tar.bz2"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Admesh < Formula
+  desc "Processes triangulated solid meshes"
   homepage "https://github.com/admesh/admesh"
   url "https://github.com/admesh/admesh/releases/download/v0.98.1/admesh-0.98.1.tar.gz"
   sha1 "8256f549cb175b6783562a2603ec08f04e26b949"

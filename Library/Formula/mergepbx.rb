@@ -1,4 +1,5 @@
 class Mergepbx < Formula
+  desc "Merge XCode project files in git"
   homepage "https://github.com/simonwagner/mergepbx"
   url "https://github.com/simonwagner/mergepbx/archive/v0.9.tar.gz"
   sha256 "d0d859a902357f8059fca0c5fb061a9072b82cb7cce4f38bd9eb2c3198fce003"

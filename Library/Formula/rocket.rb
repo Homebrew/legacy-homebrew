@@ -2,6 +2,7 @@ require "formula"
 require "language/go"
 
 class Rocket < Formula
+  desc "App Container runtime"
   homepage "https://github.com/coreos/rocket"
   head "https://github.com/coreos/rocket.git"
 

@@ -1,6 +1,7 @@
 require "formula"
 
 class Apngasm < Formula
+  desc "Next generation of apngasm, the APNG assembler"
   homepage "https://github.com/apngasm/apngasm"
   url "https://github.com/apngasm/apngasm/archive/3.1.4.tar.gz"
   sha1 "62bd9f829b383a4f53f4bb1018f1e2d24a846272"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Xmltoman < Formula
+  desc "XML to manpage converter"
   homepage 'http://sourceforge.net/projects/xmltoman/'
   url 'https://downloads.sourceforge.net/project/xmltoman/xmltoman/xmltoman-0.4.tar.gz/xmltoman-0.4.tar.gz'
   sha1 '151f75d78d1fa53bca25b94dc00e46a27fabfee8'

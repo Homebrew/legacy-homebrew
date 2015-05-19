@@ -1,6 +1,7 @@
 require "formula"
 
 class GupnpAv < Formula
+  desc "Library to help implement UPnP A/V profiles"
   homepage "https://wiki.gnome.org/GUPnP/"
   url "http://ftp.gnome.org/pub/gnome/sources/gupnp-av/0.12/gupnp-av-0.12.6.tar.xz"
   sha1 "8ea44b3b9bd1dcb2ad56d56943fc1cd235570d00"

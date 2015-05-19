@@ -1,6 +1,7 @@
 require "formula"
 
 class Dmd < Formula
+  desc "D programming language compiler for OS X"
   homepage "http://dlang.org"
   url "https://github.com/D-Programming-Language/dmd/archive/v2.067.1.tar.gz"
   sha1 "05eed2bcd850cd5be88e7f20f31d19f10b17dc5d"

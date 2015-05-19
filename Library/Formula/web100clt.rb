@@ -1,4 +1,5 @@
 class Web100clt < Formula
+  desc "Command-line version of NDT diagnostic client"
   homepage "http://software.internet2.edu/ndt/"
   url "http://software.internet2.edu/sources/ndt/ndt-3.7.0.2.tar.gz"
   sha256 "bd298eb333d4c13f191ce3e9386162dd0de07cddde8fe39e9a74fde4e072cdd9"

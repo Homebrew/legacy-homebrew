@@ -1,4 +1,5 @@
 class Fossil < Formula
+  desc "Distributed software configuration management"
   homepage "https://www.fossil-scm.org/"
   head "https://www.fossil-scm.org/", :using => :fossil
   url "https://www.fossil-scm.org/download/fossil-src-1.32.tar.gz"

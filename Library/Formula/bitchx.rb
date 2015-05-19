@@ -1,4 +1,5 @@
 class Bitchx < Formula
+  desc "BitchX IRC client"
   homepage "http://bitchx.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/bitchx/ircii-pana/bitchx-1.2.1/bitchx-1.2.1.tar.gz"
   sha1 "48ca956d43d6d62e32040bddfae49e88c1188927"

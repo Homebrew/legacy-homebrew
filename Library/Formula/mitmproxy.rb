@@ -1,4 +1,5 @@
 class Mitmproxy < Formula
+  desc "Intercept, modify, replay, save HTTP/S traffic"
   homepage "http://mitmproxy.org"
   url "https://mitmproxy.org/download/mitmproxy-0.11.3.tar.gz"
   sha256 "e774760fc33864caa708eeaafb756e110d7adeb619f3734f2f50b2a0e4910d5c"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class OpenBabel < Formula
+  desc "A chemical toolbox"
   homepage 'http://www.openbabel.org'
 
   stable do

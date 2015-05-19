@@ -1,6 +1,7 @@
 require "formula"
 
 class Leptonica < Formula
+  desc "Image processing and image analysis library"
   homepage "http://www.leptonica.org/"
   url "http://www.leptonica.org/source/leptonica-1.72.tar.gz"
   sha256 "79d5eadd32658c9fea38700c975d60aa3d088eaa3e307659f004d40834de1f56"

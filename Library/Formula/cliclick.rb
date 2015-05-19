@@ -1,6 +1,7 @@
 require "formula"
 
 class Cliclick < Formula
+  desc "Tool for automating emulated mouse clicks"
   homepage "http://www.bluem.net/jump/cliclick/"
   url "https://github.com/BlueM/cliclick/archive/3.0.3.tar.gz"
   sha1 "7d2f21065c1d77f46292f72f7aa50c91abb48a53"

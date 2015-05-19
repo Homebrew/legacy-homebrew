@@ -1,6 +1,7 @@
 require "formula"
 
 class Xplanetfx < Formula
+  desc "Configure, run or daemonize xplanet for HQ Earth wallpapers"
   homepage "http://mein-neues-blog.de/xplanetFX/"
   url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.6_all.tar.gz"
   sha256 "59c49af68b6cafcbe4ebfd65979181a7f1e4416e024505b5b0d46f1cc04b082a"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Opensc < Formula
+  desc "Tools and libraries for smart cards"
   homepage "https://github.com/OpenSC/OpenSC/wiki"
   url "https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz"
   sha1 "4a898e351b0a6d2a5d81576daa7ebed45baf9138"

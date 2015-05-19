@@ -1,4 +1,5 @@
 class GstPluginsUgly < Formula
+  desc "GStreamer plugins (well-supported, possibly problematic for distributors)"
   homepage "http://gstreamer.freedesktop.org/"
   url "http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.4.5.tar.xz"
   mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.4.5.tar.xz"

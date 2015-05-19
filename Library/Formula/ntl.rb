@@ -1,6 +1,7 @@
 require "formula"
 
 class Ntl < Formula
+  desc "C++ number theory library"
   homepage "http://www.shoup.net/ntl"
   url "http://www.shoup.net/ntl/ntl-6.2.1.tar.gz"
   sha1 "3b9ab3bedb0b2e9b5ee322d60745be5caf1c743f"

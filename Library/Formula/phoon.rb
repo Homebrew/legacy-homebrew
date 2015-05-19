@@ -1,6 +1,7 @@
 require 'formula'
 
 class Phoon < Formula
+  desc "Displays current or specified phase of the moon via ASCII art"
   homepage 'http://www.acme.com/software/phoon/'
   url 'http://www.acme.com/software/phoon/phoon_29jun2005.tar.gz'
   version '03A'

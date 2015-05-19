@@ -1,6 +1,7 @@
 require 'formula'
 
 class Hexcurse < Formula
+  desc "Ncurses-based console hex editor"
   homepage 'https://github.com/LonnyGomes/hexcurse'
   url 'https://github.com/LonnyGomes/hexcurse/archive/hexcurse-1.58.tar.gz'
   sha1 '6a07324a4782007dcea800b8b545f9f07e8eae8f'

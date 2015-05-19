@@ -1,6 +1,7 @@
 require 'formula'
 
 class Wiggle < Formula
+  desc "Program for applying patches with conflicting changes"
   homepage "http://neil.brown.name/blog/20100324064620"
   url "http://neil.brown.name/wiggle/wiggle-1.0.tar.gz"
   sha1 "07fa4450c658d3f24d2e529b7fc4d883b5ba2e51"

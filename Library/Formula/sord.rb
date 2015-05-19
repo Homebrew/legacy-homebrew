@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sord < Formula
+  desc "C library for storing RDF data in memory"
   homepage 'http://drobilla.net/software/sord/'
   url 'http://download.drobilla.net/sord-0.12.2.tar.bz2'
   sha1 '01def87419beed8bb51a89e50307a22940f1d968'

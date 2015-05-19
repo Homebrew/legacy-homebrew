@@ -1,6 +1,7 @@
 require "formula"
 
 class Xplanet < Formula
+  desc "Create HQ wallpapers of planet Earth"
   homepage "http://xplanet.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/xplanet/xplanet/1.3.0/xplanet-1.3.0.tar.gz"
   sha256 "44fb742bb93e5661ea8b11ccabcc12896693e051f3dd5083c9227224c416b442"

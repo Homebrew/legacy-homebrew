@@ -1,4 +1,5 @@
 class Gistit < Formula
+  desc "Command-line utility for creating Gists"
   homepage "http://gistit.herokuapp.com/"
   url "https://github.com/jrbasso/gistit/archive/v0.1.3.tar.gz"
   sha1 "62b9797a656b15da9196b6c9ee355c0c81bdc3ac"

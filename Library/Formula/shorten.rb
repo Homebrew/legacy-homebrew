@@ -1,4 +1,5 @@
 class Shorten < Formula
+  desc "Waveform compression"
   homepage "http://www.etree.org/shnutils/shorten/"
   url "http://www.etree.org/shnutils/shorten/dist/src/shorten-3.6.1.tar.gz"
   sha256 "ce22e0676c93494ee7d094aed9b27ad018eae5f2478e8862ae1e962346405b66"

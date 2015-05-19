@@ -1,4 +1,5 @@
 class Sipsak < Formula
+  desc "SIP Swiss army knife"
   homepage "https://sourceforge.net/projects/sipsak.berlios/"
   url "https://downloads.sourceforge.net/project/sipsak.berlios/sipsak-0.9.6-1.tar.gz"
   version "0.9.6"

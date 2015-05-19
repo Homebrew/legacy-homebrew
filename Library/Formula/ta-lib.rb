@@ -1,6 +1,7 @@
 require 'formula'
 
 class TaLib < Formula
+  desc "Tools for market analysis"
   homepage 'http://ta-lib.org/index.html'
   url 'https://downloads.sourceforge.net/project/ta-lib/ta-lib/0.4.0/ta-lib-0.4.0-src.tar.gz'
   sha1 'b326b91e79ca1e569e95aad91e87a38640dd5f1b'

@@ -1,6 +1,7 @@
 require "formula"
 
 class Watchman < Formula
+  desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
   head "https://github.com/facebook/watchman.git"
   url "https://github.com/facebook/watchman/archive/v3.1.tar.gz"

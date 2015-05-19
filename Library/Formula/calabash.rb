@@ -1,4 +1,5 @@
 class Calabash < Formula
+  desc "An XProc (XML Pipeline Language) implementation"
   homepage "http://xmlcalabash.com"
   url "https://github.com/ndw/xmlcalabash1/releases/download/1.1.0-95/xmlcalabash-1.1.0-95.zip"
   sha256 "d75a8699ec496fb854761d8e375015732ac51047aad5d7bec57ea3a5349feae7"

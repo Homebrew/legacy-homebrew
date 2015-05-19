@@ -1,4 +1,5 @@
 class Validns < Formula
+  desc "DNS/DNSSEC zone validator"
   homepage "http://www.validns.net/"
   url "http://www.validns.net/download/validns-0.8.tar.gz"
   sha256 "df2db0eaa998a0411ff4c1c4e417eb82d32aec4835f92f45f26c66c8d1d5bd22"

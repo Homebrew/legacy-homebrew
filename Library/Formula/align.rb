@@ -1,6 +1,7 @@
 require "formula"
 
 class Align < Formula
+  desc "Text column alignment filter"
   homepage "http://www.cs.indiana.edu/~kinzler/align/"
   url "http://www.cs.indiana.edu/~kinzler/align/align-1.7.4.tgz"
   sha1 "a1dff741a0080252d79b4b4466ca440dc772c7ae"

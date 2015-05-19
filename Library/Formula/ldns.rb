@@ -1,4 +1,5 @@
 class Ldns < Formula
+  desc "DNS library written in C"
   homepage "https://nlnetlabs.nl/projects/ldns/"
   url "https://nlnetlabs.nl/downloads/ldns/ldns-1.6.17.tar.gz"
   sha256 "8b88e059452118e8949a2752a55ce59bc71fa5bc414103e17f5b6b06f9bcc8cd"

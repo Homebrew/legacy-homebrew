@@ -1,6 +1,7 @@
 require "formula"
 
 class EulerPy < Formula
+  desc "Project Euler command-line tool written in Python"
   homepage "https://github.com/iKevinY/EulerPy"
   url "https://github.com/iKevinY/EulerPy/archive/v1.2.3.tar.gz"
   sha1 "88d97d7807f6b06ebfe475eee31ebd021b4ef275"

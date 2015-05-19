@@ -3,6 +3,7 @@ require "language/haskell"
 class Pandoc < Formula
   include Language::Haskell::Cabal
 
+  desc "Swiss-army knife of markup format conversion"
   homepage "http://pandoc.org"
   url "https://hackage.haskell.org/package/pandoc-1.14.0.2/pandoc-1.14.0.2.tar.gz"
   sha256 "5d60bddc474499a2aa553e200da2860fed9e48a3db77072355f5f7c666a56bd0"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Teem < Formula
+  desc "Libraries for scientific raster data"
   homepage 'http://teem.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/teem/teem/1.11.0/teem-1.11.0-src.tar.gz'
   sha1 'faafa0362abad37591bc1d01441730af462212f9'

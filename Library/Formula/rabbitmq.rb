@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rabbitmq < Formula
+  desc "Messaging broker"
   homepage 'https://www.rabbitmq.com'
   url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.2/rabbitmq-server-mac-standalone-3.5.2.tar.gz'
   sha256 '26f418b4b742e7a95720eecd681b03cad38a30bc2b8a01eeff3e15ab85e8fd04'

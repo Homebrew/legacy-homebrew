@@ -1,4 +1,5 @@
 class Debianutils < Formula
+  desc "Miscellaneous utilities specific to Debian"
   homepage "https://packages.debian.org/unstable/utils/debianutils"
   url "https://mirrors.kernel.org/debian/pool/main/d/debianutils/debianutils_4.5.tar.xz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/debianutils/debianutils_4.5.tar.gz"

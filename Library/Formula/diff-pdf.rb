@@ -1,6 +1,7 @@
 require "formula"
 
 class DiffPdf < Formula
+  desc "Visually compare two PDF files"
   homepage "http://vslavik.github.io/diff-pdf/"
   url "https://github.com/vslavik/diff-pdf/archive/v0.2.tar.gz"
   sha1 "308ea8e92ac609ca88303dce6a6e8403c6b9f11f"

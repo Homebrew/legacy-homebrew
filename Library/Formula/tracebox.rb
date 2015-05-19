@@ -1,4 +1,5 @@
 class Tracebox < Formula
+  desc "Middlebox detection tool"
   homepage "http://www.tracebox.org/"
   url "https://github.com/tracebox/tracebox.git", :tag => "v0.3",
       :revision => "63e89e92164d5f527a8e2bbec08797179b2dacb1"

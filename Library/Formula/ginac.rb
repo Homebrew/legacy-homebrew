@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ginac < Formula
+  desc "GiNaC is Not a Computer algebra system"
   homepage 'http://www.ginac.de/'
   url 'http://www.ginac.de/ginac-1.6.3.tar.bz2'
   sha1 '39ebd0035491da84ca3406688c15930faebe5ef1'

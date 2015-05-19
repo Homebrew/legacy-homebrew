@@ -1,6 +1,7 @@
 require "formula"
 
 class Loudmouth < Formula
+  desc "Lightweight C library for the Jabber protocol"
   homepage "http://mcabber.com"
   url "http://mcabber.com/files/loudmouth-1.5.0-20121201.tar.bz2"
   version "1.5.0.20121201"

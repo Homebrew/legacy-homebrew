@@ -1,4 +1,5 @@
 class Frege < Formula
+  desc "Non-strict, functional programming language in the spirit of Haskell"
   homepage "https://github.com/Frege/frege/"
   url "https://github.com/Frege/frege/releases/download/3.22.324/frege3.22.524-gcc99d7e.jar"
   version "3.22.524-gcc99d7e"

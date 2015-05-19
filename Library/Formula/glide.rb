@@ -2,6 +2,7 @@ require "formula"
 require "language/go"
 
 class Glide < Formula
+  desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
   url "https://github.com/Masterminds/glide/archive/0.2.0.tar.gz"
   sha1 "a01fc0a56cfcb9070af2e8bbca35da81310b0b21"

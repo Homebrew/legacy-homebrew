@@ -1,6 +1,7 @@
 require "formula"
 
 class ApacheSpark < Formula
+  desc "Engine for large-scale data processing"
   homepage "https://spark.apache.org/"
   head "https://github.com/apache/spark.git"
   url "https://d3kbcqa49mib13.cloudfront.net/spark-1.3.1-bin-hadoop2.6.tgz"

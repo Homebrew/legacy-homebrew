@@ -1,6 +1,7 @@
 require "formula"
 
 class BoostBuild < Formula
+  desc "C++ build system"
   homepage "http://boost.org/boost-build2/"
   url "https://github.com/boostorg/build/archive/2014.10.tar.gz"
   sha1 "64f59424b829e9b5741bda58c78d830c993a0042"

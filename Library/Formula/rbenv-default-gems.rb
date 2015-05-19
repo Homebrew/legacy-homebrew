@@ -1,4 +1,5 @@
 class RbenvDefaultGems < Formula
+  desc "Auto-installs gems for Ruby installs"
   homepage "https://github.com/sstephenson/rbenv-default-gems"
   url "https://github.com/sstephenson/rbenv-default-gems/archive/v1.0.0.tar.gz"
   sha1 "e79c7073909e24e866df49cf9eb3f18aa8872842"

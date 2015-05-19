@@ -1,6 +1,7 @@
 require 'formula'
 
 class IosWebkitDebugProxy < Formula
+  desc "DevTools proxy for iOS devices"
   homepage 'https://github.com/google/ios-webkit-debug-proxy'
   url 'https://github.com/google/ios-webkit-debug-proxy/archive/1.4.tar.gz'
   sha1 'e6d882182fe2fd8f5827a9289545cc7e9ebb25e7'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Fdclone < Formula
+  desc "Console-based file manager"
   homepage 'http://hp.vector.co.jp/authors/VA012337/soft/fd/'
   url 'http://hp.vector.co.jp/authors/VA012337/soft/fd/FD-3.01b.tar.gz'
   sha1 '01a0174d0409a246c2caf34e901a1d51f9e45519'

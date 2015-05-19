@@ -1,6 +1,7 @@
 require "formula"
 
 class PltRacket < Formula
+  desc "Modern programming language in the Lisp/Scheme family"
   homepage "http://racket-lang.org/"
   url "http://mirror.racket-lang.org/installers/6.1.1/racket-minimal-6.1.1-src-builtpkgs.tgz"
   sha1 "8800c89a981f7b86808c7d9f2173c7f2a47147bc"

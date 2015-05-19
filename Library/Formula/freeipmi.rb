@@ -1,4 +1,5 @@
 class Freeipmi < Formula
+  desc "In-band and out-of-band IPMI (v1.5/2.0) software"
   homepage "https://www.gnu.org/software/freeipmi/"
   url "http://ftpmirror.gnu.org/freeipmi/freeipmi-1.4.8.tar.gz"
   mirror "https://ftp.gnu.org/gnu/freeipmi/freeipmi-1.4.8.tar.gz"

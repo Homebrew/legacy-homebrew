@@ -1,4 +1,5 @@
 class Osm2pgsql < Formula
+  desc "Convert OpenStreetMap data to postGIS-enabled PostgreSQL db"
   homepage "http://wiki.openstreetmap.org/wiki/Osm2pgsql"
   url "https://github.com/openstreetmap/osm2pgsql/archive/0.87.0.tar.gz"
   sha1 "6f302500e52d6e42147cc8dff8f344677e3131f8"

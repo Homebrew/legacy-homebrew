@@ -1,4 +1,5 @@
 class Libusb < Formula
+  desc "Library for USB device access"
   homepage "http://libusb.info"
   url "https://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.19/libusb-1.0.19.tar.bz2"
   sha256 "6c502c816002f90d4f76050a6429c3a7e0d84204222cbff2dce95dd773ba6840"

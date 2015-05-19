@@ -1,4 +1,5 @@
 class Capstone < Formula
+  desc "Multi-platform, multi-architecture disassembly framework"
   homepage "http://capstone-engine.org"
   url "http://capstone-engine.org/download/3.0.3/capstone-3.0.3.tgz"
   sha1 "0bb889ac8ba864b98892a17986075dea48be64b2"

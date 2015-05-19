@@ -1,4 +1,5 @@
 class Sslmate < Formula
+  desc "Buy SSL certs from the command-line"
   homepage "https://sslmate.com"
   url "https://packages.sslmate.com/other/sslmate-1.2.1.tar.gz"
   sha256 "b23d6e4ed14e8baf818c7ece974e8e0be2a3c59f7d6d5b8342a1f3f8eb02c0ea"

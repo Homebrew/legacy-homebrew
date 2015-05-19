@@ -1,6 +1,7 @@
 require "formula"
 
 class Davix < Formula
+  desc "Library and tools for advanced file I/O with HTTP-based protocols"
   homepage "http://dmc.web.cern.ch/projects/davix/home"
   url "https://git.cern.ch/pub/davix.git", :tag => "R_0_4_0-1"
   version "0.4.0-1"

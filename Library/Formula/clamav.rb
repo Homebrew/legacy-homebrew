@@ -1,4 +1,5 @@
 class Clamav < Formula
+  desc "Anti-virus software"
   homepage "http://www.clamav.net/"
   url "https://downloads.sourceforge.net/clamav/clamav-0.98.6.tar.gz"
   sha1 "03cb9a20a08aba9176b1f58d5527d06ec8261f9c"

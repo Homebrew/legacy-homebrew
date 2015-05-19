@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libopkele < Formula
+  desc "C++ implementation of OpenID decentralized identity system"
   homepage 'http://kin.klever.net/libopkele/'
 
   stable do

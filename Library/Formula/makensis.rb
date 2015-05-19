@@ -1,6 +1,7 @@
 require 'formula'
 
 class Makensis < Formula
+  desc "System to create Windows installers"
   homepage 'http://nsis.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-src.tar.bz2'
   sha1 '2cc9bff130031a0b1d76b01ec0a9136cdf5992ce'

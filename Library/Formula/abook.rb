@@ -1,4 +1,5 @@
 class Abook < Formula
+  desc "Address book with mutt support"
   homepage "http://abook.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/abook/abook/0.5.6/abook-0.5.6.tar.gz"
   sha1 "79f04f2264c8bd81bbc952b6560c86d69b21615d"

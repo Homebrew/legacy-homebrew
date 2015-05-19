@@ -1,4 +1,5 @@
 class Jpeg < Formula
+  desc "JPEG image manipulation library"
   homepage "http://www.ijg.org"
   url "http://www.ijg.org/files/jpegsrc.v8d.tar.gz"
   sha1 "f080b2fffc7581f7d19b968092ba9ebc234556ff"

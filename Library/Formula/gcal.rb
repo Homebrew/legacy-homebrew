@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gcal < Formula
+  desc "Gcal is a program for calculating and printing calendars"
   homepage 'http://www.gnu.org/software/gcal/'
   url 'http://ftpmirror.gnu.org/gcal/gcal-3.6.3.tar.xz'
   mirror 'http://ftp.gnu.org/gnu/gcal/gcal-3.6.3.tar.xz'

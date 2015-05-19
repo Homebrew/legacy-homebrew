@@ -1,4 +1,5 @@
 class Hashpump < Formula
+  desc "Tool to exploit hash length extension attack"
   homepage "https://github.com/bwall/HashPump"
   url "https://github.com/bwall/HashPump/archive/v1.2.0.tar.gz"
   sha256 "d002e24541c6604e5243e5325ef152e65f9fcd00168a9fa7a06ad130e28b811b"

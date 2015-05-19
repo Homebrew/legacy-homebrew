@@ -1,4 +1,5 @@
 class Collectd < Formula
+  desc "Statistics collection and monitoring daemon"
   homepage "https://collectd.org/"
   url "https://collectd.org/files/collectd-5.4.2.tar.gz"
   sha256 "9778080ee9ee676c7130b1ce86c2843c7359e29b9bd1c1c0e48fcd9cccf089eb"

@@ -1,4 +1,5 @@
 class Metashell < Formula
+  desc "Metaprogramming shell for C++ templates"
   homepage "https://github.com/sabel83/metashell"
   url "https://github.com/sabel83/metashell/archive/v2.0.0.tar.gz"
   sha1 "4dec47b6ee32cdf179b2eb297c289b296d3fba8f"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Vassh < Formula
+  desc "Vagrant Host-Guest SSH Command Wrapper/Proxy/Forwarder"
   homepage "https://github.com/x-team/vassh"
   url "https://github.com/x-team/vassh/archive/0.2.tar.gz"
   sha1 "b7be90ab0a20f3edebe45dab2f7a048684871068"

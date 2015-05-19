@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sproxy < Formula
+  desc "HTTP proxy server collecting URLs in a 'siege-friendly' manner"
   homepage 'http://www.joedog.org/sproxy-home/'
   url 'http://download.joedog.org/sproxy/sproxy-1.02.tar.gz'
   sha1 'c218b3a49d3acc3aca39ac658b2013846ee7c5b9'

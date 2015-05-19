@@ -1,6 +1,7 @@
 require "formula"
 
 class Liblastfm < Formula
+  desc "Libraries for Last.fm site services"
   homepage "https://github.com/lastfm/liblastfm/"
   url "https://github.com/lastfm/liblastfm/archive/1.0.9.tar.gz"
   sha1 "4a6323538a26c5ea2080a8ebe58e4407dbc42397"

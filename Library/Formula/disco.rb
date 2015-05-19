@@ -1,6 +1,7 @@
 require "formula"
 
 class Disco < Formula
+  desc "Distributed computing framework based on the MapReduce paradigm"
   homepage "http://discoproject.org/"
   url "https://github.com/discoproject/disco/archive/0.5.4.tar.gz"
   sha1 "43bc8fac5d5d657a81a8d7b628d1f72f97470b6e"

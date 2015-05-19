@@ -1,6 +1,7 @@
 require 'formula'
 
 class CrosstoolNg < Formula
+  desc "Tool for building toolchains"
   homepage 'http://crosstool-ng.org'
   url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.20.0.tar.bz2'
   sha1 'b11f7ee706753b8cf822f98b549f8ab9dd8da9c7'

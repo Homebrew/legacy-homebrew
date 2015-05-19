@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sqoop < Formula
+  desc "Transfer bulk data between Hadoop and structured datastores"
   homepage 'http://sqoop.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=sqoop/1.4.5/sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz'
   version '1.4.5'

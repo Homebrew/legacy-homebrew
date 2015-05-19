@@ -1,4 +1,5 @@
 class Rancid < Formula
+  desc "Really Awesome New Cisco confIg Differ"
   homepage "http://www.shrubbery.net/rancid/"
   url "ftp://ftp.shrubbery.net/pub/rancid/rancid-3.2.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/r/rancid/rancid_3.2.orig.tar.gz"

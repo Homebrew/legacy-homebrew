@@ -1,4 +1,5 @@
 class AutoScaling < Formula
+  desc "Client interface to the Amazon Auto Scaling web service"
   homepage "https://aws.amazon.com/developertools/2535"
   url "https://ec2-downloads.s3.amazonaws.com/AutoScaling-2011-01-01.zip"
   version "1.0.61.6"

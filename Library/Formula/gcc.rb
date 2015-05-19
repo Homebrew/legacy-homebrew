@@ -19,6 +19,7 @@ class Gcc < Formula
     `uname -r`.chomp
   end
 
+  desc "GNU compiler collection"
   homepage "https://gcc.gnu.org"
   url "http://ftpmirror.gnu.org/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
   mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"

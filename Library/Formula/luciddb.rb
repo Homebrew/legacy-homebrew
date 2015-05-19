@@ -1,6 +1,7 @@
 require 'formula'
 
 class Luciddb < Formula
+  desc "DBMS optimized for business intelligence"
   homepage 'http://www.luciddb.org/'
   url 'https://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2'
   sha1 'b0a7b9dbe997a1754d48856c866ffedf4d276eae'

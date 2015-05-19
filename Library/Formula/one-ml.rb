@@ -1,4 +1,5 @@
 class OneMl < Formula
+  desc "Reboot of ML, unifying its core and (now first-class) module layers"
   homepage "https://www.mpi-sws.org/~rossberg/1ml/"
   url "https://www.mpi-sws.org/~rossberg/1ml/1ml-0.1.zip"
   sha256 "64c40c497f48355811fc198a2f515d46c1bb5031957b87f6a297822b07bb9c9a"

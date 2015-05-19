@@ -1,4 +1,5 @@
 class Pmccabe < Formula
+  desc "Calculate McCabe-style cyclomatic complexity for C/C++ code"
   homepage "https://packages.debian.org/sid/pmccabe"
   url "https://mirrors.kernel.org/debian/pool/main/p/pmccabe/pmccabe_2.6.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/p/pmccabe/pmccabe_2.6.tar.gz"

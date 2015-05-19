@@ -1,4 +1,5 @@
 class Czmq < Formula
+  desc "High-level C binding for ØMQ"
   homepage "http://czmq.zeromq.org/"
   url "http://download.zeromq.org/czmq-2.2.0.tar.gz"
   sha1 "2f4fd8de4cf04a68a8f6e88ea7657d8068f472d2"

@@ -1,4 +1,5 @@
 class Ascii < Formula
+  desc "List ASCII idiomatic names and octal/decimal code-point forms"
   homepage "http://www.catb.org/~esr/ascii/"
   url "http://www.catb.org/~esr/ascii/ascii-3.15.tar.gz"
   sha256 "ace1db8b64371d53d9ad420d341f2b542324ae70437e37b4b75646f12475ff5f"

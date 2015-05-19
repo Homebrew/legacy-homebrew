@@ -1,4 +1,5 @@
 class Cryptopp < Formula
+  desc "Free C++ class library of cryptographic schemes"
   homepage "http://www.cryptopp.com/"
   url "https://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.2/cryptopp562.zip"
   mirror "http://www.cryptopp.com/cryptopp562.zip"

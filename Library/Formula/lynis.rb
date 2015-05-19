@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lynis < Formula
+  desc "Security and system auditing tool to harden systems"
   homepage "https://cisofy.com/lynis/"
   url "https://cisofy.com/files/lynis-2.1.0.tar.gz"
   sha256 "16ed596c8c283b8e4c635ada25ceb042371384ae09b3238a658ca60801a73c24"

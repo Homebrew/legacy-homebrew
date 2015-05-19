@@ -1,6 +1,7 @@
 require "formula"
 
 class Ssreflect < Formula
+  desc "Virtual package provided by libssreflect-coq"
   homepage "http://www.msr-inria.fr/projects/mathematical-components-2/"
   url "http://ssr.msr-inria.inria.fr/FTP/ssreflect-1.5.tar.gz"
   sha1 "131f4e2746b4a97627ae91a9f980f61ec42a00c9"

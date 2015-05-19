@@ -1,6 +1,7 @@
 require "formula"
 
 class Xa < Formula
+  desc "6502 cross assembler"
   homepage "http://www.floodgap.com/retrotech/xa/"
   url "http://www.floodgap.com/retrotech/xa/dists/xa-2.3.7.tar.gz"
   sha1 "e5a6eb86c5683c217a778553a78a30780702c1d9"

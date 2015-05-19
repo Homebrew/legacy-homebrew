@@ -1,4 +1,5 @@
 class Fakeroot < Formula
+  desc "Provide a fake root environment"
   homepage "https://tracker.debian.org/pkg/fakeroot"
   url "https://mirrors.kernel.org/debian/pool/main/f/fakeroot/fakeroot_1.20.2.orig.tar.bz2"
   mirror "http://ftp.debian.org/debian/pool/main/f/fakeroot/fakeroot_1.20.2.orig.tar.bz2"

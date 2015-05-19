@@ -1,4 +1,5 @@
 class Qt < Formula
+  desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
 
   stable do

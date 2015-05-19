@@ -1,4 +1,5 @@
 class Vim < Formula
+  desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
   head "https://vim.googlecode.com/hg/"
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim

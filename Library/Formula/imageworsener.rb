@@ -1,4 +1,5 @@
 class Imageworsener < Formula
+  desc "Utility and library for image scaling and processing"
   homepage "http://entropymine.com/imageworsener/"
   url "http://entropymine.com/imageworsener/imageworsener-1.2.0.tar.gz"
   sha256 "97fdb1aafac7bc2339b2ce813071f0900de0b093b96ab1a99a43f9647afdfe35"

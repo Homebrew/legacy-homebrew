@@ -1,6 +1,7 @@
 require "formula"
 
 class Jhiccup < Formula
+  desc "Measure pauses and stalls of an app's Java runtime platform"
   homepage "http://www.jhiccup.com"
   url "http://www.azulsystems.com/sites/default/files/images/jHiccup.1.3.7.zip"
   sha1 "2bd5ad585b50b80b6a12d6b2d5338fde8c18a10b"

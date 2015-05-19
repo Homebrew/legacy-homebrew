@@ -1,6 +1,7 @@
 require 'formula'
 
 class Liboil < Formula
+  desc "C library of simple functions optimized for various CPUs"
   homepage 'http://liboil.freedesktop.org/'
   url 'http://liboil.freedesktop.org/download/liboil-0.3.17.tar.gz'
   sha1 'f9d7103a3a4a4089f56197f81871ae9129d229ed'

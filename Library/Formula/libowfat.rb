@@ -1,4 +1,5 @@
 class Libowfat < Formula
+  desc "Reimplements libdjb"
   homepage 'http://www.fefe.de/libowfat/'
   head ":pserver:cvs:@cvs.fefe.de:/cvs", :using => :cvs
   url 'http://dl.fefe.de/libowfat-0.29.tar.bz2'

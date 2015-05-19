@@ -1,4 +1,5 @@
 class Autojump < Formula
+  desc "Shell extension to jump to frequently used directories"
   homepage "https://github.com/joelthelion/autojump"
   url "https://github.com/joelthelion/autojump/archive/release-v22.2.4.tar.gz"
   sha256 "816badb0721f735e2b86bdfa8b333112f3867343c7c2263c569f75b4ec91f475"

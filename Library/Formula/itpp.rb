@@ -1,6 +1,7 @@
 require "formula"
 
 class Itpp < Formula
+  desc "Library of math, signal, and communication classes and functions"
   homepage "http://itpp.sourceforge.net"
   head "http://git.code.sf.net/p/itpp/git"
   url "https://downloads.sourceforge.net/project/itpp/itpp/4.3.1/itpp-4.3.1.tar.bz2"

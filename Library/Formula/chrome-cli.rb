@@ -1,6 +1,7 @@
 require "formula"
 
 class ChromeCli < Formula
+  desc "Control Google Chrome from the command-line"
   homepage "https://github.com/prasmussen/chrome-cli"
   url "https://github.com/prasmussen/chrome-cli/archive/1.5.0.tar.gz"
   sha1 "aab28c1dfafd6a54f4de757b390bdb2b6ab0c522"

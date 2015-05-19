@@ -1,4 +1,5 @@
 class Ledit < Formula
+  desc "Line editor for interactive commands"
   homepage "http://pauillac.inria.fr/~ddr/ledit/"
   url "http://pauillac.inria.fr/~ddr/ledit/distrib/src/ledit-2.03.tgz"
   sha256 "ce08a8568c964009ccb0cbba45ae78b9a96c823f42a4fd61431a5b0c2c7a19ce"

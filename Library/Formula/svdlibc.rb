@@ -1,6 +1,7 @@
 require 'formula'
 
 class Svdlibc < Formula
+  desc "C library to perform singular value decomposition"
   homepage 'http://tedlab.mit.edu/~dr/SVDLIBC/'
   url 'http://tedlab.mit.edu/~dr/SVDLIBC/svdlibc.tgz'
   version '1.4'

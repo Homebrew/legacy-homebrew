@@ -1,4 +1,5 @@
 class Talloc < Formula
+  desc "Hierarchical, reference-counted memory pool with destructors"
   homepage "https://talloc.samba.org/"
   url "https://www.samba.org/ftp/talloc/talloc-2.1.2.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/t/talloc/talloc_2.1.2.orig.tar.gz"

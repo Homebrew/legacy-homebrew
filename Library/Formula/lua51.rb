@@ -1,6 +1,7 @@
 class Lua51 < Formula
   # 5.2 is not fully backwards compatible so we must retain 2 Luas for now.
   # The transition has begun. Lua will now become Lua51, and Lua52 will become Lua.
+  desc "Powerful, lightweight programming language (v5.1.5)"
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.1.5.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5.orig.tar.gz"

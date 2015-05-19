@@ -1,4 +1,5 @@
 class Libmagic < Formula
+  desc "Implementation of the file(1) command"
   homepage "http://www.darwinsys.com/file/"
   url "ftp://ftp.astron.com/pub/file/file-5.22.tar.gz"
   mirror "https://fossies.org/unix/misc/file-5.22.tar.gz"

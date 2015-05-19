@@ -2,6 +2,7 @@ require "formula"
 require "language/go"
 
 class Influxdb < Formula
+  desc "Time series, events, and metrics database"
   homepage "http://influxdb.com"
   url "https://s3.amazonaws.com/get.influxdb.org/influxdb-0.8.8.src.tar.gz"
   sha1 "a5686d0374ec5ab616e335e9c5fb1aeacd17fb00"

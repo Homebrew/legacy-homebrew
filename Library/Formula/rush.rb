@@ -1,4 +1,5 @@
 class Rush < Formula
+  desc "GNU's Restricted User SHell"
   homepage "https://www.gnu.org/software/rush/"
   url "http://ftpmirror.gnu.org/rush/rush-1.7.tar.gz"
   mirror "https://ftp.gnu.org/gnu/rush/rush-1.7.tar.gz"

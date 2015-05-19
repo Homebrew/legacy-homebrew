@@ -1,4 +1,5 @@
 class Gearman < Formula
+  desc "Application framework to farm out work to other machines or processes"
   homepage "http://gearman.org/"
   url "https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz"
   sha256 "973d7a3523141a84c7b757c6f243febbc89a3631e919b532c056c814d8738acb"

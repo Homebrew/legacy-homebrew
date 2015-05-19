@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rasqal < Formula
+  desc "RDF query library"
   homepage 'http://librdf.org/rasqal/'
   url 'http://download.librdf.org/source/rasqal-0.9.33.tar.gz'
   sha1 '281c2e0a352c53ef1656bfe778c380226d61726f'

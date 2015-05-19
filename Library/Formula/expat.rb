@@ -1,4 +1,5 @@
 class Expat < Formula
+  desc "XML 1.0 parser"
   homepage "http://www.libexpat.org"
   url "https://downloads.sourceforge.net/project/expat/expat/2.1.0/expat-2.1.0.tar.gz"
   sha1 "b08197d146930a5543a7b99e871cba3da614f6f0"

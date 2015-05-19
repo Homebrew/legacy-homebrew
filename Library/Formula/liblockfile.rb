@@ -1,6 +1,7 @@
 require 'formula'
 
 class Liblockfile < Formula
+  desc "Library providing functions to lock standard mailboxes"
   homepage 'http://packages.qa.debian.org/libl/liblockfile.html'
   url 'http://mirrors.kernel.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz'
   mirror 'http://ftp.us.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz'

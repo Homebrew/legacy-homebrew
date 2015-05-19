@@ -1,6 +1,7 @@
 require "formula"
 
 class Rtorrent < Formula
+  desc "Console-based BitTorrent client"
   homepage "http://libtorrent.rakshasa.no/"
   url "http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.4.tar.gz"
   sha1 "e997822e9b0d53cf8ecfb6b836e380065890e10d"

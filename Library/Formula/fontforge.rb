@@ -1,4 +1,5 @@
 class Fontforge < Formula
+  desc "Outline and bitmap font editor/converter for many formats"
   homepage "https://fontforge.github.io"
   url "https://github.com/fontforge/fontforge/archive/20150430.tar.gz"
   sha256 "430c6d02611c7ca948df743e9241994efe37eda25f81a94aeadd9b6dd286ff37"

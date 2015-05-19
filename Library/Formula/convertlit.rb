@@ -1,6 +1,7 @@
 require 'formula'
 
 class Convertlit < Formula
+  desc "Convert Microsoft Reader format eBooks into open format"
   homepage 'http://www.convertlit.com/'
   url 'http://www.convertlit.com/clit18src.zip'
   sha1 '0fa9aead468bd8640c49374d46d78d2a3e79489f'

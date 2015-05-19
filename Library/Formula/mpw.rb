@@ -1,4 +1,5 @@
 class Mpw < Formula
+  desc "Master Password for the terminal"
   homepage "http://masterpasswordapp.com"
   url "https://ssl.masterpasswordapp.com/mpw-2.1-cli4-0-gf6b2287.tar.gz"
   sha1 "036b3d8f4bd6f0676ae16e7e9c3de65f6030874f"

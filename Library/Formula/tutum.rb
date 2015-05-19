@@ -1,6 +1,7 @@
 require "formula"
 
 class Tutum < Formula
+  desc "Docker platform for dev and ops"
   homepage "https://www.tutum.co/"
   url "https://pypi.python.org/packages/source/t/tutum/tutum-0.15.1.tar.gz"
   sha256 "f476f5a680fd473c211a17368fe6761ff942fa6f25f0d368d737110d5b561819"

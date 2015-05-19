@@ -1,4 +1,5 @@
 class Acpica < Formula
+  desc "OS-independent implementation of the ACPI specification"
   homepage "https://www.acpica.org/"
   head "https://github.com/acpica/acpica.git"
   url "https://acpica.org/sites/acpica/files/acpica-unix2-20150204.tar.gz"

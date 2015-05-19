@@ -1,6 +1,7 @@
 require "formula"
 
 class Matlab2tikz < Formula
+  desc "Convert MATLAB(R) figures into TikZ/Pgfplots figures"
   homepage "https://github.com/nschloe/matlab2tikz"
   url "https://github.com/nschloe/matlab2tikz/archive/0.5.0.tar.gz"
   sha1 "1c53d378be87fc9ca43c921ab7193257ea416864"

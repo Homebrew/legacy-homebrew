@@ -1,6 +1,7 @@
 require "formula"
 
 class Gegl < Formula
+  desc "Graph based image processing framework"
   homepage "http://www.gegl.org/"
 
   stable do

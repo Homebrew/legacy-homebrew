@@ -1,4 +1,5 @@
 class Nu < Formula
+  desc "An object-oriented, Lisp-like programming language"
   homepage 'http://programming.nu'
   url 'https://github.com/timburks/nu/archive/v2.1.1.tar.gz'
   sha1 'ca0f9bbd5bbdb8528be516325f274d07d4be54bf'

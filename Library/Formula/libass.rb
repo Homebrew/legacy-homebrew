@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libass < Formula
+  desc "Subtitle renderer for the ASS/SSA subtitle format"
   homepage 'https://github.com/libass/libass'
   url 'https://github.com/libass/libass/releases/download/0.12.2/libass-0.12.2.tar.gz'
   sha1 '416efe79a8529c246a4ed98c8698265a87ffa22a'

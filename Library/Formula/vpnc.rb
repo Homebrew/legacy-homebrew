@@ -1,6 +1,7 @@
 require "formula"
 
 class Vpnc < Formula
+  desc "Cisco VPN concentrator client"
   homepage "http://www.unix-ag.uni-kl.de/~massar/vpnc/"
   url "http://ftp.debian.org/debian/pool/main/v/vpnc/vpnc_0.5.3r512.orig.tar.gz"
   version "0.5.3r512"

@@ -1,4 +1,5 @@
 class Sshguard < Formula
+  desc "Protect from brute force attacks against SSH"
   homepage "http://www.sshguard.net/"
   url "https://downloads.sourceforge.net/project/sshguard/sshguard/1.6.0/sshguard-1.6.0.tar.xz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/sshguard/sshguard_1.6.0.orig.tar.xz"
