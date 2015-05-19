@@ -1,8 +1,8 @@
 class Autoconf < Formula
-  homepage "http://www.gnu.org/software/autoconf"
+  homepage "https://www.gnu.org/software/autoconf"
   url "http://ftpmirror.gnu.org/autoconf/autoconf-2.69.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz"
-  sha1 "562471cbcb0dd0fa42a76665acf0dbb68479b78a"
+  mirror "https://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz"
+  sha256 "954bd69b391edc12d6a4a51a2dd1476543da5c6bbf05a95b59dc0dd6fd4c2969"
 
   bottle do
     revision 1

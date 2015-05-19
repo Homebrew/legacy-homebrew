@@ -2,14 +2,14 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/v0.11.5.1.tar.gz"
-  sha1 "cba0333eb55322320dbfad90840b2e260cb1e9bf"
+  url "https://github.com/tutumcloud/tutum-cli/archive/v0.14.1.tar.gz"
+  sha256 "d908123cc9f761171155f6ccfc66227393fd0dba485963bd40753b5579e0cf71"
 
   bottle do
     cellar :any
-    sha1 "1d950e6fcc51ace7b4b11a4311c26434e7f439f7" => :yosemite
-    sha1 "c88aeeee454dac9eaba90450b248c5bf3a50c8a9" => :mavericks
-    sha1 "e3189cfa513d954a75c74b638f0d735488b3c282" => :mountain_lion
+    sha256 "6d704a7cb443a61fb4d9f090c477303c445fa07966e1c6173c96897661ebdf17" => :yosemite
+    sha256 "1c27aa0ae16c1ffdcb87f501697dc8e6e819e805f0346c994305a6d89e711bce" => :mavericks
+    sha256 "f8e46e0a24b4309af63230f8a95b8eb76e5380d831d9f07e86c9e7f278a2f98f" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -17,57 +17,57 @@ class Tutum < Formula
 
   resource "ago" do
     url "https://pypi.python.org/packages/source/a/ago/ago-0.0.6.tar.gz"
-    sha1 "b48b99151370de0c1642748a3f3b206649645d8d"
+    sha256 "a64811a5a44cd3ba687d800986edf0f7a97859b8da75d3347c915b58b0869b44"
   end
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.5.3.tar.gz"
-    sha1 "11708a7021e3d0d522e145c057256d7d2acaec07"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.1.0.tar.gz"
+    sha256 "6a07eb56b234719e89d3038c24f9c870b6f1ee0b58080120e865e2752673cd94"
   end
 
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
-    sha1 "476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73"
+    sha256 "e713da45c96ca53a3a8b48140d4120374db622df16ab71759c9ceb5b8d46fe7c"
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.11.2.tar.gz"
-    sha1 "eea0dd65fc0a4809d1956a1052788fe9e9290c10"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.14.2.tar.gz"
+    sha256 "cd7743600b8e9c367f0c4907752f09b4aad86c0adb1fd46a44c4871ee8fc2d97"
   end
 
   resource "backports.ssl-match-hostname" do
     url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.4.0.2.tar.gz"
-    sha1 "da4e41f3b110279d2382df47ac1e4f10c63cf954"
+    sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
   end
 
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
-    sha1 "fbafcd19ea0082b3ecb17695b4cb46070181699f"
+    sha256 "eec865307ebe7f329a6a9945c15453265a449cdaaf3710340828a1934d53e468"
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
   resource "tabulate" do
     url "https://pypi.python.org/packages/source/t/tabulate/tabulate-0.7.2.tar.gz"
-    sha1 "da057c6d4faab9847436c3221c98f34911e623df"
+    sha256 "532ccab8d9e4659a5f016d84814df86cc04763785e9de2739e890d956dc82d8f"
   end
 
   resource "websocket-client" do
-    url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.23.0.tar.gz"
-    sha1 "3348c226eb44324417db777e962fec6bda8134b9"
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.29.0.tar.gz"
+    sha256 "abfcb1a8dff4df1b12db4c227d3f4f38a68b42c35a8bca9d2bee10f8eae2b434"
   end
 
   resource "future" do
     url "https://pypi.python.org/packages/source/f/future/future-0.14.3.tar.gz"
-    sha1 "44fdd9323913d21068b29ecda795a98c07dc8a40"
+    sha256 "62857d51881d97dd5492b9295b9f51d92108a52a4c88e2c40054c1d3e5995be9"
   end
 
   def install

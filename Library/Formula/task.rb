@@ -1,14 +1,13 @@
 class Task < Formula
   homepage "http://www.taskwarrior.org/"
-  url "http://taskwarrior.org/download/task-2.4.1.tar.gz"
-  sha1 "4882628ac339e31fcb0fef2f4a1c585e86eb95c7"
-  head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.4.2", :shallow => false
+  url "http://taskwarrior.org/download/task-2.4.4.tar.gz"
+  sha1 "e7e1336ed099f672b3d5971d6a221b72ed804ac6"
+  head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.4.5", :shallow => false
 
   bottle do
-    revision 1
-    sha1 "acbdbada15ee3024b8678cc5bc962832de33047a" => :yosemite
-    sha1 "4568d8cb2e9cef3ec533813ac156e5119dde4e07" => :mavericks
-    sha1 "f391c3c7572f759ebcb389e37920000afe7eaf3f" => :mountain_lion
+    sha256 "d88850d6183ecb96ce63d1a0601591262eb5675dfa786eba2d244f857dffa55e" => :yosemite
+    sha256 "f160b9ff4cd55935c35a636257f8745acde5e8a45d9ece951173330ad98b4def" => :mavericks
+    sha256 "aeae5194ecd2e3324d9bc925e5b9b8968063978a03a78d5c977da0fdba77d81c" => :mountain_lion
   end
 
   depends_on "cmake" => :build

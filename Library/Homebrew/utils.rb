@@ -4,6 +4,7 @@ require 'os/mac'
 require 'utils/json'
 require 'utils/inreplace'
 require 'utils/popen'
+require 'utils/fork'
 require 'open-uri'
 
 class Tty
@@ -120,13 +121,16 @@ module Homebrew
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
   end
 
-  def self.install_gem_setup_path! gem, executable=gem
+  def self.install_gem_setup_path! gem, version=nil, executable=gem
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
 
-    unless quiet_system "gem", "list", "--installed", gem
+    args = [gem]
+    args << "-v" << version if version
+
+    unless quiet_system "gem", "list", "--installed", *args
       safe_system "gem", "install", "--no-ri", "--no-rdoc",
-                                    "--user-install", gem
+                                    "--user-install", *args
     end
 
     unless which executable
@@ -144,6 +148,15 @@ def with_system_path
   yield
 ensure
   ENV['PATH'] = old_path
+end
+
+def run_as_not_developer(&block)
+  begin
+    old = ENV.delete "HOMEBREW_DEVELOPER"
+    yield
+  ensure
+    ENV["HOMEBREW_DEVELOPER"] = old
+  end
 end
 
 # Kernel.system but with exceptions
@@ -291,6 +304,16 @@ def paths
   end.uniq.compact
 end
 
+# return the shell profile file based on users' preference shell
+def shell_profile
+  case ENV["SHELL"]
+  when %r{/(ba)?sh} then "~/.bash_profile"
+  when %r{/zsh} then "~/.zshrc"
+  when %r{/ksh} then "~/.kshrc"
+  else "~/.bash_profile"
+  end
+end
+
 module GitHub extend self
   ISSUES_URI = URI.parse("https://api.github.com/search/issues")
 
@@ -301,9 +324,9 @@ module GitHub extend self
     def initialize(reset, error)
       super <<-EOS.undent
         GitHub #{error}
-        Try again in #{pretty_ratelimit_reset(reset)}, or create an API token:
-          https://github.com/settings/applications
-        and then set HOMEBREW_GITHUB_API_TOKEN.
+        Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
+          https://github.com/settings/tokens
+        and then set it as HOMEBREW_GITHUB_API_TOKEN.
         EOS
     end
 
@@ -321,28 +344,26 @@ module GitHub extend self
       super <<-EOS.undent
         GitHub #{error}
         HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          https://github.com/settings/applications
+          https://github.com/settings/tokens
         EOS
     end
   end
 
-  def open url, headers={}, &block
+  def open(url, &block)
     # This is a no-op if the user is opting out of using the GitHub API.
     return if ENV['HOMEBREW_NO_GITHUB_API']
 
     require "net/https"
 
-    default_headers = {
+    headers = {
       "User-Agent" => HOMEBREW_USER_AGENT,
       "Accept"     => "application/vnd.github.v3+json",
     }
 
-    default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
+    headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
 
     begin
-      Kernel.open(url, default_headers.merge(headers)) do |f|
-        yield Utils::JSON.load(f.read)
-      end
+      Kernel.open(url, headers) { |f| yield Utils::JSON.load(f.read) }
     rescue OpenURI::HTTPError => e
       handle_api_error(e)
     rescue EOFError, SocketError, OpenSSL::SSL::SSLError => e

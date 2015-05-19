@@ -1,8 +1,9 @@
 class Hbase < Formula
-  homepage "http://hbase.apache.org"
-  url "http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.98.10.1/hbase-0.98.10.1-hadoop2-bin.tar.gz"
-  sha1 "ffe3b17a0c44417f2f8dabf9f263699f471d403f"
+  homepage "https://hbase.apache.org"
+  url "https://www.apache.org/dyn/closer.cgi?path=hbase/hbase-1.0.1/hbase-1.0.1-bin.tar.gz"
+  sha256 "bd9586e94b22ad12ae16fa229a017d7370913b4ce2fead717832630127e3a08e"
 
+  depends_on :java => "1.6+"
   depends_on "hadoop"
 
   def install
@@ -16,9 +17,7 @@ class Hbase < Formula
   end
 
   def caveats; <<-EOS.undent
-    Requires Java 1.6.0 or greater.
-
-    You must also edit the configs in:
+    You must edit the configs in:
       #{libexec}/conf
     to reflect your environment.
 

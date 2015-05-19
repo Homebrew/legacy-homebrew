@@ -40,7 +40,7 @@ module Homebrew
       stem = Pathname.new(url).stem
       print "Formula name [#{stem}]: "
       fc.name = __gets || stem
-      fc.path = Formula.path(fc.name)
+      fc.path = Formulary.path(fc.name)
     end
 
     # Don't allow blacklisted formula, or names that shadow aliases,
@@ -73,7 +73,7 @@ module Homebrew
 end
 
 class FormulaCreator
-  attr_reader :url, :sha1
+  attr_reader :url, :sha256
   attr_accessor :name, :version, :path, :mode
 
   def url= url
@@ -84,9 +84,9 @@ class FormulaCreator
       @name ||= $1
       /(.*?)[-_.]?#{path.version}/.match path.basename
       @name ||= $1
-      @path = Formula.path @name unless @name.nil?
+      @path = Formulary.path @name unless @name.nil?
     else
-      @path = Formula.path name
+      @path = Formulary.path name
     end
     if @version
       @version = Version.new(@version)
@@ -112,7 +112,7 @@ class FormulaCreator
       r.url(url)
       r.version(version)
       r.owner = self
-      @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
+      @sha256 = r.fetch.sha256 if r.download_strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
@@ -129,7 +129,7 @@ class FormulaCreator
     <% unless version.nil? or version.detected_from_url? %>
       version "#{version}"
     <% end %>
-      sha1 "#{sha1}"
+      sha256 "#{sha256}"
 
     <% if mode == :cmake %>
       depends_on "cmake" => :build

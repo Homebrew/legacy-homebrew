@@ -20,7 +20,7 @@ module Homebrew
 
     fi = FormulaInstaller.new(f)
     fi.options             = options
-    fi.build_bottle        = ARGV.build_bottle? || tab.build_bottle?
+    fi.build_bottle        = ARGV.build_bottle? || (!f.bottled? && tab.build_bottle?)
     fi.build_from_source   = ARGV.build_from_source?
     fi.force_bottle        = ARGV.force_bottle?
     fi.verbose             = ARGV.verbose?

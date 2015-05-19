@@ -1,7 +1,7 @@
 class Checkstyle < Formula
   homepage "http://checkstyle.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.3/checkstyle-6.3-bin.tar.gz"
-  sha1 "13cc70785a4208f854677726ede5518997122224"
+  url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.4.1/checkstyle-6.4.1-bin.tar.gz"
+  sha256 "ff37bd1b81914dc67f71646cae991e2763d2c7d1d2bf8b73e3dad5506a818170"
 
   def install
     libexec.install "checkstyle-#{version}-all.jar"

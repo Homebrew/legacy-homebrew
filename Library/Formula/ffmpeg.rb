@@ -1,14 +1,14 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://www.ffmpeg.org/releases/ffmpeg-2.5.4.tar.bz2"
-  sha1 "e7d0bab14e82876762531a883c6b48918631d48c"
+  url "https://ffmpeg.org/releases/ffmpeg-2.6.2.tar.bz2"
+  sha256 "889e3aa069b724dc95cbfc79ef83322a8a39d9f6225f39fad1b47294fc1f29ba"
 
-  head "git://git.videolan.org/ffmpeg.git"
+  head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha1 "1d2f2630e86a06519f36263914ab79dc2f2fef72" => :yosemite
-    sha1 "d2dcb0fd8c650ad8b106ab3ab4fcd0b5512eb6aa" => :mavericks
-    sha1 "cddc9c78521770bc529e85f80f842dff678bc1e6" => :mountain_lion
+    sha256 "86a7a9e11279a93870255bdb2a3e18d874a7ff6ddaa5062d199172a6cbbe64e2" => :yosemite
+    sha256 "31e0e71be605a8fbdd17c9bacbc8abec81e0ff54803a11e65d24b99664d1c8d3" => :mavericks
+    sha256 "a051897c6cc9b1f4a161a64f77746c280e65795f74d5ac986ab87020d582a8b1" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -35,7 +35,7 @@ class Ffmpeg < Formula
   depends_on "pkg-config" => :build
 
   # manpages won't be built without texi2html
-  depends_on "texi2html" => :build if MacOS.version >= :mountain_lion
+  depends_on "texi2html" => :build
   depends_on "yasm" => :build
 
   depends_on "x264" => :recommended
@@ -125,7 +125,7 @@ class Ffmpeg < Formula
     end
 
     # A bug in a dispatch header on 10.10, included via CoreFoundation,
-    # prevents GCC from building VDA support. GCC has no probles on
+    # prevents GCC from building VDA support. GCC has no problems on
     # 10.9 and earlier.
     # See: https://github.com/Homebrew/homebrew/issues/33741
     if MacOS.version < :yosemite || ENV.compiler == :clang
@@ -135,7 +135,7 @@ class Ffmpeg < Formula
     end
 
     # For 32-bit compilation under gcc 4.2, see:
-    # http://trac.macports.org/ticket/20938#comment:22
+    # https://trac.macports.org/ticket/20938#comment:22
     ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
 
     system "./configure", *args

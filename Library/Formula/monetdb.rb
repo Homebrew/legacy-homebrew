@@ -17,13 +17,13 @@ end
 
 class Monetdb < Formula
   homepage "https://www.monetdb.org/"
-  url "https://dev.monetdb.org/downloads/sources/Oct2014-SP2/MonetDB-11.19.9.zip"
-  sha1 "dde2cad29d2f5bbdd2e2845ee0663969eb0aeb3f"
+  url "https://dev.monetdb.org/downloads/sources/Oct2014-SP3/MonetDB-11.19.11.zip"
+  sha1 "eace3b154e43e5ab1b5c6e381b7688296cbd257e"
 
   bottle do
-    sha1 "a277df350c7758eee0dd9082f5b369da4aeb67b3" => :yosemite
-    sha1 "360ce097dd63e8af6caf94f0a1c422491d965c9b" => :mavericks
-    sha1 "d63d44cbc488f5f4d40d5ed169e92d2ece4964d6" => :mountain_lion
+    sha256 "b67981d95bc9f86fe132284beded066ef2f13727e6daa0b814c660ed02f5195f" => :yosemite
+    sha256 "2003c68af6ad2fb0c5a07bed030499ac7a8cc9237b5ccbbb10ab5e3fc6c0c610" => :mavericks
+    sha256 "2ed04ccbd56d3e9c895f3b0e551fe97d6146f36157f432bc1b4a604df85f569c" => :mountain_lion
   end
 
   head do

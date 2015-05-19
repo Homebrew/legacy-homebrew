@@ -133,6 +133,14 @@ class FormulaAuditor
     if formula.class < GithubGistFormula
       problem "GithubGistFormula is deprecated, use Formula instead"
     end
+
+    if formula.class < ScriptFileFormula
+      problem "ScriptFileFormula is deprecated, use Formula instead"
+    end
+
+    if formula.class < AmazonWebServicesFormula
+      problem "AmazonWebServicesFormula is deprecated, use Formula instead"
+    end
   end
 
   @@aliases ||= Formula.aliases
@@ -179,7 +187,7 @@ class FormulaAuditor
               depends_on "#{dep}" => :run
           EOS
         when "git"
-          problem "Use `depends_on :git` instead of `depends_on 'git'`"
+          problem "Don't use git as a dependency"
         when "mercurial"
           problem "Use `depends_on :hg` instead of `depends_on 'mercurial'`"
         when "ruby"
@@ -208,6 +216,9 @@ class FormulaAuditor
     formula.conflicts.each do |c|
       begin
         Formulary.factory(c.name)
+      rescue TapFormulaUnavailableError
+        # Don't complain about missing cross-tap conflicts.
+        next
       rescue FormulaUnavailableError
         problem "Can't find conflicting formula #{c.name.inspect}."
       end
@@ -223,7 +234,7 @@ class FormulaAuditor
     end
   end
 
-  def audit_urls
+  def audit_homepage
     homepage = formula.homepage
 
     unless homepage =~ %r[^https?://]
@@ -243,26 +254,26 @@ class FormulaAuditor
 
     # Automatic redirect exists, but this is another hugely common error.
     if homepage =~ %r[^http://code\.google\.com/]
-      problem "Google Code homepages should be https:// links (URL is #{homepage})."
+      problem "Google Code homepages should be https:// URLs (URL is #{homepage})."
     end
 
     # GNU has full SSL/TLS support but no auto-redirect.
     if homepage =~ %r[^http://www\.gnu\.org/]
-      problem "GNU homepages should be https:// links (URL is #{homepage})."
+      problem "GNU homepages should be https:// URLs (URL is #{homepage})."
     end
 
     # Savannah has full SSL/TLS support but no auto-redirect.
-    # Doesn't apply to the download links (boo), only the homepage.
+    # Doesn't apply to the download URLs, only the homepage.
     if homepage =~ %r[^http://savannah\.nongnu\.org/]
-      problem "Savannah homepages should be https:// links (URL is #{homepage})."
+      problem "Savannah homepages should be https:// URLs (URL is #{homepage})."
     end
 
     if homepage =~ %r[^http://((?:trac|tools|www)\.)?ietf\.org]
-      problem "ietf homepages should be https:// links (URL is #{homepage})."
+      problem "ietf homepages should be https:// URLs (URL is #{homepage})."
     end
 
     if homepage =~ %r[^http://((?:www)\.)?gnupg.org/]
-      problem "GnuPG homepages should be https:// links (URL is #{homepage})."
+      problem "GnuPG homepages should be https:// URLs (URL is #{homepage})."
     end
 
     # Freedesktop is complicated to handle - It has SSL/TLS, but only on certain subdomains.
@@ -271,9 +282,9 @@ class FormulaAuditor
     # "Software" is redirected to https://wiki.freedesktop.org/www/Software/project_name
     if homepage =~ %r[^http://((?:www|nice|libopenraw|liboil|telepathy|xorg)\.)?freedesktop\.org/(?:wiki/)?]
       if homepage =~ /Software/
-        problem "The url should be styled `https://wiki.freedesktop.org/www/Software/project_name`, not #{homepage})."
+        problem "The url should be styled `https://wiki.freedesktop.org/www/Software/project_name`, not #{homepage}."
       else
-        problem "The url should be styled `https://wiki.freedesktop.org/project_name`, not #{homepage})."
+        problem "The url should be styled `https://wiki.freedesktop.org/project_name`, not #{homepage}."
       end
     end
 
@@ -283,120 +294,24 @@ class FormulaAuditor
 
     # There's an auto-redirect here, but this mistake is incredibly common too.
     if homepage =~ %r[^http://packages\.debian\.org]
-      problem "Debian homepage should be https:// links (URL is #{homepage})."
+      problem "Debian homepage should be https:// URLs (URL is #{homepage})."
     end
 
     # People will run into mixed content sometimes, but we should enforce and then add
     # exemptions as they are discovered. Treat mixed content on homepages as a bug.
     # Justify each exemptions with a code comment so we can keep track here.
     if homepage =~ %r[^http://[^/]*github\.io/]
-      problem "Github Pages links should be https:// (URL is #{homepage})."
+      problem "Github Pages URLs should be https:// (URL is #{homepage})."
+    end
+
+    if homepage =~ %r[^http://[^/]*\.apache\.org]
+      problem "Apache homepages should be https:// URLs (URL is #{homepage})."
     end
 
     # There's an auto-redirect here, but this mistake is incredibly common too.
-    # Only applies to the homepage and subdomains for now, not the FTP links.
+    # Only applies to the homepage and subdomains for now, not the FTP URLs.
     if homepage =~ %r[^http://((?:build|cloud|developer|download|extensions|git|glade|help|library|live|nagios|news|people|projects|rt|static|wiki|www)\.)?gnome\.org]
-      problem "Gnome homepages should be https:// links (URL is #{homepage})."
-    end
-
-    urls = @specs.map(&:url)
-
-    # Check GNU urls; doesn't apply to mirrors
-    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]) do |u|
-      problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
-    end
-
-    # the rest of the checks apply to mirrors as well.
-    urls.concat(@specs.map(&:mirrors).flatten)
-
-    # Check a variety of SSL/TLS links that don't consistently auto-redirect
-    # or are overly common errors that need to be reduced & fixed over time.
-    urls.each do |p|
-      # Skip the main url link, as it can't be made SSL/TLS yet.
-      next if p =~ %r[/ftpmirror\.gnu\.org]
-
-      case p
-      when %r[^http://ftp\.gnu\.org/]
-        problem "ftp.gnu.org urls should be https://, not http:// (url is #{p})."
-      when %r[^http://code\.google\.com/]
-        problem "code.google.com urls should be https://, not http (url is #{p})."
-      when %r[^http://fossies\.org/]
-        problem "Fossies urls should be https://, not http (url is #{p})."
-      when %r[^http://mirrors\.kernel\.org/]
-        problem "mirrors.kernel urls should be https://, not http (url is #{p})."
-      when %r[^http://tools\.ietf\.org/]
-        problem "ietf urls should be https://, not http (url is #{p})."
-      end
-    end
-
-    # Check SourceForge urls
-    urls.each do |p|
-      # Skip if the URL looks like a SVN repo
-      next if p =~ %r[/svnroot/]
-      next if p =~ %r[svn\.sourceforge]
-
-      # Is it a sourceforge http(s) URL?
-      next unless p =~ %r[^https?://.*\b(sourceforge|sf)\.(com|net)]
-
-      if p =~ /(\?|&)use_mirror=/
-        problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
-      end
-
-      if p =~ /\/download$/
-        problem "Don't use /download in SourceForge urls (url is #{p})."
-      end
-
-      if p =~ %r[^https?://sourceforge\.]
-        problem "Use http://downloads.sourceforge.net to get geolocation (url is #{p})."
-      end
-
-      if p =~ %r[^https?://prdownloads\.]
-        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
-                "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
-      end
-
-      if p =~ %r[^http://\w+\.dl\.]
-        problem "Don't use specific dl mirrors in SourceForge urls (url is #{p})."
-      end
-
-      if p.start_with? "http://downloads"
-        problem "Use https:// URLs for downloads from SourceForge (url is #{p})."
-      end
-    end
-
-    # Check for Google Code download urls, https:// is preferred
-    urls.grep(%r[^http://.*\.googlecode\.com/files.*]) do |u|
-      problem "Use https:// URLs for downloads from Google Code (url is #{u})."
-    end
-
-    # Check for new-url Google Code download urls, https:// is preferred
-    urls.grep(%r[^http://code\.google\.com/]) do |u|
-      problem "Use https:// URLs for downloads from code.google (url is #{u})."
-    end
-
-    # Check for git:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^git://[^/]*github\.com/]) do |u|
-      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
-    end
-
-    # Check for git:// Gitorious repo urls, https:// is preferred.
-    urls.grep(%r[^git://[^/]*gitorious\.org/]) do |u|
-      problem "Use https:// URLs for accessing Gitorious repositories (url is #{u})."
-    end
-
-    # Check for http:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^http://github\.com/.*\.git$]) do |u|
-      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
-    end
-
-    # Use new-style archive downloads
-    urls.select { |u| u =~ %r[https://.*github.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
-      problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
-    end
-
-    # Don't use GitHub .zip files
-    urls.select { |u| u =~ %r[https://.*github.*/(archive|releases)/.*\.zip$] && u !~ %r[releases/download] }.each do |u|
-      problem "Use GitHub tarballs rather than zipballs (url is #{u})."
+      problem "Gnome homepages should be https:// URLs (URL is #{homepage})."
     end
   end
 
@@ -434,8 +349,9 @@ class FormulaAuditor
     end
 
     stable = formula.stable
-    if stable && stable.url =~ /#{Regexp.escape("ftp.gnome.org/pub/GNOME/sources")}/i
-      minor_version = stable.version.to_s[/\d\.(\d+)/, 1].to_i
+    case stable && stable.url
+    when %r{download\.gnome\.org/sources}, %r{ftp\.gnome\.org/pub/GNOME/sources}i
+      minor_version = Version.parse(stable.url).to_s.split(".", 3)[1].to_i
 
       if minor_version.odd?
         problem "#{stable.version} is a development release"
@@ -464,8 +380,6 @@ class FormulaAuditor
       problem "Patches from MacPorts Trac should be https://, not http:\n#{patch.url}"
     when %r[^http://bugs\.debian\.org]
       problem "Patches from Debian should be https://, not http:\n#{patch.url}"
-    when %r[^https?://github\.com/.*commit.*\.patch$]
-      problem "GitHub appends a git version to patches; use .diff instead."
     end
   end
 
@@ -568,6 +482,10 @@ class FormulaAuditor
 
     if line =~ %r[(\#\{prefix\}/share/(info|man))]
       problem "\"#{$1}\" should be \"\#{#{$2}}\""
+    end
+
+    if line =~ %r[depends_on :(automake|autoconf|libtool)]
+      problem ":#{$1} is deprecated. Usage should be \"#{$1}\""
     end
 
     # Commented-out depends_on
@@ -704,8 +622,10 @@ class FormulaAuditor
     if @strict
       if line =~ /system (["'][^"' ]*(?:\s[^"' ]*)+["'])/
         bad_system = $1
-        good_system = bad_system.gsub(" ", "\", \"")
-        problem "Use `system #{good_system}` instead of `system #{bad_system}` "
+        unless %w[| < > & ; *].any? { |c| bad_system.include? c }
+          good_system = bad_system.gsub(" ", "\", \"")
+          problem "Use `system #{good_system}` instead of `system #{bad_system}` "
+        end
       end
 
       if line =~ /(require ["']formula["'])/
@@ -764,7 +684,7 @@ class FormulaAuditor
     audit_file
     audit_class
     audit_specs
-    audit_urls
+    audit_homepage
     audit_deps
     audit_java_home
     audit_conflicts
@@ -794,13 +714,14 @@ end
 
 class ResourceAuditor
   attr_reader :problems
-  attr_reader :version, :checksum, :using, :specs, :url, :name
+  attr_reader :version, :checksum, :using, :specs, :url, :mirrors, :name
 
   def initialize(resource)
     @name     = resource.name
     @version  = resource.version
     @checksum = resource.checksum
     @url      = resource.url
+    @mirrors  = resource.mirrors
     @using    = resource.using
     @specs    = resource.specs
     @problems = []
@@ -810,6 +731,7 @@ class ResourceAuditor
     audit_version
     audit_checksum
     audit_download_strategy
+    audit_urls
     self
   end
 
@@ -829,6 +751,10 @@ class ResourceAuditor
     if version.to_s =~ /^v/
       problem "version #{version} should not have a leading 'v'"
     end
+
+    if version.to_s =~ /_\d+$/
+      problem "version #{version} should not end with a underline and a number"
+    end
   end
 
   def audit_checksum
@@ -836,9 +762,15 @@ class ResourceAuditor
 
     case checksum.hash_type
     when :md5
-      problem "MD5 checksums are deprecated, please use SHA1 or SHA256"
+      problem "MD5 checksums are deprecated, please use SHA256"
       return
-    when :sha1   then len = 40
+    when :sha1
+      if ARGV.include? "--strict"
+        problem "SHA1 checksums are deprecated, please use SHA256"
+        return
+      else
+        len = 40
+      end
     when :sha256 then len = 64
     end
 
@@ -854,6 +786,14 @@ class ResourceAuditor
   def audit_download_strategy
     if url =~ %r[^(cvs|bzr|hg|fossil)://] || url =~ %r[^(svn)\+http://]
       problem "Use of the #{$&} scheme is deprecated, pass `:using => :#{$1}` instead"
+    end
+
+    url_strategy = DownloadStrategyDetector.detect(url)
+
+    if using == :git || url_strategy == GitDownloadStrategy
+      if specs[:tag] && !specs[:revision]
+        problem "Git should specify :revision when a :tag is specified."
+      end
     end
 
     return unless using
@@ -882,13 +822,124 @@ class ResourceAuditor
       end
     end
 
-    url_strategy   = DownloadStrategyDetector.detect(url)
     using_strategy = DownloadStrategyDetector.detect('', using)
 
     if url_strategy == using_strategy
       problem "Redundant :using value in URL"
     end
   end
+
+  def audit_urls
+    # Check GNU urls; doesn't apply to mirrors
+    if url =~ %r[^(?:https?|ftp)://(?!alpha).+/gnu/]
+      problem "\"http://ftpmirror.gnu.org\" is preferred for GNU software (url is #{url})."
+    end
+
+    if mirrors.include?(url)
+      problem "URL should not be duplicated as a mirror: #{url}"
+    end
+
+    urls = [url] + mirrors
+
+    # Check a variety of SSL/TLS URLs that don't consistently auto-redirect
+    # or are overly common errors that need to be reduced & fixed over time.
+    urls.each do |p|
+      # Skip the main url link, as it can't be made SSL/TLS yet.
+      next if p =~ %r[/ftpmirror\.gnu\.org]
+
+      case p
+      when %r[^http://ftp\.gnu\.org/]
+        problem "ftp.gnu.org mirrors should be https://, not http:// (mirror is #{p})."
+      when %r[^http://[^/]*\.apache\.org/]
+        problem "Apache urls should be https://, not http (url is #{p})."
+      when %r[^http://code\.google\.com/]
+        problem "code.google.com urls should be https://, not http (url is #{p})."
+      when %r[^http://fossies\.org/]
+        problem "Fossies urls should be https://, not http (url is #{p})."
+      when %r[^http://mirrors\.kernel\.org/]
+        problem "mirrors.kernel urls should be https://, not http (url is #{p})."
+      when %r[^http://([^/]*\.|)bintray\.com/]
+        problem "Bintray urls should be https://, not http (url is #{p})."
+      when %r[^http://tools\.ietf\.org/]
+        problem "ietf urls should be https://, not http (url is #{p})."
+      when %r[^http://search\.mcpan\.org/CPAN/(.*)]i
+        problem "MetaCPAN url should be `https://cpan.metacpan.org/#{$1}` (url is #{p})."
+      end
+    end
+
+    # Check SourceForge urls
+    urls.each do |p|
+      # Skip if the URL looks like a SVN repo
+      next if p =~ %r[/svnroot/]
+      next if p =~ %r[svn\.sourceforge]
+
+      # Is it a sourceforge http(s) URL?
+      next unless p =~ %r[^https?://.*\b(sourceforge|sf)\.(com|net)]
+
+      if p =~ /(\?|&)use_mirror=/
+        problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
+      end
+
+      if p =~ /\/download$/
+        problem "Don't use /download in SourceForge urls (url is #{p})."
+      end
+
+      if p =~ %r[^https?://sourceforge\.]
+        problem "Use http://downloads.sourceforge.net to get geolocation (url is #{p})."
+      end
+
+      if p =~ %r[^https?://prdownloads\.]
+        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
+                "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
+      end
+
+      if p =~ %r[^http://\w+\.dl\.]
+        problem "Don't use specific dl mirrors in SourceForge urls (url is #{p})."
+      end
+
+      if p.start_with? "http://downloads"
+        problem "Use https:// URLs for downloads from SourceForge (url is #{p})."
+      end
+    end
+
+    # Check for Google Code download urls, https:// is preferred
+    # Intentionally not extending this to SVN repositories due to certificate
+    # issues.
+    urls.grep(%r[^http://.*\.googlecode\.com/files.*]) do |u|
+      problem "Use https:// URLs for downloads from Google Code (url is #{u})."
+    end
+
+    # Check for new-url Google Code download urls, https:// is preferred
+    urls.grep(%r[^http://code\.google\.com/]) do |u|
+      problem "Use https:// URLs for downloads from code.google (url is #{u})."
+    end
+
+    # Check for git:// GitHub repo urls, https:// is preferred.
+    urls.grep(%r[^git://[^/]*github\.com/]) do |u|
+      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
+    end
+
+    # Check for git:// Gitorious repo urls, https:// is preferred.
+    urls.grep(%r[^git://[^/]*gitorious\.org/]) do |u|
+      problem "Use https:// URLs for accessing Gitorious repositories (url is #{u})."
+    end
+
+    # Check for http:// GitHub repo urls, https:// is preferred.
+    urls.grep(%r[^http://github\.com/.*\.git$]) do |u|
+      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
+    end
+
+    # Use new-style archive downloads
+    urls.select { |u| u =~ %r[https://.*github.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
+      problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
+    end
+
+    # Don't use GitHub .zip files
+    urls.select { |u| u =~ %r[https://.*github.*/(archive|releases)/.*\.zip$] && u !~ %r[releases/download] }.each do |u|
+      problem "Use GitHub tarballs rather than zipballs (url is #{u})."
+    end
+  end
+
 
   def problem text
     @problems << text

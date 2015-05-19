@@ -18,6 +18,9 @@ class Asciidoc < Formula
 
   depends_on "docbook"
 
+  option "with-docbook-xsl", "Install DTDs to generate manpages"
+  depends_on "docbook-xsl" => :optional
+
   def install
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
@@ -32,7 +35,7 @@ class Asciidoc < Formula
       (such as a2x for manpage generation) you need to add something
       like:
 
-        export XML_CATALOG_FILES=#{HOMEBREW_PREFIX}/etc/xml/catalog
+        export XML_CATALOG_FILES=#{etc}/xml/catalog
 
       to your shell rc file so that xmllint can find AsciiDoc's
       catalog files.

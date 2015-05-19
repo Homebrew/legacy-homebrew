@@ -1,15 +1,13 @@
-require "formula"
-
 class MongoC < Formula
-  homepage "http://docs.mongodb.org/ecosystem/drivers/c/"
-  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.1.0/mongo-c-driver-1.1.0.tar.gz"
-  sha1 "9277fb0afcf595838da0d5e4715df1526d53e020"
+  homepage "https://docs.mongodb.org/ecosystem/drivers/c/"
+  url "https://github.com/mongodb/mongo-c-driver/releases/download/1.1.5/mongo-c-driver-1.1.5.tar.gz"
+  sha256 "ebad1af02c50b6db20bb9ca988d1050b97c13bed65e9de8b5ac93eee71115c29"
 
   bottle do
     cellar :any
-    sha1 "a1902585054a645fece9ef6e91a53258f3df0356" => :yosemite
-    sha1 "53858df7d3bb85e63d070754e2aa8f0e9576266f" => :mavericks
-    sha1 "b547c663729e6ec4944462c8d305643dd83d452f" => :mountain_lion
+    sha256 "767da53feade70a23f1cd302b2c442f2a5ee0fcdb7f0e2633cf0c7ad4c60f2bc" => :yosemite
+    sha256 "805d4470878d76233e5c4cb08878d907ed85ac0aacf84c704fafb51b8300b3c7" => :mavericks
+    sha256 "4f591e9b09ac501ece9161f23d98f9ad4d7fa5ba79a5fcc2478a958b02eb7f0a" => :mountain_lion
   end
 
   head do
@@ -31,7 +29,7 @@ class MongoC < Formula
       system "./autogen.sh"
     end
 
-    if build.with?('openssl')
+    if build.with?("openssl")
       args << "--enable-ssl=yes"
     else
       args << "--enable-ssl=no"

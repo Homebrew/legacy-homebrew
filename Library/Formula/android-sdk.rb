@@ -1,30 +1,28 @@
-require 'formula'
-
 class AndroidSdk < Formula
-  homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r24.0.2-macosx.zip'
-  version '24.0.2'
-  sha1 '3ab5e0ab0db5e7c45de9da7ff525dee6cfa97455'
+  homepage "https://developer.android.com/index.html"
+  url "https://dl.google.com/android/android-sdk_r24.2-macosx.zip"
+  version "24.2"
+  sha256 "9e0cd4844a696c555563a2daad5ff6731a4175b7a56f00c8f8dd831dbca9511b"
 
-  conflicts_with 'android-platform-tools',
+  conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
-  resource 'completion' do
-    url 'https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
-    sha1 '6dfead9b1350dbe1c16a1c80ed70beedebfa39eb'
+  resource "completion" do
+    url "https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash"
+    sha256 "6ae8fae2a07c7a286d440d5f5bdafdd0c208284d7c8be21a0f59d96bb7426091"
   end
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "21.1.2"
+    "22.0.1"
   end
 
   def install
-    prefix.install 'tools', 'SDK Readme.txt' => 'README'
+    prefix.install "tools", "SDK Readme.txt" => "README"
 
     %w[android ddms draw9patch emulator
-    emulator-arm emulator-x86 hierarchyviewer lint mksdcard
-    monitor monkeyrunner traceview].each do |tool|
+       emulator-arm emulator-x86 hierarchyviewer lint mksdcard
+       monitor monkeyrunner traceview].each do |tool|
       (bin/tool).write <<-EOS.undent
         #!/bin/bash
         TOOL="#{prefix}/tools/#{tool}"
@@ -79,14 +77,13 @@ class AndroidSdk < Formula
       EOS
     end
 
-    bash_completion.install resource('completion').files('adb.bash' => 'adb-completion.bash')
+    bash_completion.install resource("completion").files("adb.bash" => "adb-completion.bash")
   end
 
   def caveats; <<-EOS.undent
     Now run the 'android' tool to install the actual SDK stuff.
 
-    The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
-      #{prefix}
+    The Android-SDK is available at #{opt_prefix}
 
     You will have to install the platform-tools and docs EVERY time this formula
     updates. If you want to try and fix this then see the comment in this formula.

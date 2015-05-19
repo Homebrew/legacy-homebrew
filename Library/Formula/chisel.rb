@@ -2,8 +2,8 @@ require "formula"
 
 class Chisel < Formula
   homepage "https://github.com/facebook/chisel"
-  url "https://github.com/facebook/chisel/archive/1.1.0.tar.gz"
-  sha1 "d137fec38a8f9e1795331c6a340e7a5f43214b12"
+  url "https://github.com/facebook/chisel/archive/1.2.0.tar.gz"
+  sha1 "c4c2bf25035cc15f10a10290023a6f8ce23ba1da"
 
   def install
     libexec.install Dir["*.py", "commands"]

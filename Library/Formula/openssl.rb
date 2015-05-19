@@ -1,14 +1,17 @@
 class Openssl < Formula
   homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.2.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2.tar.gz"
-  # Use sha1 for Tiger (which needs OpenSSL to compute sha256 hashes)
-  sha1 "2f264f7f6bb973af444cd9fc6ee65c8588f610cc"
+  url "https://www.openssl.org/source/openssl-1.0.2a.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2a.tar.gz"
+  sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
+  # Work around this being parsed as an alpha version by our
+  # version detection code.
+  version "1.0.2a-1"
 
   bottle do
-    sha1 "0e5844609ea57a7f5361dca42d05578c6cf45643" => :yosemite
-    sha1 "56a6407b6a9179084a760d6f463cd0e6ea083c0e" => :mavericks
-    sha1 "8e36006185156281d487a2b1f04322701d0bef7b" => :mountain_lion
+    revision 1
+    sha256 "847e8085763f2950819a6fcbaebeff46cdafc4fb6cf0508c69719736e5b6bfba" => :yosemite
+    sha256 "55b21566026ae075817f28a8292a9a0e326e56d266e918b4bddb9372bc9937c7" => :mavericks
+    sha256 "47e087fa8bbc68a757eb0021f32ac942e5d0edf1abbda3398523aaab2fa58ab5" => :mountain_lion
   end
 
   option :universal
@@ -19,6 +22,22 @@ class Openssl < Formula
   keg_only :provided_by_osx,
     "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
+  # Remove both patches with the 1.0.2b release.
+  # They fix:
+  # https://github.com/Homebrew/homebrew/pull/38495
+  # https://github.com/Homebrew/homebrew/issues/38491
+  # Upstream discussions:
+  # https://www.mail-archive.com/openssl-dev@openssl.org/msg38674.html
+  patch do
+    url "https://github.com/openssl/openssl/commit/6281abc796234.diff"
+    sha256 "f8b94201ac2cd7dcdee3b07fb3cd77a2de6b81ea67da9ae075cf06fb0ba73cea"
+  end
+
+  patch do
+    url "https://github.com/openssl/openssl/commit/dfd3322d72a2.diff"
+    sha256 "0602eef6e38368c7b34994deb9b49be1a54037de5e8b814748d55882bfba4eac"
+  end
+
   def arch_args
     {
       :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp_64_gcc_128],
@@ -27,13 +46,13 @@ class Openssl < Formula
   end
 
   def configure_args; %W[
-      --prefix=#{prefix}
-      --openssldir=#{openssldir}
-      no-ssl2
-      zlib-dynamic
-      shared
-      enable-cms
-    ]
+    --prefix=#{prefix}
+    --openssldir=#{openssldir}
+    no-ssl2
+    zlib-dynamic
+    shared
+    enable-cms
+  ]
   end
 
   def install
@@ -109,6 +128,9 @@ class Openssl < Formula
 
     openssldir.mkpath
     (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+
+    # Remove this once 1.0.2b lands.
+    rm_f openssldir/"certs/Equifax_CA" if MacOS.version == :yosemite
   end
 
   def caveats; <<-EOS.undent

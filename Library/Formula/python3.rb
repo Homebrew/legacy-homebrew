@@ -1,26 +1,28 @@
 class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
-  sha1 "7ca5cd664598bea96eec105aa6453223bb6b4456"
+  sha256 "b5b3963533768d5fc325a4d7a6bd6f666726002d696f1d399ec06b043ea996b8"
 
   bottle do
-    sha1 "b8a3b54597788f38fe056c51b1de207c3e5287fb" => :yosemite
-    sha1 "b8a7e7370052734df0fe4286a4f86993745ddd12" => :mavericks
-    sha1 "c367a9fd8fb3480a3515df39a31dea70c16174d5" => :mountain_lion
+    revision 10
+    sha256 "06b2766a61cd2f1f97ca8f9db0ca1d0eb16f51b36703a7df959db15bc268031a" => :yosemite
+    sha256 "e6be6bed7233938bc22c1173f38c921c9f820e5c46dc969d85d5a479b3240c95" => :mavericks
+    sha256 "c92526adb9a3f07da1ab665a23e80f9e62ca38166b6eb9a0c18680f9feb4c6fc" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
 
   devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0a1.tgz"
-    sha1 "e9441525f37d65623f5efab0b7ca726ab52b1fb9"
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0a4.tgz"
+    sha256 "d865d540283cb518f340bbe0fac40a467956ae27fdc779122ca92f8bfd255426"
   end
 
   option :universal
-  option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
+  option "with-tcl-tk", "Use Homebrew's Tk instead of OS X Tk (has optional Cocoa and threads support)"
   option "with-quicktest", "Run `make quicktest` after the build"
 
   deprecated_option "quicktest" => "with-quicktest"
+  deprecated_option "with-brewed-tk" => "with-tcl-tk"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -28,29 +30,33 @@ class Python3 < Formula
   depends_on "gdbm" => :recommended
   depends_on "openssl"
   depends_on "xz" => :recommended  # for the lzma module added in 3.3
-  depends_on "homebrew/dupes/tcl-tk" if build.with? "brewed-tk"
-  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
+  depends_on "homebrew/dupes/tcl-tk" => :optional
+  depends_on :x11 if build.with? "tcl-tk" and Tab.for_name("homebrew/dupes/tcl-tk").with? "x11"
 
   skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5"
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.2.tar.gz"
-    sha1 "b36aaa86fe762eb66d2abc860405410158fadfe8"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.2.tar.gz"
+    sha256 "381e78471fb0eff89c4b1a219e8739f48dd87c76ad2d3a790010ca3a62ee29a4"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
-    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.1.1.tar.gz"
+    sha256 "89f3b626d225e08e7f20d85044afa40f612eb3284484169813dc2d0631f2a556"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
   # so we have to stop python from searching for frameworks and linking against
   # X11.
-  patch :DATA if build.with? "brewed-tk"
+  patch :DATA if build.with? "tcl-tk"
+
+  def lib_cellar
+    prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}"
+  end
 
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/site-packages"
+    lib_cellar/"site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -93,7 +99,25 @@ class Python3 < Formula
 
     args << "--without-gcc" if ENV.compiler == :clang
 
-    distutils_fix_superenv(args)
+    unless MacOS::CLT.installed?
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
+      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
+      cflags = "CFLAGS=-isysroot #{MacOS.sdk_path}"
+      ldflags = "LDFLAGS=-isysroot #{MacOS.sdk_path}"
+      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
+      if build.without? "tcl-tk"
+        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
+      end
+      args << cflags
+      args << ldflags
+    end
+    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
+    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+    # We want our readline! This is just to outsmart the detection code,
+    # superenv makes cc always find includes/libs!
+    inreplace "setup.py",
+              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
 
     if build.universal?
       ENV.universal_binary
@@ -111,7 +135,7 @@ class Python3 < Formula
       f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
-    if build.with? "brewed-tk"
+    if build.with? "tcl-tk"
       tcl_tk = Formula["tcl-tk"].opt_prefix
       ENV.append "CPPFLAGS", "-I#{tcl_tk}/include"
       ENV.append "LDFLAGS", "-L#{tcl_tk}/lib"
@@ -137,11 +161,21 @@ class Python3 < Formula
     ["Headers", "Python", "Resources"].each { |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
     rm prefix/"Frameworks/Python.framework/Versions/Current"
 
+    # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
+    (lib/"pkgconfig").install_symlink Dir["#{frameworks}/Python.framework/Versions/#{xy}/lib/pkgconfig/*"]
+
     # Remove 2to3 because python2 also installs it
     rm bin/"2to3"
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+
+    # These makevars are available through distutils.sysconfig at runtime and
+    # some third-party software packages depend on them
+    inreplace frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}m/Makefile" do |s|
+      s.change_make_var! "LINKFORSHARED",
+                         "-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python"
+    end
 
     %w[setuptools pip].each do |r|
       (libexec/r).install resource(r)
@@ -185,44 +219,36 @@ class Python3 < Formula
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
-    # And now we write the distutils.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}/distutils/distutils.cfg"
+    # Help distutils find brewed stuff when building extensions
+    include_dirs = [HOMEBREW_PREFIX/"include"]
+    library_dirs = [HOMEBREW_PREFIX/"lib"]
+
+    if build.with? "sqlite"
+      include_dirs << Formula["sqlite"].opt_include
+      library_dirs << Formula["sqlite"].opt_lib
+    end
+
+    if build.with? "tcl-tk"
+      include_dirs << Formula["homebrew/dupes/tcl-tk"].opt_include
+      library_dirs << Formula["homebrew/dupes/tcl-tk"].opt_lib
+    end
+
+    cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
+
       [install]
       prefix=#{HOMEBREW_PREFIX}
+
+      [build_ext]
+      include_dirs=#{include_dirs.join ":"}
+      library_dirs=#{library_dirs.join ":"}
     EOF
   end
 
   def xy
     version.to_s.slice(/(3.\d)/) || "3.5"
-  end
-
-  def distutils_fix_superenv(args)
-    # To allow certain Python bindings to find brewed software (and sqlite):
-    sqlite = Formula["sqlite"].opt_prefix
-    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{sqlite}/include"
-    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{sqlite}/lib"
-    unless MacOS::CLT.installed?
-      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
-      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-      cflags += " -isysroot #{MacOS.sdk_path}"
-      ldflags += " -isysroot #{MacOS.sdk_path}"
-      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
-      if build.without? "brewed-tk"
-        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
-      end
-    end
-    args << cflags
-    args << ldflags
-    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
-    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
-    # We want our readline! This is just to outsmart the detection code,
-    # superenv makes cc always find includes/libs!
-    inreplace "setup.py",
-              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-              "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
   end
 
   def sitecustomize
@@ -258,16 +284,6 @@ class Python3 < Formula
           long_prefix = re.compile(r'#{rack}/[0-9\._abrc]+/Frameworks/Python\.framework/Versions/#{xy}/lib/python#{xy}/site-packages')
           sys.path = [long_prefix.sub('#{site_packages}', p) for p in sys.path]
 
-          # LINKFORSHARED (and python-config --ldflags) return the
-          # full path to the lib (yes, "Python" is actually the lib, not a
-          # dir) so that third-party software does not need to add the
-          # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
-          try:
-              from _sysconfigdata import build_time_vars
-              build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python'
-          except:
-              pass  # remember: don't print here. Better to fail silently.
-
           # Set the sys.executable to use the opt_prefix
           sys.executable = '#{opt_bin}/python#{xy}'
     EOF
@@ -275,8 +291,8 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Pip has been installed. To update it
-        pip3 install --upgrade pip
+      Pip and setuptools have been installed. To update them
+        pip3 install --upgrade pip setuptools
 
       You can install Python packages with
         pip3 install <package>

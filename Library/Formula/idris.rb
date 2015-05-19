@@ -4,14 +4,14 @@ class Idris < Formula
   include Language::Haskell::Cabal
 
   homepage "http://www.idris-lang.org"
-  url "https://github.com/idris-lang/Idris-dev/archive/v0.9.16.tar.gz"
-  sha1 "01f794c4e516454b8352266c26c92549e90c708f"
+  url "https://github.com/idris-lang/Idris-dev/archive/v0.9.18.tar.gz"
+  sha1 "08b863ab13c306b2643e63a2bb76a01b0305c20d"
   head "https://github.com/idris-lang/Idris-dev.git"
 
   bottle do
-    sha1 "c25ba4b91264c187485111c5b8c18670c7f0441b" => :yosemite
-    sha1 "df1773cb1800d6c629db9ba194666faf0019de31" => :mavericks
-    sha1 "bbbe93cbd829bb02a9cdbb680805470f29702bbb" => :mountain_lion
+    sha256 "f7452fb8719478d033473dc7a655f1ffae44bbccf2a2999a2b42c483363de318" => :yosemite
+    sha256 "5c0d4067a4284b4d551ed05824151071463d07493ffb406145e118d7f537d522" => :mavericks
+    sha256 "96c8ee3754b782fddfb879ab6db9a8ad0b247b9b5a83fb91943c07fc767ed101" => :mountain_lion
   end
 
   depends_on "ghc" => :build
@@ -39,7 +39,7 @@ class Idris < Formula
     assert_match /Hello, Homebrew!/, result
 
     if build.with? "libffi"
-      cmd = "#{bin}/idris --exec 'putStrLn \"Hello, interpreter!\"'"
+      cmd = "#{bin}/idris --exec 'putStrLn {ffi=FFI_C} \"Hello, interpreter!\"'"
       result = shell_output cmd
       assert_match /Hello, interpreter!/, result
     end

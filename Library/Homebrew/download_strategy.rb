@@ -63,6 +63,10 @@ class AbstractDownloadStrategy
     "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
+  def lhapath
+    "#{HOMEBREW_PREFIX}/opt/lha/bin/lha"
+  end
+
   def cvspath
     @cvspath ||= %W[
       /usr/bin/cvs
@@ -98,11 +102,12 @@ class AbstractDownloadStrategy
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
-  REF_TYPES = [:branch, :revision, :revisions, :tag].freeze
+  REF_TYPES = [:tag, :branch, :revisions, :revision].freeze
 
   def initialize name, resource
     super
     @ref_type, @ref = extract_ref(meta)
+    @revision = meta[:revision]
     @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
@@ -118,6 +123,15 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
       clone_repo
     else
       clone_repo
+    end
+
+    if @ref_type == :tag && @revision && current_revision
+      unless current_revision == @revision
+        raise <<-EOS.undent
+          #{@ref} tag should be #{@revision}
+          but is actually #{current_revision}!
+        EOS
+      end
     end
   end
 
@@ -153,6 +167,9 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def update
   end
 
+  def current_revision
+  end
+
   def extract_ref(specs)
     key = REF_TYPES.find { |type| specs.key?(type) }
     return key, specs[key]
@@ -179,6 +196,8 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
     when :lzip
       with_system_path { pipe_to_tar(lzippath) }
       chdir
+    when :lha
+      safe_system lhapath, "x", cached_location
     when :xar
       safe_system "/usr/bin/xar", "-xf", cached_location
     when :rar
@@ -330,7 +349,9 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     @tried_apache_mirror = true
 
     mirrors = Utils::JSON.load(apache_mirrors)
-    @url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
+    path_info = mirrors.fetch("path_info")
+    @url = mirrors.fetch('preferred') + path_info
+    @mirrors |= %W[https://archive.apache.org/dist/#{path_info}]
 
     ohai "Best Mirror #{@url}"
     super
@@ -405,7 +426,7 @@ class S3DownloadStrategy < CurlDownloadStrategy
     # a dependency of S3 users, not all Homebrew users
     require 'rubygems'
     begin
-      require 'aws-sdk'
+      require 'aws-sdk-v1'
     rescue LoadError
       onoe "Install the aws-sdk gem into the gem repo used by brew."
       raise
@@ -431,7 +452,7 @@ end
 class SubversionDownloadStrategy < VCSDownloadStrategy
   def initialize(name, resource)
     super
-    @url = @url.sub(/^svn\+/, "") if @url.start_with?("svn+http://")
+    @url = @url.sub("svn+http://", "")
   end
 
   def fetch
@@ -570,6 +591,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
     quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', "#{@ref}^{commit}"
   end
 
+  def current_revision
+    Utils.popen_read('git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', "HEAD").strip
+  end
+
   def repo_valid?
     quiet_system "git", "--git-dir", git_dir, "status", "-s"
   end
@@ -669,7 +694,8 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     HOMEBREW_CACHE.cd do
-      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login"
+      # Login is only needed (and allowed) with pserver; skip for anoncvs.
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login" if @url.include? "pserver"
       quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "checkout", "-d", cache_filename, @module
     end
   end
@@ -804,7 +830,7 @@ class DownloadStrategyDetector
     case url
     when %r[^https?://.+\.git$], %r[^git://]
       GitDownloadStrategy
-    when %r[^http://www\.apache\.org/dyn/closer\.cgi]
+    when %r[^https?://www\.apache\.org/dyn/closer\.cgi]
       CurlApacheMirrorDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn], %r[^https?://svn\.], %r[^svn://], %r[^https?://(.+?\.)?sourceforge\.net/svnroot/]
       SubversionDownloadStrategy

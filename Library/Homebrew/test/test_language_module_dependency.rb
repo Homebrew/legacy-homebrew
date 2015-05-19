@@ -2,6 +2,8 @@ require 'testing_env'
 require 'requirements/language_module_dependency'
 
 class LanguageModuleDependencyTests < Homebrew::TestCase
+  parallelize_me!
+
   def assert_deps_fail(spec)
     refute_predicate LanguageModuleDependency.new(*spec.shift.reverse), :satisfied?
   end

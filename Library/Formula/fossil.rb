@@ -1,17 +1,14 @@
-require "formula"
-
 class Fossil < Formula
-  homepage "http://www.fossil-scm.org/"
-  head "http://www.fossil-scm.org/", :using => :fossil
-  url "http://www.fossil-scm.org/download/fossil-src-20140612172556.tar.gz"
-  sha1 "173c3350ba39ecfee6e660f866b4f3104e351b33"
-  version "1.29"
+  homepage "https://www.fossil-scm.org/"
+  head "https://www.fossil-scm.org/", :using => :fossil
+  url "https://www.fossil-scm.org/download/fossil-src-1.32.tar.gz"
+  sha256 "cd79c333eb9e86fbb8c17bf5cdf31c387e4ab768eede623aed21adfdbcad686e"
 
   bottle do
     cellar :any
-    sha1 "977cde0938a0b751938aaac28cab1fe7ef479e9b" => :yosemite
-    sha1 "f45d99ad80bdda2852a8dcb9e1292b5117d0ae56" => :mavericks
-    sha1 "b00e434097adba303767426916654da1f17d7f39" => :mountain_lion
+    sha256 "48d1066ffb5380b0e6575925ac240ef1a372b182e2b5983414b45199effb2b13" => :yosemite
+    sha256 "3851f9002dc1dab1a67a1bea554145d431e28f5c9f4e2aa3ab3a701c0ea17208" => :mavericks
+    sha256 "ebc87b4bc8dca46bbbdc8f7e28c7b682f15d42fcb3c8dcb0f74d94d469ce2bca" => :mountain_lion
   end
 
   option "without-json", "Build without 'json' command support"
@@ -27,5 +24,9 @@ class Fossil < Formula
     system "./configure", *args
     system "make"
     bin.install "fossil"
+  end
+
+  test do
+    system "#{bin}/fossil", "init", "test"
   end
 end

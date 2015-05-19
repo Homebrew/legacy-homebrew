@@ -9,8 +9,10 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
+require 'cmd/postinstall'
 require 'hooks/bottles'
 require 'debrew'
+require 'sandbox'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -192,8 +194,16 @@ class FormulaInstaller
     return if ARGV.force?
 
     conflicts = formula.conflicts.select do |c|
-      f = Formulary.factory(c.name)
-      f.linked_keg.exist? && f.opt_prefix.exist?
+      begin
+        f = Formulary.factory(c.name)
+      rescue TapFormulaUnavailableError
+        # If the formula name is in full-qualified name. Let's silently
+        # ignore it as we don't care about things used in taps that aren't
+        # currently tapped.
+        false
+      else
+        f.linked_keg.exist? && f.opt_prefix.exist?
+      end
     end
 
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
@@ -339,7 +349,7 @@ class FormulaInstaller
 
     fi = DependencyInstaller.new(df)
     fi.options           |= tab.used_options
-    fi.options           |= dep.options
+    fi.options           |= Tab.remap_deprecated_options(df.deprecated_options, dep.options)
     fi.options           |= inherited_options
     fi.build_from_source  = build_from_source?
     fi.verbose            = verbose? && !quieter?
@@ -426,7 +436,12 @@ class FormulaInstaller
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
-    args << "--env=#{ARGV.env}" if ARGV.env
+
+    if ARGV.env
+      args << "--env=#{ARGV.env}"
+    elsif formula.env.std? || formula.recursive_dependencies.any? { |d| d.name == "scons" }
+      args << "--env=std"
+    end
 
     if formula.head?
       args << "--HEAD"
@@ -448,50 +463,34 @@ class FormulaInstaller
   end
 
   def build
-    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]
+    FileUtils.rm_rf(formula.logs)
 
     @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    read, write = IO.pipe
-    # I'm guessing this is not a good way to do this, but I'm no UNIX guru
-    ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
-
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{HOMEBREW_LIBRARY_PATH}
+      -I #{HOMEBREW_LOAD_PATH}
       --
       #{HOMEBREW_LIBRARY_PATH}/build.rb
       #{formula.path}
     ].concat(build_argv)
 
-    # Ruby 2.0+ sets close-on-exec on all file descriptors except for
-    # 0, 1, and 2 by default, so we have to specify that we want the pipe
-    # to remain open in the child process.
-    args << { write => write } if RUBY_VERSION >= "2.0"
-
-    pid = fork do
-      begin
-        read.close
+    Utils.safe_fork do
+      if Sandbox.available? && ARGV.sandbox?
+        sandbox = Sandbox.new
+        formula.logs.mkpath
+        sandbox.record_log(formula.logs/"sandbox.build.log")
+        sandbox.allow_write_temp_and_cache
+        sandbox.allow_write_log(formula)
+        sandbox.allow_write_cellar(formula)
+        sandbox.exec(*args)
+      else
         exec(*args)
-      rescue Exception => e
-        Marshal.dump(e, write)
-        write.close
-        exit! 1
       end
-    end
-
-    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
-      write.close
-      data = read.read
-      read.close
-      Process.wait(pid)
-      raise Marshal.load(data) unless data.nil? or data.empty?
-      raise Interrupt if $?.exitstatus == 130
-      raise "Suspicious installation failure" unless $?.success?
     end
 
     raise "Empty installation" if Dir["#{formula.prefix}/*"].empty?
@@ -560,6 +559,8 @@ class FormulaInstaller
     return unless formula.plist
     formula.plist_path.atomic_write(formula.plist)
     formula.plist_path.chmod 0644
+    log = formula.var/"log"
+    log.mkpath if formula.plist.include? log.to_s
   rescue Exception => e
     onoe "Failed to install plist file"
     ohai e, e.backtrace if debug?
@@ -594,7 +595,7 @@ class FormulaInstaller
   end
 
   def post_install
-    formula.run_post_install
+    Homebrew.run_post_install(formula)
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
     puts "You can try again using `brew postinstall #{formula.name}`"

@@ -15,15 +15,15 @@ class Tab < OpenStruct
       "used_options" => build.used_options.as_flags,
       "unused_options" => build.unused_options.as_flags,
       "tabfile" => formula.prefix.join(FILENAME),
-      "built_as_bottle" => !!ARGV.build_bottle?,
+      "built_as_bottle" => build.bottle?,
       "poured_from_bottle" => false,
-      "tapped_from" => formula.tap,
       "time" => Time.now.to_i,
       "HEAD" => Homebrew.git_head,
       "compiler" => compiler,
       "stdlib" => stdlib,
       "source" => {
         "path" => formula.path.to_s,
+        "tap" => formula.tap,
       },
     }
 
@@ -33,6 +33,13 @@ class Tab < OpenStruct
   def self.from_file path
     attributes = Utils::JSON.load(File.read(path))
     attributes["tabfile"] = path
+    attributes["source"] ||= {}
+
+    tapped_from = attributes["tapped_from"]
+    unless tapped_from.nil? || tapped_from == "path or URL"
+      attributes["source"]["tap"] = attributes.delete("tapped_from")
+    end
+
     new(attributes)
   end
 
@@ -86,7 +93,7 @@ class Tab < OpenStruct
     else
       tab = empty
       tab.unused_options = f.options.as_flags
-      tab.source = { "path" => f.path.to_s }
+      tab.source = { "path" => f.path.to_s, "tap" => f.tap }
     end
 
     tab
@@ -98,13 +105,13 @@ class Tab < OpenStruct
       "unused_options" => [],
       "built_as_bottle" => false,
       "poured_from_bottle" => false,
-      "tapped_from" => "",
       "time" => nil,
       "HEAD" => nil,
       "stdlib" => nil,
       "compiler" => "clang",
       "source" => {
         "path" => nil,
+        "tap" => nil,
       },
     }
 
@@ -155,18 +162,25 @@ class Tab < OpenStruct
     built_as_bottle && !poured_from_bottle
   end
 
+  def bottle?
+    built_as_bottle
+  end
+
+  def tap
+    source["tap"]
+  end
+
   def to_json
     attributes = {
       "used_options" => used_options.as_flags,
       "unused_options" => unused_options.as_flags,
       "built_as_bottle" => built_as_bottle,
       "poured_from_bottle" => poured_from_bottle,
-      "tapped_from" => tapped_from,
       "time" => time,
       "HEAD" => self.HEAD,
       "stdlib" => (stdlib.to_s if stdlib),
       "compiler" => (compiler.to_s if compiler),
-      "source" => source || {},
+      "source" => source,
     }
 
     Utils::JSON.dump(attributes)

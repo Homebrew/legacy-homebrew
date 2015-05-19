@@ -124,7 +124,7 @@ module OS
       (@non_apple_gcc_version ||= {}).fetch(cc) do
         path = HOMEBREW_PREFIX.join("opt", "gcc", "bin", cc)
         path = locate(cc) unless path.exist?
-        version = %x{#{path} --version}[/gcc(?:-\d\.\d \(.+\))? (\d\.\d\.\d)/, 1] if path
+        version = %x{#{path} --version}[/gcc(?:-\d(?:\.\d)? \(.+\))? (\d\.\d\.\d)/, 1] if path
         @non_apple_gcc_version[cc] = version
       end
     end
@@ -210,6 +210,9 @@ module OS
       "6.0.1" => { :clang => "6.0", :clang_build => 600 },
       "6.1"   => { :clang => "6.0", :clang_build => 600 },
       "6.1.1" => { :clang => "6.0", :clang_build => 600 },
+      "6.2"   => { :clang => "6.0", :clang_build => 600 },
+      "6.3"   => { :clang => "6.1", :clang_build => 602 },
+      "6.3.1" => { :clang => "6.1", :clang_build => 602 },
     }
 
     def compilers_standard?

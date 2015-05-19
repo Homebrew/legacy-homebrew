@@ -1,14 +1,14 @@
 class GpgAgent < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
+  sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
 
   bottle do
-    revision 1
-    sha1 "d35632224c39ebf9b1bba4cebcbea4a97f9bfc43" => :yosemite
-    sha1 "c9048d0f7dd157b0a6a24d725aac433f7a692b1f" => :mavericks
-    sha1 "7f39030a3d21587c6844209caa7286026de2e28e" => :mountain_lion
+    revision 2
+    sha256 "0e13cf13842212387b756ee284ecd1a3a8c3c424025368c6dfe30009fd108300" => :yosemite
+    sha256 "a050658a4ae0c286a08a4ca52324b9f2d2bd85a6e1b8e3d0007d7d8234564e61" => :mavericks
+    sha256 "c0eb101a549b54f826013c3f4cafe7541669879296cce8b13b1cc0c5a1120ffe" => :mountain_lion
   end
 
   depends_on "libgpg-error"
@@ -34,9 +34,16 @@ class GpgAgent < Formula
     system "make", "install"
   end
 
+  def caveats; <<-EOS.undent
+      Remember to add "use-standard-socket" to your ~/.gnupg/gpg-agent.conf
+      file.
+    EOS
+  end
+
   test do
     system "#{bin}/gpg-agent", "--help"
   end
+
 end
 
 __END__
@@ -52,6 +59,6 @@ index c022805..96ea7ed 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.26'
- PACKAGE_STRING='gnupg 2.0.26'
+ PACKAGE_VERSION='2.0.27'
+ PACKAGE_STRING='gnupg 2.0.27'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

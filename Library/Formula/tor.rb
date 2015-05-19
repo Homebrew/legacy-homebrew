@@ -1,30 +1,27 @@
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.5.10.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.5.10.tar.gz"
-  sha256 "b3dd02a5dcd2ffe14d9a37956f92779d4427edf7905c0bba9b1e3901b9c5a83b"
-  revision 2
+  url "https://dist.torproject.org/tor-0.2.6.7.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.6.7.tar.gz"
+  sha256 "8c2be88a542ed1b22a8d3d595ec0acd0e28191de273dbcaefc64fdce92b89e6c"
 
   bottle do
-    sha1 "0a17052c81afa7dfdb9d6988cfa84839d3f7e8f8" => :yosemite
-    sha1 "4d74af6045cf81c77fa70d243535e472c19c91d4" => :mavericks
-    sha1 "d8b6e1b05ebb7dc441c9fa0199165a9b396514e9" => :mountain_lion
+    sha256 "0cddcd6e31bb6f9af1cd4313ee5b0f4eecd971d8a40e41fa8988971a271f40f1" => :yosemite
+    sha256 "5b44acfc1a42c9824f8113584461ebdad5075187197ef3ebb3dff8c0df9abe29" => :mavericks
+    sha256 "43258e2a46024eab2d031cb4904cb1b9562a7ffadd745bd126955a1a6d72f830" => :mountain_lion
   end
 
   devel do
-    url "https://dist.torproject.org/tor-0.2.6.3-alpha.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.6.3-alpha.tar.gz"
-    sha256 "5e31a0ccbb1fbe9ac6fc64d157c5c3db9b478908ea09bbe15adea2f1fd11d670"
-    version "0.2.6.3-alpha"
-
-    # Move this to the main block when current devel = stable release.
-    depends_on "libscrypt" => :optional
+    url "https://dist.torproject.org/tor-0.2.7.1-alpha.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.7.1-alpha.tar.gz"
+    sha256 "9afc770a5a795e752f053ae7c2c1ee3a560145adc0aea377c83e602c2cbbed9b"
+    version "0.2.7.1-alpha"
   end
 
   depends_on "libevent"
   depends_on "openssl"
   depends_on "libnatpmp" => :optional
   depends_on "miniupnpc" => :optional
+  depends_on "libscrypt" => :optional
 
   def install
     args = %W[
@@ -37,6 +34,7 @@ class Tor < Formula
 
     args << "--with-libnatpmp-dir=#{Formula["libnatpmp"].opt_prefix}" if build.with? "libnatpmp"
     args << "--with-libminiupnpc-dir=#{Formula["miniupnpc"].opt_prefix}" if build.with? "miniupnpc"
+    args << "--disable-libscrypt" if build.without? "libscrypt"
 
     system "./configure", *args
     system "make", "install"

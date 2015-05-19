@@ -1,16 +1,14 @@
-require "formula"
-
 class Sbcl < Formula
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.2/sbcl-1.2.2-source.tar.bz2"
-  sha1 "23449d376ac0b6112ad468adc11a5e521667d8fd"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.11/sbcl-1.2.11-source.tar.bz2"
+  sha256 "88aa04dae72d011f5c22084a35201188d8a02f0cd82e5de542aa4ce6bfaa3e70"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
-    sha1 "aedcdd2e3e4ec477cb140c58ba461102fd548bfb" => :mavericks
-    sha1 "aaeb881100107fb03813cf41dc65de04e2aa50f4" => :mountain_lion
-    sha1 "ca2d16c6e5b7af262d69b63415784fd4c6a9b288" => :lion
+    sha256 "bf5bc33e2baee617f47e20a66fb283638041a903e8f23ded35a9fdb05e5b3f03" => :yosemite
+    sha256 "4a322984fd96c34bc043318a71c7dbd784977cd5269eeadfd204eac0c89e770f" => :mavericks
+    sha256 "14aced9514c59c6d7b1207cfafe60936a564b40f94fa08d57cdbfde640b6faee" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -77,7 +75,7 @@ class Sbcl < Formula
 
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
-    ENV.delete_if do |key, value|
+    ENV.delete_if do |_, value|
       value =~ /[\x80-\xff]/n
     end
 
@@ -96,15 +94,14 @@ class Sbcl < Formula
     end
 
     ENV["INSTALL_ROOT"] = prefix
-    system "sh install.sh"
+    system "sh", "install.sh"
   end
 
   test do
-    (testpath/'simple.sbcl').write <<-EOS.undent
+    (testpath/"simple.sbcl").write <<-EOS.undent
       (write-line (write-to-string (+ 2 2)))
     EOS
-    output = `'#{bin}/sbcl' --script #{testpath}/simple.sbcl`
-    assert_equal '4', output.strip
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/sbcl --script #{testpath}/simple.sbcl")
+    assert_equal "4", output.strip
   end
 end

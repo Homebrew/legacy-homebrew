@@ -2,15 +2,15 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.3.tar.gz&os=mac'
-  version '2.0.3'
-  sha1 'b6e470ec08434f0e8e5d8df3ee9b42142ec1659b'
+  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.9.tar.gz&os=mac'
+  version '2.0.9'
+  sha1 '03637f65a18831a382ca64b87660578f16a3157b'
 
   bottle do
     cellar :any
-    sha1 "a4f03183d5355446b4357f0e016c172ba01408e4" => :yosemite
-    sha1 "09eca353571673fdc4f1c3b0058662893d0cc3b6" => :mavericks
-    sha1 "2375cc9ad416dbb1932be476f7b99dc3c2ee6b4e" => :mountain_lion
+    sha256 "6705f71386d9ac0df3b9c36d19396224d8e29ce2cbd007b4f0cbe13d42c50905" => :yosemite
+    sha256 "8b70601d73023de3cfdecf50703c829aca579399f9df5b003607f31910bf4bae" => :mavericks
+    sha256 "b45214091f8573b4c9d9cda50f5f78cc36a36529a30b63adfb4921b48f88ff99" => :mountain_lion
   end
 
   # Fixing OrientDB init scripts

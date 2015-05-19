@@ -419,6 +419,16 @@ def check_access_usr_local
   end
 end
 
+def check_tmpdir_sticky_bit
+  world_writable = HOMEBREW_TEMP.stat.mode & 0777 == 0777
+  if world_writable && !HOMEBREW_TEMP.sticky? then <<-EOS.undent
+    #{HOMEBREW_TEMP} is world-writable but does not have the sticky bit set.
+    Please run "Repair Disk Permissions" in Disk Utility.
+  EOS
+  end
+end
+
+
 (Keg::TOP_LEVEL_DIRECTORIES + ["lib/pkgconfig"]).each do |d|
   define_method("check_access_#{d.sub("/", "_")}") do
     dir = HOMEBREW_PREFIX.join(d)
@@ -570,7 +580,7 @@ def check_user_path_1
 
             Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
             occurs before /usr/bin. Here is a one-liner:
-                echo export PATH='#{HOMEBREW_PREFIX}/bin:$PATH' >> ~/.bash_profile
+                echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >> #{shell_profile}
           EOS
         end
       end
@@ -588,7 +598,7 @@ def check_user_path_2
     <<-EOS.undent
       Homebrew's bin was not found in your PATH.
       Consider setting the PATH for example like so
-          echo export PATH='#{HOMEBREW_PREFIX}/bin:$PATH' >> ~/.bash_profile
+          echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >> #{shell_profile}
     EOS
   end
 end
@@ -602,7 +612,7 @@ def check_user_path_3
         Homebrew's sbin was not found in your PATH but you have installed
         formulae that put executables in #{HOMEBREW_PREFIX}/sbin.
         Consider setting the PATH for example like so
-            echo export PATH='#{HOMEBREW_PREFIX}/sbin:$PATH' >> ~/.bash_profile
+            echo 'export PATH="#{HOMEBREW_PREFIX}/sbin:$PATH"' >> #{shell_profile}
       EOS
     end
   end

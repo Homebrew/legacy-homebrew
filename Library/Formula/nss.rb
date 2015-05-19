@@ -2,17 +2,22 @@ require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_4_RTM/src/nss-3.17.4.tar.gz"
-  sha256 "1d98ad1881a4237ec98cbe472fc851480f0b0e954dfe224d047811fb96ff9d79"
-  revision 1
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_19_RTM/src/nss-3.19.tar.gz"
+  sha256 "989ebdf79374f24181f060d332445b1a4baf3df39d08514c4349ba8573cefa9b"
 
   bottle do
     cellar :any
-    sha1 "2b8a680e6639215188542cc54c4f08dcee62ae36" => :yosemite
-    sha1 "2fdb9e02eddf3c692d2de478ab7fbb630cd0dcb0" => :mavericks
-    sha1 "83a0cf6db62ff865b07347c4a94361869715e6b0" => :mountain_lion
+    sha256 "73f2d526a20013c16a4d9a881ba5ced9fad579fd9fbbf171c62c6778b9302d78" => :yosemite
+    sha256 "928d9f476ef9919c88c573b3a137faf87e5a5aa2a5ae413b741521e02bc229ba" => :mavericks
+    sha256 "2322c1d6f9c34bc27636db92a74cce2aa166c6085c31bfb9896ece31f97ddb7f" => :mountain_lion
   end
 
+  keg_only <<-EOS.undent
+    Having this library symlinked makes Firefox pick it up instead of built-in,
+    so it then randomly crashes without meaningful explanation.
+
+    Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOS
   depends_on "nspr"
 
   def install
@@ -22,8 +27,8 @@ class Nss < Formula
     args = [
       "BUILD_OPT=1",
       "NSS_USE_SYSTEM_SQLITE=1",
-      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
-      "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
+      "NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr",
+      "NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}"
     ]
     args << "USE_64=1" if MacOS.prefer_64_bit?
 
@@ -63,7 +68,7 @@ class Nss < Formula
   end
 
   test do
-    # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
+    # See: https://developer.mozilla.org/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
     (testpath/"passwd").write("It's a secret to everyone.")
     system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
     system "#{bin}/certutil", "-L", "-d", pwd
@@ -92,7 +97,7 @@ class Nss < Formula
     Name: NSS
     Description: Mozilla Network Security Services
     Version: #{version}
-    Requires: nspr >= 4.10.7
+    Requires: nspr >= 4.10.8
     Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
     Cflags: -I${includedir}
     EOS

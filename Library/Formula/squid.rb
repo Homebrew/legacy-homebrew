@@ -1,14 +1,12 @@
-require "formula"
-
 class Squid < Formula
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.9.tar.bz2"
-  sha1 "a356cadc324d91c41119f96a7d1a20330866c1ac"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.4.tar.xz"
+  sha256 "dce615d08e349caf3975fc5d51ce4c3c69b9995fb83f51dc5d55ae873d8bf6a4"
 
   bottle do
-    sha1 "26d026bc8523fed17870fcdd7ef935687208232d" => :yosemite
-    sha1 "7fa50fc50e2525175d733068b3fc8c00d72eedf1" => :mavericks
-    sha1 "bdae1232126a1aa7a9eec3380d1d95184a2923ed" => :mountain_lion
+    sha256 "db246b52297badab3b482ff6525300e81633d5ff547f25a1c02a0dc3330648eb" => :yosemite
+    sha256 "6e271226f1f30ac69e2dd05e95730dcdd62768c4511b6c6dd88d14e1fd4abdf7" => :mavericks
+    sha256 "ec37c74bc79b7847cdf1f78a07fbcebcb371577fb962c4dfad862549145f1182" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -29,10 +27,11 @@ class Squid < Formula
       --disable-eui
       --enable-pf-transparent
       --with-included-ltdl
+      --with-openssl
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   def plist; <<-EOS.undent

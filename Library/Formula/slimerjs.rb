@@ -4,7 +4,9 @@ class FirefoxDependency < Requirement
 
   def self.firefox_installation
     paths = ["~/Applications/FirefoxNightly.app", "~/Applications/Firefox.app",
-             "/Applications/FirefoxNightly.app", "/Applications/Firefox.app"]
+             "/Applications/FirefoxNightly.app", "/Applications/Firefox.app",
+             "~/Applications/FirefoxDeveloperEdition.app",
+             "/Applications/FirefoxDeveloperEdition.app"]
     paths.find { |p| File.exist? File.expand_path(p) }
   end
 

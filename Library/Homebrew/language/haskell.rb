@@ -10,6 +10,10 @@ module Language
         # avoid touching ~/.cabal
         home = ENV["HOME"]
         ENV["HOME"] = pwd
+
+        # Use llvm-gcc on Lion or below (same compiler used when building GHC).
+        fails_with(:clang) if MacOS.version <= :lion
+
         # use cabal's sandbox feature if available
         cabal_version = `cabal --version`[/[0-9.]+/].split('.').collect(&:to_i)
         if (cabal_version <=> [1, 20]) > -1

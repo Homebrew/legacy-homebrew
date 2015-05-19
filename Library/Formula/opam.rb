@@ -2,18 +2,16 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://opam.ocaml.org'
-  url 'https://github.com/ocaml/opam/archive/1.2.0.tar.gz'
-  sha1 'b7923516a853afe86e8439afd23c0dae5fa8ad57'
-  revision 1
+  url 'https://github.com/ocaml/opam/archive/1.2.1.tar.gz'
+  sha1 'ec05bb766834c599ea5045eb3b7e92478ddf9dd0'
 
   head 'https://github.com/ocaml/opam.git'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "e60d1329090f7e4dce5744a52b4fff05a99b1dcb" => :yosemite
-    sha1 "089632176a7fa526a37906f187601be96f2c618d" => :mavericks
-    sha1 "53469ef187c263b6faed914e67f3d11e0f2d2efe" => :mountain_lion
+    sha256 "07bb172ee9fe261c4216b94f9fbb6e7789394ae0aa2baaf5edfb7531f31a557a" => :yosemite
+    sha256 "295c0f30bf07605c585810fcd0dd1c767defb5353f681d69a390f518f722a3d4" => :mavericks
+    sha256 "00971c8f7ead433bdac2731715380aef7635847c8f899be6dcf08a9d6d162455" => :mountain_lion
   end
 
   depends_on "objective-caml"
@@ -52,13 +50,18 @@ class Opam < Formula
   end
 
   resource "dose3" do
-    url "https://gforge.inria.fr/frs/download.php/file/33677/dose3-3.2.2.tar.gz"
-    sha1 "9e679404f46dd0c9af4c6b77d6088b17986741b3"
+    url "https://gforge.inria.fr/frs/download.php/file/34277/dose3-3.3.tar.gz"
+    sha1 "889b1d7daf963ab21b2c06e68ea8c3f51b58960d"
   end
 
   resource "cmdliner" do
-    url "http://erratique.ch/software/cmdliner/releases/cmdliner-0.9.4.tbz"
-    sha1 "afa604e527fc3e0753c643a96c354d4a6421321c"
+    url "http://erratique.ch/software/cmdliner/releases/cmdliner-0.9.7.tbz"
+    sha1 "7eb50ddb16a1e58bf39755117193a53a7613042c"
+  end
+
+  resource "uutf" do
+    url "http://erratique.ch/software/uutf/releases/uutf-0.9.3.tbz"
+    sha1 "9f9ae5a16ff0cd7ffeebf8b4174c5f041739b231"
   end
 
   resource "jsonm" do

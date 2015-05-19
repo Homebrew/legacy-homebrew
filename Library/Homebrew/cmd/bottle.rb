@@ -52,8 +52,6 @@ module Homebrew
     result = false
 
     keg.each_unique_file_matching(string) do |file|
-      put_filename = false
-
       # Check dynamic library linkage. Importantly, do not run otool on static
       # libraries, which will falsely report "linkage" to themselves.
       if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?
@@ -202,7 +200,7 @@ module Homebrew
     bottle.prefix prefix
     bottle.cellar relocatable ? :any : cellar
     bottle.revision bottle_revision
-    bottle.sha1 bottle_path.sha1 => bottle_tag
+    bottle.sha256 bottle_path.sha256 => bottle_tag
 
     output = bottle_output bottle
 
@@ -259,7 +257,18 @@ module Homebrew
               indent = s.slice(/^ +stable do/).length - "stable do".length
               string = s.sub!(/^ {#{indent}}stable do(.|\n)+?^ {#{indent}}end\n/m, '\0' + output + "\n")
             else
-              string = s.sub!(/(  ((url|sha1|sha256|head|version|mirror) ['"][\S ]+['"]|revision \d+)\n+)+/m, '\0' + output + "\n")
+              string = s.sub!(/(
+                                 \ {2}(                                                # two spaces at the beginning
+                                   url\ ['"][\S\ ]+['"]                                # url with a string
+                                   (
+                                     ,[\S\ ]*$                                         # url may have options
+                                     (\n^\ {3}[\S\ ]+$)*                               # options can be in multiple lines
+                                   )?|
+                                   (sha1|sha256|head|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
+                                   revision\ \d+                                       # revision with a number
+                                 )\n+                                                  # multiple empty lines
+                               )+
+                              /mx, '\0' + output + "\n")
             end
             odie 'Bottle block addition failed!' unless string
           end

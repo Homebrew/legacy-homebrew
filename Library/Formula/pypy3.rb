@@ -113,8 +113,8 @@ class Pypy3 < Formula
 
     Setuptools and pip have been installed, so you can use easy_install_pypy3 and
     pip_pypy3.
-    To update setuptools and pip between pypy3 releases, run:
-        #{scripts_folder}/pip install --upgrade setuptools pip
+    To update pip and setuptools between pypy3 releases, run:
+        pip_pypy3 install --upgrade pip setuptools
 
     See: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md
     EOS

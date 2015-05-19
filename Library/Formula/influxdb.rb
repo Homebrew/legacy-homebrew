@@ -7,16 +7,17 @@ class Influxdb < Formula
   sha1 "a5686d0374ec5ab616e335e9c5fb1aeacd17fb00"
 
   bottle do
-    revision 1
-    sha1 "5ef1d6ea8124f7047a818bf3a50830ce6d3d8098" => :yosemite
-    sha1 "c6ee43baa6927de07578ac9e20afa5bb9b39fba1" => :mavericks
-    sha1 "d8e036216607ffd611fe21bdaeb642462f024b38" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "bb246da9efb02f1dfaf3b401b1c6a5058de82081e4c31526228cb5fb486df787" => :yosemite
+    sha256 "abb2b857200ce69022981b8a7694f3fe4f24fadf905e3c6c3236a3a0ad946e7a" => :mavericks
+    sha256 "b3b3c081494c29f7fc0387d9e746732f3ac0cdaa480e891468b020ad5a3c9ed8" => :mountain_lion
   end
 
   devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc5.tar.gz"
-    sha1 "3aa889256f58253ee65ef276a7f375ff391f6482"
-    version "0.9.0-rc5"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc30.tar.gz"
+    sha1 "fc61f6e326f3bc91178b38cd793a2011e7fc3f0e"
+    version "0.9.0-rc30"
   end
 
   depends_on "go" => :build
@@ -36,7 +37,7 @@ class Influxdb < Formula
     end
 
     go_resource "github.com/boltdb/bolt" do
-      url "https://github.com/boltdb/bolt.git", :revision => "a7d19d8cd50cb700babad58d0643a4bb6ac8f36c"
+      url "https://github.com/boltdb/bolt.git", :revision => "8b138fd106636b40b4b6d43786e668ce658aa3d7"
     end
 
     go_resource "github.com/BurntSushi/toml" do
@@ -48,7 +49,7 @@ class Influxdb < Formula
     end
 
     go_resource "github.com/peterh/liner" do
-      url "https://github.com/peterh/liner.git", :revision => "d9335eee40a45a4f5d74524c90040d6fe6013d50"
+      url "https://github.com/peterh/liner.git", :revision => "fc147570057cd703778924569c41923b28611ca2"
     end
 
     go_resource "github.com/rakyll/statik" do
@@ -57,14 +58,6 @@ class Influxdb < Formula
 
     go_resource "golang.org/x/crypto" do
       url "https://go.googlesource.com/crypto.git", :revision => "1351f936d976c60a0a48d728281922cf63eafb8d"
-    end
-
-    go_resource "code.google.com/p/go-uuid" do
-      url "https://code.google.com/p/go-uuid/", :revision => "35bc42037350", :using => :hg
-    end
-
-    go_resource "code.google.com/p/log4go" do
-      url "https://code.google.com/p/log4go/", :revision => "c3294304d93f", :using => :hg
     end
   end
 
@@ -104,15 +97,13 @@ class Influxdb < Formula
       Language::Go.stage_deps resources, buildpath/"src"
 
       cd influxdb_path do
-        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc5 -X main.commit 487cd2a1c19f201e329cba93a7b49204f8684b18", "./..."
+        system "go", "build", "-ldflags", "-X main.version 0.9.0-rc30 -X main.commit acf2dd6ba5429e95ad6a156afe7afbdc6b861979", "./..."
         system "go", "install", "./..."
       end
 
       inreplace influxdb_path/"etc/config.sample.toml" do |s|
-        s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
-        s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-        s.gsub! "/tmp/influxdb/development/state", "#{var}/influxdb/state"
-        s.gsub! "/var/log/influxdb/influxd.log", "#{var}/influxdb/logs/influxd.log"
+        s.gsub! "/var/opt/influxdb/db", "#{var}/influxdb/data"
+        s.gsub! "/var/opt/influxdb/raft", "#{var}/influxdb/raft"
       end
 
       bin.install buildpath/"bin/influxd" => "influxd"
@@ -176,7 +167,8 @@ class Influxdb < Formula
           <key>ProgramArguments</key>
           <array>
             <string>#{opt_bin}/influxd</string>
-            <string>-config #{HOMEBREW_PREFIX}/etc/influxdb.conf</string>
+            <string>-config</string>
+            <string>#{HOMEBREW_PREFIX}/etc/influxdb.conf</string>
           </array>
           <key>RunAtLoad</key>
           <true/>

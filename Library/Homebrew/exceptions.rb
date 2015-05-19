@@ -166,18 +166,16 @@ class BuildError < RuntimeError
       require 'cmd/config'
       require 'cmd/--env'
 
-      unless formula.core_formula?
-        ohai "Formula"
-        puts "Tap: #{formula.tap}"
-        puts "Path: #{formula.path}"
-      end
+      ohai "Formula"
+      puts "Tap: #{formula.tap}" if formula.tap?
+      puts "Path: #{formula.path}"
       ohai "Configuration"
       Homebrew.dump_verbose_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
       puts
       onoe "#{formula.name} #{formula.version} did not build"
-      unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]).empty?
+      unless (logs = Dir["#{formula.logs}/*"]).empty?
         puts "Logs:"
         puts logs.map{|fn| "     #{fn}"}.join("\n")
       end

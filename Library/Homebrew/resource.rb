@@ -122,7 +122,7 @@ class Resource
   rescue ChecksumMissingError
     opoo "Cannot verify integrity of #{fn.basename}"
     puts "A checksum was not provided for this resource"
-    puts "For your reference the SHA1 is: #{fn.sha1}"
+    puts "For your reference the SHA256 is: #{fn.sha256}"
   end
 
   Checksum::TYPES.each do |type|

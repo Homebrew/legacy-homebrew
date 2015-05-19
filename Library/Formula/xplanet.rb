@@ -3,7 +3,7 @@ require "formula"
 class Xplanet < Formula
   homepage "http://xplanet.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/xplanet/xplanet/1.3.0/xplanet-1.3.0.tar.gz"
-  sha1 "7c5208b501b441a0184cbb334a5658d0309d7dac"
+  sha256 "44fb742bb93e5661ea8b11ccabcc12896693e051f3dd5083c9227224c416b442"
 
   bottle do
     revision 2

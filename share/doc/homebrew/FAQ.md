@@ -10,7 +10,7 @@ You can now find out what is outdated with:
 
 Upgrade everything with:
 
-    brew upgrade
+    brew upgrade --all
 
 Or upgrade a specific formula with:
 
@@ -44,28 +44,25 @@ to see what would be cleaned up:
 <a name="uninstall"></a>
 
 ### How do I uninstall Homebrew?
-If you installed to `/usr/local` then you can use the script in [this
-gist](https://gist.github.com/1173223) to uninstall — it will only
-remove Homebrew and the stuff Homebrew installed leaving anything else
-in `/usr/local` alone.
+To uninstall Homebrew, paste the command below in a terminal prompt.
 
-Provided you haven’t put anything else in Homebrew’s prefix
-(`brew --prefix`), you can generally just `rm -rf` that directory. This
-is because Homebrew won’t touch files outside its prefix.
+```bash
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+```
+Download the [uninstall script](https://raw.githubusercontent.com/Homebrew/install/master/uninstall)
+and run `./uninstall --help` to view more uninstall options.
 
 <a name="uninstall-package"></a>
 
 ### How do I uninstall a formula?
 If you do not uninstall all of the versions that Homebrew has installed,
 Homebrew will continue to attempt to install the newest version it knows
-about when you do (`brew upgrade`). This can be surprising.
+about when you do (`brew upgrade --all`). This can be surprising.
 
 To remove a formula entirely, you may do
 (`brew uninstall formula_name --force`).
 
-Be careful as this is a destructive operation and unfortunately, in
-Homebrew 0.9.5 it seems that Homebrew does not support the `--dry-run`
-option.
+Be careful as this is a destructive operation.
 
 ### Where does stuff get downloaded?
 
@@ -86,16 +83,14 @@ alternative](https://developer.apple.com/legacy/library/qa/qa1067/_index.html).
 Read everything in https://github.com/Homebrew/homebrew/blob/master/CONTRIBUTING.md.
 
 ### Why do you compile everything?
-Projects distribute source tarballs, generally, but if they provide a
-good binary, we’ll use it. Though we don’t always, because Homebrew is
-about **homebrewing**, it’s half the point that you can just
+Homebrew is about **homebrewing**, it’s half the point that you can just
 `brew edit $FORMULA` and change how the formula is compiled to your own
 specification.
 
 Homebrew does provide pre-compiled versions for some formulae. These
 pre-compiled versions are referred to as **bottles** and are available
 at:
-[http://sf.net/projects/machomebrew/files](http://sf.net/projects/machomebrew/files).
+[https://bintray.com/homebrew/bottles](https://bintray.com/homebrew/bottles).
 
 If available, bottled binaries will be used by default except under the
 following conditions:
@@ -253,4 +248,4 @@ to with `brew link`.
 
 ### How can I specify different configure arguments for a formula?
 `brew edit $FORMULA` and edit the formula. Currently there is no
-other way to do this, but we’ll design something like that into brew2.
+other way to do this.

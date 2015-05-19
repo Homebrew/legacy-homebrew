@@ -1,7 +1,7 @@
 class Golo < Formula
   homepage "http://golo-lang.org"
-  url "http://search.maven.org/remotecontent?filepath=org/golo-lang/golo/2.0.0/golo-2.0.0-distribution.tar.gz"
-  sha1 "8d9f8433518885b5d8aa0015b19c230fd425d3da"
+  url "http://search.maven.org/remotecontent?filepath=org/golo-lang/golo/2.1.0/golo-2.1.0-distribution.tar.gz"
+  sha1 "42bc1f44007b7aa4dfc85ad8da0a75918faf65fb"
 
   head do
     url "https://github.com/golo-lang/golo-lang.git"

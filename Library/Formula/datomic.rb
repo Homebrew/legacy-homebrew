@@ -1,16 +1,16 @@
 class Datomic < Formula
   homepage "http://www.datomic.com/"
-  url "https://my.datomic.com/downloads/free/0.9.5130"
-  sha256 "3fd1d7a8a2c400f570899e6bb77af246ea7d7561f7692b84f299064b8b22b681"
-  version "0.9.5130"
+  url "https://my.datomic.com/downloads/free/0.9.5153"
+  sha256 "acaacf8d08d5594451dfad00782cefccea78a61fce0185f4448890ed9adf886b"
+  version "0.9.5153"
 
   depends_on :java
 
   def install
     libexec.install Dir["*"]
-    (bin/"datomic").write_env_script libexec/"bin/datomic", :JAVA_HOME => ENV["JAVA_HOME"]
+    (bin/"datomic").write_env_script libexec/"bin/datomic", Language::Java.java_home_env
     %w[transactor repl repl-jline rest shell].each do |file|
-      (bin/"datomic-#{file}").write_env_script libexec/"bin/#{file}", :JAVA_HOME => ENV["JAVA_HOME"]
+      (bin/"datomic-#{file}").write_env_script libexec/"bin/#{file}", Language::Java.java_home_env
     end
   end
 

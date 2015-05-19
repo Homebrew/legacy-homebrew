@@ -2,21 +2,21 @@ require "formula"
 
 class Neo4j < Formula
   homepage "http://neo4j.org"
-  url "http://dist.neo4j.org/neo4j-community-2.1.7-unix.tar.gz"
-  sha1 "1827c318c019042c3ca2da89481f717f711d9aed"
-  version "2.1.7"
+  url "http://dist.neo4j.org/neo4j-community-2.2.1-unix.tar.gz"
+  sha1 "49290968ad53030bd4826335ea104f10ecc3ec42"
+  version "2.2.1"
 
   option "with-neo4j-shell-tools", "Add neo4j-shell-tools to the standard neo4j-shell"
 
   resource "neo4j-shell-tools" do
-    url "http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.1.zip"
-    sha1 "83011a6dcf1cb49ee609e973fdb61f32f765b224"
+    url "http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.2.zip"
+    sha1 "5c1d4d46660149291ca4f484591c25c25be82c5b"
   end
 
   devel do
-    url "http://dist.neo4j.org/neo4j-community-2.2.0-M04-unix.tar.gz"
-    sha1 "05e4d532b08a4b02de0b601bbb95c3298a715525"
-    version "2.2.0-M04"
+    url "http://dist.neo4j.org/neo4j-community-2.3.0-M01-unix.tar.gz"
+    sha1 "288f917f5f3822ca70c8eef5bcf1639392a41036"
+    version "2.3.0-M01"
   end
 
   def install
@@ -27,15 +27,13 @@ class Neo4j < Formula
     libexec.install Dir["*"]
 
     # Symlink binaries
-    bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
-
-    bin.install_symlink libexec/"bin/neo4j-import" if build.devel?
+    bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell,-import}"]
 
     # Eventually, install neo4j-shell-tools
     # omiting "opencsv-2.3.jar" because it already comes with neo4j (see libexec/lib)
     if build.with? "neo4j-shell-tools"
       resource("neo4j-shell-tools").stage {
-        (libexec/"lib").install "geoff-0.5.0.jar", "import-tools-2.1-SNAPSHOT.jar", "mapdb-0.9.3.jar"
+        (libexec/"lib").install "geoff-0.5.0.jar", "import-tools-2.2.jar", "mapdb-0.9.3.jar"
       }
     end
 

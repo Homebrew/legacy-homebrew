@@ -2,35 +2,44 @@ class Ledger < Formula
   homepage "http://ledger-cli.org"
   url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
   sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
-
-  resource "utfcpp" do
-    url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
-    sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
-  end
+  head "https://github.com/ledger/ledger.git"
 
   bottle do
-    revision 2
-    sha1 "661106efe731cb8934269f0e9141b6c846b65710" => :yosemite
-    sha1 "80b7a33291be43598d5084da49d8783ee7780679" => :mavericks
-    sha1 "087576750c2d1df2367a7bac2617e54dbedc2866" => :mountain_lion
+    revision 3
+    sha256 "0fb1aefa3cf1e52cce8f7153818bab704a7bf29197e5691def5398e272a1a972" => :yosemite
+    sha256 "a9d67f14335ff833b389d3b5b57110af7ab268e51e960caf4cd21d2a745ea441" => :mavericks
+    sha256 "2ad8d5e6e038d5a7761b389e33455c5113b4e6387754e48aaaa55e69e7b2a7f9" => :mountain_lion
   end
 
-  head "https://github.com/ledger/ledger.git"
+  resource "utfcpp" do
+    url "https://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+    sha256 "3373cebb25d88c662a2b960c4d585daf9ae7b396031ecd786e7bb31b15d010ef"
+  end
 
   deprecated_option "debug" => "with-debug"
 
   option "with-debug", "Build with debugging symbols enabled"
   option "with-docs", "Build HTML documentation"
+  option "without-python", "Build without python support"
 
-  depends_on "mpfr"
-  depends_on "gmp"
-  depends_on :python => :optional
   depends_on "cmake" => :build
+  depends_on "gmp"
+  depends_on "mpfr"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
 
   boost_opts = []
   boost_opts << "c++11" if MacOS.version < "10.9"
   depends_on "boost" => boost_opts
   depends_on "boost-python" => boost_opts if build.with? "python"
+
+  stable do
+    # don't explicitly link a python framework
+    # https://github.com/ledger/ledger/pull/415
+    patch do
+      url "https://github.com/ledger/ledger/commit/5f08e27.diff"
+      sha256 "064b0e64d211224455511cd7b82736bb26e444c3af3b64936bec1501ed14c547"
+    end
+  end
 
   needs :cxx11
 
@@ -42,7 +51,6 @@ class Ledger < Formula
 
     flavor = (build.with? "debug") ? "debug" : "opt"
 
-    opts = %w[-- -DBUILD_DOCS=1]
     args = %W[
       --jobs=#{ENV.make_jobs}
       --output=build
@@ -50,22 +58,10 @@ class Ledger < Formula
       --boost=#{Formula["boost"].opt_prefix}
     ]
 
-    if build.with? "docs"
-      opts << "-DBUILD_WEB_DOCS=1"
-    end
+    args << "--python" if build.with? "python"
 
-    if build.with? "python"
-      # Per #25118, CMake does a poor job of detecting a brewed Python.
-      # We need to tell CMake explicitly where our default python lives.
-      # Inspired by
-      # https://github.com/Homebrew/homebrew/blob/51d054c/Library/Formula/opencv.rb
-      args << "--python"
-      python_prefix = `python-config --prefix`.strip
-      opts << "-DPYTHON_LIBRARY=#{python_prefix}/Python"
-      opts << "-DPYTHON_INCLUDE_DIR=#{python_prefix}/Headers"
-    end
-
-    args += opts
+    args += %w[-- -DBUILD_DOCS=1]
+    args << "-DBUILD_WEB_DOCS=1" if build.with? "docs"
 
     system "./acprep", flavor, "make", *args
     system "./acprep", flavor, "make", "doc", *args
