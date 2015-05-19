@@ -25,10 +25,10 @@ class Gcc < Formula
   sha256 "b7dafdf89cbb0e20333dbf5b5349319ae06e3d1a30bf3515b5488f7e89dca5ad"
 
   bottle do
-    revision 1
-    sha256 "4e8d95ce716ec056ee6e29271aa9121f23e535678365e5e075aeda49249d76f0" => :yosemite
-    sha256 "710d0d5462900da808596940d81aee9ac14c4c25f38f6008051577497d70df44" => :mavericks
-    sha256 "c4d9704632d46fc1ec8e505185f95ce42b69fb12d9644dd894c420f72fb55c29" => :mountain_lion
+    revision 2
+    sha256 "77f780600830699d4bfb9e6f14e3befd7a5511a7a4937d57ef665a58934972f8" => :yosemite
+    sha256 "8c156f6588eb4e83837635b42daa1b5e5d1b88097f0dbd679b0332874113cc97" => :mavericks
+    sha256 "77bce635f78bc26bd01010b5ece480251af223bf2dba6d48c29af6b29b441296" => :mountain_lion
   end
 
   option "with-java", "Build the gcj compiler"
