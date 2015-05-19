@@ -1,10 +1,8 @@
-require "formula"
-
 class Libinfinity < Formula
   desc "GObject-based C implementation of the Infinote protocol"
   homepage "http://gobby.0x539.de/trac/wiki/Infinote/Libinfinity"
-  url "http://releases.0x539.de/libinfinity/libinfinity-0.6.4.tar.gz"
-  sha1 "93477ccefcedf28bba7f709f3387920040cbcedc"
+  url "http://releases.0x539.de/libinfinity/libinfinity-0.6.6.tar.gz"
+  sha256 "3df9397b52d61392cbe98084aada9b7362a34811ef21baa0db87fdfd754f92cc"
 
   bottle do
     sha1 "a82073981d1c5e79dc509ca7bf0a35256c19ccbb" => :yosemite
@@ -14,10 +12,9 @@ class Libinfinity < Formula
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "gtk+"
+  depends_on "gtk+3"
   depends_on "gnutls"
   depends_on "gsasl"
-  depends_on :x11
 
   # MacPorts patch to fix pam include. This is still applicable to 0.6.4.
   patch :p0 do
@@ -27,7 +24,54 @@ class Libinfinity < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-gtk3", "--with-inftextgtk", "--with-infgtk"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <libinfinity/common/inf-init.h>
+
+      int main(int argc, char *argv[]) {
+        GError *error = NULL;
+        gboolean status = inf_init(&error);
+        return 0;
+      }
+    EOS
+    ENV.libxml2
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    gnutls = Formula["gnutls"]
+    gsasl = Formula["gsasl"]
+    libtasn1 = Formula["libtasn1"]
+    nettle = Formula["nettle"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{gnutls.opt_include}
+      -I#{gsasl.opt_include}
+      -I#{include}/libinfinity-0.6
+      -I#{libtasn1.opt_include}
+      -I#{nettle.opt_include}
+      -D_REENTRANT
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{gnutls.opt_lib}
+      -L#{gsasl.opt_lib}
+      -L#{lib}
+      -lglib-2.0
+      -lgnutls
+      -lgobject-2.0
+      -lgsasl
+      -lgthread-2.0
+      -linfinity-0.6
+      -lintl
+      -lxml2
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end
