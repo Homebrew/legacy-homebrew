@@ -4,6 +4,7 @@ class OpenMpi < Formula
   # https://github.com/open-mpi/ompi/issues/579
   url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2"
   sha256 "23158d916e92c80e2924016b746a93913ba7fae9fff51bf68d5c2a0ae39a2f8a"
+  revision 1
 
   bottle do
     sha1 "a6ec98d40ab34bf2eb4dbe9223d5aa430ba749ed" => :yosemite
