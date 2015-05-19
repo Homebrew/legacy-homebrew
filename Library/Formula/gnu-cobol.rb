@@ -1,9 +1,11 @@
+require "formula"
+
 class GnuCobol < Formula
   homepage "http://www.opencobol.org/"
 
   stable do
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/1.1/gnu-cobol-1.1.tar.gz"
-    sha256 "5cd6c99b2b1c82fd0c8fffbb350aaf255d484cde43cf5d9b92de1379343b3d7e"
+    sha1 "86e928c43cb3372f1f4564f3fd5e1dde668e8c1f"
 
     fails_with :clang do
       cause <<-EOS.undent
@@ -12,16 +14,18 @@ class GnuCobol < Formula
       EOS
     end
   end
-  revision 1
 
   devel do
     version "2.0_nightly_r411"
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/2.0/gnu-cobol-2.0_nightly_r411.tar.gz"
-    sha256 "5d6d767bf0255fa63bc5c26493d53f4749eb0e369b81c626d156f346b3664fe7"
+    sha1 "009215c090b9a90fbf02bbc913095ce2a9b31910"
   end
 
   bottle do
-    sha256 "3b1ace2c9e1b37faca976a81fba636054d3971a4d5a7512dce2eb8fad79fbdce" => :mountain_lion
+    revision 1
+    sha1 "0faef373e0364a8c92e32b828904e0fc10198aab" => :mavericks
+    sha1 "cf08ce9301cfb80a882b37587ef0b9cb5c96f70b" => :mountain_lion
+    sha1 "fc50ad8ec550f6d347044778b795688e4f18ad24" => :lion
   end
 
   depends_on "autoconf" => :build

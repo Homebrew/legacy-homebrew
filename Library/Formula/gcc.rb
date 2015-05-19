@@ -19,21 +19,22 @@ class Gcc < Formula
     `uname -r`.chomp
   end
 
-  homepage "https://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
-  sha256 "b7dafdf89cbb0e20333dbf5b5349319ae06e3d1a30bf3515b5488f7e89dca5ad"
+  homepage "http://gcc.gnu.org"
+  url "http://ftpmirror.gnu.org/gcc/gcc-4.9.2/gcc-4.9.2.tar.bz2"
+  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.bz2"
+  sha1 "79dbcb09f44232822460d80b033c962c0237c6d8"
+  revision 1
 
   bottle do
-    sha256 "5310c49573271aaf83b90f2f151ab8503a2bda79c8717b9a1960834f2bf937b1" => :yosemite
-    sha256 "d95aafb87eb06793777b4bb8310fbd6f2243fc096597b722f5b02f6389daaf94" => :mavericks
-    sha256 "aaa8e969f6391ee493bc72c340fc940b6c79de9ed7aad9dd255de82c5df6f6bc" => :mountain_lion
+    revision 1
+    sha256 "4e8d95ce716ec056ee6e29271aa9121f23e535678365e5e075aeda49249d76f0" => :yosemite
+    sha256 "710d0d5462900da808596940d81aee9ac14c4c25f38f6008051577497d70df44" => :mavericks
+    sha256 "c4d9704632d46fc1ec8e505185f95ce42b69fb12d9644dd894c420f72fb55c29" => :mountain_lion
   end
 
   option "with-java", "Build the gcj compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
   option "with-nls", "Build with native language support (localization)"
-  option "with-jit", "Build the jit compiler"
   option "without-fortran", "Build without the gfortran compiler"
   # enabling multilib on a host that can't run 64-bit results in build failures
   option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
@@ -41,6 +42,7 @@ class Gcc < Formula
   depends_on "gmp"
   depends_on "libmpc"
   depends_on "mpfr"
+  depends_on "cloog"
   depends_on "isl"
   depends_on "ecj" if build.with?("java") || build.with?("all-languages")
 
@@ -66,10 +68,6 @@ class Gcc < Formula
     version.to_s.slice(/\d\.\d/)
   end
 
-  # Fix for libgccjit.so linkage on Darwin
-  # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64089
-  patch :DATA
-
   def install
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
@@ -78,19 +76,14 @@ class Gcc < Formula
       ENV["AS"] = ENV["AS_FOR_TARGET"] = "#{Formula["cctools"].bin}/as"
     end
 
-    if build.with? "all-languages"
-      # Everything but Ada, which requires a pre-existing GCC Ada compiler
-      # (gnat) to bootstrap. GCC 4.6.0 adds go as a language option, but it is
-      # currently only compilable on Linux.
-      languages = %w[c c++ objc obj-c++ fortran java jit]
-    else
-      # C, C++, ObjC compilers are always built
-      languages = %w[c c++ objc obj-c++]
+    # C, C++, ObjC compilers are always built
+    languages = %w[c c++ objc obj-c++]
 
-      languages << "fortran" if build.with? "fortran"
-      languages << "java" if build.with? "java"
-      languages << "jit" if build.with? "jit"
-    end
+    # Everything but Ada, which requires a pre-existing GCC Ada compiler
+    # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
+    # currently only compilable on Linux.
+    languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
+    languages << "java" if build.with?("java") || build.with?("all-languages")
 
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
@@ -102,6 +95,7 @@ class Gcc < Formula
       "--with-gmp=#{Formula["gmp"].opt_prefix}",
       "--with-mpfr=#{Formula["mpfr"].opt_prefix}",
       "--with-mpc=#{Formula["libmpc"].opt_prefix}",
+      "--with-cloog=#{Formula["cloog"].opt_prefix}",
       "--with-isl=#{Formula["isl"].opt_prefix}",
       "--with-system-zlib",
       "--enable-libstdcxx-time=yes",
@@ -111,6 +105,8 @@ class Gcc < Formula
       # Use 'bootstrap-debug' build configuration to force stripping of object
       # files prior to comparison during bootstrap (broken by Xcode 6.3).
       "--with-build-config=bootstrap-debug",
+      # A no-op unless --HEAD is built because in head warnings will
+      # raise errors. But still a good idea to include.
       "--disable-werror",
       "--with-pkgversion=Homebrew #{name} #{pkg_version} #{build.used_options*" "}".strip,
       "--with-bugurl=https://github.com/Homebrew/homebrew/issues",
@@ -136,8 +132,6 @@ class Gcc < Formula
       args << "--enable-multilib"
     end
 
-    args << "--enable-host-shared" if build.with? "jit"
-
     # Ensure correct install names when linking against libgcc_s;
     # see discussion in https://github.com/Homebrew/homebrew/pull/34303
     inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
@@ -145,7 +139,7 @@ class Gcc < Formula
     mkdir "build" do
       unless MacOS::CLT.installed?
         # For Xcode-only systems, we need to tell the sysroot path.
-        # "native-system-headers" will be appended
+        # "native-system-header's will be appended
         args << "--with-native-system-header-dir=/usr/include"
         args << "--with-sysroot=#{MacOS.sdk_path}"
       end
@@ -241,18 +235,3 @@ class Gcc < Formula
     end
   end
 end
-__END__
-diff --git a/gcc/jit/Make-lang.in b/gcc/jit/Make-lang.in
-index 44d0750..4df2a9c 100644
---- a/gcc/jit/Make-lang.in
-+++ b/gcc/jit/Make-lang.in
-@@ -85,8 +85,7 @@ $(LIBGCCJIT_FILENAME): $(jit_OBJS) \
-	     $(jit_OBJS) libbackend.a libcommon-target.a libcommon.a \
-	     $(CPPLIB) $(LIBDECNUMBER) $(LIBS) $(BACKENDLIBS) \
-	     $(EXTRA_GCC_OBJS) \
--	     -Wl,--version-script=$(srcdir)/jit/libgccjit.map \
--	     -Wl,-soname,$(LIBGCCJIT_SONAME)
-+	     -Wl,-install_name,$(LIBGCCJIT_SONAME)
-
- $(LIBGCCJIT_SONAME_SYMLINK): $(LIBGCCJIT_FILENAME)
-	ln -sf $(LIBGCCJIT_FILENAME) $(LIBGCCJIT_SONAME_SYMLINK)
