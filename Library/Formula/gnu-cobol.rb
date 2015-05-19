@@ -21,10 +21,7 @@ class GnuCobol < Formula
   end
 
   bottle do
-    revision 1
-    sha1 "0faef373e0364a8c92e32b828904e0fc10198aab" => :mavericks
-    sha1 "cf08ce9301cfb80a882b37587ef0b9cb5c96f70b" => :mountain_lion
-    sha1 "fc50ad8ec550f6d347044778b795688e4f18ad24" => :lion
+    sha256 "3b1ace2c9e1b37faca976a81fba636054d3971a4d5a7512dce2eb8fad79fbdce" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
