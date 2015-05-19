@@ -5,6 +5,13 @@ class Karn < Formula
   url "https://github.com/prydonius/karn/archive/v0.0.2.tar.gz"
   sha256 "eac77b82f7abd9c37e70d01240e8e69893b7497d3dd5ab7b0fb2df04ae1e6529"
 
+  bottle do
+    cellar :any
+    sha256 "217c56700267f33763c3d2c19cb16f568ede2a9354497377639d26c6998f5490" => :yosemite
+    sha256 "25ac0041b1023e2b703468d194e554d2dc42664f496f2ca53082003684477ece" => :mavericks
+    sha256 "0c5c97266aa7b34fdabaf54b6877b67d279fa643dc264b7f1a1926f2dd1f3790" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/codegangsta/cli" do
