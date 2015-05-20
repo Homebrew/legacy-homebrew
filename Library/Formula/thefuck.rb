@@ -1,7 +1,7 @@
 class Thefuck < Formula
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.40.tar.gz"
-  sha256 "f20262e3b1e59d66ad9cfa5b4fba45737a959789f9a094ea226b455f6c8b1f9e"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.42.tar.gz"
+  sha256 "049f52a44d82ed1e79abb3c32eb96459e3b848fbc097af826dda218a5910f011"
 
   bottle do
     cellar :any
