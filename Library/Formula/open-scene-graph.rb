@@ -2,7 +2,8 @@ class OpenSceneGraph < Formula
   desc "3D graphics toolkit"
   homepage "http://www.openscenegraph.org/projects/osg"
   url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.3.3.zip"
-  sha1 "98697c3e3b3c6e7e2ec7a6a75ece8f790b709cd7"
+  sha256 "b81cda123ffb3bd108e0fe4be4fff1351d6636e6fb0a1475b2c4fb9618d3ae2b"
+  revision 1
 
   bottle do
     sha1 "2f7f0292cf0d66cc37f94ff9d769c7d397e4a19c" => :yosemite
@@ -32,6 +33,8 @@ class OpenSceneGraph < Formula
   depends_on "ffmpeg" => :optional
   depends_on "qt5" => :optional
   depends_on "qt" => :optional
+
+  patch :DATA
 
   if build.with? "docs"
     depends_on "doxygen" => :build
@@ -91,3 +94,17 @@ class OpenSceneGraph < Formula
     assert_equal `./test`.chomp, version.to_s
   end
 end
+__END__
+diff --git a/CMakeModules/FindGtkGl.cmake b/CMakeModules/FindGtkGl.cmake
+index 321cede..6497589 100644
+--- a/CMakeModules/FindGtkGl.cmake
++++ b/CMakeModules/FindGtkGl.cmake
+@@ -10,7 +10,7 @@ IF(PKG_CONFIG_FOUND)
+     IF(WIN32)
+         PKG_CHECK_MODULES(GTKGL gtkglext-win32-1.0)
+     ELSE()
+-        PKG_CHECK_MODULES(GTKGL gtkglext-x11-1.0)
++        PKG_CHECK_MODULES(GTKGL gtkglext-quartz-1.0)
+     ENDIF()
+
+ ENDIF()
