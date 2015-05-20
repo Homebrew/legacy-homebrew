@@ -19,6 +19,9 @@ class Pstoedit < Formula
   # worked in 3.62 but now don't in 3.70, including PIC, DXF, FIG, and
   # many others.
   #
+  # This patch has been submitted upstream; see:
+  # http://sourceforge.net/p/pstoedit/bugs/19/
+  #
   # Taken from:
   # https://build.opensuse.org/package/view_file/openSUSE:Factory/pstoedit/pstoedit-pkglibdir.patch?expand=1
   #
