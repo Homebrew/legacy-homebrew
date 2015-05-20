@@ -1,7 +1,7 @@
 class Passenger < Formula
   homepage "https://www.phusionpassenger.com/"
-  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.7.tar.gz"
-  sha256 'e1f481d7bc2be54aaad7aa3201d24253dcb17a3e505dca273fd7725fedeabf29'
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.8.tar.gz"
+  sha256 '4da783986fad73f898a00aa118ada33ea99d83ff065fd11ab3d508a4f63f0920'
   head "https://github.com/phusion/passenger.git"
 
   bottle do
