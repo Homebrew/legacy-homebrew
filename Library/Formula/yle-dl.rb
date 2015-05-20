@@ -44,6 +44,6 @@ class YleDl < Formula
 
   test do
     assert_equal "3 minuuttia-2012-05-30T10:51:00\n",
-                 shell_output("#{bin}/yle-dl --showtitle http://areena.yle.fi/tv/1570236")
+                 shell_output("#{bin}/yle-dl --showtitle http://areena.yle.fi/1-1570236")
   end
 end
