@@ -18,9 +18,9 @@ class GtkEngines < Formula
   end
 
   test do
-    ENV["GTK2_RC_FILES"] = "#{share}/themes/Clearlooks/gtk-2.0/gtkrc"
-    ENV["GTK_PATH"] = "#{HOMEBREW_PREFIX}/lib/gtk-2.0"
-    system "#{HOMEBREW_PREFIX}/bin/gtk-demo"
+    assert (share/"gtk-engines/clearlooks.xml").exist?
+    assert (lib/"gtk-2.0/2.10.0/engines/libhcengine.so").exist?
+    assert (share/"themes/Industrial/gtk-2.0/gtkrc").exist?
   end
 
   def caveats; <<-EOS.undent
