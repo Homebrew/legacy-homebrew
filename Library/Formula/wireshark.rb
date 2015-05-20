@@ -2,9 +2,9 @@ class Wireshark < Formula
   homepage "https://www.wireshark.org"
 
   stable do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.4.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.4.tar.bz2"
-    sha256 "de804e98e252e4b795d28d6ac2d48d7f5aacd9b046ee44d44266983795ebc312"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.5.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.5.tar.bz2"
+    sha256 "d0f177b2ef49e4deae4ff7d3299bdd295ba558a3934ce8ae489b2f13927cbd82"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -14,9 +14,9 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha256 "f309207f69b0982b7456c931c738afe855b6da3a420ff6111ca1b0ce50a787e5" => :yosemite
-    sha256 "454c9aea54ab1445d63d60599de8b96f87b38b1b674f68cbfb2714be7c7a5364" => :mavericks
-    sha256 "8f5f81f60f35b6e08ab3ddb47345589d71cd40ca1b6a56c103a6f8110237746b" => :mountain_lion
+    sha256 "4eefb6e29162dec6c87ef79880c5b3a8fa6c9515b1c6c1d94208eb0b14b95f06" => :yosemite
+    sha256 "a0bf7759f5bdf3092f35c5cbe6375c4ee6e56fe2ae3d4f9a93ed28b5d9e988ae" => :mavericks
+    sha256 "b2294c6fe1dc2de324bc834331f5a1cd76f958c65d7d1b40154f7e1cd48656fe" => :mountain_lion
   end
 
   head do

@@ -1,15 +1,14 @@
 class Libgit2 < Formula
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.22.0.tar.gz"
-  sha1 "a37dc29511422eec9828e129ad057e77ca962c5e"
+  url "https://github.com/libgit2/libgit2/archive/v0.22.1.tar.gz"
+  sha256 "c7f1bf99ed8aeba65a485489869e2a50f022f3cd847df85e192fc99fdd6c8b5e"
   head "https://github.com/libgit2/libgit2.git"
-  revision 1
 
   bottle do
     cellar :any
-    sha256 "722c0d7fee0826e2534f43d71bd7f3df20b09802db53bbcdf1f3b72c073b888d" => :yosemite
-    sha256 "4ebcae368e74ebe396032744b5790e2af3ce37ec3035a852ba1ed08d9559fff5" => :mavericks
-    sha256 "d0a6034bc1dcabd209ca79727320cc64fe13f9b336ae51cc3cb8f9d62fd39d99" => :mountain_lion
+    sha256 "2a82725022d06bb36807274f003797938f9b2b0544270b6ba04c29acfdfbd0de" => :yosemite
+    sha256 "e8fa9e5bda12a415c8da8ca0d38ae22a5e59794159cc3d0f5a5527d51d494029" => :mavericks
+    sha256 "4b050924591f0ef948c713c767e9f50504648e191bce4439ebe952c52b56ef8a" => :mountain_lion
   end
 
   option :universal

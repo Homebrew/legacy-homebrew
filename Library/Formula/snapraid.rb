@@ -1,19 +1,28 @@
 class Snapraid < Formula
   homepage "http://snapraid.sourceforge.net/"
-  head "git://snapraid.git.sourceforge.net/gitroot/snapraid/snapraid"
-  url "https://downloads.sourceforge.net/project/snapraid/snapraid-7.1.tar.gz"
-  sha1 "3aa3ee982c21c6e19f31988cc1805dc535404334"
+  url "https://downloads.sourceforge.net/project/snapraid/snapraid-8.1.tar.gz"
+  sha256 "6bf89a1319ac3403958cd2c98a9c6102728c0070cfa1aedd90c4561d93c54e5d"
+
+  head do
+    url "https://github.com/amadvance/snapraid.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
 
   bottle do
     cellar :any
-    sha256 "5725dceb381a57c2e216cf13f51c0eb68793d772bedaa211ac4de163c23d6a1d" => :yosemite
-    sha256 "0fe2f7a73f36103c67b7308f7267be8a37277ed03f8b1573906102c0cf6ed510" => :mavericks
-    sha256 "ad68ec9b63b3bc6cc46c2905a57d3b23a5154a94fdf86cfa12a58742c7ec12e3" => :mountain_lion
+    sha256 "10123687aa79706617cf0d62ee0a2d5e27d43ab633d9dc914089d325b3e22464" => :yosemite
+    sha256 "d5a7af73bdf89fd946d96139ae94dcb8e5b4e437a8836ba6c9c9a21d618af763" => :mavericks
+    sha256 "b5f0e760a5448d744cc279df69686d65d4aaa3d8523ca8d9a8731615ef55d059" => :mountain_lion
   end
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}"
-    system "make"
     system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/snapraid --version")
   end
 end

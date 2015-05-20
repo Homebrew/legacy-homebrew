@@ -1,11 +1,11 @@
 class Sourcekitten < Formula
   homepage "https://github.com/jpsim/SourceKitten"
-  url "https://github.com/jpsim/SourceKitten.git", :tag => "0.4.1", :revision => "a9b100ab0803d79ef42c775895a40726d3128f07"
+  url "https://github.com/jpsim/SourceKitten.git", :tag => "0.4.3", :revision => "d3dd7c76ca17b8e43165588a61bd65772e67cdac"
   head "https://github.com/jpsim/SourceKitten.git"
 
   bottle do
     cellar :any
-    sha256 "49e11e2ba849579a4636c41da1e104efb5d3fcfc3a8cee2fac95e4886f7520e4" => :yosemite
+    sha256 "eddf7ddfb7e49f8219530732fe502ccf181afb8a54f9c6b7ac24b85e7f36bc10" => :yosemite
   end
 
   depends_on :xcode => ["6.3", :build]

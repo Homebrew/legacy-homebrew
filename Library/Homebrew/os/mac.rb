@@ -127,7 +127,7 @@ module OS
         path = HOMEBREW_PREFIX.join("opt", "gcc", "bin", cc)
         path = locate(cc) unless path.exist?
         path = locate(cc.delete("-.")) if OS.linux? && !path
-        version = %x{#{path} --version}[/gcc(?:-?\d?\.?\d? \(.+\))? (\d\.\d\.\d)/, 1] if path
+        version = %x{#{path} --version}[/gcc(?:-\d(?:\.\d)? \(.+\))? (\d\.\d\.\d)/, 1] if path
         @non_apple_gcc_version[cc] = version
       end
     end

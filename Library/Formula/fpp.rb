@@ -1,14 +1,14 @@
 class Fpp < Formula
   homepage "https://facebook.github.io/PathPicker/"
-  url "https://github.com/facebook/PathPicker/releases/download/0.5.6/fpp.0.5.6.tar.gz"
-  sha256 "c06a8733471074104099a21957f1f391e1d68969c4671443f4a0518314ecc509"
+  url "https://github.com/facebook/PathPicker/releases/download/0.5.7/fpp.0.5.7.tar.gz"
+  sha256 "1293e9510b2d7c1f83320d11cd2f3034545f92daffb6d8de3ee3c8a563972783"
   head "https://github.com/facebook/pathpicker.git"
 
   bottle do
     cellar :any
-    sha256 "740e47c5a8b65fa0d04de191f6c725e1412d41b446a9ecd42d2db248f056712e" => :yosemite
-    sha256 "6babb29cd3e942b1cbba06d2bdb771269080f51461942390d11b706ce1c66468" => :mavericks
-    sha256 "2dd1de06a0e03919559f26de97855f1db1a424d7b1c9794db8d63b1dd156401b" => :mountain_lion
+    sha256 "ae789a874c288492bdf5c7091606a6ceaf19a74a2155995f30da50e61351fa61" => :yosemite
+    sha256 "74664af7de31118b6e68391c0d15f7f69c918e0074e05d940e4c83795f60b9a2" => :mavericks
+    sha256 "91c376617a259b6d359791d4c6176129f9f1d7e5d515812f325ab739efbabc25" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

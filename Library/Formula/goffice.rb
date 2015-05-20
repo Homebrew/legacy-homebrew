@@ -4,9 +4,18 @@ class Goffice < Formula
   sha256 "0206a87a323b52a874dc54491374245f9e1c5f62e93a2ce4a02fb444a26b0e28"
 
   bottle do
-    sha256 "51f1067664b72d91c61bdeb7a3f2218afcba8c37d5aa958f390986bd1db5c7c1" => :yosemite
-    sha256 "c3f9c729a1db2dd973c9894ec645db354dc8e883d27ad82d5af4fc0a1ebc6dfe" => :mavericks
-    sha256 "9d69ebfd454ebcecaf56cf7e7eca1484ac3c200e974ffbd2308b11da810090d8" => :mountain_lion
+    revision 2
+    sha256 "8c94537b1917665098cc5b9ed4947fb54e8bec93d053bcc424c59c6b4b118c4a" => :yosemite
+    sha256 "9b4c25cda4b2b61038ab9b7c0fbab9ed7931e77be6e46148ca73479ae66b2fec" => :mavericks
+    sha256 "13958f27c96a72a9cf9e366cf29cdc070d65b6c2a2955f99db6dadfede7646c9" => :mountain_lion
+  end
+
+  # Fixes a crash with quad precision math when building using clang
+  # Will be included in the next release; patch from upstream commit.
+  # https://bugzilla.gnome.org/show_bug.cgi?id=749463
+  patch do
+    url "https://gist.githubusercontent.com/mistydemeo/71c77c48e36116b824b4/raw/2f70e9f1d847bfaea2f328e43b6c8cd0a609902b/goffice.patch"
+    sha256 "f51f9a149189c6ab9716716ee0170416c4847739f7bf866fbf388c246008f7e1"
   end
 
   head do

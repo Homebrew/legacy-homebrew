@@ -1,12 +1,12 @@
 class Suricata < Formula
   homepage "http://suricata-ids.org"
-  url "https://www.openinfosecfoundation.org/download/suricata-2.0.7.tar.gz"
-  sha256 "c5c3ccebeecbace39df0ff2d50ec4515b541103ffaa5e33cd1dc79d4955c0dfd"
+  url "https://www.openinfosecfoundation.org/download/suricata-2.0.8.tar.gz"
+  sha256 "7af6394cb81e464f5c1ac88a1444030e30940caab6e53688a6d9eb652226d1be"
 
   bottle do
-    sha256 "f67922f17fd54ad460fac601c489324a3fc9649332c235b19188db673ac1dd37" => :yosemite
-    sha256 "5da62c060b67d37acccef04a3e94da3c6a12a2d33140ece6d83259144bbf4dfb" => :mavericks
-    sha256 "4e84abe9e22b63d8ab7161d704da16202bfd8320c50b70a87c5da42ee095efbb" => :mountain_lion
+    sha256 "269066b7601a3cd2c47d7e0e3c789ff2c334d1eff7dfa47221b1fb66233a7014" => :yosemite
+    sha256 "08ea538e48680b7712324dc8fe19a682aa0d485193823408f251f0441f62ec59" => :mavericks
+    sha256 "692c6babe72dd65363c607c846c2f9a5a01580451fd6ed97c0d1eadb4bbe736a" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -30,6 +30,9 @@ class Suricata < Formula
   end
 
   def install
+    # bug raised https://redmine.openinfosecfoundation.org/issues/1470
+    ENV.deparallelize
+
     libnet = Formula["libnet"]
     libmagic = Formula["libmagic"]
 

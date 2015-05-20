@@ -6,16 +6,19 @@ class Yara < Formula
 
   bottle do
     cellar :any
-    sha1 "75e874c69b0a326e200ec289fd7fd3bdb2d5c146" => :yosemite
-    sha1 "0459df8e18781fdaf365bb54d62b28585e36cda2" => :mavericks
-    sha1 "4b39059db000f82d8dde03b99db89354761e3c6a" => :mountain_lion
+    revision 1
+    sha256 "cc3f189a1514c82ca28bbc40dccdc63e7abeea7adc737504ef545d2085983508" => :yosemite
+    sha256 "b75176a83cc1d0285a565f52e5d5be0bcb00dd70d2978a2d6b5ad25a8de6a09e" => :mavericks
+    sha256 "f5a26831ec9a3e051eca85ee701bbd20ca5c5923d2fb9655cb8aa278ed25efc4" => :mountain_lion
   end
 
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "pcre"
   depends_on "openssl"
+
 
   # fixes a variable redefinition error with clang
   patch do
@@ -35,6 +38,10 @@ class Yara < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+
+    cd "yara-python" do
+      system "python", *Language::Python.setup_install_args(prefix)
+    end
   end
 
   test do

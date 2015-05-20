@@ -1,14 +1,14 @@
 class Dpkg < Formula
   homepage "https://wiki.debian.org/Teams/Dpkg"
   url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
-  mirror "http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
   sha256 "07019d38ae98fb107c79dbb3690cfadff877f153b8c4970e3a30d2e59aa66baa"
+  revision 1
 
   bottle do
-    revision 1
-    sha256 "deea5a4f7724157f3d3d7b2dada03a3e471f848bf73c6df3466fee323dc7b217" => :yosemite
-    sha256 "ddcbb73e71f0820c8ed798561800a31e216eeb1e2b97d2a2b2a564421158b27d" => :mavericks
-    sha256 "79b0c0358973d0514a17bb578000d1d302e232ae36fde4bfd5d02cd1a6923f49" => :mountain_lion
+    sha256 "5dabc2c8c35cd06726e00d107c43e40719f30124973adad0007b63d14dbdd933" => :yosemite
+    sha256 "c1febe7f186c47c8a3a3a9c67eda1b20fe9111e4b299dbc503d2486f062e1baf" => :mavericks
+    sha256 "e73bd53e10a54ee114b020676a60de1af9ec178fcbd0855f1f45ab184bff91a7" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -17,8 +17,9 @@ class Dpkg < Formula
 
   def install
     # Fix for OS X checksum utility names.
+    # The quotation marks look weird, but don't "fix" them, it's intentional.
     inreplace "scripts/Dpkg/Checksums.pm" do |s|
-      s.gsub! "md5sum", "md5"
+      s.gsub! "md5sum", "md5', '-q"
       s.gsub! "sha1sum", "shasum"
       s.gsub! "sha256sum", "shasum', '-a', '256"
     end

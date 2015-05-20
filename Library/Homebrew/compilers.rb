@@ -108,7 +108,7 @@ class CompilerSelector
       when :gnu
         GNU_GCC_VERSIONS.reverse_each do |v|
           name = "gcc-#{v}"
-          version = versions.non_apple_gcc_version(name)
+          version = compiler_version(name)
           yield Compiler.new(name, version) if version
         end
         if OS.linux?
@@ -116,7 +116,7 @@ class CompilerSelector
           yield Compiler.new("gcc", version) if version
         end
       else
-        version = versions.send("#{compiler}_build_version")
+        version = compiler_version(compiler)
         yield Compiler.new(compiler, version) if version
       end
     end
@@ -124,5 +124,14 @@ class CompilerSelector
 
   def fails_with?(compiler)
     failures.any? { |failure| failure === compiler }
+  end
+
+  def compiler_version(name)
+    case name
+    when GNU_GCC_REGEXP
+      versions.non_apple_gcc_version(name)
+    else
+      versions.send("#{name}_build_version")
+    end
   end
 end
