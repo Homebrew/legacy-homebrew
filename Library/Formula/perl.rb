@@ -1,10 +1,8 @@
-require "formula"
-
 class Perl < Formula
   homepage "https://www.perl.org/"
-  url "http://www.cpan.org/src/5.0/perl-5.20.1.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.20.1.orig.tar.bz2"
-  sha1 "cd424d1520ba2686fe5d4422565aaf880e9467f6"
+  url "http://www.cpan.org/src/5.0/perl-5.20.2.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.20.2.orig.tar.bz2"
+  sha256 "e5a4713bc65e1da98ebd833dce425c000768bfe84d17ec5183ec5ca249db71ab"
 
   head "git://perl5.git.perl.org/perl.git", :branch => "blead"
 
@@ -36,13 +34,13 @@ class Perl < Formula
 
     system "./Configure", *args
     system "make"
-    system "make", "test" if build.with? "tests"
+    system "make", "test" if build.with?("tests") || build.bottle?
     system "make", "install"
   end
 
   def caveats; <<-EOS.undent
     By default Perl installs modules in your HOME dir. If this is an issue run:
-    #{bin}/cpan o conf init
+      `#{bin}/cpan o conf init`
     EOS
   end
 
