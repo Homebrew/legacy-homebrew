@@ -17,6 +17,7 @@ class Pygtk < Formula
   depends_on "atk"
   depends_on "pygobject"
   depends_on "py2cairo"
+  depends_on "libglade" => :optional
 
   option :universal
 
