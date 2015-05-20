@@ -1,13 +1,18 @@
 class Treeline < Formula
   desc "Advanced outliner and personal information manager"
   homepage "http://treeline.bellz.org/"
-  url "https://downloads.sourceforge.net/project/treeline/1.4.1/treeline-1.4.1.tar.gz"
-  sha256 "d66e0fcae9bcb5e54f664381f6af73f360f9ff46c91787a126c7197fbe685489"
+  url "https://downloads.sourceforge.net/project/treeline/2.0.0/treeline-2.0.0.tar.gz"
+  sha256 "71af995fca9e0eaf4e6205d72eb4ee6a979a45ea2a1f6600ed8a39bb1861d118"
 
-  depends_on :python
-  depends_on "pyqt"
+  depends_on :python3
+  depends_on "sip" => "with-python3"
+  depends_on "pyqt" => "with-python3"
 
   def install
     system "./install.py", "-p#{prefix}"
+  end
+
+  test do
+    system bin/"treeline", "--help"
   end
 end
