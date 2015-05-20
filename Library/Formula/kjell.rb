@@ -7,6 +7,12 @@ class Kjell < Formula
 
   head "https://github.com/karlll/kjell.git"
 
+  bottle do
+    sha256 "a192455ff56b71352922c12cb7bc5c8d13fb0957379414170a6cd87e8294a275" => :yosemite
+    sha256 "c9cf3b4d1ef5785036e9752ae104357e701f4d56d7b330c41e9421cf63f4a3c8" => :mavericks
+    sha256 "d87338b3f6669d917ce0202da53cb0737e6c67b9295d29f5efd55b0aa50574a3" => :mountain_lion
+  end
+
   depends_on "erlang"
 
   def install
