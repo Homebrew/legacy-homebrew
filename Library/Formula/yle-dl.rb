@@ -1,7 +1,7 @@
 class YleDl < Formula
   homepage "https://aajanki.github.io/yle-dl/index-en.html"
-  url "https://github.com/aajanki/yle-dl/archive/2.5.0.tar.gz"
-  sha1 "6530a47b69a905f7ae92b97ded37c81437a8be72"
+  url "https://github.com/aajanki/yle-dl/archive/2.7.1.tar.gz"
+  sha1 "041f212d56a981e1c53f6bdf042a281db965d6ed"
 
   head "https://github.com/aajanki/yle-dl.git"
 
