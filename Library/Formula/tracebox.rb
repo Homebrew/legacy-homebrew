@@ -5,9 +5,9 @@ class Tracebox < Formula
 
   bottle do
     cellar :any
-    sha1 "96873e5b6be4076c3f66a06e62635fcba085704a" => :mavericks
-    sha1 "3958426b9f4034a0dd278610981105124bc4ed26" => :mountain_lion
-    sha1 "efd205cf4ccee2bff4ed6ef619d308e349663f1b" => :lion
+    sha256 "c730306d9053f007178149525392d736b238faf45e85f88f9d1c8e8a098daaad" => :yosemite
+    sha256 "a952db97c0d9629820ab495f0276a00877b13e1c7f39af230970417a9b5691a9" => :mavericks
+    sha256 "89f944d8fde6f621d5f2ec817b91c349e0a34ade67a0600e98b905d92b50e013" => :mountain_lion
   end
 
   head "https://github.com/tracebox/tracebox.git"
