@@ -2,9 +2,9 @@ require 'formula'
 
 class Basex < Formula
   homepage 'http://basex.org'
-  url 'http://files.basex.org/releases/8.1.1/BaseX811.zip'
-  version '8.1.1'
-  sha1 '14880d68460c6c67696dde86fba3a342d0920dde'
+  url 'http://files.basex.org/releases/8.2/BaseX82.zip'
+  version '8.2'
+  sha1 '4dfd8ce5508748777586d26ccedc466f437e7da6'
 
   bottle do
     cellar :any
