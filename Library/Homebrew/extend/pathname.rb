@@ -70,10 +70,10 @@ class Pathname
   end
 
   def install_symlink_p(src, new_basename)
-    src = Pathname(src).expand_path(self)
+    src = Pathname(src).realpath
     dst = join(new_basename)
     mkpath
-    FileUtils.ln_sf(src.relative_path_from(dst.parent), dst)
+    FileUtils.ln_sf(src.relative_path_from(dst.parent.realpath), dst)
   end
   private :install_symlink_p
 
