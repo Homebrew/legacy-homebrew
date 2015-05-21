@@ -6,6 +6,7 @@ class Tnef < Formula
   sha256 "fefea5d9481555cc150ab799b9b1e957564e7fd2ead99fa19e87258f263f7c37"
 
   def install
+    system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
