@@ -3,8 +3,8 @@ require "language/go"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.9.11.tar.gz"
-  sha256 "2030773f344478426b70aebd9eeaa068840bed6ab0acea190b552bfab61301ce"
+  url "https://github.com/junegunn/fzf/archive/0.9.12.tar.gz"
+  sha256 "644f741530120856c4bd8e63b95174af172c85a2c378eaf87db9e8e4717aabb3"
   head 'https://github.com/junegunn/fzf.git'
 
   bottle do
@@ -38,7 +38,7 @@ class Fzf < Formula
 
     prefix.install %w[install uninstall LICENSE]
     (prefix/"shell").install %w[bash zsh fish].map { |s| "shell/key-bindings.#{s}" }
-    (prefix/"shell").install "shell/completion.bash"
+    (prefix/"shell").install %w[bash zsh].map { |s| "shell/completion.#{s}" }
     (prefix/"plugin").install "plugin/fzf.vim"
     man1.install "man/man1/fzf.1"
     bin.install "bin/fzf-tmux"
