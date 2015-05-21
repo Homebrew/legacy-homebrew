@@ -32,6 +32,16 @@ after this fixed, I can run jobs submitted from a remote job server successfully
 
 (Thanks to @pcliu)
 
+## I want to run job-server on Windows
+
+1) Create directory `C:\Hadoop\bin`
+2) Download `http://public-repo-1.hortonworks.com/hdp-win-alpha/winutils.exe` and place it in `C:\Hadoop\bin`
+3) Set environment variable HADOOP_HOME (either in a .bat script or within OS properties)  `HADOOP_HOME=C:\Hadoop`
+4) Start spark-job-server in a shell that has the HADOOP_HOME environment set.
+5) Submit the WordCountExample Job.
+
+(Thanks to Javier Delgadillo)
+
 ## Akka Deadletters / Workers disconnect from Job Server
 
 Most likely a networking issue. Try using IP addresses instead of DNS.  (happens in AWS)
