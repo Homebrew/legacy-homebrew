@@ -2,8 +2,10 @@ require 'formula'
 
 class Libass < Formula
   homepage 'https://github.com/libass/libass'
-  url 'https://github.com/libass/libass/releases/download/0.12.1/libass-0.12.1.tar.gz'
-  sha1 'ddf61cf8e15fea7825667580b207d46fe34bd4ac'
+  url 'https://github.com/libass/libass/releases/download/0.12.2/libass-0.12.2.tar.gz'
+  sha1 '416efe79a8529c246a4ed98c8698265a87ffa22a'
+
+  head 'https://github.com/libass/libass.git'
 
   bottle do
     cellar :any
