@@ -1,11 +1,16 @@
 require "formula"
 
 class Tnef < Formula
-  homepage "http://sourceforge.net/projects/tnef/"
-  url "https://downloads.sourceforge.net/project/tnef/tnef/tnef-1.4.12.tar.gz"
-  sha1 "efa9aa2bb416e5c81317910a1b615931d79a8c7b"
+  homepage "https://github.com/verdammelt/tnef"
+  url "https://github.com/verdammelt/tnef/archive/1.4.12.tar.gz"
+  sha256 "fefea5d9481555cc150ab799b9b1e957564e7fd2ead99fa19e87258f263f7c37"
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
+    system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
