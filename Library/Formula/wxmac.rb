@@ -1,7 +1,7 @@
 require "formula"
 
 class Wxmac < Formula
-  homepage "http://www.wxwidgets.org"
+  homepage "https://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
   sha1 "6461eab4428c0a8b9e41781b8787510484dea800"
 
@@ -17,6 +17,7 @@ class Wxmac < Formula
   depends_on "libtiff"
 
   option "with-stl", "use standard C++ classes for everything"
+  option "with-static", "build static libraries"
 
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
@@ -36,7 +37,6 @@ class Wxmac < Formula
     args = [
       "--disable-debug",
       "--prefix=#{prefix}",
-      "--enable-shared",
       "--enable-unicode",
       "--enable-std_string",
       "--enable-display",
@@ -70,6 +70,12 @@ class Wxmac < Formula
     ]
 
     args << "--enable-stl" if build.with? "stl"
+
+    if build.with? "static"
+      args << "--disable-shared"
+    else
+      args << "--enable-shared"
+    end
 
     system "./configure", *args
     system "make", "install"
