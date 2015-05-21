@@ -8,9 +8,9 @@ class Fzf < Formula
   head 'https://github.com/junegunn/fzf.git'
 
   bottle do
-    sha256 "db725c585814b8200e1de16610f955ad37c69d00cb647398ee3b1a38dde14fdb" => :yosemite
-    sha256 "8788d79f10266ba246cdc9de832dece2bd9c8b86cf52349fae9975f9313dce55" => :mavericks
-    sha256 "2416477ec926d08f358594dbd87232d3a499f50313d81fb630d8fd3836de8dfc" => :mountain_lion
+    sha256 "285db0bacd6a94a1451fea10aede60d0ed279a4a5f33e0acc6183b2856682bd9" => :yosemite
+    sha256 "a86b5e5b95cef5e8a7f641c7aff666683ba45d322f5728ad2366bcdcc2545173" => :mavericks
+    sha256 "cbcb6535430eb6b404f023448705591d3a9767d20b973855e80fac73a80972c2" => :mountain_lion
   end
 
   depends_on "go" => :build
