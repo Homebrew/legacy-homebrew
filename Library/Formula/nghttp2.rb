@@ -1,7 +1,7 @@
 class Nghttp2 < Formula
   homepage "https://nghttp2.org"
-  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v1.0.0/nghttp2-1.0.0.tar.xz"
-  sha256 "b4c3b9176f5fc70c52878a09a71c877f6d54efd25867093c4bf04852bfe24282"
+  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.13/nghttp2-0.7.13.tar.xz"
+  sha256 "91f2bfcad1e27472d8c96de71d9bcb37d93b131ee60c775c95b46be82a24e1db"
 
   bottle do
     sha256 "d8503c739001158d086269440377054db0fa3dd82fe160b049c39b98bb59051d" => :yosemite
