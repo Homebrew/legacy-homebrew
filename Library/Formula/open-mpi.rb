@@ -21,6 +21,7 @@ class OpenMpi < Formula
   conflicts_with "mpich2", :because => "both install mpi__ compiler wrappers"
   conflicts_with "lcdf-typetools", :because => "both install same set of binaries."
 
+  depends_on :java => :build
   depends_on :fortran => :recommended
   depends_on "libevent"
 
