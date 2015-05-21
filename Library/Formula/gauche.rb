@@ -11,11 +11,23 @@ class Gauche < Formula
     sha1 "087b1f85a18485fe2226892d9b96066a027de606" => :lion
   end
 
+  option "with-slib", "Configure Gauche's slib module"
+
   def install
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking',
-                          '--enable-multibyte=utf-8'
+    args = ["--prefix=#{prefix}",
+            '--disable-dependency-tracking',
+            '--enable-multibyte=utf-8']
+
+    args << '--with-slib=/usr/local/lib/slib' if build.with? 'slib'
+
+    system './configure', *args
     system "make"
     system "make check"
     system "make install"
+  end
+
+  test do
+    result = `#{bin}/gosh -q -E 'display (gauche-version)' -E 'exit'`
+    assert_equal '0.9.4', result
   end
 end
