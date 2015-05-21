@@ -5,7 +5,7 @@ class Wxmac < Formula
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
   sha1 "6461eab4428c0a8b9e41781b8787510484dea800"
 
-  option "with-static", "Include static libraries"
+  option "with-static", "Build static libraries"
 
   bottle do
     revision 9
@@ -72,13 +72,14 @@ class Wxmac < Formula
 
     args << "--enable-stl" if build.with? "stl"
 
-    system "./configure", "--enable-shared", *args
-    system "make", "install"
-
     if build.with? "static"
-      system "./configure", "--disable-shared", *args
-      system "make", "install"
+      args << "--disable-shared"
+    else
+      args << "--enable-shared"
     end
+
+    system "./configure", *args
+    system "make", "install"
   end
 end
 
