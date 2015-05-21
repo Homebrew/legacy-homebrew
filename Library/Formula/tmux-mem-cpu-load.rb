@@ -7,9 +7,9 @@ class TmuxMemCpuLoad < Formula
 
   bottle do
     cellar :any
-    sha1 "f1128ff9697f59c56caa8f83d09752749fa2937d" => :yosemite
-    sha1 "9b8093ea6d70b3665594fa166e8067c4bd0576fa" => :mavericks
-    sha1 "93df136a1c19a26bb236b4b99e6a96b39014bf17" => :mountain_lion
+    sha256 "e7d13527fa1cf3f4abea9ca4e252815fdbaa5d0e6d09f6101e7ceb5ea94f2f64" => :yosemite
+    sha256 "084d150d3a3e8a50714c08d19798925dc63459489731a746e4bb139a131b395b" => :mavericks
+    sha256 "669587ff93da23c1c9d1f3f162e9d497602672f547ef2ce3c839acb6eae65b8c" => :mountain_lion
   end
 
   depends_on "cmake" => :build
