@@ -61,7 +61,7 @@ class Bullet < Formula
     system "make"
     system "make", "install"
 
-    prefix.install "examples" if with_demo
+    prefix.install "examples" if build.with? "demo"
     prefix.install "Extras" if build.with? "extra"
   end
 
