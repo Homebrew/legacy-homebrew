@@ -6,6 +6,16 @@ If you used `reStart` to start a local job server, be sure it's stopped using `r
 
 Also, try adding `-Dakka.test.timefactor=X` to `SBT_OPTS` before launching sbt, where X is a number greater than 1.  This scales out the Akka TestKit timeouts by a factor X.
 
+## Requests are timing out
+
+or you get `akka.pattern.AskTimeoutException`.
+
+send timeout param along with your request (in secs). eg below.
+
+```
+http://devsparkcluster.cloudapp.net/jobs?appName=job-server-tests&classPath=spark.jobserver.WordCountExample&sync=true&timeout=20
+```
+
 ## Job server won't start / cannot bind to 0.0.0.0:8090
 
 Check that another process isn't already using that port.  If it is, you may want to start it on another port:
