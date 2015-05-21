@@ -1,7 +1,7 @@
 class Reposurgeon < Formula
   homepage "http://www.catb.org/esr/reposurgeon/"
-  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.21.tar.gz"
-  sha256 "637f1450b235f0a08d6f850e565a60b357607ce3a95dcbaea15425947fd002b9"
+  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.22.tar.gz"
+  sha256 "66f366fc92d908fd68717cfb86eade989b7f550481b2e055803fd400805d1b14"
 
   head "git://thyrsus.com/repositories/reposurgeon.git"
 
