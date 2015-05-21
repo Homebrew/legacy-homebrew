@@ -5,8 +5,6 @@ class Wxmac < Formula
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
   sha1 "6461eab4428c0a8b9e41781b8787510484dea800"
 
-  option "with-static", "Build static libraries"
-
   bottle do
     revision 9
     sha1 "7a63c6715dea44ef7eee683355458e9203fb723a" => :yosemite
@@ -19,6 +17,7 @@ class Wxmac < Formula
   depends_on "libtiff"
 
   option "with-stl", "use standard C++ classes for everything"
+  option "with-static", "build static libraries"
 
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
