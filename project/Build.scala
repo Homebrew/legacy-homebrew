@@ -80,6 +80,9 @@ object JobServerBuild extends Build {
     test in Test <<= (test in Test).dependsOn(packageBin in Compile)
                                    .dependsOn(clean in Compile),
     fork in Test := true,
+    // Temporarily disable test for assembly builds so folks can package and get started.  Some tests
+    // are flaky in extras esp involving paths.
+    test in AssemblyKeys.assembly := {},
     exportJars := true
   )
 
