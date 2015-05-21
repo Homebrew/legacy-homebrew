@@ -25,6 +25,7 @@ Check that another process isn't already using that port.  If it is, you may wan
 ## Job Server Doesn't Connect to Spark Cluster
 
 Finally, I got the problem solved. There are two problems in my configuration:
+
 1. the version of spark cluster is 1.1 but the spark version in job server machine is 1.0.2
 after upgrading spark to 1.1 in job server machine, jobs can be submitted to spark cluster (can show in spark UI) but cannot be executed.
 2. the spark machines need to know the host name of job server machine
@@ -34,11 +35,11 @@ after this fixed, I can run jobs submitted from a remote job server successfully
 
 ## I want to run job-server on Windows
 
-1) Create directory `C:\Hadoop\bin`
-2) Download `http://public-repo-1.hortonworks.com/hdp-win-alpha/winutils.exe` and place it in `C:\Hadoop\bin`
-3) Set environment variable HADOOP_HOME (either in a .bat script or within OS properties)  `HADOOP_HOME=C:\Hadoop`
-4) Start spark-job-server in a shell that has the HADOOP_HOME environment set.
-5) Submit the WordCountExample Job.
+1. Create directory `C:\Hadoop\bin`
+2. Download `http://public-repo-1.hortonworks.com/hdp-win-alpha/winutils.exe` and place it in `C:\Hadoop\bin`
+3. Set environment variable HADOOP_HOME (either in a .bat script or within OS properties)  `HADOOP_HOME=C:\Hadoop`
+4. Start spark-job-server in a shell that has the HADOOP_HOME environment set.
+5. Submit the WordCountExample Job.
 
 (Thanks to Javier Delgadillo)
 
