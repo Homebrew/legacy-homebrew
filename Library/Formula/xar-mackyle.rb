@@ -3,6 +3,9 @@ class XarMackyle < Formula
   url "https://github.com/downloads/mackyle/xar/xar-1.6.1.tar.gz"
   sha256 "ee46089968457cf710b8cf1bdeb98b7ef232eb8a4cdeb34502e1f16ef4d2153e"
 
+  depends_on "openssl"
+  depends_on "xz"
+
   def install
     system "./configure", "--prefix=#{libexec}"
     system "make"
