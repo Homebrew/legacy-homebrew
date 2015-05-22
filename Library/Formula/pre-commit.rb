@@ -72,6 +72,16 @@ class PreCommit < Formula
   end
 
   test do
-    system bin/"pre-commit", "help"
+    testpath.cd do
+      system "git", "init"
+      (testpath/".pre-commit-config.yaml").write <<-EOF.undent
+      -   repo: git://github.com/pre-commit/pre-commit-hooks
+          sha: 5541a6a046b7a0feab73a21612ab5d94a6d3f6f0
+          hooks:
+          -   id: trailing-whitespace
+      EOF
+      system bin/"pre-commit", "install"
+      system bin/"pre-commit", "run", "--all-files"
+    end
   end
 end
