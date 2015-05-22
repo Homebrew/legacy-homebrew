@@ -1,9 +1,7 @@
-require "formula"
-
 class Wxmac < Formula
-  homepage "http://www.wxwidgets.org"
+  homepage "https://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
-  sha1 "6461eab4428c0a8b9e41781b8787510484dea800"
+  sha256 "346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d"
 
   bottle do
     revision 9
@@ -17,6 +15,7 @@ class Wxmac < Formula
   depends_on "libtiff"
 
   option "with-stl", "use standard C++ classes for everything"
+  option "with-static", "build static libraries"
 
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
@@ -36,7 +35,6 @@ class Wxmac < Formula
     args = [
       "--disable-debug",
       "--prefix=#{prefix}",
-      "--enable-shared",
       "--enable-unicode",
       "--enable-std_string",
       "--enable-display",
@@ -63,7 +61,7 @@ class Wxmac < Formula
       "--enable-dataviewctrl",
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}",
-      "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(',')}",
+      "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(",")}",
       "--disable-precomp-headers",
       # This is the default option, but be explicit
       "--disable-monolithic"
@@ -71,8 +69,18 @@ class Wxmac < Formula
 
     args << "--enable-stl" if build.with? "stl"
 
+    if build.with? "static"
+      args << "--disable-shared"
+    else
+      args << "--enable-shared"
+    end
+
     system "./configure", *args
     system "make", "install"
+  end
+
+  test do
+    system "wx-config", "--libs"
   end
 end
 
