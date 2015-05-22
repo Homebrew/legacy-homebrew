@@ -3,7 +3,6 @@ class GstPython < Formula
   homepage "http://gstreamer.freedesktop.org/modules/gst-python.html"
   url "http://gstreamer.freedesktop.org/src/gst-python/gst-python-1.4.0.tar.xz"
   sha256 "b1e40c29ceb41b03f08d38aca6056054f0341d0706276326dceeec6ac8d53d3e"
-  revision 1
 
   bottle do
     sha256 "e27ac3a525070e5e9dbbd1128c5913c0e35d10efbff18eb2f5777e30323c45a9" => :yosemite
@@ -12,7 +11,6 @@ class GstPython < Formula
   end
 
   depends_on "gst-plugins-base"
-  depends_on "pygtk"
   depends_on "pygobject3"
 
   def install
