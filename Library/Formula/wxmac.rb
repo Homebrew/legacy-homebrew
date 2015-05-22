@@ -1,7 +1,7 @@
 class Wxmac < Formula
   homepage "https://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
-  sha1 "6461eab4428c0a8b9e41781b8787510484dea800"
+  sha256 "346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d"
 
   bottle do
     revision 9
