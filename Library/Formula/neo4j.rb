@@ -2,9 +2,9 @@ require "formula"
 
 class Neo4j < Formula
   homepage "http://neo4j.org"
-  url "http://dist.neo4j.org/neo4j-community-2.2.1-unix.tar.gz"
-  sha1 "49290968ad53030bd4826335ea104f10ecc3ec42"
-  version "2.2.1"
+  url "http://dist.neo4j.org/neo4j-community-2.2.2-unix.tar.gz"
+  sha1 "b5b12d7815ffa7d232c29d0021b5d8629c243073"
+  version "2.2.2"
 
   option "with-neo4j-shell-tools", "Add neo4j-shell-tools to the standard neo4j-shell"
 
