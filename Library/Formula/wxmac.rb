@@ -61,7 +61,7 @@ class Wxmac < Formula
       "--enable-dataviewctrl",
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}",
-      "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(',')}",
+      "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(",")}",
       "--disable-precomp-headers",
       # This is the default option, but be explicit
       "--disable-monolithic"
