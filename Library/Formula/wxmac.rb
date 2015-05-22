@@ -78,6 +78,10 @@ class Wxmac < Formula
     system "./configure", *args
     system "make", "install"
   end
+
+  test do
+    system "wx-config", "--libs"
+  end
 end
 
 __END__
