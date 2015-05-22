@@ -218,4 +218,9 @@ class PathnameInstallTests < Homebrew::TestCase
     assert_predicate @dst+"bin/b.txt", :exist?
     assert_predicate (@dst+"bin").readlink, :relative?
   end
+
+  def test_install_relative_symlink
+    @dst.install_symlink "foo" => "bar"
+    assert_equal Pathname.new("foo"), (@dst+"bar").readlink
+  end
 end
