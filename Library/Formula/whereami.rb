@@ -13,7 +13,7 @@ class Whereami < Formula
   depends_on :macos => :yosemite
 
   def install
-    system "xcodebuild", "install", "DSTROOT=#{prefix}", "INSTALL_PATH=/bin"
+    xcodebuild "install", "DSTROOT=#{prefix}", "INSTALL_PATH=/bin"
   end
 
   test do

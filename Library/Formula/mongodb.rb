@@ -1,34 +1,46 @@
-require "formula"
 require "language/go"
 
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
-  url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.1.tar.gz"
-  sha256 "68980641996a3a4b5440e12d343c2de98bb7f350fbc0c8327a674094d6e11213"
 
-  # Mongo HEAD now requires mongo-tools, and Golang
-  # https://jira.mongodb.org/browse/SERVER-15806
   depends_on "go" => :build
-  go_resource "github.com/mongodb/mongo-tools" do
-    url "https://github.com/mongodb/mongo-tools.git",
-      :tag => "r3.0.1",
-      :revision => "bc08e57abb71b2edd1cc3ab8f9f013409718f197"
+  stable do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.3.tar.gz"
+    sha256 "57765a81c18a0bb674fbe63bc507111d8795596eb9c9492028903985b4720807"
+    go_resource "github.com/mongodb/mongo-tools" do
+      url "https://github.com/mongodb/mongo-tools.git",
+        :tag => "r3.0.3",
+        :revision => "13a7eac12d16edd41fa875df759b16e4b027db7f"
+    end
+  end
+
+  devel do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.3.tar.gz"
+    sha256 "edd3c7eabac765d4bf47efd38e22b3fc6271a77559f8173c5da9c38a43ec05df"
+    go_resource "github.com/mongodb/mongo-tools" do
+      url "https://github.com/mongodb/mongo-tools.git",
+        :tag => "r3.1.3",
+        :revision => "9aa74bcbecc3bd4d995dd14281e84ad33c119c70"
+    end
   end
 
   bottle do
-    sha256 "3761153651660207c145da9eac659c7b8ddaed879b44f6127c534d5f79e32f46" => :yosemite
-    sha256 "f761d0e8d97fcc924c466165a6193c7c8169153b9afd33ca77b35bbb3a16b5e7" => :mavericks
-    sha256 "7b212a87996b0e3cc9a9eddb180ec41bfbe9e056528c5f060029d94c18a8828a" => :mountain_lion
+    cellar :any
+    sha256 "11b56632d04d55ca9b84c2b3c5d84b71aaa4cd915871e3530f4a62f5e72666c1" => :yosemite
+    sha256 "3b0c1f8d8b5d5f86e61cdc62cc20dd58316c56c110267d5d7fe439c821263d56" => :mavericks
+    sha256 "3aa0133679f5ef2325403c6e4cd96bc3b48aad0ea529c33c497ae77823f7994f" => :mountain_lion
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
 
   depends_on "boost" => :optional
-  depends_on :macos => :snow_leopard
+  depends_on "go" => :build
+  depends_on :macos => :mountain_lion
   depends_on "scons" => :build
   depends_on "openssl" => :optional
 
   def install
+    ENV.libcxx if build.devel?
 
     # New Go tools have their own build script but the server scons "install" target is still
     # responsible for installing them.
@@ -53,10 +65,18 @@ class Mongodb < Formula
     args = %W[
       --prefix=#{prefix}
       -j#{ENV.make_jobs}
-      --cc=#{ENV.cc}
-      --cxx=#{ENV.cxx}
       --osx-version-min=#{MacOS.version}
     ]
+
+    if build.stable?
+      args << "--cc=#{ENV.cc}"
+      args << "--cxx=#{ENV.cxx}"
+    end
+
+    if build.devel?
+      args << "CC=#{ENV.cc}"
+      args << "CXX=#{ENV.cxx}"
+    end
 
     args << "--use-system-boost" if build.with? "boost"
     args << "--use-new-tools"
@@ -114,12 +134,12 @@ class Mongodb < Formula
       <key>HardResourceLimits</key>
       <dict>
         <key>NumberOfFiles</key>
-        <integer>65536</integer>
+        <integer>4096</integer>
       </dict>
       <key>SoftResourceLimits</key>
       <dict>
         <key>NumberOfFiles</key>
-        <integer>65536</integer>
+        <integer>4096</integer>
       </dict>
     </dict>
     </plist>

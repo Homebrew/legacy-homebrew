@@ -1,24 +1,24 @@
 class Git < Formula
-  homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.3.4.tar.gz"
-  sha256 "49c9c840a0a53f77e01830f0737a69dc56be0fa1a3d5cc1bacc56da4dd3a442b"
+  homepage "https://git-scm.com"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.4.1.tar.xz"
+  sha256 "72851809632c9d1651290caa4bbd3b3094e92fbc6e0e0eb01c454a945c30ada4"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha256 "e756df7030a334e84899c51f61878a0ee85e38e48d32f086ec6a1d3e6836a7ad" => :yosemite
-    sha256 "d6e43e90e364641996171cccc718f54557264fbd4ade02ec6e26f7a57e3f410a" => :mavericks
-    sha256 "08ee7c699793198b168fa4c509147ce664e5dcf36adc8daa1fd8454aedff3f65" => :mountain_lion
+    sha256 "e3b6a61703106e58138112835f1f8aeeb4b24a0280d38fddcf1e803f4789146c" => :yosemite
+    sha256 "2f79f0e3bda104d15bbc1ad7ad4e0d37f0ecd0cab7399cc282ed69138dd1748b" => :mavericks
+    sha256 "27101e7f52cac4e359938569c1d57ea9f80e88f25a97498d52edccb38a70f663" => :mountain_lion
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.3.4.tar.gz"
-    sha256 "34954257dfbd0cd6db579c17c8c2049c03e0e7dcc9be26f76a61b91011d80fa5"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.4.1.tar.xz"
+    sha256 "ebebd18797b84dd0251ac9ebcd35d55da95e651f18a13e6d8ac7d3c5ccc9d8f0"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.3.4.tar.gz"
-    sha256 "1002b976257423ad9b203736fb5a1f50ca9a3b5dde38b9a0b8751a71e707b939"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.4.1.tar.xz"
+    sha256 "b899dbf605121c8a7e60517121e1ff362fb4b6f51a204bb64b044b568023161a"
   end
 
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"
@@ -52,13 +52,13 @@ class Git < Formula
     perl_version = /\d\.\d+/.match(`perl --version`)
 
     if build.with? "brewed-svn"
-      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
+      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].opt_prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
     elsif MacOS.version >= :mavericks
-      ENV["PERLLIB_EXTRA"] = %W{
+      ENV["PERLLIB_EXTRA"] = %W[
         #{MacOS.active_developer_dir}
         /Library/Developer/CommandLineTools
         /Applications/Xcode.app/Contents/Developer
-      }.uniq.map { |p|
+      ].uniq.map { |p|
         "#{p}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
       }.join(":")
     end

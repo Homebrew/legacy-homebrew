@@ -1,13 +1,13 @@
 require "formula"
 
 class Osquery < Formula
-  homepage "http://osquery.io"
+  homepage "https://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.4.2"
+  url "https://github.com/facebook/osquery.git", :tag => "1.4.5", :revision => "3131a97d9511ed92d65afadf1a049a6425ec6eca"
 
   bottle do
-    sha1 "ce6f4994b20a231c0f882dfd00697972a3fbf476" => :yosemite
-    sha1 "1ce7e6f2240c2d053629aff5db3579d454d6de87" => :mavericks
+    sha256 "292711f22175d0efb61710f1cf5e57f3f9a1cba97dbbe3d3e8190ee5b384e904" => :yosemite
+    sha256 "b29dc293b5c7e68250c6163f6528595ea2dd37d6f75a1c435c17971297e0efb4" => :mavericks
   end
 
   # Build currently fails on Mountain Lion:
@@ -17,9 +17,11 @@ class Osquery < Formula
 
   depends_on "cmake" => :build
   depends_on "boost" => :build
+  depends_on "doxygen" => :build
   depends_on "gflags" => :build
   depends_on "rocksdb" => :build
   depends_on "thrift" => :build
+  depends_on "yara" => :build
   depends_on "openssl"
 
   resource "markupsafe" do
@@ -52,9 +54,9 @@ class Osquery < Formula
   test do
     require 'open3'
     Open3.popen3("#{bin}/osqueryi") do |stdin, stdout, _|
-      stdin.write(".mode line\nSELECT major FROM osx_version;")
+      stdin.write(".mode line\nSELECT count(version) as lines FROM osquery_info;")
       stdin.close
-      assert_equal "major = 10\n", stdout.read
+      assert_equal "lines = 1\n", stdout.read
     end
   end
 end

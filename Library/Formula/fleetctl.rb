@@ -2,15 +2,15 @@ require "formula"
 
 class Fleetctl < Formula
   homepage "https://github.com/coreos/fleet"
-  url "https://github.com/coreos/fleet/archive/v0.9.1.tar.gz"
-  sha1 "1e3754c9be085634f1d637f3ba737147c6f4bab2"
+  url "https://github.com/coreos/fleet/archive/v0.10.1.tar.gz"
+  sha256 "395d49fcd506803acb6e6e1d9528072ea7469b66d7d317ffbe45e6fe931a53b6"
   head "https://github.com/coreos/fleet.git"
 
   bottle do
     cellar :any
-    sha1 "9b43a3147a4159afc896b5b9046558f7f054e9cb" => :yosemite
-    sha1 "7afabaeb2cc5624af27e47f32eb0f974bee73de1" => :mavericks
-    sha1 "4d1f559599d47aed0b1be261c6bdd7e6e3ad04e8" => :mountain_lion
+    sha256 "62982186300220afb27c7723e2f16314a48077d3b4768616c24c70e90304b10a" => :yosemite
+    sha256 "b4347fc62257c5280c1b7c5352bd19360e307c4a709501cca25625ff717be051" => :mavericks
+    sha256 "8498d6f0fb5557d7dc8ec1ffea50803cbc6e184b230420e8165dbcbd35256c46" => :mountain_lion
   end
 
   depends_on "go" => :build

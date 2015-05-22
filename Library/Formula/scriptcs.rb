@@ -1,13 +1,13 @@
 class Scriptcs < Formula
   homepage "https://github.com/scriptcs/scriptcs"
-  url "https://github.com/scriptcs/scriptcs/archive/v0.14.0.tar.gz"
-  sha256 "44060c7ae6eb156a0088e0f8c1a3e6523b5cd7d8c6961e628ba8d5a9df3998eb"
+  url "https://github.com/scriptcs/scriptcs/archive/v0.14.1.tar.gz"
+  sha256 "7c56ed317befe902b196f14fe74a5d2c35ca6f58944a4134aaa64e8a1b022132"
 
   bottle do
     cellar :any
-    sha256 "067f9f65deee2c3ef357dd98ea69f7ad0c933bfaa133038ff17c23a74729e852" => :yosemite
-    sha256 "7d655aefdd184550312511d4de69d492601f2a3f2aab0309d8bf4bf6494d8156" => :mavericks
-    sha256 "c97d97de65c57debc8d4eab150d1e08c6d569a30670b1cece71e3d2fc4276a42" => :mountain_lion
+    sha256 "037322cb22364e6f5f04dc0bbe44e61d70563c1a11b4720e008fc9c75a38c0c1" => :yosemite
+    sha256 "a0fa33747394a09593296c2a8b79d2c91e969e513e3b51134064ee764b178526" => :mavericks
+    sha256 "618d93786fe7db150874329ff1339cb383c5b423779dae289bb4ce12db7de8dc" => :mountain_lion
   end
 
   depends_on "mono" => :recommended

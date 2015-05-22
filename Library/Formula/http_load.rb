@@ -20,7 +20,7 @@ class HttpLoad < Formula
 
     if build.with? "openssl"
       inreplace "Makefile", "#SSL_", "SSL_"
-      args << "SSL_TREE=#{Formula["openssl"].prefix}"
+      args << "SSL_TREE=#{Formula["openssl"].opt_prefix}"
     end
 
     system "make", "install", *args

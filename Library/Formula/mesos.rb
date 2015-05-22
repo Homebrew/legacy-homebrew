@@ -1,14 +1,13 @@
 class Mesos < Formula
   homepage "https://mesos.apache.org"
-  url "http://www.apache.org/dyn/closer.cgi?path=mesos/0.21.1/mesos-0.21.1.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.21.1/mesos-0.21.1.tar.gz"
-  sha256 "a953c76a7fb4a45662a6cd084d867372933902d2507cc3f753970dbbc5cce7e3"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.22.1/mesos-0.22.1.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.22.1/mesos-0.22.1.tar.gz"
+  sha256 "a51f6bb1be4c90160b233df471beece82d998bcfa7fd55be4366a9fbfebdc067"
 
   bottle do
-    revision 2
-    sha256 "4e8f04afbaada418723e510cacc03137e5ccd9168deabdea3b5e8d287cd1d2ef" => :yosemite
-    sha256 "7d350a2696b5d770e5e5de82819b0b2105ef210950000125ca6dbbe2a86f5623" => :mavericks
-    sha256 "ae0233e820085af19202dc98a85c8585e69245d4362d29cdbc328abb60b08017" => :mountain_lion
+    sha256 "c16f5ca8fa963c0374ba78e2d02c104fdcac74e1a77211e0e31d37d7dde1836b" => :yosemite
+    sha256 "0736237391a31f05a61f235541724eec5e9f41c93e128ac6e40a2ebdd85be360" => :mavericks
+    sha256 "65732dd0a57ca22927641aa08ca9eb315e1d92d5256b6632d1f23943ab6be894" => :mountain_lion
   end
 
   depends_on :java => "1.7+"
@@ -69,7 +68,7 @@ class Mesos < Formula
     # https://github.com/Homebrew/homebrew/pull/37087
     native_patch = <<-EOS.undent
       import os
-      os.environ["CC"] = "#{ENV.cxx}"
+      os.environ["CC"] = os.environ["CXX"]
       os.environ["LDFLAGS"] = "@LIBS@"
       \\0
     EOS
@@ -141,11 +140,6 @@ class Mesos < Formula
     Process.kill("TERM", master)
     Process.kill("TERM", slave)
     assert File.exist?("#{testpath}/executed")
-
-    user_site = Language::Python.user_site_packages("python")
-    mkdir_p user_site
-    pth_contents = "import site; site.addsitedir('#{Language::Python.homebrew_site_packages}')\n"
-    (user_site/"homebrew.pth").write pth_contents
     system "python", "-c", "import mesos.native"
   end
 end

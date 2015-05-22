@@ -8,7 +8,7 @@ module Homebrew
     if not ARGV.force?
       ARGV.kegs.each do |keg|
         keg.lock do
-          puts "Uninstalling #{keg}..."
+          puts "Uninstalling #{keg}... (#{keg.abv})"
           keg.unlink
           keg.uninstall
           rm_pin keg.name
@@ -28,7 +28,7 @@ module Homebrew
         rack = HOMEBREW_CELLAR/name
 
         if rack.directory?
-          puts "Uninstalling #{name}..."
+          puts "Uninstalling #{name}... (#{rack.abv})"
           rack.subdirs.each do |d|
             keg = Keg.new(d)
             keg.unlink

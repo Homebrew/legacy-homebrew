@@ -1,14 +1,13 @@
 class Libsass < Formula
   homepage "https://github.com/sass/libsass"
-  url "https://github.com/sass/libsass/archive/3.1.0.tar.gz"
-  sha1 "858c41405f5ff8b4186c7111e08f29893f4e51a1"
+  url "https://github.com/sass/libsass.git", :tag => "3.2.4", :revision => "a6482aac915f46e3e9033afd88659889b215a288"
   head "https://github.com/sass/libsass.git"
 
   bottle do
     cellar :any
-    sha1 "af2bbeb2d2221df2fece3eaa054a65270768bb92" => :yosemite
-    sha1 "c626b584ef3e650e3ea3e05db123958c8a00d947" => :mavericks
-    sha1 "9c7460ce74317a03c996f215a890e0ab88b6c73d" => :mountain_lion
+    sha256 "cf97d80a53ecf9fd8aaadcccd1b9fc9c70c65f845c252888ce6f91cd413dc016" => :yosemite
+    sha256 "97f5c026db53f04e977a8ae9c76b074e6a4b4fa4164ed96a2e8e79f8443f3376" => :mavericks
+    sha256 "ba1bf6496be50c3cf8131e2617b7b3b5a51f03593990790861bb88b98f998d24" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -18,15 +17,10 @@ class Libsass < Formula
 
   def install
     ENV.cxx11
-    ENV["LIBSASS_VERSION"] = "HEAD" if build.head?
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}", "--disable-silent-rules",
                           "--disable-dependency-tracking"
     system "make", "install"
-    # The header below is deprecated and should not be used outside of test do.
-    # We only install it here for backward compatibility and so brew test works.
-    # https://github.com/sass/libsass/wiki/API-Documentation
-    include.install "sass_interface.h" if build.devel?
   end
 
   test do
@@ -37,11 +31,12 @@ class Libsass < Formula
 
       int main()
       {
-        char* source_string = "a { color:blue; &:hover { color:red; } }";
-        struct Sass_Data_Context* data_ctx = sass_make_data_context(source_string);
+        const char* source_string = "a { color:blue; &:hover { color:red; } }";
+        struct Sass_Data_Context* data_ctx = sass_make_data_context(strdup(source_string));
         struct Sass_Options* options = sass_data_context_get_options(data_ctx);
-        sass_option_set_precision(options, SASS_STYLE_NESTED);
-        sass_option_set_source_comments(options, 0);
+        sass_option_set_precision(options, 1);
+        sass_option_set_source_comments(options, false);
+        sass_data_context_set_options(data_ctx, options);
         sass_compile_data_context(data_ctx);
         struct Sass_Context* ctx = sass_data_context_get_context(data_ctx);
         int err = sass_context_get_error_status(ctx);

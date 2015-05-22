@@ -1,14 +1,14 @@
 class Sbcl < Formula
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.9/sbcl-1.2.9-source.tar.bz2"
-  sha1 "788e38d4c64fa1f99a5297dce72e87f3958e98a1"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.11/sbcl-1.2.11-source.tar.bz2"
+  sha256 "88aa04dae72d011f5c22084a35201188d8a02f0cd82e5de542aa4ce6bfaa3e70"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
-    sha256 "4b455f19a7c9508dab431f3f317a94afe96b4e8f5dda8ec33caad5112f904319" => :yosemite
-    sha256 "472e3b47c30712e7d1b09b92eaae561cde95c9a754eeed53a10c9a0f67cedcc8" => :mavericks
-    sha256 "7440077b7b6bec6de8775a0dc1fc5ce4d173d255094dc208304441d2cdb669be" => :mountain_lion
+    sha256 "bf5bc33e2baee617f47e20a66fb283638041a903e8f23ded35a9fdb05e5b3f03" => :yosemite
+    sha256 "4a322984fd96c34bc043318a71c7dbd784977cd5269eeadfd204eac0c89e770f" => :mavericks
+    sha256 "14aced9514c59c6d7b1207cfafe60936a564b40f94fa08d57cdbfde640b6faee" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -53,10 +53,6 @@ class Sbcl < Formula
     url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
     sha1 "4d08e56e7e261db47ffdfef044149b001e6cd7c1"
   end
-
-  # Restore parallel build support.
-  # See: https://bugs.launchpad.net/sbcl/+bug/1434768
-  patch :DATA
 
   def write_features
     features = []
@@ -109,15 +105,3 @@ class Sbcl < Formula
     assert_equal "4", output.strip
   end
 end
-__END__
---- a/contrib/asdf/Makefile
-+++ b/contrib/asdf/Makefile
-@@ -8,7 +8,7 @@ $(UIOP_FASL):: uiop.lisp ../../output/sbcl.core
-	mkdir -p $(DEST)
-	$(SBCL) --eval '(compile-file #p"SYS:CONTRIB;ASDF;UIOP.LISP" :output-file (parse-native-namestring "$@"))' </dev/null
-
--$(ASDF_FASL):: asdf.lisp ../../output/sbcl.core
-+$(ASDF_FASL):: asdf.lisp ../../output/sbcl.core $(UIOP_FASL)
-	if [ -d asdf-upstream ] ; then rm -rf asdf-upstream ; fi
-	mkdir -p $(DEST)
-	$(SBCL) --eval '(compile-file #p"SYS:CONTRIB;ASDF;ASDF.LISP" :output-file (parse-native-namestring "$@"))' </dev/null

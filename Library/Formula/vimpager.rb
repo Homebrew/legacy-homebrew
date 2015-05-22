@@ -1,14 +1,10 @@
-require "formula"
-
 class Vimpager < Formula
   homepage "https://github.com/rkitover/vimpager"
-  url "https://github.com/rkitover/vimpager/archive/1.8.9.tar.gz"
-  sha1 "332a84fec5bd2a4c2dae518d52b310dcaa49f417"
+  url "https://github.com/rkitover/vimpager/archive/2.02.tar.gz"
+  sha256 "d0e59b33b1c21f996992ddeeaf87a63f6494b60443847acf28e3f3376acd6a05"
   head "https://github.com/rkitover/vimpager.git"
 
   def install
-    inreplace "vimpager.1", "~/bin/", ""
-
     bin.install "vimcat"
     bin.install "vimpager"
     man1.install gzip("vimpager.1")

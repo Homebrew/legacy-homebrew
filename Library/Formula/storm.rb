@@ -1,7 +1,7 @@
 class Storm < Formula
-  homepage "http://storm.apache.org"
-  url "http://www.apache.org/dyn/closer.cgi?path=storm/apache-storm-0.9.3/apache-storm-0.9.3.tar.gz"
-  sha1 "33545afc72281d6e8b497fcbdf2b9944eebb83aa"
+  homepage "https://storm.apache.org"
+  url "https://www.apache.org/dyn/closer.cgi?path=storm/apache-storm-0.9.4/apache-storm-0.9.4.tar.gz"
+  sha256 "2cdb3530839375bb5f18751ff16ff78b11e9b4f6d23c423c95d78487ad92d38e"
 
   def install
     libexec.install Dir["*"]

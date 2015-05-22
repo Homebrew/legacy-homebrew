@@ -10,6 +10,14 @@ Style/StringLiterals:
 Style/StringLiteralsInInterpolation:
     EnforcedStyle: double_quotes
 
+# percent-x is allowed for multiline
+Style/CommandLiteral:
+    EnforcedStyle: mixed
+
+# paths abound, easy escape
+Style/RegexpLiteral:
+    EnforcedStyle: slashes
+
 # no metrics for formulas
 Metrics/AbcSize:
     Enabled: false
@@ -47,10 +55,6 @@ Style/EmptyLineBetweenDefs:
 # port numbers and such tech stuff
 Style/NumericLiterals:
     Enabled: false
-
-# paths abound, easy escape
-Style/RegexpLiteral:
-    MaxSlashes: 0
 
 # consistency and readability when faced with string interpolation
 Style/PercentLiteralDelimiters:
@@ -101,12 +105,6 @@ Style/WordArray:
 Style/UnneededCapitalW:
     Enabled: false
 
-# percent-x is allowed for multiline
-# TODO: enforce when rubocop has fixed this
-# https://github.com/bbatsov/rubocop/issues/1397
-Style/UnneededPercentX:
-    Enabled: false
-
 # TODO: rubocop bug regarding __END__
 # see https://github.com/bbatsov/rubocop/issues/1541
 Style/TrailingWhitespace:
@@ -115,3 +113,11 @@ Style/Tab:
     Enabled: false
 Style/TrailingBlankLines:
     Enabled: false
+
+# we use raise, not fail
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+# trailing commas in method argument lists are a syntax error in 1.8
+Style/TrailingComma:
+  Enabled: false

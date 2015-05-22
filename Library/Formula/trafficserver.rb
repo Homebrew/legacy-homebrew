@@ -1,9 +1,8 @@
 class Trafficserver < Formula
   homepage "https://trafficserver.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.2.0.tar.bz2"
-  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.2.0.tar.bz2"
-  sha256 "e3a265dd3188edaa7b8ad2bb54b0030c23588b48abb02890363db1374aac68d3"
-  revision 1
+  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.2.1.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.2.1.tar.bz2"
+  sha256 "7980be2c1b95d9b1c6b91d6a8ab88e24a8c31b36acd2d02c4df8c47dc18e6b1d"
 
   head do
     url "https://github.com/apache/trafficserver.git"
@@ -14,12 +13,13 @@ class Trafficserver < Formula
   end
 
   bottle do
-    sha256 "26c2989bc8abffcb704dfec98738bfe64788bd857f4e33f1559d843d585d19fb" => :yosemite
-    sha256 "720cf540ae6d4088a463cd57ed2d683b3641ac96615d5b97fcd89102595ceb48" => :mavericks
-    sha256 "cef715a09849d0ce15a0cb446e3ed2a471f822361c82c4d7b04e3420d75e7373" => :mountain_lion
+    sha256 "d1c423b0fcd28528be7cb5538535ea5a3c3e1bbe7d9a6116ecad8529b242a0d4" => :yosemite
+    sha256 "cd3cd2a117f56ccb1ab37a442f39b888d552d73f50eb1f5d197ad67556e94e9c" => :mavericks
+    sha256 "891a45f79c0af21bbb3d50a433839683fa636ca866e8493a217828db69da38dc" => :mountain_lion
   end
 
   option "with-spdy", "Build with SPDY protocol support"
+  option "with-experimental-plugins", "Enable experimental plugins"
 
   depends_on "openssl"
   depends_on "pcre"
@@ -28,8 +28,11 @@ class Trafficserver < Formula
     depends_on "pkg-config" => :build
   end
 
-  # patch openssl 1.0.2 tls1.h detection, remove on 5.3.0 (upstream bug TS-3443)
-  patch :DATA if build.stable?
+  # Patch 1: OpenSSL 1.0.2+ tls1.h detection, remove on 5.3.0 (upstream bug TS-3443)
+  # Patch 2: Xcode 6.3 compile fix, remove on 5.3.0 (upstream bug TS-3302)
+  stable do
+    patch :DATA
+  end
 
   def install
     # Needed for correct ./configure detections.
@@ -45,9 +48,14 @@ class Trafficserver < Formula
       "--with-group=admin"
     ]
     args << "--enable-spdy" if build.with? "spdy"
+    args << "--enable-experimental-plugins" if build.with? "experimental-plugins"
     system "./configure", *args
     # Fix wrong username in the generated startup script for bottles.
     inreplace "rc/trafficserver.in", "@pkgsysuser@", '$USER'
+    if build.with? "experimental-plugins"
+      # Disable mysql_remap plugin due to missing symbol compile error (upstream bug TS-3490)
+      inreplace "plugins/experimental/Makefile", " mysql_remap", ""
+    end
     system "make" if build.head?
     system "make", "install"
   end
@@ -92,3 +100,22 @@ __END__
    # We are looking for SSL_CTX_set_tlsext_servername_callback, but it's a
    # macro, so AC_CHECK_FUNCS is not going to do the business.
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for SSL_CTX_set_tlsext_servername_callback" >&5
+diff --git a/lib/ts/IntrusiveDList.h b/lib/ts/IntrusiveDList.h
+index 81a5192..b79ab10 100644
+--- a/lib/ts/IntrusiveDList.h
++++ b/lib/ts/IntrusiveDList.h
+@@ -42,13 +42,8 @@
+
+  */
+
+-# if USE_STL
+-#   include <iterator>
+-# else
+-namespace std {
+-  struct bidirectional_iterator_tag;
+-}
+-# endif
++/// FreeBSD doesn't like just declaring the tag struct we need so we have to include the file.
++# include <iterator>
+
+ /** Intrusive doubly linked list container.

@@ -4,15 +4,15 @@ class Encfs < Formula
   homepage 'https://vgough.github.io/encfs/'
 
   stable do
-    url 'https://github.com/vgough/encfs/archive/v1.8.tar.gz'
-    sha1 'f3723aa7ba64ad3fc6087dba6c26bf6d54762085'
+    url 'https://github.com/vgough/encfs/archive/v1.8.1.tar.gz'
+    sha1 '107e1bcc4b8fd60821a7c8dd99f0c7c37cf5619c'
   end
 
   head 'https://github.com/vgough/encfs.git'
 
   bottle do
-    sha256 "a9014044ed57522f70e9b90d52212ce08775ebd6c00411481947984197aefa1e" => :mavericks
-    sha256 "b577b5a48c9bb5af3a2a02aff3575048c02049c91fb6fc63dd5f5182a0ad4a2e" => :mountain_lion
+    sha256 "4d79b4413c12e591e6de81a4ba3624f31b0937da17974fc63ac81cc82d08d6aa" => :mavericks
+    sha256 "a63c7df51551d64eee771f7f6ab712367e951bad1a5933b423256ff81eddf0b2" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

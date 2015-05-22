@@ -1,14 +1,14 @@
 class Ffmpeg < Formula
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.6.1.tar.bz2"
-  sha256 "a4f6388706ee2daba9d35d2aa018ae5feeb450efa716555e011a6543d43ec7c1"
+  url "https://ffmpeg.org/releases/ffmpeg-2.6.3.tar.bz2"
+  sha256 "59eb98c1b5896ac29abc0385f7c875d1b4942d695818818d418ee71eea1e0cfb"
 
-  head "https://git.videolan.org/ffmpeg.git"
+  head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "8bc0cb43f99a7004aada9969875e551a24ebe2e57b8c620aa77b70372ba7fa0f" => :yosemite
-    sha256 "2ab2f322d8a1ce26af77b7f86e45e8af1c1cf6f01a51d05e460a1282ab84cbec" => :mavericks
-    sha256 "dd2629269914f801e5c16b5c8ba3abebbc48ab7417a54852f1cb74aee8c04875" => :mountain_lion
+    sha256 "b0a0e414f887e94e95f49465b7d3a3071958595cc084678608c24592a00fc0bd" => :yosemite
+    sha256 "a88ce135ec41efdc7cb6abc21c312cd634d6d9a97c6638603a869da4e1386804" => :mavericks
+    sha256 "8a4c32f5a30509fbaf267907d38ab68d8d9536972efba1b10329b186b32b2dbb" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"

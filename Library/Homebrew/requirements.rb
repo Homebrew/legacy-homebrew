@@ -8,9 +8,11 @@ require 'requirements/mpi_dependency'
 require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
 require 'requirements/java_dependency'
+require 'requirements/ruby_requirement'
 require 'requirements/tuntap_dependency'
 require 'requirements/unsigned_kext_requirement'
 require 'requirements/x11_dependency'
+require 'requirements/emacs_requirement'
 
 class XcodeDependency < Requirement
   fatal true

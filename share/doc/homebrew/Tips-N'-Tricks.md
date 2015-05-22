@@ -39,7 +39,7 @@ And of course, you can simply `brew link $FORMULA` again afterwards!
 Add to your `~/.bashrc` or `~/.bash_profile` (whichever you have configured to run on shell startup):
 
 ```bash
-source `brew --repository`/Library/Contributions/brew_bash_completion.sh
+source $(brew --repository)/Library/Contributions/brew_bash_completion.sh
 ```
 
 

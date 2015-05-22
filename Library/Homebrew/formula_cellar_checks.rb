@@ -109,6 +109,8 @@ module FormulaCellarChecks
     end
 
     return if MacOS.version < :mavericks && formula.name.start_with?("postgresql")
+    return if MacOS.version < :yosemite  && formula.name.start_with?("memcached")
+
     return if formula.keg_only? || !formula.include.directory?
 
     files  = relative_glob(formula.include, "**/*.h")
@@ -125,7 +127,7 @@ module FormulaCellarChecks
   end
 
   def check_easy_install_pth lib
-    pth_found = Dir["#{lib}/python{2.7,3.4}/site-packages/easy-install.pth"].map { |f| File.dirname(f) }
+    pth_found = Dir["#{lib}/python{2.7,3}*/site-packages/easy-install.pth"].map { |f| File.dirname(f) }
     return if pth_found.empty?
 
     <<-EOS.undent
@@ -154,6 +156,23 @@ module FormulaCellarChecks
     EOS
   end
 
+  def check_python_framework_links lib
+    python_modules = Pathname.glob lib/"python*/site-packages/**/*.so"
+    framework_links = python_modules.select do |obj|
+      dlls = obj.dynamically_linked_libraries
+      dlls.any? { |dll| /Python\.framework/.match dll }
+    end
+    return if framework_links.empty?
+
+    <<-EOS.undent
+      python modules have explicit framework links
+      These python extension modules were linked directly to a Python
+      framework binary. They should be linked with -undefined dynamic_lookup
+      instead of -lpython or -framework Python.
+        #{framework_links * "\n        "}
+    EOS
+  end
+
   def audit_installed
     audit_check_output(check_manpages)
     audit_check_output(check_infopages)
@@ -166,6 +185,7 @@ module FormulaCellarChecks
     audit_check_output(check_shadowed_headers)
     audit_check_output(check_easy_install_pth(formula.lib))
     audit_check_output(check_openssl_links)
+    audit_check_output(check_python_framework_links(formula.lib))
   end
 
   private

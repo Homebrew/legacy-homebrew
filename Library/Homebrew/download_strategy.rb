@@ -63,6 +63,10 @@ class AbstractDownloadStrategy
     "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
+  def lhapath
+    "#{HOMEBREW_PREFIX}/opt/lha/bin/lha"
+  end
+
   def cvspath
     @cvspath ||= %W[
       /usr/bin/cvs
@@ -192,6 +196,8 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
     when :lzip
       with_system_path { pipe_to_tar(lzippath) }
       chdir
+    when :lha
+      safe_system lhapath, "x", cached_location
     when :xar
       safe_system "/usr/bin/xar", "-xf", cached_location
     when :rar
@@ -343,7 +349,9 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     @tried_apache_mirror = true
 
     mirrors = Utils::JSON.load(apache_mirrors)
-    @url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
+    path_info = mirrors.fetch("path_info")
+    @url = mirrors.fetch('preferred') + path_info
+    @mirrors |= %W[https://archive.apache.org/dist/#{path_info}]
 
     ohai "Best Mirror #{@url}"
     super
@@ -444,7 +452,7 @@ end
 class SubversionDownloadStrategy < VCSDownloadStrategy
   def initialize(name, resource)
     super
-    @url = @url.sub(/^svn\+/, "") if @url.start_with?("svn+http://")
+    @url = @url.sub("svn+http://", "")
   end
 
   def fetch
@@ -686,7 +694,8 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     HOMEBREW_CACHE.cd do
-      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login"
+      # Login is only needed (and allowed) with pserver; skip for anoncvs.
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login" if @url.include? "pserver"
       quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "checkout", "-d", cache_filename, @module
     end
   end

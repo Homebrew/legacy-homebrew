@@ -44,6 +44,8 @@ module MacCPUs
         :ivybridge
       when 0x10B282DC # Haswell
         :haswell
+      when 0x582ed09c # Broadwell
+        :broadwell
       else
         :dunno
       end

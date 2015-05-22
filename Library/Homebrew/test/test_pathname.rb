@@ -7,8 +7,8 @@ module PathnameTestExtension
   include FileUtils
 
   def setup
-    @src  = Pathname.new(Dir.mktmpdir)
-    @dst  = Pathname.new(Dir.mktmpdir)
+    @src  = Pathname.new(mktmpdir)
+    @dst  = Pathname.new(mktmpdir)
     @file = @src+'foo'
     @dir  = @src+'bar'
   end
@@ -217,5 +217,10 @@ class PathnameInstallTests < Homebrew::TestCase
     assert_predicate @dst+"bin/a.txt", :exist?
     assert_predicate @dst+"bin/b.txt", :exist?
     assert_predicate (@dst+"bin").readlink, :relative?
+  end
+
+  def test_install_relative_symlink
+    @dst.install_symlink "foo" => "bar"
+    assert_equal Pathname.new("foo"), (@dst+"bar").readlink
   end
 end

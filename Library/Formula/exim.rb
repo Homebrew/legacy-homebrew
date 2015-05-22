@@ -7,9 +7,10 @@ class Exim < Formula
   sha1 '6b40d5a6ae59f86b4780ad50aaf0d930330d7b67'
 
   bottle do
-    sha1 "011a332c09baaf4d00c322b56b91e22bcc7a8334" => :yosemite
-    sha1 "16bc2450378a8061ad290cdbe47797381381d5bb" => :mavericks
-    sha1 "6d90530045d473748f044d00bc5b14957da17808" => :mountain_lion
+    revision 1
+    sha256 "78e5eb89f3b324114f453d64f9a6955f60abe8fcde2e0c32acc19649e1cdbacb" => :yosemite
+    sha256 "beae28cb7ca235377eeb0bc04218154a2a0c29ec2942fbae52ac67f321e99b41" => :mavericks
+    sha256 "28f88bffa0447b615552d5a80c31ff8a762afd801a803429cf015af00aafae8b" => :mountain_lion
   end
 
   option 'support-maildir', 'Support delivery in Maildir format'
@@ -33,6 +34,7 @@ class Exim < Formula
       s << "AUTH_PLAINTEXT=yes\n"
       s << "SUPPORT_TLS=yes\n"
       s << "TLS_LIBS=-lssl -lcrypto\n"
+      s << "TRANSPORT_LMTP=yes\n"
 
       # For non-/usr/local HOMEBREW_PREFIX
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"

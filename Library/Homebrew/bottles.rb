@@ -55,10 +55,6 @@ class Bintray
     return "bottles" if tap.to_s.empty?
     "bottles-#{tap.sub(/^homebrew\/(homebrew-)?/i, "")}"
   end
-
-  def self.version(path)
-    BottleVersion.parse(path).to_s
-  end
 end
 
 class BottleCollector

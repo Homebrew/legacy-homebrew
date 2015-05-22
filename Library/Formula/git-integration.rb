@@ -20,7 +20,7 @@ class GitIntegration < Formula
   depends_on SufficientlyRecentGit
 
   def install
-    ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     (buildpath/"config.mak").write "prefix = #{prefix}"
     system "make", "install"
     if build.with? "asciidoc"
