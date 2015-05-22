@@ -8,6 +8,13 @@ class Dcmtk < Formula
 
   head "git://git.dcmtk.org/dcmtk.git"
 
+  bottle do
+    revision 1
+    sha256 "01a5f4a8eae4a776974753de4c5af76c3465f1cbdb3e8413130bbd8558815465" => :yosemite
+    sha256 "5ae479f470798ef7724dfa485906e6be9de6ee3b21deb99345e493256974a849" => :mavericks
+    sha256 "43035c832346690513f2180216f74caa6ffabe3714e35131639a5f342c0e6b51" => :mountain_lion
+  end
+
   option "with-docs", "Install development libraries/headers and HTML docs"
   option "with-openssl", "Configure DCMTK with support for OpenSSL"
   option "with-libiconv", "Build with brewed libiconv. Dcmtk and system libiconv can have problems with utf8."
