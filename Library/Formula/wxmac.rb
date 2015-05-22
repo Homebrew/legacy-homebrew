@@ -1,5 +1,3 @@
-require "formula"
-
 class Wxmac < Formula
   homepage "https://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
