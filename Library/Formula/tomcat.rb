@@ -1,8 +1,8 @@
 class Tomcat < Formula
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22.tar.gz"
-  sha256 "cb163576d03f45981bf025b62b46e71c3c634584daa4662fc721d37d46989eff"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz"
+  sha256 "c98b19a1edaaef2859991f304d0ec8f29c5ccacc6d63a0bc8bf7078d63191a38"
 
   bottle do
     cellar :any
@@ -14,10 +14,10 @@ class Tomcat < Formula
   option "with-fulldocs", "Install full documentation locally"
 
   resource "fulldocs" do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22-fulldocs.tar.gz"
-    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22-fulldocs.tar.gz"
-    version "8.0.22"
-    sha256 "f1287f7a005180d8ff8b60461327554c9d5473d1d6784d97cbb4b580ef292c8c"
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23-fulldocs.tar.gz"
+    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23-fulldocs.tar.gz"
+    version "8.0.23"
+    sha256 "bd0c85d48ccd6f0b7838e55215a7e553a8b9b58fd1a880560a7414940413f6d3"
   end
 
   def install
