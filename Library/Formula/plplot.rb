@@ -38,6 +38,7 @@ class Plplot < Formula
     end
   end
 end
+
 __END__
 --- a/cmake/modules/pkg-config.cmake
 +++ b/cmake/modules/pkg-config.cmake
@@ -52,14 +53,14 @@ __END__
 @@ -94,7 +94,12 @@
      set(_xprefix ${_prefix})
    endif(FORCE_EXTERNAL_STATIC)
-
+   
 -  _pkg_check_modules_internal(0 0 ${_prefix} "${_package}")
 +  if(CMAKE_VERSION VERSION_LESS "3.1")
 +    _pkg_check_modules_internal(0 0 ${_prefix} "${_package}")
 +  else(CMAKE_VERSION VERSION_LESS "3.1")
 +    _pkg_check_modules_internal(0 0 0 0 ${_prefix} "${_package}")
 +  endif(CMAKE_VERSION VERSION_LESS "3.1")
-+
++    
    if(${_prefix}_FOUND)
      cmake_link_flags(${_link_FLAGS} "${${_xprefix}_LDFLAGS}")
      # If libraries cannot be not found, then that is equivalent to whole
@@ -105,7 +106,7 @@ index e45988e..ff392f0 100644
    if(GENERATE_PLPLOT_H_INC)
      add_custom_target(
        check_plplot_h.inc
--      COMMAND
+-      COMMAND 
 -      ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/generated_plplot_h.inc
 -      COMMAND
 -      ${OCAML} ${CMAKE_CURRENT_SOURCE_DIR}/touchup.ml ${CMAKE_CURRENT_SOURCE_DIR}/plplot_h ${CMAKE_CURRENT_BINARY_DIR}/generated_plplot_h.inc
