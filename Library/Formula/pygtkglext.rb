@@ -1,6 +1,6 @@
 class Pygtkglext < Formula
   desc "Python bindings to OpenGL GTK+ extension"
-  homepage "http://projects.gnome.org/gtkglext/download.html#pygtkglext"
+  homepage "https://projects.gnome.org/gtkglext/download.html#pygtkglext"
   url "https://download.gnome.org/sources/pygtkglext/1.1/pygtkglext-1.1.0.tar.gz"
   sha256 "9712c04c60bf6ee7d05e0c6a6672040095c2ea803a1546af6dfde562dc0178a3"
   revision 1
