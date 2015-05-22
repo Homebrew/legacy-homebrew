@@ -5,9 +5,9 @@ class Exiftool < Formula
 
   bottle do
     cellar :any
-    sha256 "28b576135c1968a4ad107eabddaea0086150ca70ed3de0790871154d2fdadb26" => :yosemite
-    sha256 "ca7ed38e4fe76644e31ba0bb0b6c2375dadb0333fb5543c8dce9dc9f9a2b46a0" => :mavericks
-    sha256 "834aee0a09414ff3d38282de3bb0a3cc5cb63f28413b5be16952424ebda9dc3f" => :mountain_lion
+    sha256 "62736b9e4361784b431be5bcddb177517275f951a4b485c4f57eb2e3942c6e9b" => :yosemite
+    sha256 "fcff7d4cb079b255a4ac10c55a6f30fa3e7767c0351736ef9701daa783d28d96" => :mavericks
+    sha256 "5681c568a351c32079040fb74022613d10aad09377abe32f6fa5deb4036075ec" => :mountain_lion
   end
 
   def install
