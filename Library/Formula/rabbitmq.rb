@@ -5,13 +5,6 @@ class Rabbitmq < Formula
   url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.2/rabbitmq-server-mac-standalone-3.5.2.tar.gz'
   sha256 '26f418b4b742e7a95720eecd681b03cad38a30bc2b8a01eeff3e15ab85e8fd04'
 
-  bottle do
-    cellar :any
-    sha256 "9ba1e932ef3c8616926033922534f4e4b8fd9a58ec3e12c88c70e0ec17710631" => :yosemite
-    sha256 "d43688e39579e560c335effde052da5dcc324b4ffde9aff000c6a03572591049" => :mavericks
-    sha256 "865f4020ff398ea898df489a03bce794ba79463f12b22fa689024f0cbbf4c99e" => :mountain_lion
-  end
-
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   def install
