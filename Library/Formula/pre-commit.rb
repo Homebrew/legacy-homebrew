@@ -62,6 +62,9 @@ class PreCommit < Formula
       end
     end
 
+    #fix aspy.yaml
+    (libexec/"vendor/lib/python2.7/site-packages/aspy/__init__.py").write ''
+
     system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir["#{libexec}/bin/*"]
