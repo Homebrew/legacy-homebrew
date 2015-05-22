@@ -2,10 +2,9 @@ require "formula"
 
 class Luajit < Formula
   homepage "http://luajit.org/luajit.html"
-  url "http://luajit.org/download/LuaJIT-2.0.3.tar.gz"
-  sha1 "2db39e7d1264918c2266b0436c313fbd12da4ceb"
+  url "http://luajit.org/download/LuaJIT-2.0.4.tar.gz"
+  sha256 "620fa4eb12375021bef6e4f237cbd2dd5d49e56beb414bee052c746beef1807d"
   head "http://luajit.org/git/luajit-2.0.git"
-  revision 1
 
   devel do
     url "http://luajit.org/git/luajit-2.0.git", :branch => "v2.1"
