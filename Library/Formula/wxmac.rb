@@ -4,10 +4,10 @@ class Wxmac < Formula
   sha256 "346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d"
 
   bottle do
-    revision 9
-    sha1 "7a63c6715dea44ef7eee683355458e9203fb723a" => :yosemite
-    sha1 "5e6e114cff5901ec6f7586a844df713dc376fcf7" => :mavericks
-    sha1 "2f7ab6db7de665c76abe4546672e58cd48973c13" => :mountain_lion
+    revision 10
+    sha256 "477e8d5fccd025ec8c30a72b3d201eedb1d1f73f784bdeb1bb0e6d8c7df68e77" => :yosemite
+    sha256 "21bff32ebe73902c152b03c8ba16a54df97f82c068827c85360db5e9413c929a" => :mavericks
+    sha256 "6e5b9d09d115f105648039423baa48227f0df4a65abd8fca852092452a40a067" => :mountain_lion
   end
 
   depends_on "jpeg"
