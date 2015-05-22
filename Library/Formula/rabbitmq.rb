@@ -6,9 +6,10 @@ class Rabbitmq < Formula
   sha256 '26f418b4b742e7a95720eecd681b03cad38a30bc2b8a01eeff3e15ab85e8fd04'
 
   bottle do
-    sha256 "91c6f8814eced0b996580390325f55efdf83b40b8d5ac6898f31ccc7f26e9ef8" => :yosemite
-    sha256 "dcbe969881c390e288388a8a121878fb384a8cbf8d89f420862d6e9ef4f3a2c8" => :mavericks
-    sha256 "eb07306c5f3fb1932e90bcb98a8aad149a73a2a766b179ebfd5907f3cdd1225b" => :mountain_lion
+    cellar :any
+    sha256 "9ba1e932ef3c8616926033922534f4e4b8fd9a58ec3e12c88c70e0ec17710631" => :yosemite
+    sha256 "d43688e39579e560c335effde052da5dcc324b4ffde9aff000c6a03572591049" => :mavericks
+    sha256 "865f4020ff398ea898df489a03bce794ba79463f12b22fa689024f0cbbf4c99e" => :mountain_lion
   end
 
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
