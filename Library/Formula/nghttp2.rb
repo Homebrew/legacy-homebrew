@@ -20,8 +20,10 @@ class Nghttp2 < Formula
 
   option "with-examples", "Compile and install example programs"
   option "without-docs", "Don't build man pages"
+  option "with-python3", "This is required for enabling the python bindings"
 
-  depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
+  depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs") && build.without?("python3")
+  depends_on :python3 => :optional
   depends_on "libxml2" if MacOS.version <= :lion
   depends_on "pkg-config" => :build
   depends_on "cunit" => :build
@@ -87,22 +89,49 @@ class Nghttp2 < Formula
     sha256 "3e15b416c9a2039c1a51208b2cd3bb4ffd796cd19e601b1d2657afcb77c3dc90"
   end
 
+  resource "Cython" do
+    url "https://pypi.python.org/packages/source/C/Cython/cython-0.22.tar.gz"
+    sha256 "14307e7a69af9a0d0e0024d446af7e51cc0e3e4d0dfb10d36ba837e5e5844015"
+  end if build.with?("python3")
+
   # https://github.com/tatsuhiro-t/nghttp2/issues/125
   # Upstream requested the issue closed and for users to use gcc instead.
   # Given this will actually build with Clang with cxx11, just use that.
   needs :cxx11
 
+  def python_version
+   @python_version ||= begin
+     build.with?('python3') ? [3, 4] : [2, 7]
+   end
+  end
+
+  def python
+   @python ||= begin
+     "python#{python_version.join('.')}"
+   end
+  end
+
+  patch :p1, :DATA
+
   def install
     ENV.cxx11
 
     if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/#{python}/site-packages"
       resources.each do |r|
         r.stage do
-          system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
-        end
+          system python, *Language::Python.setup_install_args(buildpath/'sphinx')
+        end unless r.name == 'Cython'
       end
       ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
+    end
+
+    if build.with?('python3')
+       ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/#{python}/site-packages"
+       resource('Cython').stage do
+         system python, *(Language::Python.setup_install_args(libexec/"vendor") << "--install-scripts=#{libexec}/vendor/bin")
+       end
+       bin.env_script_all_files(libexec/"vendor/bin", :PYTHONPATH => ENV["PYTHONPATH"])
     end
 
     args = %W[
@@ -111,11 +140,15 @@ class Nghttp2 < Formula
       --enable-app
       --with-boost=#{Formula["boost"].opt_prefix}
       --enable-asio-lib
-      --disable-python-bindings
     ]
 
     args << "--enable-examples" if build.with? "examples"
     args << "--with-spdylay" if build.with? "spdylay"
+    if build.with?('python3')
+      args << "--enable-python-bindings" << "PYTHON=#{Formula['python3'].bin}/#{python}" << "CYTHON=#{libexec}/vendor/bin/cython"
+    else
+      args << "--disable-python-bindings"
+    end
 
     system "autoreconf", "-ivf" if build.head?
     system "./configure", *args
@@ -136,3 +169,30 @@ class Nghttp2 < Formula
     system bin/"nghttp", "-nv", "https://nghttp2.org"
   end
 end
+__END__
+diff --git a/configure b/configure
+index 2d46036..2142ed3 100755
+--- a/configure
++++ b/configure
+@@ -17559,9 +17559,7 @@ $as_echo "$PYTHON_SITE_PKG" >&6; }
+ 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking python extra libraries" >&5
+ $as_echo_n "checking python extra libraries... " >&6; }
+ 	if test -z "$PYTHON_EXTRA_LIBS"; then
+-	   PYTHON_EXTRA_LIBS=`$PYTHON -c "import distutils.sysconfig; \
+-                conf = distutils.sysconfig.get_config_var; \
+-                print (conf('LIBS'))"`
++	   PYTHON_EXTRA_LIBS=`$PYTHON-config --libs`
+ 	fi
+ 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $PYTHON_EXTRA_LIBS" >&5
+ $as_echo "$PYTHON_EXTRA_LIBS" >&6; }
+@@ -17573,9 +17571,7 @@ $as_echo "$PYTHON_EXTRA_LIBS" >&6; }
+ 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking python extra linking flags" >&5
+ $as_echo_n "checking python extra linking flags... " >&6; }
+ 	if test -z "$PYTHON_EXTRA_LDFLAGS"; then
+-		PYTHON_EXTRA_LDFLAGS=`$PYTHON -c "import distutils.sysconfig; \
+-			conf = distutils.sysconfig.get_config_var; \
+-			print (conf('LINKFORSHARED'))"`
++		PYTHON_EXTRA_LDFLAGS=`$PYTHON-config --ldflags`
+ 	fi
+ 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $PYTHON_EXTRA_LDFLAGS" >&5
+ $as_echo "$PYTHON_EXTRA_LDFLAGS" >&6; }
