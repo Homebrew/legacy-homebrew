@@ -20,8 +20,10 @@ class Nghttp2 < Formula
 
   option "with-examples", "Compile and install example programs"
   option "without-docs", "Don't build man pages"
+  option "with-python3", "This is required for enabling the python bindings"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
+  depends_on :python3 => :optional
   depends_on "libxml2" if MacOS.version <= :lion
   depends_on "pkg-config" => :build
   depends_on "cunit" => :build
@@ -87,6 +89,11 @@ class Nghttp2 < Formula
     sha256 "3e15b416c9a2039c1a51208b2cd3bb4ffd796cd19e601b1d2657afcb77c3dc90"
   end
 
+  resource "Cython" do
+    url "https://pypi.python.org/packages/source/C/Cython/cython-0.22.tar.gz"
+    sha256 "14307e7a69af9a0d0e0024d446af7e51cc0e3e4d0dfb10d36ba837e5e5844015"
+  end
+
   # https://github.com/tatsuhiro-t/nghttp2/issues/125
   # Upstream requested the issue closed and for users to use gcc instead.
   # Given this will actually build with Clang with cxx11, just use that.
@@ -100,9 +107,16 @@ class Nghttp2 < Formula
       resources.each do |r|
         r.stage do
           system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
-        end
+        end unless r.name == "Cython"
       end
       ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
+    end
+
+    if build.with? "python3"
+       ENV.prepend_create_path "PYTHONPATH", buildpath/"cython/lib/python#{Language::Python.major_minor_version "python3"}/site-packages"
+       resource("Cython").stage do
+         system "python3", *(Language::Python.setup_install_args(buildpath/"cython") << "--install-scripts=#{buildpath}/cython/bin")
+       end
     end
 
     args = %W[
@@ -111,11 +125,15 @@ class Nghttp2 < Formula
       --enable-app
       --with-boost=#{Formula["boost"].opt_prefix}
       --enable-asio-lib
-      --disable-python-bindings
     ]
 
     args << "--enable-examples" if build.with? "examples"
     args << "--with-spdylay" if build.with? "spdylay"
+    if build.with? "python3"
+      args << "--enable-python-bindings" << "PYTHON=python3" << "CYTHON=#{buildpath}/cython/bin/cython" << "PYTHON_EXTRA_LDFLAGS=-undefined dynamic_lookup"
+    else
+      args << "--disable-python-bindings"
+    end
 
     system "autoreconf", "-ivf" if build.head?
     system "./configure", *args
