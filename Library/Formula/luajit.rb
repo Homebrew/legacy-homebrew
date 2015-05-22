@@ -12,9 +12,9 @@ class Luajit < Formula
   end
 
   bottle do
-    sha1 "9a6fc01ed0659ecc07a1e34daecdcf82cd150ca4" => :yosemite
-    sha1 "7ed3346a644ca5cd73c51131c54060b13038208e" => :mavericks
-    sha1 "0363e0a9c7ff2580d35363622b228fba7bb8f770" => :mountain_lion
+    sha256 "13b55554d8a6772cec7eb3ba04c484146dc705417591c9455108aa2f9950dd56" => :yosemite
+    sha256 "f3ab35cf3d35a68037f65353ebe6a6e09dc9e021d29e4067c03f90e0805a0acd" => :mavericks
+    sha256 "0d50380c98eef0fcc4be1d91d11d0cd1a6afefa600833f1cfce502336228e36c" => :mountain_lion
   end
 
   skip_clean "lib/lua/5.1", "share/lua/5.1"
