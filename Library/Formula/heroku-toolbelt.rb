@@ -1,6 +1,6 @@
 class HerokuToolbelt < Formula
   homepage "https://toolbelt.heroku.com/other"
-  url "https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.37.0.tgz"
+  url "https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.37.1.tgz"
   sha256 "26f28e0921eba6524e65b50ee21771759c27187b3673146cc6f22fa607513265"
   head "https://github.com/heroku/heroku.git"
 
