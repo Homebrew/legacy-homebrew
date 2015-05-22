@@ -1,8 +1,8 @@
 class GitStree < Formula
   homepage "https://github.com/tdd/git-stree"
   head "https://github.com/tdd/git-stree.git"
-  url "https://github.com/tdd/git-stree/archive/v0.4.0.tar.gz"
-  sha256 "c04d19c8eb1a566a8e7f373d447ab7e3480ee95f94802fa957afeb22c4bed0ef"
+  url "https://github.com/tdd/git-stree/archive/0.4.5.tar.gz"
+  sha256 "5504ac90871c73c92c21f5cd84b0bf956c521b237749e2b2dd699dbe0c096af8"
 
   bottle do
     cellar :any
