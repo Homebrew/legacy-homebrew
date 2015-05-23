@@ -6,9 +6,9 @@ class Talloc < Formula
 
   bottle do
     cellar :any
-    sha1 "95140108cb3675eedb25493d9a6ae51681b293eb" => :yosemite
-    sha1 "48d9ed5b9dc8d86b9787d2911df70a4dd2ef1307" => :mavericks
-    sha1 "d573466b7e520fcb1cf46fba2d7cd1314a3f1025" => :mountain_lion
+    sha256 "09562c643230ee89b534b0db792cb2e3285d2b09a24a3a3e66076bcd073d4ad9" => :yosemite
+    sha256 "394a7de53648e3a0a31af88618aa28390639dfc1422b4263c707dc0f5d273533" => :mavericks
+    sha256 "9f40baa58c9df7ef375e8451ac021cba5cced8e686a5093d5f786b39674f2a9d" => :mountain_lion
   end
 
   conflicts_with "samba", :because => "both install `include/talloc.h`"
