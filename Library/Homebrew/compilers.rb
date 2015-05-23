@@ -72,10 +72,10 @@ class CompilerSelector
   Compiler = Struct.new(:name, :version)
 
   COMPILER_PRIORITY = {
-    :clang   => [:clang, :gcc, :llvm, :gnu, :gcc_4_0],
-    :gcc     => [:gcc, :llvm, :gnu, :clang, :gcc_4_0],
-    :llvm    => [:llvm, :gcc, :gnu, :clang, :gcc_4_0],
-    :gcc_4_0 => [:gcc_4_0, :gcc, :llvm, :gnu, :clang],
+    :clang   => [:clang, :clang_omp, :gcc, :llvm, :gnu, :gcc_4_0],
+    :gcc     => [:gcc, :llvm, :gnu, :clang, :clang_omp, :gcc_4_0],
+    :llvm    => [:llvm, :gcc, :gnu, :clang, :clang_omp, :gcc_4_0],
+    :gcc_4_0 => [:gcc_4_0, :gcc, :llvm, :gnu, :clang, :clang_omp],
   }
 
   def self.select_for(formula, compilers=self.compilers)

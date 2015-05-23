@@ -236,6 +236,11 @@ class Formula
     active_spec.compiler_failures
   end
 
+  # If a compiler feature is needed for the currently active {SoftwareSpec}.
+  def needs_compiler_feature?(feature)
+    active_spec.needs_compiler_feature?(feature)
+  end
+
   # If this {Formula} is installed.
   # This is actually just a check for if the {#installed_prefix} directory
   # exists and is not empty.

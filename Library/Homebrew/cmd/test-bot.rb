@@ -388,7 +388,7 @@ module Homebrew
           test "brew", "unlink", conflict.name
         end
 
-      installed_gcc = false
+      installed_alternative_compiler = false
 
       deps = []
       reqs = []
@@ -417,13 +417,19 @@ module Homebrew
         end
         CompilerSelector.select_for(formula)
       rescue CompilerSelectionError => e
-        unless installed_gcc
-          if @formulae.include? "gcc"
-            run_as_not_developer { test "brew", "install", "gcc" }
+        unless installed_alternative_compiler
+          if e.formula.needs_compiler_feature? :openmp
+            alternative_compiler = "clang-omp"
           else
-            test "brew", "install", "gcc"
+            alternative_compiler = "gcc"
           end
-          installed_gcc = true
+
+          if @formulae.include? alternative_compiler
+            run_as_not_developer { test "brew", "install", alternative_compiler }
+          else
+            test "brew", "install", alternative_compiler
+          end
+          installed_alternative_compiler = true
           OS::Mac.clear_version_cache
           retry
         end
