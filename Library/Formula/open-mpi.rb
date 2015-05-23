@@ -7,9 +7,10 @@ class OpenMpi < Formula
   revision 1
 
   bottle do
-    sha256 "1dd17f0b0325dd607c46a4bc5ff8e047403c4ef0a94c5acf060e59ab49fd6338" => :yosemite
-    sha256 "a18d196cc10738fe4ba8ca10440e75aeef15679c7af803bf11e2b8f57f0fc745" => :mavericks
-    sha256 "8313511a6bd0f9ae9b6390bd3952c67982372873ea4ba59f54c3ad2ea56032ec" => :mountain_lion
+    revision 1
+    sha256 "78d4850f74cc2c6043bc3fb77cb431dcb43edde4bd898640840aa444c3268e6e" => :yosemite
+    sha256 "21c9b28a601b07a0c5ac85b5155e79d4e083f233dbddfe5a62a5274d24b40866" => :mavericks
+    sha256 "b2d256bf0430a7a3853683354137102f5ab5d8ba729f8e889877763e65dd7d22" => :mountain_lion
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
