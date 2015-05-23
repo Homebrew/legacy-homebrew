@@ -18,8 +18,8 @@ class FirefoxDependency < Requirement
 end
 
 class Slimerjs < Formula
-  homepage "http://www.slimerjs.org"
-  url "http://download.slimerjs.org/releases/0.9.5/slimerjs-0.9.5-mac.tar.bz2"
+  homepage "https://slimerjs.org/"
+  url "https://download.slimerjs.org/releases/0.9.5/slimerjs-0.9.5-mac.tar.bz2"
   sha256 "4333ae1c7898789c71b65ba5767cd1781290cdad36cb64d58ef289933482c81b"
   head "https://github.com/laurentj/slimerjs.git"
 
@@ -34,11 +34,15 @@ class Slimerjs < Formula
   depends_on FirefoxDependency
 
   def install
-    cd "src" do
-      system "zip", "-r", "omni.ja", "chrome/", "components/", "modules/",
-                    "defaults/", "chrome.manifest", "-x@package_exclude.lst"
-    end unless build.stable?
-    libexec.install %w[application.ini omni.ja slimerjs slimerjs.py]
+    if build.head?
+      cd "src" do
+        system "zip", "-r", "omni.ja", "chrome/", "components/", "modules/",
+                      "defaults/", "chrome.manifest", "-x@package_exclude.lst"
+        libexec.install %w[application.ini omni.ja slimerjs slimerjs.py]
+      end
+    else
+      libexec.install %w[application.ini omni.ja slimerjs slimerjs.py]
+    end
     bin.install_symlink libexec/"slimerjs"
   end
 
@@ -55,7 +59,7 @@ class Slimerjs < Formula
     end
     s += <<-EOS.undent
 
-      Note: If you use SlimerJS with an unstable version of Mozilla Firefox/XULRunner (>36.*)
+      Note: If you use SlimerJS with an unstable version of Mozilla Firefox/XULRunner (>38.*)
       you may have to change the [Gecko]MaxVersion in #{libexec}/application.ini
     EOS
 
