@@ -46,8 +46,8 @@ class Lua51 < Formula
   end
 
   resource "luarocks" do
-    url "https://github.com/keplerproject/luarocks/archive/v2.2.1.tar.gz"
-    sha256 "30e5bd99f82f5e3ea174572c1831f9ff83dfe37727f9fcfc89168b4572193571"
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
+    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
   end
 
   def install
