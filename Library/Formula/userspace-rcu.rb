@@ -1,9 +1,7 @@
-require "formula"
-
 class UserspaceRcu < Formula
-  homepage "http://lttng.org/urcu"
-  url "http://lttng.org/files/urcu/userspace-rcu-0.8.4.tar.bz2"
-  sha1 "4b3bf1b76e6ea50d9a56d9e5e00df2cc7c4d610f"
+  homepage "https://lttng.org/urcu"
+  url "https://www.lttng.org/files/urcu/userspace-rcu-0.8.7.tar.bz2"
+  sha256 "b523f22c4726ca6bb77a77d258e76d8c33c89724433bd65313024b98e55c4295"
 
   bottle do
     cellar :any
@@ -13,9 +11,11 @@ class UserspaceRcu < Formula
   end
 
   def install
-    args = ["--disable-dependency-tracking", "--disable-silent-rules",
-            "--disable-rpath", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--prefix=#{prefix}"]
     # workaround broken upstream detection of build platform
+    # marked as wontfix: http://bugs.lttng.org/issues/578#note-1
     if MacOS.prefer_64_bit?
       args << "--build=#{Hardware::CPU.arch_64_bit}"
     end
@@ -26,7 +26,7 @@ class UserspaceRcu < Formula
   end
 
   test do
-    system "cp", "-a", "#{doc}/examples", "."
+    cp_r "#{doc}/examples", testpath
     system "make", "-C", "examples"
   end
 end
