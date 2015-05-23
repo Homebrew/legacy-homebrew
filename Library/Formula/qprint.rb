@@ -1,14 +1,19 @@
-require 'formula'
-
 class Qprint < Formula
-  homepage 'http://www.fourmilab.ch/webtools/qprint'
-  url 'http://www.fourmilab.ch/webtools/qprint/qprint-1.0.tar.gz'
-  sha1 '533a4942e93cccc2e6b3fd2171707bf1d0054d20'
+  homepage "https://www.fourmilab.ch/webtools/qprint"
+  url "https://www.fourmilab.ch/webtools/qprint/qprint-1.1.tar.gz"
+  sha256 "ffa9ca1d51c871fb3b56a4bf0165418348cf080f01ff7e59cd04511b9665019c"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
-    bin.install "qprint"
-    man1.install "qprint.1"
+    bin.mkpath
+    man1.mkpath
+    system "make", "install"
+  end
+
+  test do
+    msg = "test homebrew"
+    encoded = pipe_output("#{bin}/qprint -e", msg)
+    assert_equal msg, pipe_output("#{bin}/qprint -d", encoded)
   end
 end
