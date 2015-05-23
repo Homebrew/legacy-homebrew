@@ -7,6 +7,7 @@ class Nvm < Formula
   resource "nvm-exec" do
     url "https://raw.githubusercontent.com/creationix/nvm/v0.25.3/nvm-exec"
     sha256 "a0581795f10114b9759992a82a43496daf4b4a52ad381a3072d8eee9866a28c5"
+    version "0.25.3"
   end
 
   def install
