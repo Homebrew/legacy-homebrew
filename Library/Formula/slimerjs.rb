@@ -29,8 +29,6 @@ class Slimerjs < Formula
     sha1 "aa5654afdd8d2dc049878d2898b9fb7fa33911ab" => :mountain_lion
   end
 
-  option "without-xulrunner", "Build with xulrunner"
-
   # Min supported OS X version by Firefox & xulrunner is 10.6
   depends_on :macos => :leopard
   depends_on FirefoxDependency
