@@ -2,8 +2,8 @@ require "language/go"
 
 class Vegeta < Formula
   homepage "https://github.com/tsenart/vegeta"
-  url "https://github.com/tsenart/vegeta/archive/v5.6.3.tar.gz"
-  sha1 "f20a34040319724e9bb9a1ad630f9eb1f4231073"
+  url "https://github.com/tsenart/vegeta/archive/v5.7.1.tar.gz"
+  sha1 "2d10d66460fdd7bd6a4e0cabc50d519dd72244bd"
 
   bottle do
     cellar :any
@@ -26,7 +26,7 @@ class Vegeta < Formula
     ENV["CGO_ENABLED"] = "0"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-ldflags", "-X main.Version v5.6.3", "-o", "vegeta"
+    system "go", "build", "-ldflags", "-X main.Version v5.7.1", "-o", "vegeta"
     bin.install "vegeta"
   end
 
