@@ -31,7 +31,11 @@ class Tab < OpenStruct
   end
 
   def self.from_file path
-    attributes = Utils::JSON.load(File.read(path))
+    from_file_content(File.read(path), path)
+  end
+
+  def self.from_file_content content, path
+    attributes = Utils::JSON.load(content)
     attributes["tabfile"] = path
     attributes["source"] ||= {}
 
