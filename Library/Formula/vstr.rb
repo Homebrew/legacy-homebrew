@@ -3,6 +3,13 @@ class Vstr < Formula
   url "http://www.and.org/vstr/1.0.15/vstr-1.0.15.tar.bz2"
   sha256 "d33bcdd48504ddd21c0d53e4c2ac187ff6f0190d04305e5fe32f685cee6db640"
 
+  bottle do
+    cellar :any
+    sha256 "0d4176307ea18472c9da9a765bcb033e6256ae361d2e32b758b205a56dd7e38a" => :yosemite
+    sha256 "5fc509c660fc38b3484a093ce0894ee2e9c3ea3cccc43222071c4d8139975d8d" => :mavericks
+    sha256 "10918d69a40e4516a549dae179e73c390248f4eaa8c75460228d9ba7d330fee9" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
 
   def install
