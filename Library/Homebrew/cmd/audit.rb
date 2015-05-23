@@ -350,6 +350,14 @@ class FormulaAuditor
       spec.patches.select(&:external?).each { |p| audit_patch(p) }
     end
 
+    %w[Stable Devel].each do |name|
+      next unless spec = formula.send(name.downcase)
+      version = spec.version
+      if version.to_s !~ /\d/
+        problem "#{name}: version (#{version}) is set to a string without a digit"
+      end
+    end
+
     if formula.stable && formula.devel
       if formula.devel.version < formula.stable.version
         problem "devel version #{formula.devel.version} is older than stable version #{formula.stable.version}"
