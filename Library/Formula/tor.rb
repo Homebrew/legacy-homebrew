@@ -1,8 +1,8 @@
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.6.7.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.6.7.tar.gz"
-  sha256 "8c2be88a542ed1b22a8d3d595ec0acd0e28191de273dbcaefc64fdce92b89e6c"
+  url "https://dist.torproject.org/tor-0.2.6.8.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.6.8.tar.gz"
+  sha256 "b88b363896454250c3f561b0b48479f18295c93596d2e81baa10c5a3ae609a76"
 
   bottle do
     sha256 "0cddcd6e31bb6f9af1cd4313ee5b0f4eecd971d8a40e41fa8988971a271f40f1" => :yosemite
