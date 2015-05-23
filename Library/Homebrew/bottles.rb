@@ -40,10 +40,7 @@ def bottle_tag
 end
 
 def bottle_filename_formula_name filename
-  path = Pathname.new filename
-  version = BottleVersion.parse(path).to_s
-  basename = path.basename.to_s
-  basename.rpartition("-#{version}").first
+  BottleVersion.parse(filename).name
 end
 
 class Bintray
