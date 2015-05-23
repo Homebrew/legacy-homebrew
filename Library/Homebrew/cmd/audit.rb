@@ -597,7 +597,7 @@ class FormulaAuditor
       problem "Define method #{$1.inspect} in the class body, not at the top-level"
     end
 
-    if line =~ /ENV.fortran/
+    if line =~ /ENV.fortran/ && !formula.requirements.map(&:class).include?(FortranDependency)
       problem "Use `depends_on :fortran` instead of `ENV.fortran`"
     end
 
