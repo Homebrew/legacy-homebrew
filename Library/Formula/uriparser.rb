@@ -13,9 +13,9 @@ class Uriparser < Formula
 
   bottle do
     cellar :any
-    sha1 "4aa9b66b5ff2cd4cc32e3a43759fd27d85409750" => :yosemite
-    sha1 "d12b3817d93aabbac1f4afad651ecf6ee05274f8" => :mavericks
-    sha1 "f8d78d458c6579be32e769a4c1d0138ccbece282" => :mountain_lion
+    sha256 "6a6ca5b4d0a1244b918c6d49240996d359fbc0373f7f2e7ead8a4ef6e88b7934" => :yosemite
+    sha256 "eb5143ee0ed00da74ba1df9abe9997fd5cb523d232a2503d25403345ce0e6ee5" => :mavericks
+    sha256 "bc5812a35b617cc3bd430b52d2f2a76fe3fdea0ba92522fdc5385ad8ff5d05ba" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
