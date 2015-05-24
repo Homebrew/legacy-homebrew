@@ -5,9 +5,9 @@ class UserspaceRcu < Formula
 
   bottle do
     cellar :any
-    sha1 "16c1a7476c1f43cfdee4b3410dc2a91b7c84ba5c" => :mavericks
-    sha1 "e914e384c50f1fcde334f4ea059c62305b5e60ca" => :mountain_lion
-    sha1 "be83fc32071b02e3881a67119e3944166d8f81ad" => :lion
+    sha256 "f0c0badb4e39284c68fee23e2abed3055150b696d374dcc3b46f02c607fccbdc" => :yosemite
+    sha256 "37c33ee463ea71b2deca8ab72d02d9191846cf2ddd639cf1eb51a8039db2eeb5" => :mavericks
+    sha256 "e9ba30f7d6e8eae7bb7fed85d65dbaf7c3d970eb764d03b5561d6d91e3d01871" => :mountain_lion
   end
 
   def install
