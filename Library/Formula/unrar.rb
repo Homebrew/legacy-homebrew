@@ -1,7 +1,8 @@
 class Unrar < Formula
   homepage "http://www.rarlab.com"
-  url "http://www.rarlab.com/rar/unrarsrc-5.2.6.tar.gz"
-  sha1 "bdd4c8936fd0deb460afe8b7afa9322dd63f3ecb"
+  url "http://www.rarlab.com/rar/unrarsrc-5.2.7.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/non-free/u/unrar-nonfree/unrar-nonfree_5.2.7.orig.tar.gz"
+  sha256 "ef14757e943787b439fedf2c564c1f38d0db315528a928e0de170860717e2fac"
 
   bottle do
     cellar :any
