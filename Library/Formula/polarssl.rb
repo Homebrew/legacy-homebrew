@@ -1,4 +1,4 @@
-class Mbedtls < Formula
+class Polarssl < Formula
   homepage "https://tls.mbed.org/"
   # 1.4.0 will need dependents recompiled due to breaking binary compat.
   url "https://tls.mbed.org/download/mbedtls-1.3.10-gpl.tgz"
