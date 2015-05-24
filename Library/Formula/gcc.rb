@@ -137,7 +137,7 @@ class Gcc < Formula
       args << "--enable-multilib"
     end
 
-    args << "--enable-host-shared" if build.with? "jit"
+    args << "--enable-host-shared" if build.with?("jit") || build.with?("all-languages")
 
     # Ensure correct install names when linking against libgcc_s;
     # see discussion in https://github.com/Homebrew/homebrew/pull/34303
