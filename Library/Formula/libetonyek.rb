@@ -1,9 +1,7 @@
-require "formula"
-
 class Libetonyek < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
-  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.1.tar.xz"
-  sha1 "024fd730b062d1df54de0352323d03d011e59277"
+  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.2.tar.xz"
+  sha256 "58d078a76c3fd839c282244a1a7dabca81cef64be086a5c7d8470bb64208da39"
 
   bottle do
     cellar :any
@@ -15,8 +13,8 @@ class Libetonyek < Formula
 
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
-  depends_on "libwpd"
   depends_on "librevenge"
+  depends_on "glm"
 
   def install
     system "./configure", "--without-docs",
