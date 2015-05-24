@@ -14,9 +14,9 @@ class Unpaper < Formula
 
   bottle do
     cellar :any
-    sha1 "c20298eac668f11a24cb02a61065ad58096623bb" => :mavericks
-    sha1 "dbad33b7762c589639ccf084d33776a55b777593" => :mountain_lion
-    sha1 "1f0bdc89500234a96557d99cd2bcb6cc1372594e" => :lion
+    sha256 "b0bb6934af1df4298a04c6d5520aac607184025cc2217d0e139a4a004d43410f" => :yosemite
+    sha256 "bc7e3b90cdc1b5d285788e33024afc81a5b3632485346e34fb852d2d86917899" => :mavericks
+    sha256 "a4cd97fa61392b0092b5b61e459e5e9a956193715fc6ff19a582ec6190629b38" => :mountain_lion
   end
 
   def install
