@@ -3,6 +3,13 @@ class Tinycdb < Formula
   url "http://www.corpit.ru/mjt/tinycdb/tinycdb-0.78.tar.gz"
   sha256 "50678f432d8ada8d69f728ec11c3140e151813a7847cf30a62d86f3a720ed63c"
 
+  bottle do
+    cellar :any
+    sha256 "d73abbd1439c1579c3ab925d2110fee60f287bb9b262850e030c74f7c356bcaa" => :yosemite
+    sha256 "b35dda3e5219c993140f7ed6244f483b0159cbd4458fb3ee4461e25daa368d41" => :mavericks
+    sha256 "cc08f9c7d8ab18de0f547d6790ebef51ad0984e82ed99e8d2cb7567725ca8eb5" => :mountain_lion
+  end
+
   def install
     system "make"
     system "make", "install", "prefix=#{prefix}", "mandir=#{man}"
