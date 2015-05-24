@@ -1,7 +1,7 @@
 class Openwsman < Formula
   homepage "http://openwsman.github.io"
-  url "https://github.com/Openwsman/openwsman/archive/v2.4.12.tar.gz"
-  sha1 "15fbe4454c3d48ab229036b09400afd5037f4ef2"
+  url "https://github.com/Openwsman/openwsman/archive/v2.5.0.tar.gz"
+  sha256 "538ad011c3be59ed9843f8499ce749b98cc245208f7b3ca9ca9d53611fee7fe5"
 
   bottle do
     sha1 "70ba82023cb43276b4fa40103e1e32a7f9fdb74c" => :yosemite
