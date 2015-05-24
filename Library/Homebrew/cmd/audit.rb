@@ -206,12 +206,6 @@ class FormulaAuditor
     end
   end
 
-  def audit_java_home
-    if text =~ /JAVA_HOME/i && !formula.requirements.map(&:class).include?(JavaDependency)
-      problem "Use `depends_on :java` to set JAVA_HOME"
-    end
-  end
-
   def audit_conflicts
     formula.conflicts.each do |c|
       begin
@@ -601,6 +595,10 @@ class FormulaAuditor
       problem "Use `depends_on :fortran` instead of `ENV.fortran`"
     end
 
+    if line =~ /JAVA_HOME/i && !formula.requirements.map(&:class).include?(JavaDependency)
+      problem "Use `depends_on :java` to set JAVA_HOME"
+    end
+
     if line =~ /depends_on :(.+) (if.+|unless.+)$/
       audit_conditional_dep($1.to_sym, $2, $&)
     end
@@ -686,7 +684,6 @@ class FormulaAuditor
     audit_specs
     audit_homepage
     audit_deps
-    audit_java_home
     audit_conflicts
     audit_options
     audit_patches
