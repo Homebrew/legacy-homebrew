@@ -1,8 +1,8 @@
 class Libodfgen < Formula
   homepage "http://sourceforge.net/p/libwpd/wiki/libodfgen/"
-  url "http://dev-www.libreoffice.org/src/libodfgen-0.1.3.tar.bz2"
-  mirror "https://downloads.sourceforge.net/project/libwpd/libodfgen/libodfgen-0.1.3/libodfgen-0.1.3.tar.bz2"
-  sha1 "f726a1811bc78c12b28995d1bff2561e820667ea"
+  url "http://dev-www.libreoffice.org/src/libodfgen-0.1.4.tar.bz2"
+  mirror "https://downloads.sourceforge.net/project/libwpd/libodfgen/libodfgen-0.1.4/libodfgen-0.1.4.tar.bz2"
+  sha256 "f74999d2c93ac0cc077a0a9c36340daff29dc772992160ae81dd010345f72b80"
 
   bottle do
     cellar :any
