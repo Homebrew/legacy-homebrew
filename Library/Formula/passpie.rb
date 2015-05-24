@@ -1,7 +1,7 @@
 class Passpie < Formula
   homepage "https://marcwebbie.github.io/passpie"
-  url "https://pypi.python.org/packages/source/p/passpie/passpie-0.2.0.tar.gz"
-  sha256 "b6378294129f9cc693e7f7d099d121c69d1840f9478cf4c76a9762a60b82e850"
+  url "https://pypi.python.org/packages/source/p/passpie/passpie-0.2.1.tar.gz"
+  sha256 "d8a0281e188624ad9d40198c7402f59d2d822dd34ac361a7de79cfcdfae5ecca"
   head "https://github.com/marcwebbie/passpie.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
