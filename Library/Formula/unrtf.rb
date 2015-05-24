@@ -1,20 +1,36 @@
-require 'formula'
-
 class Unrtf < Formula
-  homepage 'http://www.gnu.org/software/unrtf/'
-  url 'http://ftpmirror.gnu.org/unrtf/unrtf-0.21.5.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/unrtf/unrtf-0.21.5.tar.gz'
-  sha1 '73d22805eb7a83edf5c3c27fe036e3c33248902d'
+  homepage "https://www.gnu.org/software/unrtf/"
+  url "http://ftpmirror.gnu.org/unrtf/unrtf-0.21.9.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/unrtf/unrtf-0.21.9.tar.gz"
+  sha256 "22a37826f96d754e335fb69f8036c068c00dd01ee9edd9461a36df0085fb8ddd"
 
-  # Per MacPorts, add a return value to fix compiling with clang, and fix
-  # a bad memory access.
-  patch :p0 do
-    url "https://trac.macports.org/export/94428/trunk/dports/textproc/unrtf/files/patch-src-attr.c.diff"
-    sha1 "8a6a111373d6bf18750bbb5bf2d91383ac6aa584"
-  end
+  head "http://hg.savannah.gnu.org/hgweb/unrtf/", :using => :hg
+
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
 
   def install
+    system "./bootstrap"
     system "./configure", "LIBS=-liconv", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.rtf").write <<-'EOS'.undent
+      {\rtf1\ansi
+      {\b hello} world
+      }
+    EOS
+    expected = <<-EOS.undent
+      <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+      <html>
+      <head>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+      <!-- Translation from RTF performed by UnRTF, version #{version} -->
+      </head>
+      <body><b>hello</b> world</body>
+      </html>
+    EOS
+    assert_equal expected, shell_output("#{bin}/unrtf --html test.rtf")
   end
 end
