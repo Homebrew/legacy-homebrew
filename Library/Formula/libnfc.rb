@@ -2,8 +2,9 @@ require 'formula'
 
 class Libnfc < Formula
   homepage 'http://www.libnfc.org/'
-  url 'https://libnfc.googlecode.com/files/libnfc-1.7.0.tar.bz2'
-  sha1 '5adfb6c6238b1659ad8609837dc8e59eb41a8768'
+  url 'https://bintray.com/artifact/download/nfc-tools/sources/libnfc-1.7.1.tar.bz2'
+  sha1 'd77c1408f5e38f24d69778b2ff82f68b2d7bc111'
+  head 'https://code.google.com/p/libnfc/'
 
   bottle do
     revision 2
@@ -31,14 +32,27 @@ class Libnfc < Formula
 end
 
 __END__
+diff --git a/libnfc/buses/uart.c b/libnfc/buses/uart.c
+index 953c126..8078767 100644
+--- a/libnfc/buses/uart.c
++++ b/libnfc/buses/uart.c
+@@ -74,7 +74,7 @@
+ #endif
+ 
+ #  if defined(__APPLE__)
+-const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", NULL };
++const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial", "tty.usbmodem", NULL };
+ #  elif defined (__FreeBSD__) || defined (__OpenBSD__) || defined(__FreeBSD_kernel__)
+ const char *serial_ports_device_radix[] = { "cuaU", "cuau", NULL };
+ #  elif defined (__linux__)
 diff --git a/libnfc/nfc-internal.h b/libnfc/nfc-internal.h
-index ec9e2fc..41797b2 100644
+index 4fa2fc2..bcafe59 100644
 --- a/libnfc/nfc-internal.h
 +++ b/libnfc/nfc-internal.h
-@@ -33,6 +33,15 @@
-
+@@ -40,6 +40,15 @@
+ 
  #include "log.h"
-
+ 
 +// Patch to compile on OS X
 +// Tested on OS X Mountain Lion
 +#ifndef MAX
@@ -51,16 +65,3 @@ index ec9e2fc..41797b2 100644
  /**
   * @macro HAL
   * @brief Execute corresponding driver function if exists.
-diff --git a/libnfc/buses/uart.c b/libnfc/buses/uart.c
-index 7b687c1..686f9ed 100644
---- a/libnfc/buses/uart.c
-+++ b/libnfc/buses/uart.c
-@@ -46,7 +46,7 @@
- #define LOG_CATEGORY "libnfc.bus.uart"
-
- #  if defined(__APPLE__)
--const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", NULL };
-+const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", "tty.usbmodem", "tty.usbserial", NULL };
- #  elif defined (__FreeBSD__) || defined (__OpenBSD__)
- const char *serial_ports_device_radix[] = { "cuaU", "cuau", NULL };
- #  elif defined (__linux__)
