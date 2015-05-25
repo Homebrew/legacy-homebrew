@@ -5,9 +5,9 @@ class Bwctl < Formula
 
   bottle do
     cellar :any
-    sha1 "b44fbe6a0a4cb82f9d5f9af6062006bbe22d163c" => :yosemite
-    sha1 "318f7c3022df966510467489102ea2f3fa6ea728" => :mavericks
-    sha1 "d18b048baeb365d22717b2b831c164eb1c8ba125" => :mountain_lion
+    sha256 "c8890647536e60b3ed8599eb3239ee59fde0382e9df8b7585ee7eeb20275fc39" => :yosemite
+    sha256 "f10efbf8f41f526130340cc6087ce3dfad83b71b69d21e0b01c11b3169d88bdd" => :mavericks
+    sha256 "b60c679e8b498ffc23e697cb025dc6decc4f4d939e2b0874ff36291967eee18d" => :mountain_lion
   end
 
   depends_on "i2util" => :build
