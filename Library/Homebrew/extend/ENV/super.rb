@@ -23,7 +23,8 @@ module Superenv
   end
 
   def self.bin
-    (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    bin = (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    bin.realpath unless bin.nil?
   end
 
   def reset
