@@ -2,8 +2,9 @@ require "language/go"
 
 class Asciinema < Formula
   homepage "https://asciinema.org/"
-  url "https://github.com/asciinema/asciinema/archive/v1.0.0.tar.gz"
-  sha1 "8e9862309a5bc1723cb27a40a412401ed05e4586"
+  desc "A terminal session recorder"
+  url "https://github.com/asciinema/asciinema/archive/v1.1.0.tar.gz"
+  sha256 "2f03549620534341e883b630c6947c3b4ecd234105ec1d7aa98393a00f0845e8"
 
   head "https://github.com/asciinema/asciinema.git"
 
@@ -18,7 +19,7 @@ class Asciinema < Formula
 
   go_resource "github.com/kr/pty" do
     url "https://github.com/kr/pty.git",
-      :revision => "67e2db24c831afa6c64fc17b4a143390674365ef"
+      :revision => "5cf931ef8f76dccd0910001d74a58a7fca84a83d"
   end
 
   go_resource "code.google.com/p/go.crypto" do
@@ -37,9 +38,7 @@ class Asciinema < Formula
     ln_s buildpath, buildpath/"src/github.com/asciinema/asciinema"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "asciinema"
-
-    bin.install "asciinema"
+    system "go", "build", "-o", bin/"asciinema"
   end
 
   test do
