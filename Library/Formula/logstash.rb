@@ -1,7 +1,7 @@
 require 'formula'
 
 class Logstash < Formula
-  homepage 'http://logstash.net/'
+  homepage 'https://www.elastic.co/products/logstash'
   url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.5.0.tar.gz'
   sha1 '9729c2d31fddaabdd3d8e94c34a6d1f61d57f94a'
 
