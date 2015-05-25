@@ -5,16 +5,16 @@ class Mg3a < Formula
 
   conflicts_with "mg", :because => "both install `mg`"
 
-  option "without-emacs-quit", "Use ^U ^X ^C to exit saving"
   option "with-c-mode", "Include the original C mode"
   option "with-clike-mode", "Include the C mode that also handles Perl and Java"
   option "with-python-mode", "Include the Python mode"
   option "without-dired", "Exclude dired functions"
   option "without-prefix-region", "Exclude the prefix region mode"
-  option "with-user-modes", "Include the support for user defined modes"
-  option "with-user-macros", "Include the support for user defined macros"
-  option "with-most","Include c-like and python modes, user modes and user macros"
-  option "with-all","Include all fancy stuff"
+  option "without-user-modes", "Exclude the support for user defined modes"
+  option "without-user-macros", "Exclude the support for user defined macros"
+  option "without-emacs-quit", "Use ^U ^X ^C to exit saving"
+  option "with-most", "Include c-like and python modes, user modes and user macros"
+  option "with-all", "Include all fancy stuff"
 
   def install
     mg3aopts=""
@@ -32,5 +32,9 @@ class Mg3a < Formula
     bin.install "mg"
     doc.install Dir["bl/dot.*"]
     doc.install Dir["README*"]
+  end
+  test do
+    # Simple test to check that mg was built correctly
+    system "mg", "-e", "save-buffers-kill-emacs"
   end
 end
