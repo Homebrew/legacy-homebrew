@@ -1,7 +1,9 @@
 class Thefuck < Formula
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.42.tar.gz"
-  sha256 "049f52a44d82ed1e79abb3c32eb96459e3b848fbc097af826dda218a5910f011"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.43.tar.gz"
+  sha256 "24ba074a51e988ddb7dbc5dcfce70865799b33499ba46f4826329c9be961305e"
+
+  head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any
@@ -36,10 +38,8 @@ class Thefuck < Formula
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
-    %w[psutil pathlib colorama six].each do |r|
-      resource(r).stage do
-        system "python", *Language::Python.setup_install_args(libexec/"vendor")
-      end
+    resources.each do |r|
+      r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
     end
     system "python", *Language::Python.setup_install_args(libexec)
 
