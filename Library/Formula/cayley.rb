@@ -1,10 +1,9 @@
-require "formula"
 require "language/go"
 
 class Cayley < Formula
   homepage "https://github.com/google/cayley"
-  url "https://github.com/google/cayley/archive/v0.4.0.tar.gz"
-  sha1 "100c1e057fb140b35e1ecdd4824541436e6cb741"
+  url "https://github.com/google/cayley/archive/v0.4.1.tar.gz"
+  sha256 "d61f969128bcff1bce1e14e0afa68b9f25e4f3ab8e5f77930a384426f3b3bbce"
   head "https://github.com/google/cayley.git"
 
   bottle do
@@ -18,10 +17,6 @@ class Cayley < Formula
   depends_on "go" => :build
 
   option "without-samples", "Disable installing sample data"
-
-  # This patch is only necessary until Cayley releases something beyond 0.4.0
-  # See https://github.com/google/cayley/pull/188
-  patch :DATA unless build.head?
 
   # Go dependencies
   go_resource "github.com/badgerodon/peg" do
@@ -72,8 +67,17 @@ class Cayley < Formula
     url "https://github.com/boltdb/bolt.git", :revision => "3b449559cf34cbcc74460b59041a4399d3226e5a"
   end
 
+  # It looks for both unstable and stable mgo in GOPATH during compile.
   go_resource "gopkg.in/mgo.v2" do
     url "https://github.com/go-mgo/mgo.git", :revision => "c6a7dce14133ccac2dcac3793f1d6e2ef048503a"
+  end
+
+  go_resource "gopkg.in/mgo.v2-unstable" do
+    url "https://github.com/go-mgo/mgo.git", :revision => "7a4943433e00707e38099a2b2e904d96681d14bc"
+  end
+
+  go_resource "code.google.com/p/go-uuid" do
+    url "https://code.google.com/p/go-uuid/", :revision => "35bc42037350", :using => :hg
   end
 
   def install
@@ -96,13 +100,13 @@ class Cayley < Formula
     etc.install "cayley.cfg.example" => "cayley.conf"
 
     # Copy over the static web assets
-    (share/'cayley/assets').install "docs", "static", "templates"
+    (share/"cayley/assets").install "docs", "static", "templates"
 
     if build.with? "samples"
-      system "gzip", "-d", "30kmoviedata.nq.gz"
+      system "gzip", "-d", "data/30kmoviedata.nq.gz"
 
       # Copy over sample data
-      (share/'cayley/samples').install "testdata.nq", "30kmoviedata.nq"
+      (share/"cayley/samples").install "data/testdata.nq", "data/30kmoviedata.nq"
     end
   end
 
@@ -155,27 +159,3 @@ class Cayley < Formula
     assert result.include?("Cayley snapshot")
   end
 end
-
-# This patch is only necessary until Cayley releases something beyond 0.4.0
-# See https://github.com/google/cayley/pull/188
-__END__
-diff --git a/graph/leveldb/triplestore.go b/graph/leveldb/triplestore.go
-index 641a6f5..ee41dff 100644
---- a/graph/leveldb/triplestore.go
-+++ b/graph/leveldb/triplestore.go
-@@ -26,7 +26,6 @@
-
-	"github.com/barakmich/glog"
-	"github.com/syndtr/goleveldb/leveldb"
--	"github.com/syndtr/goleveldb/leveldb/cache"
-	"github.com/syndtr/goleveldb/leveldb/opt"
-	"github.com/syndtr/goleveldb/leveldb/util"
-
-@@ -94,7 +93,7 @@
-		cache_size = val
-	}
-	qs.dbOpts = &opt.Options{
--		BlockCache: cache.NewLRUCache(cache_size * opt.MiB),
-+		BlockCacheCapacity: cache_size * opt.MiB,
-	}
-	qs.dbOpts.ErrorIfMissing = true
