@@ -8,9 +8,9 @@ class Sfml < Formula
 
   bottle do
     cellar :any
-    sha256 "aa333dcea990b993dea2b2e6eaf814ea21dce35fd22fc109fffa376b24337203" => :yosemite
-    sha256 "0d1eaaf926fbcfc14b32929aaa3d42862722cc0ef9e3e3dcd3b5bf171048770f" => :mavericks
-    sha256 "7471263a9b8cbc9694aa5ad4d5f563cd54119770b6a0be5a8dd2a7d9c9d3dffd" => :mountain_lion
+    sha256 "3a945776dbc66b4e304853fe09a41b43f1da4047427e37a21c3402332b41d2ff" => :yosemite
+    sha256 "7c7e3eeb9f700ecf56e4ce68406dfe9be1c3a614f6ce156a45057e421bd08d60" => :mavericks
+    sha256 "1dd68903fa88cf39d3d12d9380d0bfb9c10585d2970b2cca24597e8c3604acf8" => :mountain_lion
   end
 
   depends_on "cmake" => :build
