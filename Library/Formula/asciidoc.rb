@@ -1,5 +1,5 @@
 class Asciidoc < Formula
-  homepage "http://www.methods.co.nz/asciidoc"
+  homepage "http://asciidoc.org/"
   url "https://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz"
   sha1 "82e574dd061640561fa0560644bc74df71fb7305"
 
@@ -12,7 +12,7 @@ class Asciidoc < Formula
   end
 
   head do
-    url "https://code.google.com/p/asciidoc/", :using => :hg
+    url "https://github.com/asciidoc/asciidoc.git"
     depends_on "autoconf" => :build
   end
 
