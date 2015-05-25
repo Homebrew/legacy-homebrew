@@ -7,9 +7,9 @@ homepage "http://getgauge.io"
 
   bottle do
     cellar :any
-    sha256 "26944fa402a063917c7278d28752512b8735eab62678933b44fbe290426bca47" => :yosemite
-    sha256 "e23a370369f7a647d84c2ad0889180a051d3757924c74f4a834e4b07ca71dff4" => :mavericks
-    sha256 "624cd5274c709149fa26d5bdd6224836e229c2d0b900ee49687b5ae5e6a492cd" => :mountain_lion
+    sha256 "74037e9f211487cd8a3b189b0fbdd8a131f0c74e4c231c04ca8d8bd982974572" => :yosemite
+    sha256 "d18c054b51dd8536d0126b544e2145237f9cee0ab154a593f62db709ff221794" => :mavericks
+    sha256 "8913e5692c08384a8954148fe49c8761be0407fe04534dc1f9e9930016dc3f37" => :mountain_lion
   end
 
   depends_on "go" => :build
