@@ -5,6 +5,13 @@ class SimpleTiles < Formula
 
   head "https://github.com/propublica/simple-tiles.git"
 
+  bottle do
+    cellar :any
+    sha256 "feaaac49a14352c65dc4163fcfb483e220a3015edbe9671d68b42f08e04ce255" => :yosemite
+    sha256 "46e57be573ad461719de4df03e352308cd657658472436b7b0bc8303c85e75b2" => :mavericks
+    sha256 "875ae1cc1fe6bdf01504dbbee45bc14079c394680be55aaea41c3b9d4ccec487" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "cairo"
   depends_on "gdal"
