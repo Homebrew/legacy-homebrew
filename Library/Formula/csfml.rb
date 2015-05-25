@@ -8,9 +8,9 @@ class Csfml < Formula
 
   bottle do
     cellar :any
-    sha256 "81a7f3da157b8941df5ba58152846b62aefcfcb434bd3e2a259db63964d5765e" => :yosemite
-    sha256 "48ffc9d13eec898937ad7cde0562f85694d6b7bf25a02f67efc50565788f179d" => :mavericks
-    sha256 "65457acf802959c36830d5d812d1f3e63739e366249196d4bafe526e2bc254ea" => :mountain_lion
+    sha256 "0f080fd2c809a1c22ba10aee92ccc34b201458e98de3b8c973cdf9fa99d8cf3e" => :yosemite
+    sha256 "32e3cd01b497a73fb7d918841e4df0e980811270d92626d6399e47fae8291ea6" => :mavericks
+    sha256 "afbda33ded196a5dd39ecc68627e6fb6db156ec7a67f71fb16a6d6cb4cd40531" => :mountain_lion
   end
 
   depends_on "cmake" => :build
