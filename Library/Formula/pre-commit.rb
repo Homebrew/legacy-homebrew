@@ -54,10 +54,8 @@ class PreCommit < Formula
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
-    res = %w[argparse aspy.yaml cached-property jsonschema nodeenv]
-    res += %w[ordereddict pyyaml simplejson virtualenv]
-    res.each do |r|
-      resource(r).stage do
+    resources.each do |r|
+      r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
