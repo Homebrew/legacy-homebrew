@@ -2,9 +2,9 @@ require "formula"
 
 class Gawk < Formula
   homepage "https://www.gnu.org/software/gawk/"
-  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.2.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gawk/gawk-4.1.2.tar.xz"
-  sha256 "ea8b53c5834ee27012fecba7273f97fca7104884975cf81ddae6f85c5581f481"
+  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.3.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gawk/gawk-4.1.3.tar.xz"
+  sha256 "e3cf55e91e31ea2845f8338bedd91e40671fc30e4d82ea147d220e687abda625"
 
   bottle do
     sha256 "3870e56454e734670d30e89e45fcb756d14090ca3dc1f831b3ada52c2e10e0d4" => :yosemite
