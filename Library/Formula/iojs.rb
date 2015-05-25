@@ -1,7 +1,8 @@
 class Iojs < Formula
+  desc "An npm-compatible platform based on Node.js"
   homepage "https://iojs.org/"
-  url "https://iojs.org/dist/v2.0.2/iojs-v2.0.2.tar.xz"
-  sha256 "afab3752cf9143a13784cd9d9c38b0ff5fd4aa77dffded2f5c3742c42b9743a2"
+  url "https://iojs.org/dist/v2.1.0/iojs-v2.1.0.tar.xz"
+  sha256 "b9bb7fb626a0f0f0babb3b042f61eba55ff0dec4645682fbb36b5bab13d5dd29"
 
   bottle do
     sha256 "c2160a0165cb221045e3f5e2f2f634cd475de01272498a8ba14bb0cc3af3478c" => :yosemite
