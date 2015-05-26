@@ -2,8 +2,8 @@ require "formula"
 
 class Goaccess < Formula
   homepage "http://goaccess.prosoftcorp.com/"
-  url "http://tar.goaccess.io/goaccess-0.9.tar.gz"
-  sha1 "fd18df44e09d4fac4ea90f1552e8ff9da0d6633c"
+  url "http://tar.goaccess.io/goaccess-0.9.1.tar.gz"
+  sha1 "3b1c17d5f808c8c81de0a9d3581c3ef7846812b7"
 
   bottle do
     sha256 "d768a98f42f9ec841328c859d6505e80904ec3c28e3bba38532ee67425d994d5" => :yosemite
