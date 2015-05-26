@@ -10,9 +10,9 @@ class Hugo < Formula
 
   bottle do
     cellar :any
-    sha256 "318cd60e3fd01d0876952ca5eac6870da04f40d1f0513751fce8fc85fef9f200" => :yosemite
-    sha256 "28a230b589cb78a4868449409633871c7983d2f385d1a6e64538236b35a19f1c" => :mavericks
-    sha256 "ec9257d512d512ca607360f59902a07e0eec1b2e07d7cbb0ac7639407f715c37" => :mountain_lion
+    sha256 "6b66a7a6d98818464279913d96f55cc28f1e9876a2f9f6ff72bc02dbea11ebd2" => :yosemite
+    sha256 "1cb8e13a2ec21fb7cb588dc451844be6a70143f6ba5c03f583aa3480c5648aa0" => :mavericks
+    sha256 "0134339448731790a04bf782703e1de8e338f5467a3e24b0ffc5c73e9acf7156" => :mountain_lion
   end
 
   depends_on "go" => :build
