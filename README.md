@@ -20,7 +20,7 @@ Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebre
 Please report security issues to security@brew.sh.
 
 ## Who Are You?
-Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Baptiste Fontaine](https://github.com/bfontaine), [Brett Koonce](https://github.com/asparagui), [Dominyk Tiller](https://github.com/DomT4) and [Tim Smith](https://github.com/tdsmith).
 
 Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 
