@@ -16,6 +16,9 @@ class CracklibWords < Formula
 
   def install
     share.install "cracklib-words-#{version}" => "cracklib-words"
-    system "/bin/sh", "-c", "#{HOMEBREW_PREFIX}/sbin/cracklib-packer < #{share}/cracklib-words"
+  end
+
+  def post_install
+    system "#{Formula["cracklib"].opt_bin}/cracklib-packer < #{share}/cracklib-words"
   end
 end

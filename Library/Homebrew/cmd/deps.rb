@@ -29,12 +29,24 @@ module Homebrew
   end
 
   def deps_for_formula(f, recursive=false)
+    ignores = []
+    ignores << "build?" if ARGV.include? "--skip-build"
+    ignores << "optional?" if ARGV.include? "--skip-optional"
+
     if recursive
-      deps = f.recursive_dependencies
-      reqs = f.recursive_requirements
+      deps = f.recursive_dependencies do |dependent, dep|
+        Dependency.prune if ignores.any? { |ignore| dep.send(ignore) } && !dependent.build.with?(dep)
+      end
+      reqs = f.recursive_requirements do |dependent, req|
+        Requirement.prune if ignores.any? { |ignore| req.send(ignore) } && !dependent.build.with?(req)
+      end
     else
-      deps = f.deps.default
-      reqs = f.requirements
+      deps = f.deps.reject do |dep|
+        ignores.any? { |ignore| dep.send(ignore) }
+      end
+      reqs = f.requirements.reject do |req|
+        ignores.any? { |ignore| req.send(ignore) }
+      end
     end
 
     deps + reqs.select(&:default_formula?).map(&:to_dependency)

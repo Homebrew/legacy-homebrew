@@ -81,6 +81,10 @@ class ResourceTests < Homebrew::TestCase
     assert_raises(TypeError) { @resource.version(Object.new) }
   end
 
+  def test_version_when_url_is_not_set
+    assert_nil @resource.version
+  end
+
   def test_mirrors
     assert_empty @resource.mirrors
     @resource.mirror('foo')
@@ -109,7 +113,7 @@ class ResourceTests < Homebrew::TestCase
 
     fn.stubs(:file? => true)
     fn.expects(:verify_checksum).raises(ChecksumMissingError)
-    fn.expects(:sha1)
+    fn.expects(:sha256)
 
     shutup { @resource.verify_download_integrity(fn) }
   end

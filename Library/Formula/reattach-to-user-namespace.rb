@@ -1,29 +1,36 @@
-require 'formula'
-
 class ReattachToUserNamespace < Formula
-  homepage 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard'
-  url 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard/archive/v2.3.tar.gz'
-  sha1 '830d329992b294c2673ed240ee3c7786e4e06308'
+  homepage "https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard"
+  url "https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard/archive/v2.3.tar.gz"
+  sha256 "f9ff4f7bca2927465092c8c5cb44b782a8a500229db72a014bbb12bf43a5bf96"
 
-  head 'https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git'
+  head "https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard.git"
 
-  option 'wrap-pbcopy-and-pbpaste', 'Include wrappers for pbcopy/pbpaste that shim in this fix'
-  option 'wrap-launchctl', 'Include wrapper for launchctl with this fix'
+  bottle do
+    cellar :any
+    sha256 "30aa385bfb31849afac326e1e8c429b39eee2aee7db4e26af22426faef08f6f5" => :yosemite
+    sha256 "50b7105b92e65585234193864bc2d813c4c5b647e709f23aa34a01808badd85b" => :mavericks
+    sha256 "ae205ae3b48cf22831c790fb3a2d24f5910bccebb413a14b94d20d55ed1c32ef" => :mountain_lion
+  end
+
+  option "with-wrap-pbcopy-and-pbpaste", "Include wrappers for pbcopy/pbpaste that shim in this fix"
+  option "with-wrap-launchctl", "Include wrapper for launchctl with this fix"
+  deprecated_option "wrap-pbcopy-and-pbpaste" => "with-wrap-pbcopy-and-pbpaste"
+  deprecated_option "wrap-launchctl" => "with-wrap-launchctl"
 
   def install
     system "make"
     bin.install "reattach-to-user-namespace"
-    wrap_pbpasteboard_commands if build.include? 'wrap-pbcopy-and-pbpaste'
-    wrap_launchctl if build.include? 'wrap-launchctl'
+    wrap_pbpasteboard_commands if build.with? "wrap-pbcopy-and-pbpaste"
+    wrap_launchctl if build.with? "wrap-launchctl"
   end
 
   def wrap_pbpasteboard_commands
-    make_executable_with_content('pbcopy', 'cat - | reattach-to-user-namespace /usr/bin/pbcopy')
-    make_executable_with_content('pbpaste', 'reattach-to-user-namespace /usr/bin/pbpaste')
+    make_executable_with_content("pbcopy", "cat - | reattach-to-user-namespace /usr/bin/pbcopy")
+    make_executable_with_content("pbpaste", "reattach-to-user-namespace /usr/bin/pbpaste")
   end
 
   def wrap_launchctl
-    make_executable_with_content('launchctl', 'reattach-to-user-namespace /bin/launchctl "$@"')
+    make_executable_with_content("launchctl", 'reattach-to-user-namespace /bin/launchctl "$@"')
   end
 
   def make_executable_with_content(executable_name, content_lines)
@@ -31,5 +38,9 @@ class ReattachToUserNamespace < Formula
     content = [*content_lines].unshift("#!/bin/sh").join("\n")
     executable.write(content)
     executable.chmod(0755)
+  end
+
+  test do
+    system bin/"reattach-to-user-namespace", "-l", "bash", "-c", "echo Hello World!"
   end
 end

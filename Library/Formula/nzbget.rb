@@ -1,23 +1,21 @@
-require "formula"
-
 class Nzbget < Formula
   homepage "http://nzbget.net/"
-  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/13.0/nzbget-13.0.tar.gz"
-  sha1 "dc321ed59f47755bc910cf859f18dab0bf0cc7ff"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.2/nzbget-14.2.tar.gz"
+  sha1 "25adf5565d228cf1cbb8fa305732f61a6f869aa0"
 
   devel do
-    url "https://downloads.sourceforge.net/project/nzbget/nzbget-testing/14.0-r1137/nzbget-14.0-testing-r1137.tar.gz"
-    sha1 "b416a25c4744ca29be24c08ea240ac59bd19f2f4"
-    version "14.0-r1137"
+    url "https://downloads.sourceforge.net/project/nzbget/nzbget-testing/15.0-r1207/nzbget-15.0-testing-r1207.tar.gz"
+    sha1 "37f9d069df4bab4a78a1999434a2152aae6c2577"
+    version "15.0-r1207"
   end
 
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
   bottle do
     revision 1
-    sha1 "1c3dadeea5e3b2c11c389c47d52b01c178c8dc15" => :mavericks
-    sha1 "cc54cc62edb0a8e46984f182e910113746bcd1c1" => :mountain_lion
-    sha1 "a16304bb423a561ce4a51a808d3c10717f237d51" => :lion
+    sha1 "a99dad2495312ed2b6a44f094866edec6de3c60a" => :yosemite
+    sha1 "c88d1e24b4a32652154cfce1ed3e9eb1215f9259" => :mavericks
+    sha1 "254d5ba9030626f11fc3891b8b684917295647f9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -54,6 +52,31 @@ class Nzbget < Formula
     ENV.j1
     system "make", "install"
     etc.install "nzbget.conf"
+  end
+
+  plist_options :manual => "nzbget"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_bin}/nzbget</string>
+        <string>-s</string>
+        <string>-o</string>
+        <string>OutputMode=Log</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <true/>
+    </dict>
+    </plist>
+    EOS
   end
 
   test do

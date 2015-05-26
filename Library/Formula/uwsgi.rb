@@ -5,28 +5,14 @@ class Uwsgi < Formula
   head "https://github.com/unbit/uwsgi.git"
 
   stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.8.tar.gz"
-    sha1 "f017faf259f409907dc8c37541370d3e803fba32"
-
-    # Upstream ntohll fix - Kill on next stable release.
-    # https://github.com/unbit/uwsgi/issues/760
-    # https://github.com/unbit/uwsgi/commit/1964c9758
-    patch do
-      url "https://github.com/unbit/uwsgi/commit/1964c975.diff"
-      sha1 "5cad23c43ce933d723bf9961b3af303383386f92"
-    end
-    # Patches the patch to make it more ML & Mavericks friendly.
-    patch do
-      url "https://github.com/unbit/uwsgi/commit/48314cb903b.diff"
-      sha1 "4cd25b2c5ff39edacdac942f91839465e246d687"
-    end
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.10.tar.gz"
+    sha1 "31bae2dac113af8d95dbc9b982df139ff61ce209"
   end
 
   bottle do
-    revision 1
-    sha1 "9da9aa73d1ac4e5a78e325cb7c3dac45af659c44" => :yosemite
-    sha1 "933203169438fad47bac044b5517a6a04d8af90e" => :mavericks
-    sha1 "7dd5bb88ad74ed0ad834dc1cc3eb06ed4494f687" => :mountain_lion
+    sha256 "85e9a1c89c49f76818c87be4a6a9fe200ccc4ff39d9d788d328702b1463c740f" => :yosemite
+    sha256 "12ce6b55caecc1fb74979e2d3d858dafd9e64805f748d78792e6c87948fb6664" => :mavericks
+    sha256 "9c0a86e07730a797191d06e01b9c30bce6af0edf15cf212be5b3a7ec5ac492fb" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -46,6 +32,7 @@ class Uwsgi < Formula
   depends_on "lua51" => :optional
   depends_on "mongodb" => :optional
   depends_on "mongrel2" => :optional
+  depends_on "mono" => :optional
   depends_on "nagios" => :optional
   depends_on "postgresql" => :optional
   depends_on "pypy" => :optional
@@ -109,6 +96,7 @@ class Uwsgi < Formula
     plugins << "mongodb" if build.with? "mongodb"
     plugins << "mongodblog" if build.with? "mongodb"
     plugins << "mongrel2" if build.with? "mongrel2"
+    plugins << "mono" if build.with? "mono"
     plugins << "nagios" if build.with? "nagios"
     plugins << "pypy" if build.with? "pypy"
     plugins << "php" if build.with? "php"

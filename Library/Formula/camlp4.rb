@@ -1,17 +1,15 @@
-require "formula"
-
 class Camlp4 < Formula
   homepage "https://github.com/ocaml/camlp4"
-  url "https://github.com/ocaml/camlp4/archive/4.02.1+1.tar.gz"
-  sha1 "7d0f879517887299167f1c3eefa8f4d266d69183"
-  version "4.02.1+1"
+  url "https://github.com/ocaml/camlp4/archive/4.02.1+2.tar.gz"
+  sha1 "ad43587c2bdc46d5d0f028857f5ce90bc9ce7ab5"
+  version "4.02.1+2"
   head "https://github.com/ocaml/camlp4.git"
 
   bottle do
     cellar :any
-    sha1 "0eb13f59de6a620e7663f3e865d0fae8d211abfa" => :yosemite
-    sha1 "af24c6a58f16bd15875114bca320db8c3110d88d" => :mavericks
-    sha1 "c0c7378b99240a65cec22fa505cc4711413e03ec" => :mountain_lion
+    sha1 "f8f1ff8b4c3cb9ca0a691e56c32615b8b1c43912" => :yosemite
+    sha1 "5def247ba43daed533e1b1a88bf2a3dcc3bf4391" => :mavericks
+    sha1 "68c208492b208b060b66418e77dedc059796c2b2" => :mountain_lion
   end
 
   depends_on "objective-caml"

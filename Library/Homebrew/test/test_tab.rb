@@ -8,25 +8,28 @@ class TabTests < Homebrew::TestCase
     @unused = Options.create(%w(--with-baz --without-qux))
 
     @tab = Tab.new({
-      :used_options       => @used.as_flags,
-      :unused_options     => @unused.as_flags,
-      :built_as_bottle    => false,
-      :poured_from_bottle => true,
-      :tapped_from        => "Homebrew/homebrew",
-      :time               => nil,
-      :HEAD               => TEST_SHA1,
-      :compiler           => "clang",
-      :stdlib             => "libcxx",
+      "used_options"       => @used.as_flags,
+      "unused_options"     => @unused.as_flags,
+      "built_as_bottle"    => false,
+      "poured_from_bottle" => true,
+      "time"               => nil,
+      "HEAD"               => TEST_SHA1,
+      "compiler"           => "clang",
+      "stdlib"             => "libcxx",
+      "source"             => {
+        "tap" => "Homebrew/homebrew",
+        "path" => nil,
+      },
     })
   end
 
   def test_defaults
-    tab = Tab.dummy_tab
+    tab = Tab.empty
     assert_empty tab.unused_options
     assert_empty tab.used_options
     refute_predicate tab, :built_as_bottle
     refute_predicate tab, :poured_from_bottle
-    assert_empty tab.tapped_from
+    assert_nil tab.tap
     assert_nil tab.time
     assert_nil tab.HEAD
     assert_equal MacOS.default_compiler, tab.cxxstdlib.compiler
@@ -57,7 +60,7 @@ class TabTests < Homebrew::TestCase
 
   def test_other_attributes
     assert_equal TEST_SHA1, @tab.HEAD
-    assert_equal "Homebrew/homebrew", @tab.tapped_from
+    assert_equal "Homebrew/homebrew", @tab.tap
     assert_nil @tab.time
     refute_predicate @tab, :built_as_bottle
     assert_predicate @tab, :poured_from_bottle
@@ -71,7 +74,7 @@ class TabTests < Homebrew::TestCase
     assert_equal @unused.sort, tab.unused_options.sort
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
-    assert_equal "Homebrew/homebrew", tab.tapped_from
+    assert_equal "Homebrew/homebrew", tab.tap
     refute_nil tab.time
     assert_equal TEST_SHA1, tab.HEAD
     assert_equal :clang, tab.cxxstdlib.compiler
@@ -84,7 +87,7 @@ class TabTests < Homebrew::TestCase
     assert_equal @tab.unused_options.sort, tab.unused_options.sort
     assert_equal @tab.built_as_bottle, tab.built_as_bottle
     assert_equal @tab.poured_from_bottle, tab.poured_from_bottle
-    assert_equal @tab.tapped_from, tab.tapped_from
+    assert_equal @tab.tap, tab.tap
     assert_equal @tab.time, tab.time
     assert_equal @tab.HEAD, tab.HEAD
     assert_equal @tab.compiler, tab.compiler

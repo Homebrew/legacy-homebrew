@@ -7,7 +7,7 @@ Features, usage and installation instructions are [summarised on the homepage](h
 3. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
 
 ## More Documentation
-`brew help` or `man brew` or check our [documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
+`brew help`, `man brew` or check [our documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
 
 ## Troubleshooting
 First, please run `brew update` and `brew doctor`.
@@ -20,7 +20,7 @@ Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebre
 Please report security issues to security@brew.sh.
 
 ## Who Are You?
-Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
 
 Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 
@@ -30,4 +30,13 @@ Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/ho
 ## Donations
 We accept tips through [Gratipay](https://gratipay.com/Homebrew/).
 
-[![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://www.gittip.com/Homebrew/)
+[![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://gratipay.com/Homebrew/)
+
+## Sponsors
+Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).
+
+Our CI infrastructure is hosted by [The Positive Internet Company](http://www.positive-internet.com).
+
+Our bottles (binary packages) are hosted by Bintray.
+
+[![Downloads by Bintray](https://bintray.com/docs/images/downloads_by_bintray_96.png)](https://bintray.com/homebrew)

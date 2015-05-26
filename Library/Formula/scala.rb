@@ -2,27 +2,27 @@ require 'formula'
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/files/archive/scala-2.11.4.tgz'
-  sha1 'a6d319b26ccabe9c609fadebc32e797bf9cb1084'
+  url 'http://www.scala-lang.org/files/archive/scala-2.11.6.tgz'
+  sha1 'f30ff4104b0fed5c4beca2b599b8f67e66b7f4e6'
 
   bottle do
     cellar :any
-    sha1 "3135e56649f81649a90ef0cddb3fa9c9a8208864" => :yosemite
-    sha1 "80c33a2bd51cefb57c2e6df0c9956ab49824bb78" => :mavericks
-    sha1 "53f58473692d16a1d88b2e515ab04723573232dc" => :mountain_lion
+    sha1 "4f98ce5d49a4e4dffbb00becd7f7a9e1733ec04e" => :yosemite
+    sha1 "3d99131300d5fc87b6867eee16c73e7e68667c52" => :mavericks
+    sha1 "15310848fa89566423225e6547505c2aa246d249" => :mountain_lion
   end
 
   option 'with-docs', 'Also install library documentation'
   option 'with-src', 'Also install sources for IDE support'
 
   resource 'docs' do
-    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.4.zip'
-    sha1 'de6a5545f13542667d8ff795883fdf192effce2f'
+    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.6.zip'
+    sha1 'b646de99bb38de779bdc65ce0e48c727da4778f7'
   end
 
   resource 'src' do
-    url 'https://github.com/scala/scala/archive/v2.11.4.tar.gz'
-    sha1 '15f9a8f1d3947b5e1ddd3c653968481626caf418'
+    url 'https://github.com/scala/scala/archive/v2.11.6.tar.gz'
+    sha1 '96911a7f5faf6768744322be59e6eb7df4a3af53'
   end
 
   resource 'completion' do

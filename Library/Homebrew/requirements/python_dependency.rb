@@ -3,6 +3,7 @@ require "language/python"
 class PythonDependency < Requirement
   fatal true
   default_formula "python"
+  cask "python"
 
   satisfy :build_env => false do
     python = which_python
@@ -17,7 +18,7 @@ class PythonDependency < Requirement
     build? || system_python?
   end
 
-  def modify_build_environment
+  env do
     if system_python?
       if python_binary == "python"
         version = python_short_version
@@ -35,9 +36,7 @@ class PythonDependency < Requirement
   def which_python
     python = which python_binary
     return unless python
-    executable = `#{python} -c "import sys; print(sys.executable)"`.strip
-    return unless executable
-    Pathname.new executable
+    Pathname.new Utils.popen_read(python, "-c", "import sys; print(sys.executable)").strip
   end
 
   def system_python; "/usr/bin/#{python_binary}" end
@@ -51,6 +50,7 @@ end
 class Python3Dependency < PythonDependency
   fatal true
   default_formula "python3"
+  cask "python3"
 
   satisfy(:build_env => false) { which_python }
 

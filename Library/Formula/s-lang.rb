@@ -1,22 +1,18 @@
-require 'formula'
-
 class SLang < Formula
-  homepage 'http://www.jedsoft.org/slang/'
-  url 'ftp://space.mit.edu/pub/davis/slang/v2.2/slang-2.2.4.tar.bz2'
-  mirror 'http://pkgs.fedoraproject.org/repo/pkgs/slang/slang-2.2.4.tar.bz2/7fcfd447e378f07dd0c0bae671fe6487/slang-2.2.4.tar.bz2'
-  sha1 '34e68a993888d0ae2ebc7bc31b40bc894813a7e2'
-  revision 1
+  homepage "http://www.jedsoft.org/slang/"
+  url "http://www.jedsoft.org/releases/slang/slang-2.3.0.tar.bz2"
+  mirror "http://pkgs.fedoraproject.org/repo/pkgs/slang/slang-2.3.0.tar.bz2/3bcc790460d52db1316c20395b7ac2f1/slang-2.3.0.tar.bz2"
+  sha1 "6e26e90307d4569e5feef195648c0858ba27f7ac"
 
   bottle do
-    revision 2
-    sha1 "dc2d2148553f6ea6ecb83f5b2997a87aac41a48e" => :yosemite
-    sha1 "6498d9a823c84f48b036d1c42571b13e4a2f0a50" => :mavericks
-    sha1 "274fdf93326cb429e850181a58ae13a85bfa5c4c" => :mountain_lion
+    sha1 "5ee9afbf50de909d6e0a74d00b5e32162dc890e3" => :yosemite
+    sha1 "48400ef87e23ca59bb65dc0ee59487e573bf2df2" => :mavericks
+    sha1 "f27927f44ec63a865773b2fa9e0f7830b1089ecf" => :mountain_lion
   end
 
-  depends_on 'libpng'
-  depends_on 'pcre' => :optional
-  depends_on 'oniguruma' => :optional
+  depends_on "libpng"
+  depends_on "pcre" => :optional
+  depends_on "oniguruma" => :optional
 
   def install
     png = Formula["libpng"]
@@ -25,6 +21,10 @@ class SLang < Formula
                           "--with-pnginc=#{png.include}"
     ENV.j1
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert_equal "Hello World!", shell_output("#{bin}/slsh -e 'message(\"Hello World!\");'").strip
   end
 end

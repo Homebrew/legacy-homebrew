@@ -23,24 +23,22 @@ Bottles have a DSL to be used in formulae which is contained in the `bottle do .
 A simple (and typical) example:
 ```ruby
 bottle do
-  sha1 'd3d13fe6f42416765207503a946db01378131d7b' => :mountain_lion
-  sha1 'cdc48e79de2dee796bb4ba1ad987f6b35ce1c1ee' => :lion
-  sha1 'a19b544c8c645d7daad1d39a070a0eb86dfe9b9c' => :snow_leopard
+  sha256 "4921af80137af9cc3d38fd17c9120da882448a090b0a8a3a19af3199b415bfca" => :yosemite
+  sha256 "c71db15326ee9196cd98602e38d0b7fb2b818cdd48eede4ee8eb827d809e09ba" => :mavericks
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7" => :mountain_lion
 end
 ```
 
 A full example:
 ```ruby
 bottle do
-  root_url 'http://mikemcquaid.com'
-  prefix '/opt/homebrew'
-  cellar '/opt/homebrew/Cellar'
+  root_url "http://mikemcquaid.com"
+  prefix "/opt/homebrew"
+  cellar "/opt/homebrew/Cellar"
   revision 4
-  sha1 'd3d13fe6f42416765207503a946db01378131d7b' => :mountain_lion
-  sha1 'cdc48e79de2dee796bb4ba1ad987f6b35ce1c1ee' => :lion
-  sha1 'a19b544c8c645d7daad1d39a070a0eb86dfe9b9c' => :snow_leopard
-  sha1 '583dc9d98604c56983e17d66cfca2076fc56312b' => :snow_leopard_32
-  sha1 '2ef5f57afae319a3e7618d5723059eae568276fa' => :leopard
+  sha256 "4921af80137af9cc3d38fd17c9120da882448a090b0a8a3a19af3199b415bfca" => :yosemite
+  sha256 "c71db15326ee9196cd98602e38d0b7fb2b818cdd48eede4ee8eb827d809e09ba" => :mavericks
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7" => :mountain_lion
 end
 ```
 
@@ -60,8 +58,8 @@ See description of `cellar`. When `cellar` is `:any` prefix should be omitted.
 Optionally contains the revision of the bottle.
 Sometimes bottles may need be updated without bumping the version of the formula e.g. a new patch was applied. In that case the revision will have a value of 1 or more.
 
-### `sha1`
-Contains the SHA-1 of bottle for a particular version of OS X.
+### `sha256`
+Contains the SHA-256 of bottle for a particular version of OS X.
 
 ## Formula DSL
 Additionally there is a method available in the formula DSL.

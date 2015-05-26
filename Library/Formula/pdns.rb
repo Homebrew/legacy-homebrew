@@ -1,9 +1,9 @@
 require "formula"
 
 class Pdns < Formula
-  homepage "http://www.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-3.4.1.tar.bz2"
-  sha1 "e4d807b4dc27ef130a49e0efaf82a74cb66f5b11"
+  homepage "https://www.powerdns.com"
+  url "https://downloads.powerdns.com/releases/pdns-3.4.4.tar.bz2"
+  sha256 "ec49f5a0b55b69ba057bf9ce28ab81e5258fc60c8d4954d9100fe3bb3efd09c8"
 
   head do
     url "https://github.com/powerdns/pdns.git"
@@ -15,9 +15,9 @@ class Pdns < Formula
   end
 
   bottle do
-    sha1 "e39b0c25f869f94fa5b8d86af210baa980fce2ce" => :yosemite
-    sha1 "62bcb4ddeb59d8ef5b8dad7cfa9fdbebf698a9f0" => :mavericks
-    sha1 "e297580e0699c5d3c4aba341a7ad95c4945993bb" => :mountain_lion
+    sha256 "a29c373c4303b29ca09e4bb764503496bdd9eb9c7ec5c43efbd40cdda2fbf6b3" => :yosemite
+    sha256 "417271a4bfdd115b7fac2d7b4709b608eedabef07c4c3a757e56d0357987721b" => :mavericks
+    sha256 "32dbdaab6b90d2caa6da03aca0b7b71b7e7227ea902a4ba4c82917cef30454c0" => :mountain_lion
   end
 
   option "pgsql", "Enable the PostgreSQL backend"

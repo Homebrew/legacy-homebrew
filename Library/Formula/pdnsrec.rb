@@ -2,15 +2,14 @@ require "formula"
 
 class Pdnsrec < Formula
   homepage "http://wiki.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-recursor-3.6.2.tar.bz2"
-  sha1 "69e461eb1da816f82c344137612d056f281217a1"
-  revision 1
+  url "https://downloads.powerdns.com/releases/pdns-recursor-3.7.2.tar.bz2"
+  sha256 "1366bc1bed7c96fbd3926cf7a9e6d365c53b8a99182642debe1b2863dd015a7e"
 
   bottle do
     cellar :any
-    sha1 "b4e3d1a4132ff1c41972d3a8e0a70c945c6ad1ef" => :yosemite
-    sha1 "19d5f92b26119931a0ea3b354b54870f3e3b10ae" => :mavericks
-    sha1 "f391330c5b3211349ad4272d1823772b8f5a2300" => :mountain_lion
+    sha256 "4b91cb394be8a7d768a1f1ea6cb3e4bd06fbfa6ea753948ad501eef78160b6e5" => :yosemite
+    sha256 "629e0bb4b83c912ecdcd4543d248f0682d8c24f3da754b8f45b89547dd289fd9" => :mavericks
+    sha256 "6ad788ccee069d9917096e800bda57cf8f0dd2577796cc056d9b05d82ae058fc" => :mountain_lion
   end
 
   depends_on :macos => :lion
@@ -31,13 +30,13 @@ class Pdnsrec < Formula
     end
 
     # Adjust hard coded paths in Makefile
-    inreplace "Makefile", "/usr/sbin/", "#{sbin}/"
-    inreplace "Makefile", "/usr/bin/", "#{bin}/"
-    inreplace "Makefile", "/etc/powerdns/", "#{etc}/powerdns/"
-    inreplace "Makefile", "/var/run/", "#{var}/run/"
+    inreplace "Makefile.in", "/usr/sbin/", "#{sbin}/"
+    inreplace "Makefile.in", "/usr/bin/", "#{bin}/"
+    inreplace "Makefile.in", "/etc/powerdns/", "#{etc}/powerdns/"
+    inreplace "Makefile.in", "/var/run/", "#{var}/run/"
 
     # Compile
-    system "make", "basic_checks"
+    system "./configure"
     system "make"
 
     # Do the install manually

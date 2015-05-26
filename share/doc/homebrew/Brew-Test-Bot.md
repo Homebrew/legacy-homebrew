@@ -1,6 +1,6 @@
 # Brew Test Bot
 `brew test-bot` is the name for the automated review and testing system funded
-by [our Kickstarter in 2013](http://www.kickstarter.com/projects/homebrew/brew-test-bot).
+by [our Kickstarter in 2013](https://www.kickstarter.com/projects/homebrew/brew-test-bot).
 
 It comprises of four Mac Minis running in a data centre in England which host
 [a Jenkins instance at http://bot.brew.sh](http://bot.brew.sh) and run the

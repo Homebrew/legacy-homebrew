@@ -10,8 +10,8 @@ end
 
 class Skinny < Formula
   homepage "http://skinny-framework.org/"
-  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.5/skinny-1.3.5.tar.gz"
-  sha1 "762ee98b3369d1f1fd240980c360a5500c6339c5"
+  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.18/skinny-1.3.18.tar.gz"
+  sha1 "150fe1a5f010d0bba07491ed008d0797f8bd1f19"
 
   depends_on "node"
   depends_on UniversalNpm

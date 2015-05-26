@@ -13,10 +13,15 @@ class Cdrtools < Formula
     end
   end
 
+  bottle do
+    sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
+    sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
+    sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
+  end
+
   devel do
-    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a25.tar.bz2"
-    version "3.01~a25"
-    sha1 "ef54e81082c795d595e752cec93884f74a9294ca"
+    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a28.tar.bz2"
+    sha1 "081b1daa9c86f33483213a8d8d0fd75caec51ead"
 
     patch :p0, :DATA
   end
@@ -36,6 +41,14 @@ class Cdrtools < Formula
     end
     (lib/"profiled").rmtree
     man5.rmtree
+  end
+
+  test do
+    system "#{bin}/cdrecord", "-version"
+    system "#{bin}/cdda2wav", "-version"
+    (testpath/"testfile.txt").write("testing mkisofs")
+    system "#{bin}/mkisofs", "-r", "-o", "test.iso", "testfile.txt"
+    assert (testpath/"test.iso").exist?
   end
 end
 

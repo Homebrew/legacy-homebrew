@@ -18,8 +18,6 @@ class Libextractor < Formula
   depends_on "libtool" => :run
   depends_on "iso-codes" => :optional
 
-  conflicts_with "sptk", :because => "both install `extract`"
-
   def install
     ENV.deparallelize
     system "./configure", "--disable-silent-rules",

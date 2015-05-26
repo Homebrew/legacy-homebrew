@@ -15,18 +15,18 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_prefix
-    f = TestBall.new
+    f = Testball.new
     assert_equal HOMEBREW_CELLAR/f.name/'0.1', f.prefix
     assert_kind_of Pathname, f.prefix
   end
 
   def test_revised_prefix
-    f = Class.new(TestBall) { revision 1 }.new
+    f = Class.new(Testball) { revision 1 }.new
     assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
   end
 
   def test_installed?
-    f = TestBall.new
+    f = Testball.new
     f.stubs(:installed_prefix).returns(stub(:directory? => false))
     refute_predicate f, :installed?
 
@@ -42,7 +42,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_installed_prefix
-    f = Class.new(TestBall).new
+    f = Testball.new
     assert_equal f.prefix, f.installed_prefix
   end
 
@@ -116,27 +116,27 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_equality
-    x = TestBall.new
-    y = TestBall.new
+    x = Testball.new
+    y = Testball.new
     assert_equal x, y
     assert_eql x, y
     assert_equal x.hash, y.hash
   end
 
   def test_inequality
-    x = TestBall.new("foo")
-    y = TestBall.new("bar")
+    x = Testball.new("foo")
+    y = Testball.new("bar")
     refute_equal x, y
     refute_eql x, y
     refute_equal x.hash, y.hash
   end
 
   def test_comparison_with_non_formula_objects_does_not_raise
-    refute_equal TestBall.new, Object.new
+    refute_equal Testball.new, Object.new
   end
 
   def test_sort_operator
-    assert_nil TestBall.new <=> Object.new
+    assert_nil Testball.new <=> Object.new
   end
 
   def test_class_naming
@@ -148,7 +148,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_formula_spec_integration
-    f = Class.new(Formula) do
+    f = formula do
       homepage 'http://example.com'
       url 'http://example.com/test-0.1.tbz'
       mirror 'http://example.org/test-0.1.tbz'
@@ -161,21 +161,15 @@ class FormulaTests < Homebrew::TestCase
         mirror 'http://example.org/test-0.2.tbz'
         sha256 TEST_SHA256
       end
-
-      bottle { sha1 TEST_SHA1 => bottle_tag }
-
-      def initialize
-        super "test", Pathname.new(__FILE__).expand_path, :stable
-      end
-    end.new
+    end
 
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
     assert_predicate f, :stable?
 
-    assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of SoftwareSpec, f.devel
-    assert_instance_of HeadSoftwareSpec, f.head
+    assert_version_equal "0.1", f.stable.version
+    assert_version_equal "0.2", f.devel.version
+    assert_version_equal "HEAD", f.head.version
   end
 
   def test_path
@@ -189,7 +183,6 @@ class FormulaTests < Homebrew::TestCase
     path.dirname.mkpath
     File.open(path, 'w') do |f|
       f << %{
-        require 'formula'
         class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
         end
@@ -247,16 +240,6 @@ class FormulaTests < Homebrew::TestCase
     end
 
     assert_equal PkgVersion.parse('HEAD'), f.pkg_version
-  end
-
-  def test_raises_when_non_formula_constant_exists
-    const = :SomeConst
-    Object.const_set(const, Module.new)
-    begin
-      assert_raises(FormulaUnavailableError) { Formulary.factory("some_const") }
-    ensure
-      Object.send(:remove_const, const)
-    end
   end
 
   def test_legacy_options

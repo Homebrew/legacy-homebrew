@@ -4,13 +4,13 @@ class Libmemcached < Formula
   homepage "http://libmemcached.org"
   url "https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz"
   sha1 "8be06b5b95adbc0a7cb0f232e237b648caf783e1"
+  revision 1
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "274d4fc366072ec4a530ea8c0a8a3283b361ff5a" => :yosemite
-    sha1 "5966d2bcccbcc24fadfbc91b9dca113c7c8c0dda" => :mavericks
-    sha1 "614d50333395e4f79db56eae6b10ee12e713d39b" => :mountain_lion
+    sha1 "bc3d5a76a9ab01adf8e2f1e5379ed22c929695dd" => :yosemite
+    sha1 "252266ab9cd3465fd58be65d39b2f4a4247e96fc" => :mavericks
+    sha1 "4622bbb54b807a894d4ace68d45d761b9d68d07f" => :mountain_lion
   end
 
   option "with-sasl", "Build with sasl support"
@@ -40,24 +40,24 @@ end
 
 __END__
 diff --git a/clients/memflush.cc b/clients/memflush.cc
-index 8bd0dbf..cdba743 100644
+index 8bd0dbf..71545ea 100644
 --- a/clients/memflush.cc
 +++ b/clients/memflush.cc
 @@ -39,7 +39,7 @@ int main(int argc, char *argv[])
  {
    options_parse(argc, argv);
-
+ 
 -  if (opt_servers == false)
-+  if (*opt_servers != NULL)
++  if (opt_servers == NULL)
    {
      char *temp;
-
+ 
 @@ -48,7 +48,7 @@ int main(int argc, char *argv[])
        opt_servers= strdup(temp);
      }
-
+ 
 -    if (opt_servers == false)
-+    if (*opt_servers != NULL)
++    if (opt_servers == NULL)
      {
        std::cerr << "No Servers provided" << std::endl;
        exit(EXIT_FAILURE);

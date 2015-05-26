@@ -1,14 +1,15 @@
 require 'formula'
 
 class Hive < Formula
-  homepage 'http://hive.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-0.13.1/apache-hive-0.13.1-bin.tar.gz'
-  sha1 'f9d96e3942ce93a409379f86632e80dd0a75848c'
+  homepage 'https://hive.apache.org'
+  url 'https://www.apache.org/dyn/closer.cgi?path=hive/hive-1.1.0/apache-hive-1.1.0-bin.tar.gz'
+  sha1 'bf7e4752fa7208c3eda09f7a8aeba0f341239952'
 
   depends_on 'hadoop'
+  depends_on :java
 
   def install
-    rm_f Dir["bin/*.bat"]
+    rm_f Dir["bin/ext/*.cmd", "bin/ext/util/*.cmd"]
     libexec.install %w[bin conf examples hcatalog lib scripts]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end

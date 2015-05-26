@@ -2,8 +2,8 @@ require 'formula'
 
 class Ringojs < Formula
   homepage 'http://ringojs.org'
-  url 'http://ringojs.org/downloads/ringojs-0.10.tar.gz'
-  sha1 'e8ca13e23ab757f1e52132a1357a59b107318e91'
+  url 'https://github.com/ringo/ringojs/releases/download/v0.11.0/ringojs-0.11.tar.gz'
+  sha1 'ffeca5905165b0c883fb81cfcad8ca640772bf03'
 
   def install
     rm Dir['bin/*.cmd']

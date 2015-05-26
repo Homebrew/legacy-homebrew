@@ -51,6 +51,10 @@ class UpdaterTests < Homebrew::TestCase
     @report = Report.new
   end
 
+  def teardown
+    FileUtils.rm_rf HOMEBREW_LIBRARY.join("Taps")
+  end
+
   def perform_update(fixture_name="")
     @updater.diff = fixture(fixture_name)
     @updater.in_repo_expect("git checkout -q master")

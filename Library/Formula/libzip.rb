@@ -1,15 +1,14 @@
-require 'formula'
-
 class Libzip < Formula
-  homepage 'http://www.nih.at/libzip/'
-  url 'http://www.nih.at/libzip/libzip-0.11.2.tar.gz'
-  sha1 'eeb3b5567fcf3532fa4bcb6440a87c7ad8507d2d'
+  homepage "http://www.nih.at/libzip/"
+  url "http://www.nih.at/libzip/libzip-0.11.2.tar.gz"
+  sha1 "eeb3b5567fcf3532fa4bcb6440a87c7ad8507d2d"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ce30c8d305a9e9472448f5d91b28714a5aa2a576" => :yosemite
-    sha1 "b9efac49af4b11a0e9f45d849b6d5b0b6c8e2a6e" => :mavericks
+    revision 2
+    sha1 "714257f1e187a42f11c50c8f777d79d8beba28c6" => :yosemite
+    sha1 "65b31e70e363879aad9f8d1845e17bf7f2dcaeb3" => :mavericks
+    sha1 "f1571198224aa96ea539e282c24097ee4d9096d6" => :mountain_lion
   end
 
   option :universal
@@ -20,6 +19,14 @@ class Libzip < Formula
                           "--mandir=#{man}",
                           "CXX=#{ENV.cxx}",
                           "CXXFLAGS=#{ENV.cflags}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    touch "file1"
+    system "zip", "file1.zip", "file1"
+    touch "file2"
+    system "zip", "file2.zip", "file1", "file2"
+    assert_match /\+.*file2/, shell_output("#{bin}/zipcmp -v file1.zip file2.zip", 1)
   end
 end

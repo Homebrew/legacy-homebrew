@@ -11,16 +11,19 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
     - Need GDB or a newer Tk? System duplicates go here.
 
 *   [homebrew/versions](https://github.com/Homebrew/homebrew-versions)
-    - Need e.g. older or newer versions of Python? Newer versions of GCC?
+    - Need e.g. older or newer versions of Postgresql? Older versions of GCC?
 
 *   [homebrew/games](https://github.com/Homebrew/homebrew-games)
-    - Game formulae.
+    - Game or gaming-emulation related formulae.
 
 *   [homebrew/apache](https://github.com/Homebrew/homebrew-apache)
     - A tap for Apache modules, extending OS X's built-in Apache. These brews may require unconventional additional setup, as explained in the caveats.
 
-*   [homebrew/headonly](https://github.com/Homebrew/homebrew-headonly)
-    - A tap for brews that don't have stable versions.
+*   [homebrew/head-only](https://github.com/Homebrew/homebrew-head-only)
+    - A tap for brews that only have unstable, unreleased versions.
+
+*   [homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only)
+    - A tap for brews that only have pre-release/development versions.
 
 *   [homebrew/php](https://github.com/Homebrew/homebrew-php)
     - Repository for php-related formulae.
@@ -38,10 +41,13 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
     - Formula are not deleted, they are moved here.
 
 *   [homebrew/nginx](https://github.com/Homebrew/homebrew-nginx)
-    - Feature rich Nginx tap for modules
+    - Feature rich Nginx tap for modules.
 
 *   [homebrew/binary](https://github.com/Homebrew/homebrew-binary)
     - Precompiled binary formulae.
+
+*   [homebrew/brewdler](https://github.com/Homebrew/homebrew-brewdler)
+    - A Bundler-equivalent for installing project dependencies from Homebrew.
 
 
 `brew search` looks in these main taps and as well in [Homebrew/homebrew](https://github.com/Homebrew/homebrew). So don't worry about missing stuff. We will add other taps to the search as they become well maintained and popular.
@@ -60,12 +66,6 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 *   [besport/ocaml](https://github.com/besport/homebrew-ocaml)
     - A tap for Ocaml libraries, though with caveats, it requires you install its customized ocaml formula. Perhaps a template for more work.
 
-*   [nolith/embedded](https://github.com/nolith/homebrew-embedded)
-    - Flashing tools for embedded devices and olsrd for mesh network routing.
-
-*   [anarchivist/forensics](https://github.com/anarchivist/homebrew-forensics)
-    - Digital forensics-related formulae; mostly head-only, binary-only, or unstable.
-
 *   [petere/postgresql](https://github.com/petere/homebrew-postgresql)
     - Allows installing multiple PostgreSQL versions in parallel.
 
@@ -80,23 +80,14 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 *   [mistydemeo/tigerbrew](https://github.com/mistydemeo/tigerbrew)
     - Experimental Tiger PowerPC version
 
-*   [codebutler](https://github.com/codebutler/homebrew/commits/master)
-    - Preliminary support for GTK+ using the Quartz (native OS X) back-end
-
-*   [paxan/linux](https://github.com/paxan/homebrew/commits/linux)
-    - Experimental Linux version
-
 *   [homebrew/linuxbrew](https://github.com/Homebrew/linuxbrew)
     - Experimental Linux version
 
-*   [rmyers/homebrew](https://github.com/rmyers/homebrew)
-    - Experimental Solaris version
-
-*   [nddrylliog/winbrew](https://github.com/nddrylliog/winbrew)
-    - Experimental Windows version
-
 *   [wilmoore/homebrew-home](https://github.com/wilmoore/homebrew-home)
     - Homebrew install for those that like to Homebrew @ $HOME (i.e. ~/.homebrew).
+
+*   [nddrylliog/homebrew-mingw](https://github.com/nddrylliog/homebrew-mingw)
+    - An experimental port of Homebrew for Windows (with an MSYS/MinGW environment).
 
 
 ## Technical Details

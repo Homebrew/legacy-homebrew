@@ -16,6 +16,16 @@ class Tup < Formula
   depends_on "pkg-config" => :build
   depends_on :osxfuse
 
+  # Backport Yosemite compilation fix
+  stable do
+    if MacOS.version >= :yosemite
+      patch do
+        url "https://github.com/gittup/tup/commit/9812548b4d3833644f0cf8f70f62628a75ffbb56.diff"
+        sha1 "439fb1e1692c95e09703d6c41055c06855276307"
+      end
+    end
+  end
+
   def install
     ENV["TUP_LABEL"] = version
     system "./build.sh"

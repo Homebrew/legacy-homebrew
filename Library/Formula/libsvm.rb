@@ -1,16 +1,13 @@
-require 'formula'
-
 class Libsvm < Formula
-  homepage 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/'
-  url 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/oldfiles/libsvm-3.18.tar.gz'
-  sha1 '20bd3e2d21d79c3714007043475b92dfeed29135'
+  homepage "https://www.csie.ntu.edu.tw/~cjlin/libsvm/"
+  url "https://www.csie.ntu.edu.tw/~cjlin/libsvm/libsvm-3.20.tar.gz"
+  sha256 "0f122480bef44dec4df6dae056f468c208e4e08c00771ec1b6dae2707fd945be"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "90aa0337c4b35d26d3c51283dc69a3f6d3221824" => :yosemite
-    sha1 "dd4e5a85187a0729083cdb1adfb69bd54d5c2cd9" => :mavericks
-    sha1 "697539637c9cb4e007f1124822ef1c92bc5f90ed" => :mountain_lion
+    sha1 "9a87d885fd4d943448c9107fe572ed0b5687bf5b" => :yosemite
+    sha1 "8fcd71c75841c4def48a4f57312ab5aae4ee628e" => :mavericks
+    sha1 "90e7456fa54524a2a12f563ae3e9bcab57d6ade7" => :mountain_lion
   end
 
   def install
@@ -21,5 +18,24 @@ class Libsvm < Formula
     lib.install_symlink "libsvm.2.dylib" => "libsvm.dylib"
     system "install_name_tool", "-id", "#{lib}/libsvm.2.dylib", "#{lib}/libsvm.2.dylib"
     include.install "svm.h"
+  end
+
+  test do
+    (testpath/"train_classification.txt").write <<-EOS.undent
+    +1 201:1.2 3148:1.8 3983:1 4882:1
+    -1 874:0.3 3652:1.1 3963:1 6179:1
+    +1 1168:1.2 3318:1.2 3938:1.8 4481:1
+    +1 350:1 3082:1.5 3965:1 6122:0.2
+    -1 99:1 3057:1 3957:1 5838:0.3
+    EOS
+
+    (testpath/"train_regression.txt").write <<-EOS.undent
+    0.23 201:1.2 3148:1.8 3983:1 4882:1
+    0.33 874:0.3 3652:1.1 3963:1 6179:1
+    -0.12 1168:1.2 3318:1.2 3938:1.8 4481:1
+    EOS
+
+    system "#{bin}/svm-train", "-s", "0", "train_classification.txt"
+    system "#{bin}/svm-train", "-s", "3", "train_regression.txt"
   end
 end

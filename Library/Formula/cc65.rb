@@ -13,8 +13,16 @@ class Cc65 < Formula
   def install
     ENV.deparallelize
     ENV.no_optimization
-    system "make", "-f", "make/gcc.mak", "prefix=#{prefix}", "libdir=#{share}"
-    system "make", "-f", "make/gcc.mak", "install", "prefix=#{prefix}", "libdir=#{share}"
+
+    make_vars = ["prefix=#{prefix}", "libdir=#{share}"]
+
+    if head?
+      system "make", *make_vars
+      system "make", "install", *make_vars
+    else
+      system "make", "-f", "make/gcc.mak", *make_vars
+      system "make", "-f", "make/gcc.mak", "install", *make_vars
+    end
   end
 
   def caveats; <<-EOS.undent

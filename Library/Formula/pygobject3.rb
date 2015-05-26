@@ -1,9 +1,7 @@
-require 'formula'
-
 class Pygobject3 < Formula
-  homepage 'http://live.gnome.org/PyGObject'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.14/pygobject-3.14.0.tar.xz'
-  sha256 '779effa93f4b59cdb72f4ab0128fb3fd82900bf686193b570fd3a8ce63392d54'
+  homepage "https://live.gnome.org/PyGObject"
+  url "http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.14/pygobject-3.14.0.tar.xz"
+  sha256 "779effa93f4b59cdb72f4ab0128fb3fd82900bf686193b570fd3a8ce63392d54"
 
   option 'with-tests', 'run tests'
 
@@ -34,6 +32,14 @@ class Pygobject3 < Formula
     sha1 "1d7aad99256d87d616a41b7026cd05267bd9f97f"
   end if build.with? 'tests'
 
+  # resolves "error: redefinition of typedef 'PyGIFunctionCache'"
+  # https://github.com/Homebrew/homebrew/issues/34734
+  # https://bugzilla.gnome.org/show_bug.cgi?id=737874
+  patch do
+    url "https://github.com/GNOME/pygobject/commit/0de827190e7575f7e1e339337b78c7d6e46957b4.diff"
+    sha1 "6a9c1f510964e9c09531c47538ca376af14522c5"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
@@ -45,8 +51,7 @@ class Pygobject3 < Formula
     end
 
     Language::Python.each_python(build) do |python, version|
-      ENV["PYTHON"] = "#{python}" if Formula[python].installed?
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "PYTHON=#{python}"
       system "make", "install"
       system "make", "check" if build.with? 'tests'
       system "make", "clean"

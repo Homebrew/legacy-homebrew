@@ -1,28 +1,26 @@
-require "formula"
-
 class Cheat < Formula
   homepage "https://github.com/chrisallenlane/cheat"
-  url "https://github.com/chrisallenlane/cheat/archive/2.0.9.tar.gz"
-  sha1 "cf4a76badd8d0e58c9299037703ba4abbd2217df"
+  url "https://github.com/chrisallenlane/cheat/archive/2.1.8.tar.gz"
+  sha1 "75176e3f8c75f4a476a7ecb53497e72eceace2e2"
   head "https://github.com/chrisallenlane/cheat.git"
 
   bottle do
     cellar :any
-    sha1 "52437406145fdeeb208591fc204c93e2cb9d22ec" => :mavericks
-    sha1 "5e3a0e9992dabcdb57ce1987cd7fde79f791664e" => :mountain_lion
-    sha1 "cc83ffcefc6e909d50522a8a737721e2b36d4c00" => :lion
+    sha256 "bf5a19217cb8918dc4a8b61cd2907cf355f4a6e92ea2c294792fbd64b47dc911" => :yosemite
+    sha256 "47840d1b30dab97c409dc2259974973fc3e78ef594c2aa5cce9d7ac70ed105df" => :mavericks
+    sha256 "c9975d7b4a4e4c30115b155100513e42a1635d7858589ef834d2f94d61b7a3ff" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "docopt" do
-    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.1.tar.gz"
-    sha1 "3d0ad1cf495d2c801327042e02d67b4ee4b85cd4"
+    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
+    sha1 "224a3ec08b56445a1bd1583aad06b00692671e04"
   end
 
   resource "Pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
-    sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
+    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
   end
 
   def install
@@ -30,10 +28,10 @@ class Cheat < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+      r.stage { system "python", *Language::Python.setup_install_args(libexec) }
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", *Language::Python.setup_install_args(prefix)
 
     bash_completion.install "cheat/autocompletion/cheat.bash"
     zsh_completion.install "cheat/autocompletion/cheat.zsh" => "_cheat"

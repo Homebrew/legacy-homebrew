@@ -1,26 +1,42 @@
-require "formula"
-
 class Dropbear < Formula
   homepage "https://matt.ucc.asn.au/dropbear/dropbear.html"
-  url "https://matt.ucc.asn.au/dropbear/dropbear-2014.65.tar.bz2"
-  sha1 "a7b04ff3c27059477ecdd8dccef7d43f644abe46"
+  url "https://matt.ucc.asn.au/dropbear/releases/dropbear-2015.67.tar.bz2"
+  sha256 "7e690594645dfde5787065c78a5d2e4d15e288babfa06e140197ce05f698c8e5"
 
   bottle do
     cellar :any
-    sha1 "dae9dacc360506b417401b5ac33beda6648c38b3" => :mavericks
-    sha1 "5f932b296fb9764d5d982e63f1196ab220c2aa3f" => :mountain_lion
-    sha1 "6cb51ab0dadbe813aacd66251c84507a9c5006d1" => :lion
+    sha256 "c8e9ed7751d8c0c4ae6f4c042f063967c86ca42675cd742c52617e0cdd1ae0ed" => :yosemite
+    sha256 "3161e412ab4dd042dfffc26b62409c467f184488178f58df168cb4c9e074c400" => :mavericks
+    sha256 "16396c8c4d6aff45e1d32757bd96b8a9806d2a282a3cd21a37e191efe0b0be7d" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/mkj/dropbear.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
   end
 
   def install
-    system "./configure","--prefix=#{prefix}", "--enable-pam", "--enable-zlib"
+    ENV.deparallelize
+
+    if build.head?
+      system "autoconf"
+      system "autoheader"
+    end
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-pam",
+                          "--enable-zlib",
+                          "--enable-bundled-libtom",
+                          "--sysconfdir=#{etc}/dropbear"
     system "make"
     system "make", "install"
   end
 
   test do
-      system "dbclient", "-h"
-      system "dropbearkey", "-t", "rsa", "-f", "id_rsa"
-      assert File.exist?("id_rsa")
+    system "dbclient", "-h"
+    system "dropbearkey", "-t", "ecdsa",
+           "-f", testpath/"testec521", "-s", "521"
+    File.exist? testpath/"testec521"
   end
 end

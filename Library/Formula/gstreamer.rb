@@ -2,23 +2,23 @@ require "formula"
 
 class Gstreamer < Formula
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.3.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.3.tar.xz"
-  sha256 "11f155784d28b85a12b50d2fc8f91c6b75d9ca325cc76aaffba1a58d4c9549c9"
+  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.5.tar.xz"
+  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.5.tar.xz"
+  sha256 "40801aa7f979024526258a0e94707ba42b8ab6f7d2206e56adbc4433155cb0ae"
 
   bottle do
     revision 1
-    sha1 "8f87c50553526db465c19e8835f4b1ebc6fd201f" => :yosemite
-    sha1 "91a9136afb0b5ab0f45edde0a6e4dd1c95480593" => :mavericks
-    sha1 "63b329db1488338e8d7732e72072fc5f9dd0a280" => :mountain_lion
+    sha1 "6dc46c6ae68a1edf24ec3d92fac5512cd6c6014f" => :yosemite
+    sha1 "2c4db754eab30e5a4a6674ba73b2236e2254757f" => :mavericks
+    sha1 "9c0cdab28d02577b949dacbf838bbb1065daa0ef" => :mountain_lion
   end
 
   head do
     url "git://anongit.freedesktop.org/gstreamer/gstreamer"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "pkg-config" => :build

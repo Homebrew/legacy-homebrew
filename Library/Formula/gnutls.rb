@@ -1,41 +1,36 @@
-require "formula"
-
 # GnuTLS has previous, current, and next stable branches, we use current.
 # From 3.4.0 GnuTLS will be permanently disabling SSLv3. Every brew uses will need a revision with that.
 # http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
   homepage "http://gnutls.org"
-  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.9.tar.xz"
-  mirror "http://mirrors.dotsrc.org/gcrypt/gnutls/v3.3/gnutls-3.3.9.tar.xz"
-  sha256 "39166de5293a9d30ef1cd0a4d97f01fdeed7d7dbf8db95392e309256edcb13c1"
+  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"
+  sha256 "8961227852911a1974e15bc017ddbcd4779876c867226d199f06648d8b27ba4b"
 
   bottle do
     cellar :any
-    sha1 "d040d5a242185d6ecfa9ddafb3e756b484666c5c" => :yosemite
-    sha1 "123f5b72837690546cdb2104d9a47b23f905f7b0" => :mavericks
-    sha1 "b4fc1dcbc3a7a2407c629671b5ca83cc37262dff" => :mountain_lion
+    sha256 "f0762b7145a3c15501643ce1ee26b4106787d7d6398624be29265da9d6da8086" => :yosemite
+    sha256 "e13e1b032bbfd5cf57f3a9652ce41ad43ef20f906e12e5002f596a37e9334e5a" => :mavericks
+    sha256 "66e1a2b340ab7d3244dbf7b4f918e01e63ccc42950f1a4a4c938723ff06a52ad" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
-  depends_on "xz"
   depends_on "libtasn1"
   depends_on "gmp"
   depends_on "nettle"
   depends_on "guile" => :optional
   depends_on "p11-kit" => :optional
+  depends_on "unbound" => :optional
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
 
-  # Fix libopts Makefile.in, corresponds to upstream commit
-  # https://gitorious.org/gnutls/gnutls/commit/db3f46aeca90f6dce42592dd723a15f988264852
-  patch :DATA
-
   def install
     args = %W[
       --disable-dependency-tracking
+      --disable-silent-rules
       --disable-static
       --prefix=#{prefix}
       --sysconfdir=#{etc}
@@ -57,21 +52,17 @@ class Gnutls < Formula
   end
 
   def post_install
-    Formula["openssl"].post_install
+    keychains = %w[
+      /Library/Keychains/System.keychain
+      /System/Library/Keychains/SystemRootCertificates.keychain
+    ]
+
+    openssldir = etc/"openssl"
+    openssldir.mkpath
+    (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+  end
+
+  test do
+    system bin/"gnutls-cli", "--version"
   end
 end
-
-__END__
-diff --git a/src/libopts/Makefile.in b/src/libopts/Makefile.in
-index 3be797a..8e6d3eb 100644
---- a/src/libopts/Makefile.in
-+++ b/src/libopts/Makefile.in
-@@ -1546,7 +1546,7 @@ uninstall-am:
- 	tags tags-am uninstall uninstall-am
- 
- 
--+_NORETURN_H=$(srcdir)/compat/_Noreturn.h
-+_NORETURN_H=$(srcdir)/compat/_Noreturn.h
- @GL_GENERATE_STDNORETURN_H_TRUE@stdnoreturn.h: stdnoreturn.in.h $(top_builddir)/config.status $(_NORETURN_H)
- @GL_GENERATE_STDNORETURN_H_TRUE@	$(AM_V_GEN)rm -f $@-t $@ && \
- @GL_GENERATE_STDNORETURN_H_TRUE@	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \

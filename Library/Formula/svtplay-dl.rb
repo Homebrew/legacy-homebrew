@@ -2,8 +2,8 @@ require "formula"
 
 class SvtplayDl < Formula
   homepage "https://github.com/spaam/svtplay-dl"
-  url "https://github.com/spaam/svtplay-dl/archive/0.9.2014.10.23.tar.gz"
-  sha1 "ab3337934c875edddaf4c025b6df69be561df662"
+  url "https://github.com/spaam/svtplay-dl/archive/0.10.2015.05.24.tar.gz"
+  sha1 "760a6459842ec66dfdc47c13dca7a4892ea6db56"
 
   depends_on "rtmpdump"
 
@@ -12,9 +12,8 @@ class SvtplayDl < Formula
   end
 
   def caveats; <<-EOS.undent
-    You need PyCrypto (https://www.dlitz.net/software/pycrypto/) to
-    download encrypted HLS streams.
-    You need PyAMF (http://www.pyamf.org/) for kanal5play.se.
+    You need PyCrypto (https://www.dlitz.net/software/pycrypto/) to download
+    encrypted HLS streams.
     EOS
   end
 end

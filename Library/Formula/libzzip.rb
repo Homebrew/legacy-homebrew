@@ -1,9 +1,7 @@
-require 'formula'
-
 class Libzzip < Formula
-  homepage 'http://sourceforge.net/projects/zziplib/'
-  url 'https://downloads.sourceforge.net/project/zziplib/zziplib13/0.13.62/zziplib-0.13.62.tar.bz2'
-  sha1 'cf8b642abd9db618324a1b98cc71492a007cd687'
+  homepage "http://sourceforge.net/projects/zziplib/"
+  url "https://downloads.sourceforge.net/project/zziplib/zziplib13/0.13.62/zziplib-0.13.62.tar.bz2"
+  sha1 "cf8b642abd9db618324a1b98cc71492a007cd687"
 
   bottle do
     cellar :any
@@ -13,13 +11,15 @@ class Libzzip < Formula
     sha1 "986d13aa3974d0b7c2621a8447f1aad640f11d92" => :mountain_lion
   end
 
-  option 'sdl', 'Enable SDL usage and create SDL_rwops_zzip.pc'
+  option "with-sdl", "Enable SDL usage and create SDL_rwops_zzip.pc"
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'sdl' if build.include? 'sdl'
+  deprecated_option "sdl" => "with-sdl"
 
-  conflicts_with 'zzuf', :because => 'both install `zzcat` binaries'
+  depends_on "pkg-config" => :build
+  depends_on "sdl" => :optional
+
+  conflicts_with "zzuf", :because => "both install `zzcat` binaries"
 
   def install
     if build.universal?
@@ -33,10 +33,16 @@ class Libzzip < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    args << '--enable-sdl' if build.include? 'sdl'
-    system './configure', *args
-    system 'make install'
+    args << "--enable-sdl" if build.with? "sdl"
+    system "./configure", *args
+    system "make", "install"
     ENV.deparallelize   # fails without this when a compressed file isn't ready
-    system 'make check' # runing this after install bypasses DYLD issues
+    system "make", "check" # runing this after install bypasses DYLD issues
+  end
+
+  test do
+    (testpath/"README.txt").write("Hello World!")
+    system "zip", "test.zip", "README.txt"
+    assert_equal "Hello World!", shell_output("#{bin}/zzcat test/README.txt")
   end
 end

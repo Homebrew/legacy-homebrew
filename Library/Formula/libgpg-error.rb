@@ -1,23 +1,26 @@
-require "formula"
-
 class LibgpgError < Formula
-  homepage "http://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.17.tar.bz2"
-  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.17.tar.bz2"
-  sha1 "ba5858b2947e7272dd197c87bac9f32caf29b256"
+  homepage "https://www.gnupg.org/"
+  url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.19.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.19.tar.bz2"
+  sha256 "53120e1333d5c5d28d87ff2854e9e98719c8e214152f17ad5291704d25c4978b"
 
   bottle do
     cellar :any
-    sha1 "2797742803d4b1529d5fd12a91e22ccbe8232511" => :yosemite
-    sha1 "7b5d3ad9f1a7de9bb3766d2cbea98547b44ab342" => :mavericks
-    sha1 "b8ae825c272dfe2e98f45d49dc5fdce803bafbe7" => :mountain_lion
+    sha256 "d5d119f2cfa0172ef20a05fee0ebb9746f5cb26b51e28d7a8a2e25c6398bca6a" => :yosemite
+    sha256 "78f175ed5ecf1b846bd7819b9110823ee615f31a29a8a9f4443143d6fcaece34" => :mavericks
+    sha256 "d20fac5b6d68c489bd2dfcaaf2d2ea9b2767efbc510b89f6426c402281007c5b" => :mountain_lion
   end
 
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--disable-silent-rules"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gpg-error-config", "--libs"
   end
 end

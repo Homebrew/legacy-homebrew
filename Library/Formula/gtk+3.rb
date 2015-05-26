@@ -1,45 +1,29 @@
-require 'formula'
-
 class Gtkx3 < Formula
-  homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.4.tar.xz'
-  sha256 'a006c716d723dab0c623491566e3292af84c87d9198a30199051d23cfc7bef2f'
+  homepage "http://gtk.org/"
+  url "https://download.gnome.org/sources/gtk+/3.16/gtk+-3.16.3.tar.xz"
+  sha256 "2943fd4a6b02c2a9b2edd231c1d8f7a1d2f8d36996f14310d34f503dca9ebea4"
 
   bottle do
-    sha1 "54ad82781a6f423b00acfdfc8425f21099b8ef1d" => :yosemite
-    sha1 "d182700a63a4de1d82db7036b7a728a23b5111f0" => :mavericks
-    sha1 "cee7dfbdecacadd2b8dea994ce698364fd2045c6" => :mountain_lion
+    sha256 "84b91d85145d04b48af70b4417dbf85729d3a3dc505846eba37cb2df5ebe81e1" => :yosemite
+    sha256 "1fea56a602b4628f131a87c12960b08c58b723a5ea1dd9f94108cccfaa8b6067" => :mavericks
+    sha256 "c087291289f0800622f71896ce4c8743969f63593aed281b6c111483933141e1" => :mountain_lion
   end
 
-  depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'jpeg'
-  depends_on 'libtiff'
-  depends_on 'gdk-pixbuf'
-  depends_on 'pango'
-  depends_on 'cairo'
-  depends_on 'jasper' => :optional
-  depends_on 'atk'
-  depends_on 'at-spi2-atk'
-  depends_on 'gobject-introspection'
-  depends_on 'gsettings-desktop-schemas' => :recommended
+  option :universal
 
-  # These two patches fix a compilation error on Snow Leopard when
-  # using quartz backend (no effect on later OS versions)
-  # Can be removed when upstream releases these commits (3.14.5?)
-  # See: https://bugzilla.gnome.org/show_bug.cgi?id=737561
-  patch do
-    url "https://git.gnome.org/browse/gtk+/patch/?id=7d3991f2757de8374e11891e21e82f61242b4034"
-    sha1 "66dc9d63ba6d2f9219d0dbe27f2dd8343b07ab0c"
-  end
-
-  patch do
-    url "https://git.gnome.org/browse/gtk+/patch/?id=830a72b307b33815179aa0b03dad498c9ac1bb14"
-    sha1 "5a39469d8923ac9ce1f6511c4e304f7e1cba781c"
-  end
+  depends_on "pkg-config" => :build
+  depends_on "gdk-pixbuf"
+  depends_on "jasper" => :optional
+  depends_on "atk"
+  depends_on "gobject-introspection"
+  depends_on "libepoxy"
+  depends_on "gsettings-desktop-schemas" => :recommended
+  depends_on "pango"
+  depends_on "glib"
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W[
       --disable-debug
       --disable-dependency-tracking
@@ -47,21 +31,83 @@ class Gtkx3 < Formula
       --disable-glibtest
       --enable-introspection=yes
       --disable-schemas-compile
+      --enable-quartz-backend
+      --enable-quartz-relocation
+      --disable-x11-backend
     ]
 
-    if build.without? "x11"
-      args << "--enable-quartz-backend" << "--enable-quartz-relocation"
-    else
-      args << "--enable-x11-backend"
-    end
-
     system "./configure", *args
-    system "make install"
+    # necessary to avoid gtk-update-icon-cache not being found during make install
+    bin.mkpath
+    ENV.prepend_path "PATH", "#{bin}"
+    system "make", "install"
     # Prevent a conflict between this and Gtk+2
-    mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
+    mv bin/"gtk-update-icon-cache", bin/"gtk3-update-icon-cache"
   end
 
   def post_install
     system "#{Formula["glib"].opt_bin}/glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gtk/gtk.h>
+
+      int main(int argc, char *argv[]) {
+        gtk_disable_setlocale();
+        return 0;
+      }
+    EOS
+    atk = Formula["atk"]
+    cairo = Formula["cairo"]
+    fontconfig = Formula["fontconfig"]
+    freetype = Formula["freetype"]
+    gdk_pixbuf = Formula["gdk-pixbuf"]
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    libepoxy = Formula["libepoxy"]
+    libpng = Formula["libpng"]
+    pango = Formula["pango"]
+    pixman = Formula["pixman"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{atk.opt_include}/atk-1.0
+      -I#{cairo.opt_include}/cairo
+      -I#{fontconfig.opt_include}
+      -I#{freetype.opt_include}/freetype2
+      -I#{gdk_pixbuf.opt_include}/gdk-pixbuf-2.0
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/gio-unix-2.0/
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{include}
+      -I#{include}/gtk-3.0
+      -I#{libepoxy.opt_include}
+      -I#{libpng.opt_include}/libpng16
+      -I#{pango.opt_include}/pango-1.0
+      -I#{pixman.opt_include}/pixman-1
+      -D_REENTRANT
+      -L#{atk.opt_lib}
+      -L#{cairo.opt_lib}
+      -L#{gdk_pixbuf.opt_lib}
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{lib}
+      -L#{pango.opt_lib}
+      -latk-1.0
+      -lcairo
+      -lcairo-gobject
+      -lgdk-3
+      -lgdk_pixbuf-2.0
+      -lgio-2.0
+      -lglib-2.0
+      -lgobject-2.0
+      -lgtk-3
+      -lintl
+      -lpango-1.0
+      -lpangocairo-1.0
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end

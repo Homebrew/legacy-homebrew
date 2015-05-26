@@ -1,25 +1,28 @@
-require "formula"
 require "language/haskell"
 
 class Pandoc < Formula
   include Language::Haskell::Cabal
 
-  homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://hackage.haskell.org/package/pandoc-1.13.1/pandoc-1.13.1.tar.gz"
-  sha1 "8f3df1977cf9daa848640754515b733c13fd934a"
+  homepage "http://pandoc.org"
+  url "https://hackage.haskell.org/package/pandoc-1.13.2.1/pandoc-1.13.2.1.tar.gz"
+  sha256 "66da6eb690b8de41eccf05620e165630854d74c08cf69dbfb68d0ea84589785f"
+
+  head "https://github.com/jgm/pandoc.git"
 
   bottle do
-    revision 1
-    sha1 "acceca6830120f47cc7b1ee9d05988dadc2b5f99" => :yosemite
-    sha1 "5e268465b7024f5241b6a6c88db849b78580d7cf" => :mavericks
-    sha1 "ff4aa7be2a28afb3d404c15a17b266bb4ef8f14b" => :mountain_lion
+    sha256 "e9df02321a7129c78dec25d350730cd6e9197d31ef96c800f6462535c9411749" => :yosemite
+    sha256 "471cbe82c36664f90d43736c2169048cf2735b21895a6da936cf46620b963444" => :mavericks
+    sha256 "0fa5678764cea7319f9f09bca10e2413157f0310ac2067efc9d3d7cd6c02195a" => :mountain_lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
-  fails_with(:clang) { build 425 } # clang segfaults on Lion
+  fails_with :clang do
+    build 425
+    cause "clang segfaults on Lion"
+  end
 
   def install
     cabal_sandbox do
@@ -30,7 +33,7 @@ class Pandoc < Formula
   end
 
   test do
-    system "pandoc", "-o", "output.html", prefix/"README"
-    assert (Pathname.pwd/"output.html").read.include? '<h1 id="synopsis">Synopsis</h1>'
+    system "pandoc", "-o", testpath/"output.html", prefix/"README"
+    assert (testpath/"output.html").read.include? '<h1 id="synopsis">Synopsis</h1>'
   end
 end

@@ -1,16 +1,17 @@
-require "formula"
-
 class Openssl < Formula
   homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.1j.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.1j.tar.gz"
-  sha256 "1b60ca8789ba6f03e8ef20da2293b8dc131c39d83814e775069f02d26354edf3"
+  url "https://www.openssl.org/source/openssl-1.0.2a.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2a.tar.gz"
+  sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
+  # Work around this being parsed as an alpha version by our
+  # version detection code.
+  version "1.0.2a-1"
 
   bottle do
-    sha1 "f6cdb5c0ec14896a385dacf0746768e56e65aed9" => :yosemite
-    sha1 "595305062ba76824570d5c52b2add7f53422dafb" => :mavericks
-    sha1 "dc26c0ea2a7e38451a1b213f7e0f3694f70e460d" => :mountain_lion
-    sha1 "ba064e1f82e3eb54a7272d20c8114d8910bbdf01" => :lion
+    revision 1
+    sha256 "847e8085763f2950819a6fcbaebeff46cdafc4fb6cf0508c69719736e5b6bfba" => :yosemite
+    sha256 "55b21566026ae075817f28a8292a9a0e326e56d266e918b4bddb9372bc9937c7" => :mavericks
+    sha256 "47e087fa8bbc68a757eb0021f32ac942e5d0edf1abbda3398523aaab2fa58ab5" => :mountain_lion
   end
 
   option :universal
@@ -21,6 +22,22 @@ class Openssl < Formula
   keg_only :provided_by_osx,
     "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
+  # Remove both patches with the 1.0.2b release.
+  # They fix:
+  # https://github.com/Homebrew/homebrew/pull/38495
+  # https://github.com/Homebrew/homebrew/issues/38491
+  # Upstream discussions:
+  # https://www.mail-archive.com/openssl-dev@openssl.org/msg38674.html
+  patch do
+    url "https://github.com/openssl/openssl/commit/6281abc796234.diff"
+    sha256 "f8b94201ac2cd7dcdee3b07fb3cd77a2de6b81ea67da9ae075cf06fb0ba73cea"
+  end
+
+  patch do
+    url "https://github.com/openssl/openssl/commit/dfd3322d72a2.diff"
+    sha256 "0602eef6e38368c7b34994deb9b49be1a54037de5e8b814748d55882bfba4eac"
+  end
+
   def arch_args
     {
       :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp_64_gcc_128],
@@ -29,13 +46,13 @@ class Openssl < Formula
   end
 
   def configure_args; %W[
-      --prefix=#{prefix}
-      --openssldir=#{openssldir}
-      no-ssl2
-      zlib-dynamic
-      shared
-      enable-cms
-    ]
+    --prefix=#{prefix}
+    --openssldir=#{openssldir}
+    no-ssl2
+    zlib-dynamic
+    shared
+    enable-cms
+  ]
   end
 
   def install
@@ -63,7 +80,10 @@ class Openssl < Formula
       system "perl", "./Configure", *(configure_args + arch_args[arch])
       system "make", "depend"
       system "make"
-      system "make", "test" if build.with? "check"
+
+      if (MacOS.prefer_64_bit? || arch == MacOS.preferred_arch) && build.with?("check")
+        system "make", "test"
+      end
 
       if build.universal?
         cp Dir["*.?.?.?.dylib", "*.a", "apps/openssl"], dir
@@ -108,6 +128,9 @@ class Openssl < Formula
 
     openssldir.mkpath
     (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+
+    # Remove this once 1.0.2b lands.
+    rm_f openssldir/"certs/Equifax_CA" if MacOS.version == :yosemite
   end
 
   def caveats; <<-EOS.undent
@@ -121,6 +144,11 @@ class Openssl < Formula
   end
 
   test do
+    # Make sure the necessary .cnf file exists, otherwise OpenSSL gets moody.
+    assert (HOMEBREW_PREFIX/"etc/openssl/openssl.cnf").exist?,
+            "OpenSSL requires the .cnf file for some functionality"
+
+    # Check OpenSSL itself functions as expected.
     (testpath/"testfile.txt").write("This is a test file")
     expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
     system "#{bin}/openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"

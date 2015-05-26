@@ -1,14 +1,12 @@
-require "formula"
-
 class Libvirt < Formula
-  homepage "http://www.libvirt.org"
-  url "http://libvirt.org/sources/libvirt-1.2.10.tar.gz"
-  sha1 "e83683cc59be7f60cbd62085d3d2284f595f5ed3"
+  homepage "https://www.libvirt.org"
+  url "https://libvirt.org/sources/libvirt-1.2.15.tar.gz"
+  sha256 "5f88041b8c212f8f687c672fe583108833240d6175b512ce4de92ab6660194c6"
 
   bottle do
-    sha1 "0471d5146c15e0cfce15bc50c18a59c683268cab" => :yosemite
-    sha1 "e92ce6497f0c2a6bc3e40c310ae193cea77b3f49" => :mavericks
-    sha1 "4e92d1e6c3c8d9278a9905aecd5e461215ef441a" => :mountain_lion
+    sha256 "395320c81107eeb1ec7d00512858849cc7a01f482821995c9a56f649765267fa" => :yosemite
+    sha256 "b96b4793184ae698b7be038467e4b946ef706e8f4fb60f0db19c07f7b4c8aa1d" => :mavericks
+    sha256 "91a6090536be7381379718ceefd526334227f029f17c895ae21cfd7531dbeec5" => :mountain_lion
   end
 
   option "without-libvirtd", "Build only the virsh client and development libraries"
@@ -47,9 +45,9 @@ class Libvirt < Formula
 
     system "./configure", *args
 
-    # Compilation of docs doesn"t get done if we jump straight to "make install"
+    # Compilation of docs doesn't get done if we jump straight to "make install"
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Update the SASL config file with the Homebrew prefix
     inreplace "#{etc}/sasl2/libvirt.conf" do |s|

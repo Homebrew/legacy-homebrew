@@ -1,18 +1,26 @@
-require 'formula'
-
 class Byobu < Formula
-  homepage 'http://byobu.co'
-  url 'https://launchpad.net/byobu/trunk/5.75/+download/byobu_5.75.orig.tar.gz'
-  sha1 'c14e0e3e9e95cef9e9d50074280d0747a02debe5'
+  homepage "http://byobu.co"
+  url "https://launchpad.net/byobu/trunk/5.92/+download/byobu_5.92.orig.tar.gz"
+  sha256 "22a5cab37c2426688945a5dfebc521dc684a4eda11bf48a1767dc6ba4b2b7a2c"
 
-  depends_on 'coreutils'
-  depends_on 'gnu-sed' # fails with BSD sed
-  depends_on 'tmux'
-  depends_on 'newt' => 'with-python'
+  bottle do
+    sha256 "00b83c52d088c2ac0b46ebe5f15fc07af5f9bed8d1687ddf3a9ff019cd2340bb" => :yosemite
+    sha256 "8261afcff0043e4f3435e92facf03f686621400a18d9ff6c38b43a49c1d42789" => :mavericks
+    sha256 "c73501b5d8969028206d6a3479b2556e4efbf9c24effaad973a96c6a35d68dcd" => :mountain_lion
+  end
+
+  depends_on "coreutils"
+  depends_on "gnu-sed" # fails with BSD sed
+  depends_on "tmux"
+  depends_on "newt" => "with-python"
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"byobu-status"
   end
 
   def caveats; <<-EOS.undent

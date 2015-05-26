@@ -1,33 +1,29 @@
-require "formula"
-
 class Hh < Formula
   homepage "https://github.com/dvorka/hstr"
-  url "https://github.com/dvorka/hstr/releases/download/1.13/hh-1.13-src.tgz"
-  sha1 "09fee6d687a8b8a7c6f508ced071fb88b0a9bb28"
+  url "https://github.com/dvorka/hstr/releases/download/1.16/hh-1.16-src.tgz"
+  sha1 "43c353662a0b31aa56d683fa6ff519bded289c51"
 
   bottle do
     cellar :any
-    sha1 "3110fabac2e10d0bd49f0893a9bff1babf8ad4d3" => :yosemite
-    sha1 "9e7f8e5fab6fdfb0151eb426a97187e7abeb8519" => :mavericks
-    sha1 "e31eebb154535a7fc7e35a498178e1163068e4fb" => :mountain_lion
+    sha256 "ac98ac6b688292e6a10cf15fad9b7010dae97af3de8ead3b2c518aa8c6b74063" => :yosemite
+    sha256 "cf97b8be45310c6c43f43c3c7f1d35b97ef9811bc20a5eb46d8a36e2d6823832" => :mavericks
+    sha256 "947d41c44564edc123d5cefc16eadd4d9e54bcf9a8e07beb78f2807344b76c67" => :mountain_lion
   end
 
   head do
     url "https://github.com/dvorka/hstr.git"
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "readline"
 
   def install
+    system "autoreconf", "-fvi" if build.head?
     # Upstream bug report for curses/ncursesw:
     # https://github.com/dvorka/hstr/issues/103
-    if build.head?
-      inreplace %w(src/hstr.c src/include/hstr_curses.h), "ncursesw/", ""
-      system "autoreconf", "-fvi"
-    end
+    inreplace %w[src/hstr.c src/include/hstr_curses.h], "ncursesw/", ""
     inreplace "configure", "ncursesw", "ncurses"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

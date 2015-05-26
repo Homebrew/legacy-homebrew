@@ -1,42 +1,24 @@
-require "formula"
-
-class NoExpatFramework < Requirement
-  def expat_framework
-    "/Library/Frameworks/expat.framework"
-  end
-
-  satisfy :build_env => false do
-    not File.exist? expat_framework
-  end
-
-  def message; <<-EOS.undent
-    Detected #{expat_framework}
-
-    This will be picked up by CMake's build system and likely cause the
-    build to fail, trying to link to a 32-bit version of expat.
-
-    You may need to move this file out of the way to compile CMake.
-    EOS
-  end
-end
-
 class Cmake < Formula
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.0/cmake-3.0.2.tar.gz"
-  sha1 "379472e3578902a1d6f8b68a9987773151d6f21a"
-
+  url "http://www.cmake.org/files/v3.2/cmake-3.2.2.tar.gz"
+  sha256 "ade94e6e36038774565f2aed8866415443444fb7a362eb0ea5096e40d5407c78"
   head "http://cmake.org/cmake.git"
 
   bottle do
     cellar :any
-    sha1 "29e403721a38731bb3015008b1fe39d0d334c11f" => :yosemite
-    sha1 "4b8b26f60d28c85c0119cb9ab136c5b40f8db570" => :mavericks
-    sha1 "a7bc77aa9b9855e5d4081ec689bb62c89be7c25d" => :mountain_lion
-    sha1 "842240c9febb4123918cf62a3cea5ca4207ad860" => :lion
+    revision 3
+    sha256 "da3c5fae000164e94cf2a58ca9ec7cc970b009f9413443af903e5069eb564dc3" => :yosemite
+    sha256 "147aa92c60d006b544aaef8a4fe549d3ce35de6265d9476d66853939fa33e4ca" => :mavericks
+    sha256 "d9ccd1a85b5376a4b0dce0563f7c705ad21df0f379b31fe98fffdcda2c4fe21a" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"
+
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
+
+  # The `with-qt` GUI option was removed due to circular dependencies if
+  # CMake is built with Qt support and Qt is built with MySQL support as MySQL uses CMake.
+  # For the GUI application please instead use brew install caskroom/cask/cmake.
 
   resource "sphinx" do
     url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
@@ -49,8 +31,8 @@ class Cmake < Formula
   end
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
-    sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
+    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
   end
 
   resource "jinja2" do
@@ -63,18 +45,18 @@ class Cmake < Formula
     sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
   end
 
-  depends_on NoExpatFramework
+  patch do
+    # fix for older bash-completion versions
+    url "http://www.cmake.org/gitweb?p=cmake.git;a=commitdiff_plain;h=2ecf168f"
+    sha256 "147854010874cd68289e3ca203399d5c149287167bca0b67f9c5677f0ee22eb8"
+  end
 
   def install
     if build.with? "docs"
       ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
-      %w[markupsafe docutils pygments jinja2 sphinx].each do |r|
-        resource(r).stage do
-          pyargs = ["setup.py", "install", "--prefix=#{buildpath}/sphinx"]
-          unless r == "docutils"
-            pyargs << "--single-version-externally-managed" << "--record=installed.txt"
-          end
-          system "python", *pyargs
+      resources.each do |r|
+        r.stage do
+          system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
         end
       end
 
@@ -85,12 +67,16 @@ class Cmake < Formula
 
     args = %W[
       --prefix=#{prefix}
-      --system-libs
-      --no-system-libarchive
+      --no-system-libs
+      --parallel=#{ENV.make_jobs}
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
       --mandir=/share/man
+      --system-curl
+      --system-zlib
+      --system-bzip2
     ]
+
     if build.with? "docs"
       args << "--sphinx-man" << "--sphinx-build=#{buildpath}/sphinx/bin/sphinx-build"
     end
@@ -98,6 +84,10 @@ class Cmake < Formula
     system "./bootstrap", *args
     system "make"
     system "make", "install"
+
+    cd "Auxiliary/bash-completion/" do
+      bash_completion.install "ctest", "cmake", "cpack"
+    end
   end
 
   test do

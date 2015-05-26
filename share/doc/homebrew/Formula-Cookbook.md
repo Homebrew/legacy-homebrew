@@ -62,9 +62,9 @@ Before contributing, make sure your package:
 *   meets all our [Acceptable Formulae](Acceptable-Formulae.md) requirements
 *   isn't already in Homebrew (check `brew search $FORMULA`)
 *   isn't in another [Homebrew tap](https://github.com/Homebrew)
-*   isn't already waiting to be merged (check the [issue tracker](http://github.com/Homebrew/homebrew/issues))
+*   isn't already waiting to be merged (check the [issue tracker](https://github.com/Homebrew/homebrew/issues))
 *   is still supported by upstream
-*   has a stable, tagged version (i.e. not just a GitHub repository with no versions)
+*   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release and head-only versions belong.
 
 Make sure you search thoroughly (all aliases!). We don’t want you to waste your time.
 
@@ -79,9 +79,9 @@ Probably. But we have rules to keep the quality and goals of Homebrew intact: Pl
 
 Formulae aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/etl.rb) is as simple as it gets.
 
-And then [Git](http://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](http://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
+And then [Git](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
 
-A more complete [cheat-sheet](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/example-formula.rb) shows almost all the stuff you can use in a Formula.
+A more complete example-formula [cheat-sheet](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/example-formula.rb) shows almost all the stuff you can use in a Formula.
 
 ## Grab the URL
 
@@ -91,24 +91,22 @@ All you need to make a formula is a URL to the tarball.
 
 This creates:
 
-`/usr/local/Library/Formula/foo.rb`
+`$HOMEBREW_REPOSITORY/Library/Formula/foo.rb`
 
 And opens it in your `$EDITOR`. It'll look like:
 
 ```ruby
-require "formula"
-
 class Foo < Formula
   url "http://example.com/foo-0.1.tar.gz"
   homepage ""
-  sha1 "1234567890ABCDEF1234567890ABCDEF"
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 
   # depends_on "cmake" => :build
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
 #   system "cmake", ".", *std_cmake_args
-    system "make install"
+    system "make", "install"
   end
 end
 ```
@@ -149,7 +147,11 @@ There are plenty of others. Check `/usr/lib` to see.
 
 We try to not duplicate libraries and complicated tools in core Homebrew. We dupe some common tools though. But generally, we avoid dupes because it’s one of Homebrew’s foundations. (And it causes build and usage problems!)
 
-However, we maintain a special [tap that provides dupes](https://github.com/Homebrew/homebrew-dupes).
+The one special exception is OpenSSL. Anything that uses OpenSSL *should* be built using Homebrew’s shipped OpenSSL and our test bot's post-install audit will warn of this when it is detected. (*Of course, there are exceptions to the exception. Not everything can be forced onto our OpenSSL)*.
+
+Because Homebrew’s OpenSSL is `keg_only` to avoid conflicting with the system sometimes formulae need to have environmental variables set or special configuration flags passed to locate our preferred OpenSSL; you can see this mechanism in the [clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28) formula. Usually this is unnecessary because when OpenSSL is specified as a dependency Homebrew temporarily prepends the $PATH with that prefix.
+
+Homebrew maintains a special [tap that provides other useful dupes](https://github.com/Homebrew/homebrew-dupes).
 
 *Important:* Since the introduction of `superenv`, `brew --prefix`/bin is NOT on the `$PATH` during formula installation. If you have dependencies at build time, you must specify them and brew will add them to the `$PATH`. You can test around this with `--env=std`.
 
@@ -162,7 +164,7 @@ class Foo < Formula
   depends_on "gtk+" => :optional
   depends_on "readline" => :recommended
   depends_on "boost" => "with-icu"
-  depends_on :x11
+  depends_on :x11 => :optional
 end
 ```
 
@@ -197,6 +199,34 @@ A Hash specifies a formula dependency with some additional information. Given a 
     ```
 
 
+## Specifying other formulae as conflicts
+
+Sometimes there’s hard conflict between formulae, and it can’t be avoided or circumvented with `keg_only`.
+
+PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L36-L37) formula for minor conflict.
+
+PolarSSL ship GNU’s Hello, and compiles a `hello` binary. This is obviously non-essential to PolarSSL’s functionality, and conflict with the `hello` formula would be overkill, so we just remove it.
+
+However, also in the PolarSSL formulae is a [firm conflict](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L19) with `md5sha1sum`, because both `md5sha1sum` and `polarssl` compile identically-named binaries that *are* important for core functionality.
+
+As a general rule, `conflicts_with` should be a last-resort option. It’s a fairly blunt instrument.
+
+The syntax for conflict that can’t be worked around is
+
+```ruby
+conflicts_with "blueduck", :because => "yellowduck also ships a duck binary"
+```
+
+## Formulae Revisions
+
+In Homebrew we sometimes accept formulae updates that don’t include a version bump. These include homepage changes, resource updates, new patches or fixing a security issue with a formula.
+
+Occasionally, these updates require a forced-recompile of the formula itself or its dependents to either ensure formulae continue to function as expected or to close a security issue. This forced-recompile is known as a `revision` and inserted underneath the homepage/url/sha block.
+
+Where a dependent of a formula fails against a new version of that dependency it must receive a `revision`. An example of such failure can be seen [here](https://github.com/Homebrew/homebrew/issues/31195) and the fix [here](https://github.com/Homebrew/homebrew/pull/31207).
+
+`Revisions` are also used for formulae that move from the system OpenSSL to the Homebrew-shipped OpenSSL without any other changes to that formula. This ensures users aren’t left exposed to the potential security issues of the outdated OpenSSL. An example of this can be seen in [this commit](https://github.com/Homebrew/homebrew/commit/6b9d60d474d72b1848304297d91adc6120ea6f96).
+
 ## Double-check for dependencies
 
 When you already have a lot of brews installed, its easy to miss a common dependency like `glib` or `gettext`.
@@ -205,20 +235,19 @@ You can double-check which libraries a binary links to with the `otool` command 
 
     $ otool -L /usr/local/bin/ldapvi
     /usr/local/bin/ldapvi:
-      /usr/lib/libssl.0.9.8.dylib (compatibility version 0.9.8, current version 0.9.8)
-      /usr/lib/libcrypto.0.9.8.dylib (compatibility version 0.9.8, current version 0.9.8)
-      /usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.3)
-      /usr/local/Cellar/glib/2.22.4/lib/libglib-2.0.0.dylib (compatibility version 2201.0.0, current version 2201.4.0)
-      /usr/local/Cellar/gettext/0.17/lib/libintl.8.dylib (compatibility version 9.0.0, current version 9.2.0)
-      /usr/local/Cellar/readline/6.0/lib/libreadline.6.0.dylib (compatibility version 6.0.0, current version 6.0.0)
-      /usr/local/Cellar/popt/1.15/lib/libpopt.0.dylib (compatibility version 1.0.0, current version 1.0.0)
-      /usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
-      /System/Library/Frameworks/LDAP.framework/Versions/A/LDAP (compatibility version 1.0.0, current version 2.2.0)
-      /usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 38.0.0)
-      /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 125.0.0)
+	/usr/local/opt/openssl/lib/libssl.1.0.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/local/lib/libglib-2.0.0.dylib (compatibility version 4201.0.0, current version 4201.0.0)
+	/usr/local/opt/gettext/lib/libintl.8.dylib (compatibility version 10.0.0, current version 10.2.0)
+	/usr/local/opt/readline/lib/libreadline.6.dylib (compatibility version 6.0.0, current version 6.3.0)
+	/usr/local/lib/libpopt.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/lib/libncurses.5.4.dylib (compatibility version 5.4.0, current version 5.4.0)
+	/System/Library/Frameworks/LDAP.framework/Versions/A/LDAP (compatibility version 1.0.0, current version 2.4.0)
+	/usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1213.0.0)
 
 
-## Specifying gems, Python modules etc. as dependencies
+## Specifying gems, Python modules, Go projects, etc. as dependencies
 
 Homebrew doesn’t package already packaged language-specific libraries. These should be installed directly from `gem`/`cpan`/`pip` etc.
 
@@ -228,18 +257,20 @@ If you're installing an application then please locally vendor all the language-
 class Foo < Formula
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz"
-    sha1 "c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84"
+    sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
   end
 
   def install
-    resource("pycrypto").stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+    resource("pycrypto").stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
   end
 end
 ```
 
-See [ansible](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/ansible.rb) for an example of a formula that does this well. The end-result means the user doesn't have to faff with `pip` or Python and can just run `ansible`.
+[jrnl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/jrnl.rb) is an example of a formula that does this well. The end-result means the user doesn't have to faff with `pip` or Python and can just run `jrnl`.
 
-[This script](https://raw.githubusercontent.com/tdsmith/labmisc/master/mkpydeps) can help you generate resource stanzas for the dependencies of your Python application.
+[homebrew-pypi-poet](https://github.com/tdsmith/homebrew-pypi-poet) can help you generate resource stanzas for the dependencies of your Python application.
+
+Similarly, [homebrew-go-resources](https://github.com/samertm/homebrew-go-resources) can help you generate go\_resource stanzas for the dependencies of your go application.
 
 If your formula needs a gem or python module and it can't be made into a resource you’ll need to check for these external dependencies:
 
@@ -290,9 +321,13 @@ The only exception is stuff like “Apache Ant”. Apache sticks “Apache” in
 
 If you’re not sure about the name check the homepage, and check the Wikipedia page.
 
-[ALSO CHECK WHAT DEBIAN CALLS IT!](http://www.debian.org/distrib/packages)
+[ALSO CHECK WHAT DEBIAN CALLS IT!](https://www.debian.org/distrib/packages)
 
-If you’re *still* not sure, just commit. I’ll apply some arbitrary rule and make a decision ;)
+Where Homebrew already has a formula called `foo` we typically do not accept requests to replace that formula with something else also named `foo`. This is to avoid both confusing and surprising users’ expectation.
+
+When two formulae share an upstream name, e.g. [`AESCrypt`](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/aescrypt.rb) and [`AESCrypt`](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/aescrypt-packetizer.rb) the newer formula must typically adapt the name to avoid conflict with the current formula.
+
+If you’re *still* not sure, just commit. We’ll apply some arbitrary rule and make a decision ;)
 
 When importing classes, Homebrew will require the formula and then create an instance of the class. It does this by assuming the formula name can be directly converted to the class name using a `regexp`. The rules are simple:
 
@@ -340,17 +375,17 @@ Ensure you reference any relevant GitHub issue `#12345` in the commit message. H
 
 Now you just need to push back to GitHub.
 
-If you haven’t forked Homebrew yet, [go to the repo and hit the fork button](http://github.com/Homebrew/homebrew).
+If you haven’t forked Homebrew yet, [go to the repo and hit the fork button](https://github.com/Homebrew/homebrew).
 
-If you have already forked Homebrew on Github, then you can manually push (just make sure you have been pulling from the Homebrew/homebrew master):
+If you have already forked Homebrew on GitHub, then you can manually push (just make sure you have been pulling from the Homebrew/homebrew master):
 
     git push git@github.com:myname/homebrew.git <what-you-called-your-branch>
 
-Now, please open a Pull Request (on your github repo page) for new and updated brews.
+Now, please open a Pull Request (on your GitHub repo page) for new and updated brews.
 
 *   One formula per commit; one commit per formula
 *   Keep merge commits out of the request
-*   If you have any merge or mixup commits, please [squash](http://www.gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html) them.
+*   If you have any merge or mixup commits, please [squash](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html) them.
 
 If a commit touches multiple files, or isn’t one logical bug fix, or a file is touched in multiple commits, we’ll probably ask you to `rebase` and `squash` your commits. For this reason, you should avoid pushing to your `master` branch. Note, after rebase and/or squash, you'll need to push with `--force` to your remote.
 
@@ -360,7 +395,7 @@ If a commit touches multiple files, or isn’t one logical bug fix, or a file is
 
 *   The result of `Formula.download_strategy` is instantiated.
 *   `DownloadStrategy.fetch` is called (downloads tarball, checks out git repository, etc.)
-*   A temporary sandbox is created in `/tmp/homebrew`
+*   A temporary sandbox is created in `/tmp/$formulaname`
 *   `DownloadStrategy.stage` is called (extracts tarball to above sandbox, exports git repository to sandbox, etc.)
 *   Patches are applied
 *   Current directory is changed to the stage root (so when you `system make`, it works)
@@ -384,7 +419,7 @@ In particular, when a test needs to be performed before installation use `onoe` 
 
 ```ruby
 if some_test?
-  system "make install"
+  system "make", "install"
 else
   onoe "Error! Something is wrong."
 end
@@ -393,7 +428,7 @@ end
 
 ## bin.install "foo"
 
-You’ll see stuff like that in other formulae. This installs the file foo into the Formula’s `bin` directory (`/usr/local/Cellar/pkg/0.1/bin`) and makes it executable (`chmod +x foo`).
+You’ll see stuff like that in other formulae. This installs the file foo into the Formula’s `bin` directory (`/usr/local/Cellar/pkg/0.1/bin`) and makes it executable (`chmod 0555 foo`).
 
 ## inreplace
 
@@ -443,7 +478,7 @@ External patches can be declared using resource-style blocks:
 ```rb
 patch do
   url "https://example.com/example_patch.diff"
-  sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 end
 ```
 
@@ -452,7 +487,7 @@ A strip level of -p1 is assumed. It can be overridden using a symbol argument:
 ```rb
 patch :p0 do
   url "https://example.com/example_patch.diff"
-  sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 end
 ```
 
@@ -464,7 +499,7 @@ stable do
 
   patch do
     url "https://example.com/example_patch.diff"
-    sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
   end
 end
 ```
@@ -512,7 +547,7 @@ Instead of `git diff | pbcopy`, for some editors `git diff >> path/to/your/formu
 
 # Advanced Formula Tricks
 
-If anything isn’t clear, you can usually figure it out with some `grep` and the `Library/Formula` directory. Please amend this wiki page if you think it will help!
+If anything isn’t clear, you can usually figure it out with some `grep` and the `Library/Formula` directory. Please amend this document if you think it will help!
 
 
 ## Unstable versions (`HEAD`, `devel`)
@@ -531,13 +566,14 @@ end
 
 Homebrew understands `git`, `svn`, and `hg` URLs, and has a way to specify `cvs` repositories as a URL as well. You can test whether the `HEAD` is being built with `build.head?`.
 
-To use a specific commit, tag, or branch from a repository, specify head with the `:revision`, `:tag`, or `:branch` option, like so:
+To use a specific commit, tag, or branch from a repository, specify head with the `:tag` and `:revision`, `:revision`, or `:branch` option, like so:
 
 ```ruby
 class Foo < Formula
   head "https://github.com/some/package.git", :revision => "090930930295adslfknsdfsdaffnasd13"
                                          # or :branch => "develop"
-                                         # or :tag => "1_0_release"
+                                         # or :tag => "1_0_release",
+                                         #    :revision => "090930930295adslfknsdfsdaffnasd13"
 end
 ```
 
@@ -550,7 +586,7 @@ The "devel" spec (activated by passing `--devel`) is used for a project’s unst
 ```ruby
 devel do
   url "https://foo.com/foo-0.1.tar.gz"
-  sha1 "deadbeefdeadbeefdeadbeafdeadbeefdeadbeef"
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 end
 ```
 
@@ -558,7 +594,7 @@ You can test if the "devel" spec is in use with `build.devel?`.
 
 ## Compiler selection
 
-Sometimes a package fails to build when using a certain compiler. Since recent XCode no longer includes a GCC compiler, we cannot simply force the use of GCC. Instead, the correct way to declare this is the `fails_with` DSL method. A properly constructed `fails_with` block documents the latest compiler build version known to cause compilation to fail, and the cause of the failure. For example:
+Sometimes a package fails to build when using a certain compiler. Since recent Xcode no longer includes a GCC compiler, we cannot simply force the use of GCC. Instead, the correct way to declare this is the `fails_with` DSL method. A properly constructed `fails_with` block documents the latest compiler build version known to cause compilation to fail, and the cause of the failure. For example:
 
 ```ruby
 fails_with :llvm do
@@ -823,11 +859,13 @@ if build.without? "ham"
 end
 
 if build.include? "enable-ham"
-  # the old style, only useful for options other than `with`/`without` style
+  # the deprecated style, only useful for options other than `with`/`without` style
 end
 ```
 
 Option names should be prefixed with one of the words `with`, `without`, `no`, or a verb in the imperative tense describing the action to be taken. For example, an option to run a test suite should be named `--with-test` or `--with-check` rather than `--test`, and an option to enable a shared library should be named `--enable-shared` rather than `--shared`.
+
+Note that options that aren’t ` build.with? ` or ` build.without? ` should be actively deprecated where possible. See [wget](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/wget.rb#L27-L31) for an example.
 
 See the [graphviz](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/graphviz.rb) formula for an example.
 
@@ -860,7 +898,7 @@ Homebrew provides two Formula methods for launchd plist files. `plist_name` will
 
 ## Updating formulae
 
-Eventually a new version of the software will be released. In this case you should update the `url` and `sha1`/`sha256`. Even although it will warn on your local machine please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
+Eventually a new version of the software will be released. In this case you should update the `url` and `sha256`. Please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
 
 Check if the formula you are updating is a dependency for any other formulae by running `brew uses UPDATED_FORMULA`. If it is a dependency please `brew reinstall` all the dependencies after it is installed and verify they work correctly.
 
@@ -900,12 +938,12 @@ class Foo < Formula
     ENV.deparallelize
     ENV.no_optimization
     system "make"  # separate make and make install steps
-    system "make install"
+    system "make", "install"
   end
 end
 ```
 
-If that fixes it, please open an [issue](http://github.com/Homebrew/homebrew/issues) so that we can fix it for everyone.
+If that fixes it, please open an [issue](https://github.com/Homebrew/homebrew/issues) so that we can fix it for everyone.
 
 ## Still won’t work?
 

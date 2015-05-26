@@ -1,16 +1,13 @@
-require 'formula'
-
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url "http://download.osgeo.org/gdal/1.11.1/gdal-1.11.1.tar.gz"
-  sha1 "e2c67481932ec9fb6ec3c0faadc004f715c4eef4"
+  url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
+  sha1 "6f3ccbe5643805784812072a33c25be0bbff00db"
   revision 1
 
   bottle do
-    revision 2
-    sha1 "bc2a281841b0b5179ceeb352a6c1c63e468903cc" => :yosemite
-    sha1 "cff8c3c89558603d579255e9a8fd7b00f4c99f34" => :mavericks
-    sha1 "93908f8c4570af931a9096aa73a7c2b03b692d33" => :mountain_lion
+    sha256 "a0fd2413588bac1b4705349796cf1a93a20770ee16ae0044e56bc93ceaa18a72" => :yosemite
+    sha256 "7c33025fa16cf89fc44292ac7fe3aa50bc20a034cd48aff75336b2ab4caf2fff" => :mavericks
+    sha256 "4334496a720744b535ea88da40f5e7ddf2117cc0039345e6ba51dafc88c031b0" => :mountain_lion
   end
 
   head do
@@ -24,6 +21,7 @@ class Gdal < Formula
   option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
   option 'enable-mdb', 'Build with Access MDB driver (requires Java 1.6+ JDK/JRE, from Apple or Oracle).'
   option "with-libkml", "Build with Google's libkml driver (requires libkml --HEAD or >= 1.3)"
+  option 'with-swig-java', 'Build the swig java bindings'
 
   depends_on :python => :optional
   if build.with? "python"
@@ -61,6 +59,7 @@ class Gdal < Formula
     depends_on "cfitsio"
     depends_on "epsilon"
     depends_on "libdap"
+    depends_on "libxml2"
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
@@ -71,6 +70,9 @@ class Gdal < Formula
     depends_on "poppler"
     depends_on "json-c"
   end
+
+  depends_on :java => ["1.7+", :optional, :build]
+  depends_on "swig" if build.with? "swig-java"
 
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
@@ -259,8 +261,6 @@ class Gdal < Formula
     sqlite = Formula["sqlite"]
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
     ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
-    # Needed by libdap
-    ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.
     ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
@@ -273,7 +273,7 @@ class Gdal < Formula
 
     system "./configure", *get_configure_args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # `python-config` may try to talk us into building bindings for more
     # architectures than we really should.
@@ -286,6 +286,15 @@ class Gdal < Formula
     cd 'swig/python' do
       system "python", "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
       bin.install Dir['scripts/*']
+    end
+
+    if build.with? "swig-java"
+      cd 'swig/java' do
+        inreplace "java.opt", "linux", "darwin"
+        inreplace "java.opt", "#JAVA_HOME = /usr/lib/jvm/java-6-openjdk/", 'JAVA_HOME=$(shell echo $$JAVA_HOME)'
+        system "make"
+        system "make", "install"
+      end
     end
 
     system 'make', 'man' if build.head?

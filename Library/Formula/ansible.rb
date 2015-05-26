@@ -1,23 +1,38 @@
-require "formula"
-
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.7.2.tar.gz"
-  sha1 "21532ce402e08c91cc64c5e655758574af9fc8f3"
+  url "http://releases.ansible.com/ansible/ansible-1.9.1.tar.gz"
+  sha256 "a6f975d565723765a4d490ff40cede96833a745f38908def4950a0075f1973f5"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha1 "97822f76a9c9650473fff0cd725bfa546bb84442" => :mavericks
-    sha1 "dcc7cf4b6272707d95505a2c2c2f1b9b051f1b76" => :mountain_lion
-    sha1 "5f9f3b109a31ccf5d7d64a16338d635d974b1648" => :lion
+    sha256 "a4c5e2eaf227cb99fab83b07d46fcd3603cfb407190f997faead82c8ecbdeed4" => :yosemite
+    sha256 "992e9d95b3317c18f073e6e7bea5803992ca1ba3ce59f88ea0992045a20a5671" => :mavericks
+    sha256 "34b6bd4e12a11a7a84cd6a8bf67278593a6e9f70af4fb4a78bd3c4b68307f89b" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
-  option "with-accelerate", "Enable accelerated mode"
-  option "with-windows", "Enable Windows support"
+  resource "docker-py" do
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-0.6.0.tar.gz"
+    sha1 "01eb7b2cd1a607d361170041b973a0e36bb1be42"
+  end
+
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
+  end
+
+  resource "websocket-client" do
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.11.0.tar.gz"
+    sha1 "a38cb6072a25b18faf11d31dd415750692c36f33"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
+    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+  end
 
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz"
@@ -25,8 +40,8 @@ class Ansible < Formula
   end
 
   resource "boto" do
-    url "https://pypi.python.org/packages/source/b/boto/boto-2.32.1.tar.gz"
-    sha1 "4fdecde66245b7fc0295e22d2c2d3c9b08c2b1fa"
+    url "https://pypi.python.org/packages/source/b/boto/boto-2.36.0.tar.gz"
+    sha1 "f230ff9b041d3b43244086e38b7b6029450898be"
   end
 
   resource "pyyaml" do
@@ -49,14 +64,19 @@ class Ansible < Formula
     sha1 "a9b24d887f2be772921b3ee30a0b9d435cffadda"
   end
 
+  resource "pyasn1" do
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.7.tar.gz"
+    sha1 "e32b91c5a5d9609fb1d07d8685a884bab22ca6d0"
+  end
+
   resource "python-keyczar" do
-    url "https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz"
-    sha1 "20c7c5d54c0ce79262092b4cc691aa309fb277fa"
+    url "https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71c.tar.gz"
+    sha1 "0ac1e85e05acac470029d1eaeece5c47d59fcc89"
   end
 
   resource "pywinrm" do
-    url "https://github.com/diyan/pywinrm/archive/df049454a9309280866e0156805ccda12d71c93a.zip"
-    sha1 "f2f94b9a1038425323afaa191a25798c1c0b8426"
+    url "https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.0.3.tar.gz"
+    sha1 "9b4f50e838b9222a101094328b0f6e8669ac17b7"
   end
 
   resource "isodate" do
@@ -69,39 +89,48 @@ class Ansible < Formula
     sha1 "06e4396e886133fdc0b10147c388ed82b0586c83"
   end
 
+  resource "kerberos" do
+    url "https://pypi.python.org/packages/source/k/kerberos/kerberos-1.1.1.tar.gz"
+    sha1 "305cc1ea1e7a209402bca30fbb74a2ca8f2f539d"
+  end
+
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    # HEAD additionally requires this to be present in PYTHONPATH, or else
-    # ansible's own setup.py will fail.
-    ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+    ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
     res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
-    res << "python-keyczar" if build.with? "accelerate"
-    res += %w[pywinrm isodate xmltodict] if build.with? "windows"
+    res += %w[isodate xmltodict kerberos pywinrm] # windows support
+    res += %w[six requests websocket-client docker-py] # docker support
+    res += %w[pyasn1 python-keyczar] # accelerate support
     res.each do |r|
-      resource(r).stage { system "python", *install_args }
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
     inreplace "lib/ansible/constants.py" do |s|
-      s.gsub! "/usr/share/ansible", share+"ansible"
-      s.gsub! "/etc/ansible", etc+"ansible"
+      s.gsub! "/usr/share/ansible", share/"ansible"
+      s.gsub! "/etc/ansible", etc/"ansible"
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
-
-    # These are now rolled into 1.6 and cause linking conflicts
-    rm Dir["#{bin}/easy_install*"]
-    rm "#{lib}/python2.7/site-packages/site.py"
-    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
+    system "python", *Language::Python.setup_install_args(libexec)
 
     man1.install Dir["docs/man/man1/*.1"]
-
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
-    system "#{bin}/ansible", "--version"
+    ENV["ANSIBLE_REMOTE_TEMP"] = testpath/"tmp"
+    (testpath/"playbook.yml").write <<-EOF.undent
+      ---
+      - hosts: all
+        gather_facts: False
+        tasks:
+        - name: ping
+          ping:
+    EOF
+    (testpath/"hosts.ini").write("localhost ansible_connection=local\n")
+    system bin/"ansible-playbook", testpath/"playbook.yml", "-i", testpath/"hosts.ini"
   end
 end

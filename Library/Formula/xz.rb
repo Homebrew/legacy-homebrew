@@ -1,19 +1,16 @@
-require "formula"
-
 # Upstream project has requested we use a mirror as the main URL
 # https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
   homepage "http://tukaani.org/xz/"
-  url "http://fossies.org/linux/misc/xz-5.0.7.tar.bz2"
-  mirror "http://tukaani.org/xz/xz-5.0.7.tar.bz2"
-  sha256 "e8851dc749df2340dac6c9297cb2653eff684e73c3dedf690930119502edd616"
+  url "https://fossies.org/linux/misc/xz-5.2.1.tar.gz"
+  mirror "http://tukaani.org/xz/xz-5.2.1.tar.gz"
+  sha256 "b918b6648076e74f8d7ae19db5ee663df800049e187259faf5eb997a7b974681"
 
   bottle do
     cellar :any
-    sha1 "9e340d49dcfd08d82b59211ec7778b384bfa59f8" => :yosemite
-    sha1 "c54becb676547560824fb873d6a04f24aa3e27aa" => :mavericks
-    sha1 "d3ee779d021906abde55b3672135a0cac27c73b0" => :mountain_lion
-    sha1 "99d721024996c74abf542373a03d85e121a0714a" => :lion
+    sha1 "fedcee4af6aae52f4ee471fad0071aefa442887b" => :yosemite
+    sha1 "42f6a1501db4f6a298ba037bbd50ebfb7aa79d39" => :mavericks
+    sha1 "8f9bb2675c7e967e2adc1679cb7190f697689075" => :mountain_lion
   end
 
   option :universal

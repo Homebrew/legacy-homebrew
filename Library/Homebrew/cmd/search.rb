@@ -9,17 +9,24 @@ module Homebrew
 
   def search
     if ARGV.include? '--macports'
-      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     elsif ARGV.include? '--debian'
-      exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+      exec_browser "https://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.include? '--opensuse'
-      exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
+      exec_browser "https://software.opensuse.org/search?q=#{ARGV.next}"
     elsif ARGV.include? '--fedora'
-      exec_browser "https://admin.fedoraproject.org/pkgdb/acls/list/*#{ARGV.next}*"
+      exec_browser "https://admin.fedoraproject.org/pkgdb/packages/%2A#{ARGV.next}%2A/"
     elsif ARGV.include? '--ubuntu'
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+    elsif ARGV.include? '--desc'
+      query = ARGV.next
+      Formula.each do |formula|
+        if formula.desc =~ query_regexp(query)
+          puts "#{formula.name}: #{formula.desc}"
+        end
+      end
     elsif ARGV.empty?
       puts_columns Formula.names
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
@@ -61,7 +68,16 @@ module Homebrew
         end
       end
     end
-
+    metacharacters = %w[\\ | ( ) [ ] { } ^ $ * + ? .]
+    bad_regex = metacharacters.any? do |char|
+      ARGV.any? do |arg|
+        arg.include?(char) && !arg.start_with?('/')
+      end
+    end
+    if ARGV.any? && bad_regex
+      ohai "Did you mean to perform a regular expression search?"
+      ohai "Surround your query with /slashes/ to search by regex."
+    end
     raise SEARCH_ERROR_QUEUE.pop unless SEARCH_ERROR_QUEUE.empty?
   end
 
@@ -76,6 +92,9 @@ module Homebrew
     %w{Homebrew binary},
     %w{Homebrew python},
     %w{Homebrew php},
+    %w{Homebrew tex},
+    %w{Homebrew x11},
+    %w{Caskroom cask},
   ]
 
   def query_regexp(query)
@@ -94,7 +113,10 @@ module Homebrew
   end
 
   def search_tap user, repo, rx
-    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory?
+    if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory? && \
+       "#{user}/#{repo}" != "Caskroom/cask"
+      return []
+    end
 
     results = []
     tree = {}
@@ -113,7 +135,7 @@ module Homebrew
       end
     end
 
-    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["."] || []
+    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["Casks"] || tree["."] || []
     paths.each do |path|
       name = File.basename(path, ".rb")
       results << "#{user}/#{repo}/#{name}" if rx === name

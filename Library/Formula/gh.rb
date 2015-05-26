@@ -1,5 +1,3 @@
-require "formula"
-
 class Gh < Formula
   homepage "https://github.com/jingweno/gh"
   url "https://github.com/jingweno/gh/archive/v2.1.0.tar.gz"
@@ -7,6 +5,7 @@ class Gh < Formula
   head "https://github.com/jingweno/gh.git"
 
   bottle do
+    cellar :any
     revision 1
     sha1 "2f7d94e9d932fa8a275b097c1756c8827511de17" => :yosemite
     sha1 "bac12bb9f1b776a10eab9d7b3fd859f4fb459a23" => :mavericks
@@ -31,7 +30,7 @@ class Gh < Formula
 
   test do
     HOMEBREW_REPOSITORY.cd do
-      assert_equal 'bin/brew', `#{bin}/gh ls-files -- bin`.strip
+      assert_equal "bin/brew", `#{bin}/gh ls-files -- bin`.strip
     end
   end
 end

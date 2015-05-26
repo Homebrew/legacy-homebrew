@@ -6,7 +6,7 @@ class Pango < Formula
   sha256 "18dbb51b8ae12bae0ab7a958e7cf3317c9acfc8a1e1103ec2f147164a0fc2d07"
 
   head do
-    url 'git://git.gnome.org/pango'
+    url 'https://git.gnome.org/browse/pango'
 
     depends_on 'automake' => :build
     depends_on 'autoconf' => :build
@@ -20,6 +20,8 @@ class Pango < Formula
     sha1 "eb30e96c1d896cd8fc7e1053513b3e298645c9af" => :mavericks
     sha1 "ea288645c2ca58b4addf29c0140fb3ecec6ea3ab" => :mountain_lion
   end
+
+  option :universal
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -35,6 +37,8 @@ class Pango < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules

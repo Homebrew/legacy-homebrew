@@ -10,6 +10,10 @@ module Language
         # avoid touching ~/.cabal
         home = ENV["HOME"]
         ENV["HOME"] = pwd
+
+        # Use llvm-gcc on Lion or below (same compiler used when building GHC).
+        fails_with(:clang) if MacOS.version <= :lion
+
         # use cabal's sandbox feature if available
         cabal_version = `cabal --version`[/[0-9.]+/].split('.').collect(&:to_i)
         if (cabal_version <=> [1, 20]) > -1
@@ -54,12 +58,12 @@ module Language
         rm_rf lib
       end
 
-      def install_cabal_package
+      def install_cabal_package args=[]
         cabal_sandbox do
           # the dependencies are built first and installed locally, and only the
           # current package is actually installed in the destination dir
-          cabal_install "--only-dependencies"
-          cabal_install "--prefix=#{prefix}"
+          cabal_install "--only-dependencies", *args
+          cabal_install "--prefix=#{prefix}", *args
         end
         cabal_clean_lib
       end

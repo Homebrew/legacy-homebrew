@@ -14,9 +14,9 @@ class Cuetools < Formula
     sha1 "c21d19db598c92f1829c6b92bdafa0215cd33a6f" => :lion
   end
 
-  depends_on :autoconf => :build
-  depends_on :automake => :build
-  depends_on :libtool => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   # see https://github.com/svend/cuetools/pull/18
   patch :DATA

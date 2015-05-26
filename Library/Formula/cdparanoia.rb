@@ -5,7 +5,7 @@ class Cdparanoia < Formula
   url 'http://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz'
   sha1 '1901e20d3a370ca6afa4c76a9ef30d3f03044320'
 
-  depends_on :autoconf
+  depends_on "autoconf" => :build
 
   fails_with :llvm do
     build 2326

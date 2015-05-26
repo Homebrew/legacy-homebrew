@@ -1,35 +1,40 @@
-require "formula"
-
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.5.10.tar.gz"
-  sha256 "b3dd02a5dcd2ffe14d9a37956f92779d4427edf7905c0bba9b1e3901b9c5a83b"
+  url "https://dist.torproject.org/tor-0.2.6.8.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.6.8.tar.gz"
+  sha256 "b88b363896454250c3f561b0b48479f18295c93596d2e81baa10c5a3ae609a76"
 
   bottle do
-    sha1 "0bf6ef6985285bac9e67fbc78cef7ebb78844de2" => :yosemite
-    sha1 "6f4d92e5a77e1d3f3da94f1b45e4817c8ccecdf9" => :mavericks
-    sha1 "bae5ecb83486c16256d9d56b284bbf341c8d5a42" => :mountain_lion
+    sha256 "8e951125ab8ccec4f75f042f07bded3b08c4c970b84d84a6962249b7290ba86d" => :yosemite
+    sha256 "4e99238ca821986b63c7b524774c9173ad8b9f0e5075266f9fe254ff0103b0a9" => :mavericks
+    sha256 "a0316b566f6214a0b476f916c8810375bf964844d622512f3faf1ad68bac5ed9" => :mountain_lion
   end
 
   devel do
-    url "https://dist.torproject.org/tor-0.2.6.1-alpha.tar.gz"
-    version "0.2.6.1-a1"
-    sha256 "83154b8e5514978722add6c888d050420342405d4567e5945e89ae40b78b8761"
+    url "https://dist.torproject.org/tor-0.2.7.1-alpha.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.7.1-alpha.tar.gz"
+    sha256 "9afc770a5a795e752f053ae7c2c1ee3a560145adc0aea377c83e602c2cbbed9b"
+    version "0.2.7.1-alpha"
   end
 
   depends_on "libevent"
   depends_on "openssl"
   depends_on "libnatpmp" => :optional
   depends_on "miniupnpc" => :optional
+  depends_on "libscrypt" => :optional
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--sysconfdir=#{etc}",
-            "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"]
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+      --with-openssl-dir=#{Formula["openssl"].opt_prefix}
+    ]
 
     args << "--with-libnatpmp-dir=#{Formula["libnatpmp"].opt_prefix}" if build.with? "libnatpmp"
     args << "--with-libminiupnpc-dir=#{Formula["miniupnpc"].opt_prefix}" if build.with? "miniupnpc"
+    args << "--disable-libscrypt" if build.without? "libscrypt"
 
     system "./configure", *args
     system "make", "install"
@@ -58,6 +63,15 @@ class Tor < Formula
         <string>#{HOMEBREW_PREFIX}</string>
       </dict>
     </plist>
+    EOS
+  end
+
+  def caveats; <<-EOS.undent
+    You will find a sample `torrc` file in #{etc}/tor.
+    It is advisable to edit the sample `torrc` to suit
+    your own security needs:
+      https://www.torproject.org/docs/faq#torrc
+    After editing the `torrc` you need to restart tor.
     EOS
   end
 end

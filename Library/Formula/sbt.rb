@@ -2,8 +2,15 @@ require "formula"
 
 class Sbt < Formula
   homepage "http://www.scala-sbt.org"
-  url "http://dl.bintray.com/sbt/native-packages/sbt/0.13.6/sbt-0.13.6.tgz"
-  sha1 "3efd29e51751157777c4e001acc106b8737e0720"
+  url "https://dl.bintray.com/sbt/native-packages/sbt/0.13.8/sbt-0.13.8.tgz"
+  sha1 "155d6ff3bc178745ad4f951b74792b257ed14105"
+
+  bottle do
+    cellar :any
+    sha256 "b04a205bd4dd390030b3384896020507a036ea5f897e8f34412ee74f4e55fe48" => :yosemite
+    sha256 "dbe3bf9660a6391455b2f95a790229f755d81a364f88e52601b377bacfe5b6f6" => :mavericks
+    sha256 "71ab799b398710a583647cad56b59086c7e0338f2419f039abe1666423fc9c80" => :mountain_lion
+  end
 
   def install
     inreplace "bin/sbt" do |s|

@@ -16,9 +16,9 @@ module Homebrew
       if editor == "mate" or editor == "subl"
         # If the user is using TextMate or Sublime Text,
         # give a nice project view instead.
-        exec editor, HOMEBREW_REPOSITORY+"bin/brew",
-                     HOMEBREW_REPOSITORY+'README.md',
-                     HOMEBREW_REPOSITORY+".gitignore",
+        exec_editor HOMEBREW_REPOSITORY+"bin/brew",
+                    HOMEBREW_REPOSITORY+'README.md',
+                    HOMEBREW_REPOSITORY+".gitignore",
                     *library_folders
       else
         exec_editor HOMEBREW_REPOSITORY
@@ -26,13 +26,11 @@ module Homebrew
     else
       # Don't use ARGV.formulae as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
-        name = Formulary.canonical_name(name)
-        Formula.path(name)
-      end
-      unless ARGV.force?
-        paths.each do |path|
-          raise FormulaUnavailableError, path.basename('.rb').to_s unless path.file?
+        path = Formulary.path(name)
+        unless path.file? || ARGV.force?
+          raise FormulaUnavailableError, name
         end
+        path
       end
       exec_editor(*paths)
     end

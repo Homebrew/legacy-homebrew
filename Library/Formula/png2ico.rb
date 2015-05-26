@@ -1,21 +1,31 @@
-require 'formula'
-
 class Png2ico < Formula
-  homepage 'http://www.winterdrache.de/freeware/png2ico/'
-  url 'http://www.winterdrache.de/freeware/png2ico/data/png2ico-src-2002-12-08.tar.gz'
-  sha1 '955004bee9a20f12b225aa01895762cbbafaeb28'
+  homepage "http://www.winterdrache.de/freeware/png2ico/"
+  url "http://www.winterdrache.de/freeware/png2ico/data/png2ico-src-2002-12-08.tar.gz"
+  sha1 "955004bee9a20f12b225aa01895762cbbafaeb28"
+  bottle do
+    cellar :any
+    sha1 "b3c0353afa9ea55e8dc9e8f41eeaac8968f569d3" => :yosemite
+    sha1 "75edd65a4d22ec52b41010b2c8140e3fe20c0895" => :mavericks
+    sha1 "1d603b519c4067f20de399892d85fbcd834a9f39" => :mountain_lion
+  end
+
   revision 1
 
-  depends_on 'libpng'
+  depends_on "libpng"
 
   # Fix build with recent clang
   patch :DATA
 
   def install
-    inreplace 'Makefile', 'g++', '$(CXX)'
+    inreplace "Makefile", "g++", "$(CXX)"
     system "make", "CPPFLAGS=#{ENV.cxxflags} #{ENV.cppflags} #{ENV.ldflags}"
-    bin.install 'png2ico'
-    man1.install 'doc/png2ico.1'
+    bin.install "png2ico"
+    man1.install "doc/png2ico.1"
+  end
+
+  test do
+    system "#{bin}/png2ico", "out.ico", test_fixtures("test.png")
+    assert File.exist?("out.ico")
   end
 end
 

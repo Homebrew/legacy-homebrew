@@ -1,20 +1,19 @@
-require "formula"
-
 class Fish < Formula
   homepage "http://fishshell.com"
-  url "https://github.com/fish-shell/fish-shell/releases/download/2.1.1/fish-2.1.1.tar.gz"
-  sha1 "8f97f39b92ea7dfef1f464b18e304045bf37546d"
+  url "http://fishshell.com/files/2.1.2/fish-2.1.2.tar.gz"
+  sha1 "f7f8d8d26721833be3458b8113c74b747296ec0b"
 
   bottle do
-    sha1 "61736de475346ff8aba971429d217b827730bc65" => :mavericks
-    sha1 "1d8d3f5656a4a9ec53d22b908581109eecfc9769" => :mountain_lion
-    sha1 "56535dfe5f9a6c4bad0b7d8e9571ab00e5a2f772" => :lion
+    revision 1
+    sha1 "7560818f385831e3d18be1458b1c5e52216f121c" => :yosemite
+    sha1 "a158ae57a437e5f8b2fdff88177be13fa6f35502" => :mavericks
+    sha1 "8d0aa59ebb4cf446e0f0fdf0f91738ffee7edbae" => :mountain_lion
   end
 
   head do
     url "https://github.com/fish-shell/fish-shell.git", :shallow => false
 
-    depends_on :autoconf
+    depends_on "autoconf" => :build
     # Indeed, the head build always builds documentation
     depends_on "doxygen" => :build
   end
@@ -22,10 +21,7 @@ class Fish < Formula
   skip_clean "share/doc"
 
   def install
-    if build.head?
-      ENV['GIT_DIR'] = cached_download/'.git'
-      system "autoconf"
-    end
+    system "autoconf" if build.head?
     # In Homebrew's 'superenv' sed's path will be incompatible, so
     # the correct path is passed into configure here.
     system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"

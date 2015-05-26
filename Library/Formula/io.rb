@@ -10,6 +10,7 @@ class Io < Formula
   option "without-addons", "Build without addons"
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
 
   if build.with? "addons"
     depends_on "glib"

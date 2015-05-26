@@ -1,10 +1,13 @@
-require 'formula'
+require "formula"
 
 class Haxe < Formula
-  homepage 'http://haxe.org'
-  url 'https://github.com/HaxeFoundation/haxe.git', :tag => '3.1.3'
+  homepage "http://haxe.org"
 
-  head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
+  stable do
+    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.1.3", :revision => "7be30670b2f1f9b6082499c8fb9e23c0a6df6c28"
+    # Remove the below with the next stable release
+    depends_on MaximumMacOSRequirement => :mavericks
+  end
 
   bottle do
     cellar :any
@@ -13,14 +16,18 @@ class Haxe < Formula
     sha1 "408dbaf0110cb38ee52900bd4910c56913681bab" => :lion
   end
 
-  depends_on 'neko' => :recommended
-  depends_on 'objective-caml' => :build
-  depends_on 'camlp4' => :build
+  head do
+    url "https://github.com/HaxeFoundation/haxe.git", :branch => "development"
+  end
+
+  depends_on "objective-caml" => :build
+  depends_on "camlp4" => :build
+  depends_on "neko" => :optional
 
   def install
     # Build requires targets to be built in specific order
     ENV.deparallelize
-    system "make"
+    system "make", "OCAMLOPT=ocamlopt.opt"
     bin.mkpath
     system "make", "install", "INSTALL_BIN_DIR=#{bin}", "INSTALL_LIB_DIR=#{lib}/haxe"
 

@@ -1,24 +1,11 @@
-require "formula"
-
 # speed up head clone, see: https://developer.mozilla.org/en-US/docs/Developer_Guide/Source_Code/Mercurial/Bundles
 class HgBundleDownloadStrategy < CurlDownloadStrategy
-  def hgpath
-    MercurialDownloadStrategy.new(@name, @resource).hgpath
-  end
-
-  def fetch
-    @repo = @url.split("|").last
-    @url = @url.split("|").first
-    super()
-  end
-
   def stage
-    safe_system "mkdir mozilla-central"
-    safe_system hgpath, "init", "mozilla-central"
+    mkdir "mozilla-central"
+    quiet_safe_system hgpath, "init", "mozilla-central"
     chdir
-    safe_system hgpath, "unbundle", @tarball_path
-    safe_system hgpath, "pull", @repo
-    safe_system hgpath, "update"
+    quiet_safe_system hgpath, "unbundle", cached_location
+    quiet_safe_system hgpath, "pull", "--update", meta.fetch(:repo)
   end
 end
 
@@ -36,7 +23,8 @@ class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
 
   stable do
-    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/latest/source/xulrunner-33.0.source.tar.bz2"
+    # Always use direct URLs (releases/<version>/) instead of releases/latest/
+    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/33.0/source/xulrunner-33.0.source.tar.bz2"
     sha1 "0fbd6ac263d9c5811a5338252b28e3d08ddfbeb2"
 
     # https://github.com/Homebrew/homebrew/issues/33558
@@ -50,8 +38,8 @@ class Xulrunner < Formula
   end
 
   head do
-    url "https://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/",
-      :using => HgBundleDownloadStrategy
+    url "https://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg",
+      :using => HgBundleDownloadStrategy, :repo => "https://hg.mozilla.org/mozilla-central"
     depends_on :hg => :build
     depends_on "gettext" => :build
   end

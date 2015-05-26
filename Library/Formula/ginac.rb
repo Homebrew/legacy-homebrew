@@ -2,18 +2,19 @@ require 'formula'
 
 class Ginac < Formula
   homepage 'http://www.ginac.de/'
-  url 'http://www.ginac.de/ginac-1.6.2.tar.bz2'
-  sha1 'c93913c4c543874b2ade4f0390030641be7e0c41'
+  url 'http://www.ginac.de/ginac-1.6.3.tar.bz2'
+  sha1 '39ebd0035491da84ca3406688c15930faebe5ef1'
+
+  bottle do
+    cellar :any
+    sha1 "04f032b8d9f13b33457cf78569b71a55572fb2b8" => :yosemite
+    sha1 "ecc3f94892bccb66c9f240aecc9d6d70e8fbf500" => :mavericks
+    sha1 "062569680b5a725eb0316574ba2d6c22760a02e2" => :mountain_lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'cln'
   depends_on 'readline'
-
-  # Fixes compilation with libc++; already applied upstream
-  patch do
-    url "http://www.ginac.de/ginac.git?p=ginac.git;a=commitdiff_plain;h=5bf87cea66bb2071222c2910ed68c2649a98906c"
-    sha1 "415dad5f0f233268ad743e5beacf99c03bb339ae"
-  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

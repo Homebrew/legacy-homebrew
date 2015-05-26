@@ -1,24 +1,26 @@
-require "formula"
-
 class Bitchx < Formula
+  homepage "http://bitchx.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/bitchx/ircii-pana/bitchx-1.2.1/bitchx-1.2.1.tar.gz"
+  sha1 "48ca956d43d6d62e32040bddfae49e88c1188927"
 
-  homepage "https://github.com/BitchX"
-  url "http://bitchx.ca/BitchX-1.2-final.tar.gz"
-  mirror "http://pkgs.fedoraproject.org/repo/pkgs/BitchX/BitchX-1.2-final.tar.gz/5c4947f5a345574e28d93f78cb191ce4/BitchX-1.2-final.tar.gz"
-  sha1 "a2162a18d3a96ade7d2410f6a560e43f7d6b8763"
+  bottle do
+    sha1 "8ad5407a90b61e1d20f59486c2ca750383bcc595" => :yosemite
+    sha1 "3581e44130a9bcf64636355c09d5dae36ea30d1c" => :mavericks
+    sha1 "01ca96037d259ab3b17354e65001672140b4cfa9" => :mountain_lion
+  end
 
-  # Reported upstream:
-  # https://github.com/BitchX/BitchX/pull/8
-  patch :DATA
+  depends_on "openssl"
 
   def install
-    args = %W{
+    plugins = %w[acro aim arcfour amp autocycle blowfish cavlink encrypt
+                 fserv hint identd nap pkga possum qbx qmail]
+    args = %W[
       --prefix=#{prefix}
       --with-ssl
-      --with-plugins=acro,aim,arcfour,amp,autocycle,blowfish,cavlink,encrypt,fserv,hint,identd,nap,pkga,possum,qbx,qmail
+      --with-plugins=#{plugins * ","}
       --enable-ipv6
       --mandir=#{man}
-    }
+    ]
 
     system "./configure", *args
     system "make"
@@ -38,22 +40,4 @@ class Bitchx < Formula
   test do
     system bin/"BitchX", "-v"
   end
-
 end
-
-__END__
-diff --git a/source/compat.c b/source/compat.c
-index fa68988..9549bd6 100644
---- a/source/compat.c
-+++ b/source/compat.c
-@@ -1011,6 +1011,10 @@ int  scandir (const char *name,
- #include <stddef.h>
- #include <string.h>
-
-+#if defined(__APPLE__)
-+ #define environ (*_NSGetEnviron())
-+#endif
-+
- int   bsd_setenv(const char *name, const char *value, int rewrite);
-
- /*

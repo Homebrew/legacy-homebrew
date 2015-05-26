@@ -4,37 +4,15 @@ class FormulaVersions
   IGNORED_EXCEPTIONS = [
     ArgumentError, NameError, SyntaxError, TypeError,
     FormulaSpecificationError, FormulaValidationError,
+    ErrorDuringExecution, LoadError,
   ]
 
-  attr_reader :f
+  attr_reader :name, :repository, :entry_name
 
-  def initialize(f)
-    @f = f
-  end
-
-  def repository
-    @repository ||= if f.tap?
-      HOMEBREW_LIBRARY.join("Taps", f.tap)
-    else
-      HOMEBREW_REPOSITORY
-    end
-  end
-
-  def entry_name
-    @entry_name ||= f.path.relative_path_from(repository).to_s
-  end
-
-  def each
-    versions = Set.new
-    rev_list do |rev|
-      version = version_at_revision(rev)
-      next if version.nil?
-      yield version, rev if versions.add?(version)
-    end
-  end
-
-  def repository_path
-    Pathname.pwd == repository ? entry_name : f.path
+  def initialize(formula)
+    @name = formula.name
+    @repository = formula.tap? ? HOMEBREW_LIBRARY.join("Taps", formula.tap) : HOMEBREW_REPOSITORY
+    @entry_name = formula.path.relative_path_from(repository).to_s
   end
 
   def rev_list(branch="HEAD")
@@ -46,29 +24,26 @@ class FormulaVersions
   end
 
   def file_contents_at_revision(rev)
-    repository.cd { `git cat-file blob #{rev}:#{entry_name}` }
+    repository.cd { Utils.popen_read("git", "cat-file", "blob", "#{rev}:#{entry_name}") }
   end
 
-  def version_at_revision(rev)
-    formula_at_revision(rev) { |f| f.version }
-  end
-
-  def formula_at_revision rev, &block
-    FileUtils.mktemp(f.name) do
-      path = Pathname.pwd.join("#{f.name}.rb")
+  def formula_at_revision(rev)
+    FileUtils.mktemp(name) do
+      path = Pathname.pwd.join("#{name}.rb")
       path.write file_contents_at_revision(rev)
 
+      old_const = Formulary.unload_formula(name)
+
       begin
-        old_const = Formulary.unload_formula(f.name)
         nostdout { yield Formulary.factory(path.to_s) }
       rescue *IGNORED_EXCEPTIONS => e
         # We rescue these so that we can skip bad versions and
         # continue walking the history
-        ohai "#{e} in #{f.name} at revision #{rev}", e.backtrace if ARGV.debug?
+        ohai "#{e} in #{name} at revision #{rev}", e.backtrace if ARGV.debug?
       rescue FormulaUnavailableError
         # Suppress this error
       ensure
-        Formulary.restore_formula(f.name, old_const)
+        Formulary.restore_formula(name, old_const)
       end
     end
   end
@@ -77,7 +52,7 @@ class FormulaVersions
     map = Hash.new { |h, k| h[k] = [] }
     rev_list(branch) do |rev|
       formula_at_revision(rev) do |f|
-        bottle = f.stable.bottle_specification
+        bottle = f.bottle_specification
         unless bottle.checksums.empty?
           map[f.pkg_version] << bottle.revision
         end

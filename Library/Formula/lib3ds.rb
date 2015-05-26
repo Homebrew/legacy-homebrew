@@ -1,9 +1,7 @@
-require 'formula'
-
 class Lib3ds < Formula
-  homepage 'http://code.google.com/p/lib3ds/'
-  url 'https://lib3ds.googlecode.com/files/lib3ds-1.3.0.zip'
-  sha1 '544262eac73c1e4a1d77f0f1cbd90b990a996db8'
+  homepage "https://code.google.com/p/lib3ds/"
+  url "https://lib3ds.googlecode.com/files/lib3ds-1.3.0.zip"
+  sha1 "544262eac73c1e4a1d77f0f1cbd90b990a996db8"
 
   bottle do
     cellar :any
@@ -15,6 +13,12 @@ class Lib3ds < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    # create a raw emtpy 3ds file.
+    (testpath/"test.3ds").write("\x4d\x4d\x06\x00\x00\x00")
+    system "#{bin}/3dsdump", "test.3ds"
   end
 end

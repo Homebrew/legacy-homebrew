@@ -1,31 +1,37 @@
-require "formula"
-
 class Pypy < Formula
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-src.tar.bz2"
-  sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.1-src.tar.bz2"
+  sha256 "ddb3a580b1ee99c5a699172d74be91c36dda9a38946d4731d8c6a63120a3ba2a"
+
   bottle do
     cellar :any
-    revision 1
-    sha1 "3473464c440ded1e99b5aaa40e5cc740aa3d7ef4" => :yosemite
-    sha1 "9d4eccd93b9af5814ce5d159bc4f16bbaf589418" => :mavericks
-    sha1 "06ee886537c517845fdec289839105c024689007" => :mountain_lion
+    sha256 "5ea51028fcc8e52243be21a280826dfe516d16012121cd7d01dbeaa36dd9839b" => :yosemite
+    sha256 "907562de31fcb6be876099d4f560a175d83475084f9bd72a4a8d6957f769283f" => :mavericks
+    sha256 "5d7301690ffc81531d26aad3f2817720864e64489ffb6f54cc227925df14c46e" => :mountain_lion
   end
-
-  revision 2
 
   depends_on :arch => :x86_64
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
+  option "without-bootstrap", "Translate Pypy with system Python instead of " \
+                              "downloading a Pypy binary distribution to " \
+                              "perform the translation (adds 30-60 minutes " \
+                              "to build)"
+
+  resource "bootstrap" do
+    url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-osx64.tar.bz2"
+    sha1 "ad47285526b1b3c14f4eecc874bb82a133a8e551"
+  end
+
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-6.0.2.tar.gz"
-    sha1 "a29a81b7913151697cb15b069844af75d441408f"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-14.3.1.tar.gz"
+    sha256 "8d5712b7debddddf75ba98e069036b138c89430497037a406b36e57f9bcfee20"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
-    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
+    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
@@ -38,11 +44,17 @@ class Pypy < Formula
     ENV["PYTHONPATH"] = ""
     ENV["PYPY_USESSION_DIR"] = buildpath
 
+    python = "python"
+    if build.with?("bootstrap") && OS.mac? && MacOS.preferred_arch == :x86_64
+      resource("bootstrap").stage buildpath/"bootstrap"
+      python = buildpath/"bootstrap/bin/pypy"
+    end
+
     Dir.chdir "pypy/goal" do
-      system "python", buildpath/"rpython/bin/rpython",
-             "-Ojit", "--shared", "--cc", ENV["CC"], "--translation-verbose",
+      system python, buildpath/"rpython/bin/rpython",
+             "-Ojit", "--shared", "--cc", ENV.cc, "--verbose",
              "--make-jobs", ENV.make_jobs, "targetpypystandalone.py"
-      system "install_name_tool", "-change", "libpypy-c.dylib", libexec/"lib/libpypy-c.dylib", "pypy-c"
+      system "install_name_tool", "-change", "@rpath/libpypy-c.dylib", libexec/"lib/libpypy-c.dylib", "pypy-c"
       system "install_name_tool", "-id", opt_libexec/"lib/libpypy-c.dylib", "libpypy-c.dylib"
       (libexec/"bin").install "pypy-c" => "pypy"
       (libexec/"lib").install "libpypy-c.dylib"
@@ -57,6 +69,10 @@ class Pypy < Formula
     # scripts will find it.
     bin.install_symlink libexec/"bin/pypy"
     lib.install_symlink libexec/"lib/libpypy-c.dylib"
+
+    %w[setuptools pip].each do |r|
+      (libexec/r).install resource(r)
+    end
   end
 
   def post_install
@@ -83,8 +99,12 @@ class Pypy < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    resource("setuptools").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
-    resource("pip").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    %w[setuptools pip].each do |pkg|
+      (libexec/pkg).cd do
+        system bin/"pypy", "-s", "setup.py", "--no-user-cfg", "install",
+               "--force", "--verbose"
+      end
+    end
 
     # Symlinks to easy_install_pypy and pip_pypy
     bin.install_symlink scripts_folder/"easy_install" => "easy_install_pypy"
@@ -108,9 +128,9 @@ class Pypy < Formula
     Setuptools and pip have been installed, so you can use easy_install_pypy and
     pip_pypy.
     To update setuptools and pip between pypy releases, run:
-        #{scripts_folder}/pip install --upgrade setuptools
+        pip_pypy install --upgrade pip setuptools
 
-    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Homebrew-and-Python.md
     EOS
   end
 
@@ -127,5 +147,10 @@ class Pypy < Formula
   # The Cellar location of distutils
   def distutils
     libexec+"lib-python/2.7/distutils"
+  end
+
+  test do
+    system bin/"pypy", "-c", "print('Hello, world!')"
+    system scripts_folder/"pip", "list"
   end
 end

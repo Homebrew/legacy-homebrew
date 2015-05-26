@@ -1,6 +1,5 @@
 require 'testing_env'
 require 'formula'
-require 'testball'
 
 class PatchingTests < Homebrew::TestCase
   PATCH_URL_A = "file://#{TEST_DIRECTORY}/patches/noop-a.diff"
@@ -21,42 +20,41 @@ class PatchingTests < Homebrew::TestCase
     @_f.patchlist.select(&:external?).each(&:clear_cache)
   end
 
-  def assert_patched(path)
-    s = File.read(path)
-    refute_includes s, "NOOP", "#{path} was not patched as expected"
-    assert_includes s, "ABCD", "#{path} was not patched as expected"
+  def assert_patched(formula)
+    shutup do
+      formula.brew do
+        formula.patch
+        s = File.read("libexec/NOOP")
+        refute_includes s, "NOOP", "libexec/NOOP was not patched as expected"
+        assert_includes s, "ABCD", "libexec/NOOP was not patched as expected"
+      end
+    end
   end
 
   def test_single_patch
-    shutup do
-      formula do
-        def patches
-          PATCH_URL_A
-        end
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula {
+      def patches
+        PATCH_URL_A
+      end
+    }
   end
 
   def test_single_patch_dsl
-    shutup do
-      formula do
-        patch do
-          url PATCH_URL_A
-          sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
-        end
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula {
+      patch do
+        url PATCH_URL_A
+        sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
+      end
+    }
   end
 
   def test_single_patch_dsl_with_strip
-    shutup do
-      formula do
-        patch :p1 do
-          url PATCH_URL_A
-          sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
-        end
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula {
+      patch :p1 do
+        url PATCH_URL_A
+        sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
+      end
+    }
   end
 
   def test_single_patch_dsl_with_incorrect_strip
@@ -67,86 +65,50 @@ class PatchingTests < Homebrew::TestCase
             url PATCH_URL_A
             sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
           end
-        end.brew { }
+        end.brew(&:patch)
       end
     end
   end
 
   def test_patch_p0_dsl
-    shutup do
-      formula do
-        patch :p0 do
-          url PATCH_URL_B
-          sha1 "3b54bd576f998ef6d6623705ee023b55062b9504"
-        end
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula {
+      patch :p0 do
+        url PATCH_URL_B
+        sha1 "3b54bd576f998ef6d6623705ee023b55062b9504"
+      end
+    }
   end
 
   def test_patch_p0
-    shutup do
-      formula do
-        def patches
-          { :p0 => PATCH_URL_B }
-        end
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula { def patches; { :p0 => PATCH_URL_B }; end }
   end
 
   def test_patch_array
-    shutup do
-      formula do
-        def patches
-          [PATCH_URL_A]
-        end
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula { def patches; [PATCH_URL_A]; end }
   end
 
   def test_patch_hash
-    shutup do
-      formula do
-        def patches
-          { :p1 => PATCH_URL_A }
-        end
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula { def patches; { :p1 => PATCH_URL_A }; end }
   end
 
   def test_patch_hash_array
-    shutup do
-      formula do
-        def patches
-          { :p1 => [PATCH_URL_A] }
-        end
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula { def patches; { :p1 => [PATCH_URL_A] } end }
   end
 
   def test_patch_string
-    shutup do
-      formula do
-        patch PATCH_A_CONTENTS
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula { patch PATCH_A_CONTENTS }
   end
 
   def test_patch_string_with_strip
-    shutup do
-      formula do
-        patch :p0, PATCH_B_CONTENTS
-      end.brew { assert_patched 'libexec/NOOP' }
-    end
+    assert_patched formula { patch :p0, PATCH_B_CONTENTS }
   end
 
   def test_patch_DATA_constant
-    shutup do
-      formula("test", Pathname.new(__FILE__).expand_path) do
-        def patches
-          Formula::DATA
-        end
-      end.brew { assert_patched "libexec/NOOP" }
-    end
+    assert_patched formula("test", Pathname.new(__FILE__).expand_path) {
+      def patches
+        Formula::DATA
+      end
+    }
   end
 end
 

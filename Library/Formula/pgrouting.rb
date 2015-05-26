@@ -5,6 +5,13 @@ class Pgrouting < Formula
   url "https://github.com/pgRouting/pgrouting/archive/v2.0.0.tar.gz"
   sha1 "cd2f60dc49df7bc8c789c8e73ecb9759194fab96"
 
+  bottle do
+    cellar :any
+    sha1 "5630b70733c8106498e99cd86a7dfb0efad61d99" => :yosemite
+    sha1 "e534968cb994d3d3cf0315eec1277d5339cc4984" => :mavericks
+    sha1 "a0f566240642fb80b4b906f58bab8be265521099" => :mountain_lion
+  end
+
   # work around function name conflict from Postgres
   # https://github.com/pgRouting/pgrouting/issues/274
   patch :DATA

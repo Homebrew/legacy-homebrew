@@ -1,17 +1,15 @@
-require "formula"
-
 class Libgcrypt < Formula
   homepage "https://gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.2.tar.bz2"
-  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libgcrypt/libgcrypt-1.6.2.tar.bz2"
-  sha1 "cc31aca87e4a3769cb86884a3f5982b2cc8eb7ec"
+  url "ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.3.tar.bz2"
+  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.3.tar.bz2"
+  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libgcrypt/libgcrypt-1.6.3.tar.bz2"
+  sha1 "9456e7b64db9df8360a1407a38c8c958da80bbf1"
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "dc8f8cd1fddaf5fc65310da67bc9d97432814457" => :yosemite
-    sha1 "41e2ca0f9844ac269216fba13eaade4fae19596d" => :mavericks
-    sha1 "aad60fe1c727f115872b3b971e47b24b3a2e865c" => :mountain_lion
+    sha1 "d24142fb501c015dc669d9c0a8d94c5dc7123ee0" => :yosemite
+    sha1 "1ca2c47570a91ffe6e6c96a6d50627a8cce1e58e" => :mavericks
+    sha1 "3bf6ac3f6bc55a8fbd51b3fc9d7fd6677469d14e" => :mountain_lion
   end
 
   depends_on "libgpg-error"
@@ -28,6 +26,7 @@ class Libgcrypt < Formula
     ENV.universal_binary if build.universal?
 
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--disable-asm",
                           "--with-gpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}"
@@ -41,5 +40,9 @@ class Libgcrypt < Formula
     system "make"
     system "make", "check"
     system "make", "install"
+  end
+
+  test do
+    system bin/"libgcrypt-config", "--libs"
   end
 end

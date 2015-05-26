@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 require 'cxxstdlib'
 require 'exceptions'
 require 'formula'
@@ -11,8 +9,10 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
+require 'cmd/postinstall'
 require 'hooks/bottles'
 require 'debrew'
+require 'sandbox'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -154,7 +154,7 @@ class FormulaInstaller
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    formula.active_spec.deprecated_flags.each do |deprecated_option|
+    formula.deprecated_flags.each do |deprecated_option|
       old_flag = deprecated_option.old_flag
       new_flag = deprecated_option.current_flag
       opoo "#{formula.name}: #{old_flag} was deprecated; using #{new_flag} instead!"
@@ -190,28 +190,26 @@ class FormulaInstaller
     opoo "Nothing was installed to #{formula.prefix}" unless formula.installed?
   end
 
-  # HACK: If readline is present in the dependency tree, it will clash
-  # with the stdlib's Readline module when the debugger is loaded
-  def perform_readline_hack
-    if (formula.recursive_dependencies.any? { |d| d.name == "readline" } || formula.name == "readline") && debug?
-      ENV['HOMEBREW_NO_READLINE'] = '1'
-    end
-  end
-
   def check_conflicts
     return if ARGV.force?
 
-    conflicts = formula.conflicts.reject do |c|
-      keg = Formulary.factory(c.name).prefix
-      not keg.directory? && Keg.new(keg).linked?
+    conflicts = formula.conflicts.select do |c|
+      begin
+        f = Formulary.factory(c.name)
+      rescue TapFormulaUnavailableError
+        # If the formula name is in full-qualified name. Let's silently
+        # ignore it as we don't care about things used in taps that aren't
+        # currently tapped.
+        false
+      else
+        f.linked_keg.exist? && f.opt_prefix.exist?
+      end
     end
 
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
   end
 
   def compute_and_install_dependencies
-    perform_readline_hack
-
     req_map, req_deps = expand_requirements
 
     check_requirements(req_map)
@@ -351,7 +349,7 @@ class FormulaInstaller
 
     fi = DependencyInstaller.new(df)
     fi.options           |= tab.used_options
-    fi.options           |= dep.options
+    fi.options           |= Tab.remap_deprecated_options(df.deprecated_options, dep.options)
     fi.options           |= inherited_options
     fi.build_from_source  = build_from_source?
     fi.verbose            = verbose? && !quieter?
@@ -395,7 +393,12 @@ class FormulaInstaller
     link(keg)
     fix_install_names(keg) if OS.mac?
 
-    post_install
+    if build_bottle? && formula.post_install_defined?
+      ohai "Not running post_install as we're building a bottle"
+      puts "You can run it manually using `brew postinstall #{formula.name}`"
+    else
+      post_install
+    end
 
     ohai "Summary" if verbose? or show_summary_heading?
     puts summary
@@ -433,7 +436,12 @@ class FormulaInstaller
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
-    args << "--env=#{ARGV.env}" if ARGV.env
+
+    if ARGV.env
+      args << "--env=#{ARGV.env}"
+    elsif formula.env.std? || formula.recursive_dependencies.any? { |d| d.name == "scons" }
+      args << "--env=std"
+    end
 
     if formula.head?
       args << "--HEAD"
@@ -455,50 +463,34 @@ class FormulaInstaller
   end
 
   def build
-    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]
+    FileUtils.rm_rf(formula.logs)
 
     @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    read, write = IO.pipe
-    # I'm guessing this is not a good way to do this, but I'm no UNIX guru
-    ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
-
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{HOMEBREW_LIBRARY_PATH}
+      -I #{HOMEBREW_LOAD_PATH}
       --
       #{HOMEBREW_LIBRARY_PATH}/build.rb
       #{formula.path}
     ].concat(build_argv)
 
-    # Ruby 2.0+ sets close-on-exec on all file descriptors except for
-    # 0, 1, and 2 by default, so we have to specify that we want the pipe
-    # to remain open in the child process.
-    args << { write => write } if RUBY_VERSION >= "2.0"
-
-    pid = fork do
-      begin
-        read.close
+    Utils.safe_fork do
+      if Sandbox.available? && ARGV.sandbox?
+        sandbox = Sandbox.new
+        formula.logs.mkpath
+        sandbox.record_log(formula.logs/"sandbox.build.log")
+        sandbox.allow_write_temp_and_cache
+        sandbox.allow_write_log(formula)
+        sandbox.allow_write_cellar(formula)
+        sandbox.exec(*args)
+      else
         exec(*args)
-      rescue Exception => e
-        Marshal.dump(e, write)
-        write.close
-        exit! 1
       end
-    end
-
-    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
-      write.close
-      data = read.read
-      read.close
-      Process.wait(pid)
-      raise Marshal.load(data) unless data.nil? or data.empty?
-      raise Interrupt if $?.exitstatus == 130
-      raise "Suspicious installation failure" unless $?.success?
     end
 
     raise "Empty installation" if Dir["#{formula.prefix}/*"].empty?
@@ -567,6 +559,8 @@ class FormulaInstaller
     return unless formula.plist
     formula.plist_path.atomic_write(formula.plist)
     formula.plist_path.chmod 0644
+    log = formula.var/"log"
+    log.mkpath if formula.plist.include? log.to_s
   rescue Exception => e
     onoe "Failed to install plist file"
     ohai e, e.backtrace if debug?
@@ -601,7 +595,7 @@ class FormulaInstaller
   end
 
   def post_install
-    formula.post_install
+    Homebrew.run_post_install(formula)
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
     puts "You can try again using `brew postinstall #{formula.name}`"

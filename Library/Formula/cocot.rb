@@ -5,7 +5,7 @@ class Cocot < Formula
   url 'https://github.com/vmi/cocot/archive/cocot-1.1-20120313.tar.gz'
   sha1 'ffc36f56e47c22a963ef48cb67e60b0337b58bc6'
 
-  head 'https://github.com/vmi/cocot.git', :branch => 'master'
+  head 'https://github.com/vmi/cocot.git'
 
   def install
     system "./configure", "--prefix=#{prefix}"

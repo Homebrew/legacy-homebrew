@@ -2,18 +2,20 @@ require "formula"
 
 class Notmuch < Formula
   homepage "http://notmuchmail.org"
-  url "http://notmuchmail.org/releases/notmuch-0.18.1.tar.gz"
-  sha1 "ad82d6d5355594c4cab3c6d28c70ae4993acbec9"
+  url "http://notmuchmail.org/releases/notmuch-0.19.tar.gz"
+  sha1 "df023988f67e329357a5e8d00c4f6fc71249b89f"
 
   bottle do
     cellar :any
-    sha1 "c2abec535c387b43719bb5775d2f5c574a0b26a6" => :mavericks
-    sha1 "60839b86690a3b8d095b98a788dedef6163b779e" => :mountain_lion
-    sha1 "74cbad02dae99188baa190c6f3a8175bcea10e14" => :lion
+    sha1 "000f3f7ab9e2a78db874ba95f2a7e73d96cbdcd9" => :yosemite
+    sha1 "43d716940b5b99923ef14dd207fab1c9eb9e591f" => :mavericks
+    sha1 "c5bcffd7d593c4c5dffb85d42b33bdfff26ff113" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "emacs" => :optional
+  depends_on :python => :optional
+  depends_on :python3 => :optional
   depends_on "xapian"
   depends_on "talloc"
   depends_on "gmime"
@@ -38,8 +40,15 @@ class Notmuch < Formula
     else
       args << "--without-emacs"
     end
-    system "./configure", *args
 
+    system "./configure", *args
     system "make", "V=1", "install"
+
+    Language::Python.each_python(build) do |python, version|
+      cd "bindings/python" do
+        system python, *Language::Python.setup_install_args(prefix)
+      end
+    end
+
   end
 end

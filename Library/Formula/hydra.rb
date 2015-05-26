@@ -2,24 +2,22 @@ require "formula"
 
 class Hydra < Formula
   homepage "https://www.thc.org/thc-hydra/"
-  url "https://www.thc.org/releases/hydra-8.0.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/h/hydra/hydra_8.0.orig.tar.gz"
-  sha1 "d1a705985846caf77c291461f391a43457cc76e5"
-  revision 1
+  url "https://www.thc.org/releases/hydra-8.1.tar.gz"
+  sha256 "e4bc2fd11f97a8d985a38a31785c86d38cc60383e47a8f4a5c436351e5135f19"
 
-  head "https://github.com/vanhauser-thc/thc-hydra"
+  head "https://github.com/vanhauser-thc/thc-hydra.git"
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "8eef0ef48e07a9b50f51d6b6f62d76be48cd2bb7" => :yosemite
-    sha1 "a918878af2ceb50c9ae0cd7193d99c8911fc179b" => :mavericks
-    sha1 "57e89de532dc1af0c6fd939357881d9920274597" => :mountain_lion
+    sha1 "1e4448de82ef48e4dd8290b0ebec5fc84690437e" => :yosemite
+    sha1 "df94e14ed8bf4553590545da8a9ac1cdcb72fd8d" => :mavericks
+    sha1 "16c8738d0cdf625c6144c2c2939d3922e2f3b697" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on :mysql
   depends_on "openssl"
+  depends_on "subversion" => :optional
   depends_on "libidn" => :optional
   depends_on "libssh" => :optional
   depends_on "pcre" => :optional

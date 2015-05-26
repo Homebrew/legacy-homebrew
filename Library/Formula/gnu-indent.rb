@@ -1,14 +1,14 @@
-require 'formula'
-
 class GnuIndent < Formula
-  homepage 'http://www.gnu.org/software/indent/'
-  url 'http://ftpmirror.gnu.org/indent/indent-2.2.10.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/indent/indent-2.2.10.tar.gz'
-  sha1 '20fa8a7a4af6670c3254c8b87020291c3db37ed1'
+  homepage "https://www.gnu.org/software/indent/"
+  url "http://ftpmirror.gnu.org/indent/indent-2.2.10.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/indent/indent-2.2.10.tar.gz"
+  sha1 "20fa8a7a4af6670c3254c8b87020291c3db37ed1"
 
-  depends_on 'gettext'
+  depends_on "gettext"
 
-  option 'default-names', "Do not prepend 'g' to the binary"
+  deprecated_option "default-names" => "with-default-names"
+
+  option "with-default-names", "Do not prepend 'g' to the binary"
 
   # Fix broken include and missing build dependency
   patch :DATA
@@ -21,10 +21,22 @@ class GnuIndent < Formula
       --mandir=#{man}
       ]
 
-    args << "--program-prefix=g" unless build.include? 'default-names'
+    args << "--program-prefix=g" if build.without? "default-names"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write("int main(){ return 0; }")
+    system "#{bin}/gindent", "test.c"
+    assert_equal File.read("test.c"), <<-EOS.undent
+      int
+      main ()
+      {
+        return 0;
+      }
+    EOS
   end
 end
 

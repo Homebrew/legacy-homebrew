@@ -13,7 +13,11 @@ module HomebrewArgvExtension
 
   def formulae
     require "formula"
-    @formulae ||= downcased_unique_named.map { |name| Formulary.factory(name, spec) }
+    @formulae ||= (downcased_unique_named - casks).map { |name| Formulary.factory(name, spec) }
+  end
+
+  def casks
+    @casks ||= downcased_unique_named.grep HOMEBREW_CASK_TAP_FORMULA_REGEX
   end
 
   def kegs
@@ -92,6 +96,10 @@ module HomebrewArgvExtension
 
   def homebrew_developer?
     include? '--homebrew-developer' or !ENV['HOMEBREW_DEVELOPER'].nil?
+  end
+
+  def sandbox?
+    include?("--sandbox") || !ENV["HOMEBREW_SANDBOX"].nil?
   end
 
   def ignore_deps?

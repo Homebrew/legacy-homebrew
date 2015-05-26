@@ -19,7 +19,6 @@ class Minidlna < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
     depends_on "gettext" => :build
-    depends_on "xz" => :build
   end
 
   depends_on "libexif"

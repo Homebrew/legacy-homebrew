@@ -5,20 +5,15 @@ class Bro < Formula
   head "https://github.com/bro/bro.git"
 
   stable do
-    url "https://www.bro.org/downloads/release/bro-2.3.1.tar.gz"
-    sha256 "ff32d21e335d2ddb3e2942527c3212de6ead4e7ffd6ac958497fa80e04e60800"
+    url "https://www.bro.org/downloads/release/bro-2.3.2.tar.gz"
+    sha256 "2fe5fbda0a86b5a594116d567fd9a4c2458d30f1c6670ba8e1fac0bc8848c69b"
 
-    # Fix for ntohll errrors on Yosemite. Already in HEAD.
-    patch do
-      url "https://github.com/bro/bro/commit/121fcdbb5b9221.diff"
-      sha1 "985cede121964a96fe10c81f2239d1f0c137c517"
-    end
   end
 
   bottle do
-    sha1 "19d44e396ea474a01625333cc005d59c15a1a779" => :yosemite
-    sha1 "3ec9e7b7c05b68668f6559322372a2f57344f735" => :mavericks
-    sha1 "6e69354144ece0c4b99fe0c8f07c353e5892bf3c" => :mountain_lion
+    sha1 "2aa244b83b9aeac9a63624defabc59b9c9f3ce48" => :yosemite
+    sha1 "00140842870f97f164de968471e366882774d84e" => :mavericks
+    sha1 "2710acd445167b1fece844f15367db3ce55036bb" => :mountain_lion
   end
 
   depends_on "cmake" => :build

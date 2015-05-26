@@ -1,32 +1,24 @@
-require "formula"
-
-class GPGDependency < Requirement
-  fatal true
-  default_formula "gpg"
-  satisfy { which("gpg") || which("gpg2") }
-end
-
 class Keybase < Formula
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/node-client/archive/v0.7.2.tar.gz"
-  sha1 "680574530bbe77ecdc1954057e5518240dd099c6"
+  url "https://github.com/keybase/node-client/archive/v0.7.8.tar.gz"
+  sha256 "87fda71a1559e418ba67d64eeca29b7e0caa4a7696de130bd2da7379da3a62aa"
   head "https://github.com/keybase/node-client.git"
 
   depends_on "node"
-  depends_on GPGDependency
+  depends_on :gpg
 
   def install
+    # remove self-update command
+    # https://github.com/keybase/keybase-issues/issues/1477
+    rm "lib/command/update.js"
+    inreplace "lib/command/all.js", '"update", ', ""
+    inreplace "lib/req.js", "keybase-installer", "brew update && brew upgrade keybase"
+
     libexec.install Dir["*"]
     (bin/"keybase").write <<-EOS.undent
       #!/bin/sh
       export KEYBASE_BIN="#{bin}/keybase"
       exec "#{Formula["node"].opt_bin}/node" "#{libexec}/bin/main.js" "$@"
-    EOS
-  end
-
-  def caveats;<<-EOS.undent if which("gpg2") && !which("gpg")
-      Run below command if you use gpg2 as keybase's backend
-        keybase config gpg gpg2
     EOS
   end
 

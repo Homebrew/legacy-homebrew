@@ -19,12 +19,15 @@ module Homebrew
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}"
     return false if tapd.directory?
-    abort unless system "git", "clone", "https://github.com/#{repouser}/homebrew-#{repo}", tapd.to_s
+    ohai "Tapping #{repouser}/#{repo}"
+    args = %W[clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}]
+    args << "--depth=1" unless ARGV.include?("--full")
+    safe_system "git", *args
 
     files = []
     tapd.find_formula { |file| files << file }
     link_tap_formula(files)
-    puts "Tapped #{files.length} formula#{plural(files.length, 'e')}"
+    puts "Tapped #{files.length} formula#{plural(files.length, 'e')} (#{tapd.abv})"
 
     if private_tap?(repouser, repo) then puts <<-EOS.undent
       It looks like you tapped a private repository. To avoid entering your
@@ -108,8 +111,8 @@ module Homebrew
     end
   end
 
-  def tap_args
-    ARGV.first =~ HOMEBREW_TAP_ARGS_REGEX
+  def tap_args(tap_name=ARGV.named.first)
+    tap_name =~ HOMEBREW_TAP_ARGS_REGEX
     raise "Invalid tap name" unless $1 && $3
     [$1, $3]
   end

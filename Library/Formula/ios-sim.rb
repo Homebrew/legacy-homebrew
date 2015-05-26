@@ -1,15 +1,14 @@
-require "formula"
-
 class IosSim < Formula
   homepage "https://github.com/phonegap/ios-sim"
-  url "https://github.com/phonegap/ios-sim/archive/3.0.0.tar.gz"
-  sha1 "e5b5dd2a622549f105935c3f6fc3cce93aba7b45"
+  url "https://github.com/phonegap/ios-sim/archive/3.1.1.tar.gz"
+  sha1 "fbed1bf01253d99ab643e6cdf9fa4e999111324c"
   head "https://github.com/phonegap/ios-sim.git"
 
   bottle do
     cellar :any
-    sha1 "a3d4fca43c68809b156490b018190df8059a0ebf" => :mavericks
-    sha1 "747cd81a2dfae3c14a4d41ff286d60dc9c939d5b" => :mountain_lion
+    sha1 "4b4c830f96af400e593fe1457f8162774589f67d" => :yosemite
+    sha1 "84de583b7e287ddab20e8ef10e03a97ad2a4d5af" => :mavericks
+    sha1 "f559ce57478e9aaebb8eabb6366fa12629e8cf3a" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion

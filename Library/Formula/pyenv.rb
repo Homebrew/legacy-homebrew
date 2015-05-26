@@ -1,10 +1,14 @@
-require "formula"
-
 class Pyenv < Formula
   homepage "https://github.com/yyuu/pyenv"
   head "https://github.com/yyuu/pyenv.git"
-  url "https://github.com/yyuu/pyenv/archive/v20141106.tar.gz"
-  sha1 "573ae5f998461f86df289fa13d8324614eee8d7d"
+  url "https://github.com/yyuu/pyenv/archive/v20150524.tar.gz"
+  sha256 "d1bc60f6ae0775f9682fee4ac40f34ce9206de21277f396506093b008041a680"
+
+  bottle do
+    sha256 "be429c58d6320535384a9e6fa144981d5432c657bd60d960fb991963ef8a4337" => :yosemite
+    sha256 "05e1f9e243009ee16de37217fb02521b70a91e1d05d0205512544401259fb7ed" => :mavericks
+    sha256 "4d597ae1a0d0bd6ff64f95374fe8580acb8175035d763414ec78c3208a85cb10" => :mountain_lion
+  end
 
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]
@@ -33,7 +37,11 @@ class Pyenv < Formula
       if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
     To use Homebrew's directories rather than ~/.pyenv add to your profile:
-      export PYENV_ROOT=#{opt_prefix}
+      export PYENV_ROOT=#{var}/pyenv
     EOS
+  end
+
+  test do
+    shell_output("eval \"$(#{bin}/pyenv init -)\" && pyenv versions")
   end
 end

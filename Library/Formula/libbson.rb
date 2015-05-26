@@ -2,14 +2,14 @@ require "formula"
 
 class Libbson < Formula
   homepage "https://github.com/mongodb/libbson"
-  url "https://github.com/mongodb/libbson/releases/download/1.0.2/libbson-1.0.2.tar.gz"
-  sha1 "20126faa95dfdcdc30d4289b82e914cc5b606be7"
+  url "https://github.com/mongodb/libbson/releases/download/1.1.6/libbson-1.1.6.tar.gz"
+  sha1 "0e4b74ad9e8848c3a5fa231de60e8bdaaf4fc3c7"
 
   bottle do
     cellar :any
-    sha1 "290424b019dfc4ddf6aa0eb441b7882d3d60d688" => :yosemite
-    sha1 "ce84cf5b8745f559d0c9275c45ae0212d0b39e96" => :mavericks
-    sha1 "12916e6c197294cfafd5de0eab2d25eb732d4a30" => :mountain_lion
+    sha256 "04608ead2044c711fb374da28a18b5fe9e7983c4d1d4c4f4ba996ebc00abc10f" => :yosemite
+    sha256 "0aa56dae1c07c75abb5604f9780c764c1791ee0ea45951a48d75702fb401fc86" => :mavericks
+    sha256 "a50c21b0f1f641df27f22f41bcecfd2e77c37128accc0ae3a7f4501085204ae9" => :mountain_lion
   end
 
   def install

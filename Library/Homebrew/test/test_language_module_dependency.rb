@@ -2,6 +2,8 @@ require 'testing_env'
 require 'requirements/language_module_dependency'
 
 class LanguageModuleDependencyTests < Homebrew::TestCase
+  parallelize_me!
+
   def assert_deps_fail(spec)
     refute_predicate LanguageModuleDependency.new(*spec.shift.reverse), :satisfied?
   end
@@ -22,7 +24,7 @@ class LanguageModuleDependencyTests < Homebrew::TestCase
     import_name = "bar"
     l = LanguageModuleDependency.new(:python, mod_name, import_name)
     assert_includes l.message, mod_name
-    assert l.the_test.one? { |c| c.include?(import_name) }
+    assert_includes l.the_test, "import #{import_name}"
   end
 
   def test_bad_perl_deps

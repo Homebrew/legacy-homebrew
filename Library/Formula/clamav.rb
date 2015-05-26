@@ -1,31 +1,54 @@
-require "formula"
-
 class Clamav < Formula
   homepage "http://www.clamav.net/"
-  head "https://github.com/vrtadmin/clamav-devel"
-  url "https://downloads.sourceforge.net/clamav/clamav-0.98.4.tar.gz"
-  sha1 "f1003d04f34efb0aede05395d3c7cc22c944e4ef"
+  url "https://downloads.sourceforge.net/clamav/clamav-0.98.6.tar.gz"
+  sha1 "03cb9a20a08aba9176b1f58d5527d06ec8261f9c"
 
   bottle do
-    revision 1
-    sha1 "3cec3e85844d54a629a735a4cd035475af1a62b4" => :mavericks
-    sha1 "2f7e1f591e956369eae6446e4a5aeb4ee79940e4" => :mountain_lion
-    sha1 "07e9159ecbf0aa90dd56a7ee9d728b7bb77d5b6b" => :lion
+    sha1 "b98d88af709fc48b4cad3e07e8bf2b243a64e36b" => :yosemite
+    sha1 "857c84af44eeeb1f8413f5034ff47be8f950075d" => :mavericks
+    sha1 "e0b8f89118ff2c0fe2d8bca37572f4b37d327ce6" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/vrtadmin/clamav-devel.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "openssl"
+  depends_on "json-c" => :optional
 
   skip_clean "share/clamav"
 
   def install
+    args = [
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
+      "--prefix=#{prefix}",
+      "--libdir=#{lib}",
+      "--sysconfdir=#{etc}/clamav",
+      "--disable-zlib-vcheck",
+      "--with-zlib=#{MacOS.sdk_path}/usr",
+      "--with-openssl=#{Formula["openssl"].opt_prefix}",
+    ]
+
+    args << "--with-libjson=#{Formula["json-c"].opt_prefix}" if build.with? "json-c"
+
     (share/"clamav").mkpath
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--libdir=#{lib}",
-                          "--sysconfdir=#{etc}",
-                          "--disable-zlib-vcheck",
-                          "--with-zlib=#{MacOS.sdk_path}/usr",
-                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
+    system "autoreconf", "-i" if build.head?
+    system "./configure", *args
     system "make", "install"
+  end
+
+  def caveats; <<-EOS.undent
+    To finish installation & run clamav you will need to edit
+    the example conf files at #{etc}/clamav/
+    EOS
+  end
+
+  test do
+    system "#{bin}/clamav-config", "--version"
   end
 end

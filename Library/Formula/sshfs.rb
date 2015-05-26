@@ -1,9 +1,7 @@
-require 'formula'
-
 class Sshfs < Formula
-  homepage 'http://osxfuse.github.io/'
-  url 'https://github.com/osxfuse/sshfs/archive/osxfuse-sshfs-2.5.0.tar.gz'
-  sha1 '34d81a2f6b4150bff5ee55978b98df50c0bd3152'
+  homepage "https://osxfuse.github.io/"
+  url "https://github.com/osxfuse/sshfs/archive/osxfuse-sshfs-2.5.0.tar.gz"
+  sha256 "8ea4d3d5bc0f343998009d7eb138e3804490f6a22e890c6de4eadc6fd2414ae0"
 
   bottle do
     cellar :any
@@ -12,7 +10,7 @@ class Sshfs < Formula
     sha1 "8828686ca5c28061825fe059d7d6b9afae5972e9" => :lion
   end
 
-  option 'without-sshnodelay', "Don't compile NODELAY workaround for ssh"
+  option "without-sshnodelay", "Don't compile NODELAY workaround for ssh"
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
@@ -29,11 +27,15 @@ class Sshfs < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    args << "--disable-sshnodelay" if build.without? 'sshnodelay'
+    args << "--disable-sshnodelay" if build.without? "sshnodelay"
 
     system "autoreconf", "--force", "--install"
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/sshfs", "--version"
   end
 end
 

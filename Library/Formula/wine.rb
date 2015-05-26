@@ -5,7 +5,7 @@ require 'formula'
 #  - http://wiki.winehq.org/Gecko
 #  - http://wiki.winehq.org/Mono
 class Wine < Formula
-  homepage 'http://winehq.org/'
+  homepage 'https://www.winehq.org/'
 
   stable do
     url 'https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
@@ -13,8 +13,7 @@ class Wine < Formula
 
     resource 'gecko' do
       url 'https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-      version '2.21'
-      sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+      sha256 'f01fafa6d7aab995c38add77315c4cbc2f32f52d5d6a9350056f42b62d631fd8'
     end
 
     resource 'mono' do
@@ -30,8 +29,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.30.tar.bz2"
-    sha256 "10f7caf0420970772d868ab2ae24578f89b8a04b93604473e7c41bb295e0086c"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.43.tar.bz2"
+    sha256 "53d49b9affcb836443cf25111c2906dfcae9ff1fc8170dffbd81755405907822"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -40,19 +39,21 @@ class Wine < Formula
     # https://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
       url "https://bugs.winehq.org/attachment.cgi?id=47639"
-      sha1 "c195f4b9c0af450c7dc3f396e8661ea5248f2b01"
+      sha256 "3054467e0b1ef9efce3e1b24497bd26e00c4727e8bd7b1e990d1352bb1819de0"
     end
   end
 
   head do
     url "git://source.winehq.org/git/wine.git"
     depends_on "samba" => :optional
+    option "with-win64",
+           "Build with win64 emulator (won't run 32-bit binaries.)"
   end
 
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
   def require_universal_deps?
-    true
+    MacOS.prefer_64_bit?
   end
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
@@ -69,14 +70,13 @@ class Wine < Formula
   depends_on 'libgsm' => :optional
 
   resource 'gecko' do
-    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
-    version '2.24'
-    sha1 'b4923c0565e6cbd20075a0d4119ce3b48424f962'
+    url "https://downloads.sourceforge.net/wine/wine_gecko-2.36-x86.msi", :using => :nounzip
+    sha256 "afa457ce8f9885225b6e549dd6f154713ce15bf063c23e38c1327d2f869e128a"
   end
 
   resource 'mono' do
-    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
-    sha256 'd9124edb41ba4418af10eba519dafb25ab4338c567d25ce0eb4ce1e1b4d7eaad'
+    url "https://downloads.sourceforge.net/wine/wine-mono-4.5.6.msi", :using => :nounzip
+    sha256 "ac681f737f83742d786706529eb85f4bc8d6bdddd8dcdfa9e2e336b71973bc25"
   end
 
   fails_with :llvm do
@@ -117,6 +117,7 @@ class Wine < Formula
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard
+    args << "--enable-win64" if build.with? "win64"
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
@@ -168,7 +169,7 @@ class Wine < Formula
       which may cause text rendering issues in applications such as Steam.
       We recommend that you run winecfg, add an override for dwrite in the
       Libraries tab, and edit the override mode to "disable". See:
-        http://bugs.winehq.org/show_bug.cgi?id=31374
+        https://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
 
     if build.with? 'x11'
@@ -179,7 +180,7 @@ class Wine < Formula
         "x11" (or use winetricks).
 
         For best results with X11, install the latest version of XQuartz:
-          http://xquartz.macosforge.org/
+          https://xquartz.macosforge.org/
       EOS
     end
     return s

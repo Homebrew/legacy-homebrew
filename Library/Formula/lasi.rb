@@ -9,8 +9,8 @@ class Lasi < Formula
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "doxygen" => :build
   depends_on "pango"
-  depends_on "doxygen"
 
   def install
     # None is valid, but lasi's CMakeFiles doesn't think so for some reason

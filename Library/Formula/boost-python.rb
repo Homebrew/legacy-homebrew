@@ -1,5 +1,3 @@
-require "formula"
-
 class UniversalPython < Requirement
   satisfy(:build_env => false) { archs_for_command("python").universal? }
 
@@ -26,8 +24,9 @@ end
 
 class BoostPython < Formula
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.56.0/boost_1_56_0.tar.bz2"
-  sha1 "f94bb008900ed5ba1994a1072140590784b9b5df"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
+  sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
+
   head "https://github.com/boostorg/boost.git"
 
   option :universal
@@ -35,8 +34,8 @@ class BoostPython < Formula
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
-  depends_on UniversalPython if build.universal? and build.with? "python"
-  depends_on UniversalPython3 if build.universal? and build.with? "python3"
+  depends_on UniversalPython if build.universal? && build.with?("python")
+  depends_on UniversalPython3 if build.universal? && build.with?("python3")
 
   if build.cxx11?
     depends_on "boost" => "c++11"
@@ -116,10 +115,10 @@ class BoostPython < Formula
         boost::python::def("greet", greet);
       }
     EOS
-    Language::Python.each_python(build) do |python, version|
-      pycflags = `#{python}-config --includes`.strip
-      pyldflags = `#{python}-config --ldflags`.strip
-      system "#{ENV.cxx} -shared hello.cpp #{pycflags} #{pyldflags} -lboost_#{python} -o hello.so"
+    Language::Python.each_python(build) do |python, _|
+      pyflags = (`#{python}-config --includes`.strip +
+                 `#{python}-config --ldflags`.strip).split(" ")
+      system ENV.cxx, "-shared", "hello.cpp", "-lboost_#{python}", "-o", "hello.so", *pyflags
       output = `#{python} -c "from __future__ import print_function; import hello; print(hello.greet())"`
       assert output.include?("Hello, world!")
     end

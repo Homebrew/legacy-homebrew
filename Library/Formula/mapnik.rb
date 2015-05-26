@@ -1,16 +1,14 @@
-require "formula"
-
 class Mapnik < Formula
   homepage "http://www.mapnik.org/"
   head "https://github.com/mapnik/mapnik.git"
-  url "http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
-  sha1 "e493ad87ca83471374a3b080f760df4b25f7060d"
-  revision 4
+  url "https://s3.amazonaws.com/mapnik/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
+  sha256 "9b30de4e58adc6d5aa8478779d0a47fdabe6bf8b166b67a383b35f5aa5d6c1b0"
+  revision 6
 
   bottle do
-    sha1 "e9a4adde844d0cd895f4ff07c81f9ae3dc761d55" => :mavericks
-    sha1 "4d0bc356c681e2a4337e281a5ae0e01e1f4983c7" => :mountain_lion
-    sha1 "359a96c8206039098c149e30ac7e7d97a73039f7" => :lion
+    sha256 "1c362e8436c60b47664dfba2bfd18eab7ef281db3e0f376274676bcb1c66685d" => :yosemite
+    sha256 "7f2f612d1a1cd98cd9cb726ea9f06e8b532765e07e6a9f5f1451321f865bbf15" => :mavericks
+    sha256 "6ee18c569252ef0d25f5756a57e7be64ea7dea38f04a7e0fc8c544558f07a64a" => :mountain_lion
   end
 
   stable do
@@ -55,24 +53,24 @@ class Mapnik < Formula
     jobs = ENV.make_jobs.to_i
     jobs /= 2 if jobs > 2
 
-    args = [ "CC=\"#{ENV.cc}\"",
-             "CXX=\"#{ENV.cxx}\"",
-             "JOBS=#{jobs}",
-             "PREFIX=#{prefix}",
-             "ICU_INCLUDES=#{icu}/include",
-             "ICU_LIBS=#{icu}/lib",
-             "PYTHON_PREFIX=#{prefix}",  # Install to Homebrew's site-packages
-             "JPEG_INCLUDES=#{jpeg}/include",
-             "JPEG_LIBS=#{jpeg}/lib",
-             "PNG_INCLUDES=#{libpng}/include",
-             "PNG_LIBS=#{libpng}/lib",
-             "TIFF_INCLUDES=#{libtiff}/include",
-             "TIFF_LIBS=#{libtiff}/lib",
-             "BOOST_INCLUDES=#{boost}/include",
-             "BOOST_LIBS=#{boost}/lib",
-             "PROJ_INCLUDES=#{proj}/include",
-             "PROJ_LIBS=#{proj}/lib",
-             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config"
+    args = ["CC=\"#{ENV.cc}\"",
+            "CXX=\"#{ENV.cxx}\"",
+            "JOBS=#{jobs}",
+            "PREFIX=#{prefix}",
+            "ICU_INCLUDES=#{icu}/include",
+            "ICU_LIBS=#{icu}/lib",
+            "PYTHON_PREFIX=#{prefix}",  # Install to Homebrew's site-packages
+            "JPEG_INCLUDES=#{jpeg}/include",
+            "JPEG_LIBS=#{jpeg}/lib",
+            "PNG_INCLUDES=#{libpng}/include",
+            "PNG_LIBS=#{libpng}/lib",
+            "TIFF_INCLUDES=#{libtiff}/include",
+            "TIFF_LIBS=#{libtiff}/lib",
+            "BOOST_INCLUDES=#{boost}/include",
+            "BOOST_LIBS=#{boost}/lib",
+            "PROJ_INCLUDES=#{proj}/include",
+            "PROJ_LIBS=#{proj}/lib",
+            "FREETYPE_CONFIG=#{freetype}/bin/freetype-config",
            ]
 
     if build.with? "cairo"

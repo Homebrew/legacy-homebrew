@@ -1,16 +1,13 @@
-require 'formula'
-
 class Moreutils < Formula
-  homepage 'http://joeyh.name/code/moreutils/'
-  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
-  sha1 '32047f935178b490a12c370d8f695f1273dc5895'
+  homepage "http://joeyh.name/code/moreutils/"
+  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
+  mirror "http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
+  sha1 "050c73067d2b5373f2652b91e75699dd79a44590"
 
   bottle do
-    revision 2
-    sha1 "09c41223be308962ffb8014fdbcedba9c9288a8c" => :yosemite
-    sha1 "07383e8aa340c226800d36fb0d2107073c05392d" => :mavericks
-    sha1 "7ed2b97a47512e47e7a74ee11ebf8b3cc5d1697e" => :mountain_lion
+    sha1 "a7d3974c453e9b68d0254505f5bb4ed9fa9ba3a3" => :yosemite
+    sha1 "314304205f3f69f2a885524ea327ddb887be43d9" => :mavericks
+    sha1 "47ac9f9d22e0890e9df62e602ecf7a70a378826f" => :mountain_lion
   end
 
   depends_on "docbook-xsl" => :build
@@ -22,7 +19,7 @@ class Moreutils < Formula
       :because => "both install a 'parallel' executable. See the '--without-parallel' option"
   end
 
-  conflicts_with 'task-spooler',
+  conflicts_with "task-spooler",
     :because => "both install a 'ts' executable."
 
   resource "Time::Duration" do
@@ -61,5 +58,10 @@ class Moreutils < Formula
     system "make", "check"
     system "make", "install", "PREFIX=#{prefix}"
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
+  end
+
+  test do
+    pipe_output("#{bin}/isutf8", "hello", 0)
+    pipe_output("#{bin}/isutf8", "\xca\xc0\xbd\xe7", 1)
   end
 end

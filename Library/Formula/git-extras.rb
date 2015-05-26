@@ -1,24 +1,25 @@
-require "formula"
-
 class GitExtras < Formula
-  homepage "https://github.com/visionmedia/git-extras"
-  url "https://github.com/visionmedia/git-extras/archive/2.0.0.tar.gz"
-  sha1 "1cb12caffc76d3285d60a3b2b169e3ce6040998c"
+  homepage "https://github.com/tj/git-extras"
+  url "https://github.com/tj/git-extras/archive/3.0.0.tar.gz"
+  sha1 "dac8477c1ea8dd9e591623ced2b4de4e52f541c1"
 
-  head "https://github.com/visionmedia/git-extras.git", :branch => "master"
+  head "https://github.com/tj/git-extras.git"
 
   bottle do
     cellar :any
-    sha1 "c8c8a635d8555679422c6d7a06e32e3c08b4e32c" => :mavericks
-    sha1 "cb24ad03c24209431b4242f5cfc863046fcfc163" => :mountain_lion
-    sha1 "f1bdf0558b495a466eba8be250c6fda94a94c1fc" => :lion
+    sha256 "3eabd97b6e574274665ed178b72076648ed03da53c7dd29425835331592c3378" => :yosemite
+    sha256 "14471fe41a1162813ed803fe9edc91aca493d7529340e8f15e2cea9aa269d586" => :mavericks
+    sha256 "7655c7e7f926d58b28a8ef503b406ff2c0f6fb2102a2915cb7d05b36b26f9d9b" => :mountain_lion
   end
 
-  # Don't take +x off these files
-  skip_clean "bin"
-
   def install
-    inreplace "Makefile", %r|\$\(DESTDIR\)(?=/etc/bash_completion\.d)|, "$(DESTDIR)$(PREFIX)"
+    inreplace "Makefile", %r{\$\(DESTDIR\)(?=/etc/bash_completion\.d)}, "$(DESTDIR)$(PREFIX)"
     system "make", "PREFIX=#{prefix}", "install"
+  end
+
+  test do
+    cd HOMEBREW_PREFIX do
+      system "#{bin}/git-root"
+    end
   end
 end

@@ -1,35 +1,31 @@
-require 'formula'
-
 class Datomic < Formula
-  homepage 'http://www.datomic.com/'
-  url 'https://my.datomic.com/downloads/free/0.9.5052'
-  sha256 '61ae1cb2922fe832f66066c08e0f01abef5707296bc7a1d5af5903eae7b6740e'
-  version '0.9.5052'
+  homepage "http://www.datomic.com/"
+  url "https://my.datomic.com/downloads/free/0.9.5153"
+  sha256 "acaacf8d08d5594451dfad00782cefccea78a61fce0185f4448890ed9adf886b"
+  version "0.9.5153"
 
-  def write_libexec_alias *script_names
-    script_names.each do |script_name|
-      alias_name = script_name == 'datomic' ? 'datomic' : "datomic-#{script_name}"
-      (bin + alias_name).write <<-EOS.undent
-        #!/bin/bash
-        cd #{libexec} && exec "bin/#{script_name}" "$@"
-      EOS
-    end
-  end
+  depends_on :java
 
   def install
-    libexec.install Dir['*']
-    write_libexec_alias 'datomic', 'transactor', 'repl', 'repl-jline', 'rest', 'shell'
+    libexec.install Dir["*"]
+    (bin/"datomic").write_env_script libexec/"bin/datomic", Language::Java.java_home_env
+    %w[transactor repl repl-jline rest shell].each do |file|
+      (bin/"datomic-#{file}").write_env_script libexec/"bin/#{file}", Language::Java.java_home_env
+    end
   end
 
   def caveats
     <<-EOS.undent
-      You may need to set JAVA_HOME:
-        export JAVA_HOME="$(/usr/libexec/java_home)"
-      All commands have been installed with the prefix 'datomic-'.
+      All commands have been installed with the prefix "datomic-".
 
       We agreed to the Datomic Free Edition License for you:
         http://www.datomic.com/datomic-free-edition-license.html
       If this is unacceptable you should uninstall.
     EOS
+  end
+
+  test do
+    help = pipe_output("#{bin}/datomic-shell", "Shell.help();\n")
+    assert_match(/^\* Basics/, help)
   end
 end

@@ -22,7 +22,7 @@ class Pixz < Formula
     bin.install 'pixz'
 
     if build.with? 'docs'
-      ENV['XML_CATALOG_FILES'] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
+      ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
       system 'a2x --doctype manpage --format manpage pixz.1.asciidoc'
       man1.install 'pixz.1'
     end

@@ -1,17 +1,14 @@
-require "formula"
-
 class Libssh < Formula
   homepage "https://www.libssh.org/"
-  url "https://red.libssh.org/attachments/download/87/libssh-0.6.3.tar.xz"
-  sha1 "8189255e0f684d36b7ca62739fa0cd5f1030a467"
-  revision 2
+  url "https://red.libssh.org/attachments/download/107/libssh-0.6.4.tar.gz"
+  sha1 "073bf53d9e02f7cfbcc5d8738ca1c9ffb2edd247"
 
   head "git://git.libssh.org/projects/libssh.git"
 
   bottle do
-    revision 1
-    sha1 "199ee5e4c60ccac22f38567d903cf34607b59474" => :yosemite
-    sha1 "7a819a38b87d47a63b184faa6cd1db57106db1a2" => :mavericks
+    sha1 "de5ef207ed3ae4d79f180a5835fe491409a0804d" => :yosemite
+    sha1 "3de5d0a02be7bda59dabe91cd7db4ece978d25bb" => :mavericks
+    sha1 "983355b795316434c54dd61e85495a808a147845" => :mountain_lion
   end
 
   depends_on "cmake" => :build
