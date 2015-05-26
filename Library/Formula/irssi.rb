@@ -14,10 +14,10 @@ class Irssi < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "55bdbcb5958fdfd443229dbf67163a2bd5723bcac2b9f624a1e220479a3efab8" => :yosemite
-    sha256 "099ed90249fa060d6227163b01f64621b130c55e110e86a521b258d445e98ecb" => :mavericks
-    sha256 "a4393b3c87ce4683c92909eb090fb85e972a5dcaded6603c2ab6e1b5e05751b4" => :mountain_lion
+    revision 2
+    sha256 "a3f40b5a09cd11ee4fe46420b03fe8ac99c1603ac560cdd56b373745d5a07b6b" => :yosemite
+    sha256 "58a876749226ac7f862bdd8ba2d8c1b3aa9f5f9e9bc69e6d7671a32899b108e8" => :mavericks
+    sha256 "dbe24bf6031f96b060884f07dcfc33e00fca993001c3676ce949f6f00522ba88" => :mountain_lion
   end
 
   option "without-perl", "Build without perl support"
