@@ -5,9 +5,9 @@ class AescryptPacketizer < Formula
 
   bottle do
     cellar :any
-    sha1 "9332b85915d37899948db1d69c2703baba61e50e" => :yosemite
-    sha1 "a0bff6bff8e0476badc312dabdb6a936f8ed6507" => :mavericks
-    sha1 "2b9d8e775d1abf5bdf5ad0ba9a948deb498bdcf2" => :mountain_lion
+    sha256 "21d60280f0f3f7878b3014cf9073aa67864a6211769ef6eff9995eeb241f7e48" => :yosemite
+    sha256 "9d4487b8ef937395e99477e199b8ecc6f961b03d45bcf1d8abcb8b73eb70e5c1" => :mavericks
+    sha256 "2b4523df88634d5b65d95dc3e5f7448d67b53c847517c9c8ed0be5d04f4189dc" => :mountain_lion
   end
 
   head do
