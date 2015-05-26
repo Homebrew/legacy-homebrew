@@ -1,7 +1,7 @@
 class Libbluray < Formula
   homepage "https://www.videolan.org/developers/libbluray.html"
-  url "ftp://ftp.videolan.org/pub/videolan/libbluray/0.7.0/libbluray-0.7.0.tar.bz2"
-  sha1 "12baf71accac2ae9efe7fb077999821ea1430d7b"
+  url "https://download.videolan.org/pub/videolan/libbluray/0.7.0/libbluray-0.7.0.tar.bz2"
+  sha256 "f79beb9fbb24117cbb1264c919e686ae9e6349c0ad08b48c4b6233b2887eb68d"
 
   bottle do
     cellar :any
