@@ -1,8 +1,8 @@
 class Python < Formula
   homepage "https://www.python.org"
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz"
-  sha256 "c8bba33e66ac3201dabdc556f0ea7cfe6ac11946ec32d357c4c6f9b018c12c5b"
+  url "https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz"
+  sha256 "eda8ce6eec03e74991abb5384170e7c65fcd7522e409b8e83d7e6372add0f12a"
 
   bottle do
     revision 13
@@ -33,8 +33,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.2.tar.gz"
-    sha256 "381e78471fb0eff89c4b1a219e8739f48dd87c76ad2d3a790010ca3a62ee29a4"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-16.0.tar.gz"
+    sha256 "aa86255dee2c4a0056509750008007667c29306b7a6c13801468515b2c672845"
   end
 
   resource "pip" do
