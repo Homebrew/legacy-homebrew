@@ -5,9 +5,9 @@ class Ufraw < Formula
   sha256 "2a6a1bcc633bdc8e15615cf726befcd7f27ab00e7c2a518469a24e1a96964d87"
 
   bottle do
-    sha1 "114f5807e129d36cf97186160ead6003adb5b6fa" => :yosemite
-    sha1 "3604acf00a45b6e569b264d2e482626214731ca8" => :mavericks
-    sha1 "2ee9849f3b51f2702f67a6626539fcae5a9a6f04" => :mountain_lion
+    sha256 "08672a5a059ad9736b43b426343e7c98f85879fcbd1c97786fc931b70fade99c" => :yosemite
+    sha256 "8fd7723a81578679c7f5c9f8b1739d75b745cf53deb78203856d3e6fc5270bba" => :mavericks
+    sha256 "3233bc9d19aa79d7453f8d112629fd24802c7539dc3232ed07635585e1c0bc06" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
