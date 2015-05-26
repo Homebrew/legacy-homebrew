@@ -631,6 +631,7 @@ class FormulaInstaller
     )
 
     tab = Tab.for_keg(formula.prefix)
+    tab.tap = formula.tap
     tab.poured_from_bottle = true
     tab.write
   end
