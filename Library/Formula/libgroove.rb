@@ -7,8 +7,8 @@ class Libgroove < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "bcc1b6b2f985c5f753e9074409062dc558acdecc" => :yosemite
+    sha256 "0aed4c4465b5db098f23fc8ce8c4e9e09987c98ccdfced38499f2f0d81013455" => :yosemite
+    sha256 "bf744cb535945d763a3870e4b618ba61419bd6093b406ad803e9b03f836285be" => :mavericks
   end
 
   depends_on :macos => :mavericks
