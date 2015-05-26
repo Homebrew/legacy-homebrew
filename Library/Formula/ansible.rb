@@ -2,6 +2,7 @@ class Ansible < Formula
   homepage "http://www.ansible.com/home"
   url "http://releases.ansible.com/ansible/ansible-1.9.1.tar.gz"
   sha256 "a6f975d565723765a4d490ff40cede96833a745f38908def4950a0075f1973f5"
+  revision 1
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
@@ -94,11 +95,17 @@ class Ansible < Formula
     sha1 "305cc1ea1e7a209402bca30fbb74a2ca8f2f539d"
   end
 
+  # Required by module: uri
+  resource "httplib2" do
+    url "https://pypi.python.org/packages/source/h/httplib2/httplib2-0.9.1.tar.gz"
+    sha256 "bc6339919a5235b9d1aaee011ca5464184098f0c47c9098001f91c97176583f5"
+  end
+
   def install
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
-    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
+    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2 httplib2]
     res += %w[isodate xmltodict kerberos pywinrm] # windows support
     res += %w[six requests websocket-client docker-py] # docker support
     res += %w[pyasn1 python-keyczar] # accelerate support
