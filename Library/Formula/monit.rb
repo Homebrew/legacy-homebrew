@@ -1,8 +1,8 @@
 class Monit < Formula
   homepage "https://mmonit.com/monit/"
-  url "https://mmonit.com/monit/dist/monit-5.12.2.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/m/monit/monit_5.12.2.orig.tar.gz"
-  sha256 "8ab0296d1aa2351b1573481592d7b5e06de1edd49dff1b5552839605a450914c"
+  url "https://mmonit.com/monit/dist/monit-5.13.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/m/monit/monit_5.13.orig.tar.gz"
+  sha256 "9abae036f3be93a19c6b476ecd106b29d4da755bbc05f0a323e882eab6b2c5a9"
 
   bottle do
     cellar :any
