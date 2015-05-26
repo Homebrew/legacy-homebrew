@@ -1,5 +1,6 @@
 class Ansible < Formula
   homepage "http://www.ansible.com/home"
+  revision 1
   url "http://releases.ansible.com/ansible/ansible-1.9.1.tar.gz"
   sha256 "a6f975d565723765a4d490ff40cede96833a745f38908def4950a0075f1973f5"
   revision 1
