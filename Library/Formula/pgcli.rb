@@ -1,7 +1,7 @@
 class Pgcli < Formula
   homepage "http://pgcli.com/"
-  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.16.3.tar.gz"
-  sha1 "747e8505514255833738a0ded3809728d942dda7"
+    url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.17.0.tar.gz"
+    sha256 "b7a47405da61bc05dbceb28443e13965f322f58d942e119499976be19e2e2d44"
 
   bottle do
     cellar :any
@@ -49,14 +49,9 @@ class Pgcli < Formula
     sha256 "680f0abab097619e013c75f4fc234f7734ee888a483d9492e326ecd7883c6859"
   end
 
-  resource "pgcli" do
-    url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.17.0.tar.gz"
-    sha256 "b7a47405da61bc05dbceb28443e13965f322f58d942e119499976be19e2e2d44"
-  end
-
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[click prompt_toolkit psycopg2 sqlparse pygments wcwidth six jedi docopt].each do |r|
+    %w[click prompt_toolkit psycopg2 sqlparse Pygments wcwidth six].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
