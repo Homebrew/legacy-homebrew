@@ -1,10 +1,8 @@
-require "formula"
-
 class Libaacs < Formula
   homepage "https://www.videolan.org/developers/libaacs.html"
-  url "ftp://ftp.videolan.org/pub/videolan/libaacs/0.7.1/libaacs-0.7.1.tar.bz2"
-  mirror "http://videolan-nyc.defaultroute.com/libaacs/0.7.1/libaacs-0.7.1.tar.bz2"
-  sha1 "09eb61bcfceca77cd779c4475093dd22a0cb5510"
+  url "ftp://ftp.videolan.org/pub/videolan/libaacs/0.8.1/libaacs-0.8.1.tar.bz2"
+  mirror "http://videolan-nyc.defaultroute.com/libaacs/0.8.1/libaacs-0.8.1.tar.bz2"
+  sha256 "95c344a02c47c9753c50a5386fdfb8313f9e4e95949a5c523a452f0bcb01bbe8"
 
   bottle do
     cellar :any
