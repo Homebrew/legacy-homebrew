@@ -470,7 +470,7 @@ Display the file or directory used to cache \fIformula\fR\.
 .
 .TP
 \fB\-\-cellar\fR
-Display Homebrew\'s Cellar path\. \fIDefault:\fR \fB/usr/local/Cellar\fR
+Display Homebrew\'s Cellar path\. \fIDefault:\fR \fB$(brew \-\-prefix)/Cellar\fR, or if that directory doesn\'t exist, \fB$(brew \-\-repository)/Cellar\fR\.
 .
 .TP
 \fB\-\-cellar\fR \fIformula\fR
