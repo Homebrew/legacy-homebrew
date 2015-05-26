@@ -32,11 +32,11 @@ class Imagemagick < Formula
 
   depends_on "jpeg" => :recommended
   depends_on "libpng" => :recommended
+  depends_on "libtiff" => :recommended
   depends_on "freetype" => :recommended
 
   depends_on :x11 => :optional
   depends_on "fontconfig" => :optional
-  depends_on "libtiff" => :optional
   depends_on "little-cms" => :optional
   depends_on "little-cms2" => :optional
   depends_on "libwmf" => :optional
