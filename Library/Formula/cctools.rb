@@ -12,6 +12,7 @@ class Cctools < Formula
   end
 
   bottle do
+    does_not_need_relocation
     cellar :any
     sha1 "1acad163d4a245f5bd7ad2668cc87a5c9102163a" => :yosemite
     sha1 "2629465c3d063d3a108adc987bbaa910a49db5f4" => :mavericks
