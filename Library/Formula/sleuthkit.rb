@@ -26,6 +26,7 @@ class Sleuthkit < Formula
 
   option 'with-jni', "Build Sleuthkit with JNI bindings"
 
+  depends_on :java
   depends_on :ant => :build
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
