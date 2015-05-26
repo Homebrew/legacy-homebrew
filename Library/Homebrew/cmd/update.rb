@@ -26,7 +26,12 @@ module Homebrew
     report = Report.new
     master_updater = Updater.new(HOMEBREW_REPOSITORY)
     begin
-      master_updater.pull!
+      if ENV["HOMEBREW_UPDATE_NO_PULL"]
+        ohai "Updating without pulling"
+        master_updater.set_revisions_from_local
+      else
+        master_updater.pull!
+      end
     ensure
       link_tap_formula(tapped_formulae)
     end
@@ -141,6 +146,11 @@ class Updater
     @repository = repository
   end
 
+  def set_revisions_from_local
+    @initial_revision = read_origin_local_revision
+    @current_revision = read_current_revision
+  end
+
   def pull!
     safe_system "git", "checkout", "-q", "master"
 
@@ -209,6 +219,10 @@ class Updater
 
   def read_current_revision
     `git rev-parse -q --verify HEAD`.chomp
+  end
+
+  def read_origin_local_revision
+    `git rev-parse -q --verify origin/master`.chomp
   end
 
   def diff
