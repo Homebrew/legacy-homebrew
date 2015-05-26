@@ -1,7 +1,7 @@
 class Sslmate < Formula
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-1.2.0.tar.gz"
-  sha256 "e91abde87f4eead5f13cd66708316f05a8e3557b15e64d052243aab1ac3063b3"
+  url "https://packages.sslmate.com/other/sslmate-1.2.1.tar.gz"
+  sha256 "b23d6e4ed14e8baf818c7ece974e8e0be2a3c59f7d6d5b8342a1f3f8eb02c0ea"
 
   bottle do
     cellar :any
