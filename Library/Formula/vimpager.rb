@@ -1,13 +1,19 @@
 class Vimpager < Formula
   homepage "https://github.com/rkitover/vimpager"
-  url "https://github.com/rkitover/vimpager/archive/2.02.tar.gz"
-  sha256 "d0e59b33b1c21f996992ddeeaf87a63f6494b60443847acf28e3f3376acd6a05"
+  desc "vimpager: Use Vim as PAGER"
+  url "https://github.com/rkitover/vimpager/archive/2.04.tar.gz"
+  sha256 "eefbfe178ea03be3df8bbad82ba162797ab8fb49c994b4b240d513cd0c3ef3f0"
   head "https://github.com/rkitover/vimpager.git"
 
+  option "with-pandoc", "Use pandoc to build and install man pages"
+  depends_on "pandoc" => [:build, :optional]
+
   def install
+    system "make", "docs" if build.with? "pandoc"
     bin.install "vimcat"
     bin.install "vimpager"
-    man1.install gzip("vimpager.1")
+    doc.install "README.md", "vimcat.md", "vimpager.md"
+    man1.install "vimcat.1", "vimpager.1" if build.with? "pandoc"
   end
 
   def caveats; <<-EOS.undent
