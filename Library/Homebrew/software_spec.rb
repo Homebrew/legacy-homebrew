@@ -262,7 +262,7 @@ class BottleSpecification
   DEFAULT_ROOT_URL = "#{DEFAULT_DOMAIN}/bottles".freeze
 
   attr_rw :root_url, :prefix, :cellar, :revision
-  attr_reader :checksum, :collector
+  attr_reader :checksum, :collector, :needs_cctools
 
   def initialize
     @revision = 0
@@ -270,6 +270,7 @@ class BottleSpecification
     @cellar = DEFAULT_CELLAR
     @root_url = DEFAULT_ROOT_URL
     @collector = BottleCollector.new
+    @needs_cctools = true
   end
 
   def compatible_cellar?
