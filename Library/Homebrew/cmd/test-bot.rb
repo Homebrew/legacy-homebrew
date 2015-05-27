@@ -779,12 +779,7 @@ module Homebrew
       formula_packaged = {}
 
       Dir.glob("*.bottle*.tar.gz") do |filename|
-        formula_name = bottle_filename_formula_name filename
-        canonical_formula_name = if tap
-          "#{tap}/#{formula_name}"
-        else
-          formula_name
-        end
+        formula_name, canonical_formula_name = bottle_resolve_formula_names filename
         formula = Formulary.factory canonical_formula_name
         version = formula.pkg_version
         bintray_package = Bintray.package formula_name
