@@ -3,6 +3,12 @@ class Frescobaldi < Formula
   url "https://github.com/wbsoft/frescobaldi/releases/download/v2.18.1/frescobaldi-2.18.1.tar.gz"
   sha256 "475bbb9aeed8009fdb7b0c53e4da78ce7a204b548d0af6d909b699c99e61d4c1"
 
+  bottle do
+    sha256 "2b11cbd21fef365684ec0be8543a557fbc943ce9832b5c2b7b5204a081de74aa" => :yosemite
+    sha256 "c592d71f41e66f3f5115c8eac982344fa903eff02a7e3a011852a5ee3e39d968" => :mavericks
+    sha256 "cc6e9b3a940690ae225a157f4a0d95aec4db46f0ccf78442a99ae941f7a358a0" => :mountain_lion
+  end
+
   option "with-lilypond", "Install Lilypond from Homebrew/tex"
 
   depends_on :python if MacOS.version <= :snow_leopard
