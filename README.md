@@ -374,6 +374,9 @@ Copyright(c) 2014, Ooyala, Inc.
 
 ## TODO
 
+- Have server_start.sh use spark-submit (#155, others)  - would help resolve classpath/dependency issues.
+- More debugging for classpath issues
+- Update .g8 template, consider creating Activator template for sample job	
 - Add Swagger support.  See the spray-swagger project.
 - Implement an interactive SQL window.  See: [spark-admin](https://github.com/adatao/spark-admin)
 
