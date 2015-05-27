@@ -1,7 +1,6 @@
 require 'tab'
 require 'os/mac'
 require 'extend/ARGV'
-require 'bottle_version'
 
 def built_as_bottle? f
   return false unless f.installed?
