@@ -5,6 +5,13 @@ class Vnstat < Formula
 
   head "https://github.com/vergoh/vnstat.git"
 
+  bottle do
+    cellar :any
+    sha256 "e35e04ae895a0abdd11198ea4e313f4103c52b7f8e4356eb2b9d7dae8cebc254" => :yosemite
+    sha256 "995fa5a0cba75a852526b9bfe5dde9ab1d5ff168e6298175e607d7bd6dc9f47e" => :mavericks
+    sha256 "e1ad44a67cc8a6cb7cf5bb716473a42285226e0dca4f719f9e4d2be66f7f1e2b" => :mountain_lion
+  end
+
   depends_on "gd"
 
   def install
