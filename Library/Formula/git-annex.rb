@@ -8,10 +8,9 @@ class GitAnnex < Formula
   sha256 "77208899616ed973dca26137534533f03636af6314cbdbfdc3e4e51c5efeec6a"
 
   bottle do
-    cellar :any
-    sha1 "fa9fa816e728479b6d4b3e058a6ea3544db4acc2" => :yosemite
-    sha1 "be634c33bc9f4aa337404e0f5cf78ec989b45e3b" => :mavericks
-    sha1 "bf687c017b26ac5694e466afd8fe996c7ea2c22b" => :mountain_lion
+    sha256 "4bae9f9d41e97243371d0adc021922955c353aff37b1b8b2ba247dc16f9d19ce" => :yosemite
+    sha256 "796521c204d5da5c2bb149b65bd4685a78798861c4e4da8c7422bfe017e40332" => :mavericks
+    sha256 "9421a63dffda734a5ef9f25c51a6bbac8dcead100c6b6c6d166a98151fc7a501" => :mountain_lion
   end
 
   option "with-git-union-merge", "Build the git-union-merge tool"
