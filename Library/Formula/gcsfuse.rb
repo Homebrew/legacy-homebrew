@@ -6,6 +6,12 @@ class Gcsfuse < Formula
   url "https://github.com/GoogleCloudPlatform/gcsfuse/archive/v0.1.1.tar.gz"
   sha256 "cc3c12dc82a8e9ff0672976131b60af4161606c082f8dfe9cc51730caf4f3123"
 
+  bottle do
+    cellar :any
+    sha256 "56c8618fe16d0336b0c8dbd7882f5c33669f8e5d07d8a4dd779db97578d582ca" => :mavericks
+    sha256 "9c014ddaafe37faf831f8f09809bbad99cd945f5863d3db6dce3e51e5d1e1e17" => :mountain_lion
+  end
+
   depends_on :osxfuse
   depends_on "go" => :build
 
