@@ -18,7 +18,7 @@ class SoftwareSpec
     "32-bit"   => Option.new("32-bit", "Build 32-bit only"),
   }
 
-  attr_reader :name, :owner
+  attr_reader :name, :full_name, :owner
   attr_reader :build, :resources, :patches, :options
   attr_reader :deprecated_flags, :deprecated_options
   attr_reader :dependency_collector
@@ -46,6 +46,7 @@ class SoftwareSpec
 
   def owner= owner
     @name = owner.name
+    @full_name = owner.full_name
     @owner = owner
     @resource.owner = self
     resources.each_value do |r|
