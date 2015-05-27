@@ -57,12 +57,12 @@ module Homebrew
   end
 
   def puts_deps(formulae)
-    formulae.each { |f| puts "#{f.name}: #{deps_for_formula(f).sort_by(&:name) * " "}" }
+    formulae.each { |f| puts "#{f.full_name}: #{deps_for_formula(f).sort_by(&:name) * " "}" }
   end
 
   def puts_deps_tree(formulae)
     formulae.each do |f|
-      puts f.name
+      puts f.full_name
       recursive_deps_tree(f, 1)
       puts
     end
