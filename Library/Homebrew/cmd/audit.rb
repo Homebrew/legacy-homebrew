@@ -39,7 +39,7 @@ module Homebrew
 
         formula_count += 1
         problem_count += fa.problems.size
-        puts "#{f.name}:", fa.problems.map { |p| " * #{p}" }, ""
+        puts "#{f.full_name}:", fa.problems.map { |p| " * #{p}" }, ""
       end
     end
 
@@ -180,7 +180,7 @@ class FormulaAuditor
         end
 
         if @@aliases.include?(dep.name)
-          problem "Dependency '#{dep.name}' is an alias; use the canonical name '#{dep.to_formula.name}'."
+          problem "Dependency '#{dep.name}' is an alias; use the canonical name '#{dep.to_formula.full_name}'."
         end
 
         dep.options.reject do |opt|
@@ -261,7 +261,7 @@ class FormulaAuditor
     end
 
     # Make sure the formula name plus description is no longer than 80 characters
-    linelength = formula.name.length + ": ".length + desc.length
+    linelength = formula.full_name.length + ": ".length + desc.length
     if linelength > 80
       problem "Description is too long. \"name: desc\" should be less than 80 characters (currently #{linelength})."
     end
