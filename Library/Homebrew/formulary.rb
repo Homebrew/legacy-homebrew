@@ -97,17 +97,31 @@ class Formulary
   class BottleLoader < FormulaLoader
     def initialize bottle_name
       @bottle_filename = Pathname(bottle_name).realpath
-      name_without_version = bottle_filename_formula_name @bottle_filename
-      if name_without_version.empty?
-        if ARGV.homebrew_developer?
-          opoo "Add a new regex to bottle_version.rb to parse this filename."
+      @bottle_version = BottleVersion.parse @bottle_filename
+      name = full_name = nil
+      success = catch(:done) do
+        if @bottle_version.name.empty? || @bottle_version.version.nil?
+          name = full_name = bottle_name
+          throw(:done, false)
         end
-        name = bottle_name
-      else
-        name = name_without_version
+
+        name = full_name = @bottle_version.name
+        version = @bottle_version.version
+        tabfile = Utils.popen_read("tar", "-xOzf", @bottle_filename, "#{name}/#{version}/INSTALL_RECEIPT.json")
+        throw(:done, false) if tabfile.empty?
+
+        tap = Tab.from_tabfile_content(tabfile, @bottle_filename).tap
+        unless tap.nil? || tap == "Homebrew/homebrew"
+          full_name = "#{tap.sub("homebrew-", "")}/#{name}"
+        end
+        throw(:done, true)
       end
 
-      super name, Formulary.path(name)
+      if !success && ARGV.homebrew_developer?
+        opoo "Add a new regex to bottle_version.rb to parse this filename."
+      end
+
+      super name, Formulary.path(full_name)
     end
 
     def get_formula(spec)

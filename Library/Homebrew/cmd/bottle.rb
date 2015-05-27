@@ -139,9 +139,10 @@ module Homebrew
     end
 
     filename = Bottle::Filename.create(f, bottle_tag, bottle_revision)
+    bottle_version = BottleVersion.parse(filename)
 
-    if bottle_filename_formula_name(filename).empty?
-      return ofail "Add a new regex to bottle_version.rb to parse #{f.version} from #{filename}"
+    if bottle_version.name != f.name || bottle_version.version != f.pkg_version
+      return ofail "Add a new regex to bottle_version.rb to parse #{f.pkg_version} from #{filename}"
     end
 
     bottle_path = Pathname.pwd/filename
