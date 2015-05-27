@@ -24,7 +24,7 @@ module Homebrew
       query = ARGV.next
       Formula.each do |formula|
         if formula.desc =~ query_regexp(query)
-          puts "#{formula.name}: #{formula.desc}"
+          puts "#{formula.full_name}: #{formula.desc}"
         end
       end
     elsif ARGV.empty?
