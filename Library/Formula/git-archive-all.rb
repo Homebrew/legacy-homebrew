@@ -9,9 +9,9 @@ class GitArchiveAll < Formula
 
   bottle do
     cellar :any
-    sha1 "883e8ab977795ea4fb85ac41913e5b3b55a0f25b" => :mavericks
-    sha1 "6d7cd0e9d2ab7e9171585d6f121c1817719fc614" => :mountain_lion
-    sha1 "6833260e3badad055db6da98c6d308345c10a7d1" => :lion
+    sha256 "dddf1164f9a24ab37c784d906b3d4ffaebb0760951046a9e42f4955a8a2dee08" => :yosemite
+    sha256 "3965335a01bdecc405d9cb2bda02e5c430920cca57ccc2f4081e50ea2896ab91" => :mavericks
+    sha256 "97400a8e97ab0fe7e42a27e81a1a84eb3c26d5e9113d6a915b677726f4d727d0" => :mountain_lion
   end
 
   def install
