@@ -170,6 +170,10 @@ class Tab < OpenStruct
     source["tap"]
   end
 
+  def tap=(tap)
+    source["tap"] = tap
+  end
+
   def to_json
     attributes = {
       "used_options" => used_options.as_flags,
