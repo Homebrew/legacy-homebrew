@@ -96,7 +96,7 @@ module Superenv
   end
 
   def determine_cxx
-    determine_cc.to_s.gsub('gcc', 'g++').gsub('clang', 'clang++')
+    determine_cc.to_s.sub("gcc", "g++").sub(/(clang(-omp)?)/, '\0++')
   end
 
   def determine_path
@@ -291,7 +291,7 @@ module Superenv
 
   def cxx11
     case homebrew_cc
-    when "clang"
+    when /clang/
       append 'HOMEBREW_CCCFG', "x", ''
       append 'HOMEBREW_CCCFG', "g", ''
     when /gcc-(4\.(8|9)|5)/

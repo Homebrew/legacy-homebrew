@@ -24,6 +24,7 @@ class SoftwareSpec
   attr_reader :dependency_collector
   attr_reader :bottle_specification
   attr_reader :compiler_failures
+  attr_reader :compiler_standards
 
   def_delegators :@resource, :stage, :fetch, :verify_download_integrity
   def_delegators :@resource, :cached_download, :clear_cache
@@ -42,6 +43,7 @@ class SoftwareSpec
     @deprecated_options = []
     @build = BuildOptions.new(Options.create(@flags), options)
     @compiler_failures = []
+    @compiler_standards= []
   end
 
   def owner= owner
@@ -152,8 +154,13 @@ class SoftwareSpec
 
   def needs *standards
     standards.each do |standard|
+      compiler_standards << standard
       compiler_failures.concat CompilerFailure.for_standard(standard)
     end
+  end
+
+  def needs_compiler_feature?(feature)
+    compiler_standards.include?(feature)
   end
 
   def add_legacy_patches(list)
