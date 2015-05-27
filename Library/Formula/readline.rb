@@ -21,6 +21,8 @@ class Readline < Formula
     defaulting this GNU Readline installation to keg-only.
   EOS
 
+  depends_on "homebrew/dupes/ncurses" => :recommended unless OS.mac?
+
   # Vendor the patches.
   # The mirrors are unreliable for getting the patches, and the more patches
   # there are, the more unreliable they get. Pulling this patch inline to
@@ -34,8 +36,11 @@ class Readline < Formula
 
   def install
     ENV.universal_binary
-    system "./configure", "--prefix=#{prefix}", "--enable-multibyte"
-    system "make", "install"
+    system "./configure", "--prefix=#{prefix}", "--enable-multibyte",
+      ("--with-curses" if build.with? "ncurses")
+    args = []
+    args << "SHLIB_LIBS=-lcurses" if build.with? "ncurses"
+    system "make", "install", *args
 
     # The 6.3 release notes say:
     #   When creating shared libraries on Mac OS X, the pathname written into the
