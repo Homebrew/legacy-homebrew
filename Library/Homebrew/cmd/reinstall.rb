@@ -9,7 +9,7 @@ module Homebrew
     tab = Tab.for_formula(f)
     options = tab.used_options | f.build.used_options
 
-    notice  = "Reinstalling #{f.name}"
+    notice  = "Reinstalling #{f.full_name}"
     notice += " with #{options * ", "}" unless options.empty?
     oh1 notice
 
