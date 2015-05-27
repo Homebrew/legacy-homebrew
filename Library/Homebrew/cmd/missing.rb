@@ -18,8 +18,8 @@ module Homebrew
       missing_deps.reject! { |d| d.rack.exist? && d.rack.subdirs.length > 0 }
 
       unless missing_deps.empty?
-        yield f.name, missing_deps if block_given?
-        missing[f.name] = missing_deps
+        yield f.full_name, missing_deps if block_given?
+        missing[f.full_name] = missing_deps
       end
     end
     missing
