@@ -345,7 +345,7 @@ module Homebrew
         satisfied ||= requirement.optional?
         if !satisfied && requirement.default_formula?
           default = Formula[requirement.class.default_formula]
-          satisfied = satisfied_requirements?(default, :stable, formula.name)
+          satisfied = satisfied_requirements?(default, :stable, formula.full_name)
         end
         satisfied
       end
@@ -353,7 +353,7 @@ module Homebrew
       if unsatisfied_requirements.empty?
         true
       else
-        name = formula.name
+        name = formula.full_name
         name += " (#{spec})" unless spec == :stable
         name += " (#{dependency} dependency)" if dependency
         skip name
