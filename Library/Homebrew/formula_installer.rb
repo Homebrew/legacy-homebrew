@@ -70,7 +70,7 @@ class FormulaInstaller
 
     unless bottle.compatible_cellar?
       if install_bottle_options[:warn]
-        opoo "Building source; cellar of #{formula.name}'s bottle is #{bottle.cellar}"
+        opoo "Building source; cellar of #{formula.full_name}'s bottle is #{bottle.cellar}"
       end
       return false
     end
@@ -104,7 +104,7 @@ class FormulaInstaller
       end
     end
   rescue FormulaUnavailableError => e
-    e.dependent = formula.name
+    e.dependent = formula.full_name
     raise
   end
 
@@ -116,7 +116,7 @@ class FormulaInstaller
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
-        "You must `brew link #{unlinked_deps*' '}' before #{formula.name} can be installed" unless unlinked_deps.empty?
+        "You must `brew link #{unlinked_deps*' '}' before #{formula.full_name} can be installed" unless unlinked_deps.empty?
     end
   end
 
@@ -157,10 +157,10 @@ class FormulaInstaller
     formula.deprecated_flags.each do |deprecated_option|
       old_flag = deprecated_option.old_flag
       new_flag = deprecated_option.current_flag
-      opoo "#{formula.name}: #{old_flag} was deprecated; using #{new_flag} instead!"
+      opoo "#{formula.full_name}: #{old_flag} was deprecated; using #{new_flag} instead!"
     end
 
-    oh1 "Installing #{Tty.green}#{formula.name}#{Tty.reset}" if show_header?
+    oh1 "Installing #{Tty.green}#{formula.full_name}#{Tty.reset}" if show_header?
 
     @@attempted << formula
 
@@ -217,7 +217,7 @@ class FormulaInstaller
     deps = expand_dependencies(req_deps + formula.deps)
 
     if deps.empty? and only_deps?
-      puts "All dependencies for #{formula.name} are satisfied."
+      puts "All dependencies for #{formula.full_name} are satisfied."
     else
       install_dependencies(deps)
     end
@@ -311,7 +311,7 @@ class FormulaInstaller
 
   def install_dependencies(deps)
     if deps.length > 1
-      oh1 "Installing dependencies for #{formula.name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
+      oh1 "Installing dependencies for #{formula.full_name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
     end
 
     deps.each { |dep, options| install_dependency(dep, options) }
@@ -355,7 +355,7 @@ class FormulaInstaller
     fi.verbose            = verbose? && !quieter?
     fi.debug              = debug?
     fi.prelude
-    oh1 "Installing #{formula.name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
+    oh1 "Installing #{formula.full_name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     fi.install
     fi.caveats
     fi.finish
@@ -395,7 +395,7 @@ class FormulaInstaller
 
     if build_bottle? && formula.post_install_defined?
       ohai "Not running post_install as we're building a bottle"
-      puts "You can run it manually using `brew postinstall #{formula.name}`"
+      puts "You can run it manually using `brew postinstall #{formula.full_name}`"
     else
       post_install
     end
@@ -510,7 +510,7 @@ class FormulaInstaller
         keg.optlink
       rescue Keg::LinkError => e
         onoe "Failed to create #{formula.opt_prefix}"
-        puts "Things that depend on #{formula.name} will probably not build."
+        puts "Things that depend on #{formula.full_name} will probably not build."
         puts e
         Homebrew.failed = true
       end
@@ -598,7 +598,7 @@ class FormulaInstaller
     Homebrew.run_post_install(formula)
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
-    puts "You can try again using `brew postinstall #{formula.name}`"
+    puts "You can try again using `brew postinstall #{formula.full_name}`"
     ohai e, e.backtrace if debug?
     Homebrew.failed = true
     @show_summary_heading = true
