@@ -941,7 +941,7 @@ def check_for_linked_keg_only_brews
   Formula.each do |f|
     next unless f.keg_only? and f.installed?
     links = __check_linked_brew f
-    warnings[f.name] = links unless links.empty?
+    warnings[f.full_name] = links unless links.empty?
   end
 
   unless warnings.empty?
@@ -992,7 +992,7 @@ def check_missing_deps
     Some installed formula are missing dependencies.
     You should `brew install` the missing dependencies:
 
-        brew install #{missing.sort_by(&:name) * " "}
+        brew install #{missing.sort_by(&:full_name) * " "}
 
     Run `brew missing` for more details.
     EOS
