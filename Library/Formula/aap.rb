@@ -4,6 +4,12 @@ class Aap < Formula
   url "https://downloads.sourceforge.net/project/a-a-p/Aap/1.093/aap-1.093.zip"
   sha256 "7a6c6c4a819a8379e60c679fe0c3f93eb1b74204cd7cc1c158263f4b34943001"
 
+  bottle do
+    sha256 "2a0ac5d749435a00a40366cbbf0438e7cc29579d4ea73b4491743d34d53dafad" => :yosemite
+    sha256 "3044bc85097466a3b88dd7811602d8494f2afe6e1f6c98170056d2e52ca55094" => :mavericks
+    sha256 "250cbd3d70ba5d0972c625e5045a019b7ef53d07ecf5da9f9ead3e783b0bced0" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
