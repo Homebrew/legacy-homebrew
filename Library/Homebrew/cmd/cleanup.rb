@@ -50,7 +50,7 @@ module Homebrew
     elsif f.rack.subdirs.length > 1
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep.
-      opoo "Skipping #{f.name}: most recent version #{f.pkg_version} not installed"
+      opoo "Skipping #{f.full_name}: most recent version #{f.pkg_version} not installed"
     end
   end
 
@@ -120,7 +120,7 @@ module Homebrew
     elsif formula.opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
       Formula.installed.
-        select { |f| f.deps.any? { |d| d.name == formula.name } }.
+        select { |f| f.deps.any? { |d| d.to_formula.full_name == formula.full_name } }.
         all? { |f| f.rack.subdirs.all? { |keg| Tab.for_keg(keg).HEAD } }
     end
   end
