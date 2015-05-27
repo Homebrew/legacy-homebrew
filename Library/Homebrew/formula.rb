@@ -28,6 +28,11 @@ class Formula
   # e.g. `this-formula`
   attr_reader :name
 
+  # The fully-qualified name of this {Formula}.
+  # For core formula it's the same as {#name}.
+  # e.g. `homebrew/tap-name/this-formula`
+  attr_reader :full_name
+
   # The full path to this {Formula}.
   # e.g. `/usr/local/Library/Formula/this-formula.rb`
   attr_reader :path
@@ -87,6 +92,12 @@ class Formula
     @name = name
     @path = path
     @revision = self.class.revision || 0
+
+    if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
+      @full_name = "#{$1}/#{$2.gsub(/^homebrew-/, "")}/#{name}"
+    else
+      @full_name = name
+    end
 
     set_spec :stable
     set_spec :devel
@@ -714,6 +725,7 @@ class Formula
   def to_hash
     hsh = {
       "name" => name,
+      "full_name" => full_name,
       "desc" => desc,
       "homepage" => homepage,
       "versions" => {
