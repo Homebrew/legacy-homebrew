@@ -18,6 +18,7 @@ class Imagemagick < Formula
   option "with-fftw", "Compile with FFTW support"
   option "with-hdri", "Compile with HDRI support"
   option "with-jp2", "Compile with Jpeg2000 support"
+  option "with-openmp", "Compile with OpenMP support"
   option "with-perl", "enable build/install of PerlMagick"
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
   option "with-quantum-depth-16", "Compile with a quantum depth of 16 bit"
@@ -48,6 +49,8 @@ class Imagemagick < Formula
   depends_on "fftw" => :optional
   depends_on "pango" => :optional
 
+  needs :openmp if build.with? "openmp"
+
   skip_clean :la
 
   def install
@@ -59,9 +62,13 @@ class Imagemagick < Formula
       --enable-shared
       --disable-static
       --with-modules
-      --disable-openmp
     ]
 
+    if build.with? "openmp"
+      args << "--enable-openmp"
+    else
+      args << "--disable-openmp"
+    end
     args << "--disable-opencl" if build.without? "opencl"
     args << "--without-gslib" if build.without? "ghostscript"
     args << "--without-perl" if build.without? "perl"
