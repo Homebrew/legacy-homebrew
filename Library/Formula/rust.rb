@@ -11,14 +11,24 @@ class Rust < Formula
 
     # name includes date to satisfy cache
     resource "cargo-nightly-2015-05-14" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-05-14/cargo-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "46403af9abb0dd0d9e3c31c20aa2508878ae1e8d0f1e7913addbfc08605b9733"
+      if OS.mac?
+        url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-05-14/cargo-nightly-x86_64-apple-darwin.tar.gz"
+        sha256 "46403af9abb0dd0d9e3c31c20aa2508878ae1e8d0f1e7913addbfc08605b9733"
+      else
+        url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-05-14/cargo-nightly-x86_64-unknown-linux-gnu.tar.gz"
+        sha256 "43d6411d004b94605abbf77a3fdf1a7cd771495888a80ce686348b9c18406ed3"
+      end
     end
 
     # name includes date to satisfy cache
     resource "rustc-nightly-2015-05-14" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/dist/2015-05-14/rustc-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "1f7f447e369190d4d0d3f8c516e6c4d07e458f258f71737422b3f542b6d4da1e"
+      if OS.mac?
+        url "https://static-rust-lang-org.s3.amazonaws.com/dist/2015-05-14/rustc-nightly-x86_64-apple-darwin.tar.gz"
+        sha256 "1f7f447e369190d4d0d3f8c516e6c4d07e458f258f71737422b3f542b6d4da1e"
+      else
+        url "https://static-rust-lang-org.s3.amazonaws.com/dist/2015-05-14/rustc-nightly-x86_64-unknown-linux-gnu.tar.gz"
+        sha256 "cb34fe17ed3fc2d8ad8fc20af3fa55f268ddfc0efa1cca4db535eea49c8e5306"
+      end
     end
   end
 
