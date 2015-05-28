@@ -1,7 +1,7 @@
 class Ats2Postiats < Formula
   homepage "http://www.ats-lang.org/"
-  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.11/ATS2-Postiats-0.1.11.tgz"
-  sha1 "89f664ca39fe90057a789f867d6c9f30df5f8c9a"
+  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.13/ATS2-Postiats-0.1.13.tgz"
+  sha1 "d6cc8b5bcd8a323701d7c6a86cf4466ad36af4b4"
 
   bottle do
     cellar :any
