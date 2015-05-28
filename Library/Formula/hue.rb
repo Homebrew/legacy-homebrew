@@ -18,31 +18,25 @@ class Hue < Formula
 
   def install
     # patched the Makefile vars to install to ${PREFIX}/libexec
-    ohai "Building Hue from source - this process will take several minutes ..."
     system "make", "-j", "1", "install", "PREFIX=#{prefix}"
 
-    ohai "Setting up the default configuration file"
-    cp "desktop/conf.dist/hue.ini" "#{libexec}/desktop/conf/hue.ini"
+    (libexec/"desktop/conf").install "desktop/conf.dist/hue.ini"
+    etc.install_symlink "#{libexec}/desktop/conf/hue.ini"
 
     bin.install_symlink "#{libexec}/build/env/bin/hue"
-    etc.install_symlink "#{libexec}/desktop/conf/hue.ini"
   end
 
   test do
-
-    ohai "starting the Hue server in local mode"
     pid = fork do
-      exec "#{bin}/hue", "runserver"
+      system "#{bin}/hue", "runserver"
     end
     sleep(6)
 
     begin
-      ohai "checking to make sure the server is running"
       system "curl -s -S -f -L http://localhost:8000"
       assert_equal 0, $?.exitstatus
     ensure
       sleep(2)
-      ohai "stopping the Hue server"
       system "pkill -f hue"
     end
   end
