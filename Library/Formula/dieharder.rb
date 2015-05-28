@@ -1,11 +1,9 @@
-require 'formula'
-
 class Dieharder < Formula
-  homepage 'http://www.phy.duke.edu/~rgb/General/dieharder.php'
-  url 'http://www.phy.duke.edu/~rgb/General/dieharder/dieharder-3.31.1.tgz'
-  sha1 '506b1380c780f90372d9d4adcb5cfcc96234f2a8'
+  homepage "https://www.phy.duke.edu/~rgb/General/dieharder.php"
+  url "https://www.phy.duke.edu/~rgb/General/dieharder/dieharder-3.31.1.tgz"
+  sha256 "6cff0ff8394c553549ac7433359ccfc955fb26794260314620dfa5e4cd4b727f"
 
-  depends_on 'gsl'
+  depends_on "gsl"
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-shared"
@@ -13,6 +11,6 @@ class Dieharder < Formula
   end
 
   test do
-    system "#{bin}/dieharder", "-a", "-g", "501"
+    system "#{bin}/dieharder", "-o", "-t", "10"
   end
 end
