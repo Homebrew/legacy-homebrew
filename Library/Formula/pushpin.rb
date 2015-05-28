@@ -1,8 +1,8 @@
 class Pushpin < Formula
   homepage "http://pushpin.org"
   url "http://packages.fanout.io/source/pushpin-1.2.0.tar.bz2"
-  sha256 "10156a5c3a5e956569fe25d5e467e3e452fc2b6b0b63c7894fc7f6aee6c7c414"
-  revision 1
+  sha256 "b0a9fb68ecbf366e1c7ab22582f9d3b3ea36d8f161500aef6e2e80d728cd3927"
+  revision 2
 
   head "https://github.com/fanout/pushpin.git"
 
