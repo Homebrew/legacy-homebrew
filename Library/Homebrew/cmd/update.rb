@@ -238,18 +238,6 @@ class Report
     dump_formula_report :D, "Deleted Formulae"
   end
 
-  def tapped_formula_for key
-    fetch(key, []).select { |path| HOMEBREW_TAP_PATH_REGEX === path.to_s }
-  end
-
-  def new_tapped_formula
-    tapped_formula_for :A
-  end
-
-  def removed_tapped_formula
-    tapped_formula_for :D
-  end
-
   def select_formula key
     fetch(key, []).map do |path|
       case path.to_s
