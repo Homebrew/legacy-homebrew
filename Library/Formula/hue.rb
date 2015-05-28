@@ -2,7 +2,7 @@ class Hue < Formula
   desc "Hue is a Web interface for analyzing data with Apache Hadoop."
   homepage "http://gethue.com/"
   url "https://github.com/cloudera/hue/archive/release-3.8.1.tar.gz"
-  version "3.8.1"
+  # version "3.8.1" # redundant with version scanned from URL
   sha256 "582777f567b9f4a34e4ce58cfd5ed24aff15f3e02f193e7990329d8cb0161a8a"
 
   # system dependencies - either Homebrew or Mac OS versions
@@ -11,27 +11,28 @@ class Hue < Formula
   depends_on :mysql
 
   depends_on "maven" => :build
+  depends_on "openssl" => :optional
   depends_on "gmp"
 
   patch :DATA
 
   def install
-    # patched the Makefile vars to install to $PREFIX/libexec
+    # patched the Makefile vars to install to ${PREFIX}/libexec
     ohai "Building Hue from source - this process will take several minutes ..."
     system "make", "-j", "1", "install", "PREFIX=#{prefix}"
 
-    ohai "Setting up the default configuration file" 
-    system "cp desktop/conf.dist/hue.ini #{prefix}/libexec/desktop/conf/hue.ini"
+    ohai "Setting up the default configuration file"
+    cp "desktop/conf.dist/hue.ini" "#{libexec}/desktop/conf/hue.ini"
 
-    bin.install_symlink "#{prefix}/libexec/build/env/bin/hue"
-    etc.install_symlink "#{prefix}/libexec/desktop/conf/hue.ini"
+    bin.install_symlink "#{libexec}/build/env/bin/hue"
+    etc.install_symlink "#{libexec}/desktop/conf/hue.ini"
   end
 
   test do
 
     ohai "starting the Hue server in local mode"
     pid = fork do
-      exec "#{prefix}/bin/hue", "runserver"
+      exec "#{bin}/hue", "runserver"
     end
     sleep(6)
 
@@ -47,7 +48,6 @@ class Hue < Formula
   end
 
 end
-
 __END__
 diff --git a/desktop/core/ext-py/tablib-develop/setup.py b/desktop/core/ext-py/tablib-develop/setup.py
 index fb16546..6f3bcfe 100755
