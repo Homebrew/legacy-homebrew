@@ -4,9 +4,7 @@ class Haxe < Formula
   homepage "http://haxe.org"
 
   stable do
-    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.1.3", :revision => "7be30670b2f1f9b6082499c8fb9e23c0a6df6c28"
-    # Remove the below with the next stable release
-    depends_on MaximumMacOSRequirement => :mavericks
+    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.2.0"
   end
 
   bottle do
@@ -22,7 +20,7 @@ class Haxe < Formula
 
   depends_on "objective-caml" => :build
   depends_on "camlp4" => :build
-  depends_on "neko" => :optional
+  depends_on "neko" => :build
 
   def install
     # Build requires targets to be built in specific order
