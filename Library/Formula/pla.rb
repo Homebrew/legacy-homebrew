@@ -1,8 +1,8 @@
 class Pla < Formula
   desc "A tool for building gantt charts in format PNG, EPS, PDF or SVG."
   homepage "http://www.arpalert.org/pla.html"
-  url "http://www.arpalert.org/src/pla-1.1.tar.gz"
-  sha256 "a213c5e1060c97618d0eb0462cfdf738532591b30f18b36a37c1a4398346ac37"
+  url "http://www.arpalert.org/src/pla-1.2.tar.gz"
+  sha256 "c2f1ce50b04032abf7f88ac07648ea40bed2443e86e9f28f104d341965f52b9c"
 
   bottle do
     cellar :any
@@ -12,10 +12,10 @@ class Pla < Formula
   end
 
   depends_on "cairo"
+  depends_on "pkg-config" => :build
 
   def install
-    ENV.prepend "CFLAGS", "-I#{Formula["cairo"].opt_include}/cairo"
-    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
+    system "make"
     bin.install "pla"
   end
 
