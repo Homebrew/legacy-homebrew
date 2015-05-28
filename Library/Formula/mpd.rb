@@ -59,6 +59,7 @@ class Mpd < Formula
   depends_on "yajl" => :optional        # JSON library for SoundCloud
   depends_on "opus" => :optional        # Opus support
   depends_on "libvorbis" => :optional
+  depends_on "libnfs" => :optional
 
   def install
     # mpd specifies -std=gnu++0x, but clang appears to try to build
@@ -88,6 +89,7 @@ class Mpd < Formula
     args << "--disable-lame-encoder" if build.without? "lame"
     args << "--disable-soundcloud" if build.without? "yajl"
     args << "--enable-vorbis-encoder" if build.with? "libvorbis"
+    args << "--enable-nfs" if build.with? "libnfs"
 
     system "./configure", *args
     system "make"
