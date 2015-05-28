@@ -166,6 +166,7 @@ class FormulaInstaller
 
     if pour_bottle?(:warn => true)
       begin
+        install_relocation_tools if formula.bottle.needs_relocation?
         pour
       rescue => e
         raise if ARGV.homebrew_developer?
@@ -324,6 +325,11 @@ class FormulaInstaller
     deps.each { |dep, options| install_dependency(dep, options) }
 
     @show_header = true unless deps.empty?
+  end
+
+  def install_relocation_tools
+    ohai "placeholder"
+    true
   end
 
   class DependencyInstaller < FormulaInstaller
