@@ -5,6 +5,13 @@ class Tvnamer < Formula
   sha256 "c28836f4c9263ee8ad6994788ad35f00e66fa1bd602e876364cd9b938f2843c8"
   head "https://github.com/dbr/tvnamer.git"
 
+  bottle do
+    cellar :any
+    sha256 "e2054cad544e9a1bc8d4eb7925c33909d126efaa7cb79a63d58e655a9d5b6e7d" => :yosemite
+    sha256 "ccbdd91361cf82fa43718a3aa43291901d7ec26864a03422b47dbb0d6ebcf71c" => :mavericks
+    sha256 "a055ef2f5c60a5e0ae4207ad85db4b9c6c961c0b0bea74505ebd47e1d331b32a" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "tvdb_api" do
