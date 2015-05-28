@@ -244,6 +244,10 @@ class Bottle
     @spec.compatible_cellar?
   end
 
+  def needs_relocation?
+    @spec.needs_relocation?
+  end
+
   def stage
     resource.downloader.stage
   end
@@ -274,6 +278,10 @@ class BottleSpecification
 
   def compatible_cellar?
     cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+  end
+
+  def needs_relocation?
+    @does_not_need_relocation == false
   end
 
   def tag?(tag)
