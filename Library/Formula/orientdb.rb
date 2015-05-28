@@ -2,9 +2,9 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.9.tar.gz&os=mac'
-  version '2.0.9'
-  sha1 '03637f65a18831a382ca64b87660578f16a3157b'
+  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.10.tar.gz&os=mac'
+  version '2.0.10'
+  sha1 '0903345ee525fb102e67807b7dded78871971680'
 
   bottle do
     cellar :any
