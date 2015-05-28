@@ -3,13 +3,6 @@ class Elasticsearch < Formula
   url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.tar.gz"
   sha256 "efae7897367ac3fa8057d02fad31c72e215b6edef599b63e373d3ce0c1049a14"
 
-  bottle do
-    cellar :any
-    sha256 "45d1eb8e7ca180102cbfcb3188c6f2c0acb3322bbf47e6ebe67238a623d32c12" => :yosemite
-    sha256 "0bb1d68827a188e8f4c2f11919dfe029934a9862fbc4939a050e77a54a171cc5" => :mavericks
-    sha256 "2aaa66c6d0a6ac432d96d83aed18c8c6211c18ad635584293d99803890d3136e" => :mountain_lion
-  end
-
   depends_on :java => "1.7+"
 
   head do
