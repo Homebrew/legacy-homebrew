@@ -13,13 +13,14 @@ class Luyten < Formula
 
   def install
     if build.head?
-      version = `mvn org.apache.maven.plugins:maven-help-plugin:evaluate -Dexpression=project.version | grep -v '\\['`.chomp
+      ver = `mvn org.apache.maven.plugins:maven-help-plugin:evaluate -Dexpression=project.version`.split.grep(/^\d+\.\d+\.\d+/).uniq.first
       system "mvn", "clean", "package"
-      libexec.install "target/luyten-#{version}.jar"
+      libexec.install "target/luyten-#{ver}.jar"
     else
-      libexec.install "luyten-#{version}.jar"
+      ver = "#{version}"
+      libexec.install "luyten-#{ver}.jar"
     end
-    bin.write_jar_script libexec/"luyten-#{version}.jar", "luyten"
+    bin.write_jar_script libexec/"luyten-#{ver}.jar", "luyten"
   end
 
   test do
