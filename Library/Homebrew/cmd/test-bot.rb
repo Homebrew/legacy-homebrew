@@ -525,7 +525,7 @@ module Homebrew
       if formula.devel && formula.stable? && !ARGV.include?('--HEAD') \
          && satisfied_requirements?(formula, :devel)
         test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
-        run_as_not_developer { test "brew", "install", "--devel", "--verbose", dependent.name }
+        run_as_not_developer { test "brew", "install", "--devel", "--verbose", canonical_formula_name }
         devel_install_passed = steps.last.passed?
         test "brew", "audit", "--devel", *audit_args
         if devel_install_passed
