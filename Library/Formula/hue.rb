@@ -27,20 +27,19 @@ class Hue < Formula
   end
 
   test do
-    pid = fork do
+    fork do
       system "#{bin}/hue", "runserver"
     end
     sleep(6)
 
     begin
-      system "curl -s -S -f -L http://localhost:8000"
+      system "curl", "-s", "-S", "-f", "-L", "http://localhost:8000"
       assert_equal 0, $?.exitstatus
     ensure
       sleep(2)
-      system "pkill -f hue"
+      system "pkill", "-f", "hue"
     end
   end
-
 end
 __END__
 diff --git a/desktop/core/ext-py/tablib-develop/setup.py b/desktop/core/ext-py/tablib-develop/setup.py
