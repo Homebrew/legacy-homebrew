@@ -9,8 +9,7 @@ class Eg < Formula
               /DEFAULT_EXAMPLES_DIR = .+$/,
               "DEFAULT_EXAMPLES_DIR = os.path.join('#{share}', 'examples')"
 
-    mv "eg", "commands"
-    prefix.install "commands"
+    prefix.install "eg" => "commands"
     inreplace "bin/eg",
               "from eg import eg_exec",
               <<-EOS.undent
