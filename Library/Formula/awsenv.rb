@@ -5,6 +5,13 @@ class Awsenv < Formula
   url "https://github.com/Luzifer/awsenv/archive/v0.4.2.tar.gz"
   head "https://github.com/Luzifer/awsenv.git"
   sha256 "10667db8365c1f74ec0a789db6e822f2d7c8342a80c0bec95113318c113c1d50"
+  bottle do
+    cellar :any
+    sha256 "a5d568e2f756fcc1b795be44a37dfb5ca9c83d1ee0e23d285b8d343339dcba51" => :yosemite
+    sha256 "62bd5d3903007fe3a101a4afe285cd620d0204f6ba379de7fbd161a14296bea1" => :mavericks
+    sha256 "aea71464130719792e0ce96e4c61136dc174ffe4c4a5e52f1be730d27953b326" => :mountain_lion
+  end
+
   desc "awsenv is a credential store for people using one or more AWS account"
 
   depends_on "go" => :build
