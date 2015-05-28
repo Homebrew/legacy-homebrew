@@ -1,7 +1,7 @@
 class Thefuck < Formula
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.43.tar.gz"
-  sha256 "24ba074a51e988ddb7dbc5dcfce70865799b33499ba46f4826329c9be961305e"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.44.tar.gz"
+  sha256 "7379afc90f3ac862215690d19d7022255af56159d90511dfaaddf38b02048587"
 
   head "https://github.com/nvbn/thefuck.git"
 
