@@ -19,6 +19,8 @@ class PandocCiteproc < Formula
   depends_on "cabal-install" => :build
   depends_on "pandoc"
 
+  setup_ghc_compilers
+
   def install
     cabal_sandbox do
       cabal_install "--only-dependencies"

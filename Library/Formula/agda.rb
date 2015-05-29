@@ -33,6 +33,8 @@ class Agda < Formula
   depends_on "bdw-gc" if build.with? "epic-backend"
   depends_on "emacs" => :optional
 
+  setup_ghc_compilers
+
   head do
     resource "stdlib" do
       url "https://github.com/agda/agda-stdlib.git", :branch => "master"
