@@ -6,9 +6,10 @@ class Szl < Formula
 
   bottle do
     cellar :any
-    sha256 "669604692ce1fcc7d3daaa607742ea9f40fc776717f8102ff734da9d703636bf" => :yosemite
-    sha256 "d37d8e41d91a4931744d55ea0ff891b3b19f85f459ba4a5a2a21fb12ec3d71f8" => :mavericks
-    sha256 "38f0ce52268749130b6adf82071d5594f0ff4999c4ed71ce9ed6ef2de8af773d" => :mountain_lion
+    revision 1
+    sha256 "92a10b08dae8394ac7ac5db90d351fad99bc74ff94f966bb888d3797e78c2891" => :yosemite
+    sha256 "235f69f9ca8061937fe3f72c6f2467027fe2083837cebbeb2d98e33a25c09b83" => :mavericks
+    sha256 "cf31222f970c0ccd5cc34d8704244e6cf86c353b5fe9658ecfeedd914ffe7174" => :mountain_lion
   end
 
   depends_on "binutils" # For objdump
