@@ -1,6 +1,6 @@
 class Eg < Formula
   homepage "https://github.com/srsudar/eg"
-  desc "Useful examples for command line tools."
+  desc "Useful examples for command-line tools."
   url "https://github.com/srsudar/eg/archive/v0.0.3.tar.gz"
   sha256 "c257e334f2a2e494f9b9791b92c1d3f7b00da3e2e7ec47f02d720342b466f968"
 
