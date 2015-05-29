@@ -1,13 +1,13 @@
 class Nvm < Formula
   homepage "https://github.com/creationix/nvm"
-  url "https://github.com/creationix/nvm/archive/v0.25.3.tar.gz"
-  sha256 "6c15eda2d8ee01c08c190771ad493c1bdcf0caefad29b4ade6222b527084366f"
+  url "https://github.com/creationix/nvm/archive/v0.25.4.tar.gz"
+  sha256 "6df007c5e9e36a8409f3daeced1d50d66b0d03ebecd780533d4546c519d351a7"
   head "https://github.com/creationix/nvm.git"
 
   resource "nvm-exec" do
-    url "https://raw.githubusercontent.com/creationix/nvm/v0.25.3/nvm-exec"
+    url "https://raw.githubusercontent.com/creationix/nvm/v0.25.4/nvm-exec"
     sha256 "a0581795f10114b9759992a82a43496daf4b4a52ad381a3072d8eee9866a28c5"
-    version "0.25.3"
+    version "0.25.4"
   end
 
   def install
