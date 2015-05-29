@@ -1,10 +1,8 @@
-require 'formula'
-
 class Cppi < Formula
-  homepage 'http://www.gnu.org/software/cppi/'
-  url 'http://ftpmirror.gnu.org/cppi/cppi-1.18.tar.xz'
-  mirror 'http://ftp.gnu.org/cppi/cppi-1.18.tar.xz'
-  sha1 '5f46d04041fc6e3413d5312db5b99329143a7c33'
+  homepage "https://www.gnu.org/software/cppi/"
+  url "http://ftpmirror.gnu.org/cppi/cppi-1.18.tar.xz"
+  mirror "https://ftp.gnu.org/cppi/cppi-1.18.tar.xz"
+  sha256 "12a505b98863f6c5cf1f749f9080be3b42b3eac5a35b59630e67bea7241364ca"
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -16,6 +14,15 @@ class Cppi < Formula
   end
 
   test do
-    system "#{bin}/cppi", "--version"
+    test = <<-EOS.undent
+      #ifdef TEST
+      #include <homebrew.h>
+      #endif
+    EOS
+    assert_equal <<-EOS.undent, pipe_output("#{bin}/cppi", test, 0)
+      #ifdef TEST
+      # include <homebrew.h>
+      #endif
+    EOS
   end
 end
