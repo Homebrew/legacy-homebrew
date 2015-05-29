@@ -20,8 +20,15 @@ module Homebrew
       exec_browser "https://admin.fedoraproject.org/pkgdb/packages/%2A#{ARGV.next}%2A/"
     elsif ARGV.include? '--ubuntu'
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+    elsif ARGV.include? '--desc'
+      query = ARGV.next
+      Formula.each do |formula|
+        if formula.desc =~ query_regexp(query)
+          puts "#{formula.full_name}: #{formula.desc}"
+        end
+      end
     elsif ARGV.empty?
-      puts_columns Formula.names
+      puts_columns Formula.full_names
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
       query = ARGV.first
       user, repo, name = query.split("/", 3)
@@ -145,7 +152,7 @@ module Homebrew
 
   def search_formulae rx
     aliases = Formula.aliases
-    results = (Formula.names+aliases).grep(rx).sort
+    results = (Formula.full_names+aliases).grep(rx).sort
 
     # Filter out aliases when the full name was also found
     results.reject do |name|

@@ -125,7 +125,7 @@ module Homebrew
       unless ARGV.include? '--bottle'
         changed_formulae.each do |f|
           next unless f.bottle
-          opoo "#{f.name} has a bottle: do you need to update it with --bottle?"
+          opoo "#{f.full_name} has a bottle: do you need to update it with --bottle?"
         end
       end
 
@@ -180,7 +180,7 @@ module Homebrew
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
             sleep 2
-            safe_system "brew", "fetch", "--retry", "--force-bottle", f.name
+            safe_system "brew", "fetch", "--retry", "--force-bottle", f.full_name
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
@@ -192,9 +192,9 @@ module Homebrew
 
       if ARGV.include? '--install'
         changed_formulae.each do |f|
-          ohai "Installing #{f.name}"
+          ohai "Installing #{f.full_name}"
           install = f.installed? ? 'upgrade' : 'install'
-          safe_system 'brew', install, '--debug', f.name
+          safe_system 'brew', install, '--debug', f.full_name
         end
       end
     end

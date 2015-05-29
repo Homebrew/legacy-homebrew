@@ -160,7 +160,7 @@ class Build
     end
     Keg.new(path).optlink
   rescue StandardError
-    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f.name}. Sorry :("
+    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f.full_name}. Sorry :("
   end
 end
 

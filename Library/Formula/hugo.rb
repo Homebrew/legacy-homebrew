@@ -1,51 +1,21 @@
 require "language/go"
 
 class Hugo < Formula
+  desc "A static site generator emphasizing speed and configurability"
   homepage "https://gohugo.io/"
-  revision 1
+  url "https://github.com/spf13/hugo/archive/v0.14.tar.gz"
+  sha256 "67e0fda342e6a35490ce03f5535e30cf04bc06775c47bacf416d96d83cce4535"
 
-  stable do
-    url "https://github.com/spf13/hugo/archive/v0.13.tar.gz"
-    sha256 "4d3f1fd0df1f993ef188b2e2c2e1c4a45411d9f7b4ff6ebcad24b9288e9ff278"
-    # remove `-DEV` from version string to prevent confusion
-    patch do
-      url "https://gist.githubusercontent.com/dunn/b4a5c15815b9067d0dcf/raw/d64809d68b716e0ce3286dd685dd23eb475c18ec/hugo.diff"
-      sha256 "1b8caa1dccd2001152de08b906d7429385c570243dbf7821a0e07f1643e2c388"
-    end
-
-    # corrects repository url for osext; remove in next release
-    patch do
-      url "https://github.com/spf13/hugo/commit/967d001ebe40cfe90992d953880356a495216202.diff"
-      sha256 "5a991372a54ac049783926c1993d920f46ab52563ff1877e7aaddc40b5a79e22"
-    end
-
-    # Install version of fsnotify needed by stable
-    go_resource "gopkg.in/fsnotify.v0" do
-      url "https://github.com/go-fsnotify/fsnotify.git",
-        :branch => "v0",
-        :revision => "ea925a0a47d225b2ca7f9932b01d2ed4f3ec74f6"
-    end
-  end
-
-  # Install version of fsnotify needed by head
-  head do
-    url "https://github.com/spf13/hugo.git"
-    go_resource "gopkg.in/fsnotify.v1" do
-      url "https://github.com/go-fsnotify/fsnotify.git",
-        :revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
-    end
-  end
+  head "https://github.com/spf13/hugo.git"
 
   bottle do
     cellar :any
-    sha256 "318cd60e3fd01d0876952ca5eac6870da04f40d1f0513751fce8fc85fef9f200" => :yosemite
-    sha256 "28a230b589cb78a4868449409633871c7983d2f385d1a6e64538236b35a19f1c" => :mavericks
-    sha256 "ec9257d512d512ca607360f59902a07e0eec1b2e07d7cbb0ac7639407f715c37" => :mountain_lion
+    sha256 "6b66a7a6d98818464279913d96f55cc28f1e9876a2f9f6ff72bc02dbea11ebd2" => :yosemite
+    sha256 "1cb8e13a2ec21fb7cb588dc451844be6a70143f6ba5c03f583aa3480c5648aa0" => :mavericks
+    sha256 "0134339448731790a04bf782703e1de8e338f5467a3e24b0ffc5c73e9acf7156" => :mountain_lion
   end
 
   depends_on "go" => :build
-  depends_on "bazaar" => :build
-  depends_on :hg => :build
 
   go_resource "bitbucket.org/pkg/inflect" do
     url "https://bitbucket.org/pkg/inflect",
@@ -54,7 +24,7 @@ class Hugo < Formula
   end
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
-        :revision => "443a628bc233f634a75bcbdd71fe5350789f1afa"
+        :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
   end
   go_resource "github.com/dchest/cssmin" do
     url "https://github.com/dchest/cssmin.git",
@@ -62,15 +32,15 @@ class Hugo < Formula
   end
   go_resource "github.com/eknkc/amber" do
     url "https://github.com/eknkc/amber.git",
-        :revision => "dade3a75e1ab1cf0c2cafae1397b32a99aaaef4a"
+        :revision => "ee5a5b8364bb73899fdd529d23af6ad9230f8a06"
   end
   go_resource "github.com/gorilla/websocket" do
     url "https://github.com/gorilla/websocket.git",
-        :revision => "2dbddebb8266b93c5e6b119efb54e89043186f3f"
+        :revision => "ecff5aabe41f13b4cdf897e3c0c9bbccbe552a29"
   end
   go_resource "github.com/kardianos/osext" do
     url "https://github.com/kardianos/osext.git",
-        :revision => "ccfcd0245381f0c94c68f50626665eed3c6b726a"
+        :revision => "8fef92e41e22a70e700a96b29f066cda30ea24ef"
   end
   go_resource "github.com/mitchellh/mapstructure" do
     url "https://github.com/mitchellh/mapstructure.git",
@@ -82,19 +52,19 @@ class Hugo < Formula
   end
   go_resource "github.com/russross/blackfriday" do
     url "https://github.com/russross/blackfriday.git",
-        :revison => "77efab57b2f74dd3f9051c79752b2e8995c8b789"
+        :revision => "4bed88b4fd00fbb66b49b0f38ed3dd0b902ab515"
   end
   go_resource "github.com/spf13/afero" do
     url "https://github.com/spf13/afero.git",
-        :revision => "139e50e29af82d1d998f0e38fabf4947c668acc6"
+        :revision => "e54aac2c6a0e639c31cbfe95944a1e9c01c05606"
   end
   go_resource "github.com/spf13/cast" do
     url "https://github.com/spf13/cast.git",
-        :revision => "2c4fdb5416dd394ff5e61fcdb8eb4f09e46a2ed8"
+        :revision => "4d07383ffe94b5e5a6fa3af9211374a4507a0184"
   end
   go_resource "github.com/spf13/cobra" do
     url "https://github.com/spf13/cobra.git",
-      :revision => "9cb5e8502924a8ff1cce18a9348b61995d7b4fde"
+        :revision => "c11766b405b388c6bbafaa1c8b3ad2eaf471b7b6"
   end
   go_resource "github.com/spf13/fsync" do
     url "https://github.com/spf13/fsync.git",
@@ -110,37 +80,44 @@ class Hugo < Formula
   end
   go_resource "github.com/spf13/viper" do
     url "https://github.com/spf13/viper.git",
-        :revision => "5b0b926e3dd4bd9bc75a2b9fac23279c9fae2d9f"
+        :revision => "be782f3fee037d2db69c1c8af0e985e81e1ac273"
   end
   go_resource "github.com/stretchr/testify" do
     url "https://github.com/stretchr/testify.git",
-        :revision => "e4ec8152c15fc46bd5056ce65997a07c7d415325"
+        :revision => "dab07ac62d4905d3e48d17dc549c684ac3b7c15a"
   end
   go_resource "github.com/yosssi/ace" do
     url "https://github.com/yosssi/ace.git",
-        :revision => "1f82044938a7180f6fb6bbb3a29688d1e6dbe74b"
+        :revision => "78e48a2f0ac5fb5a642585f96b03a5f47f7775f5"
   end
-
+  go_resource "github.com/miekg/mmark" do
+    url "https://github.com/miekg/mmark.git",
+        :revision => "8a5a95ecab1c0d187754b4074c0d6f5215a26565"
+  end
   go_resource "gopkg.in/yaml.v2" do
     url "https://github.com/go-yaml/yaml.git",
         :branch => "v2",
         :revision => "49c95bdc21843256fb6c4e0d370a05f24a0bf213"
   end
+  go_resource "gopkg.in/fsnotify.v1" do
+    url "https://github.com/go-fsnotify/fsnotify.git",
+        :revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
+  end
 
   # dependency for blackfriday
   go_resource "github.com/shurcooL/sanitized_anchor_name" do
     url "https://github.com/shurcooL/sanitized_anchor_name.git",
-        :revision => "8e87604bec3c645a4eeaee97dfec9f25811ff20d"
+        :revision => "11a20b799bf22a02808c862eb6ca09f7fb38f84a"
   end
 
   # dependencies for cobra
   go_resource "github.com/spf13/pflag" do
     url "https://github.com/spf13/pflag.git",
-        :revision => "18d831e92d67eafd1b0db8af9ffddbd04f7ae1f4"
+        :revision => "0ed81a961505a7dfaab5490049a7a324743e6f03"
   end
   go_resource "github.com/inconshreveable/mousetrap" do
     url "https://github.com/inconshreveable/mousetrap.git",
-      :revision => "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+        :revision => "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
   end
 
   # dependency for purell
@@ -156,7 +133,11 @@ class Hugo < Formula
   end
   go_resource "github.com/xordataexchange/crypt" do
     url "https://github.com/xordataexchange/crypt.git",
-        :revision => "0499a3c94698e44032bd5fab8ba6f45672406678"
+        :revision => "93de65664ef094aa5acff4f5201ac17580370af7"
+  end
+  go_resource "github.com/magiconair/properties" do
+    url "https://github.com/magiconair/properties.git",
+        :revision => "d5929c67198951106f49f7ea425198d0f1a08f7f"
   end
 
   # dependency for pretty
@@ -173,17 +154,17 @@ class Hugo < Formula
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto",
         :using => :git,
-        :revision => "1351f936d976c60a0a48d728281922cf63eafb8d"
+        :revision => "4d48e5fa3d62b5e6e71260571bf76c767198ca02"
   end
   go_resource "github.com/coreos/go-etcd" do
     url "https://github.com/coreos/go-etcd.git",
-        :revision => "4734e7aca379f0d7fcdf04fbb2101696a4b45ce8"
+        :revision => "73a8ef737e8ea002281a28b4cb92a1de121ad4c6"
   end
 
   # dependency for go-etcd
   go_resource "github.com/coreos/etcd" do
     url "https://github.com/coreos/etcd.git",
-        :revision => "a2be25cba4bb74756890dcd21dd67c66decdfd77"
+        :revision => "b3e6ad136a184afbffd1a803f75955d393c53e21"
   end
 
   def install
@@ -195,8 +176,10 @@ class Hugo < Formula
     ln_sf buildpath, buildpath/"src/github.com/spf13/hugo"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "main.go"
-    bin.install "main" => "hugo"
+    system "go", "build", "-o", bin/"hugo", "main.go"
+
+    system bin/"hugo", "genautocomplete", "--completionfile=#{buildpath}/hugo.sh"
+    bash_completion.install "hugo.sh"
   end
 
   test do

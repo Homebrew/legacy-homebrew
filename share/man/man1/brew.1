@@ -380,7 +380,7 @@ If \fB\-\-full\fR is passed, a full clone will be used\.
 .
 .TP
 \fBtap \-\-repair\fR
-Ensure all tapped formulae are symlinked into Library/Formula and prune dead formulae from Library/Formula\.
+Migrate tapped formulae from symlink\-based to directory\-based structure\.
 .
 .TP
 \fBtest\fR [\-\-devel|\-\-HEAD] [\-\-debug] \fIformula\fR
@@ -470,7 +470,7 @@ Display the file or directory used to cache \fIformula\fR\.
 .
 .TP
 \fB\-\-cellar\fR
-Display Homebrew\'s Cellar path\. \fIDefault:\fR \fB/usr/local/Cellar\fR
+Display Homebrew\'s Cellar path\. \fIDefault:\fR \fB$(brew \-\-prefix)/Cellar\fR, or if that directory doesn\'t exist, \fB$(brew \-\-repository)/Cellar\fR\.
 .
 .TP
 \fB\-\-cellar\fR \fIformula\fR

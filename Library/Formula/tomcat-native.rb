@@ -1,33 +1,35 @@
-require 'formula'
-
 class TomcatNative < Formula
-  homepage 'https://tomcat.apache.org/native-doc/'
-  url 'https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz'
-  sha1 'c7626c8e5144ee8e958175c4cd034cef90eab1ed'
+  homepage "https://tomcat.apache.org/native-doc/"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz"
+  sha256 "523dde7393c57307eedf4972ebbe19a9e9af6f7699e3b1ef6dabd7a11677866e"
 
   bottle do
     cellar :any
-    sha256 "1649e2b91dab7a9d2f3399fa713478f5a68f8b55a5a59a5007257797c4611386" => :yosemite
+    revision 1
+    sha256 "8bf7506bff79aba8825481af4587bc0eebc2595b1993672806a0494fff0b39d3" => :yosemite
+    sha256 "d5b76b3e6ae4a144a7553ae2533500ce9f4d1810d42a834336e8c10dcb4f97f8" => :mavericks
+    sha256 "04ec93175cdc5da0d6b7459eab624e82fb5af54ec1f017409c0b1b08d45d5007" => :mountain_lion
   end
 
   option "with-apr", "Include APR support via Homebrew"
 
   depends_on "libtool" => :build
   depends_on "tomcat" => :recommended
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
   depends_on "openssl"
   depends_on "apr" => :optional
 
   def install
     cd "jni/native" do
-      if build.with? 'apr'
-        apr_path = Formula['apr'].opt_prefix
+      if build.with? "apr"
+        apr_path = Formula["apr"].opt_prefix
       else
         apr_path = "#{MacOS.sdk_path}/usr"
       end
       system "./configure", "--prefix=#{prefix}",
                             "--with-apr=#{apr_path}",
-                            "--with-java-home=#{`/usr/libexec/java_home`.chomp}",
+                            "--with-java-home=#{ENV["JAVA_HOME"]}",
                             "--with-ssl=#{Formula["openssl"].opt_prefix}"
 
       # fixes occasional compiling issue: glibtool: compile: specify a tag with `--tag'
@@ -36,7 +38,7 @@ class TomcatNative < Formula
       # usr/local/opt/libtool/bin/glibtool: line 1125: /Applications/Xcode.app/Contents/Developer/Toolchains/OSX10.8.xctoolchain/usr/bin/cc: No such file or directory
       args << "CC=#{ENV.cc}" if MacOS.version >= :mountain_lion
       system "make", *args
-      system "make install"
+      system "make", "install"
     end
   end
 

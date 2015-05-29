@@ -2,14 +2,14 @@ require "formula"
 
 class Gawk < Formula
   homepage "https://www.gnu.org/software/gawk/"
-  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.2.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gawk/gawk-4.1.2.tar.xz"
-  sha256 "ea8b53c5834ee27012fecba7273f97fca7104884975cf81ddae6f85c5581f481"
+  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.3.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gawk/gawk-4.1.3.tar.xz"
+  sha256 "e3cf55e91e31ea2845f8338bedd91e40671fc30e4d82ea147d220e687abda625"
 
   bottle do
-    sha256 "3870e56454e734670d30e89e45fcb756d14090ca3dc1f831b3ada52c2e10e0d4" => :yosemite
-    sha256 "b4e858452e199ba6993d2d7f4958ab84a58f3775e630cd4f204b5ec56eeda66a" => :mavericks
-    sha256 "61c42778345ee6497511380faa0537eb015d9e9b4625b7c199f8f1e51cca1039" => :mountain_lion
+    sha256 "c6fd269bedf83b9016fb8e09186de1c88ce18f51b1ad471f4b5ad4262066dda2" => :yosemite
+    sha256 "30486a1665295a3fee02e22465869cec9297aec262554a470bbc7f127d1766e5" => :mavericks
+    sha256 "d9edeb691699655ff990e2227abf67568916640eeffbbca959dbf3b2779c371e" => :mountain_lion
   end
 
   fails_with :llvm do

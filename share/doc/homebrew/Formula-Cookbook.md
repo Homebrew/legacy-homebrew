@@ -119,8 +119,7 @@ end
 
 **We don’t accept formulae without homepages!**
 
-Homebrew doesn’t have a description field because the homepage is always up to date, and Homebrew is not. That’s way less maintenance for us. Try `brew home qt`.
-
+Homebrew now has a description field (`desc`). Try and summarize this from the homepage.
 
 ## Check the build system
 

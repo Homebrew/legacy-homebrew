@@ -9,6 +9,7 @@
 # Homebrew does enforce that the name of the file and the class correspond.
 # Check with `brew search` that the name is free.
 class ExampleFormula < Formula
+  desc "An example formula" # shows up in `brew info`, and can be searched with `brew search --desc`.
   homepage "https://www.example.com" # used by `brew home example-formula`.
   revision 1 # This is used when there's no new version but it needs recompiling for another reason.
              # 0 is default & unwritten.

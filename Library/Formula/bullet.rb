@@ -1,13 +1,13 @@
 class Bullet < Formula
   homepage "http://bulletphysics.org/wordpress/"
-  url "https://github.com/bulletphysics/bullet3/archive/2.82.tar.gz"
-  sha256 "93ffcdfdd7aa67159fc18d336456945538a6602e3cd318eed9963280620b55bd"
+  url "https://github.com/bulletphysics/bullet3/archive/2.83.4.tar.gz"
+  sha256 "2cf287cead9a116c56f6d6f15f73dc8b3ed1fe407ef2ca894027d585fab07341"
   head "https://github.com/bulletphysics/bullet3.git"
 
   bottle do
-    sha256 "ea68461df51601ae10349cf50423cab3beae2a3d932dcb4fb5e0447c953b4102" => :yosemite
-    sha256 "dc31c9602d2bbea68a0b899e20396bb4d500d1439407407c64175a6d76e57abf" => :mavericks
-    sha256 "66980c300d484edad267776475277592681ed782e9514bafcdd32ec74f04ced3" => :mountain_lion
+    sha256 "4dea2d45fd71ae072e95f2e0c85030298ed9789f01e19d8171429e2c89abe8f4" => :yosemite
+    sha256 "891b36d8dc81d0f0335ecb936acdddb4fd0fe1d96352af5b325003230cc40811" => :mavericks
+    sha256 "a2faed86dda67fe343ccbd302a0598dcde27b41868d057f048a27fe80145a4f0" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -44,11 +44,15 @@ class Bullet < Formula
 
     args << "-DUSE_DOUBLE_PRECISION=ON" if build.with? "double-precision"
 
-    args << "-DBUILD_DEMOS=OFF" if build.without? "demo"
+    # Related to the following warnings when building --with-shared --with-demo
+    # https://gist.github.com/scpeters/6afc44f0cf916b11a226
+    if build.with?("demo") && (build.with?("shared") || build.with?("framework"))
+      raise "Demos cannot be installed with shared libraries or framework."
+    end
 
-    # Demos require extras, see:
-    # https://code.google.com/p/bullet/issues/detail?id=767&thanks=767&ts=1384333052
-    if build.with?("extra") || build.with?("demo")
+    args << "-DBUILD_BULLET2_DEMOS=OFF" if build.without? "demo"
+
+    if build.with?("extra")
       args << "-DINSTALL_EXTRA_LIBS=ON"
     else
       args << "-DBUILD_EXTRAS=OFF"
@@ -58,7 +62,7 @@ class Bullet < Formula
     system "make"
     system "make", "install"
 
-    prefix.install "Demos" if build.with? "demo"
+    prefix.install "examples" if build.with? "demo"
     prefix.install "Extras" if build.with? "extra"
   end
 

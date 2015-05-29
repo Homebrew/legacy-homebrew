@@ -188,7 +188,7 @@ module Homebrew
 
       begin
         formula = Formulary.factory(argument)
-      rescue FormulaUnavailableError
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
       end
 
       git "rev-parse", "--verify", "-q", argument
@@ -345,7 +345,7 @@ module Homebrew
         satisfied ||= requirement.optional?
         if !satisfied && requirement.default_formula?
           default = Formula[requirement.class.default_formula]
-          satisfied = satisfied_requirements?(default, :stable, formula.name)
+          satisfied = satisfied_requirements?(default, :stable, formula.full_name)
         end
         satisfied
       end
@@ -353,7 +353,7 @@ module Homebrew
       if unsatisfied_requirements.empty?
         true
       else
-        name = formula.name
+        name = formula.full_name
         name += " (#{spec})" unless spec == :stable
         name += " (#{dependency} dependency)" if dependency
         skip name
@@ -418,11 +418,7 @@ module Homebrew
         CompilerSelector.select_for(formula)
       rescue CompilerSelectionError => e
         unless installed_gcc
-          if @formulae.include? "gcc"
-            run_as_not_developer { test "brew", "install", "gcc" }
-          else
-            test "brew", "install", "gcc"
-          end
+          run_as_not_developer { test "brew", "install", "gcc" }
           installed_gcc = true
           OS::Mac.clear_version_cache
           retry
@@ -452,11 +448,7 @@ module Homebrew
       testable_dependents = dependents.select { |d| d.test_defined? && d.bottled? }
 
       if (deps | reqs).any? { |d| d.name == "mercurial" && d.build? }
-        if @formulae.include? "mercurial"
-          run_as_not_developer { test "brew", "install", "mercurial" }
-        else
-          test "brew", "install", "mercurial"
-        end
+        run_as_not_developer { test "brew", "install", "mercurial" }
       end
 
       test "brew", "fetch", "--retry", *unchanged_dependencies unless unchanged_dependencies.empty?
@@ -485,8 +477,8 @@ module Homebrew
       # Don't care about e.g. bottle failures for dependencies.
       run_as_not_developer do
         test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
+        test "brew", "install", *install_args
       end
-      test "brew", "install", *install_args
       install_passed = steps.last.passed?
       audit_args = [canonical_formula_name]
       audit_args << "--strict" if @added_formulae.include? formula_name
@@ -520,7 +512,7 @@ module Homebrew
             conflicts.each do |conflict|
               test "brew", "unlink", conflict.name
             end
-            test "brew", "install", dependent.name
+            run_as_not_developer { test "brew", "install", dependent.name }
             next if steps.last.failed?
           end
           if dependent.installed?
@@ -533,7 +525,7 @@ module Homebrew
       if formula.devel && formula.stable? && !ARGV.include?('--HEAD') \
          && satisfied_requirements?(formula, :devel)
         test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
-        test "brew", "install", "--devel", "--verbose", canonical_formula_name
+        run_as_not_developer { test "brew", "install", "--devel", "--verbose", canonical_formula_name }
         devel_install_passed = steps.last.passed?
         test "brew", "audit", "--devel", *audit_args
         if devel_install_passed

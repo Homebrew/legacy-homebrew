@@ -3,12 +3,12 @@ class Ledger < Formula
   url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
   sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
   head "https://github.com/ledger/ledger.git"
+  revision 1
 
   bottle do
-    revision 3
-    sha256 "0fb1aefa3cf1e52cce8f7153818bab704a7bf29197e5691def5398e272a1a972" => :yosemite
-    sha256 "a9d67f14335ff833b389d3b5b57110af7ab268e51e960caf4cd21d2a745ea441" => :mavericks
-    sha256 "2ad8d5e6e038d5a7761b389e33455c5113b4e6387754e48aaaa55e69e7b2a7f9" => :mountain_lion
+    sha256 "a9caafb67ee6b9bef882d7dff8e24747f3997a84bacb82b456b96c5c6448e899" => :yosemite
+    sha256 "7c396585b474187340429297f151435a545c0ab0509f094461599f338eb8d045" => :mavericks
+    sha256 "a47cc33ddd2ef9df9921d1ad333eac68e791e32dad86b497c9abbe8bc707a5b2" => :mountain_lion
   end
 
   resource "utfcpp" do
@@ -33,11 +33,22 @@ class Ledger < Formula
   depends_on "boost-python" => boost_opts if build.with? "python"
 
   stable do
-    # don't explicitly link a python framework
+    # library shouldn't explicitly link a python framework
     # https://github.com/ledger/ledger/pull/415
     patch do
       url "https://github.com/ledger/ledger/commit/5f08e27.diff"
       sha256 "064b0e64d211224455511cd7b82736bb26e444c3af3b64936bec1501ed14c547"
+    end
+
+    # but the executable should
+    # https://github.com/ledger/ledger/pull/416
+    patch :DATA
+
+    # boost 1.58 compatibility
+    # https://github.com/ledger/ledger/pull/417
+    patch do
+      url "https://github.com/ledger/ledger/commit/2e02e0.diff"
+      sha256 "c1438cbf989995dd0b4bfa426578a8763544f28788ae76f9ff5d23f1b8b17add"
     end
   end
 
@@ -87,3 +98,18 @@ class Ledger < Formula
     end
   end
 end
+__END__
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index a368d37..570a659 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -273,6 +273,9 @@ if (BUILD_LIBRARY)
+
+   add_executable(ledger main.cc global.cc)
+   target_link_libraries(ledger libledger)
++  if (APPLE AND HAVE_BOOST_PYTHON)
++    target_link_libraries(ledger ${PYTHON_LIBRARIES})
++  endif()
+
+   install(TARGETS libledger DESTINATION ${CMAKE_INSTALL_LIBDIR})
+   install(FILES ${LEDGER_INCLUDES}

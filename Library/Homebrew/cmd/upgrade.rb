@@ -16,14 +16,14 @@ module Homebrew
       outdated = Homebrew.outdated_brews(Formula.installed)
       exit 0 if outdated.empty?
     elsif ARGV.named.any?
-      outdated = Homebrew.outdated_brews(ARGV.formulae)
+      outdated = Homebrew.outdated_brews(ARGV.resolved_formulae)
 
-      (ARGV.formulae - outdated).each do |f|
+      (ARGV.resolved_formulae - outdated).each do |f|
         if f.rack.directory?
           version = f.rack.subdirs.map { |d| Keg.new(d).version }.max
-          onoe "#{f.name} #{version} already installed"
+          onoe "#{f.full_name} #{version} already installed"
         else
-          onoe "#{f.name} not installed"
+          onoe "#{f.full_name} not installed"
         end
       end
       exit 1 if outdated.empty?
@@ -41,14 +41,14 @@ module Homebrew
 
     unless outdated.empty?
       oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+      puts outdated.map{ |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
-      puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+      puts pinned.map{ |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     end
 
     outdated.each { |f| upgrade_formula(f) }
@@ -71,7 +71,7 @@ module Homebrew
     fi.debug               = ARGV.debug?
     fi.prelude
 
-    oh1 "Upgrading #{f.name}"
+    oh1 "Upgrading #{f.full_name}"
 
     # first we unlink the currently active keg for this formula otherwise it is
     # possible for the existing build to interfere with the build we are about to

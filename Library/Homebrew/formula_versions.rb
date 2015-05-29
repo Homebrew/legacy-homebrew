@@ -15,7 +15,7 @@ class FormulaVersions
     @entry_name = formula.path.relative_path_from(repository).to_s
   end
 
-  def rev_list(branch="HEAD")
+  def rev_list(branch)
     repository.cd do
       Utils.popen_read("git", "rev-list", "--abbrev-commit", "--remove-empty", branch, "--", entry_name) do |io|
         yield io.readline.chomp until io.eof?
@@ -48,7 +48,7 @@ class FormulaVersions
     end
   end
 
-  def bottle_version_map(branch="HEAD")
+  def bottle_version_map(branch)
     map = Hash.new { |h, k| h[k] = [] }
     rev_list(branch) do |rev|
       formula_at_revision(rev) do |f|

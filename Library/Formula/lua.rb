@@ -6,9 +6,10 @@ class Lua < Formula
   revision 2
 
   bottle do
-    sha256 "fb2d346b786331f1b71ff793b52274702f9daa3a52c49b336aea4e50bd4232ed" => :yosemite
-    sha256 "05f8ad2e915eef8b48ee99e74cc7e451301d2632c1c8494a592e1a42a8880f75" => :mavericks
-    sha256 "b334c5254a66b026c1944db77c0cb41f3cd5330575463ec5eb51334c5eb8f68b" => :mountain_lion
+    revision 1
+    sha256 "cae36fb3b4acf3aed7e39d612ded55d25468dc52e0bcbb0ab643ee32ae9fa03d" => :yosemite
+    sha256 "4416560fb728ec134d3762f30dc08689a22bded2874b868f002429cf51d55c05" => :mavericks
+    sha256 "95cf1d7878924ff658566d2b271f676b4de6686669ed68925d9ea7b5989368d7" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -45,8 +46,8 @@ class Lua < Formula
   end
 
   resource "luarocks" do
-    url "https://github.com/keplerproject/luarocks/archive/v2.2.1.tar.gz"
-    sha256 "30e5bd99f82f5e3ea174572c1831f9ff83dfe37727f9fcfc89168b4572193571"
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
+    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
   end
 
   def install
@@ -98,6 +99,8 @@ class Lua < Formula
         (share+"lua/5.2/luarocks").install_symlink Dir["#{libexec}/share/lua/5.2/luarocks/*"]
         bin.install_symlink libexec/"bin/luarocks-5.2"
         bin.install_symlink libexec/"bin/luarocks-admin-5.2"
+        bin.install_symlink libexec/"bin/luarocks"
+        bin.install_symlink libexec/"bin/luarocks-admin"
 
         # This block ensures luarock exec scripts don't break across updates.
         inreplace libexec/"share/lua/5.2/luarocks/site_config.lua" do |s|

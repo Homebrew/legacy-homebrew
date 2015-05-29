@@ -1,16 +1,15 @@
 class Postgresql < Formula
   homepage "https://www.postgresql.org/"
-  revision 1
 
   stable do
-    url "https://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
-    sha256 "29ddb77c820095b8f52e5455e9c6c6c20cf979b0834ed1986a8857b84888c3a6"
+    url "https://ftp.postgresql.org/pub/source/v9.4.2/postgresql-9.4.2.tar.bz2"
+    sha256 "81fda191c165ba1d25d75cd0166ece5abdcb4a7f5eca01b349371e279ebb4d11"
   end
 
   bottle do
-    sha256 "f52380ae9ff983c5ee701e3fe0cd6801c93814c1f8b279ac9b517849162dc1db" => :yosemite
-    sha256 "d0c1cf0090ac3e2405c29225f6bb4e912a131804b44303ed2ddffd217b8c6bc3" => :mavericks
-    sha256 "ca57563e2443a0caaf5d17b33dc466258493d8d8ff96203b3bcebe08c5de2d35" => :mountain_lion
+    sha256 "5629390eaa5cc90e6524648aa3502037e32725497c4f3792029c8ce34e003d4b" => :yosemite
+    sha256 "8ff6939a7e023e05789d03100e838f0097e7cc251859741e80775f435ce3eacf" => :mavericks
+    sha256 "c515d661dcecf62f41d69982d9ebf1753cd6919fefead0233b61b3575f4e5a12" => :mountain_lion
   end
 
   option "32-bit"

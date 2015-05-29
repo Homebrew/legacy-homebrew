@@ -2,14 +2,14 @@ require "formula"
 
 class Tutum < Formula
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/tutum-cli/archive/v0.14.1.tar.gz"
-  sha256 "d908123cc9f761171155f6ccfc66227393fd0dba485963bd40753b5579e0cf71"
+  url "https://pypi.python.org/packages/source/t/tutum/tutum-0.15.0.1.tar.gz"
+  sha256 "399cff8b5b25c1b2fa686d2214ae18dc09c410a070f17fa347b64940c4be0c79"
 
   bottle do
     cellar :any
-    sha256 "6d704a7cb443a61fb4d9f090c477303c445fa07966e1c6173c96897661ebdf17" => :yosemite
-    sha256 "1c27aa0ae16c1ffdcb87f501697dc8e6e819e805f0346c994305a6d89e711bce" => :mavericks
-    sha256 "f8e46e0a24b4309af63230f8a95b8eb76e5380d831d9f07e86c9e7f278a2f98f" => :mountain_lion
+    sha256 "2e7bbf6a3408f0ca3a408da1f0aff4534c67188cc6fc2e315daa78aa11529f94" => :yosemite
+    sha256 "48fd8a003f8ac8189bd6142717c49b981fb0efd78bb7926f85f2b1cb81551537" => :mavericks
+    sha256 "481402fde6caf702eb314f9ca3f7436fb8138169b3b04eabeda8ba3a0c79faae" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -21,8 +21,8 @@ class Tutum < Formula
   end
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.1.0.tar.gz"
-    sha256 "6a07eb56b234719e89d3038c24f9c870b6f1ee0b58080120e865e2752673cd94"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.2.2.tar.gz"
+    sha256 "4494d699059559118417da192a3d4bf015b097f7b589c48e253c12b4c61e5ef0"
   end
 
   resource "pyyaml" do
@@ -31,8 +31,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.14.2.tar.gz"
-    sha256 "cd7743600b8e9c367f0c4907752f09b4aad86c0adb1fd46a44c4871ee8fc2d97"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.15.0.1.tar.gz"
+    sha256 "42f309124859d13b3edb2d604ee316c27bbe0c4708e2807a8f67262f9bdc68a4"
   end
 
   resource "backports.ssl-match-hostname" do
@@ -51,8 +51,8 @@ class Tutum < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
-    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
+    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
   end
 
   resource "tabulate" do
@@ -61,8 +61,8 @@ class Tutum < Formula
   end
 
   resource "websocket-client" do
-    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.29.0.tar.gz"
-    sha256 "abfcb1a8dff4df1b12db4c227d3f4f38a68b42c35a8bca9d2bee10f8eae2b434"
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.31.0.tar.gz"
+    sha256 "ddbba49fe9f185dec6a80a536831fa781e10e1d946eef20ebcccd75b943c6ea6"
   end
 
   resource "future" do

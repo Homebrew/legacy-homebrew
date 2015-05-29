@@ -1,14 +1,13 @@
 class Python < Formula
   homepage "https://www.python.org"
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "https://www.python.org/ftp/python/2.7.9/Python-2.7.9.tgz"
-  sha256 "c8bba33e66ac3201dabdc556f0ea7cfe6ac11946ec32d357c4c6f9b018c12c5b"
+  url "https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz"
+  sha256 "eda8ce6eec03e74991abb5384170e7c65fcd7522e409b8e83d7e6372add0f12a"
 
   bottle do
-    revision 13
-    sha256 "1fa1d7452fdea531afdcc49a364166a0e48e345e0d9eda5dcebc7e7e7c399d86" => :yosemite
-    sha256 "9737f1e6e2a0aad834740488ab2e5eed25f33ea9de42c6b2101b4ecb18d0c890" => :mavericks
-    sha256 "8cfbbc8c66515f90908901d4e9e648c65446d33e52bd51b73062359c1d469133" => :mountain_lion
+    sha256 "726e13ae4d0befdc86ae82c1585393de814609d8f6b2fda5ef2be8514f654c4d" => :yosemite
+    sha256 "def214085072e3c22e135f3b07b02fd535abc9b6b3c7128311d875852d1b62db" => :mavericks
+    sha256 "f8b4cded09f4018342e188c09c3f4796b6919727c1259c1bd06d7885c8fc4d53" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -33,8 +32,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-15.2.tar.gz"
-    sha256 "381e78471fb0eff89c4b1a219e8739f48dd87c76ad2d3a790010ca3a62ee29a4"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-16.0.tar.gz"
+    sha256 "aa86255dee2c4a0056509750008007667c29306b7a6c13801468515b2c672845"
   end
 
   resource "pip" do

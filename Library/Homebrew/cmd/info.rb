@@ -92,7 +92,9 @@ module Homebrew
 
     specs << "HEAD" if f.head
 
-    puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
+    puts "#{f.full_name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
+
+    puts f.desc if f.desc
 
     puts f.homepage
 

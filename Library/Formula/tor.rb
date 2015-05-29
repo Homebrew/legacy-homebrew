@@ -1,13 +1,13 @@
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.6.7.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.6.7.tar.gz"
-  sha256 "8c2be88a542ed1b22a8d3d595ec0acd0e28191de273dbcaefc64fdce92b89e6c"
+  url "https://dist.torproject.org/tor-0.2.6.8.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.6.8.tar.gz"
+  sha256 "b88b363896454250c3f561b0b48479f18295c93596d2e81baa10c5a3ae609a76"
 
   bottle do
-    sha256 "0cddcd6e31bb6f9af1cd4313ee5b0f4eecd971d8a40e41fa8988971a271f40f1" => :yosemite
-    sha256 "5b44acfc1a42c9824f8113584461ebdad5075187197ef3ebb3dff8c0df9abe29" => :mavericks
-    sha256 "43258e2a46024eab2d031cb4904cb1b9562a7ffadd745bd126955a1a6d72f830" => :mountain_lion
+    sha256 "8e951125ab8ccec4f75f042f07bded3b08c4c970b84d84a6962249b7290ba86d" => :yosemite
+    sha256 "4e99238ca821986b63c7b524774c9173ad8b9f0e5075266f9fe254ff0103b0a9" => :mavericks
+    sha256 "a0316b566f6214a0b476f916c8810375bf964844d622512f3faf1ad68bac5ed9" => :mountain_lion
   end
 
   devel do

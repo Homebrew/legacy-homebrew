@@ -1,13 +1,15 @@
 class Thefuck < Formula
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.40.tar.gz"
-  sha256 "f20262e3b1e59d66ad9cfa5b4fba45737a959789f9a094ea226b455f6c8b1f9e"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.44.tar.gz"
+  sha256 "7379afc90f3ac862215690d19d7022255af56159d90511dfaaddf38b02048587"
+
+  head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any
-    sha256 "890762ad1d9324ab346cab435dd0d89f8820ee43c68046847fb1218aed9fe246" => :yosemite
-    sha256 "8eb332807213eedc8f34e3c60f5305e24d1deb0d1c09907994ca0a05bbb47f66" => :mavericks
-    sha256 "ed2b83dd297c9a8ff578f48157cf7740a17e261d167c0f1243580bd6f8767829" => :mountain_lion
+    sha256 "2069a5492fe571434d2a598e22531500165987d8480f1c2745d9e45b03d378d6" => :yosemite
+    sha256 "dee4f10dce9196c4b46a05a93f21899bfb1cf8852f07b45e13011dc991d98e8a" => :mavericks
+    sha256 "6e9e87a2e6ee8b1bc6938f482447020fa11b2c5d1d1b8f04949636289ca2a01d" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -36,10 +38,8 @@ class Thefuck < Formula
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
-    %w[psutil pathlib colorama six].each do |r|
-      resource(r).stage do
-        system "python", *Language::Python.setup_install_args(libexec/"vendor")
-      end
+    resources.each do |r|
+      r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
     end
     system "python", *Language::Python.setup_install_args(libexec)
 

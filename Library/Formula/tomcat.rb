@@ -1,23 +1,23 @@
 class Tomcat < Formula
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22.tar.gz"
-  sha256 "cb163576d03f45981bf025b62b46e71c3c634584daa4662fc721d37d46989eff"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23.tar.gz"
+  sha256 "c98b19a1edaaef2859991f304d0ec8f29c5ccacc6d63a0bc8bf7078d63191a38"
 
   bottle do
     cellar :any
-    sha256 "00f059d92cb53b70e89f710bd3836318d2b8b60c49ac1a1fc03d1c93347d2c16" => :yosemite
-    sha256 "eccf010c1c89fd74905f8f2df8c5fa489464b8c7d8239d2823a27a9f2b7cc58a" => :mavericks
-    sha256 "4e2db444d69c635bf6b575ba6442183c0013f323d4aa5178591d3a770e43ccc0" => :mountain_lion
+    sha256 "5c43653281e5e7099230ebb76616583935538140b7802ec5d0fdbb719ccdc5e0" => :yosemite
+    sha256 "caa72406f8f0f60d56dd656aa31e6170194df58d97c7f4661c93624771106c6b" => :mavericks
+    sha256 "0fd6ba9c446dc1cf03c7dc1d537f61b879f8f1d194bf998cb1a0353a09e21831" => :mountain_lion
   end
 
   option "with-fulldocs", "Install full documentation locally"
 
   resource "fulldocs" do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22-fulldocs.tar.gz"
-    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.22/bin/apache-tomcat-8.0.22-fulldocs.tar.gz"
-    version "8.0.22"
-    sha256 "f1287f7a005180d8ff8b60461327554c9d5473d1d6784d97cbb4b580ef292c8c"
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23-fulldocs.tar.gz"
+    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.23/bin/apache-tomcat-8.0.23-fulldocs.tar.gz"
+    version "8.0.23"
+    sha256 "bd0c85d48ccd6f0b7838e55215a7e553a8b9b58fd1a880560a7414940413f6d3"
   end
 
   def install

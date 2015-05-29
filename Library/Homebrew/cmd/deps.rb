@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'formula'
 require 'ostruct'
 
@@ -34,11 +35,11 @@ module Homebrew
     ignores << "optional?" if ARGV.include? "--skip-optional"
 
     if recursive
-      deps = f.recursive_dependencies.reject do |dep|
-        ignores.any? { |ignore| dep.send(ignore) }
+      deps = f.recursive_dependencies do |dependent, dep|
+        Dependency.prune if ignores.any? { |ignore| dep.send(ignore) } && !dependent.build.with?(dep)
       end
-      reqs = f.recursive_requirements.reject do |req|
-        ignores.any? { |ignore| req.send(ignore) }
+      reqs = f.recursive_requirements do |dependent, req|
+        Requirement.prune if ignores.any? { |ignore| req.send(ignore) } && !dependent.build.with?(req)
       end
     else
       deps = f.deps.reject do |dep|
@@ -57,24 +58,31 @@ module Homebrew
   end
 
   def puts_deps(formulae)
-    formulae.each { |f| puts "#{f.name}: #{deps_for_formula(f).sort_by(&:name) * " "}" }
+    formulae.each { |f| puts "#{f.full_name}: #{deps_for_formula(f).sort_by(&:name) * " "}" }
   end
 
   def puts_deps_tree(formulae)
     formulae.each do |f|
-      puts f.name
-      recursive_deps_tree(f, 1)
+      puts f.full_name
+      recursive_deps_tree(f, "")
       puts
     end
   end
 
-  def recursive_deps_tree f, level
-    f.requirements.select(&:default_formula?).each do |req|
-      puts "|  "*(level-1) + "|- :#{req.to_dependency.name}"
+  def recursive_deps_tree f, prefix
+    reqs = f.requirements.select(&:default_formula?)
+    max = reqs.length - 1
+    reqs.each_with_index do |req, i|
+      chr = i == max ? "└──" : "├──"
+      puts prefix + "#{chr} :#{req.to_dependency.name}"
     end
-    f.deps.default.each do |dep|
-      puts "|  "*(level-1) + "|- #{dep.name}"
-      recursive_deps_tree(Formulary.factory(dep.name), level+1)
+    deps = f.deps.default
+    max = deps.length - 1
+    deps.each_with_index do |dep, i|
+      chr = i == max ? "└──" : "├──"
+      prefix_ext = i == max ? "    " : "|   "
+      puts prefix + "#{chr} #{dep.name}"
+      recursive_deps_tree(Formulary.factory(dep.name), prefix + prefix_ext)
     end
   end
 end

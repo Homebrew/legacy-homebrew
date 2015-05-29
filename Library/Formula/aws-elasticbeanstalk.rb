@@ -1,13 +1,13 @@
 class AwsElasticbeanstalk < Formula
   homepage "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.3.2.tar.gz"
-  sha256 "2854c0cc10138d14ccc8166a26e441bba2a1913d5a1c54a33b5a0a448b785942"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.4.4.tar.gz"
+  sha256 "f503253a6ed3e8ed567092927ca3e3baf41ba95f3ccbbe7ee798777d0592e879"
 
   bottle do
     cellar :any
-    sha256 "69a0a3748612f9dde25cbc24b8a85c3dbfb5d8558ce560f66663e14fefce0ecb" => :yosemite
-    sha256 "f31b8ec626354d7fe40b5bb295269f7f755a7e5c76f50fd8c7f1eeebf9136d61" => :mavericks
-    sha256 "b7266cabec9c7480d68ca6cebcc088a5e676645166ccba85d8553a6e80003436" => :mountain_lion
+    sha256 "d7beceb7056c939810924908e2c61558794d2620942c0b2744537ce62b5b741a" => :yosemite
+    sha256 "ce6df0b920142438c31d35f25040ce0134a3c8e48f967ff26d6ba72f115a7217" => :mavericks
+    sha256 "a0153c1978d05bdef7c2efe1a62536900867de5dd20ab3c65375c1b79775cabd" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -42,7 +42,7 @@ class AwsElasticbeanstalk < Formula
     sha256 "0577249d4b6c4b11fd97c28037e98664bfaa0559022fee7bcef6b752a106e505"
   end
 
-  resource "textable" do
+  resource "texttable" do
     url "https://pypi.python.org/packages/source/t/texttable/texttable-0.8.3.tar.gz"
     sha256 "f333ac915e7c5daddc7d4877b096beafe74ea88b4b746f82a4b110f84e348701"
   end
@@ -58,8 +58,8 @@ class AwsElasticbeanstalk < Formula
   end
 
   resource "dockerpty" do
-    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.2.tar.gz"
-    sha256 "fa23e4dead1920f5b53774cabf688c4709ce617c4afb0b105ec4b71d42f124fb"
+    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.3.tar.gz"
+    sha256 "5b9bd23e4a5f0ad28ea702adeebc1bb8b153c4a19526f230792b0af57f7eb3be"
   end
 
   resource "python-dateutil" do

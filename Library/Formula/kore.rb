@@ -2,15 +2,15 @@ require "formula"
 
 class Kore < Formula
   homepage "https://kore.io/"
-  url "https://kore.io/release/kore-1.2.2-release.tgz"
-  sha256 "f58a00abcc8b02533eae63cc1d90701dcae92688e69534d13bde502ddcb2a06a"
+  url "https://kore.io/release/kore-1.2.3-release.tgz"
+  sha256 "24f1a88f4ef3199d6585f821e1ef134bb448a1c9409a76d18fcccd4af940d32f"
 
   head "https://github.com/jorisvink/kore.git"
 
   bottle do
-    sha256 "766f095f01beefc6de2b4a439b8ce7fab705076f5172b753c33c9168627940e1" => :yosemite
-    sha256 "933d799a245c352069a1a17812818d5f238ab62e017d1962ea75fc89bce24bd7" => :mavericks
-    sha256 "1a7cb118b4f562e3f3fedf2a4360de55978f0ed42c09afdf967156fc09fc2245" => :mountain_lion
+    sha256 "cba37916c300a8c35d9dab23dabdd2de0abb7eef560fa4f8328195f5543854fa" => :yosemite
+    sha256 "42baed336207505fcbd03f95f5e3a842413569b987ef0f5e568350f81e66bfbd" => :mavericks
+    sha256 "dbb9515b193dc3caa5ada4dd048d42ea8794ecab27d1420c051979ebe456276a" => :mountain_lion
   end
 
   depends_on "openssl"

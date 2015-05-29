@@ -2,15 +2,15 @@ require 'formula'
 
 class Basex < Formula
   homepage 'http://basex.org'
-  url 'http://files.basex.org/releases/8.1.1/BaseX811.zip'
-  version '8.1.1'
-  sha1 '14880d68460c6c67696dde86fba3a342d0920dde'
+  url 'http://files.basex.org/releases/8.2/BaseX82.zip'
+  version '8.2'
+  sha1 '4dfd8ce5508748777586d26ccedc466f437e7da6'
 
   bottle do
     cellar :any
-    sha256 "680ac5ad68cb5867898c945734c9594805e7f2c13c99405d16993bc899826ad7" => :yosemite
-    sha256 "9539d4f3dfb2e88bc895f751a955327e1c123470590c5b7e98b628d31db1b79c" => :mavericks
-    sha256 "d24f992d3e7a3ca87d8f3d0be267b086347c41e8246f16bb12c04b4c71f1546c" => :mountain_lion
+    sha256 "3a5da356958771ed48f4f7a2586c65466527c4d6922bffa3247a947a0c546517" => :yosemite
+    sha256 "0c46862974b6510bb93ae33adc43567952f82650be0e646893a7d2c958b6c32e" => :mavericks
+    sha256 "e5b1a5088b3237266d5676a504f44eff782bb5bf08bc4485473ec6be27866dc6" => :mountain_lion
   end
 
   def install

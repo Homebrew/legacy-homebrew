@@ -107,7 +107,7 @@ class Formulary
         name = name_without_version
       end
 
-      super name, Formula.path(name)
+      super name, Formulary.path(name)
     end
 
     def get_formula(spec)
@@ -182,7 +182,7 @@ class Formulary
 
   class NullLoader < FormulaLoader
     def initialize(name)
-      super name, Formula.path(name)
+      super name, Formulary.core_path(name)
     end
 
     def get_formula(spec)
@@ -200,8 +200,28 @@ class Formulary
     loader_for(ref).get_formula(spec)
   end
 
+  # Return a Formula instance for the given rack.
+  def self.from_rack(rack, spec=:stable)
+    kegs = rack.directory? ? rack.subdirs.map { |d| Keg.new(d) } : []
+
+    keg = kegs.detect(&:linked?) || kegs.detect(&:optlinked?) || kegs.max_by(&:version)
+    return factory(rack.basename.to_s, spec) unless keg
+
+    tap = Tab.for_keg(keg).tap
+
+    if tap.nil? || tap == "Homebrew/homebrew" || tap == "mxcl/master"
+      factory(rack.basename.to_s, spec)
+    else
+      factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
+    end
+  end
+
   def self.canonical_name(ref)
     loader_for(ref).name
+  rescue TapFormulaAmbiguityError
+    # If there are multiple tap formulae with the name of ref,
+    # then ref is the canonical name
+    ref.downcase
   end
 
   def self.path(ref)
@@ -222,7 +242,7 @@ class Formulary
       return FromPathLoader.new(ref)
     end
 
-    formula_with_that_name = Formula.path(ref)
+    formula_with_that_name = core_path(ref)
     if formula_with_that_name.file?
       return FormulaLoader.new(ref, formula_with_that_name)
     end
@@ -232,11 +252,30 @@ class Formulary
       return AliasLoader.new(possible_alias)
     end
 
+    possible_tap_formulae = tap_paths(ref)
+    if possible_tap_formulae.size > 1
+      raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
+    elsif possible_tap_formulae.size == 1
+      return FormulaLoader.new(ref, possible_tap_formulae.first)
+    end
+
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
     if possible_cached_formula.file?
       return FormulaLoader.new(ref, possible_cached_formula)
     end
 
     return NullLoader.new(ref)
+  end
+
+  def self.core_path(name)
+    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
+  end
+
+  def self.tap_paths(name)
+    name = name.downcase
+    Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
+      Pathname.glob(["#{tap}#{name}.rb", "#{tap}Formula/#{name}.rb",
+                     "#{tap}HomebrewFormula/#{name}.rb"])
+    end.flatten.select(&:file?)
   end
 end

@@ -28,6 +28,11 @@ class Formula
   # e.g. `this-formula`
   attr_reader :name
 
+  # The fully-qualified name of this {Formula}.
+  # For core formula it's the same as {#name}.
+  # e.g. `homebrew/tap-name/this-formula`
+  attr_reader :full_name
+
   # The full path to this {Formula}.
   # e.g. `/usr/local/Library/Formula/this-formula.rb`
   attr_reader :path
@@ -87,6 +92,12 @@ class Formula
     @name = name
     @path = path
     @revision = self.class.revision || 0
+
+    if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
+      @full_name = "#{$1}/#{$2.gsub(/^homebrew-/, "")}/#{name}"
+    else
+      @full_name = name
+    end
 
     set_spec :stable
     set_spec :devel
@@ -161,6 +172,12 @@ class Formula
   # @private
   def bottle
     Bottle.new(self, bottle_specification) if bottled?
+  end
+
+  # The description of the software.
+  # @see .desc
+  def desc
+    self.class.desc
   end
 
   # The homepage for the software.
@@ -600,13 +617,35 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
+  # an array of all core {Formula} names
+  def self.core_names
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
+  end
+
+  # an array of all tap {Formula} names
+  def self.tap_names
+    names = []
+    Pathname.glob("#{HOMEBREW_LIBRARY}/Taps/*/*/") do |tap|
+      tap.find_formula do |formula|
+        formula.to_s =~ HOMEBREW_TAP_PATH_REGEX
+        names << "#{$1}/#{$2.gsub(/^homebrew-/, "")}/#{formula.basename(".rb")}"
+      end
+    end
+    names.sort
+  end
+
   # an array of all {Formula} names
   def self.names
-    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+    (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+  end
+
+  # an array of all {Formula} names, which the tap formulae have the fully-qualified name
+  def self.full_names
+    core_names + tap_names
   end
 
   def self.each
-    names.each do |name|
+    full_names.each do |name|
       begin
         yield Formulary.factory(name)
       rescue StandardError => e
@@ -624,8 +663,8 @@ class Formula
 
     HOMEBREW_CELLAR.subdirs.map do |rack|
       begin
-        Formulary.factory(rack.basename.to_s)
-      rescue FormulaUnavailableError
+        Formulary.from_rack(rack)
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
       end
     end.compact
   end
@@ -659,11 +698,12 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path == Formula.path(name)
+    path == Formulary.core_path(name)
   end
 
+  # @deprecated
   def self.path name
-    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
+    Formulary.core_path(name)
   end
 
   def env
@@ -688,6 +728,8 @@ class Formula
   def to_hash
     hsh = {
       "name" => name,
+      "full_name" => full_name,
+      "desc" => desc,
       "homepage" => homepage,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
@@ -923,6 +965,12 @@ class Formula
     # {::HOMEBREW_PREFIX}.
     # @private
     attr_reader :keg_only_reason
+
+    # @!attribute [w]
+    # A one-line description of the software. Used by users to get an overview
+    # of the software and Homebrew maintainers.
+    # Shows when running `brew info`.
+    attr_rw :desc
 
     # @!attribute [w]
     # The homepage for the software. Used by users to get more information
