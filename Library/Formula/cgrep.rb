@@ -19,6 +19,8 @@ class Cgrep < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
+  setup_ghc_compilers
+
   def install
     # The "--allow-newer" is a hack for GHC 7.10.1, remove when possible.
     install_cabal_package "--allow-newer"
