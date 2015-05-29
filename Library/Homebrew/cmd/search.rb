@@ -2,6 +2,7 @@ require 'formula'
 require 'blacklist'
 require 'utils'
 require 'thread'
+require "official_taps"
 
 module Homebrew
 
@@ -81,19 +82,7 @@ module Homebrew
     raise SEARCH_ERROR_QUEUE.pop unless SEARCH_ERROR_QUEUE.empty?
   end
 
-  SEARCHABLE_TAPS = [
-    %w{Homebrew nginx},
-    %w{Homebrew apache},
-    %w{Homebrew versions},
-    %w{Homebrew dupes},
-    %w{Homebrew games},
-    %w{Homebrew science},
-    %w{Homebrew completions},
-    %w{Homebrew binary},
-    %w{Homebrew python},
-    %w{Homebrew php},
-    %w{Homebrew tex},
-    %w{Homebrew x11},
+  SEARCHABLE_TAPS = OFFICIAL_TAPS.map { |tap| ["Homebrew", tap] } + [
     %w{Caskroom cask},
   ]
 
