@@ -29,8 +29,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.43.tar.bz2"
-    sha256 "53d49b9affcb836443cf25111c2906dfcae9ff1fc8170dffbd81755405907822"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.44.tar.bz2"
+    sha256 "d2e3290d4b312d235ab8ac214eaae8f81c751fb610b15b40c2620904bd38d8bb"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
