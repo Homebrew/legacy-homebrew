@@ -1,6 +1,6 @@
 class Swiftlint < Formula
   homepage "https://github.com/realm/SwiftLint"
-  url "https://github.com/realm/SwiftLint.git", :tag => "0.1.1", :revision => "7fc587cc949c9f3cc7e31dffce15789a98ef5dc0"
+  url "https://github.com/realm/SwiftLint.git", :tag => "0.1.1", :revision => "76939117e8db4cff7ccd5d362340cbc6a7af878c"
   head "https://github.com/realm/SwiftLint.git"
 
   bottle do
