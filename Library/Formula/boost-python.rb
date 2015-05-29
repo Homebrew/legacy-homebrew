@@ -29,6 +29,12 @@ class BoostPython < Formula
       sha256 "9f374761ada11eecd082e7f9d5b80efeb387039d3a290f45b61f0730bce3801a"
     end
   end
+  bottle do
+    cellar :any
+    sha256 "13296f3f1591f31ddfe232b8dc4962aee313a198b210348f6b7e3ffbec20270b" => :yosemite
+    sha256 "4c11ee0933bbb96bb9e463ffba099c2b1fed02bc5bedfbeaf61f855672560109" => :mavericks
+  end
+
 
   def install
     ENV.universal_binary if build.universal?
