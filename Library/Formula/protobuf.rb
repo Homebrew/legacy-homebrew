@@ -4,9 +4,9 @@ class Protobuf < Formula
   sha1 '6421ee86d8fb4e39f21f56991daa892a3e8d314b'
 
   devel do
-    url "https://github.com/google/protobuf/archive/v3.0.0-alpha-2.tar.gz"
-    sha256 "46df8649e2a0ce736e37f8f347f92b32a9b8b54d672bf60bd8f6f4d24d283390"
-    version "3.0.0-alpha-2"
+    url "https://github.com/google/protobuf/archive/v3.0.0-alpha-3.tar.gz"
+    sha256 "bf90fb01b054d364d05d362d63e09d3466311e24bd6db1127dfcd88af443bf05"
+    version "3.0.0-alpha-3"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -107,7 +107,7 @@ class Protobuf < Formula
         syntax = "proto3";
         package test;
         message TestCase {
-          optional string name = 4;
+          string name = 4;
         }
         message Test {
           repeated TestCase case = 1;
