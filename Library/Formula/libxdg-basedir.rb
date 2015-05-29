@@ -1,7 +1,8 @@
 class LibxdgBasedir < Formula
   homepage "https://github.com/devnev/libxdg-basedir"
   url "http://github.com/devnev/libxdg-basedir/archive/libxdg-basedir-1.2.0.tar.gz"
-  sha1 "e671b01b17c8cf785d95dd3aefa93e7cf31e56a5"
+  sha256 "1c2b0032a539033313b5be2e48ddd0ae94c84faf21d93956d53562eef4614868"
+  desc "An implementation of the XDG Base Directory specifications"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -14,7 +15,7 @@ class LibxdgBasedir < Formula
   end
 
   test do
-    (testpath/'test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <basedir.h>
       int main() {
         xdgHandle handle;
