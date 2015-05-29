@@ -13,6 +13,7 @@ TAP_MIGRATIONS = {
   "authexec" => "homebrew/boneyard",
   "avfs" => "homebrew/fuse",
   "aws-iam-tools" => "homebrew/boneyard",
+  "awsenv" => "Luzifer/tools",
   "bbcp" => "homebrew/head-only",
   "bcwipe" => "homebrew/boneyard",
   "bindfs" => "homebrew/fuse",
