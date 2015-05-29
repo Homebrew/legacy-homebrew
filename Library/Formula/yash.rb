@@ -1,9 +1,8 @@
-require "formula"
-
 class Yash < Formula
-  homepage "http://yash.sourceforge.jp/"
-  url "http://dl.sourceforge.jp/yash/62651/yash-2.37.tar.gz"
-  sha1 "a6ac6fe9434a25a8fd39137a05768aa65076bed6"
+  desc "Yash, yet another shell, is a POSIX-compliant command-line shell"
+  homepage "http://yash.osdn.jp"
+  url "http://dl.osdn.jp/yash/62651/yash-2.37.tar.gz"
+  sha256 "b976692de245ad3fb17bf87eb8b2e4c9bba4537e3820d488624c868e7408faaa"
 
   bottle do
     cellar :any
