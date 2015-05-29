@@ -892,6 +892,8 @@ class ResourceAuditor
         problem "Please use https:// for #{p}"
       when %r[^http://search\.mcpan\.org/CPAN/(.*)]i
         problem "#{p} should be `https://cpan.metacpan.org/#{$1}`"
+      when %r[^(http|ftp)://ftp\.gnome\.org/pub/gnome/(.*)]i
+        problem "#{p} should be `https://download.gnome.org/#{$2}`"
       end
     end
 
