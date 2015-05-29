@@ -23,6 +23,8 @@ class GitAnnex < Formula
   depends_on "gnutls"
   depends_on "quvi"
 
+  setup_ghc_compilers
+
   def install
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "c2hs"

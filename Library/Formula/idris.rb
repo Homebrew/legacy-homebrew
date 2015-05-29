@@ -21,6 +21,8 @@ class Idris < Formula
   depends_on "libffi" => :recommended
   depends_on "pkg-config" => :build if build.with? "libffi"
 
+  setup_ghc_compilers
+
   def install
     flags = []
     flags << "-f FFI" if build.with? "libffi"
