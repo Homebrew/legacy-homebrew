@@ -4,6 +4,13 @@ class BoostPython < Formula
   sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
   head "https://github.com/boostorg/boost.git"
 
+  bottle do
+    cellar :any
+    sha256 "7f627fb1887ecaaea4b6b363d300a21c5274a1607c7dc64f2114d3794b5fec11" => :yosemite
+    sha256 "6239719b00615abb9ce2bd40c680b14182325c2e1844c1bea410c002b42ce1db" => :mavericks
+    sha256 "24acf2ddde1edfabe04239856dec6ce85e8652f3c0d5d8cf357b219c2bf3272a" => :mountain_lion
+  end
+
   option :universal
   option :cxx11
 
@@ -29,12 +36,6 @@ class BoostPython < Formula
       sha256 "9f374761ada11eecd082e7f9d5b80efeb387039d3a290f45b61f0730bce3801a"
     end
   end
-  bottle do
-    cellar :any
-    sha256 "13296f3f1591f31ddfe232b8dc4962aee313a198b210348f6b7e3ffbec20270b" => :yosemite
-    sha256 "4c11ee0933bbb96bb9e463ffba099c2b1fed02bc5bedfbeaf61f855672560109" => :mavericks
-  end
-
 
   def install
     ENV.universal_binary if build.universal?
