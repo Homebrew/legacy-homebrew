@@ -12,6 +12,12 @@ class Scala < Formula
     sha1 "15310848fa89566423225e6547505c2aa246d249" => :mountain_lion
   end
 
+  devel do
+    url 'http://www.scala-lang.org/files/archive/scala-2.12.0-M1.tgz'
+    sha1 '23b19c5885671192a46b0e1eb4980cda6a4e6c03'
+    version '2.12.0-M1'
+  end
+
   option 'with-docs', 'Also install library documentation'
   option 'with-src', 'Also install sources for IDE support'
 
@@ -57,7 +63,7 @@ class Scala < Formula
     file.write <<-EOS.undent
       object Computer {
         def main(args: Array[String]) {
-          println(2 + 2)
+          println(s"${2 + 2}")
         }
       }
     EOS
