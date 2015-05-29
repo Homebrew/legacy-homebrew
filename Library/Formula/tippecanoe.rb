@@ -5,6 +5,13 @@ class Tippecanoe < Formula
   url "https://github.com/mapbox/tippecanoe/archive/v1.2.0.tar.gz"
   sha1 "348563c57629260d17e1761f9aedd85b1a0453ba"
 
+  bottle do
+    cellar :any
+    sha1 "6fa77446f3ad21f346f25ab42c6bbb83f29e58b4" => :yosemite
+    sha1 "ee7a92d3ad37e334eb386a45764b5018467e6f5f" => :mavericks
+    sha1 "98ee5c744cdd44a4e85475028bf043f15a9f5e2a" => :mountain_lion
+  end
+
   depends_on "protobuf-c"
 
   def install
@@ -19,6 +26,6 @@ class Tippecanoe < Formula
     EOS
     output = `#{bin}/tippecanoe -o test.mbtiles #{path}`.strip
     assert_equal 0, $?.exitstatus
-    assert_equal "using layer name test", output
+    assert_equal "using layer 0 name test", output
   end
 end
