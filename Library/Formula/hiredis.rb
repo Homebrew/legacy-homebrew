@@ -1,7 +1,7 @@
 class Hiredis < Formula
   homepage "https://github.com/redis/hiredis"
-  url "https://github.com/redis/hiredis/archive/v0.13.0.tar.gz"
-  sha256 "416d6cded4795d2223d8703dd9687259cb8c68445b3f73652eb15887297b15bb"
+  url "https://github.com/redis/hiredis/archive/v0.13.1.tar.gz"
+  sha256 "8865105e15331156a74b64aafbfd3f8c784a8375e003a55512dcca3d82168487"
 
   head "https://github.com/redis/hiredis.git"
 
