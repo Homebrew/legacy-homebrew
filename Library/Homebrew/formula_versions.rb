@@ -48,7 +48,7 @@ class FormulaVersions
     end
   end
 
-  def bottle_version_map(branch="HEAD")
+  def bottle_version_map(branch)
     map = Hash.new { |h, k| h[k] = [] }
     rev_list(branch) do |rev|
       formula_at_revision(rev) do |f|
