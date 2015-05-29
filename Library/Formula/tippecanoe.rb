@@ -2,8 +2,8 @@ require "formula"
 
 class Tippecanoe < Formula
   homepage "https://github.com/mapbox/tippecanoe"
-  url "https://github.com/mapbox/tippecanoe/archive/v1.1.0.tar.gz"
-  sha1 "5b50dc19c1e56ea4051dee5e790dd5cd328df005"
+  url "https://github.com/mapbox/tippecanoe/archive/v1.2.0.tar.gz"
+  sha1 "348563c57629260d17e1761f9aedd85b1a0453ba"
 
   bottle do
     cellar :any
@@ -26,6 +26,6 @@ class Tippecanoe < Formula
     EOS
     output = `#{bin}/tippecanoe -o test.mbtiles #{path}`.strip
     assert_equal 0, $?.exitstatus
-    assert_equal "using layer name test", output
+    assert_equal "using layer 0 name test", output
   end
 end
