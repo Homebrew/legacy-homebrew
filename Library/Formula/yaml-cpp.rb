@@ -5,10 +5,9 @@ class YamlCpp < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "90e07cbad706bc9e3052e91018a2389c8a592e700b0a2c3933d253f933e2c554" => :yosemite
-    sha256 "52257d4f7c38fb6baadfed2f8ed4c0b1731ec0b019bfe463087246b7b3e806f5" => :mavericks
-    sha256 "ed92a64681670a01dbe3113a900b614798179153bbecbf3cea1b24845ad3fa80" => :mountain_lion
+    sha256 "9727c8af2fe48f0d3c7cd3a031f92cb22a5f475bf8aeebecacf81d3bc425aff8" => :yosemite
+    sha256 "58eb6496d8d6e95398fab4d4ace176c0d42284c44ccb9cda3cc9304b29804395" => :mavericks
+    sha256 "6eeeae8bcc43b2425f09184666cdf7b8df9228d94ca64761d6fefc57c7936918" => :mountain_lion
   end
 
   option :cxx11
