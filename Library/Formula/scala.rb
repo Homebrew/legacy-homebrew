@@ -2,8 +2,6 @@ require 'formula'
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/files/archive/scala-2.11.6.tgz'
-  sha1 'f30ff4104b0fed5c4beca2b599b8f67e66b7f4e6'
 
   bottle do
     cellar :any
@@ -16,6 +14,9 @@ class Scala < Formula
   option 'with-src', 'Also install sources for IDE support'
 
   stable do
+    url "http://www.scala-lang.org/files/archive/scala-2.11.6.tgz"
+    sha256 "41ba45e4600404634217a66d6b2c960459d3a67e0344a7c3d9642d0eaa446583"
+
     resource "docs" do
       url "http://www.scala-lang.org/files/archive/scala-docs-2.11.6.zip"
       sha256 "aa7fb121cc0e50d32cd85b162b684d30be383aab42ec9b59589e389af8b62254"
