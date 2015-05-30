@@ -726,6 +726,12 @@ module Homebrew
         raise "Missing BINTRAY_USER or BINTRAY_KEY variables!"
       end
 
+      # Don't pass keys/cookies to subprocesses..
+      ENV["BINTRAY_KEY"] = nil
+      ENV["HUDSON_SERVER_COOKIE"] = nil
+      ENV["JENKINS_SERVER_COOKIE"] = nil
+      ENV["HUDSON_COOKIE"] = nil
+
       ARGV << '--verbose'
 
       bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
@@ -756,20 +762,6 @@ module Homebrew
         safe_system "brew", "pull", "--clean", pull_pr
       end
 
-      # Check for existing bottles as we don't want them to be autopublished
-      # on Bintray until manually `brew pull`ed.
-      existing_bottles = {}
-      Dir.glob("*.bottle*.tar.gz") do |filename|
-        formula_name = bottle_filename_formula_name filename
-        canonical_formula_name = if tap
-          "#{tap}/#{formula_name}"
-        else
-          formula_name
-        end
-        formula = Formulary.factory canonical_formula_name
-        existing_bottles[formula_name] = !!formula.bottle
-      end
-
       ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
       bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
@@ -796,7 +788,6 @@ module Homebrew
         formula = Formulary.factory canonical_formula_name
         version = formula.pkg_version
         bintray_package = Bintray.package formula_name
-        existing_bottle = existing_bottles[formula_name]
 
         unless formula_packaged[formula_name]
           package_url = "#{bintray_repo_url}/#{bintray_package}"
@@ -811,8 +802,6 @@ module Homebrew
 
         content_url = "https://api.bintray.com/content/homebrew"
         content_url += "/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
-        content_url += "?override=1"
-        content_url += "&publish=1" if existing_bottle
         curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
              "-T", filename, content_url
         puts
