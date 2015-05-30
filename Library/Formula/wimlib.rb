@@ -1,9 +1,7 @@
-require "formula"
-
 class Wimlib < Formula
   homepage "http://sourceforge.net/projects/wimlib/"
-  url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.7.3.tar.gz"
-  sha1 "3e6633b932dec774fa348511efb1ec505159a481"
+  url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.8.1.tar.gz"
+  sha256 "1558fe63243984259685eb35608631cf445042ac8d1998de8c62fe85f69a15e1"
 
   bottle do
     cellar :any
@@ -12,15 +10,22 @@ class Wimlib < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "ntfs-3g"
+  depends_on "homebrew/fuse/ntfs-3g" => :optional
   depends_on "openssl"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--without-fuse", # requires librt, unavailable on OSX
-                          "--prefix=#{prefix}"
+    # fuse requires librt, unavailable on OSX
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --without-fuse
+      --prefix=#{prefix}
+    ]
+
+    args << "--without-ntfs-3g" if build.without? "ntfs-3g"
+
+    system "./configure", *args
     system "make", "install"
   end
 
