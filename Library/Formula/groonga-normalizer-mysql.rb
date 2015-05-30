@@ -1,7 +1,7 @@
 class GroongaNormalizerMysql < Formula
   homepage "https://github.com/groonga/groonga-normalizer-mysql"
-  url "http://packages.groonga.org/source/groonga-normalizer-mysql/groonga-normalizer-mysql-1.0.9.tar.gz"
-  sha1 "9057570c1f0e3b5974bf7ac58877af8971ef2a25"
+  url "http://packages.groonga.org/source/groonga-normalizer-mysql/groonga-normalizer-mysql-1.1.0.tar.gz"
+  sha256 "525daffdb999b647ce87328ec2e94c004ab59803b00a71ce1afd0b5dfd167116"
 
   bottle do
     cellar :any
