@@ -1,7 +1,7 @@
 class Abcl < Formula
   homepage "http://abcl.org"
-  url "http://abcl.org/releases/1.3.1/abcl-bin-1.3.1.tar.gz"
-  sha1 "7abb22130acfbca9d01c413da9c98a6aa078c78b"
+  url "http://abcl.org/releases/1.3.2/abcl-bin-1.3.2.tar.gz"
+  sha256 "01105fe25c51873b71ffd6f0ba2d9b2688741ed96ff60c1950c0e62f9d84a785"
 
   depends_on :java => "1.5+"
   depends_on "rlwrap"
