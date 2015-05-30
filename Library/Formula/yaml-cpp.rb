@@ -1,7 +1,7 @@
 class YamlCpp < Formula
-  homepage "https://code.google.com/p/yaml-cpp/"
-  url "https://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.1.tar.gz"
-  sha256 "3e7c9052b43d987d41819a203d97fc45de4eed3ec67e0fdb14265c3d11046f06"
+  homepage "https://github.com/jbeder/yaml-cpp"
+  url "https://github.com/jbeder/yaml-cpp/archive/release-0.5.2.tar.gz"
+  sha256 "6fb92f6f5925e0af918ffbb90acf19b7b88706ebcd40fc186b7caa76609b6350"
 
   bottle do
     cellar :any
