@@ -3,6 +3,7 @@ class Creduce < Formula
   url "https://github.com/csmith-project/creduce/archive/creduce-2.3.0.tar.gz"
   sha256 "47a42751aab8b51bc10d8df62f359bdc1b4a644f16feb85b9f7325f0c5bce4a3"
   head "https://github.com/csmith-project/creduce.git"
+  revision 1
 
   bottle do
     sha256 "cb27ed455261c1839800d26ad5c66a3afa1ac76717857cc6797fea9a21162d44" => :yosemite
