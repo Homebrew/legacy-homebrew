@@ -1,7 +1,7 @@
 class GtkDoc < Formula
   homepage "http://www.gtk.org/gtk-doc/"
-  url "https://download.gnome.org/sources/gtk-doc/1.23/gtk-doc-1.23.tar.xz"
-  sha256 "0b5c23711166c10ff5c74603db80ac26c2b9a382ce778b0e795db821d50718c4"
+  url "https://download.gnome.org/sources/gtk-doc/1.24/gtk-doc-1.24.tar.xz"
+  sha256 "b420759ea05c760301bada14e428f1b321f5312f44e10a176d6804822dabb58b"
 
   bottle do
     sha256 "941b07e4d71fd9d618dd5fb2ad843f6878174c8edefb51188a01a93aab8d6fde" => :yosemite
