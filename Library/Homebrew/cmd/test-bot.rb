@@ -710,12 +710,8 @@ module Homebrew
 
     # Tap repository if required, this is done before everything else
     # because Formula parsing and/or git commit hash lookup depends on it.
-    if tap
-      if !repository.directory?
-        safe_system "brew", "tap", tap
-      else
-        quiet_system "brew", "tap", "--repair"
-      end
+    if tap && !repository.directory?
+      safe_system "brew", "tap", tap
     end
 
     if ARGV.include? '--ci-upload'
