@@ -4,8 +4,8 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.14/pandoc-1.14.tar.gz"
-  sha256 "e1c36ae6ba4937ebaaf49a68bdeee2fec9089b8894136ba25e5fa2b6bf1c9458"
+  url "https://hackage.haskell.org/package/pandoc-1.14.0.2/pandoc-1.14.0.2.tar.gz"
+  sha256 "5d60bddc474499a2aa553e200da2860fed9e48a3db77072355f5f7c666a56bd0"
 
   head "https://github.com/jgm/pandoc.git"
 
