@@ -1,5 +1,6 @@
 # encoding: UTF-8
 class Mecab < Formula
+  desc "Yet Another Part-of-Speech and Morphological Analyzer"
   homepage "https://taku910.github.io/mecab/"
   url "https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE"
   version "0.996"
@@ -12,7 +13,31 @@ class Mecab < Formula
     sha1 "9747369cd4c0aa246e6a973c4f2e5652e174bae8" => :mountain_lion
   end
 
+  option "with-unidic", "UniDicとは"
+
+  resource "unidic" do
+    # https://osdn.jp/projects/unidic/
+    url "http://dl.osdn.jp/unidic/58338/unidic-mecab-2.1.2_src.zip"
+    sha256 "6cce98269214ce7de6159f61a25ffc5b436375c098cc86d6aa98c0605cbf90d4"
+  end
+
   def install
+    if build.include? "unidic"
+      resource("unidic").stage do
+        cd ("unidic") do
+          system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                                "--prefix=#{prefix}"
+          system "make", "install"
+        end
+      end
+
+      def caveats; <<-EOS.undent
+        If you want to use UniDic, please rewrite "dicdir".
+           #{opt_prefix}/etc/mecabrc
+        EOS
+      end
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
