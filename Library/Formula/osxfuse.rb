@@ -24,8 +24,6 @@ class Osxfuse < Formula
   depends_on "libtool" => :build
   depends_on "gettext" => :build
 
-  conflicts_with "fuse4x", :because => "both install `fuse.pc`"
-
   def install
     # Do not override Xcode build settings
     ENV.remove_cc_etc
