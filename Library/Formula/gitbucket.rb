@@ -1,7 +1,7 @@
 class Gitbucket < Formula
   homepage "https://github.com/takezoe/gitbucket"
-  url "https://github.com/takezoe/gitbucket/releases/download/3.2/gitbucket.war"
-  sha256 "639d9b7ae1aa2a4c59f275a80aa39d09f7cf202d518ca341f339041e1678ee1a"
+  url "https://github.com/takezoe/gitbucket/releases/download/3.3/gitbucket.war"
+  sha256 "3a50d97ed8184acdee865dab5e7b4694145f723dee92683eaa08448339658ea4"
 
   head do
     url "https://github.com/takezoe/gitbucket.git"
