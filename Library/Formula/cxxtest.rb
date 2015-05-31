@@ -14,7 +14,7 @@ class Cxxtest < Formula
     testfile = testpath/"MyTestSuite1.h"
     testfile.write <<-EOS.undent
       #include <cxxtest/TestSuite.h>
-      
+
       class MyTestSuite1 : public CxxTest::TestSuite {
       public:
           void testAddition(void) {
@@ -23,9 +23,9 @@ class Cxxtest < Formula
           }
       };
     EOS
-    
+
     system bin/"cxxtestgen", "--error-printer", "-o", testpath/"runner.cpp", testfile
-    system "g++", "-o", testpath/"runner", testpath/"runner.cpp"
+    system ENV.cxx, "-o", testpath/"runner", testpath/"runner.cpp"
     system testpath/"runner"
   end
 end
