@@ -1,9 +1,7 @@
-require 'formula'
-
 class GitCrypt < Formula
   homepage 'https://www.agwa.name/projects/git-crypt/'
-  url "https://www.agwa.name/projects/git-crypt/downloads/git-crypt-0.4.2.tar.gz"
-  sha1 "c084d73d285ed2c7b9840d4d527cb51ecc7a687b"
+  url "https://www.agwa.name/projects/git-crypt/downloads/git-crypt-0.5.0.tar.gz"
+  sha256 "0a8f92c0a0a125bf768d0c054d947ca4e4b8d6556454b0e7e87fb907ee17cf06"
 
   bottle do
     cellar :any
