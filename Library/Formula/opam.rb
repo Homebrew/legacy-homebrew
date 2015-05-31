@@ -6,9 +6,9 @@ class Opam < Formula
 
   bottle do
     cellar :any
-    sha256 "07bb172ee9fe261c4216b94f9fbb6e7789394ae0aa2baaf5edfb7531f31a557a" => :yosemite
-    sha256 "295c0f30bf07605c585810fcd0dd1c767defb5353f681d69a390f518f722a3d4" => :mavericks
-    sha256 "00971c8f7ead433bdac2731715380aef7635847c8f899be6dcf08a9d6d162455" => :mountain_lion
+    sha256 "ad11048ca70e2548f7b825f94ac4885da0f5448a7e2d2dd9eec99889d4858b0e" => :yosemite
+    sha256 "81f126dcb52b514f0e06d4e93465ca1ff8d3260d3ad0abe99950a90112872d71" => :mavericks
+    sha256 "49b51771003bde6912d7563dd8f4bff805691f2c5298d814b62abf845d6b6e2e" => :mountain_lion
   end
 
   depends_on "objective-caml"
