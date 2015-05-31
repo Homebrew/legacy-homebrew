@@ -6,6 +6,13 @@ class Caddy < Formula
   sha256 "919023cd91b6ab94fcde08fc30620b10f90eaaa95ab8b9f3ff7e06c0e9b7f301"
   desc "Caddy is an alternative HTTP/2 web server that is easy to configure and use"
 
+  bottle do
+    cellar :any
+    sha256 "fa5e8abd8a6f756c8eac243eff986f5359d7bac4cf8aa101ef4abcfd7663c852" => :yosemite
+    sha256 "bf4fb487f503e51af2f9bc48badd09bec452113d1a60caa1ccb2ab7fa6d5699e" => :mavericks
+    sha256 "6e5f7d9348505a970aa6369091b447ae203c3808185ba993a967d5d9e185841f" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   head do
