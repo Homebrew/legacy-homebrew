@@ -5,9 +5,17 @@ class Cxxtest < Formula
   sha256 "356d0f4810e8eb5c344147a0cca50fc0d84122c286e7644b61cb365c2ee22083"
 
   def install
-    libexec.install Dir["*"]
-    bin.install_symlink "#{libexec}/bin/cxxtestgen"
-    include.install_symlink "#{libexec}/cxxtest"
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+    ENV.prepend_create_path 'PYTHONPATH', lib+'python2.7/site-packages'
+
+    cd "./python" do
+      system "python", *Language::Python.setup_install_args(prefix)
+    end
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+
+    include.install Dir['cxxtest']
+    doc.install Dir['doc/*']
   end
 
   test do
