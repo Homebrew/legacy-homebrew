@@ -1,7 +1,5 @@
-require 'formula'
-
 class Scala < Formula
-  homepage 'http://www.scala-lang.org/'
+  homepage "http://www.scala-lang.org/"
 
   bottle do
     cellar :any
@@ -10,8 +8,8 @@ class Scala < Formula
     sha1 "15310848fa89566423225e6547505c2aa246d249" => :mountain_lion
   end
 
-  option 'with-docs', 'Also install library documentation'
-  option 'with-src', 'Also install sources for IDE support'
+  option "with-docs", "Also install library documentation"
+  option "with-src", "Also install sources for IDE support"
 
   stable do
     url "http://www.scala-lang.org/files/archive/scala-2.11.6.tgz"
@@ -46,25 +44,25 @@ class Scala < Formula
     end
   end
 
-  resource 'completion' do
-    url 'https://raw.githubusercontent.com/scala/scala-dist/v2.11.4/bash-completion/src/main/resources/completion.d/2.9.1/scala'
-    sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
+  resource "completion" do
+    url "https://raw.githubusercontent.com/scala/scala-dist/v2.11.4/bash-completion/src/main/resources/completion.d/2.9.1/scala"
+    sha256 "95aeba51165ce2c0e36e9bf006f2904a90031470ab8d10b456e7611413d7d3fd"
   end
 
   def install
     rm_f Dir["bin/*.bat"]
-    doc.install Dir['doc/*']
+    doc.install Dir["doc/*"]
     share.install "man"
     libexec.install "bin", "lib"
     bin.install_symlink Dir["#{libexec}/bin/*"]
-    bash_completion.install resource('completion')
-    doc.install resource('docs') if build.with? 'docs'
-    libexec.install resource('src').files('src') if build.with? 'src'
+    bash_completion.install resource("completion")
+    doc.install resource("docs") if build.with? "docs"
+    libexec.install resource("src").files("src") if build.with? "src"
 
     # Set up an IntelliJ compatible symlink farm in 'idea'
-    idea = prefix/'idea'
-    idea.install_symlink libexec/'src', libexec/'lib'
-    idea.install_symlink doc => 'doc'
+    idea = prefix/"idea"
+    idea.install_symlink libexec/"src", libexec/"lib"
+    idea.install_symlink doc => "doc"
   end
 
   def caveats; <<-EOS.undent
@@ -74,7 +72,7 @@ class Scala < Formula
   end
 
   test do
-    file = testpath/'hello.scala'
+    file = testpath/"hello.scala"
     file.write <<-EOS.undent
       object Computer {
         def main(args: Array[String]) {
