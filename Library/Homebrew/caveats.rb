@@ -48,7 +48,7 @@ class Caveats
   end
 
   def fish_completion_caveats
-    if keg and keg.completion_installed? :fish then <<-EOS.undent
+    if keg and keg.completion_installed? :fish and which("fish") then <<-EOS.undent
       fish completion has been installed to:
         #{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
       EOS
