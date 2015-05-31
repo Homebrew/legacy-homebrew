@@ -1,7 +1,7 @@
 class Cimg < Formula
-  homepage "http://cimg.sourceforge.net/"
-  url "https://downloads.sourceforge.net/cimg/CImg_1.6.2.zip"
-  sha256 "5c3f465b431566e82d9aeb0ca5dd18d925d3733861c735f4edf7f4e715748813"
+  homepage "http://cimg.eu/"
+  url "http://cimg.eu/files/CImg_1.6.3.zip"
+  sha256 "c2a3c62d05d1e322afa6afae086cf96df82a3a13b839e9bf1cedcb014d921ce7"
 
   def install
     include.install "CImg.h"
