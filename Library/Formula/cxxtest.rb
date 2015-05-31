@@ -6,16 +6,16 @@ class Cxxtest < Formula
 
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path 'PYTHONPATH', lib+'python2.7/site-packages'
+    ENV.prepend_create_path "PYTHONPATH", lib+"python2.7/site-packages"
 
     cd "./python" do
       system "python", *Language::Python.setup_install_args(prefix)
     end
 
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
-    include.install Dir['cxxtest']
-    doc.install Dir['doc/*']
+    include.install "cxxtest"
+    doc.install Dir["doc/*"]
   end
 
   test do
