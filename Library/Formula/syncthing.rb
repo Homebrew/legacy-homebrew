@@ -1,7 +1,7 @@
 class Syncthing < Formula
   homepage "https://syncthing.net/"
   url "https://github.com/syncthing/syncthing.git",
-    :tag => "v0.11.6", :revision => "3a203b8d83396b392975a1a0a1272807bc897936"
+    :tag => "v0.11.7", :revision => "36d4c69fd6da72e87252537051ef25ec3802064b"
 
   head "https://github.com/syncthing/syncthing.git"
 
