@@ -1,7 +1,7 @@
 class Sbcl < Formula
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.11/sbcl-1.2.11-source.tar.bz2"
-  sha256 "88aa04dae72d011f5c22084a35201188d8a02f0cd82e5de542aa4ce6bfaa3e70"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.12/sbcl-1.2.12-source.tar.bz2"
+  sha256 "b65bc878f15b8dc87582498780714e06c32a161aaa579e6f0216fd372247c9ad"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
