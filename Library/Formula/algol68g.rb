@@ -1,15 +1,13 @@
-require 'formula'
-
 class Algol68g < Formula
-  homepage 'http://www.xs4all.nl/~jmvdveer/algol.html'
-  url 'http://jmvdveer.home.xs4all.nl/algol68g-2.8.tar.gz'
-  sha1 '46b43b8db53e2a8c02e218ca9c81cf5e6ce924fd'
+  homepage "http://www.xs4all.nl/~jmvdveer/algol.html"
+  url "http://jmvdveer.home.xs4all.nl/algol68/algol68g-2.8.1.tar.gz"
+  sha256 "bd499f90576a8d86008316f55e026e08abe2c9bda930e7a00cd0bec5b2b2dc44"
 
-  depends_on 'gsl' => :optional
+  depends_on "gsl" => :optional
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
