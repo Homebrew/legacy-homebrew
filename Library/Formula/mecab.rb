@@ -13,7 +13,7 @@ class Mecab < Formula
     sha1 "9747369cd4c0aa246e6a973c4f2e5652e174bae8" => :mountain_lion
   end
 
-  option "with-unidic", "UniDicとは"
+  option "with-unidic", "UniDic"
 
   resource "unidic" do
     # https://osdn.jp/projects/unidic/
@@ -30,17 +30,17 @@ class Mecab < Formula
           system "make", "install"
         end
       end
-
-      def caveats; <<-EOS.undent
-        If you want to use UniDic, please rewrite "dicdir".
-           #{opt_prefix}/etc/mecabrc
-        EOS
-      end
     end
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+
+    def caveats; <<-EOS.undent
+      If you want to use an alternate dictionary, please rewrite "dicdir".
+         #{opt_prefix}/etc/mecabrc
+      EOS
+    end
   end
 
   test do
