@@ -2,8 +2,8 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://opam.ocaml.org'
-  url 'https://github.com/ocaml/opam/archive/1.2.1.tar.gz'
-  sha1 'ec05bb766834c599ea5045eb3b7e92478ddf9dd0'
+  url 'https://github.com/ocaml/opam/archive/1.2.2.tar.gz'
+  sha1 '40d6ea499c06254ace4bed1d280a6e401cec0945'
 
   head 'https://github.com/ocaml/opam.git'
 
@@ -108,6 +108,11 @@ class Opam < Formula
     To export the needed variables every time, add them to your dotfiles.
       * On Bash, add them to `~/.bash_profile`.
       * On Zsh, add them to `~/.zprofile` instead.
+
+    You can subsequently update the package database and install fresh
+    packages by running:
+
+    $  opam update -u
 
     Documentation and tutorials are available at https://opam.ocaml.org, or
     via 'man opam' and 'opam --help'.
