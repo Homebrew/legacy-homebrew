@@ -4,6 +4,13 @@ class Jetty < Formula
   version "9.2.11.v20150529"
   sha256 "2dd7d03d49c44d25a0a852f6f40a8ea5548edd7f1ca33eb7e98386450c4d3ab5"
 
+  bottle do
+    cellar :any
+    sha256 "a0bf10e7229deaff9ccf17164354598ba6727033a1cdbbce7290270943d61e96" => :yosemite
+    sha256 "894ab6e7b99475b31e10b4a9cf7806f20b7162439bf5d9706087ad785834ef7a" => :mavericks
+    sha256 "cf81c0b658885c2d1199d3f063536b4c2489a456718d5e4b30d4693640e23cab" => :mountain_lion
+  end
+
   depends_on :java => "1.7+"
 
   def install
