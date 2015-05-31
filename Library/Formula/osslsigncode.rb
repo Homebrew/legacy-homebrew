@@ -5,10 +5,9 @@ class Osslsigncode < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "343585fea99f289ae65a66297cb644fb96ec5c89" => :mavericks
-    sha1 "93a53082b119c7facf8e5b59ede70d0756f72eb9" => :mountain_lion
-    sha1 "aabd093edd467aa6804c4e52ac0f5fb95359c6c3" => :lion
+    sha256 "5f3799537630936f8d7954e9ec28f191fff6e1713f6b209aa94b2b665e5eaf88" => :yosemite
+    sha256 "59da5261972c8d26f0238c6ea42f5b247489d41e7ce6525c703675a22e260cfa" => :mavericks
+    sha256 "49a6dd76e78c82062041e5025ed1e7d71f1c53b51ef0e314a5e6938a07b6e49d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
