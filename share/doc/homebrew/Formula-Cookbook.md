@@ -342,6 +342,8 @@ Add aliases by creating symlinks in `Library/Aliases`.
 
 You can run `brew audit` to test formulae for adherence to Homebrew house style. This includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
 
+Use `brew info` and check if the version guessed by Homebrew from the URL is
+correct. Add an explicit `version` if not.
 
 ## Commit
 
