@@ -2,6 +2,8 @@ require "formula"
 require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
+require "official_taps"
+require "cmd/search"
 
 module Homebrew
   def audit
@@ -160,6 +162,41 @@ class FormulaAuditor
   end
 
   @@aliases ||= Formula.aliases
+
+  def audit_formula_name
+    return unless @strict
+    # skip for non-official taps
+    return if !formula.core_formula? && !formula.tap.to_s.start_with?("homebrew")
+
+    name = formula.name
+    full_name = formula.full_name
+
+    if @@aliases.include? name
+      problem "Formula name is conflicted with existed aliases."
+      return
+    end
+
+    if !formula.core_formula? && Formula.core_names.include?(name)
+      problem "Formula name is conflicted with existed core formula."
+      return
+    end
+
+    same_name_tap_formulae = Formula.tap_names.select { |f| f =~ %r{^homebrew/[^/]+/#{name}$} }
+    homebrew_tapd = HOMEBREW_LIBRARY/"Taps/homebrew"
+    current_taps = if homebrew_tapd.directory?
+      homebrew_tapd.subdirs.map(&:basename).map { |tap| tap.to_s.sub(/^homebrew-/, "") }
+    else
+      []
+    end
+    same_name_tap_formulae += (OFFICIAL_TAPS - current_taps).map do |tap|
+      Thread.new { Homebrew.search_tap "homebrew", tap, name }
+    end.map(&:value).flatten
+    same_name_tap_formulae.delete(full_name)
+
+    if same_name_tap_formulae.size > 0
+      problem "Formula name is conflicted with #{same_name_tap_formulae.join ", "}"
+    end
+  end
 
   def audit_deps
     @specs.each do |spec|
@@ -716,6 +753,7 @@ class FormulaAuditor
 
   def audit
     audit_file
+    audit_formula_name
     audit_class
     audit_specs
     audit_desc
