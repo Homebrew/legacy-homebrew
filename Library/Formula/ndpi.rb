@@ -2,8 +2,9 @@ require "formula"
 
 class Ndpi < Formula
   homepage "http://www.ntop.org/products/ndpi/"
-  url "https://downloads.sourceforge.net/project/ntop/nDPI/libndpi-1.5.1.tar.gz"
-  sha1 "0a6ed585545ab6611f3f0ac9efd9eb36bb5481dd"
+  url "https://downloads.sourceforge.net/project/ntop/nDPI/nDPI-1.6.tar.gz"
+  sha1 "60a4969bb456293dea8a847049cfb6cadeaf9c10"
+
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -12,6 +13,7 @@ class Ndpi < Formula
   depends_on "json-c"
 
   def install
+    system "./autogen.sh"
     system "./configure","--prefix=#{prefix}"
     system "make"
     system "make", "install"
