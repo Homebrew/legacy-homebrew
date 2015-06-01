@@ -16,6 +16,7 @@ class Harfbuzz < Formula
   depends_on "cairo"
   depends_on "icu4c" => :recommended
   depends_on "freetype"
+  depends_on "gobject-introspection"
 
   resource "ttf" do
     url "https://github.com/behdad/harfbuzz/raw/fc0daafab0336b847ac14682e581a8838f36a0bf/test/shaping/fonts/sha1sum/270b89df543a7e48e206a2d830c0e10e5265c630.ttf"
@@ -23,7 +24,13 @@ class Harfbuzz < Formula
   end
 
   def install
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-introspection=yes
+      --with-gobject=yes
+    ]
+
     args << "--with-icu" if build.with? "icu4c"
     system "./configure", *args
     system "make", "install"
