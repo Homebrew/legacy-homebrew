@@ -12,6 +12,7 @@ class Ndpi < Formula
   depends_on "json-c"
 
   def install
+    system "./autogen.sh"
     system "./configure","--prefix=#{prefix}"
     system "make"
     system "make", "install"
