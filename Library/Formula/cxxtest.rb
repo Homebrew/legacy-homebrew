@@ -4,6 +4,8 @@ class Cxxtest < Formula
   url "https://github.com/CxxTest/cxxtest/archive/4.3.tar.gz"
   sha256 "356d0f4810e8eb5c344147a0cca50fc0d84122c286e7644b61cb365c2ee22083"
 
+  depends_on :python if MacOS.version <= :snow_leopard
+
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", lib+"python2.7/site-packages"
