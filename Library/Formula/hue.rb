@@ -2,23 +2,27 @@ class Hue < Formula
   desc "Hue is a Web interface for analyzing data with Apache Hadoop."
   homepage "http://gethue.com/"
   url "https://github.com/cloudera/hue/archive/release-3.8.1.tar.gz"
-  # version "3.8.1" # redundant with version scanned from URL
   sha256 "582777f567b9f4a34e4ce58cfd5ed24aff15f3e02f193e7990329d8cb0161a8a"
 
-  # system dependencies - either Homebrew or Mac OS versions
   depends_on :java
-  depends_on :python
   depends_on :mysql
 
-  depends_on "maven" => :build
-  depends_on "openssl" => :optional
   depends_on "gmp"
+
+  depends_on "maven" => :build
+
+  option "with-system-openssl", "Build with the Mac OS system OpenSSL instead of the (more secure) latest Homebrew version"
+  depends_on "openssl" unless build.with? "system-openssl"
 
   patch :DATA
 
   def install
+
+    ENV.append_to_cflags '-I' + `xcrun --show-sdk-path`.strip + '/usr/include/sasl' if MacOS.version >= :mavericks
+    ENV.deparallelize
+
     # patched the Makefile vars to install to ${PREFIX}/libexec
-    system "make", "-j", "1", "install", "PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}", "SKIP_PYTHONDEV_CHECK=1"
 
     (libexec/"desktop/conf").install "desktop/conf.dist/hue.ini"
     etc.install_symlink "#{libexec}/desktop/conf/hue.ini"
@@ -142,6 +146,19 @@ index ab807a2..7203c94 100644
 \ No newline at end of file
 +			byte_index, bit_offset = (divmod(self.offset + key), 8)
 +			return self.bytes[byte_index] & SINGLE_BIT_MASK[bit_offset]
+diff --git a/desktop/core/ext-py/pyopenssl/OpenSSL/crypto/crl.c b/desktop/core/ext-py/pyopenssl/OpenSSL/crypto/crl.c
+index eec5bcb..b2fd681 100644
+--- a/desktop/core/ext-py/pyopenssl/OpenSSL/crypto/crl.c
++++ b/desktop/core/ext-py/pyopenssl/OpenSSL/crypto/crl.c
+@@ -3,7 +3,7 @@
+ #include "crypto.h"
+ 
+ 
+-static X509_REVOKED * X509_REVOKED_dup(X509_REVOKED *orig) {
++X509_REVOKED * X509_REVOKED_dup(X509_REVOKED *orig) {
+     X509_REVOKED *dupe = NULL;
+ 
+     dupe = X509_REVOKED_new();
 diff --git a/Makefile.vars.priv b/Makefile.vars.priv
 index 79bc443..e17e192 100644
 --- a/Makefile.vars.priv
