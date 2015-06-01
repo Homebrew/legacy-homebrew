@@ -2,45 +2,28 @@
 # It is not meant to be used directy from formulae.
 
 class Formulary
-  module Formulae
-    class << self
-      if instance_method(:const_defined?).arity == -1
-        def formula_const_defined?(name)
-          const_defined?(name, false)
-        end
+  FORMULAE = {}
 
-        def formula_const_get(name)
-          const_get(name, false)
-        end
-      else
-        def formula_const_defined?(name)
-          const_defined?(name)
-        end
+  def self.formula_class_defined?(path)
+    FORMULAE.key?(path)
+  end
 
-        def formula_const_get(name)
-          const_get(name)
-        end
-      end
+  def self.formula_class_get(path)
+    FORMULAE.fetch(path)
+  end
 
-      def remove_formula_const(name)
-        remove_const(name)
-      end
+  def self.load_formula(name, path)
+    mod = Module.new
+    mod.module_eval(path.read, path)
+    class_name = class_s(name)
 
-      def formula_const_set(name, value)
-        const_set(name, value)
-      end
+    begin
+      klass = mod.const_get(class_name)
+    rescue NameError => e
+      raise FormulaUnavailableError, name, e.backtrace
+    else
+      FORMULAE[path] = klass
     end
-  end
-
-  def self.unload_formula formula_name
-    Formulae.remove_formula_const(class_s(formula_name))
-  end
-
-  def self.restore_formula formula_name, value
-    old_verbose, $VERBOSE = $VERBOSE, nil
-    Formulae.formula_const_set(class_s(formula_name), value)
-  ensure
-    $VERBOSE = old_verbose
   end
 
   def self.class_s name
@@ -57,13 +40,10 @@ class Formulary
     attr_reader :name
     # The formula's ruby file's path or filename
     attr_reader :path
-    # The ruby constant name of the formula's class
-    attr_reader :class_name
 
     def initialize(name, path)
       @name = name
       @path = path.resolved_path
-      @class_name = Formulary.class_s(name)
     end
 
     # Gets the formula instance.
@@ -72,16 +52,8 @@ class Formulary
     end
 
     def klass
-      begin
-        have_klass = Formulae.formula_const_defined?(class_name)
-      rescue NameError => e
-        raise unless e.name.to_s == class_name
-        raise FormulaUnavailableError, name, e.backtrace
-      end
-
-      load_file unless have_klass
-
-      Formulae.formula_const_get(class_name)
+      load_file unless Formulary.formula_class_defined?(path)
+      Formulary.formula_class_get(path)
     end
 
     private
@@ -89,7 +61,7 @@ class Formulary
     def load_file
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
       raise FormulaUnavailableError.new(name) unless path.file?
-      Formulae.module_eval(path.read, path)
+      Formulary.load_formula(name, path)
     end
   end
 

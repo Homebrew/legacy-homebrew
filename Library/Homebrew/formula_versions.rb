@@ -32,8 +32,6 @@ class FormulaVersions
       path = Pathname.pwd.join("#{name}.rb")
       path.write file_contents_at_revision(rev)
 
-      old_const = Formulary.unload_formula(name)
-
       begin
         nostdout { yield Formulary.factory(path.to_s) }
       rescue *IGNORED_EXCEPTIONS => e
@@ -42,8 +40,6 @@ class FormulaVersions
         ohai "#{e} in #{name} at revision #{rev}", e.backtrace if ARGV.debug?
       rescue FormulaUnavailableError
         # Suppress this error
-      ensure
-        Formulary.restore_formula(name, old_const)
       end
     end
   end
