@@ -1,8 +1,7 @@
 class Pngquant < Formula
   homepage "http://pngquant.org/"
-  url "https://github.com/pornel/pngquant/archive/2.3.5.tar.gz"
-  sha256 "8907787afca9b83aefe7e29dbf29f4d107255160d0f32c43e7c159ebc2b8d1a7"
-
+  url "https://github.com/pornel/pngquant/archive/2.4.1.tar.gz"
+  sha256 "28157abfddc83d074cfbe7e9865d3dd656f7be323fbc4e6a049385236e57d3c3"
   head "https://github.com/pornel/pngquant.git"
 
   bottle do
