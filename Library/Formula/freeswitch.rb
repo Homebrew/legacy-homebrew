@@ -1,7 +1,10 @@
 class Freeswitch < Formula
-  homepage "http://freeswitch.org"
-  url "https://stash.freeswitch.org/scm/fs/freeswitch.git", :tag => "v1.4.15"
-  head "https://stash.freeswitch.org/scm/fs/freeswitch.git"
+  homepage "https://freeswitch.org"
+  url "https://freeswitch.org/stash/scm/fs/freeswitch.git",
+      :tag => "v1.4.19",
+      :revision => "ebf2df68fa6f341311620c6d90f5a8d77334606c"
+
+  head "https://freeswitch.org/stash/scm/fs/freeswitch.git"
 
   bottle do
     sha1 "4e9636023d8cc82441b3594a4cd83d581990e718" => :yosemite
