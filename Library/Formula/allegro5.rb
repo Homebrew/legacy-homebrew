@@ -5,14 +5,6 @@ class Allegro5 < Formula
 
   head "git://git.code.sf.net/p/alleg/allegro", :branch => "5.1"
 
-  bottle do
-    root_url "https://homebrew.bintray.com/bottles-versions"
-    cellar :any
-    sha256 "45bddf5bdb18bce6e99771c6e031ec89eeabc442a0dc45de72aa22e8e27b6193" => :yosemite
-    sha256 "51014d2dafc31122b05db7b9a34264de6a9e5db50446b942d41cff4e22455590" => :mavericks
-    sha256 "0ee8a23b7d169746a7323e2d61907fa0d096ab53c409bb0f7455ad85a82f1548" => :mountain_lion
-  end
-
   depends_on "cmake" => :build
   depends_on "libvorbis" => :optional
   depends_on "freetype" => :optional
