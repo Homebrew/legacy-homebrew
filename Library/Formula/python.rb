@@ -32,13 +32,13 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-16.0.tar.gz"
-    sha256 "aa86255dee2c4a0056509750008007667c29306b7a6c13801468515b2c672845"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
+    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.1.1.tar.gz"
-    sha256 "89f3b626d225e08e7f20d85044afa40f612eb3284484169813dc2d0631f2a556"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.1.tar.gz"
+    sha256 "cfec177552fdd0b2d12b72651c8e874f955b4c62c1c2c9f2588cbdc1c0d0d416"
   end
 
   # Patch for pyport.h macro issue
