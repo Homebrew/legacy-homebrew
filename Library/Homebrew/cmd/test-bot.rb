@@ -802,6 +802,10 @@ module Homebrew
 
         content_url = "https://api.bintray.com/content/homebrew"
         content_url += "/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
+        unless system "curl", "-I", "--fail", "--output", "/dev/null",
+                      "https://homebrew.bintray.com/#{bintray_repo}/#{filename}"
+          content_url += "?override=1"
+        end
         curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
              "-T", filename, content_url
         puts
