@@ -4,6 +4,18 @@ class Binwalk < Formula
   stable do
     url "https://github.com/devttys0/binwalk/archive/v2.0.1.tar.gz"
     sha256 "90ee8426d71e91b62dfe4a1446c457bc7835b475b28717859e275a0494403959"
+
+    # Fixes OS-X-specific issues no longer relevant in HEAD:
+    #
+    # * Fixes OS X bug in 'setup.py':
+    #   * See <https://github.com/devttys0/binwalk/commit/8278229cae4c2c354ffc5bfc3bcef0fd1d9bf2b3>
+    #     and <https://github.com/devttys0/binwalk/commit/76ff729a19552e6e58505ca64b1d4ce2325e7ac0>.
+    # * Fixes library lookup for non-standard Homebrew installations:
+    #   * See upstream issue <https://github.com/devttys0/binwalk/issues/130>
+    #     for the details.
+    #   * The fix is Homebrew-specific as it uses HOMEBREW_PREFIX, that is
+    #     implicitly replace with the actual Homebrew prefix, in the patch.
+    patch :DATA
   end
 
   bottle do
@@ -76,3 +88,34 @@ class Binwalk < Formula
     system "#{bin}/binwalk", "binwalk.test"
   end
 end
+
+__END__
+diff --git a/setup.py b/setup.py
+index b5fbf54..660091d 100755
+--- a/setup.py
++++ b/setup.py
+@@ -134,7 +134,7 @@ if "install" in sys.argv or "build" in sys.argv:
+
+ # The data files to install along with the module
+ data_dirs = ["magic", "config", "plugins", "modules", "core"]
+-install_data_files = [os.path.join("libs", "*.so")]
++install_data_files = [os.path.join("libs", "*.so"), os.path.join("libs", "*.dylib")]
+
+ for data_dir in data_dirs:
+     install_data_files.append("%s%s*" % (data_dir, os.path.sep))
+diff --git a/src/binwalk/core/C.py b/src/binwalk/core/C.py
+index e492a22..f8b3bd3 100644
+--- a/src/binwalk/core/C.py
++++ b/src/binwalk/core/C.py
+@@ -125,10 +125,7 @@ class Library(object):
+                 'linux'   : [os.path.join(prefix, 'lib%s.so' % library), '/usr/local/lib/lib%s.so' % library],
+                 'cygwin'  : [os.path.join(prefix, 'lib%s.so' % library), '/usr/local/lib/lib%s.so' % library],
+                 'win32'   : [os.path.join(prefix, 'lib%s.dll' % library), '%s.dll' % library],
+-                'darwin'  : [os.path.join(prefix, 'lib%s.dylib' % library),
+-                             '/opt/local/lib/lib%s.dylib' % library,
+-                             '/usr/local/lib/lib%s.dylib' % library,
+-                            ] + glob.glob('/usr/local/Cellar/*%s*/*/lib/lib%s.dylib' % (library, library)),
++                'darwin'  : [os.path.join(prefix, 'lib%s.dylib' % library), 'HOMEBREW_PREFIX/lib/lib%s.dylib' % library],
+             }
+
+             for i in range(2, 4):
