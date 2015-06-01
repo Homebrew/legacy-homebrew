@@ -14,3 +14,6 @@ DEPENDENCIES
   minitest (~> 5.3)
   mocha (~> 1.1)
   rake (~> 10.3)
+
+BUNDLED WITH
+   1.10.2
