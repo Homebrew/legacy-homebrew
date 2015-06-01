@@ -6,6 +6,13 @@ class Allegro < Formula
     url "https://downloads.sourceforge.net/project/alleg/allegro/5.0.11/allegro-5.0.11.tar.gz"
     sha256 "49fe14c9571463ba08db4ff778d1fbb15e49f9c33bdada3ac8599e04330ea531"
   end
+  bottle do
+    cellar :any
+    sha256 "2b960b185c3458e8f9dc39ad80f7861ab4ab11cb18c118ce9d3c9ab13488a422" => :yosemite
+    sha256 "762b4ba85b03478764ce857b905ca141843148a0ffe4f1a6b1e84640a6ce545d" => :mavericks
+    sha256 "32a6ba24e889fb5529edcf6b6da894610942ce4610da8cb9ea021bf97ae13532" => :mountain_lion
+  end
+
 
   head do
     url "git://git.code.sf.net/p/alleg/allegro", :branch => "5.1"
