@@ -30,7 +30,7 @@ class Pypy < Formula
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.1.tar.gz"
     sha256 "cfec177552fdd0b2d12b72651c8e874f955b4c62c1c2c9f2588cbdc1c0d0d416"
   end
 
