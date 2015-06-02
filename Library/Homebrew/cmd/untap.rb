@@ -7,10 +7,10 @@ module Homebrew
     ARGV.each do |tapname|
       user, repo = tap_args(tapname)
 
-      # we consistently downcase in tap to ensure we are not bitten by case-insensive
-      # filesystem issues. Which is the default on mac. The problem being the
-      # filesystem cares, but our regexps don't. So unless we resolve *every* path
-      # we will get bitten.
+      # We consistently downcase in tap to ensure we are not bitten by
+      # case-insensitive filesystem issues, which is the default on mac. The
+      # problem being the filesystem cares, but our regexps don't. So unless we
+      # resolve *every* path we will get bitten.
       user.downcase!
       repo.downcase!
 
