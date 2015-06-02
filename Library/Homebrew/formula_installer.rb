@@ -13,6 +13,7 @@ require 'cmd/postinstall'
 require 'hooks/bottles'
 require 'debrew'
 require 'sandbox'
+require 'requirements/cctools_requirement'
 
 class FormulaInstaller
   include FormulaCellarChecks
