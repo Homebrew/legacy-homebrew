@@ -18,6 +18,7 @@ class Rocksdb < Formula
 
   def install
     ENV.cxx11
+    ENV["PORTABLE"] = "1" if build.bottle?
     system "make", "clean"
     system "make", "static_lib"
     system "make", "shared_lib"
