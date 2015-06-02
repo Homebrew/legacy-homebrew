@@ -1,7 +1,7 @@
 require "language/go"
 
 class Hugo < Formula
-  desc "A static site generator emphasizing speed and configurability"
+  desc "Configurable static site generator"
   homepage "https://gohugo.io/"
   url "https://github.com/spf13/hugo/archive/v0.14.tar.gz"
   sha256 "67e0fda342e6a35490ce03f5535e30cf04bc06775c47bacf416d96d83cce4535"

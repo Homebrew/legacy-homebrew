@@ -1,8 +1,8 @@
 require "language/go"
 
 class Asciinema < Formula
+  desc "Record and share terminal sessions"
   homepage "https://asciinema.org/"
-  desc "A terminal session recorder"
   url "https://github.com/asciinema/asciinema/archive/v1.1.0.tar.gz"
   sha256 "2f03549620534341e883b630c6947c3b4ecd234105ec1d7aa98393a00f0845e8"
 

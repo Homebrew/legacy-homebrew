@@ -1,6 +1,6 @@
 class Vimpager < Formula
+  desc "Use ViM as PAGER"
   homepage "https://github.com/rkitover/vimpager"
-  desc "vimpager: Use Vim as PAGER"
   url "https://github.com/rkitover/vimpager/archive/2.04.tar.gz"
   sha256 "eefbfe178ea03be3df8bbad82ba162797ab8fb49c994b4b240d513cd0c3ef3f0"
   head "https://github.com/rkitover/vimpager.git"

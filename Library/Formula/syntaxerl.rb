@@ -1,6 +1,6 @@
 class Syntaxerl < Formula
   homepage "https://github.com/ten0s/syntaxerl"
-  desc "Syntax-checker for Erlang code and config files"
+  desc "Syntax checker for Erlang code and config files"
   url "https://github.com/ten0s/syntaxerl/archive/0.8.0.tar.gz"
   sha256 "4c5a6390a7d28869bf44cc831ae59cb69480a8481853de8dd59672b7cf5bff7b"
 

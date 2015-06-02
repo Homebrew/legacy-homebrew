@@ -1,5 +1,5 @@
 class Ufraw < Formula
-  desc "RAW image processing utility"
+  desc "Unidentified Flying RAW: RAW image processing utility"
   homepage "http://ufraw.sourceforge.net"
   url "https://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.21/ufraw-0.21.tar.gz"
   sha256 "2a6a1bcc633bdc8e15615cf726befcd7f27ab00e7c2a518469a24e1a96964d87"
