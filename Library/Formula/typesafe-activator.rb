@@ -1,10 +1,10 @@
 require 'formula'
 
 class TypesafeActivator < Formula
-  homepage 'https://typesafe.com/activator'
-  version '1.3.3'
-  url 'https://downloads.typesafe.com/typesafe-activator/1.3.3/typesafe-activator-1.3.3-minimal.zip'
-  sha1 '4930cd73b2d5b7e263287419c75df5be293b210a'
+  homepage "https://typesafe.com/activator"
+  version "1.3.4"
+  url "https://downloads.typesafe.com/typesafe-activator/1.3.4/typesafe-activator-1.3.4-minimal.zip"
+  sha256 "8c403e074165b8a73e75c60c897078ac90295d054dd16c462c2f9aab9413e031"
 
   bottle do
     cellar :any
