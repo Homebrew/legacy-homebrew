@@ -1,5 +1,5 @@
 class Pngquant < Formula
-  homepage "http://pngquant.org/"
+  homepage "https://pngquant.org/"
   url "https://github.com/pornel/pngquant/archive/2.4.1.tar.gz"
   sha256 "28157abfddc83d074cfbe7e9865d3dd656f7be323fbc4e6a049385236e57d3c3"
   head "https://github.com/pornel/pngquant.git"
