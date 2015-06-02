@@ -1,5 +1,5 @@
 class Allegro < Formula
-  desc "A multimedia library aimed at cross-platform game development"
+  desc "C/C++ multimedia library for cross-platform game development"
   homepage "http://liballeg.org/"
 
   stable do

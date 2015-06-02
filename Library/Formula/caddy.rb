@@ -4,7 +4,7 @@ class Caddy < Formula
   homepage "https://caddyserver.com/"
   url "https://github.com/mholt/caddy/archive/v0.6.0.tar.gz"
   sha256 "919023cd91b6ab94fcde08fc30620b10f90eaaa95ab8b9f3ff7e06c0e9b7f301"
-  desc "Caddy is an alternative HTTP/2 web server that is easy to configure and use"
+  desc "Alternative general-purpose HTTP/2 web server"
 
   bottle do
     cellar :any
