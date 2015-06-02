@@ -122,13 +122,13 @@ module Homebrew
   end
 
   def check_xcode
-    # TODO: reinstate check_for_bad_install_name_tool
+    # TODO: reinstate check_for_bad_install_name_tool and check_for_installed_developer_tools
     # currently check_for_bad_install_name_tool fails because it tries to call
     # the /usr/bin/otool stub program on systems without XCode/CLT
+    # check_for_installed_developer_tools doesn't fail, but produces a warning
+    # when one is no longer required
     checks = Checks.new
     %w[
-      check_for_unsupported_osx
-      check_for_installed_developer_tools
       check_xcode_license_approved
       check_for_osx_gcc_installer
     ].each do |check|
