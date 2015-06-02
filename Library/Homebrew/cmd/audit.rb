@@ -11,9 +11,9 @@ module Homebrew
     problem_count = 0
 
     strict = ARGV.include? "--strict"
-    if strict && ARGV.formulae.any? && MacOS.version >= :mavericks
+    if strict && ARGV.formulae(false, true).any? && MacOS.version >= :mavericks
       require "cmd/style"
-      ohai "brew style #{ARGV.formulae.join " "}"
+      ohai "brew style #{ARGV.formulae(false, true).join " "}"
       style
     end
 
@@ -43,7 +43,7 @@ module Homebrew
     ff = if ARGV.named.empty?
       Formula
     else
-      ARGV.formulae
+      ARGV.formulae(false, true)
     end
 
     output_header = !strict

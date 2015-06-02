@@ -15,7 +15,23 @@ module Homebrew
 
   def install_tap user, repo, clone_target=nil
     tap = Tap.new user, repo
-    return false if tap.installed?
+
+    if tap.installed?
+      ohai "#{user}/#{repo} already tapped. Changing priority."
+      priority = ARGV.value("priority")
+      if priority.nil?
+        opoo "Priority not specified, terminating."
+      else
+        priority = priority.to_i
+        if priority < 0 or priority > 99
+          opoo "Priority not allowed, terminating."
+        else
+          tap.set_priority priority
+        end
+      end
+      return true
+    end
+
     ohai "Tapping #{tap}"
     remote = clone_target || "https://github.com/#{tap.user}/homebrew-#{tap.repo}"
     args = %W[clone #{remote} #{tap.path}]
@@ -24,6 +40,20 @@ module Homebrew
 
     formula_count = tap.formula_files.size
     puts "Tapped #{formula_count} formula#{plural(formula_count, 'e')} (#{tap.path.abv})"
+
+    priority = ARGV.value("priority")
+    if priority.nil?
+      opoo "Priority not specified, default is 99."
+      priority = 99
+    else
+      priority = priority.to_i
+      if priority < 0 or priority > 99
+        opoo "Priority not allowed, default is 99."
+        priority = 99
+      end
+    end
+
+    tap.set_priority priority
 
     if !clone_target && tap.private?
       puts <<-EOS.undent

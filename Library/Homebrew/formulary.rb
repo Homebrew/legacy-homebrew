@@ -166,8 +166,9 @@ class Formulary
   # * a formula pathname
   # * a formula URL
   # * a local bottle reference
-  def self.factory(ref, spec=:stable)
-    loader_for(ref).get_formula(spec)
+  def self.factory(ref, spec=:stable, is_installing=false, warn_all_ambiguity=false)
+    spec = spec || :stable  # TODO: hack to have fake optional arguments
+    loader_for(ref, is_installing, warn_all_ambiguity).get_formula(spec)  # TODO: check all usages and change respective parameters
   end
 
   # Return a Formula instance for the given rack.
@@ -198,12 +199,14 @@ class Formulary
     loader_for(ref).path
   end
 
-  def self.loader_for(ref)
+  def self.loader_for(ref, is_installing = false, warn_all_ambiguity = false)
     case ref
     when %r[(https?|ftp)://]
       return FromUrlLoader.new(ref)
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
+    when HOMEBREW_CORE_FORMULA_REGEX
+      return FormulaLoader.new($1, core_path($1))
     when HOMEBREW_TAP_FORMULA_REGEX
       return TapLoader.new(ref)
     end
@@ -212,8 +215,13 @@ class Formulary
       return FromPathLoader.new(ref)
     end
 
-    formula_with_that_name = core_path(ref)
-    if formula_with_that_name.file?
+    # formula_with_that_name = core_path(ref)
+    # if formula_with_that_name.file?
+    #   return FormulaLoader.new(ref, formula_with_that_name)
+    # end
+
+    formula_with_that_name = find_with_priority(ref, is_installing, warn_all_ambiguity)
+    if formula_with_that_name
       return FormulaLoader.new(ref, formula_with_that_name)
     end
 
@@ -222,12 +230,12 @@ class Formulary
       return AliasLoader.new(possible_alias)
     end
 
-    possible_tap_formulae = tap_paths(ref)
-    if possible_tap_formulae.size > 1
-      raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
-    elsif possible_tap_formulae.size == 1
-      return FormulaLoader.new(ref, possible_tap_formulae.first)
-    end
+    # possible_tap_formulae = tap_paths(ref)
+    # if possible_tap_formulae.size > 1
+    #   raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
+    # elsif possible_tap_formulae.size == 1
+    #   return FormulaLoader.new(ref, possible_tap_formulae.first)
+    # end
 
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
     if possible_cached_formula.file?
@@ -237,18 +245,67 @@ class Formulary
     return NullLoader.new(ref)
   end
 
+  def self.find_with_priority(ref, is_installing, warn_all_ambiguity)
+    available_formulas = tap_paths(ref)
+    core_formula = core_path(ref)
+    if core_formula.file?
+      available_formulas[50] = [] if available_formulas[50].nil?
+      available_formulas[50] << core_formula
+    end
+
+    unless available_formulas.empty?
+      if warn_all_ambiguity
+        flat_formulas = available_formulas.values.flatten
+        if flat_formulas.length == 1
+          return flat_formulas.first
+        else
+          raise TapFormulaAmbiguityError.new(ref, flat_formulas)
+        end
+      else
+        available_formulas.keys.sort.each do |this_priority|
+          if available_formulas[this_priority].length > 1
+            if is_installing
+              ohai "Multiple available. Please choose one: Sorry not supported yet, we temporarily choose first one for you lah."
+              puts available_formulas[this_priority].to_s
+              selected_index = 0
+            else
+              raise TapFormulaAmbiguityError.new(ref, available_formulas[this_priority])
+            end
+          else
+            selected_index = 0
+          end
+          return available_formulas[this_priority][selected_index]
+        end
+      end
+    end
+
+  end
+
   def self.core_path(name)
     Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
   end
 
   def self.tap_paths(name)
+    available_formulas = Hash.new
     name = name.downcase
-    Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
-      Pathname.glob([
-        "#{tap}Formula/#{name}.rb",
-        "#{tap}HomebrewFormula/#{name}.rb",
-        "#{tap}#{name}.rb",
-      ]).detect(&:file?)
-    end.compact
+    # Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
+    #   Pathname.glob([
+    #     "#{tap}Formula/#{name}.rb",
+    #     "#{tap}HomebrewFormula/#{name}.rb",
+    #     "#{tap}#{name}.rb",
+    #   ]).detect(&:file?)
+    # end.compact
+
+    Tap.each do |tap|
+      this_priority = tap.get_priority
+      tap_path = tap.path
+      Pathname.glob(["#{tap_path}/#{name}.rb", "#{tap_path}/Formula/#{name}.rb", "#{tap_path}/HomebrewFormula/#{name}.rb"]) do |formula|
+        if formula.file?
+          available_formulas[this_priority] = [] if available_formulas[this_priority].nil?
+          available_formulas[this_priority] << formula
+        end
+      end
+    end
+    available_formulas
   end
 end
