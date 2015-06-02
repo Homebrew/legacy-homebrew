@@ -2,6 +2,7 @@ class PreCommit < Formula
   homepage "http://pre-commit.com/"
   url "https://github.com/pre-commit/pre-commit/archive/v0.5.0.tar.gz"
   sha256 "567d8e0f64e176c2c2c97c80a3c96c2d40c7a21d205bee84ce5f74d9323de9fb"
+  desc "Framework for managing multi-language pre-commit hooks"
 
   depends_on :python if MacOS.version <= :snow_leopard
 
