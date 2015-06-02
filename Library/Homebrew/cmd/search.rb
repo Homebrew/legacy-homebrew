@@ -84,7 +84,7 @@ module Homebrew
 
   SEARCHABLE_TAPS = OFFICIAL_TAPS.map { |tap| ["Homebrew", tap] } + [
     (%w{Caskroom cask} if OS.mac?),
-  ]
+  ].compact
 
   def query_regexp(query)
     case query
