@@ -2,8 +2,8 @@ require "formula"
 
 class WakatimeCli < Formula
   homepage "https://wakatime.com/"
-  url "https://pypi.python.org/packages/source/w/wakatime/wakatime-2.1.6.tar.gz"
-  sha1 "e288befaeefaaeec303efa36f2b7488829a6cf0d"
+  url "https://pypi.python.org/packages/source/w/wakatime/wakatime-4.0.14.tar.gz"
+  sha1 "8bf0ca4b9c3309558ca8941bd547fcc8931b725c"
 
   bottle do
     cellar :any
