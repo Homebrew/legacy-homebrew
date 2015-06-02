@@ -5,7 +5,7 @@ module Homebrew
     raise "Usage is `brew untap <tap-name>`" if ARGV.empty?
 
     ARGV.each do |tapname|
-      user, repo = tap_args(tapname)
+      user, repo = tap_args()
 
       # we consistently downcase in tap to ensure we are not bitten by case-insensive
       # filesystem issues. Which is the default on mac. The problem being the

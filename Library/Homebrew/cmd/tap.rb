@@ -11,7 +11,7 @@ module Homebrew
     end
   end
 
-  def install_tap user, repo
+  def install_tap user, repo, clone_target=nil
     # we special case homebrew so users don't have to shift in a terminal
     repouser = if user == "homebrew" then "Homebrew" else user end
     user = "homebrew" if user == "Homebrew"
@@ -20,7 +20,11 @@ module Homebrew
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}"
     return false if tapd.directory?
     ohai "Tapping #{repouser}/#{repo}"
-    args = %W[clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}]
+    if clone_target
+      args = %W[clone #{clone_target} #{tapd}]
+    else
+      args = %W[clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}]
+    end
     args << "--depth=1" unless ARGV.include?("--full")
     safe_system "git", *args
 
@@ -28,14 +32,16 @@ module Homebrew
     tapd.find_formula { |file| files << file }
     puts "Tapped #{files.length} formula#{plural(files.length, 'e')} (#{tapd.abv})"
 
-    if private_tap?(repouser, repo) then puts <<-EOS.undent
-      It looks like you tapped a private repository. To avoid entering your
-      credentials each time you update, you can use git HTTP credential caching
-      or issue the following command:
+    unless clone_target
+      if private_tap?(repouser, repo) then puts <<-EOS.undent
+        It looks like you tapped a private repository. To avoid entering your
+        credentials each time you update, you can use git HTTP credential
+        caching or issue the following command:
 
-        cd #{tapd}
-        git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git
-      EOS
+          cd #{tapd}
+          git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git
+        EOS
+      end
     end
 
     true
@@ -63,10 +69,11 @@ module Homebrew
     end
   end
 
-  def tap_args(tap_name=ARGV.named.first)
+  def tap_args()
+    tap_name, clone_target = ARGV.named[0..1]
     tap_name =~ HOMEBREW_TAP_ARGS_REGEX
     raise "Invalid tap name" unless $1 && $3
-    [$1, $3]
+    [$1, $3, clone_target]
   end
 
   def private_tap?(user, repo)
