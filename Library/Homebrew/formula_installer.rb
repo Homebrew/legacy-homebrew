@@ -323,6 +323,7 @@ class FormulaInstaller
   end
 
   def install_relocation_tools
+    ohai "Placeholder"
     cctools = CctoolsRequirement.new
     install_dependency(cctools.to_dependency) unless cctools.satisfied?
   end
