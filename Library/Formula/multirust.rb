@@ -1,6 +1,6 @@
 class Multirust < Formula
   homepage "https://github.com/brson/multirust"
-  desc "A tool for managing multiple Rust installations"
+  desc "Manage multiple Rust installations"
 
   # Use the tag instead of the tarball to get submodules
   url "https://github.com/brson/multirust.git",
