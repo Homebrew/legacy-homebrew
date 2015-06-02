@@ -3,10 +3,11 @@ class Creduce < Formula
   url "https://github.com/csmith-project/creduce/archive/creduce-2.3.0.tar.gz"
   sha256 "47a42751aab8b51bc10d8df62f359bdc1b4a644f16feb85b9f7325f0c5bce4a3"
   head "https://github.com/csmith-project/creduce.git"
+  revision 1
 
   bottle do
-    sha256 "cb27ed455261c1839800d26ad5c66a3afa1ac76717857cc6797fea9a21162d44" => :yosemite
-    sha256 "5afedc24dbb4be00f7e89ee377e6f5500a0804fd914c4eaa75e3c7d7f27fbddb" => :mavericks
+    sha256 "50d5f701b36606f0dc798e2c82050b4c8a129fd5fe1911509f6c1820ab4622f6" => :yosemite
+    sha256 "6782679d25a31affcf620083c5001aa4c99a55d3375c6ae91ec7318bd09dfeca" => :mavericks
   end
 
   depends_on "astyle"

@@ -1,9 +1,5 @@
-require 'formula'
-
 class Scala < Formula
-  homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/files/archive/scala-2.11.6.tgz'
-  sha1 'f30ff4104b0fed5c4beca2b599b8f67e66b7f4e6'
+  homepage "http://www.scala-lang.org/"
 
   bottle do
     cellar :any
@@ -12,38 +8,61 @@ class Scala < Formula
     sha1 "15310848fa89566423225e6547505c2aa246d249" => :mountain_lion
   end
 
-  option 'with-docs', 'Also install library documentation'
-  option 'with-src', 'Also install sources for IDE support'
+  option "with-docs", "Also install library documentation"
+  option "with-src", "Also install sources for IDE support"
 
-  resource 'docs' do
-    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.6.zip'
-    sha1 'b646de99bb38de779bdc65ce0e48c727da4778f7'
+  stable do
+    url "http://www.scala-lang.org/files/archive/scala-2.11.6.tgz"
+    sha256 "41ba45e4600404634217a66d6b2c960459d3a67e0344a7c3d9642d0eaa446583"
+
+    resource "docs" do
+      url "http://www.scala-lang.org/files/archive/scala-docs-2.11.6.zip"
+      sha256 "aa7fb121cc0e50d32cd85b162b684d30be383aab42ec9b59589e389af8b62254"
+    end
+
+    resource "src" do
+      url "https://github.com/scala/scala/archive/v2.11.6.tar.gz"
+      sha256 "0ccf26576dacd2792af09a146a43a15b25201d47891f83c3dc8f9a04c79e88b1"
+    end
   end
 
-  resource 'src' do
-    url 'https://github.com/scala/scala/archive/v2.11.6.tar.gz'
-    sha1 '96911a7f5faf6768744322be59e6eb7df4a3af53'
+  devel do
+    url "http://www.scala-lang.org/files/archive/scala-2.12.0-M1.tgz"
+    sha256 "e48971939fa0f82ff3190ecafd22ad98d9d00eb4aef09cd2197265dc44f72eee"
+    version "2.12.0-M1"
+
+    resource "docs" do
+      url "http://www.scala-lang.org/files/archive/scala-docs-2.12.0-M1.zip"
+      sha256 "36683ec16e30b69e3abf424c8cff1d49ebfd5f07b4cd3a015ced767a1ca81221"
+      version "2.12.0-M1"
+    end
+
+    resource "src" do
+      url "https://github.com/scala/scala/archive/v2.12.0-M1.tar.gz"
+      sha256 "0c129529b8dbafa89782c997904705dc59d5b9abf01f97218f86f1c602fca339"
+      version "2.12.0-M1"
+    end
   end
 
-  resource 'completion' do
-    url 'https://raw.githubusercontent.com/scala/scala-dist/v2.11.4/bash-completion/src/main/resources/completion.d/2.9.1/scala'
-    sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
+  resource "completion" do
+    url "https://raw.githubusercontent.com/scala/scala-dist/v2.11.4/bash-completion/src/main/resources/completion.d/2.9.1/scala"
+    sha256 "95aeba51165ce2c0e36e9bf006f2904a90031470ab8d10b456e7611413d7d3fd"
   end
 
   def install
     rm_f Dir["bin/*.bat"]
-    doc.install Dir['doc/*']
+    doc.install Dir["doc/*"]
     share.install "man"
     libexec.install "bin", "lib"
     bin.install_symlink Dir["#{libexec}/bin/*"]
-    bash_completion.install resource('completion')
-    doc.install resource('docs') if build.with? 'docs'
-    libexec.install resource('src').files('src') if build.with? 'src'
+    bash_completion.install resource("completion")
+    doc.install resource("docs") if build.with? "docs"
+    libexec.install resource("src").files("src") if build.with? "src"
 
     # Set up an IntelliJ compatible symlink farm in 'idea'
-    idea = prefix/'idea'
-    idea.install_symlink libexec/'src', libexec/'lib'
-    idea.install_symlink doc => 'doc'
+    idea = prefix/"idea"
+    idea.install_symlink libexec/"src", libexec/"lib"
+    idea.install_symlink doc => "doc"
   end
 
   def caveats; <<-EOS.undent
@@ -53,11 +72,11 @@ class Scala < Formula
   end
 
   test do
-    file = testpath/'hello.scala'
+    file = testpath/"hello.scala"
     file.write <<-EOS.undent
       object Computer {
         def main(args: Array[String]) {
-          println(2 + 2)
+          println(s"${2 + 2}")
         }
       }
     EOS

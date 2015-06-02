@@ -1,13 +1,13 @@
 class Pypy < Formula
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.1-src.tar.bz2"
-  sha256 "ddb3a580b1ee99c5a699172d74be91c36dda9a38946d4731d8c6a63120a3ba2a"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.0-src.tar.bz2"
+  sha256 "9bf353f22d25e97a85a6d3766619966055edea1ea1b2218445d683a8ad0399d9"
 
   bottle do
     cellar :any
-    sha256 "5ea51028fcc8e52243be21a280826dfe516d16012121cd7d01dbeaa36dd9839b" => :yosemite
-    sha256 "907562de31fcb6be876099d4f560a175d83475084f9bd72a4a8d6957f769283f" => :mavericks
-    sha256 "5d7301690ffc81531d26aad3f2817720864e64489ffb6f54cc227925df14c46e" => :mountain_lion
+    sha256 "8a7c642dd468283b450b18a4584d36a8b1ac0fd81ac87b6383abe1d89ad55792" => :yosemite
+    sha256 "0f6b9af5138181c1ae637d67ff966804388cb690fc07e976f593d6187d642c7c" => :mavericks
+    sha256 "fb23cd2945fb3ef9747ae151f5a862b4757e235c4d10210289b2368dd03dca1e" => :mountain_lion
   end
 
   depends_on :arch => :x86_64
@@ -25,13 +25,13 @@ class Pypy < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-14.3.1.tar.gz"
-    sha256 "8d5712b7debddddf75ba98e069036b138c89430497037a406b36e57f9bcfee20"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
+    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
-    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.1.tar.gz"
+    sha256 "cfec177552fdd0b2d12b72651c8e874f955b4c62c1c2c9f2588cbdc1c0d0d416"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391

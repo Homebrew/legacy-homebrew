@@ -3,10 +3,10 @@ require "language/go"
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
 
-  depends_on "go" => :build
   stable do
     url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.3.tar.gz"
     sha256 "57765a81c18a0bb674fbe63bc507111d8795596eb9c9492028903985b4720807"
+
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
         :tag => "r3.0.3",
@@ -17,6 +17,7 @@ class Mongodb < Formula
   devel do
     url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.3.tar.gz"
     sha256 "edd3c7eabac765d4bf47efd38e22b3fc6271a77559f8173c5da9c38a43ec05df"
+
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
         :tag => "r3.1.3",
@@ -26,9 +27,10 @@ class Mongodb < Formula
 
   bottle do
     cellar :any
-    sha256 "11b56632d04d55ca9b84c2b3c5d84b71aaa4cd915871e3530f4a62f5e72666c1" => :yosemite
-    sha256 "3b0c1f8d8b5d5f86e61cdc62cc20dd58316c56c110267d5d7fe439c821263d56" => :mavericks
-    sha256 "3aa0133679f5ef2325403c6e4cd96bc3b48aad0ea529c33c497ae77823f7994f" => :mountain_lion
+    revision 1
+    sha256 "f89334dc463941c478c36a82d527d09699a8957490b4fc9f66ec7ea49b1a70a3" => :yosemite
+    sha256 "4772b547e272c087da3a3fc9a60350b4ce208187f830fdbbc91e6829508c04b3" => :mavericks
+    sha256 "e6d995c3124effee093ccf6afaf0d0f5fbda3b76c37040174d3373a7f7ba91a8" => :mountain_lion
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
@@ -47,14 +49,15 @@ class Mongodb < Formula
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd "src/github.com/mongodb/mongo-tools" do
+      # https://github.com/Homebrew/homebrew/issues/40136
+      inreplace "build.sh", '-ldflags "-X github.com/mongodb/mongo-tools/common/options.Gitspec `git rev-parse HEAD`"', ""
+
       args = %W[]
-      # Once https://github.com/mongodb/mongo-tools/issues/11 is fixed, also set CPATH.
-      # For now, use default include path
-      #
+
       if build.with? "openssl"
         args << "ssl"
         ENV["LIBRARY_PATH"] = "#{Formula["openssl"].opt_prefix}/lib"
-        # ENV["CPATH"] = "#{Formula["openssl"].opt_prefix}/include"
+        ENV["CPATH"] = "#{Formula["openssl"].opt_prefix}/include"
       end
       system "./build.sh", *args
     end

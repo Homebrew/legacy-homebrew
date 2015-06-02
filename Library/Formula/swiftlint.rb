@@ -1,11 +1,11 @@
 class Swiftlint < Formula
   homepage "https://github.com/realm/SwiftLint"
-  url "https://github.com/realm/SwiftLint.git", :tag => "0.1.0", :revision => "ed7eadd5c6011c35d017290fb7fb55e735dc18ba"
+  url "https://github.com/realm/SwiftLint.git", :tag => "0.1.1", :revision => "76939117e8db4cff7ccd5d362340cbc6a7af878c"
   head "https://github.com/realm/SwiftLint.git"
 
   bottle do
     cellar :any
-    sha256 "1d6c4631e894635fbbbb6d006e5e186452cf40ea0e2e5d98442dda2bda6efd20" => :yosemite
+    sha256 "c2d3dfadfe93370770d98d0aa8c562a79a279228f7aa4d04ae2226c5d276bad0" => :yosemite
   end
 
   depends_on :xcode => ["6.3", :build]

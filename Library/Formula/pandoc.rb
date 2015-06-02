@@ -4,15 +4,15 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.14/pandoc-1.14.tar.gz"
-  sha256 "e1c36ae6ba4937ebaaf49a68bdeee2fec9089b8894136ba25e5fa2b6bf1c9458"
+  url "https://hackage.haskell.org/package/pandoc-1.14.0.2/pandoc-1.14.0.2.tar.gz"
+  sha256 "5d60bddc474499a2aa553e200da2860fed9e48a3db77072355f5f7c666a56bd0"
 
   head "https://github.com/jgm/pandoc.git"
 
   bottle do
-    sha256 "0574980cdcb828c6106e2454b77d36f0f9098c601da8b7bd945146c93f5909a1" => :yosemite
-    sha256 "086b3caa8e26cc764940d0ab502aeae9711862d5fbc3267c3aee5e6d69a64877" => :mavericks
-    sha256 "ea5e61cdfaedd15e11637c3177d4c4c4af142a84cde744b7e7e47f7fe16474e2" => :mountain_lion
+    sha256 "dda5a71f09d869a7c46bf6b2af39a05e79633f125b564fa431109c198832eab2" => :yosemite
+    sha256 "f99e53a35876f07687bcf81e10894a482510f735aa54d2b303edce2c8f170aea" => :mavericks
+    sha256 "d4edcf75c228b95e96117731bee0a75158f143ea7f604aeb2d38ff5fbd218297" => :mountain_lion
   end
 
   depends_on "ghc" => :build

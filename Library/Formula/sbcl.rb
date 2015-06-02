@@ -1,14 +1,14 @@
 class Sbcl < Formula
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.11/sbcl-1.2.11-source.tar.bz2"
-  sha256 "88aa04dae72d011f5c22084a35201188d8a02f0cd82e5de542aa4ce6bfaa3e70"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.12/sbcl-1.2.12-source.tar.bz2"
+  sha256 "b65bc878f15b8dc87582498780714e06c32a161aaa579e6f0216fd372247c9ad"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
-    sha256 "bf5bc33e2baee617f47e20a66fb283638041a903e8f23ded35a9fdb05e5b3f03" => :yosemite
-    sha256 "4a322984fd96c34bc043318a71c7dbd784977cd5269eeadfd204eac0c89e770f" => :mavericks
-    sha256 "14aced9514c59c6d7b1207cfafe60936a564b40f94fa08d57cdbfde640b6faee" => :mountain_lion
+    sha256 "88af924875adfb1d6526a4642a516fb9e02f22e0ff01f73306e60516fe1cf12a" => :yosemite
+    sha256 "b6275cda423c3ff0e2b38ad864eb9ec5ea7ece88dfb3e69ef0b42c8a35f6d415" => :mavericks
+    sha256 "e05b809845cd4f80a8b821d80c11f568cbd8f3ae15b44ab1bcdb2d55a738486f" => :mountain_lion
   end
 
   fails_with :llvm do
