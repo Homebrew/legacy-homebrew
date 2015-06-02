@@ -23,7 +23,8 @@ class Getdns < Formula
 
   def install
     args = [
-      "--with-ssl=#{Formula["openssl"].opt_prefix}"
+      "--with-ssl=#{Formula["openssl"].opt_prefix}",
+      "--with-trust-anchor=/usr/local/etc/getdns-root.key"
     ]
     args << "--with-libevent" if build.with? "libevent"
     args << "--with-libev" if build.with? "libev"
