@@ -22,7 +22,6 @@ class Osquery < Formula
   depends_on "rocksdb" => :build
   depends_on "thrift" => :build
   depends_on "yara" => :build
-  depends_on "openssl"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
