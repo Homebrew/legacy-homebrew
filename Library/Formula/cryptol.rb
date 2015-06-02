@@ -10,9 +10,9 @@ class Cryptol < Formula
   head "https://github.com/GaloisInc/cryptol.git"
 
   bottle do
-    sha256 "9242d48cf126dd4ae9eb8f3d843e022d86cc89df55fb98e3c5ee4e87805f9be5" => :yosemite
-    sha256 "9da91e105a5e3ec090e420d56026e0c56fdf1ba37008c1d4b845652f68d66aff" => :mavericks
-    sha256 "5c5bf1a0e83cc800d9b32c1d976a1e96ce12b05c0bf6106e9e11ccab11b3b757" => :mountain_lion
+    sha256 "68e7672e7481772a3fc758682d76f55480ea9d125b889c011340f9165ff0cf76" => :yosemite
+    sha256 "d5f1fa017614729c6c849bda23d568689c17d782e1f2157254795c3486affe57" => :mavericks
+    sha256 "eeae281e614864184053d9814c75ccf796dd79303f0281234bf4cda85cfbe996" => :mountain_lion
   end
 
   depends_on "ghc" => :build
