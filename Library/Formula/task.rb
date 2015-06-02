@@ -18,6 +18,7 @@ class Task < Formula
     system "make", "install"
     bash_completion.install "scripts/bash/task.sh"
     zsh_completion.install "scripts/zsh/_task"
+    fish_completion.install "scripts/fish/task.fish"
   end
 
   test do
