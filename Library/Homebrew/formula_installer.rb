@@ -13,6 +13,7 @@ require "cmd/postinstall"
 require "hooks/bottles"
 require "debrew"
 require "sandbox"
+require "requirements/cctools_requirement"
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -328,8 +329,10 @@ class FormulaInstaller
   end
 
   def install_relocation_tools
-    ohai "placeholder"
-    true
+    cctools = CctoolsRequirement.new
+    return if cctools.satisfied?
+
+    install_dependency(cctools.to_dependency, inherited_options_for(cctools))
   end
 
   class DependencyInstaller < FormulaInstaller
