@@ -5,13 +5,6 @@ class OfflineImap < Formula
 
   head "https://github.com/OfflineIMAP/offlineimap.git"
 
-  bottle do
-    cellar :any
-    sha256 "66181d527266669fb42a76a39bbf588238c4e3102270697da99ee4d13a579248" => :yosemite
-    sha256 "30b28f478b8ae787ee30fd615a1b30d29911c0ebe34e27a5a832b2f3bf2f036c" => :mavericks
-    sha256 "d5b18881b8ce16cfbe3b0ba78a2fb5cb66af38ce8d5a60961423ef6dc0eacd01" => :mountain_lion
-  end
-
   def install
     etc.install "offlineimap.conf", "offlineimap.conf.minimal"
     libexec.install "bin/offlineimap" => "offlineimap.py"
