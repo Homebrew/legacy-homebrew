@@ -1,8 +1,8 @@
 class Pinentry < Formula
   homepage "https://www.gnupg.org/related_software/pinentry/index.en.html"
-  url "ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.2.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.2.tar.bz2"
-  sha256 "fd8bc1592ceb22bb492b07cb29b1b140bb882c859e6503b974254c0a4b4134d1"
+  url "ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.3.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.3.tar.bz2"
+  sha256 "88c2d9ff892d591c2a12c52229eb2262f0ae4b8e58b551990a0949f44df98244"
 
   bottle do
     cellar :any
@@ -17,7 +17,8 @@ class Pinentry < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-pinentry-qt4",
-                          "--disable-pinentry-gtk2"
+                          "--disable-pinentry-gtk2",
+                          "--disable-pinentry-gnome3"
     system "make", "install"
   end
 
