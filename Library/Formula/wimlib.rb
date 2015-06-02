@@ -1,5 +1,5 @@
 class Wimlib < Formula
-  homepage "http://sourceforge.net/projects/wimlib/"
+  homepage "https://sourceforge.net/projects/wimlib/"
   url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.8.1.tar.gz"
   sha256 "1558fe63243984259685eb35608631cf445042ac8d1998de8c62fe85f69a15e1"
 
