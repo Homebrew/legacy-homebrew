@@ -34,7 +34,7 @@ class Coreutils < Formula
 
     resource "gnulib" do
       url "http://git.savannah.gnu.org/cgit/gnulib.git/snapshot/gnulib-0.1.tar.gz"
-      sha1 "b29e165bf276ce0a0c12ec8ec1128189bd786155"
+      sha1 "ef19f03bc0eb6bf8bc322bf69262fbf44acc36e8"
     end
   end
 
