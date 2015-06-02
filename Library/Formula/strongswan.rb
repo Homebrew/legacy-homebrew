@@ -2,8 +2,8 @@ require 'formula'
 
 class Strongswan < Formula
   homepage 'https://www.strongswan.org'
-  url 'https://download.strongswan.org/strongswan-5.3.0.tar.bz2'
-  sha1 '6d83222143ff4dabbc667e9b1725cac55c546826'
+  url 'https://download.strongswan.org/strongswan-5.3.1.tar.bz2'
+  sha1 '8077af91a80a89dc1fac93c05da876fb927760dd'
 
   bottle do
     revision 1
