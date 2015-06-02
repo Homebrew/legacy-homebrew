@@ -13,9 +13,9 @@ end
 
 class Gdb < Formula
   homepage "https://www.gnu.org/software/gdb/"
-  url "http://ftpmirror.gnu.org/gdb/gdb-7.9.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.9.tar.xz"
-  sha256 "9b315651a16528f7af8c7d8284699fb0c965df316cc7339bb0b7bae335848392"
+  url "http://ftpmirror.gnu.org/gdb/gdb-7.9.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.9.1.tar.xz"
+  sha256 "cd9c543a411a05b2b647dd38936034b68c2b5d6f10e0d51dc168c166c973ba40"
 
   bottle do
     root_url "https://homebrew.bintray.com/bottles-dupes"
