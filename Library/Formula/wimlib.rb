@@ -32,7 +32,7 @@ class Wimlib < Formula
 
   test do
     # make a directory containing a dummy 1M file
-    Dir.mkdir("foo")
+    mkdir("foo")
     system "dd", "if=/dev/random", "of=foo/bar", "bs=1m", "count=1"
 
     # capture an image
