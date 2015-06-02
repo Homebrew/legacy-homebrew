@@ -7,9 +7,9 @@ class SshCopyId < Formula
 
   bottle do
     cellar :any
-    sha1 "5e9e5c5e53951435d1a6b408401301fbba2e6ee4" => :yosemite
-    sha1 "4ea46c7153cf26546b9d794cf9b63722c191faec" => :mavericks
-    sha1 "409ea4f6ba8a6f6d6fce94d33d6c8a59091ab89b" => :mountain_lion
+    sha256 "4c89eddf0780ce6d65d9b2c8a5c1c3ddb536953daf4758524c369f6b40fcf593" => :yosemite
+    sha256 "36d4f00ce8ea2a61b89b3af35252cfc269010d10b4e6ddfc09d1b74189070184" => :mavericks
+    sha256 "5e57c77e0eae4650040b81824063e9672936d80aff16dbc77986e00d38a79e8a" => :mountain_lion
   end
 
   def install
