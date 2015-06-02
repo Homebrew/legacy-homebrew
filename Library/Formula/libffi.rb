@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libffi < Formula
-  homepage 'http://sourceware.org/libffi/'
-  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.13.tar.gz'
-  mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz'
-  sha1 'f5230890dc0be42fb5c58fbf793da253155de106'
+  homepage "http://sourceware.org/libffi/"
+  url "https://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.2.1.tar.gz"
+  mirror "ftp://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz"
+  sha1 "280c265b789e041c02e5c97815793dfc283fb1e6"
 
   bottle do
     cellar :any
@@ -15,7 +13,7 @@ class Libffi < Formula
   end
 
   head do
-    url 'https://github.com/atgreen/libffi.git'
+    url "https://github.com/atgreen/libffi.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -25,15 +23,14 @@ class Libffi < Formula
 
   def install
     ENV.deparallelize # https://github.com/Homebrew/homebrew/pull/19267
-    ENV.universal_binary
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    (testpath/'closure.c').write <<-TEST_SCRIPT.undent
+    (testpath/"closure.c").write <<-TEST_SCRIPT.undent
      #include <stdio.h>
      #include <ffi.h>
 
