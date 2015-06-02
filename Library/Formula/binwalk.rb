@@ -4,13 +4,25 @@ class Binwalk < Formula
   stable do
     url "https://github.com/devttys0/binwalk/archive/v2.0.1.tar.gz"
     sha256 "90ee8426d71e91b62dfe4a1446c457bc7835b475b28717859e275a0494403959"
+
+    # Fixes OS-X-specific issues no longer relevant in HEAD:
+    #
+    # * Fixes OS X bug in 'setup.py':
+    #   * See <https://github.com/devttys0/binwalk/commit/8278229cae4c2c354ffc5bfc3bcef0fd1d9bf2b3>
+    #     and <https://github.com/devttys0/binwalk/commit/76ff729a19552e6e58505ca64b1d4ce2325e7ac0>.
+    # * Fixes library lookup for non-standard Homebrew installations:
+    #   * See upstream issue <https://github.com/devttys0/binwalk/issues/130>
+    #     for the details.
+    #   * The fix is Homebrew-specific as it uses HOMEBREW_PREFIX, that is
+    #     implicitly replace with the actual Homebrew prefix, in the patch.
+    patch :DATA
   end
 
   bottle do
-    revision 1
-    sha256 "93ee55895ace7e0dc5f0acacd763b7233993205250a40484d2a369abc1a8b09a" => :yosemite
-    sha256 "f7c486829bdec2d762fccc6a40e737fa224db3a33160a47ba634c202a9905f0a" => :mavericks
-    sha256 "224b9a15eb5381132b65196f3748ddd19ab5f4b3375a0a7e846d212dddbf1a41" => :mountain_lion
+    revision 2
+    sha256 "0f82745a58604fd03f88fd41a6a0b4c3408982c5aa31e099f421a641a1c67520" => :yosemite
+    sha256 "2371ec0e725e8ade778849e1ad6fc9c5aaef2887d0e2052c32ab2c992413db88" => :mavericks
+    sha256 "0e95d22e718e204bff65a768fc925afbacd612c77969f638731cdfa2f439a61a" => :mountain_lion
   end
 
   head do
@@ -76,3 +88,34 @@ class Binwalk < Formula
     system "#{bin}/binwalk", "binwalk.test"
   end
 end
+
+__END__
+diff --git a/setup.py b/setup.py
+index b5fbf54..660091d 100755
+--- a/setup.py
++++ b/setup.py
+@@ -134,7 +134,7 @@ if "install" in sys.argv or "build" in sys.argv:
+
+ # The data files to install along with the module
+ data_dirs = ["magic", "config", "plugins", "modules", "core"]
+-install_data_files = [os.path.join("libs", "*.so")]
++install_data_files = [os.path.join("libs", "*.so"), os.path.join("libs", "*.dylib")]
+
+ for data_dir in data_dirs:
+     install_data_files.append("%s%s*" % (data_dir, os.path.sep))
+diff --git a/src/binwalk/core/C.py b/src/binwalk/core/C.py
+index e492a22..f8b3bd3 100644
+--- a/src/binwalk/core/C.py
++++ b/src/binwalk/core/C.py
+@@ -125,10 +125,7 @@ class Library(object):
+                 'linux'   : [os.path.join(prefix, 'lib%s.so' % library), '/usr/local/lib/lib%s.so' % library],
+                 'cygwin'  : [os.path.join(prefix, 'lib%s.so' % library), '/usr/local/lib/lib%s.so' % library],
+                 'win32'   : [os.path.join(prefix, 'lib%s.dll' % library), '%s.dll' % library],
+-                'darwin'  : [os.path.join(prefix, 'lib%s.dylib' % library),
+-                             '/opt/local/lib/lib%s.dylib' % library,
+-                             '/usr/local/lib/lib%s.dylib' % library,
+-                            ] + glob.glob('/usr/local/Cellar/*%s*/*/lib/lib%s.dylib' % (library, library)),
++                'darwin'  : [os.path.join(prefix, 'lib%s.dylib' % library), 'HOMEBREW_PREFIX/lib/lib%s.dylib' % library],
+             }
+
+             for i in range(2, 4):

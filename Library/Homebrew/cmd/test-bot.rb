@@ -779,15 +779,18 @@ module Homebrew
       formula_packaged = {}
 
       Dir.glob("*.bottle*.tar.gz") do |filename|
-        formula_name = bottle_filename_formula_name filename
-        canonical_formula_name = if tap
-          "#{tap}/#{formula_name}"
-        else
-          formula_name
-        end
+        formula_name, canonical_formula_name = bottle_resolve_formula_names filename
         formula = Formulary.factory canonical_formula_name
         version = formula.pkg_version
         bintray_package = Bintray.package formula_name
+
+        if system "curl", "-I", "--silent", "--fail", "--output", "/dev/null",
+                  "#{BottleSpecification::DEFAULT_DOMAIN}/#{bintray_repo}/#{filename}"
+          raise <<-EOS.undent
+            #{filename} is already published. Please remove it manually from
+            https://bintray.com/homebrew/#{bintray_repo}/#{bintray_package}/view#files
+          EOS
+        end
 
         unless formula_packaged[formula_name]
           package_url = "#{bintray_repo_url}/#{bintray_package}"
@@ -802,10 +805,7 @@ module Homebrew
 
         content_url = "https://api.bintray.com/content/homebrew"
         content_url += "/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
-        unless system "curl", "-I", "--fail", "--output", "/dev/null",
-                      "https://homebrew.bintray.com/#{bintray_repo}/#{filename}"
-          content_url += "?override=1"
-        end
+        content_url += "?override=1"
         curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
              "-T", filename, content_url
         puts
