@@ -3,7 +3,6 @@ class SshCopyId < Formula
   url "http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
   mirror "http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
   version "6.8p1"
-  sha1 "cdbc51e46a902b30d263b05fdc71340920e91c92"
   sha256 "3ff64ce73ee124480b5bf767b9830d7d3c03bbcb6abe716b78f0192c37ce160e"
 
   bottle do
