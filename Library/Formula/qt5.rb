@@ -11,9 +11,9 @@ end
 
 class Qt5 < Formula
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
-  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
-  sha256 "1b7eb91e153176ac917f72b6bf443f987abf47c4208cdd43e2307684a7fad860"
+  url "https://download.qt.io/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
+  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
+  sha256 "8c6d070613b721452f8cffdea6bddc82ce4f32f96703e3af02abb91a59f1ea25"
 
   bottle do
     sha1 "0c62b742770ae83a97063e688912a719f464dbff" => :yosemite
