@@ -1,7 +1,7 @@
 class Libvirt < Formula
   homepage "https://www.libvirt.org"
-  url "https://libvirt.org/sources/libvirt-1.2.15.tar.gz"
-  sha256 "5f88041b8c212f8f687c672fe583108833240d6175b512ce4de92ab6660194c6"
+  url "https://libvirt.org/sources/libvirt-1.2.16.tar.gz"
+  sha256 "419bee553442024b9ee8a1fa94023b1189bb52b7c3021fa37d8e4c108490060d"
 
   bottle do
     sha256 "395320c81107eeb1ec7d00512858849cc7a01f482821995c9a56f649765267fa" => :yosemite
