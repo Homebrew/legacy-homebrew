@@ -1,9 +1,9 @@
 class SshCopyId < Formula
   homepage "http://www.openssh.com/"
-  url "http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.7p1.tar.gz"
-  mirror "http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.7p1.tar.gz"
-  version "6.7p1"
-  sha1 "14e5fbed710ade334d65925e080d1aaeb9c85bf6"
+  url "http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
+  mirror "http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
+  version "6.8p1"
+  sha256 "3ff64ce73ee124480b5bf767b9830d7d3c03bbcb6abe716b78f0192c37ce160e"
 
   bottle do
     cellar :any
