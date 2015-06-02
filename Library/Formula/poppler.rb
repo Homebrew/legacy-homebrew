@@ -12,7 +12,7 @@ class Poppler < Formula
   end
 
   option "with-qt", "Build Qt backend"
-  option "with-qt5", "Build Qt5 backend" #added to support qt5
+  option "with-qt5", "Build Qt5 backend"
   option "with-little-cms2", "Use color management system"
 
   deprecated_option "with-qt4" => "with-qt"
@@ -31,7 +31,7 @@ class Poppler < Formula
   depends_on 'openjpeg'
 
   depends_on "qt" => :optional
-  depends_on "qt5" => :optional         #added to support qt5
+  depends_on "qt5" => :optional
   depends_on "little-cms2" => :optional
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
@@ -56,9 +56,9 @@ class Poppler < Formula
     #edded to support qt5
     elsif build.with? "qt5"
       args << "--enable-poppler-qt5"
-      ENV.append_path "PKG_CONFIG_PATH" , "#{HOMEBREW_PREFIX}/opt/qt5/lib/pkgconfig"
+      ENV.append_path "PKG_CONFIG_PATH" , "#{Formula["qt5"].opt_lib}/pkgconfig"
     else
-      args << "--disable-poppler-qt4 --disable-poppler-qt5"
+      args << "--disable-poppler-qt4" << "--disable-poppler-qt5"
     end
 
     args << "--enable-cms=lcms2" if build.with? "little-cms2"
@@ -68,4 +68,3 @@ class Poppler < Formula
     resource('font-data').stage { system "make", "install", "prefix=#{prefix}" }
   end
 end
-
