@@ -2,6 +2,7 @@ class Pypy < Formula
   homepage "http://pypy.org/"
   url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.0-src.tar.bz2"
   sha256 "9bf353f22d25e97a85a6d3766619966055edea1ea1b2218445d683a8ad0399d9"
+  revision 1
 
   bottle do
     cellar :any
@@ -12,6 +13,8 @@ class Pypy < Formula
 
   depends_on :arch => :x86_64
   depends_on "pkg-config" => :build
+  depends_on "gdbm" => :recommended
+  depends_on "sqlite" => :recommended
   depends_on "openssl"
 
   option "without-bootstrap", "Translate Pypy with system Python instead of " \
@@ -50,18 +53,22 @@ class Pypy < Formula
       python = buildpath/"bootstrap/bin/pypy"
     end
 
-    Dir.chdir "pypy/goal" do
+    cd "pypy/goal" do
       system python, buildpath/"rpython/bin/rpython",
              "-Ojit", "--shared", "--cc", ENV.cc, "--verbose",
              "--make-jobs", ENV.make_jobs, "targetpypystandalone.py"
-      system "install_name_tool", "-change", "@rpath/libpypy-c.dylib", libexec/"lib/libpypy-c.dylib", "pypy-c"
-      system "install_name_tool", "-id", opt_libexec/"lib/libpypy-c.dylib", "libpypy-c.dylib"
-      (libexec/"bin").install "pypy-c" => "pypy"
-      (libexec/"lib").install "libpypy-c.dylib"
     end
 
-    (libexec/"lib-python").install "lib-python/2.7"
-    libexec.install %w[include lib_pypy]
+    libexec.mkpath
+    cd "pypy/tool/release" do
+      package_args = %w[--archive-name pypy --targetdir . --nostrip]
+      package_args << "--without-gdbm" if build.without? "gdbm"
+      system python, "package.py", *package_args
+      system *%W[tar -C #{libexec} --strip-components 1 -xzf pypy.tar.bz2]
+    end
+
+    (libexec/"lib").install libexec/"bin/libpypy-c.dylib"
+    system *%W[install_name_tool -change @rpath/libpypy-c.dylib #{libexec}/lib/libpypy-c.dylib #{libexec}/bin/pypy]
 
     # The PyPy binary install instructions suggest installing somewhere
     # (like /opt) and symlinking in binaries as needed. Specifically,
@@ -76,12 +83,6 @@ class Pypy < Formula
   end
 
   def post_install
-    # Precompile cffi extensions in lib_pypy
-    # list from create_cffi_import_libraries in pypy/tool/release/package.py
-    %w[_sqlite3 _curses syslog gdbm _tkinter].each do |module_name|
-      quiet_system bin/"pypy", "-c", "import #{module_name}"
-    end
-
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
     # as going from 1.7.0 to 1.7.1.
