@@ -21,7 +21,7 @@ class Flow < Formula
     (share/"flow").install "bin/examples"
 
     bash_completion.install "resources/shell/bash-completion" => "flow-completion.bash"
-    zsh_completion.install_symlink (bash_completion/"flow-completion.bash") => "_flow"
+    zsh_completion.install_symlink bash_completion/"flow-completion.bash" => "_flow"
   end
 
   test do
