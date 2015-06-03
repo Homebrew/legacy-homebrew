@@ -16,9 +16,9 @@ class Qt5 < Formula
   sha256 "8c6d070613b721452f8cffdea6bddc82ce4f32f96703e3af02abb91a59f1ea25"
 
   bottle do
-    sha1 "0c62b742770ae83a97063e688912a719f464dbff" => :yosemite
-    sha1 "0bd4601aac5e1d76aaa6295060312e1f93cd43ff" => :mavericks
-    sha1 "94634131524185beccae4dd5f749cbca6750c91d" => :mountain_lion
+    sha256 "1d3aee1664b44e912ddd307fc7f1eff25e835452ce44705acaa4162f79006ef7" => :yosemite
+    sha256 "f32d4dde1b09d619e5046b9e5717ab48d7dc6b066b09bbde8d44f74b2ef040fb" => :mavericks
+    sha256 "855e075b522199c52876f44fe2d2a63e4c4b4f9bfd5c6edb0e3dc850fd02ef34" => :mountain_lion
   end
 
   head "https://code.qt.io/qt/qt5.git", :branch => "5.4", :shallow => false
