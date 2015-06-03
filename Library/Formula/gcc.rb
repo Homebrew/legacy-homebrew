@@ -77,6 +77,13 @@ class Gcc < Formula
   # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64089
   patch :DATA if OS.mac?
 
+  # Fix error: rpc/xdr.h: No such file or directory
+  # See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64839
+  patch do
+    url "https://gist.githubusercontent.com/anonymous/7f239960c46240d83a67/raw"
+    sha256 "6ae5488ae1f7f712a782d65fd2bba3bca6431054b6d8683886df3a2cbc003834"
+  end if OS.linux?
+
   def install
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
