@@ -326,17 +326,7 @@ class FormulaInstaller
     cctools = CctoolsRequirement.new
     return if cctools.satisfied?
 
-    f = cctools.to_dependency.to_formula
-    di = DependencyInstaller.new(f)
-    di.options = f.build.used_options
-    di.build_from_source   = false
-    di.verbose             = verbose? && !quieter?
-    di.debug               = debug?
-    di.prelude
-    di.install
-    di.caveats
-    di.finish
-    # install_dependency(cctools.to_dependency, inherited_options_for(cctools)) unless cctools.satisfied?
+    install_dependency(cctools.to_dependency, inherited_options_for(cctools))
   end
 
   class DependencyInstaller < FormulaInstaller
