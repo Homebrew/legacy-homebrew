@@ -1,7 +1,7 @@
 class Passpie < Formula
   homepage "https://marcwebbie.github.io/passpie"
-  url "https://pypi.python.org/packages/source/p/passpie/passpie-0.3.0.tar.gz"
-  sha256 "92ecae783f18942617e3c480f080f10115bc7ea7b4469ba48134fc2f8c971b0e"
+  url "https://pypi.python.org/packages/source/p/passpie/passpie-0.3.1.tar.gz"
+  sha256 "a7c92eaf8217ed787c4dfee8f2d445af91efaf8d34d69b94500b06f694f1e502"
   head "https://github.com/marcwebbie/passpie.git"
 
   bottle do
