@@ -1,7 +1,7 @@
 class Libuv < Formula
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.5.0.tar.gz"
-  sha256 "f9c6ad4b7a2c90d93c8e09d2e739bb46d199639c4d884ba30323359521b09367"
+  url "https://github.com/libuv/libuv/archive/v1.6.0.tar.gz"
+  sha256 "1d60d79b942f5a4e53b7eddd96faccf77257ee5d3ae9865cbe9e719f6e164fea"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
@@ -31,8 +31,8 @@ class Libuv < Formula
   end
 
   resource "alabaster" do
-    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.3.tar.gz"
-    sha256 "0703c1ea5a6af0bb6d0cec24708301334949d56ebc7f95c64028d9c66f9d8d5d"
+    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.4.tar.gz"
+    sha256 "ce77e2fdbaabaae393ffce2a6252a0a666e3977c6c2fa1c48c4ded0569785951"
   end
 
   resource "babel" do
@@ -71,15 +71,15 @@ class Libuv < Formula
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.2.tar.bz2"
-    sha256 "3e15b416c9a2039c1a51208b2cd3bb4ffd796cd19e601b1d2657afcb77c3dc90"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.4.tar.bz2"
+    sha256 "a78b484d5472dd8c688f8b3eee18646a25c66ce45b2c26652850f6af9ce52b17"
   end
 
   def install
     ENV.universal_binary if build.universal?
 
     if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", buildpath/"sphinx/lib/python2.7/site-packages"
       resources.each do |r|
         r.stage do
           system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
