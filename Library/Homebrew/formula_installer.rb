@@ -329,20 +329,20 @@ class FormulaInstaller
     formula = cctools.to_dependency.to_formula
     installer = FormulaInstaller.new(formula)
     installer.options = formula.build.used_options
-    formula.ignore_deps         = false
-    formula.only_deps           = false
-    formula.build_bottle        = true
-    formula.build_from_source   = false
-    formula.force_bottle        = true
-    formula.interactive         = false
-    formula.git                 = false
-    formula.verbose             = false
-    formula.quieter             = false
-    formula.debug               = false
-    formula.prelude
-    formula.install
-    formula.caveats
-    formula.finish
+    installer.ignore_deps         = false
+    installer.only_deps           = false
+    installer.build_bottle        = true
+    installer.build_from_source   = false
+    installer.force_bottle        = true
+    installer.interactive         = false
+    installer.git                 = false
+    installer.verbose             = false
+    installer.quieter             = false
+    installer.debug               = false
+    installer.prelude
+    installer.install
+    installer.caveats
+    installer.finish
     # install_dependency(cctools.to_dependency, inherited_options_for(cctools)) unless cctools.satisfied?
   end
 
