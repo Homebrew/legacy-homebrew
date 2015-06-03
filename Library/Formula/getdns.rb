@@ -8,9 +8,10 @@ class Getdns < Formula
   head "https://github.com/getdnsapi/getdns.git"
 
   bottle do
-    sha1 "86879ca8d95414125287abc89393781bcd801f88" => :yosemite
-    sha1 "c826c175dc647cf68bd8ba12dcc9c78da232fb87" => :mavericks
-    sha1 "1c393a248ef0633265f1e40c335a6ddf1fd7794e" => :mountain_lion
+    cellar :any
+    sha256 "1c2614856050708b3877bb6b53e6160800d70e9c297f3951359027e5943d8bb7" => :yosemite
+    sha256 "5311f4983c92edc9e7a87c5e7838bfd72c73350b8ed2ae1d44ff595aae6a0b72" => :mavericks
+    sha256 "c84509d556c02cdcec5189d4f4cc2304e7c45ddde2ea80edda9703af502e9340" => :mountain_lion
   end
 
   depends_on "openssl"
