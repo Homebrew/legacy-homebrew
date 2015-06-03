@@ -10,13 +10,27 @@ class Hashpump < Formula
     sha256 "cf4a9cee9d04bef03016073dc0e516e5349861691ad80bae1706cbd846b03920" => :mountain_lion
   end
 
+  option "without-python", "Build without python 2 support"
+
   depends_on "openssl"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
+  depends_on :python3 => :optional
+
+  # Remove on next release
+  patch do
+    url "https://patch-diff.githubusercontent.com/raw/bwall/HashPump/pull/14.diff"
+    sha256 "47236fed281000726942740002e44ef8bb90b05f55b2e7deeb183d9f708906c1"
+  end
 
   def install
     bin.mkpath
     system "make", "INSTALLLOCATION=#{bin}",
                    "CXX=#{ENV.cxx}",
                    "install"
+
+    Language::Python.each_python(build) do |python, version|
+      system python, *Language::Python.setup_install_args(prefix)
+    end
   end
 
   test do
