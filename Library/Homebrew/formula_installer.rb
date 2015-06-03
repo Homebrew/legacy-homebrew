@@ -323,27 +323,7 @@ class FormulaInstaller
   end
 
   def install_relocation_tools
-    cctools = CctoolsRequirement.new
-    return if cctools.satisfied?
-
-    formula = cctools.to_dependency.to_formula
-    installer = FormulaInstaller.new(formula)
-    installer.options = formula.build.used_options
-    installer.ignore_deps         = false
-    installer.only_deps           = false
-    installer.build_bottle        = true
-    installer.build_from_source   = false
-    installer.force_bottle        = true
-    installer.interactive         = false
-    installer.git                 = false
-    installer.verbose             = false
-    installer.quieter             = false
-    installer.debug               = false
-    installer.prelude
-    installer.install
-    installer.caveats
-    installer.finish
-    # install_dependency(cctools.to_dependency, inherited_options_for(cctools)) unless cctools.satisfied?
+      formula.class.depends_on CctoolsRequirement
   end
 
   class DependencyInstaller < FormulaInstaller
