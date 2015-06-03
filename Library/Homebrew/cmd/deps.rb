@@ -14,16 +14,17 @@ module Homebrew
 
     if mode.installed? && mode.tree?
       puts_deps_tree Formula.installed
-    elsif mode.installed?
-      puts_deps Formula.installed
     elsif mode.all?
       puts_deps Formula
     elsif mode.tree?
       raise FormulaUnspecifiedError if ARGV.named.empty?
       puts_deps_tree ARGV.formulae
+    elsif ARGV.named.empty?
+      raise FormulaUnspecifiedError unless mode.installed?
+      puts_deps Formula.installed
     else
-      raise FormulaUnspecifiedError if ARGV.named.empty?
       all_deps = deps_for_formulae(ARGV.formulae, !ARGV.one?, &(mode.union? ? :| : :&))
+      all_deps.keep_if(&:installed?) if mode.installed?
       all_deps = all_deps.sort_by(&:name) unless mode.topo_order?
       puts all_deps
     end
