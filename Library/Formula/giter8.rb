@@ -4,7 +4,7 @@ class Giter8 < Formula
   homepage "https://github.com/n8han/giter8"
   url "https://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.7/sbt-launch.jar"
   sha1 "b407b2a76ad72165f806ac7e7ea09132b951ef53"
-  version "0.6.6"
+  version "0.6.8"
 
   def exec_script; <<-EOS.undent
     #!/bin/sh
