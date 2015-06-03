@@ -9,7 +9,7 @@ module Homebrew
     end
   end
 
-  def install_tap user, repo, clone_target
+  def install_tap user, repo, clone_target=nil
     # we special case homebrew so users don't have to shift in a terminal
     repouser = if user == "homebrew" then "Homebrew" else user end
     user = "homebrew" if user == "Homebrew"
