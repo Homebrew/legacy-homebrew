@@ -11,6 +11,10 @@ class Swiftcov < Formula
   end
 
   test do
+    system "cd", testpath
+    system "wget", "https://github.com/realm/SwiftCov/archive/#{version}.zip"
+    system "unzip", "#{version}.zip"
+    system "cd", "SwiftCov-#{version}"
     system "#{bin}/swiftcov",
            "generate",
            "--output",
