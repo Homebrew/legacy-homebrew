@@ -1,17 +1,15 @@
 module Homebrew
   def tap
     if ARGV.empty?
-      each_tap do |user, repo|
-        puts "#{user.basename}/#{repo.basename.sub("homebrew-", "")}" if (repo/".git").directory?
-      end
+      show_taps
     elsif ARGV.first == "--repair"
       migrate_taps :force => true
     else
-      opoo "Already tapped!" unless install_tap(*tap_args)
+      opoo "Already tapped!" unless install_tap(*tap_args, ARGV.named[1])
     end
   end
 
-  def install_tap user, repo, clone_target=nil
+  def install_tap user, repo, clone_target
     # we special case homebrew so users don't have to shift in a terminal
     repouser = if user == "homebrew" then "Homebrew" else user end
     user = "homebrew" if user == "Homebrew"
@@ -69,11 +67,10 @@ module Homebrew
     end
   end
 
-  def tap_args()
-    tap_name, clone_target = ARGV.named[0..1]
+  def tap_args(tap_name=ARGV.named.first)
     tap_name =~ HOMEBREW_TAP_ARGS_REGEX
     raise "Invalid tap name" unless $1 && $3
-    [$1, $3, clone_target]
+    [$1, $3]
   end
 
   def private_tap?(user, repo)
@@ -82,5 +79,13 @@ module Homebrew
     true
   rescue GitHub::Error
     false
+  end
+
+  def show_taps
+    each_tap do |user, repo|
+      if (repo/".git").directory?
+        puts "#{user.basename}/#{repo.basename.sub("homebrew-", "")}"
+      end
+    end
   end
 end
