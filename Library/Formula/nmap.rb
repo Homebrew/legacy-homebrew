@@ -1,10 +1,8 @@
-require 'formula'
-
 class Nmap < Formula
-  homepage "http://nmap.org/"
+  homepage "https://nmap.org/"
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
-  url "http://nmap.org/dist/nmap-6.47.tar.bz2"
-  sha1 "0c917453a91a5e85c2a217d27c3853b0f3e0e6ac"
+  url "https://nmap.org/dist/nmap-6.47.tar.bz2"
+  sha256 "8fa11e9e203ce2d81a207db5ca4f110a525f6c01c1dd0018325a7112a51aa591"
 
   bottle do
     revision 1
@@ -36,7 +34,7 @@ class Nmap < Formula
 
     system "./configure", *args
     system "make" # separate steps required otherwise the build fails
-    system "make install"
+    system "make", "install"
   end
 
   test do
