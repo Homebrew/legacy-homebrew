@@ -1,3 +1,5 @@
+require "digest/md5"
+
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
 
@@ -14,6 +16,7 @@ class Formulary
 
   def self.load_formula(name, path)
     mod = Module.new
+    const_set("FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}", mod)
     mod.module_eval(path.read, path)
     class_name = class_s(name)
 
