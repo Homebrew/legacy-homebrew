@@ -2,9 +2,7 @@ module Homebrew
   def tap
     if ARGV.empty?
       each_tap do |user, repo|
-        if (repo/".git").directory?
-          puts "#{user.basename}/#{repo.basename.sub("homebrew-", "")}"
-        end
+        puts "#{user.basename}/#{repo.basename.sub("homebrew-", "")}" if (repo/".git").directory?
       end
     elsif ARGV.first == "--repair"
       migrate_taps :force => true
