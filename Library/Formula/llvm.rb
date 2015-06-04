@@ -101,7 +101,7 @@ class Llvm < Formula
   depends_on "cmake" => :build
   if build.with? "lldb"
     depends_on "swig"
-    depends_on CodesignRequirement
+    depends_on CodesignRequirement if OS.mac?
   end
 
   # llvm requires <histedit.h>
@@ -147,6 +147,9 @@ class Llvm < Formula
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
 
+    # Fix for LineEditor.cpp:17:22: fatal error: histedit.h: No such file or directory
+    args << "-DCMAKE_CXX_FLAGS=#{ENV["CPPFLAGS"]} #{ENV["CXXFLAGS"]}" unless OS.mac?
+
     mktemp do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
@@ -155,12 +158,19 @@ class Llvm < Formula
 
     if build.with? "clang"
       if OS.linux?
-        # Let's use clang to build libcxx. It fails with gcc.
+        # libcxx fails to build with gcc.
         ENV["CC"] = bin/"clang"
         ENV["CXX"] = bin/"clang++"
+        mktemp do
+          system "cmake", "-G", "Unix Makefiles", "#{buildpath}/projects/libcxx", *std_cmake_args
+          system "make"
+          system "make", "install"
+        end
+      else
+        # Installation on Mac OS X doesn't require CMake approach
+        system "make", "-C", "projects/libcxx", "install",
+          "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
       end
-      system "make", "-C", "projects/libcxx", "install",
-        "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
 
       (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
       inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
