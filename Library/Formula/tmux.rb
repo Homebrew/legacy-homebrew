@@ -1,8 +1,8 @@
 require 'formula'
 
 class Tmux < Formula
-  homepage 'http://tmux.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/tmux/tmux/tmux-2.0/tmux-2.0.tar.gz'
+  homepage 'https://tmux.github.io'
+  url 'https://github.com/tmux/tmux/releases/download/2.0/tmux-2.0.tar.gz'
   sha1 '977871e7433fe054928d86477382bd5f6794dc3d'
 
   bottle do
@@ -13,7 +13,7 @@ class Tmux < Formula
   end
 
   head do
-    url 'git://git.code.sf.net/p/tmux/tmux-code'
+    url 'https://github.com/tmux/tmux.git'
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
