@@ -1,8 +1,7 @@
 class Pushpin < Formula
   homepage "http://pushpin.org"
-  url "http://packages.fanout.io/source/pushpin-1.2.0.tar.bz2"
-  sha256 "b0a9fb68ecbf366e1c7ab22582f9d3b3ea36d8f161500aef6e2e80d728cd3927"
-  revision 2
+  url "http://packages.fanout.io/source/pushpin-1.3.0.tar.bz2"
+  sha256 "b3f45a6faca6873299eb68c876eab21f965cb961a3c91e8ed13cccb4018ff5e6"
 
   head "https://github.com/fanout/pushpin.git"
 
@@ -19,6 +18,12 @@ class Pushpin < Formula
   depends_on "qjson"
   depends_on "mongrel2"
   depends_on "zurl"
+
+  # MacOS versions prior to Yosemite need the latest setuptools in order to compile dependencies
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
+    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
+  end
 
   resource "MarkupSafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
@@ -45,10 +50,15 @@ class Pushpin < Formula
     sha256 "55715a5d758214034db179005def47ed842da36c4c48e9e7ae59bcaffed7ca9b"
   end
 
+  resource "blist" do
+    url "https://pypi.python.org/packages/source/b/blist/blist-1.3.6.tar.gz"
+    sha256 "3a12c450b001bdf895b30ae818d4d6d3f1552096b8c995f0fe0c74bef04d1fc3"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    %w[MarkupSafe Jinja2 pyzmq setproctitle tnetstring].each do |r|
+    %w[setuptools MarkupSafe Jinja2 pyzmq setproctitle tnetstring blist].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
