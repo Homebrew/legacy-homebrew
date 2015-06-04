@@ -197,16 +197,7 @@ class Pathname
 
   def version
     require 'version'
-    if BOTTLE_EXTNAME_RX === to_s
-      begin
-        receipt = Utils.popen_read("tar", "-tzf", to_s, "*/*/INSTALL_RECEIPT.json").chomp
-        Version.new(receipt.split("/", 3)[1])
-      rescue
-        Version.parse(self)
-      end
-    else
-      Version.parse(self)
-    end
+    Version.parse(self)
   end
 
   def compression_type
