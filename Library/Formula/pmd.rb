@@ -14,14 +14,13 @@ class Pmd < Formula
 
     doc.install "LICENSE", "NOTICE", "README.md"
 
-    libexec.install "pmd-dist/target/pmd-bin-5.3.2/pmd-bin-5.3.2/bin", "pmd-dist/target/pmd-bin-5.3.2/pmd-bin-5.3.2/lib"
+    libexec.install "pmd-dist/target/pmd-bin-#{version}/pmd-bin-#{version}/bin", "pmd-dist/target/pmd-bin-#{version}/pmd-bin-#{version}/lib"
 
     bin.install_symlink "#{libexec}/bin/run.sh" => "pmd"
     inreplace "#{libexec}/bin/run.sh", "${script_dir}/../lib", "#{libexec}/lib"
   end
 
   def caveats; <<-EOS.undent
-    The install process needs maven3. It's not listed as a dependency since you may have a specific version installed. If you don't, do: brew install maven
     Once pmd is installed, maven isn't needed anymore.
     Run with `pmd` (instead of `run.sh` as described in the documentation).
     EOS
