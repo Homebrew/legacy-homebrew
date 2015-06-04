@@ -9,7 +9,9 @@ module Homebrew
     elsif ARGV.first == "--repair"
       migrate_taps :force => true
     else
-      opoo "Already tapped!" unless install_tap(*tap_args)
+      user, repo = tap_args
+      clone_target = ARGV.named[1]
+      opoo "Already tapped!" unless install_tap(user, repo, clone_target)
     end
   end
 
@@ -74,7 +76,7 @@ module Homebrew
   def tap_args(tap_name=ARGV.named.first)
     tap_name =~ HOMEBREW_TAP_ARGS_REGEX
     raise "Invalid tap name" unless $1 && $3
-    [$1, $3, ARGV.named[1]]
+    [$1, $3]
   end
 
   def private_tap?(user, repo)
