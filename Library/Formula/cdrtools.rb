@@ -1,15 +1,13 @@
-require 'formula'
-
 class Cdrtools < Formula
-  homepage 'http://cdrecord.org/'
+  homepage "http://cdrecord.org/"
 
   stable do
     url "https://downloads.sourceforge.net/project/cdrtools/cdrtools-3.00.tar.bz2"
-    sha1 "6464844d6b936d4f43ee98a04d637cd91131de4e"
+    sha256 "7f9cb64820055573b880f77b2f16662a512518336ba95ab49228a1617973423d"
 
     patch :p0 do
       url "https://trac.macports.org/export/104091/trunk/dports/sysutils/cdrtools/files/patch-include_schily_sha2.h"
-      sha1 "6c2c06b7546face6dd58c3fb39484b9120e3e1ca"
+      sha256 "59a62420138c54fbea6eaa10a11f69488bb3fecf4f954fda47a3b1e424671d61"
     end
   end
 
@@ -20,8 +18,8 @@ class Cdrtools < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a28.tar.bz2"
-    sha1 "081b1daa9c86f33483213a8d8d0fd75caec51ead"
+    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a29.tar.bz2"
+    sha256 "3ad98ea911a4ee7811ecfc433b70dac3a3b9671eb71a55da9f4a7e08cb6fc247"
 
     patch :p0, :DATA
   end
