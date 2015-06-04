@@ -21,10 +21,7 @@ class Sshuttle < Formula
     Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
       sleep 1
       exit_status = wait_thr.value
-      unless exit_status.success?
-        abort "Test failed #{cmd}"
-      end
+      return false unless exit_status.success?
     end
   end
-
 end
