@@ -33,6 +33,10 @@ after this fixed, I can run jobs submitted from a remote job server successfully
 
 (Thanks to @pcliu)
 
+## Exception in thread "main" java.lang.NoSuchMethodError: akka.actor.ActorRefFactory.dispatcher()Lscala/concurrent/ExecutionContextExecutor;
+
+If you are running CDH 5.3 or older, you may have an incompatible version of Akka bundled together.  :(  Try modifying the version of Akka included with spark-jobserver to match the one in CDH (2.2.4, I think), or upgrade to CDH 5.4.   If you are on CDH 5.4, check that `sparkVersion` in `Dependencies.scala` matches CDH.  Or see [isse #154](https://github.com/spark-jobserver/spark-jobserver/issues/154).
+
 ## I want to run job-server on Windows
 
 1. Create directory `C:\Hadoop\bin`
