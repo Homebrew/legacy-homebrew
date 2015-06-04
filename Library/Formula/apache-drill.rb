@@ -1,7 +1,7 @@
 class ApacheDrill < Formula
   homepage "https://drill.apache.org/download/"
   url "https://www.apache.org/dyn/closer.cgi?path=drill/drill-1.0.0/apache-drill-1.0.0.tar.gz"
-  sha1 "0b43d52f6754bad7c7bb3c36e0dfc4c9de6d71e8"
+  sha256 "59f293aeb61ff55e3ab280dc3fbc9648dd6c1aefa2282a5a772be11d4f5a2682"
 
   def install
     libexec.install Dir["*"]
@@ -9,6 +9,6 @@ class ApacheDrill < Formula
   end
 
   test do
-    system "#{bin}/sqlline -u jdbc:drill:zk=local <<< '!tables'"
+    pipe_output("#{bin}/sqlline -u jdbc:drill:zk=local", "!tables", 0)
   end
 end
