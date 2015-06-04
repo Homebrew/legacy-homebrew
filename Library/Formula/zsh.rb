@@ -2,9 +2,9 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.7/zsh-5.0.7.tar.bz2'
-  mirror 'http://www.zsh.org/pub/zsh-5.0.7.tar.bz2'
-  sha1 '1500191d16af8a71aec4f719a92775a074682096'
+  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.8/zsh-5.0.8.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.8.tar.bz2'
+  sha256 '8079cf08cb8beff22f84b56bd72bb6e6962ff4718d816f3d83a633b4c9e17d23'
 
   bottle do
     sha1 "83d646649569ade648db6a44c480709d63268a25" => :yosemite
