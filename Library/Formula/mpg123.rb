@@ -1,8 +1,8 @@
 class Mpg123 < Formula
   homepage "http://www.mpg123.de/"
-  url "https://downloads.sourceforge.net/project/mpg123/mpg123/1.21.0/mpg123-1.21.0.tar.bz2"
-  mirror "http://mpg123.orgis.org/download/mpg123-1.21.0.tar.bz2"
-  sha1 "a2fd84078632b7ab73ae4cd64c3f941d140167a8"
+  url "http://www.mpg123.de/download/mpg123-1.22.2.tar.bz2"
+  mirror "http://mpg123.orgis.org/download/mpg123-1.22.2.tar.bz2"
+  sha256 "6d1e2487777114ba8a73c543f355cacfa2055646724000fc195ac9e64c843744"
 
   bottle do
     cellar :any
