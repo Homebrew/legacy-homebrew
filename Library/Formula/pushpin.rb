@@ -19,6 +19,12 @@ class Pushpin < Formula
   depends_on "mongrel2"
   depends_on "zurl"
 
+  # MacOS versions prior to Yosemite need the latest setuptools in order to compile dependencies
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
+    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
+  end
+
   resource "MarkupSafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
     sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
@@ -52,7 +58,7 @@ class Pushpin < Formula
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    %w[MarkupSafe Jinja2 pyzmq setproctitle tnetstring blist].each do |r|
+    %w[setuptools MarkupSafe Jinja2 pyzmq setproctitle tnetstring blist].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
