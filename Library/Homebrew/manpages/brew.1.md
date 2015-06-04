@@ -403,14 +403,10 @@ Note that these flags should only appear after a command.
 
     If `--rebase` is specified then `git pull --rebase` is used.
 
-  * `upgrade [--all] [install-options]` [<formulae>]:
+  * `upgrade [install-options]` [<formulae>]:
     Upgrade outdated, unpinned brews.
 
     Options for the `install` command are also valid here.
-
-    If `--all` is passed, upgrade all formulae. This is currently the same
-    behaviour as without `--all` but soon `--all` will be required to upgrade
-    all formulae.
 
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).
