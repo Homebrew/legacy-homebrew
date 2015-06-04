@@ -69,7 +69,12 @@ module Homebrew
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
       next cleanup_path(file) { file.unlink } if prune && file.mtime < time
 
-      next unless (version = file.version)
+      if Pathname::BOTTLE_EXTNAME_RX === file.to_s
+        version = bottle_resolve_version(file) rescue file.version
+      else
+        version = file.version
+      end
+      next unless version
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
 
       begin
