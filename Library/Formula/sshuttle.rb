@@ -1,6 +1,4 @@
 require 'formula'
-# for test
-require 'open3'
 
 class Sshuttle < Formula
   homepage 'https://github.com/sshuttle/sshuttle'
@@ -17,6 +15,7 @@ class Sshuttle < Formula
     bin.write_exec_script libexec/'sshuttle'
   end
   test do
+    require "open3"
     cmd = '#{bin}/sshuttle --server'
     Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
       sleep 1
