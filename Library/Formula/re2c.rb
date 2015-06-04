@@ -1,7 +1,7 @@
 class Re2c < Formula
   homepage "http://re2c.org"
-  url "https://downloads.sourceforge.net/project/re2c/re2c/0.14.2/re2c-0.14.2.tar.gz"
-  sha256 "a702eb63977af4715555edb41eba3b47bbfdcdb44b566d146869a7db022f1c30"
+  url "https://downloads.sourceforge.net/project/re2c/re2c/0.14.3/re2c-0.14.3.tar.gz"
+  sha256 "1c6806df599f3aef0804b576cfdf64bdba5ad590626dfca2d44e473460917e84"
 
   bottle do
     cellar :any
