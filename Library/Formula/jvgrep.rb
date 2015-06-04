@@ -2,8 +2,8 @@ require "language/go"
 
 class Jvgrep < Formula
   homepage "https://github.com/mattn/jvgrep"
-  url "https://github.com/mattn/jvgrep/archive/v4.1.tar.gz"
-  sha256 "f0d8d4a2214e6873688dfe2f75e21c8c4a0a105efd145cde419abf4280e57fb2"
+  url "https://github.com/mattn/jvgrep/archive/v4.2.tar.gz"
+  sha256 "33b7f28ba20489dbd5e90d1b68ad9c5b8c9919632c204ed02f7d2ce6384e59c6"
 
   head "https://github.com/mattn/jvgrep.git"
 
