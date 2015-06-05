@@ -15,6 +15,9 @@ class Softhsm < Formula
   end
 
   test do
-    system "#{bin}/softhsm", "--version"
+    (testpath/"softhsm.conf").write("0:#{testpath}/hsm.db")
+    ENV["SOFTHSM_CONF"] = "#{testpath}/softhsm.conf"
+    system *%W[#{bin}/softhsm --init-token --slot 0 --label testing --so-pin 1234 --pin 1234]
+    system *%W[#{bin}/softhsm --show-slots]
   end
 end
