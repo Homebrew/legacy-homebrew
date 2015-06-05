@@ -11,14 +11,50 @@ class Mongoose < Formula
     sha256 "0ec26e8125679d0b2464a186b5d204035879804ca6ff814e50cc0eaad658fabd" => :mountain_lion
   end
 
+  depends_on "openssl" => :recommended
+
   def install
+    # No Makefile but is an expectation upstream of binary creation
+    # https://github.com/cesanta/mongoose/blob/master/docs/Usage.md
+    # https://github.com/cesanta/mongoose/issues/326
+    cd "examples/web_server" do
+      args = []
+      args << "openssl" if build.with? "openssl"
+
+      system "make", *args
+      bin.install "web_server" => "mongoose"
+    end
+
     system ENV.cc, "-dynamiclib", "mongoose.c", "-o", "libmongoose.dylib"
     include.install "mongoose.h"
     lib.install "libmongoose.dylib"
-    share.install "examples", "docs", "jni"
+    share.install "examples", "jni"
+    doc.install Dir["docs/*"]
   end
 
   test do
-    system ENV.cc, "#{share}/examples/hello_world/hello_world.c", "-o", "hello_world", "-lmongoose"
+    (testpath/"hello.html").write <<-EOS.undent
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Homebrew</title>
+        </head>
+        <body>
+          <p>Hello World!</p>
+        </body>
+      </html>
+    EOS
+
+    pid = fork do
+      exec "#{bin}/mongoose -document_root #{testpath} -index_files hello.html"
+    end
+    sleep 2
+
+    begin
+      assert_match /Hello World!/, shell_output("curl localhost:8080")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
