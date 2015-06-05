@@ -7,6 +7,8 @@ class Pmd < Formula
 
   depends_on "maven" => :build
 
+  # The mvn package target produces a .zip with all the jars needed for PMD
+  # This patch makes it produce a folder instead so installing the jars is straightforward
   patch :DATA
 
   def install
