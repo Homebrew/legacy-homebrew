@@ -109,7 +109,7 @@ underworld of C.
 To solve this, you should remove the problematic formula with those python
 bindings and all of its dependencies.
 
-  - `brew rm $(brew deps <problematic_formula>)`
+  - `brew rm $(brew deps --installed <problematic_formula>)`
   - `brew rm <problematic_formula>`
   - Also check the `$(brew --prefix)/lib/python2.7/site-packages` directory and
     delete all remains of the corresponding python modules if they were not
