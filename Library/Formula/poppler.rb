@@ -55,7 +55,6 @@ class Poppler < Formula
       args << "--enable-poppler-qt4"
     elsif build.with? "qt5"
       args << "--enable-poppler-qt5"
-      ENV.append_path "PKG_CONFIG_PATH" , "#{Formula["qt5"].opt_lib}/pkgconfig"
     else
       args << "--disable-poppler-qt4" << "--disable-poppler-qt5"
     end
