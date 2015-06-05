@@ -1,42 +1,34 @@
-require 'formula'
-
 class Grass < Formula
-  homepage 'http://grass.osgeo.org/'
-  revision 1
+  homepage "http://grass.osgeo.org/"
+  url "http://grass.osgeo.org/grass70/source/grass-7.0.0.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/grass/grass_7.0.0.orig.tar.gz"
+  sha256 "1324556514cc38aced1c6dce27933ce386be027b1e2594f807f67250fb55436a"
 
-  stable do
-    url "http://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
-    sha1 "0e4dac9fb3320a26e4f640f641485fde0323dd46"
+  head "https://svn.osgeo.org/grass/grass/trunk"
 
-    # Patches that files are not installed outside of the prefix.
-    patch :DATA
-  end
-
-  head do
-    url "https://svn.osgeo.org/grass/grass/trunk"
-
-    patch do
-      url "https://gist.githubusercontent.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
-      sha1 "ffbe31682d8a7605d5548cdafd536f1c785d3a23"
-    end
+  # prevent installer trying to write to /Library
+  patch do
+    url "https://gist.githubusercontent.com/dunn/776ccb55d8d4535798bf/raw/288f43b37f7b1016efcefaea37ef5133d93c75b0/grass.diff"
+    sha256 "c7020dd282e0144bd900d0ac5d51ada486c071d3826db5405d2b6ef63ee2d7fc"
   end
 
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
   depends_on :macos => :lion
-  depends_on 'gcc' if MacOS.version >= :mountain_lion
-  depends_on "pkg-config" => :build
-  depends_on "gettext"
-  depends_on "readline"
-  depends_on "gdal"
-  depends_on "libtiff"
-  depends_on "unixodbc"
-  depends_on "fftw"
-  depends_on "wxpython" => :recommended # prefer over OS X's version because of 64bit
-  depends_on :postgresql => :optional
-  depends_on :mysql => :optional
+
   depends_on "cairo"
+  depends_on "fftw"
   depends_on "freetype"
+  depends_on "gcc" if MacOS.version >= :mountain_lion
+  depends_on "gdal"
+  depends_on "gettext"
+  depends_on "libtiff"
+  depends_on "pkg-config" => :build
+  depends_on "readline"
+  depends_on "unixodbc"
+  depends_on "wxpython" => :recommended # prefer over OS X's version because of 64bit
+  depends_on :mysql => :optional
+  depends_on :postgresql => :optional
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
   fails_with :clang do
@@ -46,7 +38,7 @@ class Grass < Formula
   def headless?
     # The GRASS GUI is based on WxPython. Unfortunately, Lion does not include
     # this module so we have to drop it.
-    build.without? "gui" or MacOS.version == :lion
+    build.without?("gui") || MacOS.version == :lion
   end
 
   def install
@@ -82,7 +74,7 @@ class Grass < Formula
       args << "--with-opengl-includes=#{MacOS.sdk_path}/System/Library/Frameworks/OpenGL.framework/Headers"
     end
 
-    if headless? or build.without? 'wxmac'
+    if headless? || build.without?("wxmac")
       args << "--without-wxwidgets"
     else
       args << "--with-wxwidgets=#{Formula["wxmac"].opt_bin}/wx-config"
@@ -113,8 +105,15 @@ class Grass < Formula
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make GDAL_DYNAMIC=" # make and make install must be separate steps.
-    system "make GDAL_DYNAMIC= install" # GDAL_DYNAMIC set to blank for r.external compatability
+    system "make", "GDAL_DYNAMIC=" # make and make install must be separate steps.
+    system "make", "GDAL_DYNAMIC=", "install" # GDAL_DYNAMIC set to blank for r.external compatability
+
+    mv bin/"grass71", bin/"grass" if build.head?
+    mv bin/"grass70", bin/"grass" if build.stable?
+  end
+
+  test do
+    system bin/"grass", "--config"
   end
 
   def caveats
@@ -125,7 +124,7 @@ class Grass < Formula
         available to compile against.
 
         The command line tools remain fully functional.
-        EOS
+      EOS
     elsif MacOS.version < :lion
       # On Lion or above, we are very happy with our brewed wxwidgets.
       <<-EOS.undent
@@ -148,22 +147,3 @@ class Grass < Formula
     end
   end
 end
-
-__END__
-Remove two lines of the Makefile that try to install stuff to
-/Library/Documentation---which is outside of the prefix and usually fails due
-to permissions issues.
-
-diff --git a/Makefile b/Makefile
-index f1edea6..be404b0 100644
---- a/Makefile
-+++ b/Makefile
-@@ -304,8 +304,6 @@ ifeq ($(strip $(MINGW)),)
- 	-tar cBf - gem/skeleton | (cd ${INST_DIR}/etc ; tar xBf - ) 2>/dev/null
- 	-${INSTALL} gem/gem$(GRASS_VERSION_MAJOR)$(GRASS_VERSION_MINOR) ${BINDIR} 2>/dev/null
- endif
--	@# enable OSX Help Viewer
--	@if [ "`cat include/Make/Platform.make | grep -i '^ARCH.*darwin'`" ] ; then /bin/ln -sfh "${INST_DIR}/docs/html" /Library/Documentation/Help/GRASS-${GRASS_VERSION_MAJOR}.${GRASS_VERSION_MINOR} ; fi
-
-
- install-strip: FORCE
