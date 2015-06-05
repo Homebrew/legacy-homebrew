@@ -4,8 +4,8 @@ require "language/go"
 class Terraform < Formula
   desc "Tool to build, change, and version infrastructure"
   homepage "https://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.5.1.tar.gz"
-  sha1 "7df99086b2ef218c0a56841dbd43a054b19903fb"
+  url "https://github.com/hashicorp/terraform/archive/v0.5.3.tar.gz"
+  sha256 "be71d430df5b28deaff815ee775bbb4d8e240b145450d6c027baa6ef0860ca94"
 
   bottle do
     cellar :any
@@ -14,19 +14,16 @@ class Terraform < Formula
     sha256 "f2be116dee2e01a75f192c5088c25f40ce3a7d6f23ea83539f485701e3b907fa" => :mountain_lion
   end
 
-  # patch from upstream, will be included in next release
-  # fix regression in networkacl with conflicts with
-  patch do
-    url "https://github.com/hashicorp/terraform/commit/af09f2.diff"
-    sha256 "35a5857f51b36fce4a700e440b5ccf56e319e309b707bd5766ce2649fe6fc994"
-  end
-
   depends_on "go" => :build
+
+  go_resource "github.com/awslabs/aws-sdk-go" do
+    url "https://github.com/aws/aws-sdk-go.git",
+        :revision => "43d7c58d0a71c01d98b7881cb9f90047f04f4acd"
+  end
 
   terraform_deps = %w[
     github.com/Sirupsen/logrus 52919f182f9c314f8a38c5afe96506f73d02b4b2
     github.com/armon/circbuf f092b4f207b6e5cce0569056fba9e1a2735cb6cf
-    github.com/awslabs/aws-sdk-go c37b3cb43ea0ca2ee05432f620c06647491ba1dd
     github.com/cyberdelia/heroku-go 594d483b9b6a8ddc7cd2f1e3e7d1de92fa2de665
     github.com/docker/docker 42cfc95549728014811cc9aa2c5b07bdf5553a54
     github.com/dylanmei/iso8601 2075bf119b58e5576c6ed9f867b8f3d17f2e54d4
