@@ -87,7 +87,7 @@ A more complete example-formula [cheat-sheet](https://github.com/Homebrew/homebr
 
 All you need to make a formula is a URL to the tarball.
 
-    brew create http://example.com/foo-0.1.tar.gz
+    brew create https://example.com/foo-0.1.tar.gz
 
 This creates:
 
@@ -97,7 +97,7 @@ And opens it in your `$EDITOR`. It'll look like:
 
 ```ruby
 class Foo < Formula
-  url "http://example.com/foo-0.1.tar.gz"
+  url "https://example.com/foo-0.1.tar.gz"
   homepage ""
   sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 
