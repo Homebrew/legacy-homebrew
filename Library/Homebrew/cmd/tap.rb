@@ -34,8 +34,8 @@ module Homebrew
     tapd.find_formula { |file| files << file }
     puts "Tapped #{files.length} formula#{plural(files.length, 'e')} (#{tapd.abv})"
 
-    unless clone_target
-      if private_tap?(repouser, repo) then puts <<-EOS.undent
+    if check_private?(clone_target, repouser, repo)
+      puts <<-EOS.undent
         It looks like you tapped a private repository. To avoid entering your
         credentials each time you update, you can use git HTTP credential
         caching or issue the following command:
@@ -43,7 +43,6 @@ module Homebrew
           cd #{tapd}
           git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git
         EOS
-      end
     end
 
     true
@@ -83,5 +82,9 @@ module Homebrew
     true
   rescue GitHub::Error
     false
+  end
+
+  def check_private?(clone_target, user, repo)
+    not clone_target && private_tap?(user, repo)
   end
 end
