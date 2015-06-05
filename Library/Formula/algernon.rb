@@ -14,16 +14,13 @@ class Algernon < Formula
   def install
     ENV["GOPATH"] = buildpath
 
-    # Install Go dependencies
     system "go", "get", "-d"
-
-    # Build and install algernon
     system "go", "build", "-o", "algernon"
-
     bin.install "algernon"
   end
 
   test do
+    system "go", "test"
     system "#{bin}/algernon", "--version"
   end
 end
