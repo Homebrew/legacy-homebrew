@@ -9,6 +9,7 @@ class Algernon < Formula
 
   depends_on "go" => :build
   depends_on :hg => :build
+  depends_on "readline"
 
   def install
     ENV["GOPATH"] = buildpath
