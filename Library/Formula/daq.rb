@@ -1,10 +1,8 @@
-require "formula"
-
 class Daq < Formula
   desc "Network intrusion prevention and detection system"
-  homepage "http://www.snort.org/"
-  url "https://www.snort.org/downloads/snort/daq-2.0.4.tar.gz"
-  sha1 "f2d798e303959c8f2d4a31481f4983fc4d8ba1d9"
+  homepage "https://www.snort.org/"
+  url "https://www.snort.org/downloads/snort/daq-2.0.5.tar.gz"
+  sha256 "7704b5db858732142586f5043deb0733e2c396535c83081e918fb6993258bc6d"
 
   bottle do
     cellar :any
@@ -18,5 +16,9 @@ class Daq < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    assert File.exist? "#{include}/daq.h"
   end
 end
