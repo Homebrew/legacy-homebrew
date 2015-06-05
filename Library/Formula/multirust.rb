@@ -13,7 +13,7 @@ class Multirust < Formula
     sha256 "fda4e8a56c51643e5b3edea4e714c311287e53038dfe7acf955776e6c881bf94" => :mountain_lion
   end
 
-  depends_on :gpg => :recommended
+  depends_on :gpg => [:recommended, :run]
 
   def install
     system "./build.sh"
