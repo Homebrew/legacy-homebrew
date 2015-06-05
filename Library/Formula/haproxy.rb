@@ -1,7 +1,7 @@
 class Haproxy < Formula
   homepage "http://haproxy.1wt.eu"
-  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.10.tar.gz"
-  sha1 "2af3b740e84f10cbd0c90a78c30a222a24fb2945"
+  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.12.tar.gz"
+  sha256 "6648dd7d6b958d83dd7101eab5792178212a66c884bec0ebcd8abc39df83bb78"
 
   bottle do
     cellar :any
