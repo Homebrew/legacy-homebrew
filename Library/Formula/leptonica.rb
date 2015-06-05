@@ -1,10 +1,9 @@
-require 'formula'
+require "formula"
 
 class Leptonica < Formula
-  homepage 'http://www.leptonica.org/'
-  url 'http://www.leptonica.org/source/leptonica-1.71.tar.gz'
-  sha1 '1ee59b06fd6c6402876f46c26c21b17ffd3c9b6b'
-  revision 1
+  homepage "http://www.leptonica.org/"
+  url "http://www.leptonica.org/source/leptonica-1.72.tar.gz"
+  sha256 "79d5eadd32658c9fea38700c975d60aa3d088eaa3e307659f004d40834de1f56"
 
   bottle do
     cellar :any
@@ -13,15 +12,15 @@ class Leptonica < Formula
     sha1 "cba822e6f2e5d1c87789fbcd6c0e78cef487b134" => :mountain_lion
   end
 
-  depends_on 'libpng' => :recommended
-  depends_on 'jpeg' => :recommended
-  depends_on 'libtiff' => :recommended
-  depends_on 'giflib' => :optional
-  depends_on 'openjpeg' => :optional
-  depends_on 'webp' => :optional
-  depends_on 'pkg-config' => :build
+  depends_on "libpng" => :recommended
+  depends_on "jpeg" => :recommended
+  depends_on "libtiff" => :recommended
+  depends_on "giflib" => :optional
+  depends_on "openjpeg" => :optional
+  depends_on "webp" => :optional
+  depends_on "pkg-config" => :build
 
-  conflicts_with 'osxutils',
+  conflicts_with "osxutils",
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
 
   def install
