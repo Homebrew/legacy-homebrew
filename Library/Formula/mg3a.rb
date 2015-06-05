@@ -1,7 +1,7 @@
 class Mg3a < Formula
   homepage "http://www.bengtl.net/files/mg3a/"
-  url "http://www.bengtl.net/files/mg3a/mg3a.150519.tar.gz"
-  sha256 "b1735f3b933084b6760693022773e8b7395522b8db878a45a34f0c02e60374bc"
+  url "http://www.bengtl.net/files/mg3a/mg3a.150603.tar.gz"
+  sha256 "71d47cb2c4608c8f8563089df9540ba9a25853c8abd8db911738642a893cb8fc"
 
   conflicts_with "mg", :because => "both install `mg`"
 
