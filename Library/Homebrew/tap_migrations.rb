@@ -174,6 +174,7 @@ TAP_MIGRATIONS = {
   "s3fs" => "homebrew/fuse",
   "salt" => "homebrew/science",
   "scantailor" => "homebrew/x11",
+  "sdelta3" => "homebrew/boneyard",
   "shark" => "homebrew/boneyard",
   "shell.fm" => "homebrew/boneyard",
   "simple-mtpfs" => "homebrew/fuse",
