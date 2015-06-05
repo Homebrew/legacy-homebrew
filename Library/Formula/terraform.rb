@@ -4,7 +4,7 @@ require "language/go"
 class Terraform < Formula
   homepage "https://www.terraform.io/"
   url "https://github.com/hashicorp/terraform/archive/v0.5.3.tar.gz"
-  sha1 "2f1a743272f6b456b29112e350ee00fc21a3f4ad"
+  sha256 "be71d430df5b28deaff815ee775bbb4d8e240b145450d6c027baa6ef0860ca94"
 
   bottle do
     cellar :any
@@ -13,14 +13,12 @@ class Terraform < Formula
     sha256 "f2be116dee2e01a75f192c5088c25f40ce3a7d6f23ea83539f485701e3b907fa" => :mountain_lion
   end
 
-
   depends_on "go" => :build
 
   go_resource "github.com/awslabs/aws-sdk-go" do
     url "https://github.com/aws/aws-sdk-go.git",
         :revision => "43d7c58d0a71c01d98b7881cb9f90047f04f4acd"
   end
-
 
   terraform_deps = %w[
     github.com/Sirupsen/logrus 52919f182f9c314f8a38c5afe96506f73d02b4b2
@@ -74,7 +72,6 @@ class Terraform < Formula
       url "https://#{x}.git", :revision => y
     end
   end
-
 
   go_resource "code.google.com/p/go-uuid" do
     url "https://code.google.com/p/go-uuid", :using => :hg,
