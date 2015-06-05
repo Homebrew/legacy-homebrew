@@ -48,9 +48,9 @@ class Cmake < Formula
 
   patch do
     # fix for older bash-completion versions
-    # Vendored because upstream's sha changes regularly and breaks from-source download.
-    url "https://gist.githubusercontent.com/DomT4/11b05fe406fa9d578a82/raw/7a42632c240a855be71c9cb14702ba05d14dd88f/cmake_bash_comps.diff"
-    sha256 "0017011a8c75badb20599a56832d6cd04f89d441252a8d5ed0c04a252b8e40ac"
+    # Use Github because upstream git changes sha and breaks from-source download.
+    url "https://github.com/Kitware/CMake/commit/2ecf168f1909.diff"
+    sha256 "d3f8cd71d0b6ce23a22c55145114012da916f2e42af71cbbad35090d0aeb4f68"
   end
 
   def install
