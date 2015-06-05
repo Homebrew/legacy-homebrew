@@ -1,7 +1,6 @@
 class Zeromq < Formula
   desc "High-performance, asynchronous messaging library"
   homepage "http://www.zeromq.org/"
-  revision 2
 
   bottle do
     cellar :any
@@ -19,15 +18,8 @@ class Zeromq < Formula
   end
 
   stable do
-    url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
-    sha1 "a664ec63661a848ef46114029156a0a6006feecd"
-
-    patch do
-      # enable --without-libsodium on libzmq < 4.1
-      # zeromq/zeromq4-x#105
-      url "https://gist.githubusercontent.com/minrk/478aab66adf7016158ff/raw/b5ea2d61c3f66db6ff3e266b76d1bec4ad4a238b/without-libsodium.patch"
-      sha1 "68543ff1b0f64b22994cb13b4d24bce8f76cf431"
-    end
+    url "http://download.zeromq.org/zeromq-4.1.2.tar.gz"
+    sha1 "86c17096f7f4bf46cbcd2ad242cf8fec8a7cfb7b"
   end
 
   option :universal
