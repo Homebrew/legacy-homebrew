@@ -6,9 +6,9 @@ class Daq < Formula
 
   bottle do
     cellar :any
-    sha1 "f3fb9c1e17455a6172cf1f43c867675115c2c990" => :yosemite
-    sha1 "d257544110abe1872795e492c611cfa3d825734a" => :mavericks
-    sha1 "64346e0563f43fb97fbe2d71d6359d5131351e97" => :mountain_lion
+    sha256 "04ee508c881d80e6d115a3f7fcd8c45ec7405c90a9a2a60cfa2e06f75030ee2a" => :yosemite
+    sha256 "49b01b6adb0cd5757a919afb84d25c0ba2644df35178c5024f31f9ca9f676821" => :mavericks
+    sha256 "1fad31d21b32ad21c18ed686e8043d65e629a9af16e5cc72774ef7677199b7a6" => :mountain_lion
   end
 
   def install
