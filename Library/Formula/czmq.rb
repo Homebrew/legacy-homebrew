@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Czmq < Formula
   desc "High-level C binding for ØMQ"
   homepage "http://czmq.zeromq.org/"
