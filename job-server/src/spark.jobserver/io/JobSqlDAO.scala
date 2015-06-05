@@ -5,11 +5,20 @@ import java.io.{FileOutputStream, BufferedOutputStream, File}
 import java.sql.Timestamp
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
+import scala.slick.driver.JdbcProfile
 import scala.slick.jdbc.meta.MTable
-
+import scala.reflect.runtime.universe
 
 class JobSqlDAO(config: Config) extends JobDAO {
-  import scala.slick.driver.H2Driver.simple._
+  val slickDriverClass = getOrElse(config.getString("spark.jobserver.sqldao.slick-driver"),
+    "scala.slick.driver.H2Driver")
+  val jdbcDriverClass = getOrElse(config.getString("spark.jobserver.sqldao.jdbc-driver"),
+    "org.h2.Driver")
+
+  val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
+  val profileModule = runtimeMirror.staticModule(slickDriverClass)
+  val profile = runtimeMirror.reflectModule(profileModule).instance.asInstanceOf[JdbcProfile]
+  import profile.simple._
 
   private val logger = LoggerFactory.getLogger(getClass)
 
@@ -56,7 +65,7 @@ class JobSqlDAO(config: Config) extends JobDAO {
   // DB initialization
   val defaultJdbcUrl = "jdbc:h2:file:" + rootDir + "/h2-db"
   val jdbcUrl = getOrElse(config.getString("spark.jobserver.sqldao.jdbc.url"), defaultJdbcUrl)
-  val db = Database.forURL(jdbcUrl, driver = "org.h2.Driver")
+  val db = Database.forURL(jdbcUrl, driver = jdbcDriverClass)
 
   // Server initialization
   init()
