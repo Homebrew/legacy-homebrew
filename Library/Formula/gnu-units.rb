@@ -1,6 +1,3 @@
-# coding: utf-8
-require "formula"
-
 class GnuUnits < Formula
   desc "GNU unit conversion tool"
   homepage "https://www.gnu.org/software/units/"

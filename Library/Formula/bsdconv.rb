@@ -1,7 +1,3 @@
-# encoding: UTF-8
-
-require 'formula'
-
 class Bsdconv < Formula
   desc "Charset/encoding converter library"
   homepage 'https://github.com/buganini/bsdconv'
