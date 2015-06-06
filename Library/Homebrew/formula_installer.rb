@@ -330,9 +330,11 @@ class FormulaInstaller
 
   def install_relocation_tools
     cctools = CctoolsRequirement.new
-    return if cctools.satisfied?
+    dependency = cctools.to_dependency
+    formula = dependency.to_formula
+    return if cctools.satisfied? || @@attempted.include?(formula)
 
-    install_dependency(cctools.to_dependency, inherited_options_for(cctools))
+    install_dependency(dependency, inherited_options_for(cctools))
   end
 
   class DependencyInstaller < FormulaInstaller
@@ -407,7 +409,10 @@ class FormulaInstaller
 
     keg = Keg.new(formula.prefix)
     link(keg)
-    fix_install_names(keg)
+
+    # this needs to be changed to a test against build_bottle? and
+    # formula.bottle.needs_relocation?
+    fix_install_names(keg) unless formula.name == 'cctools'
 
     if build_bottle? && formula.post_install_defined?
       ohai "Not running post_install as we're building a bottle"
