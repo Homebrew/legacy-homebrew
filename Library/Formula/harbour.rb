@@ -17,6 +17,19 @@ class Harbour < Formula
   depends_on "pcre"
   depends_on :x11 => :optional
 
+  depends_on "allegro" => :optional
+  depends_on "cairo" => :optional
+  depends_on "curl" => :recommended
+  depends_on "freeimage" => :optional
+  depends_on "gd" => :optional
+  depends_on "ghostscript" => :optional
+  depends_on "libmagic" => :optional
+  depends_on "mysql" => :optional
+  depends_on "ncurses" => :optional
+  depends_on "postgresql" => :optional
+  depends_on "qt5" => :optional
+  depends_on "unixodbc" => :optional
+
   # Missing a header that was deprecated by libcurl @ version 7.12.0 and
   # deleted sometime after Harbour 3.0.0 release.
   stable do
