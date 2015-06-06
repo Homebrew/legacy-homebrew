@@ -1,8 +1,8 @@
 class Mitmproxy < Formula
   desc "Intercept, modify, replay, save HTTP/S traffic"
   homepage "http://mitmproxy.org"
-  url "https://mitmproxy.org/download/mitmproxy-0.11.3.tar.gz"
-  sha256 "e774760fc33864caa708eeaafb756e110d7adeb619f3734f2f50b2a0e4910d5c"
+  url "https://mitmproxy.org/download/mitmproxy-0.12.1.tar.gz"
+  sha256 "a7a59faa1f79a97c5cbd7acdaca72cfbf9903b9e39823226bc5d8a30efc07e70"
 
   head "https://github.com/mitmproxy/mitmproxy.git"
 
@@ -42,8 +42,8 @@ class Mitmproxy < Formula
   end
 
   resource "netlib" do
-    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.11.2.tar.gz"
-    sha256 "66dac408eccb528b284e6a6fa5bc52aa40d1c2a53d74179d3cb2253b3120851e"
+    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.12.1.tar.gz"
+    sha256 "090ccaa44f4369f0aa98a831e021277bcd45fdf7d7f00af282073cc7343ce79b"
   end
 
   resource "pyasn1" do
@@ -67,18 +67,18 @@ class Mitmproxy < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-0.8.2.tar.gz"
-    sha256 "1c9a022ab3decaf152093e2ef2d5ee4258c72c7d429446c86bd68ff8c0929db6"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-0.9.tar.gz"
+    sha256 "ecfb96fdfda712ad21925c823013998c44322e862c54e7f1948970da42f2f771"
   end
 
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-0.8.6.tar.gz"
-    sha256 "2532d9e3af9e3c6d0f710fc98b0295b563c7f39cfd97dd2242bd36fbf4900610"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.1.0.tar.gz"
+    sha256 "d8c1dcef421bf3b9335925dd5bf39c3fad923a3cbd814c3664d754638b32355e"
   end
 
   resource "pycparser" do
-    url "https://pypi.python.org/packages/source/p/pycparser/pycparser-2.12.tar.gz"
-    sha256 "da24c80aeb3c794ac64fe5503a01f65f13fece3e02513fd2e0761f93c96597b0"
+    url "https://pypi.python.org/packages/source/p/pycparser/pycparser-2.13.tar.gz"
+    sha256 "b399599a8a0e386bfcbc5e01a38d79dd6e926781f9e358cd5512f41ab7d20eb7"
   end
 
   resource "werkzeug" do
@@ -112,8 +112,8 @@ class Mitmproxy < Formula
   end
 
   resource "tornado" do
-    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.1.tar.gz"
-    sha256 "99abd3aede45c93739346ee7384e710120121c3744da155d5cff1c0101702228"
+    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.2.tar.gz"
+    sha256 "e8b1207da67dbdceebfb291292b4ef1b547d6171525bec1b366853f923456a5f"
   end
 
   resource "backports.ssl_match_hostname" do
@@ -121,16 +121,70 @@ class Mitmproxy < Formula
     sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
   end
 
+  resource "pyparsing" do
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.0.3.tar.gz"
+    sha256 "06e729e1cbf5274703b1f47b6135ed8335999d547f9d8cf048b210fb8ebf844f"
+  end
+
+  resource "html2text" do
+    url "https://pypi.python.org/packages/source/h/html2text/html2text-2015.6.6.tar.gz"
+    sha256 "f4bffa87b38de50cf872340f210ec68cef8d9d152c4d78474bce388d4052274f"
+  end
+
+  resource "blinker" do
+    url "https://pypi.python.org/packages/source/b/blinker/blinker-1.3.tar.gz"
+    sha256 "6811010809262261e41ab7b92f3f6d23f35cf816fbec2bc05077992eebec6e2f"
+  end
+
+  resource "pyperclip" do
+    url "https://pypi.python.org/packages/source/p/pyperclip/pyperclip-1.5.11.zip"
+    sha256 "7087ab09b24d8c9a7b25570e360383ff85b9fa91a38b14eeff11de136b9e081f"
+  end
+
+  resource "passlib" do
+    url "https://pypi.python.org/packages/source/p/passlib/passlib-1.6.2.tar.gz"
+    sha256 "e987f6000d16272f75314c7147eb015727e8532a3b747b1a8fb58e154c68392d"
+  end
+
+  resource "hpack" do
+    url "https://pypi.python.org/packages/source/h/hpack/hpack-1.0.1.tar.gz"
+    sha256 "1868027f255e141ae2d194507f788a3d9d015ebe4982bec0e24a6b1b5ecae219"
+  end
+
+  resource "idna" do
+    url "https://pypi.python.org/packages/source/i/idna/idna-2.0.tar.gz"
+    sha256 "16199aad938b290f5be1057c0e1efc6546229391c23cea61ca940c115f7d3d3b"
+  end
+
+  resource "enum34" do
+    url "https://pypi.python.org/packages/source/e/enum34/enum34-1.0.4.zip"
+    sha256 "7583d80aca2a2b2a8a411f141c4d744de06a6bc43a32253f6b81d14d48f6c90e"
+  end
+
+  resource "ipaddress" do
+    url "https://pypi.python.org/packages/source/i/ipaddress/ipaddress-1.0.7.tar.gz"
+    sha256 "2c99e9eaea2dacbe4038b3be772ec650f5b4f4c8cc479c3704b81673d96849d7"
+  end
+
+  # Required by tornado
+  resource "certifi" do
+    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.04.28.tar.gz"
+    sha256 "99785e6cf715cdcde59dee05a676e99f04835a71e7ced201ca317401c322ba96"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    ENV.append "CFLAGS", "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers" unless MacOS::CLT.installed?
 
     resource("pillow").stage do
       inreplace "setup.py", "'brew', '--prefix'", "'#{HOMEBREW_PREFIX}/bin/brew', '--prefix'"
       system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
-    res = %w[cffi cryptography flask itsdangerous jinja2 lxml markupsafe netlib pyasn1 pycparser pyopenssl six urwid werkzeug configargparse tornado backports.ssl_match_hostname]
+    res = %w[six cffi cryptography flask itsdangerous jinja2 lxml markupsafe pyasn1 pycparser pyopenssl
+             pyparsing html2text urwid werkzeug configargparse tornado backports.ssl_match_hostname
+             pyperclip blinker passlib hpack idna enum34 certifi ipaddress netlib]
+
     res << "pyamf" if build.with? "pyamf"
     res << "cssutils" if build.with? "cssutils"
 
@@ -140,6 +194,7 @@ class Mitmproxy < Formula
       end
     end
 
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir[libexec/"bin/*"]
