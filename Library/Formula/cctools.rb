@@ -21,6 +21,8 @@ class Cctools < Formula
 
   depends_on :ld64
 
+  cxxstdlib_check :skip
+
   keg_only :provided_by_osx,
     "This package duplicates tools shipped by Xcode."
 
