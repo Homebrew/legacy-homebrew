@@ -1,4 +1,3 @@
-# encoding: UTF-8
 class Libidn < Formula
   desc "International domain name library"
   homepage "https://www.gnu.org/software/libidn/"
