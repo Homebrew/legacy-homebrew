@@ -1,4 +1,3 @@
-# encoding: UTF-8
 class Uni2ascii < Formula
   desc "Bi-directional conversion between UTF-8 and various ASCII flavors"
   homepage "http://billposer.org/Software/uni2ascii.html"
