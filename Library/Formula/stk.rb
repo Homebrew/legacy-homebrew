@@ -1,6 +1,7 @@
 require 'formula'
 
 class Stk < Formula
+  desc "Sound Synthesis Toolkit"
   homepage 'https://ccrma.stanford.edu/software/stk/'
   url 'http://ccrma.stanford.edu/software/stk/release/stk-4.5.0.tar.gz'
   sha1 '1e7f586526f749dea9bd9cd9744ee25f334df25a'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class GitArchiveAll < Formula
+  desc "Archive a project and its submodules"
   homepage 'https://github.com/Kentzo/git-archive-all'
   url 'https://github.com/Kentzo/git-archive-all/archive/1.10.tar.gz'
   sha1 '6627953816c5494e87360cf6c244b1ae71958ae4'

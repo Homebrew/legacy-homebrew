@@ -2,6 +2,7 @@ require "formula"
 require "language/go"
 
 class Aptly < Formula
+  desc "Swiss army knife for Debian repository management"
   homepage "https://www.aptly.info/"
   url "https://github.com/smira/aptly/archive/v0.9.1.tar.gz"
   sha1 "d38a20f04ba70c67a86a3e04b2cd2641674371d2"

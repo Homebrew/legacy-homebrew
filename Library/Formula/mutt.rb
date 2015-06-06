@@ -5,6 +5,7 @@
 # being accepted for this formula. Mutt power-users are encouraged to
 # copy the formula and modify it locally, adding needed patches.
 class Mutt < Formula
+  desc "Mongrel of mail user agents (part elm, pine, mush, mh, etc.)"
   homepage "http://www.mutt.org/"
   url "https://mirrors.kernel.org/debian/pool/main/m/mutt/mutt_1.5.23.orig.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mutt/mutt_1.5.23.orig.tar.gz"

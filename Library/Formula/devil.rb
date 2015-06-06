@@ -1,6 +1,7 @@
 require 'formula'
 
 class Devil < Formula
+  desc "Cross-platform image library"
   homepage 'http://sourceforge.net/projects/openil/'
   url 'https://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz'
   sha1 'bc27e3e830ba666a3af03548789700d10561fcb1'

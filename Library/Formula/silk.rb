@@ -1,4 +1,5 @@
 class Silk < Formula
+  desc "Collection of traffic analysis tools"
   homepage "https://tools.netsa.cert.org/silk/"
   url "https://tools.netsa.cert.org/releases/silk-3.10.0.tar.gz"
   sha1 "ba139c0685456208cb51b74be627894558cf0126"

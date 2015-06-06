@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gwyddion < Formula
+  desc "Scanning Probe Microscopy visualization and analysis tool"
   homepage 'http://gwyddion.net/'
   url 'http://gwyddion.net/download/2.40/gwyddion-2.40.tar.gz'
   sha1 '3e914985e5cde6303e2c842605014a9c66a1c030'

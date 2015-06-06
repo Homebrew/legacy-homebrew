@@ -1,4 +1,5 @@
 class Mdk < Formula
+  desc "GNU MIX development kit"
   homepage "https://www.gnu.org/software/mdk/mdk.html"
   url "http://ftpmirror.gnu.org/mdk/v1.2.8/mdk-1.2.8.tar.gz"
   mirror "https://ftp.gnu.org/gnu/mdk/v1.2.8/mdk-1.2.8.tar.gz"

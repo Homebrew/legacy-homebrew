@@ -1,4 +1,5 @@
 class Intercal < Formula
+  desc "Esoteric, parody programming language"
   homepage "http://catb.org/~esr/intercal/"
   url "http://catb.org/~esr/intercal/intercal-0.30.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/i/intercal/intercal_0.30.orig.tar.gz"

@@ -1,4 +1,5 @@
 class Bash < Formula
+  desc "Bash (Bourne-again SHell) is a UNIX command interpreter"
   homepage "https://www.gnu.org/software/bash/"
 
   stable do

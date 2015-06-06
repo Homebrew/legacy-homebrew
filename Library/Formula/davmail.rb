@@ -1,6 +1,7 @@
 require "formula"
 
 class Davmail < Formula
+  desc "POP/IMAP/SMTP/Caldav/Carddav/LDAP exchange gateway"
   homepage "http://davmail.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/davmail/davmail/4.5.1/davmail-4.5.1-2303.zip"
   sha1 "4b524832b432216d2b8dfa97198c50681a1734ce"

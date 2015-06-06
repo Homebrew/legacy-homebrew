@@ -1,6 +1,7 @@
 require "formula"
 
 class Getdns < Formula
+  desc "Modern asynchronous DNS API"
   homepage "https://getdnsapi.net"
   url "https://getdnsapi.net/dist/getdns-0.2.0.tar.gz"
   sha1 "6843984f7ed8109302bda3b37f5247fd49827f90"

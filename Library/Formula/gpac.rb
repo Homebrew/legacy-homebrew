@@ -7,6 +7,7 @@
 # that Brew installs
 
 class Gpac < Formula
+  desc "Multimedia framework for research and academic purposes"
   homepage "http://gpac.wp.mines-telecom.fr/"
 
   stable do

@@ -1,6 +1,7 @@
 require "formula"
 
 class Gifify < Formula
+  desc "Turn movies into GIFs"
   homepage "https://github.com/jclem/gifify"
   head "https://github.com/jclem/gifify.git"
   url "https://github.com/jclem/gifify/archive/v3.0.tar.gz"

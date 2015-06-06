@@ -1,6 +1,7 @@
 require 'formula'
 
 class ObjcRun < Formula
+  desc "Use Objective-C files for shell script-like tasks"
   homepage 'https://github.com/iljaiwas/objc-run'
   url 'https://github.com/iljaiwas/objc-run/archive/1.4.tar.gz'
   sha1 '86c15705359f2dc2c62d70e358caf63c2a468fee'

@@ -12,6 +12,7 @@ class MatDownloadStrategy < CurlDownloadStrategy
 end
 
 class Mat < Formula
+  desc "Metadata anonymization toolkit"
   homepage "https://mat.boum.org/"
   url "https://mat.boum.org/files/mat-0.5.2.tar.xz", :using => MatDownloadStrategy
   sha1 "932ac13863c994ca8874e3271f817efd879e28c3"

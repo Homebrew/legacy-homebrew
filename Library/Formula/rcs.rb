@@ -1,4 +1,5 @@
 class Rcs < Formula
+  desc "GNU revision control system"
   homepage "https://www.gnu.org/software/rcs/"
   url "http://ftpmirror.gnu.org/rcs/rcs-5.9.4.tar.xz"
   mirror "https://ftp.gnu.org/gnu/rcs/rcs-5.9.4.tar.xz"

@@ -1,4 +1,5 @@
 class Cfengine < Formula
+  desc "Help manage and understand IT infrastructure"
   homepage "https://cfengine.com/"
   url "https://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.4.tar.gz"
   sha256 "0df910185e41004a5d9eeb91718d92583508efcf1d19df7caecc7d288dc5a933"

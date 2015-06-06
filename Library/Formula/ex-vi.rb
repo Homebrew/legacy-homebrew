@@ -1,6 +1,7 @@
 require 'formula'
 
 class ExVi < Formula
+  desc "UTF8-friendly version of tradition vi"
   homepage 'http://ex-vi.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/ex-vi/ex-vi/050325/ex-050325.tar.bz2'
   sha1 '573501d15fa4be59f136641957c7f893e86bac82'

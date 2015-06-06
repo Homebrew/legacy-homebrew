@@ -1,4 +1,5 @@
 class Tinysvm < Formula
+  desc "Support vector machine library for pattern recognition"
   homepage "http://chasen.org/~taku/software/TinySVM/"
   url "http://chasen.org/~taku/software/TinySVM/src/TinySVM-0.09.tar.gz"
   sha1 "9c3c36454c475180ef6646d059376f35549cad08"

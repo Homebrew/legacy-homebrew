@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libwebsockets < Formula
+  desc "C websockets server library"
   homepage 'http://libwebsockets.org'
   url 'http://git.libwebsockets.org/cgi-bin/cgit/libwebsockets/snapshot/libwebsockets-1.4-chrome43-firefox-36.tar.gz'
   version '1.4'

@@ -1,6 +1,7 @@
 require "formula"
 
 class Gant < Formula
+  desc "Tool for scripting ant"
   homepage "http://gant.codehaus.org/"
   url "http://dist.codehaus.org/gant/distributions/gant-1.9.11-_groovy-2.3.0.zip"
   version "1.9.11"

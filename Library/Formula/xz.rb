@@ -1,6 +1,7 @@
 # Upstream project has requested we use a mirror as the main URL
 # https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
+  desc "General-purpose data compression with high compression ratio"
   homepage "http://tukaani.org/xz/"
   url "https://fossies.org/linux/misc/xz-5.2.1.tar.gz"
   mirror "http://tukaani.org/xz/xz-5.2.1.tar.gz"

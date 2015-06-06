@@ -1,15 +1,16 @@
 class Thefuck < Formula
+  desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.44.tar.gz"
-  sha256 "7379afc90f3ac862215690d19d7022255af56159d90511dfaaddf38b02048587"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.45.tar.gz"
+  sha256 "024f4b72e0410de5429612008a649362cd911ed8cbfb39ad6123828de62ffcd7"
 
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any
-    sha256 "2069a5492fe571434d2a598e22531500165987d8480f1c2745d9e45b03d378d6" => :yosemite
-    sha256 "dee4f10dce9196c4b46a05a93f21899bfb1cf8852f07b45e13011dc991d98e8a" => :mavericks
-    sha256 "6e9e87a2e6ee8b1bc6938f482447020fa11b2c5d1d1b8f04949636289ca2a01d" => :mountain_lion
+    sha256 "9bc1f8588e33a8f15df5e128cacc42edae6fdcc97dd9976c996d61e1e0772b14" => :yosemite
+    sha256 "156441667763715e4b01c84f13338464c25af98bc8ccd89ce9e3f98b4d4b46a8" => :mavericks
+    sha256 "a1e7276ed57bf76d8c157e6b544f3315fa059137c32620c69144578b68a590a5" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

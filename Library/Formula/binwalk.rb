@@ -1,4 +1,5 @@
 class Binwalk < Formula
+  desc "Searches a binary image for embedded files and executable code"
   homepage "http://binwalk.org/"
   revision 1
   stable do

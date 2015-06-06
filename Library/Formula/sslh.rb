@@ -1,4 +1,5 @@
 class Sslh < Formula
+  desc "Forward connections based on first data packet sent by client"
   homepage "http://www.rutschle.net/tech/sslh.shtml"
 
   stable do

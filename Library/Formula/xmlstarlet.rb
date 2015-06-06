@@ -1,6 +1,7 @@
 require "formula"
 
 class Xmlstarlet < Formula
+  desc "XML command-line utilities"
   homepage "http://xmlstar.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.6.1/xmlstarlet-1.6.1.tar.gz"
   sha1 "87bb104f546caca71b9540807c5b2738944cb219"

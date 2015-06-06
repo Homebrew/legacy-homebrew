@@ -1,4 +1,5 @@
 class Imagemagick < Formula
+  desc "Tools and libraries to manipulate images in many formats"
   homepage "http://www.imagemagick.org"
   url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-4.tar.xz"
   mirror "https://downloads.sourceforge.net/project/imagemagick/6.9.1-sources/ImageMagick-6.9.1-4.tar.xz"

@@ -1,4 +1,5 @@
 class Sysdig < Formula
+  desc "System-level exploration and troubleshooting tool"
   homepage "http://www.sysdig.org/"
   url "https://github.com/draios/sysdig/archive/0.1.99.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/sysdig/sysdig_0.1.99.orig.tar.gz"

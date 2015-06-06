@@ -1,6 +1,7 @@
 require "formula"
 
 class Cairo < Formula
+  desc "Vector graphics library with cross-device output support"
   homepage "http://cairographics.org/"
   url "http://cairographics.org/releases/cairo-1.14.2.tar.xz"
   mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.2.tar.xz"

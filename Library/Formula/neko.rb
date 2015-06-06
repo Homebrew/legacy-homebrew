@@ -1,4 +1,5 @@
 class Neko < Formula
+  desc "High-level, dynamically typed programming language"
   homepage "http://nekovm.org"
   # revision includes recent parameterized build targets for mac.  Use a :tag
   # on the next release

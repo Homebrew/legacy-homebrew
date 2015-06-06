@@ -1,4 +1,5 @@
 class Cppi < Formula
+  desc "Indent C preprocessor directives to reflect their nesting"
   homepage "https://www.gnu.org/software/cppi/"
   url "http://ftpmirror.gnu.org/cppi/cppi-1.18.tar.xz"
   mirror "https://ftp.gnu.org/cppi/cppi-1.18.tar.xz"

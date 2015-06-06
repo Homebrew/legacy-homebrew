@@ -1,6 +1,7 @@
 require "language/go"
 
 class Cayley < Formula
+  desc "Graph database inspired by Freebase and Knowledge Graph"
   homepage "https://github.com/google/cayley"
   url "https://github.com/google/cayley/archive/v0.4.1.tar.gz"
   sha256 "d61f969128bcff1bce1e14e0afa68b9f25e4f3ab8e5f77930a384426f3b3bbce"

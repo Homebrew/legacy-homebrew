@@ -1,4 +1,5 @@
 class Scriptcs < Formula
+  desc "Tools to write and execute C#"
   homepage "https://github.com/scriptcs/scriptcs"
   url "https://github.com/scriptcs/scriptcs/archive/v0.14.1.tar.gz"
   sha256 "7c56ed317befe902b196f14fe74a5d2c35ca6f58944a4134aaa64e8a1b022132"

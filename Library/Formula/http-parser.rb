@@ -1,4 +1,5 @@
 class HttpParser < Formula
+  desc "HTTP request/response parser for c"
   homepage "https://github.com/joyent/http-parser"
   url "https://github.com/joyent/http-parser/archive/v2.5.0.tar.gz"
   sha256 "e3b4ba58f4e6ee5fbec781df020e5cb74c3a799a07f059e1e125127a0b801481"

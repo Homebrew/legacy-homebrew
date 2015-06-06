@@ -1,6 +1,7 @@
 require "formula"
 
 class Libtrace < Formula
+  desc "Library for trace processing supporting multiple inputs"
   homepage "http://research.wand.net.nz/software/libtrace.php"
   url "http://research.wand.net.nz/software/libtrace/libtrace-3.0.21.tar.bz2"
   sha1 "208908ceee0dde9a556dc4cf1d5dac7320f6bae3"

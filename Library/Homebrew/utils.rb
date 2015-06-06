@@ -175,8 +175,14 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  curl = which "curl" unless OS.mac?
-  curl ||= Pathname.new '/usr/bin/curl'
+  brewed_curl = HOMEBREW_PREFIX/"opt/curl/bin/curl"
+  curl = if MacOS.version <= "10.6" && brewed_curl.exist?
+    brewed_curl
+  elsif OS.mac?
+    Pathname.new '/usr/bin/curl'
+  else
+    which("curl") || Pathname.new("/usr/bin/curl")
+  end
   raise "#{curl} is not executable" unless curl.exist? and curl.executable?
 
   flags = HOMEBREW_CURL_ARGS

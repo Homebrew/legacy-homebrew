@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mogenerator < Formula
+  desc "Generate Objective-C code for Core Data custom classes"
   homepage 'http://rentzsch.github.io/mogenerator/'
   url 'https://github.com/rentzsch/mogenerator/archive/1.28.tar.gz'
   sha1 '2c92204c76cbe88091494d0730cf986efab8ef1a'

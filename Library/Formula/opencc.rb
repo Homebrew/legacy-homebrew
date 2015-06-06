@@ -1,6 +1,7 @@
 require "formula"
 
 class Opencc < Formula
+  desc "Simplified-traditional Chinese conversion tool"
   homepage "https://github.com/BYVoid/OpenCC"
   url "http://dl.bintray.com/byvoid/opencc/opencc-1.0.2.tar.gz"
   sha1 "101b9f46aca95d2039a955572c394ca6bdb2d88d"

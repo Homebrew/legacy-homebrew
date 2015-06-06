@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mr < Formula
+  desc "Multiple Repository management tool"
   homepage 'http://myrepos.branchable.com/'
   url 'git://myrepos.branchable.com/', :tag => '1.20141024'
 

@@ -1,4 +1,5 @@
 class Glew < Formula
+  desc "OpenGL Extension Wrangler Library"
   homepage "http://glew.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/glew/glew/1.12.0/glew-1.12.0.tgz"
   sha256 "af58103f4824b443e7fa4ed3af593b8edac6f3a7be3b30911edbc7344f48e4bf"

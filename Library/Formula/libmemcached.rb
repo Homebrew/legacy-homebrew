@@ -1,6 +1,7 @@
 require "formula"
 
 class Libmemcached < Formula
+  desc "C and C++ client library to the memcached server"
   homepage "http://libmemcached.org"
   url "https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz"
   sha1 "8be06b5b95adbc0a7cb0f232e237b648caf783e1"

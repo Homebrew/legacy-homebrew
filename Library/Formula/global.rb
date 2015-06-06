@@ -1,4 +1,5 @@
 class Global < Formula
+  desc "Source code tag system"
   homepage "https://www.gnu.org/software/global/"
   url "http://ftpmirror.gnu.org/global/global-6.4.tar.gz"
   mirror "https://ftp.gnu.org/gnu/global/global-6.4.tar.gz"

@@ -1,4 +1,5 @@
 class Scalastyle < Formula
+  desc "Run scalastyle from the command-line"
   homepage "http://www.scalastyle.org/command-line.html"
   url "https://oss.sonatype.org/content/repositories/releases/org/scalastyle/scalastyle_2.11/0.7.0/scalastyle_2.11-0.7.0-batch.jar"
   sha256 "3f61e6f03615019068ad79a8d70890a0af893650c98009b1c4acb73a0b8341ba"

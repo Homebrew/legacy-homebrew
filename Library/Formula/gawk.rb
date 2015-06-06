@@ -1,6 +1,7 @@
 require "formula"
 
 class Gawk < Formula
+  desc "GNU awk utility"
   homepage "https://www.gnu.org/software/gawk/"
   url "http://ftpmirror.gnu.org/gawk/gawk-4.1.3.tar.xz"
   mirror "https://ftp.gnu.org/gnu/gawk/gawk-4.1.3.tar.xz"

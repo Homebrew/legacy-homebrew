@@ -1,4 +1,5 @@
 class Wireshark < Formula
+  desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
 
   stable do

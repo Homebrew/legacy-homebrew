@@ -1,4 +1,5 @@
 class Gifsicle < Formula
+  desc "GIF image/animation creator/editor"
   homepage "http://www.lcdf.org/gifsicle/"
   url "http://www.lcdf.org/gifsicle/gifsicle-1.87.tar.gz"
   sha1 "0c22ba0fb0f5d005bd3bb579c2e07620fdd3ca5f"

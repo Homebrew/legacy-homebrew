@@ -1,4 +1,5 @@
 class Frescobaldi < Formula
+  desc "LilyPond sheet music text editor"
   homepage "http://frescobaldi.org/"
   url "https://github.com/wbsoft/frescobaldi/releases/download/v2.18.1/frescobaldi-2.18.1.tar.gz"
   sha256 "475bbb9aeed8009fdb7b0c53e4da78ce7a204b548d0af6d909b699c99e61d4c1"

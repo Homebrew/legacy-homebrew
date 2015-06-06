@@ -1,6 +1,7 @@
 require "formula"
 
 class GoAppEngine64 < Formula
+  desc "Google App Engine SDK for Go!"
   homepage "https://cloud.google.com/appengine/docs/go/"
   if OS.mac?
     url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_amd64-1.9.20.zip"

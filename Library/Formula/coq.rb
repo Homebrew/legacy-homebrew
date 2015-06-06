@@ -13,6 +13,7 @@ class TransitionalMode < Requirement
 end
 
 class Coq < Formula
+  desc "Proof assistant for higher-order logic"
   homepage "https://coq.inria.fr/"
   url "https://coq.inria.fr/distrib/V8.4pl6/files/coq-8.4pl6.tar.gz"
   version "8.4pl6"

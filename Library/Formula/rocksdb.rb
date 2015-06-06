@@ -1,6 +1,7 @@
 require "formula"
 
 class Rocksdb < Formula
+  desc "Persistent key-value store for fast storage environments"
   homepage "http://rocksdb.org"
   url "https://github.com/facebook/rocksdb/archive/rocksdb-3.10.2.tar.gz"
   sha256 "5ace408b12e5e5c836c9ba0b1bd57662784d15820cd02b203459b3ac2e01fde7"

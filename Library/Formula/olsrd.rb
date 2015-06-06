@@ -1,6 +1,7 @@
 require 'formula'
 
 class Olsrd < Formula
+  desc "Implementation of the optimized link state routing protocol"
   homepage 'http://www.olsr.org'
   url 'http://www.olsr.org/releases/0.6/olsrd-0.6.6.1.tar.bz2'
   sha1 '0d74708dd94ad978af061a44758f8ea31845261f'

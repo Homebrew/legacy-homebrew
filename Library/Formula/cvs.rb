@@ -4,6 +4,7 @@
 # Creating a useful testcase: http://mrsrl.stanford.edu/~brian/cvstutorial/
 
 class Cvs < Formula
+  desc "Version control system"
   homepage "http://cvs.nongnu.org/"
   url "https://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2"
   sha1 "93a8dacc6ff0e723a130835713235863f1f5ada9"

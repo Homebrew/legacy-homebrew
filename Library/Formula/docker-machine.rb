@@ -1,6 +1,7 @@
 require "language/go"
 
 class DockerMachine < Formula
+  desc "Create Docker hosts locally and on cloud providers"
   homepage "https://docs.docker.com/machine"
   url "https://github.com/docker/machine/archive/v0.2.0.tar.gz"
   sha256 "ba4df6728280732e70dcabc2aeb903babac0bbefb3f1c11e7f131e3aad0f2131"

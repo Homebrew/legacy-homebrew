@@ -1,4 +1,5 @@
 class Pillar < Formula
+  desc "Manage migrations for Cassandra data stores"
   homepage "https://github.com/comeara/pillar"
   url "https://github.com/comeara/pillar/archive/v2.0.1.tar.gz"
   sha256 "d5db7fbf956dae05794ec7b26c1de70aaab1d21fed774d95d16a241e9dd3952e"

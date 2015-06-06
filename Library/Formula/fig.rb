@@ -1,4 +1,5 @@
 class Fig < Formula
+  desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
   url "https://github.com/docker/compose/archive/1.2.0.tar.gz"
   sha256 "89c2626f6d03ca18440a67470272f1383c2ca867320abf710abdab96d467868d"

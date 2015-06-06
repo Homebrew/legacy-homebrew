@@ -46,7 +46,9 @@ module Homebrew
     end
 
     unless problem_count.zero?
-      ofail "#{problem_count} problems in #{formula_count} formulae"
+      problems = "problem" + plural(problem_count)
+      formulae = "formula" + plural(formula_count, "e")
+      ofail "#{problem_count} #{problems} in #{formula_count} #{formulae}"
     end
   end
 end

@@ -1,4 +1,5 @@
 class Pidgin < Formula
+  desc "GUI-less chat client (e.g., Finch-only)"
   homepage "https://pidgin.im/"
   url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.11/pidgin-2.10.11.tar.bz2"
   sha256 "f2ae211341fc77efb9945d40e9932aa535cdf3a6c8993fe7919fca8cc1c04007"

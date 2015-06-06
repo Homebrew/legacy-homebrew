@@ -1,6 +1,7 @@
 require "formula"
 
 class Vala < Formula
+  desc "Compiler for the GObject type system"
   homepage "https://live.gnome.org/Vala"
   url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.26/vala-0.26.1.tar.xz"
   sha256 "8407abb19ab3a58bbfc0d288abb47666ef81f76d0540258c03965e7545f59e6b"

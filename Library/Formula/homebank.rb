@@ -1,6 +1,7 @@
 require 'formula'
 
 class Homebank < Formula
+  desc "Manage your personal accounts at home"
   homepage 'http://homebank.free.fr'
   url 'http://homebank.free.fr/public/homebank-5.0.2.tar.gz'
   sha1 '73517bf16f889ea6dd25120575d1d80c0367f54b'

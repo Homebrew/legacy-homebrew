@@ -2,6 +2,7 @@
 require "formula"
 
 class GnuUnits < Formula
+  desc "GNU unit conversion tool"
   homepage "https://www.gnu.org/software/units/"
   url "http://ftpmirror.gnu.org/units/units-2.02.tar.gz"
   mirror "https://ftp.gnu.org/gnu/units/units-2.02.tar.gz"

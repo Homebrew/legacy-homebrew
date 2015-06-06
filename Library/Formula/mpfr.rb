@@ -1,4 +1,5 @@
 class Mpfr < Formula
+  desc "C library for multiple-precision floating-point computations"
   homepage "http://www.mpfr.org/"
   # Upstream is down a lot, so use the GNU mirror + Gist for patches
   url "http://ftpmirror.gnu.org/mpfr/mpfr-3.1.2.tar.bz2"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Kbtin < Formula
+  desc "Heavily extended clone of TinTin++"
   homepage 'http://kbtin.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/kbtin/kbtin/1.0.14/kbtin-1.0.14.tar.xz'
   sha1 'b6e09ee7702fe52d48db53098c79fe243505cc0f'

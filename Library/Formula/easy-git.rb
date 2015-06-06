@@ -1,6 +1,7 @@
 require 'formula'
 
 class EasyGit < Formula
+  desc "Wrapper to simplify learning and using git"
   homepage 'https://people.gnome.org/~newren/eg/'
   url 'https://people.gnome.org/~newren/eg/download/1.7.5.2/eg'
   version '1.7.5.2'

@@ -80,7 +80,7 @@ brew install $WHATEVER_YOU_WANT
 ## What Packages Are Available?
 1. Type `brew search` for a list.
 2. Or visit [braumeister.org](http://braumeister.org) to browse packages online.
-3. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
+3. Or use `brew search --desc` to browse packages from the command line.
 
 ## More Documentation
 `brew help`, `man brew` or check [our documentation](https://github.com/Homebrew/linuxbrew/tree/master/share/doc/homebrew#readme).

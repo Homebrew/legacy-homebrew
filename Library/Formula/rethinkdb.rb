@@ -1,4 +1,5 @@
 class Rethinkdb < Formula
+  desc "Distributed database"
   homepage "http://www.rethinkdb.com/"
   url "http://download.rethinkdb.com/dist/rethinkdb-2.0.2.tgz"
   sha1 "8f5b6d30fb5608d726b10b6f1256228c0cd940f0"

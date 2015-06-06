@@ -1,6 +1,7 @@
 require 'formula'
 
 class Discodex < Formula
+  desc "Distributed indices for disco"
   homepage 'https://github.com/discoproject/discodex'
   url 'https://github.com/discoproject/discodex/archive/fa3fa57aa9fcd9c2bd3b4cd2233dc0d051dafc2b.tar.gz'
   version '2012-01-10' # No tags in the project; using date of last commit as a proxy

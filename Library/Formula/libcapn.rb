@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libcapn < Formula
+  desc "C library to send push notifications to Apple devices"
   homepage 'http://libcapn.org/'
   url "http://libcapn.org/download/libcapn-1.0.0-src.tar.gz"
   sha1 "740dc87395fc7255b78c3c926a044f00692e8c41"

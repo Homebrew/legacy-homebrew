@@ -1,6 +1,7 @@
 require "formula"
 
 class MysqlSandbox < Formula
+  desc "Install one or more MySQL servers"
   homepage "http://mysqlsandbox.net"
   url "https://launchpadlibrarian.net/187745286/MySQL-Sandbox-3.0.47.tar.gz"
   sha1 "1759c08c5b7d272b718178bbb7dbc0f52bcb429d"

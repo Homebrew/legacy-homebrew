@@ -1,4 +1,5 @@
 class Openssl < Formula
+  desc "OpenSSL SSL/TLS cryptography library"
   homepage "https://openssl.org"
   url "https://www.openssl.org/source/openssl-1.0.2a.tar.gz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2a.tar.gz"

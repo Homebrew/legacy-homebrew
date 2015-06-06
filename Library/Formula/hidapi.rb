@@ -1,6 +1,7 @@
 require 'formula'
 
 class Hidapi < Formula
+  desc "Library for communicating with USB and Bluetooth HID devices"
   homepage "https://github.com/signal11/hidapi"
   url "https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.tar.gz"
   sha1 "5e72a4c7add8b85c8abcdd360ab8b1e1421da468"

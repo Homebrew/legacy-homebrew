@@ -1,4 +1,5 @@
 class Idutils < Formula
+  desc "ID database and query tools"
   homepage "https://www.gnu.org/s/idutils/"
   url "http://ftpmirror.gnu.org/idutils/idutils-4.6.tar.xz"
   mirror "https://ftp.gnu.org/gnu/idutils/idutils-4.6.tar.xz"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Fleetctl < Formula
+  desc "Distributed init system"
   homepage "https://github.com/coreos/fleet"
   url "https://github.com/coreos/fleet/archive/v0.10.1.tar.gz"
   sha256 "395d49fcd506803acb6e6e1d9528072ea7469b66d7d317ffbe45e6fe931a53b6"

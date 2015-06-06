@@ -1,6 +1,7 @@
 require 'formula'
 
 class Smake < Formula
+  desc "Portable make program with automake features"
   homepage "http://s-make.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/s-make/smake-1.2.5.tar.bz2"
   sha256 "27566aa731a400c791cd95361cc755288b44ff659fa879933d4ea35d052259d4"

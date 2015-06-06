@@ -1,4 +1,5 @@
 class Betty < Formula
+  desc "English-like interface for the command-line"
   homepage "https://github.com/pickhardt/betty"
   url "https://github.com/pickhardt/betty/archive/v0.1.7.tar.gz"
   sha1 "ec21ec5541289a9902874c7897f8d521044daf27"

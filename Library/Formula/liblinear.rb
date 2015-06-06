@@ -1,6 +1,7 @@
 require 'formula'
 
 class Liblinear < Formula
+  desc "Library for large linear classification"
   homepage 'http://www.csie.ntu.edu.tw/~cjlin/liblinear/'
   url 'http://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/liblinear-1.96.tar.gz'
   sha1 '54de76b5e37cc3f200857e7a4cee0da21f0eefbc'

@@ -1,4 +1,5 @@
 class Parallel < Formula
+  desc "GNU parallel shell command"
   homepage "https://savannah.gnu.org/projects/parallel/"
   url "http://ftpmirror.gnu.org/parallel/parallel-20150122.tar.bz2"
   mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150122.tar.bz2"

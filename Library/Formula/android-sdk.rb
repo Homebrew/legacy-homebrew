@@ -1,4 +1,5 @@
 class AndroidSdk < Formula
+  desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
   version "24.2"
   if OS.mac?

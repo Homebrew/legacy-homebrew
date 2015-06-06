@@ -1,6 +1,7 @@
 require "language/go"
 
 class Gdrive < Formula
+  desc "Google Drive CLI Client"
   homepage "https://github.com/prasmussen/gdrive"
   url "https://github.com/prasmussen/gdrive/archive/1.6.1.tar.gz"
   sha256 "50d5851c6f6cfa52713c001dae03a2c189ee3d9a255e8bf58ce8d4dadab5b9fc"

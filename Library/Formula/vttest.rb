@@ -1,4 +1,5 @@
 class Vttest < Formula
+  desc "Test compatibility of VT100-compatible terminals"
   homepage "http://invisible-island.net/vttest/"
   url "ftp://invisible-island.net/vttest/vttest-20140305.tgz"
   mirror "http://invisible-mirror.net/archives/vttest/vttest-20140305.tgz"

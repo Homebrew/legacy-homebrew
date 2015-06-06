@@ -1,6 +1,7 @@
 require "formula"
 
 class Logstalgia < Formula
+  desc "Web server access log visualizer"
   homepage "https://code.google.com/p/logstalgia/"
   url "https://github.com/acaudwell/Logstalgia/releases/download/logstalgia-1.0.6/logstalgia-1.0.6.tar.gz"
   sha1 "92b2b037d289840517d6648bf72f09afbf3f09d5"

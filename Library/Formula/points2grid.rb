@@ -1,4 +1,5 @@
 class Points2grid < Formula
+  desc "Generate digital elevation models using local griding"
   homepage "https://github.com/CRREL/points2grid"
   url "https://github.com/CRREL/points2grid/archive/1.3.0.tar.gz"
   sha256 "87acdfd336fac20d2c2a22926b045c7f3f0fc925769a87393aff28b8c351c62b"

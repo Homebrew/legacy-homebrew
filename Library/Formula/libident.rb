@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libident < Formula
+  desc "Ident protocol library"
   homepage 'http://www.remlab.net/libident/'
   url 'http://www.remlab.net/files/libident/libident-0.32.tar.gz'
   sha1 '4658807b017f21928a64f3442ee3a2b91f48d14e'

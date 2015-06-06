@@ -1,6 +1,7 @@
 require "formula"
 
 class Mruby < Formula
+  desc "Lightweight implementation of the Ruby language"
   homepage "http://www.mruby.org"
   url "https://github.com/mruby/mruby/archive/1.1.0.tar.gz"
   sha1 "828eadbc0640d3f670a5eb24bf8d99f6bb90b5fc"

@@ -1,4 +1,5 @@
 class Byobu < Formula
+  desc "Text-based window manager and terminal multiplexer"
   homepage "http://byobu.co"
   url "https://launchpad.net/byobu/trunk/5.92/+download/byobu_5.92.orig.tar.gz"
   sha256 "22a5cab37c2426688945a5dfebc521dc684a4eda11bf48a1767dc6ba4b2b7a2c"

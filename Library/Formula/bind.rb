@@ -1,6 +1,7 @@
 require "formula"
 
 class Bind < Formula
+  desc "Implementation of the DNS protocols"
   homepage "https://www.isc.org/downloads/bind/"
   url "http://ftp.isc.org/isc/bind9/9.10.2/bind-9.10.2.tar.gz"
   sha1 "4ddb2670976c06af7e86352616383958d82c51ce"

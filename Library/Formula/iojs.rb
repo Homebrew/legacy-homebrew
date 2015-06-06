@@ -1,5 +1,5 @@
 class Iojs < Formula
-  desc "An npm-compatible platform based on Node.js"
+  desc "npm-compatible platform based on Node.js"
   homepage "https://iojs.org/"
   url "https://iojs.org/dist/v2.2.1/iojs-v2.2.1.tar.xz"
   sha256 "26cce6e3581185ef3b1fe486a86ba9e18d611f6dfe439cfcbcfc8e639436a5bd"

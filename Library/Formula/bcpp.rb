@@ -1,4 +1,5 @@
 class Bcpp < Formula
+  desc "C(++) beautifier"
   homepage "http://invisible-island.net/bcpp/"
   url "ftp://invisible-island.net/bcpp/bcpp-20131209.tgz"
   sha1 "5b38e0ae532ed5fc9ee8d5fc8bf84511d55080a8"

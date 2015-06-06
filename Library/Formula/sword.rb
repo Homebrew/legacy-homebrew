@@ -1,4 +1,5 @@
 class Sword < Formula
+  desc "Cross-platform tools to write Bible software"
   homepage "http://www.crosswire.org/sword/index.jsp"
   url "http://www.crosswire.org/ftpmirror/pub/sword/source/v1.7/sword-1.7.4.tar.gz"
   sha256 "995da8cf5a207c1f09809bf4b9db0bd7d267da5fcdb9d6666c9b313edd9d213d"

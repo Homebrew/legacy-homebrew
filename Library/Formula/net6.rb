@@ -1,6 +1,7 @@
 require 'formula'
 
 class Net6 < Formula
+  desc "C++ library for network-based applications"
   homepage 'http://gobby.0x539.de'
   url 'http://releases.0x539.de/net6/net6-1.3.14.tar.gz'
   sha1 '7523a604e6b7f723cdd7f457f8f7c8c9cf48dae1'

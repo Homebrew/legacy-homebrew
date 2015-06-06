@@ -1,6 +1,7 @@
 require 'formula'
 
 class SdlRtf < Formula
+  desc "Sample library to display Rich Text Format (RTF) documents"
   homepage 'http://www.libsdl.org/projects/SDL_rtf/'
   url 'http://www.libsdl.org/projects/SDL_rtf/release/SDL_rtf-0.1.0.tar.gz'
   sha1 'daf749fd87b1d76cd43880c9c5b61c9741847197'

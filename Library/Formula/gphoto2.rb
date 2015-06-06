@@ -1,4 +1,5 @@
 class Gphoto2 < Formula
+  desc "Command-line interface to libgphoto2"
   homepage "http://gphoto.org/"
   url "https://downloads.sourceforge.net/project/gphoto/gphoto/2.5.6/gphoto2-2.5.6.tar.bz2"
   sha1 "5094fd8b0f3b473a5fc3e869166c2f552132bbb2"

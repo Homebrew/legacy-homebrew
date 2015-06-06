@@ -1,4 +1,5 @@
 class Calc < Formula
+  desc "Arbitrary precision calculator"
   homepage "http://www.isthe.com/chongo/tech/comp/calc/"
   url "http://www.isthe.com/chongo/src/calc/calc-2.12.5.0.tar.bz2"
   sha1 "65e5a6c77f7f5f3a500959a5deafd1b89a356335"

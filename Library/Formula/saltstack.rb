@@ -1,4 +1,5 @@
 class Saltstack < Formula
+  desc "Dynamic infrastructure communication bus"
   homepage "http://www.saltstack.org"
   url "https://github.com/saltstack/salt/archive/v2015.5.0.tar.gz"
   sha256 "278142ffd4d6ec693a7d160c27d360e9fdce6ae9c7de40e3cb18805078488b71"

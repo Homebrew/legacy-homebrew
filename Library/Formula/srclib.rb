@@ -1,6 +1,7 @@
 require "language/go"
 
 class Srclib < Formula
+  desc "Polyglot code analysis library, build for hackability"
   homepage "https://srclib.org"
   url "https://github.com/sourcegraph/srclib/archive/v0.0.42.tar.gz"
   sha256 "de9af74ec0805b0ef4f1c7ddf26c5aef43f84668b12c001f2f413ff20a19ebee"

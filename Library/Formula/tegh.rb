@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tegh < Formula
+  desc "Command-line client for Prontserve"
   homepage 'https://github.com/D1plo1d/tegh'
   head 'https://github.com/D1plo1d/tegh.git', :branch => 'develop'
   url 'https://s3.amazonaws.com/tegh_binaries/0.3.1/tegh-0.3.1-brew.tar.gz'

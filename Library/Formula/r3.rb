@@ -1,6 +1,7 @@
 require "formula"
 
 class R3 < Formula
+  desc "High-performance URL router library"
   homepage "https://github.com/c9s/r3"
   url "https://github.com/c9s/r3/archive/1.3.3.tar.gz"
   sha1 "2626e78e5d5afb64561b6c468e357db14597aef6"

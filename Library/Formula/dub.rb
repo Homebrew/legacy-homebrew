@@ -1,4 +1,5 @@
 class Dub < Formula
+  desc "Build tool for D projects"
   homepage "http://code.dlang.org/about"
   url  "https://github.com/D-Programming-Language/dub/archive/v0.9.23.tar.gz"
   sha1 "88c908cab5d396435091cb9cc31dcd886fdb26c9"

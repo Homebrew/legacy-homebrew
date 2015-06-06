@@ -1,6 +1,7 @@
 require 'formula'
 
 class GdkPixbuf < Formula
+  desc "Toolkit for image loading and pixel buffer manipulation"
   homepage 'http://gtk.org'
   url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.8.tar.xz'
   sha256 '4853830616113db4435837992c0aebd94cbb993c44dc55063cee7f72a7bef8be'

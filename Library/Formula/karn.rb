@@ -1,6 +1,7 @@
 require "language/go"
 
 class Karn < Formula
+  desc "Manage multiple Git identities"
   homepage "https://github.com/prydonius/karn"
   url "https://github.com/prydonius/karn/archive/v0.0.2.tar.gz"
   sha256 "eac77b82f7abd9c37e70d01240e8e69893b7497d3dd5ab7b0fb2df04ae1e6529"

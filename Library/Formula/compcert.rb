@@ -1,6 +1,7 @@
 require "formula"
 
 class Compcert < Formula
+  desc "CompCert C verified compiler"
   homepage "http://compcert.inria.fr"
   url "http://compcert.inria.fr/release/compcert-2.4.tgz"
   sha1 "065eef31d1a59547fb3275ba7566867757b176f6"

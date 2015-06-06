@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libffi < Formula
+  desc "A portable Foreign Function Interface library"
   homepage 'http://sourceware.org/libffi/'
   url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.13.tar.gz'
   mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz'

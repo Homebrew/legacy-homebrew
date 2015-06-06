@@ -1,6 +1,7 @@
 require "formula"
 
 class Fswatch < Formula
+  desc "Monitor a directory for changes and run a shell command"
   homepage "https://github.com/emcrisostomo/fswatch"
   url "https://github.com/emcrisostomo/fswatch/releases/download/1.4.7/fswatch-1.4.7.tar.gz"
   sha1 "bfc41da5a56ab810b28945506a0ad4198b13ffef"

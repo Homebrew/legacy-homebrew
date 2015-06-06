@@ -1,4 +1,5 @@
 class Syncthing < Formula
+  desc "Open source continuous file synchronization application"
   homepage "https://syncthing.net/"
   url "https://github.com/syncthing/syncthing.git",
     :tag => "v0.11.7", :revision => "36d4c69fd6da72e87252537051ef25ec3802064b"

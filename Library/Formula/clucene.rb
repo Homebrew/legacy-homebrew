@@ -1,6 +1,7 @@
 require "formula"
 
 class Clucene < Formula
+  desc "C++ port of Lucene: high-performance, full-featured text search engine"
   homepage "http://clucene.sourceforge.net"
   url "https://downloads.sourceforge.net/project/clucene/clucene-core-unstable/2.3/clucene-core-2.3.3.4.tar.gz"
   sha1 "76d6788e747e78abb5abf8eaad78d3342da5f2a4"

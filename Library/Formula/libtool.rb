@@ -2,6 +2,7 @@
 # This is not the same so as a result we must install this as glibtool.
 
 class Libtool < Formula
+  desc "Generic library support script"
   homepage "https://www.gnu.org/software/libtool/"
   url "http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz"
   mirror "https://ftp.gnu.org/gnu/libtool/libtool-2.4.6.tar.xz"

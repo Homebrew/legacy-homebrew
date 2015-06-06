@@ -1,4 +1,5 @@
 class Gettext < Formula
+  desc "GNU internationalization (i18n) and localization (l10n) library"
   homepage "https://www.gnu.org/software/gettext/"
   url "http://ftpmirror.gnu.org/gettext/gettext-0.19.4.tar.xz"
   mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.4.tar.xz"

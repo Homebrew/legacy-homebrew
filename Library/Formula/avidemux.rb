@@ -1,4 +1,5 @@
 class Avidemux < Formula
+  desc "Multiformat video editor that cuts, filters, and encodes"
   homepage "http://fixounet.free.fr/avidemux/"
 
   stable do

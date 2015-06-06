@@ -1,6 +1,7 @@
 require "formula"
 
 class Pbc < Formula
+  desc "Pairing-based cryptography"
   homepage "http://crypto.stanford.edu/pbc/"
   url "http://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz"
   sha1 "8947f1a5a32d5c2d1f5113ccbb1e0d25ca5ce1c9"

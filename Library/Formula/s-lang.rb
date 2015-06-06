@@ -1,4 +1,5 @@
 class SLang < Formula
+  desc "Library for creating multi-platform software"
   homepage "http://www.jedsoft.org/slang/"
   url "http://www.jedsoft.org/releases/slang/slang-2.3.0.tar.bz2"
   mirror "http://pkgs.fedoraproject.org/repo/pkgs/slang/slang-2.3.0.tar.bz2/3bcc790460d52db1316c20395b7ac2f1/slang-2.3.0.tar.bz2"

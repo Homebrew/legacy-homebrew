@@ -1,4 +1,5 @@
 class Ipsumdump < Formula
+  desc "Summarizes TCP/IP dump files into a self-describing ASCII format easily readable"
   homepage "http://www.read.seas.harvard.edu/~kohler/ipsumdump/"
   url "http://www.read.seas.harvard.edu/~kohler/ipsumdump/ipsumdump-1.85.tar.gz"
   sha1 "53b7be092d94c1b28817e1c6920bb70293eb60b3"

@@ -1,4 +1,5 @@
 class Webalizer < Formula
+  desc "Web server log file analysis"
   homepage "http://www.webalizer.org"
   url "ftp://ftp.mrunix.net/pub/webalizer/webalizer-2.23-08-src.tgz"
   mirror "https://mirrors.kernel.org/debian/pool/main/w/webalizer/webalizer_2.23.08.orig.tar.gz"
