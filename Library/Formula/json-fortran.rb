@@ -6,6 +6,13 @@ class JsonFortran < Formula
 
   head "https://github.com/jacobwilliams/json-fortran.git"
 
+  bottle do
+    cellar :any
+    sha256 "3b6410ef26c24d63f90e420aae0157f7d97b4d154b398305863e2be6c24eed8d" => :yosemite
+    sha256 "5608f04857515ce6b38d6a7ade2cf50a15541cb307ff97cbde1d367af3b19801" => :mavericks
+    sha256 "443ce5965a801c7e3dda0dfc5762b9f84ec97bf450d98eedfe0385d3681a725e" => :mountain_lion
+  end
+
   option "with-unicode-support", "Build json-fortran to support unicode text in json objects and files"
   option "without-test", "Skip running build-time tests (not recommended)"
   option "without-robodoc", "Do not build and install ROBODoc generated documentation for json-fortran"
