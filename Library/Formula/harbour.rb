@@ -19,14 +19,13 @@ class Harbour < Formula
 
   depends_on "allegro" => :optional
   depends_on "cairo" => :optional
-  depends_on "curl" => :recommended
   depends_on "freeimage" => :optional
   depends_on "gd" => :optional
   depends_on "ghostscript" => :optional
   depends_on "libmagic" => :optional
-  depends_on "mysql" => :optional
+  depends_on :mysql => :optional
   depends_on "ncurses" => :optional
-  depends_on "postgresql" => :optional
+  depends_on :postgresql => :optional
   depends_on "qt5" => :optional
   depends_on "unixodbc" => :optional
 
