@@ -17,7 +17,8 @@ class Formulary
   def self.load_formula(name, path)
     mod = Module.new
     const_set("FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}", mod)
-    mod.module_eval(path.read, path)
+    contents = path.open("r") { |f| set_encoding(f).read }
+    mod.module_eval(contents, path)
     class_name = class_s(name)
 
     begin
@@ -26,6 +27,16 @@ class Formulary
       raise FormulaUnavailableError, name, e.backtrace
     else
       FORMULAE[path] = klass
+    end
+  end
+
+  if IO.method_defined?(:set_encoding)
+    def self.set_encoding(io)
+      io.set_encoding(Encoding::UTF_8)
+    end
+  else
+    def self.set_encoding(io)
+      io
     end
   end
 
