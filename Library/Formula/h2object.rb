@@ -1,12 +1,10 @@
-require 'formula'
 
 class H2object < Formula
-  homepage 'http://h2object.io'
-  url 'http://dl.h2object.io/h2object/macosx/h2object-0.0.1-beta.tar.gz'
-  sha1 '588bab3d9372b433d15616a8b8bbe6d2720f27d6'
+  homepage "http://h2object.io"
+  url "http://dl.h2object.io/h2object/macosx/h2object-0.0.1.tar.gz"
+  sha256 "262f2f491baca8c06f600f2c94506592a08cbfc6fede51e53586b58d3e8c0fe5"
 
   def install
-    bin.install 'h2object'
+    bin.install "h2object"
   end
 end
-
