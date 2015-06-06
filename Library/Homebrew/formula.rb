@@ -749,6 +749,15 @@ class Formula
       "caveats" => caveats
     }
 
+    hsh["requirements"] = requirements.map do |req|
+      {
+        "name" => req.name,
+        "default_formula" => req.default_formula,
+        "cask" => req.cask,
+        "download" => req.download
+      }
+    end
+
     hsh["options"] = options.map { |opt|
       { "option" => opt.flag, "description" => opt.description }
     }
