@@ -1,4 +1,3 @@
-# encoding: UTF-8
 class Mecab < Formula
   desc "Yet another part-of-speech and morphological analyzer"
   homepage "https://taku910.github.io/mecab/"

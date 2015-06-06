@@ -1,4 +1,3 @@
-# encoding: UTF-8
 class Uni2ascii < Formula
   desc "Bi-directional conversion between UTF-8 and various ASCII flavors"
   # homepage/url: "the website you are looking for is suspended"

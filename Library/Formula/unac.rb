@@ -1,7 +1,3 @@
-# encoding: UTF-8
-
-require 'formula'
-
 class Unac < Formula
   desc "C library and command that removes accents from a string"
   homepage 'http://savannah.nongnu.org/projects/unac'

@@ -1,7 +1,3 @@
-# encoding: UTF-8
-
-require "formula"
-
 class Paps < Formula
   desc "Pango to PostScript converter"
   homepage "http://paps.sourceforge.net/"

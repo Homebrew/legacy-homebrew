@@ -1,4 +1,3 @@
-# encoding: UTF-8
 class Yaz < Formula
   desc "Toolkit for Z39.50/SRW/SRU clients/servers"
   homepage "http://www.indexdata.com/yaz"

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 class Cabocha < Formula
   desc "Yet Another Japanese Dependency Structure Analyzer"
   homepage "https://taku910.github.io/cabocha/"
