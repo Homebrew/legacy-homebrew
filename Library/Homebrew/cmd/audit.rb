@@ -74,14 +74,6 @@ class FormulaText
     /\Z\n/ =~ @text
   end
 
-  def has_non_ascii_character?
-    /[^\x00-\x7F]/ =~ @text
-  end
-
-  def has_encoding_comment?
-    /^# (en)?coding: utf-8$/i =~ @text
-  end
-
   def =~ regex
     regex =~ @text
   end
@@ -128,14 +120,6 @@ class FormulaAuditor
 
     if text.has_END? and not text.has_DATA?
       problem "'__END__' was found, but 'DATA' is not used"
-    end
-
-    if text.has_non_ascii_character? and not text.has_encoding_comment?
-      problem "Found non-ASCII character: add `# encoding: UTF-8` in the first line"
-    end
-
-    if text.has_encoding_comment? and not text.has_non_ascii_character?
-      problem "Remove the redundant `# encoding: UTF-8`"
     end
 
     unless text.has_trailing_newline?
