@@ -7,9 +7,9 @@ class Gitup < Formula
 
   bottle do
     cellar :any
-    sha256 "9467012a786daf151c8753b6fea2003749696a8c790df3230e04041cbc5f8ef3" => :yosemite
-    sha256 "e549ee12a5faa4cd5bf2ffe5b5d745a1186da9f87df186676a37df60e64a419d" => :mavericks
-    sha256 "3ea5f1c672e777fe044bc1bc3242e82583ee3db7dbf050ff42a926a1fda7128f" => :mountain_lion
+    sha256 "0b5f3064bcdc561e931afbd126bd472a7d7ad87a68c02f5c03defbdb9c140d85" => :yosemite
+    sha256 "c0b86146ca84fd6962066a3bc11634d504c97df17bcf113f77ea3ff16543aa41" => :mavericks
+    sha256 "030291b81b361518a13917c16235fac9bb06ce12ce8f9c7ebb8ae38a9e4ad531" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
