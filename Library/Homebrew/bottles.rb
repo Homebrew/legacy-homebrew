@@ -38,8 +38,12 @@ def bottle_tag
   end
 end
 
+def bottle_receipt_path bottle_file
+  Utils.popen_read("tar", "-tzf", bottle_file, "*/*/INSTALL_RECEIPT.json").chomp
+end
+
 def bottle_resolve_formula_names bottle_file
-  receipt_file_path = Utils.popen_read("tar", "-tzf", bottle_file, "*/*/INSTALL_RECEIPT.json").chomp
+  receipt_file_path = bottle_receipt_path bottle_file
   receipt_file = Utils.popen_read("tar", "-xOzf", bottle_file, receipt_file_path)
   name = receipt_file_path.split("/").first
   tap = Tab.from_file_content(receipt_file, "#{bottle_file}/#{receipt_file_path}").tap
@@ -51,6 +55,10 @@ def bottle_resolve_formula_names bottle_file
   end
 
   [name, full_name]
+end
+
+def bottle_resolve_version bottle_file
+  Version.new bottle_receipt_path(bottle_file).split("/")[1]
 end
 
 class Bintray
