@@ -7,6 +7,13 @@ class Jenv < Formula
   sha256 "aa8e5f9da2e89f3c28550bdcc49746b29b14a82ee0b06025dda4a859aa26b69b"
   head "https://github.com/gcuisinier/jenv.git"
 
+  bottle do
+    cellar :any
+    sha256 "007fbdb0fdadaff1464c83aff891568a41c7b7c14f4a0db14d129e40df0a88cd" => :yosemite
+    sha256 "9099acb01f2dffe6a8051210d1f991c98d062f720d94e47f8a95785d57045245" => :mavericks
+    sha256 "89da9b768cc9275abf2a9e5ffd3e06991fcb7d7bd50c7a313debb0e60c904db4" => :mountain_lion
+  end
+
   def install
      libexec.install Dir["*"]
      bin.write_exec_script libexec/"bin/jenv"
