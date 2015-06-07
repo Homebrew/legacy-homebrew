@@ -144,7 +144,7 @@ Note that these flags should only appear after a command.
     If `--HEAD` or `--devel` is passed, fetch that version instead of the
     stable version.
 
-    If `-v` is passed, do a verbose VCS checkout, if the url represents a CVS.
+    If `-v` is passed, do a verbose VCS checkout, if the URL represents a CVS.
     This is useful for seeing if an existing VCS cache has been updated.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
@@ -236,7 +236,7 @@ Note that these flags should only appear after a command.
 
   * `ln`, `link [--overwrite] [--dry-run] [--force]` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
-    is done automatically when you install formula, but can be useful for DIY
+    is done automatically when you install formulae but can be useful for DIY
     installations.
 
     If `--overwrite` is passed, Homebrew will delete files which already exist in
