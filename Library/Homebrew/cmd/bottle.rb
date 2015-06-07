@@ -250,18 +250,19 @@ module Homebrew
               indent = s.slice(/^ +stable do/).length - "stable do".length
               string = s.sub!(/^ {#{indent}}stable do(.|\n)+?^ {#{indent}}end\n/m, '\0' + output + "\n")
             else
-              string = s.sub!(/(
-                                 \ {2}(                                                # two spaces at the beginning
-                                   url\ ['"][\S\ ]+['"]                                # url with a string
-                                   (
-                                     ,[\S\ ]*$                                         # url may have options
-                                     (\n^\ {3}[\S\ ]+$)*                               # options can be in multiple lines
-                                   )?|
-                                   (sha1|sha256|head|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
-                                   revision\ \d+                                       # revision with a number
-                                 )\n+                                                  # multiple empty lines
-                               )+
-                              /mx, '\0' + output + "\n")
+              string = s.sub!(
+                /(
+                  \ {2}(                                                              # two spaces at the beginning
+                    url\ ['"][\S\ ]+['"]                                              # url with a string
+                    (
+                      ,[\S\ ]*$                                                       # url may have options
+                      (\n^\ {3}[\S\ ]+$)*                                             # options can be in multiple lines
+                    )?|
+                    (homepage|desc|sha1|sha256|head|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
+                    revision\ \d+                                                     # revision with a number
+                  )\n+                                                                # multiple empty lines
+                 )+
+               /mx, '\0' + output + "\n")
             end
             odie 'Bottle block addition failed!' unless string
           end
