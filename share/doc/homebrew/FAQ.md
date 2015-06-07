@@ -185,12 +185,12 @@ Yes! It’s easy! Just `brew edit $FORMULA`. You don’t have to submit modifica
 ### Can I make new formulae?
 Yes! It’s easy! Just `brew create URL` Homebrew will then open the
 formula in `$EDITOR` so you can edit it, but it probably already
-installs, try it: `brew install $FORMULA`. If you come up any issues,
-run the command with the `-d` switch like so: `brew install -d $FORMULA`
+installs; try it: `brew install $FORMULA`. If you come up with any issues,
+run the command with the `-d` switch like so: `brew install -d $FORMULA`,
 which drops you into a debugging shell.
 
 If you want your new formula to be part of *Homebrew/homebrew* or want
-to learn more about writing formula then please read the [Formula Cookbook](Formula-Cookbook.md).
+to learn more about writing formulae, then please read the [Formula Cookbook](Formula-Cookbook.md).
 
 ### Can I install my own stuff to `/usr/local`?
 Yes, brew is designed to not get in your way so you can use it how you
@@ -218,7 +218,7 @@ Linking /usr/local/Cellar/foo/0.1… 17 symlinks created
 ### Where was a formula deleted?
 Use `brew log $FORMULA` to find out!
 
-Sometimes formula are moved to specialized repositories. These are the
+Sometimes formulae are moved to specialized repositories. These are the
 likely candidates:
 
 * [https://github.com/Homebrew/homebrew-dupes](https://github.com/Homebrew/homebrew-dupes)
@@ -241,9 +241,9 @@ late. However, today, the first google hit for “homebrew” is not beer
 related ;-)
 
 ### What does *keg-only* mean?
-It means the formula is installed only into the Cellar, it is not linked
+It means the formula is installed only into the Cellar; it is not linked
 into `/usr/local`. This means most tools will not find it. We don’t do
-this for stupid reasons. You can link the formula in still if you need
+this for stupid reasons. You can still link in the formula if you need
 to with `brew link`.
 
 ### How can I specify different configure arguments for a formula?

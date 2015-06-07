@@ -148,7 +148,7 @@ We try to not duplicate libraries and complicated tools in core Homebrew. We dup
 
 The one special exception is OpenSSL. Anything that uses OpenSSL *should* be built using Homebrew’s shipped OpenSSL and our test bot's post-install audit will warn of this when it is detected. (*Of course, there are exceptions to the exception. Not everything can be forced onto our OpenSSL)*.
 
-Because Homebrew’s OpenSSL is `keg_only` to avoid conflicting with the system sometimes formulae need to have environmental variables set or special configuration flags passed to locate our preferred OpenSSL; you can see this mechanism in the [clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28) formula. Usually this is unnecessary because when OpenSSL is specified as a dependency Homebrew temporarily prepends the $PATH with that prefix.
+Because Homebrew’s OpenSSL is `keg_only` to avoid conflicting with the system, sometimes formulae need to have environmental variables set or special configuration flags passed to locate our preferred OpenSSL; you can see this mechanism in the [clamav](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/clamav.rb#L28) formula. Usually this is unnecessary because when OpenSSL is specified as a dependency Homebrew temporarily prepends the $PATH with that prefix.
 
 Homebrew maintains a special [tap that provides other useful dupes](https://github.com/Homebrew/homebrew-dupes).
 
@@ -228,7 +228,7 @@ Where a dependent of a formula fails against a new version of that dependency it
 
 ## Double-check for dependencies
 
-When you already have a lot of brews installed, its easy to miss a common dependency like `glib` or `gettext`.
+When you already have a lot of brews installed, it's easy to miss a common dependency like `glib` or `gettext`.
 
 You can double-check which libraries a binary links to with the `otool` command (perhaps you need to use `xcrun otool`):
 
@@ -265,7 +265,7 @@ class Foo < Formula
 end
 ```
 
-[jrnl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/jrnl.rb) is an example of a formula that does this well. The end-result means the user doesn't have to faff with `pip` or Python and can just run `jrnl`.
+[jrnl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/jrnl.rb) is an example of a formula that does this well. The end result means the user doesn't have to faff with `pip` or Python and can just run `jrnl`.
 
 [homebrew-pypi-poet](https://github.com/tdsmith/homebrew-pypi-poet) can help you generate resource stanzas for the dependencies of your Python application.
 
@@ -364,7 +364,7 @@ The established standard for Git commit messages is:
 * two (2) newlines, then
 * explain the commit throughly
 
-At Homebrew, we like to put the name of the formula upfront like so "foobar 7.3 (new formula)".
+At Homebrew, we like to put the name of the formula up front like so: "foobar 7.3 (new formula)".
 This may seem crazy short, but you’ll find that forcing yourself to summarise the commit encourages you to be atomic and concise. If you can’t summarise it in 50-80 characters, you’re probably trying to commit two commits as one. For a more thorough explanation, please read Tim Pope’s excellent blog post, [A Note About Git Commit Messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 
 The preferred commit message format for simple version updates is "foobar 7.3".
