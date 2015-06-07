@@ -7,9 +7,9 @@ class Fits < Formula
 
   bottle do
     cellar :any
-    sha256 "e606253277eb78b26d24ff3dfd582d7bc1fae03d13e393ff0512885fdc278066" => :yosemite
-    sha256 "0e97437daf0e227b2ec937cf9034db585a92a17e34cd22ed2f8fe2b80be15003" => :mavericks
-    sha256 "050cb99d9da1f008a4721c5e3cf962a19fc591f075e6126b9d2bea7482495dfd" => :mountain_lion
+    sha256 "cbd107b9147e58be56405d04b83e7b58b2a61210f8713f32ef0aa12cc0cb9192" => :yosemite
+    sha256 "81b380fb42b2f057f80842a723a30bee313ca6c7f70a9f007a206c63064ca665" => :mavericks
+    sha256 "be677363eb1d07b255dd6d931b372411011576d97269f75c52dbb72a716ea919" => :mountain_lion
   end
 
   # provided jars may not be compatible with installed java,
