@@ -26,6 +26,8 @@ class Pandoc < Formula
     cabal_sandbox do
       cabal_install "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
+      man1.install "man/man1/pandoc.1"
+      man5.install "man/man5/pandoc_markdown.5"
     end
     cabal_clean_lib
   end
