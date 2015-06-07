@@ -2,8 +2,8 @@ class Gitup < Formula
   desc "Update multiple git repositories at once"
   homepage "https://github.com/earwig/git-repo-updater"
   url "https://github.com/earwig/git-repo-updater.git",
-    :revision => "51a482d7a25bed39ccc75780813c65bd666c1436",
-    :tag => "v0.2.3"
+    :revision => "10494e677bba19622acfa3fc62093a06451c8562",
+    :tag => "v0.3"
 
   bottle do
     cellar :any
@@ -85,7 +85,7 @@ class Gitup < Formula
 
     system "gitup", "--add", "third"
 
-    system "gitup", "--rebase"
+    system "gitup"
     third_head = `cd third ; git rev-parse HEAD`.split.first
     assert_not_equal third_head, third_head_start
 
