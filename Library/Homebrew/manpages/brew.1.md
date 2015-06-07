@@ -345,12 +345,30 @@ Note that these flags should only appear after a command.
   * `switch` <name> <version>:
     Symlink all of the specific <version> of <name>'s install to Homebrew prefix.
 
-  * `tap` [--full] [<tap>]:
-    Tap a new formula repository from GitHub, or list existing taps.
+  * `tap` [--full] [<name>] [<target>]:
+    Tap a new formula repository or list existing taps. This command can be
+    invoked in three ways. In what follows, <name> stands for something of the
+    form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
 
-    <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+    + `tap` without arguments displays existing taps.
+    + `tap <name>` taps a new formula repository from GitHub using HTTP
+    + `tap <name> <target>` taps a new formula repository from anywhere
 
-    If `--full` is passed, a full clone will be used.
+    The one- and two-argument forms of `tap` make different assumptions and
+    have different advantages. Many taps are hosted on GitHub, and in order to
+    make things easier, `tap <name>` attempts to clone a repository at
+    https://github.com/#{user}/homebrew-#{repo}. This helps users in the
+    default situation, but it also limits the one-argument invocation to
+    GitHub. By contrast, `tap <name> <target>` does not make any assumptions
+    and it's more flexible, but the user must give an extra argument. The
+    two-argument form allows users to tap repositories from any location, using
+    any protocol that git recognizes.
+
+    tl;dr To clone from GitHub using HTTP, pick the one-argument form. Pick the
+    two argument form for repos not on GitHub or that don't use HTTP.
+
+    By default, the repository is cloned as a shallow copy (`--depth=1`), but
+    if `--full` is passed, a full clone will be used.
 
   * `tap --repair`:
     Migrate tapped formulae from symlink-based to directory-based structure.
