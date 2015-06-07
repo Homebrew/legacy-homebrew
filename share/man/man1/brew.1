@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "May 2015" "Homebrew" "brew"
+.TH "BREW" "1" "June 2015" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -155,7 +155,7 @@ Download the source packages for the given \fIformulae\fR\. For tarballs, also p
 If \fB\-\-HEAD\fR or \fB\-\-devel\fR is passed, fetch that version instead of the stable version\.
 .
 .IP
-If \fB\-v\fR is passed, do a verbose VCS checkout, if the url represents a CVS\. This is useful for seeing if an existing VCS cache has been updated\.
+If \fB\-v\fR is passed, do a verbose VCS checkout, if the URL represents a CVS\. This is useful for seeing if an existing VCS cache has been updated\.
 .
 .IP
 If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
@@ -255,7 +255,7 @@ Show installed formulae that are not dependencies of another installed formula\.
 .
 .TP
 \fBln\fR, \fBlink [\-\-overwrite] [\-\-dry\-run] [\-\-force]\fR \fIformula\fR
-Symlink all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula, but can be useful for DIY installations\.
+Symlink all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formulae but can be useful for DIY installations\.
 .
 .IP
 If \fB\-\-overwrite\fR is passed, Homebrew will delete files which already exist in the prefix while linking\.

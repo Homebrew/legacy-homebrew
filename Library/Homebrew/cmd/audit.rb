@@ -195,12 +195,12 @@ class FormulaAuditor
     full_name = formula.full_name
 
     if @@aliases.include? name
-      problem "Formula name is conflicted with existed aliases."
+      problem "Formula name conflicts with existing aliases."
       return
     end
 
     if !formula.core_formula? && Formula.core_names.include?(name)
-      problem "Formula name is conflicted with existed core formula."
+      problem "Formula name conflicts with existing core formula."
       return
     end
 
@@ -217,7 +217,7 @@ class FormulaAuditor
     same_name_tap_formulae.delete(full_name)
 
     if same_name_tap_formulae.size > 0
-      problem "Formula name is conflicted with #{same_name_tap_formulae.join ", "}"
+      problem "Formula name conflicts with #{same_name_tap_formulae.join ", "}"
     end
   end
 
@@ -355,7 +355,7 @@ class FormulaAuditor
     end
 
     # Freedesktop is complicated to handle - It has SSL/TLS, but only on certain subdomains.
-    # To enable https Freedesktop change the url from http://project.freedesktop.org/wiki to
+    # To enable https Freedesktop change the URL from http://project.freedesktop.org/wiki to
     # https://wiki.freedesktop.org/project_name.
     # "Software" is redirected to https://wiki.freedesktop.org/www/Software/project_name
     if homepage =~ %r[^http://((?:www|nice|libopenraw|liboil|telepathy|xorg)\.)?freedesktop\.org/(?:wiki/)?]
@@ -511,7 +511,7 @@ class FormulaAuditor
     if line =~ /# if this fails, try separate make\/make install steps/
       problem "Please remove default template comments"
     end
-    if line =~ /# The url of the archive/
+    if line =~ /# The URL of the archive/
       problem "Please remove default template comments"
     end
     if line =~ /## Naming --/
@@ -848,7 +848,7 @@ class ResourceAuditor
     end
 
     if version.to_s =~ /_\d+$/
-      problem "version #{version} should not end with a underline and a number"
+      problem "version #{version} should not end with an underline and a number"
     end
   end
 
