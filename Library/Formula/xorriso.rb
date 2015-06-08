@@ -7,9 +7,9 @@ class Xorriso < Formula
 
   bottle do
     cellar :any
-    sha1 "ad77fd89af5dfb762f5a090bda81e879961e2cd3" => :mavericks
-    sha1 "9a13f8d21424c8c1916c18942d4c2466a853a83a" => :mountain_lion
-    sha1 "59061ff18ad511c667654fee742db83bdbcc87f0" => :lion
+    sha256 "99291dcf6826ec15b82c9d32ddae8279244f304661f23e1086f69392ce14f34c" => :yosemite
+    sha256 "611ac7bb03593af3216d772b0d4d0b3b5797257dd656b3eb04db3da0f7582f7d" => :mavericks
+    sha256 "88442ed4676b021a09bafeef4cd3b40a7e822bb7b4239a1de0518360eefbd5a6" => :mountain_lion
   end
 
   def install
