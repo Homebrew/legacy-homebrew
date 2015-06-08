@@ -53,6 +53,7 @@ class ClangFormat < Formula
       bin.install "bin/clang-format"
     end
     bin.install "tools/clang/tools/clang-format/git-clang-format"
+    (share/"clang").install Dir["tools/clang/tools/clang-format/clang-format*"]
   end
 
   test do
