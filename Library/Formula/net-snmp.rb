@@ -1,29 +1,46 @@
 require "formula"
 
 class NetSnmp < Formula
+  desc "Implements SNMP v1, v2c, and v3, using IPv4 and IPv6"
   homepage "http://www.net-snmp.org/"
-  url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.2.1/net-snmp-5.7.2.1.tar.gz"
-  sha1 "815d4e5520a1ed96a27def33e7534b4190599f0f"
+  url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3/net-snmp-5.7.3.tar.gz"
+  sha1 "97dc25077257680815de44e34128d365c76bd839"
 
-  devel do
-    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3-pre-releases/net-snmp-5.7.3.pre3.tar.gz"
-    version "5.7.3.pre3"
-    sha1 "5e46232a2508a3cb6543f0438569090f78e4a20e"
+  bottle do
+    sha1 "6b7c2019c338a70336de0e8e808fbb4787a34fe8" => :mavericks
+    sha1 "83cc6e796ebb6748e2c458a6bb54e99bb42c30e6" => :mountain_lion
   end
 
+  depends_on "openssl"
+  depends_on :python => :optional
+
+  keg_only :provided_by_osx
+
   def install
-    system "./configure", "--disable-debugging",
-                          "--prefix=#{prefix}",
-                          "--enable-ipv6",
-                          "--with-defaults",
-                          "--with-persistent-directory=#{var}/db/net-snmp",
-                          "--with-logfile=#{var}/log/snmpd.log",
-                          "--with-mib-modules=host ucd-snmp/diskio",
-                          "--without-rpm",
-                          "--without-kmem-usage",
-                          "--disable-embedded-perl",
-                          "--without-perl-modules"
+    args = [
+      "--disable-debugging",
+      "--prefix=#{prefix}",
+      "--enable-ipv6",
+      "--with-defaults",
+      "--with-persistent-directory=#{var}/db/net-snmp",
+      "--with-logfile=#{var}/log/snmpd.log",
+      "--with-mib-modules=host ucd-snmp/diskio",
+      "--without-rpm",
+      "--without-kmem-usage",
+      "--disable-embedded-perl",
+      "--without-perl-modules",
+    ]
+
+    if build.with? "python"
+      args << "--with-python-modules"
+      ENV["PYTHONPROG"] = `which python`
+    end
+
+    # https://sourceforge.net/p/net-snmp/bugs/2504/
+    ln_s "darwin13.h", "include/net-snmp/system/darwin14.h"
+
+    system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

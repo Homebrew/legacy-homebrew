@@ -1,20 +1,24 @@
-require 'formula'
-
 class Dnsmasq < Formula
-  homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.71.tar.gz'
-  sha1 'b0a39f66557c966629a0ed9282cd87df8f409004'
+  desc "Lightweight DNS forwarder and DHCP server"
+  homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
+  url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.72.tar.gz"
+  sha1 "c2dc54b142ec5676d6e22951bc5b61863b0503fe"
 
   bottle do
-    sha1 "96d2784aa36024ce06c727c323c211b0f278950f" => :mavericks
-    sha1 "ede61cf944079d566a059bd4638c75df22bc7057" => :mountain_lion
-    sha1 "a65ee0871fb0dd2d037d1742ca51d38f56005bb4" => :lion
+    revision 1
+    sha1 "68baa9fab86c8f30738984f2d734d537a0e815e5" => :yosemite
+    sha1 "926b6cf81ecd09011a64ded5922231cb13aae7d8" => :mavericks
+    sha1 "86e05946e01f650595ea72332fcce61e5e489ed4" => :mountain_lion
   end
 
-  option 'with-idn', 'Compile with IDN support'
+  option "with-libidn", "Compile with IDN support"
+  option "with-dnssec", "Compile with DNSSEC support"
 
-  depends_on "libidn" if build.with? "idn"
-  depends_on 'pkg-config' => :build
+  deprecated_option "with-idn" => "with-libidn"
+
+  depends_on "pkg-config" => :build
+  depends_on "libidn" => :optional
+  depends_on "nettle" if build.with? "dnssec"
 
   def install
     ENV.deparallelize
@@ -23,8 +27,13 @@ class Dnsmasq < Formula
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
     # Optional IDN support
-    if build.with? "idn"
+    if build.with? "libidn"
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
+    end
+
+    # Optional DNSSEC support
+    if build.with? "dnssec"
+      inreplace "src/config.h", "/* #define HAVE_DNSSEC */", "#define HAVE_DNSSEC"
     end
 
     # Fix compilation on Lion
@@ -60,13 +69,16 @@ class Dnsmasq < Formula
           <string>#{opt_sbin}/dnsmasq</string>
           <string>--keep-in-foreground</string>
         </array>
+        <key>RunAtLoad</key>
+        <true/>
         <key>KeepAlive</key>
-        <dict>
-          <key>NetworkState</key>
-          <true/>
-        </dict>
+        <true/>
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/dnsmasq", "--test"
   end
 end

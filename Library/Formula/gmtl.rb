@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gmtl < Formula
+  desc "Lightweight math library"
   homepage 'http://ggt.sourceforge.net/'
 
   stable do
@@ -13,9 +14,23 @@ class Gmtl < Formula
     patch :DATA
   end
 
+  bottle do
+    cellar :any
+    sha1 "905af4149c167870069b22d3cb082897f8bf1259" => :mavericks
+    sha1 "09ef2b92b09f46a1ee33866fda35494bbe545819" => :mountain_lion
+    sha1 "3444ed4b6eb1859a64f3f7250656ae5c1e074fd3" => :lion
+  end
+
   head 'https://ggt.svn.sourceforge.net/svnroot/ggt/trunk/'
 
   depends_on 'scons' => :build
+
+  # The scons script in gmtl only works for gcc, patch it
+  # https://sourceforge.net/p/ggt/bugs/28/
+  patch do
+    url "https://gist.githubusercontent.com/anonymous/c16cad998a4903e6b3a8/raw/e4669b3df0e14996c7b7b53937dd6b6c2cbc7c04/gmtl_Sconstruct.diff"
+    sha1 "6470e7db1df3c5b3d73d301c761bfcffc8de5913"
+  end
 
   def install
     scons "install", "prefix=#{prefix}"

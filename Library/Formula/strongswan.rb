@@ -1,20 +1,19 @@
-require 'formula'
-
 class Strongswan < Formula
-  homepage 'http://www.strongswan.org'
-  url 'http://download.strongswan.org/strongswan-5.1.3.tar.bz2'
-  sha1 '6f8898308999b8fc293812ea5812a12c9ddbedc7'
+  desc "VPN based on IPsec"
+  homepage 'https://www.strongswan.org'
+  url 'https://download.strongswan.org/strongswan-5.3.1.tar.bz2'
+  sha256 "83fa7b004e65356ff5bb755d9d0e03901d578a99e90b6328a350a4335a32f6de"
 
   bottle do
-    sha1 "7a63c925dde5195c98e3e63dc3fb6eb963eac106" => :mavericks
-    sha1 "f4e35b174358d712e8fab4bee12a7a864860b05c" => :mountain_lion
-    sha1 "a6006954a5d396d2822212bec774f7a4b863e19f" => :lion
+    sha256 "78c124b46d7409d91d8f19a256a51ee584f862ae9c8f5b19ed4049486df1af20" => :yosemite
+    sha256 "f9c7fc1b920a7fde85dd817c7501e2727a964872913ebfccc903545debc3665c" => :mavericks
+    sha256 "b10aaf7f4d09d9876a237832733fdd56c804962e2931ac002a6f0de89e0bd244" => :mountain_lion
   end
 
   option 'with-curl', 'Build with libcurl based fetcher'
   option 'with-suite-b', 'Build with Suite B support (does not use the IPsec implementation provided by the kernel)'
 
-  depends_on 'openssl' if build.with? "suite-b" or MacOS.version <= :leopard
+  depends_on 'openssl'
   depends_on 'curl' => :optional
 
   def install
@@ -27,9 +26,9 @@ class Strongswan < Formula
       --enable-charon
       --enable-cmd
       --enable-constraints
+      --enable-eap-gtc
       --enable-eap-identity
       --enable-eap-md5
-      --enable-eap-gtc
       --enable-eap-mschapv2
       --enable-ikev1
       --enable-ikev2
@@ -41,25 +40,22 @@ class Strongswan < Formula
       --enable-pgp
       --enable-pkcs1
       --enable-pkcs8
+      --enable-pki
       --enable-pubkey
       --enable-revocation
+      --enable-scepclient
       --enable-socket-default
       --enable-sshkey
       --enable-stroke
-      --enable-tools
-      --enable-updown
+      --enable-swanctl
       --enable-unity
+      --enable-updown
+      --enable-x509
       --enable-xauth-generic
     ]
     args << "--enable-curl" if build.with? 'curl'
     args << "--enable-kernel-pfkey" if build.without? 'suite-b'
     args << "--enable-kernel-libipsec" if build.with? 'suite-b'
-
-    # problem with weak reference, will be fixed in the next release
-    inreplace "src/libstrongswan/utils/test.c" do |s|
-      s.gsub! /__attribute__.+$/, "{}"
-      s.gsub! /!testable_functions_create/, "TRUE"
-    end
 
     system "./configure", *args
     system "make", "install"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class AardvarkShellUtils < Formula
+  desc "Utilities to aid shell scripts or command-line users"
   homepage 'http://www.laffeycomputer.com/shellutils.html'
   url 'http://downloads.laffeycomputer.com/current_builds/shellutils/aardvark_shell_utils-1.0.tar.gz'
   sha1 '8cee29059038ebec96c3a97978d18a5a4941da06'
@@ -14,16 +15,8 @@ class AardvarkShellUtils < Formula
   end
 
   test do
-    output = `#{bin}/filebase movcpm.com`
-    assert_equal "movcpm\n", output
-    assert_equal 0, $?.exitstatus
-
-    output = `#{bin}/fileext movcpm.com`
-    assert_equal "com\n", output
-    assert_equal 0, $?.exitstatus
-
-    output = `#{bin}/realpath .`
-    assert_equal "#{testpath}\n", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "movcpm", shell_output("#{bin}/filebase movcpm.com").strip
+    assert_equal "com", shell_output("#{bin}/fileext movcpm.com").strip
+    assert_equal testpath.to_s, shell_output("#{bin}/realpath .").strip
   end
 end

@@ -1,19 +1,21 @@
 require "formula"
 
 class Xplanet < Formula
+  desc "Create HQ wallpapers of planet Earth"
   homepage "http://xplanet.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/xplanet/xplanet/1.3.0/xplanet-1.3.0.tar.gz"
-  sha1 "7c5208b501b441a0184cbb334a5658d0309d7dac"
+  sha256 "44fb742bb93e5661ea8b11ccabcc12896693e051f3dd5083c9227224c416b442"
 
   bottle do
-    sha1 "e22172b3ee5a08cba075846194fc7f7f21c01ffc" => :mavericks
-    sha1 "35dc45eedc379c7fc91bb129e513e4c8e27d5f9e" => :mountain_lion
-    sha1 "50b7295df967c9418ebcca392e4c424a3f00c8a4" => :lion
+    revision 2
+    sha1 "f4494377cd80ce1332e9a171b914f9fa316406fb" => :mavericks
+    sha1 "bb5488ef9be45bb605560c0af8d85b5e297984fc" => :mountain_lion
+    sha1 "39f3137787a1f753d4fb083aaa05157368705fbd" => :lion
   end
 
   revision 1
 
-  option "with-x", "Build for X11 instead of Aqua"
+  option "with-x11", "Build for X11 instead of Aqua"
   option "with-all", "Build with default Xplanet configuration dependencies"
   option "with-pango", "Build Xplanet to support Internationalized text library"
   option "with-netpbm", "Build Xplanet with PNM graphic support"
@@ -26,22 +28,40 @@ class Xplanet < Formula
   depends_on "libpng" => :recommended
   depends_on "libtiff" => :recommended
 
-  depends_on "netpbm" if build.with?("netpbm") || build.with?("all")
-  depends_on "pango" if build.with?("pango") || build.with?("all")
-  depends_on "cspice" if build.with?("cspice") || build.with?("all")
+  if build.with?("all")
+    depends_on "netpbm"
+    depends_on "pango"
+    depends_on "cspice"
+  end
 
-  depends_on 'freetype'
-  depends_on :x11
+  depends_on "netpbm" => :optional
+  depends_on "pango" => :optional
+  depends_on "cspice" => :optional
+
+  depends_on "freetype"
+  depends_on :x11 => :optional
 
   def install
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --without-cygwin
     ]
-    if build.with? "x"
-      args << "--with-x"
+
+    if build.without?("all")
+      args << "--without-gif" if build.without?("giflib")
+      args << "--without-jpeg" if build.without?("jpeg")
+      args << "--without-libpng" if build.without?("libpng")
+      args << "--without-libtiff" if build.without?("libtiff")
+      args << "--without-pnm" if build.without?("netpbm")
+      args << "--without-pango" if build.without?("pango")
+      args << "--without-cspice" if build.without?("cspice")
+    end
+
+    if build.with?("x11")
+      args << "--with-x" << "--with-xscreensaver" << "--without-aqua"
     else
-      args << "--with-aqua" << "--without-x"
+      args << "--with-aqua" << "--without-x" << "--without-xscreensaver"
     end
 
     if build.with?("netpbm") || build.with?("all")

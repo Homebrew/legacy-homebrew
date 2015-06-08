@@ -1,34 +1,28 @@
-require 'formula'
-
 class Bitlbee < Formula
-  homepage 'http://www.bitlbee.org/'
-  url 'http://get.bitlbee.org/src/bitlbee-3.2.1.tar.gz'
-  sha1 '954471ab87206826c072f31b3def40a1be5a78f5'
-  revision 2
+  desc "IRC to other chat networks gateway"
+  homepage "http://www.bitlbee.org/"
+  url "http://get.bitlbee.org/src/bitlbee-3.4.tar.gz"
+  sha256 "cebad646bbfd17c80923743244039fd970e3ca27e8c1b7cf872622e773239d5e"
+
+  head "https://github.com/bitlbee/bitlbee.git"
 
   bottle do
-    sha1 "87aaac8542c0e5fcfaa81a5d0464d48043cf0389" => :mavericks
-    sha1 "7aa598b16ce35182e9c061dbc27a1a08e3462c6f" => :mountain_lion
-    sha1 "af0cdf96d4a5e718f191ecdc7cda133e8849bff0" => :lion
+    sha256 "69514cb51c5d562a10b10ea950bc51f066a12ae0b68fa74d8b77c61b368fc4c9" => :yosemite
+    sha256 "85d411185c1f7e5095777d567e5d63a6ba3566fc0ce51635cb18bc999147f689" => :mavericks
+    sha256 "85f062d5044055a73f4000c9db27c07094f4aedf4299c96fa7fa0b96e1fb7427" => :mountain_lion
   end
 
-  option 'with-finch', "Use finch/libpurple for all communication with instant messaging networks"
-  option 'with-libotr', "Build with otr (off the record) support"
+  option "with-pidgin", "Use finch/libpurple for all communication with instant messaging networks"
+  option "with-libotr", "Build with otr (off the record) support"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
-  depends_on 'finch' => :optional
-  depends_on 'libotr' => :optional
+  deprecated_option "with-finch" => "with-pidgin"
 
-  if build.with? "libotr"
-    # Head versions of bitlbee support otr4, but there is no release yet.
-    patch do
-      url "http://ftp.de.debian.org/debian/pool/main/b/bitlbee/bitlbee_3.2.1+otr4-1.diff.gz"
-      sha1 "a05af5ec8912f85b876f90e75a78dc4f98917ead"
-    end
-  end
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "gnutls"
+  depends_on "libgcrypt"
+  depends_on "pidgin" => :optional
+  depends_on "libotr" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -38,18 +32,18 @@ class Bitlbee < Formula
             "--config=#{var}/bitlbee/lib/",
             "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
 
-    args << "--purple=1" if build.with? "finch"
+    args << "--purple=1" if build.with? "pidgin"
     args << "--otr=1" if build.with? "libotr"
 
     system "./configure", *args
 
     # This build depends on make running first.
     system "make"
-    system "make install"
+    system "make", "install"
     # Install the dev headers too
-    system "make install-dev"
+    system "make", "install-dev"
     # This build has an extra step.
-    system "make install-etc"
+    system "make", "install-etc"
 
     (var+"bitlbee/run").mkpath
     (var+"bitlbee/lib").mkpath
@@ -94,5 +88,9 @@ class Bitlbee < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    shell_output("#{sbin}/bitlbee -V", 1)
   end
 end

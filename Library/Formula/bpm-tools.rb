@@ -1,6 +1,7 @@
 require 'formula'
 
 class BpmTools < Formula
+  desc "Detect tempo of audio files using beats-per-minute (BPM)"
   homepage 'http://www.pogo.org.uk/~mark/bpm-tools/'
   head 'http://www.pogo.org.uk/~mark/bpm-tools.git'
   url 'http://www.pogo.org.uk/~mark/bpm-tools/releases/bpm-tools-0.3.tar.gz'
@@ -10,10 +11,13 @@ class BpmTools < Formula
   option 'with-bpm-tag', 'Install audio file tagging script'
 
   depends_on 'gnuplot' if build.with? 'bpm-graph'
-  depends_on 'sox' if build.with? 'bpm-tag'
-  depends_on 'id3v2' if build.with? 'bpm-tag'
-  depends_on 'flac' if build.with? 'bpm-tag'
-  depends_on 'vorbis-tools' if build.with? 'bpm-tag'
+
+  if build.with? "bpm-tag"
+    depends_on 'sox'
+    depends_on 'id3v2'
+    depends_on 'flac'
+    depends_on 'vorbis-tools'
+  end
 
   def install
     system "make"

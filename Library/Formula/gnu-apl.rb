@@ -1,13 +1,18 @@
-require 'formula'
+require "formula"
 
 class GnuApl < Formula
-  homepage 'http://www.gnu.org/software/apl/'
-  url 'http://ftpmirror.gnu.org/apl/apl-1.3.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/apl/apl-1.3.tar.gz'
-  sha1 'f4cd44a716dc5c5af1cd88811e10efa03d327fd2'
+  desc "GNU implementation of the programming language APL"
+  homepage "http://www.gnu.org/software/apl/"
+  url "http://ftpmirror.gnu.org/apl/apl-1.4.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/apl/apl-1.4.tar.gz"
+  sha1 "ee5dab7f7c0f5d79c435a20f3ddcafbda85ac22e"
+
+  bottle do
+    sha1 "e067c7741c9f7e174f0a5f06d99e59fe5b6e930b" => :mavericks
+  end
 
   # GNU Readline is required; libedit won't work.
-  depends_on 'readline'
+  depends_on "readline"
   depends_on :macos => :mavericks
 
   def install
@@ -19,7 +24,10 @@ class GnuApl < Formula
   end
 
   test do
-    ENV["TERM"] = "dumb"
-    system "#{bin}/apl", "--version"
+    (testpath/"hello.apl").write <<-EOS.undent
+      'Hello world'
+      )OFF
+    EOS
+    assert_match /Hello world/, shell_output("#{bin}/apl -s -f hello.apl")
   end
 end

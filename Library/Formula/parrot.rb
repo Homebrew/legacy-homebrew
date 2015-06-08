@@ -1,24 +1,25 @@
-require 'formula'
+require "formula"
 
 class Parrot < Formula
-  homepage 'http://www.parrot.org/'
-  url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/6.0.0/parrot-6.0.0.tar.bz2'
-  sha256 '6cb9223ee389a36588acf76ad8ac85e2224544468617412b1d7902e5eb8bd39b'
+  desc "Open source virtual machine (for Perl6, et al.)"
+  homepage "http://www.parrot.org/"
+  head "https://github.com/parrot/parrot.git"
+  url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.9.0/parrot-6.9.0.tar.bz2"
+  sha256 "ad5f3723c216675b9ebc2e3d3807d24fd13aa55e1eb3e7ffcad4062e0026f482"
 
-  devel do
-    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/6.1.0/parrot-6.1.0.tar.bz2'
-    sha256 'bb1294ad2a7d5b3c4688fc736fb775e94ecfe35fdc072a2631c2080eb5f366f7'
+  bottle do
+    sha1 "8cadb0beb3984785d995a64847ed78b279798cee" => :yosemite
+    sha1 "da39dec1f80b1fa5192ed3b72ca53b7333e8ca3b" => :mavericks
+    sha1 "d09c985f1f51ecf6bed935da78311cb650b23ba7" => :mountain_lion
   end
 
-  head 'https://github.com/parrot/parrot.git'
+  conflicts_with "rakudo-star"
 
-  conflicts_with 'rakudo-star'
-
-  depends_on 'gmp' => :optional
-  depends_on 'icu4c' => :optional
-  depends_on 'pcre' => :optional
-  depends_on 'readline' => :optional
-  depends_on 'libffi' => :optional
+  depends_on "gmp" => :optional
+  depends_on "icu4c" => :optional
+  depends_on "pcre" => :optional
+  depends_on "readline" => :optional
+  depends_on "libffi" => :optional
 
   def install
     system "perl", "Configure.pl", "--prefix=#{prefix}",
@@ -29,7 +30,7 @@ class Parrot < Formula
     system "make"
     system "make install"
     # Don't install this file in HOMEBREW_PREFIX/lib
-    rm_rf lib/'VERSION'
+    rm_rf lib/"VERSION"
   end
 
   test do

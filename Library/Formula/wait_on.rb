@@ -1,11 +1,12 @@
 require 'formula'
 
 class WaitOn < Formula
+  desc "Provides shell scripts with access to kqueue(3)"
   homepage 'http://www.freshports.org/sysutils/wait_on/'
   url 'http://distcache.freebsd.org/ports-distfiles/wait_on-1.1.tar.gz'
   sha1 '9e3fb51b6324f5aca7664fb8165f61a52bd5bd61'
 
-  depends_on :bsdmake
+  depends_on "bsdmake" => :build
 
   def install
     system "bsdmake"

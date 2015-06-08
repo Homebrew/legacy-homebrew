@@ -1,13 +1,14 @@
 require 'formula'
 
 class Log4cxx < Formula
+  desc "Library of C++ classes for flexible logging"
   homepage 'http://logging.apache.org/log4cxx/index.html'
   url 'http://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
   sha1 'd79c053e8ac90f66c5e873b712bb359fd42b648d'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   option :universal
 

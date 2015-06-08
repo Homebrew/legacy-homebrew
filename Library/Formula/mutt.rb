@@ -1,23 +1,22 @@
-require "formula"
-
-# Note: Mutt has a large number of non-upstream patches available for it,
-# some of which conflict with each other. These patches are also not kept
-# up-to-date when new versions of mutt (occasionally) come out.
-# To reduce Homebrew's maintainence burden, new patches are not being
-# accepted for this formula. Mutt power-users are encouraged to copy the
-# formula and modify it locally, adding needed patches.
+# Note: Mutt has a large number of non-upstream patches available for
+# it, some of which conflict with each other. These patches are also
+# not kept up-to-date when new versions of mutt (occasionally) come
+# out.  To reduce Homebrew's maintenance burden, new patches are not
+# being accepted for this formula. Mutt power-users are encouraged to
+# copy the formula and modify it locally, adding needed patches.
 class Mutt < Formula
+  desc "Mongrel of mail user agents (part elm, pine, mush, mh, etc.)"
   homepage "http://www.mutt.org/"
-  url "ftp://ftp.mutt.org/mutt/mutt-1.5.23.tar.gz"
-  mirror "http://fossies.org/linux/misc/mutt-1.5.23.tar.gz"
-  sha1 "8ac821d8b1e25504a31bf5fda9c08d93a4acc862"
-  revision 1
+  url "https://mirrors.kernel.org/debian/pool/main/m/mutt/mutt_1.5.23.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mutt/mutt_1.5.23.orig.tar.gz"
+  sha256 "3af0701e57b9e1880ed3a0dee34498a228939e854a16cdccd24e5e502626fd37"
+  revision 2
 
   bottle do
-    revision 1
-    sha1 "5aa656ffd793e57b26642b82c514e0195e32dd1e" => :mavericks
-    sha1 "56302c5553e7bf5b31db3720ab22c6343c11c428" => :mountain_lion
-    sha1 "8b7dad42c73723e25cb874e2654c8754218f580a" => :lion
+    revision 3
+    sha256 "7dcb549c1a9efc7f4c1a0602709478cae6f071215a762c77b4d9fba1ab561287" => :yosemite
+    sha256 "4b9b8c3a3b069d6103f650f1136161d41de1bc6014a682b6c15fd8d562cc773b" => :mavericks
+    sha256 "79b84411d1f0916e7df520b9fbac9f9d4479a4631f5da6b616f363fd6f68d0c2" => :mountain_lion
   end
 
   head do
@@ -28,7 +27,7 @@ class Mutt < Formula
     end
   end
 
-  unless Tab.for_name("signing-party").used_options.include? "with-rename-pgpring"
+  unless Tab.for_name("signing-party").with? "rename-pgpring"
     conflicts_with "signing-party",
       :because => "mutt installs a private copy of pgpring"
   end
@@ -77,7 +76,7 @@ class Mutt < Formula
     args = ["--disable-dependency-tracking",
             "--disable-warnings",
             "--prefix=#{prefix}",
-            "--with-ssl=#{Formula['openssl'].opt_prefix}",
+            "--with-ssl=#{Formula["openssl"].opt_prefix}",
             "--with-sasl",
             "--with-gss",
             "--enable-imap",
@@ -85,9 +84,9 @@ class Mutt < Formula
             "--enable-pop",
             "--enable-hcache",
             "--with-tokyocabinet",
-            # This is just a trick to keep 'make install' from trying to chgrp
-            # the mutt_dotlock file (which we can't do if we're running as an
-            # unpriviledged user)
+            # This is just a trick to keep 'make install' from trying
+            # to chgrp the mutt_dotlock file (which we can't do if
+            # we're running as an unprivileged user)
             "--with-homespool=.mbox"]
     args << "--with-slang" if build.with? "s-lang"
     args << "--enable-gpgme" if build.with? "gpgme"
@@ -102,6 +101,10 @@ class Mutt < Formula
     system "make"
     system "make", "install"
 
-    (share/"doc/mutt").install resource("html") if build.head?
+    doc.install resource("html") if build.head?
+  end
+
+  test do
+    system bin/"mutt", "-D"
   end
 end

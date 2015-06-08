@@ -1,22 +1,36 @@
-require 'formula'
-
 class Entr < Formula
-  homepage 'http://entrproject.org/'
-  url 'http://entrproject.org/code/entr-2.8.tar.gz'
-  sha1 'ec03da66480cc7f8c6130e6f8599e1ae956e9b72'
+  desc "Run arbitrary commands when files change"
+  homepage "http://entrproject.org/"
+  url "http://entrproject.org/code/entr-3.2.tar.gz"
+  mirror "https://bitbucket.org/eradman/entr/get/entr-3.2.tar.gz"
+  sha256 "b1eee00afbeccf03010c1c557436854be6aaf0ef9b72ab8d44b94affdd7d7146"
+
+  head do
+    url "https://bitbucket.org/eradman/entr", :using => :hg
+    depends_on :hg => :build
+  end
 
   bottle do
     cellar :any
-    sha1 "b1fe6118d723b9eadbec1bab469eade0943e62ed" => :mavericks
-    sha1 "4768d9865e6b1c20839834ffec69e4697eaee32c" => :mountain_lion
-    sha1 "f7e3bcf2fc31d896f2bb6f62711bed1de2099ed7" => :lion
+    sha256 "abf6264e4dd04966320b6e2ed371e5c101a3c73e71102f988f5f30ab3aa26b9f" => :yosemite
+    sha256 "f2b9660db9526f88691d093b62fcd6c7361c582319fd8609dbd2786f3e1624c0" => :mavericks
+    sha256 "896090571a723c7f513e342967a7623bcf3cc0d70af5eabc473f8425c4037ef3" => :mountain_lion
   end
 
   def install
-    ENV['PREFIX'] = prefix
-    ENV['MANPREFIX'] = man
+    ENV["PREFIX"] = prefix
+    ENV["MANPREFIX"] = man
     system "./configure"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    touch testpath/"test.1"
+    fork do
+      sleep 0.5
+      touch testpath/"test.2"
+    end
+    assert_equal "New File", pipe_output("#{bin}/entr -p -d echo 'New File'", testpath).strip
   end
 end

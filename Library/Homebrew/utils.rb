@@ -3,6 +3,8 @@ require 'exceptions'
 require 'os/mac'
 require 'utils/json'
 require 'utils/inreplace'
+require 'utils/popen'
+require 'utils/fork'
 require 'open-uri'
 
 class Tty
@@ -44,7 +46,7 @@ end
 def ohai title, *sput
   title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
-  puts sput unless sput.empty?
+  puts sput
 end
 
 def oh1 title
@@ -53,13 +55,11 @@ def oh1 title
 end
 
 def opoo warning
-  STDERR.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
+  $stderr.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error
-  lines = error.to_s.split("\n")
-  STDERR.puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
-  STDERR.puts lines unless lines.empty?
+  $stderr.puts "#{Tty.red}Error#{Tty.reset}: #{error}"
 end
 
 def ofail error
@@ -85,7 +85,7 @@ end
 def interactive_shell f=nil
   unless f.nil?
     ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
-    ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
+    ENV['HOMEBREW_DEBUG_INSTALL'] = f.full_name
   end
 
   Process.wait fork { exec ENV['SHELL'] }
@@ -106,11 +106,39 @@ module Homebrew
     pid = fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
-      exec(cmd.to_s, *args) rescue nil
+      exec(cmd, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
     Process.wait(pid)
     $?.success?
+  end
+
+  def self.git_head
+    HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
+  end
+
+  def self.git_last_commit
+    HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
+  end
+
+  def self.install_gem_setup_path! gem, version=nil, executable=gem
+    require "rubygems"
+    ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
+
+    args = [gem]
+    args << "-v" << version if version
+
+    unless quiet_system "gem", "list", "--installed", *args
+      safe_system "gem", "install", "--no-ri", "--no-rdoc",
+                                    "--user-install", *args
+    end
+
+    unless which executable
+      odie <<-EOS.undent
+        The '#{gem}' gem is installed but couldn't find '#{executable}' in the PATH:
+        #{ENV["PATH"]}
+      EOS
+    end
   end
 end
 
@@ -122,12 +150,18 @@ ensure
   ENV['PATH'] = old_path
 end
 
+def run_as_not_developer(&block)
+  begin
+    old = ENV.delete "HOMEBREW_DEVELOPER"
+    yield
+  ensure
+    ENV["HOMEBREW_DEVELOPER"] = old
+  end
+end
+
 # Kernel.system but with exceptions
 def safe_system cmd, *args
-  unless Homebrew.system cmd, *args
-    args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
-    raise ErrorDuringExecution, "Failure while executing: #{cmd} #{args}"
-  end
+  Homebrew.system(cmd, *args) or raise ErrorDuringExecution.new(cmd, args)
 end
 
 # prints no output
@@ -141,7 +175,12 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  curl = Pathname.new '/usr/bin/curl'
+  brewed_curl = HOMEBREW_PREFIX/"opt/curl/bin/curl"
+  curl = if MacOS.version <= "10.6" && brewed_curl.exist?
+    brewed_curl
+  else
+    Pathname.new '/usr/bin/curl'
+  end
   raise "#{curl} is not executable" unless curl.exist? and curl.executable?
 
   flags = HOMEBREW_CURL_ARGS
@@ -178,30 +217,36 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  path.split(File::PATH_SEPARATOR).find do |p|
-    pcmd = File.join(p, cmd)
-    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+  path.split(File::PATH_SEPARATOR).each do |p|
+    pcmd = File.expand_path(cmd, p)
+    return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
   return nil
 end
 
 def which_editor
   editor = ENV.values_at('HOMEBREW_EDITOR', 'VISUAL', 'EDITOR').compact.first
-  # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 
   # Find Textmate
-  return 'mate' if which "mate"
+  editor = "mate" if which "mate"
   # Find BBEdit / TextWrangler
-  return 'edit' if which "edit"
+  editor ||= "edit" if which "edit"
   # Find vim
-  return 'vim' if which "vim"
+  editor ||= "vim" if which "vim"
   # Default to standard vim
-  return '/usr/bin/vim'
+  editor ||= "/usr/bin/vim"
+
+  opoo <<-EOS.undent
+    Using #{editor} because no editor was set in the environment.
+    This may change in the future, so we recommend setting EDITOR, VISUAL,
+    or HOMEBREW_EDITOR to your preferred text editor.
+  EOS
+
+  editor
 end
 
 def exec_editor *args
-  return if args.to_s.empty?
   safe_exec(which_editor, *args)
 end
 
@@ -213,7 +258,7 @@ end
 def safe_exec cmd, *args
   # This buys us proper argument quoting and evaluation
   # of environment variables in the cmd parameter.
-  exec "/bin/sh", "-i", "-c", cmd + ' "$@"', "--", *args
+  exec "/bin/sh", "-c", "#{cmd} \"$@\"", "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -244,12 +289,12 @@ def nostdout
     yield
   else
     begin
-      require 'stringio'
-      real_stdout = $stdout
-      $stdout = StringIO.new
+      out = $stdout.dup
+      $stdout.reopen("/dev/null")
       yield
     ensure
-      $stdout = real_stdout
+      $stdout.reopen(out)
+      out.close
     end
   end
 end
@@ -264,6 +309,16 @@ def paths
   end.uniq.compact
 end
 
+# return the shell profile file based on users' preference shell
+def shell_profile
+  case ENV["SHELL"]
+  when %r{/(ba)?sh} then "~/.bash_profile"
+  when %r{/zsh} then "~/.zshrc"
+  when %r{/ksh} then "~/.kshrc"
+  else "~/.bash_profile"
+  end
+end
+
 module GitHub extend self
   ISSUES_URI = URI.parse("https://api.github.com/search/issues")
 
@@ -274,9 +329,9 @@ module GitHub extend self
     def initialize(reset, error)
       super <<-EOS.undent
         GitHub #{error}
-        Try again in #{pretty_ratelimit_reset(reset)}, or create an API token:
-          https://github.com/settings/applications
-        and then set HOMEBREW_GITHUB_API_TOKEN.
+        Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
+          https://github.com/settings/tokens
+        and then set it as HOMEBREW_GITHUB_API_TOKEN.
         EOS
     end
 
@@ -294,32 +349,33 @@ module GitHub extend self
       super <<-EOS.undent
         GitHub #{error}
         HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          https://github.com/settings/applications
+          https://github.com/settings/tokens
         EOS
     end
   end
 
-  def open url, headers={}, &block
+  def open(url, &block)
     # This is a no-op if the user is opting out of using the GitHub API.
     return if ENV['HOMEBREW_NO_GITHUB_API']
 
-    require 'net/https' # for exception classes below
+    require "net/https"
 
-    default_headers = {
+    headers = {
       "User-Agent" => HOMEBREW_USER_AGENT,
       "Accept"     => "application/vnd.github.v3+json",
     }
 
-    default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-    Kernel.open(url, default_headers.merge(headers)) do |f|
-      yield Utils::JSON.load(f.read)
+    headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
+
+    begin
+      Kernel.open(url, headers) { |f| yield Utils::JSON.load(f.read) }
+    rescue OpenURI::HTTPError => e
+      handle_api_error(e)
+    rescue EOFError, SocketError, OpenSSL::SSL::SSLError => e
+      raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
+    rescue Utils::JSON::Error => e
+      raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
     end
-  rescue OpenURI::HTTPError => e
-    handle_api_error(e)
-  rescue SocketError, OpenSSL::SSL::SSLError => e
-    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
-  rescue Utils::JSON::Error => e
-    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
   def handle_api_error(e)

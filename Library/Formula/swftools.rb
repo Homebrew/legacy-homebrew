@@ -1,6 +1,7 @@
 require 'formula'
 
 class Swftools < Formula
+  desc "SWF manipulation and generation tools"
   homepage 'http://www.swftools.org'
   url 'http://www.swftools.org/swftools-0.9.2.tar.gz'
   sha1 'd7cf8874c4187d2edd3e40d20ba325ca17b91973'
@@ -14,8 +15,8 @@ class Swftools < Formula
   depends_on 'fftw' => :optional
 
   resource 'xpdf' do
-    url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.03.tar.gz', :using  => :nounzip
-    sha1 '499423e8a795e0efd76ca798239eb4d0d52fe248'
+    url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.04.tar.gz', :using  => :nounzip
+    sha1 'b9b1dbb0335742a09d0442c60fd02f4f934618bd'
   end
 
   # Fixes a conftest for libfftwf.dylib that mistakenly calls fftw_malloc()
@@ -32,7 +33,7 @@ class Swftools < Formula
   end
 
   test do
-    system "#{bin}/png2swf", "swftools_test.swf", "/usr/share/doc/cups/images/cups.png"
+    system "#{bin}/png2swf", "swftools_test.swf", test_fixtures("test.png")
   end
 end
 

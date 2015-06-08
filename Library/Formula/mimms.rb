@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mimms < Formula
+  desc "Mms stream downloader"
   homepage 'http://savannah.nongnu.org/projects/mimms'
   url 'https://launchpad.net/mimms/trunk/3.2.1/+download/mimms-3.2.1.tar.bz2'
   sha1 '279eee76dd4032cd2c1dddf1d49292a952c57b80'
@@ -10,7 +11,6 @@ class Mimms < Formula
 
   # Switch shared library loading to Mach-O naming convention (.dylib)
   # Matching upstream bug report: http://savannah.nongnu.org/bugs/?29684
-  # Fix installation path for man page to $(brew --prefix)/share/man
   patch :DATA
 
   def install

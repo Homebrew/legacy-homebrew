@@ -1,14 +1,22 @@
-require 'formula'
+require "formula"
 
 class Disco < Formula
-  homepage 'http://discoproject.org/'
-  url 'https://github.com/discoproject/disco/archive/0.5.1.tar.gz'
-  sha1 'c158018409216d5c03368b773e54e1e5ea91ae38'
+  desc "Distributed computing framework based on the MapReduce paradigm"
+  homepage "http://discoproject.org/"
+  url "https://github.com/discoproject/disco/archive/0.5.4.tar.gz"
+  sha1 "43bc8fac5d5d657a81a8d7b628d1f72f97470b6e"
+
+  bottle do
+    cellar :any
+    sha1 "f1a4e9775053971dac6ab3b183ebb13d6928c050" => :yosemite
+    sha1 "286325ec178e1bd06a78127333c835a1bf5a2763" => :mavericks
+    sha1 "da6e23c51a8ca6c353e83724746f0e11dba37a99" => :mountain_lion
+  end
 
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.version <= :leopard
-  depends_on 'libcmph'
+  depends_on "erlang"
+  depends_on "simplejson" => :python if MacOS.version <= :leopard
+  depends_on "libcmph"
 
   # Modifies config for single-node operation
   patch :DATA
@@ -37,7 +45,7 @@ class Disco < Formula
       s.gsub!("Cellar/disco/"+version+"/", "")
     end
 
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

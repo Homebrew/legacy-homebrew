@@ -1,16 +1,15 @@
-require "formula"
-
 class Sbcl < Formula
+  desc "Steel Bank Common Lisp system"
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.0/sbcl-1.2.0-source.tar.bz2"
-  sha1 "275804270c2a00304a1da6ffe9764ca29c393133"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.12/sbcl-1.2.12-source.tar.bz2"
+  sha256 "b65bc878f15b8dc87582498780714e06c32a161aaa579e6f0216fd372247c9ad"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
-    sha1 "7377561de8efea05b685d0558fb25869eefad729" => :mavericks
-    sha1 "8faa53a0b74c22f2ee6e9c25bd8f280876c2d15b" => :mountain_lion
-    sha1 "e868a07068dcec1a39e1932c79b0e91b6a9e7df2" => :lion
+    sha256 "88af924875adfb1d6526a4642a516fb9e02f22e0ff01f73306e60516fe1cf12a" => :yosemite
+    sha256 "b6275cda423c3ff0e2b38ad864eb9ec5ea7ece88dfb3e69ef0b42c8a35f6d415" => :mavericks
+    sha256 "e05b809845cd4f80a8b821d80c11f568cbd8f3ae15b44ab1bcdb2d55a738486f" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -77,7 +76,7 @@ class Sbcl < Formula
 
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
-    ENV.delete_if do |key, value|
+    ENV.delete_if do |_, value|
       value =~ /[\x80-\xff]/n
     end
 
@@ -96,15 +95,14 @@ class Sbcl < Formula
     end
 
     ENV["INSTALL_ROOT"] = prefix
-    system "sh install.sh"
+    system "sh", "install.sh"
   end
 
   test do
-    (testpath/'simple.sbcl').write <<-EOS.undent
+    (testpath/"simple.sbcl").write <<-EOS.undent
       (write-line (write-to-string (+ 2 2)))
     EOS
-    output = `'#{bin}/sbcl' --script #{testpath}/simple.sbcl`
-    assert_equal '4', output.strip
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/sbcl --script #{testpath}/simple.sbcl")
+    assert_equal "4", output.strip
   end
 end

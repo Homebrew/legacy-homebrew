@@ -1,19 +1,26 @@
-require 'formula'
-
 class AndroidNdk < Formula
-  homepage 'http://developer.android.com/sdk/ndk/index.html'
-  url 'http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86.tar.bz2'
-  version 'r9d'
-  sha1 '91ac410a24ad6d1fc67b5161294a4a5cb78b2975'
+  desc "Android native-code language toolset"
+  homepage "https://developer.android.com/sdk/ndk/index.html"
+  url "https://dl.google.com/android/ndk/android-ndk-r10e-darwin-x86_64.bin"
+  sha256 "728c309e606f63101f1258c9d3d579b80ac74fe74c511ebb71f460ce5c5d084e"
 
-  depends_on 'android-sdk'
+  version "r10e"
+
+  # As of r10e, only a 64-bit version is provided
+  depends_on :arch => :x86_64
+  depends_on "android-sdk" => :recommended
 
   def install
     bin.mkpath
-    prefix.install Dir['*']
+
+    chmod 0755, "./android-ndk-#{version}-darwin-x86_64.bin"
+    system "./android-ndk-#{version}-darwin-x86_64.bin"
+
+    # Now we can install both 64-bit and 32-bit targeting toolchains
+    prefix.install Dir["android-ndk-#{version}/*"]
 
     # Create a dummy script to launch the ndk apps
-    ndk_exec = prefix+'ndk-exec.sh'
+    ndk_exec = prefix+"ndk-exec.sh"
     ndk_exec.write <<-EOS.undent
       #!/bin/sh
       BASENAME=`basename $0`
@@ -29,10 +36,10 @@ class AndroidNdk < Formula
     If this is unacceptable you should uninstall.
 
     License information at:
-    http://developer.android.com/sdk/terms.html
+    https://developer.android.com/sdk/terms.html
 
     Software and System requirements at:
-    http://developer.android.com/sdk/ndk/index.html#requirements
+    https://developer.android.com/sdk/ndk/index.html#requirements
 
     For more documentation on Android NDK, please check:
       #{prefix}/docs

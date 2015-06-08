@@ -1,11 +1,17 @@
 require 'formula'
 
 class Graphicsmagick < Formula
+  desc "Image processing tools collection"
   homepage 'http://www.graphicsmagick.org/'
-  url 'https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.19/GraphicsMagick-1.3.19.tar.bz2'
-  sha256 'b57cdeb1ab9492b667776bbbc265149eda5601d2c572d65f43b44273e892fff1'
-  head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
-  revision 1
+  url 'https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.21/GraphicsMagick-1.3.21.tar.bz2'
+  sha256 'a0ce08f2710c158e39faa083463441f6eeeecce07dbd59510498ffa4e0b053d1'
+  head 'http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick', :using => :hg
+
+  bottle do
+    sha1 "73175a47211a0e05b55b15cfbcefcb1fc34b93ca" => :yosemite
+    sha1 "d20dd246c9ae4f9bed6cd11a9de877490e5113ce" => :mavericks
+    sha1 "b9265254c6c11f0ff0e44960d514ef7087a89eeb" => :mountain_lion
+  end
 
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
@@ -29,8 +35,7 @@ class Graphicsmagick < Formula
   depends_on 'jasper' => :optional
   depends_on 'libwmf' => :optional
   depends_on 'ghostscript' => :optional
-
-  opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
+  depends_on "webp" => :optional
 
   fails_with :llvm do
     build 2335
@@ -54,6 +59,7 @@ class Graphicsmagick < Formula
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? 'ghostscript'
     args << "--without-magick-plus-plus" if build.without? 'magick-plus-plus'
     args << "--with-perl" if build.with? "perl"
+    args << "--with-webp=yes" if build.with? "webp"
 
     if build.with? 'quantum-depth-32'
       quantum_depth = 32
@@ -85,7 +91,7 @@ class Graphicsmagick < Formula
   end
 
   test do
-    system "#{bin}/gm", "identify", "/usr/share/doc/cups/images/cups.png"
+    system "#{bin}/gm", "identify", test_fixtures("test.png")
   end
 
   def caveats

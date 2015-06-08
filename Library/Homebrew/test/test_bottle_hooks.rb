@@ -2,7 +2,7 @@ require 'testing_env'
 require 'formula_installer'
 require 'hooks/bottles'
 
-class BottleHookTests < Test::Unit::TestCase
+class BottleHookTests < Homebrew::TestCase
   class FormulaDouble
     def bottle; end
     def local_bottle_path; end
@@ -17,14 +17,14 @@ class BottleHookTests < Test::Unit::TestCase
     Homebrew::Hooks::Bottles.setup_formula_has_bottle do |f|
       f.some_random_method
     end
-    assert @fi.pour_bottle?
+    assert_predicate @fi, :pour_bottle?
   end
 
   def test_has_no_bottle
     Homebrew::Hooks::Bottles.setup_formula_has_bottle do |f|
       !f.some_random_method
     end
-    assert !@fi.pour_bottle?
+    refute_predicate @fi, :pour_bottle?
   end
 
   def test_pour_formula_bottle
@@ -36,5 +36,9 @@ class BottleHookTests < Test::Unit::TestCase
       f.some_random_method
     end
     @fi.pour
+  end
+
+  def teardown
+    Homebrew::Hooks::Bottles.reset_hooks
   end
 end

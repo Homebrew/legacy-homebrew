@@ -20,19 +20,18 @@ class Dependency
   end
 
   def ==(other)
-    instance_of?(other.class) && name == other.name
+    instance_of?(other.class) && name == other.name && tags == other.tags
   end
   alias_method :eql?, :==
 
   def hash
-    name.hash
+    name.hash ^ tags.hash
   end
 
   def to_formula
-    f = Formula.factory(name)
-    # Add this dependency's options to the formula's build args
-    f.build.args = f.build.args.concat(options)
-    f
+    formula = Formulary.factory(name)
+    formula.build = BuildOptions.new(options, formula.options)
+    formula
   end
 
   def installed?
@@ -43,11 +42,9 @@ class Dependency
     installed? && missing_options(inherited_options).empty?
   end
 
-  def missing_options(inherited_options=[])
-    missing = options | inherited_options
-    missing -= Tab.for_formula(to_formula).used_options
-    missing -= to_formula.build.implicit_options
-    missing
+  def missing_options(inherited_options)
+    required = options | inherited_options
+    required - Tab.for_formula(to_formula).used_options
   end
 
   def modify_build_environment
@@ -55,7 +52,7 @@ class Dependency
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   # Define marshaling semantics because we cannot serialize @env_proc
@@ -121,20 +118,25 @@ class Dependency
       throw(:action, :keep_but_prune_recursive_deps)
     end
 
-    def merge_repeats(deps)
-      grouped = deps.group_by(&:name)
+    def merge_repeats(all)
+      grouped = all.group_by(&:name)
 
-      deps.uniq.map do |dep|
-        tags = grouped.fetch(dep.name).map(&:tags).flatten.uniq
-        dep.class.new(dep.name, tags, dep.env_proc)
+      all.map(&:name).uniq.map do |name|
+        deps = grouped.fetch(name)
+        dep  = deps.first
+        tags = deps.map(&:tags).flatten.uniq
+        dep.class.new(name, tags, dep.env_proc)
       end
     end
   end
 end
 
 class TapDependency < Dependency
+  attr_reader :tap
+
   def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
-    super(name, tags, env_proc, name.split("/").last)
+    @tap, _, option_name = option_name.rpartition "/"
+    super(name, tags, env_proc, option_name)
   end
 
   def installed?

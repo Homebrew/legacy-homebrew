@@ -1,16 +1,15 @@
-require 'formula'
-
 class Ocrad < Formula
-  homepage 'http://www.gnu.org/software/ocrad/'
-  url 'http://ftpmirror.gnu.org/ocrad/ocrad-0.23.tar.lz'
-  mirror 'http://ftp.gnu.org/gnu/ocrad/ocrad-0.23.tar.lz'
-  sha1 '8f539613ce6eb816c691f37ef0977adfcdab5e92'
+  desc "Optical character recognition (OCR) program"
+  homepage "https://www.gnu.org/software/ocrad/"
+  url "http://ftpmirror.gnu.org/ocrad/ocrad-0.25.tar.lz"
+  mirror "https://ftp.gnu.org/gnu/ocrad/ocrad-0.25.tar.lz"
+  sha256 "e710be9c030fbcbce2315077326c8268feb422c0bc39fa744644cbbd1f5d4dd4"
 
   bottle do
     cellar :any
-    sha1 "a3714c9fe1685bf247ba7ff127a098eb1ac0b9d9" => :mavericks
-    sha1 "fbc42888aa3700c6420eedb6aa3c7aea27d2e80d" => :mountain_lion
-    sha1 "3bc70ab2c0df8e0368990d146c03c34ed29d1e9a" => :lion
+    sha256 "99dba4fcc35dcea80dcf70e783832a57578f36406aa9a465398cf511ff2bae6e" => :yosemite
+    sha256 "ee28a84a3c13a281f601f92920201a00af54509201f62ffb9d84d0e554001c7d" => :mavericks
+    sha256 "2e338636210625c15a91389b2d53b7464c05c38017d0fba37076e100794668e1" => :mountain_lion
   end
 
   def install
@@ -19,6 +18,21 @@ class Ocrad < Formula
   end
 
   test do
-    system "#{bin}/ocrad", "-h"
+    (testpath/"test.pbm").write <<-EOS.undent
+      P1
+      # This is an example bitmap of the letter "J"
+      6 10
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      0 0 0 0 1 0
+      1 0 0 0 1 0
+      0 1 1 1 0 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+    EOS
+    assert_equal "J", `#{bin}/ocrad #{testpath}/test.pbm`.strip
   end
 end

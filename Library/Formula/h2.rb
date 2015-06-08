@@ -1,10 +1,11 @@
 require 'formula'
 
 class H2 < Formula
+  desc "Java SQL database"
   homepage 'http://www.h2database.com/'
-  url 'http://www.h2database.com/h2-2014-04-05.zip'
-  version '1.3.176'
-  sha1 '9a87bf67741e1b9f9711db160e783898f4242bfe'
+  url 'http://www.h2database.com/h2-2015-03-02.zip'
+  version '1.4.186'
+  sha1 '39906db100cbef8c36973689906c9fa0c1440721'
 
   def script; <<-EOS.undent
     #!/bin/sh

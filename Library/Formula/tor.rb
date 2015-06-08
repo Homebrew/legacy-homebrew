@@ -1,39 +1,44 @@
-require "formula"
-
 class Tor < Formula
+  desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
-  url "https://www.torproject.org/dist/tor-0.2.4.22.tar.gz"
-  sha1 "42349e02c3f6db4e6f2cc52b8a61ea91761ac4d6"
+  url "https://dist.torproject.org/tor-0.2.6.8.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.6.8.tar.gz"
+  sha256 "b88b363896454250c3f561b0b48479f18295c93596d2e81baa10c5a3ae609a76"
 
   bottle do
-    revision 1
-    sha1 "f6b42d12fb7dc5a18a6d58b3250923d0a0fcd78f" => :mavericks
-    sha1 "f9225a57b8a494767cf4a5e126a5cbb19af86e7d" => :mountain_lion
-    sha1 "5be6f9dd594330e1864f6a570873d86f3c84506f" => :lion
+    sha256 "8e951125ab8ccec4f75f042f07bded3b08c4c970b84d84a6962249b7290ba86d" => :yosemite
+    sha256 "4e99238ca821986b63c7b524774c9173ad8b9f0e5075266f9fe254ff0103b0a9" => :mavericks
+    sha256 "a0316b566f6214a0b476f916c8810375bf964844d622512f3faf1ad68bac5ed9" => :mountain_lion
   end
 
   devel do
-    url "https://www.torproject.org/dist/tor-0.2.5.4-alpha.tar.gz"
-    version "0.2.5.4-alpha"
-    sha1 "6817c103e2e401330823930e1a0dec38e5147ba2"
+    url "https://dist.torproject.org/tor-0.2.7.1-alpha.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.7.1-alpha.tar.gz"
+    sha256 "9afc770a5a795e752f053ae7c2c1ee3a560145adc0aea377c83e602c2cbbed9b"
+    version "0.2.7.1-alpha"
   end
 
   depends_on "libevent"
   depends_on "openssl"
+  depends_on "libnatpmp" => :optional
+  depends_on "miniupnpc" => :optional
+  depends_on "libscrypt" => :optional
 
   def install
-    # Fix the path to the control cookie.
-    inreplace "contrib/tor-ctrl.sh",
-      'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
-      'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+      --with-openssl-dir=#{Formula["openssl"].opt_prefix}
+    ]
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
-    system "make install"
+    args << "--with-libnatpmp-dir=#{Formula["libnatpmp"].opt_prefix}" if build.with? "libnatpmp"
+    args << "--with-libminiupnpc-dir=#{Formula["miniupnpc"].opt_prefix}" if build.with? "miniupnpc"
+    args << "--disable-libscrypt" if build.without? "libscrypt"
 
-    bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
+    system "./configure", *args
+    system "make", "install"
   end
 
   test do
@@ -59,6 +64,15 @@ class Tor < Formula
         <string>#{HOMEBREW_PREFIX}</string>
       </dict>
     </plist>
+    EOS
+  end
+
+  def caveats; <<-EOS.undent
+    You will find a sample `torrc` file in #{etc}/tor.
+    It is advisable to edit the sample `torrc` to suit
+    your own security needs:
+      https://www.torproject.org/docs/faq#torrc
+    After editing the `torrc` you need to restart tor.
     EOS
   end
 end

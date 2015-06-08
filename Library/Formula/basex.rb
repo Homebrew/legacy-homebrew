@@ -1,10 +1,18 @@
 require 'formula'
 
 class Basex < Formula
+  desc "Light-weight XML database and XPath/XQuery processor"
   homepage 'http://basex.org'
-  url 'http://files.basex.org/releases/7.8.2/BaseX782.zip'
-  version '7.8.2'
-  sha1 '0fe690eb10cb5bc79491e3ece3cbce365840524e'
+  url 'http://files.basex.org/releases/8.2/BaseX82.zip'
+  version '8.2'
+  sha1 '4dfd8ce5508748777586d26ccedc466f437e7da6'
+
+  bottle do
+    cellar :any
+    sha256 "3a5da356958771ed48f4f7a2586c65466527c4d6922bffa3247a947a0c546517" => :yosemite
+    sha256 "0c46862974b6510bb93ae33adc43567952f82650be0e646893a7d2c958b6c32e" => :mavericks
+    sha256 "e5b1a5088b3237266d5676a504f44eff782bb5bf08bc4485473ec6be27866dc6" => :mountain_lion
+  end
 
   def install
     rm Dir['bin/*.bat']
@@ -17,9 +25,6 @@ class Basex < Formula
   end
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/basex", "1 to 10") do |_, stdout, _|
-      assert_equal "1 2 3 4 5 6 7 8 9 10", stdout.read
-    end
+    assert_equal "1\n2\n3\n4\n5\n6\n7\n8\n9\n10", shell_output("#{bin}/basex '1 to 10'")
   end
 end

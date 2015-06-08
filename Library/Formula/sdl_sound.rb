@@ -1,6 +1,7 @@
 require 'formula'
 
 class SdlSound < Formula
+  desc "Library to decode several popular sound file formats"
   homepage 'http://icculus.org/SDL_sound/'
   url 'http://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz'
   sha1 '1984bc20b2c756dc71107a5a0a8cebfe07e58cb1'
@@ -13,6 +14,8 @@ class SdlSound < Formula
     depends_on "libtool" => :build
   end
 
+  option :universal
+
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'flac' => :optional
@@ -23,6 +26,7 @@ class SdlSound < Formula
   depends_on 'physfs' => :optional
 
   def install
+    ENV.universal_binary if build.universal?
     if build.head?
       inreplace "bootstrap", "/usr/bin/glibtoolize",
         "#{Formula["libtool"].opt_bin}/glibtoolize"

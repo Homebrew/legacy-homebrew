@@ -3,9 +3,7 @@ require "formula"
 class TransitionalMode < Requirement
   fatal true
 
-  satisfy do
-    Tab.for_name("camlp5").unused_options.include? "strict"
-  end
+  satisfy { !Tab.for_name("camlp5").include?("strict") }
 
   def message; <<-EOS.undent
     camlp5 must be compiled in transitional mode (instead of --strict mode):
@@ -15,12 +13,19 @@ class TransitionalMode < Requirement
 end
 
 class Coq < Formula
-  homepage "http://coq.inria.fr/"
-  url "http://coq.inria.fr/distrib/V8.4pl4/files/coq-8.4pl4.tar.gz"
-  version "8.4pl4"
-  sha1 "4dfc3a1ae65f5c480ddc4387d21549a526183e00"
+  desc "Proof assistant for higher-order logic"
+  homepage "https://coq.inria.fr/"
+  url "https://coq.inria.fr/distrib/V8.4pl6/files/coq-8.4pl6.tar.gz"
+  version "8.4pl6"
+  sha1 "c89525295659a805661ef91da24ecfb94e226953"
 
-  head "git://scm.gforge.inria.fr/coq/coq.git"
+  head "git://scm.gforge.inria.fr/coq/coq.git", :branch => "trunk"
+
+  bottle do
+    sha256 "c2978c36d4cf84212e5f9d246135f032267b04cfb5bf413620706c7b8be87c1f" => :yosemite
+    sha256 "01b1fe69d4dab5f6c30891f37ce7e8999768784f02685a3a548abe37c5876e0e" => :mavericks
+    sha256 "3dcdec51e2d2402d6ec9bca3f5f1d29a486995fcccfbb46e9b023f18715a4968" => :mountain_lion
+  end
 
   depends_on TransitionalMode
   depends_on "objective-caml"

@@ -2,7 +2,7 @@ require 'testing_env'
 require 'version'
 require 'os/mac/version'
 
-class MacOSVersionTests < Test::Unit::TestCase
+class MacOSVersionTests < Homebrew::TestCase
   def setup
     @v = MacOS::Version.new("10.7")
   end
@@ -38,5 +38,10 @@ class MacOSVersionTests < Test::Unit::TestCase
     assert_operator @v, :==, Version.new("10.7")
     assert_operator @v, :===, Version.new("10.7")
     assert_operator @v, :<, Version.new("10.8")
+  end
+
+  def test_from_symbol
+    assert_equal @v, MacOS::Version.from_symbol(:lion)
+    assert_raises(ArgumentError) { MacOS::Version.from_symbol(:foo) }
   end
 end

@@ -1,23 +1,23 @@
-require "formula"
-
 class Davix < Formula
-  homepage "http://dmc.web.cern.ch/projects/davix/home"
-  head "https://git.cern.ch/pub/davix.git"
+  desc "Library and tools for advanced file I/O with HTTP-based protocols"
+  homepage "https://dmc.web.cern.ch/projects/davix/home"
+  url "https://github.com/cern-it-sdc-id/davix.git",
+    :revision => "9d8f400ec1882602fc18312f35d617fe94ebbd67",
+    :tag => "R_0_4_0-1"
+  version "0.4.0-1"
+
+  head "https://github.com/cern-it-sdc-id/davix.git"
 
   bottle do
     cellar :any
-    sha1 "7fd2d4e6dd0d2572c9bf00df6e63e0f23349684e" => :mavericks
-    sha1 "873460802e57043ba558741a0e04cb6b1ef61ec7" => :mountain_lion
-    sha1 "b17e9338f9f545dcb2a6c336fd03cdf9bf6cbdcb" => :lion
-  end
-
-  stable do
-    url "https://git.cern.ch/pub/davix.git", :tag => "R_0_3_1"
-    version "0.3.1"
+    sha1 "7b0e8b98a4bea320f53e18aee117b57b0e1e78d4" => :yosemite
+    sha1 "c9f097cb09483cd1be6d18d76c04728d9dcb6622" => :mavericks
+    sha1 "ed43d4321c579740ac29d3302f39f89e8c5f0ffb" => :mountain_lion
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
+  depends_on "openssl"
 
   def install
     ENV.libcxx

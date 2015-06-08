@@ -1,12 +1,18 @@
-require 'formula'
-
 class Couchdb < Formula
-  homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.5.1/apache-couchdb-1.5.1.tar.gz'
-  sha1 '5340c79f8f9e11742b723f92e2251d4d59b8247c'
+  desc "CouchDB is a document database server"
+  homepage "https://couchdb.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
+  sha256 "5a601b173733ce3ed31b654805c793aa907131cd70b06d03825f169aa48c8627"
+  revision 2
+
+  bottle do
+    sha256 "47b7f1ef640ec8d9f2ead064f5ab912fb9782168077451e1acb25b75e9bb3341" => :yosemite
+    sha256 "36ba0563f8ca7494eee01a7f1db432fe6b808e74edb03552478d64244de08ab3" => :mavericks
+    sha256 "7e3980cb7449267c8407187a95d3447440e9ed3a36158bcae1d0eee39de50c1e" => :mountain_lion
+  end
 
   head do
-    url 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
+    url "https://git-wip-us.apache.org/repos/asf/couchdb.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -16,20 +22,20 @@ class Couchdb < Formula
     depends_on "help2man" => :build
   end
 
-  depends_on 'spidermonkey'
-  depends_on 'icu4c'
-  depends_on 'erlang'
-  depends_on 'curl' if MacOS.version <= :leopard
+  depends_on "spidermonkey"
+  depends_on "icu4c"
+  depends_on "erlang"
+  depends_on "curl" if MacOS.version <= :leopard
 
   def install
     # CouchDB >=1.3.0 supports vendor names and versioning
     # in the welcome message
-    inreplace 'etc/couchdb/default.ini.tpl.in' do |s|
-      s.gsub! '%package_author_name%', 'Homebrew'
-      s.gsub! '%version%', '%version%-1'
+    inreplace "etc/couchdb/default.ini.tpl.in" do |s|
+      s.gsub! "%package_author_name%", "Homebrew"
+      s.gsub! "%version%", "%version%-1"
     end
 
-    if build.devel? or build.head?
+    if build.devel? || build.head?
       # workaround for the auto-generation of THANKS file which assumes
       # a developer build environment incl access to git sha
       touch "THANKS"
@@ -44,13 +50,23 @@ class Couchdb < Formula
                           "--with-js-include=#{HOMEBREW_PREFIX}/include/js",
                           "--with-js-lib=#{HOMEBREW_PREFIX}/lib"
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Use our plist instead to avoid faffing with a new system user.
     (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").delete
-    (lib+'couchdb/bin/couchjs').chmod 0755
-    (var+'lib/couchdb').mkpath
-    (var+'log/couchdb').mkpath
+    (lib+"couchdb/bin/couchjs").chmod 0755
+    (var+"lib/couchdb").mkpath
+    (var+"log/couchdb").mkpath
+  end
+
+  def post_install
+    # default.ini is owned by CouchDB and marked not user-editable
+    # and must be overwritten to ensure correct operation.
+    if (etc/"couchdb/default.ini.default").exist?
+      # but take a backup just in case the user didn't read the warning.
+      mv etc/"couchdb/default.ini", etc/"couchdb/default.ini.old"
+      mv etc/"couchdb/default.ini.default", etc/"couchdb/default.ini"
+    end
   end
 
   plist_options :manual => "couchdb"

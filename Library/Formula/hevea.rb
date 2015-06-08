@@ -1,22 +1,30 @@
-require 'formula'
-
 class Hevea < Formula
-  homepage 'http://hevea.inria.fr/'
-  url "http://hevea.inria.fr/distri/hevea-2.14.tar.gz"
-  sha1 "78152c83802e34881ce3414072d75bff66facb15"
+  desc "LaTeX-to-HTML translator"
+  homepage "http://hevea.inria.fr/"
+  url "http://hevea.inria.fr/old/hevea-2.23.tar.gz"
+  sha256 "db8ec1459cace8f008387dbcf745ba56917d44ff62c7bdba843da250109137b9"
 
   bottle do
-    sha1 "657486337d169647d9c10afb61516e38ae1bf772" => :mavericks
-    sha1 "0e1fe3dd6b1b21fbf435738f329473c1e6130e38" => :mountain_lion
-    sha1 "4766e826da52e595f679c699c836bcfb141dfdbd" => :lion
+    sha256 "d6f5a5ce7cd70c14fe1f9355ac8e7af264b093304c4f8488e5df190f5b6e434d" => :yosemite
+    sha256 "53300a1adc2db5cc8b80fbc3395564e8c65d35fdce8c7e20dcac42563962efdf" => :mavericks
+    sha256 "1777a109ad7bf3693bd3cb0c09ec99846fbb73611e705eba4a7a48cf195c7ce4" => :mountain_lion
   end
 
-  depends_on 'objective-caml'
-  depends_on 'ghostscript' => :optional
+  depends_on "objective-caml"
+  depends_on "ghostscript" => :optional
 
   def install
-    inreplace 'Makefile', '/usr/local', prefix
+    ENV["PREFIX"] = prefix
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.tex").write <<-EOS.undent
+      \\documentclass{article}
+      \\begin{document}
+      \\end{document}
+    EOS
+    system "#{bin}/hevea", "test.tex"
   end
 end

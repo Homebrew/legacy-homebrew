@@ -1,10 +1,18 @@
 require 'formula'
 
 class PdflibLite < Formula
+  desc "Subset of the functionality of PDFlib 7"
   homepage 'http://www.pdflib.com/download/free-software/pdflib-lite/'
   url 'http://www.pdflib.com/binaries/PDFlib/705/PDFlib-Lite-7.0.5p3.tar.gz'
   version '7.0.5p3'
   sha1 '42e0605ae21f4b6d25fa2d20e78fed6df36fbaa9'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "a3312478c0af40820fc1970a79b85677a64cdf78" => :yosemite
+    sha1 "1681c61b3679e8a96dc42266d4a49d092f2798b4" => :mavericks
+  end
 
   def install
     # Without the following substitution, pdflib-lite runs into weird

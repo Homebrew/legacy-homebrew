@@ -1,8 +1,10 @@
 require 'formula'
 
 class Avrdude < Formula
+  desc "Atmel AVR MCU programmer"
   homepage 'http://savannah.nongnu.org/projects/avrdude/'
   url 'http://download.savannah.gnu.org/releases/avrdude/avrdude-6.1.tar.gz'
+  mirror 'http://download-mirror.savannah.gnu.org/releases/avrdude/avrdude-6.1.tar.gz'
   sha1 '15525cbff5918568ef3955d871dbb94feaf83c79'
 
   bottle do
@@ -26,7 +28,10 @@ class Avrdude < Formula
   depends_on 'libhid' => :optional
 
   def install
-    system "./bootstrap" if build.head?
+    if build.head?
+      inreplace "bootstrap", /libtoolize/, "glibtoolize"
+      system "./bootstrap"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

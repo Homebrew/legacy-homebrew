@@ -1,61 +1,65 @@
-require 'formula'
+require "formula"
 
 class Assimp < Formula
-  homepage 'http://assimp.sourceforge.net/'
+  desc "Portable library for importing many well-known 3D model formats"
+  homepage "http://assimp.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/assimp/assimp-3.1/assimp-3.1.1_no_test_models.zip"
+  sha1 "d7bc1d12b01d5c7908d85ec9ff6b2d972e565e2d"
+  version "3.1.1"
 
-  stable do
-    url "https://downloads.sourceforge.net/project/assimp/assimp-3.0/assimp--3.0.1270-source-only.zip"
-    sha1 "e80a3a4326b649ed6585c0ce312ed6dd68942834"
+  head "https://github.com/assimp/assimp.git"
 
-    # makes assimp3 compile with clang
-    # Reported upstream http://sourceforge.net/p/assimp/discussion/817654/thread/381fa18a
-    # and http://sourceforge.net/p/assimp/patches/43/
-    # Committed in R1339, so when building HEAD no need for this patch
-    patch :DATA
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "147bc1b92a31526950262c123b2d78d78b092005" => :yosemite
+    sha1 "a44ef2d43ab074beb0b03196e65df3bf1a8e406b" => :mavericks
+    sha1 "31bb541f50c5ff22055ce2f608ae88ab4997407c" => :mountain_lion
   end
 
-  head 'https://github.com/assimp/assimp.git'
+  option "without-boost", "Compile without thread safe logging or multithreaded computation if boost isn't installed"
 
-  depends_on 'cmake' => :build
-  depends_on 'boost'
+  depends_on "cmake" => :build
+  depends_on "boost" => [:recommended, :build]
 
   def install
     system "cmake", ".", *std_cmake_args
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    # Library test.
+    (testpath/'test.cpp').write <<-EOS.undent
+      #include <assimp/Importer.hpp>
+      int main() {
+        Assimp::Importer importer;
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.cpp", "-L#{lib}", "-lassimp", "-o", "test"
+    system "./test"
+
+    # Application test.
+    (testpath/"test.obj").write <<-EOS.undent
+      # WaveFront .obj file - a single square based pyramid
+
+      # Start a new group:
+      g MySquareBasedPyramid
+
+      # List of vertices:
+      v -0.5 0 0.5    # Front left.
+      v 0.5 0 0.5   # Front right.
+      v 0.5 0 -0.5    # Back right
+      v -0.5 0 -0.5   # Back left.
+      v 0 1 0           # Top point (top of pyramid).
+
+      # List of faces:
+      f 4 3 2 1       # Square base (note: normals are placed anti-clockwise).
+      f 1 2 5         # Triangle on front.
+      f 3 4 5         # Triangle on back.
+      f 4 1 5         # Triangle on left side.
+      f 2 3 5
+    EOS
+    system "assimp", "export", testpath/"test.obj", testpath/"test.ply"
   end
 end
-
-__END__
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 3d5833e..d0cdd7c 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 2.6 )
- PROJECT( Assimp )
- 
- # Define here the needed parameters
--set (ASSIMP_SV_REVISION 1264)
-+set (ASSIMP_SV_REVISION 255)
- set (ASSIMP_VERSION_MAJOR 3)
- set (ASSIMP_VERSION_MINOR 0)
- set (ASSIMP_VERSION_PATCH ${ASSIMP_SV_REVISION}) # subversion revision?
-diff --git a/code/STEPFile.h b/code/STEPFile.h
-index f958956..510e051 100644
---- a/code/STEPFile.h
-+++ b/code/STEPFile.h
-@@ -195,13 +195,13 @@ namespace STEP {
- 			// conversion support.
- 			template <typename T>
- 			const T& ResolveSelect(const DB& db) const {
--				return Couple<T>(db).MustGetObject(To<EXPRESS::ENTITY>())->To<T>();
-+				return Couple<T>(db).MustGetObject(To<EXPRESS::ENTITY>())->template To<T>();
- 			}
- 
- 			template <typename T>
- 			const T* ResolveSelectPtr(const DB& db) const {
- 				const EXPRESS::ENTITY* e = ToPtr<EXPRESS::ENTITY>();
--				return e?Couple<T>(db).MustGetObject(*e)->ToPtr<T>():(const T*)0;
-+				return e?Couple<T>(db).MustGetObject(*e)->template ToPtr<T>():(const T*)0;
- 			}
- 
- 		public:

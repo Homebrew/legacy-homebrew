@@ -1,9 +1,16 @@
 require "formula"
 
 class Ace < Formula
+  desc "ADAPTIVE Communication Environment: OO network programming in C++"
   homepage "http://www.cse.wustl.edu/~schmidt/ACE.html"
-  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.2.6.tar.bz2"
-  sha1 "245cf37f60a92bf912ae2a008d73587a8d19462e"
+  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.0.tar.bz2"
+  sha1 "f7f0ba28f61774e3b269af65461819f31c999529"
+
+  bottle do
+    sha1 "90cb518c4554949453de2eb406a7d1ef8fda3880" => :yosemite
+    sha1 "2a58aa9a687ed6b8d3eef8f982b0c96554d85de7" => :mavericks
+    sha1 "faa49b7abaf6661f0e4cff46715755985a4a980a" => :mountain_lion
+  end
 
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.

@@ -1,19 +1,17 @@
 require 'testing_env'
-require 'test/testball'
 require 'formula'
 require 'cxxstdlib'
-require 'tab'
 
-class CxxStdlibTests < Test::Unit::TestCase
+class CxxStdlibTests < Homebrew::TestCase
   def setup
-    @clang = CxxStdlib.new(:libstdcxx, :clang)
-    @gcc   = CxxStdlib.new(:libstdcxx, :gcc)
-    @llvm  = CxxStdlib.new(:libstdcxx, :llvm)
-    @gcc4  = CxxStdlib.new(:libstdcxx, :gcc_4_0)
-    @gcc48 = CxxStdlib.new(:libstdcxx, 'gcc-4.8')
-    @gcc49 = CxxStdlib.new(:libstdcxx, 'gcc-4.9')
-    @lcxx  = CxxStdlib.new(:libcxx, :clang)
-    @purec = CxxStdlib.new(nil, :clang)
+    @clang = CxxStdlib.create(:libstdcxx, :clang)
+    @gcc   = CxxStdlib.create(:libstdcxx, :gcc)
+    @llvm  = CxxStdlib.create(:libstdcxx, :llvm)
+    @gcc4  = CxxStdlib.create(:libstdcxx, :gcc_4_0)
+    @gcc48 = CxxStdlib.create(:libstdcxx, 'gcc-4.8')
+    @gcc49 = CxxStdlib.create(:libstdcxx, 'gcc-4.9')
+    @lcxx  = CxxStdlib.create(:libcxx, :clang)
+    @purec = CxxStdlib.create(nil, :clang)
   end
 
   def test_apple_libstdcxx_intercompatibility
@@ -44,11 +42,11 @@ class CxxStdlibTests < Test::Unit::TestCase
   end
 
   def test_apple_compiler_reporting
-    assert @clang.apple_compiler?
-    assert @gcc.apple_compiler?
-    assert @llvm.apple_compiler?
-    assert @gcc4.apple_compiler?
-    assert !@gcc48.apple_compiler?
+    assert_predicate @clang, :apple_compiler?
+    assert_predicate @gcc, :apple_compiler?
+    assert_predicate @llvm, :apple_compiler?
+    assert_predicate @gcc4, :apple_compiler?
+    refute_predicate @gcc48, :apple_compiler?
   end
 
   def test_type_string_formatting
@@ -56,13 +54,11 @@ class CxxStdlibTests < Test::Unit::TestCase
     assert_equal "libc++", @lcxx.type_string
   end
 
-  def test_constructing_from_tab
-    stdlib = Tab.dummy_tab.cxxstdlib
-    assert_equal :clang, stdlib.compiler
-    assert_nil stdlib.type
-  end
-
   def test_compatibility_for_non_cxx_software
     assert @purec.compatible_with?(@clang)
+    assert @clang.compatible_with?(@purec)
+    assert @purec.compatible_with?(@purec)
+    assert @purec.compatible_with?(@gcc48)
+    assert @gcc48.compatible_with?(@purec)
   end
 end

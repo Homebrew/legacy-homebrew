@@ -1,6 +1,7 @@
 require 'formula'
 
 class Blitz < Formula
+  desc "C++ class library for scientific computing"
   homepage 'http://blitz.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/blitz/blitz/Blitz++%200.10/blitz-0.10.tar.gz'
   sha1 '7e157ec22ed2d261e896b7de4e8e8d3bf7d780e2'
@@ -8,9 +9,9 @@ class Blitz < Formula
   head do
     url 'http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz', :using => :hg
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install

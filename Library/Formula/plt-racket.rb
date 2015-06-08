@@ -1,12 +1,20 @@
 require "formula"
 
 class PltRacket < Formula
+  desc "Modern programming language in the Lisp/Scheme family"
   homepage "http://racket-lang.org/"
-  url "https://github.com/plt/racket/archive/v6.0.1.tar.gz"
-  sha1 "c459860b5bc9c37f6e5d9f3e74ae8fcdd44ef45e"
+  url "http://mirror.racket-lang.org/installers/6.1.1/racket-minimal-6.1.1-src-builtpkgs.tgz"
+  sha1 "8800c89a981f7b86808c7d9f2173c7f2a47147bc"
+  version "6.1.1"
+
+  bottle do
+    sha1 "ce1209d975593554d7973bb30d06f4897672c3b5" => :yosemite
+    sha1 "04953a38b638ed718063f123da83a3eed9f3bb99" => :mavericks
+    sha1 "79bf69d88c0479cf180f56e9d67d48833ce0a34a" => :mountain_lion
+  end
 
   def install
-    cd 'racket/src' do
+    cd "src" do
       args = ["--disable-debug", "--disable-dependency-tracking",
               "--enable-macprefix",
               "--prefix=#{prefix}",

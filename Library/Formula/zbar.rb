@@ -1,6 +1,7 @@
 require 'formula'
 
 class Zbar < Formula
+  desc "Suite of barcodes-reading tools"
   homepage 'http://zbar.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2'
   sha1 '273b47c26788faba4325baecc34063e27a012963'
@@ -12,6 +13,8 @@ class Zbar < Formula
   depends_on 'imagemagick'
   depends_on 'ufraw'
   depends_on 'xz'
+  depends_on 'freetype'
+  depends_on 'libtool' => :run
 
   # Fix JPEG handling using patch from
   # http://sourceforge.net/p/zbar/discussion/664596/thread/58b8d79b#8f67

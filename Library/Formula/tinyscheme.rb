@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tinyscheme < Formula
+  desc "Very small Scheme implementation"
   homepage 'http://tinyscheme.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/tinyscheme/tinyscheme/tinyscheme-1.40/tinyscheme-1.40.tar.gz'
   sha1 'e03f7ac41f0517bb35eced2772c79eb9db42ea82'
@@ -10,8 +11,6 @@ class Tinyscheme < Formula
     sha1 "7c272214c941b749a3e9b57744fbd33564151b78" => :mountain_lion
     sha1 "f2f6def9dc2ef11876dd1e307634ac454302ed11" => :lion
   end
-
-  conflicts_with 'mit-scheme', :because => 'both install a `scheme` binary'
 
   # Modify compile flags for Mac OS X per instructions
   patch :DATA

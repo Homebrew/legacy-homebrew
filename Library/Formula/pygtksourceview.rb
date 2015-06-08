@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pygtksourceview < Formula
+  desc "Python wrapper for the GtkSourceView widget library"
   homepage 'http://projects.gnome.org/gtksourceview/pygtksourceview.html'
   url 'http://ftp.gnome.org/pub/gnome/sources/pygtksourceview/2.10/pygtksourceview-2.10.0.tar.bz2'
   sha256 'bfdde2ce4f61d461fb34dece9433cf81a73a9c9de6b62d4eb06177b8c9cec9c7'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tpp < Formula
+  desc "Ncurses-based presentation tool"
   homepage 'http://synflood.at/tpp.html'
   url 'http://synflood.at/tpp/tpp-1.3.1.tar.gz'
   sha1 'e99fca1d7819c23d4562e3abdacea7ff82563754'
@@ -35,6 +36,6 @@ class Tpp < Formula
 
   test do
     assert_equal "tpp - text presentation program #{version}",
-                 `#{bin}/tpp --version`.chomp
+                 shell_output("#{bin}/tpp --version", 1).chomp
   end
 end

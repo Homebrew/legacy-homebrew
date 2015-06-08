@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mplayer < Formula
+  desc "UNIX movie player"
   homepage 'http://www.mplayerhq.hu/'
 
   stable do
@@ -22,21 +23,23 @@ class Mplayer < Formula
   end
 
   head do
-    url "svn://svn.mplayerhq.hu/mplayer/trunk", :using => StrictSubversionDownloadStrategy
+    url "svn://svn.mplayerhq.hu/mplayer/trunk"
+    depends_on "subversion" => :build if MacOS.version <= :leopard
 
     # When building SVN, configure prompts the user to pull FFmpeg from git.
     # Don't do that.
     patch :DATA
   end
 
-  option 'with-x', 'Build with X11 support'
   option 'without-osd', 'Build without OSD'
 
   depends_on 'yasm' => :build
   depends_on 'libcaca' => :optional
-  depends_on :x11 if build.with? 'x'
+  depends_on :x11 => :optional
 
-  if build.with? 'osd' or build.with? 'x'
+  deprecated_option "with-x" => "with-x11"
+
+  if build.with? 'osd' or build.with? 'x11'
     # These are required for the OSD. We can get them from X11, or we can
     # build our own.
     depends_on "fontconfig"
@@ -48,6 +51,9 @@ class Mplayer < Formula
     build 211
     cause 'Inline asm errors during compile on 32bit Snow Leopard.'
   end unless MacOS.prefer_64_bit?
+
+  # ld fails with: Unknown instruction for architecture x86_64
+  fails_with :llvm
 
   def install
     # It turns out that ENV.O1 fixes link errors with llvm.
@@ -68,8 +74,8 @@ class Mplayer < Formula
     ]
 
     args << "--enable-menu" if build.with? 'osd'
-    args << "--disable-x11" if build.without? 'x'
-    args << "--enable-freetype" if build.with?('osd') || build.with?('x')
+    args << "--disable-x11" if build.without? 'x11'
+    args << "--enable-freetype" if build.with?('osd') || build.with?('x11')
     args << "--enable-caca" if build.with? 'libcaca'
 
     system "./configure", *args
@@ -83,16 +89,14 @@ class Mplayer < Formula
 end
 
 __END__
-diff --git a/configure b/configure
-index a1fba5f..5deaa80 100755
 --- a/configure
 +++ b/configure
-@@ -49,8 +49,6 @@ if test -e ffmpeg/mp_auto_pull ; then
+@@ -1532,8 +1532,6 @@
  fi
-
- if ! test -e ffmpeg ; then
+ 
+ if test "$ffmpeg_a" != "no" && ! test -e ffmpeg ; then
 -    echo "No FFmpeg checkout, press enter to download one with git or CTRL+C to abort"
 -    read tmp
-     if ! git clone --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
+     if ! git clone -b $FFBRANCH --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
          rm -rf ffmpeg
          echo "Failed to get a FFmpeg checkout"

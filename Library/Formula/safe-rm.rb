@@ -1,18 +1,25 @@
-require 'formula'
-
 class SafeRm < Formula
-  homepage 'https://launchpad.net/safe-rm'
-  url 'https://launchpad.net/safe-rm/trunk/0.10/+download/safe-rm-0.10.tar.gz'
-  sha1 '6b829ae68e1fa3c8016e15ab37fcc08caef7712f'
+  desc "Wraps rm to prevent dangerous deletion of files"
+  homepage "https://launchpad.net/safe-rm"
+  url "https://launchpad.net/safe-rm/trunk/0.12/+download/safe-rm-0.12.tar.gz"
+  sha256 "1c9d3113591e249301fd00fff51152069ab71cd518b32bfcf6848a8d6c3054e2"
+
+  head "http://repo.or.cz/safe-rm.git"
 
   def install
-    bin.install 'safe-rm'
+    bin.install "safe-rm"
   end
 
   test do
-    file = "a-file"
-    touch file
-    system "#{bin}/safe-rm", file
-    assert !File.exist?(file)
+    foo = testpath/"foo"
+    bar = testpath/"bar"
+    (testpath/".config").mkdir
+    (testpath/".config/safe-rm").write bar
+    touch foo
+    touch bar
+    system "#{bin}/safe-rm", foo
+    assert !File.exist?(foo)
+    shell_output("#{bin}/safe-rm #{bar} 2>&1", 64)
+    assert File.exist?(bar)
   end
 end

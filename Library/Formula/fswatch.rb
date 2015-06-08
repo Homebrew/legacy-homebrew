@@ -1,24 +1,21 @@
 require "formula"
 
 class Fswatch < Formula
-  homepage "https://github.com/alandipert/fswatch"
-  url "https://github.com/alandipert/fswatch/archive/1.3.6.tar.gz"
-  sha1 "e3dc16f2b181452f864a7cb4718d1aa0f8a0ee2f"
+  desc "Monitor a directory for changes and run a shell command"
+  homepage "https://github.com/emcrisostomo/fswatch"
+  url "https://github.com/emcrisostomo/fswatch/releases/download/1.4.7/fswatch-1.4.7.tar.gz"
+  sha1 "bfc41da5a56ab810b28945506a0ad4198b13ffef"
 
   bottle do
-    sha1 "915a9948cf26cbf7f12225de136c25bacc2d030a" => :mavericks
-    sha1 "6900820cc5aac8bce488c743139a6a8bdb41b2ae" => :mountain_lion
-    sha1 "0764779ee5ce0483a3c781c64892c9b02938e14e" => :lion
+    sha256 "1263ca1127a202ffd678803608d2620af5c43a4a8b3db1d987147df2b8a0cf7a" => :yosemite
+    sha256 "ce054437060df774bd2a0d8587e5fd8230ecd738b3a06471c5c0cb4ec8713557" => :mavericks
+    sha256 "76e5f7ee8a312b6f9b21e5e4f547586d2788b74c7467bcf5e4596300af3a4346" => :mountain_lion
   end
-
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
 
   needs :cxx11
 
   def install
     ENV.cxx11
-    system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules"

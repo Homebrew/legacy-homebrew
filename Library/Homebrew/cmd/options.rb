@@ -1,6 +1,6 @@
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def options
     if ARGV.include? '--all'
       puts_options Formula.to_a
@@ -14,11 +14,11 @@ module Homebrew extend self
 
   def puts_options(formulae)
     formulae.each do |f|
-      next if f.build.empty?
+      next if f.options.empty?
       if ARGV.include? '--compact'
-        puts f.build.as_flags.sort * " "
+        puts f.options.as_flags.sort * " "
       else
-        puts f.name if formulae.length > 1
+        puts f.full_name if formulae.length > 1
         dump_options_for_formula f
         puts
       end
@@ -26,17 +26,10 @@ module Homebrew extend self
   end
 
   def dump_options_for_formula f
-    f.build.sort_by(&:flag).each do |opt|
-      puts opt.flag
-      puts "\t"+opt.description
+    f.options.sort_by(&:flag).each do |opt|
+      puts "#{opt.flag}\n\t#{opt.description}"
     end
-    if f.devel
-      puts '--devel'
-      puts "\tinstall development version #{f.devel.version}"
-    end
-    if f.head
-      puts '--HEAD'
-      puts "\tinstall HEAD version"
-    end
+    puts "--devel\n\tInstall development version #{f.devel.version}" if f.devel
+    puts "--HEAD\n\tInstall HEAD version" if f.head
   end
 end

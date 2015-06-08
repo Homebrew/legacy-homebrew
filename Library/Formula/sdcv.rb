@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sdcv < Formula
+  desc "StarDict Console Version"
   homepage 'http://sdcv.sourceforge.net/'
-  url 'https://svn.code.sf.net/p/sdcv/code/trunk',
-    :using => UnsafeSubversionDownloadStrategy, :revision => '76'
+  url 'http://svn.code.sf.net/p/sdcv/code/trunk', :revision => '76'
   version '0.5-2013-09-10'
 
   depends_on 'pkg-config' => :build

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Qiv < Formula
+  desc "Quick image viewer for X"
   homepage 'http://spiegl.de/qiv/'
   url 'http://spiegl.de/qiv/download/qiv-2.3.1.tgz'
   sha1 '8f8455951047ed41c773b9214375d02f7acaf814'

@@ -2,6 +2,7 @@ require 'formula'
 
 class Ccal < Formula
   url 'http://ccal.chinesebay.com/ccal/ccal-2.5.3.tar.gz'
+  desc "Create Chinese calendars for print or browsing"
   homepage 'http://ccal.chinesebay.com/ccal'
   sha1 'b44d73804ef3ba9129ae196887509f99b508401c'
 
@@ -11,8 +12,7 @@ class Ccal < Formula
   end
 
   test do
-    output = `#{bin}/ccal 2 2014`
+    output = shell_output("#{bin}/ccal 2 2014")
     assert output.include?("Year JiaWu, Month 1X")
-    assert_equal 0, $?.exitstatus
   end
 end

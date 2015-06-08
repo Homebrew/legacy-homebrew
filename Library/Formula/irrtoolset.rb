@@ -1,6 +1,7 @@
 require 'formula'
 
 class Irrtoolset < Formula
+  desc "Tools to work with Internet routing policies"
   homepage 'http://irrtoolset.isc.org/'
   url 'http://ftp.isc.org/isc/IRRToolSet/IRRToolSet-5.0.1/irrtoolset-5.0.1.tar.gz'
   sha1 '19510275f5f64608e4a683c744c14f8e900ea19e'
@@ -8,9 +9,9 @@ class Irrtoolset < Formula
   head do
     url 'svn://irrtoolset.isc.org/trunk'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on 'pkg-config' => :build

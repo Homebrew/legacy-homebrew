@@ -11,15 +11,16 @@ class GoInstalled < Requirement
 end
 
 class Gpm < Formula
+  desc "Barebones dependency manager for Go"
   homepage "https://github.com/pote/gpm"
-  url "https://github.com/pote/gpm/archive/v1.2.1.tar.gz"
-  sha1 "225eabbf7f2ec01e4c6e2cce57950ad3a1034c39"
+  url "https://github.com/pote/gpm/archive/v1.3.2.tar.gz"
+  sha1 "2ad332aa2d711cb901ce4c2be72a254ecc5f20eb"
 
   bottle do
     cellar :any
-    sha1 "623057df59619c9fb9fda82d85a5aed696c49bb2" => :mavericks
-    sha1 "ebbfe75b3aae977a55ba3de9df09bb8fa3b161b6" => :mountain_lion
-    sha1 "dc68290e961ccfb91cb688262be917dc55f728bc" => :lion
+    sha1 "488291cfa92867caf806bb270e0734d0d5af5314" => :yosemite
+    sha1 "7339121dd321f16a146a6f9d752d5044452eefda" => :mavericks
+    sha1 "1fc18dc8ade7f9307648d603deb8a79ccf587fe7" => :mountain_lion
   end
 
   depends_on GoInstalled

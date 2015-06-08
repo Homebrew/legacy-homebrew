@@ -1,13 +1,16 @@
-require 'formula'
-
 class N < Formula
-  homepage 'https://github.com/visionmedia/n'
-  head 'https://github.com/visionmedia/n.git'
-  url 'https://github.com/visionmedia/n/archive/1.2.1.tar.gz'
-  sha1 'c8a54313ee8ff43f3b6cdb03f140bc200f548f9f'
+  desc "Node version management"
+  homepage "https://github.com/tj/n"
+  head "https://github.com/tj/n.git"
+  url "https://github.com/tj/n/archive/v1.3.0.tar.gz"
+  sha1 "3c3248456bd6255401305d2cdf24898d78c28e25"
 
   def install
     bin.mkdir
     system "make", "PREFIX=#{prefix}", "install"
+  end
+
+  test do
+    system bin/"n", "ls"
   end
 end

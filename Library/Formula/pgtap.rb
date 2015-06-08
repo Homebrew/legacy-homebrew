@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pgtap < Formula
+  desc "Unit testing framework for PostgreSQL"
   homepage 'http://pgtap.org/'
   url 'http://api.pgxn.org/dist/pgtap/0.94.0/pgtap-0.94.0.zip'
   sha1 '58c04a57d79345c18525ed4aee9db058964408a1'
@@ -41,7 +42,7 @@ class Pgtap < Formula
       system './Build', 'install'
     end
 
-    pg_config = Formula["postgresql"].opt_prefix/'bin/pg_config'
+    pg_config = "#{Formula["postgresql"].opt_bin}/pg_config"
     system "make", "PG_CONFIG=#{pg_config}"
     system "make", "PG_CONFIG=#{pg_config}", "install"
   end

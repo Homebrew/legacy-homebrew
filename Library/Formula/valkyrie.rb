@@ -1,6 +1,7 @@
 require 'formula'
 
 class Valkyrie < Formula
+  desc "GUI for Memcheck and Helgrind tools in Valgrind 3.6.X"
   homepage 'http://valgrind.org/downloads/guis.html'
   url 'http://valgrind.org/downloads/valkyrie-2.0.0.tar.bz2'
   sha1 '999a6623eea5b7b8d59b55d59b8198f4fcd08add'

@@ -1,16 +1,16 @@
-require "formula"
-
 class Ncp < Formula
+  desc "File copy tool for LANs"
   homepage "http://www.fefe.de/ncp/"
   url "http://dl.fefe.de/ncp-1.2.4.tar.bz2"
   sha1 "bd33e5311c249948559d17bfd59df93ae72e1f17"
-  head "cvs://:pserver:cvs:@cvs.fefe.de:/cvs:ncp"
+  head ":pserver:cvs:@cvs.fefe.de:/cvs", :using => :cvs
 
   depends_on "libowfat"
 
-  def patches
-    # fixes man and libowfat paths and "strip" command in Makefile
-    "https://gist.githubusercontent.com/plumbojumbo/9331146/raw/560e46a688ac9493ffbc1464e59cc062c0940532/GNUmakefile.diff"
+  # fixes man and libowfat paths and "strip" command in Makefile
+  patch do
+    url "https://gist.githubusercontent.com/plumbojumbo/9331146/raw/560e46a688ac9493ffbc1464e59cc062c0940532/GNUmakefile.diff"
+    sha1 "2c187e6c6bfd87b08c9573f97b0d220228d2e14e"
   end
 
   def install

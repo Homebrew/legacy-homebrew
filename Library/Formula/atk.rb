@@ -1,19 +1,18 @@
-require 'formula'
-
 class Atk < Formula
-  homepage 'http://library.gnome.org/devel/atk/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/atk/2.12/atk-2.12.0.tar.xz'
-  sha256 '48a8431974639c5a59c24fcd3ece1a19709872d5dfe78907524d9f5e9993f18f'
+  desc "GNOME accessibility toolkit"
+  homepage "https://library.gnome.org/devel/atk/"
+  url "https://download.gnome.org/sources/atk/2.16/atk-2.16.0.tar.xz"
+  sha256 "095f986060a6a0b22eb15eef84ae9f14a1cf8082488faa6886d94c37438ae562"
 
   bottle do
-    sha1 "dcb833f1676a66c2f747a3f32437b915e9e978b7" => :mavericks
-    sha1 "629b4f16a103a3e4e55b6b22be8e5c01984f9f6b" => :mountain_lion
-    sha1 "1a951bd1902b8fb12f6043664a1e15f89363e220" => :lion
+    sha256 "128b040fbcf11591d3fef7bff779b958fb1fd4ce49715a14427fd5f8aba81010" => :yosemite
+    sha256 "50a58e13caac37709dd4cb9d7414393ded99aa17ca8037316d0dd0cb9018286d" => :mavericks
+    sha256 "7a7f9f7a5532e454434eeb4d33abd52cf7a568c259b407b61af1705233f0ea6c" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'gobject-introspection'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "gobject-introspection"
 
   option :universal
 
@@ -23,6 +22,35 @@ class Atk < Formula
                           "--prefix=#{prefix}",
                           "--enable-introspection=yes"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <atk/atk.h>
+
+      int main(int argc, char *argv[]) {
+        const gchar *version = atk_get_version();
+        return 0;
+      }
+    EOS
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{include}/atk-1.0
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{lib}
+      -latk-1.0
+      -lglib-2.0
+      -lgobject-2.0
+      -lintl
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end

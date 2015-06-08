@@ -1,9 +1,10 @@
 require "formula"
 
 class GoogleAppEngine < Formula
+  desc "Google App Engine"
   homepage "https://developers.google.com/appengine/"
-  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.6.zip"
-  sha1 "888a6687d868ac37f973ea2fb986931338a1c040"
+  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.20.zip"
+  sha256 "320e96b85405e8c6c9a8f1810f43cd3655b670cc4f49e0445eb7579da0498583"
 
   def install
     cd ".."
@@ -20,7 +21,6 @@ class GoogleAppEngine < Formula
       endpointscfg.py
       gen_protorpc.py
       google_sql.py
-      old_dev_appserver.py
       remote_api_shell.py
     ].each do |fn|
       bin.install_symlink share/name/fn

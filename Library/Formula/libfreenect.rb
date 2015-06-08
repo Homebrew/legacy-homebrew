@@ -1,11 +1,19 @@
 require "formula"
 
 class Libfreenect < Formula
+  desc "Drivers and libraries for the Xbox Kinect device"
   homepage "http://openkinect.org"
-  url "https://github.com/OpenKinect/libfreenect/archive/v0.4.3.tar.gz"
-  sha1 "aa2784b78d2ba402cecd68eaec4a0cc6f72dc5cc"
+  url "https://github.com/OpenKinect/libfreenect/archive/v0.5.1.tar.gz"
+  sha1 "1f7296e50c27c07e2f57ee906c195cabf97c1438"
 
   head "https://github.com/OpenKinect/libfreenect.git"
+
+  bottle do
+    cellar :any
+    sha1 "431e5bc789920cdc34e2a786fd44eb4485dd7e3d" => :yosemite
+    sha1 "98c11049dd822039eaa7325fa9dc2131c4a4b3dd" => :mavericks
+    sha1 "1e5ec1cc7a91d583f3de9c5f12d5eac8321970e4" => :mountain_lion
+  end
 
   option :universal
 

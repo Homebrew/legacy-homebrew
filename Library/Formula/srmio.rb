@@ -1,6 +1,7 @@
 require 'formula'
 
 class Srmio < Formula
+  desc "C library to access the PowerControl of a SRM bike power meter"
   homepage 'http://www.zuto.de/project/srmio/'
   url 'http://www.zuto.de/project/files/srmio/srmio-0.1.1~git1.tar.gz'
   sha1 '0db685d6046fca38ad64df05840d01b5f3b27499'
@@ -9,9 +10,9 @@ class Srmio < Formula
   head do
     url 'https://github.com/rclasen/srmio.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   def install

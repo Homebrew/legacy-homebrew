@@ -1,5 +1,3 @@
-require "formula"
-
 class Gcc < Formula
   def arch
     if Hardware::CPU.type == :intel
@@ -21,24 +19,23 @@ class Gcc < Formula
     `uname -r`.chomp
   end
 
-  homepage "http://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-4.8.3/gcc-4.8.3.tar.bz2"
-  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.3/gcc-4.8.3.tar.bz2"
-  sha1 "da0a2b9ec074f2bf624a34f3507f812ebb6e4dce"
-  revision 1
-
-  head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
+  desc "GNU compiler collection"
+  homepage "https://gcc.gnu.org"
+  url "http://ftpmirror.gnu.org/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
+  sha256 "b7dafdf89cbb0e20333dbf5b5349319ae06e3d1a30bf3515b5488f7e89dca5ad"
 
   bottle do
-    sha1 "0e4040eb5a667ecacba2b7e7c71a7a868a593386" => :mavericks
-    sha1 "78374c616c427d49e29656579d6a143cbb468b0b" => :mountain_lion
-    sha1 "b3320839c172d7abc4f9889a67822e604e080a75" => :lion
+    revision 2
+    sha256 "77f780600830699d4bfb9e6f14e3befd7a5511a7a4937d57ef665a58934972f8" => :yosemite
+    sha256 "8c156f6588eb4e83837635b42daa1b5e5d1b88097f0dbd679b0332874113cc97" => :mavericks
+    sha256 "77bce635f78bc26bd01010b5ece480251af223bf2dba6d48c29af6b29b441296" => :mountain_lion
   end
 
   option "with-java", "Build the gcj compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
   option "with-nls", "Build with native language support (localization)"
-  option "with-profiled-build", "Make use of profile guided optimization when bootstrapping GCC"
+  option "with-jit", "Build the jit compiler"
   option "without-fortran", "Build without the gfortran compiler"
   # enabling multilib on a host that can't run 64-bit results in build failures
   option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
@@ -46,7 +43,6 @@ class Gcc < Formula
   depends_on "gmp"
   depends_on "libmpc"
   depends_on "mpfr"
-  depends_on "cloog"
   depends_on "isl"
   depends_on "ecj" if build.with?("java") || build.with?("all-languages")
 
@@ -54,13 +50,10 @@ class Gcc < Formula
     # The as that comes with Tiger isn't capable of dealing with the
     # PPC asm that comes in libitm
     depends_on "cctools" => :build
-    # GCC 4.8.1 incorrectly determines that _Unwind_GetIPInfo is available on
-    # Tiger, resulting in a failed build
-    # Fixed upstream: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58710
-    patch :DATA
   end
 
   fails_with :gcc_4_0
+  fails_with :llvm
 
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
@@ -71,6 +64,14 @@ class Gcc < Formula
     MacOS::CLT.installed?
   end
 
+  def version_suffix
+    version.to_s.slice(/\d/)
+  end
+
+  # Fix for libgccjit.so linkage on Darwin
+  # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64089
+  patch :DATA
+
   def install
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
@@ -79,39 +80,39 @@ class Gcc < Formula
       ENV["AS"] = ENV["AS_FOR_TARGET"] = "#{Formula["cctools"].bin}/as"
     end
 
-    # C, C++, ObjC compilers are always built
-    languages = %w[c c++ objc obj-c++]
+    if build.with? "all-languages"
+      # Everything but Ada, which requires a pre-existing GCC Ada compiler
+      # (gnat) to bootstrap. GCC 4.6.0 adds go as a language option, but it is
+      # currently only compilable on Linux.
+      languages = %w[c c++ objc obj-c++ fortran java jit]
+    else
+      # C, C++, ObjC compilers are always built
+      languages = %w[c c++ objc obj-c++]
 
-    # Everything but Ada, which requires a pre-existing GCC Ada compiler
-    # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
-    # currently only compilable on Linux.
-    languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
-    languages << "java" if build.with?("java") || build.with?("all-languages")
-
-    version_suffix = version.to_s.slice(/\d\.\d/)
+      languages << "fortran" if build.with? "fortran"
+      languages << "java" if build.with? "java"
+      languages << "jit" if build.with? "jit"
+    end
 
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
       "--prefix=#{prefix}",
+      "--libdir=#{lib}/gcc/#{version_suffix}",
       "--enable-languages=#{languages.join(",")}",
       # Make most executables versioned to avoid conflicts.
       "--program-suffix=-#{version_suffix}",
       "--with-gmp=#{Formula["gmp"].opt_prefix}",
       "--with-mpfr=#{Formula["mpfr"].opt_prefix}",
       "--with-mpc=#{Formula["libmpc"].opt_prefix}",
-      "--with-cloog=#{Formula["cloog"].opt_prefix}",
       "--with-isl=#{Formula["isl"].opt_prefix}",
       "--with-system-zlib",
-      # This ensures lib, libexec, include are sandboxed so that they
-      # don't wander around telling little children there is no Santa
-      # Claus.
-      "--enable-version-specific-runtime-libs",
       "--enable-libstdcxx-time=yes",
       "--enable-stage1-checking",
       "--enable-checking=release",
       "--enable-lto",
-      # A no-op unless --HEAD is built because in head warnings will
-      # raise errors. But still a good idea to include.
+      # Use 'bootstrap-debug' build configuration to force stripping of object
+      # files prior to comparison during bootstrap (broken by Xcode 6.3).
+      "--with-build-config=bootstrap-debug",
       "--disable-werror",
       "--with-pkgversion=Homebrew #{name} #{pkg_version} #{build.used_options*" "}".strip,
       "--with-bugurl=https://github.com/Homebrew/homebrew/issues",
@@ -128,7 +129,7 @@ class Gcc < Formula
     args << "--disable-nls" if build.without? "nls"
 
     if build.with?("java") || build.with?("all-languages")
-      args << "--with-ecj-jar=#{Formula["ecj"].opt_prefix}/share/java/ecj.jar"
+      args << "--with-ecj-jar=#{Formula["ecj"].opt_share}/java/ecj.jar"
     end
 
     if build.without?("multilib") || !MacOS.prefer_64_bit?
@@ -137,27 +138,22 @@ class Gcc < Formula
       args << "--enable-multilib"
     end
 
+    args << "--enable-host-shared" if build.with?("jit") || build.with?("all-languages")
+
+    # Ensure correct install names when linking against libgcc_s;
+    # see discussion in https://github.com/Homebrew/homebrew/pull/34303
+    inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
+
     mkdir "build" do
       unless MacOS::CLT.installed?
         # For Xcode-only systems, we need to tell the sysroot path.
-        # "native-system-header's will be appended
+        # "native-system-headers" will be appended
         args << "--with-native-system-header-dir=/usr/include"
         args << "--with-sysroot=#{MacOS.sdk_path}"
       end
 
       system "../configure", *args
-
-      if build.with? "profiled-build"
-        # Takes longer to build, may bug out. Provided for those who want to
-        # optimise all the way to 11.
-        system "make", "profiledbootstrap"
-      else
-        system "make", "bootstrap"
-      end
-
-      # At this point `make check` could be invoked to run the testsuite. The
-      # deja-gnu and autogen formulae must be installed in order to do this.
-
+      system "make", "bootstrap"
       system "make", "install"
 
       if build.with?("fortran") || build.with?("all-languages")
@@ -168,8 +164,6 @@ class Gcc < Formula
     # Handle conflicts between GCC formulae and avoid interfering
     # with system compilers.
     # Since GCC 4.8 libffi stuff are no longer shipped.
-    # Rename libiberty.a.
-    Dir.glob(prefix/"**/libiberty.*") { |file| add_suffix file, version_suffix }
     # Rename man7.
     Dir.glob(man7/"*.7") { |file| add_suffix file, version_suffix }
     # Even when suffixes are appended, the info pages conflict when
@@ -179,10 +173,10 @@ class Gcc < Formula
     # Rename java properties
     if build.with?("java") || build.with?("all-languages")
       config_files = [
-        "#{lib}/logging.properties",
-        "#{lib}/security/classpath.security",
-        "#{lib}/i386/logging.properties",
-        "#{lib}/i386/security/classpath.security"
+        "#{lib}/gcc/#{version_suffix}/logging.properties",
+        "#{lib}/gcc/#{version_suffix}/security/classpath.security",
+        "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
+        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security",
       ]
       config_files.each do |file|
         add_suffix file, version_suffix if File.exist? file
@@ -190,14 +184,46 @@ class Gcc < Formula
     end
   end
 
-  def add_suffix file, suffix
+  def add_suffix(file, suffix)
     dir = File.dirname(file)
     ext = File.extname(file)
     base = File.basename(file, ext)
     File.rename file, "#{dir}/#{base}-#{suffix}#{ext}"
   end
 
+  def caveats
+    if build.with?("multilib") then <<-EOS.undent
+      GCC has been built with multilib support. Notably, OpenMP may not work:
+        https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60670
+      If you need OpenMP support you may want to
+        brew reinstall gcc --without-multilib
+      EOS
+    end
+  end
+
   test do
+    (testpath/"hello-c.c").write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+        puts("Hello, world!");
+        return 0;
+      }
+    EOS
+    system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
+    assert_equal "Hello, world!\n", `./hello-c`
+
+    (testpath/"hello-cc.cc").write <<-EOS.undent
+      #include <iostream>
+      int main()
+      {
+        std::cout << "Hello, world!" << std::endl;
+        return 0;
+      }
+    EOS
+    system "#{bin}/g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
+    assert_equal "Hello, world!\n", `./hello-cc`
+
     if build.with?("fortran") || build.with?("all-languages")
       fixture = <<-EOS.undent
         integer,parameter::m=10000
@@ -217,119 +243,18 @@ class Gcc < Formula
     end
   end
 end
-
 __END__
-diff --git a/libbacktrace/backtrace.c b/libbacktrace/backtrace.c
-index 428f53a..a165197 100644
---- a/libbacktrace/backtrace.c
-+++ b/libbacktrace/backtrace.c
-@@ -35,6 +35,14 @@ POSSIBILITY OF SUCH DAMAGE.  */
- #include "unwind.h"
- #include "backtrace.h"
+diff --git a/gcc/jit/Make-lang.in b/gcc/jit/Make-lang.in
+index 44d0750..4df2a9c 100644
+--- a/gcc/jit/Make-lang.in
++++ b/gcc/jit/Make-lang.in
+@@ -85,8 +85,7 @@ $(LIBGCCJIT_FILENAME): $(jit_OBJS) \
+	     $(jit_OBJS) libbackend.a libcommon-target.a libcommon.a \
+	     $(CPPLIB) $(LIBDECNUMBER) $(LIBS) $(BACKENDLIBS) \
+	     $(EXTRA_GCC_OBJS) \
+-	     -Wl,--version-script=$(srcdir)/jit/libgccjit.map \
+-	     -Wl,-soname,$(LIBGCCJIT_SONAME)
++	     -Wl,-install_name,$(LIBGCCJIT_SONAME)
 
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* The main backtrace_full routine.  */
-
- /* Data passed through _Unwind_Backtrace.  */
-diff --git a/libbacktrace/simple.c b/libbacktrace/simple.c
-index b03f039..9f3a945 100644
---- a/libbacktrace/simple.c
-+++ b/libbacktrace/simple.c
-@@ -35,6 +35,14 @@ POSSIBILITY OF SUCH DAMAGE.  */
- #include "unwind.h"
- #include "backtrace.h"
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* The simple_backtrace routine.  */
-
- /* Data passed through _Unwind_Backtrace.  */
-diff --git a/libgcc/unwind-c.c b/libgcc/unwind-c.c
-index b937d9d..1121dce 100644
---- a/libgcc/unwind-c.c
-+++ b/libgcc/unwind-c.c
-@@ -30,6 +30,14 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
- #define NO_SIZE_OF_ENCODED_VALUE
- #include "unwind-pe.h"
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- typedef struct
- {
-   _Unwind_Ptr Start;
-diff --git a/libgfortran/runtime/backtrace.c b/libgfortran/runtime/backtrace.c
-index 3b58118..9a00066 100644
---- a/libgfortran/runtime/backtrace.c
-+++ b/libgfortran/runtime/backtrace.c
-@@ -40,6 +40,14 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
- #include "unwind.h"
-
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* Macros for common sets of capabilities: can we fork and exec, and
-    can we use pipes to communicate with the subprocess.  */
- #define CAN_FORK (defined(HAVE_FORK) && defined(HAVE_EXECVE) \
-diff --git a/libgo/runtime/go-unwind.c b/libgo/runtime/go-unwind.c
-index c669a3c..9e848db 100644
---- a/libgo/runtime/go-unwind.c
-+++ b/libgo/runtime/go-unwind.c
-@@ -18,6 +18,14 @@
- #include "go-defer.h"
- #include "go-panic.h"
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* The code for a Go exception.  */
-
- #ifdef __ARM_EABI_UNWINDER__
-diff --git a/libobjc/exception.c b/libobjc/exception.c
-index 4b05611..8ff70f9 100644
---- a/libobjc/exception.c
-+++ b/libobjc/exception.c
-@@ -31,6 +31,14 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
- #include "unwind-pe.h"
- #include <string.h> /* For memcpy */
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* 'is_kind_of_exception_matcher' is our default exception matcher -
-    it determines if the object 'exception' is of class 'catch_class',
-    or of a subclass.  */
+ $(LIBGCCJIT_SONAME_SYMLINK): $(LIBGCCJIT_FILENAME)
+	ln -sf $(LIBGCCJIT_FILENAME) $(LIBGCCJIT_SONAME_SYMLINK)

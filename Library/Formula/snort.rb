@@ -1,34 +1,49 @@
-require 'formula'
-
 class Snort < Formula
-  homepage 'http://www.snort.org'
-  url 'http://www.snort.org/dl/snort-current/snort-2.9.6.1.tar.gz'
-  sha1 '49da9b989fa59114a6e533b26383cb1a7df9b717'
+  desc "Flexible Network Intrusion Detection System"
+  homepage "https://www.snort.org"
+  url "https://www.snort.org/downloads/snort/snort-2.9.7.3.tar.gz"
+  sha256 "8cc3613b888fc54947a2beec773c76d9a20368f2659b31d45a9f0b11e66cc229"
 
-  depends_on 'daq'
-  depends_on 'libdnet'
-  depends_on 'pcre'
+  bottle do
+    cellar :any
+    sha256 "500a6e7527ccd71d95cad8dc6fa2ee4c09ea516c7c866357efecda0dca70389f" => :yosemite
+    sha256 "a9a9f2afbe4ebcad4814da730399510ca68c6eed201ca71e17069cc97ce6092c" => :mavericks
+    sha256 "2b4871dcf9ac94c842458fcf190ee35390ecc49be2c077cce1c074b3ebc306fb" => :mountain_lion
+  end
 
-  option 'enable-debug', "Compile Snort with --enable-debug and --enable-debug-msgs"
+  depends_on "pkg-config" => :build
+  depends_on "luajit"
+  depends_on "daq"
+  depends_on "libdnet"
+  depends_on "pcre"
+  depends_on "openssl"
 
-  fails_with :clang
+  option "with-debug", "Compile Snort with debug options enabled"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   def install
-    args = %W[--prefix=#{prefix}
-              --disable-dependency-tracking
-              --enable-gre
-              --enable-mpls
-              --enable-targetbased
-              --enable-ppm
-              --enable-perfprofiling
-              --enable-zlib
-              --enable-active-response
-              --enable-normalizer
-              --enable-reload
-              --enable-react
-              --enable-flexresp3]
+    openssl = Formula["openssl"]
 
-    if build.include? 'enable-debug'
+    args = %W[
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}/snort
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --enable-gre
+      --enable-mpls
+      --enable-targetbased
+      --enable-sourcefire
+      --with-openssl-includes=#{openssl.opt_include}
+      --with-openssl-libraries=#{openssl.opt_lib}
+      --enable-active-response
+      --enable-normalizer
+      --enable-reload
+      --enable-react
+      --enable-flexresp3
+    ]
+
+    if build.with? "debug"
       args << "--enable-debug"
       args << "--enable-debug-msgs"
     else
@@ -36,7 +51,10 @@ class Snort < Formula
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+
+    rm Dir[buildpath/"etc/Makefile*"]
+    (etc+"snort").install Dir[buildpath/"etc/*"]
   end
 
   def caveats; <<-EOS.undent
@@ -45,5 +63,9 @@ class Snort < Formula
         sudo chmod 644 /dev/bpf*
     or you could create a startup item to do this for you.
     EOS
+  end
+
+  test do
+    system bin/"snort", "-V"
   end
 end

@@ -1,31 +1,41 @@
-require 'formula'
-
 class Irssi < Formula
-  homepage 'http://irssi.org/'
-  url 'http://irssi.org/files/irssi-0.8.16.tar.bz2'
-  sha1 '631dd70b6d3872c5f81c1a46a6872fef5bd65ffb'
+  desc "Modular IRC client"
+  homepage "http://irssi.org/"
+  url "http://irssi.org/files/irssi-0.8.17.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/i/irssi/irssi_0.8.17.orig.tar.gz"
+  sha256 "0ae01f76797fb6d6b8e0f2268b39c7afb90ac62658ec754c82acfc344b8203e9"
+  revision 2
+
+  head do
+    url "https://github.com/irssi/irssi.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+    depends_on "lynx" => :build
+  end
 
   bottle do
-    sha1 "17f3a8f117308e65c5de44e977dbc083858c44f4" => :mavericks
-    sha1 "dfbc2f405189d536264342d72737ef272d0da360" => :mountain_lion
-    sha1 "529bf17edbb6bf5bcd200ed8a84d9190c9a244b3" => :lion
+    revision 2
+    sha256 "a3f40b5a09cd11ee4fe46420b03fe8ac99c1603ac560cdd56b373745d5a07b6b" => :yosemite
+    sha256 "58a876749226ac7f862bdd8ba2d8c1b3aa9f5f9e9bc69e6d7671a32899b108e8" => :mavericks
+    sha256 "dbe24bf6031f96b060884f07dcfc33e00fca993001c3676ce949f6f00522ba88" => :mountain_lion
   end
 
   option "without-perl", "Build without perl support"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'openssl' => :optional
-
-  devel do
-    url 'http://irssi.org/files/snapshots/irssi-20140530.tar.gz'
-    sha1 '6bf61b3c3a384bacfd55c06aa9d4f7e288a30ac8'
-  end
-
-  # Fix Perl build flags and paths in man page
-  patch :DATA
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "openssl" => :recommended
+  depends_on "dante" => :optional
 
   def install
+    # Make paths in man page Homebrew-specific
+    # https://github.com/irssi/irssi/issues/251
+    inreplace "docs/irssi.1" do |s|
+      s.gsub! "/usr/share", "#{HOMEBREW_PREFIX}/share"
+      s.gsub! "/etc/irssi.conf", "#{HOMEBREW_PREFIX}/etc/irssi.conf"
+    end
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -33,6 +43,7 @@ class Irssi < Formula
       --with-bot
       --with-proxy
       --enable-ipv6
+      --enable-true-color
       --with-socks
       --with-ncurses=#{MacOS.sdk_path}/usr
     ]
@@ -44,69 +55,26 @@ class Irssi < Formula
       args << "--with-perl=no"
     end
 
-    args << "--enable-ssl" if build.with? "openssl"
+    # confuses Perl library path configuration
+    # https://github.com/Homebrew/homebrew/issues/34685
+    ENV.delete "PERL_MM_OPT"
 
-    system "./configure", *args
+    args << "--disable-ssl" if build.without? "openssl"
 
-    # 'make' and 'make install' must be done separately on some systems
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
+    # "make" and "make install" must be done separately on some systems
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    IO.popen("#{bin}/irssi --connect=irc.freenode.net", "w") do |pipe|
+      pipe.puts "/quit\n"
+      pipe.close_write
+    end
   end
 end
-
-__END__
---- a/configure	2009-12-03 19:35:07.000000000 -0800
-+++ b/configure	2009-12-03 19:35:33.000000000 -0800
-@@ -27419,7 +27419,7 @@
- 	if test -z "$perlpath"; then
- 		perl_check_error="perl binary not found"
- 	else
--		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
-+		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
- 	fi
-
- 	if test "x$ac_cv_c_compiler_gnu" = "xyes" -a -z "`echo $host_os|grep 'bsd\|linux'`"; then
-@@ -27437,7 +27437,7 @@
- $as_echo "not found, building without Perl" >&6; }
- 		want_perl=no
- 	else
--		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null`
-+		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
-
- 		if test "x$DYNLIB_MODULES" = "xno" -a "$want_perl" != "static"; then
- 						want_perl=static
-
-diff --git a/docs/irssi.1 b/docs/irssi.1
-index 62c2844..482cd96 100644
---- a/docs/irssi.1
-+++ b/docs/irssi.1
-@@ -65,10 +65,10 @@ display brief usage message.
- .SH SEE ALSO
- .B Irssi
- has been supplied with a huge amount of documentation. Check /help or look
--at the files contained by /usr/share/doc/irssi*
-+at the files contained by HOMEBREW_PREFIX/share/doc/irssi*
- .SH FILES
- .TP
--.I /etc/irssi.conf
-+.I HOMEBREW_PREFIX/etc/irssi.conf
- Global configuration file
- .TP
- .I ~/.irssi/config
-@@ -83,13 +83,13 @@ Default irssi theme
- .I ~/.irssi/away.log
- Logged messages in away status
- .TP
--.I /usr/share/irssi/help/
-+.I HOMEBREW_PREFIX/share/irssi/help/
- Directory including many help files
- .TP
--.I /usr/share/irssi/scripts/
-+.I HOMEBREW_PREFIX/share/irssi/scripts/
- Global scripts directory
- .TP
--.I /usr/share/irssi/themes/
-+.I HOMEBREW_PREFIX/share/irssi/themes/
- Global themes directory
- .TP
- .I ~/.irssi/scripts/

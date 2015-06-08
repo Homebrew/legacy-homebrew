@@ -1,99 +1,129 @@
-require 'formula'
-
-# We use a custom download strategy to properly configure
-# salt's version information when built against HEAD.
-# This is populated from git information unfortunately.
-class SaltHeadDownloadStrategy < GitDownloadStrategy
-  def stage
-    @clone.cd {reset}
-    safe_system 'git', 'clone', @clone, '.'
-  end
-end
-
 class Saltstack < Formula
-  homepage 'http://www.saltstack.org'
-  url 'https://github.com/saltstack/salt/archive/v2014.1.4.tar.gz'
-  sha256 '737686df6d28244af95eea2203badd2104df6421d61c054c1f7dcf942e1f1823'
+  desc "Dynamic infrastructure communication bus"
+  homepage "http://www.saltstack.org"
+  url "https://github.com/saltstack/salt/archive/v2015.5.0.tar.gz"
+  sha256 "278142ffd4d6ec693a7d160c27d360e9fdce6ae9c7de40e3cb18805078488b71"
+  head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
-  head 'https://github.com/saltstack/salt.git', :branch => 'develop',
-    :using => SaltHeadDownloadStrategy, :shallow => false
+  bottle do
+    sha256 "cf9d2aee286f69efcd838021b9e21fcb87189e4c4f1b32a01213ed63dd1154e4" => :yosemite
+    sha256 "84096f34d6f8940236594f8c08ac7fe344e5878026c829b96edc772d87b82e95" => :mavericks
+    sha256 "03493a5a2cb2e9e203691e1ff15473f7ddb718c9a6c12e386782b055ef68262d" => :mountain_lion
+  end
 
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on 'swig' => :build
-  depends_on 'zeromq'
-  depends_on 'libyaml'
+  depends_on "zeromq"
+  depends_on "libyaml"
+  depends_on "openssl" # For M2Crypto
 
-  resource 'pycrypto' do
-    url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
-    sha1 'c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84'
+  # For vendored Swig
+  depends_on "pcre" => :build
+
+  # Homebrew's swig breaks M2Crypto due to upstream's undermaintained status.
+  # https://github.com/swig/swig/issues/344
+  # https://github.com/martinpaljak/M2Crypto/issues/60
+  resource "swig304" do
+    url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.4/swig-3.0.4.tar.gz"
+    sha256 "410ffa80ef5535244b500933d70c1b65206333b546ca5a6c89373afb65413795"
   end
 
-  resource 'm2crypto' do
-    url 'https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.3.tar.gz'
-    sha1 'c5e39d928aff7a47e6d82624210a7a31b8220a50'
+  # Don't depend on Homebrew's openssl due to upstream build issues with non-system OpenSSL in M2Crypto
+  # See: https://github.com/martinpaljak/M2Crypto/issues/11
+  resource "m2crypto" do
+    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.3.tar.gz"
+    sha256 "6071bfc817d94723e9b458a010d565365104f84aa73f7fe11919871f7562ff72"
   end
 
-  resource 'pyyaml' do
-    url 'https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz'
-    sha1 '476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73'
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
+    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
   end
 
-  resource 'markupsafe' do
-    url 'https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.18.tar.gz'
-    sha1 '9fe11891773f922a8b92e83c8f48edeb2f68631e'
+  resource "pycrypto" do
+    url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz"
+    sha256 "f2ce1e989b272cfcb677616763e0a2e7ec659effa67a88aa92b3a65528f60a3c"
   end
 
-  resource 'jinja2' do
-    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.2.tar.gz'
-    sha1 '1ce4c8bc722444ec3e77ef9db76faebbd17a40d8'
+  resource "pyyaml" do
+    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
+    sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
-  resource 'pyzmq' do
-    url 'https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.0.1.tar.gz'
-    sha1 'd09c72dc6dcad9449dbcb2f97b3cc1f2443d4b84'
+  resource "markupsafe" do
+    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
-  resource 'msgpack-python' do
-    url 'https://pypi.python.org/packages/source/m/msgpack-python/msgpack-python-0.4.1.tar.gz'
-    sha1 'ae7b4d1afab10cd78baada026cad1ae92354852b'
+  resource "jinja2" do
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
+    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
   end
 
-  resource 'apache-libcloud' do
-    url 'https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.14.1.tar.gz'
-    sha1 'e587c9c3519e7d061f3c2fb232af8ace593c8156'
+  resource "pyzmq" do
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.3.1.tar.gz"
+    sha256 "00e263c26a524f81127247e6f37cbf427eddf3a3657d170cf4865bd522df3914"
   end
 
-  head do
-    resource 'requests' do
-      url 'https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz'
-      sha1 'f57bc125d35ec01a81afe89f97dc75913a927e65'
-    end
+  resource "msgpack-python" do
+    url "https://pypi.python.org/packages/source/m/msgpack-python/msgpack-python-0.4.2.tar.gz"
+    sha256 "0476e8fdd79e5b648b349bd0edebf06e41271ee29421ef7adb12cdbe55dac2a9"
+  end
+
+  resource "apache-libcloud" do
+    url "https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.15.1.tar.gz"
+    sha256 "f12f80c2f66e46c406c53b90c41eb572c29751c407bdbe7204ec6d9264ce16bc"
+  end
+
+  # Required by tornado
+  resource "certifi" do
+    url "https://pypi.python.org/packages/source/c/certifi/certifi-14.05.14.tar.gz"
+    sha256 "1e1bcbacd6357c151ae37cf0290dcc809721d32ce21fd6b7339568f3ddef1b69"
+  end
+
+  # Required by tornado
+  resource "backports.ssl_match_hostname" do
+    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.4.0.2.tar.gz"
+    sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
+  end
+
+  resource "tornado" do
+    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.1.tar.gz"
+    sha256 "99abd3aede45c93739346ee7384e710120121c3744da155d5cff1c0101702228"
   end
 
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
-
-    resource('pycrypto').stage { system "python", *install_args }
-    resource('pyyaml').stage { system "python", *install_args }
-    resource('pyzmq').stage { system "python", *install_args }
-    resource('msgpack-python').stage { system "python", *install_args }
-    resource('markupsafe').stage { system "python", *install_args }
-    resource('m2crypto').stage { system "python", *install_args }
-    resource('jinja2').stage { system "python", *install_args }
-    resource('apache-libcloud').stage { system "python", *install_args }
-
-    if build.head?
-      resource('requests').stage { system "python", *install_args }
+    resource("swig304").stage do
+      system "./configure", "--disable-dependency-tracking", "--prefix=#{buildpath}/swig"
+      system "make"
+      system "make", "install"
     end
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    ENV.prepend_path "PATH", buildpath/"swig/bin"
 
-    man1.install Dir['doc/man/*.1']
-    man7.install Dir['doc/man/*.7']
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    rs = %w[requests pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python apache-libcloud]
+    rs += %w[certifi backports.ssl_match_hostname tornado] if build.head?
+
+    rs.each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+
+    # M2Crypto always has to be done individually as we have to inreplace OpenSSL path
+    resource("m2crypto").stage do
+      inreplace "setup.py", "self.openssl = '/usr'", "self.openssl = '#{Formula["openssl"].opt_prefix}'"
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
+    end
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
+    man1.install Dir["doc/man/*.1"]
+    man7.install Dir["doc/man/*.7"]
+
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

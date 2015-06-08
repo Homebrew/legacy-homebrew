@@ -1,14 +1,14 @@
-require 'formula'
-
 class Libgeotiff < Formula
+  desc "Library and tools for dealing with GeoTIFF"
   homepage 'http://geotiff.osgeo.org/'
-  url 'http://download.osgeo.org/geotiff/libgeotiff/libgeotiff-1.4.0.tar.gz'
-  sha1 '4c6f405869826bb7d9f35f1d69167e3b44a57ef0'
+  url 'http://download.osgeo.org/geotiff/libgeotiff/libgeotiff-1.4.1.tar.gz'
+  sha1 'bc9e2bb43f3877b795b4b191e7aec6267f4a1c7e'
+  revision 1
 
   bottle do
-    sha1 "81c251028852c1e1cdd0f9ba8f6e023222db4099" => :mavericks
-    sha1 "58398ab68357c0d5ed104eaecf1f52f684df685c" => :mountain_lion
-    sha1 "5c3f8cd77572592d30d542b7d25c354aca8ef932" => :lion
+    sha256 "cc50df08d046654c4dcdb71dca892522ddbe7f4d08bf76db875843b5278f8c72" => :yosemite
+    sha256 "a06efe08c1bd6a4c8c2e17d8081bafb2c6fd7e6a46083d7ff3228f98d3dca7e3" => :mavericks
+    sha256 "07efe6adec3e35b7e3d05af18e62a407041d84a96fa91a64757aa1e0b4696fd6" => :mountain_lion
   end
 
   depends_on 'libtiff'

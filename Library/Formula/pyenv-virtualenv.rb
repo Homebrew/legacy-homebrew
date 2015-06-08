@@ -1,9 +1,8 @@
-require "formula"
-
 class PyenvVirtualenv < Formula
+  desc "Pyenv plugin to manage virtualenv"
   homepage "https://github.com/yyuu/pyenv-virtualenv"
-  url "https://github.com/yyuu/pyenv-virtualenv/archive/v20140614.tar.gz"
-  sha1 "2ac2202f3a8da4126a94a39dd7ba709e696d4a7d"
+  url "https://github.com/yyuu/pyenv-virtualenv/archive/v20150119.tar.gz"
+  sha1 "8f91e04fb87b0f05b127a557c08ccbe1b42ef32f"
 
   head "https://github.com/yyuu/pyenv-virtualenv.git"
 
@@ -18,5 +17,9 @@ class PyenvVirtualenv < Formula
     To enable auto-activation add to your profile:
       if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
     EOS
+  end
+
+  test do
+    shell_output("eval \"$(pyenv init -)\" && pyenv virtualenvs")
   end
 end

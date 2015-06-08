@@ -23,7 +23,8 @@ module Superenv
   end
 
   def self.bin
-    (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    bin = (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    bin.realpath unless bin.nil?
   end
 
   def reset
@@ -34,21 +35,20 @@ module Superenv
   end
 
   def setup_build_environment(formula=nil)
-    reset
+    super
+    send(compiler)
 
-    self.cc  = determine_cc
-    self.cxx = determine_cxx
-    validate_cc!(formula) unless formula.nil?
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     self['PATH'] = determine_path
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
     self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
     self['HOMEBREW_CCCFG'] = determine_cccfg
     self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
-    self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
-    self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX
-    self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
-    self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
+    self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE.to_s
+    self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX.to_s
+    self['HOMEBREW_CELLAR'] = HOMEBREW_CELLAR.to_s
+    self['HOMEBREW_TEMP'] = HOMEBREW_TEMP.to_s
+    self['HOMEBREW_SDKROOT'] = effective_sysroot
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
     self['HOMEBREW_ARCHFLAGS'] = ''
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
@@ -60,12 +60,6 @@ module Superenv
     self["HOMEBREW_ISYSTEM_PATHS"] = determine_isystem_paths
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
-
-    # On 10.9 the developer tools honor the correct sysroot by default.
-    # On 10.7 and 10.8 we need to set it ourselves.
-    if MacOS::Xcode.without_clt? && (MacOS.version <= "10.8" || compiler != :clang)
-      self["HOMEBREW_SYSROOT"] = effective_sysroot
-    end
 
     # On 10.9, the tools in /usr/bin proxy to the active developer directory.
     # This means we can use them for any combination of CLT and Xcode.
@@ -85,8 +79,6 @@ module Superenv
     # On 10.8 and newer, these flags will also be present:
     # s - apply fix for sed's Unicode support
     # a - apply fix for apr-1-config path
-
-    warn_about_non_apple_gcc($1) if homebrew_cc =~ GNU_GCC_REGEXP
   end
 
   private
@@ -100,12 +92,7 @@ module Superenv
   end
 
   def effective_sysroot
-    if MacOS::Xcode.without_clt? then MacOS.sdk_path.to_s else "" end
-  end
-
-  def determine_cc
-    cc = compiler
-    COMPILER_SYMBOL_MAP.invert.fetch(cc, cc)
+    MacOS::Xcode.without_clt? ? MacOS.sdk_path.to_s : nil
   end
 
   def determine_cxx
@@ -115,6 +102,9 @@ module Superenv
   def determine_path
     paths = [Superenv.bin]
 
+    # Formula dependencies can override standard tools.
+    paths += deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
+
     # On 10.9, there are shims for all tools in /usr/bin.
     # On 10.7 and 10.8 we need to add these directories ourselves.
     if MacOS::Xcode.without_clt? && MacOS.version <= "10.8"
@@ -122,7 +112,6 @@ module Superenv
       paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
 
-    paths += deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin.to_s if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
 
@@ -132,7 +121,7 @@ module Superenv
     when "gcc-4.2"
       begin
        apple_gcc42 = Formulary.factory('apple-gcc42')
-      rescue Exception # in --debug, catch bare exceptions too
+      rescue FormulaUnavailableError
       end
       paths << apple_gcc42.opt_bin.to_s if apple_gcc42
     when GNU_GCC_REGEXP
@@ -173,7 +162,15 @@ module Superenv
   end
 
   def determine_include_paths
-    keg_only_deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/include" }.to_path_s
+    paths = keg_only_deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/include" }
+
+    # https://github.com/Homebrew/homebrew/issues/38514
+    if MacOS::CLT.installed? && MacOS.active_developer_dir.include?("CommandLineTools") &&
+       MacOS::CLT.version == "6.3.0.0.1.1428348375"
+      paths << "#{HOMEBREW_LIBRARY}/ENV/include/6.3"
+    end
+
+    paths.to_path_s
   end
 
   def determine_library_paths
@@ -245,26 +242,23 @@ module Superenv
 
   public
 
+  # Removes the MAKEFLAGS environment variable, causing make to use a single job.
+  # This is useful for makefiles with race conditions.
+  # When passed a block, MAKEFLAGS is removed only for the duration of the block and is restored after its completion.
+  # Returns the value of MAKEFLAGS.
   def deparallelize
-    delete('MAKEFLAGS')
+    old = delete('MAKEFLAGS')
+    if block_given?
+      begin
+        yield
+      ensure
+        self['MAKEFLAGS'] = old
+      end
+    end
+
+    old
   end
   alias_method :j1, :deparallelize
-
-  COMPILER_SYMBOL_MAP.values.each do |compiler|
-    define_method compiler do
-      @compiler = compiler
-      self.cc  = determine_cc
-      self.cxx = determine_cxx
-    end
-  end
-
-  GNU_GCC_VERSIONS.each do |n|
-    define_method(:"gcc-4.#{n}") do
-      @compiler = "gcc-4.#{n}"
-      self.cc  = determine_cc
-      self.cxx = determine_cxx
-    end
-  end
 
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/
@@ -300,7 +294,7 @@ module Superenv
     when "clang"
       append 'HOMEBREW_CCCFG', "x", ''
       append 'HOMEBREW_CCCFG', "g", ''
-    when /gcc-4\.(8|9)/
+    when /gcc-(4\.(8|9)|5)/
       append 'HOMEBREW_CCCFG', "x", ''
     else
       raise "The selected compiler doesn't support C++11: #{homebrew_cc}"
@@ -330,7 +324,7 @@ module Superenv
 
   # These methods are no longer necessary under superenv, but are needed to
   # maintain an interface compatible with stdenv.
-  noops.concat %w{fast O4 Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
+  noops.concat %w{fast O4 Og libxml2 set_cpu_flags macosxsdk remove_macosxsdk}
 
   # These methods provide functionality that has not yet been ported to
   # superenv.

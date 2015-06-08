@@ -1,12 +1,23 @@
-require 'formula'
-
 class Pngcheck < Formula
-  homepage 'http://www.libpng.org/pub/png/apps/pngcheck.html'
-  url 'https://downloads.sourceforge.net/project/png-mng/pngcheck/2.3.0/pngcheck-2.3.0.tar.gz'
-  sha1 'e7f1535abbf2f809e036a9a43c759eeac5e39350'
+  desc "Print info and check PNG, JNG, and MNG files"
+  homepage "http://www.libpng.org/pub/png/apps/pngcheck.html"
+  url "https://downloads.sourceforge.net/project/png-mng/pngcheck/2.3.0/pngcheck-2.3.0.tar.gz"
+  sha256 "77f0a039ac64df55fbd06af6f872fdbad4f639d009bbb5cd5cbe4db25690f35f"
+  revision 1
+
+  bottle do
+    cellar :any
+    sha256 "2f8901f0259f2ec24478268e5fa4cd8fe904a160592f118efdddf4ba20221dd6" => :yosemite
+    sha256 "af2af2a3771b7730c0da6fe3c74f6044b3664498c0b9f5070be3cf4d7ec1274e" => :mavericks
+    sha256 "b4ebae530dd4e2cb7822f15c9da98cbfe6dd62540b222c6a85f297e446f67d66" => :mountain_lion
+  end
 
   def install
-    system 'make pngcheck'
-    bin.install 'pngcheck'
+    system "make", "-f", "Makefile.unx", "ZINC=", "ZLIB=-lz"
+    bin.install %w[pngcheck pngsplit png-fix-IDAT-windowsize]
+  end
+
+  test do
+    system bin/"pngcheck", test_fixtures("test.png")
   end
 end

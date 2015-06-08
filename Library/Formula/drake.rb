@@ -1,10 +1,11 @@
 require 'formula'
 
 class Drake < Formula
+  desc "Data workflow tool meant to be 'make for data'"
   homepage 'https://github.com/Factual/drake'
-  url 'https://github.com/Factual/drake/releases/download/v0.1.6/drake.jar'
-  version '0.1.6'
-  sha1 '43870cf657a70fd484093f452ceab22fb4c33d3c'
+  url 'https://github.com/Factual/drake/releases/download/v0.1.7/drake.jar'
+  version '0.1.7'
+  sha1 'c3092bd4e62effa38d4ade09bc191463b1c93c6a'
 
   def install
     libexec.install Dir['*']

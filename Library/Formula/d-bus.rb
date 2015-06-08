@@ -1,14 +1,22 @@
-require 'formula'
-
 class DBus < Formula
-  homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.8.2.tar.gz'
-  sha256 '5689f7411165adc953f37974e276a3028db94447c76e8dd92efe910c6d3bae08'
+  # releases: even (1.8.x) = stable, odd (1.9.x) = development
+  desc "Message bus system, providing inter-application communication"
+  homepage "http://www.freedesktop.org/wiki/Software/dbus"
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.14.tar.gz"
+  sha1 "d0b84d6d7af47b8cad7f55befee8e9001daefe01"
 
   bottle do
-    sha1 "170fd9d8771d1a681131dfe34f4f39eeaf105f66" => :mavericks
-    sha1 "80ef90bac8789af790eadff4d0a30649ce266fce" => :mountain_lion
-    sha1 "d85a01aa83aa3d38de212a52ef0db20d645625ea" => :lion
+    sha1 "22806b6107833bea3b69099848c6f12add3625cc" => :yosemite
+    sha1 "d9271e1f6906883e42c9782b4ce43ce288ad8f8e" => :mavericks
+    sha1 "4162df1d33f03d55472155728bd2911653702798" => :mountain_lion
+  end
+
+  # Upstream fix for O_CLOEXEC portability
+  # http://cgit.freedesktop.org/dbus/dbus/commit/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472
+  # This is fixed in 1.9.x but won't be fixed upstream for 1.8.x
+  patch do
+    url "http://cgit.freedesktop.org/dbus/dbus/patch/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472"
+    sha1 "ebb383abb86eeafbe048dbb8b77d83bdf0b7c9bb"
   end
 
   def install
@@ -27,9 +35,9 @@ class DBus < Formula
                           "--disable-tests"
     system "make"
     ENV.deparallelize
-    system "make install"
+    system "make", "install"
 
-    (prefix+'org.freedesktop.dbus-session.plist').chmod 0644
+    (prefix+"org.freedesktop.dbus-session.plist").chmod 0644
   end
 
   def post_install
@@ -37,16 +45,7 @@ class DBus < Formula
     system "#{bin}/dbus-uuidgen", "--ensure=#{var}/lib/dbus/machine-id"
   end
 
-  def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
-
-    If this is an upgrade and you already have the org.freedesktop.dbus-session.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
-        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
-    EOS
+  test do
+    system "#{bin}/dbus-daemon", "--version"
   end
 end

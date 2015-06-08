@@ -1,22 +1,35 @@
-require 'formula'
-
 class Concurrencykit < Formula
-  homepage 'http://concurrencykit.org'
-  url 'http://concurrencykit.org/releases/ck-0.4.2.tar.gz'
-  sha1 '70c49d50345c915af2248e7f5223ecf74200dacb'
+  desc "Aid design and implementation of concurrent systems"
+  homepage "http://concurrencykit.org"
+  url "http://concurrencykit.org/releases/ck-0.4.5.tar.gz"
+  mirror "https://github.com/concurrencykit/ck/archive/0.4.5.tar.gz"
+  sha256 "89feea338cd6a8efbe7bd64d033cefccb34775ea0bedbcb1612df2b822fa0356"
 
-  head 'https://github.com/concurrencykit/ck.git'
+  head "https://github.com/concurrencykit/ck.git"
 
   bottle do
     cellar :any
-    sha1 "9d7092669ec91a020b06a1e5a5038af9d2888fff" => :mavericks
-    sha1 "27a762867fa388d36763292c53d3a795f63855ff" => :mountain_lion
-    sha1 "00473fc2ef6ba55498018637a2573972c36e2052" => :lion
+    sha256 "782560f0c9693a783087b595548975bbc24c6dbc122a01d24dd9098de09819e0" => :yosemite
+    sha256 "2bc7526a484537d45f98c2d2795e7c9ea4a4ebc5ff5003687f8718271f70a59d" => :mavericks
+    sha256 "8323fa92d2f032c5ef9c793c31f0da5d6310c9dbedb9d33946fa1dc35dc4a13b" => :mountain_lion
   end
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make", "CC=#{ENV.cc}"
-    system "make install"
+    system "make"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <ck_spinlock.h>
+      int main()
+      {
+          return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{include}", "-L#{lib}", "-lck",
+           testpath/"test.c", "-o", testpath/"test"
+    system "./test"
   end
 end

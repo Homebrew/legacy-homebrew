@@ -1,23 +1,22 @@
 require 'cmd/install'
 require 'cmd/outdated'
 
-module Homebrew extend self
+module Homebrew
   def upgrade
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      outdated = Homebrew.outdated_brews
+      outdated = Homebrew.outdated_brews(Formula.installed)
       exit 0 if outdated.empty?
-    else
-      outdated = ARGV.formulae.select do |f|
-        if f.installed?
-          onoe "#{f}-#{f.installed_version} already installed"
-          false
-        elsif not f.rack.directory? or f.rack.subdirs.empty?
-          onoe "#{f} not installed"
-          false
+    elsif ARGV.named.any?
+      outdated = Homebrew.outdated_brews(ARGV.resolved_formulae)
+
+      (ARGV.resolved_formulae - outdated).each do |f|
+        if f.rack.directory?
+          version = f.rack.subdirs.map { |d| Keg.new(d).version }.max
+          onoe "#{f.full_name} #{version} already installed"
         else
-          true
+          onoe "#{f.full_name} not installed"
         end
       end
       exit 1 if outdated.empty?
@@ -30,14 +29,14 @@ module Homebrew extend self
 
     unless outdated.empty?
       oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+      puts outdated.map{ |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
-      puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+      puts pinned.map{ |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     end
 
     outdated.each { |f| upgrade_formula(f) }
@@ -49,16 +48,18 @@ module Homebrew extend self
 
   def upgrade_formula f
     outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
+    tab = Tab.for_formula(f)
 
     fi = FormulaInstaller.new(f)
-    fi.options             = Tab.for_formula(f).used_options
+    fi.options             = tab.used_options
+    fi.build_bottle        = ARGV.build_bottle? || (!f.bottled? && tab.build_bottle?)
     fi.build_from_source   = ARGV.build_from_source?
     fi.verbose             = ARGV.verbose?
-    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.quieter             = ARGV.quieter?
     fi.debug               = ARGV.debug?
     fi.prelude
 
-    oh1 "Upgrading #{f.name}"
+    oh1 "Upgrading #{f.full_name}"
 
     # first we unlink the currently active keg for this formula otherwise it is
     # possible for the existing build to interfere with the build we are about to

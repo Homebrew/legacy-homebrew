@@ -56,35 +56,49 @@ end
 
 # used by the inreplace function (in utils.rb)
 module StringInreplaceExtension
+  attr_accessor :errors
+
+  def self.extended(str)
+    str.errors = []
+  end
+
+  def sub! before, after
+    result = super
+    unless result
+      errors << "expected replacement of #{before.inspect} with #{after.inspect}"
+    end
+    result
+  end
+
   # Warn if nothing was replaced
   def gsub! before, after, audit_result=true
-    sub = super(before, after)
-    if audit_result and sub.nil?
-      opoo "inreplace: replacement of '#{before}' with '#{after}' failed"
+    result = super(before, after)
+    if audit_result && result.nil?
+      errors << "expected replacement of #{before.inspect} with #{after.inspect}"
     end
-    return sub
+    result
   end
 
   # Looks for Makefile style variable defintions and replaces the
   # value with "new_value", or removes the definition entirely.
   def change_make_var! flag, new_value
-    new_value = "#{flag}=#{new_value}"
-    sub = gsub! Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$"), new_value, false
-    opoo "inreplace: changing '#{flag}' to '#{new_value}' failed" if sub.nil?
+    unless gsub!(/^#{Regexp.escape(flag)}[ \t]*=[ \t]*(.*)$/, "#{flag}=#{new_value}", false)
+      errors << "expected to change #{flag.inspect} to #{new_value.inspect}"
+    end
   end
 
   # Removes variable assignments completely.
   def remove_make_var! flags
     Array(flags).each do |flag|
       # Also remove trailing \n, if present.
-      sub = gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), "", false
-      opoo "inreplace: removing '#{flag}' failed" if sub.nil?
+      unless gsub!(/^#{Regexp.escape(flag)}[ \t]*=.*$\n?/, "", false)
+        errors << "expected to remove #{flag.inspect}"
+      end
     end
   end
 
   # Finds the specified variable
   def get_make_var flag
-    m = match Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$")
-    return m[1] if m
+    self[/^#{Regexp.escape(flag)}[ \t]*=[ \t]*(.*)$/, 1]
   end
 end

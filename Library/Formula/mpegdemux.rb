@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mpegdemux < Formula
+  desc "MPEG1/2 system stream demultiplexer"
   homepage 'http://www.hampa.ch/mpegdemux/'
   url 'http://www.hampa.ch/mpegdemux/mpegdemux-0.1.4.tar.gz'
   sha1 '1778304fbe6f8be4d25034d1b6a8acef6c91e311'

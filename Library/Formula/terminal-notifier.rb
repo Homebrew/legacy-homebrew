@@ -1,16 +1,16 @@
-require 'formula'
-
 class TerminalNotifier < Formula
-  homepage 'https://github.com/alloy/terminal-notifier'
-  url 'https://github.com/alloy/terminal-notifier/archive/1.6.0.tar.gz'
-  sha1 '15517dfa070c7ad228424c0dcbb71774b699e99e'
+  desc "Send OS X User Notifications from the command-line"
+  homepage "https://github.com/alloy/terminal-notifier"
+  url "https://github.com/alloy/terminal-notifier/archive/1.6.3.tar.gz"
+  sha256 "d71243e194d290e873eb5c5f30904e1d9406246d089e7d4d48ca275a8abfe275"
 
-  head 'https://github.com/alloy/terminal-notifier.git'
+  head "https://github.com/alloy/terminal-notifier.git"
 
   bottle do
     cellar :any
-    sha1 "a47abd03d3c9574af6f28e343f065b0393e37ed9" => :mavericks
-    sha1 "063dfbda7818f78024f4d179a8037aa0bf99bc01" => :mountain_lion
+    sha256 "748aefaf06e506a51274395f600fff007d6dde927f0bc1911f3b83cc8e854928" => :yosemite
+    sha256 "6609dfdb1840dfff23420a39220ba5e2eade7841b66ab167c3924c5be4f05248" => :mavericks
+    sha256 "87e1ddf62740069b8fc35ae4c302f46ecb7c2c0cf32ff5ec8ffd6cdd9611e53e" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion
@@ -21,9 +21,13 @@ class TerminalNotifier < Formula
                "-target", "terminal-notifier",
                "SYMROOT=build",
                "-verbose"
-    prefix.install Dir['build/Release/*']
+    prefix.install Dir["build/Release/*"]
     inner_binary = "#{prefix}/terminal-notifier.app/Contents/MacOS/terminal-notifier"
     bin.write_exec_script inner_binary
-    chmod 0755, bin/'terminal-notifier'
+    chmod 0755, bin/"terminal-notifier"
+  end
+
+  test do
+    system "#{bin}/terminal-notifier", "-help" if MacOS.version < :yosemite
   end
 end

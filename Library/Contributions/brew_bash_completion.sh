@@ -413,6 +413,7 @@ _brew_upgrade ()
     case "$cur" in
     --*)
         __brewcomp "
+            --all
             --build-from-source --build-bottle --force-bottle
             --debug
             --verbose
@@ -458,9 +459,6 @@ _brew ()
     done
 
     if [[ $i -eq $COMP_CWORD ]]; then
-        local ext=$(\ls -p $(brew --repository)/Library/Contributions/cmd \
-                2>/dev/null | sed -e "s/\.rb//g" -e "s/brew-//g" \
-                -e "s/.*\///g")
         __brewcomp "
             --cache --cellar
             --env --prefix --repository
@@ -500,8 +498,6 @@ _brew ()
             update
             upgrade
             uses
-            versions
-            $ext
             "
         return
     fi
@@ -538,7 +534,6 @@ _brew ()
     update)                     _brew_update ;;
     upgrade)                    _brew_upgrade ;;
     uses)                       _brew_uses ;;
-    versions)                   __brew_complete_formulae ;;
     *)                          ;;
     esac
 }

@@ -1,15 +1,17 @@
 require 'formula'
 
 class Libnet < Formula
+  desc "C library for creating IP packets"
   homepage 'https://github.com/sam-github/libnet'
   url 'https://downloads.sourceforge.net/project/libnet-dev/libnet-1.1.6.tar.gz'
   sha1 'dffff71c325584fdcf99b80567b60f8ad985e34c'
 
   bottle do
     cellar :any
-    sha1 "760d3bce80332f5f616852c2e32ab6b2b8fcfd51" => :mavericks
-    sha1 "4eca550f12b216daf214ef17aaaaa998edc8dbc2" => :mountain_lion
-    sha1 "714de01fd66edc826414bd730e0f5256f2dd50d1" => :lion
+    revision 1
+    sha1 "4fde2d99706c15ca126f6f5ac83226288d0de5d0" => :yosemite
+    sha1 "8bcb8736a1264d1ec6c44312e36f81ec7a7720c6" => :mavericks
+    sha1 "14f7d1d0c595c08c0bbcc4182ff6eabca6df5c8a" => :mountain_lion
   end
 
   # MacPorts does an autoreconf to get raw sockets working

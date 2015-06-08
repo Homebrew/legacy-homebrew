@@ -1,9 +1,18 @@
 require "formula"
 
 class Libmms < Formula
+  desc "Library for parsing mms:// and mmsh:// network streams"
   homepage "http://sourceforge.net/projects/libmms/"
   url "https://downloads.sourceforge.net/project/libmms/libmms/0.6.4/libmms-0.6.4.tar.gz"
   sha1 "b03ef84a9eedc68fdf2866265b667b75e1a33bee"
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "775dd094b8e1d7ac7a8466321241341f8f05be2e" => :yosemite
+    sha1 "ccc9dc73c3512d932d529853398199fc3995a84f" => :mavericks
+    sha1 "38786ae43d15c27862bd003e1fc779c24e2f1863" => :mountain_lion
+  end
 
   depends_on "pkg-config" => :build
   depends_on "glib"

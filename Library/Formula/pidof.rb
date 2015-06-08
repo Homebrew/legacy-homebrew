@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pidof < Formula
+  desc "Display the PID number for a given process name"
   homepage 'http://www.nightproductions.net/cli.htm'
   url 'http://www.nightproductions.net/downloads/pidof_source.tar.gz'
   sha1 '150ff344d7065ecf9bc5cb3c2cc83eeda8d31348'

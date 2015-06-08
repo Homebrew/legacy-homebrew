@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cherokee < Formula
+  desc "Cherokee web server"
   homepage 'http://cherokee-project.com/'
 
   stable do
@@ -17,13 +18,14 @@ class Cherokee < Formula
   head do
     url 'https://github.com/cherokee/webserver.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
     depends_on 'wget' => :build
   end
 
   depends_on 'gettext'
+  depends_on "openssl"
 
   def install
     if build.head?

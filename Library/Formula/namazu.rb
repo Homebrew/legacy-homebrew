@@ -1,6 +1,7 @@
 require "formula"
 
 class Namazu < Formula
+  desc "Full-text search engine"
   homepage "http://www.namazu.org/"
   url "http://www.namazu.org/stable/namazu-2.0.21.tar.gz"
   sha1 "35aaff34d0cdbe96fff24da87671b6f902bb7d43"
@@ -17,6 +18,7 @@ class Namazu < Formula
 
   resource "text-kakasi" do
     url "http://search.cpan.org/CPAN/authors/id/D/DA/DANKOGAI/Text-Kakasi-2.04.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/D/DA/DANKOGAI/Text-Kakasi-2.04.tar.gz"
     sha1 "6a574b6b11eb6ee6b8f52251df355792ffca6add"
   end
 

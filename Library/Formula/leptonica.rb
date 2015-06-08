@@ -1,20 +1,28 @@
-require 'formula'
+require "formula"
 
 class Leptonica < Formula
-  homepage 'http://www.leptonica.org/'
-  url 'http://www.leptonica.org/source/leptonica-1.70.tar.gz'
-  sha1 '476edd5cc3f627f5ad988fcca6b62721188fce13'
+  desc "Image processing and image analysis library"
+  homepage "http://www.leptonica.org/"
+  url "http://www.leptonica.org/source/leptonica-1.72.tar.gz"
+  sha256 "79d5eadd32658c9fea38700c975d60aa3d088eaa3e307659f004d40834de1f56"
 
-  depends_on 'libpng' => :recommended
-  depends_on 'jpeg' => :recommended
-  depends_on 'libtiff' => :optional
-  depends_on 'pkg-config' => :build
+  bottle do
+    cellar :any
+    sha256 "6f46198e077161bd40654e29da0bb26243701dcb75069ef169542f006c3b745b" => :yosemite
+    sha256 "a4d35adcbf811eb48a2dec51bc6e7dcd3ecf61a0c716ae10de0e55c9eaec5065" => :mavericks
+    sha256 "2c747c2e33de6c93958e34353bdad7c9ce41dfbcbc4588cb19411d8956445895" => :mountain_lion
+  end
 
-  conflicts_with 'osxutils',
+  depends_on "libpng" => :recommended
+  depends_on "jpeg" => :recommended
+  depends_on "libtiff" => :recommended
+  depends_on "giflib" => :optional
+  depends_on "openjpeg" => :optional
+  depends_on "webp" => :optional
+  depends_on "pkg-config" => :build
+
+  conflicts_with "osxutils",
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
-
-  ## Patch to fix pkg-config from https://code.google.com/p/leptonica/issues/detail?id=94
-  patch :DATA
 
   def install
     args = %W[
@@ -22,8 +30,12 @@ class Leptonica < Formula
       --prefix=#{prefix}
     ]
 
-    %w[libpng jpeg libtiff].each do |dep|
+    %w[libpng jpeg libtiff giflib].each do |dep|
       args << "--without-#{dep}" if build.without?(dep)
+    end
+    %w[openjpeg webp].each do |dep|
+      args << "--with-lib#{dep}" if build.with?(dep)
+      args << "--without-lib#{dep}" if build.without?(dep)
     end
 
     system "./configure", *args
@@ -40,21 +52,9 @@ class Leptonica < Formula
         return 0;
     }
     EOS
-    system ENV.cxx, "test.cpp", `pkg-config --cflags lept`
-    assert_equal "1.70", `./a.out`
+
+    flags = ["-I#{include}/leptonica"] + ENV.cflags.to_s.split
+    system ENV.cxx, "test.cpp", *flags
+    assert_equal version.to_s, `./a.out`
   end
 end
-
-__END__
-diff --git a/lept.pc.in b/lept.pc.in
-index 8044ba8..c1b9492 100644
---- a/lept.pc.in
-+++ b/lept.pc.in
-@@ -1,3 +1,5 @@
-+prefix=@prefix@
-+exec_prefix=@exec_prefix@
- libdir=@libdir@
- includedir=@includedir@/leptonica
- 
--- 
-1.9.1

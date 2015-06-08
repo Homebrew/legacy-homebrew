@@ -1,23 +1,18 @@
-require 'formula'
-
 class Socat < Formula
-  homepage 'http://www.dest-unreach.org/socat/'
-  url 'http://www.dest-unreach.org/socat/download/socat-1.7.2.2.tar.bz2'
-  sha1 'ba270b85b0d16a6b300159f9b0d88653a9f5d9da'
+  desc "netcat on steroids"
+  homepage "http://www.dest-unreach.org/socat/"
+  url "http://www.dest-unreach.org/socat/download/socat-1.7.3.0.tar.gz"
+  sha1 "c09ec6539647cebe8fccdfcf0f1ace1243231ec3"
 
-  devel do
-    url 'http://www.dest-unreach.org/socat/download/socat-2.0.0-b6.tar.bz2'
-    sha1 '8873c8ab721bc301bfd5026872bace9e01e7bfac'
-    patch :DATA
+  bottle do
+    cellar :any
+    sha1 "1dbd28a373b01b68aa18882f27a4ad82a75cdcd6" => :yosemite
+    sha1 "af4f37fa4ac0083200f6ede2e740a35b69decc0e" => :mavericks
+    sha1 "1e756f77d2956ceea9ea454d62ef1ae58e90d1ad" => :mountain_lion
   end
 
   depends_on 'readline'
-
-  # Socat devs are aware; see: https://trac.macports.org/ticket/32044
-  patch :p0 do
-    url "https://trac.macports.org/export/90442/trunk/dports/sysutils/socat/files/patch-xioexit.c.diff"
-    sha1 "e555d20551f44cddc2613687ff31ec7f0ef09f79"
-  end
+  depends_on 'openssl'
 
   def install
     ENV.enable_warnings # -w causes build to fail
@@ -25,20 +20,3 @@ class Socat < Formula
     system "make install"
   end
 end
-
-__END__
-diff --git a/sysincludes.h b/sysincludes.h
-index ee25556..8a57422 100644
---- a/sysincludes.h
-+++ b/sysincludes.h
-@@ -5,6 +5,10 @@
- #ifndef __sysincludes_h_included
- #define __sysincludes_h_included 1
- 
-+#if __APPLE__
-+#define __APPLE_USE_RFC_3542 1
-+#endif
-+
- #if HAVE_LIMITS_H
- #include <limits.h>	/* USHRT_MAX */
- #endif

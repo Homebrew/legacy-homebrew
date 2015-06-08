@@ -1,11 +1,21 @@
 require 'formula'
 
 class Libmowgli < Formula
+  desc "Core framework for Atheme applications"
   homepage 'http://www.atheme.org/project/mowgli'
   url 'https://github.com/atheme/libmowgli-2/archive/libmowgli-2.0.0.tar.gz'
   sha1 'dd3860fb116c4249456f13cd6c30c55e84388262'
+  revision 1
 
   head 'https://github.com/atheme/libmowgli-2.git'
+
+  bottle do
+    cellar :any
+    revision 3
+    sha1 "3c8576b64db4e689e386376b66821b95a45716d4" => :yosemite
+    sha1 "21d241c7ef4f94bb0dd4407ac09ecb9fbde93660" => :mavericks
+    sha1 "b0a6bf09ca579425a935063b9c8b86ee7cceec53" => :mountain_lion
+  end
 
   depends_on "openssl"
 

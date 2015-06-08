@@ -1,6 +1,7 @@
 require 'formula'
 
 class Portmidi < Formula
+  desc "Cross-platform library for real-time MIDI I/O"
   homepage 'http://sourceforge.net/apps/trac/portmedia/wiki/portmidi'
   url 'https://downloads.sourceforge.net/project/portmedia/portmidi/217/portmidi-src-217.zip'
   sha1 'f45bf4e247c0d7617deacd6a65d23d9fddae6117'

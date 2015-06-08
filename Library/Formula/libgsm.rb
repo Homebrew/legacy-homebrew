@@ -1,9 +1,18 @@
 require 'formula'
 
 class Libgsm < Formula
+  desc "Lossy speech compression library"
   homepage 'http://www.quut.com/gsm/'
   url 'http://www.quut.com/gsm/gsm-1.0.13.tar.gz'
   sha1 '668b0a180039a50d379b3d5a22e78da4b1d90afc'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "832cbeb382112a042221bdef53980c1432d9acb5" => :yosemite
+    sha1 "90ebcfff95c504b5e3b0a1dca09164a4342239ae" => :mavericks
+    sha1 "45ce069c68066f2a93148379ec1539f5bf398280" => :mountain_lion
+  end
 
   option :universal
 

@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'formula_pin'
 
-class FormulaPinTests < Test::Unit::TestCase
+class FormulaPinTests < Homebrew::TestCase
   class FormulaDouble
     def name
       "double"
@@ -19,27 +19,25 @@ class FormulaPinTests < Test::Unit::TestCase
   end
 
   def test_not_pinnable
-    assert !@pin.pinnable?
+    refute_predicate @pin, :pinnable?
   end
 
   def test_pinnable_if_kegs_exist
     (@f.rack+'0.1').mkpath
-    assert @pin.pinnable?
-  end
-
-  def test_pin
-    (@f.rack+'0.1').mkpath
-    @pin.pin
-    assert @pin.pinned?
-    assert_equal 1, FormulaPin::PINDIR.children.length
+    assert_predicate @pin, :pinnable?
   end
 
   def test_unpin
     (@f.rack+'0.1').mkpath
     @pin.pin
+
+    assert_predicate @pin, :pinned?
+    assert_equal 1, FormulaPin::PINDIR.children.length
+
     @pin.unpin
-    assert !@pin.pinned?
-    assert_equal 0, FormulaPin::PINDIR.children.length
+
+    refute_predicate @pin, :pinned?
+    refute_predicate FormulaPin::PINDIR, :directory?
   end
 
   def teardown

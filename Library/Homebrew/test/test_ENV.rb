@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'extend/ENV'
 
-class EnvironmentTests < Test::Unit::TestCase
+class EnvironmentTests < Homebrew::TestCase
   def setup
     @env = {}.extend(EnvActivation)
     @env.activate_extensions!
@@ -114,9 +114,17 @@ module SharedEnvTests
       assert_equal compiler, @env.compiler
     end
   end
+
+  def test_deparallelize_block_form_restores_makeflags
+    @env['MAKEFLAGS'] = '-j4'
+    @env.deparallelize do
+      assert_nil @env['MAKEFLAGS']
+    end
+    assert_equal '-j4', @env['MAKEFLAGS']
+  end
 end
 
-class StdenvTests < Test::Unit::TestCase
+class StdenvTests < Homebrew::TestCase
   include SharedEnvTests
 
   def setup
@@ -124,27 +132,15 @@ class StdenvTests < Test::Unit::TestCase
   end
 end
 
-class SuperenvTests < Test::Unit::TestCase
+class SuperenvTests < Homebrew::TestCase
   include SharedEnvTests
-
-  attr_reader :env, :bin
 
   def setup
     @env = {}.extend(Superenv)
-    @bin = HOMEBREW_REPOSITORY/"Library/ENV/#{MacOS::Xcode.version}"
-    bin.mkpath
-  end
-
-  def test_bin
-    assert_equal bin, Superenv.bin
   end
 
   def test_initializes_deps
-    assert_equal [], env.deps
-    assert_equal [], env.keg_only_deps
-  end
-
-  def teardown
-    bin.rmtree
+    assert_equal [], @env.deps
+    assert_equal [], @env.keg_only_deps
   end
 end

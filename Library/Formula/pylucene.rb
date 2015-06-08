@@ -1,13 +1,15 @@
 require "formula"
 
 class Pylucene < Formula
+  desc "Python extension for accessing Java Lucene"
   homepage "http://lucene.apache.org/pylucene/index.html"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/pylucene/pylucene-4.8.0-1-src.tar.gz"
-  sha1 "81ef976ba9c3237ff794b7cbff6d37413a5376bf"
+  url "http://www.apache.org/dyn/closer.cgi?path=lucene/pylucene/pylucene-4.10.1-1-src.tar.gz"
+  sha1 "650709590f4443ed711f100cc6e4f6850245899b"
 
   option "with-shared", "build jcc as a shared library"
 
   depends_on :ant => :build
+  depends_on :java => "1.7"
   depends_on :python
 
   def install
@@ -23,7 +25,7 @@ class Pylucene < Formula
     end
 
     cd "jcc" do
-      system "python", "setup.py", "install", "--prefix=#{prefix}"
+      system "python", "setup.py", "install", "--prefix=#{prefix}", "--single-version-externally-managed", "--record=install.txt"
     end
     ENV.deparallelize  # the jars must be built serially
     system "make", "all", "install", opt, jcc, "ANT=ant", "PYTHON=python", "NUM_FILES=8"

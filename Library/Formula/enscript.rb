@@ -1,6 +1,7 @@
 require 'formula'
 
 class Enscript < Formula
+  desc "Convert text to Postscript, HTML, or RTF, with syntax highlighting"
   homepage 'http://www.gnu.org/software/enscript/'
   url 'http://ftpmirror.gnu.org/enscript/enscript-1.6.6.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/enscript/enscript-1.6.6.tar.gz'
@@ -19,9 +20,7 @@ class Enscript < Formula
   end
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/enscript", "-V") do |_, stdout, _|
-      assert_match /GNU Enscript #{Regexp.escape(version)}/, stdout.read
-    end
+    assert_match /GNU Enscript #{Regexp.escape(version)}/,
+                 shell_output("#{bin}/enscript -V")
   end
 end

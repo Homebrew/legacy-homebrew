@@ -1,17 +1,19 @@
-require 'formula'
+require "formula"
 
 class Goaccess < Formula
-  homepage 'http://goaccess.prosoftcorp.com/'
-  url 'http://tar.goaccess.io/goaccess-0.8.tar.gz'
-  sha1 '8c220e7e65a6e45ae5a2221e241e976d07c23def'
+  desc "Log analyzer and interactive viewer for the Apache Webserver"
+  homepage "http://goaccess.prosoftcorp.com/"
+  url "http://tar.goaccess.io/goaccess-0.9.1.tar.gz"
+  sha1 "3b1c17d5f808c8c81de0a9d3581c3ef7846812b7"
 
   bottle do
-    sha1 "081452df0eca44ca9d59591985956090087654e8" => :mavericks
-    sha1 "a74a803534ae1050fea03429b11bb298909ab218" => :mountain_lion
-    sha1 "3a327d75218841c39c356f7c03c8a03212920314" => :lion
+    sha256 "0bd28778ccb4d3976313ec429f62ec67528aa2db33db32023569fdf2ee5cc065" => :yosemite
+    sha256 "912546461e75e75e3cb44a88715a267b4de82cc4e4573f8a559e9e375680ccde" => :mavericks
+    sha256 "58d9cabba37d663a94e8b1ece0ee794dc9717f918199577a5b422b116557266b" => :mountain_lion
   end
 
-  option 'enable-geoip', "Enable IP location information using GeoIP"
+  option "with-geoip", "Enable IP location information using GeoIP"
+  deprecated_option "enable-geoip" => "with-geoip"
 
   head do
     url "https://github.com/allinurl/goaccess.git"
@@ -19,9 +21,9 @@ class Goaccess < Formula
     depends_on "automake" => :build
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'geoip' if build.include? "enable-geoip"
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "geoip" => :optional
 
   def install
     system "autoreconf", "-vfi" if build.head?
@@ -31,7 +33,7 @@ class Goaccess < Formula
       --prefix=#{prefix}
     ]
 
-    args << "--enable-geoip" if build.include? "enable-geoip"
+    args << "--enable-geoip" if build.with? "geoip"
 
     system "./configure", *args
     system "make install"

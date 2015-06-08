@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libkml < Formula
+  desc "Library to parse, generate and operate on KML"
   homepage 'http://code.google.com/p/libkml/'
 
   stable do
@@ -19,6 +20,13 @@ class Libkml < Formula
     end
   end
 
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "604dafcf5fb8135e89f4636af4ecb21b404b4e4b" => :yosemite
+    sha1 "61000bffb52eb852149276e37b42461fd5f710a7" => :mavericks
+    sha1 "68d01ed7b9748caa23f6309c62e836cb030f673d" => :mountain_lion
+  end
 
   head do
     url 'http://libkml.googlecode.com/svn/trunk/'

@@ -1,7 +1,7 @@
 require 'keg'
 require 'cmd/tap'
 
-module Homebrew extend self
+module Homebrew
   def prune
     ObserverPathnameExtension.reset_counts!
 
@@ -36,7 +36,7 @@ module Homebrew extend self
       end
     end
 
-    repair_taps unless ARGV.dry_run?
+    migrate_taps :force => true unless ARGV.dry_run?
 
     if ObserverPathnameExtension.total.zero?
       puts "Nothing pruned" if ARGV.verbose?

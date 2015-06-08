@@ -1,18 +1,23 @@
 require 'formula'
 
 class Poppler < Formula
+  desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.26.1.tar.xz'
-  sha1 '69911065030200bb7233a1f051b2e4695bbc386c'
+  url 'http://poppler.freedesktop.org/poppler-0.29.0.tar.xz'
+  sha1 'ba3330ab884e6a139ca63dd84d0c1c676f545b5e'
 
   bottle do
-    sha1 "665087d2cbf78417e8651182547e456c0fb1b61c" => :mavericks
-    sha1 "baedb7e6b18a90bc0b8720f3808f886a02ae8d6c" => :mountain_lion
-    sha1 "970ccd0298c820b229a3872ca8107ffd5e4810e3" => :lion
+    sha1 "b83e3b7fe032d69343367ceb481a0387e447e565" => :yosemite
+    sha1 "c1693c4f5dddc088b6ea53640610918416d7e08c" => :mavericks
+    sha1 "36ca1676e824fe8532ad6c6e826685c0e39ac808" => :mountain_lion
   end
 
-  option 'with-qt4', 'Build Qt backend'
-  option 'with-lcms2', 'Use color management system'
+  option "with-qt", "Build Qt backend"
+  option "with-qt5", "Build Qt5 backend"
+  option "with-little-cms2", "Use color management system"
+
+  deprecated_option "with-qt4" => "with-qt"
+  deprecated_option "with-lcms2" => "with-little-cms2"
 
   depends_on 'pkg-config' => :build
   depends_on 'cairo'
@@ -26,17 +31,15 @@ class Poppler < Formula
   depends_on 'libtiff'
   depends_on 'openjpeg'
 
-  depends_on 'qt' if build.with? 'qt4'
-  depends_on 'little-cms2' if build.with? 'lcms2'
+  depends_on "qt" => :optional
+  depends_on "qt5" => :optional
+  depends_on "little-cms2" => :optional
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
 
-  conflicts_with 'pdf2image', 'xpdf',
-    :because => 'poppler, pdf2image, and xpdf install conflicting executables'
-
   resource 'font-data' do
-    url 'http://poppler.freedesktop.org/poppler-data-0.4.6.tar.gz'
-    sha1 'f030563eed9f93912b1a546e6d87936d07d7f27d'
+    url 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'
+    sha1 '556a5bebd0eb743e0d91819ba11fd79947d8c674'
   end
 
   def install
@@ -49,13 +52,15 @@ class Poppler < Formula
       --enable-introspection=yes
     ]
 
-    if build.with? "qt4"
+    if build.with? "qt"
       args << "--enable-poppler-qt4"
+    elsif build.with? "qt5"
+      args << "--enable-poppler-qt5"
     else
-      args << "--disable-poppler-qt4"
+      args << "--disable-poppler-qt4" << "--disable-poppler-qt5"
     end
 
-    args << "--enable-cms=lcms2" if build.with? "lcms2"
+    args << "--enable-cms=lcms2" if build.with? "little-cms2"
 
     system "./configure", *args
     system "make install"

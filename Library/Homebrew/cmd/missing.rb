@@ -1,14 +1,14 @@
 require 'formula'
 require 'tab'
 
-module Homebrew extend self
+module Homebrew
   def missing_deps ff
     missing = {}
     ff.each do |f|
       missing_deps = f.recursive_dependencies do |dependent, dep|
         if dep.optional? || dep.recommended?
           tab = Tab.for_formula(dependent)
-          Dependency.prune unless tab.with?(dep.name)
+          Dependency.prune unless tab.with?(dep)
         elsif dep.build?
           Dependency.prune
         end
@@ -18,8 +18,8 @@ module Homebrew extend self
       missing_deps.reject! { |d| d.rack.exist? && d.rack.subdirs.length > 0 }
 
       unless missing_deps.empty?
-        yield f.name, missing_deps if block_given?
-        missing[f.name] = missing_deps
+        yield f.full_name, missing_deps if block_given?
+        missing[f.full_name] = missing_deps
       end
     end
     missing
@@ -31,7 +31,7 @@ module Homebrew extend self
     ff = if ARGV.named.empty?
       Formula.installed
     else
-      ARGV.formulae
+      ARGV.resolved_formulae
     end
 
     missing_deps(ff) do |name, missing|

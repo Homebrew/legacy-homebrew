@@ -1,10 +1,19 @@
 require 'formula'
 
 class Libming < Formula
+  desc "C library for generating Macromedia Flash files"
   homepage 'http://www.libming.org'
   url 'https://downloads.sourceforge.net/project/ming/Releases/ming-0.4.4.tar.bz2'
   sha1 'e803b3b94a00a361e3415105f26112cf6f7bac81'
   revision 1
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "32b39f8fa04d714d6bf347e949226083d047cbcb" => :yosemite
+    sha1 "74dede7e7d9cc92cf77f75ee3f9e3f203fc45a16" => :mavericks
+    sha1 "a17d5d4085eac1998e3cee52048870f569d37935" => :mountain_lion
+  end
 
   option 'perl', 'Build the perl extension'
   option 'php', 'Build the php extension'

@@ -1,8 +1,7 @@
 require 'testing_env'
 require 'dependency_collector'
-require 'extend/set'
 
-class DependencyCollectorTests < Test::Unit::TestCase
+class DependencyCollectorTests < Homebrew::TestCase
   def find_dependency(name)
     @d.deps.find { |dep| dep.name == name }
   end
@@ -16,7 +15,7 @@ class DependencyCollectorTests < Test::Unit::TestCase
   end
 
   def teardown
-    DependencyCollector::CACHE.clear
+    DependencyCollector.clear_cache
   end
 
   def test_dependency_creation
@@ -32,17 +31,10 @@ class DependencyCollectorTests < Test::Unit::TestCase
   end
 
   def test_dependency_tags
-    assert Dependency.new('foo', [:build]).build?
-    assert Dependency.new('foo', [:build, :optional]).optional?
-    assert Dependency.new('foo', [:universal]).options.include? '--universal'
+    assert_predicate Dependency.new('foo', [:build]), :build?
+    assert_predicate Dependency.new('foo', [:build, :optional]), :optional?
+    assert_includes Dependency.new('foo', ["universal"]).options, "--universal"
     assert_empty Dependency.new('foo').tags
-  end
-
-  def test_no_duplicate_dependencies
-    @d.add 'foo'
-    @d.add 'foo' => :build
-    assert_equal 1, @d.deps.count
-    assert_empty find_dependency("foo").tags
   end
 
   def test_requirement_creation
@@ -52,14 +44,14 @@ class DependencyCollectorTests < Test::Unit::TestCase
 
   def test_no_duplicate_requirements
     2.times { @d.add :x11 }
-    assert_equal 1, @d.requirements.length
+    assert_equal 1, @d.requirements.count
   end
 
   def test_requirement_tags
     @d.add :x11 => '2.5.1'
     @d.add :xcode => :build
     assert_empty find_requirement(X11Dependency).tags
-    assert find_requirement(XcodeDependency).build?
+    assert_predicate find_requirement(XcodeDependency), :build?
   end
 
   def test_x11_no_tag
@@ -69,19 +61,19 @@ class DependencyCollectorTests < Test::Unit::TestCase
 
   def test_x11_min_version
     @d.add :x11 => '2.5.1'
-    assert_equal "2.5.1", find_requirement(X11Dependency).min_version
+    assert_equal "2.5.1", find_requirement(X11Dependency).min_version.to_s
   end
 
   def test_x11_tag
     @d.add :x11 => :optional
-    assert find_requirement(X11Dependency).optional?
+    assert_predicate find_requirement(X11Dependency), :optional?
   end
 
   def test_x11_min_version_and_tag
     @d.add :x11 => ['2.5.1', :optional]
     dep = find_requirement(X11Dependency)
-    assert_equal '2.5.1', dep.min_version
-    assert dep.optional?
+    assert_equal '2.5.1', dep.min_version.to_s
+    assert_predicate dep, :optional?
   end
 
   def test_ld64_dep_pre_leopard
@@ -129,7 +121,7 @@ class DependencyCollectorTests < Test::Unit::TestCase
 
   def test_resource_dep_raises_for_unknown_classes
     resource = Resource.new
-    resource.url "foo", :using => Class.new
+    resource.download_strategy = Class.new
     assert_raises(TypeError) { @d.add(resource) }
   end
 end

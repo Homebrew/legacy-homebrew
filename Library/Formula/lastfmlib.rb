@@ -1,9 +1,18 @@
 require 'formula'
 
 class Lastfmlib < Formula
+  desc "Implements Last.fm v1.2 submissions protocol for scrobbling"
   homepage 'http://code.google.com/p/lastfmlib/'
   url 'https://lastfmlib.googlecode.com/files/lastfmlib-0.4.0.tar.gz'
   sha1 'b9e15e4eb42a9ccd9b3c5373054b0bd51a406fdd'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "764db4a4f10b803d6fccf6552a47427634e70c18" => :yosemite
+    sha1 "dcb26b1acf66e30f694543ad32f3b4433745667d" => :mavericks
+    sha1 "61c0b04548eefedd3c546e3bbf392987d667c2b9" => :mountain_lion
+  end
 
   depends_on 'pkg-config' => :build
 

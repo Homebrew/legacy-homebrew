@@ -1,14 +1,15 @@
 require 'formula'
 
 class Varnish < Formula
-  homepage 'http://www.varnish-cache.org/'
-  url 'https://repo.varnish-cache.org/source/varnish-4.0.0.tar.gz'
-  sha1 '6ad4fcf42a505a748ae993cb6ed579159e023633'
+  desc "High-performance HTTP accelerator"
+  homepage 'https://www.varnish-cache.org/'
+  url 'https://repo.varnish-cache.org/source/varnish-4.0.3.tar.gz'
+  sha1 'ba4668cb7d17f95c4c5e4baf964fe1412a269297'
 
   bottle do
-    sha1 "190bba2cf0e521b489cbd64cc698ba769b18cccd" => :mavericks
-    sha1 "fd12d468c2328179bd402f1592b65ef69d6f1baa" => :mountain_lion
-    sha1 "0e9717e705541a34906947eb7e49ab800204e2ff" => :lion
+    sha256 "050160fe3c7780d56f0ff3a68e26c200c72ffb785451d351cb2b1410d7b86588" => :yosemite
+    sha256 "204524142865d6ea5fc9d1dec5c877402726ec44133bcc0d1e0aeb31e39730c7" => :mavericks
+    sha256 "31c5ee79f9bc61d9951dac9a6f56687b8c2724ff934c90ecfb171687707fd4d3" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

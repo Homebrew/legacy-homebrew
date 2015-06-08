@@ -1,9 +1,10 @@
 require "formula"
 
 class GoAppEngine32 < Formula
-  homepage "http://code.google.com/appengine/docs/go/overview.html"
-  url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_386-1.9.6.zip"
-  sha1 "607ddc9ee0f4a68a6cd98903538e5d25ae3667da"
+  desc "Google App Engine SDK for Go!"
+  homepage "https://cloud.google.com/appengine/docs/go/"
+  url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_386-1.9.20.zip"
+  sha1 "c50dc5d473cd553e4b5fe653f52396849fbc9aa0"
 
   def install
     cd ".."

@@ -1,48 +1,35 @@
 require 'testing_env'
 require 'patch'
 
-class PatchTests < Test::Unit::TestCase
+class PatchTests < Homebrew::TestCase
   def test_create_simple
-    patch = Patch.create(:p2)
+    patch = Patch.create(:p2, nil)
     assert_kind_of ExternalPatch, patch
-    assert patch.external?
+    assert_predicate patch, :external?
     assert_equal :p2, patch.strip
-  end
-
-  def test_create_io
-    patch = Patch.create(:p0, StringIO.new("foo"))
-    assert_kind_of IOPatch, patch
-    assert !patch.external?
-    assert_equal :p0, patch.strip
-  end
-
-  def test_create_io_without_strip
-    patch = Patch.create(StringIO.new("foo"))
-    assert_kind_of IOPatch, patch
-    assert_equal :p1, patch.strip
   end
 
   def test_create_string
     patch = Patch.create(:p0, "foo")
-    assert_kind_of IOPatch, patch
+    assert_kind_of StringPatch, patch
     assert_equal :p0, patch.strip
   end
 
   def test_create_string_without_strip
-    patch = Patch.create("foo")
-    assert_kind_of IOPatch, patch
+    patch = Patch.create("foo", nil)
+    assert_kind_of StringPatch, patch
     assert_equal :p1, patch.strip
   end
 
   def test_create_DATA
     patch = Patch.create(:p0, :DATA)
-    assert_kind_of IOPatch, patch
+    assert_kind_of DATAPatch, patch
     assert_equal :p0, patch.strip
   end
 
   def test_create_DATA_without_strip
-    patch = Patch.create(:DATA)
-    assert_kind_of IOPatch, patch
+    patch = Patch.create(:DATA, nil)
+    assert_kind_of DATAPatch, patch
     assert_equal :p1, patch.strip
   end
 
@@ -51,7 +38,7 @@ class PatchTests < Test::Unit::TestCase
   end
 end
 
-class LegacyPatchTests < Test::Unit::TestCase
+class LegacyPatchTests < Homebrew::TestCase
   def test_patch_single_string
     patches = Patch.normalize_legacy_patches("http://example.com/patch.diff")
     assert_equal 1, patches.length

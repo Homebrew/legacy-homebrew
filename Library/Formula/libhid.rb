@@ -1,9 +1,17 @@
 require "formula"
 
 class Libhid < Formula
+  desc "Library to access and interact with USB HID devices"
   homepage "http://libhid.alioth.debian.org/"
   url "http://distcache.freebsd.org/ports-distfiles/libhid-0.2.16.tar.gz"
   sha1 "9a25fef674e8f20f97fea6700eb91c21ebbbcc02"
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "906bbdb53b10becc5fa7662513ac7ee98bef5b24" => :yosemite
+    sha1 "fcd7fdf048247a5ecb01abbd56f7c03e330c62ca" => :mavericks
+  end
 
   depends_on "libusb"
   depends_on "libusb-compat"

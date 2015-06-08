@@ -1,125 +1,110 @@
-# Require this file to build a testing environment.
+$:.unshift File.expand_path("../..", __FILE__)
+$:.unshift File.expand_path("../lib", __FILE__)
 
-$:.push(File.expand_path(__FILE__+'/../..'))
-
-require 'extend/module'
-require 'extend/fileutils'
-require 'extend/pathname'
-require 'extend/string'
-require 'extend/symbol'
-require 'extend/enumerable'
-require 'exceptions'
-require 'utils'
-require 'rbconfig'
-
-# Constants normally defined in global.rb
-HOMEBREW_PREFIX        = Pathname.new('/private/tmp/testbrew/prefix')
-HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
-HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
-HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
-HOMEBREW_CACHE_FORMULA = HOMEBREW_PREFIX.parent+'formula_cache'
-HOMEBREW_CELLAR        = HOMEBREW_PREFIX.parent+'cellar'
-HOMEBREW_LOGS          = HOMEBREW_PREFIX.parent+'logs'
-HOMEBREW_TEMP          = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
-HOMEBREW_USER_AGENT    = 'Homebrew'
-HOMEBREW_WWW           = 'http://example.com'
-HOMEBREW_CURL_ARGS     = '-fsLA'
-HOMEBREW_VERSION       = '0.9-test'
-
-require 'tap_constants'
-
-if RbConfig.respond_to?(:ruby)
-  RUBY_PATH = Pathname.new(RbConfig.ruby)
-else
-  RUBY_PATH = Pathname.new(RbConfig::CONFIG["bindir"]).join(
-    RbConfig::CONFIG["ruby_install_name"] + RbConfig::CONFIG["EXEEXT"]
-  )
-end
-RUBY_BIN = RUBY_PATH.dirname
-
-MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
-
-ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
-
-module Homebrew extend self
-  include FileUtils
-end
+require "global"
 
 # Test environment setup
-%w{Library/Formula Library/ENV}.each do |d|
-  HOMEBREW_REPOSITORY.join(d).mkpath
-end
-
-at_exit { HOMEBREW_PREFIX.parent.rmtree }
+%w{ENV Formula}.each { |d| HOMEBREW_LIBRARY.join(d).mkpath }
+%w{cache formula_cache cellar logs}.each { |d| HOMEBREW_PREFIX.parent.join(d).mkpath }
 
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 
-def shutup
-  if ARGV.verbose?
-    yield
-  else
-    begin
-      tmperr = $stderr.clone
-      tmpout = $stdout.clone
-      $stderr.reopen '/dev/null', 'w'
-      $stdout.reopen '/dev/null', 'w'
-      yield
-    ensure
-      $stderr.reopen tmperr
-      $stdout.reopen tmpout
+begin
+  require "rubygems"
+  require "minitest/autorun"
+  require "mocha/setup"
+rescue LoadError
+  abort "Run `rake deps` or install the mocha and minitest gems before running the tests"
+end
+
+module Homebrew
+  module VersionAssertions
+    def version v
+      Version.new(v)
+    end
+
+    def assert_version_equal expected, actual
+      assert_equal Version.new(expected), actual
+    end
+
+    def assert_version_detected expected, url
+      assert_equal expected, Version.parse(url).to_s
+    end
+
+    def assert_version_nil url
+      assert_nil Version.parse(url)
     end
   end
-end
 
-require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
+  module FSLeakLogger
+    def self.included(klass)
+      require "find"
+      @@log = File.open("fs_leak_log", "w")
+      klass.make_my_diffs_pretty!
+    end
 
-require 'test/unit' # must be after at_exit
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
+    def before_setup
+      @__files_before_test = []
+      Find.find(TEST_TMPDIR) { |f| @__files_before_test << f.sub(TEST_TMPDIR, "") }
+      super
+    end
 
-begin
-  require 'rubygems'
-  require 'mocha/setup'
-rescue LoadError
-  warn 'The mocha gem is required to run some tests, expect failures'
-end
-
-module VersionAssertions
-  def version v
-    Version.new(v)
+    def after_teardown
+      super
+      files_after_test = []
+      Find.find(TEST_TMPDIR) { |f| files_after_test << f.sub(TEST_TMPDIR, "") }
+      if @__files_before_test != files_after_test
+        @@log.puts location, diff(@__files_before_test, files_after_test)
+      end
+    end
   end
 
-  def assert_version_equal expected, actual
-    assert_equal Version.new(expected), actual
-  end
+  class TestCase < ::Minitest::Test
+    include VersionAssertions
+    include FSLeakLogger if ENV["LOG_FS_LEAKS"]
 
-  def assert_version_detected expected, url
-    assert_equal expected, Version.parse(url).to_s
-  end
+    TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+    TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-  def assert_version_nil url
-    assert_nil Version.parse(url)
-  end
+    def formula(name="formula_name", path=Formulary.core_path(name), spec=:stable, &block)
+      @_f = Class.new(Formula, &block).new(name, path, spec)
+    end
 
-  def assert_version_tokens tokens, version
-    assert_equal tokens, version.send(:tokens).map(&:to_s)
-  end
-end
+    def shutup
+      err = $stderr.dup
+      out = $stdout.dup
 
-module Test::Unit::Assertions
-  def assert_empty(obj, msg=nil)
-    assert_respond_to(obj, :empty?, msg)
-    assert(obj.empty?, msg)
-  end unless method_defined?(:assert_empty)
-end
+      begin
+        $stderr.reopen("/dev/null")
+        $stdout.reopen("/dev/null")
+        yield
+      ensure
+        $stderr.reopen(err)
+        $stdout.reopen(out)
+        err.close
+        out.close
+      end
+    end
 
-class Test::Unit::TestCase
-  TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
-  TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+    def mktmpdir(prefix_suffix=nil, &block)
+      Dir.mktmpdir(prefix_suffix, HOMEBREW_TEMP, &block)
+    end
 
-  def formula(name="formula_name", path=Formula.path(name), &block)
-    @_f = Class.new(Formula, &block).new(name, path)
+    def assert_nothing_raised
+      yield
+    end
+
+    def assert_eql(exp, act, msg=nil)
+      msg = message(msg, "") { diff exp, act }
+      assert exp.eql?(act), msg
+    end
+
+    def refute_eql(exp, act, msg=nil)
+      msg = message(msg) {
+        "Expected #{mu_pp(act)} to not be eql to #{mu_pp(exp)}"
+      }
+      refute exp.eql?(act), msg
+    end
   end
 end

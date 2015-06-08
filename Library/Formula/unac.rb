@@ -3,6 +3,7 @@
 require 'formula'
 
 class Unac < Formula
+  desc "C library and command that removes accents from a string"
   homepage 'http://savannah.nongnu.org/projects/unac'
   url 'http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0.orig.tar.gz'
   sha1 '3e779bb7f3b505880ac4f43b48ee2f935ef8aa36'
@@ -44,10 +45,7 @@ class Unac < Formula
   end
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/unaccent", "utf-8", "fóó") do |_, stdout, _|
-      assert_equal "foo", stdout.read.strip
-    end
+    assert_equal "foo", shell_output("#{bin}/unaccent utf-8 fóó").strip
   end
 end
 

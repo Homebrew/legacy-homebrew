@@ -1,6 +1,7 @@
 require 'formula'
 
 class Freealut < Formula
+  desc "Implementation of OpenAL's ALUT standard"
   homepage 'http://connect.creativelabs.com/openal/Documentation/The%20OpenAL%20Utility%20Toolkit.htm'
   url 'http://connect.creativelabs.com/openal/Downloads/ALUT/freealut-1.1.0.tar.gz'
   mirror 'http://ftp.de.debian.org/debian/pool/main/f/freealut/freealut_1.1.0.orig.tar.gz'
@@ -9,9 +10,9 @@ class Freealut < Formula
   # Adds the OpenAL frameworks to the library list so linking succeeds
   patch :DATA
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     system "./autogen.sh"

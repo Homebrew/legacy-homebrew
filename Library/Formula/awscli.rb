@@ -1,76 +1,92 @@
-require "formula"
-
 class Awscli < Formula
+  desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.11.tar.gz"
-  sha1 "18050c58ac8ce9553aed22ac0b8950df21d7c4fe"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.32.tar.gz"
+  sha256 "50f914d752700c47e6567d1f17ee64c8d5efbe1974da46c03cf7d85e080f71b5"
+
+  bottle do
+    cellar :any
+    sha256 "26fbc4082457d9e3379740c14da5e6283978f1b475d6c9a2b55720b595948b90" => :yosemite
+    sha256 "6120544ffc32eb298c0f95350d0ff6cb2e541028fa1e86f4c5d511647d380ac1" => :mavericks
+    sha256 "bc6d694da65caeda5738782841b41feb5c660acc224573c44dbac1d5c585d2d7" => :mountain_lion
+  end
 
   head do
-    url "https://github.com/aws/aws-cli.git", :branch => :develop
+    url "https://github.com/aws/aws-cli.git", :branch => "develop"
 
     resource "botocore" do
-      url "https://github.com/boto/botocore.git", :branch => :develop
+      url "https://github.com/boto/botocore.git", :branch => "develop"
     end
 
     resource "bcdoc" do
-      url "https://github.com/boto/bcdoc.git", :branch => :develop
+      url "https://github.com/boto/bcdoc.git", :branch => "develop"
     end
 
     resource "jmespath" do
-      url "https://github.com/boto/jmespath.git", :branch => :develop
+      url "https://github.com/boto/jmespath.git", :branch => "develop"
     end
   end
 
-  depends_on :python if MacOS.version <= :snow_leopard
-
-  resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.45.0.tar.gz"
-    sha1 "b3bcf0065458a3fd5c172701cd88614b05ef41eb"
-  end
-
-  resource "bcdoc" do
-    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.12.2.tar.gz"
-    sha1 "31b2a714c2803658d9d028c8edf4623fd0daaf18"
-  end
+  # Use :python on Lion to avoid urllib3 warning
+  # https://github.com/Homebrew/homebrew/pull/37240
+  depends_on :python if MacOS.version <= :lion
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.6.1.tar.gz"
-    sha1 "2a7941cc2233d9ad6d7d54dd5265d1eb9726c5a1"
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+  end
+
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.2.tar.gz"
+    sha256 "3e95445c1db500a344079a47b171c45ef18f57d188dffdb0e4165c71bea8eb3d"
   end
 
   resource "colorama" do
-    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.2.5.tar.gz"
-    sha1 "87507210c5a7d400b27d23e8dd42734198663d66"
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.3.tar.gz"
+    sha256 "eb21f2ba718fbf357afdfdf6f641ab393901c7ca8d9f37edd0bee4806ffa269c"
+  end
+
+  resource "jmespath" do
+    url "https://pypi.python.org/packages/source/j/jmespath/jmespath-0.7.1.tar.gz"
+    sha1 "10cbbf7f1a892d2c4fce7f7e84bb91e9108fcf45"
+  end
+
+  resource "botocore" do
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.0.0b1.tar.gz"
+    sha256 "c4665a00dad68bfdfda02df9cad7b93bb391430c043f01261a964f86fa1b41eb"
   end
 
   resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.11.tar.gz"
-    sha1 "3894ebcbcbf8aa54ce7c3d2c8f05460544912d67"
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
+    sha1 "002450621b33c5690060345b0aac25bc2426d675"
+  end
+
+  resource "bcdoc" do
+    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.14.0.tar.gz"
+    sha256 "68aecc8e14151266316562c6a50605b8efa33f18f8023e303fb20a1b346e53e8"
+  end
+
+  resource "pyasn1" do
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.7.tar.gz"
+    sha1 "e32b91c5a5d9609fb1d07d8685a884bab22ca6d0"
   end
 
   resource "rsa" do
-    url "https://bitbucket.org/sybren/python-rsa/get/version-3.1.2.tar.gz"
-    sha1 "6a7515221e50ee87cfb54cb36e96f2a39df9badd"
+    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.4.tar.gz"
+    sha256 "e2b0b05936c276b1edd2e1525553233b666df9e29b5c3ba223eed738277c82a0"
   end
 
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+    ENV["PYTHONPATH"] = libexec/"lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    if build.head? then
-      resource("jmespath").stage { system "python", *install_args }
+    resources.each do |r|
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
 
-    resource("botocore").stage { system "python", *install_args }
-    resource("bcdoc").stage { system "python", *install_args }
-    resource("six").stage { system "python", *install_args }
-    resource("colorama").stage { system "python", *install_args }
-    resource("docutils").stage { system "python", *install_args }
-    resource("rsa").stage { system "python", *install_args }
-
-    system "python", "setup.py", "install", "--prefix=#{prefix}",
-      "--single-version-externally-managed", "--record=installed.txt"
+    system "python", *Language::Python.setup_install_args(libexec)
 
     # Install zsh completion
     zsh_completion.install "bin/aws_zsh_completer.sh" => "_aws"
@@ -78,6 +94,7 @@ class Awscli < Formula
     # Install the examples
     (share+"awscli").install "awscli/examples"
 
+    bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 

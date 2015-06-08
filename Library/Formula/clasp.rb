@@ -1,20 +1,28 @@
-require 'formula'
+require "formula"
 
 class Clasp < Formula
-  homepage 'http://potassco.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/potassco/clasp/2.1.4/clasp-2.1.4-source.tar.gz'
-  sha1 '4c6ec3ee2f68fd5f9b3574ebb5a8b069d65d12df'
+  desc "An answer set solver for (extended) normal logic programs"
+  homepage "http://potassco.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/potassco/clasp/3.1.1/clasp-3.1.1-source.tar.gz"
+  sha1 "01a35f05fb4c138bb0bfd8759f36b2eebafa7069"
 
-  option 'with-mt', 'Enable multi-thread support'
+  bottle do
+    cellar :any
+    sha1 "0ac56c1eb46713865ead22812d8000978e0ff63b" => :yosemite
+    sha1 "b40b58db856ac11dfbaa64fb28213bc3350fc986" => :mavericks
+    sha1 "16aca848e54eae150b7f6b2a3d9d8bdd4d510fac" => :mountain_lion
+  end
 
-  depends_on 'tbb' if build.with? "mt"
+  option "with-mt", "Enable multi-thread support"
+
+  depends_on "tbb" if build.with? "mt"
 
   def install
     if build.with? "mt"
-      ENV['TBB30_INSTALL_DIR'] = Formula["tbb"].opt_prefix
-      build_dir = 'build/release_mt'
+      ENV["TBB30_INSTALL_DIR"] = Formula["tbb"].opt_prefix
+      build_dir = "build/release_mt"
     else
-      build_dir = 'build/release'
+      build_dir = "build/release"
     end
 
     args = %W[

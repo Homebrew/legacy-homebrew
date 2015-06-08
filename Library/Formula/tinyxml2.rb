@@ -1,16 +1,15 @@
-require "formula"
-
 class Tinyxml2 < Formula
+  desc "Improved tinyxml (in memory efficiency and size)"
   homepage "http://grinninglizard.com/tinyxml2"
-  url "https://github.com/leethomason/tinyxml2/archive/2.1.0.tar.gz"
-  sha1 "70ef3221bdc190fd8fc50cdd4a6ef440f44b74dc"
-  head "https://github.com/leethomason/tinyxml2.git", :branch => "master"
+  url "https://github.com/leethomason/tinyxml2/archive/3.0.0.tar.gz"
+  sha256 "128aa1553e88403833e0cccf1b651f45ce87bc207871f53fdcc8e7f9ec795747"
+  head "https://github.com/leethomason/tinyxml2.git"
 
   bottle do
     cellar :any
-    sha1 "82860d4195cb6c1230770cb35899a26480d608b3" => :mavericks
-    sha1 "bebfd80f824aeccc679c3efd719457f353d8132e" => :mountain_lion
-    sha1 "4fba761a6b118583a2ef064c43b7a839fe210cd3" => :lion
+    sha256 "b79adb5c96cd74936064056b697a241e5fe2d2adc82a67b7bff65d36221e9aec" => :yosemite
+    sha256 "2ff2104bbdee6870a91603ca22848095a21f939a0d0fc9454bc2a0a553b3c498" => :mavericks
+    sha256 "4181968c3b03f0bfb7fe9ae4fe044b4a8c9bafb32b9b5730a57da3e5592d3ed9" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -21,13 +20,14 @@ class Tinyxml2 < Formula
   end
 
   test do
-    (testpath/'test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <tinyxml2.h>
       int main() {
         tinyxml2::XMLDocument doc (false);
         return 0;
       }
     EOS
-    system ENV.cc, "test.cpp", "-ltinyxml2"
+    system ENV.cc, "test.cpp", "-L#{lib}", "-ltinyxml2", "-o", "test"
+    system "./test"
   end
 end

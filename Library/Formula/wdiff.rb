@@ -1,6 +1,7 @@
 require 'formula'
 
 class Wdiff < Formula
+  desc "Display word differences between text files"
   homepage 'http://www.gnu.org/software/wdiff/'
   url 'http://ftpmirror.gnu.org/wdiff/wdiff-1.2.2.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/wdiff/wdiff-1.2.2.tar.gz'
@@ -22,8 +23,7 @@ class Wdiff < Formula
     b = testpath/"b.txt"
     b.write "The package manager for OS X"
 
-    out = `#{bin}/wdiff #{a} #{b}`
-    assert_equal "The [-missing-] package manager for OS X", out
-    assert_equal 1, $?.exitstatus
+    output = shell_output("#{bin}/wdiff #{a} #{b}", 1)
+    assert_equal "The [-missing-] package manager for OS X", output
   end
 end

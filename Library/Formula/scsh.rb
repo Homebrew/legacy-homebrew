@@ -1,6 +1,7 @@
 require 'formula'
 
 class Scsh < Formula
+  desc "Scheme shell"
   homepage 'http://www.scsh.net/'
   url 'http://ftp.scsh.net/pub/scsh/0.6/scsh-0.6.7.tar.gz'
   sha1 'a1eaf0d0593e14914824898a0c3ec166429affd7'
@@ -14,9 +15,6 @@ class Scsh < Formula
   end
 
   conflicts_with 'scheme48', :because => 'both install include/scheme48.h'
-
-  # stable segfaults when built 64-bit; see #21351
-  env :std unless build.head?
 
   def install
     if build.head?

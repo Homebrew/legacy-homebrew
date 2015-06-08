@@ -1,17 +1,27 @@
 require 'formula'
 
 class Libcapn < Formula
+  desc "C library to send push notifications to Apple devices"
   homepage 'http://libcapn.org/'
-  url 'http://libcapn.org/download/libcapn-1.0.0b3-src.tar.gz'
-  sha1 'a53f7b382e683249ff55214b1effbae5f82c4ef2'
+  url "http://libcapn.org/download/libcapn-1.0.0-src.tar.gz"
+  sha1 "740dc87395fc7255b78c3c926a044f00692e8c41"
   head 'https://github.com/adobkin/libcapn.git'
+
+  bottle do
+    cellar :any
+    sha1 "7e72854c13412bf987b6c8a81908de2667939cd9" => :yosemite
+    sha1 "7108c97b5710b7a5c90b30051f9a55c6399dd48f" => :mavericks
+    sha1 "0ec5a47c3fb17267eb8d714746195ab9205f057f" => :mountain_lion
+  end
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
+  depends_on "openssl"
 
   def install
-    inreplace 'CMakeLists.txt', /usr\/lib\/pkgconfig/, "#{lib}/pkgconfig" unless build.head?
-    system "cmake", ".", *std_cmake_args
+    cmake_args = std_cmake_args
+    cmake_args << "-DOPENSSL_ROOT_DIR=#{Formula["openssl"].opt_prefix}"
+    system "cmake", ".", *cmake_args
     system "make", "install"
   end
 
@@ -30,7 +40,8 @@ class Libcapn < Formula
         return 0;
     }
     TEST_SCRIPT
-    flags = `#{HOMEBREW_PREFIX}/bin/pkg-config --cflags --libs libcapn`.split + ENV.cflags.to_s.split
+
+    flags = ["-I#{include}/capn", "-L#{lib}/capn", "-lcapn"] + ENV.cflags.to_s.split
     system ENV.cc, "-o", "test_install", "test_install.c", *flags
     system "./test_install"
   end

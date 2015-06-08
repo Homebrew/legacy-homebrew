@@ -1,14 +1,24 @@
 require 'formula'
 
 class Exim < Formula
+  desc "Complete replacement for sendmail"
   homepage 'http://exim.org'
-  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.82.tar.gz'
-  sha1 'a473782ea9cd17e27798a2971c243973df999a71'
+  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.85.tar.bz2'
+  mirror 'http://www.mirrorservice.org/sites/ftp.exim.org/pub/exim/exim4/exim-4.85.tar.bz2'
+  sha1 '6b40d5a6ae59f86b4780ad50aaf0d930330d7b67'
+
+  bottle do
+    revision 1
+    sha256 "78e5eb89f3b324114f453d64f9a6955f60abe8fcde2e0c32acc19649e1cdbacb" => :yosemite
+    sha256 "beae28cb7ca235377eeb0bc04218154a2a0c29ec2942fbae52ac67f321e99b41" => :mavericks
+    sha256 "28f88bffa0447b615552d5a80c31ff8a762afd801a803429cf015af00aafae8b" => :mountain_lion
+  end
 
   option 'support-maildir', 'Support delivery in Maildir format'
 
   depends_on 'pcre'
   depends_on 'berkeley-db4'
+  depends_on 'openssl'
 
   def install
     cp 'src/EDITME', 'Local/Makefile'
@@ -25,6 +35,7 @@ class Exim < Formula
       s << "AUTH_PLAINTEXT=yes\n"
       s << "SUPPORT_TLS=yes\n"
       s << "TLS_LIBS=-lssl -lcrypto\n"
+      s << "TRANSPORT_LMTP=yes\n"
 
       # For non-/usr/local HOMEBREW_PREFIX
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"
@@ -36,7 +47,7 @@ class Exim < Formula
     inreplace 'OS/Makefile-Darwin' do |s|
       s.remove_make_var! %w{CC CFLAGS}
       # Add include and lib paths for BDB 4
-      s.gsub! "# Exim: OS-specific make file for Darwin (Mac OS X).", "INCLUDE=-I${bdb4.include}"
+      s.gsub! "# Exim: OS-specific make file for Darwin (Mac OS X).", "INCLUDE=-I#{bdb4.include}"
       s.gsub! "DBMLIB =", "DBMLIB=#{bdb4.lib}/libdb-4.dylib"
     end
 

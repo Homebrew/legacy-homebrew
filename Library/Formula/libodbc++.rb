@@ -1,9 +1,15 @@
 require 'formula'
 
 class Libodbcxx < Formula
+  desc "C++ development environment for SQL database access"
   homepage 'http://libodbcxx.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/libodbcxx/libodbc++/0.2.5/libodbc++-0.2.5.tar.gz'
   sha1 'e59842266b981caab24a6fae1f7d48b6799420f8'
+
+  bottle do
+    cellar :any
+    sha1 "2bbe061284cc6a3188e776c8bb9544fad672862e" => :mountain_lion
+  end
 
   # Two patches are included:
   # The first: Fixes a compilation error on 64bit machines:

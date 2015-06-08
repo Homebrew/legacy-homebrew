@@ -1,9 +1,18 @@
 require 'formula'
 
 class Liboil < Formula
+  desc "C library of simple functions optimized for various CPUs"
   homepage 'http://liboil.freedesktop.org/'
   url 'http://liboil.freedesktop.org/download/liboil-0.3.17.tar.gz'
   sha1 'f9d7103a3a4a4089f56197f81871ae9129d229ed'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "1d7f799090d7ccfe52341971822d3af1269ea68f" => :yosemite
+    sha1 "14d746548dc6e18f900e4fe67d1f1958fda68016" => :mavericks
+    sha1 "41590a673b637d2307b1ce287ec692e4d47b3191" => :mountain_lion
+  end
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
@@ -28,7 +37,8 @@ class Liboil < Formula
         return 0;
       }
     EOS
-    flags = `#{HOMEBREW_PREFIX}/bin/pkg-config --cflags --libs liboil-0.3`.split + ENV.cflags.to_s.split
+
+    flags = ["-I#{include}/liboil-0.3", "-L#{lib}", "-loil-0.3"] + ENV.cflags.to_s.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

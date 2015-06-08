@@ -1,30 +1,22 @@
-require 'formula'
-
 class Geoip < Formula
-  homepage 'https://github.com/maxmind/geoip-api-c'
+  desc "GeoIP databases in a number of formats"
+  homepage "https://github.com/maxmind/geoip-api-c"
+  url "https://github.com/maxmind/geoip-api-c/archive/v1.6.5.tar.gz"
+  sha1 "55950b436718a32ff9f8c9cfb36cec0aa3674253"
 
-  stable do
-    url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz"
-    sha1 "41ed21fb2d40e54648cae2a1f73e8a5210676def"
-
-    # Download test data so `make check` works. Fixed in HEAD.
-    # See https://github.com/maxmind/geoip-api-c/commit/722707cc3a0adc06aec3e98bc36e7262f67ec0da
-    patch :DATA
-  end
-
-  head 'https://github.com/maxmind/geoip-api-c.git'
+  head "https://github.com/maxmind/geoip-api-c.git"
 
   bottle do
     cellar :any
-    sha1 "f342950837e46ac3ba90be79c77c8c770fbc9c2d" => :mavericks
-    sha1 "f3b27eb5aef8815b2c01f03938e5c8f7af8d1371" => :mountain_lion
-    sha1 "a39b59af4ee01c7a1e224e9d98ee83d2230f7993" => :lion
+    sha256 "eedb986a2e5daf59d9f7982455773de7f3bc5be6948911a8e5667b6598e37e38" => :yosemite
+    sha256 "619929de31b302b9423465399c1954f9071aacd0c0f02d1c86760a7918e868b5" => :mavericks
+    sha256 "a8c5a78c7bb3587e9f84c7474aa85e1f2a4b6b2bcdb9b5de103ef2e7472acfa2" => :mountain_lion
   end
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
-  depends_on 'geoipupdate' => :optional
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "geoipupdate" => :optional
 
   option :universal
 
@@ -54,11 +46,10 @@ class Geoip < Formula
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/GeoIP"
     cp Dir["#{legacy_data}/*"], geoip_data if legacy_data.exist?
 
-    ["City", "Country"].each do |type|
-      full = Pathname.new "#{geoip_data}/GeoIP#{type}.dat"
-      next if full.exist? or full.symlink?
-      ln_s "GeoLite#{type}.dat", full
-    end
+    full = Pathname.new "#{geoip_data}/GeoIP.dat"
+    ln_s "GeoLiteCountry.dat", full unless full.exist? or full.symlink?
+    full = Pathname.new "#{geoip_data}/GeoIPCity.dat"
+    ln_s "GeoLiteCity.dat", full unless full.exist? or full.symlink?
   end
 
   test do
@@ -67,24 +58,3 @@ class Geoip < Formula
     system "#{bin}/geoiplookup", "-f", "GeoIP.dat", "8.8.8.8"
   end
 end
-
-__END__
-diff --git a/bootstrap b/bootstrap
-index 30fc0f9..f20f095 100755
---- a/bootstrap
-+++ b/bootstrap
-@@ -1,5 +1,14 @@
- #!/bin/sh
-
-+# dl the dat file if needed
-+DIR="$( cd "$( dirname "$0"  )" && pwd  )"
-+
-+# download geolite database for the tests
-+mkdir -p $DIR/data
-+if [ ! -f $DIR/data/GeoIP.dat  ]; then
-+      curl http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gzip -d > $DIR/data/GeoIP.dat
-+fi
-+
- # make sure  to use the installed libtool
- rm -f ltmain.sh
- autoreconf -fiv

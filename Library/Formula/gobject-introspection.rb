@@ -1,25 +1,23 @@
-require 'formula'
-
 class GobjectIntrospection < Formula
-  homepage 'http://live.gnome.org/GObjectIntrospection'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.40/gobject-introspection-1.40.0.tar.xz'
-  sha256 '96ea75e9679083e7fe39a105e810e2ead2d708abf189a5ba420bfccfffa24e98'
+  desc "Generate interface introspection data for GObject libraries"
+  homepage "https://live.gnome.org/GObjectIntrospection"
+  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.44/gobject-introspection-1.44.0.tar.xz"
+  sha256 "6f0c2c28aeaa37b5037acbf21558098c4f95029b666db755d3a12c2f1e1627ad"
 
   bottle do
-    sha1 "dbd65331012abd0570bfb8b115870a4ece51aad7" => :mavericks
-    sha1 "e553b3f537e998ef50ca42f1224aa981558ee29d" => :mountain_lion
-    sha1 "bb2353a61e8a05d4ef3e2a9f113d8ff348106e79" => :lion
+    revision 2
+    sha256 "e29497a4aa084f25f7d53988beab1999c4b3145896f0ef6a993b0d7736269cbd" => :yosemite
+    sha256 "1e0e84d4d114f39d89549bc5a6bfae59a84655a1aefce926d8dd6e53495390ae" => :mavericks
+    sha256 "3dcfedfe989ec4d9c6558def0190ef3bd3214bafa4d2f53fd28aa1abbc1403f2" => :mountain_lion
   end
 
   option :universal
-  option 'with-tests', 'Run tests in addition to the build (requires cairo)'
+  option "with-tests", "Run tests in addition to the build (requires cairo)"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'libffi'
-  # To avoid: ImportError: dlopen(./.libs/_giscanner.so, 2): Symbol not found: _PyList_Check
-  depends_on :python
-  depends_on 'cairo' => :build if build.with? 'tests'
+  depends_on "pkg-config" => :run
+  depends_on "glib"
+  depends_on "libffi"
+  depends_on "cairo" => :build if build.with? "tests"
 
   # Allow tests to execute on OS X (.so => .dylib)
   patch do
@@ -27,12 +25,17 @@ class GobjectIntrospection < Formula
     sha1 "1f57849db76cd2ca26ddb35dc36c373606414dfc"
   end if build.with? "tests"
 
+  resource "tutorial" do
+    url "https://gist.github.com/7a0023656ccfe309337a.git",
+        :revision => "499ac89f8a9ad17d250e907f74912159ea216416"
+  end
+
   def install
-    ENV['GI_SCANNER_DISABLE_CACHE'] = 'true'
+    ENV["GI_SCANNER_DISABLE_CACHE"] = "true"
     ENV.universal_binary if build.universal?
-    inreplace 'giscanner/transformer.py', '/usr/share', HOMEBREW_PREFIX/'share'
-    inreplace 'configure' do |s|
-      s.change_make_var! 'GOBJECT_INTROSPECTION_LIBDIR', HOMEBREW_PREFIX/'lib'
+    inreplace "giscanner/transformer.py", "/usr/share", "#{HOMEBREW_PREFIX}/share"
+    inreplace "configure" do |s|
+      s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
     end
 
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
@@ -42,5 +45,12 @@ class GobjectIntrospection < Formula
     system "make"
     system "make", "check" if build.with? "tests"
     system "make", "install"
+  end
+
+  test do
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["libffi"].opt_lib/"pkgconfig"
+    resource("tutorial").stage testpath
+    system "make"
+    assert (testpath/"Tut-0.1.typelib").exist?
   end
 end

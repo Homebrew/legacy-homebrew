@@ -1,27 +1,32 @@
-require 'formula'
-
 class Libdvdread < Formula
-  homepage 'http://dvdnav.mplayerhq.hu/'
-  url 'http://download.videolan.org/pub/videolan/libdvdread/4.9.9/libdvdread-4.9.9.tar.bz2'
-  sha256 'ffcf51c8596f5b052e95c50f2555d15f645d652b153afde2ab4c0733dde69fbb'
+  desc "C library for reading DVD-video images"
+  homepage "https://dvdnav.mplayerhq.hu/"
+  url "https://download.videolan.org/pub/videolan/libdvdread/5.0.2/libdvdread-5.0.2.tar.bz2"
+  sha256 "82cbe693f2a3971671e7428790b5498392db32185b8dc8622f7b9cd307d3cfbf"
 
-  head 'git://git.videolan.org/libdvdread.git'
+  head do
+    url "git://git.videolan.org/libdvdread.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
-    sha1 "e40c9798dfce20ff381e86aa248c40ad2b4dc54f" => :mavericks
-    sha1 "dfc52def86101b04cca9d0153efc87986944bfbd" => :mountain_lion
-    sha1 "35be8214b84e4556d6cb78513a77333ab04d85e0" => :lion
+    sha1 "df466eb8a5baca8d26615d93d9eb3e88bf5ec6a8" => :yosemite
+    sha1 "427e4c4a5553abbfba325837be969811496641bd" => :mavericks
+    sha1 "3ad46154279902cb54890942f2d2ade6eeb32f7a" => :mountain_lion
   end
 
-  depends_on 'libdvdcss'
+  depends_on "libdvdcss"
 
   def install
     ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
     ENV.append "LDFLAGS", "-ldvdcss"
 
+    system "autoreconf", "-if" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

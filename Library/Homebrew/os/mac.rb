@@ -30,21 +30,21 @@ module OS
         elsif File.executable?(path = "#{HOMEBREW_PREFIX}/bin/#{tool}")
           Pathname.new path
         else
-          path = `/usr/bin/xcrun -no-cache -find #{tool} 2>/dev/null`.chomp
+          path = Utils.popen_read("/usr/bin/xcrun", "-no-cache", "-find", tool).chomp
           Pathname.new(path) if File.executable?(path)
         end
       end
     end
 
     def active_developer_dir
-      @active_developer_dir ||= `xcode-select -print-path 2>/dev/null`.strip
+      @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end
 
     def sdk_path(v = version)
       (@sdk_path ||= {}).fetch(v.to_s) do |key|
         opts = []
         # First query Xcode itself
-        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp
+        opts << Utils.popen_read(locate("xcodebuild"), "-version", "-sdk", "macosx#{v}", "Path").chomp
         # Xcode.prefix is pretty smart, so lets look inside to find the sdk
         opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
         # Xcode < 4.3 style
@@ -121,22 +121,24 @@ module OS
     end
 
     def non_apple_gcc_version(cc)
-      path = HOMEBREW_PREFIX.join("opt/gcc/bin/#{cc}")
-      path = nil unless path.exist?
+      (@non_apple_gcc_version ||= {}).fetch(cc) do
+        path = HOMEBREW_PREFIX.join("opt", "gcc", "bin", cc)
+        path = locate(cc) unless path.exist?
+        version = %x{#{path} --version}[/gcc(?:-\d(?:\.\d)? \(.+\))? (\d\.\d\.\d)/, 1] if path
+        @non_apple_gcc_version[cc] = version
+      end
+    end
 
-      return unless path ||= locate(cc)
-
-      ivar = "@#{cc.gsub(/(-|\.)/, '')}_version"
-      return instance_variable_get(ivar) if instance_variable_defined?(ivar)
-
-      `#{path} --version` =~ /gcc(-\d\.\d \(.+\))? (\d\.\d\.\d)/
-      instance_variable_set(ivar, $2)
+    def clear_version_cache
+      @gcc_40_build_version = @gcc_42_build_version = @llvm_build_version = nil
+      @clang_version = @clang_build_version = nil
+      @non_apple_gcc_version = {}
     end
 
     # See these issues for some history:
-    # http://github.com/Homebrew/homebrew/issues/13
-    # http://github.com/Homebrew/homebrew/issues/41
-    # http://github.com/Homebrew/homebrew/issues/48
+    # https://github.com/Homebrew/homebrew/issues/13
+    # https://github.com/Homebrew/homebrew/issues/41
+    # https://github.com/Homebrew/homebrew/issues/48
     def macports_or_fink
       paths = []
 
@@ -204,6 +206,14 @@ module OS
       "5.0.2" => { :clang => "5.0", :clang_build => 500 },
       "5.1"   => { :clang => "5.1", :clang_build => 503 },
       "5.1.1" => { :clang => "5.1", :clang_build => 503 },
+      "6.0"   => { :clang => "6.0", :clang_build => 600 },
+      "6.0.1" => { :clang => "6.0", :clang_build => 600 },
+      "6.1"   => { :clang => "6.0", :clang_build => 600 },
+      "6.1.1" => { :clang => "6.0", :clang_build => 600 },
+      "6.2"   => { :clang => "6.0", :clang_build => 600 },
+      "6.3"   => { :clang => "6.1", :clang_build => 602 },
+      "6.3.1" => { :clang => "6.1", :clang_build => 602 },
+      "6.3.2" => { :clang => "6.1", :clang_build => 602 },
     }
 
     def compilers_standard?
@@ -231,13 +241,13 @@ module OS
     def mdfind(*ids)
       return [] unless OS.mac?
       (@mdfind ||= {}).fetch(ids) do
-        @mdfind[ids] = `/usr/bin/mdfind "#{mdfind_query(*ids)}"`.split("\n")
+        @mdfind[ids] = Utils.popen_read("/usr/bin/mdfind", mdfind_query(*ids)).split("\n")
       end
     end
 
     def pkgutil_info(id)
       (@pkginfo ||= {}).fetch(id) do |key|
-        @pkginfo[key] = `/usr/sbin/pkgutil --pkg-info "#{key}" 2>/dev/null`.strip
+        @pkginfo[key] = Utils.popen_read("/usr/sbin/pkgutil", "--pkg-info", key).strip
       end
     end
 

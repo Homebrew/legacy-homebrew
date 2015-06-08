@@ -1,9 +1,17 @@
-require 'formula'
+require "formula"
 
 class Nasm < Formula
-  homepage 'http://www.nasm.us/'
-  url 'http://www.nasm.us/pub/nasm/releasebuilds/2.11.04/nasm-2.11.04.tar.xz'
-  sha256 '4f07059a080883cd99f58da837a6504f1e0aa2757cbb0bb3064aca24a58da0f7'
+  desc "Netwide Assembler (NASM) is an 80x86 assembler"
+  homepage "http://www.nasm.us/"
+  url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.08/nasm-2.11.08.tar.xz"
+  sha256 "c99467c7072211c550d147640d8a1a0aa4d636d4d8cf849f3bf4317d900a1f7f"
+
+  bottle do
+    cellar :any
+    sha256 "4b7434920425f190c807863d79f653d1f3a8668916f5780a5f2c529056d714b9" => :yosemite
+    sha256 "dbcbfe3dd3f67dce50f6baf2a0aea7021f4c893863b4ed552542685488519b38" => :mavericks
+    sha256 "0191f8c219a08f1a3207d63e07b736b627f90d80373d400bded4cada29afc184" => :mountain_lion
+  end
 
   option :universal
 

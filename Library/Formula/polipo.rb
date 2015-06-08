@@ -1,11 +1,20 @@
 require 'formula'
 
 class Polipo < Formula
+  desc "Web caching proxy"
   homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
   url 'http://www.pps.univ-paris-diderot.fr/~jch/software/files/polipo/polipo-1.1.1.tar.gz'
   sha1 'cf7461a96c4bf012496844d5a54171182c2cb1a7'
 
   head 'git://git.wifi.pps.jussieu.fr/polipo'
+
+  bottle do
+    sha1 "b8a3690483249552c1ca12c8173767b847f7e296" => :yosemite
+    sha1 "40c9e227cc80b2378d0c5c0c397e7638628d694f" => :mavericks
+    sha1 "e293417dcc1d1708cdef6cc5476445741ee97bb4" => :mountain_lion
+  end
+
+  option 'with-large-chunks', 'Set chunk size to 16k (more RAM, but more performance)'
 
   def install
     cache_root = (var + "cache/polipo")
@@ -16,6 +25,7 @@ class Polipo < Formula
               MANDIR=#{man}
               INFODIR=#{info}
               PLATFORM_DEFINES=-DHAVE_IPv6]
+    args << 'EXTRA_DEFINES="-DCHUNK_SIZE=16384"' if build.with? "large-chunks"
 
     system "make", "all", *args
     system "make", "install", *args
@@ -36,6 +46,15 @@ class Polipo < Formula
         <array>
           <string>#{opt_bin}/polipo</string>
         </array>
+        <!-- Set `ulimit -n 20480`. The default OS X limit is 256, that's
+             not enough for Polipo (displays 'too many files open' errors).
+             It seems like you have no reason to lower this limit
+             (and unlikely will want to raise it). -->
+        <key>SoftResourceLimits</key>
+        <dict>
+          <key>NumberOfFiles</key>
+          <integer>20480</integer>
+        </dict>
       </dict>
     </plist>
     EOS

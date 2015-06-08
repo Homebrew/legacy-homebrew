@@ -1,6 +1,7 @@
 require 'formula'
 
 class Recode < Formula
+  desc "Convert character set (charsets)"
   homepage 'http://recode.progiciels-bpi.ca/index.html'
   url 'https://github.com/pinard/Recode/archive/v3.7-beta2.tar.gz'
   sha1 'a10c90009ad3e1743632ada2a302c824edc08eaf'
@@ -14,7 +15,7 @@ class Recode < Formula
     ENV.append 'LDFLAGS', '-liconv'
     ENV.append 'LDFLAGS', '-lintl'
 
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ganglia < Formula
+  desc "Ganglia monitoring client"
   homepage 'http://ganglia.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.6.0/ganglia-3.6.0.tar.gz'
   sha1 'b06529ac49deb1f1c65c6215b8d2d13c3f3fa23f'
@@ -8,6 +9,7 @@ class Ganglia < Formula
   conflicts_with 'coreutils', :because => 'both install `gstat` binaries'
 
   depends_on 'pkg-config' => :build
+  depends_on :apr => :build
   depends_on 'confuse'
   depends_on 'pcre'
   depends_on 'rrdtool'

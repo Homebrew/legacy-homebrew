@@ -1,9 +1,10 @@
 require 'formula'
 
 class VertX < Formula
+  desc "Application platform for the JVM"
   homepage 'http://vertx.io/'
-  url 'http://dl.bintray.com/vertx/downloads/vert.x-2.1.tar.gz'
-  sha1 '77d4eff1ee042774a4c0e313a71db921d8ce12fa'
+  url 'http://dl.bintray.com/vertx/downloads/vert.x-2.1.5.tar.gz'
+  sha1 'bac58701858462f13c0b01de99e2ada0a4df8431'
 
   def install
     rm_f Dir["bin/*.bat"]

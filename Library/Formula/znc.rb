@@ -1,29 +1,40 @@
-require 'formula'
-
 class Znc < Formula
-  homepage 'http://wiki.znc.in/ZNC'
-  url 'http://znc.in/releases/archive/znc-1.2.tar.gz'
-  sha1 '69a05702d2db8329ed323e9f74408260ea82c0eb'
+  desc "Advanced IRC bouncer"
+  homepage "http://wiki.znc.in/ZNC"
+  url "http://znc.in/releases/archive/znc-1.6.0.tar.gz"
+  sha1 "548d31fa63d50494bdf4b1d3c0f43a8ceda66849"
 
   head do
-    url 'https://github.com/znc/znc.git'
+    url "https://github.com/znc/znc.git"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
-  option 'enable-debug', "Compile ZNC with --enable-debug"
+  bottle do
+    sha1 "4f695db064f9971100f917f35ab2bcb9ba758f84" => :yosemite
+    sha1 "6e3799aae4b598b61062eb0b67744a5caa5f264e" => :mavericks
+    sha1 "83597cccd275a3a4bf8fcc5d8dd5c9048403869a" => :mountain_lion
+  end
 
-  depends_on 'pkg-config' => :build
+  option "with-debug", "Compile ZNC with debug support"
+  option "with-icu4c", "Build with icu4c for charset support"
+
+  deprecated_option "enable-debug" => "with-debug"
+
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
+  depends_on "icu4c" => :optional
 
   def install
+    ENV.cxx11
     args = ["--prefix=#{prefix}"]
-    args << "--enable-debug" if build.include? 'enable-debug'
+    args << "--enable-debug" if build.with? "debug"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   plist_options :manual => "znc --foreground"
@@ -51,5 +62,11 @@ class Znc < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    mkdir ".znc"
+    system bin/"znc", "--makepem"
+    assert File.exist?(".znc/znc.pem")
   end
 end

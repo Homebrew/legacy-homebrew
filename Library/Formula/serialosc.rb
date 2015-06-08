@@ -1,6 +1,7 @@
 require 'formula'
 
 class Serialosc < Formula
+  desc "Opensound control server for monome devices"
   homepage 'http://docs.monome.org/doku.php?id=app:serialosc'
   url 'https://github.com/monome/serialosc/archive/1.2.tar.gz'
   sha1 '230c3f0cb6176da6aec3b80500e175cb7f90a76a'

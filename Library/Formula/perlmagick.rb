@@ -1,15 +1,16 @@
 require "formula"
 
 class Perlmagick < Formula
+  desc "Objected-oriented Perl interface to ImageMagick"
   homepage "http://www.imagemagick.org/script/perl-magick.php"
-  url "http://www.imagemagick.org/download/perl/PerlMagick-6.88.tar.gz"
-  sha1 "f234b49a5c570f78d693c04924fe74ddb5595292"
+  url "http://www.imagemagick.org/download/perl/PerlMagick-6.89.tar.gz"
+  sha256 "c8f81869a4f007be63e67fddf724b23256f6209f16aa95e14d0eaef283772a59"
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "86285696b717954a1a64a94df70f5701523b1403" => :mavericks
-    sha1 "96de2b7c175b6682fb74c0f2353fca9d50f3529d" => :mountain_lion
-    sha1 "a468f8f61603cc0c3daa21c077bf156ef7ae1266" => :lion
+    sha1 "ce1cf658507f5269ea3167a9d6f83ff4e38b9749" => :mavericks
+    sha1 "939ec50e438de4caf808f324e9949a5a75c13eb8" => :mountain_lion
+    sha1 "c040bc6e0b238c49c076414b5a082b4b54047406" => :lion
   end
 
   depends_on "freetype"
@@ -29,9 +30,11 @@ class Perlmagick < Formula
   end
 
   # References the system Perl version.
-  def caveats; <<-EOS.undent
-     You may need to define the Perl library directory for PerlMagick.
-       export PERL5LIB="#{HOMEBREW_PREFIX}/lib/perl5/site_perl/5.16.2"
+  def caveats
+    perl_version = `/usr/bin/perl -e 'printf "%vd", $^V;'`
+    <<-EOS.undent
+      You need to define the OS X system Perl library directory to use PerlMagick:
+        export PERL5LIB="#{HOMEBREW_PREFIX}/lib/perl5/site_perl/#{perl_version}"
     EOS
   end
 end

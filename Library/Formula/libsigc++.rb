@@ -1,40 +1,38 @@
-require 'formula'
-
 class Libsigcxx < Formula
-  homepage 'http://libsigc.sourceforge.net'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.3/libsigc++-2.3.1.tar.xz'
-  sha256 '67d05852b31fdb267c9fdcecd40b046a11aa54d884435e99e3c60dd20cd60393'
+  desc "Callback framework for C++"
+  homepage "http://libsigc.sourceforge.net"
+  url "http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.4/libsigc++-2.4.1.tar.xz"
+  sha256 "540443492a68e77e30db8d425f3c0b1299c825bf974d9bfc31ae7efafedc19ec"
 
   bottle do
-    sha1 "8e806e2532f2ef1a1a8bb936a1f54e34c20bda69" => :mavericks
-    sha1 "2a522fa21082df0620b515dc4466dcb7eb0c5c6f" => :mountain_lion
-    sha1 "328a7b8efcfd560caae155d3acf25087c2a05462" => :lion
+    sha256 "20c65462fad1a772c4dd0d001d94641577c1be2760ad6fa08ba6945b1a303761" => :yosemite
+    sha256 "1df44b807cd8607f84917d53439718c94237139702b1fe533f3fc4fd3d1de014" => :mavericks
+    sha256 "37ccdaab3df9890cd9796dae58e16d8e49defca6d889be0d763cadfdd2f9bc0b" => :mountain_lion
   end
 
   option :cxx11
-
-  # apply this patch for C++11 mode
-  # see https://git.gnome.org/browse/libsigc++2/commit/tests/test_cpp11_lambda.cc?id=cd600a31fbf8e76e25f4be4c10c0645f090a9b80
-  patch :DATA if build.cxx11?
 
   def install
     ENV.cxx11 if build.cxx11?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
+  end
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <sigc++/sigc++.h>
+
+      void somefunction(int arg) {}
+
+      int main(int argc, char *argv[])
+      {
+         sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
+         return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp",
+                   "-L#{lib}", "-lsigc-2.0", "-I#{include}/sigc++-2.0", "-I#{lib}/sigc++-2.0/include", "-o", "test"
+    system "./test"
   end
 end
-__END__
-diff -u a/tests/test_cpp11_lambda.cc b/tests/test_cpp11_lambda.cc
---- a/tests/test_cpp11_lambda.cc
-+++ b/tests/test_cpp11_lambda.cc
-@@ -312,7 +312,7 @@
-
-   //std::cout << (sigc::group(sigc::mem_fun(&bar::test), _1, _2, _3)) (sigc::ref(the_bar), 1, 2) << std::endl;
-   result_stream << std::bind(std::mem_fn(&bar::test), std::placeholders::_1,
--    std::placeholders::_2, std::placeholders::_3)(std::ref(the_bar), 1, 2);
-+    std::placeholders::_2, std::placeholders::_3)(the_bar, 1, 2);
-   check_result("bar::test(int 1, int 2)6");
-
-   // same functionality as bind

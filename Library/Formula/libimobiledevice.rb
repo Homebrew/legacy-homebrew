@@ -1,17 +1,22 @@
-require "formula"
-
 class Libimobiledevice < Formula
+  desc "Library to communicate with iOS devices natively"
   homepage "http://www.libimobiledevice.org/"
-  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.6.tar.bz2"
-  sha1 "3016bf1241bc5a77a621c49d82d71bb8f32905e4"
-
-  head "http://cgit.sukimashita.com/libimobiledevice.git"
+  url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.2.0.tar.bz2"
+  sha1 "a8e3f21180b1d6df754d04a4080a29cf6891e701"
 
   bottle do
     cellar :any
-    sha1 "f34c0c45c2be50b1fed8eb40760462a7339fffcd" => :mavericks
-    sha1 "b1abcc6f7bdc142d8f3da012cd94eddef42ef4a1" => :mountain_lion
-    sha1 "0bcc31e491474f923c145b702dc7870ddf003fff" => :lion
+    sha1 "7e4b860af3e151499c8444cd5617033dc696e228" => :yosemite
+    sha1 "9db2d736d715cc8ea6af1f3c95679679792a5c25" => :mavericks
+    sha1 "9f7786afecdd2b7ad55b92d5713dc8ade9d012fe" => :mountain_lion
+  end
+
+  head do
+    url "http://git.sukimashita.com/libimobiledevice.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "libxml2"
   end
 
   depends_on "pkg-config" => :build
@@ -21,6 +26,7 @@ class Libimobiledevice < Formula
   depends_on "openssl"
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",

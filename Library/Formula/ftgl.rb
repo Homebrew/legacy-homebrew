@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ftgl < Formula
+  desc "Freetype / OpenGL bridge"
   homepage 'http://sourceforge.net/projects/ftgl/'
   url 'https://downloads.sourceforge.net/project/ftgl/FTGL%20Source/2.1.3~rc5/ftgl-2.1.3-rc5.tar.gz'
   sha1 'b9c11d3a594896333f1bbe46e10d8617713b4fc6'
@@ -18,9 +19,6 @@ class Ftgl < Formula
     # Skip building the example program by failing to find GLUT (MacPorts)
                           "--with-glut-inc=/dev/null",
                           "--with-glut-lib=/dev/null"
-
-    # Hack the package info
-    inreplace "ftgl.pc", "Requires.private: freetype2\n", ""
 
     system "make install"
   end

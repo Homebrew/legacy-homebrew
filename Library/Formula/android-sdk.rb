@@ -1,33 +1,50 @@
-require 'formula'
+require "base64"
 
 class AndroidSdk < Formula
-  homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip'
-  version '22.6.2'
-  sha1 '6abb9cf56529a40ac29fa70a95f5741fa1ae0f86'
+  desc "Android API libraries and developer tools"
+  homepage "https://developer.android.com/index.html"
+  url "https://dl.google.com/android/android-sdk_r24.2-macosx.zip"
+  version "24.2"
+  sha256 "9e0cd4844a696c555563a2daad5ff6731a4175b7a56f00c8f8dd831dbca9511b"
 
-  conflicts_with 'android-platform-tools',
+  conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
-  resource 'completion' do
-    url 'https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
-    sha1 '6dfead9b1350dbe1c16a1c80ed70beedebfa39eb'
+  resource "completion" do
+    url "https://android.googlesource.com/platform/sdk/+/7859e2e738542baf96c15e6c8b50bbdb410131b0/bash_completion/adb.bash?format=TEXT"
+    sha256 "44b3e20ed9cb8fff01dc6907a57bd8648cd0d1bcc7b129ec952a190983ab5e1a"
   end
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "19.0.3"
+    "22.0.1"
   end
 
   def install
-    prefix.install 'tools', 'SDK Readme.txt' => 'README'
+    prefix.install "tools", "SDK Readme.txt" => "README"
 
-    %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
-    emulator-arm emulator-x86 hierarchyviewer hprof-conv lint mksdcard
-    monitor monkeyrunner traceview zipalign].each do |tool|
+    %w[android ddms draw9patch emulator
+       emulator-arm emulator-x86 hierarchyviewer lint mksdcard
+       monitor monkeyrunner traceview].each do |tool|
       (bin/tool).write <<-EOS.undent
         #!/bin/bash
         TOOL="#{prefix}/tools/#{tool}"
+        exec "$TOOL" "$@"
+      EOS
+    end
+
+    %w[zipalign].each do |tool|
+      (bin/tool).write <<-EOS.undent
+        #!/bin/bash
+        TOOL="#{prefix}/build-tools/#{build_tools_version}/#{tool}"
+        exec "$TOOL" "$@"
+      EOS
+    end
+
+    %w[dmtracedump etc1tool hprof-conv].each do |tool|
+      (bin/tool).write <<-EOS.undent
+        #!/bin/bash
+        TOOL="#{prefix}/platform-tools/#{tool}"
         exec "$TOOL" "$@"
       EOS
     end
@@ -63,14 +80,19 @@ class AndroidSdk < Formula
       EOS
     end
 
-    bash_completion.install resource('completion').files('adb.bash' => 'adb-completion.bash')
+    resource("completion").stage do
+      # googlesource.com only serves up the file in base64-encoded format; we
+      # need to decode it before installing
+      decoded_file = buildpath/"adb-completion.bash"
+      decoded_file.write Base64.decode64(File.read("adb.bash"))
+      bash_completion.install decoded_file
+    end
   end
 
   def caveats; <<-EOS.undent
     Now run the 'android' tool to install the actual SDK stuff.
 
-    The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
-      #{prefix}
+    The Android-SDK is available at #{opt_prefix}
 
     You will have to install the platform-tools and docs EVERY time this formula
     updates. If you want to try and fix this then see the comment in this formula.

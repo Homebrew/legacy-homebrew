@@ -1,9 +1,11 @@
 require 'formula'
 
 class Tree < Formula
-  homepage 'http://mama.indstate.edu/users/ice/tree/'
-  url 'http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz'
-  sha1 '35bd212606e6c5d60f4d5062f4a59bb7b7b25949'
+  desc "Display directories as trees (with optional color/HTML output)"
+  homepage "http://mama.indstate.edu/users/ice/tree/"
+  url "http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz"
+  mirror "https://fossies.org/linux/misc/tree-1.7.0.tgz"
+  sha1 "35bd212606e6c5d60f4d5062f4a59bb7b7b25949"
 
   bottle do
     cellar :any

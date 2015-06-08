@@ -1,6 +1,7 @@
 require 'formula'
 
 class Msitools < Formula
+  desc "Windows installer (.MSI) tool"
   homepage 'https://wiki.gnome.org/msitools'
   url 'http://ftp.gnome.org/pub/GNOME/sources/msitools/0.93/msitools-0.93.tar.xz'
   sha1 'b8dcf394a1aeddd8404ae1702ce42af623f54101'
@@ -24,10 +25,7 @@ class Msitools < Formula
 
   test do
     # wixl-heat: make an xml fragment
-    IO.popen("#{bin}/wixl-heat --prefix test", "w+") do |pipe|
-      pipe.close_write
-      assert pipe.read.include?("<Fragment>")
-    end
+    assert pipe_output("#{bin}/wixl-heat --prefix test").include?("<Fragment>")
 
     # wixl: build two installers
     1.upto(2) do |i|

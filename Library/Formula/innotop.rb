@@ -1,6 +1,7 @@
 require "formula"
 
 class Innotop < Formula
+  desc "Top clone for MySQL"
   homepage "http://code.google.com/p/innotop/"
   url "https://innotop.googlecode.com/files/innotop-1.9.1.tar.gz"
   sha1 "6b0b5f492e7188152727f6c157043be180ba516a"
@@ -9,6 +10,7 @@ class Innotop < Formula
 
   resource "DBD::mysql" do
     url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
     sha1 "3bf1edd6f0b4f6144b2aaa715c80df3fb1cd2119"
   end
 

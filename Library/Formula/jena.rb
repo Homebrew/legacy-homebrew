@@ -1,9 +1,10 @@
 require 'formula'
 
 class Jena < Formula
+  desc "Framework for building semantic web and linked data apps"
   homepage 'http://jena.apache.org/'
-  url 'http://www.apache.org/dist/jena/binaries/apache-jena-2.11.1.tar.gz'
-  sha1 '1cb7122ed62d8748b8cc759ae22292f9cc4336bf'
+  url 'http://archive.apache.org/dist/jena/binaries/apache-jena-2.12.1.tar.gz'
+  sha1 '4493a893b12b119d89d991d6d9c1f11f0700139b'
 
   def shim_script target
     <<-EOS.undent

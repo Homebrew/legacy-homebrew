@@ -1,6 +1,5 @@
-require "formula"
-
 class PyenvWhichExt < Formula
+  desc "Integrate pyenv and system commands"
   homepage "https://github.com/yyuu/pyenv-which-ext"
   url "https://github.com/yyuu/pyenv-which-ext/archive/v0.0.2.tar.gz"
   sha1 "72d2d3a80d6d9226276dfb897d12f7be69a12f0a"
@@ -12,5 +11,9 @@ class PyenvWhichExt < Formula
   def install
     ENV["PREFIX"] = prefix
     system "./install.sh"
+  end
+
+  test do
+    shell_output("eval \"$(pyenv init -)\" && pyenv which python")
   end
 end

@@ -1,6 +1,7 @@
 require "formula"
 
 class Tta < Formula
+  desc "TTA lossless audio codec"
   homepage "http://www.true-audio.com"
   url "https://downloads.sourceforge.net/project/tta/tta/libtta/libtta-2.2.tar.gz"
   sha1 "8d57bcad7ec22a83302080579bc96e49fec0f093"

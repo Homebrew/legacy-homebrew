@@ -1,6 +1,7 @@
 require 'formula'
 
 class EmacsClangCompleteAsync < Formula
+  desc "Emacs plugin using libclang to complete C and C++ code"
   homepage 'https://github.com/Golevka/emacs-clang-complete-async'
   url 'https://github.com/Golevka/emacs-clang-complete-async/archive/v0.5.tar.gz'
   sha1 '7f50d3029fedee5ef9306afdac547571928a16b4'
@@ -11,8 +12,16 @@ class EmacsClangCompleteAsync < Formula
 
   depends_on 'llvm' => 'with-clang'
 
-  # https://github.com/Golevka/emacs-clang-complete-async/issues/65
-  patch :DATA
+  stable do
+    # https://github.com/Golevka/emacs-clang-complete-async/issues/65
+    patch :DATA
+  end
+
+  # https://github.com/Golevka/emacs-clang-complete-async/pull/59
+  patch do
+    url "https://github.com/yocchi/emacs-clang-complete-async/commit/5ce197b15d7b8c9abfc862596bf8d902116c9efe.diff"
+    sha1 "a933be38f09627cc6b841a49b849d68219a3bc96"
+  end
 
   def install
     system "make"

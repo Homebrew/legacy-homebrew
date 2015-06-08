@@ -14,7 +14,10 @@ module OS
       }
 
       def self.from_symbol(sym)
-        new(SYMBOLS.fetch(sym))
+        str = SYMBOLS.fetch(sym) do
+          raise ArgumentError, "unknown version #{sym.inspect}"
+        end
+        new(str)
       end
 
       def initialize(*args)

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Trafshow < Formula
+  desc "Continuous network traffic display"
   homepage 'http://soft.risp.ru/trafshow/index_en.shtml'
   url 'http://distcache.freebsd.org/ports-distfiles/trafshow-5.2.3.tgz'
   sha1 '1c68f603f12357e932c83de850366c9b46e53d89'
@@ -28,7 +29,7 @@ class Trafshow < Formula
   end
 
   def install
-    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

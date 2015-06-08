@@ -1,9 +1,16 @@
 require 'formula'
 
 class Cgal < Formula
+  desc "CGAL: Computational Geometry Algorithm Library"
   homepage 'http://www.cgal.org/'
-  url 'https://gforge.inria.fr/frs/download.php/33525/CGAL-4.4.tar.gz'
-  sha1 '5e82193808817ba5144a0c8a57fa5d0c2498cb0d'
+  url 'https://gforge.inria.fr/frs/download.php/file/34704/CGAL-4.6.tar.gz'
+  sha1 'fed9a1d95bbf1620c9d7c7fbecd3c651702dd529'
+
+  bottle do
+    sha256 "27a0904eca24b6093b9612b5a12fb016f1e3a20b3739ec2db907abbca30ae9e4" => :yosemite
+    sha256 "0491330f4e188301342a6591325c4b6239a49ab394e303781e7e591a77efd02d" => :mavericks
+    sha256 "10d4636e402f13cbf5bd8777cb92cd63deb7464f49c0944b585cb44b3f8bc9ee" => :mountain_lion
+  end
 
   option :cxx11
 

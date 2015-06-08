@@ -1,11 +1,23 @@
-require 'formula'
+require "formula"
 
 class Newlisp < Formula
-  homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.6.0.tgz'
-  sha1 '0f5ce581d070ff171cbef504308e578885aa5e72'
+  desc "A Lisp-like, general-purpose scripting language"
+  homepage "http://www.newlisp.org/"
+  url "http://www.newlisp.org/downloads/newlisp-10.6.2.tgz"
+  sha1 "8ea722f2ed415548a0904ef15bafd259d8b07e01"
 
-  depends_on 'readline'
+  bottle do
+    sha1 "3201cfe276549f314eb8bd429d849277fd43293b" => :yosemite
+    sha1 "6a5503849e0d9ad6a28af27e75396f22fb472ed0" => :mavericks
+    sha1 "bb63e424cc5b4c2caa0c9f414178705c557c32d7" => :mountain_lion
+  end
+
+  devel do
+    url "http://www.newlisp.org/downloads/development/inprogress/newlisp-10.6.3.tgz"
+    sha1 "15fff9bff3eb4bb2118b1941ffd34255b9a9a5b5"
+  end
+
+  depends_on "readline"
 
   patch :DATA
 
@@ -32,9 +44,7 @@ class Newlisp < Formula
       (exit 0)
     EOS
 
-    output = `#{bin}/newlisp #{path}`
-    assert_equal "hello\n", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "hello\n", shell_output("#{bin}/newlisp #{path}")
   end
 end
 
@@ -48,7 +58,7 @@ __END__
  
  ; newlisp-edit.lsp - multiple tab LISP editor and support for running code from the editor
  ; needs 9.9.2 version minimum to run
-@@ -155,7 +155,7 @@
+@@ -157,7 +157,7 @@
  			(write-file file (base64-dec text)))
  		(if (= ostype "Win32")
  			(catch (exec (string {newlisp.exe "} currentScriptFile {" } file " > " (string file "out"))) 'result)
@@ -57,7 +67,7 @@ __END__
  		)
  		(if (list? result)
  			(begin
-@@ -223,7 +223,7 @@
+@@ -225,7 +225,7 @@
  		(gs:run-shell 'OutputArea 
  			(string newlispDir "/newlisp.exe") (string currentExtension " -C -w \"" $HOME "\""))
  		(gs:run-shell 'OutputArea 

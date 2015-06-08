@@ -1,6 +1,7 @@
 require 'formula'
 
 class Daemon < Formula
+  desc "Turn other processes into daemons"
   homepage 'http://libslack.org/daemon/'
   url 'http://libslack.org/daemon/download/daemon-0.6.4.tar.gz'
   sha1 'fa6298f05f868d54660a7ed70c05fb7a0963a24b'
@@ -9,7 +10,7 @@ class Daemon < Formula
   patch do
     url "https://trac.macports.org/raw-attachment/ticket/42845/daemon-0.6.4-ignore-strlcpy-strlcat.patch"
     sha1 "8330e7a2df1b8a37b440709c26baf55df251bc56"
-  end if MacOS.version == :mavericks
+  end if MacOS.version >= :mavericks
 
   def install
     system "./config"

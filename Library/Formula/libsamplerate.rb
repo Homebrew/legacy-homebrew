@@ -1,15 +1,17 @@
 require 'formula'
 
 class Libsamplerate < Formula
+  desc "Library for sample rate conversion of audio data"
   homepage 'http://www.mega-nerd.com/SRC'
   url 'http://www.mega-nerd.com/SRC/libsamplerate-0.1.8.tar.gz'
   sha1 'e5fe82c4786be2fa33ca6bd4897db4868347fe70'
 
   bottle do
     cellar :any
-    sha1 "d235c9d703076fc7021d7663a09ca2ffa496a190" => :mavericks
-    sha1 "3a59f5ae0cbcfdd5501d98e7bd418b3564cd46c3" => :mountain_lion
-    sha1 "a25e2123024d74546dce54994b1adf3e81ec6dd3" => :lion
+    revision 1
+    sha1 "7bdee60fa49e368546369cafdbff37a772970492" => :yosemite
+    sha1 "a60d3e18f126fe69826cd8e4ab9944574e1ac9b6" => :mavericks
+    sha1 "64fd25bc4134aa6f3d3d463892c662e0e73bc333" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

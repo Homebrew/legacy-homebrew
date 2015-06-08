@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cksfv < Formula
+  desc "File verification utility"
   homepage 'http://zakalwe.fi/~shd/foss/cksfv/'
   url 'http://zakalwe.fi/~shd/foss/cksfv/files/cksfv-1.3.14.tar.bz2'
   sha1 'f6da3a559b2862691a2be6d2be0aac66cd624885'
@@ -14,8 +15,6 @@ class Cksfv < Formula
     path = testpath/"foo"
     path.write "abcd"
 
-    lines = `#{bin}/cksfv #{path}`.split("\n")
-    assert lines.include?("#{path} ED82CD11")
-    assert_equal 0, $?.exitstatus
+    assert shell_output("#{bin}/cksfv #{path}").include?("#{path} ED82CD11")
   end
 end

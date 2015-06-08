@@ -15,8 +15,7 @@ module MacCPUs
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.
   def type
-    @type ||= `/usr/sbin/sysctl -n hw.cputype`.to_i
-    case @type
+    case sysctl_int("hw.cputype")
     when 7
       :intel
     when 18
@@ -28,7 +27,7 @@ module MacCPUs
 
   def family
     if intel?
-      case @intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
+      case sysctl_int("hw.cpufamily")
       when 0x73d67300 # Yonah: Core Solo/Duo
         :core
       when 0x426f69ef # Merom: Core 2 Duo
@@ -45,11 +44,13 @@ module MacCPUs
         :ivybridge
       when 0x10B282DC # Haswell
         :haswell
+      when 0x582ed09c # Broadwell
+        :broadwell
       else
         :dunno
       end
     elsif ppc?
-      case @ppc_family ||= `/usr/sbin/sysctl -n hw.cpusubtype`.to_i
+      case sysctl_int("hw.cpusubtype")
       when 9
         :g3  # PowerPC 750
       when 10
@@ -67,15 +68,15 @@ module MacCPUs
   end
 
   def extmodel
-    @extmodel ||= `/usr/sbin/sysctl -n machdep.cpu.extmodel`.to_i
+    sysctl_int("machdep.cpu.extmodel")
   end
 
   def cores
-    @cores ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
+    sysctl_int("hw.ncpu")
   end
 
   def bits
-    @bits ||= sysctl_bool("hw.cpu64bit_capable") ? 64 : 32
+    sysctl_bool("hw.cpu64bit_capable") ? 64 : 32
   end
 
   def arch_32_bit
@@ -96,6 +97,14 @@ module MacCPUs
     else
       [arch_32_bit, arch_64_bit].extend ArchitectureListExtension
     end
+  end
+
+  def features
+    @features ||= sysctl_n(
+      "machdep.cpu.features",
+      "machdep.cpu.extfeatures",
+      "machdep.cpu.leaf7_features"
+    ).split(" ").map { |s| s.downcase.to_sym }
   end
 
   def aes?
@@ -130,16 +139,19 @@ module MacCPUs
     sysctl_bool('hw.optional.sse4_2')
   end
 
-  protected
+  private
 
-  def sysctl_bool(property)
-    (@properties ||= {}).fetch(property) do
-      result = nil
-      IO.popen("/usr/sbin/sysctl -n '#{property}' 2>/dev/null") do |f|
-        result = f.gets.to_i # should be 0 or 1
-      end
-      # sysctl call succeded and printed 1
-      @properties[property] = $?.success? && result == 1
+  def sysctl_bool(key)
+    sysctl_int(key) == 1
+  end
+
+  def sysctl_int(key)
+    sysctl_n(key).to_i
+  end
+
+  def sysctl_n(*keys)
+    (@properties ||= {}).fetch(keys) do
+      @properties[keys] = Utils.popen_read("/usr/sbin/sysctl", "-n", *keys)
     end
   end
 end

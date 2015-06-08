@@ -1,10 +1,11 @@
 require 'formula'
 
 class Fuseki < Formula
+  desc "SPARQL server"
   homepage 'http://jena.apache.org/documentation/serving_data/'
-  url 'http://www.apache.org/dist/jena/binaries/jena-fuseki-1.0.1-distribution.tar.gz'
-  version '1.0.1'
-  sha1 '556d3bbe0dbac67ea1335c1933576492ecc9213f'
+  url 'http://www.apache.org/dist/jena/binaries/jena-fuseki-1.1.1-distribution.tar.gz'
+  version '1.1.1'
+  sha1 '12453d3e3de1a01d3413e94712c9219d065c55ad'
 
   def install
     # Remove windows files
@@ -42,7 +43,7 @@ class Fuseki < Formula
     prefix.install 'Data'
 
     # Install documentation
-    prefix.install 'DEPENDENCIES', 'LICENSE', 'NOTICE', 'ReleaseNotes.txt'
+    prefix.install 'LICENSE', 'NOTICE', 'ReleaseNotes.txt'
   end
 
   def caveats; <<-EOS.undent

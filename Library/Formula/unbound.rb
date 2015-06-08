@@ -1,21 +1,26 @@
-require 'formula'
+require "formula"
 
 class Unbound < Formula
-  homepage 'http://www.unbound.net'
-  url 'http://unbound.net/downloads/unbound-1.4.22.tar.gz'
-  sha1 'a56e31e2f3a2fefa3caaad9200dd943d174ca81e'
+  desc "Validating, recursive, caching DNS resolver"
+  homepage "https://www.unbound.net"
+  url "https://unbound.net/downloads/unbound-1.5.3.tar.gz"
+  sha256 "76bdc875ed4d1d3f8e4cfe960e6df78ee5c6c7c18abac11331cf93a7ae129eca"
+
+  depends_on "openssl"
+  depends_on "libevent"
 
   bottle do
-    sha1 "24b82835213927e67a4ad83c91e188b2b494c6d3" => :mavericks
-    sha1 "84a921d4ad1ff56cd32c4062d1fb427443367527" => :mountain_lion
-    sha1 "e426817cd99c1997803b6425269f4b0f2ffccbe8" => :lion
+    sha256 "4ec2891a47855facb66da9178f966cb524ed725c328f8a8278764676049d048e" => :yosemite
+    sha256 "7e0775a27cae29b72fe55e1b74f8dad51fa413a0ffba924b79d7c18d0d5d916d" => :mavericks
+    sha256 "a977d1f977b7ee9abe834cefff90d29f3e3d878ee09ff066adfcc616cdf859b1" => :mountain_lion
   end
 
   def install
-    # gost requires OpenSSL >= 1.0.0
     system "./configure", "--prefix=#{prefix}",
-                          "--disable-gost"
-    system "make install"
+                          "--sysconfdir=#{etc}",
+                          "--with-libevent=#{Formula["libevent"].opt_prefix}",
+                          "--with-ssl=#{Formula["openssl"].opt_prefix}"
+    system "make", "install"
   end
 
   plist_options :startup => true

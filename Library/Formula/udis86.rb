@@ -1,6 +1,7 @@
 require 'formula'
 
 class Udis86 < Formula
+  desc "Minimalistic disassembler library for x86"
   homepage 'http://udis86.sourceforge.net'
   url 'https://downloads.sourceforge.net/udis86/udis86-1.7.2.tar.gz'
   sha1 'f55dec2d5319aac9d0a7ae2614ddcc7aa73d3744'
@@ -16,10 +17,6 @@ class Udis86 < Formula
   end
 
   test do
-    IO.popen("#{bin}/udcli -x", "w+") do |pipe|
-      pipe.write "cd 80"
-      pipe.close_write
-      assert pipe.read.include?("int 0x80")
-    end
+    assert pipe_output("#{bin}/udcli -x", "cd 80").include?("int 0x80")
   end
 end

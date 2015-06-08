@@ -1,31 +1,46 @@
-require 'formula'
-
 class Gnupg < Formula
-  homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.16.tar.bz2'
-  mirror 'http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.16.tar.bz2'
-  sha1 '0bf5e475f3eb6f33d5474d017fe5bf66070e43f4'
+  desc "GNU Pretty Good Privacy (PGP) package"
+  homepage "https://www.gnupg.org/"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.19.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.19.tar.bz2"
+  mirror "http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.19.tar.bz2"
+  sha1 "5503f7faa0a0e84450838706a67621546241ca50"
 
   bottle do
-    sha1 "eb0eb56c77ee61a43ec63393cf63493f0a04c4aa" => :mavericks
-    sha1 "3f2e2ebd287d57d5c89565d087cfbaa1e2586f54" => :mountain_lion
-    sha1 "a077b3a698ef320d82a05d5a538ec4860504251c" => :lion
+    sha1 "22482f6bceecb726ad428b06308d918308bf06e3" => :yosemite
+    sha1 "589cd445bdfaf05cb5f18021b7b7207037e05250" => :mavericks
+    sha1 "842a4c03eac710030e6257d00d7133b7a1c046cd" => :mountain_lion
   end
 
-  option '8192', 'Build with support for private keys of up to 8192 bits'
+  depends_on "curl" if MacOS.version <= :mavericks
 
   def install
-    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
-
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--disable-asm"
     system "make"
-    system "make check"
+    system "make", "check"
 
     # we need to create these directories because the install target has the
     # dependency order wrong
-    [bin, libexec/'gnupg'].each(&:mkpath)
-    system "make install"
+    [bin, libexec/"gnupg"].each(&:mkpath)
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"gen-key-script").write <<-EOS.undent
+      Key-Type: RSA
+      Key-Length: 4096
+      Subkey-Type: RSA
+      Subkey-Length: 4096
+      Name-Real: Homebrew Test
+      Name-Email: test@example.com
+      Expire-Date: 0
+    EOS
+    system bin/"gpg", "--batch", "--gen-key", "gen-key-script"
+    (testpath/"test.txt").write ("Hello World!")
+    system bin/"gpg", "--armor", "--sign", "test.txt"
+    system bin/"gpg", "--verify", "test.txt.asc"
   end
 end

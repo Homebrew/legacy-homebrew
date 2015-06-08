@@ -1,6 +1,7 @@
 require 'formula'
 
 class Jsmin < Formula
+  desc "Minify JavaScript code"
   homepage 'http://www.crockford.com/javascript/jsmin.html'
   url 'https://github.com/douglascrockford/JSMin/archive/1bf6ce5f74a9f8752ac7f5d115b8d7ccb31cfe1b.tar.gz'
   version '2013-03-29'
@@ -12,10 +13,6 @@ class Jsmin < Formula
   end
 
   test do
-    IO.popen("#{bin}/jsmin", "w+") do |pipe|
-      pipe.puts "var i = 0; // comment"
-      pipe.close_write
-      assert_equal "\nvar i=0;", pipe.read
-    end
+    assert_equal "\nvar i=0;", pipe_output(bin/"jsmin", "var i = 0; // comment")
   end
 end

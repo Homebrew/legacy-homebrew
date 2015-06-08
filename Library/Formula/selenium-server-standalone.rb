@@ -1,9 +1,8 @@
-require 'formula'
-
 class SeleniumServerStandalone < Formula
-  homepage 'http://seleniumhq.org/'
-  url 'http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.41.0.jar'
-  sha1 '36ff5dbb6f9592d511935f65ff262f5c1a53fef8'
+  desc "Browser automation for testing purposes"
+  homepage "http://seleniumhq.org/"
+  url "http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar"
+  sha1 "9bc872d1f364a3104257b1f8e055a342228259c3"
 
   def install
     libexec.install "selenium-server-standalone-#{version}.jar"
@@ -34,9 +33,9 @@ class SeleniumServerStandalone < Formula
       <key>ServiceDescription</key>
       <string>Selenium Server</string>
       <key>StandardErrorPath</key>
-      <string>/var/log/selenium/selenium-error.log</string>
+      <string>#{var}/log/selenium-error.log</string>
       <key>StandardOutPath</key>
-      <string>/var/log/selenium/selenium-output.log</string>
+      <string>#{var}/log/selenium-output.log</string>
     </dict>
     </plist>
     EOS

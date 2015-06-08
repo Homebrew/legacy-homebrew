@@ -1,13 +1,17 @@
 require 'formula'
 
 class Gringo < Formula
+  desc "Grounder to translate user-provided logic programs"
   homepage 'http://potassco.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/potassco/gringo/4.3.0/gringo-4.3.0-source.tar.gz'
-  sha1 'dccb55c2c690ebe1f6599a43b6072bfb50eb5e83'
+  url 'https://downloads.sourceforge.net/project/potassco/gringo/4.4.0/gringo-4.4.0-source.tar.gz'
+  sha1 'c39a1c3cfe64b62e39e6abcc8f813e2d1d17251e'
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "1dc4996fd4469e987a5aab9c205cf157c3460c01" => :mavericks
+    sha1 "53aa3f2faea4ed8018e182ad116b580a258f5f0b" => :yosemite
+    sha1 "169c5ce2e52e5e60b8dc9cf1a7bea91d2068ce7d" => :mavericks
+    sha1 "dbf6db34bc0ea8858ce4a3d3a3f65d874d96133b" => :mountain_lion
   end
 
   depends_on 're2c'  => :build
@@ -16,29 +20,13 @@ class Gringo < Formula
 
   needs :cxx11
 
-  # Fixes missing include; fixed upstream:
-  # http://sourceforge.net/p/potassco/code/8274/tree//trunk/gringo/app/gringo/main.cc?diff=5083e8f9bfc09e133b25ad84:8273
-  patch :p3, :DATA
-
   def install
     # Allow pre-10.9 clangs to build in C++11 mode
     ENV.libcxx
     inreplace "SConstruct",
               "env['CXX']            = 'g++'",
-              "env['CXX']            = '#{ENV['CXX']}'"
+              "env['CXX']            = '#{ENV.cxx}'"
     scons "--build-dir=release", "gringo", "clingo"
     bin.install "build/release/gringo", "build/release/clingo"
   end
 end
-
-__END__
---- a/trunk/gringo/app/gringo/main.cc
-+++ b/trunk/gringo/app/gringo/main.cc
-@@ -33,6 +33,7 @@
- #include <gringo/scripts.hh>
- #include <gringo/version.hh>
- #include <gringo/control.hh>
-+#include <climits>
- #include <iostream>
- #include <stdexcept>
- #include <program_opts/application.h>

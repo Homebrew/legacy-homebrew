@@ -7,7 +7,7 @@ require 'metafiles'
 class Pathname
   include MachO
 
-  BOTTLE_EXTNAME_RX = /(\.[a-z_]+(32)?\.bottle\.(\d+\.)?tar\.gz)$/
+  BOTTLE_EXTNAME_RX = /(\.[a-z0-9_]+\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
     sources.each do |src|
@@ -21,104 +21,104 @@ class Pathname
           opoo "tried to install empty array to #{self}"
           return
         end
-        src.each {|s| install_p(s) }
+        src.each { |s| install_p(s, File.basename(s)) }
       when Hash
         if src.empty?
           opoo "tried to install empty hash to #{self}"
           return
         end
-        src.each {|s, new_basename| install_p(s, new_basename) }
+        src.each { |s, new_basename| install_p(s, new_basename) }
       else
-        install_p(src)
+        install_p(src, File.basename(src))
       end
     end
   end
 
-  def install_p src, new_basename = nil
-    if new_basename
-      new_basename = File.basename(new_basename) # rationale: see Pathname.+
-      dst = self+new_basename
-    else
-      dst = self
-    end
+  def install_p(src, new_basename)
+    raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
 
-    src = src.to_s
-    dst = dst.to_s
-
-    # if it's a symlink, don't resolve it to a file because if we are moving
-    # files one by one, it's likely we will break the symlink by moving what
-    # it points to before we move it
-    # and also broken symlinks are not the end of the world
-    raise "#{src} does not exist" unless File.symlink? src or File.exist? src
-
+    src = Pathname(src)
+    dst = join(new_basename)
     dst = yield(src, dst) if block_given?
 
     mkpath
-    if File.symlink? src
-      # we use the BSD mv command because FileUtils copies the target and
-      # not the link! I'm beginning to wish I'd used Python quite honestly!
+
+    # Use FileUtils.mv over File.rename to handle filesystem boundaries. If src
+    # is a symlink, and its target is moved first, FileUtils.mv will fail:
+    #   https://bugs.ruby-lang.org/issues/7707
+    # In that case, use the system "mv" command.
+    if src.symlink?
       raise unless Kernel.system 'mv', src, dst
     else
-      # we mv when possible as it is faster and you should only be using
-      # this function when installing from the temporary build directory
       FileUtils.mv src, dst
     end
   end
-  protected :install_p
+  private :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
     sources.each do |src|
       case src
       when Array
-        src.each {|s| install_symlink_p(s) }
+        src.each { |s| install_symlink_p(s, File.basename(s)) }
       when Hash
-        src.each {|s, new_basename| install_symlink_p(s, new_basename) }
+        src.each { |s, new_basename| install_symlink_p(s, new_basename) }
       else
-        install_symlink_p(src)
+        install_symlink_p(src, File.basename(src))
       end
     end
   end
 
-  def install_symlink_p src, new_basename=src
+  def install_symlink_p(src, new_basename)
     src = Pathname(src).expand_path(self)
-    dst = join File.basename(new_basename)
+    dst = join(new_basename)
     mkpath
-    FileUtils.ln_sf src.relative_path_from(dst.parent), dst
+    FileUtils.ln_sf(src.relative_path_from(dst.parent), dst)
   end
-  protected :install_symlink_p
+  private :install_symlink_p
 
   # we assume this pathname object is a file obviously
   alias_method :old_write, :write if method_defined?(:write)
-  def write content
+  def write(content, *open_args)
     raise "Will not overwrite #{to_s}" if exist?
     dirname.mkpath
-    File.open(self, 'w') {|f| f.write content }
+    open("w", *open_args) { |f| f.write(content) }
   end
+
+  def binwrite(contents, *open_args)
+    open("wb", *open_args) { |f| f.write(contents) }
+  end unless method_defined?(:binwrite)
+
+  def binread(*open_args)
+    open("rb", *open_args) { |f| f.read }
+  end unless method_defined?(:binread)
 
   # NOTE always overwrites
   def atomic_write content
     require "tempfile"
-    tf = Tempfile.new(basename.to_s)
-    tf.binmode
-    tf.write(content)
-    tf.close
-
+    tf = Tempfile.new(basename.to_s, dirname)
     begin
-      old_stat = stat
-    rescue Errno::ENOENT
-      old_stat = default_stat
-    end
+      tf.binmode
+      tf.write(content)
 
-    FileUtils.mv tf.path, self
+      begin
+        old_stat = stat
+      rescue Errno::ENOENT
+        old_stat = default_stat
+      end
 
-    uid = Process.uid
-    gid = Process.groups.delete(old_stat.gid) { Process.gid }
+      uid = Process.uid
+      gid = Process.groups.delete(old_stat.gid) { Process.gid }
 
-    begin
-      chown(uid, gid)
-      chmod(old_stat.mode)
-    rescue Errno::EPERM
+      begin
+        tf.chown(uid, gid)
+        tf.chmod(old_stat.mode)
+      rescue Errno::EPERM
+      end
+
+      File.rename(tf.path, self)
+    ensure
+      tf.close!
     end
   end
 
@@ -144,22 +144,17 @@ class Pathname
   def cp_path_sub pattern, replacement
     raise "#{self} does not exist" unless self.exist?
 
-    src = self.to_s
-    dst = src.sub(pattern, replacement)
-    raise "#{src} is the same file as #{dst}" if src == dst
+    dst = sub(pattern, replacement)
 
-    dst_path = Pathname.new dst
+    raise "#{self} is the same file as #{dst}" if self == dst
 
-    if self.directory?
-      dst_path.mkpath
-      return
+    if directory?
+      dst.mkpath
+    else
+      dst.dirname.mkpath
+      dst = yield(self, dst) if block_given?
+      FileUtils.cp(self, dst)
     end
-
-    dst_path.dirname.mkpath
-
-    dst = yield(src, dst) if block_given?
-
-    FileUtils.cp(src, dst)
   end
 
   # extended to support common double extensions
@@ -216,6 +211,8 @@ class Pathname
       return :gzip_only
     when ".bz2"
       return :bzip2_only
+    when ".lha", ".lzh"
+      return :lha
     end
 
     # Get enough of the file to detect common file types
@@ -232,6 +229,7 @@ class Pathname
     when /^Rar!/n               then :rar
     when /^7z\xBC\xAF\x27\x1C/n then :p7zip
     when /^xar!/n               then :xar
+    when /^\xed\xab\xee\xdb/n   then :rpm
     else
       # This code so that bad-tarballs and zips produce good error messages
       # when they don't unarchive properly.
@@ -252,7 +250,7 @@ class Pathname
       digest.file(self)
     else
       buf = ""
-      open("rb") { |f| digest << buf while f.read(1024, buf) }
+      open("rb") { |f| digest << buf while f.read(16384, buf) }
     end
     digest.hexdigest
   end
@@ -273,9 +271,8 @@ class Pathname
     raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
-  if '1.9' <= RUBY_VERSION
-    alias_method :to_str, :to_s
-  end
+  # FIXME eliminate the places where we rely on this method
+  alias_method :to_str, :to_s unless method_defined?(:to_str)
 
   def cd
     Dir.chdir(self){ yield }
@@ -348,6 +345,7 @@ class Pathname
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
       return
     end
+    mkpath
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
       (self+target.basename()).write <<-EOS.undent
@@ -361,6 +359,7 @@ class Pathname
   def write_env_script target, env
     env_export = ''
     env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
+    dirname.mkpath
     self.write <<-EOS.undent
     #!/bin/bash
     #{env_export}exec "#{target}" "$@"
@@ -371,7 +370,8 @@ class Pathname
   def env_script_all_files dst, env
     dst.mkpath
     Pathname.glob("#{self}/*") do |file|
-      dst.install_p file
+      next if file.directory?
+      dst.install(file)
       new_file = dst+file.basename
       file.write_env_script(new_file, env)
     end
@@ -379,6 +379,7 @@ class Pathname
 
   # Writes an exec script that invokes a java jar
   def write_jar_script target_jar, script_name, java_opts=""
+    mkpath
     (self+script_name).write <<-EOS.undent
       #!/bin/bash
       exec java #{java_opts} -jar #{target_jar} "$@"
@@ -400,10 +401,11 @@ class Pathname
   end
 
   def abv
-    out=''
-    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
-    out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
+    out = ""
+    n = Utils.popen_read("find", expand_path.to_s, "-type", "f", "!", "-name", ".DS_Store").split("\n").size
+    out << "#{n} files, " if n > 1
+    out << Utils.popen_read("/usr/bin/du", "-hs", expand_path.to_s).split("\t")[0].strip
+    out
   end
 
   # We redefine these private methods in order to add the /o modifier to

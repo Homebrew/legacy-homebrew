@@ -1,6 +1,7 @@
 require 'formula'
 
 class Vcprompt < Formula
+  desc "Provide version control info in shell prompts"
   homepage 'https://bitbucket.org/gward/vcprompt'
   url 'https://bitbucket.org/gward/vcprompt/downloads/vcprompt-1.2.1.tar.gz'
   sha1 'fb623e6183b8e5ccbbe5cf7d135a04e727c9b402'
@@ -13,8 +14,8 @@ class Vcprompt < Formula
   end
 
   head do
-    url 'hg://https://bitbucket.org/gward/vcprompt'
-    depends_on :autoconf
+    url 'https://bitbucket.org/gward/vcprompt', :using => :hg
+    depends_on "autoconf" => :build
   end
 
   depends_on 'sqlite'
