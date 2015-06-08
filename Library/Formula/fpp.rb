@@ -7,9 +7,9 @@ class Fpp < Formula
 
   bottle do
     cellar :any
-    sha256 "e99cee3f18c0fee425bb452cec86599ed46f181a337ff6657f38d410058ec725" => :yosemite
-    sha256 "d58cb003bb7080570f13cc9251467218b83f0ff8f9cd2889a051c5716d9d0f29" => :mavericks
-    sha256 "d199b13c4254f992d56a61b70e2f8ed1f63412950e5c6c0958b6fb524fd55cb2" => :mountain_lion
+    sha256 "81c66eb233cf29c15a198b5adcc7cfda6b306d9c2d38d37401c50a2494795358" => :yosemite
+    sha256 "7e86a6be38372bec214594ee10cf19eb2afaad9464a4ee23afde33ed5ae5c430" => :mavericks
+    sha256 "eb3e955121c0cab6f567b4b3ba942899be74452be5a56c3f766ea9904bf39d09" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
