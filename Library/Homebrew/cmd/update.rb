@@ -27,14 +27,14 @@ module Homebrew
     # this procedure will be removed in the future if it seems unnecessasry
     rename_taps_dir_if_necessary
 
-    each_tap do |user, repo|
-      repo.cd do
-        updater = Updater.new(repo)
+    Tap.each do |tap|
+      tap.path.cd do
+        updater = Updater.new(tap.path)
 
         begin
           updater.pull!
         rescue
-          onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
+          onoe "Failed to update tap: #{tap}"
         else
           report.update(updater.report) do |key, oldval, newval|
             oldval.concat(newval)
