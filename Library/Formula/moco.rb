@@ -1,13 +1,13 @@
 class Moco < Formula
   desc "Stub server with Maven, Gradle, Scala, and shell integration"
   homepage "https://github.com/dreamhead/moco"
-  url "http://central.maven.org/maven2/com/github/dreamhead/moco-runner/0.9.2/moco-runner-0.9.2-standalone.jar"
-  version "0.9.2"
-  sha256 "ab663f52315e39d3291ee3ff447a0503977a1d6cf8b6efc9905c86386577d251"
+  url "http://central.maven.org/maven2/com/github/dreamhead/moco-runner/0.10.1/moco-runner-0.10.1-standalone.jar"
+  version "0.10.1"
+  sha256 "77996c0c5518beec0179fcdef83c2c606c5704073efc4ab6f9af80fc7756efbe"
 
   def install
-    libexec.install "moco-runner-0.9.2-standalone.jar"
-    bin.write_jar_script libexec/"moco-runner-0.9.2-standalone.jar", "moco"
+    libexec.install "moco-runner-0.10.1-standalone.jar"
+    bin.write_jar_script libexec/"moco-runner-0.10.1-standalone.jar", "moco"
   end
 
   test do
