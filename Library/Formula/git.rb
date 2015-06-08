@@ -35,7 +35,7 @@ class Git < Formula
   depends_on "curl" if build.with? "brewed-curl"
   depends_on "go" => :build if build.with? "persistent-https"
   depends_on "expat" unless OS.mac?
-  depends_on "homebrew/dupes/tcl-tk" unless OS.mac?
+  depends_on "tcl-tk" unless OS.mac?
 
   # Trigger an install of swig before subversion, as the "swig" doesn't get pulled in otherwise
   # See https://github.com/Homebrew/homebrew/issues/34554
