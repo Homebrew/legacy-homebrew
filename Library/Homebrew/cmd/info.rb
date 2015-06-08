@@ -22,7 +22,8 @@ module Homebrew
   def print_info
     if ARGV.named.empty?
       if HOMEBREW_CELLAR.exist?
-        puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
+        count = HOMEBREW_CELLAR.subdirs.length
+        puts "#{count} keg#{plural(count)}, #{HOMEBREW_CELLAR.abv}"
       end
     else
       ARGV.named.each_with_index do |f,i|
