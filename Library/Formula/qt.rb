@@ -31,6 +31,11 @@ class Qt < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    # Fix this error:
+    # /bin/ld: warning: libQtCLucene.so.4, needed by libQtHelp.so, not found
+    # libQtHelp.so: undefined reference to `QCLuceneIndexWriter::setMergeFactor(int)'
+    ENV["LD_LIBRARY_PATH"] = buildpath/"lib" if OS.linux?
+
     args = ["-prefix", prefix,
             "-system-zlib",
             "-qt-libtiff", "-qt-libpng", "-qt-libjpeg",
