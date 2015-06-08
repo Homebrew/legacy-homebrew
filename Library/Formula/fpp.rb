@@ -1,8 +1,8 @@
 class Fpp < Formula
-  desc "Alternative to piping that accepts input and presents a UI for selecting items"
+  desc "CLI program that accepts piped input and presents files for selection"
   homepage "https://facebook.github.io/PathPicker/"
-  url "https://github.com/facebook/PathPicker/releases/download/0.6.0/fpp.0.6.0.tar.gz"
-  sha256 "5e3f9e8ffa5e5d0f4608af521458a93010f2f504ce936ac33cf376505099dc65"
+  url "https://github.com/facebook/PathPicker/releases/download/0.6.1/fpp.0.6.1.tar.gz"
+  sha256 "800a6dcf0cfe55fae9b901b2827f2706ef85812cc4d7d6676dde359c62235428"
   head "https://github.com/facebook/pathpicker.git"
 
   bottle do
