@@ -383,6 +383,20 @@ If \fB\-\-full\fR is passed, a full clone will be used\.
 Migrate tapped formulae from symlink\-based to directory\-based structure\.
 .
 .TP
+\fBtap\-info\fR \fItap\fR
+Display information about \fItap\fR\.
+.
+.TP
+\fBtap\-info \-\-json=<version>\fR (\-\-installed|\fItaps\fR)
+Print a JSON representation of \fItaps\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
+.
+.IP
+Pass \fB\-\-installed\fR to get information on installed taps\.
+.
+.IP
+See the docs for examples of using the JSON: \fIhttps://github\.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying\-Brew\.md\fR
+.
+.TP
 \fBtest\fR [\-\-devel|\-\-HEAD] [\-\-debug] \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
 .
