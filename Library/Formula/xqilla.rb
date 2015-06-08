@@ -4,6 +4,13 @@ class Xqilla < Formula
   url "https://downloads.sourceforge.net/project/xqilla/XQilla-2.3.1.tar.gz"
   sha256 "5ba1c1060c7d7e1dae537d4e1388d23b278a2177c7652e33121d481907d25d68"
 
+  bottle do
+    cellar :any
+    sha256 "f3f90fae2c2ca2b4dffb8d8261ee60c2d9c2efcf9c9dee534f252fafb647616b" => :yosemite
+    sha256 "f9aaade5ef6770609d770579279c55ea5c02d0877a747d75e514b287161af100" => :mavericks
+    sha256 "35b3e6c6d56af36f717f067a759daf2f9aaa135cd519245e925a83e480e1781a" => :mountain_lion
+  end
+
   depends_on "xerces-c"
 
   def install
