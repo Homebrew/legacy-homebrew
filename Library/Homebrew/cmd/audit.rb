@@ -56,6 +56,7 @@ end
 class FormulaText
   def initialize path
     @text = path.open("rb", &:read)
+    @lines = @text.lines
   end
 
   def without_patch
@@ -76,6 +77,11 @@ class FormulaText
 
   def =~ regex
     regex =~ @text
+  end
+
+  def line_number regex
+    index = @lines.index { |line| line =~ regex }
+    index ? index + 1 : nil
   end
 end
 
@@ -124,6 +130,37 @@ class FormulaAuditor
 
     unless text.has_trailing_newline?
       problem "File should end with a newline"
+    end
+
+    return unless @strict
+
+    component_list = [
+      [/^  desc ["'][\S\ ]+["']/,          "desc"          ],
+      [/^  homepage ["'][\S\ ]+["']/,      "homepage"      ],
+      [/^  url ["'][\S\ ]+["']/,           "url"           ],
+      [/^  mirror ["'][\S\ ]+["']/,        "mirror"        ],
+      [/^  version ["'][\S\ ]+["']/,       "version"       ],
+      [/^  (sha1|sha256) ["'][\S\ ]+["']/, "checksum"      ],
+      [/^  head ["'][\S\ ]+["']/,          "head"          ],
+      [/^  stable do/,                     "stable block"  ],
+      [/^  bottle do/,                     "bottle block"  ],
+      [/^  devel do/,                      "devel block"   ],
+      [/^  head do/,                       "head block"    ],
+      [/^  option/,                        "option"        ],
+      [/^  depends_on/,                    "depends_on"    ],
+      [/^  def install/,                   "install method"],
+      [/^  def caveats/,                   "caveats method"],
+      [/^  test do/,                       "test block"    ],
+    ]
+
+    component_list.map do |regex, name|
+      lineno = text.line_number regex
+      next unless lineno
+      [lineno, name]
+    end.compact.each_cons(2) do |c1, c2|
+      unless c1[0] < c2[0]
+        problem "`#{c1[1]}`(line #{c1[0]}) should be put before `#{c2[1]}`(line #{c2[0]})"
+      end
     end
   end
 
