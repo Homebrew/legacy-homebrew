@@ -85,6 +85,6 @@ module Homebrew
   end
 
   def check_private?(clone_target, user, repo)
-    not clone_target && private_tap?(user, repo)
+    !clone_target && private_tap?(user, repo)
   end
 end
