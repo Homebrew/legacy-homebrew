@@ -11,9 +11,12 @@ class Gflags < Formula
     sha256 "c252863cdb5da9ad87241f906a9d218a3e8c7136f8fff567ddf9922715c22389" => :mountain_lion
   end
 
+  option "with-debug", "Build debug version"
+
   depends_on "cmake" => :build
 
   def install
+    ENV.append_to_cflags "-DNDEBUG" if build.without? "debug"
     mkdir "buildroot" do
       system "cmake", "..", *std_cmake_args
       system "make", "install"
