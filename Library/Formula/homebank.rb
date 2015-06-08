@@ -3,8 +3,8 @@ require 'formula'
 class Homebank < Formula
   desc "Manage your personal accounts at home"
   homepage 'http://homebank.free.fr'
-  url 'http://homebank.free.fr/public/homebank-5.0.2.tar.gz'
-  sha1 '73517bf16f889ea6dd25120575d1d80c0367f54b'
+  url 'http://homebank.free.fr/public/homebank-5.0.3.tar.gz'
+  sha256 'eac04a19f5d7644a5bf254a22f737d562b41503f280e339192f39745bf0d7839'
 
   bottle do
     sha256 "addd119c70a99456bf8216415a092a8824dbd428ade7349fa8929a1eb9d304da" => :yosemite
