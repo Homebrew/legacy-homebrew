@@ -34,12 +34,9 @@ module Homebrew
     if ARGV.named.empty?
       formulae = Formula.full_names
     else
-      user, repo = tap_args
-      user.downcase!
-      repo.downcase!
-      tap = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
-      raise "#{tap} does not exist!" unless tap.directory?
-      tap.find_formula { |f| formulae << f }
+      tap = Tap.new(*tap_args)
+      raise "#{tap} does not exist!" unless tap.installed?
+      formulae = tap.formula_files
     end
 
     formulae.sort.each do |n|
