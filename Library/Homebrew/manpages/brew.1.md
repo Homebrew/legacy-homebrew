@@ -355,6 +355,18 @@ Note that these flags should only appear after a command.
   * `tap --repair`:
     Migrate tapped formulae from symlink-based to directory-based structure.
 
+  * `tap-info` <tap>:
+    Display information about <tap>.
+
+  * `tap-info --json=<version>` (--installed|<taps>):
+    Print a JSON representation of <taps>. Currently the only accepted value
+    for <version> is `v1`.
+
+    Pass `--installed` to get information on installed taps.
+
+    See the docs for examples of using the JSON:
+    <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md>
+
   * `test` [--devel|--HEAD] [--debug] <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
