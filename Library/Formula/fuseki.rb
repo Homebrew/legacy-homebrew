@@ -4,8 +4,8 @@ class Fuseki < Formula
   desc "SPARQL server"
   homepage 'https://jena.apache.org/documentation/serving_data/'
   url 'https://www.apache.org/dist/jena/binaries/jena-fuseki1-1.1.2-distribution.tar.gz'
-  version '1.1.1'
-  sha1 'e22d7dfe6b427de267642fe7dc2141ab662db24b'
+  version '1.1.2'
+  sha256 '78bd92b4e32f9e918d89946d11aed9789416f4058b127af60b251b4a8636b5f0'
 
   def install
     # Remove windows files
