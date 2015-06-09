@@ -9,10 +9,9 @@ class Qt < Formula
   end
 
   bottle do
-    revision 6
-    sha1 "bedfe4e950676a85f9653732d33767fbcce45da5" => :yosemite
-    sha1 "8ee072473ababd49fe85bc6f9bf5ddcdafea8c26" => :mavericks
-    sha1 "668ac1a65811e0ff23230a698725b383c61c1d13" => :mountain_lion
+    sha256 "540e72bee0f660e0aeebe84ce04408fd45642fd987e304c9591b2648af55672b" => :yosemite
+    sha256 "27e20d9f5b17df87e49ae9d6fe15105ac83a79b2a364884cdfd17e55e02d6ea1" => :mavericks
+    sha256 "c03ff74ad662f1aafb048f6d016f76bf510da328752453ae4b7e6aaa6402e9b9" => :mountain_lion
   end
 
   head "https://code.qt.io/qt/qt.git", :branch => "4.8"
