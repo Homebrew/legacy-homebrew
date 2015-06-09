@@ -489,6 +489,17 @@ class FormulaAuditor
     if text =~ /Formula\.factory\(/
       problem "\"Formula.factory(name)\" is deprecated in favor of \"Formula[name]\""
     end
+
+    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec}/npm/bin]
+      need_npm = "\#{Formula[\"node\"].opt_libexec\}/npm/bin"
+      problem <<-EOS.undent
+       Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install
+      EOS
+    end
+
+    if text =~ /system "npm", "install"/ && text !~ /"HOME"/
+      problem "Please add ENV[\"HOME\"] = buildpath/\".brew_home\" to def install"
+    end
   end
 
   def audit_line(line, lineno)
