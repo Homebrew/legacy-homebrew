@@ -10,6 +10,7 @@ class Gtimer < Formula
   patch :DATA
 
   def install
+    ENV.O1
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
                           "--with-gtk2"
