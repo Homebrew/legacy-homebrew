@@ -49,5 +49,6 @@ Thank you!
   * Be sure to use the `https:` URL (i.e. the URL in your browser's address bar), not the `git:` URL.
 
 [Gist]:https://gist.github.com
-[Java Developer Update]:http://support.apple.com/kb/DL1572
+[Apple Developer]:https://developer.apple.com/downloads
+[Java Developer Update]:https://support.apple.com/kb/DL1572
 [JDK 7]:https://docs.oracle.com/javase/7/docs/webnotes/install/mac/mac-install-faq.html

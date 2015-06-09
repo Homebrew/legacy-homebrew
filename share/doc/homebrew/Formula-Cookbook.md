@@ -87,7 +87,7 @@ A more complete example-formula [cheat-sheet](https://github.com/Homebrew/homebr
 
 All you need to make a formula is a URL to the tarball.
 
-    brew create http://example.com/foo-0.1.tar.gz
+    brew create https://example.com/foo-0.1.tar.gz
 
 This creates:
 
@@ -97,7 +97,7 @@ And opens it in your `$EDITOR`. It'll look like:
 
 ```ruby
 class Foo < Formula
-  url "http://example.com/foo-0.1.tar.gz"
+  url "https://example.com/foo-0.1.tar.gz"
   homepage ""
   sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7"
 
@@ -619,11 +619,11 @@ end
 To use one of Homebrew’s built-in download strategies, specify the `:using =>` flag on a `url` or `head`.  For example:
 
 ```ruby
-class Sip < Formula
-  url "http://www.riverbankcomputing.co.uk/hg/sip/archive/4.11"
-  md5 "dbafd7101a4e7caee6f529912a1356e5"
-  head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
-  homepage "http://www.riverbankcomputing.co.uk/software/sip"
+class Python3 < Formula
+  homepage "https://www.python.org/"
+  url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
+  sha256 "b5b3963533768d5fc325a4d7a6bd6f666726002d696f1d399ec06b043ea996b8"
+  head "https://hg.python.org/cpython", :using => :hg
 ```
 
 The downloaders offered by Homebrew are:

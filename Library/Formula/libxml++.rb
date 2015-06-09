@@ -1,13 +1,13 @@
 class Libxmlxx < Formula
   desc "C++ wrapper for libxml"
   homepage "http://libxmlplusplus.sourceforge.net"
-  url "https://download.gnome.org/sources/libxml++/2.38/libxml++-2.38.0.tar.xz"
-  sha256 "5698b03f5d320fb8310e30780e328f03debca12c557434ee031aea9baf3b1346"
+  url "https://download.gnome.org/sources/libxml++/2.38/libxml++-2.38.1.tar.xz"
+  sha256 "882529189b03db6c69925b3f579ab1941feb4f02b5fe2612504ee7e498a4a05f"
 
   bottle do
-    sha256 "a54f1940bdcf03e3198a1907ffcad9ce66d0dd1fc79babf502c5100ede9e0703" => :yosemite
-    sha256 "3837069e7c317cab4df180451a7f74c7dd730fad068309ae394f684e2ed38988" => :mavericks
-    sha256 "0627acae7aa558085839566d36da0cedef39087c08e32bf7d39d8bb4c7260a53" => :mountain_lion
+    sha256 "aee30c6a4f6c8a73b126a3ac3b86d2a0776aa3fb28cd4ca456239cba80c58615" => :yosemite
+    sha256 "c27d008e5c70b1ecb58236e7c1147b11de45fd8355a819edb756d9b2afd8cbf1" => :mavericks
+    sha256 "486754665b20b0bb79f95704842d153df4ad9765144bc32c1653be7a1ae40d83" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

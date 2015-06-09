@@ -5,15 +5,16 @@ class Pandoc < Formula
 
   desc "Swiss-army knife of markup format conversion"
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.14.0.2/pandoc-1.14.0.2.tar.gz"
-  sha256 "5d60bddc474499a2aa553e200da2860fed9e48a3db77072355f5f7c666a56bd0"
+  url "https://hackage.haskell.org/package/pandoc-1.14.0.4/pandoc-1.14.0.4.tar.gz"
+  sha256 "01955bfb1f397ec22bbce10e2df7b4f2214b7289bf79bf51eb7ae0e3b427fadf"
 
   head "https://github.com/jgm/pandoc.git"
 
   bottle do
-    sha256 "dda5a71f09d869a7c46bf6b2af39a05e79633f125b564fa431109c198832eab2" => :yosemite
-    sha256 "f99e53a35876f07687bcf81e10894a482510f735aa54d2b303edce2c8f170aea" => :mavericks
-    sha256 "d4edcf75c228b95e96117731bee0a75158f143ea7f604aeb2d38ff5fbd218297" => :mountain_lion
+    revision 1
+    sha256 "a7470327540c74e9c5e05a7b6b6240faa82e521147439f8bfb3fc100e12b3cfa" => :yosemite
+    sha256 "7e803fffac74ac594caf39cdd194983083c2a7eaf3d86b358c9d41b59addcb1a" => :mavericks
+    sha256 "09efd70cef2bfdfa2b43dd80abd51faa276ff600703cd16928f06f45fc2eb8d6" => :mountain_lion
   end
 
   depends_on "ghc" => :build
@@ -26,6 +27,8 @@ class Pandoc < Formula
     cabal_sandbox do
       cabal_install "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
+      man1.install "man/man1/pandoc.1"
+      man5.install "man/man5/pandoc_markdown.5"
     end
     cabal_clean_lib
   end

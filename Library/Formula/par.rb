@@ -1,4 +1,3 @@
-# encoding: UTF-8
 class Par < Formula
   desc "Paragraph reflow for email"
   homepage "http://www.nicemice.net/par/"

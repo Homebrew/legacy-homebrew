@@ -1,25 +1,20 @@
 class Aap < Formula
   desc "Aap is a make-like tool to download, build, and install software"
   homepage "http://www.a-a-p.org"
-  url "https://downloads.sourceforge.net/project/a-a-p/Aap/1.093/aap-1.093.zip"
-  sha256 "7a6c6c4a819a8379e60c679fe0c3f93eb1b74204cd7cc1c158263f4b34943001"
+  url "https://downloads.sourceforge.net/project/a-a-p/aap-1.094.zip"
+  sha256 "3f53b2fc277756042449416150acc477f29de93692944f8a77e8cef285a1efd8"
 
   bottle do
-    sha256 "2a0ac5d749435a00a40366cbbf0438e7cc29579d4ea73b4491743d34d53dafad" => :yosemite
-    sha256 "3044bc85097466a3b88dd7811602d8494f2afe6e1f6c98170056d2e52ca55094" => :mavericks
-    sha256 "250cbd3d70ba5d0972c625e5045a019b7ef53d07ecf5da9f9ead3e783b0bced0" => :mountain_lion
+    sha256 "b95b0d83504a5ec5c0d10143f2f85aa9fa21f394fda2cf14bebee8b1b643dd37" => :yosemite
+    sha256 "019cb29542a8d8250e22cc10e389d1a2159a9db99db90dc9392650b288025507" => :mavericks
+    sha256 "e496122256798dc62cd02ffdd0d72c7a1d682243c6743b1b7b0b88fc6b3bd34a" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
-    # Aap only installs "man" at top level. This moves it under share/,
-    # which OS X and Homebrew use by default.
-    # Upstream bug report: http://sourceforge.net/p/a-a-p/mailman/message/34146703/
-    inreplace "main.aap", "mandir = $PREFIX/man/man1", "mandir = $PREFIX/share/man/man1"
-
     # Aap is designed to install using itself
-    system "./aap", "install", "PREFIX=#{prefix}"
+    system "./aap", "install", "PREFIX=#{prefix}", "MANSUBDIR=share/man"
   end
 
   test do
