@@ -49,7 +49,8 @@ else
   HOMEBREW_REPOSITORY+"Cellar"
 end
 
-HOMEBREW_LOGS = Pathname.new(ENV['HOMEBREW_LOGS'] || '~/Library/Logs/Homebrew/').expand_path
+HOMEBREW_LOGS = Pathname.new(ENV['HOMEBREW_LOGS'] ||
+  (OS.mac? ? "~/Library/Logs/Homebrew/" : "~/.cache/Homebrew/Logs")).expand_path
 
 HOMEBREW_TEMP = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
 
