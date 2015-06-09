@@ -2,8 +2,8 @@ require 'formula'
 
 class Fuseki < Formula
   desc "SPARQL server"
-  homepage 'http://jena.apache.org/documentation/serving_data/'
-  url 'http://www.apache.org/dist/jena/binaries/jena-fuseki1-1.1.2-distribution.tar.gz'
+  homepage 'https://jena.apache.org/documentation/serving_data/'
+  url 'https://www.apache.org/dist/jena/binaries/jena-fuseki1-1.1.2-distribution.tar.gz'
   version '1.1.1'
   sha1 'e22d7dfe6b427de267642fe7dc2141ab662db24b'
 
