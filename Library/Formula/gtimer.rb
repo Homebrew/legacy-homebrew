@@ -1,7 +1,7 @@
 class Gtimer < Formula
-  desc "GTimer is a GTK application for timing how you spend your time among various projects and tasks with support for generating plain text and HTML reports."
+  desc "An application for timing how you spend your time among projects and tasks."
   homepage "http://www.k5n.us/gtimer.php"
-  url "http://downloads.sourceforge.net/project/gtimer/2.0.0/gtimer-2.0.0.tar.gz"
+  url "https://downloads.sourceforge.net/project/gtimer/2.0.0/gtimer-2.0.0.tar.gz"
   sha256 "a2dd70793a5b1b4d497be0c4429b8e8cef6910497b6af8fbdedff00764308458"
 
   depends_on :x11
