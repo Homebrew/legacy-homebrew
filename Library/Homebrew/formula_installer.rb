@@ -403,7 +403,10 @@ class FormulaInstaller
 
     keg = Keg.new(formula.prefix)
     link(keg)
-    fix_install_names(keg) if OS.mac?
+
+    if OS.mac?
+      fix_install_names(keg) unless build_bottle? && !formula.bottle.needs_relocation?
+    end
 
     if build_bottle? && formula.post_install_defined?
       ohai "Not running post_install as we're building a bottle"
