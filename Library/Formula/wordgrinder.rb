@@ -6,8 +6,13 @@ class Wordgrinder < Formula
   depends_on "lua"
 
   def install
+<<<<<<< HEAD
 		system "make"
     system "make", "install", "PREFIX=#{prefix}"
+=======
+    system "make"
+    system "make install PREFIX=#{prefix}"
+>>>>>>> 0462d99d871d8cda3af0689211b1bbdc5882fca1
   end
 
   test do
