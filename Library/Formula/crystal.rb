@@ -9,11 +9,7 @@ class Crystal < Formula
   def install
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
-  end
-
-  def post_install
-    cd libexec
-    system "npm", "install"
+    ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
   end
 
   test do
