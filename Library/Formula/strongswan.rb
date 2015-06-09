@@ -5,9 +5,9 @@ class Strongswan < Formula
   sha256 "a4a9bc8c4e42bdc4366a87a05a02bf9f425169a7ab0c6f4482d347e44acbf225"
 
   bottle do
-    sha256 "78c124b46d7409d91d8f19a256a51ee584f862ae9c8f5b19ed4049486df1af20" => :yosemite
-    sha256 "f9c7fc1b920a7fde85dd817c7501e2727a964872913ebfccc903545debc3665c" => :mavericks
-    sha256 "b10aaf7f4d09d9876a237832733fdd56c804962e2931ac002a6f0de89e0bd244" => :mountain_lion
+    sha256 "dcb83dc117ee1f0b145408d14ef5a832ea8931cedd6d2f3a7c97c157cc577bff" => :yosemite
+    sha256 "bc642bdf33694216316a17fd2d64054b6b7aac5bc73cf5cd231aa868b1108b88" => :mavericks
+    sha256 "f3601206f55048e0d67802fc4d32091cfe3a6bef4c98fa38a2f1e9ddbb832e85" => :mountain_lion
   end
 
   option 'with-curl', 'Build with libcurl based fetcher'
