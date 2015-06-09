@@ -325,7 +325,7 @@ class FormulaInstaller
   def install_relocation_tools
     cctools = CctoolsRequirement.new
     dependency = cctools.to_dependency
-    formula = cctools.to_formula
+    formula = dependency.to_formula
     return if cctools.satisfied? || @@attempted.include?(formula)
 
     install_dependency(dependency, inherited_options_for(cctools))
