@@ -48,7 +48,7 @@ class Algernon < Formula
       Process.kill("HUP", algernon_pid)
 
       # Remove temporary Bolt database
-      `rm -f #{tempdb}`
+      rm_f tempdb
     end
   end
 end
