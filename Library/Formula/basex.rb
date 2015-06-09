@@ -3,9 +3,9 @@ require 'formula'
 class Basex < Formula
   desc "Light-weight XML database and XPath/XQuery processor"
   homepage 'http://basex.org'
-  url 'http://files.basex.org/releases/8.2/BaseX82.zip'
-  version '8.2'
-  sha1 '4dfd8ce5508748777586d26ccedc466f437e7da6'
+  url 'http://files.basex.org/releases/8.2.1/BaseX821.zip'
+  version '8.2.1'
+  sha256 '4073aa250a9551619b9fb254d3022da97b97d2b5085fdf7535fb92a53d3f1589'
 
   bottle do
     cellar :any
