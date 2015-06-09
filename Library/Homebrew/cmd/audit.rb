@@ -56,7 +56,7 @@ end
 class FormulaText
   def initialize path
     @text = path.open("rb", &:read)
-    @lines = @text.lines
+    @lines = @text.lines.to_a
   end
 
   def without_patch
