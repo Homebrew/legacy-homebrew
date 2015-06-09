@@ -16,6 +16,7 @@ class Isl < Formula
     sha256 "8f2930559c015c477a094e67f2f70aff8ef0fb37296432e95921569fa9080db9" => :yosemite
     sha256 "835d04dc9d6be86f7480b31824522ece83895ec0ed78314caf900c4bfd5611fa" => :mavericks
     sha256 "19f797f8031bd373bb13a61ceefd9d74ee74cca0af1790617020f8a951ae8ce2" => :mountain_lion
+    sha256 "ea945f6fbdadead78ca3c2526409a72fc40746d59268707f77d729aa2a5d0ab2" => :x86_64_linux
   end
 
   head do
