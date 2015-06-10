@@ -1,8 +1,8 @@
 class Cyassl < Formula
   desc "Embedded SSL Library written in C"
-  homepage "http://www.wolfssl.com/yaSSL/Home.html"
-  url "https://github.com/wolfSSL/wolfssl/archive/v3.4.0.tar.gz"
-  sha256 "e23b7939c04bf18efa353ff9abfeaba3bcf454e47c9ced45e2aadab6660245f0"
+  homepage "https://www.wolfssl.com/wolfSSL/Home.html"
+  url "https://github.com/wolfSSL/wolfssl/archive/v3.4.8.tar.gz"
+  sha256 "50243fa7124a1af611acb916ec11d98a2a91ac5079b7a6a51562e8970cbd942e"
   head "https://github.com/wolfSSL/wolfssl.git"
 
   bottle do
@@ -19,8 +19,6 @@ class Cyassl < Formula
   depends_on "libtool" => :build
 
   def install
-    # At some point it'd be nice to be able to "--disable-md5" but:
-    # https://github.com/wolfSSL/wolfssl/issues/26
     args = %W[
       --disable-silent-rules
       --disable-dependency-tracking
@@ -31,6 +29,7 @@ class Cyassl < Formula
       --disable-bump
       --disable-examples
       --disable-fortress
+      --disable-md5
       --disable-sniffer
       --disable-webserver
       --enable-aesccm
