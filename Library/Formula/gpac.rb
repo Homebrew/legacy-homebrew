@@ -8,14 +8,13 @@
 
 class Gpac < Formula
   desc "Multimedia framework for research and academic purposes"
-  homepage "http://gpac.wp.mines-telecom.fr/"
+  homepage "https://gpac.wp.mines-telecom.fr/"
+  head "https://github.com/gpac/gpac.git"
 
   stable do
     url "https://github.com/gpac/gpac/archive/v0.5.2.tar.gz"
     sha256 "14de020482fc0452240f368564baa95a71b729980e4f36d94dd75c43ac4d9d5c"
   end
-
-  head "https://github.com/gpac/gpac"
 
   depends_on "openssl"
   depends_on "pkg-config" => :build
@@ -42,8 +41,9 @@ class Gpac < Formula
       # Force detection of X libs on 64-bit kernel
       args << "--extra-ldflags=-L#{MacOS::X11.lib}"
     else
+      # https://github.com/gpac/gpac/issues/166
+      inreplace "configure", "has_x11=\"yes\"", "has_x11=\"no\""
       args << "--disable-x11-shm" << "--disable-x11-xv"
-      args << "--X11-path=/dev/null"
     end
 
     system "./configure", *args
