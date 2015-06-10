@@ -27,6 +27,8 @@ class Mysql < Formula
   depends_on "cmake" => :build
   depends_on "pidof" unless MacOS.version >= :mountain_lion || !OS.mac?
   depends_on "openssl"
+  # Fix error: Cannot find system editline libraries.
+  depends_on "libedit" unless OS.mac?
 
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
