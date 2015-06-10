@@ -42,7 +42,6 @@ class WebApi(system: ActorSystem,
   val ResultKey = "result"
 
   val contextTimeout = SparkJobUtils.getContextTimeout(config)
-  val sparkAliveWorkerThreshold = Try(config.getInt("spark.jobserver.sparkAliveWorkerThreshold")).getOrElse(1)
   val bindAddress = config.getString("spark.jobserver.bind-address")
 
   val logger = LoggerFactory.getLogger(getClass)
