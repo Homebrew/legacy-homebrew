@@ -492,6 +492,40 @@ _brew_tests ()
     esac
 }
 
+_brew_style ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--fix --homebrew-developer"
+        return
+        ;;
+    esac
+    __brew_complete_formulae
+}
+
+_brew_tap_readme ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--verbose"
+        return
+        ;;
+    esac
+}
+
+_brew_tests ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--verbose"
+        return
+        ;;
+    esac
+}
+
 _brew_uninstall ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
