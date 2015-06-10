@@ -3,8 +3,8 @@ require 'formula'
 class Juju < Formula
   desc "DevOps management tool"
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.23/1.23.3/+download/juju-core_1.23.3.tar.gz'
-  sha1 '813455d308c14bf0f90e8326727cc327c6eb481f'
+  url 'https://launchpad.net/juju-core/1.24/1.24.0/+download/juju-core_1.24.0.tar.gz'
+  sha1 '501a333edd3b0c3f81e11f5946cf2ae59628d0c6'
 
   bottle do
     cellar :any
