@@ -117,6 +117,7 @@ TAP_MIGRATIONS = {
   "kernagic" => "homebrew/x11",
   "kismet" => "homebrew/boneyard",
   "klavaro" => "homebrew/x11",
+  "kumofs" => "homebrew/boneyard",
   "latex-mk" => "homebrew/tex",
   "libdlna" => "homebrew/boneyard",
   "libgtextutils" => "homebrew/science",
