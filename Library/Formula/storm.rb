@@ -1,8 +1,8 @@
 class Storm < Formula
   desc "Distributed realtime computation system to process data streams"
   homepage "https://storm.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=storm/apache-storm-0.9.4/apache-storm-0.9.4.tar.gz"
-  sha256 "2cdb3530839375bb5f18751ff16ff78b11e9b4f6d23c423c95d78487ad92d38e"
+  url "https://github.com/apache/storm/archive/v0.9.5.tar.gz"
+  sha256 "bff3fdd4ba04380b87777b5fa97fbc207fefe3653606a8e341d412415e9c9c8d"
 
   def install
     libexec.install Dir["*"]
