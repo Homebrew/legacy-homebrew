@@ -8,6 +8,9 @@ class Watchman < Formula
   sha1 "b7313c240e4977ee6ea8906bdca9680db34df2e9"
 
   bottle do
+    sha256 "89671e8b820786af65fb3cb159034636230f7cf89ca934871df4a2adb595df9d" => :yosemite
+    sha256 "a6f245862f48b38010e1a22f1659468466f5b9bbff4a77db25faeba9c76cf4e3" => :mavericks
+    sha256 "73f54fc034ec6be43dab94e3911fa179925a56e9c96dd53feb047400e99053b3" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
