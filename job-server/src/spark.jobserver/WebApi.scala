@@ -337,6 +337,9 @@ class WebApi(system: ActorSystem,
       }
   }
 
+  override def timeoutRoute: Route =
+    complete(500, errMap("Request timed out. Try using the /jobs/<jobID>, /jobs APIs to get status/results"))
+
   private def badRequest(ctx: RequestContext, msg: String) =
     ctx.complete(StatusCodes.BadRequest, errMap(msg))
 
