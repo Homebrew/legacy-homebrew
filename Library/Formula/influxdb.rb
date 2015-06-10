@@ -16,9 +16,9 @@ class Influxdb < Formula
   end
 
   devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc31.tar.gz"
-    sha1 "f7f4768cd155f308fa68d0773eb0517625e038d1"
-    version "0.9.0-rc31"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.0-rc33.tar.gz"
+    sha256 "9eed2631309e22b555336ef6358551c4dda1dc407b6240837a61de8c395b4987"
+    version "0.9.0-rc33"
   end
 
   depends_on "go" => :build
@@ -33,32 +33,56 @@ class Influxdb < Formula
     depends_on "flex" => :build
     depends_on "gawk" => :build
   else
+    go_resource "github.com/BurntSushi/toml" do
+      url "https://github.com/BurntSushi/toml.git", :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
+    end
+
+    go_resource "github.com/armon/go-metrics" do
+      url "https://github.com/armon/go-metrics.git", :revision => "b2d95e5291cdbc26997d1301a5e467ecbb240e25"
+    end
+
     go_resource "github.com/bmizerany/pat" do
       url "https://github.com/bmizerany/pat.git", :revision => "b8a35001b773c267eb260a691f4e5499a3531600"
     end
 
     go_resource "github.com/boltdb/bolt" do
-      url "https://github.com/boltdb/bolt.git", :revision => "8b138fd106636b40b4b6d43786e668ce658aa3d7"
+      url "https://github.com/boltdb/bolt.git", :revision => "abb4088170cfac644ed5f4648a5cdc566cdb1da2"
     end
 
-    go_resource "github.com/BurntSushi/toml" do
-      url "https://github.com/BurntSushi/toml.git", :revision => "443a628bc233f634a75bcbdd71fe5350789f1afa"
+    go_resource "github.com/gogo/protobuf" do
+      url "https://github.com/gogo/protobuf.git", :revision => "499788908625f4d83de42a204d1350fde8588e4f"
+    end
+
+    go_resource "github.com/hashicorp/go-msgpack" do
+      url "https://github.com/hashicorp/go-msgpack.git", :revision => "fa3f63826f7c23912c15263591e65d54d080b458"
+    end
+
+    go_resource "github.com/hashicorp/raft" do
+      url "https://github.com/hashicorp/raft.git", :revision => "379e28eb5a538707eae7a97ecc60846821217f27"
+    end
+
+    go_resource "github.com/hashicorp/raft-boltdb" do
+      url "https://github.com/hashicorp/raft-boltdb.git", :revision => "d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee"
     end
 
     go_resource "github.com/kimor79/gollectd" do
-      url "https://github.com/kimor79/gollectd.git", :revision => "1d0fc88b7c2bf0ba79021ddca2b5f5fd9cc3a5a3"
+      url "https://github.com/kimor79/gollectd.git", :revision => "cf6dec97343244b5d8a5485463675d42f574aa2d"
     end
 
     go_resource "github.com/peterh/liner" do
-      url "https://github.com/peterh/liner.git", :revision => "fc147570057cd703778924569c41923b28611ca2"
+      url "https://github.com/peterh/liner.git", :revision => "1bb0d1c1a25ed393d8feb09bab039b2b1b1fbced"
     end
 
     go_resource "github.com/rakyll/statik" do
-      url "https://github.com/rakyll/statik.git", :revision => "4a16c831de16fd27a38fab90ade0cf35844a31db"
+      url "https://github.com/rakyll/statik.git", :revision => "274df120e9065bdd08eb1120e0375e3dc1ae8465"
     end
 
     go_resource "golang.org/x/crypto" do
-      url "https://go.googlesource.com/crypto.git", :revision => "1351f936d976c60a0a48d728281922cf63eafb8d"
+      url "https://go.googlesource.com/crypto.git", :revision => "1e856cbfdf9bc25eefca75f83f25d55e35ae72e0"
+    end
+
+    go_resource "gopkg.in/fatih/pool.v2" do
+      url "https://github.com/fatih/pool.git", :revision => "cba550ebf9bce999a02e963296d4bc7a486cb715"
     end
   end
 
@@ -98,12 +122,13 @@ class Influxdb < Formula
       Language::Go.stage_deps resources, buildpath/"src"
 
       cd influxdb_path do
-        system "go", "install", "-ldflags", "-X main.version 0.9.0-rc31 -X main.commit 8ade485b5865e642b128a7cc6eb20c9da73d1b48", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.0-rc33 -X main.commit 10b07a1bbd0463686ed7713b01a42f1e7a596ec6", "./..."
       end
 
       inreplace influxdb_path/"etc/config.sample.toml" do |s|
-        s.gsub! "/var/opt/influxdb/db", "#{var}/influxdb/data"
-        s.gsub! "/var/opt/influxdb/raft", "#{var}/influxdb/raft"
+        s.gsub! "/var/opt/influxdb/data", "#{var}/influxdb/data"
+        s.gsub! "/var/opt/influxdb/meta", "#{var}/influxdb/meta"
+        s.gsub! "/var/opt/influxdb/hh", "#{var}/influxdb/hh"
       end
 
       bin.install buildpath/"bin/influxd" => "influxd"
