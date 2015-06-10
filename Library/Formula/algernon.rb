@@ -78,8 +78,7 @@ class Algernon < Formula
 
       # Start the server in a detached process
       fork_pid = fork do
-        Kernel.system "#{bin}/algernon", "--httponly", "--server", "--addr", cport,
-          "--boltdb", tempdb, :out => "/dev/null", :err => "/dev/null"
+        `#{bin}/algernon --httponly --server --addr #{cport} --boltdb #{tempdb} --log /dev/null`
       end
       child_pid = fork_pid + 1
       Process.detach fork_pid
