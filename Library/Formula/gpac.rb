@@ -15,6 +15,12 @@ class Gpac < Formula
     url "https://github.com/gpac/gpac/archive/v0.5.2.tar.gz"
     sha256 "14de020482fc0452240f368564baa95a71b729980e4f36d94dd75c43ac4d9d5c"
   end
+  bottle do
+    sha256 "3feeb23cfe274e9e8e42cc1589ccd45a4b9c9006444bfce9205454c242abe205" => :yosemite
+    sha256 "495e9d51129841da9b135a8112c34ab831f01dfffb5f18db44e59b83813f16c0" => :mavericks
+    sha256 "b6291bcf89fc7ea7232e060ddebc3b5c561009a0923ad54b40ab991875c2fa57" => :mountain_lion
+  end
+
 
   depends_on "openssl"
   depends_on "pkg-config" => :build
