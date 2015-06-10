@@ -18,8 +18,8 @@ class Gpac < Formula
   head "https://github.com/gpac/gpac"
 
   depends_on "openssl"
-  depends_on :x11 => :recommended
   depends_on "pkg-config" => :build
+  depends_on :x11 => :optional
   depends_on "a52dec" => :optional
   depends_on "jpeg" => :optional
   depends_on "faad2" => :optional
@@ -41,6 +41,9 @@ class Gpac < Formula
       args << "--extra-cflags=-I#{MacOS::X11.include}"
       # Force detection of X libs on 64-bit kernel
       args << "--extra-ldflags=-L#{MacOS::X11.lib}"
+    else
+      args << "--disable-x11-shm" << "--disable-x11-xv"
+      args << "--X11-path=/dev/null"
     end
 
     system "./configure", *args
