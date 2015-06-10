@@ -57,7 +57,7 @@ if [ -z "$LOG_DIR" ]; then
 fi
 mkdir -p $LOG_DIR
 
-LOGGING_OPTS="-Dlog4j.configuration=$appdir/log4j-server.properties
+LOGGING_OPTS="-Dlog4j.configuration=file:$appdir/log4j-server.properties
               -DLOG_DIR=$LOG_DIR"
 
 # For Mesos
@@ -74,6 +74,7 @@ fi
 export SPARK_HOME
 
 $SPARK_HOME/bin/spark-submit --class $MAIN --driver-memory 5G \
+  --conf "spark.executor.extraJavaOptions=$LOGGING_OPTS" \
   --driver-java-options "$GC_OPTS $JAVA_OPTS $LOGGING_OPTS $CONFIG_OVERRIDES" \
   $@ $appdir/spark-job-server.jar $conffile 2>&1 &
 echo $! > $pidFilePath
