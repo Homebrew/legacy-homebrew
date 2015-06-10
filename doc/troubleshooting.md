@@ -16,6 +16,19 @@ send timeout param along with your request (in secs). eg below.
 http://devsparkcluster.cloudapp.net/jobs?appName=job-server-tests&classPath=spark.jobserver.WordCountExample&sync=true&timeout=20
 ```
 
+You may need to adjust Spray's default request timeout and idle timeout, which are by default 40 secs and 60 secs.  To do this, modify the configuration file in your deployed job server, adding a section like the following:
+
+```
+spray.can.server {
+  idle-timeout = 210 s
+  request-timeout = 200 s
+}
+```
+
+Then simply restart the job server.
+
+Note that the idle-timeout must be higher than request-timeout, or Spray and the job server won't start.
+
 ## Job server won't start / cannot bind to 0.0.0.0:8090
 
 Check that another process isn't already using that port.  If it is, you may want to start it on another port:
