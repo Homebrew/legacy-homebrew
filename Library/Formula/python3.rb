@@ -249,7 +249,7 @@ class Python3 < Formula
   end
 
   def xy
-    version.to_s.slice(/(3.\d)/) || "3.5"
+    version.to_s.slice(/(3.\d)/) || "3.6"
   end
 
   def sitecustomize
