@@ -1,12 +1,9 @@
 class Openssl < Formula
   desc "OpenSSL SSL/TLS cryptography library"
   homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.2a.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2a.tar.gz"
-  sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
-  # Work around this being parsed as an alpha version by our
-  # version detection code.
-  version "1.0.2a-1"
+  url "https://www.openssl.org/source/openssl-1.0.2c.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2c.tar.gz"
+  sha256 "0038ba37f35a6367c58f17a7a7f687953ef8ce4f9684bbdec63e62515ed36a83"
 
   bottle do
     revision 1
@@ -22,22 +19,6 @@ class Openssl < Formula
 
   keg_only :provided_by_osx,
     "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
-
-  # Remove both patches with the 1.0.2b release.
-  # They fix:
-  # https://github.com/Homebrew/homebrew/pull/38495
-  # https://github.com/Homebrew/homebrew/issues/38491
-  # Upstream discussions:
-  # https://www.mail-archive.com/openssl-dev@openssl.org/msg38674.html
-  patch do
-    url "https://github.com/openssl/openssl/commit/6281abc796234.diff"
-    sha256 "f8b94201ac2cd7dcdee3b07fb3cd77a2de6b81ea67da9ae075cf06fb0ba73cea"
-  end
-
-  patch do
-    url "https://github.com/openssl/openssl/commit/dfd3322d72a2.diff"
-    sha256 "0602eef6e38368c7b34994deb9b49be1a54037de5e8b814748d55882bfba4eac"
-  end
 
   def arch_args
     {
@@ -129,9 +110,6 @@ class Openssl < Formula
 
     openssldir.mkpath
     (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
-
-    # Remove this once 1.0.2b lands.
-    rm_f openssldir/"certs/Equifax_CA" if MacOS.version == :yosemite
   end
 
   def caveats; <<-EOS.undent
