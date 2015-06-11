@@ -1,9 +1,9 @@
 class Tor < Formula
   desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.6.8.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.6.8.tar.gz"
-  sha256 "b88b363896454250c3f561b0b48479f18295c93596d2e81baa10c5a3ae609a76"
+  url "https://dist.torproject.org/tor-0.2.6.9.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.6.9.tar.gz"
+  sha256 "4a6c29ad89a98d7832c599d9480d6d8e55355fb3b8f4b506c5df557f15942f9c"
 
   bottle do
     sha256 "8e951125ab8ccec4f75f042f07bded3b08c4c970b84d84a6962249b7290ba86d" => :yosemite
@@ -41,6 +41,15 @@ class Tor < Formula
     system "make", "install"
   end
 
+  def caveats; <<-EOS.undent
+    You will find a sample `torrc` file in #{etc}/tor.
+    It is advisable to edit the sample `torrc` to suit
+    your own security needs:
+      https://www.torproject.org/docs/faq#torrc
+    After editing the `torrc` you need to restart tor.
+    EOS
+  end
+
   test do
     system bin/"tor", "--version"
   end
@@ -62,17 +71,12 @@ class Tor < Formula
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/tor.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/tor.log</string>
       </dict>
     </plist>
-    EOS
-  end
-
-  def caveats; <<-EOS.undent
-    You will find a sample `torrc` file in #{etc}/tor.
-    It is advisable to edit the sample `torrc` to suit
-    your own security needs:
-      https://www.torproject.org/docs/faq#torrc
-    After editing the `torrc` you need to restart tor.
     EOS
   end
 end
