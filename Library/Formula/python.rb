@@ -111,11 +111,13 @@ class Python < Formula
     # Avoid linking to libgcc https://code.activestate.com/lists/python-dev/112195/
     args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
 
-    # We want our readline! This is just to outsmart the detection code,
+    # We want our readline and openssl! This is just to outsmart the detection code,
     # superenv handles that cc finds includes/libs!
-    inreplace "setup.py",
-              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+    inreplace "setup.py" do |s|
+      s.gsub! "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
               "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
+      s.gsub! "/usr/local/ssl", Formula["openssl"].opt_prefix
+    end
 
     if build.universal?
       ENV.universal_binary
@@ -215,8 +217,8 @@ class Python < Formula
     end
 
     # Help distutils find brewed stuff when building extensions
-    include_dirs = [HOMEBREW_PREFIX/"include"]
-    library_dirs = [HOMEBREW_PREFIX/"lib"]
+    include_dirs = [HOMEBREW_PREFIX/"include", Formula["openssl"].opt_include]
+    library_dirs = [HOMEBREW_PREFIX/"lib", Formula["openssl"].opt_lib]
 
     if build.with? "sqlite"
       include_dirs << Formula["sqlite"].opt_include
