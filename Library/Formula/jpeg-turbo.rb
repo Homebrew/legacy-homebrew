@@ -1,9 +1,8 @@
 class JpegTurbo < Formula
   desc "JPEG image codec that aids compression and decompression"
   homepage "http://www.libjpeg-turbo.org/"
-  url "https://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-1.4.0.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/libj/libjpeg-turbo/libjpeg-turbo_1.4.0.orig.tar.gz"
-  sha1 "a9ed7a99a6090e0848836c5df8e836f300a098b9"
+  url "https://downloads.sourceforge.net/project/libjpeg-turbo/1.4.1/libjpeg-turbo-1.4.1.tar.gz"
+  sha256 "4bf5bad4ce85625bffbbd9912211e06790e00fb982b77724af7211034efafb08"
 
   bottle do
     cellar :any
