@@ -32,7 +32,7 @@ trait JobSpecConfig {
       "context-factory" -> contextFactory,
       "spark.context-settings.test" -> ""
     )
-    ConfigFactory.parseMap(ConfigMap.asJava)
+    ConfigFactory.parseMap(ConfigMap.asJava).withFallback(ConfigFactory.defaultOverrides())
   }
 
   lazy val contextConfig = {
