@@ -90,9 +90,12 @@ class Mongodb < Formula
     end
 
     scons "install", *args
+  end
 
-    (buildpath+"mongod.conf").write mongodb_conf
-    etc.install "mongod.conf"
+  def post_install
+    conf = etc + "mongod.conf"
+    conf.unlink
+    conf.write mongodb_conf
 
     (var+"mongodb").mkpath
     (var+"log/mongodb").mkpath
