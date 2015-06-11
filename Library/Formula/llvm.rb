@@ -1,3 +1,22 @@
+class CodesignRequirement < Requirement
+  include FileUtils
+  fatal true
+
+  satisfy do
+    mktemp do
+      touch "llvm_check.txt"
+      quiet_system "/usr/bin/codesign", "-s", "lldb_codesign", "llvm_check.txt"
+    end
+  end
+
+  def message
+    <<-EOS.undent
+      lldb_codesign identity must be available to build with LLDB.
+      See: https://llvm.org/svn/llvm-project/lldb/trunk/docs/code-signing.txt
+    EOS
+  end
+end
+
 class Llvm < Formula
   desc "llvm (Low Level Virtual Machine): a next-gen compiler infrastructure"
   homepage "http://llvm.org/"
@@ -79,7 +98,11 @@ class Llvm < Formula
     depends_on :python => :optional
   end
   depends_on "cmake" => :build
-  depends_on "swig" if build.with? "lldb"
+
+  if build.with? "lldb"
+    depends_on "swig"
+    depends_on CodesignRequirement
+  end
 
   keg_only :provided_by_osx
 
@@ -134,12 +157,8 @@ class Llvm < Formula
     end
 
     # install llvm python bindings
-    (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
-    (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
-  end
-
-  test do
-    system "#{bin}/llvm-config", "--version"
+    (lib/"python2.7/site-packages").install buildpath/"bindings/python/llvm"
+    (lib/"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
   end
 
   def caveats
@@ -147,5 +166,9 @@ class Llvm < Formula
       LLVM executables are installed in #{opt_bin}.
       Extra tools are installed in #{opt_share}/llvm.
     EOS
+  end
+
+  test do
+    system "#{bin}/llvm-config", "--version"
   end
 end
