@@ -6,7 +6,9 @@ class Proguard < Formula
 
   def install
     libexec.install "lib/proguard.jar"
+    libexec.install "lib/proguardgui.jar"
     bin.write_jar_script libexec/"proguard.jar", "proguard"
+    bin.write_jar_script libexec/"proguardgui.jar", "proguardgui"
   end
 
   test do
