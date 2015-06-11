@@ -2,7 +2,7 @@ class Socat < Formula
   desc "netcat on steroids"
   homepage "http://www.dest-unreach.org/socat/"
   url "http://www.dest-unreach.org/socat/download/socat-1.7.3.0.tar.gz"
-  sha1 "c09ec6539647cebe8fccdfcf0f1ace1243231ec3"
+  sha256 "f8de4a2aaadb406a2e475d18cf3b9f29e322d4e5803d8106716a01fd4e64b186"
 
   bottle do
     cellar :any
@@ -11,12 +11,22 @@ class Socat < Formula
     sha1 "1e756f77d2956ceea9ea454d62ef1ae58e90d1ad" => :mountain_lion
   end
 
-  depends_on 'readline'
-  depends_on 'openssl'
+  devel do
+    url "http://www.dest-unreach.org/socat/download/socat-2.0.0-b8.tar.bz2"
+    sha256 "c804579db998fb697431c82829ae03e6a50f342bd41b8810332a5d0661d893ea"
+    version "2.0.0-b8"
+  end
+
+  depends_on "readline"
+  depends_on "openssl"
 
   def install
     ENV.enable_warnings # -w causes build to fail
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/socat -V")
   end
 end
