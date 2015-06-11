@@ -1,8 +1,8 @@
 class Rethinkdb < Formula
   desc "Distributed database"
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-2.0.2.tgz"
-  sha1 "8f5b6d30fb5608d726b10b6f1256228c0cd940f0"
+  url "http://download.rethinkdb.com/dist/rethinkdb-2.0.3.tgz"
+  sha1 "90655427495756225a81051f07491a0197104645"
 
   bottle do
     cellar :any
