@@ -80,7 +80,7 @@ class Sqlite < Formula
         In your application, call sqlite3_enable_load_extension(db,1) to
         allow loading external libraries.  Then load the library libsqlitefunctions
         using sqlite3_load_extension; the third argument should be 0.
-        See https://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
+        See https://www.sqlite.org/loadext.html.
         Select statements may now use these functions, as in
         SELECT cos(radians(inclination)) FROM satsum WHERE satnum = 25544;
 
