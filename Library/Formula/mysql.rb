@@ -11,6 +11,10 @@ class Mysql < Formula
     sha256 "f5c73b0b85a0e1f0123f488e5fc37babb5fbfe56103596ab54f3ebb570a2459b" => :mountain_lion
   end
 
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
+
   option :universal
   option "with-tests", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
@@ -24,10 +28,6 @@ class Mysql < Formula
   deprecated_option "enable-memcached" => "with-memcached"
   deprecated_option "enable-debug" => "with-debug"
 
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
-  depends_on "openssl"
-
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
   conflicts_with "mysql-connector-c",
@@ -39,7 +39,7 @@ class Mysql < Formula
   end
 
   def datadir
-    var+"mysql"
+    var/"mysql"
   end
 
   def install
@@ -53,7 +53,7 @@ class Mysql < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # -DINSTALL_* are relative to prefix
+    # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
     args = %W[
       .
       -DCMAKE_INSTALL_PREFIX=#{prefix}
@@ -111,7 +111,7 @@ class Mysql < Formula
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix+"data"
+    rm_rf prefix/"data"
 
     # Link the setup script into bin
     bin.install_symlink prefix/"scripts/mysql_install_db"
@@ -125,7 +125,6 @@ class Mysql < Formula
 
     bin.install_symlink prefix/"support-files/mysql.server"
 
-    # Move mysqlaccess to libexec
     libexec.install bin/"mysqlaccess"
     libexec.install bin/"mysqlaccess.conf"
   end
@@ -133,9 +132,9 @@ class Mysql < Formula
   def post_install
     # Make sure the datadir exists
     datadir.mkpath
-    unless File.exist? "#{datadir}/mysql/user.frm"
+    unless (datadir/"mysql/user.frm").exist?
       ENV["TMPDIR"] = nil
-      system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+      system bin/"mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
         "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
     end
   end
@@ -176,7 +175,7 @@ class Mysql < Formula
   end
 
   test do
-    (prefix+"mysql-test").cd do
+    (prefix/"mysql-test").cd do
       system "./mysql-test-run.pl", "status"
     end
   end
