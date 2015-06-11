@@ -1,24 +1,22 @@
 package spark.jobserver
 
-import java.io.File
-
 import com.typesafe.config.ConfigFactory
 import spark.jobserver.context.StreamingContextFactory
 import spark.jobserver.io.JobInfo
 
-
-
+/**
+ * Test for Straming Jobs.
+ */
 object StreamingJobSpec extends JobSpecConfig {
-
   override val contextFactory = classOf[StreamingContextFactory].getName
 }
 
 class StreamingJobSpec extends JobSpecBase(StreamingJobSpec.getNewSystem) {
 
-  import scala.concurrent.duration._
   import CommonMessages._
 
   import collection.JavaConverters._
+  import scala.concurrent.duration._
 
   val classPrefix = "spark.jobserver."
   private val streamingJob = classPrefix + "StreamingTestJob"
@@ -31,7 +29,6 @@ class StreamingJobSpec extends JobSpecBase(StreamingJobSpec.getNewSystem) {
     dao = new InMemoryDAO
     manager =
       system.actorOf(JobManagerActor.props(dao, "test", StreamingJobSpec.contextConfig, false))
-
   }
 
   describe("Spark Streaming Jobs") {

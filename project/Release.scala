@@ -36,7 +36,8 @@ object JobServerRelease {
       commitReleaseVersion,
       tagRelease,
       publishArtifacts,
-      syncWithLs(thisProjectRef.value),
+      // lsync seems broken, always returning: Error synchronizing project libraries Unexpected response status: 404
+      // syncWithLs(thisProjectRef.value),
       setNextVersion,
       commitNextVersion,
       pushChanges

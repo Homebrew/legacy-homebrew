@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/spark-jobserver/spark-jobserver.svg?branch=master)](https://travis-ci.org/spark-jobserver/spark-jobserver)
 
+[![Join the chat at https://gitter.im/spark-jobserver/spark-jobserver](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/spark-jobserver/spark-jobserver?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 spark-jobserver provides a RESTful interface for submitting and managing [Apache Spark](http://spark-project.org) jobs, jars, and job contexts.
 This repo contains the complete Spark job server project, including unit tests and deploy scripts.
 It was originally started at [Ooyala](http://www.ooyala.com), but this is now the main development repo.
@@ -110,6 +112,8 @@ From this point, you could asynchronously query the status and results:
 Note that you could append `&sync=true` when you POST to /jobs to get the results back in one request, but for
 real clusters and most jobs this may be too slow.
 
+You can also append `&timeout=XX` to extend the request timeout for `sync=true` requests.
+
 #### Persistent Context Mode - Faster & Required for Related Jobs
 Another way of running this job is in a pre-created context.  Start a new context:
 
@@ -141,7 +145,11 @@ In your `build.sbt`, add this to use the job server jar:
 
 	resolvers += "Job Server Bintray" at "https://dl.bintray.com/spark-jobserver/maven"
 
-	libraryDependencies += "spark.jobserver" % "job-server-api" % "0.5.0" % "provided"
+	libraryDependencies += "spark.jobserver" %% "job-server-api" % "0.5.1" % "provided"
+
+If a SQL or Hive job/context is desired, you also want to pull in `job-server-extras`:
+
+    libraryDependencies += "spark.jobserver" %% "job-server-extras" % "0.5.1" % "provided"
 
 For most use cases it's better to have the dependencies be "provided" because you don't want SBT assembly to include the whole job server jar.
 
@@ -223,6 +231,7 @@ def validate(sc:SparkContext, config: Contig): SparkJobValidation = {
    it to the remotes you have configured in `<environment>.sh`
 3. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
 
+NOTE: by default the assembly jar from `job-server-extras`, which includes support for SQLContext and HiveContext, is used.  If you face issues with all the extra dependencies, consider modifying the install scripts to invoke `sbt job-server/assembly` instead, which doesn't include the extra dependencies.
 
 Note: to test out the deploy to a local staging dir, or package the job server for Mesos,
 use `bin/server_package.sh <environment>`.
@@ -367,6 +376,9 @@ Copyright(c) 2014, Ooyala, Inc.
 
 ## TODO
 
+- Have server_start.sh use spark-submit (#155, others)  - would help resolve classpath/dependency issues.
+- More debugging for classpath issues
+- Update .g8 template, consider creating Activator template for sample job	
 - Add Swagger support.  See the spray-swagger project.
 - Implement an interactive SQL window.  See: [spark-admin](https://github.com/adatao/spark-admin)
 

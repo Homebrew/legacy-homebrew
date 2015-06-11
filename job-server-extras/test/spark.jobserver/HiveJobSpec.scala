@@ -15,7 +15,7 @@ object HiveJobSpec extends JobSpecConfig {
   override val contextFactory = classOf[TestHiveContextFactory].getName
 }
 
-class HiveJobSpec extends JobSpecBase(HiveJobSpec.getNewSystem) {
+class HiveJobSpec extends ExtrasJobSpecBase(HiveJobSpec.getNewSystem) {
   import scala.concurrent.duration._
   import CommonMessages._
   import JobManagerSpec.MaxJobsPerContext

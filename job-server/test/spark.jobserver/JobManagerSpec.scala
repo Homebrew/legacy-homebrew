@@ -11,10 +11,10 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
   import scala.concurrent.duration._
   import CommonMessages._
   import JobManagerSpec.MaxJobsPerContext
+  import akka.testkit._
 
   val classPrefix = "spark.jobserver."
   private val wordCountClass = classPrefix + "WordCountExample"
-  private val sqlTestClass = classPrefix + "SqlLoaderJob"
   protected val stringConfig = ConfigFactory.parseString("input.string = The lazy dog jumped over the fish")
   protected val emptyConfig = ConfigFactory.parseString("spark.master = bar")
 
@@ -39,14 +39,6 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
       expectMsgClass(classOf[JobManagerActor.Initialized])
       manager ! JobManagerActor.StartJob("notajar", "no.such.class", emptyConfig, Set.empty[Class[_]])
       expectMsg(CommonMessages.NoSuchClass)
-    }
-
-    it("should get WrongJobType if loading SQL job in a plain SparkContext context") {
-      uploadTestJar()
-      manager ! JobManagerActor.Initialize
-      expectMsgClass(classOf[JobManagerActor.Initialized])
-      manager ! JobManagerActor.StartJob("demo", sqlTestClass, emptyConfig, errorEvents)
-      expectMsg(CommonMessages.WrongJobType)
     }
 
     it("should error out if job validation fails") {
@@ -95,7 +87,7 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
 
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", wordCountClass, stringConfig, syncEvents ++ errorEvents)
-      expectMsgPF(3 seconds, "Did not get JobResult") {
+      expectMsgPF(3.seconds.dilated, "Did not get JobResult") {
         case JobResult(_, result: Map[String, Int]) => println("I got results! " + result)
       }
       expectNoMsg()
@@ -129,7 +121,7 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", classPrefix + "ConfigCheckerJob", jobConfig,
         syncEvents ++ errorEvents)
-      expectMsgPF(3 seconds, "Did not get JobResult") {
+      expectMsgPF(3.seconds.dilated, "Did not get JobResult") {
         case JobResult(_, keys: Seq[String]) =>
           keys should contain ("foo")
       }
@@ -142,7 +134,7 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", classPrefix + "ZookeeperJob", stringConfig,
         syncEvents ++ errorEvents)
-      expectMsgPF(3 seconds, "Did not get JobResult") {
+      expectMsgPF(3.seconds.dilated, "Did not get JobResult") {
         case JobResult(_, result: Array[Product]) =>
           result.length should equal (1)
           result(0).getClass.getName should include ("Animal")
@@ -166,7 +158,7 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
       }
 
       while (messageCounts.values.sum < (MaxJobsPerContext * 3 + 1)) {
-        expectMsgPF(3 seconds, "Expected a message but didn't get one!") {
+        expectMsgPF(3.seconds.dilated, "Expected a message but didn't get one!") {
           case started: JobStarted =>
             messageCounts(started.getClass) += 1
           case noSlots: NoJobSlotsAvailable =>
@@ -192,7 +184,7 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", classPrefix + "SimpleObjectJob", emptyConfig,
         syncEvents ++ errorEvents)
-      expectMsgPF(3 seconds, "Did not get JobResult") {
+      expectMsgPF(3.seconds.dilated, "Did not get JobResult") {
         case JobResult(_, result: Int) => result should equal (1 + 2 + 3)
       }
     }
@@ -203,7 +195,7 @@ abstract class JobManagerSpec extends JobSpecBase(JobManagerSpec.getNewSystem) {
 
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", classPrefix + "LongPiJob", stringConfig, allEvents)
-      expectMsgPF(1 seconds, "Did not get JobResult") {
+      expectMsgPF(1.seconds.dilated, "Did not get JobResult") {
         case JobStarted(id, _, _) => {
           manager ! KillJob(id)
           expectMsgClass(classOf[JobKilled])

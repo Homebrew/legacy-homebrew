@@ -3,7 +3,7 @@ package spark.jobserver.context
 import com.typesafe.config.Config
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import spark.jobserver.{SparkStramingJob, SparkJobBase, ContextLike}
+import spark.jobserver.{SparkStramingJob, ContextLike, SparkJobBase}
 
 class StreamingContextFactory extends SparkContextFactory {
 
@@ -15,7 +15,7 @@ class StreamingContextFactory extends SparkContextFactory {
       def isValidJob(job: SparkJobBase): Boolean = job.isInstanceOf[SparkStramingJob]
       def stop() {
         //Gracefully stops the spark context
-        stop(true, true)
+        stop(stopSparkContext = true, stopGracefully = true)
       }
     }
   }

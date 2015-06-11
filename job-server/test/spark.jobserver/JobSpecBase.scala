@@ -11,6 +11,7 @@ import spark.jobserver.io.JobDAO
 
 /**
  * Provides a base Config for tests.  Override the vals to configure.  Mix into an object.
+ * Also, defaults for values not specified here could be provided as java system properties.
  */
 trait JobSpecConfig {
   import collection.JavaConverters._
@@ -28,7 +29,8 @@ trait JobSpecConfig {
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
       "akka.log-dead-letters" -> Integer.valueOf(0),
       "spark.master" -> "local[4]",
-      "spark.context-settings.context-factory" -> contextFactory
+      "context-factory" -> contextFactory,
+      "spark.context-settings.test" -> ""
     )
     ConfigFactory.parseMap(ConfigMap.asJava)
   }
@@ -38,16 +40,17 @@ trait JobSpecConfig {
       "context-factory" -> contextFactory,
       "streaming.batch_interval" -> new Integer(10)
     )
-    ConfigFactory.parseMap(ConfigMap.asJava)
+    ConfigFactory.parseMap(ConfigMap.asJava).withFallback(ConfigFactory.defaultOverrides())
   }
 
   def getNewSystem = ActorSystem("test", config)
 }
 
-abstract class JobSpecBase(system: ActorSystem) extends TestKit(system) with ImplicitSender
-with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with TestJarFinder {
+abstract class JobSpecBaseBase(system: ActorSystem) extends TestKit(system) with ImplicitSender
+with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll {
   var dao: JobDAO = _
   var manager: ActorRef = _
+  def testJar: java.io.File
 
   after {
     ooyala.common.akka.AkkaTestUtils.shutdownAndWait(manager)
@@ -72,3 +75,5 @@ with FunSpecLike with Matchers with BeforeAndAfter with BeforeAndAfterAll with T
   val syncEvents = Set(classOf[JobResult])
   val allEvents = errorEvents ++ asyncEvents ++ syncEvents ++ Set(classOf[JobFinished])
 }
+
+abstract class JobSpecBase(system: ActorSystem) extends JobSpecBaseBase(system) with TestJarFinder

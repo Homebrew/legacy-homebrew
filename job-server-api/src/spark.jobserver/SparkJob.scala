@@ -2,9 +2,6 @@ package spark.jobserver
 
 import com.typesafe.config.Config
 import org.apache.spark.SparkContext
-import org.apache.spark.sql.SQLContext
-import org.apache.spark.sql.hive.HiveContext
-import org.apache.spark.streaming.StreamingContext
 
 sealed trait SparkJobValidation {
   // NOTE(harish): We tried using lazy eval here by passing in a function
@@ -48,16 +45,4 @@ trait SparkJobBase {
 
 trait SparkJob extends SparkJobBase {
   type C = SparkContext
-}
-
-trait SparkSqlJob extends SparkJobBase {
-  type C = SQLContext
-}
-
-trait SparkHiveJob extends SparkJobBase {
-  type C = HiveContext
-}
-
-trait SparkStramingJob extends SparkJobBase {
-  type C = StreamingContext
 }
