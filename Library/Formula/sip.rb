@@ -3,6 +3,7 @@ class Sip < Formula
   homepage "http://www.riverbankcomputing.co.uk/software/sip"
   url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.5/sip-4.16.5.tar.gz"
   sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
+  revision 1
 
   bottle do
     revision 1
@@ -40,6 +41,10 @@ class Sip < Formula
       system "make"
       system "make", "install"
       system "make", "clean"
+
+      if which(python).realpath == (Formula[python].bin/python).realpath
+        inreplace lib/"python#{version}/site-packages/sipconfig.py", Formula[python].prefix, Formula[python].opt_prefix
+      end
     end
   end
 
