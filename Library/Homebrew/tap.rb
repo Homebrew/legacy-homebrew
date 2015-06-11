@@ -42,7 +42,7 @@ class Tap
   end
 
   def installed?
-    (@path/".git").directory?
+    @path.directory?
   end
 
   def custom_remote?
