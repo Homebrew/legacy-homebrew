@@ -126,9 +126,8 @@ class Mysql < Formula
     bin.install_symlink prefix/"support-files/mysql.server"
 
     # Move mysqlaccess to libexec
-    libexec.mkpath
-    mv "#{bin}/mysqlaccess", libexec
-    mv "#{bin}/mysqlaccess.conf", libexec
+    libexec.install bin/"mysqlaccess"
+    libexec.install bin/"mysqlaccess.conf"
   end
 
   def post_install
