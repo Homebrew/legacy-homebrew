@@ -21,7 +21,7 @@ class Libfreehand < Formula
 
   test do
     (testpath/"test.cpp").write <<-EOS.undent
-      #include <libfreehand-0.1/inc/FreeHandDocument.h>
+      #include <libfreehand/FreeHandDocument.h>
       int main() {
         return libfreehand::FreeHandDocument::RESULT_OK;
       }
