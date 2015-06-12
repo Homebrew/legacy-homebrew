@@ -1,8 +1,8 @@
 class Zurl < Formula
   desc "HTTP and WebSocket client worker with ZeroMQ interface"
   homepage "https://github.com/fanout/zurl"
-  url "http://packages.fanout.io/source/zurl-1.3.1.tar.bz2"
-  sha1 "8a04ad092a4fd9b174a352b910c190466fc39eb9"
+  url "http://packages.fanout.io/source/zurl-1.4.1.tar.bz2"
+  sha256 "5e51f76463bd46a6e362e4043e4c1a7af50b48622f83b273edf89a5a4bd1b525"
 
   bottle do
     cellar :any
@@ -18,8 +18,8 @@ class Zurl < Formula
   depends_on "qjson"
 
   resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.5.0.tar.gz"
-    sha1 "1dced02ea8527b5870ffdbe835d096aca5c01d2a"
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.6.0.tar.gz"
+    sha256 "7746806ff94f1e8c1e843644c6bbd3b9aaeb1203c2eaf38879adc23dbd5c35bb"
   end
 
   def install
