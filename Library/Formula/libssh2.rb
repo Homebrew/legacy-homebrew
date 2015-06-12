@@ -7,7 +7,7 @@ class Libssh2 < Formula
   option "with-libressl", "build with LibreSSL instead of OpenSSL"
 
   head do
-    url "https://github.com/libssh2/libssh2"
+    url "https://github.com/libssh2/libssh2.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
