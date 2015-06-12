@@ -244,8 +244,11 @@ class Formulary
   def self.tap_paths(name)
     name = name.downcase
     Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
-      Pathname.glob(["#{tap}#{name}.rb", "#{tap}Formula/#{name}.rb",
-                     "#{tap}HomebrewFormula/#{name}.rb"])
-    end.flatten.select(&:file?)
+      Pathname.glob([
+        "#{tap}Formula/#{name}.rb",
+        "#{tap}HomebrewFormula/#{name}.rb",
+        "#{tap}#{name}.rb",
+      ]).detect(&:file?)
+    end.compact
   end
 end
