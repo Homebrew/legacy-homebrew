@@ -3,9 +3,9 @@ require 'formula'
 class DynamodbLocal < Formula
   desc "Cient-side database and server imitating DynamoDB"
   homepage 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html'
-  url 'https://dynamodb-local.s3.amazonaws.com/dynamodb_local_2015-01-27_1.2.tar.gz'
-  version '2015-01-27_1.2'
-  sha256 '66d3fb9ad03e491891c23c96e5f86a0ede64976e980c62aa5babafab12daab7f'
+  url 'https://dynamodb-local.s3.amazonaws.com/dynamodb_local_2015-04-27_1.0.tar.gz'
+  version '2015-04-27_1.0'
+  sha256 '16c074a787af2572e8d6867c2cff47c02fe1b2eb6c956ae2ca604d844d95331c'
 
   def data_path
     var/'data/dynamodb-local'
