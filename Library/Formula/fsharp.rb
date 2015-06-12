@@ -26,18 +26,18 @@ class Fsharp < Formula
   def post_install
     mono_ver = Formula["mono"].version
     %w|3.0 3.1|.each do |fsharp_ver|
-      %w|Microsoft.Portable.FSharp.Targets
-         Microsoft.FSharp.Targets|.each do |fsharp_targ|
+      %w|Microsoft.Portable.FSharp.Targets Microsoft.FSharp.Targets|.each do |fsharp_targ|
+         %w|4.0 4.5|.each do |framework_ver|
+            tree_dir   = "lib/mono/Microsoft\ SDKs/F\#/#{fsharp_ver}/Framework/v#{framework_ver}"
+            source_dir = File.expand_path "#{prefix}/../../mono/#{mono_ver}/#{tree_dir}"
 
-        tree_dir   = "lib/mono/Microsoft\ SDKs/F\#/#{fsharp_ver}/Framework/v4.0"
-        source_dir = File.expand_path "#{prefix}/../../mono/#{mono_ver}/#{tree_dir}"
-
-        # variables:
-        #  - tree_dir: the 'convoluted' non-absolute path the the installation, inside mono's prefix
-        #  - source_dir: tree_dir, inside mono's prefix, expanded to a full path
-        #  - fsharp_targ: the target file (for xbuild)
-        mkdir_p source_dir
-        ln_sf "#{prefix}/#{tree_dir}/#{fsharp_targ}", "#{source_dir}/#{fsharp_targ}"
+            # variables:
+            #  - tree_dir: the 'convoluted' non-absolute path the the installation, inside mono's prefix
+            #  - source_dir: tree_dir, inside mono's prefix, expanded to a full path
+            #  - fsharp_targ: the target file (for xbuild)
+            mkdir_p source_dir
+            ln_sf "#{prefix}/#{tree_dir}/#{fsharp_targ}", "#{source_dir}/#{fsharp_targ}"
+        end
       end
     end
   end
