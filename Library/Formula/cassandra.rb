@@ -6,9 +6,9 @@ class Cassandra < Formula
   sha256 "c2123b9d82b57868ad03c57720d9f4c99934fe292d571242a3b51337063409f7"
 
   bottle do
-    sha256 "972abe2bcc66a6e2af20e3765ba026cf69797adbe4c652ecdff9a43321244cf6" => :yosemite
-    sha256 "d333a29ab238c46453cf4d8484d44ef9d3d56be4f0b590d89e5b6be5ed13bc2b" => :mavericks
-    sha256 "ec244f4b5b073ca2545a60c3efbdcbbd2ae0d08c40d80dbae578243dfb8c7aff" => :mountain_lion
+    sha256 "c269d7d38965af4413351c296d8573fdd93594a9d4abf02a5c69ede3f6f07565" => :yosemite
+    sha256 "e8cf539dd5ed31edc0c5e174b6b11e5c34e731f48706277ac6d5ff286af16e41" => :mavericks
+    sha256 "f1c022d18a838e037e565584eb1f72780be8128f56b26ebf25ac2ff733b0d503" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
