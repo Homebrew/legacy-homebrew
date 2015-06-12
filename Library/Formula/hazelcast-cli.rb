@@ -6,7 +6,7 @@ class HazelcastCli < Formula
   homepage "github.com/hazelcast"
   url "http://download.hazelcast.com/enterprise/brew/hazelcast-cli-1.0.tar.gz"
   version "1.0"
-  sha256 "03f9c9147b46f3d5544aaa75e44eb33292d03086c93e58b6bccd09ce83ca7b2c"
+  sha256 "92fc920b1523077dc23f898c24d292b81a6666ae0a10729bfe07f73f97a86270"
 
   # depends_on "cmake" => :build
 
