@@ -21,9 +21,9 @@ class Libfreehand < Formula
 
   test do
     (testpath/"test.cpp").write <<-EOS.undent
-      #include <libfreehand/FreeHandDocument.h>
+      #include <libfreehand/libfreehand.h>
       int main() {
-        return libfreehand::FreeHandDocument::RESULT_OK;
+        libfreehand::FreeHandDocument::isSupported(0);
       }
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
@@ -32,7 +32,7 @@ class Libfreehand < Formula
                     "-L#{Formula["librevenge"].lib}",
                     "-L#{lib}",
                     "-lrevenge-0.0",
-                    "-libfreehand-0.1.1"
+                    "-lfreehand-0.1"
     system "./test"
   end
 end
