@@ -1,13 +1,13 @@
 class Libssh2 < Formula
   desc "C library implementing the SSH2 protocol"
   homepage "http://www.libssh2.org/"
-  url "http://www.libssh2.org/download/libssh2-1.5.0.tar.gz"
-  sha256 "83196badd6868f5b926bdac8017a6f90fb8a90b16652d3bf02df0330d573d0fc"
+  url "http://www.libssh2.org/download/libssh2-1.6.0.tar.gz"
+  sha256 "5a202943a34a1d82a1c31f74094f2453c207bf9936093867f41414968c8e8215"
 
   option "with-libressl", "build with LibreSSL instead of OpenSSL"
 
   head do
-    url "git://git.libssh2.org/libssh2.git"
+    url "https://github.com/libssh2/libssh2"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
