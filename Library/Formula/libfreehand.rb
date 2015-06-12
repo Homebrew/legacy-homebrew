@@ -4,6 +4,13 @@ class Libfreehand < Formula
   url "http://dev-www.libreoffice.org/src/libfreehand/libfreehand-0.1.1.tar.xz"
   sha256 "ec6676d0c63f7feac7801a1fe18dd7abe9044b39c3882fc99b9afef39bdf1d30"
 
+  bottle do
+    cellar :any
+    sha256 "9179aa1f2f70931d95a632f88b90dab2dae1a03d85ccf6c4cdb191258844e158" => :yosemite
+    sha256 "eb8d65c58a1138f638fd9daa375af93cd50d18fdb41b3031ba860271779f9be4" => :mavericks
+    sha256 "1d905f049eb5471b15f2af24cd7a8ae909574aedacc20231795e927123a7d926" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
   depends_on "librevenge"
