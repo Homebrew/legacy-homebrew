@@ -8,7 +8,7 @@ class Libfreehand < Formula
   depends_on "boost" => :build
   depends_on "librevenge"
   depends_on "icu4c"
-  depends_on "lcms2"
+  depends_on "little-cms2"
 
   def install
     system "./configure", "--without-docs",
@@ -21,14 +21,14 @@ class Libfreehand < Formula
 
   test do
     (testpath/"test.cpp").write <<-EOS.undent
-      #include <libfreehand/FreeHandDocument.h>
+      #include <libfreehand-0.1/inc/FreeHandDocument.h>
       int main() {
         return libfreehand::FreeHandDocument::RESULT_OK;
       }
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
                     "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                    "-I#{include}/libfreehand-0.1.1",
+                    "-I#{include}/libfreehand-0.1",
                     "-L#{Formula["librevenge"].lib}",
                     "-L#{lib}",
                     "-lrevenge-0.0",
