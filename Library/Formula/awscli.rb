@@ -1,8 +1,8 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.32.tar.gz"
-  sha256 "50f914d752700c47e6567d1f17ee64c8d5efbe1974da46c03cf7d85e080f71b5"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.33.tar.gz"
+  sha256 "e131ddf47fb74657015ac1ffcb34769bf6db9dbe79b88d96e8f91731dab1abe8"
 
   bottle do
     cellar :any
@@ -52,8 +52,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.0.0b1.tar.gz"
-    sha256 "c4665a00dad68bfdfda02df9cad7b93bb391430c043f01261a964f86fa1b41eb"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.0.0b2.tar.gz"
+    sha256 "d6bb66a23015ef85ff93150d472f8510dc69ea52681a685664fa0a436fa837c9"
   end
 
   resource "docutils" do
@@ -62,8 +62,8 @@ class Awscli < Formula
   end
 
   resource "bcdoc" do
-    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.14.0.tar.gz"
-    sha256 "68aecc8e14151266316562c6a50605b8efa33f18f8023e303fb20a1b346e53e8"
+    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.16.0.tar.gz"
+    sha256 "f568c182e06883becf7196f227052435cffd45604700c82362ca77d3427b6202"
   end
 
   resource "pyasn1" do
