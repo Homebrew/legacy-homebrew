@@ -2,7 +2,7 @@ class Weechat < Formula
   desc "Extensible IRC client"
   homepage "https://www.weechat.org"
   url "https://weechat.org/files/src/weechat-1.2.tar.gz"
-  sha1 "84b93c3a52f8762940380edd9a4eaa3432066351"
+  sha256 "0f9b00e3fe4d0a4e864111d4231e1756f7be5c1b2b6d17da43bd785ab9f035d8"
 
   head "https://github.com/weechat/weechat.git"
 
@@ -30,12 +30,13 @@ class Weechat < Formula
 
     args = std_cmake_args
 
-    args << "-DENABLE_LUA=OFF"    if build.without? "lua"
-    args << "-DENABLE_PERL=OFF"   if build.without? "perl"
-    args << "-DENABLE_RUBY=OFF"   if build.without? "ruby"
+    args << "-DENABLE_LUA=OFF" if build.without? "lua"
+    args << "-DENABLE_PERL=OFF" if build.without? "perl"
+    args << "-DENABLE_RUBY=OFF" if build.without? "ruby"
     args << "-DENABLE_ASPELL=OFF" if build.without? "aspell"
-    args << "-DENABLE_GUILE=OFF"  if build.without? "guile"
+    args << "-DENABLE_GUILE=OFF" if build.without? "guile"
     args << "-DENABLE_PYTHON=OFF" if build.without? "python"
+    args << "-DENABLE_JAVASCRIPT=OFF"
 
     mkdir "build" do
       system "cmake", "..", *args
