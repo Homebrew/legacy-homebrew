@@ -7,20 +7,26 @@ class Tap
   attr_reader :repo
   attr_reader :name
   attr_reader :path
-  attr_reader :remote
 
-  def initialize(user, repo, remote=nil)
+  def initialize(user, repo)
     # we special case homebrew so users don't have to shift in a terminal
     @user = user == "homebrew" ? "Homebrew" : user
     @repo = repo
     @name = "#{@user}/#{@repo}".downcase
     @path = TAP_DIRECTORY/"#{@user}/homebrew-#{@repo}".downcase
-    if installed?
-      @path.cd do
-        @remote = Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
+  end
+
+  def remote
+    @remote ||= if installed?
+      if (@path/".git").exist?
+        @path.cd do
+          Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
+        end
+      else
+        nil
       end
     else
-      @remote = remote || "https://github.com/#{@user}/homebrew-#{@repo}"
+      raise TapUnavailableError, name
     end
   end
 
@@ -46,7 +52,8 @@ class Tap
   end
 
   def custom_remote?
-    @remote.casecmp("https://github.com/#{@user}/homebrew-#{@repo}") != 0
+    return true unless remote
+    remote.casecmp("https://github.com/#{@user}/homebrew-#{@repo}") != 0
   end
 
   def formula_files
@@ -69,7 +76,7 @@ class Tap
       "user" => @user,
       "repo" => @repo,
       "path" => @path.to_s,
-      "remote" => @remote,
+      "remote" => remote,
       "installed" => installed?,
       "official" => official?,
       "custom_remote" => custom_remote?,

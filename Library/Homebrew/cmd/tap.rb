@@ -14,10 +14,11 @@ module Homebrew
   end
 
   def install_tap user, repo, clone_target=nil
-    tap = Tap.new user, repo, clone_target
+    tap = Tap.new user, repo
     return false if tap.installed?
     ohai "Tapping #{tap}"
-    args = %W[clone #{tap.remote} #{tap.path}]
+    remote = clone_target || "https://github.com/#{tap.user}/homebrew-#{tap.repo}"
+    args = %W[clone #{remote} #{tap.path}]
     args << "--depth=1" unless ARGV.include?("--full")
     safe_system "git", *args
 
