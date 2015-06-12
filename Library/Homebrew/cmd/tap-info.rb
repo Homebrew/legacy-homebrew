@@ -48,7 +48,7 @@ module Homebrew
           info += "Not installed"
         end
         puts info
-        puts "From: #{tap.remote}"
+        puts "From: #{tap.remote.nil? ? "N/A" : tap.remote}"
       end
     end
   end
