@@ -6,6 +6,7 @@ class Uim < Formula
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
+  depends_on "intltool"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
