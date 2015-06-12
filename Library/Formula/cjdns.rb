@@ -9,12 +9,10 @@ class Cjdns < Formula
   def install
     system "./do"
     bin.install "cjdroute"
-    mv "./build_darwin/test_testcjdroute_c", "./cjdroute_test"
-    bin.install "cjdroute_test"
+    bin.install "build_darwin/test_testcjdroute_c" => "cjdroute_test"
   end
 
   test do
-    system "cjdroute_test all"
+    system bin/"cjdroute_test", "all"
   end
-
 end
