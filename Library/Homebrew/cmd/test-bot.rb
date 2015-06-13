@@ -553,8 +553,7 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "-fdx"
-      git "clean", "-ffdx" unless $?.success?
+      git "clean", "-ffdx"
       pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) {|lock| FileUtils.rm_rf lock }
     end
@@ -564,8 +563,7 @@ module Homebrew
 
       checkout_args = []
       if ARGV.include? '--cleanup'
-        git "clean", "-fdx"
-        test "git", "clean", "-ffdx" unless $?.success?
+        test "git", "clean", "-ffdx"
         checkout_args << "-f"
       end
 
