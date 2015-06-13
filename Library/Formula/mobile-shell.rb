@@ -8,7 +8,7 @@ class MobileShell < Formula
   revision 2
 
   head do
-    url "https://github.com/keithw/mosh.git"
+    url "https://github.com/keithw/mosh.git", :shallow => false
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
