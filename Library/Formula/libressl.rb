@@ -1,9 +1,9 @@
 class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.6.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.6.tar.gz"
-  sha256 "4f826dd97b3b8001707073bde8401493f9cd4668465b481c042d28e3973653a8"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.0.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.2.0.tar.gz"
+  sha256 "9690d8f38a5d48425395452eeb305b05bb0f560cd96e0ee30f370d4f16563040"
 
   bottle do
     revision 1
@@ -38,8 +38,8 @@ class Libressl < Formula
     system "make", "install"
 
     # Install the dummy openssl.cnf file to stop runtime warnings.
-    mkdir_p "#{etc}/libressl/certs"
-    cp "apps/openssl.cnf", "#{etc}/libressl"
+    (etc/"libressl/certs").mkpath
+    (etc/"libressl").install "apps/openssl.cnf"
   end
 
   def post_install
