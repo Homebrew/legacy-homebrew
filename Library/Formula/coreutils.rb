@@ -1,10 +1,18 @@
 class Coreutils < Formula
   desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
-  sha256 "ec43ca5bcfc62242accb46b7f121f6b684ee21ecd7d075059bf650ff9e37b82d"
   revision 1
+
+  stable do
+    url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
+    mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
+    sha256 "ec43ca5bcfc62242accb46b7f121f6b684ee21ecd7d075059bf650ff9e37b82d"
+
+    # Patch adapted from upstream commits:
+    # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
+    # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
+    patch :DATA
+  end
 
   bottle do
     revision 2
@@ -16,13 +24,6 @@ class Coreutils < Formula
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
 
-  # Patch adapted from upstream commits:
-  # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
-  # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
-  stable do
-    patch :DATA
-  end
-
   head do
     url "git://git.sv.gnu.org/coreutils"
 
@@ -32,19 +33,11 @@ class Coreutils < Formula
     depends_on "gettext" => :build
     depends_on "texinfo" => :build
     depends_on "xz" => :build
-
-    resource "gnulib" do
-      url "http://git.savannah.gnu.org/cgit/gnulib.git/snapshot/gnulib-0.1.tar.gz"
-      sha1 "b29e165bf276ce0a0c12ec8ec1128189bd786155"
-    end
+    depends_on "wget" => :build
   end
 
   def install
-    if build.head?
-      resource("gnulib").stage "gnulib"
-      ENV["GNULIB_SRCDIR"] = "gnulib"
-      system "./bootstrap"
-    end
+    system "./bootstrap" if build.head?
     system "./configure", "--prefix=#{prefix}",
                           "--program-prefix=g",
                           "--without-gmp"
