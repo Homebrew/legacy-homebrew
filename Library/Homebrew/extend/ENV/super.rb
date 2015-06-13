@@ -245,7 +245,6 @@ module Superenv
   # Removes the MAKEFLAGS environment variable, causing make to use a single job.
   # This is useful for makefiles with race conditions.
   # When passed a block, MAKEFLAGS is removed only for the duration of the block and is restored after its completion.
-  # Returns the value of MAKEFLAGS.
   def deparallelize
     old = delete('MAKEFLAGS')
     if block_given?
