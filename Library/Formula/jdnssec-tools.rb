@@ -4,6 +4,13 @@ class JdnssecTools < Formula
   url "http://www.verisignlabs.com/dnssec-tools/packages/jdnssec-tools-0.12.tar.gz"
   sha256 "3fa0bfe062051d9048c5186adbb04d8f5e176e50da3cdcf9b0d97e1c558efc22"
 
+  bottle do
+    cellar :any
+    sha256 "c4a33ea5bff8ff14d8438a1dddb62da5983611d64288cd1e057b4c5419a58a87" => :yosemite
+    sha256 "e5899718ae9f0b57628ecbb0bc5e6d338e7847e2a0f931992849e4c27ffc6edf" => :mavericks
+    sha256 "9f87e73931c928a4b490f7a9dd858c40abde1d51f83f1c63a2212a520e8552e2" => :mountain_lion
+  end
+
   depends_on :java
 
   def install
