@@ -1,11 +1,9 @@
-require "formula"
-
 class Valabind < Formula
   desc "Vala bindings for radare, reverse engineering framework"
   homepage "http://radare.org/"
   head "https://github.com/radare/valabind.git"
-  url "https://github.com/radare/valabind/archive/0.9.0.tar.gz"
-  sha1 "65af558a0116c1d8598992637cfd994cc7e23407"
+  url "https://github.com/radare/valabind/archive/0.9.2.tar.gz"
+  sha256 "84cc2be21acb671e737dab50945b3717f1c68917faf23af443d3911774f5e578"
 
   bottle do
     cellar :any
