@@ -405,6 +405,8 @@ class FormulaInstaller
     link(keg)
 
     if OS.mac?
+      # this needs to be changed to a test against build_bottle? and
+      # formula.bottle.needs_relocation?
       fix_install_names(keg) unless formula.name == 'cctools'
     end
 
