@@ -5,9 +5,9 @@ class MysqlSandbox < Formula
   sha256 "c709c4dec711ab37265c5c596330ad3af01866f418e8158cdf949efcdcab96d8"
 
   bottle do
-    sha1 "897c13c030850fae4ea21698c38f214f1d4e1609" => :yosemite
-    sha1 "2ce186a294c8e76d673d65dadd5a09a978f62f56" => :mavericks
-    sha1 "027b0af0c13bc153323fd46f9492635c265bd4a3" => :mountain_lion
+    sha256 "1ad86e367e36e62fe32b15fc93129f0f8ef5ab43f0e2ab171df22361fc3b48ff" => :yosemite
+    sha256 "3bd2fb88ca6d0aa370396962233e3a925c5f67cd205a1a46279a6a7cdb2c8f87" => :mavericks
+    sha256 "08da8aa5ab71e34f9f87838ff3b5f17c53a021683c569df000d27940890b7d7b" => :mountain_lion
   end
 
   def install
