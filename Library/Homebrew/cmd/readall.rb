@@ -35,7 +35,7 @@ module Homebrew
       formulae = Formula.full_names
     else
       tap = Tap.new(*tap_args)
-      raise "#{tap} does not exist!" unless tap.installed?
+      raise TapUnavailableError, tap.name unless tap.installed?
       formulae = tap.formula_files
     end
 

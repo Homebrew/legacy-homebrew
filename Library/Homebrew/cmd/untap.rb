@@ -7,7 +7,7 @@ module Homebrew
     ARGV.named.each do |tapname|
       tap = Tap.new(*tap_args(tapname))
 
-      raise "No such tap!" unless tap.installed?
+      raise TapUnavailableError, tap.name unless tap.installed?
       puts "Untapping #{tap}... (#{tap.path.abv})"
 
       formula_count = tap.formula_files.size
