@@ -1,10 +1,8 @@
-require "formula"
-
 class MysqlSandbox < Formula
   desc "Install one or more MySQL servers"
   homepage "http://mysqlsandbox.net"
-  url "https://launchpadlibrarian.net/187745286/MySQL-Sandbox-3.0.47.tar.gz"
-  sha1 "1759c08c5b7d272b718178bbb7dbc0f52bcb429d"
+  url "https://launchpad.net/mysql-sandbox/mysql-sandbox-3/mysql-sandbox-3/+download/MySQL-Sandbox-3.0.50.tar.gz"
+  sha256 "c709c4dec711ab37265c5c596330ad3af01866f418e8158cdf949efcdcab96d8"
 
   bottle do
     sha1 "897c13c030850fae4ea21698c38f214f1d4e1609" => :yosemite
