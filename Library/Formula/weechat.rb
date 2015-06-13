@@ -30,12 +30,13 @@ class Weechat < Formula
 
     args = std_cmake_args
 
-    args << "-DENABLE_LUA=OFF"    if build.without? "lua"
-    args << "-DENABLE_PERL=OFF"   if build.without? "perl"
-    args << "-DENABLE_RUBY=OFF"   if build.without? "ruby"
+    args << "-DENABLE_LUA=OFF" if build.without? "lua"
+    args << "-DENABLE_PERL=OFF" if build.without? "perl"
+    args << "-DENABLE_RUBY=OFF" if build.without? "ruby"
     args << "-DENABLE_ASPELL=OFF" if build.without? "aspell"
-    args << "-DENABLE_GUILE=OFF"  if build.without? "guile"
+    args << "-DENABLE_GUILE=OFF" if build.without? "guile"
     args << "-DENABLE_PYTHON=OFF" if build.without? "python"
+    args << "-DENABLE_JAVASCRIPT=OFF"
 
     mkdir "build" do
       system "cmake", "..", *args
