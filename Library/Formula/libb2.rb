@@ -1,10 +1,8 @@
-require "formula"
-
 class Libb2 < Formula
   desc "Secure hashing function"
-  homepage "https://blake2.net"
+  homepage "https://blake2.net/"
   url "https://blake2.net/libb2-0.96.tar.gz"
-  sha1 "e52ce4c788a972e3a49bbbe4380331030c4aca32"
+  sha256 "8cda63288637a9f8824bc036396e1fd78eb76c220ec020bfb441991508ba4f6f"
 
   bottle do
     cellar :any
@@ -23,7 +21,7 @@ class Libb2 < Formula
   end
 
   test do
-    (testpath/'blake2test.c').write <<-EOS.undent
+    (testpath/"blake2test.c").write <<-EOS.undent
       #include <blake2.h>
       #include <stdio.h>
       #include <string.h>
