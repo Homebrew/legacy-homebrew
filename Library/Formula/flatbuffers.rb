@@ -6,9 +6,9 @@ class Flatbuffers < Formula
 
   bottle do
     cellar :any
-    sha1 "2a82aec99c3b5ab9cd643dc7c6d2f88cfe953cce" => :yosemite
-    sha1 "a7222fe66033ca2749241e4d253534b3540b1e7c" => :mavericks
-    sha1 "d0de7bdea3b5fd43fddcfe20b857e4ec803a73f2" => :mountain_lion
+    sha256 "b5722008fa44851f7a4005d757b40bf2583e8eb8b1861e4bf7f6f21497e66b57" => :yosemite
+    sha256 "6f31e9e4cb05aa895ed19562b959c7f736c4688277debb6e5cf8f3f29670a5fd" => :mavericks
+    sha256 "ddbf240d9fe9307f82812ac6872899c89d741bb27a2aed54efa3826aea95973f" => :mountain_lion
   end
 
   head "https://github.com/google/flatbuffers.git"
