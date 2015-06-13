@@ -488,8 +488,6 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     # cache as it will make any changes to get the right revision.
     svncommand = target.directory? ? 'up' : 'checkout'
     args = ['svn', svncommand] + fetch_args
-    # SVN shipped with XCode 3.1.4 can't force a checkout.
-    args << '--force' unless MacOS.version == :leopard
     args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
