@@ -3,8 +3,8 @@ class Postgresql < Formula
   homepage "https://www.postgresql.org/"
 
   stable do
-    url "https://ftp.postgresql.org/pub/source/v9.4.3/postgresql-9.4.3.tar.bz2"
-    sha256 "734acfd2ac352dd0cd353d226f3199c2e1a2730200998aea5b38cf685136d755"
+    url "https://ftp.postgresql.org/pub/source/v9.4.4/postgresql-9.4.4.tar.bz2"
+    sha256 "538ed99688d6fdbec6fd166d1779cf4588bf2f16c52304e5ef29f904c43b0013"
   end
 
   bottle do
