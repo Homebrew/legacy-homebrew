@@ -323,6 +323,22 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
   end
 end
 
+# GitHubCodeLoadDownloadStrategy downloads tarballs and ZIP archives from
+# GitHub CodeLoad, the place where the downloads for your releases are stored.
+# This download strategy uses a GitHub access token (HOMEBREW_GITHUB_API_TOKEN)
+# in order to access files from private repositories.
+class GitHubCodeLoadDownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    return super unless HOMEBREW_GITHUB_API_TOKEN
+
+    if @url !~ %r[^https://codeload.github.com/.+/.+/(?:tar\.gz|zip)/.+$]
+      raise "Invalid GitHub CodeLoad URL: #{@url}"
+    end
+
+    curl @url, '-H', "Authorization: token #{HOMEBREW_GITHUB_API_TOKEN}", '-C', downloaded_size, '-o', temporary_path
+  end
+end
+
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def apache_mirrors
@@ -832,6 +848,8 @@ class DownloadStrategyDetector
       GitDownloadStrategy
     when %r[^https?://www\.apache\.org/dyn/closer\.cgi]
       CurlApacheMirrorDownloadStrategy
+    when %r[^https://codeload\.github\.com/]
+      GitHubCodeLoadDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn], %r[^https?://svn\.], %r[^svn://], %r[^https?://(.+?\.)?sourceforge\.net/svnroot/]
       SubversionDownloadStrategy
     when %r[^cvs://]
