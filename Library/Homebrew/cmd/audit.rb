@@ -941,6 +941,11 @@ class ResourceAuditor
       problem "Please use \"http://ftpmirror.gnu.org\" instead of #{url}."
     end
 
+    # GNU's ftpmirror does NOT support SSL/TLS.
+    if url =~ %r[^https://ftpmirror\.gnu\.org/]
+      problem "Please use http:// for #{url}"
+    end
+
     if mirrors.include?(url)
       problem "URL should not be duplicated as a mirror: #{url}"
     end
@@ -950,9 +955,6 @@ class ResourceAuditor
     # Check a variety of SSL/TLS URLs that don't consistently auto-redirect
     # or are overly common errors that need to be reduced & fixed over time.
     urls.each do |p|
-      # Skip the main url link, as it can't be made SSL/TLS yet.
-      next if p =~ %r[/ftpmirror\.gnu\.org]
-
       case p
       when %r[^http://ftp\.gnu\.org/],
            %r[^http://[^/]*\.apache\.org/],
