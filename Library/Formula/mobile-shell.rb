@@ -7,6 +7,12 @@ class MobileShell < Formula
   sha256 "e74d0d323226046e402dd469a176075fc2013b69b0e67cea49762c957175df46"
   revision 2
 
+  bottle do
+    sha256 "3c108593641fb31bf079147e66d15c711745604ceb395005c57abe4e57b844ad" => :yosemite
+    sha256 "d5527371143c95e39a4535e70be7cbc5c659b2b95d5dd609b766cdc20ca038b2" => :mavericks
+    sha256 "4d480c213adba08197a671939466accbf9019365895f01452278a51345b168c0" => :mountain_lion
+  end
+
   head do
     url "https://github.com/keithw/mosh.git", :shallow => false
 
