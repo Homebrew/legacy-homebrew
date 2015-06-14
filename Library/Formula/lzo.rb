@@ -3,8 +3,8 @@ require "formula"
 class Lzo < Formula
   desc "Real-time data compression library"
   homepage "http://www.oberhumer.com/opensource/lzo/"
-  url "http://www.oberhumer.com/opensource/lzo/download/lzo-2.08.tar.gz"
-  sha256 "ac1b3e4dee46febe9fd28737eb7f5692d3232ef1a01da10444394c3d47536614"
+  url "http://www.oberhumer.com/opensource/lzo/download/lzo-2.09.tar.gz"
+  sha256 "f294a7ced313063c057c504257f437c8335c41bfeed23531ee4e6a2b87bcb34c"
 
   bottle do
     cellar :any
