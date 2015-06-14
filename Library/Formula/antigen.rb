@@ -13,10 +13,4 @@ class Antigen < Formula
     (testpath/".zshrc").write "source antigen.zsh"
     system "/bin/zsh", "--login", "-i", "-c", "antigen help"
   end
-
-  def caveats; <<-EOS.undent
-    To use antigen, add the following line to your ~/.zshrc:
-    source antigen.zsh
-    EOS
-  end
 end
