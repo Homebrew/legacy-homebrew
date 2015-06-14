@@ -1,44 +1,65 @@
 # brew tap
-The `brew tap` command is powerful, but has a few subtleties worth describing.
 
-**tl;dr** `brew tap` allows you to add more GitHub repos to the list of formulae that `brew` tracks, updates and installs from. When naming tap repos and formulas, however, there are a few gotchas to beware of.
+**tl;dr** `brew tap` adds more repos to the list of formulae that `brew`
+tracks, updates, and installs from. By default, `tap` assumes that the repos
+come from GitHub, but the command isn't limited to any one location.
 
 ## The command
 
-*   If you run `brew tap` with no arguments, it will list the currently
-    tapped repositories. Example:
+* `brew tap` without arguments lists the currently tapped repositories. For
+  example:
 
 ```bash
 $ brew tap
 homebrew/dupes
-telemachus/desc
-telemachus/vim
+mistydemeo/tigerbrew
+edavis/emacs
 ```
 
-*   If you run `brew tap` with a single argument, `brew` will attempt to
-    parse the argument into a valid 'username/repo' combination. If the argument is a valid name, then `brew tap` will attempt to clone the repository and symlink all its formulae. (See below for what it means to be a 'valid name'.) After that, `brew` will be able to work on those formulae as if there were in Homebrew's canonical repository. You can install and uninstall them with `brew [un]install`, and the formulae are automatically updated when you run `brew update`. (See below for a few exceptions on names and installation.)
+* `brew tap <user/repo>` makes a shallow clone of the repository at
+  https://github.com/user/repo. After that, `brew` will be able to work on
+  those formulae as if there were in Homebrew's canonical repository. You can
+  install and uninstall them with `brew [un]install`, and the formulae are
+  automatically updated when you run `brew update`. (See below for details
+  about how `brew tap` handles the names of repositories.)
 
-*   In you run `brew tap --repair`, then `brew` will check for dead symlinks
-    and relink all valid formulae across all your taps.
+* `brew tap <user/repo> <URL>` makes a shallow clone of the repository at URL.
+  Unlike the one-argument version, URL is not assumed to be GitHub, and it
+  doesn't have to be HTTP. Any location and any protocol that git can handle is
+  fine.
 
-*   You can remove a tapped repository using the `brew untap` command.
+* Add `--full` to either the one- or two-argument invocations above, and git
+  will make a complete clone rather than a shallow one.
 
-## Naming conventions and limitations
+* `brew tap --repair` migrates tapped formulae from symlink-based to
+  directory-based structure. (This should only need to be run once.)
 
-`brew tap username/repo` employs some shortcuts and has some limitations.
+* `brew untap user/repo [user/repo user/repo ...]` removes the given taps. The
+  repos are deleted and `brew` will no longer be aware of its formulae. `brew
+  untap` can handle multiple removals at once.
 
-*   On GitHub, your repository must be named `homebrew-something`.
-    The prefix 'homebrew-' is not optional.
+## Repository naming conventions and assumptions
 
-*   When you use `brew tap` on the command line, you can leave out the
-    'homebrew-' prefix in commands.
+* On GitHub, your repository must be named `homebrew-something` in order to use
+  the one-argument form of `brew tap`.  The prefix 'homebrew-' is not optional.
+  (The two-argument form doesn't have this limitation, but it forces you to
+  give the full URL explicitly.)
 
-    That is, `brew tap username/foobar` can be used as a shortcut for the long version: `brew tap username/homebrew-foobar`. The command will automatically add back the 'homebrew-' prefix.
+* When you use `brew tap` on the command line, however, you can leave out the
+  'homebrew-' prefix in commands.
+
+  That is, `brew tap username/foobar` can be used as a shortcut for the long
+  version: `brew tap username/homebrew-foobar`. `brew` will automatically add
+  back the 'homebrew-' prefix whenever it's necessary.
 
 ## Formula duplicate names
-If your tap contains a formula that is also present in master, that's fine, but it means that you must install it explicitly.
 
-For example, you can create a tap for an alternative `vim` formula, but in that case when you install from there you must run the command with a more explicit installation target:
+If your tap contains a formula that is also present in master, that's fine, but
+it means that you must install it explicitly.
+
+For example, you can create a tap for an alternative `vim` formula, but in that
+case when you install from there you must run the command with a more explicit
+installation target:
 
 ```bash
 brew install vim                 # installs from Homebrew/homebrew
