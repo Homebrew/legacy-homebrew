@@ -13,9 +13,11 @@ end
 
 class GitIntegration < Formula
   desc "Manage git integration branches"
-  homepage "http://johnkeeping.github.io/git-integration/"
+  homepage "https://johnkeeping.github.io/git-integration/"
   url "https://github.com/johnkeeping/git-integration/archive/v0.3.tar.gz"
-  sha1 "fc64f987a2a6b73c61c8a5278d06bcaa46ee9312"
+  sha256 "7fb0a4ed4e4c23b7fa9334abfd1894ed5821b73be144d56d67d926e3cd7a1eb5"
+
+  head "https://github.com/johnkeeping/git-integration.git"
 
   depends_on "asciidoc" => [:build, :optional]
   depends_on SufficientlyRecentGit
