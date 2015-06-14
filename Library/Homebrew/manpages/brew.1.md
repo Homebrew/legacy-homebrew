@@ -359,7 +359,7 @@ Note that these flags should only appear after a command.
       any transport protocol that `git` handles. The one-argument form of `tap`
       simplifies but also limits.  This two-argument command makes no
       assumptions, so taps can be cloned from places other than GitHub and
-      using protocols other than HTTPS, e.g. SSH, GIT, HTTP(S), FTP(S), RSYNC.
+      using protocols other than HTTPS, e.g., SSH, GIT, HTTP, FTP(S), RSYNC.
 
     By default, the repository is cloned as a shallow copy (`--depth=1`), but
     if `--full` is passed, a full clone will be used.
