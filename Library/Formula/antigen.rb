@@ -3,7 +3,7 @@ class Antigen < Formula
   homepage "http://antigen.sharats.me/"
   url "https://github.com/zsh-users/antigen/archive/v1.tar.gz"
   sha256 "6d4bd7b5d7bc3e36a23ac8feb93073b06e1e09b9100eb898f66c2e8c3f4d7847"
-  head "https://github.com/zsh-users/antigen/archive"
+  head "https://github.com/zsh-users/antigen.git"
 
   def install
     bin.install "antigen.zsh"
