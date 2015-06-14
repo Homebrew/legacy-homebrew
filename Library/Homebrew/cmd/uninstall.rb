@@ -9,7 +9,9 @@ module Homebrew
       ARGV.kegs.each do |keg|
         keg.lock do
           puts "Uninstalling #{keg}... (#{keg.abv})"
-          keg.unlink
+          if keg.linked?
+            keg.unlink
+          end
           keg.uninstall
           rack = keg.rack
           rm_pin rack
