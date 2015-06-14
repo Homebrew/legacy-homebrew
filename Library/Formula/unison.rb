@@ -2,9 +2,9 @@ require 'formula'
 
 class Unison < Formula
   desc "Unison file synchronizer"
-  homepage 'http://www.cis.upenn.edu/~bcpierce/unison/'
-  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz'
-  sha1 '74f1c087ee49dc1db4680ad779280f7333d5c968'
+  homepage 'https://www.cis.upenn.edu/~bcpierce/unison/'
+  url 'https://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz'
+  sha256 'f40d3cfbe82078d79328b51acab3e5179f844135260c2f4710525b9b45b15483'
 
   bottle do
     cellar :any
