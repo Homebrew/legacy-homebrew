@@ -4,6 +4,8 @@ class GitOctopus < Formula
   url "https://github.com/lesfurets/git-octopus/archive/v1.0.tar.gz"
   sha256 "c83ab4aa3d8ec770f4f05619239a7852c871216a108b4e287c13efb10e3db5db"
 
+  head "https://github.com/lesfurets/git-octopus.git"
+
   def install
     bin.install "bin/git-octopus"
     man1.install "man/man1/git-octopus.1"
