@@ -8,7 +8,7 @@ class Batik < Formula
     libexec.install "lib", Dir["*.jar"]
     prefix.install_metafiles
 
-    bin.write_jar_script libexec/"batik-rasterizer-#{version}.jar", "batik-rasterizer"
+    bin.write_jar_script libexec/"batik-rasterizer-#{version}.jar", "batik-rasterizer", "-Djava.awt.headless=true"
     bin.write_jar_script libexec/"batik-#{version}.jar", "batik"
     bin.write_jar_script libexec/"batik-ttf2svg-#{version}.jar", "batik-ttf2svg"
   end
