@@ -25,7 +25,7 @@ module Homebrew
             reqs = f.recursive_requirements do |dependent, req|
               Requirement.prune if ignores.any? { |ignore| req.send(ignore) } && !dependent.build.with?(req)
             end
-            deps.any? { |dep| dep.to_formula.full_name == ff.full_name } ||
+            deps.any? { |dep| dep.to_formula.full_name == ff.full_name rescue dep.name == ff.name } ||
               reqs.any? { |req| req.name == ff.name || [ff.name, ff.full_name].include?(req.default_formula) }
           else
             deps = f.deps.reject do |dep|
@@ -34,7 +34,7 @@ module Homebrew
             reqs = f.requirements.reject do |req|
               ignores.any? { |ignore| req.send(ignore) }
             end
-            deps.any? { |dep| dep.to_formula.full_name == ff.full_name } ||
+            deps.any? { |dep| dep.to_formula.full_name == ff.full_name rescue dep.name == ff.name } ||
               reqs.any? { |req| req.name == ff.name || [ff.name, ff.full_name].include?(req.default_formula) }
           end
         rescue FormulaUnavailableError
