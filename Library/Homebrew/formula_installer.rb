@@ -409,7 +409,7 @@ class FormulaInstaller
     if OS.mac?
       # this needs to be changed to a test against build_bottle? and
       # formula.bottle.needs_relocation?
-      fix_install_names(keg) unless build_bottle? && !formula.bottle.needs_relocation?
+      fix_install_names(keg) unless !formula.bottle.needs_relocation?
     end
 
     if build_bottle? && formula.post_install_defined?
