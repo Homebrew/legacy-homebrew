@@ -1,10 +1,8 @@
-require 'formula'
-
 class Juju < Formula
   desc "DevOps management tool"
-  homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.23/1.23.3/+download/juju-core_1.23.3.tar.gz'
-  sha1 '813455d308c14bf0f90e8326727cc327c6eb481f'
+  homepage "https://juju.ubuntu.com"
+  url "https://launchpad.net/juju-core/1.24/1.24.0/+download/juju-core_1.24.0.tar.gz"
+  sha256 "1771c016278e73cf7417d9b10f4dbd4f4ea8c05f31753ff5ce2a352beeee03ce"
 
   bottle do
     cellar :any
@@ -13,7 +11,7 @@ class Juju < Formula
     sha256 "83fc63f22eab55c8e4f68e9f8588c30461fee4a26277f0b98c561b44122beca7" => :mountain_lion
   end
 
-  depends_on 'go' => :build
+  depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
