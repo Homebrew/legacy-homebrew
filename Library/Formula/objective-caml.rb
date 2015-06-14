@@ -1,6 +1,6 @@
 class ObjectiveCaml < Formula
   desc "General purpose programming language in the ML family"
-  homepage "http://ocaml.org"
+  homepage "https://ocaml.org/"
   url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.1.tar.gz"
   sha256 "3cbc7af5a3886c8c5af8dab5568d6256a191d89ecbd4aea18eaf5b47034c6138"
   revision 2
