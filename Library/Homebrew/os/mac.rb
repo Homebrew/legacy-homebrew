@@ -36,6 +36,22 @@ module OS
       end
     end
 
+    def install_name_tool
+      if File.executable?(path = "#{HOMEBREW_PREFIX}/opt/cctools/bin/install_name_tool")
+        Pathname.new(path)
+      else
+        locate("install_name_tool")
+      end
+    end
+
+    def otool
+      if File.executable?(path = "#{HOMEBREW_PREFIX}/opt/cctools/bin/otool")
+        Pathname.new(path)
+      else
+        locate("otool")
+      end
+    end
+
     def active_developer_dir
       @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end

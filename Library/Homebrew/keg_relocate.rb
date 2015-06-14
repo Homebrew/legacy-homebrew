@@ -98,8 +98,8 @@ class Keg
   end
 
   def install_name_tool(*args)
-    tool = MacOS.locate("install_name_tool")
-    system(tool, *args) || raise(ErrorDuringExecution.new(tool, args))
+    tool = MacOS.install_name_tool
+    system(tool, *args) || raise ErrorDuringExecution.new(tool, args)
   end
 
   # If file is a dylib or bundle itself, look for the dylib named by
