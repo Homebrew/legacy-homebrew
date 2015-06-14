@@ -6,9 +6,9 @@ class Ccat < Formula
 
   bottle do
     cellar :any
-    sha256 "de19c851b70ac557dc9c3f2a9adfabd9ed3188a6f11a5d9b2f713d9622370dda" => :yosemite
-    sha256 "ea0549911b2fefd072b42d04e437063c653be7a7d26b57b125fc3807055127bc" => :mavericks
-    sha256 "737d28a8532177a0a9e3819a28689000826dc4ba854388d90770baaba5c080b5" => :mountain_lion
+    sha256 "70c3e7597d8c767d83ebaded9056e94221c71aa70f9b79146fc35874959c5655" => :yosemite
+    sha256 "201def201539d94334b2cc6fec04154a808d90811352ffeb7d01cd6789e00ccf" => :mavericks
+    sha256 "7f31873c0412ff8fa3c04ab70cdb4ecb4f2232c415ca535b6e7b149f166695d1" => :mountain_lion
   end
 
   depends_on "go" => :build
