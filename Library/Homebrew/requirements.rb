@@ -52,6 +52,13 @@ class XcodeDependency < Requirement
   end
 end
 
+class LibsslDependency < Requirement
+  fatal true
+  default_formula 'openssl'
+
+  satisfy { which 'openssl' }
+end
+
 class MysqlDependency < Requirement
   fatal true
   default_formula 'mysql'
