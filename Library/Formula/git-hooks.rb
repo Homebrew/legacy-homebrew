@@ -4,13 +4,17 @@ class GitHooks < Formula
   url "https://github.com/icefox/git-hooks/archive/1.00.0.tar.gz"
   sha256 "8197ca1de975ff1f795a2b9cfcac1a6f7ee24276750c757eecf3bcb49b74808e"
 
+  head "https://github.com/icefox/git-hooks.git"
+
   def install
     bin.install "git-hooks"
     (etc/"git-hooks").install "contrib"
   end
 
   test do
-    output = `cd $(brew --repository); git hooks`.strip
-    assert_match /Listing User, Project, and Global hooks/, output
+    HOMEBREW_REPOSITORY.cd do
+      output = shell_output("git hooks").strip
+      assert_match(/Listing User, Project, and Global hooks/, output)
+    end
   end
 end
