@@ -1,6 +1,6 @@
 class Lz4 < Formula
   desc "Lossless compression algorithm"
-  homepage "https://code.google.com/p/lz4/"
+  homepage "http://www.lz4.info/"
   url "https://github.com/Cyan4973/lz4/archive/r130.tar.gz"
   sha256 "c48450d27524c2e5856997133e059e3cf9909241110a6e21ad278890ac425afc"
   version "r130"
