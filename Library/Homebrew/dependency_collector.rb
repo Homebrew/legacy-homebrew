@@ -189,6 +189,7 @@ class DependencyCollector
     when '.lz'  then Dependency.new('lzip', tags)
     when '.rar' then Dependency.new('unrar', tags)
     when '.7z'  then Dependency.new('p7zip', tags)
+    when '.zip' then Dependency.new('homebrew/dupes/unzip', tags) unless OS.mac?
     end
   end
 end
