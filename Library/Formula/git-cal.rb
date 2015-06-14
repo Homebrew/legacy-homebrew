@@ -6,6 +6,12 @@ class GitCal < Formula
 
   head "https://github.com/k4rthik/git-cal.git"
 
+  bottle do
+    sha256 "0ceb50d8f6038f54709422700ca0347e5758880b3256193059fef826c02370ea" => :yosemite
+    sha256 "06054ffa5848f289225e3bcd9978bfcfd1238e0e0de5a060b4c680a66b44fa51" => :mavericks
+    sha256 "7d6308aa47d99e203173fa12896f24bb11b9a9aba91c89de9199fed0a1f6db74" => :mountain_lion
+  end
+
   def install
     system "perl", "Makefile.PL", "PREFIX=#{prefix}"
     system "make"
