@@ -1,13 +1,14 @@
-require "formula"
-
 class GitImerge < Formula
   desc "Incremental merge for git"
   homepage "https://github.com/mhagger/git-imerge"
   url "https://github.com/mhagger/git-imerge/archive/0.7.0.tar.gz"
-  sha1 "b3bab94743a79426ea79c1b5e503020ef7fbf2ec"
+  sha256 "0688fe4c13c65c6fa90989c57c04fafe34114889d2d100b6e62538e8f2b0dc02"
+
+  head "https://github.com/mhagger/git-imerge.git"
 
   def install
-    bin.install "git-imerge"
+    bin.mkpath
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
