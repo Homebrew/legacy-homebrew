@@ -326,9 +326,11 @@ class FormulaInstaller
     cctools = CctoolsRequirement.new
     dependency = cctools.to_dependency
     formula = dependency.to_formula
+    options = inherited_options_for(cctools)
+    options << Option.new('force-bottle')
     return if cctools.satisfied? || @@attempted.include?(formula)
 
-    install_dependency(dependency, inherited_options_for(cctools))
+    install_dependency(dependency, options)
   end
 
   class DependencyInstaller < FormulaInstaller
@@ -407,7 +409,7 @@ class FormulaInstaller
     if OS.mac?
       # this needs to be changed to a test against build_bottle? and
       # formula.bottle.needs_relocation?
-      fix_install_names(keg) unless formula.name == 'cctools'
+      fix_install_names(keg) unless build_bottle? && !formula.bottle.needs_relocation?
     end
 
     if build_bottle? && formula.post_install_defined?
