@@ -4,7 +4,6 @@
 # case, `user/repo` will be used as the {#name} of this {Tap}, where
 # {#user} represents Github username and {#repo} represents repository
 # name without leading `homebrew-`.
-# @abstract
 class Tap
   TAP_DIRECTORY = HOMEBREW_LIBRARY/"Taps"
 
