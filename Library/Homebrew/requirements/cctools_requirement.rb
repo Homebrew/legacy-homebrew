@@ -3,6 +3,6 @@ class CctoolsRequirement < Requirement
   default_formula 'cctools'
 
   satisfy do
-    MacOS::Xcode.installed? || MacOS::CLT.installed?
+    MacOS::Xcode.installed? || MacOS::CLT.installed? || Dir.exists?('/usr/local/opt/cctools')
   end
 end
