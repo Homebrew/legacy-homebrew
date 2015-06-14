@@ -22,5 +22,6 @@ class Unison < Formula
     system "make ./mkProjectInfo"
     system "make UISTYLE=text"
     bin.install 'unison'
+    bin.install 'fsmonitor.py'
   end
 end
