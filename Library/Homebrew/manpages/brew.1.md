@@ -345,12 +345,24 @@ Note that these flags should only appear after a command.
   * `switch` <name> <version>:
     Symlink all of the specific <version> of <name>'s install to Homebrew prefix.
 
-  * `tap` [--full] [<tap>]:
-    Tap a new formula repository from GitHub, or list existing taps.
+  * `tap` [--full] [<user/repo>] [<URL>]:
+    Tap a formula repository or list existing taps. This command can be invoked
+    in three ways.
 
-    <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+    + `tap` without arguments displays existing taps.
 
-    If `--full` is passed, a full clone will be used.
+    + `tap <user/repo>` taps a formula repository from GitHub using HTTPS.
+      Since so many taps are hosted on GitHub, this command is a shortcut for
+      `tap user/repo https://github.com/#{user}/homebrew-#{repo}`.
+
+    + `tap <user/repo> <URL>` taps a formula repository from anywhere, using
+      any transport protocol that `git` handles. The one-argument form of `tap`
+      simplifies but also limits.  This two-argument command makes no
+      assumptions, so taps can be cloned from places other than GitHub and
+      using protocols other than HTTPS, e.g. SSH, GIT, HTTP(S), FTP(S), RSYNC.
+
+    By default, the repository is cloned as a shallow copy (`--depth=1`), but
+    if `--full` is passed, a full clone will be used.
 
   * `tap --repair`:
     Migrate tapped formulae from symlink-based to directory-based structure.
