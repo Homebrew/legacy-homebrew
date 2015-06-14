@@ -4,8 +4,9 @@
 class Pstree < Formula
   desc "Show ps output as a tree"
   homepage "http://www.thp.uni-duisburg.de/pstree/"
-  url "ftp://ftp.thp.uni-duisburg.de/pub/source/pstree-2.36.tar.gz"
-  sha1 "1ca2e08c62d33afd37d78a215095258e77654b3f"
+  url "ftp://ftp.thp.uni-duisburg.de/pub/source/pstree-2.39.tar.gz"
+  mirror "https://fossies.org/linux/misc/pstree-2.39.tar.gz"
+  sha256 "7c9bc3b43ee6f93a9bc054eeff1e79d30a01cac13df810e2953e3fc24ad8479f"
 
   def install
     system "make pstree"
