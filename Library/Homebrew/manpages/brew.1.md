@@ -361,10 +361,6 @@ Note that these flags should only appear after a command.
       assumptions, so taps can be cloned from places other than GitHub and
       using protocols other than HTTPS. E.g. SSH, GIT, HTTP(S), FTP(S), RSYNC.
 
-    tl;dr To clone from GitHub using HTTPS, use the one-argument form. Use the
-    two argument form for repos not on GitHub or for protocols other than
-    HTTPS.
-
     By default, the repository is cloned as a shallow copy (`--depth=1`), but
     if `--full` is passed, a full clone will be used.
 
