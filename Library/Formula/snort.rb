@@ -1,15 +1,14 @@
-require "formula"
-
 class Snort < Formula
+  desc "Flexible Network Intrusion Detection System"
   homepage "https://www.snort.org"
-  url "https://www.snort.org/downloads/snort/snort-2.9.7.0.tar.gz"
-  sha1 "29eddcfaf8a4d02a4d68d88fa97c0275e4f0cc75"
+  url "https://www.snort.org/downloads/snort/snort-2.9.7.3.tar.gz"
+  sha256 "8cc3613b888fc54947a2beec773c76d9a20368f2659b31d45a9f0b11e66cc229"
 
   bottle do
     cellar :any
-    sha1 "f5a8dbb0d53f814778b275f81e5837e2b8112329" => :yosemite
-    sha1 "c990b24ed535f1999f2330b008829b5ce30ec257" => :mavericks
-    sha1 "3e3d16beb12cbeda1d6d9191c342c50b09bf5450" => :mountain_lion
+    sha256 "500a6e7527ccd71d95cad8dc6fa2ee4c09ea516c7c866357efecda0dca70389f" => :yosemite
+    sha256 "a9a9f2afbe4ebcad4814da730399510ca68c6eed201ca71e17069cc97ce6092c" => :mavericks
+    sha256 "2b4871dcf9ac94c842458fcf190ee35390ecc49be2c077cce1c074b3ebc306fb" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -19,13 +18,16 @@ class Snort < Formula
   depends_on "pcre"
   depends_on "openssl"
 
-  option "enable-debug", "Compile Snort with --enable-debug and --enable-debug-msgs"
+  option "with-debug", "Compile Snort with debug options enabled"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   def install
     openssl = Formula["openssl"]
 
     args = %W[
       --prefix=#{prefix}
+      --sysconfdir=#{etc}/snort
       --disable-dependency-tracking
       --disable-silent-rules
       --enable-gre
@@ -41,7 +43,7 @@ class Snort < Formula
       --enable-flexresp3
     ]
 
-    if build.include? "enable-debug"
+    if build.with? "debug"
       args << "--enable-debug"
       args << "--enable-debug-msgs"
     else
@@ -50,6 +52,9 @@ class Snort < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    rm Dir[buildpath/"etc/Makefile*"]
+    (etc+"snort").install Dir[buildpath/"etc/*"]
   end
 
   def caveats; <<-EOS.undent
@@ -58,5 +63,9 @@ class Snort < Formula
         sudo chmod 644 /dev/bpf*
     or you could create a startup item to do this for you.
     EOS
+  end
+
+  test do
+    system bin/"snort", "-V"
   end
 end

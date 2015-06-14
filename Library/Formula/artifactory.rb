@@ -1,11 +1,10 @@
-require "formula"
-
 class Artifactory < Formula
+  desc "Manages binaries"
   homepage "http://www.jfrog.com/artifactory/"
-  url "http://dl.bintray.com/jfrog/artifactory/artifactory-3.4.1.zip"
-  sha1 "c8ca7a024be33648ab36f5e674f340c6630ec603"
+  url "https://dl.bintray.com/jfrog/artifactory/artifactory-3.8.0.zip"
+  sha1 "ade88a068f58a3847f9591ee0b9bfd0bcbd20049"
 
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
 
   option "with-low-heap", "Run artifactory with low Java memory options. Useful for development machines. Do not use in production."
   option "with-java8", "Adjust memory settings for Java 8"
@@ -38,12 +37,11 @@ class Artifactory < Formula
     bin.install_symlink libexec/"bin/artifactory.default"
   end
 
-
   def post_install
     # Create persistent data directory. Artifactory heavily relies on the data
     # directory being directly under ARTIFACTORY_HOME.
-    # Therefore, I symlink the data dir to var.
-    data = (var+"artifactory")
+    # Therefore, we symlink the data dir to var.
+    data = var/"artifactory"
     data.mkpath
 
     libexec.install_symlink data => "data"
@@ -73,8 +71,7 @@ class Artifactory < Formula
   end
 
   test do
-    output = `#{bin}/artifactory.sh check 2>&1`
+    output = shell_output("#{bin}/artifactory.sh check 2>&1", 1)
     assert output.include?("Checking arguments to Artifactory")
-    assert_equal 1, $?.exitstatus
   end
 end

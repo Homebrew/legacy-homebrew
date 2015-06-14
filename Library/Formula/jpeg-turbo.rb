@@ -1,20 +1,18 @@
-require 'formula'
-
 class JpegTurbo < Formula
-  homepage 'http://www.libjpeg-turbo.org/'
-  url 'https://downloads.sourceforge.net/project/libjpeg-turbo/1.3.1/libjpeg-turbo-1.3.1.tar.gz'
-  mirror 'https://mirrors.kernel.org/debian/pool/main/libj/libjpeg-turbo/libjpeg-turbo_1.3.1.orig.tar.gz'
-  sha1 '5fa19252e5ca992cfa40446a0210ceff55fbe468'
+  desc "JPEG image codec that aids compression and decompression"
+  homepage "http://www.libjpeg-turbo.org/"
+  url "https://downloads.sourceforge.net/project/libjpeg-turbo/1.4.1/libjpeg-turbo-1.4.1.tar.gz"
+  sha256 "4bf5bad4ce85625bffbbd9912211e06790e00fb982b77724af7211034efafb08"
 
   bottle do
     cellar :any
-    sha1 "d3bd70ed5eb4beecc84c782f69e2376915e978cc" => :yosemite
-    sha1 "d9456e1ae7d99dd88e7c7a0b34c52408f0d02f6a" => :mavericks
-    sha1 "9e7bd8532480479cd4011fa263c65b860e6d6928" => :mountain_lion
+    sha256 "1938c9a93f0de685fd2b2c48f9d7f4d6ccd214260e76b177dc5aa5c5231f8876" => :yosemite
+    sha256 "dbb0b0a91c703b860746cf4cd08a2b88e2946cf4b086ad86a6c81ff603ce81c0" => :mavericks
+    sha256 "d0aee820193caf7d5c365869ce932ccfbe2c6dc76c6a81e0dc73b8f5f08ba5c0" => :mountain_lion
   end
 
   depends_on "libtool" => :build
-  depends_on 'nasm' => :build if MacOS.prefer_64_bit?
+  depends_on "nasm" => :build if MacOS.prefer_64_bit?
 
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
 
@@ -27,9 +25,9 @@ class JpegTurbo < Formula
     end
 
     system "./configure", *args
-    system 'make'
+    system "make"
     ENV.j1 # Stops a race condition error: file exists
-    system "make install"
+    system "make", "install"
   end
 
   test do

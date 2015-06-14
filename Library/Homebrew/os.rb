@@ -8,7 +8,7 @@ module OS
   end
 
   if OS.mac?
-    ISSUES_URL = "http://git.io/brew-troubleshooting"
+    ISSUES_URL = "https://git.io/brew-troubleshooting"
     PATH_OPEN = "/usr/bin/open"
   elsif OS.linux?
     ISSUES_URL = "https://github.com/Homebrew/linuxbrew/wiki/troubleshooting"

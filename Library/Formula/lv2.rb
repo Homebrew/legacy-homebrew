@@ -1,15 +1,16 @@
 require "formula"
 
 class Lv2 < Formula
+  desc "Portable plugin standard for audio systems"
   homepage "http://lv2plug.in"
-  url "http://lv2plug.in/spec/lv2-1.10.0.tar.bz2"
-  sha1 "182f8358808719edfcad535ff9c53d3e1dbce3f4"
+  url "http://lv2plug.in/spec/lv2-1.12.0.tar.bz2"
+  sha1 "fc914f00d3230354145748a2a4e55df0a03bcbe2"
 
   bottle do
     cellar :any
-    sha1 "df2e95bc5e66e21910b24296e7abf5bf38f521ed" => :yosemite
-    sha1 "f61a2ea63098cbcebe6747bd855aa45c8c1cdbde" => :mavericks
-    sha1 "e435c12326408f004e3bcda8506a1093b8bf8d09" => :mountain_lion
+    sha256 "e682bb3d9dea26c66b139f21ab9a64e8a7ffcf283dd70223fc7fb81bf7942d5b" => :yosemite
+    sha256 "9dfb6260a6590324b504c649d1af839603414a6d76c390fc4a0b24671b0d45a2" => :mavericks
+    sha256 "cc96aedd80560fd38ce73bf5aa4e925c4836b570da37e9556131113e1666da32" => :mountain_lion
   end
 
   def install

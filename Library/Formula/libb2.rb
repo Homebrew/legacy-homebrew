@@ -1,16 +1,15 @@
-require "formula"
-
 class Libb2 < Formula
-  homepage "https://blake2.net"
+  desc "Secure hashing function"
+  homepage "https://blake2.net/"
   url "https://blake2.net/libb2-0.96.tar.gz"
-  sha1 "e52ce4c788a972e3a49bbbe4380331030c4aca32"
+  sha256 "8cda63288637a9f8824bc036396e1fd78eb76c220ec020bfb441991508ba4f6f"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ac09887e43b1913731fe348911703d99b5da6228" => :yosemite
-    sha1 "3697500c99090725a2af03c88bb32e08aa64eb9f" => :mavericks
-    sha1 "abecebfa782baceba70813c2c60333c4b9e92eae" => :mountain_lion
+    revision 2
+    sha256 "0a905618380c1fa0cdecb54fb49f175a1a73b435bee0954921fabcf824f61801" => :yosemite
+    sha256 "8186ac58f9312ee3f2599e06b894b8e1fdacb0f145d3ac43b436b3f248a97d6b" => :mavericks
+    sha256 "5978374a05368c3812205a5ac8995af20bdc4c5e2040ffcfd49275cd2fc5a089" => :mountain_lion
   end
 
   def install
@@ -22,7 +21,7 @@ class Libb2 < Formula
   end
 
   test do
-    (testpath/'blake2test.c').write <<-EOS.undent
+    (testpath/"blake2test.c").write <<-EOS.undent
       #include <blake2.h>
       #include <stdio.h>
       #include <string.h>

@@ -12,18 +12,6 @@ class VersionTests < Homebrew::TestCase
     assert_raises(TypeError) { Version.new(1) }
     assert_raises(TypeError) { Version.new(:symbol) }
   end
-
-  def test_tokens
-    assert_version_tokens %w{1 0 z23}, version('1.0z23')
-    assert_version_tokens %w{1 0 z23}, version('1.0.z23')
-    assert_version_tokens %w{1 0 z 23}, version('1.0.z.23')
-    assert_version_tokens %w{1 0 23 z}, version('1.0.23z')
-    assert_version_tokens %w{1 0 23 z}, version('1.0.23.z')
-  end
-
-  def test_openssl_style_tokenization
-    assert_version_tokens %w{1 0 1 f}, version('1.0.1f')
-  end
 end
 
 class VersionComparisonTests < Homebrew::TestCase
@@ -230,23 +218,23 @@ class VersionParsingTests < Homebrew::TestCase
   end
 
   def test_bottle_style
-    assert_version_detected '4.8.0', 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0.lion.bottle.tar.gz'
+    assert_version_detected '4.8.0', 'https://homebrew.bintray.com/bottles/qt-4.8.0.lion.bottle.tar.gz'
   end
 
   def test_versioned_bottle_style
-    assert_version_detected '4.8.1', 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.1.lion.bottle.1.tar.gz'
+    assert_version_detected '4.8.1', 'https://homebrew.bintray.com/bottles/qt-4.8.1.lion.bottle.1.tar.gz'
   end
 
   def test_erlang_bottle_style
-    assert_version_detected 'R15B', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B.lion.bottle.tar.gz'
+    assert_version_detected 'R15B', 'https://homebrew.bintray.com/bottles/erlang-R15B.lion.bottle.tar.gz'
   end
 
   def test_another_erlang_bottle_style
-    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountain_lion.bottle.tar.gz'
+    assert_version_detected 'R15B01', 'https://homebrew.bintray.com/bottles/erlang-R15B01.mountain_lion.bottle.tar.gz'
   end
 
   def test_yet_another_erlang_bottle_style
-    assert_version_detected 'R15B03-1', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B03-1.mountainlion.bottle.tar.gz'
+    assert_version_detected 'R15B03-1', 'https://homebrew.bintray.com/bottles/erlang-R15B03-1.mountainlion.bottle.tar.gz'
   end
 
   def test_imagemagick_style
@@ -254,11 +242,11 @@ class VersionParsingTests < Homebrew::TestCase
   end
 
   def test_imagemagick_bottle_style
-    assert_version_detected '6.7.5-7', 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7.lion.bottle.tar.gz'
+    assert_version_detected '6.7.5-7', 'https://homebrew.bintray.com/bottles/imagemagick-6.7.5-7.lion.bottle.tar.gz'
   end
 
   def test_imagemagick_versioned_bottle_style
-    assert_version_detected '6.7.5-7', 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7.lion.bottle.1.tar.gz'
+    assert_version_detected '6.7.5-7', 'https://homebrew.bintray.com/bottles/imagemagick-6.7.5-7.lion.bottle.1.tar.gz'
   end
 
   def test_dash_version_dash_style
@@ -341,5 +329,25 @@ class VersionParsingTests < Homebrew::TestCase
   def test_aespipe_version_style
     assert_version_detected '2.4c',
       'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
+  end
+
+  def test_win_style
+    assert_version_detected '0.9.17',
+      'http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.17-w32.zip'
+    assert_version_detected '1.29',
+      'http://ftpmirror.gnu.org/libidn/libidn-1.29-win64.zip'
+  end
+
+  def test_with_arch
+    assert_version_detected '4.0.18-1',
+      'http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm'
+    assert_version_detected '5.5.7-5',
+      'http://ftpmirror.gnu.org/autogen/autogen-5.5.7-5.i386.rpm'
+    assert_version_detected '2.8',
+      'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x86.zip'
+    assert_version_detected '2.8',
+      'http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x64.zip'
+    assert_version_detected '4.0.18',
+      'http://ftpmirror.gnu.org/mtools/mtools_4.0.18_i386.deb'
   end
 end

@@ -1,6 +1,7 @@
 require 'formula'
 
 class MysqlConnectorCxx < Formula
+  desc "MySQL database connector for C++ applications"
   homepage 'http://dev.mysql.com/downloads/connector/cpp/'
   url 'http://mysql.he.net/Downloads/Connector-C++/mysql-connector-c++-1.1.5.tar.gz'
   sha1 '0b33f74049227d330da0a37ce919b8cd695a9584'

@@ -1,72 +1,70 @@
-require 'formula'
-
 class Plod < Formula
-  homepage 'http://www.deer-run.com/~hal/'
-  url 'http://www.deer-run.com/~hal/plod/plod.shar'
-  version '1.9'
-  sha1 '5cceafeafeb5487926e93e2f5e9ecfce64f6cdd3'
+  desc "Keep an online journal of what you're working on"
+  homepage "http://www.deer-run.com/~hal/"
+  url "http://www.deer-run.com/~hal/plod/plod.shar"
+  version "1.9"
+  sha256 "1b7b8267c41b11c2f5413a8d6850099e0547b7506031b0c733121ed5e8d182f5"
 
   def install
-    system "sh plod.shar"
-    set_plod_vars!
+    system "sh", "plod.shar"
+
+    pager = ENV["PAGER"] || "/usr/bin/less"
+    editor = ENV["EDITOR"] || "/usr/bin/emacs"
+    visual = ENV["VISUAL"] || editor
+
     inreplace "plod" do |s|
       s.gsub! "#!/usr/local/bin/perl", "#!/usr/bin/env perl"
       s.gsub! '"/bin/crypt"', "undef"
-      s.gsub! "/usr/local/bin/less", @plod_vars[:pager]
-      s.gsub! '$EDITOR = "/usr/local/bin/emacs"',
-        "$EDITOR = \"#{@plod_vars[:editor]}\""
-      s.gsub! '$VISUAL = "/usr/local/bin/emacs"',
-        "$VISUAL = \"#{@plod_vars[:visual]}\""
+      s.gsub! "/usr/local/bin/less", pager
+      s.gsub! '$EDITOR = "/usr/local/bin/emacs"', "$EDITOR = \"#{editor}\""
+      s.gsub! '$VISUAL = "/usr/local/bin/emacs"', "$VISUAL = \"#{visual}\""
     end
     man1.install "plod.man" => "plod.1"
     bin.install "plod"
-    prefix.install 'plod.el.v1', 'plod.el.v2'
-    ohai "Creating #{prefix}/plodrc"
-    (prefix + "plodrc").write plodrc
+    prefix.install "plod.el.v1", "plod.el.v2"
+
+    (prefix/"plodrc").write <<-PLODRC.undent
+      # Uncomment lines and change their values to override defaults.
+      # man plod for further details.
+      #
+      # $PROMPT = 0;
+      # $CRYPTCMD = undef;
+      # $TMPFILE = "/tmp/plodtmp$$";
+      # $HOME = (getpwuid($<))[7];
+      # $EDITOR = "#{editor}";
+      # $VISUAL = "#{visual}";
+      # $PAGER =  "#{pager}";
+      # $LINES = 24;
+      # $LOGDIR = "$HOME/.logdir";
+      # $LOGFILE = sprintf("%04d%02d", $YY+1900, $MM);
+      # $BACKUP = ".plod$$.bak";
+      # $DEADLOG = "dead.log";
+      # $STAMP = sprintf("%02d/%02d/%04d, %02d:%02d --", $MM, $DD, $YY+1900, $hh, $mm);
+      # $PREFIX = '';
+      # $SUFFIX = '';
+      # $SEPARATOR = '-----';
+    PLODRC
   end
 
-  def set_plod_vars!
-    @plod_vars = { :pager => ENV['PAGER'] || "/usr/bin/less",
-                   :editor => ENV['EDITOR'] || "/usr/bin/emacs" }
-    @plod_vars[:visual] = @plod_vars[:visual] || ENV['VISUAL'] ||
-      @plod_vars[:editor]
+  def caveats; <<-EOS.undent
+      Emacs users may want to peruse the two available plod modes. They've been
+      installed at:
+
+        #{prefix}/plod.el.v1
+        #{prefix}/plod.el.v2
+
+      Certain environment variables can be customized.
+
+        cp #{prefix}/plodrc ~/.plodrc
+
+      See man page for details.
+    EOS
   end
 
-  def plodrc; <<-PLODRC
-# Uncomment lines and change their values to override defaults.
-# man plod for further details.
-#
-# $PROMPT = 0;
-# $CRYPTCMD = undef;
-# $TMPFILE = "/tmp/plodtmp$$";
-# $HOME = (getpwuid($<))[7];
-# $EDITOR = "#{@plod_vars[:editor]}";
-# $VISUAL = "#{@plod_vars[:visual]}";
-# $PAGER =  "#{@plod_vars[:pager]}";
-# $LINES = 24;
-# $LOGDIR = "$HOME/.logdir";
-# $LOGFILE = sprintf("%04d%02d", $YY+1900, $MM);
-# $BACKUP = ".plod$$.bak";
-# $DEADLOG = "dead.log";
-# $STAMP = sprintf("%02d/%02d/%04d, %02d:%02d --", $MM, $DD, $YY+1900, $hh, $mm);
-# $PREFIX = '';
-# $SUFFIX = '';
-# $SEPARATOR = '-----';
-PLODRC
-  end
-
-  def caveats; <<-EOS
-Emacs users may want to peruse the two available plod modes. They've been
-installed at:
-
-  #{prefix}/plod.el.v1
-  #{prefix}/plod.el.v2
-
-Certain environment variables can be customized.
-
-  cp #{prefix}/plodrc ~/.plodrc
-
-See man page for details.
-EOS
+  test do
+    ENV["LOGDIR"] = testpath/".logdir"
+    system "#{bin}/plod", "this", "is", "Homebrew"
+    assert File.directory? "#{testpath}/.logdir"
+    assert_match(/this is Homebrew/, shell_output("#{bin}/plod -P"))
   end
 end

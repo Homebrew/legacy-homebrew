@@ -1,16 +1,15 @@
-require "formula"
-
 class Libmongoclient < Formula
-  homepage "http://www.mongodb.org"
-  url "https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.5.tar.gz"
-  sha1 "1cc66854eac8cb79457ec68ba24153b321263430"
+  desc "C and C++ driver for MongoDB"
+  homepage "https://www.mongodb.org"
+  url "https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.9.tar.gz"
+  sha256 "fcbc8032afe7e3a45464aacf6ef34cfb7a3cf2afdd2a09d7cdaf23f6c7a24376"
 
   head "https://github.com/mongodb/mongo-cxx-driver.git", :branch => "26compat"
 
   bottle do
-    sha1 "eb587e75d00fb4fd1c54c685862513b10586bc5f" => :yosemite
-    sha1 "4e2c8814b0da3941e1006536aace5328ded68892" => :mavericks
-    sha1 "f784fb305307b81b93ecb19f33daea475e4d3762" => :mountain_lion
+    sha256 "8a627a9d8146d29946db5c1835a38266af2e2080d947917c45d165759d5f6eb7" => :yosemite
+    sha256 "e526f5f2cc21c7a8c7051e4cbbff0e90a3d5ae4830035d9a66b6805c40f5958a" => :mavericks
+    sha256 "d34debf8911f3ff31c950babb837ca49fedecf05cbe3dd679c25a93df460f01c" => :mountain_lion
   end
 
   option :cxx11
@@ -22,10 +21,6 @@ class Libmongoclient < Formula
   else
     depends_on "boost"
   end
-
-  # Add 10.10 as a recognised OS X version choice.
-  # https://github.com/mongodb/mongo-cxx-driver/pull/185
-  patch :DATA
 
   def install
     ENV.cxx11 if build.cxx11?
@@ -52,18 +47,3 @@ class Libmongoclient < Formula
     scons *args
   end
 end
-
-__END__
-
-diff --git a/SConstruct b/SConstruct
-index ae0f270..24c8522 100644
---- a/SConstruct
-+++ b/SConstruct
-@@ -300,7 +300,7 @@ add_option('propagate-shell-environment',
-            0, False)
-
- if darwin:
--    osx_version_choices = ['10.6', '10.7', '10.8', '10.9']
-+    osx_version_choices = ['10.6', '10.7', '10.8', '10.9', '10.10']
-     add_option("osx-version-min", "minimum OS X version to support", 1, True,
-                type = 'choice', default = osx_version_choices[0], choices = osx_version_choices)

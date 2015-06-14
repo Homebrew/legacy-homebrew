@@ -1,9 +1,15 @@
-require 'formula'
-
 class Nu < Formula
+  desc "An object-oriented, Lisp-like programming language"
   homepage 'http://programming.nu'
   url 'https://github.com/timburks/nu/archive/v2.1.1.tar.gz'
   sha1 'ca0f9bbd5bbdb8528be516325f274d07d4be54bf'
+
+  bottle do
+    cellar :any
+    sha1 "b5abfa521c0983c057820e51e6edad1d2e26c79e" => :yosemite
+    sha1 "6f3cc8067845537ef5da9c7b702bba21c61dd86d" => :mavericks
+    sha1 "4d21aa4cbc078e3d6d052f65ec9eef3b43f34e64" => :mountain_lion
+  end
 
   depends_on :macos => :lion
   depends_on 'pcre'
@@ -16,6 +22,14 @@ class Nu < Formula
   fails_with :gcc do
     build 5666
     cause 'nu only builds with clang'
+  end
+
+  # remove deprecated -fobjc-gc
+  # https://github.com/timburks/nu/pull/74
+  # https://github.com/Homebrew/homebrew/issues/37341
+  patch do
+    url "https://github.com/timburks/nu/commit/c0b05f1.diff"
+    sha256 "f6c1a66e470e7132ba11937c971f9b90824bb03eaa030b3e70004f9d2725c636"
   end
 
   def install
@@ -49,5 +63,9 @@ EOS
       EOS
     end
     return nil
+  end
+
+  test do
+    system bin/"nush", "-e", '(puts "Everything old is Nu again.")'
   end
 end

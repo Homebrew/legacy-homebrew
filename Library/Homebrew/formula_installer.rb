@@ -9,8 +9,10 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
+require 'cmd/postinstall'
 require 'hooks/bottles'
 require 'debrew'
+require 'sandbox'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -68,7 +70,7 @@ class FormulaInstaller
 
     unless bottle.compatible_cellar?
       if install_bottle_options[:warn]
-        opoo "Building source; cellar of #{formula.name}'s bottle is #{bottle.cellar}"
+        opoo "Building source; cellar of #{formula.full_name}'s bottle is #{bottle.cellar}"
       end
       return false
     end
@@ -102,7 +104,7 @@ class FormulaInstaller
       end
     end
   rescue FormulaUnavailableError => e
-    e.dependent = formula.name
+    e.dependent = formula.full_name
     raise
   end
 
@@ -114,7 +116,7 @@ class FormulaInstaller
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
-        "You must `brew link #{unlinked_deps*' '}' before #{formula.name} can be installed" unless unlinked_deps.empty?
+        "You must `brew link #{unlinked_deps*' '}' before #{formula.full_name} can be installed" unless unlinked_deps.empty?
     end
   end
 
@@ -155,10 +157,10 @@ class FormulaInstaller
     formula.deprecated_flags.each do |deprecated_option|
       old_flag = deprecated_option.old_flag
       new_flag = deprecated_option.current_flag
-      opoo "#{formula.name}: #{old_flag} was deprecated; using #{new_flag} instead!"
+      opoo "#{formula.full_name}: #{old_flag} was deprecated; using #{new_flag} instead!"
     end
 
-    oh1 "Installing #{Tty.green}#{formula.name}#{Tty.reset}" if show_header?
+    oh1 "Installing #{Tty.green}#{formula.full_name}#{Tty.reset}" if show_header?
 
     @@attempted << formula
 
@@ -192,8 +194,16 @@ class FormulaInstaller
     return if ARGV.force?
 
     conflicts = formula.conflicts.select do |c|
-      f = Formulary.factory(c.name)
-      f.linked_keg.exist? && f.opt_prefix.exist?
+      begin
+        f = Formulary.factory(c.name)
+      rescue TapFormulaUnavailableError
+        # If the formula name is in full-qualified name. Let's silently
+        # ignore it as we don't care about things used in taps that aren't
+        # currently tapped.
+        false
+      else
+        f.linked_keg.exist? && f.opt_prefix.exist?
+      end
     end
 
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
@@ -207,7 +217,7 @@ class FormulaInstaller
     deps = expand_dependencies(req_deps + formula.deps)
 
     if deps.empty? and only_deps?
-      puts "All dependencies for #{formula.name} are satisfied."
+      puts "All dependencies for #{formula.full_name} are satisfied."
     else
       install_dependencies(deps)
     end
@@ -229,6 +239,7 @@ class FormulaInstaller
   def install_requirement_default_formula?(req, dependent, build)
     return false unless req.default_formula?
     return true unless req.satisfied?
+    return false if req.tags.include?(:run)
     install_bottle_for?(dependent, build) || build_bottle?
   end
 
@@ -301,7 +312,7 @@ class FormulaInstaller
 
   def install_dependencies(deps)
     if deps.length > 1
-      oh1 "Installing dependencies for #{formula.name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
+      oh1 "Installing dependencies for #{formula.full_name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
     end
 
     deps.each { |dep, options| install_dependency(dep, options) }
@@ -339,13 +350,13 @@ class FormulaInstaller
 
     fi = DependencyInstaller.new(df)
     fi.options           |= tab.used_options
-    fi.options           |= dep.options
+    fi.options           |= Tab.remap_deprecated_options(df.deprecated_options, dep.options)
     fi.options           |= inherited_options
     fi.build_from_source  = build_from_source?
     fi.verbose            = verbose? && !quieter?
     fi.debug              = debug?
     fi.prelude
-    oh1 "Installing #{formula.name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
+    oh1 "Installing #{formula.full_name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     fi.install
     fi.caveats
     fi.finish
@@ -383,9 +394,9 @@ class FormulaInstaller
     link(keg)
     fix_install_names(keg) if OS.mac?
 
-    if build_bottle?
+    if build_bottle? && formula.post_install_defined?
       ohai "Not running post_install as we're building a bottle"
-      puts "You can run it manually using `brew postinstall #{formula.name}`"
+      puts "You can run it manually using `brew postinstall #{formula.full_name}`"
     else
       post_install
     end
@@ -426,7 +437,12 @@ class FormulaInstaller
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
-    args << "--env=#{ARGV.env}" if ARGV.env
+
+    if ARGV.env
+      args << "--env=#{ARGV.env}"
+    elsif formula.env.std? || formula.recursive_dependencies.any? { |d| d.name == "scons" }
+      args << "--env=std"
+    end
 
     if formula.head?
       args << "--HEAD"
@@ -448,50 +464,34 @@ class FormulaInstaller
   end
 
   def build
-    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]
+    FileUtils.rm_rf(formula.logs)
 
     @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    read, write = IO.pipe
-    # I'm guessing this is not a good way to do this, but I'm no UNIX guru
-    ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
-
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{HOMEBREW_LIBRARY_PATH}
+      -I #{HOMEBREW_LOAD_PATH}
       --
       #{HOMEBREW_LIBRARY_PATH}/build.rb
       #{formula.path}
     ].concat(build_argv)
 
-    # Ruby 2.0+ sets close-on-exec on all file descriptors except for
-    # 0, 1, and 2 by default, so we have to specify that we want the pipe
-    # to remain open in the child process.
-    args << { write => write } if RUBY_VERSION >= "2.0"
-
-    pid = fork do
-      begin
-        read.close
+    Utils.safe_fork do
+      if Sandbox.available? && ARGV.sandbox?
+        sandbox = Sandbox.new
+        formula.logs.mkpath
+        sandbox.record_log(formula.logs/"sandbox.build.log")
+        sandbox.allow_write_temp_and_cache
+        sandbox.allow_write_log(formula)
+        sandbox.allow_write_cellar(formula)
+        sandbox.exec(*args)
+      else
         exec(*args)
-      rescue Exception => e
-        Marshal.dump(e, write)
-        write.close
-        exit! 1
       end
-    end
-
-    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
-      write.close
-      data = read.read
-      read.close
-      Process.wait(pid)
-      raise Marshal.load(data) unless data.nil? or data.empty?
-      raise Interrupt if $?.exitstatus == 130
-      raise "Suspicious installation failure" unless $?.success?
     end
 
     raise "Empty installation" if Dir["#{formula.prefix}/*"].empty?
@@ -511,7 +511,7 @@ class FormulaInstaller
         keg.optlink
       rescue Keg::LinkError => e
         onoe "Failed to create #{formula.opt_prefix}"
-        puts "Things that depend on #{formula.name} will probably not build."
+        puts "Things that depend on #{formula.full_name} will probably not build."
         puts e
         Homebrew.failed = true
       end
@@ -560,6 +560,8 @@ class FormulaInstaller
     return unless formula.plist
     formula.plist_path.atomic_write(formula.plist)
     formula.plist_path.chmod 0644
+    log = formula.var/"log"
+    log.mkpath if formula.plist.include? log.to_s
   rescue Exception => e
     onoe "Failed to install plist file"
     ohai e, e.backtrace if debug?
@@ -594,10 +596,10 @@ class FormulaInstaller
   end
 
   def post_install
-    formula.post_install
+    Homebrew.run_post_install(formula)
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
-    puts "You can try again using `brew postinstall #{formula.name}`"
+    puts "You can try again using `brew postinstall #{formula.full_name}`"
     ohai e, e.backtrace if debug?
     Homebrew.failed = true
     @show_summary_heading = true
@@ -630,6 +632,7 @@ class FormulaInstaller
     )
 
     tab = Tab.for_keg(formula.prefix)
+    tab.tap = formula.tap
     tab.poured_from_bottle = true
     tab.write
   end

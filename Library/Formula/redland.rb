@@ -1,9 +1,17 @@
 require 'formula'
 
 class Redland < Formula
+  desc "RDF Library"
   homepage 'http://librdf.org/'
-  url 'http://download.librdf.org/source/redland-1.0.16.tar.gz'
-  sha1 '0dc3d65bee6d580cae84ed261720b5b4e6b1f856'
+  url 'http://download.librdf.org/source/redland-1.0.17.tar.gz'
+  sha1 'a47a7e98f934d17d60a241db90be407a0abe3c5d'
+
+  bottle do
+    sha1 "5f4840ede53c1f9ab9c7387355fc682be3a524b7" => :yosemite
+    sha1 "db4d3fdde92412bafe55e19def76b3447168595c" => :mavericks
+    sha1 "523752a1bd434159e361f66a7a72b45412d30a7a" => :mountain_lion
+  end
+
   revision 1
 
   option 'with-php', 'Build with php support'
@@ -18,8 +26,8 @@ class Redland < Formula
   depends_on :python => :optional
 
   resource 'bindings' do
-    url 'http://download.librdf.org/source/redland-bindings-1.0.16.1.tar.gz'
-    sha1 '98c20b64cf5e99cbf29fcb84490e73e2a828213a'
+    url 'http://download.librdf.org/source/redland-bindings-1.0.17.1.tar.gz'
+    sha1 '0a6cd971a3721bc6f7bde4689de04ae35a5c3578'
   end
 
   fails_with :llvm do

@@ -1,16 +1,16 @@
 require "formula"
 
 class Gawk < Formula
-  homepage "http://www.gnu.org/software/gawk/"
-  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.1.tar.xz"
-  mirror "http://ftp.gnu.org/gnu/gawk/gawk-4.1.1.tar.xz"
-  sha1 "547feb48d20e923aff58daccee97c94e047fdc18"
+  desc "GNU awk utility"
+  homepage "https://www.gnu.org/software/gawk/"
+  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.3.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gawk/gawk-4.1.3.tar.xz"
+  sha256 "e3cf55e91e31ea2845f8338bedd91e40671fc30e4d82ea147d220e687abda625"
 
   bottle do
-    revision 1
-    sha1 "7efb956662b3283b96271179bd7c3fc1cc367197" => :yosemite
-    sha1 "93f05ee77b9ae24aa7ae874b0e397439cd1b9192" => :mavericks
-    sha1 "2205db37be8b453fd1d63d4bf8b19ce6bd2ee863" => :mountain_lion
+    sha256 "c6fd269bedf83b9016fb8e09186de1c88ce18f51b1ad471f4b5ad4262066dda2" => :yosemite
+    sha256 "30486a1665295a3fee02e22465869cec9297aec262554a470bbc7f127d1766e5" => :mavericks
+    sha256 "d9edeb691699655ff990e2227abf67568916640eeffbbca959dbf3b2779c371e" => :mountain_lion
   end
 
   fails_with :llvm do

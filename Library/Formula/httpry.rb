@@ -1,6 +1,7 @@
 require "formula"
 
 class Httpry < Formula
+  desc "Packet sniffer for displaying and logging HTTP traffic"
   homepage "http://dumpsterventures.com/jason/httpry/"
   url "http://dumpsterventures.com/jason/httpry/httpry-0.1.8.tar.gz"
   sha1 "163dcd1ab8cb2e8cef3cda2d7f0dea1b04deb338"

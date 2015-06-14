@@ -1,8 +1,9 @@
 require "formula"
 
 class Transmission < Formula
+  desc "Lightweight BitTorrent client"
   homepage "http://www.transmissionbt.com/"
-  url "http://download.transmissionbt.com/files/transmission-2.84.tar.xz"
+  url "https://transmission.cachefly.net/transmission-2.84.tar.xz"
   sha1 "455359bc1fa34aeecc1bac9255ad0c884b94419c"
 
   option "with-nls", "Build with native language support"

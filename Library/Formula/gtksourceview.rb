@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gtksourceview < Formula
+  desc "Text view with syntax, undo/redo, and text marks"
   homepage 'http://projects.gnome.org/gtksourceview/'
   url 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceview/2.10/gtksourceview-2.10.5.tar.gz'
   sha1 '1bb784d1e9d9966232928cf91b1ded20e8339670'
@@ -11,7 +12,6 @@ class Gtksourceview < Formula
     sha1 "466836536733808dfbbe8c874b02b3e9afa84006" => :mountain_lion
   end
 
-  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'

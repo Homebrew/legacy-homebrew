@@ -1,6 +1,7 @@
 require "formula"
 
 class Ansifilter < Formula
+  desc "Strip or convert ANSI codes into HTML, (La)Tex, RTF, or BBCode"
   homepage "http://www.andre-simon.de/doku/ansifilter/ansifilter.html"
   url "http://www.andre-simon.de/zip/ansifilter-1.11.tar.gz"
   sha256 "bdbd6cda51be643e070c98139e79061ab3c2935c4b26c4a098bc64fa3328d1a3"

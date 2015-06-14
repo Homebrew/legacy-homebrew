@@ -85,11 +85,16 @@ module Language
       %W[
         -c
         #{shim}
+        --no-user-cfg
         install
         --prefix=#{prefix}
         --single-version-externally-managed
         --record=installed.txt
       ]
+    end
+
+    def self.package_available? python, module_name
+      quiet_system python, "-c", "import #{module_name}"
     end
   end
 end

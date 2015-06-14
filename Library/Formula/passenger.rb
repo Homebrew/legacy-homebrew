@@ -1,32 +1,38 @@
-require 'formula'
-
 class Passenger < Formula
-  homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.57.tar.gz'
-  sha1 '817e1fd7c3d96ddbdff27489122f39b3295d6ac0'
-  head 'https://github.com/phusion/passenger.git'
+  desc "Server for Ruby, Python, and Node.js apps via Apache/NGINX"
+  homepage "https://www.phusionpassenger.com/"
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.10.tar.gz"
+  sha256 'd44e1a65331755b4f063807f959081eb2fed1be3762645db7a103604d19b2366'
+  head "https://github.com/phusion/passenger.git"
 
   bottle do
-    sha1 "3fb270caab2623ff6f1ee6909b992cd20f95c189" => :yosemite
-    sha1 "f5bf7d36cfd0c0ce7b75d71de147155b134be07b" => :mavericks
-    sha1 "00e5099bd25a9b36ffd0256dc36616da9f89f5ef" => :mountain_lion
+    sha256 "002cc75503e14694d01fc96e2db6d58ec64c343520560106a9e4448173831d75" => :yosemite
+    sha256 "d181f916504b148c28ee62e7fa2ae158ac00e140647248ab66a2ba8d8310557d" => :mavericks
+    sha256 "a445adc7e7460ef1a85dd329adb2f4d541f17fe745911e432e88c829904fa663" => :mountain_lion
   end
 
-  depends_on 'pcre'
+  depends_on "pcre"
   depends_on "openssl"
   depends_on :macos => :lion
 
-  option 'without-apache2-module', 'Disable Apache2 module'
+  option "without-apache2-module", "Disable Apache2 module"
 
   def install
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
 
+    (libexec/"download_cache").mkpath
+
+    # Fixes https://github.com/phusion/passenger/issues/1288
+    rm_rf "buildout/libev"
+    rm_rf "buildout/libeio"
+    rm_rf "buildout/cache"
+
     necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
       "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
-      "helper-scripts", "ext", "resources", "buildout"]
+      "dev", "helper-scripts", "ext", "resources", "buildout"]
     libexec.mkpath
     cp_r necessary_files, libexec, :preserve => true
 
@@ -43,7 +49,7 @@ class Passenger < Formula
     system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
       "--nginx-module-config", libexec/"bin", libexec/"ext/nginx/config"
 
-    mv libexec/'man', share
+    mv libexec/"man", share
   end
 
   def caveats
@@ -66,7 +72,7 @@ class Passenger < Formula
   test do
     ruby_libdir = `#{HOMEBREW_PREFIX}/bin/passenger-config --ruby-libdir`.strip
     if ruby_libdir != (libexec/"lib").to_s
-      raise "Invalid installation"
+      fail "Invalid installation"
     end
   end
 end

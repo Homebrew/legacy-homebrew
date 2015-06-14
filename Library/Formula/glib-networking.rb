@@ -1,6 +1,7 @@
 require "formula"
 
 class GlibNetworking < Formula
+  desc "Network related modules for glib"
   homepage "https://launchpad.net/glib-networking"
   url "http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.42/glib-networking-2.42.0.tar.xz"
   sha256 "304dd9e4c0ced69094300e0b9e66cd2eaae7161b9fc3186536d11458677d820d"

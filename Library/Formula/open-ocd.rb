@@ -1,9 +1,16 @@
 require 'formula'
 
 class OpenOcd < Formula
+  desc "On-chip debugging, in-system programming and boundary-scan testing"
   homepage 'http://sourceforge.net/projects/openocd/'
-  url 'https://downloads.sourceforge.net/project/openocd/openocd/0.8.0/openocd-0.8.0.tar.bz2'
-  sha1 '10bf9eeb54e03083cb1a101785b2d69fbdf18f31'
+  url 'https://downloads.sourceforge.net/project/openocd/openocd/0.9.0/openocd-0.9.0.tar.bz2'
+  sha256 '837042ac9a156b9363cbffa1fcdaf463bfb83a49331addf52e63119642b5f443'
+
+  bottle do
+    sha256 "4122f7c2510f900833e0cd6009fc42d8e019684eeca3588befd00888acd8c610" => :yosemite
+    sha256 "bf238101c44d7ee455c886fc5c2e370bb7a9741c18d73e71ab689fc527ee77c1" => :mavericks
+    sha256 "637a2fa7abc4ddf6e8717081aab86020997b0a44d60901f6e3d408c07a9599d4" => :mountain_lion
+  end
 
   head do
     url 'git://git.code.sf.net/p/openocd/code'

@@ -1,15 +1,14 @@
-require "formula"
-
 class Megatools < Formula
+  desc "Command-line client for Mega.co.nz"
   homepage "http://megatools.megous.com/"
-  url "http://megatools.megous.com/builds/megatools-1.9.93.tar.gz"
-  sha1 "06411d7ee19a3acaae97346c87ed3194d7d0c321"
+  url "http://megatools.megous.com/builds/megatools-1.9.95.tar.gz"
+  sha256 "a46a560c8769b40f073fd27b321d6b89f8ac0f0ca73e6ed83047c2619fe6b437"
 
   bottle do
     cellar :any
-    sha1 "5eb36e9319cf36da464113512f0234ad415cba8b" => :yosemite
-    sha1 "686394945133e0cb535fb92cbb4e3d98d103ddad" => :mavericks
-    sha1 "a6ccf99952c6c701191ead83c6a693bf65a1d4a4" => :mountain_lion
+    sha256 "0311e2291fada711351ae78aed4e1a07650f662546672e13d7e9c804dd331e29" => :yosemite
+    sha256 "cfe36bb96c87610af7cf48d554d79639523976ceb9ca7dbd1c5676472b6075cb" => :mavericks
+    sha256 "b9c56994907575b087c495495ff131d578809a2d1e1cb2199f8a135fe1dfb39c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

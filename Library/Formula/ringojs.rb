@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ringojs < Formula
+  desc "CommonJS-based JavaScript runtime"
   homepage 'http://ringojs.org'
   url 'https://github.com/ringo/ringojs/releases/download/v0.11.0/ringojs-0.11.tar.gz'
   sha1 'ffeca5905165b0c883fb81cfcad8ca640772bf03'

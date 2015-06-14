@@ -1,14 +1,15 @@
-require 'formula'
-
 class Deheader < Formula
-  homepage 'http://www.catb.org/~esr/deheader'
-  url 'http://www.catb.org/~esr/deheader/deheader-0.8.tar.gz'
-  sha1 '4527b4675a7b06d728cfa989a3b7844cdf091b40'
-  head 'https://git.gitorious.org/deheader/deheader.git'
+  desc "Analyze C/C++ files for unnecessary headers"
+  homepage "http://www.catb.org/~esr/deheader"
+  url "http://www.catb.org/~esr/deheader/deheader-1.1.tar.gz"
+  sha256 "69f69e9c7d9398221cb49f7de91df0d122e4b0ec942bede2d7c592401e4b913c"
+  head "git://thyrsus.com/repositories/deheader.git"
 
   def install
     bin.install "deheader"
-    man1.install "deheader.1"
+    # Man page is defined in a DocBook XML file, the DTD for which is MIA,
+    # thus there's no way to build it from HEAD...
+    man1.install "deheader.1" unless build.head?
   end
 
   test do
@@ -20,6 +21,6 @@ class Deheader < Formula
         return 0;
       }
     EOS
-    assert_equal "121", `deheader test.c | tr -cd 0-9`
+    assert_equal "121", shell_output("deheader test.c | tr -cd 0-9")
   end
 end

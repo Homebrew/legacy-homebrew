@@ -1,9 +1,8 @@
-require "formula"
-
 class CssCrush < Formula
+  desc "An extensible PHP based CSS preprocessor"
   homepage "http://the-echoplex.net/csscrush"
-  url "https://github.com/peteboere/css-crush/archive/v2.2.1.tar.gz"
-  sha1 "39c721af2765f36d4a2990fe365fb18c3ee41485"
+  url "https://github.com/peteboere/css-crush/archive/v2.3.0.tar.gz"
+  sha1 "1141311ad12e4472d5ec2fddcefec42d98655725"
 
   def install
     libexec.install Dir["*"]

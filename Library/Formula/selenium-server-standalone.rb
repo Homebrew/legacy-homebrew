@@ -1,15 +1,8 @@
-require "formula"
-
 class SeleniumServerStandalone < Formula
+  desc "Browser automation for testing purposes"
   homepage "http://seleniumhq.org/"
-  url "http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.1.jar"
-  sha1 "ef1b5f8ae9c99332f99ba8794988a1d5b974d27b"
-
-  bottle do
-    sha1 "fa420b238130adea8407329e2b459a79eaa939dc" => :mavericks
-    sha1 "b0ac2d1411b63c50639be91da20b898d8c7de53f" => :mountain_lion
-    sha1 "dc9029c9028d18460fdd9c7e0ba296f05e5acd00" => :lion
-  end
+  url "https://selenium-release.storage.googleapis.com/2.46/selenium-server-standalone-2.46.0.jar"
+  sha256 "deb997cfbbc29680b20e7af6960b5c49ecd5aa3e17fba0d3288cfb9c62a9b9e6"
 
   def install
     libexec.install "selenium-server-standalone-#{version}.jar"

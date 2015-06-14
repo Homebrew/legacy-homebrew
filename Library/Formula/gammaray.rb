@@ -1,6 +1,7 @@
 require "formula"
 
 class Gammaray < Formula
+  desc "Examine and manipulate Qt application internals at runtime"
   homepage "http://www.kdab.com/kdab-products/gammaray/"
   url "https://github.com/KDAB/GammaRay/archive/v2.2.0.tar.gz"
   sha1 "c6055ae24b67465528b1747f2ac291adcd805a8e"

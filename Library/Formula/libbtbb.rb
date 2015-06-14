@@ -1,18 +1,19 @@
 require "formula"
 
 class Libbtbb < Formula
+  desc "Bluetooth baseband decoding library"
   homepage "https://github.com/greatscottgadgets/libbtbb"
-  url "https://github.com/greatscottgadgets/libbtbb/archive/2014-02-R3.tar.gz"
-  sha1 "b42c19cd1965b18409661d765734adec9c1f7449"
-  version "2014-02-R3"
+  url "https://github.com/greatscottgadgets/libbtbb/archive/2014-02-R4.tar.gz"
+  sha1 "281bb4a68f5e79553d704a6fe5256944338ac4b3"
+  version "2014-02-R4"
 
   head "https://github.com/greatscottgadgets/libbtbb.git"
 
   bottle do
     cellar :any
-    sha1 "9ce274e76c4e44bb9d5ff166b0f920ef2b6d7997" => :yosemite
-    sha1 "c35dcd7c94a2ca00db402954b1eabba33f3bab7b" => :mavericks
-    sha1 "3238e7c992e725806f3bea8b683638ab337978ab" => :mountain_lion
+    sha1 "e1870ab678e92b9524d3f1ea05862fedc3d196eb" => :yosemite
+    sha1 "52071cec084c13a10a08102e391f457d176ecd1d" => :mavericks
+    sha1 "3069f205340202284cd8e0ec902d056c4f851bba" => :mountain_lion
   end
 
   option :universal

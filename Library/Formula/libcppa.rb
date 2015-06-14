@@ -1,42 +1,52 @@
-require "formula"
-
 class Libcppa < Formula
+  # TODO: since libcppa has been renamed to CAF, this formula should eventually
+  # be renamed to 'caf.rb'.
+  desc "Implementation of the Actor Model for C++"
   homepage "http://actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/0.11.0.tar.gz"
-  sha1 "202f2fd72a5af59d7ace6b7300df1fcc19f1857f"
-
-  # since upstream has rename the project to actor-framework (or libcaf in its
-  # pkgconfig file), we need to rename libcppa to libcaf in the future
+  url "https://github.com/actor-framework/actor-framework/archive/0.13.2.tar.gz"
+  sha256 "3ccf7e469740e750eef31f14b965b00f7b6e3a89b05086a088ca905b3b1a04e6"
+  head "https://github.com/actor-framework/actor-framework.git",
+    :branch => "develop"
 
   bottle do
     cellar :any
-    sha1 "b0e9bef1983d561763e21539c9b9196d75e5a935" => :yosemite
-    sha1 "ed71bb57236d2aecf4e19e5044ca3af22969b5c5" => :mavericks
-    sha1 "8224fe20d5d4bd184a9b6c15ddd6143740ea23ca" => :mountain_lion
+    sha256 "7534496109bd370daae9e9265ec4d380e6150c4f147ad5628e2b6f25620f71e2" => :yosemite
+    sha256 "0524882f335b97e63b75867dfe2b22139c41fa6552a46c31d1f7a6079bc82483" => :mavericks
+    sha256 "4d0143d27f761dcfae634babf7884a4f46f3953034c74451aa63aca9ad13dd8a" => :mountain_lion
   end
 
   depends_on "cmake" => :build
 
   needs :cxx11
 
-  option "with-opencl", "Build with OpenCL actors"
-  option "with-examples", "Build examples"
-  option "without-check", "Skip build-time tests (not recommended)"
+  option "with-opencl", "build with support for OpenCL actors"
+  option "without-check", "skip unit tests (not recommended)"
 
   def install
-    ENV.cxx11
-
-    args = %W[
-      --prefix=#{prefix}
-      --build-static
-    ]
-
+    args = %W[./configure --prefix=#{prefix} --no-examples --build-static]
     args << "--no-opencl" if build.without? "opencl"
-    args << "--no-examples" if build.without? "examples"
 
-    system "./configure", *args
+    system *args
     system "make"
     system "make", "test" if build.with? "check"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <iostream>
+      #include <caf/all.hpp>
+      using namespace caf;
+      int main() {
+        scoped_actor self;
+        self->spawn([] {
+          std::cout << "test" << std::endl;
+        });
+        self->await_all_other_actors_done();
+        return 0;
+      }
+    EOS
+    system *%W[#{ENV.cxx} -std=c++11 -stdlib=libc++ test.cpp -lcaf_core -o test]
+    system "./test"
   end
 end

@@ -1,9 +1,8 @@
-require "formula"
-
 class Libdvdnav < Formula
+  desc "DVD navigation library"
   homepage "https://dvdnav.mplayerhq.hu/"
-  url "http://download.videolan.org/pub/videolan/libdvdnav/5.0.1/libdvdnav-5.0.1.tar.bz2"
-  sha256 "72b1cb8266f163d4a1481b92c7b6c53e6dc9274d2a6befb08ffc351fe7a4a2a9"
+  url "https://download.videolan.org/pub/videolan/libdvdnav/5.0.3/libdvdnav-5.0.3.tar.bz2"
+  sha256 "5097023e3d2b36944c763f1df707ee06b19dc639b2b68fb30113a5f2cbf60b6d"
 
   head do
     url "git://git.videolan.org/libdvdnav.git"
@@ -14,10 +13,9 @@ class Libdvdnav < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "8c2db56f7b72fb9dc3ab3c671895f849d6afd686" => :yosemite
-    sha1 "6719c51ec9f3d7746cc23996603ab7e66ea739c7" => :mavericks
-    sha1 "7a08652f39426feefc93525ecb6aceab4d3aa720" => :mountain_lion
+    sha1 "c99a864651ceff870b4a5826c80b6ef88ad8671d" => :yosemite
+    sha1 "30322b1a670e188773fea56f23604e02679530f8" => :mavericks
+    sha1 "c34ab3283adfcc429dbecebec5251a57ffd88a61" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

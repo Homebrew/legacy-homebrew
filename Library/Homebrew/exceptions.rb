@@ -65,6 +65,37 @@ class TapFormulaUnavailableError < FormulaUnavailableError
   end
 end
 
+class TapFormulaAmbiguityError < RuntimeError
+  attr_reader :name, :paths, :formulae
+
+  def initialize name, paths
+    @name = name
+    @paths = paths
+    @formulae = paths.map do |path|
+      path.to_s =~ HOMEBREW_TAP_PATH_REGEX
+      "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+    end
+
+    super <<-EOS.undent
+      Formulae found in multiple taps: #{formulae.map { |f| "\n       * #{f}" }.join}
+
+      Please use the fully-qualified name e.g. #{formulae.first} to refer the formula.
+    EOS
+  end
+end
+
+class TapUnavailableError < RuntimeError
+  attr_reader :name
+
+  def initialize name
+    @name = name
+
+    super <<-EOS.undent
+      No available tap #{name}.
+    EOS
+  end
+end
+
 class OperationInProgressError < RuntimeError
   def initialize name
     message = <<-EOS.undent
@@ -81,7 +112,7 @@ class CannotInstallFormulaError < RuntimeError; end
 
 class FormulaInstallationAlreadyAttemptedError < RuntimeError
   def initialize(formula)
-    super "Formula installation already attempted: #{formula.name}"
+    super "Formula installation already attempted: #{formula.full_name}"
   end
 end
 
@@ -113,7 +144,7 @@ class FormulaConflictError < RuntimeError
 
   def message
     message = []
-    message << "Cannot install #{formula.name} because conflicting formulae are installed.\n"
+    message << "Cannot install #{formula.full_name} because conflicting formulae are installed.\n"
     message.concat conflicts.map { |c| conflict_message(c) } << ""
     message << <<-EOS.undent
       Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
@@ -153,25 +184,29 @@ class BuildError < RuntimeError
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
       if formula.tap?
-        puts "If reporting this issue please do so at (not Homebrew/homebrew):"
-        puts "  https://github.com/#{formula.tap}/issues"
+        case formula.tap
+        when "homebrew/homebrew-boneyard"
+          puts "#{formula} was moved to homebrew-boneyard because it has unfixable issues."
+          puts "Please do not file any issues about this. Sorry!"
+        else
+          puts "If reporting this issue please do so at (not Homebrew/homebrew):"
+          puts "  https://github.com/#{formula.tap}/issues"
+        end
       end
     else
       require 'cmd/config'
       require 'cmd/--env'
 
-      unless formula.core_formula?
-        ohai "Formula"
-        puts "Tap: #{formula.tap}"
-        puts "Path: #{formula.path}"
-      end
+      ohai "Formula"
+      puts "Tap: #{formula.tap}" if formula.tap?
+      puts "Path: #{formula.path}"
       ohai "Configuration"
       Homebrew.dump_verbose_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
       puts
-      onoe "#{formula.name} #{formula.version} did not build"
-      unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]).empty?
+      onoe "#{formula.full_name} #{formula.version} did not build"
+      unless (logs = Dir["#{formula.logs}/*"]).empty?
         puts "Logs:"
         puts logs.map{|fn| "     #{fn}"}.join("\n")
       end
@@ -189,7 +224,7 @@ end
 class CompilerSelectionError < RuntimeError
   def initialize(formula)
     super <<-EOS.undent
-      #{formula.name} cannot be built with any available compilers.
+      #{formula.full_name} cannot be built with any available compilers.
       To install this formula, you may need to:
         brew install gcc
       EOS
@@ -250,7 +285,7 @@ end
 
 class ResourceMissingError < ArgumentError
   def initialize(formula, resource)
-    super "#{formula.name} does not define resource #{resource.inspect}"
+    super "#{formula.full_name} does not define resource #{resource.inspect}"
   end
 end
 

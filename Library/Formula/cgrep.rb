@@ -1,27 +1,30 @@
-require "formula"
 require "language/haskell"
 
 class Cgrep < Formula
   include Language::Haskell::Cabal
 
+  desc "Context-aware grep for source code"
   homepage "https://github.com/awgn/cgrep"
-  url "https://github.com/awgn/cgrep/archive/v6.4.9.tar.gz"
-  sha1 "0b5bc5bb96b2c70a7353ac036ce5949bbe2a9bc1"
+  url "https://github.com/awgn/cgrep/archive/v6.4.12.tar.gz"
+  sha256 "a38d7957854b9b6f55ed8610d88b0ba3d5061d7194e3ec13e608d7a4515371f5"
   head "https://github.com/awgn/cgrep.git"
 
+  revision 1
+
   bottle do
-    cellar :any
-    sha1 "08b871722472f4d2ee246ca59cf9266e7f37f78a" => :yosemite
-    sha1 "cd182ff755db1210bba15dce69d5cf90acfa9e82" => :mavericks
-    sha1 "57d998d3e8dfc19fc7d9fdb67e9ebf92e9e5ed26" => :mountain_lion
+    sha256 "677084bcc353b3bfc75629c6b974027c34c7330b2ecabe8489462585fbd10159" => :yosemite
+    sha256 "e8e7d72ed0db7ff54ec8bf6a08f4744135e2616df6360041736e26c8ff789668" => :mavericks
+    sha256 "5721bb4900b6d0ff7f6eb40c40bafa56f7153206d6851dd66297cf64b1c178e9" => :mountain_lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "gmp"
+
+  setup_ghc_compilers
 
   def install
-    install_cabal_package
+    # The "--allow-newer" is a hack for GHC 7.10.1, remove when possible.
+    install_cabal_package "--allow-newer"
   end
 
   test do

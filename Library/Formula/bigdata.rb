@@ -1,30 +1,18 @@
-require "formula"
-
 class Bigdata < Formula
-  homepage "http://bigdata.com/"
-  url "http://bigdata.com/deploy/bigdata-1.3.1.tgz"
-  sha1 "bcfacd08b1e1c7429d3ca31b8632a20cdff1fb79"
+  desc "Graph database supporting RDF data model, Sesame, and Blueprint APIs"
+  homepage "http://www.blazegraph.com/bigdata"
+  url "https://downloads.sourceforge.net/project/bigdata/bigdata/1.5.1/bigdata-bundled.jar"
+  sha256 "092ecfb1293de27ef40c02795a34ac410e30d175623a342b27271952f01c1f1a"
+  version "1.5.1"
+
+  depends_on :java => "1.7+"
 
   def install
-    prefix.install "doc", "var", "bin"
-    libexec.install Dir["lib/*.jar"]
-
-    File.rename "#{bin}/bigdataNSS", "#{bin}/bigdata"
-
-    # Set the installation path as the root for the bin scripts:
-    inreplace "#{bin}/bigdata" do |s|
-      s.sub! "<%= BD_HOME %>", prefix
-      s.sub! "<%= INSTALL_TYPE %>", "BREW"
-    end
-
-    # Set the installation path as the root for bigdata.jnl file location (<bigdata_home>/data):
-    inreplace "#{prefix}/var/jetty/WEB-INF/RWStore.properties", "<%= BD_HOME %>", prefix
-
-    # Set the installation path as the root for log files (<bigdata_home>/log):
-    inreplace "#{prefix}/var/jetty/WEB-INF/classes/log4j.properties", "<%= BD_HOME %>", prefix
+    libexec.install "bigdata-bundled.jar"
+    bin.write_jar_script libexec/"bigdata-bundled.jar", "bigdata"
   end
 
-  plist_options :startup => 'true', :manual => 'bigdata start'
+  plist_options :startup => "true", :manual => "bigdata start"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -45,4 +33,13 @@ class Bigdata < Formula
     EOS
   end
 
+  test do
+    server = fork do
+      system bin/"bigdata"
+    end
+    sleep 5
+    Process.kill("TERM", server)
+    File.exist? "bigdata.jnl"
+    File.exist? "rules.log"
+  end
 end

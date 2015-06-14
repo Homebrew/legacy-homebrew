@@ -1,16 +1,17 @@
-require "formula"
-
 class Lmdb < Formula
+  desc "Lightning memory-mapped database: key-value data store"
   homepage "http://symas.com/mdb/"
-  url "https://gitorious.org/mdb/mdb.git", :tag => "LMDB_0.9.14"
+  url "https://github.com/LMDB/lmdb/archive/LMDB_0.9.14.tar.gz"
+  sha256 "6447d7677a991e922e3e811141869421a2b67952586aa68a26e018ea8ee3989c"
 
   head "git://git.openldap.org/openldap.git", :branch => "mdb.master"
 
   bottle do
     cellar :any
-    sha1 "7e7e4fb592dccd7c34553760930a9cc59d58c7fb" => :yosemite
-    sha1 "835766327dd8a41e993a7e5e54ca415cceec1f15" => :mavericks
-    sha1 "5914b3dfe5980896f5242b67cf66fadfb59a0ce5" => :mountain_lion
+    revision 1
+    sha256 "49b620b1ddb51161db870b239de4cf699a7d2b97de1e13901e5fdc8d3358394e" => :yosemite
+    sha256 "fec09772155dae25a6aec9422e07927e60ad5ef0f3d95b1aca12ba464ed347f6" => :mavericks
+    sha256 "3ad74588a349fb8e4bacb63017c52928001d2adf1a41adde0282ba2bb35f3165" => :mountain_lion
   end
 
   def install

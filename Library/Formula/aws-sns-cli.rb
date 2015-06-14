@@ -1,25 +1,36 @@
-require 'formula'
-
-class AwsSnsCli < AmazonWebServicesFormula
-  homepage 'http://aws.amazon.com/developertools/3688'
-  url 'http://sns-public-resources.s3.amazonaws.com/SimpleNotificationServiceCli-2010-03-31.zip'
+class AwsSnsCli < Formula
+  desc "Client for Amazon Simple Notification web service"
+  homepage "https://aws.amazon.com/developertools/3688"
+  url "https://sns-public-resources.s3.amazonaws.com/SimpleNotificationServiceCli-2010-03-31.zip"
   # The version in the tarball is the API version; this is the tool version
-  version '2013-09-27'
-  sha1 '192bd9e682f2b27a3c10f207f7a85c65dcaae471'
+  version "2013-09-27"
+  sha1 "192bd9e682f2b27a3c10f207f7a85c65dcaae471"
+
+  depends_on :java
 
   def install
-    rm Dir['bin/*.cmd'] # Remove Windows versions
-
-    # There is a "service" binary, which of course will conflict with any number
-    # other brews that have a generically named tool. So don't just blindly
-    # install bin to the prefix.
-    jars = prefix/'jars'
-    jars.install "bin", "lib"
-    system "chmod +x #{jars}/bin/*"
-    bin.install_symlink Dir["#{jars}/bin/sns-*"]
+    env = Language::Java.java_home_env.merge(:AWS_SNS_HOME => libexec)
+    rm Dir["bin/*.cmd"] # Remove Windows versions
+    chmod 0755, Dir["bin/*"]
+    libexec.install Dir["*"]
+    Pathname.glob("#{libexec}/bin/*") do |file|
+      next if file.directory?
+      basename = file.basename
+      next if basename.to_s == "service"
+      (bin/basename).write_env_script file, env
+    end
   end
 
   def caveats
-    standard_instructions "AWS_SNS_HOME", prefix/'jars'
+    <<-EOS.undent
+      Before you can use these tools you must export some variables to your $SHELL.
+        export AWS_ACCESS_KEY="<Your AWS Access ID>"
+        export AWS_SECRET_KEY="<Your AWS Secret Key>"
+        export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
+    EOS
+  end
+
+  test do
+    assert_match /w.x.y.z/, shell_output("#{bin}/sns-version")
   end
 end

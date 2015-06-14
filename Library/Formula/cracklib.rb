@@ -1,6 +1,7 @@
 require "formula"
 
 class Cracklib < Formula
+  desc "LibCrack password checking library"
   homepage "http://cracklib.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/cracklib/cracklib/2.9.2/cracklib-2.9.2.tar.gz"
   sha1 "a780211a87a284297aa473fe2b50584b842a0e98"

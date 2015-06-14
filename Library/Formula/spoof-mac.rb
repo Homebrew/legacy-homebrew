@@ -1,20 +1,23 @@
 class SpoofMac < Formula
-  homepage "http://feross.org/spoofmac/"
-  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.0.tar.gz"
-  sha1 "6a1d44ee300f30c1e2406fa612950adedc7367d2"
+  desc "Spoof your MAC address in OS X"
+  homepage "https://github.com/feross/SpoofMAC"
+  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.5.tar.gz"
+  sha256 "16576c5197d2abf728ebad282f94872c7c79d2a65693b72a1644b69414814134"
+
   head "https://github.com/feross/SpoofMAC.git"
 
   bottle do
-    sha1 "13efa686db9f20bc7cfb69f2ebc18583c2bb990e" => :yosemite
-    sha1 "2d68dfc7103ce1c3f99d1a6a48460bc7370310a2" => :mavericks
-    sha1 "bdecbe4eb2ccd5ddb2f340922c37f652e1b3b1f2" => :mountain_lion
+    cellar :any
+    sha256 "f4b4c37c0bb9995e1b3ee43801e063c042ba651fa4b7f746d7c14ae18ef5692d" => :yosemite
+    sha256 "91dbb7c621dbb6d64fd8d9e9571185a01c41b89d13d5793c2f626948a8abb6f7" => :mavericks
+    sha256 "c13d7a193e153dff43c2390a55ee84757f63f04d87008ea4b0889b3b06242f34" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "docopt" do
     url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
-    sha1 "224a3ec08b56445a1bd1583aad06b00692671e04"
+    sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
   end
 
   def install

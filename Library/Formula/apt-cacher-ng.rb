@@ -1,6 +1,7 @@
 require 'formula'
 
 class AptCacherNg < Formula
+  desc "Caching proxy"
   homepage 'http://www.unix-ag.uni-kl.de/~bloch/acng/'
   url "http://ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.7.27.orig.tar.xz"
   sha1 "ae1324bf3c42909546f2b9d2a25cd9d837977a42"

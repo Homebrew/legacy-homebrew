@@ -1,6 +1,7 @@
 require "formula"
 
 class Tuntap < Formula
+  desc "Virtual network interfaces for OS X"
   homepage "http://tuntaposx.sourceforge.net/"
 
   stable do

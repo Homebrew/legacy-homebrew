@@ -1,15 +1,17 @@
 require "formula"
 
 class Ideviceinstaller < Formula
+  desc "Cross-platform library and tools for communicating with iOS devices"
   homepage "http://www.libimobiledevice.org/"
   url "http://www.libimobiledevice.org/downloads/ideviceinstaller-1.1.0.tar.bz2"
   sha1 "5e2c47b9e6ac6d610b7bfe5186c8e84536549ce4"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "3c255cc07204fe0b7b9715cc8e9f5caf46f496e9" => :yosemite
-    sha1 "883165e904a0d4dde166597efc1f709598f2a8b8" => :mavericks
-    sha1 "23fbfb97b7ce046ac3348ad47914d28bd2165ba9" => :mountain_lion
+    sha1 "893e9e6cb97a2073bb0b42e9ae09cd5d085f6f0f" => :yosemite
+    sha1 "e484976abf87bbf958c003b5f651db9329be862b" => :mavericks
+    sha1 "7a8a684bb21b714c447fa484fa6cd4a8f6027313" => :mountain_lion
   end
 
   head do

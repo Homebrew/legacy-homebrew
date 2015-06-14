@@ -1,20 +1,22 @@
 require 'formula'
 
 class Mahout < Formula
-  homepage 'http://mahout.apache.org/'
-  url 'http://apache.cs.utah.edu/mahout/0.9/mahout-distribution-0.9.tar.gz'
-  sha1 'b0d192a33dcc3f00439bf2ffbc313c6ef47510c3'
+  desc "Library to help build scalable machine learning libraries"
+  homepage 'https://mahout.apache.org/'
+  url 'https://www.apache.org/dyn/closer.cgi?path=mahout/0.10.0/mahout-distribution-0.10.0.tar.gz'
+  sha1 'c8dcb51a04eb026eb9fd0fe6cb496cb101cf632d'
 
   head do
-    url 'http://svn.apache.org/repos/asf/mahout/trunk'
+    url 'https://svn.apache.org/repos/asf/mahout/trunk'
     depends_on 'maven' => :build
   end
 
   depends_on 'hadoop'
+  depends_on :java
 
   def install
     if build.head?
-      system 'chmod 755 ./bin'
+      chmod 755, './bin'
       system 'mvn -DskipTests clean install'
     end
 

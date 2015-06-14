@@ -1,6 +1,7 @@
 require "formula"
 
 class Unoconv < Formula
+  desc "Convert between any document format supported by OpenOffice"
   homepage "http://dag.wiee.rs/home-made/unoconv/"
   url "http://dag.wieers.com/home-made/unoconv/unoconv-0.6.tar.gz"
   sha1 "d6c3574639b9ceedcb866b84f18ba7158f25db48"

@@ -8,7 +8,10 @@ module Homebrew
 
     # Unbrewed uses the PREFIX, which will exist
     # Things below use the CELLAR, which doesn't until the first formula is installed.
-    return unless HOMEBREW_CELLAR.exist?
+    unless HOMEBREW_CELLAR.exist?
+      raise NoSuchKegError.new(ARGV.named.first) if ARGV.named.any?
+      return
+    end
 
     if ARGV.include? '--pinned' or ARGV.include? '--versions'
       filtered_list
@@ -31,6 +34,10 @@ module Homebrew
     lib/gio/*
     lib/node_modules/*
     lib/python[23].[0-9]/*
+    lib/pypy/*
+    lib/pypy3/*
+    share/pypy/*
+    share/pypy3/*
     share/doc/homebrew/*
     share/info/dir
     share/man/man1/brew.1

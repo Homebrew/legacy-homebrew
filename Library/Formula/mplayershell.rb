@@ -8,6 +8,7 @@ class MPlayerPresented < Requirement
 end
 
 class Mplayershell < Formula
+  desc "Improved visual experience for MPlayer on OS X"
   homepage 'https://github.com/donmelton/MPlayerShell'
   url 'https://github.com/donmelton/MPlayerShell/archive/0.9.3.tar.gz'
   sha1 '22af911cfd379d34756c0a59b07fcdeaad77c493'

@@ -1,23 +1,31 @@
-require "formula"
-
 class Yara < Formula
+  desc "Malware identification and classification tool"
   homepage "https://github.com/plusvic/yara/"
-  url "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz"
-  sha1 "dd1a92b1469cd629f6cd368aec32f207375b125b"
+  url "https://github.com/plusvic/yara/archive/v3.3.0.tar.gz"
+  sha1 "6f72d80f21336c098f9013212d496d3920d9ef18"
   head "https://github.com/plusvic/yara.git"
 
   bottle do
     cellar :any
-    sha1 "3f77c2481bf0bfbd4be617a06b98611d9595ca41" => :yosemite
-    sha1 "19e0547d33cacea6807a515f7c42e65c3fc8d842" => :mavericks
-    sha1 "11e14894b2c26b452884fc3cf73f5cc4ebc71fcc" => :mountain_lion
+    revision 1
+    sha256 "cc3f189a1514c82ca28bbc40dccdc63e7abeea7adc737504ef545d2085983508" => :yosemite
+    sha256 "b75176a83cc1d0285a565f52e5d5be0bcb00dd70d2978a2d6b5ad25a8de6a09e" => :mavericks
+    sha256 "f5a26831ec9a3e051eca85ee701bbd20ca5c5923d2fb9655cb8aa278ed25efc4" => :mountain_lion
   end
 
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "pcre"
   depends_on "openssl"
+
+
+  # fixes a variable redefinition error with clang
+  patch do
+    url "https://github.com/plusvic/yara/pull/261.diff"
+    sha1 "17ed1efbd2c4575109bb7b7e2f0c883795dc3163"
+  end
 
   def install
     # Use of "inline" requires gnu89 semantics
@@ -31,6 +39,10 @@ class Yara < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+
+    cd "yara-python" do
+      system "python", *Language::Python.setup_install_args(prefix)
+    end
   end
 
   test do

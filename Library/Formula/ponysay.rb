@@ -1,14 +1,14 @@
-require "formula"
-
 class Ponysay < Formula
+  desc "Cowsay but with ponies"
   homepage "http://erkin.co/ponysay/"
   url "https://github.com/erkin/ponysay/archive/3.0.2.tar.gz"
   sha1 "e152b4ffea3dff8d2ca18ab597344e9b50ab78e6"
 
   bottle do
-    sha1 "b84b8b2c6376c9f0dd6cc404dc3089702c14da38" => :mavericks
-    sha1 "f4c871b6a3c8d1afcb2c36f83df7237f4c825e9b" => :mountain_lion
-    sha1 "ad4531eef91d6dd525d9d38909e11f106b78cfe2" => :lion
+    revision 1
+    sha1 "77682c4c9a1114e8c71d27ef21483ea709ec8614" => :yosemite
+    sha1 "90083a6bd5118323ae7ea7b3117c43c6b10bdd72" => :mavericks
+    sha1 "085a01cbf4ee1ed72361e87a040578e72369799e" => :mountain_lion
   end
 
   depends_on :python3
@@ -21,5 +21,9 @@ class Ponysay < Formula
            "--cache-dir=#{prefix}/var/cache",
            "--sysconf-dir=#{prefix}/etc",
            "install"
+  end
+
+  test do
+    system "#{bin}/ponysay", "-A"
   end
 end

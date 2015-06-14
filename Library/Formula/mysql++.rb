@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mysqlxx < Formula
+  desc "C++ wrapper for MySQL's C API"
   homepage 'http://tangentsoft.net/mysql++/'
   url 'http://tangentsoft.net/mysql++/releases/mysql++-3.2.1.tar.gz'
   sha1 '1ce5a4484b66d9852718412315e1409cafd8c397'

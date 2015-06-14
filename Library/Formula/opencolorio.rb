@@ -1,6 +1,7 @@
 require 'formula'
 
 class Opencolorio < Formula
+  desc "Color management solution geared towards motion picture production"
   homepage 'http://opencolorio.org/'
   url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.9.tar.gz'
   sha1 '45efcc24db8f8830b6892830839da085e19eeb6d'

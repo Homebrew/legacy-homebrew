@@ -1,15 +1,14 @@
-require "formula"
-
 class DnscryptProxy < Formula
+  desc "Secure communications between a client and a DNS resolver"
   homepage "http://dnscrypt.org"
-  url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.4.2/dnscrypt-proxy-1.4.2.tar.bz2"
-  mirror "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.2.tar.bz2"
-  sha256 "766bcd8874cd6cbfeeeb7246c75c39ddc14317ad81ad713bd6cfc9529b2f0c0d"
+  url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.5.0/dnscrypt-proxy-1.5.0.tar.bz2"
+  mirror "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.5.0.tar.bz2"
+  sha256 "dd1a09baff5685cf939c429ba0258f66a79d464bc5ac130d8d30e667fb8ee3b2"
 
   bottle do
-    sha1 "2a09152f68e40dd76d2415cb7afebf0480881578" => :yosemite
-    sha1 "80fa7111d860b34bb312381886e2b73128db906e" => :mavericks
-    sha1 "401db4fb2a2dcee39edcbeb8b04e30ef669a8b4a" => :mountain_lion
+    sha256 "e7062b1b7be9232ae720c10a8408947979d067309f858876d69f840682f4c232" => :yosemite
+    sha256 "d68a2f9232aff5b1565221fbd188dd0a763cca36bde24edfc7bc41414c06fa93" => :mavericks
+    sha256 "13a888618cccd52d7fc902fd209d9c681cbf760f06306022f17bdf94e098cf3a" => :mountain_lion
   end
 
   head do
@@ -20,7 +19,8 @@ class DnscryptProxy < Formula
     depends_on "libtool" => :build
   end
 
-  option "plugins", "Support plugins and install example plugins."
+  option "with-plugins", "Support plugins and install example plugins."
+  deprecated_option "plugins" => "with-plugins"
 
   depends_on "libsodium"
 
@@ -28,7 +28,7 @@ class DnscryptProxy < Formula
     system "autoreconf", "-if" if build.head?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    if build.include? "plugins"
+    if build.with? "plugins"
       args << "--enable-plugins"
       args << "--enable-relaxed-plugins-permissions"
       args << "--enable-plugins-root"
@@ -93,5 +93,9 @@ class DnscryptProxy < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{sbin}/dnscrypt-proxy", "--version"
   end
 end

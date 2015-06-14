@@ -1,29 +1,45 @@
-require 'formula'
-
 class Newt < Formula
+  desc "Library for color text mode, widget based user interfaces"
   homepage 'https://fedorahosted.org/newt/'
-  url 'https://fedorahosted.org/releases/n/e/newt/newt-0.52.16.tar.gz'
-  sha1 '678bf57e0a7e28db4da1a2951dbb65f9ce882f73'
+  url 'https://fedorahosted.org/releases/n/e/newt/newt-0.52.18.tar.gz'
+  sha1 '2992c926bd3699ff0d6fd7549d4a8a018e3ac8fd'
+
+  bottle do
+    cellar :any
+    sha1 "447b7cdf5ba5fb0be6bcaa80a9c30a5112071a87" => :yosemite
+    sha1 "07bcf73d646dd489d10d68ded6811aa5a7d5ea57" => :mavericks
+    sha1 "599600fa6e92c38dbaa7bb6e1138eda04a4c5bf1" => :mountain_lion
+  end
 
   depends_on 'gettext'
   depends_on 'popt'
   depends_on 's-lang'
   depends_on :python => :optional
 
+  # build dylibs with -dynamiclib; version libraries
   patch :p0 do
-    url "https://trac.macports.org/export/111598/trunk/dports/devel/libnewt/files/patch-configure.ac.diff"
-    sha1 "d01bd0d8cd2b679c26f0f443bde495a52abe5a4f"
-  end
-
-  patch :p0 do
-    url "https://gist.githubusercontent.com/co-me/6725961/raw/aa8bb06967ad5360eab89e22c1fe15b36bfa06e3/patch-Makefile.in.diff"
-    sha1 "8cd3b609cd7dffbc2abf00454dcba0a78967bce7"
+    url "https://trac.macports.org/export/132914/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff"
+    sha1 "f366a650ed100317344a3e7f49981a6dca1f4889"
   end
 
   def install
     args = ["--prefix=#{prefix}", "--without-tcl"]
     args << "--without-python" if build.without? 'python'
+
+    inreplace "Makefile.in" do |s|
+      # name libraries correctly
+      # https://bugzilla.redhat.com/show_bug.cgi?id=1192285
+      s.gsub! "libnewt.$(SOEXT).$(SONAME)", "libnewt.$(SONAME).dylib"
+      s.gsub! "libnewt.$(SOEXT).$(VERSION)", "libnewt.$(VERSION).dylib"
+
+      # don't link to libpython.dylib
+      # causes https://github.com/Homebrew/homebrew/issues/30252
+      # https://bugzilla.redhat.com/show_bug.cgi?id=1192286
+      s.gsub! "`$$pyconfig --ldflags`", '"-undefined dynamic_lookup"'
+      s.gsub! "`$$pyconfig --libs`", '""'
+    end
+
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

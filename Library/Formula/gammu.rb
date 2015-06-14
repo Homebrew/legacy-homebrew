@@ -1,39 +1,35 @@
-require 'formula'
-
 class Gammu < Formula
-  homepage 'http://wammu.eu/gammu/'
-  url 'https://downloads.sourceforge.net/project/gammu/gammu/1.33.0/gammu-1.33.0.tar.bz2'
-  sha1 'b7ee28e7398ea578290588d94d69c295491ff86a'
+  desc "Command-line utility to control a phone"
+  homepage "http://wammu.eu/gammu/"
+  url "https://dl.cihar.com/gammu/releases/gammu-1.36.0.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/gammu/gammu_1.36.0.orig.tar.xz"
+  sha256 "9c89fd204e190db5b301d28b793e8d0f2b05069a5b2b91fde451a6dae7f7d633"
 
-  depends_on 'cmake' => :build
-  depends_on 'glib' => :recommended
-  depends_on 'gettext' => :optional
+  head "https://github.com/gammu/gammu.git"
 
-  # Fixes issue https://github.com/gammu/gammu/issues/13
-  patch :DATA
+  bottle do
+    sha256 "c5e3744176b3609902070f07ced499d02570a8dc0d5aa72e02383b8e9bcce5a4" => :yosemite
+    sha256 "106312958bcfb95929178a716ca5cd458ee37ba9e6ad6ca80ba3dbb0ac8c8b40" => :mavericks
+    sha256 "d1f54aae239138586fbc5693120a28b58eb709811461478b8dc976345b3de3df" => :mountain_lion
+  end
+
+  depends_on "cmake" => :build
+  depends_on "glib" => :recommended
+  depends_on "gettext" => :optional
+  depends_on "openssl"
 
   def install
     args = std_cmake_args
-    args << '-DINSTALL_BASH_COMPLETION=OFF'
+    args << "-DINSTALL_BASH_COMPLETION=OFF"
     args << "-DWITH_PYTHON=OFF"
 
-    system 'cmake', *args
-    system 'make'
-    system 'make install'
+    mkdir "build" do
+      system "cmake", "..", *args
+      system "make", "install"
+    end
   end
 
+  test do
+    system bin/"gammu", "--help"
+  end
 end
-
-__END__
-diff --git a/python/setup.py b/python/setup.py
-index feb66e8..0982927 100755
---- a/python/setup.py
-+++ b/python/setup.py
-@@ -282,6 +282,7 @@ gammumodule = Extension('gammu._gammu',
-         'gammu/src/convertors/file.c',
-         'gammu/src/convertors/call.c',
-         'gammu/src/convertors/wap.c',
-+        'gammu/src/convertors/diverts.c',
-         'gammu/src/gammu.c',
-         'gammu/src/smsd.c',
-         ])

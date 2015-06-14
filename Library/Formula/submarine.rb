@@ -1,6 +1,7 @@
 require 'formula'
 
 class Submarine < Formula
+  desc "Search and download subtitles"
   homepage 'https://github.com/rastersoft/submarine'
   url 'https://github.com/rastersoft/submarine/archive/0.1.4.tar.gz'
   sha1 '9ecbdfd25c299839a55ec7878b585525b03f2e8b'

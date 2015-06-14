@@ -16,6 +16,17 @@ module HomebrewArgvExtension
     @formulae ||= (downcased_unique_named - casks).map { |name| Formulary.factory(name, spec) }
   end
 
+  def resolved_formulae
+    require "formula"
+    @resolved_formulae ||= (downcased_unique_named - casks).map do |name|
+      if name.include?("/")
+        Formulary.factory(name, spec)
+      else
+        Formulary.from_rack(HOMEBREW_CELLAR/name, spec)
+      end
+    end
+  end
+
   def casks
     @casks ||= downcased_unique_named.grep HOMEBREW_CASK_TAP_FORMULA_REGEX
   end
@@ -40,7 +51,7 @@ module HomebrewArgvExtension
           Keg.new(linked_keg_ref.resolved_path)
         elsif dirs.length == 1
           Keg.new(dirs.first)
-        elsif (prefix = Formulary.factory(canonical_name).prefix).directory?
+        elsif (prefix = (name.include?("/") ? Formulary.factory(name) : Formulary.from_rack(rack)).prefix).directory?
           Keg.new(prefix)
         else
           raise MultipleVersionsInstalledError.new(canonical_name)
@@ -96,6 +107,10 @@ module HomebrewArgvExtension
 
   def homebrew_developer?
     include? '--homebrew-developer' or !ENV['HOMEBREW_DEVELOPER'].nil?
+  end
+
+  def sandbox?
+    include?("--sandbox") || !ENV["HOMEBREW_SANDBOX"].nil?
   end
 
   def ignore_deps?

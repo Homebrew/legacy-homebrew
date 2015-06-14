@@ -1,16 +1,15 @@
 class Gnupg2 < Formula
+  desc "GNU Privacy Guard: a free PGP replacement"
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/gnupg/gnupg-2.0.26.tar.bz2"
-  sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
-  revision 1
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.28.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.28.tar.bz2"
+  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.28.tar.bz2"
+  sha256 "ce092ee4ab58fd19b9fb34a460c07b06c348f4360dd5dd4886d041eb521a534c"
 
   bottle do
-    revision 2
-    sha1 "ccbafc88773f15b92e7ab931ec1be83fb27b58c2" => :yosemite
-    sha1 "1735c876de43f9635e191e6b1f1ed3f1ae04068d" => :mavericks
-    sha1 "ad0e8129ffbaf615f8b43aa93b89eb1cdc517f1f" => :mountain_lion
+    sha256 "39a665cd01fdafc70111ff4569e2fe34050064a2ba3a45b029028bc3ae5b5fbd" => :yosemite
+    sha256 "0f546298f437d123f97f4bf585756d3fb78c83ea2625cdbce854b5ca70b90de7" => :mavericks
+    sha256 "6ea1c0699de594104bc8cc9b33056775542c3670ba782dcefb86561ca19bc845" => :mountain_lion
   end
 
   depends_on "libgpg-error"
@@ -69,7 +68,7 @@ class Gnupg2 < Formula
 
     # Conflicts with a manpage from the 1.x formula, and
     # gpg-zip isn't installed by this formula anyway
-    rm man1/"gpg-zip.1"
+    rm_f man1/"gpg-zip.1"
   end
 
   test do

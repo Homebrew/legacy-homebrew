@@ -8,12 +8,11 @@ module Homebrew
     if not ARGV.force?
       ARGV.kegs.each do |keg|
         keg.lock do
-          puts "Uninstalling #{keg}..."
+          puts "Uninstalling #{keg}... (#{keg.abv})"
           keg.unlink
           keg.uninstall
-          rm_pin keg.name
-
-          rack = keg/".."
+          rack = keg.rack
+          rm_pin rack
           if rack.directory?
             versions = rack.subdirs.map(&:basename)
             verb = versions.length == 1 ? "is" : "are"
@@ -28,7 +27,7 @@ module Homebrew
         rack = HOMEBREW_CELLAR/name
 
         if rack.directory?
-          puts "Uninstalling #{name}..."
+          puts "Uninstalling #{name}... (#{rack.abv})"
           rack.subdirs.each do |d|
             keg = Keg.new(d)
             keg.unlink
@@ -36,7 +35,7 @@ module Homebrew
           end
         end
 
-        rm_pin name
+        rm_pin rack
       end
     end
   rescue MultipleVersionsInstalledError => e
@@ -44,7 +43,7 @@ module Homebrew
     puts "Use `brew remove --force #{e.name}` to remove all versions."
   end
 
-  def rm_pin name
-    Formulary.factory(name).unpin rescue nil
+  def rm_pin rack
+    Formulary.from_rack(rack).unpin rescue nil
   end
 end

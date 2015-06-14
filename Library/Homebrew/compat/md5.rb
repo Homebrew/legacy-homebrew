@@ -18,11 +18,9 @@ end
 
 class Pathname
   def md5
-    require 'digest/md5'
-    opoo <<-EOS.undent
-    MD5 support is deprecated and will be removed in a future version.
-    Please switch this formula to #{Checksum::TYPES.map { |t| t.to_s.upcase } * ' or '}.
+    odie <<-EOS.undent
+      MD5 support has been dropped for security reasons.
+      Please switch this formula to SHA256.
     EOS
-    incremental_hash(Digest::MD5)
   end
 end

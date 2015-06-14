@@ -2,6 +2,7 @@ require "formula"
 require "language/go"
 
 class Rocket < Formula
+  desc "App Container runtime"
   homepage "https://github.com/coreos/rocket"
   head "https://github.com/coreos/rocket.git"
 
@@ -9,6 +10,7 @@ class Rocket < Formula
   sha1 "04ae8cb9bac04eedacb03a7531e6b251556be653"
 
   bottle do
+    cellar :any
     sha1 "cb111d426363b5df807800ccf6b2f6eba7cdf10f" => :yosemite
     sha1 "cd464addb3a1364a621aa64e0239a0d10ef11e65" => :mavericks
     sha1 "70bf2fffc71a3e3c948bd20854880d2dca267611" => :mountain_lion

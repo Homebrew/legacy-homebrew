@@ -1,6 +1,5 @@
-require "formula"
-
 class Ktoblzcheck < Formula
+  desc "Library for German banks"
   homepage "http://ktoblzcheck.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.48.tar.gz"
   sha1 "80d1a586e2d581dce62094fed61b9292f2c72c6b"
@@ -16,6 +15,11 @@ class Ktoblzcheck < Formula
                           "--prefix=#{prefix}"
     system "make"
     ENV.j1
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert_match /Ok/, shell_output("#{bin}/ktoblzcheck --outformat=oneline 10000000 123456789", 0)
+    assert_match /unknown/, shell_output("#{bin}/ktoblzcheck --outformat=oneline 12345678 100000000", 3)
   end
 end

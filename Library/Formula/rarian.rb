@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rarian < Formula
+  desc "Documentation metadata library"
   homepage 'http://rarian.freedesktop.org/'
   url 'http://rarian.freedesktop.org/Releases/rarian-0.8.1.tar.bz2'
   sha1 '9b3f1bad1cdbb0de51d6f74431b20eb3647edc5a'

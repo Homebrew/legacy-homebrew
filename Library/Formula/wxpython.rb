@@ -1,5 +1,3 @@
-require "formula"
-
 class FrameworkPython < Requirement
   fatal true
 
@@ -14,6 +12,7 @@ class FrameworkPython < Requirement
 end
 
 class Wxpython < Formula
+  desc "Python bindings for wxWidgets"
   homepage "http://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxpython/wxPython/3.0.2.0/wxPython-src-3.0.2.0.tar.bz2"
   sha1 "5053f3fa04f4eb3a9d4bfd762d963deb7fa46866"
@@ -30,8 +29,16 @@ class Wxpython < Formula
   end
   depends_on "wxmac"
 
+  option :universal
+
   def install
     ENV["WXWIN"] = buildpath
+
+    if build.universal?
+      ENV.universal_binary
+    else
+      ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
+    end
 
     args = [
       "WXPORT=osx_cocoa",
@@ -45,20 +52,11 @@ class Wxpython < Formula
       # OpenGL and stuff
       "BUILD_GLCANVAS=1",
       "BUILD_GIZMOS=1",
-      "BUILD_STC=1"
+      "BUILD_STC=1",
     ]
 
     cd "wxPython" do
-      ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
-
-      system "python", "setup.py",
-                     "build_ext",
-                     *args
-
-      system "python", "setup.py",
-                     "install",
-                     "--prefix=#{prefix}",
-                     *args
+      system "python", "setup.py", "install", "--prefix=#{prefix}", *args
     end
   end
 end

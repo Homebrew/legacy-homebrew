@@ -1,6 +1,7 @@
 require 'formula'
 
 class GtkMurrineEngine < Formula
+  desc "Murrine GTK+ engine"
   homepage 'https://github.com/GNOME/murrine'
   url 'http://ftp.gnome.org/pub/GNOME/sources/murrine/0.98/murrine-0.98.2.tar.xz'
   sha1 'ddaca56b6e10736838572014ae9d20b814242615'

@@ -1,6 +1,7 @@
 require "formula"
 
 class Thrift < Formula
+  desc "Framework for scalable cross-language services development"
   homepage "http://thrift.apache.org"
 
   stable do
@@ -42,6 +43,7 @@ class Thrift < Formula
   option "with-java", "Install Java binding"
   option "with-perl", "Install Perl binding"
   option "with-php", "Install PHP binding"
+  option "with-libevent", "Install nonblocking server libraries"
 
   depends_on "boost"
   depends_on "openssl"

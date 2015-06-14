@@ -1,12 +1,16 @@
 class Freeswitch < Formula
-  homepage "http://freeswitch.org"
-  url "https://stash.freeswitch.org/scm/fs/freeswitch.git", :tag => "v1.4.6"
-  head "https://stash.freeswitch.org/scm/fs/freeswitch.git"
+  desc "Telephony platform to route various communication protocols"
+  homepage "https://freeswitch.org"
+  url "https://freeswitch.org/stash/scm/fs/freeswitch.git",
+      :tag => "v1.4.19",
+      :revision => "ebf2df68fa6f341311620c6d90f5a8d77334606c"
+
+  head "https://freeswitch.org/stash/scm/fs/freeswitch.git"
 
   bottle do
-    sha1 "a1ff029908457b7a992474b8abd4428c88858128" => :mavericks
-    sha1 "05c391e0c3f2f795ec7b87485a5ad54fbdd57259" => :mountain_lion
-    sha1 "dc5a331f94eb51353d01dfe6d2319985e7844a96" => :lion
+    sha256 "724b0f3f85c5dde65923d7b64b396addccd898a9b0f8977a422e0518a2a62d94" => :yosemite
+    sha256 "f91222c325a6f65da9873559b61912095e23f7bcee0dec1079170b139696e7d2" => :mavericks
+    sha256 "5a3cbf979034485152c4412980d62516e12bb6b0a5e52e7c71f636368960ef0d" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -23,7 +27,7 @@ class Freeswitch < Formula
   depends_on "sqlite"
 
   def install
-    system "./bootstrap.sh -j#{ENV.make_jobs}"
+    system "./bootstrap.sh", "-j#{ENV.make_jobs}"
 
     # tiff will fail to find OpenGL unless told not to use X
     inreplace "libs/tiff-4.0.2/configure.gnu", "--with-pic", "--with-pic --without-x"
@@ -37,8 +41,7 @@ class Freeswitch < Formula
                           "--exec_prefix=#{prefix}"
 
     system "make"
-    system "make", "install"
-    system "make", "all", "cd-sounds-install", "cd-moh-install"
+    system "make", "install", "all", "cd-sounds-install", "cd-moh-install"
   end
 
   plist_options :manual => "freeswitch -nc --nonat"

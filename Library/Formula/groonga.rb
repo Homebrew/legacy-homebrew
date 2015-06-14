@@ -1,14 +1,13 @@
-require "formula"
-
 class Groonga < Formula
+  desc "Fulltext search engine and column store"
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-4.0.9.tar.gz"
-  sha1 "0196b3909324f66d303185e67646cba401f23a7e"
+  url "http://packages.groonga.org/source/groonga/groonga-5.0.4.tar.gz"
+  sha256 "338b7a921e6f6dcf3e65d2147a55a9fe646544eeb97653194261111159b4fe10"
 
   bottle do
-    sha1 "12b94e2102ab23fe0192f2c9f79cd523c22b4ea2" => :yosemite
-    sha1 "d945ef8bd06bcc31739ab9c21baa398cc4d4f32b" => :mavericks
-    sha1 "0a0d111c1519b51cce93421427ed7e6e25562646" => :mountain_lion
+    sha256 "73dd96e27fcc896f7625fb834f4869ed515c97a41213ceb06c35c379e45a2bfc" => :yosemite
+    sha256 "a79bacfd254ef168aa2f20d116bd6f3ed207cf17b7a7b9a9d8a15b0fa79e861f" => :mavericks
+    sha256 "5d7041fac2246ffda0a056e86a03a8e49eef6617f06dfda6ee1c1e709bb9c09c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -28,7 +27,7 @@ class Groonga < Formula
       --prefix=#{prefix}
       --with-zlib
       --disable-zeromq
-      --with-mruby
+      --enable-mruby
       --without-libstemmer
     ]
 

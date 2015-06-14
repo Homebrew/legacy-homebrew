@@ -1,69 +1,60 @@
 require "extend/ENV"
+require "formula_assertions"
+require "sandbox"
 require "timeout"
-require "debrew"
 
 module Homebrew
-  TEST_TIMEOUT_SECONDS = 5*60
-
-  if defined?(Gem)
-    begin
-      gem "minitest", "< 5.0.0"
-    rescue Gem::LoadError
-      require "test/unit/assertions"
-    else
-      require "minitest/unit"
-      require "test/unit/assertions"
-    end
-  else
-    require "test/unit/assertions"
-  end
-
-  if defined?(MiniTest::Assertion)
-    FailedAssertion = MiniTest::Assertion
-  elsif defined?(Minitest::Assertion)
-    FailedAssertion = Minitest::Assertion
-  else
-    FailedAssertion = Test::Unit::AssertionFailedError
-  end
-
-  require "formula_assertions"
 
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    ENV.extend(Stdenv)
-    ENV.setup_build_environment
-
-    ARGV.formulae.each do |f|
+    ARGV.resolved_formulae.each do |f|
       # Cannot test uninstalled formulae
       unless f.installed?
-        ofail "Testing requires the latest version of #{f.name}"
+        ofail "Testing requires the latest version of #{f.full_name}"
         next
       end
 
       # Cannot test formulae without a test method
       unless f.test_defined?
-        ofail "#{f.name} defines no test"
+        ofail "#{f.full_name} defines no test"
         next
       end
 
-      puts "Testing #{f.name}"
+      puts "Testing #{f.full_name}"
 
-      f.extend(Test::Unit::Assertions)
-      f.extend(Homebrew::Assertions)
-      f.extend(Debrew::Formula) if ARGV.debug?
+      env = ENV.to_hash
 
       begin
-        # tests can also return false to indicate failure
-        Timeout::timeout TEST_TIMEOUT_SECONDS do
-          raise if f.run_test == false
+        args = %W[
+          #{RUBY_PATH}
+          -W0
+          -I #{HOMEBREW_LOAD_PATH}
+          --
+          #{HOMEBREW_LIBRARY_PATH}/test.rb
+          #{f.path}
+        ].concat(ARGV.options_only)
+
+        Utils.safe_fork do
+          if Sandbox.available? && ARGV.sandbox?
+            sandbox = Sandbox.new
+            f.logs.mkpath
+            sandbox.record_log(f.logs/"sandbox.test.log")
+            sandbox.allow_write_temp_and_cache
+            sandbox.allow_write_log(f)
+            sandbox.exec(*args)
+          else
+            exec(*args)
+          end
         end
-      rescue FailedAssertion => e
-        ofail "#{f.name}: failed"
+      rescue Assertions::FailedAssertion => e
+        ofail "#{f.full_name}: failed"
         puts e.message
       rescue Exception => e
-        ofail "#{f.name}: failed"
+        ofail "#{f.full_name}: failed"
         puts e, e.backtrace
+      ensure
+        ENV.replace(env)
       end
     end
   end

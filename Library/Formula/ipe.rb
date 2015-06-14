@@ -1,13 +1,14 @@
 class Ipe < Formula
+  desc "Drawing editor for creating figures in PDF or PS formats"
   homepage "http://ipe7.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.6-src.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.6-src.tar.gz"
-  sha1 "72fc2532cfa0a8591447dde3f60e5e4b2ecbf0d6"
+  url "https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.7-src.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.7-src.tar.gz"
+  sha256 "ec670cd7f0fa521271fc54bf9b663570d82280bdbe405be6de59535fec7c00d2"
 
   bottle do
-    sha1 "53408fdfff0f17a6e60a6cc539ccf56b50c52168" => :yosemite
-    sha1 "ade5a611e2a0afac642147acbdacbc47e3167b0a" => :mavericks
-    sha1 "19d21ebd060dcdd4d6b37da15b93bbfa3dba4f79" => :mountain_lion
+    sha256 "f694eff81d650fb2777380b6a4038edca3db023dce2682a5a4f7a332aa5023ef" => :yosemite
+    sha256 "321e713cf94d63297574e0bf9c20a331e11a35573e1e5c489d3516395a70e694" => :mavericks
+    sha256 "7c9b0165eedc50fa04c7ab017ddeabbf43177c1b0098a212857b29412724a271" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -14,11 +14,6 @@ module Homebrew
     end
 
     ARGV.named.each do |name|
-      # if a formula has been tapped ignore the blacklisting
-      unless Formula.path(name).file?
-        msg = blacklisted? name
-        raise "No available formula for #{name}\n#{msg}" if msg
-      end
       if !File.exist?(name) && (name =~ HOMEBREW_TAP_FORMULA_REGEX \
                                 || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
         install_tap $1, $2
@@ -31,35 +26,51 @@ module Homebrew
       if ARGV.casks.any?
         brew_cask = Formulary.factory("brew-cask")
         install_formula(brew_cask) unless brew_cask.installed?
+        args = []
+        args << "--force" if ARGV.force?
+        args << "--debug" if ARGV.debug?
+        args << "--verbose" if ARGV.verbose?
 
         ARGV.casks.each do |c|
-          cmd = "brew", "cask", "install", c
+          cmd = "brew", "cask", "install", c, *args
           ohai cmd.join " "
           system(*cmd)
         end
       end
 
       ARGV.formulae.each do |f|
-        # Building head-only without --HEAD is an error
-        if not ARGV.build_head? and f.stable.nil?
+        # head-only without --HEAD is an error
+        if not ARGV.build_head? and f.stable.nil? and f.devel.nil?
           raise <<-EOS.undent
-          #{f.name} is a head-only formula
-          Install with `brew install --HEAD #{f.name}`
+          #{f.full_name} is a head-only formula
+          Install with `brew install --HEAD #{f.full_name}`
           EOS
         end
 
-        # Building stable-only with --HEAD is an error
-        if ARGV.build_head? and f.head.nil?
-          raise "No head is defined for #{f.name}"
+        # devel-only without --devel is an error
+        if not ARGV.build_devel? and f.stable.nil? and f.head.nil?
+          raise <<-EOS.undent
+          #{f.full_name} is a devel-only formula
+          Install with `brew install --devel #{f.full_name}`
+          EOS
         end
 
-        # Building stable-only with --devel is an error
+        if ARGV.build_stable? and f.stable.nil?
+          raise "#{f.full_name} has no stable download, please choose --devel or --HEAD"
+        end
+
+        # --HEAD, fail with no head defined
+        if ARGV.build_head? and f.head.nil?
+          raise "No head is defined for #{f.full_name}"
+        end
+
+        # --devel, fail with no devel defined
         if ARGV.build_devel? and f.devel.nil?
-          raise "No devel block is defined for #{f.name}"
+          raise "No devel block is defined for #{f.full_name}"
         end
 
         if f.installed?
-          msg = "#{f.name}-#{f.installed_version} already installed"
+          msg = "#{f.full_name}-#{f.installed_version} already installed"
           msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
           opoo msg
         else
@@ -71,12 +82,16 @@ module Homebrew
 
       formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
-      ofail e.message
-      query = query_regexp(e.name)
-      puts 'Searching formulae...'
-      puts_columns(search_formulae(query))
-      puts 'Searching taps...'
-      puts_columns(search_taps(query))
+      if (blacklist = blacklisted?(e.name))
+        ofail "#{e.message}\n#{blacklist}"
+      else
+        ofail e.message
+        query = query_regexp(e.name)
+        puts "Searching formulae..."
+        puts_columns(search_formulae(query))
+        puts "Searching taps..."
+        puts_columns(search_taps(query))
+      end
     end
   end
 

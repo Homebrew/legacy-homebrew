@@ -3,7 +3,8 @@ require 'formula'
 class EucjpMecabIpadic < Requirement
   fatal true
 
-  def initialize
+  def initialize tags=[]
+    super
     @mecab_ipadic_installed = Formula['mecab-ipadic'].installed?
   end
 
@@ -55,6 +56,7 @@ class EucjpMecabIpadic < Requirement
 end
 
 class Hyperestraier < Formula
+  desc "Full-text search system for communities"
   homepage 'http://fallabs.com/hyperestraier/index.html'
   url 'http://fallabs.com/hyperestraier/hyperestraier-1.4.13.tar.gz'
   sha1 '1094686f457070323083ecf4f89665c564a0c5f0'

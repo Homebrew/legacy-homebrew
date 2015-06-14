@@ -1,13 +1,20 @@
 class CouchdbLucene < Formula
-  homepage 'https://github.com/rnewson/couchdb-lucene'
-  url 'https://github.com/rnewson/couchdb-lucene/archive/v1.0.2.tar.gz'
-  sha1 '75e0c55a87f47903c6cd122286ea3e4568809f7e'
+  desc "Full-text search of CouchDB documents using Lucene"
+  homepage "https://github.com/rnewson/couchdb-lucene"
+  url "https://github.com/rnewson/couchdb-lucene/archive/v1.0.2.tar.gz"
+  sha1 "75e0c55a87f47903c6cd122286ea3e4568809f7e"
 
-  depends_on 'couchdb'
-  depends_on 'maven' => :build
+  bottle do
+    sha1 "6df93e1cf958760cd4d822822728693092d2289f" => :yosemite
+    sha1 "ae4d677f930935654b3cc727650c4c21dffbc501" => :mavericks
+    sha1 "2248e7029a5a565e151c52f67cc2bfeae12e2bdd" => :mountain_lion
+  end
+
+  depends_on "couchdb"
+  depends_on "maven" => :build
+  depends_on :java
 
   def install
-    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
     system "mvn"
     system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz", "--strip", "1"
 

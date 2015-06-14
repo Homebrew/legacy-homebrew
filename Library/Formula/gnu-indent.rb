@@ -1,4 +1,5 @@
 class GnuIndent < Formula
+  desc "C code prettifier"
   homepage "https://www.gnu.org/software/indent/"
   url "http://ftpmirror.gnu.org/indent/indent-2.2.10.tar.gz"
   mirror "https://ftp.gnu.org/gnu/indent/indent-2.2.10.tar.gz"

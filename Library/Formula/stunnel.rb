@@ -1,17 +1,18 @@
-require "formula"
-
 class Stunnel < Formula
+  desc "SSL tunneling program"
   homepage "https://www.stunnel.org/"
-  url "https://www.stunnel.org/downloads/stunnel-5.08.tar.gz"
-  mirror "http://www.usenix.org.uk/mirrors/stunnel/stunnel-5.08.tar.gz"
-  sha256 "830b21d24cd237e96f4d7993be43553d4eba4d3cfa2660faa78dec8d41d314fc"
+  url "https://www.stunnel.org/downloads/stunnel-5.18.tar.gz"
+  mirror "https://www.usenix.org.uk/mirrors/stunnel/stunnel-5.18.tar.gz"
+  sha256 "0532c0a2f8de3da1ab625e384146501ce5936fac63d01561c3a9bf652b692317"
 
   bottle do
-    sha1 "aab0c4a1dcdfcdfdac9d9b9c06fda6b1933475af" => :yosemite
-    sha1 "4f3e8b4b30793258391cd9b355e15e8f4b3e5f56" => :mavericks
-    sha1 "48d18d655dd0a75a28488cc9c244ee6d99c55849" => :mountain_lion
+    sha256 "2e6964737b4922e1aa87c5762ccdfe7dfe29d78bc2e0715e714179f0a76aa8c9" => :yosemite
+    sha256 "d8fbd05f56f04febb16be5ab08ecf7742be148a3d1a904f91c821fa28a37b899" => :mavericks
+    sha256 "859022f3d210ef9eeaf18b3000c6127880364c03b53db4b18b4f100e2c462d9a" => :mountain_lion
   end
 
+  # Please revision me whenever OpenSSL is updated
+  # "Update OpenSSL shared libraries or rebuild stunnel"
   depends_on "openssl"
 
   def install
@@ -20,7 +21,7 @@ class Stunnel < Formula
     stunnel_cnf.unlink
     stunnel_cnf.write <<-EOS.undent
       # OpenSSL configuration file to create a server certificate
-      # by Michal Trojnara 1998-2013
+      # by Michal Trojnara 1998-2015
 
       [ req ]
       # the default key length is secure and quite fast - do not change it
@@ -43,7 +44,7 @@ class Stunnel < Formula
       # 1.commonName                  = DNS alias of your server
       # 2.commonName                  = DNS alias of your server
       # ...
-      # See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
+      # See https://web.archive.org/web/20020207210031/http://home.netscape.com/eng/security/ssl_2.0_certificate.html
       # to see how Netscape understands commonName.
 
       [ cert_type ]
@@ -51,10 +52,13 @@ class Stunnel < Formula
     EOS
 
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}",
                           "--mandir=#{man}",
                           "--disable-libwrap",
+                          "--disable-systemd",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install", "cert"
   end
@@ -65,9 +69,29 @@ class Stunnel < Formula
         #{etc}/stunnel/stunnel.pem
 
       This certificate will be used by default unless a config file says otherwise!
+      Stunnel will refuse to load the sample configuration file if left unedited.
 
       In your stunnel configuration, specify a SSL certificate with
       the "cert =" option for each service.
     EOS
+  end
+
+  test do
+    (testpath/"tstunnel.conf").write <<-EOS.undent
+      cert = #{etc}/stunnel/stunnel.pem
+
+      setuid = nobody
+      setgid = nobody
+
+      [pop3s]
+      accept  = 995
+      connect = 110
+
+      [imaps]
+      accept  = 993
+      connect = 143
+    EOS
+
+    assert_match /successful/, pipe_output("#{bin}/stunnel #{testpath}/tstunnel.conf 2>&1")
   end
 end

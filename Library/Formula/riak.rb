@@ -1,10 +1,11 @@
 require "formula"
 
 class Riak < Formula
+  desc "Distributed database"
   homepage "http://basho.com/riak/"
-  url "https://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.2/osx/10.8/riak-2.0.2-OSX-x86_64.tar.gz"
-  version "2.0.2"
-  sha256 "a21178c02110f26e5f1f990ceca10c0d62516265d957450ba6fc7b98e963c76d"
+  url "https://s3.amazonaws.com/downloads.basho.com/riak/2.1/2.1.1/osx/10.8/riak-2.1.1-OSX-x86_64.tar.gz"
+  version "2.1.1"
+  sha256 "ee06193b5fc4bb56746f8f648794b732b96879369835a94f22235e0561d652d7"
 
   depends_on :macos => :mountain_lion
   depends_on :arch => :x86_64

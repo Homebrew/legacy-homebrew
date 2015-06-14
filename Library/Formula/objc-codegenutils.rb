@@ -1,6 +1,7 @@
 require "formula"
 
 class ObjcCodegenutils < Formula
+  desc "Three small tools to help work with XCode"
   homepage "https://github.com/square/objc-codegenutils"
   url "https://github.com/square/objc-codegenutils/archive/v1.0.tar.gz"
   sha1 "ed22e553e3b0f5aaa445d912af287714aeb09f7b"
@@ -10,6 +11,8 @@ class ObjcCodegenutils < Formula
     sha1 "6444a44bb506d0078b494d243475aa492da91b4a" => :mavericks
     sha1 "115f70a9c8b61545630a14d7503d4e20c221f6cb" => :mountain_lion
   end
+
+  head "https://github.com/square/objc-codegenutils.git"
 
   depends_on :macos => :mountain_lion
   depends_on :xcode => :build

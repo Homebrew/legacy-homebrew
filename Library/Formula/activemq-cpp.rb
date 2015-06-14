@@ -1,15 +1,15 @@
-require "formula"
-
 class ActivemqCpp < Formula
+  desc "C++ API for message brokers such as Apache ActiveMQ"
   homepage "https://activemq.apache.org/cms/index.html"
-  url "http://www.apache.org/dyn/closer.cgi?path=activemq/activemq-cpp/3.8.3/activemq-cpp-library-3.8.3-src.tar.bz2"
-  sha1 "ea67d8b86a524ff57f2a2e0e2451deafacfd6d4b"
+  url "http://www.apache.org/dyn/closer.cgi?path=activemq/activemq-cpp/3.8.4/activemq-cpp-library-3.8.4-src.tar.bz2"
+  sha1 "7c0c79833f1647df3905948f3b8f2592bc7a8994"
 
   bottle do
     cellar :any
-    sha1 "aa3411a43d75c8e21df2a15895ca2fefdd73d1fd" => :yosemite
-    sha1 "8108b14f55b2718b91d740f1cef1a2d1a19077ce" => :mavericks
-    sha1 "aa809055878e2d6f617debbd4a02e5e50afd04f7" => :mountain_lion
+    revision 1
+    sha1 "0a9eb28a54a39e34c7acdbf2223bc3e4321b6e0e" => :yosemite
+    sha1 "4274dcd894a783d0b59f197feece8e5b1c844575" => :mavericks
+    sha1 "4a4fa0eaae9b13720bf78ee95a056ab7165fc07f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

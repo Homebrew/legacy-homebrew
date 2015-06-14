@@ -1,17 +1,19 @@
 class LibvoAacenc < Formula
+  desc "VisualOn AAC encoder library"
   homepage "http://opencore-amr.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/opencore-amr/vo-aacenc/vo-aacenc-0.1.2.tar.gz"
-  sha1 "ac56325c05eba4c4f8fe2c5443121753f4d70255"
+  url "https://downloads.sourceforge.net/project/opencore-amr/vo-aacenc/vo-aacenc-0.1.3.tar.gz"
+  sha256 "e51a7477a359f18df7c4f82d195dab4e14e7414cbd48cf79cc195fc446850f36"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ac00d35656c43e6ffa1286e433374fc9e2320c1a" => :yosemite
-    sha1 "3c8fb5c15a89647e021c80ac2294c89437b4b195" => :mavericks
+    sha256 "cf63ddcb79e40b79264507393ed4fa1b223feecf4638f0e58fef464db722b554" => :yosemite
+    sha256 "645f4294e8512add5c5f263cd8273c93e22eab565307ada5f8804ef7b9d41d8d" => :mavericks
+    sha256 "1a2fc17d25d424a4385d2c792b4e09ff0409b5c264cc03aec2182e40dc21295a" => :mountain_lion
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make", "install"
   end
 

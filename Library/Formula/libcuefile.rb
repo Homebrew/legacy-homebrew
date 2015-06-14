@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libcuefile < Formula
+  desc "Library to work with CUE files"
   homepage 'http://www.musepack.net/'
   url 'http://files.musepack.net/source/libcuefile_r475.tar.gz'
   sha1 'd7363882384ff75809dc334d3ced8507b81c6051'

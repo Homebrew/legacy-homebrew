@@ -1,13 +1,15 @@
 class JohnJumbo < Formula
+  desc "Enhanced version of john, a UNIX password cracker"
   homepage "http://www.openwall.com/john/"
   url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
   sha1 "38196f21d2c9c4b539529d0820eb242d5373241f"
   version "1.8.0"
 
   bottle do
-    sha1 "7b1fd2d3d9f12567c70c4e12cbf8cdc525f0f61e" => :yosemite
-    sha1 "4514927c45452ffebaeef56e068d0ea1e709e8c2" => :mavericks
-    sha1 "c91ebc708391e78c2a586c90da7b85cd394fa0ee" => :mountain_lion
+    revision 3
+    sha256 "b5d13ea393e16a474bcd69d0d7fd14038effac04d423b6041d9dbb76dd6325ae" => :yosemite
+    sha256 "d8303c4412f7354e2778ef58ed8eb366d9d474491b255ad5f32d27946df174e6" => :mavericks
+    sha256 "c3a9c980f5725ec08854cdce75b91af58bb4f61c8a30e2d700de45e0a5b9ff3c" => :mountain_lion
   end
 
   conflicts_with "john", :because => "both install the same binaries"
@@ -34,7 +36,11 @@ class JohnJumbo < Formula
 
   def install
     cd "src" do
-      system "./configure"
+      args = []
+      if build.bottle?
+        args << "--disable-native-tests" << "--disable-native-macro"
+      end
+      system "./configure", *args
       system "make", "clean"
       system "make", "-s", "CC=#{ENV.cc}"
     end
@@ -58,7 +64,6 @@ class JohnJumbo < Formula
   end
 
   test do
-    ENV["HOME"] = testpath
     touch "john2.pot"
     system "echo dave:`printf secret | openssl md5` > test"
     output = shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test")

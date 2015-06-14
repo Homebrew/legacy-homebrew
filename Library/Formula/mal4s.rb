@@ -1,11 +1,19 @@
 require 'formula'
 
 class Mal4s < Formula
+  desc "Malicious host finder based on gource"
   homepage 'https://github.com/secure411dotorg/mal4s/'
   url 'https://service.dissectcyber.com/mal4s/mal4s-1.2.8.tar.gz'
   sha1 'd1f38c0e09b1f5963e70c93c88ea41a3d7890887'
+  revision 1
 
   head 'https://github.com/secure411dotorg/mal4s.git'
+
+  bottle do
+    sha256 "7860372e817d304308db192b87533b0e8eb390bef57137b9ba2f6a96c5a53802" => :yosemite
+    sha256 "e9b2e3bb2770db34cba13f0fcdbe4a141e6e2fb581fcd5394ece2188e276d1e0" => :mavericks
+    sha256 "85fad50f95402df580d98b546d39fcaab97989c0ac4ff3f3b2499e7cc2575e22" => :mountain_lion
+  end
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build

@@ -1,22 +1,24 @@
-require "formula"
-
 class Leiningen < Formula
+  desc "Build tool for Clojure"
   homepage "https://github.com/technomancy/leiningen"
   head "https://github.com/technomancy/leiningen.git"
-  url "https://github.com/technomancy/leiningen/archive/2.5.0.tar.gz"
-  sha1 "881c3646c41d9aea14f5401981d45053483125bc"
+  url "https://github.com/technomancy/leiningen/archive/2.5.1.tar.gz"
+  sha1 "4f6e2e189be0a163f400c3a8060896285fe731f7"
 
   resource "jar" do
-    url "https://github.com/technomancy/leiningen/releases/download/2.5.0/leiningen-2.5.0-standalone.jar"
-    sha1 "7514d137f0f4ff226c0171df47a3422b1ecfa80a"
+    url "https://github.com/technomancy/leiningen/releases/download/2.5.1/leiningen-2.5.1-standalone.zip", :using => :nounzip
+    sha1 "1c526e6573713b0635a1f2d52502ffa04ae45383"
   end
 
   def install
-    libexec.install resource("jar")
+    jar = "leiningen-#{version}-standalone.jar"
+    resource("jar").stage do
+      libexec.install "leiningen-#{version}-standalone.zip" => jar
+    end
 
     # bin/lein autoinstalls and autoupdates, which doesn't work too well for us
     inreplace "bin/lein-pkg" do |s|
-      s.change_make_var! "LEIN_JAR", libexec/"leiningen-#{version}-standalone.jar"
+      s.change_make_var! "LEIN_JAR", libexec/jar
     end
 
     bin.install "bin/lein-pkg" => "lein"
@@ -38,20 +40,19 @@ class Leiningen < Formula
     EOS
     (testpath/"src/brew_test/core.clj").write <<-EOS.undent
       (ns brew-test.core)
-        (defn adds-two
-          "I add two to a number"
-          [x]
-          (+ x 2))
+      (defn adds-two
+        "I add two to a number"
+        [x]
+        (+ x 2))
     EOS
     (testpath/"test/brew_test/core_test.clj").write <<-EOS.undent
       (ns brew-test.core-test
         (:require [clojure.test :refer :all]
-                  [brew-test.core :refer :all]))
+                  [brew-test.core :as t]))
       (deftest canary-test
         (testing "adds-two yields 4 for input of 2"
-          (is (= 4 (adds-two 2)))))
+          (is (= 4 (t/adds-two 2)))))
     EOS
     system "#{bin}/lein", "test"
   end
-
 end

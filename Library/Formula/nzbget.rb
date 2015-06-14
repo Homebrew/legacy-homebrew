@@ -1,16 +1,22 @@
-require "formula"
-
 class Nzbget < Formula
+  desc "Binary newsgrabber for nzb files"
   homepage "http://nzbget.net/"
-  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.1/nzbget-14.1.tar.gz"
-  sha1 "671c0d0b554643e1b58665004c65519a330766db"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.2/nzbget-14.2.tar.gz"
+  sha1 "25adf5565d228cf1cbb8fa305732f61a6f869aa0"
+
+  devel do
+    url "https://downloads.sourceforge.net/project/nzbget/nzbget-testing/15.0-r1207/nzbget-15.0-testing-r1207.tar.gz"
+    sha1 "37f9d069df4bab4a78a1999434a2152aae6c2577"
+    version "15.0-r1207"
+  end
 
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
   bottle do
-    sha1 "b8fa821bf43c2c5ccd2842ce0a57ba0131b150bc" => :yosemite
-    sha1 "78df733e6f5983b32dd66a391cb1c6f6b1a8570a" => :mavericks
-    sha1 "ba78b8016b214a18c80499eb3d17a4aa4a45983b" => :mountain_lion
+    revision 1
+    sha1 "a99dad2495312ed2b6a44f094866edec6de3c60a" => :yosemite
+    sha1 "c88d1e24b4a32652154cfce1ed3e9eb1215f9259" => :mavericks
+    sha1 "254d5ba9030626f11fc3891b8b684917295647f9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -47,6 +53,31 @@ class Nzbget < Formula
     ENV.j1
     system "make", "install"
     etc.install "nzbget.conf"
+  end
+
+  plist_options :manual => "nzbget"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_bin}/nzbget</string>
+        <string>-s</string>
+        <string>-o</string>
+        <string>OutputMode=Log</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <true/>
+    </dict>
+    </plist>
+    EOS
   end
 
   test do

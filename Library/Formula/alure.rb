@@ -1,6 +1,7 @@
 require 'formula'
 
 class Alure < Formula
+  desc "Manage common tasks with OpenAL applications"
   homepage 'http://kcat.strangesoft.net/alure.html'
   url 'http://kcat.strangesoft.net/alure-releases/alure-1.2.tar.bz2'
   sha1 'f033f0820c449ebff7b4b0254a7b1f26c0ba485b'

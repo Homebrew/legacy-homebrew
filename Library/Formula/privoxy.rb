@@ -1,14 +1,13 @@
-require 'formula'
-
 class Privoxy < Formula
-  homepage 'http://www.privoxy.org'
-  url 'https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.22%20%28stable%29/privoxy-3.0.22-stable-src.tar.gz'
-  sha1 '16cab9bb2055546a5f70815044dab893396c5686'
+  desc "Advanced filtering web proxy"
+  homepage "http://www.privoxy.org"
+  url "https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.23%20%28stable%29/privoxy-3.0.23-stable-src.tar.gz"
+  sha1 "72b6756cf532fdb85520640f0a1d4cb06bba1b7f"
 
   bottle do
-    sha1 "9a7f048bebdfa6737775a2b3ccbffb9813b6e548" => :yosemite
-    sha1 "a1ffe0019d363486a9e8c6dabfc779596dcc7f52" => :mavericks
-    sha1 "b9c9795f397f6571bab68b2a0633b493cf60c4da" => :mountain_lion
+    sha1 "019e61d3280bc129ef7f83415b7c65785bc66727" => :yosemite
+    sha1 "4dabda6301f4430c5f80024f8c2695582d99754c" => :mavericks
+    sha1 "343462262756a0933cad7d04fc5ea9667c533881" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

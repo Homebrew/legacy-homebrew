@@ -19,19 +19,22 @@ class SoftwareSpecTests < Homebrew::TestCase
   end
 
   def test_raises_when_accessing_missing_resources
-    @spec.owner = Class.new { def name; "test"; end }.new
+    @spec.owner = Class.new do
+      def name; "test"; end
+      def full_name; "test"; end
+    end.new
     assert_raises(ResourceMissingError) { @spec.resource('foo') }
   end
 
   def test_set_owner
-    owner = stub(:name => 'some_name')
+    owner = stub(:name => 'some_name', :full_name => 'some_name')
     @spec.owner = owner
     assert_equal owner, @spec.owner
   end
 
   def test_resource_owner
     @spec.resource('foo') { url 'foo-1.0' }
-    @spec.owner = stub(:name => 'some_name')
+    @spec.owner = stub(:name => 'some_name', :full_name => 'some_name')
     assert_equal 'some_name', @spec.name
     @spec.resources.each_value { |r| assert_equal @spec, r.owner }
   end
@@ -39,7 +42,7 @@ class SoftwareSpecTests < Homebrew::TestCase
   def test_resource_without_version_receives_owners_version
     @spec.url('foo-42')
     @spec.resource('bar') { url 'bar' }
-    @spec.owner = stub(:name => 'some_name')
+    @spec.owner = stub(:name => 'some_name', :full_name => 'some_name')
     assert_version_equal '42', @spec.resource('bar').version
   end
 
