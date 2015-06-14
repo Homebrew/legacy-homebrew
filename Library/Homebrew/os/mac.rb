@@ -24,7 +24,9 @@ module OS
       # Give the name of the binary you look for as a string to this method
       # in order to get the full path back as a Pathname.
       (@locate ||= {}).fetch(tool) do |key|
-        @locate[key] = if File.executable?(path = "/usr/bin/#{tool}")
+        @locate[key] = if File.executable?(path = "/usr/local/opt/cctools/bin/#{tool}")
+          Pathname.new path
+        elsif File.executable?(path = "/usr/bin/#{tool}")
           Pathname.new path
         # Homebrew GCCs most frequently; much faster to check this before xcrun
         elsif File.executable?(path = "#{HOMEBREW_PREFIX}/bin/#{tool}")
