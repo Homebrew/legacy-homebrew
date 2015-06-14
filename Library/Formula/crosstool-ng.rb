@@ -1,10 +1,8 @@
-require 'formula'
-
 class CrosstoolNg < Formula
   desc "Tool for building toolchains"
-  homepage 'http://crosstool-ng.org'
-  url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.20.0.tar.bz2'
-  sha1 'b11f7ee706753b8cf822f98b549f8ab9dd8da9c7'
+  homepage "http://crosstool-ng.org"
+  url "http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.21.0.tar.bz2"
+  sha256 "67122ba42657da258f23de4a639bc49c6ca7fe2173b5efba60ce729c6cce7a41"
 
   bottle do
     cellar :any
@@ -16,31 +14,17 @@ class CrosstoolNg < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on 'coreutils' => :build
-  depends_on 'wget'
-  depends_on 'gnu-sed'
-  depends_on 'gawk'
-  depends_on 'binutils'
-  depends_on 'libelf'
-  depends_on 'homebrew/dupes/grep' => :optional
-  depends_on 'homebrew/dupes/make' => :optional
+  depends_on "coreutils" => :build
+  depends_on "wget"
+  depends_on "gnu-sed"
+  depends_on "gawk"
+  depends_on "binutils"
+  depends_on "libelf"
+  depends_on "homebrew/dupes/grep" => :optional
+  depends_on "homebrew/dupes/make" => :optional
 
   # Avoid superenv to prevent https://github.com/mxcl/homebrew/pull/10552#issuecomment-9736248
   env :std
-
-  # Patch to fix clang offsetof. Can be removed when adopted upstream.
-  # http://patchwork.ozlabs.org/patch/400328/
-  patch do
-    url "http://patchwork.ozlabs.org/patch/400328/raw/"
-    sha1 "0baca77c863e6876f6fb1838db9e5cb60c6fe89c"
-  end
-
-  # Patch to make regex BSD grep compatible. Can be removed when adopted upstream.
-  # http://patchwork.ozlabs.org/patch/400351/
-  patch do
-    url "http://patchwork.ozlabs.org/patch/400351/raw/"
-    sha1 "8f8e29aa149e65c2588a2d9ec3849d0ba727e0ad"
-  end
 
   def install
     args = ["--prefix=#{prefix}",
