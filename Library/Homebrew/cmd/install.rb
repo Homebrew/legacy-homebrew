@@ -157,7 +157,12 @@ module Homebrew
   def perform_preinstall_checks
     check_ppc
     check_writable_install_location
-    check_xcode
+    if MacOS::Xcode.installed?
+      check_xcode
+    else
+      opoo "You have not installed Xcode."
+      puts "Bottles may install correctly, but builds will fail!"
+    end
     check_cellar
   end
 
