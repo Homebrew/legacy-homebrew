@@ -3,7 +3,7 @@ require 'requirement'
 # There are multiple implementations of MPI-2 available.
 # http://www.mpi-forum.org/
 # This requirement is used to find an appropriate one.
-class MPIDependency < Requirement
+class MPIRequirement < Requirement
 
   attr_reader :lang_list
 

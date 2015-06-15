@@ -1,6 +1,6 @@
 require "requirement"
 
-class AprDependency < Requirement
+class AprRequirement < Requirement
   fatal true
   default_formula "apr-util"
 

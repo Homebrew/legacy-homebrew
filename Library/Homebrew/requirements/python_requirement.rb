@@ -1,6 +1,6 @@
 require "language/python"
 
-class PythonDependency < Requirement
+class PythonRequirement < Requirement
   fatal true
   default_formula "python"
   cask "python"
@@ -47,7 +47,7 @@ class PythonDependency < Requirement
   alias_method :to_s, :python_binary
 end
 
-class Python3Dependency < PythonDependency
+class Python3Requirement < PythonRequirement
   fatal true
   default_formula "python3"
   cask "python3"

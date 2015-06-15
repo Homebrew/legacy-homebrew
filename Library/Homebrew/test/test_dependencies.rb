@@ -83,19 +83,19 @@ class RequirementsTests < Homebrew::TestCase
   end
 
   def test_merging_multiple_dependencies
-    @reqs << X11Dependency.new << X11Dependency.new
+    @reqs << X11Requirement.new << X11Requirement.new
     assert_equal 1, @reqs.count
     @reqs << Requirement.new
     assert_equal 2, @reqs.count
   end
 
   def test_comparison_prefers_larger
-    @reqs << X11Dependency.new << X11Dependency.new("x11", %w[2.6])
-    assert_equal [X11Dependency.new("x11", %w[2.6])], @reqs.to_a
+    @reqs << X11Requirement.new << X11Requirement.new("x11", %w[2.6])
+    assert_equal [X11Requirement.new("x11", %w[2.6])], @reqs.to_a
   end
 
   def test_comparison_does_not_merge_smaller
-    @reqs << X11Dependency.new("x11", %w{2.6}) << X11Dependency.new
-    assert_equal [X11Dependency.new("x11", %w[2.6])], @reqs.to_a
+    @reqs << X11Requirement.new("x11", %w{2.6}) << X11Requirement.new
+    assert_equal [X11Requirement.new("x11", %w[2.6])], @reqs.to_a
   end
 end

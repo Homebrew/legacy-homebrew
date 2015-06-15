@@ -1,6 +1,6 @@
 require "requirement"
 
-class OsxfuseDependency < Requirement
+class OsxfuseRequirement < Requirement
   fatal true
   default_formula "osxfuse"
   cask "osxfuse"
@@ -17,9 +17,9 @@ class OsxfuseDependency < Requirement
   end
 end
 
-class ConflictsWithBinaryOsxfuse < Requirement
+class NonBinaryOsxfuseRequirement < Requirement
   fatal true
-  satisfy { HOMEBREW_PREFIX.to_s != "/usr/local" || !OsxfuseDependency.binary_osxfuse_installed? }
+  satisfy { HOMEBREW_PREFIX.to_s != "/usr/local" || !OsxfuseRequirement.binary_osxfuse_installed? }
 
   def message
     <<-EOS.undent

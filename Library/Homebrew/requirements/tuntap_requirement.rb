@@ -1,6 +1,6 @@
 require "requirement"
 
-class TuntapDependency < Requirement
+class TuntapRequirement < Requirement
   fatal true
   default_formula "tuntap"
   cask "tuntap"

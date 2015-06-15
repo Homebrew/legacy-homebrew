@@ -1,20 +1,20 @@
 require 'requirement'
-require 'requirements/apr_dependency'
-require 'requirements/fortran_dependency'
-require 'requirements/language_module_dependency'
+require 'requirements/apr_requirement'
+require 'requirements/fortran_requirement'
+require 'requirements/language_module_requirement'
 require 'requirements/minimum_macos_requirement'
 require 'requirements/maximum_macos_requirement'
-require 'requirements/mpi_dependency'
-require 'requirements/osxfuse_dependency'
-require 'requirements/python_dependency'
-require 'requirements/java_dependency'
+require 'requirements/mpi_requirement'
+require 'requirements/osxfuse_requirement'
+require 'requirements/python_requirement'
+require 'requirements/java_requirement'
 require 'requirements/ruby_requirement'
-require 'requirements/tuntap_dependency'
+require 'requirements/tuntap_requirement'
 require 'requirements/unsigned_kext_requirement'
-require 'requirements/x11_dependency'
+require 'requirements/x11_requirement'
 require 'requirements/emacs_requirement'
 
-class XcodeDependency < Requirement
+class XcodeRequirement < Requirement
   fatal true
 
   satisfy(:build_env => false) { xcode_installed_version }
@@ -52,28 +52,28 @@ class XcodeDependency < Requirement
   end
 end
 
-class MysqlDependency < Requirement
+class MysqlRequirement < Requirement
   fatal true
   default_formula 'mysql'
 
   satisfy { which 'mysql_config' }
 end
 
-class PostgresqlDependency < Requirement
+class PostgresqlRequirement < Requirement
   fatal true
   default_formula 'postgresql'
 
   satisfy { which 'pg_config' }
 end
 
-class GPGDependency < Requirement
+class GPGRequirement < Requirement
   fatal true
   default_formula "gpg"
 
   satisfy { which("gpg") || which("gpg2") }
 end
 
-class TeXDependency < Requirement
+class TeXRequirement < Requirement
   fatal true
   cask "mactex"
   download "https://www.tug.org/mactex/"
@@ -112,14 +112,14 @@ class ArchRequirement < Requirement
   end
 end
 
-class MercurialDependency < Requirement
+class MercurialRequirement < Requirement
   fatal true
   default_formula 'mercurial'
 
   satisfy { which('hg') }
 end
 
-class GitDependency < Requirement
+class GitRequirement < Requirement
   fatal true
   default_formula 'git'
   satisfy { !!which('git') }

@@ -1,20 +1,20 @@
 require 'testing_env'
-require 'requirements/language_module_dependency'
+require 'requirements/language_module_requirement'
 
-class LanguageModuleDependencyTests < Homebrew::TestCase
+class LanguageModuleRequirementTests < Homebrew::TestCase
   parallelize_me!
 
   def assert_deps_fail(spec)
-    refute_predicate LanguageModuleDependency.new(*spec.shift.reverse), :satisfied?
+    refute_predicate LanguageModuleRequirement.new(*spec.shift.reverse), :satisfied?
   end
 
   def assert_deps_pass(spec)
-    assert_predicate LanguageModuleDependency.new(*spec.shift.reverse), :satisfied?
+    assert_predicate LanguageModuleRequirement.new(*spec.shift.reverse), :satisfied?
   end
 
   def test_unique_deps_are_not_eql
-    x = LanguageModuleDependency.new(:node, "less")
-    y = LanguageModuleDependency.new(:node, "coffee-script")
+    x = LanguageModuleRequirement.new(:node, "less")
+    y = LanguageModuleRequirement.new(:node, "coffee-script")
     refute_eql x, y
     refute_equal x.hash, y.hash
   end
@@ -22,7 +22,7 @@ class LanguageModuleDependencyTests < Homebrew::TestCase
   def test_differing_module_and_import_name
     mod_name = "foo"
     import_name = "bar"
-    l = LanguageModuleDependency.new(:python, mod_name, import_name)
+    l = LanguageModuleRequirement.new(:python, mod_name, import_name)
     assert_includes l.message, mod_name
     assert_includes l.the_test, "import #{import_name}"
   end
