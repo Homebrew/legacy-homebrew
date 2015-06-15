@@ -9,7 +9,7 @@ class Caveats
     caveats = []
     s = f.caveats.to_s
     caveats << s.chomp + "\n" if s.length > 0
-    caveats << f.keg_only_text if f.keg_only? && f.respond_to?(:keg_only_text)
+    caveats << keg_only_text
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
     caveats << fish_completion_caveats
@@ -29,6 +29,27 @@ class Caveats
     @keg ||= [f.prefix, f.opt_prefix, f.linked_keg].map do |d|
       Keg.new(d.resolved_path) rescue nil
     end.compact.first
+  end
+
+  def keg_only_text
+    return "" unless f.keg_only?
+
+    s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
+    s << "\n\n#{f.keg_only_reason.to_s}"
+    if f.lib.directory? or f.include.directory?
+      s <<
+        <<-EOS.undent_________________________________________________________72
+
+
+        Generally there are no consequences of this for you. If you build your
+        own software and it requires this formula, you'll need to add to your
+        build variables:
+
+        EOS
+      s << "    LDFLAGS:  -L#{f.opt_lib}\n" if f.lib.directory?
+      s << "    CPPFLAGS: -I#{f.opt_include}\n" if f.include.directory?
+    end
+    s << "\n"
   end
 
   def bash_completion_caveats
