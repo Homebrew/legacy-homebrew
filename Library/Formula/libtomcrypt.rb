@@ -8,10 +8,10 @@ class Libtomcrypt < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "77bfa87994a726db794bf65153913dbc2dc7aad5" => :yosemite
-    sha1 "05559690a26660ed6c5979ff4661db2e57672491" => :mavericks
-    sha1 "eb5270eff08703ed0d72ece429f9df5f0273fb65" => :mountain_lion
+    revision 2
+    sha256 "ad36e0538d35fe35f71a1c5d7c19945a2800e791911a53bf1168b9bbc6df8db1" => :yosemite
+    sha256 "108baa1e0008f5967f5dae0f670558bcb0bd679c94deb2d21d335525beda21ac" => :mavericks
+    sha256 "dd8857ae5f03d3e26c9f741b13522f0e868539264ab9c3dceb26f6019fe1996c" => :mountain_lion
   end
 
   depends_on "libtommath"
