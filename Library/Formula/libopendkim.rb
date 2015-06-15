@@ -5,9 +5,9 @@ class Libopendkim < Formula
   sha256 "43a0ba57bf942095fe159d0748d8933c6b1dd1117caf0273fa9a0003215e681b"
 
   bottle do
-    sha1 "c4ffd7ead8a1f4c5ddf5ed9556e8fc476130b229" => :yosemite
-    sha1 "e012df195eee3f3aacd7cb1bb77b23969379b7e0" => :mavericks
-    sha1 "bb60d1866f2e9357d9f652cd76311285d595f3f7" => :mountain_lion
+    sha256 "42f6bac489a74cf6f05f059c454b8b821c884abc71138f811fb72e4feca14f6d" => :yosemite
+    sha256 "4177829cd1e50e4723c815b747298277554a0a52176601c1f56b5c548ba133ff" => :mavericks
+    sha256 "e9196bde7304789169ceb844a7bea8b67e273e6005ed93ffd80d0a4d5af6241c" => :mountain_lion
   end
 
   depends_on "unbound"
