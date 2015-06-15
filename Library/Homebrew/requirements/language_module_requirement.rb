@@ -1,6 +1,6 @@
 require 'requirement'
 
-class LanguageModuleDependency < Requirement
+class LanguageModuleRequirement < Requirement
   fatal true
 
   def initialize language, module_name, import_name=nil

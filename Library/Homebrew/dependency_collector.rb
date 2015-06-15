@@ -1,8 +1,8 @@
 require 'dependency'
 require 'dependencies'
+require 'ld64_dependency'
 require 'requirement'
 require 'requirements'
-require 'requirements/ld64_dependency'
 require 'set'
 
 ## A dependency is a formula that another formula needs to install.
@@ -94,7 +94,7 @@ class DependencyCollector
     elsif tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
-      LanguageModuleDependency.new(tag, spec, tags[1])
+      LanguageModuleRequirement.new(tag, spec, tags[1])
     else
       Dependency.new(spec, tags)
     end
@@ -102,25 +102,25 @@ class DependencyCollector
 
   def parse_symbol_spec(spec, tags)
     case spec
-    when :x11        then X11Dependency.new(spec.to_s, tags)
-    when :xcode      then XcodeDependency.new(tags)
+    when :x11        then X11Requirement.new(spec.to_s, tags)
+    when :xcode      then XcodeRequirement.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
-    when :mysql      then MysqlDependency.new(tags)
-    when :postgresql then PostgresqlDependency.new(tags)
-    when :gpg        then GPGDependency.new(tags)
-    when :fortran    then FortranDependency.new(tags)
-    when :mpi        then MPIDependency.new(*tags)
-    when :tex        then TeXDependency.new(tags)
+    when :mysql      then MysqlRequirement.new(tags)
+    when :postgresql then PostgresqlRequirement.new(tags)
+    when :gpg        then GPGRequirement.new(tags)
+    when :fortran    then FortranRequirement.new(tags)
+    when :mpi        then MPIRequirement.new(*tags)
+    when :tex        then TeXRequirement.new(tags)
     when :arch       then ArchRequirement.new(tags)
-    when :hg         then MercurialDependency.new(tags)
-    when :python     then PythonDependency.new(tags)
-    when :python3    then Python3Dependency.new(tags)
-    when :java       then JavaDependency.new(tags)
+    when :hg         then MercurialRequirement.new(tags)
+    when :python     then PythonRequirement.new(tags)
+    when :python3    then Python3Requirement.new(tags)
+    when :java       then JavaRequirement.new(tags)
     when :ruby       then RubyRequirement.new(tags)
-    when :osxfuse    then OsxfuseDependency.new(tags)
-    when :tuntap     then TuntapDependency.new(tags)
+    when :osxfuse    then OsxfuseRequirement.new(tags)
+    when :tuntap     then TuntapRequirement.new(tags)
     when :ant        then ant_dep(spec, tags)
-    when :apr        then AprDependency.new(tags)
+    when :apr        then AprRequirement.new(tags)
     when :emacs      then EmacsRequirement.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
@@ -133,7 +133,7 @@ class DependencyCollector
       tags << :run
       Dependency.new("libtool", tags)
     when :python2
-      PythonDependency.new(tags)
+      PythonRequirement.new(tags)
     else
       raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
@@ -166,9 +166,9 @@ class DependencyCollector
     when strategy <= CurlDownloadStrategy
       parse_url_spec(spec.url, tags)
     when strategy <= GitDownloadStrategy
-      GitDependency.new(tags)
+      GitRequirement.new(tags)
     when strategy <= MercurialDownloadStrategy
-      MercurialDependency.new(tags)
+      MercurialRequirement.new(tags)
     when strategy <= FossilDownloadStrategy
       Dependency.new("fossil", tags)
     when strategy <= BazaarDownloadStrategy
