@@ -265,7 +265,7 @@ class BottleSpecification
   DEFAULT_DOMAIN = "https://homebrew.bintray.com".freeze
   DEFAULT_ROOT_URL = "#{DEFAULT_DOMAIN}/bottles".freeze
 
-  attr_rw :root_url, :prefix, :cellar, :revision, :does_not_need_relocation
+  attr_rw :root_url, :prefix, :cellar, :revision
   attr_reader :checksum, :collector
   def initialize
     @revision = 0
@@ -278,6 +278,10 @@ class BottleSpecification
 
   def compatible_cellar?
     cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+  end
+
+  def does_not_need_relocation
+    @does_not_need_relocation = true
   end
 
   def needs_relocation?
