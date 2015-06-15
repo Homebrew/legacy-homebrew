@@ -281,7 +281,7 @@ class BottleSpecification
   end
 
   def needs_relocation?
-    @does_not_need_relocation == false
+    !@does_not_need_relocation
   end
 
   def tag?(tag)
