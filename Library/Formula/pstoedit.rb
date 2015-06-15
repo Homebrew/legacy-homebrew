@@ -61,21 +61,21 @@ index 763a87e..1bc0b0e 100644
  .de Vb
  .ft CW
 @@ -10,7 +10,7 @@
-
+ 
  .fi
  ..
 -.TH "PSTOEDIT" "1" "01 January 2015" "Conversion Tools " "Conversion Tools "
 +.TH "PSTOEDIT" "1" "13 March 2015" "Conversion Tools " "Conversion Tools "
  .SH NAME
-
+ 
  pstoedit
 @@ -367,7 +367,7 @@ MS Windows: The same directory where the pstoedit executable is located
  .B *
  Unix:
- .br
+ .br 
 -<\fIThe directory where the pstoedit executable is located\fP>
 +The default installation directory. If it fails, then <\fIThe directory where the pstoedit executable is located\fP>
- /../lib/
+ /../lib/ 
  .RS
  .PP
 diff --git a/doc/pstoedit.htm b/doc/pstoedit.htm
@@ -90,21 +90,21 @@ index 2a2c500..e1ca481 100644
  ** NOTE: This file is generated, DO NOT EDIT. -->
  <html>
 @@ -9,7 +9,7 @@
- PSTOEDIT
+ PSTOEDIT 
  </h1>
  <h4 align=center>Dr. Wolfgang Glunz </h4>
 -<h4 align=center>01 January 2015</h4>
 +<h4 align=center>13 March 2015</h4>
  <h4 align=center>Version 3.70 </h4>
  <tt>pstoedit</tt>
- - a tool converting PostScript and PDF files into various
+ - a tool converting PostScript and PDF files into various 
 @@ -561,7 +561,7 @@ in the installation directory and uses that file as a default fontmap file if av
  </li>
  <li>Unix:<br>
-
+  
 -&lt;<em>The directory where the pstoedit executable is located</em>&gt;
 +The default installation directory. If it fails, then &lt;<em>The directory where the pstoedit executable is located</em>&gt;
- <tt>/../lib/</tt>
+ <tt>/../lib/</tt> 
  <p>
  </li>
 diff --git a/doc/pstoedit.tex b/doc/pstoedit.tex
@@ -113,29 +113,29 @@ index a3d5494..7f590ea 100644
 +++ b/doc/pstoedit.tex
 @@ -352,7 +352,7 @@ If  the \Opt{-fontmap} option is not specified, \Prog{pstoedit} automatically lo
    \item MS Windows: The same directory where the \Prog{pstoedit} executable is located
-
+ 
    \item Unix:\\
 -  $<$\emph{The directory where the pstoedit executable is located}$>$\verb+/../lib/+
 +  The default installation directory. If it fails, then $<$\emph{The directory where the pstoedit executable is located}$>$\verb+/../lib/+
-
+ 
  \end{itemize}
-
+ 
 diff --git a/src/pstoedit.cpp b/src/pstoedit.cpp
 index 7f66d23..a16f57d 100644
 --- a/src/pstoedit.cpp
 +++ b/src/pstoedit.cpp
 @@ -30,6 +30,7 @@
  #include I_string_h
-
+ 
  #include <assert.h>
 +#include <sys/stat.h>
-
+ 
  #include "pstoeditoptions.h"
-
+ 
 @@ -261,33 +262,33 @@ static void loadpstoeditplugins(const char *progname, ostream & errstream, bool
-		loadPlugInDrivers(plugindir.c_str(), errstream, verbose);	// load the driver plugins
-		pluginsloaded = true;
-	}
+ 		loadPlugInDrivers(plugindir.c_str(), errstream, verbose);	// load the driver plugins
+ 		pluginsloaded = true;
+ 	}
 -	// also look in the directory where the pstoedit .exe/dll was found
 -	char szExePath[1000];
 -	szExePath[0] = '\0';
@@ -162,10 +162,10 @@ index 7f66d23..a16f57d 100644
 +	if (!pluginsloaded &&
 +	    !stat(PSTOEDITLIBDIR, &s) &&
 +	    S_ISDIR(s.st_mode)) {
-	  // also try to load drivers from the PSTOEDITLIBDIR
-	  loadPlugInDrivers(PSTOEDITLIBDIR, errstream,verbose);
-	  pluginsloaded = true;
-	}
+   	  // also try to load drivers from the PSTOEDITLIBDIR
+ 	  loadPlugInDrivers(PSTOEDITLIBDIR, errstream,verbose);
+ 	  pluginsloaded = true;
+ 	}
  #endif
 +	// If the above failed, also look in the directory where the pstoedit .exe/dll was found
 +	if (!pluginsloaded) {
@@ -184,6 +184,6 @@ index 7f66d23..a16f57d 100644
 +	  loadPlugInDrivers(szExePath, errstream,verbose);
 +	  }
 +	}
-
-	// delete[]plugindir;
+ 
+ 	// delete[]plugindir;
  }
