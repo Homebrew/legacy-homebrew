@@ -6,7 +6,7 @@ class Antigen < Formula
   head "https://github.com/zsh-users/antigen.git"
 
   def install
-    bin.install "antigen.zsh"
+    prefix.install "antigen.zsh"
   end
 
   test do
