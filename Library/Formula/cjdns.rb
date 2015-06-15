@@ -9,10 +9,10 @@ class Cjdns < Formula
   def install
     system "./do"
     bin.install "cjdroute"
-    bin.install "build_darwin/test_testcjdroute_c" => "cjdroute_test"
+    (share+"test").install "build_darwin/test_testcjdroute_c" => "cjdroute_test"
   end
 
   test do
-    system bin/"cjdroute_test", "all"
+    system "#{share}/test/cjdroute_test", "all"
   end
 end
