@@ -4,7 +4,7 @@ class Osquery < Formula
   desc "SQL powered operating system instrumentation and analytics"
   homepage "https://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.4.5", :revision => "3131a97d9511ed92d65afadf1a049a6425ec6eca"
+  url "https://github.com/facebook/osquery.git", :tag => "1.4.6", :revision => "b56e9efd47efeea487b90fd7c137b55b3254c6c8"
 
   bottle do
     sha256 "292711f22175d0efb61710f1cf5e57f3f9a1cba97dbbe3d3e8190ee5b384e904" => :yosemite
