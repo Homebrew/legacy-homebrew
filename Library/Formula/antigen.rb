@@ -6,11 +6,11 @@ class Antigen < Formula
   head "https://github.com/zsh-users/antigen.git"
 
   def install
-    prefix.install "antigen.zsh"
+    lib.install "antigen.zsh"
   end
 
   test do
-    (testpath/".zshrc").write "source antigen.zsh"
+    (testpath/".zshrc").write "source `brew --prefix`/lib/antigen.zsh"
     system "/bin/zsh", "--login", "-i", "-c", "antigen help"
   end
 end
