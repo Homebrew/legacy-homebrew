@@ -13,7 +13,7 @@ class Pmd < Formula
     doc.install "LICENSE", "NOTICE", "README.md"
 
     # The mvn package target produces a .zip with all the jars needed for PMD
-    with_system_path { safe_system 'unzip', '-qq', buildpath/"pmd-dist/target/pmd-bin-#{version}.zip" }
+    safe_system 'tar', '-xf', buildpath/"pmd-dist/target/pmd-bin-#{version}.zip"
     libexec.install "pmd-bin-#{version}/bin", "pmd-bin-#{version}/lib"
 
     bin.install_symlink "#{libexec}/bin/run.sh" => "pmd"
@@ -21,7 +21,6 @@ class Pmd < Formula
   end
 
   def caveats; <<-EOS.undent
-    Once pmd is installed, maven isn't needed anymore.
     Run with `pmd` (instead of `run.sh` as described in the documentation).
     EOS
   end
@@ -42,4 +41,3 @@ class Pmd < Formula
       "rulesets/java/basic.xml", "-f", "textcolor", "-l", "java"
   end
 end
-
