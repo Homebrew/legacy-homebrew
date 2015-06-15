@@ -3,8 +3,8 @@ require "formula"
 class AflFuzz < Formula
   desc "American fuzzy lop: Security-oriented fuzzer"
   homepage "http://lcamtuf.coredump.cx/afl/"
-  url "http://lcamtuf.coredump.cx/afl/releases/afl-1.82b.tgz"
-  sha256 "ee9c0483820c85a3afe22e779456651403e364b95fe919a5b8e326a4272539ae"
+  url "http://lcamtuf.coredump.cx/afl/releases/afl-1.83b.tgz"
+  sha256 "5b1083537b549c74250acb43023d4bf0551508afcb07daa90330d40adb4e6efe"
 
   head "http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz"
 
