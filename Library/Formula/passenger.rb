@@ -71,8 +71,6 @@ class Passenger < Formula
 
   test do
     ruby_libdir = `#{HOMEBREW_PREFIX}/bin/passenger-config --ruby-libdir`.strip
-    if ruby_libdir != (libexec/"lib").to_s
-      fail "Invalid installation"
-    end
+    assert_equal "#{libexec}/lib", ruby_libdir
   end
 end
