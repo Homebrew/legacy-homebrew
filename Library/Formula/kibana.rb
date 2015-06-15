@@ -5,6 +5,13 @@ class Kibana < Formula
   sha256 "df30e084faa1a7b0b2694fade5340ebb9125b20da481c40ee2ff8c7d4f31ac7c"
   head "https://github.com/elastic/kibana.git"
 
+  bottle do
+    cellar :any
+    sha256 "932177c7581bdeffceff3eca3019267cfcb334742e15ba6c0e6212d5efe100c0" => :yosemite
+    sha256 "b8b741d84dddd27df01956fbd560f7025036e15c87639947904105912396a0f8" => :mavericks
+    sha256 "a616da0b414e515cf895dcb278280e055dc7273d4cd38242dee597ec7d319100" => :mountain_lion
+  end
+
   depends_on "node"
 
   def install
