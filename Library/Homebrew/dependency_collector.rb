@@ -105,6 +105,7 @@ class DependencyCollector
     when :x11        then X11Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
+    when :libssl     then LibsslDependency.new(tags)
     when :mysql      then MysqlDependency.new(tags)
     when :postgresql then PostgresqlDependency.new(tags)
     when :gpg        then GPGDependency.new(tags)
