@@ -3,8 +3,8 @@ require "formula"
 class Vala < Formula
   desc "Compiler for the GObject type system"
   homepage "https://live.gnome.org/Vala"
-  url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.26/vala-0.26.1.tar.xz"
-  sha256 "8407abb19ab3a58bbfc0d288abb47666ef81f76d0540258c03965e7545f59e6b"
+  url "https://download.gnome.org/sources/vala/0.28/vala-0.28.0.tar.xz"
+  sha256 "0d9e3bd3f82145664875f7c29b2f544ba92d2814f75412948f774c0727fc977f"
 
   bottle do
     sha1 "9e829527c2662e38375a04116802f8975109fc5b" => :yosemite
