@@ -1,5 +1,7 @@
 #!/bin/bash
 # Script to start the job server
+# Extra arguments will be spark-submit options, for example
+#  ./server_start.sh --jars cassandra-spark-connector.jar
 set -e
 
 get_abs_script_path() {
@@ -16,7 +18,7 @@ GC_OPTS="-XX:+UseConcMarkSweepGC
          -XX:MaxPermSize=512m
          -XX:+CMSClassUnloadingEnabled "
 
-JAVA_OPTS="-Xmx5g -XX:MaxDirectMemorySize=512M
+JAVA_OPTS="-XX:MaxDirectMemorySize=512M
            -XX:+HeapDumpOnOutOfMemoryError -Djava.net.preferIPv4Stack=true
            -Dcom.sun.management.jmxremote.port=9999
            -Dcom.sun.management.jmxremote.authenticate=false
@@ -42,13 +44,6 @@ if [ -z "$SPARK_HOME" ]; then
   exit 1
 fi
 
-if [ -z "$SPARK_CONF_DIR" ]; then
-  SPARK_CONF_DIR=$SPARK_HOME/conf
-fi
-
-# Pull in other env vars in spark config, such as MESOS_NATIVE_LIBRARY
-. $SPARK_CONF_DIR/spark-env.sh
-
 pidFilePath=$appdir/$PIDFILE
 
 if [ -f "$pidFilePath" ] && kill -0 $(cat "$pidFilePath"); then
@@ -62,7 +57,7 @@ if [ -z "$LOG_DIR" ]; then
 fi
 mkdir -p $LOG_DIR
 
-LOGGING_OPTS="-Dlog4j.configuration=log4j-server.properties
+LOGGING_OPTS="-Dlog4j.configuration=file:$appdir/log4j-server.properties
               -DLOG_DIR=$LOG_DIR"
 
 # For Mesos
@@ -78,9 +73,8 @@ fi
 # This needs to be exported for standalone mode so drivers can connect to the Spark cluster
 export SPARK_HOME
 
-# job server jar needs to appear first so its deps take higher priority
-# need to explicitly include app dir in classpath so logging configs can be found
-CLASSPATH="$appdir:$appdir/spark-job-server.jar:$($SPARK_HOME/bin/compute-classpath.sh)"
-
-exec java -cp $CLASSPATH $GC_OPTS $JAVA_OPTS $LOGGING_OPTS $CONFIG_OVERRIDES $MAIN $conffile 2>&1 &
+$SPARK_HOME/bin/spark-submit --class $MAIN --driver-memory 5G \
+  --conf "spark.executor.extraJavaOptions=$LOGGING_OPTS" \
+  --driver-java-options "$GC_OPTS $JAVA_OPTS $LOGGING_OPTS $CONFIG_OVERRIDES" \
+  $@ $appdir/spark-job-server.jar $conffile 2>&1 &
 echo $! > $pidFilePath
