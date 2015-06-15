@@ -275,7 +275,7 @@ class FormulaAuditor
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
         when "open-mpi", "mpich2"
           problem <<-EOS.undent
-            There are multiple conflicting ways to install MPI. Use an MPIDependency:
+            There are multiple conflicting ways to install MPI. Use an MPIRequirement:
               depends_on :mpi => [<lang list>]
             Where <lang list> is a comma delimited list that can include:
               :cc, :cxx, :f77, :f90
@@ -698,11 +698,11 @@ class FormulaAuditor
       problem "Define method #{$1.inspect} in the class body, not at the top-level"
     end
 
-    if line =~ /ENV.fortran/ && !formula.requirements.map(&:class).include?(FortranDependency)
+    if line =~ /ENV.fortran/ && !formula.requirements.map(&:class).include?(FortranRequirement)
       problem "Use `depends_on :fortran` instead of `ENV.fortran`"
     end
 
-    if line =~ /JAVA_HOME/i && !formula.requirements.map(&:class).include?(JavaDependency)
+    if line =~ /JAVA_HOME/i && !formula.requirements.map(&:class).include?(JavaRequirement)
       problem "Use `depends_on :java` to set JAVA_HOME"
     end
 

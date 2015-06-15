@@ -1,6 +1,6 @@
 require "requirement"
 
-class X11Dependency < Requirement
+class X11Requirement < Requirement
   include Comparable
   attr_reader :min_version
 
@@ -33,7 +33,7 @@ class X11Dependency < Requirement
   end
 
   def <=> other
-    return unless X11Dependency === other
+    return unless X11Requirement === other
     min_version <=> other.min_version
   end
 
