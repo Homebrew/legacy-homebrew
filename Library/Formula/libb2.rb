@@ -1,8 +1,8 @@
 class Libb2 < Formula
   desc "Secure hashing function"
   homepage "https://blake2.net/"
-  url "https://blake2.net/libb2-0.96.tar.gz"
-  sha256 "8cda63288637a9f8824bc036396e1fd78eb76c220ec020bfb441991508ba4f6f"
+  url "https://blake2.net/libb2-0.97.tar.gz"
+  sha256 "7829c7309347650239c76af7f15d9391af2587b38f0a65c250104a2efef99051"
 
   bottle do
     cellar :any
