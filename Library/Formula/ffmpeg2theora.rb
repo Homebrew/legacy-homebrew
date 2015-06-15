@@ -19,10 +19,10 @@ class Ffmpeg2theora < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "94fc80f71d14abe75e467c8d631e67ee51dbd685" => :yosemite
-    sha1 "acf1a399ee26ae9b9303b649b1e405881da1664c" => :mavericks
-    sha1 "7c215c1078da702b774e8f99787f9bd87975aedc" => :mountain_lion
+    revision 2
+    sha256 "9b5c5a894bbb3988a4b6d9039eb107f3e46021d944eba03c666c3cbdfa20ec3a" => :yosemite
+    sha256 "ae5c9ad2515591001a8e759c67bc23d2580ed429266c6fba4c8ddb4923dd9c89" => :mavericks
+    sha256 "0fd532c961a5b677ff4975ed60d5c950d34e9fc079f493b45c7a0f30bda8f322" => :mountain_lion
   end
 
   head do
