@@ -24,7 +24,7 @@ module OS
       # Give the name of the binary you look for as a string to this method
       # in order to get the full path back as a Pathname.
       (@locate ||= {}).fetch(tool) do |key|
-        @locate[key] = if File.executable?(path = "#{HOMEBREW_PREFIX}/opt/cctools/bin/#{tool}")
+        @locate[key] = if File.executable?(path = "#{Formula['ccools'].opt_prefix}/bin/#{tool}")
           Pathname.new path
         elsif File.executable?(path = "/usr/bin/#{tool}")
           Pathname.new path
