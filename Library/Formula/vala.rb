@@ -13,8 +13,8 @@ class Vala < Formula
   end
 
   devel do
-    url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.27/vala-0.27.1.tar.xz"
-    sha256 "0bce939c011c34478da840f869b3c24d02e8f1c92691c587c1fe289a5533cd77"
+    url "https://download.gnome.org/sources/vala/0.29/vala-0.29.1.tar.xz"
+    sha256 "776b95c2cf29e20177bdfebdc05e0b665968a42313d8fd1961e5d5073a2600e9"
   end
 
   depends_on "pkg-config" => :run
