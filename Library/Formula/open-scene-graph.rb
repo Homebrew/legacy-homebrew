@@ -34,6 +34,8 @@ class OpenSceneGraph < Formula
   depends_on "qt5" => :optional
   depends_on "qt" => :optional
 
+  # patch necessary to ensure support for gtkglext-quartz
+  # filed as an issue to the developers https://github.com/openscenegraph/osg/issues/34
   patch :DATA
 
   if build.with? "docs"

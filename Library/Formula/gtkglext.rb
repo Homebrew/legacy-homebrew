@@ -18,6 +18,8 @@ class Gtkglext < Formula
   depends_on "gtk+"
   depends_on "pangox-compat"
 
+  # all these MacPorts patches have already been included upstream. A new release of gtkglext
+  # for gtk+2.0 remains uncertain though.
   patch :p0 do
     url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-configure.diff"
     sha256 "aca35cd6ae28613b375301068715f82b59bd066a32b2f4d046177478950ab026"
