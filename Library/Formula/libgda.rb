@@ -3,8 +3,9 @@ require 'formula'
 class Libgda < Formula
   desc "Provides unified data access to the GNOME project"
   homepage 'http://www.gnome-db.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libgda/5.2/libgda-5.2.0.tar.xz'
-  sha256 '41bd14aaaf50efc7b80d7279c69ed9c90d3a1894cb5123385d86883a1d7d5f30'
+  url 'https://download.gnome.org/sources/libgda/5.2/libgda-5.2.4.tar.xz'
+  sha256 '2cee38dd583ccbaa5bdf6c01ca5f88cc08758b9b144938a51a478eb2684b765e'
+
   bottle do
     sha1 "446acb6ebf7b20f8adb7e270a1de64815dc397c3" => :yosemite
     sha1 "408c2544e9416932199431d358d34658c38c1654" => :mavericks
@@ -21,6 +22,7 @@ class Libgda < Formula
   depends_on 'readline'
   depends_on 'libgcrypt'
   depends_on 'sqlite'
+  depends_on 'openssl'
 
   def install
     ENV.libxml2
