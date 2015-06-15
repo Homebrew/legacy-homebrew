@@ -1,8 +1,8 @@
 class Hh < Formula
-  desc "Bash history suggest box"
+  desc "Bash and zsh history suggest box"
   homepage "https://github.com/dvorka/hstr"
-  url "https://github.com/dvorka/hstr/releases/download/1.16/hh-1.16-src.tgz"
-  sha1 "43c353662a0b31aa56d683fa6ff519bded289c51"
+  url "https://github.com/dvorka/hstr/releases/download/1.17/hh-1.17-src.tgz"
+  sha256 "68eae9ecb022d3f492b85e1479d9b81e3b47b568b7714fd35e4e0fca50234c6e"
 
   bottle do
     cellar :any
@@ -22,10 +22,6 @@ class Hh < Formula
 
   def install
     system "autoreconf", "-fvi" if build.head?
-    # Upstream bug report for curses/ncursesw:
-    # https://github.com/dvorka/hstr/issues/103
-    inreplace %w[src/hstr.c src/include/hstr_curses.h], "ncursesw/", ""
-    inreplace "configure", "ncursesw", "ncurses"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
