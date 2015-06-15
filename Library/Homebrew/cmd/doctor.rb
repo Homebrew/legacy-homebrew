@@ -1142,12 +1142,19 @@ def check_for_unlinked_but_not_keg_only
 end
 
   def check_xcode_license_approved
-    # If the user installs Xcode-only, they have to approve the
-    # license or no "xc*" tool will work.
-    if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success? then <<-EOS.undent
-      You have not agreed to the Xcode license.
-      Builds will fail! Agree to the license by opening Xcode.app or running:
-          sudo xcodebuild -license
+    if MacOS::Xcode.installed?
+      # If the user installs Xcode-only, they have to approve the
+      # license or no "xc*" tool will work.
+      if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success? then <<-EOS.undent
+        You have not agreed to the Xcode license.
+        Builds will fail! Agree to the license by opening Xcode.app or running:
+            sudo xcodebuild -license
+        EOS
+      end
+    else
+      <<-EOS.undent
+        You have not installed Xcode.
+        Bottles may install correctly, but builds will fail!
       EOS
     end
   end
