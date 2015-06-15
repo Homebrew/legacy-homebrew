@@ -171,15 +171,15 @@ class FormulaAuditor
       end
     end
 
-    if formula.class < GithubGistFormula
+    if Object.const_defined?("GithubGistFormula") && formula.class < GithubGistFormula
       problem "GithubGistFormula is deprecated, use Formula instead"
     end
 
-    if formula.class < ScriptFileFormula
+    if Object.const_defined?("ScriptFileFormula") && formula.class < ScriptFileFormula
       problem "ScriptFileFormula is deprecated, use Formula instead"
     end
 
-    if formula.class < AmazonWebServicesFormula
+    if Object.const_defined?("AmazonWebServicesFormula") && formula.class < AmazonWebServicesFormula
       problem "AmazonWebServicesFormula is deprecated, use Formula instead"
     end
   end
