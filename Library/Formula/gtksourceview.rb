@@ -17,6 +17,10 @@ class Gtksourceview < Formula
   depends_on "gtk+"
   depends_on "gtk-mac-integration"
 
+  # patches added the ensure that gtk-mac-integration is supported properly instead
+  # of the old released called ige-mac-integration.
+  # These are already integrated upstream in their gnome-2-30 branch but a release of
+  # this remains highly unlikely
   patch :DATA
 
   def install
