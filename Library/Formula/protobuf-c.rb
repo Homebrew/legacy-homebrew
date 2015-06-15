@@ -3,8 +3,8 @@ require "formula"
 class ProtobufC < Formula
   desc "Protocol buffers library"
   homepage "https://github.com/protobuf-c/protobuf-c"
-  url "https://github.com/protobuf-c/protobuf-c/releases/download/v1.0.2/protobuf-c-1.0.2.tar.gz"
-  sha1 "f831f98a1142fdd3072b329fdc3b30533be67f48"
+  url "https://github.com/protobuf-c/protobuf-c/releases/download/v1.1.1/protobuf-c-1.1.1.tar.gz"
+  sha256 "09c5bb187b7a8e86bc0ff860f7df86370be9e8661cdb99c1072dcdab0763562c"
 
   bottle do
     sha1 "e850a4947ec7189154845bfb60ff8b69197c45e4" => :mavericks
