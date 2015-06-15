@@ -6,10 +6,9 @@ class Libb2 < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "0a905618380c1fa0cdecb54fb49f175a1a73b435bee0954921fabcf824f61801" => :yosemite
-    sha256 "8186ac58f9312ee3f2599e06b894b8e1fdacb0f145d3ac43b436b3f248a97d6b" => :mavericks
-    sha256 "5978374a05368c3812205a5ac8995af20bdc4c5e2040ffcfd49275cd2fc5a089" => :mountain_lion
+    sha256 "4c604799e388530022494535a551c06bf08baba5d6d37fd5622f9fe50773b860" => :yosemite
+    sha256 "513444d15673a2bba2b8042522db8fc68e25154955d18cb8eff6b8bb9bb4503f" => :mavericks
+    sha256 "686a12f6cd03b3ed92c4f900f8a75a0467fd33c9b703678b06ad1060773b16b5" => :mountain_lion
   end
 
   def install
