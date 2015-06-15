@@ -6,10 +6,10 @@ class Python < Formula
   sha256 "eda8ce6eec03e74991abb5384170e7c65fcd7522e409b8e83d7e6372add0f12a"
 
   bottle do
-    revision 1
-    sha256 "9e8dc4de4453039b6ace6ec77d948036247cb95c38c7011241e9edd7a69e3458" => :yosemite
-    sha256 "f388982ebc79c01d9c38478dbd2edf2cd93d50a27436c943130e03b3e3fc9c4c" => :mavericks
-    sha256 "6a252fac6253d4c48ac881051ab28927c2e2dd1f143698c2f08f5ed4b2eae797" => :mountain_lion
+    revision 2
+    sha256 "c09a2be2afed41d72235364fac7b172e07f248c28b24ceee8d3be2084bf2b138" => :yosemite
+    sha256 "08b8454aa0a753feffb7db0601485ae1f79253c0094917b6ddbabe7354e8de13" => :mavericks
+    sha256 "1ec521bf24e2c1b87e7739811b9e7413edc1a2dd008714b416b7c110d97e2a3b" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -34,13 +34,13 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
-    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.1.1.tar.gz"
+    sha256 "5bf42dbf406fd58a41029f53cffff1c90db5de1c5e0e560b5545cf2ec949c431"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.1.tar.gz"
-    sha256 "cfec177552fdd0b2d12b72651c8e874f955b4c62c1c2c9f2588cbdc1c0d0d416"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.3.tar.gz"
+    sha256 "b4c598825a6f6dc2cac65968feb28e6be6c1f7f1408493c60a07eaa731a0affd"
   end
 
   # Patch for pyport.h macro issue
@@ -111,11 +111,13 @@ class Python < Formula
     # Avoid linking to libgcc https://code.activestate.com/lists/python-dev/112195/
     args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
 
-    # We want our readline! This is just to outsmart the detection code,
+    # We want our readline and openssl! This is just to outsmart the detection code,
     # superenv handles that cc finds includes/libs!
-    inreplace "setup.py",
-              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+    inreplace "setup.py" do |s|
+      s.gsub! "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
               "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
+      s.gsub! "/usr/local/ssl", Formula["openssl"].opt_prefix
+    end
 
     if build.universal?
       ENV.universal_binary
@@ -215,8 +217,8 @@ class Python < Formula
     end
 
     # Help distutils find brewed stuff when building extensions
-    include_dirs = [HOMEBREW_PREFIX/"include"]
-    library_dirs = [HOMEBREW_PREFIX/"lib"]
+    include_dirs = [HOMEBREW_PREFIX/"include", Formula["openssl"].opt_include]
+    library_dirs = [HOMEBREW_PREFIX/"lib", Formula["openssl"].opt_lib]
 
     if build.with? "sqlite"
       include_dirs << Formula["sqlite"].opt_include

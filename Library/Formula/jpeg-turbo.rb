@@ -1,15 +1,14 @@
 class JpegTurbo < Formula
   desc "JPEG image codec that aids compression and decompression"
   homepage "http://www.libjpeg-turbo.org/"
-  url "https://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-1.4.0.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/libj/libjpeg-turbo/libjpeg-turbo_1.4.0.orig.tar.gz"
-  sha1 "a9ed7a99a6090e0848836c5df8e836f300a098b9"
+  url "https://downloads.sourceforge.net/project/libjpeg-turbo/1.4.1/libjpeg-turbo-1.4.1.tar.gz"
+  sha256 "4bf5bad4ce85625bffbbd9912211e06790e00fb982b77724af7211034efafb08"
 
   bottle do
     cellar :any
-    sha1 "847dab53f17c69fc8670407f42d6e6da30e3f527" => :yosemite
-    sha1 "d682021ac4745c3e3cfe4a6f1baf6bf07628966a" => :mavericks
-    sha1 "f5a667481af812c39caca21ec7842bf678864df3" => :mountain_lion
+    sha256 "1938c9a93f0de685fd2b2c48f9d7f4d6ccd214260e76b177dc5aa5c5231f8876" => :yosemite
+    sha256 "dbb0b0a91c703b860746cf4cd08a2b88e2946cf4b086ad86a6c81ff603ce81c0" => :mavericks
+    sha256 "d0aee820193caf7d5c365869ce932ccfbe2c6dc76c6a81e0dc73b8f5f08ba5c0" => :mountain_lion
   end
 
   depends_on "libtool" => :build

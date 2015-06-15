@@ -175,7 +175,7 @@ class Keg
   end
 
   def find_dylib name
-    lib.find { |pn| break pn if pn.basename == name }
+    lib.find { |pn| break pn if pn.basename == name } if lib.directory?
   end
 
   def mach_o_files

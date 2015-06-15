@@ -171,15 +171,15 @@ class FormulaAuditor
       end
     end
 
-    if formula.class < GithubGistFormula
+    if Object.const_defined?("GithubGistFormula") && formula.class < GithubGistFormula
       problem "GithubGistFormula is deprecated, use Formula instead"
     end
 
-    if formula.class < ScriptFileFormula
+    if Object.const_defined?("ScriptFileFormula") && formula.class < ScriptFileFormula
       problem "ScriptFileFormula is deprecated, use Formula instead"
     end
 
-    if formula.class < AmazonWebServicesFormula
+    if Object.const_defined?("AmazonWebServicesFormula") && formula.class < AmazonWebServicesFormula
       problem "AmazonWebServicesFormula is deprecated, use Formula instead"
     end
   end
@@ -195,12 +195,12 @@ class FormulaAuditor
     full_name = formula.full_name
 
     if @@aliases.include? name
-      problem "Formula name is conflicted with existed aliases."
+      problem "Formula name conflicts with existing aliases."
       return
     end
 
     if !formula.core_formula? && Formula.core_names.include?(name)
-      problem "Formula name is conflicted with existed core formula."
+      problem "Formula name conflicts with existing core formula."
       return
     end
 
@@ -217,7 +217,7 @@ class FormulaAuditor
     same_name_tap_formulae.delete(full_name)
 
     if same_name_tap_formulae.size > 0
-      problem "Formula name is conflicted with #{same_name_tap_formulae.join ", "}"
+      problem "Formula name conflicts with #{same_name_tap_formulae.join ", "}"
     end
   end
 
@@ -355,7 +355,7 @@ class FormulaAuditor
     end
 
     # Freedesktop is complicated to handle - It has SSL/TLS, but only on certain subdomains.
-    # To enable https Freedesktop change the url from http://project.freedesktop.org/wiki to
+    # To enable https Freedesktop change the URL from http://project.freedesktop.org/wiki to
     # https://wiki.freedesktop.org/project_name.
     # "Software" is redirected to https://wiki.freedesktop.org/www/Software/project_name
     if homepage =~ %r[^http://((?:www|nice|libopenraw|liboil|telepathy|xorg)\.)?freedesktop\.org/(?:wiki/)?]
@@ -489,6 +489,17 @@ class FormulaAuditor
     if text =~ /Formula\.factory\(/
       problem "\"Formula.factory(name)\" is deprecated in favor of \"Formula[name]\""
     end
+
+    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec}/npm/bin]
+      need_npm = "\#{Formula[\"node\"].opt_libexec\}/npm/bin"
+      problem <<-EOS.undent
+       Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install
+      EOS
+    end
+
+    if text =~ /system "npm", "install"/ && text !~ /"HOME"/
+      problem "Please add ENV[\"HOME\"] = buildpath/\".brew_home\" to def install"
+    end
   end
 
   def audit_line(line, lineno)
@@ -511,7 +522,7 @@ class FormulaAuditor
     if line =~ /# if this fails, try separate make\/make install steps/
       problem "Please remove default template comments"
     end
-    if line =~ /# The url of the archive/
+    if line =~ /# The URL of the archive/
       problem "Please remove default template comments"
     end
     if line =~ /## Naming --/
@@ -848,7 +859,7 @@ class ResourceAuditor
     end
 
     if version.to_s =~ /_\d+$/
-      problem "version #{version} should not end with a underline and a number"
+      problem "version #{version} should not end with an underline and a number"
     end
   end
 
@@ -930,6 +941,11 @@ class ResourceAuditor
       problem "Please use \"http://ftpmirror.gnu.org\" instead of #{url}."
     end
 
+    # GNU's ftpmirror does NOT support SSL/TLS.
+    if url =~ %r[^https://ftpmirror\.gnu\.org/]
+      problem "Please use http:// for #{url}"
+    end
+
     if mirrors.include?(url)
       problem "URL should not be duplicated as a mirror: #{url}"
     end
@@ -939,9 +955,6 @@ class ResourceAuditor
     # Check a variety of SSL/TLS URLs that don't consistently auto-redirect
     # or are overly common errors that need to be reduced & fixed over time.
     urls.each do |p|
-      # Skip the main url link, as it can't be made SSL/TLS yet.
-      next if p =~ %r[/ftpmirror\.gnu\.org]
-
       case p
       when %r[^http://ftp\.gnu\.org/],
            %r[^http://[^/]*\.apache\.org/],

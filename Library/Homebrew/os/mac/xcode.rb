@@ -18,7 +18,7 @@ module OS
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
           if MacOS.version > "10.10"
-            "6.3.2"
+            "7.0"
           else
             raise "Mac OS X '#{MacOS.version}' is invalid"
           end
@@ -163,6 +163,7 @@ module OS
 
       def latest_version
         case MacOS.version
+        when "10.11" then "700.0.53"
         when "10.10" then "602.0.53"
         when "10.9"  then "600.0.57"
         when "10.8"  then "503.0.40"

@@ -136,16 +136,9 @@ class Formulary
     def initialize tapped_name
       @tapped_name = tapped_name
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}")
-      path = tap.join("#{name}.rb")
-
-      if tap.directory?
-        tap.find_formula do |file|
-          if file.basename(".rb").to_s == name
-            path = file
-          end
-        end
-      end
+      tap = Tap.new user, repo
+      path = tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
+      path ||= tap.path/"#{name}.rb"
 
       super name, path
     end
@@ -251,8 +244,11 @@ class Formulary
   def self.tap_paths(name)
     name = name.downcase
     Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
-      Pathname.glob(["#{tap}#{name}.rb", "#{tap}Formula/#{name}.rb",
-                     "#{tap}HomebrewFormula/#{name}.rb"])
-    end.flatten.select(&:file?)
+      Pathname.glob([
+        "#{tap}Formula/#{name}.rb",
+        "#{tap}HomebrewFormula/#{name}.rb",
+        "#{tap}#{name}.rb",
+      ]).detect(&:file?)
+    end.compact
   end
 end

@@ -101,6 +101,13 @@ __brew_complete_versions ()
     COMPREPLY=($(compgen -W "$versions" -X "$formula" -- "$cur"))
 }
 
+__brew_complete_logs ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local logs=$(ls ${HOMEBREW_LOGS:-~/Library/Logs/Homebrew/})
+    COMPREPLY=($(compgen -W "$logs" -- "$cur"))
+}
+
 _brew_switch ()
 {
     case "$COMP_CWORD" in
@@ -217,6 +224,18 @@ _brew_fetch ()
     __brew_complete_formulae
 }
 
+_brew_gist_logs ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--new-issue"
+        return
+        ;;
+    esac
+    __brew_complete_logs
+}
+
 _brew_info ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -255,6 +274,17 @@ _brew_install ()
         ;;
     esac
     __brew_complete_formulae
+}
+
+_brew_irb ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--examples"
+        return
+        ;;
+    esac
 }
 
 _brew_link ()
@@ -337,6 +367,17 @@ _brew_log ()
     __brew_complete_formulae
 }
 
+_brew_man ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--link --server --verbose"
+        return
+        ;;
+    esac
+}
+
 _brew_options ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -360,12 +401,92 @@ _brew_outdated ()
     esac
 }
 
+_brew_postinstall ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--debug --sandbox"
+        return
+        ;;
+    esac
+    __brew_complete_installed
+}
+
+_brew_prune ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--dry-run --verbose"
+        return
+        ;;
+    esac
+}
+
+_brew_pull ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--bottle --bump --clean --ignore-whitespace --install --resolve"
+        return
+        ;;
+    esac
+}
+
+_brew_readall ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--syntax"
+        return
+        ;;
+    esac
+    __brew_complete_tapped
+}
+
 _brew_search ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--debian --fedora --fink --macports --opensuse --ubuntu"
+        __brewcomp "--debian --desc --fedora --fink --macports --opensuse --ubuntu"
+        return
+        ;;
+    esac
+}
+
+_brew_style ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--fix --homebrew-developer"
+        return
+        ;;
+    esac
+    __brew_complete_formulae
+}
+
+_brew_tap_readme ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--verbose"
+        return
+        ;;
+    esac
+}
+
+_brew_tests ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--verbose"
         return
         ;;
     esac
@@ -462,7 +583,9 @@ _brew ()
         __brewcomp "
             --cache --cellar
             --env --prefix --repository
+            aspell-dictionaries
             audit
+            bottle
             cat
             cleanup
             commands
@@ -473,26 +596,40 @@ _brew ()
             doctor
             edit
             fetch
+            gist-logs
             help
             home
             info abv
             install
+            irb
+            leaves
             linkapps
             link ln
             list ls
             log
+            man
             missing
             options
             outdated
             prune
             pin
+            postinstall
+            pull
+            readall
             search
             reinstall
+            sh
+            style
+            switch
             tap
+            tap-readme
             test
+            test-bot
+            tests
             uninstall remove rm
             unlink
             unlinkapps
+            unpack
             unpin
             untap
             update
@@ -514,19 +651,29 @@ _brew ()
     doctor|dr)                  _brew_doctor ;;
     diy|configure)              _brew_diy ;;
     fetch)                      _brew_fetch ;;
+    gist-logs)                  _brew_gist_logs ;;
     info|abv)                   _brew_info ;;
     install|instal|reinstall)   _brew_install ;;
+    irb)                        _brew_irb ;;
     link|ln)                    _brew_link ;;
     linkapps)                   _brew_linkapps ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
+    man)                        _brew_man ;;
     missing)                    __brew_complete_formulae ;;
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
     pin)                        __brew_complete_formulae ;;
+    postinstall)                _brew_postinstall ;;
+    prune)                      _brew_prune ;;
+    pull)                       _brew_pull ;;
+    readall)                    _brew_readall ;;
     search|-S)                  _brew_search ;;
+    style)                      _brew_style ;;
     switch)                     _brew_switch ;;
     tap)                        _brew_complete_tap ;;
+    tap-readme)                 _brew_tap_readme ;;
+    tests)                      _brew_tests ;;
     uninstall|remove|rm)        _brew_uninstall ;;
     unpack)                     _brew_unpack ;;
     unpin)                      __brew_complete_formulae ;;

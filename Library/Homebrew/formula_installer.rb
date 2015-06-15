@@ -245,6 +245,7 @@ class FormulaInstaller
   def install_requirement_default_formula?(req, dependent, build)
     return false unless req.default_formula?
     return true unless req.satisfied?
+    return false if req.tags.include?(:run)
     install_bottle_for?(dependent, build) || build_bottle?
   end
 
@@ -680,27 +681,5 @@ class FormulaInstaller
       @@locked.clear
       @hold_locks = false
     end
-  end
-end
-
-
-class Formula
-  def keg_only_text
-    s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
-    s << "\n\n#{keg_only_reason.to_s}"
-    if lib.directory? or include.directory?
-      s <<
-        <<-EOS.undent_________________________________________________________72
-
-
-        Generally there are no consequences of this for you. If you build your
-        own software and it requires this formula, you'll need to add to your
-        build variables:
-
-        EOS
-      s << "    LDFLAGS:  -L#{opt_lib}\n" if lib.directory?
-      s << "    CPPFLAGS: -I#{opt_include}\n" if include.directory?
-    end
-    s << "\n"
   end
 end

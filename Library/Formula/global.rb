@@ -1,14 +1,14 @@
 class Global < Formula
   desc "Source code tag system"
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.4.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.4.tar.gz"
-  sha256 "315bf69bf2b4dbe661ff2800967e5f1171edfb83a0f17424612baa673aff248e"
+  url "http://ftpmirror.gnu.org/global/global-6.5.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.5.tar.gz"
+  sha256 "4afd12db1aa600277b39113cc2d61dc59bd6c6b4ee8033da8bb6dd0c39a4c6a9"
 
   bottle do
-    sha256 "543a6fa77e22e58b4df082a53353b9e264942e0b5e011df648301f916c06a79d" => :yosemite
-    sha256 "4a3d7ee45ba3125725f584d9e711d5bc4061b41db4b58e0a63ca466db6b6bc4c" => :mavericks
-    sha256 "09659b458ac359daadad56aee968796ee7df2e8c3ca10b647d939aef26ba8f8b" => :mountain_lion
+    sha256 "6450fd297faa82a13e2505e20a5f131d742c313ef63dcb65fb56324117815368" => :yosemite
+    sha256 "e745d15ebfad496459fd55736b7e479ea7c8b276221a683609f3e0543d234e91" => :mavericks
+    sha256 "e25e53f6f2be9c36334622c45c5f00725c7cbcc513e1016c5bd7ba40f6ed192d" => :mountain_lion
   end
 
   head do

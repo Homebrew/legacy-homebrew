@@ -1,16 +1,14 @@
-require "formula"
-
 class Pdnsrec < Formula
   desc "Non-authoritative/recursing DNS server"
-  homepage "http://wiki.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-recursor-3.7.2.tar.bz2"
-  sha256 "1366bc1bed7c96fbd3926cf7a9e6d365c53b8a99182642debe1b2863dd015a7e"
+  homepage "https://www.powerdns.com/recursor.html"
+  url "https://downloads.powerdns.com/releases/pdns-recursor-3.7.3.tar.bz2"
+  sha256 "859ca6071147dd2e2ac1b2a5c3d5c2cbff0f5cbc501660db4259e7cbf27fea11"
 
   bottle do
     cellar :any
-    sha256 "4b91cb394be8a7d768a1f1ea6cb3e4bd06fbfa6ea753948ad501eef78160b6e5" => :yosemite
-    sha256 "629e0bb4b83c912ecdcd4543d248f0682d8c24f3da754b8f45b89547dd289fd9" => :mavericks
-    sha256 "6ad788ccee069d9917096e800bda57cf8f0dd2577796cc056d9b05d82ae058fc" => :mountain_lion
+    sha256 "68e80d6dd093d9ab1c986d9f68c97dfe9d8b46b228c4b27d64ce4bcd47105250" => :yosemite
+    sha256 "afc4630468ea74d4a7aec183f5f5f3c4872b3bcca1aac7a58c9a579aa7d0cbcc" => :mavericks
+    sha256 "a9faf9edf0e71de5e9ec9fa70d27811f353a8451b41746208fbdc0d592aa5910" => :mountain_lion
   end
 
   depends_on :macos => :lion

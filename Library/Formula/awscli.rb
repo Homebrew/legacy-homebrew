@@ -1,14 +1,14 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.32.tar.gz"
-  sha256 "50f914d752700c47e6567d1f17ee64c8d5efbe1974da46c03cf7d85e080f71b5"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.34.tar.gz"
+  sha256 "b0545e1526718f3af53f8ef7a875b11d1f2fec5f6475067d26f42be235723ad6"
 
   bottle do
     cellar :any
-    sha256 "26fbc4082457d9e3379740c14da5e6283978f1b475d6c9a2b55720b595948b90" => :yosemite
-    sha256 "6120544ffc32eb298c0f95350d0ff6cb2e541028fa1e86f4c5d511647d380ac1" => :mavericks
-    sha256 "bc6d694da65caeda5738782841b41feb5c660acc224573c44dbac1d5c585d2d7" => :mountain_lion
+    sha256 "2ee2a272585cf26ef40ba214e1b239c1194db836edd09759a5fdfdbb550b92bc" => :yosemite
+    sha256 "c17854e2e9ad28dc056fd05c9b65b9286d6ebffd4792f58f1ad56c5a852d7fc2" => :mavericks
+    sha256 "b1936bb94f4e602c985950b9c9679f5e00dbc6438acd98e20494f8b9958082d3" => :mountain_lion
   end
 
   head do
@@ -20,9 +20,6 @@ class Awscli < Formula
 
     resource "bcdoc" do
       url "https://github.com/boto/bcdoc.git", :branch => "develop"
-    end
-
-    resource "jmespath" do
       url "https://github.com/boto/jmespath.git", :branch => "develop"
     end
   end
@@ -52,8 +49,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.0.0b1.tar.gz"
-    sha256 "c4665a00dad68bfdfda02df9cad7b93bb391430c043f01261a964f86fa1b41eb"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.0.0b3.tar.gz"
+    sha256 "6f91dd0dd5520b36098c5996b7424051c824f69a20f00433ae3c9ecba2218b00"
   end
 
   resource "docutils" do
@@ -62,8 +59,8 @@ class Awscli < Formula
   end
 
   resource "bcdoc" do
-    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.14.0.tar.gz"
-    sha256 "68aecc8e14151266316562c6a50605b8efa33f18f8023e303fb20a1b346e53e8"
+    url "https://pypi.python.org/packages/source/b/bcdoc/bcdoc-0.16.0.tar.gz"
+    sha256 "f568c182e06883becf7196f227052435cffd45604700c82362ca77d3427b6202"
   end
 
   resource "pyasn1" do
