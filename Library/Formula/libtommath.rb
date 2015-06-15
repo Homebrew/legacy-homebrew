@@ -8,9 +8,10 @@ class Libtommath < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "fe3bb489505e96a505676c1cbca5ebc554c8990c" => :yosemite
-    sha1 "59fa62fa21fbdb2e938d40cf6171c074db8f2e05" => :mavericks
+    revision 2
+    sha256 "e6ed2cbd074bb7b8c2287baac219bf5a928dd84c8fc4c69d178358f3810164fe" => :yosemite
+    sha256 "fbc9c911c91862cad93470cac7e03aba2183faeadb6d67d2a15a0e730efc8103" => :mavericks
+    sha256 "537f66d9668409f36ef2c2b99bbd02e1a103e86a2603a66dc66c280763ab9c4a" => :mountain_lion
   end
 
   def install
