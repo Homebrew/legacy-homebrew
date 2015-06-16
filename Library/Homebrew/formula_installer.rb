@@ -167,7 +167,6 @@ class FormulaInstaller
 
     if pour_bottle?(:warn => true)
       begin
-        #install_relocation_tools if formula.bottle.needs_relocation?
         pour
       rescue => e
         raise if ARGV.homebrew_developer?
@@ -322,15 +321,6 @@ class FormulaInstaller
     @show_header = true unless deps.empty?
   end
 
-  def install_relocation_tools
-    cctools = CctoolsRequirement.new
-    dependency = cctools.to_dependency
-    formula = dependency.to_formula
-    return if cctools.satisfied? || @@attempted.include?(formula)
-
-    install_dependency(dependency, inherited_options_for(cctools))
-  end
-
   class DependencyInstaller < FormulaInstaller
     def initialize(*)
       super
@@ -405,9 +395,6 @@ class FormulaInstaller
     link(keg)
 
     if OS.mac?
-      # this needs to be changed to a test against build_bottle? and
-      # formula.bottle.needs_relocation?
-      # fix_install_names(keg) unless formula.name == 'cctools'
       fix_install_names(keg)
     end
 
@@ -547,7 +534,7 @@ class FormulaInstaller
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts e
       puts
-      puts "Possible conflicting files are:"
+      puts "Possible conflitcing files are:"
       mode = OpenStruct.new(:dry_run => true, :overwrite => true)
       keg.link(mode)
       @show_summary_heading = true
