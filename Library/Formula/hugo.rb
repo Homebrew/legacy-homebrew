@@ -22,6 +22,14 @@ class Hugo < Formula
     end
   end
 
+  head do
+    url "https://github.com/spf13/hugo.git"
+
+    go_resource "golang.org/x/text" do
+      url "https://github.com/golang/text.git", :revision => "df923bbb63f8ea3a26bb743e2a497abd0ab585f7"
+    end
+  end
+
   depends_on "go" => :build
 
   go_resource "bitbucket.org/pkg/inflect" do
