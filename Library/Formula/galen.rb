@@ -6,9 +6,9 @@ class Galen < Formula
 
   bottle do
     cellar :any
-    sha256 "e7bb986e7077068b4864fc0136087793f6d3daa49821dc1a059946183d777463" => :yosemite
-    sha256 "60137c10b0433fbc729d2590fa2da15f1ddd3ee7cca6ee8ca4d216aa9e40a6a8" => :mavericks
-    sha256 "2c7d23e72734ca6387ee784539bc3458ad224b1cce4fa7f9d9539bf80981449f" => :mountain_lion
+    sha256 "a8896697000cc717132626a3a5594f6a1f4c2dd8a3a6b51b380e14204621b724" => :yosemite
+    sha256 "061e77f0cd75b2ddbf2c372373f5d7ae7e72546b2bd43dba8c0dbd43fd62ca9c" => :mavericks
+    sha256 "97b5096a5a3130854aca1dd34b0a1b6f1e5f31c3364ff77be6900e0e6342922f" => :mountain_lion
   end
 
   depends_on :java => "1.6+"
