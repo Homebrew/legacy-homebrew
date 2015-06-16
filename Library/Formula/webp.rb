@@ -11,6 +11,13 @@ class Webp < Formula
     sha256 "a96249caa1541d335ab594fdd0af221109be00baa94d82429048deb56ed88008" => :mountain_lion
   end
 
+  head do
+    url "https://chromium.googlesource.com/webm/libwebp.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   option :universal
 
   depends_on "libpng"
@@ -19,6 +26,8 @@ class Webp < Formula
   depends_on "giflib" => :optional
 
   def install
+    system "./autogen.sh" if build.head?
+
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--enable-libwebpmux",
