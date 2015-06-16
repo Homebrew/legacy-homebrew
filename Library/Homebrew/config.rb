@@ -1,6 +1,6 @@
 def cache
-  if ENV['HOMEBREW_CACHE']
-    Pathname.new(ENV['HOMEBREW_CACHE'])
+  if ENV["HOMEBREW_CACHE"]
+    Pathname.new(ENV["HOMEBREW_CACHE"]).expand_path
   else
     # we do this for historic reasons, however the cache *should* be the same
     # directory whichever user is used and whatever instance of brew is executed
