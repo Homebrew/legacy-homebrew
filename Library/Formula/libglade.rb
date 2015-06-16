@@ -1,7 +1,7 @@
 class Libglade < Formula
   desc "RAD tool to help build GTK+ interfaces"
   homepage "https://glade.gnome.org"
-  url "http://ftp.gnome.org/pub/GNOME/sources/libglade/2.6/libglade-2.6.4.tar.gz"
+  url "https://download.gnome.org/sources/libglade/2.6/libglade-2.6.4.tar.gz"
   sha256 "c41d189b68457976069073e48d6c14c183075d8b1d8077cb6dfb8b7c5097add3"
   revision 1
 
