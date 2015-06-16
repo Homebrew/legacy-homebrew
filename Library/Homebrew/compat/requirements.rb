@@ -10,7 +10,6 @@ GitDependency              = GitRequirement
 AprDependency              = AprRequirement
 FortranDependency          = FortranRequirement
 JavaDependency             = JavaRequirement
-JavaRequirement            = JavaRequirement
 LanguageModuleDependency   = LanguageModuleRequirement
 MPIDependency              = MPIRequirement
 OsxfuseDependency          = OsxfuseRequirement
