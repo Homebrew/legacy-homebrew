@@ -8,9 +8,9 @@ class Libbson < Formula
 
   bottle do
     cellar :any
-    sha256 "04608ead2044c711fb374da28a18b5fe9e7983c4d1d4c4f4ba996ebc00abc10f" => :yosemite
-    sha256 "0aa56dae1c07c75abb5604f9780c764c1791ee0ea45951a48d75702fb401fc86" => :mavericks
-    sha256 "a50c21b0f1f641df27f22f41bcecfd2e77c37128accc0ae3a7f4501085204ae9" => :mountain_lion
+    sha256 "00c6bf92d3d324c39fce886b061de737090ea98f3cadf02a360857ac0f302dc6" => :yosemite
+    sha256 "78e2c2b112d80180c5578f9a1581b68bfd73d2fe7561903d2b4e177ccdd8932d" => :mavericks
+    sha256 "5fd3ce491e4a7c7980359b9870d74d2ed7f90f35876d7de28ffd50f6c3e8eaff" => :mountain_lion
   end
 
   def install
