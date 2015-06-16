@@ -496,16 +496,12 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     end
   end
 
-  def fetch_args
-    []
-  end
-
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.directory? ? 'up' : 'checkout'
-    args = ['svn', svncommand] + fetch_args
+    args = ['svn', svncommand]
     args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
@@ -542,14 +538,8 @@ end
 
 # @deprecated
 StrictSubversionDownloadStrategy = SubversionDownloadStrategy
-
 # @deprecated
-class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
-  def fetch_args
-    %w[--non-interactive --trust-server-cert]
-  end
-  private :fetch_args
-end
+UnsafeSubversionDownloadStrategy = SubversionDownloadStrategy
 
 class GitDownloadStrategy < VCSDownloadStrategy
   SHALLOW_CLONE_WHITELIST = [
