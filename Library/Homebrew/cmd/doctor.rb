@@ -927,8 +927,8 @@ end
 def check_for_linked_keg_only_brews
   return unless HOMEBREW_CELLAR.exist?
 
-  linked = Formula.select { |f|
-    f.keg_only? && f.installed? && __check_linked_brew(f)
+  linked = Formula.installed.select { |f|
+    f.keg_only? && __check_linked_brew(f)
   }
 
   unless linked.empty?
