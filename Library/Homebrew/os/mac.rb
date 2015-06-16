@@ -37,7 +37,9 @@ module OS
     end
 
     def locate_cctool(tool)
-      if File.executable?(path = "#{Formula['cctools'].opt_prefix}/bin/#{tool}")
+      if File.executable?(path = "#{HOMEBREW_LIBRARY}/Homebrew/vendor/cctools/#{tool}")
+        Pathname.new(path)
+      elsif File.executable?(path = "#{Formula['cctools'].opt_prefix}/bin/#{tool}")
         Pathname.new(path)
       else
         locate(tool)

@@ -167,7 +167,7 @@ class FormulaInstaller
 
     if pour_bottle?(:warn => true)
       begin
-        install_relocation_tools if formula.bottle.needs_relocation?
+        #install_relocation_tools if formula.bottle.needs_relocation?
         pour
       rescue => e
         raise if ARGV.homebrew_developer?
@@ -407,7 +407,8 @@ class FormulaInstaller
     if OS.mac?
       # this needs to be changed to a test against build_bottle? and
       # formula.bottle.needs_relocation?
-      fix_install_names(keg) unless formula.name == 'cctools'
+      # fix_install_names(keg) unless formula.name == 'cctools'
+      fix_install_names(keg)
     end
 
     if build_bottle? && formula.post_install_defined?
