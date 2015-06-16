@@ -2,9 +2,9 @@ require 'formula'
 
 class Smartmontools < Formula
   desc "SMART hard drive monitoring"
-  homepage 'http://sourceforge.net/apps/trac/smartmontools/'
-  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.3/smartmontools-6.3.tar.gz'
-  sha1 '716c5dc339d408d628c55dbe69028b1561df4c7e'
+  homepage 'https://www.smartmontools.org/'
+  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.4/smartmontools-6.4.tar.gz'
+  sha1 '855c7d555dd405e5b392b1631dc36dd9632db8b8'
 
   bottle do
     sha1 "cf2bcaf04682dbc444735b73a0cbc719871e1951" => :mavericks
