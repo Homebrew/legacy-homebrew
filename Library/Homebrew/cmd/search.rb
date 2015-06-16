@@ -23,8 +23,9 @@ module Homebrew
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.include? '--desc'
       query = ARGV.next
+      rx = query_regexp(query)
       Formula.each do |formula|
-        if formula.desc =~ query_regexp(query)
+        if formula.desc =~ rx
           puts "#{formula.full_name}: #{formula.desc}"
         end
       end
