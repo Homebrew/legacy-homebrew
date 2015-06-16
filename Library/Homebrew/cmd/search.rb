@@ -108,36 +108,36 @@ module Homebrew
       return []
     end
 
-    results = []
-    tree = {}
+    @@remote_tap_formulae ||= Hash.new do |cache, key|
+      user, repo = key.split("/", 2)
+      tree = {}
 
-    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
-      user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
-      json["tree"].each do |object|
-        next unless object["type"] == "blob"
+      GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
+        json["tree"].each do |object|
+          next unless object["type"] == "blob"
 
-        subtree, file = File.split(object["path"])
+          subtree, file = File.split(object["path"])
 
-        if File.extname(file) == ".rb"
-          tree[subtree] ||= []
-          tree[subtree] << file
+          if File.extname(file) == ".rb"
+            tree[subtree] ||= []
+            tree[subtree] << file
+          end
         end
       end
+
+      paths = tree["Formula"] || tree["HomebrewFormula"] || tree["Casks"] || tree["."] || []
+      cache[key] = paths.map { |path| File.basename(path, ".rb") }
     end
 
-    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["Casks"] || tree["."] || []
-    paths.each do |path|
-      name = File.basename(path, ".rb")
-      results << "#{user}/#{repo}/#{name}" if rx === name
-    end
+    names = @@remote_tap_formulae["#{user}/#{repo}"]
+    user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
+    names.select { |name| rx === name }.map { |name| "#{user}/#{repo}/#{name}" }
   rescue GitHub::HTTPNotFoundError => e
     opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
   rescue GitHub::Error => e
     SEARCH_ERROR_QUEUE << e
     []
-  else
-    results
   end
 
   def search_formulae rx
