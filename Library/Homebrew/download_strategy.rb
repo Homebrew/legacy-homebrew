@@ -403,11 +403,7 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
 end
 
 # @deprecated
-class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
-  def _fetch
-    curl @url, '--insecure', '-C', downloaded_size, '-o', temporary_path
-  end
-end
+CurlUnsafeDownloadStrategy = CurlDownloadStrategy
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
