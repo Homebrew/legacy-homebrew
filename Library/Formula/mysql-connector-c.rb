@@ -22,8 +22,6 @@ class MysqlConnectorC < Formula
 
   def install
     system "cmake", ".", *std_cmake_args
-    system "make"
-    ENV.j1
     system "make", "install"
   end
 
