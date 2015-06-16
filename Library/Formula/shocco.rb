@@ -13,7 +13,7 @@ class Shocco < Formula
   depends_on MarkdownRequirement
 
   resource "pygments" do
-    url "http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
     sha256 "fe183e3886f597e41f8c88d0e53c796cefddc879bfdf45f2915a383060436740"
   end
 
