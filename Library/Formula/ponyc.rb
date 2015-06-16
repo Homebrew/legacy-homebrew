@@ -5,10 +5,9 @@ class Ponyc < Formula
   sha256 "28592dd60320e1a587d256e08e7053e42975f8dc3dd5fb5eb0fd57baae5dc01e"
 
   bottle do
-    revision 1
-    sha256 "dceed199973166120039b48d73df384b9b6d5cc087ed6762a4e0155dae3ce417" => :yosemite
-    sha256 "14e784acf5b8ab11e346492eddde4bd6dfb5076dd1461be12acc8aaf5e2d44bb" => :mavericks
-    sha256 "9248d2e58ccd3b5dd155c994d738b90cc18249239a220ea30b88a8e94fdcb6ef" => :mountain_lion
+    sha256 "c5d4837fdcdcb8abff9faef03002b64ea589e53cb10cfcd703eee505483f5fed" => :yosemite
+    sha256 "9b96cf934f39d9f61170704ba1165b718b868bd56bc089a343970a9ef0ca8d3d" => :mavericks
+    sha256 "49e11ccb179955ad14703e5ce2c965b28519d2937b82b4b93379c8356aac4925" => :mountain_lion
   end
 
   depends_on "llvm" => "with-rtti"
