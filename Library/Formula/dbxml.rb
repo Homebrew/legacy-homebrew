@@ -1,4 +1,5 @@
 class Dbxml < Formula
+  desc "Embeddable XML database with XQuery support and other advanced features"
   url "http://download.oracle.com/berkeley-db/dbxml-6.0.17.tar.gz"
   homepage "http://www.oracle.com/us/products/database/berkeley-db/xml/overview/index.html"
   sha1 "fa706a73497bbdc6e026cd83e8a5538dd9468e0c"
