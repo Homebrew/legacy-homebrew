@@ -610,8 +610,8 @@ class FormulaInstaller
       return if Homebrew::Hooks::Bottles.pour_formula_bottle(formula)
     end
 
-    if formula.local_bottle_path
-      downloader = LocalBottleDownloadStrategy.new(formula)
+    if (bottle_path = formula.local_bottle_path)
+      downloader = LocalBottleDownloadStrategy.new(bottle_path)
     else
       downloader = formula.bottle
       downloader.verify_download_integrity(downloader.fetch)

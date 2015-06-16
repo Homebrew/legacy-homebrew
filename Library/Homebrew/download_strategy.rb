@@ -417,8 +417,8 @@ end
 class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
   attr_reader :cached_location
 
-  def initialize(formula)
-    @cached_location = formula.local_bottle_path
+  def initialize(path)
+    @cached_location = path
   end
 
   def stage
