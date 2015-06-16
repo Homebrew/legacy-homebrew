@@ -3,8 +3,8 @@ require "formula"
 class Libbson < Formula
   desc "BSON utility library"
   homepage "https://github.com/mongodb/libbson"
-  url "https://github.com/mongodb/libbson/releases/download/1.1.6/libbson-1.1.6.tar.gz"
-  sha1 "0e4b74ad9e8848c3a5fa231de60e8bdaaf4fc3c7"
+  url "https://github.com/mongodb/libbson/releases/download/1.1.7/libbson-1.1.7.tar.gz"
+  sha256 "94b11f9ce0bc118b9f4dc0470ce48aaf673278f4b22517c452e1f3f675d1abe3"
 
   bottle do
     cellar :any
