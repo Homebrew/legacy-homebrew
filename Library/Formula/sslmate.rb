@@ -1,8 +1,8 @@
 class Sslmate < Formula
   desc "Buy SSL certs from the command-line"
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-1.2.1.tar.gz"
-  sha256 "b23d6e4ed14e8baf818c7ece974e8e0be2a3c59f7d6d5b8342a1f3f8eb02c0ea"
+  url "https://packages.sslmate.com/other/sslmate-1.2.3.tar.gz"
+  sha256 "c0e45b1046c659f1c581a44ec4eb2d022a4cf6feded14e1ef1a8a5ea5fcd26d4"
 
   bottle do
     cellar :any
@@ -18,8 +18,8 @@ class Sslmate < Formula
     depends_on "curl"
 
     resource "URI" do
-      url "http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
-      mirror "https://cpan.metacpan.org/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
+      url "http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/URI-1.67.tar.gz"
+      mirror "https://cpan.metacpan.org/authors/id/E/ET/ETHER/URI-1.67.tar.gz"
       sha256 "ab7f5fbc80da4ed9c46d63ed956c68a09e83dae30f20c2778c3e056d41883f9d"
     end
 
@@ -42,8 +42,8 @@ class Sslmate < Formula
     depends_on :python if MacOS.version <= :snow_leopard
 
     resource "boto" do
-      url "https://pypi.python.org/packages/source/b/boto/boto-2.34.0.tar.gz"
-      sha256 "33baab022ecb803414ad0d6cf4041d010cfc2755ff8acc3bea7b32e77ba98be0"
+      url "https://pypi.python.org/packages/source/b/boto/boto-2.38.0.tar.gz"
+      sha256 "d9083f91e21df850c813b38358dc83df16d7f253180a1344ecfedce24213ecf2"
     end
   end
 
