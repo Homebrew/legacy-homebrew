@@ -6,13 +6,19 @@ class Hugo < Formula
   url "https://github.com/spf13/hugo/archive/v0.14.tar.gz"
   sha256 "67e0fda342e6a35490ce03f5535e30cf04bc06775c47bacf416d96d83cce4535"
 
-  head "https://github.com/spf13/hugo.git"
-
   bottle do
     cellar :any
     sha256 "6b66a7a6d98818464279913d96f55cc28f1e9876a2f9f6ff72bc02dbea11ebd2" => :yosemite
     sha256 "1cb8e13a2ec21fb7cb588dc451844be6a70143f6ba5c03f583aa3480c5648aa0" => :mavericks
     sha256 "0134339448731790a04bf782703e1de8e338f5467a3e24b0ffc5c73e9acf7156" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/spf13/hugo.git"
+
+    go_resource "golang.org/x/text" do
+      url "https://github.com/golang/text.git", :revision => "df923bbb63f8ea3a26bb743e2a497abd0ab585f7"
+    end
   end
 
   depends_on "go" => :build
@@ -52,7 +58,7 @@ class Hugo < Formula
   end
   go_resource "github.com/russross/blackfriday" do
     url "https://github.com/russross/blackfriday.git",
-        :revision => "4bed88b4fd00fbb66b49b0f38ed3dd0b902ab515"
+        :revision => "386ef80f18233ea97960e855a54382ec446c6637"
   end
   go_resource "github.com/spf13/afero" do
     url "https://github.com/spf13/afero.git",
