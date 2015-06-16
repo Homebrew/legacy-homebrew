@@ -4,6 +4,8 @@ class Payara < Formula
   url "https://s3-eu-west-1.amazonaws.com/payara.co/Payara+Downloads/payara-4.1.152.1.zip"
   sha256 "b57e5c816685b92c4ceecdaae6d1822a83fc6d2ee87765c9dcf68ae6c6d7e356"
 
+  depends_on :java
+
   def install
     rm_rf Dir["bin/*.bat"]
     libexec.install Dir["*", ".org.opensolaris,pkg"]
@@ -23,6 +25,6 @@ class Payara < Formula
   end
 
   test do
-    system "#{bin}/asadmin", "--help"
+    system "#{libexec}/bin/asadmin", "--help"
   end
 end
