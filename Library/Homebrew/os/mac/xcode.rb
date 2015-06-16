@@ -20,7 +20,7 @@ module OS
           if MacOS.version > "10.10"
             "7.0"
           else
-            raise "Mac OS X '#{MacOS.version}' is invalid"
+            raise "OS X '#{MacOS.version}' is invalid"
           end
         end
       end
