@@ -14,6 +14,11 @@ HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require 'global'
 
+if ARGV == %w{--repository}
+  puts HOMEBREW_REPOSITORY
+  exit 0
+end
+
 if ARGV.first == '--version'
   puts HOMEBREW_VERSION
   exit 0
