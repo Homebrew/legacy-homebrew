@@ -913,12 +913,12 @@ def check_for_autoconf
 end
 
 def __check_linked_brew f
-  prefix = f.prefix
-
-  prefix.find do |src|
-    next if src == prefix
-    dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)
-    return true if dst.symlink? && src == dst.resolved_path
+  f.rack.subdirs.each do |prefix|
+    prefix.find do |src|
+      next if src == prefix
+      dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)
+      return true if dst.symlink? && src == dst.resolved_path
+    end
   end
 
   false
