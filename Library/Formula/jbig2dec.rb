@@ -21,7 +21,7 @@ class Jbig2dec < Formula
   # Remove on next release.
   patch do
     url "http://git.ghostscript.com/?p=jbig2dec.git;a=patch;h=70c7f1967f43a94f9f0d6808d6ab5700a120d2fc"
-    sha256 "81ae6367ab74a18d88473a81dd2f36d8c892370a63fcf518d6f2a5af346ab867"
+    sha256 "c82f964fb47bb6e97f0686fc3af57ad819e7dbefd7e74ea078c9ba3f4f6c7b06"
   end
 
   def install
