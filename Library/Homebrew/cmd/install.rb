@@ -112,6 +112,7 @@ module Homebrew
   def check_xcode
     checks = Checks.new
     %w[
+      check_for_unsupported_osx
       check_for_installed_developer_tools
       check_xcode_license_approved
       check_for_osx_gcc_installer
