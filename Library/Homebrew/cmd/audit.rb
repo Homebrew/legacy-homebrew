@@ -20,6 +20,26 @@ module Homebrew
     ENV.activate_extensions!
     ENV.setup_build_environment
 
+    if ARGV.switch? "D"
+      FormulaAuditor.module_eval do
+        instance_methods.grep(/audit_/).map do |name|
+          method = instance_method(name)
+          define_method(name) do |*args, &block|
+            begin
+              time = Time.now
+              method.bind(self).(*args, &block)
+            ensure
+              $times[name] ||= 0
+              $times[name] += Time.now - time
+            end
+          end
+        end
+      end
+
+      $times = {}
+      at_exit { puts $times.sort_by{ |k, v| v }.map{ |k, v| "#{k}: #{v}" } }
+    end
+
     ff = if ARGV.named.empty?
       Formula
     else
