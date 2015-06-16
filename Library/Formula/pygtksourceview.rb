@@ -7,6 +7,7 @@ class Pygtksourceview < Formula
 
   depends_on "pkg-config" => :build
   depends_on "gtksourceview"
+  depends_on "gtk+"
   depends_on "pygtk"
 
   def install

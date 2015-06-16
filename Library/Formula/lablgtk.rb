@@ -32,7 +32,7 @@ class Lablgtk < Formula
         GtkMain.Main.init ()
       let _ = main ()
     EOS
-    system "ocamlc", "-I", "+lablgtk2", "-o", "test", "lablgtk.cma", "gtkInit.cmo", "test.ml"
+    system "ocamlc", "-I", "#{Formula["lablgtk"].opt_lib}/ocaml/lablgtk2", "lablgtk.cma", "gtkInit.cmo", "test.ml", "-o", "test"
     system "./test"
   end
 end
