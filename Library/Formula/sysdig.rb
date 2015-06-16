@@ -1,9 +1,9 @@
 class Sysdig < Formula
   desc "System-level exploration and troubleshooting tool"
   homepage "http://www.sysdig.org/"
-  url "https://github.com/draios/sysdig/archive/0.1.99.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/s/sysdig/sysdig_0.1.99.orig.tar.gz"
-  sha256 "e6f00493feaa42f05720c708ab87b7150b465306dae18f9b97f2c40334e2ca09"
+  url "https://github.com/draios/sysdig/archive/0.1.101.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/s/sysdig/sysdig_0.1.101.orig.tar.gz"
+  sha256 "6995e39be565514901b5cb587689ee2efbf8359293e4e597362382cccf0e9db6"
 
   bottle do
     sha256 "42cf03077f83db8d0171ec9139a2d87f28bbe76f4311db8518d87e153d857192" => :yosemite
