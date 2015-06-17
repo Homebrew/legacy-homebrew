@@ -8,9 +8,10 @@ class Glide < Formula
   sha1 "60fb5978446bae925158b594dbf2e15546fd3168"
 
   bottle do
-    sha1 "dea3d205ecbfa38f7cfe5e2b79c5ab12af462df9" => :mavericks
-    sha1 "d622cfb237b2e26a63a923f00c7d0af639974219" => :mountain_lion
-    sha1 "7afcc2e6b089b38d8ed38979621fceb457df0cfa" => :lion
+    cellar :any
+    sha256 "7c4c13ddcf1c045816b74fa3b00ca21ea451adcf6508d6e7984d61e7f90f86bf" => :yosemite
+    sha256 "f92d3a48b8283f204455c217aae38a42f36503ca85c728d576dcc267a62a0aba" => :mavericks
+    sha256 "0a48ea01a1fd5f4c6f24dc90588edf82200d4c7833befe20a321950426bd7442" => :mountain_lion
   end
 
   depends_on "go" => :build
