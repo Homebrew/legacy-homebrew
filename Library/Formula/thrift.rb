@@ -2,22 +2,22 @@ require "formula"
 
 class Thrift < Formula
   desc "Framework for scalable cross-language services development"
-  homepage "http://thrift.apache.org"
+  homepage "https://thrift.apache.org/"
 
   stable do
-    url "http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz"
-    sha1 "02f78b158da795ea89a26ce41964fbe562cc4235"
+    url "https://www.apache.org/dyn/closer.cgi?path=thrift/0.9.2/thrift-0.9.2.tar.gz"
+    sha256 "cef50d3934c41db5fa7724440cc6f10a732e7a77fe979b98c23ce45725349570"
 
     # Apply any necessary patches (none currently required)
     [
       # Example patch:
       #
       # Apply THRIFT-2201 fix from master to 0.9.1 branch (required for clang to compile with C++11 support)
-      # %w{836d95f9f00be73c6936d407977796181d1a506c 4bc8c19c51f3d9f30799251a810dd1ca63c4bf1e},
+      # %w{836d95f9f00be73c6936d407977796181d1a506c f8e14cbae1810ade4eab49d91e351459b055c81dba144c1ca3c5d6f4fe440925},
     ].each do |name, sha|
       patch do
-        url "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=#{name}"
-        sha1 sha
+        url "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=commitdiff_plain;h=#{name}"
+        sha256 sha
       end
     end
   end
