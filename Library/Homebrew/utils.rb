@@ -145,7 +145,7 @@ end
 def with_system_path
   old_path = ENV['PATH']
   ENV['PATH'] = '/usr/bin:/bin'
-  ENV.prepend_path 'PATH', HOMEBREW_PREFIX/'bin' unless OS.mac?
+  ENV['PATH'] = "#{HOMEBREW_PREFIX}/bin:#{ENV['PATH']}" unless OS.mac?
   yield
 ensure
   ENV['PATH'] = old_path
