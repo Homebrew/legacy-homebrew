@@ -2,7 +2,7 @@ require 'formula'
 
 class Smartmontools < Formula
   desc "SMART hard drive monitoring"
-  homepage 'http://sourceforge.net/apps/trac/smartmontools/'
+  homepage 'https://www.smartmontools.org/'
   url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.4/smartmontools-6.4.tar.gz'
   sha1 '855c7d555dd405e5b392b1631dc36dd9632db8b8'
 
