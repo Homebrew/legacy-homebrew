@@ -8,9 +8,9 @@ class Miniupnpc < Formula
 
   bottle do
     cellar :any
-    sha1 "ee9cb081a8ebfda57d568bf7df403703a0b89ef9" => :yosemite
-    sha1 "97d743dbcbd8833d42abc7ed497ce7b86711cffd" => :mavericks
-    sha1 "3eef46a3903bd91d8e1443ac91ce53daa46f0326" => :mountain_lion
+    sha256 "b31e62a6331c82219bdf674c9d5b366f1288f203b947f446bbade154ab54025d" => :yosemite
+    sha256 "ffc0d9665983408ee86c4e5aae53c66abb22f56d700c8ceea6bd01f2a3875c75" => :mavericks
+    sha256 "ba1333c0e47f68fb0b11e945ada0aff81b69517aea4356f936fed0eaf357475e" => :mountain_lion
   end
 
   def install
