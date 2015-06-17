@@ -6,8 +6,8 @@ class Bro < Formula
   head "https://github.com/bro/bro.git"
 
   stable do
-    url "https://www.bro.org/downloads/release/bro-2.3.2.tar.gz"
-    sha256 "2fe5fbda0a86b5a594116d567fd9a4c2458d30f1c6670ba8e1fac0bc8848c69b"
+    url "https://www.bro.org/downloads/release/bro-2.4.tar.gz"
+    sha256 "740c0d0b0bec279c2acef5e1b6b4d0016c57cd02a729f5e2924ae4a922e208b2"
 
   end
 
