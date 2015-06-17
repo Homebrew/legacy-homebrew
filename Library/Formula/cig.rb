@@ -7,6 +7,13 @@ class Cig < Formula
   sha256 "015c8ec23a5751aa6ef1479bd3f276a45dcb345c5eb1affdf72e96e4978b1f2c"
   head "https://github.com/stevenjack/cig.git"
 
+  bottle do
+    cellar :any
+    sha256 "38986c3def39f3df4b4d7c210e6b5ef9716c9e390499e614058229a97a1ec994" => :yosemite
+    sha256 "3d396bb911d6214d866706337e76546dbfe26eb1fc7bc88d19e0afef43b9880b" => :mavericks
+    sha256 "f49f5732e6e6a69692a2dabfbe3e2e04914edb11a578dd95c5e8ee328a4b7ddb" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/tools/godep" do
