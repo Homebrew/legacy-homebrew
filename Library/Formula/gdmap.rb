@@ -1,6 +1,6 @@
 class Gdmap < Formula
   desc "Tool to inspect the used space of folders"
-  homepage "http://sourceforge.net/projects/gdmap/"
+  homepage "https://sourceforge.net/projects/gdmap/"
   url "https://downloads.sourceforge.net/project/gdmap/gdmap/0.8.1/gdmap-0.8.1.tar.gz"
   sha256 "a200c98004b349443f853bf611e49941403fce46f2335850913f85c710a2285b"
 
