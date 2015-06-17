@@ -265,9 +265,12 @@ class Formulary
         available_formulas.keys.sort.each do |this_priority|
           if available_formulas[this_priority].length > 1
             if is_installing
-              ohai "Multiple available. Please choose one: Sorry not supported yet, we temporarily choose first one for you lah."
-              puts available_formulas[this_priority].to_s
-              selected_index = 0
+              ohai "Multiple formulae with same name and priority available."
+              formulae_list = available_formulas[this_priority]
+              puts_columns (0..formulae_list.length-1).map { |i| "#{i+1}. #{formulae_list[i].fully_qualified_name}"}
+              print "Please choose one by inputing the number before it: "
+              selected_index = $stdin.readline.to_i - 1
+              ohai "Installing #{available_formulas[this_priority][selected_index].fully_qualified_name}"
             else
               raise TapFormulaAmbiguityError.new(ref, available_formulas[this_priority])
             end
