@@ -5,6 +5,13 @@ class Libglade < Formula
   sha256 "c41d189b68457976069073e48d6c14c183075d8b1d8077cb6dfb8b7c5097add3"
   revision 1
 
+  bottle do
+    revision 2
+    sha256 "5c650d4a9eb7de60ce0b74a15825b0396a3811df14c51ea53b2d4477cf1835cc" => :yosemite
+    sha256 "a9fdc34b5efc22d5193598ca045f6fd05828428c4b691bba1a18082e989b54ed" => :mavericks
+    sha256 "256b81161ba3a638eb993d8309c8a1e7172fcb84fea247675597b4232c7db775" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libxml2"
   depends_on "gtk+"
