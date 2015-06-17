@@ -262,6 +262,9 @@ class Formulary
           raise TapFormulaAmbiguityError.new(ref, flat_formulas)
         end
       else
+        if available_formulas.length > 1
+          opoo "Some formulae are excluded due to priority settings. Run brew info #{ref} to see them."
+        end
         available_formulas.keys.sort.each do |this_priority|
           if available_formulas[this_priority].length > 1
             if is_installing
