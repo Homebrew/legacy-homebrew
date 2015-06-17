@@ -5,12 +5,6 @@ class Jigdo < Formula
   sha256 "875c069abad67ce67d032a9479228acdb37c8162236c0e768369505f264827f0"
   revision 2
 
-  bottle do
-    sha1 "082410ddb96160d7dad904396e54c628e395efd6" => :yosemite
-    sha1 "3728075c968660a34393a2c8657d2e3f18fb0017" => :mavericks
-    sha1 "f059fdafb3d3891c27e86ef0d31ef20d14bf7c2c" => :mountain_lion
-  end
-
   depends_on "pkg-config" => :build
   depends_on "wget" => :recommended
   depends_on "berkeley-db4"

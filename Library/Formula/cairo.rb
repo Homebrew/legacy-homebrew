@@ -6,12 +6,6 @@ class Cairo < Formula
   sha256 "c919d999ddb1bbbecd4bbe65299ca2abd2079c7e13d224577895afa7005ecceb"
   revision 1
 
-  bottle do
-    sha256 "86672344ecd86346a890952f6038e943d95080d15d9eafc06e417fd6dc301791" => :yosemite
-    sha256 "50e7a59e4d6a1aff9c972ea6697be32dd052ed771b35a32188d5f150a4db7964" => :mavericks
-    sha256 "a860e936571129c55ef8098bcbfda6dffa7970c49d2908e96a1a8a50f55399a4" => :mountain_lion
-  end
-
   keg_only :provided_pre_mountain_lion
 
   option :universal

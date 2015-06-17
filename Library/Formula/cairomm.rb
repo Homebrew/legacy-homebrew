@@ -5,12 +5,6 @@ class Cairomm < Formula
   sha256 "ccf677098c1e08e189add0bd146f78498109f202575491a82f1815b6bc28008d"
   revision 1
 
-  bottle do
-    sha256 "0de6d6e44c5e25a7c74cf8e7e0a57f96354603b57ef81550f2862cf44f2826d5" => :yosemite
-    sha256 "97daf82719e87af9df0788eb00d43035f66bebe87d385f100508de80d4e788da" => :mavericks
-    sha256 "0a706ff9d219ed40ee0bad185d34a060a46a38f60a68f65971a328b6afa0fd5d" => :mountain_lion
-  end
-
   option :cxx11
 
   depends_on "pkg-config" => :build

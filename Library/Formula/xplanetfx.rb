@@ -5,13 +5,6 @@ class Xplanetfx < Formula
   sha256 "59c49af68b6cafcbe4ebfd65979181a7f1e4416e024505b5b0d46f1cc04b082a"
   version "2.6.6"
 
-  bottle do
-    cellar :any
-    sha256 "ec54be513691a25a873f0f59da03a20843670885bac4c2626a526a5e57c2e501" => :yosemite
-    sha256 "61be399a9f715a4541592e819963d24d41d739b9f57a6fc5f012fc4802627dda" => :mavericks
-    sha256 "37b09a20a17d6e713a662a83c5e17c782a25af167b0b2ac161c48b0bd3b1b9e0" => :mountain_lion
-  end
-
   option "without-gui", "Build to run xplanetFX from the command-line only"
   option "with-gnu-sed", "Build to use GNU sed instead of OS X sed"
 

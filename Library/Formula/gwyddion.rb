@@ -5,12 +5,6 @@ class Gwyddion < Formula
   sha256 "b3838dab5a4ff8e1f62d2ab859fabb42c3a8c31f5dc4f72dc679a46de2b67bab"
   revision 1
 
-  bottle do
-    sha1 "9e6ba00a543047c776d88ad1e3561247cdfacf05" => :yosemite
-    sha1 "1eee93b2d89cffac4c224252ff5932b6697143c0" => :mavericks
-    sha1 "3c621ed8e56d52a4502bc9b7fc1641a86988a94f" => :mountain_lion
-  end
-
   depends_on "pkg-config" => :build
   depends_on "gtk+"
   depends_on "gtk-mac-integration"

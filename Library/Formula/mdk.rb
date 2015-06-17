@@ -6,12 +6,6 @@ class Mdk < Formula
   sha256 "7bff1e10b829c6e1f3c278bfecbe82f0f658753ce80ea58b6f71c05f9490b0db"
   revision 1
 
-  bottle do
-    sha1 "027992f17eb6d137af1b2c2fecd2ae58acb4c66d" => :yosemite
-    sha1 "522285e46831ecacb0bb3d4d8358adf23ab910a2" => :mavericks
-    sha1 "73dd16e090ff87bee664f4b45858462a8235c1ab" => :mountain_lion
-  end
-
   depends_on "gtk+"
   depends_on "libglade"
   depends_on "glib"

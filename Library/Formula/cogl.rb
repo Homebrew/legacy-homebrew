@@ -5,12 +5,6 @@ class Cogl < Formula
   sha256 "729e35495829e7d31fafa3358e47b743ba21a2b08ff9b6cd28fb74c0de91192b"
   revision 1
 
-  bottle do
-    sha256 "16b476d5d5d34c5dadd575e7ae9e6b526043083d574eadb92ae11f1642dc6fab" => :yosemite
-    sha256 "9071de70236e6d6a3b3357e20734200895bf2a2bb280493f9a9da716e3c04bb8" => :mavericks
-    sha256 "faa1b4a195de1c6308d59c63061717244d529a53589d7e7e6d65e1cae9aa88bc" => :mountain_lion
-  end
-
   head do
     url "https://git.gnome.org/browse/cogl", :using => :git
     depends_on "autoconf" => :build
