@@ -1,7 +1,7 @@
 class Libdistance < Formula
   homepage "http://monkey.org/~jose/software/libdistance/"
   url "http://monkey.org/~jose/software/libdistance/libdistance-0.2.2.tar.gz"
-  sha1 "d516e5f24ae55bcbbf93a4d14c6a53914e5b3a0a"
+  sha256 "65364e07c9fe78ef34fc0e563aff2317ab0aba7549da07adea929426a708e6ad"
 
   def install
     system "make"
