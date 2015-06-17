@@ -3,8 +3,8 @@ require "formula"
 class Lftp < Formula
   desc "Sophisticated file transfer program"
   homepage "http://lftp.yar.ru/"
-  url "http://lftp.yar.ru/ftp/lftp-4.6.2.tar.gz"
-  sha1 "8c50f1b4c721143ac3e3428a72c9864edfde61f6"
+  url "http://lftp.yar.ru/ftp/lftp-4.6.3a.tar.xz"
+  sha256 "8c3a12a1f9ec288132b245bdd7d14d88ade1aa5cb1c14bb68c8fab3b68793840"
 
   bottle do
     sha256 "725145ef258d9a536bd78e7bab9c31ff1a5ae1f8d6c3ec86aa52dc6e0948e3b7" => :yosemite
