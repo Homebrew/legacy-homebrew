@@ -216,6 +216,11 @@ class BuildError < RuntimeError
       puts "These open issues may also help:"
       puts issues.map{ |i| "#{i['title']} (#{i['html_url']})" }.join("\n")
     end
+
+    if MacOS.version >= "10.11"
+      require "cmd/doctor"
+      opoo Checks.new.check_for_unsupported_osx
+    end
   end
 end
 

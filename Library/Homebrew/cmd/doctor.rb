@@ -237,6 +237,15 @@ def check_for_broken_symlinks
   end
 end
 
+def check_for_unsupported_osx
+  if MacOS.version >= "10.11" then <<-EOS.undent
+    You are using OS X #{MacOS.version}.
+    We do not provide support for this pre-release version.
+    You may encounter build failures or other breakage.
+    EOS
+  end
+end
+
 if MacOS.version >= "10.9"
   def check_for_installed_developer_tools
     unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
