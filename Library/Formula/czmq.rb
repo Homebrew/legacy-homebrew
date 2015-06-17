@@ -1,9 +1,8 @@
 class Czmq < Formula
   desc "High-level C binding for ZeroMQ"
   homepage "http://czmq.zeromq.org/"
-  url "http://download.zeromq.org/czmq-2.2.0.tar.gz"
-  sha1 "2f4fd8de4cf04a68a8f6e88ea7657d8068f472d2"
-  revision 1
+  url "http://download.zeromq.org/czmq-3.0.1.tar.gz"
+  sha1 "fc69f8175347c73a61d2004fc9699f10f8a73eb2"
 
   bottle do
     cellar :any
