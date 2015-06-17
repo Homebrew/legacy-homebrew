@@ -5,6 +5,12 @@ class Gtkmm < Formula
   sha256 "443a2ff3fcb42a915609f1779000390c640a6d7fd19ad8816e6161053696f5ee"
   revision 1
 
+  bottle do
+    sha256 "a40d400e6c26790b66be7202b4d5b600b46f12c8c1962671f4668f22be53c95f" => :yosemite
+    sha256 "1c37f50965de90cc802c2ec2ce124aa9351d469862ba681cc2f48243ae669b47" => :mavericks
+    sha256 "7e978d4f7b903baf4f843546bd7169619c8c9d8dfc4a15eb8034988f85948c72" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glibmm"
   depends_on "gtk+"
