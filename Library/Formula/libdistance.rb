@@ -12,7 +12,7 @@ class Libdistance < Formula
     lib.install "libdistance.a"
 
     mkdir "#{prefix}/test"
-    cp "test/test", "#{prefix}/test/"
+    share.install "test/test", "#{prefix}/test/"
   end
 
   def test
