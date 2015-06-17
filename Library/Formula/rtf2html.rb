@@ -1,7 +1,8 @@
 class Rtf2html < Formula
+  desc "Convert documents from Rich Text Format (e.g. Word, OO Writer) to HTML"
   homepage "http://sourceforge.net/projects/rtf2html-lite/"
   url "https://downloads.sourceforge.net/project/rtf2html-lite/RTF%202%20HTML%20Lite%20-%20Sources/2008-10-03%2C%20first%20LGPL%20release/rtf2html-lite-20081003.tar.bz2"
-  sha1 "eec3b29633f44290fcab3acd5336462cfc737140"
+  sha256 "0276c04431b4319853cf75af2411ea8fef1b4fa95e126166462b749dffa093ce"
 
   def install
     system "make"
