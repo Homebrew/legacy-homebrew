@@ -5,6 +5,13 @@ class Pidgin < Formula
   sha256 "f2ae211341fc77efb9945d40e9932aa535cdf3a6c8993fe7919fca8cc1c04007"
   revision 1
 
+  bottle do
+    revision 4
+    sha256 "10a81542aa56713c17b788fc84fb4b1efca6b7de835a0d10268a782669979a5d" => :yosemite
+    sha256 "814fe76e025c38aae466f91368c0985db7a7bfee60b9cc0cfb1feed74f84a306" => :mavericks
+    sha256 "a2e99b12d482ae688ffa6ea72b6df5d6d3af144ddc84e108fcc32ee82efa9de7" => :mountain_lion
+  end
+
   option "with-perl", "Build Pidgin with Perl support"
   option "without-gui", "Build Finch instead of Pidgin"
 
