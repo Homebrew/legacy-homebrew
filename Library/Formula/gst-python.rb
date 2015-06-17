@@ -11,7 +11,6 @@ class GstPython < Formula
   end
 
   depends_on "gst-plugins-base"
-  depends_on "pygtk"
   depends_on "pygobject3"
 
   def install

@@ -3,6 +3,7 @@ class Cairomm < Formula
   homepage "http://cairographics.org/cairomm/"
   url "http://cairographics.org/releases/cairomm-1.11.2.tar.gz"
   sha256 "ccf677098c1e08e189add0bd146f78498109f202575491a82f1815b6bc28008d"
+  revision 1
 
   bottle do
     sha256 "0de6d6e44c5e25a7c74cf8e7e0a57f96354603b57ef81550f2862cf44f2826d5" => :yosemite
@@ -11,8 +12,6 @@ class Cairomm < Formula
   end
 
   option :cxx11
-
-  deprecated_option "without-x" => "without-x11"
 
   depends_on "pkg-config" => :build
   if build.cxx11?
@@ -23,7 +22,6 @@ class Cairomm < Formula
 
   depends_on "libpng"
   depends_on "cairo"
-  depends_on :x11 => :recommended
 
   def install
     ENV.cxx11 if build.cxx11?
