@@ -1,8 +1,8 @@
 class Fontforge < Formula
   desc "Outline and bitmap font editor/converter for many formats"
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/archive/20150430.tar.gz"
-  sha256 "430c6d02611c7ca948df743e9241994efe37eda25f81a94aeadd9b6dd286ff37"
+  url "https://github.com/fontforge/fontforge/archive/20150612.tar.gz"
+  sha256 "af4997a07c96f7057f08cb5c7d71b19a0e8ac6336e0c48476471b471c0574247"
   head "https://github.com/fontforge/fontforge.git"
 
   bottle do
@@ -33,7 +33,10 @@ class Fontforge < Formula
   depends_on "giflib" => :optional
   depends_on "libspiro" => :optional
   depends_on :x11 => :optional
-  depends_on :python if MacOS.version <= :snow_leopard
+
+  # Segfaults on import without Homebrew's Python
+  # https://github.com/fontforge/fontforge/issues/2353
+  depends_on :python
 
   # This may be causing font-display glitches and needs further isolation & fixing.
   # https://github.com/fontforge/fontforge/issues/2083
@@ -46,11 +49,7 @@ class Fontforge < Formula
   end
 
   def install
-    if MacOS.version <= :snow_leopard || !build.bottle?
-      pydir = "#{%x(python-config --prefix).chomp}"
-    else
-      pydir = "#{%x(/usr/bin/python-config --prefix).chomp}"
-    end
+    pydir = `python-config --prefix`.chomp
 
     args = %W[
       --prefix=#{prefix}
@@ -101,5 +100,6 @@ class Fontforge < Formula
 
   test do
     system bin/"fontforge", "-version"
+    system "python", "-c", "import fontforge"
   end
 end
