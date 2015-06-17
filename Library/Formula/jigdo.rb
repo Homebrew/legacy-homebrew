@@ -19,7 +19,7 @@ class Jigdo < Formula
   # Use MacPorts patch for compilation on 10.9; this software is no longer developed.
   patch :p0 do
     url "https://trac.macports.org/export/113020/trunk/dports/net/jigdo/files/patch-src-compat.hh.diff"
-    sha1 "3318ecbe8b2bb20e8e36c70dc10ff366df2009f3"
+    sha256 "a21aa8bcc5a03a6daf47e0ab4e04f16e611e787a7ada7a6a87c8def738585646"
   end
 
   def install
