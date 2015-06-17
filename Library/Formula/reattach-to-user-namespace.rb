@@ -8,9 +8,9 @@ class ReattachToUserNamespace < Formula
 
   bottle do
     cellar :any
-    sha256 "30aa385bfb31849afac326e1e8c429b39eee2aee7db4e26af22426faef08f6f5" => :yosemite
-    sha256 "50b7105b92e65585234193864bc2d813c4c5b647e709f23aa34a01808badd85b" => :mavericks
-    sha256 "ae205ae3b48cf22831c790fb3a2d24f5910bccebb413a14b94d20d55ed1c32ef" => :mountain_lion
+    sha256 "a4f830cb25bf7b0a77a65e4e90d24541c1e50a36450ba96a31e3ccb1ed599342" => :yosemite
+    sha256 "674bb4314d34fc4fc41695d1da5fd46a98ef624d1f6b9d61b6708330109a4e24" => :mavericks
+    sha256 "a43cb67207a2ce491a5806a5a11a170f74a3503ba5006b0e5dbdfb0223e1589e" => :mountain_lion
   end
 
   option "with-wrap-pbcopy-and-pbpaste", "Include wrappers for pbcopy/pbpaste that shim in this fix"
