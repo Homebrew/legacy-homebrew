@@ -4,7 +4,6 @@ class Libdistance < Formula
   sha1 "d516e5f24ae55bcbbf93a4d14c6a53914e5b3a0a"
 
   def install
-    # The build system is incredibly simple.
     system "make"
     system "make -C test"
 
