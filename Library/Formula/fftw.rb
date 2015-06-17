@@ -17,9 +17,11 @@ class Fftw < Formula
   option "with-fortran", "Enable Fortran bindings"
   option :universal
   option "with-mpi", "Enable MPI parallel transforms"
+  option "with-openmp", "Enable OpenMP parallel transforms"
 
   depends_on :fortran => :optional
   depends_on :mpi => [:cc, :optional]
+  needs :openmp if build.with? "openmp"
 
   def install
     args = ["--enable-shared",
@@ -32,6 +34,7 @@ class Fftw < Formula
 
     args << "--disable-fortran" if build.without? "fortran"
     args << "--enable-mpi" if build.with? "mpi"
+    args << "--enable-openmp" if build.with? "openmp"
 
     ENV.universal_binary if build.universal?
 
@@ -62,7 +65,6 @@ class Fftw < Formula
     # http://www.fftw.org/fftw3_doc/Complex-One_002dDimensional-DFTs.html
     (testpath/'fftw.c').write <<-TEST_SCRIPT.undent
       #include <fftw3.h>
-
       int main(int argc, char* *argv)
       {
           fftw_complex *in, *out;
