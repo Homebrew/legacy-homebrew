@@ -5,12 +5,6 @@ class Pygtk < Formula
   sha256 "cd1c1ea265bd63ff669e92a2d3c2a88eb26bcd9e5363e0f82c896e649f206912"
   revision 1
 
-  bottle do
-    sha1 "be4727a98966bb3c60d5f28b727dcab578361c1c" => :yosemite
-    sha1 "bf9ec63c71f74349cf23a6f37754cdb0f705eb33" => :mavericks
-    sha1 "c715bf7639a0c547441da94e5e9052fc5e756ef9" => :mountain_lion
-  end
-
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gtk+"

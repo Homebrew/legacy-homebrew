@@ -5,14 +5,6 @@ class Gtkglext < Formula
   sha256 "e5073f3c6b816e7fa67d359d9745a5bb5de94a628ac85f624c992925a46844f9"
   revision 1
 
-  bottle do
-    cellar :any
-    revision 1
-    sha1 "b858e7878b3106fbdc3060afb480f52415007e6c" => :yosemite
-    sha1 "93ffc6a0ce780238f417fc2d53b4408ddab1e462" => :mavericks
-    sha1 "03c196737dbef40fef3bd51f7feba9040a039d3a" => :mountain_lion
-  end
-
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gtk+"
