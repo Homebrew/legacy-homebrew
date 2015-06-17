@@ -1,8 +1,8 @@
 class Ufraw < Formula
   desc "Unidentified Flying RAW: RAW image processing utility"
   homepage "http://ufraw.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.21/ufraw-0.21.tar.gz"
-  sha256 "2a6a1bcc633bdc8e15615cf726befcd7f27ab00e7c2a518469a24e1a96964d87"
+  url "https://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.22/ufraw-0.22.tar.gz"
+  sha256 "f7abd28ce587db2a74b4c54149bd8a2523a7ddc09bedf4f923246ff0ae09a25e"
 
   bottle do
     sha256 "08672a5a059ad9736b43b426343e7c98f85879fcbd1c97786fc931b70fade99c" => :yosemite
