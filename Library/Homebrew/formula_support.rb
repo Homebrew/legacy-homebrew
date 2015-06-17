@@ -25,19 +25,19 @@ class KegOnlyReason
   def to_s
     case @reason
     when :provided_by_osx then <<-EOS
-Mac OS X already provides this software and installing another version in
+OS X already provides this software and installing another version in
 parallel can cause all kinds of trouble.
 
 #{@explanation}
 EOS
     when :shadowed_by_osx then <<-EOS
-Mac OS X provides similar software, and installing this software in
+OS X provides similar software, and installing this software in
 parallel can cause all kinds of trouble.
 
 #{@explanation}
 EOS
     when :provided_pre_mountain_lion then <<-EOS
-Mac OS X already provides this software in versions before Mountain Lion.
+OS X already provides this software in versions before Mountain Lion.
 
 #{@explanation}
 EOS
