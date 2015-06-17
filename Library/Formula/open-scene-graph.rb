@@ -5,12 +5,6 @@ class OpenSceneGraph < Formula
   sha256 "b81cda123ffb3bd108e0fe4be4fff1351d6636e6fb0a1475b2c4fb9618d3ae2b"
   revision 1
 
-  bottle do
-    sha1 "2f7f0292cf0d66cc37f94ff9d769c7d397e4a19c" => :yosemite
-    sha1 "eb231106f731af9f9803e38a2aa152276d99bb79" => :mavericks
-    sha1 "f613127ed57c7fba5a8de44f65ea49501c9b1d83" => :mountain_lion
-  end
-
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
 
   option :cxx11
