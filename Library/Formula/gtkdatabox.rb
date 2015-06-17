@@ -1,6 +1,6 @@
 class Gtkdatabox < Formula
   desc "Widget for live display of large amounts of changing data"
-  homepage "http://sourceforge.net/projects/gtkdatabox/"
+  homepage "https://sourceforge.net/projects/gtkdatabox/"
   url "https://downloads.sourceforge.net/project/gtkdatabox/gtkdatabox/0.9.2.0/gtkdatabox-0.9.2.0.tar.gz"
   sha256 "745a6843e8f790504a86ad1b8642e1a9e595d75586215e0d2cb2f0bf0a324040"
   revision 1
