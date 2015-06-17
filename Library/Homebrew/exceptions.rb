@@ -72,8 +72,7 @@ class TapFormulaAmbiguityError < RuntimeError
     @name = name
     @paths = paths
     @formulae = paths.map do |path|
-      match = path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      match ? "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}" : "core/#{name}"  # TODO: is this useful?
+      path.fully_qualified_name
     end
 
     super <<-EOS.undent
