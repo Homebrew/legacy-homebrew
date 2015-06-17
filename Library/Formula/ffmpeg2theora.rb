@@ -8,10 +8,9 @@ class Ffmpeg2theora < Formula
     sha256 "214110e2a5afdd8ff8e0be18152e893dbff5dabc1ae1d1124e64d9f93eae946d"
 
     # Fixes build with ffmpeg 2.x by removing use of deprecated constant
-    # Vendored because upstream's git repo "churns" and the checksum doesn't remain static.
     patch do
-      url "https://raw.githubusercontent.com/DomT4/scripts/5f773bffa06/Homebrew_Resources/ffmpeg2theora/ffmpeg2theora.diff"
-      sha256 "caf2863bf1da8f5eb78c07c2cfb9ee732a0373a0e177208c8a391e9525359cbc"
+      url "https://git.xiph.org/?p=ffmpeg2theora.git;a=commitdiff_plain;h=d3435a6a83dc656379de9e6523ecf8d565da6ca6"
+      sha256 "0655ed219b438d1eefd8ad31fad3c1b8da77f13b911eb6247466ac46ce060f3c"
     end
 
     depends_on "libkate" => :optional
