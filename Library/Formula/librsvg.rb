@@ -5,6 +5,13 @@ class Librsvg < Formula
   sha256 "13964c5d35357552b47d365c34215eee0a63bf0e6059b689f048648c6bf5f43a"
   revision 1
 
+  bottle do
+    revision 1
+    sha256 "f955dd5db15b8963cecbe16243d21672894a4486594610e71c24612ad4607259" => :yosemite
+    sha256 "656a206ab678897eda447ab3f13681f5c133e00581aee70382de6707bed34a5d" => :mavericks
+    sha256 "be9e61f02fe0d10f25d1980c56041c2856c65a69c02e19dd72ae04d05e634768" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "cairo"
   depends_on "gdk-pixbuf"
