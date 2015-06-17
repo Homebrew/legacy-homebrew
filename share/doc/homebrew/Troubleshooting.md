@@ -3,7 +3,7 @@
 
 Please run `brew update` and `brew doctor` *before* creating an issue!
 
-If you create an issue, please also create a [Gist][] by running
+If you create an issue related to a formula, please also create a [Gist][] by running
 
 ```
 brew gist-logs <formula name>
