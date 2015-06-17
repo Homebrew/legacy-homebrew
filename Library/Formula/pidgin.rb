@@ -57,6 +57,7 @@ class Pidgin < Formula
       --disable-gtkspell
       --disable-meanwhile
       --disable-vv
+      --without-x
     ]
 
     args << "--disable-perl" if build.without? "perl"
@@ -65,10 +66,8 @@ class Pidgin < Formula
     if build.without? "gui"
       args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
       args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
-      args << "--without-x"
       args << "--disable-gtkui"
     else
-      args << "--without-x"
       args << "--disable-idn"
     end
 
