@@ -5,7 +5,7 @@ class Libdistance < Formula
 
   def install
     system "make"
-    system "make -C test"
+    system "make", "-C", "test"
 
     include.install "distance.h"
     lib.install "libdistance.a"
