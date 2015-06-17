@@ -20,8 +20,8 @@ class Jbig2dec < Formula
   # http://bugs.ghostscript.com/show_bug.cgi?id=695890
   # Remove on next release.
   patch do
-    url "http://git.ghostscript.com/?p=jbig2dec.git;a=patch;h=70c7f1967f43a94f9f0d6808d6ab5700a120d2fc"
-    sha256 "c82f964fb47bb6e97f0686fc3af57ad819e7dbefd7e74ea078c9ba3f4f6c7b06"
+    url "http://git.ghostscript.com/?p=jbig2dec.git;a=commitdiff_plain;h=70c7f1967f43a94f9f0d6808d6ab5700a120d2fc"
+    sha256 "5239e4eb991f198d2ba30d08011c2887599b5cead9db8b1d3eacec4b8912c2d0"
   end
 
   def install
