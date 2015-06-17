@@ -3,8 +3,8 @@ require "formula"
 class Miniupnpc < Formula
   desc "UpnP IGD client library and daemon"
   homepage "http://miniupnp.tuxfamily.org"
-  url "http://miniupnp.tuxfamily.org/files/download.php?file=miniupnpc-1.9.20141027.tar.gz"
-  sha1 "b3c8e7f1e8d0a43ee274866730347e9871903ea1"
+  url "http://miniupnp.tuxfamily.org/files/download.php?file=miniupnpc-1.9.20150609.tar.gz"
+  sha256 "86e6ccec5b660ba6889893d1f3fca21db087c6466b1a90f495a1f87ab1cd1c36"
 
   bottle do
     cellar :any
