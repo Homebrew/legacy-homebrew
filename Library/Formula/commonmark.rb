@@ -1,13 +1,14 @@
 class Commonmark < Formula
+  desc "Strongly specified, highly compatible implementation of Markdown"
   homepage "http://commonmark.org"
-  url "https://github.com/jgm/CommonMark/archive/0.15.tar.gz"
-  sha1 "877665a96fdc5fcc42ec2cd605d8535344a27b72"
+  url "https://github.com/jgm/cmark/archive/0.20.0.tar.gz"
+  sha256 "c8f77eaf5389968cd5737439693f2c8d43606969d5c4674d443e70a90920f48b"
 
   bottle do
     cellar :any
-    sha1 "fbaebb5f33ffad7deb3b744d37e00bfab8d6251a" => :yosemite
-    sha1 "3cd4d72d841ff4e95cb3fac25451b2979161b5a1" => :mavericks
-    sha1 "f67567a2bf4bf4f619b3631a1c575f16a58df25c" => :mountain_lion
+    sha256 "181be5778b214828ed9c95bcb11d40864cbdeed93abf12ab9e2cbcf725c7516c" => :yosemite
+    sha256 "9d8edde15d2c5d8fc45a17af25379dc08eb9a2acd818a2064c035f91c4939ede" => :mavericks
+    sha256 "5ad82a1f6ee5a88647b967bea985f5dc7f38f277bbfbc2dccfb17875dac138c0" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -16,7 +17,6 @@ class Commonmark < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      ENV.deparallelize # https://github.com/jgm/CommonMark/issues/279
       system "make"
       system "make", "test"
       system "make", "install"

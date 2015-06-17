@@ -1,6 +1,7 @@
 require "formula"
 
 class ClosureLinter < Formula
+  desc "Check JavaScript files for style and documentation"
   homepage "https://developers.google.com/closure/utilities/"
   url "https://closure-linter.googlecode.com/files/closure_linter-2.3.13.tar.gz"
   sha1 "71763adfd097dbf2d456db3b1b77ebeb0ba60664"

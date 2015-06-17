@@ -1,19 +1,18 @@
-require "formula"
-
 class Abcm2ps < Formula
+  desc "ABC music notation software"
   homepage "http://moinejf.free.fr"
-  url "http://moinejf.free.fr/abcm2ps-7.8.11.tar.gz"
-  sha1 "93e016cf933d88d817be76bd3eb4163851f3b132"
+  url "http://moinejf.free.fr/abcm2ps-7.8.14.tar.gz"
+  sha256 "31c55865a914d56c12e2b7cbeaf5e4a09b47bbe79f1c7b5cd1576a16f3753d07"
 
   bottle do
-    sha1 "1381e1f180e685182193a4392fc664cc16e5bc87" => :yosemite
-    sha1 "ccb022e97dac73bae23be04cc8bdf99ce10e09d8" => :mavericks
-    sha1 "d6b852cb4761a91f16ff9de9b189e0faf238de90" => :mountain_lion
+    sha256 "3f3cbc0a52593625dd5d14cfc4678f92dcfcbf13a88bb3f51d8dd2544137b396" => :yosemite
+    sha256 "11dc20c7dc6bc5e71df0cc7df303df3027de9663f3c7cdc1425151b8007081dc" => :mavericks
+    sha256 "904a9114ad88c9482bc8c3b7d9366ce3f2bde2e3ee324da54f9c5e70932d6c7e" => :mountain_lion
   end
 
   devel do
-    url "http://moinejf.free.fr/abcm2ps-8.3.4.tar.gz"
-    sha1 "e3a92e89eb55d36e582e3529846f17c60dfb788b"
+    url "http://moinejf.free.fr/abcm2ps-8.7.8.tar.gz"
+    sha256 "f9120e8ffd8e9eba3095fc800c7cceca5017eadeedcc2e1e19d7c59082201cbc"
   end
 
   depends_on "pkg-config" => :build

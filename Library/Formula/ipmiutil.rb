@@ -1,11 +1,23 @@
 require 'formula'
 
 class Ipmiutil < Formula
+  desc "IPMI server management utility"
   homepage 'http://ipmiutil.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/ipmiutil/ipmiutil-2.9.1.tar.gz'
-  sha1 'f23fabe8339842fea9b8c2a601717dc002e44a9d'
+  url 'https://downloads.sourceforge.net/project/ipmiutil/ipmiutil-2.9.5.tar.gz'
+  sha1 '265f022c876da373b2ecb4be2bc0f98e65f70977'
 
-  # Make ipmiutil treat Darwin as BSD
+  bottle do
+    cellar :any
+    sha1 "463fb38c4ac02170177e043ecddbd0b598bce163" => :yosemite
+    sha1 "91da6fd51706e874f8a72249339eb3a7bd22adba" => :mavericks
+    sha1 "15a3e15c010478e83bf1aa38f9369329f417220e" => :mountain_lion
+  end
+
+  depends_on "openssl"
+
+  # Ensure ipmiutil does not try to link against (disabled) OpenSSL's MD2
+  # support. Patch submitted upstream in
+  # http://sourceforge.net/p/ipmiutil/mailman/message/33373858/
   patch :DATA
 
   def install
@@ -31,14 +43,23 @@ end
 
 __END__
 diff -u ./configure.bak ./configure
---- ./configure.bak	2012-09-18 23:19:11.000000000 +0800
-+++ ./configure	2012-09-18 23:21:04.000000000 +0800
-@@ -20983,7 +20983,7 @@
-	OS_CFLAGS="-DLINUX $MD2_CFLAGS $cfwarn"
-   else
-      # usually "x$sysname" = "xFreeBSD", but allow NetBSD
--     echo $sysname | grep BSD >/dev/null 2>&1
-+     echo $sysname | grep 'BSD\|Darwin' >/dev/null 2>&1
-      if test $? -eq 0; then
-	os=bsd
-	OS_CFLAGS="-DBSD"
+--- ./configure.bak       2015-02-04 22:15:07.000000000 +0100
++++ ./configure   2015-02-04 22:16:18.000000000 +0100
+@@ -20739,7 +20739,7 @@
+            echo "Detected HP-UX"
+            os=hpux
+            MD2_CFLAGS="-DSKIP_MD2"
+-           OS_CFLAGS="-DHPUX"
++           OS_CFLAGS="-DHPUX $MD2_CFLAGS"
+            OS_LFLAGS=""
+            OS_DRIVERS="ipmimv.c"
+            drivers="open"
+@@ -20748,7 +20748,7 @@
+            echo "Detected MacOSX"
+            os=macos
+            MD2_CFLAGS="-DSKIP_MD2"
+-           OS_CFLAGS="-DMACOS"
++           OS_CFLAGS="-DMACOS $MD2_CFLAGS"
+            OS_LFLAGS=""
+           OS_DRIVERS="ipmimv.c ipmidir.c"
+           drivers="open direct"

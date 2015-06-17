@@ -1,15 +1,16 @@
 require 'formula'
 
 class Serd < Formula
+  desc "C library for RDF syntax"
   homepage 'http://drobilla.net/software/serd/'
-  url 'http://download.drobilla.net/serd-0.18.2.tar.bz2'
-  sha1 '9472be8d6f407affca5c8fa3125a5fbe49af967e'
+  url 'http://download.drobilla.net/serd-0.20.0.tar.bz2'
+  sha1 '38c0c8600270e38d99bc87b0ceb14b25c4c0cea3'
 
   bottle do
     cellar :any
-    sha1 "cf8e4e7cba72fb4d05de1a6f75090aefb24c19a6" => :yosemite
-    sha1 "734bc7cdd91ec765dcfa07404e0635c915fa52f8" => :mavericks
-    sha1 "45ff9722f3d3f774c558c2b4dde77f811c596d0a" => :mountain_lion
+    sha256 "fa5c347c7566b07e48821dd8b55c253c2ee681a0fb98ca392652757dece2b9b1" => :yosemite
+    sha256 "abc4c507232fa581114ee241f95f5c3aede518b2edcf7d7ff41e33f8c7ad25a7" => :mavericks
+    sha256 "ef544a7dab5f355717e72587bb66bc99c2b5c48f05a2e34f2523849c4bad3526" => :mountain_lion
   end
 
   depends_on 'pkg-config' => :build

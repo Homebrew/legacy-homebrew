@@ -1,15 +1,20 @@
-require "formula"
-
 class Solr < Formula
-  homepage "http://lucene.apache.org/solr/"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.10.2/solr-4.10.2.tgz"
-  sha1 "b913204d07212d7bb814afe4641992f22404a27d"
+  desc "Enterprise search platform from the Apache Lucene project"
+  homepage "https://lucene.apache.org/solr/"
+  url "https://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.2.0/solr-5.2.0.tgz"
+  mirror "https://archive.apache.org/dist/lucene/solr/5.2.0/solr-5.2.0.tgz"
+  sha256 "dff2c5df505b732e23178e8f12e817dba4a088a8afe6599dcacf9ea241f76a1e"
+
+  depends_on :java
+
+  skip_clean "example/logs"
 
   def install
     libexec.install Dir["*"]
     bin.install "#{libexec}/bin/solr"
     share.install "#{libexec}/bin/solr.in.sh"
     prefix.install "#{libexec}/example"
+    prefix.install "#{libexec}/server"
   end
 
   plist_options :manual => "solr start"
@@ -36,5 +41,9 @@ class Solr < Formula
       </dict>
       </plist>
     EOS
+  end
+
+  test do
+    system "solr"
   end
 end

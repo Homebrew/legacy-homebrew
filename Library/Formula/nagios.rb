@@ -1,6 +1,7 @@
 require 'formula'
 
 class Nagios < Formula
+  desc "Network monitoring and management system"
   homepage 'http://www.nagios.org/'
   url 'https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.0.6/nagios-4.0.6.tar.gz'
   sha1 'aacd0ebc1a0a91692702667bd98f8a016b59780f'
@@ -79,10 +80,13 @@ class Nagios < Formula
 
       1) Turn on Personal Web Sharing.
 
-      2) Load the php module by patching /etc/apache2/httpd.conf:
+      2) Load the cgi and php modules by patching /etc/apache2/httpd.conf:
 
         -#LoadModule php5_module        libexec/apache2/libphp5.so
         +LoadModule php5_module        libexec/apache2/libphp5.so
+
+        -#LoadModule cgi_module libexec/apache2/mod_cgi.so
+        +LoadModule cgi_module libexec/apache2/mod_cgi.so
 
       3) Symlink the sample config and create your web account:
 

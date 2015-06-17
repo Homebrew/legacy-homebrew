@@ -1,11 +1,11 @@
-require 'formula'
-
 class Libarchive < Formula
-  homepage 'http://www.libarchive.org'
-  url 'http://www.libarchive.org/downloads/libarchive-3.1.2.tar.gz'
-  sha1 '6a991777ecb0f890be931cec4aec856d1a195489'
+  desc "Multi-format archive and compression library"
+  homepage "http://www.libarchive.org"
+  url "http://www.libarchive.org/downloads/libarchive-3.1.2.tar.gz"
+  mirror "https://github.com/libarchive/libarchive/archive/v3.1.2.tar.gz"
+  sha256 "eb87eacd8fe49e8d90c8fdc189813023ccc319c5e752b01fb6ad0cc7b2c53d5e"
 
-  depends_on 'xz' => :optional
+  depends_on "xz" => :optional
 
   bottle do
     cellar :any
@@ -22,6 +22,12 @@ class Libarchive < Formula
                           "--without-lzo2",
                           "--without-nettle",
                           "--without-xml2"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test").write("test")
+    system bin/"bsdtar", "-czvf", "test.tar.gz", "test"
+    assert_match /test/, shell_output("#{bin}/bsdtar -xOzf test.tar.gz")
   end
 end

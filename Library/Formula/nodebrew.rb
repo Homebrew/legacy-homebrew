@@ -1,9 +1,8 @@
-require "formula"
-
 class Nodebrew < Formula
+  desc "Node.js version manager"
   homepage "https://github.com/hokaccha/nodebrew"
-  url "https://github.com/hokaccha/nodebrew/archive/v0.8.0.tar.gz"
-  sha1 "5f3ec97e267fbccffcd3732a0a2436daa3a09d48"
+  url "https://github.com/hokaccha/nodebrew/archive/v0.8.1.tar.gz"
+  sha256 "c976a879954dfb5dd657f1e93934ec182ffe4aa4e91ee2be0f7ece91cd25af6f"
   head "https://github.com/hokaccha/nodebrew.git"
 
   def install

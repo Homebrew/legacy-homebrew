@@ -1,20 +1,21 @@
 require "formula"
 
 class ChibiScheme < Formula
-  homepage "http://code.google.com/p/chibi-scheme/"
+  desc "Small footprint Scheme for use as a C Extension Language"
+  homepage "http://synthcode.com/wiki/chibi-scheme"
 
   stable do
-    url "http://abrek.synthcode.com/chibi-scheme-0.7.2.tgz"
-    sha1 "337908635020bf354ec9bcb62f91e1bbe534ff23"
+    url "http://synthcode.com/scheme/chibi/chibi-scheme-0.7.3.tgz"
+    sha1 "752cf11a507f3deeedc49cb51f40dfe0c9bda18a"
   end
 
-  head "https://code.google.com/p/chibi-scheme/", :using => :hg
+  head "https://github.com/ashinn/chibi-scheme.git"
 
   bottle do
     cellar :any
-    sha1 "eff7f6bd5b2a711cd21b7c6d74d14462b647b4ad" => :yosemite
-    sha1 "2343e7d9a49a5ea997cbe5e7f91e516aeaf2cbfb" => :mavericks
-    sha1 "55723f46b0c3043f676db51894a47e9ac8271b47" => :mountain_lion
+    sha256 "9fab20beb2d9afdd48d97434ca022f327f7b1eb3bec7d0a4d2ed6d44a091946a" => :yosemite
+    sha256 "bcd1046b43b40256705c162d6f92f71665811120143f7857d0ba7938f20cc433" => :mavericks
+    sha256 "98b0bb6559ce5b8225b481e56024dc44fcb6e4c71ece3a54a3bcbe8395d8e463" => :mountain_lion
   end
 
   def install

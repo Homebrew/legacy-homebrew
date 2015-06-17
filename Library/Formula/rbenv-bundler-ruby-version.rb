@@ -1,9 +1,8 @@
-require "formula"
-
 class RbenvBundlerRubyVersion < Formula
+  desc "Pick a ruby version from bundler's Gemfile"
   homepage "https://github.com/aripollak/rbenv-bundler-ruby-version"
-  url "https://github.com/aripollak/rbenv-bundler-ruby-version/archive/v0.1.tar.gz"
-  sha1 "4a5190d896aaebdb103ffeae61dd4eace7c0fd4c"
+  url "https://github.com/aripollak/rbenv-bundler-ruby-version/archive/v0.2.tar.gz"
+  sha256 "b6abca1097bd9e99be89dd46e7bd855f47c6522c97546e43049cf38f6aea6c9a"
 
   head "https://github.com/aripollak/rbenv-bundler-ruby-version.git"
 
@@ -15,6 +14,6 @@ class RbenvBundlerRubyVersion < Formula
 
   test do
     (testpath/"Gemfile").write("ruby \"2.1.5\"")
-    system "rbenv bundler-ruby-version"
+    system "rbenv", "bundler-ruby-version"
   end
 end

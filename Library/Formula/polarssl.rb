@@ -1,18 +1,18 @@
-require "formula"
-
 class Polarssl < Formula
-  homepage "https://polarssl.org/"
-  url "https://polarssl.org/download/polarssl-1.3.9-gpl.tgz"
+  desc "SSL library"
+  homepage "https://tls.mbed.org/"
   # 1.4.0 will need dependents recompiled due to breaking binary compat.
-  sha256 "d3605afc28ed4b7d1d9e3142d72e42855e4a23c07c951bbb0299556b02d36755"
+  url "https://tls.mbed.org/download/mbedtls-1.3.10-gpl.tgz"
+  sha256 "746fd88e0c6623691fc56c4eed52e40a57b2da0ac80f6dd8995094aa6adb407e"
 
-  head "https://github.com/polarssl/polarssl.git"
+  head "https://github.com/ARMmbed/mbedtls.git"
 
   bottle do
     cellar :any
-    sha1 "d265ce8c0677d001ac1e6bf48a1fe979d19a0559" => :yosemite
-    sha1 "8715a5351f9a32391e39eab3c5c75b737bff68e6" => :mavericks
-    sha1 "f497de9c97371c7e871c7041ccc38f26a7c2847e" => :mountain_lion
+    revision 1
+    sha1 "9f073fda6a57f9ce78768f9391c0c92850d187de" => :yosemite
+    sha1 "722cb2387ea35a3c394cb6854068fc124badca09" => :mavericks
+    sha1 "4a0effaa65d9fa92a0c6da1914de2dbdd318ecf4" => :mountain_lion
   end
 
   depends_on "cmake" => :build
@@ -20,19 +20,26 @@ class Polarssl < Formula
   conflicts_with "md5sha1sum", :because => "both install conflicting binaries"
 
   def install
-  # Kills SSL2 Handshake & SSLv3 using upstream's recommended method.
-  # Upstream, can you make this less hacky please?
-  inreplace "include/polarssl/config.h" do |s|
-    s.gsub! "#define POLARSSL_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO", "//#define POLARSSL_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO"
-    s.gsub! "#define POLARSSL_SSL_PROTO_SSL3", "//#define POLARSSL_SSL_PROTO_SSL3"
-  end
+    # Kills SSL2 Handshake & SSLv3 using upstream's recommended method.
+    # Upstream, can you make this less hacky please?
+    inreplace "include/polarssl/config.h" do |s|
+      s.gsub! "#define POLARSSL_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO", "//#define POLARSSL_SSL_SRV_SUPPORT_SSLV2_CLIENT_HELLO"
+      s.gsub! "#define POLARSSL_SSL_PROTO_SSL3", "//#define POLARSSL_SSL_PROTO_SSL3"
+    end
 
-    system "cmake", ".",  *std_cmake_args
+    system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
     # Why does PolarSSL ship with GNU's Hello included? Let's remove that.
-    rm "#{bin}/hello"
+    rm_f "#{bin}/hello"
     # Remove the pointless example application that hooks into system OpenSSL
-    rm "#{bin}/o_p_test"
+    rm_f "#{bin}/o_p_test"
+  end
+
+  test do
+    (testpath/"testfile.txt").write("This is a test file")
+    # Don't remove the space between the checksum and filename. It will break.
+    expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32  testfile.txt"
+    assert_equal expected_checksum, shell_output("#{bin}/sha1sum testfile.txt").strip
   end
 end

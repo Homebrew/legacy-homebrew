@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mplayer < Formula
+  desc "UNIX movie player"
   homepage 'http://www.mplayerhq.hu/'
 
   stable do

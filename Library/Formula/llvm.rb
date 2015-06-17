@@ -1,36 +1,41 @@
 class Llvm < Formula
-  homepage 'http://llvm.org/'
-  revision 2
+  desc "llvm (Low Level Virtual Machine): a next-gen compiler infrastructure"
+  homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.5.0/llvm-3.5.0.src.tar.xz"
-    sha1 "58d817ac2ff573386941e7735d30702fe71267d5"
+    url "http://llvm.org/releases/3.6.1/llvm-3.6.1.src.tar.xz"
+    sha256 "2f00c615913aa0b56607ee1548936e60ad2aa89e6d56f23fb032a4463366fc7a"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.5.0/cfe-3.5.0.src.tar.xz"
-      sha1 "834cee2ed8dc6638a486d8d886b6dce3db675ffa"
+      url "http://llvm.org/releases/3.6.1/cfe-3.6.1.src.tar.xz"
+      sha256 "74f92d0c93b86678b015e87655f59474b2f657769680efdeb3c0524ffbd2dad7"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.5.0/libcxx-3.5.0.src.tar.xz"
-      sha1 "c98beed86ae1adf9ab7132aeae8fd3b0893ea995"
+      url "http://llvm.org/releases/3.6.1/libcxx-3.6.1.src.tar.xz"
+      sha256 "5a5c653becf3978d4c4f6095708660855bed691210a9426bb839eecd88b6c0f9"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
-      sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
+      url "http://llvm.org/releases/3.6.1/lld-3.6.1.src.tar.xz"
+      sha256 "3aee0513caeac6dd55930838425f63ad79bee9ccdf081cafbd853bbd65486feb"
+    end
+
+    resource "lldb" do
+      url "http://llvm.org/releases/3.6.1/lldb-3.6.1.src.tar.xz"
+      sha256 "cefb5c64e78e85ad05a06b80f017ccfe1208b74d3da34eb425c505c6fef9aaba"
     end
 
     resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.5.0/clang-tools-extra-3.5.0.src.tar.xz"
-      sha1 "74a84493e3313c180490a4affbb92d61ee4f0d21"
+      url "http://llvm.org/releases/3.6.1/clang-tools-extra-3.6.1.src.tar.xz"
+      sha256 "f4ee70d870d550a9147ac6a548ce7daf7d9e6897348bf411f43c572966fb92b6"
     end
   end
 
   bottle do
-    sha1 "b438ffa15440a1f6ee7efbc7ddc3adb32e757ad6" => :yosemite
-    sha1 "47e4f98e8fa4ea845f5acd6ea568b9ddc73729df" => :mavericks
-    sha1 "244cb85540b4ec6a33356e3e02fd8e0caa89224d" => :mountain_lion
+    sha256 "1263ca0485c17f53004103019e60c3569f4651968869df30844db804deb76e23" => :yosemite
+    sha256 "9c0acca6791ea00662923425fa1df59c8dc14c1f30c003fc545fb6e5657a9c88" => :mavericks
+    sha256 "36ed75090669c6fb30b2c9637aaaaf9568aad75c87190760ba1a837ef502c38e" => :mountain_lion
   end
 
   head do
@@ -48,23 +53,33 @@ class Llvm < Formula
       url "http://llvm.org/git/lld.git"
     end
 
+    resource "lldb" do
+      url "http://llvm.org/git/lldb.git"
+    end
+
     resource "clang-tools-extra" do
       url "http://llvm.org/git/clang-tools-extra.git"
     end
   end
 
-  # Use absolute paths for shared library IDs
-  patch :DATA
-
   option :universal
-  option 'with-clang', 'Build Clang support library'
-  option 'with-lld', 'Build LLD linker'
-  option 'disable-shared', "Don't build LLVM as a shared library"
-  option 'all-targets', 'Build all target backends'
-  option 'rtti', 'Build with C++ RTTI'
-  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
+  option "with-clang", "Build Clang support library"
+  option "with-lld", "Build LLD linker"
+  option "with-lldb", "Build LLDB debugger"
+  option "with-rtti", "Build with C++ RTTI"
+  option "with-python", "Build Python bindings against Homebrew Python"
+  option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
-  depends_on :python => :optional
+  deprecated_option "rtti" => "with-rtti"
+  deprecated_option "disable-assertions" => "without-assertions"
+
+  if MacOS.version <= :snow_leopard
+    depends_on :python
+  else
+    depends_on :python => :optional
+  end
+  depends_on "cmake" => :build
+  depends_on "swig" if build.with? "lldb"
 
   keg_only :provided_by_osx
 
@@ -76,8 +91,8 @@ class Llvm < Formula
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
 
-    if build.with? "python" and build.include? 'disable-shared'
-      raise 'The Python bindings need the shared library.'
+    if build.with?("lldb") && build.without?("clang")
+      raise "Building LLDB needs Clang support library."
     end
 
     if build.with? "clang"
@@ -87,35 +102,26 @@ class Llvm < Formula
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
+    (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
+
+    args = %w[
+      -DLLVM_OPTIMIZED_TABLEGEN=On
+    ]
+
+    args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
+
+    args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
 
     if build.universal?
       ENV.permit_arch_flags
-      ENV['UNIVERSAL'] = '1'
-      ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
 
-    ENV["REQUIRES_RTTI"] = "1" if build.include? "rtti" or build.with? "clang"
-
-    args = [
-      "--prefix=#{prefix}",
-      "--enable-optimized",
-      # As of LLVM 3.1, attempting to build ocaml bindings with Homebrew's
-      # OCaml 3.12.1 results in errors.
-      "--disable-bindings",
-    ]
-
-    if build.include? 'all-targets'
-      args << "--enable-targets=all"
-    else
-      args << "--enable-targets=host"
+    mktemp do
+      system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
+      system "make"
+      system "make", "install"
     end
-    args << "--enable-shared" unless build.include? 'disable-shared'
-
-    args << "--disable-assertions" if build.include? 'disable-assertions'
-
-    system "./configure", *args
-    system "make"
-    system "make", "install"
 
     if build.with? "clang"
       system "make", "-C", "projects/libcxx", "install",
@@ -128,10 +134,8 @@ class Llvm < Formula
     end
 
     # install llvm python bindings
-    if build.with? "python"
-      (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
-      (lib+'python2.7/site-packages').install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
-    end
+    (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
+    (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
   end
 
   test do
@@ -145,23 +149,3 @@ class Llvm < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/Makefile.rules b/Makefile.rules
-index ebebc0a..b0bb378 100644
---- a/Makefile.rules
-+++ b/Makefile.rules
-@@ -599,7 +599,12 @@ ifneq ($(HOST_OS), $(filter $(HOST_OS), Cygwin MingW))
- ifneq ($(HOST_OS),Darwin)
-   LD.Flags += $(RPATH) -Wl,'$$ORIGIN'
- else
--  LD.Flags += -Wl,-install_name  -Wl,"@rpath/lib$(LIBRARYNAME)$(SHLIBEXT)"
-+  LD.Flags += -Wl,-install_name
-+  ifdef LOADABLE_MODULE
-+    LD.Flags += -Wl,"$(PROJ_libdir)/$(LIBRARYNAME)$(SHLIBEXT)"
-+  else
-+    LD.Flags += -Wl,"$(PROJ_libdir)/$(SharedPrefix)$(LIBRARYNAME)$(SHLIBEXT)"
-+  endif
- endif
- endif
- endif

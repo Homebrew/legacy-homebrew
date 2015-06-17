@@ -1,15 +1,15 @@
 require "formula"
 
 class Qbs < Formula
-  homepage "http://qt-project.org/wiki/qbs"
-  url "http://download.qt-project.org/official_releases/qbs/1.3.2/qbs-1.3.2.src.tar.gz"
-  sha1 "ce2d807c145e239d39e360521d62486eb1e3d108"
+  desc "Qt Build Suite"
+  homepage "https://wiki.qt.io/Qt_Build_Suite"
+  url "https://download.qt.io/official_releases/qbs/1.4.0/qbs-1.4.0.src.tar.gz"
+  sha1 "4c70247155281b9536a6fab6672cd5f53610cfa1"
 
   bottle do
-    cellar :any
-    sha1 "cc8d1816df4336ab9d8745e332efb3081ac8abf7" => :yosemite
-    sha1 "f95dc259474a8006364b62f7fcbc943783a6ccd9" => :mavericks
-    sha1 "bbdadfad3bc1d7a6024b42245999d460ad719515" => :mountain_lion
+    sha256 "fa881458fc8700b9160bde642842e0baf75a4e221909a890c7ed6c1f191c4e32" => :yosemite
+    sha256 "e211c32a20804c5d8386d825bb3846a6bb2b5bc360f2abdab577d5dc7288402f" => :mavericks
+    sha256 "fbf2045061fdb7c148ec4c32843e29078810282ae28eb13c1289904953a3209d" => :mountain_lion
   end
 
   depends_on "qt5"
@@ -36,6 +36,7 @@ class Qbs < Formula
       }
     EOS
 
-    system "#{bin}/qbs", "run", "-f", "test.qbp", "profile:clang"
+    system "#{bin}/qbs", "setup-toolchains", "--detect", "--settings-dir", testpath
+    system "#{bin}/qbs", "run", "--settings-dir", testpath, "-f", "test.qbp", "profile:clang"
   end
 end

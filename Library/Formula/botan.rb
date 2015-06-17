@@ -1,18 +1,19 @@
-require "formula"
-
 class Botan < Formula
+  desc "Cryptographic algorithms and formats library in C++"
   homepage "http://botan.randombit.net/"
-  url "http://files.randombit.net/botan/Botan-1.10.8.tgz"
-  sha1 "078fcb03c9ef0691621eda3ca312ebf08b3890cc"
-  revision 1
+  url "http://botan.randombit.net/releases/Botan-1.10.9.tgz"
+  sha1 "e1c8e97b214b23931f7dc8aba44306fbeca9055c"
 
   bottle do
-    sha1 "89d491598019e57540e22089c3c7a3d45a845adc" => :yosemite
-    sha1 "aa5b7be38ab12c1755f3cb8dbee104d9514f27b2" => :mavericks
-    sha1 "2efea61b9f63b8344617a90eb4dc0445baab0243" => :mountain_lion
+    revision 1
+    sha256 "21928e32477150b767937ecfbf8be519c279474eb7273c38475ee39501084977" => :yosemite
+    sha256 "a89a03f87751e838d0e7265fff8f92f19782048b2b17bd0bcadbcef186f4f29f" => :mavericks
+    sha256 "c8899f3e0b379e27e37fd7e3e83bbec52803cce45800c7bf88c509f09a7e520b" => :mountain_lion
   end
 
-  option "enable-debug", "Enable debug build of Botan"
+  option "with-debug", "Enable debug build of Botan"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
@@ -23,7 +24,7 @@ class Botan < Formula
   def install
     args = %W[
       --prefix=#{prefix}
-      --docdir=#{share}/doc
+      --docdir=share/doc
       --cpu=#{MacOS.preferred_arch}
       --cc=#{ENV.compiler}
       --os=darwin
@@ -32,12 +33,16 @@ class Botan < Formula
       --with-bzip2
     ]
 
-    args << "--enable-debug" if build.include? "enable-debug"
+    args << "--enable-debug" if build.with? "debug"
 
     system "./configure.py", *args
     # A hack to force them use our CFLAGS. MACH_OPT is empty in the Makefile
     # but used for each call to cc/ld.
     system "make", "install", "MACH_OPT=#{ENV.cflags}"
+  end
+
+  test do
+    assert_match /lcrypto/, shell_output("#{bin}/botan-config-1.10 --libs")
   end
 end
 

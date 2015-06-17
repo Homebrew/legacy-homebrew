@@ -1,15 +1,15 @@
 class Gpgme < Formula
+  desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.3.tar.bz2"
-  mirror "ftp://mirror.switch.ch/mirror/gnupg/gpgme/gpgme-1.5.3.tar.bz2"
-  mirror "http://sources.buildroot.net/gpgme-1.5.3.tar.bz2"
-  sha1 "8dd7711a4de117994fe2d45879ef8a9900d50f6a"
+  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.5.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.5.tar.bz2"
+  sha256 "0b3d3d5107680c594777aae65882a1ff6dd1ba629a83432e719c8b82a743c207"
 
   bottle do
     cellar :any
-    sha1 "61785471d163d15cef924d11a9e4623cbe4126f6" => :yosemite
-    sha1 "65581c685595865411af4bc530e5bfe4ee7929b6" => :mavericks
-    sha1 "411d0b43ee5e2906fb08742d02a9f167dd0bb33a" => :mountain_lion
+    sha256 "7129bc6a4a05b84bdc20474262bd3b932aee25f38fca761977e1d24c3ad45e64" => :yosemite
+    sha256 "474f70e432795e77e9d8b28b4bade8582ee6e603bf5f246afa96c3f227dde0c6" => :mavericks
+    sha256 "0a4f65a8a21f945e5130dafedeca9e792af7dbf17167bfea030d357027c506ec" => :mountain_lion
   end
 
   depends_on "gnupg2"

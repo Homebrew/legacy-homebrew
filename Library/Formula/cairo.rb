@@ -1,16 +1,16 @@
 require "formula"
 
 class Cairo < Formula
+  desc "Vector graphics library with cross-device output support"
   homepage "http://cairographics.org/"
-  url "http://cairographics.org/releases/cairo-1.14.0.tar.xz"
-  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.0.tar.xz"
-  sha256 "2cf5f81432e77ea4359af9dcd0f4faf37d015934501391c311bfd2d19a0134b7"
+  url "http://cairographics.org/releases/cairo-1.14.2.tar.xz"
+  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.2.tar.xz"
+  sha256 "c919d999ddb1bbbecd4bbe65299ca2abd2079c7e13d224577895afa7005ecceb"
 
   bottle do
-    revision 1
-    sha1 "e2db7a27b4b9ddd78875f8fa1820c756b03ed1ac" => :yosemite
-    sha1 "2e975c2003ea16d8186e63c3e59dcc4963227a9e" => :mavericks
-    sha1 "b55dd832e2f702cb9685f3b3822b29f7dec0a34a" => :mountain_lion
+    sha256 "86672344ecd86346a890952f6038e943d95080d15d9eafc06e417fd6dc301791" => :yosemite
+    sha256 "50e7a59e4d6a1aff9c972ea6697be32dd052ed771b35a32188d5f150a4db7964" => :mavericks
+    sha256 "a860e936571129c55ef8098bcbfda6dffa7970c49d2908e96a1a8a50f55399a4" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
@@ -33,6 +33,7 @@ class Cairo < Formula
       --prefix=#{prefix}
       --enable-gobject=yes
       --enable-svg=yes
+      --enable-tee=yes
       --with-x
     ]
 

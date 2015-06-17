@@ -1,6 +1,5 @@
-require "formula"
-
 class RbenvBinstubs < Formula
+  desc "Make rbenv aware of bundler binstubs"
   homepage "https://github.com/ianheggie/rbenv-binstubs"
   url "https://github.com/ianheggie/rbenv-binstubs/archive/v1.4.tar.gz"
   sha1 "7bea29d60e6b3870608c056c6f0ebf55bb8a150a"
@@ -11,5 +10,9 @@ class RbenvBinstubs < Formula
 
   def install
     prefix.install Dir["*"]
+  end
+
+  test do
+    assert shell_output("rbenv hooks exec").include? "rbenv-binstubs.bash"
   end
 end

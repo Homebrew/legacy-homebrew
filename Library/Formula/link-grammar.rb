@@ -1,6 +1,7 @@
 require 'formula'
 
 class LinkGrammar < Formula
+  desc "Carnegie Mellon University's link grammar parser"
   homepage 'http://www.abisource.com/projects/link-grammar/'
   url 'http://www.abisource.com/downloads/link-grammar/4.7.14/link-grammar-4.7.14.tar.gz'
   sha1 'dd8d03021e6c68933093cd61317a4d4d0bae6f57'

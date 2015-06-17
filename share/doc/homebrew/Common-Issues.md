@@ -97,20 +97,32 @@ $ git clean -f # this will remove untracked files
 
 ### Python: `Segmentation fault: 11` on `import <some_python_module>`
 
-A `Segmentation fault: 11` is in 95% due to a different Python executable used for building the software vs. the python you use to import the module. Note that e.g. the `boost` bottle is built against system python and should be brewed from source to make it work with a brewed Python.
-This can even happen when both python executables are the same version (e.g. 2.7.2). The explanation is that Python packages with C-extensions (those that have `.so` files) are compiled against a certain python binary/library that may have been built with a different arch (e.g. Apple's python is still not a pure 64bit). Other things can go wrong, too. Welcome to the dirty underworld of C.
+A `Segmentation fault: 11` is in many cases due to a different Python
+executable used for building the software vs. the python you use to import the
+module.  This can even happen when both python executables are the same version
+(e.g. 2.7.2). The explanation is that Python packages with C extensions (those
+that have `.so` files) are compiled against a certain python binary/library that
+may have been built with a different arch (e.g. Apple's python is still not a
+pure 64-bit build). Other things can go wrong, too. Welcome to the dirty
+underworld of C.
 
-To solve this, you should remove the problematic formulae with those python bindings and all of it's dependencies.
+To solve this, you should remove the problematic formula with those python
+bindings and all of its dependencies.
 
-  - `brew rm $(brew deps <problematic_formula>)`
+  - `brew rm $(brew deps --installed <problematic_formula>)`
   - `brew rm <problematic_formula>`
-  - Also check the `$(brew --prefix)/lib/python2.7/site-packages` directory and delete all remains of the corresponding python modules if they were not cleanly removed by the previous steps.
-  - Check that `which python` points to the python you want. Perhaps now is the time to `brew install python`.
+  - Also check the `$(brew --prefix)/lib/python2.7/site-packages` directory and
+    delete all remains of the corresponding python modules if they were not
+    cleanly removed by the previous steps.
+  - Check that `which python` points to the python you want. Perhaps now is the
+    time to `brew install python`.
   - Then reinstall `brew install <problematic_formula>`
-  - Now start `python` and try to `import` the module installed by the <problematic_formula>
+  - Now start `python` and try to `import` the module installed by the
+    \<problematic_formula\>
 
-You can basically use any Python (2.x) for the bindings homebrew provides, but you can't mix.
-Homebrew formulae use a brewed Python if available or, if not so, they use whatever `python` is in your `PATH`.
+You can basically use any Python (2.x) for the bindings homebrew provides, but
+you can't mix.  Homebrew formulae use a brewed Python if available or, if not
+so, they use whatever `python` is in your `PATH`.
 
 ### Python: `Fatal Python error: PyThreadState_Get: no current thread`
 
@@ -119,14 +131,12 @@ Fatal Python error: PyThreadState_Get: no current thread
 Abort trap: 6
 ```
 
-This happens for `boost`, `pygtk` and/or `pygobject` and related modules, for the same reason as described above.
-If the `boost` is your problem, please `brew rm boost`, `brew install boost --build-from-source`. This is needed because the boost bottle is built against system python.
+This happens for `boost-python`, `pygtk`, `pygobject`, and related modules,
+for the same reason as described above. To solve this, follow the steps above.
 
-To solve this, follow the steps above.
-
-### Python: `Python.h not found`
-
-The formula needs a `depends_on :python`, probably.
+If `boost` is your problem, note that Boost.Python is now provided by the
+`boost-python` formula. Removing any existing `boost` and `boost-python`,
+running `brew update`, and installing them anew should fix things.
 
 ### Python: easy-install.pth cannot be linked
 ```
@@ -147,9 +157,6 @@ To list all files that would be deleted:
   brew link --overwrite --dry-run formula_name
 ```
 
-Don't follow the advice of setuptools here but fix by adding
-`--record=installed.txt` and `--single-version-externally-managed` flags to `setup.py`:
-
-### Python: `/usr/local/bin/virtualenv: ...: bad interpreter: No such file or directory`
-
-Did you try to pip install --upgrade virtualenv? Since the full path to Python is included, you will need to reinstall software like this after upgrading python itself.
+Don't follow the advice here but fix by using
+`Language::Python.setup_install_args` in the formula as described in
+[Python for Formula Authors](Python-for-Formula-Authors.md).

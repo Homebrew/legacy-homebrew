@@ -1,6 +1,7 @@
 require 'formula'
 
 class Poppler < Formula
+  desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage 'http://poppler.freedesktop.org'
   url 'http://poppler.freedesktop.org/poppler-0.29.0.tar.xz'
   sha1 'ba3330ab884e6a139ca63dd84d0c1c676f545b5e'
@@ -12,6 +13,7 @@ class Poppler < Formula
   end
 
   option "with-qt", "Build Qt backend"
+  option "with-qt5", "Build Qt5 backend"
   option "with-little-cms2", "Use color management system"
 
   deprecated_option "with-qt4" => "with-qt"
@@ -30,6 +32,7 @@ class Poppler < Formula
   depends_on 'openjpeg'
 
   depends_on "qt" => :optional
+  depends_on "qt5" => :optional
   depends_on "little-cms2" => :optional
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
@@ -51,8 +54,10 @@ class Poppler < Formula
 
     if build.with? "qt"
       args << "--enable-poppler-qt4"
+    elsif build.with? "qt5"
+      args << "--enable-poppler-qt5"
     else
-      args << "--disable-poppler-qt4"
+      args << "--disable-poppler-qt4" << "--disable-poppler-qt5"
     end
 
     args << "--enable-cms=lcms2" if build.with? "little-cms2"

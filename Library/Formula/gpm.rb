@@ -1,6 +1,4 @@
-require "formula"
-
-class GoInstalled < Requirement
+class GoRequirement < Requirement
   fatal true
   default_formula "go"
   satisfy { which "go" }
@@ -11,18 +9,19 @@ class GoInstalled < Requirement
 end
 
 class Gpm < Formula
+  desc "Barebones dependency manager for Go"
   homepage "https://github.com/pote/gpm"
-  url "https://github.com/pote/gpm/archive/v1.3.1.tar.gz"
-  sha1 "e29a009aeddad05d08a23c3694bedad7602dbe7a"
+  url "https://github.com/pote/gpm/archive/v1.3.2.tar.gz"
+  sha256 "c79b10c9f13d9cc79f2dcf08323daac86b9bb50cf7b84924ebeb28e98334c0ae"
 
   bottle do
     cellar :any
-    sha1 "d07f2a511b3111d069dfc74ecbaccf7059e67c61" => :mavericks
-    sha1 "94975efcfb696ff95e37a3b845ed16ff9d00ff82" => :mountain_lion
-    sha1 "2623227176179dbdb5e828b93d590b432c4ab503" => :lion
+    sha1 "488291cfa92867caf806bb270e0734d0d5af5314" => :yosemite
+    sha1 "7339121dd321f16a146a6f9d752d5044452eefda" => :mavericks
+    sha1 "1fc18dc8ade7f9307648d603deb8a79ccf587fe7" => :mountain_lion
   end
 
-  depends_on GoInstalled
+  depends_on GoRequirement
 
   def install
     system "./configure", "--prefix=#{prefix}"

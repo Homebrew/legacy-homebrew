@@ -1,15 +1,16 @@
 require 'formula'
 
 class Graphicsmagick < Formula
+  desc "Image processing tools collection"
   homepage 'http://www.graphicsmagick.org/'
-  url 'https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.20/GraphicsMagick-1.3.20.tar.bz2'
-  sha256 '7caf27691ec21682de1f0259c9243725db7cdeca699c40958c28aece99e4f1dc'
+  url 'https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.21/GraphicsMagick-1.3.21.tar.bz2'
+  sha256 'a0ce08f2710c158e39faa083463441f6eeeecce07dbd59510498ffa4e0b053d1'
   head 'http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick', :using => :hg
 
   bottle do
-    sha1 "3e681ecf2e126ee5322a6c05e4228670de8b7f8e" => :mavericks
-    sha1 "6dbabb0a513590f9e000bdf6a9fc4cf15cc829ec" => :mountain_lion
-    sha1 "dbdef094a39a8052eb7b04bae77724b5c7c524e9" => :lion
+    sha1 "73175a47211a0e05b55b15cfbcefcb1fc34b93ca" => :yosemite
+    sha1 "d20dd246c9ae4f9bed6cd11a9de877490e5113ce" => :mavericks
+    sha1 "b9265254c6c11f0ff0e44960d514ef7087a89eeb" => :mountain_lion
   end
 
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
@@ -34,6 +35,7 @@ class Graphicsmagick < Formula
   depends_on 'jasper' => :optional
   depends_on 'libwmf' => :optional
   depends_on 'ghostscript' => :optional
+  depends_on "webp" => :optional
 
   fails_with :llvm do
     build 2335
@@ -57,6 +59,7 @@ class Graphicsmagick < Formula
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? 'ghostscript'
     args << "--without-magick-plus-plus" if build.without? 'magick-plus-plus'
     args << "--with-perl" if build.with? "perl"
+    args << "--with-webp=yes" if build.with? "webp"
 
     if build.with? 'quantum-depth-32'
       quantum_depth = 32

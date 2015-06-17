@@ -1,53 +1,37 @@
-require 'formula'
-
 class Minizinc < Formula
-  homepage 'http://www.minizinc.org'
-  url 'http://www.minizinc.org/downloads/release-1.6/minizinc-1.6-x86_64-apple-darwin.tar.gz'
-  sha1 '71f0e08962eb8bb44c463851f0144c8b006fdb80'
+  desc "Medium-level constraint modeling language"
+  homepage "http://www.minizinc.org"
+  head "https://github.com/MiniZinc/libminizinc.git", :branch => "develop"
+
+  stable do
+    url "http://www.minizinc.org/downloads/release-2.0.1/libminizinc-2.0.1.tar.gz"
+    sha256 "b2dedd456d71d5670b24ec4b159a05d53c00e2aae232171c0e3be31cec915aff"
+
+    patch do
+      url "https://github.com/MiniZinc/libminizinc/commit/5c9341c32df7f6d1f11249bc93ef62fd860444ab.diff"
+      sha256 "30562c42e08bda8f79ff87e53054c7def125ce5e4a7ee1d74599068bdd572505"
+    end
+  end
+  bottle do
+    cellar :any
+    sha256 "ae9f777c740457c2d5698e339ac0434682f43bbc1e154cf797d586647624e5bf" => :yosemite
+    sha256 "58bf476cbe2181e3a6420aa709ade2aecde6b400a70f291aeb7c3a7e747d1e05" => :mavericks
+    sha256 "d5d00aeaf5f6bb6b3f2cb0d78a29271d98fa73deeb7d939055992f631da78f34" => :mountain_lion
+  end
+
 
   depends_on :arch => :x86_64
-
-  # remove echoed recommendations about linking directories
-  # add installation location as parameter of SETUP script
-  patch :DATA
+  depends_on "cmake" => :build
 
   def install
-    system "sh", "SETUP", libexec
-    man.install Dir['doc/man/*']
-    libexec.install 'bin', 'lib'
-    bin.install_symlink Dir["#{libexec}/bin/*"]
-    (bin/'private').unlink
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "cmake", "--build", "."
+      system "make", "install"
+    end
   end
 
   test do
-    system "#{bin}/mzn2fzn", "--help"
+    system bin/"mzn2doc", share/"examples/functions/warehouses.mzn"
   end
 end
-
-__END__
-diff --git a/SETUP b/SETUP
-index 33d973e..7715800 100755
---- a/SETUP
-+++ b/SETUP
-@@ -33,7 +33,3 @@ chmod a+x bin/mzn2fzn
- #----------------------------------------------------------------------------#
-
- echo "-- G12 MiniZinc distribution setup complete."
--echo
--echo "-- Don't forget to add $INSTALL_PATH/bin to your PATH"
--echo "-- and $INSTALL_PATH/doc/man to your MANPATH."
--echo
-
-diff --git a/SETUP b/SETUP
-index 7715800..71c93b6 100755
---- a/SETUP
-+++ b/SETUP
-@@ -11,7 +11,7 @@
- 
- #-----------------------------------------------------------------------------#
-
--INSTALL_PATH=`pwd`
-+INSTALL_PATH=$1
- EXEEXT=""
-  
- #----------------------------------------------------------------------------#

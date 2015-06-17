@@ -92,5 +92,9 @@ module Language
         --record=installed.txt
       ]
     end
+
+    def self.package_available? python, module_name
+      quiet_system python, "-c", "import #{module_name}"
+    end
   end
 end

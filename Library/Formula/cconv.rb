@@ -1,32 +1,27 @@
-require 'formula'
-
 class Cconv < Formula
-  homepage 'http://code.google.com/p/cconv/'
-  url 'https://cconv.googlecode.com/files/cconv-0.6.2.tar.gz'
-  sha1 '9775f91fd5600d176552a88625aaa1f64ece09c1'
+  desc "Iconv based simplified-traditional Chinese conversion tool"
+  homepage "https://code.google.com/p/cconv/"
+  url "https://cconv.googlecode.com/files/cconv-0.6.2.tar.gz"
+  sha1 "9775f91fd5600d176552a88625aaa1f64ece09c1"
 
-  # fix link with iconv: http://code.google.com/p/cconv/issues/detail?id=18
-  patch :DATA
+  bottle do
+    cellar :any
+    sha1 "bf9023851423f52249b9107fe71a89f16ea00146" => :yosemite
+    sha1 "d3c284caaf0ef18e98050078c9eda2f3896b666c" => :mavericks
+    sha1 "3a700e441e9b0d2d2a939269fa7c71e985a453bf" => :mountain_lion
+  end
 
   def install
+    # fix link with iconv: https://code.google.com/p/cconv/issues/detail?id=18
+    inreplace "Makefile.in", "@ICONV_LIBS@", "@ICONV_LIBS@ -liconv"
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
-    rm include/"unicode.h"
+    system "make", "install"
+    rm_f include/"unicode.h"
+  end
+
+  test do
+    system bin/"cconv", "-l"
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index 7cdb9aa..93afc5b 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -207,7 +207,7 @@ AC_CFLAGS = -Wall @ICONV_INCLUDES@ @OS_TYPE@
- ACLOCAL_AMFLAGS = -I m4
- cconv_SOURCES = cconv.c main.c unicode.c
- cconv_CFLAGS = ${AC_CFLAGS}
--cconv_LDFLAGS = @ICONV_LIBS@
-+cconv_LDFLAGS = @ICONV_LIBS@ -liconv
- lib_LTLIBRARIES = libcconv.la
- libcconv_la_SOURCES = cconv.c unicode.c
- libcconv_la_CFLAGS = -Wall @ICONV_INCLUDES@ @OS_TYPE@

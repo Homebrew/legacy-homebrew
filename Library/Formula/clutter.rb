@@ -1,6 +1,7 @@
 require "formula"
 
 class Clutter < Formula
+  desc "Generic high-level canvas library"
   homepage "https://wiki.gnome.org/Projects/Clutter"
   url "http://ftp.gnome.org/pub/gnome/sources/clutter/1.20/clutter-1.20.0.tar.xz"
   sha256 "cc940809e6e1469ce349c4bddb0cbcc2c13c087d4fc15cda9278d855ee2d1293"

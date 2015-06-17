@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gforth < Formula
+  desc "Implementation of the ANS Forth language"
   homepage 'http://www.gnu.org/software/gforth/'
   url 'http://www.complang.tuwien.ac.at/forth/gforth/gforth-0.7.3.tar.gz'
   sha256 '2f62f2233bf022c23d01c920b1556aa13eab168e3236b13352ac5e9f18542bb0'

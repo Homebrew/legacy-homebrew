@@ -1,6 +1,7 @@
 require "formula"
 
 class Slurm < Formula
+  desc "Yet another network load monitor"
   homepage "https://github.com/mattthias/slurm"
   url "https://github.com/mattthias/slurm/archive/upstream/0.4.2.tar.gz"
   sha1 "927687980445066a0c12c938321a27bc717bcad9"

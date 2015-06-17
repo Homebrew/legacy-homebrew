@@ -5,6 +5,7 @@ class LuaRequirement < Requirement
 end
 
 class Gnuplot < Formula
+  desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info"
   url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
   mirror "http://ftp.cstug.cz/pub/CTAN/graphics/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
@@ -79,9 +80,13 @@ class Gnuplot < Formula
 
     args << "--with-pdf=#{pdflib}" if build.with? "pdflib-lite"
     args << ((build.with? "gd") ? "--with-gd=#{gd}" : "--without-gd")
-    args << "--disable-wxwidgets"  if build.without? "wxmac"
-    args << "--without-cairo"      if build.without? "cairo"
-    args << "--enable-qt"          if build.with? "qt"
+
+    if build.without? "wxmac"
+      args << "--disable-wxwidgets"
+      args << "--without-cairo" if build.without? "cairo"
+    end
+
+    args << "--with-qt" if build.with? "qt"
     args << "--without-lua"        if build.without? "lua"
     args << "--without-lisp-files" if build.without? "emacs"
     args << ((build.with? "aquaterm") ? "--with-aquaterm" : "--without-aquaterm")

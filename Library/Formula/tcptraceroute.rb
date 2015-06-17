@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tcptraceroute < Formula
+  desc "Traceroute implementation using TCP packets"
   homepage 'https://github.com/mct/tcptraceroute'
   url 'https://github.com/mct/tcptraceroute/archive/tcptraceroute-1.5beta7.tar.gz'
   version '1.5beta7'
@@ -17,14 +18,9 @@ class Tcptraceroute < Formula
   end
 
   def caveats; <<-EOS.undent
-    tcptraceroute requires superuser privileges. You can either run the program
-    via `sudo`, or change its ownership to root and set the setuid bit:
-
-      sudo chown root:wheel #{bin}/tcptraceroute
-      sudo chmod u+s #{bin}/tcptraceroute
-
-    In any case, you should be certain that you trust the software you
-    are executing with elevated privileges.
+    tcptraceroute requires root privileges so you will need to run
+    `sudo tcptraceroute`.
+    You should be certain that you trust any software you grant root privileges.
     EOS
   end
 end

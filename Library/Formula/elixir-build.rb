@@ -1,6 +1,7 @@
 require "formula"
 
 class ElixirBuild < Formula
+  desc "Elixir version of ruby-build"
   homepage "https://github.com/mururu/elixir-build"
   head "https://github.com/mururu/elixir-build.git"
   url "https://github.com/mururu/elixir-build/archive/v20141001.tar.gz"

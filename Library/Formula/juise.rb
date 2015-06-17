@@ -1,6 +1,7 @@
 require 'formula'
 
 class Juise < Formula
+  desc "JUNOS user interface scripting environment"
   homepage 'https://github.com/Juniper/juise/wiki'
   url 'https://github.com/Juniper/juise/releases/download/0.6.1/juise-0.6.1.tar.gz'
   sha1 '9180619ffc67c7b3ebbdd003d9010328e7513527'

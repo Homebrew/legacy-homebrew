@@ -1,16 +1,17 @@
-require "formula"
-
 class Boot2docker < Formula
+  desc "Lightweight Linux for Docker"
   homepage "https://github.com/boot2docker/boot2docker-cli"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of docker too
-  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.4.1"
+  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.6.2",
+    :revision => "cb2c3bcc890d8ee67bb76cc91ecf5b63927c97f9"
   head "https://github.com/boot2docker/boot2docker-cli.git"
 
   bottle do
-    sha1 "9e23c1d530e7ef94fbac0c02eb02fecb943c8f7b" => :yosemite
-    sha1 "72dc462b5bf76c4c69e35aef14e6d4ffa7bbcb6e" => :mavericks
-    sha1 "82da9c5a4f56d4fe5e4fd08d1a2098cb40842bc5" => :mountain_lion
+    cellar :any
+    sha256 "819b26b7e1fd2e14cece31244b9b3a481ad06dbeb4f6658d58be7ae5c1e2105f" => :yosemite
+    sha256 "a6aff45bff1875366e6a307105c48b44bfb8ba1f5fda13099125a274bdedf73c" => :mavericks
+    sha256 "1bbae6d9d9815ced2953df1f2749cb1d194b0fcc7a4e7574a8d91dfb2346d135" => :mountain_lion
   end
 
   depends_on "docker" => :recommended
@@ -22,8 +23,6 @@ class Boot2docker < Formula
     cd "src/github.com/boot2docker/boot2docker-cli" do
       ENV["GOPATH"] = buildpath
       system "go", "get", "-d"
-
-      ENV["GIT_DIR"] = cached_download/".git"
       system "make", "goinstall"
     end
 

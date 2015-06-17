@@ -1,6 +1,7 @@
 require "formula"
 
 class Ddar < Formula
+  desc "De-duplicating archiver"
   homepage "http://www.synctus.com/ddar/"
   url "https://github.com/basak/ddar/archive/v1.0.tar.gz"
   sha1 "5f8b508f93031b1be217441b45fff27a6b630a49"

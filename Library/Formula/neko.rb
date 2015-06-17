@@ -1,23 +1,18 @@
-require "formula"
-
 class Neko < Formula
+  desc "High-level, dynamically typed programming language"
   homepage "http://nekovm.org"
+  # revision includes recent parameterized build targets for mac.  Use a :tag
+  # on the next release
+  url "https://github.com/HaxeFoundation/neko.git", :revision => "22c49a89b56b9f106d7162710102e9475227e882"
+  version "2.0.0-22c49a8"
+  revision 2
+
   head "https://github.com/HaxeFoundation/neko.git"
-  revision 1
-
-  stable do
-    # revision includes recent parameterized build targets for mac.  Use a :tag
-    # on the next release
-    url "https://github.com/HaxeFoundation/neko.git", :revision => "6ab8f48a8dc62e4d917b599b3d8c8e10f764f839"
-    version "2.0.0-6ab8f48"
-
-    # Revisit with each stable release. Could be a while though.
-    depends_on MaximumMacOSRequirement => :mavericks
-  end
 
   bottle do
-    sha1 "3ef70ebed2f81e523da90926ec1900e23a7cfa40" => :mavericks
-    sha1 "5b42966d7ff146962b8722b41e6ed11ddcbee77c" => :mountain_lion
+    sha256 "08e27a02801d60a36971ef04892c8737402d94611c8cce5e6abdfc0066f2d8ce" => :yosemite
+    sha256 "fd20435ab471a197439ef8b15bc22e20ed63e5bee586b0a64d811a8a178a4c3b" => :mavericks
+    sha256 "a45ce3f4eab713bea15f8b34045333462d3e6a971c10257b9789ffc8000951e2" => :mountain_lion
   end
 
   depends_on "bdw-gc"

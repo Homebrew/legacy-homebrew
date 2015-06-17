@@ -1,6 +1,7 @@
 require "formula"
 
 class Cuetools < Formula
+  desc "Utilities for .cue and .toc files"
   homepage "https://github.com/svend/cuetools"
   url "https://github.com/svend/cuetools/archive/1.4.0.tar.gz"
   sha1 "2954eb1b33ed7c22ce5201f69ec5480560d650ad"

@@ -1,7 +1,6 @@
-require "formula"
-
 class Lsh < Formula
-  homepage "http://www.lysator.liu.se/~nisse/lsh/"
+  desc "GNU implementation of the Secure Shell (SSH) protocols"
+  homepage "https://www.lysator.liu.se/~nisse/lsh/"
   url "http://ftpmirror.gnu.org/lsh/lsh-2.1.tar.gz"
   mirror "https://ftp.gnu.org/gnu/lsh/lsh-2.1.tar.gz"
   sha1 "ddc9895a6f7d3725dd3080db8740832eb3147a85"

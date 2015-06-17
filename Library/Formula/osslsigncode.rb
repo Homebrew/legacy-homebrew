@@ -1,20 +1,18 @@
-require "formula"
-
 class Osslsigncode < Formula
-  homepage "http://sourceforge.net/projects/osslsigncode/"
-  url "https://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.6.tar.gz"
-  sha1 "83c169638c8c1e0122127674cbb73d2e0e6b5bc2"
-  revision 1
+  desc "Authenticode signing of PE(EXE/SYS/DLL/etc), CAB and MSI files"
+  homepage "https://sourceforge.net/projects/osslsigncode/"
+  url "https://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz"
+  sha256 "f9a8cdb38b9c309326764ebc937cba1523a3a751a7ab05df3ecc99d18ae466c9"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "343585fea99f289ae65a66297cb644fb96ec5c89" => :mavericks
-    sha1 "93a53082b119c7facf8e5b59ede70d0756f72eb9" => :mountain_lion
-    sha1 "aabd093edd467aa6804c4e52ac0f5fb95359c6c3" => :lion
+    sha256 "5f3799537630936f8d7954e9ec28f191fff6e1713f6b209aa94b2b665e5eaf88" => :yosemite
+    sha256 "59da5261972c8d26f0238c6ea42f5b247489d41e7ce6525c703675a22e260cfa" => :mavericks
+    sha256 "49a6dd76e78c82062041e5025ed1e7d71f1c53b51ef0e314a5e6938a07b6e49d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
   depends_on "openssl"
   depends_on "libgsf" => :optional
 

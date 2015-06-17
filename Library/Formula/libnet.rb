@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libnet < Formula
+  desc "C library for creating IP packets"
   homepage 'https://github.com/sam-github/libnet'
   url 'https://downloads.sourceforge.net/project/libnet-dev/libnet-1.1.6.tar.gz'
   sha1 'dffff71c325584fdcf99b80567b60f8ad985e34c'

@@ -1,9 +1,9 @@
-require 'formula'
-
 class Mecab < Formula
-  homepage 'http://mecab.sourceforge.net/'
-  url 'https://mecab.googlecode.com/files/mecab-0.996.tar.gz'
-  sha1 '15baca0983a61c1a49cffd4a919463a0a39ef127'
+  desc "Yet another part-of-speech and morphological analyzer"
+  homepage "https://taku910.github.io/mecab/"
+  url "https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7cENtOXlicTFaRUE"
+  version "0.996"
+  sha256 "e073325783135b72e666145c781bb48fada583d5224fb2490fb6c1403ba69c59"
 
   bottle do
     revision 1
@@ -15,6 +15,11 @@ class Mecab < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    result = `echo "mecabのテストです。" | mecab |md5`.chomp
+    assert_equal "3518edb94fe7fbd3784474f2ddc02905", result
   end
 end

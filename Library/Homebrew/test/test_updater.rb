@@ -51,6 +51,10 @@ class UpdaterTests < Homebrew::TestCase
     @report = Report.new
   end
 
+  def teardown
+    FileUtils.rm_rf HOMEBREW_LIBRARY.join("Taps")
+  end
+
   def perform_update(fixture_name="")
     @updater.diff = fixture(fixture_name)
     @updater.in_repo_expect("git checkout -q master")
@@ -122,11 +126,5 @@ class UpdaterTests < Homebrew::TestCase
     assert_equal %w{foo/bar/lua}, @report.select_formula(:A)
     assert_equal %w{foo/bar/git}, @report.select_formula(:M)
     assert_empty @report.select_formula(:D)
-
-    assert_empty @report.removed_tapped_formula
-    assert_equal [repo.join("Formula", "lua.rb")],
-      @report.new_tapped_formula
-    assert_equal [repo.join("Formula", "git.rb")],
-      @report.tapped_formula_for(:M)
   end
 end

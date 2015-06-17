@@ -1,4 +1,5 @@
 class Imapfilter < Formula
+  desc "IMAP message processor/filter"
   homepage "https://github.com/lefcha/imapfilter/"
   url "https://github.com/lefcha/imapfilter/archive/v2.5.7.tar.gz"
   sha1 "216ec7b8563729cf446e9b2839bdcdf3eae351ed"

@@ -31,14 +31,17 @@ module Homebrew
       output
     end
 
-    # Returns the output of running the cmd, with the optional input
-    def pipe_output(cmd, input=nil)
+    # Returns the output of running the cmd with the optional input, and
+    # optionally asserts the exit status
+    def pipe_output(cmd, input=nil, result=nil)
       ohai cmd
-      IO.popen(cmd, "w+") do |pipe|
+      output = IO.popen(cmd, "w+") do |pipe|
         pipe.write(input) unless input.nil?
         pipe.close_write
         pipe.read
       end
+      assert_equal result, $?.exitstatus unless result.nil?
+      output
     end
   end
 end

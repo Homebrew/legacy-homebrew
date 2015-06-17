@@ -1,6 +1,7 @@
 require "formula"
 
 class Dsd < Formula
+  desc "Decoder for several digital speech formats"
   homepage "http://wiki.radioreference.com/index.php/Digital_Speech_Decoder_%28software_package%29"
   head "https://github.com/szechyjs/dsd.git"
   url "https://github.com/szechyjs/dsd/archive/v1.6.0.tar.gz"

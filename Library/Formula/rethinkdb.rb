@@ -1,44 +1,32 @@
 class Rethinkdb < Formula
+  desc "Distributed database"
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.3-1.tgz"
-  version "1.15.3-1"
-  sha1 "16b6ff1eedd592287b841c0c5fc0bae3ab896a44"
+  url "http://download.rethinkdb.com/dist/rethinkdb-2.0.3.tgz"
+  sha1 "90655427495756225a81051f07491a0197104645"
 
   bottle do
-    sha1 "06487ec43710bbfae00586d5ed3324b4ae2f1f6e" => :yosemite
-    sha1 "535de5a50649be803c111fb2ace8a2bf2b21cfbd" => :mavericks
-    sha1 "d549b2044132c0686dcddaf431fea57ae20e6dc5" => :mountain_lion
+    cellar :any
+    sha256 "9b7deae77a9c93e361e7f61ddfbfc974a4995459423a3e1df4c300dbdaf1fc99" => :yosemite
+    sha256 "e9bb64ad3af5e2abe9f208df708629fab553e1b2e8b5355491f75094fe942015" => :mavericks
+    sha256 "fb4196d1fcaea4c299f840599607fcbf515b1a48dfe8a4fcdbb4125512b2cfaf" => :mountain_lion
   end
 
   depends_on :macos => :lion
-  # Embeds an older V8, whose gyp still requires the full Xcode
-  # Reported upstream: https://github.com/rethinkdb/rethinkdb/issues/2581
-  depends_on :xcode => :build
   depends_on "boost" => :build
   depends_on "openssl"
+  depends_on "icu4c"
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
     cause "RethinkDB uses C++0x"
   end
 
-  # boost 1.56 compatibility
-  # https://github.com/rethinkdb/rethinkdb/issues/3044#issuecomment-55478774
-  patch :DATA
-
   def install
     args = ["--prefix=#{prefix}"]
-
-    # brew's v8 is too recent. rethinkdb uses an older v8 API
-    args += ["--fetch", "v8"]
 
     # rethinkdb requires that protobuf be linked against libc++
     # but brew's protobuf is sometimes linked against libstdc++
     args += ["--fetch", "protobuf"]
-
-    # support gcc with boost 1.56
-    # https://github.com/rethinkdb/rethinkdb/issues/3044#issuecomment-55471981
-    args << "CXXFLAGS=-DBOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES"
 
     system "./configure", *args
     system "make"
@@ -80,17 +68,3 @@ class Rethinkdb < Formula
     assert File.read("test/metadata").start_with?("RethinkDB")
   end
 end
-__END__
-diff --git a/src/clustering/reactor/reactor_be_primary.cc b/src/clustering/reactor/reactor_be_primary.cc
-index 3f583fc..945f78b 100644
---- a/src/clustering/reactor/reactor_be_primary.cc
-+++ b/src/clustering/reactor/reactor_be_primary.cc
-@@ -290,7 +290,7 @@ void do_backfill(
-
- bool check_that_we_see_our_broadcaster(const boost::optional<boost::optional<broadcaster_business_card_t> > &maybe_a_
-     guarantee(maybe_a_business_card, "Not connected to ourselves\n");
--    return maybe_a_business_card.get();
-+    return static_cast<bool>(maybe_a_business_card.get());
- }
-
- bool reactor_t::attempt_backfill_from_peers(directory_entry_t *directory_entry,

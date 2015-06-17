@@ -1,8 +1,9 @@
 module Homebrew
   def commands
     # Find commands in Homebrew/cmd
+    with_directory = false
     cmds = (HOMEBREW_REPOSITORY/"Library/Homebrew/cmd").
-           children(with_directory=false).
+           children(with_directory).
            map {|f| File.basename(f, '.rb')}
     puts "Built-in commands"
     puts_columns cmds

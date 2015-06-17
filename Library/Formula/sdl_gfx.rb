@@ -1,6 +1,7 @@
 require 'formula'
 
 class SdlGfx < Formula
+  desc "Graphics drawing primitives and other support functions"
   homepage 'http://www.ferzkopp.net/joomla/content/view/19/14/'
   url 'http://www.ferzkopp.net/Software/SDL_gfx-2.0/SDL_gfx-2.0.24.tar.gz'
   sha1 '34e8963188e4845557468a496066a8fa60d5f563'

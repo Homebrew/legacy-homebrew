@@ -1,4 +1,5 @@
 class Libtiff < Formula
+  desc "TIFF library and utilities"
   homepage "http://www.remotesensing.org/libtiff/"
   url "ftp://ftp.remotesensing.org/pub/libtiff/tiff-4.0.3.tar.gz"
   mirror "http://download.osgeo.org/libtiff/tiff-4.0.3.tar.gz"
@@ -42,7 +43,7 @@ class Libtiff < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-ltiff", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-ltiff", "-o", "test"
     system "./test", "test.tif"
     assert_match /ImageWidth.*10/, shell_output("#{bin}/tiffdump test.tif")
   end

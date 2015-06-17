@@ -1,17 +1,24 @@
 require "formula"
 
 class Nss < Formula
+  desc "Libraries for security-enabled client and server applications"
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_17_2_RTM/src/nss-3.17.2.tar.gz"
-  sha256 "134929e44e44b968a4883f4ee513a71ae45d55b486cee41ee8e26c3cc84dab8b"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_19_1_RTM/src/nss-3.19.1.tar.gz"
+  sha256 "b7be709551ec13206d8e3e8c065b894fa981c11573115e9478fa051029c52fff"
 
   bottle do
     cellar :any
-    sha1 "a95ed894654e8c276746826703461f70dda3b2d5" => :yosemite
-    sha1 "0e88f0e26ad4f57d3cf8ccee7930f278c8bac0c2" => :mavericks
-    sha1 "df5cceadcdf7c37af42c7b7950dd987fb9f47ab5" => :mountain_lion
+    sha256 "3b4771ff0a8079b58d6a37775329fe2654451f1b510b02e2aafe52efea14b898" => :yosemite
+    sha256 "e76c397688606b966a5ff1bb1e10fb98575fe7ce53589c2756c8b394980bcbe2" => :mavericks
+    sha256 "17a5921677457552c0ece0c6c3bcfb8d5fee28ebf0b7a1207ffc03682a902b1a" => :mountain_lion
   end
 
+  keg_only <<-EOS.undent
+    Having this library symlinked makes Firefox pick it up instead of built-in,
+    so it then randomly crashes without meaningful explanation.
+
+    Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOS
   depends_on "nspr"
 
   def install
@@ -21,8 +28,8 @@ class Nss < Formula
     args = [
       "BUILD_OPT=1",
       "NSS_USE_SYSTEM_SQLITE=1",
-      "NSPR_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/nspr",
-      "NSPR_LIB_DIR=#{HOMEBREW_PREFIX}/lib"
+      "NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr",
+      "NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}"
     ]
     args << "USE_64=1" if MacOS.prefer_64_bit?
 
@@ -57,18 +64,33 @@ class Nss < Formula
     # resolves conflict with openssl, see #28258
     rm lib/"libssl.a"
 
+    (bin+"nss-config").write config_file
     (lib+"pkgconfig/nss.pc").write pc_file
   end
 
   test do
-    # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
+    # See: https://developer.mozilla.org/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
     (testpath/"passwd").write("It's a secret to everyone.")
     system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
     system "#{bin}/certutil", "-L", "-d", pwd
   end
 
+  # A very minimal nss-config for configuring firefox etc. with this nss,
+  # see https://bugzil.la/530672 for the progress of upstream inclusion.
+  def config_file; <<-EOS.undent
+    #!/bin/sh
+    for opt; do :; done
+    case "$opt" in
+      --version) opt="--modversion";;
+      --cflags|--libs) ;;
+      *) exit 1;;
+    esac
+    pkg-config "$opt" nss
+    EOS
+  end
+
   def pc_file; <<-EOS.undent
-    prefix=#{opt_prefix}
+    prefix=#{prefix}
     exec_prefix=${prefix}
     libdir=${exec_prefix}/lib
     includedir=${prefix}/include/nss
@@ -76,7 +98,7 @@ class Nss < Formula
     Name: NSS
     Description: Mozilla Network Security Services
     Version: #{version}
-    Requires: nspr
+    Requires: nspr >= 4.10.8
     Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
     Cflags: -I${includedir}
     EOS

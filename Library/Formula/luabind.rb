@@ -1,6 +1,7 @@
 require 'formula'
 
 class Luabind < Formula
+  desc "Library for bindings between C++ and Lua"
   homepage 'http://www.rasterbar.com/products/luabind.html'
   url 'https://downloads.sourceforge.net/project/luabind/luabind/0.9.1/luabind-0.9.1.tar.gz'
   sha1 '2e92a18b8156d2e2948951d429cd3482e7347550'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Weighttp < Formula
+  desc "Webserver benchmarking tool that supports multithreading"
   homepage 'http://redmine.lighttpd.net/projects/weighttp/wiki'
   url 'https://github.com/lighttpd/weighttp/archive/weighttp-0.3.tar.gz'
   sha1 '170b359abd989fe1db26c71e89dc07c3a7caaf05'

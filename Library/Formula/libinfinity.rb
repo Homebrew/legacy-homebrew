@@ -1,6 +1,7 @@
 require "formula"
 
 class Libinfinity < Formula
+  desc "GObject-based C implementation of the Infinote protocol"
   homepage "http://gobby.0x539.de/trac/wiki/Infinote/Libinfinity"
   url "http://releases.0x539.de/libinfinity/libinfinity-0.6.4.tar.gz"
   sha1 "93477ccefcedf28bba7f709f3387920040cbcedc"

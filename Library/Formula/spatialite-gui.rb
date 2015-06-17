@@ -1,16 +1,15 @@
-require "formula"
-
 class SpatialiteGui < Formula
+  desc "GUI tool supporting SpatiaLite"
   homepage "https://www.gaia-gis.it/fossil/spatialite_gui/index"
   url "http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
   sha1 "3b9d88e84ffa5a4f913cf74b098532c2cd15398f"
+  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "54ee1f62973a5711be12125ff0237c715d925427" => :mavericks
-    sha1 "e9a4a406a5d5cae055316136a28c7f15063fd923" => :mountain_lion
-    sha1 "5cf52fd35bdb73e7a7c18227212e2b4ccbd7f646" => :lion
+    sha256 "d65494655bb8470c01e1ecdce00ea8802ef3b1eaebcf87ad8daf2494cbe6aa20" => :yosemite
+    sha256 "dece5c5d459997cc7a8d789c38336dd4eb05e8f048f3e6eb84f581120d4ac023" => :mavericks
+    sha256 "750a8216d218709d6aafd9c0fecce6342fa5ce51f3870ba844ffdd3e381c91d0" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

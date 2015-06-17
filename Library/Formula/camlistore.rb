@@ -1,6 +1,5 @@
-require 'formula'
-
 class Camlistore < Formula
+  desc "Content-addressable multi-layer indexed storage"
   homepage 'http://camlistore.org'
   head 'https://camlistore.googlesource.com/camlistore', :using => :git
   url 'https://github.com/bradfitz/camlistore/archive/0.8.tar.gz'
@@ -17,8 +16,6 @@ class Camlistore < Formula
   depends_on 'sqlite'
 
   def install
-    ENV['GIT_DIR'] = cached_download+".git"
-
     system "go", "run", "make.go"
     prefix.install "bin/README"
     prefix.install "bin"

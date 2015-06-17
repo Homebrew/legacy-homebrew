@@ -1,21 +1,20 @@
 require 'formula'
 
 class Squirrel < Formula
+  desc "High level, imperative, object-oriented programming language"
   homepage 'http://www.squirrel-lang.org'
-  url 'https://downloads.sourceforge.net/project/squirrel/squirrel3/squirrel%203.0.6%20stable/squirrel_3_0_6_stable.tar.gz'
-  version '3.0.6'
-  sha1 'b4ab6055f8cd8997df54193ac92bd3dc041f054b'
+  url 'https://downloads.sourceforge.net/project/squirrel/squirrel3/squirrel%203.0.7%20stable/squirrel_3_0_7_stable.tar.gz'
+  version '3.0.7'
+  sha1 '5ae3f669677ac5f5d663ec070d42ee68980e1911'
 
   bottle do
     cellar :any
-    sha1 "306d52e2b2bb99df7b9622a4bfcb31e0585a3618" => :yosemite
-    sha1 "232448b9e82a130d9717d8e1119a5fd24e2801e1" => :mavericks
-    sha1 "e473092003e6e71b7c15adaf1dcbfe9ea258bc98" => :mountain_lion
+    sha1 "24ac32cfb018ba9ed7a68b1fd7314de307e6b60e" => :yosemite
+    sha1 "7a4e09d82eaf35d16962df098d9342c3f1a95b81" => :mavericks
+    sha1 "8d3ec975ba7dde650f11985df813ce49daa6f830" => :mountain_lion
   end
 
   def install
-    # -s causes the linker to crash
-    inreplace "sq/Makefile", " -s ", " "
     system "make"
     prefix.install %w[bin include lib]
     doc.install Dir['doc/*.pdf']

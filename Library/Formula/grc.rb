@@ -1,9 +1,10 @@
 require 'formula'
 
 class Grc < Formula
+  desc "Colorize logfiles and command output"
   homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
-  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.5.tar.gz'
-  sha1 'bcbe45992d2c4cb1d33e76aac6aa79b448124ce2'
+  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.9.orig.tar.gz'
+  sha1 '445d3d076bda34c6398c926ca27c5a3a6c64a833'
 
   conflicts_with 'cc65', :because => 'both install `grc` binaries'
 
@@ -35,6 +36,13 @@ class Grc < Formula
         alias netstat='colourify netstat'
         alias ping='colourify ping'
         alias traceroute='colourify /usr/sbin/traceroute'
+        alias head='colourify head'
+        alias tail='colourify tail'
+        alias dig='colourify dig'
+        alias mount='colourify mount'
+        alias ps='colourify ps'
+        alias mtr='colourify mtr'
+        alias df='colourify df'
     fi
     EOS
   end

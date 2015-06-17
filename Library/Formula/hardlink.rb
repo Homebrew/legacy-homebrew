@@ -1,6 +1,7 @@
 require "formula"
 
 class Hardlink < Formula
+  desc "Replace file copies using hardlinks"
   homepage "http://jak-linux.org/projects/hardlink/"
   url "http://jak-linux.org/projects/hardlink/hardlink_0.3.0.tar.xz"
   sha1 "abe9964d104b124b8dbebe6f354691e884f1fa2c"

@@ -1,15 +1,13 @@
-require 'formula'
-
 class Rsense < Formula
-  homepage 'http://cx4a.org/software/rsense/'
-  url 'http://cx4a.org/pub/rsense/rsense-0.3.tar.bz2'
-  sha1 '497510e7048120af01bac619e50aa72ebd825c49'
+  desc "Ruby development tools for Emacs and Vim"
+  homepage "http://cx4a.org/software/rsense/"
+  url "http://cx4a.org/pub/rsense/rsense-0.3.tar.bz2"
+  sha256 "508795d2f11784e708cbbc39c3e4149a3e87baab7161db3df60b68a321bb534b"
 
   def install
-    prefix.install_metafiles
-    libexec.install Dir['*']
-    (libexec/'bin/rsense').chmod 0755
-    bin.write_exec_script libexec/'bin/rsense'
+    libexec.install Dir["*"]
+    (libexec/"bin/rsense").chmod 0755
+    bin.write_exec_script libexec/"bin/rsense"
   end
 
   def caveats

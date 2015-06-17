@@ -1,16 +1,16 @@
 require 'formula'
 
 class Libmpdclient < Formula
+  desc "Library for MPD in the C, C++, and Objective-C languages"
   homepage 'http://www.musicpd.org/libs/libmpdclient/'
-  url 'http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.9.tar.gz'
-  sha1 'fe40dcb54f79648a17b68c93add2e601077a9311'
+  url 'http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.10.tar.gz'
+  sha1 '106de0e8f0e63ec3899c91c38d1bcc171df61637'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "962769a096ef0fff79397f306cff35d5ba3c1600" => :yosemite
-    sha1 "ae92204217c4bfec8d79dc24049dc4cac1adef07" => :mavericks
-    sha1 "3c03b2e7a7624d7249c047e235a41469c29d05ee" => :mountain_lion
+    sha1 "9be910acd8278521e8f43b20448f31d7bb841ca5" => :yosemite
+    sha1 "a5e180c855e756a33049a7f5aa4b2b4776cb6967" => :mavericks
+    sha1 "e7e1ea43d44615bdacb1d4bb06ad8e4413e30ac2" => :mountain_lion
   end
 
   head do

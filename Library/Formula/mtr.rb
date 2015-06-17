@@ -1,4 +1,5 @@
 class Mtr < Formula
+  desc "'traceroute' and 'ping' in a single tool"
   homepage "http://www.bitwizard.nl/mtr/"
   url "ftp://ftp.bitwizard.nl/mtr/mtr-0.86.tar.gz"
   sha1 "2c81d0f4c9296861a1159f07eec6acfb4bebecf7"
@@ -35,14 +36,8 @@ class Mtr < Formula
   end
 
   def caveats; <<-EOS.undent
-    mtr requires superuser privileges. You can either run the program
-    via `sudo`, or change its ownership to root and set the setuid bit:
-
-      sudo chown root:wheel #{sbin}/mtr
-      sudo chmod u+s #{sbin}/mtr
-
-    In any case, you should be certain that you trust the software you
-    are executing with elevated privileges.
+    mtr requires root privileges so you will need to run `sudo mtr`.
+    You should be certain that you trust any software you grant root privileges.
     EOS
   end
 end

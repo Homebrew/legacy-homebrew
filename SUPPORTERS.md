@@ -179,7 +179,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Nick Jones](mailto:nick@dischord.org)
 * [Esmé Cowles](https://github.com/escowles)
 * [Garrett L. Ward](http://glward.net)
-* Carl Laird
+* [Carl Laird](http://allthingsoptimal.com)
 * [Mx A. Matienzo](http://matienzo.org/)
 * [Sean Dunn](http://www.dunns.me)
 * [Kara Van Malssen](http://avpreserve.com)
@@ -439,13 +439,13 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [Derek Croft](http://www.kiindly.com)
 * [Doc Ritezel](http://ritezel.com)
 * [Christoph Heer](http://christophheer.me)
-* Jakub Suder
+* [Kuba Suder](http://mackuba.eu)
 * [Jason Garber](http://sixtwothree.org)
 * [Alejandro Caceres](http://punkspider.hyperiongray.com)
 * [Slobodan Miskovic](https://miskovic.ca)
 * [Kurt Ostergaard](http://KurtOstergaard.com)
 * [Simply Business](http://www.simplybusiness.co.uk/)
-* Tate Johnson
+* [Tate Johnson](http://tatey.com)
 * [Gerry Cardinal III](http://gerrycardinal.com/)
 * [Andrew Kalek](http://anlek.com)
 * [Bryan Coe](http://www.BryanACoe.com)

@@ -1,15 +1,14 @@
-require 'formula'
-
 class Gdal < Formula
+  desc "GDAL: Geospatial Data Abstraction Library"
   homepage 'http://www.gdal.org/'
-  url "http://download.osgeo.org/gdal/1.11.1/gdal-1.11.1.tar.gz"
-  sha1 "e2c67481932ec9fb6ec3c0faadc004f715c4eef4"
-  revision 3
+  url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
+  sha1 "6f3ccbe5643805784812072a33c25be0bbff00db"
+  revision 1
 
   bottle do
-    sha1 "672ef7894b473fbe7650bd442c06e8e61a2415f0" => :yosemite
-    sha1 "ccfd06fd15e86bbc24e5475e2be27a2bdb487986" => :mavericks
-    sha1 "fd2b45f6412a9459bcda143baa57cda6c63aad61" => :mountain_lion
+    sha256 "a0fd2413588bac1b4705349796cf1a93a20770ee16ae0044e56bc93ceaa18a72" => :yosemite
+    sha256 "7c33025fa16cf89fc44292ac7fe3aa50bc20a034cd48aff75336b2ab4caf2fff" => :mavericks
+    sha256 "4334496a720744b535ea88da40f5e7ddf2117cc0039345e6ba51dafc88c031b0" => :mountain_lion
   end
 
   head do
@@ -23,6 +22,7 @@ class Gdal < Formula
   option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
   option 'enable-mdb', 'Build with Access MDB driver (requires Java 1.6+ JDK/JRE, from Apple or Oracle).'
   option "with-libkml", "Build with Google's libkml driver (requires libkml --HEAD or >= 1.3)"
+  option 'with-swig-java', 'Build the swig java bindings'
 
   depends_on :python => :optional
   if build.with? "python"
@@ -72,16 +72,8 @@ class Gdal < Formula
     depends_on "json-c"
   end
 
-  stable do
-    # REMOVE when 1.11.2 is released
-    # Fix segfault when executing OGR2SQLITE_Register() when compiled against sqlite 3.8.7
-    # See: http://trac.osgeo.org/gdal/ticket/5725, https://github.com/OSGeo/gdal/commit/12d3b98
-    # Fixes issue with QGIS's Save as... for vector layers: http://hub.qgis.org/issues/11526
-    patch :p2 do
-      url "https://github.com/OSGeo/gdal/commit/12d3b984a052c59ee336f952902b82ace01ba31c.diff"
-      sha1 "844bb827327f9c64918499f3cce3ded9414952c4"
-    end
-  end
+  depends_on :java => ["1.7+", :optional, :build]
+  depends_on "swig" if build.with? "swig-java"
 
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
@@ -282,7 +274,7 @@ class Gdal < Formula
 
     system "./configure", *get_configure_args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # `python-config` may try to talk us into building bindings for more
     # architectures than we really should.
@@ -295,6 +287,15 @@ class Gdal < Formula
     cd 'swig/python' do
       system "python", "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
       bin.install Dir['scripts/*']
+    end
+
+    if build.with? "swig-java"
+      cd 'swig/java' do
+        inreplace "java.opt", "linux", "darwin"
+        inreplace "java.opt", "#JAVA_HOME = /usr/lib/jvm/java-6-openjdk/", 'JAVA_HOME=$(shell echo $$JAVA_HOME)'
+        system "make"
+        system "make", "install"
+      end
     end
 
     system 'make', 'man' if build.head?

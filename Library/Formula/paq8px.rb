@@ -1,6 +1,5 @@
-require "formula"
-
 class Paq8px < Formula
+  desc "Data compression archivers"
   homepage "http://dhost.info/paq8/"
   url "http://dhost.info/paq8/paq8px_v69.zip"
   sha1 "77667a3c61b858d71897f47fc4c4d8eabf3d715c"
@@ -11,13 +10,13 @@ class Paq8px < Formula
   end
 
   test do
-    system "touch test.txt"
-    system "echo Foobarbaz > test.txt"
+    touch "test.txt"
+    system "echo", "Foobarbaz", ">", "test.txt"
     system "yes | #{bin}/paq8px test.txt"
     system "yes | #{bin}/paq8px test.txt.paq8px"
-    system "rm test.txt"
+    rm "test.txt"
     system "yes | #{bin}/paq8px test.txt.paq8px"
-    system "rm test.txt"
-    system "rm test.txt.paq8px"
+    rm "test.txt"
+    rm "test.txt.paq8px"
   end
 end

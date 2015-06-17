@@ -1,23 +1,24 @@
-require "formula"
 require "language/haskell"
 
 class Darcs < Formula
   include Language::Haskell::Cabal
 
+  desc "Distributed version control system that tracks changes, via Haskell"
   homepage "http://darcs.net/"
-  url "http://darcs.net/releases/darcs-2.8.5.tar.gz"
-  sha1 "74dd74896d3334696d24fdd783c69459b91d5c7f"
+  url "http://darcs.net/releases/darcs-2.10.0.tar.gz"
+  sha256 "52b3db3f7b64a4306585b96af7b5887f62ba54f6e9c3bdbed9b6a18d97f16b36"
 
   bottle do
-    cellar :any
-    sha1 "a73d24ee0ea59f94f02535eb4505e3cb35aa090c" => :mavericks
-    sha1 "8c317286607ebbd8217522422e21b4a01c042b79" => :mountain_lion
-    sha1 "a3d88d3493b5f2ea12beb412878a12419ef79327" => :lion
+    sha256 "66086e078cdb111cf517313997a29044d8f3c16e45bdcdc06ad438a37d6d0c32" => :yosemite
+    sha256 "6c1161e09c005bab52e63faec61610076c3c4393e850229e2117c94a0e78f4d4" => :mavericks
+    sha256 "c97c89b0b0d04e067476a807d308ef3ee24296a420d13a0be16b8822b919d8ab" => :mountain_lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
+
+  setup_ghc_compilers
 
   def install
     install_cabal_package
@@ -32,7 +33,7 @@ class Darcs < Formula
     end
     system "darcs", "get", "my_repo", "my_repo_clone"
     Dir.chdir "my_repo_clone" do
-      assert (Pathname.pwd/"foo").read.include?  "hello homebrew!"
+      assert (Pathname.pwd/"foo").read.include? "hello homebrew!"
     end
   end
 end

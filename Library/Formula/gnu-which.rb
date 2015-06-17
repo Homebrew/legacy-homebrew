@@ -1,17 +1,16 @@
-require "formula"
-
 class GnuWhich < Formula
+  desc "GNU implementation of which utility"
   # Previous homepage is dead. Have linked to the GNU Projects page for now.
   homepage "https://savannah.gnu.org/projects/which/"
-  url "http://ftpmirror.gnu.org/which/which-2.20.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/which/which-2.20.tar.gz"
-  sha1 "3bcd6d87aa5231917ba7123319eedcae90cfa0fd"
+  url "http://ftpmirror.gnu.org/which/which-2.21.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/which/which-2.21.tar.gz"
+  sha256 "f4a245b94124b377d8b49646bf421f9155d36aa7614b6ebf83705d3ffc76eaad"
 
   bottle do
     cellar :any
-    sha1 "567d232b6ad4221f446d2862a8f9e230d0a51eba" => :yosemite
-    sha1 "18afa8a2d0e56b74c0d22a02dd24b46635d2e14b" => :mavericks
-    sha1 "705c8aa57e1f67b7e9d61c36088902f0562aa2bf" => :mountain_lion
+    sha256 "469d61be66afe0da2758838d1bde62544a661691568eaa30bc4f5abc16402efc" => :yosemite
+    sha256 "b2649bbc23e1b180e3a7b9d4f88765d674696468904b246d253a7ca39106af61" => :mavericks
+    sha256 "5f9dc6704dbc7599c299c6e0dd186efe19d2cdf6680651010c7a9c3b377a983e" => :mountain_lion
   end
 
   deprecated_option "default-names" => "with-default-names"

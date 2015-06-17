@@ -1,4 +1,5 @@
 class Schroedinger < Formula
+  desc "High-speed implementation of the Dirac codec"
   homepage "http://diracvideo.org/"
   url "http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/schroedinger/schroedinger_1.0.11.orig.tar.gz"

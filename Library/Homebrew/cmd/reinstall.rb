@@ -2,14 +2,14 @@ require "formula_installer"
 
 module Homebrew
   def reinstall
-    ARGV.formulae.each { |f| reinstall_formula(f) }
+    ARGV.resolved_formulae.each { |f| reinstall_formula(f) }
   end
 
   def reinstall_formula f
     tab = Tab.for_formula(f)
     options = tab.used_options | f.build.used_options
 
-    notice  = "Reinstalling #{f.name}"
+    notice  = "Reinstalling #{f.full_name}"
     notice += " with #{options * ", "}" unless options.empty?
     oh1 notice
 
@@ -20,7 +20,7 @@ module Homebrew
 
     fi = FormulaInstaller.new(f)
     fi.options             = options
-    fi.build_bottle        = ARGV.build_bottle? || tab.build_bottle?
+    fi.build_bottle        = ARGV.build_bottle? || (!f.bottled? && tab.build_bottle?)
     fi.build_from_source   = ARGV.build_from_source?
     fi.force_bottle        = ARGV.force_bottle?
     fi.verbose             = ARGV.verbose?

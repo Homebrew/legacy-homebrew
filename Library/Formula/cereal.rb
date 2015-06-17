@@ -1,17 +1,16 @@
-require "formula"
-
 class Cereal < Formula
-  homepage "http://uscilab.github.io/cereal/"
-  url "https://github.com/USCiLab/cereal/archive/v1.0.0.tar.gz"
-  sha1 "a8e409deb2bdba6bdbc04d3eb2d5294d4cc4b9e2"
+  desc "C++11 library for serialization"
+  homepage "https://uscilab.github.io/cereal/"
+  url "https://github.com/USCiLab/cereal/archive/v1.1.0.tar.gz"
+  sha1 "a7036f3fdb43315b0b6aa6c112c5878c03f1aa9e"
 
   head "https://github.com/USCiLab/cereal.git", :branch => "develop"
 
   bottle do
     cellar :any
-    sha1 "6adcd84314611446fb8926455217e207a47993be" => :mavericks
-    sha1 "5d9e8b45dbe08eaad5fe3088e70036a27d7ff581" => :mountain_lion
-    sha1 "47344b6e499bf21f54f6a59a462a9ada773f8a5e" => :lion
+    sha1 "e7bbce282665e7e1d392840a1a620371de9fb3af" => :yosemite
+    sha1 "2d1bc4e43e82c55eb57cf767683fb7223ab05fef" => :mavericks
+    sha1 "2b53401c5d32d2d6263678e2166db000df7dc013" => :mountain_lion
   end
 
   option "with-tests", "Build and run the test suite"

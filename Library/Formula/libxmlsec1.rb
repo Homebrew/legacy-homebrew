@@ -1,6 +1,7 @@
 require "formula"
 
 class Libxmlsec1 < Formula
+  desc "XML security library"
   homepage "https://www.aleksey.com/xmlsec/"
   url "https://www.aleksey.com/xmlsec/download/xmlsec1-1.2.20.tar.gz"
   sha1 "40117ab0f788e43deef6eaf028c88f6abc3a30d0"

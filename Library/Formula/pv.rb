@@ -1,13 +1,13 @@
 class Pv < Formula
-  homepage "http://www.ivarch.com/programs/pv.shtml"
-  url "http://www.ivarch.com/programs/sources/pv-1.5.7.tar.bz2"
-  sha1 "173d87d11d02a524037228f6495c46cad3214b7d"
+  desc "Monitor data's progress through a pipe"
+  homepage "https://www.ivarch.com/programs/pv.shtml"
+  url "https://www.ivarch.com/programs/sources/pv-1.6.0.tar.bz2"
+  sha256 "0ece824e0da27b384d11d1de371f20cafac465e038041adab57fcf4b5036ef8d"
 
   bottle do
-    revision 1
-    sha1 "0c77b97448d2705d9e9f5a63ceafa42e483a21d9" => :yosemite
-    sha1 "a49bcc1abe924b622d06fb15eb01141d0c252f40" => :mavericks
-    sha1 "1441d97ae226d2cb3e3519ae714cf47940d6595a" => :mountain_lion
+    sha256 "3c5bde779bd29a478548bab1fffc869516ed6cb854a09063c80ca8013f4dc400" => :yosemite
+    sha256 "2268e40d7fc4ed41aad651167057d6a3e38d167678063b62b70dae226449ff7a" => :mavericks
+    sha256 "f343368e557cb1c86173bd0c62143b34834e2b825b1a188ac2a37c23d0c685dd" => :mountain_lion
   end
 
   depends_on "gettext"

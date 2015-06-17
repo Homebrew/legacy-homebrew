@@ -1,13 +1,14 @@
 class Libmagic < Formula
+  desc "Implementation of the file(1) command"
   homepage "http://www.darwinsys.com/file/"
-  url "ftp://ftp.astron.com/pub/file/file-5.22.tar.gz"
-  mirror "https://fossies.org/unix/misc/file-5.22.tar.gz"
-  sha1 "20fa06592291555f2b478ea2fb70b53e9e8d1f7c"
+  url "ftp://ftp.astron.com/pub/file/file-5.23.tar.gz"
+  mirror "https://fossies.org/unix/misc/file-5.23.tar.gz"
+  sha256 "2c8ab3ff143e2cdfb5ecee381752f80a79e0b4cfe9ca4cc6e1c3e5ec15e6157c"
 
   bottle do
-    sha1 "2a725b5f45d5c534ac59cfee87fde8b09e7f764f" => :yosemite
-    sha1 "2e493cfb219635780b4cf01a05c23dc60a6806cb" => :mavericks
-    sha1 "f626fc50838bc8d3be6e57a79e6f977b2d7c64c2" => :mountain_lion
+    sha256 "59bb0f198492cab776647823b467b60a25c851fe5f03c06de15dfec008c38827" => :yosemite
+    sha256 "073b5db84f8b641c0e6d2f8ff8caca751e42e8cfc0c31d60ec42863e3afd4ea4" => :mavericks
+    sha256 "a613459fd15e1a648ecc9179e398ee1de76ea56d72fcfc902fd441683b1ea8b3" => :mountain_lion
   end
 
   option :universal
@@ -21,9 +22,12 @@ class Libmagic < Formula
     rm "src/magic.h"
 
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--enable-fsect-man5"
+                          "--enable-fsect-man5",
+                          "--enable-static"
     system "make", "install"
+    (share+"misc/magic").install Dir["magic/Magdir/*"]
 
     if build.with? "python"
       cd "python" do

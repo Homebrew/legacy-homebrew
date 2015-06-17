@@ -1,10 +1,16 @@
-require 'formula'
-
 class Anttweakbar < Formula
-  homepage 'http://www.antisphere.com/Wiki/tools:anttweakbar'
-  url 'https://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip'
-  version '1.16'
-  sha1 '5743321df3b074f9a82b5ef3e6b54830a715b938'
+  desc "C/C++ library for adding GUIs to OpenGL apps"
+  homepage "http://www.antisphere.com/Wiki/tools:anttweakbar"
+  url "https://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip"
+  version "1.16"
+  sha1 "5743321df3b074f9a82b5ef3e6b54830a715b938"
+
+  bottle do
+    cellar :any
+    sha1 "103b4c69883ace7c1d24a8ea9405669f491a00bc" => :yosemite
+    sha1 "52b1d49b36d290e5f90897b3fb291c52c936007b" => :mavericks
+    sha1 "370619e705719ed57ba0b31447c1f33a3b014c77" => :mountain_lion
+  end
 
   # See
   # http://sourceforge.net/p/anttweakbar/code/ci/5a076d13f143175a6bda3c668e29a33406479339/tree/src/LoadOGLCore.h?diff=5528b167ed12395a60949d7c643262b6668f15d5&diformat=regular
@@ -13,8 +19,8 @@ class Anttweakbar < Formula
 
   def install
     system "make", "-C", "src", "-f", "Makefile.osx"
-    lib.install 'lib/libAntTweakBar.dylib'
-    include.install 'include/AntTweakBar.h'
+    lib.install "lib/libAntTweakBar.dylib", "lib/libAntTweakBar.a"
+    include.install "include/AntTweakBar.h"
   end
 end
 

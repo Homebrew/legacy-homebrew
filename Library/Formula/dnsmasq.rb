@@ -1,13 +1,14 @@
 class Dnsmasq < Formula
+  desc "Lightweight DNS forwarder and DHCP server"
   homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
-  url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.72.tar.gz"
-  sha1 "c2dc54b142ec5676d6e22951bc5b61863b0503fe"
+  url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.73.tar.gz"
+  sha256 "9f350f74ae2c7990b1c7c6c8591d274c37b674aa987f54dfee7ca856fae0d02d"
 
   bottle do
-    revision 1
-    sha1 "68baa9fab86c8f30738984f2d734d537a0e815e5" => :yosemite
-    sha1 "926b6cf81ecd09011a64ded5922231cb13aae7d8" => :mavericks
-    sha1 "86e05946e01f650595ea72332fcce61e5e489ed4" => :mountain_lion
+    cellar :any
+    sha256 "bd74dbd1bc8501ef5b648402efb3fca086e0bc0eee4bd038e7621f134ba925ea" => :yosemite
+    sha256 "0be4c29866964960e9903d447309823da37fcab913299b0cbfcc9dd1bd92db40" => :mavericks
+    sha256 "e1dd537c926c06948a33b7c87e9b1eff490a5a3a7856a005aab6d862f04ade15" => :mountain_lion
   end
 
   option "with-libidn", "Compile with IDN support"
@@ -78,6 +79,6 @@ class Dnsmasq < Formula
   end
 
   test do
-    system "#{bin}/dnsmasq", "--test"
+    system "#{sbin}/dnsmasq", "--test"
   end
 end

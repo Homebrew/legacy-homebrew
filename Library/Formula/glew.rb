@@ -1,16 +1,14 @@
-require "formula"
-
 class Glew < Formula
+  desc "OpenGL Extension Wrangler Library"
   homepage "http://glew.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/glew/glew/1.11.0/glew-1.11.0.tgz"
-  sha1 "9bb5c87c055acd122a4956112bbb18ee72c38e5c"
+  url "https://downloads.sourceforge.net/project/glew/glew/1.12.0/glew-1.12.0.tgz"
+  sha256 "af58103f4824b443e7fa4ed3af593b8edac6f3a7be3b30911edbc7344f48e4bf"
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "0f140259d5cb5525153b32102220432fefba1bee" => :yosemite
-    sha1 "ab31a942adaf43f20cea1fd39d1a04949615c2de" => :mavericks
-    sha1 "0ea8a4b4ec385c39eb52732ce8527f68410e35da" => :mountain_lion
+    sha256 "4c8befbf2493fa5491e64cf6e6e0db3d8ca876ab31f742af6ad0f7a5548d8e7c" => :yosemite
+    sha256 "b5b97f390fd241729c5023941e34378bb3e3c2d64825370fcd5845e3d226ae0d" => :mavericks
+    sha256 "ad52c4946186b87fd290833e3b7c68287316f5dc8a2c96f662478a403697bb4f" => :mountain_lion
   end
 
   option :universal
@@ -29,5 +27,9 @@ class Glew < Formula
     inreplace "glew.pc.in", "Requires: @requireslib@", ""
     system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "all"
     system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "install.all"
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/glewinfo")
   end
 end

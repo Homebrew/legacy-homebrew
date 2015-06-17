@@ -1,12 +1,16 @@
-require 'formula'
-
 class Xtitle < Formula
-  homepage 'http://www.cs.indiana.edu/~kinzler/xtitle/'
-  url 'http://www.cs.indiana.edu/~kinzler/xtitle/xtitle-1.0.2.tgz'
-  sha1 '0322cf93316a066bcba098b250821bcadaaedc02'
+  desc "Set window title and icon for your X terminal"
+  homepage "http://www.cs.indiana.edu/~kinzler/xtitle/"
+  url "http://www.cs.indiana.edu/~kinzler/xtitle/xtitle-1.0.4.tgz"
+  sha256 "cadddef1389ba1c5e1dc7dd861545a5fe11cb397a3f692cd63881671340fcc15"
 
   def install
     bin.install "xtitle.sh" => "xtitle"
+    bin.install "xtctl.sh" => "xtctl"
     man1.install "xtitle.man" => "xtitle.1"
+  end
+
+  test do
+    assert_equal "#{version}", shell_output("#{bin}/xtitle -V").chomp
   end
 end

@@ -1,22 +1,23 @@
-require "formula"
-
 class Szl < Formula
-  homepage "http://code.google.com/p/szl/"
+  desc "Compiler and runtime for the Sawzall language"
+  homepage "https://code.google.com/p/szl/"
   url "https://szl.googlecode.com/files/szl-1.0.tar.gz"
   sha1 "e4c6d4aec1afc025257d41dd77b8f5c25ea120d4"
-  revision 3
+  revision 5
 
   bottle do
     cellar :any
-    sha1 "4bb28fa3ac8a317c732351eb41b4f7a0ddd24551" => :mavericks
-    sha1 "ef794a67b878a03eaee17955b036611fae2b1539" => :mountain_lion
-    sha1 "19172cbd2b18c1b15f64f1710cb4a767a8e4b3ea" => :lion
+    revision 1
+    sha256 "92a10b08dae8394ac7ac5db90d351fad99bc74ff94f966bb888d3797e78c2891" => :yosemite
+    sha256 "235f69f9ca8061937fe3f72c6f2467027fe2083837cebbeb2d98e33a25c09b83" => :mavericks
+    sha256 "cf31222f970c0ccd5cc34d8704244e6cf86c353b5fe9658ecfeedd914ffe7174" => :mountain_lion
   end
 
   depends_on "binutils" # For objdump
   depends_on "icu4c"
   depends_on "protobuf"
   depends_on "pcre"
+  depends_on "openssl"
 
   # 10.9 and clang fixes
   # Include reported upstream in:
@@ -29,7 +30,11 @@ class Szl < Formula
     ENV["OBJDUMP"] = "#{HOMEBREW_PREFIX}/bin/gobjdump"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"szl", "-V"
   end
 end
 

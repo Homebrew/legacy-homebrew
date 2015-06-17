@@ -1,6 +1,7 @@
 require "formula"
 
 class Thrift < Formula
+  desc "Framework for scalable cross-language services development"
   homepage "http://thrift.apache.org"
 
   stable do

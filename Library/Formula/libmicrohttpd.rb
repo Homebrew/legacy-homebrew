@@ -1,6 +1,7 @@
 require "formula"
 
 class Libmicrohttpd < Formula
+  desc "Light HTTP/1.1 server library"
   homepage "http://www.gnu.org/software/libmicrohttpd/"
   url "http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.38.tar.gz"
   mirror "http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.38.tar.gz"

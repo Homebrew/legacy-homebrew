@@ -1,9 +1,10 @@
 require 'formula'
 
 class Tag < Formula
+  desc "Manipulate and query tags on Mavericks files"
   homepage 'https://github.com/jdberry/tag/'
-  url 'https://github.com/jdberry/tag/archive/v0.7.5.tar.gz'
-  sha1 'e1075a1068f6a4cb377144e162ee47c063a4a0d6'
+  url 'https://github.com/jdberry/tag/archive/v0.8.1.tar.gz'
+  sha1 '0778c0aeae3da7281271ab8f0fe4777b835dd5a9'
   head 'https://github.com/jdberry/tag.git'
 
   depends_on :macos => :mavericks

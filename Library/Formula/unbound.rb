@@ -1,17 +1,18 @@
 require "formula"
 
 class Unbound < Formula
-  homepage "http://www.unbound.net"
-  url "http://unbound.net/downloads/unbound-1.5.1.tar.gz"
-  sha256 "0ff82709fb2bd7ecbde8dbdcf60fa417d2b43379570a3d460193a76a169900ec"
+  desc "Validating, recursive, caching DNS resolver"
+  homepage "https://www.unbound.net"
+  url "https://unbound.net/downloads/unbound-1.5.3.tar.gz"
+  sha256 "76bdc875ed4d1d3f8e4cfe960e6df78ee5c6c7c18abac11331cf93a7ae129eca"
 
   depends_on "openssl"
   depends_on "libevent"
 
   bottle do
-    sha1 "98610e627047f9a5df8b8a2fed73b6d3f5153f31" => :yosemite
-    sha1 "e29b138c0d056405e98bd4c86282c2ac3072c1c9" => :mavericks
-    sha1 "ba39f11d28f588616c0a0bc6f42197856c6035e5" => :mountain_lion
+    sha256 "4ec2891a47855facb66da9178f966cb524ed725c328f8a8278764676049d048e" => :yosemite
+    sha256 "7e0775a27cae29b72fe55e1b74f8dad51fa413a0ffba924b79d7c18d0d5d916d" => :mavericks
+    sha256 "a977d1f977b7ee9abe834cefff90d29f3e3d878ee09ff066adfcc616cdf859b1" => :mountain_lion
   end
 
   def install

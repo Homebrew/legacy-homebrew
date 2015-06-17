@@ -1,6 +1,7 @@
 require "formula"
 
 class BdwGc < Formula
+  desc "Garbage collector for C and C++"
   homepage "http://www.hboehm.info/gc/"
   url "http://www.hboehm.info/gc/gc_source/gc-7.4.2.tar.gz"
   sha1 "cd4a54620c38a2c361b3ee99dd134dbffb57c313"

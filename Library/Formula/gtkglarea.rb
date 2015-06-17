@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gtkglarea < Formula
+  desc "OpenGL context provider for GTK+"
   homepage 'https://github.com/GNOME/gtkglarea'
   url 'http://ftp.gnome.org/pub/GNOME/sources/gtkglarea/2.0/gtkglarea-2.0.1.tar.gz'
   sha1 'db12f2bb9a3d28d69834832e2e04a255acfd8a6d'

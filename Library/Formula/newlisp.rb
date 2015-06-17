@@ -1,13 +1,20 @@
 require "formula"
 
 class Newlisp < Formula
+  desc "A Lisp-like, general-purpose scripting language"
   homepage "http://www.newlisp.org/"
-  url "http://www.newlisp.org/downloads/newlisp-10.6.0.tgz"
-  sha1 "0f5ce581d070ff171cbef504308e578885aa5e72"
+  url "http://www.newlisp.org/downloads/newlisp-10.6.2.tgz"
+  sha1 "8ea722f2ed415548a0904ef15bafd259d8b07e01"
+
+  bottle do
+    sha1 "3201cfe276549f314eb8bd429d849277fd43293b" => :yosemite
+    sha1 "6a5503849e0d9ad6a28af27e75396f22fb472ed0" => :mavericks
+    sha1 "bb63e424cc5b4c2caa0c9f414178705c557c32d7" => :mountain_lion
+  end
 
   devel do
-    url "http://www.newlisp.org/downloads/development/newlisp-10.6.1.tgz"
-    sha1 "6f7d06df961022f4319b0ea7227480847e221cb0"
+    url "http://www.newlisp.org/downloads/development/inprogress/newlisp-10.6.3.tgz"
+    sha1 "15fff9bff3eb4bb2118b1941ffd34255b9a9a5b5"
   end
 
   depends_on "readline"

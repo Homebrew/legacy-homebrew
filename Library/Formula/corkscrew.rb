@@ -1,6 +1,7 @@
 require 'formula'
 
 class Corkscrew < Formula
+  desc "Tunnel SSH through HTTP proxies"
   homepage 'http://www.agroman.net/corkscrew/'
   url 'http://www.agroman.net/corkscrew/corkscrew-2.0.tar.gz'
   sha1 '8bdb4c0dc71048136c721c33229b9bf795230b32'

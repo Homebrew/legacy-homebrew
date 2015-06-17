@@ -1,5 +1,3 @@
-require "formula"
-
 # speed up head clone, see: https://developer.mozilla.org/en-US/docs/Developer_Guide/Source_Code/Mercurial/Bundles
 class HgBundleDownloadStrategy < CurlDownloadStrategy
   def stage
@@ -22,10 +20,12 @@ class Python273Requirement < Requirement
 end
 
 class Xulrunner < Formula
+  desc "Mozilla runtime package to bootstrap XUL+XPCOM applications"
   homepage "https://developer.mozilla.org/docs/XULRunner"
 
   stable do
-    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/latest/source/xulrunner-33.0.source.tar.bz2"
+    # Always use direct URLs (releases/<version>/) instead of releases/latest/
+    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/33.0/source/xulrunner-33.0.source.tar.bz2"
     sha1 "0fbd6ac263d9c5811a5338252b28e3d08ddfbeb2"
 
     # https://github.com/Homebrew/homebrew/issues/33558

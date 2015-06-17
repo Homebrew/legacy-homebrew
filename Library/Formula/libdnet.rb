@@ -1,22 +1,22 @@
-require 'formula'
-
 class Libdnet < Formula
-  homepage 'http://code.google.com/p/libdnet/'
+  desc "Portable low-level networking library"
+  homepage 'https://code.google.com/p/libdnet/'
   url 'https://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "d50344d91979822e446a28997c4b25f4c047e405" => :yosemite
-    sha1 "0b7296e9d6d6a3a17268611171df4b944e853bbf" => :mavericks
-    sha1 "e1570018c6ace49b52f2d77a660c7720e6250660" => :mountain_lion
+    revision 2
+    sha256 "09996ef2a4fce855bd5302996000f5ab49fd28d3e6bf6f0d82d3f11d495baef1" => :yosemite
+    sha256 "1b425f04354f60b2c9de0b6e031d50f626d3cda0dc50c892b163107a6eecacb9" => :mavericks
+    sha256 "c8fda878e8ff2a87a3b521ca26a5ebb0d4b9eb82868a92149c723c4bf21f5b79" => :mountain_lion
   end
+
+  option "without-python", "Build without python support"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on :python => :optional
 
   def install
     # autoreconf to get '.dylib' extension on shared lib
@@ -30,6 +30,6 @@ class Libdnet < Formula
     ]
     args << "--with-python" if build.with? "python"
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

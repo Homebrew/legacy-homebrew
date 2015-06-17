@@ -1,25 +1,31 @@
-require 'formula'
-
 class Urlview < Formula
-  homepage 'http://packages.debian.org/unstable/misc/urlview'
-  url 'http://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
-  sha1 '323af9ba30ba87ec600531629f5dd84c720984b6'
+  desc "URL extractor/launcher"
+  homepage "https://packages.debian.org/sid/misc/urlview"
+  url "https://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz"
+  sha256 "746ff540ccf601645f500ee7743f443caf987d6380e61e5249fc15f7a455ed42"
+
+  bottle do
+    cellar :any
+    sha256 "9ea616f456b9456d4b360a890de4b2c32252c6157d48f21e52d64865ed4ab983" => :yosemite
+    sha256 "10083fe38ccf5e60d2a39d17ab9106b23905d4ff5fefc71b2e5f2bb50fa8cda7" => :mavericks
+    sha256 "770efdc852305b834a843303ce28a37ed20cacc2afc37cf09c7e514d164fd668" => :mountain_lion
+  end
 
   patch do
-    url "http://ftp.aarnet.edu.au/debian/pool/main/u/urlview/urlview_0.9-19.diff.gz"
-    sha1 "96bd07bbb7cfc3416dc0ce8fa914160356f95c41"
+    url "https://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9-19.diff.gz"
+    sha256 "056883c17756f849fb9235596d274fbc5bc0d944fcc072bdbb13d1e828301585"
   end
 
   def install
-    inreplace 'urlview.man', '/etc/urlview/url_handler.sh', 'open'
-    inreplace 'urlview.c',
+    inreplace "urlview.man", "/etc/urlview/url_handler.sh", "open"
+    inreplace "urlview.c",
       '#define DEFAULT_COMMAND "/etc/urlview/url_handler.sh %s"',
       '#define DEFAULT_COMMAND "open %s"'
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
     man1.mkpath
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
+    system "make", "install"
   end
 end

@@ -33,30 +33,37 @@ BOTTLE_ERB = <<-EOS
 EOS
 
 module Homebrew
-  def keg_contains string, keg
-    if not ARGV.homebrew_developer?
-      return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg.to_s
+  def keg_contains string, keg, ignores
+    @put_string_exists_header, @put_filenames = nil
+
+    def print_filename string, filename
+      unless @put_string_exists_header
+        opoo "String '#{string}' still exists in these files:"
+        @put_string_exists_header = true
+      end
+
+      @put_filenames ||= []
+      unless @put_filenames.include? filename
+        puts "#{Tty.red}#{filename}#{Tty.reset}"
+        @put_filenames << filename
+      end
     end
 
     result = false
-    index = 0
 
     keg.each_unique_file_matching(string) do |file|
-      if ARGV.verbose?
-        opoo "String '#{string}' still exists in these files:" if index.zero?
-        puts "#{Tty.red}#{file}#{Tty.reset}"
-      end
-
       # Check dynamic library linkage. Importantly, do not run otool on static
       # libraries, which will falsely report "linkage" to themselves.
       if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?
         linked_libraries = file.dynamically_linked_libraries
         linked_libraries = linked_libraries.select { |lib| lib.include? string }
+        result ||= linked_libraries.any?
       else
         linked_libraries = []
       end
 
       if ARGV.verbose?
+        print_filename(string, file) if linked_libraries.any?
         linked_libraries.each do |lib|
           puts " #{Tty.gray}-->#{Tty.reset} links to #{lib}"
         end
@@ -67,30 +74,32 @@ module Homebrew
         until io.eof?
           str = io.readline.chomp
 
+          next if ignores.any? {|i| i =~ str }
+
           next unless str.include? string
 
           offset, match = str.split(" ", 2)
 
           next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
+          result ||= true
+
           if ARGV.verbose?
+            print_filename string, file
             puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
           end
         end
       end
-
-      index += 1
-      result = true
     end
 
-    index = 0
+    put_symlink_header = false
     keg.find do |pn|
       if pn.symlink? && (link = pn.readlink).absolute?
-        if link.to_s.start_with?(string)
-          opoo "Absolute symlink starting with #{string}:" if index.zero?
+        if !put_symlink_header && link.to_s.start_with?(string)
+          opoo "Absolute symlink starting with #{string}:"
           puts "  #{pn} -> #{pn.resolved_path}"
+          put_symlink_header = true
         end
 
-        index += 1
         result = true
       end
     end
@@ -105,32 +114,28 @@ module Homebrew
 
   def bottle_formula f
     unless f.installed?
-      return ofail "Formula not installed or up-to-date: #{f.name}"
+      return ofail "Formula not installed or up-to-date: #{f.full_name}"
     end
 
     unless built_as_bottle? f
-      return ofail "Formula not installed with '--build-bottle': #{f.name}"
+      return ofail "Formula not installed with '--build-bottle': #{f.full_name}"
     end
 
     unless f.stable
-      return ofail "Formula has no stable version: #{f.name}"
+      return ofail "Formula has no stable version: #{f.full_name}"
     end
 
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
-      ohai "Determining #{f.name} bottle revision..."
+      ohai "Determining #{f.full_name} bottle revision..."
       versions = FormulaVersions.new(f)
-      max = versions.bottle_version_map("origin/master")[f.pkg_version].max
-      bottle_revision = max ? max + 1 : 0
+      bottle_revisions = versions.bottle_version_map("origin/master")[f.pkg_version]
+      bottle_revisions.pop if bottle_revisions.last.to_i > 0
+      bottle_revision = bottle_revisions.any? ? bottle_revisions.max.to_i + 1 : 0
     end
 
     filename = Bottle::Filename.create(f, bottle_tag, bottle_revision)
-
-    if bottle_filename_formula_name(filename).empty?
-      return ofail "Add a new regex to bottle_version.rb to parse #{f.version} from #{filename}"
-    end
-
     bottle_path = Pathname.pwd/filename
 
     prefix = HOMEBREW_PREFIX.to_s
@@ -163,8 +168,13 @@ module Homebrew
           prefix_check = prefix
         end
 
-        relocatable = !keg_contains(prefix_check, keg)
-        relocatable = !keg_contains(cellar, keg) && relocatable
+        ignores = []
+        if f.deps.any? { |dep| dep.name == "go" }
+          ignores << %r{#{HOMEBREW_CELLAR}/go/[\d\.]+/libexec}
+        end
+
+        relocatable = !keg_contains(prefix_check, keg, ignores)
+        relocatable = !keg_contains(cellar, keg, ignores) && relocatable
         puts if !relocatable && ARGV.verbose?
       rescue Interrupt
         ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
@@ -186,7 +196,7 @@ module Homebrew
     bottle.prefix prefix
     bottle.cellar relocatable ? :any : cellar
     bottle.revision bottle_revision
-    bottle.sha1 bottle_path.sha1 => bottle_tag
+    bottle.sha256 bottle_path.sha256 => bottle_tag
 
     output = bottle_output bottle
 
@@ -194,7 +204,10 @@ module Homebrew
     puts output
 
     if ARGV.include? '--rb'
-      File.open("#{filename.prefix}.bottle.rb", "w") { |file| file.write(output) }
+      File.open("#{filename.prefix}.bottle.rb", "w") do |file|
+        file.write("\# #{f.full_name}\n")
+        file.write(output)
+      end
     end
   end
 
@@ -207,9 +220,9 @@ module Homebrew
   def merge
     merge_hash = {}
     ARGV.named.each do |argument|
-      formula_name = bottle_filename_formula_name argument
+      bottle_block = IO.read(argument)
+      formula_name = bottle_block.lines.first.sub(/^# /,"").chomp
       merge_hash[formula_name] ||= []
-      bottle_block = IO.read argument
       merge_hash[formula_name] << bottle_block
     end
 
@@ -233,7 +246,24 @@ module Homebrew
             odie 'Bottle block update failed!' unless string
           else
             update_or_add = 'add'
-            string = s.sub!(/(  (url|sha1|sha256|head|version|mirror|revision) ['"][\S ]+['"]\n+)+/m, '\0' + output + "\n")
+            if s.include? 'stable do'
+              indent = s.slice(/^ +stable do/).length - "stable do".length
+              string = s.sub!(/^ {#{indent}}stable do(.|\n)+?^ {#{indent}}end\n/m, '\0' + output + "\n")
+            else
+              string = s.sub!(
+                /(
+                  \ {2}(                                                              # two spaces at the beginning
+                    url\ ['"][\S\ ]+['"]                                              # url with a string
+                    (
+                      ,[\S\ ]*$                                                       # url may have options
+                      (\n^\ {3}[\S\ ]+$)*                                             # options can be in multiple lines
+                    )?|
+                    (homepage|desc|sha1|sha256|head|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
+                    revision\ \d+                                                     # revision with a number
+                  )\n+                                                                # multiple empty lines
+                 )+
+               /mx, '\0' + output + "\n")
+            end
             odie 'Bottle block addition failed!' unless string
           end
         end
@@ -251,7 +281,7 @@ module Homebrew
   def bottle
     merge if ARGV.include? '--merge'
 
-    ARGV.formulae.each do |f|
+    ARGV.resolved_formulae.each do |f|
       bottle_formula f
     end
   end

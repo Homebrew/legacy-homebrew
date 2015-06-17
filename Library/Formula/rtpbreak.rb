@@ -1,25 +1,36 @@
-require 'formula'
-
 class Rtpbreak < Formula
-  homepage 'http://www.dallachiesa.com/code/rtpbreak/doc/rtpbreak_en.html'
-  url 'http://dallachiesa.com/code/rtpbreak/rtpbreak-1.3a.tgz'
-  sha1 'd22e9c37cc28c2fc36475d221b4eb2cc2c5aafbb'
+  # Homepage and URL dead since at least Feb 2015
+  desc "Detect, reconstruct and analyze any RTP session"
+  homepage "http://www.dallachiesa.com/code/rtpbreak/doc/rtpbreak_en.html"
+  url "http://dallachiesa.com/code/rtpbreak/rtpbreak-1.3a.tgz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Rtpbreak/rtpbreak-1.3a.tgz"
+  sha1 "d22e9c37cc28c2fc36475d221b4eb2cc2c5aafbb"
 
-  depends_on 'libnet'
+  bottle do
+    cellar :any
+    sha1 "0ba5286070de0faeb39197d9ce96a5b28cb5d01e" => :yosemite
+    sha1 "f2105bfaefd67bf150b6d3bb80afba5c43f82cf6" => :mavericks
+    sha1 "a58e0738e815217695e288c4b2f1b75207fe6767" => :mountain_lion
+  end
+
+  depends_on "libnet"
 
   # main.c is missing the netinet/udp.h header; reported upstream by email
   patch :p0, :DATA
 
   def install
+    mkdir_p bin
     system "make", "CC=#{ENV.cc}"
-    bin.install "src/rtpbreak"
+    system "make", "install", "INSTALL_DIR=#{bin}"
   end
 
   test do
-    system "#{bin}/rtpbreak"
+    assert_match /payload/, shell_output("#{bin}/rtpbreak -k")
   end
 end
+
 __END__
+
 --- src/main.c  2012-06-30 12:22:29.000000000 +0200
 +++ src/main.c  2012-06-30 12:19:11.000000000 +0200
 @@ -25,6 +25,7 @@

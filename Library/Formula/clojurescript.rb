@@ -1,19 +1,20 @@
 class Clojurescript < Formula
+  desc "Clojure to JS compiler"
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2665.tar.gz"
-  sha1 "364e799e9a4f2c79d1058ec10909a96071d1b5a3"
+  url "https://github.com/clojure/clojurescript/archive/r2913.tar.gz"
+  sha1 "ff33a93516b3c91923667d667d34cc4b404489c8"
 
   bottle do
     cellar :any
-    sha1 "a1e0a6ab52df6fc41697c5b669b0088a071fca94" => :yosemite
-    sha1 "58e46c032fb6059f6ce1ebb54e1ec9eb4bb17183" => :mavericks
-    sha1 "dd099b7132450b0458076e8eaa0db42ae2611ecc" => :mountain_lion
+    sha1 "aa8b2bd64da090c12d508e63bbf56a5128abfbcf" => :yosemite
+    sha1 "f56c2dfcd8ee828a2734ea1c39c6c1f1c147178b" => :mavericks
+    sha1 "63127cb547b78d3a7fac2770fe3ed56ce39acc10" => :mountain_lion
   end
 
   def install
     system "./script/bootstrap"
-    inreplace %w(bin/cljsc script/repl script/repljs script/browser-repl),
+    inreplace %w[bin/cljsc script/repl script/repljs script/browser-repl],
       "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{libexec}"
     libexec.install Dir["*"]
     bin.write_exec_script libexec/"bin/cljsc"

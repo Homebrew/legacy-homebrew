@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pygtkglext < Formula
+  desc "Python bindings to OpenGL GTK+ extension"
   homepage 'http://projects.gnome.org/gtkglext/download.html#pygtkglext'
   url 'https://downloads.sourceforge.net/gtkglext/pygtkglext-1.1.0.tar.gz'
   sha1 '2ae3e87e8cdfc3318d8ff0e33b344377cb3df7cb'

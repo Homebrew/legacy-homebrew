@@ -1,15 +1,16 @@
 # No head build supported; if you need head builds of Mercurial, do so outside
 # of Homebrew.
 class Mercurial < Formula
-  homepage "http://mercurial.selenic.com/"
-  url "http://mercurial.selenic.com/release/mercurial-3.2.4.tar.gz"
-  sha1 "6adc45a99f036a3fe3433a4d24e5641c91acb693"
+  desc "Scalable distributed version control system"
+  homepage "https://mercurial.selenic.com/"
+  url "https://mercurial.selenic.com/release/mercurial-3.4.1.tar.gz"
+  sha256 "7a8acf7329beda38ceea29c689212574d9a6bfffe24cf565015ea0066f7cee3f"
 
   bottle do
     cellar :any
-    sha1 "70793c59ab9c56e13df2dfc08af7d386794ea0e6" => :yosemite
-    sha1 "466d3dceb99256119196e06effd8bb18ea8accea" => :mavericks
-    sha1 "5adc409dc7655f094c19f1ec1026efbde4775109" => :mountain_lion
+    sha256 "f038a255e43c177ae362f319d0cef3e42c1bf631418de78ee13165dc48d2b9ba" => :yosemite
+    sha256 "b9408e88838e05d57720735b95c8dc00efbf81f655846b29fb363895580a1daa" => :mavericks
+    sha256 "a0b7d3f952aae73b8b02aff8c82c41af458babddf9c1e01118676ec1139a734b" => :mountain_lion
   end
 
   def install
@@ -23,10 +24,6 @@ class Mercurial < Formula
     # install the completion scripts
     bash_completion.install "contrib/bash_completion" => "hg-completion.bash"
     zsh_completion.install "contrib/zsh_completion" => "_hg"
-
-    # install the merge tool default configs
-    # http://mercurial.selenic.com/wiki/Packaging#Things_to_note
-    (etc/"mercurial"/"hgrc.d").install "contrib/mergetools.hgrc" => "mergetools.rc"
   end
 
   test do

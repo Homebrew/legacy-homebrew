@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libcaca < Formula
+  desc "Convert pixel information into colored ASCII art"
   homepage 'http://caca.zoy.org/wiki/libcaca'
   url 'http://fossies.org/linux/privat/libcaca-0.99.beta19.tar.gz'
   version '0.99b19'

@@ -1,15 +1,18 @@
-require 'formula'
-
 class RbenvVars < Formula
-  homepage 'https://github.com/sstephenson/rbenv-vars'
-  url 'https://github.com/sstephenson/rbenv-vars/archive/v1.2.0.tar.gz'
-  sha1 '8953cecac154fac96dc1e68b54d66a4c8b569e08'
+  desc "Safely sets global and per-project environment variables"
+  homepage "https://github.com/sstephenson/rbenv-vars"
+  url "https://github.com/sstephenson/rbenv-vars/archive/v1.2.0.tar.gz"
+  sha1 "8953cecac154fac96dc1e68b54d66a4c8b569e08"
 
-  head 'https://github.com/sstephenson/rbenv-vars.git'
+  head "https://github.com/sstephenson/rbenv-vars.git"
 
-  depends_on 'rbenv'
+  depends_on "rbenv"
 
   def install
-    prefix.install Dir['*']
+    prefix.install Dir["*"]
+  end
+
+  test do
+    assert shell_output("rbenv hooks exec").include? "rbenv-vars.bash"
   end
 end

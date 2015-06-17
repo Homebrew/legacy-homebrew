@@ -1,6 +1,7 @@
 require 'formula'
 
 class Fftw < Formula
+  desc "C routines to compute the Discrete Fourier Transform"
   homepage 'http://www.fftw.org'
   url 'http://www.fftw.org/fftw-3.3.4.tar.gz'
   sha1 'fd508bac8ac13b3a46152c54b7ac885b69734262'

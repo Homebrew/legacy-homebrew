@@ -1,16 +1,15 @@
-require "formula"
-
 class Libav < Formula
+  desc "Audio and video processing tools"
   homepage "https://libav.org/"
-  url "https://libav.org/releases/libav-11.1.tar.xz"
-  sha1 "4cd3337c6c67481b7165c9c618f1fcf6998942ce"
+  url "https://libav.org/releases/libav-11.4.tar.xz"
+  sha256 "0b7dabc2605f3a254ee410bb4b1a857945696aab495fe21b34c3b6544ff5d525"
 
   head "git://git.libav.org/libav.git"
 
   bottle do
-    sha1 "450f32ac0b9be44d70e7cad574ed5937ef040050" => :yosemite
-    sha1 "ddd3dea8eea023d750b1e9644460b4d0dd12e311" => :mavericks
-    sha1 "169b1f483e117f253196956876c03092ddaba01e" => :mountain_lion
+    sha256 "3a30c36f092ed695cc58882faf6b303efa2574bc22d66306b88a92c2784405f1" => :yosemite
+    sha256 "06f578ac6a8e1e90ce763d022c516988b8afd9cbe1a73a707f22eeb88bcf330f" => :mavericks
+    sha256 "76fc99bc066de18e660f62a6401573dedcf0652d6a0ec0c5daf6dcce8cd2cfda" => :mountain_lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"
@@ -18,7 +17,7 @@ class Libav < Formula
   option "without-x264", "Disable H.264 encoder via x264"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder via xvid"
 
-  option "with-opencore-amr", "Enable AMR-NB de/encoding and AMR-WB decoding " +
+  option "with-opencore-amr", "Enable AMR-NB de/encoding and AMR-WB decoding " \
     "via libopencore-amrnb and libopencore-amrwb"
   option "with-openjpeg", "Enable JPEG 2000 de/encoding via OpenJPEG"
   option "with-openssl", "Enable SSL support"
@@ -62,6 +61,7 @@ class Libav < Formula
     args = [
       "--disable-debug",
       "--disable-shared",
+      "--disable-indev=jack",
       "--prefix=#{prefix}",
       "--enable-gpl",
       "--enable-nonfree",
@@ -69,7 +69,7 @@ class Libav < Formula
       "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
-      "--host-ldflags=#{ENV.ldflags}"
+      "--host-ldflags=#{ENV.ldflags}",
     ]
 
     args << "--enable-frei0r" if build.with? "frei0r"
@@ -106,6 +106,9 @@ class Libav < Formula
   end
 
   test do
-    system "#{bin}/avconv -h"
+    # Create an example mp4 file
+    system "#{bin}/avconv", "-y", "-filter_complex",
+        "testsrc=rate=1:duration=1", "#{testpath}/video.mp4"
+    assert (testpath/"video.mp4").exist?
   end
 end

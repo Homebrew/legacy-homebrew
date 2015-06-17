@@ -1,9 +1,8 @@
-require "formula"
-
 class Eina < Formula
-  homepage "http://trac.enlightenment.org/e/wiki/Eina"
-  url "http://download.enlightenment.org/releases/eina-1.7.10.tar.gz"
-  sha1 "c2544357b27f59d1592a02228cb277dc6b4ef797"
+  desc "Eina is a core data structure and common utility library"
+  homepage "https://docs.enlightenment.org/auto/eina/eina_main.html"
+  url "https://download.enlightenment.org/releases/eina-1.7.10.tar.gz"
+  sha256 "3f33ae45c927faedf8d342106136ef1269cf8dde6648c8165ce55e72341146e9"
 
   bottle do
     sha1 "58d642bbf7088e75415c2d7267c1170e7bd99c39" => :yosemite
@@ -12,7 +11,7 @@ class Eina < Formula
   end
 
   head do
-    url "http://svn.enlightenment.org/svn/e/trunk/eina/"
+    url "https://git.enlightenment.org/legacy/eina.git/"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

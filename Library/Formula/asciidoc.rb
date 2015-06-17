@@ -1,5 +1,6 @@
 class Asciidoc < Formula
-  homepage "http://www.methods.co.nz/asciidoc"
+  desc "Formatter/translator for text files to numerous formats"
+  homepage "http://asciidoc.org/"
   url "https://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz"
   sha1 "82e574dd061640561fa0560644bc74df71fb7305"
 
@@ -12,11 +13,14 @@ class Asciidoc < Formula
   end
 
   head do
-    url "https://code.google.com/p/asciidoc/", :using => :hg
+    url "https://github.com/asciidoc/asciidoc.git"
     depends_on "autoconf" => :build
   end
 
   depends_on "docbook"
+
+  option "with-docbook-xsl", "Install DTDs to generate manpages"
+  depends_on "docbook-xsl" => :optional
 
   def install
     system "autoconf" if build.head?
@@ -32,7 +36,7 @@ class Asciidoc < Formula
       (such as a2x for manpage generation) you need to add something
       like:
 
-        export XML_CATALOG_FILES=#{HOMEBREW_PREFIX}/etc/xml/catalog
+        export XML_CATALOG_FILES=#{etc}/xml/catalog
 
       to your shell rc file so that xmllint can find AsciiDoc's
       catalog files.

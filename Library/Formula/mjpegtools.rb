@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mjpegtools < Formula
+  desc "Record and playback videos and perform simple edits"
   homepage 'http://mjpeg.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/mjpeg/mjpegtools/2.1.0/mjpegtools-2.1.0.tar.gz'
   sha1 'b9effa86280e23d67369e842e5cb645948583097'

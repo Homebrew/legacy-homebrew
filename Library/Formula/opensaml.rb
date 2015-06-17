@@ -1,6 +1,7 @@
 require 'formula'
 
 class Opensaml < Formula
+  desc "Library for Security Assertion Markup Language"
   homepage 'https://wiki.shibboleth.net/confluence/display/OpenSAML/Home'
   url 'http://shibboleth.net/downloads/c++-opensaml/2.5.3/opensaml-2.5.3.tar.gz'
   sha1 '412d0807821f7ee5d419e59fd9fd85613d64da7b'

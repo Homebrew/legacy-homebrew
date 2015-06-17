@@ -1,14 +1,13 @@
-require 'formula'
-
 # Based on:
-# Apple Open Source: http://www.opensource.apple.com/source/cvs/cvs-45/
+# Apple Open Source: https://opensource.apple.com/source/cvs/cvs-45/
 # MacPorts: https://trac.macports.org/browser/trunk/dports/devel/cvs/Portfile
 # Creating a useful testcase: http://mrsrl.stanford.edu/~brian/cvstutorial/
 
 class Cvs < Formula
-  homepage 'http://cvs.nongnu.org/'
-  url 'http://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2'
-  sha1 '93a8dacc6ff0e723a130835713235863f1f5ada9'
+  desc "Version control system"
+  homepage "http://cvs.nongnu.org/"
+  url "https://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2"
+  sha1 "93a8dacc6ff0e723a130835713235863f1f5ada9"
 
   bottle do
     cellar :any
@@ -35,7 +34,7 @@ class Cvs < Formula
     "zlib"              => "7781dc997c895df8cfa991ab7a04add245169ea4",
   }.each do |name, sha|
     patch :p0 do
-      url "http://www.opensource.apple.com/source/cvs/cvs-45/patches/#{name}.diff?txt"
+      url "https://opensource.apple.com/source/cvs/cvs-45/patches/#{name}.diff?txt"
       sha1 sha
     end
   end

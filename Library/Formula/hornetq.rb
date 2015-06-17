@@ -1,6 +1,7 @@
 require 'formula'
 
 class Hornetq < Formula
+  desc "Multi-protocol, embeddable, clustered, asynchronous messaging system"
   homepage 'http://www.jboss.org/hornetq'
   url 'http://downloads.jboss.org/hornetq/hornetq-2.4.0.Final-bin.tar.gz'
   version '2.4.0'

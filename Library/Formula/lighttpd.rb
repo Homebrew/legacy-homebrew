@@ -1,26 +1,26 @@
-require 'formula'
-
 class Lighttpd < Formula
-  homepage 'http://www.lighttpd.net/'
-  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.35.tar.bz2'
-  sha256 '4a71c1f6d8af41ed894b507720c4c17184dc320590013881d5170ca7f15c5bf7'
-  revision 1
+  desc "Small memory footprint, flexible web-server"
+  homepage "http://www.lighttpd.net/"
+  url "http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.35.tar.bz2"
+  sha256 "4a71c1f6d8af41ed894b507720c4c17184dc320590013881d5170ca7f15c5bf7"
+  revision 2
 
   bottle do
-    sha1 "1e1149e3cd4a622a4d90e2e0243ee43ee6900b05" => :mavericks
-    sha1 "9005df016564ac3cf44757f14dab8d0ae98eec49" => :mountain_lion
-    sha1 "0dc5abe30f67397f4d0dcf0b04bbed96b8b23173" => :lion
+    sha1 "55e4c14cf1e20dd169a16756f03e4d973f85c5bc" => :yosemite
+    sha1 "8d5c27b5f3f0d405f70ece7037beeb472f32ceed" => :mavericks
+    sha1 "83623156747027dcf7aed971b8edba2befcb000c" => :mountain_lion
   end
 
-  option 'with-lua', 'Include Lua scripting support for mod_magnet'
+  option "with-lua51", "Include Lua scripting support for mod_magnet"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
-  depends_on 'pcre'
-  depends_on 'lua51' if build.with? "lua"
-  depends_on 'libev' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pcre"
+  depends_on "openssl"
+  depends_on "lua51" => :optional
+  depends_on "libev" => :optional
 
   # default max. file descriptors; this option will be ignored if the server is not started as root
   MAX_FDS = 512
@@ -33,6 +33,7 @@ class Lighttpd < Formula
   def install
     args = %W[
       --disable-dependency-tracking
+      --disable-silent-rules
       --prefix=#{prefix}
       --sbindir=#{bin}
       --with-openssl
@@ -42,17 +43,17 @@ class Lighttpd < Formula
       --with-attr
     ]
 
-    args << "--with-lua" if build.with? 'lua'
-    args << "--with-libev" if build.with? 'libev'
+    args << "--with-lua" if build.with? "lua51"
+    args << "--with-libev" if build.with? "libev"
 
     # fixed upstream, should be in next release: http://redmine.lighttpd.net/issues/2517
-    inreplace 'src/Makefile.am', '$(LDAP_LIB)', '$(SSL_LIB) $(LDAP_LIB)'
+    inreplace "src/Makefile.am", "$(LDAP_LIB)", "$(SSL_LIB) $(LDAP_LIB)"
 
     # autogen must be run, otherwise prebuilt configure may complain
     # about a version mismatch between included automake and Homebrew's
     system "./autogen.sh"
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
     unless File.exist? config_path
       config_path.install "doc/config/lighttpd.conf", "doc/config/modules.conf"
@@ -63,12 +64,12 @@ class Lighttpd < Formula
         s.sub!(/^var\.state_dir\s*=\s*".+"$/,"var.state_dir   = \"#{run_path}\"")
         s.sub!(/^var\.home_dir\s*=\s*".+"$/,"var.home_dir    = \"#{run_path}\"")
         s.sub!(/^var\.conf_dir\s*=\s*".+"$/,"var.conf_dir    = \"#{config_path}\"")
-        s.sub!(/^server\.port\s*=\s*80$/,'server.port = 8080')
-        s.sub!(/^server\.document-root\s*=\s*server_root \+ "\/htdocs"$/,'server.document-root = server_root')
+        s.sub!(/^server\.port\s*=\s*80$/,"server.port = 8080")
+        s.sub!(/^server\.document-root\s*=\s*server_root \+ "\/htdocs"$/,"server.document-root = server_root")
 
         # get rid of "warning: please use server.use-ipv6 only for hostnames, not
         # without server.bind / empty address; your config will break if the kernel
-        # default for IPV6_V6ONLY changes" warning
+        # default for IPV6_V6ONLY changes"
         s.sub!(/^server.use-ipv6\s*=\s*"enable"$/,'server.use-ipv6 = "disable"')
 
         s.sub!(/^server\.username\s*=\s*".+"$/,'server.username  = "_www"')
@@ -78,17 +79,17 @@ class Lighttpd < Formula
 
         # "max-connections == max-fds/2",
         # http://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
-        s.sub!(/^server\.max-connections = .+$/,'server.max-connections = ' + (MAX_FDS / 2).to_s())
+        s.sub!(/^server\.max-connections = .+$/,"server.max-connections = " + (MAX_FDS / 2).to_s())
       end
     end
 
     log_path.mkpath
-    (www_path/'htdocs').mkpath
+    (www_path/"htdocs").mkpath
     run_path.mkpath
   end
 
   test do
-    system "#{bin}/lighttpd", '-t', '-f', "#{config_path}lighttpd.conf"
+    system "#{bin}/lighttpd", "-t", "-f", "#{config_path}lighttpd.conf"
   end
 
   def caveats; <<-EOS.undent
