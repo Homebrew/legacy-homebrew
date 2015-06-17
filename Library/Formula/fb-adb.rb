@@ -6,9 +6,9 @@ class FbAdb < Formula
 
   bottle do
     cellar :any
-    sha1 "21d0566e25712be5e04caa8c23980e80575abda7" => :yosemite
-    sha1 "336e8fcd1b4061d2a62bc04a7581be46b85736c1" => :mavericks
-    sha1 "19f9cd0ae30d27ea80e42808bbf9803bdd10d548" => :mountain_lion
+    sha256 "ea7f04716e434f8788be5f00c321cf47aa0a0bfb988ccbe71a7772bcc8066794" => :yosemite
+    sha256 "77f99858579778af72ba838f4372c5dd2064da10bc59fad5f3d680d29e474ca8" => :mavericks
+    sha256 "1a70988d1082132abc28b6536ac2f4ae2b9cd13c1dc7f40f869b39023ce65e51" => :mountain_lion
   end
 
   depends_on "android-ndk" => :build
