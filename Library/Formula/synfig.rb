@@ -6,6 +6,13 @@ class Synfig < Formula
 
   head "git://synfig.git.sourceforge.net/gitroot/synfig/synfig"
 
+  bottle do
+    revision 1
+    sha256 "ebc2dd13c9a693a5baaa194832a4e2c23dbb1e77c44fe698bfd03d7523a63701" => :yosemite
+    sha256 "2c724dfb2c4bc14f2ee795289dd69a3a3804fe711ebc125c7e0f72e931d78860" => :mavericks
+    sha256 "71cbd51d4f8f94018477d58767ea296a27c82f8dac5696c5976f7336a3b6004d" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "etl"
