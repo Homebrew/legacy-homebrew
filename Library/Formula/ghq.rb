@@ -8,6 +8,13 @@ class Ghq < Formula
 
   head "https://github.com/motemen/ghq.git"
 
+  bottle do
+    cellar :any
+    sha256 "243adcfa107af6b6d87d2491ef8dc56e44dacd95505bf60c03ff4aa69b37d0cd" => :yosemite
+    sha256 "4348cffae023d0a300fa1cc8a1d9f5e26bced6c5330483b4437f25cd6f81bfe7" => :mavericks
+    sha256 "bd653fda50b8ed0e05f336dabace93ddf9c4be58d43becd4d694c0f04327096c" => :mountain_lion
+  end
+
   option "without-completions", "Disable zsh completions"
 
   depends_on "go" => :build
