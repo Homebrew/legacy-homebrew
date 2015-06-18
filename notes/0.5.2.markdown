@@ -1,0 +1,4 @@
+#Scala #akka @ApacheSpark
+
+* Change `server_start.sh` to use `spark-submit`
+* Configurable driver memory (@acidghost)
