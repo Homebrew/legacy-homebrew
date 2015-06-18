@@ -17,6 +17,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Avenida.com
 - GumGum
 - Fuse Elements
+- Frontline Solvers
 
 ## Features
 
