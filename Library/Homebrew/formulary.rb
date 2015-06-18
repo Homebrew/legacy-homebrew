@@ -249,8 +249,8 @@ class Formulary
     available_formulas = tap_paths(ref)
     core_formula = core_path(ref)
     if core_formula.file?
-      available_formulas[50] = [] if available_formulas[50].nil?
-      available_formulas[50] << core_formula
+      available_formulas[Tap.core_priority] = [] if available_formulas[50].nil?
+      available_formulas[Tap.core_priority] << core_formula
     end
 
     unless available_formulas.empty?

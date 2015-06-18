@@ -153,4 +153,8 @@ class Tap
   def self.names
     map(&:name)
   end
+
+  def self.core_priority
+    50
+  end
 end
