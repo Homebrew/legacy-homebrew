@@ -39,6 +39,11 @@ class Fontforge < Formula
   # https://github.com/Homebrew/homebrew/issues/37803
   depends_on "fontconfig"
 
+  resource "gnulib" do
+    url "git://git.savannah.gnu.org/gnulib.git",
+        :revision => "9a417cf7d48fa231c937c53626da6c45d09e6b3e"
+  end
+
   fails_with :llvm do
     build 2336
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
@@ -77,7 +82,8 @@ class Fontforge < Formula
     ENV.prepend_path "PKG_CONFIG_PATH", "#{pydir}/lib/pkgconfig"
 
     # Bootstrap in every build: https://github.com/fontforge/fontforge/issues/1806
-    system "./bootstrap"
+    resource("gnulib").fetch
+    system "./bootstrap", "--gnulib-srcdir=#{resource("gnulib").cached_download}"
     system "./configure", *args
     system "make"
     system "make", "install"
