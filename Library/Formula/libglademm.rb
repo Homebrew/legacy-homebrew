@@ -5,6 +5,14 @@ class Libglademm < Formula
   sha256 "38543c15acf727434341cc08c2b003d24f36abc22380937707fc2c5c687a2bc3"
   revision 1
 
+  bottle do
+    cellar :any
+    revision 2
+    sha256 "576f131d971857d7977448e2011211e2eeb067bb7d76b06f47fa963c4ec3e1f8" => :yosemite
+    sha256 "7c83009c9ee3687e53be88193714f19d7a2b14ca7f79e6fc11839ce93bace8a1" => :mavericks
+    sha256 "bf3e5362d3591b88686c1ad47aea11c943dec0f130312e886a313a42646a0fd7" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gtkmm"
   depends_on "libglade"
