@@ -37,4 +37,8 @@ class RabbitmqC < Formula
     system "cmake", ".", *args
     system "make", "install"
   end
+
+  test do
+    system "amqp-get", "--help"
+  end
 end
