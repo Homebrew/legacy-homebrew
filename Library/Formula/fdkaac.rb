@@ -21,7 +21,42 @@ class Fdkaac < Formula
     system "make", "install"
   end
 
+  def generate_tone_pcm
+    ohai "generating test audio file"
+
+    sample_rate = 44100
+    two_pi = 2 * Math::PI
+
+    num_samples = sample_rate
+    frequency = 440.0
+    max_amplitude = 0.2
+
+    position_in_period = 0.0
+    position_in_period_delta = frequency / sample_rate
+
+    samples = [].fill(0.0, 0, num_samples)
+
+    num_samples.times do |i|
+      samples[i] = Math::sin(position_in_period * two_pi) * max_amplitude
+
+      position_in_period += position_in_period_delta
+
+      if(position_in_period >= 1.0)
+        position_in_period -= 1.0
+      end
+    end
+
+    samples.map! do |sample|
+      (sample * 32767.0).round
+    end
+
+    File.open("#{testpath}/tone.pcm", "wb") {
+      |f| f.syswrite(samples.flatten.pack("s*"))
+    }
+  end
+
   test do
-    system "#{bin}/fdkaac", "--help"
+    generate_tone_pcm
+    system "#{bin}/fdkaac", "-R", "--raw-channels", "1", "-m", "1", "#{testpath}/tone.pcm", "--title", "Test Tone"
   end
 end
