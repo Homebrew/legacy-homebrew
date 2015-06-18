@@ -62,12 +62,12 @@ class Vim < Formula
     end
 
     opts << "--disable-nls" if build.include? "disable-nls"
+    opts << "--without-x"
 
     if build.with? "client-server"
       opts << "--enable-gui=gtk2"
     else
       opts << "--enable-gui=no"
-      opts << "--without-x"
     end
 
     if build.with? "luajit"
