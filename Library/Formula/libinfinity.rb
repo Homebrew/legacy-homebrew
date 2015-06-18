@@ -4,6 +4,13 @@ class Libinfinity < Formula
   url "http://releases.0x539.de/libinfinity/libinfinity-0.6.6.tar.gz"
   sha256 "3df9397b52d61392cbe98084aada9b7362a34811ef21baa0db87fdfd754f92cc"
 
+  bottle do
+    revision 1
+    sha256 "07e6ddb3637ebf634a64af6dae46cde353fc5fa8e89bf0fd5958eb38a305c877" => :yosemite
+    sha256 "c74520bb5b208f9e43390c69682745edeef0ffd8b8d30ec84805a2300e1dce4a" => :mavericks
+    sha256 "75561e4d4ad9a8e35c624442e420a53e4dc521437e985a9531580b2797d24124" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gtk+3"
