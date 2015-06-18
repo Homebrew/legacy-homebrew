@@ -6,6 +6,13 @@ class Mdk < Formula
   sha256 "7bff1e10b829c6e1f3c278bfecbe82f0f658753ce80ea58b6f71c05f9490b0db"
   revision 1
 
+  bottle do
+    revision 1
+    sha256 "5b24eaf48d048cd8d482ec4b28dc093e5e75fe4e3430934d8930b64d003d7b5c" => :yosemite
+    sha256 "73dee962b53150de146a017161004995a341a7239554b46a5f895c31aea80755" => :mavericks
+    sha256 "76631db9d820f00fa4f807c9316c08b20a54151827f5b40d7b49a5608dbba547" => :mountain_lion
+  end
+
   depends_on "gtk+"
   depends_on "libglade"
   depends_on "glib"
