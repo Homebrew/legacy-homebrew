@@ -50,17 +50,26 @@ class Fontforge < Formula
   end
 
   def install
-    if MacOS.version <= :snow_leopard || !build.bottle?
-      pydir = `python-config --prefix`.chomp
-    else
-      pydir = `/usr/bin/python-config --prefix`.chomp
+    # Don't link libraries to libpython, but do link binaries that expect
+    # to embed a python interpreter
+    # https://github.com/fontforge/fontforge/issues/2353#issuecomment-121009759
+    ENV["PYTHON_CFLAGS"] = `python-config --cflags`.chomp
+    ENV["PYTHON_LIBS"] = "-undefined dynamic_lookup"
+    python_libs = `python2.7-config --ldflags`.chomp
+    inreplace "fontforgeexe/Makefile.am" do |s|
+      oldflags = s.get_make_var "libfontforgeexe_la_LDFLAGS"
+      s.change_make_var! "libfontforgeexe_la_LDFLAGS", "#{python_libs} #{oldflags}"
     end
+
+    # Disable Homebrew detection
+    # https://github.com/fontforge/fontforge/issues/2425
+    inreplace "configure.ac", 'test "y$HOMEBREW_BREW_FILE" != "y"', "false"
 
     args = %W[
       --prefix=#{prefix}
       --disable-silent-rules
       --disable-dependency-tracking
-      --with-pythonbinary=#{pydir}/bin/python2.7
+      --with-pythonbinary=#{which "python2.7"}
       --without-x
     ]
 
@@ -75,11 +84,6 @@ class Fontforge < Formula
 
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
-
-    # And for finding the correct Python, not always Homebrew's.
-    ENV.prepend "CFLAGS", "-I#{pydir}/include"
-    ENV.prepend "LDFLAGS", "-L#{pydir}/lib"
-    ENV.prepend_path "PKG_CONFIG_PATH", "#{pydir}/lib/pkgconfig"
 
     # Bootstrap in every build: https://github.com/fontforge/fontforge/issues/1806
     resource("gnulib").fetch
@@ -98,5 +102,6 @@ class Fontforge < Formula
 
   test do
     system bin/"fontforge", "-version"
+    system "python", "-c", "import fontforge"
   end
 end
