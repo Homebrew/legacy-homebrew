@@ -3,7 +3,6 @@ class Zurl < Formula
   homepage "https://github.com/fanout/zurl"
   url "http://packages.fanout.io/source/zurl-1.4.2.tar.bz2"
   sha256 "8c1ceb5fd7aad81b1b04323b46a742a2da6bbc63d825b847b23876d74a8162ab"
-  revision 1
 
   bottle do
     cellar :any
