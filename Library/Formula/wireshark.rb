@@ -3,9 +3,9 @@ class Wireshark < Formula
   homepage "https://www.wireshark.org"
 
   stable do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.5.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.5.tar.bz2"
-    sha256 "d0f177b2ef49e4deae4ff7d3299bdd295ba558a3934ce8ae489b2f13927cbd82"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.6.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.6.tar.bz2"
+    sha256 "22ac0cc872f12cef9bb2cacfe0720eed8533dc5cea102d21de511620606cb3b6"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -20,20 +20,20 @@ class Wireshark < Formula
     sha256 "b2294c6fe1dc2de324bc834331f5a1cd76f958c65d7d1b40154f7e1cd48656fe" => :mountain_lion
   end
 
-  head do
-    url "https://code.wireshark.org/review/wireshark", :using => :git
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   devel do
     url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.6.tar.bz2"
     mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.6.tar.bz2"
     sha256 "dfd8800f15a531573700703fee32c97f6c1525615c5d2b92a110fd50b259cc1a"
 
     depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
+  end
+
+  head do
+    url "https://code.wireshark.org/review/wireshark", :using => :git
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option "with-gtk+3", "Build the wireshark command with gtk+3"
