@@ -2,7 +2,7 @@ class Carthage < Formula
   desc "Decentralized dependency manager for Cocoa"
   homepage "https://github.com/Carthage/Carthage"
   url "https://github.com/Carthage/Carthage.git", :tag => "0.7.5",
-                                                  :revision => "e58c1a66ef1f031cc0c38a329249451e467fabef",
+                                                  :revision => "41e93849adcd05d1e2ffc7a7f409c056a23a53ab",
                                                   :shallow => false
   head "https://github.com/Carthage/Carthage.git", :shallow => false
 
