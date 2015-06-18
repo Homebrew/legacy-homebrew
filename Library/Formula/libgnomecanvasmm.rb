@@ -5,6 +5,13 @@ class Libgnomecanvasmm < Formula
   sha256 "996577f97f459a574919e15ba7fee6af8cda38a87a98289e9a4f54752d83e918"
   revision 1
 
+  bottle do
+    cellar :any
+    sha256 "797afd05cd05e13cfcee845343041769244d41e8312d75a0d3c27a52174b3a13" => :yosemite
+    sha256 "054b6061f8d0102c7899251c6cb6eee2dba06723e0cc5ad6c1f2e02bd96ee1a5" => :mavericks
+    sha256 "8b87a9f7ed33695074519cafa21280b926a58ec51a39cb2839bd01800d4bdb55" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libgnomecanvas"
   depends_on "gtkmm"
