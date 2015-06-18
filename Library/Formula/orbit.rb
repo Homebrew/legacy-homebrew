@@ -4,6 +4,12 @@ class Orbit < Formula
   url "https://download.gnome.org/sources/ORBit2/2.14/ORBit2-2.14.19.tar.bz2"
   sha256 "55c900a905482992730f575f3eef34d50bda717c197c97c08fa5a6eafd857550"
 
+  bottle do
+    sha256 "adf8c93736bee9ceede9f65ae9e4d6d10529a085315ec522bfd661a7b6fcd94a" => :yosemite
+    sha256 "ae04763dcb6ea680fba27e49b01235d65204cd9240a871b429095fa414fda4fb" => :mavericks
+    sha256 "9f987a2d8be82cf391d2903872cfe20ce304cbc91fbe638820c41b00a3ecb4cc" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libidl"
