@@ -5,10 +5,9 @@ class Harfbuzz < Formula
   sha256 "d81aa53d0c02b437beeaac159d7fc16394d676bbce0860fb6f6a10b587dc057c"
 
   bottle do
-    revision 1
-    sha256 "e7a4f53b09310e122594f4036f41f13a80ff595372e3bfb09aaf2e3ad0ccbc0b" => :yosemite
-    sha256 "0c0487f536b489f9594b7b416ff353a328e0bd9b872a14769154d9ce84cd243e" => :mavericks
-    sha256 "2943b908ad3d5a9e431f2eb58a3b09270ae1d12713f8da1156d9dfc542edf13d" => :mountain_lion
+    sha256 "127226ca79eb2225b2e96a2919541466b4f93a7ead04dbbbf6b605ac2e7deb43" => :yosemite
+    sha256 "0ee1b49cbb64c20dfd4ac5822a89e0e85168e249fe24ca7c35b8f8814899682c" => :mavericks
+    sha256 "06116bc1ac3ac010211f2c56193e144b242ca4a45988f38637e215be3670e956" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
