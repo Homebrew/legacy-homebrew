@@ -5,6 +5,14 @@ class Gtkextra < Formula
   sha256 "eb8bbfd31ec5d73face8939d19f9951293dd99183050aab4f781549964c2692f"
   revision 1
 
+  bottle do
+    cellar :any
+    revision 1
+    sha256 "49de9a63e4ae4edad08119a436a6618301bbb25b23a509da0124c151d5457762" => :yosemite
+    sha256 "8d87d6ae3410a479a688cbda9ec388c847bba6bfb07f4a3eafc24079ffb0f456" => :mavericks
+    sha256 "9e254e64504afcf0881d3efed490a16b21827e6a600a53cc6af5ae5f0140e1eb" => :mountain_lion
+  end
+
   depends_on "gtk+"
   depends_on "pkg-config" => :build
 
