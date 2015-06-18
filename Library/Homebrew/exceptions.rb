@@ -70,15 +70,12 @@ class TapFormulaAmbiguityError < RuntimeError
 
   def initialize name, paths
     @name = name
-    @paths = paths
-    @formulae = paths.map do |path|
-      path.fully_qualified_name
-    end
+    @paths = paths.sort! {|a, b| a.tap_priority <=> b.tap_priority}
 
     super <<-EOS.undent
-      Formulae found in multiple taps: #{formulae.map { |f| "\n       * #{f}" }.join}
+      Formulae found in multiple taps: #{@paths.map { |p| "\n       * [#{p.tap_priority.to_s.rjust(2, '0')}] #{p.fully_qualified_name}" }.join}
 
-      Please use the fully-qualified name e.g. #{formulae.first} to refer the formula.
+      Please use the fully-qualified name e.g. #{@paths.first.fully_qualified_name} to refer the formula.
     EOS
   end
 end
