@@ -6,9 +6,10 @@ class Dnsmasq < Formula
 
   bottle do
     cellar :any
-    sha256 "bd74dbd1bc8501ef5b648402efb3fca086e0bc0eee4bd038e7621f134ba925ea" => :yosemite
-    sha256 "0be4c29866964960e9903d447309823da37fcab913299b0cbfcc9dd1bd92db40" => :mavericks
-    sha256 "e1dd537c926c06948a33b7c87e9b1eff490a5a3a7856a005aab6d862f04ade15" => :mountain_lion
+    revision 1
+    sha256 "7d0589f5a6b4c6addcf62a9f766291753514ade66550b2c582d98662e925fd68" => :yosemite
+    sha256 "63a5a949e45b0226352c60d8436a1088aadf3e94bd699eb41fdd8bac5ae6199e" => :mavericks
+    sha256 "8f79b99434415fde4f10583ecc29a32fc57f26f65b7ebe7725c8b23277ad2acb" => :mountain_lion
   end
 
   option "with-libidn", "Compile with IDN support"
