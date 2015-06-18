@@ -68,6 +68,8 @@ class Dnsmasq < Formula
         <array>
           <string>#{opt_sbin}/dnsmasq</string>
           <string>--keep-in-foreground</string>
+          <string>-C</string>
+          <string>#{etc}/dnsmasq.conf</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
