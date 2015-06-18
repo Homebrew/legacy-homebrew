@@ -3,7 +3,7 @@ class Docker < Formula
   homepage "https://www.docker.com/"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of boot2docker too
-  url "https://github.com/docker/docker.git", :tag => "v1.6.2",
+  url "https://github.com/docker/docker.git", :tag => "v1.7.0",
     :revision => "7c8fca2ddb58c8d2c4fb4df31c242886df7dd257"
 
   bottle do
