@@ -1,8 +1,8 @@
 class H2o < Formula
   desc "HTTP server with support for HTTP/1.x and HTTP/2"
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.2.0.tar.gz"
-  sha256 "09aacd84ea0a53eaffdc8e0c2a2cf1108bea5db81d5859a136221fd67f07833f"
+  url "https://github.com/h2o/h2o/archive/v1.3.0.tar.gz"
+  sha256 "01a32a51edfea24526a0d0df085c66867706e41dd07073f777d6fbaa8d15a62d"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
@@ -11,9 +11,10 @@ class H2o < Formula
     sha256 "07fb006ca4d87c01e85d2eb3fb5f293770e8c016ebab4593b720389884d552e8" => :mountain_lion
   end
 
-  option "with-libuv", "Build the H2O library in addition to the executable."
+  option "with-libuv", "Build the H2O library in addition to the executable"
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "openssl" => :recommended
   depends_on "libressl" => :optional
   depends_on "libuv" => :optional
@@ -33,12 +34,11 @@ class H2o < Formula
 
     system "make", "install"
 
-    mkdir_p etc/"h2o"
-    mkdir_p var/"h2o"
-    (var+"h2o").install "examples/doc_root/index.html"
+    (etc/"h2o").mkpath
+    (var/"h2o").install "examples/doc_root/index.html"
     # Write up a basic example conf for testing.
-    (buildpath+"brew/h2o.conf").write conf_example
-    (etc+"h2o").install buildpath/"brew/h2o.conf"
+    (buildpath/"brew/h2o.conf").write conf_example
+    (etc/"h2o").install buildpath/"brew/h2o.conf"
   end
 
   # This is simplified from examples/h2o/h2o.conf upstream.
