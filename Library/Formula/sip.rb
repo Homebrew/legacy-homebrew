@@ -41,7 +41,7 @@ class Sip < Formula
       system "make", "install"
       system "make", "clean"
 
-      if which(python).realpath == (Formula[python].bin/python).realpath
+      if Formula[python].installed? && which(python).realpath == (Formula[python].bin/python).realpath
         inreplace lib/"python#{version}/site-packages/sipconfig.py", Formula[python].prefix, Formula[python].opt_prefix
       end
     end
