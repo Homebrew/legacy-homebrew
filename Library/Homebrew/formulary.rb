@@ -170,20 +170,25 @@ class Formulary
     loader_for(ref).get_formula(spec)
   end
 
-  # Return a Formula instance for the given rack.
-  def self.from_rack(rack, spec=:stable)
+  def self.rack_to_ref(rack)
     kegs = rack.directory? ? rack.subdirs.map { |d| Keg.new(d) } : []
 
     keg = kegs.detect(&:linked?) || kegs.detect(&:optlinked?) || kegs.max_by(&:version)
-    return factory(rack.basename.to_s, spec) unless keg
+    return rack.basename.to_s unless keg
 
     tap = Tab.for_keg(keg).tap
 
     if tap.nil? || tap == "Homebrew/homebrew" || tap == "mxcl/master"
-      factory(rack.basename.to_s, spec)
+      rack.basename.to_s
     else
-      factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
+      "#{tap.sub("homebrew-", "")}/#{rack.basename}"
     end
+  end
+
+  # Return a Formula instance for the given rack.
+  def self.from_rack(rack, spec=:stable)
+    @@rack_to_ref ||= Hash.new { |cache, key| cache[key] = rack_to_ref(key) }
+    factory(@@rack_to_ref[rack], spec)
   end
 
   def self.canonical_name(ref)
