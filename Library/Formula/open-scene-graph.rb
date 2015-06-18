@@ -7,6 +7,13 @@ class OpenSceneGraph < Formula
 
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
 
+  bottle do
+    revision 1
+    sha256 "84a2fb06650a9b61bcefe3abcc3619263a1e36fa086e85ccc5b749e4948cb793" => :yosemite
+    sha256 "c5de6622bedf78bc453db80ec34f9d784c453444e2046f17061a7e1da272772f" => :mavericks
+    sha256 "1be15b3c3e807af706d6a6a5ddf985550c4eabc6ebeceb92908f5fdc6c90d081" => :mountain_lion
+  end
+
   option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
