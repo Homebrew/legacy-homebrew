@@ -12,23 +12,32 @@ module Homebrew
     # ensure GIT_CONFIG is unset as we need to operate on .git/config
     ENV.delete('GIT_CONFIG')
 
-    cd HOMEBREW_REPOSITORY
-    git_init_if_necessary
+    HOMEBREW_REPOSITORY.cd { git_init_if_necessary }
 
     # migrate to new directories based tap structure
     migrate_taps
-
-    report = Report.new
-    master_updater = Updater.new(HOMEBREW_REPOSITORY)
-    master_updater.pull!
-    report.update(master_updater.report)
 
     # rename Taps directories
     # this procedure will be removed in the future if it seems unnecessasry
     rename_taps_dir_if_necessary
 
+    report = Report.new
+    tasks = Queue.new
+    semaphore = Mutex.new
+    master_updater = Updater.new(HOMEBREW_REPOSITORY)
+    thread_num = if ARGV.verbose?
+      1
+    else
+      Hardware::CPU.cores
+    end
+
+    tasks << Proc.new do
+      master_updater.pull!
+      master_updater.report
+    end
+
     Tap.each do |tap|
-      tap.path.cd do
+      tasks << Proc.new do
         updater = Updater.new(tap.path)
 
         begin
@@ -36,12 +45,26 @@ module Homebrew
         rescue
           onoe "Failed to update tap: #{tap}"
         else
-          report.update(updater.report) do |key, oldval, newval|
-            oldval.concat(newval)
-          end
+          updater.report
         end
       end
     end
+
+    workers = (0...thread_num).map do
+      Thread.new do
+        begin
+          while task = tasks.pop(true)
+            next unless task_report = task.call
+            semaphore.synchronize do
+              report.update(task_report) { |key, oldval, newval| oldval.concat newval }
+            end
+          end
+        rescue ThreadError # ignore empty queue error
+        end
+      end
+    end
+
+    workers.map(&:join)
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
@@ -63,7 +86,7 @@ module Homebrew
   private
 
   def git_init_if_necessary
-    if Dir[".git/*"].empty?
+    unless File.exist? ".git/config"
       safe_system "git", "init"
       safe_system "git", "config", "core.autocrlf", "false"
       safe_system "git", "config", "remote.origin.url", "https://github.com/Homebrew/homebrew.git"
@@ -84,9 +107,8 @@ module Homebrew
   def rename_taps_dir_if_necessary
     Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
       begin
-        tapd_basename = File.basename(tapd)
-
         if File.directory?(tapd + "/.git")
+          tapd_basename = File.basename(tapd)
           if tapd_basename.include?("-")
             # only replace the *last* dash: yes, tap filenames suck
             user, repo = tapd_basename.reverse.sub("-", "/").reverse.split("/")
@@ -203,24 +225,28 @@ class Updater
   end
 
   def read_current_revision
-    `git rev-parse -q --verify HEAD`.chomp
+    popen_read("git", "rev-parse", "-q", "--verify", "HEAD").chomp
   end
 
   def diff
-    Utils.popen_read(
+    popen_read(
       "git", "diff-tree", "-r", "--name-status", "--diff-filter=AMDR",
       "-M85%", initial_revision, current_revision
     )
   end
 
-  def `(cmd)
-    out = super
+  def popen_read(cmd, *args)
+    out = @repository.cd { Utils.popen_read(cmd, *args) }
     unless $?.success?
       $stderr.puts(out) unless out.empty?
-      raise ErrorDuringExecution.new(cmd)
+      raise ErrorDuringExecution.new(cmd, *args)
     end
-    ohai(cmd, out) if ARGV.verbose?
+    ohai("#{cmd} #{args * " "}", out) if ARGV.verbose?
     out
+  end
+
+  def safe_system(cmd, *args)
+    @repository.cd { super(cmd, *args) }
   end
 end
 
