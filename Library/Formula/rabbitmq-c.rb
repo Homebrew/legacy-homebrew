@@ -1,10 +1,8 @@
-require "formula"
-
 class RabbitmqC < Formula
   desc "RabbitMQ C client"
   homepage "https://github.com/alanxz/rabbitmq-c"
   url "https://github.com/alanxz/rabbitmq-c/archive/v0.5.2.tar.gz"
-  sha1 "6c442aefbc4477ac0598c05361c767a75d6e1541"
+  sha256 "418726e830567c296292fd37325d8eeea7b8973c143c4b50b8acf694244ff6a7"
 
   head "https://github.com/alanxz/rabbitmq-c.git"
 
@@ -20,8 +18,8 @@ class RabbitmqC < Formula
 
   depends_on "pkg-config" => :build
   depends_on "cmake" => :build
-  depends_on "rabbitmq" => :recommended
   depends_on "popt" if build.with? "tools"
+  depends_on "openssl"
 
   def install
     ENV.universal_binary if build.universal?
@@ -31,10 +29,10 @@ class RabbitmqC < Formula
     args << "-DBUILD_API_DOCS=OFF"
 
     args << if build.with? "tools"
-      "-DBUILD_TOOLS=ON"
-    else
-      "-DBUILD_TOOLS=OFF"
-    end
+              "-DBUILD_TOOLS=ON"
+            else
+              "-DBUILD_TOOLS=OFF"
+            end
 
     system "cmake", ".", *args
     system "make", "install"
