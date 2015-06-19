@@ -34,7 +34,7 @@ class StreamingJobSpec extends JobSpecBase(StreamingJobSpec.getNewSystem) {
   describe("Spark Streaming Jobs") {
     it("should be able to process data usign Streaming jobs") {
       manager ! JobManagerActor.Initialize
-      expectMsgClass(10 seconds, classOf[JobManagerActor.Initialized])
+      expectMsgClass(15 seconds, classOf[JobManagerActor.Initialized])
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", streamingJob, emptyConfig, asyncEvents ++ errorEvents)
 
