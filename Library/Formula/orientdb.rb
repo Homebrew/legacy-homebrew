@@ -3,9 +3,9 @@ require 'formula'
 class Orientdb < Formula
   desc "Graph database"
   homepage 'http://www.orientdb.org/index.htm'
-  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.10.tar.gz&os=mac'
-  version '2.0.10'
-  sha1 '0903345ee525fb102e67807b7dded78871971680'
+  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.11.tar.gz&os=mac'
+  version '2.0.11'
+  sha1 '812df4b971c3afc7bc9760b7de9bcc6680c060f0'
 
   bottle do
     cellar :any
