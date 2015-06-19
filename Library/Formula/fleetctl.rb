@@ -3,8 +3,8 @@ require "formula"
 class Fleetctl < Formula
   desc "Distributed init system"
   homepage "https://github.com/coreos/fleet"
-  url "https://github.com/coreos/fleet/archive/v0.10.1.tar.gz"
-  sha256 "395d49fcd506803acb6e6e1d9528072ea7469b66d7d317ffbe45e6fe931a53b6"
+  url "https://github.com/coreos/fleet/archive/v0.10.2.tar.gz"
+  sha256 "2f5310e8f37c3fbbc0d643a18d27e60c57ba17763a7e6e1e7ad9ae6cb4fe285a"
   head "https://github.com/coreos/fleet.git"
 
   bottle do
