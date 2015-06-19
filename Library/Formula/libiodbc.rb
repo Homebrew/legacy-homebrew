@@ -1,4 +1,5 @@
 class Libiodbc < Formula
+  desc "Independent Open DataBase Connectivity from OpenLink Software. Alternative to unixodbc."
   homepage "http://www.iodbc.org/dataspace/iodbc/wiki/iODBC/"
   url "http://sourceforge.net/projects/iodbc/files/iodbc/3.52.10/libiodbc-3.52.10.tar.gz/download"
   sha256 "1568b42b4e97f36110af661d39bfea7d94ac4ff020014574b16a7199f068e11f"
