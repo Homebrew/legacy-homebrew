@@ -31,7 +31,7 @@ class HiveJobSpec extends ExtrasJobSpecBase(HiveJobSpec.getNewSystem) {
   before {
     dao = new InMemoryDAO
     manager =
-      system.actorOf(JobManagerActor.props(dao, "test", HiveJobSpec.config, false))
+      system.actorOf(JobManagerActor.props(dao, "test", HiveJobSpec.contextConfig, false))
   }
 
   describe("Spark Hive Jobs") {

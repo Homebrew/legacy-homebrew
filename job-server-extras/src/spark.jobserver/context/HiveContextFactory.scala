@@ -7,13 +7,10 @@ import spark.jobserver.{ContextLike, SparkHiveJob, SparkJobBase}
 import spark.jobserver.util.SparkJobUtils
 
 class HiveContextFactory extends SparkContextFactory {
-  import SparkJobUtils._
-
   type C = HiveContext with ContextLike
 
-  def makeContext(config: Config, contextConfig: Config, contextName: String): C = {
-    val conf = configToSparkConf(config, contextConfig, contextName)
-    contextFactory(conf)
+  def makeContext(sparkConf: SparkConf, config: Config,  contextName: String): C = {
+    contextFactory(sparkConf)
   }
 
   protected def contextFactory(conf: SparkConf): C = {
