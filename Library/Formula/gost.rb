@@ -1,9 +1,11 @@
 require "language/go"
 
+desc "A simple command line utility for easily creating Gists for Github."
 class Gost < Formula
   homepage "https://github.com/wilhelm-murdoch/gost"
   url "https://github.com/wilhelm-murdoch/gost/archive/1.1.1.tar.gz"
-  sha1 "7a1cd487203a11940491861a3b40b187fa55af56"
+  version "1.1.1"
+  sha256 "6e932ad58c9147a6d08528f16d5e496441e577a6175ddca10fbaffcd077a080a"
 
   depends_on "go" => :build
   depends_on :hg => :build
@@ -38,9 +40,7 @@ class Gost < Formula
   end
 
   test do
-    (testpath/"test.txt").write <<-EOS.undent
-    42
-    EOS
+    (testpath/"test.txt").write "42"
     system bin/"gost", "--file=test.txt"
   end
 end
