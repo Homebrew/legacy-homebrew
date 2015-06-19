@@ -4,6 +4,7 @@ require 'formula'
 # too:
 #  - http://wiki.winehq.org/Gecko
 #  - http://wiki.winehq.org/Mono
+#  - http://sourceforge.net/projects/wine/files
 class Wine < Formula
   desc "Wine Is Not an Emulator"
   homepage 'https://www.winehq.org/'
@@ -11,16 +12,16 @@ class Wine < Formula
   stable do
     url 'https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
     sha256 'f0ab9eede5a0ccacbf6e50682649f9377b9199e49cf55641f1787cf72405acbe'
+  end
 
-    resource 'gecko' do
-      url 'https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-      sha256 'f01fafa6d7aab995c38add77315c4cbc2f32f52d5d6a9350056f42b62d631fd8'
-    end
+  resource 'gecko' do
+    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.36-x86.msi', :using => :nounzip
+    sha256 'afa457ce8f9885225b6e549dd6f154713ce15bf063c23e38c1327d2f869e128a'
+  end
 
-    resource 'mono' do
-      url 'https://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-      sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
-    end
+  resource 'mono' do
+    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.6.msi', :using => :nounzip
+    sha256 'ac681f737f83742d786706529eb85f4bc8d6bdddd8dcdfa9e2e336b71973bc25'
   end
 
   bottle do
