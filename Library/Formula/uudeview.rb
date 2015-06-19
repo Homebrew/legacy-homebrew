@@ -7,6 +7,12 @@ class Uudeview < Formula
   sha1 '2c6ab7d355b545218bd0877d598bd5327d9fd125'
   revision 1
 
+  bottle do
+    sha256 "2692468b933a114f9f2cdebdb566ace98a5d33694fa6133e5024df5e4022a63f" => :yosemite
+    sha256 "632df808fdc10ec4f8dbc18c028b51f6c28152fe0cc00c4b2a19a723f0b0499b" => :mavericks
+    sha256 "880ad715f426a3284778d05138b45af606e8a7e78bd3aff4bd6e96fe9020f22d" => :mountain_lion
+  end
+
   # Fix function signatures (for clang)
   patch :p0 do
     url "https://trac.macports.org/export/102865/trunk/dports/mail/uudeview/files/inews.c.patch"
