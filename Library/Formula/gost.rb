@@ -1,7 +1,7 @@
 require "language/go"
 
-desc "A simple command line utility for easily creating Gists for Github."
 class Gost < Formula
+  desc "A simple command line utility for easily creating Gists for Github."
   homepage "https://github.com/wilhelm-murdoch/gost"
   url "https://github.com/wilhelm-murdoch/gost/archive/1.1.1.tar.gz"
   version "1.1.1"
