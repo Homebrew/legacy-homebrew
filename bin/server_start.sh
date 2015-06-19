@@ -70,6 +70,10 @@ if [ "$PORT" != "" ]; then
   CONFIG_OVERRIDES+="-Dspark.jobserver.port=$PORT "
 fi
 
+if [ -z "$DRIVER_MEMORY" ]; then
+	DRIVER_MEMORY=1G
+fi
+
 # This needs to be exported for standalone mode so drivers can connect to the Spark cluster
 export SPARK_HOME
 
