@@ -1,5 +1,3 @@
-require 'formula'
-
 class Libiodbc < Formula
   homepage 'http://www.iodbc.org/dataspace/iodbc/wiki/iODBC/'
   url 'http://sourceforge.net/projects/iodbc/files/iodbc/3.52.10/libiodbc-3.52.10.tar.gz/download'
