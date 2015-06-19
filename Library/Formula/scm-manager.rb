@@ -8,9 +8,10 @@ class ScmManager < Formula
   depends_on :java => "1.6+"
 
   bottle do
-    sha1 "4ed2b53994cf1f31bde45a4e819906c39b218ca3" => :yosemite
-    sha1 "38d785287fc539b1b807acfa41c24a58c1cdb2d5" => :mavericks
-    sha1 "0b1169a36a9da089dc2d2257dfc473b16b5ad1f5" => :mountain_lion
+    cellar :any
+    sha256 "cb4f58a1ec6c26ee09534d8b6d42c28a21fb461b1d7e4a8ac1a4793d0a0fecf9" => :yosemite
+    sha256 "142969086cc96c7300bd92b4cc28063a57e9f014aafbcf45360fee5bae0fba1c" => :mavericks
+    sha256 "979071c94926cda759b8270d4d51b0e54c9d70ce4b078864d041b9c926093919" => :mountain_lion
   end
 
   resource "client" do
