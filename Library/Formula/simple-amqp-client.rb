@@ -8,9 +8,9 @@ class SimpleAmqpClient < Formula
 
   bottle do
     cellar :any
-    sha1 "bd274d244f4187fbf464096f09031f273261fbaf" => :yosemite
-    sha1 "ba390005dd4fa32f8c886a1d988c985ad8ba11eb" => :mavericks
-    sha1 "7f60046c62ba839e2a4df7477d9a5cf23901704d" => :mountain_lion
+    sha256 "4ce0051362b24556e552aadf852dc98910414ff9ed81d9c9efbbeafb863c8cb6" => :yosemite
+    sha256 "37b12090418d4423810cff30c484d0a11736bf856119e9757d9923a381db61bc" => :mavericks
+    sha256 "92986f1969aa18e48035b57dedcaec0bf5c098f597b8fa6d573112e4d266958a" => :mountain_lion
   end
 
   depends_on "cmake" => :build
