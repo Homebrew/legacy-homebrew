@@ -84,3 +84,4 @@ class Fftw < Formula
     system './fftw'
   end
 end
+
