@@ -98,7 +98,7 @@ begin
 
   cmd = aliases[cmd] if aliases[cmd]
 
-  sudo_check = Set.new %w[ install link pin unpin upgrade ]
+  sudo_check = %w[ install link pin unpin upgrade ]
 
   if sudo_check.include? cmd
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
