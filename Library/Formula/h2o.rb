@@ -1,8 +1,8 @@
 class H2o < Formula
   desc "HTTP server with support for HTTP/1.x and HTTP/2"
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.3.0.tar.gz"
-  sha256 "01a32a51edfea24526a0d0df085c66867706e41dd07073f777d6fbaa8d15a62d"
+  url "https://github.com/h2o/h2o/archive/v1.3.1.tar.gz"
+  sha256 "8668a7c70cdb59eef4e67889569a45e0cf75b95eec133bd30435879cbdb77fba"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
@@ -22,7 +22,6 @@ class H2o < Formula
 
   def install
     args = std_cmake_args
-    args << "."
     args << "-DWITH_BUNDLED_SSL=OFF"
 
     system "cmake", *args
