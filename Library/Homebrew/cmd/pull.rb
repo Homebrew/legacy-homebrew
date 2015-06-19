@@ -6,6 +6,8 @@ require 'formula'
 require 'cmd/tap'
 
 module Homebrew
+  HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/homebrew(-[\w-]+)?/pulls/(\d+)}
+
   def tap arg
     match = arg.match(%r[homebrew-([\w-]+)/])
     match[1].downcase if match
@@ -48,11 +50,11 @@ module Homebrew
 
   def pull
     if ARGV.empty?
-      onoe 'This command requires at least one argument containing a URL or pull request number'
+      odie 'This command requires at least one argument containing a URL or pull request number'
     end
 
     if ARGV[0] == '--rebase'
-      onoe 'You meant `git pull --rebase`.'
+      odie 'You meant `git pull --rebase`.'
     end
 
     ARGV.named.each do |arg|
@@ -60,11 +62,13 @@ module Homebrew
         url = 'https://github.com/Homebrew/homebrew/pull/' + arg
         issue = arg
       else
-        url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-        unless url_match
-          ohai 'Ignoring URL:', "Not a GitHub pull request or commit: #{arg}"
-          next
+        if (api_match = arg.match HOMEBREW_PULL_API_REGEX)
+          _, user, tap, pull = *api_match
+          arg = "https://github.com/#{user}/homebrew#{tap}/pull/#{pull}"
         end
+
+        url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
+        odie "Not a GitHub pull request or commit: #{arg}" unless url_match
 
         url = url_match[0]
         issue = url_match[3]
@@ -89,6 +93,10 @@ module Homebrew
       # Store current revision and branch
       revision = `git rev-parse --short HEAD`.strip
       branch = `git symbolic-ref --short HEAD`.strip
+
+      unless branch == "master"
+        opoo "Current branch is #{branch}: do you need to pull inside master?"
+      end
 
       pull_url url
 
@@ -117,7 +125,7 @@ module Homebrew
       unless ARGV.include? '--bottle'
         changed_formulae.each do |f|
           next unless f.bottle
-          opoo "#{f.name} has a bottle: do you need to update it with --bottle?"
+          opoo "#{f.full_name} has a bottle: do you need to update it with --bottle?"
         end
       end
 
@@ -164,19 +172,18 @@ module Homebrew
         if bintray_user && bintray_key
           repo = Bintray.repository(tap_name)
           changed_formulae.each do |f|
-            # This means the formula has an existing bottle.
-            next if f.bottle
             ohai "Publishing on Bintray:"
             package = Bintray.package f.name
-            bottle = Bottle.new(f, f.bottle_specification)
-            version = Bintray.version(bottle.url)
+            version = f.pkg_version
             curl "--silent", "--fail",
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
+            sleep 2
+            safe_system "brew", "fetch", "--retry", "--force-bottle", f.full_name
           end
         else
-          opoo "Set BINTRAY_USER and BINTRAY_KEY to add new formula bottles on Bintray!"
+          opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
         end
       end
 
@@ -185,9 +192,9 @@ module Homebrew
 
       if ARGV.include? '--install'
         changed_formulae.each do |f|
-          ohai "Installing #{f.name}"
+          ohai "Installing #{f.full_name}"
           install = f.installed? ? 'upgrade' : 'install'
-          safe_system 'brew', install, '--debug', f.name
+          safe_system 'brew', install, '--debug', f.full_name
         end
       end
     end

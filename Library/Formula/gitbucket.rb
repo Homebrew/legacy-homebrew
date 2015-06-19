@@ -1,7 +1,15 @@
 class Gitbucket < Formula
+  desc "GitHub clone"
   homepage "https://github.com/takezoe/gitbucket"
-  url "https://github.com/takezoe/gitbucket/releases/download/2.7/gitbucket.war"
-  sha256 "23ce9310232129c5c48c0d5c269ce869e24c5d30ff4c59f0682f1b39f8712e80"
+  url "https://github.com/takezoe/gitbucket/releases/download/3.3/gitbucket.war"
+  sha256 "3a50d97ed8184acdee865dab5e7b4694145f723dee92683eaa08448339658ea4"
+
+  bottle do
+    cellar :any
+    sha256 "e6c36e1cbadf79ba6ee7bf4d4e0686baa4ab8cd842b74743cc485336a1537944" => :yosemite
+    sha256 "a6f8da25fb5267ceabaa039986f2f8c0a19bde3b80cde3adf5e49fe68e32412f" => :mavericks
+    sha256 "10c67abed55b1dd97e0db921e0ed9dfa5d9cd4e5bfed98e542101686ba589685" => :mountain_lion
+  end
 
   head do
     url "https://github.com/takezoe/gitbucket.git"

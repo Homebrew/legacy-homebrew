@@ -1,28 +1,20 @@
 class AndroidNdk < Formula
+  desc "Android native-code language toolset"
   homepage "https://developer.android.com/sdk/ndk/index.html"
+  url "https://dl.google.com/android/ndk/android-ndk-r10e-darwin-x86_64.bin"
+  sha256 "728c309e606f63101f1258c9d3d579b80ac74fe74c511ebb71f460ce5c5d084e"
 
-  if MacOS.prefer_64_bit?
-    url "https://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86_64.bin"
-    sha256 "46e6d0249012d926996616709f9fdd2d4506309309c19e3ab7468f7ab04b0ddc"
-  else
-    url "https://dl.google.com/android/ndk/android-ndk-r10d-darwin-x86.bin"
-    sha256 "f1eb62d3a256f1339978b96b05bd3d7195debbf07b2d1e8a887d2f2b468d6cc7"
-  end
+  version "r10e"
 
-  version "r10d"
-
+  # As of r10e, only a 64-bit version is provided
+  depends_on :arch => :x86_64
   depends_on "android-sdk" => :recommended
 
   def install
     bin.mkpath
 
-    if MacOS.prefer_64_bit?
-      chmod 0755, "./android-ndk-#{version}-darwin-x86_64.bin"
-      system "./android-ndk-#{version}-darwin-x86_64.bin"
-    else
-      chmod 0755, "./android-ndk-#{version}-darwin-x86.bin"
-      system "./android-ndk-#{version}-darwin-x86.bin"
-    end
+    chmod 0755, "./android-ndk-#{version}-darwin-x86_64.bin"
+    system "./android-ndk-#{version}-darwin-x86_64.bin"
 
     # Now we can install both 64-bit and 32-bit targeting toolchains
     prefix.install Dir["android-ndk-#{version}/*"]

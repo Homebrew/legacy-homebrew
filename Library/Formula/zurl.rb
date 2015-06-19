@@ -1,13 +1,14 @@
 class Zurl < Formula
+  desc "HTTP and WebSocket client worker with ZeroMQ interface"
   homepage "https://github.com/fanout/zurl"
-  url "http://packages.fanout.io/source/zurl-1.3.1.tar.bz2"
-  sha1 "8a04ad092a4fd9b174a352b910c190466fc39eb9"
+  url "http://packages.fanout.io/source/zurl-1.4.2.tar.bz2"
+  sha256 "8c1ceb5fd7aad81b1b04323b46a742a2da6bbc63d825b847b23876d74a8162ab"
 
   bottle do
     cellar :any
-    sha1 "1bdbedac8c648f56a5fa72724157e4f7d3861b3e" => :yosemite
-    sha1 "a8da3afaeb13e55de3abacbe03fd2500ecb23533" => :mavericks
-    sha1 "65a4a270eb23fe38d6d2e748224ae37c40edc17f" => :mountain_lion
+    sha256 "1162e98e173d0e4a9aabaa454bf763fd43cf7d4ae91c60e6453965948e7ce74e" => :yosemite
+    sha256 "6180d9e6c0847e69054b4e8e87e514bc8a5aa729f203dae4acbf9de774e7dd1f" => :mavericks
+    sha256 "5218b780a805648f399d8f46f21ad02b37e985914e11cdd19d0b600e83b6fb60" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -17,8 +18,8 @@ class Zurl < Formula
   depends_on "qjson"
 
   resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.5.0.tar.gz"
-    sha1 "1dced02ea8527b5870ffdbe835d096aca5c01d2a"
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.6.0.tar.gz"
+    sha256 "7746806ff94f1e8c1e843644c6bbd3b9aaeb1203c2eaf38879adc23dbd5c35bb"
   end
 
   def install

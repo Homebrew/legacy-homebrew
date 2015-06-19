@@ -1,9 +1,8 @@
-require 'formula'
-
 class Riemann < Formula
-  homepage 'http://riemann.io'
-  url 'http://aphyr.com/riemann/riemann-0.2.8.tar.bz2'
-  sha1 'f77769345691f7276a58feb6be4ba3857753cf86'
+  desc "Event stream processor"
+  homepage "http://riemann.io"
+  url "http://aphyr.com/riemann/riemann-0.2.9.tar.bz2"
+  sha256 "8363e936d5c31d879a7e725e6c8fe41f1a1627b90530a7fb7968aaf4b448ff83"
 
   def shim_script
     <<-EOS.undent
@@ -19,16 +18,12 @@ class Riemann < Formula
   end
 
   def install
-    if (etc/'riemann.config').exist?
-      (prefix/'etc').install 'etc/riemann.config' => 'riemann.config.guide'
-    else
-      etc.install 'etc/riemann.config'
-    end
+    etc.install "etc/riemann.config" => "riemann.config.guide"
 
     # Install jars in libexec to avoid conflicts
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
-    (bin+'riemann').write shim_script
+    (bin+"riemann").write shim_script
   end
 
   def caveats; <<-EOS.undent
@@ -37,5 +32,35 @@ class Riemann < Formula
       riemann-tools
       riemann-dash
     EOS
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>KeepAlive</key>
+        <true/>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/riemann</string>
+          <string>#{etc}/riemann.config</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/riemann.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/riemann.log</string>
+      </dict>
+    </plist>
+    EOS
+  end
+
+  test do
+    system "#{bin}/riemann", "-help", "0"
   end
 end

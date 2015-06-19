@@ -1,10 +1,9 @@
-require 'formula'
-
 class Libffi < Formula
-  homepage 'http://sourceware.org/libffi/'
-  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.13.tar.gz'
-  mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz'
-  sha1 'f5230890dc0be42fb5c58fbf793da253155de106'
+  desc "A portable Foreign Function Interface library"
+  homepage "https://sourceware.org/libffi/"
+  url "https://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.13.tar.gz"
+  mirror "ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz"
+  sha256 "1dddde1400c3bcb7749d398071af88c3e4754058d2d4c0b3696c2f82dc5cf11c"
 
   bottle do
     cellar :any
@@ -15,7 +14,7 @@ class Libffi < Formula
   end
 
   head do
-    url 'https://github.com/atgreen/libffi.git'
+    url "https://github.com/atgreen/libffi.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -29,11 +28,11 @@ class Libffi < Formula
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    (testpath/'closure.c').write <<-TEST_SCRIPT.undent
+    (testpath/"closure.c").write <<-TEST_SCRIPT.undent
      #include <stdio.h>
      #include <ffi.h>
 

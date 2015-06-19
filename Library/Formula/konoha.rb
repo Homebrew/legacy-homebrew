@@ -1,6 +1,7 @@
 require 'formula'
 
 class Konoha < Formula
+  desc "Static scripting language with extensible syntax"
   homepage 'http://www.konohascript.org/'
   url 'https://github.com/konoha-project/konoha3/archive/v0.1.tar.gz'
   sha1 '85ee3527c9a2db2874280e506c09aab8809a6ad5'

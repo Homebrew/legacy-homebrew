@@ -1,14 +1,16 @@
 class Szl < Formula
+  desc "Compiler and runtime for the Sawzall language"
   homepage "https://code.google.com/p/szl/"
   url "https://szl.googlecode.com/files/szl-1.0.tar.gz"
   sha1 "e4c6d4aec1afc025257d41dd77b8f5c25ea120d4"
-  revision 4
+  revision 5
 
   bottle do
     cellar :any
-    sha1 "484db0b2bf6ff14f41a412181cbc1070c774e765" => :yosemite
-    sha1 "a097587106354bade616f560bba0cce10bab9bde" => :mavericks
-    sha1 "8c9a06759321f2060b324c8747d8987517d1c1a3" => :mountain_lion
+    revision 1
+    sha256 "92a10b08dae8394ac7ac5db90d351fad99bc74ff94f966bb888d3797e78c2891" => :yosemite
+    sha256 "235f69f9ca8061937fe3f72c6f2467027fe2083837cebbeb2d98e33a25c09b83" => :mavericks
+    sha256 "cf31222f970c0ccd5cc34d8704244e6cf86c353b5fe9658ecfeedd914ffe7174" => :mountain_lion
   end
 
   depends_on "binutils" # For objdump

@@ -1,16 +1,16 @@
-require 'formula'
-
 class Halibut < Formula
-  homepage 'http://www.chiark.greenend.org.uk/~sgtatham/halibut/'
-  url 'http://www.chiark.greenend.org.uk/~sgtatham/halibut/halibut-1.0.tar.gz'
-  sha1 '1e4643faf2bb4e1843740b8c70635d3d33bb7989'
+  desc "Yet another free document preparation system"
+  homepage "http://www.chiark.greenend.org.uk/~sgtatham/halibut/"
+  url "http://www.chiark.greenend.org.uk/~sgtatham/halibut/halibut-1.1.tar.gz"
+  sha256 "b964950d11ed09d3af28ac095da539613f6e50d650f01fe72b4ae752724c80a0"
+
+  head "git://git.tartarus.org/simon/halibut.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "27a4552810abd6b9df1cf35d4f9b6b450de08dc9" => :yosemite
-    sha1 "bfc2c0ca0bea4953fc0beea4f6dd009617b72f89" => :mavericks
-    sha1 "8cfc5a662b31be69a88f92dd492c005db936e21e" => :mountain_lion
+    sha256 "db13c78d65619b0b602a83d9641afdbe4d603492bc33bab263ae2530630578f4" => :yosemite
+    sha256 "eedcff72763e75094aadb2a05115614484a2e46561bb11a0466a98153d5dbcab" => :mavericks
+    sha256 "acf6e1989f0f9f895f36b4076179bc8f30fb37be5537f02a1c2f5b0733b8e7a9" => :mountain_lion
   end
 
   def install
@@ -23,13 +23,10 @@ class Halibut < Formula
   end
 
   test do
-    # Initial sanity test
-    system "#{bin}/halibut", "--version"
-
-    # Test converting to HTML.
-    (testpath/'sample.but').write('Hello, world!')
+    (testpath/"sample.but").write("Hello, world!")
     system "#{bin}/halibut", "--html=sample.html", "sample.but"
 
-    assert_match /<p>\nHello, world!\n<\/p>/, (testpath/'sample.html').read()
+    assert_match("<p>\nHello, world!\n<\/p>",
+                 (testpath/"sample.html").read)
   end
 end

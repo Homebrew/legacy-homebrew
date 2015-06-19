@@ -1,26 +1,20 @@
 class Qt < Formula
-  homepage "http://qt-project.org/"
+  desc "Cross-platform application and UI framework"
+  homepage "https://www.qt.io/"
 
   stable do
-    url "https://download.qt.io/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-    mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-    sha1 "ddf9c20ca8309a116e0466c42984238009525da6"
-
-    # This patch should be able to be removed with the next stable Qt4 release.
-    patch do
-      url "https://raw.githubusercontent.com/DomT4/scripts/440e3cafde5bf6ec6f50cd28fa5bf89c280f1b53/Homebrew_Resources/Qt/qt4patch.diff"
-      sha1 "57246a33460246118a1fab7460c79f2077d3a929"
-    end
+    url "https://download.qt.io/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
+    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
+    sha256 "e2882295097e47fe089f8ac741a95fef47e0a73a3f3cdf21b56990638f626ea0"
   end
 
   bottle do
-    revision 6
-    sha1 "bedfe4e950676a85f9653732d33767fbcce45da5" => :yosemite
-    sha1 "8ee072473ababd49fe85bc6f9bf5ddcdafea8c26" => :mavericks
-    sha1 "668ac1a65811e0ff23230a698725b383c61c1d13" => :mountain_lion
+    sha256 "540e72bee0f660e0aeebe84ce04408fd45642fd987e304c9591b2648af55672b" => :yosemite
+    sha256 "27e20d9f5b17df87e49ae9d6fe15105ac83a79b2a364884cdfd17e55e02d6ea1" => :mavericks
+    sha256 "c03ff74ad662f1aafb048f6d016f76bf510da328752453ae4b7e6aaa6402e9b9" => :mountain_lion
   end
 
-  head "https://gitorious.org/qt/qt.git", :branch => "4.8"
+  head "https://code.qt.io/qt/qt.git", :branch => "4.8"
 
   option :universal
   option "with-qt3support", "Build with deprecated Qt3Support module support"
@@ -45,13 +39,13 @@ class Qt < Formula
             "-cocoa", "-fast", "-release"]
 
     if ENV.compiler == :clang
-        args << "-platform"
+      args << "-platform"
 
-        if MacOS.version >= :mavericks
-          args << "unsupported/macx-clang-libc++"
-        else
-          args << "unsupported/macx-clang"
-        end
+      if MacOS.version >= :mavericks
+        args << "unsupported/macx-clang-libc++"
+      else
+        args << "unsupported/macx-clang"
+      end
     end
 
     args << "-plugin-sql-mysql" if build.with? "mysql"
@@ -74,11 +68,11 @@ class Qt < Formula
 
     args << "-nomake" << "docs" if build.without? "docs"
 
-    if MacOS.prefer_64_bit? or build.universal?
+    if MacOS.prefer_64_bit? || build.universal?
       args << "-arch" << "x86_64"
     end
 
-    if !MacOS.prefer_64_bit? or build.universal?
+    if !MacOS.prefer_64_bit? || build.universal?
       args << "-arch" << "x86"
     end
 

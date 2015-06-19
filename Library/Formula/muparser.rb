@@ -1,26 +1,63 @@
-require 'formula'
-
 class Muparser < Formula
-  homepage 'http://muparser.beltoforion.de/'
-  url 'https://downloads.sourceforge.net/project/muparser/muparser/Version%202.2.3/muparser_v2_2_3.zip'
-  sha1 '3974898052dd9ef350df1860f8292755f78f59df'
+  desc "C++ math expression parser library"
+  homepage "http://muparser.beltoforion.de/"
+  url "https://docs.google.com/uc?export=download&id=0BzuB-ydOOoduejdwdTQwcF9JLTA"
+  version "2.2.4"
+  sha256 "fe4e207b9b5ee0e8ba155c3a7cc22ea6085313e0a17b7568a8a86eaa0d441431"
+
+  head "http://muparser.googlecode.com/svn/trunk/"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "138dd0da70ef47470e5f19b0261dc357d1734afd" => :mavericks
-    sha1 "dcec9427dff9d1021281ebf0eb8ca22c3877e355" => :mountain_lion
-    sha1 "95b0c1e1b228216c712f78892488db996d11ed30" => :lion
+    sha256 "3d580042b67b5f23bb7c255baaf6c079e030516afc7f0bb25d3978259628f098" => :yosemite
+    sha256 "6e4a1373a02ff289d474514fdffc77a80cebf30e37fb5fe51f2dd9c659163bf4" => :mavericks
+    sha256 "b3ca223c600162789f56a26d73db8b086234a16923d0db6c346f2accef30d829" => :mountain_lion
   end
 
   def install
-    # patch to correct thousands separator behavior when built against libc++.
-    # https://groups.google.com/d/topic/muparser-dev/l8pbPFnR46s/discussion
-    # https://code.google.com/p/muparser/source/detail?r=18
-    inreplace 'include/muParserBase.h', 'std::string(1, m_nGroup)', 'std::string(1, (char)(m_cThousandsSep > 0 ? m_nGroup : CHAR_MAX))'
-    inreplace 'include/muParserInt.h', 'std::string(1, m_nGroup)', 'std::string(1, (char)(m_cThousandsSep > 0 ? m_nGroup : CHAR_MAX))'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    chmod 0755, "./configure"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <iostream>
+      #include "muParser.h"
+
+      double MySqr(double a_fVal)
+      {
+        return a_fVal*a_fVal;
+      }
+
+      int main(int argc, char* argv[])
+      {
+        using namespace mu;
+        try
+        {
+          double fVal = 1;
+          Parser p;
+          p.DefineVar("a", &fVal);
+          p.DefineFun("MySqr", MySqr);
+          p.SetExpr("MySqr(a)*_pi+min(10,a)");
+
+          for (std::size_t a=0; a<100; ++a)
+          {
+            fVal = a;  // Change value of variable a
+            std::cout << p.Eval() << std::endl;
+          }
+        }
+        catch (Parser::exception_type &e)
+        {
+          std::cout << e.GetMsg() << std::endl;
+        }
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "-I#{include}", "-L#{lib}", "-lmuparser",
+           testpath/"test.cpp", "-o", testpath/"test"
+    system "./test"
   end
 end

@@ -1,9 +1,10 @@
 require 'formula'
 
 class Geoserver < Formula
+  desc "Java server to share and edit geospatial data"
   homepage 'http://geoserver.org/'
-  url 'https://downloads.sourceforge.net/project/geoserver/GeoServer/2.6.2/geoserver-2.6.2-bin.zip'
-  sha1 '16b2dd0a8471a2af420d6999906d21ccd9384812'
+  url 'https://downloads.sourceforge.net/project/geoserver/GeoServer/2.7.1/geoserver-2.7.1-bin.zip'
+  sha256 '37a48e344ad17ee8dfd300746789f82c4617c8d1800d772cb59305cd8b7c6845'
 
   def install
     libexec.install Dir['*']

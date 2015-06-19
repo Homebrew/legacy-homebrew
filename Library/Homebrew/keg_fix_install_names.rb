@@ -38,7 +38,7 @@ class Keg
       end
     end
 
-    files = pkgconfig_files | libtool_files | script_files
+    files = pkgconfig_files | libtool_files | script_files | plist_files
 
     files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
       s = first.open("rb", &:read)
@@ -148,7 +148,7 @@ class Keg
   end
 
   def find_dylib name
-    lib.find { |pn| break pn if pn.basename == name }
+    lib.find { |pn| break pn if pn.basename == name } if lib.directory?
   end
 
   def mach_o_files
@@ -197,5 +197,15 @@ class Keg
       libtool_files << pn
     end if lib.directory?
     libtool_files
+  end
+
+  def plist_files
+    plist_files = []
+
+    self.find do |pn|
+      next if pn.symlink? or pn.directory? or pn.extname != '.plist'
+      plist_files << pn
+    end
+    plist_files
   end
 end

@@ -1,4 +1,5 @@
 class Spiped < Formula
+  desc "Secure pipe daemon"
   homepage "https://www.tarsnap.com/spiped.html"
   url "https://www.tarsnap.com/spiped/spiped-1.5.0.tgz"
   sha256 "b2f74b34fb62fd37d6e2bfc969a209c039b88847e853a49e91768dec625facd7"

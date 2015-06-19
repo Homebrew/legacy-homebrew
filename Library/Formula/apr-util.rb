@@ -1,12 +1,14 @@
 class AprUtil < Formula
+  desc "Companion library to apr, the Apache Portable Runtime library"
   homepage "https://apr.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=apr/apr-util-1.5.4.tar.bz2"
-  sha1 "b00038b5081472ed094ced28bcbf2b5bb56c589d"
+  url "https://www.apache.org/dyn/closer.cgi?path=apr/apr-util-1.5.4.tar.bz2"
+  sha256 "a6cf327189ca0df2fb9d5633d7326c460fe2b61684745fd7963e79a6dd0dc82e"
+  revision 1
 
   bottle do
-    sha1 "c0807fd64a46a6c0d1dfd3e3a5cfff3812356251" => :yosemite
-    sha1 "c3d8fa3f0b6d5c4923ab8bda382614d81d412c0b" => :mavericks
-    sha1 "4af28090bda520eabde6dfc039ea7d20da4f3db6" => :mountain_lion
+    sha256 "6b043e4bf051fce17991f3cafb4ce7d235bf52e01b76e447b5a286f85a69cde9" => :yosemite
+    sha256 "aff874c3e72a5ec31b75c066d327771bc84b0a31fedc2243e4e21a56dee78eae" => :mavericks
+    sha256 "76f24ef98aebf89eb0b3c7d7fdc31f8074120c39708d8a513575e956fe50fc07" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "Apple's CLT package contains apr."

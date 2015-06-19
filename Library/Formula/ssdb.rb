@@ -1,14 +1,15 @@
 class Ssdb < Formula
+  desc "NoSQL database supporting many data structures: Redis alternative"
   homepage "http://ssdb.io/"
-  url "https://github.com/ideawu/ssdb/archive/1.8.0.tar.gz"
-  sha1 "88f4930ae6f3d0234c783546e1fb00638801c4e7"
+  url "https://github.com/ideawu/ssdb/archive/1.8.2.tar.gz"
+  sha256 "2fe10689a0e1e9e9ca67acbe9e0fa3607810dca90dcc9f0813b2661cc6d4e826"
   head "https://github.com/ideawu/ssdb.git"
-  revision 1
 
   bottle do
-    sha1 "61b35f6fc12408e55863344feab5af1a8fbd3d88" => :yosemite
-    sha1 "3e6a066798981b12d02885fa4ee3358bf3f251a2" => :mavericks
-    sha1 "807e32ab2af2db9fbaa1a4104c1a5e065c3a9231" => :mountain_lion
+    cellar :any
+    sha256 "1970e505fd1e8f6166010a892e66a718a39cbab1bcdd515bd6fdd4ec7c185600" => :yosemite
+    sha256 "61430871ab15a312f8a6b0caf68003d379fc8e52199702747b84f86f3887d911" => :mavericks
+    sha256 "16b3c20d79519328e01139ccf8fc71832f90d5df1c55c9ba32ab150a0cddf77e" => :mountain_lion
   end
 
   def install

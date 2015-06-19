@@ -1,14 +1,15 @@
 require "formula"
 class Geographiclib < Formula
+  desc "C++ geography library"
   homepage "http://geographiclib.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.41.tar.gz"
-  sha1 "f1ff824f0e8bc30dd349bf21d2cd54a5630c87f6"
+  url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.43.tar.gz"
+  sha1 "444650196e1e7fd18c7d3e184599d05be5221e57"
 
   bottle do
     cellar :any
-    sha256 "4b63ee2a41d497463011f7a9edcc1d1c011b2f35153e59818a787a5e7429b821" => :yosemite
-    sha256 "12da0209d90c749ba463a3c87daf1025253709fd90b5bb1fbd55d7fbf93ab2e4" => :mavericks
-    sha256 "f65d005f4bcec64175f413d2eedef5d561007f66a791333184806594cd426e45" => :mountain_lion
+    sha256 "71b8bbdd29951d7e32e690f9b03df844f2d3750f40211a0d80a54e55bc17d2e1" => :yosemite
+    sha256 "9f88fd085316b05f7196de74780b9b7968481bb5810e2f157a626d8bc033a03d" => :mavericks
+    sha256 "0759e226f6722727f6ea3f42999064b31fc660e8e881f7163a2dcf0881303941" => :mountain_lion
   end
 
   depends_on "cmake" => :build

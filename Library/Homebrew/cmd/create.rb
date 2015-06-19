@@ -40,7 +40,7 @@ module Homebrew
       stem = Pathname.new(url).stem
       print "Formula name [#{stem}]: "
       fc.name = __gets || stem
-      fc.path = Formula.path(fc.name)
+      fc.path = Formulary.path(fc.name)
     end
 
     # Don't allow blacklisted formula, or names that shadow aliases,
@@ -84,9 +84,9 @@ class FormulaCreator
       @name ||= $1
       /(.*?)[-_.]?#{path.version}/.match path.basename
       @name ||= $1
-      @path = Formula.path @name unless @name.nil?
+      @path = Formulary.path @name unless @name.nil?
     else
-      @path = Formula.path name
+      @path = Formulary.path name
     end
     if @version
       @version = Version.new(@version)
@@ -124,6 +124,7 @@ class FormulaCreator
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
     class #{Formulary.class_s(name)} < Formula
+      desc ""
       homepage ""
       url "#{url}"
     <% unless version.nil? or version.detected_from_url? %>

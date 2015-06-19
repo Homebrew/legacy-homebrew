@@ -1,4 +1,5 @@
 class Camlp4 < Formula
+  desc "Tool to write extensible parsers in OCaml"
   homepage "https://github.com/ocaml/camlp4"
   url "https://github.com/ocaml/camlp4/archive/4.02.1+2.tar.gz"
   sha1 "ad43587c2bdc46d5d0f028857f5ce90bc9ce7ab5"

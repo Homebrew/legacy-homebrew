@@ -1,14 +1,15 @@
 require "formula"
 
 class Lftp < Formula
+  desc "Sophisticated file transfer program"
   homepage "http://lftp.yar.ru/"
-  url "http://lftp.yar.ru/ftp/lftp-4.6.1.tar.gz"
-  sha1 "57b62d7365de1698433a3b1b5daf7192adc2517a"
+  url "http://lftp.yar.ru/ftp/lftp-4.6.3a.tar.xz"
+  sha256 "8c3a12a1f9ec288132b245bdd7d14d88ade1aa5cb1c14bb68c8fab3b68793840"
 
   bottle do
-    sha1 "4eb97a364cce3e0af57a0fb08e7b8094bf3fa5f5" => :yosemite
-    sha1 "331af6459f1cd2c65c4845cdaf0c2bd0e475e2e1" => :mavericks
-    sha1 "0ebecf5a39e1a5a6cdd4da9405b0914470c72e87" => :mountain_lion
+    sha256 "5f939d210823658f99f455b76250aac59e4db8a02673f3ec69087cf4a61ea20b" => :yosemite
+    sha256 "d5f13cc616fb5d3346fc83a15ec3c6185e00aba6964c6c755b520b1f8367a973" => :mavericks
+    sha256 "7ad557cfbebbe54ac6e7c017aa183752b6ae9bbf9939231b2a403feaf297be6b" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -1,10 +1,9 @@
 require 'testing_env'
 require 'extend/ENV'
 
-class EnvironmentTests < Homebrew::TestCase
+module SharedEnvTests
   def setup
     @env = {}.extend(EnvActivation)
-    @env.activate_extensions!
   end
 
   def test_switching_compilers
@@ -105,14 +104,20 @@ class EnvironmentTests < Homebrew::TestCase
     @env.prepend_path 'FOO', '/bin'
     assert_equal "/bin#{File::PATH_SEPARATOR}/usr/bin", @env['FOO']
   end
-end
 
-module SharedEnvTests
   def test_switching_compilers_updates_compiler
     [:clang, :llvm, :gcc, :gcc_4_0].each do |compiler|
       @env.send(compiler)
       assert_equal compiler, @env.compiler
     end
+  end
+
+  def test_deparallelize_block_form_restores_makeflags
+    @env['MAKEFLAGS'] = '-j4'
+    @env.deparallelize do
+      assert_nil @env['MAKEFLAGS']
+    end
+    assert_equal '-j4', @env['MAKEFLAGS']
   end
 end
 
@@ -120,31 +125,21 @@ class StdenvTests < Homebrew::TestCase
   include SharedEnvTests
 
   def setup
-    @env = {}.extend(Stdenv)
+    super
+    @env.extend(Stdenv)
   end
 end
 
 class SuperenvTests < Homebrew::TestCase
   include SharedEnvTests
 
-  attr_reader :env, :bin
-
   def setup
-    @env = {}.extend(Superenv)
-    @bin = HOMEBREW_REPOSITORY/"Library/ENV/#{MacOS::Xcode.version}"
-    bin.mkpath
-  end
-
-  def test_bin
-    assert_equal bin, Superenv.bin
+    super
+    @env.extend(Superenv)
   end
 
   def test_initializes_deps
-    assert_equal [], env.deps
-    assert_equal [], env.keg_only_deps
-  end
-
-  def teardown
-    bin.rmtree
+    assert_equal [], @env.deps
+    assert_equal [], @env.keg_only_deps
   end
 end

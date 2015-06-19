@@ -1,13 +1,15 @@
 class GpgAgent < Formula
+  desc "GPG key agent"
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
   mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
   sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
 
   bottle do
-    sha256 "1e516200de1786beeb5de9dbc14e18db0794914a8d931ecc7af0e6c37a4545ed" => :yosemite
-    sha256 "5e2619d61dbe587c0a457937887a8555ed87b6e52abe17ef55af454a5ce5ca72" => :mavericks
-    sha256 "3897518fdb9d4b9a159a9e29d64fef1a515ebac83c3b5fce1a45ab3bb5e534dc" => :mountain_lion
+    revision 2
+    sha256 "0e13cf13842212387b756ee284ecd1a3a8c3c424025368c6dfe30009fd108300" => :yosemite
+    sha256 "a050658a4ae0c286a08a4ca52324b9f2d2bd85a6e1b8e3d0007d7d8234564e61" => :mavericks
+    sha256 "c0eb101a549b54f826013c3f4cafe7541669879296cce8b13b1cc0c5a1120ffe" => :mountain_lion
   end
 
   depends_on "libgpg-error"
@@ -34,8 +36,8 @@ class GpgAgent < Formula
   end
 
   def caveats; <<-EOS.undent
-      Remember to set a graphical pinentry program (such as pinentry-mac) in your
-      ~/.gnupg/gpg-agent.conf if you configure launchd to start gpg-agent at login.
+      Remember to add "use-standard-socket" to your ~/.gnupg/gpg-agent.conf
+      file.
     EOS
   end
 
@@ -43,31 +45,6 @@ class GpgAgent < Formula
     system "#{bin}/gpg-agent", "--help"
   end
 
-  def plist; <<-EOS.undent
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-            <string>/bin/sh</string>
-            <string>-c</string>
-            <string>#{opt_prefix}/bin/gpg-agent -c --daemon | /bin/launchctl</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>StandardErrorPath</key>
-        <string>/dev/null</string>
-        <key>StandardOutPath</key>
-        <string>/dev/null</string>
-        <key>ServiceDescription</key>
-        <string>Run gpg-agent at login</string>
-    </dict>
-    </plist>
-    EOS
-  end
 end
 
 __END__

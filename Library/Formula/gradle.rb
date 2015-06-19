@@ -1,12 +1,11 @@
-require 'formula'
-
 class Gradle < Formula
-  homepage 'http://www.gradle.org/'
-  url 'https://downloads.gradle.org/distributions/gradle-2.3-bin.zip'
-  sha1 'db857319150aa8f90cfcc1df7991c0ef4bcd180a'
+  desc "Build system based on the Groovy language"
+  homepage "https://www.gradle.org/"
+  url "https://downloads.gradle.org/distributions/gradle-2.4-bin.zip"
+  sha256 "c4eaecc621a81f567ded1aede4a5ddb281cc02a03a6a87c4f5502add8fc2f16f"
 
   def install
     libexec.install %w[bin lib]
-    bin.install_symlink libexec+'bin/gradle'
+    bin.install_symlink libexec+"bin/gradle"
   end
 end

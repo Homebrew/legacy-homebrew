@@ -1,17 +1,18 @@
 class Libcppa < Formula
   # TODO: since libcppa has been renamed to CAF, this formula should eventually
   # be renamed to 'caf.rb'.
+  desc "Implementation of the Actor Model for C++"
   homepage "http://actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/0.13.tar.gz"
-  sha1 "80de2666cad9795f280994f6dd12aae8368e65fe"
+  url "https://github.com/actor-framework/actor-framework/archive/0.13.2.tar.gz"
+  sha256 "3ccf7e469740e750eef31f14b965b00f7b6e3a89b05086a088ca905b3b1a04e6"
   head "https://github.com/actor-framework/actor-framework.git",
     :branch => "develop"
 
   bottle do
     cellar :any
-    sha256 "2b0c07b1bd32cae582d99cfdebb3034056343e5893d29fdf30aab7af3d0954fb" => :yosemite
-    sha256 "95421cb4101f8e2c3c7f0466ccd8efcf94e22e3e1d55c6e3fa83bfec500d91c2" => :mavericks
-    sha256 "3bc6394e1b7c51ab09f2580c20f55cb9fa15b532d22a81b26cab249d88d9cc3b" => :mountain_lion
+    sha256 "7534496109bd370daae9e9265ec4d380e6150c4f147ad5628e2b6f25620f71e2" => :yosemite
+    sha256 "0524882f335b97e63b75867dfe2b22139c41fa6552a46c31d1f7a6079bc82483" => :mavericks
+    sha256 "4d0143d27f761dcfae634babf7884a4f46f3953034c74451aa63aca9ad13dd8a" => :mountain_lion
   end
 
   depends_on "cmake" => :build

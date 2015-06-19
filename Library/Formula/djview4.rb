@@ -1,23 +1,26 @@
 require 'formula'
 
 class Djview4 < Formula
+  desc "Viewer for the DjVu image format"
   homepage 'http://djvu.sourceforge.net/djview4.html'
-  url 'https://downloads.sourceforge.net/project/djvu/DjView/4.8/djview-4.8.tar.gz'
-  sha1 '266d207afb63a1ee63eed054190bf88888fda572'
+  url 'https://downloads.sourceforge.net/project/djvu/DjView/4.10/djview-4.10.3.tar.gz'
+  sha1 '5e31fec525d05744454bd0b74f0375acde1ad66c'
+
+  bottle do
+    sha256 "5290a8aef17bd16879e382315d0aa34585ddcbf0512315a2829f299ecb26a08a" => :yosemite
+    sha256 "b0f55aae6abd6d7a16ea2b16ad6ee34d695558a4093847693f02a5f26a52e28a" => :mavericks
+    sha256 "62b602b5145f8f69f63c9b16e7b7c740d261bd6a17e3b03799b06aceb5701c0d" => :mountain_lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'djvulibre'
   depends_on 'qt'
 
-  # Patch for Qt 4.8 compatibility. See:
-  # https://build.opensuse.org/package/view_file?file=djview4-qt-4.8.patch&package=djvulibre-djview4&project=graphics&rev=8c40ae0f91469bb1af80f36c24516251
-  # When updating this formula, check if this patch is still needed.
-  patch :DATA
-
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--with-x=no",
+                          "--disable-nsdejavu",
                           "--disable-desktopfiles"
     system "make", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}"
 
@@ -27,43 +30,3 @@ class Djview4 < Formula
     prefix.install 'src/djview.app'
   end
 end
-
-
-__END__
-Index: djview-4.8/src/qdjvuwidget.cpp
-===================================================================
---- djview-4.8.orig/src/qdjvuwidget.cpp
-+++ djview-4.8/src/qdjvuwidget.cpp
-@@ -153,7 +153,7 @@ all_numbers(const char *s)
- }
- 
- template<class T> static inline void 
--swap(T& x, T& y)
-+myswap(T& x, T& y)
- {
-   T tmp;
-   tmp = x;
-@@ -173,11 +173,11 @@ ksmallest(T *v, int n, int k)
-       /* Sort v[lo], v[m], v[hi] by insertion */
-       m = (lo+hi)/2;
-       if (v[lo]>v[m])
--        swap(v[lo],v[m]);
-+        myswap(v[lo],v[m]);
-       if (v[m]>v[hi]) {
--        swap(v[m],v[hi]);
-+        myswap(v[m],v[hi]);
-         if (v[lo]>v[m])
--          swap(v[lo],v[m]);
-+          myswap(v[lo],v[m]);
-       }
-       /* Extract pivot, place sentinel */
-       pivot = v[m];
-@@ -191,7 +191,7 @@ ksmallest(T *v, int n, int k)
-       do ++l; while (v[l]<pivot);
-       do --h; while (v[h]>pivot);
-       if (l < h) { 
--        swap(v[l],v[h]); 
-+        myswap(v[l],v[h]); 
-         goto loop; 
-       }
-       /* Finish up */

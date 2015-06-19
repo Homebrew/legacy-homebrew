@@ -1,17 +1,18 @@
 class Duck < Formula
+  desc "Command-line interface for Cyberduck (a multi-protocol file transfer tool)"
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-4.6.5.17000.tar.gz"
-  sha1 "bd26842b09bf41f86791a7172b93ac88f029b354"
+  url "https://dist.duck.sh/duck-src-4.7.17432.tar.gz"
+  sha1 "100996ffbabf2586eb149efd3097b4af20efa728"
   head "https://svn.cyberduck.io/trunk/"
 
   bottle do
     cellar :any
-    sha1 "c0439df03eaf84f6b8a446b5207963e4ca35609b" => :yosemite
-    sha1 "b8e8a45673394a7034e63e5514eac65a122bdc16" => :mavericks
-    sha1 "be719af049e6b39490554f8e1ba916c2b7de77ea" => :mountain_lion
+    sha256 "d514c0960a9d735b84257e57f7878b87bdc99d425aa7dd3cab456ec57f5fcafe" => :yosemite
+    sha256 "4b2278554fe444de99c510fce0d236058ddf3c63d504a566d3ad33eb34f66b53" => :mavericks
+    sha256 "e6963de8e17bd35f4299e9add6176bdb434b9760450019ef1d36ca99577ea73a" => :mountain_lion
   end
 
-  depends_on :java => ["1.7", :build]
+  depends_on :java => ["1.7+", :build]
   depends_on :xcode => :build
   depends_on "ant" => :build
 

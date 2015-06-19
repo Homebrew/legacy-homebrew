@@ -1,4 +1,5 @@
 class Orpie < Formula
+  desc "RPN calculator for the terminal"
   homepage "http://pessimization.com/software/orpie/"
   url "http://pessimization.com/software/orpie/orpie-1.5.2.tar.gz"
   sha1 "9786df20fb272fd36f87868bed04cab504602282"

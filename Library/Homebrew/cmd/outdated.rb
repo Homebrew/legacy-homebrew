@@ -3,16 +3,16 @@ require 'keg'
 
 module Homebrew
   def outdated
-    formulae = ARGV.formulae.any? ? ARGV.formulae : Formula.installed
+    formulae = ARGV.resolved_formulae.any? ? ARGV.resolved_formulae : Formula.installed
 
     outdated = outdated_brews(formulae) do |f, versions|
       if ($stdout.tty? || ARGV.verbose?) && !ARGV.flag?("--quiet")
-        puts "#{f.name} (#{versions*', '} < #{f.pkg_version})"
+        puts "#{f.full_name} (#{versions*', '} < #{f.pkg_version})"
       else
-        puts f.name
+        puts f.full_name
       end
     end
-    Homebrew.failed = ARGV.formulae.any? && outdated.any?
+    Homebrew.failed = ARGV.resolved_formulae.any? && outdated.any?
   end
 
   def outdated_brews(formulae)
@@ -23,11 +23,10 @@ module Homebrew
         keg = Keg.new dir
         version = keg.version
         all_versions << version
-        older_version = f.version <= version
+        older_version = f.pkg_version <= version
 
-        tap = Tab.for_keg(keg).tapped_from
-        same_or_path_url_tap = f.tap == tap || tap == HOMEBREW_PATH_URL_TAP
-        if same_or_path_url_tap || older_version
+        tap = Tab.for_keg(keg).tap
+        if tap.nil? || f.tap == tap || older_version
           older_or_same_tap_versions << version
         end
       end

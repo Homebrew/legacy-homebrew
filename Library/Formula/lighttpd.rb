@@ -1,4 +1,5 @@
 class Lighttpd < Formula
+  desc "Small memory footprint, flexible web-server"
   homepage "http://www.lighttpd.net/"
   url "http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.35.tar.bz2"
   sha256 "4a71c1f6d8af41ed894b507720c4c17184dc320590013881d5170ca7f15c5bf7"
@@ -138,9 +139,5 @@ class Lighttpd < Formula
     </dict>
     </plist>
     EOS
-  end
-
-  test do
-    system bin/"lighttpd", "-v"
   end
 end

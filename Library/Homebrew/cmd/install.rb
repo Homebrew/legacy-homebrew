@@ -42,35 +42,35 @@ module Homebrew
         # head-only without --HEAD is an error
         if not ARGV.build_head? and f.stable.nil? and f.devel.nil?
           raise <<-EOS.undent
-          #{f.name} is a head-only formula
-          Install with `brew install --HEAD #{f.name}`
+          #{f.full_name} is a head-only formula
+          Install with `brew install --HEAD #{f.full_name}`
           EOS
         end
 
         # devel-only without --devel is an error
         if not ARGV.build_devel? and f.stable.nil? and f.head.nil?
           raise <<-EOS.undent
-          #{f.name} is a devel-only formula
-          Install with `brew install --devel #{f.name}`
+          #{f.full_name} is a devel-only formula
+          Install with `brew install --devel #{f.full_name}`
           EOS
         end
 
         if ARGV.build_stable? and f.stable.nil?
-          raise "#{f.name} has no stable download, please choose --devel or --HEAD"
+          raise "#{f.full_name} has no stable download, please choose --devel or --HEAD"
         end
 
         # --HEAD, fail with no head defined
         if ARGV.build_head? and f.head.nil?
-          raise "No head is defined for #{f.name}"
+          raise "No head is defined for #{f.full_name}"
         end
 
         # --devel, fail with no devel defined
         if ARGV.build_devel? and f.devel.nil?
-          raise "No devel block is defined for #{f.name}"
+          raise "No devel block is defined for #{f.full_name}"
         end
 
         if f.installed?
-          msg = "#{f.name}-#{f.installed_version} already installed"
+          msg = "#{f.full_name}-#{f.installed_version} already installed"
           msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
           opoo msg
         else
@@ -112,6 +112,7 @@ module Homebrew
   def check_xcode
     checks = Checks.new
     %w[
+      check_for_unsupported_osx
       check_for_installed_developer_tools
       check_xcode_license_approved
       check_for_osx_gcc_installer

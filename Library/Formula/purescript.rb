@@ -3,18 +3,21 @@ require "language/haskell"
 class Purescript < Formula
   include Language::Haskell::Cabal
 
+  desc "Strongly typed programming language that compiles to JavaScript"
   homepage "http://www.purescript.org"
-  url "https://hackage.haskell.org/package/purescript-0.6.8/purescript-0.6.8.tar.gz"
-  sha1 "70fd4d3109d61c34c8898a30d222c4b1ad8fd7a5"
+  url "https://github.com/purescript/purescript/archive/v0.6.9.5.tar.gz"
+  sha256 "b7d24ce85c65a9d2adb178d2e9b628f8d4f5a33103c3da6f3312c63a1048ff80"
 
   bottle do
-    sha1 "b5628dbaabd07215c54979156b2d2f66fb6034c0" => :yosemite
-    sha1 "0d082d33a31bae337188e0866180120a8b38c66d" => :mavericks
-    sha1 "e9bbad2add5f0961926a0df8adbd8a3848781747" => :mountain_lion
+    sha256 "1f7e753da5fee42ed983254d5c8914e9c5cca3f876d219ca538726ae76aee68d" => :yosemite
+    sha256 "df653749f0b80a3f406d2e23b870775e651a5f264701d879386dbd5fe86083cc" => :mavericks
+    sha256 "dbab26a1e995dd5b64fed38bd9d287c2d33e519cedc5165ecdd2780429df82dc" => :mountain_lion
   end
 
+  depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "ghc"
+
+  setup_ghc_compilers
 
   def install
     install_cabal_package

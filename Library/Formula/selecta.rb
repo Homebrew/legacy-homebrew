@@ -1,23 +1,10 @@
-class Ruby19Dependency < Requirement
-  fatal true
-
-  satisfy do
-    ruby = which("ruby")
-    `#{ruby} --version` =~ /ruby (\d\.\d).\d/
-    $1.to_f >= 1.9
-  end
-
-  def message
-    "Selecta requires Ruby 1.9 or greater."
-  end
-end
-
 class Selecta < Formula
+  desc "Fuzzy text selector for files and anything else you need to select"
   homepage "https://github.com/garybernhardt/selecta"
   url "https://github.com/garybernhardt/selecta/archive/v0.0.6.tar.gz"
-  sha1 "bf8881b2d545847921b1a05d23b88e2037c358e4"
+  sha256 "c5e0fdab53b3c4942e46c1a2c5a38158f21eb0520c6391f77d6d0a7d2a023318"
 
-  depends_on Ruby19Dependency
+  depends_on :ruby => "1.9"
 
   def install
     bin.install "selecta"

@@ -1,9 +1,10 @@
 require "formula"
 
 class GoogleAppEngine < Formula
+  desc "Google App Engine"
   homepage "https://developers.google.com/appengine/"
-  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.18.zip"
-  sha256 "e113c3e68942f0661afe3b22bbe18d9574b42776cc14d4c3f2b761277b7f3d3e"
+  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.20.zip"
+  sha256 "320e96b85405e8c6c9a8f1810f43cd3655b670cc4f49e0445eb7579da0498583"
 
   def install
     cd ".."

@@ -1,14 +1,13 @@
-require "formula"
-
 class Bmake < Formula
+  desc "Portable version of NetBSD make(1)"
   homepage "http://www.crufty.net/help/sjg/bmake.html"
-  url "http://www.crufty.net/ftp/pub/sjg/bmake-20141111.tar.gz"
-  sha1 "a6f670210f9ccde09a0e93a29a766f4726ddfeed"
+  url "http://www.crufty.net/ftp/pub/sjg/bmake-20150411.tar.gz"
+  sha256 "67fe93e078ea64719fb4123a638cc798241fe70d1fa5d5e08e64751f69a06b82"
 
   bottle do
-    sha1 "bfb80b95386a6e9c439167573d58a9623650708e" => :yosemite
-    sha1 "9ae644344202f0e42eaac253e38b95d16c23433d" => :mavericks
-    sha1 "e91b8e0f374eeaf85ef53bf4d92df3cf1d646a97" => :mountain_lion
+    sha256 "d04c6d1053a37523def6b64436b892740234ccb2478d35ddb389cf9fcba78cbb" => :yosemite
+    sha256 "f953d4ff22e6ecbad0a33ea3b37becf5be6b5a8bbbb69a6c4d0f0ad69f61f534" => :mavericks
+    sha256 "c5dc94d4a158a3b3517663ac77e670b5154a69b81c3ebb9d425cee4b81171c45" => :mountain_lion
   end
 
   def install
@@ -25,16 +24,15 @@ class Bmake < Formula
   end
 
   test do
-    (testpath/"Makefile").write <<-EOS
-all: hello
+    (testpath/"Makefile").write <<-EOS.undent
+      all: hello
 
-hello:
-\t@echo 'Test successful.'
+      hello:
+      \t@echo 'Test successful.'
 
-clean:
-\trm -rf Makefile
-EOS
-
+      clean:
+      \trm -rf Makefile
+    EOS
     system bin/"bmake"
     system bin/"bmake", "clean"
   end

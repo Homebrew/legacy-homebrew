@@ -1,10 +1,16 @@
-require 'formula'
-
 class Mapserver < Formula
+  desc "Publish spatial data and interactive mapping apps to the web"
   homepage 'http://mapserver.org/'
   url 'http://download.osgeo.org/mapserver/mapserver-6.2.1.tar.gz'
   sha1 'bbe4234a4dcc179812c6598f68fe59a3dae63e44'
-  revision 1
+  revision 2
+
+  bottle do
+    cellar :any
+    sha256 "9dbab28f8434c3468255fd19d1e2677624febecea1fc28f79f04c14df4a6fb5b" => :yosemite
+    sha256 "0fa13f927801f0ccc89c6266257705ece9eaea09ea101e544d6a4040fee6e04b" => :mavericks
+    sha256 "98198c61c8db8dc7b980e53a76542a821cca7c5a0b0facf127e03df1ae49ed01" => :mountain_lion
+  end
 
   option "with-fastcgi", "Build with fastcgi support"
   option "with-geos", "Build support for GEOS spatial operations"

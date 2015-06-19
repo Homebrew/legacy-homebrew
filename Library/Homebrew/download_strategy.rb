@@ -63,6 +63,10 @@ class AbstractDownloadStrategy
     "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
+  def lhapath
+    "#{HOMEBREW_PREFIX}/opt/lha/bin/lha"
+  end
+
   def cvspath
     @cvspath ||= %W[
       /usr/bin/cvs
@@ -192,6 +196,8 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
     when :lzip
       with_system_path { pipe_to_tar(lzippath) }
       chdir
+    when :lha
+      safe_system lhapath, "x", cached_location
     when :xar
       safe_system "/usr/bin/xar", "-xf", cached_location
     when :rar
@@ -263,6 +269,16 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
 
   def fetch
     ohai "Downloading #{@url}"
+
+    urls = actual_urls
+    unless urls.empty?
+      ohai "Downloading from: #{urls.last}"
+      if !ENV["HOMEBREW_NO_INSECURE_REDIRECT"].nil? && @url.start_with?("https://") &&
+        urls.any? { |u| !u.start_with? "https://" }
+        raise "HTTPS to HTTP redirect detected & HOMEBREW_NO_INSECURE_REDIRECT is set."
+      end
+    end
+
     unless cached_location.exist?
       had_incomplete_download = temporary_path.exist?
       begin
@@ -306,6 +322,14 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
     curl @url, "-C", downloaded_size, "-o", temporary_path
   end
 
+  def actual_urls
+    urls = []
+    Utils.popen_read("curl", "-I", "-L", @url).scan(/^Location: (.+)$/).map do |m|
+      urls << URI.join(urls.last || @url, m.first.chomp).to_s
+    end
+    urls
+  end
+
   def downloaded_size
     temporary_path.size? || 0
   end
@@ -343,7 +367,9 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     @tried_apache_mirror = true
 
     mirrors = Utils::JSON.load(apache_mirrors)
-    @url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
+    path_info = mirrors.fetch("path_info")
+    @url = mirrors.fetch('preferred') + path_info
+    @mirrors |= %W[https://archive.apache.org/dist/#{path_info}]
 
     ohai "Best Mirror #{@url}"
     super
@@ -377,11 +403,7 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
 end
 
 # @deprecated
-class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
-  def _fetch
-    curl @url, '--insecure', '-C', downloaded_size, '-o', temporary_path
-  end
-end
+CurlUnsafeDownloadStrategy = CurlDownloadStrategy
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
@@ -395,8 +417,8 @@ end
 class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
   attr_reader :cached_location
 
-  def initialize(formula)
-    @cached_location = formula.local_bottle_path
+  def initialize(path)
+    @cached_location = path
   end
 
   def stage
@@ -444,7 +466,7 @@ end
 class SubversionDownloadStrategy < VCSDownloadStrategy
   def initialize(name, resource)
     super
-    @url = @url.sub(/^svn\+/, "") if @url.start_with?("svn+http://")
+    @url = @url.sub("svn+http://", "")
   end
 
   def fetch
@@ -470,18 +492,12 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     end
   end
 
-  def fetch_args
-    []
-  end
-
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.directory? ? 'up' : 'checkout'
-    args = ['svn', svncommand] + fetch_args
-    # SVN shipped with XCode 3.1.4 can't force a checkout.
-    args << '--force' unless MacOS.version == :leopard
+    args = ['svn', svncommand]
     args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
@@ -518,14 +534,8 @@ end
 
 # @deprecated
 StrictSubversionDownloadStrategy = SubversionDownloadStrategy
-
 # @deprecated
-class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
-  def fetch_args
-    %w[--non-interactive --trust-server-cert]
-  end
-  private :fetch_args
-end
+UnsafeSubversionDownloadStrategy = SubversionDownloadStrategy
 
 class GitDownloadStrategy < VCSDownloadStrategy
   SHALLOW_CLONE_WHITELIST = [
@@ -686,7 +696,8 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
   def clone_repo
     HOMEBREW_CACHE.cd do
-      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login"
+      # Login is only needed (and allowed) with pserver; skip for anoncvs.
+      quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "login" if @url.include? "pserver"
       quiet_safe_system cvspath, { :quiet_flag => "-Q" }, "-d", @url, "checkout", "-d", cache_filename, @module
     end
   end
@@ -821,7 +832,7 @@ class DownloadStrategyDetector
     case url
     when %r[^https?://.+\.git$], %r[^git://]
       GitDownloadStrategy
-    when %r[^http://www\.apache\.org/dyn/closer\.cgi]
+    when %r[^https?://www\.apache\.org/dyn/closer\.cgi]
       CurlApacheMirrorDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn], %r[^https?://svn\.], %r[^svn://], %r[^https?://(.+?\.)?sourceforge\.net/svnroot/]
       SubversionDownloadStrategy

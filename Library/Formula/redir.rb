@@ -1,14 +1,15 @@
 class Redir < Formula
+  desc "Port redirector"
   homepage "http://sammy.net/~sammy/hacks/"
   url "https://github.com/TracyWebTech/redir/archive/2.2.1-9.tar.gz"
-  version "2.2.1_9"
+  version "2.2.1-9"
   sha1 "84ae75104d79432bbc15f67e4dc2980e0912b2b6"
 
   bottle do
     cellar :any
-    sha1 "2a57028bcc1b6a0275e4f912848a107b3fb033b6" => :yosemite
-    sha1 "e87c9be1628c1d54624be55f94f686f96b2b5d15" => :mavericks
-    sha1 "e0fe4cd60535063295ad7527516d3ac114b5e72d" => :mountain_lion
+    sha256 "76c6d218033c27de7a5030e8d9fe1356e0a152e3a31e4210b589314643b9fd0d" => :yosemite
+    sha256 "19b1d25bc23f38eeecd22c9ed2eac4640e63e97d7a192e7bc71b822d5d29afe0" => :mavericks
+    sha256 "7b363f804ba92db19815e67697fa28247fe346be4733c48b9b306e2797a3344b" => :mountain_lion
   end
 
   def install

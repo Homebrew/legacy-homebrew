@@ -1,6 +1,7 @@
 require 'formula'
 
 class Enscript < Formula
+  desc "Convert text to Postscript, HTML, or RTF, with syntax highlighting"
   homepage 'http://www.gnu.org/software/enscript/'
   url 'http://ftpmirror.gnu.org/enscript/enscript-1.6.6.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/enscript/enscript-1.6.6.tar.gz'

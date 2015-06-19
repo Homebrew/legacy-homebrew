@@ -1,6 +1,7 @@
 require 'formula'
 
 class Uudeview < Formula
+  desc "Smart multi-file multi-part decoder"
   homepage 'http://www.fpx.de/fp/Software/UUDeview/'
   url 'http://www.fpx.de/fp/Software/UUDeview/download/uudeview-0.5.20.tar.gz'
   sha1 '2c6ab7d355b545218bd0877d598bd5327d9fd125'

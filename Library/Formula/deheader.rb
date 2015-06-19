@@ -1,12 +1,15 @@
 class Deheader < Formula
+  desc "Analyze C/C++ files for unnecessary headers"
   homepage "http://www.catb.org/~esr/deheader"
-  url "http://www.catb.org/~esr/deheader/deheader-1.0.tar.gz"
-  sha1 "dc9fc816af1631a84ace7f94a85a3a424d72dbed"
-  head "https://git.gitorious.org/deheader/deheader.git"
+  url "http://www.catb.org/~esr/deheader/deheader-1.1.tar.gz"
+  sha256 "69f69e9c7d9398221cb49f7de91df0d122e4b0ec942bede2d7c592401e4b913c"
+  head "git://thyrsus.com/repositories/deheader.git"
 
   def install
     bin.install "deheader"
-    man1.install "deheader.1"
+    # Man page is defined in a DocBook XML file, the DTD for which is MIA,
+    # thus there's no way to build it from HEAD...
+    man1.install "deheader.1" unless build.head?
   end
 
   test do

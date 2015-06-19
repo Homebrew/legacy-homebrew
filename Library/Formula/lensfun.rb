@@ -1,6 +1,7 @@
 require "formula"
 
 class Lensfun < Formula
+  desc "Remove defects from digital images"
   homepage "http://lensfun.sourceforge.net/"
   head "git://git.code.sf.net/p/lensfun/code"
   url "https://downloads.sourceforge.net/project/lensfun/0.3.0/lensfun-0.3.0.tar.bz2"

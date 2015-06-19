@@ -1,10 +1,11 @@
 class FreeradiusServer < Formula
+  desc "High-performance and highly configurable RADIUS server"
   homepage "http://freeradius.org/"
-  revision 2
 
   stable do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.6.tar.gz"
-    sha1 "25b0a057b1fffad5a030946e8af0c6170e5cdf46"
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.7.tar.bz2"
+    mirror "http://ftp.cc.uoc.gr/mirrors/ftp.freeradius.org/freeradius-server-2.2.7.tar.bz2"
+    sha256 "6b0af62ded0fda9bb24aee568c3bc9e5f0c0b736530df3c1260e2b6085f2e5f9"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -12,15 +13,16 @@ class FreeradiusServer < Formula
   end
 
   devel do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.6.tar.bz2"
-    sha1 "37c5a38f74a8b228abe9682db9f3184a9c7d9639"
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.8.tar.bz2"
+    mirror "http://ftp.cc.uoc.gr/mirrors/ftp.freeradius.org/freeradius-server-3.0.8.tar.bz2"
+    sha256 "b89721c609e5a106936112fe8122e470f02a5197bb614e202d2c386f4821d902"
     depends_on "talloc" => :build
   end
 
   bottle do
-    sha1 "a46ed359e5124ea50fe3331d150a7ad82011e1b5" => :yosemite
-    sha1 "e9ddff066dd51b5cbc207787a3f5d3053e8ce088" => :mavericks
-    sha1 "9406f32f9e73f44383b0cdc8410ea79b5504c95f" => :mountain_lion
+    sha256 "8843ce6b2cacf638f211ff039a32c7f2a30e605fddf593d79760ceff52bd6a27" => :yosemite
+    sha256 "8485f3a73083a46f0b0c44b2351727db28c2ba3da6dce72c0f7737615d1b9f45" => :mavericks
+    sha256 "bfb6f2e71540d9a7763d242463bad1197e531825f84f7b1c1b09ad7ab7cde089" => :mountain_lion
   end
 
   depends_on "openssl"

@@ -1,20 +1,19 @@
 class Mysql < Formula
+  desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.6/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.23.tar.gz"
-  sha1 "2d610ba01ab97df042d5946ba0da411da5547c5d"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.25.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/mysql.mirror/MySQL%205.6.25/mysql-5.6.25.tar.gz"
+  sha256 "15079c0b83d33a092649cbdf402c9225bcd3f33e87388407be5cdbf1432c7fbd"
 
   bottle do
-    sha1 "9edc48cf27c50b6f51bfd90af86716a4a36b39e8" => :yosemite
-    sha1 "e4aee77fd9a4882bd85a718b622fbd817d87e4ae" => :mavericks
-    sha1 "38ef7c81c209fd7ca55f3769c32c9ae593f4384d" => :mountain_lion
+    sha256 "5811356b516364cff6d0cb377f221f6ccbc51c9052001866002481e52125ea26" => :yosemite
+    sha256 "8f15916acc783ae4fe12eb12b2900963d731e9501cada615a52f0a2fff113a05" => :mavericks
+    sha256 "f5c73b0b85a0e1f0123f488e5fc37babb5fbfe56103596ab54f3ebb570a2459b" => :mountain_lion
   end
 
-  # Fixes compilation with OpenSSL 1.0.2
-  # https://bugs.mysql.com/bug.php?id=75623
-  patch do
-    url "https://github.com/mysql/mysql-server/pull/3.diff"
-    sha1 "6b17a31ee32e373dca0f257f7c7884ac6dcf8e1f"
-  end
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   option :universal
   option "with-tests", "Build with unit tests"
@@ -29,10 +28,6 @@ class Mysql < Formula
   deprecated_option "enable-memcached" => "with-memcached"
   deprecated_option "enable-debug" => "with-debug"
 
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
-  depends_on "openssl"
-
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
   conflicts_with "mysql-connector-c",
@@ -41,6 +36,10 @@ class Mysql < Formula
   fails_with :llvm do
     build 2326
     cause "https://github.com/Homebrew/homebrew/issues/issue/144"
+  end
+
+  def datadir
+    var/"mysql"
   end
 
   def install
@@ -54,13 +53,13 @@ class Mysql < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # -DINSTALL_* are relative to prefix
+    # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
     args = %W[
       .
       -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DCMAKE_FIND_FRAMEWORK=LAST
       -DCMAKE_VERBOSE_MAKEFILE=ON
-      -DMYSQL_DATADIR=#{var}/mysql
+      -DMYSQL_DATADIR=#{datadir}
       -DINSTALL_INCLUDEDIR=include/mysql
       -DINSTALL_MANDIR=share/man
       -DINSTALL_DOCDIR=share/doc/#{name}
@@ -112,7 +111,7 @@ class Mysql < Formula
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix+"data"
+    rm_rf prefix/"data"
 
     # Link the setup script into bin
     bin.install_symlink prefix/"scripts/mysql_install_db"
@@ -126,19 +125,17 @@ class Mysql < Formula
 
     bin.install_symlink prefix/"support-files/mysql.server"
 
-    # Move mysqlaccess to libexec
-    libexec.mkpath
-    mv "#{bin}/mysqlaccess", libexec
-    mv "#{bin}/mysqlaccess.conf", libexec
+    libexec.install bin/"mysqlaccess"
+    libexec.install bin/"mysqlaccess.conf"
   end
 
   def post_install
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-    unless File.exist? "#{var}/mysql/mysql/user.frm"
+    # Make sure the datadir exists
+    datadir.mkpath
+    unless (datadir/"mysql/user.frm").exist?
       ENV["TMPDIR"] = nil
-      system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
-        "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
+      system bin/"mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+        "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
     end
   end
 
@@ -166,21 +163,20 @@ class Mysql < Formula
       <array>
         <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
-        <string>--datadir=#{var}/mysql</string>
+        <string>--datadir=#{datadir}</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>
-      <string>#{var}</string>
+      <string>#{datadir}</string>
     </dict>
     </plist>
     EOS
   end
 
   test do
-    (prefix+"mysql-test").cd do
+    (prefix/"mysql-test").cd do
       system "./mysql-test-run.pl", "status"
     end
   end
 end
-

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lorem < Formula
+  desc "Lorem Ipsum generator"
   homepage 'http://code.google.com/p/lorem/'
   url 'http://lorem.googlecode.com/svn-history/r4/trunk/lorem', :using => :curl
   version '0.6.1'

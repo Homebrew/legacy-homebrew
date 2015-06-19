@@ -1,16 +1,17 @@
 require "formula"
 
 class Flow < Formula
+  desc "Static type checker for JavaScript"
   homepage "http://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.6.0.tar.gz"
-  sha1 "8185edc3598f4261b25cc4300f3f7cee12312240"
+  url "https://github.com/facebook/flow/archive/v0.12.0.tar.gz"
+  sha1 "fd8edf6cf291d66bc20053dd02eb66507f36023a"
   head "https://github.com/facebook/flow.git"
 
   bottle do
     cellar :any
-    sha256 "b18ff22833c0bb393e67bcbf815b0bdf5ed75f2390898f8e6ace342a5d8f79f9" => :yosemite
-    sha256 "d438368253344540c8af406725cf8514f579ec9e7ea41fb1faa700214b131d44" => :mavericks
-    sha256 "72f6f76de95e9629a7907f2531adad486419c5c452189ca7cc4baae545d82174" => :mountain_lion
+    sha256 "fd20aff1d786aadebfd990ed571b0cca8d93083a8bda89245a89f5ac9dd70a55" => :yosemite
+    sha256 "16516306bae3cb264733f706fbb6ea5ede2b25d7aedc32a21663964741e62417" => :mavericks
+    sha256 "2a6fc52ef06dbce0bb65f3ffb4022681e3ccfca67526f86cc5e36e87ce2d4de5" => :mountain_lion
   end
 
   depends_on "objective-caml" => :build
@@ -19,6 +20,9 @@ class Flow < Formula
     system "make"
     bin.install "bin/flow"
     (share/"flow").install "bin/examples"
+
+    bash_completion.install "resources/shell/bash-completion" => "flow-completion.bash"
+    zsh_completion.install_symlink bash_completion/"flow-completion.bash" => "_flow"
   end
 
   test do

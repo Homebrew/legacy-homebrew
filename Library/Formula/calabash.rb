@@ -1,13 +1,14 @@
 class Calabash < Formula
+  desc "An XProc (XML Pipeline Language) implementation"
   homepage "http://xmlcalabash.com"
-  url "http://xmlcalabash.com/download/calabash-1.0.24-95.zip"
-  sha1 "e5443324147891728277880046e5466aef74a8ad"
+  url "https://github.com/ndw/xmlcalabash1/releases/download/1.1.0-95/xmlcalabash-1.1.0-95.zip"
+  sha256 "d75a8699ec496fb854761d8e375015732ac51047aad5d7bec57ea3a5349feae7"
 
   depends_on "saxon"
 
   def install
     libexec.install Dir["*"]
-    bin.write_jar_script libexec/"calabash.jar", "calabash", "-Xmx1024m"
+    bin.write_jar_script libexec/"xmlcalabash-#{version}.jar", "calabash", "-Xmx1024m"
   end
 
   test do

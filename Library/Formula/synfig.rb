@@ -1,16 +1,16 @@
-require "formula"
-
 class Synfig < Formula
+  desc "Command-line renderer"
   homepage "http://synfig.org"
-  url "https://downloads.sourceforge.net/project/synfig/releases/0.64.3/source/synfig-0.64.3.tar.gz"
-  sha1 "868e55dcac9ecda93c6f4aa2d842713f5b77df8d"
+  url "https://downloads.sourceforge.net/project/synfig/releases/1.0/source/synfig-1.0.tar.gz"
+  sha256 "1f2f9b209d49dff838049e9817b0458ac6987e912a56c061aa2f9c2faeb40720"
 
   head "git://synfig.git.sourceforge.net/gitroot/synfig/synfig"
 
   bottle do
-    sha1 "89c964ef3cf533bf684f068edf859e8fcffeab3e" => :yosemite
-    sha1 "e18ee1a88afa30edf481230dfb61ee35eab8d76a" => :mavericks
-    sha1 "678579ebdb05f32f405fde48151ef3523a9249fc" => :mountain_lion
+    revision 1
+    sha256 "ebc2dd13c9a693a5baaa194832a4e2c23dbb1e77c44fe698bfd03d7523a63701" => :yosemite
+    sha256 "2c724dfb2c4bc14f2ee795289dd69a3a3804fe711ebc125c7e0f72e931d78860" => :mavericks
+    sha256 "71cbd51d4f8f94018477d58767ea296a27c82f8dac5696c5976f7336a3b6004d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -25,6 +25,7 @@ class Synfig < Formula
   depends_on "pango"
   depends_on "boost"
   depends_on "openexr"
+  depends_on "mlt"
   depends_on "libtool" => :run
 
   def install
@@ -33,6 +34,84 @@ class Synfig < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-boost=#{boost.opt_prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <synfig/version.h>
+      int main(int argc, char *argv[])
+      {
+        const char *version = synfig::get_version();
+        return 0;
+      }
+    EOS
+    ENV.libxml2
+    cairo = Formula["cairo"]
+    etl = Formula["etl"]
+    fontconfig = Formula["fontconfig"]
+    freetype = Formula["freetype"]
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    glibmm = Formula["glibmm"]
+    libpng = Formula["libpng"]
+    libsigcxx = Formula["libsigc++"]
+    libxmlxx = Formula["libxml++"]
+    mlt = Formula["mlt"]
+    pango = Formula["pango"]
+    pixman = Formula["pixman"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{cairo.opt_include}/cairo
+      -I#{etl.opt_include}
+      -I#{fontconfig.opt_include}
+      -I#{freetype.opt_include}/freetype2
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{glibmm.opt_include}/giomm-2.4
+      -I#{glibmm.opt_include}/glibmm-2.4
+      -I#{glibmm.opt_lib}/giomm-2.4/include
+      -I#{glibmm.opt_lib}/glibmm-2.4/include
+      -I#{include}/synfig-1.0
+      -I#{libpng.opt_include}/libpng16
+      -I#{libsigcxx.opt_include}/sigc++-2.0
+      -I#{libsigcxx.opt_lib}/sigc++-2.0/include
+      -I#{libxmlxx.opt_include}/libxml++-2.6
+      -I#{libxmlxx.opt_lib}/libxml++-2.6/include
+      -I#{mlt.opt_include}
+      -I#{mlt.opt_include}/mlt
+      -I#{mlt.opt_include}/mlt++
+      -I#{pango.opt_include}/pango-1.0
+      -I#{pixman.opt_include}/pixman-1
+      -D_REENTRANT
+      -L#{cairo.opt_lib}
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{glibmm.opt_lib}
+      -L#{libsigcxx.opt_lib}
+      -L#{libxmlxx.opt_lib}
+      -L#{lib}
+      -L#{mlt.opt_lib}
+      -L#{pango.opt_lib}
+      -lcairo
+      -lgio-2.0
+      -lgiomm-2.4
+      -lglib-2.0
+      -lglibmm-2.4
+      -lgobject-2.0
+      -lintl
+      -lmlt
+      -lmlt++
+      -lpango-1.0
+      -lpangocairo-1.0
+      -lpthread
+      -lsigc-2.0
+      -lsynfig
+      -lxml++-2.6
+      -lxml2
+    ]
+    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system "./test"
   end
 end

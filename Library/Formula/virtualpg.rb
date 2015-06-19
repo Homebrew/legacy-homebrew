@@ -1,6 +1,7 @@
 require 'formula'
 
 class Virtualpg < Formula
+  desc "Loadable dynamic extension for SQLite and SpatiaLite"
   homepage 'https://www.gaia-gis.it/fossil/virtualpg/index'
   url 'http://www.gaia-gis.it/gaia-sins/virtualpg-1.0.1.tar.gz'
   sha1 '20849c368a2bef3e8532765589d0b6b445d56908'

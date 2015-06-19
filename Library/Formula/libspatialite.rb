@@ -1,14 +1,15 @@
 class Libspatialite < Formula
+  desc "Adds spatial SQL capabilities to SQLite"
   homepage "https://www.gaia-gis.it/fossil/libspatialite/index"
   url "http://www.gaia-gis.it/gaia-sins/libspatialite-4.2.0.tar.gz"
   sha1 "698bf70bec669ddcbf1b0cc48f40c2e03776bffc"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha1 "ef9892e273b4cbc4acf626d3659a13d1fc7699a7" => :yosemite
-    sha1 "c9ecbcc0188f44fd8dad30a3e7fde31e09407a13" => :mavericks
-    sha1 "2eba5d49512f854f8bb4216072ce8aa83c0a961d" => :mountain_lion
+    sha256 "fcbf88ff77342d18a933dd3286d54953966c4fb4c4862ac55abd825793359829" => :yosemite
+    sha256 "737bde3761c0595e6d7af56d91391d0e5395420cc83434d33cbdae65d6b196b2" => :mavericks
+    sha256 "5e98e35ce051227f5fca51fe829e68781f58ce5cb80a67d9c8e569c0d028ad56" => :mountain_lion
   end
 
   head do

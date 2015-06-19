@@ -78,8 +78,21 @@ module Stdenv
     paths.select { |d| File.directory? d }.join(File::PATH_SEPARATOR)
   end
 
+  # Removes the MAKEFLAGS environment variable, causing make to use a single job.
+  # This is useful for makefiles with race conditions.
+  # When passed a block, MAKEFLAGS is removed only for the duration of the block and is restored after its completion.
   def deparallelize
+    old = self['MAKEFLAGS']
     remove 'MAKEFLAGS', /-j\d+/
+    if block_given?
+      begin
+        yield
+      ensure
+        self['MAKEFLAGS'] = old
+      end
+    end
+
+    old
   end
   alias_method :j1, :deparallelize
 
@@ -116,7 +129,7 @@ module Stdenv
   alias_method :gcc_4_2, :gcc
 
   GNU_GCC_VERSIONS.each do |n|
-    define_method(:"gcc-4.#{n}") do
+    define_method(:"gcc-#{n}") do
       super()
       set_cpu_cflags
     end
@@ -261,7 +274,7 @@ module Stdenv
     if compiler == :clang
       append 'CXX', '-std=c++11'
       append 'CXX', '-stdlib=libc++'
-    elsif compiler =~ /gcc-4\.(8|9)/
+    elsif compiler =~ /gcc-(4\.(8|9)|5)/
       append 'CXX', '-std=c++11'
     else
       raise "The selected compiler doesn't support C++11: #{compiler}"

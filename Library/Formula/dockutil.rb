@@ -1,6 +1,7 @@
 require "formula"
 
 class Dockutil < Formula
+  desc "Tool for managing dock items"
   homepage "https://github.com/kcrawford/dockutil"
   url "https://github.com/kcrawford/dockutil/archive/2.0.2.tar.gz"
   sha1 "d937d20d4ba6ce2bee347966d84048215a7e52ce"

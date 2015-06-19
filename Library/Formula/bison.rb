@@ -1,6 +1,7 @@
 class Bison < Formula
+  desc "Parser generator"
   homepage "https://www.gnu.org/software/bison/"
-  url "https://ftpmirror.gnu.org/bison/bison-3.0.4.tar.gz"
+  url "http://ftpmirror.gnu.org/bison/bison-3.0.4.tar.gz"
   mirror "https://ftp.gnu.org/gnu/bison/bison-3.0.4.tar.gz"
   sha1 "ec1f2706a7cfedda06d29dc394b03e092a1e1b74"
 

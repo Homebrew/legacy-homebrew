@@ -1,6 +1,7 @@
 require "formula"
 
 class CsvFix < Formula
+  desc "CSVfix is a tool for manipulating CSV data"
   homepage "http://neilb.bitbucket.org/csvfix/"
   url "https://bitbucket.org/neilb/csvfix/get/version-1.6.tar.gz"
   sha1 "ca770b47f2e08a09350c4005e6ab3c524798b440"

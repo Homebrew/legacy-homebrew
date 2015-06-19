@@ -1,13 +1,12 @@
-require 'formula'
-
 class Chromedriver < Formula
-  homepage 'https://sites.google.com/a/chromium.org/chromedriver/'
-  url 'http://chromedriver.storage.googleapis.com/2.14/chromedriver_mac32.zip'
-  sha256 '33ee96ea17b00dd8e14e15ca6fe1b1fd4ae7a71f86d8785e562e88d839299d2e'
-  version '2.14'
+  desc "Tool for automated testing of webapps across many browsers"
+  homepage "https://sites.google.com/a/chromium.org/chromedriver/"
+  url "https://chromedriver.storage.googleapis.com/2.16/chromedriver_mac32.zip"
+  sha256 "2e4eb9e7bf884d735d08275fb3d9f9e2474c370f11ed02753d0ae4e61cc07a0c"
+  version "2.16"
 
   def install
-    bin.install 'chromedriver'
+    bin.install "chromedriver"
   end
 
   def plist; <<-EOS.undent
@@ -34,5 +33,15 @@ class Chromedriver < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    driver = fork do
+      system bin/"chromedriver",
+             "--port=9999", "--log-path=#{testpath}/cd.log"
+    end
+    sleep 5
+    Process.kill("TERM", driver)
+    File.exist? testpath/"cd.log"
   end
 end

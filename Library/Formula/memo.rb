@@ -1,14 +1,15 @@
 class Memo < Formula
+  desc "Note-taking and to-do software"
   homepage "http://www.getmemo.org"
-  url "http://www.getmemo.org/memo-1.5.tar.gz"
-  sha1 "3e047b09e91d695f1767d1dd6d179732c07a5759"
+  url "http://www.getmemo.org/memo-1.6.tar.gz"
+  sha256 "08e32f7eee35c24a790eb886fdde9e86c4ef58d2a3059df95fd3a55718f79e96"
   head "https://github.com/nrosvall/memo.git"
 
   bottle do
     cellar :any
-    sha1 "824504a78e8f84ee824e62b35172bb15ad8d7d4d" => :yosemite
-    sha1 "5bf25a80b56621ae3a5f0e4203f86921f545e128" => :mavericks
-    sha1 "cc76689fd90ea7bc8d2741439fbb4ae4e7243aa2" => :mountain_lion
+    sha256 "841ec3aa9b83f218069c2035c4818fcf3da6ae2c137e94ac446874eeb9719e41" => :yosemite
+    sha256 "e771214c2f839a58e329c986461810a89e259739ee24b209c6397191d2c2bb21" => :mavericks
+    sha256 "967b7a7f27726310aefac3a109879281f0de0eac010e448deab6ef7670ee7c29" => :mountain_lion
   end
 
   def install

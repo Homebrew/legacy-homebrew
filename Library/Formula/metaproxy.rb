@@ -1,15 +1,15 @@
-require "formula"
-
 class Metaproxy < Formula
+  desc "Z39.50 proxy and router utilizing Yaz toolkit"
   homepage "http://www.indexdata.com/metaproxy"
-  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.8.3.tar.gz"
-  sha1 "d25e1a38aab965f99eb6cb439f1961d118408dcb"
+  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.8.8.tar.gz"
+  sha256 "c82849e2901607d585967c1708eabcdac9b4a5a780aeb6f2ec044047455f9811"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "2cc72713d3fe663eaf79322dbba046038bdd7cde438f26fc4cca03d1a81885e9" => :yosemite
-    sha256 "4bc73abfca9681e44e0a76732f6bf9743db91c4f0f0312053c0dec19bd0598c6" => :mavericks
-    sha256 "ac81adfebc44cbfdede36ccf7a9e2c8ae528922a0744ed54ab69c3c6a409e58e" => :mountain_lion
+    sha256 "bb618ee8c7f6629f32afcf54fbc87a3fb80882ab42159aefc047592e48a7f6b1" => :yosemite
+    sha256 "3ceeb3f4a5fadda4f4df82262f260732ff3c088ff8fbfdf3a0171451e9373004" => :mavericks
+    sha256 "1d46ab6054f7e0dbadf5e9f3038c4ff713c0790d4711ec31b4d9545adfcf9cc5" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

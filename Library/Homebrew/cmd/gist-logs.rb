@@ -6,7 +6,7 @@ require 'stringio'
 
 module Homebrew
   def gistify_logs f
-    files = load_logs(f.name)
+    files = load_logs(f.logs)
 
     s = StringIO.new
     Homebrew.dump_verbose_config(s)
@@ -27,7 +27,7 @@ module Homebrew
       auth = :AUTH_TOKEN
 
       unless HOMEBREW_GITHUB_API_TOKEN
-        puts 'You can create an API token: https://github.com/settings/applications'
+        puts 'You can create a personal access token: https://github.com/settings/tokens'
         puts 'and then set HOMEBREW_GITHUB_API_TOKEN as authentication method.'
         puts
 
@@ -58,9 +58,8 @@ module Homebrew
     request.basic_auth(user, password)
   end
 
-  def load_logs name
+  def load_logs(dir)
     logs = {}
-    dir = HOMEBREW_LOGS/name
     dir.children.sort.each do |file|
       contents = file.size? ? file.read : "empty log"
       logs[file.basename.to_s] = { :content => contents }
@@ -132,12 +131,12 @@ module Homebrew
   end
 
   def gist_logs
-    if ARGV.formulae.length != 1
+    if ARGV.resolved_formulae.length != 1
       puts "usage: brew gist-logs [--new-issue|-n] <formula>"
       Homebrew.failed = true
       return
     end
 
-    gistify_logs(ARGV.formulae[0])
+    gistify_logs(ARGV.resolved_formulae[0])
   end
 end

@@ -1,4 +1,5 @@
 class Ld64 < Formula
+  desc "Updated version of the ld shipped by Apple"
   homepage "https://opensource.apple.com/"
   # Latest is 134.9, but it no longer supports building for PPC.
   # 127.2 won't build on Tiger, at least without some patching.

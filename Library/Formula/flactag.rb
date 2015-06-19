@@ -1,6 +1,7 @@
 require 'formula'
 
 class Flactag < Formula
+  desc "Tag single album FLAC files with MusicBrainz CUE sheets"
   homepage 'http://flactag.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/flactag/v2.0.4/flactag-2.0.4.tar.gz'
   sha1 'eb62b3b8657fe26c6f838b0098fd4f176ccb454d'
@@ -15,11 +16,8 @@ class Flactag < Formula
   depends_on 'unac'
   depends_on 'jpeg'
 
-  # Don't have a2x run xmllint on the a2x-generated DocBook - it
-  # fails its own validation.
-  patch :DATA
-
   def install
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     ENV.append "LDFLAGS", "-liconv"
     ENV.append "LDFLAGS", "-lFLAC"
     system "./configure", "--disable-dependency-tracking",
@@ -31,16 +29,3 @@ class Flactag < Formula
     system "#{bin}/flactag"
   end
 end
-
-__END__
---- flactag-2.0.4/Makefile.in.orig	2013-02-26 22:57:46.000000000 -0800
-+++ flactag-2.0.4/Makefile.in	2013-02-26 22:57:57.000000000 -0800
-@@ -1137,7 +1137,7 @@
-        chmod +x ripflac
-
- flactag.1:	flactag.1.txt Makefile
--	a2x -f manpage flactag.1.txt
-+	a2x -L -f manpage flactag.1.txt
-
- flactag.html:	flactag.txt Makefile
-        asciidoc -a numbered flactag.txt

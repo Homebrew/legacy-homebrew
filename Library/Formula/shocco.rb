@@ -1,21 +1,20 @@
-require "formula"
-
-class MarkdownProvider < Requirement
+class MarkdownRequirement < Requirement
   fatal true
   default_formula "markdown"
   satisfy { which "markdown" }
 end
 
 class Shocco < Formula
-  homepage "http://rtomayko.github.io/shocco/"
+  desc "Literate documentation tool for shell scripts (a la Docco)"
+  homepage "https://rtomayko.github.io/shocco/"
   url "https://github.com/rtomayko/shocco/archive/1.0.tar.gz"
-  sha1 "e29d58fb8109040b4fb4a816f330bb1c67064f6d"
+  sha256 "b3454ca818329955043b166a9808847368fd48dbe94c4b819a9f0c02cf57ce2e"
 
-  depends_on MarkdownProvider
+  depends_on MarkdownRequirement
 
   resource "pygments" do
-    url "http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
-    sha1 "4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
+    sha256 "fe183e3886f597e41f8c88d0e53c796cefddc879bfdf45f2915a383060436740"
   end
 
   # Upstream, but not in a release

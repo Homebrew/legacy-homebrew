@@ -1,36 +1,57 @@
 class Ledger < Formula
+  desc "Command-line, double-entry accounting tool"
   homepage "http://ledger-cli.org"
   url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
   sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
-
-  resource "utfcpp" do
-    url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
-    sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
-  end
+  head "https://github.com/ledger/ledger.git"
+  revision 1
 
   bottle do
-    revision 2
-    sha1 "661106efe731cb8934269f0e9141b6c846b65710" => :yosemite
-    sha1 "80b7a33291be43598d5084da49d8783ee7780679" => :mavericks
-    sha1 "087576750c2d1df2367a7bac2617e54dbedc2866" => :mountain_lion
+    sha256 "a9caafb67ee6b9bef882d7dff8e24747f3997a84bacb82b456b96c5c6448e899" => :yosemite
+    sha256 "7c396585b474187340429297f151435a545c0ab0509f094461599f338eb8d045" => :mavericks
+    sha256 "a47cc33ddd2ef9df9921d1ad333eac68e791e32dad86b497c9abbe8bc707a5b2" => :mountain_lion
   end
 
-  head "https://github.com/ledger/ledger.git"
+  resource "utfcpp" do
+    url "https://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+    sha256 "3373cebb25d88c662a2b960c4d585daf9ae7b396031ecd786e7bb31b15d010ef"
+  end
 
   deprecated_option "debug" => "with-debug"
 
   option "with-debug", "Build with debugging symbols enabled"
   option "with-docs", "Build HTML documentation"
+  option "without-python", "Build without python support"
 
-  depends_on "mpfr"
-  depends_on "gmp"
-  depends_on :python => :optional
   depends_on "cmake" => :build
+  depends_on "gmp"
+  depends_on "mpfr"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
 
   boost_opts = []
   boost_opts << "c++11" if MacOS.version < "10.9"
   depends_on "boost" => boost_opts
   depends_on "boost-python" => boost_opts if build.with? "python"
+
+  stable do
+    # library shouldn't explicitly link a python framework
+    # https://github.com/ledger/ledger/pull/415
+    patch do
+      url "https://github.com/ledger/ledger/commit/5f08e27.diff"
+      sha256 "064b0e64d211224455511cd7b82736bb26e444c3af3b64936bec1501ed14c547"
+    end
+
+    # but the executable should
+    # https://github.com/ledger/ledger/pull/416
+    patch :DATA
+
+    # boost 1.58 compatibility
+    # https://github.com/ledger/ledger/pull/417
+    patch do
+      url "https://github.com/ledger/ledger/commit/2e02e0.diff"
+      sha256 "c1438cbf989995dd0b4bfa426578a8763544f28788ae76f9ff5d23f1b8b17add"
+    end
+  end
 
   needs :cxx11
 
@@ -42,7 +63,6 @@ class Ledger < Formula
 
     flavor = (build.with? "debug") ? "debug" : "opt"
 
-    opts = %w[-- -DBUILD_DOCS=1]
     args = %W[
       --jobs=#{ENV.make_jobs}
       --output=build
@@ -50,22 +70,10 @@ class Ledger < Formula
       --boost=#{Formula["boost"].opt_prefix}
     ]
 
-    if build.with? "docs"
-      opts << "-DBUILD_WEB_DOCS=1"
-    end
+    args << "--python" if build.with? "python"
 
-    if build.with? "python"
-      # Per #25118, CMake does a poor job of detecting a brewed Python.
-      # We need to tell CMake explicitly where our default python lives.
-      # Inspired by
-      # https://github.com/Homebrew/homebrew/blob/51d054c/Library/Formula/opencv.rb
-      args << "--python"
-      python_prefix = `python-config --prefix`.strip
-      opts << "-DPYTHON_LIBRARY=#{python_prefix}/Python"
-      opts << "-DPYTHON_INCLUDE_DIR=#{python_prefix}/Headers"
-    end
-
-    args += opts
+    args += %w[-- -DBUILD_DOCS=1]
+    args << "-DBUILD_WEB_DOCS=1" if build.with? "docs"
 
     system "./acprep", flavor, "make", *args
     system "./acprep", flavor, "make", "doc", *args
@@ -91,3 +99,18 @@ class Ledger < Formula
     end
   end
 end
+__END__
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index a368d37..570a659 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -273,6 +273,9 @@ if (BUILD_LIBRARY)
+
+   add_executable(ledger main.cc global.cc)
+   target_link_libraries(ledger libledger)
++  if (APPLE AND HAVE_BOOST_PYTHON)
++    target_link_libraries(ledger ${PYTHON_LIBRARIES})
++  endif()
+
+   install(TARGETS libledger DESTINATION ${CMAKE_INSTALL_LIBDIR})
+   install(FILES ${LEDGER_INCLUDES}

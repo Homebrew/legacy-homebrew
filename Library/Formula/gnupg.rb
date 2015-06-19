@@ -1,8 +1,9 @@
 class Gnupg < Formula
+  desc "GNU Pretty Good Privacy (PGP) package"
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.19.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.19.tar.bz2"
   mirror "http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.19.tar.bz2"
-  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.19.tar.bz2"
   sha1 "5503f7faa0a0e84450838706a67621546241ca50"
 
   bottle do

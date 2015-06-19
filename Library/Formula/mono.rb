@@ -1,24 +1,22 @@
-require "formula"
-
 class Mono < Formula
+  desc "Cross platform, open source .NET development framework"
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.12.0.tar.bz2"
-  sha1 "cec83efd13ffc1e212c632395a5aac75772a09e7"
-  head "https://github.com/mono/mono.git"
+  url "http://download.mono-project.com/sources/mono/mono-4.0.1.44.tar.bz2"
+  sha256 "eaf5bd9d19818cb89483b3c9cae2ee3569643fd621560da036f6a49f6b3e3a6f"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha1 "5c6fe51dac9396ec10e8d45efdae24cf9e88bc3e" => :yosemite
-    sha1 "7d47061cb4f731398d2114a86010ab60e6dc88b4" => :mavericks
-    sha1 "48ccd72d404ef3a20255ed87c5fbc8a14ac10fb5" => :mountain_lion
+    sha256 "bf7c66c98bd84cb94626666f7c0c94dddf4296abaa67a47e70882198332e5190" => :yosemite
+    sha256 "119736581b0d5fdcdc98cda215b2c58f74203b6800a4ff30034c26aef1d56a6c" => :mavericks
+    sha256 "28e4d3eaa4752b0060825dce2aef767ccabe62a3d38d7f5595aa44b101acbd64" => :mountain_lion
   end
 
   resource "monolite" do
-    url "http://storage.bos.xamarin.com/mono-dist-master/cb/cb33b94c853049a43222288ead1e0cb059b22783/monolite-111-latest.tar.gz"
-    sha1 "a674c47cd60786c49185fb3512410c43689be43e"
+    url "http://storage.bos.xamarin.com/mono-dist-4.0.0-release/79/7975f5090d8b0d266dc0ba824295d92edd8873da/monolite-117-latest.tar.gz"
+    sha256 "7c48200e4c8bdfe890a0b5301975feac0b2fc6797e6accd00e7a366edbba92e7"
   end
 
   def install
@@ -28,8 +26,11 @@ class Mono < Formula
 
     args = %W[
       --prefix=#{prefix}
+      --disable-dependency-tracking
+      --disable-silent-rules
       --enable-nls=no
     ]
+
     args << "--build=" + (MacOS.prefer_64_bit? ? "x86_64": "i686") + "-apple-darwin"
 
     system "./configure", *args
@@ -62,6 +63,7 @@ class Mono < Formula
       <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
         <PropertyGroup>
           <AssemblyName>HomebrewMonoTest</AssemblyName>
+          <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
         </PropertyGroup>
         <ItemGroup>
           <Compile Include="#{test_name}" />

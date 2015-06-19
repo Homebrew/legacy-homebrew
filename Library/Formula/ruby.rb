@@ -1,12 +1,13 @@
 class Ruby < Formula
+  desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.1.tar.bz2"
-  sha256 "4e5676073246b7ade207be3e80a930567a88100513591a0f19fc38e247370065"
+  url "http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.bz2"
+  sha256 "f3b8ffa6089820ee5bdc289567d365e5748d4170e8aa246d2ea6576f24796535"
 
   bottle do
-    sha1 "86b890a33905d8d99d0ea91194f91a0285c882c3" => :yosemite
-    sha1 "446d041833c0bbe8938c39d1c42950fbe2834490" => :mavericks
-    sha1 "a268f0dbfca4ed9f23694b68e1c3f58d7fb0c691" => :mountain_lion
+    sha256 "a3899bcda507cb92ec8b56c85ce87f243d36ad515b349a5cde0817d6eadd8761" => :yosemite
+    sha256 "adeaf776e7f24bdefd0c2f012432650e85e05ccb55735a68edb225c13cb96105" => :mavericks
+    sha256 "d7d2f35a774a39f565f27bfbcbf7e5813c4b8535c8c70eaee0cd9a9f834d5b0d" => :mountain_lion
   end
 
   head do

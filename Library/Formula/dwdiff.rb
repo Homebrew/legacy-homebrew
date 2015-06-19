@@ -1,13 +1,14 @@
 class Dwdiff < Formula
+  desc "Diff that operates at the word level"
   homepage "http://os.ghalkes.nl/dwdiff.html"
   url "http://os.ghalkes.nl/dist/dwdiff-2.0.9.tgz"
   sha1 "01cb2230b9147347bcfd1770898e435e4a57fa25"
-  revision 2
+  revision 3
 
   bottle do
-    sha1 "7f88e50048cd75124feabeefa19ce892d2530895" => :mavericks
-    sha1 "7a7ee944533fe44613dcb53bd5baf1a5e2c6efa0" => :mountain_lion
-    sha1 "df694f72951f3c441de4150261437c1d5a0d679f" => :lion
+    sha256 "e549a381bc4a2440c48598fe20f653ef5d075cbf4e3d0806e387032d94c6d1d4" => :yosemite
+    sha256 "98013209fde9b8480b6d8bfc7d7f23165e0c3d2c62304eefe66d23c24bd7cf34" => :mavericks
+    sha256 "945eb1520cb19ceaabd2be44575e37efd99ea1db883fe438523eeedfe20b175a" => :mountain_lion
   end
 
   depends_on "gettext"

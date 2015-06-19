@@ -1,13 +1,21 @@
 class Subversion < Formula
+  desc "Version control system designed to be a better CVS"
   homepage "https://subversion.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.11.tar.bz2"
-  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.11.tar.bz2"
-  sha1 "161edaee328f4fdcfd2a7c10ecd3fbcd51c61275"
+  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.13.tar.bz2"
+  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.13.tar.bz2"
+  sha256 "1099cc68840753b48aedb3a27ebd1e2afbcc84ddb871412e5d500e843d607579"
 
   bottle do
-    sha1 "fdc774e0ca4c603e7d6167b0780fe6fb38ddd3f7" => :yosemite
-    sha1 "0ed6964b8bde9170b25e54c9e3cd56067325b00b" => :mavericks
-    sha1 "f27aeb2bc0aac84caea6ed9c9adb6401fd62143e" => :mountain_lion
+    revision 1
+    sha256 "bf2389a0865234d120f5fc79735205ea77e93c549db3774131f3c5250622b68d" => :yosemite
+    sha256 "95e5d20542567d39da4e964d50fddfbed74c4d8187ca55fb4a9784abb714efd5" => :mavericks
+    sha256 "c11519346a1efdaf76ceec4689b88713279bdd352df0a61fd8fc11d427056f7b" => :mountain_lion
+  end
+
+  devel do
+    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-rc2.tar.bz2"
+    mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-rc2.tar.bz2"
+    sha256 "915161d5692d5ee3358bb04ae634d2b7173c308eef78070fe1905e40585ecd85"
   end
 
   deprecated_option "java" => "with-java"
@@ -22,7 +30,7 @@ class Subversion < Formula
 
   resource "serf" do
     url "https://serf.googlecode.com/svn/src_releases/serf-1.3.8.tar.bz2", :using => :curl
-    sha1 "1d45425ca324336ce2f4ae7d7b4cfbc5567c5446"
+    sha256 "e0500be065dbbce490449837bb2ab624e46d64fc0b090474d9acaa87c82b2590"
   end
 
   depends_on "pkg-config" => :build
@@ -45,6 +53,7 @@ class Subversion < Formula
 
   # Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
   # Prevent "-arch ppc" from being pulled in from Perl's $Config{ccflags}
+  # Prevent linking into a Python Framework
   patch :DATA
 
   if build.with?("perl") || build.with?("ruby")
@@ -63,6 +72,19 @@ class Subversion < Formula
   end
 
   def install
+    # OS X's Python is built universally and can't link with Homebrew's deps
+    # unless Homebrew's deps are universal as well.
+    # https://github.com/Homebrew/homebrew-versions/issues/777
+    # https://github.com/Homebrew/homebrew/issues/34119
+    if build.with?("python") && (which "python").universal?
+      unless build.universal?
+        raise <<-EOS.undent
+          You must build subversion --universal unless Homebrew's
+          Python is installed, otherwise the build will fail.
+        EOS
+      end
+    end
+
     serf_prefix = libexec+"serf"
 
     resource("serf").stage do
@@ -88,7 +110,7 @@ class Subversion < Formula
     end
 
     if build.include? "unicode-path"
-      fail <<-EOS.undent
+      raise <<-EOS.undent
         The --unicode-path patch is not supported on Subversion 1.8.
 
         Upgrading from a 1.7 version built with this patch is not supported.
@@ -165,6 +187,7 @@ class Subversion < Formula
     if build.with? "python"
       system "make", "swig-py"
       system "make", "install-swig-py"
+      (lib/"python2.7/site-packages").install_symlink Dir["#{lib}/svn-python/*"]
     end
 
     if build.with? "perl"
@@ -282,3 +305,17 @@ index a60430b..bd9b017 100644
      INC  => join(' ', $includes, $cppflags,
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
+
+diff --git a/build/get-py-info.py b/build/get-py-info.py
+index 29a6c0a..dd1a5a8 100644
+--- a/build/get-py-info.py
++++ b/build/get-py-info.py
+@@ -83,7 +83,7 @@ def link_options():
+   options = sysconfig.get_config_var('LDSHARED').split()
+   fwdir = sysconfig.get_config_var('PYTHONFRAMEWORKDIR')
+
+-  if fwdir and fwdir != "no-framework":
++  if fwdir and fwdir != "no-framework" and sys.platform != 'darwin':
+
+     # Setup the framework prefix
+     fwprefix = sysconfig.get_config_var('PYTHONFRAMEWORKPREFIX')

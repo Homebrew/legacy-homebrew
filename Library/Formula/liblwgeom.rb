@@ -1,10 +1,11 @@
 class Liblwgeom < Formula
+  desc "Allows SpatiaLite to support ST_MakeValid() like PostGIS"
   homepage "http://postgis.net"
+  revision 1
 
   stable do
     url "http://download.osgeo.org/postgis/source/postgis-2.1.5.tar.gz"
     sha1 "5ac24b95495be258a7430c08b3407d7beca1832a"
-
     # Strip all the PostgreSQL functions from PostGIS configure.ac, to allow
     # building liblwgeom.dylib without needing PostgreSQL
     # NOTE: this will need to be maintained per postgis version
@@ -17,9 +18,9 @@ class Liblwgeom < Formula
 
   bottle do
     cellar :any
-    sha1 "c225e0bcc23cc38b026cde2b6ea8a1403ab09bcd" => :yosemite
-    sha1 "077710818cff94dc707197dcc5794c49b67d080e" => :mavericks
-    sha1 "6432a799ec96fd4583610f64c1ca88f3c5931fc4" => :mountain_lion
+    sha256 "48aa3296e32ff2a72c2c559649a37e7ad1ce3c8fe825d9a0f3e320683c97041e" => :yosemite
+    sha256 "c2a7148e99fe6b03f368a12bf89e69262795e97c1d8b1578f250607bf8833136" => :mavericks
+    sha256 "11a77a99a93daed092be094195bc1afce3f2c2d91adc9412106bf5c89e4f5755" => :mountain_lion
   end
 
   head do

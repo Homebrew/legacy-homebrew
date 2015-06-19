@@ -1,16 +1,17 @@
 require "formula"
 
 class Autossh < Formula
+  desc "Automatically restart SSH sessions and tunnels"
   homepage "http://www.harding.motd.ca/autossh/"
-  url "http://www.harding.motd.ca/autossh/autossh-1.4d.tgz"
-  mirror "http://ftp.de.debian.org/debian/pool/main/a/autossh/autossh_1.4d.orig.tar.gz"
-  sha1 "27da23c357f8d263aba6ecf3e8792a3552d90e50"
+  url "http://www.harding.motd.ca/autossh/autossh-1.4e.tgz"
+  mirror "http://ftp.de.debian.org/debian/pool/main/a/autossh/autossh_1.4e.orig.tar.gz"
+  sha1 "268b5f2556ecfbb18b750b26d9816e53fb9501f4"
 
   bottle do
     cellar :any
-    sha1 "4233a7ced33f61621bbfe993a38b1f341b50fa37" => :yosemite
-    sha1 "5438d61bc2751a0f7225882199f9e25cdc61863f" => :mavericks
-    sha1 "3dc121773b268bb858d65e2824be58dee8495289" => :mountain_lion
+    sha256 "d6cc04e8d60e33d420153e44c96d9cddf1b863b1a9f87b93e046781845810e9d" => :yosemite
+    sha256 "e041aabe60aa25c259170ffb5ee7a0debe57aa418f6f0552f430d2085516ed8c" => :mavericks
+    sha256 "d5d0367913f4a3f98a00aee546c2b935004c0b54973d2cd20bd29ab6e5a7ea58" => :mountain_lion
   end
 
   patch :DATA

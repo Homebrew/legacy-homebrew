@@ -1,9 +1,9 @@
-require 'formula'
-
 class Mksh < Formula
-  homepage 'https://mirbsd.org/mksh.htm'
-  url 'http://mirbsd.org/MirOS/dist/mir/mksh/mksh-R50d.tgz'
-  sha1 '0066c260e0ae6736c56189f481607d8306449c53'
+  desc "MirBSD Korn Shell"
+  homepage "https://mirbsd.org/mksh.htm"
+  url "https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R50f.tgz"
+  mirror "http://pub.allbsd.org/MirOS/dist/mir/mksh/mksh-R50f.tgz"
+  sha256 "74e051ce92ece9555d91505b956572f64668fc88c5ccabee742099e7f29a2bcb"
 
   bottle do
     cellar :any
@@ -14,8 +14,8 @@ class Mksh < Formula
 
   def install
     system "sh", "./Build.sh", "-r", "-c", (ENV.compiler == :clang ? "lto" : "combine")
-    bin.install 'mksh'
-    man1.install 'mksh.1'
+    bin.install "mksh"
+    man1.install "mksh.1"
   end
 
   def caveats; <<-EOS.undent
@@ -23,5 +23,10 @@ class Mksh < Formula
         echo #{HOMEBREW_PREFIX}/bin/mksh >> /etc/shells
     Then, any user may run `chsh` to change their shell.
     EOS
+  end
+
+  test do
+    assert_equal "honk",
+                 shell_output("mksh -c 'echo honk'").chomp
   end
 end

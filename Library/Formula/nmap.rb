@@ -1,16 +1,15 @@
-require 'formula'
-
 class Nmap < Formula
-  homepage "http://nmap.org/"
+  desc "Port scanning utility for large networks"
+  homepage "https://nmap.org/"
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
-  url "http://nmap.org/dist/nmap-6.47.tar.bz2"
-  sha1 "0c917453a91a5e85c2a217d27c3853b0f3e0e6ac"
+  url "https://nmap.org/dist/nmap-6.47.tar.bz2"
+  sha256 "8fa11e9e203ce2d81a207db5ca4f110a525f6c01c1dd0018325a7112a51aa591"
 
   bottle do
-    revision 1
-    sha1 "f866508268e57a381a1c2456456c5580f83e5bc4" => :mavericks
-    sha1 "c80f12d6d1a52bca5ff152404a84a5c4436ba7b3" => :mountain_lion
-    sha1 "28da4ac4b94c636b1acd02ca1b17cbb799f86f3f" => :lion
+    revision 2
+    sha256 "9b6d72f580b7da225aedadad7682242356c80df9aa3f35153d040148dacf9d07" => :yosemite
+    sha256 "c452ee2ac7166b7330a5b4ec523d2a0ab166a05702816d1e0198afa36927a80d" => :mavericks
+    sha256 "73c5cc0e510d834016a13bc37013454805435db55575af53eb49d23d27a8756a" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -28,7 +27,7 @@ class Nmap < Formula
       --prefix=#{prefix}
       --with-libpcre=included
       --with-liblua=included
-      --with-openssl=#{Formula["openssl"].prefix}
+      --with-openssl=#{Formula["openssl"].opt_prefix}
       --without-nmap-update
       --without-zenmap
       --disable-universal
@@ -36,7 +35,7 @@ class Nmap < Formula
 
     system "./configure", *args
     system "make" # separate steps required otherwise the build fails
-    system "make install"
+    system "make", "install"
   end
 
   test do

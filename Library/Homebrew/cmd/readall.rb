@@ -22,7 +22,7 @@ module Homebrew
             while rb = ruby_files.pop(true)
               nostdout { failed = true unless system "ruby", "-c", "-w", rb }
             end
-          rescue ThreadError, IOError # ignore empty queue error
+          rescue ThreadError # ignore empty queue error
           end
         end
       end
@@ -31,22 +31,19 @@ module Homebrew
     end
 
     formulae = []
-    if ARGV.empty?
-      formulae = Formula.names
+    if ARGV.named.empty?
+      formulae = Formula.full_names
     else
-      user, repo = tap_args
-      user.downcase!
-      repo.downcase!
-      tap = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
-      raise "#{tap} does not exist!" unless tap.directory?
-      tap.find_formula { |f| formulae << f }
+      tap = Tap.new(*tap_args)
+      raise TapUnavailableError, tap.name unless tap.installed?
+      formulae = tap.formula_files
     end
 
     formulae.sort.each do |n|
       begin
         Formulary.factory(n)
       rescue Exception => e
-        onoe "problem in #{Formula.path(n)}"
+        onoe "problem in #{Formulary.path(n)}"
         puts e
         Homebrew.failed = true
       end

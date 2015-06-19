@@ -1,13 +1,14 @@
 class Cabextract < Formula
+  desc "Extract files from Microsoft cabinet files"
   homepage "http://www.cabextract.org.uk/"
-  url "http://www.cabextract.org.uk/cabextract-1.5.tar.gz"
-  sha1 "7ddb31072590a807bef09234f46f940e1ba51067"
+  url "http://www.cabextract.org.uk/cabextract-1.6.tar.gz"
+  sha256 "cee661b56555350d26943c5e127fc75dd290b7f75689d5ebc1f04957c4af55fb"
 
   bottle do
     cellar :any
-    sha1 "c7cd0a4500cfc35680ffa4687f9683bc741bbec0" => :yosemite
-    sha1 "2367b8a88d18e528e1dded8425a8954e5402f472" => :mavericks
-    sha1 "838d7c66e6447f79ea4b6bff4d7e29af1f25c5a9" => :mountain_lion
+    sha256 "e86f3dda55d8cbba0602abacbf67d09a1b733d4fe6db761938f8a3416f1cf5a8" => :yosemite
+    sha256 "f71f87d6bbb877207ad984d8ad4bd68c7f50ae0305178583c968847cb57f6179" => :mavericks
+    sha256 "464d4ede11b2be5ecf25244193e901d9d08c1d0daf254204703e054405e41603" => :mountain_lion
   end
 
   def install

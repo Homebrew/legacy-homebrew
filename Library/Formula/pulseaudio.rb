@@ -1,21 +1,36 @@
-require 'formula'
-
 class Pulseaudio < Formula
+  desc "Sound system for POSIX OSes"
   homepage "http://pulseaudio.org"
-  url "http://freedesktop.org/software/pulseaudio/releases/pulseaudio-5.0.tar.xz"
-  sha1 "e420931a0b9cf37331cd06e30ba415046317ab85"
+  url "http://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-6.0.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/p/pulseaudio/pulseaudio_6.0.orig.tar.xz"
+  sha256 "b50640e0b80b1607600accfad2e45aabb79d379bf6354c9671efa2065477f6f6"
+
+  bottle do
+    sha256 "d57bc83ad5fc738faeb8fe64b03139e1164cecff7cc969b17f4b551e31ff25fa" => :yosemite
+    sha256 "5e7826508922b199bf1027e4961c3a747a97b2f73496993bae3c3453f53fa442" => :mavericks
+    sha256 "1f2204be6e1ecd20380a6593dd4e49608e1d7be42caf60d29c43ec1587dae97e" => :mountain_lion
+  end
+
+  head do
+    url "http://anongit.freedesktop.org/git/pulseaudio/pulseaudio.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "intltool" => :build
+    depends_on "gettext" => :build
+  end
 
   option "with-nls", "Build with native language support"
   option :universal
 
   depends_on "pkg-config" => :build
-  depends_on "libtool" => :build
   depends_on "intltool" => :build if build.with? "nls"
   depends_on "gettext" => :build if build.with? "nls"
 
+  depends_on "libtool" => :run
   depends_on "json-c"
   depends_on "libsndfile"
   depends_on "libsamplerate"
+  depends_on "openssl"
 
   depends_on :x11 => :optional
   depends_on "glib" => :optional
@@ -26,8 +41,8 @@ class Pulseaudio < Formula
 
   # i386 patch per MacPorts
   patch :p0 do
-    url "https://trac.macports.org/export/119615/trunk/dports/audio/pulseaudio/files/i386.patch"
-    sha1 "4193a6112f90d103875d2ca91462c26d811a9386"
+    url "https://trac.macports.org/export/135547/trunk/dports/audio/pulseaudio/files/i386.patch"
+    sha256 "d3a2180600a4fbea538949b6c4e9e70fe7997495663334e50db96d18bfb1da5f"
   end
 
   fails_with :clang do
@@ -54,7 +69,16 @@ class Pulseaudio < Formula
       ENV.universal_binary
     end
 
-    system "./configure", *args
+    if build.head?
+      # autogen.sh runs bootstrap.sh then ./configure
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
     system "make", "install"
+  end
+
+  test do
+    system bin/"pulseaudio", "--dump-modules"
   end
 end

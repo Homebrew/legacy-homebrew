@@ -1,15 +1,15 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
+  desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz"
-  sha256 "9700e23af4e9b3643af48cef5f2ad20a1331ff531a12154eef2bfb0bb1682e32"
+  url "https://nodejs.org/dist/v0.12.4/node-v0.12.4.tar.gz"
+  sha256 "3298d0997613a04ac64343e8316da134d04588132554ae402eb344e3369ec912"
   head "https://github.com/joyent/node.git", :branch => "v0.12"
 
   bottle do
-    revision 1
-    sha1 "cf47b47fca78022a299f5353b968fb703fb90bc9" => :yosemite
-    sha1 "a0fc2c129428a0fcd50169857b240039d328463b" => :mavericks
-    sha1 "8312e7ea6ffec58e39ec7cc1f8671847a9d7b4bf" => :mountain_lion
+    sha256 "851eedc0bcfb26ce2c7decc16d97522090c662498d703a51ed1c82dd4392f273" => :yosemite
+    sha256 "dac805242be62d05eb8e5451e9a9a4a1fd8bbaee6b048e7547157e19b3ff1a2d" => :mavericks
+    sha256 "cdee3b33f5b1f54916f456d88d4470c967898214beba5fe5ef23b4f899d74f44" => :mountain_lion
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -31,8 +31,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.5.1.tgz"
-    sha1 "23e4b0fdd1ffced7d835780e692a9e5a0125bb02"
+    url "https://registry.npmjs.org/npm/-/npm-2.10.1.tgz"
+    sha256 "5b57c177bcaba628b04aba22f1112f409a0344c74653eb8c9185df24a97ac01b"
   end
 
   def install
@@ -94,7 +94,7 @@ class Node < Formula
       # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
       rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      ln_sf Dir[libexec/"npm/share/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
+      ln_sf Dir[libexec/"npm/lib/node_modules/npm/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     npm_root = node_modules/"npm"
@@ -105,13 +105,7 @@ class Node < Formula
   def caveats
     s = ""
 
-    if build.with? "npm"
-      s += <<-EOS.undent
-        If you update npm itself, do NOT use the npm update command.
-        The upstream-recommended way to update npm is:
-          npm install -g npm@latest
-      EOS
-    else
+    if build.without? "npm"
       s += <<-EOS.undent
         Homebrew has NOT installed npm. If you later install it, you should supplement
         your NODE_PATH with the npm module folder:

@@ -1,16 +1,16 @@
-require "formula"
-
 class Xplanetfx < Formula
+  desc "Configure, run or daemonize xplanet for HQ Earth wallpapers"
   homepage "http://mein-neues-blog.de/xplanetFX/"
-  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.4_all.tar.gz"
-  sha256 "0c7ea5783103f00867eecc1603e598b89fd52bd19954fd2976e3aa89390813ca"
-  version "2.6.4"
+  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.6_all.tar.gz"
+  sha256 "59c49af68b6cafcbe4ebfd65979181a7f1e4416e024505b5b0d46f1cc04b082a"
+  version "2.6.6"
 
   bottle do
     cellar :any
-    sha256 "9d369a95ea8b1ea8421f9e63041ede5f452fb04418bd684ef58f6db49794a86e" => :yosemite
-    sha256 "85fffdc38d701f4d4739aa9bc0043f0c2cfcaa2998483e4b0e8321ebbfec7853" => :mavericks
-    sha256 "9c803d55555e7d4bceb6f5296fd53d83c44ea40014030f1f4e2922f5f96fc583" => :mountain_lion
+    revision 1
+    sha256 "d0df69f6cd30618e953e4474e196fa8221d3d984b5ffe1aef933616caced9b05" => :yosemite
+    sha256 "89b74842859932646369a6c0aae9356a7b124e142ec04fe564a40e28c81fd115" => :mavericks
+    sha256 "760a9f132f462b274a9068a21bfe1f806c295fbd1bb5fdb02a5de433dd7e2efe" => :mountain_lion
   end
 
   option "without-gui", "Build to run xplanetFX from the command-line only"
@@ -40,7 +40,7 @@ class Xplanetfx < Formula
       ENV.prepend_create_path "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages/gtk-2.0"
       ENV.prepend_create_path "GDK_PIXBUF_MODULEDIR", "#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
     end
-    bin.env_script_all_files(libexec+'bin', :PATH => "#{path}:$PATH", :PYTHONPATH => ENV["PYTHONPATH"], :GDK_PIXBUF_MODULEDIR => ENV["GDK_PIXBUF_MODULEDIR"])
+    bin.env_script_all_files(libexec+"bin", :PATH => "#{path}:$PATH", :PYTHONPATH => ENV["PYTHONPATH"], :GDK_PIXBUF_MODULEDIR => ENV["GDK_PIXBUF_MODULEDIR"])
   end
 
   def post_install
@@ -49,5 +49,9 @@ class Xplanetfx < Formula
       ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
       system "#{HOMEBREW_PREFIX}/bin/gdk-pixbuf-query-loaders", "--update-cache"
     end
+  end
+
+  test do
+    system "#{bin}/xplanetFX", "--help"
   end
 end

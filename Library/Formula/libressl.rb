@@ -1,15 +1,14 @@
 class Libressl < Formula
+  desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.1.4.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.1.4.tar.gz"
-  sha256 "e8e08535928774119a979412ee8e307444b7a1a42c8c47ac06ee09423ca9a04e"
-
-  option "without-libtls", "Build without libtls"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.0.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.2.0.tar.gz"
+  sha256 "9690d8f38a5d48425395452eeb305b05bb0f560cd96e0ee30f370d4f16563040"
 
   bottle do
-    sha1 "f67adff1d5735453bd33dacbfdf091265faa0ca2" => :yosemite
-    sha1 "747aad9e3e402379a6b19940328b948c225f4c96" => :mavericks
-    sha1 "20bc24c3257e23b7cdb0074d8b0743146b2af1e7" => :mountain_lion
+    sha256 "96d88a9de52cd8bc8b44c351f98a40360ded9a9d3788474a06b024201cc3f638" => :yosemite
+    sha256 "42edf353873147a1f37058dd6440cf3c65748468683663619b7c163c95d5288e" => :mavericks
+    sha256 "e1b78e175917e469b3ac9e6af957f913bf2dac9fb5913ebb7896f9d5253797a7" => :mountain_lion
   end
 
   head do
@@ -31,8 +30,6 @@ class Libressl < Formula
       --with-enginesdir=#{lib}/engines
     ]
 
-    args << "--enable-libtls" if build.with? "libtls"
-
     system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make"
@@ -40,8 +37,8 @@ class Libressl < Formula
     system "make", "install"
 
     # Install the dummy openssl.cnf file to stop runtime warnings.
-    mkdir_p "#{etc}/libressl"
-    cp "apps/openssl.cnf", "#{etc}/libressl"
+    (etc/"libressl/certs").mkpath
+    (etc/"libressl").install "apps/openssl.cnf"
   end
 
   def post_install
@@ -57,7 +54,10 @@ class Libressl < Formula
   def caveats; <<-EOS.undent
     A CA file has been bootstrapped using certificates from the system
     keychain. To add additional certificates, place .pem files in
-      #{etc}/libressl
+      #{etc}/libressl/certs
+
+    and run
+      #{opt_bin}/openssl certhash #{etc}/libressl/certs
     EOS
   end
 

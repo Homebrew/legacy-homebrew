@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ode < Formula
+  desc "Library for simulating articulated rigid body dynamics"
   homepage 'http://www.ode.org/'
   url 'https://bitbucket.org/odedevs/ode/downloads/ode-0.13.1.tar.gz'
   sha1 '2fea08792e8f0fe606e929097fbec78ba926bcab'

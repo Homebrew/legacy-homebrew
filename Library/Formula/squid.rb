@@ -1,14 +1,13 @@
-require "formula"
-
 class Squid < Formula
+  desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.9.tar.bz2"
-  sha1 "a356cadc324d91c41119f96a7d1a20330866c1ac"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.5.tar.xz"
+  sha256 "23793da6b23871765188becae59a6f4b6c3672c256ba9be90743b46a3c7921cf"
 
   bottle do
-    sha1 "26d026bc8523fed17870fcdd7ef935687208232d" => :yosemite
-    sha1 "7fa50fc50e2525175d733068b3fc8c00d72eedf1" => :mavericks
-    sha1 "bdae1232126a1aa7a9eec3380d1d95184a2923ed" => :mountain_lion
+    sha256 "71479ca4e9760be2a6484b7283acf218d8024325feabb243bca22faae837cdcc" => :yosemite
+    sha256 "68b00e8b3ac336a1d5db3e58d5e460ac0cb7f8eeca999d444141712423eeebaf" => :mavericks
+    sha256 "cf69206d528b13547f9943ebd8b0b06be26886e615649e930952c4c0c59b51ec" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -29,10 +28,11 @@ class Squid < Formula
       --disable-eui
       --enable-pf-transparent
       --with-included-ltdl
+      --with-openssl
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   def plist; <<-EOS.undent

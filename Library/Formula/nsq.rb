@@ -1,24 +1,21 @@
-require "formula"
 require "language/go"
 
 class Nsq < Formula
-  homepage "https://bitly.github.io/nsq"
-  url "https://github.com/bitly/nsq/archive/v0.3.2.tar.gz"
-  sha1 "3df203637e9b669486747e5ac18c93e7dd2d33bd"
+  desc "Realtime distributed messaging platform"
+  homepage "http://nsq.io"
+  url "https://github.com/bitly/nsq/archive/v0.3.5.tar.gz"
+  sha256 "4120ad24e3700be1e65549b9a55eab5d4e744cd114d9b39779a47b6dedda0b35"
+
+  head "https://github.com/bitly/nsq.git"
 
   bottle do
     cellar :any
-    sha1 "4eca017db1de9f3992da92a3eed95f6343393c74" => :yosemite
-    sha1 "0fcd44d0fc5bc26ad364b2e5c943160f06bffcbe" => :mavericks
-    sha1 "e3ce46fcb14aa4557a68ef7197b8a5889e556823" => :mountain_lion
+    sha256 "eb9dd459eec6603dd720b58b8fcee5ccfc122999aed51845ff2c98e0bb3fabfe" => :yosemite
+    sha256 "b17656e4e8b93abf9d6b0b65b614ffa7fecc2b0920a8d0329aa6abda2e5a2f7e" => :mavericks
+    sha256 "dd00b16b6708fd69764ec0276568f88b4d3c8729c6be45859b3450b313a0f3b6" => :mountain_lion
   end
 
   depends_on "go" => :build
-
-  go_resource "code.google.com/p/snappy-go" do
-    url "https://code.google.com/p/snappy-go/", :using => :hg,
-      :revision => "12e4b4183793ac4b061921e7980845e750679fd0"
-  end
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
@@ -32,7 +29,7 @@ class Nsq < Formula
 
   go_resource "github.com/bitly/go-nsq" do
     url "https://github.com/bitly/go-nsq.git",
-      :revision => "5a2abdba46a853a75ccdeeead30ad34eabc4d72a"
+      :revision => "22a8bd48c443ec23bb559675b6df8284bbbdab29"
   end
 
   go_resource "github.com/bitly/go-simplejson" do
@@ -52,7 +49,7 @@ class Nsq < Formula
 
   go_resource "github.com/mreiferson/go-snappystream" do
     url "https://github.com/mreiferson/go-snappystream.git",
-      :revision => "307a466b220aaf34bcee2d19c605ed9e96b4bcdb"
+      :revision => "028eae7ab5c4c9e2d1cb4c4ca1e53259bbe7e504"
   end
 
   go_resource "github.com/bitly/timer_metrics" do
@@ -60,10 +57,14 @@ class Nsq < Formula
       :revision => "afad1794bb13e2a094720aeb27c088aa64564895"
   end
 
+  go_resource "github.com/blang/semver" do
+    url "https://github.com/blang/semver.git",
+      :revision => "9bf7bff48b0388cb75991e58c6df7d13e982f1f2"
+  end
+
   def install
     # build a proper GOPATH tree for local dependencies
-    (buildpath + "src/github.com/bitly/nsq").install "util", "nsqlookupd", "nsqd"
-    (buildpath + "src/github.com/bitly/nsq/nsqadmin").install "nsqadmin/templates" => "templates"
+    (buildpath + "src/github.com/bitly/nsq").install "internal", "nsqlookupd", "nsqd", "nsqadmin"
 
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
@@ -73,6 +74,38 @@ class Nsq < Formula
   end
 
   test do
-    system "#{bin}/nsqd", "--version"
+    begin
+      lookupd = fork do
+        system bin/"nsqlookupd"
+      end
+      sleep 2
+      d = fork do
+        system bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
+      end
+      sleep 2
+      admin = fork do
+        system bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
+      end
+      sleep 2
+      to_file = fork do
+        system bin/"nsq_to_file", "--topic=test", "--output-dir=#{testpath}",
+               "--lookupd-http-address=127.0.0.1:4161"
+      end
+      sleep 2
+      system "curl", "-d", "hello", "http://127.0.0.1:4151/put?topic=test"
+
+      dat = File.read(Dir["*.dat"].first)
+      assert_match "test", dat
+      assert_match version.to_s, dat
+    ensure
+      Process.kill(9, lookupd)
+      Process.kill(9, d)
+      Process.kill(9, admin)
+      Process.kill(9, to_file)
+      Process.wait lookupd
+      Process.wait d
+      Process.wait admin
+      Process.wait to_file
+    end
   end
 end

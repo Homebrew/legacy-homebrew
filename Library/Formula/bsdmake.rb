@@ -1,4 +1,5 @@
 class Bsdmake < Formula
+  desc "BSD make (build tool)"
   homepage "https://opensource.apple.com/"
   url "https://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz"
   sha1 "9ce3c3fc01e0eb47d82827b1eb227eb371fefd5c"

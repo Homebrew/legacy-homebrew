@@ -1,6 +1,7 @@
 require "formula"
 
 class Srecord < Formula
+  desc "Tools for manipulating EPROM load files"
   homepage "http://srecord.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/srecord/srecord/1.64/srecord-1.64.tar.gz"
   sha1 "f947751084f5837a1a7988cbfe5fcf3800958cb7"

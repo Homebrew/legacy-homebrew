@@ -1,46 +1,43 @@
+require "digest/md5"
+
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
 
 class Formulary
-  module Formulae
-    class << self
-      if instance_method(:const_defined?).arity == -1
-        def formula_const_defined?(name)
-          const_defined?(name, false)
-        end
+  FORMULAE = {}
 
-        def formula_const_get(name)
-          const_get(name, false)
-        end
-      else
-        def formula_const_defined?(name)
-          const_defined?(name)
-        end
+  def self.formula_class_defined?(path)
+    FORMULAE.key?(path)
+  end
 
-        def formula_const_get(name)
-          const_get(name)
-        end
-      end
+  def self.formula_class_get(path)
+    FORMULAE.fetch(path)
+  end
 
-      def remove_formula_const(name)
-        remove_const(name)
-      end
+  def self.load_formula(name, path)
+    mod = Module.new
+    const_set("FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}", mod)
+    contents = path.open("r") { |f| set_encoding(f).read }
+    mod.module_eval(contents, path)
+    class_name = class_s(name)
 
-      def formula_const_set(name, value)
-        const_set(name, value)
-      end
+    begin
+      klass = mod.const_get(class_name)
+    rescue NameError => e
+      raise FormulaUnavailableError, name, e.backtrace
+    else
+      FORMULAE[path] = klass
     end
   end
 
-  def self.unload_formula formula_name
-    Formulae.remove_formula_const(class_s(formula_name))
-  end
-
-  def self.restore_formula formula_name, value
-    old_verbose, $VERBOSE = $VERBOSE, nil
-    Formulae.formula_const_set(class_s(formula_name), value)
-  ensure
-    $VERBOSE = old_verbose
+  if IO.method_defined?(:set_encoding)
+    def self.set_encoding(io)
+      io.set_encoding(Encoding::UTF_8)
+    end
+  else
+    def self.set_encoding(io)
+      io
+    end
   end
 
   def self.class_s name
@@ -57,13 +54,10 @@ class Formulary
     attr_reader :name
     # The formula's ruby file's path or filename
     attr_reader :path
-    # The ruby constant name of the formula's class
-    attr_reader :class_name
 
     def initialize(name, path)
       @name = name
       @path = path.resolved_path
-      @class_name = Formulary.class_s(name)
     end
 
     # Gets the formula instance.
@@ -72,16 +66,8 @@ class Formulary
     end
 
     def klass
-      begin
-        have_klass = Formulae.formula_const_defined?(class_name)
-      rescue NameError => e
-        raise unless e.name.to_s == class_name
-        raise FormulaUnavailableError, name, e.backtrace
-      end
-
-      load_file unless have_klass
-
-      Formulae.formula_const_get(class_name)
+      load_file unless Formulary.formula_class_defined?(path)
+      Formulary.formula_class_get(path)
     end
 
     private
@@ -89,7 +75,7 @@ class Formulary
     def load_file
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
       raise FormulaUnavailableError.new(name) unless path.file?
-      Formulae.module_eval(path.read, path)
+      Formulary.load_formula(name, path)
     end
   end
 
@@ -97,17 +83,8 @@ class Formulary
   class BottleLoader < FormulaLoader
     def initialize bottle_name
       @bottle_filename = Pathname(bottle_name).realpath
-      name_without_version = bottle_filename_formula_name @bottle_filename
-      if name_without_version.empty?
-        if ARGV.homebrew_developer?
-          opoo "Add a new regex to bottle_version.rb to parse this filename."
-        end
-        name = bottle_name
-      else
-        name = name_without_version
-      end
-
-      super name, Formula.path(name)
+      name, full_name = bottle_resolve_formula_names @bottle_filename
+      super name, Formulary.path(full_name)
     end
 
     def get_formula(spec)
@@ -159,16 +136,9 @@ class Formulary
     def initialize tapped_name
       @tapped_name = tapped_name
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}")
-      path = tap.join("#{name}.rb")
-
-      if tap.directory?
-        tap.find_formula do |file|
-          if file.basename(".rb").to_s == name
-            path = file
-          end
-        end
-      end
+      tap = Tap.new user, repo
+      path = tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
+      path ||= tap.path/"#{name}.rb"
 
       super name, path
     end
@@ -182,7 +152,7 @@ class Formulary
 
   class NullLoader < FormulaLoader
     def initialize(name)
-      @name = name
+      super name, Formulary.core_path(name)
     end
 
     def get_formula(spec)
@@ -200,8 +170,32 @@ class Formulary
     loader_for(ref).get_formula(spec)
   end
 
+  # Return a Formula instance for the given rack.
+  def self.from_rack(rack, spec=:stable)
+    kegs = rack.directory? ? rack.subdirs.map { |d| Keg.new(d) } : []
+
+    keg = kegs.detect(&:linked?) || kegs.detect(&:optlinked?) || kegs.max_by(&:version)
+    return factory(rack.basename.to_s, spec) unless keg
+
+    tap = Tab.for_keg(keg).tap
+
+    if tap.nil? || tap == "Homebrew/homebrew" || tap == "mxcl/master"
+      factory(rack.basename.to_s, spec)
+    else
+      factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
+    end
+  end
+
   def self.canonical_name(ref)
     loader_for(ref).name
+  rescue TapFormulaAmbiguityError
+    # If there are multiple tap formulae with the name of ref,
+    # then ref is the canonical name
+    ref.downcase
+  end
+
+  def self.path(ref)
+    loader_for(ref).path
   end
 
   def self.loader_for(ref)
@@ -218,7 +212,7 @@ class Formulary
       return FromPathLoader.new(ref)
     end
 
-    formula_with_that_name = Formula.path(ref)
+    formula_with_that_name = core_path(ref)
     if formula_with_that_name.file?
       return FormulaLoader.new(ref, formula_with_that_name)
     end
@@ -228,11 +222,33 @@ class Formulary
       return AliasLoader.new(possible_alias)
     end
 
+    possible_tap_formulae = tap_paths(ref)
+    if possible_tap_formulae.size > 1
+      raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
+    elsif possible_tap_formulae.size == 1
+      return FormulaLoader.new(ref, possible_tap_formulae.first)
+    end
+
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
     if possible_cached_formula.file?
       return FormulaLoader.new(ref, possible_cached_formula)
     end
 
     return NullLoader.new(ref)
+  end
+
+  def self.core_path(name)
+    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
+  end
+
+  def self.tap_paths(name)
+    name = name.downcase
+    Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
+      Pathname.glob([
+        "#{tap}Formula/#{name}.rb",
+        "#{tap}HomebrewFormula/#{name}.rb",
+        "#{tap}#{name}.rb",
+      ]).detect(&:file?)
+    end.compact
   end
 end

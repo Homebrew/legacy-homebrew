@@ -1,4 +1,5 @@
 class HttpLoad < Formula
+  desc "Test throughput of a web server by running parallel fetches"
   homepage "http://www.acme.com/software/http_load/"
   url "http://www.acme.com/software/http_load/http_load-14aug2014.tar.gz"
   version "20140814"
@@ -20,7 +21,7 @@ class HttpLoad < Formula
 
     if build.with? "openssl"
       inreplace "Makefile", "#SSL_", "SSL_"
-      args << "SSL_TREE=#{Formula["openssl"].prefix}"
+      args << "SSL_TREE=#{Formula["openssl"].opt_prefix}"
     end
 
     system "make", "install", *args

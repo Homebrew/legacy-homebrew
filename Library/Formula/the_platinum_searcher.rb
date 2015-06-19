@@ -1,39 +1,39 @@
-require "formula"
 require "language/go"
 
 class ThePlatinumSearcher < Formula
+  desc "Multi-platform code-search similar to ack and ag"
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.5.tar.gz"
-  sha1 "775f73aaf894dabcfbd80f07eeb0d8450010ac15"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.7.tar.gz"
+  sha256 "8009fa74e93b26d362f8ddb2354818ce7736b683c1c9afa405022d8efb057d91"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
+
+  depends_on "go" => :build
 
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
-      :revision => "7047cf7a8dc6f41e53365420ab62d415055232c6"
+        :revision => "1679536dcc895411a9f5848d9a0250be7856448c"
   end
 
   go_resource "github.com/monochromegane/terminal" do
     url "https://github.com/monochromegane/terminal.git",
-      :revision => "6d255869fb99937f1f287bd1fe3a034c6c4f68f6"
+        :revision => "6d255869fb99937f1f287bd1fe3a034c6c4f68f6"
   end
 
   go_resource "github.com/shiena/ansicolor" do
     url "https://github.com/shiena/ansicolor.git",
-      :revision => "6046e7d18a7698e98846e5d25842e9cf15aecf2c"
+        :revision => "6046e7d18a7698e98846e5d25842e9cf15aecf2c"
   end
 
-  go_resource "code.google.com/p/go.text" do
-    url "https://code.google.com/p/go.text", :using => :hg,
-      :revision => "46250cb715a27b42c736a5ff2a4e6fa0b2118952"
+  go_resource "golang.org/x/text" do
+    url "https://github.com/golang/text.git",
+        :revision => "c980adc4a823548817b9c47d38c6ca6b7d7d8b6a"
   end
-
-  depends_on "go" => :build
 
   bottle do
     cellar :any
-    sha1 "a7a984c9716c0cae11b37cc99724cdb7004058ca" => :yosemite
-    sha1 "8ad4be8eb22d125ce6b448e4999dc4bdc1b89cdb" => :mavericks
-    sha1 "c0ace5f1aeab2d6eb1f283f676fdc820f5aaa00a" => :mountain_lion
+    sha256 "ed9b856da6f6abe519a0751600dd24a5b47c3c486140900d2c16d1bbed8d7e0b" => :yosemite
+    sha256 "19a0bc22ab3e0a291982b750f3ca339d36573cef8aeb88fddd3ac2b886cc1085" => :mavericks
+    sha256 "6be9cac1ed488a52e9b81434e545f42f87a6422d3772363af7c013c09d8b665b" => :mountain_lion
   end
 
   def install
@@ -44,8 +44,7 @@ class ThePlatinumSearcher < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "pt", "cmd/pt/main.go"
-    bin.install "pt"
+    system "go", "build", "-o", bin/"pt", "cmd/pt/main.go"
   end
 
   test do

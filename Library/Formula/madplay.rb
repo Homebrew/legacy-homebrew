@@ -1,6 +1,7 @@
 require 'formula'
 
 class Madplay < Formula
+  desc "MPEG Audio Decoder"
   homepage 'http://www.underbit.com/products/mad/'
   url 'https://downloads.sourceforge.net/project/mad/madplay/0.15.2b/madplay-0.15.2b.tar.gz'
   sha1 '29105eb27c1416aa33c8d1ab3404a8e5f0aecd3f'

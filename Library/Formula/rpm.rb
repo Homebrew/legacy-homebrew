@@ -14,31 +14,37 @@ class RpmDownloadStrategy < CurlDownloadStrategy
 end
 
 class Rpm < Formula
+  desc "RPM package manager"
   homepage 'http://www.rpm5.org/'
-  url 'http://rpm5.org/files/rpm/rpm-5.4/rpm-5.4.14-0.20131024.src.rpm',
+  url 'http://rpm5.org/files/rpm/rpm-5.4/rpm-5.4.15-0.20140824.src.rpm',
       :using => RpmDownloadStrategy
-  version '5.4.14'
-  sha1 'ea1a5f073ba4923d32f98b4e95a3f2555824f22c'
+  version '5.4.15'
+  sha1 '5e94f4679759c36ce76a4847401b22b660a97227'
+
+  bottle do
+    sha256 "ac5e32d13f8d61c4a7bfae758a98f4be00622e02a2db6e64430429a0ed17cc30" => :yosemite
+    sha256 "26cb3e750a1333f5c66fd2c125f34a546ed1a200eeee7c950a0616ea7699453b" => :mavericks
+    sha256 "67743955785cdb2f2c532d0a9cdd8c05adab1da9c10c9a2f5af18d53f3abaea5" => :mountain_lion
+  end
 
   depends_on 'berkeley-db'
   depends_on 'libmagic'
   depends_on 'popt'
-  depends_on 'beecrypt'
   depends_on 'libtasn1'
-  depends_on 'neon'
   depends_on 'gettext'
   depends_on 'xz'
   depends_on 'ossp-uuid'
-  depends_on 'pcre'
   depends_on 'rpm2cpio' => :build
 
   def install
+    # only rpm should go into HOMEBREW_CELLAR, not rpms built
+    inreplace "macros/macros.in", '@prefix@', HOMEBREW_PREFIX
     args = %W[
         --prefix=#{prefix}
         --localstatedir=#{var}
         --with-path-cfg=#{etc}/rpm
         --with-path-magic=#{HOMEBREW_PREFIX}/share/misc/magic
-        --with-extra-path-macros=#{lib}/rpm/macros.*
+        --with-path-sources=#{var}/lib/rpmbuild
         --with-libiconv-prefix=/usr
         --disable-openmp
         --disable-nls
@@ -47,23 +53,65 @@ class Rpm < Formula
         --with-sqlite=external
         --with-file=external
         --with-popt=external
-        --with-beecrypt=external
+        --with-beecrypt=internal
         --with-libtasn1=external
-        --with-neon=external
+        --with-neon=internal
         --with-uuid=external
-        --with-pcre=external
+        --with-pcre=internal
         --with-lua=internal
         --with-syck=internal
         --without-apidocs
         varprefix=#{var}
     ]
 
-    inreplace "configure", "db-6.0", "db-5.3"
-    inreplace "configure", "db_sql-6.0", "db_sql-5.3"
     system "./configure", *args
     inreplace "Makefile", "--tag=CC", "--tag=CXX"
     inreplace "Makefile", "--mode=link $(CCLD)", "--mode=link $(CXX)"
     system "make"
+    # enable rpmbuild macros, for building *.rpm packages
+    inreplace "macros/macros", "#%%{load:%{_usrlibrpm}/macros.rpmbuild}", "%{load:%{_usrlibrpm}/macros.rpmbuild}"
+    # using __scriptlet_requires needs bash --rpm-requires
+    inreplace "macros/macros.rpmbuild", "%_use_internal_dependency_generator\t2", "%_use_internal_dependency_generator\t1"
     system "make install"
+  end
+
+  def test_spec
+    <<-EOS.undent
+      Summary:   Test package
+      Name:      test
+      Version:   1.0
+      Release:   1
+      License:   Public Domain
+      Group:     Development/Tools
+      BuildArch: noarch
+
+      %description
+      Trivial test package
+
+      %prep
+      %build
+      %install
+      mkdir -p $RPM_BUILD_ROOT/tmp
+      touch $RPM_BUILD_ROOT/tmp/test
+
+      %files
+      /tmp/test
+
+      %changelog
+
+    EOS
+  end
+
+  def rpmdir macro
+    return Pathname.new(`#{bin}/rpm --eval #{macro}`.chomp)
+  end
+
+  test do
+    system "#{bin}/rpm", "-vv", "-qa"
+    rpmdir('%_builddir').mkpath
+    specfile = rpmdir('%_specdir')+'test.spec'
+    specfile.unlink if specfile.exist?
+    (specfile).write(test_spec)
+    system "#{bin}/rpmbuild", "-ba", specfile
   end
 end

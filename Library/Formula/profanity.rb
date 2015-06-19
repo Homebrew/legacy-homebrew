@@ -1,15 +1,14 @@
-require "formula"
-
 class Profanity < Formula
+  desc "Console based XMPP client"
   homepage "http://www.profanity.im/"
-  url "http://www.profanity.im/profanity-0.4.5.tar.gz"
-  sha1 "d9eb1b9d6a674d5f49e03882f80d1c5cf98c3ce1"
+  url "http://www.profanity.im/profanity-0.4.6.tar.gz"
+  sha256 "9672667e419958dd75d40cc0f253087ba1ae7df0c3c855eaa780831ad8282a9f"
   head "https://github.com/boothj5/profanity.git"
 
   bottle do
-    sha1 "f53fc5631fa1b079414420275278e55d6225798d" => :yosemite
-    sha1 "240feb4c76b4ddb3170792710fa011cb90c302d4" => :mavericks
-    sha1 "2c5d854f76597d6b0aa55f4daad3aad3027f3bc4" => :mountain_lion
+    sha256 "94039c7e967b2db27b9b0ea7b57ecf394b571c5facbf38cc754f9076c86b5f86" => :yosemite
+    sha256 "6e137ddb29e94142d988738f491a994137992680b5322f8593656ae87159cc84" => :mavericks
+    sha256 "5399f746ca2c82a279ef696ccd3bf7a3e08b8de2f9758668a0c4342132df8b9b" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

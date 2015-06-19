@@ -1,15 +1,16 @@
 require "formula"
 
 class Spdylay < Formula
+  desc "Experimental implementation of SPDY protocol versions 2, 3, and 3.1"
   homepage "https://github.com/tatsuhiro-t/spdylay"
-  url "https://github.com/tatsuhiro-t/spdylay/archive/v1.3.1.tar.gz"
-  sha1 "2cb544364a1797d2abf46a08da95044c1c51aa74"
+  url "https://github.com/tatsuhiro-t/spdylay/archive/v1.3.2.tar.gz"
+  sha1 "0ad6989f93781012efab3602ba1ffffe9002abf3"
 
   bottle do
     cellar :any
-    sha1 "6a0b34fbd6d032b40e05392254a9427b64afb7d7" => :mavericks
-    sha1 "d0f350a74c629d3e657277bffb7b865dcebd2bbb" => :mountain_lion
-    sha1 "157a4de06a02a54eb8c4851d33c2d1b8f72d9424" => :lion
+    sha256 "b520acd2e6169ca96a5a00214908b819f0a4ad3ecb109dc4bcac7567dbd0747b" => :yosemite
+    sha256 "409ae0e5fea5a7e9534a914c3eb9eca48198892d100818e913c5f5868f507fff" => :mavericks
+    sha256 "d9a294e36d238945e881f75f33d07e93f77370e0902a0de5591aeb4d482f28f1" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

@@ -1,5 +1,5 @@
-# encoding: UTF-8
 class Par < Formula
+  desc "Paragraph reflow for email"
   homepage "http://www.nicemice.net/par/"
   url "http://www.nicemice.net/par/Par152.tar.gz"
   version "1.52"

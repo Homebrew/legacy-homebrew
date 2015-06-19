@@ -1,14 +1,15 @@
 class Ejabberd < Formula
+  desc "XMPP application server"
   homepage "https://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/15.02/ejabberd-15.02.tgz"
-  sha256 "58cc6b9b512f2f495993be735a8313a8a0591157e0f35a9a3702b59ff9eb6beb"
+  url "https://www.process-one.net/downloads/ejabberd/15.04/ejabberd-15.04.tgz"
+  sha256 "6750199b75d6b658dabffdf34e20994803b2fc0832e54fea7ab388e5122d63ec"
 
   head "https://github.com/processone/ejabberd.git"
 
   bottle do
-    sha256 "4e5ae83ad6edeeea3a67ccdd4f1cd576916f413ea4516a0e66512507c4628667" => :yosemite
-    sha256 "0f073a85e94b5cdcb266a376c27cd146557a75ed376b1900c2c9868eddc20829" => :mavericks
-    sha256 "ee50b942bf62838b2ed5c474e379443da2d1bf352a18c68a5d0c7c96c1719017" => :mountain_lion
+    sha256 "b0591b932687ecfc54acedd1cc3b312b90654954a775a516fdd9f1194808cbdb" => :yosemite
+    sha256 "22e2ac10889e5036583ee32914515d30f10c4a3a5b19c70cf3ae90079cd4783d" => :mavericks
+    sha256 "b9fe7179d1cafb381b69ecc3dfcc329038a0aba61db0a53389552f42b6322b3d" => :mountain_lion
   end
 
   option "32-bit"
@@ -59,6 +60,11 @@ class Ejabberd < Formula
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
     <dict>
+      <key>EnvironmentVariables</key>
+      <dict>
+        <key>HOME</key>
+        <string>#{var}/lib/ejabberd</string>
+      </dict>
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
@@ -68,6 +74,8 @@ class Ejabberd < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
+      <key>WorkingDirectory</key>
+      <string>#{var}/lib/ejabberd</string>
     </dict>
     </plist>
     EOS

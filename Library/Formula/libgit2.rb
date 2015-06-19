@@ -1,15 +1,15 @@
 class Libgit2 < Formula
+  desc "C library of Git core methods that is re-entrant and linkable"
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.22.0.tar.gz"
-  sha1 "a37dc29511422eec9828e129ad057e77ca962c5e"
-
+  url "https://github.com/libgit2/libgit2/archive/v0.22.2.tar.gz"
+  sha256 "3109f2579180d561fc736bad8bd917d7241477aab11633755c8a273beac53cdc"
   head "https://github.com/libgit2/libgit2.git"
 
   bottle do
     cellar :any
-    sha1 "f38b591523f02a8d3310ec203f1ab7d2c6d825e4" => :yosemite
-    sha1 "ecfdcf794a06e2e501c2c95ca72cdc0f0a97c3ba" => :mavericks
-    sha1 "0daa906f4cf15f9e9de9637c41c0e600aae36c4b" => :mountain_lion
+    sha256 "ecc9a5697ee9834c5c35d849331315ebf39565b9272b0e5cce155ec23507735b" => :yosemite
+    sha256 "1653516e194defec8bb954e0e59edb15cf76bb7efa609f0bf11ca95dc7b600e8" => :mavericks
+    sha256 "4aa576564a09b3053585d63498ad02553374975dd526f9faaf50c982af0d3da6" => :mountain_lion
   end
 
   option :universal

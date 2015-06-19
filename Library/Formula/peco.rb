@@ -1,15 +1,25 @@
 require "language/go"
 
 class Peco < Formula
+  desc "Simplistic interactive filtering tool"
   homepage "https://github.com/peco/peco"
-  url "https://github.com/peco/peco/archive/v0.2.12.tar.gz"
-  sha1 "4f5caf6eab2f7c08191939dec7543afc32a6ddde"
+  url "https://github.com/peco/peco/archive/v0.3.2.tar.gz"
+  sha256 "ce2d617a49a29a010546b6331f7d3288eeab23226fada591b5c65be035b9c693"
+
+  head "https://github.com/peco/peco.git"
 
   bottle do
     cellar :any
-    sha1 "c266e3919d01293aedfc7f4ce459be76ccacd954" => :yosemite
-    sha1 "9374ae50643d4b8b0e1d09c4b2076e5d3ee09355" => :mavericks
-    sha1 "a8e68353239ec1b48866f820b8e3c7915b6b5ec9" => :mountain_lion
+    sha256 "69a0b87dd86fafe7d6d81cc51df811a4273d6b2a7a73fc8ee4d135f544905b5d" => :yosemite
+    sha256 "ea4f6411ebb5cd48283340cff402d338a84d47b7b2849a6b2f870e389c9f89e3" => :mavericks
+    sha256 "f9bb9eb2d8eb0273652acd4254da956781baadc361064ecf8f6589a465ebc882" => :mountain_lion
+  end
+
+  depends_on "go" => :build
+
+  go_resource "github.com/google/btree" do
+    url "https://github.com/google/btree.git",
+      :revision => "0c05920fc3d98100a5e3f7fd339865a6e2aaa671"
   end
 
   go_resource "github.com/jessevdk/go-flags" do
@@ -19,23 +29,18 @@ class Peco < Formula
 
   go_resource "github.com/mattn/go-runewidth" do
     url "https://github.com/mattn/go-runewidth.git",
-      :revision => "c718ccb0685f9fa7129b1b41c04d2877423c419d"
+      :revision => "58a0da4ed7b321c9b5dfeffb7e03ee188fae1c60"
   end
 
   go_resource "github.com/nsf/termbox-go" do
     url "https://github.com/nsf/termbox-go.git",
-      :revision => "1f1918bf12614154995c633122959e84e54ffafa"
+      :revision => "10f14d7408b64a659b7c694a771f5006952d336c"
   end
-
-  go_resource "github.com/peco/peco" do
-    url "https://github.com/peco/peco.git",
-      :revision => "f0c506536a5bb4a0e605fb71420690f57087f2d4"
-  end
-
-  depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/peco"
+    ln_s buildpath, buildpath/"src/github.com/peco/peco"
     Language::Go.stage_deps resources, buildpath/"src"
 
     system "go", "build", "cmd/peco/peco.go"

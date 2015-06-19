@@ -1,16 +1,17 @@
 require 'formula'
 
 class Libxslt < Formula
+  desc "C XSLT library for GNOME"
   homepage 'http://xmlsoft.org/XSLT/'
-  url 'ftp://xmlsoft.org/libxml2/libxslt-1.1.28.tar.gz'
-  mirror 'http://xmlsoft.org/sources/libxslt-1.1.28.tar.gz'
+  url 'http://xmlsoft.org/sources/libxslt-1.1.28.tar.gz'
+  mirror 'ftp://xmlsoft.org/libxml2/libxslt-1.1.28.tar.gz'
   sha1 '4df177de629b2653db322bfb891afa3c0d1fa221'
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "b2fbd32e69e1787d4ea792ee2c51f81466b26f20" => :yosemite
-    sha1 "3f2dee00534b0646cfdcd8064a16c970c4a01cd0" => :mavericks
-    sha1 "791b272f8c0aca80af72c263f9e0f7066ce00628" => :mountain_lion
+    sha256 "6d183c0aec7ca84802c54256289d401d05b2ae153956e118df357f70f388fed9" => :yosemite
+    sha256 "3f674b2296134366637b6ab6f8880c124926b768d4ce5230564d4a1265a8797d" => :mavericks
+    sha256 "2530cd13170900d9f6e5cc4c9d57312cffcb0f16a20d12cc4e82ac8e5f4455d9" => :mountain_lion
   end
 
   keg_only :provided_by_osx
@@ -18,7 +19,7 @@ class Libxslt < Formula
   depends_on 'libxml2'
 
   head do
-    url "git://git.gnome.org/libxslt"
+    url "https://git.gnome.org/browse/libxslt"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -36,7 +37,7 @@ class Libxslt < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libxml-prefix=#{Formula["libxml2"].prefix}"
+                          "--with-libxml-prefix=#{Formula["libxml2"].opt_prefix}"
     system "make"
     system "make install"
   end

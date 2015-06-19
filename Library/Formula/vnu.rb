@@ -1,8 +1,9 @@
 class Vnu < Formula
+  desc "Nu Markup Checker: command-line and server HTML validator"
   homepage "https://validator.github.io/validator/"
-  url "https://github.com/validator/validator/releases/download/20150216/vnu-20150216.jar.zip"
-  sha1 "76806240e7f07d210e23e0dd96a06f6f2c5f0162"
-  version "20150216"
+  url "https://github.com/validator/validator/releases/download/15.4.12/vnu.jar_15.4.12.zip"
+  sha256 "2ae32a816aea9a7f60f359bdace9324d1a5532da61b8fb494eefdddc85148ba9"
+  version "20150412"
 
   def install
     libexec.install "vnu.jar"
@@ -10,8 +11,7 @@ class Vnu < Formula
   end
 
   test do
-    path = testpath/"index.html"
-    path.write <<-EOS.undent
+    (testpath/"index.html").write <<-EOS.undent
       <!DOCTYPE html>
       <html>
       <head>
@@ -21,7 +21,6 @@ class Vnu < Formula
       </body>
       </html>
     EOS
-
-    system bin/"vnu", path
+    system bin/"vnu", testpath/"index.html"
   end
 end

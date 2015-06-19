@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pbrt < Formula
+  desc "Physically based rendering"
   homepage 'http://pbrt.org/'
   url 'https://github.com/mmp/pbrt-v2/archive/2.0.342.tar.gz'
   sha1 'c18e4cb5acdd3120573c26be702e452e77273a79'

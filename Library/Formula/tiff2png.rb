@@ -1,4 +1,5 @@
 class Tiff2png < Formula
+  desc "TIFF to PNG converter"
   homepage "http://www.libpng.org/pub/png/apps/tiff2png.html"
   url "https://github.com/rillian/tiff2png/archive/v0.92.tar.gz"
   sha1 "b838d0e43410a237837b46654e3fb1644fd9891f"

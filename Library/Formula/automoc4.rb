@@ -1,8 +1,9 @@
 require 'formula'
 
 class Automoc4 < Formula
-  homepage 'http://techbase.kde.org/Development/Tools/Automoc4'
-  url 'ftp://ftp.kde.org/pub/kde/stable/automoc4/0.9.88/automoc4-0.9.88.tar.bz2'
+  desc "Tool to add rules for generating Qt moc files"
+  homepage 'https://techbase.kde.org/Development/Tools/Automoc4'
+  url 'http://download.kde.org/stable/automoc4/0.9.88/automoc4-0.9.88.tar.bz2'
   sha1 'd864c3dda99d8b5f625b9267acfa1d88ff617e3a'
 
   depends_on 'cmake' => :build

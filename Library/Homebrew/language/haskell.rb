@@ -2,6 +2,17 @@ module Language
   module Haskell
     # module for formulas using cabal-install as build tool
     module Cabal
+      module ClassMethods
+        def setup_ghc_compilers
+          # Use llvm-gcc on Lion or below (same compiler used when building GHC).
+          fails_with(:clang) if MacOS.version <= :lion
+        end
+      end
+
+      def self.included base
+        base.extend ClassMethods
+      end
+
       def cabal_sandbox
         pwd = Pathname.pwd
         # force cabal to put its stuff here instead of the home directory by
@@ -10,6 +21,7 @@ module Language
         # avoid touching ~/.cabal
         home = ENV["HOME"]
         ENV["HOME"] = pwd
+
         # use cabal's sandbox feature if available
         cabal_version = `cabal --version`[/[0-9.]+/].split('.').collect(&:to_i)
         if (cabal_version <=> [1, 20]) > -1

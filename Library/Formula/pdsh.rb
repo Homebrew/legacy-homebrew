@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pdsh < Formula
+  desc "Efficient rsh-like utility, for using hosts in parallel"
   homepage 'https://code.google.com/p/pdsh/'
   url 'https://code.google.com/p/pdsh/', :tag => 'pdsh-2.31', :using => :git
   sha1 '03f1f82761162e5f0d382f4e586aae9fb0ef7ef9'

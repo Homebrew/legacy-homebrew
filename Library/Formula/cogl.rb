@@ -1,98 +1,87 @@
-require "formula"
-
 class Cogl < Formula
-  homepage "http://developer.gnome.org/cogl/"
-  url "http://ftp.gnome.org/pub/gnome/sources/cogl/1.18/cogl-1.18.2.tar.xz"
-  sha256 "9278e519d5480eb0379efd48db024e8fdbf93f01dff48a7e756b85b508a863aa"
+  desc "Low level OpenGL abstraction library developed for Clutter"
+  homepage "https://developer.gnome.org/cogl/"
+  url "https://download.gnome.org/sources/cogl/1.20/cogl-1.20.0.tar.xz"
+  sha256 "729e35495829e7d31fafa3358e47b743ba21a2b08ff9b6cd28fb74c0de91192b"
+  revision 1
 
   bottle do
     revision 1
-    sha1 "f86c435b6472355f9db615cfc7ea94d76452d8f6" => :yosemite
-    sha1 "113da66275bfe4c1af107b9cfa65619e20af5441" => :mavericks
-    sha1 "2740ac7cb7da32ae2e44d055918352d5d947aa1e" => :mountain_lion
+    sha256 "f1c4bcc7ed92370f25667f619a77201b922f250fefa7a4884d2e3e7d6adcf0fd" => :yosemite
+    sha256 "a92b3f7ce32927fc8a10239c28c24d49d755c0dd4ecc64c40860fccba484c1f3" => :mavericks
+    sha256 "401ec44a470559b23d590427339271f9469e048e1a7160e113875bab35d504c9" => :mountain_lion
   end
 
   head do
-    url "git://git.gnome.org/cogl"
+    url "https://git.gnome.org/browse/cogl", :using => :git
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  deprecated_option "without-x" => "without-x11"
-
   depends_on "pkg-config" => :build
   depends_on "cairo"
   depends_on "glib"
-  depends_on "pango"
-  depends_on :x11 => ["2.5.1", :recommended]
   depends_on "gobject-introspection"
+  depends_on "gtk-doc"
+  depends_on "pango"
 
   # Lion's grep fails, which later results in compilation failures:
   # libtool: link: /usr/bin/grep -E -e [really long regexp] ".libs/libcogl.exp" > ".libs/libcogl.expT"
   # grep: Regular expression too big
-  resource "grep" do
-    url "http://ftpmirror.gnu.org/grep/grep-2.20.tar.xz"
-    mirror "https://ftp.gnu.org/gnu/grep/grep-2.20.tar.xz"
-    sha256 "f0af452bc0d09464b6d089b6d56a0a3c16672e9ed9118fbe37b0b6aeaf069a65"
-  end if MacOS.version == :lion
-
-  # Patch from MacPorts, reported upstream at https://bugzilla.gnome.org/show_bug.cgi?id=708825
-  # https://trac.macports.org/browser/trunk/dports/graphics/cogl/files/patch-clock_gettime.diff
-  patch :DATA
+  if MacOS.version == :lion
+    resource "grep" do
+      url "http://ftpmirror.gnu.org/grep/grep-2.20.tar.xz"
+      mirror "https://ftp.gnu.org/gnu/grep/grep-2.20.tar.xz"
+      sha256 "f0af452bc0d09464b6d089b6d56a0a3c16672e9ed9118fbe37b0b6aeaf069a65"
+    end
+  end
 
   def install
     # Don't dump files in $HOME.
     ENV["GI_SCANNER_DISABLE_CACHE"] = "yes"
 
-    resource("grep").stage do
-      system "./configure", "--disable-dependency-tracking",
-                            "--disable-nls",
-                            "--prefix=#{buildpath}/grep"
-      system "make", "install"
-      ENV["GREP"] = "#{buildpath}/grep/bin/grep"
-    end if MacOS.version == :lion
+    if MacOS.version == :lion
+      resource("grep").stage do
+        system "./configure", "--disable-dependency-tracking",
+               "--disable-nls",
+               "--prefix=#{buildpath}/grep"
+        system "make", "install"
+        ENV["GREP"] = "#{buildpath}/grep/bin/grep"
+      end
+    end
 
-    system "./autogen.sh" if build.head?
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
       --enable-cogl-pango=yes
       --enable-introspection=yes
+      --disable-glx
+      --without-x
     ]
-    args << "--without-x" if build.without? "x11"
-    system "./configure", *args
-    system "make install"
+
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
+    system "make", "install"
+    doc.install "examples"
+  end
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <cogl/cogl.h>
+
+      int main()
+      {
+          return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{include}/cogl",
+           "-I#{Formula["glib"].opt_include}/glib-2.0",
+           "-I#{Formula["glib"].opt_lib}/glib-2.0/include",
+           testpath/"test.c", "-o", testpath/"test"
+    system "./test"
   end
 end
-__END__
-diff --git a/cogl/winsys/cogl-winsys-glx.c b/cogl/winsys/cogl-winsys-glx.c
---- a/cogl/winsys/cogl-winsys-glx.c
-+++ b/cogl/winsys/cogl-winsys-glx.c
-@@ -56,7 +56,26 @@
- #include <sys/stat.h>
- #include <sys/time.h>
- #include <fcntl.h>
-+
-+#ifdef __MACH__
-+#include <mach/mach_time.h>
-+#define CLOCK_REALTIME 0
-+#define CLOCK_MONOTONIC 0
-+static int
-+clock_gettime(int clk_id, struct timespec *t){
-+    mach_timebase_info_data_t timebase;
-+    mach_timebase_info(&timebase);
-+    uint64_t time;
-+    time = mach_absolute_time();
-+    double nseconds = ((double)time * (double)timebase.numer)/((double)timebase.denom);
-+    double seconds = ((double)time * (double)timebase.numer)/((double)timebase.denom * 1e9);
-+    t->tv_sec = seconds;
-+    t->tv_nsec = nseconds;
-+    return 0;
-+}
-+#else
- #include <time.h>
-+#endif
-
- #include <glib/gi18n-lib.h>

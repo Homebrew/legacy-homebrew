@@ -1,29 +1,25 @@
 require "language/go"
 
 class Asciinema < Formula
+  desc "Record and share terminal sessions"
   homepage "https://asciinema.org/"
-  url "https://github.com/asciinema/asciinema-cli/archive/v0.9.9.tar.gz"
-  sha1 "155c19366ffb3347e97026e9ab8006c16d2a52c6"
-  head "https://github.com/asciinema/asciinema-cli"
+  url "https://github.com/asciinema/asciinema/archive/v1.1.0.tar.gz"
+  sha256 "2f03549620534341e883b630c6947c3b4ecd234105ec1d7aa98393a00f0845e8"
 
-  devel do
-    url "https://github.com/asciinema/asciinema-cli/archive/v1.0.0.rc1.tar.gz"
-    sha1 "14bea5ed7fc3bda9a40c8a8173d7e9f107f6a78c"
-    version "1.0.0.rc1"
-  end
+  head "https://github.com/asciinema/asciinema.git"
 
   bottle do
     cellar :any
-    sha1 "18071c7dc6d7fb738db64b864e7d5b48e935e0eb" => :yosemite
-    sha1 "975785a19567a9a7aca8ea7a53b1cfea3f822734" => :mavericks
-    sha1 "cba30872e33a44b4042ef768fd871175e76fc502" => :mountain_lion
+    sha256 "58318ae8f0df8ec4ef5f08106e2c3e0c9157b030cb19e170e2e6fa9942c607a0" => :yosemite
+    sha256 "983b9641df3c5ef0543b197368dbc272f57a230d3ea2541ababf4de7fb4c27fb" => :mavericks
+    sha256 "69fcc08cfe0f382e26a5441a19bf1f6b9a19ccacb6c70b8044d1b8a5e96219fd" => :mountain_lion
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/kr/pty" do
     url "https://github.com/kr/pty.git",
-      :revision => "67e2db24c831afa6c64fc17b4a143390674365ef"
+      :revision => "5cf931ef8f76dccd0910001d74a58a7fca84a83d"
   end
 
   go_resource "code.google.com/p/go.crypto" do
@@ -39,17 +35,15 @@ class Asciinema < Formula
   def install
     ENV["GOPATH"] = buildpath
     mkdir_p buildpath/"src/github.com/asciinema"
-    ln_s buildpath, buildpath/"src/github.com/asciinema/asciinema-cli"
+    ln_s buildpath, buildpath/"src/github.com/asciinema/asciinema"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "asciinema"
-
-    bin.install "asciinema"
+    system "go", "build", "-o", bin/"asciinema"
   end
 
   test do
     ENV["LC_ALL"] = "en_US.UTF-8"
-    system "#{bin}/asciinema", "-v"
-    system "#{bin}/asciinema", "-h"
+    system "#{bin}/asciinema", "--version"
+    system "#{bin}/asciinema", "--help"
   end
 end

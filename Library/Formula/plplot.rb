@@ -1,14 +1,16 @@
 require 'formula'
 
 class Plplot < Formula
+  desc "Cross-platform software package for creating scientific plots"
   homepage 'http://plplot.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/plplot/plplot/5.10.0%20Source/plplot-5.10.0.tar.gz'
   sha1 'ea962cb0138c9b4cbf97ecab1fac1919ea0f939f'
 
   bottle do
-    sha1 "1087a7643567d02bf7fe500726367539738856ab" => :yosemite
-    sha1 "63c644192722135b5239beb32b7abc6e221511a7" => :mavericks
-    sha1 "ee91aff30b0de02b6c8b48c1d68c1d9ebfc3155a" => :mountain_lion
+    revision 1
+    sha256 "c7721f7d2cd4aa9f9e9724bb7e97dbeadcbafe9e9d3f331a56a97986b88bf896" => :yosemite
+    sha256 "394ee113bdf444ec5c2a50fd379f283cfa85de3a6d04fe7a673a2e8c211c2264" => :mavericks
+    sha256 "39b18e81232ae3987018662035c49a441ddd0f0fcbe9d7534620d512b7f2910c" => :mountain_lion
   end
 
   depends_on 'cmake' => :build
@@ -38,6 +40,7 @@ class Plplot < Formula
     end
   end
 end
+
 __END__
 --- a/cmake/modules/pkg-config.cmake
 +++ b/cmake/modules/pkg-config.cmake
@@ -52,14 +55,14 @@ __END__
 @@ -94,7 +94,12 @@
      set(_xprefix ${_prefix})
    endif(FORCE_EXTERNAL_STATIC)
-
+   
 -  _pkg_check_modules_internal(0 0 ${_prefix} "${_package}")
 +  if(CMAKE_VERSION VERSION_LESS "3.1")
 +    _pkg_check_modules_internal(0 0 ${_prefix} "${_package}")
 +  else(CMAKE_VERSION VERSION_LESS "3.1")
 +    _pkg_check_modules_internal(0 0 0 0 ${_prefix} "${_package}")
 +  endif(CMAKE_VERSION VERSION_LESS "3.1")
-+
++    
    if(${_prefix}_FOUND)
      cmake_link_flags(${_link_FLAGS} "${${_xprefix}_LDFLAGS}")
      # If libraries cannot be not found, then that is equivalent to whole
@@ -105,7 +108,7 @@ index e45988e..ff392f0 100644
    if(GENERATE_PLPLOT_H_INC)
      add_custom_target(
        check_plplot_h.inc
--      COMMAND
+-      COMMAND 
 -      ${CMAKE_COMMAND} -E remove -f ${CMAKE_CURRENT_BINARY_DIR}/generated_plplot_h.inc
 -      COMMAND
 -      ${OCAML} ${CMAKE_CURRENT_SOURCE_DIR}/touchup.ml ${CMAKE_CURRENT_SOURCE_DIR}/plplot_h ${CMAKE_CURRENT_BINARY_DIR}/generated_plplot_h.inc

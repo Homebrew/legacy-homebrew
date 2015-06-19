@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mtools < Formula
+  desc "Tools for manipulating MSDOS files"
   homepage 'http://www.gnu.org/software/mtools/'
   url 'http://ftpmirror.gnu.org/mtools/mtools-4.0.17.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/mtools/mtools-4.0.17.tar.gz'

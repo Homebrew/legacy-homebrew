@@ -18,7 +18,7 @@ class SoftwareSpec
     "32-bit"   => Option.new("32-bit", "Build 32-bit only"),
   }
 
-  attr_reader :name, :owner
+  attr_reader :name, :full_name, :owner
   attr_reader :build, :resources, :patches, :options
   attr_reader :deprecated_flags, :deprecated_options
   attr_reader :dependency_collector
@@ -46,6 +46,7 @@ class SoftwareSpec
 
   def owner= owner
     @name = owner.name
+    @full_name = owner.full_name
     @owner = owner
     @resource.owner = self
     resources.each_value do |r|
@@ -62,7 +63,8 @@ class SoftwareSpec
   end
 
   def bottled?
-    bottle_specification.tag?(bottle_tag)
+    bottle_specification.tag?(bottle_tag) && \
+      (bottle_specification.compatible_cellar? || ARGV.force_bottle?)
   end
 
   def bottle &block
@@ -82,6 +84,10 @@ class SoftwareSpec
     else
       resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
     end
+  end
+
+  def go_resource name, &block
+    resource name, Resource::Go, &block
   end
 
   def option_defined?(name)
@@ -220,6 +226,7 @@ class Bottle
     @name = formula.name
     @resource = Resource.new
     @resource.owner = formula
+    @spec = spec
 
     checksum, tag = spec.checksum_for(bottle_tag)
 
@@ -234,7 +241,7 @@ class Bottle
   end
 
   def compatible_cellar?
-    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+    @spec.compatible_cellar?
   end
 
   def stage
@@ -263,6 +270,10 @@ class BottleSpecification
     @cellar = DEFAULT_CELLAR
     @root_url = DEFAULT_ROOT_URL
     @collector = BottleCollector.new
+  end
+
+  def compatible_cellar?
+    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
   end
 
   def tag?(tag)

@@ -1,51 +1,81 @@
 require "language/go"
 
 class Wellington < Formula
+  desc "Adds file awareness to SASS"
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/0.6.0.tar.gz"
-  sha1 "c7d1c391f9e929796f92c4496f011c62546a12cd"
+  url "https://github.com/wellington/wellington/archive/v0.8.1.tar.gz"
+  sha256 "77b41ee1b3e0095dd54a8575c6b05fdef7bf7bc059b46e534b3d06f84ab2422c"
   head "https://github.com/wellington/wellington.git"
 
   bottle do
     cellar :any
-    sha1 "4c2de0af6f0d18032e3d3722a328cbab4ca555d2" => :yosemite
-    sha1 "93fe2f24e449f8892d1401cf3fb8f9642d11d1ff" => :mavericks
-    sha1 "84d4941117e47a9c865aa5b9ac1c1f97295a04f9" => :mountain_lion
+    sha256 "c997930e1d617e3bc0f09136c3d102c592634cec1d9ef8c9e26c1592af58619f" => :yosemite
+    sha256 "fed8ce27ec30e8d648fd148dc83d7ad937456b04a7b1d5eb435ed0db4fae6698" => :mavericks
+    sha256 "e3fa0c5f9dea85b93b43f4cc4681c8e67dcfbf4dae34a51d0a59f81c6fed063a" => :mountain_lion
   end
 
   needs :cxx11
 
   depends_on "go" => :build
   depends_on "pkg-config" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
 
-  go_resource "github.com/wellington/spritewell" do
-    url "https://github.com/wellington/spritewell.git",
-        :revision => "748bfe956f31c257605c304b41a0525a4487d17d"
+  stable do
+    depends_on "libsass"
   end
 
-  go_resource "github.com/go-fsnotify/fsnotify" do
-    url "https://github.com/go-fsnotify/fsnotify.git",
-        :revision => "f582d920d11386e8ae15227bb5933a8f9b4c3dec"
+  devel do
+    url "https://github.com/wellington/wellington/archive/c574754c39806e8c52682f15f49c8ff819d0f962.tar.gz"
+    sha256 "92c5d4bdd6260f96aed0e20fa06c6200b1c57281dbd32dbd00b1c06636ef6e10"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  head do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  go_resource "github.com/tools/godep" do
+    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
+  end
+
+  go_resource "github.com/kr/fs" do
+    url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
+  end
+
+  go_resource "golang.org/x/tools" do
+    url "https://github.com/golang/tools.git", :revision => "473fd854f8276c0b22f17fb458aa8f1a0e2cf5f5"
   end
 
   def install
-    ENV.cxx11
-    # go_resource doesn't support gopkg, do it manually then symlink
-    mkdir_p buildpath/"src/gopkg.in"
-    ln_s buildpath/"src/github.com/go-fsnotify/fsnotify",
-         buildpath/"src/gopkg.in/fsnotify.v1"
-    ENV["PKG_CONFIG_PATH"] = buildpath/"libsass/lib/pkgconfig"
+    version = File.read("version.txt").chomp
+    ENV["GOPATH"] = buildpath
+    Language::Go.stage_deps resources, buildpath/"src"
+
+    cd "src/github.com/tools/godep" do
+      system "go", "install"
+    end
+    system "bin/godep", "restore"
+
+    # Build libsass from source for devel build
+    unless stable?
+      ENV.cxx11
+      ENV["PKG_CONFIG_PATH"] = buildpath/"src/github.com/wellington/go-libsass/lib/pkgconfig"
+
+      ENV.append "CGO_LDFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
+      cd "src/github.com/wellington/go-libsass/" do
+        system "make", "deps"
+      end
+    end
+
+    # symlink into $GOPATH so builds work
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
-    Language::Go.stage_deps resources, buildpath/"src"
-    ENV["GOPATH"] = buildpath
-    ENV.append "CGO_LDFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
-    system "make", "deps"
-    system "go", "build", "-x", "-v", "-o", "dist/wt", "wt/main.go"
 
+    system "go", "build", "-ldflags", "-X main.version #{version}", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
   end
 
@@ -53,7 +83,7 @@ class Wellington < Formula
     s = "div { p { color: red; } }"
     expected = <<-EOS.undent
       Reading from stdin, -h for help
-      /* line 6, stdin */
+      /* line 1, stdin */
       div p {
         color: red; }
     EOS

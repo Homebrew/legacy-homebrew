@@ -1,13 +1,15 @@
 class Libvisio < Formula
+  desc "Interpret and import Visio diagrams"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
   url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.1.tar.xz"
   sha1 "2284866af215a56683bfe4d49a921a053eff4cf9"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "df77602d026ee51bea001bcb7744b6d2e83579f1" => :yosemite
-    sha1 "ec7c204c7976255ee6e0b54a2e1e4957e2ed526f" => :mavericks
-    sha1 "f616d10990778b77edd54db39653332ac9e60195" => :mountain_lion
+    sha256 "2baf447a0865b93ddcf93afb2fbbe0ab2c0f0e37f0d5ebe6d2f7d4b618e428f2" => :yosemite
+    sha256 "b2432c53569d0c8e0eb0befcb3b2f10ebdebcf8ca09c6f06299486652429a075" => :mavericks
+    sha256 "2257bf59998222573140be09039f3a49ebf0a6c5badf3c896e1928b75baa25dd" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

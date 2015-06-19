@@ -1,14 +1,15 @@
 class Cyassl < Formula
-  homepage "http://www.wolfssl.com/yaSSL/Home.html"
-  url "https://github.com/wolfSSL/wolfssl/archive/v3.4.0.tar.gz"
-  sha256 "e23b7939c04bf18efa353ff9abfeaba3bcf454e47c9ced45e2aadab6660245f0"
+  desc "Embedded SSL Library written in C"
+  homepage "https://www.wolfssl.com/wolfSSL/Home.html"
+  url "https://github.com/wolfSSL/wolfssl/archive/v3.4.8.tar.gz"
+  sha256 "50243fa7124a1af611acb916ec11d98a2a91ac5079b7a6a51562e8970cbd942e"
   head "https://github.com/wolfSSL/wolfssl.git"
 
   bottle do
     cellar :any
-    sha256 "17893cd56326d12cb3c8d0d7158255ad7ca5df30e5fa160b0309e8ab6805eaa8" => :yosemite
-    sha256 "452f4d57bbba4f48c9e148c5c4311236143d5f15933051d5bae6f5148ffd427f" => :mavericks
-    sha256 "3eeb925899dd6b339a1eb4d3f303e3bf628fa25dc6e5b93a2ed7bd079a2d4195" => :mountain_lion
+    sha256 "6ef0f5121a7486d05fc097e5d12abb0930a5a5c4d0fa470a4584a93718eb40b4" => :yosemite
+    sha256 "ec404ac09e2a16219c53bbfe235363cf2a940ffcff53f01bb811420ac5bece22" => :mavericks
+    sha256 "3a77e9919894765aeab5b9c08bbea00bf590bf0e85afbcbfd43d6207fc29d451" => :mountain_lion
   end
 
   option "without-check", "Skip compile-time tests."
@@ -18,8 +19,6 @@ class Cyassl < Formula
   depends_on "libtool" => :build
 
   def install
-    # At some point it'd be nice to be able to "--disable-md5" but:
-    # https://github.com/wolfSSL/wolfssl/issues/26
     args = %W[
       --disable-silent-rules
       --disable-dependency-tracking
@@ -30,6 +29,7 @@ class Cyassl < Formula
       --disable-bump
       --disable-examples
       --disable-fortress
+      --disable-md5
       --disable-sniffer
       --disable-webserver
       --enable-aesccm

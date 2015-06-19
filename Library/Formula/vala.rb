@@ -1,19 +1,20 @@
 require "formula"
 
 class Vala < Formula
+  desc "Compiler for the GObject type system"
   homepage "https://live.gnome.org/Vala"
-  url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.26/vala-0.26.1.tar.xz"
-  sha256 "8407abb19ab3a58bbfc0d288abb47666ef81f76d0540258c03965e7545f59e6b"
+  url "https://download.gnome.org/sources/vala/0.28/vala-0.28.0.tar.xz"
+  sha256 "0d9e3bd3f82145664875f7c29b2f544ba92d2814f75412948f774c0727fc977f"
 
   bottle do
-    sha1 "9e829527c2662e38375a04116802f8975109fc5b" => :yosemite
-    sha1 "22d08887de342be1704472063003caa6c3a33f03" => :mavericks
-    sha1 "0ad74c02e196ac61098dddc8b8c4caec7d91a044" => :mountain_lion
+    sha256 "637fba462ccb76d523bf960b790b70c906e8e90b5ef14ddb10fb2b3a49bef5b9" => :yosemite
+    sha256 "57ece7782e2d1c997de1849923e9c64f7c4eaead80251bcddd37bed836c5b18b" => :mavericks
+    sha256 "3fe949f7ad4a1121f2ea41cc0e45f37bd127d967354c43c94d9b3178a1594997" => :mountain_lion
   end
 
   devel do
-    url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.27/vala-0.27.1.tar.xz"
-    sha256 "0bce939c011c34478da840f869b3c24d02e8f1c92691c587c1fe289a5533cd77"
+    url "https://download.gnome.org/sources/vala/0.29/vala-0.29.1.tar.xz"
+    sha256 "776b95c2cf29e20177bdfebdc05e0b665968a42313d8fd1961e5d5073a2600e9"
   end
 
   depends_on "pkg-config" => :run

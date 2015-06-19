@@ -1,4 +1,5 @@
 class PinentryMac < Formula
+  desc "Pinentry for GPG on Mac"
   homepage "https://github.com/GPGTools/pinentry-mac"
   head "https://github.com/GPGTools/pinentry-mac.git"
 

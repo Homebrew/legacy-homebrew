@@ -1,4 +1,5 @@
 class Bup < Formula
+  desc "Backup tool"
   homepage "https://github.com/bup/bup"
   head "https://github.com/bup/bup.git"
 

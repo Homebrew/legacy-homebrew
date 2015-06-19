@@ -2,6 +2,7 @@ require 'formula'
 require 'blacklist'
 require 'utils'
 require 'thread'
+require "official_taps"
 
 module Homebrew
 
@@ -15,13 +16,21 @@ module Homebrew
     elsif ARGV.include? '--debian'
       exec_browser "https://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.include? '--opensuse'
-      exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
+      exec_browser "https://software.opensuse.org/search?q=#{ARGV.next}"
     elsif ARGV.include? '--fedora'
       exec_browser "https://admin.fedoraproject.org/pkgdb/packages/%2A#{ARGV.next}%2A/"
     elsif ARGV.include? '--ubuntu'
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+    elsif ARGV.include? '--desc'
+      query = ARGV.next
+      rx = query_regexp(query)
+      Formula.each do |formula|
+        if formula.desc =~ rx
+          puts "#{formula.full_name}: #{formula.desc}"
+        end
+      end
     elsif ARGV.empty?
-      puts_columns Formula.names
+      puts_columns Formula.full_names
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
       query = ARGV.first
       user, repo, name = query.split("/", 3)
@@ -61,22 +70,20 @@ module Homebrew
         end
       end
     end
-
+    metacharacters = %w[\\ | ( ) [ ] { } ^ $ * + ? .]
+    bad_regex = metacharacters.any? do |char|
+      ARGV.any? do |arg|
+        arg.include?(char) && !arg.start_with?('/')
+      end
+    end
+    if ARGV.any? && bad_regex
+      ohai "Did you mean to perform a regular expression search?"
+      ohai "Surround your query with /slashes/ to search by regex."
+    end
     raise SEARCH_ERROR_QUEUE.pop unless SEARCH_ERROR_QUEUE.empty?
   end
 
-  SEARCHABLE_TAPS = [
-    %w{Homebrew nginx},
-    %w{Homebrew apache},
-    %w{Homebrew versions},
-    %w{Homebrew dupes},
-    %w{Homebrew games},
-    %w{Homebrew science},
-    %w{Homebrew completions},
-    %w{Homebrew binary},
-    %w{Homebrew python},
-    %w{Homebrew php},
-    %w{Homebrew x11},
+  SEARCHABLE_TAPS = OFFICIAL_TAPS.map { |tap| ["Homebrew", tap] } + [
     %w{Caskroom cask},
   ]
 
@@ -101,41 +108,41 @@ module Homebrew
       return []
     end
 
-    results = []
-    tree = {}
+    @@remote_tap_formulae ||= Hash.new do |cache, key|
+      user, repo = key.split("/", 2)
+      tree = {}
 
-    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
-      user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
-      json["tree"].each do |object|
-        next unless object["type"] == "blob"
+      GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
+        json["tree"].each do |object|
+          next unless object["type"] == "blob"
 
-        subtree, file = File.split(object["path"])
+          subtree, file = File.split(object["path"])
 
-        if File.extname(file) == ".rb"
-          tree[subtree] ||= []
-          tree[subtree] << file
+          if File.extname(file) == ".rb"
+            tree[subtree] ||= []
+            tree[subtree] << file
+          end
         end
       end
+
+      paths = tree["Formula"] || tree["HomebrewFormula"] || tree["Casks"] || tree["."] || []
+      cache[key] = paths.map { |path| File.basename(path, ".rb") }
     end
 
-    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["Casks"] || tree["."] || []
-    paths.each do |path|
-      name = File.basename(path, ".rb")
-      results << "#{user}/#{repo}/#{name}" if rx === name
-    end
+    names = @@remote_tap_formulae["#{user}/#{repo}"]
+    user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
+    names.select { |name| rx === name }.map { |name| "#{user}/#{repo}/#{name}" }
   rescue GitHub::HTTPNotFoundError => e
     opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
   rescue GitHub::Error => e
     SEARCH_ERROR_QUEUE << e
     []
-  else
-    results
   end
 
   def search_formulae rx
     aliases = Formula.aliases
-    results = (Formula.names+aliases).grep(rx).sort
+    results = (Formula.full_names+aliases).grep(rx).sort
 
     # Filter out aliases when the full name was also found
     results.reject do |name|

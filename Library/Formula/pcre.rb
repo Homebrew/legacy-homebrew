@@ -1,14 +1,17 @@
 class Pcre < Formula
+  desc "Perl compatible regular expressions library"
   homepage "http://www.pcre.org/"
-  url "https://downloads.sourceforge.net/project/pcre/pcre/8.36/pcre-8.36.tar.bz2"
-  mirror "http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.bz2"
-  sha256 "ef833457de0c40e82f573e34528f43a751ff20257ad0e86d272ed5637eb845bb"
+  url "https://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/downloads.sourceforge.net/p/pc/pcre/pcre/8.37/pcre-8.37.tar.bz2"
+  sha256 "51679ea8006ce31379fb0860e46dd86665d864b5020fc9cd19e71260eef4789d"
+
+  head "svn://vcs.exim.org/pcre/code/trunk"
 
   bottle do
     cellar :any
-    sha1 "b3e7d1cb382ab41fe260cb8c75e96ba45167044f" => :yosemite
-    sha1 "3b585fa4fdcd0e1906f6a732809c2e6b015fec2c" => :mavericks
-    sha1 "4d48f013859cc1ca72467d4802d1d5d6b06ad542" => :mountain_lion
+    sha256 "83191880a6cc02a258928bf69f6bc0545b019f90ecccc5b2d08787180504327c" => :yosemite
+    sha256 "88485e49b169f4123f29c086e8e59d835a16b1e7d39c4ecaca01412b88d16281" => :mavericks
+    sha256 "78ecdc1a81fe8da426fd5fe0d9d04fb03bb92bd3763d876fcb3d48d45b76876f" => :mountain_lion
   end
 
   option :universal

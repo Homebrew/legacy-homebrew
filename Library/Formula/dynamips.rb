@@ -1,4 +1,5 @@
 class Dynamips < Formula
+  desc "Cisco 7200/3600/3725/3745/2600/1700 Router Emulator"
   homepage "http://www.gns3.net/dynamips/"
   url "https://github.com/GNS3/dynamips/archive/v0.2.14.tar.gz"
   sha1 "1f0b62d19586365246a957b4eb4dab0cdbd657ad"

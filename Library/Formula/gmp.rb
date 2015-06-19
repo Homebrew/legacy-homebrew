@@ -1,9 +1,10 @@
 class Gmp < Formula
-  homepage "http://gmplib.org/"
+  desc "GNU multiple precision arithmetic library"
+  homepage "https://gmplib.org/"
   url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-  mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
+  mirror "https://gmplib.org/download/gmp/gmp-6.0.0a.tar.bz2"
   mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
-  sha1 "360802e3541a3da08ab4b55268c80f799939fddc"
+  sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
 
   bottle do
     cellar :any
@@ -25,10 +26,8 @@ class Gmp < Formula
       args << "ABI=32"
     end
 
-    if build.build_32_bit? || build.bottle?
-      # https://github.com/Homebrew/homebrew/issues/20693
-      args << "--disable-assembly"
-    end
+    # https://github.com/Homebrew/homebrew/issues/20693
+    args << "--disable-assembly" if build.build_32_bit? || build.bottle?
 
     system "./configure", *args
     system "make"

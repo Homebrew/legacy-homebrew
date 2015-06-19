@@ -1,15 +1,16 @@
 require "formula"
 
 class Tig < Formula
+  desc "Text interface for Git repositories"
   homepage "http://jonas.nitro.dk/tig/"
-  url "http://jonas.nitro.dk/tig/releases/tig-2.1.tar.gz"
-  sha1 "2527cfee62a890f25c7c2ae8c1a16e5fa201ce29"
+  url "http://jonas.nitro.dk/tig/releases/tig-2.1.1.tar.gz"
+  sha1 "253ab0075adb1479f4bb68ffd702b5f6b47b98ec"
 
   bottle do
     cellar :any
-    sha256 "8efbb377b3edc371349e9eb7c014e1c6cf982ad7f6de8f51f2ff1bfacb514eaa" => :yosemite
-    sha256 "d304edaf4eb06511f89a85a8821180caf5d6677a84ab87240a13ad132aabf09a" => :mavericks
-    sha256 "4f16770794c63c073e9f517e173284f4015879a0b06660ba5fc66682c9f70fcf" => :mountain_lion
+    sha256 "fcb12bec3a384607e4f61a05fca637eb6c48d9821a26715abe83100210f480f9" => :yosemite
+    sha256 "0995b3eb60f7f312653189d4aec8d40f1376c2970ab58d5cc5f9b2a17fefaa2b" => :mavericks
+    sha256 "f54b52c2c174a6e29afc9c519dc3c3c92d9c05b6805dd29650e0711a20bab007" => :mountain_lion
   end
 
   head do
@@ -24,6 +25,8 @@ class Tig < Formula
     depends_on "asciidoc"
     depends_on "xmlto"
   end
+
+  depends_on "readline" => :recommended
 
   def install
     system "./autogen.sh" if build.head?

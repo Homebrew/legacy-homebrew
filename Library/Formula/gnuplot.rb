@@ -5,6 +5,7 @@ class LuaRequirement < Requirement
 end
 
 class Gnuplot < Formula
+  desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info"
   url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
   mirror "http://ftp.cstug.cz/pub/CTAN/graphics/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
@@ -85,7 +86,7 @@ class Gnuplot < Formula
       args << "--without-cairo" if build.without? "cairo"
     end
 
-    args << "--enable-qt"          if build.with? "qt"
+    args << "--with-qt" if build.with? "qt"
     args << "--without-lua"        if build.without? "lua"
     args << "--without-lisp-files" if build.without? "emacs"
     args << ((build.with? "aquaterm") ? "--with-aquaterm" : "--without-aquaterm")

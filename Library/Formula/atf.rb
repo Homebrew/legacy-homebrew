@@ -1,6 +1,7 @@
 require 'formula'
 
 class Atf < Formula
+  desc "ATF: Automated Testing Framework"
   homepage 'https://github.com/jmmv/atf'
   url 'https://github.com/jmmv/atf/releases/download/atf-0.21/atf-0.21.tar.gz'
   sha1 '7cc9d3703f7c0e00bb8ec801f7ac65ac9dc898d7'

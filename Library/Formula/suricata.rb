@@ -1,35 +1,64 @@
-require "formula"
-
 class Suricata < Formula
+  desc "Network IDS, IPS, and security monitoring engine"
   homepage "http://suricata-ids.org"
-  url "http://www.openinfosecfoundation.org/download/suricata-2.0.tar.gz"
-  sha1 "37819a0d6ecb7ebd4201bc32dec40824c145da98"
+  url "https://www.openinfosecfoundation.org/download/suricata-2.0.8.tar.gz"
+  sha256 "7af6394cb81e464f5c1ac88a1444030e30940caab6e53688a6d9eb652226d1be"
 
   bottle do
-    sha1 "e696fc00b003d1ea19631e385f4dc84631eb2c64" => :mavericks
-    sha1 "02691341316ab28d7bf1729f3ed5008170355f89" => :mountain_lion
-    sha1 "3fcae2900b1f4070c48bb8d0720869b8364a9202" => :lion
+    sha256 "269066b7601a3cd2c47d7e0e3c789ff2c334d1eff7dfa47221b1fb66233a7014" => :yosemite
+    sha256 "08ea538e48680b7712324dc8fe19a682aa0d485193823408f251f0441f62ec59" => :mavericks
+    sha256 "692c6babe72dd65363c607c846c2f9a5a01580451fd6ed97c0d1eadb4bbe736a" => :mountain_lion
   end
 
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "pkg-config" => :build
   depends_on "libmagic"
   depends_on "libnet"
   depends_on "libyaml"
   depends_on "pcre"
   depends_on "geoip" => :optional
+  depends_on "lua" => :optional
+  depends_on "luajit" => :optional
 
-  # Use clang provided strl* functions. Reported upstream:
-  # https://redmine.openinfosecfoundation.org/issues/1192
-  patch :DATA
+  resource "argparse" do
+    url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
+    sha256 "b3a79a23d37b5a02faa550b92cbbbebeb4aa1d77e649c3eb39c19abf5262da04"
+  end
+
+  resource "simplejson" do
+    url "https://pypi.python.org/packages/source/s/simplejson/simplejson-3.6.5.tar.gz"
+    sha256 "2a3189f79d1c7b8a2149a0e783c0b4217fad9b30a6e7d60450f2553dc2c0e57e"
+  end
 
   def install
+    # bug raised https://redmine.openinfosecfoundation.org/issues/1470
+    ENV.deparallelize
+
     libnet = Formula["libnet"]
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}",
-            "--with-libnet-includes=#{libnet.opt_include}",
-            "--with-libnet-libs=#{libnet.opt_lib}"]
+    libmagic = Formula["libmagic"]
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    resources.each do |r|
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+      --localstatedir=#{var}
+      --with-libnet-includes=#{libnet.opt_include}
+      --with-libnet-libs=#{libnet.opt_lib}
+      --with-libmagic-includes=#{libmagic.opt_include}
+      --with-libmagic-libraries=#{libmagic.opt_lib}
+    ]
+
+    args << "--enable-lua" if build.with? "lua"
+    args << "--enable-luajit" if build.with? "luajit"
 
     if build.with? "geoip"
       geoip = Formula["geoip"]
@@ -39,52 +68,15 @@ class Suricata < Formula
     end
 
     system "./configure", *args
-    system "make", "install"
+    system "make", "install-full"
+
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+
+    # Leave the magic-file: prefix in otherwise it overrides a commented out line rather than intended line.
+    inreplace etc/"suricata/suricata.yaml", %r{magic-file: /.+/magic}, "magic-file: #{libmagic.opt_share}/misc/magic"
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/suricata --build-info")
   end
 end
-
-__END__
-diff --git a/src/Makefile.in b/src/Makefile.in
-index 32cb702..68ef842 100644
---- a/src/Makefile.in
-+++ b/src/Makefile.in
-@@ -266,7 +266,6 @@ am_suricata_OBJECTS = alert-debuglog.$(OBJEXT) alert-fastlog.$(OBJEXT) \
- 	util-signal.$(OBJEXT) util-spm-bm.$(OBJEXT) \
- 	util-spm-bs2bm.$(OBJEXT) util-spm-bs.$(OBJEXT) \
- 	util-spm.$(OBJEXT) util-storage.$(OBJEXT) \
--	util-strlcatu.$(OBJEXT) util-strlcpyu.$(OBJEXT) \
- 	util-syslog.$(OBJEXT) util-threshold-config.$(OBJEXT) \
- 	util-time.$(OBJEXT) util-unittest.$(OBJEXT) \
- 	util-unittest-helper.$(OBJEXT) util-affinity.$(OBJEXT) \
-@@ -862,8 +861,6 @@ util-spm-bs2bm.c util-spm-bs2bm.h \
- util-spm-bs.c util-spm-bs.h \
- util-spm.c util-spm.h util-clock.h \
- util-storage.c util-storage.h \
--util-strlcatu.c \
--util-strlcpyu.c \
- util-syslog.c util-syslog.h \
- util-threshold-config.c util-threshold-config.h \
- util-time.c util-time.h \
-@@ -1353,8 +1350,6 @@ distclean-compile:
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util-spm-bs2bm.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util-spm.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util-storage.Po@am__quote@
--@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util-strlcatu.Po@am__quote@
--@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util-strlcpyu.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util-syslog.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util-threshold-config.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util-time.Po@am__quote@
-diff --git a/src/suricata-common.h b/src/suricata-common.h
-index 43c76c1..b6010f4 100644
---- a/src/suricata-common.h
-+++ b/src/suricata-common.h
-@@ -323,9 +323,6 @@ typedef enum PacketProfileDetectId_ {
- #include "util-path.h"
- #include "util-conf.h"
- 
--size_t strlcat(char *, const char *src, size_t siz);
--size_t strlcpy(char *dst, const char *src, size_t siz);
--
- extern int coverage_unittests;
- extern int g_ut_modules;
- extern int g_ut_covered;

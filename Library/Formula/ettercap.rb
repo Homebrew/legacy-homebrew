@@ -1,31 +1,13 @@
-require "formula"
-
 class Ettercap < Formula
-  homepage "http://ettercap.github.io/ettercap/"
-
-  stable do
-    url "https://github.com/Ettercap/ettercap/archive/v0.8.1.tar.gz"
-    sha1 "66362ce69cd9b82b9eb8ea6a52048700704a7d9b"
-
-    # Upstream patch to fix Luajit compile on OS X
-    # Both of these patches are already in HEAD.
-    # https://github.com/Ettercap/ettercap/pull/618
-    # https://github.com/Homebrew/homebrew/issues/33902
-    patch do
-      url "https://github.com/Ettercap/ettercap/commit/190e4264e3.diff"
-      sha1 "4d8cadd8ca19956450e7e2d52f92dc649d393acf"
-    end
-
-    patch do
-      url "https://github.com/Ettercap/ettercap/commit/e505088db.diff"
-      sha1 "db0f121aeba34286c5f6a16e523ac675868b384c"
-    end
-  end
+  desc "Multipurpose sniffer/interceptor/logger for switched LAN"
+  homepage "https://ettercap.github.io/ettercap/"
+  url "https://github.com/Ettercap/ettercap/archive/v0.8.2.tar.gz"
+  sha256 "f38514f35bea58bfe6ef1902bfd4761de0379942a9aa3e175fc9348f4eef2c81"
 
   bottle do
-    sha1 "b7d7bfc3d98015cea228473b239a0fe9ae41127d" => :yosemite
-    sha1 "15b7682fbba8687cfaa8effd00b7f6dd0ced8e91" => :mavericks
-    sha1 "d221416cc95911a965ea1821b1a218531b4ea349" => :mountain_lion
+    sha256 "1c6bc00b1f7dc226fb6378669c4704de9a190439ba1edef083fb9178d09faac0" => :yosemite
+    sha256 "b51137d64a04f49737a639f097dc725e2ffc36ec7dd52295bdafd7db9ea4dff7" => :mavericks
+    sha256 "4a2f65a3d3606b465f0bab5cb1c27a5599815a23bb59a4ba126f8ed9fdf60a9f" => :mountain_lion
   end
 
   head "https://github.com/Ettercap/ettercap.git"
@@ -39,15 +21,12 @@ class Ettercap < Formula
   depends_on "pcre"
   depends_on "libnet"
   depends_on "curl" # require libcurl >= 7.26.0
+  depends_on "openssl"
   depends_on "gtk+" => :optional
   depends_on "luajit" => :optional
-  depends_on "openssl"
 
   def install
     args = std_cmake_args
-
-    # specify build type manually since std_cmake_args sets the build type to "None".
-    args << "-DCMAKE_BUILD_TYPE=Release"
 
     args << "-DINSTALL_SYSCONFDIR=#{etc}"
     args << "-DENABLE_CURSES=OFF" if build.without? "curses"
@@ -62,5 +41,9 @@ class Ettercap < Formula
       system "cmake", *args
       system "make", "install"
     end
+  end
+
+  test do
+    system bin/"ettercap", "--version"
   end
 end

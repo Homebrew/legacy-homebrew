@@ -1,14 +1,14 @@
 class Openssl < Formula
+  desc "OpenSSL SSL/TLS cryptography library"
   homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.2.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2.tar.gz"
-  # Use sha1 for Tiger (which needs OpenSSL to compute sha256 hashes)
-  sha1 "2f264f7f6bb973af444cd9fc6ee65c8588f610cc"
+  url "https://www.openssl.org/source/openssl-1.0.2c.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2c.tar.gz"
+  sha256 "0038ba37f35a6367c58f17a7a7f687953ef8ce4f9684bbdec63e62515ed36a83"
 
   bottle do
-    sha1 "0e5844609ea57a7f5361dca42d05578c6cf45643" => :yosemite
-    sha1 "56a6407b6a9179084a760d6f463cd0e6ea083c0e" => :mavericks
-    sha1 "8e36006185156281d487a2b1f04322701d0bef7b" => :mountain_lion
+    sha256 "b8f497f8d75d04fbeba3adb93af9823f49f4441583f8e007ccac8ff0aa38d3ae" => :yosemite
+    sha256 "8ec459f70f91522226280af48d21fa35e612c0373234cdb1cb06fea3bc9f58fc" => :mavericks
+    sha256 "24c387f6aef2464f1003532de09e1fd17d66da900633719a51a6adca6c04d598" => :mountain_lion
   end
 
   option :universal
@@ -27,13 +27,13 @@ class Openssl < Formula
   end
 
   def configure_args; %W[
-      --prefix=#{prefix}
-      --openssldir=#{openssldir}
-      no-ssl2
-      zlib-dynamic
-      shared
-      enable-cms
-    ]
+    --prefix=#{prefix}
+    --openssldir=#{openssldir}
+    no-ssl2
+    zlib-dynamic
+    shared
+    enable-cms
+  ]
   end
 
   def install

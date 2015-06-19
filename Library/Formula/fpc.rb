@@ -1,6 +1,7 @@
 require "formula"
 
 class Fpc < Formula
+  desc "Free Pascal: multi-architecture Pascal compiler"
   homepage "http://www.freepascal.org/"
   url "https://downloads.sourceforge.net/project/freepascal/Source/2.6.4/fpc-2.6.4.source.tar.gz"
   sha1 "60eeadf65db25b10b174627457a5799bf0fd0d52"

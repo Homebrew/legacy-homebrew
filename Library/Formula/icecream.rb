@@ -1,4 +1,5 @@
 class Icecream < Formula
+  desc "Distributed compiler with a central scheduler to share build load"
   homepage "https://en.opensuse.org/Icecream"
 
   option "with-docbook2X", "Build with man page"

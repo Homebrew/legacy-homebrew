@@ -1,12 +1,13 @@
 class Glib < Formula
+  desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
-  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.42/glib-2.42.2.tar.xz"
-  sha256 "a3cc1ebd2bd310a9fdf42ae4293ee713cdf1764bd29f552febf3bf44cadae7db"
+  url "https://download.gnome.org/sources/glib/2.44/glib-2.44.1.tar.xz"
+  sha256 "8811deacaf8a503d0a9b701777ea079ca6a4277be10e3d730d2112735d5eca07"
 
   bottle do
-    sha256 "c443bcd8171108729f8d65f331868ea7cdc07a076e2c6d7441883451d9252149" => :yosemite
-    sha256 "801be3fb27da98e8eed617614e4ce385062160f29dd06564aae06a290fbe03be" => :mavericks
-    sha256 "beeadb1aec3ca6f5b8534bb6e381c1209f14a573bff8ebe378282f4b400ab4de" => :mountain_lion
+    sha256 "b6017260ce6e82abca388e12ab536a7e0675caf17f4a5f3ae7d7876ec1f7b5d9" => :yosemite
+    sha256 "ec584074182b988e2b83fcc23d6143fe463a9bb6ddca6d7f75d40d96a9282a7b" => :mavericks
+    sha256 "fcac604c02b1f562c4a6823b8361f35067a2cc1cdcf2ea0dc772698b5f2a156a" => :mountain_lion
   end
 
   option :universal

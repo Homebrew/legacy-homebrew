@@ -1,12 +1,14 @@
 class Osm2pgsql < Formula
+  desc "Convert OpenStreetMap data to postGIS-enabled PostgreSQL db"
   homepage "http://wiki.openstreetmap.org/wiki/Osm2pgsql"
   url "https://github.com/openstreetmap/osm2pgsql/archive/0.87.0.tar.gz"
   sha1 "6f302500e52d6e42147cc8dff8f344677e3131f8"
+  revision 1
 
   bottle do
-    sha1 "613f83d5eec75fc35cf39dd74f6c93478f962d21" => :yosemite
-    sha1 "245a3e678eb6ff1f3af53cffb7fd1cd6ef3481a0" => :mavericks
-    sha1 "9c97bc588a3ddeb4c173327249437d485f4192a4" => :mountain_lion
+    sha256 "6b1bc9ca723e3c8bf23c9bb5704fa99205a1037085d408102050da03ac703a5c" => :yosemite
+    sha256 "2835cacfecdbca3f00255cfc5b95107d54fa640e1eb1ca728520f4c252da983f" => :mavericks
+    sha256 "63c279201caf3f6c0359dbe27eb1c2e2a144cdf0cfd130ef6d218b95a9d009fe" => :mountain_lion
   end
 
   depends_on :postgresql

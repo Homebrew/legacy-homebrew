@@ -1,4 +1,5 @@
 class Ipbt < Formula
+  desc "Program for recording a UNIX terminal session"
   homepage "http://www.chiark.greenend.org.uk/~sgtatham/ipbt/"
   url "http://www.chiark.greenend.org.uk/~sgtatham/ipbt/ipbt-20141026.2197432.tar.gz"
   sha1 "db190dda34611f0037c56b0cf8fb595d10f2b1a5"

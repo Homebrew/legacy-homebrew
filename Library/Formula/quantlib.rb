@@ -1,37 +1,44 @@
-require 'formula'
-
 class Quantlib < Formula
-  homepage 'http://quantlib.org/'
-  url 'https://downloads.sourceforge.net/project/quantlib/QuantLib/1.4/QuantLib-1.4.tar.gz'
-  sha1 'f31f4651011a8e38e8b2cc6c457760fe61863391'
+  desc "Library for quantitative finance"
+  homepage "http://quantlib.org/"
+  url "https://downloads.sourceforge.net/project/quantlib/QuantLib/1.5/QuantLib-1.5.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/q/quantlib/quantlib_1.5.orig.tar.gz"
+  sha256 "bc4edcc3ace5b0668f8f75af9834fb0c04b0a0a1b79ec9338a9e5e2f1ccebd33"
+
+  head do
+    url "https://github.com/lballabio/quantlib.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "05127a732538048ea590627c768c83c9034ccf5d" => :yosemite
-    sha1 "eff03577fd90569d8541d64161d9e08851d71ba8" => :mavericks
-    sha1 "19d71ade61f7f55518dfed37ffa46114357b2056" => :mountain_lion
+    sha256 "d5e777622b83b3392f99a193346d73d85e4c595148bba4fe259ae70231bbc42f" => :yosemite
+    sha256 "57615e8a88585ce4ad3e8b42c56abeced2f639fd26861201af87d322a6e10496" => :mavericks
+    sha256 "6b5fbe9f581df20dbe7209ed80a51cb8cd9d8e6eabb621e52e1b5d84f04253e1" => :mountain_lion
   end
 
   option :cxx11
 
   if build.cxx11?
-    depends_on 'boost' => 'c++11'
+    depends_on "boost" => "c++11"
   else
-    depends_on 'boost'
-  end
-
-  # boost 1.57 compatibility; backported from master
-  # https://github.com/lballabio/quantlib/issues/163
-  patch do
-    url "https://gist.githubusercontent.com/tdsmith/b2d5909db67b3173db02/raw/364ae3a09eb1dbb8bd14a2b71d42fda0b4e0d8cc/quantlib-boost-157.diff"
-    sha1 "2ddc873bfb1baf33c7fc587211c281600ddfa182"
+    depends_on "boost"
   end
 
   def install
     ENV.cxx11 if build.cxx11?
+    if build.head?
+      Dir.chdir "QuantLib"
+      system "./autogen.sh"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    system bin/"quantlib-config", "--prefix=#{prefix}", "--libs", "--cflags"
   end
 end

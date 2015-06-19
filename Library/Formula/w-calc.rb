@@ -7,6 +7,7 @@ class WCalc < Formula
     sha1 "b8494cd0a26356c9a0f4307057978cd231499541" => :mountain_lion
   end
 
+  desc "Very capable calculator"
   homepage "http://w-calc.sourceforge.net"
   sha256 "0e2c17c20f935328dcdc6cb4c06250a6732f9ee78adf7a55c01133960d6d28ee"
 

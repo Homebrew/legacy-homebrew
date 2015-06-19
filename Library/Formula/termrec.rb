@@ -1,6 +1,7 @@
 require "formula"
 
 class Termrec < Formula
+  desc "Record \"videos\" of terminal output"
   homepage "http://angband.pl/termrec.html"
   head "http://angband.pl/git/termrec/", :using => :git
   url "https://github.com/kilobyte/termrec/archive/0.17.tar.gz"

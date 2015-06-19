@@ -25,7 +25,7 @@ module Homebrew
     kegs.each do |keg|
       keg = keg.opt_record if keg.optlinked?
       Dir["#{keg}/*.app", "#{keg}/bin/*.app", "#{keg}/libexec/*.app"].each do |app|
-        puts "Linking #{app}"
+        puts "Linking #{app} to #{target_dir}."
         app_name = File.basename(app)
         target = "#{target_dir}/#{app_name}"
 
@@ -33,10 +33,9 @@ module Homebrew
           onoe "#{target} already exists, skipping."
           next
         end
+
         system "ln", "-sf", app, target_dir
       end
     end
-
-    puts "Finished linking. Find the links under #{target_dir}."
   end
 end

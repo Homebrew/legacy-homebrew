@@ -114,32 +114,28 @@ module Homebrew
 
   def bottle_formula f
     unless f.installed?
-      return ofail "Formula not installed or up-to-date: #{f.name}"
+      return ofail "Formula not installed or up-to-date: #{f.full_name}"
     end
 
     unless built_as_bottle? f
-      return ofail "Formula not installed with '--build-bottle': #{f.name}"
+      return ofail "Formula not installed with '--build-bottle': #{f.full_name}"
     end
 
     unless f.stable
-      return ofail "Formula has no stable version: #{f.name}"
+      return ofail "Formula has no stable version: #{f.full_name}"
     end
 
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
-      ohai "Determining #{f.name} bottle revision..."
+      ohai "Determining #{f.full_name} bottle revision..."
       versions = FormulaVersions.new(f)
-      max = versions.bottle_version_map("origin/master")[f.pkg_version].max
-      bottle_revision = max ? max + 1 : 0
+      bottle_revisions = versions.bottle_version_map("origin/master")[f.pkg_version]
+      bottle_revisions.pop if bottle_revisions.last.to_i > 0
+      bottle_revision = bottle_revisions.any? ? bottle_revisions.max.to_i + 1 : 0
     end
 
     filename = Bottle::Filename.create(f, bottle_tag, bottle_revision)
-
-    if bottle_filename_formula_name(filename).empty?
-      return ofail "Add a new regex to bottle_version.rb to parse #{f.version} from #{filename}"
-    end
-
     bottle_path = Pathname.pwd/filename
 
     prefix = HOMEBREW_PREFIX.to_s
@@ -208,7 +204,10 @@ module Homebrew
     puts output
 
     if ARGV.include? '--rb'
-      File.open("#{filename.prefix}.bottle.rb", "w") { |file| file.write(output) }
+      File.open("#{filename.prefix}.bottle.rb", "w") do |file|
+        file.write("\# #{f.full_name}\n")
+        file.write(output)
+      end
     end
   end
 
@@ -221,9 +220,9 @@ module Homebrew
   def merge
     merge_hash = {}
     ARGV.named.each do |argument|
-      formula_name = bottle_filename_formula_name argument
+      bottle_block = IO.read(argument)
+      formula_name = bottle_block.lines.first.sub(/^# /,"").chomp
       merge_hash[formula_name] ||= []
-      bottle_block = IO.read argument
       merge_hash[formula_name] << bottle_block
     end
 
@@ -237,13 +236,7 @@ module Homebrew
       puts output
 
       if ARGV.include? '--write'
-        tap = ARGV.value('tap')
-        canonical_formula_name = if tap
-          "#{tap}/#{formula_name}"
-        else
-          formula_name
-        end
-        f = Formulary.factory(canonical_formula_name)
+        f = Formulary.factory(formula_name)
         update_or_add = nil
 
         Utils::Inreplace.inreplace(f.path) do |s|
@@ -257,7 +250,19 @@ module Homebrew
               indent = s.slice(/^ +stable do/).length - "stable do".length
               string = s.sub!(/^ {#{indent}}stable do(.|\n)+?^ {#{indent}}end\n/m, '\0' + output + "\n")
             else
-              string = s.sub!(/(  ((url|sha1|sha256|head|version|mirror) ['"][\S ]+['"]|revision \d+)\n+)+/m, '\0' + output + "\n")
+              string = s.sub!(
+                /(
+                  \ {2}(                                                              # two spaces at the beginning
+                    url\ ['"][\S\ ]+['"]                                              # url with a string
+                    (
+                      ,[\S\ ]*$                                                       # url may have options
+                      (\n^\ {3}[\S\ ]+$)*                                             # options can be in multiple lines
+                    )?|
+                    (homepage|desc|sha1|sha256|head|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
+                    revision\ \d+                                                     # revision with a number
+                  )\n+                                                                # multiple empty lines
+                 )+
+               /mx, '\0' + output + "\n")
             end
             odie 'Bottle block addition failed!' unless string
           end
@@ -276,7 +281,7 @@ module Homebrew
   def bottle
     merge if ARGV.include? '--merge'
 
-    ARGV.formulae.each do |f|
+    ARGV.resolved_formulae.each do |f|
       bottle_formula f
     end
   end

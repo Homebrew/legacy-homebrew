@@ -2,30 +2,31 @@
 # Homebrew-versions, and only be merged to master when things like couchdb and
 # elixir are compatible.
 class Erlang < Formula
+  desc "Erlang Programming Language"
   homepage "http://www.erlang.org"
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-17.4.1.tar.gz"
-    sha256 "3ff545f086c541d1d5fefc9777ed5ddc93f3a20bf30d93f38399fba417ccf58e"
+    url "https://github.com/erlang/otp/archive/OTP-17.5.tar.gz"
+    sha256 "cf19313925011afb59daa2742a9a0c5b97daf60daaa832ef1d61c6f13d770d2c"
   end
 
   head "https://github.com/erlang/otp.git"
 
   bottle do
-    sha1 "6194f633e00ffb805b514ace20ba4d12f51a4e33" => :yosemite
-    sha1 "a6a667c269d067717465de2cc7a3e0cf0901202f" => :mavericks
-    sha1 "cbea1cc87f07cc262cde7ae06ebe55963db8baec" => :mountain_lion
+    sha256 "7d67c222e2fc1c388e772ddac7add5620b43f4577535a0fbcd6efcf40c98d7ac" => :yosemite
+    sha256 "e42c5d38d9b311452adc9b5630cd72476bd7ba1a66463cd6bd370714def4a3e4" => :mavericks
+    sha256 "70f73ae014b67eba372560239d188d2ace3dcd72cade495fb3f28db179a0a88c" => :mountain_lion
   end
 
   resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_17.4.tar.gz"
-    sha256 "6c1cdb8e9d367c7b6dc6b20706de9fd0a0f0b7dffd66532663b2a24ed7679a58"
+    url "http://www.erlang.org/download/otp_doc_man_17.5.tar.gz"
+    sha256 "85b1b2a1011fc01af550f1fe9e5a599a4c5f2a35d264d2804af1d05590a857c3"
   end
 
   resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_17.4.tar.gz"
-    sha256 "dd42b0104418de18e2247608a337bcd3bb24c59bbc36294deb5fae73ab6c90d6"
+    url "http://www.erlang.org/download/otp_doc_html_17.5.tar.gz"
+    sha256 "baba1d373c1faacf4a1a6ec1220d57d0cb2b977edb74f32cd58dc786361c6cf5"
   end
 
   option "without-hipe", "Disable building hipe; fails on various OS X systems"

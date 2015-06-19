@@ -1,14 +1,14 @@
-require 'formula'
-
 class TmuxCssh < Formula
-  homepage 'https://github.com/dennishafemann/tmux-cssh'
-  url 'https://github.com/dennishafemann/tmux-cssh/archive/0.1.tar.gz'
-  sha1 '477a9079775ce48afe0c90699fa69f368e69cdfd'
+  desc "TMUX with a \"ClusterSSH\"-like behavior"
+  homepage "https://github.com/dennishafemann/tmux-cssh"
+  url "https://github.com/dennishafemann/tmux-cssh/archive/1.0.6-0.tar.gz"
+  sha256 "0819ede68fcde7df7b86df440790d6be2a45259b5c2af40bbe9b476a1bf54acc"
+  version "1.0.6-0"
 
-  depends_on 'tmux'
+  depends_on "tmux"
 
   def install
-    bin.install 'tmux-cssh'
+    bin.install "tmux-cssh"
   end
 
   test do

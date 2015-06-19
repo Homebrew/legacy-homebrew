@@ -1,10 +1,11 @@
 class Polarssl < Formula
-  homepage "https://polarssl.org/"
+  desc "SSL library"
+  homepage "https://tls.mbed.org/"
   # 1.4.0 will need dependents recompiled due to breaking binary compat.
-  url "https://polarssl.org/download/mbedtls-1.3.10-gpl.tgz"
+  url "https://tls.mbed.org/download/mbedtls-1.3.10-gpl.tgz"
   sha256 "746fd88e0c6623691fc56c4eed52e40a57b2da0ac80f6dd8995094aa6adb407e"
 
-  head "https://github.com/polarssl/polarssl.git"
+  head "https://github.com/ARMmbed/mbedtls.git"
 
   bottle do
     cellar :any

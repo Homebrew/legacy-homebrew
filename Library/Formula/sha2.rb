@@ -1,13 +1,15 @@
 class Sha2 < Formula
-  homepage "http://www.aarongifford.com/computers/sha.html"
-  url "http://www.aarongifford.com/computers/sha2-1.0.1.tgz"
-  sha1 "ffbc69e0b0ab47f70e61aeb14fa16ba2b74dc728"
+  desc "Implementation of SHA-256, SHA-384, and SHA-512 hash algorithms"
+  homepage "https://www.aarongifford.com/computers/sha.html"
+  url "https://www.aarongifford.com/computers/sha2-1.0.1.tgz"
+  sha256 "67bc662955c6ca2fa6a0ce372c4794ec3d0cd2c1e50b124e7a75af7e23dd1d0c"
 
   bottle do
     cellar :any
-    sha1 "df93015804de4b208f7eb7c3e6ea390aa4839da0" => :yosemite
-    sha1 "6a70d9dab98a22b03aa83b735746c356fcfd4ced" => :mavericks
-    sha1 "23658e75f2a245c7fbcb63d792db85a5b8c9d5c0" => :mountain_lion
+    revision 1
+    sha256 "e087ba4357e2ed9d75bd2d25253c0982ac742db854d1c7c6792671d58e05bdc8" => :yosemite
+    sha256 "7bb393c6de372210c1343a76094063a344f59f7bfeed67210abc749e9dfb93aa" => :mavericks
+    sha256 "dc28fabf8cd4680b5ff534de7ef19ad95c4b839f6b891f80292e6ac9bd0952ad" => :mountain_lion
   end
 
   option "without-check", "Skip compile-time tests"

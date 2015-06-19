@@ -1,4 +1,5 @@
 class Collectd < Formula
+  desc "Statistics collection and monitoring daemon"
   homepage "https://collectd.org/"
   url "https://collectd.org/files/collectd-5.4.2.tar.gz"
   sha256 "9778080ee9ee676c7130b1ce86c2843c7359e29b9bd1c1c0e48fcd9cccf089eb"
@@ -10,8 +11,11 @@ class Collectd < Formula
   end
 
   # Will fail against Java 1.7
-  option "java", "Enable Java 1.6 support"
-  option "debug", "Enable debug support"
+  option "with-java", "Enable Java 1.6 support"
+  option "with-debug", "Enable debug support"
+
+  deprecated_option "java" => "with-java"
+  deprecated_option "debug" => "with-debug"
 
   head do
     url "git://git.verplant.org/collectd.git"
@@ -22,6 +26,7 @@ class Collectd < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on :java => ["1.6", :optional]
   depends_on "openssl"
 
   fails_with :clang do
@@ -41,8 +46,8 @@ class Collectd < Formula
     ]
 
     args << "--disable-embedded-perl" if MacOS.version <= :leopard
-    args << "--disable-java" unless build.include? "java"
-    args << "--enable-debug" if build.include? "debug"
+    args << "--disable-java" if build.without? "java"
+    args << "--enable-debug" if build.with? "debug"
 
     system "./build.sh" if build.head?
     system "./configure", *args
@@ -68,9 +73,9 @@ class Collectd < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>StandardErrorPath</key>
-        <string>/usr/local/var/log/collectd.log</string>
+        <string>#{var}/log/collectd.log</string>
         <key>StandardOutPath</key>
-        <string>/usr/local/var/log/collectd.log</string>
+        <string>#{var}/log/collectd.log</string>
       </dict>
     </plist>
     EOS

@@ -1,15 +1,16 @@
 require "language/go"
 
 class Vegeta < Formula
+  desc "HTTP load testing tool and library"
   homepage "https://github.com/tsenart/vegeta"
-  url "https://github.com/tsenart/vegeta/archive/v5.5.3.tar.gz"
-  sha1 "f1813f5dc1bbcbd2d0d627c997d41ea7f466919a"
+  url "https://github.com/tsenart/vegeta/archive/v5.7.1.tar.gz"
+  sha1 "2d10d66460fdd7bd6a4e0cabc50d519dd72244bd"
 
   bottle do
     cellar :any
-    sha256 "a8d0252c29c1de7e34088bef3b0626820ee605ed3abc6f918f32c7706d5669aa" => :yosemite
-    sha256 "630824373d85b313faf19576206a1f5a81bd856c1e5dc0add9440d0742d31010" => :mavericks
-    sha256 "f9e4067f952412ae098b536cf7e56b92ff0e48672ec1b7f46ca81a575da24cf4" => :mountain_lion
+    sha256 "ef0965454eb37a26a2113647d4214e14d38d8f3e89f26de2da2471972e8962a9" => :yosemite
+    sha256 "46b4b7560d65c47deb00bedc5b6f2e80549074bc0b9c0d639ca7cac1e83e22c3" => :mavericks
+    sha256 "8cfd06e0427cacb68bb65357fab9bf95375748b7b8c7a64fcb21076701b6ce5f" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -23,13 +24,14 @@ class Vegeta < Formula
     mkdir_p buildpath/"src/github.com/tsenart/"
     ln_s buildpath, buildpath/"src/github.com/tsenart/vegeta"
     ENV["GOPATH"] = buildpath
+    ENV["CGO_ENABLED"] = "0"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "vegeta"
+    system "go", "build", "-ldflags", "-X main.Version v5.7.1", "-o", "vegeta"
     bin.install "vegeta"
   end
 
   test do
-    pipe_output("#{bin}/vegeta attack -duration=1s -rate=1", "GET http://localhost/")
+    pipe_output("#{bin}/vegeta attack -duration=1s -rate=1 | #{bin}/vegeta report", "GET http://localhost/")
   end
 end

@@ -1,15 +1,15 @@
 class Icu4c < Formula
+  desc "C/C++ and Java libraries for Unicode and globalization"
   homepage "http://site.icu-project.org/"
-  head "http://source.icu-project.org/repos/icu/icu/trunk/", :using => :svn
-  url "http://download.icu-project.org/files/icu4c/54.1/icu4c-54_1-src.tgz"
-  version "54.1"
-  sha1 "8c752490bbf31cea26e20246430cee67d48abe34"
+  head "https://ssl.icu-project.org/repos/icu/icu/trunk/", :using => :svn
+  url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"
+  version "55.1"
+  sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
 
   bottle do
-    revision 1
-    sha1 "244dbb217c95a79f87a35df70aca493a05c9ff39" => :yosemite
-    sha1 "a963404c60a1de000c3e9d7478f6318e8f3c9291" => :mavericks
-    sha1 "fb48ee8a8fa5aa9537d4e594178bc7e62689156a" => :mountain_lion
+    sha256 "a27e2b3645992acec22c95cb6ff4c4893139d3710c1a0be6d54c9f22593fc148" => :yosemite
+    sha256 "c68728ae3a0401fb32ddb3a85eb5ddf8c367268090421d66db2631d49f7b1ce1" => :mavericks
+    sha256 "be4ecad0c4f0542df384dd48c8c57380f6d843958c5d1eddb068e52f910e2dd9" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "OS X provides libicucore.dylib (but nothing else)."

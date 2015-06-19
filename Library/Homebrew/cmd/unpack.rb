@@ -2,18 +2,12 @@ require "stringio"
 require "formula"
 
 module Homebrew
-  module UnpackPatch
-    def patch
-      super if ARGV.flag?("--patch")
-    end
-  end
-
   def unpack
     formulae = ARGV.formulae
     raise FormulaUnspecifiedError if formulae.empty?
 
     if dir = ARGV.value("destdir")
-      unpack_dir = Pathname.new(dir)
+      unpack_dir = Pathname.new(dir).expand_path
       unpack_dir.mkpath
     else
       unpack_dir = Pathname.pwd
@@ -22,7 +16,6 @@ module Homebrew
     raise "Cannot write to #{unpack_dir}" unless unpack_dir.writable_real?
 
     formulae.each do |f|
-      f.extend(UnpackPatch)
       stage_dir = unpack_dir.join("#{f.name}-#{f.version}")
 
       if stage_dir.exist?
@@ -30,10 +23,13 @@ module Homebrew
         rm_rf stage_dir
       end
 
-      oh1 "Unpacking #{f.name} to: #{stage_dir}"
+      oh1 "Unpacking #{f.full_name} to: #{stage_dir}"
 
       ENV['VERBOSE'] = '1' # show messages about tar
-      f.brew { cp_r getwd, stage_dir }
+      f.brew do
+        f.patch if ARGV.flag?("--patch")
+        cp_r getwd, stage_dir
+      end
       ENV['VERBOSE'] = nil
 
       if ARGV.git?

@@ -1,14 +1,13 @@
-require 'formula'
-
 class Strongswan < Formula
-  homepage 'http://www.strongswan.org'
-  url 'http://download.strongswan.org/strongswan-5.2.2.tar.bz2'
-  sha1 '5dcf6e8e50e11e4009375fda5ce2b49049123e18'
+  desc "VPN based on IPsec"
+  homepage 'https://www.strongswan.org'
+  url 'https://download.strongswan.org/strongswan-5.3.2.tar.bz2'
+  sha256 "a4a9bc8c4e42bdc4366a87a05a02bf9f425169a7ab0c6f4482d347e44acbf225"
 
   bottle do
-    sha1 "bcceab4dccbbaef7815b0e4b0c5fd800c9323edd" => :yosemite
-    sha1 "7ecdc03048bdb90143588c229a3d5422af2feae2" => :mavericks
-    sha1 "8c1bb11c6d21f5d4c80a43fbffdf5ac432eaaa3f" => :mountain_lion
+    sha256 "dcb83dc117ee1f0b145408d14ef5a832ea8931cedd6d2f3a7c97c157cc577bff" => :yosemite
+    sha256 "bc642bdf33694216316a17fd2d64054b6b7aac5bc73cf5cd231aa868b1108b88" => :mavericks
+    sha256 "f3601206f55048e0d67802fc4d32091cfe3a6bef4c98fa38a2f1e9ddbb832e85" => :mountain_lion
   end
 
   option 'with-curl', 'Build with libcurl based fetcher'
@@ -27,9 +26,9 @@ class Strongswan < Formula
       --enable-charon
       --enable-cmd
       --enable-constraints
+      --enable-eap-gtc
       --enable-eap-identity
       --enable-eap-md5
-      --enable-eap-gtc
       --enable-eap-mschapv2
       --enable-ikev1
       --enable-ikev2
@@ -49,8 +48,9 @@ class Strongswan < Formula
       --enable-sshkey
       --enable-stroke
       --enable-swanctl
-      --enable-updown
       --enable-unity
+      --enable-updown
+      --enable-x509
       --enable-xauth-generic
     ]
     args << "--enable-curl" if build.with? 'curl'

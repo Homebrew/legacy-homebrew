@@ -1,7 +1,10 @@
 class Nave < Formula
+  desc "Virtual environments for Node.js"
   homepage "https://github.com/isaacs/nave"
-  url "https://github.com/isaacs/nave/archive/v0.5.0.tar.gz"
-  sha1 "adfb72e9f57b14c94866d87001735c864d33c50f"
+  url "https://github.com/isaacs/nave/archive/v0.5.1.tar.gz"
+  sha256 "8b9f76b97c07b6d3f623d0ccc9287e79e5107701bcf9eb12c82a02547ce4a70c"
+
+  head "https://github.com/isaacs/nave.git"
 
   def install
     bin.install "nave.sh" => "nave"

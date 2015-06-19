@@ -1,14 +1,15 @@
 class TheSilverSearcher < Formula
+  desc "Code-search similar to ack"
   homepage "https://github.com/ggreer/the_silver_searcher"
   head "https://github.com/ggreer/the_silver_searcher.git"
-  url "https://github.com/ggreer/the_silver_searcher/archive/0.29.1.tar.gz"
-  sha1 "128c27749b7166800c00879b427a117dd4a17804"
+  url "https://github.com/ggreer/the_silver_searcher/archive/0.30.0.tar.gz"
+  sha256 "a3b61b80f96647dbe89c7e89a8fa7612545db6fa4a313c0ef8a574d01e7da5db"
 
   bottle do
     cellar :any
-    sha1 "b1e44c0d9cd3a37ab20f56c9ccb8a7c969e76b53" => :yosemite
-    sha1 "4fa6040bf03a04b94504c0259d0c92d9d168a9eb" => :mavericks
-    sha1 "5d1fcee7e46abcea478b3549a8b824ac9d84da2d" => :mountain_lion
+    sha256 "2083010fedc92dddfe1806bd505b37f67de334780a3351aa0f336f0a45f037c7" => :yosemite
+    sha256 "7ec1a769eea33db96c16614beebcb184d775d682803870d0ec894a3dddb86db3" => :mavericks
+    sha256 "2c771c3cd0f3189b4943ca0a57a1d96a082e3d418cfaaf8390d6f4a7fe8d781e" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

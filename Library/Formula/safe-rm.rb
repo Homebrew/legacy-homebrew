@@ -1,9 +1,10 @@
 class SafeRm < Formula
+  desc "Wraps rm to prevent dangerous deletion of files"
   homepage "https://launchpad.net/safe-rm"
   url "https://launchpad.net/safe-rm/trunk/0.12/+download/safe-rm-0.12.tar.gz"
-  sha1 "f0abd96a6898ad64389bf4be8773c899986b4618"
+  sha256 "1c9d3113591e249301fd00fff51152069ab71cd518b32bfcf6848a8d6c3054e2"
 
-  head "https://gitorious.org/safe-rm/mainline.git"
+  head "http://repo.or.cz/safe-rm.git"
 
   def install
     bin.install "safe-rm"

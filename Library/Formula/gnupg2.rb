@@ -1,14 +1,15 @@
 class Gnupg2 < Formula
+  desc "GNU Privacy Guard: a free PGP replacement"
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
-  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
-  sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.28.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.28.tar.bz2"
+  mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.28.tar.bz2"
+  sha256 "ce092ee4ab58fd19b9fb34a460c07b06c348f4360dd5dd4886d041eb521a534c"
 
   bottle do
-    sha1 "68caf3377045b2ca989fbfb0dbea822f1c05886a" => :yosemite
-    sha1 "a43d2c5d929e6dd706774fdbfd1eeb282c4ca524" => :mavericks
-    sha1 "4e1697673d235ec19cf28d89f3ef015920c6e292" => :mountain_lion
+    sha256 "39a665cd01fdafc70111ff4569e2fe34050064a2ba3a45b029028bc3ae5b5fbd" => :yosemite
+    sha256 "0f546298f437d123f97f4bf585756d3fb78c83ea2625cdbce854b5ca70b90de7" => :mavericks
+    sha256 "6ea1c0699de594104bc8cc9b33056775542c3670ba782dcefb86561ca19bc845" => :mountain_lion
   end
 
   depends_on "libgpg-error"

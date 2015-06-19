@@ -1,6 +1,7 @@
 require 'formula'
 
 class Winexe < Formula
+  desc "Remote Windows-command executor"
   homepage 'http://sourceforge.net/projects/winexe/'
   url 'https://downloads.sourceforge.net/project/winexe/winexe-1.00.tar.gz'
   sha1 'bdb598745953fcad3a9b6bba8f728c2b714a7aeb'

@@ -1,7 +1,8 @@
 class Libyubikey < Formula
-  homepage "http://yubico.github.io/yubico-c/"
+  desc "C library for manipulating Yubico one-time passwords"
+  homepage "https://yubico.github.io/yubico-c/"
   url "https://developers.yubico.com/yubico-c/Releases/libyubikey-1.12.tar.gz"
-  sha1 "6a73d548e61f0b622a9447917f03c78686ab386d"
+  sha256 "b95387f791dad4d2544282299800f016736c363838e1e732f199bf90eba717b8"
 
   bottle do
     cellar :any
@@ -16,6 +17,6 @@ class Libyubikey < Formula
     ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,9 +1,10 @@
 require 'formula'
 
 class Zinc < Formula
+  desc "Stand-alone version of sbt's Scala incremental compiler"
   homepage 'https://github.com/typesafehub/zinc'
-  url 'http://downloads.typesafe.com/zinc/0.3.5/zinc-0.3.5.tgz'
-  sha1 '1ae45236fdf0ad91e739889bffb7829d9308cdea'
+  url 'http://downloads.typesafe.com/zinc/0.3.7/zinc-0.3.7.tgz'
+  sha1 '442e3fde66f58c642efb7fa1355166318f4ac5cd'
 
   def install
     rm_f Dir["bin/ng/{linux,win}*"]

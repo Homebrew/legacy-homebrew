@@ -1,6 +1,7 @@
 require "formula"
 
 class Htmlcleaner < Formula
+  desc "HTML parser written in Java"
   homepage "http://htmlcleaner.sourceforge.net/index.php"
   url "https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.10/htmlcleaner-2.10.zip"
   sha1 "dddeeece559b3834c2699f2dba72393de2b53186"

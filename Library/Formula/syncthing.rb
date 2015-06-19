@@ -1,14 +1,16 @@
 class Syncthing < Formula
-  homepage "http://syncthing.net"
+  desc "Open source continuous file synchronization application"
+  homepage "https://syncthing.net/"
   url "https://github.com/syncthing/syncthing.git",
-    :tag => "v0.10.26", :revision => "9c3cee9ae4ff8ea7d8e3edc9eb7ff590a8255bdb"
+    :tag => "v0.11.9", :revision => "1437952aee2069e47c856ae2c06d1e9aefb46d9d"
 
   head "https://github.com/syncthing/syncthing.git"
 
   bottle do
-    sha256 "ccde3860572a6c41902b37692ff9472d6c902e3ccf48191d9b0877f3f1b3f4da" => :yosemite
-    sha256 "786522724164b5a1137397f195b571802f4bbbd06a01aff13cc4cbc47bc955b8" => :mavericks
-    sha256 "7ede3d8431a012f3057d3e3d829acb88e009b78540e3e12a48b07f56af9d79af" => :mountain_lion
+    cellar :any
+    sha256 "392d1b861c5eae39e44148842947dfbeb3640cb0d031e0a42fef3ec49d31252b" => :yosemite
+    sha256 "28b78c3826f3a9a6c1b521ad91b2e7c91b3bc6417f7e175a2e83960ad2f78e1d" => :mavericks
+    sha256 "a1c9ae1947ae60898b14820577ffafc4bbb5e92039d02ebf9e8d2aa9e5fffaea" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -47,6 +49,10 @@ class Syncthing < Formula
         <true/>
         <key>ProcessType</key>
         <string>Background</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/syncthing.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/syncthing.log</string>
       </dict>
     </plist>
     EOS

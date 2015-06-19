@@ -1,7 +1,8 @@
 class Jq < Formula
+  desc "Lightweight and flexible command-line JSON processor"
   homepage "https://stedolan.github.io/jq/"
-  url "http://stedolan.github.io/jq/download/source/jq-1.4.tar.gz"
-  sha1 "71da3840839ec74ae65241e182ccd46f6251c43e"
+  url "https://stedolan.github.io/jq/download/source/jq-1.4.tar.gz"
+  sha256 "998c41babeb57b4304e65b4eb73094279b3ab1e63801b6b4bddd487ce009b39d"
 
   bottle do
     cellar :any
@@ -10,19 +11,24 @@ class Jq < Formula
     sha1 "4c33838662ed6f806ac21db87d433c8722f488a4" => :mountain_lion
   end
 
-  depends_on "bison" => :build # jq depends on bison > 2.5
-
+  devel do
+    url "https://github.com/stedolan/jq/archive/jq-1.5rc1.tar.gz"
+    sha256 "fea2ac70143b93add57b8df9596247f6c3cbf50553d7eaaef32fa73490a402dc"
+  end
   head do
     url "https://github.com/stedolan/jq.git"
+  end
 
-    depends_on "oniguruma"
+  if build.devel? || build.head?
+    depends_on "oniguruma"  # jq depends > 1.5
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
+  depends_on "bison" => :build # jq depends on bison > 2.5
 
   def install
-    system "autoreconf", "-iv" if build.head?
+    system "autoreconf", "-iv" if build.devel? || build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"

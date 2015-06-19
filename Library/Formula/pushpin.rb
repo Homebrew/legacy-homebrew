@@ -1,12 +1,16 @@
 class Pushpin < Formula
+  desc "Reverse proxy for realtime web services"
   homepage "http://pushpin.org"
-  url "http://packages.fanout.io/source/pushpin-1.1.0.tar.bz2"
-  sha1 "4cf4d061062a37f3ff8fa53706523e8f61c79c08"
+  url "http://packages.fanout.io/source/pushpin-1.3.0.tar.bz2"
+  sha256 "b3f45a6faca6873299eb68c876eab21f965cb961a3c91e8ed13cccb4018ff5e6"
+  revision 1
+
+  head "https://github.com/fanout/pushpin.git"
 
   bottle do
-    sha256 "da47c1945de1c2568f137e90a2bdb037fc63b9c85e8c2111ea61e675df716647" => :yosemite
-    sha256 "43381c8079e5ea1ecfaebcf142f05415d95908ac90ebe3c0f4313b814ddb64ff" => :mavericks
-    sha256 "02159fc0a5a38c7d1e93223e1246c5a778707eb9a504c381a88b2909530049bf" => :mountain_lion
+    sha256 "f4fb204ca635b382101e5fa3927dc90e27a0781cabf40de97c491c21126c40f1" => :yosemite
+    sha256 "e331bac41c7ca1a9ecfec2c71e1408eef10b1c204cf6a7857bd2c05d5cb88182" => :mavericks
+    sha256 "8aa61ae4f9eedbbce0fb14ab61eb16a8893867230535d26cc74998e5b31ed5aa" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -17,35 +21,46 @@ class Pushpin < Formula
   depends_on "mongrel2"
   depends_on "zurl"
 
-  resource "MarkupSafe" do
-    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+  # MacOS versions prior to Yosemite need the latest setuptools in order to compile dependencies
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
+    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
   end
 
-  resource "jinja2" do
+  resource "MarkupSafe" do
+    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
+  end
+
+  resource "Jinja2" do
     url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
+    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
   end
 
   resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.5.0.tar.gz"
-    sha1 "1dced02ea8527b5870ffdbe835d096aca5c01d2a"
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.6.0.tar.gz"
+    sha256 "7746806ff94f1e8c1e843644c6bbd3b9aaeb1203c2eaf38879adc23dbd5c35bb"
   end
 
   resource "setproctitle" do
     url "https://pypi.python.org/packages/source/s/setproctitle/setproctitle-1.1.8.tar.gz"
-    sha1 "a23463feac8d99b5504efc22f0ca2cfe2c145930"
+    sha256 "b564cf6488217c7a4632a9fe646fc3a3bea2f9712b4e667e9632b870d1a58211"
   end
 
   resource "tnetstring" do
     url "https://pypi.python.org/packages/source/t/tnetstring/tnetstring-0.2.1.tar.gz"
-    sha1 "ffc35722f4ae978151acdc4801f20efa597c8b54"
+    sha256 "55715a5d758214034db179005def47ed842da36c4c48e9e7ae59bcaffed7ca9b"
+  end
+
+  resource "blist" do
+    url "https://pypi.python.org/packages/source/b/blist/blist-1.3.6.tar.gz"
+    sha256 "3a12c450b001bdf895b30ae818d4d6d3f1552096b8c995f0fe0c74bef04d1fc3"
   end
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    %w[MarkupSafe jinja2 pyzmq setproctitle tnetstring].each do |r|
+    %w[setuptools MarkupSafe Jinja2 pyzmq setproctitle tnetstring blist].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -55,7 +70,7 @@ class Pushpin < Formula
     system "make", "install", "prefix=#{prefix}", "varprefix=#{var}"
 
     pyenv = { :PYTHONPATH => ENV["PYTHONPATH"] }
-    %w[pushpin pushpin-handler].each do |f|
+    %w[pushpin pushpin-handler pushpin-publish].each do |f|
       (libexec/"bin").install bin/f
       (bin/f).write_env_script libexec/"bin/#{f}", pyenv
     end
@@ -72,7 +87,7 @@ class Pushpin < Formula
 
     inreplace routesfile, "localhost:80", "localhost:10080"
 
-    runfile.write(<<-EOS.undent
+    runfile.write <<-EOS.undent
       import urllib2
       import threading
       from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
@@ -102,8 +117,7 @@ class Pushpin < Formula
       f = urllib2.urlopen('http://localhost:7999/test')
       body = f.read()
       assert(body == 'test response\\n')
-      EOS
-      )
+    EOS
 
     pid = fork do
       exec "#{bin}/pushpin", "--config=#{conffile}"

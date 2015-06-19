@@ -1,17 +1,18 @@
 class Mariadb < Formula
+  desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.17/source/mariadb-10.0.17.tar.gz"
-  sha1 "240253b3ee21dea5e2f501778e8ee72b32a5d052"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.19/source/mariadb-10.0.19.tar.gz"
+  sha256 "2fbf5e5d7d8094691601ece8ae60b941478d73c98a58a960aeebfa021091a132"
 
   bottle do
-    sha1 "30bb3e16ab50ced951a582b30b3609b799a3c236" => :yosemite
-    sha1 "7f7a3cc62d684820b12970239bbcf0566816e770" => :mavericks
-    sha1 "68e5b41c2c33d8ac237470f6b55318c7fe31815f" => :mountain_lion
+    sha256 "01c0c87bb3185c4b9e992dd8869daeea126dc8131c9cfc507f59e28b8b4f364e" => :yosemite
+    sha256 "7650b9eb90b5c9427bed0558f91d5c8d1ac324050d766311e2e09dee1b6d167f" => :mavericks
+    sha256 "09916d6944e8cbbee2ca6c97dafdf5c7409522bd27738c851df0e544e8ae2163" => :mountain_lion
   end
 
   devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.3/source/mariadb-10.1.3.tar.gz"
-    sha1 "95a4e2640b40e79c58f22662ff76eb3f76f892e9"
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.5/source/mariadb-10.1.5.tar.gz"
+    sha256 "af8788bfbb842338882e505612f86ef53a25968663a1519185ecf3de3b1efe83"
   end
 
   depends_on "cmake" => :build
@@ -123,6 +124,7 @@ class Mariadb < Formula
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
+    touch etc/"my.cnf.d/.homebrew_dont_prune_me"
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975

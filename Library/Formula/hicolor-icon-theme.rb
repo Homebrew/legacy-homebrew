@@ -1,20 +1,33 @@
-require 'formula'
-
 class HicolorIconTheme < Formula
-  homepage 'http://icon-theme.freedesktop.org/wiki/HicolorTheme'
-  url 'http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.13.tar.gz'
-  sha1 '15e30dfcf5e7b53c1a6f9028c30665006abba55c'
+  desc "Fallback theme for FreeDesktop.org icon themes"
+  homepage "https://wiki.freedesktop.org/www/Software/icon-theme/"
+  url "http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.15.tar.xz"
+  sha256 "9cc45ac3318c31212ea2d8cb99e64020732393ee7630fa6c1810af5f987033cc"
+
+  head do
+    url "http://anongit.freedesktop.org/git/xdg/default-icon-theme.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "9f3bd40e44a26a00b741f29fe86618a3cb8b570a" => :yosemite
-    sha1 "930f46d4d40d82e17af141cbecaf5e51f5ccad09" => :mavericks
-    sha1 "aa796a38b6672816314527f318d17f6bc6ad136b" => :mountain_lion
+    sha256 "e1e09d7dee2b5560d45d99a310d8e2903d30413eb53408a4079261e8ef5f3b55" => :yosemite
+    sha256 "e3e7a63d5af66fe6721839c12e00288e061ef092a046ff6db2dcc6f62f75b9c2" => :mavericks
+    sha256 "5647ecc1f44a15ee6cef8d37ae62d606251a0ae94f2659c9fac497270876367e" => :mountain_lion
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    args = %W[--prefix=#{prefix} --disable-silent-rules]
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
+    system "make", "install"
+  end
+
+  test do
+    File.exist? share/"icons/hicolor/index.theme"
   end
 end

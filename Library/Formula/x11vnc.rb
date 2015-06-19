@@ -1,11 +1,20 @@
 require 'formula'
 
 class X11vnc < Formula
+  desc "VNC server for real X displays"
   homepage 'http://www.karlrunge.com/x11vnc/'
   url 'https://downloads.sourceforge.net/project/libvncserver/x11vnc/0.9.13/x11vnc-0.9.13.tar.gz'
   sha1 'f011d81488ac94dc8dce2d88739c23bd85a976fa'
 
-  depends_on :x11 => :recommended
+  bottle do
+    cellar :any
+    sha256 "a32bb68e7b1ebb96de7acd8ce4d602038fed7ae0d7e6c6adca294fc688f2a8ad" => :yosemite
+    sha256 "6e92c88b0c90fbda1ffc73f62c7ef2482b42b544595232b02caa54a6ab7c7021" => :mavericks
+    sha256 "104e7c7dfd642f901e9f8be417b77540242c1ef2bf8e8aba6bee64e5d9f2a215" => :mountain_lion
+  end
+
+  depends_on :x11 => :optional
+  depends_on 'openssl'
   depends_on 'jpeg'
 
   # Patch solid.c so a non-void function returns a NULL instead of a void.
