@@ -89,5 +89,10 @@ def blacklisted? name
     A binary installer is available:
       https://www.haskell.org/platform/mac.html
     EOS
+  when 'gnome-icon-theme', 'adwaita-icon-theme' then <<-EOS.undent
+    The Adwaita icon theme (which replaces the now defunct gnome-icon-theme)
+    is now provided as a part of Gtk+3. Install with:
+      brew install gtk+3
+    EOS
   end
 end

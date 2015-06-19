@@ -16,7 +16,6 @@ class Homebank < Formula
   depends_on "intltool" => :build
   depends_on "gettext"
   depends_on "gtk+3"
-  depends_on "gnome-icon-theme"
   depends_on "hicolor-icon-theme"
   depends_on "freetype"
   depends_on "fontconfig"

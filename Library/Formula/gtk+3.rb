@@ -3,6 +3,7 @@ class Gtkx3 < Formula
   homepage "http://gtk.org/"
   url "https://download.gnome.org/sources/gtk+/3.16/gtk+-3.16.4.tar.xz"
   sha256 "1ee5dbd7a4cb81a91eaa1b7ae64ba5a3eab6a3c0a764155583ab96524590fc8e"
+  revision 1
 
   bottle do
     sha256 "6c32e525805e77f5c98566e913202004c4008a14eafbaf3ec6030857bfe22d8e" => :yosemite
@@ -11,6 +12,8 @@ class Gtkx3 < Formula
   end
 
   option :universal
+  option "with-quartz-relocation", "Build with quartz relocation support"
+  option "without-icons", "Do not install Adwaita icon theme for basic icon support (not recommended)"
 
   depends_on "pkg-config" => :build
   depends_on "gdk-pixbuf"
@@ -22,8 +25,25 @@ class Gtkx3 < Formula
   depends_on "pango"
   depends_on "glib"
 
+  if build.with?("icons")
+    # Adwaita icon theme dependencies
+    depends_on "gettext" => :build
+    depends_on "icon-naming-utils" => :build
+    depends_on "intltool" => :build
+    depends_on "librsvg"
+  end
+
+  resource "adwaita-icon-theme" do
+    url "https://download.gnome.org/sources/adwaita-icon-theme/3.16/adwaita-icon-theme-3.16.2.1.tar.xz"
+    sha256 "b4556dfbf555d4fac12d4d5c12f7519de0d43ec42a1b649611439a50bf7acb96"
+  end
+
   def install
     ENV.universal_binary if build.universal?
+
+    if File.exist?(HOMEBREW_PREFIX/"opt/gnome-icon-theme")
+      raise "Please `brew rm gnome-icon-theme` - It has been merged with GTK+3"
+    end
 
     args = %W[
       --disable-debug
@@ -33,17 +53,24 @@ class Gtkx3 < Formula
       --enable-introspection=yes
       --disable-schemas-compile
       --enable-quartz-backend
-      --enable-quartz-relocation
       --disable-x11-backend
     ]
 
+    args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
+
     system "./configure", *args
-    # necessary to avoid gtk-update-icon-cache not being found during make install
-    bin.mkpath
-    ENV.prepend_path "PATH", "#{bin}"
     system "make", "install"
     # Prevent a conflict between this and Gtk+2
     mv bin/"gtk-update-icon-cache", bin/"gtk3-update-icon-cache"
+
+    if build.with? "icons"
+      resource("adwaita-icon-theme").stage do
+        system "./configure", "--disable-dependency-tracking",
+                              "--prefix=#{prefix}",
+                              "GTK_UPDATE_ICON_CACHE=#{bin}/gtk3-update-icon-cache"
+        system "make", "install"
+      end
+    end
   end
 
   def post_install
