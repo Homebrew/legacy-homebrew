@@ -4,7 +4,6 @@ class Gost < Formula
   desc "A simple command line utility for easily creating Gists for Github."
   homepage "https://github.com/wilhelm-murdoch/gost"
   url "https://github.com/wilhelm-murdoch/gost/archive/1.1.1.tar.gz"
-  version "1.1.1"
   sha256 "6e932ad58c9147a6d08528f16d5e496441e577a6175ddca10fbaffcd077a080a"
 
   depends_on "go" => :build
