@@ -3,37 +3,21 @@
 $:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
 require 'pathname'
 require 'set'
-require 'stringio'
-
-class Logger
-  def initialize
-    @io = StringIO.new
-  end
-
-  def puts(*args)
-    @io.puts(*args)
-  end
-
-  def log!
-    return unless ENV.key? 'HOMEBREW_CC_LOG_PATH'
-    path = "#{ENV['HOMEBREW_CC_LOG_PATH']}.cc"
-
-    puts
-    File.open(path, File::WRONLY | File::APPEND | File::CREAT) { |f| f.write(@io.string) }
-  end
-end
-
-LOGGER = Logger.new
 
 class Cmd
-  attr_reader :brewfix, :brewtmp, :sysroot
+  attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
+  attr_reader :archflags, :optflags
 
-  def initialize path, args
-    @arg0 = File.basename(path).freeze
+  def initialize(arg0, args)
+    @arg0 = arg0
     @args = args.freeze
-    @brewfix = ENV['HOMEBREW_PREFIX']
-    @brewtmp = ENV['HOMEBREW_TEMP']
+    @config = ENV.fetch("HOMEBREW_CCCFG") { "" }
+    @prefix = ENV['HOMEBREW_PREFIX']
+    @cellar = ENV['HOMEBREW_CELLAR']
+    @tmpdir = ENV['HOMEBREW_TEMP']
     @sysroot = ENV['HOMEBREW_SDKROOT']
+    @archflags = ENV.fetch("HOMEBREW_ARCHFLAGS") { "" }.split(" ")
+    @optflags = ENV.fetch("HOMEBREW_OPTFLAGS") { "" }.split(" ")
   end
 
   def mode
@@ -60,13 +44,13 @@ class Cmd
     @tool ||= case @arg0
     when 'ld' then 'ld'
     when 'cpp' then 'cpp'
-    when /\w\+\+(-\d\.\d)?$/
+    when /\w\+\+(-\d(\.\d)?)?$/
       case ENV['HOMEBREW_CC']
       when /clang/
         'clang++'
       when /llvm-gcc/
         'llvm-g++-4.2'
-      when /gcc(-\d\.\d)?$/
+      when /gcc(-\d(\.\d)?)?$/
         'g++' + $1.to_s
       end
     else
@@ -83,7 +67,8 @@ class Cmd
       # software uses gcc -v (wrongly) to sniff the GCC version.
       return @args.dup
     end
-    if !cccfg?("O") || tool == "ld" || configure?
+
+    if !refurbish_args? || tool == "ld" || configure?
       args = @args.dup
     else
       args = refurbished_args
@@ -97,7 +82,7 @@ class Cmd
       end
     end
 
-    allflags = case mode
+    case mode
     when :ccld
       cflags + args + cppflags + ldflags
     when :cxxld
@@ -112,9 +97,7 @@ class Cmd
       args + cppflags
     when :ld
       ldflags + args
-    end.compact
-    make_fuss(allflags)
-    allflags
+    end
   end
 
   def refurbished_args
@@ -127,13 +110,13 @@ class Cmd
     loop do
       case arg = enum.next
       when "-arch"
-        if cccfg?("K")
+        if permit_arch_flags?
           args << arg << enum.next
         else
           enum.next
         end
       when "-m32", "-m64"
-        args << arg if cccfg?("K")
+        args << arg if permit_arch_flags?
       when /^-Xarch_/
         refurbished = refurbish_arg(enum.next, enum)
         unless refurbished.empty?
@@ -155,7 +138,8 @@ class Cmd
     when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
       /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/,
       /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
-      '-pedantic', '-pedantic-errors', '-Wno-long-double'
+      '-pedantic', '-pedantic-errors', '-Wno-long-double',
+      '-Wno-unused-but-set-variable'
     when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
       '-mno-dynamic-no-pic', '-fearly-inlining', /^-f(?:no-)?inline-functions-called-once/,
       /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
@@ -197,24 +181,17 @@ class Cmd
   end
 
   def keep? path
-    case path
-    when %r{^#{Regexp.escape(brewfix)}}o, %r{^#{Regexp.escape(brewtmp)}}o
-      # maybe homebrew is installed to /sw or /opt/brew
-      true
-    when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
-      false
-    else
-      true
-    end
+    path.start_with?(prefix, cellar, tmpdir) || !path.start_with?("/opt", "/sw", "/usr/X11")
   end
 
   def cflags
     args = []
 
-    return args unless cccfg? 'O' or configure?
+    return args unless refurbish_args? || configure?
 
     args << '-pipe'
     args << '-w' unless configure?
+    args << "-#{ENV["HOMEBREW_OPTIMIZATION_LEVEL"]}"
     args.concat(optflags)
     args.concat(archflags)
     args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
@@ -223,21 +200,10 @@ class Cmd
 
   def cxxflags
     args = cflags
-    args << '-std=c++11' if cccfg? 'x'
-    args << '-stdlib=libc++' if cccfg? 'g'
-    args << '-stdlib=libstdc++' if cccfg? 'h'
+    args << "-std=c++11" if cxx11?
+    args << "-stdlib=libc++" if libcxx?
+    args << "-stdlib=libstdc++" if libstdcxx?
     args
-  end
-
-  def optflags
-    args = []
-    args << "-#{ENV['HOMEBREW_OPTIMIZATION_LEVEL']}"
-    args.concat ENV['HOMEBREW_OPTFLAGS'].split(' ') if ENV['HOMEBREW_OPTFLAGS']
-    args
-  end
-
-  def archflags
-    ENV["HOMEBREW_ARCHFLAGS"].split(" ")
   end
 
   def cppflags
@@ -271,27 +237,29 @@ class Cmd
     %W{#{sysroot}/usr/lib /usr/local/lib}
   end
 
-  def make_fuss args
-    return unless make_fuss?
-
-    dels = @args - args
-    adds = args - @args
-
-    LOGGER.puts "superenv removed:  #{dels*' '}" unless dels.empty?
-    LOGGER.puts "superenv added:    #{adds*' '}" unless adds.empty?
-  end
-
-  def make_fuss?
-    cccfg? 'O' and not configure?
-  end
-
   def configure?
     # configure scripts generated with autoconf 2.61 or later export as_nl
     ENV.key? 'as_nl'
   end
 
-  def cccfg? flags
-    flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
+  def refurbish_args?
+    config.include?("O")
+  end
+
+  def cxx11?
+    config.include?("x")
+  end
+
+  def libcxx?
+    config.include?("g")
+  end
+
+  def libstdcxx?
+    config.include?("h")
+  end
+
+  def permit_arch_flags?
+    config.include?("K")
   end
 
   def canonical_path(path)
@@ -316,6 +284,20 @@ class Cmd
   end
 end
 
+def log(basename, argv, tool, args)
+  return unless ENV.key?("HOMEBREW_CC_LOG_PATH")
+
+  adds = args - argv
+  dels = argv - args
+
+  s = ""
+  s << "#{basename} called with: #{argv.join(" ")}\n"
+  s << "superenv removed:  #{dels.join(" ")}\n" unless dels.empty?
+  s << "superenv added:    #{adds.join(" ")}\n" unless adds.empty?
+  s << "superenv executed: #{tool} #{args.join(" ")}\n\n"
+  File.open("#{ENV["HOMEBREW_CC_LOG_PATH"]}.cc", "a+") { |f| f.write(s) }
+end
+
 if __FILE__ == $PROGRAM_NAME
   ##################################################################### sanity
   abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
@@ -327,14 +309,13 @@ if __FILE__ == $PROGRAM_NAME
 
   ####################################################################### main
 
-  LOGGER.puts "#{File.basename($0)} called with: #{ARGV.join(" ")}"
+  dirname, basename = File.split($0)
 
-  cmd = Cmd.new($0, ARGV)
+  cmd = Cmd.new(basename, ARGV)
   tool, args = cmd.tool, cmd.args
 
-  LOGGER.puts "superenv executed: #{tool} #{args.join(" ")}"
-  LOGGER.log!
+  log(basename, ARGV, tool, args)
 
   args << { :close_others => false } if RUBY_VERSION >= "2.0"
-  exec "xcrun", tool, *args
+  exec "#{dirname}/xcrun", tool, *args
 end

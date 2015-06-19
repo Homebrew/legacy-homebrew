@@ -1,6 +1,7 @@
 require "formula"
 
 class Cutter < Formula
+  desc "Disconnect routed IP connections"
   homepage "http://cutter.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/cutter/cutter/1.2.4/cutter-1.2.4.tar.gz"
   sha1 "cf4bc0dc92fc8ac51441536544acc8a81a195a79"

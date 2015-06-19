@@ -1,14 +1,12 @@
 class Zeromq < Formula
+  desc "High-performance, asynchronous messaging library"
   homepage "http://www.zeromq.org/"
-  url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
-  sha1 "a664ec63661a848ef46114029156a0a6006feecd"
-  revision 2
 
   bottle do
     cellar :any
-    sha1 "8598e6f79d5cfbe72f281c3f835c0894078108ad" => :yosemite
-    sha1 "895c3427fb619cf3dcbe1d51cbf2c97d55177821" => :mavericks
-    sha1 "ba066d695b43cba56747649b18f146696ba2ada0" => :mountain_lion
+    sha256 "35959e6b6e357d80c35529f410a7429cb53ed0d79d56762c8719ce822dab8431" => :yosemite
+    sha256 "54649139f4cdd17a5780335eda37286feecfed5b5682fd15782b9e4895d14380" => :mavericks
+    sha256 "78951bbe1bb821bdc758ba28ec3220acc6ea85b228250c348120760f7cc45841" => :mountain_lion
   end
 
   head do
@@ -17,6 +15,11 @@ class Zeromq < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  stable do
+    url "http://download.zeromq.org/zeromq-4.1.2.tar.gz"
+    sha1 "86c17096f7f4bf46cbcd2ad242cf8fec8a7cfb7b"
   end
 
   option :universal
@@ -39,7 +42,11 @@ class Zeromq < Formula
       args << "--with-system-pgm"
     end
 
-    args << "--with-libsodium" if build.with? "libsodium"
+    if build.with? "libsodium"
+      args << "--with-libsodium"
+    else
+      args << "--without-libsodium"
+    end
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
@@ -59,7 +66,7 @@ class Zeromq < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-lzmq", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-lzmq", "-o", "test"
     system "./test"
   end
 end

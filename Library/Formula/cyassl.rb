@@ -1,15 +1,15 @@
 class Cyassl < Formula
-  homepage "http://yassl.com/yaSSL/Products-cyassl.html"
-  url "https://github.com/cyassl/cyassl/archive/v3.3.0.tar.gz"
-  sha256 "585ca95b23a44da2d0e042bd0aef95ce770cd541028b76dc45f29ab62ad3ad4a"
-
-  head "https://github.com/cyassl/cyassl.git"
+  desc "Embedded SSL Library written in C"
+  homepage "https://www.wolfssl.com/wolfSSL/Home.html"
+  url "https://github.com/wolfSSL/wolfssl/archive/v3.4.8.tar.gz"
+  sha256 "50243fa7124a1af611acb916ec11d98a2a91ac5079b7a6a51562e8970cbd942e"
+  head "https://github.com/wolfSSL/wolfssl.git"
 
   bottle do
     cellar :any
-    sha1 "47a068ee29646ef26b3f7e2a62268f62ed73dbec" => :yosemite
-    sha1 "57f47edc303e4f7f07d893a0724c67e068ca4883" => :mavericks
-    sha1 "c5de09829f89696a73a8f3818bbf413eae99e5ac" => :mountain_lion
+    sha256 "6ef0f5121a7486d05fc097e5d12abb0930a5a5c4d0fa470a4584a93718eb40b4" => :yosemite
+    sha256 "ec404ac09e2a16219c53bbfe235363cf2a940ffcff53f01bb811420ac5bece22" => :mavericks
+    sha256 "3a77e9919894765aeab5b9c08bbea00bf590bf0e85afbcbfd43d6207fc29d451" => :mountain_lion
   end
 
   option "without-check", "Skip compile-time tests."
@@ -27,7 +27,9 @@ class Cyassl < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --disable-bump
+      --disable-examples
       --disable-fortress
+      --disable-md5
       --disable-sniffer
       --disable-webserver
       --enable-aesccm
@@ -40,8 +42,10 @@ class Cyassl < Formula
       --enable-crl
       --enable-crl-monitor
       --enable-dtls
+      --enable-dh
       --enable-ecc
       --enable-eccencrypt
+      --enable-ecc25519
       --enable-filesystem
       --enable-hc128
       --enable-hkdf
@@ -82,6 +86,6 @@ class Cyassl < Formula
   end
 
   test do
-    system bin/"cyassl-config", "--cflags", "--libs", "--prefix"
+    system bin/"wolfssl-config", "--cflags", "--libs", "--prefix"
   end
 end

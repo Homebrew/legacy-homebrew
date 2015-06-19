@@ -1,20 +1,16 @@
 require "formula"
 
 class Poco < Formula
+  desc "POCO C++ Libraries"
   homepage "http://pocoproject.org/"
-  url "http://pocoproject.org/releases/poco-1.4.7/poco-1.4.7p1-all.tar.bz2"
-  sha1 "29339fe4b9318d7f358f400e0847856a27ea6c4a"
+  url "http://pocoproject.org/releases/poco-1.6.0/poco-1.6.0-all.tar.gz"
+  sha1 "b45486757bfc132631d31724342a62cf41dc2795"
 
   bottle do
     cellar :any
-    sha1 "3deaf590ff6e90c7c9ddd70f38a39ad4e85ebafd" => :yosemite
-    sha1 "e42e56f7bf77d64ce7decc089a948a04feeccceb" => :mavericks
-    sha1 "270e0119505e7608d86d897cdb65f3452f9850a2" => :mountain_lion
-  end
-
-  devel do
-    url "http://pocoproject.org/releases/poco-1.5.4/poco-1.5.4-all.tar.bz2"
-    sha1 "f44b57539511bb23f6bb5387347ca08bdd9c724d"
+    sha1 "32c3d4f754f5fd1b01fa2455a070f5057582a1a4" => :yosemite
+    sha1 "1d844a6baf5ffa6c19697623aceb0d0035e4be38" => :mavericks
+    sha1 "4f039170113a69a61657d35a2a0206743bd7f416" => :mountain_lion
   end
 
   option :cxx11

@@ -1,18 +1,17 @@
 require "formula"
 
 class Wrk < Formula
+  desc "HTTP benchmarking tool"
   homepage "https://github.com/wg/wrk"
-  url "https://github.com/wg/wrk/archive/3.1.1.tar.gz"
-  sha1 "7cea5d12dc5076fed1a1c730bd3e6eba832a8f61"
+  url "https://github.com/wg/wrk/archive/4.0.1.tar.gz"
+  sha256 "c03bbc283836cb4b706eb6bfd18e724a8ce475e2c16154c13c6323a845b4327d"
   head "https://github.com/wg/wrk.git"
-  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "034ed6c6991064d72aabadec117cedc8826a5018" => :mavericks
-    sha1 "beec443377916519ef99e99ac443adf92aa15f59" => :mountain_lion
-    sha1 "9528426378a5d4d75e1ec5f7cd0d3dcbdeb775ac" => :lion
+    sha256 "982842de8ea8ff98e798a70b51f928e45d6ae17eabd96ba3a6112f4d4cceff50" => :yosemite
+    sha256 "fa18093d7236c1d2c68b4f41d633065d716b7bbfea8723605f8793afd2161e17" => :mavericks
+    sha256 "1890cb7b8fa9a9ce9ef1f495c407dba4bc5a082e5bcde939fa8d59e807c40499" => :mountain_lion
   end
 
   depends_on "openssl"

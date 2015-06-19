@@ -1,17 +1,15 @@
-require "formula"
-
 class Libgit2 < Formula
+  desc "C library of Git core methods that is re-entrant and linkable"
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.21.3.tar.gz"
-  sha1 "d116cb15f76edf2283c85da40389e4fecc8d5aeb"
-
-  head "https://github.com/libgit2/libgit2.git", :branch => "development"
+  url "https://github.com/libgit2/libgit2/archive/v0.22.2.tar.gz"
+  sha256 "3109f2579180d561fc736bad8bd917d7241477aab11633755c8a273beac53cdc"
+  head "https://github.com/libgit2/libgit2.git"
 
   bottle do
     cellar :any
-    sha1 "1eaa718a043b055902f0cd5c01a7a93b14836d85" => :yosemite
-    sha1 "9b5d5f3026c699e05ad9a623ea37e004e800af30" => :mavericks
-    sha1 "059ee25e0a3d46ad685b3d55394ae1c8a007da70" => :mountain_lion
+    sha256 "ecc9a5697ee9834c5c35d849331315ebf39565b9272b0e5cce155ec23507735b" => :yosemite
+    sha256 "1653516e194defec8bb954e0e59edb15cf76bb7efa609f0bf11ca95dc7b600e8" => :mavericks
+    sha256 "4aa576564a09b3053585d63498ad02553374975dd526f9faaf50c982af0d3da6" => :mountain_lion
   end
 
   option :universal
@@ -22,7 +20,7 @@ class Libgit2 < Formula
 
   def install
     args = std_cmake_args
-    args << "-DBUILD_TESTS=NO"
+    args << "-DBUILD_CLAR=NO" # Don't build tests.
 
     if build.universal?
       ENV.universal_binary

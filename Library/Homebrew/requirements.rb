@@ -1,17 +1,20 @@
 require 'requirement'
-require 'requirements/apr_dependency'
-require 'requirements/fortran_dependency'
-require 'requirements/language_module_dependency'
+require 'requirements/apr_requirement'
+require 'requirements/fortran_requirement'
+require 'requirements/language_module_requirement'
 require 'requirements/minimum_macos_requirement'
 require 'requirements/maximum_macos_requirement'
-require 'requirements/mpi_dependency'
-require 'requirements/osxfuse_dependency'
-require 'requirements/python_dependency'
-require 'requirements/tuntap_dependency'
+require 'requirements/mpi_requirement'
+require 'requirements/osxfuse_requirement'
+require 'requirements/python_requirement'
+require 'requirements/java_requirement'
+require 'requirements/ruby_requirement'
+require 'requirements/tuntap_requirement'
 require 'requirements/unsigned_kext_requirement'
-require 'requirements/x11_dependency'
+require 'requirements/x11_requirement'
+require 'requirements/emacs_requirement'
 
-class XcodeDependency < Requirement
+class XcodeRequirement < Requirement
   fatal true
 
   satisfy(:build_env => false) { xcode_installed_version }
@@ -43,23 +46,34 @@ class XcodeDependency < Requirement
       EOS
     end
   end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} version=#{@version.inspect}>"
+  end
 end
 
-class MysqlDependency < Requirement
+class MysqlRequirement < Requirement
   fatal true
   default_formula 'mysql'
 
   satisfy { which 'mysql_config' }
 end
 
-class PostgresqlDependency < Requirement
+class PostgresqlRequirement < Requirement
   fatal true
   default_formula 'postgresql'
 
   satisfy { which 'pg_config' }
 end
 
-class TeXDependency < Requirement
+class GPGRequirement < Requirement
+  fatal true
+  default_formula "gpg"
+
+  satisfy { which("gpg") || which("gpg2") }
+end
+
+class TeXRequirement < Requirement
   fatal true
   cask "mactex"
   download "https://www.tug.org/mactex/"
@@ -98,42 +112,16 @@ class ArchRequirement < Requirement
   end
 end
 
-class MercurialDependency < Requirement
+class MercurialRequirement < Requirement
   fatal true
   default_formula 'mercurial'
 
   satisfy { which('hg') }
 end
 
-class GitDependency < Requirement
+class GitRequirement < Requirement
   fatal true
   default_formula 'git'
   satisfy { !!which('git') }
 end
 
-class JavaDependency < Requirement
-  fatal true
-  cask "java"
-  download "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
-
-  satisfy { java_version }
-
-  def initialize(tags)
-    @version = tags.pop
-    super
-  end
-
-  def java_version
-    args = %w[/usr/libexec/java_home --failfast]
-    args << "--version" << "#{@version}+" if @version
-    quiet_system(*args)
-  end
-
-  def message
-    version_string = " #{@version}" if @version
-
-    s = "Java#{version_string} is required to install this formula."
-    s += super
-    s
-  end
-end

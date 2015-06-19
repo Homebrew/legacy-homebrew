@@ -1,6 +1,7 @@
 require "formula"
 
 class OsspUuid < Formula
+  desc "ISO-C API and CLI for generating UUIDs"
   homepage "http://www.ossp.org/pkg/lib/uuid/"
   url "http://ftp.de.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_1.6.2.orig.tar.gz"
   mirror "ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz"

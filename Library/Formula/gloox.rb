@@ -1,37 +1,40 @@
-require 'formula'
-
 class Gloox < Formula
-  homepage 'http://camaya.net/gloox/'
-  url 'http://camaya.net/download/gloox-1.0.9.tar.bz2'
-  sha1 '0f408d25b8e8ba8dea69832b4c49ad02d74a6695'
+  desc "C++ Jabber/XMPP library that handles the low-level protocol"
+  homepage "https://camaya.net/gloox/"
+  url "https://camaya.net/download/gloox-1.0.12.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/gloox/gloox_1.0.12.orig.tar.bz2"
+  sha1 "188ab51af7e410d4119a8dc3e1d96ca548dbd040"
 
-  depends_on 'pkg-config' => :build
+  bottle do
+    cellar :any
+    sha1 "5060164baddf38f05951775cfd5f70b2f52056d2" => :yosemite
+    sha1 "c2c278952e2256638c8165bf56168d069375fd7f" => :mavericks
+    sha1 "ce76ecc24eef8c32f79d6e65bf6eae8a0f6efdcf" => :mountain_lion
+  end
 
-  # signed/unsigned conversion error, reported upstream:
-  # http://bugs.camaya.net/ticket/?id=223
-  patch :DATA
+  depends_on "pkg-config" => :build
+  depends_on "openssl" => :recommended
+  depends_on "gnutls" => :optional
+  depends_on "libidn" => :optional
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--with-openssl",
-                          "--without-gnutls",
-                          "--with-zlib"
-    system "make install"
+    args = %W[
+      --prefix=#{prefix}
+      --with-zlib
+      --disable-debug
+    ]
+
+    if build.with? "gnutls"
+      args << "--with-gnutls=yes"
+    else
+      args << "--with-openssl=#{Formula["openssl"].opt_prefix}"
+    end
+
+    system "./configure", *args
+    system "make", "install"
+  end
+
+  test do
+    system bin/"gloox-config", "--cflags", "--libs", "--version"
   end
 end
-
-__END__
-diff --git a/src/atomicrefcount.cpp b/src/atomicrefcount.cpp
-index 58a3887..599a818 100644
---- a/src/atomicrefcount.cpp
-+++ b/src/atomicrefcount.cpp
-@@ -76,7 +76,7 @@ namespace gloox
- #if defined( _WIN32 ) && !defined( __SYMBIAN32__ )
-       ::InterlockedExchange( (volatile LONG*)&m_count, (volatile LONG)0 );
- #elif defined( __APPLE__ )
--      OSAtomicAnd32Barrier( (int32_t)0, (volatile int32_t*)&m_count );
-+      OSAtomicAnd32Barrier( (int32_t)0, (volatile uint32_t*)&m_count );
- #elif defined( HAVE_GCC_ATOMIC_BUILTINS )
-       // Use the gcc intrinsic for atomic decrement if supported.
-       __sync_fetch_and_and( &m_count, 0 );

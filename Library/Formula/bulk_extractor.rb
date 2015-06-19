@@ -1,6 +1,7 @@
 require 'formula'
 
 class BulkExtractor < Formula
+  desc "Stream-based forensics tool"
   homepage "https://github.com/simsong/bulk_extractor/wiki"
   url "http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz"
   sha1 "59cab1d96089043ad4a74483bd09179262b136ab"

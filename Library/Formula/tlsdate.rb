@@ -1,6 +1,7 @@
 require "formula"
 
 class Tlsdate < Formula
+  desc "Secure rdate replacement"
   homepage "https://www.github.com/ioerror/tlsdate/"
   head "https://github.com/ioerror/tlsdate.git"
   url "https://github.com/ioerror/tlsdate/archive/tlsdate-0.0.8.tar.gz"

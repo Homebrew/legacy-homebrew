@@ -9,6 +9,7 @@ require 'formulary'
 require 'software_spec'
 require 'install_renamed'
 require 'pkg_version'
+require 'tap'
 
 # A formula provides instructions and metadata for Homebrew to install a piece
 # of software. Every Homebrew formula is a {Formula}.
@@ -27,6 +28,11 @@ class Formula
   # The name of this {Formula}.
   # e.g. `this-formula`
   attr_reader :name
+
+  # The fully-qualified name of this {Formula}.
+  # For core formula it's the same as {#name}.
+  # e.g. `homebrew/tap-name/this-formula`
+  attr_reader :full_name
 
   # The full path to this {Formula}.
   # e.g. `/usr/local/Library/Formula/this-formula.rb`
@@ -88,6 +94,12 @@ class Formula
     @path = path
     @revision = self.class.revision || 0
 
+    if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
+      @full_name = "#{$1}/#{$2.gsub(/^homebrew-/, "")}/#{name}"
+    else
+      @full_name = name
+    end
+
     set_spec :stable
     set_spec :devel
     set_spec :head
@@ -147,10 +159,26 @@ class Formula
     active_spec == head
   end
 
+  # @private
+  def bottled?
+    active_spec.bottled?
+  end
+
+  # @private
+  def bottle_specification
+    active_spec.bottle_specification
+  end
+
   # The Bottle object for the currently active {SoftwareSpec}.
   # @private
   def bottle
-    Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
+    Bottle.new(self, bottle_specification) if bottled?
+  end
+
+  # The description of the software.
+  # @see .desc
+  def desc
+    self.class.desc
   end
 
   # The homepage for the software.
@@ -252,6 +280,8 @@ class Formula
     end
   end
 
+  # The currently installed version for this formula. Will raise an exception
+  # if the formula is not installed.
   def installed_version
     require 'keg'
     Keg.new(installed_prefix).version
@@ -262,42 +292,151 @@ class Formula
   def prefix(v=pkg_version)
     Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
+
   # The parent of the prefix; the named directory in the cellar containing all
   # installed versions of this software
   def rack; prefix.parent end
 
+  # The directory where the formula's binaries should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def bin;     prefix+'bin'     end
+
+  # The directory where the formula's documentation should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def doc;     share+'doc'+name end
+
+  # The directory where the formula's headers should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def include; prefix+'include' end
+
+  # The directory where the formula's info files should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def info;    share+'info'     end
+
+  # The directory where the formula's libraries should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def lib;     prefix+'lib'     end
+
+  # The directory where the formula's binaries should be installed.
+  # This is not symlinked into `HOMEBREW_PREFIX`.
+  # It is also commonly used to install files that we do not wish to be
+  # symlinked into HOMEBREW_PREFIX from one of the other directories and
+  # instead manually create symlinks or wrapper scripts into e.g. {#bin}.
   def libexec; prefix+'libexec' end
+
+  # The root directory where the formula's manual pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  # Often one of the more specific `man` functions should be used instead
+  # e.g. {#man1}
   def man;     share+'man'      end
+
+  # The directory where the formula's man1 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man1;    man+'man1'       end
+
+  # The directory where the formula's man2 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man2;    man+'man2'       end
+
+  # The directory where the formula's man3 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man3;    man+'man3'       end
+
+  # The directory where the formula's man4 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man4;    man+'man4'       end
+
+  # The directory where the formula's man5 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man5;    man+'man5'       end
+
+  # The directory where the formula's man6 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man6;    man+'man6'       end
+
+  # The directory where the formula's man7 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man7;    man+'man7'       end
+
+  # The directory where the formula's man8 pages should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def man8;    man+'man8'       end
+
+  # The directory where the formula's `sbin` binaries should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  # Generally we try to migrate these to {#bin} instead.
   def sbin;    prefix+'sbin'    end
+
+  # The directory where the formula's shared files should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
   def share;   prefix+'share'   end
 
+  # The directory where the formula's Frameworks should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  # This is not symlinked into `HOMEBREW_PREFIX`.
   def frameworks; prefix+'Frameworks' end
+
+  # The directory where the formula's kernel extensions should be installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  # This is not symlinked into `HOMEBREW_PREFIX`.
   def kext_prefix; prefix+'Library/Extensions' end
 
-  # configuration needs to be preserved past upgrades
+  # The directory where the formula's configuration files should be installed.
+  # Anything using `etc.install` will not overwrite other files on e.g. upgrades
+  # but will write a new file named `*.default`.
+  # This directory is not inside the `HOMEBREW_CELLAR` so it is persisted
+  # across upgrades.
   def etc; (HOMEBREW_PREFIX+'etc').extend(InstallRenamed) end
 
-  # generally we don't want var stuff inside the keg
+  # The directory where the formula's variable files should be installed.
+  # This directory is not inside the `HOMEBREW_CELLAR` so it is persisted
+  # across upgrades.
   def var; HOMEBREW_PREFIX+'var' end
 
-  def bash_completion; prefix+'etc/bash_completion.d' end
-  def zsh_completion;  share+'zsh/site-functions'     end
+  # The directory where the formula's Bash completion files should be
+  # installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  def bash_completion; prefix+'etc/bash_completion.d'    end
 
-  # for storing etc, var files for later copying from bottles
+  # The directory where the formula's ZSH completion files should be
+  # installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  def zsh_completion;  share+'zsh/site-functions'        end
+
+  # The directory where the formula's fish completion files should be
+  # installed.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  def fish_completion; share+'fish/vendor_completions.d' end
+
+  # The directory used for as the prefix for {#etc} and {#var} files on
+  # installation so, despite not being in `HOMEBREW_CELLAR`, they are installed
+  # there after pouring a bottle.
   def bottle_prefix; prefix+'.bottle' end
+
+  def logs
+    HOMEBREW_LOGS+name
+  end
 
   # override this to provide a plist
   def plist; nil; end
@@ -324,6 +463,7 @@ class Formula
   def opt_libexec; opt_prefix+'libexec' end
   def opt_sbin;    opt_prefix+'sbin'    end
   def opt_share;   opt_prefix+'share'   end
+  def opt_frameworks; opt_prefix+'Frameworks' end
 
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
@@ -332,6 +472,18 @@ class Formula
 
   # Can be overridden to run commands on both source and bottle installation.
   def post_install; end
+
+  def post_install_defined?
+    method(:post_install).owner == self.class
+  end
+
+  # @private
+  def run_post_install
+    build, self.build = self.build, Tab.for_formula(self)
+    post_install
+  ensure
+    self.build = build
+  end
 
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
@@ -372,8 +524,10 @@ class Formula
   end
 
   def patch
-    ohai "Patching"
-    active_spec.patches.each(&:apply)
+    unless patchlist.empty?
+      ohai "Patching"
+      patchlist.each(&:apply)
+    end
   end
 
   # yields self with current working directory set to the uncompressed tarball
@@ -385,7 +539,7 @@ class Formula
       begin
         yield self
       ensure
-        cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
+        cp Dir["config.log", "CMakeCache.txt"], logs
       end
     end
   end
@@ -442,8 +596,6 @@ class Formula
   end
 
   # Standard parameters for CMake builds.
-  # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
-  # Setting it to Release would ignore our flags.
   # Setting CMAKE_FIND_FRAMEWORK to "LAST" tells CMake to search for our
   # libraries before trying to utilize Frameworks, many of which will be from
   # 3rd party installs.
@@ -451,8 +603,10 @@ class Formula
   # less consistent and the standard parameters are more memorable.
   def std_cmake_args
     %W[
+      -DCMAKE_C_FLAGS_RELEASE=
+      -DCMAKE_CXX_FLAGS_RELEASE=
       -DCMAKE_INSTALL_PREFIX=#{prefix}
-      -DCMAKE_BUILD_TYPE=None
+      -DCMAKE_BUILD_TYPE=Release
       -DCMAKE_FIND_FRAMEWORK=LAST
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
@@ -463,18 +617,33 @@ class Formula
   def python(options={}, &block)
     opoo 'Formula#python is deprecated and will go away shortly.'
     block.call if block_given?
-    PythonDependency.new
+    PythonRequirement.new
   end
   alias_method :python2, :python
   alias_method :python3, :python
 
+  # an array of all core {Formula} names
+  def self.core_names
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
+  end
+
+  # an array of all tap {Formula} names
+  def self.tap_names
+    Tap.map(&:formula_names).flatten.sort
+  end
+
   # an array of all {Formula} names
   def self.names
-    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+    (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+  end
+
+  # an array of all {Formula} names, which the tap formulae have the fully-qualified name
+  def self.full_names
+    core_names + tap_names
   end
 
   def self.each
-    names.each do |name|
+    full_names.each do |name|
       begin
         yield Formulary.factory(name)
       rescue StandardError => e
@@ -492,8 +661,8 @@ class Formula
 
     HOMEBREW_CELLAR.subdirs.map do |rack|
       begin
-        Formulary.factory(rack.basename.to_s)
-      rescue FormulaUnavailableError
+        Formulary.from_rack(rack)
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
       end
     end.compact
   end
@@ -515,8 +684,6 @@ class Formula
       "#$1/#$2"
     elsif core_formula?
       "Homebrew/homebrew"
-    else
-      "path or URL"
     end
   end
 
@@ -529,11 +696,12 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path == Formula.path(name)
+    path == Formulary.core_path(name)
   end
 
+  # @deprecated
   def self.path name
-    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
+    Formulary.core_path(name)
   end
 
   def env
@@ -558,6 +726,8 @@ class Formula
   def to_hash
     hsh = {
       "name" => name,
+      "full_name" => full_name,
+      "desc" => desc,
       "homepage" => homepage,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
@@ -569,10 +739,19 @@ class Formula
       "installed" => [],
       "linked_keg" => (linked_keg.resolved_path.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
-      "dependencies" => deps.map(&:name),
+      "dependencies" => deps.map(&:name).uniq,
       "conflicts_with" => conflicts.map(&:name),
       "caveats" => caveats
     }
+
+    hsh["requirements"] = requirements.map do |req|
+      {
+        "name" => req.name,
+        "default_formula" => req.default_formula,
+        "cask" => req.cask,
+        "download" => req.download
+      }
+    end
 
     hsh["options"] = options.map { |opt|
       { "option" => opt.flag, "description" => opt.description }
@@ -590,6 +769,8 @@ class Formula
           "poured_from_bottle" => tab.poured_from_bottle
         }
       end
+
+      hsh["installed"] = hsh["installed"].sort_by { |i| Version.new(i["version"]) }
     end
 
     hsh
@@ -605,13 +786,18 @@ class Formula
   end
 
   def run_test
-    self.build = Tab.for_formula(self)
+    old_home = ENV["HOME"]
+    build, self.build = self.build, Tab.for_formula(self)
     mktemp do
       @testpath = Pathname.pwd
+      ENV["HOME"] = @testpath
+      setup_test_home @testpath
       test
     end
   ensure
     @testpath = nil
+    self.build = build
+    ENV["HOME"] = old_home
   end
 
   def test_defined?
@@ -629,6 +815,16 @@ class Formula
   end
 
   protected
+
+  def setup_test_home home
+    # keep Homebrew's site-packages in sys.path when testing with system Python
+    user_site_packages = home/"Library/Python/2.7/lib/python/site-packages"
+    user_site_packages.mkpath
+    (user_site_packages/"homebrew.pth").write <<-EOS.undent
+      import site; site.addsitedir("#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+      import sys; sys.path.insert(0, "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+    EOS
+  end
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -650,9 +846,8 @@ class Formula
 
     @exec_count ||= 0
     @exec_count += 1
-    logd = HOMEBREW_LOGS/name
-    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
-    mkdir_p(logd)
+    logfn = "#{logs}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
+    logs.mkpath
 
     File.open(logfn, "w") do |log|
       log.puts Time.now, "", cmd, args, ""
@@ -742,11 +937,10 @@ class Formula
 
   def prepare_patches
     active_spec.add_legacy_patches(patches)
-    return if patchlist.empty?
 
-    active_spec.patches.grep(DATAPatch) { |p| p.path = path }
+    patchlist.grep(DATAPatch) { |p| p.path = path }
 
-    active_spec.patches.select(&:external?).each do |patch|
+    patchlist.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
     end
   end
@@ -778,6 +972,12 @@ class Formula
     # {::HOMEBREW_PREFIX}.
     # @private
     attr_reader :keg_only_reason
+
+    # @!attribute [w]
+    # A one-line description of the software. Used by users to get an overview
+    # of the software and Homebrew maintainers.
+    # Shows when running `brew info`.
+    attr_rw :desc
 
     # @!attribute [w]
     # The homepage for the software. Used by users to get more information
@@ -887,7 +1087,7 @@ class Formula
     end
 
     def go_resource name, &block
-      resource name, Resource::Go, &block
+      specs.each { |spec| spec.go_resource(name, &block) }
     end
 
     def depends_on dep
@@ -980,4 +1180,3 @@ class Formula
   end
 end
 
-require 'formula_specialties'

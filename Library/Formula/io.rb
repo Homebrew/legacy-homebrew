@@ -1,6 +1,7 @@
 require "formula"
 
 class Io < Formula
+  desc "Small prototype-based programming language"
   homepage "http://iolanguage.com/"
   url "https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz"
   sha1 "47d9a3e7a8e14c9fbe3b376e4967bb55f6c68aed"
@@ -10,6 +11,7 @@ class Io < Formula
   option "without-addons", "Build without addons"
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
 
   if build.with? "addons"
     depends_on "glib"

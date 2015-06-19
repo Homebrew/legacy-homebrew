@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cherokee < Formula
+  desc "Cherokee web server"
   homepage 'http://cherokee-project.com/'
 
   stable do

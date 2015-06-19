@@ -1,6 +1,7 @@
 require 'formula'
 
 class Zmap < Formula
+  desc "Network scanner for Internet-wide network studies"
   homepage 'https://zmap.io'
   url 'https://github.com/zmap/zmap/archive/v1.2.1.tar.gz'
   sha1 '1ce5529d8685a7b7fbca1f3b04670b1614838fa7'

@@ -1,17 +1,15 @@
-require "formula"
-
 class Pngquant < Formula
-  homepage "http://pngquant.org/"
-  url "https://github.com/pornel/pngquant/archive/2.3.1.tar.gz"
-  sha1 "964987f24012b247be666903ab4e31f53d84d80c"
-
+  desc "PNG image optimizing utility"
+  homepage "https://pngquant.org/"
+  url "https://github.com/pornel/pngquant/archive/2.4.1.tar.gz"
+  sha256 "28157abfddc83d074cfbe7e9865d3dd656f7be323fbc4e6a049385236e57d3c3"
   head "https://github.com/pornel/pngquant.git"
 
   bottle do
     cellar :any
-    sha1 "4c4b52ecd2d0c6e02e6086717277eca258e96239" => :yosemite
-    sha1 "73d1b4d1addd90e6c00497ff9403f97b0f6bc855" => :mavericks
-    sha1 "5a8b9d3200c479ed3cf7ee0af43dc127c848eacc" => :mountain_lion
+    sha256 "44f37e5dc9360228fcbad23e6635ba7a38d5140e9e34a52875d3cf5f2a846d89" => :yosemite
+    sha256 "423891a9d736c7b7bcaaecd4e6ad74eb5d4bdc77b0d759793635f4318c7502c3" => :mavericks
+    sha256 "5e7a35bc9a97c2af46366824bf60f88f62e2224074c8c6211f6e6130c3272838" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -25,6 +23,6 @@ class Pngquant < Formula
   end
 
   test do
-    system "#{bin}/pngquant", "--help"
+    system "#{bin}/pngquant", test_fixtures("test.png"), "-o" "out.png"
   end
 end

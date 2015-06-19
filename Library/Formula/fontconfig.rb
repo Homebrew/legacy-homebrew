@@ -1,9 +1,8 @@
-require 'formula'
-
 class Fontconfig < Formula
-  homepage 'http://fontconfig.org/'
-  url 'http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2'
-  sha1 '08565feea5a4e6375f9d8a7435dac04e52620ff2'
+  desc "XML-based font configuration API for X Windows"
+  homepage "http://fontconfig.org/"
+  url "http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2"
+  sha1 "08565feea5a4e6375f9d8a7435dac04e52620ff2"
 
   # The bottle tooling is too lenient and thinks fontconfig
   # is relocatable, but it has hardcoded paths in the executables.
@@ -19,8 +18,8 @@ class Fontconfig < Formula
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'freetype'
+  depends_on "pkg-config" => :build
+  depends_on "freetype"
 
   # Reverts commit http://cgit.freedesktop.org/fontconfig/commit/?id=7a6622f25cdfab5ab775324bef1833b67109801b,
   # which breaks caching font directories containing subdirectories
@@ -41,6 +40,10 @@ class Fontconfig < Formula
 
   def post_install
     system "#{bin}/fc-cache", "-frv"
+  end
+
+  test do
+    system "#{bin}/fc-list"
   end
 end
 

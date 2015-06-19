@@ -1,5 +1,5 @@
 # This script is loaded by formula_installer as a separate instance.
-# Thrown exceptions are propogated back to the parent process over a pipe
+# Thrown exceptions are propagated back to the parent process over a pipe
 
 old_trap = trap("INT") { exit! 130 }
 
@@ -10,6 +10,7 @@ require "keg"
 require "extend/ENV"
 require "debrew"
 require "fcntl"
+require "socket"
 
 class Build
   attr_reader :formula, :deps, :reqs
@@ -32,13 +33,6 @@ class Build
     # a formula opts-in to allowing the user's path.
     if formula.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
       ENV.userpaths!
-    end
-  end
-
-  def pre_superenv_hacks
-    # Allow a formula to opt-in to the std environment.
-    if (formula.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
-      ARGV.unshift "--env=std"
     end
   end
 
@@ -82,13 +76,12 @@ class Build
       fixopt(dep) unless dep.opt_prefix.directory?
     end
 
-    pre_superenv_hacks
     ENV.activate_extensions!
 
     if superenv?
-      ENV.keg_only_deps = keg_only_deps.map(&:name)
-      ENV.deps = deps.map { |d| d.to_formula.name }
-      ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
+      ENV.keg_only_deps = keg_only_deps
+      ENV.deps = deps.map(&:to_formula)
+      ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Requirement) }
       ENV.setup_build_environment(formula)
       post_superenv_hacks
       reqs.each(&:modify_build_environment)
@@ -140,6 +133,7 @@ class Build
 
         # Find and link metafiles
         formula.prefix.install_metafiles Pathname.pwd
+        formula.prefix.install_metafiles formula.libexec if formula.libexec.exist?
       end
     end
   end
@@ -166,12 +160,12 @@ class Build
     end
     Keg.new(path).optlink
   rescue StandardError
-    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f.name}. Sorry :("
+    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f.full_name}. Sorry :("
   end
 end
 
 begin
-  error_pipe = IO.new(ENV["HOMEBREW_ERROR_PIPE"].to_i, "w")
+  error_pipe = UNIXSocket.open(ENV["HOMEBREW_ERROR_PIPE"], &:recv_io)
   error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
 
   # Invalidate the current sudo timestamp in case a build script calls sudo

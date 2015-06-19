@@ -1,9 +1,8 @@
-require "formula"
-
 class Ttfautohint < Formula
+  desc "Automated hinting process for web fonts"
   homepage "http://www.freetype.org/ttfautohint"
-  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.2/ttfautohint-1.2.tar.gz"
-  sha1 "d4c4c570139da9667744e086da57ee5a21872630"
+  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.3/ttfautohint-1.3.tar.gz"
+  sha1 "5de45f0b5e3f87ad0a6b4153e5382765f17974ed"
 
   head do
     url "http://repo.or.cz/ttfautohint.git"
@@ -16,31 +15,39 @@ class Ttfautohint < Formula
 
   bottle do
     cellar :any
-    sha1 "560b377ed563e03032b8ca14a6e23cf051c9e855" => :mavericks
-    sha1 "c2958652ba83dc5d2a34baebd2041b9b6832eb98" => :mountain_lion
-    sha1 "747d9dec24fffae7b4c2d5a76fe69527cc5b837d" => :lion
+    sha1 "06db9ad73083d1a47515711fa5de47cb1b12fe4e" => :yosemite
+    sha1 "dd81a451044381a3f87a8ad9d9da464744b98b80" => :mavericks
+    sha1 "af5485546cb4fc3b6a663920ba9599f727e5fb11" => :mountain_lion
   end
+
+  option "with-qt", "Build ttfautohintGUI also"
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "libpng"
   depends_on "harfbuzz"
+  depends_on "qt" => :optional
 
   def install
-    if build.head?
-      ln_s cached_download/".git", ".git"
-      system "./bootstrap"
-    end
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --without-doc
+    ]
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-qt=no",
-                          "--without-doc"
+    args << "--without-qt" if build.without? "qt"
+
+    system "./bootstrap" if build.head?
+    system "./configure", *args
     system "make install"
   end
 
   test do
-    system "#{bin}/ttfautohint", "-V"
+    if build.with? "qt"
+      system "#{bin}/ttfautohintGUI", "-V"
+    else
+      system "#{bin}/ttfautohint", "-V"
+    end
   end
 end

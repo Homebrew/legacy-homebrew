@@ -19,7 +19,7 @@ To pull and bottle a pull request with `brew pull`:
 
 1. Ensure the job has already completed successfully.
 2. Run `brew pull --bottle 12345` where `12345` is the pull request number (or URL). If it complains about a missing URL with `BrewTestBot` in it then the bottles have not finished uploading yet; wait and try again later.
-3. Run `brew fetch --force-bottle $FORMULAE` to check the SHA-1 in the bottled formulae match the uploaded files.
+3. Run `brew fetch --force-bottle $FORMULAE` to check the SHA-256 in the bottled formulae match the uploaded files.
 4. Run `git push` to push the commits.
 
 To bottle a test build or pull request without `brew pull`:
@@ -29,5 +29,5 @@ To bottle a test build or pull request without `brew pull`:
 3. Run `git fetch --tags https://github.com/BrewTestBot/homebrew.git`
 4. For testing builds run `git merge testing-123` (where `123` is the testing job number). For pull requests builds run `git merge pr-45678` (where `45678` is the pull request number).
 5. Run `git rebase origin/master` to get rid of any nasty merge commits.
-6. Run `brew fetch --force-bottle $FORMULAE` to check the SHA-1 in the bottled formulae match the uploaded files.
+6. Run `brew fetch --force-bottle $FORMULAE` to check the SHA-256 in the bottled formulae match the uploaded files.
 7. Run `git push` to push the commits.

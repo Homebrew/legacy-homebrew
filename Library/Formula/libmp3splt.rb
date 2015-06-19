@@ -1,6 +1,7 @@
 require "formula"
 
 class Libmp3splt < Formula
+  desc "Utility library to split mp3, ogg, and FLAC files"
   homepage "http://mp3splt.sourceforge.net"
   url "https://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.9.2/libmp3splt-0.9.2.tar.gz"
   sha1 "d4e84e1f466e7fdabe30d0a12acb751903bb9203"
@@ -11,7 +12,7 @@ class Libmp3splt < Formula
     sha1 "1be429bb92ffc593284b8f33456795f78c711a1e" => :mountain_lion
   end
 
-  depends_on "libtool" => :build
+  depends_on "libtool" => :run
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "pcre"

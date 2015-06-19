@@ -1,15 +1,16 @@
 require "formula"
 
 class JujuQuickstart < Formula
+  desc "Opinionated command-line tool for quickly starting Juju"
   homepage "https://launchpad.net/juju-quickstart"
-  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-1.5.0.tar.gz"
-  sha1 "05f27f0d62cd2f7a49f2584b965a78c4502cd4ac"
+  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.2.0.tar.gz"
+  sha1 "4f009d463cb4249a0b9e5c1201d910186321c12e"
 
   bottle do
     cellar :any
-    sha1 "31f0e8cd3c4e7a9d8076fe78a1c93184eb37a91a" => :yosemite
-    sha1 "b5df56eb3553ac0ca416f36ee9d7acb48b4e5826" => :mavericks
-    sha1 "d710ae76c5c80dd91b55e3b3e2efefd74306d0c2" => :mountain_lion
+    sha256 "f6a3b86834ac7f5d8523ff1070bcb4cc6893c6c6e050aa90b27b99f458b12789" => :yosemite
+    sha256 "06decd0e63754e9fd0aaaa5dbb0dad56d372d1fad9ccac81f34dee0a2c1b39f0" => :mavericks
+    sha256 "582c7d89b1584bd06a984f5f84babf667c2bef654c446e0d0ae8319b678df896" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

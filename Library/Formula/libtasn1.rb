@@ -1,22 +1,23 @@
 class Libtasn1 < Formula
+  desc "ASN.1 structure parser library"
   homepage "https://www.gnu.org/software/libtasn1/"
-  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.2.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.2.tar.gz"
-  sha1 "d2fe4bf12dbdc4d6765a04abbf8ddaf7e9163afa"
+  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.5.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.5.tar.gz"
+  sha256 "89b3b5dce119273431544ecb305081f3530911001bb12e5d76588907edb71bda"
 
   bottle do
     cellar :any
-    sha1 "8f3781a5320a3673805acf106204f3aa332a7892" => :yosemite
-    sha1 "d39d835568aa45f2db736b4db2758c910babffe8" => :mavericks
-    sha1 "dc5377805975c8be571a5635e8f795065e619004" => :mountain_lion
-    sha1 "5cd9d101456486012c53e6aadc11ef1e987d582d" => :lion
+    sha256 "71e0467545847cc6b5703125dd5ac6aa6c87146db3eb4f20b08cab8f406f68f6" => :yosemite
+    sha256 "566331c00d7d067582142cc884b47f8a65ac3de2a7d1d6e7303a812d36119411" => :mavericks
+    sha256 "982a2ea23e32996706eaf28b01106839a846233502ccf3053da3ded026f5d1ec" => :mountain_lion
   end
 
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking",
+                          "--disable-silent-rules"
     system "make", "install"
   end
 

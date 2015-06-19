@@ -1,6 +1,7 @@
 require 'formula'
 
 class EmacsClangCompleteAsync < Formula
+  desc "Emacs plugin using libclang to complete C and C++ code"
   homepage 'https://github.com/Golevka/emacs-clang-complete-async'
   url 'https://github.com/Golevka/emacs-clang-complete-async/archive/v0.5.tar.gz'
   sha1 '7f50d3029fedee5ef9306afdac547571928a16b4'

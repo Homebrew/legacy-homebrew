@@ -1,33 +1,24 @@
-require "formula"
-
 class Platypus < Formula
+  desc "Create OS X applications from {Perl,Ruby,sh,Python} scripts"
   homepage "http://sveinbjorn.org/platypus"
-  url "https://raw.githubusercontent.com/sveinbjornt/Platypus/4.8/Releases/platypus4.8.src.zip"
-  sha1 "39d165b9579600cef637b45c70c82307697bb7be"
+  url "https://github.com/sveinbjornt/Platypus/raw/master/Releases/platypus4.9.src.zip"
+  version "4.9"
+  sha256 "11b32fc5c68b4e73abeeabd22e1547c2c9b53bafe86cf04474c1f78863d2c1ae"
   head "https://github.com/sveinbjornt/Platypus.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "5a139598aec4a7e83d3c3ce662b3ab16f9503e0c" => :yosemite
-    sha1 "dcd15ab5fb3068899164c7be0fb2c7690383b788" => :mavericks
-    sha1 "502dd32f63eff7c2028a5197636335a43665c226" => :mountain_lion
+    sha256 "398efe2d6afe358e13dc881be58ae8e27c73bd1538ca954e7067c055d25adf75" => :yosemite
+    sha256 "99a07275ad62b9d26bf2e31ce5f4e0d9e35525a18c1414ef7d655c11a92510f9" => :mavericks
+    sha256 "d33acad77bacbbec3c602541b3e0410576efda95679760314b7e5ba737154871" => :mountain_lion
   end
 
   depends_on :xcode => :build
 
   def install
-    # 4.8 tarball has extra __MACOSX folder, so go to the right one
-    # The head tarball only has a single folder in it
-    cd "Platypus 4.8 Source" if build.stable?
-
-    if build.stable? and MacOS.version >= :mountain_lion
-      # Platypus wants to use a compiler that isn't shipped with recent versions of XCode.
-      # See https://github.com/Homebrew/homebrew/pull/22618#issuecomment-24898050
-      # and https://github.com/sveinbjornt/Platypus/issues/22
-
-      inreplace "Platypus.xcodeproj/project.pbxproj", "GCC_VERSION", "//GCC_VERSION"
-    end
+    # 4.9 stable tarball has unexpected unpacked name, so go to the right
+    # place.
+    cd "platypus" if build.stable?
 
     xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
                "-project", "Platypus.xcodeproj",

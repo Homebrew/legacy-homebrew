@@ -1,6 +1,7 @@
 require "formula"
 
 class Cfitsio < Formula
+  desc "C access to FITS data files with optional Fortran wrappers"
   homepage "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
   url "http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio3370.tar.gz"
   mirror "ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3370.tar.gz"

@@ -1,9 +1,9 @@
-require 'formula'
-
 class Nuttcp < Formula
-  homepage 'http://www.nuttcp.net/nuttcp'
-  url 'http://www.nuttcp.net/nuttcp/nuttcp-6.1.2.tar.bz2'
-  sha1 '329fcc3c0b75db18b7b4d73962992603f9ace9ca'
+  desc "Network performance measurement tool"
+  homepage "http://www.nuttcp.net/nuttcp"
+  url "http://www.nuttcp.net/nuttcp/nuttcp-6.1.2.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/n/nuttcp/nuttcp_6.1.2.orig.tar.gz"
+  sha256 "4edfa66a6d03fbd8a5c030a8aad33786945d83455b395486dba592e8a2312a87"
 
   bottle do
     cellar :any
@@ -13,8 +13,13 @@ class Nuttcp < Formula
   end
 
   def install
-    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
-    bin.install "nuttcp-#{version}" => "nuttcp"
-    man8.install 'nuttcp.cat' => 'nuttcp.8'
+    system "make", "APP=nuttcp",
+           "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
+    bin.install "nuttcp"
+    man8.install "nuttcp.cat" => "nuttcp.8"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/nuttcp -V")
   end
 end

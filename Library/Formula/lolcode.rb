@@ -1,20 +1,27 @@
-require 'formula'
-
 class Lolcode < Formula
-  homepage 'http://lolcode.org'
-  head 'https://github.com/justinmeza/lolcode.git'
-  url 'https://github.com/justinmeza/lci/archive/v0.11.1.tar.gz'
-  sha1 '9949a2480a738ac566dbe66142dd351f778fb8b7'
+  desc "LOLCODE interpreter"
+  homepage "http://lolcode.org"
+  head "https://github.com/justinmeza/lolcode.git"
+  bottle do
+    cellar :any
+    sha1 "3adaf4e185615a450be5102252c54ea881fe6195" => :yosemite
+    sha1 "ac8426fbea700357f25e98911fdd8d748769ae1e" => :mavericks
+    sha1 "28d703003ff61e29c2f6c9f9bee09e758aa1a00a" => :mountain_lion
+  end
 
-  depends_on 'cmake' => :build
+  # note: 0.10.* releases are stable versions, 0.11.* are dev ones
+  url "https://github.com/justinmeza/lci/archive/v0.11.2.tar.gz"
+  sha1 "6c5b996bb4defb77542a8fb525df9991b21139f9"
 
-  conflicts_with 'lci', :because => 'both install `lci` binaries'
+  depends_on "cmake" => :build
+
+  conflicts_with "lci", :because => "both install `lci` binaries"
 
   def install
-    system "cmake ."
+    system "cmake", "."
     system "make"
     # Don't use `make install` for this one file
-    bin.install 'lci'
+    bin.install "lci"
   end
 
   test do
@@ -26,8 +33,6 @@ class Lolcode < Formula
       KTHXBYE
     EOS
 
-    output = `#{bin}/lci #{path}`
-    assert_equal "HAI WORLD\n", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "HAI WORLD\n", shell_output("#{bin}/lci #{path}")
   end
 end

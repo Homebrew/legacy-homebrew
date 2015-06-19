@@ -1,6 +1,7 @@
 require "formula"
 
 class Pixman < Formula
+  desc "Low-level library for pixel manipulation"
   homepage "http://cairographics.org/"
   url "http://cairographics.org/releases/pixman-0.32.6.tar.gz"
   sha256 "3dfed13b8060eadabf0a4945c7045b7793cc7e3e910e748a8bb0f0dc3e794904"

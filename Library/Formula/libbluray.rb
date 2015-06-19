@@ -1,16 +1,14 @@
-require "formula"
-
 class Libbluray < Formula
+  desc "Blu-Ray disc playback library for media players like VLC"
   homepage "https://www.videolan.org/developers/libbluray.html"
-  url "ftp://ftp.videolan.org/pub/videolan/libbluray/0.6.2/libbluray-0.6.2.tar.bz2"
-  sha1 "a1ab8c8c9310680fb1fe6a58f9fc5430613600fe"
+  url "https://download.videolan.org/pub/videolan/libbluray/0.8.1/libbluray-0.8.1.tar.bz2"
+  sha256 "cdbec680c5bbc2251de6ccd109cf5f798ea51db6fcb938df39283be1799efb8f"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "a223bd0799d7dc26a05ad0d5751569c4964c248e" => :yosemite
-    sha1 "050786aa8393d98e0e72249f4933efa590c69a17" => :mavericks
-    sha1 "9170f553e8df68758d0ccddea706b1b2b0e16109" => :mountain_lion
+    sha256 "33e711f8364371ebdf47183f09864321a185d8769c17a745aef4649d79deaa86" => :yosemite
+    sha256 "f161eb07eb035181aac218d9ff22323db5ff9891e432fcc101964b5bfc241b95" => :mavericks
+    sha256 "f39ea94c14fd752e203033670fbe268f59048f4a420b2f2b72688a40b975e759" => :mountain_lion
   end
 
   head do
@@ -23,6 +21,8 @@ class Libbluray < Formula
 
   depends_on "pkg-config" => :build
   depends_on "freetype" => :recommended
+  depends_on "fontconfig"
+  depends_on "ant" => :build
 
   def install
     # https://mailman.videolan.org/pipermail/libbluray-devel/2014-April/001401.html
@@ -35,6 +35,6 @@ class Libbluray < Formula
     system "./bootstrap" if build.head?
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

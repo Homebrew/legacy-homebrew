@@ -1,4 +1,5 @@
 class Fwknop < Formula
+  desc "Single Packet Authorization and Port Knocking"
   homepage "http://www.cipherdyne.org/fwknop/"
   head "https://github.com/mrash/fwknop.git"
   url "https://github.com/mrash/fwknop/archive/2.6.5.tar.gz"
@@ -25,7 +26,6 @@ class Fwknop < Formula
   end
 
   test do
-    ENV["HOME"] = testpath
     touch testpath/".fwknoprc"
     chmod 0600, testpath/".fwknoprc"
     system "#{bin}/fwknop", "--version"

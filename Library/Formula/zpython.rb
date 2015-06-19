@@ -1,11 +1,13 @@
-require 'formula'
-
-class Zsh5Installed < Requirement
-  default_formula 'zsh'
+class Zsh5Requirement < Requirement
+  default_formula "zsh"
   fatal true
 
   satisfy :build_env => false do
-    `zsh --version`[/zsh (\d)/, 1] == "5" rescue false
+    begin
+      `zsh --version`[/zsh (\d)/, 1] == "5"
+    rescue
+      false
+    end
   end
 
   def message
@@ -14,7 +16,8 @@ class Zsh5Installed < Requirement
 end
 
 class Zpython < Formula
-  homepage 'https://bitbucket.org/ZyX_I/zsh'
+  desc "Embeds a Python interpreter into zsh"
+  homepage "https://bitbucket.org/ZyX_I/zsh"
 
   stable do
     url "https://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2"
@@ -29,17 +32,17 @@ class Zpython < Formula
   end
 
   # We prepend `00-` for the first version of the zpython module, which is
-  # itself a patch on top of zsh and does not have own version number yes.
+  # itself a patch on top of zsh and does not have own version number yet.
   # Hoping that upstream will provide tags that we could download properly.
   # Starting here with `00-`, so that once we get tags for the upstream
   # repository at https://bitbucket.org/ZyX_I/zsh.git, brew outdated will
   # be able to tell us to upgrade zpython.
-  version '00-5.0.5'
-  sha1 '75426146bce45ee176d9d50b32f1ced78418ae16'
+  version "00-5.0.5"
+  sha256 "6624d2fb6c8fa4e044d2b009f86ed1617fe8583c83acfceba7ec82826cfa8eaf"
 
-  head 'https://bitbucket.org/ZyX_I/zsh.git', :branch => 'zpython'
+  head "https://bitbucket.org/ZyX_I/zsh.git", :branch => "zpython"
 
-  depends_on Zsh5Installed
+  depends_on Zsh5Requirement
   depends_on "autoconf" => :build
 
   def install

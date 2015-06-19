@@ -1,9 +1,8 @@
-require "formula"
-
 class Soccerwindow2 < Formula
-  homepage "http://sourceforge.jp/projects/rctools/"
-  url "http://dl.sourceforge.jp/rctools/51942/soccerwindow2-5.1.0.tar.gz"
-  sha1 "366f80591d39aaca0717bc2fb8993e0b5eb50ef2"
+  desc "Tools for RoboCup Soccer Simulator"
+  homepage "https://osdn.jp/projects/rctools/"
+  url "http://dl.osdn.jp/rctools/51942/soccerwindow2-5.1.0.tar.gz"
+  sha256 "3505f662144d5c97628191c941e84af4d384770733b9ff93ab8b58c2d1b9c22b"
 
   bottle do
     sha1 "211691f9c8e7e89c8451693065b2ce7b01fbb65f" => :mavericks

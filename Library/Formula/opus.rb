@@ -1,6 +1,7 @@
 require 'formula'
 
 class Opus < Formula
+  desc "Audio codec"
   homepage 'http://www.opus-codec.org'
   url 'http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz'
   sha1 '35005f5549e2583f5770590135984dcfce6f3d58'

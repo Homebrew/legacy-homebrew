@@ -1,10 +1,11 @@
 require 'formula'
 
 class Apollo < Formula
+  desc "Multi-protocol messaging broker based on ActiveMQ"
   homepage 'http://activemq.apache.org/apollo'
-  url 'http://archive.apache.org/dist/activemq/activemq-apollo/1.7/apache-apollo-1.7-unix-distro.tar.gz'
-  version '1.7'
-  sha1 '3bf6dba6396fe3814e56163249de80d8a20230d0'
+  url 'https://archive.apache.org/dist/activemq/activemq-apollo/1.7.1/apache-apollo-1.7.1-unix-distro.tar.gz'
+  version '1.7.1'
+  sha1 '5f9921042cc3167e48f54588f30da59f557f5a5a'
 
   option "no-bdb", "Install without bdb store support"
   option "no-mqtt", "Install without MQTT protocol support"
@@ -33,7 +34,7 @@ class Apollo < Formula
     bin.write_exec_script libexec/'bin/apollo'
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/var/apollo/bin/apollo-broker"
+  plist_options :manual => "#{HOMEBREW_PREFIX}/var/apollo/bin/apollo-broker run"
 
   def caveats; <<-EOS.undent
     To create the broker:

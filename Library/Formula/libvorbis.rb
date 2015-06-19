@@ -1,16 +1,16 @@
 require 'formula'
 
 class Libvorbis < Formula
+  desc "Vorbis General Audio Compression Codec"
   homepage 'http://vorbis.com'
-  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.xz'
-  sha1 'b99724acdf3577982b3146b9430d765995ecf9e1'
+  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz'
+  sha256 '54f94a9527ff0a88477be0a71c0bab09a4c3febe0ed878b24824906cd4b0e1d1'
 
   bottle do
     cellar :any
-    sha1 "d782a644646132fe3c583afc4db34a681a13f904" => :yosemite
-    sha1 "5888cafaeb4bb6001a24ceab46d993f104b0adc3" => :mavericks
-    sha1 "72fe81e0d9b761954c059e6a5bdd73379eecc33e" => :mountain_lion
-    sha1 "49865744038d60add35f19e123a43c3cce6b30f8" => :lion
+    sha1 "241550d9dc1c52eecfe2ca63d8609c1e8cf4d5fb" => :yosemite
+    sha1 "b216293debbca8baa7bfa848b81cb07e664be847" => :mavericks
+    sha1 "44ac5cf5991f063d5ed105379fceb84cd1ef8330" => :mountain_lion
   end
 
   head do

@@ -1,48 +1,49 @@
-require 'formula'
-require 'keg'
+require "formula"
+require "keg"
+require "cmd/link"
 
 module Homebrew
   def switch
     if ARGV.named.length != 2
-      onoe "Usage: brew switch <formula> <version>"
+      onoe "Usage: brew switch <name> <version>"
       exit 1
     end
 
     name = ARGV.shift
     version = ARGV.shift
 
-    # Does this formula have any versions?
-    f = Formula.factory(name.downcase)
-    cellar = f.prefix.parent
-    unless cellar.directory?
+    canonical_name = Formulary.canonical_name(name)
+    rack = HOMEBREW_CELLAR.join(canonical_name)
+
+    unless rack.directory?
       onoe "#{name} not found in the Cellar."
       exit 2
     end
 
     # Does the target version exist?
-    unless (cellar+version).directory?
+    unless (rack+version).directory?
       onoe "#{name} does not have a version \"#{version}\" in the Cellar."
 
-      versions = cellar.subdirs.map { |d| Keg.new(d).version }
+      versions = rack.subdirs.map { |d| Keg.new(d).version }
       puts "Versions available: #{versions.join(', ')}"
 
       exit 3
     end
 
     # Unlink all existing versions
-    cellar.subdirs.each do |v|
+    rack.subdirs.each do |v|
       keg = Keg.new(v)
       puts "Cleaning #{keg}"
       keg.unlink
     end
 
+    keg = Keg.new(rack+version)
+
     # Link new version, if not keg-only
-    if f.keg_only?
-      keg = Keg.new(cellar+version)
+    if keg_only?(rack)
       keg.optlink
       puts "Opt link created for #{keg}"
     else
-      keg = Keg.new(cellar+version)
       puts "#{keg.link} links created for #{keg}"
     end
   end

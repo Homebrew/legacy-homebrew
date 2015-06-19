@@ -1,18 +1,10 @@
-require "formula"
-
 class Cpanminus < Formula
+  desc "Get, unpack, build, and install modules from CPAN"
   homepage "https://github.com/miyagawa/cpanminus"
-  url "https://github.com/miyagawa/cpanminus/archive/1.7022.tar.gz"
-  sha1 "ce2e5321d676022b9e476bb8e5683ad60e13915c"
+  url "https://github.com/miyagawa/cpanminus/archive/1.7031.tar.gz"
+  sha256 "7ff36a42aa46146cbe423f4dd4f2c0d8bd57c0e9968cf05651fac0f47ac82e98"
 
   head "https://github.com/miyagawa/cpanminus.git"
-
-  bottle do
-    cellar :any
-    sha1 "52f75e63756ef4c858013fa3542ce138e899f904" => :yosemite
-    sha1 "2457a4bcbee3e5ba9dd6fd5717477b6fffe5dde9" => :mavericks
-    sha1 "8ee611a85ab2f397f810a4f92f9d5af987a3789f" => :mountain_lion
-  end
 
   def install
     bin.install "cpanm"

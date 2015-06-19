@@ -1,14 +1,13 @@
-require "formula"
-
 class Emscripten < Formula
+  desc "LLVM bytecode to JavaScript compiler"
   homepage "https://kripken.github.io/emscripten-site/"
-  url "https://github.com/kripken/emscripten/archive/1.28.0.tar.gz"
-  sha1 "6d90ed5bb4aa3b54a626e451937754a9ae34650f"
+  url "https://github.com/kripken/emscripten/archive/1.33.0.tar.gz"
+  sha256 "ff88d80d61c94f289c5020d714dfa872c018ea9ba0e8577e0d5708335375f5f4"
 
   bottle do
-    sha1 "a5fe0b92e8d915988ca5bce83b4f5d739a1f154b" => :yosemite
-    sha1 "c59c1306fcba0acc6ab4f749977f65dd52ad3c2f" => :mavericks
-    sha1 "7fd747e61f0fc764124c27b20c5d3625496b3297" => :mountain_lion
+    sha256 "a15045f4e083d785cfe276d322469796bb43e94e6ad7388a57bd907f83526551" => :yosemite
+    sha256 "8f205ed1aa87d0f2dbe99dfab669e64eb3a384791503709596d0ef92b0f45196" => :mavericks
+    sha256 "d4014e557b16ccd7df9ac57e9399c47373dd74e0b392b9333464fc290adea862" => :mountain_lion
   end
 
   head do
@@ -25,15 +24,17 @@ class Emscripten < Formula
 
   stable do
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.28.0.tar.gz"
-      sha1 "fd8cb60d7d5c33d435a0a772084baee634d6ce61"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.33.0.tar.gz"
+      sha256 "6adddb55afdd05fccedd9c82455701afcdaf5a7803ccc685a5e246df9a9890cb"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.28.0.tar.gz"
-      sha1 "d01ab3763194c04c78c30dfa632bf52a90bbdb71"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.33.0.tar.gz"
+      sha256 "f935cdd46a5189147e4a2028a73fe7a2006d7dd47f86f2783c874021c1a02cac"
     end
   end
+
+  needs :cxx11
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "node"
@@ -41,6 +42,7 @@ class Emscripten < Formula
   depends_on "yuicompressor"
 
   def install
+    ENV.cxx11
     # OSX doesn't provide a "python2" binary so use "python" instead.
     python2_shebangs = `grep --recursive --files-with-matches ^#!/usr/bin/.*python2$ #{buildpath}`
     python2_shebang_files = python2_shebangs.lines.sort.uniq

@@ -1,18 +1,18 @@
-require "formula"
-
 class Libiomp < Formula
+  desc "Manage multiple threads in an OpenMP program as it executes"
   homepage "https://www.openmprtl.org/download"
-  url "https://www.openmprtl.org/sites/default/files/libomp_20140926_oss.tgz"
-  sha1 "488ff3874eb5c971523534cb3c987bfb5ce3addb"
+  url "https://www.openmprtl.org/sites/default/files/libomp_20150401_oss.tgz"
+  sha256 "476dcf62d29134a3549d49542a74345bb5389f93670f2313d7c610a690f9048e"
+
+  depends_on :arch => :intel
+  depends_on "cmake" => :build
 
   bottle do
     cellar :any
-    sha1 "782faf00e595709011f1e8a19933fff0d55c954e" => :yosemite
-    sha1 "070a6edb8c872e2b88f953222b72cd587f288149" => :mavericks
-    sha1 "26a2f4d2d6427c1d114fdc774a71bdd06926cc13" => :mountain_lion
+    sha256 "b330ef085dbff40bdf5b3bf67beb8efd0573c67d5abe9c193f34f8cba1ba7e2c" => :yosemite
+    sha256 "bc754820685040c0567edf3d7aeef1d5c1a25f532409b43673371854e16caca7" => :mavericks
+    sha256 "231ec294a8d99a93a2336d06e2ebf5a1550f76f08ef168fa26c54dc15e0482bf" => :mountain_lion
   end
-
-  depends_on :arch => :intel
 
   fails_with :gcc  do
     cause "libiomp can only be built with clang."
@@ -29,14 +29,12 @@ class Libiomp < Formula
   end
 
   def install
-    # fix makefile for yosemite:
-    inreplace "src/makefile.mk" do |s|
-      s.gsub! "`sw_vers -productVersion` > 10.6", "`sw_vers -productVersion` == '10.10' || `sw_vers -productVersion`> 10.6"
-    end
-
     intel_arch = MacOS.prefer_64_bit? ? "mac_32e" : "mac_32"
-
-    system "make", "compiler=clang"
+    args = std_cmake_args
+    args << (MacOS.prefer_64_bit? ? "-Darch=32e" : "-Darch=32")
+    args << "-DCMAKE_BUILD_TYPE=Release"
+    system "cmake", ".", *args
+    system "make", "all", "common"
 
     (include/"libiomp").install Dir["exports/common/include/*"]
     lib.install "exports/#{intel_arch}/lib.thin/libiomp5.dylib"

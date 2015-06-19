@@ -1,5 +1,4 @@
 require 'cmd/tap'
-require 'cmd/untap'
 
 module Homebrew
   def update
@@ -16,34 +15,26 @@ module Homebrew
     cd HOMEBREW_REPOSITORY
     git_init_if_necessary
 
-    tapped_formulae = []
-    HOMEBREW_LIBRARY.join("Formula").children.each do |path|
-      next unless path.symlink?
-      tapped_formulae << path.resolved_path
-    end
-    unlink_tap_formula(tapped_formulae)
+    # migrate to new directories based tap structure
+    migrate_taps
 
     report = Report.new
     master_updater = Updater.new(HOMEBREW_REPOSITORY)
-    begin
-      master_updater.pull!
-    ensure
-      link_tap_formula(tapped_formulae)
-    end
+    master_updater.pull!
     report.update(master_updater.report)
 
     # rename Taps directories
     # this procedure will be removed in the future if it seems unnecessasry
     rename_taps_dir_if_necessary
 
-    each_tap do |user, repo|
-      repo.cd do
-        updater = Updater.new(repo)
+    Tap.each do |tap|
+      tap.path.cd do
+        updater = Updater.new(tap.path)
 
         begin
           updater.pull!
         rescue
-          onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
+          onoe "Failed to update tap: #{tap}"
         else
           report.update(updater.report) do |key, oldval, newval|
             oldval.concat(newval)
@@ -51,10 +42,6 @@ module Homebrew
         end
       end
     end
-
-    # we unlink first in case the formula has moved to another tap
-    Homebrew.unlink_tap_formula(report.removed_tapped_formula)
-    Homebrew.link_tap_formula(report.new_tapped_formula)
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
@@ -95,7 +82,6 @@ module Homebrew
   end
 
   def rename_taps_dir_if_necessary
-    need_repair_taps = false
     Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
       begin
         tapd_basename = File.basename(tapd)
@@ -107,7 +93,6 @@ module Homebrew
 
             FileUtils.mkdir_p("#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}")
             FileUtils.mv(tapd, "#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase}")
-            need_repair_taps = true
 
             if tapd_basename.count("-") >= 2
               opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
@@ -123,8 +108,6 @@ module Homebrew
         next # next tap directory
       end
     end
-
-    repair_taps if need_repair_taps
   end
 
   def load_tap_migrations
@@ -181,8 +164,20 @@ class Updater
         next unless paths.any? { |p| File.dirname(p) == formula_directory }
 
         case status
-        when "A", "M", "D"
+        when "A", "D"
           map[status.to_sym] << repository.join(src)
+        when "M"
+          file = repository.join(src)
+          begin
+            require "formula_versions"
+            formula = Formulary.factory(file)
+            new_version = formula.pkg_version
+            old_version = FormulaVersions.new(formula).formula_at_revision(@initial_revision, &:pkg_version)
+            next if new_version == old_version
+          rescue LoadError, FormulaUnavailableError => e
+            onoe e if ARGV.homebrew_developer?
+          end
+          map[:M] << file
         when /^R\d{0,3}/
           map[:D] << repository.join(src) if File.dirname(src) == formula_directory
           map[:A] << repository.join(dst) if File.dirname(dst) == formula_directory
@@ -253,18 +248,6 @@ class Report
     dump_formula_report :A, "New Formulae"
     dump_formula_report :M, "Updated Formulae"
     dump_formula_report :D, "Deleted Formulae"
-  end
-
-  def tapped_formula_for key
-    fetch(key, []).select { |path| HOMEBREW_TAP_PATH_REGEX === path.to_s }
-  end
-
-  def new_tapped_formula
-    tapped_formula_for :A
-  end
-
-  def removed_tapped_formula
-    tapped_formula_for :D
   end
 
   def select_formula key

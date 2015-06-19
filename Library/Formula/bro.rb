@@ -1,24 +1,20 @@
 require "formula"
 
 class Bro < Formula
+  desc "Network security monitor"
   homepage "https://www.bro.org"
   head "https://github.com/bro/bro.git"
 
   stable do
-    url "https://www.bro.org/downloads/release/bro-2.3.1.tar.gz"
-    sha256 "ff32d21e335d2ddb3e2942527c3212de6ead4e7ffd6ac958497fa80e04e60800"
+    url "https://www.bro.org/downloads/release/bro-2.4.tar.gz"
+    sha256 "740c0d0b0bec279c2acef5e1b6b4d0016c57cd02a729f5e2924ae4a922e208b2"
 
-    # Fix for ntohll errrors on Yosemite. Already in HEAD.
-    patch do
-      url "https://github.com/bro/bro/commit/121fcdbb5b9221.diff"
-      sha1 "985cede121964a96fe10c81f2239d1f0c137c517"
-    end
   end
 
   bottle do
-    sha1 "19d44e396ea474a01625333cc005d59c15a1a779" => :yosemite
-    sha1 "3ec9e7b7c05b68668f6559322372a2f57344f735" => :mavericks
-    sha1 "6e69354144ece0c4b99fe0c8f07c353e5892bf3c" => :mountain_lion
+    sha256 "6ebeb99f7435427fea693cb6a7a1484cbf065a501af389ff6a86b139a16a7cbe" => :yosemite
+    sha256 "6a15212763d47074a8d9cc3783a0e28c245eebc79afc09b4f86d385840a8e07a" => :mavericks
+    sha256 "b1ab1064cba21febae1e902477292a974602881ad4d2aa837ed1ee008df0eaf3" => :mountain_lion
   end
 
   depends_on "cmake" => :build

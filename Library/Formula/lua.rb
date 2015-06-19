@@ -1,17 +1,17 @@
-require "formula"
-
 class Lua < Formula
+  desc "Powerful, lightweight programming language"
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.3.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.2/lua5.2_5.2.3.orig.tar.gz"
-  sha1 "926b7907bc8d274e063d42804666b40a3f3c124c"
-  bottle do
-    sha1 "febde5bb25ed1a6d7cdf2b1a9ed798f29587f7f4" => :yosemite
-    sha1 "10d2bc30697656e6deb6fde98a8fafbd1385681c" => :mavericks
-    sha1 "ced438f2c14b0c7e26b356e4e13fb5a47c3c60fc" => :mountain_lion
-  end
+  sha256 "13c2fb97961381f7d06d5b5cea55b743c163800896fd5c5e2356201d3619002d"
+  revision 2
 
-  revision 1
+  bottle do
+    revision 1
+    sha256 "cae36fb3b4acf3aed7e39d612ded55d25468dc52e0bcbb0ab643ee32ae9fa03d" => :yosemite
+    sha256 "4416560fb728ec134d3762f30dc08689a22bded2874b868f002429cf51d55c05" => :mavericks
+    sha256 "95cf1d7878924ff658566d2b271f676b4de6686669ed68925d9ea7b5989368d7" => :mountain_lion
+  end
 
   fails_with :llvm do
     build 2326
@@ -21,6 +21,7 @@ class Lua < Formula
   option :universal
   option "with-completion", "Enables advanced readline support"
   option "without-sigaction", "Revert to ANSI signal instead of improved POSIX sigaction"
+  option "without-luarocks", "Don't build with Luarocks support embedded"
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/Homebrew/homebrew/pull/5043
@@ -28,16 +29,25 @@ class Lua < Formula
 
   # completion provided by advanced readline power patch
   # See http://lua-users.org/wiki/LuaPowerPatches
-  patch do
-    url "http://luajit.org/patches/lua-5.2.0-advanced_readline.patch"
-    sha1 "ca405dbd126bc018980a26c2c766dfb0f82e919e"
-  end if build.with? "completion"
+  if build.with? "completion"
+    patch do
+      url "http://luajit.org/patches/lua-5.2.0-advanced_readline.patch"
+      sha256 "33d32d11fce4f85b88ce8f9bd54e6a6cbea376dfee3dbf8cdda3640e056bc29d"
+    end
+  end
 
   # sigaction provided by posix signalling power patch
-  patch do
-    url "http://lua-users.org/files/wiki_insecure/power_patches/5.2/lua-5.2.3-sig_catch.patch"
-    sha1 "b9a0044eb3c422f8405798c900ce31587156c7dd"
-  end if build.with? "sigaction"
+  if build.with? "sigaction"
+    patch do
+      url "http://lua-users.org/files/wiki_insecure/power_patches/5.2/lua-5.2.3-sig_catch.patch"
+      sha256 "f2e77f73791c08169573658caa3c97ba8b574c870a0a165972ddfbddb948c164"
+    end
+  end
+
+  resource "luarocks" do
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
+    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
+  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -58,13 +68,41 @@ class Lua < Formula
     (lib+"pkgconfig/lua.pc").write pc_file
 
     # Fix some software potentially hunting for different pc names.
-    ln_s "#{bin}/lua", "#{bin}/lua5.2"
-    ln_s "#{bin}/lua", "#{bin}/lua-5.2"
-    ln_s "#{bin}/luac", "#{bin}/luac5.2"
-    ln_s "#{bin}/luac", "#{bin}/luac-5.2"
-    ln_s "#{include}", "#{include}/lua5.2"
-    ln_s "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.2.pc"
-    ln_s "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua-5.2.pc"
+    bin.install_symlink "lua" => "lua5.2"
+    bin.install_symlink "lua" => "lua-5.2"
+    bin.install_symlink "luac" => "luac5.2"
+    bin.install_symlink "luac" => "luac-5.2"
+    include.install_symlink include => "#{include}/lua5.2"
+    (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.2.pc"
+    (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.2.pc"
+
+    # This resource must be handled after the main install, since there's a lua dep.
+    # Keeping it in install rather than postinstall means we can bottle.
+    if build.with? "luarocks"
+      resource("luarocks").stage do
+        ENV.prepend_path "PATH", bin
+
+        system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
+                              "--sysconfdir=#{etc}/luarocks52", "--with-lua=#{prefix}",
+                              "--lua-version=5.2", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks52"
+        system "make", "build"
+        system "make", "install"
+
+        (share+"lua/5.2/luarocks").install_symlink Dir["#{libexec}/share/lua/5.2/luarocks/*"]
+        bin.install_symlink libexec/"bin/luarocks-5.2"
+        bin.install_symlink libexec/"bin/luarocks-admin-5.2"
+        bin.install_symlink libexec/"bin/luarocks"
+        bin.install_symlink libexec/"bin/luarocks-admin"
+
+        # This block ensures luarock exec scripts don't break across updates.
+        inreplace libexec/"share/lua/5.2/luarocks/site_config.lua" do |s|
+          s.gsub! libexec.to_s, opt_libexec
+          s.gsub! include.to_s, "#{HOMEBREW_PREFIX}/include"
+          s.gsub! lib.to_s, "#{HOMEBREW_PREFIX}/lib"
+          s.gsub! bin.to_s, "#{HOMEBREW_PREFIX}/bin"
+        end
+      end
+    end
   end
 
   def pc_file; <<-EOS.undent
@@ -90,8 +128,27 @@ class Lua < Formula
     EOS
   end
 
+  def caveats; <<-EOS.undent
+    Please be aware due to the way Luarocks is designed any binaries installed
+    via Luarocks-5.2 AND 5.1 will overwrite each other in #{HOMEBREW_PREFIX}/bin.
+
+    This is, for now, unavoidable. If this is troublesome for you, you can build
+    rocks with the `--tree=` command to a special, non-conflicting location and
+    then add that to your `$PATH`.
+
+    If you have existing Rocks trees in $HOME, you will need to migrate them to the new
+    location manually. You will only have to do this once.
+    EOS
+  end
+
   test do
     system "#{bin}/lua", "-e", "print ('Ducks are cool')"
+
+    if File.exist?(bin/"luarocks-5.2")
+      mkdir testpath/"luarocks"
+      system bin/"luarocks-5.2", "install", "moonscript", "--tree=#{testpath}/luarocks"
+      assert File.exist? testpath/"luarocks/bin/moon"
+    end
   end
 end
 

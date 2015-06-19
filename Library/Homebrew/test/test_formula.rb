@@ -5,7 +5,7 @@ class FormulaTests < Homebrew::TestCase
   def test_formula_instantiation
     klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
     name = "formula_name"
-    path = Formula.path(name)
+    path = Formulary.core_path(name)
     spec = :stable
 
     f = klass.new(name, path, spec)
@@ -15,18 +15,18 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_prefix
-    f = TestBall.new
+    f = Testball.new
     assert_equal HOMEBREW_CELLAR/f.name/'0.1', f.prefix
     assert_kind_of Pathname, f.prefix
   end
 
   def test_revised_prefix
-    f = Class.new(TestBall) { revision 1 }.new
+    f = Class.new(Testball) { revision 1 }.new
     assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
   end
 
   def test_installed?
-    f = TestBall.new
+    f = Testball.new
     f.stubs(:installed_prefix).returns(stub(:directory? => false))
     refute_predicate f, :installed?
 
@@ -42,7 +42,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_installed_prefix
-    f = TestBall.new
+    f = Testball.new
     assert_equal f.prefix, f.installed_prefix
   end
 
@@ -116,27 +116,27 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_equality
-    x = TestBall.new
-    y = TestBall.new
+    x = Testball.new
+    y = Testball.new
     assert_equal x, y
     assert_eql x, y
     assert_equal x.hash, y.hash
   end
 
   def test_inequality
-    x = TestBall.new("foo")
-    y = TestBall.new("bar")
+    x = Testball.new("foo")
+    y = Testball.new("bar")
     refute_equal x, y
     refute_eql x, y
     refute_equal x.hash, y.hash
   end
 
   def test_comparison_with_non_formula_objects_does_not_raise
-    refute_equal TestBall.new, Object.new
+    refute_equal Testball.new, Object.new
   end
 
   def test_sort_operator
-    assert_nil TestBall.new <=> Object.new
+    assert_nil Testball.new <=> Object.new
   end
 
   def test_class_naming
@@ -174,7 +174,7 @@ class FormulaTests < Homebrew::TestCase
 
   def test_path
     name = 'foo-bar'
-    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formula.path(name)
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formulary.core_path(name)
   end
 
   def test_factory
@@ -240,16 +240,6 @@ class FormulaTests < Homebrew::TestCase
     end
 
     assert_equal PkgVersion.parse('HEAD'), f.pkg_version
-  end
-
-  def test_raises_when_non_formula_constant_exists
-    const = :SomeConst
-    Object.const_set(const, Module.new)
-    begin
-      assert_raises(FormulaUnavailableError) { Formulary.factory("some_const") }
-    ensure
-      Object.send(:remove_const, const)
-    end
   end
 
   def test_legacy_options

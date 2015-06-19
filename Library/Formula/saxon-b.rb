@@ -1,6 +1,7 @@
 require 'formula'
 
 class SaxonB < Formula
+  desc "XSLT and XQuery processor"
   homepage 'http://saxon.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/saxon/Saxon-B/9.1.0.8/saxonb9-1-0-8j.zip'
   version '9.1.0.8'

@@ -1,6 +1,7 @@
 require "formula"
 
 class SaneBackends < Formula
+  desc "Backends for scanner access"
   homepage "http://www.sane-project.org/"
   url "http://fossies.org/linux/misc/sane-backends-1.0.24.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/sane-backends/sane-backends_1.0.24.orig.tar.gz"

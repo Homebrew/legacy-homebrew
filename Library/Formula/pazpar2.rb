@@ -1,18 +1,21 @@
 require "formula"
 
 class Pazpar2 < Formula
+  desc "Metasearching middleware webservice"
   homepage "http://www.indexdata.com/pazpar2"
-  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.8.2.tar.gz"
-  sha1 "a322e6a668c283aa43570fafbc63c7f4bafb1399"
+  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.8.7.tar.gz"
+  sha1 "e4e5c1c7cdeea7f06c0242c1b85c32b35c52ee69"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "3913c1102f8eb27357a6ff823aa3c67694877943" => :yosemite
-    sha1 "e811a8a27ec51af194963940717f3aa389e45f6b" => :mavericks
-    sha1 "eeced70f699a306ea414f1be027a6b248806beff" => :mountain_lion
+    sha256 "1ba5b525a809477edb5cbafd2fbcefd9fba29d224ccad06064abbdbcb3d9d1e3" => :yosemite
+    sha256 "e7b386c553cd3e1d8b123b88abf9df7288371d4423982bfa333456ba3ef40646" => :mavericks
+    sha256 "53d1ad3c4eccfd37b51788d10ad7609541aad20537faec0de168c2272857fe2f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+  depends_on "icu4c" => :recommended
   depends_on "yaz"
 
   def install

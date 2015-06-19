@@ -1,20 +1,42 @@
-require "formula"
-
 class Re2c < Formula
+  desc "Generate C-based recognizers from regular expressions"
   homepage "http://re2c.org"
-  url "https://downloads.sourceforge.net/project/re2c/re2c/0.13.7.5/re2c-0.13.7.5.tar.gz"
-  sha1 "4786a13be61f8249f4f388e60d94bb81db340d5c"
+  url "https://downloads.sourceforge.net/project/re2c/re2c/0.14.3/re2c-0.14.3.tar.gz"
+  sha256 "1c6806df599f3aef0804b576cfdf64bdba5ad590626dfca2d44e473460917e84"
 
   bottle do
     cellar :any
-    sha1 "a3246b77461757a1d03fce798dc0e96946dd8d4b" => :yosemite
-    sha1 "295edf3bf8132c990a2d524132ce1cf0f4e22c38" => :mavericks
-    sha1 "b289675f0bc4e76b1f131e82a7fe41f4d11804ed" => :mountain_lion
+    sha256 "7040c6d1946125f13649a16b21ac9d44afd3c0539dfc2ce97e376c436b768141" => :yosemite
+    sha256 "06528f7fb154253ba75560e7ea77845fda54e2cbb9257244c4ea63afd40d6fe4" => :mavericks
+    sha256 "1cafc788466d50c7d1f68719b0fd62b9f2599a5909c4c280043d91e17d4aa183" => :mountain_lion
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      unsigned int stou (const char * s)
+      {
+      #   define YYCTYPE char
+          const YYCTYPE * YYCURSOR = s;
+          unsigned int result = 0;
+
+          for (;;)
+          {
+              /*!re2c
+                  re2c:yyfill:enable = 0;
+
+                  "\x00" { return result; }
+                  [0-9]  { result = result * 10 + c; continue; }
+              */
+          }
+      }
+    EOS
+    system bin/"re2c", "-is", testpath/"test.c"
   end
 end

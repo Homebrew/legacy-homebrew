@@ -1,10 +1,9 @@
-require "formula"
-
 class Ddrescue < Formula
+  desc "GNU data recovery tool"
   homepage "https://www.gnu.org/software/ddrescue/ddrescue.html"
   url "http://ftpmirror.gnu.org/ddrescue/ddrescue-1.19.tar.lz"
   mirror "https://ftp.gnu.org/gnu/ddrescue/ddrescue-1.19.tar.lz"
-  sha1 "5c5bfa4e2d0cb98feb1fd66cb9ea0c8ab2c7d34d"
+  sha256 "ed8d0c9d9aac80a9110e9cb0d0a91a7390d3bf9f816b67a62ca4eb140f4747b8"
 
   bottle do
     cellar :any
@@ -18,4 +17,9 @@ class Ddrescue < Formula
                           "CXX=#{ENV.cxx}"
     system "make", "install"
   end
+
+  test do
+    system bin/"ddrescue", "--force", "--size=64Ki", "/dev/zero", "/dev/null"
+  end
+
 end

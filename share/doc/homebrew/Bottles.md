@@ -23,9 +23,9 @@ Bottles have a DSL to be used in formulae which is contained in the `bottle do .
 A simple (and typical) example:
 ```ruby
 bottle do
-  sha1 "23ef6a81af2f37166d7d7423b88f7716bf9b0629" => :yosemite
-  sha1 "fdc919d750012fbfeeec8b3f95d07000adc3c946" => :mavericks
-  sha1 "0d08b3ca611f47a25a922b2d942f157f1d6268c1" => :mountain_lion
+  sha256 "4921af80137af9cc3d38fd17c9120da882448a090b0a8a3a19af3199b415bfca" => :yosemite
+  sha256 "c71db15326ee9196cd98602e38d0b7fb2b818cdd48eede4ee8eb827d809e09ba" => :mavericks
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7" => :mountain_lion
 end
 ```
 
@@ -36,9 +36,9 @@ bottle do
   prefix "/opt/homebrew"
   cellar "/opt/homebrew/Cellar"
   revision 4
-  sha1 "23ef6a81af2f37166d7d7423b88f7716bf9b0629" => :yosemite
-  sha1 "fdc919d750012fbfeeec8b3f95d07000adc3c946" => :mavericks
-  sha1 "0d08b3ca611f47a25a922b2d942f157f1d6268c1" => :mountain_lion
+  sha256 "4921af80137af9cc3d38fd17c9120da882448a090b0a8a3a19af3199b415bfca" => :yosemite
+  sha256 "c71db15326ee9196cd98602e38d0b7fb2b818cdd48eede4ee8eb827d809e09ba" => :mavericks
+  sha256 "85cc828a96735bdafcf29eb6291ca91bac846579bcef7308536e0c875d6c81d7" => :mountain_lion
 end
 ```
 
@@ -58,8 +58,8 @@ See description of `cellar`. When `cellar` is `:any` prefix should be omitted.
 Optionally contains the revision of the bottle.
 Sometimes bottles may need be updated without bumping the version of the formula e.g. a new patch was applied. In that case the revision will have a value of 1 or more.
 
-### `sha1`
-Contains the SHA-1 of bottle for a particular version of OS X.
+### `sha256`
+Contains the SHA-256 of bottle for a particular version of OS X.
 
 ## Formula DSL
 Additionally there is a method available in the formula DSL.

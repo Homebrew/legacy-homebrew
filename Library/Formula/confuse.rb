@@ -1,6 +1,7 @@
 require 'formula'
 
 class Confuse < Formula
+  desc "Configuration file parser library written in C"
   homepage 'http://www.nongnu.org/confuse/'
   url 'http://savannah.nongnu.org/download/confuse/confuse-2.7.tar.gz'
   sha1 'b3f74f9763e6c9012476dbd323d083af4be34cad'

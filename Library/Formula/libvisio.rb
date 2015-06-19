@@ -1,21 +1,20 @@
-require "formula"
-
 class Libvisio < Formula
+  desc "Interpret and import Visio diagrams"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
-  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.0.tar.xz"
-  sha1 "c82e5c7ad25e513c268032cda9febd01b8879504"
-  revision 3
+  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.1.tar.xz"
+  sha1 "2284866af215a56683bfe4d49a921a053eff4cf9"
+  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "99ed3132f737611f552f499c593171b9c5de98f1" => :yosemite
-    sha1 "fe4be3eedf1ecfc4e30c2ced7dba2a8c01483e95" => :mavericks
-    sha1 "100c2d78d59c91ab3f6d77937cc35a669e24d383" => :mountain_lion
+    sha256 "2baf447a0865b93ddcf93afb2fbbe0ab2c0f0e37f0d5ebe6d2f7d4b618e428f2" => :yosemite
+    sha256 "b2432c53569d0c8e0eb0befcb3b2f10ebdebcf8ca09c6f06299486652429a075" => :mavericks
+    sha256 "2257bf59998222573140be09039f3a49ebf0a6c5badf3c896e1928b75baa25dd" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
+  depends_on "cppunit" => :build
   depends_on "libwpd"
   depends_on "libwpg"
   depends_on "icu4c"

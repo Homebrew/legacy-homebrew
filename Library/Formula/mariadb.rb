@@ -1,33 +1,39 @@
-require 'formula'
-
 class Mariadb < Formula
-  homepage 'http://mariadb.org/'
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.15/source/mariadb-10.0.15.tar.gz"
-  sha1 "edd8ba315fffa727b52833df453ac9b88961130e"
+  desc "Drop-in replacement for MySQL"
+  homepage "https://mariadb.org/"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.20/source/mariadb-10.0.20.tar.gz"
+  sha256 "3a4f6963c794977af5d5fd9ec06a337a2ad556b3a287196fddbd2243c1388b7b"
 
   bottle do
-    sha1 "96be0c291a73e273b3910f7c609cdfa45fc25347" => :yosemite
-    sha1 "432e13ac5b3f90008de0fcafeb42fe0d7a139229" => :mavericks
-    sha1 "cbffb3b121dad1e8602514613ac5f6aaf40a859a" => :mountain_lion
+    sha256 "66f51ca674ca5e82f1d813507382f9b448f4a96e2de472b9be3297d090780348" => :yosemite
+    sha256 "848299d2e682d2cc353be6119e90ba2670a03361cdbe868f89c6143a838b422e" => :mavericks
+    sha256 "3f760e604dbee14a52e854ab8c85dcb3e68c53652750917eaa90d8e463d8958f" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  devel do
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.5/source/mariadb-10.1.5.tar.gz"
+    sha256 "af8788bfbb842338882e505612f86ef53a25968663a1519185ecf3de3b1efe83"
+  end
+
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
   depends_on "openssl"
 
   option :universal
-  option 'with-tests', 'Keep test when installing'
-  option 'with-bench', 'Keep benchmark app when installing'
-  option 'with-embedded', 'Build the embedded server'
-  option 'with-libedit', 'Compile with editline wrapper instead of readline'
-  option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
-  option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
-  option 'enable-local-infile', 'Build with local infile loading support'
+  option "with-tests", "Keep test when installing"
+  option "with-bench", "Keep benchmark app when installing"
+  option "with-embedded", "Build the embedded server"
+  option "with-libedit", "Compile with editline wrapper instead of readline"
+  option "with-archive-storage-engine", "Compile with the ARCHIVE storage engine enabled"
+  option "with-blackhole-storage-engine", "Compile with the BLACKHOLE storage engine enabled"
+  option "with-local-infile", "Build with local infile loading support"
 
-  conflicts_with 'mysql', 'mysql-cluster', 'percona-server',
+  deprecated_option "enable-local-infile" => "with-local-infile"
+
+  conflicts_with "mysql", "mysql-cluster", "percona-server",
     :because => "mariadb, mysql, and percona install the same binaries."
-  conflicts_with 'mysql-connector-c',
-    :because => 'both install MySQL client libraries'
+  conflicts_with "mysql-connector-c",
+    :because => "both install MySQL client libraries"
 
   def install
     # Don't hard-code the libtool path. See:
@@ -65,22 +71,40 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
-      -DWITHOUT_TOKUDB=1
     ]
 
-    args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
+    # disable TokuDB, which is currently not supported on Mac OS X
+    if build.stable?
+      args << "-DWITHOUT_TOKUDB=1"
+    else
+      args << "-DPLUGIN_TOKUDB=NO"
+    end
+
+    args << "-DWITH_UNIT_TESTS=OFF" if build.without? "tests"
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? "embedded"
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" if build.without? 'libedit'
+    args << "-DWITH_READLINE=yes" if build.without? "libedit"
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? 'archive-storage-engine'
+    if build.with? "archive-storage-engine"
+      if build.stable?
+        args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1"
+      else
+        args << "-DPLUGIN_ARCHIVE=YES"
+      end
+    end
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
+    if build.with? "blackhole-storage-engine"
+      if build.stable?
+        args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1"
+      else
+        args << "-DPLUGIN_BLACKHOLE=YES"
+      end
+    end
 
     # Make universal for binding to universal applications
     if build.universal?
@@ -89,24 +113,25 @@ class Mariadb < Formula
     end
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.with? "local-infile"
 
     system "cmake", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Fix my.cnf to point to #{etc} instead of /etc
-    (etc+'my.cnf.d').mkpath
+    (etc+"my.cnf.d").mkpath
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
+    touch etc/"my.cnf.d/.homebrew_dont_prune_me"
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix+'data'
+    rm_rf prefix+"data"
 
-    (prefix+'mysql-test').rmtree if build.without? 'tests' # save 121MB!
-    (prefix+'sql-bench').rmtree if build.without? 'bench'
+    (prefix+"mysql-test").rmtree if build.without? "tests" # save 121MB!
+    (prefix+"sql-bench").rmtree if build.without? "bench"
 
     # Link the setup script into bin
     bin.install_symlink prefix/"scripts/mysql_install_db"
@@ -115,18 +140,35 @@ class Mariadb < Formula
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      s.gsub!(/pidof/, "pgrep") if MacOS.version >= :mountain_lion
     end
 
     bin.install_symlink prefix/"support-files/mysql.server"
+
+    if build.devel?
+      # Move sourced non-executable out of bin into libexec
+      libexec.mkpath
+      libexec.install "#{bin}/wsrep_sst_common"
+      # Fix up references to wsrep_sst_common
+      %W[
+        wsrep_sst_mysqldump
+        wsrep_sst_rsync
+        wsrep_sst_xtrabackup
+        wsrep_sst_xtrabackup-v2
+      ].each do |f|
+        inreplace "#{bin}/#{f}" do |s|
+          s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
+        end
+      end
+    end
   end
 
   def post_install
     # Make sure the var/mysql directory exists
     (var+"mysql").mkpath
     unless File.exist? "#{var}/mysql/mysql/user.frm"
-      ENV['TMPDIR'] = nil
-      system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
+      ENV["TMPDIR"] = nil
+      system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
         "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
     end
   end
@@ -164,5 +206,15 @@ class Mariadb < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    if build.with? "tests"
+      (prefix+"mysql-test").cd do
+        system "./mysql-test-run.pl", "status"
+      end
+    else
+      system "mysqld", "--version"
+    end
   end
 end

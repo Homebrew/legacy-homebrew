@@ -1,6 +1,7 @@
 require 'formula'
 
 class Owfs < Formula
+  desc "Monitor and control physical environment using Dallas/Maxim 1-wire system"
   homepage 'http://owfs.org/'
   url 'https://downloads.sourceforge.net/project/owfs/owfs/2.9p1/owfs-2.9p1.tar.gz'
   version '2.9p1'

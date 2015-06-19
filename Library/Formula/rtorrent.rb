@@ -1,9 +1,12 @@
 require "formula"
 
 class Rtorrent < Formula
-  homepage "http://libtorrent.rakshasa.no/"
-  url "http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.4.tar.gz"
-  sha1 "e997822e9b0d53cf8ecfb6b836e380065890e10d"
+  desc "Console-based BitTorrent client"
+  # Both homepage and primary url have been down since at least ~April 2015
+  homepage "https://github.com/rakshasa/rtorrent"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/r/rtorrent/rtorrent_0.9.4.orig.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/r/rtorrent/rtorrent_0.9.4.orig.tar.gz"
+  sha256 "bc0a2c1ee613b68f37021beaf4e64a9252f91ed06f998c1e897897c354ce7e84"
   revision 1
 
   depends_on "pkg-config" => :build

@@ -1,14 +1,15 @@
 require "formula"
 
 class IrcdHybrid < Formula
+  desc "High-performance secure IRC server"
   homepage "http://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.1/ircd-hybrid-8.2.1.tgz"
-  sha1 "43e96d1d3e57f8d867348921a5b225011ab988b2"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.6/ircd-hybrid-8.2.6.tgz"
+  sha256 "c712988ef43081e6d2218e4fe2523fdadf22df2959cf4c878f0625d16da5b79d"
 
   bottle do
-    sha1 "1ac5860e94fac63377994eebada838b4975e5cb2" => :yosemite
-    sha1 "d3150f7395160fc08cd665144288587360d5ee34" => :mavericks
-    sha1 "cbcbb7266548178d080fb3683e7ba8cd203265fa" => :mountain_lion
+    sha256 "b0c505ad232ad94432d513595558dd5e92cb73c0f7fdda3a1ead22ea0ca1f84a" => :yosemite
+    sha256 "41f6f18ae7b788d87bf0bc65e286547c082ce6189c145c39b08bfb478c8b8249" => :mavericks
+    sha256 "681aa8d8494ed80b13f147d2134acb1d7d3b5daca02d9ebe8fee1e051c09ca6e" => :mountain_lion
   end
 
   # ircd-hybrid needs the .la files

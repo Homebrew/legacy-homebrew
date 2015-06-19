@@ -1,6 +1,7 @@
 require 'formula'
 
 class GdalGrass < Formula
+  desc "Geospatial Data Abstraction Library"
   homepage 'http://www.gdal.org'
   url 'http://download.osgeo.org/gdal/gdal-grass-1.4.3.tar.gz'
   sha1 '63b87ad1688cc365dc6bd6c3ccc854d0e6aa637a'
@@ -16,7 +17,7 @@ class GdalGrass < Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-gdal=#{gdal.bin}/gdal-config",
-                          "--with-grass=#{grass.prefix}/grass-#{grass.version}",
+                          "--with-grass=#{grass.opt_prefix}/grass-#{grass.version}",
                           "--with-autoload=#{lib}/gdalplugins"
 
     inreplace "Makefile", 'mkdir', 'mkdir -p'

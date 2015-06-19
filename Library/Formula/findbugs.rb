@@ -1,23 +1,22 @@
-require 'formula'
-
 class Findbugs < Formula
-  homepage 'http://findbugs.sourceforge.net/index.html'
-  url 'https://downloads.sourceforge.net/project/findbugs/findbugs/3.0.0/findbugs-3.0.0.tar.gz'
-  sha1 '50205ecbe340d78a658d5930fc3e2e0e38b07db7'
+  desc "Find bugs in Java programs through static analysis"
+  homepage "http://findbugs.sourceforge.net/index.html"
+  url "https://downloads.sourceforge.net/project/findbugs/findbugs/3.0.1/findbugs-3.0.1.tar.gz"
+  sha1 "59a24064ca6869e483ce9a04d3c50d14a227d5e6"
 
-  conflicts_with 'fb-client',
+  conflicts_with "fb-client",
     :because => "findbugs and fb-client both install a `fb` binary"
 
-  depends_on :java => '1.7'
+  depends_on :java => "1.7+"
 
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
-    bin.write_exec_script libexec/'bin/fb'
-    bin.write_exec_script libexec/'bin/findbugs'
+    bin.write_exec_script libexec/"bin/fb"
+    bin.write_exec_script libexec/"bin/findbugs"
   end
 
   def caveats; <<-EOS.undent

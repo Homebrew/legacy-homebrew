@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libftdi0 < Formula
+  desc "Library to talk to FTDI chips"
   homepage 'http://www.intra2net.com/en/developer/libftdi'
   url "http://www.intra2net.com/en/developer/libftdi/download/libftdi-0.20.tar.gz"
   sha1 '4bc6ce70c98a170ada303fbd00b8428d8a2c1aa2'

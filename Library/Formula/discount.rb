@@ -1,18 +1,32 @@
 require 'formula'
 
 class Discount < Formula
+  desc "C implementation of Markdown"
   homepage 'http://www.pell.portland.or.us/~orc/Code/discount/'
-  url 'http://www.pell.portland.or.us/~orc/Code/discount/discount-2.1.7.tar.bz2'
-  sha1 '517bcf7409d8c02b3e57f51264b2e110f8a03120'
+  url 'http://www.pell.portland.or.us/~orc/Code/discount/discount-2.1.8a.tar.bz2'
+  sha256 'c01502f4eedba8163dcd30c613ba5ee238a068f75291be127856261727e03526'
+
+  bottle do
+    cellar :any
+    sha256 "a803af2105ca176a4e525bd7ebbd055cb3d4d1020b9d0fa2ef3f723ffacb1f99" => :yosemite
+    sha256 "2c1442bebb7543681cd076b88037c9a891dbc685ac781d6658dee3821cfbdd61" => :mavericks
+    sha256 "cab7dbc460fe459181e6fa69e530a9b1d9083218449cd36a2a7a30e123f558c0" => :mountain_lion
+  end
+
+  option "with-fenced-code", "Enable Pandoc-style fenced code blocks."
 
   conflicts_with 'markdown',
     :because => 'both discount and markdown ship a `markdown` executable.'
 
   def install
-    system "./configure.sh", "--prefix=#{prefix}",
-                             "--mandir=#{man}",
-                             "--with-dl=Both",
-                             "--enable-all-features"
+    args = %W[
+        --prefix=#{prefix}
+        --mandir=#{man}
+        --with-dl=Both
+        --enable-all-features
+    ]
+    args << "--with-fenced-code" if build.with? "fenced-code"
+    system "./configure.sh", *args
     bin.mkpath
     lib.mkpath
     include.mkpath

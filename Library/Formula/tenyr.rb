@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tenyr < Formula
+  desc "32-bit computing environment"
   homepage 'http://tenyr.info/'
   url 'https://github.com/kulp/tenyr/archive/v0.6.0.tar.gz'
   sha1 '93f5215f5d788d5ef3e04a1720dcb0685d33ec18'

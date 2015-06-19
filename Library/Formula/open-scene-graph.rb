@@ -1,70 +1,55 @@
-require 'formula'
-
 class OpenSceneGraph < Formula
-  homepage 'http://www.openscenegraph.org/projects/osg'
+  desc "3D graphics toolkit"
+  homepage "http://www.openscenegraph.org/projects/osg"
+  url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.3.3.zip"
+  sha256 "b81cda123ffb3bd108e0fe4be4fff1351d6636e6fb0a1475b2c4fb9618d3ae2b"
   revision 1
 
-  stable do
-    url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.2.0.zip"
-    sha1 "c20891862b5876983d180fc4a3d3cfb2b4a3375c"
-
-    # Build fixes for clang/c++11
-    patch do
-      url "https://github.com/openscenegraph/osg/commit/f71491786ac2d22ef16f9f5ed31de0f6666c6600.diff"
-      sha1 "d96fe3dc1a01c8ad096433ef07f02803c2bf9206"
-    end
-
-    # Fix freetype detection
-    patch do
-      url "https://github.com/openscenegraph/osg/commit/3063b45aba74a0cfc693d46866084cde0d8959e2.diff"
-      sha1 "8a2a0e8384a30e3adb2820786f91adb52ba69cd9"
-    end
-  end
+  head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
 
   bottle do
-    sha1 "39ebd1c9cb19056e150b7087586e1e63a9546288" => :mavericks
-    sha1 "166b932d7d317cd32b1da89353bb3e03b4b13880" => :mountain_lion
-    sha1 "16055dc346e3a892c1083e08c40d32d37c2e10f0" => :lion
+    revision 1
+    sha256 "84a2fb06650a9b61bcefe3abcc3619263a1e36fa086e85ccc5b749e4948cb793" => :yosemite
+    sha256 "c5de6622bedf78bc453db80ec34f9d784c453444e2046f17061a7e1da272772f" => :mavericks
+    sha256 "1be15b3c3e807af706d6a6a5ddf985550c4eabc6ebeceb92908f5fdc6c90d081" => :mountain_lion
   end
-
-  head 'http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/'
 
   option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
 
-  depends_on 'cmake' => :build
-  depends_on 'pkg-config' => :build
-  depends_on 'jpeg'
-  depends_on 'wget'
-  depends_on 'gtkglext'
-  depends_on 'freetype'
-  depends_on 'gdal' => :optional
-  depends_on 'jasper' => :optional
-  depends_on 'openexr' => :optional
-  depends_on 'dcmtk' => :optional
-  depends_on 'librsvg' => :optional
-  depends_on 'collada-dom' => :optional
-  depends_on 'gnuplot' => :optional
-  depends_on 'ffmpeg' => :optional
-  depends_on 'qt5' => :optional
-  depends_on 'qt' => :optional
+  depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "jpeg"
+  depends_on "wget"
+  depends_on "gtkglext"
+  depends_on "freetype"
+  depends_on "gdal" => :optional
+  depends_on "jasper" => :optional
+  depends_on "openexr" => :optional
+  depends_on "dcmtk" => :optional
+  depends_on "librsvg" => :optional
+  depends_on "collada-dom" => :optional
+  depends_on "gnuplot" => :optional
+  depends_on "ffmpeg" => :optional
+  depends_on "qt5" => :optional
+  depends_on "qt" => :optional
+
+  # patch necessary to ensure support for gtkglext-quartz
+  # filed as an issue to the developers https://github.com/openscenegraph/osg/issues/34
+  patch :DATA
 
   if build.with? "docs"
     depends_on "doxygen" => :build
     depends_on "graphviz" => :build
   end
 
-  # Fix osgQt for Qt 5.2
-  # Reported upstream http://forum.openscenegraph.org/viewtopic.php?t=13206
-  patch :DATA
-
   def install
     ENV.cxx11 if build.cxx11?
 
     # Turning off FFMPEG takes this change or a dozen "-DFFMPEG_" variables
-    if build.without? 'ffmpeg'
-      inreplace 'CMakeLists.txt', 'FIND_PACKAGE(FFmpeg)', '#FIND_PACKAGE(FFmpeg)'
+    if build.without? "ffmpeg"
+      inreplace "CMakeLists.txt", "FIND_PACKAGE(FFmpeg)", "#FIND_PACKAGE(FFmpeg)"
     end
 
     args = std_cmake_args
@@ -82,41 +67,47 @@ class OpenSceneGraph < Formula
       args << "-DCOLLADA_INCLUDE_DIR=#{Formula["collada-dom"].opt_include}/collada-dom"
     end
 
-    if build.with? 'qt5'
+    if build.with? "qt5"
       args << "-DCMAKE_PREFIX_PATH=#{Formula["qt5"].opt_prefix}"
-    elsif build.with? 'qt'
+    elsif build.with? "qt"
       args << "-DCMAKE_PREFIX_PATH=#{Formula["qt"].opt_prefix}"
     end
 
-    args << '..'
-
-    mkdir 'build' do
-      system 'cmake', *args
-      system 'make'
+    mkdir "build" do
+      system "cmake", "..", *args
+      system "make"
       system "make", "doc_openscenegraph" if build.with? "docs"
-      system 'make install'
-      if build.with? "docs"
-        doc.install Dir["#{prefix}/doc/OpenSceneGraphReferenceDocs/*"]
-      end
+      system "make", "install"
+      doc.install Dir["#{prefix}/doc/OpenSceneGraphReferenceDocs/*"] if build.with? "docs"
     end
   end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <iostream>
+      #include <osg/Version>
+      using namespace std;
+      int main()
+        {
+          cout << osgGetVersion() << endl;
+          return 0;
+        }
+    EOS
+    system ENV.cxx, "test.cpp", "-I#{include}", "-L#{lib}", "-losg", "-o", "test"
+    assert_equal `./test`.chomp, version.to_s
+  end
 end
-
 __END__
-diff --git a/src/osgQt/CMakeLists.txt b/src/osgQt/CMakeLists.txt
-index 43afffe..6c62e73 100644
---- a/src/osgQt/CMakeLists.txt
-+++ b/src/osgQt/CMakeLists.txt
-@@ -13,7 +13,11 @@ SET(SOURCES_H
- )
+diff --git a/CMakeModules/FindGtkGl.cmake b/CMakeModules/FindGtkGl.cmake
+index 321cede..6497589 100644
+--- a/CMakeModules/FindGtkGl.cmake
++++ b/CMakeModules/FindGtkGl.cmake
+@@ -10,7 +10,7 @@ IF(PKG_CONFIG_FOUND)
+     IF(WIN32)
+         PKG_CHECK_MODULES(GTKGL gtkglext-win32-1.0)
+     ELSE()
+-        PKG_CHECK_MODULES(GTKGL gtkglext-x11-1.0)
++        PKG_CHECK_MODULES(GTKGL gtkglext-quartz-1.0)
+     ENDIF()
 
- IF ( Qt5Widgets_FOUND )
--    QT5_WRAP_CPP( SOURCES_H_MOC ${SOURCES_H} OPTIONS "-f" )
-+    IF (Qt5Widgets_VERSION VERSION_LESS 5.2.0)
-+        QT5_WRAP_CPP( SOURCES_H_MOC ${SOURCES_H} OPTIONS "-f" )
-+    ELSE()
-+        QT5_WRAP_CPP( SOURCES_H_MOC ${SOURCES_H} )
-+    ENDIF()
- ELSE()
-     QT4_WRAP_CPP( SOURCES_H_MOC ${SOURCES_H} OPTIONS "-f" )
  ENDIF()

@@ -1,4 +1,5 @@
 class Tinyxml < Formula
+  desc "XML parser"
   homepage "http://www.grinninglizard.com/tinyxml/"
   url "https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz"
   sha1 "cba3f50dd657cb1434674a03b21394df9913d764"
@@ -71,7 +72,7 @@ class Tinyxml < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-ltinyxml", "-o", "test"
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-ltinyxml", "-o", "test"
     system "./test"
   end
 end

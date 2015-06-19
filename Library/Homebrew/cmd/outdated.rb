@@ -3,23 +3,36 @@ require 'keg'
 
 module Homebrew
   def outdated
-    formulae = ARGV.formulae.any? ? ARGV.formulae : Formula.installed
+    formulae = ARGV.resolved_formulae.any? ? ARGV.resolved_formulae : Formula.installed
 
     outdated = outdated_brews(formulae) do |f, versions|
       if ($stdout.tty? || ARGV.verbose?) && !ARGV.flag?("--quiet")
-        puts "#{f.name} (#{versions*', '} < #{f.pkg_version})"
+        puts "#{f.full_name} (#{versions*', '} < #{f.pkg_version})"
       else
-        puts f.name
+        puts f.full_name
       end
     end
-    Homebrew.failed = ARGV.formulae.any? && outdated.any?
+    Homebrew.failed = ARGV.resolved_formulae.any? && outdated.any?
   end
 
   def outdated_brews(formulae)
     formulae.map do |f|
-      versions = f.rack.subdirs.map { |d| Keg.new(d).version }.sort!
-        if versions.all? { |version| f.pkg_version > version }
-        yield f, versions if block_given?
+      all_versions = []
+      older_or_same_tap_versions = []
+      f.rack.subdirs.each do |dir|
+        keg = Keg.new dir
+        version = keg.version
+        all_versions << version
+        older_version = f.pkg_version <= version
+
+        tap = Tab.for_keg(keg).tap
+        if tap.nil? || f.tap == tap || older_version
+          older_or_same_tap_versions << version
+        end
+      end
+
+      if older_or_same_tap_versions.all? { |version| f.pkg_version > version }
+        yield f, all_versions if block_given?
         f
       end
     end.compact

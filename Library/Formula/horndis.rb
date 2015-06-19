@@ -1,22 +1,24 @@
-require "formula"
-
 class Horndis < Formula
+  desc "USB tethering driver for OS X"
   homepage "http://joshuawise.com/horndis"
-  url "https://github.com/jwise/HoRNDIS/archive/rel6.tar.gz"
-  sha1 "e41ed0c5c06ee555a4a418696b112c955a356ce0"
+  url "https://github.com/jwise/HoRNDIS/archive/rel7.tar.gz"
+  sha1 "b3186de7c43ff0398e429f1af8e73cb3a255e5cd"
 
   bottle do
     cellar :any
-    sha1 "e37bc2997a594e67eaeac3c0f8d1ff5f51da7d99" => :mavericks
-    sha1 "1fb6c9910e96a67f34d48260d3d41ebeefb1749a" => :mountain_lion
-    sha1 "af083937c77de9d628d9cf6858296be61846ad63" => :lion
+    sha1 "0d55b2656caeb26a77ee1eb5d6785bbf85529a0b" => :mavericks
+    sha1 "5f8c5a67a3c3eaa99e60f59e1b2910a95ca2bdb6" => :mountain_lion
   end
 
   depends_on UnsignedKextRequirement
   depends_on :xcode => :build
 
   def install
-    xcodebuild "-configuration", "Release", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET=", "GCC_VERSION=", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build"
+    xcodebuild "-configuration", "Release", "SDKROOT=",
+                                            "MACOSX_DEPLOYMENT_TARGET=",
+                                            "GCC_VERSION=",
+                                            "ONLY_ACTIVE_ARCH=YES",
+                                            "SYMROOT=build"
     kext_prefix.install "build/Release/HoRNDIS.kext"
   end
 

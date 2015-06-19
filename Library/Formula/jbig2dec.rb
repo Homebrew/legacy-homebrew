@@ -1,20 +1,41 @@
-require 'formula'
-
 class Jbig2dec < Formula
-  homepage 'http://jbig2dec.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/jbig2dec/jbig2dec/0.11/jbig2dec-0.11.tar.gz'
-  sha1 '349cd765616db7aac1f4dd1d45957d1da65ea925'
+  desc "JBIG2 decoder and library (for monochrome documents)"
+  homepage "http://ghostscript.com/jbig2dec.html"
+  url "http://downloads.ghostscript.com/public/jbig2dec/jbig2dec-0.12.tar.gz"
+  sha256 "bcc5f2cc75ee46e9a2c3c68d4a1b740280c772062579a5d0ceda24bee2e5ebf0"
 
   bottle do
     cellar :any
-    sha1 "e00cb60ee3f381b625c0c9c6225102c1261fb1a0" => :mavericks
-    sha1 "a9a442415f9dc5f61d6e487abe5dd1344f1483aa" => :mountain_lion
-    sha1 "cbb4dfe055be243427210d03304c20760fb00bd7" => :lion
+    revision 1
+    sha256 "d1de5bcbceaca8669c847ec754e7d44b844ad08abdef377efdd704e768d13c86" => :yosemite
+    sha256 "e42e117812549edeae1f60e1900b0692994c75ebae186f611e16528fe0521c89" => :mavericks
+    sha256 "42039ee0b62ad6b4a153c5a5e93609ac1b668626b044a23a450a58d4d71338a5" => :mountain_lion
+  end
+
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "libtool" => :build
+  depends_on "libpng" => :optional
+
+  # http://bugs.ghostscript.com/show_bug.cgi?id=695890
+  # Remove on next release.
+  patch do
+    url "http://git.ghostscript.com/?p=jbig2dec.git;a=commitdiff_plain;h=70c7f1967f43a94f9f0d6808d6ab5700a120d2fc"
+    sha256 "5239e4eb991f198d2ba30d08011c2887599b5cead9db8b1d3eacec4b8912c2d0"
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-silent-rules
+    ]
+
+    args << "--without-libpng" if build.without? "libpng"
+
+    system "autoreconf", "-fvi" # error: cannot find install-sh
+    system "./configure", *args
+    system "make", "install"
   end
 
   test do

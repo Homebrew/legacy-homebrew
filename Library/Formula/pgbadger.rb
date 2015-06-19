@@ -1,21 +1,22 @@
-require "formula"
-
 class Pgbadger < Formula
-  homepage "http://dalibo.github.io/pgbadger/"
-  url "https://downloads.sourceforge.net/project/pgbadger/6.2/pgbadger-6.2.tar.gz"
-  sha1 "46f6935ff746f8b2002009ebbcae60d23aaff8b3"
+  desc "Log analyzer for PostgreSQL"
+  homepage "https://dalibo.github.io/pgbadger/"
+  url "https://downloads.sourceforge.net/project/pgbadger/6.4/pgbadger-6.4.tar.gz"
+  sha256 "a2a3b38e64c20b95d3ae395f93f41cda30492f844885a7ec5d5b2fbb090ec2f3"
+
+  head "https://github.com/dalibo/pgbadger.git"
 
   bottle do
     cellar :any
-    sha1 "9616da60ee7c521b8f03e747ac7ec558059be8ed" => :yosemite
-    sha1 "41b734655e5c158be3e585e8108b8cab67017004" => :mavericks
-    sha1 "029768bd3f29fc116c531bc16edc42fb77c30ff7" => :mountain_lion
+    sha256 "588d67e7a2ceee5a2465e2d28d4087d1c51d25593b1ae15f728d6b260628cc9e" => :yosemite
+    sha256 "b24b5ef55b6b26c3e51a184488317cbc0e303c460ac068e5336181f24652aa6f" => :mavericks
+    sha256 "3754aa6ed54fbfe21b48ba5dc528bd1ffa44256c464a02d1c68f3fd377798258" => :mountain_lion
   end
 
   def install
-    system "perl", "Makefile.PL", "DESTDIR=."
+    system "perl", "Makefile.PL", "DESTDIR=#{buildpath}"
     system "make"
-    system "make install"
+    system "make", "install"
     bin.install "usr/local/bin/pgbadger"
     man1.install "usr/local/share/man/man1/pgbadger.1"
     chmod 0755, bin+"pgbadger" # has 555 by default
@@ -39,5 +40,14 @@ class Pgbadger < Formula
       log_temp_files = 0
       lc_messages = 'C'
     EOS
+  end
+
+  test do
+    (testpath/"server.log").write <<-EOS.undent
+      LOG:  autovacuum launcher started
+      LOG:  database system is ready to accept connections
+    EOS
+    system bin/"pgbadger", "-f", "syslog", "server.log"
+    File.exist? "out.html"
   end
 end

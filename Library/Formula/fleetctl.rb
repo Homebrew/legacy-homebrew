@@ -1,15 +1,17 @@
 require "formula"
 
 class Fleetctl < Formula
+  desc "Distributed init system"
   homepage "https://github.com/coreos/fleet"
-  url "https://github.com/coreos/fleet/archive/v0.9.0.tar.gz"
-  sha1 "989d5c076b1268e596773ae8ed0d1959d7dabf84"
+  url "https://github.com/coreos/fleet/archive/v0.10.2.tar.gz"
+  sha256 "2f5310e8f37c3fbbc0d643a18d27e60c57ba17763a7e6e1e7ad9ae6cb4fe285a"
   head "https://github.com/coreos/fleet.git"
 
   bottle do
-    sha1 "9c19743e0bc3457147b72d66ee9162e0a9a6e3da" => :yosemite
-    sha1 "99e7396f5bbf76ef18f917592edb5cd10bc5cf27" => :mavericks
-    sha1 "48fa5e33e2805a0a76a8a341085bae8ea40dc4c7" => :mountain_lion
+    cellar :any
+    sha256 "fd9569cd4defba9154664f29281803fe349b00eb822145333f1c77da340f0c4b" => :yosemite
+    sha256 "c90e834545e262bf320f2de1e4cb5ddf47ecf44a0a54ec36aa1cb641b46fd198" => :mavericks
+    sha256 "dc0dcbe17ba1d306f20dca802e29b5d8ce5c22b1dc2a933ccd2081e1e3a7d31a" => :mountain_lion
   end
 
   depends_on "go" => :build

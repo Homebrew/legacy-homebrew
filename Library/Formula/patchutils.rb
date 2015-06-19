@@ -1,29 +1,30 @@
 class Patchutils < Formula
+  desc "Small collection of programs that operate on patch files"
   homepage "http://cyberelk.net/tim/software/patchutils/"
-  url "http://cyberelk.net/tim/data/patchutils/stable/patchutils-0.3.3.tar.xz"
-  sha1 "89d3f8a454bacede1b9a112b3a13701ed876fcc1"
+  url "http://cyberelk.net/tim/data/patchutils/stable/patchutils-0.3.4.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/p/patchutils/patchutils_0.3.4.orig.tar.xz"
+  sha256 "cf55d4db83ead41188f5b6be16f60f6b76a87d5db1c42f5459d596e81dabe876"
+
+  head do
+    url "https://github.com/twaugh/patchutils.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
 
   bottle do
     cellar :any
-    sha1 "e339d44549d5adaf0907752d87a15c74fdc14892" => :yosemite
-    sha1 "1d2ef386ca2d3f17574ecdb8ca2cf3dbde142296" => :mavericks
-    sha1 "56c838384a5712786d2a424a57ce69b168e1f66e" => :mountain_lion
-  end
-
-  # Fix 'filterdiff --exclude-from-file...' crashes
-  # https://fedorahosted.org/patchutils/ticket/30
-  patch do
-    url "https://fedorahosted.org/patchutils/raw-attachment/ticket/30/0001-Provide-NULL-pointer-to-getline-to-avoid-realloc-ing.patch"
-    sha1 "e787c8df1501feea5c895cdf9e8e01441035bdcf"
+    sha256 "24f30129312fa91a40c2e4ccede817ea0ccaf51ecad8cf656089332dba78a84c" => :yosemite
+    sha256 "947e0db6b163b638d885a97b336c08d48bef820ee69b3668810f63d24623e300" => :mavericks
+    sha256 "58d815641c3a74f955f94cc5fa127bbc4da63547cd210bdd9385bd76ed825f64" => :mountain_lion
   end
 
   def install
+    system "./bootstrap" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
 
   test do
-    assert_match /a\/libexec\/NOOP/,
-          shell_output("#{bin}/lsdiff #{HOMEBREW_LIBRARY.join("Homebrew", "test", "patches", "noop-a.diff")}")
+    assert_match %r{a\/libexec\/NOOP}, shell_output("#{bin}/lsdiff #{test_fixtures("test.diff")}")
   end
 end

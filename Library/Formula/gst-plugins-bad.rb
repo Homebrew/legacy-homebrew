@@ -1,6 +1,7 @@
 require 'formula'
 
 class GstPluginsBad < Formula
+  desc "GStreamer plugins (less supported, missing docs, not fully tested)"
   homepage 'http://gstreamer.freedesktop.org/'
   url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.5.tar.xz'
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.5.tar.xz'
@@ -18,6 +19,7 @@ class GstPluginsBad < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on "openssl"
   end
 
   depends_on 'pkg-config' => :build

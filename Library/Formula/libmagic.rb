@@ -1,26 +1,19 @@
 class Libmagic < Formula
+  desc "Implementation of the file(1) command"
   homepage "http://www.darwinsys.com/file/"
-  url "ftp://ftp.astron.com/pub/file/file-5.21.tar.gz"
-  mirror "http://fossies.org/unix/misc/file-5.21.tar.gz"
-  sha1 "9836603b75dde99664364b0e7a8b5492461ac0fe"
+  url "ftp://ftp.astron.com/pub/file/file-5.23.tar.gz"
+  mirror "https://fossies.org/unix/misc/file-5.23.tar.gz"
+  sha256 "2c8ab3ff143e2cdfb5ecee381752f80a79e0b4cfe9ca4cc6e1c3e5ec15e6157c"
 
   bottle do
-    revision 2
-    sha1 "ecfd27c64c9e35bb4411931ec6638b350de353a3" => :yosemite
-    sha1 "1b39fac95723524d2f413ee9239cc57ae8404d5d" => :mavericks
-    sha1 "df255124f0a0460480380bc3c0d7ec4cc99896b3" => :mountain_lion
+    sha256 "59bb0f198492cab776647823b467b60a25c851fe5f03c06de15dfec008c38827" => :yosemite
+    sha256 "073b5db84f8b641c0e6d2f8ff8caca751e42e8cfc0c31d60ec42863e3afd4ea4" => :mavericks
+    sha256 "a613459fd15e1a648ecc9179e398ee1de76ea56d72fcfc902fd441683b1ea8b3" => :mountain_lion
   end
 
   option :universal
 
   depends_on :python => :optional
-
-  # Patch applied upstream, should be in 5.22
-  # See http://bugs.gw.com/view.php?id=230
-  patch do
-    url "https://github.com/file/file/commit/f79e16aebe701fdb8e821c3c1f3504568d0c10f5.diff"
-    sha1 "7dcbf309bf013c11a6c5367bab8834050d762bd5"
-  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -29,12 +22,17 @@ class Libmagic < Formula
     rm "src/magic.h"
 
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--enable-fsect-man5"
+                          "--enable-fsect-man5",
+                          "--enable-static"
     system "make", "install"
+    (share+"misc/magic").install Dir["magic/Magdir/*"]
 
-    cd "python" do
-      system "python", "setup.py", "install", "--prefix=#{prefix}"
+    if build.with? "python"
+      cd "python" do
+        system "python", *Language::Python.setup_install_args(prefix)
+      end
     end
 
     # Don't dupe this system utility

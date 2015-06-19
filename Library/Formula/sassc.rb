@@ -1,16 +1,16 @@
 require "formula"
 
 class Sassc < Formula
+  desc "Wrapper around libsass that helps to create command-line apps"
   homepage "https://github.com/sass/sassc"
-  url "https://github.com/sass/sassc/archive/3.1.0.tar.gz"
-  sha1 "573224ad922b46ea1a568807ddcbc7de41a4254d"
+  url "https://github.com/sass/sassc.git", :tag => "3.2.4", :revision => "a88dd098143a1297d68a509f6dd99be25487197a"
   head "https://github.com/sass/sassc.git"
 
   bottle do
     cellar :any
-    sha1 "744cd165da007750644e6eb3cfb1a7b76d94c7a2" => :yosemite
-    sha1 "d6d38f5d139073162943d1a5828c1b8b38e998be" => :mavericks
-    sha1 "26c429c4b643c8cf8602e2534f44473e18859ab5" => :mountain_lion
+    sha256 "1ad01ed7c28efd12f067f2cc6a743ec291218231462f17419b32be0d09538901" => :yosemite
+    sha256 "ce98149a0cf434fda2ce3e9803f92a77c4581df9ca7b9f8f13478b56670c956c" => :mavericks
+    sha256 "16150a5116dd01b150f1b48696e0dfc256cb38d5b4f5aff9f4edb18bd5d9c54c" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -20,7 +20,6 @@ class Sassc < Formula
   depends_on "libsass"
 
   def install
-    ENV["SASSC_VERSION"] = "3.1.0"
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}", "--disable-silent-rules",
                           "--disable-dependency-tracking"

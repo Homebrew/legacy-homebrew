@@ -1,15 +1,13 @@
-require "formula"
-
 class Mercury < Formula
+  desc "Logic/functional programming language"
   homepage "http://mercurylang.org/"
-  url "http://dl.mercurylang.org/release/mercury-srcdist-14.01.tar.gz"
-  sha1 "619680675c68a0b953024b7ee4d3886a885d94de"
+  url "http://dl.mercurylang.org/release/mercury-srcdist-14.01.1.tar.gz"
+  sha1 "8d8295aed6cadb6cd2e932490042de6075d18acf"
 
   bottle do
-    revision 1
-    sha1 "b9f481aecf1ecb6032b09c8434b86b87fd1f67c0" => :mavericks
-    sha1 "92798069609393c4d0d558080e93db63d60738ff" => :mountain_lion
-    sha1 "5319c3fa8a318136d9c9ffc4818a22ebe38e9aeb" => :lion
+    sha1 "82730c120043d0a741d8deeceb79c82b7e232549" => :yosemite
+    sha1 "70e9c006f0287ff012441f469d1fa39b6ec5a291" => :mavericks
+    sha1 "0ab2f708f25879f4b894d89a271ddb23be0d984e" => :mountain_lion
   end
 
   depends_on "erlang" => :optional
@@ -31,12 +29,12 @@ class Mercury < Formula
 
     # The build system doesn't quite honour the mandir/infodir autoconf
     # parameters.
-    system "make", "install", "PARALLEL=-j", "INSTALL_MAN_DIR=#{man}", "INSTALL_INFO_DIR=#{info}"
+    system "make", "install", "PARALLEL=-j",
+                              "INSTALL_MAN_DIR=#{man}",
+                              "INSTALL_INFO_DIR=#{info}"
 
     # Remove batch files for windows.
-    Dir.glob("#{bin}/*.bat") do |path|
-      rm path
-    end
+    rm Dir.glob("#{bin}/*.bat")
   end
 
   test do
@@ -54,8 +52,6 @@ class Mercury < Formula
     system "#{bin}/mmc", "--make", "hello"
     assert File.exist?(testpath/"hello")
 
-    output = `#{testpath}/hello`
-    assert_equal test_string, output
-    assert_equal 0, $?.exitstatus
+    assert_equal test_string, shell_output("#{testpath}/hello")
   end
 end

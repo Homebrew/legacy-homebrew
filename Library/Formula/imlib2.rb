@@ -1,25 +1,22 @@
-require 'formula'
-
 class Imlib2 < Formula
-  homepage 'http://sourceforge.net/projects/enlightenment/files/'
-  url 'https://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.4.6/imlib2-1.4.6.tar.bz2'
-  sha1 '20e111d822074593e8d657ecf8aafe504e9e2967'
-  revision 1
+  desc "Image loading and rendering library"
+  homepage "http://sourceforge.net/projects/enlightenment/files/"
+  url "https://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.4.7/imlib2-1.4.7.tar.bz2"
+  sha256 "35d733ce23ad7d338cff009095d37e656cb8a7a53717d53793a38320f9924701"
 
   bottle do
-    revision 1
-    sha1 "c6cb08c880b91081f247e0ee7f3399c76f1392cf" => :yosemite
-    sha1 "452e184ee428ebf3dabd28c81570e04c267540a7" => :mavericks
-    sha1 "43617f8bb0c30c7de73dc5f2e07d6f1f10fd8e6c" => :mountain_lion
+    sha256 "4b20ff58bc429b7a553e36b665d0d3d8b918eb9af8cd67fef34ca561a70ff543" => :yosemite
+    sha256 "5675decb0b01e4ca1738ad722fcedc7d19c5c736b58e3b28b807ebe3f1e39c34" => :mavericks
+    sha256 "edd83e83ed8c0a0b57a330aba23bf3b60ba7bd946e78386e8066276af3e5781a" => :mountain_lion
   end
 
   deprecated_option "without-x" => "without-x11"
 
-  depends_on 'freetype'
-  depends_on 'libpng' => :recommended
+  depends_on "freetype"
+  depends_on "libpng" => :recommended
   depends_on :x11 => :recommended
-  depends_on 'pkg-config' => :build
-  depends_on 'jpeg' => :recommended
+  depends_on "pkg-config" => :build
+  depends_on "jpeg" => :recommended
 
   def install
     args = %W[

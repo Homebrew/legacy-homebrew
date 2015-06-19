@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cntlm < Formula
+  desc "NTLM authentication proxy with tunneling"
   homepage 'http://cntlm.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/cntlm/cntlm/cntlm%200.92.3/cntlm-0.92.3.tar.bz2'
   sha1 '9b68a687218dd202c04b678ba8c559edba6f6f7b'
@@ -29,7 +30,7 @@ class Cntlm < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{bin}/cntlm</string>
+          <string>#{opt_bin}/cntlm</string>
         </array>
         <key>KeepAlive</key>
         <false/>

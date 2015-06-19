@@ -1,19 +1,17 @@
-require "formula"
-
 class Freetds < Formula
+  desc "Libraries to talk to Microsoft SQL Server and Sybase databases"
   homepage "http://www.freetds.org/"
-  url "http://mirrors.ibiblio.org/freetds/stable/freetds-0.91.tar.gz"
-  sha1 "3ab06c8e208e82197dc25d09ae353d9f3be7db52"
-  revision 2
+  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.1.tar.gz"
+  sha256 "bb81968691502c4f2ce904e1cf4e3c3e6da311999d1e9829d12a4271e6811a7c"
 
   bottle do
-    sha1 "7f98f1313e932185398c72237b7ac0d408cea986" => :mavericks
-    sha1 "ecef51129ffd5d25543a9775960d5cea716bae78" => :mountain_lion
-    sha1 "f261d6b8309af7642198ad87a2b63599a08602e3" => :lion
+    sha256 "e49cee90451411cafccf7a967519814cf2a25a120e8703012c8ad674c5b0f40c" => :yosemite
+    sha256 "809bc9ded6749e29dce21633b281ce48e32e349d57712645a588291afe50ad1f" => :mavericks
+    sha256 "6f2f8964dfdc0020b03ab9c28f37fa60343c7316f063c9c4e47293e4e6e6f764" => :mountain_lion
   end
 
   head do
-    url "https://git.gitorious.org/freetds/freetds.git"
+    url "https://github.com/FreeTDS/freetds.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -21,43 +19,44 @@ class Freetds < Formula
   end
 
   option :universal
-  option "enable-msdblib", "Enable Microsoft behavior in the DB-Library API where it diverges from Sybase's"
-  option "enable-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
-  option "enable-odbc-wide", "Enable odbc wide, prevent unicode - MemoryError's"
-  option "enable-krb", "Enable Kerberos support"
+  option "with-msdblib", "Enable Microsoft behavior in the DB-Library API where it diverges from Sybase's"
+  option "with-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
+  option "with-odbc-wide", "Enable odbc wide, prevent unicode - MemoryError's"
+  option "with-krb5", "Enable Kerberos support"
+  option "without-openssl", "Build without OpenSSL support (default is to use brewed OpenSSL)"
+
+  deprecated_option "enable-msdblib" => "with-msdblib"
+  deprecated_option "enable-sybase-compat" => "with-sybase-compat"
+  deprecated_option "enable-odbc-wide" => "with-odbc-wide"
+  deprecated_option "enable-krb" => "with-krb5"
 
   depends_on "pkg-config" => :build
   depends_on "unixodbc" => :optional
-  depends_on "openssl"
+  depends_on "openssl" => :recommended
 
   def install
-    system "autoreconf -i" if build.head?
+    system "autoreconf", "-i" if build.head?
 
     args = %W[
       --prefix=#{prefix}
-      --with-openssl=#{Formula["openssl"].opt_prefix}
       --with-tdsver=7.1
       --mandir=#{man}
     ]
 
+    if build.with? "openssl"
+      args << "--with-openssl=#{Formula["openssl"].opt_prefix}"
+    end
+
     if build.with? "unixodbc"
-      args << "--with-unixodbc=#{Formula["unixodbc"].prefix}"
+      args << "--with-unixodbc=#{Formula["unixodbc"].opt_prefix}"
     end
 
-    if build.include? "enable-msdblib"
-      args << "--enable-msdblib"
-    end
-
-    if build.include? "enable-sybase-compat"
-      args << "--enable-sybase-compat"
-    end
-
-    if build.include? "enable-odbc-wide"
-      args << "--enable-odbc-wide"
-    end
-
-    if build.include? "enable-krb"
-      args << "--enable-krb5"
+    # Translate formula's "--with" options to configuration script's "--enable"
+    # options
+    %w[msdblib sybase-compat odbc-wide krb5].each do |option|
+      if build.with? option
+        args << "--enable-#{option}"
+      end
     end
 
     ENV.universal_binary if build.universal?

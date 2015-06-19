@@ -1,14 +1,14 @@
-require "formula"
-
 class Gearman < Formula
+  desc "Application framework to farm out work to other machines or processes"
   homepage "http://gearman.org/"
   url "https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz"
-  sha1 "85b5271ea3ac919d96fff9500993b73c9dc80c6c"
+  sha256 "973d7a3523141a84c7b757c6f243febbc89a3631e919b532c056c814d8738acb"
 
   bottle do
-    sha1 "99393fa57c7c2ff6c4b52d3639e80c77b099edc3" => :yosemite
-    sha1 "efc68a7e0880ad8c63f557ee335ef2a29f50a076" => :mavericks
-    sha1 "3efaaacefd8dc65954e3195637149ff43e4d12d6" => :mountain_lion
+    revision 1
+    sha256 "a3eaa2cb9241381c6679fe9f9547c0477ba0f1b860f97a405b4f4d8d8b0d7c81" => :yosemite
+    sha256 "a843fcbaf51130d36e86362fd832444de1815c1e546b3590b257eada0e6c6597" => :mavericks
+    sha256 "0637f412fcb5d0c324c9d63120bd8ea4809d826e729d1c357438c690f95ae954" => :mountain_lion
   end
 
   option "with-mysql", "Compile with MySQL persistent queue enabled"
@@ -40,17 +40,18 @@ class Gearman < Formula
 
     args = [
       "--prefix=#{prefix}",
+      "--localstatedir=#{var}",
       "--disable-silent-rules",
       "--disable-dependency-tracking",
       "--disable-libdrizzle",
-      "--with-boost=#{Formula["boost"].prefix}",
+      "--with-boost=#{Formula["boost"].opt_prefix}",
       "--with-sqlite3"
     ]
 
     if build.with? "cyassl"
       args << "--enable-ssl" << "--enable-cyassl"
     elsif build.with? "openssl"
-      args << "--enable-ssl" << "--with-openssl=#{Formula["openssl"].prefix}" << "--disable-cyassl"
+      args << "--enable-ssl" << "--with-openssl=#{Formula["openssl"].opt_prefix}" << "--disable-cyassl"
     else
       args << "--disable-ssl" << "--disable-cyassl"
     end
@@ -67,14 +68,15 @@ class Gearman < Formula
       args << "--disable-libmemcached" << "--without-memcached"
     end
 
-    if build.without? "tokyo-cabinet"
-      args << "--disable-libtokyocabinet"
-    end
+
+    args << "--disable-libtokyocabinet" if build.without? "tokyo-cabinet"
 
     args << (build.with?("mysql") ? "--with-mysql=#{Formula["mysql"].opt_bin}/mysql_config" : "--without-mysql")
     args << (build.with?("hiredis") ? "--enable-hiredis" : "--disable-hiredis")
 
     ENV.append_to_cflags "-DHAVE_HTONLL"
+
+    (var/"log").mkpath
     system "./configure", *args
     system "make", "install"
   end

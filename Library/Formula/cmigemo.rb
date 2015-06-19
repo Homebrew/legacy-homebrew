@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cmigemo < Formula
+  desc "Migemo is a tool that supports Japanese incremental search with Romaji"
   homepage 'http://www.kaoriya.net/software/cmigemo'
 
   stable do

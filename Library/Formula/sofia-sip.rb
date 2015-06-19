@@ -1,6 +1,7 @@
 require 'formula'
 
 class SofiaSip < Formula
+  desc "SIP User-Agent library"
   homepage 'http://sofia-sip.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/sofia-sip/sofia-sip/1.12.11/sofia-sip-1.12.11.tar.gz'
   sha1 'fe11c98fae19cbdbd7e55876c5553c1f9a0c561d'

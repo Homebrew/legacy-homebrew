@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pmdmini < Formula
+  desc "Plays music in PC-88/98 PMD chiptune format"
   homepage 'https://github.com/BouKiCHi/mdxplayer'
   url 'https://github.com/BouKiCHi/mdxplayer/archive/aa55d9d3128f06aac4a15d5cefc083bd7b66d814.tar.gz'
   version '20120115'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mpg321 < Formula
+  desc "Command-line MP3 player"
   homepage 'http://mpg321.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/mpg321/mpg321/0.3.2/mpg321_0.3.2.orig.tar.gz'
   sha1 'bf1c22542c86af69267828e45f217fdeb49e5d43'

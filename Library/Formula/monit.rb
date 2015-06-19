@@ -1,15 +1,15 @@
-require "formula"
-
 class Monit < Formula
-  homepage "http://mmonit.com/monit/"
-  url "http://mmonit.com/monit/dist/monit-5.10.tar.gz"
-  sha1 "4933898c6e6191e8d8ee4730c64ef6f16c8130c1"
+  desc "Manage and monitor processes, files, directories, and devices"
+  homepage "https://mmonit.com/monit/"
+  url "https://mmonit.com/monit/dist/monit-5.14.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/m/monit/monit_5.14.orig.tar.gz"
+  sha256 "d0424c3ee8ed43d670ba039184a972ac9f3ad6f45b0806ec17c23820996256c6"
 
   bottle do
     cellar :any
-    sha1 "c21b130f1492f1ec2d64aaf2af28e2f7924bd3c7" => :yosemite
-    sha1 "a0a3f64fe0ef95bc2adb2e5a3a0cf5647a6d3ef5" => :mavericks
-    sha1 "1f6659744cdcfc0324d74ee0237d61ca14d62b25" => :mountain_lion
+    sha256 "599c29599d179cd53f4f0983d1fe535aeee91b199b3d0acfd38089ae0fde94b9" => :yosemite
+    sha256 "c48854b626a95aa3015877bf3aba9e77c7beb7cf0d86d5bb74894564c6c1d360" => :mavericks
+    sha256 "ed2484446e8bbb5c0c5f8ce9c9559e7f181e4e7db97a19200ebcc72417b2cfe2" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -18,10 +18,11 @@ class Monit < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}/monit",
                           "--sysconfdir=#{etc}/monit"
-    system "make install"
+    system "make", "install"
+    (share/"monit").install "monitrc"
   end
 
   test do
-    system "#{bin}/monit", "-h"
+    system bin/"monit", "-c", share/"monit/monitrc", "-t"
   end
 end

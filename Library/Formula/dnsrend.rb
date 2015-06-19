@@ -1,9 +1,8 @@
-require "formula"
-
 class Dnsrend < Formula
+  desc "DNS message dissector"
   homepage "http://romana.now.ie/dnsrend"
   url "http://romana.now.ie/software/dnsrend-0.08.tar.gz"
-  sha1 "67f97d1d00b4f371857e2e844dde4130c95cc05d"
+  sha256 "32fa6965f68e7090af7e4a9a06de53d12f40397f644a76cf97b6b4cb138da93a"
 
   bottle do
     sha1 "017b703c7136f3c69c666bfc2b71e13f37c28df2" => :mavericks
@@ -13,14 +12,14 @@ class Dnsrend < Formula
 
   resource "Net::Pcap" do
     url "http://search.cpan.org/CPAN/authors/id/S/SA/SAPER/Net-Pcap-0.17.tar.gz"
-    mirror "http://search.cpan.org/CPAN/authors/id/S/SA/SAPER/Net-Pcap-0.17.tar.gz"
-    sha1 "eca0c42bf70cf9739a0f669d37df8c4815e1c836"
+    mirror "https://cpan.metacpan.org/authors/id/S/SA/SAPER/Net-Pcap-0.17.tar.gz"
+    sha256 "aaee41ebea17924abdc2d683ec940b3e6b0dc1e5e344178395f57774746a5452"
   end
 
   resource "Net::Pcap::Reassemble" do
     url "http://search.cpan.org/CPAN/authors/id/J/JR/JRAFTERY/Net-Pcap-Reassemble-0.04.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/J/JR/JRAFTERY/Net-Pcap-Reassemble-0.04.tar.gz"
-    sha1 "c6a614664e48ec21180cccdf639367c15df2481f"
+    mirror "https://cpan.metacpan.org/authors/id/J/JR/JRAFTERY/Net-Pcap-Reassemble-0.04.tar.gz"
+    sha256 "0bcba2d4134f6d412273a75663628b08b0a164e0a5ecb8a2fd14cdf5237629c4"
   end
 
   def install

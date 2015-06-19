@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mad < Formula
+  desc "MPEG audio decoder"
   homepage 'http://www.underbit.com/products/mad/'
   url 'https://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz'
   sha1 'cac19cd00e1a907f3150cc040ccc077783496d76'

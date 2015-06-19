@@ -1,6 +1,7 @@
 require "formula"
 
 class Tpl < Formula
+  desc "Store and retrieve binary data in C"
   homepage "http://troydhanson.github.io/tpl/"
   url "https://github.com/troydhanson/tpl/archive/v1.6.1.tar.gz"
   sha1 "2ee92627e8f67400061d8fc606b601988ed90217"
