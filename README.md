@@ -17,6 +17,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Avenida.com
 - GumGum
 - Fuse Elements
+- Frontline Solvers
 
 ## Features
 
@@ -45,6 +46,8 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 For release notes, look in the `notes/` directory.  They should also be up on [ls.implicit.ly](http://ls.implicit.ly/spark-jobserver/spark-jobserver).
 
 ## Quick start / development mode
+
+NOTE: This quick start guide uses SBT to run the job server and the included test jar, but the normal development process is to create a separate project for Job Server jobs and to deploy the job server to a Spark cluster.
 
 You need to have [SBT](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html) installed.
 
@@ -230,6 +233,8 @@ def validate(sc:SparkContext, config: Contig): SparkJobValidation = {
 2. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
    it to the remotes you have configured in `<environment>.sh`
 3. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
+
+The `server_start.sh` script uses `spark-submit` under the hood and may be passed any of the standard extra arguments from `spark-submit`.
 
 NOTE: by default the assembly jar from `job-server-extras`, which includes support for SQLContext and HiveContext, is used.  If you face issues with all the extra dependencies, consider modifying the install scripts to invoke `sbt job-server/assembly` instead, which doesn't include the extra dependencies.
 
