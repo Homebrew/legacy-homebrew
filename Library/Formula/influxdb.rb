@@ -1,11 +1,13 @@
-require "formula"
 require "language/go"
 
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "http://influxdb.com"
-  url "https://github.com/influxdb/influxdb/archive/v0.9.0.tar.gz"
-  sha256 "c7cc869754d7bfb9374b0a16a9b91073d9588adedbd7bfda1d5709e22d3a3d75"
+
+  stable do
+    url "https://github.com/influxdb/influxdb/archive/v0.9.0.tar.gz"
+    sha256 "c7cc869754d7bfb9374b0a16a9b91073d9588adedbd7bfda1d5709e22d3a3d75"
+  end
 
   bottle do
     cellar :any
@@ -14,8 +16,15 @@ class Influxdb < Formula
     sha256 "c9581f39e4904fa38609e140396e6e67b44080b26e7a26a3b2ae68e0a3b831ae" => :mountain_lion
   end
 
+  head do
+    url "https://github.com/influxdb/influxdb.git"
+
+    go_resource "collectd.org" do
+      url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
+    end
+  end
+
   depends_on "go" => :build
-  depends_on :hg => :build
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git", :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
@@ -81,7 +90,11 @@ class Influxdb < Formula
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd influxdb_path do
-      system "go", "install", "-ldflags", "-X main.version 0.9.0 -X main.commit 471117ce5b308e59f8f247d8a88a52ead553b602", "./..."
+      if build.head?
+        system "go", "install", "-ldflags", "-X main.version 0.9.0-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
+      else
+        system "go", "install", "-ldflags", "-X main.version 0.9.0 -X main.commit 471117ce5b308e59f8f247d8a88a52ead553b602", "./..."
+      end
     end
 
     inreplace influxdb_path/"etc/config.sample.toml" do |s|
@@ -90,14 +103,13 @@ class Influxdb < Formula
       s.gsub! "/var/opt/influxdb/hh", "#{var}/influxdb/hh"
     end
 
-    bin.install buildpath/"bin/influxd" => "influxd"
-    bin.install buildpath/"bin/influx" => "influx"
+    bin.install buildpath/"bin/influxd"
+    bin.install buildpath/"bin/influx"
     etc.install influxdb_path/"etc/config.sample.toml" => "influxdb.conf"
 
     (var/"influxdb/data").mkpath
-    (var/"influxdb/raft").mkpath
-    (var/"influxdb/state").mkpath
-    (var/"influxdb/logs").mkpath
+    (var/"influxdb/meta").mkpath
+    (var/"influxdb/hh").mkpath
   end
 
   plist_options :manual => "influxd -config #{HOMEBREW_PREFIX}/etc/influxdb.conf"
@@ -130,6 +142,15 @@ class Influxdb < Formula
         <string>#{var}/log/influxdb.log</string>
       </dict>
     </plist>
+    EOS
+  end
+
+  def caveats; <<-EOS.undent
+    Config files from old InfluxDB versions are incompatible with version 0.9.
+    If upgrading from a pre-0.9 version, the new configuration file will be named:
+        #{etc}/influxdb.conf.default
+    To generate a new config file:
+        influxd config > influxdb.conf.generated
     EOS
   end
 end
