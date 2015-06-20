@@ -3,7 +3,7 @@ class Acpica < Formula
   homepage "https://www.acpica.org/"
   head "https://github.com/acpica/acpica.git"
   url "https://acpica.org/sites/acpica/files/acpica-unix2-20150619.tar.gz"
-  version "20150618"
+  version "20150619"
   sha256 "7884f414a8f3bc58c21f3e9bc4f0094771fa665be0b24140b54bd7477764f215"
 
   bottle do
