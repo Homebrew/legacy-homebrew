@@ -32,6 +32,11 @@ class Librsvg < Formula
     args << "--enable-svgz" if build.with? "libgsf"
 
     system "./configure", *args
+
+    # disable updating gdk-pixbuf cache, we will do this manually in post_install
+    # https://github.com/Homebrew/homebrew/issues/40833
+    inreplace "gdk-pixbuf-loader/Makefile", "$(GDK_PIXBUF_QUERYLOADERS) > $(DESTDIR)$(gdk_pixbuf_cache_file) ;", ""
+
     system "make", "install",
       "gdk_pixbuf_binarydir=#{lib}/gdk-pixbuf-2.0/2.10.0/loaders",
       "gdk_pixbuf_moduledir=#{lib}/gdk-pixbuf-2.0/2.10.0/loaders"
