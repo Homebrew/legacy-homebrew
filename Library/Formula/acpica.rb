@@ -3,7 +3,7 @@ class Acpica < Formula
   homepage "https://www.acpica.org/"
   head "https://github.com/acpica/acpica.git"
   url "https://acpica.org/sites/acpica/files/acpica-unix2-20150619.tar_1.gz"
-  sha1 "283c594c4b89db8e3bef8fca25021c52938987ad"
+  sha256 "12d68f781c9f5c3dfb61ef280f41f0d019d7ba4e914ef916ed3e1d22712ffd52"
 
   bottle do
     cellar :any
@@ -14,8 +14,8 @@ class Acpica < Formula
 
   def install
     ENV.deparallelize
-    system "make", "HOST=_APPLE", "PREFIX=#{prefix}"
-    system "make", "install", "HOST=_APPLE", "PREFIX=#{prefix}"
+    system "make", "PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
