@@ -5,6 +5,13 @@ class Pwsafe < Formula
   sha256 "61e91dc5114fe014a49afabd574eda5ff49b36c81a6d492c03fcb10ba6af47b7"
   revision 1
 
+  bottle do
+    cellar :any
+    sha256 "3484c4e83315adbbdf77155e2af0e1d41a4d3a99d9769e0f7c1520195d2a1a47" => :yosemite
+    sha256 "3143d04abfb5df939c94d008bc6ccc716d3dec530572433c17ce665c52c37b8c" => :mavericks
+    sha256 "e4537a372cb1f6e17d005fb8b2f73fad576722832058ad514bcf4fa7e0112e41" => :mountain_lion
+  end
+
   depends_on "openssl"
   depends_on "readline"
 
