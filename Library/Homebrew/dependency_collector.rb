@@ -57,19 +57,11 @@ class DependencyCollector
   end
 
   def build(spec)
-    spec, tags = case spec
-                 when Hash then destructure_spec_hash(spec)
-                 else spec
-                 end
-
+    spec, tags = Hash === spec ? spec.first : spec
     parse_spec(spec, Array(tags))
   end
 
   private
-
-  def destructure_spec_hash(spec)
-    spec.each { |o| return o }
-  end
 
   def parse_spec(spec, tags)
     case spec
