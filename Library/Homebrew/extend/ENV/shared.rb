@@ -7,16 +7,6 @@ module SharedEnvExtension
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
-  COMPILER_SYMBOL_MAP = {
-    "gcc-4.0"  => :gcc_4_0,
-    "gcc-4.2"  => :gcc,
-    "llvm-gcc" => :llvm,
-    "clang"    => :clang,
-  }
-
-  COMPILERS = COMPILER_SYMBOL_MAP.values +
-    GNU_GCC_VERSIONS.map { |n| "gcc-#{n}" }
-
   SANITIZED_VARS = %w[
     CDPATH GREP_OPTIONS CLICOLOR_FORCE
     CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
