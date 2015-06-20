@@ -210,6 +210,7 @@ TAP_MIGRATIONS = {
   "urweb" => "homebrew/boneyard",
   "ushare" => "homebrew/boneyard",
   "viewglob" => "homebrew/boneyard",
+  "vobcopy" => "homebrew/boneyard",
   "wdfs" => "homebrew/fuse",
   "wkhtmltopdf" => "homebrew/boneyard",
   "wmctrl" => "homebrew/x11",
