@@ -6,8 +6,7 @@ class ScalewayCli < Formula
   sha256 "78ac104bf11f856ea50e7c75442264e5601214b5d33118648866250fcc0bff80"
 
   def install
-    mv "scw-Darwin-x86_64", "scw"
-    bin.install "scw"
+    bin.install "scw-Darwin-x86_64" => "scw"
   end
 
   test do
