@@ -16,6 +16,11 @@ class Dos2unix < Formula
     sha256 "59cea39b181913532bf9e9c234a142c15e330d5eee145cd6b90f54becd6ec27b"
   end
 
+  devel do
+    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.2.3-beta1.tar.gz"
+    sha256 "59cea39b181913532bf9e9c234a142c15e330d5eee145cd6b90f54becd6ec27b"
+  end
+
   depends_on "gettext"
 
   def install
