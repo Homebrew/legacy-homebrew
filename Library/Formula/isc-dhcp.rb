@@ -41,13 +41,7 @@ class IscDhcp < Formula
                           "--prefix=#{prefix}",
                           "--localstatedir=#{dhcpd_dir}"
 
-    # the 'bind' subdirectory doesn't like overly parallel builds
-    # so build it sequentially. deparallelizing the whole build
-    # can be slow.
-    previous_makeflags = ENV['MAKEFLAGS']
-    ENV.deparallelize
-    system 'make -C bind'
-    ENV['MAKEFLAGS'] = previous_makeflags
+    ENV.deparallelize { system "make", "-C", "bind" }
 
     # build everything else
     inreplace 'Makefile', 'SUBDIRS = bind', 'SUBDIRS = '

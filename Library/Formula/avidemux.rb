@@ -94,11 +94,10 @@ class Avidemux < Formula
       system "cmake", *args
       # Parallel build sometimes fails with:
       #   "ld: library not found for -lADM6avcodec"
-      ENV.deparallelize
-      system "make"
-      system "make", "install"
-      # There is no ENV.parallelize, so:
-      ENV["MAKEFLAGS"] = "-j#{ENV.make_jobs}"
+      ENV.deparallelize do
+        system "make"
+        system "make", "install"
+      end
     end
 
     # UIs: Build Qt4 and cli
