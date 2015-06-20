@@ -2,8 +2,8 @@ class Acpica < Formula
   desc "OS-independent implementation of the ACPI specification"
   homepage "https://www.acpica.org/"
   head "https://github.com/acpica/acpica.git"
-  url "https://acpica.org/sites/acpica/files/acpica-unix2-20150204.tar.gz"
-  sha1 "8c5514b1171afb40dca40289581c8ba3f17583e1"
+  url "https://acpica.org/sites/acpica/files/acpica-unix2-20150619.tar.gz"
+  sha256 "7884f414a8f3bc58c21f3e9bc4f0094771fa665be0b24140b54bd7477764f215"
 
   bottle do
     cellar :any
@@ -14,8 +14,8 @@ class Acpica < Formula
 
   def install
     ENV.deparallelize
-    system "make", "HOST=_APPLE", "PREFIX=#{prefix}"
-    system "make", "install", "HOST=_APPLE", "PREFIX=#{prefix}"
+    system "make", "PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
