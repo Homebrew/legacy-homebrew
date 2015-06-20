@@ -25,12 +25,10 @@ class Points2grid < Formula
   end
 
   test do
-    mktemp do
-      system bin/"points2grid",
-             "-i", libexec/"example.las",
-             "-o", "example",
-             "--max", "--output_format", "grid"
-      assert_equal 5, `grep -c '423.820000' < example.max.grid`.strip.to_i
-    end
+    system bin/"points2grid",
+           "-i", libexec/"example.las",
+           "-o", "example",
+           "--max", "--output_format", "grid"
+    assert_equal 5, File.read("example.max.grid").scan("423.820000").size
   end
 end
