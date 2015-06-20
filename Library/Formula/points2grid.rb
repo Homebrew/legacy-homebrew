@@ -29,6 +29,6 @@ class Points2grid < Formula
            "-i", libexec/"example.las",
            "-o", "example",
            "--max", "--output_format", "grid"
-    assert_equal 5, File.read("example.max.grid").scan("423.820000").size
+    assert_equal 13, File.read("example.max.grid").scan("423.820000").size
   end
 end
