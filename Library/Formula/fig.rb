@@ -82,7 +82,6 @@ class Fig < Formula
   end
 
   test do
-    output = shell_output(bin/"docker-compose --version")
-    assert output.include? "compose 1.3.0"
+    assert_match /#{version}/, shell_output(bin/"docker-compose --version")
   end
 end
