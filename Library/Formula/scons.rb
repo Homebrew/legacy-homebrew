@@ -3,8 +3,8 @@ require "formula"
 class Scons < Formula
   desc "Substitute for classic 'make' tool with autoconf/automake functionality"
   homepage "http://www.scons.org"
-  url "https://downloads.sourceforge.net/scons/scons-2.3.4.tar.gz"
-  sha1 "8c55f8c15221c1b3536a041d46056ddd7fa2d23a"
+  url "https://downloads.sourceforge.net/scons/scons-2.3.5.tar.gz"
+  sha256 "5b72f959cafbef81f408b503bc8e8d5cfc39f41fb5b629e9ff13bdf20a3eefe2"
 
   bottle do
     cellar :any
