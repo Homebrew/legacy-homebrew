@@ -37,11 +37,11 @@ class Fdkaac < Formula
     samples = [].fill(0.0, 0, num_samples)
 
     num_samples.times do |i|
-      samples[i] = Math::sin(position_in_period * two_pi) * max_amplitude
+      samples[i] = Math.sin(position_in_period * two_pi) * max_amplitude
 
       position_in_period += position_in_period_delta
 
-      if(position_in_period >= 1.0)
+      if position_in_period >= 1.0
         position_in_period -= 1.0
       end
     end
@@ -50,9 +50,9 @@ class Fdkaac < Formula
       (sample * 32767.0).round
     end
 
-    File.open("#{testpath}/tone.pcm", "wb") {
-      |f| f.syswrite(samples.flatten.pack("s*"))
-    }
+    File.open("#{testpath}/tone.pcm", "wb") do |f|
+      f.syswrite(samples.flatten.pack("s*"))
+    end
   end
 
   test do
