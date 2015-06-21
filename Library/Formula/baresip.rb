@@ -1,8 +1,8 @@
 class Baresip < Formula
   desc "Modular SIP useragent"
   homepage "http://www.creytiv.com/"
-  url "http://www.creytiv.com/pub/baresip-0.4.12.tar.gz"
-  sha1 "03f72e93ddf2f896568b092ee63203b1c6a19679"
+  url "http://www.creytiv.com/pub/baresip-0.4.13.tar.gz"
+  sha256 "4f02079ae58085e61bb9363adc7139ead5865e3c032e274ba598954b19bbcdd6"
 
   bottle do
     sha1 "bbbd13065696d79cb97d346ef5df38f0f8ad5c81" => :yosemite
