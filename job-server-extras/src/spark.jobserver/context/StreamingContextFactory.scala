@@ -15,7 +15,7 @@ class StreamingContextFactory extends SparkContextFactory {
       def isValidJob(job: SparkJobBase): Boolean = job.isInstanceOf[SparkStramingJob]
       def stop() {
         //Gracefully stops the spark context
-        stop(stopSparkContext = false, stopGracefully = true)
+        stop(stopSparkContext = true, stopGracefully = false)
       }
     }
   }
