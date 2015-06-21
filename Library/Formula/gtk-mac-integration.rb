@@ -7,16 +7,17 @@ class GtkMacIntegration < Formula
   depends_on "pkg-config" => :build
   depends_on "gtk+"
   depends_on "gtk+3" => :recommended
+  depends_on "gobject-introspection"
+  depends_on "pygtk"
 
   def install
     args = %W[
-      --disable-debug
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
       --with-gtk2
-      --enable-python=no
-      --enable-introspection=no
+      --enable-python=yes
+      --enable-introspection=yes
     ]
 
     args << ((build.without? "gtk+3") ? "--without-gtk3" : "--with-gtk3")
