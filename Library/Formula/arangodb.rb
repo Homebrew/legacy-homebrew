@@ -3,8 +3,8 @@ require 'formula'
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
   homepage 'https://www.arangodb.com/'
-  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.5.5.tar.gz'
-  sha1 'e8ca48870222f68189881eb09b431cce02bfb7d8'
+  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.6.0.tar.gz'
+  sha256 'fec63994692cfb851369e3d074ae0a0e240ef2b362990deca6babc5fd7929b0d'
 
   head "https://github.com/arangodb/arangodb.git", :branch => 'unstable'
 
@@ -34,7 +34,7 @@ class Arangodb < Formula
       --localstatedir=#{var}
     ]
 
-    args << "--program-suffix=unstable" if build.head?
+    args << "--program-suffix=-unstable" if build.head?
 
     system "./configure", *args
     system "make install"
@@ -44,10 +44,10 @@ class Arangodb < Formula
   end
 
   def post_install
-    system "#{sbin}/arangod", "--upgrade", "--log.file", "-"
+    system "#{sbin}/arangod" + (build.head? ? "-unstable" : ""), "--upgrade", "--log.file", "-"
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod --log.file -"
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod" + (build.head? ? "-unstable" : "") + " --log.file -"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
