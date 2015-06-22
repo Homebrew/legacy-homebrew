@@ -4,6 +4,12 @@ class GtkMacIntegration < Formula
   url "https://download.gnome.org/sources/gtk-mac-integration/2.0/gtk-mac-integration-2.0.8.tar.xz"
   sha256 "74fce9dbc5efe4e3d07a20b24796be1b1d6c3ac10a0ee6b1f1d685c809071b79"
 
+  bottle do
+    sha256 "d12a21fddf5ed6e18ea4025ebe480fd5b99929c234423cf29c634f4925d14156" => :yosemite
+    sha256 "40bdabc52178c159b9a0e2e35f74525cf36d20c7d59a28f71d8312a5518e97f8" => :mavericks
+    sha256 "8c8fb5c90fb42ee5ff1f646daacb0bc571d86f35b149df4da42d9e3e4ee74edd" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gtk+"
   depends_on "gtk+3" => :recommended
