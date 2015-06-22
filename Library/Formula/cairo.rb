@@ -35,7 +35,7 @@ class Cairo < Formula
       --enable-tee=yes
       --enable-xlib=no
       --enable-xlib-xrender=no
-      --enable-quartz-image
+      #{--enable-quartz-image if OS.mac?}
     ]
 
     args << "--enable-xcb=no" if MacOS.version <= :leopard
