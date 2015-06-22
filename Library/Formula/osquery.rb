@@ -4,11 +4,11 @@ class Osquery < Formula
   desc "SQL powered operating system instrumentation and analytics"
   homepage "https://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.4.5", :revision => "3131a97d9511ed92d65afadf1a049a6425ec6eca"
+  url "https://github.com/facebook/osquery.git", :tag => "1.4.6", :revision => "b56e9efd47efeea487b90fd7c137b55b3254c6c8"
 
   bottle do
-    sha256 "292711f22175d0efb61710f1cf5e57f3f9a1cba97dbbe3d3e8190ee5b384e904" => :yosemite
-    sha256 "b29dc293b5c7e68250c6163f6528595ea2dd37d6f75a1c435c17971297e0efb4" => :mavericks
+    sha256 "73ef1b702ac0711cb8ae97c56688c0396104d042d4d735d9120274edbb87072f" => :yosemite
+    sha256 "b065db81d07ad1bbc6f4f06438bd694cc5cf536364da0f518b39ba89bd715838" => :mavericks
   end
 
   # Build currently fails on Mountain Lion:

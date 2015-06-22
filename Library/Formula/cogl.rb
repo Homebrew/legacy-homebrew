@@ -3,11 +3,13 @@ class Cogl < Formula
   homepage "https://developer.gnome.org/cogl/"
   url "https://download.gnome.org/sources/cogl/1.20/cogl-1.20.0.tar.xz"
   sha256 "729e35495829e7d31fafa3358e47b743ba21a2b08ff9b6cd28fb74c0de91192b"
+  revision 1
 
   bottle do
-    sha256 "16b476d5d5d34c5dadd575e7ae9e6b526043083d574eadb92ae11f1642dc6fab" => :yosemite
-    sha256 "9071de70236e6d6a3b3357e20734200895bf2a2bb280493f9a9da716e3c04bb8" => :mavericks
-    sha256 "faa1b4a195de1c6308d59c63061717244d529a53589d7e7e6d65e1cae9aa88bc" => :mountain_lion
+    revision 1
+    sha256 "f1c4bcc7ed92370f25667f619a77201b922f250fefa7a4884d2e3e7d6adcf0fd" => :yosemite
+    sha256 "a92b3f7ce32927fc8a10239c28c24d49d755c0dd4ecc64c40860fccba484c1f3" => :mavericks
+    sha256 "401ec44a470559b23d590427339271f9469e048e1a7160e113875bab35d504c9" => :mountain_lion
   end
 
   head do
@@ -23,9 +25,6 @@ class Cogl < Formula
   depends_on "gobject-introspection"
   depends_on "gtk-doc"
   depends_on "pango"
-
-  depends_on :x11 => ["2.5.1", :recommended]
-  deprecated_option "without-x" => "without-x11"
 
   # Lion's grep fails, which later results in compilation failures:
   # libtool: link: /usr/bin/grep -E -e [really long regexp] ".libs/libcogl.exp" > ".libs/libcogl.expT"
@@ -59,8 +58,8 @@ class Cogl < Formula
       --enable-cogl-pango=yes
       --enable-introspection=yes
       --disable-glx
+      --without-x
     ]
-    args << "--without-x" if build.without? "x11"
 
     if build.head?
       system "./autogen.sh", *args

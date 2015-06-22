@@ -1,14 +1,14 @@
 class Hh < Formula
-  desc "Bash history suggest box"
+  desc "Bash and zsh history suggest box"
   homepage "https://github.com/dvorka/hstr"
-  url "https://github.com/dvorka/hstr/releases/download/1.16/hh-1.16-src.tgz"
-  sha1 "43c353662a0b31aa56d683fa6ff519bded289c51"
+  url "https://github.com/dvorka/hstr/releases/download/1.17/hh-1.17-src.tgz"
+  sha256 "68eae9ecb022d3f492b85e1479d9b81e3b47b568b7714fd35e4e0fca50234c6e"
 
   bottle do
     cellar :any
-    sha256 "ac98ac6b688292e6a10cf15fad9b7010dae97af3de8ead3b2c518aa8c6b74063" => :yosemite
-    sha256 "cf97b8be45310c6c43f43c3c7f1d35b97ef9811bc20a5eb46d8a36e2d6823832" => :mavericks
-    sha256 "947d41c44564edc123d5cefc16eadd4d9e54bcf9a8e07beb78f2807344b76c67" => :mountain_lion
+    sha256 "ceb89140b07409845bd3bd40cafb9dcf65ff65de35a634d013455a100c6e8066" => :yosemite
+    sha256 "192d154897ebce7cb5b55e0ca1c0cc8503ac9bd5e1e5cc2bc8a7f7fe7aee188d" => :mavericks
+    sha256 "50dc71816420d5ec1fdcb90cd9ef82a0ee47208250c8525f72e238aa90a0404c" => :mountain_lion
   end
 
   head do
@@ -22,10 +22,6 @@ class Hh < Formula
 
   def install
     system "autoreconf", "-fvi" if build.head?
-    # Upstream bug report for curses/ncursesw:
-    # https://github.com/dvorka/hstr/issues/103
-    inreplace %w[src/hstr.c src/include/hstr_curses.h], "ncursesw/", ""
-    inreplace "configure", "ncursesw", "ncurses"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"

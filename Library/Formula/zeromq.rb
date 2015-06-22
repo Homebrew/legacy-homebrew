@@ -1,13 +1,12 @@
 class Zeromq < Formula
   desc "High-performance, asynchronous messaging library"
   homepage "http://www.zeromq.org/"
-  revision 2
 
   bottle do
     cellar :any
-    sha1 "8598e6f79d5cfbe72f281c3f835c0894078108ad" => :yosemite
-    sha1 "895c3427fb619cf3dcbe1d51cbf2c97d55177821" => :mavericks
-    sha1 "ba066d695b43cba56747649b18f146696ba2ada0" => :mountain_lion
+    sha256 "35959e6b6e357d80c35529f410a7429cb53ed0d79d56762c8719ce822dab8431" => :yosemite
+    sha256 "54649139f4cdd17a5780335eda37286feecfed5b5682fd15782b9e4895d14380" => :mavericks
+    sha256 "78951bbe1bb821bdc758ba28ec3220acc6ea85b228250c348120760f7cc45841" => :mountain_lion
   end
 
   head do
@@ -19,15 +18,8 @@ class Zeromq < Formula
   end
 
   stable do
-    url "http://download.zeromq.org/zeromq-4.0.5.tar.gz"
-    sha1 "a664ec63661a848ef46114029156a0a6006feecd"
-
-    patch do
-      # enable --without-libsodium on libzmq < 4.1
-      # zeromq/zeromq4-x#105
-      url "https://gist.githubusercontent.com/minrk/478aab66adf7016158ff/raw/b5ea2d61c3f66db6ff3e266b76d1bec4ad4a238b/without-libsodium.patch"
-      sha1 "68543ff1b0f64b22994cb13b4d24bce8f76cf431"
-    end
+    url "http://download.zeromq.org/zeromq-4.1.2.tar.gz"
+    sha1 "86c17096f7f4bf46cbcd2ad242cf8fec8a7cfb7b"
   end
 
   option :universal

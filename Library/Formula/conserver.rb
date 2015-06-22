@@ -1,13 +1,13 @@
 class Conserver < Formula
   desc "Allows multiple users to watch a serial console at the same time"
   homepage "http://conserver.com"
-  url "http://conserver.com/conserver-8.2.0.tar.gz"
-  sha256 "a05beb7b66c0228ece62786c3cfe4b0048c5d508e072fb3631c2bf460cab904f"
+  url "http://conserver.com/conserver-8.2.1.tar.gz"
+  sha256 "251ae01997e8f3ee75106a5b84ec6f2a8eb5ff2f8092438eba34384a615153d0"
 
   bottle do
-    sha256 "124e2eab8cea657ee17fea2ed6c9bd5592f172fa401b72f63f37299989a36b22" => :yosemite
-    sha256 "faa174dbcf430a5410654ce87e2cc69bd0ee4382f253dff38ff5ee4f992c259d" => :mavericks
-    sha256 "81aee0e591a8c878a55cf173c0d9b70e3539bb7cebbd81466ffabd270ee07ce2" => :mountain_lion
+    sha256 "0afc8a0539f05c8226c0d75775558e98f42e597e2e9755988164dc5f2e0f3cf7" => :yosemite
+    sha256 "40af1ae864c47df564f22760f96969c3a6e9575610d9cd1d3348b44d6eef5a9e" => :mavericks
+    sha256 "88887688a6de1d1cb9ed36899477e16ef233b80392854220291fa1a5499ea833" => :mountain_lion
   end
 
   def install

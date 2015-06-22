@@ -1,16 +1,14 @@
 class Czmq < Formula
   desc "High-level C binding for ZeroMQ"
   homepage "http://czmq.zeromq.org/"
-  url "http://download.zeromq.org/czmq-2.2.0.tar.gz"
-  sha1 "2f4fd8de4cf04a68a8f6e88ea7657d8068f472d2"
-  revision 1
+  url "http://download.zeromq.org/czmq-3.0.1.tar.gz"
+  sha1 "fc69f8175347c73a61d2004fc9699f10f8a73eb2"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "798cef5fd0d7c79123fe60be9db628e8db5fe351" => :yosemite
-    sha1 "c1361edaea2bbea8f30937741b5346e419c3909c" => :mavericks
-    sha1 "9a8556182c8599cf1a32f0cec8e6dc8eed151035" => :mountain_lion
+    sha256 "87984479649892f23aa2abfebb006606d7e531fea20cade7f12baa7d7462fe43" => :yosemite
+    sha256 "9a582534291bc2ec40ebdeba655402f105b6bb17b3c6a3ab98ed9365c7fa5842" => :mavericks
+    sha256 "a70dff1acc626c959f25ab2a7ec997b36e1b3261132a0f39fb5851a2f896cdd8" => :mountain_lion
   end
 
   head do
@@ -43,13 +41,9 @@ class Czmq < Formula
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
+    system "make"
+    system "make", "check"
     system "make", "install"
     rm Dir["#{bin}/*.gsl"]
-  end
-
-  test do
-    bin.cd do
-      system "#{bin}/czmq_selftest"
-    end
   end
 end

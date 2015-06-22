@@ -258,15 +258,16 @@ Note that these flags should only appear after a command.
     If provided, `--local` will move them into the user's `~/Applications`
     directory instead of the system directory. It may need to be created, first.
 
-  * `ls, list [--unbrewed] [--versions [--multiple]] [--pinned]` [<formulae>]:
-    Without any arguments, list all installed formulae.
+  * `ls, list [--full-name]`
+    List all installed formulae. If `--full-name` is passed, print formulae with
+    full-qualified names.
 
-    If <formulae> are given, list the installed files for <formulae>.
-    Combined with `--verbose`, recursively list the contents of all subdirectories
-    in each <formula>'s keg.
+  * `ls, list --unbrewed`
+    List all files in the Homebrew prefix not installed by Homebrew.
 
-    If `--unbrewed` is passed, list all files in the Homebrew prefix not installed
-    by Homebrew.
+  * `ls, list [--versions [--multiple]] [--pinned]` [<formulae>]:
+    List the installed files for <formulae>. Combined with `--verbose`, recursively
+    list the contents of all subdirectories in each <formula>'s keg.
 
     If `--versions` is passed, show the version number for installed formulae,
     or only the specified formulae if <formulae> are given. With `--multiple`,

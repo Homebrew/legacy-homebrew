@@ -20,6 +20,26 @@ module Homebrew
     ENV.activate_extensions!
     ENV.setup_build_environment
 
+    if ARGV.switch? "D"
+      FormulaAuditor.module_eval do
+        instance_methods.grep(/audit_/).map do |name|
+          method = instance_method(name)
+          define_method(name) do |*args, &block|
+            begin
+              time = Time.now
+              method.bind(self).call(*args, &block)
+            ensure
+              $times[name] ||= 0
+              $times[name] += Time.now - time
+            end
+          end
+        end
+      end
+
+      $times = {}
+      at_exit { puts $times.sort_by{ |k, v| v }.map{ |k, v| "#{k}: #{v}" } }
+    end
+
     ff = if ARGV.named.empty?
       Formula
     else
@@ -185,6 +205,11 @@ class FormulaAuditor
   end
 
   @@aliases ||= Formula.aliases
+  @@remote_official_taps ||= if (homebrew_tapd = HOMEBREW_LIBRARY/"Taps/homebrew").directory?
+    OFFICIAL_TAPS - homebrew_tapd.subdirs.map(&:basename).map { |tap| tap.to_s.sub(/^homebrew-/, "") }
+  else
+    OFFICIAL_TAPS
+  end
 
   def audit_formula_name
     return unless @strict
@@ -204,14 +229,11 @@ class FormulaAuditor
       return
     end
 
-    same_name_tap_formulae = Formula.tap_names.select { |f| f =~ %r{^homebrew/[^/]+/#{name}$} }
-    homebrew_tapd = HOMEBREW_LIBRARY/"Taps/homebrew"
-    current_taps = if homebrew_tapd.directory?
-      homebrew_tapd.subdirs.map(&:basename).map { |tap| tap.to_s.sub(/^homebrew-/, "") }
-    else
-      []
+    same_name_tap_formulae = Formula.tap_names.select do |tap_formula_name|
+      user_name, _, formula_name = tap_formula_name.split("/", 3)
+      user_name == "homebrew" && formula_name == name
     end
-    same_name_tap_formulae += (OFFICIAL_TAPS - current_taps).map do |tap|
+    same_name_tap_formulae += @@remote_official_taps.map do |tap|
       Thread.new { Homebrew.search_tap "homebrew", tap, name }
     end.map(&:value).flatten
     same_name_tap_formulae.delete(full_name)
@@ -275,7 +297,7 @@ class FormulaAuditor
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
         when "open-mpi", "mpich2"
           problem <<-EOS.undent
-            There are multiple conflicting ways to install MPI. Use an MPIDependency:
+            There are multiple conflicting ways to install MPI. Use an MPIRequirement:
               depends_on :mpi => [<lang list>]
             Where <lang list> is a comma delimited list that can include:
               :cc, :cxx, :f77, :f90
@@ -698,11 +720,11 @@ class FormulaAuditor
       problem "Define method #{$1.inspect} in the class body, not at the top-level"
     end
 
-    if line =~ /ENV.fortran/ && !formula.requirements.map(&:class).include?(FortranDependency)
+    if line =~ /ENV.fortran/ && !formula.requirements.map(&:class).include?(FortranRequirement)
       problem "Use `depends_on :fortran` instead of `ENV.fortran`"
     end
 
-    if line =~ /JAVA_HOME/i && !formula.requirements.map(&:class).include?(JavaDependency)
+    if line =~ /JAVA_HOME/i && !formula.requirements.map(&:class).include?(JavaRequirement)
       problem "Use `depends_on :java` to set JAVA_HOME"
     end
 

@@ -50,15 +50,6 @@ if OS.mac? and MacOS.version < "10.6"
   EOABORT
 end
 
-if OS.mac? && MacOS.version == "10.11"
-  opoo <<-EOS.undent
-    Although Homebrew has added initial recognition of 10.11, it is unsupported.
-    You may encounter breakage or other failure and there is no guarantee
-    Homebrew can resolve those issues until El Capitan is stable.
-
-  EOS
-end
-
 # Many Pathname operations use getwd when they shouldn't, and then throw
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
 Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
@@ -107,7 +98,7 @@ begin
 
   cmd = aliases[cmd] if aliases[cmd]
 
-  sudo_check = Set.new %w[ install link pin unpin upgrade ]
+  sudo_check = %w[ install link pin unpin upgrade ]
 
   if sudo_check.include? cmd
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?

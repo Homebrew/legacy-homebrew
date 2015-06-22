@@ -1,13 +1,13 @@
 class Fig < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/1.2.0.tar.gz"
-  sha256 "89c2626f6d03ca18440a67470272f1383c2ca867320abf710abdab96d467868d"
+  url "https://github.com/docker/compose/archive/1.3.0.tar.gz"
+  sha256 "7fcf5ce1df5c53aedcfc875c2620035c735d75191ace6bc8ad97b9aeb522f153"
 
   bottle do
-    sha256 "bf8a80a39a59185add39a12e6da2b53e19e08bb09d823b1cbaf2ffdcf797c3d7" => :yosemite
-    sha256 "e85b4185703cea5312d6828c394fca4153802851ed202f4a0cfc246a4b7ae898" => :mavericks
-    sha256 "95f304cda3721315ac6ec23fb7f5d1760955150f1ec5b13e5e7c031f5283d176" => :mountain_lion
+    sha256 "42c21d5454a5e4eed111e925744a56845a979e408e2d7bcef4c6cc17baa6d6c7" => :yosemite
+    sha256 "0ca8ccee1dbb569031fde091aa786c485f70c5905b25d8897c46033488f30f2e" => :mavericks
+    sha256 "6be5dfaadf213b2624c97e331f17f6499d16bc5aabeb136d6a2d084ee4ea4021" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -19,8 +19,8 @@ class Fig < Formula
   depends_on "boot2docker" => :recommended
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.1.0.tar.gz"
-    sha256 "6a07eb56b234719e89d3038c24f9c870b6f1ee0b58080120e865e2752673cd94"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.2.3.tar.gz"
+    sha256 "5328a7f4a2d812da166b3fb59211fca976c9f48bb9f8b17d9f3fd4ef7c765ac5"
   end
 
   resource "pyyaml" do
@@ -34,8 +34,8 @@ class Fig < Formula
   end
 
   resource "dockerpty" do
-    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.2.tar.gz"
-    sha256 "fa23e4dead1920f5b53774cabf688c4709ce617c4afb0b105ec4b71d42f124fb"
+    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.4.tar.gz"
+    sha256 "a51044cc49089a2408fdf6769a63eebe0b16d91f34716ecee681984446ce467d"
   end
 
   resource "texttable" do
@@ -49,8 +49,8 @@ class Fig < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.3.tar.gz"
-    sha256 "55d7f5619daae94ec49ee81ed8c865e5a2a47f0bbf8e06cf94636bee103eaf65"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.1.tar.gz"
+    sha256 "490b111c824d64b84797a899a4c22618bbc45323ac24a0a0bb4b73a8758e943c"
   end
 
   resource "websocket-client" do
@@ -82,7 +82,6 @@ class Fig < Formula
   end
 
   test do
-    output = shell_output(bin/"docker-compose --version")
-    assert output.include? "compose 1.2.0"
+    assert_match /#{version}/, shell_output(bin/"docker-compose --version")
   end
 end

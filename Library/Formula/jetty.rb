@@ -1,18 +1,18 @@
 class Jetty < Formula
   desc "Java servlet engine and webserver"
   homepage "https://www.eclipse.org/jetty/"
-  url "http://download.eclipse.org/jetty/9.2.11.v20150529/dist/jetty-distribution-9.2.11.v20150529.tar.gz"
-  version "9.2.11.v20150529"
-  sha256 "2dd7d03d49c44d25a0a852f6f40a8ea5548edd7f1ca33eb7e98386450c4d3ab5"
+  url "http://download.eclipse.org/jetty/9.3.0.v20150612/dist/jetty-distribution-9.3.0.v20150612.tar.gz"
+  version "9.3.0.v20150612"
+  sha256 "0a06c7ee2997819e5b46302c7b6f0269f0c953f194a30f15912d2e45d2c30a5c"
 
   bottle do
     cellar :any
-    sha256 "a0bf10e7229deaff9ccf17164354598ba6727033a1cdbbce7290270943d61e96" => :yosemite
-    sha256 "894ab6e7b99475b31e10b4a9cf7806f20b7162439bf5d9706087ad785834ef7a" => :mavericks
-    sha256 "cf81c0b658885c2d1199d3f063536b4c2489a456718d5e4b30d4693640e23cab" => :mountain_lion
+    sha256 "124258ef3fc8e1ffc3c17a157ba0fea091b3142b85596b95705e9c76cbc2ebd8" => :yosemite
+    sha256 "6e861d3f2233e03f790c846d935d0322171fdf417566d92550093b68f8a3bcf1" => :mavericks
+    sha256 "3e808c691ffd66116ecef596871fa6082da3c1964be5402acd651740363b6d6d" => :mountain_lion
   end
 
-  depends_on :java => "1.7+"
+  depends_on :java => "1.8+"
 
   def install
     libexec.install Dir["*"]

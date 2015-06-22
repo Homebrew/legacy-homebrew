@@ -463,6 +463,7 @@ class Formula
   def opt_libexec; opt_prefix+'libexec' end
   def opt_sbin;    opt_prefix+'sbin'    end
   def opt_share;   opt_prefix+'share'   end
+  def opt_frameworks; opt_prefix+'Frameworks' end
 
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
@@ -619,29 +620,29 @@ class Formula
   def python(options={}, &block)
     opoo 'Formula#python is deprecated and will go away shortly.'
     block.call if block_given?
-    PythonDependency.new
+    PythonRequirement.new
   end
   alias_method :python2, :python
   alias_method :python3, :python
 
   # an array of all core {Formula} names
   def self.core_names
-    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
+    @core_names ||= Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
   end
 
   # an array of all tap {Formula} names
   def self.tap_names
-    Tap.map(&:formula_names).flatten.sort
+    @tap_names ||= Tap.map(&:formula_names).flatten.sort
   end
 
   # an array of all {Formula} names
   def self.names
-    (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+    @names ||= (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
   end
 
   # an array of all {Formula} names, which the tap formulae have the fully-qualified name
   def self.full_names
-    core_names + tap_names
+    @full_names ||= core_names + tap_names
   end
 
   def self.each
@@ -659,14 +660,16 @@ class Formula
 
   # An array of all installed {Formula}
   def self.installed
-    return [] unless HOMEBREW_CELLAR.directory?
-
-    HOMEBREW_CELLAR.subdirs.map do |rack|
-      begin
-        Formulary.from_rack(rack)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
-      end
-    end.compact
+    @installed ||= if HOMEBREW_CELLAR.directory?
+      HOMEBREW_CELLAR.subdirs.map do |rack|
+        begin
+          Formulary.from_rack(rack)
+        rescue FormulaUnavailableError, TapFormulaAmbiguityError
+        end
+      end.compact
+    else
+      []
+    end
   end
 
   def self.aliases

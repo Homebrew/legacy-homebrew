@@ -3,9 +3,9 @@ class Wireshark < Formula
   homepage "https://www.wireshark.org"
 
   stable do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.5.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.5.tar.bz2"
-    sha256 "d0f177b2ef49e4deae4ff7d3299bdd295ba558a3934ce8ae489b2f13927cbd82"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.6.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.6.tar.bz2"
+    sha256 "22ac0cc872f12cef9bb2cacfe0720eed8533dc5cea102d21de511620606cb3b6"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -15,17 +15,9 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha256 "4eefb6e29162dec6c87ef79880c5b3a8fa6c9515b1c6c1d94208eb0b14b95f06" => :yosemite
-    sha256 "a0bf7759f5bdf3092f35c5cbe6375c4ee6e56fe2ae3d4f9a93ed28b5d9e988ae" => :mavericks
-    sha256 "b2294c6fe1dc2de324bc834331f5a1cd76f958c65d7d1b40154f7e1cd48656fe" => :mountain_lion
-  end
-
-  head do
-    url "https://code.wireshark.org/review/wireshark", :using => :git
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+    sha256 "6a0cf2653668e7c4f2838c5c7f9e3d025389b78e31afda50020b7876592a9f62" => :yosemite
+    sha256 "ca2db6e47b255c42c9426b4bb61cc9181f8eecb0d5dc0c1c7d3e08899977f735" => :mavericks
+    sha256 "1d98b70b4eef4833446659398090fde23d6647b7f11181ca488a0a38ec3bf71e" => :mountain_lion
   end
 
   devel do
@@ -34,6 +26,14 @@ class Wireshark < Formula
     sha256 "dfd8800f15a531573700703fee32c97f6c1525615c5d2b92a110fd50b259cc1a"
 
     depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
+  end
+
+  head do
+    url "https://code.wireshark.org/review/wireshark", :using => :git
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option "with-gtk+3", "Build the wireshark command with gtk+3"

@@ -237,6 +237,15 @@ def check_for_broken_symlinks
   end
 end
 
+def check_for_unsupported_osx
+  if MacOS.version >= "10.11" then <<-EOS.undent
+    You are using OS X #{MacOS.version}.
+    We do not provide support for this pre-release version.
+    You may encounter build failures or other breakage.
+    EOS
+  end
+end
+
 if MacOS.version >= "10.9"
   def check_for_installed_developer_tools
     unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
@@ -922,12 +931,12 @@ def check_for_autoconf
 end
 
 def __check_linked_brew f
-  prefix = f.prefix
-
-  prefix.find do |src|
-    next if src == prefix
-    dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)
-    return true if dst.symlink? && src == dst.resolved_path
+  f.rack.subdirs.each do |prefix|
+    prefix.find do |src|
+      next if src == prefix
+      dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)
+      return true if dst.symlink? && src == dst.resolved_path
+    end
   end
 
   false
@@ -936,8 +945,8 @@ end
 def check_for_linked_keg_only_brews
   return unless HOMEBREW_CELLAR.exist?
 
-  linked = Formula.select { |f|
-    f.keg_only? && f.installed? && __check_linked_brew(f)
+  linked = Formula.installed.select { |f|
+    f.keg_only? && __check_linked_brew(f)
   }
 
   unless linked.empty?

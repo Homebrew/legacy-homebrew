@@ -3,19 +3,22 @@ class Gtkx < Formula
   homepage "http://gtk.org/"
   url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
   sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
+  revision 1
 
   bottle do
-    sha256 "bbc0dc6e82ebed36acfecbd5216a7e05709ce54353fae2e88ae6dc89d02b4c49" => :yosemite
-    sha256 "e3ac7c303dcf388bf87835a85a1e143c2957eaada72de82527bb0364196a9d35" => :mavericks
-    sha256 "67af28491ac9622e5c19b0d37802c9569e95ab21342b83672de0b6aac98c5c72" => :mountain_lion
+    revision 2
+    sha256 "c3c38a7e3ce5c11f4febb7136342aff6156e86bc7264d1b755141e27e1bcd1b7" => :yosemite
+    sha256 "89b216bb20a360a6002a1259e9ab84cb89961f3cc03e9829e48532b5d95c8f1d" => :mavericks
+    sha256 "3f3948ce65bd2c199e2603a8bebc39f6de14e3c7f408226b1d6a0c8b52a51f29" => :mountain_lion
   end
+
+  option "with-quartz-relocation", "Build with quartz relocation support"
 
   depends_on "pkg-config" => :build
   depends_on "gdk-pixbuf"
   depends_on "jasper" => :optional
   depends_on "atk"
   depends_on "pango"
-  depends_on :x11 => ["2.3.6", :recommended]
   depends_on "gobject-introspection"
 
   fails_with :llvm do
@@ -29,10 +32,10 @@ class Gtkx < Formula
             "--prefix=#{prefix}",
             "--disable-glibtest",
             "--enable-introspection=yes",
+            "--with-gdktarget=quartz",
             "--disable-visibility"]
 
-    args << "--with-gdktarget=quartz" if build.without?("x11")
-    args << "--enable-quartz-relocation" if build.without?("x11")
+    args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
 
     system "./configure", *args
     system "make", "install"
@@ -54,7 +57,6 @@ class Gtkx < Formula
     gdk_pixbuf = Formula["gdk-pixbuf"]
     gettext = Formula["gettext"]
     glib = Formula["glib"]
-    harfbuzz = Formula["harfbuzz"]
     libpng = Formula["libpng"]
     pango = Formula["pango"]
     pixman = Formula["pixman"]
@@ -68,7 +70,6 @@ class Gtkx < Formula
       -I#{gettext.opt_include}
       -I#{glib.opt_include}/glib-2.0
       -I#{glib.opt_lib}/glib-2.0/include
-      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/gtk-2.0
       -I#{libpng.opt_include}/libpng16
       -I#{lib}/gtk-2.0/include
@@ -77,8 +78,6 @@ class Gtkx < Formula
       -D_REENTRANT
       -L#{atk.opt_lib}
       -L#{cairo.opt_lib}
-      -L#{fontconfig.opt_lib}
-      -L#{freetype.opt_lib}
       -L#{gdk_pixbuf.opt_lib}
       -L#{gettext.opt_lib}
       -L#{glib.opt_lib}
@@ -86,18 +85,15 @@ class Gtkx < Formula
       -L#{pango.opt_lib}
       -latk-1.0
       -lcairo
-      -lfontconfig
-      -lfreetype
-      -lgdk-x11-2.0
+      -lgdk-quartz-2.0
       -lgdk_pixbuf-2.0
       -lgio-2.0
       -lglib-2.0
       -lgobject-2.0
-      -lgtk-x11-2.0
+      -lgtk-quartz-2.0
       -lintl
       -lpango-1.0
       -lpangocairo-1.0
-      -lpangoft2-1.0
     ]
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"

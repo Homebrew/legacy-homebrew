@@ -1,6 +1,6 @@
 require 'requirement'
 
-class FortranDependency < Requirement
+class FortranRequirement < Requirement
   fatal true
 
   default_formula 'gcc'

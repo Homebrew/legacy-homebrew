@@ -3,8 +3,6 @@ require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/ARGV'
 require 'extend/string'
-require 'extend/symbol'
-require 'extend/enumerable'
 require 'os'
 require 'utils'
 require 'exceptions'
@@ -30,7 +28,7 @@ RUBY_BIN = RUBY_PATH.dirname
 if RUBY_PLATFORM =~ /darwin/
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
   MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/]
-  OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
+  OS_VERSION = "OS X #{MACOS_FULL_VERSION}"
 else
   MACOS_FULL_VERSION = MACOS_VERSION = "0"
   OS_VERSION = RUBY_PLATFORM

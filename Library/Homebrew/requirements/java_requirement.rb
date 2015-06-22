@@ -1,6 +1,6 @@
 require "language/java"
 
-class JavaDependency < Requirement
+class JavaRequirement < Requirement
   fatal true
   cask "java"
   download "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
