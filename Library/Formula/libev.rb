@@ -8,9 +8,9 @@ class Libev < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ed65bae24001a65df1be2e2aea664af1a07b1fed" => :yosemite
-    sha1 "76a348a71741db6ab9dd7420a7ede73b150bb0c9" => :mavericks
+    sha256 "7943ef71a65a1a7118d314c0c428eb467e10131be82e0b3ffc3a2b179d779c3e" => :yosemite
+    sha256 "21c5b5060434406af0ace8361084845422a2d28625c2388278d44eeeeecf21aa" => :mavericks
+    sha256 "70631a7212920732b2dacd6155b5cdfd404c4304586203f83649c427d453a460" => :mountain_lion
   end
 
   def install
