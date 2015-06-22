@@ -40,6 +40,10 @@ class DockerMachine < Formula
     url "https://github.com/docker/machine.git", :revision => "0a251fe434d868165cca28200ffd71f16abb5c10" # the 0.3.0 tag
   end
 
+  go_resource "github.com/pmezard/go-difflib/difflib" do
+    url "https://github.com/pmezard/go-difflib.git", :revision => "f78a839676152fd9f4863704f5d516195c18fc14"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
