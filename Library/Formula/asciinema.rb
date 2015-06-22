@@ -21,7 +21,6 @@ class Asciinema < Formula
     ENV["GOPATH"] = buildpath
     mkdir_p buildpath/"src/github.com/asciinema"
     ln_s buildpath, buildpath/"src/github.com/asciinema/asciinema"
-    Language::Go.stage_deps resources, buildpath/"src"
 
     system "go", "build", "-o", bin/"asciinema"
   end
