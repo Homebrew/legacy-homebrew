@@ -3,8 +3,8 @@ require 'formula'
 class Libev < Formula
   desc "Asynchronous event library"
   homepage 'http://software.schmorp.de/pkg/libev.html'
-  url 'http://dist.schmorp.de/libev/Attic/libev-4.15.tar.gz'
-  sha1 '88655b1e2c0b328c9f90a6df7e72361a97fa8dc3'
+  url 'http://dist.schmorp.de/libev/Attic/libev-4.20.tar.gz'
+  sha256 'f870334c7fa961e7f31087c7d76abf849f596e3048f8ed2a0aaa983cd73d449e'
 
   bottle do
     cellar :any
