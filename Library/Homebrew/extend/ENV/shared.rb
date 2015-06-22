@@ -221,21 +221,10 @@ module SharedEnvExtension
       EOS
     end
 
-    if gcc_formula.name == "gcc"
-      return if gcc_formula.opt_prefix.exist?
+    unless gcc_formula.opt_prefix.exist?
       raise <<-EOS.undent
-        The Homebrew GCC was not installed.
-        You must:
-          brew install gcc
-      EOS
-    end
-
-    if !gcc_formula.opt_prefix.exist?
-      raise <<-EOS.undent
-        The requested Homebrew GCC, #{gcc_version_name}, was not installed.
-        You must:
-          brew tap homebrew/versions
-          brew install #{gcc_version_name}
+      The requested Homebrew GCC was not installed. You must:
+        brew install #{gcc_formula.full_name}
       EOS
     end
   end
