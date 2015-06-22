@@ -4,9 +4,7 @@ class Gotags < Formula
     url "https://github.com/jstemmer/gotags/archive/v1.3.0.tar.gz"
     sha256 "414e1f96b560b089f11f814cd9000974a8ee376bb2cd9119cce60368e89ba226"
 
-    head do
-        url "https://github.com/jstemmer/gotags.git"
-    end
+    head "https://github.com/jstemmer/gotags.git"
 
     depends_on "go" => :build
 
@@ -15,13 +13,6 @@ class Gotags < Formula
 
         system "go", "build", "-o", "gotags"
         bin.install "gotags"
-    end
-
-    def caveats
-        <<-EOS.undent
-        Check https://github.com/jstemmer/gotags/blob/master/README.md
-        for usage and Vim/Emacs configuration
-        EOS
     end
 
     test do
