@@ -21,7 +21,6 @@ class Putty < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "gtk+" => :optional
 
   def install
     if build.head?
@@ -35,19 +34,17 @@ class Putty < Formula
       --disable-silent-rules
       --disable-dependency-tracking
       --disable-gtktest
+      --without-gtk
     ]
-    args << ((build.with? "gtk+") ? "--with-gtk" : "--without-gtk")
 
     system "./configure", *args
 
     build_version = build.head? ? "svn-#{version}" : version
     system "make", "VER=-DRELEASE=#{build_version}"
 
-    bin.install %w[putty puttytel pterm] if build.with? "gtk+"
     bin.install %w[plink pscp psftp puttygen]
 
     cd "doc" do
-      man1.install %w[putty.1 puttytel.1 pterm.1] if build.with? "gtk+"
       man1.install %w[plink.1 pscp.1 psftp.1 puttygen.1]
     end
   end
