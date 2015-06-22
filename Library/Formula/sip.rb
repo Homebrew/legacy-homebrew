@@ -5,9 +5,9 @@ class Sip < Formula
   sha256 "d3141b65e48a30c9ce36612f8bcd1730ebf02d044757e4d6c5234927e2063e18"
 
   bottle do
-    sha256 "0b6980e990a743676e7c1bac9a49a9a428c79b001bc40784e8d28b23bf119dcb" => :yosemite
-    sha256 "b775749bcfafaf189f2bfae15a9ae40cb016d06cce41ef98a1cce5bd0c7b4abf" => :mavericks
-    sha256 "ca4b9b761080abe76670072d000d256791a05a440bb608579759b3ca499c41ad" => :mountain_lion
+    sha256 "d21f39098b5f241d1ea61c414961664941793e3ff5fea56b478c2ad092b7c166" => :yosemite
+    sha256 "7d25d976f4bbcec265c0f144ef839b197f1593ebbf5c6740963d0ac4fc5734ea" => :mavericks
+    sha256 "72383920ab69c92737f791d5e1fb06e45b8babb1d71b3e683489ca3dee8baee1" => :mountain_lion
   end
 
   head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
