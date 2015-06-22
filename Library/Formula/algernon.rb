@@ -3,8 +3,8 @@ require "language/go"
 class Algernon < Formula
   desc "HTTP/2 web server with Lua support"
   homepage "http://algernon.roboticoverlords.org/"
-  url "https://github.com/xyproto/algernon/archive/0.74.tar.gz"
-  sha256 "1341af6864643a968d85bfa63ca231604b6d1123919c6826ae179908c6c4a176"
+  url "https://github.com/xyproto/algernon/archive/0.82.tar.gz"
+  sha256 "b64a6367445b707ae272ff917d971133777f62893f75a3dbaa0a19018d02a51c"
   head "https://github.com/xyproto/algernon.git"
 
   bottle do
@@ -20,6 +20,7 @@ class Algernon < Formula
   # List of Go dependencies and hashes.
   # Generated using: https://github.com/samertm/homebrew-go-resources
   %w[
+    github.com/bkaradzic/go-lz4 4f7c2045dbd17b802370e2e6022200468abf02ba
     github.com/bobappleyard/readline a1f23ef6d7c8177f1fe3085d3bf7b40457049f0c
     github.com/boltdb/bolt 5eb31d5821750fbc84284d610c0ce85261662adb
     github.com/bradfitz/http2 f8202bc903bda493ebba4aa54922d78430c2c42f
@@ -33,14 +34,17 @@ class Algernon < Formula
     github.com/juju/ratelimit faa59ce93750e747b2997635e8b7daf30024b1ac
     github.com/mamaar/risotto 2683127f39af835e766a70b203efc6a51dd2ebe6
     github.com/mattn/go-runewidth 5890272cd41c5103531cd7b79e428d99c9e97f76
-    github.com/natefinch/pie 704bec149c2c6e52bcb2570c2d8c5e30e0ddc732
+    github.com/mitchellh/go-homedir 1f6da4a72e57d4e7edd4a7295a585e0a3999a2d4
+    github.com/mitchellh/mapstructure 2caf8efc93669b6c43e0441cdc6aed17546c96f3
+    github.com/natefinch/pie 0e26844fad24d1f3fc81b7d6a8f8589cac6ec64c
     github.com/nsf/termbox-go 598cdb8b3c49430c1c91604805461732064bde1d
     github.com/russross/blackfriday 386ef80f18233ea97960e855a54382ec446c6637
     github.com/shiena/ansicolor 8368d3b31cf6f2c2464c7a91675342c9a0ac6658
     github.com/shurcooL/sanitized_anchor_name 11a20b799bf22a02808c862eb6ca09f7fb38f84a
-    github.com/sirupsen/logrus 386ccca031649304b1b3e6db057e8cecdaabe760
-    github.com/tylerb/graceful ff20838629c6b3e602864634a75949b3685d584a
+    github.com/sirupsen/logrus 0f2a4955b11372eec5a4b95d907eaf8379b835d0
+    github.com/tylerb/graceful ac9ebe4f1ee151ac1eeeaef32957085cba64d508
     github.com/xyproto/cookie b84c85ae2aa3e21b2c7fc8c37d5a3081c0c9c83b
+    github.com/xyproto/jpath 7b9116746a7134fdcefd5802af406361087bb190
     github.com/xyproto/mime 58d5c367ee5b5e10f4662848579b8ccd759b280e
     github.com/xyproto/permissionbolt b94c45a7f4c70603f12aa1d47a325a37036fd3ba
     github.com/xyproto/permissions2 b5248dea92e87c670813edf4e68dc16eff59c05b
@@ -53,6 +57,7 @@ class Algernon < Formula
     github.com/xyproto/term c9eabb15c0681f48654ee132a8bc6608c7bed8b3
     github.com/xyproto/unzip 823950573952ff86553b26381fe7472549873cb4
     github.com/yosssi/gcss 39677598ea4f3ec1da5568173b4d43611f307edb
+    github.com/yuin/gluamapper d836955830e75240d46ce9f0e6d148d94f2e1d3a
     github.com/yuin/gopher-lua 54750d6aec1c2706990e9ec17438bd88d30231ab
   ].each_slice(2) do |resurl, rev|
     go_resource resurl do
@@ -62,12 +67,12 @@ class Algernon < Formula
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "1e856cbfdf9bc25eefca75f83f25d55e35ae72e0"
+      :revision => "4ed45ec682102c643324fae5dff8dab085b6c300"
   end
 
   go_resource "golang.org/x/net" do
     url "https://go.googlesource.com/net.git",
-      :revision => "dfcbca9c45aeabb8971affa4f76b2d40f6f72328"
+      :revision => "dfe268fd2bb5c793f4c083803609fce9806c6f80"
   end
 
   def install
@@ -83,21 +88,13 @@ class Algernon < Formula
       tempdb = "/tmp/_brew_test.db"
       cport = ":45678"
 
-      # Start the server in a detached process
-      fork_pid = fork do
-        `#{bin}/algernon --httponly --server --addr #{cport} --boltdb #{tempdb} --log /dev/null`
+      # Start the server in a fork
+      algernon_pid = fork do
+        exec "#{bin}/algernon", "--quiet", "--httponly", "--server", "--addr", cport
       end
-      child_pid = fork_pid + 1
-      Process.detach fork_pid
 
       # Give the server some time to start serving
       sleep(1)
-
-      # Check that we have the right PID
-      pgrep_output = `pgrep algernon`
-      assert_equal 1, pgrep_output.count("\n")
-      assert_equal pgrep_output.to_i, child_pid
-      algernon_pid = child_pid
 
       # Check that the server is responding correctly
       output = `curl -sIm3 -o- http://localhost#{cport}`
