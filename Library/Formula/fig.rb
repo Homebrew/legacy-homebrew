@@ -5,9 +5,9 @@ class Fig < Formula
   sha256 "7fcf5ce1df5c53aedcfc875c2620035c735d75191ace6bc8ad97b9aeb522f153"
 
   bottle do
-    sha256 "bf8a80a39a59185add39a12e6da2b53e19e08bb09d823b1cbaf2ffdcf797c3d7" => :yosemite
-    sha256 "e85b4185703cea5312d6828c394fca4153802851ed202f4a0cfc246a4b7ae898" => :mavericks
-    sha256 "95f304cda3721315ac6ec23fb7f5d1760955150f1ec5b13e5e7c031f5283d176" => :mountain_lion
+    sha256 "42c21d5454a5e4eed111e925744a56845a979e408e2d7bcef4c6cc17baa6d6c7" => :yosemite
+    sha256 "0ca8ccee1dbb569031fde091aa786c485f70c5905b25d8897c46033488f30f2e" => :mavericks
+    sha256 "6be5dfaadf213b2624c97e331f17f6499d16bc5aabeb136d6a2d084ee4ea4021" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
