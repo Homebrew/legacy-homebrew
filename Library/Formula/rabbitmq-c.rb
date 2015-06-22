@@ -28,11 +28,11 @@ class RabbitmqC < Formula
     args << "-DBUILD_TESTS=OFF"
     args << "-DBUILD_API_DOCS=OFF"
 
-    args << if build.with? "tools"
-              "-DBUILD_TOOLS=ON"
-            else
-              "-DBUILD_TOOLS=OFF"
-            end
+    if build.with? "tools"
+      args << "-DBUILD_TOOLS=ON"
+    else
+      args << "-DBUILD_TOOLS=OFF"
+    end
 
     system "cmake", ".", *args
     system "make", "install"
