@@ -26,7 +26,7 @@ class Haxe < Formula
   def install
     # Build requires targets to be built in specific order
     ENV.deparallelize
-    system "make", "OCAMLOPT=ocamlopt.opt", "ADD_REVISION=1"
+    system "make", "OCAMLOPT=ocamlopt.opt", ("ADD_REVISION=1" if build.head?)
     bin.mkpath
     system "make", "install", "INSTALL_BIN_DIR=#{bin}", "INSTALL_LIB_DIR=#{lib}/haxe"
 
