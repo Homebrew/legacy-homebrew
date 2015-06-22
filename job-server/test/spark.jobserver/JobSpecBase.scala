@@ -38,7 +38,9 @@ trait JobSpecConfig {
   lazy val contextConfig = {
     val ConfigMap = Map(
       "context-factory" -> contextFactory,
-      "streaming.batch_interval" -> new Integer(10)
+      "streaming.batch_interval" -> new Integer(40),
+      "streaming.stopGracefully" -> false,
+      "streaming.stopSparkContext" -> true
     )
     ConfigFactory.parseMap(ConfigMap.asJava).withFallback(ConfigFactory.defaultOverrides())
   }
