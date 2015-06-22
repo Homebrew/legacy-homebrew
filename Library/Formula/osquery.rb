@@ -4,17 +4,15 @@ class Osquery < Formula
   desc "SQL powered operating system instrumentation and analytics"
   homepage "https://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.4.6", :revision => "b56e9efd47efeea487b90fd7c137b55b3254c6c8"
+  url "https://github.com/facebook/osquery.git", :tag => "1.4.7", :revision => "9d783fee002196c73c4b2622cc7e410d6ce4a4b3"
 
   bottle do
     sha256 "73ef1b702ac0711cb8ae97c56688c0396104d042d4d735d9120274edbb87072f" => :yosemite
     sha256 "b065db81d07ad1bbc6f4f06438bd694cc5cf536364da0f518b39ba89bd715838" => :mavericks
   end
 
-  # Build currently fails on Mountain Lion:
-  # https://github.com/facebook/osquery/issues/409
-  # Will welcome PRs to fix this!
-  depends_on :macos => :mavericks
+  # osquery only support OS X Yosemite and above. Do not remove this.
+  depends_on :macos => :yosemite
 
   depends_on "cmake" => :build
   depends_on "boost" => :build
