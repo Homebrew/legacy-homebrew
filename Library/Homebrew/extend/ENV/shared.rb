@@ -214,27 +214,28 @@ module SharedEnvExtension
 
     begin
       gcc_formula = gcc_version_formula(name)
-      if gcc_formula.name == "gcc"
-        return if gcc_formula.opt_prefix.exist?
-        raise <<-EOS.undent
-        The Homebrew GCC was not installed.
-        You must:
-          brew install gcc
-        EOS
-      end
-
-      if !gcc_formula.opt_prefix.exist?
-        raise <<-EOS.undent
-        The requested Homebrew GCC, #{gcc_version_name}, was not installed.
-        You must:
-          brew tap homebrew/versions
-          brew install #{gcc_version_name}
-        EOS
-      end
     rescue FormulaUnavailableError
       raise <<-EOS.undent
       Homebrew GCC requested, but formula #{gcc_version_name} not found!
       You may need to: brew tap homebrew/versions
+      EOS
+    end
+
+    if gcc_formula.name == "gcc"
+      return if gcc_formula.opt_prefix.exist?
+      raise <<-EOS.undent
+        The Homebrew GCC was not installed.
+        You must:
+          brew install gcc
+      EOS
+    end
+
+    if !gcc_formula.opt_prefix.exist?
+      raise <<-EOS.undent
+        The requested Homebrew GCC, #{gcc_version_name}, was not installed.
+        You must:
+          brew tap homebrew/versions
+          brew install #{gcc_version_name}
       EOS
     end
   end
