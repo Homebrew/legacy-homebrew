@@ -1,9 +1,8 @@
 class Sip < Formula
   desc "Tool to create Python bindings for C and C++ libraries"
   homepage "http://www.riverbankcomputing.co.uk/software/sip"
-  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.5/sip-4.16.5.tar.gz"
-  sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
-  revision 1
+  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.8/sip-4.16.8.tar.gz"
+  sha256 "d3141b65e48a30c9ce36612f8bcd1730ebf02d044757e4d6c5234927e2063e18"
 
   bottle do
     sha256 "0b6980e990a743676e7c1bac9a49a9a428c79b001bc40784e8d28b23bf119dcb" => :yosemite
