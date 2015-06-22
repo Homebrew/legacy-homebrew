@@ -5,9 +5,10 @@ class Mcrypt < Formula
   sha256 "5145aa844e54cca89ddab6fb7dd9e5952811d8d787c4f4bf27eb261e6c182098"
 
   bottle do
-    sha1 "9afdc1c3fdbf8f9801301fb959c0192b99072fc7" => :mavericks
-    sha1 "71c4c177e18d8ee3be7a1f5556c40ec5d2ba5a4d" => :mountain_lion
-    sha1 "ac147e3524ce21a9d57c0fa84e3c8e2db26321e1" => :lion
+    revision 1
+    sha256 "d7b36cbc7affc0e1851861381e92677abce2b011f184ab39234ff6cfbf021413" => :yosemite
+    sha256 "6c060224061c43733929524f3e45010192d5fc4ece1972fbce7259f96f514fa2" => :mavericks
+    sha256 "b6dd5f1210d4b0fffa7b14e4fce445c11d6245840fd38f08255149b6e27832c2" => :mountain_lion
   end
 
   option :universal
