@@ -13,16 +13,15 @@ class Allegro < Formula
     sha256 "32a6ba24e889fb5529edcf6b6da894610942ce4610da8cb9ea021bf97ae13532" => :mountain_lion
   end
 
-
-  head do
-    url "git://git.code.sf.net/p/alleg/allegro", :branch => "5.1"
+  devel do
+    url "https://downloads.sourceforge.net/project/alleg/allegro-unstable/5.1.11/allegro-5.1.11.tar.gz"
+    sha256 "7a071635e39105ce52cd82c8641a8f3841efbdfe8fdb39f7a5ae1be6db3be07f"
 
     depends_on "theora" => :recommended
   end
 
-  devel do
-    url "https://downloads.sourceforge.net/project/alleg/allegro-unstable/5.1.11/allegro-5.1.11.tar.gz"
-    sha256 "7a071635e39105ce52cd82c8641a8f3841efbdfe8fdb39f7a5ae1be6db3be07f"
+  head do
+    url "git://git.code.sf.net/p/alleg/allegro", :branch => "5.1"
 
     depends_on "theora" => :recommended
   end
