@@ -8,9 +8,10 @@ class Putty < Formula
 
   bottle do
     cellar :any
-    sha256 "1544c89c1a77addd9ca1b3976e29c7d2b0dab05728d69bc8a49ec43c3a6c1058" => :yosemite
-    sha256 "780b82f548d3f66b892470be198ca9f3ba7ceaa8440b46c2993d24e58c20ed6a" => :mavericks
-    sha256 "ea7a2ecaf3ba3c5dcfbaccfecd7c3062a36d5eb80f86ae0084c3df23deef55f8" => :mountain_lion
+    revision 1
+    sha256 "23ea6a1e7979ebdd4891ff1968e444a14d4cdd02ab36762df8192c654e796bca" => :yosemite
+    sha256 "0aca10188a1a172c09fff6d9d1669e08ad1afd34a0a84b8c4798e83bdb1895d4" => :mavericks
+    sha256 "0c3d48155005e602a8c278b9df98d8c2d7df3464c39207b72bbcfdcc0ac6fb83" => :mountain_lion
   end
 
   head do
