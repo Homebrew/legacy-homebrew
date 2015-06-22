@@ -98,10 +98,10 @@ module SharedEnvExtension
 
   def compiler
     @compiler ||= if (cc = ARGV.cc)
-      warn_about_non_apple_gcc($1) if cc =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($&) if cc =~ GNU_GCC_REGEXP
       fetch_compiler(cc, "--cc")
     elsif (cc = homebrew_cc)
-      warn_about_non_apple_gcc($1) if cc =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($&) if cc =~ GNU_GCC_REGEXP
       compiler = fetch_compiler(cc, "HOMEBREW_CC")
 
       if @formula
@@ -188,14 +188,13 @@ module SharedEnvExtension
     append "LDFLAGS", "-B#{ld64.bin}/"
   end
 
-  def gcc_version_formula(version)
-    gcc_name = "gcc-#{version}"
+  def gcc_version_formula(name)
+    version = name[GNU_GCC_REGEXP, 1]
     gcc_version_name = "gcc#{version.delete('.')}"
 
-    gcc_path = HOMEBREW_PREFIX.join "opt/gcc/bin/#{gcc_name}"
+    gcc_path = HOMEBREW_PREFIX.join("opt", "gcc", "bin", name)
     gcc_formula = Formulary.factory "gcc"
-    gcc_versions_path = \
-      HOMEBREW_PREFIX.join "opt/#{gcc_version_name}/bin/#{gcc_name}"
+    gcc_versions_path = HOMEBREW_PREFIX.join("opt", gcc_version_name, "bin", name)
 
     if gcc_path.exist?
       gcc_formula
@@ -210,11 +209,11 @@ module SharedEnvExtension
     end
   end
 
-  def warn_about_non_apple_gcc(gcc)
-    gcc_name = 'gcc' + gcc.delete('.')
+  def warn_about_non_apple_gcc(name)
+    gcc_version_name = name.delete(".-")
 
     begin
-      gcc_formula = gcc_version_formula(gcc)
+      gcc_formula = gcc_version_formula(name)
       if gcc_formula.name == "gcc"
         return if gcc_formula.opt_prefix.exist?
         raise <<-EOS.undent
@@ -226,15 +225,15 @@ module SharedEnvExtension
 
       if !gcc_formula.opt_prefix.exist?
         raise <<-EOS.undent
-        The requested Homebrew GCC, #{gcc_name}, was not installed.
+        The requested Homebrew GCC, #{gcc_version_name}, was not installed.
         You must:
           brew tap homebrew/versions
-          brew install #{gcc_name}
+          brew install #{gcc_version_name}
         EOS
       end
     rescue FormulaUnavailableError
       raise <<-EOS.undent
-      Homebrew GCC requested, but formula #{gcc_name} not found!
+      Homebrew GCC requested, but formula #{gcc_version_name} not found!
       You may need to: brew tap homebrew/versions
       EOS
     end
