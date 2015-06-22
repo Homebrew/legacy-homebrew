@@ -2,7 +2,7 @@ class Fossil < Formula
   desc "Distributed software configuration management"
   homepage "https://www.fossil-scm.org/"
   head "https://www.fossil-scm.org/", :using => :fossil
-  url "https://www.fossil-scm.org/download/fossil-src-1.32.tar.gz"
+  url "https://www.fossil-scm.org/download/fossil-src-1.33.tar.gz"
   sha256 "cd79c333eb9e86fbb8c17bf5cdf31c387e4ab768eede623aed21adfdbcad686e"
 
   bottle do
