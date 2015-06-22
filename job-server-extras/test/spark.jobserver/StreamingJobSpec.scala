@@ -24,6 +24,7 @@ class StreamingJobSpec extends JobSpecBase(StreamingJobSpec.getNewSystem) {
   val configMap = Map("streaming.batch_interval" -> Integer.valueOf(3))
 
   val emptyConfig = ConfigFactory.parseMap(configMap.asJava)
+  var jobId = ""
 
   before {
     dao = new InMemoryDAO
@@ -38,18 +39,17 @@ class StreamingJobSpec extends JobSpecBase(StreamingJobSpec.getNewSystem) {
       uploadTestJar()
       manager ! JobManagerActor.StartJob("demo", streamingJob, emptyConfig, asyncEvents ++ errorEvents)
 
-      val jobId = expectMsgPF(6 seconds, "Did not start JobResult") {
+      jobId = expectMsgPF(6 seconds, "Did not start StreamingTestJob, expecting JobStarted") {
         case JobStarted(jobid, _, _) => {
           jobid should not be null
           jobid
         }
       }
-      Thread sleep 6000
+      Thread sleep 1000
       dao.getJobInfos.get(jobId).get match  {
         case JobInfo(_, _, _, _, _, None, _) => {  }
         case e => fail("Unexpected JobInfo" + e)
       }
-
     }
   }
 }
