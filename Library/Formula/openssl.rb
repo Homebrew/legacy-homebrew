@@ -21,6 +21,7 @@ class Openssl < Formula
   option "without-check", "Skip build-time tests (not recommended)"
 
   depends_on "makedepend" => :build
+  depends_on "zlib" unless OS.mac?
 
   keg_only :provided_by_osx,
     "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
