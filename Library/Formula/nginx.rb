@@ -35,7 +35,7 @@ class Nginx < Formula
   def install
     # Changes default port to 8080
     inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
-    open("conf/nginx.conf", "a") { |f| f.puts "include servers/*;" }
+    inreplace "conf/nginx.conf", "    #}\n\n}", "    #}\n    include servers/*;\n}"
 
     pcre = Formula["pcre"]
     openssl = Formula["openssl"]
@@ -86,9 +86,12 @@ class Nginx < Formula
       system "./configure", *args
     end
 
-    system "make"
     system "make", "install"
-    man8.install "objs/nginx.8"
+    if build.head?
+      man8.install "docs/man/nginx.8"
+    else
+      man8.install "man/nginx.8"
+    end
 
     (etc/"nginx/servers").mkpath
     (var/"run/nginx").mkpath
@@ -136,7 +139,7 @@ class Nginx < Formula
 
     nginx will load all files in #{etc}/nginx/servers/.
     EOS
-    s << passenger_caveats if build.with? "passenger"
+    s << "\n" << passenger_caveats if build.with? "passenger"
     s
   end
 
