@@ -166,9 +166,9 @@ class Formulary
   # * a formula pathname
   # * a formula URL
   # * a local bottle reference
-  def self.factory(ref, spec=:stable, is_installing=false, warn_all_ambiguity=false)
-    spec = spec || :stable  # TODO: hack to have fake optional arguments
-    loader_for(ref, is_installing, warn_all_ambiguity).get_formula(spec)  # TODO: check all usages and change respective parameters
+  def self.factory(ref, spec=:stable, behavior=FactoryBehavior::KEG_FIRST)
+    spec = spec || :stable
+    loader_for(ref, behavior).get_formula(spec)
   end
 
   # Return a Formula instance for the given rack.
@@ -199,7 +199,7 @@ class Formulary
     loader_for(ref).path
   end
 
-  def self.loader_for(ref, is_installing = false, warn_all_ambiguity = false)
+  def self.loader_for(ref, behavior = FactoryBehavior::KEG_FIRST)
     case ref
     when %r[(https?|ftp)://]
       return FromUrlLoader.new(ref)
@@ -220,7 +220,7 @@ class Formulary
     #   return FormulaLoader.new(ref, formula_with_that_name)
     # end
 
-    formula_with_that_name = find_with_priority(ref, is_installing, warn_all_ambiguity)
+    formula_with_that_name = find_with_priority(ref, behavior)
     if formula_with_that_name
       return FormulaLoader.new(ref, formula_with_that_name)
     end
@@ -245,16 +245,15 @@ class Formulary
     return NullLoader.new(ref)
   end
 
-  def self.find_with_priority(ref, is_installing, warn_all_ambiguity)
+  def self.find_with_priority(ref, behavior)
     available_formulas = tap_paths(ref)
     core_formula = core_path(ref)
     if core_formula.file?
       available_formulas[Tap.core_priority] = [] if available_formulas[Tap.core_priority].nil?
       available_formulas[Tap.core_priority] << core_formula
     end
-
     unless available_formulas.empty?
-      if warn_all_ambiguity
+      if behavior == FactoryBehavior::ENFORCE_UNIQUE
         flat_formulas = available_formulas.values.flatten
         if flat_formulas.length == 1
           return flat_formulas.first
@@ -267,13 +266,15 @@ class Formulary
         end
         available_formulas.keys.sort.each do |this_priority|
           if available_formulas[this_priority].length > 1
-            if is_installing
+            if behavior == FactoryBehavior::INSTALL_LIKE
               ohai "Multiple formulae with same name and priority available."
               formulae_list = available_formulas[this_priority]
               puts_columns (0..formulae_list.length-1).map { |i| "#{i+1}. #{formulae_list[i].fully_qualified_name}"}
               print "Please choose one by inputing the number before it: "
               selected_index = $stdin.readline.to_i - 1
               ohai "Installing #{available_formulas[this_priority][selected_index].fully_qualified_name}"
+            elsif behavior == FactoryBehavior::CHOOSE_ANY
+              selected_index = 0
             else
               raise TapFormulaAmbiguityError.new(ref, available_formulas[this_priority])
             end

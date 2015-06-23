@@ -40,6 +40,7 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 HOMEBREW_CURL_ARGS = '-f#LA'
 
 require 'tap_constants'
+require 'factory_behavior'
 
 module Homebrew
   include FileUtils
