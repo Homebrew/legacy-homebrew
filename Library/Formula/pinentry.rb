@@ -14,6 +14,8 @@ class Pinentry < Formula
 
   depends_on "pkg-config" => :build
 
+  # Fix backspacing in pinentry-curses.  Remove at next release.
+  # https://bugs.gnupg.org/gnupg/issue2020
   patch :DATA
 
   def install
