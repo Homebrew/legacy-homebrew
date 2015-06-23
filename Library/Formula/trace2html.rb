@@ -1,8 +1,8 @@
 class Trace2html < Formula
   desc "Utility from Google Trace Viewer to convert JSON traces to HTML"
   homepage "https://github.com/google/trace-viewer"
-  url "https://github.com/google/trace-viewer/archive/a4c4894801935627ff412c3cc6c3ddae96019cc5.tar.gz"
-  sha256 "40bf1613e23c0f483536667d3ab584889c50219768414f0086150b3c364269c3"
+  url "https://github.com/google/trace-viewer/archive/2015-06-23.tar.gz"
+  sha256 "97ad0ca9c07a50c53a3d881b69b6b6f7424d6b0f4d9e9fb531c2d9273e413f19"
 
   depends_on :python if MacOS.version <= :snow_leopard
 
