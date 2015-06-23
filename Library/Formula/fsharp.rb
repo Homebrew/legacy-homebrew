@@ -29,7 +29,7 @@ class Fsharp < Formula
       %w|Microsoft.Portable.FSharp.Targets
          Microsoft.FSharp.Targets|.each do |fsharp_targ|
 
-        tree_dir   = "lib/mono/Microsoft\ SDKs/F\#/#{fsharp_ver}/Framework/v4.0"
+        tree_dir   = "lib/mono/Microsoft\ SDKs/F\#/#{fsharp_ver}/Framework/v4.5"
         source_dir = File.expand_path "#{prefix}/../../mono/#{mono_ver}/#{tree_dir}"
 
         # variables:
