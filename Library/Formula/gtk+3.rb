@@ -3,6 +3,7 @@ class Gtkx3 < Formula
   homepage "http://gtk.org/"
   url "https://download.gnome.org/sources/gtk+/3.16/gtk+-3.16.4.tar.xz"
   sha256 "1ee5dbd7a4cb81a91eaa1b7ae64ba5a3eab6a3c0a764155583ab96524590fc8e"
+  revision 1
 
   bottle do
     sha256 "6c32e525805e77f5c98566e913202004c4008a14eafbaf3ec6030857bfe22d8e" => :yosemite
@@ -11,6 +12,7 @@ class Gtkx3 < Formula
   end
 
   option :universal
+  option "with-quartz-relocation", "Build with quartz relocation support"
 
   depends_on "pkg-config" => :build
   depends_on "gdk-pixbuf"
@@ -33,9 +35,10 @@ class Gtkx3 < Formula
       --enable-introspection=yes
       --disable-schemas-compile
       --enable-quartz-backend
-      --enable-quartz-relocation
       --disable-x11-backend
     ]
+
+    args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
 
     system "./configure", *args
     # necessary to avoid gtk-update-icon-cache not being found during make install
