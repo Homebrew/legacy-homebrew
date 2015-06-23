@@ -19,7 +19,7 @@ class Multitail < Formula
   end
 
   def install
-    system "make", "-f", "makefile.macosx", "multitail"
+    system "make", "-f", "makefile.macosx", "multitail", "DESTDIR=#{HOMEBREW_PREFIX}"
 
     bin.install "multitail"
     man1.install gzip("multitail.1")
