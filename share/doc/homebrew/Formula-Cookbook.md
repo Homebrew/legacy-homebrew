@@ -119,6 +119,8 @@ end
 
 **We don’t accept formulae without homepages!**
 
+SSL/TLS (https) homepage is preferred, if one is available.
+
 Homebrew now has a description field (`desc`). Try and summarize this from the homepage.
 
 ## Check the build system
