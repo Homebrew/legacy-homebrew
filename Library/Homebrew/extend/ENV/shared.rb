@@ -205,8 +205,9 @@ module SharedEnvExtension
     version = name[GNU_GCC_REGEXP, 1]
     gcc_version_name = "gcc#{version.delete('.')}"
 
-    if HOMEBREW_PREFIX.join("opt", "gcc", "bin", name).exist?
-      Formulary.factory("gcc")
+    gcc = Formulary.factory("gcc")
+    if gcc.opt_bin.join(name).exist?
+      gcc
     else
       Formulary.factory(gcc_version_name)
     end
@@ -215,9 +216,9 @@ module SharedEnvExtension
   def warn_about_non_apple_gcc(name)
     begin
       gcc_formula = gcc_version_formula(name)
-    rescue FormulaUnavailableError
+    rescue FormulaUnavailableError => e
       raise <<-EOS.undent
-      Homebrew GCC requested, but formula #{name.delete(".-")} not found!
+      Homebrew GCC requested, but formula #{e.name} not found!
       You may need to: brew tap homebrew/versions
       EOS
     end
