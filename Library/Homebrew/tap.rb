@@ -102,7 +102,7 @@ class Tap
   end
 
   def get_priority
-    @json_path.exist?? Utils::JSON.load(File.read(@json_path))["priority"] : 99
+    @json_path.exist?? Utils::JSON.load(File.read(@json_path))["priority"] : Tap.default_priority
   end
 
   def set_priority priority
@@ -110,7 +110,7 @@ class Tap
         "priority" => priority
     }
     @json_path.atomic_write(Utils::JSON.dump(attributes))
-    if priority == 50
+    if priority == Tap.core_priority
       opoo "Core formulae has a priority of 50, we don't recommand do this!"
     end
     Tap.each do |other_tap|
@@ -156,5 +156,9 @@ class Tap
 
   def self.core_priority
     50
+  end
+
+  def self.default_priority
+    99
   end
 end
