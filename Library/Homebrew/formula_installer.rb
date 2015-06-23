@@ -13,6 +13,7 @@ require 'cmd/postinstall'
 require 'hooks/bottles'
 require 'debrew'
 require 'sandbox'
+require 'requirements/cctools_requirement'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -392,7 +393,10 @@ class FormulaInstaller
 
     keg = Keg.new(formula.prefix)
     link(keg)
-    fix_install_names(keg) if OS.mac?
+
+    if OS.mac?
+      fix_install_names(keg)
+    end
 
     if build_bottle? && formula.post_install_defined?
       ohai "Not running post_install as we're building a bottle"

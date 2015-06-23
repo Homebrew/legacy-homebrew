@@ -154,9 +154,9 @@ module MachO
 
     def parse_otool_L_output
       ENV["HOMEBREW_MACH_O_FILE"] = path.expand_path.to_s
-      libs = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split("\n")
+      libs = `#{MacOS.otool} -L "$HOMEBREW_MACH_O_FILE"`.split("\n")
       unless $?.success?
-        raise ErrorDuringExecution.new(MacOS.locate("otool"),
+        raise ErrorDuringExecution.new(MacOS.otool,
           ["-L", ENV["HOMEBREW_MACH_O_FILE"]])
       end
 
