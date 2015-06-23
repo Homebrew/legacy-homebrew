@@ -120,6 +120,10 @@ class Tap
     end
   end
 
+  def padded_priority
+    self.get_priority.to_s.rjust(2, '0')
+  end
+
   def to_hash
     {
       "name" => @name,

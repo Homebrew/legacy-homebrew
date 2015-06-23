@@ -3,7 +3,7 @@ require "tap"
 module Homebrew
   def tap
     if ARGV.empty?
-      Tap.each {|tap| puts " * [#{tap.get_priority.to_s.rjust(2, '0')}] #{tap.name}"}
+      Tap.each {|tap| puts " * [#{tap.padded_priority}] #{tap.name}"}
     elsif ARGV.first == "--repair"
       migrate_taps :force => true
     else
