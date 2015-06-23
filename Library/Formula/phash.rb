@@ -7,9 +7,10 @@ class Phash < Formula
 
   bottle do
     cellar :any
-    sha1 "d5cd584f04669d06d1876704546bc56bc71aa754" => :mavericks
-    sha1 "7a5320740e97de701e924c6c2dbeecb179438f1c" => :mountain_lion
-    sha1 "9c8ecf5f7b7774cec34059f8a2e02d3d6644368e" => :lion
+    revision 1
+    sha256 "daf5e13548267562355eb4a08c8a51b90ea3b6ecafb33a1c12a68ebd999d1ee2" => :yosemite
+    sha256 "d2aa89a1102afe704c88fe0250cca0de618b264f819a2229daa31a5bfe6f7419" => :mavericks
+    sha256 "caba9909717b1286db3be662f975928ee470f9ebe5bdcd3ac9fc2955180be04b" => :mountain_lion
   end
 
   option "disable-image-hash", "Disable image hash"
