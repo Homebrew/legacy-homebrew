@@ -1,7 +1,7 @@
 class Libsass < Formula
   desc "C implementation of a Sass compiler"
   homepage "https://github.com/sass/libsass"
-  url "https://github.com/sass/libsass.git", :tag => "3.2.4", :revision => "a6482aac915f46e3e9033afd88659889b215a288"
+  url "https://github.com/sass/libsass.git", :tag => "3.2.5", :revision => "0e6b4a2850092356aa3ece07c6b249f0221caced"
   head "https://github.com/sass/libsass.git"
 
   bottle do
