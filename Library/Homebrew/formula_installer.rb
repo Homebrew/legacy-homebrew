@@ -147,7 +147,11 @@ class FormulaInstaller
 
     check_conflicts
 
-    compute_and_install_dependencies unless ignore_deps?
+    if !ignore_deps?
+      deps = compute_dependencies
+      check_dependencies_bottled(deps) if pour_bottle?
+      install_dependencies(deps)
+    end
 
     return if only_deps?
 
@@ -217,18 +221,28 @@ class FormulaInstaller
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
   end
 
-  def compute_and_install_dependencies
+  def compute_dependencies
     req_map, req_deps = expand_requirements
-
     check_requirements(req_map)
-
     deps = expand_dependencies(req_deps + formula.deps)
 
-    if deps.empty? && only_deps?
-      puts "All dependencies for #{formula.full_name} are satisfied."
-    else
-      install_dependencies(deps)
+    deps
+  end
+
+  def check_dependencies_bottled(deps)
+    unbottled = []
+
+    unbottled = deps.select do |dep, _|
+      formula = dep.to_formula
+      !formula.pour_bottle? && !MacOS.can_build?
     end
+
+    raise BuildToolsError.new(unbottled) unless unbottled.empty?
+  end
+
+  def compute_and_install_dependencies
+    deps = compute_dependencies
+    install_dependencies(deps)
   end
 
   def check_requirements(req_map)
@@ -319,11 +333,12 @@ class FormulaInstaller
   end
 
   def install_dependencies(deps)
-    if deps.length > 1
+    if deps.empty? && only_deps?
+      puts "All dependencies for #{formula.full_name} are satisfied."
+    else
       oh1 "Installing dependencies for #{formula.full_name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
+      deps.each { |dep, options| install_dependency(dep, options) }
     end
-
-    deps.each { |dep, options| install_dependency(dep, options) }
 
     @show_header = true unless deps.empty?
   end
