@@ -17,5 +17,18 @@ class Gotags < Formula
 
   test do
     system "#{bin}/gotags", "-v"
+
+    (testpath/"test.go").write <<-EOS.undent
+      package main
+
+      type Foo struct {
+          Bar int
+      }
+    EOS
+
+    require "open3"
+    stdout_str, _ = Open3.capture2("#{bin}/gotags", (testpath/"test.go"))
+    assert_match (/^Bar.*test.go.*$/) , stdout_str
+    assert_match (/^Foo.*test.go.*$/) , stdout_str
   end
 end
