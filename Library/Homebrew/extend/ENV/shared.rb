@@ -192,8 +192,9 @@ module SharedEnvExtension
     version = name[GNU_GCC_REGEXP, 1]
     gcc_version_name = "gcc#{version.delete('.')}"
 
-    if HOMEBREW_PREFIX.join("opt", "gcc", "bin", name).exist?
-      Formulary.factory("gcc")
+    gcc = Formulary.factory("gcc")
+    if gcc.opt_bin.join(name).exist?
+      gcc
     else
       Formulary.factory(gcc_version_name)
     end
