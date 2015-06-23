@@ -1,8 +1,8 @@
 class Fig < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/1.3.0.tar.gz"
-  sha256 "7fcf5ce1df5c53aedcfc875c2620035c735d75191ace6bc8ad97b9aeb522f153"
+  url "https://github.com/docker/compose/archive/1.3.1.tar.gz"
+  sha256 "04b60b805dc305543d5fe9a0880b8e1ad5818c440587a26b0eb01f9e3e8e79eb"
 
   bottle do
     sha256 "42c21d5454a5e4eed111e925744a56845a979e408e2d7bcef4c6cc17baa6d6c7" => :yosemite
