@@ -13,4 +13,19 @@ class Ppl < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <ppl_c.h>
+      #ifndef PPL_VERSION_MAJOR
+      #error "No PPL header"
+      #endif
+      int main() {
+        ppl_initialize();
+        return ppl_finalize();
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-lppl_c", "-lppl", "-o", "test"
+    system "./test"
+  end
 end
