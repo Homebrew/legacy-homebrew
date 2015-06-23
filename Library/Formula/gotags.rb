@@ -16,8 +16,6 @@ class Gotags < Formula
   end
 
   test do
-    system "#{bin}/gotags", "-v"
-
     (testpath/"test.go").write <<-EOS.undent
       package main
 
@@ -26,9 +24,6 @@ class Gotags < Formula
       }
     EOS
 
-    require "open3"
-    stdout_str, _ = Open3.capture2("#{bin}/gotags", (testpath/"test.go"))
-    assert_match (/^Bar.*test.go.*$/) , stdout_str
-    assert_match (/^Foo.*test.go.*$/) , stdout_str
+    assert_match (/^Bar.*test.go.*$/), shell_output("#{bin}/gotags #{testpath}/test.go")
   end
 end
