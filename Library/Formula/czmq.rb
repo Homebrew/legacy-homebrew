@@ -6,9 +6,9 @@ class Czmq < Formula
 
   bottle do
     cellar :any
-    sha256 "87984479649892f23aa2abfebb006606d7e531fea20cade7f12baa7d7462fe43" => :yosemite
-    sha256 "9a582534291bc2ec40ebdeba655402f105b6bb17b3c6a3ab98ed9365c7fa5842" => :mavericks
-    sha256 "a70dff1acc626c959f25ab2a7ec997b36e1b3261132a0f39fb5851a2f896cdd8" => :mountain_lion
+    sha256 "85e90046efe9bfb89c6cd94dcab7869673bffebff31eef220d493020fdf45f88" => :yosemite
+    sha256 "f6adffe6da23c90632ad57cfedcf3b6725ea5eda506714518981e5571a6d1ee7" => :mavericks
+    sha256 "71313a3a187fe0fbd7accf221658819f736a93bb86fad8fac18d700399fd5d3d" => :mountain_lion
   end
 
   head do
