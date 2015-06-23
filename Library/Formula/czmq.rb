@@ -1,8 +1,8 @@
 class Czmq < Formula
   desc "High-level C binding for ZeroMQ"
   homepage "http://czmq.zeromq.org/"
-  url "http://download.zeromq.org/czmq-3.0.1.tar.gz"
-  sha1 "fc69f8175347c73a61d2004fc9699f10f8a73eb2"
+  url "http://download.zeromq.org/czmq-3.0.2.tar.gz"
+  sha256 "8bca39ab69375fa4e981daf87b3feae85384d5b40cef6adbe9d5eb063357699a"
 
   bottle do
     cellar :any
@@ -34,10 +34,7 @@ class Czmq < Formula
     ENV.universal_binary if build.universal?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    if build.stable?
-      args << "--with-libsodium" if build.with? "libsodium"
-    end
+    args << "--with-libsodium" if build.with? "libsodium"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
