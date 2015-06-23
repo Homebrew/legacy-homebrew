@@ -99,7 +99,7 @@ class Keg
   end
 
   def install_name_tool(*args)
-    tool = MacOS.locate_cctool("install_name_tool")
+    tool = MacOS.install_name_tool
     system(tool, *args) or raise ErrorDuringExecution.new(tool, args)
   end
 

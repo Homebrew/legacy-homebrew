@@ -36,14 +36,12 @@ module OS
       end
     end
 
-    def locate_cctool(tool)
-      if File.executable?(path = "#{HOMEBREW_LIBRARY}/Homebrew/vendor/cctools/#{tool}")
-        Pathname.new(path)
-      elsif File.executable?(path = "#{Formula['cctools'].opt_prefix}/bin/#{tool}")
-        Pathname.new(path)
-      else
-        locate(tool)
-      end
+    def install_name_tool
+      Pathname.new("#{HOMEBREW_LIBRARY}/Homebrew/vendor/cctools/install_name_tool")
+    end
+
+    def otool
+      Pathname.new("#{HOMEBREW_LIBRARY}/Homebrew/vendor/cctools/otool")
     end
 
     def active_developer_dir
