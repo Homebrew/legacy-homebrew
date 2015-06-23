@@ -18,12 +18,13 @@ class Libtool < Formula
   keg_only :provided_until_xcode43
 
   option :universal
+  option "with-default-names", "Do not prepend 'g' to the binary"
 
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--program-prefix=g",
+                          ("--program-prefix=g" if build.without? "default-names"),
                           "--enable-ltdl-install"
     system "make", "install"
   end
