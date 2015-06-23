@@ -11,6 +11,8 @@ class Redis < Formula
     sha256 "54bda6925b7258c6dbcd8134fbb64a3feae09d1c0de1fedae7925a524ee1befe" => :mountain_lion
   end
 
+  option "with-jemalloc", "Select jemalloc as memory allocator when building Redis"
+
   head "https://github.com/antirez/redis.git", :branch => "unstable"
 
   fails_with :llvm do
@@ -22,7 +24,12 @@ class Redis < Formula
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = "-arch #{MacOS.preferred_arch}"
 
-    system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"
+    args = %W[
+      PREFIX=#{prefix}
+      CC=#{ENV.cc}
+    ]
+    args << "MALLOC=jemalloc" if build.with? "jemalloc"
+    system "make", "install", *args
 
     %w[run db/redis log].each { |p| (var+p).mkpath }
 
