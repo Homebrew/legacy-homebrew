@@ -203,9 +203,9 @@ module SharedEnvExtension
   def warn_about_non_apple_gcc(name)
     begin
       gcc_formula = gcc_version_formula(name)
-    rescue FormulaUnavailableError
+    rescue FormulaUnavailableError => e
       raise <<-EOS.undent
-      Homebrew GCC requested, but formula #{name.delete(".-")} not found!
+      Homebrew GCC requested, but formula #{e.name} not found!
       You may need to: brew tap homebrew/versions
       EOS
     end
