@@ -2,8 +2,8 @@
 class Node < Formula
   desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.4/node-v0.12.4.tar.gz"
-  sha256 "3298d0997613a04ac64343e8316da134d04588132554ae402eb344e3369ec912"
+  url "https://nodejs.org/dist/v0.12.5/node-v0.12.5.tar.gz"
+  sha256 "4bc1e25f4c62ac65324d3cf4aa9de2d801cd708757c3567b6ad2ced7df30cdd2"
   head "https://github.com/joyent/node.git", :branch => "v0.12"
 
   bottle do
@@ -31,8 +31,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.10.1.tgz"
-    sha256 "5b57c177bcaba628b04aba22f1112f409a0344c74653eb8c9185df24a97ac01b"
+    url "https://registry.npmjs.org/npm/-/npm-2.11.2.tgz"
+    sha256 "1c831305ca20a4f1280e52869f9c838ee53ed512c15ebaafc64dd263a85f5418"
   end
 
   def install
