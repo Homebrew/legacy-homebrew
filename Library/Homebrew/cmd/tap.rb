@@ -23,8 +23,10 @@ module Homebrew
         opoo "Priority not specified, terminating."
       else
         priority = priority.to_i
-        if priority < 0 or priority > 99
-          opoo "Priority not allowed, terminating."
+        if priority < 0 || priority > 99
+          opoo "Priority must be between 0 and 99, terminating."
+        elsif priority == tap.get_priority
+          opoo "Priority not changed, terminating."
         else
           tap.set_priority priority
         end
