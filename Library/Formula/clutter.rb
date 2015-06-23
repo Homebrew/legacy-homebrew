@@ -5,9 +5,9 @@ class Clutter < Formula
   sha256 "8e69d21d9f7e8e89eafc072e2615c289903260c470af39bcb578b081139c11ac"
 
   bottle do
-    sha1 "f9ef97d254247e2e0ab98fbaf3723d577c115ab4" => :mavericks
-    sha1 "063234b823140c65483e9ac0dbbf4af63764431b" => :mountain_lion
-    sha1 "7565ae43a559f988271cfdf8a745cc7919659efe" => :lion
+    sha256 "7a028dc9422f38d39737dc1db867fbdf4469fdd3a5e218362aa6dad4cd451d77" => :yosemite
+    sha256 "b787bc09a5327030b49f3a1743e754a49b601bdcf90f9a4095cc2aadd1532114" => :mavericks
+    sha256 "43195b3a9e8c58457e26acdf24821449f5fefe8e6f83b8af0caa7c1baf9f8fa9" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
