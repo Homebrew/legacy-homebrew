@@ -20,7 +20,6 @@ class Grsync < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-unity",
                           "--prefix=#{prefix}"
-
     system "make", "install"
   end
 
