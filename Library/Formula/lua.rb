@@ -64,16 +64,10 @@ class Lua < Formula
     # Fix path in the config header
     inreplace "src/luaconf.h", "/usr/local", HOMEBREW_PREFIX
 
-    # Fix the error libreadline.so: undefined reference to `tputs'
-    # See http://lua-users.org/lists/lua-l/2013-02/msg00488.html
-    args = []
-    args << "MYLIBS=-lncurses" if OS.linux?
-
-    arch = if OS.mac? then "macosx" elsif OS.linux? then "linux" else "posix" end
-    system "make", arch, "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", *args
-    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
-
     # We ship our own pkg-config file as Lua no longer provide them upstream.
+    arch = if OS.mac? then "macosx" elsif OS.linux? then "linux" else "posix" end
+    system "make", arch, "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
+    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
     (lib+"pkgconfig/lua.pc").write pc_file
 
     # Fix some software potentially hunting for different pc names.
