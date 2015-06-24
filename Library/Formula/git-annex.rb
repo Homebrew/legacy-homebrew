@@ -5,8 +5,8 @@ class GitAnnex < Formula
 
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-5.20150522/git-annex-5.20150522.tar.gz"
-  sha256 "77208899616ed973dca26137534533f03636af6314cbdbfdc3e4e51c5efeec6a"
+  url "https://hackage.haskell.org/package/git-annex-5.20150617/git-annex-5.20150617.tar.gz"
+  sha256 "2d37c49866880803886fe77be17ac154c84acc0c344e4fefea577a59e55f8d54"
 
   bottle do
     sha256 "4bae9f9d41e97243371d0adc021922955c353aff37b1b8b2ba247dc16f9d19ce" => :yosemite
@@ -41,6 +41,7 @@ class GitAnnex < Formula
 
       system "make", "install-docs", "PREFIX=#{prefix}"
     end
+    bin.install_symlink "git-annex" => "git-annex-shell"
     cabal_clean_lib
   end
 
