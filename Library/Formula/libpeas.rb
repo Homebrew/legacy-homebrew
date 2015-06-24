@@ -4,6 +4,12 @@ class Libpeas < Formula
   url "https://download.gnome.org/sources/libpeas/1.14/libpeas-1.14.0.tar.xz"
   sha256 "5e4b3a8968b71497ab26a7a528c414c4c640c5724328fa3507854f04788e2d76"
 
+  bottle do
+    sha256 "3d96adbac4014c293339b23d96447ef56246c9986ec7d6c198aef3b0394fef08" => :yosemite
+    sha256 "6cf87185dd7d908ff8207d4ca77227cdbc3f40183c3aedcd6722f6f36f868dcb" => :mavericks
+    sha256 "2fac61c95a159f52ecb1e3ec07d8765612a45ed743647dd35c529fd87b82eae7" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gettext" => :build
