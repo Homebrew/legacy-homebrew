@@ -20,6 +20,7 @@ class Gtkx < Formula
   depends_on "atk"
   depends_on "pango"
   depends_on "gobject-introspection"
+  depends_on "hicolor-icon-theme"
 
   fails_with :llvm do
     build 2326

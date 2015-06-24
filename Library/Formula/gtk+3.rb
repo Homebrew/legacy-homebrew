@@ -23,6 +23,7 @@ class Gtkx3 < Formula
   depends_on "gsettings-desktop-schemas" => :recommended
   depends_on "pango"
   depends_on "glib"
+  depends_on "hicolor-icon-theme"
 
   def install
     ENV.universal_binary if build.universal?
