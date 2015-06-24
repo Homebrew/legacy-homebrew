@@ -5,6 +5,7 @@ class Vim < Formula
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
   url "https://mirrors.kernel.org/debian/pool/main/v/vim/vim_7.4.712.orig.tar.gz"
   sha256 "b334ba9f6682c605d29fcf45e7fe246b88061736b86c3e7cdfa309404a66b55c"
+  revision 1
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -30,7 +31,7 @@ class Vim < Formula
   depends_on :python3 => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
-  depends_on "gtk+" if build.with? "client-server"
+  depends_on :x11 if build.with? "client-server"
 
   conflicts_with "ex-vi",
     :because => "vim and ex-vi both install bin/ex and bin/view"
@@ -62,12 +63,12 @@ class Vim < Formula
     end
 
     opts << "--disable-nls" if build.include? "disable-nls"
-    opts << "--without-x"
+    opts << "--enable-gui=no"
 
     if build.with? "client-server"
-      opts << "--enable-gui=gtk2"
+      opts << "--with-x"
     else
-      opts << "--enable-gui=no"
+      opts << "--without-x"
     end
 
     if build.with? "luajit"
