@@ -35,7 +35,7 @@ class Git < Formula
   depends_on "curl" if build.with? "brewed-curl"
   depends_on "go" => :build if build.with? "persistent-https"
   depends_on "expat" unless OS.mac?
-  depends_on "homebrew/dupes/tcl-tk" unless OS.mac?
+  depends_on "homebrew/dupes/tcl-tk" => :recommended unless OS.mac?
 
   # Trigger an install of swig before subversion, as the "swig" doesn't get pulled in otherwise
   # See https://github.com/Homebrew/homebrew/issues/34554
@@ -88,6 +88,7 @@ class Git < Formula
       LDFLAGS=#{ENV.ldflags}
     ]
     args << "NO_OPENSSL=1" << "APPLE_COMMON_CRYPTO=1" if build.without? "brewed-openssl"
+    args << "NO_TCLTK=1" if build.without? "tcl-tk"
 
     system "make", "install", *args
 
