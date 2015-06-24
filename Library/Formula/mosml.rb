@@ -1,5 +1,3 @@
-require "formula"
-
 class Mosml < Formula
   homepage "http://mosml.org"
   url "https://github.com/kfl/mosml/archive/ver-2.10.1.tar.gz"
@@ -19,6 +17,6 @@ class Mosml < Formula
   end
 
   test do
-    system "mosml", "-P full"
+    system "#{bin}/mosml", "-P full"
   end
 end
