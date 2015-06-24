@@ -1,7 +1,7 @@
 class ClangFormat < Formula
-  desc "C/C++/Obj-C formatting tools: standalone and editor plugins"
+  desc "C, C++, Obj-C, Java, JavaScript, TypeScript formatting tools and editor plugins"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2015-04-21"
+  version "2015-06-18"
 
   bottle do
     cellar :any
@@ -12,10 +12,10 @@ class ClangFormat < Formula
   end
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-04-21/", :using => :svn
+    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-06-18/", :using => :svn
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-04-21/", :using => :svn
+      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-06-18/", :using => :svn
     end
 
     resource "libcxx" do
