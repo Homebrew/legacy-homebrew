@@ -4,6 +4,13 @@ class Sile < Formula
   url "https://github.com/simoncozens/sile/releases/download/v0.9.2/sile-0.9.2.tar.bz2"
   sha256 "2223582818df06daa4609cee40a81e8787085ad1795d4b2ce5edbe0663b74e18"
 
+  bottle do
+    cellar :any
+    sha256 "aacf9f59beae5b6de301b7e865d8aef602d47d6aa99ac8a87615c267a90a8646" => :yosemite
+    sha256 "04bb77b8e45794a08c31ad9efea24d722d704b31180ff89d4da80d5696150b73" => :mavericks
+    sha256 "3e634157cf79e6be843c73034cd4f4d7099c760a3ed2b2d2905e42512dac7c2c" => :mountain_lion
+  end
+
   head do
     url "https://github.com/simoncozens/sile.git"
     depends_on "automake" => :build
