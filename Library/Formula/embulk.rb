@@ -1,15 +1,15 @@
 class Embulk < Formula
   desc "Data transfer between various databases, file formats and services"
   homepage "http://www.embulk.org/"
-  url "https://bintray.com/artifact/download/embulk/maven/embulk-0.6.11.jar"
-  sha256 "1ae155c252abc03d8b82010dd648394a05bfbbfbcdbb9ce6479d07eab38a6bd2"
+  url "https://bintray.com/artifact/download/embulk/maven/embulk-0.6.12.jar"
+  sha256 "440be2dc34e6f3346fc808ece4c7ab713dbcea90c992149d56f407cf264c2598"
 
   depends_on :java
 
   skip_clean "libexec"
 
   def install
-    (libexec/"bin").install "embulk-0.6.11.jar" => "embulk"
+    (libexec/"bin").install "embulk-0.6.12.jar" => "embulk"
     chmod 0755, libexec/"bin/embulk"
     bin.write_exec_script libexec/"bin/embulk"
   end
