@@ -41,6 +41,7 @@ class GitAnnex < Formula
 
       system "make", "install-docs", "PREFIX=#{prefix}"
     end
+    bin.install_symlink "git-annex" => "git-annex-shell"
     cabal_clean_lib
   end
 
