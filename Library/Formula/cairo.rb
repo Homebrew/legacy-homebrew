@@ -33,10 +33,12 @@ class Cairo < Formula
       --enable-gobject=yes
       --enable-svg=yes
       --enable-tee=yes
+    ]
+    args += %W[
       --enable-xlib=no
       --enable-xlib-xrender=no
-      #{--enable-quartz-image if OS.mac?}
-    ]
+      --enable-quartz-image
+    ] if OS.mac?
 
     args << "--enable-xcb=no" if MacOS.version <= :leopard
 
