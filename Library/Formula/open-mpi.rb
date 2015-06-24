@@ -31,6 +31,8 @@ class OpenMpi < Formula
     ENV.cxx11 if build.cxx11?
 
     args = %W[
+      FC=#{ENV.fc}
+      F77=#{ENV.fc}
       --prefix=#{prefix}
       --disable-dependency-tracking
       --disable-silent-rules
