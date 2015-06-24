@@ -13,17 +13,17 @@ class Scala < Formula
   option "with-src", "Also install sources for IDE support"
 
   stable do
-    url "http://www.scala-lang.org/files/archive/scala-2.11.6.tgz"
-    sha256 "41ba45e4600404634217a66d6b2c960459d3a67e0344a7c3d9642d0eaa446583"
+    url "http://www.scala-lang.org/files/archive/scala-2.11.7.tgz"
+    sha256 "ffe4196f13ee98a66cf54baffb0940d29432b2bd820bd0781a8316eec22926d0"
 
     resource "docs" do
-      url "http://www.scala-lang.org/files/archive/scala-docs-2.11.6.zip"
-      sha256 "aa7fb121cc0e50d32cd85b162b684d30be383aab42ec9b59589e389af8b62254"
+      url "http://www.scala-lang.org/files/archive/scala-docs-2.11.7.zip"
+      sha256 "90981bf388552465ce07761c8f991c13be332ee07e97ff44f4b8be278f489667"
     end
 
     resource "src" do
-      url "https://github.com/scala/scala/archive/v2.11.6.tar.gz"
-      sha256 "0ccf26576dacd2792af09a146a43a15b25201d47891f83c3dc8f9a04c79e88b1"
+      url "https://github.com/scala/scala/archive/v2.11.7.tar.gz"
+      sha256 "1679ee604bc4e881b0d325e164c39c02dcfa711d53cd3115f5a6c9676c5915ef"
     end
   end
 
