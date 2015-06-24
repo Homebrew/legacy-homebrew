@@ -4,6 +4,12 @@ class Gedit < Formula
   url "https://download.gnome.org/sources/gedit/3.16/gedit-3.16.2.tar.xz"
   sha256 "db60a9408711b00f3780f5f5b657e9f44722c88c683ba6e9f2b4885631f429aa"
 
+  bottle do
+    sha256 "40b6f94969ae896a2b6f0fce819bd6d70b0fe49318bfcb30650e74073061d6ad" => :yosemite
+    sha256 "2aa33f56f6b6de0f7a0fadf58ba38591969fe96371e531f9a6cef1ed5be32907" => :mavericks
+    sha256 "75a3454fb6f2bf2255a15bc58e87e4e74f7616828d0b8473540fd9476ff7231b" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "itstool" => :build
