@@ -5,6 +5,11 @@ class Xhyve < Formula
   sha256 "75be0cf1ab345874aef00833e34cf337e71aad0f946d7f9bf8ade248fc4f6b59"
   head "https://github.com/mist64/xhyve.git"
 
+  bottle do
+    cellar :any
+    sha256 "cfbc2e2bf6b8e2fe8892779c9e6dadedab2f0cedfb63aa648bc26febd0c1257a" => :yosemite
+  end
+
   depends_on :macos => :yosemite
 
   def install
