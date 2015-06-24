@@ -5,6 +5,12 @@ class ClutterGtk < Formula
   sha256 "883550b574a036363239442edceb61cf3f6bedc8adc97d3404278556dc82234d"
   revision 1
 
+  bottle do
+    sha256 "2c65b0b686d723cb47210a38f7a023f3478bc2db37bec07de13f89b19b6b82f6" => :yosemite
+    sha256 "10c12381084561f4b51b772a4b4968b325149c557b8ced2643e1d0b4887afc0e" => :mavericks
+    sha256 "18d51643c63c642a27c9d7010107835d2cf525e076d38eb7dc7603233216ec64" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gdk-pixbuf"
