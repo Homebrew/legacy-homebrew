@@ -3,7 +3,7 @@ class Ansible < Formula
   homepage "http://www.ansible.com/home"
   url "http://releases.ansible.com/ansible/ansible-1.9.1.tar.gz"
   sha256 "a6f975d565723765a4d490ff40cede96833a745f38908def4950a0075f1973f5"
-  revision 1
+  revision 2
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
@@ -31,8 +31,8 @@ class Ansible < Formula
   end
 
   resource "paramiko" do
-    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.7.7.1.zip"
-    sha256 "189853a8d96a53f8197b3be8dbd9c288ec17545e8b2c2d0a0883e8c5f9d7df02"
+    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.15.2.tar.gz"
+    sha256 "4f56a671a3eecbb76e6143e6e4ca007d503a39aa79aa9e14ade667fa53fd6e55"
   end
 
   resource "pycrypto" do
@@ -43,6 +43,15 @@ class Ansible < Formula
   resource "PyYAML" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
     sha256 "e713da45c96ca53a3a8b48140d4120374db622df16ab71759c9ceb5b8d46fe7c"
+  end
+
+  #
+  # Required by the 'paramiko' core module
+  # https://github.com/paramiko/paramiko)
+  #
+  resource "ecdsa" do
+    url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.13.tar.gz"
+    sha256 "64cf1ee26d1cde3c73c6d7d107f835fed7c6a2904aef9eac223d57ad800c43fa"
   end
 
   #
