@@ -3,6 +3,13 @@ class Smpeg < Formula
   homepage "http://icculus.org/smpeg/"
   url "svn://svn.icculus.org/smpeg/tags/release_0_4_5/", :revision => "399"
 
+  bottle do
+    cellar :any
+    sha256 "b205e203c6942fcf32e16696eeca2e38416b226e9f737ad6b53e21a3130e7fc8" => :yosemite
+    sha256 "9230641a8af9ce9c7da7102ea957a764d22185981e123604f81f2260a9f75dcb" => :mavericks
+    sha256 "0923b3aae2d9854152ccd50b94a838e590e482d93a2cee4ed010c9810e7dabd7" => :mountain_lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
