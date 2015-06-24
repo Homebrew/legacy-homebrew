@@ -1,8 +1,8 @@
 class Libgit2 < Formula
   desc "C library of Git core methods that is re-entrant and linkable"
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.22.2.tar.gz"
-  sha256 "3109f2579180d561fc736bad8bd917d7241477aab11633755c8a273beac53cdc"
+  url "https://github.com/libgit2/libgit2/archive/v0.22.3.tar.gz"
+  sha256 "511fe60e7c12c3525b4e0489861e5c1fe0e331d604bee9a3dfb8420c2f288f60"
   head "https://github.com/libgit2/libgit2.git"
 
   bottle do
@@ -31,5 +31,26 @@ class Libgit2 < Formula
       system "cmake", "..", *args
       system "make", "install"
     end
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <git2.h>
+
+      int main(int argc, char *argv[]) {
+        int options = git_libgit2_features();
+        return 0;
+      }
+    EOS
+    libssh2 = Formula["libssh2"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{include}
+      -I#{libssh2.opt_include}
+      -L#{lib}
+      -lgit2
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end
