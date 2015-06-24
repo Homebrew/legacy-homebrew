@@ -24,12 +24,14 @@ class Zeromq < Formula
 
   option :universal
   option "with-libpgm", "Build with PGM extension"
+  option "with-norm", "Build with NORM extension"
 
   deprecated_option "with-pgm" => "with-libpgm"
 
   depends_on "pkg-config" => :build
   depends_on "libpgm" => :optional
   depends_on "libsodium" => :optional
+  depends_on "norm" => :optional
 
   def install
     ENV.universal_binary if build.universal?
@@ -37,9 +39,9 @@ class Zeromq < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     if build.with? "libpgm"
       # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
-      ENV['OpenPGM_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
-      ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
-      args << "--with-system-pgm"
+      ENV['pgm_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
+      ENV['pgm_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
+      args << "--with-pgm"
     end
 
     if build.with? "libsodium"
@@ -47,6 +49,8 @@ class Zeromq < Formula
     else
       args << "--without-libsodium"
     end
+
+    args << "--with-norm" if build.with? "norm"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
