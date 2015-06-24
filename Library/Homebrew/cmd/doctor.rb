@@ -809,7 +809,7 @@ def check_for_multiple_volumes
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
   real_cellar = HOMEBREW_CELLAR.realpath
 
-  tmp = Pathname.new with_system_path { `mktemp -d #{HOMEBREW_TEMP}/homebrew-brew-doctor-XXXXXX` }.strip
+  tmp = Pathname.new(Dir.mktmpdir("doctor", HOMEBREW_TEMP))
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
