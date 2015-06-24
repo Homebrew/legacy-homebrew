@@ -11,21 +11,37 @@ class JpegTurbo < Formula
     sha256 "d0aee820193caf7d5c365869ce932ccfbe2c6dc76c6a81e0dc73b8f5f08ba5c0" => :mountain_lion
   end
 
+  option "without-test", "Skip build-time checks (Not Recommended)"
+
   depends_on "libtool" => :build
-  depends_on "nasm" => :build if MacOS.prefer_64_bit?
 
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
+
+  # https://github.com/Homebrew/homebrew/issues/41023
+  # http://sourceforge.net/p/libjpeg-turbo/mailman/message/34219546/
+  # Should be safe to remove once nasm 2.11.09 lands - Check first.
+  resource "nasm" do
+    url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.06/nasm-2.11.06.tar.xz"
+    sha256 "90f60d95a15b8a54bf34d87b9be53da89ee3d6213ea739fb2305846f4585868a"
+  end
 
   def install
     cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--with-jpeg8", "--mandir=#{man}"]
+
     if MacOS.prefer_64_bit?
-      # Auto-detect our 64-bit nasm
-      args << "NASM=#{Formula["nasm"].bin}/nasm"
+      resource("nasm").stage do
+        system "./configure", "--prefix=#{buildpath}/nasm"
+        system "make", "install"
+      end
+
+      ENV.prepend_path "PATH", buildpath/"nasm/bin"
+      args << "NASM=#{buildpath}/nasm/bin/nasm"
     end
 
     system "./configure", *args
     system "make"
+    system "make", "test" if build.with? "test"
     ENV.j1 # Stops a race condition error: file exists
     system "make", "install"
   end
