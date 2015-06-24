@@ -1,8 +1,8 @@
 class Libetonyek < Formula
   desc "Interpret and import Apple Keynote presentations"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
-  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.2.tar.xz"
-  sha256 "58d078a76c3fd839c282244a1a7dabca81cef64be086a5c7d8470bb64208da39"
+  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.3.tar.xz"
+  sha256 "fe12276a62bd5f5ca4f5bfbd4938a74d097084e1f9fe173e521f63203f56f055"
 
   bottle do
     cellar :any
@@ -11,10 +11,11 @@ class Libetonyek < Formula
     sha256 "a3df704492a824517d62d3ca29f0b916b8a52486a9745f300090d2c9dec2f038" => :mountain_lion
   end
 
-  depends_on "pkg-config" => :build
   depends_on "boost" => :build
-  depends_on "librevenge"
+  depends_on "pkg-config" => :build
   depends_on "glm"
+  depends_on "librevenge"
+  depends_on "libxml2"
 
   def install
     system "./configure", "--without-docs",
