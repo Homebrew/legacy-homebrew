@@ -260,7 +260,7 @@ class Formulary
           raise TapFormulaAmbiguityError.new(ref, flat_formulas)
         end
       else
-        if available_formulas.length > 1
+        if available_formulas.length > 1 && behavior != FactoryBehavior::CHOOSE_ANY
           opoo "Some formulae are excluded due to priority settings. Run brew info #{ref} to see them."
         end
         available_formulas.keys.sort.each do |this_priority|
