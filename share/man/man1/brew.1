@@ -290,7 +290,7 @@ If \fB\-\-all\fR is passed, show options for all formulae\.
 If \fB\-\-installed\fR is passed, show options for all installed formulae\.
 .
 .IP "\(bu" 4
-\fBoutdated [\-\-quiet|\-\-verbose]\fR: Show formulae that have an updated version available\.
+\fBoutdated [\-\-quiet | \-\-verbose | \-\-json=v1 ]\fR: Show formulae that have an updated version available\.
 .
 .IP
 By default, version information is displayed in interactive shells, and suppressed otherwise\.
@@ -300,6 +300,9 @@ If \fB\-\-quiet\fR is passed, list only the names of outdated brews (takes prece
 .
 .IP
 If \fB\-\-verbose\fR is passed, display detailed version information\.
+.
+.IP
+If \fB\-\-json=<version>\fR is passed, the output will be in JSON format\. The only valid version is \fBv1\fR\.
 .
 .IP "\(bu" 4
 \fBpin\fR \fIformulae\fR: Pin the specified \fIformulae\fR, preventing them from being upgraded when issuing the \fBbrew upgrade \-\-all\fR command\. See also \fBunpin\fR\.
