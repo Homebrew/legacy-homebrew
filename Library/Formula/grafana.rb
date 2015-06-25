@@ -104,8 +104,13 @@ class Grafana < Formula
     ln_sf buildpath, buildpath/"src/github.com/grafana/grafana"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "npm", "install", buildpath
-    system "node_modules/.bin/grunt"
+    ENV["HOME"] = buildpath/".brew_home"
+    ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
+
+    system "npm", "install"
+    system "npm", "install", "grunt-cli"
+    system "./node_modules/.bin/grunt"
+
     system "go", "build", "main.go"
 
     bin.install "main" => "grafana"
