@@ -176,7 +176,7 @@ class Formulary
     kegs = rack.directory? ? rack.subdirs.map { |d| Keg.new(d) } : []
 
     keg = kegs.detect(&:linked?) || kegs.detect(&:optlinked?) || kegs.max_by(&:version)
-    return factory(rack.basename.to_s, spec) unless keg
+    return factory(rack.basename.to_s, spec, FactoryBehavior::ENFORCE_UNIQUE) unless keg
 
     tap = Tab.for_keg(keg).tap
 
