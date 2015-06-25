@@ -249,9 +249,6 @@ class Python3 < Formula
 
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
-      [global]
-      verbose=1
-
       [install]
       prefix=#{HOMEBREW_PREFIX}
 
