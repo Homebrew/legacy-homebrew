@@ -105,7 +105,7 @@ class Elasticsearch < Formula
           <key>ProgramArguments</key>
           <array>
             <string>#{HOMEBREW_PREFIX}/bin/elasticsearch</string>
-            <string>--config=#{prefix}/config/elasticsearch.yml</string>
+            <string>--config=#{etc}/elasticsearch/elasticsearch.yml</string>
           </array>
           <key>EnvironmentVariables</key>
           <dict>
