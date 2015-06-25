@@ -1,8 +1,8 @@
 class Libxmp < Formula
   desc "C library for playback of module music (MOD, S3M, IT, etc)"
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.8/libxmp-4.3.8.tar.gz"
-  sha256 "de9a25b5f28e5f82010ade423bb63adc6ad235c2aeca4b7433ec5d0a43020640"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.9/libxmp-4.3.9.tar.gz"
+  sha256 "8acdcc7c4b97558b36279ec26fd03d3c34b4fed20e06a84fa0ce667816c78a95"
 
   bottle do
     cellar :any
