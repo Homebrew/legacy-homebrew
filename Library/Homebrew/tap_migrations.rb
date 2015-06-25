@@ -155,7 +155,6 @@ TAP_MIGRATIONS = {
   "pcb" => "homebrew/x11",
   "pdfjam" => "homebrew/tex",
   "pdf2image" => "homebrew/x11",
-  "pdf2svg" => "homebrew/x11",
   "pdftoipe" => "homebrew/head-only",
   "pebble-sdk" => "pebble/pebble-sdk",
   "pgplot" => "homebrew/x11",
