@@ -4,6 +4,7 @@ class Python < Formula
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz"
   sha256 "eda8ce6eec03e74991abb5384170e7c65fcd7522e409b8e83d7e6372add0f12a"
+  revision 1
 
   bottle do
     revision 2
@@ -41,6 +42,11 @@ class Python < Formula
   resource "pip" do
     url "https://pypi.python.org/packages/source/p/pip/pip-7.0.3.tar.gz"
     sha256 "b4c598825a6f6dc2cac65968feb28e6be6c1f7f1408493c60a07eaa731a0affd"
+  end
+
+  resource "wheel" do
+    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.24.0.tar.gz"
+    sha256 "ef832abfedea7ed86b6eae7400128f88053a1da81a37c00613b1279544d585aa"
   end
 
   # Patch for pyport.h macro issue
@@ -178,6 +184,7 @@ class Python < Formula
 
     (libexec/"setuptools").install resource("setuptools")
     (libexec/"pip").install resource("pip")
+    (libexec/"wheel").install resource("wheel")
   end
 
   def post_install
@@ -212,10 +219,11 @@ class Python < Formula
 
     (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
     (libexec/"pip").cd { system "#{bin}/python", *setup_args }
+    (libexec/"wheel").cd { system "#{bin}/python", *setup_args }
 
     # When building from source, these symlinks will not exist, since
     # post_install happens after linking.
-    %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
+    %w[pip pip2 pip2.7 easy_install easy_install-2.7 wheel].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
