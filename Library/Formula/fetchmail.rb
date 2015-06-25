@@ -13,7 +13,7 @@ class Fetchmail < Formula
   depends_on "openssl"
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--with-ssl"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--with-ssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 
