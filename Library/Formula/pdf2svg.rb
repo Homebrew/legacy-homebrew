@@ -22,7 +22,6 @@ class Pdf2svg < Formula
   end
 
   test do
-    curl "-O", "http://partners.adobe.com/public/developer/en/xml/AdobeXMLFormsSamples.pdf"
-    system "#{bin}/pdf2svg", "AdobeXMLFormsSamples.pdf", "test.svg"
+    system "#{bin}/pdf2svg", test_fixtures("test.pdf"), "test.svg"
   end
 end
