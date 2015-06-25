@@ -35,7 +35,8 @@ class Pixman < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--disable-gtk"
+                          "--disable-gtk",
+                          "--disable-mmx"
     system "make", "install"
   end
 end
