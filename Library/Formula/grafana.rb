@@ -2,17 +2,17 @@ require "language/go"
 
 class Grafana < Formula
   homepage "http://www.grafana.org/"
-  url "https://github.com/grafana/grafana/archive/v2.0.0-beta1.tar.gz"
-  sha256 "096f46078f8350726d8a0ce083f49623d28685615825fdf0e203ee99b7dc3302"
+  url "https://github.com/grafana/grafana/archive/v2.0.2.tar.gz"
+  sha256 "e2e1b502b7ea9b7342defd82af9ff81d93670b3049c81fb240235df658a7f8db"
   head "https://github.com/grafana/grafana.git"
-  version "2.0.0-beta1"
+  version "2.0.2"
 
   depends_on "node"
   depends_on "go" => :build
 
   go_resource "github.com/Unknwon/com" do
     url "https://github.com/Unknwon/com.git",
-      :revision => "d9bcf409c8a368d06c9b347705c381e7c12d54d"
+      :revision => "d9bcf409c8a368d06c9b347705c381e7c12d54df"
   end
   go_resource "github.com/Unknwon/macaron" do
     url "https://github.com/Unknwon/macaron.git",
@@ -33,6 +33,10 @@ class Grafana < Formula
   go_resource "github.com/go-xorm/xorm" do
     url "https://github.com/go-xorm/xorm.git",
       :revision => "e2889e5517600b82905f1d2ba8b70deb71823ffe"
+  end
+  go_resource "github.com/gosimple/slug" do
+    url "https://github.com/gosimple/slug.git",
+      :revision => "a2392a4a87fa0366cbff131d3fd421f83f52492f"
   end
   go_resource "github.com/jtolds/gls" do
     url "https://github.com/jtolds/gls.git",
@@ -68,11 +72,27 @@ class Grafana < Formula
   end
   go_resource "golang.org/x/oauth2" do
     url "https://go.googlesource.com/oauth2.git",
-      :revision => "e5909d4679a1926c774c712b343f10b8298687a3"
+      :revision => "c58fcf0ffc1c772aa2e1ee4894bc19f2649263b2"
+  end
+  go_resource "gopkg.in/bufio.v1" do
+    url "https://github.com/go-bufio/bufio.git",
+      :revision => "567b2bfa514e796916c4747494d6ff5132a1dfce"
   end
   go_resource "gopkg.in/ini.v1" do
     url "https://github.com/go-ini/ini.git",
       :revision => "177219109c97e7920c933e21c9b25f874357b237"
+  end
+  go_resource "gopkg.in/redis.v2" do
+    url "https://github.com/go-redis/redis.git",
+      :revision => "e6179049628164864e6e84e973cfb56335748dea"
+  end
+  go_resource "gopkgs.com/pool.v1" do
+    url "https://github.com/rainycape/pool.git",
+      :revision => "c850f092aad1780cbffff25f471c5cc32097932a"
+  end
+  go_resource "gopkgs.com/unidecode.v1" do
+    url "https://github.com/rainycape/unidecode.git",
+      :revision => "4deae2c05236b41cc39f8144ac87a837ba974d40"
   end
 
   def install
