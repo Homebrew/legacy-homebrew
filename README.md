@@ -18,6 +18,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - GumGum
 - Fuse Elements
 - Frontline Solvers
+- Aruba Networks
 
 ## Features
 
