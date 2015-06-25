@@ -1,6 +1,6 @@
 class Smpeg < Formula
   desc "SDL MPEG Player Library"
-  homepage "http://icculus.org/smpeg/"
+  homepage "https://icculus.org/smpeg/"
   url "svn://svn.icculus.org/smpeg/tags/release_0_4_5/", :revision => "399"
 
   bottle do
