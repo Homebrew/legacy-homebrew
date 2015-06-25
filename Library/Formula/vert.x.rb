@@ -3,7 +3,7 @@ require 'formula'
 class VertX < Formula
   desc "Application platform for the JVM"
   homepage 'http://vertx.io/'
-  url 'https://bintray.com/artifact/download/vertx/downloads/vert.x-3.0.0-full.zip'
+  url 'https://dl.bintray.com/vertx/downloads/vert.x-3.0.0-full.tar.gz'
   sha1 '47b0fad8de3e9c175fca9ff70a127facdd0c0cf0'
 
   def install
