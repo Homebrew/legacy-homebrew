@@ -201,9 +201,12 @@ class Python < Formula
     # setuptools-0.9.5-py3.3.egg
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
+    rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
 
     setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force",
                   "--verbose",
+                  "--single-version-externally-managed",
+                  "--record=installed.txt",
                   "--install-scripts=#{bin}",
                   "--install-lib=#{site_packages}"]
 
