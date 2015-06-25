@@ -31,18 +31,15 @@ class Pixman < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    if MacOS.version >= "10.11" then
-      system "./configure", "--disable-dependency-tracking",
-                            "--disable-silent-rules",
-                            "--prefix=#{prefix}",
-                            "--disable-gtk",
-                            "--disable-mmx"
-    else
-      system "./configure", "--disable-dependency-tracking",
-                            "--disable-silent-rules",
-                            "--prefix=#{prefix}",
-                            "--disable-gtk"
-    end
+
+    args = %W[--disable-dependency-tracking
+              --disable-gtk
+              --disable-silent-rules
+              --prefix=#{prefix}]
+
+    args << "--disable-mmx" if MacOS.version >= :el_capitan
+
+    system "./configure", *args
     system "make", "install"
   end
 end
