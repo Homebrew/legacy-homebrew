@@ -243,11 +243,7 @@ class Python < Formula
 
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
-      [global]
-      verbose=1
-
       [install]
-      force=1
       prefix=#{HOMEBREW_PREFIX}
 
       [build_ext]
