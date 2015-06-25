@@ -3,6 +3,7 @@ class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
   sha256 "b5b3963533768d5fc325a4d7a6bd6f666726002d696f1d399ec06b043ea996b8"
+  revision 1
 
   bottle do
     revision 12
@@ -45,6 +46,11 @@ class Python3 < Formula
   resource "pip" do
     url "https://pypi.python.org/packages/source/p/pip/pip-7.0.3.tar.gz"
     sha256 "b4c598825a6f6dc2cac65968feb28e6be6c1f7f1408493c60a07eaa731a0affd"
+  end
+
+  resource "wheel" do
+    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.24.0.tar.gz"
+    sha256 "ef832abfedea7ed86b6eae7400128f88053a1da81a37c00613b1279544d585aa"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
@@ -181,7 +187,7 @@ class Python3 < Formula
                          "-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python"
     end
 
-    %w[setuptools pip].each do |r|
+    %w[setuptools pip wheel].each do |r|
       (libexec/r).install resource(r)
     end
   end
@@ -209,7 +215,7 @@ class Python3 < Formula
     rm_rf Dir["#{site_packages}/distribute*"]
     rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
 
-    %w[setuptools pip].each do |pkg|
+    %w[setuptools pip wheel].each do |pkg|
       (libexec/pkg).cd do
         system bin/"python3", "-s", "setup.py", "--no-user-cfg", "install",
                "--force", "--verbose", "--install-scripts=#{bin}",
@@ -220,9 +226,10 @@ class Python3 < Formula
     end
 
     rm_rf [bin/"pip", bin/"easy_install"]
+    mv bin/"wheel", bin/"wheel3"
 
     # post_install happens after link
-    %W[pip3 pip#{xy} easy_install-#{xy}].each do |e|
+    %W[pip3 pip#{xy} easy_install-#{xy} wheel3].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
