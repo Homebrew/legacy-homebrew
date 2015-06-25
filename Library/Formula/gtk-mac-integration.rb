@@ -51,6 +51,7 @@ class GtkMacIntegration < Formula
     libpng = Formula["libpng"]
     pango = Formula["pango"]
     pixman = Formula["pixman"]
+    Dir.foreach("#{gtkx.opt_include}/gtk-2.0") {|x| puts("Found " + x) }
     flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
     flags += %W[
       -I#{atk.opt_include}/atk-1.0
