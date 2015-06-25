@@ -17,4 +17,6 @@ module FactoryBehavior
   # TODO: not implemented!
   KEG_FIRST = 3
 
+  # Return only core formula.
+  CORE_ONLY = 4
 end

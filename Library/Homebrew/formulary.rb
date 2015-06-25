@@ -181,9 +181,9 @@ class Formulary
     tap = Tab.for_keg(keg).tap
 
     if tap.nil? || tap == "Homebrew/homebrew" || tap == "mxcl/master"
-      factory(rack.basename.to_s, spec)
+      factory(rack.basename.to_s, spec, FactoryBehavior::CORE_ONLY)
     else
-      factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
+      factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec, FactoryBehavior::ENFORCE_UNIQUE)
     end
   end
 
@@ -211,14 +211,13 @@ class Formulary
       return TapLoader.new(ref)
     end
 
+    if behavior == FactoryBehavior::CORE_ONLY
+      return FormulaLoader.new(ref, core_path(ref))
+    end
+
     if File.extname(ref) == ".rb"
       return FromPathLoader.new(ref)
     end
-
-    # formula_with_that_name = core_path(ref)
-    # if formula_with_that_name.file?
-    #   return FormulaLoader.new(ref, formula_with_that_name)
-    # end
 
     formula_with_that_name = find_with_priority(ref, behavior)
     if formula_with_that_name
