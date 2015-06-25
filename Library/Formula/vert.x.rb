@@ -9,7 +9,6 @@ class VertX < Formula
   def install
     rm_f Dir["bin/*.bat"]
     libexec.install %w[bin client conf lib]
-    doc.install %w[api-docs]
     bin.install_symlink "#{libexec}/bin/vertx"
   end
 end
