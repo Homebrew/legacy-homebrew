@@ -195,8 +195,8 @@ class Formulary
     ref.downcase
   end
 
-  def self.path(ref)
-    loader_for(ref).path
+  def self.path(ref, behavior = FactoryBehavior::KEG_FIRST)
+    loader_for(ref, behavior).path
   end
 
   def self.loader_for(ref, behavior = FactoryBehavior::KEG_FIRST)
