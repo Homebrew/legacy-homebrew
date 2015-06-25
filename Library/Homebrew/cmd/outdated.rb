@@ -39,8 +39,10 @@ module Homebrew
   end
 
   def print_outdated
+    verbose = ($stdout.tty? || ARGV.verbose?) && !ARGV.flag?("--quiet")
+
     outdated_brews(formulae_to_check) do |f, versions|
-      if ($stdout.tty? || ARGV.verbose?) && !ARGV.flag?("--quiet")
+      if verbose
         puts "#{f.full_name} (#{versions*', '} < #{f.pkg_version})"
       else
         puts f.full_name
