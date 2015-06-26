@@ -6,8 +6,9 @@ class Openvpn < Formula
   sha256 "1f02a4cd6aeb6250ca9311560875b10ce8957a3c9101a8005bd1e17e5b03146e"
 
   bottle do
-    sha1 "34b304622113b4cb822efa9711e6c1500b6edca8" => :mavericks
-    sha1 "bddff060d3d3e70db96abcf6ccc95952cdb7a99c" => :mountain_lion
+    cellar :any
+    sha256 "e2117b3eb0c39e1823d81bfbf0feed017ea1fe6a079b052c83755514a8ad6a94" => :mavericks
+    sha256 "fc4c5fc02f9791220cfee0a0c5a55d3a30f6fce83d201728340facafa8f05b80" => :mountain_lion
   end
 
   depends_on "lzo"
