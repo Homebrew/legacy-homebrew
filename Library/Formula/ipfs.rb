@@ -42,6 +42,6 @@ class Ipfs < Formula
   end
 
   test do
-    system "false"
+    system "#{bin}/ipfs", "version"
   end
 end
