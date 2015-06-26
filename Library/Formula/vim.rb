@@ -49,12 +49,11 @@ class Vim < Formula
     end
 
     opts = []
-    opts += LANGUAGES_OPTIONAL.map do |language|
-      "--enable-#{language}interp" if build.with? language
+
+    (LANGUAGES_OPTIONAL + LANGUAGES_DEFAULT).each do |language|
+      opts << "--enable-#{language}interp" if build.with? language
     end
-    opts += LANGUAGES_DEFAULT.map do |language|
-      "--enable-#{language}interp" if build.with? language
-    end
+
     if opts.include? "--enable-pythoninterp" and opts.include? "--enable-python3interp"
       # only compile with either python or python3 support, but not both
       # (if vim74 is compiled with +python3/dyn, the Python[3] library lookup segfaults
@@ -93,7 +92,6 @@ class Vim < Formula
                           "--with-features=huge",
                           "--with-compiledby=Homebrew",
                           *opts
-
     system "make"
     # If stripping the binaries is not enabled, vim will segfault with
     # statically-linked interpreters like ruby
