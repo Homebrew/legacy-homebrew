@@ -1,6 +1,8 @@
 class Patchelf < Formula
   desc "PatchELF: modify the dynamic linker and RPATH of ELF executables"
   homepage "https://nixos.org/patchelf.html"
+  # tag "linuxbrew"
+
   url "http://nixos.org/releases/patchelf/patchelf-0.8/patchelf-0.8.tar.bz2"
   sha256 "c99f84d124347340c36707089ec8f70530abd56e7827c54d506eb4cc097a17e7"
 
