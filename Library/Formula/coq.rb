@@ -1,7 +1,7 @@
 class Camlp5TransitionalModeRequirement < Requirement
   fatal true
 
-  satisfy { !Tab.for_name("camlp5").include?("strict") }
+  satisfy(:build_env => false) { !Tab.for_name("camlp5").include?("strict") }
 
   def message; <<-EOS.undent
     camlp5 must be compiled in transitional mode (instead of --strict mode):

@@ -5,7 +5,7 @@ class JavaRequirement < Requirement
   cask "java"
   download "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
 
-  satisfy { java_version }
+  satisfy(:build_env => false) { java_version }
 
   env do
     java_home = Pathname.new(@java_home)

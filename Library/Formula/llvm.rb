@@ -2,7 +2,7 @@ class CodesignRequirement < Requirement
   include FileUtils
   fatal true
 
-  satisfy do
+  satisfy(:build_env => false) do
     mktemp do
       touch "llvm_check.txt"
       quiet_system "/usr/bin/codesign", "-s", "lldb_codesign", "llvm_check.txt"
