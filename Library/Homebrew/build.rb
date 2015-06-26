@@ -128,7 +128,7 @@ class Build
 
         formula.install
 
-        stdlibs = detect_stdlibs
+        stdlibs = detect_stdlibs(ENV.compiler)
         Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
 
         # Find and link metafiles
@@ -138,9 +138,9 @@ class Build
     end
   end
 
-  def detect_stdlibs
+  def detect_stdlibs(compiler)
     keg = Keg.new(formula.prefix)
-    CxxStdlib.check_compatibility(formula, deps, keg, ENV.compiler)
+    CxxStdlib.check_compatibility(formula, deps, keg, compiler)
 
     # The stdlib recorded in the install receipt is used during dependency
     # compatibility checks, so we only care about the stdlib that libraries
