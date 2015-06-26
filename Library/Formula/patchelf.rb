@@ -1,17 +1,13 @@
-require "formula"
-
 class Patchelf < Formula
+  desc "PatchELF: modify the dynamic linker and RPATH of ELF executables"
   homepage "https://nixos.org/patchelf.html"
   url "http://nixos.org/releases/patchelf/patchelf-0.8/patchelf-0.8.tar.bz2"
-  sha1 "d0645e9cee6f8e583ae927311c7ce88d29f416fc"
+  sha256 "c99f84d124347340c36707089ec8f70530abd56e7827c54d506eb4cc097a17e7"
 
   bottle do
     cellar :any
-    sha1 "bf46aa7abe2def28e6291d2353d6f66d76cbd2ab" => :x86_64_linux
+    sha256 "c6bab9c75be8610cc9875a2b269850de5c98ff65ae2a5d8b6bbf9ca153652c5e" => :x86_64_linux
   end
-
-  option "with-static", "Link statically"
-  option "without-static-libstdc++", "Link libstdc++ dynamically"
 
   head do
     url "https://github.com/NixOS/patchelf.git"
@@ -19,21 +15,22 @@ class Patchelf < Formula
     depends_on "automake" => :build
   end
 
+  option "with-static", "Link statically"
+  option "without-static-libstdc++", "Link libstdc++ dynamically"
+
   def install
     # Fix ./configure: line 4: .: filename argument required
     inreplace "configure.ac", "m4_esyscmd([echo -n $(cat ./version)])", version
 
     system "./bootstrap.sh" if build.head?
-    system "./configure", "--disable-debug",
-      "--disable-dependency-tracking",
-      "--disable-silent-rules",
-      "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
       ("CXXFLAGS=-static" if build.with? "static"),
-      ("CXXFLAGS=-static-libgcc -static-libstdc++" if build.with? "static-libstdc++")
+      ("CXXFLAGS=-static-libgcc -static-libstdc++" if build.with? "static-libstdc++"),
+      "--disable-debug", "--disable-dependency-tracking", "--disable-silent-rules"
     system "make", "install"
   end
 
   test do
-    system "#{bin}/patchelf --version"
+    system "#{bin}/patchelf", "--version"
   end
 end
