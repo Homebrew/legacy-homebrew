@@ -6,9 +6,9 @@ class Dynamips < Formula
 
   bottle do
     cellar :any
-    sha1 "d0d6ed53cac613224298052a4403f215d41cdeaa" => :yosemite
-    sha1 "bdcd75d6bfd8800340620f934193ac952e9ee455" => :mavericks
-    sha1 "14bf80d8127981a9fab5e8cb94fd1c771a0cbe4c" => :mountain_lion
+    sha256 "3b23d9683f4344d5bbca80bfb4328484e409e215ae7aa4c22c01d5e45217b4f9" => :yosemite
+    sha256 "c460f69bc4b30af2d57a7e624bab98ce244b7492d2ef5bd39b24c155708e0625" => :mavericks
+    sha256 "c5732f50e1571b3027d3254cce93c29bd6a6e1973a6f9830e02a9fc95721cc46" => :mountain_lion
   end
 
   depends_on "libelf"
