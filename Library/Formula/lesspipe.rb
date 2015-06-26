@@ -13,7 +13,7 @@ class Lesspipe < Formula
       inreplace 'configure', %q{$ifsyntax = "\L$ifsyntax";}, %q{$ifsyntax = "\Ly";}
     end
 
-    system "./configure", "--prefix=#{prefix}", "--default"
+    system "./configure", "--prefix=#{prefix}", "--yes"
     man1.mkpath
     system "make install"
   end
