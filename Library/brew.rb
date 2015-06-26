@@ -65,22 +65,6 @@ end
 begin
   trap("INT", std_trap) # restore default CTRL-C handler
 
-  aliases = {'ls' => 'list',
-             'homepage' => 'home',
-             '-S' => 'search',
-             'up' => 'update',
-             'ln' => 'link',
-             'instal' => 'install', # gem does the same
-             'rm' => 'uninstall',
-             'remove' => 'uninstall',
-             'configure' => 'diy',
-             'abv' => 'info',
-             'dr' => 'doctor',
-             '--repo' => '--repository',
-             'environment' => '--env',
-             '--config' => 'config',
-             }
-
   empty_argv = ARGV.empty?
   help_regex = /(-h$|--help$|--usage$|-\?$|^help$)/
   help_flag = false
@@ -96,7 +80,7 @@ begin
     end
   end
 
-  cmd = aliases[cmd] if aliases[cmd]
+  cmd = HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
 
   sudo_check = %w[ install link pin unpin upgrade ]
 
