@@ -10,7 +10,7 @@ class FirefoxRequirement < Requirement
     paths.find { |p| File.exist? File.expand_path(p) }
   end
 
-  satisfy { Formula["xulrunner"].installed? || FirefoxRequirement.firefox_installation }
+  satisfy(:build_env => false) { Formula["xulrunner"].installed? || FirefoxRequirement.firefox_installation }
 
   def message
     "Firefox or xulrunner must be available."
