@@ -50,7 +50,7 @@ module Homebrew
   def print_outdated_json(formulae)
     json = []
     outdated = outdated_brews(formulae) do |f, versions|
-      json << {:name => f.name,
+      json << {:name => f.full_name,
                :installed_versions => versions.collect(&:to_s),
                :current_version => f.pkg_version.to_s}
     end
