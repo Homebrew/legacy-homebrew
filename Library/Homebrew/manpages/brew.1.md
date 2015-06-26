@@ -226,10 +226,10 @@ Note that these flags should only appear after a command.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `irb [--example]`:
+  * `irb [--examples]`:
     Enter the interactive Homebrew Ruby shell.
 
-    If `--example` is passed, several examples will be shown.
+    If `--examples` is passed, several examples will be shown.
 
   * `leaves`:
     Show installed formulae that are not dependencies of another installed formula.
