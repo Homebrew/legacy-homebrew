@@ -207,7 +207,7 @@ class Tab < OpenStruct
     unless used_options.empty?
       s << "Installed" if s.empty?
       s << "with:"
-      s << used_options.to_a.join(", ")
+      s << used_options.to_a.join(" ")
     end
     s.join(" ")
   end
