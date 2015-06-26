@@ -612,7 +612,7 @@ class Formula
       -Wno-dev
     ]
     # Set RPATH for Linux to fix error while loading shared libraries
-    args << "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=1" if OS.linux?
+    args += ["-DCMAKE_BUILD_WITH_INSTALL_RPATH=1", "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=1"] if OS.linux?
     args
   end
 
