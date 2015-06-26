@@ -69,6 +69,9 @@ Note that these flags should only appear after a command.
     versions of formula. Note downloads for any installed formula will still not be
     deleted. If you want to delete those too: `rm -rf $(brew --cache)`
 
+  * `command` <cmd>:
+    Display the path to the file which is used when invoking `brew <cmd>`.
+
   * `commands`:
     Show a list of built-in and external commands.
 
