@@ -1,13 +1,13 @@
-require "formula"
-
 class LinuxHeaders < Formula
+  desc "Header files of the Linux kernel"
   homepage "http://kernel.org/"
   url "https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.15.9.tar.gz"
-  sha1 "068aefd8d7a5ef62e152d6d45228c53bdec4a2cc"
+  sha256 "648143d560db550e417ce0532017c310cc966d5428a74042cdb69ce64e9b5c8c"
+  # tag "linuxbrew"
 
   bottle do
     cellar :any
-    sha1 "69c321f2cfca43e39891d34b6b088b4b786007e6" => :x86_64_linux
+    sha256 "f8aa29cafbdfd0a815970dfcffe5e56cc9a8033b34caee5ea5483e729cff9700" => :x86_64_linux
   end
 
   def install
