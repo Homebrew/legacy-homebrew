@@ -1,4 +1,4 @@
-class Fdkaac < Formula
+class FdkAacEncoder < Formula
   desc "Command-line encoder frontend for libfdk-aac"
   homepage "https://github.com/nu774/fdkaac"
   url "https://github.com/nu774/fdkaac/archive/v0.6.2.tar.gz"
