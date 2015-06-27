@@ -3,6 +3,7 @@ class Gexiv2 < Formula
   homepage "https://wiki.gnome.org/Projects/gexiv2"
   url "https://download.gnome.org/sources/gexiv2/0.10/gexiv2-0.10.3.tar.xz"
   sha256 "390cfb966197fa9f3f32200bc578d7c7f3560358c235e6419657206a362d3988"
+  revision 1
 
   bottle do
     sha256 "c1d0a2a875a4a56d4b55c394be9a36edee091122c0ecb6008242c804e09c9002" => :yosemite
