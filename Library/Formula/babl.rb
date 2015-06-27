@@ -1,21 +1,9 @@
-require "formula"
-
 class Babl < Formula
   desc "Dynamic, any-to-any, pixel format translation library"
   homepage "http://www.gegl.org/babl/"
-
-  stable do
-    # The official url is unreliable. Use Debian instead.
-    url "https://mirrors.kernel.org/debian/pool/main/b/babl/babl_0.1.10.orig.tar.bz2"
-    mirror "http://ftp.gtk.org/pub/babl/0.1/babl-0.1.10.tar.bz2"
-    sha1 "ee60089e8e9d9390e730d3ae5e41074549928b7a"
-
-    # There are two patches.
-    # The first one changes an include <values.h> (deleted on Mac OS X) to <limits.h>
-    # The second one fixes an error when compiling with clang. See:
-    # https://trac.macports.org/browser/trunk/dports/graphics/babl/files/clang.patch
-    patch :DATA
-  end
+  url "http://download.gimp.org/pub/babl/0.1/babl-0.1.12.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/b/babl/babl_0.1.12.orig.tar.bz2"
+  sha256 "2f802b7f1a17b72c10bf0fe1e69b7a888cf7ce62b7cf1537b030f7f88d55a407"
 
   bottle do
     sha1 "d3ead1808b7c029ab864d3318d7009379cc205a5" => :yosemite
@@ -32,16 +20,14 @@ class Babl < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
-
   option :universal
+
+  depends_on "pkg-config" => :build
 
   def install
     if build.universal?
       ENV.universal_binary
-      if ENV.compiler == :gcc
-        opoo "Compilation may fail at babl-cpuaccel.c using gcc for a universal build"
-      end
+      opoo "Compilation may fail at babl-cpuaccel.c using gcc for a universal build" if ENV.compiler == :gcc
     end
 
     system "./autogen.sh" if build.head?
@@ -49,41 +35,20 @@ class Babl < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <babl/babl.h>
+      int main() {
+        babl_init();
+        const Babl *srgb = babl_format ("R'G'B' u8");
+        const Babl *lab  = babl_format ("CIE Lab float");
+        const Babl *rgb_to_lab_fish = babl_fish (srgb, lab);
+        babl_exit();
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{include}/babl-0.1", "-L#{lib}", "-lbabl-0.1", testpath/"test.c", "-o", "test"
+    system testpath/"test"
+  end
 end
-
-__END__
-diff --git a/babl/babl-palette.c b/babl/babl-palette.c
-index 7e72eaa..2f9bf8d 100644
---- a/babl/babl-palette.c
-+++ b/babl/babl-palette.c
-@@ -19,7 +19,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <stdio.h>
--#include <values.h>
-+#include <limits.h>
- #include <assert.h>
- #include "config.h"
- #include "babl-internal.h"
-diff --git a/extensions/sse-fixups.c b/extensions/sse-fixups.c
-index b44bb5e..7f633d1 100644
---- a/extensions/sse-fixups.c
-+++ b/extensions/sse-fixups.c
-@@ -21,7 +21,7 @@
-
- #include "config.h"
-
--#if defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
-+#if !defined(__clang__) && defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
-
- #include <stdint.h>
- #include <stdlib.h>
-@@ -177,7 +177,7 @@ int init (void);
- int
- init (void)
- {
--#if defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
-+#if !defined(__clang__) && defined(__GNUC__) && (__GNUC__ >= 4) && defined(USE_SSE) && defined(USE_MMX)
-
-   const Babl *rgbaF_linear = babl_format_new (
-     babl_model ("RGBA"),
