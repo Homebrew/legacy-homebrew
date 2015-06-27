@@ -76,10 +76,6 @@ module OS
       end
     end
 
-    def default_cxx_stdlib
-      version >= :mavericks ? :libcxx : :libstdcxx
-    end
-
     def gcc_40_build_version
       @gcc_40_build_version ||=
         if (path = locate("gcc-4.0"))
