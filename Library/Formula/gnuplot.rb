@@ -7,9 +7,8 @@ end
 class Gnuplot < Formula
   desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info"
-  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
-  mirror "http://ftp.cstug.cz/pub/CTAN/graphics/gnuplot/5.0.0/gnuplot-5.0.0.tar.gz"
-  sha256 "417d4bc5bc914a60409bb75cf18dd14f48b07f53c6ad3c4a4d3cd9a8d7370faf"
+  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.0.1/gnuplot-5.0.1.tar.gz"
+  sha256 "7cbc557e71df581ea520123fb439dea5f073adcc9010a2885dc80d4ed28b3c47"
 
   bottle do
     sha1 "ba387ee75f15b1220f1c77469609841cb7155f83" => :yosemite
@@ -45,18 +44,18 @@ class Gnuplot < Formula
 
   depends_on "pkg-config" => :build
   depends_on LuaRequirement if build.with? "lua"
-  depends_on "readline"
-  depends_on "libpng"
-  depends_on "jpeg"
-  depends_on "libtiff"
   depends_on "fontconfig"
-  depends_on "pango"       if (build.with? "cairo") || (build.with? "wxmac")
-  depends_on :x11 => :optional
-  depends_on "pdflib-lite" => :optional
   depends_on "gd" => :recommended
-  depends_on "wxmac" => :optional
+  depends_on "jpeg"
+  depends_on "libpng"
+  depends_on "libtiff"
+  depends_on "pango" if (build.with? "cairo") || (build.with? "wxmac")
+  depends_on "pdflib-lite" => :optional
   depends_on "qt" => :optional
-  depends_on :tex          if build.with? "latex"
+  depends_on "readline"
+  depends_on "wxmac" => :optional
+  depends_on :tex if build.with? "latex"
+  depends_on :x11 => :optional
 
   def install
     if build.with? "aquaterm"
@@ -108,15 +107,6 @@ class Gnuplot < Formula
     system "make", "install"
   end
 
-  test do
-    system "#{bin}/gnuplot", "-e", <<-EOS.undent
-        set terminal png;
-        set output "#{testpath}/image.png";
-        plot sin(x);
-    EOS
-    assert (testpath/"image.png").exist?
-  end
-
   def caveats
     if build.with? "aquaterm"
       <<-EOS.undent
@@ -126,5 +116,13 @@ class Gnuplot < Formula
         reinstall Gnuplot.
       EOS
     end
+  end
+  test do
+    system "#{bin}/gnuplot", "-e", <<-EOS.undent
+      set terminal png;
+      set output "#{testpath}/image.png";
+      plot sin(x);
+    EOS
+    File.exist? testpath/"image.png"
   end
 end
