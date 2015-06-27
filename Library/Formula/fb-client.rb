@@ -1,8 +1,8 @@
 class FbClient < Formula
   desc "Shell-script client for http://paste.xinu.at"
   homepage "https://paste.xinu.at"
-  url "https://paste.xinu.at/data/client/fb-1.4.2.tar.gz"
-  sha256 "a0479725a370d884a0fdbcd0380028ba9682bd48115142141e17f82930fb66f0"
+  url "https://paste.xinu.at/data/client/fb-1.4.3.tar.gz"
+  sha256 "4466bc6192f525bb9aaee053d7e7637a97da7e751168dda6ecd7debe74f93986"
 
   bottle do
     cellar :any
@@ -11,8 +11,7 @@ class FbClient < Formula
     sha256 "4fbad8cedd1aec6a69a38037dbda61fdd1745693c9508a744fedd61e24621ae5" => :mountain_lion
   end
 
-  head "https://git.server-speed.net/users/flo/fb",
-       :using => :git
+  head "https://git.server-speed.net/users/flo/fb", :using => :git
 
   conflicts_with "findbugs",
     :because => "findbugs and fb-client both install a `fb` binary"
