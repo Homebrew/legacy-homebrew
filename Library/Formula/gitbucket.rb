@@ -1,8 +1,8 @@
 class Gitbucket < Formula
   desc "GitHub clone"
   homepage "https://github.com/takezoe/gitbucket"
-  url "https://github.com/takezoe/gitbucket/releases/download/3.3/gitbucket.war"
-  sha256 "3a50d97ed8184acdee865dab5e7b4694145f723dee92683eaa08448339658ea4"
+  url "https://github.com/takezoe/gitbucket/releases/download/3.4/gitbucket.war"
+  sha256 "a43f8a5d92381e9508a7c85ab3e4954f6038465edc7d370c083b121f0dc08ad6"
 
   bottle do
     cellar :any
