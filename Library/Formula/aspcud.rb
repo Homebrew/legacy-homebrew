@@ -3,8 +3,8 @@ require 'formula'
 class Aspcud < Formula
   desc "Package dependency solver"
   homepage 'http://potassco.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/potassco/aspcud/1.9.0/aspcud-1.9.0-source.tar.gz'
-  sha1 'ae77772c2424620b3064d0dfe795c26b1c8aa778'
+  url 'https://downloads.sourceforge.net/project/potassco/aspcud/1.9.1/aspcud-1.9.1-source.tar.gz'
+  sha256 'e0e917a9a6c5ff080a411ff25d1174e0d4118bb6759c3fe976e2e3cca15e5827'
 
   bottle do
     revision 1
@@ -18,10 +18,6 @@ class Aspcud < Formula
   depends_on 're2c'  => :build
   depends_on 'gringo'
   depends_on 'clasp'
-
-  # boost 1.56 compatibility
-  # https://sourceforge.net/p/potassco/bugs/99/
-  patch :DATA
 
   def install
     mkdir "build" do
@@ -42,17 +38,3 @@ class Aspcud < Formula
     system "#{bin}/aspcud", "in.cudf", "out.cudf"
   end
 end
-__END__
-diff --git a/libcudf/src/dependency.cpp b/libcudf/src/dependency.cpp
-index 37e7a93..519f2f6 100644
---- a/libcudf/src/dependency.cpp
-+++ b/libcudf/src/dependency.cpp
-@@ -49,7 +49,7 @@ namespace {
-
-     struct CudfPackageRefFilter {
-         CudfPackageRefFilter(const Cudf::PackageRef &ref) : ref(&ref) { }
--        bool operator()(const Entity *entity) {
-+        bool operator()(const Entity *entity) const {
-             switch (ref->op) {
-                 case Cudf::PackageRef::EQ:
-                     return (entity->version == ref->version || entity->allVersions()) && ref->version != 0;
