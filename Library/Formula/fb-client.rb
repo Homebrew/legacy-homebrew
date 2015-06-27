@@ -6,9 +6,9 @@ class FbClient < Formula
 
   bottle do
     cellar :any
-    sha256 "7ad33c8cc5aa7ce3f7112af36f1faac14dd9a99c67d84979a5316ab83231cdcf" => :yosemite
-    sha256 "d82dd808f067414d5ed32f9d6b84407122b73779fc01b60bb57a39ad38c42556" => :mavericks
-    sha256 "4fbad8cedd1aec6a69a38037dbda61fdd1745693c9508a744fedd61e24621ae5" => :mountain_lion
+    sha256 "e79cb5ad494ad2b72c13da145b2ddf49f057a13a8499a9bd9feaddb5da6b9b2d" => :yosemite
+    sha256 "e6dd96a901a2fe55a560c5ca5dba219d25a6447f63d655714f9b4638821c288e" => :mavericks
+    sha256 "b4bca38efef773ea10969185df3a4db669dd699df1f14883d8d847a6261003f5" => :mountain_lion
   end
 
   head "https://git.server-speed.net/users/flo/fb", :using => :git
