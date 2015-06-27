@@ -1,9 +1,8 @@
 class Dwdiff < Formula
   desc "Diff that operates at the word level"
   homepage "http://os.ghalkes.nl/dwdiff.html"
-  url "http://os.ghalkes.nl/dist/dwdiff-2.0.9.tgz"
-  sha1 "01cb2230b9147347bcfd1770898e435e4a57fa25"
-  revision 3
+  url "http://os.ghalkes.nl/dist/dwdiff-2.1.0.tar.bz2"
+  sha256 "45308f2f07c08c75c6ebd1eae3e3dcf7f836e5af1467cefc1b4829777c07743a"
 
   bottle do
     sha256 "e549a381bc4a2440c48598fe20f653ef5d075cbf4e3d0806e387032d94c6d1d4" => :yosemite
@@ -18,7 +17,8 @@ class Dwdiff < Formula
     gettext = Formula["gettext"]
     icu4c = Formula["icu4c"]
     ENV.append "CFLAGS", "-I#{gettext.include} -I#{icu4c.include}"
-    ENV.append "LDFLAGS", "-L#{gettext.lib} -L#{icu4c.lib}"
+    ENV.append "LDFLAGS", "-L#{gettext.lib} -L#{icu4c.lib} -lintl"
+
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
 
