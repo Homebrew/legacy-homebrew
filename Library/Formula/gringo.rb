@@ -3,9 +3,8 @@ require 'formula'
 class Gringo < Formula
   desc "Grounder to translate user-provided logic programs"
   homepage 'http://potassco.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/potassco/gringo/4.4.0/gringo-4.4.0-source.tar.gz'
-  sha1 'c39a1c3cfe64b62e39e6abcc8f813e2d1d17251e'
-  revision 1
+  url 'https://downloads.sourceforge.net/project/potassco/gringo/4.5.0/gringo-4.5.0-source.tar.gz'
+  sha256 'fd7bd8756d3bdf3ed1df1fae9e8a8efdc4bcc613c41086640205e677e0e22f6f'
 
   bottle do
     cellar :any
@@ -26,7 +25,12 @@ class Gringo < Formula
     inreplace "SConstruct",
               "env['CXX']            = 'g++'",
               "env['CXX']            = '#{ENV.cxx}'"
-    scons "--build-dir=release", "gringo", "clingo"
-    bin.install "build/release/gringo", "build/release/clingo"
+    # Fix build problems
+    # https://sourceforge.net/p/potassco/bugs/104/
+    inreplace "libclasp/src/clasp_output.cpp",
+              "using std::isnan;",
+              "// using std::isnan;"
+    scons "--build-dir=release", "gringo", "clingo", "reify"
+    bin.install "build/release/gringo", "build/release/clingo", "build/release/reify"
   end
 end
