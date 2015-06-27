@@ -3,8 +3,8 @@ require "formula"
 class Rebar < Formula
   desc "Erlang build tool"
   homepage "https://github.com/rebar/rebar"
-  url "https://github.com/rebar/rebar/archive/2.5.1.tar.gz"
-  sha1 "cf8d3e33c21f09b826a52a681f5b729559a3280c"
+  url "https://github.com/rebar/rebar/archive/2.6.0.tar.gz"
+  sha256 "9f30ea5ab9da8638273cb55b49780e58fed1f4aa8623b835bcdd983bb451f7a7"
 
   head "https://github.com/rebar/rebar.git"
 
