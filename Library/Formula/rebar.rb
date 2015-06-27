@@ -10,9 +10,9 @@ class Rebar < Formula
 
   bottle do
     cellar :any
-    sha1 "e2908a79a0819ae121f2ecad281474bae417bfe4" => :mavericks
-    sha1 "fe9177f8b1b5d165de672fb27e4906ae5f9a9f64" => :mountain_lion
-    sha1 "22db3c6c0b933ad003f9495fe2528fe5bb8f73fa" => :lion
+    sha256 "e2839ba7bfd37e0fdb4f91ed07990f058252b04c403758852c5ab9269ba7b452" => :yosemite
+    sha256 "c6fce9414e95e7264570cbf5c1962d7b7a6c5d8d0342732ab83108ca9921cab0" => :mavericks
+    sha256 "4cdc93fcbd623ecd607b6eb7cbccbe74512768d869b66360e54cf028b866dfa0" => :mountain_lion
   end
 
   depends_on "erlang"
