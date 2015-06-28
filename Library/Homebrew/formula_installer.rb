@@ -626,12 +626,13 @@ class FormulaInstaller
     end
     FileUtils.rm_rf formula.bottle_prefix
 
+    tab = Tab.for_keg(formula.prefix)
+
     CxxStdlib.check_compatibility(
       formula, formula.recursive_dependencies,
-      Keg.new(formula.prefix), MacOS.default_compiler
+      Keg.new(formula.prefix), tab.compiler
     )
 
-    tab = Tab.for_keg(formula.prefix)
     tab.tap = formula.tap
     tab.poured_from_bottle = true
     tab.write
