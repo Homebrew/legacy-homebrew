@@ -13,6 +13,6 @@ class Bgpdump < Formula
   end
 
   test do
-    system "#{bin}/bgpdump -T"
+    system "#{bin}/bgpdump", "-T"
   end
 end
