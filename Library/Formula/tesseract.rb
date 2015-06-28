@@ -2,7 +2,7 @@ require "formula"
 
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
-  homepage 'http://code.google.com/p/tesseract-ocr/'
+  homepage 'https://github.com/tesseract-ocr/'
   url 'https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
   sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
   revision 3
@@ -22,7 +22,7 @@ class Tesseract < Formula
   end
 
   head do
-    url 'https://code.google.com/p/tesseract-ocr/', :using => :git
+    url 'https://github.com/tesseract-ocr/tesseract/', :using => :git
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
