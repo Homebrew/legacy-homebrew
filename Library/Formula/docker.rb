@@ -5,6 +5,7 @@ class Docker < Formula
   # Please update the version of boot2docker too
   url "https://github.com/docker/docker.git", :tag => "v1.7.0",
     :revision => "0baf60984522744eed290348f33f396c046b2f3a"
+  head "https://github.com/docker/docker.git"
 
   bottle do
     cellar :any
@@ -22,7 +23,9 @@ class Docker < Formula
     ENV["DOCKER_CLIENTONLY"] = "1"
 
     system "hack/make.sh", "dynbinary"
-    bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
+
+    build_version = build.head? ? File.read("VERSION").chomp : version
+    bin.install "bundles/#{build_version}/dynbinary/docker-#{build_version}" => "docker"
 
     if build.with? "completions"
       bash_completion.install "contrib/completion/bash/docker"
