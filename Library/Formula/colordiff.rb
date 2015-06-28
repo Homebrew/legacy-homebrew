@@ -1,8 +1,8 @@
 class Colordiff < Formula
   desc "Color-highlighted diff(1) output"
   homepage "http://www.colordiff.org/"
-  url "http://www.colordiff.org/colordiff-1.0.13.tar.gz"
-  sha1 "64e369aed2230f3aa5f1510b231fcac270793c09"
+  url "http://www.colordiff.org/colordiff-1.0.15.tar.gz"
+  sha256 "595ee4e9796ba02fad0b181e21df3ee34ae71d1611e301e146c0bf00c5269d45"
 
   bottle do
     cellar :any
@@ -34,14 +34,6 @@ diff --git a/Makefile b/Makefile
 index 6ccbfc7..e5d64e7 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -8,6 +8,7 @@ DIST_FILES=COPYING INSTALL Makefile README \
- TMPDIR=colordiff-${VERSION}
- TARBALL=${TMPDIR}.tar.gz
-
-+.PHONY: install
-
- doc: colordiff.xml cdiff.xml
- 	xmlto -vv man colordiff.xml
 @@ -28,8 +29,8 @@ install:
  	if [ ! -f ${DESTDIR}${INSTALL_DIR}/cdiff ] ; then \
  	  install cdiff.sh ${DESTDIR}${INSTALL_DIR}/cdiff; \
