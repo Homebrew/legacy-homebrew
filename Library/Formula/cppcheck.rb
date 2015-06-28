@@ -23,8 +23,11 @@ class Cppcheck < Formula
   depends_on "pcre" if build.with? "rules"
   depends_on "qt" if build.with? "gui"
 
+  needs :cxx11
 
   def install
+    ENV.cxx11
+
     # Man pages aren't installed as they require docbook schemas.
 
     # Pass to make variables.
