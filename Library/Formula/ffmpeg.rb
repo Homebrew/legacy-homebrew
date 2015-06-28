@@ -1,9 +1,8 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.6.3.tar.bz2"
-  sha256 "59eb98c1b5896ac29abc0385f7c875d1b4942d695818818d418ee71eea1e0cfb"
-
+  url "http://ffmpeg.org/releases/ffmpeg-2.7.1.tar.bz2"
+  sha256 "7e07b97d2415feeae9c9b5595e35e7b7aab33207e81bf9f8c0d1eece43f7f720"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
@@ -116,7 +115,7 @@ class Ffmpeg < Formula
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
-      args << "--extra-cflags=" + %x(pkg-config --cflags libopenjpeg).chomp
+      args << "--extra-cflags=" + `pkg-config --cflags libopenjpeg`.chomp
     end
 
     # These librares are GPL-incompatible, and require ffmpeg be built with
