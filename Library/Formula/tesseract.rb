@@ -22,7 +22,7 @@ class Tesseract < Formula
   end
 
   head do
-    url 'https://github.com/tesseract-ocr/tesseract/', :using => :git
+    url 'https://github.com/tesseract-ocr/tesseract.git'
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -129,7 +129,7 @@ class Tesseract < Formula
   end
 
   resource "tessdata-head" do
-    url 'https://github.com/tesseract-ocr/tessdata/', :using => :git
+    url 'https://github.com/tesseract-ocr/tessdata.git'
   end
 
   def install
