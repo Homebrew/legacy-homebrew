@@ -4,7 +4,7 @@ class Fontforge < Formula
   url "https://github.com/fontforge/fontforge/archive/20150430.tar.gz"
   sha256 "430c6d02611c7ca948df743e9241994efe37eda25f81a94aeadd9b6dd286ff37"
   head "https://github.com/fontforge/fontforge.git"
-  revision 2
+  revision 3
 
   bottle do
     sha256 "4a796f6927f5aa414a729fbb523f2bff9daf3e9a8e160f5e21e3ee4b59ab1c7e" => :yosemite
