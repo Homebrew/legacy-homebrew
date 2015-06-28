@@ -13,4 +13,18 @@ class Rtmidi < Formula
     lib.install Dir["*.a", "*.dylib"]
     include.install Dir["*.h"]
   end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include "RtMidi.h"
+      int main(int argc, char **argv, char **env) {
+        RtMidiIn midiin;
+        RtMidiOut midiout;
+        std::cout << "Input ports: " << midiin.getPortCount() << "\\n"
+                  << "Output ports: " << midiout.getPortCount() << "\\n";
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-lrtmidi", "-o", "test"
+    system "./test"
+  end
 end
