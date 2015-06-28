@@ -4,7 +4,7 @@ class Vice < Formula
   desc "Versatile Commodore Emulator"
   homepage 'http://vice-emu.sourceforge.net/'
   url 'http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.4.tar.gz'
-  sha1 '719aa96cc72e7578983fadea1a31c21898362bc7'
+  sha256 'ff8b8d5f0f497d1f8e75b95bbc4204993a789284a08a8a59ba727ad81dcace10'
   revision 1
 
   depends_on 'pkg-config' => :build
