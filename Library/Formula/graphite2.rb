@@ -4,6 +4,13 @@ class Graphite2 < Formula
   url "https://downloads.sourceforge.net/project/silgraphite/graphite2/graphite2-1.2.4.tgz"
   sha256 "4bc3d5168029bcc0aa00eb2c973269d29407be2796ff56f9c80e10736bd8b003"
 
+  bottle do
+    cellar :any
+    sha256 "24a47ed50dc7ac5ced74a8087468da3934aec145df0fa4e60091e1df7f86ff20" => :yosemite
+    sha256 "cc78dfeafc94c5176930df46dd2b0918c1707d91651d55464291d936207ae855" => :mavericks
+    sha256 "0ce563a4d9aa5139e45bc4e48bdc5c718095b8755eba55e3f61ff764ebd8d508" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
 
   resource "testfont" do
