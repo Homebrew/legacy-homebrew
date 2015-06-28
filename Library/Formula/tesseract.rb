@@ -128,6 +128,10 @@ class Tesseract < Formula
     sha1 "a559801a42be8a3dc15ae2ec27da99bd8b0b85ac"
   end
 
+  resource "tessdata-head" do
+    url 'https://github.com/tesseract-ocr/tessdata/', :using => :git
+  end
+
   def install
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
@@ -138,8 +142,10 @@ class Tesseract < Formula
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    if build.include? "all-languages"
-      resources.each { |r| r.stage { mv Dir["tessdata/*"], share/"tessdata" } }
+    if build.include?("all-languages") && build.head?
+      resource("tessdata-head").stage { mv Dir["*"], share/"tessdata" }
+    elsif build.include? "all-languages"
+      resources.reject { |r| r.name == "tessdata-head" }.each { |r| r.stage { mv Dir["tessdata/*"], share/"tessdata" } }
     else
       resource("eng").stage { mv Dir["tessdata/*"], share/"tessdata" }
       resource("osd").stage { mv Dir["tessdata/*"], share/"tessdata" }
