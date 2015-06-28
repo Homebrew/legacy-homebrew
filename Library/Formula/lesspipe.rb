@@ -1,10 +1,8 @@
-require 'formula'
-
 class Lesspipe < Formula
   desc "Input filter for the pager less"
-  homepage 'http://www-zeuthen.desy.de/~friebel/unix/lesspipe.html'
-  url 'https://downloads.sourceforge.net/project/lesspipe/lesspipe/1.82/lesspipe-1.82.tar.gz'
-  sha1 '61a7657b20b910ed8219c6b77467e601f9a89894'
+  homepage "https://www-zeuthen.desy.de/~friebel/unix/lesspipe.html"
+  url "https://downloads.sourceforge.net/project/lesspipe/lesspipe/1.82/lesspipe-1.82.tar.gz"
+  sha1 "61a7657b20b910ed8219c6b77467e601f9a89894"
 
   bottle do
     cellar :any
@@ -13,15 +11,26 @@ class Lesspipe < Formula
     sha256 "201d33d2ae2aff83e00bbcea23bf872f2a20938ba194d175426837fc041117c0" => :mountain_lion
   end
 
-  option 'syntax-highlighting', 'Enable syntax highlighting'
+  option "with-syntax-highlighting", "Build with syntax highlighting"
+
+  deprecated_option "syntax-highlighting" => "with-syntax-highlighting"
 
   def install
-    if build.include? 'syntax-highlighting'
-      inreplace 'configure', %q{$ifsyntax = "\L$ifsyntax";}, %q{$ifsyntax = "\Ly";}
+    if build.with? "syntax-highlighting"
+      inreplace "configure", %q{$ifsyntax = "\L$ifsyntax";}, %q{$ifsyntax = "\Ly";}
     end
 
     system "./configure", "--prefix=#{prefix}", "--yes"
     man1.mkpath
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    touch "file1.txt"
+    touch "file2.txt"
+    system "tar", "-cvzf", "homebrew.tar.gz", "file1.txt", "file2.txt"
+
+    assert File.exist?("homebrew.tar.gz")
+    assert_match /file2.txt/, shell_output("tar tvzf homebrew.tar.gz | #{bin}/tarcolor")
   end
 end
