@@ -3,6 +3,7 @@ class Cloog < Formula
   homepage "http://www.cloog.org/"
   url "http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.3.tar.gz"
   sha256 "460c6c740acb8cdfbfbb387156b627cf731b3837605f2ec0001d079d89c69734"
+  revision 1
 
   bottle do
     cellar :any
@@ -44,7 +45,7 @@ class Cloog < Formula
   end
 
   test do
-    cloog_source = <<-EOS.undent
+    (testpath/"test").write <<-EOS.undent
       c
 
       0 2
@@ -60,7 +61,7 @@ class Cloog < Formula
       0
     EOS
 
-    output = pipe_output("#{bin}/cloog /dev/stdin", cloog_source)
+    output = shell_output("#{bin}/cloog #{testpath}/test")
     assert_match %r{Generated from /dev/stdin by CLooG}, output
   end
 end
