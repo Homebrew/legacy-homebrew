@@ -5,6 +5,12 @@ class Teem < Formula
   sha256 "a01386021dfa802b3e7b4defced2f3c8235860d500c1fa2f347483775d4c8def"
   head "https://teem.svn.sourceforge.net/svnroot/teem/teem/trunk"
 
+  bottle do
+    sha256 "3974a9a565044cb4de798eb1bec2b8980eef03eb6bd7ec6c98cddd606f7c8a29" => :yosemite
+    sha256 "c340d18c157b81be663636ff72326ecb946313ea1dfc533a6ba95b9efdb6bf44" => :mavericks
+    sha256 "96733ab04a4a3a7feb5db5c95f58b0a0c1ef418b91988d1000898a46c142a3ec" => :mountain_lion
+  end
+
   option "with-experimental-apps", "Build experimental apps"
   option "with-experimental-libs", "Build experimental libs"
 
