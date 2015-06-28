@@ -13,13 +13,20 @@ class Gflags < Formula
   end
 
   option "with-debug", "Build debug version"
+  option "with-static", "Build gflags as a static (instead of shared) library."
 
   depends_on "cmake" => :build
 
   def install
     ENV.append_to_cflags "-DNDEBUG" if build.without? "debug"
+    args = std_cmake_args
+    if build.with? "static"
+      args << "-DBUILD_SHARED_LIBS=OFF"
+    else
+      args << "-DBUILD_SHARED_LIBS=ON"
+    end
     mkdir "buildroot" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", *args
       system "make", "install"
     end
   end
