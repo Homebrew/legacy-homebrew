@@ -6,10 +6,9 @@ class Colordiff < Formula
 
   bottle do
     cellar :any
-    sha1 "b4715b46336a19e8580a1978be0efa815f4f0f3d" => :yosemite
-    sha1 "724512050ef11d4b0f99eb46b2fa98a44520e5a6" => :mavericks
-    sha1 "7cf723ad9a524e8b7159c57e7a7d97687c3df067" => :mountain_lion
-    sha1 "37447591b2cea0958f2f695ad9a56012cc4cba9b" => :lion
+    sha256 "c5ed797abdaedc5a5f163bafce625307249408afd87bd1a2d31b086af29e02d6" => :yosemite
+    sha256 "a316bce78fc4bfd7fead8f6a6ce87161e9bd862e61882c72be60bcc42d248db1" => :mavericks
+    sha256 "45232a4a2de9ccf1848b28593d2a870efaf38017b465fdb8f04e261f7ccad8e7" => :mountain_lion
   end
 
   patch :DATA
