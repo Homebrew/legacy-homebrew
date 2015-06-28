@@ -3,8 +3,9 @@ require "formula"
 class Jsoncpp < Formula
   desc "Library for interacting with JSON"
   homepage "https://github.com/open-source-parsers/jsoncpp"
-  url "https://github.com/open-source-parsers/jsoncpp/archive/svn-release-0.6.0-rc2.tar.gz"
-  sha1 "6cc51ed1f31e742637a512201b585e0bc4e06980"
+  url "https://github.com/open-source-parsers/jsoncpp/archive/0.10.2-p1.tar.gz"
+  sha256 "43fe64ffb0630ac3530547e2c4dcec1bfcdf48bdb5b53a0f4971ee420b39c2be"
+  version "0.10.2-p1"
 
   bottle do
     cellar :any
@@ -14,12 +15,6 @@ class Jsoncpp < Formula
   end
 
   depends_on "scons" => :build
-
-  patch :p1 do
-    # use the usual environment variables for the compilation flags
-    url "https://github.com/open-source-parsers/jsoncpp/pull/55.patch"
-    sha1 "d2e985a0877fc811acfb34f62713a35ba4742452"
-  end
 
   def install
     gccversion = `g++ -dumpversion`.strip
