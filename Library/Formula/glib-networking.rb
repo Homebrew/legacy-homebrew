@@ -1,10 +1,9 @@
-require "formula"
-
 class GlibNetworking < Formula
   desc "Network related modules for glib"
   homepage "https://launchpad.net/glib-networking"
-  url "http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.42/glib-networking-2.42.0.tar.xz"
-  sha256 "304dd9e4c0ced69094300e0b9e66cd2eaae7161b9fc3186536d11458677d820d"
+  url "https://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.44/glib-networking-2.44.0.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/glib-networking/glib-networking_2.44.0.orig.tar.xz"
+  sha256 "8f8a340d3ba99bfdef38b653da929652ea6640e27969d29f7ac51fbbe11a4346"
 
   def pour_bottle?
     # This formula installs files directly into the top-level gio modules
@@ -24,13 +23,12 @@ class GlibNetworking < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-ca-certificates=#{etc}/openssl/cert.pem"
-    system "make install"
+    system "make", "install"
   end
 
   test do
     (testpath/"gtls-test.c").write <<-EOS.undent
       #include <gio/gio.h>
-
       int main (int argc, char *argv[])
       {
         if (g_tls_backend_supports_tls (g_tls_backend_get_default()))
