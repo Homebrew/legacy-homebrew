@@ -1,6 +1,6 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
-  homepage "http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page"
+  homepage "https://sourceforge.net/projects/cppcheck/"
 
   stable do
     url "https://github.com/danmar/cppcheck/archive/1.69.tar.gz"
