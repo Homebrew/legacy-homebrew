@@ -52,6 +52,10 @@ module OS
       end
     end
 
+    def can_build?
+      Xcode.installed? || CLT.installed?
+    end
+
     def active_developer_dir
       @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end

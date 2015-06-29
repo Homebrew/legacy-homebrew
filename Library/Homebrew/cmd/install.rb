@@ -38,6 +38,14 @@ module Homebrew
         end
       end
 
+      # if the user's flags will prevent bottle only-installations when no
+      # developer tools are available, we need to stop them early on
+      if !MacOS.can_build?
+        bf = ARGV.collect_build_flags
+
+        raise BuildFlagsError.new(bf) if !bf.empty?
+      end
+
       ARGV.formulae.each do |f|
         # head-only without --HEAD is an error
         if !ARGV.build_head? && f.stable.nil? && f.devel.nil?
@@ -129,6 +137,9 @@ module Homebrew
     # when one is no longer required
     checks = Checks.new
     %w[
+      check_for_unsupported_osx
+      check_for_bad_install_name_tool
+      check_for_installed_developer_tools
       check_xcode_license_approved
       check_for_osx_gcc_installer
     ].each do |check|
@@ -157,12 +168,7 @@ module Homebrew
   def perform_preinstall_checks
     check_ppc
     check_writable_install_location
-    if MacOS::Xcode.installed?
-      check_xcode
-    else
-      opoo "You have not installed Xcode."
-      puts "Bottles may install correctly, but builds will fail!"
-    end
+    check_xcode if MacOS::Xcode.installed?
     check_cellar
   end
 
