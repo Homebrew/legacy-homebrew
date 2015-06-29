@@ -33,6 +33,7 @@ class Sile < Formula
   def install
     system "luarocks-5.2", "install", "lpeg"
     system "luarocks-5.2", "install", "luaexpat"
+    system "luarocks-5.2", "install", "luafilesystem"
     system "./bootstrap.sh" if build.head?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
