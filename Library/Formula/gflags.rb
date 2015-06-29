@@ -13,7 +13,7 @@ class Gflags < Formula
   end
 
   option "with-debug", "Build debug version"
-  option "with-static", "Build gflags as a static library."
+  option "with-static", "Build gflags as a static (instead of shared) library."
 
   depends_on "cmake" => :build
 
