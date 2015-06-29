@@ -5,6 +5,13 @@ class Ctorrent < Formula
   sha256 "c87366c91475931f75b924119580abd06a7b3cb3f00fef47346552cab1e24863"
   revision 1
 
+  bottle do
+    cellar :any
+    sha256 "47019268b9a4da02a0e36e884c9602c9ee1b8be1982e28634710c388944b333b" => :yosemite
+    sha256 "ee6156a026a912c76dcf93e24506098f25387bda9022c0bcd065d4d511601ca6" => :mavericks
+    sha256 "01c353acf408ba34f5ee8c4ac6acca99ab7cdb285f2e03366d9c18d9e44f221e" => :mountain_lion
+  end
+
   depends_on "openssl"
 
   def install
