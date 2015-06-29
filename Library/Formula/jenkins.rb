@@ -1,8 +1,8 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.617/jenkins.war"
-  sha256 "8d6e30c338a54d3eeb6deea6614dae8fba9e1a2a2d9bc7ce3c61604140f3aa3e"
+  url "http://mirrors.jenkins-ci.org/war/1.618/jenkins.war"
+  sha256 "86cb65bb3c8980d61336bdf1b10af1fefd2e1d9fca678ff4efc054c1b498a7ee"
 
   bottle do
     cellar :any
