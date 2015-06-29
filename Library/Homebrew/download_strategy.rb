@@ -129,7 +129,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
       unless current_revision == @revision
         raise <<-EOS.undent
           #{@ref} tag should be #{@revision}
-          but is actually #{current_revision}!
+          but is actually #{current_revision}
         EOS
       end
     end
