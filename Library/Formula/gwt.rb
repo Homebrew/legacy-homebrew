@@ -2,7 +2,7 @@ require 'formula'
 
 class Gwt < Formula
   desc "Google web toolkit"
-  homepage 'https://developers.google.com/web-toolkit/'
+  homepage 'http://www.gwtproject.org/'
   url 'https://storage.googleapis.com/gwt-releases/gwt-2.7.0.zip'
   sha1 '2688f2ed80a36ba0e6170a4ef656581d811f330f'
 
