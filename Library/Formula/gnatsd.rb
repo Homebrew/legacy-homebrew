@@ -1,11 +1,9 @@
-require "formula"
-
 class Gnatsd < Formula
   desc "Lightweight cloud messaging system"
-  homepage "http://nats.io"
-  url "https://github.com/apcera/gnatsd/archive/v0.5.6.tar.gz"
+  homepage "https://nats.io"
+  url "https://github.com/apcera/gnatsd/archive/v0.6.0.tar.gz"
+  sha256 "de495dc1b52e16a61e2750bcab29a6c9de2a57c591476740dcbae3134494e1c1"
   head "https://github.com/apcera/gnatsd.git"
-  sha1 "b22a0252b838cff91586fb02d9efe31b428e5be2"
 
   bottle do
     sha1 "f430b3bae19808ceaa007a681b9b5fe9704ff6e3" => :yosemite
