@@ -3,7 +3,7 @@ require "formula"
 class Akka < Formula
   desc "Toolkit for building concurrent, distributed, and fault tolerant apps"
   homepage "http://akka.io/"
-  
+
   stable do
     url "https://downloads.typesafe.com/akka/akka_2.11-2.3.11.zip"
     sha256 "58157e4f85024d66e20d7e14d2681e041e385af82985eceb5210a454c251abec"
