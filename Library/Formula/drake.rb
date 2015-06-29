@@ -3,13 +3,12 @@ require 'formula'
 class Drake < Formula
   desc "Data workflow tool meant to be 'make for data'"
   homepage 'https://github.com/Factual/drake'
-  url 'https://github.com/Factual/drake/releases/download/v0.1.7/drake.jar'
-  version '0.1.7'
-  sha1 'c3092bd4e62effa38d4ade09bc191463b1c93c6a'
+  url 'https://raw.githubusercontent.com/Factual/drake/v1.0.0/bin/drake'
+  version '1.0.0'
+  sha1 '9a70c19e0cd80ba3f9c5a5df2c752c6a194af913'
 
   def install
-    libexec.install Dir['*']
-    bin.write_jar_script libexec/'drake.jar', 'drake'
+    bin.install "drake"
   end
 
   test do
