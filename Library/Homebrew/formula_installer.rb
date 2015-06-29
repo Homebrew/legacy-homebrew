@@ -147,6 +147,10 @@ class FormulaInstaller
 
     check_conflicts
 
+    if !pour_bottle? && !MacOS.can_build?
+      raise BuildToolsError.new([formula])
+    end
+
     if !ignore_deps?
       deps = compute_dependencies
       check_dependencies_bottled(deps) if pour_bottle?
