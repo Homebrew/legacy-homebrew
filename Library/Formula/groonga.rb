@@ -22,7 +22,7 @@ class Groonga < Formula
 
   depends_on "glib" if build.with? "benchmark"
 
-  deprecated_option "enable-banchmark" => "with-benchmark"
+  deprecated_option "enable-benchmark" => "with-benchmark"
 
   def install
     args = %W[
