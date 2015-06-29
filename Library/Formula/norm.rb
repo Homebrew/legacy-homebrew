@@ -1,8 +1,9 @@
 class Norm < Formula
   desc "NACK-Oriented Reliable Multicast"
   homepage "https://www.nrl.navy.mil/itd/ncs/products/norm"
-  url "https://downloads.pf.itd.nrl.navy.mil/norm/archive/src-norm-1.5b3.tgz"
-  sha256 "ec2014f57be12ea3ade0685faa1e6e161f168311c8975093bce33a6e1dc5e77c"
+  url "https://downloads.pf.itd.nrl.navy.mil/norm/archive/src-norm-1.5r5.tgz"
+  version "1.5r5"
+  sha256 "4e98513fe8bd65dbf5c38688ddf67c4fd51ae39b56320affd74fb54372e083d5"
 
   bottle do
     cellar :any
