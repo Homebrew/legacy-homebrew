@@ -7,9 +7,9 @@ class Norm < Formula
 
   bottle do
     cellar :any
-    sha256 "eeb502e10f6407499c78292b29177c49f0723bf5ea5d199b11ce4aad4ed2be6f" => :yosemite
-    sha256 "973ac3cfc7ee43dfddfbfb4cd967ceb833ba35d4b29c09db716883c02be176a7" => :mavericks
-    sha256 "d8449b294d71b3fbba503c2ef1f3399f85dc5e1aad7fbf6f5b0209ca2e5a80e6" => :mountain_lion
+    sha256 "ae2a33d4034fa0f3d4845c7269ab0f178725185be028198a4cb541865a9e595d" => :yosemite
+    sha256 "52cf6e92bffd6f67e050172c7956f071c5e5d457db87dca957c30dd23bbf9704" => :mavericks
+    sha256 "1dc0340c8f0fe4fb6360cf4763080987e62180cc454e09c1a6da587f950c4b7f" => :mountain_lion
   end
 
   def install
