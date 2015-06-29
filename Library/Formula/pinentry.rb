@@ -7,12 +7,17 @@ class Pinentry < Formula
 
   bottle do
     cellar :any
-    sha256 "7355da76546d02a42f60922fb1786b05e10a80706d3e0da9b3a49e45f5993f79" => :yosemite
-    sha256 "49d718588e9a4c9f609636ba6d53aa88421b737a93e154ed30216df02aa8a5be" => :mavericks
-    sha256 "706ee6a2fcfca3259e94ca3b76665136066c1755229d0f3e4cb460e85f7e1b24" => :mountain_lion
+    revision 1
+    sha256 "d6caa258ee85016f4eae79c6ee42745f0b3f16d6572c8eebc5be7a70384184d3" => :yosemite
+    sha256 "772335dcc0286d88679240a68fca2555fbb347917f2a1c54e07f4afe9858fbda" => :mavericks
+    sha256 "9f7ad30cddaaf46eb49e781b82a95200679e0d93274f33b81e270421db00b9f6" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
+
+  # Fix backspacing in pinentry-curses.  Remove at next release.
+  # https://bugs.gnupg.org/gnupg/issue2020
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -27,3 +32,22 @@ class Pinentry < Formula
     system "#{bin}/pinentry", "--version"
   end
 end
+
+__END__
+diff --git a/pinentry/pinentry-curses.c b/pinentry/pinentry-curses.c
+index 235435a..784c770 100644
+--- a/pinentry/pinentry-curses.c
++++ b/pinentry/pinentry-curses.c
+@@ -705,7 +705,11 @@ dialog_input (dialog_t diag, int alt, int chr)
+   switch (chr)
+     {
+     case KEY_BACKSPACE:
+-    case 'h' - 'a' + 1: /* control-h.  */
++      /* control-h.  */
++    case 'h' - 'a' + 1:
++      /* ASCII DEL.  What Mac OS X apparently emits when the "delete"
++	 (backspace) key is pressed.  */
++    case 127:
+       if (diag->pin_len > 0)
+	{
+	  diag->pin_len--;

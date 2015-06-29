@@ -155,11 +155,14 @@ class Tab < OpenStruct
     Options.create(super)
   end
 
+  def compiler
+    super || MacOS.default_compiler
+  end
+
   def cxxstdlib
     # Older tabs won't have these values, so provide sensible defaults
     lib = stdlib.to_sym if stdlib
-    cc = compiler || MacOS.default_compiler
-    CxxStdlib.create(lib, cc.to_sym)
+    CxxStdlib.create(lib, compiler.to_sym)
   end
 
   def build_bottle?
@@ -207,7 +210,7 @@ class Tab < OpenStruct
     unless used_options.empty?
       s << "Installed" if s.empty?
       s << "with:"
-      s << used_options.to_a.join(", ")
+      s << used_options.to_a.join(" ")
     end
     s.join(" ")
   end

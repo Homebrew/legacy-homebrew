@@ -224,10 +224,10 @@ To install a newer version of HEAD use \fBbrew rm <foo> && brew install \-\-HEAD
 If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.
 .
 .IP "\(bu" 4
-\fBirb [\-\-example]\fR: Enter the interactive Homebrew Ruby shell\.
+\fBirb [\-\-examples]\fR: Enter the interactive Homebrew Ruby shell\.
 .
 .IP
-If \fB\-\-example\fR is passed, several examples will be shown\.
+If \fB\-\-examples\fR is passed, several examples will be shown\.
 .
 .IP "\(bu" 4
 \fBleaves\fR: Show installed formulae that are not dependencies of another installed formula\.
@@ -290,7 +290,7 @@ If \fB\-\-all\fR is passed, show options for all formulae\.
 If \fB\-\-installed\fR is passed, show options for all installed formulae\.
 .
 .IP "\(bu" 4
-\fBoutdated [\-\-quiet|\-\-verbose]\fR: Show formulae that have an updated version available\.
+\fBoutdated [\-\-quiet | \-\-verbose | \-\-json=v1 ]\fR: Show formulae that have an updated version available\.
 .
 .IP
 By default, version information is displayed in interactive shells, and suppressed otherwise\.
@@ -300,6 +300,9 @@ If \fB\-\-quiet\fR is passed, list only the names of outdated brews (takes prece
 .
 .IP
 If \fB\-\-verbose\fR is passed, display detailed version information\.
+.
+.IP
+If \fB\-\-json=<version>\fR is passed, the output will be in JSON format\. The only valid version is \fBv1\fR\.
 .
 .IP "\(bu" 4
 \fBpin\fR \fIformulae\fR: Pin the specified \fIformulae\fR, preventing them from being upgraded when issuing the \fBbrew upgrade \-\-all\fR command\. See also \fBunpin\fR\.

@@ -4,11 +4,11 @@ class GoAppEngine64 < Formula
   desc "Google App Engine SDK for Go!"
   homepage "https://cloud.google.com/appengine/docs/go/"
   if OS.mac?
-    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_amd64-1.9.21.zip"
-    sha1 "ffe246b8fe26e290d86a0cca4581a16088e58d5e"
+    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_amd64-1.9.23.zip"
+    sha256 "4eb357055f5c4d2ddc95253b6613ddeb5459dfa17c247ad0ba44f930d47096db"
   elsif OS.linux?
-    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.21.zip"
-    sha256 "9609f09fe2bd3f0575ae59b02b5e0984a8ccce0ffd95863ce5a7c85f9cfb46ec"
+    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.23.zip"
+    sha256 "d1a0caf17f36bff3d108926f5f9bf4a3872648ad5c985728c837c0c9e8ffa6c0"
   end
 
   def install

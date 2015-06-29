@@ -55,7 +55,7 @@ def oh1 title
 end
 
 def opoo warning
-  $stderr.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
+  $stderr.puts "#{Tty.yellow}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error

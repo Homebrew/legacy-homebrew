@@ -1,6 +1,6 @@
 class OracleHomeVarRequirement < Requirement
   fatal true
-  satisfy ENV["ORACLE_HOME"]
+  satisfy(:build_env => false) { ENV["ORACLE_HOME"] }
 
   def message; <<-EOS.undent
       To use --with-oci you have to set the ORACLE_HOME environment variable.

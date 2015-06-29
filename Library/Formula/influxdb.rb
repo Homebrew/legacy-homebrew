@@ -17,6 +17,15 @@ class Influxdb < Formula
     sha256 "b07a2a1ca26c32cc8b6b0fa8d00f735066c10cdc27ebd3e132eceae17fa96129" => :mountain_lion
   end
 
+  devel do
+    url "https://github.com/influxdb/influxdb/archive/v0.9.1-rc1.tar.gz"
+    sha256 "4311c39aa72d31bc23e7082a3af436f546038d640829a30782c5717623317d90"
+
+    go_resource "collectd.org" do
+      url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
+    end
+  end
+
   head do
     url "https://github.com/influxdb/influxdb.git"
 
@@ -93,6 +102,8 @@ class Influxdb < Formula
     cd influxdb_path do
       if build.head?
         system "go", "install", "-ldflags", "-X main.version 0.9.0-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
+      elsif build.devel?
+        system "go", "install", "-ldflags", "-X main.version 0.9.1-rc1 -X main.commit beefacd4d311e902f159212bcf3f934216d7f3bc", "./..."
       else
         system "go", "install", "-ldflags", "-X main.version 0.9.0 -X main.commit 471117ce5b308e59f8f247d8a88a52ead553b602", "./..."
       end

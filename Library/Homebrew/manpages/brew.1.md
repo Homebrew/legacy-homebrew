@@ -226,10 +226,10 @@ Note that these flags should only appear after a command.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `irb [--example]`:
+  * `irb [--examples]`:
     Enter the interactive Homebrew Ruby shell.
 
-    If `--example` is passed, several examples will be shown.
+    If `--examples` is passed, several examples will be shown.
 
   * `leaves`:
     Show installed formulae that are not dependencies of another installed formula.
@@ -296,7 +296,7 @@ Note that these flags should only appear after a command.
 
     If `--installed` is passed, show options for all installed formulae.
 
-  * `outdated [--quiet|--verbose]`:
+  * `outdated [--quiet | --verbose | --json=v1 ]`:
     Show formulae that have an updated version available.
 
     By default, version information is displayed in interactive shells, and
@@ -306,6 +306,9 @@ Note that these flags should only appear after a command.
     precedence over `--verbose`).
 
     If `--verbose` is passed, display detailed version information.
+
+    If `--json=<version>` is passed, the output will be in JSON format. The only
+    valid version is `v1`.
 
   * `pin` <formulae>:
     Pin the specified <formulae>, preventing them from being upgraded when

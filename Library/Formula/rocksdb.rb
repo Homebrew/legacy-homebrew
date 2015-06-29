@@ -14,6 +14,8 @@ class Rocksdb < Formula
     sha256 "ada906d1b4fa26f73ce3aa4b393c6c9d7ec76bf50663e2ff748d143f6c3518bc" => :mountain_lion
   end
 
+  option "with-lite", "Build mobile/non-flash optimized lite version"
+
   needs :cxx11
   depends_on "snappy"
   depends_on "lz4"
@@ -21,6 +23,7 @@ class Rocksdb < Formula
   def install
     ENV.cxx11
     ENV["PORTABLE"] = "1" if build.bottle?
+    ENV.append_to_cflags "-DROCKSDB_LITE=1" if build.with? "lite"
     system "make", "clean"
     system "make", "static_lib"
     system "make", "shared_lib"

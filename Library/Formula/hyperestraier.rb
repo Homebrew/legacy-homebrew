@@ -6,7 +6,7 @@ class EucjpMecabIpadicRequirement < Requirement
     @mecab_ipadic_installed = Formula["mecab-ipadic"].installed?
   end
 
-  satisfy { @mecab_ipadic_installed && mecab_dic_charset == "euc" }
+  satisfy(:build_env => false) { @mecab_ipadic_installed && mecab_dic_charset == "euc" }
 
   def message
     if @mecab_ipadic_installed

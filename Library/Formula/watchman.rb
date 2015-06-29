@@ -4,13 +4,13 @@ class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
   head "https://github.com/facebook/watchman.git"
-  url "https://github.com/facebook/watchman/archive/v3.2.0.tar.gz"
-  sha1 "b7313c240e4977ee6ea8906bdca9680db34df2e9"
+  url "https://github.com/facebook/watchman/archive/v3.3.0.tar.gz"
+  sha256 "c8bd6b496f5d86b13c91368bf3b01346282f565c8af4f8e2f7bb6b74a48c4793"
 
   bottle do
-    sha256 "89671e8b820786af65fb3cb159034636230f7cf89ca934871df4a2adb595df9d" => :yosemite
-    sha256 "a6f245862f48b38010e1a22f1659468466f5b9bbff4a77db25faeba9c76cf4e3" => :mavericks
-    sha256 "73f54fc034ec6be43dab94e3911fa179925a56e9c96dd53feb047400e99053b3" => :mountain_lion
+    sha256 "69ae44ef507948e8f8c0ea81e591fe33bb417b4fa4249f56a64a0de978440272" => :yosemite
+    sha256 "73de2ab287a7af1c35114a0e1225997e6c6309a22e2bccb91e5d7203f87fe63e" => :mavericks
+    sha256 "9c4141c215435ca49848a19c22d8b600d304eac00f3ba2fb388f50e55cf1be76" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
