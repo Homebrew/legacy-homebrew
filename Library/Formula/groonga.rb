@@ -10,6 +10,8 @@ class Groonga < Formula
     sha256 "5d7041fac2246ffda0a056e86a03a8e49eef6617f06dfda6ee1c1e709bb9c09c" => :mountain_lion
   end
 
+  option "with-benchmark", "With benchmark program for developer use"
+
   depends_on "pkg-config" => :build
   depends_on "pcre"
   depends_on "msgpack"
@@ -18,9 +20,9 @@ class Groonga < Formula
   depends_on "lz4" => :optional
   depends_on "openssl"
 
-  depends_on "glib" if build.include? "enable-benchmark"
+  depends_on "glib" if build.with? "benchmark"
 
-  option "enable-benchmark", "Enable benchmark program for developer use"
+  deprecated_option "enable-banchmark" => "with-benchmark"
 
   def install
     args = %W[
@@ -37,7 +39,11 @@ class Groonga < Formula
 
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
-    system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    output = shell_output("groonga --version")
+    assert_match /groonga #{version}/, output
   end
 end
