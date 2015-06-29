@@ -5,16 +5,9 @@ class Calabash < Formula
   sha256 "a68b729c1cf392433534c207e9fe1002deca42282ed409ed93fbeb0e13b7583c"
 
   depends_on "saxon"
-  
   def install
     libexec.install Dir["*"]
     bin.write_jar_script libexec/"xmlcalabash-#{version}.jar", "calabash", "-Xmx1024m"
-  end
-
-  def caveats; <<-EOS.undent
-    This formula requires Saxon version 9.6.
-    Run `brew upgrade saxon` if your version is older.
-    EOS
   end
 
   test do
