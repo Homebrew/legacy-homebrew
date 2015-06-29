@@ -282,6 +282,8 @@ the REST API.
     DELETE /jobs/<jobId>     - Kills the specified job
     GET /jobs/<jobId>/config - Gets the job configuration
 
+For details on the Typesafe config format used for input (JSON also works), see the [Typesafe Config docs](https://github.com/typesafehub/config).
+
 ### Context configuration
 
 A number of context-specific settings can be controlled when creating a context (POST /contexts) or running an
