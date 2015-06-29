@@ -8,9 +8,9 @@ class Gringo < Formula
 
   bottle do
     cellar :any
-    sha1 "53aa3f2faea4ed8018e182ad116b580a258f5f0b" => :yosemite
-    sha1 "169c5ce2e52e5e60b8dc9cf1a7bea91d2068ce7d" => :mavericks
-    sha1 "dbf6db34bc0ea8858ce4a3d3a3f65d874d96133b" => :mountain_lion
+    sha256 "61e06e100961608e832b74a8221adfbea645269a268485d42808300cb0014c8d" => :yosemite
+    sha256 "987a5a8c950f5df5d5626ed4cc9ba174cb011313ba9ee60263dff94c854202f3" => :mavericks
+    sha256 "c800b81cec82149a45dfa2485d3e4e99ad26b71c7a5543841aa01259ff199dd7" => :mountain_lion
   end
 
   depends_on 're2c'  => :build
