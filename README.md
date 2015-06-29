@@ -19,6 +19,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Fuse Elements
 - Frontline Solvers
 - Aruba Networks
+- [Zed Worldwide](www.zed.com)
 
 ## Features
 
@@ -48,7 +49,7 @@ For release notes, look in the `notes/` directory.  They should also be up on [l
 
 ## Quick start / development mode
 
-NOTE: This quick start guide uses SBT to run the job server and the included test jar, but the normal development process is to create a separate project for Job Server jobs and to deploy the job server to a Spark cluster.
+NOTE: This quick start guide uses SBT to run the job server and the included test jar, but the normal development process is to create a separate project for Job Server jobs and to deploy the job server to a Spark cluster.  Please see the deployment section below for more details.
 
 You need to have [SBT](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html) installed.
 
