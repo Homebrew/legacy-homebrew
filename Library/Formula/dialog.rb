@@ -1,21 +1,14 @@
-require 'formula'
-
 class Dialog < Formula
   desc "Display user-friendly dialog boxes from shell scripts"
-  homepage 'http://invisible-island.net/dialog/'
-  url 'ftp://invisible-island.net/dialog/dialog-1.2-20130928.tgz'
-  sha1 '204d852856754817f5590f60ffaa1c07a8ed35ca'
+  homepage "http://invisible-island.net/dialog/"
+  url "ftp://invisible-island.net/dialog/dialog-1.2-20150528.tgz"
+  sha256 "a8cd7a66bdb41e53a3145cbb0eb370c5ce7300fe0e9ad6d3e8d3b9e16ff16418"
 
   bottle do
-    cellar :any
-    sha1 "ed04a10d2cbe61af48b5a0c5232f9612efb2b6a6" => :yosemite
-    sha1 "bd04f2988844a9be9aed5796aff53365ff635a76" => :mavericks
-    sha1 "4ef77c2932c8a75f79170a98e9434201744e0193" => :mountain_lion
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install-full"
   end
 end
