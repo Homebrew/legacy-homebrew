@@ -19,6 +19,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Fuse Elements
 - Frontline Solvers
 - Aruba Networks
+- [Zed Worldwide](www.zed.com)
 
 ## Features
 
@@ -48,7 +49,7 @@ For release notes, look in the `notes/` directory.  They should also be up on [l
 
 ## Quick start / development mode
 
-NOTE: This quick start guide uses SBT to run the job server and the included test jar, but the normal development process is to create a separate project for Job Server jobs and to deploy the job server to a Spark cluster.
+NOTE: This quick start guide uses SBT to run the job server and the included test jar, but the normal development process is to create a separate project for Job Server jobs and to deploy the job server to a Spark cluster.  Please see the deployment section below for more details.
 
 You need to have [SBT](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html) installed.
 
@@ -280,6 +281,8 @@ the REST API.
     GET /jobs/<jobId>        - Gets the result or status of a specific job
     DELETE /jobs/<jobId>     - Kills the specified job
     GET /jobs/<jobId>/config - Gets the job configuration
+
+For details on the Typesafe config format used for input (JSON also works), see the [Typesafe Config docs](https://github.com/typesafehub/config).
 
 ### Context configuration
 

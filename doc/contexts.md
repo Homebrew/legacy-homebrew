@@ -40,9 +40,11 @@ This can be done easily by extending the `SparkContextFactory` trait, like `SQLC
 
 If you wish to use the `SQLContext` or `HiveContext`, be sure to pull down the job-server-extras package.
 
-# StreamingContext
-job-server-extras provides a context to run Spark Streaming jobs, there are a couple of configurations you can change in job-server's .conf file
-streaming.batch_interval: the streaming batch in millis
-streaming.stopGracefully: if true, stops gracefully by waiting for the processing of all received data to be completed 
-streaming.stopSparkContext: if true, stops the SparkContext with the StreamingContext. The underlying SparkContext will be stopped regardless of whether the StreamingContext has been started.
+## StreamingContext
+
+`job-server-extras` provides a context to run Spark Streaming jobs. There are a couple of configurations you can change in job-server's .conf file:
+
+* `streaming.batch_interval`: the streaming batch in millis
+* `streaming.stopGracefully`: if true, stops gracefully by waiting for the processing of all received data to be completed 
+* `streaming.stopSparkContext`: if true, stops the SparkContext with the StreamingContext. The underlying SparkContext will be stopped regardless of whether the StreamingContext has been started.
 
