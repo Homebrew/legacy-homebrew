@@ -6,7 +6,7 @@ class Pango < Formula
   revision 1
 
   head do
-    url "https://git.gnome.org/browse/pango"
+    url "https://git.gnome.org/browse/pango.git"
 
     depends_on "automake" => :build
     depends_on "autoconf" => :build
