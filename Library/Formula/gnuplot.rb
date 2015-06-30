@@ -1,9 +1,3 @@
-class LuaRequirement < Requirement
-  fatal true
-  default_formula "lua"
-  satisfy { which "lua" }
-end
-
 class Gnuplot < Formula
   desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info"
@@ -43,16 +37,16 @@ class Gnuplot < Formula
   deprecated_option "latex" => "with-latex"
 
   depends_on "pkg-config" => :build
-  depends_on LuaRequirement if build.with? "lua"
   depends_on "fontconfig"
   depends_on "gd" => :recommended
+  depends_on "lua" => :recommended
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
+  depends_on "readline"
   depends_on "pango" if (build.with? "cairo") || (build.with? "wxmac")
   depends_on "pdflib-lite" => :optional
   depends_on "qt" => :optional
-  depends_on "readline"
   depends_on "wxmac" => :optional
   depends_on :tex if build.with? "latex"
   depends_on :x11 => :optional
@@ -86,7 +80,7 @@ class Gnuplot < Formula
     end
 
     args << "--with-qt" if build.with? "qt"
-    args << "--without-lua"        if build.without? "lua"
+    args << "--without-lua" if build.without? "lua"
     args << "--without-lisp-files" if build.without? "emacs"
     args << ((build.with? "aquaterm") ? "--with-aquaterm" : "--without-aquaterm")
     args << ((build.with? "x11") ? "--with-x" : "--without-x")
@@ -103,7 +97,7 @@ class Gnuplot < Formula
     system "./configure", *args
     ENV.j1 # or else emacs tries to edit the same file with two threads
     system "make"
-    system "make", "check" if build.with? "tests" # Awesome testsuite
+    system "make", "check" if build.with?("tests") || build.bottle?
     system "make", "install"
   end
 
@@ -117,6 +111,7 @@ class Gnuplot < Formula
       EOS
     end
   end
+
   test do
     system "#{bin}/gnuplot", "-e", <<-EOS.undent
       set terminal png;
