@@ -16,13 +16,13 @@ class Mongodb < Formula
   end
 
   devel do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.4.tar.gz"
-    sha256 "76af6357fdffa007931c6c4f0929244da5e987c33dd2d670454830cefa2388a0"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.5.tar.gz"
+    sha256 "75d80d1266e91f6474e1c7588420b459e4a1471c608df9bf370235a986da1c3e"
 
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.1.4",
-        :revision => "102574bcf8fe267f2104ac24be68ec1c50fe63d6"
+        :tag => "r3.1.5",
+        :revision => "c3cf04406379d2981ba5b8c860c2fa78a1d4bec0"
     end
   end
 
