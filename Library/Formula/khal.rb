@@ -93,6 +93,6 @@ class Khal < Formula
   end
 
   test do
-    system "#{bin}/khard", "--version"
+    system "#{bin}/khal", "--version"
   end
 end
