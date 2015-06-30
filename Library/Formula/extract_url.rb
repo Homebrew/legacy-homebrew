@@ -8,8 +8,6 @@ class ExtractUrl < Formula
   depends_on "HTML::Parser" => :perl
   depends_on "Pod::Usage" => :perl
   depends_on "Env" => :perl
-  #depends_on "URI::Find" => :perl
-  #depends_on "Curses::UI" => :perl
   depends_on "Getopt::Long" => :perl
 
   def install
@@ -20,7 +18,6 @@ class ExtractUrl < Formula
   end
 
   test do
-    system "extract_url", "--help"
+    system "#{bin}/extract_url", "--help"
   end
-
 end
