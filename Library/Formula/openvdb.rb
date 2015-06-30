@@ -5,6 +5,12 @@ class Openvdb < Formula
   sha256 "6c90cfda032c54876b321031717c13ea56a6b7b15c911d3edfbb2ad7af49700e"
   head "https://github.com/dreamworksanimation/openvdb.git"
 
+  bottle do
+    sha256 "9001f9f2bf882a7186ff6dd0e676c1947bdcfdfe0f10cd1ff21b114bcef47722" => :yosemite
+    sha256 "572cc54af2939f50de34174540d26947037b7e055e38c21d31794186f2663a3a" => :mavericks
+    sha256 "70a2321ed4e82b098b9a9befd4cc513529583881496793815089d463ee5744fd" => :mountain_lion
+  end
+
   option "with-viewer", "Installs the command-line tool to view OpenVDB files"
   option "with-tests", "Installs the unit tests for the OpenVDB library"
   option "with-logging", "Requires log4cplus"
