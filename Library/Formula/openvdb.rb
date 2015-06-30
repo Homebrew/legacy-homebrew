@@ -10,11 +10,16 @@ class Openvdb < Formula
   option "with-logging", "Requires log4cplus"
   option "with-docs", "Installs documentation"
 
-  depends_on "boost"
   depends_on "openexr"
   depends_on "ilmbase"
   depends_on "tbb"
   depends_on "jemalloc" => :recommended
+
+  if MacOS.version < :mavericks
+    depends_on "boost" => "c++11"
+  else
+    depends_on "boost"
+  end
 
   depends_on "homebrew/versions/glfw3" if build.with? "viewer"
   depends_on "cppunit" if build.with? "tests"
