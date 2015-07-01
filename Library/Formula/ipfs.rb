@@ -7,6 +7,13 @@ class Ipfs < Formula
     :tag => "v0.3.5",
     :revision => "952dc9c60fdff27902749222fdc30164e7eea1ee"
 
+  bottle do
+    cellar :any
+    sha256 "99d7c8ec259245c955fd8445ad12876e63664aa7f3511590159ec45450190b0a" => :yosemite
+    sha256 "8744b3b05caf0de3c3d3a147a5af0abd856868e95058e1b25f8c79fd75ff89f4" => :mavericks
+    sha256 "2b0ca89668c906ed6f3af15e098bf04009695cbc346ef02b363b53acfcc48257" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/tools/godep" do
