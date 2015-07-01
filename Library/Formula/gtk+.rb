@@ -12,7 +12,9 @@ class Gtkx < Formula
     sha256 "3f3948ce65bd2c199e2603a8bebc39f6de14e3c7f408226b1d6a0c8b52a51f29" => :mountain_lion
   end
 
-  option "with-quartz-relocation", "Build with quartz relocation support"
+  if OS.mac?
+    option "with-quartz-relocation", "Build with quartz relocation support"
+  end
 
   depends_on "pkg-config" => :build
   depends_on "gdk-pixbuf"
@@ -33,10 +35,14 @@ class Gtkx < Formula
             "--prefix=#{prefix}",
             "--disable-glibtest",
             "--enable-introspection=yes",
-            "--with-gdktarget=quartz",
             "--disable-visibility"]
 
-    args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
+    if OS.mac?
+      args << "--enable-gdktarget=quartz"
+      args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
+    else
+      args << "--enable-gdktarget=x11"
+    end
 
     system "./configure", *args
     system "make", "install"
@@ -86,16 +92,27 @@ class Gtkx < Formula
       -L#{pango.opt_lib}
       -latk-1.0
       -lcairo
-      -lgdk-quartz-2.0
       -lgdk_pixbuf-2.0
       -lgio-2.0
       -lglib-2.0
       -lgobject-2.0
-      -lgtk-quartz-2.0
       -lintl
       -lpango-1.0
       -lpangocairo-1.0
     ]
+
+    if OS.mac?
+      flags += %W[
+        -lgdk-quartz-2.0
+        -lgtk-quartz-2.0
+      ]
+    else
+      flags += %W[
+        -lgdk-x11-2.0
+        -lgtk-x11-2.0
+      ]
+    end
+
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
