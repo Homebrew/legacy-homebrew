@@ -12,7 +12,7 @@ class Pv < Formula
 
   option "with-nls", "Build with Native Language Support"
 
-  depends_on "gettext" => :optional
+  depends_on "gettext" if build.with? "nls"
 
   fails_with :llvm do
     build 2334
