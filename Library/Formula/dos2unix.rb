@@ -16,13 +16,28 @@ class Dos2unix < Formula
     sha256 "59cea39b181913532bf9e9c234a142c15e330d5eee145cd6b90f54becd6ec27b"
   end
 
+  option "with-nls", "Build with Native Language Support"
+
+  depends_on "gettext" if build.with? "nls"
+
   def install
-    system "make", "prefix=#{prefix}",
-                   "CC=#{ENV.cc}",
-                   "CPP=#{ENV.cc}",
-                   "CFLAGS=#{ENV.cflags}",
-                   "install",
-                   "ENABLE_NLS="
+    args = %W[
+      prefix=#{prefix}
+      CC=#{ENV.cc}
+      CPP=#{ENV.cc}
+      CFLAGS=#{ENV.cflags}
+      install
+    ]
+
+    if build.without? "nls"
+      args << "ENABLE_NLS="
+    else
+      gettext = Formula["gettext"]
+      args << "CFLAGS_OS=-I#{gettext.include}"
+      args << "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl"
+    end
+
+    system "make", *args
   end
 
   test do
