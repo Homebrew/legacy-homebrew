@@ -413,7 +413,9 @@ class FormulaAuditor
          %r[^http://packages\.debian\.org],
          %r[^http://wiki\.freedesktop\.org/],
          %r[^http://((?:www)\.)?gnupg.org/],
-         %r[^http://((?:trac|tools|www)\.)?ietf\.org],
+         %r[^http://ietf\.org],
+         %r[^http://[^/.]+\.ietf\.org],
+         %r[^http://[^/.]+\.tools\.ietf\.org],
          %r[^http://www\.gnu\.org/],
          %r[^http://code\.google\.com/]
       problem "Please use https:// for #{homepage}"
