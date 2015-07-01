@@ -12,9 +12,15 @@ end
 class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
-  sha256 "8c6d070613b721452f8cffdea6bddc82ce4f32f96703e3af02abb91a59f1ea25"
+  url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
+  sha256 "7ea2a16ecb8088e67db86b0835b887d5316121aeef9565d5d19be3d539a2c2af"
+
+  # Apple's 3.6.0svn based clang doesn't support -Winconsistent-missing-override
+  # https://bugreports.qt.io/browse/QTBUG-46833
+  # This is fixed in 5.5 branch and below patch should be removed
+  # when this formula is updated to 5.5.1
+  patch :DATA
 
   bottle do
     sha256 "1d3aee1664b44e912ddd307fc7f1eff25e835452ce44705acaa4162f79006ef7" => :yosemite
@@ -22,7 +28,7 @@ class Qt5 < Formula
     sha256 "855e075b522199c52876f44fe2d2a63e4c4b4f9bfd5c6edb0e3dc850fd02ef34" => :mountain_lion
   end
 
-  head "https://code.qt.io/qt/qt5.git", :branch => "5.4", :shallow => false
+  head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -127,3 +133,18 @@ class Qt5 < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/qtbase/src/corelib/global/qcompilerdetection.h b/qtbase/src/corelib/global/qcompilerdetection.h
+index 7ff1b67..060af29 100644
+--- a/qtbase/src/corelib/global/qcompilerdetection.h
++++ b/qtbase/src/corelib/global/qcompilerdetection.h
+@@ -155,7 +155,7 @@
+ /* Clang also masquerades as GCC */
+ #    if defined(__apple_build_version__)
+ #      /* http://en.wikipedia.org/wiki/Xcode#Toolchain_Versions */
+-#      if __apple_build_version__ >= 6020049
++#      if __apple_build_version__ >= 7000053
+ #        define Q_CC_CLANG 306
+ #      elif __apple_build_version__ >= 6000051
+ #        define Q_CC_CLANG 305
