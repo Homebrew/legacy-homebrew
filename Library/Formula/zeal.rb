@@ -11,14 +11,14 @@ class Zeal < Formula
   patch :DATA
 
   def install
-    qt5 = Formula["qt5"]
-    ENV.append "CFLAGS", "-I#{qt5.installed_prefix}/include -I#{HOMEBREW_PREFIX}/opt/libarchive/include"
-    ENV.append "CXXFLAGS", "-I#{qt5.installed_prefix}/include -I#{HOMEBREW_PREFIX}/opt/libarchive/include"
-    ENV.append "LDFLAGS", "-L#{qt5.installed_prefix}/lib -L#{HOMEBREW_PREFIX}/opt/libarchive/lib -larchive"
+    ENV.append "CFLAGS", "-I#{Formula["qt5"].opt_include} -I#{Formula["libarchive"].opt_include}"
+    ENV.append "CXXFLAGS", "-I#{Formula["qt5"].opt_include} -I#{Formula["libarchive"].opt_include}"
+    ENV.append "LDFLAGS", "-L#{Formula["qt5"].opt_lib} -L#{Formula["libarchive"].opt_lib} -larchive"
+    ENV.append "LARCHIVE", "#{Formula["libarchive"].opt_lib}"
 
-    system "#{qt5.installed_prefix}/bin/qmake"
+    system "qmake"
     system "make"
-    system "#{qt5.installed_prefix}/bin/macdeployqt", "bin/Zeal.app"
+    system "macdeployqt", "bin/Zeal.app"
     prefix.install "bin/Zeal.app"
     (bin/"zeal").write("#! /bin/sh\n#{prefix}/Zeal.app/Contents/MacOS/Zeal \"$@\"\n")
   end
@@ -39,5 +39,5 @@ index 8f2c721..22623bb 100644
 +QMAKE_CFLAGS += $$(CFLAGS)
 +QMAKE_CXXFLAGS += $$(CXXFLAGS)
 +QMAKE_LFLAGS += $$(LDFLAGS)
-+macx:INCLUDEPATH += /usr/local/opt/libarchive/include
-+macx:DEPENDPATH += /usr/local/opt/libarchive/include
++macx:INCLUDEPATH += $$(LARCHIVE)
++macx:DEPENDPATH += $$(LARCHIVE)
