@@ -16,17 +16,13 @@ class Dos2unix < Formula
     sha256 "59cea39b181913532bf9e9c234a142c15e330d5eee145cd6b90f54becd6ec27b"
   end
 
-  depends_on "gettext"
-
   def install
-    gettext = Formula["gettext"]
     system "make", "prefix=#{prefix}",
                    "CC=#{ENV.cc}",
                    "CPP=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
-                   "CFLAGS_OS=-I#{gettext.include}",
-                   "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl",
-                   "install"
+                   "install",
+                   "ENABLE_NLS="
   end
 
   test do
