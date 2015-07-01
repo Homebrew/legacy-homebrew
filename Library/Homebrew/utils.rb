@@ -329,7 +329,7 @@ module GitHub extend self
         GitHub #{error}
         Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
           https://github.com/settings/tokens
-        and then set it as HOMEBREW_GITHUB_API_TOKEN.
+        and then set the token as: HOMEBREW_GITHUB_API_TOKEN
         EOS
     end
 
