@@ -16,6 +16,17 @@ class Strongswan < Formula
   depends_on 'openssl'
   depends_on 'curl' => :optional
 
+  head do
+    url "https://git.strongswan.org/strongswan.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "pkg-config" => :build
+    depends_on "gettext" => :build
+    depends_on "bison" => :build
+  end
+
   def install
     args = %W[
       --disable-dependency-tracking
@@ -57,6 +68,7 @@ class Strongswan < Formula
     args << "--enable-kernel-pfkey" if build.without? 'suite-b'
     args << "--enable-kernel-libipsec" if build.with? 'suite-b'
 
+    system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make", "install"
   end
