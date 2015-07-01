@@ -49,7 +49,7 @@ class Libressl < Formula
 
     # Bootstrap CAs from the system keychain.
     (etc/"libressl/cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
-  end
+  end if OS.mac?
 
   def caveats; <<-EOS.undent
     A CA file has been bootstrapped using certificates from the system

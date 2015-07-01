@@ -30,7 +30,7 @@ class Py2cairo < Formula
     # disable waf's python extension mode because it explicitly links libpython
     # https://code.google.com/p/waf/issues/detail?id=1531
     inreplace "src/wscript", "pyext", ""
-    ENV["LINKFLAGS"] = "-undefined dynamic_lookup"
+    ENV["LINKFLAGS"] = "-undefined dynamic_lookup" if OS.mac?
     ENV.append_to_cflags `python-config --includes`
 
     # Python extensions default to universal but cairo may not be universal
@@ -40,7 +40,11 @@ class Py2cairo < Formula
     system "./waf", "install"
 
     module_dir = lib/"python2.7/site-packages/cairo"
-    mv module_dir/"lib_cairo.dylib", module_dir/"_cairo.so"
+    if OS.mac?
+      mv module_dir/"lib_cairo.dylib", module_dir/"_cairo.so"
+    else
+      mv module_dir/"lib_cairo.so", module_dir/"_cairo.so"
+    end
   end
 
   test do

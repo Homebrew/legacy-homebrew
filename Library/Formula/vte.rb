@@ -77,17 +77,28 @@ class Vte < Formula
       -L#{pango.opt_lib}
       -latk-1.0
       -lcairo
-      -lgdk-quartz-2.0
       -lgdk_pixbuf-2.0
       -lgio-2.0
       -lglib-2.0
       -lgobject-2.0
-      -lgtk-quartz-2.0
       -lintl
       -lpango-1.0
       -lpangocairo-1.0
       -lvte
     ]
+
+    if OS.mac?
+      flags += %W[
+        -lgdk-quartz-2.0
+        -lgtk-quartz-2.0
+      ]
+    else
+      flags += %W[
+        -lgdk-x11-2.0
+        -lgtk-x11-2.0
+      ]
+    end
+
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
