@@ -44,8 +44,8 @@ class Python3 < Formula
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.3.tar.gz"
-    sha256 "b4c598825a6f6dc2cac65968feb28e6be6c1f7f1408493c60a07eaa731a0affd"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.0.tar.gz"
+    sha256 "d5275ba3221182a5dd1b6bcfbfc5ec277fb399dd23226d6fa018048f7e0f10f2"
   end
 
   resource "wheel" do
