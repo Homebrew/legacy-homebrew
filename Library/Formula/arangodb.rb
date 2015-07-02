@@ -3,8 +3,8 @@ require 'formula'
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
   homepage 'https://www.arangodb.com/'
-  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.6.0.tar.gz'
-  sha256 'fec63994692cfb851369e3d074ae0a0e240ef2b362990deca6babc5fd7929b0d'
+  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.6.1.tar.gz'
+  sha256 'd1e3ff55899efc1a6dfbe79dd0e4d4e4abe5b29bc5269b31a3718e9862c0c54b'
 
   head "https://github.com/arangodb/arangodb.git", :branch => 'unstable'
 
