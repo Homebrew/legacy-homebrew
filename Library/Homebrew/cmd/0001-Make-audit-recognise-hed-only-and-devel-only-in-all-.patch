@@ -1,0 +1,31 @@
+From 6ffd15a128630f463d8a1ee835e7569dbe79609f Mon Sep 17 00:00:00 2001
+From: "Rainer M. Krug" <R.M.Krug@gmail.com>
+Date: Tue, 30 Jun 2015 09:38:30 +0200
+Subject: [PATCH] Make audit recognise hed-only and devel-only in all taps
+
+- add wildcard into expressions to identify head-only and dev-only taps
+---
+ Library/Homebrew/cmd/audit.rb | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Library/Homebrew/cmd/audit.rb b/Library/Homebrew/cmd/audit.rb
+index 3a41dbd..4a6a305 100644
+--- a/Library/Homebrew/cmd/audit.rb
++++ b/Library/Homebrew/cmd/audit.rb
+@@ -421,11 +421,11 @@ class FormulaAuditor
+   end
+ 
+   def audit_specs
+-    if head_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-head-only"
++    if head_only?(formula) && formula.tap.to_s.downcase != "*/homebrew-head-only"
+       problem "Head-only (no stable download)"
+     end
+ 
+-    if devel_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-devel-only"
++    if devel_only?(formula) && formula.tap.to_s.downcase != "*/homebrew-devel-only"
+       problem "Devel-only (no stable download)"
+     end
+ 
+-- 
+2.4.5
+
