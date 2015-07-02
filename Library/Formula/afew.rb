@@ -1,9 +1,6 @@
 class Afew < Formula
   desc "afew is an initial tagging script for notmuch."
   homepage "https://github.com/teythoon/afew"
-  url "https://github.com/teythoon/afew/archive/162d9fa00ba09892bd8d63ec9fa182e0319000a2.tar.gz"
-  version "0.0.0"
-  sha256 "10fbcb1d7e9029da05d8f352499196867f40487aad9e23c12034264f88559d35"
   head "https://github.com/teythoon/afew.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
