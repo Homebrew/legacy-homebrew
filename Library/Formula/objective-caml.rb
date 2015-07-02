@@ -3,7 +3,7 @@ class ObjectiveCaml < Formula
   homepage "https://ocaml.org/"
   url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.1.tar.gz"
   sha256 "3cbc7af5a3886c8c5af8dab5568d6256a191d89ecbd4aea18eaf5b47034c6138"
-  revision 2
+  revision 3
 
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
 
@@ -22,15 +22,16 @@ class ObjectiveCaml < Formula
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
 
     # the ./configure in this package is NOT a GNU autoconf script!
-    args = ["-prefix", prefix, "-with-debug-runtime", "-mandir", man]
+    args = ["-prefix", "#{HOMEBREW_PREFIX}", "-with-debug-runtime", "-mandir", man]
     args << "-no-graph" if build.without? "x11"
     system "./configure", *args
 
     system "make", "world.opt"
-    system "make", "install"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
     assert_match "val x : int = 1", shell_output("echo 'let x = 1 ;;' | ocaml 2>&1")
+    assert_match "#{HOMEBREW_PREFIX}", shell_output("ocamlc -where")
   end
 end
