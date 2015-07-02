@@ -75,6 +75,9 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 *   [edavis/emacs](https://github.com/edavis/homebrew-emacs)
     - A tap for Emacs packages.
 
+*   [InstantClientTap/instantclient](https://github.com/InstantClientTap/homebrew-instantclient)
+    - A tap for Oracle Instant Client. The packages need to be downloaded manually.
+
 ## Interesting Branches (aka forks)
 
 *   [mistydemeo/tigerbrew](https://github.com/mistydemeo/tigerbrew)
