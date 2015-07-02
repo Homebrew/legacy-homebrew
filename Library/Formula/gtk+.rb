@@ -33,7 +33,7 @@ class Gtkx < Formula
             "--prefix=#{prefix}",
             "--disable-glibtest",
             "--enable-introspection=yes",
-            "--with-gdktarget=quartz",
+            "--with-gdktarget=#{OS.mac? ? 'quartz' : 'x11'",
             "--disable-visibility"]
 
     args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
@@ -61,6 +61,7 @@ class Gtkx < Formula
     libpng = Formula["libpng"]
     pango = Formula["pango"]
     pixman = Formula["pixman"]
+    backend = OS.mac? ? "quartz" : "x11"
     flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
     flags += %W[
       -I#{atk.opt_include}/atk-1.0
@@ -86,12 +87,12 @@ class Gtkx < Formula
       -L#{pango.opt_lib}
       -latk-1.0
       -lcairo
-      -lgdk-quartz-2.0
+      -lgdk-#{backend}-2.0
       -lgdk_pixbuf-2.0
       -lgio-2.0
       -lglib-2.0
       -lgobject-2.0
-      -lgtk-quartz-2.0
+      -lgtk-#{backend}-2.0
       -lintl
       -lpango-1.0
       -lpangocairo-1.0
