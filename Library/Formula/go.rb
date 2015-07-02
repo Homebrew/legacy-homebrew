@@ -8,7 +8,12 @@ class Go < Formula
   sha1 "460caac03379f746c473814a65223397e9c9a2f6"
   version "1.4.2"
 
-  head "https://go.googlesource.com/go", :using => :git
+  head "https://github.com/golang/go.git"
+
+  devel do
+    url "https://github.com/golang/go.git", :revision => "72970f7f52b1f8d14f10df40098175763a556ebe"
+    version "72970f7f52b1f8d14f10df40098175763a556ebe"
+  end
 
   bottle do
     revision 1
@@ -29,6 +34,16 @@ class Go < Formula
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
     :revision => "69db398fe0e69396984e3967724820c1f631e971"
+  end
+
+  resource "gobootstrap" do
+    if MacOS.version > :lion
+      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.8.tar.gz"
+      sha1 "58a04b3eb9853c75319d9076df6f3ac8b7430f7f"
+    else
+      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.6.tar.gz"
+      sha1 "00c3f9a03daff818b2132ac31d57f054925c60e7"
+    end
   end
 
   def install
@@ -55,9 +70,24 @@ class Go < Formula
       targets = [["darwin", [""]]]
     end
 
+    if build.head? || build.devel?
+      # GOROOT_FINAL must be overidden later on real Go install
+      ENV["GOROOT_FINAL"] = buildpath/"gobootstrap"
+
+      # build the gobootstrap toolchain Go >=1.4
+      (buildpath/"gobootstrap").install resource("gobootstrap")
+      cd "#{buildpath}/gobootstrap/src" do
+        system "./make.bash", "--no-clean"
+      end
+      # This should happen after we build the test Go, just in case
+      # the bootstrap toolchain is aware of this variable too.
+      ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
+    end
+
+
     # The version check is due to:
     # http://codereview.appspot.com/5654068
-    (buildpath/"VERSION").write("default") if build.head?
+    (buildpath/"VERSION").write("default") if build.head? || build.devel?
 
     cd "src" do
       targets.each do |os, archs|
