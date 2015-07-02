@@ -23,6 +23,15 @@ class Cryptopp < Formula
     sha256 "2ca6c2f9dda56fa29df952d0ee829c9501a2cbc43a68bdc786d8241aefaddea6"
   end
 
+  option :cxx11
+
+  # Incorporated upstream, remove on next version update
+  # https://groups.google.com/forum/#!topic/cryptopp-users/1wdyb2FSwc4
+  patch :p1 do
+    url "https://github.com/weidai11/cryptopp/commit/44015c26ba215f955b1e653f9c8f3c894a532707.patch"
+    sha256 "2ca6c2f9dda56fa29df952d0ee829c9501a2cbc43a68bdc786d8241aefaddea6"
+  end
+
   def install
     ENV.cxx11 if build.cxx11?
     system "make", "CXX=#{ENV.cxx}"
