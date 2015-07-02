@@ -468,11 +468,11 @@ class FormulaAuditor
   end
 
   def audit_specs
-    if head_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-head-only"
+    if head_only?(formula) && formula.tap.to_s.downcase !~ /-head-only$/
       problem "Head-only (no stable download)"
     end
 
-    if devel_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-devel-only"
+    if devel_only?(formula) && formula.tap.to_s.downcase !~ /-devel-only$/
       problem "Devel-only (no stable download)"
     end
 
