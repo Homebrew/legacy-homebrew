@@ -3,8 +3,8 @@ require "formula"
 class Tutum < Formula
   desc "Docker platform for dev and ops"
   homepage "https://www.tutum.co/"
-  url "https://pypi.python.org/packages/source/t/tutum/tutum-0.15.1.tar.gz"
-  sha256 "f476f5a680fd473c211a17368fe6761ff942fa6f25f0d368d737110d5b561819"
+  url "https://pypi.python.org/packages/source/t/tutum/tutum-0.16.0.tar.gz"
+  sha256 "5ab2e7ea8aa56a4149af56493bab4ceb3ac2127efd2ee79f44846127446e67cf"
 
   bottle do
     cellar :any
@@ -22,8 +22,8 @@ class Tutum < Formula
   end
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.2.2.tar.gz"
-    sha256 "4494d699059559118417da192a3d4bf015b097f7b589c48e253c12b4c61e5ef0"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.1.0.tar.gz"
+    sha256 "6a07eb56b234719e89d3038c24f9c870b6f1ee0b58080120e865e2752673cd94"
   end
 
   resource "pyyaml" do
@@ -32,8 +32,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.15.1.tar.gz"
-    sha256 "eba7c8311cb4557f4c5899fff31130324abc937460751f55e845d10a2340801a"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.16.0.tar.gz"
+    sha256 "9e8a4878fdba6c85611a973df105c313187110708cbda2ecd146fddc76111074"
   end
 
   resource "backports.ssl-match-hostname" do
@@ -52,8 +52,8 @@ class Tutum < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
-    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.3.tar.gz"
+    sha256 "55d7f5619daae94ec49ee81ed8c865e5a2a47f0bbf8e06cf94636bee103eaf65"
   end
 
   resource "tabulate" do
@@ -62,8 +62,8 @@ class Tutum < Formula
   end
 
   resource "websocket-client" do
-    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.31.0.tar.gz"
-    sha256 "ddbba49fe9f185dec6a80a536831fa781e10e1d946eef20ebcccd75b943c6ea6"
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.32.0.tar.gz"
+    sha256 "cb3ab95617ed2098d24723e3ad04ed06c4fde661400b96daa1859af965bfe040"
   end
 
   resource "future" do
