@@ -1,8 +1,8 @@
 class Ssldump < Formula
   desc "SSLv3/TLS network protocol analyzer"
-  homepage "http://www.rtfm.com/ssldump/"
-  url "http://www.rtfm.com/ssldump/ssldump-0.9b3.tar.gz"
-  sha1 "a633a9a811a138eac5ed440d583473b644135ef5"
+  homepage "http://ssldump.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/ssldump/ssldump/0.9b3/ssldump-0.9b3.tar.gz"
+  sha256 "6422c16718d27c270bbcfcc1272c4f9bd3c0799c351f1d6dd54fdc162afdab1e"
 
   bottle do
     cellar :any
