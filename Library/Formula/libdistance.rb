@@ -15,7 +15,7 @@ class Libdistance < Formula
     cp "test/test", "#{prefix}/test/"
   end
 
-  def test
+  test do
     system "#{prefix}/test/test"
   end
 end
