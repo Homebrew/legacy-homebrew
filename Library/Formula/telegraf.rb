@@ -3,8 +3,8 @@ require "language/go"
 class Telegraf < Formula
   desc "Server-level agent for InfluxDB"
   homepage "https://influxdb.com"
-  url "https://github.com/influxdb/telegraf/archive/v0.1.1.tar.gz"
-  sha256 "75b6e22b0c8d385ca28fe82dfb730d60cc3c8522fe705828739ebedba89bc8b6"
+  url "https://github.com/influxdb/telegraf/archive/v0.1.2.tar.gz"
+  sha256 "94c6cc2d9344f7826ec77d50ee63f3cb4279178256b3304a0652fca3be322020"
 
   bottle do
     cellar :any
@@ -106,7 +106,7 @@ class Telegraf < Formula
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd telegraf_path do
-      system "go", "build", "-ldflags", "-X main.Version 0.1.1 -X main.Commit 39c90dd879ce51da60102e9f5694474933607c8f", "cmd/telegraf/telegraf.go"
+      system "go", "build", "-ldflags", "-X main.Version 0.1.2 -X main.Commit 86a6f337f68194603d29082b42eaca4853d390c9", "cmd/telegraf/telegraf.go"
     end
 
     bin.install telegraf_path/"telegraf"
