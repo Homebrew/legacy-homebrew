@@ -24,6 +24,12 @@ class Luajit < Formula
 
   option "with-debug", "Build with debugging symbols"
   option "with-52compat", "Build with additional Lua 5.2 compatibility"
+  option "with-luarocks", "Build with Luarocks support"
+
+  resource "luarocks" do
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
+    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
+  end
 
   def install
     # 1 - Override the hardcoded gcc.
@@ -51,6 +57,33 @@ class Luajit < Formula
     # Having an empty Lua dir in Lib can screw with the new Lua setup.
     rm_rf prefix/"lib/lua"
     rm_rf prefix/"share/lua"
+
+    if build.with? "luarocks"
+      resource("luarocks").stage do
+        ENV.prepend_path "PATH", bin
+
+        system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
+                              "--sysconfdir=#{etc}/luarocks52", "--with-lua=#{prefix}",
+                              "--lua-version=5.2", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks52",
+                              "--lua-suffix=jit", "--with-lua-include=#{prefix}/include/luajit-2.0"
+        system "make", "build"
+        system "make", "install"
+
+        (share+"lua/5.2/luarocks").install_symlink Dir["#{libexec}/share/lua/5.2/luarocks/*"]
+        bin.install_symlink libexec/"bin/luarocks-5.2"
+        bin.install_symlink libexec/"bin/luarocks-admin-5.2"
+        bin.install_symlink libexec/"bin/luarocks"
+        bin.install_symlink libexec/"bin/luarocks-admin"
+
+        # This block ensures luarock exec scripts don't break across updates.
+        inreplace libexec/"share/lua/5.2/luarocks/site_config.lua" do |s|
+          s.gsub! libexec.to_s, opt_libexec
+          s.gsub! include.to_s, "#{HOMEBREW_PREFIX}/include"
+          s.gsub! lib.to_s, "#{HOMEBREW_PREFIX}/lib"
+          s.gsub! bin.to_s, "#{HOMEBREW_PREFIX}/bin"
+        end
+      end
+    end
   end
 
   test do
