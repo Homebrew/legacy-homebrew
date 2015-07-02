@@ -11,7 +11,6 @@ class Pandoc < Formula
   head "https://github.com/jgm/pandoc.git"
 
   bottle do
-    revision 1
     sha256 "a7470327540c74e9c5e05a7b6b6240faa82e521147439f8bfb3fc100e12b3cfa" => :yosemite
     sha256 "7e803fffac74ac594caf39cdd194983083c2a7eaf3d86b358c9d41b59addcb1a" => :mavericks
     sha256 "09efd70cef2bfdfa2b43dd80abd51faa276ff600703cd16928f06f45fc2eb8d6" => :mountain_lion
@@ -27,8 +26,6 @@ class Pandoc < Formula
     cabal_sandbox do
       cabal_install "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
-      man1.install "man/man1/pandoc.1"
-      man5.install "man/man5/pandoc_markdown.5"
     end
     cabal_clean_lib
   end
