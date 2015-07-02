@@ -32,5 +32,6 @@ class ObjectiveCaml < Formula
 
   test do
     assert_match "val x : int = 1", shell_output("echo 'let x = 1 ;;' | ocaml 2>&1")
+    assert_match "#{HOMEBREW_PREFIX}", shell_output("ocamlc -where")
   end
 end
