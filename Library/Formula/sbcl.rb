@@ -77,7 +77,7 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |_, value|
-      value =~ /[\x80-\xff]/n
+      value.dup.force_encoding(Encoding::ASCII_8BIT) =~ /[\x80-\xff]/n
     end
 
     bootstrap = (build.build_32_bit? || !MacOS.prefer_64_bit?) ? "bootstrap32" : "bootstrap64"
