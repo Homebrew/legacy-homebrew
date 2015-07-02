@@ -3,8 +3,8 @@ require "formula"
 class GitReview < Formula
   desc "Submit git branches to gerrit for review"
   homepage "https://git.openstack.org/cgit/openstack-infra/git-review"
-  url "https://pypi.python.org/packages/source/g/git-review/git-review-1.24.tar.gz"
-  sha1 "9183b505366b842cff32132ee88d8eff44bb7c89"
+  url "https://pypi.python.org/packages/source/g/git-review/git-review-1.25.0.tar.gz"
+  sha1 "48dc683cd50d09469f621af7106dcef54af905c3"
   revision 1
 
   bottle do
