@@ -8,9 +8,9 @@ class Xplanet < Formula
   revision 2
 
   bottle do
-    sha1 "f4494377cd80ce1332e9a171b914f9fa316406fb" => :mavericks
-    sha1 "bb5488ef9be45bb605560c0af8d85b5e297984fc" => :mountain_lion
-    sha1 "39f3137787a1f753d4fb083aaa05157368705fbd" => :lion
+    sha256 "401b46887f90818530d5996e11ef2977481c51c85716e8da22e2dbaa454c01ab" => :yosemite
+    sha256 "c0816c18de9ed0af9c7bee4e30498661cef65b0bfbea9901631740ce38edb4db" => :mavericks
+    sha256 "6237bcf19e9337e706cfa80232e48aa5f74d52cdf9c6f092bb77b109352a8889" => :mountain_lion
   end
 
   option "with-x11", "Build for X11 instead of Aqua"
