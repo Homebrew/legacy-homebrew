@@ -48,7 +48,6 @@ class Scw < Formula
 
   test do
     output = shell_output(bin/"scw version")
-    assert output.include? "Client version: v1.2.1"
-    assert output.include? "Git commit (client): 3eb2cfb2478410b61992396fad5081ee80a140e9"
+    assert output.include? "OS/Arch (client): darwin/amd64"
   end
 end
