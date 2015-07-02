@@ -2,11 +2,11 @@ require "language/go"
 
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
-  homepage "http://influxdb.com"
+  homepage "https://influxdb.com"
 
   stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0.tar.gz"
-    sha256 "c7cc869754d7bfb9374b0a16a9b91073d9588adedbd7bfda1d5709e22d3a3d75"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.1.tar.gz"
+    sha256 "a37d5ebda1b31f912390fe4e1d46e085326f91397671e2bd418f5d515004e5be"
   end
 
   bottle do
@@ -17,21 +17,8 @@ class Influxdb < Formula
     sha256 "b07a2a1ca26c32cc8b6b0fa8d00f735066c10cdc27ebd3e132eceae17fa96129" => :mountain_lion
   end
 
-  devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.1-rc1.tar.gz"
-    sha256 "4311c39aa72d31bc23e7082a3af436f546038d640829a30782c5717623317d90"
-
-    go_resource "collectd.org" do
-      url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
-    end
-  end
-
   head do
     url "https://github.com/influxdb/influxdb.git"
-
-    go_resource "collectd.org" do
-      url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
-    end
   end
 
   depends_on "go" => :build
@@ -92,6 +79,10 @@ class Influxdb < Formula
     url "https://github.com/fatih/pool.git", :revision => "cba550ebf9bce999a02e963296d4bc7a486cb715"
   end
 
+  go_resource "collectd.org" do
+    url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
     influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
@@ -101,11 +92,9 @@ class Influxdb < Formula
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version 0.9.0-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
-      elsif build.devel?
-        system "go", "install", "-ldflags", "-X main.version 0.9.1-rc1 -X main.commit beefacd4d311e902f159212bcf3f934216d7f3bc", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.1-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version 0.9.0 -X main.commit 471117ce5b308e59f8f247d8a88a52ead553b602", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.1 -X main.commit 8b3219e74fcc3843a6f4901bdf00e905642b6bd6", "./..."
       end
     end
 
