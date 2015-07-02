@@ -8,7 +8,7 @@ class Go < Formula
   sha1 "460caac03379f746c473814a65223397e9c9a2f6"
   version "1.4.2"
 
-  head "https://go.googlesource.com/go", :using => :git
+  head "https://github.com/golang/go", :using => :git
 
   bottle do
     revision 1
@@ -29,6 +29,11 @@ class Go < Formula
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
     :revision => "69db398fe0e69396984e3967724820c1f631e971"
+  end
+
+  resource "gobootstrap" do
+    url "https://storage.googleapis.com/golang/go1.4.2.src.tar.gz"
+    sha1 "460caac03379f746c473814a65223397e9c9a2f6"
   end
 
   def install
@@ -54,6 +59,21 @@ class Go < Formula
     else
       targets = [["darwin", [""]]]
     end
+
+    if build.head?
+      # GOROOT_FINAL must be overidden later on real Go install
+      ENV["GOROOT_FINAL"] = buildpath/"gobootstrap"
+
+      # build the gobootstrap toolchain Go >=1.4
+      (buildpath/"gobootstrap").install resource("gobootstrap")
+      cd "#{buildpath}/gobootstrap/src" do
+        system "./make.bash", "--no-clean"
+      end
+      # This should happen after we build the test Go, just in case
+      # the bootstrap toolchain is aware of this variable too.
+      ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
+    end
+
 
     # The version check is due to:
     # http://codereview.appspot.com/5654068
