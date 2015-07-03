@@ -3,8 +3,8 @@ require "formula"
 class Tutum < Formula
   desc "Docker platform for dev and ops"
   homepage "https://www.tutum.co/"
-  url "https://pypi.python.org/packages/source/t/tutum/tutum-0.16.0.tar.gz"
-  sha256 "5ab2e7ea8aa56a4149af56493bab4ceb3ac2127efd2ee79f44846127446e67cf"
+  url "https://pypi.python.org/packages/source/t/tutum/tutum-0.16.0.1.tar.gz"
+  sha256 "8a9ed5288842d705f40a554f0c3598885e2b1ce0667ced452d7b46b45eb0228b"
 
   bottle do
     cellar :any
@@ -22,8 +22,8 @@ class Tutum < Formula
   end
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.1.0.tar.gz"
-    sha256 "6a07eb56b234719e89d3038c24f9c870b6f1ee0b58080120e865e2752673cd94"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.2.3.tar.gz"
+    sha256 "5328a7f4a2d812da166b3fb59211fca976c9f48bb9f8b17d9f3fd4ef7c765ac5"
   end
 
   resource "pyyaml" do
@@ -32,8 +32,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.16.0.tar.gz"
-    sha256 "9e8a4878fdba6c85611a973df105c313187110708cbda2ecd146fddc76111074"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.16.0.1.tar.gz"
+    sha256 "c668a15a2c336df31e53933cd5b3d1397350f6595dd2d4e3e5341b9d241d9835"
   end
 
   resource "backports.ssl-match-hostname" do
@@ -52,8 +52,8 @@ class Tutum < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.3.tar.gz"
-    sha256 "55d7f5619daae94ec49ee81ed8c865e5a2a47f0bbf8e06cf94636bee103eaf65"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
+    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
   end
 
   resource "tabulate" do
