@@ -9,9 +9,9 @@ class Terraform < Formula
 
   bottle do
     cellar :any
-    sha256 "ca01644d5769f3fad1afdae3d7fd14c21d46a8c8718489d764a7152a4b5cb451" => :yosemite
-    sha256 "1357d87bcd1076a0788230899fe0b64f14fc508c05375164c7c7faa7fb7149a1" => :mavericks
-    sha256 "f0a35f02200f9ef904b7c67af06773b52ed1125d9277364ef7ec894a9b413e26" => :mountain_lion
+    sha256 "7d312ee61acfd38770c637c5bb67a4a3e24cbfa36d3ca1525e11b3665407b80d" => :yosemite
+    sha256 "6ce67ae71a5e5ba170b40ba5418b5b472be38cd805e56c03e6e78f7066e9df26" => :mavericks
+    sha256 "d91bd97d9d5e4729be6b2cb07dae71ea6cfee4069776ddf901a5b91ed3c6a50e" => :mountain_lion
   end
 
   depends_on "go" => :build
