@@ -1,8 +1,8 @@
 class GitLfs < Formula
   desc "Git extension for versioning large files"
   homepage "https://github.com/github/git-lfs"
-  url "https://github.com/github/git-lfs/archive/v0.5.1.tar.gz"
-  sha256 "8cefb145e47b2e582fc284d1fde5486f30e9c754f9d85d12db61c7397c797931"
+  url "https://github.com/github/git-lfs/archive/v0.5.2.tar.gz"
+  sha256 "c7453d15fd817c50c5bff86e5bbd45781b3a7213cd70de9ff8f9240cf04fb626"
 
   bottle do
     cellar :any
@@ -14,11 +14,15 @@ class GitLfs < Formula
   depends_on "go" => :build
 
   def install
+    ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/github"
+    ln_s buildpath, buildpath/"src/github.com/github/git-lfs"
     system "./script/bootstrap"
     bin.install "bin/git-lfs"
   end
 
   test do
+    system "git", "init"
     system "git", "lfs", "track", "test"
     assert_match(/^test filter=lfs/, File.read(".gitattributes"))
   end
