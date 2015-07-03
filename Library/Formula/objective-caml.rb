@@ -27,7 +27,7 @@ class ObjectiveCaml < Formula
     system "./configure", *args
 
     system "make", "world.opt"
-    system "make", "install"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
