@@ -1,10 +1,10 @@
 require "formula"
 
 class RakudoStar < Formula
-  desc "Perl 6 compiler running on the Parrot VM"
+  desc "Perl 6 compiler"
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2015.03.tar.gz"
-  sha256 "bb969c99b39cf69d0f04ae5e9d574de1da8835a1be17710f9e63afc0bcac9bbb"
+  url "http://rakudo.org/downloads/star/rakudo-star-2015.06.tar.gz"
+  sha256 "126491a2c9f408239fb8ed94d5369c9839e3fbe284fdfbfc4e45160ce2db5bc7"
 
   bottle do
     sha256 "d310af143caab23d561c00414a2b32f951236c43a00c788278e5f4abeaca8562" => :yosemite
