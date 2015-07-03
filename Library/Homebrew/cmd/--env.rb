@@ -27,7 +27,8 @@ module Homebrew
       HOMEBREW_SVN HOMEBREW_GIT
       HOMEBREW_SDKROOT HOMEBREW_BUILD_FROM_SOURCE
       MAKE GIT CPP
-      ACLOCAL_PATH PATH CPATH].select { |key| env.key?(key) }
+      ACLOCAL_PATH PATH CPATH
+      HOMEBREW_BOTTLE_DOMAIN HOMEBREW_BOTTLE_ROOT_URL].select { |key| env.key?(key) }
   end
 
   def dump_build_env env, f=$stdout
