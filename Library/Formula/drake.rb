@@ -6,11 +6,11 @@ class Drake < Formula
   head "https://github.com/Factual/drake.git"
   version "v1.0.0"
   url "https://raw.githubusercontent.com/Factual/drake/master/bin/drake-pkg"
-  sha1 "3791f8e681620dae927bc70e22452b2703402724"
+  sha256 "8e09238f7f9e18fe5eaade60d461801f47bfb29fbbefec951075683c2b0ace49"
 
   resource "jar" do
     url "https://github.com/Factual/drake/releases/download/v1.0.0/drake.jar"
-    sha1 "0ee261ba884c6bf2572d99b0c2bbf943b4da8da0"
+    sha256 "f601f059dd23f87ccb1fa9ce1c39067e8bbeed36f08820769c6132c311e99aa8"
   end
 
   def install
