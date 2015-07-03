@@ -4,7 +4,8 @@ class Swftools < Formula
   desc "SWF manipulation and generation tools"
   homepage 'http://www.swftools.org'
   url 'http://www.swftools.org/swftools-0.9.2.tar.gz'
-  sha1 'd7cf8874c4187d2edd3e40d20ba325ca17b91973'
+  sha256 'bf6891bfc6bf535a1a99a485478f7896ebacbe3bbf545ba551298080a26f01f1'
+  revision 1
 
   option 'with-xpdf', 'Build with PDF support'
 
@@ -24,6 +25,12 @@ class Swftools < Formula
   # http://lists.nongnu.org/archive/html/swftools-common/2012-04/msg00014.html
   # Patch is merged upstream.  Remove at swftools-0.9.3.
   patch :DATA
+
+  # Fix compile error, via MacPorts: https://trac.macports.org/ticket/34553
+  patch :p0 do
+    url "https://trac.macports.org/export/96933/trunk/dports/graphics/swftools/files/patch-src_gif2swf.c.diff"
+    sha256 "75daa35a292a25d05b45effc5b734e421b437bad22479837e0ee5cbd7a05e73e"
+  end
 
   def install
     (buildpath+'lib/pdf').install resource('xpdf') if build.with? "xpdf"
