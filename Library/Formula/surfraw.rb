@@ -1,9 +1,10 @@
 class Surfraw < Formula
   desc "Shell Users' Revolutionary Front Rage Against the Web"
   homepage "http://surfraw.alioth.debian.org/"
-  head "git://git.debian.org/surfraw/surfraw.git"
   url "http://surfraw.alioth.debian.org/dist/surfraw-2.2.9.tar.gz"
   sha1 "70bbba44ffc3b1bf7c7c4e0e9f0bdd656698a1c0"
+
+  head "git://git.debian.org/surfraw/surfraw.git", :shallow => false
 
   bottle do
     sha1 "6c592c99adf6c1a0bb4993a36e4392bce6e24eaa" => :yosemite
