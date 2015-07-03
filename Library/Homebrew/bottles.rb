@@ -67,7 +67,7 @@ class Bintray
   end
 
   def self.repository(tap=nil)
-    return "bottles" if tap.to_s.empty?
+    return "bottles" if tap.nil? || tap == "Homebrew/homebrew" || tap == "mxcl/master"
     "bottles-#{tap.sub(/^homebrew\/(homebrew-)?/i, "")}"
   end
 end
