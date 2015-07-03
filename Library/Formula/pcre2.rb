@@ -1,9 +1,9 @@
 class Pcre2 < Formula
   desc "Perl compatible regular expressions library with a new API"
   homepage "http://www.pcre.org/"
-  url "https://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.10.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/downloads.sourceforge.net/p/pc/pcre/pcre2/10.10/pcre2-10.10.tar.bz2"
-  sha256 "5f45e5550a8c055a8a02b20c50060b16e71bec8440e5c86013c6b272c242ff42"
+  url "https://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.20.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/downloads.sourceforge.net/p/pc/pcre/pcre2/10.20/pcre2-10.20.tar.bz2"
+  sha256 "332e287101c9e9567d1ed55391b338b32f1f72c5b5ee7cc81ef2274a53ad487a"
 
   head "svn://vcs.exim.org/pcre2/code/trunk"
 
