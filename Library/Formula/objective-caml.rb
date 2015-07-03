@@ -12,10 +12,9 @@ class ObjectiveCaml < Formula
   depends_on :x11 => :optional
 
   bottle do
-    revision 2
-    sha256 "f4d597281214ca019ab564cd0cebdcf18e428fc56ea81c9b289a42f4ec9da17c" => :yosemite
-    sha256 "5dc0b0515b58513c35a35b290eea8417f942ee1fdd1891bb8bfc62ddd5ea0889" => :mavericks
-    sha256 "3cd3841dec22d0b1309ad781376a4a509c5946cc77a32044dc9f306d906198fc" => :mountain_lion
+    sha256 "b9d8aca6567340adbed781ed3e5a7137e21999bd828ff07c766402b4f6070400" => :yosemite
+    sha256 "d2e27ecccfb743c52395b24b0b1792e023214a3c7d66031953f6fd4a8a0bbd7e" => :mavericks
+    sha256 "620b3d86106535c471cc81f6e2993a72e9c856f98fab012169d2d5428bb878e9" => :mountain_lion
   end
 
   def install
