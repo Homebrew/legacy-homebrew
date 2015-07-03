@@ -1,4 +1,5 @@
 require 'hardware'
+require "software_spec"
 
 module Homebrew
   def config
@@ -137,6 +138,7 @@ module Homebrew
     f.puts "Last commit: #{last_commit}"
     f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
+    f.puts "HOMEBREW_BOTTLE_DOMAIN: #{BottleSpecification::DEFAULT_DOMAIN}"
     f.puts hardware
     f.puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
     f.puts "Xcode: #{xcode ? xcode : "N/A"}"
