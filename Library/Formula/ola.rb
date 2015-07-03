@@ -2,7 +2,7 @@ require "formula"
 
 class Ola < Formula
   desc "Open Lighting Architecture for lighting control information"
-  homepage "http://www.openlighting.org/ola/"
+  homepage "https://www.openlighting.org/ola/"
   url "https://github.com/OpenLightingProject/ola/releases/download/0.9.6/ola-0.9.6.tar.gz"
   sha256 "e1bbc7ed833d64107f13d64274ff92b0a0dfc6c1e2f6def18c6ad4b6fa2be744"
 
