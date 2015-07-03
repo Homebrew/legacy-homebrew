@@ -486,9 +486,6 @@ module Homebrew
       if install_passed
         if formula.stable? && !ARGV.include?('--no-bottle')
           bottle_args = ["--rb", canonical_formula_name]
-          if @tap
-            bottle_args << "--root-url=#{BottleSpecification::DEFAULT_DOMAIN}/#{Bintray.repository(@tap)}"
-          end
           bottle_args << { :puts_output_on_success => true }
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last
