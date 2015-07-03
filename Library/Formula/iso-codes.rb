@@ -4,7 +4,7 @@ class IsoCodes < Formula
   url "https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.59.tar.xz"
   sha256 "63d5ef035a96223f1fc8f36b711082f806e1666852dfc4149eeca8fd435d76ed"
 
-  head "git://git.debian.org/git/iso-codes/iso-codes.git"
+  head "git://git.debian.org/git/iso-codes/iso-codes.git", :shallow => false
 
   bottle do
     cellar :any
