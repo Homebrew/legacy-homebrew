@@ -3,8 +3,8 @@ require "formula"
 class Qbs < Formula
   desc "Qt Build Suite"
   homepage "https://wiki.qt.io/Qt_Build_Suite"
-  url "https://download.qt.io/official_releases/qbs/1.4.0/qbs-1.4.0.src.tar.gz"
-  sha1 "4c70247155281b9536a6fab6672cd5f53610cfa1"
+  url "https://download.qt.io/official_releases/qbs/1.4.1/qbs-src-1.4.1.tar.gz"
+  sha1 "05aac5341859159556bc0f3f1ba96c46179d12d3"
 
   bottle do
     sha256 "fa881458fc8700b9160bde642842e0baf75a4e221909a890c7ed6c1f191c4e32" => :yosemite
@@ -13,9 +13,12 @@ class Qbs < Formula
   end
 
   depends_on "qt5"
+  depends_on :java => :optional
 
   def install
-    system "qmake", "qbs.pro", "-r"
+    args = []
+    args << "CONFIG+=qbs_enable_java" if build.with? "java"
+    system "qmake", "qbs.pro", "-r", "QBS_INSTALL_PREFIX=/", *args
     system "make", "install", "INSTALL_ROOT=#{prefix}"
   end
 
