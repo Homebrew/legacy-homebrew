@@ -4,7 +4,7 @@ class Reposurgeon < Formula
   url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.27.tar.gz"
   sha256 "e2c0563384fa29917bb5014214280e586dbe389edd0c7006a3cdecb63c7b2e85"
 
-  head "git://thyrsus.com/repositories/reposurgeon.git"
+  head "https://gitlab.com/esr/reposurgeon.git"
 
   bottle do
     cellar :any
