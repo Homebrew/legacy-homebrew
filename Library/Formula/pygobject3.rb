@@ -3,13 +3,14 @@ class Pygobject3 < Formula
   homepage "https://live.gnome.org/PyGObject"
   url "https://download.gnome.org/sources/pygobject/3.16/pygobject-3.16.2.tar.xz"
   sha256 "de620e00fe7ecb788aa2dc0d664e41f71b8e718e728168e8d982cf193a9e7e64"
+  revision 1
 
   option :universal
+  option "without-python", "Build without python2 support"
 
   depends_on "pkg-config" => :build
   depends_on "libffi" => :optional
   depends_on "glib"
-  depends_on :python => :recommended
   depends_on :python3 => :optional
   depends_on "py2cairo" if build.with? "python"
   depends_on "py3cairo" if build.with? "python3"
