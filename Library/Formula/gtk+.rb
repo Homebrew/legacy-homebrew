@@ -3,7 +3,7 @@ class Gtkx < Formula
   homepage "http://gtk.org/"
   url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
   sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
-  revision 1
+  revision 2
 
   bottle do
     revision 2
@@ -25,6 +25,15 @@ class Gtkx < Formula
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
+  end
+
+  # Patch to allow Freeciv's gtk2 client to run.
+  # See:
+  # - https://bugzilla.gnome.org/show_bug.cgi?id=557780
+  # - Homebrew/homebrew-games#278
+  patch do
+    url "https://bug557780.bugzilla-attachments.gnome.org/attachment.cgi?id=306776"
+    sha256 "4d7a1fe8d55174dc7f0be0016814668098d38bbec233b05a6c46180e96a159fc"
   end
 
   def install
