@@ -1,12 +1,10 @@
-require 'formula'
-
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
-  homepage 'https://www.arangodb.com/'
-  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.6.1.tar.gz'
-  sha256 'd1e3ff55899efc1a6dfbe79dd0e4d4e4abe5b29bc5269b31a3718e9862c0c54b'
+  homepage "https://www.arangodb.com/"
+  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.6.1.tar.gz"
+  sha256 "d1e3ff55899efc1a6dfbe79dd0e4d4e4abe5b29bc5269b31a3718e9862c0c54b"
 
-  head "https://github.com/arangodb/arangodb.git", :branch => 'unstable'
+  head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
   bottle do
     sha256 "3e30a733cc0e0b74ec6703df4c4b46ca7c1fe038b1a0a87ce9fbfbda956bb894" => :yosemite
@@ -14,8 +12,8 @@ class Arangodb < Formula
     sha256 "56cd3864d579bfb22757a1999e4eb5687ef3bb36e7307612d5678bfb622ab5c6" => :mountain_lion
   end
 
-  depends_on 'go' => :build
-  depends_on 'openssl'
+  depends_on "go" => :build
+  depends_on "openssl"
 
   needs :cxx11
 
@@ -37,10 +35,10 @@ class Arangodb < Formula
     args << "--program-suffix=-unstable" if build.head?
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
-    (var/'arangodb').mkpath
-    (var/'log/arangodb').mkpath
+    (var/"arangodb").mkpath
+    (var/"log/arangodb").mkpath
   end
 
   def post_install
