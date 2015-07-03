@@ -259,7 +259,7 @@ end
 class BottleSpecification
   DEFAULT_PREFIX = "/usr/local".freeze
   DEFAULT_CELLAR = "/usr/local/Cellar".freeze
-  DEFAULT_DOMAIN = "https://homebrew.bintray.com".freeze
+  DEFAULT_DOMAIN = (ENV["HOMEBREW_BOTTLE_DOMAIN"] || "https://homebrew.bintray.com").freeze
 
   attr_rw :prefix, :cellar, :revision
   attr_accessor :tap
