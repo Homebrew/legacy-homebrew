@@ -1,10 +1,10 @@
 class Reposurgeon < Formula
   desc "Edit version-control repository history"
   homepage "http://www.catb.org/esr/reposurgeon/"
-  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.22.tar.gz"
-  sha256 "66f366fc92d908fd68717cfb86eade989b7f550481b2e055803fd400805d1b14"
+  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.27.tar.gz"
+  sha256 "e2c0563384fa29917bb5014214280e586dbe389edd0c7006a3cdecb63c7b2e85"
 
-  head "git://thyrsus.com/repositories/reposurgeon.git"
+  head "https://gitlab.com/esr/reposurgeon.git"
 
   bottle do
     cellar :any
