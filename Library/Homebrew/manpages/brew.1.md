@@ -540,7 +540,10 @@ can take several different forms:
 
     Set this to force Homebrew to use a particular git binary.
 
-  * HOMEBREW_BROWSER:
+  * HOMEBREW\_BOTTLE\_DOMAIN:
+    If set, instructs Homebrew to use the given URL as a download mirror for bottles.
+
+  * HOMEBREW\_BROWSER:
     If set, uses this setting as the browser when opening project homepages,
     instead of the OS default browser.
 
