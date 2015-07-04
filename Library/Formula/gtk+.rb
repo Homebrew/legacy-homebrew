@@ -6,10 +6,9 @@ class Gtkx < Formula
   revision 2
 
   bottle do
-    revision 2
-    sha256 "c3c38a7e3ce5c11f4febb7136342aff6156e86bc7264d1b755141e27e1bcd1b7" => :yosemite
-    sha256 "89b216bb20a360a6002a1259e9ab84cb89961f3cc03e9829e48532b5d95c8f1d" => :mavericks
-    sha256 "3f3948ce65bd2c199e2603a8bebc39f6de14e3c7f408226b1d6a0c8b52a51f29" => :mountain_lion
+    sha256 "afac113e6701cf013e0235e0fd91fcfc6659bc75220ca03e408a7a0f38671bb9" => :yosemite
+    sha256 "e7daa89de1184b1edc71242fd65b9b608885ebe6c92f5f793af8a46ef5912b28" => :mavericks
+    sha256 "17dcc4df1082000447b968c831f657b5f1aa863f32b8397900a38feaa7147db0" => :mountain_lion
   end
 
   option "with-quartz-relocation", "Build with quartz relocation support"
