@@ -1,10 +1,10 @@
 class Xvid < Formula
   desc "High-performance, high-quality MPEG-4 video library"
   homepage "https://www.xvid.org"
-  url "https://fossies.org/unix/privat/xvidcore-1.3.3.tar.gz"
+  url "https://fossies.org/unix/privat/xvidcore-1.3.4.tar.gz"
   # Official download takes a long time to fail, so set it as the mirror for now
-  mirror "http://downloads.xvid.org/downloads/xvidcore-1.3.3.tar.gz"
-  sha256 "9e6bb7f7251bca4615c2221534d4699709765ff019ab0366609f219b0158499d"
+  mirror "http://downloads.xvid.org/downloads/xvidcore-1.3.4.tar.gz"
+  sha256 "4e9fd62728885855bc5007fe1be58df42e5e274497591fec37249e1052ae316f"
 
   bottle do
     cellar :any
