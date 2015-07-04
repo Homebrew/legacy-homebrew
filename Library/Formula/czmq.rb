@@ -3,6 +3,7 @@ class Czmq < Formula
   homepage "http://czmq.zeromq.org/"
   url "http://download.zeromq.org/czmq-3.0.2.tar.gz"
   sha256 "8bca39ab69375fa4e981daf87b3feae85384d5b40cef6adbe9d5eb063357699a"
+  revision 1
 
   bottle do
     cellar :any
@@ -42,5 +43,8 @@ class Czmq < Formula
     system "make", "check"
     system "make", "install"
     rm Dir["#{bin}/*.gsl"]
+
+    # makecert clashes with Mono. Rename it less generically.
+    mv bin/"makecert", bin/"czmq-makecert"
   end
 end
