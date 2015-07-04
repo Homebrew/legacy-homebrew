@@ -1,10 +1,8 @@
 class Lua < Formula
   desc "Powerful, lightweight programming language"
   homepage "http://www.lua.org/"
-  url "http://www.lua.org/ftp/lua-5.2.3.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.2/lua5.2_5.2.3.orig.tar.gz"
-  sha256 "13c2fb97961381f7d06d5b5cea55b743c163800896fd5c5e2356201d3619002d"
-  revision 2
+  url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
+  sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
 
   bottle do
     revision 1
@@ -84,7 +82,7 @@ class Lua < Formula
 
         system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
                               "--sysconfdir=#{etc}/luarocks52", "--with-lua=#{prefix}",
-                              "--lua-version=5.2", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks52"
+                              "--lua-version=5.2", "--versioned-rocks-dir"
         system "make", "build"
         system "make", "install"
 
@@ -107,7 +105,7 @@ class Lua < Formula
 
   def pc_file; <<-EOS.undent
     V= 5.2
-    R= 5.2.3
+    R= 5.2.4
     prefix=#{HOMEBREW_PREFIX}
     INSTALL_BIN= ${prefix}/bin
     INSTALL_INC= ${prefix}/include
@@ -121,7 +119,7 @@ class Lua < Formula
 
     Name: Lua
     Description: An Extensible Extension Language
-    Version: 5.2.3
+    Version: 5.2.4
     Requires:
     Libs: -L${libdir} -llua -lm
     Cflags: -I${includedir}
@@ -135,9 +133,6 @@ class Lua < Formula
     This is, for now, unavoidable. If this is troublesome for you, you can build
     rocks with the `--tree=` command to a special, non-conflicting location and
     then add that to your `$PATH`.
-
-    If you have existing Rocks trees in $HOME, you will need to migrate them to the new
-    location manually. You will only have to do this once.
     EOS
   end
 
