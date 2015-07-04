@@ -6,6 +6,7 @@ class Drake < Formula
   url "https://raw.githubusercontent.com/Factual/drake/1.0.0/bin/drake-pkg"
   sha256 "6b75504f85f01a7d213c60f87e7da0d94a4961bbc7e9b7e90f79efcc38ae5165"
   head "https://github.com/Factual/drake.git"
+  version "1.0.0"
 
   resource "jar" do
     url "https://github.com/Factual/drake/releases/download/1.0.0/drake.jar"
