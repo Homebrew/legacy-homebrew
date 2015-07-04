@@ -19,19 +19,11 @@ class Mldonkey < Formula
     sha256 "1fb503d37eed92390eb891878a9e6d69b778bd2f1d40b9845d18aa3002f3d739"
   end
 
-  deprecated_option "with-x" => "with-x11"
-
   depends_on 'camlp4' => :build
   depends_on 'objective-caml' => :build
   depends_on 'pkg-config' => :build
   depends_on 'gd'
   depends_on 'libpng'
-  depends_on :x11 => :optional
-
-  if build.with? "x11"
-    depends_on 'librsvg'
-    depends_on 'lablgtk'
-  end
 
   def install
     ENV.j1
@@ -39,10 +31,7 @@ class Mldonkey < Formula
     # Fix compiler selection
     ENV['OCAMLC'] = "#{HOMEBREW_PREFIX}/bin/ocamlc.opt -cc #{ENV.cc}"
 
-    args = ["--prefix=#{prefix}"]
-    args << "--enable-gui=newgui2" if build.with? "x11"
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end
