@@ -3,9 +3,9 @@ require "formula"
 class MediaInfo < Formula
   desc "Unified display of technical and tag data for audio/video"
   homepage "https://mediaarea.net/"
-  url "https://mediaarea.net/download/binary/mediainfo/0.7.74/MediaInfo_CLI_0.7.74_GNU_FromSource.tar.bz2"
-  version "0.7.74"
-  sha1 "89cf4745e3d9725bf109976a933f36af2a3aa36a"
+  url "https://mediaarea.net/download/binary/mediainfo/0.7.75/MediaInfo_CLI_0.7.75_GNU_FromSource.tar.bz2"
+  version "0.7.75"
+  sha256 "98f3a7ba9daf77e3df2fd308811e20ef6f87c6471fce8d6fe611b56668623f0d"
 
   bottle do
     cellar :any
