@@ -1,10 +1,8 @@
-require "formula"
-
 class GupnpAv < Formula
   desc "Library to help implement UPnP A/V profiles"
   homepage "https://wiki.gnome.org/GUPnP/"
-  url "http://ftp.gnome.org/pub/gnome/sources/gupnp-av/0.12/gupnp-av-0.12.6.tar.xz"
-  sha1 "8ea44b3b9bd1dcb2ad56d56943fc1cd235570d00"
+  url "https://download.gnome.org/sources/gupnp-av/0.12/gupnp-av-0.12.7.tar.xz"
+  sha256 "35e775bc4f7801d65dcb710905a6b8420ce751a239b5651e6d830615dc906ea8"
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
