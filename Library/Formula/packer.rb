@@ -6,38 +6,13 @@ class Packer < Formula
 
   # buildscript requires the .git directory be present
   url "https://github.com/mitchellh/packer.git",
-    :tag => "v0.7.5", :revision => "9cd66feeacbd9cb318b72eb5ed59428c5b8c37ac"
+    :tag => "v0.8.1", :revision => "872e78d5b0a387eb3b87ddeef210264c3199d178"
 
   bottle do
     cellar :any
     sha256 "4c62e5691329f9c274001400df487c090f5a0debbf3067cf977ac96e356f883e" => :yosemite
     sha256 "6c6894eb419f8677c13c34027e8897716f40a5f14bf0561869d99c8c6b4d8740" => :mavericks
     sha256 "1e6676f09ec0c145223f025254d7cf636cf13a240fc274d3711319970cafebf0" => :mountain_lion
-  end
-
-  # All of these patches come from the upstream repo and will be in the next release.
-  #
-  # Fixes reference to "BuildID" field in an atlas struct
-  patch do
-    url "https://github.com/mitchellh/packer/commit/ddb966061f88709537c93f16f7c4066ddf2b8adf.patch"
-    sha256 "f3fd4a516da76b7fd9623bc02ac020766c0f13f3f85931d74b75e0d50b99fdb8"
-  end
-
-  # "multiple-value c.client.CreateBuildConfig() in single-value context"
-  patch do
-    url "https://github.com/mitchellh/packer/commit/17d4c4396c182ba77518d9d06f639b0ee49f295c.patch"
-    sha256 "3850821cb6e6a82de3581e3e65b55c662d4a2f3443823805abca7176a8aa8ccd"
-  end
-
-  # next two patches: "not enough arguments in call to c.client.UploadBuildConfigVersion"
-  patch do
-    url "https://github.com/mitchellh/packer/commit/8e0c7ace3aac455b0e51d20009c014406060aa21.patch"
-    sha256 "d5755e6e6f8028ae928bbf0d0779c6ac6119cd3ae18ba41632490a0066968c59"
-  end
-
-  patch do
-    url "https://gist.githubusercontent.com/mistydemeo/23f749fa73296deacd5a/raw/7e0441edfb22841f6c2ba6dbf9bc7c9ecdce01d3/packer-push-message.patch"
-    sha256 "add040cd165240dd3b6a925886f01cd8c24611c121529a654cac246d7e0686d5"
   end
 
   depends_on :hg => :build
