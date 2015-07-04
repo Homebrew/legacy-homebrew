@@ -6,7 +6,7 @@ class Lua51 < Formula
   url "http://www.lua.org/ftp/lua-5.1.5.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5.orig.tar.gz"
   sha256 "2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333"
-  revision 1
+  revision 2
 
   bottle do
     revision 2
@@ -78,7 +78,7 @@ class Lua51 < Formula
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
 
-    (lib+"pkgconfig").install "etc/lua.pc"
+    (lib/"pkgconfig").install "etc/lua.pc"
 
     # Renaming from Lua to Lua51.
     # Note that the naming must be both lua-version & lua.version.
@@ -101,11 +101,11 @@ class Lua51 < Formula
 
         system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
                               "--sysconfdir=#{etc}/luarocks51", "--with-lua=#{prefix}",
-                              "--lua-version=5.1", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks51"
+                              "--lua-version=5.1", "--versioned-rocks-dir"
         system "make", "build"
         system "make", "install"
 
-        (share+"lua/5.1/luarocks").install_symlink Dir["#{libexec}/share/lua/5.1/luarocks/*"]
+        (share/"lua/5.1/luarocks").install_symlink Dir["#{libexec}/share/lua/5.1/luarocks/*"]
         bin.install_symlink libexec/"bin/luarocks-5.1"
         bin.install_symlink libexec/"bin/luarocks-admin-5.1"
 
@@ -127,9 +127,6 @@ class Lua51 < Formula
     This is, for now, unavoidable. If this is troublesome for you, you can build
     rocks with the `--tree=` command to a special, non-conflicting location and
     then add that to your `$PATH`.
-
-    If you have existing Rocks trees in $HOME, you will need to migrate them to the new
-    location manually. You will only have to do this once.
     EOS
   end
 
