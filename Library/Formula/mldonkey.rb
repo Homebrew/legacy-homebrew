@@ -21,9 +21,9 @@ class Mldonkey < Formula
 
   deprecated_option "with-x" => "with-x11"
 
+  depends_on 'camlp4' => :build
+  depends_on 'objective-caml' => :build
   depends_on 'pkg-config' => :build
-  depends_on 'objective-caml'
-  depends_on 'camlp4'
   depends_on 'gd'
   depends_on 'libpng'
   depends_on :x11 => :optional
