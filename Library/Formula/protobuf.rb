@@ -1,13 +1,20 @@
 class Protobuf < Formula
   desc "Protocol buffers (Google's data interchange format)"
   homepage "https://github.com/google/protobuf/"
-  url 'https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.bz2'
-  sha1 '6421ee86d8fb4e39f21f56991daa892a3e8d314b'
+
+  stable do
+    url "https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.bz2"
+    sha256 "ee445612d544d885ae240ffbcbf9267faa9f593b7b101f21d58beceb92661910"
+
+    # Fixes the unexpected identifier error when compiling software against protobuf:
+    # https://github.com/google/protobuf/issues/549
+    patch :p1, :DATA
+  end
 
   devel do
-    url "https://github.com/google/protobuf/archive/v3.0.0-alpha-3.tar.gz"
-    sha256 "bf90fb01b054d364d05d362d63e09d3466311e24bd6db1127dfcd88af443bf05"
-    version "3.0.0-alpha-3"
+    url "https://github.com/google/protobuf/archive/v3.0.0-alpha-3.1.tar.gz"
+    sha256 "ce19f7a48f3d83073feb5506c2018098fdedb0e1b8cd80e5b29d156faded3f2a"
+    version "3.0.0-alpha-3.1"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -136,3 +143,19 @@ class Protobuf < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/google/protobuf/descriptor.h b/src/google/protobuf/descriptor.h
+index 67afc77..504d5fe 100644
+--- a/src/google/protobuf/descriptor.h
++++ b/src/google/protobuf/descriptor.h
+@@ -59,6 +59,9 @@
+ #include <vector>
+ #include <google/protobuf/stubs/common.h>
+
++#ifdef TYPE_BOOL
++#undef TYPE_BOOL
++#endif
+
+ namespace google {
+ namespace protobuf {
