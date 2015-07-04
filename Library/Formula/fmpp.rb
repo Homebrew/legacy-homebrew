@@ -1,6 +1,7 @@
 class Fmpp < Formula
   homepage "http://fmpp.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/fmpp/fmpp/0.9.15/fmpp_0.9.15.tar.gz"
+  desc "FMPP is a general-purpose text file preprocessing tool that uses FreeMarker templates."
   sha256 "b893451b5450a7f35fe680e934f6903ec8143d88959dcfca5d17467fbe4142f9"
   head "https://github.com/freemarker/fmpp.git"
 
