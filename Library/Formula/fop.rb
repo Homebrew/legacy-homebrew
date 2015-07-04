@@ -4,6 +4,13 @@ class Fop < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-2.0-bin.tar.gz"
   sha256 "1e90cfc9e07c2da088592860fa4651a7640c9e1e3500b71a613a5dea03eb3665"
 
+  bottle do
+    cellar :any
+    sha256 "eec4b2d93c9a4f2e75b18cd1bdb68851df2a34e58ca3bbba68a2b046b735625f" => :yosemite
+    sha256 "b5b8cdf1a93d104f5927e4916684e97ea91092fcf9525caa929d55ff15822e2b" => :mavericks
+    sha256 "6cceeca2b10749a6e5457bbbb9156ed7d026a80a71fdfe30ff7a588cbb8e259d" => :mountain_lion
+  end
+
   resource "hyph" do
     url "https://downloads.sourceforge.net/project/offo/offo-hyphenation-utf8/0.1/offo-hyphenation-fop-stable-utf8.zip"
     sha256 "0b4e074635605b47a7b82892d68e90b6ba90fd2af83142d05878d75762510128"
