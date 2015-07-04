@@ -27,6 +27,7 @@ TAP_MIGRATIONS = {
   "celt" => "homebrew/boneyard",
   "chktex" => "homebrew/tex",
   "clam" => "homebrew/boneyard",
+  "clay" => "homebrew/boneyard",
   "cloudfoundry-cli" => "pivotal/tap",
   "clusterit" => "homebrew/x11",
   "cmucl" => "homebrew/binary",
