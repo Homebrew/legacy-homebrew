@@ -19,14 +19,13 @@ class Graphite2 < Formula
   end
 
   def install
-    args = std_cmake_args
-    system "cmake", ".", *args
+    system "cmake", *std_cmake_args
     system "make", "install"
   end
 
   test do
     resource("testfont").stage do
-      shape = `#{bin}/gr2fonttest Simple-Graphite-Font.ttf "abcde"`
+      shape = shell_output("#{bin}/gr2fonttest Simple-Graphite-Font.ttf 'abcde'")
       assert_match /67.*36.*37.*38.*71/m, shape
     end
   end
