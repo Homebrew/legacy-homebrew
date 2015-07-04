@@ -12,7 +12,7 @@ class Harfbuzz < Formula
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "cairo" => :optional
+  depends_on "cairo"
   depends_on "icu4c" => :recommended
   depends_on "graphite2" => :optional
   depends_on "freetype"
