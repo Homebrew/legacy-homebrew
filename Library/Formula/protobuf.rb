@@ -22,10 +22,10 @@ class Protobuf < Formula
   end
 
   bottle do
-    revision 2
-    sha256 "f9eb5495d7f1e4fc3c5b45e7df8260b6e6b072766587d65d2ed037abc841e686" => :yosemite
-    sha256 "6c990feefd2c7a9351018125a4017c3a60c0c6bdd6536dc05d51cadb85c0df1b" => :mavericks
-    sha256 "751ce459d196ae2f7e04a766dbb5f322c26fcb18f01c01f8550ad242b24ede29" => :mountain_lion
+    revision 3
+    sha256 "79242567bd4febd993338c2203a2734217b18ecf7803d998da1a20660eac15a6" => :yosemite
+    sha256 "8404ff6169a09b622535d47b18993ed0ea90819e9434d169545db5d9442381bd" => :mavericks
+    sha256 "2861639d01fdf0cb8fc70194bde36fd0f16010022c1f2c72e6236aad48fdf522" => :mountain_lion
   end
 
   # this will double the build time approximately if enabled
