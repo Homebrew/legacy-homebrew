@@ -9,10 +9,9 @@ class Lua51 < Formula
   revision 2
 
   bottle do
-    revision 2
-    sha256 "00ba6f4c757a85554d2ba0bff801afbc9e42138b1ee2f971e0409adcce6f833d" => :yosemite
-    sha256 "a3de13a9fa643617cc62241c4de2cd5dbcb60babf865dc009c9185130c306c8a" => :mavericks
-    sha256 "0ae65fd8b5f4c073b64dbc10e151abad6d70b615023c7c408cd0ea12e380f70e" => :mountain_lion
+    sha256 "9ba65f3942dee733f9612209c844cbdd560890ee558003ec55bd3678f9c2a016" => :yosemite
+    sha256 "dd81b86051197f6cc21abf4822dc3c0be0dc09347850496c00c873d902f0c345" => :mavericks
+    sha256 "c618924af19c957fac536aeb2a90f2c8bfa4068b2236f0c872f9de658c34071b" => :mountain_lion
   end
 
   fails_with :llvm do
