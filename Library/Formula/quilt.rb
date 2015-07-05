@@ -20,8 +20,7 @@ class Quilt < Formula
                           "--with-sed=#{HOMEBREW_PREFIX}/bin/gsed",
                           "--without-getopt"
     system "make"
-    system "make", "install"
-    (share/"emacs/site-lisp").install "lib/quilt.el"
+    system "make", "install", "emacsdir=#{share}/emacs/site-lisp/quilt"
   end
 
   test do
