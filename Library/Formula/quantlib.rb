@@ -2,6 +2,7 @@ class Quantlib < Formula
   desc "Library for quantitative finance"
   homepage "http://quantlib.org/"
   url "https://downloads.sourceforge.net/project/quantlib/QuantLib/1.6/QuantLib-1.6.tar.gz"
+  mirror "https://distfiles.macports.org/QuantLib/QuantLib-1.6.tar.gz"
   sha256 "a135d424a59cbb00a75d7f7ac3a181d49e804abae1776b555ec0183e309f81ce"
 
   head do
