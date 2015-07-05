@@ -6,9 +6,9 @@ class Libconfig < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "28fca89d671c8ebf4f97ac7a6706675e8b957b2f" => :yosemite
-    sha1 "21f6d02c17ab809a63b076dec69d0bc5dbc8f605" => :mavericks
+    sha256 "04d66c5f07d74f31a5b57a6bb50d0c2b73222876e6c4ba40470bfb852e6f7b99" => :yosemite
+    sha256 "b48857221d7df42fdfb5a1e8a61da669ca2d30331539797e57d436d8cd78f4c9" => :mavericks
+    sha256 "3053bef646c2eb74d9f9a723a496a09d786a3e46e193993a0c10281b28500e50" => :mountain_lion
   end
 
   head do
