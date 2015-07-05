@@ -82,14 +82,4 @@ trait JobDAO {
    */
   def getLastUploadTime(appName: String): Option[DateTime] =
     getApps.get(appName)
-
-  /**
-   * A safe API for getting values from Typesafe Config, will return a default if the
-   * value is missing.  If the value is badly formatted, error still goes through.
-   */
-  def getOrElse[T](getter: => T, default: T): T = {
-    try getter catch {
-      case e: ConfigException.Missing => default
-    }
-  }
 }

@@ -16,8 +16,7 @@ class JobFileDAO(config: Config) extends JobDAO {
   // jobId to its Config
   private val configs = mutable.HashMap.empty[String, Config]
 
-  private val rootDir = getOrElse(config.getString("spark.jobserver.filedao.rootdir"),
-    "/tmp/spark-jobserver/filedao/data")
+  private val rootDir = config.getString("spark.jobserver.filedao.rootdir")
   private val rootDirFile = new File(rootDir)
   logger.info("rootDir is " + rootDirFile.getAbsolutePath)
 

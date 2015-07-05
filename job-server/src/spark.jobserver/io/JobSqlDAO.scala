@@ -10,10 +10,8 @@ import scala.slick.jdbc.meta.MTable
 import scala.reflect.runtime.universe
 
 class JobSqlDAO(config: Config) extends JobDAO {
-  val slickDriverClass = getOrElse(config.getString("spark.jobserver.sqldao.slick-driver"),
-    "scala.slick.driver.H2Driver")
-  val jdbcDriverClass = getOrElse(config.getString("spark.jobserver.sqldao.jdbc-driver"),
-    "org.h2.Driver")
+  val slickDriverClass = config.getString("spark.jobserver.sqldao.slick-driver")
+  val jdbcDriverClass = config.getString("spark.jobserver.sqldao.jdbc-driver")
 
   val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
   val profileModule = runtimeMirror.staticModule(slickDriverClass)
@@ -22,8 +20,8 @@ class JobSqlDAO(config: Config) extends JobDAO {
 
   private val logger = LoggerFactory.getLogger(getClass)
 
-  private val rootDir = getOrElse(config.getString("spark.jobserver.sqldao.rootdir"),
-    "/tmp/spark-jobserver/sqldao/data")
+  // NOTE: below is only needed for H2 drivers
+  private val rootDir = config.getString("spark.jobserver.sqldao.rootdir")
   private val rootDirFile = new File(rootDir)
   logger.info("rootDir is " + rootDirFile.getAbsolutePath)
 
@@ -63,8 +61,7 @@ class JobSqlDAO(config: Config) extends JobDAO {
   val configs = TableQuery[Configs]
 
   // DB initialization
-  val defaultJdbcUrl = "jdbc:h2:file:" + rootDir + "/h2-db"
-  val jdbcUrl = getOrElse(config.getString("spark.jobserver.sqldao.jdbc.url"), defaultJdbcUrl)
+  val jdbcUrl = config.getString("spark.jobserver.sqldao.jdbc.url")
   val db = Database.forURL(jdbcUrl, driver = jdbcDriverClass)
 
   // Server initialization
