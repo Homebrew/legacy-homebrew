@@ -169,6 +169,7 @@ TAP_MIGRATIONS = {
   "pyenv-pip-rehash" => "homebrew/boneyard",
   "pyxplot" => "homebrew/x11",
   "qfits" => "homebrew/boneyard",
+  "qi" => "homebrew/boneyard",
   "qiv" => "homebrew/boneyard",
   "qrupdate" => "homebrew/science",
   "rdesktop" => "homebrew/x11",
