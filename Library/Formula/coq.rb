@@ -27,15 +27,15 @@ class Coq < Formula
   end
 
   depends_on Camlp5TransitionalModeRequirement
-  depends_on "objective-caml"
   depends_on "camlp5"
+  depends_on "objective-caml"
 
   def install
     camlp5_lib = Formula["camlp5"].opt_lib+"ocaml/camlp5"
     system "./configure", "-prefix", prefix,
                           "-mandir", man,
                           "-camlp5dir", camlp5_lib,
-                          "-emacslib", "#{lib}/emacs/site-lisp",
+                          "-emacslib", "#{share}/emacs/site-lisp/coq",
                           "-coqdocdir", "#{share}/coq/latex",
                           "-coqide", "no",
                           "-with-doc", "no"
@@ -45,11 +45,7 @@ class Coq < Formula
   end
 
   def caveats; <<-EOS.undent
-    Coq's Emacs mode is installed into
-      #{opt_lib}/emacs/site-lisp
-
-    To use the Coq Emacs mode, you need to put the following lines in
-    your .emacs file:
+    To use the Coq Emacs mode, add the the following to your init file:
       (setq auto-mode-alist (cons '("\\\\.v$" . coq-mode) auto-mode-alist))
       (autoload 'coq-mode "coq" "Major mode for editing Coq vernacular." t)
     EOS
