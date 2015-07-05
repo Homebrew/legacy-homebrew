@@ -1,18 +1,9 @@
 class Coreutils < Formula
   desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  revision 1
-
-  stable do
-    url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
-    mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
-    sha256 "ec43ca5bcfc62242accb46b7f121f6b684ee21ecd7d075059bf650ff9e37b82d"
-
-    # Patch adapted from upstream commits:
-    # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
-    # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
-    patch :DATA
-  end
+  url "http://ftpmirror.gnu.org/coreutils/coreutils-8.24.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.24.tar.xz"
+  sha256 "a2d75286a4b9ef3a13039c2da3868a61be4ee9f17d8ae380a35a97e506972170"
 
   bottle do
     revision 2
@@ -88,18 +79,3 @@ class Coreutils < Formula
     system "#{bin}/gsha1sum", "-c", "test.sha1"
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index 140a428..bae3163 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -2566,7 +2566,7 @@ pkglibexecdir = @pkglibexecdir@
- # Use 'ginstall' in the definition of PROGRAMS and in dependencies to avoid
- # confusion with the 'install' target.  The install rule transforms 'ginstall'
- # to install before applying any user-specified name transformations.
--transform = s/ginstall/install/; $(program_transform_name)
-+transform = s/ginstall/install/;/libstdbuf/!$(program_transform_name)
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@
