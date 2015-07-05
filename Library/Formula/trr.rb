@@ -16,7 +16,7 @@ class Trr < Formula
 
   def install
     system "make", "clean"
-    cp Dir["#{Formula["apel"].share}/emacs/site-lisp/*"], buildpath
+    cp Dir["#{Formula["apel"].share}/emacs/site-lisp/apel/**/*.el"], buildpath
 
     # The file "CONTENTS" is firstly encoded to EUC-JP.
     # This encodes it to UTF-8 to avoid garbled characters.
@@ -26,42 +26,32 @@ class Trr < Formula
     inreplace "#{buildpath}/CONTENTS", "EmacsLisp", "Elisp_programs"
 
     system "make", "clean"
-    cp Dir["#{Formula["apel"].share}/emacs/site-lisp/*.elc"], buildpath
+    cp Dir["#{Formula["apel"].share}/emacs/site-lisp/apel/**/*.elc"], buildpath
 
     # texts for playing trr
     texts = "The_Constitution_Of_JAPAN Constitution_of_the_USA Iccad_90 C_programs Elisp_programs Java_programs Ocaml_programs Python_programs"
 
     inreplace "#{buildpath}/Makefile", "japanese = t", "japanese = nil"
-    system "make", "all", "LISPDIR=#{share}/emacs/site-lisp",
-                          "TRRDIR=#{prefix}",
-                          "INFODIR=#{info}",
-                          "BINDIR=#{bin}",
-                          "TEXTS=#{texts}"
-    system "make", "install", "LISPDIR=#{share}/emacs/site-lisp",
-                              "TRRDIR=#{prefix}",
-                              "INFODIR=#{info}",
-                              "BINDIR=#{bin}",
-                              "TEXTS=#{texts}"
-    cp Dir["record/*"], "#{prefix}/record/"
-  end
 
-  def caveats; <<-EOF.undent
-    Please add below lines to your emacs configuration file. (ex. ~/emacs.d/init.el)
-    (add-to-list 'load-path "#{Formula["apel"].share}/emacs/site-lisp")
-    (add-to-list 'load-path "#{share}/emacs/site-lisp")
-    (autoload 'trr "#{share}/emacs/site-lisp/trr" nil t)
-    EOF
+    system "make", "install",
+                   "CC=#{ENV.cc}",
+                   "TRRDIR=#{prefix}",
+                   "INFODIR=#{info}",
+                   "BINDIR=#{bin}",
+                   "TEXTS=#{texts}",
+                   "LISPDIR=#{share}/emacs/site-lisp/trr"
+    (prefix/"record").install Dir["record/*"]
   end
 
   test do
     program = testpath/"test-trr.el"
     program.write <<-EOS.undent
-      (add-to-list 'load-path "#{Formula["apel"].share}/emacs/site-lisp")
-      (add-to-list 'load-path "#{share}/emacs/site-lisp")
+      (add-to-list 'load-path "#{HOMEBREW_PREFIX}/share/emacs/site-lisp/apel/emu")
+      (add-to-list 'load-path "#{share}/emacs/site-lisp/trr")
       (require 'trr)
       (print (TRR:trainer-menu-buffer))
     EOS
 
-    assert_equal "\"Type & Menu\"", shell_output("emacs -batch -l #{program}").strip
+    assert_equal "\"Type & Menu\"", shell_output("emacs -Q --batch -l #{program}").strip
   end
 end
