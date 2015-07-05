@@ -23,8 +23,11 @@ class Autoconf < Formula
     inreplace "bin/autoreconf.in", "libtoolize", "glibtoolize"
     # also touch the man page so that it isn't rebuilt
     inreplace "man/autoreconf.1", "libtoolize", "glibtoolize"
-    system "./configure", "--prefix=#{prefix}"
+
+    system "./configure", "--prefix=#{prefix}",
+           "--with-lispdir=#{share}/emacs/site-lisp/autoconf"
     system "make", "install"
+
     rm_f info/"standards.info"
   end
 
