@@ -127,6 +127,7 @@ TAP_MIGRATIONS = {
   "libspotify" => "homebrew/binary",
   "lilypond" => "homebrew/tex",
   "lmutil" => "homebrew/binary",
+  "mat" => "homebrew/boneyard",
   "meld" => "homebrew/x11",
   "mesalib-glw" => "homebrew/x11",
   "mess" => "homebrew/games",
