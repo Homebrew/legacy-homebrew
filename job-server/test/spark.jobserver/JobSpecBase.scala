@@ -16,10 +16,10 @@ import spark.jobserver.io.JobDAO
 trait JobSpecConfig {
   import collection.JavaConverters._
 
-  val JobResultCacheSize = 30
-  val NumCpuCores = Runtime.getRuntime.availableProcessors()  // number of cores to allocate. Required.
+  val JobResultCacheSize = Integer.valueOf(30)
+  val NumCpuCores = Integer.valueOf(Runtime.getRuntime.availableProcessors())  // number of cores to allocate. Required.
   val MemoryPerNode = "512m"  // Executor memory per node, -Xmx style eg 512m, 1G, etc.
-  val MaxJobsPerContext = 2
+  val MaxJobsPerContext = Integer.valueOf(2)
   def contextFactory = classOf[DefaultSparkContextFactory].getName
   lazy val config = {
     val ConfigMap = Map(
@@ -27,9 +27,20 @@ trait JobSpecConfig {
       "num-cpu-cores" -> NumCpuCores,
       "memory-per-node" -> MemoryPerNode,
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
-      "akka.log-dead-letters" -> 0,
+      "akka.log-dead-letters" -> Integer.valueOf(0),
       "spark.master" -> "local[4]",
-      "context-factory" -> contextFactory
+      "context-factory" -> contextFactory,
+      "spark.context-settings.test" -> ""
+    )
+    ConfigFactory.parseMap(ConfigMap.asJava).withFallback(ConfigFactory.defaultOverrides())
+  }
+
+  lazy val contextConfig = {
+    val ConfigMap = Map(
+      "context-factory" -> contextFactory,
+      "streaming.batch_interval" -> new Integer(40),
+      "streaming.stopGracefully" -> false,
+      "streaming.stopSparkContext" -> true
     )
     ConfigFactory.parseMap(ConfigMap.asJava).withFallback(ConfigFactory.defaultOverrides())
   }

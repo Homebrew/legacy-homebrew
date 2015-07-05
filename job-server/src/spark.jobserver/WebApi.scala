@@ -42,7 +42,6 @@ class WebApi(system: ActorSystem,
   val ResultKey = "result"
 
   val contextTimeout = SparkJobUtils.getContextTimeout(config)
-  val sparkAliveWorkerThreshold = Try(config.getInt("spark.jobserver.sparkAliveWorkerThreshold")).getOrElse(1)
   val bindAddress = config.getString("spark.jobserver.bind-address")
 
   val logger = LoggerFactory.getLogger(getClass)
@@ -118,7 +117,7 @@ class WebApi(system: ActorSystem,
             complete(StatusCodes.BadRequest, errMap("context name must start with letters"))
           } else {
             parameterMap { (params) =>
-              val config = ConfigFactory.parseMap(params.asJava)
+              val config = ConfigFactory.parseMap(params.asJava).resolve()
               val future = (supervisor ? AddContext(contextName, config))(contextTimeout.seconds)
               respondWithMediaType(MediaTypes.`application/json`) { ctx =>
                 future.map {
@@ -291,7 +290,7 @@ class WebApi(system: ActorSystem,
               try {
                 val async = !syncOpt.getOrElse(false)
                 val postedJobConfig = ConfigFactory.parseString(configString)
-                val jobConfig = postedJobConfig.withFallback(config)
+                val jobConfig = postedJobConfig.withFallback(config).resolve()
                 val contextConfig = Try(jobConfig.getConfig("spark.context-settings")).
                                       getOrElse(ConfigFactory.empty)
                 val jobManager = getJobManagerForContext(contextOpt, contextConfig, classPath)
@@ -337,6 +336,9 @@ class WebApi(system: ActorSystem,
         }
       }
   }
+
+  override def timeoutRoute: Route =
+    complete(500, errMap("Request timed out. Try using the /jobs/<jobID>, /jobs APIs to get status/results"))
 
   private def badRequest(ctx: RequestContext, msg: String) =
     ctx.complete(StatusCodes.BadRequest, errMap(msg))

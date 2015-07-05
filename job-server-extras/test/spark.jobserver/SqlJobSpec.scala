@@ -26,7 +26,7 @@ class SqlJobSpec extends ExtrasJobSpecBase(SqlJobSpec.getNewSystem) {
   before {
     dao = new InMemoryDAO
     manager =
-      system.actorOf(JobManagerActor.props(dao, "test", SqlJobSpec.config, false))
+      system.actorOf(JobManagerActor.props(dao, "test", SqlJobSpec.contextConfig, false))
   }
 
   describe("Spark SQL Jobs") {

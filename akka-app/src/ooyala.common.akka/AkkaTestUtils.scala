@@ -10,7 +10,7 @@ object AkkaTestUtils {
   // This is a var for now because we need to let people change it, and we can't pass this in as a param
   // because then we would change the API.  If we have it as a default param, we can't have multiple methods
   // with the same name.
-  var timeout = 10 seconds
+  var timeout = 15 seconds
 
   def shutdownAndWait(actor: ActorRef) {
     if (actor != null) {

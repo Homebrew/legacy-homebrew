@@ -36,11 +36,12 @@ object JobServer {
         println("Could not find configuration file " + configFile)
         sys.exit(1)
       }
-      ConfigFactory.parseFile(configFile).withFallback(defaultConfig)
+      ConfigFactory.parseFile(configFile).withFallback(defaultConfig).resolve()
     } else {
       defaultConfig
     }
     logger.info("Starting JobServer with config {}", config.getConfig("spark").root.render())
+    logger.info("Spray config: {}", config.getConfig("spray.can.server").root.render())
     val port = config.getInt("spark.jobserver.port")
 
     // TODO: Hardcode for now to get going. Make it configurable later.
