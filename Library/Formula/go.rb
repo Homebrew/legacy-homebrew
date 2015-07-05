@@ -32,8 +32,13 @@ class Go < Formula
   end
 
   resource "gobootstrap" do
-    url "https://storage.googleapis.com/golang/go1.4.2.src.tar.gz"
-    sha1 "460caac03379f746c473814a65223397e9c9a2f6"
+    if MacOS.version > :lion
+      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.8.tar.gz"
+      sha1 "58a04b3eb9853c75319d9076df6f3ac8b7430f7f"
+    else
+      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.6.tar.gz"
+      sha1 "00c3f9a03daff818b2132ac31d57f054925c60e7"
+    end
   end
 
   def install
