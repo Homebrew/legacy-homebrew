@@ -1,9 +1,8 @@
 class Quantlib < Formula
   desc "Library for quantitative finance"
   homepage "http://quantlib.org/"
-  url "https://downloads.sourceforge.net/project/quantlib/QuantLib/1.5/QuantLib-1.5.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/q/quantlib/quantlib_1.5.orig.tar.gz"
-  sha256 "bc4edcc3ace5b0668f8f75af9834fb0c04b0a0a1b79ec9338a9e5e2f1ccebd33"
+  url "https://downloads.sourceforge.net/project/quantlib/QuantLib/1.6/QuantLib-1.6.tar.gz"
+  sha256 "a135d424a59cbb00a75d7f7ac3a181d49e804abae1776b555ec0183e309f81ce"
 
   head do
     url "https://github.com/lballabio/quantlib.git"
