@@ -22,7 +22,8 @@ class GnuTypist < Formula
     ENV.append "LDFLAGS", "-liconv"
 
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-lispdir=#{share}/emacs/site-lisp/gnu-typist"
     system "make"
     system "make", "install"
   end
