@@ -1,5 +1,6 @@
 require 'testing_env'
 require 'cmd/update'
+require "formula_versions"
 require 'yaml'
 
 class UpdaterTests < Homebrew::TestCase
@@ -56,6 +57,8 @@ class UpdaterTests < Homebrew::TestCase
   end
 
   def perform_update(fixture_name="")
+    Formulary.stubs(:factory).returns(stub(:pkg_version => "1.0"))
+    FormulaVersions.stubs(:new).returns(stub(:formula_at_revision => "2.0"))
     @updater.diff = fixture(fixture_name)
     @updater.in_repo_expect("git checkout -q master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
