@@ -14,8 +14,8 @@ class Python3 < Formula
   head "https://hg.python.org/cpython", :using => :hg
 
   devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0b2.tgz"
-    sha256 "3487dbdea5b78ec25be73321e5d54f56d76e8de22bf818e2a529eeb9feb34fe8"
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0b3.tgz"
+    sha256 "5d1437676e75826963028eece5e84c31a8f6e4a781b86d860df89607ddb62f29"
   end
 
   option :universal
