@@ -173,6 +173,26 @@ module FormulaCellarChecks
     EOS
   end
 
+  def check_emacs_lisp(share, name)
+    return unless share.directory?
+
+    # emacs itself can do what it wants
+    return if name == "emacs"
+
+    lisps = (share/"emacs/site-lisp").children.select do |file|
+      File.extname(file).include? ".el"
+    end
+    return if lisps.empty?
+
+    <<-EOS.undent
+      Emacs Lisp files were installed directly to #{HOMEBREW_PREFIX}/share/emacs/site-lisp
+      This may cause conflicts with other packages; install to #{HOMEBREW_PREFIX}/share/emacs/site-lisp/#{name} instead.
+
+      The offending files are:
+        #{lisps * "\n        "}
+    EOS
+  end
+
   def audit_installed
     audit_check_output(check_manpages)
     audit_check_output(check_infopages)
@@ -186,6 +206,7 @@ module FormulaCellarChecks
     audit_check_output(check_easy_install_pth(formula.lib))
     audit_check_output(check_openssl_links)
     audit_check_output(check_python_framework_links(formula.lib))
+    audit_check_output(check_emacs_lisp(formula.share,formula.name))
   end
 
   private
