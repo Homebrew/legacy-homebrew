@@ -18,6 +18,13 @@ class Libconfig < Formula
     depends_on "libtool" => :build
   end
 
+  head do
+    url "https://github.com/hyperrealm/libconfig.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
   option :universal
 
   def install
