@@ -13,6 +13,7 @@ class Reposurgeon < Formula
     sha256 "6457aa5a0cb2dd9e89173992ea209a61bdc110b448291fbde376fc4ae64614fc" => :mountain_lion
   end
 
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "asciidoc" => :build
   depends_on "xmlto" => :build
 
