@@ -14,7 +14,7 @@ class Cweb < Formula
     ENV.deparallelize
 
     macrosdir = (share/"texmf/tex/generic")
-    emacsdir = (share/"emacs/site-lisp")
+    emacsdir = (share/"emacs/site-lisp/cweb")
     cwebinputs = (lib/"cweb")
 
     # make install doesn't use `mkdir -p` so this is needed
