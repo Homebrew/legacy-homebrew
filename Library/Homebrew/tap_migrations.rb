@@ -173,6 +173,7 @@ TAP_MIGRATIONS = {
   "qrupdate" => "homebrew/science",
   "rdesktop" => "homebrew/x11",
   "rofs-filtered" => "homebrew/fuse",
+  "rocket" => "homebrew/boneyard",
   "rxvt-unicode" => "homebrew/x11",
   "s3-backer" => "homebrew/fuse",
   "s3fs" => "homebrew/fuse",
