@@ -1,9 +1,9 @@
 class Libtiff < Formula
   desc "TIFF library and utilities"
   homepage "http://www.remotesensing.org/libtiff/"
-  url "ftp://ftp.remotesensing.org/pub/libtiff/tiff-4.0.3.tar.gz"
-  mirror "http://download.osgeo.org/libtiff/tiff-4.0.3.tar.gz"
-  sha256 "ea1aebe282319537fb2d4d7805f478dd4e0e05c33d0928baba76a7c963684872"
+  url "http://download.osgeo.org/libtiff/tiff-4.0.4.tar.gz"
+  mirror "ftp://ftp.remotesensing.org/pub/libtiff/tiff-4.0.4.tar.gz"
+  sha256 "8cb1d90c96f61cdfc0bcf036acc251c9dbe6320334da941c7a83cfe1576ef890"
 
   bottle do
     cellar :any
