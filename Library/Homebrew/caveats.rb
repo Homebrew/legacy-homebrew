@@ -16,6 +16,7 @@ class Caveats
     caveats << plist_caveats
     caveats << python_caveats
     caveats << app_caveats
+    caveats << elisp_caveats
     caveats.compact.join("\n")
   end
 
@@ -128,6 +129,19 @@ class Caveats
       <<-EOS.undent
         .app bundles were installed.
         Run `brew linkapps #{keg.name}` to symlink these to /Applications.
+      EOS
+    end
+  end
+
+  def elisp_caveats
+    if keg && keg.elisp_installed?
+      <<-EOS.undent
+        Emacs Lisp files have been installed to:
+        #{HOMEBREW_PREFIX}/share/emacs/site-lisp/
+
+        Add the following to your init file to have packages installed by Homebrew added to your load-path:
+        (let ((default-directory "#{HOMEBREW_PREFIX}/share/emacs/site-lisp/"))
+          (normal-top-level-add-subdirs-to-load-path))
       EOS
     end
   end
