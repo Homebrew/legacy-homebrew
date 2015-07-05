@@ -15,9 +15,9 @@ class Gupnp < Formula
 
   bottle do
     cellar :any
-    sha256 "919e7b6f31a63434e1169829e6e2a9f1ee019e6505566172e799aa7b0b08557b" => :yosemite
-    sha256 "ce4e2cfdc25ebb1b4543d708a179ac25ad9f95e0328e0b963facd8e5fdcd2ca5" => :mavericks
-    sha256 "590dc56b06e0dd6cd5a015e9f6391e3c014d8dcc17a70b97f623a841c740c389" => :mountain_lion
+    sha256 "1109087b4b77ce974f4e435e4c27cd3b1aa49b0d2993ff1aed0f9148dd4c6033" => :yosemite
+    sha256 "239c762f839d1aea6aebbe320e87cac9602986ef54c8994b88b650e6977f8ce2" => :mavericks
+    sha256 "07e09de0ee06b0140bcd99d9f25f5d2163d21ae50f4e3ec1147ac25b978b6466" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
