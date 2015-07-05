@@ -4,6 +4,13 @@ class Khal < Formula
   url "https://github.com/geier/khal/archive/v0.5.0.tar.gz"
   sha256 "da7cda13fce3f727658db5efad049e642d25a47aaf50a33312c6123f912e5ae6"
 
+  bottle do
+    cellar :any
+    sha256 "5c9c2c9aeeaffd16d9076d8fb422752cbe0e8227c1cdf6bdbb42a76486a26f9a" => :yosemite
+    sha256 "f381747f9191ddcdbd4bcda97881488e917a4bca6fd3d0d6f858891323bdd939" => :mavericks
+    sha256 "a93d8a7dea73c3638e3cd980ea25b281bb3c9fc70b41521e7233cb18e676d4ba" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "icalendar" do
