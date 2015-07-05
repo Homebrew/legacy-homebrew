@@ -12,25 +12,27 @@ class Cask < Formula
     sha256 "2a9c3376bc81daa443d7b9a10043e871f7439eb8d11ae2523b18ca0cf11e3832" => :mountain_lion
   end
 
-  depends_on :emacs => "23"
+  depends_on :emacs => "24"
 
   def install
-    zsh_completion.install "etc/cask_completion.zsh"
     bin.install "bin/cask"
-    prefix.install Dir["*.el"]
     prefix.install "templates"
-    (share/"emacs/site-lisp").install_symlink "#{prefix}/cask-bootstrap.el"
-    (share/"emacs/site-lisp").install_symlink "#{prefix}/cask.el"
+    # Lisp files must stay here: https://github.com/cask/cask/issues/305
+    prefix.install Dir["*.el"]
+    (share/"emacs/site-lisp/cask").install_symlink "#{prefix}/cask.el"
+    (share/"emacs/site-lisp/cask").install_symlink "#{prefix}/cask-bootstrap.el"
+    zsh_completion.install "etc/cask_completion.zsh"
+
     # Stop cask performing self-upgrades.
     touch prefix/".no-upgrade"
   end
 
   test do
     (testpath/"test.el").write <<-EOS.undent
-      (add-to-list 'load-path "#{share}/emacs/site-lisp")
+      (add-to-list 'load-path "#{share}/emacs/site-lisp/cask")
       (require 'cask)
       (print (minibuffer-prompt-width))
     EOS
-    assert_equal "0", shell_output("emacs -batch -l #{testpath}/test.el").strip
+    assert_equal "0", shell_output("emacs -Q --batch -l #{testpath}/test.el").strip
   end
 end
