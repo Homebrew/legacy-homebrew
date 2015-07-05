@@ -51,7 +51,6 @@ class Khal < Formula
     sha256 "1950d112ed1b717683280d54f1e7a4533564d479127162cbf247bd0fb3708983"
   end
 
-  # vdirsyncer + deps until available via homebrew
   resource "vdirsyncer" do
     url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.4.4.tar.gz"
     sha256 "d6f6fa7730c1c87dd10bb5bad3143515ae983987bf4154b5e53cc74aa720abd2"
