@@ -4,6 +4,12 @@ class ExtractUrl < Formula
   url "https://extracturl.googlecode.com/files/extract_url-1.5.8.tar.gz"
   sha256 "58eac907cb926deba74ab81e7503a1055fd3cbe20952f011d8e6b75da12d6bcc"
 
+  bottle do
+    sha256 "d30e8c0391caf4f3b9e13c911e4c552d7f754e7dc593b253caf113af1b58b4b1" => :yosemite
+    sha256 "aee130ee64d137e7f8488a959674a63e31593208d3c3994f103e11f0629a1e94" => :mavericks
+    sha256 "55022f20ad95a8073b84c69b5ea603da7e0efe7d8ed45eea00b6d0f3be1aa8de" => :mountain_lion
+  end
+
   resource "MIME::Parser" do
     url "https://cpan.metacpan.org/authors/id/D/DS/DSKOLL/MIME-tools-5.506.tar.gz"
     sha256 "dbed9bf46830c4a1df9840a546824ee44d14902012870f0c34bc4f5cc86af812"
