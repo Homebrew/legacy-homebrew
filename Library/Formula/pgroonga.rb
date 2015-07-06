@@ -5,7 +5,7 @@ class Pgroonga < Formula
   sha256 "29a631f68013bba19321beac0d7b933eafce60aec1597aa8fff0b0898ff2a73d"
 
   depends_on "cmake" => :build
-  depends_on "pkgconfig" => :build
+  depends_on "pkg-config" => :build
   depends_on "postgresql"
   depends_on "groonga"
 
