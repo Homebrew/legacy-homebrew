@@ -4,7 +4,6 @@ class Pgroonga < Formula
   url "http://packages.groonga.org/source/pgroonga/pgroonga-0.6.0.tar.gz"
   sha256 "29a631f68013bba19321beac0d7b933eafce60aec1597aa8fff0b0898ff2a73d"
 
-  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "postgresql"
   depends_on "groonga"
