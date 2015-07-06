@@ -9,9 +9,9 @@ class Siege < Formula
   depends_on 'openssl'
 
   bottle do
-    sha1 "8fc40ce186470abb7b79dcae5bf0f79de19aa95a" => :yosemite
-    sha1 "b4db408f279d8b22f6c0aa74577a8204d5f60678" => :mavericks
-    sha1 "9d6ec76bee4bf1b145b62b5b166ffbfed5112182" => :mountain_lion
+    sha256 "f1456aec75bb9403dcfdb2fc043cfc5721f585d7c16698c79e3f7a6bfc202b59" => :yosemite
+    sha256 "c67690422391cb3d2cc27a55930c278cf6a7b7d9e15e2d86d10e58e83b478821" => :mavericks
+    sha256 "40a93e1f6e9cb1c9f5c71c29aa1f2612fc6d70eee1a56be6678f1acdc8708499" => :mountain_lion
   end
 
   def install
