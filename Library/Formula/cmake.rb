@@ -2,7 +2,7 @@ class Cmake < Formula
   desc "Cross-platform make"
   homepage "http://www.cmake.org/"
   url "http://www.cmake.org/files/v3.2/cmake-3.2.3.tar.gz"
-  sha256 "a1ebcaf6d288eb4c966714ea457e3b9677cdfde78820d0f088712d7320850297"
+  sha256 MacOS.version == :el_capitan ? "e7be87a6cfc403785ab9d5846a70be2c27b17fda6a9b7442e9fc7af45c077d63" : "a1ebcaf6d288eb4c966714ea457e3b9677cdfde78820d0f088712d7320850297"
   head "http://cmake.org/cmake.git"
 
   bottle do
