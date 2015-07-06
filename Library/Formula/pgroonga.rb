@@ -19,4 +19,9 @@ class Pgroonga < Formula
     system "make"
     system "make", "install"
   end
+
+  test do
+    postgres_realpath = Formula["postgresql"].opt_prefix.realpath
+    File.exist?("#{postgres_realpath}/share/postgresql/extension/pgroonga--#{version}.sql")
+  end
 end
