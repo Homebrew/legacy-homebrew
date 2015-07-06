@@ -7,9 +7,9 @@ class Ldc < Formula
   sha1 "06db0c07d73bf714e6fc7a4aca4c44123e4a585a"
 
   devel do
-    url "https://github.com/ldc-developers/ldc/releases/download/v0.15.2-beta1/ldc-0.15.2-beta1-src.tar.gz"
-    sha1 "cf5b22ea98f4905ad3ba468aedfdce78d194e59d"
-    version "0.15.2-beta1"
+    url "https://github.com/ldc-developers/ldc/releases/download/v0.15.2-beta2/ldc-0.15.2-beta2-src.tar.gz"
+    sha1 "8e2913de136facfe0a3a8065a78b319690c85830"
+    version "0.15.2-beta2"
   end
 
   bottle do
