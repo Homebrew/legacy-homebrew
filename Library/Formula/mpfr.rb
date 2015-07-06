@@ -1,11 +1,10 @@
 class Mpfr < Formula
   desc "C library for multiple-precision floating-point computations"
   homepage "http://www.mpfr.org/"
-  # Upstream is down a lot, so use the GNU mirror + Gist for patches
-  url "http://ftpmirror.gnu.org/mpfr/mpfr-3.1.2.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2"
-  sha256 "79c73f60af010a30a5c27a955a1d2d01ba095b72537dab0ecaad57f5a7bb1b6b"
-  version "3.1.2-p11"
+  # Upstream is down a lot, so use mirrors
+  url "https://mirrors.kernel.org/debian/pool/main/m/mpfr4/mpfr4_3.1.3.orig.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/mpfr/mpfr-3.1.3.tar.xz"
+  sha256 "6835a08bd992c8257641791e9a6a2b35b02336c8de26d0a8577953747e514a16"
 
   bottle do
     cellar :any
@@ -16,13 +15,13 @@ class Mpfr < Formula
 
   # http://www.mpfr.org/mpfr-current/allpatches
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/7f276cd60149a1ffc9a7/raw/98bd4a4d77d57d91d501e66af2237dfa41b12719/mpfr-3.1.2-p11.diff"
-    sha256 "ef758e28d988180ce4e91860a890bab74a5ef2a0cd57b1174c59a6e81d4f5c64"
+    url "https://gist.github.com/anonymous/3a7d24cf2c68f21eb940/raw/471e928fcdbfb5c2fa7428cfb496496e6ee469aa/mpfr-3.1.3.diff"
+    sha256 "1ca002acc121413b9ce39e9f12bb6efe4bed4ec45cf3f3ffcff122b94f6694de"
   end
 
-  depends_on "gmp"
-
   option "32-bit"
+
+  depends_on "gmp"
 
   fails_with :clang do
     build 421
