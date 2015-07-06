@@ -7,9 +7,9 @@ class Libssh < Formula
   head "git://git.libssh.org/projects/libssh.git"
 
   bottle do
-    sha1 "de5ef207ed3ae4d79f180a5835fe491409a0804d" => :yosemite
-    sha1 "3de5d0a02be7bda59dabe91cd7db4ece978d25bb" => :mavericks
-    sha1 "983355b795316434c54dd61e85495a808a147845" => :mountain_lion
+    sha256 "d4c38799d5f43f7f19d69f5733f884604944cde5458383cf5133ce449524fada" => :yosemite
+    sha256 "f316f85527d2ff721eb897fff84329610241224462d396ff6afdbd0f41b7c73c" => :mavericks
+    sha256 "a090f18299ad75737715fb0b1dd37fff809dc10383232a65c4849f61a7197bf7" => :mountain_lion
   end
 
   depends_on "cmake" => :build
