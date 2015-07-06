@@ -9,9 +9,9 @@ class Basex < Formula
 
   bottle do
     cellar :any
-    sha256 "446ecf222327f0a3914cb677b4dccb7bfabeac81451c1ddd989a78375171fd90" => :yosemite
-    sha256 "deac3806b1c4e7c7ba2faf448ae2062e5ef073c796791018807a42a48dea81bb" => :mavericks
-    sha256 "6a2dd33330cafa32e823c48bad20e763daff81be3b3d7d6721d151c3943184c6" => :mountain_lion
+    sha256 "58b5e02334e985e161cd5aa9e5d1b8492daaf4cc36645577e86d28464541147a" => :yosemite
+    sha256 "726b7365ee7c73ac1f48176befa08553f7c9b7ee630e172e8dca2401ba4bc983" => :mavericks
+    sha256 "9ecf13cac0290aa379ebd08ad6dbdc296aa8773de9532eefaaa94682aee5cdde" => :mountain_lion
   end
 
   def install
