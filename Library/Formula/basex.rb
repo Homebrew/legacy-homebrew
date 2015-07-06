@@ -1,11 +1,9 @@
-require 'formula'
-
 class Basex < Formula
   desc "Light-weight XML database and XPath/XQuery processor"
-  homepage 'http://basex.org'
-  url 'http://files.basex.org/releases/8.2.2/BaseX822.zip'
-  version '8.2.2'
-  sha256 '6a7a87a95e23a836a35c4f47983dc5d0336eb83e9cf02e1ec48b5c5eb3742003'
+  homepage "http://basex.org"
+  url "http://files.basex.org/releases/8.2.2/BaseX822.zip"
+  version "8.2.2"
+  sha256 "6a7a87a95e23a836a35c4f47983dc5d0336eb83e9cf02e1ec48b5c5eb3742003"
 
   bottle do
     cellar :any
@@ -15,12 +13,12 @@ class Basex < Formula
   end
 
   def install
-    rm Dir['bin/*.bat']
+    rm Dir["bin/*.bat"]
     rm_rf "repo"
     rm_rf "data"
     rm_rf "etc"
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
