@@ -2,7 +2,7 @@ require 'formula'
 
 class Siege < Formula
   desc "HTTP regression testing and benchmarking utility"
-  homepage 'http://www.joedog.org/index/siege-home'       
+  homepage 'http://www.joedog.org/index/siege-home'
   url 'http://download.joedog.org/siege/siege-3.1.0.tar.gz'
   sha256 'f6a104cb2a3ac6c0efb2699649e8c4f8da2b548147bbbb7af2483089e4940e7f'
 
