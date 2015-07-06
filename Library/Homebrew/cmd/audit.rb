@@ -3,6 +3,7 @@ require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
 require "official_taps"
+require "tap_migrations"
 require "cmd/search"
 
 module Homebrew
@@ -412,7 +413,9 @@ class FormulaAuditor
          %r[^http://packages\.debian\.org],
          %r[^http://wiki\.freedesktop\.org/],
          %r[^http://((?:www)\.)?gnupg.org/],
-         %r[^http://((?:trac|tools|www)\.)?ietf\.org],
+         %r[^http://ietf\.org],
+         %r[^http://[^/.]+\.ietf\.org],
+         %r[^http://[^/.]+\.tools\.ietf\.org],
          %r[^http://www\.gnu\.org/],
          %r[^http://code\.google\.com/]
       problem "Please use https:// for #{homepage}"
@@ -769,6 +772,20 @@ class FormulaAuditor
     end
   end
 
+  def audit_reverse_migration
+    # Only enforce for new formula being re-added to core
+    return unless @strict
+    return unless formula.core_formula?
+
+    if TAP_MIGRATIONS.has_key?(formula.name)
+      problem <<-EOS.undent
+       #{formula.name} seems to be listed in tap_migrations.rb!
+       Please remove #{formula.name} from present tap & tap_migrations.rb
+       before submitting it to Homebrew/homebrew.
+      EOS
+    end
+  end
+
   def audit_prefix_has_contents
     return unless formula.prefix.directory?
 
@@ -823,6 +840,7 @@ class FormulaAuditor
     text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
     audit_installed
     audit_prefix_has_contents
+    audit_reverse_migration
   end
 
   private

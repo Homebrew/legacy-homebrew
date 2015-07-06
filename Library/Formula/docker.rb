@@ -5,6 +5,7 @@ class Docker < Formula
   # Please update the version of boot2docker too
   url "https://github.com/docker/docker.git", :tag => "v1.7.0",
     :revision => "0baf60984522744eed290348f33f396c046b2f3a"
+  head "https://github.com/docker/docker.git"
 
   bottle do
     cellar :any
@@ -13,6 +14,7 @@ class Docker < Formula
     sha256 "ca4e419285a250598f05d658fda3dac97c9b0bae4c3361086a9f13a41b40bfc7" => :mountain_lion
   end
 
+  option "with-experimental", "Enable experimental features"
   option "without-completions", "Disable bash/zsh completions"
 
   depends_on "go" => :build
@@ -20,9 +22,12 @@ class Docker < Formula
   def install
     ENV["AUTO_GOPATH"] = "1"
     ENV["DOCKER_CLIENTONLY"] = "1"
+    ENV["DOCKER_EXPERIMENTAL"] = "1" if build.with? "experimental"
 
     system "hack/make.sh", "dynbinary"
-    bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
+
+    build_version = build.head? ? File.read("VERSION").chomp : version
+    bin.install "bundles/#{build_version}/dynbinary/docker-#{build_version}" => "docker"
 
     if build.with? "completions"
       bash_completion.install "contrib/completion/bash/docker"

@@ -1,14 +1,14 @@
 class Zurl < Formula
   desc "HTTP and WebSocket client worker with ZeroMQ interface"
   homepage "https://github.com/fanout/zurl"
-  url "https://dl.bintray.com/fanout/source/zurl-1.4.5.tar.bz2"
-  sha256 "d3fc65859d647e0df746d0f69742f3224c7675a33780098b37d8a1af7af52e27"
+  url "https://dl.bintray.com/fanout/source/zurl-1.4.7.tar.bz2"
+  sha256 "ffe8bb1268c62241050e8d57472a0877e1374db31e6777c5498693685770a90e"
 
   bottle do
     cellar :any
-    sha256 "1707afc137ceedb9c44acb796be1956fd1d52b6c61f0e9e7c73ed1560d36a264" => :yosemite
-    sha256 "e05b8ff7b27986821c44a84b5ca3ad26c1b8992f1146cf0bf8bc5ef45e12b17f" => :mavericks
-    sha256 "bbdd2ba2daa9036d2eedc7e29831f67225724575eea0fc4271e611f0210027b6" => :mountain_lion
+    sha256 "87d3d44429695a671cfbcc7e43cf6a12bde243df79ddd2f8bd595005b7a473fb" => :yosemite
+    sha256 "365190727ac5dd5901fb2a02a37635a7b6a4e82a536845a4511c55d78b28ff21" => :mavericks
+    sha256 "e1bbc70ee4a8aa687dd6c61e7b9fba5d6da2dc9092572eb03b314c8b4aafc448" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

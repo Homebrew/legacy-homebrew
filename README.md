@@ -107,7 +107,7 @@ This is our PGP key which is valid until June 17, 2016.
 ## Who Are You?
 Linuxbrew is maintained by [Shaun Jackman](https://github.com/sjackman).
 
-Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Baptiste Fontaine](https://github.com/bfontaine), [Brett Koonce](https://github.com/asparagui), [Dominyk Tiller](https://github.com/DomT4) and [Tim Smith](https://github.com/tdsmith).
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Baptiste Fontaine](https://github.com/bfontaine), [Brett Koonce](https://github.com/asparagui), [Dominyk Tiller](https://github.com/DomT4) and [Tim Smith](https://github.com/tdsmith).
 
 Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 

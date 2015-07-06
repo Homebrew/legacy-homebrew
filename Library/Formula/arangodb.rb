@@ -1,21 +1,19 @@
-require 'formula'
-
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
-  homepage 'https://www.arangodb.com/'
-  url 'https://www.arangodb.com/repositories/Source/ArangoDB-2.6.0.tar.gz'
-  sha256 'fec63994692cfb851369e3d074ae0a0e240ef2b362990deca6babc5fd7929b0d'
+  homepage "https://www.arangodb.com/"
+  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.6.2.tar.gz"
+  sha256 "673465c868f34e80ef1d6a6b1d949173dbb35a9913664aa17bb6c2b7175f29fe"
 
-  head "https://github.com/arangodb/arangodb.git", :branch => 'unstable'
+  head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
   bottle do
-    sha256 "022442171a83fc3605783249ca1d6f8458818e4327ff36ea4f3b62b80ee119c8" => :yosemite
-    sha256 "e2e79447c2616b005f099fd7b4d7b8725fcad8e4d7f567ec7d3d8e9c1b131cca" => :mavericks
-    sha256 "ee824f0b85f11ca6e5e887d019dc51ff4291255d6b50e661e18e9e7876df8663" => :mountain_lion
+    sha256 "2e4678a8406e75e2245c252474f610e52d1046754841681f83bd3360a9ef5eb1" => :yosemite
+    sha256 "1597f83f4e2b5db929eb80c289abfb28223b54e1f89cd188e610c6a8c9fb4006" => :mavericks
+    sha256 "421a3c80df4453ce0f6532993da50ed674effcf65b534ccdd453025d53507401" => :mountain_lion
   end
 
-  depends_on 'go' => :build
-  depends_on 'openssl'
+  depends_on "go" => :build
+  depends_on "openssl"
 
   needs :cxx11
 
@@ -37,10 +35,10 @@ class Arangodb < Formula
     args << "--program-suffix=-unstable" if build.head?
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
-    (var/'arangodb').mkpath
-    (var/'log/arangodb').mkpath
+    (var/"arangodb").mkpath
+    (var/"log/arangodb").mkpath
   end
 
   def post_install

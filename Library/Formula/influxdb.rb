@@ -2,36 +2,22 @@ require "language/go"
 
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
-  homepage "http://influxdb.com"
+  homepage "https://influxdb.com"
 
   stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.0.tar.gz"
-    sha256 "c7cc869754d7bfb9374b0a16a9b91073d9588adedbd7bfda1d5709e22d3a3d75"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.1.tar.gz"
+    sha256 "a37d5ebda1b31f912390fe4e1d46e085326f91397671e2bd418f5d515004e5be"
   end
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "357b0d2a3a71d4451e887e85fda7f2d79d4ab7cae4f7d8de62f6102f55986402" => :yosemite
-    sha256 "14619d7bce3788b295910f08a48377f74e2efc54d4f1c0c22d79f07a74022523" => :mavericks
-    sha256 "b07a2a1ca26c32cc8b6b0fa8d00f735066c10cdc27ebd3e132eceae17fa96129" => :mountain_lion
-  end
-
-  devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.1-rc1.tar.gz"
-    sha256 "4311c39aa72d31bc23e7082a3af436f546038d640829a30782c5717623317d90"
-
-    go_resource "collectd.org" do
-      url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
-    end
+    sha256 "f4244b8a3a9d71372cc822547ba97809e37731c95483ce89d9c4e21b171a366b" => :yosemite
+    sha256 "c5a1f8fe170a6f2a5c9a6f5568600711d8d98eb28e74f5a37a54e906ba15c134" => :mavericks
+    sha256 "5bbf255e5facc8d9060f1de5e25840e3c415dd37b9c2b9f20320a8d264b533e9" => :mountain_lion
   end
 
   head do
     url "https://github.com/influxdb/influxdb.git"
-
-    go_resource "collectd.org" do
-      url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
-    end
   end
 
   depends_on "go" => :build
@@ -92,6 +78,10 @@ class Influxdb < Formula
     url "https://github.com/fatih/pool.git", :revision => "cba550ebf9bce999a02e963296d4bc7a486cb715"
   end
 
+  go_resource "collectd.org" do
+    url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
     influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
@@ -101,11 +91,9 @@ class Influxdb < Formula
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version 0.9.0-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
-      elsif build.devel?
-        system "go", "install", "-ldflags", "-X main.version 0.9.1-rc1 -X main.commit beefacd4d311e902f159212bcf3f934216d7f3bc", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.1-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version 0.9.0 -X main.commit 471117ce5b308e59f8f247d8a88a52ead553b602", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.1 -X main.commit 8b3219e74fcc3843a6f4901bdf00e905642b6bd6", "./..."
       end
     end
 

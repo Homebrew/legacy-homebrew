@@ -6,20 +6,27 @@ class Gflags < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "8bbbd5efff7f825bfad987b7fc2f55f41c81e23ee0758645a079e6fbe9369fd7" => :yosemite
-    sha256 "52bd446dc3ba39b7e8a821e2f483cb5be8ad6f24b487cf9296ebc5b94a143b24" => :mavericks
-    sha256 "9dfeb3e15cf5d5082ad017e7390b7919fe94707291f1edbd77158805a63ad0e9" => :mountain_lion
+    revision 2
+    sha256 "8e648b5824007745eb546beffe4d94a3c25a29556f89eaa4a156dec6984335dd" => :yosemite
+    sha256 "8f4093596ce2b359821d9a3398b82d7d327288d24ca9f0218a9ade1ace2bdbfa" => :mavericks
+    sha256 "19d46507297d14c4ff50d99c9279ddd513df439a5d87e5325ef8fb52c37f7e6d" => :mountain_lion
   end
 
   option "with-debug", "Build debug version"
+  option "with-static", "Build gflags as a static (instead of shared) library."
 
   depends_on "cmake" => :build
 
   def install
     ENV.append_to_cflags "-DNDEBUG" if build.without? "debug"
+    args = std_cmake_args
+    if build.with? "static"
+      args << "-DBUILD_SHARED_LIBS=OFF"
+    else
+      args << "-DBUILD_SHARED_LIBS=ON"
+    end
     mkdir "buildroot" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", *args
       system "make", "install"
     end
   end

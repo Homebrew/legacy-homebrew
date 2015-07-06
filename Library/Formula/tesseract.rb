@@ -2,32 +2,37 @@ require "formula"
 
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
-  homepage 'http://code.google.com/p/tesseract-ocr/'
-  url 'https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
-  sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
+  homepage "https://github.com/tesseract-ocr/"
+  url "https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz"
+  sha1 "a950acf7b75cf851de2de787e9abb62c58ca1827"
   revision 3
 
   bottle do
-    sha1 "9a4e5a35ac9f1e84990598411763075530691cb8" => :yosemite
-    sha1 "41c1a04692d03564c59b86cf1067554934fad290" => :mavericks
-    sha1 "2333fe903cfd1b51b1c5e7758c6a033747a37c57" => :mountain_lion
+    revision 1
+    sha256 "19d4caa5ce632ca41d3b45accd7f116f6cf93688531f26437cb4833f26cc0172" => :yosemite
+    sha256 "092e7e8ccc7622a48a3103d259c9770638fff086438fd5f82661fc80144e4705" => :mavericks
+    sha256 "3bac833b02c9927cf4ba9ef43be39ce017f57a5380a076568f79455a836e96e7" => :mountain_lion
   end
 
   devel do
-    url 'https://drive.google.com/uc?id=0B7l10Bj_LprhSGN2bTYwemVRREU&export=download'
-    sha1 '5bd12482a69f0a1fdf3c9e0d652de08db763ee93'
-    version '3.03rc1'
+    url "https://drive.google.com/uc?id=0B7l10Bj_LprhSGN2bTYwemVRREU&export=download"
+    sha1 "5bd12482a69f0a1fdf3c9e0d652de08db763ee93"
+    version "3.03rc1"
 
     needs :cxx11
   end
 
   head do
-    url 'https://code.google.com/p/tesseract-ocr/', :using => :git
+    url "https://github.com/tesseract-ocr/tesseract.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
     depends_on "pkg-config" => :build
+
+    resource "tessdata-head" do
+      url "https://github.com/tesseract-ocr/tessdata.git"
+    end
   end
 
   option "all-languages", "Install recognition data for all languages"
@@ -138,7 +143,9 @@ class Tesseract < Formula
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    if build.include? "all-languages"
+    if build.head?
+      resource("tessdata-head").stage { mv Dir["*"], share/"tessdata" }
+    elsif build.include? "all-languages"
       resources.each { |r| r.stage { mv Dir["tessdata/*"], share/"tessdata" } }
     else
       resource("eng").stage { mv Dir["tessdata/*"], share/"tessdata" }

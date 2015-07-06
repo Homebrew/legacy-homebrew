@@ -1,30 +1,29 @@
-require 'formula'
-
 class IosWebkitDebugProxy < Formula
   desc "DevTools proxy for iOS devices"
-  homepage 'https://github.com/google/ios-webkit-debug-proxy'
-  url 'https://github.com/google/ios-webkit-debug-proxy/archive/1.4.tar.gz'
-  sha1 'e6d882182fe2fd8f5827a9289545cc7e9ebb25e7'
-  revision 2
+  homepage "https://github.com/google/ios-webkit-debug-proxy"
+  url "https://github.com/google/ios-webkit-debug-proxy/archive/1.5.tar.gz"
+  sha1 "34f6325200700ccbd8c190b0c6835beb1396303d"
 
   bottle do
     cellar :any
-    sha1 "0c7419ab91dc1bc47c664aada5712b2367c9196c" => :yosemite
-    sha1 "cd348f6486cc83e8a1502acc3a7f2550826e0a9a" => :mavericks
-    sha1 "7d6b999f36569825be410869f38c345a1c287ddb" => :mountain_lion
+    sha256 "5b7f1a0c6a3980a71c7a17351a11c3b54b81b0a5e7692530ed9b6a26836c1f65" => :yosemite
+    sha256 "e5376a0b9abea1af969cbb14416ccde34046b60e5fede0c45d7d5e2952deb295" => :mavericks
+    sha256 "f5cd081364422f1053c15adce7bb82b4440cf488f7ba7068ef67dc6f4ffb936b" => :mountain_lion
   end
 
   depends_on :macos => :lion
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on 'libplist'
-  depends_on 'usbmuxd'
-  depends_on 'libimobiledevice'
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "libplist"
+  depends_on "usbmuxd"
+  depends_on "libimobiledevice"
 
   def install
     system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

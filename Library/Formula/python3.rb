@@ -3,19 +3,19 @@ class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
   sha256 "b5b3963533768d5fc325a4d7a6bd6f666726002d696f1d399ec06b043ea996b8"
+  revision 1
 
   bottle do
-    revision 12
-    sha256 "68f6938ba44a6c40852f02c15c2f88afc07e4395f7d8d30a22d385f0a70360ed" => :yosemite
-    sha256 "214e9575b5b6e1714ae1aa2107c3ad3c449130eb0b1ef79914dce668ca2e025e" => :mavericks
-    sha256 "e0ac1577337be5ad2e421f2299edc26018e78a57df76830f56bada728eca023e" => :mountain_lion
+    sha256 "021f88d68c87fe761ba6d158464c60c8c58fee703ed970327d6ebb5fe704cde6" => :yosemite
+    sha256 "4319f624ab2877c676ae79ca4e48a26d23c26acbec4f424866575d6d345da7ab" => :mavericks
+    sha256 "07c908972c96221b467bb4eabfa8e53cc94a4a6f8f5a8e4654d671fa634189b7" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
 
   devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0b2.tgz"
-    sha256 "3487dbdea5b78ec25be73321e5d54f56d76e8de22bf818e2a529eeb9feb34fe8"
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0b3.tgz"
+    sha256 "5d1437676e75826963028eece5e84c31a8f6e4a781b86d860df89607ddb62f29"
   end
 
   option :universal
@@ -38,13 +38,18 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.1.1.tar.gz"
-    sha256 "5bf42dbf406fd58a41029f53cffff1c90db5de1c5e0e560b5545cf2ec949c431"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
+    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.3.tar.gz"
-    sha256 "b4c598825a6f6dc2cac65968feb28e6be6c1f7f1408493c60a07eaa731a0affd"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.0.tar.gz"
+    sha256 "d5275ba3221182a5dd1b6bcfbfc5ec277fb399dd23226d6fa018048f7e0f10f2"
+  end
+
+  resource "wheel" do
+    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.24.0.tar.gz"
+    sha256 "ef832abfedea7ed86b6eae7400128f88053a1da81a37c00613b1279544d585aa"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
@@ -183,7 +188,7 @@ class Python3 < Formula
                          "-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python"
     end if OS.mac?
 
-    %w[setuptools pip].each do |r|
+    %w[setuptools pip wheel].each do |r|
       (libexec/r).install resource(r)
     end
   end
@@ -209,19 +214,23 @@ class Python3 < Formula
     # setuptools-0.9.8-py3.3.egg
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
+    rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
 
-    %w[setuptools pip].each do |pkg|
+    %w[setuptools pip wheel].each do |pkg|
       (libexec/pkg).cd do
         system bin/"python3", "-s", "setup.py", "--no-user-cfg", "install",
                "--force", "--verbose", "--install-scripts=#{bin}",
-               "--install-lib=#{site_packages}"
+               "--install-lib=#{site_packages}",
+               "--single-version-externally-managed",
+               "--record=installed.txt"
       end
     end
 
     rm_rf [bin/"pip", bin/"easy_install"]
+    mv bin/"wheel", bin/"wheel3"
 
     # post_install happens after link
-    %W[pip3 pip#{xy} easy_install-#{xy}].each do |e|
+    %W[pip3 pip#{xy} easy_install-#{xy} wheel3].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
@@ -241,9 +250,6 @@ class Python3 < Formula
 
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
-      [global]
-      verbose=1
-
       [install]
       prefix=#{HOMEBREW_PREFIX}
 

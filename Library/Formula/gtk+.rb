@@ -3,13 +3,12 @@ class Gtkx < Formula
   homepage "http://gtk.org/"
   url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
   sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
-  revision 1
+  revision 2
 
   bottle do
-    revision 2
-    sha256 "c3c38a7e3ce5c11f4febb7136342aff6156e86bc7264d1b755141e27e1bcd1b7" => :yosemite
-    sha256 "89b216bb20a360a6002a1259e9ab84cb89961f3cc03e9829e48532b5d95c8f1d" => :mavericks
-    sha256 "3f3948ce65bd2c199e2603a8bebc39f6de14e3c7f408226b1d6a0c8b52a51f29" => :mountain_lion
+    sha256 "afac113e6701cf013e0235e0fd91fcfc6659bc75220ca03e408a7a0f38671bb9" => :yosemite
+    sha256 "e7daa89de1184b1edc71242fd65b9b608885ebe6c92f5f793af8a46ef5912b28" => :mavericks
+    sha256 "17dcc4df1082000447b968c831f657b5f1aa863f32b8397900a38feaa7147db0" => :mountain_lion
   end
 
   option "with-quartz-relocation", "Build with quartz relocation support"
@@ -25,6 +24,15 @@ class Gtkx < Formula
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
+  end
+
+  # Patch to allow Freeciv's gtk2 client to run.
+  # See:
+  # - https://bugzilla.gnome.org/show_bug.cgi?id=557780
+  # - Homebrew/homebrew-games#278
+  patch do
+    url "https://bug557780.bugzilla-attachments.gnome.org/attachment.cgi?id=306776"
+    sha256 "4d7a1fe8d55174dc7f0be0016814668098d38bbec233b05a6c46180e96a159fc"
   end
 
   def install

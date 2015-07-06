@@ -1,16 +1,16 @@
 class Reposurgeon < Formula
   desc "Edit version-control repository history"
   homepage "http://www.catb.org/esr/reposurgeon/"
-  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.22.tar.gz"
-  sha256 "66f366fc92d908fd68717cfb86eade989b7f550481b2e055803fd400805d1b14"
+  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.27.tar.gz"
+  sha256 "e2c0563384fa29917bb5014214280e586dbe389edd0c7006a3cdecb63c7b2e85"
 
-  head "git://thyrsus.com/repositories/reposurgeon.git"
+  head "https://gitlab.com/esr/reposurgeon.git"
 
   bottle do
     cellar :any
-    sha256 "c5841c5c81cfbe2d19f0ff25fe5215b208fef8ef7c5676261ec50d539cbdc77e" => :yosemite
-    sha256 "4d03f9193c74b126394c735698692891e90c0dc9e2c3f5e2bd96494f0905aefd" => :mavericks
-    sha256 "7d61765e24830fd38e24163452866fda5d565f3ac52f3da8fa9b27a976d6eef1" => :mountain_lion
+    sha256 "0f93e047fd0c6e3a29d30d7297cadc4dffb50482c46efd68a181bccd16cd596f" => :yosemite
+    sha256 "637d175cc04890d4787dc49a526c8d5a50ef046b97ee07471e9d36d92d395a72" => :mavericks
+    sha256 "6457aa5a0cb2dd9e89173992ea209a61bdc110b448291fbde376fc4ae64614fc" => :mountain_lion
   end
 
   depends_on "asciidoc" => :build
