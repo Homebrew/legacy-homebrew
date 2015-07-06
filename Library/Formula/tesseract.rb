@@ -8,9 +8,10 @@ class Tesseract < Formula
   revision 3
 
   bottle do
-    sha1 "9a4e5a35ac9f1e84990598411763075530691cb8" => :yosemite
-    sha1 "41c1a04692d03564c59b86cf1067554934fad290" => :mavericks
-    sha1 "2333fe903cfd1b51b1c5e7758c6a033747a37c57" => :mountain_lion
+    revision 1
+    sha256 "19d4caa5ce632ca41d3b45accd7f116f6cf93688531f26437cb4833f26cc0172" => :yosemite
+    sha256 "092e7e8ccc7622a48a3103d259c9770638fff086438fd5f82661fc80144e4705" => :mavericks
+    sha256 "3bac833b02c9927cf4ba9ef43be39ce017f57a5380a076568f79455a836e96e7" => :mountain_lion
   end
 
   devel do
