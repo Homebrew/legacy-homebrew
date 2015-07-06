@@ -57,7 +57,7 @@ class ExtractUrl < Formula
     end
 
     resource("URI::Find").stage do
-      system "perl", "Build.PL", "--install_base", "#{libexec}"
+      system "perl", "Build.PL", "--install_base", libexec
       system "./Build"
       system "./Build", "install"
     end
