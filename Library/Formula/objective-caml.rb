@@ -6,9 +6,9 @@ class ObjectiveCaml < Formula
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
 
   bottle do
-    sha256 "b9d8aca6567340adbed781ed3e5a7137e21999bd828ff07c766402b4f6070400" => :yosemite
-    sha256 "d2e27ecccfb743c52395b24b0b1792e023214a3c7d66031953f6fd4a8a0bbd7e" => :mavericks
-    sha256 "620b3d86106535c471cc81f6e2993a72e9c856f98fab012169d2d5428bb878e9" => :mountain_lion
+    sha256 "b9cb85c9c8a838217699388af2ac50e6691dc7343889015c23f88c61dd4c227f" => :yosemite
+    sha256 "1fe08bc34671612e3a02ed7edd9ffc913e057e14aa747e6d0177933c14209cbd" => :mavericks
+    sha256 "7a96850d25a97612fc5a6a53513699ec8f8032574cd1da8d797d2ce068c0f8e7" => :mountain_lion
   end
 
   option "with-x11", "Install with the Graphics module"
