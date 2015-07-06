@@ -1,7 +1,7 @@
 class SdlSound < Formula
   desc "Library to decode several popular sound file formats"
-  homepage "http://icculus.org/SDL_sound/"
-  url "http://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz"
+  homepage "https://icculus.org/SDL_sound/"
+  url "https://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/sdl-sound1.2/sdl-sound1.2_1.0.3.orig.tar.gz"
   sha256 "3999fd0bbb485289a52be14b2f68b571cb84e380cc43387eadf778f64c79e6df"
 
