@@ -1,12 +1,8 @@
-require 'formula'
-
 class Siege < Formula
   desc "HTTP regression testing and benchmarking utility"
-  homepage 'http://www.joedog.org/index/siege-home'
-  url 'http://download.joedog.org/siege/siege-3.1.0.tar.gz'
-  sha256 'f6a104cb2a3ac6c0efb2699649e8c4f8da2b548147bbbb7af2483089e4940e7f'
-
-  depends_on 'openssl'
+  homepage "https://www.joedog.org/siege-home/"
+  url "http://download.joedog.org/siege/siege-3.1.0.tar.gz"
+  sha256 "f6a104cb2a3ac6c0efb2699649e8c4f8da2b548147bbbb7af2483089e4940e7f"
 
   bottle do
     sha256 "f1456aec75bb9403dcfdb2fc043cfc5721f585d7c16698c79e3f7a6bfc202b59" => :yosemite
@@ -14,15 +10,17 @@ class Siege < Formula
     sha256 "40a93e1f6e9cb1c9f5c71c29aa1f2612fc6d70eee1a56be6678f1acdc8708499" => :mountain_lion
   end
 
+  depends_on "openssl"
+
   def install
     # To avoid unnecessary warning due to hardcoded path, create the folder first
-    (prefix+'etc').mkdir
+    (prefix/"etc").mkdir
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--localstatedir=#{var}",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
