@@ -6,9 +6,9 @@ class Cmus < Formula
   head "https://github.com/cmus/cmus.git"
 
   bottle do
-    sha1 "da0f9ffb5fc18e25f5f3d9dafebdc24c5121a89e" => :mavericks
-    sha1 "c59670990bc5055fae97c62732e6c4162b78e64c" => :mountain_lion
-    sha1 "4bba9a8ce200e9ab6348bcc87f459ad328d5862c" => :lion
+    sha256 "05f95c40656ece3eb7ebb509af8856c6df0c12085f046053fb1f26e7a803540c" => :yosemite
+    sha256 "23fd863afaf026dfa7fcd847db839f549b02da68940195ee47260dd7da90839a" => :mavericks
+    sha256 "b5f45b1c9da3401303cabd022ae896bad301659ac6010b95d377cc7509728984" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
