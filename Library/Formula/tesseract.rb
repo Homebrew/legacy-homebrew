@@ -2,9 +2,9 @@ require "formula"
 
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
-  homepage 'http://code.google.com/p/tesseract-ocr/'
-  url 'https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
-  sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
+  homepage "https://github.com/tesseract-ocr/"
+  url "https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz"
+  sha1 "a950acf7b75cf851de2de787e9abb62c58ca1827"
   revision 3
 
   bottle do
@@ -14,20 +14,24 @@ class Tesseract < Formula
   end
 
   devel do
-    url 'https://drive.google.com/uc?id=0B7l10Bj_LprhSGN2bTYwemVRREU&export=download'
-    sha1 '5bd12482a69f0a1fdf3c9e0d652de08db763ee93'
-    version '3.03rc1'
+    url "https://drive.google.com/uc?id=0B7l10Bj_LprhSGN2bTYwemVRREU&export=download"
+    sha1 "5bd12482a69f0a1fdf3c9e0d652de08db763ee93"
+    version "3.03rc1"
 
     needs :cxx11
   end
 
   head do
-    url 'https://code.google.com/p/tesseract-ocr/', :using => :git
+    url "https://github.com/tesseract-ocr/tesseract.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
     depends_on "pkg-config" => :build
+
+    resource "tessdata-head" do
+      url "https://github.com/tesseract-ocr/tessdata.git"
+    end
   end
 
   option "all-languages", "Install recognition data for all languages"
@@ -138,7 +142,9 @@ class Tesseract < Formula
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    if build.include? "all-languages"
+    if build.head?
+      resource("tessdata-head").stage { mv Dir["*"], share/"tessdata" }
+    elsif build.include? "all-languages"
       resources.each { |r| r.stage { mv Dir["tessdata/*"], share/"tessdata" } }
     else
       resource("eng").stage { mv Dir["tessdata/*"], share/"tessdata" }
