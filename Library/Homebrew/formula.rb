@@ -261,11 +261,30 @@ class Formula
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
+  # If this {Formula} has been modified by the user.  Relies on git.
+  def adulterated?
+    return false unless git_available?
+    repo = core_formula? ? HOMEBREW_LIBRARY : path_of_repository
+    repo.cd do
+      git_status = Utils.popen_read("git", "status", "-z", "--porcelain", #{path}).empty?
+      return ( git_status.empty? && $?.success? )
+    end
+    false
+  end
+
   # @deprecated
   # The `LinkedKegs` directory for this {Formula}.
   # You probably want {#opt_prefix} instead.
   def linked_keg
     Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
+  end
+
+  def path_of_repository
+    if tap?
+      Pathname.new($&).realpath
+    else
+      HOMEBREW_REPOSITORY
+    end
   end
 
   # The latest prefix for this formula. Checks for {#head}, then {#devel}

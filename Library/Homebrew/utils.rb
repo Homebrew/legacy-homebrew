@@ -244,6 +244,10 @@ def which_editor
   editor
 end
 
+def git_available?
+  return false unless which("git")
+end
+
 def exec_editor *args
   safe_exec(which_editor, *args)
 end
