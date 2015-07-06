@@ -33,7 +33,7 @@ class Gtkx < Formula
             "--prefix=#{prefix}",
             "--disable-glibtest",
             "--enable-introspection=yes",
-            "--with-gdktarget=#{OS.mac? ? 'quartz' : 'x11'",
+            "--with-gdktarget=#{OS.mac? ? 'quartz' : 'x11'}",
             "--disable-visibility"]
 
     args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
