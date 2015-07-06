@@ -3,8 +3,8 @@ require 'formula'
 class Mcabber < Formula
   desc "Console Jabber client"
   homepage 'http://mcabber.com/'
-  url 'http://mcabber.com/files/mcabber-0.10.3.tar.bz2'
-  sha1 '9254f520cb37e691fb55d4fc46df4440e4a17f14'
+  url 'http://lilotux.net/~mikael/mcabber/files/mcabber-1.0.0.tar.bz2'
+  sha256 '5476bcba395e0b9527823f5a9bce725151756f685ce2dcf6fad3dbe50a157032'
 
   head do
     url 'http://mcabber.com/hg/', :using => :hg
