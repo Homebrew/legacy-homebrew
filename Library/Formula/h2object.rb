@@ -1,7 +1,7 @@
 class H2object < Formula
   homepage "http://h2object.io"
-  url "http://dl.h2object.io/h2object/macosx/h2object-0.0.1.tar.gz"
-  sha256 "262f2f491baca8c06f600f2c94506592a08cbfc6fede51e53586b58d3e8c0fe5"
+  url "http://dl.h2object.io/h2object/macosx/1.0.0.tar.gz"
+  sha256 "2b9df7547876dcf24c4b0b39568b2da0198b6102960d41e522994a0e4ab060c6"        
   desc "the most fasting http server with themes to build web application"
 
   def install
