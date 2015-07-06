@@ -27,6 +27,9 @@ class Openwsman < Formula
   end
 
   test do
+    system "#{HOMEBREW_PREFIX}/bin/pkg-config openwsman "\
+           "--exact-version=#{version}"
+
     (testpath/"openwsman.conf").write <<-EOS.undent
       [server]
       # conf file based on https://raw.githubusercontent.com/Openwsman/openwsman/master/etc/openwsman.conf
