@@ -1,8 +1,8 @@
 class H2object < Formula
   desc "another fast & flexible static website generator & deployment tool"
   homepage "https://github.com/h2object/h2object"
-  url "http://dl.h2object.io/h2object/macosx/1.0.0.tar.gz"
-  sha256 "2b9df7547876dcf24c4b0b39568b2da0198b6102960d41e522994a0e4ab060c6"
+  url "http://dl.h2object.io/h2object/macosx/1.0.1.tar.gz"
+  sha256 "b9a13a52a3881ec6aca3dfd42b169f181ca3bed8e56b2a82695f5f72dc1ea2ce"
 
   def install
     bin.install "h2object"
