@@ -1,7 +1,6 @@
 class Magit < Formula
   desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
-
   url "https://github.com/magit/magit/releases/download/2.1.0/magit-2.1.0.tar.gz"
   sha256 "835ba1cc461583b012671aea8271b8faf372324f0156706d5801cc1b0e533fc8"
 
@@ -17,14 +16,15 @@ class Magit < Formula
   depends_on :emacs => "24.4"
 
   resource "dash" do
-    url "http://melpa.org/packages/dash-20150701.20.el"
-    sha256 "4d4e41c343fe0b3056d5572b7f15ba0212e9ecefd1d735eb6b403321d3b982f5"
+    url "https://github.com/magnars/dash.el/archive/2.11.0.tar.gz"
+    sha256 "d888d34b9b86337c5740250f202e7f2efc3bf059b08a817a978bf54923673cde"
   end
 
   def install
     resource("dash").stage do
-      (share/"emacs/site-lisp").install "dash-20150701.20.el" => "dash.el"
+      (share/"emacs/site-lisp").install "dash.el"
     end
+
     (buildpath/"config.mk").write <<-EOS
       LOAD_PATH = -L #{buildpath}/lisp -L #{share}/emacs/site-lisp
     EOS
