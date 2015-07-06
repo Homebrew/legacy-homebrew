@@ -6,6 +6,13 @@ class Ford < Formula
 
   head "https://github.com/cmacmackin/ford.git"
 
+  bottle do
+    cellar :any
+    sha256 "2b08cd52a0617aa9077b0bc0c424cd83f94eeaf82305d467d2d111e3bb8c5743" => :yosemite
+    sha256 "88364e9c774b76c5f96eb7b3ebd62c231b624808726cf3b9382e9689336221bc" => :mavericks
+    sha256 "c5c4ee0a98915e678545116960a78c4d56a4b8184b429739b78f01f1bc7201c3" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "toposort" do
