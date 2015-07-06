@@ -8,9 +8,9 @@ class Mpfr < Formula
 
   bottle do
     cellar :any
-    sha256 "dc5b8f01cc8e64e4050a922cd0d56fef9b0910a74f9fa99e13e0204664ef3f4f" => :yosemite
-    sha256 "02c70285a49d5494c7767ba8f40f7a4a64b236c6e602bedc4a0f42380909baef" => :mavericks
-    sha256 "d3ba1d384e725ab12ba23f51e7b8fdbf3a1cd585aff0c74f75e7c07aaa730d58" => :mountain_lion
+    sha256 "5047806085670ca9f39de8e9afdec2ab82eddb7d1d3154208262f844b43b4dcd" => :yosemite
+    sha256 "f1c281e854533cf7fab36396591516d48a61626096f152ea828eaae9f7c09238" => :mavericks
+    sha256 "5a98a6a8dd768c845602cabb31db527a0efecdbae3eaa1148db8010ae5420a97" => :mountain_lion
   end
 
   # http://www.mpfr.org/mpfr-current/allpatches
