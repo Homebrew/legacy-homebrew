@@ -1,8 +1,8 @@
 class Zurl < Formula
   desc "HTTP and WebSocket client worker with ZeroMQ interface"
   homepage "https://github.com/fanout/zurl"
-  url "https://dl.bintray.com/fanout/source/zurl-1.4.5.tar.bz2"
-  sha256 "d3fc65859d647e0df746d0f69742f3224c7675a33780098b37d8a1af7af52e27"
+  url "https://dl.bintray.com/fanout/source/zurl-1.4.7.tar.bz2"
+  sha256 "ffe8bb1268c62241050e8d57472a0877e1374db31e6777c5498693685770a90e"
 
   bottle do
     cellar :any
