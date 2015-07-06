@@ -25,6 +25,7 @@ class Gdal < Formula
   option "with-swig-java", "Build the swig java bindings"
 
   deprecated_option "enable-opencl" => "with-opencl"
+  deprecated_option "enable-armadillo" => "with-armadillo"
   deprecated_option "enable-unsupported" => "with-unsupported"
   deprecated_option "enable-mdb" => "with-mdb"
   deprecated_option "complete" => "with-complete"
