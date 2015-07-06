@@ -184,7 +184,7 @@ Note that these flags should only appear after a command.
     See the docs for examples of using the JSON:
     <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md>
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source|--force-bottle] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -212,6 +212,9 @@ Note that these flags should only appear after a command.
 
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.
+
+    If `--force-bottle` is passed, install from a bottle if it exists
+    for the current version of OS X, even if custom options are given.
 
     If `--devel` is passed, and <formula> defines it, install the development version.
 
