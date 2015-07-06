@@ -62,7 +62,7 @@ class FormulaInstaller
 
     bottle = formula.bottle
     return true  if force_bottle? && bottle
-    return false if build_from_source? || build_bottle? || interactive?
+    return false if build_from_source? || build_bottle? || interactive? || formula.file_modified?
     return false unless options.empty?
 
     return true if formula.local_bottle_path
@@ -180,6 +180,12 @@ class FormulaInstaller
     build_bottle_preinstall if build_bottle?
 
     unless @poured_bottle
+      if formula.file_modified?
+        filename = formula.path.to_s.gsub("#{HOMEBREW_PREFIX}/", "")
+        opoo "Formula file is modified!"
+        puts "Building from source because #{filename} has local changes"
+        puts "To install from a bottle instead, run with --force-bottle"
+      end
       compute_and_install_dependencies if @pour_failed and not ignore_deps?
       build
       clean
