@@ -185,7 +185,7 @@ Pass \fB\-\-all\fR to get information on all formulae, or \fB\-\-installed\fR to
 See the docs for examples of using the JSON: \fIhttps://github\.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying\-Brew\.md\fR
 .
 .IP "\(bu" 4
-\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR: Install \fIformula\fR\.
+\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-cc=<compiler>] [\-\-build\-from\-source|\-\-force\-bottle] [\-\-devel|\-\-HEAD]\fR \fIformula\fR: Install \fIformula\fR\.
 .
 .IP
 \fIformula\fR is usually the name of the formula to install, but it can be specified several different ways\. See \fISPECIFYING FORMULAE\fR\.
@@ -210,6 +210,9 @@ If \fB\-\-cc=<compiler>\fR is passed, attempt to compile using \fIcompiler\fR\. 
 .
 .IP
 If \fB\-\-build\-from\-source\fR is passed, compile from source even if a bottle is provided for \fIformula\fR\.
+.
+.IP
+If \fB\-\-force\-bottle\fR is passed, install from a bottle if it exists for the current version of OS X, even if custom options are given\.
 .
 .IP
 If \fB\-\-devel\fR is passed, and \fIformula\fR defines it, install the development version\.
