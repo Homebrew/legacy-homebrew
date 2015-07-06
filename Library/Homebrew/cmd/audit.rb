@@ -18,6 +18,9 @@ module Homebrew
       style
     end
 
+    head_only = ARGV.include? "--head-only"
+    devel_only = ARGV.include? "--devel-only"
+
     ENV.activate_extensions!
     ENV.setup_build_environment
 
@@ -50,7 +53,7 @@ module Homebrew
     output_header = !strict
 
     ff.each do |f|
-      fa = FormulaAuditor.new(f, :strict => strict)
+      fa = FormulaAuditor.new(f, :strict => strict, :head_only => head_only, :devel_only => devel_only)
       fa.audit
 
       unless fa.problems.empty?
@@ -131,6 +134,8 @@ class FormulaAuditor
   def initialize(formula, options={})
     @formula = formula
     @strict = !!options[:strict]
+    @head_only = !!options[:head_only]
+    @devel_only = !!options[:devel_only]
     @problems = []
     @text = FormulaText.new(formula.path)
     @specs = %w{stable devel head}.map { |s| formula.send(s) }.compact
@@ -423,11 +428,11 @@ class FormulaAuditor
   end
 
   def audit_specs
-    if head_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-head-only"
+    if !@head_only && head_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-head-only"
       problem "Head-only (no stable download)"
     end
 
-    if devel_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-devel-only"
+    if !@devel_only && devel_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-devel-only"
       problem "Devel-only (no stable download)"
     end
 
