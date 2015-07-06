@@ -3,6 +3,7 @@ class Poppler < Formula
   homepage "http://poppler.freedesktop.org"
   url "http://poppler.freedesktop.org/poppler-0.34.0.tar.xz"
   sha256 "1ba4ba9a2f9eb1e62ee6d736f4d82be4fc5f6dd177dc2b03febbe2ef2e515cb0"
+  revision 1
 
   bottle do
     sha256 "9790fe0ca3efc8a222a3d3a63f8d5642a1384f223ad60b3e44b6440ca2829fc2" => :yosemite
@@ -41,6 +42,8 @@ class Poppler < Formula
   end
 
   def install
+    ENV["LIBOPENJPEG_CFLAGS"] = "-I#{Formula["openjpeg"].opt_include}/openjpeg-1.5"
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
