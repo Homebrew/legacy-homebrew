@@ -14,9 +14,13 @@ class GitLfs < Formula
   depends_on "go" => :build
 
   def install
+    # These three lines can be removed with 0.5.3 as the bootstrap script has
+    # now been fixed to set GOPATH again in:
+    # https://github.com/github/git-lfs/pull/458
     ENV["GOPATH"] = buildpath
     mkdir_p buildpath/"src/github.com/github"
     ln_s buildpath, buildpath/"src/github.com/github/git-lfs"
+
     system "./script/bootstrap"
     bin.install "bin/git-lfs"
   end
