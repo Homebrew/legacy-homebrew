@@ -1,5 +1,4 @@
 class Apous < Formula
-  version "0.2.1"
   desc "Apous is a simple tool that allows for easier authoring of Swift scripts."
   homepage "https://github.com/owensd/apous"
   url "https://github.com/owensd/apous/archive/v0.2.1.tar.gz"
