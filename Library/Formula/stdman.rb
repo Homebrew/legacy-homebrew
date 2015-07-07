@@ -10,6 +10,6 @@ class Stdman < Formula
   end
 
   test do
-    assert File.exist? shell_output("/usr/bin/man -w std::string").strip
+    system "man", "-w", "std::string"
   end
 end
