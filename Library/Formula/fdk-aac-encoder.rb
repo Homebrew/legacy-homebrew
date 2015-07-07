@@ -21,9 +21,8 @@ class FdkAacEncoder < Formula
     system "make", "install"
   end
 
-  def generate_tone_pcm
-    ohai "generating test audio file"
-
+  test do
+    # generate test tone pcm file
     sample_rate = 44100
     two_pi = 2 * Math::PI
 
@@ -53,10 +52,7 @@ class FdkAacEncoder < Formula
     File.open("#{testpath}/tone.pcm", "wb") do |f|
       f.syswrite(samples.flatten.pack("s*"))
     end
-  end
 
-  test do
-    generate_tone_pcm
     system "#{bin}/fdkaac", "-R", "--raw-channels", "1", "-m", "1", "#{testpath}/tone.pcm", "--title", "Test Tone"
   end
 end
