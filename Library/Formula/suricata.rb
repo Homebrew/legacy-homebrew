@@ -45,7 +45,6 @@ class Suricata < Formula
     end
 
     args = %W[
-      --disable-debug
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
