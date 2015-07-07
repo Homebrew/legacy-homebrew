@@ -3,9 +3,9 @@ require 'formula'
 class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage 'https://www.percona.com'
-  url 'https://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.24-72.2.tar.gz'
-  version '5.6.24-72.2'
-  sha256 '5aa6469f3a55fe0fd1cfe315f2f9cacb0ce318620086c93821c9000d6e25c0de'
+  url 'https://www.percona.com/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.25-73.0.tar.gz'
+  version '5.6.25-73.0'
+  sha256 '790d056931b9dd5b158a732812490fdaf9407012aaf93d3f1c1b21942dcdc251'
 
   bottle do
     sha256 "0a36e472d62764906f6fcdec28b74aaf8a5cda4fec7db66d3701a370423ecba9" => :yosemite
