@@ -25,6 +25,7 @@ class Suricata < Formula
   depends_on "geoip" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
+  depends_on "jansson" => :optional
 
   resource "argparse" do
     url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
@@ -73,6 +74,12 @@ class Suricata < Formula
       args << "--with-libgeoip-libs=#{geoip.opt_lib}"
     end
 
+    if build.with? "jansson"
+      jansson = Formula['jansson']
+      args << "--with-libjansson-includes=#{jansson.opt_include}"
+      args << "--with-libjansson-libraries=#{jansson.opt_lib}"
+    end
+
     system "./configure", *args
     system "make", "install-full"
 
@@ -83,6 +90,6 @@ class Suricata < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/suricata --build-info")
+    assert_match(/#{version}/, shell_output("#{bin}/suricata --build-info"))
   end
 end
