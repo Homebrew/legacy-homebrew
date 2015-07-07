@@ -9,6 +9,13 @@ class Vault < Formula
 
   head "https://github.com/hashicorp/vault.git"
 
+  bottle do
+    cellar :any
+    sha256 "1a35804f6c32c563b16ec88ee4a96a05b602ad0e1da9d307752c6887d87f9972" => :yosemite
+    sha256 "51471edca0156a5624ad2add4c98a56d8c202d595c4c9b623a092a996c3adcca" => :mavericks
+    sha256 "f85be6356b1704f71ad14c2066c7979b72cb65de91afd47f730e86f432e8d02a" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/tools/godep" do
