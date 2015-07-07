@@ -1,10 +1,9 @@
 class Dpkg < Formula
   desc "Debian package management system"
   homepage "https://wiki.debian.org/Teams/Dpkg"
-  url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dpkg/dpkg_1.17.25.tar.xz"
-  sha256 "07019d38ae98fb107c79dbb3690cfadff877f153b8c4970e3a30d2e59aa66baa"
-  revision 1
+  url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.18.1.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dpkg/dpkg_1.18.1.tar.xz"
+  sha256 "cb26a97ca21c970cbe63a762125fe21f7437663badf6ce686589fe62650399da"
 
   bottle do
     sha256 "5dabc2c8c35cd06726e00d107c43e40719f30124973adad0007b63d14dbdd933" => :yosemite
@@ -17,14 +16,6 @@ class Dpkg < Formula
   depends_on "xz" # For LZMA
 
   def install
-    # Fix for OS X checksum utility names.
-    # The quotation marks look weird, but don't "fix" them, it's intentional.
-    inreplace "scripts/Dpkg/Checksums.pm" do |s|
-      s.gsub! "md5sum", "md5', '-q"
-      s.gsub! "sha1sum", "shasum"
-      s.gsub! "sha256sum", "shasum', '-a', '256"
-    end
-
     # We need to specify a recent gnutar, otherwise various dpkg C programs will
     # use the system "tar", which will fail because it lacks certain switches.
     ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
