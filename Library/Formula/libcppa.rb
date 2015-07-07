@@ -3,8 +3,8 @@ class Libcppa < Formula
   # be renamed to 'caf.rb'.
   desc "Implementation of the Actor Model for C++"
   homepage "http://actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/0.13.2.tar.gz"
-  sha256 "3ccf7e469740e750eef31f14b965b00f7b6e3a89b05086a088ca905b3b1a04e6"
+  url "https://github.com/actor-framework/actor-framework/archive/0.14.0.tar.gz"
+  sha256 "156c9548dba4ed815eff7df58d470647304f59701b6005cb2baf32cf74c19df6"
   head "https://github.com/actor-framework/actor-framework.git",
     :branch => "develop"
 
