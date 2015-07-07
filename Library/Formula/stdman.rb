@@ -8,4 +8,8 @@ class Stdman < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    assert File.exist? shell_output("/usr/bin/man -w std::string").strip
+  end
 end
