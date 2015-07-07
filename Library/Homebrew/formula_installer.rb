@@ -75,6 +75,15 @@ class FormulaInstaller
       return false
     end
 
+    if formula_adulterated?
+       opoo <<-EOS.undent
+        You've made changes to #{formula.name}'s formula, so we're building it from scratch.
+        To use the bottled version, run this command again with --force-bottle
+        (or set HOMEBREW_FORCE_BOTTLE)
+       EOS
+       return false
+     end
+
     true
   end
 
