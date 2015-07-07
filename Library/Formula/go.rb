@@ -16,10 +16,10 @@ class Go < Formula
   end
 
   bottle do
-    revision 1
-    sha1 "b3ec148a548331c3fd75435b7aa6ae2378ce995e" => :yosemite
-    sha1 "a4ea2ffdd9db813c870b0ce73c011788ac60cb51" => :mavericks
-    sha1 "bc52571c43f59f92ca461ff310693501f2419a04" => :mountain_lion
+    revision 2
+    sha256 "bb8b8e79201d93eb69e77763535b201ea812d426e259f106e18f62ddf80f86dd" => :yosemite
+    sha256 "46fbe85b2c75e45686ee463eeaa975ce1604f04ee611815d7c163f5feee90e03" => :mavericks
+    sha256 "7913ecbc952e22f9d6e5df114b857ed23ad97adcbc88419fa3b6425b856ee38e" => :mountain_lion
   end
 
   option "with-cc-all", "Build with cross-compilers and runtime support for all supported platforms"
