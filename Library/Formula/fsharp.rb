@@ -3,8 +3,8 @@ require "formula"
 class Fsharp < Formula
   desc "F#, a functional-first programming language"
   homepage "http://fsharp.org/"
-  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.32",
-    :revision => "a4e1f7111a6d1410df3f33e7205ee34617006b94"
+  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.2",
+    :revision => "54fedcc879a81d8384ec336a1bb0c5a970ccd0f0"
 
   bottle do
     revision 1
@@ -30,7 +30,7 @@ class Fsharp < Formula
       %w|Microsoft.Portable.FSharp.Targets
          Microsoft.FSharp.Targets|.each do |fsharp_targ|
 
-        tree_dir   = "lib/mono/Microsoft\ SDKs/F\#/#{fsharp_ver}/Framework/v4.5"
+        tree_dir   = "lib/mono/Microsoft\ SDKs/F\#/#{fsharp_ver}/Framework/v4.0"
         source_dir = File.expand_path "#{prefix}/../../mono/#{mono_ver}/#{tree_dir}"
 
         # variables:
