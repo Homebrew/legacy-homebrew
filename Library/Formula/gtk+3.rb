@@ -5,9 +5,9 @@ class Gtkx3 < Formula
   sha256 "b87c99d127eb962fc857c246b77a65322cdffd7dcbcf46a83bce2040e0f4bc31"
 
   bottle do
-    sha256 "8b57025aa63fe428ba5a0552a2fc821595b96662574b71266b05102c4aa76e6a" => :yosemite
-    sha256 "b3b757d5057704009a7b5cd3bfcd69b30023276a06a82367e79e93e2d8a770df" => :mavericks
-    sha256 "a638df465d2761f89218ef976e800a448bd9b94c1bb099e2816f75e341f7eb53" => :mountain_lion
+    sha256 "a7479f084db6ad576df046ef50dbb3c920705525b2f1c91361ad606e00d4ae98" => :yosemite
+    sha256 "8123728981fdf908aa78f712ca651fe26a7a3cce42e5360d2622bd18c4249497" => :mavericks
+    sha256 "4c7031e07208772b4d04eb1625393c1a8d8850a761dc388ece1dade35fd549c0" => :mountain_lion
   end
 
   option :universal
