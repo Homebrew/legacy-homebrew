@@ -37,6 +37,6 @@ class Hadoop < Formula
   end
 
   test do
-    system bin/"hadoop", "version"
+    system bin/"hadoop", "fs", "-ls"
   end
 end
