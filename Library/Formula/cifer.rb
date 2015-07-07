@@ -1,16 +1,18 @@
-require 'formula'
-
 class Cifer < Formula
   desc "Work on automating classical cipher cracking in C"
-  homepage 'http://code.google.com/p/cifer/'
-  url 'https://cifer.googlecode.com/files/cifer-1.2.0.tar.gz'
-  sha1 'dba2abbd672cd072c01f91a923e0830c009b66f2'
+  homepage "https://code.google.com/p/cifer/"
+  url "https://cifer.googlecode.com/files/cifer-1.2.0.tar.gz"
+  sha256 "436816c1f9112b8b80cf974596095648d60ffd47eca8eb91fdeb19d3538ea793"
 
   def install
-      system "make", "prefix=#{prefix}",
-                     "CC=#{ENV.cc}",
-                     "CFLAGS=#{ENV.cflags}",
-                     "LDFLAGS=#{ENV.ldflags}",
-                     "install"
+    system "make", "prefix=#{prefix}",
+                   "CC=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "LDFLAGS=#{ENV.ldflags}",
+                   "install"
+  end
+
+  test do
+    assert_match /#{version}/, pipe_output("#{bin}/cifer")
   end
 end
