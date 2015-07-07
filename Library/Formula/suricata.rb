@@ -11,9 +11,10 @@ class Suricata < Formula
   end
 
   bottle do
-    sha256 "269066b7601a3cd2c47d7e0e3c789ff2c334d1eff7dfa47221b1fb66233a7014" => :yosemite
-    sha256 "08ea538e48680b7712324dc8fe19a682aa0d485193823408f251f0441f62ec59" => :mavericks
-    sha256 "692c6babe72dd65363c607c846c2f9a5a01580451fd6ed97c0d1eadb4bbe736a" => :mountain_lion
+    revision 1
+    sha256 "c60577cacc930289e30fc51adf5bc3a9f2e2a96dc405221e8e7dd9a3792244f0" => :yosemite
+    sha256 "525504681cc58b1c0efa3ab6d77c36f18aff3d11ade6632a59e5a586beed620c" => :mavericks
+    sha256 "6c166db0c146fbe09ee5783cf37d6b261b7c214af8b7877e5c34d7616a32547e" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
