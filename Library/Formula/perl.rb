@@ -5,7 +5,7 @@ class Perl < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.22.0.orig.tar.xz"
   sha256 "be83ead0c5c26cbbe626fa4bac1a4beabe23a9eebc15d35ba49ccde11878e196"
 
-  head "git://perl5.git.perl.org/perl.git", :branch => "blead"
+  head "https://perl5.git.perl.org/perl.git", :branch => "blead"
 
   bottle do
     sha256 "e4f7a5d1436286b3fd3d992bfd3ccf58b90a8dadcb46153e2899bb8a56e75651" => :yosemite
