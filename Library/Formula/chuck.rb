@@ -1,8 +1,8 @@
 class Chuck < Formula
   desc "Concurrent, on-the-fly audio programming language"
   homepage "http://chuck.cs.princeton.edu/"
-  url "http://chuck.cs.princeton.edu/release/files/chuck-1.3.5.0.tgz"
-  sha1 "a97ad56f9fd1b0793ead099cc9723e888b3782c3"
+  url "http://chuck.cs.princeton.edu/release/files/chuck-1.3.5.1.tgz"
+  sha256 "d141ca61547131edd2b29bdb88183835e4133ef09807674bfa33a4e6e09d1f53"
 
   bottle do
     cellar :any
