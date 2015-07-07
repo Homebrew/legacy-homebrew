@@ -17,6 +17,13 @@ class OpenMpi < Formula
     depends_on "libtool" => :build
   end
 
+  head do
+    url "https://github.com/open-mpi/ompi.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
   deprecated_option "disable-fortran" => "without-fortran"
   deprecated_option "enable-mpi-thread-multiple" => "with-mpi-thread-multiple"
 
